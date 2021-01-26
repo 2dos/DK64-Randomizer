@@ -1,5 +1,5 @@
 # dk64-level-progression-randomizer
-Experimental DK64 rom randomizer that randomizes the level progression.
+Experimental Python script that randomizes the level progression in the DK64 ROM.
 
 Initial release goals:
 - Randomizes the level order of DK64 (Hideout Helm always last)
