@@ -13,6 +13,7 @@ Initial release goals:
 - Option to shorten hideout helm
   - Start in Blast-o-matic room
   - Open I-II-III-IV-V doors
+  - The gates in front of the music pads are gone
   - Open Crown door
   - Open Rareware and Nintendo Coin door
 - Option to enable quality of life changes
