@@ -25,3 +25,7 @@ Initial release goals:
   - Remove DK Rap from startup
   - Story skip set to "On" by default (not locked to on)
   - Fast start: Training Barrels complete, start with Simian Slam, spawn in DK Isles
+
+Current State:
+- Runs off Python 3+ terminal
+- Logically generates a spoiler log based of user-inputted seed
