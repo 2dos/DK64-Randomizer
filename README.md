@@ -4,6 +4,7 @@ Experimental Python script that randomizes the level progression in the DK64 ROM
 Initial release goals:
 - Randomizes the level order of DK64 (Hideout Helm always last)
   - The level lobby entrances and exits are randomized and tied together
+  - Example: If Creepy Castle is level 1, then it only takes 1 GB to enter and 60 bananas to fight the boss under Vanilla rules
 - Option to modify the length of the game (changes the B Locker and Troff n Scoff counts)
   - Vanilla game length is default
   - Shorter: B Locker GB requirements: 1-3-10-20-35-50-65-80, Troff n Scoff banana requirements: 50-75-100-125-150-200-250
