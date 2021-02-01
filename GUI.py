@@ -8,6 +8,16 @@ import random
 
 #Command to run when clicking the Randomize Button
 def randomize():
+    #Don't do anything if none of the options are selected
+    if str(varLevelProgression.get()) == "False" and str(varKongs.get()) == "False" and str(varMoves.get()) == "False" and str(varTagAnywhere.get()) == "False" and str(varShorterHelm.get()) == "False" and str(varQOL.get()) == "False":
+        messagebox.showwarning("DK64 Level Progression Randomizer", "Select at least one option to generate the game.")
+        return
+
+    #Prevent users from generating seeds with non-numeric values
+    if str(textboxSeed.get()).isdecimal() == False:
+        messagebox.showwarning("DK64 Level Progression Randomizer", "The seed must be a number with 6 digits maximum.")
+        return
+
     #Arrays for Finalized Setting Values
     finalBLocker = []
     finalTNS = []
@@ -52,7 +62,7 @@ def randomize():
         log.write("(B Locker: " + str(finalBLocker[7]) + " GB)")
     log.close()
 
-    messagebox.showinfo("DK64 Level Progression Randomizer", "Randomized successfully! Spoiler log written to spoilerlog.txt")
+    messagebox.showinfo("DK64 Level Progression Randomizer", "Game generated successfully! Spoiler log written to spoilerlog.txt")
 
     root.destroy()
 
@@ -60,6 +70,7 @@ def randomize():
 def randoEnable():
     dropdownLength.config(state="readonly" if varLevelProgression.get() else DISABLED)
     textboxSeed.config(state=NORMAL if varLevelProgression.get() else DISABLED)
+    buttonSeed.config(state=NORMAL if varLevelProgression.get() else DISABLED)
 
 #Command to generate a random 6 digit number
 def randomSeed():
