@@ -140,12 +140,20 @@ class CreateToolTip(object):
         self.id = None
         self.tw = None
 
-    def enter(self):
-        """View the tooltip."""
+    def enter(self, event=None):  # dead: disable
+        """View the tooltip.
+
+        Args:
+            event (Event, optional): Event object. Defaults to None.
+        """
         self.schedule()
 
-    def leave(self):
-        """No longer viewing the tooltip."""
+    def leave(self, event=None):  # dead: disable
+        """No longer viewing the tooltip.
+
+        Args:
+            event (Event, optional): Event object. Defaults to None.
+        """
         self.unschedule()
         self.hidetip()
 
@@ -204,7 +212,7 @@ class NumEntry(ttk.Entry):
         ttk.Entry.__init__(self, master, textvariable=self.var, **kwargs)
         self.get, self.set = self.var.get, self.var.set
 
-    def validate(self):
+    def validate(self, *args):  # dead: disable
         """Validate that the string we have is a valid seed id."""
         value = self.get()
         if not value.isdigit():
