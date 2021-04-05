@@ -1,3 +1,4 @@
+"""Gui and main program for rando DK64."""
 from tkinter import *
 from tkinter import ttk
 from tkinter import messagebox
@@ -7,8 +8,8 @@ import tkinter as tk
 import random
 
 
-# Command to run when clicking the Randomize Button
 def randomize():
+    """Command to run when clicking the Randomize Button."""
     # Don't do anything if none of the options are selected
     if (
         str(varLevelProgression.get()) == "False"
@@ -84,15 +85,15 @@ def randomize():
     root.destroy()
 
 
-# Command to disable the randomizer sub-options if the Level Progression Randomizer is not selected
 def randoEnable():
+    """Disable the randomizer sub-options if the Level Progression Randomizer is not selected."""
     dropdownLength.config(state="readonly" if varLevelProgression.get() else DISABLED)
     textboxSeed.config(state=NORMAL if varLevelProgression.get() else DISABLED)
     buttonSeed.config(state=NORMAL if varLevelProgression.get() else DISABLED)
 
 
-# Command to generate a random 6 digit number
 def randomSeed():
+    """Generate a random 6 digit number for a seed ID."""
     genNum = random.randrange(1, 10 ** 6)
     genSixDigits = str(genNum).zfill(6)
     textboxSeed.insert(0, genSixDigits)
@@ -113,10 +114,22 @@ frame3 = Frame(root)
 frame3.pack()
 
 
-# Create a ToolTip function since TKinter doesn't do this natively
-# Source: https://stackoverflow.com/questions/3221956/how-do-i-display-tooltips-in-tkinter
 class CreateToolTip(object):
+    """Create a ToolTip function since TKinter doesn't do this natively.
+
+    Source: https://stackoverflow.com/questions/3221956/how-do-i-display-tooltips-in-tkinter
+
+    Args:
+        object (widget): Widget info text.
+    """
+
     def __init__(self, widget, text="widget info"):
+        """Create the widget object.
+
+        Args:
+            widget (widget): Widget to update.
+            text (str, optional): Text of the tool tip. Defaults to "widget info".
+        """
         self.waittime = 500  # miliseconds
         self.wraplength = 250  # pixels
         self.widget = widget
@@ -127,24 +140,29 @@ class CreateToolTip(object):
         self.id = None
         self.tw = None
 
-    def enter(self, event=None):
+    def enter(self):
+        """View the tooltip."""
         self.schedule()
 
-    def leave(self, event=None):
+    def leave(self):
+        """No longer viewing the tooltip."""
         self.unschedule()
         self.hidetip()
 
     def schedule(self):
+        """Tie the tooptip to a widget."""
         self.unschedule()
         self.id = self.widget.after(self.waittime, self.showtip)
 
     def unschedule(self):
+        """Remove the tooltip from a widget."""
         id = self.id
         self.id = None
         if id:
             self.widget.after_cancel(id)
 
-    def showtip(self, event=None):
+    def showtip(self):
+        """Show the tooltip."""
         x = y = 0
         x, y, cx, cy = self.widget.bbox("insert")
         x += self.widget.winfo_rootx() + 25
@@ -165,21 +183,29 @@ class CreateToolTip(object):
         label.pack(ipadx=1)
 
     def hidetip(self):
+        """Hide the tooltip."""
         tw = self.tw
         self.tw = None
         if tw:
             tw.destroy()
 
 
-# Create an Entry function for 6 digit numbers only
 class NumEntry(ttk.Entry):
+    """Create an Entry function for 6 digit numbers only."""
+
     def __init__(self, master=None, **kwargs):
+        """Create the 6 digit number.
+
+        Args:
+            master (Frame, optional): Frame object. Defaults to None.
+        """
         self.var = tk.StringVar(master)
         self.var.trace("w", self.validate)
         ttk.Entry.__init__(self, master, textvariable=self.var, **kwargs)
         self.get, self.set = self.var.get, self.var.set
 
-    def validate(self, *args):
+    def validate(self):
+        """Validate that the string we have is a valid seed id."""
         value = self.get()
         if not value.isdigit():
             self.set("".join(x for x in value if x.isdigit()))
@@ -223,7 +249,7 @@ checkLevelProgression = Checkbutton(
 )
 checkLevelProgression.pack(padx=5, pady=5)
 checkLevelProgression.select()
-checkLevelProgression_toolTip = CreateToolTip(
+CreateToolTip(
     checkLevelProgression,
     "This option will randomize the level lobby entrances. "
     + "\n"
@@ -236,7 +262,7 @@ checkLevelProgression_toolTip = CreateToolTip(
 dropdownLength = ttk.Combobox(frame1, values=gameLengthOptions, width=10, state="readonly")
 dropdownLength.pack(padx=5, pady=5)
 dropdownLength.current(0)
-dropdownLength_toolTip = CreateToolTip(
+CreateToolTip(
     dropdownLength,
     "Select the length of the game generated. "
     + "\n"
@@ -255,7 +281,7 @@ dropdownLength_toolTip = CreateToolTip(
 textboxSeed = NumEntry(frame2, width=8, justify="center")
 textboxSeed.insert(0, str(random.randrange(1, 10 ** 6)).zfill(6))
 textboxSeed.pack(padx=5, pady=5, side=LEFT)
-textboxSeed_toolTip = CreateToolTip(
+CreateToolTip(
     textboxSeed,
     "You can either manually enter a 6 digit number or click the button to the right to pick one for you. "
     "This program will generate the game based off the number entered. ",
@@ -264,7 +290,7 @@ textboxSeed_toolTip = CreateToolTip(
 # Pick a Random Seed Number Button
 buttonSeed = Button(frame2, text="Random Seed", command=randomSeed)
 buttonSeed.pack(padx=5, pady=5, side=LEFT)
-buttonSeed_toolTip = CreateToolTip(
+CreateToolTip(
     buttonSeed,
     "Click this button to randomly generate a 6 digit number to base the seed on.",
 )
@@ -273,7 +299,7 @@ buttonSeed_toolTip = CreateToolTip(
 checkKongs = Checkbutton(frame3, text="Unlock All Kongs", variable=varKongs)
 checkKongs.pack(padx=5, pady=5)
 checkKongs.select()
-checkKongs_toolTip = CreateToolTip(
+CreateToolTip(
     checkKongs,
     "This option will make all 5 kongs available from the start without freeing them. "
     + "\n"
@@ -283,7 +309,7 @@ checkKongs_toolTip = CreateToolTip(
 # Unlock All Moves Checkbox
 checkMoves = Checkbutton(frame3, text="Unlock All Moves", variable=varMoves)
 checkMoves.pack(padx=5, pady=5)
-checkMoves_toolTip = CreateToolTip(
+CreateToolTip(
     checkMoves,
     "This option will make all moves available from the start without purchasing them. "
     + "\n"
@@ -295,7 +321,7 @@ checkMoves_toolTip = CreateToolTip(
 # Enable Tag Anywhere Checkbox
 checkTagAnywhere = Checkbutton(frame3, text="Enable Tag Anywhere", variable=varTagAnywhere)
 checkTagAnywhere.pack(padx=5, pady=5)
-checkTagAnywhere_toolTip = CreateToolTip(
+CreateToolTip(
     checkTagAnywhere,
     "This option will allow you to switch kongs almost anywhere using DPad left or DPad right. "
     + "\n"
@@ -307,7 +333,7 @@ checkTagAnywhere_toolTip = CreateToolTip(
 # Shorter Hideout Helm Checkbox
 checkShorterHelm = Checkbutton(frame3, text="Shorter Hideout Helm", variable=varShorterHelm)
 checkShorterHelm.pack(padx=5, pady=5)
-checkShorterHelm_toolTip = CreateToolTip(
+CreateToolTip(
     checkShorterHelm,
     "This option will shorten the time it takes to beat Hideout Helm with the following changes: "
     + "\n"
@@ -325,7 +351,7 @@ checkShorterHelm_toolTip = CreateToolTip(
 # Quality of Life Changes Checkbox
 checkQOL = Checkbutton(frame3, text="Quality of Life Changes", variable=varQOL)
 checkQOL.pack(padx=5, pady=5)
-checkQOL_toolTip = CreateToolTip(
+CreateToolTip(
     checkQOL,
     "This option enables the following quality of life changes to the game: "
     + "\n"
