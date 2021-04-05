@@ -1,0 +1,37 @@
+---
+name: Linter
+on:
+  push:
+    branches: [ main, master, develop ]
+  pull_request:
+    branches: [ main, master, develop ]
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+        - uses: actions/checkout@v2
+
+        - name: Setup python
+          uses: actions/setup-python@v2
+          with:
+              python-version: 3.6
+              architecture: x64
+
+        - name: Install linters
+          run: pip install black dead pycodestyle pydocstyle mypy
+
+        - name: Run black
+          run: black . --check -l 120
+
+        - name: Run dead
+          run: dead
+
+        - name: Run pycodestyle
+          run: pycodestyle --ignore E501,W605,W503 .
+
+        - name: Run pydocstyle
+          run: pydocstyle .
+
+        - name: Run mypy
+          run: mypy --ignore-missing-imports --no-site-packages --show-error-codes .
+    
