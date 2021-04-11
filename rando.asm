@@ -9,6 +9,9 @@
 [ReturnAddress2]: 0x807FFFE8
 [ReturnAddress3]: 0x807FFFEC
 
+// Custom Variables
+[BackupParentMap]: 0x807FFFDF // u8
+
 // Normal Variables
 [MovesBase]:  0x807FC950
 [Gamemode]: 0x80755318
@@ -20,6 +23,15 @@
 [TroffNScoffReqArray]: 0x807446C0 // u16 item size
 [BLockerDefaultArray]: 0x807446D0 // u16 item size
 [BLockerCheatArray]: 0x807446E0 // u16 item size, [u8 - GB, u8 - Kong]
+[ControllerInput]: 0x80014DC4
+[NewlyPressedControllerInput]: 0x807ECD66
+[CutsceneIndex]: 0x807476F4
+[CutsceneActive]: 0x807444EC
+[CutsceneTimer]: 0x807476F0
+[ParentMap]: 0x8076A172
+[ActorSpawnerArrayPointer]: 0x807FDC8C
+[DestinationMap]: 0x807444E4
+[DestinationExit]: 0x807444E8
 
 // New Variables
 [TestVariable]: 0x807FFFFC
@@ -31,6 +43,23 @@
 // Loading Zones
 [LZArray]: 0x807FDCB4 // u32
 [LZSize]: 0x807FDCB0 // u16
+
+// Pointers
+[Player]: 0x807FBB4C
+[SwapObject]: 0x807FC924
+[Character]: 0x8074E77C
+
+// Buttons
+[L_Button]: 0x0020
+[D_Up]: 0x0800
+[D_Down]: 0x0400
+[D_Left]: 0x0200
+[D_Right]: 0x0100
+[B_Button]: 0x4000
+[A_Button]: 0x8000
+[Z_Button]: 0x2000
+[R_Button]: 0x0010
+[Start_Button]: 0x1000
 
 .org 0x805FC164 // retroben's hook but up a few functions
 J Start
@@ -59,6 +88,12 @@ Start:
 	NOP
 	JAL 	ChangeLZToHelm
 	NOP
+    JAL     OpenCoinDoor
+    NOP
+    JAL     OpenCrownDoor
+    NOP
+    JAL     TagAnywhere
+    NOP
 
 	Finish:
 		J       0x805FC15C // retroben's hook but up a few functions
@@ -294,9 +329,65 @@ GiveMoves:
         NOP
 
 // Enable Tag Anywhere - OPTIONAL
-    // Can use Iso's Tag Anywhere V4 for this
-        // Known bug: for Diddy Mad Maze Maul in Caves, 
-        // the kong you finish with will be given Rocketbarrel Boost
+TagAnywhere:
+    LH      a1, @NewlyPressedControllerInput
+    ANDI    a1, a1, @D_Left
+    BEQZ    a1, TagAnywhere_Finish // Not Pressing DDown
+    NOP
+    LBU     a2, @Character
+    ADDIU   a2, a2, 1 // New Character Value
+    LI      a1, 5
+    BNE     a1, a2, GunCheck // If Character + 1 != 5, Don't wrap around to 0
+    NOP
+
+    WrapAround:
+        LI  a2, 0
+
+    GunCheck:
+        LW      a1, @Player
+        BEQZ    a1, TagAnywhere_Finish // If player isn't in RDRAM, cancel
+        NOP
+        LA      a3, GunBitfields
+        SLL     t3, a2, 2 // new_kong x 4
+        ADD     a3, t3, a3
+        LW      a3, 0x0 (a3)
+        LBU     t9, 0x0 (a3) // Get gun bitfield for kong
+        ANDI    t9, t9, 1 // Has gun
+        BEQZ    t9, RetractGun
+        NOP
+        LBU     t9, 0x20C(a1) // Was gun out
+        BEQZ    t9, RetractGun
+        NOP
+
+    PullOutGun:
+        LA      t9, HandStatesGun
+        ADD     t9, t9, a2
+        LBU     t9, 0x0 (t9)
+        SB      t9, 0x147 (a1) // Set Hand State
+        LI      t9, 1
+        B       ChangeCharacter
+        SB      t9, 0x20C (a1) // Set Gun State
+
+    RetractGun:
+        LA      t9, HandStatesNoGun
+        ADD     t9, t9, a2
+        LBU     t9, 0x0 (t9)
+        SB      t9, 0x147 (a1) // Set Hand State
+        SB      r0, 0x20C (a1) // Set Gun State
+
+    ChangeCharacter:
+        LW      a1, @Player
+        BEQZ    a1, TagAnywhere_Finish // If player isn't in RDRAM, cancel
+        ADDIU   a2, a2, 2
+        SB      a2, 0x36F (a1)
+        LW      a1, @SwapObject
+        BEQZ    a1, TagAnywhere_Finish // If swap object isn't in RDRAM, cancel
+        LI      a2, 0x3B
+        SH      a2, 0x29C (a1) // Initiate Swap
+
+    TagAnywhere_Finish:
+        JR      ra
+        NOP
 
 // Shorter Helm
 // Spawn in Blast-o-Matic Area
@@ -333,9 +424,25 @@ ChangeLZToHelm:
 		// Open I-II-III-IV-V doors
 		LI 		a0, 0x3B
 		LI 		a1, 1
-		LI 		a2, 2
 		JAL 	@SetFlag
-		NOP
+		LI 		a2, 2
+        // Gates knocked down
+        LI      a0, 0x46
+        LI      a1, 1
+        JAL     @SetFlag
+        LI      a2, 2
+        LI      a0, 0x47
+        LI      a1, 1
+        JAL     @SetFlag
+        LI      a2, 2
+        LI      a0, 0x48
+        LI      a1, 1
+        JAL     @SetFlag
+        LI      a2, 2
+        LI      a0, 0x49
+        LI      a1, 1
+        JAL     @SetFlag
+        LI      a2, 2
 		B 		ChangeLZToHelm_Finish
 		NOP
 
@@ -362,7 +469,18 @@ OpenCrownDoor:
 	JR 		ra
 	NOP
     
-// Open Rareware + Nintendo Coin door
+// Open Rareware + Nintendo Coin door (Give both coins)
+OpenCoinDoor:
+    SW      ra, @ReturnAddress
+    JAL     CodedSetPermFlag
+    LI      a0, 0x84
+    JAL     CodedSetPermFlag
+    LI      a0, 0x17B
+    JAL     CodedSetPermFlag
+    LI      a0, 0x303
+    LW      ra, @ReturnAddress
+    JR      ra
+    NOP
 
 // QoL Changes that require the "Shorten Cutscenes" option to be on
 QOLChangesShorten:
@@ -380,8 +498,75 @@ QOLChangesShorten:
         SH      a2, 0xC (a1)
 
     // Shorter Snides Cutscenes
-    // Shorter Key Turn-In Cutscenes
-    // Shorter T&S Cutscenes
+    SnidesCutsceneCompression:
+        // The cutscene the game chooses is based on the parent map (the method used to detect which Snide's H.Q. you're in)
+        // The shortest contraption cutscene is chosen with parent map 0
+        // So we swap out the original parent map with 0 at the right moment to get short cutscenes
+        // Then swap the original value back in at the right moment so that the player isn't taken back to test map when exiting Snide's H.Q.
+
+        LHU     t0, @CutsceneIndex
+        LI      t1, 5
+        BEQ     t0, t1, SnidesCutsceneCompression_CS5
+        NOP
+        LI      t1, 2
+        BEQ     t0, t1, SnidesCutsceneCompression_CS2
+        NOP
+        B       SnidesCutsceneCompression_TurnIn
+        NOP
+
+        SnidesCutsceneCompression_CS5:
+            LHU     t0, @CutsceneTimer
+            LI      t1, 199
+            BEQ     t0, t1, SnidesCutsceneCompression_Time199
+            NOP
+            LI      t1, 200
+            BEQ     t0, t1, SnidesCutsceneCompression_Time200
+            NOP
+            B       SnidesCutsceneCompression_TurnIn
+            NOP
+
+            SnidesCutsceneCompression_Time199:
+                // Make a backup copy of the current parent map to restore later
+                LHU     t2, @ParentMap
+                SB      t2, @BackupParentMap
+                B       SnidesCutsceneCompression_TurnIn
+                NOP
+
+            SnidesCutsceneCompression_Time200:
+                // Set parent map to 0
+                SH      r0, @ParentMap
+                B       SnidesCutsceneCompression_TurnIn
+                NOP
+
+        SnidesCutsceneCompression_CS2:
+            // Restore the backup copy of the parent map
+            LBU     t2, @BackupParentMap
+            SH      t2, @ParentMap
+
+        SnidesCutsceneCompression_TurnIn:
+            // Dereference the spawner array
+            LW      t0, @ActorSpawnerArrayPointer
+            BEQZ    t0, FinishQOLShorten // If there's no array loaded, don't bother
+            NOP
+
+            SnidesCutsceneCompression_TurnIn_Loop:
+                // Find a snide entry (enemy type 7)
+                LBU     t1, 0x0 (t0) // Get enemy type at slot 0
+                LI      t2, 7 // Snide Enemy Type
+                BNE     t1, t2, FinishQOLShorten
+                NOP
+
+                // Dereference the Snide Actor pointer from it
+                LW      t0, 0x18 (t0)
+                BEQZ    t0, FinishQOLShorten
+                NOP
+
+                // Read the turn count (Snide + 0x232)
+                LBU     t1, 0x232 (t0)
+                BEQZ    t1, FinishQOLShorten
+                NOP
+                LI      t2, 1
+                SB      t2, 0x232 (t0)
 
     FinishQOLShorten:
         LW      ra, @ReturnAddress
@@ -472,6 +657,30 @@ CodedSetPermFlag:
     LW      ra, @ReturnAddress3
     JR      ra
     NOP
+
+.align
+GunBitfields:
+    .word 0x807FC952 // DK
+    .word 0x807FC9B0 // Diddy
+    .word 0x807FCA0E // Lanky
+    .word 0x807FCA6C // Tiny
+    .word 0x807FCACA // Chunky
+
+.align
+HandStatesNoGun:
+    .byte 1 // DK
+    .byte 0 // Diddy
+    .byte 1 // Lanky
+    .byte 1 // Tiny
+    .byte 1 // Chunky
+
+.align
+HandStatesGun:
+    .byte 2 // DK
+    .byte 3 // Diddy
+    .byte 2 // Lanky
+    .byte 2 // Tiny
+    .byte 2 // Chunky
 
 .align
 FastStartFlags:
@@ -571,7 +780,7 @@ LobbyExits:
 
 .align
 SniperValue:
-    .byte 0x3
+    .byte 0x3 // 3 = Off, 7 = On
 
 .align
 BLockerDefaultAmounts:
