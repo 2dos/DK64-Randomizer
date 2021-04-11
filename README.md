@@ -20,8 +20,6 @@ Initial release goals:
 - Option to enable quality of life changes
   - Removes first time text
   - Removes first time boss cutscenes
-  - Shorter Snide blueprint turn-in cutscenes
-  - Shorter K Lumsy key turn-in cutscenes
   - Remove DK Rap from startup
   - Story skip set to "On" by default (not locked to on)
   - Fast start: Training Barrels complete, start with Simian Slam, spawn in DK Isles
