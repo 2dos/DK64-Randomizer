@@ -114,6 +114,10 @@ LoadInAdditionalFile:
 .org 0x805DAE00
 // Randomize Level Progression
 RandoLevelOrder:
+    LA      a0, RandoOn
+    LBU     a0, 0x0 (a0)
+    BEQZ    a0, FinishSettingLZs
+    NOP
     // Grab LZ Array (Size: 0x3A, Type: 0x10_u16, DMap: 0x12_u16, DExit: 0x14_dexit)
     LW      a0, @LZArray
     BEQZ    a0, FinishSettingLZs
@@ -253,6 +257,10 @@ RandoLevelOrder:
 
 // Swap B. Locker/Cheat Code/T&S counts
 SwapRequirements:
+    LA      a0, RandoOn
+    LBU     a0, 0x0 (a0)
+    BEQZ    a0, SwapRequirements_Finish
+    NOP
 	LA 		a0, TroffNScoffAmounts
 	LA 		a1, BLockerDefaultAmounts
 	LA 		a2, BLockerCheatAmounts
@@ -304,6 +312,11 @@ UnlockKongs:
 
 // Unlock All Moves - OPTIONAL
 GiveMoves:
+    SW      ra, @ReturnAddress
+    LA      a0, UnlockAllMoves
+    LBU     a0, 0x0 (a0)
+    BEQZ    a0, GiveMoves_Finish
+    NOP
     LI      a0, 4
     LI      a1, @MovesBase
     WriteMoves:
@@ -322,26 +335,53 @@ GiveMoves:
         ADDIU   a1, a1, 0x5E // Next kong base
     
     WriteMoveFlags:
-        SW      ra, @ReturnAddress
-        // Return
+        JAL     CodedSetPermFlag
+        LI      a0, 0x179 // BFI Camera
+
+    GiveMoves_Finish:
         LW      ra, @ReturnAddress
         JR      ra
         NOP
 
 // Enable Tag Anywhere - OPTIONAL
 TagAnywhere:
-    LH      a1, @NewlyPressedControllerInput
-    ANDI    a1, a1, @D_Left
-    BEQZ    a1, TagAnywhere_Finish // Not Pressing DDown
+    LA      a0, TagAnywhereOn
+    LBU     a0, 0x0 (a0)
+    BEQZ    a0, TagAnywhere_Finish
     NOP
-    LBU     a2, @Character
-    ADDIU   a2, a2, 1 // New Character Value
-    LI      a1, 5
-    BNE     a1, a2, GunCheck // If Character + 1 != 5, Don't wrap around to 0
+    LH      a1, @NewlyPressedControllerInput
+    ANDI    a2, a1, @D_Left
+    BNEZ    a2, TagAnywhere_ChangeCharacter
+    LI      t0, -1
+    ANDI    a2, a1, @D_Right
+    BNEZ    a2, TagAnywhere_ChangeCharacter
+    LI      t0, 1
+    B       TagAnywhere_Finish
     NOP
 
-    WrapAround:
-        LI  a2, 0
+    TagAnywhere_ChangeCharacter:
+        LBU     a2, @Character
+        LI      t3, 1
+        BEQ     t0, t3, TagAnywhere_Add // Inc Kong
+        NOP
+        BEQZ    a2, WrapAround_Neg
+        NOP
+        B       GunCheck
+        ADDI    a2, a2, -1
+
+    TagAnywhere_Add:
+        SLTIU   t8, a2, 4
+        BEQZ    t8, WrapAround_Pos
+        NOP
+        B       GunCheck
+        ADDIU   a2, a2, 1 // New Character Value
+
+    WrapAround_Neg:
+        B       GunCheck
+        LI      a2, 4
+
+    WrapAround_Pos:
+        LI      a2, 0
 
     GunCheck:
         LW      a1, @Player
@@ -393,6 +433,10 @@ TagAnywhere:
 // Spawn in Blast-o-Matic Area
 ChangeLZToHelm:
 	SW 		ra, @ReturnAddress
+    LA      a0, ShorterHelmOn
+    LBU     a0, 0x0 (a0)
+    BEQZ    a0, ChangeLZToHelm_Finish
+    NOP
 	LW 		a0, @CurrentMap
 	LI 		a1, 0xAA
 	BNE 	a0, a1, ChangeLZToHelm_Finish
@@ -463,33 +507,57 @@ ChangeLZToHelm:
 // Open Crown door
 OpenCrownDoor:
 	SW 		ra, @ReturnAddress
+    LA      a0, ShorterHelmOn
+    LBU     a0, 0x0 (a0)
+    BEQZ    a0, OpenCrownDoor_Finish
+    NOP
 	JAL 	CodedSetPermFlag
 	LI 		a0, 0x304
-	LW 		ra, @ReturnAddress
-	JR 		ra
-	NOP
+	
+    OpenCrownDoor_Finish:
+        LW 		ra, @ReturnAddress
+    	JR 		ra
+    	NOP
     
 // Open Rareware + Nintendo Coin door (Give both coins)
 OpenCoinDoor:
     SW      ra, @ReturnAddress
+    LA      a0, ShorterHelmOn
+    LBU     a0, 0x0 (a0)
+    BEQZ    a0, OpenCoinDoor_Finish
+    NOP
     JAL     CodedSetPermFlag
     LI      a0, 0x84
     JAL     CodedSetPermFlag
     LI      a0, 0x17B
     JAL     CodedSetPermFlag
     LI      a0, 0x303
-    LW      ra, @ReturnAddress
-    JR      ra
-    NOP
+
+    OpenCoinDoor_Finish:
+        LW      ra, @ReturnAddress
+        JR      ra
+        NOP
 
 // QoL Changes that require the "Shorten Cutscenes" option to be on
 QOLChangesShorten:
     SW          ra, @ReturnAddress
+    LA          a0, QualityChangesOn
+    LBU         a0, 0x0 (a0)
+    BEQZ        a0, FinishQOLShorten
+    NOP
+
     // Remove First Time Text
     NoFTT:
     	LA 		a0, FTTFlags
     	JAL 	SetAllFlags
     	NOP
+
+    NoDance:
+        SW      r0, 0x806EFB9C // Movement Write
+        SW      r0, 0x806EFC1C // CS Play
+        SW      r0, 0x806EFB88 // Animation Write
+        SW      r0, 0x806EFC0C // Change Rotation
+        SW      r0, 0x806EFBA8 // Control State Progress
 
     // Remove First Time Boss Cutscenes
     ShortenBossCutscenes:
@@ -603,6 +671,10 @@ SetAllFlags:
 
 QOLChanges:
     SW      ra, @ReturnAddress
+    LA      a0, QualityChangesOn
+    LBU     a0, 0x0 (a0)
+    BEQZ    a0, FinishQOL
+    NOP
     // Remove DK Rap from startup
     FridgeHasBeenTaken:
         LI       a1, 0x50
@@ -657,6 +729,26 @@ CodedSetPermFlag:
     LW      ra, @ReturnAddress3
     JR      ra
     NOP
+
+.align
+RandoOn:
+    .byte 1
+
+.align
+TagAnywhereOn:
+    .byte 1
+
+.align
+ShorterHelmOn:
+    .byte 1
+
+.align
+QualityChangesOn:
+    .byte 1
+
+.align
+UnlockAllMoves:
+    .byte 1
 
 .align
 GunBitfields:
