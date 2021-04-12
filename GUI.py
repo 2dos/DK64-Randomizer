@@ -4,6 +4,7 @@ from tkinter import ttk
 from tkinter import messagebox
 from random import seed
 from random import shuffle
+import shutil
 import tkinter as tk
 import random
 
@@ -40,8 +41,10 @@ def randomize():
     finalLevels = levelEntrances[:]
 
     # Start Spoiler Log and ASM Generation
+
+    shutil.copy2("asmFunctions.asm", "settings.asm")
     log = open("spoilerlog.txt", "w+")
-    asm = open("settings.asm", "w+")
+    asm = open("settings.asm", "a+")
 
     # Write Settings
     log.write("Randomizer Settings" + "\n")
@@ -67,6 +70,7 @@ def randomize():
 
     # Shuffle Level Progression
     if str(varLevelProgression.get()) == "True":
+        asm.write(".align" + "\n" + "RandoOn:" + "\n" + "\t" + ".byte 1" + "\n" + "\n") # Run Randomizer in ASM
         seed(textboxSeed.get())
         shuffle(finalLevels)
         log.write("Level Order: " + "\n")
@@ -91,15 +95,13 @@ def randomize():
             log.write(str(finalLevels.index(x) + 1) + ". " + x + " ")
             log.write("(B Locker: " + str(finalBLocker[finalLevels.index(x)]) + " GB, ")
             log.write("Troff n Scoff: " + str(finalTNS[finalLevels.index(x)]) + " bananas)")
-            # log.write(" - " + str(finalNumerical[finalLevels.index(x)]))
             log.write("\n")
             asm.write("\t" + ".byte " + str(finalNumerical[finalLevels.index(x)]))
             asm.write("\n")
         log.write("8. Hideout Helm ")
         log.write("(B Locker: " + str(finalBLocker[7]) + " GB)")
-        asm.write("\t" + ".byte 7")
-        asm.write("\n")
-        asm.write("\n")
+        asm.write("\t" + ".byte 7") # Helm should always be set to position 8 in the array
+        asm.write("\n" + "\n")
 
         # Set B Lockers in ASM
         asm.write(".align" + "\n" + "BLockerDefaultAmounts:" + "\n")
@@ -110,11 +112,10 @@ def randomize():
         asm.write("\t" + ".half " + str(finalBLocker[finalLevels.index("Fungi Forest")]) + "\n")
         asm.write("\t" + ".half " + str(finalBLocker[finalLevels.index("Crystal Caves")]) + "\n")
         asm.write("\t" + ".half " + str(finalBLocker[finalLevels.index("Creepy Castle")]) + "\n")
-        asm.write("\t" + ".half 100")
-        asm.write("\n")
-        asm.write("\n")
+        asm.write("\t" + ".half " + str(finalBLocker[7])) # Helm B Locker always uses last value in level array
+        asm.write("\n" + "\n")
 
-        # ANTI CHEAT (set GB amounts in the script instead if using cheat code)
+        # ANTI CHEAT (set GB amounts in the script instead of using the in-game cheat code)
         asm.write(".align" + "\n" + "BLockerCheatAmounts:" + "\n")
         asm.write("\t" + ".half " + str(finalBLocker[finalLevels.index("Jungle Japes")]) + "\n")
         asm.write("\t" + ".half " + str(finalBLocker[finalLevels.index("Angry Aztec")]) + "\n")
@@ -123,9 +124,8 @@ def randomize():
         asm.write("\t" + ".half " + str(finalBLocker[finalLevels.index("Fungi Forest")]) + "\n")
         asm.write("\t" + ".half " + str(finalBLocker[finalLevels.index("Crystal Caves")]) + "\n")
         asm.write("\t" + ".half " + str(finalBLocker[finalLevels.index("Creepy Castle")]) + "\n")
-        asm.write("\t" + ".half 100")
-        asm.write("\n")
-        asm.write("\n")
+        asm.write("\t" + ".half " + str(finalBLocker[7])) # Helm B Locker always uses last value in level array
+        asm.write("\n" + "\n")
 
         # Set Troff n Scoffs in ASM
         asm.write(".align" + "\n" + "TroffNScoffAmounts:" + "\n")
@@ -136,14 +136,66 @@ def randomize():
         asm.write("\t" + ".half " + str(finalTNS[finalLevels.index("Fungi Forest")]) + "\n")
         asm.write("\t" + ".half " + str(finalTNS[finalLevels.index("Crystal Caves")]) + "\n")
         asm.write("\t" + ".half " + str(finalTNS[finalLevels.index("Creepy Castle")]) + "\n")
-        asm.write("\t" + ".half 1")
+        asm.write("\t" + ".half 1") # Isles TNS should always be set to 1
+        asm.write("\n" + "\n")
+    else:
+        asm.write(".align" + "\n" + "RandoOn:" + "\n" + "\t" + ".byte 0" + "\n" + "\n") # Dont run Randomizer in ASM
+
+    # Unlock All Kongs
+    asm.write(".align" + "\n" + "KongFlags:" + "\n")
+    if str(varKongs.get()) == "True":
+        asm.write("\t" + ".half 385" + "\n") # DK
+        asm.write("\t" + ".half 6" + "\n") # Diddy
+        asm.write("\t" + ".half 70" + "\n") # Lanky
+        asm.write("\t" + ".half 66" + "\n") # Tiny
+        asm.write("\t" + ".half 117" + "\n") # Chunky
+    asm.write("\t" + ".half 0" + "\n" + "\n") # Null Terminator (required)
+
+    # Unlock All Moves
+    asm.write(".align" + "\n" + "UnlockAllMoves:" + "\n")
+    if str(varMoves.get()) == "True":
+        asm.write("\t" + ".byte 1" + "\n" + "\n")
+    else:
+        asm.write("\t" + ".byte 0" + "\n" + "\n")  
+    asm.write(".align" + "\n" + "SniperValue:" + "\n" + "\t" + ".byte 0x3" + "\n" + "\n") # Sniper Scope: 3 = off, 7 = on
+
+    # Enable Tag Anywhere
+    asm.write(".align" + "\n" + "TagAnywhereOn:" + "\n")
+    if str(varTagAnywhere.get()) == "True":
+        asm.write("\t" + ".byte 1" + "\n" + "\n")
+    else:
+        asm.write("\t" + ".byte 0" + "\n" + "\n")
+        
+    # Shorter Hideout Helm
+    asm.write(".align" + "\n" + "ShorterHelmOn:" + "\n")
+    if str(varShorterHelm.get()) == "True":
+        asm.write("\t" + ".byte 1" + "\n" + "\n")
+    else:
+        asm.write("\t" + ".byte 0" + "\n" + "\n")
+
+    # Quality of Life Changes
+    asm.write(".align" + "\n" + "QualityChangesOn:" + "\n")
+    if str(varQOL.get()) == "True":
+        asm.write("\t" + ".byte 1" + "\n" + "\n")
+    else:
+        asm.write("\t" + ".byte 0" + "\n" + "\n")
+
+    # Fast start
+    asm.write(".align" + "\n" + "FastStartFlags:" + "\n")
+    if str(varQOL.get()) == "True":
+        asm.write("\t" + ".half 386" + "\n") # Dive Barrel
+        asm.write("\t" + ".half 387" + "\n") # Vine Barrel
+        asm.write("\t" + ".half 388" + "\n") # Orange Barrel
+        asm.write("\t" + ".half 389" + "\n") # Barrel Barrel
+        asm.write("\t" + ".half 377" + "\n") # BFI Camera/Shockwave
+    asm.write("\t" + ".half 0" + "\n") # Null Terminator (required)
 
     log.close()
     asm.close()
 
     messagebox.showinfo(
         "DK64 Level Progression Randomizer",
-        "Game generated successfully! Spoiler log written to spoilerlog.txt",
+        "Game generated successfully!",
     )
 
     root.destroy()
@@ -375,7 +427,9 @@ CreateToolTip(
     checkKongs,
     "This option will make all 5 kongs available from the start without freeing them. "
     + "\n"
-    + "The golden bananas awarded when freeing specific kongs still must be collected even with this option on. ",
+    + "The golden bananas awarded when freeing specific kongs still must be collected even with this option on. "
+    + "\n"
+    + "If using Level Progression Randomizer and playing through glitchless, this option should be turned on. ",
 )
 
 # Unlock All Moves Checkbox
