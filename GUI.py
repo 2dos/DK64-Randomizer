@@ -36,12 +36,14 @@ def randomize():
     # Arrays for Finalized Setting Values
     finalBLocker = []
     finalTNS = []
+    finalNumerical = [0,1,2,3,4,5,6]
     finalLevels = levelEntrances[:]
 
-    # Start Spoiler Log Generation
+    # Start Spoiler Log and ASM Generation
     log = open("spoilerlog.txt", "w+")
+    asm = open("settings.asm", "w+")
 
-    # Write Settings to Spoiler Log
+    # Write Settings
     log.write("Randomizer Settings" + "\n")
     log.write("-------------------" + "\n")
     log.write("Level Progression Randomized: " + str(varLevelProgression.get()) + "\n")
@@ -63,19 +65,81 @@ def randomize():
         finalBLocker = shorterBLocker[:]
         finalTNS = shorterTNS[:]
 
-    # Shuffle Level Progression and Write to Spoiler Log
+    # Shuffle Level Progression
     if str(varLevelProgression.get()) == "True":
         seed(textboxSeed.get())
         shuffle(finalLevels)
         log.write("Level Order: " + "\n")
+        asm.write(".align" + "\n" + "LevelOrder:" + "\n")
+
+        # Set Level Order in ASM and Spoiler Log
         for x in finalLevels:
+            if str(x) == "Jungle Japes":
+                finalNumerical[finalLevels.index(x)] = 0
+            elif str(x) == "Angry Aztec":
+                finalNumerical[finalLevels.index(x)] = 1
+            elif str(x) == "Frantic Factory":
+                finalNumerical[finalLevels.index(x)] = 2
+            elif str(x) == "Gloomy Galleon":
+                finalNumerical[finalLevels.index(x)] = 3
+            elif str(x) == "Fungi Forest":
+                finalNumerical[finalLevels.index(x)] = 4
+            elif str(x) == "Crystal Caves":
+                finalNumerical[finalLevels.index(x)] = 5
+            elif str(x) == "Creepy Castle":
+                finalNumerical[finalLevels.index(x)] = 6
             log.write(str(finalLevels.index(x) + 1) + ". " + x + " ")
             log.write("(B Locker: " + str(finalBLocker[finalLevels.index(x)]) + " GB, ")
             log.write("Troff n Scoff: " + str(finalTNS[finalLevels.index(x)]) + " bananas)")
+            # log.write(" - " + str(finalNumerical[finalLevels.index(x)]))
             log.write("\n")
+            asm.write("\t" + ".byte " + str(finalNumerical[finalLevels.index(x)]))
+            asm.write("\n")
         log.write("8. Hideout Helm ")
         log.write("(B Locker: " + str(finalBLocker[7]) + " GB)")
+        asm.write("\t" + ".byte 7")
+        asm.write("\n")
+        asm.write("\n")
+
+        # Set B Lockers in ASM
+        asm.write(".align" + "\n" + "BLockerDefaultAmounts:" + "\n")
+        asm.write("\t" + ".half " + str(finalBLocker[finalLevels.index("Jungle Japes")]) + "\n")
+        asm.write("\t" + ".half " + str(finalBLocker[finalLevels.index("Angry Aztec")]) + "\n")
+        asm.write("\t" + ".half " + str(finalBLocker[finalLevels.index("Frantic Factory")]) + "\n")
+        asm.write("\t" + ".half " + str(finalBLocker[finalLevels.index("Gloomy Galleon")]) + "\n")
+        asm.write("\t" + ".half " + str(finalBLocker[finalLevels.index("Fungi Forest")]) + "\n")
+        asm.write("\t" + ".half " + str(finalBLocker[finalLevels.index("Crystal Caves")]) + "\n")
+        asm.write("\t" + ".half " + str(finalBLocker[finalLevels.index("Creepy Castle")]) + "\n")
+        asm.write("\t" + ".half 100")
+        asm.write("\n")
+        asm.write("\n")
+
+        # ANTI CHEAT (set GB amounts in the script instead if using cheat code)
+        asm.write(".align" + "\n" + "BLockerCheatAmounts:" + "\n")
+        asm.write("\t" + ".half " + str(finalBLocker[finalLevels.index("Jungle Japes")]) + "\n")
+        asm.write("\t" + ".half " + str(finalBLocker[finalLevels.index("Angry Aztec")]) + "\n")
+        asm.write("\t" + ".half " + str(finalBLocker[finalLevels.index("Frantic Factory")]) + "\n")
+        asm.write("\t" + ".half " + str(finalBLocker[finalLevels.index("Gloomy Galleon")]) + "\n")
+        asm.write("\t" + ".half " + str(finalBLocker[finalLevels.index("Fungi Forest")]) + "\n")
+        asm.write("\t" + ".half " + str(finalBLocker[finalLevels.index("Crystal Caves")]) + "\n")
+        asm.write("\t" + ".half " + str(finalBLocker[finalLevels.index("Creepy Castle")]) + "\n")
+        asm.write("\t" + ".half 100")
+        asm.write("\n")
+        asm.write("\n")
+
+        # Set Troff n Scoffs in ASM
+        asm.write(".align" + "\n" + "TroffNScoffAmounts:" + "\n")
+        asm.write("\t" + ".half " + str(finalTNS[finalLevels.index("Jungle Japes")]) + "\n")
+        asm.write("\t" + ".half " + str(finalTNS[finalLevels.index("Angry Aztec")]) + "\n")
+        asm.write("\t" + ".half " + str(finalTNS[finalLevels.index("Frantic Factory")]) + "\n")
+        asm.write("\t" + ".half " + str(finalTNS[finalLevels.index("Gloomy Galleon")]) + "\n")
+        asm.write("\t" + ".half " + str(finalTNS[finalLevels.index("Fungi Forest")]) + "\n")
+        asm.write("\t" + ".half " + str(finalTNS[finalLevels.index("Crystal Caves")]) + "\n")
+        asm.write("\t" + ".half " + str(finalTNS[finalLevels.index("Creepy Castle")]) + "\n")
+        asm.write("\t" + ".half 1")
+
     log.close()
+    asm.close()
 
     messagebox.showinfo(
         "DK64 Level Progression Randomizer",
@@ -341,6 +405,7 @@ CreateToolTip(
 # Shorter Hideout Helm Checkbox
 checkShorterHelm = Checkbutton(frame3, text="Shorter Hideout Helm", variable=varShorterHelm)
 checkShorterHelm.pack(padx=5, pady=5)
+checkShorterHelm.select()
 CreateToolTip(
     checkShorterHelm,
     "This option will shorten the time it takes to beat Hideout Helm with the following changes: "
@@ -359,6 +424,7 @@ CreateToolTip(
 # Quality of Life Changes Checkbox
 checkQOL = Checkbutton(frame3, text="Quality of Life Changes", variable=varQOL)
 checkQOL.pack(padx=5, pady=5)
+checkQOL.select()
 CreateToolTip(
     checkQOL,
     "This option enables the following quality of life changes to the game: "
@@ -366,10 +432,6 @@ CreateToolTip(
     + "- Removes first time text. "
     + "\n"
     + "- Removes first time boss cutscenes. "
-    + "\n"
-    + "- Shorter Snide blueprint turn-in cutscenes. "
-    + "\n"
-    + "- Shorter K Lumsy key turn-in cutscenes. "
     + "\n"
     + "- Remove DK Rap from the startup sequence. "
     + "\n"
