@@ -904,22 +904,3 @@ LobbyExits:
     .byte 0x7 // Helm
     .byte 0x0 // Terminator
 
-.align
-LevelOrder:
-    .byte 0
-    .byte 2
-    .byte 5
-    .byte 3
-    .byte 1
-    .byte 6
-    .byte 4
-    .byte 7
-
-.align
-FastStartFlags:
-    .half 386
-    .half 387
-    .half 388
-    .half 389
-    .half 377
-    .half 0

@@ -38,6 +38,7 @@ def randomize():
     finalBLocker = []
     finalTNS = []
     finalNumerical = [0,1,2,3,4,5,6]
+    finalKeyFlags = ["0x001A","0x004A","0x008A","0x00A8","0x00EC","0x0124","0x013D"]
     finalLevels = levelEntrances[:]
 
     # Start Spoiler Log and ASM Generation
@@ -137,6 +138,17 @@ def randomize():
         asm.write("\t" + ".half " + str(finalTNS[finalLevels.index("Crystal Caves")]) + "\n")
         asm.write("\t" + ".half " + str(finalTNS[finalLevels.index("Creepy Castle")]) + "\n")
         asm.write("\t" + ".half 1") # Isles TNS should always be set to 1
+        asm.write("\n" + "\n")
+
+        # Set Keys
+        asm.write(".align" + "\n" + "KeyFlags:" + "\n")
+        asm.write("\t" + ".half " + str(finalKeyFlags[finalLevels.index("Jungle Japes")]) + "\n")
+        asm.write("\t" + ".half " + str(finalKeyFlags[finalLevels.index("Angry Aztec")]) + "\n")
+        asm.write("\t" + ".half " + str(finalKeyFlags[finalLevels.index("Frantic Factory")]) + "\n")
+        asm.write("\t" + ".half " + str(finalKeyFlags[finalLevels.index("Gloomy Galleon")]) + "\n")
+        asm.write("\t" + ".half " + str(finalKeyFlags[finalLevels.index("Fungi Forest")]) + "\n")
+        asm.write("\t" + ".half " + str(finalKeyFlags[finalLevels.index("Crystal Caves")]) + "\n")
+        asm.write("\t" + ".half " + str(finalKeyFlags[finalLevels.index("Creepy Castle")]) + "\n")
         asm.write("\n" + "\n")
     else:
         asm.write(".align" + "\n" + "RandoOn:" + "\n" + "\t" + ".byte 0" + "\n" + "\n") # Dont run Randomizer in ASM
