@@ -37,8 +37,8 @@ def randomize():
     # Arrays for Finalized Setting Values
     finalBLocker = []
     finalTNS = []
-    finalNumerical = [0,1,2,3,4,5,6]
-    finalKeyFlags = ["0x001A","0x004A","0x008A","0x00A8","0x00EC","0x0124","0x013D"]
+    finalNumerical = [0, 1, 2, 3, 4, 5, 6]
+    finalKeyFlags = ["0x001A", "0x004A", "0x008A", "0x00A8", "0x00EC", "0x0124", "0x013D"]
     finalLevels = levelEntrances[:]
 
     # Start Spoiler Log and ASM Generation
@@ -71,7 +71,7 @@ def randomize():
 
     # Shuffle Level Progression
     if str(varLevelProgression.get()) == "True":
-        asm.write(".align" + "\n" + "RandoOn:" + "\n" + "\t" + ".byte 1" + "\n" + "\n") # Run Randomizer in ASM
+        asm.write(".align" + "\n" + "RandoOn:" + "\n" + "\t" + ".byte 1" + "\n" + "\n")  # Run Randomizer in ASM
         seed(textboxSeed.get())
         shuffle(finalLevels)
         log.write("Level Order: " + "\n")
@@ -101,7 +101,7 @@ def randomize():
             asm.write("\n")
         log.write("8. Hideout Helm ")
         log.write("(B Locker: " + str(finalBLocker[7]) + " GB)")
-        asm.write("\t" + ".byte 7") # Helm should always be set to position 8 in the array
+        asm.write("\t" + ".byte 7")  # Helm should always be set to position 8 in the array
         asm.write("\n" + "\n")
 
         # Set B Lockers in ASM
@@ -113,7 +113,7 @@ def randomize():
         asm.write("\t" + ".half " + str(finalBLocker[finalLevels.index("Fungi Forest")]) + "\n")
         asm.write("\t" + ".half " + str(finalBLocker[finalLevels.index("Crystal Caves")]) + "\n")
         asm.write("\t" + ".half " + str(finalBLocker[finalLevels.index("Creepy Castle")]) + "\n")
-        asm.write("\t" + ".half " + str(finalBLocker[7])) # Helm B Locker always uses last value in level array
+        asm.write("\t" + ".half " + str(finalBLocker[7]))  # Helm B Locker always uses last value in level array
         asm.write("\n" + "\n")
 
         # ANTI CHEAT (set GB amounts in the script instead of using the in-game cheat code)
@@ -125,7 +125,7 @@ def randomize():
         asm.write("\t" + ".half " + str(finalBLocker[finalLevels.index("Fungi Forest")]) + "\n")
         asm.write("\t" + ".half " + str(finalBLocker[finalLevels.index("Crystal Caves")]) + "\n")
         asm.write("\t" + ".half " + str(finalBLocker[finalLevels.index("Creepy Castle")]) + "\n")
-        asm.write("\t" + ".half " + str(finalBLocker[7])) # Helm B Locker always uses last value in level array
+        asm.write("\t" + ".half " + str(finalBLocker[7]))  # Helm B Locker always uses last value in level array
         asm.write("\n" + "\n")
 
         # Set Troff n Scoffs in ASM
@@ -137,7 +137,7 @@ def randomize():
         asm.write("\t" + ".half " + str(finalTNS[finalLevels.index("Fungi Forest")]) + "\n")
         asm.write("\t" + ".half " + str(finalTNS[finalLevels.index("Crystal Caves")]) + "\n")
         asm.write("\t" + ".half " + str(finalTNS[finalLevels.index("Creepy Castle")]) + "\n")
-        asm.write("\t" + ".half 1") # Isles TNS should always be set to 1
+        asm.write("\t" + ".half 1")  # Isles TNS should always be set to 1
         asm.write("\n" + "\n")
 
         # Set Keys
@@ -151,25 +151,25 @@ def randomize():
         asm.write("\t" + ".half " + str(finalKeyFlags[finalLevels.index("Creepy Castle")]) + "\n")
         asm.write("\n" + "\n")
     else:
-        asm.write(".align" + "\n" + "RandoOn:" + "\n" + "\t" + ".byte 0" + "\n" + "\n") # Dont run Randomizer in ASM
+        asm.write(".align" + "\n" + "RandoOn:" + "\n" + "\t" + ".byte 0" + "\n" + "\n")  # Dont run Randomizer in ASM
 
     # Unlock All Kongs
     asm.write(".align" + "\n" + "KongFlags:" + "\n")
     if str(varKongs.get()) == "True":
-        asm.write("\t" + ".half 385" + "\n") # DK
-        asm.write("\t" + ".half 6" + "\n") # Diddy
-        asm.write("\t" + ".half 70" + "\n") # Lanky
-        asm.write("\t" + ".half 66" + "\n") # Tiny
-        asm.write("\t" + ".half 117" + "\n") # Chunky
-    asm.write("\t" + ".half 0" + "\n" + "\n") # Null Terminator (required)
+        asm.write("\t" + ".half 385" + "\n")  # DK
+        asm.write("\t" + ".half 6" + "\n")  # Diddy
+        asm.write("\t" + ".half 70" + "\n")  # Lanky
+        asm.write("\t" + ".half 66" + "\n")  # Tiny
+        asm.write("\t" + ".half 117" + "\n")  # Chunky
+    asm.write("\t" + ".half 0" + "\n" + "\n")  # Null Terminator (required)
 
     # Unlock All Moves
     asm.write(".align" + "\n" + "UnlockAllMoves:" + "\n")
     if str(varMoves.get()) == "True":
         asm.write("\t" + ".byte 1" + "\n" + "\n")
     else:
-        asm.write("\t" + ".byte 0" + "\n" + "\n")  
-    asm.write(".align" + "\n" + "SniperValue:" + "\n" + "\t" + ".byte 0x3" + "\n" + "\n") # Sniper Scope: 3 = off, 7 = on
+        asm.write("\t" + ".byte 0" + "\n" + "\n")
+    asm.write(".align" + "\n" + "SniperValue:" + "\n" + "\t" + ".byte 0x3" + "\n" + "\n")  # Sniper Scope: 3 = off, 7 = on
 
     # Enable Tag Anywhere
     asm.write(".align" + "\n" + "TagAnywhereOn:" + "\n")
@@ -177,7 +177,7 @@ def randomize():
         asm.write("\t" + ".byte 1" + "\n" + "\n")
     else:
         asm.write("\t" + ".byte 0" + "\n" + "\n")
-        
+
     # Shorter Hideout Helm
     asm.write(".align" + "\n" + "ShorterHelmOn:" + "\n")
     if str(varShorterHelm.get()) == "True":
@@ -195,12 +195,12 @@ def randomize():
     # Fast start
     asm.write(".align" + "\n" + "FastStartFlags:" + "\n")
     if str(varQOL.get()) == "True":
-        asm.write("\t" + ".half 386" + "\n") # Dive Barrel
-        asm.write("\t" + ".half 387" + "\n") # Vine Barrel
-        asm.write("\t" + ".half 388" + "\n") # Orange Barrel
-        asm.write("\t" + ".half 389" + "\n") # Barrel Barrel
-        asm.write("\t" + ".half 377" + "\n") # BFI Camera/Shockwave
-    asm.write("\t" + ".half 0" + "\n") # Null Terminator (required)
+        asm.write("\t" + ".half 386" + "\n")  # Dive Barrel
+        asm.write("\t" + ".half 387" + "\n")  # Vine Barrel
+        asm.write("\t" + ".half 388" + "\n")  # Orange Barrel
+        asm.write("\t" + ".half 389" + "\n")  # Barrel Barrel
+        asm.write("\t" + ".half 377" + "\n")  # BFI Camera/Shockwave
+    asm.write("\t" + ".half 0" + "\n")  # Null Terminator (required)
 
     log.close()
     asm.close()
