@@ -13,6 +13,7 @@
 [BackupParentMap]: 0x807FFFDF // u8
 
 // Normal Variables
+[TransitionSpeed]: 0x807FD88C
 [MovesBase]:  0x807FC950
 [Gamemode]: 0x80755318
 [StorySkip]: 0x8074452C
@@ -65,29 +66,31 @@
 J Start
 
 .org 0x8000072C // Boot
-J 	LoadInAdditionalFile
+J   LoadInAdditionalFile
 NOP
 
 .org 0x8000DE88 // 0x00DE88 > 0x00EDDA. EDD1 seems the safe limit before overwriting data.
 
 Start:
-	// Run the code we replaced
-	JAL     0x805FC2B0
-	NOP
-	JAL 	RandoLevelOrder
-	NOP
-	JAL 	UnlockKongs
-	NOP
-	JAL 	GiveMoves
-	NOP
-	JAL 	QOLChangesShorten
-	NOP
-	JAL 	QOLChanges
-	NOP
-	JAL 	SwapRequirements
-	NOP
-	JAL 	ChangeLZToHelm
-	NOP
+    // Run the code we replaced
+    JAL     0x805FC2B0
+    NOP
+    JAL     RandoLevelOrder
+    NOP
+    JAL     UnlockKongs
+    NOP
+    JAL     GiveMoves
+    NOP
+    JAL     QOLChangesShorten
+    NOP
+    JAL     QOLChanges
+    NOP
+    JAL     SwapRequirements
+    NOP
+    JAL     SwapKeys
+    NOP
+    JAL     ChangeLZToHelm
+    NOP
     JAL     OpenCoinDoor
     NOP
     JAL     OpenCrownDoor
@@ -95,9 +98,9 @@ Start:
     JAL     TagAnywhere
     NOP
 
-	Finish:
-		J       0x805FC15C // retroben's hook but up a few functions
-		NOP
+    Finish:
+        J       0x805FC15C // retroben's hook but up a few functions
+        NOP
 
 .org 0x80000A30 // 0x000A30 > 0x0010BC
 
@@ -137,80 +140,80 @@ RandoLevelOrder:
         LI      a3, 9 // Type
         LHU     t9, 0x10 (a0)
         BNE     t9, a3, LoopControl
-        LI 		t3, 0
+        LI      t3, 0
 
         EntranceSearch:
-        	LA 		t6, Lobbies
-        	ADD 	t6, t6, t3
-        	LBU 	t6, 0x0 (t6)
-        	LHU 	t9, 0x12 (a0)
-        	BEQ 	t6, t9, EntranceFound // t3 = lobby index
-        	NOP
-        	LI 		t9, 7
-        	BEQ 	t3, t9, LoopControl // Lobby index not found
-        	NOP
-        	B 		EntranceSearch
-        	ADDIU 	t3, t3, 1
+            LA      t6, Lobbies
+            ADD     t6, t6, t3
+            LBU     t6, 0x0 (t6)
+            LHU     t9, 0x12 (a0)
+            BEQ     t6, t9, EntranceFound // t3 = lobby index
+            NOP
+            LI      t9, 7
+            BEQ     t3, t9, LoopControl // Lobby index not found
+            NOP
+            B       EntranceSearch
+            ADDIU   t3, t3, 1
 
         EntranceFound:
-        	LA 		t6, LevelOrder
-        	ADD 	t6, t6, t3
-        	LBU 	t6, 0x0 (t6) // New Index
-        	LA 		t3, Lobbies
-        	ADD 	t3, t3, t6
-        	LBU 	t3, 0x0 (t3) // New Lobby
-        	B 		LoopControl
-        	SH 		t3, 0x12 (a0)
+            LA      t6, LevelOrder
+            ADD     t6, t6, t3
+            LBU     t6, 0x0 (t6) // New Index
+            LA      t3, Lobbies
+            ADD     t3, t3, t6
+            LBU     t3, 0x0 (t3) // New Lobby
+            B       LoopControl
+            SH      t3, 0x12 (a0)
 
         // Lobby Exits
         Exit:
-        	LHU		t9, 0x12 (a0)
-        	LI 		a3, 0x22 // Isles
-        	BNE 	t9, a3, LoopControl
-        	LI 		a3, 9 // Type
-        	LHU 	t9, 0x10 (a0)
-        	BNE 	t9, a3, LoopControl
-        	LI 		t3, 0
+            LHU     t9, 0x12 (a0)
+            LI      a3, 0x22 // Isles
+            BNE     t9, a3, LoopControl
+            LI      a3, 9 // Type
+            LHU     t9, 0x10 (a0)
+            BNE     t9, a3, LoopControl
+            LI      t3, 0
 
         ExitSearch:
-        	SW 		t3, 0x807FFFF8
-        	LA 		t6, Lobbies
-        	ADD 	t6, t6, t3
-        	LBU 	t6, 0x0 (t6)
-        	LW 		t9, @CurrentMap
-        	BEQ 	t6, t9, ExitFound // t3 = lobby index
-        	NOP
-        	LI  	t9, 7
-        	BEQ 	t3, t9, LoopControl // Lobby not found
-        	NOP
-        	ADDIU 	t3, t3, 1
-        	B 		ExitSearch
-        	NOP
+            SW      t3, 0x807FFFF8
+            LA      t6, Lobbies
+            ADD     t6, t6, t3
+            LBU     t6, 0x0 (t6)
+            LW      t9, @CurrentMap
+            BEQ     t6, t9, ExitFound // t3 = lobby index
+            NOP
+            LI      t9, 7
+            BEQ     t3, t9, LoopControl // Lobby not found
+            NOP
+            ADDIU   t3, t3, 1
+            B       ExitSearch
+            NOP
 
         ExitFound:
-        	LI 		t9, 0
+            LI      t9, 0
 
         ExitFoundSearch:
-        	// t3 = Found Lobby
-        	// t9 = Index in Level Order
-        	SW 		t9, @TestVariable
-        	LA 		t6, LevelOrder
-        	ADD  	t6, t6, t9
-        	LBU 	t6, 0x0 (t6) // Source Index
-        	BEQ  	t6, t3, ExitFoundIndexFound
-        	NOP
-        	LI 		t6, 7
-        	BEQ 	t9, t6, LoopControl // Index not found
-        	NOP
-        	ADDIU 	t9, t9, 1
-        	B 		ExitFoundSearch
-        	NOP
+            // t3 = Found Lobby
+            // t9 = Index in Level Order
+            SW      t9, @TestVariable
+            LA      t6, LevelOrder
+            ADD     t6, t6, t9
+            LBU     t6, 0x0 (t6) // Source Index
+            BEQ     t6, t3, ExitFoundIndexFound
+            NOP
+            LI      t6, 7
+            BEQ     t9, t6, LoopControl // Index not found
+            NOP
+            ADDIU   t9, t9, 1
+            B       ExitFoundSearch
+            NOP
 
         ExitFoundIndexFound:
-        	LA 		t3, LobbyExits
-        	ADD 	t3, t3, t9
-        	LBU 	t3, 0x0 (t3) // Found Exit Value
-        	SH 		t3, 0x14 (a0)
+            LA      t3, LobbyExits
+            ADD     t3, t3, t9
+            LBU     t3, 0x0 (t3) // Found Exit Value
+            SH      t3, 0x14 (a0)
 
         // Loop Control
         LoopControl:
@@ -221,28 +224,28 @@ RandoLevelOrder:
             NOP
 
     CastleCannon:
-    	LW 		a0, @CurrentMap
-    	LI 		a1, 0x22
-    	BNE 	a0, a1, FinishSettingLZs
-    	NOP
-    	LW 		a0, @CastleCannonPointer
-    	BEQZ 	a0, FinishSettingLZs
-    	SRA 	a1, a0, 16
-    	SLTIU 	a2, a1, 0x8000
-    	BNEZ 	a2, FinishSettingLZs
-    	SLTIU 	a2, a1, 0x8080
-    	BEQZ 	a2, FinishSettingLZs
-    	NOP
-    	LHU 	a1, 0x376 (a0)
-    	LI 		a2, 0x22
-    	BNE 	a1, a2, FinishSettingLZs
-    	NOP
-    	LA 		a1, LevelOrder
-    	LBU 	a1, 0x6 (a1) // Castle Cannon Lobby Index
-    	LA 		a2, Lobbies
-    	ADD 	a2, a2, a1
-    	LBU 	a2, 0x0 (a2) // Cannon Map
-    	SH 		a2, 0x378 (a0)
+        LW      a0, @CurrentMap
+        LI      a1, 0x22
+        BNE     a0, a1, FinishSettingLZs
+        NOP
+        LW      a0, @CastleCannonPointer
+        BEQZ    a0, FinishSettingLZs
+        SRA     a1, a0, 16
+        SLTIU   a2, a1, 0x8000
+        BNEZ    a2, FinishSettingLZs
+        SLTIU   a2, a1, 0x8080
+        BEQZ    a2, FinishSettingLZs
+        NOP
+        LHU     a1, 0x376 (a0)
+        LI      a2, 0x22
+        BNE     a1, a2, FinishSettingLZs
+        NOP
+        LA      a1, LevelOrder
+        LBU     a1, 0x6 (a1) // Castle Cannon Lobby Index
+        LA      a2, Lobbies
+        ADD     a2, a2, a1
+        LBU     a2, 0x0 (a2) // Cannon Map
+        SH      a2, 0x378 (a0)
 
     // We are going with randomized level lobby entrances
         // Values of lobby entrances
@@ -261,50 +264,96 @@ SwapRequirements:
     LBU     a0, 0x0 (a0)
     BEQZ    a0, SwapRequirements_Finish
     NOP
-	LA 		a0, TroffNScoffAmounts
-	LA 		a1, BLockerDefaultAmounts
-	LA 		a2, BLockerCheatAmounts
-	LA 		a3, LevelOrder	
-	LI 		t7, 8
+    LBU     a0, @TransitionSpeed
+    ANDI    a0, a0, 0x80
+    BEQZ    a0, SwapRequirements_Finish
+    NOP
+    LA      a0, TroffNScoffAmounts
+    LA      a1, BLockerDefaultAmounts
+    LA      a2, BLockerCheatAmounts
+    LI      t3, 0
+    LI      t7, 8
 
-	SwapRequirements_Loop:
-		LBU 	t3, 0x0 (a3) // Level Index
-		// T&S
-		LI 		t9, @TroffNScoffReqArray
-		SLL 	t6, t3, 1
-		ADD 	t9, t9, t6
-		LHU 	t6, 0x0 (a0)
-		SH 		t6, 0x0 (t9)
-		// B. Locker Default
-		LI 		t9, @BLockerDefaultArray
-		SLL 	t6, t3, 1
-		ADD 	t9, t9, t6
-		LBU 	t6, 0x0 (a1)
-		SH 		t6, 0x0 (t9)
-		// B. Locker Cheat
-		LI 		t9, @BLockerCheatArray
-		SLL 	t6, t3, 1
-		ADD 	t9, t9, t6
-		LBU 	t6, 0x0 (a2)
-		SB 		t6, 0x0 (t9)
-		// Loop
-		ADDI 	t7, t7 -1
-		BEQZ 	t7, SwapRequirements_Finish
-		ADDIU 	a0, a0, 2
-		ADDIU 	a1, a1, 1
-		ADDIU 	a2, a2, 1
-		B 		SwapRequirements_Loop
-		ADDIU 	a3, a3, 1
+    SwapRequirements_Loop:
+        // T&S
+        LI      t9, @TroffNScoffReqArray
+        SLL     t6, t3, 1
+        ADD     t9, t9, t6
+        LHU     t6, 0x0 (a0)
+        SH      t6, 0x0 (t9)
+        // B. Locker Default
+        LI      t9, @BLockerDefaultArray
+        SLL     t6, t3, 1
+        ADD     t9, t9, t6
+        LHU     t6, 0x0 (a1)
+        SH      t6, 0x0 (t9)
+        // B. Locker Cheat
+        LI      t9, @BLockerCheatArray
+        SLL     t6, t3, 1
+        ADD     t9, t9, t6
+        LHU     t6, 0x0 (a2)
+        SB      t6, 0x0 (t9)
+        // Loop
+        ADDI    t7, t7 -1
+        BEQZ    t7, SwapRequirements_Finish
+        ADDIU   a0, a0, 2
+        ADDIU   a1, a1, 2
+        ADDIU   a2, a2, 2
+        B       SwapRequirements_Loop
+        ADDIU   t3, t3, 1
 
-	SwapRequirements_Finish:
-		JR 		ra
-		NOP
+    SwapRequirements_Finish:
+        JR      ra
+        NOP
+
+// Swap Keys around
+SwapKeys:
+    LA      a0, RandoOn
+    LBU     a0, 0x0 (a0)
+    BEQZ    a0, SwapKeys_Finish
+    NOP
+    LBU     a0, @TransitionSpeed
+    ANDI    a0, a0, 0x80
+    BEQZ    a0, SwapKeys_Finish
+    NOP
+    LA      a0, KeyMaps
+    LW      a1, @CurrentMap
+    LI      a2, 7
+
+    SwapKeys_MapLoop:
+        LBU     t0, 0x0 (a0)
+        BEQ     t0, a1, SwapKeys_SetKeys
+        ADDI    a2, a2, -1
+        BEQZ    a2, SwapKeys_Finish
+        ADDIU   a0, a0, 1
+        B       SwapKeys_MapLoop
+        NOP
+
+    SwapKeys_SetKeys:
+        LA      a0, KeyAddress
+        LA      a1, KeyFlags
+        LI      a2, 7
+
+    SwapKeys_SetKeysLoop:
+        LW      t0, 0x0 (a0)
+        LHU     t3, 0x0 (a1)
+        SH      t3, 0x0 (t0)
+        ADDI    a2, a2, -1
+        BEQZ    a2, SwapKeys_Finish
+        ADDIU   a0, a0, 4
+        B       SwapKeys_SetKeysLoop
+        ADDIU   a1, a1, 2        
+
+    SwapKeys_Finish:
+        JR      ra
+        NOP
+    
 
 // Unlock All Kongs - OPTIONAL
 UnlockKongs:
     SW      ra, @ReturnAddress
-    LA 		a0, KongFlags
-    JAL 	SetAllFlags
+    LA      a0, KongFlags
+    JAL     SetAllFlags
     NOP
     LW      ra, @ReturnAddress
     JR      ra
@@ -432,44 +481,44 @@ TagAnywhere:
 // Shorter Helm
 // Spawn in Blast-o-Matic Area
 ChangeLZToHelm:
-	SW 		ra, @ReturnAddress
+    SW      ra, @ReturnAddress
     LA      a0, ShorterHelmOn
     LBU     a0, 0x0 (a0)
     BEQZ    a0, ChangeLZToHelm_Finish
     NOP
-	LW 		a0, @CurrentMap
-	LI 		a1, 0xAA
-	BNE 	a0, a1, ChangeLZToHelm_Finish
-	NOP
-	LW 		a0, @ObjectTimer
-	LI 		a1, 3
-	BNE 	a0, a1, ChangeLZToHelm_Finish
-	NOP
-	LW 		a0, @LZArray
-	LHU 	a1, @LZSize
+    LW      a0, @CurrentMap
+    LI      a1, 0xAA
+    BNE     a0, a1, ChangeLZToHelm_Finish
+    NOP
+    LW      a0, @ObjectTimer
+    LI      a1, 3
+    BNE     a0, a1, ChangeLZToHelm_Finish
+    NOP
+    LW      a0, @LZArray
+    LHU     a1, @LZSize
 
-	ChangeLZToHelm_CheckLZ:
-		LHU 	a2, 0x10 (a0)
-		LI 		a3, 9
-		BNE 	a2, a3, ChangeLZToHelm_Enumerate
-		NOP
-		LHU 	a2, 0x12 (a0)
-		LI 		a3, 0x11
-		BNE 	a2, a3, ChangeLZToHelm_Enumerate
-		NOP
-		LHU 	a2, 0x14 (a0)
-		BNEZ 	a2, ChangeLZToHelm_Enumerate
-		NOP
-		LI 		a3, 3
-		SH 		a3, 0x14 (a0)
-		// Story: Helm
-		JAL 	CodedSetPermFlag
-		LI 		a0, 0x1CC
-		// Open I-II-III-IV-V doors
-		LI 		a0, 0x3B
-		LI 		a1, 1
-		JAL 	@SetFlag
-		LI 		a2, 2
+    ChangeLZToHelm_CheckLZ:
+        LHU     a2, 0x10 (a0)
+        LI      a3, 9
+        BNE     a2, a3, ChangeLZToHelm_Enumerate
+        NOP
+        LHU     a2, 0x12 (a0)
+        LI      a3, 0x11
+        BNE     a2, a3, ChangeLZToHelm_Enumerate
+        NOP
+        LHU     a2, 0x14 (a0)
+        BNEZ    a2, ChangeLZToHelm_Enumerate
+        NOP
+        LI      a3, 3
+        SH      a3, 0x14 (a0)
+        // Story: Helm
+        JAL     CodedSetPermFlag
+        LI      a0, 0x1CC
+        // Open I-II-III-IV-V doors
+        LI      a0, 0x3B
+        LI      a1, 1
+        JAL     @SetFlag
+        LI      a2, 2
         // Gates knocked down
         LI      a0, 0x46
         LI      a1, 1
@@ -487,37 +536,37 @@ ChangeLZToHelm:
         LI      a1, 1
         JAL     @SetFlag
         LI      a2, 2
-		B 		ChangeLZToHelm_Finish
-		NOP
+        B       ChangeLZToHelm_Finish
+        NOP
 
-	ChangeLZToHelm_Enumerate:
-		ADDIU 	a0, a0, 0x3A
-		ADDI 	a1, a1, -1
-		BEQZ 	a1, ChangeLZToHelm_Finish
-		NOP
-		B 		ChangeLZToHelm_CheckLZ
-		NOP
+    ChangeLZToHelm_Enumerate:
+        ADDIU   a0, a0, 0x3A
+        ADDI    a1, a1, -1
+        BEQZ    a1, ChangeLZToHelm_Finish
+        NOP
+        B       ChangeLZToHelm_CheckLZ
+        NOP
 
-	ChangeLZToHelm_Finish:
-		LW 		ra, @ReturnAddress
-		JR 		ra
-		NOP
+    ChangeLZToHelm_Finish:
+        LW      ra, @ReturnAddress
+        JR      ra
+        NOP
 
 
 // Open Crown door
 OpenCrownDoor:
-	SW 		ra, @ReturnAddress
+    SW      ra, @ReturnAddress
     LA      a0, ShorterHelmOn
     LBU     a0, 0x0 (a0)
     BEQZ    a0, OpenCrownDoor_Finish
     NOP
-	JAL 	CodedSetPermFlag
-	LI 		a0, 0x304
-	
+    JAL     CodedSetPermFlag
+    LI      a0, 0x304
+    
     OpenCrownDoor_Finish:
-        LW 		ra, @ReturnAddress
-    	JR 		ra
-    	NOP
+        LW      ra, @ReturnAddress
+        JR      ra
+        NOP
     
 // Open Rareware + Nintendo Coin door (Give both coins)
 OpenCoinDoor:
@@ -548,9 +597,9 @@ QOLChangesShorten:
 
     // Remove First Time Text
     NoFTT:
-    	LA 		a0, FTTFlags
-    	JAL 	SetAllFlags
-    	NOP
+        LA      a0, FTTFlags
+        JAL     SetAllFlags
+        NOP
 
     NoDance:
         SW      r0, 0x806EFB9C // Movement Write
@@ -571,7 +620,10 @@ QOLChangesShorten:
         // The shortest contraption cutscene is chosen with parent map 0
         // So we swap out the original parent map with 0 at the right moment to get short cutscenes
         // Then swap the original value back in at the right moment so that the player isn't taken back to test map when exiting Snide's H.Q.
-
+        LW      t0, @CurrentMap
+        LI      t1, 0xF
+        BNE     t0, t1, FinishQOLShorten
+        NOP
         LHU     t0, @CutsceneIndex
         LI      t1, 5
         BEQ     t0, t1, SnidesCutsceneCompression_CS5
@@ -644,30 +696,30 @@ QOLChangesShorten:
 // Loops through a flag array and sets all of them
 // Credit: Isotarge (Tag Anywhere V5)
 SetAllFlags:
-	// Params:
-	// a0 = Array
-	ADDIU	sp, sp, -0x18 // Push S0
-	SW		s0, 0x10(sp)
-	SW 		ra, 0x14(sp)
-	NOP
+    // Params:
+    // a0 = Array
+    ADDIU   sp, sp, -0x18 // Push S0
+    SW      s0, 0x10(sp)
+    SW      ra, 0x14(sp)
+    NOP
 
-	// Load flag array base into register to loop with
-	ADDIU 	s0, a0, 0
+    // Load flag array base into register to loop with
+    ADDIU   s0, a0, 0
 
-	SetAllFlagsLoop:
-	    LHU     a0, 0(s0) // Load the flag index from the array
-	    BEQZ    a0, FinishSettingAllFlags // If the flag index is 0, exit the loop
-	    NOP
-	    JAL     CodedSetPermFlag
-	    NOP
-	    B       SetAllFlagsLoop
-	    ADDIU   s0, s0, 2 // Move on to the next flag in the array
+    SetAllFlagsLoop:
+        LHU     a0, 0(s0) // Load the flag index from the array
+        BEQZ    a0, FinishSettingAllFlags // If the flag index is 0, exit the loop
+        NOP
+        JAL     CodedSetPermFlag
+        NOP
+        B       SetAllFlagsLoop
+        ADDIU   s0, s0, 2 // Move on to the next flag in the array
 
-	FinishSettingAllFlags:
-		LW		s0, 0x10(sp)  // Pop S0
-		LW 		ra, 0x14(sp)
-		JR
-		ADDIU	sp, sp, 0x18
+    FinishSettingAllFlags:
+        LW      s0, 0x10(sp)  // Pop S0
+        LW      ra, 0x14(sp)
+        JR
+        ADDIU   sp, sp, 0x18
 
 QOLChanges:
     SW      ra, @ReturnAddress
@@ -692,8 +744,8 @@ QOLChanges:
 
     // Start with training barrels complete + simian slam (start in DK Isles spawn)
     FastStart:
-       	LA 		a0, FastStartFlags
-        JAL 	SetAllFlags
+        LA      a0, FastStartFlags
+        JAL     SetAllFlags
         NOP
         // Slam
         LI      a0, 4
@@ -755,8 +807,28 @@ HandStatesGun:
     .byte 2 // Chunky
 
 .align
+KeyAddress:
+    .word 0x800258FA
+    .word 0x8002C136
+    .word 0x80035676
+    .word 0x8002A0C2
+    .word 0x8002B3F6
+    .word 0x80025C4E
+    .word 0x800327EE
+
+.align
+KeyMaps:
+    .byte 0x08
+    .byte 0xC5
+    .byte 0x9A
+    .byte 0x6F
+    .byte 0x53
+    .byte 0xC4
+    .byte 0xC7
+
+.align
 FTTFlags:
-	.half 355 // Bananaporter
+    .half 355 // Bananaporter
     .half 358 // Crown Pad
     .half 359 // T&S (1)
     .half 360 // Mini Monkey
@@ -832,3 +904,22 @@ LobbyExits:
     .byte 0x7 // Helm
     .byte 0x0 // Terminator
 
+.align
+LevelOrder:
+    .byte 0
+    .byte 2
+    .byte 5
+    .byte 3
+    .byte 1
+    .byte 6
+    .byte 4
+    .byte 7
+
+.align
+FastStartFlags:
+    .half 386
+    .half 387
+    .half 388
+    .half 389
+    .half 377
+    .half 0
