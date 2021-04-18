@@ -1,4 +1,4 @@
-# dk64-level-progression-randomizer
+# DK64 Randomizer
 Experimental Python script that randomizes the level progression in the DK64 ROM.
 
 Initial release goals:
