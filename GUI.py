@@ -4,9 +4,11 @@ from tkinter import ttk
 from tkinter import messagebox
 from random import seed
 from random import shuffle
-import shutil
 import tkinter as tk
+import shutil
 import random
+import sys
+import os
 
 
 def randomize():
@@ -42,10 +44,9 @@ def randomize():
     finalLevels = levelEntrances[:]
 
     # Start Spoiler Log and ASM Generation
-
-    shutil.copy2("asmFunctions.asm", "settings.asm")
-    log = open("spoilerlog.txt", "w+")
-    asm = open("settings.asm", "a+")
+    shutil.copy2(os.path.join(sys.path[0], "asmFunctions.asm"), os.path.join(sys.path[0], "settings.asm"))
+    log = open(os.path.join(sys.path[0], "spoilerlog.txt"), "w+")
+    asm = open(os.path.join(sys.path[0], "settings.asm"), "a+")
 
     # Write Settings
     log.write("Randomizer Settings" + "\n")
@@ -169,7 +170,9 @@ def randomize():
         asm.write("\t" + ".byte 1" + "\n" + "\n")
     else:
         asm.write("\t" + ".byte 0" + "\n" + "\n")
-    asm.write(".align" + "\n" + "SniperValue:" + "\n" + "\t" + ".byte 0x3" + "\n" + "\n")  # Sniper Scope: 3 = off, 7 = on
+    asm.write(
+        ".align" + "\n" + "SniperValue:" + "\n" + "\t" + ".byte 0x3" + "\n" + "\n"
+    )  # Sniper Scope: 3 = off, 7 = on
 
     # Enable Tag Anywhere
     asm.write(".align" + "\n" + "TagAnywhereOn:" + "\n")
