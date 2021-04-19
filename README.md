@@ -1,5 +1,5 @@
 # DK64 Randomizer
-Experimental Python script that randomizes the level progression in the DK64 ROM.
+Experimental Python script that randomizes various options in the DK64 ROM.
 
 Initial release goals:
 - Randomizes the level order of DK64 (Hideout Helm always last)
@@ -25,5 +25,6 @@ Initial release goals:
   - Fast start: Training Barrels complete, start with Simian Slam, spawn in DK Isles
 
 Current State:
-- Runs off Python 3+ terminal
+- Runs off Python 3+
 - Logically generates a spoiler log based of user-inputted seed
+- Generates an asm file that needs to manually be injected into the DK64 rom
