@@ -6,7 +6,7 @@ Initial release goals:
   - The level lobby entrances and exits are randomized and tied together
   - Example: If Creepy Castle is level 1, then it only takes 1 GB to enter and 60 bananas to fight the boss under Vanilla rules
 - Option to modify the length of the game (changes the B Locker and Troff n Scoff counts)
-  - Vanilla game length is default
+  - Vanilla: B Locker GB requirements: 1-5-15-30-50-65-80-100, Troff n Scoff banana requirements: 60-120-200-250-300-350-400
   - Shorter: B Locker GB requirements: 1-3-10-20-35-50-65-80, Troff n Scoff banana requirements: 50-75-100-125-150-200-250
 - Option to unlock all kongs from the start
 - Option to unlock all moves from the start
