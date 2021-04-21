@@ -140,3 +140,7 @@ cython_debug/
 # Randomizer specific
 spoilerlog.txt
 settings.asm
+*.z64
+*.bin
+*.bin.gz
+codeOutput.txt
