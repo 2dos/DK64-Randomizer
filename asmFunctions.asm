@@ -39,6 +39,7 @@
 
 // Functions
 [SetFlag]: 0x8073129C
+[CheckFlag]: 0x8073110C
 [DMAFileTransfer]: 0x80000450
 
 // Loading Zones
@@ -366,6 +367,24 @@ GiveMoves:
     LBU     a0, 0x0 (a0)
     BEQZ    a0, GiveMoves_Finish
     NOP
+    LW      a0, @CurrentMap
+    LI      a1, 0x50 // Main Menu
+    BNE     a0, a1, GiveMoves_Finish
+    NOP
+    LBU     a0, @CutsceneActive
+    LI      a1, 6
+    BNE     a0, a1, GiveMoves_Finish
+    NOP
+    LI      a0, 0x346 // CB far OoB in Japes
+    JAL     @CheckFlag
+    LI      a1, 0
+    ADDIU   a0, v0, 0
+    BNEZ    a0, GiveMoves_Finish // Flag is set, moves given
+    NOP
+    LI      a0, 0x346
+    LI      a1, 1
+    JAL     @SetFlag
+    LI      a2, 0
     LI      a0, 4
     LI      a1, @MovesBase
     WriteMoves:
@@ -560,6 +579,24 @@ OpenCrownDoor:
     LBU     a0, 0x0 (a0)
     BEQZ    a0, OpenCrownDoor_Finish
     NOP
+    LW      a0, @CurrentMap
+    LI      a1, 0x50 // Main Menu
+    BNE     a0, a1, OpenCrownDoor_Finish
+    NOP
+    LBU     a0, @CutsceneActive
+    LI      a1, 6
+    BNE     a0, a1, OpenCrownDoor_Finish
+    NOP
+    LI      a0, 0x346 // CB far OoB in Japes
+    JAL     @CheckFlag
+    LI      a1, 0
+    ADDIU   a0, v0, 0
+    BNEZ    a0, OpenCrownDoor_Finish // Flag is set, moves given
+    NOP
+    LI      a0, 0x346
+    LI      a1, 1
+    JAL     @SetFlag
+    LI      a2, 0
     JAL     CodedSetPermFlag
     LI      a0, 0x304
     
@@ -575,6 +612,24 @@ OpenCoinDoor:
     LBU     a0, 0x0 (a0)
     BEQZ    a0, OpenCoinDoor_Finish
     NOP
+    LW      a0, @CurrentMap
+    LI      a1, 0x50 // Main Menu
+    BNE     a0, a1, OpenCoinDoor_Finish
+    NOP
+    LBU     a0, @CutsceneActive
+    LI      a1, 6
+    BNE     a0, a1, OpenCoinDoor_Finish
+    NOP
+    LI      a0, 0x346 // CB far OoB in Japes
+    JAL     @CheckFlag
+    LI      a1, 0
+    ADDIU   a0, v0, 0
+    BNEZ    a0, OpenCoinDoor_Finish // Flag is set, moves given
+    NOP
+    LI      a0, 0x346
+    LI      a1, 1
+    JAL     @SetFlag
+    LI      a2, 0
     JAL     CodedSetPermFlag
     LI      a0, 0x84
     JAL     CodedSetPermFlag
@@ -727,6 +782,7 @@ QOLChanges:
     LBU     a0, 0x0 (a0)
     BEQZ    a0, FinishQOL
     NOP
+
     // Remove DK Rap from startup
     FridgeHasBeenTaken:
         LI       a1, 0x50
@@ -744,6 +800,24 @@ QOLChanges:
 
     // Start with training barrels complete + simian slam (start in DK Isles spawn)
     FastStart:
+        LW      a0, @CurrentMap
+        LI      a1, 0x50 // Main Menu
+        BNE     a0, a1, IslesSpawn
+        NOP
+        LBU     a0, @CutsceneActive
+        LI      a1, 6
+        BNE     a0, a1, IslesSpawn
+        NOP
+        LI      a0, 0x346 // CB far OoB in Japes
+        JAL     @CheckFlag
+        LI      a1, 0
+        ADDIU   a0, v0, 0
+        BNEZ    a0, IslesSpawn // Flag is set, moves given
+        NOP
+        LI      a0, 0x346
+        LI      a1, 1
+        JAL     @SetFlag
+        LI      a2, 0
         LA      a0, FastStartFlags
         JAL     SetAllFlags
         NOP
