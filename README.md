@@ -10,6 +10,7 @@ Initial release goals:
   - Four presets: Vanilla, Steady, Half and Hell
 - Option to unlock all kongs from the start
 - Option to unlock all moves from the start
+- Option to unlock the fairy camera (shockwave attack) from the start
 - Option to enable the Tag Anywhere hack
 - Option to shorten hideout helm
   - Start in Blast-o-matic room
