@@ -8,6 +8,9 @@
 [ReturnAddress]: 0x807FFFE4
 [ReturnAddress2]: 0x807FFFE8
 [ReturnAddress3]: 0x807FFFEC
+[VarStorage0]: 0x807FFFF0
+[VarStorage1]: 0x807FFFF4
+[VarStorage2]: 0x807FFFF8
 
 // Custom Variables
 [BackupParentMap]: 0x807FFFDF // u8
@@ -24,6 +27,7 @@
 [TroffNScoffReqArray]: 0x807446C0 // u16 item size
 [BLockerDefaultArray]: 0x807446D0 // u16 item size
 [BLockerCheatArray]: 0x807446E0 // u16 item size, [u8 - GB, u8 - Kong]
+[CheckmarkKeyArray]: 0x80744710 // u16 item size
 [ControllerInput]: 0x80014DC4
 [NewlyPressedControllerInput]: 0x807ECD66
 [CutsceneIndex]: 0x807476F4
@@ -33,9 +37,14 @@
 [ActorSpawnerArrayPointer]: 0x807FDC8C
 [DestinationMap]: 0x807444E4
 [DestinationExit]: 0x807444E8
+[LevelIndexMapping]: 0x807445E0
 
 // New Variables
 [TestVariable]: 0x807FFFFC
+
+// Model Two
+[ModelTwoArray]: 0x807F6000
+[ModelTwoArraySize]: 0x807F6004
 
 // Functions
 [SetFlag]: 0x8073129C
@@ -97,6 +106,8 @@ Start:
     JAL     OpenCrownDoor
     NOP
     JAL     TagAnywhere
+    NOP
+    JAL     FixPortals
     NOP
 
     Finish:
@@ -177,7 +188,6 @@ RandoLevelOrder:
             LI      t3, 0
 
         ExitSearch:
-            SW      t3, 0x807FFFF8
             LA      t6, Lobbies
             ADD     t6, t6, t3
             LBU     t6, 0x0 (t6)
@@ -197,7 +207,6 @@ RandoLevelOrder:
         ExitFoundSearch:
             // t3 = Found Lobby
             // t9 = Index in Level Order
-            SW      t9, @TestVariable
             LA      t6, LevelOrder
             ADD     t6, t6, t9
             LBU     t6, 0x0 (t6) // Source Index
@@ -272,6 +281,7 @@ SwapRequirements:
     LA      a0, TroffNScoffAmounts
     LA      a1, BLockerDefaultAmounts
     LA      a2, BLockerCheatAmounts
+    LA      a3, KeyFlags
     LI      t3, 0
     LI      t7, 8
 
@@ -294,12 +304,24 @@ SwapRequirements:
         ADD     t9, t9, t6
         LHU     t6, 0x0 (a2)
         SB      t6, 0x0 (t9)
+        // Keys - Boss Door
+        SLTIU   t0, t7, 2
+        BNEZ    t0, SwapRequirements_Increment
+        NOP
+        LI      t9, @CheckmarkKeyArray
+        SLL     t6, t3, 1
+        ADD     t9, t9, t6
+        LHU     t6, 0x0 (a3)
+        SH      t6, 0x0 (t9)
+
+    SwapRequirements_Increment:
         // Loop
         ADDI    t7, t7 -1
         BEQZ    t7, SwapRequirements_Finish
         ADDIU   a0, a0, 2
         ADDIU   a1, a1, 2
         ADDIU   a2, a2, 2
+        ADDIU   a3, a3, 2
         B       SwapRequirements_Loop
         ADDIU   t3, t3, 1
 
@@ -348,9 +370,81 @@ SwapKeys:
     SwapKeys_Finish:
         JR      ra
         NOP
-    
 
-// Unlock All Kongs - OPTIONAL
+FixPortals:
+    LW      a0, @ObjectTimer
+    LI      a1, 1
+    BNE     a0, a1, FixPortals_Finish
+    NOP
+    LW      a0, @ModelTwoArray
+    BEQZ    a0, FixPortals_Finish
+    NOP
+    LW      a1, @ModelTwoArraySize
+    BEQZ    a1, FixPortals_Finish
+    NOP
+    LW      t0, @CurrentMap
+    LI      t3, @LevelIndexMapping
+    ADD     t3, t3, t0
+    LBU     t0, 0x0 (t3) // Level Index
+    SLTIU   t6, t0, 0x7
+    BEQZ    t6, FixPortals_Finish // Get rid of level indexes not with primary levels
+    NOP
+    SLL     t0, t0, 1
+    LA      t3, KeyFlags
+    ADDU    t3, t3, t0
+    LHU     a3, 0x0 (t3) // New Key Flag
+
+    FixPortals_Loop:
+        LHU     a2, 0x84 (a0) // Object Type
+        LI      t0, 0x2AC // T&S Portal
+        BNE     a2, t0, FixPortals_Increment
+        NOP
+        LW      a2, 0x7C (a0) // Behaviour Pointer
+        BEQZ    a2, FixPortals_Increment
+        NOP
+        LW      a2, 0xA0 (a2) // Script - Block 1
+        BEQZ    a2, FixPortals_Increment
+        NOP
+        LW      a2, 0x4C (a2) // Script Segment - Block 2
+        BEQZ    a2, FixPortals_Increment
+        NOP
+        LW      a2, 0x4C (a2) // Script Segment - Block 3
+        BEQZ    a2, FixPortals_Increment
+        NOP
+        LW      a2, 0x4C (a2) // Script Segment - Block 4
+        BEQZ    a2, FixPortals_Increment
+        NOP
+        SH      a3, 0x0C (a2) // Encoded Flag
+        LW      a2, 0x4C (a2) // Script Segment - Block 5
+        BEQZ    a2, FixPortals_Increment
+        NOP
+        LW      a2, 0x4C (a2) // Script Segment - Block 6
+        BEQZ    a2, FixPortals_Increment
+        NOP
+        LW      a2, 0x4C (a2) // Script Segment - Block 7
+        BEQZ    a2, FixPortals_Increment
+        NOP
+        LW      a2, 0x4C (a2) // Script Segment - Block 8
+        BEQZ    a2, FixPortals_Increment
+        NOP
+        SH      a3, 0x14 (a2) // Encoded Flag
+        LW      a2, 0x4C (a2) // Script Segment - Block 9
+        BEQZ    a2, FixPortals_Increment
+        NOP
+        SH      a3, 0x14 (a2) // Encoded Flag
+
+    FixPortals_Increment:
+        ADDI    a1, a1, -1
+        BEQZ    a1, FixPortals_Finish
+        ADDIU   a0, a0, 0x90
+        B       FixPortals_Loop
+        NOP
+
+    FixPortals_Finish:
+        JR      ra
+        NOP
+
+// Unlock All Kongs
 UnlockKongs:
     SW      ra, @ReturnAddress
     LA      a0, KongFlags
@@ -360,7 +454,7 @@ UnlockKongs:
     JR      ra
     NOP
 
-// Unlock All Moves - OPTIONAL
+// Unlock All Moves
 GiveMoves:
     SW      ra, @ReturnAddress
     LA      a0, UnlockAllMoves
@@ -413,6 +507,7 @@ GiveMoves:
 
 // Enable Tag Anywhere - OPTIONAL
 TagAnywhere:
+    SW      ra, @ReturnAddress
     LA      a0, TagAnywhereOn
     LBU     a0, 0x0 (a0)
     BEQZ    a0, TagAnywhere_Finish
@@ -428,28 +523,66 @@ TagAnywhere:
     NOP
 
     TagAnywhere_ChangeCharacter:
+        LW      a0, @CurrentMap
+        LA      t3, TagAnywhereBan
+
+    TagAnywhere_MapLoop:
+        LBU     a2, 0x0 (t3)
+        BEQZ    a2, TagAnywhere_IsChanging
+        NOP
+        BEQ     a0, a2, TagAnywhere_Finish
+        NOP
+        B       TagAnywhere_MapLoop
+        ADDIU   t3, t3, 1
+
+    TagAnywhere_IsChanging:
         LBU     a2, @Character
+        LI      a3, 5
+
+    TagAnywhere_CharacterLoop:
         LI      t3, 1
         BEQ     t0, t3, TagAnywhere_Add // Inc Kong
         NOP
         BEQZ    a2, WrapAround_Neg
         NOP
-        B       GunCheck
+        B       UnlockCheck
         ADDI    a2, a2, -1
 
     TagAnywhere_Add:
         SLTIU   t8, a2, 4
         BEQZ    t8, WrapAround_Pos
         NOP
-        B       GunCheck
+        B       UnlockCheck
         ADDIU   a2, a2, 1 // New Character Value
 
     WrapAround_Neg:
-        B       GunCheck
+        B       UnlockCheck
         LI      a2, 4
 
     WrapAround_Pos:
         LI      a2, 0
+
+    UnlockCheck:
+        LA      a0, KongTagAnywhereFlags
+        SLL     t3, a2, 1
+        ADD     a0, a0, t3
+        LI      a1, 0
+        LH      a0, 0x0 (a0)
+        SW      t0, @VarStorage0
+        SW      a3, @VarStorage1
+        SW      a2, @VarStorage2
+        JAL     @CheckFlag
+        NOP
+        LW      a2, @VarStorage2
+        LW      a3, @VarStorage1
+        LW      t0, @VarStorage0
+        ADDIU   a0, v0, 0
+        ADDI    a3, a3, -1
+        SW      a3, @TestVariable
+        BEQZ    a3, TagAnywhere_Finish
+        NOP
+        BEQZ    a0, TagAnywhere_CharacterLoop
+        NOP
 
     GunCheck:
         LW      a1, @Player
@@ -494,6 +627,7 @@ TagAnywhere:
         SH      a2, 0x29C (a1) // Initiate Swap
 
     TagAnywhere_Finish:
+        LW      ra, @ReturnAddress
         JR      ra
         NOP
 
@@ -952,6 +1086,8 @@ FTTFlags:
     .half 277 // Rotating Room
     .half 299 // Giant Kosha
     .half 378 // Training Grounds Intro
+    .half 0x5C // Llama CS
+    .half 0x45 // Tiny Temple Ice Melted
     .half 0 // Null Terminator
 
 .align
@@ -978,3 +1114,103 @@ LobbyExits:
     .byte 0x7 // Helm
     .byte 0x0 // Terminator
 
+.align
+KongTagAnywhereFlags:
+    .half 385
+    .half 6
+    .half 70
+    .half 66
+    .half 117
+    .half 0
+
+.align
+TagAnywhereBan:
+// Credit: Isotarge
+// Tag Anywhere Dedicated Mod: https://pastebin.com/m82XBvYm
+    .byte 1 // Funky's Store
+    .byte 2 // DK Arcade
+    .byte 3 // K. Rool Barrel: Lanky's Maze
+    .byte 5 // Cranky's Lab
+    .byte 6 // Jungle Japes: Minecart
+    .byte 9 // Jetpac
+    .byte 10 // Kremling Kosh! (very easy)
+    .byte 14 // Angry Aztec: Beetle Race // Note: Softlock at the end if enabled?
+    .byte 15 // Snide's H.Q.
+    .byte 18 // Teetering Turtle Trouble! (very easy)
+    .byte 25 // Candy's Music Shop
+    .byte 27 // Frantic Factory: Car Race
+    .byte 31 // Gloomy Galleon: K. Rool's Ship // TODO: Test
+    .byte 32 // Batty Barrel Bandit! (easy)
+    .byte 35 // K. Rool Barrel: DK's Target Game
+    .byte 37 // Jungle Japes: Barrel Blast // Note: The barrels don't work as other kongs so not much point enabling it on this map
+    .byte 41 // Angry Aztec: Barrel Blast
+    .byte 42 // Troff 'n' Scoff
+    .byte 50 // K. Rool Barrel: Tiny's Mushroom Game
+    .byte 54 // Gloomy Galleon: Barrel Blast
+    .byte 55 // Fungi Forest: Minecart
+    .byte 76 // DK Rap
+    .byte 77 // Minecart Mayhem! (easy)
+    .byte 78 // Busy Barrel Barrage! (easy)
+    .byte 79 // Busy Barrel Barrage! (normal)
+    .byte 80 // Main Menu
+    .byte 82 // Crystal Caves: Beetle Race
+    .byte 83 // Fungi Forest: Dogadon
+    .byte 101 // Krazy Kong Klamour! (easy) // Note: Broken with switch kong
+    .byte 102 // Big Bug Bash! (very easy) // Note: Broken with switch kong
+    .byte 103 // Searchlight Seek! (very easy) // Note: Broken with switch kong
+    .byte 104 // Beaver Bother! (easy) // Note: Broken with switch kong
+    .byte 106 // Creepy Castle: Minecart
+    .byte 110 // Frantic Factory: Barrel Blast
+    .byte 111 // Gloomy Galleon: Pufftoss
+    .byte 115 // Kremling Kosh! (easy)
+    .byte 116 // Kremling Kosh! (normal)
+    .byte 117 // Kremling Kosh! (hard)
+    .byte 118 // Teetering Turtle Trouble! (easy)
+    .byte 119 // Teetering Turtle Trouble! (normal)
+    .byte 120 // Teetering Turtle Trouble! (hard)
+    .byte 121 // Batty Barrel Bandit! (easy)
+    .byte 122 // Batty Barrel Bandit! (normal)
+    .byte 123 // Batty Barrel Bandit! (hard)
+    .byte 131 // Busy Barrel Barrage! (hard)
+    .byte 136 // Beaver Bother! (normal)
+    .byte 137 // Beaver Bother! (hard)
+    .byte 138 // Searchlight Seek! (easy)
+    .byte 139 // Searchlight Seek! (normal)
+    .byte 140 // Searchlight Seek! (hard)
+    .byte 141 // Krazy Kong Klamour! (normal)
+    .byte 142 // Krazy Kong Klamour! (hard)
+    .byte 143 // Krazy Kong Klamour! (insane)
+    .byte 144 // Peril Path Panic! (very easy) // Note: Broken with switch kong
+    .byte 145 // Peril Path Panic! (easy)
+    .byte 146 // Peril Path Panic! (normal)
+    .byte 147 // Peril Path Panic! (hard)
+    .byte 148 // Big Bug Bash! (easy)
+    .byte 149 // Big Bug Bash! (normal)
+    .byte 150 // Big Bug Bash! (hard)
+    .byte 165 // K. Rool Barrel: Diddy's Kremling Game
+    .byte 185 // Enguarde Arena // Note: Handled by character check
+    .byte 186 // Creepy Castle: Car Race
+    .byte 187 // Crystal Caves: Barrel Blast
+    .byte 188 // Creepy Castle: Barrel Blast
+    .byte 189 // Fungi Forest: Barrel Blast
+    .byte 190 // Kong Battle: Arena 2 // TODO: Would be really cool to get multiplayer working, currently just voids you out when activated
+    .byte 191 // Rambi Arena // Note: Handled by character check
+    .byte 192 // Kong Battle: Arena 3 // TODO: Would be really cool to get multiplayer working, currently just voids you out when activated
+    .byte 198 // Training Grounds (End Sequence) // Note: Handled by cutscene check
+    .byte 199 // Creepy Castle: King Kut Out // Note: Doesn't break the kong order but since this fight is explicitly about tagging we might as well disable
+    .byte 201 // K. Rool Barrel: Diddy's Rocketbarrel Game
+    .byte 202 // K. Rool Barrel: Lanky's Shooting Game
+    .byte 203 // K. Rool Fight: DK Phase // Note: Enabling here breaks the fight and may cause softlocks
+    .byte 204 // K. Rool Fight: Diddy Phase // Note: Enabling here breaks the fight and may cause softlocks
+    .byte 205 // K. Rool Fight: Lanky Phase // Note: Enabling here breaks the fight and may cause softlocks
+    .byte 206 // K. Rool Fight: Tiny Phase // Note: Enabling here breaks the fight and may cause softlocks
+    .byte 207 // K. Rool Fight: Chunky Phase // Note: Enabling here breaks the fight and may cause softlocks
+    .byte 208 // Bloopers Ending // Note: Handled by cutscene check
+    .byte 209 // K. Rool Barrel: Chunky's Hidden Kremling Game
+    .byte 210 // K. Rool Barrel: Tiny's Pony Tail Twirl Game
+    .byte 211 // K. Rool Barrel: Chunky's Shooting Game
+    .byte 212 // K. Rool Barrel: DK's Rambi Game
+    .byte 213 // K. Lumsy Ending // Note: Handled by cutscene check
+    .byte 214 // K. Rool's Shoe
+    .byte 215 // K. Rool's Arena // Note: Handled by cutscene check?
+    .byte 0 // NULL TERMINATOR (ends loop)
