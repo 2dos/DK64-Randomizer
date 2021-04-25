@@ -955,6 +955,9 @@ QOLChanges:
         LA      a0, FastStartFlags
         JAL     SetAllFlags
         NOP
+        LA      a0, FairyQueenRewards
+        JAL     SetAllFlags
+        NOP
         // Slam
         LI      a0, 4
         LI      a1, @MovesBase
@@ -1088,6 +1091,7 @@ FTTFlags:
     .half 378 // Training Grounds Intro
     .half 0x5C // Llama CS
     .half 0x45 // Tiny Temple Ice Melted
+    .half 0xA1 // Peanut Gate Opened in Galleon
     .half 0 // Null Terminator
 
 .align
