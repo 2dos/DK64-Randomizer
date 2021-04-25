@@ -5,7 +5,11 @@ import shutil
 # Finalize ROM Python Script
 # Credit to Isotarge
 # Shamelessly ripped off/expanded by Ballaam
-
+print("DONKEY KONG 64 RANDOMIZER")
+print("-------------------------")
+print("Created by 2dos, Ballaam & KillKlli")
+print("Please wait whilst we generate your ROM for you")
+print()
 ROMName = "DK64_Randomizer.z64"
 
 if os.path.exists(ROMName):
@@ -58,4 +62,5 @@ with open(ROMName, "r+b") as fh:
     fh.write(bytearray([0, 0, 0, 0]))
 crcresult = subprocess.check_output(["n64crc", ROMName])
 print(crcresult)
-print("Your ROM is ready")
+print("[2 / 2] Compiled ROM, you can now close the terminal")
+exit()
