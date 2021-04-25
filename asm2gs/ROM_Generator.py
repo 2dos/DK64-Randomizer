@@ -18,8 +18,8 @@ if os.path.exists(ROMName):
 shutil.copyfile("randoSetupDK64.z64", ROMName)
 
 result = subprocess.check_output(["lua", "-l", "loadASM", "-e", "loadASMPatch('../settings.asm')"])
-print(result)
-
+print("[1 / 2] Written transfer code to codeOutput.txt. Please wait a short while for the ROM to be modified")
+print("Don't close this window")
 
 def processBytePatch(addr, val):
     val = bytes([val])

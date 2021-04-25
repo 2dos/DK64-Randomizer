@@ -47,6 +47,6 @@ function loadASMPatch(code_filename)
 	end
 	file:write()
 
-	print("[1 / 2] Written transfer code to codeOutput.txt. Please wait a short while for the ROM to be modified")
+	--print("")
 	return true;
 end
