@@ -602,7 +602,7 @@ for x in vanillaBLocker:
         )
 
 # Unlock All Kongs Checkbox
-checkKongs = Checkbutton(miscellaneousTab, text="Unlock All Kongs", variable=varKongs)
+checkKongs = Checkbutton(miscellaneousTab, text="Unlock All Kongs", variable=varKongs, state=DISABLED)
 checkKongs.pack(padx=5, pady=5)
 checkKongs.select()
 CreateToolTip(
