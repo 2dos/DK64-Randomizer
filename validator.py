@@ -5,7 +5,7 @@ def validateSeed(level_order,all_kongs,all_moves,fast_start,b_locker_array,tns_a
 	# Assumptions:
 		# If you can enter a level, you can unlock every move up to that level, coins aren't a problem
 		# Your CB count for a level = Kongs x 100
-		
+
 	print("Starting validation")
 	print("")
 	successful = False;
@@ -335,4 +335,4 @@ def checkMoves(level,gb_object,moves,kongs,access,keys):
 				passes = False;
 	return passes
 
-validateSeed([5,0,3,1,6,2,4,7],False,False,True,[1,5,15,30,50,65,80,100],[60,120,200,250,300,350,400],True)
+# validateSeed([5,0,3,1,6,2,4,7],False,False,True,[1,5,15,30,50,65,80,100],[60,120,200,250,300,350,400],True)
