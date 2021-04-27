@@ -1,3 +1,4 @@
+"""Generate a rom via the ASM file."""
 import subprocess
 import os
 import shutil
@@ -23,6 +24,7 @@ print("Don't close this window")
 
 
 def processBytePatch(addr, val):
+    """Process Byte addresses."""
     val = bytes([val])
     if addr >= 0x72C and addr < (0x72C + 8):
         diff = addr - 0x72C

@@ -1,3 +1,4 @@
+"""Finalize the ROM."""
 import subprocess
 import os
 import shutil

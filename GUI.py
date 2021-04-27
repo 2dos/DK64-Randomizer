@@ -12,6 +12,7 @@ import os
 
 
 def randomize():
+    """Start generating the randomizer."""
     # Prevent users from generating seeds with non-numeric/invalid values
     if str(textboxSeed.get()).isdecimal() is False:
         messagebox.showwarning(

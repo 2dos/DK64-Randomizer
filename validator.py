@@ -1,7 +1,30 @@
+"""Validate the seed we generated."""
 from validator_data import *
 
 
-def validateSeed(level_order, all_kongs, all_moves, fast_start, b_locker_array, tns_array, castle_kongs):
+def validateSeed(
+    level_order: list,
+    all_kongs: bool,
+    all_moves: bool,
+    fast_start: bool,
+    b_locker_array: dict,
+    tns_array: dict,
+    castle_kongs: bool,
+):
+    """Fully validate a seed we have generated.
+
+    Args:
+        level_order (list): List of level orders.
+        all_kongs (bool): If all kongs should be unlocked from the start.
+        all_moves (bool): If all moves should be unlocked from the start.
+        fast_start (bool): Defines if we should be skipping early game for a faster game start.
+        b_locker_array (dict): The B-Locker requirements for each level.
+        tns_array (dict): The standard bannana requirements for each level.
+        castle_kongs (bool): If all kongs are unlocked for the castle.
+
+    Returns:
+        bool: If we succeeded generation of the seed or not.
+    """
     # Validator for a seed in DK64
     # Assumptions:
     # If you can enter a level, you can unlock every move up to that level, coins aren't a problem
@@ -288,6 +311,19 @@ def validateSeed(level_order, all_kongs, all_moves, fast_start, b_locker_array, 
 
 
 def checkMoves(level, gb_object, moves, kongs, access, keys):
+    """Check if moves should be open.
+
+    Args:
+        level ([type]): [description]
+        gb_object ([type]): [description]
+        moves ([type]): [description]
+        kongs ([type]): [description]
+        access ([type]): [description]
+        keys ([type]): [description]
+
+    Returns:
+        [type]: [description]
+    """
     # print(gb_object)
     passes = True
     if gb_object["dive"] and not moves["dive"]:
