@@ -401,7 +401,7 @@ def checkMoves(level, gb_object, moves, kongs, access, keys):
             passes = False
         for j in range(8):
             lobby_prop = "in_vanillaLobby" + str(j + 1)
-            if gb_object[lobby_prop] and not j in access:
+            if gb_object[lobby_prop] and not in access:
                 passes = False
     return passes
 
