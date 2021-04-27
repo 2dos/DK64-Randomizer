@@ -10,7 +10,6 @@ import random
 import sys
 import os
 
-
 def randomize():
     # Prevent users from generating seeds with non-numeric/invalid values
     if str(textboxSeed.get()).isdecimal() is False:
@@ -55,7 +54,7 @@ def randomize():
     log = open(os.path.join(sys.path[0], "spoilerlog.txt"), "w+")
     asm = open(os.path.join(sys.path[0], "settings.asm"), "a+")
 
-    # Write Settings
+    # Write Settings to Spoiler Log
     log.write("Randomizer Settings" + "\n")
     log.write("-------------------" + "\n")
     log.write("Level Progression Randomized: " + str(varLevelProgression.get()) + "\n")
@@ -236,10 +235,9 @@ def randoEnable():
     """Disable the randomizer sub-options if the Level Progression Randomizer is not selected."""
     textboxSeed.config(state=NORMAL if varLevelProgression.get() else DISABLED)
     buttonSeed.config(state=NORMAL if varLevelProgression.get() else DISABLED)
-    # Force all kongs for level progression randomizer until logic can be implemented
+    # Force all kongs for level progression randomizer
     checkKongs.select()
     checkKongs.config(state=DISABLED if varLevelProgression.get() else NORMAL)
-
 
 def randomSeed():
     """Generate a random 6 digit number for a seed ID."""
@@ -282,7 +280,7 @@ def lengthPresetsTNS(event):
 
 # Generate the window
 root = tk.Tk()
-root.title("DK64 Randomizer")
+root.title("DK64 Randomizer v0.1")
 root.geometry("250x450")
 root.resizable(False, False)
 root.wm_attributes("-topmost", "true")
