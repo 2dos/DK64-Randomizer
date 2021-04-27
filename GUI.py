@@ -10,6 +10,7 @@ import random
 import sys
 import os
 
+
 def randomize():
     # Prevent users from generating seeds with non-numeric/invalid values
     if str(textboxSeed.get()).isdecimal() is False:
@@ -238,6 +239,7 @@ def randoEnable():
     # Force all kongs for level progression randomizer
     checkKongs.select()
     checkKongs.config(state=DISABLED if varLevelProgression.get() else NORMAL)
+
 
 def randomSeed():
     """Generate a random 6 digit number for a seed ID."""
