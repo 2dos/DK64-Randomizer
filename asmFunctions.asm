@@ -479,6 +479,9 @@ GiveMoves:
     LI      a1, 1
     JAL     @SetFlag
     LI      a2, 0
+    LA      a0, TrainingBarrelFlags
+    JAL     SetAllFlags
+    NOP
     LI      a0, 4
     LI      a1, @MovesBase
     WriteMoves:
@@ -955,6 +958,9 @@ QOLChanges:
         LA      a0, FastStartFlags
         JAL     SetAllFlags
         NOP
+        LA      a0, TrainingBarrelFlags
+        JAL     SetAllFlags
+        NOP
         LA      a0, FairyQueenRewards
         JAL     SetAllFlags
         NOP
@@ -1126,6 +1132,14 @@ KongTagAnywhereFlags:
     .half 66
     .half 117
     .half 0
+
+.align
+TrainingBarrelFlags:
+    .half 0x182 # Dive
+    .half 0x183 # Vine
+    .half 0x184 # Orange
+    .half 0x185 # Barrel
+    .half 0 # Terminator
 
 .align
 TagAnywhereBan:
