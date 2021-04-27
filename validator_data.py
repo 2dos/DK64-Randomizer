@@ -1,3 +1,4 @@
+"""Progression Data."""
 golden_bananas = {
     "japes": [
         {
