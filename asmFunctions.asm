@@ -1135,11 +1135,11 @@ KongTagAnywhereFlags:
 
 .align
 TrainingBarrelFlags:
-    .half 0x182 # Dive
-    .half 0x183 # Vine
-    .half 0x184 # Orange
-    .half 0x185 # Barrel
-    .half 0 # Terminator
+    .half 0x182 // Dive
+    .half 0x183 // Vine
+    .half 0x184 // Orange
+    .half 0x185 // Barrel
+    .half 0 // Terminator
 
 .align
 TagAnywhereBan:
