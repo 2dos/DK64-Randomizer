@@ -312,7 +312,7 @@ SwapRequirements:
         SLL     t6, t3, 1
         ADD     t9, t9, t6
         LHU     t6, 0x0 (a3)
-        SH      t6, 0x0 (t9)
+        // SH      t6, 0x0 (t9)
 
     SwapRequirements_Increment:
         // Loop
