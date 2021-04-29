@@ -152,13 +152,8 @@ def randomize():
 
     # Set Keys
     asm.write(".align" + "\n" + "KeyFlags:" + "\n")
-    asm.write("\t" + ".half " + str(finalKeyFlags[finalLevels.index("Jungle Japes")]) + "\n")
-    asm.write("\t" + ".half " + str(finalKeyFlags[finalLevels.index("Angry Aztec")]) + "\n")
-    asm.write("\t" + ".half " + str(finalKeyFlags[finalLevels.index("Frantic Factory")]) + "\n")
-    asm.write("\t" + ".half " + str(finalKeyFlags[finalLevels.index("Gloomy Galleon")]) + "\n")
-    asm.write("\t" + ".half " + str(finalKeyFlags[finalLevels.index("Fungi Forest")]) + "\n")
-    asm.write("\t" + ".half " + str(finalKeyFlags[finalLevels.index("Crystal Caves")]) + "\n")
-    asm.write("\t" + ".half " + str(finalKeyFlags[finalLevels.index("Creepy Castle")]) + "\n")
+    for x in finalNumerical:
+        asm.write("\t" + ".half " + str(finalKeyFlags[x]) + "\n")
     asm.write("\n" + "\n")
 
     # Unlock All Kongs
