@@ -38,6 +38,8 @@
 [DestinationMap]: 0x807444E4
 [DestinationExit]: 0x807444E8
 [LevelIndexMapping]: 0x807445E0
+[Health]: 0x807FCC4B // u8
+[Melons]: 0x807FCC4C // u8
 
 // New Variables
 [TestVariable]: 0x807FFFFC
@@ -377,6 +379,11 @@ GiveMoves:
     LBU     a0, 0x0 (a0)
     BEQZ    a0, GiveMoves_Finish
     NOP
+    // Melons & Health
+    LI      a0, 3
+    SB      a0, @Melons
+    LI      a0, 12
+    SB      a0, @Health
     LA      a0, TrainingBarrelFlags
     JAL     SetAllFlags
     NOP
