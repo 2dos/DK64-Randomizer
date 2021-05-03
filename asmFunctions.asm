@@ -395,7 +395,7 @@ GiveMoves:
     LI      a0, 15
     SH      a0, @Oranges
     LI      a0, 1500 // Crystal = 150 * amount
-    SH      a0, @Cyrstals
+    SH      a0, @Crystals
     LI      a0, 5
     SH      a0, @Film
     LA      a0, TrainingBarrelFlags
