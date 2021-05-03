@@ -40,6 +40,11 @@
 [LevelIndexMapping]: 0x807445E0
 [Health]: 0x807FCC4B // u8
 [Melons]: 0x807FCC4C // u8
+[AmmoStandard]: 0x807FCC40 // u16
+[AmmoHoming]: 0x807FCC42 // u16
+[Oranges]: 0x807FCC44 // u16
+[Crystals]: 0x807FCC46 // u16
+[Film]: 0x807FCC48 // u16
 
 // New Variables
 [TestVariable]: 0x807FFFFC
@@ -384,6 +389,15 @@ GiveMoves:
     SB      a0, @Melons
     LI      a0, 12
     SB      a0, @Health
+    // Collectable counts
+    LI      a0, 100
+    SH      a0, @AmmoStandard
+    LI      a0, 15
+    SH      a0, @Oranges
+    LI      a0, 1500 // Crystal = 150 * amount
+    SH      a0, @Cyrstals
+    LI      5
+    SH      a0, @Film
     LA      a0, TrainingBarrelFlags
     JAL     SetAllFlags
     NOP
@@ -391,7 +405,7 @@ GiveMoves:
     LI      a1, @MovesBase
     WriteMoves:
         LI      t3, 0x0303
-        SH      t3, 0x0 (a1) // Special | Slam Level | Guns | Ammo Belt
+        SH      t3, 0x0 (a1) // Special | Slam Level
         LA      t3, SniperValue
         LBU     t3, 0x0 (t3)
         SB      t3, 0x2 (a1) // Gun Bitfield
@@ -399,6 +413,8 @@ GiveMoves:
         SB      t3, 0x3 (a1) // Ammo belt
         LI      t3, 15
         SB      t3, 0x4 (a1) // Instrument
+        LI      t3, 12
+        SH      t3, 0x8 (a1) // Instrument Energy
         BEQZ    a0, WriteMoveFlags
         ADDI    a0, a0, -1 // Decrement Value for next kong
         B       WriteMoves
