@@ -278,7 +278,7 @@ def lengthPresetsTNS(event):
 
 # Generate the window
 root = tk.Tk()
-root.title("DK64 Randomizer v0.1")
+root.title("DK64 Randomizer v0.1.2")
 root.geometry("250x450")
 root.resizable(False, False)
 root.wm_attributes("-topmost", "true")
