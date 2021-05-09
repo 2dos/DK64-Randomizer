@@ -38,6 +38,13 @@
 [DestinationMap]: 0x807444E4
 [DestinationExit]: 0x807444E8
 [LevelIndexMapping]: 0x807445E0
+[Health]: 0x807FCC4B // u8
+[Melons]: 0x807FCC4C // u8
+[AmmoStandard]: 0x807FCC40 // u16
+[AmmoHoming]: 0x807FCC42 // u16
+[Oranges]: 0x807FCC44 // u16
+[Crystals]: 0x807FCC46 // u16
+[Film]: 0x807FCC48 // u16
 
 // New Variables
 [TestVariable]: 0x807FFFFC
@@ -89,25 +96,41 @@ Start:
     NOP
     JAL     UnlockKongs
     NOP
-    JAL     GiveMoves
-    NOP
     JAL     QOLChangesShorten
     NOP
     JAL     QOLChanges
     NOP
     JAL     SwapRequirements
     NOP
-    JAL     SwapKeys
-    NOP
     JAL     ChangeLZToHelm
     NOP
+    JAL     TagAnywhere
+    NOP
+    LW      a0, @CurrentMap
+    LI      a1, 0x50 // Main Menu
+    BNE     a0, a1, Finish
+    NOP
+    LBU     a0, @CutsceneActive
+    LI      a1, 6
+    BNE     a0, a1, Finish
+    NOP
+    LI      a0, 0x346 // CB far OoB in Japes
+    JAL     @CheckFlag
+    LI      a1, 0
+    ADDIU   a0, v0, 0
+    BNEZ    a0, Finish // Flag is set, moves given
+    NOP
+    LI      a0, 0x346
+    LI      a1, 1
+    JAL     @SetFlag
+    LI      a2, 0
     JAL     OpenCoinDoor
     NOP
     JAL     OpenCrownDoor
     NOP
-    JAL     TagAnywhere
+    JAL     GiveMoves
     NOP
-    JAL     FixPortals
+    JAL     ApplyFastStart
     NOP
 
     Finish:
@@ -278,12 +301,27 @@ SwapRequirements:
     ANDI    a0, a0, 0x80
     BEQZ    a0, SwapRequirements_Finish
     NOP
+    LW      t0, @CurrentMap
+    LI      t3, @LevelIndexMapping
+    ADD     t3, t3, t0
+    LBU     t0, 0x0 (t3) // Level Index
+    LI      t3, 7
     LA      a0, TroffNScoffAmounts
     LA      a1, BLockerDefaultAmounts
     LA      a2, BLockerCheatAmounts
-    LA      a3, KeyFlags
-    LI      t3, 0
-    LI      t7, 8
+    BEQ     t0, t3, SwapRequirements_InIsles
+    NOP
+
+    SwapRequirements_NotInIsles:
+        LA      a3, KeyFlags_Normal
+        LI      t3, 0
+        B       SwapRequirements_Loop
+        LI      t7, 8
+
+    SwapRequirements_InIsles:
+        LA      a3, KeyFlags
+        LI      t3, 0
+        LI      t7, 8
 
     SwapRequirements_Loop:
         // T&S
@@ -329,121 +367,6 @@ SwapRequirements:
         JR      ra
         NOP
 
-// Swap Keys around
-SwapKeys:
-    LA      a0, RandoOn
-    LBU     a0, 0x0 (a0)
-    BEQZ    a0, SwapKeys_Finish
-    NOP
-    LBU     a0, @TransitionSpeed
-    ANDI    a0, a0, 0x80
-    BEQZ    a0, SwapKeys_Finish
-    NOP
-    LA      a0, KeyMaps
-    LW      a1, @CurrentMap
-    LI      a2, 7
-
-    SwapKeys_MapLoop:
-        LBU     t0, 0x0 (a0)
-        BEQ     t0, a1, SwapKeys_SetKeys
-        ADDI    a2, a2, -1
-        BEQZ    a2, SwapKeys_Finish
-        ADDIU   a0, a0, 1
-        B       SwapKeys_MapLoop
-        NOP
-
-    SwapKeys_SetKeys:
-        LA      a0, KeyAddress
-        LA      a1, KeyFlags
-        LI      a2, 7
-
-    SwapKeys_SetKeysLoop:
-        LW      t0, 0x0 (a0)
-        LHU     t3, 0x0 (a1)
-        SH      t3, 0x0 (t0)
-        ADDI    a2, a2, -1
-        BEQZ    a2, SwapKeys_Finish
-        ADDIU   a0, a0, 4
-        B       SwapKeys_SetKeysLoop
-        ADDIU   a1, a1, 2        
-
-    SwapKeys_Finish:
-        JR      ra
-        NOP
-
-FixPortals:
-    LW      a0, @ObjectTimer
-    LI      a1, 1
-    BNE     a0, a1, FixPortals_Finish
-    NOP
-    LW      a0, @ModelTwoArray
-    BEQZ    a0, FixPortals_Finish
-    NOP
-    LW      a1, @ModelTwoArraySize
-    BEQZ    a1, FixPortals_Finish
-    NOP
-    LW      t0, @CurrentMap
-    LI      t3, @LevelIndexMapping
-    ADD     t3, t3, t0
-    LBU     t0, 0x0 (t3) // Level Index
-    SLTIU   t6, t0, 0x7
-    BEQZ    t6, FixPortals_Finish // Get rid of level indexes not with primary levels
-    NOP
-    SLL     t0, t0, 1
-    LA      t3, KeyFlags
-    ADDU    t3, t3, t0
-    LHU     a3, 0x0 (t3) // New Key Flag
-
-    FixPortals_Loop:
-        LHU     a2, 0x84 (a0) // Object Type
-        LI      t0, 0x2AC // T&S Portal
-        BNE     a2, t0, FixPortals_Increment
-        NOP
-        LW      a2, 0x7C (a0) // Behaviour Pointer
-        BEQZ    a2, FixPortals_Increment
-        NOP
-        LW      a2, 0xA0 (a2) // Script - Block 1
-        BEQZ    a2, FixPortals_Increment
-        NOP
-        LW      a2, 0x4C (a2) // Script Segment - Block 2
-        BEQZ    a2, FixPortals_Increment
-        NOP
-        LW      a2, 0x4C (a2) // Script Segment - Block 3
-        BEQZ    a2, FixPortals_Increment
-        NOP
-        LW      a2, 0x4C (a2) // Script Segment - Block 4
-        BEQZ    a2, FixPortals_Increment
-        NOP
-        SH      a3, 0x0C (a2) // Encoded Flag
-        LW      a2, 0x4C (a2) // Script Segment - Block 5
-        BEQZ    a2, FixPortals_Increment
-        NOP
-        LW      a2, 0x4C (a2) // Script Segment - Block 6
-        BEQZ    a2, FixPortals_Increment
-        NOP
-        LW      a2, 0x4C (a2) // Script Segment - Block 7
-        BEQZ    a2, FixPortals_Increment
-        NOP
-        LW      a2, 0x4C (a2) // Script Segment - Block 8
-        BEQZ    a2, FixPortals_Increment
-        NOP
-        SH      a3, 0x14 (a2) // Encoded Flag
-        LW      a2, 0x4C (a2) // Script Segment - Block 9
-        BEQZ    a2, FixPortals_Increment
-        NOP
-        SH      a3, 0x14 (a2) // Encoded Flag
-
-    FixPortals_Increment:
-        ADDI    a1, a1, -1
-        BEQZ    a1, FixPortals_Finish
-        ADDIU   a0, a0, 0x90
-        B       FixPortals_Loop
-        NOP
-
-    FixPortals_Finish:
-        JR      ra
-        NOP
-
 // Unlock All Kongs
 UnlockKongs:
     SW      ra, @ReturnAddress
@@ -461,29 +384,28 @@ GiveMoves:
     LBU     a0, 0x0 (a0)
     BEQZ    a0, GiveMoves_Finish
     NOP
-    LW      a0, @CurrentMap
-    LI      a1, 0x50 // Main Menu
-    BNE     a0, a1, GiveMoves_Finish
+    // Melons & Health
+    LI      a0, 3
+    SB      a0, @Melons
+    LI      a0, 12
+    SB      a0, @Health
+    // Collectable counts
+    LI      a0, 100
+    SH      a0, @AmmoStandard
+    LI      a0, 15
+    SH      a0, @Oranges
+    LI      a0, 1500 // Crystal = 150 * amount
+    SH      a0, @Crystals
+    LI      a0, 5
+    SH      a0, @Film
+    LA      a0, TrainingBarrelFlags
+    JAL     SetAllFlags
     NOP
-    LBU     a0, @CutsceneActive
-    LI      a1, 6
-    BNE     a0, a1, GiveMoves_Finish
-    NOP
-    LI      a0, 0x346 // CB far OoB in Japes
-    JAL     @CheckFlag
-    LI      a1, 0
-    ADDIU   a0, v0, 0
-    BNEZ    a0, GiveMoves_Finish // Flag is set, moves given
-    NOP
-    LI      a0, 0x346
-    LI      a1, 1
-    JAL     @SetFlag
-    LI      a2, 0
     LI      a0, 4
     LI      a1, @MovesBase
     WriteMoves:
         LI      t3, 0x0303
-        SH      t3, 0x0 (a1) // Special | Slam Level | Guns | Ammo Belt
+        SH      t3, 0x0 (a1) // Special | Slam Level
         LA      t3, SniperValue
         LBU     t3, 0x0 (t3)
         SB      t3, 0x2 (a1) // Gun Bitfield
@@ -491,6 +413,8 @@ GiveMoves:
         SB      t3, 0x3 (a1) // Ammo belt
         LI      t3, 15
         SB      t3, 0x4 (a1) // Instrument
+        LI      t3, 12
+        SH      t3, 0x8 (a1) // Instrument Energy
         BEQZ    a0, WriteMoveFlags
         ADDI    a0, a0, -1 // Decrement Value for next kong
         B       WriteMoves
@@ -713,24 +637,7 @@ OpenCrownDoor:
     LBU     a0, 0x0 (a0)
     BEQZ    a0, OpenCrownDoor_Finish
     NOP
-    LW      a0, @CurrentMap
-    LI      a1, 0x50 // Main Menu
-    BNE     a0, a1, OpenCrownDoor_Finish
-    NOP
-    LBU     a0, @CutsceneActive
-    LI      a1, 6
-    BNE     a0, a1, OpenCrownDoor_Finish
-    NOP
-    LI      a0, 0x346 // CB far OoB in Japes
-    JAL     @CheckFlag
-    LI      a1, 0
-    ADDIU   a0, v0, 0
-    BNEZ    a0, OpenCrownDoor_Finish // Flag is set, moves given
-    NOP
-    LI      a0, 0x346
-    LI      a1, 1
-    JAL     @SetFlag
-    LI      a2, 0
+    
     JAL     CodedSetPermFlag
     LI      a0, 0x304
     
@@ -746,24 +653,6 @@ OpenCoinDoor:
     LBU     a0, 0x0 (a0)
     BEQZ    a0, OpenCoinDoor_Finish
     NOP
-    LW      a0, @CurrentMap
-    LI      a1, 0x50 // Main Menu
-    BNE     a0, a1, OpenCoinDoor_Finish
-    NOP
-    LBU     a0, @CutsceneActive
-    LI      a1, 6
-    BNE     a0, a1, OpenCoinDoor_Finish
-    NOP
-    LI      a0, 0x346 // CB far OoB in Japes
-    JAL     @CheckFlag
-    LI      a1, 0
-    ADDIU   a0, v0, 0
-    BNEZ    a0, OpenCoinDoor_Finish // Flag is set, moves given
-    NOP
-    LI      a0, 0x346
-    LI      a1, 1
-    JAL     @SetFlag
-    LI      a2, 0
     JAL     CodedSetPermFlag
     LI      a0, 0x84
     JAL     CodedSetPermFlag
@@ -910,6 +799,41 @@ SetAllFlags:
         JR
         ADDIU   sp, sp, 0x18
 
+ApplyFastStart:
+    SW      ra, @ReturnAddress
+    LA      a0, QualityChangesOn
+    LBU     a0, 0x0 (a0)
+    BEQZ    a0, ApplyFastStart_Finish
+    NOP
+    LA      a0, FastStartFlags
+    JAL     SetAllFlags
+    NOP
+    LA      a0, TrainingBarrelFlags
+    JAL     SetAllFlags
+    NOP
+    LA      a0, FairyQueenRewards
+    JAL     SetAllFlags
+    NOP
+    // Slam
+    LI      a0, 4
+    LI      a1, @MovesBase
+    LBU     a2, 0x1(a1)
+    BNEZ    a2, ApplyFastStart_Finish
+    NOP
+    
+    ApplyFastStart_WriteSlam:
+        LI      t3, 0x1
+        SB      t3, 0x1 (a1) // Slam Level 1
+        BEQZ    a0, ApplyFastStart_Finish
+        ADDI    a0, a0, -1 // Decrement Value for next kong
+        B       ApplyFastStart_WriteSlam
+        ADDIU   a1, a1, 0x5E // Next kong base
+
+    ApplyFastStart_Finish:
+        LW      ra, @ReturnAddress
+        JR      ra
+        NOP
+
 QOLChanges:
     SW      ra, @ReturnAddress
     LA      a0, QualityChangesOn
@@ -927,54 +851,13 @@ QOLChanges:
     // Story Skip set to "On" by default (not locked to On)
     StorySkip:
         LBU     a1, @Gamemode
-        BNEZ    a1, FastStart
+        BNEZ    a1, IslesSpawn
         NOP
         LI      a1, 1
         SB      a1, @StorySkip
 
-    // Start with training barrels complete + simian slam (start in DK Isles spawn)
-    FastStart:
-        LW      a0, @CurrentMap
-        LI      a1, 0x50 // Main Menu
-        BNE     a0, a1, IslesSpawn
-        NOP
-        LBU     a0, @CutsceneActive
-        LI      a1, 6
-        BNE     a0, a1, IslesSpawn
-        NOP
-        LI      a0, 0x346 // CB far OoB in Japes
-        JAL     @CheckFlag
-        LI      a1, 0
-        ADDIU   a0, v0, 0
-        BNEZ    a0, IslesSpawn // Flag is set, moves given
-        NOP
-        LI      a0, 0x346
-        LI      a1, 1
-        JAL     @SetFlag
-        LI      a2, 0
-        LA      a0, FastStartFlags
-        JAL     SetAllFlags
-        NOP
-        LA      a0, FairyQueenRewards
-        JAL     SetAllFlags
-        NOP
-        // Slam
-        LI      a0, 4
-        LI      a1, @MovesBase
-        LBU     a2, 0x1(a1)
-        BNEZ    a2, IslesSpawn
-        NOP
-        
-        WriteSlam:
-            LI      t3, 0x1
-            SB      t3, 0x1 (a1) // Slam Level 1
-            BEQZ    a0, IslesSpawn
-            ADDI    a0, a0, -1 // Decrement Value for next kong
-            B       WriteSlam
-            ADDIU   a1, a1, 0x5E // Next kong base
-
-        // Isles Spawn
-        IslesSpawn:
+    // Isles Spawn
+    IslesSpawn:
         SW      r0, 0x80714540 // Cancels check
 
     FinishQOL:
@@ -1126,6 +1009,24 @@ KongTagAnywhereFlags:
     .half 66
     .half 117
     .half 0
+
+.align
+TrainingBarrelFlags:
+    .half 0x182 // Dive
+    .half 0x183 // Vine
+    .half 0x184 // Orange
+    .half 0x185 // Barrel
+    .half 0 // Terminator
+
+.align
+KeyFlags_Normal:
+    .half 0x001A
+    .half 0x004A
+    .half 0x008A
+    .half 0x00A8
+    .half 0x00EC
+    .half 0x0124
+    .half 0x013D
 
 .align
 TagAnywhereBan:
