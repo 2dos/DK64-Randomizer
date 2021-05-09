@@ -1,5 +1,5 @@
 <div class="center">
-    <label for="unlock_all_kongs" data-bs-toggle="tooltip" title="{{misc.unlock_all_kongs().ToolTip}}">
+    <label data-bs-toggle="tooltip" title="{{misc.unlock_all_kongs().ToolTip}}">
         <input type="checkbox" id="unlock_all_kongs" name="unlock_all_kongs" value="True"
             {% if misc.unlock_all_kongs().Value %} checked {% endif %} data-bs-toggle="tooltip"
             title="{{misc.unlock_all_kongs().ToolTip}}" {{misc.unlock_all_kongs().Enabled}} />
@@ -7,7 +7,7 @@
     </label>
 </div>
 <div class="center">
-    <label for="unlock_all_moves" data-bs-toggle="tooltip" title="{{misc.unlock_all_moves().ToolTip}}">
+    <label data-bs-toggle="tooltip" title="{{misc.unlock_all_moves().ToolTip}}">
         <input type="checkbox" name="unlock_all_moves" value="True" {% if misc.unlock_all_moves().Value %} checked
             {% endif %} data-bs-toggle="tooltip" title="{{misc.unlock_all_moves().ToolTip}}"
             {{misc.unlock_all_moves().Enabled}} />
@@ -15,7 +15,7 @@
     </label>
 </div>
 <div class="center">
-    <label for="unlock_fairy_shockwave" data-bs-toggle="tooltip" title="{{misc.unlock_fairy_shockwave().ToolTip}}">
+    <label data-bs-toggle="tooltip" title="{{misc.unlock_fairy_shockwave().ToolTip}}">
         <input type="checkbox" name="unlock_fairy_shockwave" value="True" {%
     if
     misc.unlock_fairy_shockwave().Value %} checked {%
@@ -26,7 +26,7 @@
     </label>
 </div>
 <div class="center">
-    <label for="enable_tag_anywhere" data-bs-toggle="tooltip" title="{{misc.enable_tag_anywhere().ToolTip}}">
+    <label data-bs-toggle="tooltip" title="{{misc.enable_tag_anywhere().ToolTip}}">
         <input type="checkbox" name="enable_tag_anywhere" value="True" {%
     if
     misc.enable_tag_anywhere().Value
@@ -38,7 +38,7 @@
     </label>
 </div>
 <div class="center">
-    <label for="shorter_hideout_helm" data-bs-toggle="tooltip" title="{{misc.shorter_hideout_helm().ToolTip}}">
+    <label data-bs-toggle="tooltip" title="{{misc.shorter_hideout_helm().ToolTip}}">
         <input type="checkbox" name="shorter_hideout_helm" value="True" {%
     if
     misc.shorter_hideout_helm().Value
@@ -50,7 +50,7 @@
     </label>
 </div>
 <div class="center">
-    <label for="quality_of_life" data-bs-toggle="tooltip" title="{{misc.quality_of_life().ToolTip}}">
+    <label data-bs-toggle="tooltip" title="{{misc.quality_of_life().ToolTip}}">
         <input type="checkbox" name="quality_of_life" value="True" {%
     if
     misc.quality_of_life().Value
