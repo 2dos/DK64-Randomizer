@@ -40,3 +40,10 @@ function progression_clicked() {
     $("#unlock_all_kongs").removeAttr("disabled");
   }
 }
+
+function submitdata() {
+  $("input:disabled, select:disabled").each(function () {
+    $(this).removeAttr("disabled");
+  });
+  $("#form").trigger("submit");
+}
