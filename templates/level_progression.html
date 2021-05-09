@@ -1,14 +1,16 @@
 <!--Randomize Level Progression-->
 <div class="center">
-    <input type="checkbox" name="randomize_progression" id="randomize_progression" value="True" {%
+    <label data-bs-toggle="tooltip" title="{{progression.randomize_progression().ToolTip}}">
+        <input type="checkbox" name="randomize_progression" id="randomize_progression" value="True" {%
     if
     progression.randomize_progression().Value
     %} checked {%
     endif
     %} data-bs-toggle="tooltip" title="{{progression.randomize_progression().ToolTip}}" onclick="progression_clicked()"
-        {{progression.randomize_progression().Enabled}} />
-    <label data-bs-toggle="tooltip" title="{{progression.randomize_progression().ToolTip}}">Randomize Level
-        Progression</label>
+            {{progression.randomize_progression().Enabled}} />
+        Randomize Level
+        Progression
+    </label>
 </div>
 <!--Randomize Seed-->
 <div class="center">
