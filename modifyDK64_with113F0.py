@@ -1,7 +1,7 @@
 """Finalize the ROM."""
-import subprocess
 import os
 import shutil
+import subprocess
 
 # Finalize ROM Python Script
 # Credit to Isotarge

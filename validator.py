@@ -1,5 +1,5 @@
 """Validate the seed we generated."""
-from validator_data import *
+from validator_data import golden_bananas
 
 
 def validateSeed(
@@ -123,6 +123,7 @@ def validateSeed(
     for i in range(8):
         if level_order[i] == 6:
             castle_order_position = i
+            print(castle_order_position)
 
     while loop_control:
         start_gb_count = gbs_collected

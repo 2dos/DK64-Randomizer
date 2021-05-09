@@ -137,6 +137,9 @@ dmypy.json
 # Cython debug symbols
 cython_debug/
 
+# VSCode
+.vscode
+
 # Randomizer specific
 spoilerlog.txt
 settings.asm

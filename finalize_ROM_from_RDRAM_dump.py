@@ -1,7 +1,7 @@
 """Used for updating the rom to be properly patched using the bin file."""
-import subprocess
 import os
 import shutil
+import subprocess
 
 # Finalize ROM Python Script
 # Credit to Isotarge

@@ -1,0 +1,51 @@
+<div class="center">
+    <input type="checkbox" id="unlock_all_kongs" name="unlock_all_kongs" value="True"
+        {% if misc.unlock_all_kongs().Value %} checked {% endif %} data-bs-toggle="tooltip"
+        title="{{misc.unlock_all_kongs().ToolTip}}" {{misc.unlock_all_kongs().Enabled}} />
+    <label data-bs-toggle="tooltip" title="{{misc.unlock_all_kongs().ToolTip}}">Unlock All Kongs</label>
+</div>
+<div class="center">
+    <input type="checkbox" name="unlock_all_moves" value="True" {% if misc.unlock_all_moves().Value %} checked
+        {% endif %} data-bs-toggle="tooltip" title="{{misc.unlock_all_moves().ToolTip}}"
+        {{misc.unlock_all_moves().Enabled}} />
+    <label data-bs-toggle="tooltip" title="{{misc.unlock_all_moves().ToolTip}}">Unlock All Purchasable Moves</label>
+</div>
+<div class="center">
+    <input type="checkbox" name="unlock_fairy_shockwave" value="True" {%
+    if
+    misc.unlock_fairy_shockwave().Value %} checked {%
+    endif
+    %} data-bs-toggle="tooltip" title="{{misc.unlock_fairy_shockwave().ToolTip}}"
+        {{misc.unlock_fairy_shockwave().Enabled}} />
+    <label data-bs-toggle="tooltip" title="{{misc.unlock_fairy_shockwave().ToolTip}}">Fairy Camera and Shockwave
+        Attack</label>
+</div>
+<div class="center">
+    <input type="checkbox" name="enable_tag_anywhere" value="True" {%
+    if
+    misc.enable_tag_anywhere().Value
+    %} checked {%
+    endif
+    %} data-bs-toggle="tooltip" title="{{misc.enable_tag_anywhere().ToolTip}}"
+        {{misc.enable_tag_anywhere().Enabled}} />
+    <label data-bs-toggle="tooltip" title="{{misc.enable_tag_anywhere().ToolTip}}">Enable Tag Anywhere</label>
+</div>
+<div class="center">
+    <input type="checkbox" name="shorter_hideout_helm" value="True" {%
+    if
+    misc.shorter_hideout_helm().Value
+    %} checked {%
+    endif
+    %} data-bs-toggle="tooltip" title="{{misc.shorter_hideout_helm().ToolTip}}"
+        {{misc.shorter_hideout_helm().Enabled}} />
+    <label data-bs-toggle="tooltip" title="{{misc.shorter_hideout_helm().ToolTip}}">Shorter Hideout Helm</label>
+</div>
+<div class="center">
+    <input type="checkbox" name="quality_of_life" value="True" {%
+    if
+    misc.quality_of_life().Value
+    %} checked {%
+    endif
+    %} data-bs-toggle="tooltip" title="{{misc.quality_of_life().ToolTip}}" {{misc.quality_of_life().Enabled}} />
+    <label data-bs-toggle="tooltip" title="{{misc.quality_of_life().ToolTip}}">Quality of Life Changes</label>
+</div>

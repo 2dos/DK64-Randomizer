@@ -1,7 +1,7 @@
 """Generate a rom via the ASM file."""
-import subprocess
 import os
 import shutil
+import subprocess
 
 # Finalize ROM Python Script
 # Credit to Isotarge
