@@ -1,3 +1,6 @@
+a[href], input[type='submit'], input[type='checkbox'], input[type='image'], label, select, button, .pointer {
+  cursor: pointer;
+}
 .center {
     text-align: center;
     margin-left: auto;
