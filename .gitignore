@@ -147,3 +147,4 @@ settings.asm
 *.bin
 *.bin.gz
 codeOutput.txt
+lockfile

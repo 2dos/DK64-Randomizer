@@ -3,6 +3,8 @@ import os
 import signal
 import threading
 import time
+import sys
+from pathlib import Path
 
 import psutil
 from flask import Flask
@@ -32,6 +34,10 @@ if __name__ == "__main__":
             frame (frame): Frame to terminate.
         """
         try:
+            os.remove("lockfile")
+        except Exception:
+            pass
+        try:
             gui.BROWSER_PROCESS.terminate()
         except Exception:
             pass
@@ -41,14 +47,26 @@ if __name__ == "__main__":
             pass
 
     signal.signal(signal.SIGINT, signal_handler)
-    threading.Thread(target=startup).start()
-    poll = None
-    while poll is None:
-        try:
-            poll = gui.BROWSER_PROCESS
-        except Exception:
-            pass
-    while True:
-        if not psutil.pid_exists(poll.pid):
-            signal_handler(None, None)
-        time.sleep(1)
+    procObjList = [procObj for procObj in psutil.process_iter() if "python" in procObj.name().lower()]
+    if os.path.isfile("lockfile"):
+        print(len(procObjList))
+        if len(procObjList) <= 1:
+            try:
+                os.remove("lockfile")
+                os.execv(sys.executable, ["python"] + sys.argv)
+            except Exception:
+                pass
+        sys.exit(1)
+    else:
+        Path("lockfile").touch()
+        threading.Thread(target=startup).start()
+        poll = None
+        while poll is None:
+            try:
+                poll = gui.BROWSER_PROCESS
+            except Exception:
+                pass
+        while True:
+            if not psutil.pid_exists(poll.pid):
+                signal_handler(None, None)
+            time.sleep(1)
