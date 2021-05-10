@@ -45,5 +45,60 @@ function submitdata() {
   $("input:disabled, select:disabled").each(function () {
     $(this).removeAttr("disabled");
   });
-  $("#form").trigger("submit");
+  $.ajax({
+    type: "POST",
+    url: "/",
+    data: $("#form").serialize(), // serializes the form's elements.
+  });
+
+  $("#modal").modal("show");
 }
+
+function saveCurrentSettings() {
+  $.ajax({
+    url: "/save_settings",
+    type: "POST",
+    dataType: "json",
+    data: { params: JSON.stringify($("#form").serializeArray()) },
+  });
+}
+
+function copyToClipboard() {
+  var clipboardText = "";
+  clipboardText = $("#settings_string").val();
+  var textArea = document.createElement("textarea");
+  textArea.value = clipboardText;
+  document.body.appendChild(textArea);
+  textArea.select();
+
+  try {
+    document.execCommand("copy");
+  } catch (err) {}
+  document.body.removeChild(textArea);
+}
+
+function request_seed() {
+  $("#seed").val(
+    $.ajax({
+      url: "/random_seed",
+      async: false,
+    }).responseText
+  );
+}
+
+function load_inital() {
+  resp = JSON.parse($.ajax({
+    url: "/load_settings",
+    async: false,
+  }).responseText);
+  if (resp == "None") {
+    blocker_selectionChanged();
+    troff_selectionChanged();
+  }
+  else{
+    for(var k in resp) {
+      document.getElementsByName(k)[0].value = resp[k];
+   }
+  }
+}
+window.onload = load_inital;

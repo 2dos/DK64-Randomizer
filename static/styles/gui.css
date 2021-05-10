@@ -1,7 +1,7 @@
 a[href], input[type='submit'], input[type='checkbox'], input[type='image'], label, select, button, .pointer {
   cursor: pointer;
 }
-.center {
+.center, .form-check {
     text-align: center;
     margin-left: auto;
     margin-right: auto;
@@ -11,21 +11,7 @@ a[href], input[type='submit'], input[type='checkbox'], input[type='image'], labe
 .center #seed {
     margin-right: 20px;
 }
-select {
-  background-image:
-    linear-gradient(45deg, transparent 50%, gray 60%),
-    linear-gradient(135deg, gray 40%, transparent 50%) !important;
-  background-position:
-    calc(100% - 20px) 14px,
-    calc(100% - 10px) 14px,
-    100% 0;
-  background-size:
-    10px 10px,
-    10px 10px;
-  background-repeat: no-repeat;
-  -webkit-appearance: none;
-  -moz-appearance: none;
-}
+
 table {
     table-layout: fixed;
     max-width: 600px;
@@ -45,7 +31,7 @@ footer {
     position: absolute;
     bottom: 0;
     width: 100%;
-    height: 60px;
+    height: 120px;
 }
 
 footer div {

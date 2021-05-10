@@ -1,6 +1,7 @@
 """Create the flask endpoints for form viewing."""
 import json
 import random
+import os
 
 from flask import Blueprint, Response, render_template, request
 
@@ -21,7 +22,11 @@ def index():
     """
     if request.method == "POST":
         randomize(request.form)
-        return render_template("completed.html", version=Version)
+        converted_settings = dict(request.form)
+        del converted_settings["seed"]
+        with open("settings.json", "w") as outfile: 
+            json.dump(converted_settings, outfile)
+        return Response(status=200, mimetype="application/json")
     return render_template(
         "index.html", version=Version, progression=LevelProgression(), random_seed=random_seed(), misc=Misc()
     )
@@ -35,6 +40,17 @@ def random_seed():
         str: Random seed id.
     """
     return str(random.randint(100000, 999999))
+
+
+@urls_blueprint.route("/load_settings", methods=["GET"])
+def load_settings():
+    try:
+        with open('settings.json') as f:
+            return Response(response=f.readlines(), status=200, mimetype="application/json")
+    except Exception:
+        if os.path.exists('settings.json'):
+            os.remove('settings.json')
+    return "None"
 
 
 @urls_blueprint.route("/blocker/<preset>")

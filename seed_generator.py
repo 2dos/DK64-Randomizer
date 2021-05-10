@@ -39,10 +39,10 @@ def randomize(submittedForm):
     # Start Spoiler Log and ASM Generation
     shutil.copy2(
         os.path.join(sys.path[0], "asmFunctions.asm"),
-        os.path.join(sys.path[0], "settings.asm"),
+        os.path.join(sys.path[0], f"settings-{submittedForm.get('seed')}.asm"),
     )
-    log = open(os.path.join(sys.path[0], "spoilerlog.txt"), "w+")
-    asm = open(os.path.join(sys.path[0], "settings.asm"), "a+")
+    log = open(os.path.join(sys.path[0], f"spoilerlog-{submittedForm.get('seed')}.txt"), "w+")
+    asm = open(os.path.join(sys.path[0], f"settings-{submittedForm.get('seed')}.asm"), "a+")
 
     # Write Settings to Spoiler Log
     log.write("Randomizer Settings" + "\n")
