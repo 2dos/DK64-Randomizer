@@ -81,17 +81,18 @@ function request_seed() {
 }
 
 function load_inital() {
-  resp = JSON.parse($.ajax({
+  resp = $.ajax({
     url: "/load_settings",
     async: false,
-  }).responseText);
+  }).responseText;
   if (resp == "None") {
     blocker_selectionChanged();
     troff_selectionChanged();
   }
   else{
-    for(var k in resp) {
-      document.getElementsByName(k)[0].value = resp[k];
+    respdata = JSON.parse(resp)
+    for(var k in respdata) {
+      document.getElementsByName(k)[0].value = respdata[k];
    }
   }
 }

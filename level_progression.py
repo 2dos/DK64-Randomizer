@@ -134,7 +134,7 @@ class LevelProgression:
             Half: 50-75-100-125-150-175-200
             Hell: 150-200-250-300-350-400-450"""
         input_tooltip = self._unindent(
-            """You can adjust each individual Troff n Scoff amount to any number between 0-500.
+            """You can adjust each individual Troff n Scoff amount to any number between 1-500.
             Note that you could make it impossible to beat the game glitchless if early levels are set too high,
             as the program does not validate if a game is beatable glitchless with adjusted Troff n Scoff settings.
             If you are unsure what to adjust the level values to, use the presets dropdown instead."""
