@@ -24,7 +24,7 @@ def index():
         randomize(request.form)
         converted_settings = dict(request.form)
         del converted_settings["seed"]
-        with open("settings.json", "w") as outfile: 
+        with open("settings.json", "w") as outfile:
             json.dump(converted_settings, outfile)
         return Response(status=200, mimetype="application/json")
     return render_template(
@@ -44,12 +44,17 @@ def random_seed():
 
 @urls_blueprint.route("/load_settings", methods=["GET"])
 def load_settings():
+    """Load settings from a file or load defaults.
+
+    Returns:
+        Response: JSON Response.
+    """
     try:
-        with open('settings.json') as f:
+        with open("settings.json") as f:
             return Response(response=f.readlines(), status=200, mimetype="application/json")
     except Exception:
-        if os.path.exists('settings.json'):
-            os.remove('settings.json')
+        if os.path.exists("settings.json"):
+            os.remove("settings.json")
     return "None"
 
 
