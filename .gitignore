@@ -137,10 +137,15 @@ dmypy.json
 # Cython debug symbols
 cython_debug/
 
+# VSCode
+.vscode
+
 # Randomizer specific
-spoilerlog.txt
-settings.asm
+spoilerlog*.txt
+settings*.asm
+settings*.json
 *.z64
 *.bin
 *.bin.gz
 codeOutput.txt
+lockfile
