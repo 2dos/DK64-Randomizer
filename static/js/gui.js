@@ -24,17 +24,11 @@ function troff_selectionChanged() {
 
 function progression_clicked() {
   if ($("#randomize_progression")[0].checked) {
-    $("#leveltable")
-      .find("input, textarea, button, select")
-      .removeAttr("disabled");
     $("#seed").removeAttr("disabled");
     $("#seed_button").removeAttr("disabled");
     $("#unlock_all_kongs").attr("disabled", "disabled");
     $("#unlock_all_kongs").prop("checked", true);
   } else {
-    $("#leveltable")
-      .find("input, textarea, button, select")
-      .attr("disabled", "disabled");
     $("#seed").attr("disabled", "disabled");
     $("#seed_button").attr("disabled", "disabled");
     $("#unlock_all_kongs").removeAttr("disabled");
