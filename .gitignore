@@ -149,3 +149,4 @@ settings*.json
 *.bin.gz
 codeOutput.txt
 lockfile
+temprom.rom

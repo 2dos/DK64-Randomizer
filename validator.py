@@ -120,10 +120,10 @@ def validateSeed(
     lobby_access = [level_order[0]]
     castle_order_position = -1
     recheck = False
-    for i in range(8):
+    for i in range(7):
         if level_order[i] == 6:
             castle_order_position = i
-            print(castle_order_position)
+            print(f"Castle Position: {castle_order_position}")
 
     while loop_control:
         start_gb_count = gbs_collected
@@ -405,6 +405,3 @@ def checkMoves(level, gb_object, moves, kongs, access, keys):
             if gb_object[lobby_prop] and j not in access:
                 passes = False
     return passes
-
-
-# validateSeed([5,0,3,1,6,2,4,7],False,False,True,[1,5,15,30,50,65,80,100],[60,120,200,250,300,350,400],True)

@@ -5,6 +5,7 @@ import sys
 import subprocess
 from random import seed, shuffle
 from type_swap import convert_format
+from validator import validateSeed
 import time
 
 
@@ -68,9 +69,9 @@ def randomize(submittedForm):
     if submittedForm.get("randomize_progression"):
         for k in submittedForm:
             if "troff_" in k and k[-1].isnumeric():
-                finalTNS.append(str(submittedForm[k]))
+                finalTNS.append(int(submittedForm[k]))
             if "blocker_" in k and k[-1].isnumeric():
-                finalBLocker.append(str(submittedForm[k]))
+                finalBLocker.append(int(submittedForm[k]))
     else:
         finalBLocker = [1, 5, 15, 30, 50, 65, 80, 100]
         finalTNS = [60, 120, 200, 250, 300, 350, 400]
@@ -219,13 +220,28 @@ def randomize(submittedForm):
         asm.write("\t" + ".half 0x180" + "\n")  # Cranky has given Sim Slam
         asm.write("\t" + ".half 385" + "\n")  # DK Free
     asm.write("\t" + ".half 0" + "\n")  # Null Terminator (required)
-
     if submittedForm.get("generate_spoilerlog"):
         with open(f"{sys.path[0]}/spoilerlog-{submittedForm.get('seed')}.txt", "w+") as file:
             file.write(logdata)
-
     asm.close()
+    # TODO: We need to properly validate the seed
+    validateSeed(
+        finalNumerical,
+        submittedForm.get("unlock_all_kongs"),
+        submittedForm.get("unlock_all_moves"),
+        submittedForm.get("quality_of_life"),
+        finalBLocker,
+        finalTNS,
+        True,
+    )
 
+
+def apply_bps(submittedForm):
+    """Apply the Resize patch file to the ROM.
+
+    Args:
+        submittedForm (dict): Submitted form data.
+    """
     # TODO: Support Linux as well
     print("Applying BPS file")
     convert_format(infile=f"{sys.path[0]}/temprom.rom", outfile=f"{sys.path[0]}/DK64-{submittedForm.get('seed')}.z64")
@@ -240,6 +256,14 @@ def randomize(submittedForm):
         ]
     )
     time.sleep(5)
+
+
+def apply_asm(submittedForm):
+    """Apply the ASM patch.
+
+    Args:
+        submittedForm (dict): Form Data.
+    """
     wd = os.getcwd()
     os.chdir(f"{sys.path[0]}/libs/asm2gs")
     process = subprocess.run(

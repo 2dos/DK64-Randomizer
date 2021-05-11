@@ -8,7 +8,7 @@ from flask import Blueprint, Response, render_template, request
 
 from level_progression import LevelProgression
 from misc import Misc
-from seed_generator import randomize
+from seed_generator import randomize, apply_asm, apply_bps
 
 Version = 0.2
 urls_blueprint = Blueprint("urls", __name__)
@@ -42,6 +42,28 @@ def prep_rom():
     """
     temprom = request.files.get("file")
     temprom.save(f"{sys.path[0]}/temprom.rom")
+    return Response(status=200, mimetype="application/json")
+
+
+@urls_blueprint.route("/bps_patch", methods=["POST"])
+def bps_patch():
+    """Resize the seed.
+
+    Returns:
+        Response: 200 status code.
+    """
+    apply_bps(dict(request.form))
+    return Response(status=200, mimetype="application/json")
+
+
+@urls_blueprint.route("/asm_patch", methods=["POST"])
+def asm_patch():
+    """Apply the ASM patch.
+
+    Returns:
+        Response: 200 status code.
+    """
+    apply_asm(dict(request.form))
     return Response(status=200, mimetype="application/json")
 
 
