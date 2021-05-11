@@ -1,13 +1,23 @@
-a[href], input[type='submit'], input[type='checkbox'], input[type='image'], label, select, button, .pointer {
-  cursor: pointer;
+a[href],
+input[type='submit'],
+input[type='checkbox'],
+input[type='image'],
+label,
+select,
+button,
+.pointer {
+    cursor: pointer;
 }
-.center, .form-check {
+
+.center,
+.form-check {
     text-align: center;
     margin-left: auto;
     margin-right: auto;
     margin-bottom: 5px;
     margin-top: 5px;
 }
+
 .center #seed {
     margin-right: 20px;
 }
@@ -35,9 +45,7 @@ footer {
 }
 
 footer div {
-  text-align: center;
-  margin-left: auto;
-  margin-right: auto;
+    text-align: center;
+    margin-left: auto;
+    margin-right: auto;
 }
-
-

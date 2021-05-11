@@ -5,7 +5,11 @@ import sys
 import subprocess
 from random import seed, shuffle
 from type_swap import convert_format
+from validator import validateSeed
 import time
+
+
+debug_printout = False
 
 
 def randomize(submittedForm):
@@ -44,31 +48,30 @@ def randomize(submittedForm):
         f"{sys.path[0]}/patchfiles/asmFunctions.asm",
         f"{sys.path[0]}/settings-{submittedForm.get('seed')}.asm",
     )
-    # Start log and modification of settings file
-    log = open(f"{sys.path[0]}/spoilerlog-{submittedForm.get('seed')}.txt", "w+")
+    # Start modification file
     asm = open(f"{sys.path[0]}/settings-{submittedForm.get('seed')}.asm", "a+")
-
+    logdata = ""
     # Write Settings to Spoiler Log
-    log.write("Randomizer Settings" + "\n")
-    log.write("-------------------" + "\n")
-    log.write("Level Progression Randomized: " + str(submittedForm.get("randomize_progression", "False")) + "\n")
+    logdata += "Randomizer Settings" + "\n"
+    logdata += "-------------------" + "\n"
+    logdata += "Level Progression Randomized: " + str(submittedForm.get("randomize_progression", "False")) + "\n"
     if submittedForm.get("randomize_progression"):
-        log.write("Seed: " + str(submittedForm.get("seed")) + "\n")
-    log.write("All Kongs Unlocked: " + str(submittedForm.get("unlock_all_kongs", "False")) + "\n")
-    log.write("All Moves Unlocked: " + str(submittedForm.get("unlock_all_moves", "False")) + "\n")
-    log.write("Fairy Queen Camera + Shockwave: " + str(submittedForm.get("unlock_fairy_shockwave", "False")) + "\n")
-    log.write("Tag Anywhere Enabled: " + str(submittedForm.get("enable_tag_anywhere", "False")) + "\n")
-    log.write("Shorter Hideout Helm: " + str(submittedForm.get("shorter_hideout_helm", "False")) + "\n")
-    log.write("Quality of Life Changes: " + str(submittedForm.get("quality_of_life", "False")) + "\n")
-    log.write("\n")
+        logdata += "Seed: " + str(submittedForm.get("seed")) + "\n"
+    logdata += "All Kongs Unlocked: " + str(submittedForm.get("unlock_all_kongs", "False")) + "\n"
+    logdata += "All Moves Unlocked: " + str(submittedForm.get("unlock_all_moves", "False")) + "\n"
+    logdata += "Fairy Queen Camera + Shockwave: " + str(submittedForm.get("unlock_fairy_shockwave", "False")) + "\n"
+    logdata += "Tag Anywhere Enabled: " + str(submittedForm.get("enable_tag_anywhere", "False")) + "\n"
+    logdata += "Shorter Hideout Helm: " + str(submittedForm.get("shorter_hideout_helm", "False")) + "\n"
+    logdata += "Quality of Life Changes: " + str(submittedForm.get("quality_of_life", "False")) + "\n"
+    logdata += "\n"
 
     # Fill Arrays with chosen game length values
     if submittedForm.get("randomize_progression"):
         for k in submittedForm:
             if "troff_" in k and k[-1].isnumeric():
-                finalTNS.append(str(submittedForm[k]))
+                finalTNS.append(int(submittedForm[k]))
             if "blocker_" in k and k[-1].isnumeric():
-                finalBLocker.append(str(submittedForm[k]))
+                finalBLocker.append(int(submittedForm[k]))
     else:
         finalBLocker = [1, 5, 15, 30, 50, 65, 80, 100]
         finalTNS = [60, 120, 200, 250, 300, 350, 400]
@@ -78,7 +81,7 @@ def randomize(submittedForm):
         asm.write(".align" + "\n" + "RandoOn:" + "\n" + "\t" + ".byte 1" + "\n" + "\n")  # Run Randomizer in ASM
         seed(submittedForm.get("seed"))
         shuffle(finalLevels)
-        log.write("Level Order: " + "\n")
+        logdata += "Level Order: " + "\n"
         asm.write(".align" + "\n" + "LevelOrder:" + "\n")
 
         # Set Level Order in ASM and Spoiler Log
@@ -97,14 +100,14 @@ def randomize(submittedForm):
                 finalNumerical[finalLevels.index(x)] = 5
             elif str(x) == "Creepy Castle":
                 finalNumerical[finalLevels.index(x)] = 6
-            log.write(str(finalLevels.index(x) + 1) + ". " + x + " ")
-            log.write("(B Locker: " + str(finalBLocker[finalLevels.index(x)]) + " GB, ")
-            log.write("Troff n Scoff: " + str(finalTNS[finalLevels.index(x)]) + " bananas)")
-            log.write("\n")
+            logdata += str(finalLevels.index(x) + 1) + ". " + x + " "
+            logdata += "(B Locker: " + str(finalBLocker[finalLevels.index(x)]) + " GB, "
+            logdata += "Troff n Scoff: " + str(finalTNS[finalLevels.index(x)]) + " bananas)"
+            logdata += "\n"
             asm.write("\t" + ".byte " + str(finalNumerical[finalLevels.index(x)]))
             asm.write("\n")
-        log.write("8. Hideout Helm ")
-        log.write("(B Locker: " + str(finalBLocker[7]) + " GB)")
+        logdata += "8. Hideout Helm "
+        logdata += "(B Locker: " + str(finalBLocker[7]) + " GB)"
         asm.write("\t" + ".byte 7")  # Helm should always be set to position 8 in the array
         asm.write("\n" + "\n")
     else:
@@ -217,10 +220,28 @@ def randomize(submittedForm):
         asm.write("\t" + ".half 0x180" + "\n")  # Cranky has given Sim Slam
         asm.write("\t" + ".half 385" + "\n")  # DK Free
     asm.write("\t" + ".half 0" + "\n")  # Null Terminator (required)
-
-    log.close()
+    if submittedForm.get("generate_spoilerlog"):
+        with open(f"{sys.path[0]}/spoilerlog-{submittedForm.get('seed')}.txt", "w+") as file:
+            file.write(logdata)
     asm.close()
+    # TODO: We need to properly validate the seed
+    validateSeed(
+        finalNumerical,
+        submittedForm.get("unlock_all_kongs"),
+        submittedForm.get("unlock_all_moves"),
+        submittedForm.get("quality_of_life"),
+        finalBLocker,
+        finalTNS,
+        True,
+    )
 
+
+def apply_bps(submittedForm):
+    """Apply the Resize patch file to the ROM.
+
+    Args:
+        submittedForm (dict): Submitted form data.
+    """
     # TODO: Support Linux as well
     print("Applying BPS file")
     convert_format(infile=f"{sys.path[0]}/temprom.rom", outfile=f"{sys.path[0]}/DK64-{submittedForm.get('seed')}.z64")
@@ -235,6 +256,14 @@ def randomize(submittedForm):
         ]
     )
     time.sleep(5)
+
+
+def apply_asm(submittedForm):
+    """Apply the ASM patch.
+
+    Args:
+        submittedForm (dict): Form Data.
+    """
     wd = os.getcwd()
     os.chdir(f"{sys.path[0]}/libs/asm2gs")
     process = subprocess.run(
@@ -263,6 +292,11 @@ def randomize(submittedForm):
         print(crcresult)
     else:
         print("Build failed")
+    if debug_printout is False:
+        if os.path.exists(f"{sys.path[0]}/codeOutput.txt"):
+            os.remove(f"{sys.path[0]}/codeOutput.txt")
+        if os.path.exists(f"{sys.path[0]}/settings-{submittedForm.get('seed')}.asm"):
+            os.remove(f"{sys.path[0]}/settings-{submittedForm.get('seed')}.asm")
 
 
 def processBytePatch(rom_name, addr, val):

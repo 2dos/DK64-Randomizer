@@ -35,54 +35,6 @@ function progression_clicked() {
   }
 }
 
-function dumpFile() {
-  return new Promise((resolve, reject) => {
-    var form_data = new FormData();
-    form_data.append("file", $("#romfile").prop("files")[0]);
-    $("#patchprogress").width(20);
-    $(function () {
-      $.ajax({
-        type: "POST",
-        url: "/prep_rom",
-        data: form_data,
-        contentType: false,
-        cache: false,
-        processData: false,
-        complete: function (data) {
-          $("#patchprogress").width(90);
-          resolve();
-        },
-      });
-    });
-    $("#patchprogress").width(140);
-  });
-}
-function submitdata() {
-  $("input:disabled, select:disabled").each(function () {
-    $(this).removeAttr("disabled");
-  });
-  if ($("#romfile").val() == "") {
-    return false;
-  } else {
-    $("#progressmodal").modal("show");
-    dumpFile().then(function () {
-      $("#patchprogress").width(260);
-      $.ajax({
-        type: "POST",
-        url: "/",
-        data: $("#form").serialize(),
-        async: true,
-        complete: function (data) {
-          $("#patchprogress").width(360);
-          $("#progressmodal").modal("hide");
-          $("#modal").modal("show");
-        },
-      });
-      $("#patchprogress").width(320);
-    });
-  }
-}
-
 function saveCurrentSettings() {
   $.ajax({
     url: "/save_settings",
@@ -120,19 +72,141 @@ function load_inital() {
     show: false,
     backdrop: "static",
   });
-  resp = JSON.parse(
-    $.ajax({
-      url: "/load_settings",
-      async: false,
-    }).responseText
-  );
+  resp = $.ajax({
+    url: "/load_settings",
+    async: false,
+  }).responseText;
   if (resp == "None") {
     blocker_selectionChanged();
     troff_selectionChanged();
   } else {
-    for (var k in resp) {
-      document.getElementsByName(k)[0].value = resp[k];
+    var jsonresp = JSON.parse(resp);
+    for (var k in jsonresp) {
+      document.getElementsByName(k)[0].value = jsonresp[k];
     }
   }
 }
 window.onload = load_inital;
+
+function dumpFile() {
+  return new Promise((resolve, reject) => {
+    var form_data = new FormData();
+    form_data.append("file", $("#romfile").prop("files")[0]);
+    $(function () {
+      $.ajax({
+        type: "POST",
+        url: "/prep_rom",
+        data: form_data,
+        contentType: false,
+        cache: false,
+        processData: false,
+        complete: function (data) {
+          setTimeout(function () {
+            $("#patchprogress").width("20%");
+            $("#progress-text").text("Rom Loaded");
+            setTimeout(function () {
+              resolve();
+            }, 1000);
+          }, 1000);
+        },
+      });
+    });
+    $("#patchprogress").width("10%");
+    $("#progress-text").text("Started Loading Rom");
+  });
+}
+
+function randomizeseed(formdata) {
+  return new Promise((resolve, reject) => {
+    $(function () {
+      $.ajax({
+        type: "POST",
+        url: "/",
+        data: formdata,
+        complete: function (data) {
+          setTimeout(function () {
+            $("#patchprogress").width("40%");
+            $("#progress-text").text("Applied BPS");
+            setTimeout(function () {
+              resolve();
+            }, 1000);
+          }, 1000);
+        },
+      });
+    });
+    $("#patchprogress").width("30%");
+    $("#progress-text").text("Applying BPS");
+  });
+}
+
+function applybps(formdata) {
+  return new Promise((resolve, reject) => {
+    $(function () {
+      $.ajax({
+        type: "POST",
+        url: "/bps_patch",
+        data: formdata,
+        complete: function (data) {
+          setTimeout(function () {
+            $("#patchprogress").width("60%");
+            $("#progress-text").text("Applied BPS");
+            setTimeout(function () {
+              resolve();
+            }, 1000);
+          }, 1000);
+        },
+      });
+    });
+    $("#patchprogress").width("50%");
+    $("#progress-text").text("Applying BPS");
+  });
+}
+
+function applyasm(formdata) {
+  return new Promise((resolve, reject) => {
+    $(function () {
+      $.ajax({
+        type: "POST",
+        url: "/asm_patch",
+        data: formdata,
+        complete: function (data) {
+          setTimeout(function () {
+            $("#patchprogress").width("80%");
+            $("#progress-text").text("Applied ASM");
+            setTimeout(function () {
+              resolve();
+            }, 1000);
+          }, 1000);
+        },
+      });
+    });
+    $("#patchprogress").width("70%");
+    $("#progress-text").text("Applying ASM");
+  });
+}
+
+function submitdata() {
+  $("input:disabled, select:disabled").each(function () {
+    $(this).removeAttr("disabled");
+  });
+  if ($("#romfile").val() == "") {
+    $("#romfile").select();
+  } else {
+    form = $("#form").serialize();
+    $("#progressmodal").modal("show");
+    dumpFile().then(function () {
+      randomizeseed(form).then(function () {
+        applybps(form).then(function () {
+          applyasm(form).then(function () {
+            $("#patchprogress").width("100%");
+            $("#progress-text").text("Rom has been patched");
+            setTimeout(function () {
+              $("#progressmodal").modal("hide");
+              $("#modal").modal("show");
+            }, 2000);
+          });
+        });
+      });
+    });
+  }
+}

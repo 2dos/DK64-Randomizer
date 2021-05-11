@@ -18,7 +18,7 @@ app_mode = True
 app = Flask(__name__, template_folder="templates")
 app.config["SEND_FILE_MAX_AGE_DEFAULT"] = 0
 app.register_blueprint(urls_blueprint)
-gui = FlaskUI(app=app, width=550, height=850, app_mode=app_mode)
+gui = FlaskUI(app=app, width=550, height=730, app_mode=app_mode)
 if __name__ == "__main__":
 
     def startup():

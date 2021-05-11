@@ -59,8 +59,8 @@
             </td>
             {% if i < 7 %}
             <td>
-                <input class="form-control" min="0" max="500" name="troff_{{i}}" id="troff_{{i}}" style="width: 100%"
-                    onKeyUp="if(this.value>500){this.value='500';}else if(this.value<0){this.value='0';}" value="{{i}}"
+                <input class="form-control" min="1" max="500" name="troff_{{i}}" id="troff_{{i}}" style="width: 100%"
+                    onKeyUp="if(this.value>500){this.value='500';}else if(this.value<1){this.value='1';}" value="{{i}}"
                     type="number" />
             </td>
             {% endif %}
