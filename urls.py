@@ -10,7 +10,7 @@ from level_progression import LevelProgression
 from misc import Misc
 from seed_generator import randomize
 
-Version = 0.3
+Version = 0.2
 urls_blueprint = Blueprint("urls", __name__)
 
 
