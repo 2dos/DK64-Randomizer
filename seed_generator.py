@@ -2,7 +2,10 @@
 import os
 import shutil
 import sys
+import subprocess
 from random import seed, shuffle
+from type_swap import convert_format
+import time
 
 
 def randomize(submittedForm):
@@ -36,13 +39,14 @@ def randomize(submittedForm):
     ]
     finalLevels = levelEntrances[:]
 
-    # Start Spoiler Log and ASM Generation
+    # Copy ASM Functions to Settings so we have a baseline
     shutil.copy2(
-        os.path.join(sys.path[0], "asmFunctions.asm"),
-        os.path.join(sys.path[0], f"settings.asm"),
+        f"{sys.path[0]}/patchfiles/asmFunctions.asm",
+        f"{sys.path[0]}/settings-{submittedForm.get('seed')}.asm",
     )
-    log = open(os.path.join(sys.path[0], f"spoilerlog-{submittedForm.get('seed')}.txt"), "w+")
-    asm = open(os.path.join(sys.path[0], f"settings.asm"), "a+")
+    # Start log and modification of settings file
+    log = open(f"{sys.path[0]}/spoilerlog-{submittedForm.get('seed')}.txt", "w+")
+    asm = open(f"{sys.path[0]}/settings-{submittedForm.get('seed')}.asm", "a+")
 
     # Write Settings to Spoiler Log
     log.write("Randomizer Settings" + "\n")
@@ -216,3 +220,75 @@ def randomize(submittedForm):
 
     log.close()
     asm.close()
+
+    # TODO: Support Linux as well
+    print("Applying BPS file")
+    convert_format(infile=f"{sys.path[0]}/temprom.rom", outfile=f"{sys.path[0]}/DK64-{submittedForm.get('seed')}.z64")
+    if os.path.exists(f"{sys.path[0]}/temprom.rom"):
+        os.remove(f"{sys.path[0]}/temprom.rom")
+    subprocess.run(
+        [
+            f"{sys.path[0]}/libs/flips/flips.exe",
+            "--apply",
+            f"{sys.path[0]}/patchfiles/DK64 Rando Setup Patch.bps",
+            f"{sys.path[0]}/DK64-{submittedForm.get('seed')}.z64",
+        ]
+    )
+    time.sleep(5)
+    wd = os.getcwd()
+    os.chdir(f"{sys.path[0]}/libs/asm2gs")
+    process = subprocess.run(
+        [
+            f"{sys.path[0]}/libs/lua/lua5.1.exe",
+            "-l",
+            "loadASM",
+            "-e",
+            f"loadASMPatch('../../settings-{submittedForm.get('seed')}.asm')",
+        ],
+        shell=True,
+    )
+    os.chdir(wd)
+    time.sleep(5)
+    if process.returncode == 0:
+        with open("codeOutput.txt", "r") as file:
+            for x in file:
+                line = x
+                segs = line.split(":")
+                processBytePatch(f"DK64-{submittedForm.get('seed')}.z64", int(segs[0]), int(segs[1]))
+        # apply crc patch
+        with open(f"DK64-{submittedForm.get('seed')}.z64", "r+b") as fh:
+            fh.seek(0x3154)
+            fh.write(bytearray([0, 0, 0, 0]))
+        crcresult = subprocess.check_output([f"{sys.path[0]}/libs/n64crc.exe", f"DK64-{submittedForm.get('seed')}.z64"])
+        print(crcresult)
+    else:
+        print("Build failed")
+
+
+def processBytePatch(rom_name, addr, val):
+    """Process Byte addresses."""
+    val = bytes([val])
+    if addr >= 0x72C and addr < (0x72C + 8):
+        diff = addr - 0x72C
+        with open(rom_name, "r+b") as fh:
+            fh.seek(0x132C + diff)
+            fh.write(val)
+        # print("Boot hook code")
+    elif addr >= 0xA30 and addr < (0xA30 + 1696):
+        diff = addr - 0xA30
+        with open(rom_name, "r+b") as fh:
+            fh.seek(0x1630 + diff)
+            fh.write(val)
+        # print("Expansion Pak Draw Code")
+    elif addr >= 0xDE88 and addr < (0xDE88 + 3920):
+        diff = addr - 0xDE88
+        with open(rom_name, "r+b") as fh:
+            fh.seek(0xEA88 + diff)
+            fh.write(val)
+        # print("Expansion Pak Picture")
+    elif addr >= 0x5DAE00 and addr < (0x5DAE00 + 0x20000):
+        diff = addr - 0x5DAE00
+        with open(rom_name, "r+b") as fh:
+            fh.seek(0x2000000 + diff)
+            fh.write(val)
+        # print("Heap Shrink Space")

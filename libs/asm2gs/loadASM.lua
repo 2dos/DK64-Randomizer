@@ -41,7 +41,7 @@ function loadASMPatch(code_filename)
 	end
 
 	-- Patch the code
-	file = io.open("codeOutput.txt","w+")
+	file = io.open("../../codeOutput.txt","w+")
 	for i = 1, #code do
 		file:write(code[i][1]..":"..code[i][2].."\n");
 	end

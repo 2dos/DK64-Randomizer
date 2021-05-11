@@ -17,7 +17,7 @@
 
   <body>
     <div class="modal fade" id="modal">
-      <div class="modal-dialog" role="document">
+      <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
           <div class="modal-header">
             <h5 class="modal-title">DK64 Randomizer</h5>
@@ -31,6 +31,19 @@
           </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="modal fade" id="progressmodal">
+      <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+          <div class="modal-body center" style="width:100%">
+            <label for="progress">Patching Rom</label>
+            <div class="progress" id="progress">
+              <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="0"
+                aria-valuemin="0" aria-valuemax="100" id="patchprogress" style="width: 0%;"></div>
+            </div>
           </div>
         </div>
       </div>

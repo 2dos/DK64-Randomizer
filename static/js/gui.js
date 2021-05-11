@@ -35,17 +35,52 @@ function progression_clicked() {
   }
 }
 
+function dumpFile() {
+  return new Promise((resolve, reject) => {
+    var form_data = new FormData();
+    form_data.append("file", $("#romfile").prop("files")[0]);
+    $("#patchprogress").width(20);
+    $(function () {
+      $.ajax({
+        type: "POST",
+        url: "/prep_rom",
+        data: form_data,
+        contentType: false,
+        cache: false,
+        processData: false,
+        complete: function (data) {
+          $("#patchprogress").width(90);
+          resolve();
+        },
+      });
+    });
+    $("#patchprogress").width(140);
+  });
+}
 function submitdata() {
   $("input:disabled, select:disabled").each(function () {
     $(this).removeAttr("disabled");
   });
-  $.ajax({
-    type: "POST",
-    url: "/",
-    data: $("#form").serialize(), // serializes the form's elements.
-  });
-
-  $("#modal").modal("show");
+  if ($("#romfile").val() == "") {
+    return false;
+  } else {
+    $("#progressmodal").modal("show");
+    dumpFile().then(function () {
+      $("#patchprogress").width(260);
+      $.ajax({
+        type: "POST",
+        url: "/",
+        data: $("#form").serialize(),
+        async: true,
+        complete: function (data) {
+          $("#patchprogress").width(360);
+          $("#progressmodal").modal("hide");
+          $("#modal").modal("show");
+        },
+      });
+      $("#patchprogress").width(320);
+    });
+  }
 }
 
 function saveCurrentSettings() {
@@ -81,19 +116,23 @@ function request_seed() {
 }
 
 function load_inital() {
-  resp = $.ajax({
-    url: "/load_settings",
-    async: false,
-  }).responseText;
+  $("#progressmodal").modal({
+    show: false,
+    backdrop: "static",
+  });
+  resp = JSON.parse(
+    $.ajax({
+      url: "/load_settings",
+      async: false,
+    }).responseText
+  );
   if (resp == "None") {
     blocker_selectionChanged();
     troff_selectionChanged();
-  }
-  else{
-    respdata = JSON.parse(resp)
-    for(var k in respdata) {
-      document.getElementsByName(k)[0].value = respdata[k];
-   }
+  } else {
+    for (var k in resp) {
+      document.getElementsByName(k)[0].value = resp[k];
+    }
   }
 }
 window.onload = load_inital;
