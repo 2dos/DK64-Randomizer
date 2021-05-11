@@ -2,6 +2,7 @@
 import json
 import random
 import os
+import sys
 
 from flask import Blueprint, Response, render_template, request
 
@@ -30,6 +31,18 @@ def index():
     return render_template(
         "index.html", version=Version, progression=LevelProgression(), random_seed=random_seed(), misc=Misc()
     )
+
+
+@urls_blueprint.route("/prep_rom", methods=["POST"])
+def prep_rom():
+    """Upload the rom data to a temp file.
+
+    Returns:
+        Response: 200 status code.
+    """
+    temprom = request.files.get("file")
+    temprom.save(f"{sys.path[0]}/temprom.rom")
+    return Response(status=200, mimetype="application/json")
 
 
 @urls_blueprint.route("/random_seed", methods=["GET"])
