@@ -39,7 +39,6 @@ function dumpFile() {
   return new Promise((resolve, reject) => {
     var form_data = new FormData();
     form_data.append("file", $("#romfile").prop("files")[0]);
-    $("#patchprogress").width(20);
     $(function () {
       $.ajax({
         type: "POST",
@@ -49,12 +48,16 @@ function dumpFile() {
         cache: false,
         processData: false,
         complete: function (data) {
-          $("#patchprogress").width(90);
-          resolve();
+          $("#patchprogress").width("50%");
+          $("#progress-text").text("Rom Loaded");
+          setTimeout(function () {
+            resolve();
+          }, 1000);
         },
       });
     });
-    $("#patchprogress").width(140);
+    $("#patchprogress").width("20%");
+    $("#progress-text").text("Started Loading Rom");
   });
 }
 function submitdata() {
@@ -62,23 +65,26 @@ function submitdata() {
     $(this).removeAttr("disabled");
   });
   if ($("#romfile").val() == "") {
-    return false;
+    $("#romfile").select();
   } else {
     $("#progressmodal").modal("show");
     dumpFile().then(function () {
-      $("#patchprogress").width(260);
       $.ajax({
         type: "POST",
         url: "/",
         data: $("#form").serialize(),
         async: true,
         complete: function (data) {
-          $("#patchprogress").width(360);
-          $("#progressmodal").modal("hide");
-          $("#modal").modal("show");
+          $("#patchprogress").width("100%");
+          $("#progress-text").text("Rom has been patched");
+          setTimeout(function () {
+            $("#progressmodal").modal("hide");
+            $("#modal").modal("show");
+          }, 2000);
         },
       });
-      $("#patchprogress").width(320);
+      $("#patchprogress").width("60%");
+      $("#progress-text").text("Randomizing Rom");
     });
   }
 }
@@ -120,18 +126,17 @@ function load_inital() {
     show: false,
     backdrop: "static",
   });
-  resp = JSON.parse(
-    $.ajax({
+  resp = $.ajax({
       url: "/load_settings",
       async: false,
     }).responseText
-  );
   if (resp == "None") {
     blocker_selectionChanged();
     troff_selectionChanged();
   } else {
-    for (var k in resp) {
-      document.getElementsByName(k)[0].value = resp[k];
+    var jsonresp = JSON.parse(resp);
+    for (var k in jsonresp) {
+      document.getElementsByName(k)[0].value = jsonresp[k];
     }
   }
 }

@@ -27,6 +27,11 @@ class Misc:
             If using Level Progression Randomizer and playing through glitchless, this option is forced on."""
         return self.response(Value=True, ToolTip=self._unindent(tooltip), Enabled="disabled")
 
+    def generate_spoilerlog(self):
+        """Response Data for form info."""
+        tooltip = """This option enables spoiler log files to be created on randomizer generation."""
+        return self.response(Value=True, ToolTip=self._unindent(tooltip), Enabled="")
+
     def unlock_all_moves(self):
         """Response Data for form info."""
         tooltip = """This option will make all moves available from the start without purchasing them.
