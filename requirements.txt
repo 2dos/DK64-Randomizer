@@ -1,3 +1,5 @@
 flaskwebgui
 flask
 numpy
+lupa
+brython

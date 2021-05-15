@@ -8,7 +8,7 @@ from flask import Blueprint, Response, render_template, request
 
 from level_progression import LevelProgression
 from misc import Misc
-from seed_generator import randomize, apply_asm, apply_bps
+from seed_generator import randomize, apply_asm
 
 Version = 0.2
 urls_blueprint = Blueprint("urls", __name__)
@@ -22,38 +22,17 @@ def index():
         render_template: Flask form.
     """
     if request.method == "POST":
-        randomize(request.form)
+        randomized = randomize(request.form)
+        # TODO: Store this as a cookie rather than in a file
         converted_settings = dict(request.form)
         del converted_settings["seed"]
         with open("settings.json", "w") as outfile:
             json.dump(converted_settings, outfile)
-        return Response(status=200, mimetype="application/json")
+        
+        return Response(response=randomized,status=200, mimetype="application/json")
     return render_template(
         "index.html", version=Version, progression=LevelProgression(), random_seed=random_seed(), misc=Misc()
     )
-
-
-@urls_blueprint.route("/prep_rom", methods=["POST"])
-def prep_rom():
-    """Upload the rom data to a temp file.
-
-    Returns:
-        Response: 200 status code.
-    """
-    temprom = request.files.get("file")
-    temprom.save(f"{sys.path[0]}/temprom.rom")
-    return Response(status=200, mimetype="application/json")
-
-
-@urls_blueprint.route("/bps_patch", methods=["POST"])
-def bps_patch():
-    """Resize the seed.
-
-    Returns:
-        Response: 200 status code.
-    """
-    apply_bps(dict(request.form))
-    return Response(status=200, mimetype="application/json")
 
 
 @urls_blueprint.route("/asm_patch", methods=["POST"])
@@ -63,8 +42,7 @@ def asm_patch():
     Returns:
         Response: 200 status code.
     """
-    apply_asm(dict(request.form))
-    return Response(status=200, mimetype="application/json")
+    return Response(response=json.dumps(apply_asm(dict(request.form)["asm"])), status=200, mimetype="application/json")
 
 
 @urls_blueprint.route("/random_seed", methods=["GET"])

@@ -88,36 +88,10 @@ function load_inital() {
 }
 window.onload = load_inital;
 
-function dumpFile() {
-  return new Promise((resolve, reject) => {
-    var form_data = new FormData();
-    form_data.append("file", $("#romfile").prop("files")[0]);
-    $(function () {
-      $.ajax({
-        type: "POST",
-        url: "/prep_rom",
-        data: form_data,
-        contentType: false,
-        cache: false,
-        processData: false,
-        complete: function (data) {
-          setTimeout(function () {
-            $("#patchprogress").width("20%");
-            $("#progress-text").text("Rom Loaded");
-            setTimeout(function () {
-              resolve();
-            }, 1000);
-          }, 1000);
-        },
-      });
-    });
-    $("#patchprogress").width("10%");
-    $("#progress-text").text("Started Loading Rom");
-  });
-}
-
 function randomizeseed(formdata) {
   return new Promise((resolve, reject) => {
+    $("#patchprogress").width("30%");
+    $("#progress-text").text("Randomizing seed");
     $(function () {
       $.ajax({
         type: "POST",
@@ -125,63 +99,40 @@ function randomizeseed(formdata) {
         data: formdata,
         complete: function (data) {
           setTimeout(function () {
-            $("#patchprogress").width("40%");
-            $("#progress-text").text("Applied BPS");
+            $("#patchprogress").width("50%");
+            $("#progress-text").text("Seed Randomized");
             setTimeout(function () {
-              resolve();
+              resolve(data.responseText);
             }, 1000);
           }, 1000);
         },
       });
     });
-    $("#patchprogress").width("30%");
-    $("#progress-text").text("Applying BPS");
+
   });
 }
 
-function applybps(formdata) {
-  return new Promise((resolve, reject) => {
-    $(function () {
-      $.ajax({
-        type: "POST",
-        url: "/bps_patch",
-        data: formdata,
-        complete: function (data) {
-          setTimeout(function () {
-            $("#patchprogress").width("60%");
-            $("#progress-text").text("Applied BPS");
-            setTimeout(function () {
-              resolve();
-            }, 1000);
-          }, 1000);
-        },
-      });
-    });
-    $("#patchprogress").width("50%");
-    $("#progress-text").text("Applying BPS");
-  });
-}
 
-function applyasm(formdata) {
+function generate_asm(asm) {
   return new Promise((resolve, reject) => {
     $(function () {
+      $("#patchprogress").width("60%");
+      $("#progress-text").text("Generating ASM");
       $.ajax({
         type: "POST",
         url: "/asm_patch",
-        data: formdata,
+        data: { asm: String(asm) },
         complete: function (data) {
           setTimeout(function () {
-            $("#patchprogress").width("80%");
-            $("#progress-text").text("Applied ASM");
+            $("#patchprogress").width("70%");
+            $("#progress-text").text("ASM Generated");
             setTimeout(function () {
-              resolve();
+              resolve(data.responseJSON);
             }, 1000);
           }, 1000);
         },
       });
     });
-    $("#patchprogress").width("70%");
-    $("#progress-text").text("Applying ASM");
   });
 }
 
@@ -189,24 +140,18 @@ function submitdata() {
   $("input:disabled, select:disabled").each(function () {
     $(this).removeAttr("disabled");
   });
-  if ($("#romfile").val() == "") {
-    $("#romfile").select();
+  if ($("#input-file-rom").val() == "") {
+    $("#input-file-rom").select();
   } else {
     form = $("#form").serialize();
     $("#progressmodal").modal("show");
-    dumpFile().then(function () {
-      randomizeseed(form).then(function () {
-        applybps(form).then(function () {
-          applyasm(form).then(function () {
-            $("#patchprogress").width("100%");
-            $("#progress-text").text("Rom has been patched");
-            setTimeout(function () {
-              $("#progressmodal").modal("hide");
-              $("#modal").modal("show");
-            }, 2000);
-          });
-        });
+    progression_clicked();
+
+    randomizeseed(form).then(function (rando) {
+      generate_asm(rando).then(function (binary_data) {
+        applyPatch(patch, romFile, false, binary_data);
       });
     });
   }
 }
+// TODO: Move all the progress stuff to a toggle function

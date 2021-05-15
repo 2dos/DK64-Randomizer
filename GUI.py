@@ -15,7 +15,7 @@ from urls import urls_blueprint
 # If this flag is set to true this flask app will only launch in a web format
 app_mode = True
 
-app = Flask(__name__, template_folder="templates")
+app = Flask(__name__, template_folder="templates", static_url_path="")
 app.config["SEND_FILE_MAX_AGE_DEFAULT"] = 0
 app.register_blueprint(urls_blueprint)
 gui = FlaskUI(app=app, width=550, height=730, app_mode=app_mode)
