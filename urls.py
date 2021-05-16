@@ -6,7 +6,6 @@ from flask import Blueprint, Response, render_template, request
 
 from static.level_progression import LevelProgression
 from static.misc import Misc
-from seed_generator import apply_asm
 
 Version = 0.2
 urls_blueprint = Blueprint("urls", __name__)
@@ -28,16 +27,6 @@ def index():
 
         return Response(status=200, mimetype="application/json")
     return render_template("index.html", version=Version, progression=LevelProgression(), misc=Misc())
-
-
-@urls_blueprint.route("/asm_patch", methods=["POST"])
-def asm_patch():
-    """Apply the ASM patch.
-
-    Returns:
-        Response: 200 status code.
-    """
-    return Response(response=apply_asm(dict(request.form)["asm"]), status=200, mimetype="application/json")
 
 
 @urls_blueprint.route("/load_settings", methods=["GET"])
