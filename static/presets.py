@@ -18,9 +18,11 @@ def set_troff_preset():
         if item.get(preset):
             for val in item.get(preset):
                 response.append(val)
+    count = 0
     for pre in response:
-        document["troff_" + str(response.index(pre))].value = pre.Value
-        document["troff_" + str(response.index(pre))].title = pre.ToolTip
+        document["troff_" + str(count)].value = pre.Value
+        document["troff_" + str(count)].title = pre.ToolTip
+        count += 1
 
 
 def set_blocker_preset():
@@ -32,9 +34,11 @@ def set_blocker_preset():
         if item.get(preset):
             for val in item.get(preset):
                 response.append(val)
+    count = 0
     for pre in response:
-        document["blocker_" + str(response.index(pre))].value = pre.Value
-        document["blocker_" + str(response.index(pre))].title = pre.ToolTip
+        document["blocker_" + str(count)].value = pre.Value
+        document["blocker_" + str(count)].title = pre.ToolTip
+        count += 1
 
 
 window.blocker_selectionChanged = set_blocker_preset
