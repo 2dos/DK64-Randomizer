@@ -106,7 +106,6 @@ Start:
     NOP
     JAL     TagAnywhere
     NOP
-    SW      r0, 0x8061963C // Bone Displacement Fix
     LW      a0, @CurrentMap
     LI      a1, 0x50 // Main Menu
     BNE     a0, a1, Finish
