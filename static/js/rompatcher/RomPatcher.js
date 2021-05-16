@@ -11,7 +11,7 @@ var romFile,
 
 var webWorkerApply, webWorkerCreate, webWorkerCrc;
 try {
-  webWorkerApply = new Worker("./js/worker_apply.js");
+  webWorkerApply = new Worker("./js/rompatcher/worker_apply.js");
   webWorkerApply.onmessage = (event) => {
     //retrieve arraybuffers back from webworker
     try {
@@ -29,9 +29,12 @@ try {
       );
   };
 
-  webWorkerCrc = new Worker("./js/worker_crc.js");
+  webWorkerCrc = new Worker("./js/rompatcher/worker_crc.js");
   webWorkerCrc.onmessage = (event) => {
-    document.getElementById("crc32").innerHTML = padZeroes(event.data.crc32, 4);
+    //document.getElementById("input-file-rom").innerHTML = padZeroes(
+    //  event.data.crc32,
+    //  4
+    //);
     romFile._u8array = event.data.u8array;
     romFile._dataView = new DataView(event.data.u8array.buffer);
   };
@@ -56,13 +59,10 @@ function _parseROM() {
 
 function updateChecksums(file, startOffset, force) {
   if (file === romFile && file.fileSize > 33554432 && !force) {
-    document.getElementById("crc32").innerHTML =
-      'File is too big. <span onclick="updateChecksums(romFile,' +
-      startOffset +
-      ',true)">Force calculate checksum</span>';
     return false;
   }
-  document.getElementById("crc32").innerHTML = "Calculating...";
+
+  //document.getElementById("input-file-rom").innerHTML = "Calculating...";
 
   webWorkerCrc.postMessage(
     { u8array: file._u8array, startOffset: startOffset },

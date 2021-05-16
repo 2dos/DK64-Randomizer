@@ -1,24 +1,23 @@
-function blocker_selectionChanged() {
-  option = $("#blocker_selected option:selected").text().trim();
-  resp = $.ajax({
-    url: "/blocker/" + option,
-    async: false,
-  }).responseJSON;
-  for (var key in resp) {
-    $("#blocker_" + key).val(resp[key][0]);
-    $("#blocker_" + key).prop("title", resp[key][1]);
-  }
-}
+window.onload = load_inital;
 
-function troff_selectionChanged() {
-  option = $("#troff_selected option:selected").text().trim();
+function load_inital() {
+  brython();
+  $("#progressmodal").modal({
+    show: false,
+    backdrop: "static",
+  });
   resp = $.ajax({
-    url: "/troff/" + option,
+    url: "/load_settings",
     async: false,
-  }).responseJSON;
-  for (var key in resp) {
-    $("#troff_" + key).val(resp[key][0]);
-    $("#troff_" + key).prop("title", resp[key][1]);
+  }).responseText;
+  if (resp == "None") {
+    blocker_selectionChanged();
+    troff_selectionChanged();
+  } else {
+    var jsonresp = JSON.parse(resp);
+    for (var k in jsonresp) {
+      document.getElementsByName(k)[0].value = jsonresp[k];
+    }
   }
 }
 
@@ -44,70 +43,18 @@ function saveCurrentSettings() {
   });
 }
 
-function copyToClipboard() {
-  var clipboardText = "";
-  clipboardText = $("#settings_string").val();
-  var textArea = document.createElement("textarea");
-  textArea.value = clipboardText;
-  document.body.appendChild(textArea);
-  textArea.select();
-
-  try {
-    document.execCommand("copy");
-  } catch (err) {}
-  document.body.removeChild(textArea);
-}
-
-function request_seed() {
-  $("#seed").val(
-    $.ajax({
-      url: "/random_seed",
-      async: false,
-    }).responseText
-  );
-}
-
-function load_inital() {
-  $("#progressmodal").modal({
-    show: false,
-    backdrop: "static",
-  });
-  resp = $.ajax({
-    url: "/load_settings",
-    async: false,
-  }).responseText;
-  if (resp == "None") {
-    blocker_selectionChanged();
-    troff_selectionChanged();
-  } else {
-    var jsonresp = JSON.parse(resp);
-    for (var k in jsonresp) {
-      document.getElementsByName(k)[0].value = jsonresp[k];
-    }
-  }
-}
-window.onload = load_inital;
-
 function randomizeseed(formdata) {
   return new Promise((resolve, reject) => {
     $("#patchprogress").width("30%");
     $("#progress-text").text("Randomizing seed");
-    $(function () {
-      $.ajax({
-        type: "POST",
-        url: "/",
-        data: formdata,
-        complete: function (data) {
-          setTimeout(function () {
-            $("#patchprogress").width("50%");
-            $("#progress-text").text("Seed Randomized");
-            setTimeout(function () {
-              resolve(data.responseText);
-            }, 1000);
-          }, 1000);
-        },
-      });
-    });
+    response = randomize_data(formdata);
+    setTimeout(function () {
+      $("#patchprogress").width("40%");
+      $("#progress-text").text("Randomizing complete");
+      setTimeout(function () {
+        resolve(response);
+      }, 1000);
+    }, 1000);
   });
 }
 
@@ -152,4 +99,3 @@ function submitdata() {
     });
   }
 }
-// TODO: Move all the progress stuff to a toggle function
