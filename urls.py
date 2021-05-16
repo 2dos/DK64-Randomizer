@@ -42,7 +42,7 @@ def asm_patch():
     Returns:
         Response: 200 status code.
     """
-    return Response(response=json.dumps(apply_asm(dict(request.form)["asm"])), status=200, mimetype="application/json")
+    return Response(response=apply_asm(dict(request.form)["asm"]), status=200, mimetype="application/json")
 
 
 @urls_blueprint.route("/random_seed", methods=["GET"])

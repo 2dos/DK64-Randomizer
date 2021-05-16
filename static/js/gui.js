@@ -108,10 +108,8 @@ function randomizeseed(formdata) {
         },
       });
     });
-
   });
 }
-
 
 function generate_asm(asm) {
   return new Promise((resolve, reject) => {
@@ -127,7 +125,7 @@ function generate_asm(asm) {
             $("#patchprogress").width("70%");
             $("#progress-text").text("ASM Generated");
             setTimeout(function () {
-              resolve(data.responseJSON);
+              resolve(data.responseText);
             }, 1000);
           }, 1000);
         },

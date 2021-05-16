@@ -247,9 +247,9 @@ def apply_asm(post_data):
         return code;
     end""")
     asm_binary = dict(loadASM(post_data))
-    formatted_dat = {}
+    formatted_dat = ""
     for key in asm_binary:
         inter = dict(asm_binary[key])
-        formatted_dat[inter[1]] = inter[2]
+        formatted_dat += str(inter[1]) + ":" + str(inter[2]) + "\n"
     return formatted_dat
 
