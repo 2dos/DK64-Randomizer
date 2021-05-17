@@ -11,7 +11,9 @@ def randomseed(event):
 
 def set_troff_preset(event):
     """Set the troff n Scoff Presets on the page."""
-    preset = document["troff_selected"].text.splitlines()[document["troff_selected"].selectedIndex]
+    preset = document["troff_selected"].text.splitlines()[
+        document["troff_selected"].selectedIndex
+    ]
     presets = LevelProgression().troff_presets()
     response = []
     if presets.Value.get(preset):
@@ -26,7 +28,9 @@ def set_troff_preset(event):
 
 def set_blocker_preset(event):
     """Set the Blocker presets on the page."""
-    preset = document["blocker_selected"].text.splitlines()[document["blocker_selected"].selectedIndex]
+    preset = document["blocker_selected"].text.splitlines()[
+        document["blocker_selected"].selectedIndex
+    ]
     presets = LevelProgression().blocker_presets()
     response = []
     if presets.Value.get(preset):
@@ -81,8 +85,7 @@ def key_up(event):
             document[event.target.id].value = 0
             return False
 
-window.troff_selectionChanged = set_troff_preset
-window.blocker_selectionChanged = set_blocker_preset
+
 document["seed_button"].bind("click", randomseed)
 document["troff_selected"].bind("change", set_troff_preset)
 document["blocker_selected"].bind("change", set_blocker_preset)

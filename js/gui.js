@@ -14,8 +14,15 @@ function load_inital() {
   setTimeout(function () {
     var savedUserJsonString = getCookie("settings");
     if (savedUserJsonString.length === 0) {
-      blocker_selectionChanged();
-      troff_selectionChanged();
+
+        for (let retries = 0; retries < 20; retries++) {
+          setTimeout(function () {
+            if (document.getElementById("blocker_selected").options[0] == "Vanilla") {
+              blocker_selectionChanged();
+              troff_selectionChanged();
+            }
+          }, 1000);
+        }
     } else {
       var jsonresp = JSON.parse(savedUserJsonString);
       for (var k in jsonresp) {
