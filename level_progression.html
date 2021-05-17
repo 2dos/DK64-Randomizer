@@ -1,0 +1,55 @@
+<!--Randomize Level Progression-->
+<div class="form-check form-switch">
+    <label data-bs-toggle="tooltip" title="{progression.randomize_progression().ToolTip}">
+        <input class="form-check-input" type="checkbox" name="randomize_progression" id="randomize_progression"
+            value="True" checked data-bs-toggle="tooltip" title="{progression.randomize_progression().ToolTip}"
+            onclick="progression_clicked()" {progression.randomize_progression().Enabled} />
+        Randomize Level
+        Progression
+    </label>
+</div>
+<!--Randomize Seed-->
+<div class="center">
+    <input name="seed" type="number" id="seed" onKeyPress="if(this.value.length==6) return false;" />
+    <input class="btn btn-warning" style="height: 40px; width: 130px; font-size: 0.875em; text-align: center;"
+        id="seed_button" type="button" value="Random Seed" />
+</div>
+<!--Create table for level progression-->
+<div>
+    <table id="leveltable" style="width: 100%">
+        <tr>
+            <th>Progression</th>
+            <th>B Locker</th>
+            <th>Troff N Scoff</th>
+        </tr>
+        <tr>
+            <td>Presets</td>
+            <td>
+                <select name="blocker_selected" class="form-select"
+                    id="blocker_selected" data-bs-toggle="tooltip" title="{progression.blocker_presets().ToolTip}">
+                    <option b-code="for option in progression.blocker_presets().Value:" value="{option}">
+                        {option}
+                    </option>
+                </select>
+            </td>
+            <td>
+                <select name="troff_selected" class="form-select"
+                    id="troff_selected" data-bs-toggle="tooltip" title="{progression.troff_presets().ToolTip}">
+                    <option b-code="for option in progression.troff_presets().Value:" value="{option}">
+                        {option}
+                    </option>
+                </select>
+            </td>
+        </tr>
+        <tr b-code="for i in range(0, 8):">
+            <td>Level {(i + 1)}</td>
+            <td>
+                <input class="form-control" min="0" max="200" name="blocker_{(i)}" id="blocker_{(i)}" style="width: 100%" value="{i}" type="number" />
+            </td>
+            <td b-code="if i < 7:">
+                <input class="form-control" min="1" max="500" name="troff_{(i)}" id="troff_{(i)}" style="width: 100%" value="{i}" type="number" />
+            </td>
+        </tr>
+
+    </table>
+</div>

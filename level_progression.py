@@ -74,56 +74,49 @@ class LevelProgression:
             If you are unsure what to adjust the level values to, use the presets dropdown instead.
         """
         )
-        options = [
-            {
-                "Vanilla": [
-                    self.response(Value=1, ToolTip=input_tooltip, Enabled=""),
-                    self.response(Value=5, ToolTip=input_tooltip, Enabled=""),
-                    self.response(Value=15, ToolTip=input_tooltip, Enabled=""),
-                    self.response(Value=30, ToolTip=input_tooltip, Enabled=""),
-                    self.response(Value=50, ToolTip=input_tooltip, Enabled=""),
-                    self.response(Value=65, ToolTip=input_tooltip, Enabled=""),
-                    self.response(Value=80, ToolTip=input_tooltip, Enabled=""),
-                    self.response(Value=100, ToolTip=input_tooltip, Enabled=""),
-                ]
-            },
-            {
-                "Steady": [
-                    self.response(Value=1, ToolTip=input_tooltip, Enabled=""),
-                    self.response(Value=10, ToolTip=input_tooltip, Enabled=""),
-                    self.response(Value=20, ToolTip=input_tooltip, Enabled=""),
-                    self.response(Value=30, ToolTip=input_tooltip, Enabled=""),
-                    self.response(Value=40, ToolTip=input_tooltip, Enabled=""),
-                    self.response(Value=50, ToolTip=input_tooltip, Enabled=""),
-                    self.response(Value=60, ToolTip=input_tooltip, Enabled=""),
-                    self.response(Value=75, ToolTip=input_tooltip, Enabled=""),
-                ]
-            },
-            {
-                "Half": [
-                    self.response(Value=1, ToolTip=input_tooltip, Enabled=""),
-                    self.response(Value=5, ToolTip=input_tooltip, Enabled=""),
-                    self.response(Value=10, ToolTip=input_tooltip, Enabled=""),
-                    self.response(Value=15, ToolTip=input_tooltip, Enabled=""),
-                    self.response(Value=20, ToolTip=input_tooltip, Enabled=""),
-                    self.response(Value=30, ToolTip=input_tooltip, Enabled=""),
-                    self.response(Value=40, ToolTip=input_tooltip, Enabled=""),
-                    self.response(Value=50, ToolTip=input_tooltip, Enabled=""),
-                ]
-            },
-            {
-                "Hell": [
-                    self.response(Value=1, ToolTip=input_tooltip, Enabled=""),
-                    self.response(Value=10, ToolTip=input_tooltip, Enabled=""),
-                    self.response(Value=25, ToolTip=input_tooltip, Enabled=""),
-                    self.response(Value=50, ToolTip=input_tooltip, Enabled=""),
-                    self.response(Value=75, ToolTip=input_tooltip, Enabled=""),
-                    self.response(Value=100, ToolTip=input_tooltip, Enabled=""),
-                    self.response(Value=125, ToolTip=input_tooltip, Enabled=""),
-                    self.response(Value=150, ToolTip=input_tooltip, Enabled=""),
-                ]
-            },
-        ]
+        options = {
+            "Vanilla": [
+                self.response(Value=1, ToolTip=input_tooltip, Enabled=""),
+                self.response(Value=5, ToolTip=input_tooltip, Enabled=""),
+                self.response(Value=15, ToolTip=input_tooltip, Enabled=""),
+                self.response(Value=30, ToolTip=input_tooltip, Enabled=""),
+                self.response(Value=50, ToolTip=input_tooltip, Enabled=""),
+                self.response(Value=65, ToolTip=input_tooltip, Enabled=""),
+                self.response(Value=80, ToolTip=input_tooltip, Enabled=""),
+                self.response(Value=100, ToolTip=input_tooltip, Enabled=""),
+            ],
+            "Steady": [
+                self.response(Value=1, ToolTip=input_tooltip, Enabled=""),
+                self.response(Value=10, ToolTip=input_tooltip, Enabled=""),
+                self.response(Value=20, ToolTip=input_tooltip, Enabled=""),
+                self.response(Value=30, ToolTip=input_tooltip, Enabled=""),
+                self.response(Value=40, ToolTip=input_tooltip, Enabled=""),
+                self.response(Value=50, ToolTip=input_tooltip, Enabled=""),
+                self.response(Value=60, ToolTip=input_tooltip, Enabled=""),
+                self.response(Value=75, ToolTip=input_tooltip, Enabled=""),
+            ],
+            "Half": [
+                self.response(Value=1, ToolTip=input_tooltip, Enabled=""),
+                self.response(Value=5, ToolTip=input_tooltip, Enabled=""),
+                self.response(Value=10, ToolTip=input_tooltip, Enabled=""),
+                self.response(Value=15, ToolTip=input_tooltip, Enabled=""),
+                self.response(Value=20, ToolTip=input_tooltip, Enabled=""),
+                self.response(Value=30, ToolTip=input_tooltip, Enabled=""),
+                self.response(Value=40, ToolTip=input_tooltip, Enabled=""),
+                self.response(Value=50, ToolTip=input_tooltip, Enabled=""),
+            ],
+            "Hell": [
+                self.response(Value=1, ToolTip=input_tooltip, Enabled=""),
+                self.response(Value=10, ToolTip=input_tooltip, Enabled=""),
+                self.response(Value=25, ToolTip=input_tooltip, Enabled=""),
+                self.response(Value=50, ToolTip=input_tooltip, Enabled=""),
+                self.response(Value=75, ToolTip=input_tooltip, Enabled=""),
+                self.response(Value=100, ToolTip=input_tooltip, Enabled=""),
+                self.response(Value=125, ToolTip=input_tooltip, Enabled=""),
+                self.response(Value=150, ToolTip=input_tooltip, Enabled=""),
+            ],
+        }
+
         return self.response(Value=options, ToolTip=self._unindent(tooltip), Enabled="")
 
     def troff_presets(self):
@@ -139,50 +132,43 @@ class LevelProgression:
             as the program does not validate if a game is beatable glitchless with adjusted Troff n Scoff settings.
             If you are unsure what to adjust the level values to, use the presets dropdown instead."""
         )
-        options = [
-            {
-                "Vanilla": [
-                    self.response(Value=60, ToolTip=input_tooltip, Enabled=""),
-                    self.response(Value=120, ToolTip=input_tooltip, Enabled=""),
-                    self.response(Value=200, ToolTip=input_tooltip, Enabled=""),
-                    self.response(Value=250, ToolTip=input_tooltip, Enabled=""),
-                    self.response(Value=300, ToolTip=input_tooltip, Enabled=""),
-                    self.response(Value=350, ToolTip=input_tooltip, Enabled=""),
-                    self.response(Value=400, ToolTip=input_tooltip, Enabled=""),
-                ]
-            },
-            {
-                "Steady": [
-                    self.response(Value=150, ToolTip=input_tooltip, Enabled=""),
-                    self.response(Value=150, ToolTip=input_tooltip, Enabled=""),
-                    self.response(Value=150, ToolTip=input_tooltip, Enabled=""),
-                    self.response(Value=150, ToolTip=input_tooltip, Enabled=""),
-                    self.response(Value=150, ToolTip=input_tooltip, Enabled=""),
-                    self.response(Value=150, ToolTip=input_tooltip, Enabled=""),
-                    self.response(Value=150, ToolTip=input_tooltip, Enabled=""),
-                ]
-            },
-            {
-                "Half": [
-                    self.response(Value=50, ToolTip=input_tooltip, Enabled=""),
-                    self.response(Value=75, ToolTip=input_tooltip, Enabled=""),
-                    self.response(Value=100, ToolTip=input_tooltip, Enabled=""),
-                    self.response(Value=125, ToolTip=input_tooltip, Enabled=""),
-                    self.response(Value=150, ToolTip=input_tooltip, Enabled=""),
-                    self.response(Value=175, ToolTip=input_tooltip, Enabled=""),
-                    self.response(Value=200, ToolTip=input_tooltip, Enabled=""),
-                ]
-            },
-            {
-                "Hell": [
-                    self.response(Value=150, ToolTip=input_tooltip, Enabled=""),
-                    self.response(Value=200, ToolTip=input_tooltip, Enabled=""),
-                    self.response(Value=250, ToolTip=input_tooltip, Enabled=""),
-                    self.response(Value=300, ToolTip=input_tooltip, Enabled=""),
-                    self.response(Value=350, ToolTip=input_tooltip, Enabled=""),
-                    self.response(Value=400, ToolTip=input_tooltip, Enabled=""),
-                    self.response(Value=450, ToolTip=input_tooltip, Enabled=""),
-                ]
-            },
-        ]
+        options = {
+            "Vanilla": [
+                self.response(Value=60, ToolTip=input_tooltip, Enabled=""),
+                self.response(Value=120, ToolTip=input_tooltip, Enabled=""),
+                self.response(Value=200, ToolTip=input_tooltip, Enabled=""),
+                self.response(Value=250, ToolTip=input_tooltip, Enabled=""),
+                self.response(Value=300, ToolTip=input_tooltip, Enabled=""),
+                self.response(Value=350, ToolTip=input_tooltip, Enabled=""),
+                self.response(Value=400, ToolTip=input_tooltip, Enabled=""),
+            ],
+            "Steady": [
+                self.response(Value=150, ToolTip=input_tooltip, Enabled=""),
+                self.response(Value=150, ToolTip=input_tooltip, Enabled=""),
+                self.response(Value=150, ToolTip=input_tooltip, Enabled=""),
+                self.response(Value=150, ToolTip=input_tooltip, Enabled=""),
+                self.response(Value=150, ToolTip=input_tooltip, Enabled=""),
+                self.response(Value=150, ToolTip=input_tooltip, Enabled=""),
+                self.response(Value=150, ToolTip=input_tooltip, Enabled=""),
+            ],
+            "Half": [
+                self.response(Value=50, ToolTip=input_tooltip, Enabled=""),
+                self.response(Value=75, ToolTip=input_tooltip, Enabled=""),
+                self.response(Value=100, ToolTip=input_tooltip, Enabled=""),
+                self.response(Value=125, ToolTip=input_tooltip, Enabled=""),
+                self.response(Value=150, ToolTip=input_tooltip, Enabled=""),
+                self.response(Value=175, ToolTip=input_tooltip, Enabled=""),
+                self.response(Value=200, ToolTip=input_tooltip, Enabled=""),
+            ],
+            "Hell": [
+                self.response(Value=150, ToolTip=input_tooltip, Enabled=""),
+                self.response(Value=200, ToolTip=input_tooltip, Enabled=""),
+                self.response(Value=250, ToolTip=input_tooltip, Enabled=""),
+                self.response(Value=300, ToolTip=input_tooltip, Enabled=""),
+                self.response(Value=350, ToolTip=input_tooltip, Enabled=""),
+                self.response(Value=400, ToolTip=input_tooltip, Enabled=""),
+                self.response(Value=450, ToolTip=input_tooltip, Enabled=""),
+            ],
+        }
+
         return self.response(Value=options, ToolTip=self._unindent(tooltip), Enabled="")
