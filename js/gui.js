@@ -14,14 +14,16 @@ function load_inital() {
   setTimeout(function () {
     var savedUserJsonString = getCookie("settings");
     if (savedUserJsonString.length === 0) {
-
-        for (let retries = 0; retries < 20; retries++) {
-          setTimeout(function () {
-            if (document.getElementById("blocker_selected").options[0] == "Vanilla") {
-              blocker_selectionChanged();
-              troff_selectionChanged();
-            }
-          }, 1000);
+        if (
+          document
+            .getElementById("blocker_selected")
+            .options[0].value.toLowerCase() == "vanilla"
+        ) {
+          const e = new Event("change");
+          element = document.querySelector("#blocker_selected");
+          element.dispatchEvent(e);
+          element = document.querySelector("#troff_selected");
+          element.dispatchEvent(e);
         }
     } else {
       var jsonresp = JSON.parse(savedUserJsonString);
