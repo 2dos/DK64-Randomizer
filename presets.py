@@ -81,7 +81,8 @@ def key_up(event):
             document[event.target.id].value = 0
             return False
 
-
+window.troff_selectionChanged = set_troff_preset
+window.blocker_selectionChanged = set_blocker_preset
 document["seed_button"].bind("click", randomseed)
 document["troff_selected"].bind("change", set_troff_preset)
 document["blocker_selected"].bind("change", set_blocker_preset)
