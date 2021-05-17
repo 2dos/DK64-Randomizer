@@ -19,11 +19,14 @@ function load_inital() {
     } else {
       var jsonresp = JSON.parse(savedUserJsonString);
       for (var k in jsonresp) {
-        document.getElementsByName(k)[0].value = jsonresp[k];
+        try {
+          document.getElementsByName(k)[0].value = jsonresp[k];
+        } catch {}
       }
     }
+    progression_clicked();
     $("#loading").modal("hide");
-  }, 1000);
+  }, 2000);
 }
 
 function progression_clicked() {

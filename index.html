@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1" name="viewport" />
+    <link href="./img/dk.png" rel="icon" />
+
+    <link href="./styles/bootstrap.min.css" rel="stylesheet" type="text/css" />
+
+    <link href="./styles/gui.css" rel="stylesheet" type="text/css" />
+    <title>
+        DK64 Randomizer
+    </title>
+    <script type="text/javascript" src="./js/jquery/jquery-3.6.0.min.js"></script>
+    <script type="text/javascript" src="./js/brython/brython.js"></script>
+    <script type="text/javascript" src="./js/brython/brython_stdlib.js"></script>
+    <!-- <script type="text/javascript" src="./js/brython/brython_modules.js"></script> -->
+</head>
+
+<body onload="brython()">
+    <div class="modal fade" id="progressmodal">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-body center" style="width:100%">
+                    <label for="progress">Patching Rom</label>
+                    <div class="progress position-relative" id="progress">
+                        <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar"
+                            aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" id="patchprogress"
+                            style="width: 0%;"></div>
+                        <small id="progress-text"
+                            class="justify-content-center d-flex position-absolute w-100">Initalizing</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="loading">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-body center" style="width:100%">
+                    <label>Loading...</label>
+                </div>
+            </div>
+        </div>
+    </div>
+    <form id="form" action="/" method="POST">
+        <!--Create navbar-->
+        <div class="container">
+            <nav>
+                <div class="nav nav-tabs" id="nav-tab" role="tablist">
+                    <button class="nav-link active" id="nav-progression-tab" data-bs-toggle="tab"
+                        data-bs-target="#nav-progression" type="button" role="tab" aria-controls="nav-progression"
+                        aria-selected="true">
+                        Level Progression
+                    </button>
+                    <button class="nav-link" id="nav-msic-tab" data-bs-toggle="tab" data-bs-target="#nav-misc"
+                        type="button" role="tab" aria-controls="nav-misc" aria-selected="false">
+                        Miscellaneous
+                    </button>
+                </div>
+            </nav>
+            <!--Populate tabs-->
+            <div class="tab-content" id="nav-tabContent">
+                <div class="tab-pane fade show active" id="nav-progression" role="tabpanel"
+                    aria-labelledby="nav-progression-tab">
+                    <div id="level_progression_tab" b-include="level_progression.html"></div>
+                </div>
+
+                <div class="tab-pane fade" id="nav-misc" role="tabpanel" aria-labelledby="nav-misc-tab">
+                    <div id="misc_tab" b-include="misc.html"></div>
+                </div>
+            </div>
+        </div>
+    </form>
+
+</body>
+
+
+<footer>
+    <script type="text/javascript" src="./js/bootstrap/bootstrap.bundle.min.js"></script>
+    <script type="text/javascript" src="./js/lua.vm/lua.vm.js"></script>
+    <script type="text/javascript" src="./js/gui.js"></script>
+    <script type="text/javascript" src="./js/rompatcher/crc.js"></script>
+    <script type="text/javascript" src="./js/rompatcher/formats/bps.js"></script>
+    <script type="text/javascript" src="./js/rompatcher/MarcFile.js"></script>
+    <script type="text/javascript" src="./js/rompatcher/RomPatcher.js"></script>
+    <script type="text/javascript" src="./js/rompatcher/filesaver.js"></script>
+    <script type="text/python" src="./form_data.py"></script>
+    <script type="text/python" src="./randomize.py"></script>
+    <script type="text/python" src="./presets.py"></script>
+    <script type="text/python" src="./level_progression.py"></script>
+    <script type="text/python" src="./__version__.py"></script>
+
+    <div style="width: 100%;">
+        <div class="form-group" style="margin-bottom: 10px;text-align: center;">
+            <label for="input-file-rom" id="romlabel" class="form-label mt-4">Rom File</label>
+            <input accept=".z64" class="form-control" type="file" id="input-file-rom" name="rom_file"
+                style="margin-right: 5px;width: 70%;height: 100%; margin: 0 auto;" required>
+        </div>
+        <input id="generateseed" class="btn btn-primary" style="width: 60%; height: 50px; text-align: center;"
+            onclick="submitdata()" type="button" value="Generate Seed" />
+    </div>
+</footer>

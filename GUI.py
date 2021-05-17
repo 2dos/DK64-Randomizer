@@ -5,20 +5,32 @@ import threading
 import time
 import sys
 from pathlib import Path
-
 import psutil
 from flask import Flask
 from flaskwebgui import FlaskUI  # import FlaskUI
 
-from urls import urls_blueprint
 
 # If this flag is set to true this flask app will only launch in a web format
 app_mode = True
 
-app = Flask(__name__, template_folder="templates", static_url_path="")
+app = Flask(__name__, template_folder="/", static_folder="/", static_url_path="")
 app.config["SEND_FILE_MAX_AGE_DEFAULT"] = 0
-app.register_blueprint(urls_blueprint)
-gui = FlaskUI(app=app, width=550, height=730, app_mode=app_mode)
+gui = FlaskUI(app=app, width=550, height=750, app_mode=app_mode)
+
+
+@app.route("/", methods=["GET"])
+def index():
+    """Index Page.
+
+    Returns:
+        render_template: Flask form.
+    """
+    html = open("./index.html", "r")
+    data = html.read()
+    html.close()
+    return data
+
+
 if __name__ == "__main__":
 
     def startup():
