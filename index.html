@@ -44,36 +44,50 @@
             </div>
         </div>
     </div>
-    <form id="form" action="/" method="POST">
-        <!--Create navbar-->
-        <div class="container">
-            <nav>
-                <div class="nav nav-tabs" id="nav-tab" role="tablist">
-                    <button class="nav-link active" id="nav-progression-tab" data-bs-toggle="tab"
-                        data-bs-target="#nav-progression" type="button" role="tab" aria-controls="nav-progression"
-                        aria-selected="true">
-                        Level Progression
-                    </button>
-                    <button class="nav-link" id="nav-msic-tab" data-bs-toggle="tab" data-bs-target="#nav-misc"
-                        type="button" role="tab" aria-controls="nav-misc" aria-selected="false">
-                        Miscellaneous
-                    </button>
-                </div>
-            </nav>
-            <!--Populate tabs-->
-            <div class="tab-content" id="nav-tabContent">
-                <div class="tab-pane fade show active" id="nav-progression" role="tabpanel"
-                    aria-labelledby="nav-progression-tab">
-                    <div id="level_progression_tab" b-include="level_progression.html"></div>
-                </div>
+    <img src="./img/logo.png" alt="DK64 Randomizer" class="center_image">
 
-                <div class="tab-pane fade" id="nav-misc" role="tabpanel" aria-labelledby="nav-misc-tab">
-                    <div id="misc_tab" b-include="misc.html"></div>
+    <div style="width: 50%;" class="center">
+        <div class="card bg-secondary ">
+            <form id="form" action="/" method="POST">
+                <!--Create navbar-->
+                <div class="container">
+                    <nav>
+                        <div class="nav nav-tabs" id="nav-tab" role="tablist">
+                            <button class="nav-link active" id="nav-progression-tab" data-bs-toggle="tab"
+                                data-bs-target="#nav-progression" type="button" role="tab"
+                                aria-controls="nav-progression" aria-selected="true">
+                                Level Progression
+                            </button>
+                            <button class="nav-link" id="nav-msic-tab" data-bs-toggle="tab" data-bs-target="#nav-misc"
+                                type="button" role="tab" aria-controls="nav-misc" aria-selected="false">
+                                Miscellaneous
+                            </button>
+                        </div>
+                    </nav>
+                    <!--Populate tabs-->
+                    <div class="tab-content" id="nav-tabContent">
+                        <div class="tab-pane fade show active" id="nav-progression" role="tabpanel"
+                            aria-labelledby="nav-progression-tab">
+                            <div id="level_progression_tab" b-include="level_progression.html"></div>
+                        </div>
+
+                        <div class="tab-pane fade" id="nav-misc" role="tabpanel" aria-labelledby="nav-misc-tab">
+                            <div id="misc_tab" b-include="misc.html"></div>
+                        </div>
+                    </div>
                 </div>
+            </form>
+            <div style="width: 80%;" class="center">
+                <div class="form-group" style="margin-bottom: 10px;text-align: center;">
+                    <label for="input-file-rom" id="romlabel" class="form-label mt-4">Rom File</label>
+                    <input accept=".z64" class="form-control" type="file" id="input-file-rom" name="rom_file"
+                        style="margin-right: 5px;width: 50%;height: 100%; margin: 0 auto;" required>
+                </div>
+                <input id="generateseed" class="btn btn-primary" style="width: 60%; height: 50px; text-align: center;"
+                    onclick="submitdata()" type="button" value="Generate Seed" />
             </div>
         </div>
-    </form>
-
+    </div>
 </body>
 
 
@@ -90,15 +104,5 @@
     <script type="text/python" src="./randomize.py"></script>
     <script type="text/python" src="./presets.py"></script>
     <script type="text/python" src="./level_progression.py"></script>
-    <script type="text/python" src="./__version__.py"></script>
-
-    <div style="width: 100%;">
-        <div class="form-group" style="margin-bottom: 10px;text-align: center;">
-            <label for="input-file-rom" id="romlabel" class="form-label mt-4">Rom File</label>
-            <input accept=".z64" class="form-control" type="file" id="input-file-rom" name="rom_file"
-                style="margin-right: 5px;width: 70%;height: 100%; margin: 0 auto;" required>
-        </div>
-        <input id="generateseed" class="btn btn-primary" style="width: 60%; height: 50px; text-align: center;"
-            onclick="submitdata()" type="button" value="Generate Seed" />
-    </div>
+    <script type="text/python" src="./version.py"></script>
 </footer>

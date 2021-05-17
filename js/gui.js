@@ -14,8 +14,17 @@ function load_inital() {
   setTimeout(function () {
     var savedUserJsonString = getCookie("settings");
     if (savedUserJsonString.length === 0) {
-      blocker_selectionChanged();
-      troff_selectionChanged();
+        if (
+          document
+            .getElementById("blocker_selected")
+            .options[0].value.toLowerCase() == "vanilla"
+        ) {
+          const e = new Event("change");
+          element = document.querySelector("#blocker_selected");
+          element.dispatchEvent(e);
+          element = document.querySelector("#troff_selected");
+          element.dispatchEvent(e);
+        }
     } else {
       var jsonresp = JSON.parse(savedUserJsonString);
       for (var k in jsonresp) {
