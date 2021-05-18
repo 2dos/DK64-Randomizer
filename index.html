@@ -58,9 +58,14 @@
                                 aria-controls="nav-progression" aria-selected="true">
                                 Level Progression
                             </button>
-                            <button class="nav-link" id="nav-msic-tab" data-bs-toggle="tab" data-bs-target="#nav-misc"
+                            <button class="nav-link" id="nav-misc-tab" data-bs-toggle="tab" data-bs-target="#nav-misc"
                                 type="button" role="tab" aria-controls="nav-misc" aria-selected="false">
                                 Miscellaneous
+                            </button>
+                            <button class="nav-link" id="nav-spoiler-tab" data-bs-toggle="tab"
+                                data-bs-target="#nav-spoiler" type="button" role="tab" aria-controls="nav-spoiler" style="display: none;" 
+                                aria-selected="false">
+                                Spoiler Log
                             </button>
                         </div>
                     </nav>
@@ -70,9 +75,11 @@
                             aria-labelledby="nav-progression-tab">
                             <div id="level_progression_tab" b-include="level_progression.html"></div>
                         </div>
-
                         <div class="tab-pane fade" id="nav-misc" role="tabpanel" aria-labelledby="nav-misc-tab">
                             <div id="misc_tab" b-include="misc.html"></div>
+                        </div>
+                        <div class="tab-pane fade" id="nav-spoiler" role="tabpanel" aria-labelledby="nav-spoiler-tab">
+                            <div id="spoiler_tab" b-include="spoiler.html"></div>
                         </div>
                     </div>
                 </div>
@@ -94,15 +101,15 @@
 <footer>
     <script type="text/javascript" src="./js/bootstrap/bootstrap.bundle.min.js"></script>
     <script type="text/javascript" src="./js/lua.vm/lua.vm.js"></script>
-    <script type="text/javascript" src="./js/gui.js"></script>
-    <script type="text/javascript" src="./js/rompatcher/crc.js"></script>
-    <script type="text/javascript" src="./js/rompatcher/formats/bps.js"></script>
-    <script type="text/javascript" src="./js/rompatcher/MarcFile.js"></script>
-    <script type="text/javascript" src="./js/rompatcher/RomPatcher.js"></script>
-    <script type="text/javascript" src="./js/rompatcher/filesaver.js"></script>
-    <script type="text/python" src="./form_data.py"></script>
-    <script type="text/python" src="./randomize.py"></script>
-    <script type="text/python" src="./presets.py"></script>
-    <script type="text/python" src="./level_progression.py"></script>
-    <script type="text/python" src="./version.py"></script>
+    <script type="text/javascript" src="./js/gui.js" defer></script>
+    <script type="text/javascript" src="./js/rompatcher/crc.js" defer></script>
+    <script type="text/javascript" src="./js/rompatcher/formats/bps.js" defer></script>
+    <script type="text/javascript" src="./js/rompatcher/MarcFile.js" defer></script>
+    <script type="text/javascript" src="./js/rompatcher/RomPatcher.js" defer></script>
+    <script type="text/javascript" src="./js/rompatcher/filesaver.js" defer></script>
+    <script type="text/python" src="./form_data.py" defer></script>
+    <script type="text/python" src="./randomize.py" defer></script>
+    <script type="text/python" src="./presets.py" defer></script>
+    <script type="text/python" src="./level_progression.py" defer></script>
+    <script type="text/python" src="./version.py" defer></script>
 </footer>

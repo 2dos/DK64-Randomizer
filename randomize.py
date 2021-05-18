@@ -1,6 +1,7 @@
 """Randomize your seed via your settings."""
 from random import seed, shuffle
-from browser import window
+from validator import validateSeed
+from browser import window, document
 
 
 def randomize(query_string):
@@ -209,21 +210,23 @@ def randomize(query_string):
         asm += "\t" + ".half 0x180" + "\n"  # Cranky has given Sim Slam
         asm += "\t" + ".half 385" + "\n"  # DK Free
     asm += "\t" + ".half 0" + "\n"  # Null Terminator (required)
-    # TODO: Return this as an option in browser
-    # if post_data.get("generate_spoilerlog"):
-    #    with open(f"{sys.path[0]}/spoilerlog-{post_data.get('seed')}.txt", "w+") as file:
-    #        file.write(logdata)
+    if post_data.get("generate_spoilerlog"):
+        document["nav-spoiler-tab"].style.display = ""
+        document["spoiler_log_text"].text = logdata
+    else:
+        document["nav-spoiler-tab"].style.display = "none"
+        document["spoiler_log_text"].text = ""
+    # TODO: We need to properly validate the seed and block depending on the results
+    validateSeed(
+        finalNumerical,
+        post_data.get("unlock_all_kongs"),
+        post_data.get("unlock_all_moves"),
+        post_data.get("quality_of_life"),
+        finalBLocker,
+        finalTNS,
+        True,
+    )
     return asm
-    # TODO: We need to properly validate the seed
-    # validateSeed(
-    #    finalNumerical,
-    #    post_data.get("unlock_all_kongs"),
-    #    post_data.get("unlock_all_moves"),
-    #    post_data.get("quality_of_life"),
-    #    finalBLocker,
-    #    finalTNS,
-    #    True,
-    # )
 
 
 window.randomize_data = randomize
