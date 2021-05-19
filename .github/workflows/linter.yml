@@ -2,9 +2,9 @@
 name: Linter
 on:
   push:
-    branches: [ main, master, develop ]
+    branches: [ main, master, dev ]
   pull_request:
-    branches: [ main, master, develop ]
+    branches: [ main, master, dev ]
 jobs:
   lint:
     runs-on: ubuntu-latest
