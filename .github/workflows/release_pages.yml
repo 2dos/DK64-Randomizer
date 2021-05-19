@@ -15,7 +15,7 @@ jobs:
         fqdn: dev.dk64randomizer.com
         build_dir: /
         jekyll: false
-        repo: DK64-Randomizer-Dev
+        repo: 2dos/DK64-Randomizer-Dev
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         GH_PAT: ${{ secrets.ACCESS_TOKEN }}
