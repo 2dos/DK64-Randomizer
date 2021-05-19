@@ -194,7 +194,7 @@ function checkLength(len,ele){
 function checkChar(key,ele){
   var input = String.fromCharCode(key.keycode);
   //Bans Math (e,-,+,Numpad-/+)
-  if((isNaN(input)) && (key.which != 69) && (key.which != 189) && (key.which != 187) && (key.which != 107) && (key.which != 109)){
+  if((isNaN(input)) && (key.which != 69) && (key.which != 189) && (key.which != 187) && (key.which != 107) && (key.which != 109) && (key.which != 190) && (key.which != 110)){
     return true;
   } else {
     key.preventDefault();
