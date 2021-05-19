@@ -1,0 +1,21 @@
+name: Build and Release
+on:
+  push:
+    branches: [ dev ]
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v1
+    - uses: crazy-max/ghaction-github-pages@v2
+      name: Deploy to GitHub Pages
+      with:
+        target_branch: dev
+        fqdn: dev.dk64randomizer.com
+        build_dir: /
+        jekyll: false
+        repo: DK64-Randomizer-Dev
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        GH_PAT: ${{ secrets.ACCESS_TOKEN }}
