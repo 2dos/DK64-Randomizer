@@ -8,14 +8,13 @@ jobs:
 
     steps:
     - uses: actions/checkout@v1
-    - uses: crazy-max/ghaction-github-pages@v2
-      name: Deploy to GitHub Pages
+    - name: Deploy To GHPages
+      uses: manzoorwanijk/action-deploy-to-repo@master
       with:
+        src_dir: /
+        target_owner: 2dos
+        target_repo: DK64-Randomizer-Dev
+        target_dir: /
         target_branch: main
-        fqdn: dev.dk64randomizer.com
-        build_dir: /
-        jekyll: false
-        repo: 2dos/DK64-Randomizer-Dev
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        GH_PAT: ${{ secrets.ACCESS_TOKEN }}
+        access_token: ${{ secrets.ACCESS_TOKEN }}
+        precommit_command: "echo 'dev.dk64randomizer.com' > CNAME"
