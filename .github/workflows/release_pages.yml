@@ -1,0 +1,17 @@
+name: Build and Release
+on:
+  push:
+    branches: [ dev ]
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v1
+    - name: Release Github Pages
+      uses: igolopolosov/github-action-release-github-pages@master
+      env:
+        GITHUB_ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
+        GITHUB_PAGES_REPO_AUTHOR: 2dos
+        GITHUB_PAGES_REPO_NAME: dev.d64randomizer.com
+        GITHUB_PAGES_RELEASE_BRANCH: master
