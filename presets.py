@@ -39,7 +39,7 @@ def set_blocker_preset(event):
         count += 1
 
 
-def key_up(event):
+def on_input(event):
     """Limits inputs from input boxes on keypress.
 
     Args:
@@ -84,13 +84,13 @@ def min_max(event, min, max):
         document[event.target.id].value = min
 
 
-def on_input(event):
-    """Check if a key is a proper number or deletion.
+def key_down(event):
+    """Check if a key is a proper number, deletion, or navigation.
 
     Args:
         event (DomEvent): Event from the DOM.
     """
-    global_keys = ["Backspace", "Delete"]
+    global_keys = ["Backspace", "Delete", "ArrowLeft", "ArrowRight"]
     if not event.key.isdigit() and event.key not in global_keys:
         event.preventDefault()
     else:
@@ -100,14 +100,14 @@ def on_input(event):
 document["seed_button"].bind("click", randomseed)
 document["troff_selected"].bind("change", set_troff_preset)
 document["blocker_selected"].bind("change", set_blocker_preset)
-document["seed"].bind("keydown", on_input)
-document["seed"].bind("keyup", key_up)
+document["seed"].bind("keydown", key_down)
+document["seed"].bind("input", on_input)
 randomseed(None)
 for i in range(0, 8):
     try:
-        document["blocker_" + str(i)].bind("keyup", key_up)
-        document["blocker_" + str(i)].bind("keydown", on_input)
-        document["troff_" + str(i)].bind("keyup", key_up)
-        document["troff_" + str(i)].bind("keydown", on_input)
+        document["blocker_" + str(i)].bind("input", on_input)
+        document["blocker_" + str(i)].bind("keydown", key_down)
+        document["troff_" + str(i)].bind("input", on_input)
+        document["troff_" + str(i)].bind("keydown", key_down)
     except Exception:
         pass
