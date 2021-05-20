@@ -179,24 +179,3 @@ function setCookie(cname, cvalue, exdays) {
   var expires = "expires=" + d.toUTCString();
   document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
 }
-
-function checkLength(len,ele){
-  var fieldLength = ele.value.length;
-  if (fieldLength <= len){
-    return true;
-  } else {
-    var str = ele.value;
-    str = str.substring(0, str.length - 1);
-    ele.value = str;
-  }
-}
-
-function checkChar(key,ele){
-  var input = String.fromCharCode(key.keycode);
-  //Bans Math (e,-,+,Numpad-/+)
-  if((isNaN(input)) && (key.which != 69) && (key.which != 189) && (key.which != 187) && (key.which != 107) && (key.which != 109) && (key.which != 190) && (key.which != 110)){
-    return true;
-  } else {
-    key.preventDefault();
-  }
-}

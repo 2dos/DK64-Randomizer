@@ -49,46 +49,65 @@ def key_up(event):
         bool: False if we need to stop the event.
     """
     if "troff" in event.target.id:
-        try:
-            if int(event.target.value) > 500:
-                event.preventDefault()
-                document[event.target.id].value = 500
-                return False
-            elif int(event.target.value) < 1:
-                event.preventDefault()
-                document[event.target.id].value = 1
-                return False
-            else:
-                document[event.target.id].value = str(event.target.value)
-        except Exception:
+        min_max(event, 1, 500)
+    elif "blocker" in event.target.id:
+        min_max(event, 0, 200)
+    elif "seed" in event.target.id:
+        if len(event.target.value) > 6:
+            document[event.target.id].value = event.target.value[:6]
+        elif len(event.target.value) <= 0:
+            randomseed(None)
+
+
+def min_max(event, min, max):
+    """Check if the data is within bounds of requirements.
+
+    Args:
+        event (DomEvent): The doms event.
+        min (int): Minimum Value to keep.
+        max (int): Maximum value to allow.
+
+    Returns:
+        bool: Deny or Success for Handled
+    """
+    try:
+        if int(event.target.value) >= max:
             event.preventDefault()
-            document[event.target.id].value = 1
-            return False
-    if "blocker" in event.target.id:
-        try:
-            if int(event.target.value) > 200:
-                event.preventDefault()
-                document[event.target.id].value = 200
-                return False
-            elif int(event.target.value) < 0:
-                event.preventDefault()
-                document[event.target.id].value = 0
-                return False
-            else:
-                document[event.target.id].value = str(event.target.value)
-        except Exception:
+            document[event.target.id].value = max
+        elif int(event.target.value) <= min:
             event.preventDefault()
-            document[event.target.id].value = 0
-            return False
+            document[event.target.id].value = min
+        else:
+            document[event.target.id].value = str(event.target.value)
+    except Exception:
+        event.preventDefault()
+        document[event.target.id].value = min
+
+
+def on_input(event):
+    """Check if a key is a proper number or deletion.
+
+    Args:
+        event (DomEvent): Event from the DOM.
+    """
+    global_keys = ["Backspace", "Delete"]
+    if not event.key.isdigit() and event.key not in global_keys:
+        event.preventDefault()
+    else:
+        pass
 
 
 document["seed_button"].bind("click", randomseed)
 document["troff_selected"].bind("change", set_troff_preset)
 document["blocker_selected"].bind("change", set_blocker_preset)
+document["seed"].bind("keydown", on_input)
+document["seed"].bind("keyup", key_up)
 randomseed(None)
 for i in range(0, 8):
     try:
-        document["blocker_" + str(i)].bind("keypress", key_up)
-        document["troff_" + str(i)].bind("keypress", key_up)
+        document["blocker_" + str(i)].bind("keyup", key_up)
+        document["blocker_" + str(i)].bind("keydown", on_input)
+        document["troff_" + str(i)].bind("keyup", key_up)
+        document["troff_" + str(i)].bind("keydown", on_input)
     except Exception:
         pass
