@@ -19,16 +19,12 @@ with open("import.csv", newline="") as csvfile:
                 "tiny": rowdata[10],
                 "chunky": rowdata[11],
             }
-            dataset.append(
-                {"group": group, "map": map, "kongs": kongs, "locations": []}
-            )
+            dataset.append({"group": group, "map": map, "kongs": kongs, "locations": []})
 
         newentry["amount"] = rowdata[2]
         newentry["x"] = rowdata[4]
         newentry["y"] = rowdata[5]
         newentry["z"] = rowdata[6]
-        dict_index = next(
-            (index for (index, d) in enumerate(dataset) if d["group"] == group), None
-        )
+        dict_index = next((index for (index, d) in enumerate(dataset) if d["group"] == group), None)
         dataset[dict_index]["locations"].append(newentry)
     print(dataset)
