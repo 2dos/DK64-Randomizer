@@ -4,7 +4,7 @@ from randomizers import Randomizers
 from level_progression import LevelProgression
 from misc import Misc
 
-
+randomizers = Randomizers()
 progression = LevelProgression()
 misc = Misc()
 Template("random_tab").render(randomizers=Randomizers())
