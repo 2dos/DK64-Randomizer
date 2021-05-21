@@ -7,8 +7,7 @@ from misc import Misc
 randomizers = Randomizers()
 progression = LevelProgression()
 misc = Misc()
-
-Template("randomizers_tab").render(randomizers=randomizers)
+Template("random_tab").render(randomizers=Randomizers())
 Template("level_progression_tab").render(progression=progression)
 Template("misc_tab").render(misc=misc)
 Template("spoiler_tab").render()

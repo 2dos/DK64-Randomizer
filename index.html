@@ -53,10 +53,10 @@
                 <div class="container">
                     <nav>
                         <div class="nav nav-tabs" id="nav-tab" role="tablist">
-                            <button class="nav-link active" id="nav-randomizers-tab" data-bs-toggle="tab"
-                                data-bs-target="#nav-randomizers" type="button" role="tab"
-                                aria-controls="nav-randomizers" aria-selected="true">
-                                Randomizers
+                            <button class="nav-link active" id="nav-random-tab" data-bs-toggle="tab"
+                                data-bs-target="#nav-random" type="button" role="tab" aria-controls="nav-random"
+                                aria-selected="true">
+                                Random
                             </button>
                             <button class="nav-link" id="nav-progression-tab" data-bs-toggle="tab"
                                 data-bs-target="#nav-progression" type="button" role="tab"
@@ -68,17 +68,17 @@
                                 Miscellaneous
                             </button>
                             <button class="nav-link" id="nav-spoiler-tab" data-bs-toggle="tab"
-                                data-bs-target="#nav-spoiler" type="button" role="tab" aria-controls="nav-spoiler" style="display: none;" 
-                                aria-selected="false">
+                                data-bs-target="#nav-spoiler" type="button" role="tab" aria-controls="nav-spoiler"
+                                style="display: none;" aria-selected="false">
                                 Spoiler Log
                             </button>
                         </div>
                     </nav>
                     <!--Populate tabs-->
                     <div class="tab-content" id="nav-tabContent">
-                        <div class="tab-pane fade show active" id="nav-randomizers" role="tabpanel"
-                            aria-labelledby="nav-randomizers-tab">
-                            <div id="randomizers_tab" b-include="randomizers.html"></div>
+                        <div class="tab-pane fade show active" id="nav-random" role="tabpanel"
+                            aria-labelledby="nav-random-tab">
+                            <div id="random_tab" b-include="randomizers.html"></div>
                         </div>
                         <div class="tab-pane fade" id="nav-progression" role="tabpanel"
                             aria-labelledby="nav-progression-tab">
@@ -121,5 +121,6 @@
     <script type="text/python" src="./presets.py" defer></script>
     <script type="text/python" src="./randomizers.py" defer></script>
     <script type="text/python" src="./level_progression.py" defer></script>
+    <script type="text/python" src="./randomizers.py" defer></script>
     <script type="text/python" src="./version.py" defer></script>
 </footer>
