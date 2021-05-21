@@ -53,9 +53,14 @@
                 <div class="container">
                     <nav>
                         <div class="nav nav-tabs" id="nav-tab" role="tablist">
-                            <button class="nav-link active" id="nav-progression-tab" data-bs-toggle="tab"
+                            <button class="nav-link active" id="nav-randomizers-tab" data-bs-toggle="tab"
+                                data-bs-target="#nav-randomizers" type="button" role="tab"
+                                aria-controls="nav-randomizers" aria-selected="true">
+                                Randomizers
+                            </button>
+                            <button class="nav-link" id="nav-progression-tab" data-bs-toggle="tab"
                                 data-bs-target="#nav-progression" type="button" role="tab"
-                                aria-controls="nav-progression" aria-selected="true">
+                                aria-controls="nav-progression" aria-selected="false">
                                 Level Progression
                             </button>
                             <button class="nav-link" id="nav-misc-tab" data-bs-toggle="tab" data-bs-target="#nav-misc"
@@ -71,7 +76,11 @@
                     </nav>
                     <!--Populate tabs-->
                     <div class="tab-content" id="nav-tabContent">
-                        <div class="tab-pane fade show active" id="nav-progression" role="tabpanel"
+                        <div class="tab-pane fade show active" id="nav-randomizers" role="tabpanel"
+                            aria-labelledby="nav-randomizers-tab">
+                            <div id="randomizers_tab" b-include="randomizers.html"></div>
+                        </div>
+                        <div class="tab-pane fade" id="nav-progression" role="tabpanel"
                             aria-labelledby="nav-progression-tab">
                             <div id="level_progression_tab" b-include="level_progression.html"></div>
                         </div>
@@ -110,6 +119,7 @@
     <script type="text/python" src="./form_data.py" defer></script>
     <script type="text/python" src="./randomize.py" defer></script>
     <script type="text/python" src="./presets.py" defer></script>
+    <script type="text/python" src="./randomizers.py" defer></script>
     <script type="text/python" src="./level_progression.py" defer></script>
     <script type="text/python" src="./version.py" defer></script>
 </footer>
