@@ -22,7 +22,8 @@ class Randomizers:
 
     def randomize_progression(self):
         """Response Data for form info."""
-        tooltip = """This option will randomize the level lobby entrances.
+        tooltip = """This option will randomize the order the levels appear in.
+            Specifically the level lobby entrances are randomized.
             The level will match the B Locker and Troff n Scoff requirements of the slot that it falls in.
             Hideout Helm will always be the final level."""
         return self.response(Value=True, ToolTip=self._unindent(tooltip), Enabled="")
