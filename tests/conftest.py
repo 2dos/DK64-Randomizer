@@ -1,3 +1,4 @@
+"""Flask tests config"""
 import pytest
 
 from GUI import app as flask_app
