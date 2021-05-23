@@ -559,7 +559,7 @@ TagAnywhere:
 // Spawn in Blast-o-Matic Area
 ChangeLZToHelm:
     SW      ra, @ReturnAddress
-    LA      a0, ShorterHelmOn
+    LA      a0, FastStartHelmOn
     LBU     a0, 0x0 (a0)
     BEQZ    a0, ChangeLZToHelm_Finish
     NOP
@@ -633,7 +633,7 @@ ChangeLZToHelm:
 // Open Crown door
 OpenCrownDoor:
     SW      ra, @ReturnAddress
-    LA      a0, ShorterHelmOn
+    LA      a0, CrownDoorOption
     LBU     a0, 0x0 (a0)
     BEQZ    a0, OpenCrownDoor_Finish
     NOP
@@ -649,7 +649,7 @@ OpenCrownDoor:
 // Open Rareware + Nintendo Coin door (Give both coins)
 OpenCoinDoor:
     SW      ra, @ReturnAddress
-    LA      a0, ShorterHelmOn
+    LA      a0, CoinDoorOption
     LBU     a0, 0x0 (a0)
     BEQZ    a0, OpenCoinDoor_Finish
     NOP
@@ -801,7 +801,7 @@ SetAllFlags:
 
 ApplyFastStart:
     SW      ra, @ReturnAddress
-    LA      a0, QualityChangesOn
+    LA      a0, FastStartOn
     LBU     a0, 0x0 (a0)
     BEQZ    a0, ApplyFastStart_Finish
     NOP

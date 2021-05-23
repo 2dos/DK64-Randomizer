@@ -1,21 +1,5 @@
-<!--Randomize Level Progression-->
-<div class="form-check form-switch">
-    <label data-bs-toggle="tooltip" title="{progression.randomize_progression().ToolTip}">
-        <input class="form-check-input" type="checkbox" name="randomize_progression" id="randomize_progression"
-            value="True" checked data-bs-toggle="tooltip" title="{progression.randomize_progression().ToolTip}"
-            onclick="progression_clicked()" {progression.randomize_progression().Enabled} />
-        Randomize Level
-        Progression
-    </label>
-</div>
-<!--Randomize Seed-->
-<div class="center">
-    <input name="seed" type="number" id="seed" />
-    <input class="btn btn-warning" style="height: 40px; width: 130px; font-size: 0.875em; text-align: center;"
-        id="seed_button" type="button" value="Random Seed" />
-</div>
 <!--Create table for level progression-->
-<div>
+<div style="margin-top: 20px;">
     <table id="leveltable" style="width: 100%">
         <tr>
             <th>Progression</th>
