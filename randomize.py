@@ -53,7 +53,10 @@ def randomize(query_string):
     logdata += "All Moves Unlocked: " + str(post_data.get("unlock_all_moves", "False")) + "\n"
     logdata += "Fairy Queen Camera + Shockwave: " + str(post_data.get("unlock_fairy_shockwave", "False")) + "\n"
     logdata += "Tag Anywhere Enabled: " + str(post_data.get("enable_tag_anywhere", "False")) + "\n"
-    logdata += "Shorter Hideout Helm: " + str(post_data.get("shorter_hideout_helm", "False")) + "\n"
+    logdata += "Fast Start - Beginning of Game: " + str(post_data.get("fast_start_beginning_of_game", "False")) + "\n"
+    logdata += "Fast Start - Hideout Helm: " + str(post_data.get("fast_start_hideout_helm", "False")) + "\n"
+    logdata += "Open Crown Door: " + str(post_data.get("crown_door_open", "False")) + "\n"
+    logdata += "Open Nintendo + Rareware Coin Door: " + str(post_data.get("coin_door_open", "False")) + "\n"
     logdata += "Quality of Life Changes: " + str(post_data.get("quality_of_life", "False")) + "\n"
     logdata += "\n"
 
@@ -143,13 +146,8 @@ def randomize(query_string):
 
     # Set Keys
     asm += ".align" + "\n" + "KeyFlags:" + "\n"
-    asm += "\t" + ".half " + str(finalKeyFlags[finalLevels.index("Jungle Japes")]) + "\n"
-    asm += "\t" + ".half " + str(finalKeyFlags[finalLevels.index("Angry Aztec")]) + "\n"
-    asm += "\t" + ".half " + str(finalKeyFlags[finalLevels.index("Frantic Factory")]) + "\n"
-    asm += "\t" + ".half " + str(finalKeyFlags[finalLevels.index("Gloomy Galleon")]) + "\n"
-    asm += "\t" + ".half " + str(finalKeyFlags[finalLevels.index("Fungi Forest")]) + "\n"
-    asm += "\t" + ".half " + str(finalKeyFlags[finalLevels.index("Crystal Caves")]) + "\n"
-    asm += "\t" + ".half " + str(finalKeyFlags[finalLevels.index("Creepy Castle")]) + "\n"
+    for x in finalNumerical:
+        asm += "\t" + ".half " + str(finalKeyFlags[x]) + "\n"
     asm += "\n" + "\n"
 
     # Unlock All Kongs
@@ -183,9 +181,23 @@ def randomize(query_string):
     else:
         asm += "\t" + ".byte 0" + "\n" + "\n"
 
-    # Shorter Hideout Helm
-    asm += ".align" + "\n" + "ShorterHelmOn:" + "\n"
-    if post_data.get("shorter_hideout_helm"):
+    # Fast Start Hideout Helm
+    asm += ".align" + "\n" + "FastStartHelmOn:" + "\n"
+    if post_data.get("fast_start_hideout_helm"):
+        asm += "\t" + ".byte 1" + "\n" + "\n"
+    else:
+        asm += "\t" + ".byte 0" + "\n" + "\n"
+
+    # Open Crown Door
+    asm += ".align" + "\n" + "CrownDoorOption:" + "\n"
+    if post_data.get("crown_door_open"):
+        asm += "\t" + ".byte 1" + "\n" + "\n"
+    else:
+        asm += "\t" + ".byte 0" + "\n" + "\n"
+
+    # Open Nintendo + Rareware Coin Door
+    asm += ".align" + "\n" + "CoinDoorOption:" + "\n"
+    if post_data.get("coin_door_open"):
         asm += "\t" + ".byte 1" + "\n" + "\n"
     else:
         asm += "\t" + ".byte 0" + "\n" + "\n"
@@ -198,8 +210,13 @@ def randomize(query_string):
         asm += "\t" + ".byte 0" + "\n" + "\n"
 
     # Fast Start
+    asm += ".align" + "\n" + "FastStartOn:" + "\n"
+    if post_data.get("fast_start_beginning_of_game"):
+        asm += "\t" + ".byte 1" + "\n" + "\n"
+    else:
+        asm += "\t" + ".byte 0" + "\n" + "\n"
     asm += ".align" + "\n" + "FastStartFlags:" + "\n"
-    if post_data.get("quality_of_life"):
+    if post_data.get("fast_start_beginning_of_game"):
         asm += "\t" + ".half 386" + "\n"  # Dive Barrel
         asm += "\t" + ".half 387" + "\n"  # Vine Barrel
         asm += "\t" + ".half 388" + "\n"  # Orange Barrel

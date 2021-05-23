@@ -1,4 +1,4 @@
-<div class="form-check form-switch">
+<div class="form-check form-switch" style="margin-top: 20px;">
     <label data-bs-toggle="tooltip" title="{misc.generate_spoilerlog().ToolTip}">
         <input class="form-check-input" type="checkbox" id="generate_spoilerlog" name="generate_spoilerlog" value="True"
             checked data-bs-toggle="tooltip" title="{misc.generate_spoilerlog().ToolTip}"
@@ -37,11 +37,34 @@
     </label>
 </div>
 <div class="form-check form-switch">
-    <label data-bs-toggle="tooltip" title="{misc.shorter_hideout_helm().ToolTip}">
-        <input class="form-check-input" type="checkbox" name="shorter_hideout_helm" value="True" checked
-            data-bs-toggle="tooltip" title="{misc.shorter_hideout_helm().ToolTip}"
-            {misc.shorter_hideout_helm().Enabled} />
-        Shorter Hideout Helm
+    <label data-bs-toggle="tooltip" title="{misc.fast_start_beginning_of_game().ToolTip}">
+        <input class="form-check-input" type="checkbox" name="fast_start_beginning_of_game" value="True" checked
+            data-bs-toggle="tooltip" title="{misc.fast_start_beginning_of_game().ToolTip}" {misc.fast_start_beginning_of_game().Enabled} />
+        Fast Start - Beginning of Game
+    </label>
+</div>
+<div class="form-check form-switch">
+    <label data-bs-toggle="tooltip" title="{misc.fast_start_hideout_helm().ToolTip}">
+        <input class="form-check-input" type="checkbox" name="fast_start_hideout_helm" value="True" checked
+            data-bs-toggle="tooltip" title="{misc.fast_start_hideout_helm().ToolTip}"
+            {misc.fast_start_hideout_helm().Enabled} />
+        Fast Start - Hideout Helm
+    </label>
+</div>
+<div class="form-check form-switch">
+    <label data-bs-toggle="tooltip" title="{misc.crown_door_open().ToolTip}">
+        <input class="form-check-input" type="checkbox" name="crown_door_open" value="True" checked
+            data-bs-toggle="tooltip" title="{misc.crown_door_open().ToolTip}"
+            {misc.crown_door_open().Enabled} />
+        Open Crown Door
+    </label>
+</div>
+<div class="form-check form-switch">
+    <label data-bs-toggle="tooltip" title="{misc.coin_door_open().ToolTip}">
+        <input class="form-check-input" type="checkbox" name="coin_door_open" value="True" checked
+            data-bs-toggle="tooltip" title="{misc.coin_door_open().ToolTip}"
+            {misc.coin_door_open().Enabled} />
+        Open Nintendo + Rareware Coin Door
     </label>
 </div>
 <div class="form-check form-switch">
