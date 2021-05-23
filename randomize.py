@@ -146,13 +146,8 @@ def randomize(query_string):
 
     # Set Keys
     asm += ".align" + "\n" + "KeyFlags:" + "\n"
-    asm += "\t" + ".half " + str(finalKeyFlags[finalLevels.index("Jungle Japes")]) + "\n"
-    asm += "\t" + ".half " + str(finalKeyFlags[finalLevels.index("Angry Aztec")]) + "\n"
-    asm += "\t" + ".half " + str(finalKeyFlags[finalLevels.index("Frantic Factory")]) + "\n"
-    asm += "\t" + ".half " + str(finalKeyFlags[finalLevels.index("Gloomy Galleon")]) + "\n"
-    asm += "\t" + ".half " + str(finalKeyFlags[finalLevels.index("Fungi Forest")]) + "\n"
-    asm += "\t" + ".half " + str(finalKeyFlags[finalLevels.index("Crystal Caves")]) + "\n"
-    asm += "\t" + ".half " + str(finalKeyFlags[finalLevels.index("Creepy Castle")]) + "\n"
+    for x in finalNumerical:
+        asm += "\t" + ".half " + str(finalKeyFlags[x]) + "\n"
     asm += "\n" + "\n"
 
     # Unlock All Kongs
