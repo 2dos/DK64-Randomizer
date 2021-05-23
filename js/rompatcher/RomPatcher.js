@@ -117,12 +117,6 @@ function preparePatchedRom(originalRom, patchedRom, binary_data) {
 function applyASMtoPatchedRom(patchedRom, binary_data) {
   var data = binary_data.split("\n");
 
-  datacap = 0;
-  for (var i = 0; i < data.length; i++) {
-    if (data[i].split(":")[0] > datacap) {
-      datacap = data[i].split(":")[0];
-    }
-  }
   patchedRom._u8array = concatTypedArrays(
     patchedRom._u8array,
     new Uint8Array(3028)
