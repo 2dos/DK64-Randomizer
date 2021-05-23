@@ -12,9 +12,12 @@
     <title>
         DK64 Randomizer
     </title>
-    <script type="text/javascript" src="./js/jquery/jquery-3.6.0.min.js"></script>
-    <script type="text/javascript" src="./js/brython/brython.js"></script>
-    <script type="text/javascript" src="./js/brython/brython_stdlib.js"></script>
+    <script type="text/javascript" src="https://code.jquery.com/jquery-3.6.0.min.js">
+    </script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/brython@3.9.3/brython.min.js">
+    </script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/brython@3.9.3/brython_stdlib.js">
+    </script>
     <!-- <script type="text/javascript" src="./js/brython/brython_modules.js"></script> -->
 </head>
 
@@ -108,8 +111,10 @@
 
 
 <footer>
-    <script type="text/javascript" src="./js/bootstrap/bootstrap.bundle.min.js"></script>
-    <script type="text/javascript" src="./js/lua.vm/lua.vm.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-gtEjrD/SeCtmISkJkNUaaKMoLD0//ElJ19smozuHV6z3Iehds+3Ulb9Bn9Plx0x4"
+        crossorigin="anonymous"></script>
+    <script type="text/javascript" src="https://unpkg.com/lua.vm.js@0.0.1/dist/lua.vm.js"></script>
     <script type="text/javascript" src="./js/gui.js" defer></script>
     <script type="text/javascript" src="./js/rompatcher/crc.js" defer></script>
     <script type="text/javascript" src="./js/rompatcher/formats/bps.js" defer></script>
@@ -119,6 +124,7 @@
     <script type="text/python" src="./form_data.py" defer></script>
     <script type="text/python" src="./randomize.py" defer></script>
     <script type="text/python" src="./presets.py" defer></script>
+    <script type="text/python" src="./level_progression.py" defer></script>
     <script type="text/python" src="./rando_options.py" defer></script>
     <script type="text/python" src="./version.py" defer></script>
 </footer>
