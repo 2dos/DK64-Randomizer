@@ -306,9 +306,8 @@ def validateSeed(
     if successful:
         print("SUCCESSFUL SEED")
         return True
-    else:
-        print("BAD SEED")
-        return False
+    print("BAD SEED")
+    return False
 
 
 def checkMoves(level, gb_object, moves, kongs, access, keys):
