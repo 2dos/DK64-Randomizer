@@ -13,7 +13,7 @@ def randomize(query_string):
     Returns:
         str: ASM Data.
     """
-    post_data = dict((itm.split("=")[0], itm.split("=")[1]) for itm in query_string.split("&"))
+    post_data = {itm.split("=")[0]: itm.split("=")[1] for itm in query_string.split("&")}
     levelEntrances = [
         "Jungle Japes",
         "Angry Aztec",
