@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
-
-<head>
+  <head>
     <meta charset="utf-8" />
     <meta content="width=device-width, initial-scale=1" name="viewport" />
     <link href="./img/dk.png" rel="icon" />
@@ -9,122 +8,230 @@
     <link href="./styles/bootstrap.min.css" rel="stylesheet" type="text/css" />
 
     <link href="./styles/gui.css" rel="stylesheet" type="text/css" />
-    <title>
-        DK64 Randomizer
-    </title>
-    <script type="text/javascript" src="https://code.jquery.com/jquery-3.6.0.min.js">
-    </script>
-    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/brython@3.9.3/brython.min.js">
-    </script>
-    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/brython@3.9.3/brython_stdlib.js">
-    </script>
+    <title>DK64 Randomizer</title>
+    <script
+      type="text/javascript"
+      src="https://code.jquery.com/jquery-3.6.0.min.js"
+    ></script>
+    <script
+      type="text/javascript"
+      src="https://cdn.jsdelivr.net/npm/brython@3.9.3/brython.min.js"
+    ></script>
+    <script
+      type="text/javascript"
+      src="https://cdn.jsdelivr.net/npm/brython@3.9.3/brython_stdlib.js"
+    ></script>
     <!-- <script type="text/javascript" src="./js/brython/brython_modules.js"></script> -->
-</head>
+  </head>
 
-<body onload="brython()">
+  <body onload="brython()">
     <div class="modal fade" id="progressmodal">
-        <div class="modal-dialog modal-dialog-centered" role="document">
-            <div class="modal-content">
-                <div class="modal-body center" style="width:100%">
-                    <label for="progress">Patching Rom</label>
-                    <div class="progress position-relative" id="progress">
-                        <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar"
-                            aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" id="patchprogress"
-                            style="width: 0%;"></div>
-                        <small id="progress-text"
-                            class="justify-content-center d-flex position-absolute w-100">Initalizing</small>
-                    </div>
-                </div>
+      <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+          <div class="modal-body center" style="width: 100%">
+            <label for="progress">Patching Rom</label>
+            <div class="progress position-relative" id="progress">
+              <div
+                class="progress-bar progress-bar-striped progress-bar-animated"
+                role="progressbar"
+                aria-valuenow="0"
+                aria-valuemin="0"
+                aria-valuemax="100"
+                id="patchprogress"
+                style="width: 0%"
+              ></div>
+              <small
+                id="progress-text"
+                class="justify-content-center d-flex position-absolute w-100"
+                >Initalizing</small
+              >
             </div>
+          </div>
         </div>
+      </div>
     </div>
     <div class="modal fade" id="loading">
-        <div class="modal-dialog modal-dialog-centered" role="document">
-            <div class="modal-content">
-                <div class="modal-body center" style="width:100%">
-                    <label>Loading...</label>
-                </div>
-            </div>
+      <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+          <div class="modal-body center" style="width: 100%">
+            <label>Loading...</label>
+          </div>
         </div>
+      </div>
     </div>
-    <img src="./img/logo.png" alt="DK64 Randomizer" class="center_image">
+    <img src="./img/logo.png" alt="DK64 Randomizer" class="center_image" />
 
-    <div style="width: 50%;" class="center">
-        <div class="card bg-secondary ">
-            <form id="form" action="/" method="POST">
-                <!--Create navbar-->
-                <div class="container">
-                    <nav>
-                        <div class="nav nav-tabs" id="nav-tab" role="tablist">
-                            <button class="nav-link active" id="nav-random-tab" data-bs-toggle="tab"
-                                data-bs-target="#nav-random" type="button" role="tab" aria-controls="nav-random"
-                                aria-selected="true">
-                                Randomizers
-                            </button>
-                            <button class="nav-link" id="nav-progression-tab" data-bs-toggle="tab"
-                                data-bs-target="#nav-progression" type="button" role="tab"
-                                aria-controls="nav-progression" aria-selected="false">
-                                Level Progression
-                            </button>
-                            <button class="nav-link" id="nav-misc-tab" data-bs-toggle="tab" data-bs-target="#nav-misc"
-                                type="button" role="tab" aria-controls="nav-misc" aria-selected="false">
-                                Miscellaneous
-                            </button>
-                            <button class="nav-link" id="nav-spoiler-tab" data-bs-toggle="tab"
-                                data-bs-target="#nav-spoiler" type="button" role="tab" aria-controls="nav-spoiler"
-                                style="display: none;" aria-selected="false">
-                                Spoiler Log
-                            </button>
-                        </div>
-                    </nav>
-                    <!--Populate tabs-->
-                    <div class="tab-content" id="nav-tabContent">
-                        <div class="tab-pane fade show active" id="nav-random" role="tabpanel"
-                            aria-labelledby="nav-random-tab">
-                            <div id="random_tab" b-include="rando_options.html"></div>
-                        </div>
-                        <div class="tab-pane fade" id="nav-progression" role="tabpanel"
-                            aria-labelledby="nav-progression-tab">
-                            <div id="level_progression_tab" b-include="level_progression.html"></div>
-                        </div>
-                        <div class="tab-pane fade" id="nav-misc" role="tabpanel" aria-labelledby="nav-misc-tab">
-                            <div id="misc_tab" b-include="misc.html"></div>
-                        </div>
-                        <div class="tab-pane fade" id="nav-spoiler" role="tabpanel" aria-labelledby="nav-spoiler-tab">
-                            <div id="spoiler_tab" b-include="spoiler.html"></div>
-                        </div>
-                    </div>
-                </div>
-            </form>
-            <div style="width: 80%;" class="center">
-                <div class="form-group" style="margin-bottom: 10px;text-align: center;">
-                    <label for="input-file-rom" id="romlabel" class="form-label mt-4">Rom File</label>
-                    <input accept=".z64" class="form-control" type="file" id="input-file-rom" name="rom_file"
-                        style="margin-right: 5px;width: 50%;height: 100%; margin: 0 auto;" required>
-                </div>
-                <input id="generateseed" class="btn btn-primary" style="width: 60%; height: 50px; text-align: center;"
-                    onclick="submitdata()" type="button" value="Generate Seed" />
+    <div style="width: 50%" class="center">
+      <div class="card bg-secondary">
+        <form id="form" action="/" method="POST">
+          <!--Create navbar-->
+          <div class="container">
+            <nav>
+              <div class="nav nav-tabs" id="nav-tab" role="tablist">
+                <button
+                  class="nav-link active"
+                  id="nav-random-tab"
+                  data-bs-toggle="tab"
+                  data-bs-target="#nav-random"
+                  type="button"
+                  role="tab"
+                  aria-controls="nav-random"
+                  aria-selected="true"
+                >
+                  Randomizers
+                </button>
+                <button
+                  class="nav-link"
+                  id="nav-progression-tab"
+                  data-bs-toggle="tab"
+                  data-bs-target="#nav-progression"
+                  type="button"
+                  role="tab"
+                  aria-controls="nav-progression"
+                  aria-selected="false"
+                >
+                  Level Progression
+                </button>
+                <button
+                  class="nav-link"
+                  id="nav-misc-tab"
+                  data-bs-toggle="tab"
+                  data-bs-target="#nav-misc"
+                  type="button"
+                  role="tab"
+                  aria-controls="nav-misc"
+                  aria-selected="false"
+                >
+                  Miscellaneous
+                </button>
+                <button
+                  class="nav-link"
+                  id="nav-spoiler-tab"
+                  data-bs-toggle="tab"
+                  data-bs-target="#nav-spoiler"
+                  type="button"
+                  role="tab"
+                  aria-controls="nav-spoiler"
+                  style="display: none"
+                  aria-selected="false"
+                >
+                  Spoiler Log
+                </button>
+              </div>
+            </nav>
+            <!--Populate tabs-->
+            <div class="tab-content" id="nav-tabContent">
+              <div
+                class="tab-pane fade show active"
+                id="nav-random"
+                role="tabpanel"
+                aria-labelledby="nav-random-tab"
+              >
+                <div id="random_tab" b-include="rando_options.html"></div>
+              </div>
+              <div
+                class="tab-pane fade"
+                id="nav-progression"
+                role="tabpanel"
+                aria-labelledby="nav-progression-tab"
+              >
+                <div
+                  id="level_progression_tab"
+                  b-include="level_progression.html"
+                ></div>
+              </div>
+              <div
+                class="tab-pane fade"
+                id="nav-misc"
+                role="tabpanel"
+                aria-labelledby="nav-misc-tab"
+              >
+                <div id="misc_tab" b-include="misc.html"></div>
+              </div>
+              <div
+                class="tab-pane fade"
+                id="nav-spoiler"
+                role="tabpanel"
+                aria-labelledby="nav-spoiler-tab"
+              >
+                <div id="spoiler_tab" b-include="spoiler.html"></div>
+              </div>
             </div>
+          </div>
+        </form>
+        <div style="width: 80%" class="center">
+          <div
+            class="form-group"
+            style="margin-bottom: 10px; text-align: center"
+          >
+            <label for="input-file-rom" id="romlabel" class="form-label mt-4"
+              >Rom File</label
+            >
+            <input
+              accept=".z64"
+              class="form-control"
+              type="file"
+              id="input-file-rom"
+              name="rom_file"
+              style="
+                margin-right: 5px;
+                width: 50%;
+                height: 100%;
+                margin: 0 auto;
+              "
+              required
+            />
+          </div>
+          <input
+            id="generateseed"
+            class="btn btn-primary"
+            style="width: 60%; height: 50px; text-align: center"
+            onclick="submitdata()"
+            type="button"
+            value="Generate Seed"
+          />
         </div>
+      </div>
     </div>
-</body>
+  </body>
 
-
-<footer>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-gtEjrD/SeCtmISkJkNUaaKMoLD0//ElJ19smozuHV6z3Iehds+3Ulb9Bn9Plx0x4"
-        crossorigin="anonymous"></script>
-    <script type="text/javascript" src="https://unpkg.com/lua.vm.js@0.0.1/dist/lua.vm.js"></script>
+  <footer>
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-gtEjrD/SeCtmISkJkNUaaKMoLD0//ElJ19smozuHV6z3Iehds+3Ulb9Bn9Plx0x4"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      type="text/javascript"
+      src="https://unpkg.com/lua.vm.js@0.0.1/dist/lua.vm.js"
+    ></script>
     <script type="text/javascript" src="./js/gui.js" defer></script>
     <script type="text/javascript" src="./js/rompatcher/crc.js" defer></script>
-    <script type="text/javascript" src="./js/rompatcher/formats/bps.js" defer></script>
-    <script type="text/javascript" src="./js/rompatcher/MarcFile.js" defer></script>
-    <script type="text/javascript" src="./js/rompatcher/RomPatcher.js" defer></script>
-    <script type="text/javascript" src="./js/rompatcher/filesaver.js" defer></script>
+    <script
+      type="text/javascript"
+      src="./js/rompatcher/formats/bps.js"
+      defer
+    ></script>
+    <script
+      type="text/javascript"
+      src="./js/rompatcher/MarcFile.js"
+      defer
+    ></script>
+    <script
+      type="text/javascript"
+      src="./js/rompatcher/RomPatcher.js"
+      defer
+    ></script>
+    <script
+      type="text/javascript"
+      src="./js/rompatcher/filesaver.js"
+      defer
+    ></script>
     <script type="text/python" src="./form_data.py" defer></script>
     <script type="text/python" src="./randomize.py" defer></script>
     <script type="text/python" src="./presets.py" defer></script>
     <script type="text/python" src="./level_progression.py" defer></script>
     <script type="text/python" src="./rando_options.py" defer></script>
     <script type="text/python" src="./version.py" defer></script>
-</footer>
+  </footer>
+</html>

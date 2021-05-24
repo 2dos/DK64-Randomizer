@@ -1,76 +1,76 @@
-window.onload = load_inital;
+window.onload = load_inital
 
-function load_inital() {
-  brython();
-  $("#progressmodal").modal({
+function load_inital () {
+  brython()
+  $('#progressmodal').modal({
     show: false,
-    backdrop: "static",
-  });
-  $("#loading").modal({
+    backdrop: 'static'
+  })
+  $('#loading').modal({
     show: true,
-    backdrop: "static",
-  });
-  $("#loading").modal("show");
+    backdrop: 'static'
+  })
+  $('#loading').modal('show')
   setTimeout(function () {
-    var savedUserJsonString = getCookie("settings");
+    const savedUserJsonString = getCookie('settings')
     if (savedUserJsonString.length === 0) {
-        if (
-          document
-            .getElementById("blocker_selected")
-            .options[0].value.toLowerCase() == "vanilla"
-        ) {
-          const e = new Event("change");
-          element = document.querySelector("#blocker_selected");
-          element.dispatchEvent(e);
-          element = document.querySelector("#troff_selected");
-          element.dispatchEvent(e);
-        }
+      if (
+        document
+          .getElementById('blocker_selected')
+          .options[0].value.toLowerCase() == 'vanilla'
+      ) {
+        const e = new Event('change')
+        element = document.querySelector('#blocker_selected')
+        element.dispatchEvent(e)
+        element = document.querySelector('#troff_selected')
+        element.dispatchEvent(e)
+      }
     } else {
-      var jsonresp = JSON.parse(savedUserJsonString);
-      for (var k in jsonresp) {
+      const jsonresp = JSON.parse(savedUserJsonString)
+      for (const k in jsonresp) {
         try {
-          document.getElementsByName(k)[0].value = jsonresp[k];
+          document.getElementsByName(k)[0].value = jsonresp[k]
         } catch {}
       }
     }
-    progression_clicked();
-    $("#loading").modal("hide");
-  }, 2000);
+    progression_clicked()
+    $('#loading').modal('hide')
+  }, 2000)
 }
 
-function progression_clicked() {
-  if ($("#randomize_progression")[0].checked) {
-    $("#seed").removeAttr("disabled");
-    $("#seed_button").removeAttr("disabled");
-    $("#unlock_all_kongs").attr("disabled", "disabled");
-    $("#unlock_all_kongs").prop("checked", true);
+function progression_clicked () {
+  if ($('#randomize_progression')[0].checked) {
+    $('#seed').removeAttr('disabled')
+    $('#seed_button').removeAttr('disabled')
+    $('#unlock_all_kongs').attr('disabled', 'disabled')
+    $('#unlock_all_kongs').prop('checked', true)
   } else {
-    $("#seed").attr("disabled", "disabled");
-    $("#seed_button").attr("disabled", "disabled");
-    $("#unlock_all_kongs").removeAttr("disabled");
+    $('#seed').attr('disabled', 'disabled')
+    $('#seed_button').attr('disabled', 'disabled')
+    $('#unlock_all_kongs').removeAttr('disabled')
   }
 }
 
-function randomizeseed(formdata) {
+function randomizeseed (formdata) {
   return new Promise((resolve, reject) => {
-    $("#patchprogress").width("30%");
-    $("#progress-text").text("Randomizing seed");
-    response = randomize_data(formdata);
+    $('#patchprogress').width('30%')
+    $('#progress-text').text('Randomizing seed')
+    response = randomize_data(formdata)
     setTimeout(function () {
-      $("#patchprogress").width("40%");
-      $("#progress-text").text("Randomizing complete");
+      $('#patchprogress').width('40%')
+      $('#progress-text').text('Randomizing complete')
       setTimeout(function () {
-        resolve(response);
-      }, 1000);
-    }, 1000);
-  });
+        resolve(response)
+      }, 1000)
+    }, 1000)
+  })
 }
 
-function generate_asm(asm) {
+function generate_asm (asm) {
   return new Promise((resolve, reject) => {
     $(function () {
-      $("#patchprogress").width("60%");
-      $("#progress-text").text("Generating ASM");
+      $('#patchprogress').width('60%')
+      $('#progress-text').text('Generating ASM')
       L.execute(
         `
       function convert(code_filename)
@@ -102,80 +102,80 @@ function generate_asm(asm) {
       end
       convert([[` +
           asm +
-          "]])"
-      );
+          ']])'
+      )
       setTimeout(function () {
-        $("#patchprogress").width("70%");
-        $("#progress-text").text("ASM Generated");
+        $('#patchprogress').width('70%')
+        $('#progress-text').text('ASM Generated')
         setTimeout(function () {
-          resolve(window.asmcode);
-        }, 1000);
-      }, 1000);
-    });
-  });
+          resolve(window.asmcode)
+        }, 1000)
+      }, 1000)
+    })
+  })
 }
-function submitdata() {
-  $("input:disabled, select:disabled").each(function () {
-    $(this).removeAttr("disabled");
-  });
-  if ($("#input-file-rom").val() == "") {
-    $("#input-file-rom").select();
+function submitdata () {
+  $('input:disabled, select:disabled').each(function () {
+    $(this).removeAttr('disabled')
+  })
+  if ($('#input-file-rom').val() == '') {
+    $('#input-file-rom').select()
   } else {
-    form = $("#form").serialize();
-    $("#progressmodal").modal("show");
-    progression_clicked();
+    form = $('#form').serialize()
+    $('#progressmodal').modal('show')
+    progression_clicked()
 
     randomizeseed(form).then(function (rando) {
       generate_asm(rando).then(function (binary_data) {
-        applyPatch(patch, romFile, false, binary_data);
-      });
-    });
-    JSONData = JSON.parse(queryStringToJSON(form));
-    delete JSONData["seed"];
-    setCookie("settings", JSON.stringify(JSONData), 30);
+        applyPatch(patch, romFile, false, binary_data)
+      })
+    })
+    JSONData = JSON.parse(queryStringToJSON(form))
+    delete JSONData.seed
+    setCookie('settings', JSON.stringify(JSONData), 30)
   }
 }
-function queryStringToJSON(qs) {
-  qs = qs || location.search.slice(1);
+function queryStringToJSON (qs) {
+  qs = qs || location.search.slice(1)
 
-  var pairs = qs.split("&");
-  var result = {};
+  const pairs = qs.split('&')
+  const result = {}
   pairs.forEach(function (p) {
-    var pair = p.split("=");
-    var key = pair[0];
-    var value = decodeURIComponent(pair[1] || "");
+    const pair = p.split('=')
+    const key = pair[0]
+    const value = decodeURIComponent(pair[1] || '')
 
     if (result[key]) {
-      if (Object.prototype.toString.call(result[key]) === "[object Array]") {
-        result[key].push(value);
+      if (Object.prototype.toString.call(result[key]) === '[object Array]') {
+        result[key].push(value)
       } else {
-        result[key] = [result[key], value];
+        result[key] = [result[key], value]
       }
     } else {
-      result[key] = value;
+      result[key] = value
     }
-  });
-  return JSON.stringify(result);
+  })
+  return JSON.stringify(result)
 }
-function getCookie(cname) {
-  var name = cname + "=";
-  var decodedCookie = decodeURIComponent(document.cookie);
-  var ca = decodedCookie.split(";");
-  for (var i = 0; i < ca.length; i++) {
-    var c = ca[i];
-    while (c.charAt(0) == " ") {
-      c = c.substring(1);
+function getCookie (cname) {
+  const name = cname + '='
+  const decodedCookie = decodeURIComponent(document.cookie)
+  const ca = decodedCookie.split(';')
+  for (let i = 0; i < ca.length; i++) {
+    let c = ca[i]
+    while (c.charAt(0) == ' ') {
+      c = c.substring(1)
     }
     if (c.indexOf(name) == 0) {
-      return c.substring(name.length, c.length);
+      return c.substring(name.length, c.length)
     }
   }
-  return "";
+  return ''
 }
 
-function setCookie(cname, cvalue, exdays) {
-  var d = new Date();
-  d.setTime(d.getTime() + exdays * 24 * 60 * 60 * 1000);
-  var expires = "expires=" + d.toUTCString();
-  document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
+function setCookie (cname, cvalue, exdays) {
+  const d = new Date()
+  d.setTime(d.getTime() + exdays * 24 * 60 * 60 * 1000)
+  const expires = 'expires=' + d.toUTCString()
+  document.cookie = cname + '=' + cvalue + ';' + expires + ';path=/'
 }
