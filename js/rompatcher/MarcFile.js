@@ -1,16 +1,19 @@
 /* MODDED VERSION OF MarcFile.js v20181020 - Marc Robledo 2014-2018 - http://www.marcrobledo.com/license */
 
 function MarcFile(source, onLoad){	
-	if(typeof source==='object' && source.files) /* get first file only if source is input with multiple files */
-		source=source.files[0];
+	if (typeof source==='object' && source.files) {
+        /* get first file only if source is input with multiple files */
+        source=source.files[0];
+    }
 
 	this.littleEndian=false;
 	this.offset=0;
 	this._lastRead=null;
 
 	if(typeof source==='object' && source.name && source.size){ /* source is file */
-		if(typeof window.FileReader!=='function')
-			throw new Error('Incompatible Browser');
+		if (typeof window.FileReader!=='function') {
+            throw new Error('Incompatible Browser');
+        }
 
 		this.fileName=source.name;
 		this.fileType=source.type;
@@ -22,8 +25,9 @@ function MarcFile(source, onLoad){
 			this.marcFile._u8array=new Uint8Array(this.result);
 			this.marcFile._dataView=new DataView(this.result);
 
-			if(onLoad)
-				onLoad.call();
+			if (onLoad) {
+                onLoad.call();
+            }
 		},false);
 
 		this._fileReader.readAsArrayBuffer(source);
@@ -40,8 +44,9 @@ function MarcFile(source, onLoad){
 		this._dataView=new DataView(this.fileType);
 		
 		source.copyToFile(this, 0);
-		if(onLoad)
-			onLoad.call();
+		if (onLoad) {
+            onLoad.call();
+        }
 
 
 
@@ -50,13 +55,15 @@ function MarcFile(source, onLoad){
 		this.fileType='application/octet-stream';
 		this.fileSize=source.byteLength;
 
-		if(typeof source.buffer !== 'undefined')
-			source=source.buffer;
+		if (typeof source.buffer !== 'undefined') {
+            source=source.buffer;
+        }
 		this._u8array=new Uint8Array(source);
 		this._dataView=new DataView(source);
 
-		if(onLoad)
-			onLoad.call();
+		if (onLoad) {
+            onLoad.call();
+        }
 
 
 
@@ -69,8 +76,9 @@ function MarcFile(source, onLoad){
 		this._u8array=new Uint8Array(ab);
 		this._dataView=new DataView(ab);
 
-		if(onLoad)
-			onLoad.call();
+		if (onLoad) {
+            onLoad.call();
+        }
 	}else{
 		throw new Error('Invalid source');
 	}
@@ -115,12 +123,13 @@ MarcFile.prototype.slice=function(offset, len){
 
 
 MarcFile.prototype.copyToFile=function(target, offsetSource, len, offsetTarget){
-	if(typeof offsetTarget==='undefined')
-		offsetTarget=offsetSource;
+	if (typeof offsetTarget==='undefined') {
+        offsetTarget=offsetSource;
+    }
 
 	len=len || (this.fileSize-offsetSource);
 
-	for(var i=0; i<len; i++){
+	for(var i=0; i<len; i += 1){
 		target._u8array[offsetTarget+i]=this._u8array[offsetSource+i];
 	}
 }
@@ -149,32 +158,35 @@ MarcFile.prototype.save=function(){
 MarcFile.prototype.readU8=function(){
 	this._lastRead=this._u8array[this.offset];
 
-	this.offset++;
+	this.offset += 1;
 	return this._lastRead
 }
 MarcFile.prototype.readU16=function(){
-	if(this.littleEndian)
-		this._lastRead=this._u8array[this.offset] + (this._u8array[this.offset+1] << 8);
-	else
-		this._lastRead=(this._u8array[this.offset] << 8) + this._u8array[this.offset+1];
+	if (this.littleEndian) {
+        this._lastRead=this._u8array[this.offset] + (this._u8array[this.offset+1] << 8);
+    } else {
+        this._lastRead=(this._u8array[this.offset] << 8) + this._u8array[this.offset+1];
+    }
 
 	this.offset+=2;
 	return this._lastRead >>> 0
 }
 MarcFile.prototype.readU24=function(){
-	if(this.littleEndian)
-		this._lastRead=this._u8array[this.offset] + (this._u8array[this.offset+1] << 8) + (this._u8array[this.offset+2] << 16);
-	else
-		this._lastRead=(this._u8array[this.offset] << 16) + (this._u8array[this.offset+1] << 8) + this._u8array[this.offset+2];
+	if (this.littleEndian) {
+        this._lastRead=this._u8array[this.offset] + (this._u8array[this.offset+1] << 8) + (this._u8array[this.offset+2] << 16);
+    } else {
+        this._lastRead=(this._u8array[this.offset] << 16) + (this._u8array[this.offset+1] << 8) + this._u8array[this.offset+2];
+    }
 
 	this.offset+=3;
 	return this._lastRead >>> 0
 }
 MarcFile.prototype.readU32=function(){
-	if(this.littleEndian)
-		this._lastRead=this._u8array[this.offset] + (this._u8array[this.offset+1] << 8) + (this._u8array[this.offset+2] << 16) + (this._u8array[this.offset+3] << 24);
-	else
-		this._lastRead=(this._u8array[this.offset] << 24) + (this._u8array[this.offset+1] << 16) + (this._u8array[this.offset+2] << 8) + this._u8array[this.offset+3];
+	if (this.littleEndian) {
+        this._lastRead=this._u8array[this.offset] + (this._u8array[this.offset+1] << 8) + (this._u8array[this.offset+2] << 16) + (this._u8array[this.offset+3] << 24);
+    } else {
+        this._lastRead=(this._u8array[this.offset] << 24) + (this._u8array[this.offset+1] << 16) + (this._u8array[this.offset+2] << 8) + this._u8array[this.offset+3];
+    }
 
 	this.offset+=4;
 	return this._lastRead >>> 0
@@ -184,7 +196,7 @@ MarcFile.prototype.readU32=function(){
 
 MarcFile.prototype.readBytes=function(len){
 	this._lastRead=new Array(len);
-	for(var i=0; i<len; i++){
+	for(var i=0; i<len; i += 1){
 		this._lastRead[i]=this._u8array[this.offset+i];
 	}
 
@@ -194,8 +206,9 @@ MarcFile.prototype.readBytes=function(len){
 
 MarcFile.prototype.readString=function(len){
 	this._lastRead='';
-	for(var i=0;i<len && (this.offset+i)<this.fileSize && this._u8array[this.offset+i]>0;i++)
-		this._lastRead=this._lastRead+String.fromCharCode(this._u8array[this.offset+i]);
+	for (var i=0; i<len && (this.offset+i)<this.fileSize && this._u8array[this.offset+i]>0; i += 1) {
+        this._lastRead=this._lastRead+String.fromCharCode(this._u8array[this.offset+i]);
+    }
 
 	this.offset+=len;
 	return this._lastRead
@@ -204,7 +217,7 @@ MarcFile.prototype.readString=function(len){
 MarcFile.prototype.writeU8=function(u8){
 	this._u8array[this.offset]=u8;
 
-	this.offset++;
+	this.offset += 1;
 }
 MarcFile.prototype.writeU16=function(u16){
 	if(this.littleEndian){
@@ -248,19 +261,22 @@ MarcFile.prototype.writeU32=function(u32){
 
 
 MarcFile.prototype.writeBytes=function(a){
-	for(var i=0;i<a.length;i++)
-		this._u8array[this.offset+i]=a[i]
+	for (var i=0; i<a.length; i += 1) {
+        this._u8array[this.offset+i]=a[i];
+    }
 
 	this.offset+=a.length;
 }
 
 MarcFile.prototype.writeString=function(str,len){
 	len=len || str.length;
-	for(var i=0;i<str.length && i<len;i++)
-		this._u8array[this.offset+i]=str.charCodeAt(i);
+	for (var i=0; i<str.length && i<len; i += 1) {
+        this._u8array[this.offset+i]=str.charCodeAt(i);
+    }
 
-	for(;i<len;i++)
-		this._u8array[this.offset+i]=0x00;
+	for (; i<len; i += 1) {
+        this._u8array[this.offset+i]=0x00;
+    }
 
 	this.offset+=len;
 }
