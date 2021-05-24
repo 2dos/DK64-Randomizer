@@ -15,7 +15,7 @@ var saveAs =
       !(
         void 0 === c ||
         (typeof navigator !== 'undefined' &&
-          /MSIE [1-9]\./.test(navigator.userAgent))
+          /MSIE [1-9]\./u.test(navigator.userAgent))
       )
     ) {
       const t = c.document
@@ -24,8 +24,8 @@ var saveAs =
       }
       const s = t.createElementNS('http://www.w3.org/1999/xhtml', 'a')
       const d = 'download' in s
-      const u = /constructor/i.test(c.HTMLElement) || c.safari
-      const l = /CriOS\/[\d]+/.test(navigator.userAgent)
+      const u = /constructor/iu.test(c.HTMLElement) || c.safari
+      const l = /CriOS\/[\d]+/u.test(navigator.userAgent)
       const p = c.setImmediate || c.setTimeout
       const v = function (t) {
         p(function () {
@@ -38,7 +38,7 @@ var saveAs =
         }, 4e4)
       }
       const m = function (t) {
-        return /^\s*(?:text\/\S*|application\/xml|\S*\/\S*\+xml)\s*;.*charset\s*=\s*utf-8/i.test(
+        return /^\s*(?:text\/\S*|application\/xml|\S*\/\S*\+xml)\s*;.*charset\s*=\s*utf-8/iu.test(
           t.type
         )
           ? new Blob([String.fromCharCode(65279), t], { type: t.type })
@@ -86,7 +86,7 @@ var saveAs =
               (e.onloadend = function () {
                 let t = l
                   ? e.result
-                  : e.result.replace(/^data:[^;]*;/, 'data:attachment/file;')
+                  : e.result.replace(/^data:[^;]*;/u, 'data:attachment/file;')
                 c.open(t, '_blank') || (c.location.href = t),
                 (t = void 0),
                 (o.readyState = o.DONE),
