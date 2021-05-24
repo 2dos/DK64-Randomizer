@@ -82,6 +82,8 @@ class Misc:
         tooltip = """This option enables the following quality of life changes to the game:
             - Removes first time text.
             - Removes first time boss cutscenes.
+            - Removes first time area visit cutscenes.
+            - Removes banana dance cutscenes.
             - Remove cutscenes from the startup sequence.
             - Story Skip option in the main menu set to On by default."""
         return self.response(Value=True, ToolTip=self._unindent(tooltip), Enabled="")
