@@ -10,107 +10,107 @@
 var saveAs =
   saveAs ||
   (function (c) {
-    'use strict'
+    "use strict";
     if (
       !(
         void 0 === c ||
-        (typeof navigator !== 'undefined' &&
-          /MSIE [1-9]\./.test(navigator.userAgent))
+        (typeof navigator !== "undefined" &&
+          /MSIE [1-9]\./u.test(navigator.userAgent))
       )
     ) {
-      const t = c.document
+      const t = c.document;
       const f = function () {
-        return c.URL || c.webkitURL || c
-      }
-      const s = t.createElementNS('http://www.w3.org/1999/xhtml', 'a')
-      const d = 'download' in s
-      const u = /constructor/i.test(c.HTMLElement) || c.safari
-      const l = /CriOS\/[\d]+/.test(navigator.userAgent)
-      const p = c.setImmediate || c.setTimeout
+        return c.URL || c.webkitURL || c;
+      };
+      const s = t.createElementNS("http://www.w3.org/1999/xhtml", "a");
+      const d = "download" in s;
+      const u = /constructor/iu.test(c.HTMLElement) || c.safari;
+      const l = /CriOS\/[\d]+/u.test(navigator.userAgent);
+      const p = c.setImmediate || c.setTimeout;
       const v = function (t) {
         p(function () {
-          throw t
-        }, 0)
-      }
+          throw t;
+        }, 0);
+      };
       const w = function (t) {
         setTimeout(function () {
-          typeof t === 'string' ? f().revokeObjectURL(t) : t.remove()
-        }, 4e4)
-      }
+          typeof t === "string" ? f().revokeObjectURL(t) : t.remove();
+        }, 4e4);
+      };
       const m = function (t) {
-        return /^\s*(?:text\/\S*|application\/xml|\S*\/\S*\+xml)\s*;.*charset\s*=\s*utf-8/i.test(
+        return /^\s*(?:text\/\S*|application\/xml|\S*\/\S*\+xml)\s*;.*charset\s*=\s*utf-8/iu.test(
           t.type
         )
           ? new Blob([String.fromCharCode(65279), t], { type: t.type })
-          : t
-      }
+          : t;
+      };
       const r = function (t, n, e) {
-        e || (t = m(t))
-        let r
-        const o = this
-        const a = t.type === 'application/octet-stream'
+        e || (t = m(t));
+        let r;
+        const o = this;
+        const a = t.type === "application/octet-stream";
         const i = function () {
           !(function (t, e, n) {
-            for (let r = (e = [].concat(e)).length; r--;) {
-              const o = t['on' + e[r]]
-              if (typeof o === 'function') {
+            for (let r = (e = [].concat(e)).length; r--; ) {
+              const o = t["on" + e[r]];
+              if (typeof o === "function") {
                 try {
-                  o.call(t, n || t)
+                  o.call(t, n || t);
                 } catch (t) {
-                  v(t)
+                  v(t);
                 }
               }
             }
-          })(o, 'writestart progress write writeend'.split(' '))
-        }
+          })(o, "writestart progress write writeend".split(" "));
+        };
         if (((o.readyState = o.INIT), d)) {
           return (
             (r = f().createObjectURL(t)),
             void p(function () {
               let t, e;
               (s.href = r),
-              (s.download = n),
-              (t = s),
-              (e = new MouseEvent('click')),
-              t.dispatchEvent(e),
-              i(),
-              w(r),
-              (o.readyState = o.DONE)
+                (s.download = n),
+                (t = s),
+                (e = new MouseEvent("click")),
+                t.dispatchEvent(e),
+                i(),
+                w(r),
+                (o.readyState = o.DONE);
             }, 0)
-          )
+          );
         }
         !(function () {
           if ((l || (a && u)) && c.FileReader) {
-            const e = new FileReader()
+            const e = new FileReader();
             return (
               (e.onloadend = function () {
                 let t = l
                   ? e.result
-                  : e.result.replace(/^data:[^;]*;/, 'data:attachment/file;')
-                c.open(t, '_blank') || (c.location.href = t),
-                (t = void 0),
-                (o.readyState = o.DONE),
-                i()
+                  : e.result.replace(/^data:[^;]*;/u, "data:attachment/file;");
+                c.open(t, "_blank") || (c.location.href = t),
+                  (t = void 0),
+                  (o.readyState = o.DONE),
+                  i();
               }),
               e.readAsDataURL(t),
               (o.readyState = o.INIT)
-            )
+            );
           }
           r || (r = f().createObjectURL(t)),
-          a
-            ? (c.location.href = r)
-            : c.open(r, '_blank') || (c.location.href = r);
-          (o.readyState = o.DONE), i(), w(r)
-        })()
-      }
-      const e = r.prototype
-      return typeof navigator !== 'undefined' && navigator.msSaveOrOpenBlob
+            a
+              ? (c.location.href = r)
+              : c.open(r, "_blank") || (c.location.href = r);
+          (o.readyState = o.DONE), i(), w(r);
+        })();
+      };
+      const e = r.prototype;
+      return typeof navigator !== "undefined" && navigator.msSaveOrOpenBlob
         ? function (t, e, n) {
             return (
-              (e = e || t.name || 'download'),
+              (e = e || t.name || "download"),
               n || (t = m(t)),
               navigator.msSaveOrOpenBlob(t, e)
-            )
+            );
           }
         : ((e.abort = function () {}),
           (e.readyState = e.INIT = 0),
@@ -118,11 +118,11 @@ var saveAs =
           (e.DONE = 2),
           (e.error = e.onwritestart = e.onprogress = e.onwrite = e.onabort = e.onerror = e.onwriteend = null),
           function (t, e, n) {
-            return new r(t, e || t.name || 'download', n)
-          })
+            return new r(t, e || t.name || "download", n);
+          });
     }
   })(
-    (typeof self !== 'undefined' && self) ||
-      (typeof window !== 'undefined' && window) ||
+    (typeof self !== "undefined" && self) ||
+      (typeof window !== "undefined" && window) ||
       this
-  )
+  );

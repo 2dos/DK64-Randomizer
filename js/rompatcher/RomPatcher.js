@@ -73,7 +73,7 @@ function updateChecksums(file, startOffset, force) {
 
 // Patches
 function fetchPatch(uri) {
-  const patchURI = decodeURI(uri.replace(/\#.*?$/, ""));
+  const patchURI = decodeURI(uri.replace(/\#.*?$/u, ""));
   fetch(patchURI)
     .then((result) => result.arrayBuffer()) // Gets the response and returns it as a blob
     .then((arrayBuffer) => {
