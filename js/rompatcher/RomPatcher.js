@@ -21,12 +21,13 @@ try {
     patchFile._u8array = event.data.patchFileU8Array;
     patchFile._dataView = new DataView(patchFile._u8array.buffer);
 
-    if (event.data.patchedRomU8Array)
+    if (event.data.patchedRomU8Array) {
       preparePatchedRom(
         romFile,
         new MarcFile(event.data.patchedRomU8Array.buffer),
         event.data.binary_data
       );
+    }
   };
 
   webWorkerCrc = new Worker("./js/rompatcher/worker_crc.js");
@@ -117,18 +118,12 @@ function preparePatchedRom(originalRom, patchedRom, binary_data) {
 function applyASMtoPatchedRom(patchedRom, binary_data) {
   var data = binary_data.split("\n");
 
-  datacap = 0;
-  for (var i = 0; i < data.length; i++) {
-    if (data[i].split(":")[0] > datacap) {
-      datacap = data[i].split(":")[0];
-    }
-  }
   patchedRom._u8array = concatTypedArrays(
     patchedRom._u8array,
     new Uint8Array(3028)
   );
 
-  for (var i = 0; i < data.length; i++) {
+  for (var i = 0; i < data.length; i += 1) {
     format = data[i].split(":");
     addr = Number(format[0]);
     val = Number(format[1]);
@@ -184,7 +179,7 @@ function applyPatch(p, r, validateChecksums, binary_data) {
     $("#patchprogress").width("80%");
     $("#progress-text").text("Applying patches");
     setTimeout(function () {
-      for (let retries = 0; retries < 3; retries++) {
+      for (let retries = 0; retries < 3; retries += 1) {
         try {
           webWorkerApply.postMessage(
             {
