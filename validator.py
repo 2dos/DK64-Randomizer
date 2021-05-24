@@ -178,7 +178,7 @@ def validateSeed(
                             if castle_kongs:
                                 castle_cb_req = tns_array[i]
                                 kongs_unlocked_count = 0
-                                for k in kongs_unlocked.keys():
+                                for k in kongs_unlocked:
                                     if kongs_unlocked[k]:
                                         kongs_unlocked_count += 1
                                 castle_cb_count = kongs_unlocked_count * 100
@@ -261,7 +261,7 @@ def validateSeed(
                             x["collected"] = True
 
             kongs_unlocked_count = 0
-            for i in kongs_unlocked.keys():
+            for i in kongs_unlocked:
                 if kongs_unlocked[i]:
                     kongs_unlocked_count += 1
 
