@@ -9,7 +9,8 @@ class Misc:
         """Set up Response named tuples."""
         self.response = collections.namedtuple("Response", ["Value", "ToolTip", "Enabled"])
 
-    def _unindent(self, string):
+    @staticmethod
+    def _unindent(string):
         """Un indent tool tip data.
 
         Args:
