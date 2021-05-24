@@ -167,12 +167,12 @@ function rom_type (val) {
   // Find out what rom type we have
   arr = new Uint8Array(val)
   if ([128, 55, 18, 64].every((v, i) => v === arr.slice(0, 4)[i])) {
-    console.log('Already Z64')
+    
   } else if ([64, 85, 55, 128].every((v, i) => v === arr.slice(0, 4)[i])) {
-    console.log('N64')
+    
     // TODO: Convert Type
   } else if ([55, 128, 64, 18].every((v, i) => v === arr.slice(0, 4)[i])) {
-    console.log('V64')
+    
     // TODO: Convert Type
   } else {
     alert('Invalid Rom Type, can only be Z64, N64, or V64.')
