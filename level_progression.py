@@ -9,7 +9,8 @@ class LevelProgression:
         """Set up Response named tuples."""
         self.response = collections.namedtuple("Response", ["Value", "ToolTip", "Enabled"])
 
-    def _unindent(self, string):
+    @staticmethod
+    def _unindent(string):
         """Un indent tool tip data.
 
         Args:
@@ -20,7 +21,8 @@ class LevelProgression:
         """
         return "".join(map(str.lstrip, string.splitlines(1)))
 
-    def return_key(self, option):
+    @staticmethod
+    def return_key(option):
         """Return first key from dict.
 
         Args:
@@ -31,7 +33,8 @@ class LevelProgression:
         """
         return list(option.keys())[0]
 
-    def return_value(self, option):
+    @staticmethod
+    def return_value(option):
         """Return first value from dict.
 
         Args:
