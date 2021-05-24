@@ -28,9 +28,7 @@ function load_inital() {
     } else {
       var jsonresp = JSON.parse(savedUserJsonString);
       for (var k in jsonresp) {
-        try {
-          document.getElementsByName(k)[0].value = jsonresp[k];
-        } catch {}
+        document.getElementsByName(k)[0].value = jsonresp[k];
       }
     }
     progression_clicked();
@@ -131,7 +129,7 @@ function submitdata() {
       });
     });
     JSONData = JSON.parse(queryStringToJSON(form));
-    delete JSONData["seed"];
+    delete JSONData.seed;
     setCookie("settings", JSON.stringify(JSONData), 30);
   }
 }
@@ -161,7 +159,7 @@ function getCookie(cname) {
   var name = cname + "=";
   var decodedCookie = decodeURIComponent(document.cookie);
   var ca = decodedCookie.split(";");
-  for (var i = 0; i < ca.length; i++) {
+  for (var i = 0; i < ca.length; i += 1) {
     var c = ca[i];
     while (c.charAt(0) == " ") {
       c = c.substring(1);

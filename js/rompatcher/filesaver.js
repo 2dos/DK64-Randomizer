@@ -13,8 +13,7 @@ var saveAs =
     "use strict";
     if (
       !(
-        void 0 === c ||
-        ("undefined" != typeof navigator &&
+        (void 0 === c || "undefined" != typeof navigator &&
           /MSIE [1-9]\./.test(navigator.userAgent))
       )
     ) {
@@ -51,21 +50,21 @@ var saveAs =
             a = "application/octet-stream" === t.type,
             i = function () {
               !(function (t, e, n) {
-                for (var r = (e = [].concat(e)).length; r--; ) {
+                for (var r = (e = [].concat(e)).length; r -= 1; ) {
                   var o = t["on" + e[r]];
-                  if ("function" == typeof o)
+                  if ("function" == typeof o) {
                     try {
                       o.call(t, n || t);
                     } catch (t) {
                       v(t);
                     }
+                  }
                 }
               })(o, "writestart progress write writeend".split(" "));
             };
-          if (((o.readyState = o.INIT), d))
+          if ((o.readyState = o.INIT, d)) {
             return (
-              (r = f().createObjectURL(t)),
-              void p(function () {
+              (r = f().createObjectURL(t), void p(function () {
                 var t, e;
                 (s.href = r),
                   (s.download = n),
@@ -75,8 +74,9 @@ var saveAs =
                   i(),
                   w(r),
                   (o.readyState = o.DONE);
-              }, 0)
+              }, 0))
             );
+          }
           !(function () {
             if ((l || (a && u)) && c.FileReader) {
               var e = new FileReader();
@@ -89,9 +89,7 @@ var saveAs =
                     (t = void 0),
                     (o.readyState = o.DONE),
                     i();
-                }),
-                e.readAsDataURL(t),
-                (o.readyState = o.INIT)
+                }, e.readAsDataURL(t), o.readyState = o.INIT)
               );
             }
             r || (r = f().createObjectURL(t)),
@@ -105,9 +103,7 @@ var saveAs =
       return "undefined" != typeof navigator && navigator.msSaveOrOpenBlob
         ? function (t, e, n) {
             return (
-              (e = e || t.name || "download"),
-              n || (t = m(t)),
-              navigator.msSaveOrOpenBlob(t, e)
+              (e = e || t.name || "download", n || (t = m(t)), navigator.msSaveOrOpenBlob(t, e))
             );
           }
         : ((e.abort = function () {}),
