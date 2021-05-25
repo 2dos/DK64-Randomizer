@@ -1,5 +1,6 @@
 """Validate the seed we generated."""
 from validator_data import golden_bananas
+import copy
 
 
 def validateSeed(
@@ -112,7 +113,7 @@ def validateSeed(
         moves_acquired["ammo_belt"] = 2
         moves_acquired["slam"] = 3
     loop_control = True
-    banana_cache = golden_bananas.copy()
+    banana_cache = copy.deepcopy(golden_bananas)
     gbs_collected = 0
     levels = ["japes", "aztec", "factory", "galleon", "fungi", "caves", "castle"]
     highest_level_entered = -1
@@ -125,6 +126,7 @@ def validateSeed(
             castle_order_position = i
             print(f"Castle Position: {castle_order_position}")
 
+    start_gb_count = 0
     while loop_control:
         start_gb_count = gbs_collected
         if not recheck:
@@ -135,11 +137,11 @@ def validateSeed(
             if not x["collected"]:
                 passes = checkMoves(
                     "isles",
-                    x.copy(),
-                    moves_acquired.copy(),
-                    kongs_unlocked.copy(),
-                    lobby_access.copy(),
-                    keys_acquired.copy(),
+                    x,
+                    moves_acquired,
+                    kongs_unlocked,
+                    lobby_access,
+                    keys_acquired,
                 )
                 if passes:
                     gbs_collected += 1
@@ -205,11 +207,11 @@ def validateSeed(
                             if not x["collected"]:
                                 passes = checkMoves(
                                     level_name,
-                                    x.copy(),
-                                    moves_acquired.copy(),
-                                    kongs_unlocked.copy(),
-                                    lobby_access.copy(),
-                                    keys_acquired.copy(),
+                                    x,
+                                    moves_acquired,
+                                    kongs_unlocked,
+                                    lobby_access,
+                                    keys_acquired,
                                 )
                                 if passes:
                                     second_pass = False
@@ -250,11 +252,11 @@ def validateSeed(
                     if not x["collected"]:
                         passes = checkMoves(
                             level_name,
-                            x.copy(),
-                            moves_acquired.copy(),
-                            kongs_unlocked.copy(),
-                            lobby_access.copy(),
-                            keys_acquired.copy(),
+                            x,
+                            moves_acquired,
+                            kongs_unlocked,
+                            lobby_access,
+                            keys_acquired,
                         )
                         if passes:
                             gbs_collected += 1
@@ -306,9 +308,8 @@ def validateSeed(
     if successful:
         print("SUCCESSFUL SEED")
         return True
-    else:
-        print("BAD SEED")
-        return False
+    print("BAD SEED")
+    return False
 
 
 def checkMoves(level, gb_object, moves, kongs, access, keys):
