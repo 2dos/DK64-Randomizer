@@ -3,6 +3,9 @@ from validator_data import golden_bananas
 import copy
 
 
+kong_list = ["dk", "diddy", "lanky", "tiny", "chunky"]
+
+
 def validateSeed(
     level_order: list,
     all_kongs: bool,
@@ -69,49 +72,29 @@ def validateSeed(
         ["slam", "sniper"],
     ]
     boss_kong_required = ["dk", "diddy", "lanky", "tiny", "chunky", "dk", "lanky"]
-    keys_acquired = {
-        "key_1": False,
-        "key_2": False,
-        "key_3": False,
-        "key_4": False,
-        "key_5": False,
-        "key_6": False,
-        "key_7": False,
-        "key_8": False,
-    }
+    keys_acquired = {}
+    for key in range(8):
+        keys_acquired["key_" + str(key + 1)] = False
     moves_acquired = {
         "dive": True,
         "orange": True,
         "barrel": True,
         "vine": True,
-        "dk_cranky": 0,
-        "diddy_cranky": 0,
-        "lanky_cranky": 0,
-        "tiny_cranky": 0,
-        "chunky_cranky": 0,
-        "gun_dk": all_moves,
-        "gun_diddy": all_moves,
-        "gun_lanky": all_moves,
-        "gun_tiny": all_moves,
-        "gun_chunky": all_moves,
-        "ins_dk": all_moves,
-        "ins_diddy": all_moves,
-        "ins_lanky": all_moves,
-        "ins_tiny": all_moves,
-        "ins_chunky": all_moves,
         "slam": 1,
         "ammo_belt": 0,
         "homing": all_moves,
         "sniper": all_moves,
     }
-    if all_moves:
-        moves_acquired["dk_cranky"] = 3
-        moves_acquired["diddy_cranky"] = 3
-        moves_acquired["lanky_cranky"] = 3
-        moves_acquired["tiny_cranky"] = 3
-        moves_acquired["chunky_cranky"] = 3
-        moves_acquired["ammo_belt"] = 2
-        moves_acquired["slam"] = 3
+    for kong in kong_list:
+        amount = 0
+        if all_moves:
+            amount = 3
+            moves_acquired["ammo_belt"] = 2
+            moves_acquired["slam"] = 3
+        moves_acquired[kong + "_cranky"] = amount
+        moves_acquired["gun_" + kong] = all_moves
+        moves_acquired["ins_" + kong] = all_moves
+
     loop_control = True
     banana_cache = copy.deepcopy(golden_bananas)
     gbs_collected = 0
@@ -119,12 +102,7 @@ def validateSeed(
     highest_level_entered = -1
     level_progress = 0
     lobby_access = [level_order[0]]
-    castle_order_position = -1
     recheck = False
-    for i in range(7):
-        if level_order[i] == 6:
-            castle_order_position = i
-            print(f"Castle Position: {castle_order_position}")
 
     start_gb_count = 0
     while loop_control:
@@ -133,20 +111,17 @@ def validateSeed(
             print("Level " + str(level_progress + 1) + " / 8:")
         # Check Isles
         for i in range(len(banana_cache["isles"])):
-            x = banana_cache["isles"][i]
-            if not x["collected"]:
-                passes = checkMoves(
+            if not banana_cache["isles"][i]["collected"]:
+                if checkMoves(
                     "isles",
-                    x,
+                    banana_cache["isles"][i],
                     moves_acquired,
                     kongs_unlocked,
                     lobby_access,
                     keys_acquired,
-                )
-                if passes:
+                ):
                     gbs_collected += 1
-                    x["collected"] = True
-                    # print(x["name"])
+                    banana_cache["isles"][i]["collected"] = True
 
         # Check if has enough for B. Locker
         if b_locker_array[level_progress] > gbs_collected:
@@ -185,95 +160,64 @@ def validateSeed(
                                         kongs_unlocked_count += 1
                                 castle_cb_count = kongs_unlocked_count * 100
                                 if castle_cb_req > castle_cb_count:
-                                    kong_string = boss_kong_required[level_order[i]]
-                                    if kongs_unlocked[kong_string]:
-                                        if not kongs_unlocked["dk"]:
-                                            print("DK Unlocked")
-                                        kongs_unlocked["dk"] = True
-                                        if not kongs_unlocked["diddy"]:
-                                            print("Diddy Unlocked")
-                                        kongs_unlocked["diddy"] = True
-                                        if not kongs_unlocked["lanky"]:
-                                            print("Lanky Unlocked")
-                                        kongs_unlocked["lanky"] = True
-                                        if not kongs_unlocked["tiny"]:
-                                            print("Tiny Unlocked")
-                                        kongs_unlocked["tiny"] = True
-                                        if not kongs_unlocked["chunky"]:
-                                            print("Chunky Unlocked")
-                                        kongs_unlocked["chunky"] = True
+                                    if kongs_unlocked[boss_kong_required[level_order[i]]]:
+                                        for kong in kong_list:
+                                            if not kongs_unlocked[kong]:
+                                                print(kong + " Unlocked")
+                                            kongs_unlocked[kong] = True
                         for j in range(len(banana_cache[level_name])):
-                            x = banana_cache[level_name][j]
-                            if not x["collected"]:
-                                passes = checkMoves(
+                            if not banana_cache[level_name][j]["collected"]:
+                                if checkMoves(
                                     level_name,
-                                    x,
+                                    banana_cache[level_name][j],
                                     moves_acquired,
                                     kongs_unlocked,
                                     lobby_access,
                                     keys_acquired,
-                                )
-                                if passes:
+                                ):
                                     second_pass = False
-                                    if x["frees_dk"]:
-                                        second_pass = True
-                                        if not kongs_unlocked["dk"]:
-                                            print("DK Unlocked")
-                                        kongs_unlocked["dk"] = True
-                                    elif x["frees_diddy"]:
-                                        second_pass = True
-                                        if not kongs_unlocked["diddy"]:
-                                            print("Diddy Unlocked")
-                                        kongs_unlocked["diddy"] = True
-                                    elif x["frees_lanky"]:
-                                        second_pass = True
-                                        if not kongs_unlocked["lanky"]:
-                                            print("Lanky Unlocked")
-                                        kongs_unlocked["lanky"] = True
-                                    elif x["frees_tiny"]:
-                                        second_pass = True
-                                        if not kongs_unlocked["tiny"]:
-                                            print("Tiny Unlocked")
-                                        kongs_unlocked["tiny"] = True
-                                    elif x["frees_chunky"]:
-                                        second_pass = True
-                                        if not kongs_unlocked["chunky"]:
-                                            print("Chunky Unlocked")
-                                        kongs_unlocked["chunky"] = True
+                                    for kong in kong_list:
+                                        if banana_cache[level_name][j]["frees_" + kong]:
+                                            second_pass = True
+                                            if not kongs_unlocked[kong]:
+                                                print(kong + " Unlocked")
+                                            kongs_unlocked[kong] = True
                                     if second_pass:
                                         gbs_collected += 1
-                                        x["collected"] = True
+                                        banana_cache[level_name][j]["collected"] = True
 
             # Check if can free kongs
             for i in lobby_access:
                 level_name = levels[i]
                 for j in range(len(banana_cache[level_name])):
-                    x = banana_cache[level_name][j]
-                    if not x["collected"]:
-                        passes = checkMoves(
+                    if not banana_cache[level_name][j]["collected"]:
+                        if checkMoves(
                             level_name,
-                            x,
+                            banana_cache[level_name][j],
                             moves_acquired,
                             kongs_unlocked,
                             lobby_access,
                             keys_acquired,
-                        )
-                        if passes:
+                        ):
                             gbs_collected += 1
-                            x["collected"] = True
+                            banana_cache[level_name][j]["collected"] = True
 
             kongs_unlocked_count = 0
             for i in kongs_unlocked.keys():
                 if kongs_unlocked[i]:
                     kongs_unlocked_count += 1
-
             cb_count = kongs_unlocked_count * 100
-            kong_string = boss_kong_required[level_order[level_progress]]
+
+
+            # End of level checks
             if gbs_collected == start_gb_count:
                 recheck = False
-                if tns_array[level_progress] > cb_count or not kongs_unlocked[kong_string]:
+                if (
+                    tns_array[level_progress] > cb_count
+                    or not kongs_unlocked[boss_kong_required[level_order[level_progress]]]
+                ):
                     loop_control = False
-                    if not kongs_unlocked[kong_string]:
+                    if not kongs_unlocked[boss_kong_required[level_order[level_progress]]]:
                         print("Do not have the kong required to fight boss: " + levels[level_order[level_progress]])
                         print("Kong Required: " + boss_kong_required[level_order[level_progress]])
                     else:
@@ -338,52 +282,21 @@ def checkMoves(level, gb_object, moves, kongs, access, keys):
         passes = False
     if gb_object["slam"] > moves["slam"]:
         passes = False
-    if gb_object["dk_cranky"] > moves["dk_cranky"]:
-        passes = False
-    if gb_object["diddy_cranky"] > moves["diddy_cranky"]:
-        passes = False
-    if gb_object["lanky_cranky"] > moves["lanky_cranky"]:
-        passes = False
-    if gb_object["tiny_cranky"] > moves["tiny_cranky"]:
-        passes = False
-    if gb_object["chunky_cranky"] > moves["chunky_cranky"]:
-        passes = False
-    if gb_object["gun_dk"] and not moves["gun_dk"]:
-        passes = False
-    if gb_object["gun_diddy"] and not moves["gun_diddy"]:
-        passes = False
-    if gb_object["gun_lanky"] and not moves["gun_lanky"]:
-        passes = False
-    if gb_object["gun_tiny"] and not moves["gun_tiny"]:
-        passes = False
-    if gb_object["gun_chunky"] and not moves["gun_chunky"]:
-        passes = False
     if gb_object["ammo_belt"] > moves["ammo_belt"]:
         passes = False
     if gb_object["homing"] and not moves["homing"]:
         passes = False
     if gb_object["sniper"] and not moves["sniper"]:
         passes = False
-    if gb_object["kong_dk"] and not kongs["dk"]:
-        passes = False
-    if gb_object["kong_diddy"] and not kongs["diddy"]:
-        passes = False
-    if gb_object["kong_lanky"] and not kongs["lanky"]:
-        passes = False
-    if gb_object["kong_tiny"] and not kongs["tiny"]:
-        passes = False
-    if gb_object["kong_chunky"] and not kongs["chunky"]:
-        passes = False
-    if gb_object["ins_dk"] and not moves["ins_dk"]:
-        passes = False
-    if gb_object["ins_diddy"] and not moves["ins_diddy"]:
-        passes = False
-    if gb_object["ins_lanky"] and not moves["ins_lanky"]:
-        passes = False
-    if gb_object["ins_tiny"] and not moves["ins_tiny"]:
-        passes = False
-    if gb_object["ins_chunky"] and not moves["ins_chunky"]:
-        passes = False
+    for kong in kong_list:
+        if gb_object[kong + "_cranky"] > moves[kong + "_cranky"]:
+            passes = False
+        if gb_object["gun_" + kong] and not moves["gun_" + kong]:
+            passes = False
+        if gb_object["kong_" + kong] and not kongs[kong]:
+            passes = False
+        if gb_object["ins_" + kong] and not moves["ins_" + kong]:
+            passes = False
     if level == "isles":
         for j in range(8):
             if gb_object["requires_key" + str(j + 1)] and not keys["key_" + str(j + 1)]:
