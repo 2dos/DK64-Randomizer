@@ -385,23 +385,9 @@ def checkMoves(level, gb_object, moves, kongs, access, keys):
     if gb_object["ins_chunky"] and not moves["ins_chunky"]:
         passes = False
     if level == "isles":
-        if gb_object["requires_key1"] and not keys["key_1"]:
-            passes = False
-        if gb_object["requires_key2"] and not keys["key_2"]:
-            passes = False
-        if gb_object["requires_key3"] and not keys["key_3"]:
-            passes = False
-        if gb_object["requires_key4"] and not keys["key_4"]:
-            passes = False
-        if gb_object["requires_key5"] and not keys["key_5"]:
-            passes = False
-        if gb_object["requires_key6"] and not keys["key_6"]:
-            passes = False
-        if gb_object["requires_key7"] and not keys["key_7"]:
-            passes = False
-        if gb_object["requires_key8"] and not keys["key_8"]:
-            passes = False
         for j in range(8):
+            if gb_object["requires_key" + str(j + 1)] and not keys["key_" + str(j + 1)]:
+                passes = False
             lobby_prop = "in_vanillaLobby" + str(j + 1)
             if gb_object[lobby_prop] and j not in access:
                 passes = False
