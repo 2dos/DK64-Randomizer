@@ -13,7 +13,12 @@ def randomize(query_string):
     Returns:
         str: ASM Data.
     """
-    post_data = dict((itm.split("=")[0], itm.split("=")[1]) for itm in query_string.split("&"))
+    if isinstance(query_string, dict):
+        post_data = query_string
+    else:
+        post_data = dict((itm.split("=")[0], itm.split("=")[1]) for itm in query_string.split("&"))
+    if post_data.get("recursion", 0) > 3:
+        return False
     levelEntrances = [
         "Jungle Japes",
         "Angry Aztec",
@@ -234,16 +239,23 @@ def randomize(query_string):
         document["nav-spoiler-tab"].style.display = "none"
         document["spoiler_log_text"].text = ""
     # TODO: We need to properly validate the seed and block depending on the results
-    validateSeed(
+    if validateSeed(
         finalNumerical,
-        post_data.get("unlock_all_kongs"),
-        post_data.get("unlock_all_moves"),
-        post_data.get("quality_of_life"),
+        post_data.get("unlock_all_kongs", False),
+        post_data.get("unlock_all_moves", False),
+        post_data.get("quality_of_life", False),
         finalBLocker,
         finalTNS,
         True,
-    )
-    return asm
+    ):
+        return asm
+    else:
+        print("Retrying generation")
+        post_data["seed"] = int(post_data.get("seed")) + 1
+        post_data["recursion"] = post_data.get("recursion", 0)
+        post_data["recursion"] = post_data["recursion"] + 1
+        result = randomize(post_data)
+        return result
 
 
 window.randomize_data = randomize
