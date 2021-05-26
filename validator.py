@@ -217,7 +217,9 @@ def validateSeed(
                     or not kongs_unlocked[boss_kong_required[level_order[level_progress]]]
                 ):
                     if not kongs_unlocked[boss_kong_required[level_order[level_progress]]]:
-                        validation_logs.append("Do not have the kong required to fight boss: " + levels[level_order[level_progress]])
+                        validation_logs.append(
+                            "Do not have the kong required to fight boss: " + levels[level_order[level_progress]]
+                        )
                         validation_logs.append("Kong Required: " + boss_kong_required[level_order[level_progress]])
                     else:
                         validation_logs.append("Not enough CBs to enter boss: " + levels[level_order[level_progress]])
@@ -247,7 +249,9 @@ def validateSeed(
                         validation_logs.append("")
             else:
                 recheck = True
-                validation_logs.append("Rechecking due to potential difference. Current GB Count: " + str(gbs_collected))
+                validation_logs.append(
+                    "Rechecking due to potential difference. Current GB Count: " + str(gbs_collected)
+                )
 
     if successful:
         validation_logs.append("SUCCESSFUL SEED")
