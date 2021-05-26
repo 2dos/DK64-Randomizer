@@ -33,9 +33,9 @@ def validateSeed(
     # Assumptions:
     # If you can enter a level, you can unlock every move up to that level, coins aren't a problem
     # Your CB count for a level = Kongs x 100
-
-    print("Starting validation")
-    print("")
+    validation_logs = []
+    validation_logs.append("Starting validation")
+    validation_logs.append("")
     successful = False
     kongs_unlocked = {
         "dk": True,
@@ -95,7 +95,6 @@ def validateSeed(
         moves_acquired["gun_" + kong] = all_moves
         moves_acquired["ins_" + kong] = all_moves
 
-    loop_control = True
     banana_cache = copy.deepcopy(golden_bananas)
     gbs_collected = 0
     levels = ["japes", "aztec", "factory", "galleon", "fungi", "caves", "castle"]
@@ -105,11 +104,11 @@ def validateSeed(
     recheck = False
 
     start_gb_count = 0
-    while loop_control:
+    while True:
         start_gb_count = gbs_collected
         if not recheck:
-            print("Level " + str(level_progress + 1) + " / 8:")
-        # Check Isles
+            validation_logs.append("Level " + str(level_progress + 1) + " / 8:")
+        # Check Isles EVERY TIME
         for i in range(len(banana_cache["isles"])):
             if not banana_cache["isles"][i]["collected"]:
                 if checkMoves(
@@ -125,26 +124,29 @@ def validateSeed(
 
         # Check if has enough for B. Locker
         if b_locker_array[level_progress] > gbs_collected:
-            loop_control = False
-            print("Not enough GBs to enter level: " + levels[level_order[level_progress]])
-            print("GBs Required: " + str(b_locker_array[level_progress]) + " GBs")
-            print("Max GBs possible: " + str(gbs_collected) + " GBs")
+            validation_logs.append("Not enough GBs to enter level: " + levels[level_order[level_progress]])
+            validation_logs.append("GBs Required: " + str(b_locker_array[level_progress]) + " GBs")
+            validation_logs.append("Max GBs possible: " + str(gbs_collected) + " GBs")
+            break
         else:
-            print("Able to enter next level: " + levels[level_order[level_progress]])
-            print("Current GB Count: " + str(gbs_collected))
+            validation_logs.append("Able to enter next level: " + levels[level_order[level_progress]])
+            validation_logs.append("Current GB Count: " + str(gbs_collected))
             # Buy Moves
             new_moves = 0
             if level_order[level_progress] > highest_level_entered:
+                moves_allowed = []
                 for m in range(level_order[level_progress] - highest_level_entered):
-                    level_moves = moves_level_purchasing[m + highest_level_entered + 1]
-                    for n in level_moves:
-                        new_moves += 1
-                        if "int" in str(type(moves_acquired[n])):
-                            moves_acquired[n] += 1
-                        elif "bool" in str(type(moves_acquired[n])):
-                            moves_acquired[n] = True
+                    for move in moves_level_purchasing[m + highest_level_entered + 1]:
+                        moves_allowed.append(move)
+                moves_allowed = list(dict.fromkeys(moves_allowed))
+                for n in moves_allowed:
+                    new_moves += 1
+                    if isinstance(moves_acquired[n], int):
+                        moves_acquired[n] += 1
+                    elif isinstance(moves_acquired[n], bool):
+                        moves_acquired[n] = True
                 highest_level_entered = level_order[level_progress]
-                print(str(new_moves) + " new moves acquired")
+                validation_logs.append(str(new_moves) + " new moves acquired")
 
             # Check if can free kongs
             for i in range(7):
@@ -163,7 +165,7 @@ def validateSeed(
                                     if kongs_unlocked[boss_kong_required[level_order[i]]]:
                                         for kong in kong_list:
                                             if not kongs_unlocked[kong]:
-                                                print(kong + " Unlocked")
+                                                validation_logs.append(kong + " Unlocked")
                                             kongs_unlocked[kong] = True
                         for j in range(len(banana_cache[level_name])):
                             if not banana_cache[level_name][j]["collected"]:
@@ -180,12 +182,11 @@ def validateSeed(
                                         if banana_cache[level_name][j]["frees_" + kong]:
                                             second_pass = True
                                             if not kongs_unlocked[kong]:
-                                                print(kong + " Unlocked")
+                                                validation_logs.append(kong + " Unlocked")
                                             kongs_unlocked[kong] = True
                                     if second_pass:
                                         gbs_collected += 1
                                         banana_cache[level_name][j]["collected"] = True
-
             # Check if can free kongs
             for i in lobby_access:
                 level_name = levels[i]
@@ -208,7 +209,6 @@ def validateSeed(
                     kongs_unlocked_count += 1
             cb_count = kongs_unlocked_count * 100
 
-
             # End of level checks
             if gbs_collected == start_gb_count:
                 recheck = False
@@ -216,17 +216,17 @@ def validateSeed(
                     tns_array[level_progress] > cb_count
                     or not kongs_unlocked[boss_kong_required[level_order[level_progress]]]
                 ):
-                    loop_control = False
                     if not kongs_unlocked[boss_kong_required[level_order[level_progress]]]:
-                        print("Do not have the kong required to fight boss: " + levels[level_order[level_progress]])
-                        print("Kong Required: " + boss_kong_required[level_order[level_progress]])
+                        validation_logs.append("Do not have the kong required to fight boss: " + levels[level_order[level_progress]])
+                        validation_logs.append("Kong Required: " + boss_kong_required[level_order[level_progress]])
                     else:
-                        print("Not enough CBs to enter boss: " + levels[level_order[level_progress]])
-                        print("CBs Required: " + str(tns_array[level_progress]) + " CBs")
-                        print("Max CBs possible: " + str(cb_count) + " CBs")
+                        validation_logs.append("Not enough CBs to enter boss: " + levels[level_order[level_progress]])
+                        validation_logs.append("CBs Required: " + str(tns_array[level_progress]) + " CBs")
+                        validation_logs.append("Max CBs possible: " + str(cb_count) + " CBs")
+                    break
 
                 else:
-                    print("End of level GB Count: " + str(gbs_collected))
+                    validation_logs.append("End of level GB Count: " + str(gbs_collected))
                     key_string = "key_" + str(level_progress + 1)
                     keys_acquired[key_string] = True
                     if level_progress == 0:  # Key 1
@@ -240,19 +240,21 @@ def validateSeed(
                         lobby_access.append(level_order[5])
                         lobby_access.append(level_order[6])
                     if level_progress == 6:
-                        loop_control = False
                         successful = True
+                        break
                     else:
                         level_progress = level_progress + 1
-                        print("")
+                        validation_logs.append("")
             else:
                 recheck = True
-                print("Rechecking due to potential difference. Current GB Count: " + str(gbs_collected))
+                validation_logs.append("Rechecking due to potential difference. Current GB Count: " + str(gbs_collected))
 
     if successful:
-        print("SUCCESSFUL SEED")
+        validation_logs.append("SUCCESSFUL SEED")
+        # print('\n'.join(map(str, validation_logs)))
         return True
-    print("BAD SEED")
+    validation_logs.append("BAD SEED")
+    # print('\n'.join(map(str, validation_logs)))
     return False
 
 
@@ -270,7 +272,6 @@ def checkMoves(level, gb_object, moves, kongs, access, keys):
     Returns:
         [type]: [description]
     """
-    # print(gb_object)
     passes = True
     if gb_object["dive"] and not moves["dive"]:
         passes = False
@@ -301,7 +302,6 @@ def checkMoves(level, gb_object, moves, kongs, access, keys):
         for j in range(8):
             if gb_object["requires_key" + str(j + 1)] and not keys["key_" + str(j + 1)]:
                 passes = False
-            lobby_prop = "in_vanillaLobby" + str(j + 1)
-            if gb_object[lobby_prop] and j not in access:
+            if gb_object["in_vanillaLobby" + str(j + 1)] and j not in access:
                 passes = False
     return passes
