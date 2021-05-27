@@ -33,7 +33,6 @@
 [CutsceneIndex]: 0x807476F4
 [CutsceneActive]: 0x807444EC
 [CutsceneTimer]: 0x807476F0
-[CutsceneType]: 0x807476FC
 [ParentMap]: 0x8076A172
 [ActorSpawnerArrayPointer]: 0x807FDC8C
 [DestinationMap]: 0x807444E4
@@ -46,7 +45,6 @@
 [Oranges]: 0x807FCC44 // u16
 [Crystals]: 0x807FCC46 // u16
 [Film]: 0x807FCC48 // u16
-[IsAutowalking]: 0x807463B8
 
 // New Variables
 [TestVariable]: 0x807FFFFC
@@ -107,8 +105,6 @@ Start:
     JAL     ChangeLZToHelm
     NOP
     JAL     TagAnywhere
-    NOP
-    JAL     FixCastleAutowalk
     NOP
     LW      a0, @CurrentMap
     LI      a1, 0x50 // Main Menu
@@ -438,10 +434,6 @@ TagAnywhere:
     SW      ra, @ReturnAddress
     LA      a0, TagAnywhereOn
     LBU     a0, 0x0 (a0)
-    BEQZ    a0, TagAnywhere_Finish
-    NOP
-    LBU     a0, @Character
-    SLTIU   a0, a0, 5
     BEQZ    a0, TagAnywhere_Finish
     NOP
     LH      a1, @NewlyPressedControllerInput
@@ -807,38 +799,12 @@ SetAllFlags:
         JR
         ADDIU   sp, sp, 0x18
 
-FixCastleAutowalk:
-    LW      a0, @CurrentMap
-    LI      a1, 0x57 // Castle
-    BNE     a0, a1, FixCastleAutowalk_Finish
-    NOP
-    LBU     a0, @CutsceneActive
-    BEQZ    a0, FixCastleAutowalk_Finish
-    NOP
-    LHU     a0, @CutsceneIndex
-    LI      a1, 29 // Exit Portal
-    BNE     a0, a1, FixCastleAutowalk_Finish
-    NOP
-    LW      a0, @CutsceneType
-    LI      a1, 0x807F5BF0
-    BNE     a0, a1, FixCastleAutowalk_Finish
-    NOP
-    LBU     a0, @IsAutowalking
-    BEQZ    a0, FixCastleAutowalk_Finish
-    NOP
-    SB      r0, @IsAutowalking
-
-    FixCastleAutowalk_Finish:
-        JR      ra
-        NOP
-
 ApplyFastStart:
     SW      ra, @ReturnAddress
     LA      a0, FastStartOn
     LBU     a0, 0x0 (a0)
     BEQZ    a0, ApplyFastStart_Finish
     NOP
-    SW      r0, 0x80714540 // Cancels check
     LA      a0, FastStartFlags
     JAL     SetAllFlags
     NOP
@@ -885,17 +851,14 @@ QOLChanges:
     // Story Skip set to "On" by default (not locked to On)
     StorySkip:
         LBU     a1, @Gamemode
-        BNEZ    a1, QOLChanges_TrainingBarrels
+        BNEZ    a1, IslesSpawn
         NOP
         LI      a1, 1
         SB      a1, @StorySkip
 
-    // Training Barrels are pre spawned
-    QOLChanges_TrainingBarrels:
-        JAL     CodedSetPermFlag
-        LI      a0, 0x309 // Cranky FTT
-        JAL     CodedSetPermFlag
-        LI      a0, 0x17F // Training Barrels Spawned
+    // Isles Spawn
+    IslesSpawn:
+        SW      r0, 0x80714540 // Cancels check
 
     FinishQOL:
         LW      ra, @ReturnAddress
