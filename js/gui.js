@@ -127,7 +127,7 @@ function submitdata() {
 
     setTimeout(function () {
       randomizeseed(form).then(function (rando) {
-        downloadToFile(rando, 'settings.asm', 'text/plain');
+        //downloadToFile(rando, 'settings.asm', 'text/plain');
         if (rando == false) {
           setTimeout(function () {
             $("#patchprogress").addClass("bg-danger");

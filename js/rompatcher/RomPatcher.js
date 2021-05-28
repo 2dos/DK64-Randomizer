@@ -89,15 +89,21 @@ function _readPatchFile() {
 function preparePatchedRom(originalRom, patchedRom, binary_data) {
   applyASMtoPatchedRom(patchedRom, binary_data);
 
+  // Checksum check
+  // patchedRom.seek(0x77C);
+  // patchedRom.writeBytes([0,0,0,0]);
+  // patchedRom.seek(0x788);
+  // patchedRom.writeBytes([0,0,0,0])
+
   // Deal with the security entry
   patchedRom.seek(0x3154);
   patchedRom.writeBytes([0,0,0,0]);
 
   // I don't know why we need to do any of this block but it makes the rom work
-  patchedRom.seek(0x10);
-  patchedRom.writeBytes([0xce, 0xd5, 0xae, 0xbc, 0x3d, 0x46, 0x79, 0x67, 0x00]);
-  patchedRom.seek(0x200042b);
-  patchedRom.writeBytes([0xfe]);
+  // patchedRom.seek(0x10);
+  // patchedRom.writeBytes([0xce, 0xd5, 0xae, 0xbc, 0x3d, 0x46, 0x79, 0x67, 0x00]);
+  // patchedRom.seek(0x200042b);
+  // patchedRom.writeBytes([0xfe]);
 
   // TODO: We need to move this earlier in the process to modify the rom type
   rom_type(patchedRom._u8array);
