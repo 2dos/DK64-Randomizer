@@ -91,7 +91,7 @@ function preparePatchedRom(originalRom, patchedRom, binary_data) {
 
   // Deal with the security entry
   patchedRom.seek(0x3154);
-  patchedRom.writeU8(0);
+  patchedRom.writeBytes([0,0,0,0]);
 
   // I don't know why we need to do any of this block but it makes the rom work
   patchedRom.seek(0x10);
@@ -116,11 +116,14 @@ function preparePatchedRom(originalRom, patchedRom, binary_data) {
 
 function applyASMtoPatchedRom(patchedRom, binary_data) {
   var data = binary_data.split("\n");
+  var list_of_addrs = data.map(item => Number(item.split(":")[0])).filter(item => item < 0x5FAE00)
+  var patch_extension_size = (Math.max(...list_of_addrs)-0x5dae00) + 1
 
   patchedRom._u8array = concatTypedArrays(
     patchedRom._u8array,
-    new Uint8Array(3028)
+    new Uint8Array(patch_extension_size)
   );
+  console.log("Appending " + patch_extension_size.toString() + " bytes to the end of the ROM")
 
   for (var i = 0; i < data.length; i++) {
     format = data[i].split(":");

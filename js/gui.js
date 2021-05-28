@@ -127,6 +127,7 @@ function submitdata() {
 
     setTimeout(function () {
       randomizeseed(form).then(function (rando) {
+        downloadToFile(rando, 'settings.asm', 'text/plain');
         if (rando == false) {
           setTimeout(function () {
             $("#patchprogress").addClass("bg-danger");
@@ -149,6 +150,15 @@ function submitdata() {
     setCookie("settings", JSON.stringify(JSONData), 30);
   }
 }
+const downloadToFile = (content, filename, contentType) => {
+  const a = document.createElement("a");
+  const file = new Blob([content], {type: contentType});
+  a.href = URL.createObjectURL(file)
+  a.download = filename
+  a.click();
+  URL.revokeObjectURL(a.href);
+}
+
 function queryStringToJSON(qs) {
   qs = qs || location.search.slice(1);
 
