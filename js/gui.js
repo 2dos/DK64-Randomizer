@@ -136,6 +136,7 @@ function submitdata() {
             setTimeout(function () {
               $("#progressmodal").modal("hide");
               $("#patchprogress").removeClass("bg-danger");
+              $("#patchprogress").width("0%");
             }, 5000);
           }, 1000);
         } else {
