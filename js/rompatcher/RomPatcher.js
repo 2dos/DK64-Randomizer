@@ -47,7 +47,7 @@ addEvent(window, "load", function () {
   addEvent(document.getElementById("input-file-rom"), "change", function () {
     romFile = new MarcFile(this, _parseROM);
     // TODO: We need to fix this romtyping so we properly update the rom type
-    rom_type(romFile._u8array);
+    // rom_type(romFile._u8array);
   });
 });
 
@@ -60,8 +60,6 @@ function updateChecksums(file, startOffset, force) {
   if (file === romFile && file.fileSize > 33554432 && !force) {
     return false;
   }
-
-  //document.getElementById("input-file-rom").innerHTML = "Calculating...";
 
   webWorkerCrc.postMessage(
     { u8array: file._u8array, startOffset: startOffset },
