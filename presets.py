@@ -1,6 +1,6 @@
 """Manage default data on the form."""
 from level_progression import LevelProgression
-from browser import window, document
+from browser import document
 import random
 
 
