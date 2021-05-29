@@ -102,7 +102,7 @@ function preparePatchedRom(originalRom, patchedRom, binary_data) {
   patchedRom.fileType = originalRom.fileType;
   patchedRom.save();
   $("#patchprogress").width("100%");
-  $("#progress-text").text("Rom has been patched");
+  $("#progress-text").text("ROM has been patched");
   setTimeout(function () {
     $("#progressmodal").modal("hide");
     progression_clicked();
