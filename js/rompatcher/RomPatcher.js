@@ -102,7 +102,7 @@ function preparePatchedRom(originalRom, patchedRom, binary_data) {
   patchedRom.fileType = originalRom.fileType;
   patchedRom.save();
   $("#patchprogress").width("100%");
-  $("#progress-text").text("Rom has been patched");
+  $("#progress-text").text("ROM has been patched");
   setTimeout(function () {
     $("#progressmodal").modal("hide");
     progression_clicked();
@@ -111,10 +111,12 @@ function preparePatchedRom(originalRom, patchedRom, binary_data) {
 
 function applyASMtoPatchedRom(patchedRom, binary_data) {
   var data = binary_data.split("\n");
+  var list_of_addrs = data.map(item => Number(item.split(":")[0])).filter(item => item < 0x5FAE00)
+  var patch_extension_size = (Math.max(...list_of_addrs)-0x5dae00) + 1
 
   patchedRom._u8array = concatTypedArrays(
     patchedRom._u8array,
-    new Uint8Array(3028)
+    new Uint8Array(patch_extension_size)
   );
 
   for (var i = 0; i < data.length; i++) {
