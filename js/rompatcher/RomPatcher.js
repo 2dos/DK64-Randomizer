@@ -31,10 +31,6 @@ try {
 
   webWorkerCrc = new Worker("./js/rompatcher/worker_crc.js");
   webWorkerCrc.onmessage = (event) => {
-    //document.getElementById("input-file-rom").innerHTML = padZeroes(
-    //  event.data.crc32,
-    //  4
-    //);
     romFile._u8array = event.data.u8array;
     romFile._dataView = new DataView(event.data.u8array.buffer);
   };
@@ -50,19 +46,20 @@ addEvent(window, "load", function () {
   fetchPatch("./patches/shrink-dk64.bps");
   addEvent(document.getElementById("input-file-rom"), "change", function () {
     romFile = new MarcFile(this, _parseROM);
+    // TODO: We need to fix this romtyping so we properly update the rom type
+    // rom_type(romFile._u8array);
   });
 });
 
 function _parseROM() {
   updateChecksums(romFile, 0);
+      getChecksum(romFile)
 }
 
 function updateChecksums(file, startOffset, force) {
   if (file === romFile && file.fileSize > 33554432 && !force) {
     return false;
   }
-
-  //document.getElementById("input-file-rom").innerHTML = "Calculating...";
 
   webWorkerCrc.postMessage(
     { u8array: file._u8array, startOffset: startOffset },
@@ -93,14 +90,12 @@ function preparePatchedRom(originalRom, patchedRom, binary_data) {
   patchedRom.seek(0x3154);
   patchedRom.writeU8(0);
 
-  // I don't know why we need to do any of this block but it makes the rom work
-  patchedRom.seek(0x10);
-  patchedRom.writeBytes([0xce, 0xd5, 0xae, 0xbc, 0x3d, 0x46, 0x79, 0x67, 0x00]);
+  // Still not sure what this is
   patchedRom.seek(0x200042b);
   patchedRom.writeBytes([0xfe]);
 
-  // TODO: We need to move this earlier in the process to modify the rom type
-  rom_type(patchedRom._u8array);
+  // Update the checksum
+  fixChecksum(patchedRom)
 
   patchedRom.fileName = originalRom.fileName =
     "dk64-randomizer-" + document.getElementById("seed").value + ".z64";
