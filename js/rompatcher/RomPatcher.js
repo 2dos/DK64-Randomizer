@@ -105,6 +105,8 @@ function preparePatchedRom(originalRom, patchedRom, binary_data) {
   $("#progress-text").text("ROM has been patched");
   setTimeout(function () {
     $("#progressmodal").modal("hide");
+    $("#patchprogress").width("0%");
+    $("#progress-text").text("");
     progression_clicked();
   }, 2000);
 }

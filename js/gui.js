@@ -28,7 +28,9 @@ function load_inital() {
     } else {
       var jsonresp = JSON.parse(savedUserJsonString);
       for (var k in jsonresp) {
-        document.getElementsByName(k)[0].value = jsonresp[k];
+        try {
+          document.getElementsByName(k)[0].value = jsonresp[k];
+        } catch (e) {}
       }
     }
     progression_clicked();
@@ -137,6 +139,7 @@ function submitdata() {
               $("#progressmodal").modal("hide");
               $("#patchprogress").removeClass("bg-danger");
               $("#patchprogress").width("0%");
+              $("#progress-text").text("");
             }, 5000);
           }, 1000);
         } else {
@@ -153,12 +156,12 @@ function submitdata() {
 }
 const downloadToFile = (content, filename, contentType) => {
   const a = document.createElement("a");
-  const file = new Blob([content], {type: contentType});
-  a.href = URL.createObjectURL(file)
-  a.download = filename
+  const file = new Blob([content], { type: contentType });
+  a.href = URL.createObjectURL(file);
+  a.download = filename;
   a.click();
   URL.revokeObjectURL(a.href);
-}
+};
 
 function queryStringToJSON(qs) {
   qs = qs || location.search.slice(1);
