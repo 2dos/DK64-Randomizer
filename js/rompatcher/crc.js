@@ -32,7 +32,11 @@ function crc32(marcFile, headerSize, ignoreLast4Bytes) {
 }
 
 function getChecksum(marcFile) {
-  return marcFile._u8array.slice(0x10, 0x19);
+  try {
+    return marcFile._u8array.slice(0x10, 0x19);
+  } catch (e) {
+    return 0;
+  }
 }
 function byteArrayToLong(byteArray) {
   var value = 0;
@@ -100,17 +104,17 @@ function recalculateChecksum(marcFile) {
 
   return crc;
 }
-function toBytesInt32 (num) {
-    arr = new ArrayBuffer(4); // an Int32 takes 4 bytes
-    view = new DataView(arr);
-    view.setUint32(0, num, false); // byteOffset = 0; litteEndian = false
-    return arr;
+function toBytesInt32(num) {
+  arr = new ArrayBuffer(4); // an Int32 takes 4 bytes
+  view = new DataView(arr);
+  view.setUint32(0, num, false); // byteOffset = 0; litteEndian = false
+  return arr;
 }
 function updateChecksum(marcFile, newChecksum) {
-	marcFile.seek(0x10);
-	marcFile.writeBytes(new Uint8Array(toBytesInt32(newChecksum[0])));
-	marcFile.seek(0x14);
-	marcFile.writeBytes(new Uint8Array(toBytesInt32(newChecksum[1])));
+  marcFile.seek(0x10);
+  marcFile.writeBytes(new Uint8Array(toBytesInt32(newChecksum[0])));
+  marcFile.seek(0x14);
+  marcFile.writeBytes(new Uint8Array(toBytesInt32(newChecksum[1])));
 }
 
 function fixChecksum(marcFile) {
