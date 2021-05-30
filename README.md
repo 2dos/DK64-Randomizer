@@ -1,12 +1,11 @@
 # DK64 Randomizer
 Python script that randomizes various options in the DK64 ROM. See the Wiki section on how to set up and use the script.
 
-Website: https://dk64randomizer.com/ (or https://dk64r.com for a shorthand redirect)
-Dev Branch: https://dev.dk64randomizer.com
-Discord: https://discord.dk64randomizer.com
+- Website: https://dk64randomizer.com/ (or https://dk64r.com for a shorthand redirect)
+- Dev Branch: https://dev.dk64randomizer.com
+- Discord: https://discord.dk64randomizer.com
 
-Randomizer by 2dos and Ballaam
-Web Interface by Killklli
+Randomizer by 2dos and Ballaam | Web Interface by Killklli
 
 ## Current Features
 - Randomizes the level order of DK64 (Hideout Helm always last)
