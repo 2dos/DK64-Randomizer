@@ -137,6 +137,7 @@ function submitdata() {
               $("#progressmodal").modal("hide");
               $("#patchprogress").removeClass("bg-danger");
               $("#patchprogress").width("0%");
+              $("#progress-text").text("");
             }, 5000);
           }, 1000);
         } else {
