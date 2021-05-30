@@ -21,21 +21,16 @@ try {
     patchFile._u8array = event.data.patchFileU8Array;
     patchFile._dataView = new DataView(patchFile._u8array.buffer);
 
-    if (event.data.patchedRomU8Array) {
+    if (event.data.patchedRomU8Array)
       preparePatchedRom(
         romFile,
         new MarcFile(event.data.patchedRomU8Array.buffer),
         event.data.binary_data
       );
-    }
   };
 
   webWorkerCrc = new Worker("./js/rompatcher/worker_crc.js");
   webWorkerCrc.onmessage = (event) => {
-    //document.getElementById("input-file-rom").innerHTML = padZeroes(
-    //  event.data.crc32,
-    //  4
-    //);
     romFile._u8array = event.data.u8array;
     romFile._dataView = new DataView(event.data.u8array.buffer);
   };
@@ -51,19 +46,20 @@ addEvent(window, "load", function () {
   fetchPatch("./patches/shrink-dk64.bps");
   addEvent(document.getElementById("input-file-rom"), "change", function () {
     romFile = new MarcFile(this, _parseROM);
+    // TODO: We need to fix this romtyping so we properly update the rom type
+    // rom_type(romFile._u8array);
   });
 });
 
 function _parseROM() {
   updateChecksums(romFile, 0);
+      getChecksum(romFile)
 }
 
 function updateChecksums(file, startOffset, force) {
   if (file === romFile && file.fileSize > 33554432 && !force) {
     return false;
   }
-
-  //document.getElementById("input-file-rom").innerHTML = "Calculating...";
 
   webWorkerCrc.postMessage(
     { u8array: file._u8array, startOffset: startOffset },
@@ -94,36 +90,34 @@ function preparePatchedRom(originalRom, patchedRom, binary_data) {
   patchedRom.seek(0x3154);
   patchedRom.writeU8(0);
 
-  // I don't know why we need to do any of this block but it makes the rom work
-  patchedRom.seek(0x10);
-  patchedRom.writeBytes([0xce, 0xd5, 0xae, 0xbc, 0x3d, 0x46, 0x79, 0x67, 0x00]);
-  patchedRom.seek(0x200042b);
-  patchedRom.writeBytes([0xfe]);
-
-  // TODO: We need to move this earlier in the process to modify the rom type
-  rom_type(patchedRom._u8array);
+  // Update the checksum
+  fixChecksum(patchedRom)
 
   patchedRom.fileName = originalRom.fileName =
     "dk64-randomizer-" + document.getElementById("seed").value + ".z64";
   patchedRom.fileType = originalRom.fileType;
   patchedRom.save();
   $("#patchprogress").width("100%");
-  $("#progress-text").text("Rom has been patched");
+  $("#progress-text").text("ROM has been patched");
   setTimeout(function () {
     $("#progressmodal").modal("hide");
+    $("#patchprogress").width("0%");
+    $("#progress-text").text("");
     progression_clicked();
   }, 2000);
 }
 
 function applyASMtoPatchedRom(patchedRom, binary_data) {
   var data = binary_data.split("\n");
+  var list_of_addrs = data.map(item => Number(item.split(":")[0])).filter(item => item < 0x5FAE00)
+  var patch_extension_size = (Math.max(...list_of_addrs)-0x5dae00) + 1
 
   patchedRom._u8array = concatTypedArrays(
     patchedRom._u8array,
-    new Uint8Array(3028)
+    new Uint8Array(patch_extension_size)
   );
 
-  for (var i = 0; i < data.length; i += 1) {
+  for (var i = 0; i < data.length; i++) {
     format = data[i].split(":");
     addr = Number(format[0]);
     val = Number(format[1]);
@@ -179,7 +173,7 @@ function applyPatch(p, r, validateChecksums, binary_data) {
     $("#patchprogress").width("80%");
     $("#progress-text").text("Applying patches");
     setTimeout(function () {
-      for (let retries = 0; retries < 3; retries += 1) {
+      for (let retries = 0; retries < 3; retries++) {
         try {
           webWorkerApply.postMessage(
             {

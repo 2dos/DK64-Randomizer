@@ -4,6 +4,9 @@
 <head>
     <meta charset="utf-8" />
     <meta content="width=device-width, initial-scale=1" name="viewport" />
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate"/>
+    <meta http-equiv="Pragma" content="no-cache"/>
+    <meta http-equiv="Expires" content="0"/>
     <link href="./img/dk.png" rel="icon" />
 
     <link href="./styles/bootstrap.min.css" rel="stylesheet" type="text/css" />
@@ -47,8 +50,7 @@
             </div>
         </div>
     </div>
-    <img src="./img/logo.png" alt="DK64 Randomizer" class="center_image">
-
+    <img src="./img/logo.png" alt="DK64 Randomizer" class="center_image" style="cursor: pointer;" onClick="window.location.reload();">
     <div style="width: 50%; min-width: 400px;" class="center">
         <div class="card bg-secondary ">
             <form id="form" action="/" method="POST">
@@ -98,7 +100,7 @@
             </form>
             <div style="width: 80%;" class="center">
                 <div class="form-group" style="margin-bottom: 10px;text-align: center;">
-                    <label for="input-file-rom" id="romlabel" class="form-label mt-4">Rom File</label>
+                    <label for="input-file-rom" id="romlabel" class="form-label mt-4">ROM File</label>
                     <input accept=".z64" class="form-control" type="file" id="input-file-rom" name="rom_file"
                         style="margin-right: 5px;width: 50%;height: 100%; margin: 0 auto;" required>
                 </div>
@@ -112,10 +114,13 @@
 
 <footer>
     <div class="center">
-        <a href="https://github.com/2dos/dk64-randomizer" target="_blank" style="text-decoration: none;">
+        <a href="https://github.com/2dos/DK64-Randomizer" target="_blank" style="text-decoration: none;">
             <img src="./img/github.png" alt="GitHub">
         </a>
-        <a href="https://discord.gg/6GCuY7B" target="_blank" style="text-decoration: none;">
+        <a href="https://github.com/2dos/DK64-Randomizer/wiki" target="_blank" style="text-decoration: none;">
+            <img src="./img/wiki.png" alt="Wiki">
+        </a>
+        <a href="https://discord.dk64randomizer.com" target="_blank" style="text-decoration: none;">
             <img src="./img/discord.png" alt="Discord">
         </a>
     </div>
@@ -125,8 +130,7 @@
             Dev Branch
         </a>
         <br>
-        Randomizer by 2dos and Ballaam | Web Generator by Killklli | 
-        Contributors: Bismuth, Cfox, Isotarge, Znernicus
+        Randomizer by 2dos and Ballaam | Web Generator by Killklli
         <br>
         In-game characters, images and logos copyright © 1999-2021 Nintendo or Rareware respectively.
         <br>

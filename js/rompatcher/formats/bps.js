@@ -36,7 +36,7 @@ BPS.prototype.apply = function (romFile, validate) {
   //patch
   var sourceRelativeOffset = 0;
   var targetRelativeOffset = 0;
-  for (var i = 0; i < this.actions.length; i += 1) {
+  for (var i = 0; i < this.actions.length; i++) {
     var action = this.actions[i];
 
     if (action.type === BPS_ACTION_SOURCE_READ) {
@@ -47,16 +47,16 @@ BPS.prototype.apply = function (romFile, validate) {
     } else if (action.type === BPS_ACTION_SOURCE_COPY) {
       sourceRelativeOffset += action.relativeOffset;
       var actionLength = action.length;
-      while (actionLength -= 1) {
+      while (actionLength--) {
         tempFile.writeU8(romFile._u8array[sourceRelativeOffset]);
-        sourceRelativeOffset += 1;
+        sourceRelativeOffset++;
       }
     } else if (action.type === BPS_ACTION_TARGET_COPY) {
       targetRelativeOffset += action.relativeOffset;
       var actionLength = action.length;
-      while (actionLength -= 1) {
+      while (actionLength--) {
         tempFile.writeU8(tempFile._u8array[targetRelativeOffset]);
-        targetRelativeOffset += 1;
+        targetRelativeOffset++;
       }
     }
   }
@@ -121,9 +121,7 @@ function BPS_readVLV() {
   while (true) {
     var x = this.readU8();
     data += (x & 0x7f) * shift;
-    if (x & 0x80) {
-      break;
-    }
+    if (x & 0x80) break;
     shift <<= 7;
     data += shift;
   }
@@ -140,7 +138,7 @@ function BPS_writeVLV(data) {
       break;
     }
     this.writeU8(x);
-    data -= 1;
+    data--;
   }
 }
 function BPS_getVLVLen(data) {
@@ -149,11 +147,11 @@ function BPS_getVLVLen(data) {
     var x = data & 0x7f;
     data >>= 7;
     if (data === 0) {
-      len += 1;
+      len++;
       break;
     }
-    len += 1;
-    data -= 1;
+    len++;
+    data--;
   }
   return len;
 }
@@ -164,7 +162,7 @@ BPS.prototype.export = function (fileName) {
   patchFileSize += BPS_getVLVLen(this.targetSize);
   patchFileSize += BPS_getVLVLen(this.metaData.length);
   patchFileSize += this.metaData.length;
-  for (var i = 0; i < this.actions.length; i += 1) {
+  for (var i = 0; i < this.actions.length; i++) {
     var action = this.actions[i];
     patchFileSize += BPS_getVLVLen(((action.length - 1) << 2) + action.type);
 
@@ -193,7 +191,7 @@ BPS.prototype.export = function (fileName) {
   patchFile.writeVLV(this.metaData.length);
   patchFile.writeString(this.metaData, this.metaData.length);
 
-  for (var i = 0; i < this.actions.length; i += 1) {
+  for (var i = 0; i < this.actions.length; i++) {
     var action = this.actions[i];
     patchFile.writeVLV(((action.length - 1) << 2) + action.type);
 
@@ -221,9 +219,7 @@ function BPS_Node() {
   this.next = null;
 }
 BPS_Node.prototype.delete = function () {
-  if (this.next) {
-    delete this.next;
-  }
+  if (this.next) delete this.next;
 };
 function createBPSFromFiles(original, modified, deltaMode) {
   var patch = new BPS();
@@ -269,33 +265,29 @@ function createBPSFromFilesLinear(original, modified) {
       var offset = outputOffset - targetReadLength;
       while (targetReadLength) {
         //write(targetData[offset++]);
-        action.bytes.push(targetData[offset += 1]);
-        targetReadLength -= 1;
+        action.bytes.push(targetData[offset++]);
+        targetReadLength--;
       }
     }
   }
 
   while (outputOffset < targetSize) {
     var sourceLength = 0;
-    for (var n = 0; outputOffset + n < Math.min(sourceSize, targetSize); n += 1) {
-      if (sourceData[outputOffset + n] != targetData[outputOffset + n]) {
-        break;
-      }
-      sourceLength += 1;
+    for (var n = 0; outputOffset + n < Math.min(sourceSize, targetSize); n++) {
+      if (sourceData[outputOffset + n] != targetData[outputOffset + n]) break;
+      sourceLength++;
     }
 
     var rleLength = 0;
-    for (var n = 1; outputOffset + n < targetSize; n += 1) {
-      if (targetData[outputOffset] != targetData[outputOffset + n]) {
-        break;
-      }
-      rleLength += 1;
+    for (var n = 1; outputOffset + n < targetSize; n++) {
+      if (targetData[outputOffset] != targetData[outputOffset + n]) break;
+      rleLength++;
     }
 
     if (rleLength >= 4) {
       //write byte to repeat
-      targetReadLength += 1;
-      outputOffset += 1;
+      targetReadLength++;
+      outputOffset++;
       targetReadFlush();
 
       //copy starting from repetition byte
@@ -342,18 +334,16 @@ function createBPSFromFilesDelta(original, modified) {
 
   var sourceTree = new Array(65536);
   var targetTree = new Array(65536);
-  for (var n = 0; n < 65536; n += 1) {
+  for (var n = 0; n < 65536; n++) {
     sourceTree[n] = null;
     targetTree[n] = null;
   }
 
   //source tree creation
-  for (var offset = 0; offset < sourceSize; offset += 1) {
+  for (var offset = 0; offset < sourceSize; offset++) {
     var symbol = sourceData[offset + 0];
     //sourceChecksum = crc32_adjust(sourceChecksum, symbol);
-    if (offset < sourceSize - 1) {
-      symbol |= sourceData[offset + 1] << 8;
-    }
+    if (offset < sourceSize - 1) symbol |= sourceData[offset + 1] << 8;
     var node = new BPS_Node();
     node.offset = offset;
     node.next = sourceTree[symbol];
@@ -374,8 +364,8 @@ function createBPSFromFilesDelta(original, modified) {
       var offset = outputOffset - targetReadLength;
       while (targetReadLength) {
         //write(targetData[offset++]);
-        action.bytes.push(targetData[offset += 1]);
-        targetReadLength -= 1;
+        action.bytes.push(targetData[offset++]);
+        targetReadLength--;
       }
     }
   }
@@ -386,9 +376,8 @@ function createBPSFromFilesDelta(original, modified) {
       mode = BPS_ACTION_TARGET_READ;
 
     var symbol = targetData[outputOffset + 0];
-    if (outputOffset < targetSize - 1) {
+    if (outputOffset < targetSize - 1)
       symbol |= targetData[outputOffset + 1] << 8;
-    }
 
     {
       //source read
@@ -399,12 +388,11 @@ function createBPSFromFilesDelta(original, modified) {
         offset < targetSize &&
         sourceData[offset] == targetData[offset]
       ) {
-        length += 1;
-        offset += 1;
+        length++;
+        offset++;
       }
-      if (length > maxLength) {
+      if (length > maxLength)
         (maxLength = length), (mode = BPS_ACTION_SOURCE_READ);
-      }
     }
 
     {
@@ -414,16 +402,16 @@ function createBPSFromFilesDelta(original, modified) {
         var length = 0,
           x = node.offset,
           y = outputOffset;
-        while (x < sourceSize &&
-        y < targetSize &&
-        sourceData[x += 1] == targetData[y += 1]) {
-          length += 1;
-        }
-        if (length > maxLength) {
+        while (
+          x < sourceSize &&
+          y < targetSize &&
+          sourceData[x++] == targetData[y++]
+        )
+          length++;
+        if (length > maxLength)
           (maxLength = length),
             (maxOffset = node.offset),
             (mode = BPS_ACTION_SOURCE_COPY);
-        }
         node = node.next;
       }
     }
@@ -435,14 +423,11 @@ function createBPSFromFilesDelta(original, modified) {
         var length = 0,
           x = node.offset,
           y = outputOffset;
-        while (y < targetSize && targetData[x += 1] == targetData[y += 1]) {
-          length += 1;
-        }
-        if (length > maxLength) {
+        while (y < targetSize && targetData[x++] == targetData[y++]) length++;
+        if (length > maxLength)
           (maxLength = length),
             (maxOffset = node.offset),
             (mode = BPS_ACTION_TARGET_COPY);
-        }
         node = node.next;
       }
 
@@ -461,9 +446,7 @@ function createBPSFromFilesDelta(original, modified) {
       }
     }
 
-    if (mode != BPS_ACTION_TARGET_READ) {
-      targetReadFlush();
-    }
+    if (mode != BPS_ACTION_TARGET_READ) targetReadFlush();
 
     switch (mode) {
       case BPS_ACTION_SOURCE_READ:

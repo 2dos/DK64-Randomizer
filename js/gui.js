@@ -28,7 +28,9 @@ function load_inital() {
     } else {
       var jsonresp = JSON.parse(savedUserJsonString);
       for (var k in jsonresp) {
-        document.getElementsByName(k)[0].value = jsonresp[k];
+        try {
+          document.getElementsByName(k)[0].value = jsonresp[k];
+        } catch (e) {}
       }
     }
     progression_clicked();
@@ -127,6 +129,7 @@ function submitdata() {
 
     setTimeout(function () {
       randomizeseed(form).then(function (rando) {
+        //downloadToFile(rando, 'settings.asm', 'text/plain');
         if (rando == false) {
           setTimeout(function () {
             $("#patchprogress").addClass("bg-danger");
@@ -135,6 +138,8 @@ function submitdata() {
             setTimeout(function () {
               $("#progressmodal").modal("hide");
               $("#patchprogress").removeClass("bg-danger");
+              $("#patchprogress").width("0%");
+              $("#progress-text").text("");
             }, 5000);
           }, 1000);
         } else {
@@ -145,10 +150,19 @@ function submitdata() {
       });
     }, 1000);
     JSONData = JSON.parse(queryStringToJSON(form));
-    delete JSONData.seed;
+    delete JSONData["seed"];
     setCookie("settings", JSON.stringify(JSONData), 30);
   }
 }
+const downloadToFile = (content, filename, contentType) => {
+  const a = document.createElement("a");
+  const file = new Blob([content], { type: contentType });
+  a.href = URL.createObjectURL(file);
+  a.download = filename;
+  a.click();
+  URL.revokeObjectURL(a.href);
+};
+
 function queryStringToJSON(qs) {
   qs = qs || location.search.slice(1);
 
@@ -175,7 +189,7 @@ function getCookie(cname) {
   var name = cname + "=";
   var decodedCookie = decodeURIComponent(document.cookie);
   var ca = decodedCookie.split(";");
-  for (var i = 0; i < ca.length; i += 1) {
+  for (var i = 0; i < ca.length; i++) {
     var c = ca[i];
     while (c.charAt(0) == " ") {
       c = c.substring(1);
