@@ -14,23 +14,23 @@ function load_inital() {
   setTimeout(function () {
     var savedUserJsonString = getCookie("settings");
     if (savedUserJsonString.length === 0) {
-        if (
-          document
-            .getElementById("blocker_selected")
-            .options[0].value.toLowerCase() == "vanilla"
-        ) {
-          const e = new Event("change");
-          element = document.querySelector("#blocker_selected");
-          element.dispatchEvent(e);
-          element = document.querySelector("#troff_selected");
-          element.dispatchEvent(e);
-        }
+      if (
+        document
+          .getElementById("blocker_selected")
+          .options[0].value.toLowerCase() == "vanilla"
+      ) {
+        const e = new Event("change");
+        element = document.querySelector("#blocker_selected");
+        element.dispatchEvent(e);
+        element = document.querySelector("#troff_selected");
+        element.dispatchEvent(e);
+      }
     } else {
       var jsonresp = JSON.parse(savedUserJsonString);
       for (var k in jsonresp) {
         try {
           document.getElementsByName(k)[0].value = jsonresp[k];
-        } catch {}
+        } catch (e) {}
       }
     }
     progression_clicked();
@@ -55,12 +55,14 @@ function randomizeseed(formdata) {
   return new Promise((resolve, reject) => {
     $("#patchprogress").width("30%");
     $("#progress-text").text("Randomizing seed");
-    response = randomize_data(formdata);
     setTimeout(function () {
-      $("#patchprogress").width("40%");
-      $("#progress-text").text("Randomizing complete");
+      response = randomize_data(formdata);
       setTimeout(function () {
-        resolve(response);
+        $("#patchprogress").width("40%");
+        $("#progress-text").text("Randomizing complete");
+        setTimeout(function () {
+          resolve(response);
+        }, 1000);
       }, 1000);
     }, 1000);
   });
@@ -125,16 +127,42 @@ function submitdata() {
     $("#progressmodal").modal("show");
     progression_clicked();
 
-    randomizeseed(form).then(function (rando) {
-      generate_asm(rando).then(function (binary_data) {
-        applyPatch(patch, romFile, false, binary_data);
+    setTimeout(function () {
+      randomizeseed(form).then(function (rando) {
+        //downloadToFile(rando, 'settings.asm', 'text/plain');
+        if (rando == false) {
+          setTimeout(function () {
+            $("#patchprogress").addClass("bg-danger");
+            $("#patchprogress").width("100%");
+            $("#progress-text").text("Failed to successfully generate a seed.");
+            setTimeout(function () {
+              $("#progressmodal").modal("hide");
+              $("#patchprogress").removeClass("bg-danger");
+              $("#patchprogress").width("0%");
+              $("#progress-text").text("");
+            }, 5000);
+          }, 1000);
+        } else {
+          generate_asm(rando).then(function (binary_data) {
+            applyPatch(patch, romFile, false, binary_data);
+          });
+        }
       });
-    });
+    }, 1000);
     JSONData = JSON.parse(queryStringToJSON(form));
     delete JSONData["seed"];
     setCookie("settings", JSON.stringify(JSONData), 30);
   }
 }
+const downloadToFile = (content, filename, contentType) => {
+  const a = document.createElement("a");
+  const file = new Blob([content], { type: contentType });
+  a.href = URL.createObjectURL(file);
+  a.download = filename;
+  a.click();
+  URL.revokeObjectURL(a.href);
+};
+
 function queryStringToJSON(qs) {
   qs = qs || location.search.slice(1);
 

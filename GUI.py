@@ -15,7 +15,7 @@ app_mode = True
 
 app = Flask(__name__, template_folder="/", static_folder="/", static_url_path="")
 app.config["SEND_FILE_MAX_AGE_DEFAULT"] = 0
-gui = FlaskUI(app=app, maximized=True, app_mode=app_mode)
+gui = FlaskUI(app=app, maximized=True, app_mode=app_mode, start_server="flask")
 
 
 @app.route("/", methods=["GET"])
