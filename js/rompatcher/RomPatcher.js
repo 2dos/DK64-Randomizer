@@ -90,10 +90,6 @@ function preparePatchedRom(originalRom, patchedRom, binary_data) {
   patchedRom.seek(0x3154);
   patchedRom.writeU8(0);
 
-  // Still not sure what this is
-  patchedRom.seek(0x200042b);
-  patchedRom.writeBytes([0xfe]);
-
   // Update the checksum
   fixChecksum(patchedRom)
 
