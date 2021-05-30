@@ -74,7 +74,8 @@ class Misc:
 
     def coin_door_open(self):
         """Response Data for form info."""
-        tooltip = """You do not need to collect the Nintendo and Rareware coin to collect Key 8."""
+        tooltip = """You do not need to collect the Nintendo and Rareware coin to collect Key 8.
+            You will not be able to collect the GB from DK Arcade with this option enabled."""
         return self.response(Value=True, ToolTip=self._unindent(tooltip), Enabled="")
 
     def quality_of_life(self):
