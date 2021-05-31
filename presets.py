@@ -89,12 +89,12 @@ def min_max(event, min, max):
 
 
 def key_down(event):
-    """Check if a key is a proper number, deletion, or navigation.
+    """Check if a key is a proper number, deletion, navigation, Copy/Cut/Paste.
 
     Args:
         event (DomEvent): Event from the DOM.
     """
-    global_keys = ["Backspace", "Delete", "ArrowLeft", "ArrowRight"]
+    global_keys = ["Backspace", "Delete", "ArrowLeft", "ArrowRight", "Control_L", "Control_R", "x", "v", "c"]
     if not event.key.isdigit() and event.key not in global_keys:
         event.preventDefault()
     else:
