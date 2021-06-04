@@ -2,7 +2,7 @@
 from browser import document, window
 
 stable_version = "0.4 Beta"
-dev_version = "0.4 Beta"
+dev_version = "0.4.1 Beta"
 
 url = window.location.href.lower().replace("/", "").replace("http:", "").replace("https:", "")
 
