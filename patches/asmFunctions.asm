@@ -47,6 +47,9 @@
 [Crystals]: 0x807FCC46 // u16
 [Film]: 0x807FCC48 // u16
 [IsAutowalking]: 0x807463B8
+[HUDPointer]: 0x80754280
+[LoadedActorArray]: 0x807FB930
+[LoadedActorCount]: 0x807FBB34 // u16
 
 // New Variables
 [TestVariable]: 0x807FFFFC
@@ -402,7 +405,7 @@ FixCastleAutowalk:
     LBU     a0, @IsAutowalking
     BEQZ    a0, FixCastleAutowalk_Finish
     NOP
-    SB      r0, @IsAutowalking
+    //SB      r0, @IsAutowalking
 
     FixCastleAutowalk_Finish:
         JR      ra
@@ -473,13 +476,74 @@ TagAnywhere:
     NOP
     LH      a1, @NewlyPressedControllerInput
     ANDI    a2, a1, @D_Left
-    BNEZ    a2, TagAnywhere_ChangeCharacter
+    BNEZ    a2, TagAnywhere_CheckHUD
     LI      t0, -1
     ANDI    a2, a1, @D_Right
-    BNEZ    a2, TagAnywhere_ChangeCharacter
+    BNEZ    a2, TagAnywhere_CheckHUD
     LI      t0, 1
     B       TagAnywhere_Finish
     NOP
+
+    TagAnywhere_CheckHUD:
+        LW      a0, @HUDPointer
+        BEQZ    a0, TagAnywhere_Finish
+        NOP
+        LW      a1, 0x20 (a0) // CB
+        BNEZ    a1, TagAnywhere_Finish
+        NOP
+        LW      a1, 0x50 (a0) // Coins
+        BNEZ    a1, TagAnywhere_Finish
+        NOP
+        LW      a1, 0x1A0 (a0) // GB Count (Not Bottom)
+        BNEZ    a1, TagAnywhere_Finish
+        NOP
+        LW      a1, 0x200 (a0) // Medals 
+        BNEZ    a1, TagAnywhere_Finish
+        NOP
+        LW      a1, 0x260 (a0) // Blueprint
+        BNEZ    a1, TagAnywhere_Finish
+        NOP
+        LW      a1, 0x290 (a0) // CB?
+        BNEZ    a1, TagAnywhere_Finish
+        NOP
+        LW      a1, 0x2C0 (a0) // Coins?
+        BNEZ    a1, TagAnywhere_Finish
+        NOP
+
+    TagAnywhere_CheckBullets:
+        LHU     a0, @LoadedActorCount
+        BEQZ    a0, TagAnywhere_Finish
+        NOP
+        LI      a1, @LoadedActorArray
+
+    TagAnywhere_CheckBullet_Loop:
+        LW      t3, 0x0 (a1)
+        LW      a2, 0x58 (t3)
+        LI      a3, 36 // Peanut
+        BEQ     a2, a3, TagAnywhere_CheckBullet_Stuck
+        LI      a3, 38 // Pineapple
+        BEQ     a2, a3, TagAnywhere_CheckBullet_Stuck
+        LI      a3, 42 // Grape
+        BEQ     a2, a3, TagAnywhere_CheckBullet_Stuck
+        LI      a3, 43 // Feather
+        BEQ     a2, a3, TagAnywhere_CheckBullet_Stuck
+        LI      a3, 48 // Coconut
+        BEQ     a2, a3, TagAnywhere_CheckBullet_Stuck
+        NOP
+        B       TagAnywhere_CheckBullet_Next
+        NOP
+
+    TagAnywhere_CheckBullet_Stuck:
+        LBU     a2, 0x154 (t3)
+        BEQZ    a2, TagAnywhere_Finish // Bullet hasn't touched object (feathers)
+        NOP
+
+    TagAnywhere_CheckBullet_Next:
+        ADDI    a0, a0, -1
+        BEQZ    a0, TagAnywhere_ChangeCharacter // All items checked
+        NOP
+        B       TagAnywhere_CheckBullet_Loop
+        ADDIU   a1, a1, 8
 
     TagAnywhere_ChangeCharacter:
         LW      a0, @CurrentMap
@@ -725,6 +789,8 @@ QOLChangesShorten:
     ShortenBossCutscenes:
         LI      a1, @TempFlagBlock
         LI      a2, 0x803F // All Boss Cutscenes
+        LHU     a3, 0xC (a1)
+        OR      a2, a3, a2
         SH      a2, 0xC (a1)
 
     // Shorter Snides Cutscenes
