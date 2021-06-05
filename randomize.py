@@ -17,6 +17,11 @@ def randomize(query_string):
         post_data = query_string
     else:
         post_data = dict((itm.split("=")[0], itm.split("=")[1]) for itm in query_string.split("&"))
+    for option in post_data:
+        if post_data[option] == "True":
+            post_data[option] = True
+        elif post_data[option] == "False":
+            post_data[option] = False
     if post_data.get("recursion", 0) > 3:
         return False
     levelEntrances = [
