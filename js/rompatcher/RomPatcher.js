@@ -44,7 +44,12 @@ function addEvent(e, ev, f) {
 /* initialize app */
 addEvent(window, "load", function () {
   fetchPatch("./patches/shrink-dk64.bps");
-  addEvent(document.getElementById("input-file-rom"), "change", function () {
+  addEvent(document.getElementById("input-file-rom_1"), "change", function () {
+    romFile = new MarcFile(this, _parseROM);
+    // TODO: We need to fix this romtyping so we properly update the rom type
+    // rom_type(romFile._u8array);
+  });
+  addEvent(document.getElementById("input-file-rom_2"), "change", function () {
     romFile = new MarcFile(this, _parseROM);
     // TODO: We need to fix this romtyping so we properly update the rom type
     // rom_type(romFile._u8array);

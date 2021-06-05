@@ -117,13 +117,30 @@ function generate_asm(asm) {
   });
 }
 function submitdata() {
-  $("input:disabled, select:disabled").each(function () {
-    $(this).removeAttr("disabled");
-  });
+  downloadlankyfile = false;
+  if (document.getElementById("downloadjson").checked) {
+    downloadlankyfile = document.getElementById("downloadjson").checked;
+  }
   if ($("#input-file-rom").val() == "") {
     $("#input-file-rom").select();
   } else {
-    form = $("#form").serialize();
+    curr_status = [];
+    $("input:disabled, select:disabled").each(function () {
+      curr_status.push($(this));
+      $(this).removeAttr("disabled");
+    });
+    var x = $('#form').serializeArray();
+    $('#form').find(':checkbox:not(:checked)').map(function () { 
+      x.push({ name: this.name, value: this.checked ? this.value : "False" }); 
+    });
+    var form = {};
+    $(x).each(function(index, obj){
+        form[obj.name] = obj.value;
+    });
+    form = new URLSearchParams(form).toString();
+    curr_status.forEach(function (item) {
+      $(item).prop("disabled", true);
+    });
     $("#progressmodal").modal("show");
     progression_clicked();
 
@@ -143,9 +160,27 @@ function submitdata() {
             }, 5000);
           }, 1000);
         } else {
-          generate_asm(rando).then(function (binary_data) {
-            applyPatch(patch, romFile, false, binary_data);
-          });
+          JSONData = JSON.parse(queryStringToJSON(form));
+          if (downloadlankyfile) {
+            setTimeout(function () {
+              downloadToFile(
+                JSON.stringify(JSONData),
+                "dk64r-settings-" + JSONData["seed"] + ".lanky",
+                "text/plain"
+              );
+              $("#patchprogress").width("100%");
+              $("#progress-text").text("Patch File Generated.");
+              setTimeout(function () {
+                $("#progressmodal").modal("hide");
+                $("#patchprogress").width("0%");
+                $("#progress-text").text("");
+              }, 5000);
+            }, 1000);
+          } else {
+            generate_asm(rando).then(function (binary_data) {
+              applyPatch(patch, romFile, false, binary_data);
+            });
+          }
         }
       });
     }, 1000);
@@ -207,3 +242,43 @@ function setCookie(cname, cvalue, exdays) {
   var expires = "expires=" + d.toUTCString();
   document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
 }
+
+function loadlankyfile() {
+  if ($("#input-file-rom").val() == "") {
+    $("#input-file-rom").select();
+  } else if ($("#jsonfileloader").val() == "") {
+    $("#jsonfileloader").select();
+  } else {
+    var file_hook = document.getElementById("jsonfileloader");
+    var fr = new FileReader();
+    fr.onload = function () {
+      jsonresp = JSON.parse(fr.result);
+      for (var k in jsonresp) {
+        try {
+          document.getElementsByName(k)[0].value = jsonresp[k];
+        } catch (e) {}
+      }
+      submitdata();
+    };
+    fr.readAsText(file_hook.files[0]);
+  }
+}
+
+var file_hook = document.getElementById("jsonfileloader");
+file_hook.addEventListener("change", function () {
+  var fr = new FileReader();
+  fr.onload = function () {
+    for (var k in JSON.parse(fr.result)) {
+      try {
+        if (JSON.parse(fr.result)[k] == "True") {
+          document.getElementsByName(k)[0].checked = true;
+        } else if (JSON.parse(fr.result)[k] == "False") {
+          document.getElementsByName(k)[0].checked = false;
+        } else {
+          document.getElementsByName(k)[0].value = JSON.parse(fr.result)[k];
+        }
+      } catch (e) {}
+    }
+  };
+  fr.readAsText(file_hook.files[0]);
+});

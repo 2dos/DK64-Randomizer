@@ -79,7 +79,7 @@ def randomize(query_string):
     # Shuffle Level Progression
     if post_data.get("randomize_progression"):
         asm += ".align" + "\n" + "RandoOn:" + "\n" + "\t" + ".byte 1" + "\n" + "\n"  # Run Randomizer in ASM
-        seed(post_data.get("seed"))
+        seed(str(post_data.get("seed")) + str(post_data))
         shuffle(finalLevels)
         logdata += "Level Order: " + "\n"
         asm += ".align" + "\n" + "LevelOrder:" + "\n"

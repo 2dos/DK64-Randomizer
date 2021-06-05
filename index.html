@@ -4,9 +4,9 @@
 <head>
     <meta charset="utf-8" />
     <meta content="width=device-width, initial-scale=1" name="viewport" />
-    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate"/>
-    <meta http-equiv="Pragma" content="no-cache"/>
-    <meta http-equiv="Expires" content="0"/>
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+    <meta http-equiv="Pragma" content="no-cache" />
+    <meta http-equiv="Expires" content="0" />
     <link href="./img/dk.png" rel="icon" />
 
     <link href="./styles/bootstrap.min.css" rel="stylesheet" type="text/css" />
@@ -50,7 +50,8 @@
             </div>
         </div>
     </div>
-    <img src="./img/logo.png" alt="DK64 Randomizer" class="center_image" style="cursor: pointer;" onClick="window.location.reload();">
+    <img src="./img/logo.png" alt="DK64 Randomizer" class="center_image" style="cursor: pointer;"
+        onClick="window.location.reload();">
     <div style="width: 50%; min-width: 400px;" class="center">
         <div class="card bg-secondary ">
             <form id="form" action="/" method="POST">
@@ -98,14 +99,67 @@
                     </div>
                 </div>
             </form>
-            <div style="width: 80%;" class="center">
-                <div class="form-group" style="margin-bottom: 10px;text-align: center;">
-                    <label for="input-file-rom" id="romlabel" class="form-label mt-4">ROM File</label>
-                    <input accept=".z64" class="form-control" type="file" id="input-file-rom" name="rom_file"
-                        style="margin-right: 5px;width: 50%;height: 100%; margin: 0 auto;" required>
+            <hr />
+            <div class="container">
+                <nav style="display: inline-block;float: none;vertical-align: top;">
+                    <div class="nav nav-tabs" role="tablist">
+                        <button class="nav-link active" id="nav-seed-gen-tab" data-bs-toggle="tab"
+                            data-bs-target="#nav-seed-gen" type="button" role="tab" aria-controls="nav-seed-gen"
+                            aria-selected="true">
+                            Generate New Seed
+                        </button>
+                        <button class="nav-link" id="nav-patch-tab" data-bs-toggle="tab"
+                            data-bs-target="#nav-patch-data" type="button" role="tab" aria-controls="nav-patch-data"
+                            aria-selected="false">
+                            Generate from Patch File
+                        </button>
+                    </div>
+                </nav>
+                <!--Populate tabs-->
+                <div class="tab-content" id="common_footer">
+                    <div class="tab-pane fade show active" id="nav-seed-gen" role="tabpanel"
+                        aria-labelledby="nav-seed-gen-tab">
+                        <div style="width: 80%;" class="center">
+                            <div class="form-group" style="margin-bottom: 10px;text-align: center;">
+                                <div class="form-check form-switch" id="downloadsettings"
+                                    style="margin-top: 20px; margin-bottom: -10px;">
+                                    <label data-bs-toggle="tooltip" title="{misc.downloadjson().ToolTip}">
+                                        <input class="form-check-input" type="checkbox" id="downloadjson"
+                                            name="downloadjson" value="True" data-bs-toggle="tooltip" title=""
+                                            {misc.downloadjson().Enabled} />
+                                        Download Patch File
+                                    </label>
+                                </div>
+                                <label for="input-file-rom_1" id="romlabel" class="form-label mt-4">ROM File</label>
+                                <input accept=".z64" class="form-control" type="file" id="input-file-rom_1"
+                                    name="rom_file" style="margin-right: 5px;width: 50%;height: 100%; margin: 0 auto;"
+                                    required />
+                            </div>
+                            <br id="formbreak" />
+                            <input id="generateseed" class="btn btn-primary"
+                                style="width: 60%; height: 50px; text-align: center;" onclick="submitdata()"
+                                type="button" value="Generate Seed" />
+                        </div>
+                    </div>
+                    <div class="tab-pane fade" id="nav-patch-data" role="tabpanel" aria-labelledby="nav-patch-tab">
+                        <div style="width: 80%;" class="center">
+                            <div class="form-group" style="margin-bottom: 10px;text-align: center;">
+                                <label for="jsonfileloader" id="patchlabel" class="form-label mt-4">Patch
+                                    File</label>
+                                <input id="jsonfileloader" class="form-control" type="file" accept=".lanky"
+                                    style="margin-right: 5px;width: 50%;height: 100%; margin: 0 auto;" />
+                                <label for="input-file-rom_2" id="romlabel" class="form-label mt-4">ROM File</label>
+                                <input accept=".z64" class="form-control" type="file" id="input-file-rom_2"
+                                    name="rom_file" style="margin-right: 5px;width: 50%;height: 100%; margin: 0 auto;"
+                                    required>
+                            </div>
+                            <br id="formbreak" />
+                            <input id="generateseed" class="btn btn-primary"
+                                style="width: 60%; height: 50px; text-align: center;" onclick="loadlankyfile()"
+                                type="button" value="Generate ROM" />
+                        </div>
+                    </div>
                 </div>
-                <input id="generateseed" class="btn btn-primary" style="width: 60%; height: 50px; text-align: center;"
-                    onclick="submitdata()" type="button" value="Generate Seed" />
             </div>
         </div>
     </div>
@@ -152,5 +206,6 @@
     <script type="text/python" src="./presets.py" defer></script>
     <script type="text/python" src="./level_progression.py" defer></script>
     <script type="text/python" src="./rando_options.py" defer></script>
+    <script type="text/python" src="./patch_files.py" defer></script>
     <script type="text/python" src="./version.py" defer></script>
 </footer>
