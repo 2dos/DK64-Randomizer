@@ -157,7 +157,7 @@ def randomize(query_string):
 
     # Unlock All Kongs
     asm += ".align" + "\n" + "KongFlags:" + "\n"
-    if post_data.get("unlock_all_kongs"):
+    if post_data.get("unlock_all_kongs") == "True":
         asm += "\t" + ".half 385" + "\n"  # DK
         asm += "\t" + ".half 6" + "\n"  # Diddy
         asm += "\t" + ".half 70" + "\n"  # Lanky
@@ -167,7 +167,7 @@ def randomize(query_string):
 
     # Unlock All Moves
     asm += ".align" + "\n" + "UnlockAllMoves:" + "\n"
-    if post_data.get("unlock_all_moves"):
+    if post_data.get("unlock_all_moves") == "True":
         asm += "\t" + ".byte 1" + "\n" + "\n"
     else:
         asm += "\t" + ".byte 0" + "\n" + "\n"
@@ -175,53 +175,53 @@ def randomize(query_string):
 
     # Unlock Camera + Shockwave
     asm += ".align" + "\n" + "FairyQueenRewards:" + "\n"
-    if post_data.get("unlock_fairy_shockwave"):
+    if post_data.get("unlock_fairy_shockwave") == "True":
         asm += "\t" + ".half 377" + "\n"  # BFI Camera/Shockwave
     asm += "\t" + ".half 0" + "\n" + "\n"  # Null Terminator (required)
 
     # Enable Tag Anywhere
     asm += ".align" + "\n" + "TagAnywhereOn:" + "\n"
-    if post_data.get("enable_tag_anywhere"):
+    if post_data.get("enable_tag_anywhere") == "True":
         asm += "\t" + ".byte 1" + "\n" + "\n"
     else:
         asm += "\t" + ".byte 0" + "\n" + "\n"
 
     # Fast Start Hideout Helm
     asm += ".align" + "\n" + "FastStartHelmOn:" + "\n"
-    if post_data.get("fast_start_hideout_helm"):
+    if post_data.get("fast_start_hideout_helm") == "True":
         asm += "\t" + ".byte 1" + "\n" + "\n"
     else:
         asm += "\t" + ".byte 0" + "\n" + "\n"
 
     # Open Crown Door
     asm += ".align" + "\n" + "CrownDoorOption:" + "\n"
-    if post_data.get("crown_door_open"):
+    if post_data.get("crown_door_open") == "True":
         asm += "\t" + ".byte 1" + "\n" + "\n"
     else:
         asm += "\t" + ".byte 0" + "\n" + "\n"
 
     # Open Nintendo + Rareware Coin Door
     asm += ".align" + "\n" + "CoinDoorOption:" + "\n"
-    if post_data.get("coin_door_open"):
+    if post_data.get("coin_door_open") == "True":
         asm += "\t" + ".byte 1" + "\n" + "\n"
     else:
         asm += "\t" + ".byte 0" + "\n" + "\n"
 
     # Quality of Life Changes
     asm += ".align" + "\n" + "QualityChangesOn:" + "\n"
-    if post_data.get("quality_of_life"):
+    if post_data.get("quality_of_life") == "True":
         asm += "\t" + ".byte 1" + "\n" + "\n"
     else:
         asm += "\t" + ".byte 0" + "\n" + "\n"
 
     # Fast Start
     asm += ".align" + "\n" + "FastStartOn:" + "\n"
-    if post_data.get("fast_start_beginning_of_game"):
+    if post_data.get("fast_start_beginning_of_game") == "True":
         asm += "\t" + ".byte 1" + "\n" + "\n"
     else:
         asm += "\t" + ".byte 0" + "\n" + "\n"
     asm += ".align" + "\n" + "FastStartFlags:" + "\n"
-    if post_data.get("fast_start_beginning_of_game"):
+    if post_data.get("fast_start_beginning_of_game") == "True":
         asm += "\t" + ".half 386" + "\n"  # Dive Barrel
         asm += "\t" + ".half 387" + "\n"  # Vine Barrel
         asm += "\t" + ".half 388" + "\n"  # Orange Barrel
@@ -232,7 +232,7 @@ def randomize(query_string):
         asm += "\t" + ".half 0x180" + "\n"  # Cranky has given Sim Slam
         asm += "\t" + ".half 385" + "\n"  # DK Free
     asm += "\t" + ".half 0" + "\n"  # Null Terminator (required)
-    if post_data.get("generate_spoilerlog"):
+    if post_data.get("generate_spoilerlog") == "True":
         document["nav-spoiler-tab"].style.display = ""
         document["spoiler_log_text"].text = logdata
     else:
