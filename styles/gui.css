@@ -62,3 +62,29 @@ footer {
     flex: 0 0 50px;
     margin-top: auto;
 }
+
+#nav-gen-type-container {
+    width: 90%;
+}
+
+#nav-gen-type {
+    border-bottom: none;
+}
+
+#nav-gen-type button.nav-link {
+    padding: 5px 10px;
+    transition: 0.5s ease-in-out background;
+    background-color: rgba(0,0,0,0);
+    border: none;
+    margin: 0px 5px;
+    outline: none;
+}
+
+#nav-gen-type button.nav-link:hover {
+    background-color: #e3e3e3;
+}
+
+#nav-gen-type button.nav-link.active {
+    border-bottom: 4px solid midnightblue;
+    border-radius: 3px;
+}
