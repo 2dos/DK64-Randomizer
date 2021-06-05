@@ -177,11 +177,11 @@ function rom_type(val) {
     return true;
   } else if ([64, 85, 55, 128].every((v, i) => v === arr.slice(0, 4)[i])) {
     console.log("N64");
-    alert("Not a valid Z64 file.");
+    alert("This is a .N64 file, please convert to .Z64.");
     // TODO: Convert Type
   } else if ([55, 128, 64, 18].every((v, i) => v === arr.slice(0, 4)[i])) {
     console.log("V64");
-    alert("Not a valid Z64 file.");
+    alert("This is a .V64 file, please convert to .Z64.");
     // TODO: Convert Type
   } else {
     alert("Invalid Rom Type, can only be Z64, N64, or V64.");

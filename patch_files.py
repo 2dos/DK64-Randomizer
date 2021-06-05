@@ -17,14 +17,14 @@ def disable_input(event):
     for item in document["form"].select("select"):
         inputs.append(item)
     for item in inputs:
-        if ev_type == True:
+        if ev_type is True:
             item.attrs["disabled"] = "disabled"
         else:
             try:
                 del item.attrs["disabled"]
             except Exception:
                 pass
-    if ev_type == False:
+    if ev_type is False:
         window.progression_clicked()
         try:
             document["input-file-rom"].id = "input-file-rom_2"
