@@ -14,17 +14,19 @@ function load_inital() {
   setTimeout(function () {
     var savedUserJsonString = getCookie("settings");
     if (savedUserJsonString.length === 0) {
-      if (
-        document
-          .getElementById("blocker_selected")
-          .options[0].value.toLowerCase() == "vanilla"
-      ) {
-        const e = new Event("change");
-        element = document.querySelector("#blocker_selected");
-        element.dispatchEvent(e);
-        element = document.querySelector("#troff_selected");
-        element.dispatchEvent(e);
-      }
+      try {
+        if (
+          document
+            .getElementById("blocker_selected")
+            .options[0].value.toLowerCase() == "vanilla"
+        ) {
+          const e = new Event("change");
+          element = document.querySelector("#blocker_selected");
+          element.dispatchEvent(e);
+          element = document.querySelector("#troff_selected");
+          element.dispatchEvent(e);
+        }
+      } catch {}
     } else {
       var jsonresp = JSON.parse(savedUserJsonString);
       for (var k in jsonresp) {
@@ -129,13 +131,15 @@ function submitdata() {
       curr_status.push($(this));
       $(this).removeAttr("disabled");
     });
-    var x = $('#form').serializeArray();
-    $('#form').find(':checkbox:not(:checked)').map(function () { 
-      x.push({ name: this.name, value: this.checked ? this.value : "False" }); 
-    });
+    var x = $("#form").serializeArray();
+    $("#form")
+      .find(":checkbox:not(:checked)")
+      .map(function () {
+        x.push({ name: this.name, value: this.checked ? this.value : "False" });
+      });
     var form = {};
-    $(x).each(function(index, obj){
-        form[obj.name] = obj.value;
+    $(x).each(function (index, obj) {
+      form[obj.name] = obj.value;
     });
     form = new URLSearchParams(form).toString();
     curr_status.forEach(function (item) {
