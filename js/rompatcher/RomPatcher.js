@@ -46,19 +46,15 @@ addEvent(window, "load", function () {
   fetchPatch("./patches/shrink-dk64.bps");
   addEvent(document.getElementById("input-file-rom_1"), "change", function () {
     romFile = new MarcFile(this, _parseROM);
-    // TODO: We need to fix this romtyping so we properly update the rom type
-    // rom_type(romFile._u8array);
   });
   addEvent(document.getElementById("input-file-rom_2"), "change", function () {
     romFile = new MarcFile(this, _parseROM);
-    // TODO: We need to fix this romtyping so we properly update the rom type
-    // rom_type(romFile._u8array);
   });
 });
 
 function _parseROM() {
   updateChecksums(romFile, 0);
-      getChecksum(romFile)
+  getChecksum(romFile);
 }
 
 function updateChecksums(file, startOffset, force) {
@@ -89,35 +85,50 @@ function _readPatchFile() {
 }
 
 function preparePatchedRom(originalRom, patchedRom, binary_data) {
-  applyASMtoPatchedRom(patchedRom, binary_data);
+  // TODO: We need to fix this romtyping so we properly update the rom type
+  if (rom_type(originalRom._u8array)) {
+    applyASMtoPatchedRom(patchedRom, binary_data);
 
-  // Deal with the security entry
-  patchedRom.seek(0x3154);
-  patchedRom.writeU8(0);
+    // Deal with the security entry
+    patchedRom.seek(0x3154);
+    patchedRom.writeU8(0);
 
-  // Update the checksum
-  fixChecksum(patchedRom)
+    // Update the checksum
+    fixChecksum(patchedRom);
 
-  patchedRom.fileName = originalRom.fileName =
-    "dk64-randomizer-" + document.getElementById("seed").value + ".z64";
-  patchedRom.fileType = originalRom.fileType;
-  patchedRom.save();
-  $("#patchprogress").width("100%");
-  $("#progress-text").text("ROM has been patched");
-  setTimeout(function () {
-    $("#progressmodal").modal("hide");
-    $("#patchprogress").width("0%");
-    $("#progress-text").text("");
-    progression_clicked();
-  }, 2000);
+    patchedRom.fileName = originalRom.fileName =
+      "dk64-randomizer-" + document.getElementById("seed").value + ".z64";
+    patchedRom.fileType = originalRom.fileType;
+    patchedRom.save();
+    $("#patchprogress").width("100%");
+    $("#progress-text").text("ROM has been patched");
+    setTimeout(function () {
+      $("#progressmodal").modal("hide");
+      $("#patchprogress").width("0%");
+      $("#progress-text").text("");
+      progression_clicked();
+    }, 2000);
+  } else {
+    $("#patchprogress").addClass("bg-danger");
+    $("#patchprogress").width("100%");
+    $("#progress-text").text("Failed to successfully generate a seed.");
+    setTimeout(function () {
+      $("#progressmodal").modal("hide");
+      $("#patchprogress").removeClass("bg-danger");
+      $("#patchprogress").width("0%");
+      $("#progress-text").text("");
+    }, 5000);
+  }
 }
 
 function applyASMtoPatchedRom(patchedRom, binary_data) {
   var data = binary_data.split("\n");
   // console.log(data)
-  var list_of_addrs = data.map(item => Number(item.split(":")[0])).filter(item => item < 0x5FAE00)
+  var list_of_addrs = data
+    .map((item) => Number(item.split(":")[0]))
+    .filter((item) => item < 0x5fae00);
   // console.log(list_of_addrs)
-  var patch_extension_size = (Math.max(...list_of_addrs)-0x5dae00) + 1
+  var patch_extension_size = Math.max(...list_of_addrs) - 0x5dae00 + 1;
 
   patchedRom._u8array = concatTypedArrays(
     patchedRom._u8array,
@@ -163,15 +174,19 @@ function rom_type(val) {
   arr = new Uint8Array(val);
   if ([128, 55, 18, 64].every((v, i) => v === arr.slice(0, 4)[i])) {
     console.log("Already Z64");
+    return true;
   } else if ([64, 85, 55, 128].every((v, i) => v === arr.slice(0, 4)[i])) {
     console.log("N64");
+    alert("Not a valid Z64 file.");
     // TODO: Convert Type
   } else if ([55, 128, 64, 18].every((v, i) => v === arr.slice(0, 4)[i])) {
     console.log("V64");
+    alert("Not a valid Z64 file.");
     // TODO: Convert Type
   } else {
     alert("Invalid Rom Type, can only be Z64, N64, or V64.");
   }
+  return false;
 }
 
 function applyPatch(p, r, validateChecksums, binary_data) {
