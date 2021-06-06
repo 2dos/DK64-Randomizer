@@ -1,7 +1,9 @@
 window.onload = load_inital;
 
 function load_inital() {
+  // Load Brython itself
   brython();
+  // launch the base modal
   $("#progressmodal").modal({
     show: false,
     backdrop: "static",
@@ -12,30 +14,41 @@ function load_inital() {
   });
   $("#loading").modal("show");
   setTimeout(function () {
-    var savedUserJsonString = getCookie("settings");
-    if (savedUserJsonString.length === 0) {
-      try {
-        if (
-          document
-            .getElementById("blocker_selected")
-            .options[0].value.toLowerCase() == "vanilla"
-        ) {
-          const e = new Event("change");
-          element = document.querySelector("#blocker_selected");
-          element.dispatchEvent(e);
-          element = document.querySelector("#troff_selected");
-          element.dispatchEvent(e);
-        }
-      } catch {}
-    } else {
-      var jsonresp = JSON.parse(savedUserJsonString);
-      for (var k in jsonresp) {
+    try {
+      // Load the settings from a cookie (Returns empty if nothing)
+      var savedUserJsonString = getCookie("settings");
+      // If the cookie is empty lets load the default vanilla settings
+      if (savedUserJsonString.length === 0) {
         try {
-          document.getElementsByName(k)[0].value = jsonresp[k];
-        } catch (e) {}
+          // Verify the selection we have
+          if (
+            document
+              .getElementById("blocker_selected")
+              .options[0].value.toLowerCase() == "vanilla"
+          ) {
+            // Trigger an event change for the two boxes to force their type
+            const e = new Event("change");
+            element = document.querySelector("#blocker_selected");
+            element.dispatchEvent(e);
+            element = document.querySelector("#troff_selected");
+            element.dispatchEvent(e);
+          }
+        } catch {}
+      } else {
+        // Load the cookie into JSON and update the form to match
+        var jsonresp = JSON.parse(savedUserJsonString);
+        for (var k in jsonresp) {
+          try {
+            document.getElementsByName(k)[0].value = jsonresp[k];
+          } catch (e) {}
+        }
       }
-    }
-    progression_clicked();
+    } catch {}
+    try {
+      // Make sure we trigger the progression button so all our flag states match
+      progression_clicked();
+    } catch {}
+    // Hide the modal
     $("#loading").modal("hide");
   }, 2000);
 }
