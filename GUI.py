@@ -1,14 +1,14 @@
 """Start the GUI Process for Flask."""
 import os
 import signal
+import sys
 import threading
 import time
-import sys
 from pathlib import Path
+
 import psutil
 from flask import Flask
 from flaskwebgui import FlaskUI  # import FlaskUI
-
 
 # If this flag is set to true this flask app will only launch in a web format
 app_mode = True

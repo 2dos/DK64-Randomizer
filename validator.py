@@ -1,7 +1,7 @@
 """Validate the seed we generated."""
-from validator_data import golden_bananas
 import copy
 
+from validator_data import golden_bananas
 
 kong_list = ["dk", "diddy", "lanky", "tiny", "chunky"]
 

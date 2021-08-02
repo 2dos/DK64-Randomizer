@@ -25,7 +25,7 @@
 </head>
 
 <body onload="brython()">
-    <div class="modal fade" id="progressmodal">
+    <div class="modal fade" data-bs-backdrop="static" data-bs-keyboard="false" id="progressmodal">
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
                 <div class="modal-body center" style="width:100%">
@@ -41,7 +41,7 @@
             </div>
         </div>
     </div>
-    <div class="modal fade" id="loading">
+    <div class="modal fade" data-bs-backdrop="static" data-bs-keyboard="false" id="loading">
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
                 <div class="modal-body center" style="width:100%">
@@ -136,8 +136,8 @@
                                     required />
                             </div>
                             <br id="formbreak" />
-                            <input id="generateseed" class="btn btn-primary"
-                                style="width: 60%; height: 50px; text-align: center;" onclick="submitdata()"
+                            <input id="generate_seed" class="btn btn-primary"
+                                style="width: 60%; height: 50px; text-align: center;"
                                 type="button" value="Generate Seed" />
                         </div>
                     </div>
@@ -154,8 +154,8 @@
                                     required>
                             </div>
                             <br id="formbreak" />
-                            <input id="generateseed" class="btn btn-primary"
-                                style="width: 60%; height: 50px; text-align: center;" onclick="loadlankyfile()"
+                            <input id="generate_lanky_seed" class="btn btn-primary"
+                                style="width: 60%; height: 50px; text-align: center;"
                                 type="button" value="Generate ROM" />
                         </div>
                     </div>
@@ -195,7 +195,6 @@
         integrity="sha384-gtEjrD/SeCtmISkJkNUaaKMoLD0//ElJ19smozuHV6z3Iehds+3Ulb9Bn9Plx0x4"
         crossorigin="anonymous"></script>
     <script type="text/javascript" src="https://unpkg.com/lua.vm.js@0.0.1/dist/lua.vm.js"></script>
-    <script type="text/javascript" src="./js/gui.js" defer></script>
     <script type="text/javascript" src="./js/rompatcher/crc.js" defer></script>
     <script type="text/javascript" src="./js/rompatcher/formats/bps.js" defer></script>
     <script type="text/javascript" src="./js/rompatcher/MarcFile.js" defer></script>
@@ -208,4 +207,10 @@
     <script type="text/python" src="./rando_options.py" defer></script>
     <script type="text/python" src="./patch_files.py" defer></script>
     <script type="text/python" src="./version.py" defer></script>
+    <script>
+        window.onload = load_inital;
+        function load_inital() {
+            brython();
+        }
+    </script>
 </footer>
