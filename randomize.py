@@ -1,22 +1,20 @@
 """Randomize your seed via your settings."""
 from random import seed, shuffle
+
+from browser import document
+
 from validator import validateSeed
-from browser import window, document
 
 
-def randomize(query_string):
+def randomize(post_data):
     """Randomize the seed.
 
     Args:
-        query_string (str): Form data query string.
+        query_string (dict): Form data query string.
 
     Returns:
         str: ASM Data.
     """
-    if isinstance(query_string, dict):
-        post_data = query_string
-    else:
-        post_data = dict((itm.split("=")[0], itm.split("=")[1]) for itm in query_string.split("&"))
     for option in post_data:
         if post_data[option] == "True":
             post_data[option] = True
@@ -243,7 +241,6 @@ def randomize(query_string):
     else:
         document["nav-spoiler-tab"].style.display = "none"
         document["spoiler_log_text"].text = ""
-    # TODO: We need to properly validate the seed and block depending on the results
     if validateSeed(
         finalNumerical,
         post_data.get("unlock_all_kongs", False),
@@ -261,6 +258,3 @@ def randomize(query_string):
         post_data["recursion"] = post_data["recursion"] + 1
         result = randomize(post_data)
         return result
-
-
-window.randomize_data = randomize

@@ -139,7 +139,6 @@ MarcFile.prototype.save=function(){
 			blob=bb.getBlob(this.fileType);
 		}else{
 			throw new Error('Incompatible Browser');
-			return false;
 		}
 	}
 	saveAs(blob,this.fileName);

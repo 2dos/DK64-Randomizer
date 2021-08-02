@@ -1,7 +1,9 @@
 """Manage default data on the form."""
-from level_progression import LevelProgression
-from browser import document
 import random
+
+from browser import document
+
+from level_progression import LevelProgression
 
 
 def randomseed(event):
@@ -12,7 +14,7 @@ def randomseed(event):
 def set_troff_preset(event):
     """Set the troff n Scoff Presets on the page."""
     preset = document["troff_selected"].text.splitlines()[document["troff_selected"].selectedIndex]
-    if preset is "":
+    if not preset:
         preset = "Vanilla"
     presets = LevelProgression().troff_presets()
     response = []
@@ -29,7 +31,7 @@ def set_troff_preset(event):
 def set_blocker_preset(event):
     """Set the Blocker presets on the page."""
     preset = document["blocker_selected"].text.splitlines()[document["blocker_selected"].selectedIndex]
-    if preset is "":
+    if not preset:
         preset = "Vanilla"
     presets = LevelProgression().blocker_presets()
     response = []
