@@ -82,7 +82,74 @@ MarcFile.IS_MACHINE_LITTLE_ENDIAN=(function(){	/* https://developer.mozilla.org/
 	return new Int16Array(buffer)[0] === 256;
 })();
 
+MarcFile.prototype.convert=function(){
+	function convertchunk(chunk, byteswp, wordswp) {
+        output = [chunk[0], chunk[1], chunk[2], chunk[3]]
+		if (byteswp == true){
+			output[0] = chunk[1]
+			output[1] = chunk[0]
+			output[2] = chunk[3]
+			output[3] = chunk[2]
+		}
+		if (wordswp == true){
+			output[0] = chunk[3]
+			output[1] = chunk[2]
+			output[2] = chunk[1]
+			output[3] = chunk[0]
+		}
+		return output
+    }
 
+	magic = [this._u8array[0], this._u8array[1], this._u8array[2], this._u8array[3]]
+	validate = [this._u8array[0], this._u8array[1], this._u8array[2], this._u8array[3]]
+	first = magic[0]
+	if (validate.sort().toString() != [0x37, 0x12, 0x40, 0x80].sort().toString()) {
+		throw new Error('Invalid Rom');
+	}
+	byteswapped = [0x37, 0x12].includes(first)
+	wordswapped = [0x40, 0x12].includes(first)
+	convert = false
+	if (byteswapped == false && wordswapped == false){
+		// console.log("z64")
+	}
+	else if (byteswapped == true && wordswapped == false){
+		// console.log("v64")
+		convert = true
+	}
+	else if (byteswapped == false && wordswapped == true){
+		// console.log("n64")
+		convert = true
+	}
+	else if (byteswapped == true && wordswapped == true){
+		// console.log("v64+n64")
+		convert = true
+	}
+	if (convert == true){
+		this.seek(0)
+		resp = convertchunk(magic, byteswapped, wordswapped)
+		this.writeU8(resp[0])
+		this.writeU8(resp[1])
+		this.writeU8(resp[2])
+		this.writeU8(resp[3])
+		position = 4
+		while (true){
+			data =[this._u8array[position], this._u8array[position + 1], this._u8array[position + 2], this._u8array[position +3]]
+			if (this._u8array[position + 4] == null){
+				break
+			}
+			converted_chunk = convertchunk(data, byteswapped, wordswapped)
+			this.writeU8(converted_chunk[0])
+			this.writeU8(converted_chunk[1])
+			this.writeU8(converted_chunk[2])
+			this.writeU8(converted_chunk[3])
+			position += 4
+		}
+		position = 4
+		this.seek(0)
+
+	}
+
+}
 
 MarcFile.prototype.seek=function(offset){
 	this.offset=offset;

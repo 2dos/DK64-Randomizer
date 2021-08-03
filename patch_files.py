@@ -155,6 +155,9 @@ def convert_asm(asm):
 
 def start_apply_asm():
     """Apply the ASM code to the rom."""
+    # Convert the rom type to z64
+    window.romFile.convert()
+    # Apply the BPS
     apply_bps()
     max_addr = -1
     asm = str(window.asmcode)
@@ -188,6 +191,8 @@ def fix_checksum():
     window.patchedRom.seek(0x3154)
     window.patchedRom.writeU8(0)
     window.fixChecksum(window.patchedRom)
+    jq("#patchprogress").width("100%")
+    jq("#progress-text").text("Patching Complete")
 
 
 def apply_asm_bytes(addr, val):

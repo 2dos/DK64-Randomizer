@@ -131,7 +131,7 @@
                                     </label>
                                 </div>
                                 <label for="input-file-rom_1" id="romlabel" class="form-label mt-4">ROM File</label>
-                                <input accept=".z64" class="form-control" type="file" id="input-file-rom_1"
+                                <input accept=".z64,.n64,.v64" class="form-control" type="file" id="input-file-rom_1"
                                     name="rom_file" style="margin-right: 5px;width: 50%;height: 100%; margin: 0 auto;"
                                     required />
                             </div>
@@ -149,7 +149,7 @@
                                 <input id="jsonfileloader" class="form-control" type="file" accept=".lanky"
                                     style="margin-right: 5px;width: 50%;height: 100%; margin: 0 auto;" />
                                 <label for="input-file-rom_2" id="romlabel" class="form-label mt-4">ROM File</label>
-                                <input accept=".z64" class="form-control" type="file" id="input-file-rom_2"
+                                <input accept=".z64,.n64,.v64" class="form-control" type="file" id="input-file-rom_2"
                                     name="rom_file" style="margin-right: 5px;width: 50%;height: 100%; margin: 0 auto;"
                                     required>
                             </div>
@@ -210,6 +210,7 @@
     <script>
         window.onload = load_inital;
         function load_inital() {
+            $("#loading").modal("show")
             brython();
         }
     </script>
