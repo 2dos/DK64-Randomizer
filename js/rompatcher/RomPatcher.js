@@ -101,7 +101,6 @@ function apply_bps_javascript() {
     bps = parseBPSFile(patchFile_internal);
     try {
       patchedRom = bps.apply(romFile_internal, false);
-      console.log("patched")
     } catch (evt) {
       errorMessage = evt.message;
       console.log(evt)

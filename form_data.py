@@ -44,5 +44,4 @@ def loading_finished():
     jq("#loading").modal("hide")
 
 
-jq("#loading").modal("show")
 timer.set_timeout(loading_finished, 2000)
