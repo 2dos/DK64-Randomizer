@@ -191,6 +191,8 @@ def fix_checksum():
     window.patchedRom.seek(0x3154)
     window.patchedRom.writeU8(0)
     window.fixChecksum(window.patchedRom)
+    jq("#patchprogress").width("100%")
+    jq("#progress-text").text("Patching Complete")
 
 
 def apply_asm_bytes(addr, val):
