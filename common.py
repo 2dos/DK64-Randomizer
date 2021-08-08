@@ -68,6 +68,7 @@ def generate_seed(event):
     if not document["input-file-rom_1"].value:
         document["input-file-rom_1"].select()
     else:
+        jq("#progressmodal").modal("show")
         disabled_options = []
         for element in document.getElementsByTagName("input"):
             if element.attrs.get("disabled"):
@@ -90,6 +91,5 @@ def generate_seed(event):
                     form_data[element.name] = False
         for element in disabled_options:
             element.attrs["disabled"] = "disabled"
-        jq("#progressmodal").modal("show")
         update_disabled_progression()
         timer.set_timeout(patch_files.start_randomizing_seed(form_data), 1000)

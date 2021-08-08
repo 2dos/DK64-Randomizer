@@ -1,7 +1,8 @@
 """Validate the seed we generated."""
 import copy
+from object_data.objects import GoldenBanana
 
-from validator_data import golden_bananas
+import object_data.golden_bananas as gbs
 
 kong_list = ["dk", "diddy", "lanky", "tiny", "chunky"]
 
@@ -90,12 +91,12 @@ def validateSeed(
         if all_moves:
             amount = 3
             moves_acquired["ammo_belt"] = 2
-            moves_acquired["slam"] = 3
+            moves_acquired.slam = 3
         moves_acquired[kong + "_cranky"] = amount
         moves_acquired["gun_" + kong] = all_moves
         moves_acquired["ins_" + kong] = all_moves
 
-    banana_cache = copy.deepcopy(golden_bananas)
+    banana_cache = copy.deepcopy(gbs.golden_bananas)
     gbs_collected = 0
     levels = ["japes", "aztec", "factory", "galleon", "fungi", "caves", "castle"]
     highest_level_entered = -1
@@ -110,7 +111,7 @@ def validateSeed(
             validation_logs.append("Level " + str(level_progress + 1) + " / 8:")
         # Check Isles EVERY TIME
         for i in range(len(banana_cache["isles"])):
-            if not banana_cache["isles"][i]["collected"]:
+            if not banana_cache["isles"][i].collected:
                 if checkMoves(
                     "isles",
                     banana_cache["isles"][i],
@@ -120,7 +121,7 @@ def validateSeed(
                     keys_acquired,
                 ):
                     gbs_collected += 1
-                    banana_cache["isles"][i]["collected"] = True
+                    banana_cache["isles"][i].collected = True
 
         # Check if has enough for B. Locker
         if b_locker_array[level_progress] > gbs_collected:
@@ -168,7 +169,7 @@ def validateSeed(
                                                 validation_logs.append(kong + " Unlocked")
                                             kongs_unlocked[kong] = True
                         for j in range(len(banana_cache[level_name])):
-                            if not banana_cache[level_name][j]["collected"]:
+                            if not banana_cache[level_name][j].collected:
                                 if checkMoves(
                                     level_name,
                                     banana_cache[level_name][j],
@@ -179,19 +180,19 @@ def validateSeed(
                                 ):
                                     second_pass = False
                                     for kong in kong_list:
-                                        if banana_cache[level_name][j]["frees_" + kong]:
+                                        if getattr(banana_cache[level_name][j], "frees_" + kong):
                                             second_pass = True
                                             if not kongs_unlocked[kong]:
                                                 validation_logs.append(kong + " Unlocked")
                                             kongs_unlocked[kong] = True
                                     if second_pass:
                                         gbs_collected += 1
-                                        banana_cache[level_name][j]["collected"] = True
+                                        banana_cache[level_name][j].collected = True
             # Check if can free kongs
             for i in lobby_access:
                 level_name = levels[i]
                 for j in range(len(banana_cache[level_name])):
-                    if not banana_cache[level_name][j]["collected"]:
+                    if not banana_cache[level_name][j].collected:
                         if checkMoves(
                             level_name,
                             banana_cache[level_name][j],
@@ -201,7 +202,7 @@ def validateSeed(
                             keys_acquired,
                         ):
                             gbs_collected += 1
-                            banana_cache[level_name][j]["collected"] = True
+                            banana_cache[level_name][j].collected = True
 
             kongs_unlocked_count = 0
             for i in kongs_unlocked.keys():
@@ -262,12 +263,12 @@ def validateSeed(
     return False
 
 
-def checkMoves(level, gb_object, moves, kongs, access, keys):
+def checkMoves(level, gb_object: GoldenBanana, moves, kongs, access, keys):
     """Check if moves should be open.
 
     Args:
         level ([type]): [description]
-        gb_object ([type]): [description]
+        gb_object (GoldenBanana): [description]
         moves ([type]): [description]
         kongs ([type]): [description]
         access ([type]): [description]
@@ -277,35 +278,33 @@ def checkMoves(level, gb_object, moves, kongs, access, keys):
         [type]: [description]
     """
     passes = True
-    if gb_object["dive"] and not moves["dive"]:
+    if gb_object.dive and not moves["dive"]:
         passes = False
-    if gb_object["orange"] and not moves["orange"]:
+    if gb_object.orange and not moves["orange"]:
         passes = False
-    if gb_object["barrel"] and not moves["barrel"]:
+    if gb_object.barrel and not moves["barrel"]:
         passes = False
-    if gb_object["vine"] and not moves["vine"]:
+    if gb_object.vine and not moves["vine"]:
         passes = False
-    if gb_object["slam"] > moves["slam"]:
+    if gb_object.slam > moves["slam"]:
         passes = False
-    if gb_object["ammo_belt"] > moves["ammo_belt"]:
+    if gb_object.homing and not moves["homing"]:
         passes = False
-    if gb_object["homing"] and not moves["homing"]:
-        passes = False
-    if gb_object["sniper"] and not moves["sniper"]:
+    if gb_object.sniper and not moves["sniper"]:
         passes = False
     for kong in kong_list:
-        if gb_object[kong + "_cranky"] > moves[kong + "_cranky"]:
+        if getattr(gb_object, kong + "_cranky") > moves[kong + "_cranky"]:
             passes = False
-        if gb_object["gun_" + kong] and not moves["gun_" + kong]:
+        if getattr(gb_object, kong + "_gun") and not moves["gun_" + kong]:
             passes = False
-        if gb_object["kong_" + kong] and not kongs[kong]:
+        if getattr(gb_object, kong + "_pickup") and not kongs[kong]:
             passes = False
-        if gb_object["ins_" + kong] and not moves["ins_" + kong]:
+        if getattr(gb_object, kong + "_instrument") and not moves["ins_" + kong]:
             passes = False
     if level == "isles":
         for j in range(8):
-            if gb_object["requires_key" + str(j + 1)] and not keys["key_" + str(j + 1)]:
+            if getattr(gb_object, "key" + str(j + 1)) and not keys["key_" + str(j + 1)]:
                 passes = False
-            if gb_object["in_vanillaLobby" + str(j + 1)] and j not in access:
+            if getattr(gb_object, "lobby" + str(j + 1)) and j not in access:
                 passes = False
     return passes
