@@ -17,4 +17,4 @@ jobs:
         target_dir: /
         target_branch: main
         access_token: ${{ secrets.ACCESS_TOKEN }}
-        precommit_command: "echo 'This repo Dev Github Pages for DK64Rando, you need to go to https://github.com/2dos/DK64-Randomizer' > README.md && echo 'dev.dk64randomizer.com' > CNAME"
+        precommit_command: "echo 'This repo Dev Github Pages for DK64Rando, you need to go to https://github.com/2dos/DK64-Randomizer' > README.md && echo 'dev.dk64randomizer.com' > CNAME && touch .nojekyll"
