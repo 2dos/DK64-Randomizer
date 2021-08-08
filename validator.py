@@ -1,6 +1,5 @@
 """Validate the seed we generated."""
 import copy
-from object_data.objects import GoldenBanana
 
 import object_data.golden_bananas as gbs
 

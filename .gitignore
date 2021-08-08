@@ -140,6 +140,10 @@ cython_debug/
 # VSCode
 .vscode
 
+# Jekyll
+_site/
+Gemfile.lock
+
 # Randomizer specific
 spoilerlog*.txt
 settings*.asm
