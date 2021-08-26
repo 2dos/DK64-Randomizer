@@ -159,10 +159,11 @@ def randomize(post_data):
     asm += "\n" + "\n"
 
     for asm_data in asm_options:
-        if asm_data.append == True:
-            asm += asm_data.generate_asm(data="randomize_progression")
-        else:
-            asm += asm_data.generate_asm()
+        if post_data.get(asm_data.form_var):
+            if asm_data.append == True:
+                asm += asm_data.generate_asm(data="randomize_progression")
+            else:
+                asm += asm_data.generate_asm()
 
     asm += "\t" + ".half 0" + "\n"  # Null Terminator (required)
     if post_data.get("generate_spoilerlog"):
