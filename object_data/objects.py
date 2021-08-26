@@ -1,4 +1,6 @@
 """Data objects for data management."""
+import os.path
+from browser import document, html
 
 
 class GoldenBanana:
@@ -199,3 +201,54 @@ class GoldenBanana:
         self.lobby6 = lobby6
         self.lobby7 = lobby7
         self.lobby8 = lobby8
+
+
+class ASMPatch:
+    def __init__(self, asm_file: str, var_type: str, form_var: str, required=False, replace=False, **kwargs):
+        self.asm_file = asm_file
+        self.var_type = var_type.lower()
+        self.form_var = form_var
+        self.required = required
+        self.replace = replace
+        for key, value in kwargs.items():
+            setattr(self, key, value)
+        self._verify_asm_exists()
+
+    def _verify_asm_exists(self):
+        if not os.path.exists(f"./asm/required/{self.asm_file}.asm" if self.required else f"./asm/{self.asm_file}.asm"):
+            raise Exception("Source ASM file does not exist.")
+        else:
+            self.path = f"./asm/required/{self.asm_file}.asm" if self.required else f"./asm/{self.asm_file}.asm"
+
+    def generate_html(self):
+        # Note: Requires self.content, self.title, self.enabled currently but does not actively check for them.
+        if self.var_type == "checkbox":
+            element = html.DIV(Class="form-check form-switch")
+            label = html.LABEL(self.content, data_bs_toggle="tooltip", title=self.title)
+            element <= label
+            label <= html.INPUT(
+                Class="form-check-input",
+                type="checkbox",
+                name=self.form_var,
+                value="True",
+                data_bs_toggle="tooltip",
+                title=self.title,
+                enabled=self.enabled,
+            )
+            document["body_data"] <= element
+        elif self.var_type == "form-select":
+            # TODO: Incomplete select
+            element = html.div()
+            element <= html.SELECT(self.content)
+            document["body_data"] <= element
+
+    def generate_asm(self, data=dict()):
+        asm = str()
+        with open(self.path, "r") as file:
+            asm += file.read()
+            asm += "\n"
+        if self.replace:
+            for item in data.items():
+                # We're replacing the key with the value in the asm
+                asm.replace(item[0], item[1])
+        return asm

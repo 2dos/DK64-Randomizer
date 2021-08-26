@@ -3,6 +3,7 @@ from random import seed, shuffle
 
 from browser import document
 
+from object_data.form_options import asm_options
 from validator import validateSeed
 
 
@@ -47,10 +48,9 @@ def randomize(post_data):
     ]
     finalLevels = levelEntrances[:]
 
-    # Open default mod file
-    with open("./patches/asmFunctions.asm", "r") as file:
-        asm = file.read()
-    logdata = ""
+    asm = str()
+    rando_params = []
+    logdata = str()
     # Write Settings to Spoiler Log
     logdata += "Randomizer Settings" + "\n"
     logdata += "-------------------" + "\n"
@@ -158,82 +158,12 @@ def randomize(post_data):
         asm += "\t" + ".half " + str(finalKeyFlags[x]) + "\n"
     asm += "\n" + "\n"
 
-    # Unlock All Kongs
-    asm += ".align" + "\n" + "KongFlags:" + "\n"
-    if post_data.get("unlock_all_kongs"):
-        asm += "\t" + ".half 385" + "\n"  # DK
-        asm += "\t" + ".half 6" + "\n"  # Diddy
-        asm += "\t" + ".half 70" + "\n"  # Lanky
-        asm += "\t" + ".half 66" + "\n"  # Tiny
-        asm += "\t" + ".half 117" + "\n"  # Chunky
-    asm += "\t" + ".half 0" + "\n" + "\n"  # Null Terminator (required)
+    for asm_data in asm_options:
+        if asm_data.append == True:
+            asm += asm_data.generate_asm(data="randomize_progression")
+        else:
+            asm += asm_data.generate_asm()
 
-    # Unlock All Moves
-    asm += ".align" + "\n" + "UnlockAllMoves:" + "\n"
-    if post_data.get("unlock_all_moves"):
-        asm += "\t" + ".byte 1" + "\n" + "\n"
-    else:
-        asm += "\t" + ".byte 0" + "\n" + "\n"
-    asm += ".align" + "\n" + "SniperValue:" + "\n" + "\t" + ".byte 0x3" + "\n" + "\n"  # Sniper Scope: 3 = off, 7 = on
-
-    # Unlock Camera + Shockwave
-    asm += ".align" + "\n" + "FairyQueenRewards:" + "\n"
-    if post_data.get("unlock_fairy_shockwave"):
-        asm += "\t" + ".half 377" + "\n"  # BFI Camera/Shockwave
-    asm += "\t" + ".half 0" + "\n" + "\n"  # Null Terminator (required)
-
-    # Enable Tag Anywhere
-    asm += ".align" + "\n" + "TagAnywhereOn:" + "\n"
-    if post_data.get("enable_tag_anywhere"):
-        asm += "\t" + ".byte 1" + "\n" + "\n"
-    else:
-        asm += "\t" + ".byte 0" + "\n" + "\n"
-
-    # Fast Start Hideout Helm
-    asm += ".align" + "\n" + "FastStartHelmOn:" + "\n"
-    if post_data.get("fast_start_hideout_helm"):
-        asm += "\t" + ".byte 1" + "\n" + "\n"
-    else:
-        asm += "\t" + ".byte 0" + "\n" + "\n"
-
-    # Open Crown Door
-    asm += ".align" + "\n" + "CrownDoorOption:" + "\n"
-    if post_data.get("crown_door_open"):
-        asm += "\t" + ".byte 1" + "\n" + "\n"
-    else:
-        asm += "\t" + ".byte 0" + "\n" + "\n"
-
-    # Open Nintendo + Rareware Coin Door
-    asm += ".align" + "\n" + "CoinDoorOption:" + "\n"
-    if post_data.get("coin_door_open"):
-        asm += "\t" + ".byte 1" + "\n" + "\n"
-    else:
-        asm += "\t" + ".byte 0" + "\n" + "\n"
-
-    # Quality of Life Changes
-    asm += ".align" + "\n" + "QualityChangesOn:" + "\n"
-    if post_data.get("quality_of_life"):
-        asm += "\t" + ".byte 1" + "\n" + "\n"
-    else:
-        asm += "\t" + ".byte 0" + "\n" + "\n"
-
-    # Fast Start
-    asm += ".align" + "\n" + "FastStartOn:" + "\n"
-    if post_data.get("fast_start_beginning_of_game"):
-        asm += "\t" + ".byte 1" + "\n" + "\n"
-    else:
-        asm += "\t" + ".byte 0" + "\n" + "\n"
-    asm += ".align" + "\n" + "FastStartFlags:" + "\n"
-    if post_data.get("fast_start_beginning_of_game"):
-        asm += "\t" + ".half 386" + "\n"  # Dive Barrel
-        asm += "\t" + ".half 387" + "\n"  # Vine Barrel
-        asm += "\t" + ".half 388" + "\n"  # Orange Barrel
-        asm += "\t" + ".half 389" + "\n"  # Barrel Barrel
-        asm += "\t" + ".half 0x1BB" + "\n"  # Japes Boulder Smashed
-        asm += "\t" + ".half 0x186" + "\n"  # Isles Escape CS
-        asm += "\t" + ".half 0x17F" + "\n"  # Training Barrels Spawned
-        asm += "\t" + ".half 0x180" + "\n"  # Cranky has given Sim Slam
-        asm += "\t" + ".half 385" + "\n"  # DK Free
     asm += "\t" + ".half 0" + "\n"  # Null Terminator (required)
     if post_data.get("generate_spoilerlog"):
         document["nav-spoiler-tab"].style.display = ""
@@ -241,6 +171,7 @@ def randomize(post_data):
     else:
         document["nav-spoiler-tab"].style.display = "none"
         document["spoiler_log_text"].text = ""
+    print("Validating Seeds")
     if validateSeed(
         finalNumerical,
         post_data.get("unlock_all_kongs", False),
