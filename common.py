@@ -1,7 +1,7 @@
 """Common functions used across all pages."""
 import json
 
-from browser import bind, document, timer, window
+from browser import bind, document, timer, window, aio
 
 import patch_files
 
@@ -69,6 +69,8 @@ def generate_seed(event):
         document["input-file-rom_1"].select()
     else:
         jq("#progressmodal").modal("show")
+        jq("#patchprogress").width("0%")
+        jq("#progress-text").text("Initalizing")
         disabled_options = []
         for element in document.getElementsByTagName("input"):
             if element.attrs.get("disabled"):
@@ -92,4 +94,5 @@ def generate_seed(event):
         for element in disabled_options:
             element.attrs["disabled"] = "disabled"
         update_disabled_progression()
-        timer.set_timeout(patch_files.start_randomizing_seed(form_data), 1000)
+        timer.set_timeout(lambda: patch_files.start_randomizing_seed(form_data), 3000)
+

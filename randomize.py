@@ -79,8 +79,6 @@ def randomize(post_data):
         asm += "\n"
 
     asm += "\t" + ".half 0" + "\n"  # Null Terminator (required)
-    print(asm)
-    return "blah"
     if post_data.get("generate_spoilerlog"):
         document["nav-spoiler-tab"].style.display = ""
         document["spoiler_log_text"].text = logdata
@@ -89,12 +87,12 @@ def randomize(post_data):
         document["spoiler_log_text"].text = ""
     print("Validating Seeds")
     if validateSeed(
-        finalNumerical,
+        post_data.get("finalNumerical"),
         post_data.get("unlock_all_kongs", False),
         post_data.get("unlock_all_moves", False),
         post_data.get("quality_of_life", False),
-        finalBLocker,
-        finalTNS,
+        post_data.get("finalBLocker"),
+        post_data.get("finalTNS"),
         True,
     ):
         return asm

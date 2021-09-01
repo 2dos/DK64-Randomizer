@@ -56,12 +56,15 @@ def start_randomizing_seed(form_data: dict):
     """
     jq("#patchprogress").width("30%")
     jq("#progress-text").text("Randomizing seed")
-    randomized_data = randomize(form_data)
 
     def randomize_seed_data():
+        randomized_data = randomize(form_data)
+        timer.set_timeout(lambda: finish_rando(randomized_data), 1000)
+
+    def finish_rando(randomized_data):
         jq("#patchprogress").width("40%")
         jq("#progress-text").text("Randomizing complete")
-        timer.set_timeout(finish_randomizing_seed(randomized_data, form_data), 1000)
+        timer.set_timeout(lambda: finish_randomizing_seed(randomized_data, form_data), 1000)
 
     timer.set_timeout(randomize_seed_data, 1000)
 
@@ -161,22 +164,25 @@ def start_apply_asm():
     apply_bps()
     max_addr = -1
     asm = str(window.asmcode)
+    built_items = []
     for item in asm.split("\n"):
         if item:
-            addr = int(item.split(":")[0])
-            if addr < 0x5FAE00:
-                if addr > max_addr:
-                    max_addr = addr
+            built_items.append(item)
+    for item in built_items:
+        addr = int(item.split(":")[0])
+        if addr < 0x5FAE00:
+            if addr > max_addr:
+                max_addr = addr
     if max_addr != -1 and max_addr >= 0x5DAE00:
         patch_extension_size = (max_addr - 0x5DAE00) + 1
         window.expand_rom_size(patch_extension_size)
-        for line in asm.split("\n"):
-            if line:
-                data = line.split(":")
-                apply_asm_bytes(int(data[0]), int(data[1]))
-        fix_checksum()
+        for line in built_items:
+            data = line.split(":")
+            apply_asm_bytes(int(data[0]), int(data[1]))
+        print("Fixing Checksum")
+        timer.set_timeout(fix_checksum, 1000)
         window.patchedRom.fileName = "dk64-randomizer-" + document["seed"].value + ".z64"
-        window.patchedRom.save()
+        timer.set_timeout(window.patchedRom.save, 3000)
 
 
 def apply_bps():
