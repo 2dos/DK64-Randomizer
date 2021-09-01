@@ -1,3 +1,4 @@
+.align
 // Unlock All Kongs
 UnlockKongs:
     SW      ra, @ReturnAddress

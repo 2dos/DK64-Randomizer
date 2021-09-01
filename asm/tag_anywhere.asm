@@ -1,3 +1,4 @@
+.align
 // Enable Tag Anywhere - OPTIONAL
 TagAnywhere:
     SW      ra, @ReturnAddress

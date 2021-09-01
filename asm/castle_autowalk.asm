@@ -1,3 +1,4 @@
+.align
 FixCastleAutowalk:
     LW      a0, @CurrentMap
     LI      a1, 0x57 // Castle

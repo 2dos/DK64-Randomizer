@@ -1,6 +1,6 @@
 """Data objects for data management."""
-import os.path
 from browser import document, html
+import os
 
 
 class GoldenBanana:
@@ -204,21 +204,21 @@ class GoldenBanana:
 
 
 class ASMPatch:
-    def __init__(self, asm_file: str, var_type: str, form_var: str, required=False, replace=False, **kwargs):
+    def __init__(self, asm_file: str, var_type: str, form_var: str, function=None, asm_start=[], **kwargs):
         self.asm_file = asm_file
         self.var_type = var_type.lower()
         self.form_var = form_var
-        self.required = required
-        self.replace = replace
+        self.function = function
+        self.asm_start = asm_start
         for key, value in kwargs.items():
             setattr(self, key, value)
         self._verify_asm_exists()
 
     def _verify_asm_exists(self):
-        if not os.path.exists(f"./asm/required/{self.asm_file}.asm" if self.required else f"./asm/{self.asm_file}.asm"):
+        if not os.path.exists(f"./asm/{self.asm_file}.asm"):
             raise Exception("Source ASM file does not exist.")
         else:
-            self.path = f"./asm/required/{self.asm_file}.asm" if self.required else f"./asm/{self.asm_file}.asm"
+            self.path = f"./asm/{self.asm_file}.asm"
 
     def generate_html(self):
         # Note: Requires self.content, self.title, self.enabled currently but does not actively check for them.
@@ -242,13 +242,12 @@ class ASMPatch:
             element <= html.SELECT(self.content)
             document["body_data"] <= element
 
-    def generate_asm(self, data=dict()):
+    def generate_asm(self, post_data: dict):
         asm = str()
+        return_data = None
         with open(self.path, "r") as file:
             asm += file.read()
             asm += "\n"
-        if self.replace:
-            for item in data.items():
-                # We're replacing the key with the value in the asm
-                asm.replace(item[0], item[1])
-        return asm
+        if self.function != None and post_data:
+            asm, return_data = self.function(asm, post_data)
+        return asm, return_data

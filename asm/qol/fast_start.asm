@@ -1,3 +1,4 @@
+.align
 ApplyFastStart:
     SW      ra, @ReturnAddress
     LA      a0, FastStartOn

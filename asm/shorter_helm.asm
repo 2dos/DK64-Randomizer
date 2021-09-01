@@ -1,3 +1,4 @@
+.align
 // Shorter Helm
 // Spawn in Blast-o-Matic Area
 ChangeLZToHelm:

@@ -1,4 +1,4 @@
-.org 0x805DAE00
+.align
 // Randomize Level Progression
 RandoLevelOrder:
     LA      a0, RandoOn
@@ -140,6 +140,7 @@ RandoLevelOrder:
         JR      ra
         NOP
 
+.align
 // Swap B. Locker/Cheat Code/T&S counts
 SwapRequirements:
     LA      a0, RandoOn

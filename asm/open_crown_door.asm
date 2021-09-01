@@ -1,3 +1,4 @@
+.align
 // Open Crown door
 OpenCrownDoor:
     SW      ra, @ReturnAddress

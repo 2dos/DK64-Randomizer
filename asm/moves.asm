@@ -1,3 +1,4 @@
+.align
 // Unlock All Moves
 GiveMoves:
     SW      ra, @ReturnAddress

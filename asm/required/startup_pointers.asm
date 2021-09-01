@@ -1,25 +1,8 @@
+.org 0x8000DE88 // 0x00DE88 > 0x00EDDA. EDD1 seems the safe limit before overwriting data.
 
 Start:
     // Run the code we replaced
     JAL     0x805FC2B0
-    NOP
-    JAL     RandoLevelOrder
-    NOP
-    JAL     UnlockKongs
-    NOP
-    JAL     QOLChangesShorten
-    NOP
-    JAL     QOLChanges
-    NOP
-    JAL     SwapRequirements
-    NOP
-    JAL     ChangeLZToHelm
-    NOP
-    JAL     TagAnywhere
-    NOP
-    JAL     FixCastleAutowalk
-    NOP
-    JAL     IslesSpawn
     NOP
     LW      a0, @CurrentMap
     LI      a1, 0x50 // Main Menu
@@ -39,12 +22,6 @@ Start:
     LI      a1, 1
     JAL     @SetFlag
     LI      a2, 0
-    JAL     OpenCoinDoor
-    NOP
-    JAL     OpenCrownDoor
-    NOP
-    JAL     GiveMoves
-    NOP
     JAL     ApplyFastStart
     NOP
 

@@ -1,3 +1,4 @@
+.align
 // Open Rareware + Nintendo Coin door (Give both coins)
 OpenCoinDoor:
     SW      ra, @ReturnAddress
