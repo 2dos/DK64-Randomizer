@@ -4,6 +4,8 @@ Start:
     // Run the code we replaced
     JAL     0x805FC2B0
     NOP
+    {REPLACE_BEFORE}
+
     LW      a0, @CurrentMap
     LI      a1, 0x50 // Main Menu
     BNE     a0, a1, Finish
@@ -22,10 +24,9 @@ Start:
     LI      a1, 1
     JAL     @SetFlag
     LI      a2, 0
-    JAL     ApplyFastStart
-    NOP
+
+    {REPLACE_AFTER}
 
     Finish:
         J       0x805FC15C // retroben's hook but up a few functions
         NOP
-

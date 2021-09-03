@@ -166,6 +166,7 @@ KeyFlags_Normal:
 
 // Loops through a flag array and sets all of them
 // Credit: Isotarge (Tag Anywhere V5)
+.align
 SetAllFlags:
     // Params:
     // a0 = Array

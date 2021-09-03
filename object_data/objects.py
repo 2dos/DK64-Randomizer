@@ -204,12 +204,14 @@ class GoldenBanana:
 
 
 class ASMPatch:
-    def __init__(self, asm_file: str, var_type: str, form_var: str, function=None, asm_start=[], **kwargs):
+    def __init__(self, asm_file: str, var_type: str, form_var: str, function=None, asm_start=[], asm_location="", always_run_function=False, **kwargs):
         self.asm_file = asm_file
         self.var_type = var_type.lower()
         self.form_var = form_var
         self.function = function
         self.asm_start = asm_start
+        self.asm_location = asm_location.lower()
+        self.always_run_function = always_run_function
         for key, value in kwargs.items():
             setattr(self, key, value)
         self._verify_asm_exists()

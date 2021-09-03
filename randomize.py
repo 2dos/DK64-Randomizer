@@ -57,25 +57,30 @@ def randomize(post_data):
     logdata += "Quality of Life Changes: " + str(post_data.get("quality_of_life", "False")) + "\n"
     logdata += "\n"
 
-    startup = str()
+    startup_pre = str()
+    startup_after = str()
     with open("./asm/required/global.asm", "r") as file:
         asm += file.read()
         asm += "\n"
     for asm_data in asm_options:
-        if post_data.get(asm_data.form_var):
+        if post_data.get(asm_data.form_var) or asm_data.always_run_function is True:
             returned_asm, returned_logs = asm_data.generate_asm(post_data)
             asm += returned_asm
             if returned_logs is not None:
                 logdata += returned_logs
             for start_data in asm_data.asm_start:
-                startup += f"\n    JAL     {start_data}\n    NOP\n"
+                for key in start_data:
+                    if start_data[key].lower() == "before":
+                        startup_pre += f"\n    JAL     {key}\n    NOP\n"
+                    else:
+                        startup_after += f"\n    JAL     {key}\n    NOP\n"
 
     with open("./asm/required/startup_pointers.asm", "r") as file:
-        asm += file.read().replace("{StartupReplacement}", startup)
+        asm += file.read().replace("{REPLACE_BEFORE}", startup_pre).replace("{REPLACE_AFTER}", startup_after)
         asm += "\n"
 
     with open("./asm/required/flags.asm", "r") as file:
-        asm += file.read().replace("{StartupReplacement}", startup)
+        asm += file.read()
         asm += "\n"
 
     asm += "\t" + ".half 0" + "\n"  # Null Terminator (required)

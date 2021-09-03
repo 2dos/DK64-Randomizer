@@ -114,6 +114,7 @@ def convert_asm(asm):
     """
     jq("#patchprogress").width("60%")
     jq("#progress-text").text("Generating ASM")
+    print(asm)
     window.L.execute(
         """
       function convert(code_filename)
@@ -127,21 +128,27 @@ def convert_asm(asm):
                   table.insert(code, {key - 0x80000000, value});
               end
           end
-          lips(code_filename, codeWriter);
-          local formatted_code = '';
-          for k,v in pairs(code) do
-            local pair_string = '';
-            for key, value in pairs(v) do
-              if(key == 1)
-              then
-                pair_string = pair_string .. value .. ':';
-              else
-                pair_string = pair_string .. value;
+          local result = lips(code_filename, codeWriter);
+          if #code == 0 then
+                print(result);
+                print("The code did not compile correctly, check for errors in your source.");
+          else
+            local formatted_code = '';
+              for k,v in pairs(code) do
+                local pair_string = '';
+                for key, value in pairs(v) do
+                  if(key == 1)
+                  then
+                    pair_string = pair_string .. value .. ':';
+                  else
+                    pair_string = pair_string .. value;
+                  end
+                end
+                formatted_code = formatted_code .. pair_string .. '\\n';
               end
-            end
-            formatted_code = formatted_code .. pair_string .. '\\n';
-          end
-          window.asmcode = formatted_code;
+              window.asmcode = formatted_code;
+         end
+          
       end
       convert([["""
         + asm
