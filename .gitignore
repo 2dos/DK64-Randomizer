@@ -156,3 +156,4 @@ lockfile
 temprom.rom
 *.csv
 *.lanky
+*.bak

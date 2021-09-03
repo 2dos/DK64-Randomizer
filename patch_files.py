@@ -182,6 +182,8 @@ def start_apply_asm():
                 max_addr = addr
     if max_addr != -1 and max_addr >= 0x5DAE00:
         patch_extension_size = (max_addr - 0x5DAE00) + 1
+        if (patch_extension_size % 8) != 0:
+            patch_extension_size += (8 - (patch_extension_size % 8))
         window.expand_rom_size(patch_extension_size)
         for line in built_items:
             data = line.split(":")
