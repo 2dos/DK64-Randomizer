@@ -60,7 +60,3 @@ FastStartFlags:
     .half 0x17F
     .half 0x180
     .half 385
-
-.align
-FairyQueenRewards:
-    .half 377

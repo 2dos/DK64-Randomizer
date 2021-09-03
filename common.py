@@ -95,4 +95,3 @@ def generate_seed(event):
             element.attrs["disabled"] = "disabled"
         update_disabled_progression()
         timer.set_timeout(lambda: patch_files.start_randomizing_seed(form_data), 3000)
-

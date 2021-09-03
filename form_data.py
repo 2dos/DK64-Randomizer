@@ -6,19 +6,19 @@ from browser.template import Template
 
 import common
 from level_progression import LevelProgression
-from misc import Misc
-from rando_options import Randomizers
+from object_data.form_options import asm_options
 
 jq = window.jQuery
 
-randos = Randomizers()
 progression = LevelProgression()
-misc = Misc()
 
-Template("random_tab").render(randos=randos)
+Template("random_tab")
 Template("level_progression_tab").render(progression=progression)
-Template("misc_tab").render(misc=misc)
 Template("spoiler_tab").render()
+
+for opt in asm_options:
+    if hasattr(opt, "tab"):
+        opt.generate_html()
 
 
 def loading_finished():

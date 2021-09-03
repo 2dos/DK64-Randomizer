@@ -1,9 +1,11 @@
 <!--Randomize Level Progression-->
 <div class="form-check form-switch" style="margin-top: 20px;">
-    <label data-bs-toggle="tooltip" title="{randos.randomize_progression().ToolTip}">
+    <label data-bs-toggle="tooltip" title="This option will randomize the order the levels appear in.
+Specifically the level lobby entrances are randomized.
+The level will match the B Locker and Troff n Scoff requirements of the slot that it falls in.
+Hideout Helm will always be the final level.">
         <input class="form-check-input" type="checkbox" name="randomize_progression" id="randomize_progression"
-            value="True" checked data-bs-toggle="tooltip" title="{randos.randomize_progression().ToolTip}"
-            onclick="progression_clicked()" {randos.randomize_progression().Enabled} />
+            value="True" onclick="progression_clicked()" checked/>
         Randomize Level
         Order
     </label>

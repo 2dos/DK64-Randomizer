@@ -221,26 +221,40 @@ class ASMPatch:
             self.path = f"./asm/{self.asm_file}.asm"
 
     def generate_html(self):
-        # Note: Requires self.content, self.title, self.enabled currently but does not actively check for them.
         if self.var_type == "checkbox":
             element = html.DIV(Class="form-check form-switch")
-            label = html.LABEL(self.content, data_bs_toggle="tooltip", title=self.title)
+            label = html.LABEL(self.content, data_bs_toggle="tooltip", title=self._unindent(self.title))
             element <= label
+            flags = {}
+            if hasattr(self, "disabled"):
+                flags["disabled"] = True
+            if hasattr(self, "checked"):
+                flags["checked"] = True
             label <= html.INPUT(
                 Class="form-check-input",
                 type="checkbox",
                 name=self.form_var,
+                id=self.form_var,
                 value="True",
-                data_bs_toggle="tooltip",
-                title=self.title,
-                enabled=self.enabled,
+                **flags,
             )
-            document["body_data"] <= element
+            document[self.tab] <= element
         elif self.var_type == "form-select":
             # TODO: Incomplete select
             element = html.div()
             element <= html.SELECT(self.content)
-            document["body_data"] <= element
+            document[self.tab] <= element
+
+    def _unindent(self, string):
+        """Un indent tool tip data.
+
+        Args:
+            string (str): Tool Tip info.
+
+        Returns:
+            str: Un indented text.
+        """
+        return "".join(map(str.lstrip, string.splitlines(1)))
 
     def generate_asm(self, post_data: dict):
         asm = str()
