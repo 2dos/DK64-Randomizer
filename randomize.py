@@ -82,7 +82,7 @@ def randomize(post_data):
     with open("./asm/required/flags.asm", "r") as file:
         asm += file.read()
         asm += "\n"
-        
+
     if post_data.get("generate_spoilerlog"):
         document["nav-spoiler-tab"].style.display = ""
         document["spoiler_log_text"].text = logdata

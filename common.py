@@ -1,7 +1,7 @@
 """Common functions used across all pages."""
 import json
 
-from browser import bind, document, timer, window, aio
+from browser import bind, document, timer, window
 
 import patch_files
 

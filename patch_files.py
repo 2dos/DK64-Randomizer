@@ -114,7 +114,6 @@ def convert_asm(asm):
     """
     jq("#patchprogress").width("60%")
     jq("#progress-text").text("Generating ASM")
-    print(asm)
     window.L.execute(
         """
       function convert(code_filename)
@@ -148,7 +147,6 @@ def convert_asm(asm):
               end
               window.asmcode = formatted_code;
          end
-          
       end
       convert([["""
         + asm
@@ -183,7 +181,7 @@ def start_apply_asm():
     if max_addr != -1 and max_addr >= 0x5DAE00:
         patch_extension_size = (max_addr - 0x5DAE00) + 1
         if (patch_extension_size % 8) != 0:
-            patch_extension_size += (8 - (patch_extension_size % 8))
+            patch_extension_size += 8 - (patch_extension_size % 8)
         window.expand_rom_size(patch_extension_size)
         for line in built_items:
             data = line.split(":")

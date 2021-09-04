@@ -1,4 +1,16 @@
+"""Set B-Locker data."""
+
+
 def set_blockers(asm: str, post_data: dict):
+    """Set B-Locker ASM code.
+
+    Args:
+        asm (str): Current ASM code.
+        post_data (dict): Form dict options.
+
+    Returns:
+        tuple: asm, log_data
+    """
     # Set B Lockers in ASM
     finalBLocker = post_data.get("finalBLocker")
     finalLevels = post_data.get("finalLevels")

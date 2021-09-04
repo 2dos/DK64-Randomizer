@@ -1,4 +1,16 @@
+"""Used for setting Key order in the ASM."""
+
+
 def set_keys(asm: str, post_data: dict):
+    """Set Key Order ASM Code.
+
+    Args:
+        asm (str): Current ASM code.
+        post_data (dict): Form dict options.
+
+    Returns:
+        tuple: asm, log_data
+    """
     # Set Keys
     finalKeyFlags = [
         "0x001A",

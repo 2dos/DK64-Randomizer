@@ -1,9 +1,10 @@
+"""Patch data for generating the UI and modifying the ROM."""
 from object_data.randomizer_options import (
     set_blockers,
     set_keys,
     set_troff_n_scoff,
     shuffle_progression,
-    fairy_shockwave
+    fairy_shockwave,
 )
 from object_data.objects import ASMPatch
 

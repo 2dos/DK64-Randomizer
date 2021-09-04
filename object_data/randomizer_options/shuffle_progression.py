@@ -1,7 +1,17 @@
+"""Shuffle level order."""
 from random import seed, shuffle
 
 
 def shuffle_progression(asm: str, post_data: dict):
+    """Set the progression order for the seed.
+
+    Args:
+        asm (str): Current ASM code.
+        post_data (dict): Form dict options.
+
+    Returns:
+        tuple: asm, log_data
+    """
     # Shuffle Level Progression
     asm += ".align" + "\n" + "RandoOn:" + "\n" + "\t" + ".byte 1" + "\n" + "\n"  # Run Randomizer in ASM
     seed(str(post_data.get("seed")) + str(post_data))

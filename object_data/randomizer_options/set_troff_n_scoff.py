@@ -1,4 +1,16 @@
+"""Used for setting the troffnscoff values."""
+
+
 def set_troff(asm: str, post_data: dict):
+    """Set troff ASM value.
+
+    Args:
+        asm (str): Current ASM code.
+        post_data (dict): Form dict options.
+
+    Returns:
+        tuple: asm, log_data
+    """
     finalTNS = post_data.get("finalTNS")
     finalLevels = post_data.get("finalLevels")
     # Set Troff n Scoffs in ASM
