@@ -1,4 +1,6 @@
 """Data objects for data management."""
+from browser import document, html
+import os
 
 
 class GoldenBanana:
@@ -199,3 +201,106 @@ class GoldenBanana:
         self.lobby6 = lobby6
         self.lobby7 = lobby7
         self.lobby8 = lobby8
+
+
+class ASMPatch:
+    """Patch data for specific options within the DK64 codebase."""
+
+    def __init__(
+        self,
+        asm_file: str,
+        var_type: str,
+        form_var: str,
+        function=None,
+        asm_start=[],
+        asm_location="",
+        always_run_function=False,
+        **kwargs,
+    ):
+        """ASM Patch file that can generate UI and create the relevant ASM code for the stack.
+
+        Args:
+            asm_file (str): ASM File directory.
+            var_type (str): Var type on the UI eg: checkbox.
+            form_var (str): Var name for the UI and for checking the post_data.
+            function (func, optional): Function to run on generation. Defaults to None.
+            asm_start (list, optional): ASM Start function to add into the JAP list. Defaults to [].
+            asm_location (str, optional): Where to add the ASM function in the JAP list (before, or after). Defaults to "".
+            always_run_function (bool, optional): Defines if we always run the python function associated with the patch. Defaults to False.
+        """
+        self.asm_file = asm_file
+        self.var_type = var_type.lower()
+        self.form_var = form_var
+        self.function = function
+        self.asm_start = asm_start
+        self.asm_location = asm_location.lower()
+        self.always_run_function = always_run_function
+        for key, value in kwargs.items():
+            setattr(self, key, value)
+        self._verify_asm_exists()
+
+    def _verify_asm_exists(self):
+        """Verify the ASM file exists in the codebase.
+
+        Raises:
+            Exception: Fail the script if the ASM file does not exist.
+        """
+        if not os.path.exists(f"./asm/{self.asm_file}.asm"):
+            raise Exception("Source ASM file does not exist.")
+        else:
+            self.path = f"./asm/{self.asm_file}.asm"
+
+    def generate_html(self):
+        """Generate HTML code and add to the webpage."""
+        if self.var_type == "checkbox":
+            element = html.DIV(Class="form-check form-switch")
+            label = html.LABEL(self.content, data_bs_toggle="tooltip", title=self._unindent(self.title))
+            element <= label
+            flags = {}
+            if hasattr(self, "disabled"):
+                flags["disabled"] = True
+            if hasattr(self, "checked"):
+                flags["checked"] = True
+            label <= html.INPUT(
+                Class="form-check-input",
+                type="checkbox",
+                name=self.form_var,
+                id=self.form_var,
+                value="True",
+                **flags,
+            )
+            document[self.tab] <= element
+        elif self.var_type == "form-select":
+            # TODO: Incomplete select
+            element = html.div()
+            element <= html.SELECT(self.content)
+            document[self.tab] <= element
+
+    def _unindent(self, string):
+        """Un indent tool tip data.
+
+        Args:
+            string (str): Tool Tip info.
+
+        Returns:
+            str: Un indented text.
+        """
+        return "".join(map(str.lstrip, string.splitlines(1)))
+
+    def generate_asm(self, post_data: dict):
+        """Gen ASM code and potential log data.
+
+        Args:
+            post_data (dict): Data posted by the form.
+
+        Returns:
+            tuple: asm string, log string.
+        """
+        asm = str()
+        return_data = None
+        with open(self.path, "r") as file:
+            asm += file.read()
+            asm += "\n"
+        if self.function is not None and post_data:
+            asm, return_data = self.function(asm, post_data)
+        return asm, return_data

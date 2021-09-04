@@ -100,7 +100,9 @@ function apply_bps_javascript() {
     var patchFile_internal = new MarcFile(patchFile._u8array);
     bps = parseBPSFile(patchFile_internal);
     try {
+      console.log("Patching BPS")
       patchedRom = bps.apply(romFile_internal, false);
+      console.log("BPS Patched")
     } catch (evt) {
       errorMessage = evt.message;
       console.log(evt)

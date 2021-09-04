@@ -91,7 +91,7 @@
                             <div id="level_progression_tab" b-include="level_progression.html"></div>
                         </div>
                         <div class="tab-pane fade" id="nav-misc" role="tabpanel" aria-labelledby="nav-misc-tab">
-                            <div id="misc_tab" b-include="misc.html"></div>
+                            <div id="misc"></div>
                         </div>
                         <div class="tab-pane fade" id="nav-spoiler" role="tabpanel" aria-labelledby="nav-spoiler-tab">
                             <div id="spoiler_tab" b-include="spoiler.html"></div>
@@ -123,10 +123,9 @@
                             <div class="form-group" style="margin-bottom: 10px;text-align: center;">
                                 <div class="form-check form-switch" id="downloadsettings"
                                     style="margin-top: 20px; margin-bottom: -10px;">
-                                    <label data-bs-toggle="tooltip" title="{misc.downloadjson().ToolTip}">
+                                    <label data-bs-toggle="tooltip" title="Download generated ROM as patch file.">
                                         <input class="form-check-input" type="checkbox" id="downloadjson"
-                                            name="downloadjson" value="True" data-bs-toggle="tooltip" title=""
-                                            {misc.downloadjson().Enabled} />
+                                            name="downloadjson" value="True" />
                                         Download Patch File
                                     </label>
                                 </div>
@@ -137,8 +136,8 @@
                             </div>
                             <br id="formbreak" />
                             <input id="generate_seed" class="btn btn-primary"
-                                style="width: 60%; height: 50px; text-align: center;"
-                                type="button" value="Generate Seed" />
+                                style="width: 60%; height: 50px; text-align: center;" type="button"
+                                value="Generate Seed" />
                         </div>
                     </div>
                     <div class="tab-pane fade" id="nav-patch-data" role="tabpanel" aria-labelledby="nav-patch-tab">
@@ -155,8 +154,8 @@
                             </div>
                             <br id="formbreak" />
                             <input id="generate_lanky_seed" class="btn btn-primary"
-                                style="width: 60%; height: 50px; text-align: center;"
-                                type="button" value="Generate ROM" />
+                                style="width: 60%; height: 50px; text-align: center;" type="button"
+                                value="Generate ROM" />
                         </div>
                     </div>
                 </div>
@@ -204,14 +203,13 @@
     <script type="text/python" src="./randomize.py" defer></script>
     <script type="text/python" src="./presets.py" defer></script>
     <script type="text/python" src="./level_progression.py" defer></script>
-    <script type="text/python" src="./rando_options.py" defer></script>
     <script type="text/python" src="./patch_files.py" defer></script>
     <script type="text/python" src="./version.py" defer></script>
     <script>
         window.onload = load_inital;
         function load_inital() {
             $("#loading").modal("show")
-            brython();
+            brython(1);
         }
     </script>
 </footer>
