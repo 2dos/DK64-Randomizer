@@ -1,4 +1,5 @@
-name: Build and Release
+---
+name: Release to Github Pages
 on:
   push:
     branches: [ dev ]

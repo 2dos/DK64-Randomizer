@@ -1,0 +1,95 @@
+---
+name: Build and Scan
+on:
+  push:
+    branches: [ main, master, dev ]
+  pull_request:
+    branches: [ main, master, dev ]
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+        - uses: actions/checkout@v2
+
+        - name: Setup python
+          uses: actions/setup-python@v2
+          with:
+              python-version: 3.6
+              architecture: x64
+
+        - name: Install linters
+          run: pip install black pycodestyle pydocstyle
+
+        - name: Run black
+          run: black . --check -l 120
+
+        - name: Run pycodestyle
+          run: pycodestyle --ignore E501,W605,W503 .
+
+        - name: Run pydocstyle
+          run: pydocstyle .
+
+  analyze:
+    name: Analyze
+    runs-on: ubuntu-latest
+    permissions:
+      actions: read
+      contents: read
+      security-events: write
+
+    strategy:
+      fail-fast: false
+      matrix:
+        language: [ 'javascript', 'python' ]
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    - name: Initialize CodeQL
+      uses: github/codeql-action/init@v1
+      with:
+        languages: ${{ matrix.language }}
+
+    - name: Autobuild
+      uses: github/codeql-action/autobuild@v1
+
+    - name: Perform CodeQL Analysis
+      uses: github/codeql-action/analyze@v1
+
+  build:
+    runs-on: macos-latest
+    steps:
+        - uses: actions/checkout@v2
+
+        - name: Update Brew
+          if: ${{ github.event_name == 'push' }}
+          run: brew update
+
+        - name: Install Node
+          if: ${{ github.event_name == 'push' }}
+          run: brew install node
+
+        - name: Install packages
+          if: ${{ github.event_name == 'push' }}
+          run: npm install
+
+        - name: Build pack
+          if: ${{ github.event_name == 'push' }}
+          run: npm run distall
+
+        - uses: actions/upload-artifact@v2
+          with:
+            name: dk64randomizer-setup.exe
+            path: "${{ github.workspace }}/dist/dk64randomizer.exe"
+
+        - uses: actions/upload-artifact@v2
+          with:
+            name: dk64randomizer.dmg
+            path: "${{ github.workspace }}/dist/dk64randomizer.dmg"
+
+        - uses: actions/upload-artifact@v2
+          with:
+            name: dk64randomizer.deb
+            path: "${{ github.workspace }}/dist/dk64randomizer.deb"
