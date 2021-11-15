@@ -1,3 +1,5 @@
 import Fill
+from ItemPool import GenerateItemPool
 
-Fill.AssumedFill()
+itemPool = GenerateItemPool()
+Fill.AssumedFill(itemPool)

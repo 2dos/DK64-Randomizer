@@ -67,11 +67,8 @@ def GetAccessibleLocations(ownedItems):
     return accessible
 
 # Assumed fill algorithm for item placement
-def AssumedFill():
-    # Initialize item pool
-    itemPool = ["a", "b", "Golden Banana", "Golden Banana", "Golden Banana"]
+def AssumedFill(itemPool):
     random.shuffle(itemPool)
-
     # While there are items to place
     while len(itemPool) > 0:
         # Get a random item, check which empty locations are still accessible without owning it
