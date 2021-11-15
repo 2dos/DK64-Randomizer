@@ -1,6 +1,5 @@
 """Data objects for data management."""
-from browser import document, html
-import os
+from browser import document, html, window
 
 
 class GoldenBanana:
@@ -208,47 +207,30 @@ class ASMPatch:
 
     def __init__(
         self,
-        asm_file: str,
         var_type: str,
         form_var: str,
         function=None,
-        asm_start=[],
-        asm_location="",
-        always_run_function=False,
+        write_data=None,
         **kwargs,
     ):
         """ASM Patch file that can generate UI and create the relevant ASM code for the stack.
 
         Args:
-            asm_file (str): ASM File directory.
             var_type (str): Var type on the UI eg: checkbox.
             form_var (str): Var name for the UI and for checking the post_data.
             function (func, optional): Function to run on generation. Defaults to None.
-            asm_start (list, optional): ASM Start function to add into the JAP list. Defaults to [].
-            asm_location (str, optional): Where to add the ASM function in the JAP list (before, or after). Defaults to "".
-            always_run_function (bool, optional): Defines if we always run the python function associated with the patch. Defaults to False.
+            write_data (dict, optional): Defines the write data for single tick options where logic is not required and it is static changes {seek: write}. Defaults to None.
         """
-        self.asm_file = asm_file
         self.var_type = var_type.lower()
         self.form_var = form_var
         self.function = function
-        self.asm_start = asm_start
-        self.asm_location = asm_location.lower()
-        self.always_run_function = always_run_function
+        self.write_data = write_data
+        if self.write_data is None and self.function is None:
+            raise Exception("Error: Function or Write data need to be set.")
+        elif self.write_data is not None and self.function is not None:
+            raise Exception("Error: Both Function and Write data cannot be set at the same time.")
         for key, value in kwargs.items():
             setattr(self, key, value)
-        self._verify_asm_exists()
-
-    def _verify_asm_exists(self):
-        """Verify the ASM file exists in the codebase.
-
-        Raises:
-            Exception: Fail the script if the ASM file does not exist.
-        """
-        if not os.path.exists(f"./asm/{self.asm_file}.asm"):
-            raise Exception("Source ASM file does not exist.")
-        else:
-            self.path = f"./asm/{self.asm_file}.asm"
 
     def generate_html(self):
         """Generate HTML code and add to the webpage."""
@@ -287,20 +269,20 @@ class ASMPatch:
         """
         return "".join(map(str.lstrip, string.splitlines(1)))
 
-    def generate_asm(self, post_data: dict):
+    def run_function(self, post_data: dict):
         """Gen ASM code and potential log data.
 
         Args:
             post_data (dict): Data posted by the form.
 
         Returns:
-            tuple: asm string, log string.
+            tuple: log string.
         """
-        asm = str()
         return_data = None
-        with open(self.path, "r") as file:
-            asm += file.read()
-            asm += "\n"
         if self.function is not None and post_data:
-            asm, return_data = self.function(asm, post_data)
-        return asm, return_data
+            return_data = self.function(post_data)
+        elif self.write_data is not None:
+            for key in self.write_data:
+                window.patchData.Seek(key)
+                window.patchData.Write(self.write_data.get(key))
+        return return_data

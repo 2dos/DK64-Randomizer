@@ -10,6 +10,18 @@ var romFile,
   oldHeader,
   patchedRom;
 
+var patchData = {
+  _data: [],
+  Seek: function (pos) {
+    this._data.push({ seek: pos });
+  },
+  Write: function (pos) {
+    this._data.push({ write: pos });
+  },
+  Clear: function () {
+    _data = [];
+  },
+};
 try {
   webWorkerCrc = new Worker("./js/rompatcher/worker_crc.js");
   webWorkerCrc.onmessage = (event) => {
@@ -100,12 +112,12 @@ function apply_bps_javascript() {
     var patchFile_internal = new MarcFile(patchFile._u8array);
     bps = parseBPSFile(patchFile_internal);
     try {
-      console.log("Patching BPS")
+      console.log("Patching BPS");
       patchedRom = bps.apply(romFile_internal, false);
-      console.log("BPS Patched")
+      console.log("BPS Patched");
     } catch (evt) {
       errorMessage = evt.message;
-      console.log(evt)
+      console.log(evt);
     }
   }
 }

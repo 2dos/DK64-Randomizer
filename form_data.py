@@ -6,7 +6,7 @@ from browser.template import Template
 
 import common
 from level_progression import LevelProgression
-from object_data.form_options import asm_options
+from object_data.form_options import form_options
 
 jq = window.jQuery
 
@@ -16,7 +16,7 @@ Template("random_tab")
 Template("level_progression_tab").render(progression=progression)
 Template("spoiler_tab").render()
 
-for opt in asm_options:
+for opt in form_options:
     if hasattr(opt, "tab"):
         opt.generate_html()
 
