@@ -7,6 +7,8 @@ class LogicVarHolder:
         self.startkong = startkong
         self.Reset()
 
+    # Reset all logic variables
+    # Done between reachability searches
     def Reset(self):
         self.donkey = self.startkong == Kongs.donkey
         self.diddy = self.startkong == Kongs.diddy
@@ -21,6 +23,7 @@ class LogicVarHolder:
         self.Events = []
         self.kong = self.startkong
 
+    # Update logic variables based on owned items
     def Update(self, ownedItems):
         self.donkey = "donkey" in ownedItems or self.startkong == Kongs.donkey
         self.diddy = "diddy" in ownedItems or self.startkong == Kongs.diddy
@@ -32,6 +35,7 @@ class LogicVarHolder:
         self.a = "a" in ownedItems
         self.b = "b" in ownedItems
 
+    # Add an event to events list so it can be checked for logically
     def AddEvent(self, event):
         self.Events.append(event)
 
@@ -44,9 +48,11 @@ class LogicVarHolder:
         Kongs.chunky: "chunky",
     }
 
+    # Set current kong for logic
     def SetKong(self, kong):
         self.kong = kong
 
+    # Return all owned kongs
     def GetKongs(self):
         ownedKongs = []
         if self.donkey:
@@ -61,6 +67,7 @@ class LogicVarHolder:
             ownedKongs.append(Kongs.chunky)
         return ownedKongs
 
+# Initialize logic variables, for now assume start with donkey
 LogicVariables = LogicVarHolder(Kongs.donkey)
 
 #Import regions from logic files
