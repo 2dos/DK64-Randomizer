@@ -62,7 +62,7 @@ Regions = {
     ]),
 
     "Angry Aztec Lobby": Region("Angry Aztec Lobby", True, [
-        Exit("Isles Tiny Big Bug Bash", lambda l: l.chimpycharge and l.twirl and l.istiny),
+        Location("Isles Tiny Big Bug Bash", lambda l: l.chimpycharge and l.twirl and l.istiny),
     ], [], [
         Exit("Isles Main", lambda l: True),
         Exit("Angry Aztec Start", lambda l: l.GoldenBananas >= 5),
@@ -140,7 +140,7 @@ Regions = {
         Exit("Hideout Helm Start", lambda l: l.gorillaGone and l.GoldenBananas >= 100),
     ]),
 
-    "K. Rool": Region("K. Rool", False, [
+    "K. Rool": Region("K. Rool", True, [
         Location("Banana Hoard", lambda l: l.donkeyAccess and l.jetpack and l.peanut and l.diddyAccess and l.trombone and l.lankyAccess and
             l.mini and l.feather and l.tinyAccess and l.Slam >= 2 and l.gorillaGone and l.hunkyChunky and l.chunkyAccess),
     ], [], []),

@@ -1,6 +1,7 @@
 from LogicClasses import Kongs
 from Items import Items
 import LogicFiles.DKIsles
+import LogicFiles.JungleJapes
 
 class LogicVarHolder:
 
@@ -187,3 +188,4 @@ LogicVariables = LogicVarHolder(Kongs.donkey)
 #Import regions from logic files
 Regions = {}
 Regions.update(LogicFiles.DKIsles.Regions)
+Regions.update(LogicFiles.JungleJapes.Regions)
