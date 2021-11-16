@@ -40,6 +40,7 @@ def GetAccessibleLocations(ownedItems):
                 region = regionPool.pop()
 
                 region.UpdateAccess(kong, LogicVariables) # Set that this kong has access to this region
+                LogicVariables.UpdateCurrentRegionAccess(region) # Set in logic as well
 
                 # Check accessibility for each location in this region
                 for location in region.locations:

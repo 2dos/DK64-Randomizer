@@ -15,12 +15,12 @@ class Events(Enum):
     
     # Jungle Japes events
     Rambi = auto()
-    JungleDonkeySwitch = auto()
-    JungleDiddySwitch1 = auto()
-    JungleLankySwitch = auto()
-    JungleTinySwitch = auto()
-    JunlgeChunkySwitch = auto()
-    JungleDiddySwitch2 = auto()
+    JapesDonkeySwitch = auto()
+    JapesDiddySwitch1 = auto()
+    JapesLankySwitch = auto()
+    JapesTinySwitch = auto()
+    JapesChunkySwitch = auto()
+    JapesDiddySwitch2 = auto()
     
     # Angry Aztec events
     FedTotem = auto()

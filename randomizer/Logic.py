@@ -49,6 +49,15 @@ class LogicVarHolder:
 
         self.camera = False
         self.shockwave = False
+
+        self.JapesKey = False
+        self.AztecKey = False
+        self.FactoryKey = False
+        self.GalleonKey = False
+        self.ForestKey = False
+        self.CavesKey = False
+        self.CastleKey = False
+        self.HelmKey = False
         
         self.Slam = 0
         self.GoldenBananas = 0
@@ -58,6 +67,14 @@ class LogicVarHolder:
         self.BluePrints = []
 
         self.Events = []
+
+        # These access variables based on current region
+        # Shouldn't be checked unless updated directly beforehand
+        self.donkeyAccess = False
+        self.diddyAccess = False
+        self.lankyAccess = False
+        self.tinyAccess = False
+        self.chunkyAccess = False
 
         self.kong = self.startkong
 
@@ -105,6 +122,15 @@ class LogicVarHolder:
         self.camera = "Camera and Shockwave" in ownedItems
         self.shockwave = "Camera and Shockwave" in ownedItems
 
+        self.JapesKey = "Jungle Japes Key" in ownedItems
+        self.AztecKey = "Angry Aztec Key" in ownedItems
+        self.FactoryKey = "Frantic Factory Key" in ownedItems
+        self.GalleonKey = "Gloomy Galleon Key" in ownedItems
+        self.ForestKey = "Fungi Forest Key" in ownedItems
+        self.CavesKey = "Crystal Caves Key" in ownedItems
+        self.CastleKey = "Creepy Castle Key" in ownedItems
+        self.HelmKey = "Hideout Helm Key" in ownedItems
+
         self.Slam = len([x for x in ownedItems if x == "Progressive Slam"])
         self.GoldenBananas = len([x for x in ownedItems if x == "Golden Banana"])
         self.BananaFairies = len([x for x in ownedItems if x == "Banana Fairies"])
@@ -143,6 +169,14 @@ class LogicVarHolder:
         self.islanky = self.kong == Kongs.lanky
         self.istiny = self.kong == Kongs.tiny
         self.ischunky = self.kong == Kongs.chunky
+
+    # Set access of current region
+    def UpdateCurrentRegionAccess(self, region):
+        self.donkeyAccess = region.donkeyAccess
+        self.diddyAccess = region.diddyAccess
+        self.lankyAccess = region.lankyAccess
+        self.tinyAccess = region.tinyAccess
+        self.chunkyAccess = region.chunkyAccess
 
 # Initialize logic variables, for now assume start with donkey
 LogicVariables = LogicVarHolder(Kongs.donkey)
