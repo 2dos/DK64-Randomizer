@@ -1,4 +1,5 @@
 from LogicClasses import Kongs
+from Items import Items
 import LogicFiles.DKIsles
 
 class LogicVarHolder:
@@ -63,6 +64,7 @@ class LogicVarHolder:
         self.GoldenBananas = 0
         self.BananaFairies = 0
         self.BananaMedals = 0
+        self.BattleCrowns = 0
         
         self.BluePrints = []
 
@@ -82,61 +84,62 @@ class LogicVarHolder:
 
     # Update logic variables based on owned items
     def Update(self, ownedItems):
-        self.donkey = "donkey" in ownedItems or self.startkong == Kongs.donkey
-        self.diddy = "diddy" in ownedItems or self.startkong == Kongs.diddy
-        self.lanky = "lanky" in ownedItems or self.startkong == Kongs.lanky
-        self.tiny = "tiny" in ownedItems or self.startkong == Kongs.tiny
-        self.chunky = "chunky" in ownedItems or self.startkong == Kongs.chunky
+        self.donkey = Items.Donkey in ownedItems or self.startkong == Kongs.donkey
+        self.diddy = Items.Diddy in ownedItems or self.startkong == Kongs.diddy
+        self.lanky = Items.Lanky in ownedItems or self.startkong == Kongs.lanky
+        self.tiny = Items.Tiny in ownedItems or self.startkong == Kongs.tiny
+        self.chunky = Items.Chunky in ownedItems or self.startkong == Kongs.chunky
 
-        self.blast = "Baboon Blast" in ownedItems and self.donkey
-        self.strongKong = "Strong Kong" in ownedItems and self.donkey
-        self.grab = "Gorilla Grab" in ownedItems and self.donkey
-        self.charge = "Chimpy Charge" in ownedItems and self.diddy
-        self.jetpack = "Rocketbarrel Boost" in ownedItems and self.diddy
-        self.spring = "Simian Spring" in ownedItems and self.diddy
-        self.handstand = "Orangstand" in ownedItems and self.lanky
-        self.balloon = "Baboon Balloon" in ownedItems and self.lanky
-        self.sprint = "Orangstand Sprint" in ownedItems and self.lanky
-        self.mini = "Mini Monkey" in ownedItems and self.tiny
-        self.twirl = "Pony Tail Twirl" in ownedItems and self.tiny
-        self.monkeyport = "Monkeyport" in ownedItems and self.tiny
-        self.hunkyChunky = "Hunky Chunky" in ownedItems and self.chunky
-        self.punch = "Primate Punch" in ownedItems and self.chunky
-        self.gorillaGone = "Gorilla Gone" in ownedItems and self.chunky
+        self.blast = Items.BaboonBlast in ownedItems and self.donkey
+        self.strongKong = Items.StrongKong in ownedItems and self.donkey
+        self.grab = Items.GorillaGrab in ownedItems and self.donkey
+        self.charge = Items.ChimpyCharge in ownedItems and self.diddy
+        self.jetpack = Items.RocketbarrelBoost in ownedItems and self.diddy
+        self.spring = Items.SimianSpring in ownedItems and self.diddy
+        self.handstand = Items.Orangstand in ownedItems and self.lanky
+        self.balloon = Items.BaboonBalloon in ownedItems and self.lanky
+        self.sprint = Items.OrangstandSprint in ownedItems and self.lanky
+        self.mini = Items.MiniMonkey in ownedItems and self.tiny
+        self.twirl = Items.PonyTailTwirl in ownedItems and self.tiny
+        self.monkeyport = Items.Monkeyport in ownedItems and self.tiny
+        self.hunkyChunky = Items.HunkyChunky in ownedItems and self.chunky
+        self.punch = Items.PrimatePunch in ownedItems and self.chunky
+        self.gorillaGone = Items.GorillaGone in ownedItems and self.chunky
 
-        self.coconut = "Coconut" in ownedItems and self.donkey
-        self.peanut = "Peanut" in ownedItems and self.diddy
-        self.grape = "Grape" in ownedItems and self.lanky
-        self.feather = "Feather" in ownedItems and self.tiny
-        self.pineapple = "Pineapple" in ownedItems and self.chunky
+        self.coconut = Items.Coconut in ownedItems and self.donkey
+        self.peanut = Items.Peanut in ownedItems and self.diddy
+        self.grape = Items.Grape in ownedItems and self.lanky
+        self.feather = Items.Feather in ownedItems and self.tiny
+        self.pineapple = Items.Pineapple in ownedItems and self.chunky
 
-        self.bongos = "Bongos" in ownedItems and self.donkey
-        self.guitar = "Guitar" in ownedItems and self.diddy
-        self.trombone = "Trombone" in ownedItems and self.lanky
-        self.saxophone = "Saxophone" in ownedItems and self.tiny
-        self.triangle = "Triangle" in ownedItems and self.chunky
+        self.bongos = Items.Bongos in ownedItems and self.donkey
+        self.guitar = Items.Guitar in ownedItems and self.diddy
+        self.trombone = Items.Trombone in ownedItems and self.lanky
+        self.saxophone = Items.Saxophone in ownedItems and self.tiny
+        self.triangle = Items.Triangle in ownedItems and self.chunky
 
-        self.nintendoCoin = "Nintendo Coin" in ownedItems
-        self.rarewareCoin = "Rareware Coin" in ownedItems
+        self.nintendoCoin = Items.NintendoCoin in ownedItems
+        self.rarewareCoin = Items.RarewareCoin in ownedItems
 
-        self.camera = "Camera and Shockwave" in ownedItems
-        self.shockwave = "Camera and Shockwave" in ownedItems
+        self.camera = Items.CameraAndShockwave in ownedItems
+        self.shockwave = Items.CameraAndShockwave in ownedItems
 
-        self.JapesKey = "Jungle Japes Key" in ownedItems
-        self.AztecKey = "Angry Aztec Key" in ownedItems
-        self.FactoryKey = "Frantic Factory Key" in ownedItems
-        self.GalleonKey = "Gloomy Galleon Key" in ownedItems
-        self.ForestKey = "Fungi Forest Key" in ownedItems
-        self.CavesKey = "Crystal Caves Key" in ownedItems
-        self.CastleKey = "Creepy Castle Key" in ownedItems
-        self.HelmKey = "Hideout Helm Key" in ownedItems
+        self.JapesKey = Items.JungleJapesKey in ownedItems
+        self.AztecKey = Items.AngryAztecKey in ownedItems
+        self.FactoryKey = Items.FranticFactoryKey in ownedItems
+        self.GalleonKey = Items.GloomyGalleonKey in ownedItems
+        self.ForestKey = Items.FungiForestKey in ownedItems
+        self.CavesKey = Items.CrystalCavesKey in ownedItems
+        self.CastleKey = Items.CreepyCastleKey in ownedItems
+        self.HelmKey = Items.HideoutHelmKey in ownedItems
 
-        self.Slam = len([x for x in ownedItems if x == "Progressive Slam"])
-        self.GoldenBananas = len([x for x in ownedItems if x == "Golden Banana"])
-        self.BananaFairies = len([x for x in ownedItems if x == "Banana Fairies"])
-        self.BananaMedals = len([x for x in ownedItems if x == "Banana Medals"])
+        self.Slam = len([x for x in ownedItems if x == Items.ProgressiveSlam])
+        self.GoldenBananas = len([x for x in ownedItems if x == Items.GoldenBanana])
+        self.BananaFairies = len([x for x in ownedItems if x == Items.BananaFairy])
+        self.BananaMedals = len([x for x in ownedItems if x == Items.BananaMedal])
+        self.BattleCrowns = len([x for x in ownedItems if x == Items.BattleCrown])   
 
-        self.BluePrints = [x for x in ownedItems if "Blueprint" in x]
+        self.BluePrints = [x for x in ownedItems if isinstance(x, str) and "Blueprint" in x]
 
     # Add an event to events list so it can be checked for logically
     def AddEvent(self, event):

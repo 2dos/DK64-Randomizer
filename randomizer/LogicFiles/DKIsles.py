@@ -36,7 +36,7 @@ Regions = {
     "Prison": Region("Prison", False, [
         Location("Isles Lanky Prison Orangsprint", lambda l: l.sprint and l.islanky),
     ], [
-        Event(Events.KlumsyTalkedTo, lambda l: True),
+        Event(Events.KLumsyTalkedTo, lambda l: True),
         Event(Events.FirstKey, lambda l: l.JapesKey),
         Event(Events.SecondKey, lambda l: l.AztecKey),
         Event(Events.FourthKey, lambda l: l.GalleonKey),
@@ -55,21 +55,21 @@ Regions = {
     ]),
 
     "Jungle Japes Lobby": Region("Jungle Japes Lobby", True, [
-        Location("Isles Lanky Instrument Pad", lambda l: l.chunkyAccess and l.trombone and l.islanky)
+        Location("Isles Lanky Instrument Pad", lambda l: l.chunkyAccess and l.trombone and l.islanky),
     ], [], [
         Exit("Isles Main", lambda l: True),
         Exit("Jungle Japes Main", lambda l: l.GoldenBananas >= 1),
     ]),
 
     "Angry Aztec Lobby": Region("Angry Aztec Lobby", True, [
-        Exit("Isles Tiny Big Bug Bash", lambda l: l.chimpycharge and l.twirl and l.istiny)
+        Exit("Isles Tiny Big Bug Bash", lambda l: l.chimpycharge and l.twirl and l.istiny),
     ], [], [
         Exit("Isles Main", lambda l: True),
         Exit("Angry Aztec Start", lambda l: l.GoldenBananas >= 5),
     ]),
 
     "Crocodile Isle Beyond Lift": Region("Crocodile Isle Beyond Lift", False, [
-        Location("Isles Donkey Caged Banana", lambda l: l.coconut and l.isdonkey)
+        Location("Isles Donkey Caged Banana", lambda l: l.coconut and l.isdonkey),
     ], [], [
         Exit("Isles Snide Room", lambda l: True),
         Exit("Frantic Factory Lobby", lambda l: True),
@@ -86,7 +86,7 @@ Regions = {
     "Frantic Factory Lobby": Region("Frantic Factory Lobby", True, [
         Location("Isles Donkey Instrument Pad", lambda l: l.grab and l.bongos and l.isdonkey),
         Location("Isles Tiny Kasplat", lambda l: l.punch and l.istiny),
-        Location("Isles Banana Fairy Factory Lobby", lambda l: l.camera and l.punch)
+        Location("Isles Banana Fairy Factory Lobby", lambda l: l.camera and l.punch),
     ], [], [
         Exit("Crocodile Isle Beyond Lift", lambda l: True),
         Exit("Frantic Factory Start", lambda l: l.GoldenBananas >= 15),
