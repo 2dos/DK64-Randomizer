@@ -76,7 +76,7 @@ Regions = {
     ], [
         Event(Events.JapesChunkySwitch, lambda l: l.Slam and l.ischunky),
     ], [
-        Exit("Japes Boss Entrance", lambda l: True),
+        Exit("Japes Boss Lobby", lambda l: True),
     ]),
 
     "Japes Lanky Cave": Region("Japes Lanky Cave", False, [
@@ -106,7 +106,7 @@ Regions = {
         Exit("Jungle Japes Main", lambda l: True),
     ]),
 
-    "Japes Boss Entrance": Region("Japes Boss Entrance", True, [], [], [
+    "Japes Boss Lobby": Region("Japes Boss Lobby", True, [], [], [
         # 50 bananas
         Exit("Japes Boss", lambda l: l.isdonkey),
     ]),
