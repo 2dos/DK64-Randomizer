@@ -9,7 +9,7 @@ class Kongs(Enum):
     chunky = 5
 
 # A shufflable location at which a random item can be placed
-class LogicLocation:
+class Location:
     def __init__(self, name, logic):
         self.name = name
         self.logic = logic # Lambda function for accessibility

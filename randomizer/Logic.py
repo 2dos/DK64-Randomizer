@@ -61,6 +61,8 @@ class LogicVarHolder:
 
         self.kong = self.startkong
 
+        self.UpdateKongs()
+
     # Update logic variables based on owned items
     def Update(self, ownedItems):
         self.donkey = "donkey" in ownedItems or self.startkong == Kongs.donkey
@@ -117,6 +119,7 @@ class LogicVarHolder:
     # Set current kong for logic
     def SetKong(self, kong):
         self.kong = kong
+        self.UpdateKongs()
 
     # Return all owned kongs
     def GetKongs(self):
@@ -132,6 +135,14 @@ class LogicVarHolder:
         if self.chunky:
             ownedKongs.append(Kongs.chunky)
         return ownedKongs
+
+    # Set variables for current kong based on self.kong
+    def UpdateKongs(self):
+        self.isdonkey = self.kong == Kongs.donkey
+        self.isdiddy = self.kong == Kongs.diddy
+        self.islanky = self.kong == Kongs.lanky
+        self.istiny = self.kong == Kongs.tiny
+        self.ischunky = self.kong == Kongs.chunky
 
 # Initialize logic variables, for now assume start with donkey
 LogicVariables = LogicVarHolder(Kongs.donkey)
