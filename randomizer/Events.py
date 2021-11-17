@@ -51,8 +51,9 @@ class Events(Enum):
     
     # Fungi Forest events
     Night = auto()
-    ForestCannonsSpawned = auto()
+    MushroomCannonsSpawned = auto()
     DonkeyMushroomSwitch = auto()
+    Bean = auto()
     GrinderActivated = auto()
     MillBoxBroken = auto()
     ConveyorActivated = auto()

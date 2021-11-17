@@ -5,6 +5,7 @@ import LogicFiles.JungleJapes
 import LogicFiles.AngryAztec
 import LogicFiles.FranticFactory
 import LogicFiles.GloomyGalleon
+import LogicFiles.FungiForest
 
 class LogicVarHolder:
 
@@ -70,6 +71,9 @@ class LogicVarHolder:
         self.BananaMedals = 0
         self.BattleCrowns = 0
         
+        self.superSlam = False
+        self.superDuperSlam = False
+
         self.BluePrints = []
 
         self.Events = []
@@ -141,7 +145,10 @@ class LogicVarHolder:
         self.GoldenBananas = len([x for x in ownedItems if x == Items.GoldenBanana])
         self.BananaFairies = len([x for x in ownedItems if x == Items.BananaFairy])
         self.BananaMedals = len([x for x in ownedItems if x == Items.BananaMedal])
-        self.BattleCrowns = len([x for x in ownedItems if x == Items.BattleCrown])   
+        self.BattleCrowns = len([x for x in ownedItems if x == Items.BattleCrown])
+
+        self.superSlam = self.Slam >= 2
+        self.superDuperSlam = self.Slam >= 3
 
         self.BluePrints = [x for x in ownedItems if isinstance(x, str) and "Blueprint" in x]
 
@@ -195,3 +202,4 @@ Regions.update(LogicFiles.JungleJapes.Regions)
 Regions.update(LogicFiles.AngryAztec.Regions)
 Regions.update(LogicFiles.FranticFactory.Regions)
 Regions.update(LogicFiles.GloomyGalleon.Regions)
+Regions.update(LogicFiles.FungiForest.Regions)

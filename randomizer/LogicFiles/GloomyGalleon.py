@@ -44,7 +44,7 @@ Regions = {
     "Lighthouse": Region("Lighthouse", False, [
         Location("Galleon Donkey Lighthouse", lambda l: Events.ActivatedLighthouse in l.Events)
     ], [
-        Event(Events.ActivatedLighthouse, lambda l: l.grab and l.isdonkey)
+        Event(Events.ActivatedLighthouse, lambda l: l.grab and l.isdonkey),
     ], [
         Exit("Lighthouse Area", lambda l: True),
     ]),
@@ -91,13 +91,13 @@ Regions = {
         Location("Galleon Lanky Gold Tower", lambda l: l.balloon),
         Location("Galleon Donkey Kasplat", lambda l: Events.TreasureRoomTeleporterUnlocked in l.Events and l.isdonkey),
     ], [
-        Event(Events.TreasureRoomTeleporterUnlocked, lambda l: l.spring)
+        Event(Events.TreasureRoomTeleporterUnlocked, lambda l: l.spring),
     ], [
         Exit("Tiny Chest", lambda l: l.mini and l.istiny),
     ]),
 
     "Tiny Chest": Region("Tiny Chest", False, [], [
-        Event(Events.PearlsCollected, lambda l: l.istiny)
+        Event(Events.PearlsCollected, lambda l: l.istiny),
     ], [
         Exit("Treasure Room", lambda l: True),
     ]),

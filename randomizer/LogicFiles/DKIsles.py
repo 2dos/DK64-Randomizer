@@ -93,7 +93,7 @@ Regions = {
     ]),
 
     "Gloomy Galleon Lobby": Region("Gloomy Galleon Lobby", True, [
-        Location("Isles Tiny Galleon Lobby", lambda l: l.chunkyAccess and l.Slam >= 2 and l.mini and l.istiny),
+        Location("Isles Tiny Galleon Lobby", lambda l: l.chunkyAccess and l.superSlam and l.mini and l.istiny),
         Location("Isles Chunky Kasplat", lambda l: l.ischunky),
     ], [], [
         Exit("Isles Main", lambda l: True),
@@ -142,6 +142,6 @@ Regions = {
 
     "K. Rool": Region("K. Rool", True, [
         Location("Banana Hoard", lambda l: l.donkeyAccess and l.jetpack and l.peanut and l.diddyAccess and l.trombone and l.lankyAccess and
-            l.mini and l.feather and l.tinyAccess and l.Slam >= 2 and l.gorillaGone and l.hunkyChunky and l.chunkyAccess),
+            l.mini and l.feather and l.tinyAccess and l.superSlam and l.gorillaGone and l.hunkyChunky and l.chunkyAccess),
     ], [], []),
 }
