@@ -4,6 +4,7 @@ import LogicFiles.DKIsles
 import LogicFiles.JungleJapes
 import LogicFiles.AngryAztec
 import LogicFiles.FranticFactory
+import LogicFiles.GloomyGalleon
 
 class LogicVarHolder:
 
@@ -193,3 +194,4 @@ Regions.update(LogicFiles.DKIsles.Regions)
 Regions.update(LogicFiles.JungleJapes.Regions)
 Regions.update(LogicFiles.AngryAztec.Regions)
 Regions.update(LogicFiles.FranticFactory.Regions)
+Regions.update(LogicFiles.GloomyGalleon.Regions)

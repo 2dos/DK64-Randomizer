@@ -22,7 +22,7 @@ Regions = {
         Exit("Japes Beyond Coconut Gate 2", lambda l: l.coconut),
         Exit("Mine", lambda l: l.peanut and l.isdiddy),
         Exit("Japes Lanky Cave", lambda l: l.peanut and l.handstand and l.islanky),
-        Exit("Japes Catacomb", lambda l: l.chunkyAccess and l.Slam),
+        Exit("Japes Catacomb", lambda l: l.Slam and l.chunkyAccess),
         Exit("Funky", lambda l: True),
         Exit("Snide", lambda l: True),
         Exit("Japes Boss Lobby", lambda l: True),

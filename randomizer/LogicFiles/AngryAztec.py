@@ -3,7 +3,7 @@ from Events import Events
 
 Regions = {
     "Angry Aztec Start": Region("Angry Aztec Start", True, [], [], [
-	    Exit("Angry Aztec Lobby", lambda l: True),
+        Exit("Angry Aztec Lobby", lambda l: True),
         Exit("Temple Start", lambda l: (l.peanut and l.isdiddy) or (l.grape and l.islanky) or (l.feather and l.istiny) or (l.pineapple and l.ischunky)),
         Exit("Angry Aztec Main", lambda l: l.jetpack and l.guitar),
         Exit("Candy", lambda l: True),
@@ -14,7 +14,7 @@ Regions = {
         Location("Aztec Tiny Klaptrap Room", lambda l: l.mini and l.istiny),
         Location("Aztec Chunky Klaptrap Room", lambda l: l.triangle and l.ischunky),
     ], [], [
-	    Exit("Angry Aztec Start", lambda l: True),
+        Exit("Angry Aztec Start", lambda l: True),
         Exit("Temple Underwater", lambda l: l.Slam and l.guitar and l.diddyAccess),
     ]),
 
@@ -35,7 +35,7 @@ Regions = {
         Event(Events.FedTotem, lambda l: l.jetpack and l.peanut),
         Event(Events.LlamaFreed, lambda l: l.blast),
     ], [
-	    Exit("Donkey Temple", lambda l: Events.FedTotem in l.Events and l.coconut and l.isdonkey),
+        Exit("Donkey Temple", lambda l: Events.FedTotem in l.Events and l.coconut and l.isdonkey),
         Exit("Diddy Temple", lambda l: Events.FedTotem in l.Events and l.peanut and l.isdiddy),
         Exit("Lanky Temple", lambda l: Events.FedTotem in l.Events and l.grape and l.islanky),
         Exit("Tiny Temple", lambda l: Events.FedTotem in l.Events and l.feather and l.istiny),
@@ -47,33 +47,33 @@ Regions = {
     "Donkey Temple": Region("Donkey Temple", False, [
         Location("Aztec Donkey 5 Door Temple", lambda l: l.coconut and l.isdonkey),
     ], [], [
-	    Exit("Angry Aztec Main", lambda l: True),
+        Exit("Angry Aztec Main", lambda l: True),
     ]),
 
     "Diddy Temple": Region("Diddy Temple", False, [
         Location("Aztec Diddy 5 Door Temple", lambda l: l.peanut and l.isdiddy),
     ], [], [
-	    Exit("Angry Aztec Main", lambda l: True),
+        Exit("Angry Aztec Main", lambda l: True),
     ]),
 
     "Lanky Temple": Region("Lanky Temple", False, [
         Location("Aztec Lanky 5 Door Temple", lambda l: l.grape and l.islanky),
     ], [], [
-	    Exit("Angry Aztec Main", lambda l: True),
+        Exit("Angry Aztec Main", lambda l: True),
     ]),
 
     "Tiny Temple": Region("Tiny Temple", False, [
         Location("Aztec Tiny 5 Door Temple", lambda l: l.feather and l.istiny),
         Location("Aztec Banana Fairy Tiny Temple", lambda l: l.camera and l.feather and l.mini and l.istiny),
     ], [], [
-	    Exit("Angry Aztec Main", lambda l: True),
+        Exit("Angry Aztec Main", lambda l: True),
     ]),
 
     "Chunky Temple": Region("Chunky Temple", False, [
         Location("Aztec Chunky 5 Door Temple", lambda l: l.pineapple and l.ischunky),
         Location("Aztec Chunky Kasplat", lambda l: l.pineapple and l.ischunky),
     ], [], [
-	    Exit("Angry Aztec Main", lambda l: True),
+        Exit("Angry Aztec Main", lambda l: True),
     ]),
 
     "Aztec Tiny Race": Region("Aztec Tiny Race", False, [
@@ -89,8 +89,8 @@ Regions = {
     ], [
         Event(Events.AztecDonkeySwitch, lambda l: l.Slam and l.isdonkey),
     ], [
-	    Exit("Angry Aztec Main", lambda l: True),
-        Exit("Llama Temple Back", lambda l: l.mini and l.tinyAccess),
+        Exit("Angry Aztec Main", lambda l: True),
+        Exit("Llama Temple Back", lambda l: l.mini),
     ]),
 
     "Llama Temple Back": Region("Llama Temple Back", False, [
@@ -100,7 +100,7 @@ Regions = {
 
     "Aztec Boss Lobby": Region("Aztec Boss Lobby", True, [], [], [
         # 120 bananas
-	    Exit("Aztec Bozz", lambda l: l.isdiddy),
+        Exit("Aztec Boss", lambda l: l.isdiddy),
     ]),
 
     "Aztec Boss": Region("Aztec Boss", False, [

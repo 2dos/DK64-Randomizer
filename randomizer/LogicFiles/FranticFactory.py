@@ -3,7 +3,7 @@ from Events import Events
 
 Regions = {
     "Frantic Factory Start": Region("Frantic Factory Start", False, [], [], [
-	    Exit("Frantic Factory Lobby", lambda l: True),
+        Exit("Frantic Factory Lobby", lambda l: True),
         Exit("Testing", lambda l: Events.TestingGateOpened in l.Events),
         Exit("Beyond Hatch", lambda l: l.Slam),
     ]),
@@ -19,7 +19,7 @@ Regions = {
     ], [
         Event(Events.DartsPlayed, lambda l: l.Slam and l.mini and l.feather),
     ], [
-	    Exit("R&D", lambda l: True),
+        Exit("R&D", lambda l: True),
         Exit("Snide", lambda l: True),
         Exit("Funky", lambda l: Events.DartsPlayed in l.Events),
         Exit("Factory Boss Lobby", lambda l: True),
@@ -32,7 +32,7 @@ Regions = {
         Location("Factory Lanky Kasplat", lambda l: l.islanky),
         Location("Factory Battle Arena", lambda l: l.grab),
     ], [], [
-	    Exit("Factory Tiny Race", lambda l: l.mini and l.istiny),
+        Exit("Factory Tiny Race", lambda l: l.mini and l.istiny),
         Exit("Chunky Room Platform", lambda l: True),
         Exit("Factory Boss Lobby", lambda l: True),
     ]),
@@ -53,7 +53,7 @@ Regions = {
     ], [
         Event(Events.MainCoreActivated, lambda l: l.coconut and l.grab and l.isdonkey),
     ], [
-	    Exit("Chunky Room Platform", lambda l: True),
+        Exit("Chunky Room Platform", lambda l: True),
     ]),
 
     "Beyond Hatch": Region("Beyond Hatch", True, [
@@ -74,7 +74,7 @@ Regions = {
         Events(Events.ChunkyCoreSwitch, lambda l: l.Slam and l.ischunky),
     ], [
         Exit("Inside Core", lambda l: Events.MainCoreActivated in l.Events),
-	    Exit("Main Core", lambda l: Events.MainCoreActivated in l.Events),
+        Exit("Main Core", lambda l: Events.MainCoreActivated in l.Events),
         Exit("Cranky", lambda l: True),
         Exit("Candy", lambda l: True),
         Exit("Factory Boss Lobby", lambda l: True),
@@ -83,7 +83,7 @@ Regions = {
     "Inside Core": Region("Inside Core", False, [
         Location("Factory Donkey Crusher Room", lambda l: l.strongKong and l.isdonkey),
     ], [], [
-	    Exit("Beyond Hatch", lambda l: True),
+        Exit("Beyond Hatch", lambda l: True),
     ]),
 
     "Main Core": Region("Main Core", True, [
@@ -95,7 +95,7 @@ Regions = {
 
     "Factory Boss Lobby": Region("Factory Boss Lobby", False, [], [], [
         # 200 bananas
-	    Exit("Factory Boss", lambda l: l.istiny),
+        Exit("Factory Boss", lambda l: l.istiny),
     ]),
 
     "Factory Boss": Region("Factory Boss", False, [

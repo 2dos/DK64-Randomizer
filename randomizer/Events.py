@@ -40,12 +40,12 @@ class Events(Enum):
     # Gloomy Galleon events
     GalleonLankySwitch = auto()
     GalleonTinySwitch = auto()
-    LighthouseEngarde = auto()
+    LighthouseEnguarde = auto()
     SealReleased = auto()
     MechafishSummoned = auto()
     GalleonChunkyPad = auto()
-    ActivateLighthouse = auto()
-    ShipyardEngarde = auto()
+    ActivatedLighthouse = auto()
+    ShipyardEnguarde = auto()
     TreasureRoomTeleporterUnlocked = auto()
     PearlsCollected = auto()
     
@@ -73,4 +73,3 @@ class Events(Enum):
     HideoutLankyDone = auto()
     HideoutDiddyDone = auto()
     HideoutKeyAccess = auto()
-    
