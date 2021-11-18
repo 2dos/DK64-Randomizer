@@ -1,7 +1,6 @@
 from enum import Enum, auto
 
 class Levels(Enum):
-
     DKIsles = auto()
     JungleJapes = auto()
     AngryAztec = auto()

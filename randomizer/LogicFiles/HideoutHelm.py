@@ -1,13 +1,14 @@
 from LogicClasses import Region, Location, Event, Exit
 from Enums.Events import Events
+from Enums.Regions import Regions
 
-Regions = {
-    "Hideout Helm Start": Region("Hideout Helm Start", True, [], [], [
-        Exit("Hideout Helm Lobby", lambda l: True),
-        Exit("Hideout Helm Main", lambda l: l.handstand and l.pineapple and l.mini),
+LogicRegions = {
+    Regions.HideoutHelmStart: Region("Hideout Helm Start", True, [], [], [
+        Exit(Regions.HideoutHelmLobby, lambda l: True),
+        Exit(Regions.HideoutHelmMain, lambda l: l.handstand and l.pineapple and l.mini),
     ]),
 
-    "Hideout Helm Main": Region("Hideout Helm Main", True, [
+    Regions.HideoutHelmMain: Region("Hideout Helm Main", True, [
         Location("Helm Battle Arena", lambda l: l.jetpack),
         Location("Helm Donkey Medal", lambda l: Events.HelmDonkeyDone in l.Events),
         Location("Helm Chunky Medal", lambda l: Events.HelmChunkyDone in l.Events),
