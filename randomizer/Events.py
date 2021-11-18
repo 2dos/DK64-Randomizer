@@ -67,10 +67,10 @@ class Events(Enum):
     # No Creepy Castle Events
 
     # Hideout Helm Events
-    HideoutDoorsOpened = auto()
-    HideoutDonkeyDone = auto()
-    HideoutChunkyDone = auto()
-    HideoutTinyDone = auto()
-    HideoutLankyDone = auto()
-    HideoutDiddyDone = auto()
-    HideoutKeyAccess = auto()
+    HelmDoorsOpened = auto()
+    HelmDonkeyDone = auto()
+    HelmChunkyDone = auto()
+    HelmTinyDone = auto()
+    HelmLankyDone = auto()
+    HelmDiddyDone = auto()
+    HelmKeyAccess = auto()
