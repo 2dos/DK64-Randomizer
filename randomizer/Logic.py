@@ -7,6 +7,7 @@ import LogicFiles.FranticFactory
 import LogicFiles.GloomyGalleon
 import LogicFiles.FungiForest
 import LogicFiles.CrystalCaves
+import LogicFiles.CreepyCastle
 
 class LogicVarHolder:
 
@@ -205,3 +206,4 @@ Regions.update(LogicFiles.FranticFactory.Regions)
 Regions.update(LogicFiles.GloomyGalleon.Regions)
 Regions.update(LogicFiles.FungiForest.Regions)
 Regions.update(LogicFiles.CrystalCaves.Regions)
+Regions.Update(LogicFiles.CreepyCastle.Regions)

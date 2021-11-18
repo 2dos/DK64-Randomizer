@@ -33,7 +33,7 @@ Regions = {
     ]),
 
     "Caves Lanky Race": Region("Caves Lanky Race", False, [
-        Location("Caves Lanky Beetle Race", lambda l: l.sprint and l.islanky)
+        Location("Caves Lanky Beetle Race", lambda l: l.sprint and l.islanky),
     ], [], []),
 
     "Frozen Castle": Region("Frozen Castle", False, [
@@ -147,7 +147,7 @@ Regions = {
         Exit("Cabin Area", lambda l: True),
     ]),
 
-    "Caves Boss Lobby": Region("Caves Boss Lobby", False, [], [], [
+    "Caves Boss Lobby": Region("Caves Boss Lobby", True, [], [], [
         # 350 bananas
         Exit("Caves Boss", lambda l: l.isdonkey),
     ]),

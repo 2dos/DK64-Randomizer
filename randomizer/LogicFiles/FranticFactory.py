@@ -38,7 +38,7 @@ Regions = {
     ]),
 
     "Factory Tiny Race": Region("Factory Tiny Race", False, [
-        Location("Factory Tiny R&D Race", lambda l: l.istiny),
+        Location("Factory Tiny Car Race", lambda l: l.istiny),
     ], [], []),
 
     "Chunky Room Platform": Region("Chunky Room Platform", False, [
