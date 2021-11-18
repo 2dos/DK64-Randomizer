@@ -2,30 +2,49 @@ import itertools
 
 from Enums.Items import Items
 
-levels = [
-    "DK Isles",
-    "Jungle Japes",
-    "Angry Aztec",
-    "Frantic Factory",
-    "Gloomy Galleon",
-    "Fungi Forest",
-    "Crystal Caves",
-    "Creepy Castle",
-]
-
-kongs = [
-    "Donkey",
-    "Diddy",
-    "Lanky",
-    "Tiny",
-    "Chunky",
-]
-
-def GenerateBlueprints():
-    blueprints = []
-    for level in levels:
-        for kong in kongs:
-            blueprints.append(level + " " + kong + " Blueprint")
+def Blueprints():
+    blueprints = [
+        Items.DKIslesDonkeyBlueprint,
+        Items.DKIslesDiddyBlueprint,
+        Items.DKIslesLankyBlueprint,
+        Items.DKIslesTinyBlueprint,
+        Items.DKIslesChunkyBlueprint,
+        Items.JungleJapesDonkeyBlueprint,
+        Items.JungleJapesDiddyBlueprint,
+        Items.JungleJapesLankyBlueprint,
+        Items.JungleJapesTinyBlueprint,
+        Items.JungleJapesChunkyBlueprint,
+        Items.AngryAztecDonkeyBlueprint,
+        Items.AngryAztecDiddyBlueprint,
+        Items.AngryAztecLankyBlueprint,
+        Items.AngryAztecTinyBlueprint,
+        Items.AngryAztecChunkyBlueprint,
+        Items.FranticFactoryDonkeyBlueprint,
+        Items.FranticFactoryDiddyBlueprint,
+        Items.FranticFactoryLankyBlueprint,
+        Items.FranticFactoryTinyBlueprint,
+        Items.FranticFactoryChunkyBlueprint,
+        Items.GloomyGalleonDonkeyBlueprint,
+        Items.GloomyGalleonDiddyBlueprint,
+        Items.GloomyGalleonLankyBlueprint,
+        Items.GloomyGalleonTinyBlueprint,
+        Items.GloomyGalleonChunkyBlueprint,
+        Items.FungiForestDonkeyBlueprint,
+        Items.FungiForestDiddyBlueprint,
+        Items.FungiForestLankyBlueprint,
+        Items.FungiForestTinyBlueprint,
+        Items.FungiForestChunkyBlueprint,
+        Items.CrystalCavesDonkeyBlueprint,
+        Items.CrystalCavesDiddyBlueprint,
+        Items.CrystalCavesLankyBlueprint,
+        Items.CrystalCavesTinyBlueprint,
+        Items.CrystalCavesChunkyBlueprint,
+        Items.CreepyCastleDonkeyBlueprint,
+        Items.CreepyCastleDiddyBlueprint,
+        Items.CreepyCastleLankyBlueprint,
+        Items.CreepyCastleTinyBlueprint,
+        Items.CreepyCastleChunkyBlueprint,
+    ]
     return blueprints
 
 
@@ -96,7 +115,7 @@ def GenerateItemPool():
 
     # Collectibles
     itemPool.extend(itertools.repeat(Items.GoldenBanana, 201))
-    itemPool.extend(GenerateBlueprints())
+    itemPool.extend(Blueprints())
     itemPool.extend(itertools.repeat(Items.BananaFairy, 20))
     itemPool.extend(itertools.repeat(Items.BattleCrown, 10))
     itemPool.extend(itertools.repeat(Items.BananaMedal, 5))

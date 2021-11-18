@@ -11,6 +11,7 @@ import LogicFiles.FungiForest
 import LogicFiles.CrystalCaves
 import LogicFiles.CreepyCastle
 import LogicFiles.HideoutHelm
+import LogicFiles.Shops
 
 class LogicVarHolder:
 
@@ -79,7 +80,7 @@ class LogicVarHolder:
         self.superSlam = False
         self.superDuperSlam = False
 
-        self.BluePrints = []
+        self.Blueprints = []
 
         self.Events = []
 
@@ -155,7 +156,7 @@ class LogicVarHolder:
         self.superSlam = self.Slam >= 2
         self.superDuperSlam = self.Slam >= 3
 
-        self.BluePrints = [x for x in ownedItems if isinstance(x, str) and "Blueprint" in x]
+        self.Blueprints = [x for x in ownedItems if x >= Items.DKIslesDonkeyBlueprint]
 
     # Add an event to events list so it can be checked for logically
     def AddEvent(self, event):
@@ -229,3 +230,4 @@ Regions.update(LogicFiles.FungiForest.Regions)
 Regions.update(LogicFiles.CrystalCaves.Regions)
 Regions.update(LogicFiles.CreepyCastle.Regions)
 Regions.update(LogicFiles.HideoutHelm.Regions)
+Regions.update(LogicFiles.Shops.Regions)
