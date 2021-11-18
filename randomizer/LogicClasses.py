@@ -1,12 +1,4 @@
-from enum import Enum
-
-# Enum for kongs to avoid excessive string comparisons
-class Kongs(Enum):
-    donkey = 1
-    diddy = 2
-    lanky = 3
-    tiny = 4
-    chunky = 5
+from Enums.Kongs import Kongs
 
 # A shufflable location at which a random item can be placed
 class Location:

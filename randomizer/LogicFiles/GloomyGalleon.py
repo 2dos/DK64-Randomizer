@@ -1,5 +1,5 @@
-from LogicClasses import Region, Location, Event, Exit, Kongs
-from Events import Events
+from LogicClasses import Region, Location, Event, Exit
+from Enums.Events import Events
 
 Regions = {
     "Gloomy Galleon Start": Region("Gloomy Galleon Start", True, [
@@ -8,6 +8,7 @@ Regions = {
         Location("Galleon Battle Arena", lambda l: l.punch),
         Location("Galleon Banana Fairy by Cranky", lambda l: l.camera and l.punch),
     ], [
+        Event(Events.GalleonEntered, lambda l: True),
         Event(Events.GalleonLankySwitch, lambda l: l.Slam and l.islanky),
         Event(Events.GalleonTinySwitch, lambda l: l.Slam and l.istiny),
     ], [

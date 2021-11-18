@@ -1,67 +1,8 @@
-from enum import Enum, auto
+from Enums.Items import Items
 
 class Item():
     def __init__(self, name):
         self.name = name
-
-class Items(Enum):
-    Donkey = auto()
-    Diddy = auto()
-    Lanky = auto()
-    Tiny = auto()
-    Chunky = auto()
-    
-    ProgressiveSlam = auto()
-    BaboonBlast = auto()
-    StrongKong = auto()
-    GorillaGrab = auto()
-    ChimpyCharge = auto()
-    RocketbarrelBoost = auto()
-    SimianSpring = auto()
-    Orangstand = auto()
-    BaboonBalloon = auto()
-    OrangstandSprint = auto()
-    MiniMonkey = auto()
-    PonyTailTwirl = auto()
-    Monkeyport = auto()
-    HunkyChunky = auto()
-    PrimatePunch = auto()
-    GorillaGone = auto()
-    
-    Coconut = auto()
-    Peanut = auto()
-    Grape = auto()
-    Feather = auto()
-    Pineapple = auto()
-    HomingAmmo = auto()
-    SniperSight = auto()
-    ProgressiveAmmoBelt = auto()
-    
-    Bongos = auto()
-    Guitar = auto()
-    Trombone = auto()
-    Saxophone = auto()
-    Triangle = auto()
-    ProgressiveInstrumentUpgrade = auto()
-    
-    NintendoCoin = auto()
-    RarewareCoin = auto()
-    
-    CameraAndShockwave = auto()
-    
-    JungleJapesKey = auto()
-    AngryAztecKey = auto()
-    FranticFactoryKey = auto()
-    GloomyGalleonKey = auto()
-    FungiForestKey = auto()
-    CrystalCavesKey = auto()
-    CreepyCastleKey = auto()
-    HideoutHelmKey = auto()
-    
-    GoldenBanana = auto()
-    BananaFairy = auto()
-    BananaMedal = auto()
-    BattleCrown = auto()
 
 ItemList = {
     Items.Donkey: Item("Donkey"),

@@ -1,5 +1,5 @@
-from LogicClasses import Region, Location, Event, Exit, Kongs
-from Events import Events
+from LogicClasses import Region, Location, Event, Exit
+from Enums.Events import Events
 
 Regions = {
     "Start": Region("Start", False, [], [], [

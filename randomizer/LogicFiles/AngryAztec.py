@@ -1,8 +1,10 @@
-from LogicClasses import Region, Location, Event, Exit, Kongs
-from Events import Events
+from LogicClasses import Region, Location, Event, Exit
+from Enums.Events import Events
 
 Regions = {
-    "Angry Aztec Start": Region("Angry Aztec Start", True, [], [], [
+    "Angry Aztec Start": Region("Angry Aztec Start", True, [], [
+        Event(Events.AztecEntered, lambda l: True),
+    ], [
         Exit("Angry Aztec Lobby", lambda l: True),
         Exit("Temple Start", lambda l: (l.peanut and l.isdiddy) or (l.grape and l.islanky) or (l.feather and l.istiny) or (l.pineapple and l.ischunky)),
         Exit("Angry Aztec Main", lambda l: l.jetpack and l.guitar),

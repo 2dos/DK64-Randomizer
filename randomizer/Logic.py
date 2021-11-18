@@ -1,5 +1,7 @@
 from LogicClasses import Kongs
-from Items import Items
+from Enums.Items import Items
+from Enums.Events import Events
+from Enums.Levels import Levels
 import LogicFiles.DKIsles
 import LogicFiles.JungleJapes
 import LogicFiles.AngryAztec
@@ -194,6 +196,24 @@ class LogicVarHolder:
         self.lankyAccess = region.lankyAccess
         self.tinyAccess = region.tinyAccess
         self.chunkyAccess = region.chunkyAccess
+
+    # Check whether a level, or any level above it, has been entered
+    def LevelEntered(self, level):
+        if Events.CastleEntered in self.Events:
+            return True
+        elif Events.CavesEntered in self.Events and level <= Levels.CrystalCaves:
+            return True
+        elif Events.ForestEntered in self.Events and level <= Levels.FungiForest:
+            return True
+        elif Events.GalleonEntered in self.Events and level <= Levels.GloomyGalleon:
+            return True
+        elif Events.FactoryEntered in self.Events and level <= Levels.FranticFactory:
+            return True
+        elif Events.AztecEntered in self.Events and level <= Levels.AngryAztec:
+            return True
+        elif Events.JapesEntered in self.Events and level <= Levels.JungleJapes:
+            return True
+        return False
 
 # Initialize logic variables, for now assume start with donkey
 LogicVariables = LogicVarHolder(Kongs.donkey)

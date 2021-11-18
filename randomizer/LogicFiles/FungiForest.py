@@ -1,8 +1,9 @@
-from LogicClasses import Region, Location, Event, Exit, Kongs
-from Events import Events
+from LogicClasses import Region, Location, Event, Exit
+from Enums.Events import Events
 
 Regions = {
     "Fungi Forest Start": Region("Fungi Forest Start", True, [], [
+        Event(Events.ForestEntered, lambda l: True),
         Event(Events.Night, lambda l: l.coconut or l.peanut or l.grape or l.feather or l.pineapple),
     ], [
         Exit("Fungi Forest Lobby", lambda l: True),

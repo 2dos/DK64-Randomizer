@@ -1,5 +1,5 @@
-from LogicClasses import Region, Location, Event, Exit, Kongs
-from Events import Events
+from LogicClasses import Region, Location, Event, Exit
+from Enums.Events import Events
 
 Regions = {
     "Jungle Japes Main": Region("Jungle Japes Main", True, [
@@ -15,7 +15,9 @@ Regions = {
         Location("Japes Chunky Boulder", lambda l: l.ischunky),
         Location("Japes Chunky Caged Banana", lambda l: Events.JapesChunkySwitch and l.ischunky),
         Location("Japes Battle Arena", lambda l: True),
-    ], [], [
+    ], [
+        Event(Events.JapesEntered, lambda l: True),
+    ], [
         Exit("Jungle Japes Lobby", lambda l: True),
         Exit("Japes Beyond Peanut Gate", lambda l: l.peanut),
         Exit("Japes Beyond Coconut Gate 1", lambda l: l.coconut),

@@ -1,6 +1,6 @@
 import itertools
 
-from Items import Items
+from Enums.Items import Items
 
 levels = [
     "DK Isles",
@@ -54,7 +54,7 @@ def GenerateItemPool():
         Items.OrangstandSprint,
         Items.MiniMonkey,
         Items.PonyTailTwirl,
-        Items.Mokeyport,
+        Items.Monkeyport,
         Items.HunkyChunky,
         Items.PrimatePunch,
         Items.GorillaGone,

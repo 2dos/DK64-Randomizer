@@ -74,3 +74,12 @@ class Events(Enum):
     HelmLankyDone = auto()
     HelmDiddyDone = auto()
     HelmKeyAccess = auto()
+
+    # Level entered events for shops
+    JapesEntered = auto()
+    AztecEntered = auto()
+    FactoryEntered = auto()
+    GalleonEntered = auto()
+    ForestEntered = auto()
+    CavesEntered = auto()
+    CastleEntered = auto()

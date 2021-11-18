@@ -1,5 +1,5 @@
-from LogicClasses import Region, Location, Event, Exit, Kongs
-from Events import Events
+from LogicClasses import Region, Location, Event, Exit
+from Enums.Events import Events
 
 Regions = {
     "Crystal Caves Main": Region("Crystal Caves Main", True, [
@@ -12,6 +12,7 @@ Regions = {
         Location("Caves Lanky Kasplat", lambda l: l.jetpack and l.islanky),
         Location("Caves Tiny Kasplat", lambda l: l.istiny),
     ], [
+        Event(Events.CavesEntered, lambda l: True),
         Event(Events.CavesSmallBoulderButton, lambda l: l.ischunky),
     ], [
         Exit("Crystal Caves Lobby", lambda l: True),

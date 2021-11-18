@@ -1,8 +1,10 @@
-from LogicClasses import Region, Location, Event, Exit, Kongs
-from Events import Events
+from LogicClasses import Region, Location, Event, Exit
+from Enums.Events import Events
 
 Regions = {
-    "Frantic Factory Start": Region("Frantic Factory Start", False, [], [], [
+    "Frantic Factory Start": Region("Frantic Factory Start", False, [], [
+        Event(Events.FactoryEntered, lambda l: True),
+    ], [
         Exit("Frantic Factory Lobby", lambda l: True),
         Exit("Testing", lambda l: Events.TestingGateOpened in l.Events),
         Exit("Beyond Hatch", lambda l: l.Slam),

@@ -1,12 +1,14 @@
-from LogicClasses import Region, Location, Event, Exit, Kongs
-from Events import Events
+from LogicClasses import Region, Location, Event, Exit
+from Enums.Events import Events
 
 Regions = {
     "Creepy Castle Main": Region("Creepy Castle Main", True, [
         Location("Castle Diddy Above Castle", lambda l: l.jetpack and l.isdiddy),
         Location("Castle Lanky Kasplat", lambda l: l.islanky),
         Location("Castle Tiny Kasplat", lambda l: l.istiny),
-    ], [], [
+    ], [
+        Event(Events.CastleEntered, lambda l: True),
+    ], [
         Exit("Creepy Castle Lobby", lambda l: True),
         Exit("Castle Waterfall", lambda l: True),
         Exit("Castle Tree", lambda l: l.blast),
