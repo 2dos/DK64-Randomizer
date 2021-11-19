@@ -92,7 +92,7 @@ LogicRegions = {
     Regions.Mine: Region("Mine", False, [], [
         # You're supposed to get to the switch by shooting a peanut switch,
         # but can just jump without too much trouble.
-        Events(Events.JapesDiddySwitch2, lambda l: l.Slam and l.isdiddy),
+        Event(Events.JapesDiddySwitch2, lambda l: l.Slam and l.isdiddy),
     ], [
         Exit(Regions.JungleJapesMain, lambda l: True),
         Exit(Regions.JapesMinecarts, lambda l: l.charge and l.Slam and l.isdiddy),

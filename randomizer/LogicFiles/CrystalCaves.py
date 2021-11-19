@@ -5,6 +5,7 @@ from Enums.Regions import Regions
 LogicRegions = {
     Regions.CrystalCavesMain: Region("Crystal Caves Main", True, [
         Location("Caves Donkey Baboon Blast", lambda l: l.blast and l.isdonkey),
+        Location("Caves Diddy Jetpack Barrel", lambda l: l.jetpack and l.isdiddy),
         Location("Caves Tiny Krazy Kong Klamour", lambda l: l.mini and l.istiny),
         Location("Caves Tiny Monkeyport Igloo", lambda l: l.monkeyport and l.mini and l.twirl and l.istiny),
         Location("Caves Chunky Gorilla Gone", lambda l: l.punch and l.gorillaGone and l.ischunky),
@@ -119,13 +120,13 @@ LogicRegions = {
     Regions.DiddyLowerCabin: Region("Diddy Lower Cabin", False, [
         # You're supposed to use the jetpack to get up the platforms,
         # but you can just backflip onto them
-        Location("Caves Donkey 5 Door Cabin", lambda l: l.isdiddy),
+        Location("Caves Diddy 5 Door Cabin Lower", lambda l: l.isdiddy),
     ], [], [
         Exit(Regions.CabinArea, lambda l: True),
     ]),
 
     Regions.DiddyUpperCabin: Region("Diddy Upper Cabin", False, [
-        Location("Caves Donkey 5 Door Cabin", lambda l: (l.guitar or l.shockwave) and l.spring and l.jetpack and l.isdiddy),
+        Location("Caves Diddy 5 Door Cabin Upper", lambda l: (l.guitar or l.shockwave) and l.spring and l.jetpack and l.isdiddy),
         Location("Caves Banana Fairy Cabin", lambda l: l.camera and (l.guitar or l.shockwave) and l.spring and l.jetpack and l.isdiddy),
     ], [], [
         Exit(Regions.CabinArea, lambda l: True),
@@ -155,6 +156,6 @@ LogicRegions = {
     ]),
 
     Regions.CavesBoss: Region("Caves Boss", False, [
-        Location("Caves Boss Key", lambda l: l.isdonkey),
+        Location("Caves Key", lambda l: l.isdonkey),
     ], [], []),
 }

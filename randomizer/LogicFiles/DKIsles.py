@@ -14,6 +14,7 @@ LogicRegions = {
         Location("Isles Tiny Instrument Pad", lambda l: Events.IslesChunkyBarrelSpawn in l.Events and l.istiny),
         Location("Isles Lanky Caged Banana", lambda l: l.grape and l.islanky),
         Location("Isles Chunky Caged Banana", lambda l: l.pineapple and l.ischunky),
+        Location("Isles Chunky Instrument Pad", lambda l: l.triangle and l.ischunky),
         Location("Isles Chunky Pound the X", lambda l: Events.IslesChunkyBarrelSpawn in l.Events and l.hunkyChunky and l.Slam and l.ischunky),
         Location("Isles Banana Fairy Island", lambda l: l.camera),
         Location("Isles Banana Fairy Crocodisle Isle", lambda l: l.camera and l.monkeyport and l.istiny),
@@ -63,7 +64,7 @@ LogicRegions = {
     ]),
 
     Regions.AngryAztecLobby: Region("Angry Aztec Lobby", True, [
-        Location("Isles Tiny Big Bug Bash", lambda l: l.chimpycharge and l.twirl and l.istiny),
+        Location("Isles Tiny Big Bug Bash", lambda l: l.charge and l.twirl and l.istiny),
     ], [], [
         Exit(Regions.IslesMain, lambda l: True),
         Exit(Regions.AngryAztecStart, lambda l: l.GoldenBananas >= 5),

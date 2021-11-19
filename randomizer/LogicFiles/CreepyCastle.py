@@ -147,6 +147,6 @@ LogicRegions = {
     ]),
 
     Regions.CastleBoss: Region("Castle Boss", False, [
-        Location("Castle Boss Key", lambda l: True),
+        Location("Castle Key", lambda l: True),
     ], [], []),
 }

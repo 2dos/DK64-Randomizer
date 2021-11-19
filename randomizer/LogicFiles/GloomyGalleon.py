@@ -65,6 +65,7 @@ LogicRegions = {
 
     Regions.Shipyard: Region("Shipyard", True, [
         Location("Galleon Donkey Free the Seal", lambda l: Events.SealReleased in l.Events and l.isdonkey),
+        Location("Galleon Chunky Kasplat", lambda l: l.ischunky),
     ], [
         Event(Events.ShipyardEnguarde, lambda l: l.islanky),
     ], [

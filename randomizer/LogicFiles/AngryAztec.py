@@ -3,7 +3,12 @@ from Enums.Events import Events
 from Enums.Regions import Regions
 
 LogicRegions = {
-    Regions.AngryAztecStart: Region("Angry Aztec Start", True, [], [
+    Regions.AngryAztecStart: Region("Angry Aztec Start", True, [
+        Location("Aztec Donkey Free Llama", lambda l: Events.LlamaFreed in l.Events and l.isdonkey),
+        Location("Aztec Chunky Vases", lambda l: l.pineapple and l.ischunky),
+        Location("Aztec Donkey Kasplat", lambda l: l.coconut and l.strongKong and l.isdonkey),
+        Location("Aztec Diddy Kasplat", lambda l: l.jetpack and l.isdiddy),
+    ], [
         Event(Events.AztecEntered, lambda l: True),
     ], [
         Exit(Regions.AngryAztecLobby, lambda l: True),

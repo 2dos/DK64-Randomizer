@@ -67,14 +67,15 @@ LogicRegions = {
         Location("Factory Tiny by Arcade", lambda l: l.mini and l.istiny),
         Location("Factory Chunky Dark Room", lambda l: l.punch and l.Slam and l.ischunky),
         Location("Factory Chunky Stash Snatch", lambda l: l.punch and l.ischunky),
+        Location("Factory Diddy Kasplat", lambda l: l.isdiddy),
         Location("Factory Tiny Kasplat", lambda l: l.istiny),
     ], [
-        Events(Events.ArcadeLeverSpawned, lambda l: l.blast and l.isdonkey),
-        Events(Events.TestingGateOpened, lambda l: l.Slam),
-        Events(Events.DiddyCoreSwitch, lambda l: l.Slam and l.isdiddy),
-        Events(Events.LankyCoreSwitch, lambda l: l.Slam and l.islanky),
-        Events(Events.TinyCoreSwitch, lambda l: l.Slam and l.istiny),
-        Events(Events.ChunkyCoreSwitch, lambda l: l.Slam and l.ischunky),
+        Event(Events.ArcadeLeverSpawned, lambda l: l.blast and l.isdonkey),
+        Event(Events.TestingGateOpened, lambda l: l.Slam),
+        Event(Events.DiddyCoreSwitch, lambda l: l.Slam and l.isdiddy),
+        Event(Events.LankyCoreSwitch, lambda l: l.Slam and l.islanky),
+        Event(Events.TinyCoreSwitch, lambda l: l.Slam and l.istiny),
+        Event(Events.ChunkyCoreSwitch, lambda l: l.Slam and l.ischunky),
     ], [
         Exit(Regions.InsideCore, lambda l: Events.MainCoreActivated in l.Events),
         Exit(Regions.MainCore, lambda l: Events.MainCoreActivated in l.Events),
@@ -94,6 +95,7 @@ LogicRegions = {
         Location("Factory Lanky Production Room", lambda l: Events.LankyCoreSwitch in l.Events and l.handstand and l.islanky),
         Location("Factory Tiny Production Room", lambda l: Events.TinyCoreSwitch in l.Events and l.twirl and l.istiny),
         Location("Factory Chunky Production Room", lambda l: Events.ChunkyCoreSwitch in l.Events and l.ischunky),
+        Location("Factory Donkey Kasplat", lambda l: l.isdonkey)
     ], [], []),
 
     Regions.FactoryBossLobby: Region("Factory Boss Lobby", False, [], [], [
@@ -102,6 +104,6 @@ LogicRegions = {
     ]),
 
     Regions.FactoryBoss: Region("Factory Boss", False, [
-        Location("Factory Boss Key", lambda l: l.twirl and l.istiny),
+        Location("Factory Key", lambda l: l.twirl and l.istiny),
     ], [], []),
 }

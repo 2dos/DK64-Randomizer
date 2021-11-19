@@ -1,6 +1,6 @@
-from enum import Enum, auto
+from enum import IntEnum, auto
 
-class Regions(Enum):
+class Regions(IntEnum):
     
     # DK Isles Regions
     Start = auto()

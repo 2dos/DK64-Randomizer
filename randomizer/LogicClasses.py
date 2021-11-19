@@ -76,3 +76,7 @@ class Region:
             return self.tinyAccess
         else:
             return self.chunkyAccess
+
+    # Get a specific location from this region given its name
+    def GetLocation(self, location):
+        return [x for x in self.locations if x.name == location][0]

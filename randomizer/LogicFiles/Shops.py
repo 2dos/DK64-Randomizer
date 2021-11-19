@@ -53,6 +53,8 @@ LogicRegions = {
         Location("Hunky Chunky", lambda l: l.LevelEntered(Levels.JungleJapes) and l.ischunky),
         Location("Primate Punch", lambda l: l.LevelEntered(Levels.FranticFactory) and l.ischunky),
         Location("Gorilla Gone", lambda l: l.LevelEntered(Levels.CrystalCaves) and l.ischunky),
+
+        Location("Rareware Coin", lambda l: l.BananaMedals >= 5),
     ], [], []),
 
     Regions.Snide: Region("Snide", False, [
@@ -61,36 +63,43 @@ LogicRegions = {
         Location("Turn In DK Isles Lanky Blueprint", lambda l: Items.DKIslesLankyBlueprint in l.Blueprints),
         Location("Turn In DK Isles Tiny Blueprint", lambda l: Items.DKIslesTinyBlueprint in l.Blueprints),
         Location("Turn In DK Isles Chunky Blueprint", lambda l: Items.DKIslesChunkyBlueprint in l.Blueprints),
+        
         Location("Turn In Jungle Japes Donkey Blueprint", lambda l: Items.JungleJapesDonkeyBlueprint in l.Blueprints),
         Location("Turn In Jungle Japes Diddy Blueprint", lambda l: Items.JungleJapesDiddyBlueprint in l.Blueprints),
         Location("Turn In Jungle Japes Lanky Blueprint", lambda l: Items.JungleJapesLankyBlueprint in l.Blueprints),
         Location("Turn In Jungle Japes Tiny Blueprint", lambda l: Items.JungleJapesTinyBlueprint in l.Blueprints),
         Location("Turn In Jungle Japes Chunky Blueprint", lambda l: Items.JungleJapesChunkyBlueprint in l.Blueprints),
+        
         Location("Turn In Angry Aztec Donkey Blueprint", lambda l: Items.AngryAztecDonkeyBlueprint in l.Blueprints),
         Location("Turn In Angry Aztec Diddy Blueprint", lambda l: Items.AngryAztecDiddyBlueprint in l.Blueprints),
         Location("Turn In Angry Aztec Lanky Blueprint", lambda l: Items.AngryAztecLankyBlueprint in l.Blueprints),
         Location("Turn In Angry Aztec Tiny Blueprint", lambda l: Items.AngryAztecTinyBlueprint in l.Blueprints),
         Location("Turn In Angry Aztec Chunky Blueprint", lambda l: Items.AngryAztecChunkyBlueprint in l.Blueprints),
+
         Location("Turn In Frantic Factory Donkey Blueprint", lambda l: Items.FranticFactoryDonkeyBlueprint in l.Blueprints),
         Location("Turn In Frantic Factory Diddy Blueprint", lambda l: Items.FranticFactoryDiddyBlueprint in l.Blueprints),
         Location("Turn In Frantic Factory Lanky Blueprint", lambda l: Items.FranticFactoryLankyBlueprint in l.Blueprints),
         Location("Turn In Frantic Factory Tiny Blueprint", lambda l: Items.FranticFactoryTinyBlueprint in l.Blueprints),
         Location("Turn In Frantic Factory Chunky Blueprint", lambda l: Items.FranticFactoryChunkyBlueprint in l.Blueprints),
+        
         Location("Turn In Gloomy Galleon Donkey Blueprint", lambda l: Items.GloomyGalleonDonkeyBlueprint in l.Blueprints),
         Location("Turn In Gloomy Galleon Diddy Blueprint", lambda l: Items.GloomyGalleonDiddyBlueprint in l.Blueprints),
         Location("Turn In Gloomy Galleon Lanky Blueprint", lambda l: Items.GloomyGalleonLankyBlueprint in l.Blueprints),
         Location("Turn In Gloomy Galleon Tiny Blueprint", lambda l: Items.GloomyGalleonTinyBlueprint in l.Blueprints),
         Location("Turn In Gloomy Galleon Chunky Blueprint", lambda l: Items.GloomyGalleonChunkyBlueprint in l.Blueprints),
+
         Location("Turn In Fungi Forest Donkey Blueprint", lambda l: Items.FungiForestDonkeyBlueprint in l.Blueprints),
         Location("Turn In Fungi Forest Diddy Blueprint", lambda l: Items.FungiForestDiddyBlueprint in l.Blueprints),
         Location("Turn In Fungi Forest Lanky Blueprint", lambda l: Items.FungiForestLankyBlueprint in l.Blueprints),
         Location("Turn In Fungi Forest Tiny Blueprint", lambda l: Items.FungiForestTinyBlueprint in l.Blueprints),
         Location("Turn In Fungi Forest Chunky Blueprint", lambda l: Items.FungiForestChunkyBlueprint in l.Blueprints),
+
         Location("Turn In Crystal Caves Donkey Blueprint", lambda l: Items.CrystalCavesDonkeyBlueprint in l.Blueprints),
         Location("Turn In Crystal Caves Diddy Blueprint", lambda l: Items.CrystalCavesDiddyBlueprint in l.Blueprints),
         Location("Turn In Crystal Caves Lanky Blueprint", lambda l: Items.CrystalCavesLankyBlueprint in l.Blueprints),
         Location("Turn In Crystal Caves Tiny Blueprint", lambda l: Items.CrystalCavesTinyBlueprint in l.Blueprints),
         Location("Turn In Crystal Caves Chunky Blueprint", lambda l: Items.CrystalCavesChunkyBlueprint in l.Blueprints),
+        
         Location("Turn In Creepy Castle Donkey Blueprint", lambda l: Items.CreepyCastleDonkeyBlueprint in l.Blueprints),
         Location("Turn In Creepy Castle Diddy Blueprint", lambda l: Items.CreepyCastleDiddyBlueprint in l.Blueprints),
         Location("Turn In Creepy Castle Lanky Blueprint", lambda l: Items.CreepyCastleLankyBlueprint in l.Blueprints),

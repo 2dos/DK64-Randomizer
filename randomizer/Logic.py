@@ -1,7 +1,7 @@
-from LogicClasses import Kongs
 from Enums.Items import Items
 from Enums.Events import Events
 from Enums.Levels import Levels
+from Enums.Kongs import Kongs
 import LogicFiles.DKIsles
 import LogicFiles.JungleJapes
 import LogicFiles.AngryAztec

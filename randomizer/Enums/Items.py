@@ -1,6 +1,6 @@
-from enum import Enum, auto
+from enum import IntEnum, auto
 
-class Items(Enum):
+class Items(IntEnum):
     Donkey = auto()
     Diddy = auto()
     Lanky = auto()
@@ -99,3 +99,5 @@ class Items(Enum):
     CreepyCastleLankyBlueprint = auto()
     CreepyCastleTinyBlueprint = auto()
     CreepyCastleChunkyBlueprint = auto()
+
+    BananaHoard = auto()

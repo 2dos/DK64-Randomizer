@@ -1,6 +1,6 @@
-from enum import Enum, auto
+from enum import IntEnum, auto
 
-class Levels(Enum):
+class Levels(IntEnum):
     DKIsles = auto()
     JungleJapes = auto()
     AngryAztec = auto()

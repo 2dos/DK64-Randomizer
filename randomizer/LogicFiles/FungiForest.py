@@ -50,6 +50,7 @@ LogicRegions = {
 
     Regions.MushroomUpper: Region("Mushroom Upper", True, [
         Location("Forest Donkey Mushroom Cannons", lambda l: Events.MushroomCannonsSpawned in l.Events and Events.DonkeyMushroomSwitch in l.Events),
+        Location("Forest Diddy Kasplat", lambda l: l.isdiddy),
     ], [], [
         Exit(Regions.MushroomLower, lambda l: True),
         Exit(Regions.MushroomLowerExterior, lambda l: True),
@@ -190,6 +191,7 @@ LogicRegions = {
 
     Regions.ThornvineHut: Region("Thornvine Hut", False, [
         Location("Forest Donkey Minecart Mayhem", lambda l: l.Slam and l.isdonkey),
+        Location("Forest Banana Fairy Thornvines", lambda l: l.camera),
     ], [], [
         Exit(Regions.ThornvineArea, lambda l: True),
     ]),
@@ -208,6 +210,6 @@ LogicRegions = {
     ]),
 
     Regions.ForestBoss: Region("Forest Boss", False, [
-        Location("Forest Boss Key", lambda l: l.hunkyChunky and l.ischunky),
+        Location("Forest Key", lambda l: l.hunkyChunky and l.ischunky),
     ], [], []),
 }
