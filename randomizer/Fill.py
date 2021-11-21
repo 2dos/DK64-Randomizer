@@ -5,6 +5,7 @@ from Logic import LogicVariables
 from Enums.Regions import Regions
 from Enums.Items import Items
 from Item import ItemList
+import ItemPool
 
 # Search to find all reachable locations given owned items
 def GetAccessibleLocations(ownedItems, searchType=0):
@@ -84,19 +85,36 @@ def ResetRegionAccess():
     for region in Logic.Regions.values():
         region.ResetAccess()
 
-# Assumed fill algorithm for item placement
-def AssumedFill(itemPool):
-    random.shuffle(itemPool)
+# Forward fill algorithm for item placement
+def ForwardFill(itemsToPlace, itemPool = []):
+    random.shuffle(itemsToPlace)
+    ownedItems = itemPool.copy()
     # While there are items to place
-    while len(itemPool) > 0:
+    while len(itemsToPlace) > 0:
+        # Find a random empty location which is reachable with current items
+        reachable = GetAccessibleLocations(ownedItems.copy())
+        reachable = [x for x in reachable if x.item == None]
+        if len(reachable) == 0: # If there are no empty reachable locations, reached a dead end
+            break
+        random.shuffle(reachable)
+        location = reachable.pop()
+        # Get a random item and place it there, also adding to owned items
+        item = itemsToPlace.pop()
+        ownedItems.append(item)
+        location.PlaceItem(item)
+
+# Assumed fill algorithm for item placement
+def AssumedFill(itemsToPlace, itemPool = []):
+    random.shuffle(itemsToPlace)
+    # While there are items to place
+    while len(itemsToPlace) > 0:
         # Get a random item, check which empty locations are still accessible without owning it
-        item = itemPool.pop()
+        item = itemsToPlace.pop()
+        ownedItems = itemsToPlace.copy()
+        ownedItems.extend(itemPool)
         LogicVariables.Reset()
         ResetRegionAccess()
-        reachable = GetAccessibleLocations(itemPool.copy())
-        # for location in reachable:
-        #     itemName = "None" if location.item == None else location.item
-        #     print(location.name + " " + itemName)
+        reachable = GetAccessibleLocations(ownedItems.copy())
         reachable = [x for x in reachable if x.item == None]
         # If there are no empty reachable locations, reached a dead end
         if len(reachable) == 0:
@@ -106,9 +124,22 @@ def AssumedFill(itemPool):
         location = reachable.pop()
         location.PlaceItem(item)
 
-def Fill(itemPool):
+# Place all items
+def Fill():
+    lowPriorityItems = ItemPool.LowPriorityItems()
+    # First place win condition item at K Rool
     Logic.Regions[Regions.KRool].GetLocation("Banana Hoard").PlaceItem(Items.BananaHoard)
-    AssumedFill(itemPool)
+    # Then place priority (logically very important) items
+    ForwardFill(ItemPool.HighPriorityItems(), lowPriorityItems)
+    # Then place blueprints
+    LogicVariables.Reset()
+    ResetRegionAccess()
+    ForwardFill(ItemPool.Blueprints(), lowPriorityItems)
+    # Then place the rest of items
+    LogicVariables.Reset()
+    ResetRegionAccess()
+    ForwardFill(lowPriorityItems)
+    # Generate and display the playthrough
     LogicVariables.Reset()
     ResetRegionAccess()
     PlaythroughLocations = GetAccessibleLocations([], 1)

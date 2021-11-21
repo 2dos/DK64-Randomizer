@@ -25,13 +25,13 @@ LogicRegions = {
         Exit(Regions.Prison, lambda l: True),
         Exit(Regions.BananaFairyRoom, lambda l: l.mini and l.istiny),
         Exit(Regions.JungleJapesLobby, lambda l: Events.KLumsyTalkedTo in l.Events),
-        Exit(Regions.AngryAztecLobby, lambda l: Events.FirstKey in l.Events),
-        Exit(Regions.CrocodileIsleBeyondLift, lambda l: Events.SecondKey in l.Events),
-        Exit(Regions.GloomyGalleonLobby, lambda l: Events.SecondKey in l.Events),
-        Exit(Regions.CabinIsle, lambda l: Events.FourthKey in l.Events),
-        Exit(Regions.CrystalCavesLobby, lambda l: Events.FifthKey in l.Events),
-        Exit(Regions.CreepyCastleLobby, lambda l: Events.FifthKey in l.Events),
-        Exit(Regions.HideoutHelmLobby, lambda l: Events.SeventhKey in l.Events and l.monkeyport and l.istiny),
+        Exit(Regions.AngryAztecLobby, lambda l: True),
+        Exit(Regions.CrocodileIsleBeyondLift, lambda l: True),
+        Exit(Regions.GloomyGalleonLobby, lambda l: True),
+        Exit(Regions.CabinIsle, lambda l: True),
+        Exit(Regions.CrystalCavesLobby, lambda l: True),
+        Exit(Regions.CreepyCastleLobby, lambda l: True),
+        Exit(Regions.HideoutHelmLobby, lambda l: True and l.monkeyport and l.istiny),
         Exit(Regions.KRool, lambda l: Events.EigthKey in l.Events),
     ]),
 
@@ -60,14 +60,14 @@ LogicRegions = {
         Location("Isles Lanky Instrument Pad", lambda l: l.chunkyAccess and l.trombone and l.islanky),
     ], [], [
         Exit(Regions.IslesMain, lambda l: True),
-        Exit(Regions.JungleJapesMain, lambda l: l.GoldenBananas >= 1),
+        Exit(Regions.JungleJapesMain, lambda l: True),
     ]),
 
     Regions.AngryAztecLobby: Region("Angry Aztec Lobby", True, [
         Location("Isles Tiny Big Bug Bash", lambda l: l.charge and l.twirl and l.istiny),
     ], [], [
         Exit(Regions.IslesMain, lambda l: True),
-        Exit(Regions.AngryAztecStart, lambda l: l.GoldenBananas >= 5),
+        Exit(Regions.AngryAztecStart, lambda l: True),
     ]),
 
     Regions.CrocodileIsleBeyondLift: Region("Crocodile Isle Beyond Lift", False, [
@@ -91,7 +91,7 @@ LogicRegions = {
         Location("Isles Banana Fairy Factory Lobby", lambda l: l.camera and l.punch),
     ], [], [
         Exit(Regions.CrocodileIsleBeyondLift, lambda l: True),
-        Exit(Regions.FranticFactoryStart, lambda l: l.GoldenBananas >= 15),
+        Exit(Regions.FranticFactoryStart, lambda l: True),
     ]),
 
     Regions.GloomyGalleonLobby: Region("Gloomy Galleon Lobby", True, [
@@ -99,7 +99,7 @@ LogicRegions = {
         Location("Isles Chunky Kasplat", lambda l: l.ischunky),
     ], [], [
         Exit(Regions.IslesMain, lambda l: True),
-        Exit(Regions.GloomyGalleonStart, lambda l: l.GoldenBananas >= 30),
+        Exit(Regions.GloomyGalleonStart, lambda l: True),
     ]),
 
     Regions.CabinIsle: Region("Cabin Isle", False, [
@@ -114,7 +114,7 @@ LogicRegions = {
         Location("Isles Banana Fairy Forest Lobby", lambda l: l.camera and l.feather),
     ], [], [
         Exit(Regions.CabinIsle, lambda l: True),
-        Exit(Regions.FungiForestStart, lambda l: l.GoldenBananas >= 50),
+        Exit(Regions.FungiForestStart, lambda l: True),
     ]),
 
     Regions.CrystalCavesLobby: Region("Crystal Caves Lobby", True, [
@@ -123,7 +123,7 @@ LogicRegions = {
         Location("Isles Lanky Kasplat", lambda l: l.punch and l.islanky),
     ], [], [
         Exit(Regions.IslesMain, lambda l: True),
-        Exit(Regions.CrystalCavesMain, lambda l: l.GoldenBananas >= 65),
+        Exit(Regions.CrystalCavesMain, lambda l: True),
     ]),
 
     Regions.CreepyCastleLobby: Region("Creepy Castle Lobby", True, [
@@ -131,7 +131,7 @@ LogicRegions = {
         Location("Isles Diddy Kasplat", lambda l: l.coconut and l.diddy),
     ], [], [
         Exit(Regions.IslesMain, lambda l: True),
-        Exit(Regions.CreepyCastleMain, lambda l: l.GoldenBananas >= 80),
+        Exit(Regions.CreepyCastleMain, lambda l: True),
     ]),
 
     Regions.HideoutHelmLobby: Region("Hideout Helm Lobby", True, [
@@ -139,7 +139,7 @@ LogicRegions = {
         Location("Isles Donkey Kasplat", lambda l: l.coconut),
     ], [], [
         Exit(Regions.IslesMain, lambda l: True),
-        Exit(Regions.HideoutHelmStart, lambda l: l.gorillaGone and l.GoldenBananas >= 100),
+        Exit(Regions.HideoutHelmStart, lambda l: l.gorillaGone),
     ]),
 
     Regions.KRool: Region("K. Rool", True, [
