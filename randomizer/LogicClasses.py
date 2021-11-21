@@ -36,11 +36,7 @@ class Region:
         self.exits = exits
 
         # Initially assume no access from any kong
-        self.donkeyAccess = False
-        self.diddyAccess = False
-        self.lankyAccess = False
-        self.tinyAccess = False
-        self.chunkyAccess = False
+        self.ResetAccess()
 
     # Set that given kong has access to this region
     def UpdateAccess(self, kong, logicVariables):
@@ -76,6 +72,14 @@ class Region:
             return self.tinyAccess
         else:
             return self.chunkyAccess
+
+    # Clear access for all kongs
+    def ResetAccess(self):
+        self.donkeyAccess = False
+        self.diddyAccess = False
+        self.lankyAccess = False
+        self.tinyAccess = False
+        self.chunkyAccess = False
 
     # Get a specific location from this region given its name
     def GetLocation(self, location):

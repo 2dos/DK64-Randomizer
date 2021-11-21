@@ -4,22 +4,34 @@ import Logic
 from Logic import LogicVariables
 from Enums.Regions import Regions
 from Enums.Items import Items
+from Item import ItemList
 
 # Search to find all reachable locations given owned items
-def GetAccessibleLocations(ownedItems):
+def GetAccessibleLocations(ownedItems, searchType=0):
     accessible = []
     accessibleIds = []
     newLocations = []
+    playthroughLocations = []
     eventAdded = True
     # Continue doing searches until nothing new is found
     while len(newLocations) > 0 or eventAdded:
         # Add items and events from the last search iteration
+        sphere = []
         for location in newLocations:
             accessible.append(location)
             accessibleIds.append(location.name)
             # If this location has an item placed, add it to owned items
             if location.item is not None:
                 ownedItems.append(location.item)
+            if searchType == 1 and ItemList[location.item].playthrough:
+                if location.item == Items.BananaHoard:
+                    sphere = [location]
+                    break
+                sphere.append(location)
+        if len(sphere) > 0:
+            playthroughLocations.append(sphere)
+            if sphere[0].item == Items.BananaHoard:
+                break
         eventAdded = False
         # Reset new lists
         newLocations = []
@@ -62,7 +74,15 @@ def GetAccessibleLocations(ownedItems):
                         addedRegions.append(exit.dest)
                         regionPool.append(Logic.Regions[exit.dest])
 
-    return accessible
+    if searchType == 0:
+        return accessible
+    elif searchType == 1:
+        return playthroughLocations
+
+# Reset kong access for all regions
+def ResetRegionAccess():
+    for region in Logic.Regions.values():
+        region.ResetAccess()
 
 # Assumed fill algorithm for item placement
 def AssumedFill(itemPool):
@@ -72,6 +92,7 @@ def AssumedFill(itemPool):
         # Get a random item, check which empty locations are still accessible without owning it
         item = itemPool.pop()
         LogicVariables.Reset()
+        ResetRegionAccess()
         reachable = GetAccessibleLocations(itemPool.copy())
         # for location in reachable:
         #     itemName = "None" if location.item == None else location.item
@@ -88,3 +109,12 @@ def AssumedFill(itemPool):
 def Fill(itemPool):
     Logic.Regions[Regions.KRool].GetLocation("Banana Hoard").PlaceItem(Items.BananaHoard)
     AssumedFill(itemPool)
+    LogicVariables.Reset()
+    ResetRegionAccess()
+    PlaythroughLocations = GetAccessibleLocations([], 1)
+    i = 0
+    for sphere in PlaythroughLocations:
+        print("\nSphere " + str(i))
+        i += 1
+        for location in sphere:
+            print(location.name + ": " + ItemList[location.item].name)

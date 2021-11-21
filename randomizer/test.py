@@ -2,6 +2,6 @@ from Fill import Fill
 from ItemPool import GenerateItemPool
 import random
 
-random.seed(3245345)
+random.seed()
 itemPool = GenerateItemPool()
 Fill(itemPool)
