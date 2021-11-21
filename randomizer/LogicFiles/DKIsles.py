@@ -3,7 +3,7 @@ from Enums.Events import Events
 from Enums.Regions import Regions
 
 LogicRegions = {
-    Regions.Start: Region("Start", False, [], [], [
+    Regions.Start: Region("Start", True, [], [], [
         Exit(Regions.IslesMain, lambda l: True),
         Exit(Regions.Cranky, lambda l: True),
     ]),

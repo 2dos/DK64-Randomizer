@@ -98,60 +98,60 @@ class LogicVarHolder:
 
     # Update logic variables based on owned items
     def Update(self, ownedItems):
-        self.donkey = Items.Donkey in ownedItems or self.startkong == Kongs.donkey
-        self.diddy = Items.Diddy in ownedItems or self.startkong == Kongs.diddy
-        self.lanky = Items.Lanky in ownedItems or self.startkong == Kongs.lanky
-        self.tiny = Items.Tiny in ownedItems or self.startkong == Kongs.tiny
-        self.chunky = Items.Chunky in ownedItems or self.startkong == Kongs.chunky
+        self.donkey = self.donkey or Items.Donkey in ownedItems or self.startkong == Kongs.donkey
+        self.diddy = self.diddy or Items.Diddy in ownedItems or self.startkong == Kongs.diddy
+        self.lanky = self.lanky or Items.Lanky in ownedItems or self.startkong == Kongs.lanky
+        self.tiny = self.tiny or Items.Tiny in ownedItems or self.startkong == Kongs.tiny
+        self.chunky = self.chunky or Items.Chunky in ownedItems or self.startkong == Kongs.chunky
 
-        self.blast = Items.BaboonBlast in ownedItems and self.donkey
-        self.strongKong = Items.StrongKong in ownedItems and self.donkey
-        self.grab = Items.GorillaGrab in ownedItems and self.donkey
-        self.charge = Items.ChimpyCharge in ownedItems and self.diddy
-        self.jetpack = Items.RocketbarrelBoost in ownedItems and self.diddy
-        self.spring = Items.SimianSpring in ownedItems and self.diddy
-        self.handstand = Items.Orangstand in ownedItems and self.lanky
-        self.balloon = Items.BaboonBalloon in ownedItems and self.lanky
-        self.sprint = Items.OrangstandSprint in ownedItems and self.lanky
-        self.mini = Items.MiniMonkey in ownedItems and self.tiny
-        self.twirl = Items.PonyTailTwirl in ownedItems and self.tiny
-        self.monkeyport = Items.Monkeyport in ownedItems and self.tiny
-        self.hunkyChunky = Items.HunkyChunky in ownedItems and self.chunky
-        self.punch = Items.PrimatePunch in ownedItems and self.chunky
-        self.gorillaGone = Items.GorillaGone in ownedItems and self.chunky
+        self.blast = self.blast or Items.BaboonBlast in ownedItems and self.donkey
+        self.strongKong = self.strongKong or Items.StrongKong in ownedItems and self.donkey
+        self.grab = self.grab or Items.GorillaGrab in ownedItems and self.donkey
+        self.charge = self.charge or Items.ChimpyCharge in ownedItems and self.diddy
+        self.jetpack = self.jetpack or Items.RocketbarrelBoost in ownedItems and self.diddy
+        self.spring = self.spring or Items.SimianSpring in ownedItems and self.diddy
+        self.handstand = self.handstand or Items.Orangstand in ownedItems and self.lanky
+        self.balloon = self.balloon or Items.BaboonBalloon in ownedItems and self.lanky
+        self.sprint = self.sprint or Items.OrangstandSprint in ownedItems and self.lanky
+        self.mini = self.mini or Items.MiniMonkey in ownedItems and self.tiny
+        self.twirl = self.twirl or Items.PonyTailTwirl in ownedItems and self.tiny
+        self.monkeyport = self.monkeyport or Items.Monkeyport in ownedItems and self.tiny
+        self.hunkyChunky = self.hunkyChunky or Items.HunkyChunky in ownedItems and self.chunky
+        self.punch = self.punch or Items.PrimatePunch in ownedItems and self.chunky
+        self.gorillaGone = self.gorillaGone or Items.GorillaGone in ownedItems and self.chunky
 
-        self.coconut = Items.Coconut in ownedItems and self.donkey
-        self.peanut = Items.Peanut in ownedItems and self.diddy
-        self.grape = Items.Grape in ownedItems and self.lanky
-        self.feather = Items.Feather in ownedItems and self.tiny
-        self.pineapple = Items.Pineapple in ownedItems and self.chunky
+        self.coconut = self.coconut or Items.Coconut in ownedItems and self.donkey
+        self.peanut = self.peanut or Items.Peanut in ownedItems and self.diddy
+        self.grape = self.grape or Items.Grape in ownedItems and self.lanky
+        self.feather = self.feather or Items.Feather in ownedItems and self.tiny
+        self.pineapple = self.pineapple or Items.Pineapple in ownedItems and self.chunky
 
-        self.bongos = Items.Bongos in ownedItems and self.donkey
-        self.guitar = Items.Guitar in ownedItems and self.diddy
-        self.trombone = Items.Trombone in ownedItems and self.lanky
-        self.saxophone = Items.Saxophone in ownedItems and self.tiny
-        self.triangle = Items.Triangle in ownedItems and self.chunky
+        self.bongos = self.bongos or Items.Bongos in ownedItems and self.donkey
+        self.guitar = self.guitar or Items.Guitar in ownedItems and self.diddy
+        self.trombone = self.trombone or Items.Trombone in ownedItems and self.lanky
+        self.saxophone = self.saxophone or Items.Saxophone in ownedItems and self.tiny
+        self.triangle = self.triangle or Items.Triangle in ownedItems and self.chunky
 
-        self.nintendoCoin = Items.NintendoCoin in ownedItems
-        self.rarewareCoin = Items.RarewareCoin in ownedItems
+        self.nintendoCoin = self.nintendoCoin or Items.NintendoCoin in ownedItems
+        self.rarewareCoin = self.rarewareCoin or Items.RarewareCoin in ownedItems
 
-        self.camera = Items.CameraAndShockwave in ownedItems
-        self.shockwave = Items.CameraAndShockwave in ownedItems
+        self.camera = self.camera or Items.CameraAndShockwave in ownedItems
+        self.shockwave = self.shockwave or Items.CameraAndShockwave in ownedItems
 
-        self.JapesKey = Items.JungleJapesKey in ownedItems
-        self.AztecKey = Items.AngryAztecKey in ownedItems
-        self.FactoryKey = Items.FranticFactoryKey in ownedItems
-        self.GalleonKey = Items.GloomyGalleonKey in ownedItems
-        self.ForestKey = Items.FungiForestKey in ownedItems
-        self.CavesKey = Items.CrystalCavesKey in ownedItems
-        self.CastleKey = Items.CreepyCastleKey in ownedItems
-        self.HelmKey = Items.HideoutHelmKey in ownedItems
+        self.JapesKey = self.JapesKey or Items.JungleJapesKey in ownedItems
+        self.AztecKey = self.AztecKey or Items.AngryAztecKey in ownedItems
+        self.FactoryKey = self.FactoryKey or Items.FranticFactoryKey in ownedItems
+        self.GalleonKey = self.GalleonKey or Items.GloomyGalleonKey in ownedItems
+        self.ForestKey = self.ForestKey or Items.FungiForestKey in ownedItems
+        self.CavesKey = self.CavesKey or Items.CrystalCavesKey in ownedItems
+        self.CastleKey = self.CastleKey or Items.CreepyCastleKey in ownedItems
+        self.HelmKey = self.HelmKey or Items.HideoutHelmKey in ownedItems
 
-        self.Slam = len([x for x in ownedItems if x == Items.ProgressiveSlam])
-        self.GoldenBananas = len([x for x in ownedItems if x == Items.GoldenBanana])
-        self.BananaFairies = len([x for x in ownedItems if x == Items.BananaFairy])
-        self.BananaMedals = len([x for x in ownedItems if x == Items.BananaMedal])
-        self.BattleCrowns = len([x for x in ownedItems if x == Items.BattleCrown])
+        self.Slam = sum(1 for x in ownedItems if x == Items.ProgressiveSlam)
+        self.GoldenBananas = sum(1 for x in ownedItems if x == Items.GoldenBanana)
+        self.BananaFairies = sum(1 for x in ownedItems if x == Items.BananaFairy)
+        self.BananaMedals = sum(1 for x in ownedItems if x == Items.BananaMedal)
+        self.BattleCrowns = sum(1 for x in ownedItems if x == Items.BattleCrown)
 
         self.superSlam = self.Slam >= 2
         self.superDuperSlam = self.Slam >= 3
