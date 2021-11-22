@@ -58,6 +58,14 @@ class Region:
                 self.tinyAccess = True
             else:
                 self.chunkyAccess = True
+
+    # Set access to region from another region
+    def UpdateAccessFromRegion(self, region):
+        self.donkeyAccess = self.donkeyAccess or region.donkeyAccess
+        self.diddyAccess = self.diddyAccess or region.diddyAccess
+        self.lankyAccess = self.lankyAccess or region.lankyAccess
+        self.tinyAccess = self.tinyAccess or region.tinyAccess
+        self.chunkyAccess = self.chunkyAccess or region.chunkyAccess
     
     # Check if given kong has access through this area
     # Used if a kong has access through a tag barrel only

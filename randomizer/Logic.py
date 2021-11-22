@@ -236,3 +236,8 @@ Regions.update(LogicFiles.Shops.LogicRegions)
 def ResetRegionAccess():
     for region in Regions.values():
         region.ResetAccess()
+
+# Updates access of master regions list from a temp list of regions
+def UpdateAllRegionsAccess(tempRegions):
+    for (key, value) in Regions.items():
+        value.UpdateAccessFromRegion(tempRegions[key])

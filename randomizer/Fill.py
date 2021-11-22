@@ -1,4 +1,5 @@
 import random
+import copy
 
 from Enums.Regions import Regions
 from Enums.Items import Items
@@ -7,6 +8,44 @@ import Logic
 from Logic import LogicVariables
 from Item import ItemList
 import ItemPool
+
+# Find all locations accessible by this kong with current logic variables
+def KongSearch(kong, logicVariables, accessibleIds, start, Regions, newLocations, newLocationIds):
+    logicVariables.SetKong(kong)
+    newEvents = []
+
+    regionPool = [Regions[start]]
+    addedRegions = [start]  
+
+    tagAccess = [(key, value) for (key, value) in Regions.items() if value.HasAccess(kong) and key not in addedRegions]
+    addedRegions.extend([x[0] for x in tagAccess]) # first value is the region key
+    regionPool.extend([x[1] for x in tagAccess]) # second value is the region itself
+
+    # Loop for each region until no more accessible regions found
+    while len(regionPool) > 0:
+        region = regionPool.pop()
+
+        region.UpdateAccess(kong, logicVariables) # Set that this kong has access to this region
+        logicVariables.UpdateCurrentRegionAccess(region) # Set in logic as well
+
+        # Check accessibility for each location in this region
+        for location in region.locations:
+            if location.logic(logicVariables) and location.name not in newLocationIds and location.name not in accessibleIds:
+                newLocations.append(location)
+                newLocationIds.append(location.name)
+        # Check accessibility for each event in this region
+        for event in region.events:
+            if event.name not in logicVariables.Events and event.logic(logicVariables):
+                newEvents.append(event.name)
+                logicVariables.Events.append(event.name)
+        # Check accessibility for each exit in this region
+        for exit in region.exits:
+            # If a region is accessible through this exit and has not yet been added, add it to the queue to be visited eventually
+            if exit.dest not in addedRegions and exit.logic(logicVariables):
+                addedRegions.append(exit.dest)
+                regionPool.append(Regions[exit.dest])
+
+    return Regions, newLocations, newLocationIds, newEvents
 
 # Search to find all reachable locations given owned items
 def GetAccessibleLocations(ownedItems, searchType=SearchMode.GetReachable):
@@ -43,38 +82,19 @@ def GetAccessibleLocations(ownedItems, searchType=SearchMode.GetReachable):
 
         # Do a search for each owned kong
         for kong in LogicVariables.GetKongs():
-            LogicVariables.SetKong(kong)
-
-            regionPool = [Logic.Regions[Regions.Start]]
-            addedRegions = [Regions.Start]  
-
-            tagAccess = [(key, value) for (key, value) in Logic.Regions.items() if value.HasAccess(kong) and key not in addedRegions]
-            addedRegions.extend([x[0] for x in tagAccess]) # first value is the region key
-            regionPool.extend([x[1] for x in tagAccess]) # second value is the region itself
-
-            # Loop for each region until no more accessible regions found
-            while len(regionPool) > 0:
-                region = regionPool.pop()
-
-                region.UpdateAccess(kong, LogicVariables) # Set that this kong has access to this region
-                LogicVariables.UpdateCurrentRegionAccess(region) # Set in logic as well
-
-                # Check accessibility for each location in this region
-                for location in region.locations:
-                    if location.logic(LogicVariables) and location.name not in newLocationIds and location.name not in accessibleIds:
-                        newLocations.append(location)
-                        newLocationIds.append(location.name)
-                # Check accessibility for each event in this region
-                for event in region.events:
-                    if event.name not in LogicVariables.Events and event.logic(LogicVariables):
-                        eventAdded = True
-                        LogicVariables.Events.append(event.name)
-                # Check accessibility for each exit in this region
-                for exit in region.exits:
-                    # If a region is accessible through this exit and has not yet been added, add it to the queue to be visited eventually
-                    if exit.dest not in addedRegions and exit.logic(LogicVariables):
-                        addedRegions.append(exit.dest)
-                        regionPool.append(Logic.Regions[exit.dest])
+            tempRegions, tempNew, tempNewIds, newEvents = KongSearch(kong, copy.deepcopy(LogicVariables), accessibleIds.copy(), Regions.Start, Logic.Regions.copy(), newLocations.copy(), newLocationIds.copy())
+            # Update regional access from search
+            Logic.UpdateAllRegionsAccess(tempRegions)
+            # Add new things found in search
+            # list(set()) removes redundancies
+            newLocations.extend(tempNew)
+            newLocations = list(set(newLocations))
+            newLocationIds.extend(tempNewIds)
+            newLocationIds = list(set(newLocationIds))
+            if len(newEvents) > 0:
+                eventAdded = True
+                LogicVariables.Events.extend(newEvents)
+                LogicVariables.Events = list(set(LogicVariables.Events))
 
     if searchType == SearchMode.GetReachable:
         return accessible
@@ -156,9 +176,9 @@ def Fill(algorithm):
     # Then place the rest of items
     LogicVariables.Reset()
     Logic.ResetRegionAccess()
-    lowPriorityUnplaced = PlaceItems(algorithm, ItemPool.LowPriorityItems(), ItemPool.ShitItems())
+    lowPriorityUnplaced = PlaceItems(algorithm, ItemPool.LowPriorityItems(), ItemPool.ExcessItems())
     # Finally place excess items fully randomly
-    excessUnplaced = RandomFill(ItemPool.ShitItems())
+    excessUnplaced = RandomFill(ItemPool.ExcessItems())
     # Generate and display the playthrough
     LogicVariables.Reset()
     Logic.ResetRegionAccess()
