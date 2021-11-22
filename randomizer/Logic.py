@@ -231,3 +231,8 @@ Regions.update(LogicFiles.CrystalCaves.LogicRegions)
 Regions.update(LogicFiles.CreepyCastle.LogicRegions)
 Regions.update(LogicFiles.HideoutHelm.LogicRegions)
 Regions.update(LogicFiles.Shops.LogicRegions)
+
+# Reset kong access for all regions
+def ResetRegionAccess():
+    for region in Regions.values():
+        region.ResetAccess()

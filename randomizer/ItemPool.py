@@ -47,6 +47,10 @@ def Blueprints():
     ]
     return blueprints
 
+# Items which are assumed to be owned while placing blueprints
+def BlueprintAssumedItems():
+    return LowPriorityItems()+ExcessItems()
+
 def Keys():
     keys = [
         Items.JungleJapesKey,
@@ -121,26 +125,37 @@ def HighPriorityItems():
     itemPool.extend(Upgrades())
     return itemPool
 
+# Items which are assumed to be owned while placing high priority items
+def HighPriorityAssumedItems():
+    return Blueprints()+LowPriorityItems()+ExcessItems()
+
 # While most of these items still have logical value they are not as important
 def LowPriorityItems():
     itemPool = []
 
+    itemPool.extend(itertools.repeat(Items.GoldenBanana, 100))
+    itemPool.extend(itertools.repeat(Items.BananaFairy, 20))
+    itemPool.extend(itertools.repeat(Items.BattleCrown, 4))
+    itemPool.append(Items.NintendoCoin)
+    itemPool.append(Items.RarewareCoin)
+
+    return itemPool
+
+# Items which either have no logical value or are excess copies of those that do
+def ExcessItems():
+    itemPool = []
+
     # Weapon upgrades
-    itemPool.extend([
-        Items.HomingAmmo,
-        Items.SniperSight,
-    ])
+    itemPool.append(Items.HomingAmmo)
+    itemPool.append(Items.SniperSight)
     itemPool.extend(itertools.repeat(Items.ProgressiveAmmoBelt, 2))
 
     # Instrument upgrades
     itemPool.extend(itertools.repeat(Items.ProgressiveInstrumentUpgrade, 3))
 
-    # Collectibles
-    itemPool.extend(itertools.repeat(Items.GoldenBanana, 201))
-    itemPool.extend(itertools.repeat(Items.BananaFairy, 20))
-    itemPool.extend(itertools.repeat(Items.BattleCrown, 10))
+    # Collectables
+    itemPool.extend(itertools.repeat(Items.GoldenBanana, 101))
+    itemPool.extend(itertools.repeat(Items.BattleCrown, 6))
     itemPool.extend(itertools.repeat(Items.BananaMedal, 5))
-    itemPool.append(Items.NintendoCoin)
-    itemPool.append(Items.RarewareCoin)
 
     return itemPool

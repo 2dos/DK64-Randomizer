@@ -1,14 +1,15 @@
 import random
 
-import Logic
-from Logic import LogicVariables
 from Enums.Regions import Regions
 from Enums.Items import Items
+from Enums.SearchMode import SearchMode
+import Logic
+from Logic import LogicVariables
 from Item import ItemList
 import ItemPool
 
 # Search to find all reachable locations given owned items
-def GetAccessibleLocations(ownedItems, searchType=0):
+def GetAccessibleLocations(ownedItems, searchType=SearchMode.GetReachable):
     accessible = []
     accessibleIds = []
     newLocations = []
@@ -24,7 +25,7 @@ def GetAccessibleLocations(ownedItems, searchType=0):
             # If this location has an item placed, add it to owned items
             if location.item is not None:
                 ownedItems.append(location.item)
-            if searchType == 1 and ItemList[location.item].playthrough:
+            if searchType == SearchMode.GeneratePlaythrough and ItemList[location.item].playthrough:
                 if location.item == Items.BananaHoard:
                     sphere = [location]
                     break
@@ -75,27 +76,39 @@ def GetAccessibleLocations(ownedItems, searchType=0):
                         addedRegions.append(exit.dest)
                         regionPool.append(Logic.Regions[exit.dest])
 
-    if searchType == 0:
+    if searchType == SearchMode.GetReachable:
         return accessible
-    elif searchType == 1:
+    elif searchType == SearchMode.GeneratePlaythrough:
         return playthroughLocations
 
-# Reset kong access for all regions
-def ResetRegionAccess():
+def RandomFill(itemsToPlace):
+    random.shuffle(itemsToPlace)
+    # Get all remaining empty locations
+    empty = []
     for region in Logic.Regions.values():
-        region.ResetAccess()
+        for location in region.locations:
+            if location.item == None:
+                empty.append(location)
+    random.shuffle(empty)
+    # Place item in random locations
+    while len(itemsToPlace) > 0:
+        if len(empty) == 0:
+            return len(itemsToPlace)
+        item = itemsToPlace.pop()
+        location = empty.pop()
+        location.PlaceItem(item)
 
 # Forward fill algorithm for item placement
-def ForwardFill(itemsToPlace, itemPool = []):
+def ForwardFill(itemsToPlace, ownedItems = []):
     random.shuffle(itemsToPlace)
-    ownedItems = itemPool.copy()
+    ownedItems = ownedItems.copy()
     # While there are items to place
     while len(itemsToPlace) > 0:
         # Find a random empty location which is reachable with current items
         reachable = GetAccessibleLocations(ownedItems.copy())
         reachable = [x for x in reachable if x.item == None]
         if len(reachable) == 0: # If there are no empty reachable locations, reached a dead end
-            break
+            return len(itemsToPlace)
         random.shuffle(reachable)
         location = reachable.pop()
         # Get a random item and place it there, also adding to owned items
@@ -104,48 +117,56 @@ def ForwardFill(itemsToPlace, itemPool = []):
         location.PlaceItem(item)
 
 # Assumed fill algorithm for item placement
-def AssumedFill(itemsToPlace, itemPool = []):
+def AssumedFill(itemsToPlace, ownedItems = []):
     random.shuffle(itemsToPlace)
     # While there are items to place
     while len(itemsToPlace) > 0:
         # Get a random item, check which empty locations are still accessible without owning it
         item = itemsToPlace.pop()
         ownedItems = itemsToPlace.copy()
-        ownedItems.extend(itemPool)
+        ownedItems.extend(ownedItems)
         LogicVariables.Reset()
-        ResetRegionAccess()
+        Logic.ResetRegionAccess()
         reachable = GetAccessibleLocations(ownedItems.copy())
         reachable = [x for x in reachable if x.item == None]
         # If there are no empty reachable locations, reached a dead end
         if len(reachable) == 0:
-            break
+            return len(itemsToPlace)
         # Get a random, empty, reachable location and place the item there
         random.shuffle(reachable)
         location = reachable.pop()
         location.PlaceItem(item)
 
+def PlaceItems(algorithm, itemsToPlace, ownedItems = []):
+    if algorithm == "assumed":
+        AssumedFill(itemsToPlace, ownedItems)
+    elif algorithm == "forward":
+        ForwardFill(itemsToPlace, ownedItems)
+
 # Place all items
-def Fill():
-    lowPriorityItems = ItemPool.LowPriorityItems()
+def Fill(algorithm):
     # First place win condition item at K Rool
     Logic.Regions[Regions.KRool].GetLocation("Banana Hoard").PlaceItem(Items.BananaHoard)
     # Then place priority (logically very important) items
-    ForwardFill(ItemPool.HighPriorityItems(), lowPriorityItems)
+    highPriorityUnplaced = PlaceItems(algorithm, ItemPool.HighPriorityItems(), ItemPool.HighPriorityAssumedItems())
     # Then place blueprints
     LogicVariables.Reset()
-    ResetRegionAccess()
-    ForwardFill(ItemPool.Blueprints(), lowPriorityItems)
+    Logic.ResetRegionAccess()
+    blueprintsUnplaced = PlaceItems(algorithm, ItemPool.Blueprints(), ItemPool.BlueprintAssumedItems())
     # Then place the rest of items
     LogicVariables.Reset()
-    ResetRegionAccess()
-    ForwardFill(lowPriorityItems)
+    Logic.ResetRegionAccess()
+    lowPriorityUnplaced = PlaceItems(algorithm, ItemPool.LowPriorityItems(), ItemPool.ShitItems())
+    # Finally place excess items fully randomly
+    excessUnplaced = RandomFill(ItemPool.ShitItems())
     # Generate and display the playthrough
     LogicVariables.Reset()
-    ResetRegionAccess()
-    PlaythroughLocations = GetAccessibleLocations([], 1)
+    Logic.ResetRegionAccess()
+    PlaythroughLocations = GetAccessibleLocations([], SearchMode.GeneratePlaythrough)
     i = 0
     for sphere in PlaythroughLocations:
         print("\nSphere " + str(i))
         i += 1
         for location in sphere:
             print(location.name + ": " + ItemList[location.item].name)
+    a = 1
