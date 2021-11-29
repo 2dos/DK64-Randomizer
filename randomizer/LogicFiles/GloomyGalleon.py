@@ -1,9 +1,10 @@
 from LogicClasses import Region, Location, Event, Exit
 from Enums.Events import Events
 from Enums.Regions import Regions
+from Enums.Levels import Levels
 
 LogicRegions = {
-    Regions.GloomyGalleonStart: Region("Gloomy Galleon Start", True, [
+    Regions.GloomyGalleonStart: Region("Gloomy Galleon Start", Levels.GloomyGalleon, True, [
         Location("Galleon Chunky Chest", lambda l: l.punch),
         Location("Galleon Tiny Kasplat", lambda l: l.istiny),
         Location("Galleon Battle Arena", lambda l: l.punch),
@@ -21,12 +22,12 @@ LogicRegions = {
         Exit(Regions.GalleonBossLobby, lambda l: True),
     ]),
 
-    Regions.GalleonBeyondPineappleGate: Region("Galleon Beyond Pineapple Gate", False, [
+    Regions.GalleonBeyondPineappleGate: Region("Galleon Beyond Pineapple Gate", Levels.GloomyGalleon, False, [
         Location("Galleon Chunky Cannon Game", lambda l: l.ischunky),
         Location("Galleon Lanky Kasplat", lambda l: l.islanky),
     ], [], []),
 
-    Regions.LighthouseArea: Region("Lighthouse Area", True, [
+    Regions.LighthouseArea: Region("Lighthouse Area", Levels.GloomyGalleon, True, [
         Location("Gellon Diddy Ship Switch", lambda l: Events.ActivatedLighthouse in l.Events and l.jetpack and l.Slam),
         Location("Galleon Lanky Enguarde Chest", lambda l: Events.LighthouseEnguarde in l.Events and l.islanky),
         Location("Galleon Diddy Kasplat", lambda l: l.isdiddy),
@@ -43,7 +44,7 @@ LogicRegions = {
         Exit(Regions.GalleonBossLobby, lambda l: Events.LighthouseEnguarde in l.Events),
     ]),
 
-    Regions.Lighthouse: Region("Lighthouse", False, [
+    Regions.Lighthouse: Region("Lighthouse", Levels.GloomyGalleon, False, [
         Location("Galleon Donkey Lighthouse", lambda l: Events.ActivatedLighthouse in l.Events)
     ], [
         Event(Events.ActivatedLighthouse, lambda l: l.grab and l.isdonkey),
@@ -51,19 +52,19 @@ LogicRegions = {
         Exit(Regions.LighthouseArea, lambda l: True),
     ]),
 
-    Regions.MermaidRoom: Region("Mermaid Room", False, [
+    Regions.MermaidRoom: Region("Mermaid Room", Levels.GloomyGalleon, False, [
         Location("Galleon Tiny Pearls", lambda l: Events.PearlsCollected in l.Events and l.istiny),
     ], [], [
         Exit(Regions.LighthouseArea, lambda l: True),
     ]),
 
-    Regions.SickBay: Region("Sick Bay", False, [
+    Regions.SickBay: Region("Sick Bay", Levels.GloomyGalleon, False, [
         Location("Galleon Chunky Seasick", lambda l: l.punch and l.ischunky),
     ], [], [
         Exit(Regions.LighthouseArea, lambda l: True),
     ]),
 
-    Regions.Shipyard: Region("Shipyard", True, [
+    Regions.Shipyard: Region("Shipyard", Levels.GloomyGalleon, True, [
         Location("Galleon Donkey Free the Seal", lambda l: Events.SealReleased in l.Events and l.isdonkey),
         Location("Galleon Chunky Kasplat", lambda l: l.ischunky),
     ], [
@@ -85,11 +86,11 @@ LogicRegions = {
         Exit(Regions.GalleonBossLobby, lambda l: True),
     ]),
 
-    Regions.SealRace: Region("Seal Race", False, [
+    Regions.SealRace: Region("Seal Race", Levels.GloomyGalleon, False, [
         Location("Donkey Seal Race", lambda l: l.isdonkey),
     ], [], []),
 
-    Regions.TreasureRoom: Region("Treasure Room", True, [
+    Regions.TreasureRoom: Region("Treasure Room", Levels.GloomyGalleon, True, [
         Location("Galleon Diddy Gold Tower", lambda l: l.spring),
         Location("Galleon Lanky Gold Tower", lambda l: l.balloon),
         Location("Galleon Donkey Kasplat", lambda l: Events.TreasureRoomTeleporterUnlocked in l.Events and l.isdonkey),
@@ -99,71 +100,71 @@ LogicRegions = {
         Exit(Regions.TinyChest, lambda l: l.mini and l.istiny),
     ]),
 
-    Regions.TinyChest: Region("Tiny Chest", False, [], [
+    Regions.TinyChest: Region("Tiny Chest", Levels.GloomyGalleon, False, [], [
         Event(Events.PearlsCollected, lambda l: l.istiny),
     ], [
         Exit(Regions.TreasureRoom, lambda l: True),
     ]),
 
-    Regions.Submarine: Region("Submarine", False, [
+    Regions.Submarine: Region("Submarine", Levels.GloomyGalleon, False, [
         Location("Galleon Tiny Submarine", lambda l: l.istiny),
     ], [], [
         Exit(Regions.Shipyard, lambda l: lambda l: True),
     ]),
 
-    Regions.Mechafish: Region("Mechafish", False, [
+    Regions.Mechafish: Region("Mechafish", Levels.GloomyGalleon, False, [
         Location("Galleon Diddy Mechafish", lambda l: l.peanut and l.isdiddy),
     ], [], []),
 
-    Regions.LankyShip: Region("Lanky Ship", False, [
+    Regions.LankyShip: Region("Lanky Ship", Levels.GloomyGalleon, False, [
         Location("Galleon Lanky 2 Door Ship", lambda l: l.islanky),
     ], [], [
         Exit(Regions.Shipyard, lambda l: True),
     ]),
 
-    Regions.TinyShip: Region("Tiny Ship", False, [
+    Regions.TinyShip: Region("Tiny Ship", Levels.GloomyGalleon, False, [
         Location("Galleon Tiny 2 Door Ship", lambda l: l.istiny),
     ], [], [
         Exit(Regions.Shipyard, lambda l: True),
     ]),
 
-    Regions.BongosShip: Region("Bongos Ship", False, [
+    Regions.BongosShip: Region("Bongos Ship", Levels.GloomyGalleon, False, [
         Location("Galleon Donkey 5 Door Ship", lambda l: l.isdonkey),
     ], [], [
         Exit(Regions.Shipyard, lambda l: True),
     ]),
 
-    Regions.GuitarShip: Region("Guitar Ship", False, [
+    Regions.GuitarShip: Region("Guitar Ship", Levels.GloomyGalleon, False, [
         Location("Galleon Diddy 5 Door Ship", lambda l: l.isdiddy),
     ], [], [
         Exit(Regions.Shipyard, lambda l: True),
     ]),
 
-    Regions.TromboneShip: Region("Trombone Ship", False, [
+    Regions.TromboneShip: Region("Trombone Ship", Levels.GloomyGalleon, False, [
         Location("Galleon Lanky 5 Door Ship", lambda l: l.islanky),
     ], [], [
         Exit(Regions.Shipyard, lambda l: True),
     ]),
 
-    Regions.SaxophoneShip: Region("Saxophone Ship", False, [
+    Regions.SaxophoneShip: Region("Saxophone Ship", Levels.GloomyGalleon, False, [
         Location("Galleon Tiny 5 Door Ship", lambda l: l.istiny),
         Location("Galleon Banana Fairy 5 Door Ship", lambda l: l.camera),
     ], [], [
         Exit(Regions.Shipyard, lambda l: True),
     ]),
 
-    Regions.TriangleShip: Region("Triangle Ship", False, [
+    Regions.TriangleShip: Region("Triangle Ship", Levels.GloomyGalleon, False, [
         Location("Galleon Chunky 5 Door Ship", lambda l: l.ischunky),
     ], [], [
         Exit(Regions.Shipyard, lambda l: True),
     ]),
 
-    Regions.GalleonBossLobby: Region("Galleon Boss Lobby", True, [], [], [
+    Regions.GalleonBossLobby: Region("Galleon Boss Lobby", Levels.GloomyGalleon, True, [], [], [
         # 250 bananas
         Exit(Regions.GalleonBoss, lambda l: l.islanky),
     ]),
 
-    Regions.GalleonBoss: Region("Galleon Boss", False, [
+    Regions.GalleonBoss: Region("Galleon Boss", Levels.GloomyGalleon, False, [
         Location("Galleon Key", lambda l: l.islanky),
     ], [], []),
 }

@@ -1,9 +1,10 @@
 from LogicClasses import Region, Location, Event, Exit
 from Enums.Events import Events
 from Enums.Regions import Regions
+from Enums.Levels import Levels
 
 LogicRegions = {
-    Regions.JungleJapesMain: Region("Jungle Japes Main", True, [
+    Regions.JungleJapesMain: Region("Jungle Japes Main", Levels.JungleJapes, True, [
         Location("Diddy Kong", lambda l: l.coconut),
         Location("Japes Donkey Front of Cage", lambda l: l.isdonkey),
         Location("Japes Donkey Free Diddy", lambda l: l.coconut and l.isdonkey),
@@ -31,7 +32,7 @@ LogicRegions = {
         Exit(Regions.JapesBossLobby, lambda l: True),
     ]),
 
-    Regions.JapesBeyondPeanutGate: Region("Japes Beyond Peanut Gate", False, [
+    Regions.JapesBeyondPeanutGate: Region("Japes Beyond Peanut Gate", Levels.JungleJapes, False, [
         Location("Japes Diddy Tunnel", lambda l: l.isdiddy),
         Location("Japes Lanky Mad Maze Maul", lambda l: l.grape and l.islanky),
         Location("Japes Tiny Splish Splash Salvage", lambda l: l.feather and l.istiny),
@@ -39,27 +40,27 @@ LogicRegions = {
         Exit(Regions.JapesBossLobby, lambda l: True),
     ]),
 
-    Regions.JapesBeyondCoconutGate1: Region("Japes Beyond Coconut Gate 1", False, [
+    Regions.JapesBeyondCoconutGate1: Region("Japes Beyond Coconut Gate 1", Levels.JungleJapes, False, [
         Location("Japes Donkey Kasplat", lambda l: l.isdonkey),
         Location("Japes Tiny Kasplat", lambda l: l.istiny),
     ], [], [
         Exit(Regions.JapesBeyondFeatherGate, lambda l: l.feather and l.tinyAccess),
     ]),
 
-    Regions.JapesBeyondFeatherGate: Region("Japes Beyond Feather Gate", True, [
+    Regions.JapesBeyondFeatherGate: Region("Japes Beyond Feather Gate", Levels.JungleJapes, True, [
         Location("Japes Tiny Stump", lambda l: l.mini and l.istiny),
         Location("Japes Chunky Minecart Mayhem", lambda l: l.hunkyChunky and l.ischunky),
     ], [], [
         Exit(Regions.TinyHive, lambda l: l.mini and l.istiny),
     ]),
 
-    Regions.TinyHive: Region("Tiny Hive", False, [
+    Regions.TinyHive: Region("Tiny Hive", Levels.JungleJapes, False, [
         Location("Japes Tiny Beehive", lambda l: l.Slam and l.istiny),
     ], [], [
         Exit(Regions.JapesBeyondFeatherGate, lambda l: True),
     ]),
 
-    Regions.JapesBeyondCoconutGate2: Region("Japes Beyond Coconut Gate 2", True, [
+    Regions.JapesBeyondCoconutGate2: Region("Japes Beyond Coconut Gate 2", Levels.JungleJapes, True, [
         Location("Japes Lanky Speedy Swing Sortie", lambda l: l.handstand and l.islanky),
         Location("Japes Diddy Kasplat", lambda l: l.isdiddy),
         Location("Japes Lanky Kasplat", lambda l: l.islanky),
@@ -74,7 +75,7 @@ LogicRegions = {
         Exit(Regions.Cranky, lambda l: True),
     ]),
 
-    Regions.BeyondRambiGate: Region("Beyond Rambi Gate", False, [
+    Regions.BeyondRambiGate: Region("Beyond Rambi Gate", Levels.JungleJapes, False, [
         Location("Japes Banana Fairy Rambi Cave", lambda l: l.camera),
     ], [
         Event(Events.JapesChunkySwitch, lambda l: l.Slam and l.ischunky),
@@ -82,14 +83,14 @@ LogicRegions = {
         Exit(Regions.JapesBossLobby, lambda l: True),
     ]),
 
-    Regions.JapesLankyCave: Region("Japes Lanky Cave", False, [
+    Regions.JapesLankyCave: Region("Japes Lanky Cave", Levels.JungleJapes, False, [
         Location("Japes Lanky Fairy Cave", lambda l: l.grape and l.islanky),
         Location("Japes Banana Fairy Lanky Cave", lambda l: l.grape and l.camera and l.islanky),
     ], [], [
         Exit(Regions.JungleJapesMain, lambda l: True),
     ]),
 
-    Regions.Mine: Region("Mine", False, [], [
+    Regions.Mine: Region("Mine", Levels.JungleJapes, False, [], [
         # You're supposed to get to the switch by shooting a peanut switch,
         # but can just jump without too much trouble.
         Event(Events.JapesDiddySwitch2, lambda l: l.Slam and l.isdiddy),
@@ -98,23 +99,23 @@ LogicRegions = {
         Exit(Regions.JapesMinecarts, lambda l: l.charge and l.Slam and l.isdiddy),
     ]),
 
-    Regions.JapesMinecarts: Region("Japes Minecarts", False, [
+    Regions.JapesMinecarts: Region("Japes Minecarts", Levels.JungleJapes, False, [
         Location("Japes Diddy Minecarts", lambda l: l.isdiddy),
     ], [], []),
 
-    Regions.JapesCatacomb: Region("Japes Catacomb", False, [
+    Regions.JapesCatacomb: Region("Japes Catacomb", Levels.JungleJapes, False, [
         Location("Japes Chunky Underground", lambda l: l.pineapple and l.ischunky),
         Location("Japes Chunky Kasplat", lambda l: l.pineapple and l.ischunky),
     ], [], [
         Exit(Regions.JungleJapesMain, lambda l: True),
     ]),
 
-    Regions.JapesBossLobby: Region("Japes Boss Lobby", True, [], [], [
+    Regions.JapesBossLobby: Region("Japes Boss Lobby", Levels.JungleJapes, True, [], [], [
         # 50 bananas
         Exit(Regions.JapesBoss, lambda l: l.isdonkey),
     ]),
 
-    Regions.JapesBoss: Region("Japes Boss", False, [
+    Regions.JapesBoss: Region("Japes Boss", Levels.JungleJapes, False, [
         Location("Japes Key", lambda l: l.isdonkey),
     ], [], []),
 }

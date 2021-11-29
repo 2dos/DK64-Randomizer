@@ -37,8 +37,9 @@ class Collectible:
 
 # Region contains shufflable locations, events, and exits to other regions
 class Region:
-    def __init__(self, name, tagbarrel, locations, events, exits):
+    def __init__(self, name, level, tagbarrel, locations, events, exits):
         self.name = name
+        self.level = level
         self.tagbarrel = tagbarrel
         self.locations = locations
         self.events = events

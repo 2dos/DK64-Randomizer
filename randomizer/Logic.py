@@ -23,7 +23,6 @@ import CollectibleLogicFiles.GloomyGalleon
 import CollectibleLogicFiles.FungiForest
 import CollectibleLogicFiles.CrystalCaves
 import CollectibleLogicFiles.CreepyCastle
-from randomizer.LogicClasses import Collectible
 
 class LogicVarHolder:
 

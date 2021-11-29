@@ -1,9 +1,10 @@
 from LogicClasses import Region, Location, Event, Exit
 from Enums.Events import Events
 from Enums.Regions import Regions
+from Enums.Levels import Levels
 
 LogicRegions = {
-    Regions.Start: Region("Start", True, [
+    Regions.Start: Region("Start", Levels.DKIsles, True, [
         Location("Isles Vines Training Barrel", lambda l: True),
         Location("Isles Swim Training Barrel", lambda l: True),
         Location("Isles Oranges Training Barrel", lambda l: True),
@@ -13,7 +14,7 @@ LogicRegions = {
         Exit(Regions.Cranky, lambda l: True),
     ]),
 
-    Regions.IslesMain: Region("Isles Main", True, [
+    Regions.IslesMain: Region("Isles Main", Levels.DKIsles, True, [
         Location("Isles Donkey Japes Rock", lambda l: Events.KLumsyTalkedTo in l.Events and l.isdonkey),
         Location("Isles Tiny Caged Banana", lambda l: l.feather and l.istiny),
         Location("Isles Tiny Instrument Pad", lambda l: Events.IslesChunkyBarrelSpawn in l.Events and l.istiny),
@@ -40,7 +41,7 @@ LogicRegions = {
         Exit(Regions.KRool, lambda l: Events.EigthKey in l.Events),
     ]),
 
-    Regions.Prison: Region("Prison", False, [
+    Regions.Prison: Region("Prison", Levels.DKIsles, False, [
         Location("Isles Lanky Prison Orangsprint", lambda l: l.sprint and l.islanky),
     ], [
         Event(Events.KLumsyTalkedTo, lambda l: True),
@@ -54,35 +55,35 @@ LogicRegions = {
         Exit(Regions.IslesMain, lambda l: True),
     ]),
 
-    Regions.BananaFairyRoom: Region("Banana Fairy Room", False, [
+    Regions.BananaFairyRoom: Region("Banana Fairy Room", Levels.DKIsles, False, [
         Location("Camera and Shockwave", lambda l: True),
         Location("Rareware Banana", lambda l: l.BananaFairies >= 20 and l.istiny),
     ], [], [
         Exit(Regions.IslesMain, lambda l: True),
     ]),
 
-    Regions.JungleJapesLobby: Region("Jungle Japes Lobby", True, [
+    Regions.JungleJapesLobby: Region("Jungle Japes Lobby", Levels.DKIsles, True, [
         Location("Isles Lanky Instrument Pad", lambda l: l.chunkyAccess and l.trombone and l.islanky),
     ], [], [
         Exit(Regions.IslesMain, lambda l: True),
         Exit(Regions.JungleJapesMain, lambda l: True),
     ]),
 
-    Regions.AngryAztecLobby: Region("Angry Aztec Lobby", True, [
+    Regions.AngryAztecLobby: Region("Angry Aztec Lobby", Levels.DKIsles, True, [
         Location("Isles Tiny Big Bug Bash", lambda l: l.charge and l.twirl and l.istiny),
     ], [], [
         Exit(Regions.IslesMain, lambda l: True),
         Exit(Regions.AngryAztecStart, lambda l: True),
     ]),
 
-    Regions.CrocodileIsleBeyondLift: Region("Crocodile Isle Beyond Lift", False, [
+    Regions.CrocodileIsleBeyondLift: Region("Crocodile Isle Beyond Lift", Levels.DKIsles, False, [
         Location("Isles Donkey Caged Banana", lambda l: l.coconut and l.isdonkey),
     ], [], [
         Exit(Regions.IslesSnideRoom, lambda l: True),
         Exit(Regions.FranticFactoryLobby, lambda l: True),
     ]),
 
-    Regions.IslesSnideRoom: Region("Isles Snide Room", True, [
+    Regions.IslesSnideRoom: Region("Isles Snide Room", Levels.DKIsles, True, [
         Location("Isles Diddy Snide's Lobby", lambda l: l.spring and l.isdiddy),
         Location("Isles Battle Arena 1", lambda l: l.ischunky),
     ], [], [
@@ -90,7 +91,7 @@ LogicRegions = {
         Exit(Regions.Snide, lambda l: True),
     ]),
 
-    Regions.FranticFactoryLobby: Region("Frantic Factory Lobby", True, [
+    Regions.FranticFactoryLobby: Region("Frantic Factory Lobby", Levels.DKIsles, True, [
         Location("Isles Donkey Instrument Pad", lambda l: l.grab and l.bongos and l.isdonkey),
         Location("Isles Tiny Kasplat", lambda l: l.punch and l.istiny),
         Location("Isles Banana Fairy Factory Lobby", lambda l: l.camera and l.punch),
@@ -99,7 +100,7 @@ LogicRegions = {
         Exit(Regions.FranticFactoryStart, lambda l: True),
     ]),
 
-    Regions.GloomyGalleonLobby: Region("Gloomy Galleon Lobby", True, [
+    Regions.GloomyGalleonLobby: Region("Gloomy Galleon Lobby", Levels.DKIsles, True, [
         Location("Isles Tiny Galleon Lobby", lambda l: l.chunkyAccess and l.superSlam and l.mini and l.istiny),
         Location("Isles Chunky Kasplat", lambda l: l.ischunky),
     ], [], [
@@ -107,14 +108,14 @@ LogicRegions = {
         Exit(Regions.GloomyGalleonStart, lambda l: True),
     ]),
 
-    Regions.CabinIsle: Region("Cabin Isle", False, [
+    Regions.CabinIsle: Region("Cabin Isle", Levels.DKIsles, False, [
         Location("Isles Diddy Caged Banana", lambda l: Events.IslesDiddyBarrelSpawn in l.Events and l.jetpack and l.isdiddy),
         Location("Isles Diddy Summit", lambda l:  Events.IslesDiddyBarrelSpawn in l.Events and l.jetpack and l.peanut and l.isdiddy),
     ], [], [
         Exit(Regions.FungiForestLobby, lambda l: True),
     ]),
 
-    Regions.FungiForestLobby: Region("Fungi Forest Lobby", True, [
+    Regions.FungiForestLobby: Region("Fungi Forest Lobby", Levels.DKIsles, True, [
         Location("Isles Battle Arena 2", lambda l: l.coconut and l.peanut and l.grape and l.feather and l.pineapple and l.gorillaGone),
         Location("Isles Banana Fairy Forest Lobby", lambda l: l.camera and l.feather),
     ], [], [
@@ -122,7 +123,7 @@ LogicRegions = {
         Exit(Regions.FungiForestStart, lambda l: True),
     ]),
 
-    Regions.CrystalCavesLobby: Region("Crystal Caves Lobby", True, [
+    Regions.CrystalCavesLobby: Region("Crystal Caves Lobby", Levels.DKIsles, True, [
         Location("Isles Donkey Lava Banana", lambda l: l.punch and l.strongKong and l.isdonkey),
         Location("Isles Diddy Instrument Pad", lambda l: l.jetpack and l.guitar and l.isdiddy),
         Location("Isles Lanky Kasplat", lambda l: l.punch and l.islanky),
@@ -131,7 +132,7 @@ LogicRegions = {
         Exit(Regions.CrystalCavesMain, lambda l: True),
     ]),
 
-    Regions.CreepyCastleLobby: Region("Creepy Castle Lobby", True, [
+    Regions.CreepyCastleLobby: Region("Creepy Castle Lobby", Levels.DKIsles, True, [
         Location("Isles Lanky Castle Lobby", lambda l: l.punch and l.balloon and l.islanky),
         Location("Isles Diddy Kasplat", lambda l: l.coconut and l.diddy),
     ], [], [
@@ -139,7 +140,7 @@ LogicRegions = {
         Exit(Regions.CreepyCastleMain, lambda l: True),
     ]),
 
-    Regions.HideoutHelmLobby: Region("Hideout Helm Lobby", True, [
+    Regions.HideoutHelmLobby: Region("Hideout Helm Lobby", Levels.DKIsles, True, [
         Location("Isles Chunky Kremling Kosh", lambda l: l.gorillaGone),
         Location("Isles Donkey Kasplat", lambda l: l.coconut),
     ], [], [
@@ -147,7 +148,7 @@ LogicRegions = {
         Exit(Regions.HideoutHelmStart, lambda l: l.gorillaGone),
     ]),
 
-    Regions.KRool: Region("K. Rool", True, [
+    Regions.KRool: Region("K. Rool", Levels.DKIsles, True, [
         Location("Banana Hoard", lambda l: l.donkeyAccess and l.jetpack and l.peanut and l.diddyAccess and l.trombone and l.lankyAccess and
             l.mini and l.feather and l.tinyAccess and l.superSlam and l.gorillaGone and l.hunkyChunky and l.chunkyAccess),
     ], [], []),

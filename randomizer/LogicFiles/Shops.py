@@ -2,9 +2,10 @@ from LogicClasses import Region, Location, Event, Exit
 from Enums.Items import Items
 from Enums.Levels import Levels
 from Enums.Regions import Regions
+from Enums.Levels import Levels
 
 LogicRegions = {
-    Regions.Funky: Region("Funky", False, [
+    Regions.Funky: Region("Funky", Levels.Shops, False, [
         Location("Coconut Gun", lambda l: l.LevelEntered(Levels.JungleJapes) and l.isdonkey),
         Location("Peanut Gun", lambda l: l.LevelEntered(Levels.JungleJapes) and l.isdiddy),
         Location("Grape Gun", lambda l: l.LevelEntered(Levels.JungleJapes) and l.islanky),
@@ -17,7 +18,7 @@ LogicRegions = {
         Location("Sniper Sight", lambda l: l.LevelEntered(Levels.CreepyCastle)),
     ], [], []),
 
-    Regions.Candy: Region("Candy", False, [
+    Regions.Candy: Region("Candy", Levels.Shops, False, [
         Location("Bongos", lambda l: l.LevelEntered(Levels.AngryAztec) and l.isdonkey),
         Location("Guitar", lambda l: l.LevelEntered(Levels.AngryAztec) and l.isdiddy),
         Location("Trombone", lambda l: l.LevelEntered(Levels.AngryAztec) and l.islanky),
@@ -29,7 +30,7 @@ LogicRegions = {
         Location("Music Upgrade 2", lambda l: l.LevelEntered(Levels.CreepyCastle)),
     ], [], []),
 
-    Regions.Cranky: Region("Cranky", False, [
+    Regions.Cranky: Region("Cranky", Levels.Shops, False, [
         Location("Simian Slam", lambda l: True),
         Location("Super Simian Slam", lambda l: l.LevelEntered(Levels.FungiForest)),
         Location("Super Duper Simian Slam", lambda l: l.LevelEntered(Levels.CreepyCastle)),
@@ -57,7 +58,7 @@ LogicRegions = {
         Location("Rareware Coin", lambda l: l.BananaMedals >= 5),
     ], [], []),
 
-    Regions.Snide: Region("Snide", False, [
+    Regions.Snide: Region("Snide", Levels.Shops, False, [
         Location("Turn In DK Isles Donkey Blueprint", lambda l: Items.DKIslesDonkeyBlueprint in l.Blueprints),
         Location("Turn In DK Isles Diddy Blueprint", lambda l: Items.DKIslesDiddyBlueprint in l.Blueprints),
         Location("Turn In DK Isles Lanky Blueprint", lambda l: Items.DKIslesLankyBlueprint in l.Blueprints),

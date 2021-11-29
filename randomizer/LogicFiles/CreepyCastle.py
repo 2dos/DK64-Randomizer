@@ -1,9 +1,10 @@
 from LogicClasses import Region, Location, Event, Exit
 from Enums.Events import Events
 from Enums.Regions import Regions
+from Enums.Levels import Levels
 
 LogicRegions = {
-    Regions.CreepyCastleMain: Region("Creepy Castle Main", True, [
+    Regions.CreepyCastleMain: Region("Creepy Castle Main", Levels.CreepyCastle, True, [
         Location("Castle Diddy Above Castle", lambda l: l.jetpack and l.isdiddy),
         Location("Castle Lanky Kasplat", lambda l: l.islanky),
         Location("Castle Tiny Kasplat", lambda l: l.istiny),
@@ -28,12 +29,12 @@ LogicRegions = {
     ]),
 
     # This region just exists to facilitate the multiple exits from the upper cave
-    Regions.CastleWaterfall: Region("Castle Waterfall", False, [], [], [
+    Regions.CastleWaterfall: Region("Castle Waterfall", Levels.CreepyCastle, False, [], [], [
         Exit(Regions.CreepyCastleMain, lambda l: True),
         Exit(Regions.UpperCave, lambda l: True),
     ]),
 
-    Regions.CastleTree: Region("Castle Tree", False, [
+    Regions.CastleTree: Region("Castle Tree", Levels.CreepyCastle, False, [
         Location("Castle Donkey Tree", lambda l: l.coconut and l.isdonkey),
         Location("Castle Chunky Tree", lambda l: l.pineapple and l.punch and l.ischunky),
         Location("Castle Donkey Kasplat", lambda l: l.coconut and l.isdonkey),
@@ -42,14 +43,14 @@ LogicRegions = {
         Exit(Regions.CreepyCastleMain, lambda l: True),
     ]),
 
-    Regions.Library: Region("Library", False, [
+    Regions.Library: Region("Library", Levels.CreepyCastle, False, [
         # Another case where you're supposed to use Strong Kong but it can be brute forced
         Location("Castle Donkey Library", lambda l: l.superDuperSlam and l.isdonkey),
     ], [], [
         Exit(Regions.CreepyCastleMain, lambda l: True),
     ]),
 
-    Regions.Ballroom: Region("Ballroom", False, [
+    Regions.Ballroom: Region("Ballroom", Levels.CreepyCastle, False, [
         Location("Castle Diddy Ballroom", lambda l: l.jetpack and l.isdiddy),
         Location("Castle Banana Fairy Ballroom", lambda l: l.camera and l.monkeyport and l.istiny),
     ], [], [
@@ -57,17 +58,17 @@ LogicRegions = {
         Exit(Regions.CastleTinyRace, lambda l: l.monkeyport and l.mini and l.istiny),
     ]),
 
-    Regions.CastleTinyRace: Region("Castle Tiny Race", False, [
+    Regions.CastleTinyRace: Region("Castle Tiny Race", Levels.CreepyCastle, False, [
         Location("Castle Tiny Car Race", lambda l: l.istiny),
     ], [], []),
 
-    Regions.Tower: Region("Tower", False, [
+    Regions.Tower: Region("Tower", Levels.CreepyCastle, False, [
         Location("Castle Lanky Tower", lambda l: l.balloon and l.grape and l.islanky),
     ], [], [
         Exit(Regions.CreepyCastleMain, lambda l: True),
     ]),
 
-    Regions.Greenhouse: Region("Greenhouse", False, [
+    Regions.Greenhouse: Region("Greenhouse", Levels.CreepyCastle, False, [
         # Not sure if sprint is actually required
         Location("Castle Lanky Greenhouse", lambda l: l.sprint and l.islanky),
         Location("Castle Battle Arena", lambda l: l.sprint and l.islanky),
@@ -75,25 +76,25 @@ LogicRegions = {
         Exit(Regions.CreepyCastleMain, lambda l: True),
     ]),
 
-    Regions.TrashCan: Region("Trash Can", False, [
+    Regions.TrashCan: Region("Trash Can", Levels.CreepyCastle, False, [
         Location("Castle Tiny Trash Can", lambda l: l.feather and l.istiny),
     ], [], [
         Exit(Regions.CreepyCastleMain, lambda l: True),
     ]),
 
-    Regions.Shed: Region("Shed", False, [
+    Regions.Shed: Region("Shed", Levels.CreepyCastle, False, [
         Location("Castle Chunky Shed", lambda l: l.punch and l.gorillaGone and l.ischunky),
     ], [], [
         Exit(Regions.CreepyCastleMain, lambda l: True),
     ]),
 
-    Regions.Museum: Region("Museum", False, [
+    Regions.Museum: Region("Museum", Levels.CreepyCastle, False, [
         Location("Castle Chunky Museum", lambda l: l.punch and l.ischunky),
     ], [], [
         Exit(Regions.CreepyCastleMain, lambda l: True),
     ]),
 
-    Regions.LowerCave: Region("Lower Cave", True, [
+    Regions.LowerCave: Region("Lower Cave", Levels.CreepyCastle, True, [
         Location("Castle Diddy Kasplat", lambda l: l.isdiddy),
     ], [], [
         Exit(Regions.CreepyCastleMain, lambda l: True),
@@ -103,7 +104,7 @@ LogicRegions = {
         Exit(Regions.CastleBossLobby, lambda l: True),
     ]),
 
-    Regions.Crypt: Region("Crypt", False, [
+    Regions.Crypt: Region("Crypt", Levels.CreepyCastle, False, [
         Location("Castle Diddy Crypt", lambda l: l.peanut and l.charge and l.isdiddy),
         Location("Castle Chunky Crypt", lambda l: l.pineapple and l.punch and l.ischunky),
     ], [], [
@@ -111,18 +112,18 @@ LogicRegions = {
         Exit(Regions.CastleMinecarts, lambda l: l.coconut and l.grab and l.isdonkey),
     ]),
 
-    Regions.CastleMinecarts: Region("Castle Minecarts", False, [
+    Regions.CastleMinecarts: Region("Castle Minecarts", Levels.CreepyCastle, False, [
         Location("Castle Donkey Minecarts", lambda l: l.isdonkey),
     ], [], []),
 
-    Regions.Mausoleum: Region("Mausoleum", False, [
+    Regions.Mausoleum: Region("Mausoleum", Levels.CreepyCastle, False, [
         Location("Castle Lanky Mausoleum", lambda l: l.grape and l.sprint and l.trombone and l.islanky),
         Location("Castle Tiny Mausoleum", lambda l: l.superDuperSlam and l.twirl and l.istiny),
     ], [], [
         Exit(Regions.LowerCave, lambda l: True),
     ]),
 
-    Regions.UpperCave: Region("Upper Cave", True, [
+    Regions.UpperCave: Region("Upper Cave", Levels.CreepyCastle, True, [
         Location("Castle Tiny Over Chasm", lambda l: l.twirl and l.istiny),
         Location("Castle Chunky Kasplat", lambda l: l.ischunky),
     ], [], [
@@ -133,7 +134,7 @@ LogicRegions = {
         Exit(Regions.CastleBossLobby, lambda l: True),
     ]),
 
-    Regions.Dungeon: Region("Dungeon", True, [
+    Regions.Dungeon: Region("Dungeon", Levels.CreepyCastle, True, [
         Location("Castle Donkey Dungeon", lambda l: l.superDuperSlam and l.isdonkey),
         Location("Castle Diddy Dungeon", lambda l: l.superDuperSlam and l.peanut and l.isdiddy),
         Location("Castle Lanky Dungeon", lambda l: l.superDuperSlam and l.trombone and l.balloon and l.islanky),
@@ -141,12 +142,12 @@ LogicRegions = {
         Exit(Regions.UpperCave, lambda l: True),
     ]),
 
-    Regions.CastleBossLobby: Region("Castle Boss Lobby", True, [], [], [
+    Regions.CastleBossLobby: Region("Castle Boss Lobby", Levels.CreepyCastle, True, [], [], [
         # 400 bananas
         Exit(Regions.CastleBoss, lambda l: l.islanky),
     ]),
 
-    Regions.CastleBoss: Region("Castle Boss", False, [
+    Regions.CastleBoss: Region("Castle Boss", Levels.CreepyCastle, False, [
         Location("Castle Key", lambda l: True),
     ], [], []),
 }
