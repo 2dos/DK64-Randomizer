@@ -6,6 +6,11 @@ class Items(IntEnum):
     Lanky = auto()
     Tiny = auto()
     Chunky = auto()
+
+    Vines = auto()
+    Swim = auto()
+    Oranges = auto()
+    Barrels = auto()
     
     ProgressiveSlam = auto()
     BaboonBlast = auto()
@@ -59,6 +64,8 @@ class Items(IntEnum):
     BananaMedal = auto()
     BattleCrown = auto()
 
+    BananaHoard = auto()
+
     DKIslesDonkeyBlueprint = auto()
     DKIslesDiddyBlueprint = auto()
     DKIslesLankyBlueprint = auto()
@@ -99,5 +106,3 @@ class Items(IntEnum):
     CreepyCastleLankyBlueprint = auto()
     CreepyCastleTinyBlueprint = auto()
     CreepyCastleChunkyBlueprint = auto()
-
-    BananaHoard = auto()

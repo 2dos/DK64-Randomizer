@@ -189,4 +189,3 @@ def Fill(algorithm):
         i += 1
         for location in sphere:
             print(location.name + ": " + ItemList[location.item].name)
-    a = 1

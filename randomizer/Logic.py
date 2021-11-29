@@ -2,6 +2,7 @@ from Enums.Items import Items
 from Enums.Events import Events
 from Enums.Levels import Levels
 from Enums.Kongs import Kongs
+
 import LogicFiles.DKIsles
 import LogicFiles.JungleJapes
 import LogicFiles.AngryAztec
@@ -12,6 +13,8 @@ import LogicFiles.CrystalCaves
 import LogicFiles.CreepyCastle
 import LogicFiles.HideoutHelm
 import LogicFiles.Shops
+
+import
 
 class LogicVarHolder:
 
@@ -27,6 +30,11 @@ class LogicVarHolder:
         self.lanky = self.startkong == Kongs.lanky
         self.tiny = self.startkong == Kongs.tiny
         self.chunky = self.startkong == Kongs.chunky
+
+        self.vines = False
+        self.swim = False
+        self.oranges = False
+        self.barrels = False
 
         self.blast = False
         self.strongKong = False
@@ -84,6 +92,11 @@ class LogicVarHolder:
 
         self.Events = []
 
+        # Colored banana and coin arrays 
+        # Colored bananas as 8 arrays of 5, only need 7 but leave room for DK Isles since we use the enum
+        self.coloredBananas = [[0]*5]*8
+        self.Coins = [0]*5
+
         # These access variables based on current region
         # Shouldn't be checked unless updated directly beforehand
         self.donkeyAccess = False
@@ -103,6 +116,11 @@ class LogicVarHolder:
         self.lanky = self.lanky or Items.Lanky in ownedItems or self.startkong == Kongs.lanky
         self.tiny = self.tiny or Items.Tiny in ownedItems or self.startkong == Kongs.tiny
         self.chunky = self.chunky or Items.Chunky in ownedItems or self.startkong == Kongs.chunky
+
+        self.vines = self.vines or Items.Vines in ownedItems
+        self.swim = self.swim or Items.Swim in ownedItems
+        self.oranges = self.oranges or Items.Oranges in ownedItems
+        self.barrels = self.barrels or Items.Barrels in ownedItems
 
         self.blast = self.blast or Items.BaboonBlast in ownedItems and self.donkey
         self.strongKong = self.strongKong or Items.StrongKong in ownedItems and self.donkey
@@ -135,9 +153,6 @@ class LogicVarHolder:
         self.nintendoCoin = self.nintendoCoin or Items.NintendoCoin in ownedItems
         self.rarewareCoin = self.rarewareCoin or Items.RarewareCoin in ownedItems
 
-        self.camera = self.camera or Items.CameraAndShockwave in ownedItems
-        self.shockwave = self.shockwave or Items.CameraAndShockwave in ownedItems
-
         self.JapesKey = self.JapesKey or Items.JungleJapesKey in ownedItems
         self.AztecKey = self.AztecKey or Items.AngryAztecKey in ownedItems
         self.FactoryKey = self.FactoryKey or Items.FranticFactoryKey in ownedItems
@@ -152,6 +167,9 @@ class LogicVarHolder:
         self.BananaFairies = sum(1 for x in ownedItems if x == Items.BananaFairy)
         self.BananaMedals = sum(1 for x in ownedItems if x == Items.BananaMedal)
         self.BattleCrowns = sum(1 for x in ownedItems if x == Items.BattleCrown)
+
+        self.camera = self.camera or Items.CameraAndShockwave in ownedItems
+        self.shockwave = self.shockwave or Items.CameraAndShockwave in ownedItems
 
         self.superSlam = self.Slam >= 2
         self.superDuperSlam = self.Slam >= 3
@@ -219,7 +237,7 @@ class LogicVarHolder:
 # Initialize logic variables, for now assume start with donkey
 LogicVariables = LogicVarHolder(Kongs.donkey)
 
-#Import regions from logic files
+# Import regions from logic files
 Regions = {}
 Regions.update(LogicFiles.DKIsles.LogicRegions)
 Regions.update(LogicFiles.JungleJapes.LogicRegions)

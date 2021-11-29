@@ -26,6 +26,15 @@ class Exit:
         self.dest = dest
         self.logic = logic # Lambda function for accessibility
 
+# Class used for colored bananas and banana coins
+class Collectible:
+    def __init__(self, type, kong, amount, logic):
+        self.type = type
+        self.kong = kong
+        self.amount = amount
+        self.logic = logic
+        self.added = False
+
 # Region contains shufflable locations, events, and exits to other regions
 class Region:
     def __init__(self, name, tagbarrel, locations, events, exits):
