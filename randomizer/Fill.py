@@ -10,11 +10,13 @@ from Item import ItemList
 import ItemPool
 
 # Find all locations accessible by this kong with current logic variables
-def KongSearch(kong, logicVariables, accessibleIds, start, Regions, newLocations, newLocationIds):
+def KongSearch(kong, logicVariables, accessibleIds, start, Regions, collectibleRegions, newLocations, newLocationIds):
     logicVariables.SetKong(kong)
     newEvents = []
 
-    regionPool = [Regions[start]]
+    startRegion = Regions[start]
+    startRegion.id = start
+    regionPool = [startRegion]
     addedRegions = [start]  
 
     tagAccess = [(key, value) for (key, value) in Regions.items() if value.HasAccess(kong) and key not in addedRegions]
@@ -43,7 +45,13 @@ def KongSearch(kong, logicVariables, accessibleIds, start, Regions, newLocations
             # If a region is accessible through this exit and has not yet been added, add it to the queue to be visited eventually
             if exit.dest not in addedRegions and exit.logic(logicVariables):
                 addedRegions.append(exit.dest)
-                regionPool.append(Regions[exit.dest])
+                newRegion = Regions[exit.dest]
+                newRegion.id = exit.dest
+                regionPool.append(newRegion)
+        # Finally check accessibility for collectibles
+        for collectible in collectibleRegions[region.id]:
+            if not collectible.added and logicVariables.IsKong(collectible.kong) and collectible.logic(logicVariables):
+                logicVariables.AddCollectible(collectible, region.level)
 
     return Regions, newLocations, newLocationIds, newEvents
 
@@ -118,6 +126,11 @@ def RandomFill(itemsToPlace):
         location = empty.pop()
         location.PlaceItem(item)
 
+def Reset():
+    LogicVariables.Reset()
+    Logic.ResetRegionAccess()
+    Logic.ResetCollectibleRegions()
+
 # Forward fill algorithm for item placement
 def ForwardFill(itemsToPlace, ownedItems = []):
     random.shuffle(itemsToPlace)
@@ -145,8 +158,7 @@ def AssumedFill(itemsToPlace, ownedItems = []):
         item = itemsToPlace.pop()
         ownedItems = itemsToPlace.copy()
         ownedItems.extend(ownedItems)
-        LogicVariables.Reset()
-        Logic.ResetRegionAccess()
+        Reset()
         reachable = GetAccessibleLocations(ownedItems.copy())
         reachable = [x for x in reachable if x.item == None]
         # If there are no empty reachable locations, reached a dead end
@@ -170,18 +182,15 @@ def Fill(algorithm):
     # Then place priority (logically very important) items
     highPriorityUnplaced = PlaceItems(algorithm, ItemPool.HighPriorityItems(), ItemPool.HighPriorityAssumedItems())
     # Then place blueprints
-    LogicVariables.Reset()
-    Logic.ResetRegionAccess()
+    Reset()
     blueprintsUnplaced = PlaceItems(algorithm, ItemPool.Blueprints(), ItemPool.BlueprintAssumedItems())
     # Then place the rest of items
-    LogicVariables.Reset()
-    Logic.ResetRegionAccess()
+    Reset()
     lowPriorityUnplaced = PlaceItems(algorithm, ItemPool.LowPriorityItems(), ItemPool.ExcessItems())
     # Finally place excess items fully randomly
     excessUnplaced = RandomFill(ItemPool.ExcessItems())
     # Generate and display the playthrough
-    LogicVariables.Reset()
-    Logic.ResetRegionAccess()
+    Reset()
     PlaythroughLocations = GetAccessibleLocations([], SearchMode.GeneratePlaythrough)
     i = 0
     for sphere in PlaythroughLocations:

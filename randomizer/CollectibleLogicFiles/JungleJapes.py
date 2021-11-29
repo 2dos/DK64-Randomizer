@@ -6,7 +6,8 @@ from LogicClasses import Collectible
 
 LogicRegions = {
     Regions.JungleJapesMain: [
-        Collectible(Collectibles.banana, Kongs.donkey, 5, lambda l: l.vines),
-        Collectible(Collectibles.coin, Kongs.donkey, 3, lambda l: l.vines)
+        Collectible(Collectibles.banana, Kongs.donkey, lambda l: l.vines, 5),
+        Collectible(Collectibles.coin, Kongs.donkey, lambda l: l.vines, 3),
+        Collectible(Collectibles.balloon, Kongs.donkey, lambda l: l.coconut),
     ],
 }

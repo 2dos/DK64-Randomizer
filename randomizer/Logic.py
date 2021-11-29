@@ -2,6 +2,7 @@ from Enums.Items import Items
 from Enums.Events import Events
 from Enums.Levels import Levels
 from Enums.Kongs import Kongs
+from Enums.Collectibles import Collectibles
 
 import LogicFiles.DKIsles
 import LogicFiles.JungleJapes
@@ -14,7 +15,15 @@ import LogicFiles.CreepyCastle
 import LogicFiles.HideoutHelm
 import LogicFiles.Shops
 
-import
+import CollectibleLogicFiles.DKIsles
+import CollectibleLogicFiles.JungleJapes
+import CollectibleLogicFiles.AngryAztec
+import CollectibleLogicFiles.FranticFactory
+import CollectibleLogicFiles.GloomyGalleon
+import CollectibleLogicFiles.FungiForest
+import CollectibleLogicFiles.CrystalCaves
+import CollectibleLogicFiles.CreepyCastle
+from randomizer.LogicClasses import Collectible
 
 class LogicVarHolder:
 
@@ -208,6 +217,21 @@ class LogicVarHolder:
         self.istiny = self.kong == Kongs.tiny
         self.ischunky = self.kong == Kongs.chunky
 
+    # Check if logic is currently a specific kong
+    def IsKong(self, kong):
+        if kong == Kongs.donkey:
+            return self.isdonkey
+        if kong == Kongs.diddy:
+            return self.isdiddy
+        if kong == Kongs.lanky:
+            return self.islanky
+        if kong == Kongs.tiny:
+            return self.istiny
+        if kong == Kongs.chunky:
+            return self.ischunky
+        if kong == Kongs.rainbow:
+            return True
+
     # Set access of current region
     def UpdateCurrentRegionAccess(self, region):
         self.donkeyAccess = region.donkeyAccess
@@ -234,6 +258,24 @@ class LogicVarHolder:
             return True
         return False
 
+    # Add a collectible
+    def AddCollectible(self, collectible, level):
+        if collectible.type == Collectibles.coin:
+            # Rainbow coin, add 5 coins for each kong
+            if collectible.kong == Kongs.rainbow:
+                for i in range(5):
+                    self.Coins[i] += 5
+            # Normal coins, add amount for the kong
+            else:
+                self.Coins[collectible.kong] += collectible.amount
+        # Add bananas for correct level for this kong
+        elif collectible.type == Collectibles.banana:
+            self.coloredBananas[level][collectible.kong] += collectible.amount
+        # Add 10 bananas for a balloon
+        elif collectible.type == Collectibles.balloon:
+            self.coloredBananas[level][collectible.kong] += 10
+        collectible.added = True
+
 # Initialize logic variables, for now assume start with donkey
 LogicVariables = LogicVarHolder(Kongs.donkey)
 
@@ -250,10 +292,27 @@ Regions.update(LogicFiles.CreepyCastle.LogicRegions)
 Regions.update(LogicFiles.HideoutHelm.LogicRegions)
 Regions.update(LogicFiles.Shops.LogicRegions)
 
+# Auxillary regions for colored bananas and banana coins
+CollectibleRegions = {}
+CollectibleRegions.update(CollectibleLogicFiles.DKIsles.LogicRegions)
+CollectibleRegions.update(CollectibleLogicFiles.JungleJapes.LogicRegions)
+CollectibleRegions.update(CollectibleLogicFiles.AngryAztec.LogicRegions)
+CollectibleRegions.update(CollectibleLogicFiles.FranticFactory.LogicRegions)
+CollectibleRegions.update(CollectibleLogicFiles.GloomyGalleon.LogicRegions)
+CollectibleRegions.update(CollectibleLogicFiles.FungiForest.LogicRegions)
+CollectibleRegions.update(CollectibleLogicFiles.CrystalCaves.LogicRegions)
+CollectibleRegions.update(CollectibleLogicFiles.CreepyCastle.LogicRegions)
+
 # Reset kong access for all regions
 def ResetRegionAccess():
     for region in Regions.values():
         region.ResetAccess()
+
+# Reset if each collectible has been added
+def ResetCollectiblesRegions():
+    for region in CollectibleRegions.values():
+        for collectible in region:
+            collectible.added = False
 
 # Updates access of master regions list from a temp list of regions
 def UpdateAllRegionsAccess(tempRegions):

@@ -28,11 +28,11 @@ class Exit:
 
 # Class used for colored bananas and banana coins
 class Collectible:
-    def __init__(self, type, kong, amount, logic):
+    def __init__(self, type, kong, logic, amount=1):
         self.type = type
         self.kong = kong
-        self.amount = amount
         self.logic = logic
+        self.amount = amount
         self.added = False
 
 # Region contains shufflable locations, events, and exits to other regions
