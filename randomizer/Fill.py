@@ -49,11 +49,12 @@ def KongSearch(kong, logicVariables, accessibleIds, start, Regions, collectibleR
                 newRegion.id = exit.dest
                 regionPool.append(newRegion)
         # Finally check accessibility for collectibles
-        for collectible in collectibleRegions[region.id]:
-            if not collectible.added and logicVariables.IsKong(collectible.kong) and collectible.logic(logicVariables):
-                logicVariables.AddCollectible(collectible, region.level)
+        if region.id in collectibleRegions.keys():
+            for collectible in collectibleRegions[region.id]:
+                if not collectible.added and logicVariables.IsKong(collectible.kong) and collectible.logic(logicVariables):
+                    logicVariables.AddCollectible(collectible, region.level)
 
-    return Regions, newLocations, newLocationIds, newEvents
+    return Regions, collectibleRegions, newLocations, newLocationIds, newEvents
 
 # Search to find all reachable locations given owned items
 def GetAccessibleLocations(ownedItems, searchType=SearchMode.GetReachable):
@@ -90,9 +91,10 @@ def GetAccessibleLocations(ownedItems, searchType=SearchMode.GetReachable):
 
         # Do a search for each owned kong
         for kong in LogicVariables.GetKongs():
-            tempRegions, tempNew, tempNewIds, newEvents = KongSearch(kong, copy.deepcopy(LogicVariables), accessibleIds.copy(), Regions.Start, Logic.Regions.copy(), newLocations.copy(), newLocationIds.copy())
+            tempRegions, tempCollectibleRegions, tempNew, tempNewIds, newEvents = KongSearch(kong, copy.deepcopy(LogicVariables), accessibleIds.copy(), Regions.Start, Logic.Regions.copy(), Logic.CollectibleRegions.copy(), newLocations.copy(), newLocationIds.copy())
             # Update regional access from search
             Logic.UpdateAllRegionsAccess(tempRegions)
+            Logic.UpdateCollectiblesAdded(tempCollectibleRegions)
             # Add new things found in search
             # list(set()) removes redundancies
             newLocations.extend(tempNew)

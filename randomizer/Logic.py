@@ -39,7 +39,7 @@ class LogicVarHolder:
         self.tiny = self.startkong == Kongs.tiny
         self.chunky = self.startkong == Kongs.chunky
 
-        self.vines = False
+        self.vines = True
         self.swim = False
         self.oranges = False
         self.barrels = False
@@ -102,7 +102,9 @@ class LogicVarHolder:
 
         # Colored banana and coin arrays 
         # Colored bananas as 8 arrays of 5, only need 7 but leave room for DK Isles since we use the enum
-        self.coloredBananas = [[0]*5]*8
+        self.coloredBananas = []
+        for i in range(8):
+            self.coloredBananas.append([0]*5)
         self.Coins = [0]*5
 
         # These access variables based on current region
@@ -308,7 +310,7 @@ def ResetRegionAccess():
         region.ResetAccess()
 
 # Reset if each collectible has been added
-def ResetCollectiblesRegions():
+def ResetCollectibleRegions():
     for region in CollectibleRegions.values():
         for collectible in region:
             collectible.added = False
@@ -317,3 +319,9 @@ def ResetCollectiblesRegions():
 def UpdateAllRegionsAccess(tempRegions):
     for (key, value) in Regions.items():
         value.UpdateAccessFromRegion(tempRegions[key])
+
+# Updates which collectibles have been added
+def UpdateCollectiblesAdded(tempRegions):
+    for (key, value) in CollectibleRegions.items():
+        for i in range(len(value)):
+            value[i].added = tempRegions[key][i].added
