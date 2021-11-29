@@ -95,6 +95,11 @@ def Instruments():
 
 def Upgrades():
     upgrades = [
+        Items.Vines,
+        Items.Swim,
+        Items.Oranges,
+        Items.Barrels,
+
         Items.BaboonBlast,
         Items.StrongKong,
         Items.GorillaGrab,

@@ -39,7 +39,7 @@ class LogicVarHolder:
         self.tiny = self.startkong == Kongs.tiny
         self.chunky = self.startkong == Kongs.chunky
 
-        self.vines = True
+        self.vines = False
         self.swim = False
         self.oranges = False
         self.barrels = False

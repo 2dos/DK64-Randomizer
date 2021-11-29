@@ -12,6 +12,11 @@ ItemList = {
     Items.Tiny: Item("Tiny", True),
     Items.Chunky: Item("Chunky", True),
 
+    Items.Vines: Item("Vines", True),
+    Items.Swim: Item("Swim", True),
+    Items.Oranges: Item("Oranges", True),
+    Items.Barrels: Item("Barrels", True),
+
     Items.ProgressiveSlam: Item("Progressive Slam", True),
     Items.BaboonBlast: Item("Baboon Blast", True),
     Items.StrongKong: Item("Strong Kong", True),
