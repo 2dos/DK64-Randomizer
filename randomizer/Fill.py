@@ -9,6 +9,7 @@ from Logic import LogicVariables
 from Item import ItemList
 import ItemPool
 
+
 # Find all locations accessible by this kong with current logic variables
 def KongSearch(kong, logicVariables, accessibleIds, start, Regions, collectibleRegions, newLocations, newLocationIds):
     logicVariables.SetKong(kong)
@@ -136,7 +137,7 @@ def RandomFill(itemsToPlace):
     empty = []
     for region in Logic.Regions.values():
         for location in region.locations:
-            if location.item == None:
+            if location.item is None:
                 empty.append(location)
     random.shuffle(empty)
     # Place item in random locations
@@ -162,7 +163,7 @@ def ForwardFill(itemsToPlace, ownedItems=[]):
     while len(itemsToPlace) > 0:
         # Find a random empty location which is reachable with current items
         reachable = GetAccessibleLocations(ownedItems.copy())
-        reachable = [x for x in reachable if x.item == None]
+        reachable = [x for x in reachable if x.item is None]
         if len(reachable) == 0:  # If there are no empty reachable locations, reached a dead end
             return len(itemsToPlace)
         random.shuffle(reachable)
@@ -184,7 +185,7 @@ def AssumedFill(itemsToPlace, ownedItems=[]):
         ownedItems.extend(ownedItems)
         Reset()
         reachable = GetAccessibleLocations(ownedItems.copy())
-        reachable = [x for x in reachable if x.item == None]
+        reachable = [x for x in reachable if x.item is None]
         # If there are no empty reachable locations, reached a dead end
         if len(reachable) == 0:
             return len(itemsToPlace)

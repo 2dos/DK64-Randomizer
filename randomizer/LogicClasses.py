@@ -1,5 +1,6 @@
 from Enums.Kongs import Kongs
 
+
 # A shufflable location at which a random item can be placed
 class Location:
     def __init__(self, name, logic):

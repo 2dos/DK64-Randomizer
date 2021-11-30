@@ -305,6 +305,7 @@ CollectibleRegions.update(CollectibleLogicFiles.FungiForest.LogicRegions)
 CollectibleRegions.update(CollectibleLogicFiles.CrystalCaves.LogicRegions)
 CollectibleRegions.update(CollectibleLogicFiles.CreepyCastle.LogicRegions)
 
+
 # Reset kong access for all regions
 def ResetRegionAccess():
     for region in Regions.values():

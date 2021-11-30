@@ -66,13 +66,13 @@ LogicRegions = {
         Location("Turn In DK Isles Lanky Blueprint", lambda l: Items.DKIslesLankyBlueprint in l.Blueprints),
         Location("Turn In DK Isles Tiny Blueprint", lambda l: Items.DKIslesTinyBlueprint in l.Blueprints),
         Location("Turn In DK Isles Chunky Blueprint", lambda l: Items.DKIslesChunkyBlueprint in l.Blueprints),
-        
+
         Location("Turn In Jungle Japes Donkey Blueprint", lambda l: Items.JungleJapesDonkeyBlueprint in l.Blueprints),
         Location("Turn In Jungle Japes Diddy Blueprint", lambda l: Items.JungleJapesDiddyBlueprint in l.Blueprints),
         Location("Turn In Jungle Japes Lanky Blueprint", lambda l: Items.JungleJapesLankyBlueprint in l.Blueprints),
         Location("Turn In Jungle Japes Tiny Blueprint", lambda l: Items.JungleJapesTinyBlueprint in l.Blueprints),
         Location("Turn In Jungle Japes Chunky Blueprint", lambda l: Items.JungleJapesChunkyBlueprint in l.Blueprints),
-        
+
         Location("Turn In Angry Aztec Donkey Blueprint", lambda l: Items.AngryAztecDonkeyBlueprint in l.Blueprints),
         Location("Turn In Angry Aztec Diddy Blueprint", lambda l: Items.AngryAztecDiddyBlueprint in l.Blueprints),
         Location("Turn In Angry Aztec Lanky Blueprint", lambda l: Items.AngryAztecLankyBlueprint in l.Blueprints),
@@ -84,7 +84,7 @@ LogicRegions = {
         Location("Turn In Frantic Factory Lanky Blueprint", lambda l: Items.FranticFactoryLankyBlueprint in l.Blueprints),
         Location("Turn In Frantic Factory Tiny Blueprint", lambda l: Items.FranticFactoryTinyBlueprint in l.Blueprints),
         Location("Turn In Frantic Factory Chunky Blueprint", lambda l: Items.FranticFactoryChunkyBlueprint in l.Blueprints),
-        
+
         Location("Turn In Gloomy Galleon Donkey Blueprint", lambda l: Items.GloomyGalleonDonkeyBlueprint in l.Blueprints),
         Location("Turn In Gloomy Galleon Diddy Blueprint", lambda l: Items.GloomyGalleonDiddyBlueprint in l.Blueprints),
         Location("Turn In Gloomy Galleon Lanky Blueprint", lambda l: Items.GloomyGalleonLankyBlueprint in l.Blueprints),
@@ -102,7 +102,7 @@ LogicRegions = {
         Location("Turn In Crystal Caves Lanky Blueprint", lambda l: Items.CrystalCavesLankyBlueprint in l.Blueprints),
         Location("Turn In Crystal Caves Tiny Blueprint", lambda l: Items.CrystalCavesTinyBlueprint in l.Blueprints),
         Location("Turn In Crystal Caves Chunky Blueprint", lambda l: Items.CrystalCavesChunkyBlueprint in l.Blueprints),
-        
+
         Location("Turn In Creepy Castle Donkey Blueprint", lambda l: Items.CreepyCastleDonkeyBlueprint in l.Blueprints),
         Location("Turn In Creepy Castle Diddy Blueprint", lambda l: Items.CreepyCastleDiddyBlueprint in l.Blueprints),
         Location("Turn In Creepy Castle Lanky Blueprint", lambda l: Items.CreepyCastleLankyBlueprint in l.Blueprints),

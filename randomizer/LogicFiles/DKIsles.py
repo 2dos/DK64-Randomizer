@@ -112,7 +112,7 @@ LogicRegions = {
 
     Regions.CabinIsle: Region("Cabin Isle", Levels.DKIsles, False, [
         Location("Isles Diddy Caged Banana", lambda l: Events.IslesDiddyBarrelSpawn in l.Events and l.jetpack and l.isdiddy),
-        Location("Isles Diddy Summit", lambda l:  Events.IslesDiddyBarrelSpawn in l.Events and l.jetpack and l.peanut and l.isdiddy),
+        Location("Isles Diddy Summit", lambda l: Events.IslesDiddyBarrelSpawn in l.Events and l.jetpack and l.peanut and l.isdiddy),
     ], [], [
         Exit(Regions.FungiForestLobby, lambda l: True),
     ]),
@@ -151,7 +151,7 @@ LogicRegions = {
     ]),
 
     Regions.KRool: Region("K. Rool", Levels.DKIsles, True, [
-        Location("Banana Hoard", lambda l: l.donkeyAccess and l.jetpack and l.peanut and l.diddyAccess and l.trombone and l.lankyAccess and
-            l.mini and l.feather and l.tinyAccess and l.superSlam and l.gorillaGone and l.hunkyChunky and l.chunkyAccess),
+        Location("Banana Hoard", lambda l: l.donkeyAccess and l.jetpack and l.peanut and l.diddyAccess and l.trombone and l.lankyAccess
+                 and l.mini and l.feather and l.tinyAccess and l.superSlam and l.gorillaGone and l.hunkyChunky and l.chunkyAccess),
     ], [], []),
 }

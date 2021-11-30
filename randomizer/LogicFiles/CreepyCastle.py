@@ -17,7 +17,7 @@ LogicRegions = {
         Exit(Regions.CastleWaterfall, lambda l: True),
         Exit(Regions.CastleTree, lambda l: l.blast),
         Exit(Regions.Library, lambda l: l.superDuperSlam and l.isdonkey),
-        Exit(Regions.Ballroom, lambda l: l.superDuperSlam and l.diddy), # Stays open
+        Exit(Regions.Ballroom, lambda l: l.superDuperSlam and l.diddy),  # Stays open
         Exit(Regions.Tower, lambda l: l.superDuperSlam and l.islanky),
         Exit(Regions.Greenhouse, lambda l: l.superDuperSlam and l.islanky),
         Exit(Regions.TrashCan, lambda l: l.mini and l.istiny),
