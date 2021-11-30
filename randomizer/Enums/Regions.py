@@ -1,7 +1,8 @@
 from enum import IntEnum, auto
 
+
 class Regions(IntEnum):
-    
+
     # DK Isles Regions
     Start = auto()
     IslesMain = auto()
@@ -19,7 +20,7 @@ class Regions(IntEnum):
     CreepyCastleLobby = auto()
     HideoutHelmLobby = auto()
     KRool = auto()
-    
+
     # Jungle Japes Regions
     JungleJapesMain = auto()
     JapesBeyondPeanutGate = auto()
@@ -34,7 +35,7 @@ class Regions(IntEnum):
     JapesCatacomb = auto()
     JapesBossLobby = auto()
     JapesBoss = auto()
-    
+
     # Angry Aztec Regions
     AngryAztecStart = auto()
     TempleStart = auto()
@@ -50,7 +51,7 @@ class Regions(IntEnum):
     LlamaTempleBack = auto()
     AztecBossLobby = auto()
     AztecBoss = auto()
-    
+
     # Frantic Factory Regions
     FranticFactoryStart = auto()
     Testing = auto()
@@ -63,7 +64,7 @@ class Regions(IntEnum):
     MainCore = auto()
     FactoryBossLobby = auto()
     FactoryBoss = auto()
-    
+
     # Gloomy Galleon Regions
     GloomyGalleonStart = auto()
     GalleonBeyondPineappleGate = auto()
@@ -86,7 +87,7 @@ class Regions(IntEnum):
     TriangleShip = auto()
     GalleonBossLobby = auto()
     GalleonBoss = auto()
-    
+
     # Fungi Forest Regions
     FungiForestStart = auto()
     ForestMinecarts = auto()
@@ -115,7 +116,7 @@ class Regions(IntEnum):
     WormArea = auto()
     ForestBossLobby = auto()
     ForestBoss = auto()
-    
+
     # Crystal Caves Regions
     CrystalCavesMain = auto()
     BoulderIgloo = auto()
@@ -138,7 +139,7 @@ class Regions(IntEnum):
     ChunkyCabin = auto()
     CavesBossLobby = auto()
     CavesBoss = auto()
-    
+
     # Creepy Castle Regions
     CreepyCastleMain = auto()
     CastleWaterfall = auto()
@@ -159,11 +160,11 @@ class Regions(IntEnum):
     Dungeon = auto()
     CastleBossLobby = auto()
     CastleBoss = auto()
-    
+
     # Hideout Helm Regions
     HideoutHelmStart = auto()
     HideoutHelmMain = auto()
-    
+
     # Shop Regions
     Funky = auto()
     Candy = auto()

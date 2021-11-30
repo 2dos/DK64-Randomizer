@@ -1,3 +1,5 @@
+# fmt: off
+
 from Enums.Events import Events
 from Enums.Regions import Regions
 from Enums.Kongs import Kongs

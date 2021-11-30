@@ -4,11 +4,12 @@ from Enums.Kongs import Kongs
 class Location:
     def __init__(self, name, logic):
         self.name = name
-        self.logic = logic # Lambda function for accessibility
+        self.logic = logic  # Lambda function for accessibility
         self.item = None
 
     def PlaceItem(self, item):
         self.item = item
+
 
 # Event within a region
 # Events act as statically placed items
@@ -18,13 +19,15 @@ class Location:
 class Event:
     def __init__(self, name, logic):
         self.name = name
-        self.logic = logic # Lambda function for accessibility
+        self.logic = logic  # Lambda function for accessibility
+
 
 # Exit from one region to another
 class Exit:
     def __init__(self, dest, logic):
         self.dest = dest
-        self.logic = logic # Lambda function for accessibility
+        self.logic = logic  # Lambda function for accessibility
+
 
 # Class used for colored bananas and banana coins
 class Collectible:
@@ -34,6 +37,7 @@ class Collectible:
         self.logic = logic
         self.amount = amount
         self.added = False
+
 
 # Region contains shufflable locations, events, and exits to other regions
 class Region:
@@ -76,7 +80,7 @@ class Region:
         self.lankyAccess = self.lankyAccess or region.lankyAccess
         self.tinyAccess = self.tinyAccess or region.tinyAccess
         self.chunkyAccess = self.chunkyAccess or region.chunkyAccess
-    
+
     # Check if given kong has access through this area
     # Used if a kong has access through a tag barrel only
     def HasAccess(self, kong):

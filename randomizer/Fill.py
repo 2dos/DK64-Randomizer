@@ -17,22 +17,26 @@ def KongSearch(kong, logicVariables, accessibleIds, start, Regions, collectibleR
     startRegion = Regions[start]
     startRegion.id = start
     regionPool = [startRegion]
-    addedRegions = [start]  
+    addedRegions = [start]
 
     tagAccess = [(key, value) for (key, value) in Regions.items() if value.HasAccess(kong) and key not in addedRegions]
-    addedRegions.extend([x[0] for x in tagAccess]) # first value is the region key
-    regionPool.extend([x[1] for x in tagAccess]) # second value is the region itself
+    addedRegions.extend([x[0] for x in tagAccess])  # first value is the region key
+    regionPool.extend([x[1] for x in tagAccess])  # second value is the region itself
 
     # Loop for each region until no more accessible regions found
     while len(regionPool) > 0:
         region = regionPool.pop()
 
-        region.UpdateAccess(kong, logicVariables) # Set that this kong has access to this region
-        logicVariables.UpdateCurrentRegionAccess(region) # Set in logic as well
+        region.UpdateAccess(kong, logicVariables)  # Set that this kong has access to this region
+        logicVariables.UpdateCurrentRegionAccess(region)  # Set in logic as well
 
         # Check accessibility for each location in this region
         for location in region.locations:
-            if location.logic(logicVariables) and location.name not in newLocationIds and location.name not in accessibleIds:
+            if (
+                location.logic(logicVariables)
+                and location.name not in newLocationIds
+                and location.name not in accessibleIds
+            ):
                 newLocations.append(location)
                 newLocationIds.append(location.name)
         # Check accessibility for each event in this region
@@ -51,10 +55,15 @@ def KongSearch(kong, logicVariables, accessibleIds, start, Regions, collectibleR
         # Finally check accessibility for collectibles
         if region.id in collectibleRegions.keys():
             for collectible in collectibleRegions[region.id]:
-                if not collectible.added and logicVariables.IsKong(collectible.kong) and collectible.logic(logicVariables):
+                if (
+                    not collectible.added
+                    and logicVariables.IsKong(collectible.kong)
+                    and collectible.logic(logicVariables)
+                ):
                     logicVariables.AddCollectible(collectible, region.level)
 
     return Regions, collectibleRegions, newLocations, newLocationIds, newEvents
+
 
 # Search to find all reachable locations given owned items
 def GetAccessibleLocations(ownedItems, searchType=SearchMode.GetReachable):
@@ -91,7 +100,16 @@ def GetAccessibleLocations(ownedItems, searchType=SearchMode.GetReachable):
 
         # Do a search for each owned kong
         for kong in LogicVariables.GetKongs():
-            tempRegions, tempCollectibleRegions, tempNew, tempNewIds, newEvents = KongSearch(kong, copy.deepcopy(LogicVariables), accessibleIds.copy(), Regions.Start, Logic.Regions.copy(), Logic.CollectibleRegions.copy(), newLocations.copy(), newLocationIds.copy())
+            tempRegions, tempCollectibleRegions, tempNew, tempNewIds, newEvents = KongSearch(
+                kong,
+                copy.deepcopy(LogicVariables),
+                accessibleIds.copy(),
+                Regions.Start,
+                Logic.Regions.copy(),
+                Logic.CollectibleRegions.copy(),
+                newLocations.copy(),
+                newLocationIds.copy(),
+            )
             # Update regional access from search
             Logic.UpdateAllRegionsAccess(tempRegions)
             Logic.UpdateCollectiblesAdded(tempCollectibleRegions)
@@ -111,6 +129,7 @@ def GetAccessibleLocations(ownedItems, searchType=SearchMode.GetReachable):
     elif searchType == SearchMode.GeneratePlaythrough:
         return playthroughLocations
 
+
 def RandomFill(itemsToPlace):
     random.shuffle(itemsToPlace)
     # Get all remaining empty locations
@@ -128,13 +147,15 @@ def RandomFill(itemsToPlace):
         location = empty.pop()
         location.PlaceItem(item)
 
+
 def Reset():
     LogicVariables.Reset()
     Logic.ResetRegionAccess()
     Logic.ResetCollectibleRegions()
 
+
 # Forward fill algorithm for item placement
-def ForwardFill(itemsToPlace, ownedItems = []):
+def ForwardFill(itemsToPlace, ownedItems=[]):
     random.shuffle(itemsToPlace)
     ownedItems = ownedItems.copy()
     # While there are items to place
@@ -142,7 +163,7 @@ def ForwardFill(itemsToPlace, ownedItems = []):
         # Find a random empty location which is reachable with current items
         reachable = GetAccessibleLocations(ownedItems.copy())
         reachable = [x for x in reachable if x.item == None]
-        if len(reachable) == 0: # If there are no empty reachable locations, reached a dead end
+        if len(reachable) == 0:  # If there are no empty reachable locations, reached a dead end
             return len(itemsToPlace)
         random.shuffle(reachable)
         location = reachable.pop()
@@ -151,8 +172,9 @@ def ForwardFill(itemsToPlace, ownedItems = []):
         ownedItems.append(item)
         location.PlaceItem(item)
 
+
 # Assumed fill algorithm for item placement
-def AssumedFill(itemsToPlace, ownedItems = []):
+def AssumedFill(itemsToPlace, ownedItems=[]):
     random.shuffle(itemsToPlace)
     # While there are items to place
     while len(itemsToPlace) > 0:
@@ -171,11 +193,13 @@ def AssumedFill(itemsToPlace, ownedItems = []):
         location = reachable.pop()
         location.PlaceItem(item)
 
-def PlaceItems(algorithm, itemsToPlace, ownedItems = []):
+
+def PlaceItems(algorithm, itemsToPlace, ownedItems=[]):
     if algorithm == "assumed":
         AssumedFill(itemsToPlace, ownedItems)
     elif algorithm == "forward":
         ForwardFill(itemsToPlace, ownedItems)
+
 
 # Place all items
 def Fill(algorithm):

@@ -1,5 +1,6 @@
 from enum import IntEnum, auto
 
+
 class Kongs(IntEnum):
     donkey = 0
     diddy = auto()

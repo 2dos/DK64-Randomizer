@@ -1,5 +1,6 @@
 from enum import IntEnum, auto
 
+
 class Events(IntEnum):
 
     # DK Isles events
@@ -12,7 +13,7 @@ class Events(IntEnum):
     FifthKey = auto()
     SeventhKey = auto()
     EigthKey = auto()
-    
+
     # Jungle Japes events
     Rambi = auto()
     JapesDonkeySwitch = auto()
@@ -21,12 +22,12 @@ class Events(IntEnum):
     JapesTinySwitch = auto()
     JapesChunkySwitch = auto()
     JapesDiddySwitch2 = auto()
-    
+
     # Angry Aztec events
     FedTotem = auto()
     LlamaFreed = auto()
     AztecDonkeySwitch = auto()
-    
+
     # Frantic Factory events
     DartsPlayed = auto()
     MainCoreActivated = auto()
@@ -36,7 +37,7 @@ class Events(IntEnum):
     LankyCoreSwitch = auto()
     TinyCoreSwitch = auto()
     ChunkyCoreSwitch = auto()
-    
+
     # Gloomy Galleon events
     GalleonLankySwitch = auto()
     GalleonTinySwitch = auto()
@@ -48,7 +49,7 @@ class Events(IntEnum):
     ShipyardEnguarde = auto()
     TreasureRoomTeleporterUnlocked = auto()
     PearlsCollected = auto()
-    
+
     # Fungi Forest events
     Night = auto()
     MushroomCannonsSpawned = auto()
@@ -58,12 +59,12 @@ class Events(IntEnum):
     MillBoxBroken = auto()
     ConveyorActivated = auto()
     WenchRaised = auto()
-    
+
     # Crystal Caves events
     CavesSmallBoulderButton = auto()
     CavesLargeBoulderButton = auto()
     GiantKoshaDefeated = auto()
-    
+
     # No Creepy Castle Events
 
     # Hideout Helm Events

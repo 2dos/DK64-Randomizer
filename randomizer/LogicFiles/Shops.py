@@ -1,3 +1,5 @@
+# fmt: off
+
 from LogicClasses import Region, Location, Event, Exit
 from Enums.Items import Items
 from Enums.Levels import Levels

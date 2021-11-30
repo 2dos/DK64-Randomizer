@@ -24,8 +24,8 @@ import CollectibleLogicFiles.FungiForest
 import CollectibleLogicFiles.CrystalCaves
 import CollectibleLogicFiles.CreepyCastle
 
-class LogicVarHolder:
 
+class LogicVarHolder:
     def __init__(self, startkong):
         self.startkong = startkong
         self.Reset()
@@ -86,13 +86,13 @@ class LogicVarHolder:
         self.CavesKey = False
         self.CastleKey = False
         self.HelmKey = False
-        
+
         self.Slam = 0
         self.GoldenBananas = 0
         self.BananaFairies = 0
         self.BananaMedals = 0
         self.BattleCrowns = 0
-        
+
         self.superSlam = False
         self.superDuperSlam = False
 
@@ -100,12 +100,12 @@ class LogicVarHolder:
 
         self.Events = []
 
-        # Colored banana and coin arrays 
+        # Colored banana and coin arrays
         # Colored bananas as 8 arrays of 5, only need 7 but leave room for DK Isles since we use the enum
         self.coloredBananas = []
         for i in range(8):
-            self.coloredBananas.append([0]*5)
-        self.Coins = [0]*5
+            self.coloredBananas.append([0] * 5)
+        self.Coins = [0] * 5
 
         # These access variables based on current region
         # Shouldn't be checked unless updated directly beforehand
@@ -277,6 +277,7 @@ class LogicVarHolder:
             self.coloredBananas[level][collectible.kong] += 10
         collectible.added = True
 
+
 # Initialize logic variables, for now assume start with donkey
 LogicVariables = LogicVarHolder(Kongs.donkey)
 
@@ -309,16 +310,19 @@ def ResetRegionAccess():
     for region in Regions.values():
         region.ResetAccess()
 
+
 # Reset if each collectible has been added
 def ResetCollectibleRegions():
     for region in CollectibleRegions.values():
         for collectible in region:
             collectible.added = False
 
+
 # Updates access of master regions list from a temp list of regions
 def UpdateAllRegionsAccess(tempRegions):
     for (key, value) in Regions.items():
         value.UpdateAccessFromRegion(tempRegions[key])
+
 
 # Updates which collectibles have been added
 def UpdateCollectiblesAdded(tempRegions):

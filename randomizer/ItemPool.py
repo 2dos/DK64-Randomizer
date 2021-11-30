@@ -2,6 +2,7 @@ import itertools
 
 from Enums.Items import Items
 
+
 def Blueprints():
     blueprints = [
         Items.DKIslesDonkeyBlueprint,
@@ -47,9 +48,11 @@ def Blueprints():
     ]
     return blueprints
 
+
 # Items which are assumed to be owned while placing blueprints
 def BlueprintAssumedItems():
-    return LowPriorityItems()+ExcessItems()
+    return LowPriorityItems() + ExcessItems()
+
 
 def Keys():
     keys = [
@@ -64,6 +67,7 @@ def Keys():
     ]
     return keys
 
+
 def Kongs():
     kongs = [
         Items.Diddy,
@@ -72,6 +76,7 @@ def Kongs():
         Items.Chunky,
     ]
     return kongs
+
 
 def Guns():
     guns = [
@@ -83,6 +88,7 @@ def Guns():
     ]
     return guns
 
+
 def Instruments():
     instruments = [
         Items.Bongos,
@@ -93,13 +99,13 @@ def Instruments():
     ]
     return instruments
 
+
 def Upgrades():
     upgrades = [
         Items.Vines,
         Items.Swim,
         Items.Oranges,
         Items.Barrels,
-
         Items.BaboonBlast,
         Items.StrongKong,
         Items.GorillaGrab,
@@ -120,6 +126,7 @@ def Upgrades():
     upgrades.extend(itertools.repeat(Items.ProgressiveSlam, 3))
     return upgrades
 
+
 # Get all items which are of high importance logically
 # Placing these first prevents fill failures
 def HighPriorityItems():
@@ -130,9 +137,11 @@ def HighPriorityItems():
     itemPool.extend(Upgrades())
     return itemPool
 
+
 # Items which are assumed to be owned while placing high priority items
 def HighPriorityAssumedItems():
-    return Blueprints()+LowPriorityItems()+ExcessItems()
+    return Blueprints() + LowPriorityItems() + ExcessItems()
+
 
 # While most of these items still have logical value they are not as important
 def LowPriorityItems():
@@ -145,6 +154,7 @@ def LowPriorityItems():
     itemPool.append(Items.RarewareCoin)
 
     return itemPool
+
 
 # Items which either have no logical value or are excess copies of those that do
 def ExcessItems():

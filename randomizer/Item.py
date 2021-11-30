@@ -1,9 +1,11 @@
 from Enums.Items import Items
 
-class Item():
+
+class Item:
     def __init__(self, name, playthrough):
         self.name = name
         self.playthrough = playthrough
+
 
 ItemList = {
     Items.Donkey: Item("Donkey", True),
@@ -11,12 +13,10 @@ ItemList = {
     Items.Lanky: Item("Lanky", True),
     Items.Tiny: Item("Tiny", True),
     Items.Chunky: Item("Chunky", True),
-
     Items.Vines: Item("Vines", True),
     Items.Swim: Item("Swim", True),
     Items.Oranges: Item("Oranges", True),
     Items.Barrels: Item("Barrels", True),
-
     Items.ProgressiveSlam: Item("Progressive Slam", True),
     Items.BaboonBlast: Item("Baboon Blast", True),
     Items.StrongKong: Item("Strong Kong", True),
@@ -33,7 +33,6 @@ ItemList = {
     Items.HunkyChunky: Item("Hunky Chunky", True),
     Items.PrimatePunch: Item("Primate Punch", True),
     Items.GorillaGone: Item("Gorilla Gone", True),
-    
     Items.Coconut: Item("Coconut", True),
     Items.Peanut: Item("Peanut", True),
     Items.Grape: Item("Grape", True),
@@ -42,19 +41,15 @@ ItemList = {
     Items.HomingAmmo: Item("Homing Ammo", False),
     Items.SniperSight: Item("Sniper Sight", False),
     Items.ProgressiveAmmoBelt: Item("Progressive Ammo Belt", False),
-    
     Items.Bongos: Item("Bongos", True),
     Items.Guitar: Item("Guitar", True),
     Items.Trombone: Item("Trombone", True),
     Items.Saxophone: Item("Saxophone", True),
     Items.Triangle: Item("Triangle", True),
     Items.ProgressiveInstrumentUpgrade: Item("Progressive Instrument Upgrade", False),
-    
     Items.NintendoCoin: Item("Nintendo Coin", True),
     Items.RarewareCoin: Item("Rareware Coin", True),
-    
     Items.CameraAndShockwave: Item("Camera and Shockwave", True),
-    
     Items.JungleJapesKey: Item("Jungle Japes Key", True),
     Items.AngryAztecKey: Item("Angry Aztec Key", True),
     Items.FranticFactoryKey: Item("Frantic Factory Key", True),
@@ -63,12 +58,10 @@ ItemList = {
     Items.CrystalCavesKey: Item("Crystal Caves Key", True),
     Items.CreepyCastleKey: Item("Creepy Castle Key", True),
     Items.HideoutHelmKey: Item("Hideout Helm Key", True),
-
     Items.GoldenBanana: Item("Golden Banana", False),
     Items.BananaFairy: Item("Banana Fairy", False),
     Items.BananaMedal: Item("Banana Medal", False),
     Items.BattleCrown: Item("Battle Crown", False),
-
     Items.DKIslesDonkeyBlueprint: Item("DK Isles Donkey Blueprint", False),
     Items.DKIslesDiddyBlueprint: Item("DK Isles Diddy Blueprint", False),
     Items.DKIslesLankyBlueprint: Item("DK Isles Lanky Blueprint", False),
@@ -109,6 +102,5 @@ ItemList = {
     Items.CreepyCastleLankyBlueprint: Item("Creepy Castle Lanky Blueprint", False),
     Items.CreepyCastleTinyBlueprint: Item("Creepy Castle Tiny Blueprint", False),
     Items.CreepyCastleChunkyBlueprint: Item("Creepy Castle Chunky Blueprint", False),
-
-    Items.BananaHoard: Item("Banana Hoard", True)
+    Items.BananaHoard: Item("Banana Hoard", True),
 }

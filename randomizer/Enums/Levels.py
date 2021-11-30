@@ -1,5 +1,6 @@
 from enum import IntEnum, auto
 
+
 class Levels(IntEnum):
     DKIsles = 0
     JungleJapes = auto()

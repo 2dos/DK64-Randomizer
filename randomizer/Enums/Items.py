@@ -1,5 +1,6 @@
 from enum import IntEnum, auto
 
+
 class Items(IntEnum):
     Donkey = auto()
     Diddy = auto()
@@ -11,7 +12,7 @@ class Items(IntEnum):
     Swim = auto()
     Oranges = auto()
     Barrels = auto()
-    
+
     ProgressiveSlam = auto()
     BaboonBlast = auto()
     StrongKong = auto()
@@ -28,7 +29,7 @@ class Items(IntEnum):
     HunkyChunky = auto()
     PrimatePunch = auto()
     GorillaGone = auto()
-    
+
     Coconut = auto()
     Peanut = auto()
     Grape = auto()
@@ -37,19 +38,19 @@ class Items(IntEnum):
     HomingAmmo = auto()
     SniperSight = auto()
     ProgressiveAmmoBelt = auto()
-    
+
     Bongos = auto()
     Guitar = auto()
     Trombone = auto()
     Saxophone = auto()
     Triangle = auto()
     ProgressiveInstrumentUpgrade = auto()
-    
+
     NintendoCoin = auto()
     RarewareCoin = auto()
-    
+
     CameraAndShockwave = auto()
-    
+
     JungleJapesKey = auto()
     AngryAztecKey = auto()
     FranticFactoryKey = auto()
@@ -58,7 +59,7 @@ class Items(IntEnum):
     CrystalCavesKey = auto()
     CreepyCastleKey = auto()
     HideoutHelmKey = auto()
-    
+
     GoldenBanana = auto()
     BananaFairy = auto()
     BananaMedal = auto()
