@@ -1,4 +1,5 @@
 # fmt: off
+"""Logic file for shops."""
 
 from LogicClasses import Region, Location, Event, Exit
 from Enums.Items import Items

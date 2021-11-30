@@ -1,38 +1,49 @@
+"""Contains classes used in the logic system."""
 from Enums.Kongs import Kongs
 
 
-# A shufflable location at which a random item can be placed
 class Location:
+    """A shufflable location at which a random item can be placed."""
+
     def __init__(self, name, logic):
+        """Initialize with given parameters."""
         self.name = name
         self.logic = logic  # Lambda function for accessibility
         self.item = None
 
     def PlaceItem(self, item):
+        """Place item at this location."""
         self.item = item
 
 
-# Event within a region
-# Events act as statically placed items
-# For example, if Lanky must press a button in region x to open something in region y,
-# that can be represented as a button press event in region x which is checked for
-# in region y.
 class Event:
+    """Event within a region.
+
+    Events act as statically placed items
+    For example, if Lanky must press a button in region x to open something in region y,
+    that can be represented as a button press event in region x which is checked for in region y.
+    """
+
     def __init__(self, name, logic):
+        """Initialize with given parameters."""
         self.name = name
         self.logic = logic  # Lambda function for accessibility
 
 
-# Exit from one region to another
 class Exit:
+    """Exit from one region to another."""
+
     def __init__(self, dest, logic):
+        """Initialize with given parameters."""
         self.dest = dest
         self.logic = logic  # Lambda function for accessibility
 
 
-# Class used for colored bananas and banana coins
 class Collectible:
+    """Class used for colored bananas and banana coins."""
+
     def __init__(self, type, kong, logic, amount=1):
+        """Initialize with given parameters."""
         self.type = type
         self.kong = kong
         self.logic = logic
@@ -40,9 +51,11 @@ class Collectible:
         self.added = False
 
 
-# Region contains shufflable locations, events, and exits to other regions
 class Region:
+    """Region contains shufflable locations, events, and exits to other regions."""
+
     def __init__(self, name, level, tagbarrel, locations, events, exits):
+        """Initialize with given parameters."""
         self.name = name
         self.level = level
         self.tagbarrel = tagbarrel
@@ -53,8 +66,8 @@ class Region:
         # Initially assume no access from any kong
         self.ResetAccess()
 
-    # Set that given kong has access to this region
     def UpdateAccess(self, kong, logicVariables):
+        """Set that given kong has access to this region."""
         # If this region contains a tag barrel, all owned kongs also have access
         if self.tagbarrel:
             self.donkeyAccess = logicVariables.donkey
@@ -74,17 +87,19 @@ class Region:
             else:
                 self.chunkyAccess = True
 
-    # Set access to region from another region
     def UpdateAccessFromRegion(self, region):
+        """Set access to region from another region."""
         self.donkeyAccess = self.donkeyAccess or region.donkeyAccess
         self.diddyAccess = self.diddyAccess or region.diddyAccess
         self.lankyAccess = self.lankyAccess or region.lankyAccess
         self.tinyAccess = self.tinyAccess or region.tinyAccess
         self.chunkyAccess = self.chunkyAccess or region.chunkyAccess
 
-    # Check if given kong has access through this area
-    # Used if a kong has access through a tag barrel only
     def HasAccess(self, kong):
+        """Check if given kong has access through this area.
+
+        Used if a kong has access through a tag barrel only.
+        """
         if kong == Kongs.donkey:
             return self.donkeyAccess
         elif kong == Kongs.diddy:
@@ -96,14 +111,14 @@ class Region:
         else:
             return self.chunkyAccess
 
-    # Clear access for all kongs
     def ResetAccess(self):
+        """Clear access for all kongs."""
         self.donkeyAccess = False
         self.diddyAccess = False
         self.lankyAccess = False
         self.tinyAccess = False
         self.chunkyAccess = False
 
-    # Get a specific location from this region given its name
     def GetLocation(self, location):
+        """Get a specific location from this region given its name."""
         return [x for x in self.locations if x.name == location][0]

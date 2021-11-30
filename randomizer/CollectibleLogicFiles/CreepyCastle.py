@@ -1,4 +1,5 @@
 # fmt: off
+"""Collectible logic file for Creepy Castle."""
 
 from Enums.Events import Events
 from Enums.Regions import Regions

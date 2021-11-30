@@ -1,7 +1,10 @@
+"""Item enum."""
 from enum import IntEnum, auto
 
 
 class Items(IntEnum):
+    """Item enum."""
+
     Donkey = auto()
     Diddy = auto()
     Lanky = auto()

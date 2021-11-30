@@ -1,3 +1,4 @@
+"""Contains the class which holds logic variables, and the master copy of regions."""
 from Enums.Items import Items
 from Enums.Events import Events
 from Enums.Levels import Levels
@@ -26,13 +27,18 @@ import CollectibleLogicFiles.CreepyCastle
 
 
 class LogicVarHolder:
+    """Used to store variables when checking logic conditions."""
+
     def __init__(self, startkong):
+        """Initialize with given parameters."""
         self.startkong = startkong
         self.Reset()
 
-    # Reset all logic variables
-    # Done between reachability searches
     def Reset(self):
+        """Reset all logic variables.
+
+        Done between reachability searches and upon initialization.
+        """
         self.donkey = self.startkong == Kongs.donkey
         self.diddy = self.startkong == Kongs.diddy
         self.lanky = self.startkong == Kongs.lanky
@@ -119,8 +125,8 @@ class LogicVarHolder:
 
         self.UpdateKongs()
 
-    # Update logic variables based on owned items
     def Update(self, ownedItems):
+        """Update logic variables based on owned items."""
         self.donkey = self.donkey or Items.Donkey in ownedItems or self.startkong == Kongs.donkey
         self.diddy = self.diddy or Items.Diddy in ownedItems or self.startkong == Kongs.diddy
         self.lanky = self.lanky or Items.Lanky in ownedItems or self.startkong == Kongs.lanky
@@ -186,17 +192,17 @@ class LogicVarHolder:
 
         self.Blueprints = [x for x in ownedItems if x >= Items.DKIslesDonkeyBlueprint]
 
-    # Add an event to events list so it can be checked for logically
     def AddEvent(self, event):
+        """Add an event to events list so it can be checked for logically."""
         self.Events.append(event)
 
-    # Set current kong for logic
     def SetKong(self, kong):
+        """Set current kong for logic."""
         self.kong = kong
         self.UpdateKongs()
 
-    # Return all owned kongs
     def GetKongs(self):
+        """Return all owned kongs."""
         ownedKongs = []
         if self.donkey:
             ownedKongs.append(Kongs.donkey)
@@ -210,16 +216,16 @@ class LogicVarHolder:
             ownedKongs.append(Kongs.chunky)
         return ownedKongs
 
-    # Set variables for current kong based on self.kong
     def UpdateKongs(self):
+        """Set variables for current kong based on self.kong."""
         self.isdonkey = self.kong == Kongs.donkey
         self.isdiddy = self.kong == Kongs.diddy
         self.islanky = self.kong == Kongs.lanky
         self.istiny = self.kong == Kongs.tiny
         self.ischunky = self.kong == Kongs.chunky
 
-    # Check if logic is currently a specific kong
     def IsKong(self, kong):
+        """Check if logic is currently a specific kong."""
         if kong == Kongs.donkey:
             return self.isdonkey
         if kong == Kongs.diddy:
@@ -233,16 +239,16 @@ class LogicVarHolder:
         if kong == Kongs.rainbow:
             return True
 
-    # Set access of current region
     def UpdateCurrentRegionAccess(self, region):
+        """Set access of current region."""
         self.donkeyAccess = region.donkeyAccess
         self.diddyAccess = region.diddyAccess
         self.lankyAccess = region.lankyAccess
         self.tinyAccess = region.tinyAccess
         self.chunkyAccess = region.chunkyAccess
 
-    # Check whether a level, or any level above it, has been entered
     def LevelEntered(self, level):
+        """Check whether a level, or any level above it, has been entered."""
         if Events.CastleEntered in self.Events:
             return True
         elif Events.CavesEntered in self.Events and level <= Levels.CrystalCaves:
@@ -259,8 +265,8 @@ class LogicVarHolder:
             return True
         return False
 
-    # Add a collectible
     def AddCollectible(self, collectible, level):
+        """Add a collectible."""
         if collectible.type == Collectibles.coin:
             # Rainbow coin, add 5 coins for each kong
             if collectible.kong == Kongs.rainbow:
@@ -306,27 +312,27 @@ CollectibleRegions.update(CollectibleLogicFiles.CrystalCaves.LogicRegions)
 CollectibleRegions.update(CollectibleLogicFiles.CreepyCastle.LogicRegions)
 
 
-# Reset kong access for all regions
 def ResetRegionAccess():
+    """Reset kong access for all regions."""
     for region in Regions.values():
         region.ResetAccess()
 
 
-# Reset if each collectible has been added
 def ResetCollectibleRegions():
+    """Reset if each collectible has been added."""
     for region in CollectibleRegions.values():
         for collectible in region:
             collectible.added = False
 
 
-# Updates access of master regions list from a temp list of regions
 def UpdateAllRegionsAccess(tempRegions):
+    """Update access of master regions list from a temp list of regions."""
     for (key, value) in Regions.items():
         value.UpdateAccessFromRegion(tempRegions[key])
 
 
-# Updates which collectibles have been added
 def UpdateCollectiblesAdded(tempRegions):
+    """Update which collectibles have been added."""
     for (key, value) in CollectibleRegions.items():
         for i in range(len(value)):
             value[i].added = tempRegions[key][i].added

@@ -1,9 +1,11 @@
+"""Contains functions related to setting up the pool of shuffled items."""
 import itertools
 
 from Enums.Items import Items
 
 
 def Blueprints():
+    """Return all blueprint items."""
     blueprints = [
         Items.DKIslesDonkeyBlueprint,
         Items.DKIslesDiddyBlueprint,
@@ -49,12 +51,13 @@ def Blueprints():
     return blueprints
 
 
-# Items which are assumed to be owned while placing blueprints
 def BlueprintAssumedItems():
+    """Items which are assumed to be owned while placing blueprints."""
     return LowPriorityItems() + ExcessItems()
 
 
 def Keys():
+    """Return all key items."""
     keys = [
         Items.JungleJapesKey,
         Items.AngryAztecKey,
@@ -69,6 +72,7 @@ def Keys():
 
 
 def Kongs():
+    """Return all Kong items."""
     kongs = [
         Items.Diddy,
         Items.Lanky,
@@ -79,6 +83,7 @@ def Kongs():
 
 
 def Guns():
+    """Return all gun items."""
     guns = [
         Items.Coconut,
         Items.Peanut,
@@ -90,6 +95,7 @@ def Guns():
 
 
 def Instruments():
+    """Return all instrument items."""
     instruments = [
         Items.Bongos,
         Items.Guitar,
@@ -101,6 +107,7 @@ def Instruments():
 
 
 def Upgrades():
+    """Return all upgrade items."""
     upgrades = [
         Items.Vines,
         Items.Swim,
@@ -127,9 +134,11 @@ def Upgrades():
     return upgrades
 
 
-# Get all items which are of high importance logically
-# Placing these first prevents fill failures
 def HighPriorityItems():
+    """Get all items which are of high importance logically.
+
+    Placing these first prevents fill failures.
+    """
     itemPool = Keys()
     itemPool.extend(Kongs())
     itemPool.extend(Guns())
@@ -138,13 +147,13 @@ def HighPriorityItems():
     return itemPool
 
 
-# Items which are assumed to be owned while placing high priority items
 def HighPriorityAssumedItems():
+    """Items which are assumed to be owned while placing high priority items."""
     return Blueprints() + LowPriorityItems() + ExcessItems()
 
 
-# While most of these items still have logical value they are not as important
 def LowPriorityItems():
+    """While most of these items still have logical value they are not as important."""
     itemPool = []
 
     itemPool.extend(itertools.repeat(Items.GoldenBanana, 100))
@@ -156,8 +165,8 @@ def LowPriorityItems():
     return itemPool
 
 
-# Items which either have no logical value or are excess copies of those that do
 def ExcessItems():
+    """Items which either have no logical value or are excess copies of those that do."""
     itemPool = []
 
     # Weapon upgrades

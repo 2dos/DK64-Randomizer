@@ -1,7 +1,9 @@
+"""Region enum."""
 from enum import IntEnum, auto
 
 
 class Regions(IntEnum):
+    """Region enum."""
 
     # DK Isles Regions
     Start = auto()

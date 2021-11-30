@@ -1,4 +1,5 @@
 # fmt: off
+"""Logic file for Crystal Caves."""
 
 from LogicClasses import Region, Location, Event, Exit
 from Enums.Events import Events

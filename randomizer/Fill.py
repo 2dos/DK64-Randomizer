@@ -1,3 +1,4 @@
+"""Module used to distribute items randomly."""
 import random
 import copy
 
@@ -10,8 +11,8 @@ from Item import ItemList
 import ItemPool
 
 
-# Find all locations accessible by this kong with current logic variables
 def KongSearch(kong, logicVariables, accessibleIds, start, Regions, collectibleRegions, newLocations, newLocationIds):
+    """Find all locations accessible by this kong with current logic variables."""
     logicVariables.SetKong(kong)
     newEvents = []
 
@@ -66,8 +67,8 @@ def KongSearch(kong, logicVariables, accessibleIds, start, Regions, collectibleR
     return Regions, collectibleRegions, newLocations, newLocationIds, newEvents
 
 
-# Search to find all reachable locations given owned items
 def GetAccessibleLocations(ownedItems, searchType=SearchMode.GetReachable):
+    """Search to find all reachable locations given owned items."""
     accessible = []
     accessibleIds = []
     newLocations = []
@@ -132,6 +133,7 @@ def GetAccessibleLocations(ownedItems, searchType=SearchMode.GetReachable):
 
 
 def RandomFill(itemsToPlace):
+    """Randomly place given items in any location disregarding logic."""
     random.shuffle(itemsToPlace)
     # Get all remaining empty locations
     empty = []
@@ -150,13 +152,14 @@ def RandomFill(itemsToPlace):
 
 
 def Reset():
+    """Reset logic variables and region info that should be reset before a search."""
     LogicVariables.Reset()
     Logic.ResetRegionAccess()
     Logic.ResetCollectibleRegions()
 
 
-# Forward fill algorithm for item placement
 def ForwardFill(itemsToPlace, ownedItems=[]):
+    """Forward fill algorithm for item placement."""
     random.shuffle(itemsToPlace)
     ownedItems = ownedItems.copy()
     # While there are items to place
@@ -174,8 +177,8 @@ def ForwardFill(itemsToPlace, ownedItems=[]):
         location.PlaceItem(item)
 
 
-# Assumed fill algorithm for item placement
 def AssumedFill(itemsToPlace, ownedItems=[]):
+    """Assumed fill algorithm for item placement."""
     random.shuffle(itemsToPlace)
     # While there are items to place
     while len(itemsToPlace) > 0:
@@ -196,14 +199,15 @@ def AssumedFill(itemsToPlace, ownedItems=[]):
 
 
 def PlaceItems(algorithm, itemsToPlace, ownedItems=[]):
+    """Places items using given algorithm."""
     if algorithm == "assumed":
         AssumedFill(itemsToPlace, ownedItems)
     elif algorithm == "forward":
         ForwardFill(itemsToPlace, ownedItems)
 
 
-# Place all items
 def Fill(algorithm):
+    """Place all items."""
     # First place win condition item at K Rool
     Logic.Regions[Regions.KRool].GetLocation("Banana Hoard").PlaceItem(Items.BananaHoard)
     # Then place priority (logically very important) items

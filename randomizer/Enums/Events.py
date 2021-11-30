@@ -1,7 +1,9 @@
+"""Event enum."""
 from enum import IntEnum, auto
 
 
 class Events(IntEnum):
+    """Event enum."""
 
     # DK Isles events
     IslesDiddyBarrelSpawn = auto()
