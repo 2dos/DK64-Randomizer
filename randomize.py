@@ -1,15 +1,14 @@
 """Randomize your seed via your settings."""
-from browser import document
-from object_data.form_options import asm_options
+from browser import document, window
+
+from object_data.form_options import form_options
 from validator import validateSeed
 
 
 def randomize(post_data):
     """Randomize the seed.
-
     Args:
         query_string (dict): Form data query string.
-
     Returns:
         str: ASM Data.
     """
@@ -37,7 +36,7 @@ def randomize(post_data):
             if "blocker_" in k and k[-1].isnumeric():
                 post_data["finalBLocker"][int(k[-1])] = int(post_data[k])
 
-    asm = str()
+    window.patchData.Clear()
     logdata = str()
     # Write Settings to Spoiler Log
     logdata += "Randomizer Settings" + "\n"
@@ -55,32 +54,11 @@ def randomize(post_data):
     logdata += "Open Nintendo + Rareware Coin Door: " + str(post_data.get("coin_door_open", "False")) + "\n"
     logdata += "Quality of Life Changes: " + str(post_data.get("quality_of_life", "False")) + "\n"
     logdata += "\n"
-
-    startup_pre = str()
-    startup_after = str()
-    with open("./asm/required/global.asm", "r") as file:
-        asm += file.read()
-        asm += "\n"
-    for asm_data in asm_options:
-        if post_data.get(asm_data.form_var) or asm_data.always_run_function is True:
-            returned_asm, returned_logs = asm_data.generate_asm(post_data)
-            asm += returned_asm
+    for form_option in form_options:
+        if post_data.get(form_option.form_var):
+            returned_logs = form_option.run_function(post_data)
             if returned_logs is not None:
                 logdata += returned_logs
-            for start_data in asm_data.asm_start:
-                for key in start_data:
-                    if start_data[key].lower() == "before":
-                        startup_pre += f"\n    JAL     {key}\n    NOP\n"
-                    else:
-                        startup_after += f"\n    JAL     {key}\n    NOP\n"
-
-    with open("./asm/required/startup_pointers.asm", "r") as file:
-        asm += file.read().replace("{REPLACE_BEFORE}", startup_pre).replace("{REPLACE_AFTER}", startup_after)
-        asm += "\n"
-
-    with open("./asm/required/flags.asm", "r") as file:
-        asm += file.read()
-        asm += "\n"
 
     if post_data.get("generate_spoilerlog"):
         document["nav-spoiler-tab"].style.display = ""
@@ -88,7 +66,6 @@ def randomize(post_data):
     else:
         document["nav-spoiler-tab"].style.display = "none"
         document["spoiler_log_text"].text = ""
-    print("Validating Seeds")
     if validateSeed(
         post_data.get("finalNumerical"),
         post_data.get("unlock_all_kongs", False),
@@ -98,7 +75,7 @@ def randomize(post_data):
         post_data.get("finalTNS"),
         True,
     ):
-        return asm
+        return True
     else:
         print("Retrying generation")
         post_data["seed"] = int(post_data.get("seed")) + 1
