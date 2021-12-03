@@ -111,6 +111,4 @@ def onmessage(evt):
     """
     data = dict(evt.data)
     print(data.get("response"))
-    timer.set_timeout(
-        lambda: patch_files.start_randomizing_seed(dict(data.get("form_data"))), 3000
-    )
+    timer.set_timeout(lambda: patch_files.start_randomizing_seed(dict(data.get("form_data"))), 3000)
