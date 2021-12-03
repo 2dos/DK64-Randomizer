@@ -1,5 +1,5 @@
 """Contains classes used in the logic system."""
-from Enums.Kongs import Kongs
+from randomizer.Enums.Kongs import Kongs
 
 
 class Location:

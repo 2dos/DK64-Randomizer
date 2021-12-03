@@ -2,13 +2,13 @@
 import random
 import copy
 
-from Enums.Regions import Regions
-from Enums.Items import Items
-from Enums.SearchMode import SearchMode
-import Logic
-from Logic import LogicVariables
-from Item import ItemList
-import ItemPool
+from randomizer.Enums.Regions import Regions
+from randomizer.Enums.Items import Items
+from randomizer.Enums.SearchMode import SearchMode
+import randomizer.Logic as Logic
+from randomizer.Logic import LogicVariables
+from randomizer.Item import ItemList
+import randomizer.ItemPool as ItemPool
 
 
 def KongSearch(kong, logicVariables, accessibleIds, start, Regions, collectibleRegions, newLocations, newLocationIds):

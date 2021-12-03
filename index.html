@@ -17,9 +17,9 @@
     </title>
     <script type="text/javascript" src="https://code.jquery.com/jquery-3.6.0.min.js">
     </script>
-    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/brython@3.9.5/brython.min.js">
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/brython@3.10.3/brython.min.js">
     </script>
-    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/brython@3.9.5/brython_stdlib.js">
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/brython@3.10.3/brython_stdlib.js">
     </script>
     <!-- <script type="text/javascript" src="./js/brython/brython_modules.js"></script> -->
 </head>
@@ -205,6 +205,7 @@
     <script type="text/python" src="./level_progression.py" defer></script>
     <script type="text/python" src="./patch_files.py" defer></script>
     <script type="text/python" src="./version.py" defer></script>
+    <script type="text/python" class="webworker" id="worker" src="worker.py"></script>
     <script>
         window.onload = load_inital;
         function load_inital() {

@@ -1,11 +1,11 @@
 # fmt: off
 """Logic file for shops."""
 
-from LogicClasses import Region, Location, Event, Exit
-from Enums.Items import Items
-from Enums.Levels import Levels
-from Enums.Regions import Regions
-from Enums.Levels import Levels
+from randomizer.LogicClasses import Region, Location, Event, Exit
+from randomizer.Enums.Items import Items
+from randomizer.Enums.Levels import Levels
+from randomizer.Enums.Regions import Regions
+from randomizer.Enums.Levels import Levels
 
 LogicRegions = {
     Regions.Funky: Region("Funky", Levels.Shops, False, [

@@ -1,29 +1,29 @@
 """Contains the class which holds logic variables, and the master copy of regions."""
-from Enums.Items import Items
-from Enums.Events import Events
-from Enums.Levels import Levels
-from Enums.Kongs import Kongs
-from Enums.Collectibles import Collectibles
+from randomizer.Enums.Items import Items
+from randomizer.Enums.Events import Events
+from randomizer.Enums.Levels import Levels
+from randomizer.Enums.Kongs import Kongs
+from randomizer.Enums.Collectibles import Collectibles
 
-import LogicFiles.DKIsles
-import LogicFiles.JungleJapes
-import LogicFiles.AngryAztec
-import LogicFiles.FranticFactory
-import LogicFiles.GloomyGalleon
-import LogicFiles.FungiForest
-import LogicFiles.CrystalCaves
-import LogicFiles.CreepyCastle
-import LogicFiles.HideoutHelm
-import LogicFiles.Shops
+import randomizer.LogicFiles.DKIsles
+import randomizer.LogicFiles.JungleJapes
+import randomizer.LogicFiles.AngryAztec
+import randomizer.LogicFiles.FranticFactory
+import randomizer.LogicFiles.GloomyGalleon
+import randomizer.LogicFiles.FungiForest
+import randomizer.LogicFiles.CrystalCaves
+import randomizer.LogicFiles.CreepyCastle
+import randomizer.LogicFiles.HideoutHelm
+import randomizer.LogicFiles.Shops
 
-import CollectibleLogicFiles.DKIsles
-import CollectibleLogicFiles.JungleJapes
-import CollectibleLogicFiles.AngryAztec
-import CollectibleLogicFiles.FranticFactory
-import CollectibleLogicFiles.GloomyGalleon
-import CollectibleLogicFiles.FungiForest
-import CollectibleLogicFiles.CrystalCaves
-import CollectibleLogicFiles.CreepyCastle
+import randomizer.CollectibleLogicFiles.DKIsles
+import randomizer.CollectibleLogicFiles.JungleJapes
+import randomizer.CollectibleLogicFiles.AngryAztec
+import randomizer.CollectibleLogicFiles.FranticFactory
+import randomizer.CollectibleLogicFiles.GloomyGalleon
+import randomizer.CollectibleLogicFiles.FungiForest
+import randomizer.CollectibleLogicFiles.CrystalCaves
+import randomizer.CollectibleLogicFiles.CreepyCastle
 
 
 class LogicVarHolder:
@@ -289,27 +289,27 @@ LogicVariables = LogicVarHolder(Kongs.donkey)
 
 # Import regions from logic files
 Regions = {}
-Regions.update(LogicFiles.DKIsles.LogicRegions)
-Regions.update(LogicFiles.JungleJapes.LogicRegions)
-Regions.update(LogicFiles.AngryAztec.LogicRegions)
-Regions.update(LogicFiles.FranticFactory.LogicRegions)
-Regions.update(LogicFiles.GloomyGalleon.LogicRegions)
-Regions.update(LogicFiles.FungiForest.LogicRegions)
-Regions.update(LogicFiles.CrystalCaves.LogicRegions)
-Regions.update(LogicFiles.CreepyCastle.LogicRegions)
-Regions.update(LogicFiles.HideoutHelm.LogicRegions)
-Regions.update(LogicFiles.Shops.LogicRegions)
+Regions.update(randomizer.LogicFiles.DKIsles.LogicRegions)
+Regions.update(randomizer.LogicFiles.JungleJapes.LogicRegions)
+Regions.update(randomizer.LogicFiles.AngryAztec.LogicRegions)
+Regions.update(randomizer.LogicFiles.FranticFactory.LogicRegions)
+Regions.update(randomizer.LogicFiles.GloomyGalleon.LogicRegions)
+Regions.update(randomizer.LogicFiles.FungiForest.LogicRegions)
+Regions.update(randomizer.LogicFiles.CrystalCaves.LogicRegions)
+Regions.update(randomizer.LogicFiles.CreepyCastle.LogicRegions)
+Regions.update(randomizer.LogicFiles.HideoutHelm.LogicRegions)
+Regions.update(randomizer.LogicFiles.Shops.LogicRegions)
 
 # Auxillary regions for colored bananas and banana coins
 CollectibleRegions = {}
-CollectibleRegions.update(CollectibleLogicFiles.DKIsles.LogicRegions)
-CollectibleRegions.update(CollectibleLogicFiles.JungleJapes.LogicRegions)
-CollectibleRegions.update(CollectibleLogicFiles.AngryAztec.LogicRegions)
-CollectibleRegions.update(CollectibleLogicFiles.FranticFactory.LogicRegions)
-CollectibleRegions.update(CollectibleLogicFiles.GloomyGalleon.LogicRegions)
-CollectibleRegions.update(CollectibleLogicFiles.FungiForest.LogicRegions)
-CollectibleRegions.update(CollectibleLogicFiles.CrystalCaves.LogicRegions)
-CollectibleRegions.update(CollectibleLogicFiles.CreepyCastle.LogicRegions)
+CollectibleRegions.update(randomizer.CollectibleLogicFiles.DKIsles.LogicRegions)
+CollectibleRegions.update(randomizer.CollectibleLogicFiles.JungleJapes.LogicRegions)
+CollectibleRegions.update(randomizer.CollectibleLogicFiles.AngryAztec.LogicRegions)
+CollectibleRegions.update(randomizer.CollectibleLogicFiles.FranticFactory.LogicRegions)
+CollectibleRegions.update(randomizer.CollectibleLogicFiles.GloomyGalleon.LogicRegions)
+CollectibleRegions.update(randomizer.CollectibleLogicFiles.FungiForest.LogicRegions)
+CollectibleRegions.update(randomizer.CollectibleLogicFiles.CrystalCaves.LogicRegions)
+CollectibleRegions.update(randomizer.CollectibleLogicFiles.CreepyCastle.LogicRegions)
 
 
 def ResetRegionAccess():

@@ -1,11 +1,14 @@
 """Common functions used across all pages."""
 import json
 
-from browser import bind, document, timer, window
-
+from browser import bind, document, timer, window, worker
+import rando_test
+import inspect
 import patch_files
+import json
 
 jq = window.jQuery
+RandoWorker = worker.Worker("worker")
 
 
 def update_disabled_progression():
@@ -94,4 +97,20 @@ def generate_seed(event):
         for element in disabled_options:
             element.attrs["disabled"] = "disabled"
         update_disabled_progression()
-        timer.set_timeout(lambda: patch_files.start_randomizing_seed(form_data), 3000)
+        run_rando = inspect.getsource(rando_test)
+        run_rando += "run('forward')"
+        RandoWorker.send({"func": run_rando, "form_data": form_data})
+
+
+@bind(RandoWorker, "message")
+def onmessage(evt):
+    """Response from the webworker back to the main thread.
+
+    Args:
+        evt (javascript.object): Inbounds as a javascript object, you can convert this back to a dict.
+    """
+    data = dict(evt.data)
+    print(data.get("response"))
+    timer.set_timeout(
+        lambda: patch_files.start_randomizing_seed(dict(data.get("form_data"))), 3000
+    )

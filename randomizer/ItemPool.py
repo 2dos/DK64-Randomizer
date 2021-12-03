@@ -1,7 +1,7 @@
 """Contains functions related to setting up the pool of shuffled items."""
 import itertools
 
-from Enums.Items import Items
+from randomizer.Enums.Items import Items
 
 
 def Blueprints():

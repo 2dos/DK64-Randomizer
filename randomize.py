@@ -1,6 +1,5 @@
 """Randomize your seed via your settings."""
 from browser import document
-
 from object_data.form_options import asm_options
 from validator import validateSeed
 

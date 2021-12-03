@@ -1,10 +1,10 @@
 # fmt: off
 """Logic file for Fungi Forest."""
 
-from LogicClasses import Region, Location, Event, Exit
-from Enums.Events import Events
-from Enums.Regions import Regions
-from Enums.Levels import Levels
+from randomizer.LogicClasses import Region, Location, Event, Exit
+from randomizer.Enums.Events import Events
+from randomizer.Enums.Regions import Regions
+from randomizer.Enums.Levels import Levels
 
 LogicRegions = {
     Regions.FungiForestStart: Region("Fungi Forest Start", Levels.FungiForest, True, [], [

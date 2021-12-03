@@ -1,5 +1,5 @@
 """Stores the item class and a list of each item with its attributes."""
-from Enums.Items import Items
+from randomizer.Enums.Items import Items
 
 
 class Item:

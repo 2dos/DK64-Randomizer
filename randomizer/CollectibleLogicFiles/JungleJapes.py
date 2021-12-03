@@ -1,11 +1,10 @@
-# fmt: off
 """Collectible logic file for Jungle Japes."""
 
-from Enums.Events import Events
-from Enums.Regions import Regions
-from Enums.Kongs import Kongs
-from Enums.Collectibles import Collectibles
-from LogicClasses import Collectible
+from randomizer.Enums.Events import Events
+from randomizer.Enums.Regions import Regions
+from randomizer.Enums.Kongs import Kongs
+from randomizer.Enums.Collectibles import Collectibles
+from randomizer.LogicClasses import Collectible
 
 LogicRegions = {
     Regions.JungleJapesMain: [
