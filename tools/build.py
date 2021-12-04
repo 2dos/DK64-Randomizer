@@ -34,7 +34,7 @@ if os.name == "nt":
         "https://github.com/tj90241/n64chain/releases/download/9.1.0/n64chain-windows.zip", "n64chain-windows.zip"
     )
     urllib.request.urlretrieve("https://dl.smwcentral.net/11474/floating.zip", "flips.zip")
-    # urllib.request.urlretrieve("https://github.com/Isotarge/n64tex/releases", "n64tex.exe")
+    urllib.request.urlretrieve("https://github.com/Isotarge/n64tex/releases/download/v1.0.0/n64tex.exe", "n64tex.exe")
 
     # Unzip the zipped packages
     with zipfile.ZipFile("flips.zip", "r") as zip_ref:
@@ -54,7 +54,7 @@ else:
         "https://github.com/tj90241/n64chain/releases/download/9.1.0/n64chain-linux.tgz", "n64chain-linux.tgz"
     )
     urllib.request.urlretrieve("https://dl.smwcentral.net/11474/floating.zip", "flips.zip")
-    # urllib.request.urlretrieve("https://github.com/Isotarge/n64tex/releases", "n64tex.exe")
+    urllib.request.urlretrieve("https://github.com/Isotarge/n64tex/releases/download/v1.0.0/n64tex.exe", "n64tex.exe")
 
     # Install mono so we can run n64tex
     subprocess.run(["apt", "install", "-y", "gnupg", "ca-certificates"])
