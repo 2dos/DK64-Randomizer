@@ -159,3 +159,5 @@ temprom.rom
 *.bak
 package-lock.json
 node_modules/
+tools/*
+!tools/build.py

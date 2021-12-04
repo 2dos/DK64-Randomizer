@@ -24,6 +24,7 @@ def reset_progress_bar():
 @bind(document["nav-patch-tab"], "click")
 def disable_input(event):
     """Disable input for each tab as we rotate through the navbar.
+
     Args:
         event (DOMEvent): DOM item that triggered the event.
     """
@@ -60,6 +61,7 @@ def disable_input(event):
 
 def start_randomizing_seed(form_data: dict):
     """Randomize the seed data using the passed dict.
+
     Args:
         form_data (dict): Passed JSON Data.
     """
@@ -80,6 +82,7 @@ def start_randomizing_seed(form_data: dict):
 
 def finish_randomizing_seed(data, form_data):
     """Randomized Generation completed.
+
     Args:
         data (str): Code of seed randomization.
         form_data (dict): Dict data of the form.

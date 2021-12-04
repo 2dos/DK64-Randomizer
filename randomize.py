@@ -7,6 +7,7 @@ from validator import validateSeed
 
 def randomize(post_data):
     """Randomize the seed.
+
     Args:
         query_string (dict): Form data query string.
     Returns:
