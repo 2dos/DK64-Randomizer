@@ -1,6 +1,7 @@
 """Generate UI elements via jinja2 to display on page load."""
 # This file will fail linting generally as await calls are not supposed to be run on a main thread
 # However this file is loaded as an async call by javascript so while python linters complain the file is valid
+# So for the time being we've moved this to a py-ui file to ignore linting on it
 import js
 from js import document
 import micropip
@@ -36,7 +37,6 @@ js.document.documentElement.innerHTML = ""
 js.document.open()
 js.document.write(rendered)
 js.document.close()
-
 
 # Load settings from the cookies if it exists
 cookie_data = document.cookie

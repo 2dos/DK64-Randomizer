@@ -9,7 +9,7 @@
         });
         await pyodide.loadPackage("jinja2");
         await pyodide.loadPackage("micropip")
-        await pyodide.runPythonAsync(await (await fetch("generate_ui.py")).text());
+        await pyodide.runPythonAsync(await (await fetch("generate_ui.py-ui")).text());
         await pyodide.runPythonAsync(await (await fetch("version.py")).text());
     }
     window.onload = load_inital;

@@ -39,7 +39,7 @@ function addEvent(e, ev, f) {
 /* initialize app */
 addEvent(window, "load", function () {
   fetchPatch("./static/patches/shrink-dk64.bps");
-  addEvent(document.getElementById("input-file-rom_1"), "change", function () {
+  addEvent(document.getElementById("input-file-rom"), "change", function () {
     romFile = new MarcFile(this, _parseROM);
   });
   addEvent(document.getElementById("input-file-rom_2"), "change", function () {
