@@ -1,10 +1,10 @@
 # fmt: off
 """Logic file for Crystal Caves."""
 
-from randomizer.LogicClasses import Region, Location, Event, Exit
 from randomizer.Enums.Events import Events
-from randomizer.Enums.Regions import Regions
 from randomizer.Enums.Levels import Levels
+from randomizer.Enums.Regions import Regions
+from randomizer.LogicClasses import Event, Exit, Location, Region
 
 LogicRegions = {
     Regions.CrystalCavesMain: Region("Crystal Caves Main", Levels.CrystalCaves, True, [

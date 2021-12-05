@@ -1,29 +1,27 @@
 """Contains the class which holds logic variables, and the master copy of regions."""
-from randomizer.Enums.Items import Items
-from randomizer.Enums.Events import Events
-from randomizer.Enums.Levels import Levels
-from randomizer.Enums.Kongs import Kongs
-from randomizer.Enums.Collectibles import Collectibles
-
-import randomizer.LogicFiles.DKIsles
-import randomizer.LogicFiles.JungleJapes
-import randomizer.LogicFiles.AngryAztec
-import randomizer.LogicFiles.FranticFactory
-import randomizer.LogicFiles.GloomyGalleon
-import randomizer.LogicFiles.FungiForest
-import randomizer.LogicFiles.CrystalCaves
-import randomizer.LogicFiles.CreepyCastle
-import randomizer.LogicFiles.HideoutHelm
-import randomizer.LogicFiles.Shops
-
-import randomizer.CollectibleLogicFiles.DKIsles
-import randomizer.CollectibleLogicFiles.JungleJapes
 import randomizer.CollectibleLogicFiles.AngryAztec
-import randomizer.CollectibleLogicFiles.FranticFactory
-import randomizer.CollectibleLogicFiles.GloomyGalleon
-import randomizer.CollectibleLogicFiles.FungiForest
-import randomizer.CollectibleLogicFiles.CrystalCaves
 import randomizer.CollectibleLogicFiles.CreepyCastle
+import randomizer.CollectibleLogicFiles.CrystalCaves
+import randomizer.CollectibleLogicFiles.DKIsles
+import randomizer.CollectibleLogicFiles.FranticFactory
+import randomizer.CollectibleLogicFiles.FungiForest
+import randomizer.CollectibleLogicFiles.GloomyGalleon
+import randomizer.CollectibleLogicFiles.JungleJapes
+import randomizer.LogicFiles.AngryAztec
+import randomizer.LogicFiles.CreepyCastle
+import randomizer.LogicFiles.CrystalCaves
+import randomizer.LogicFiles.DKIsles
+import randomizer.LogicFiles.FranticFactory
+import randomizer.LogicFiles.FungiForest
+import randomizer.LogicFiles.GloomyGalleon
+import randomizer.LogicFiles.HideoutHelm
+import randomizer.LogicFiles.JungleJapes
+import randomizer.LogicFiles.Shops
+from randomizer.Enums.Collectibles import Collectibles
+from randomizer.Enums.Events import Events
+from randomizer.Enums.Items import Items
+from randomizer.Enums.Kongs import Kongs
+from randomizer.Enums.Levels import Levels
 
 
 class LogicVarHolder:

@@ -1,0 +1,8 @@
+{
+    "name": "Steady",
+    "description_blocker": "1-10-20-30-40-50-60-75",
+    "description_troff": "All doors set to 150",
+    "blocker_progression": [1, 10, 20, 30, 40, 50, 60, 75],
+    "troff_progression": [150, 150, 150, 150, 150, 150, 150]
+  }
+  

@@ -160,4 +160,7 @@ temprom.rom
 package-lock.json
 node_modules/
 tools/*
-!tools/build.py
+!tools/*.py
+!tools/importers
+tools/importers/*
+!tools/importers/*.py

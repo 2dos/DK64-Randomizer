@@ -1,6 +1,6 @@
 {
   "name": "dk64-randomizer",
-  "main": "gui.js",
+  "main": "static/js/electron_gui.js",
   "version": "0.0.0",
   "author": "DK64Devs <devs@dk64randomizer.com>",
   "scripts": {
@@ -27,12 +27,12 @@
       ]
     },
     "linux": {
-      "icon": "img/dk.png",
+      "icon": "static/img/dk.png",
       "target": "deb"
     },
     "win": {
       "target": "nsis",
-      "icon": "img/dk.png"
+      "icon": "static/img/dk.png"
     }
   },
   "dependencies": {

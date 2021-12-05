@@ -1,10 +1,9 @@
 """Build C code along with package textures and associated items for release."""
 import os
+import subprocess
+import tarfile
 import urllib.request
 import zipfile
-import tarfile
-import subprocess
-
 
 file_data = [
     {
@@ -28,7 +27,7 @@ urllib.request.install_opener(opener)
 
 if os.name == "nt":
     print("Building for Windows")
-    
+
     # Download our required files
     urllib.request.urlretrieve(
         "https://github.com/tj90241/n64chain/releases/download/9.1.0/n64chain-windows.zip", "n64chain-windows.zip"
@@ -41,7 +40,7 @@ if os.name == "nt":
         zip_ref.extractall("./")
     with zipfile.ZipFile("n64chain-windows.zip", "r") as zip_ref:
         zip_ref.extractall("./")
-    
+
     # Set our object vars
     n64tex = ["n64tex.exe"]
     flips = ["flips.exe"]

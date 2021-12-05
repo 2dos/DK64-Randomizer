@@ -1,14 +1,14 @@
 """Module used to distribute items randomly."""
-import random
 import copy
+import random
 
-from randomizer.Enums.Regions import Regions
-from randomizer.Enums.Items import Items
-from randomizer.Enums.SearchMode import SearchMode
-import randomizer.Logic as Logic
-from randomizer.Logic import LogicVariables
-from randomizer.Item import ItemList
 import randomizer.ItemPool as ItemPool
+import randomizer.Logic as Logic
+from randomizer.Enums.Items import Items
+from randomizer.Enums.Regions import Regions
+from randomizer.Enums.SearchMode import SearchMode
+from randomizer.Item import ItemList
+from randomizer.Logic import LogicVariables
 
 
 def KongSearch(kong, logicVariables, accessibleIds, start, Regions, collectibleRegions, newLocations, newLocationIds):
@@ -224,8 +224,10 @@ def Fill(algorithm):
     Reset()
     PlaythroughLocations = GetAccessibleLocations([], SearchMode.GeneratePlaythrough)
     i = 0
+    spoiler_log = []
     for sphere in PlaythroughLocations:
-        print("\nSphere " + str(i))
+        spoiler_log.append("\nSphere " + str(i))
         i += 1
         for location in sphere:
-            print(location.name + ": " + ItemList[location.item].name)
+            spoiler_log.append(location.name + ": " + ItemList[location.item].name)
+    return spoiler_log

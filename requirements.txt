@@ -1,3 +1,2 @@
-brython
 psutil
-mockbrython
+jinja2

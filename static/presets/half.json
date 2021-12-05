@@ -1,0 +1,8 @@
+{
+    "name": "Half",
+    "description_blocker": "1-5-10-15-20-30-40-50",
+    "description_troff": "50-75-100-125-150-175-200",
+    "blocker_progression": [1, 5, 10, 15, 20, 30, 40, 50],
+    "troff_progression": [50, 75, 100, 125, 150, 175, 200]
+  }
+  

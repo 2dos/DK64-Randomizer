@@ -1,0 +1,7 @@
+{
+  "name": "Vanilla",
+  "description_blocker": "1-5-15-30-50-65-80-100",
+  "description_troff": "60-120-200-250-300-350-400",
+  "blocker_progression": [1, 5, 15, 30, 50, 65, 80, 100],
+  "troff_progression": [60, 120, 200, 250, 300, 350, 400]
+}
