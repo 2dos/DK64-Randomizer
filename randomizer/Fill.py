@@ -11,62 +11,6 @@ from randomizer.Item import ItemList
 from randomizer.Logic import LogicVariables
 
 
-def KongSearch(kong, logicVariables, accessibleIds, start, Regions, collectibleRegions, newLocations, newLocationIds):
-    """Find all locations accessible by this kong with current logic variables."""
-    logicVariables.SetKong(kong)
-    newEvents = []
-
-    startRegion = Regions[start]
-    startRegion.id = start
-    regionPool = [startRegion]
-    addedRegions = [start]
-
-    tagAccess = [(key, value) for (key, value) in Regions.items() if value.HasAccess(kong) and key not in addedRegions]
-    addedRegions.extend([x[0] for x in tagAccess])  # first value is the region key
-    regionPool.extend([x[1] for x in tagAccess])  # second value is the region itself
-
-    # Loop for each region until no more accessible regions found
-    while len(regionPool) > 0:
-        region = regionPool.pop()
-
-        region.UpdateAccess(kong, logicVariables)  # Set that this kong has access to this region
-        logicVariables.UpdateCurrentRegionAccess(region)  # Set in logic as well
-
-        # Check accessibility for each location in this region
-        for location in region.locations:
-            if (
-                location.logic(logicVariables)
-                and location.name not in newLocationIds
-                and location.name not in accessibleIds
-            ):
-                newLocations.append(location)
-                newLocationIds.append(location.name)
-        # Check accessibility for each event in this region
-        for event in region.events:
-            if event.name not in logicVariables.Events and event.logic(logicVariables):
-                newEvents.append(event.name)
-                logicVariables.Events.append(event.name)
-        # Check accessibility for each exit in this region
-        for exit in region.exits:
-            # If a region is accessible through this exit and has not yet been added, add it to the queue to be visited eventually
-            if exit.dest not in addedRegions and exit.logic(logicVariables):
-                addedRegions.append(exit.dest)
-                newRegion = Regions[exit.dest]
-                newRegion.id = exit.dest
-                regionPool.append(newRegion)
-        # Finally check accessibility for collectibles
-        if region.id in collectibleRegions.keys():
-            for collectible in collectibleRegions[region.id]:
-                if (
-                    not collectible.added
-                    and logicVariables.IsKong(collectible.kong)
-                    and collectible.logic(logicVariables)
-                ):
-                    logicVariables.AddCollectible(collectible, region.level)
-
-    return Regions, collectibleRegions, newLocations, newLocationIds, newEvents
-
-
 def GetAccessibleLocations(ownedItems, searchType=SearchMode.GetReachable):
     """Search to find all reachable locations given owned items."""
     accessible = []
@@ -107,29 +51,46 @@ def GetAccessibleLocations(ownedItems, searchType=SearchMode.GetReachable):
 
         # Do a search for each owned kong
         for kong in LogicVariables.GetKongs():
-            tempRegions, tempCollectibleRegions, tempNew, tempNewIds, newEvents = KongSearch(
-                kong,
-                copy.deepcopy(LogicVariables),
-                accessibleIds.copy(),
-                Regions.Start,
-                Logic.Regions.copy(),
-                Logic.CollectibleRegions.copy(),
-                newLocations.copy(),
-                newLocationIds.copy(),
-            )
-            # Update regional access from search
-            Logic.UpdateAllRegionsAccess(tempRegions)
-            Logic.UpdateCollectiblesAdded(tempCollectibleRegions)
-            # Add new things found in search
-            # list(set()) removes redundancies
-            newLocations.extend(tempNew)
-            newLocations = list(set(newLocations))
-            newLocationIds.extend(tempNewIds)
-            newLocationIds = list(set(newLocationIds))
-            if len(newEvents) > 0:
-                eventAdded = True
-                LogicVariables.Events.extend(newEvents)
-                LogicVariables.Events = list(set(LogicVariables.Events))
+            LogicVariables.SetKong(kong)
+
+            startRegion = Logic.Regions[Regions.Start]
+            startRegion.id = Regions.Start
+            regionPool = [startRegion]
+            addedRegions = [Regions.Start]
+
+            tagAccess = [(key, value) for (key, value) in Logic.Regions.items() if value.HasAccess(kong) and key not in addedRegions]
+            addedRegions.extend([x[0] for x in tagAccess]) # first value is the region key
+            regionPool.extend([x[1] for x in tagAccess]) # second value is the region itself
+
+            # Loop for each region until no more accessible regions found
+            while len(regionPool) > 0:
+                region = regionPool.pop()
+                region.UpdateAccess(kong, LogicVariables) # Set that this kong has access to this region
+                LogicVariables.UpdateCurrentRegionAccess(region) # Set in logic as well
+
+                # Check accessibility for each location in this region
+                for location in region.locations:
+                    if location.logic(LogicVariables) and location.name not in newLocationIds and location.name not in accessibleIds:
+                        newLocations.append(location)
+                        newLocationIds.append(location.name)
+                # Check accessibility for each event in this region
+                for event in region.events:
+                    if event.name not in LogicVariables.Events and event.logic(LogicVariables):
+                        eventAdded = True
+                        LogicVariables.Events.append(event.name)
+                # Check accessibility for each exit in this region
+                for exit in region.exits:
+                    # If a region is accessible through this exit and has not yet been added, add it to the queue to be visited eventually
+                    if exit.dest not in addedRegions and exit.logic(LogicVariables):
+                        addedRegions.append(exit.dest)
+                        newRegion = Logic.Regions[exit.dest]
+                        newRegion.id = exit.dest
+                        regionPool.append(newRegion)
+                # Finally check accessibility for collectibles
+                if region.id in Logic.CollectibleRegions.keys():
+                    for collectible in Logic.CollectibleRegions[region.id]:
+                        if not collectible.added and kong == collectible.kong and collectible.logic(LogicVariables):
+                            LogicVariables.AddCollectible(collectible, region.level)
 
     if searchType == SearchMode.GetReachable:
         return accessible
