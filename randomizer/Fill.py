@@ -149,6 +149,7 @@ def RandomFill(itemsToPlace):
         item = itemsToPlace.pop()
         location = empty.pop()
         location.PlaceItem(item)
+    return 0
 
 
 def Reset():
@@ -175,6 +176,7 @@ def ForwardFill(itemsToPlace, ownedItems=[]):
         item = itemsToPlace.pop()
         ownedItems.append(item)
         location.PlaceItem(item)
+    return 0
 
 
 def AssumedFill(itemsToPlace, ownedItems=[]):
@@ -196,38 +198,58 @@ def AssumedFill(itemsToPlace, ownedItems=[]):
         random.shuffle(reachable)
         location = reachable.pop()
         location.PlaceItem(item)
+    return 0
 
 
 def PlaceItems(algorithm, itemsToPlace, ownedItems=[]):
     """Places items using given algorithm."""
     if algorithm == "assumed":
-        AssumedFill(itemsToPlace, ownedItems)
+        return AssumedFill(itemsToPlace, ownedItems)
     elif algorithm == "forward":
-        ForwardFill(itemsToPlace, ownedItems)
+        return ForwardFill(itemsToPlace, ownedItems)
 
 
 def Fill(algorithm):
     """Place all items."""
-    # First place win condition item at K Rool
-    Logic.Regions[Regions.KRool].GetLocation("Banana Hoard").PlaceItem(Items.BananaHoard)
-    # Then place priority (logically very important) items
-    highPriorityUnplaced = PlaceItems(algorithm, ItemPool.HighPriorityItems(), ItemPool.HighPriorityAssumedItems())
-    # Then place blueprints
-    Reset()
-    blueprintsUnplaced = PlaceItems(algorithm, ItemPool.Blueprints(), ItemPool.BlueprintAssumedItems())
-    # Then place the rest of items
-    Reset()
-    lowPriorityUnplaced = PlaceItems(algorithm, ItemPool.LowPriorityItems(), ItemPool.ExcessItems())
-    # Finally place excess items fully randomly
-    excessUnplaced = RandomFill(ItemPool.ExcessItems())
-    # Generate and display the playthrough
-    Reset()
-    PlaythroughLocations = GetAccessibleLocations([], SearchMode.GeneratePlaythrough)
-    i = 0
-    spoiler_log = []
-    for sphere in PlaythroughLocations:
-        spoiler_log.append("\nSphere " + str(i))
-        i += 1
-        for location in sphere:
-            spoiler_log.append(location.name + ": " + ItemList[location.item].name)
-    return spoiler_log
+    retries = 0
+    while retries < 5:
+        try:
+            # First place win condition item at K Rool
+            Logic.Regions[Regions.KRool].GetLocation("Banana Hoard").PlaceItem(Items.BananaHoard)
+            # Then place priority (logically very important) items
+            highPriorityUnplaced = PlaceItems(algorithm, ItemPool.HighPriorityItems(), ItemPool.HighPriorityAssumedItems())
+            if highPriorityUnplaced > 0:
+                raise Exception(str(highPriorityUnplaced) + " unplaced high priority items.")
+            # Then place blueprints
+            Reset()
+            blueprintsUnplaced = PlaceItems(algorithm, ItemPool.Blueprints(), ItemPool.BlueprintAssumedItems())
+            if blueprintsUnplaced > 0:
+                raise Exception(str(blueprintsUnplaced) + " unplaced blueprints.")
+            # Then place the rest of items
+            Reset()
+            lowPriorityUnplaced = PlaceItems(algorithm, ItemPool.LowPriorityItems(), ItemPool.ExcessItems())
+            if lowPriorityUnplaced > 0:
+                raise Exception(str(lowPriorityUnplaced) + " unplaced low priority items.")
+            # Finally place excess items fully randomly
+            excessUnplaced = RandomFill(ItemPool.ExcessItems())
+            if excessUnplaced > 0:
+                raise Exception(str(excessUnplaced) + " unplaced excess items.")
+            # Check if game is beatable
+            # Generate and display the playthrough
+            Reset()
+            PlaythroughLocations = GetAccessibleLocations([], SearchMode.GeneratePlaythrough)
+            i = 0
+            spoiler_log = []
+            for sphere in PlaythroughLocations:
+                spoiler_log.append("\nSphere " + str(i))
+                i += 1
+                for location in sphere:
+                    spoiler_log.append(location.name + ": " + ItemList[location.item].name)
+            return spoiler_log
+        except Exception as ex:
+            if retries == 4:
+                print("Fill failed, out of retries.")
+                raise ex
+            else:
+                retries += 1
+                print("Fill failed. Retrying. Tries: " + str(retries))
