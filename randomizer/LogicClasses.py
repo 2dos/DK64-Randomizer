@@ -10,10 +10,20 @@ class Location:
         self.name = name
         self.logic = logic  # Lambda function for accessibility
         self.item = None
+        self.delayedItem = None
 
     def PlaceItem(self, item):
         """Place item at this location."""
         self.item = item
+
+    def SetDelayedItem(self, item):
+        """Sets an item to be added back later."""
+        self.delayedItem = item
+
+    def PlaceDelayedItem(self):
+        """Places the delayed item at this location."""
+        self.item = self.delayedItem
+        self.delayedItem = None
 
 
 class Event:

@@ -128,6 +128,40 @@ def Reset():
     Logic.ResetCollectibleRegions()
 
 
+def ParePlaythrough(PlaythroughLocations):
+    """Pares playthrough down to only the essential elements."""
+    locationsToAddBack = []
+    # Check every location in the list of spheres.
+    for i in range(len(PlaythroughLocations) - 2, -1, -1):
+        sphere = PlaythroughLocations[i]
+        for location in sphere.copy():
+            # Copy out item from location
+            item = location.item
+            location.item = None
+            # Check if the game is still beatable
+            Reset()
+            if GetAccessibleLocations([], SearchMode.CheckBeatable):
+                # If the game is still beatable, this is an unnecessary location, remove it.
+                sphere.remove(location)
+                # We delay the item to ensure future locations which may rely on this one
+                # do not give a false positive for beatability.
+                location.SetDelayedItem(item)
+                locationsToAddBack.append(location)
+            else:
+                # Else it is essential, don't remove it from the playthrough and add the item back.
+                location.PlaceItem(item)
+
+    # Check if there are any empty spheres, if so remove them
+    for i in range(len(PlaythroughLocations) - 2, -1, -1):
+        sphere = PlaythroughLocations[i]
+        if len(sphere) == 0:
+            PlaythroughLocations.remove(sphere)
+
+    # Re-place those items which were delayed earlier.
+    for location in locationsToAddBack:
+        location.PlaceDelayedItem()
+
+
 def ForwardFill(itemsToPlace, ownedItems=[]):
     """Forward fill algorithm for item placement."""
     random.shuffle(itemsToPlace)
@@ -210,6 +244,7 @@ def Fill(algorithm):
             # Generate and display the playthrough
             Reset()
             PlaythroughLocations = GetAccessibleLocations([], SearchMode.GeneratePlaythrough)
+            ParePlaythrough(PlaythroughLocations)
             i = 0
             spoiler_log = []
             for sphere in PlaythroughLocations:
