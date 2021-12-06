@@ -322,15 +322,8 @@ def ResetCollectibleRegions():
         for collectible in region:
             collectible.added = False
 
-
-def UpdateAllRegionsAccess(tempRegions):
-    """Update access of master regions list from a temp list of regions."""
-    for (key, value) in Regions.items():
-        value.UpdateAccessFromRegion(tempRegions[key])
-
-
-def UpdateCollectiblesAdded(tempRegions):
-    """Update which collectibles have been added."""
-    for (key, value) in CollectibleRegions.items():
-        for i in range(len(value)):
-            value[i].added = tempRegions[key][i].added
+def ClearAllLocations():
+    """Clear item from every location."""
+    for region in Regions.values():
+        for location in region.locations:
+            location.item = None

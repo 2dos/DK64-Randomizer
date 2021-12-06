@@ -259,5 +259,6 @@ def Fill(algorithm):
                 raise ex
             else:
                 retries += 1
-                print(ex)
                 print("Fill failed. Retrying. Tries: " + str(retries))
+                Reset()
+                Logic.ClearAllLocations()
