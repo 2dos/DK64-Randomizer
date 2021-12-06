@@ -1,0 +1,5 @@
+START_HOOK:
+	
+
+.align 0x10
+END_HOOK:
