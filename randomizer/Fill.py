@@ -84,11 +84,16 @@ def GetAccessibleLocations(ownedItems, searchType=SearchMode.GetReachable):
             # If this location has an item placed, add it to owned items
             if location.item is not None:
                 ownedItems.append(location.item)
+            # If we want to generate the playthrough and the item is a playthrough item, add it to the sphere
             if searchType == SearchMode.GeneratePlaythrough and ItemList[location.item].playthrough:
+                # Banana hoard in a sphere by itself
                 if location.item == Items.BananaHoard:
                     sphere = [location]
                     break
                 sphere.append(location)
+            # If we're checking beatability, just want to know if we have access to the banana hoard
+            if searchType == SearchMode.CheckBeatable and location.item == Items.BananaHoard:
+                return True
         if len(sphere) > 0:
             playthroughLocations.append(sphere)
             if sphere[0].item == Items.BananaHoard:
@@ -128,6 +133,9 @@ def GetAccessibleLocations(ownedItems, searchType=SearchMode.GetReachable):
 
     if searchType == SearchMode.GetReachable:
         return accessible
+    elif searchType == SearchMode.CheckBeatable:
+        # If the search has completed and banana hoard has not been found, game is unbeatable
+        return False
     elif searchType == SearchMode.GeneratePlaythrough:
         return playthroughLocations
 
@@ -235,6 +243,9 @@ def Fill(algorithm):
             if excessUnplaced > 0:
                 raise Exception(str(excessUnplaced) + " unplaced excess items.")
             # Check if game is beatable
+            Reset()
+            if not GetAccessibleLocations([], SearchMode.CheckBeatable):
+                raise Exception("Game unbeatable after placing all items.")
             # Generate and display the playthrough
             Reset()
             PlaythroughLocations = GetAccessibleLocations([], SearchMode.GeneratePlaythrough)
@@ -252,4 +263,5 @@ def Fill(algorithm):
                 raise ex
             else:
                 retries += 1
+                print(ex)
                 print("Fill failed. Retrying. Tries: " + str(retries))
