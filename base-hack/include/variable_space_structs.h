@@ -13,4 +13,5 @@ typedef struct varspace {
 	/* 0x03B */ char fast_start_helm;
 	/* 0x03C */ char crown_door_open;
 	/* 0x03D */ char coin_door_open;
+	/* 0x03E */ char quality_of_life;
 } varspace;
