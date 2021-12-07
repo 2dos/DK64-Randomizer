@@ -164,3 +164,5 @@ tools/*
 !tools/importers
 tools/importers/*
 !tools/importers/*.py
+*.sym
+!base-hack/Build/
