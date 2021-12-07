@@ -2,7 +2,7 @@
 from enum import IntEnum, auto
 
 
-class Kongs(IntEnum):
+class Locations(IntEnum):
     """Location enum."""
 
     # DK Isles locations
@@ -354,4 +354,4 @@ class Kongs(IntEnum):
     TurnInCreepyCastleDiddyBlueprint = auto()
     TurnInCreepyCastleLankyBlueprint = auto()
     TurnInCreepyCastleTinyBlueprint = auto()
-    TurnInCreepyCastleChunkyBlueprint = auto()    
+    TurnInCreepyCastleChunkyBlueprint = auto()
