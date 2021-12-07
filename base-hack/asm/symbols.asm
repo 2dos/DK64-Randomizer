@@ -183,6 +183,8 @@
 .definelabel mapFloorPointer, 0x807F9514
 .definelabel mapFloorBlockCount, 0x807F9518
 .definelabel displayListCount, 0x8076A088
+.definelabel TransitionType, 0x8076AEE0
+.definelabel DKTVKong, 0x80755328
 
 .definelabel screenCenterX, 0x80744490
 .definelabel screenCenterY, 0x80744494

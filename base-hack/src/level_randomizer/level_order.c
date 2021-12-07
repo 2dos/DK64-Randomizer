@@ -4,8 +4,8 @@
 #define LOBBY_COUNT 7
 #define ISLES_OVERWORLD 0x22
 
-static const unsigned char lobbies[] = {0xA9,0xAD,0xAF,0xAE,0xB2,0xC2,0xC1,0xAA};
-static const unsigned char lobbyexits[] = {2,3,4,5,6,10,11,7};
+static const unsigned char lobbies[] = {0xA9,0xAD,0xAF,0xAE,0xB2,0xC2,0xC1};
+static const unsigned char lobbyexits[] = {2,3,4,5,6,10,11};
 static const short normal_key_flags[] = {0x1A,0x4A,0x8A,0xA8,0xEC,0x124,0x13D};
 
 void randomizeLevelOrder(void) {
@@ -17,27 +17,30 @@ void randomizeLevelOrder(void) {
 					if (CurrentMap == ISLES_OVERWORLD) {
 						// Change Map
 						int j = 0;
-						do {
+						while (j < LOBBY_COUNT) {
 							if (lobbies[j] == focused_trigger->map) {
 								focused_trigger->map = lobbies[(int)Rando.level_order[j]];
 								break;
 							}
-						} while (j++ < LOBBY_COUNT);
+							j++;
+						};
 					} else if (focused_trigger->map == ISLES_OVERWORLD) {
 						// Change Exit
 						int k = 0;
-						do {
+						while (k < LOBBY_COUNT) {
 							if (lobbies[k] == CurrentMap) { // Get Current Lobby Index
 								int a = 0;
-								do {
+								while (a < LOBBY_COUNT) {
 									if (k == Rando.level_order[a]) {
 										focused_trigger->exit = lobbyexits[a];
 										break;
 									}
-								} while (a++ < LOBBY_COUNT);
+									a++;
+								}
 								break;
 							}
-						} while (k++ < LOBBY_COUNT);
+							k++;
+						}
 					}
 				}
 			}
@@ -59,7 +62,7 @@ void swapRequirements(void) {
 				TroffNScoffReqArray[i] = Rando.troff_scoff_count[i];
 			}
 			BLockerDefaultArray[i] = Rando.blocker_normal_count[i];
-			BLockerCheatArray[i].gb_count = Rando.blocker_cheat_count[i];
+			BLockerCheatArray[i].gb_count = Rando.blocker_normal_count[i];
 			if (levelIndexMapping[CurrentMap] == 7) {
 				// In Isles
 				CheckmarkKeyArray[i] = Rando.key_flags[i];

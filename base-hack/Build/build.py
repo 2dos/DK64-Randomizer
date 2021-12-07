@@ -49,7 +49,14 @@ file_dict = [
 		"file_index": 44,
 		"source_file": "assets/Non-Code/DKTV/logo3.png",
 		"texture_format": "rgba5551",
-	}
+	},
+	{
+		"name": "Spin Transition Image",
+		"pointer_table_index": 14,
+		"file_index": 95,
+		"source_file": "assets/Non-Code/transition/transition-body.png",
+		"texture_format": "ia4",
+	},
 ]
 
 map_replacements = [

@@ -110,22 +110,22 @@ void tagAnywhere(void) {
 							return;
 						}
 					}
-					int next_character = (Character + 1) % TAG_ANYWHERE_KONG_LIMIT;
+                    int next_character = (Character + TAG_ANYWHERE_KONG_LIMIT + change) % TAG_ANYWHERE_KONG_LIMIT;
 					int i = 0;
 					int reached_limit = 0;
 					do {
-						if (checkFlag(kong_flags[i],0)) {
+						if (checkFlag(kong_flags[next_character],0)) {
 							break;
 						} else {
 							if ((i + 1) == TAG_ANYWHERE_KONG_LIMIT) {
 								reached_limit = 1;
 								return;
 							} else {
-								next_character = (next_character + 1) % TAG_ANYWHERE_KONG_LIMIT;
+								next_character = (next_character + TAG_ANYWHERE_KONG_LIMIT + change) % TAG_ANYWHERE_KONG_LIMIT;
 							}
 						}
 					} while (i++ < TAG_ANYWHERE_KONG_LIMIT);
-					if (!reached_limit) {
+					if ((!reached_limit) && (next_character != Character)) {
 						tagKong(next_character + 2);
 						clearTagSlide(Player);
 						Player->new_kong = next_character + 2;

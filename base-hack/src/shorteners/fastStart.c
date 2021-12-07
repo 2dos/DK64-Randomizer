@@ -19,7 +19,7 @@ void applyFastStart(void) {
 		if (Rando.camera_unlocked) {
 			setPermFlag(0x179);
 		}
-		if (MovesBase[0].simian_slam != 0) {
+		if (MovesBase[0].simian_slam == 0) {
 			for (int i = 0; i < 5; i++) {
 				MovesBase[i].simian_slam = 1;
 			}

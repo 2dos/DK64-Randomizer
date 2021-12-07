@@ -191,6 +191,8 @@ extern float LZFadeoutProgress;
 extern int* mapFloorPointer;
 extern int mapFloorBlockCount;
 extern int displayListCount;
+extern char TransitionType;
+extern char DKTVKong;
 
 extern short screenCenterX;
 extern short screenCenterY;

@@ -7,7 +7,7 @@ void qualityOfLife_fixes(void) {
 	if (Rando.quality_of_life) {
 		*(unsigned char*)(0x807132BF) = JAPES_MAIN;
 		*(unsigned char*)(0x807132CB) = MODE_DKTV;
-		if (Gamemode != 0) {
+		if (Gamemode == 0) {
 			StorySkip = 1;
 		}
 		setPermFlag(0x309); // Cranky FTT
