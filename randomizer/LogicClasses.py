@@ -113,7 +113,3 @@ class Region:
         self.lankyAccess = False
         self.tinyAccess = False
         self.chunkyAccess = False
-
-    def GetLocation(self, location):
-        """Get a specific location from this region given its name."""
-        return [x for x in self.locations if x.name == location][0]

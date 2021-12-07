@@ -7,6 +7,7 @@ import randomizer.CollectibleLogicFiles.FranticFactory
 import randomizer.CollectibleLogicFiles.FungiForest
 import randomizer.CollectibleLogicFiles.GloomyGalleon
 import randomizer.CollectibleLogicFiles.JungleJapes
+
 import randomizer.LogicFiles.AngryAztec
 import randomizer.LogicFiles.CreepyCastle
 import randomizer.LogicFiles.CrystalCaves
@@ -17,11 +18,14 @@ import randomizer.LogicFiles.GloomyGalleon
 import randomizer.LogicFiles.HideoutHelm
 import randomizer.LogicFiles.JungleJapes
 import randomizer.LogicFiles.Shops
+
 from randomizer.Enums.Collectibles import Collectibles
 from randomizer.Enums.Events import Events
 from randomizer.Enums.Items import Items
 from randomizer.Enums.Kongs import Kongs
 from randomizer.Enums.Levels import Levels
+
+from randomizer.Location import LocationList
 
 
 class LogicVarHolder:
@@ -324,6 +328,5 @@ def ResetCollectibleRegions():
 
 def ClearAllLocations():
     """Clear item from every location."""
-    for region in Regions.values():
-        for location in region.locations:
-            location.item = None
+    for location in LocationList.values():
+        location.item = None

@@ -4,9 +4,13 @@ import random
 
 import randomizer.ItemPool as ItemPool
 import randomizer.Logic as Logic
+from randomizer.Location import LocationList
+
 from randomizer.Enums.Items import Items
+from randomizer.Enums.Locations import Locations
 from randomizer.Enums.Regions import Regions
 from randomizer.Enums.SearchMode import SearchMode
+
 from randomizer.Item import ItemList
 from randomizer.Logic import LogicVariables
 
@@ -14,7 +18,6 @@ from randomizer.Logic import LogicVariables
 def GetAccessibleLocations(ownedItems, searchType=SearchMode.GetReachable):
     """Search to find all reachable locations given owned items."""
     accessible = []
-    accessibleIds = []
     newLocations = []
     playthroughLocations = []
     eventAdded = True
@@ -22,9 +25,9 @@ def GetAccessibleLocations(ownedItems, searchType=SearchMode.GetReachable):
     while len(newLocations) > 0 or eventAdded:
         # Add items and events from the last search iteration
         sphere = []
-        for location in newLocations:
-            accessible.append(location)
-            accessibleIds.append(location.name)
+        for locationId in newLocations:
+            accessible.append(locationId)
+            location = LocationList[locationId]
             # If this location has an item placed, add it to owned items
             if location.item is not None:
                 ownedItems.append(location.item)
@@ -32,20 +35,19 @@ def GetAccessibleLocations(ownedItems, searchType=SearchMode.GetReachable):
             if searchType == SearchMode.GeneratePlaythrough and ItemList[location.item].playthrough:
                 # Banana hoard in a sphere by itself
                 if location.item == Items.BananaHoard:
-                    sphere = [location]
+                    sphere = [locationId]
                     break
-                sphere.append(location)
+                sphere.append(locationId)
             # If we're checking beatability, just want to know if we have access to the banana hoard
             if searchType == SearchMode.CheckBeatable and location.item == Items.BananaHoard:
                 return True
         if len(sphere) > 0:
             playthroughLocations.append(sphere)
-            if sphere[0].item == Items.BananaHoard:
+            if LocationList[sphere[0]].item == Items.BananaHoard:
                 break
         eventAdded = False
         # Reset new lists
         newLocations = []
-        newLocationIds = []
         # Update based on new items
         LogicVariables.Update(ownedItems)
 
@@ -70,9 +72,8 @@ def GetAccessibleLocations(ownedItems, searchType=SearchMode.GetReachable):
 
                 # Check accessibility for each location in this region
                 for location in region.locations:
-                    if location.logic(LogicVariables) and location.name not in newLocationIds and location.name not in accessibleIds:
-                        newLocations.append(location)
-                        newLocationIds.append(location.name)
+                    if location.logic(LogicVariables) and location.id not in newLocations and location.id not in accessible:
+                        newLocations.append(location.id)
                 # Check accessibility for each event in this region
                 for event in region.events:
                     if event.name not in LogicVariables.Events and event.logic(LogicVariables):
@@ -106,18 +107,17 @@ def RandomFill(itemsToPlace):
     random.shuffle(itemsToPlace)
     # Get all remaining empty locations
     empty = []
-    for region in Logic.Regions.values():
-        for location in region.locations:
-            if location.item is None:
-                empty.append(location)
+    for (id, location) in LocationList.items():
+        if location.item is None:
+            empty.append(id)
     random.shuffle(empty)
     # Place item in random locations
     while len(itemsToPlace) > 0:
         if len(empty) == 0:
             return len(itemsToPlace)
         item = itemsToPlace.pop()
-        location = empty.pop()
-        location.PlaceItem(item)
+        locationId = empty.pop()
+        LocationList[locationId].PlaceItem(item)
     return 0
 
 
@@ -134,7 +134,8 @@ def ParePlaythrough(PlaythroughLocations):
     # Check every location in the list of spheres.
     for i in range(len(PlaythroughLocations) - 2, -1, -1):
         sphere = PlaythroughLocations[i]
-        for location in sphere.copy():
+        for locationId in sphere.copy():
+            location = LocationList[locationId]
             # Copy out item from location
             item = location.item
             location.item = None
@@ -142,11 +143,11 @@ def ParePlaythrough(PlaythroughLocations):
             Reset()
             if GetAccessibleLocations([], SearchMode.CheckBeatable):
                 # If the game is still beatable, this is an unnecessary location, remove it.
-                sphere.remove(location)
+                sphere.remove(locationId)
                 # We delay the item to ensure future locations which may rely on this one
                 # do not give a false positive for beatability.
                 location.SetDelayedItem(item)
-                locationsToAddBack.append(location)
+                locationsToAddBack.append(locationId)
             else:
                 # Else it is essential, don't remove it from the playthrough and add the item back.
                 location.PlaceItem(item)
@@ -158,8 +159,8 @@ def ParePlaythrough(PlaythroughLocations):
             PlaythroughLocations.remove(sphere)
 
     # Re-place those items which were delayed earlier.
-    for location in locationsToAddBack:
-        location.PlaceDelayedItem()
+    for locationId in locationsToAddBack:
+        LocationList[locationId].PlaceDelayedItem()
 
 
 def ForwardFill(itemsToPlace, ownedItems=[]):
@@ -170,15 +171,15 @@ def ForwardFill(itemsToPlace, ownedItems=[]):
     while len(itemsToPlace) > 0:
         # Find a random empty location which is reachable with current items
         reachable = GetAccessibleLocations(ownedItems.copy())
-        reachable = [x for x in reachable if x.item is None]
+        reachable = [x for x in reachable if LocationList[x].item is None]
         if len(reachable) == 0:  # If there are no empty reachable locations, reached a dead end
             return len(itemsToPlace)
         random.shuffle(reachable)
-        location = reachable.pop()
+        locationId = reachable.pop()
         # Get a random item and place it there, also adding to owned items
         item = itemsToPlace.pop()
         ownedItems.append(item)
-        location.PlaceItem(item)
+        LocationList[locationId].PlaceItem(item)
     return 0
 
 
@@ -193,14 +194,14 @@ def AssumedFill(itemsToPlace, ownedItems=[]):
         ownedItems.extend(ownedItems)
         Reset()
         reachable = GetAccessibleLocations(ownedItems.copy())
-        reachable = [x for x in reachable if x.item is None]
+        reachable = [x for x in reachable if LocationList[x].item is None]
         # If there are no empty reachable locations, reached a dead end
         if len(reachable) == 0:
             return len(itemsToPlace)
         # Get a random, empty, reachable location and place the item there
         random.shuffle(reachable)
-        location = reachable.pop()
-        location.PlaceItem(item)
+        locationId = reachable.pop()
+        LocationList[locationId].PlaceItem(item)
     return 0
 
 
@@ -218,7 +219,7 @@ def Fill(algorithm):
     while retries < 5:
         try:
             # First place win condition item at K Rool
-            Logic.Regions[Regions.KRool].GetLocation("Banana Hoard").PlaceItem(Items.BananaHoard)
+            LocationList[Locations.BananaHoard].PlaceItem(Items.BananaHoard)
             # Then place priority (logically very important) items
             highPriorityUnplaced = PlaceItems(algorithm, ItemPool.HighPriorityItems(), ItemPool.HighPriorityAssumedItems())
             if highPriorityUnplaced > 0:
@@ -250,7 +251,8 @@ def Fill(algorithm):
             for sphere in PlaythroughLocations:
                 spoiler_log.append("\nSphere " + str(i))
                 i += 1
-                for location in sphere:
+                for locationId in sphere:
+                    location = LocationList[locationId]
                     spoiler_log.append(location.name + ": " + ItemList[location.item].name)
             return spoiler_log
         except Exception as ex:

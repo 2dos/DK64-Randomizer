@@ -34,9 +34,9 @@ LogicRegions = {
     ]),
 
     Regions.RandD: Region("R&D", Levels.FranticFactory, True, [
-        LocationLogic(Locations.FactoryDiddyR&D, lambda l: l.guitar and l.charge and l.isdiddy),
-        LocationLogic(Locations.FactoryLankyR&D, lambda l: l.trombone and l.Slam and l.islanky),
-        LocationLogic(Locations.FactoryChunkyR&D, lambda l: l.triangle and l.punch and l.hunkyChunky and l.ischunky),
+        LocationLogic(Locations.FactoryDiddyRandD, lambda l: l.guitar and l.charge and l.isdiddy),
+        LocationLogic(Locations.FactoryLankyRandD, lambda l: l.trombone and l.Slam and l.islanky),
+        LocationLogic(Locations.FactoryChunkyRandD, lambda l: l.triangle and l.punch and l.hunkyChunky and l.ischunky),
         LocationLogic(Locations.FactoryLankyKasplat, lambda l: l.islanky),
         LocationLogic(Locations.FactoryBattleArena, lambda l: l.grab),
     ], [], [

@@ -111,7 +111,7 @@ LogicRegions = {
 
     Regions.RotatingCabin: Region("Rotating Cabin", Levels.CrystalCaves, False, [
         LocationLogic(Locations.CavesDonkeyRotatingCabin, lambda l: l.Slam and l.isdonkey),
-        LocationLogic(Locations.CavesBattleCrown, lambda l: l.Slam),
+        LocationLogic(Locations.CavesBattleArena, lambda l: l.Slam),
     ], [], [
         Exit(Regions.CabinArea, lambda l: True),
     ]),

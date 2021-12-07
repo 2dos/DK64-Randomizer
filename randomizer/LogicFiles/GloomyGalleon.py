@@ -91,7 +91,7 @@ LogicRegions = {
     ]),
 
     Regions.SealRace: Region("Seal Race", Levels.GloomyGalleon, False, [
-        LocationLogic(Locations.DonkeySealRace, lambda l: l.isdonkey),
+        LocationLogic(Locations.GalleonDonkeySealRace, lambda l: l.isdonkey),
     ], [], []),
 
     Regions.TreasureRoom: Region("Treasure Room", Levels.GloomyGalleon, True, [
