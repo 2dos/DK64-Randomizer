@@ -110,6 +110,7 @@ extern int ObjectModel2Count;
 extern int ObjectModel2Count_Dupe;
 extern short CutsceneIndex;
 extern char CutsceneActive;
+extern short CutsceneTimer;
 extern cutsceneType* CutsceneTypePointer;
 extern short PreviousCameraState;
 extern short CurrentCameraState;

@@ -102,6 +102,7 @@
 .definelabel ObjectModel2Count_Dupe, 0x80747D70
 .definelabel CutsceneIndex, 0x807476F4
 .definelabel CutsceneActive, 0x807444EC
+.definelabel CutsceneTimer, 0x807476F0
 .definelabel CutsceneTypePointer, 0x807476FC
 .definelabel PreviousCameraState, 0x807F5CF0
 .definelabel CurrentCameraState, 0x807F5CF2

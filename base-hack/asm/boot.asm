@@ -1,4 +1,4 @@
-.definelabel dataStart, 0x01FFF000
+.definelabel dataStart, 0x01FED020
 .definelabel dataRDRAM, 0x807FF800
 
 START:

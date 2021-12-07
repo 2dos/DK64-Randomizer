@@ -250,6 +250,13 @@ with open(newROMName, "r+b") as fh:
 	print("[6 / 7] - Dumping details of all pointer tables to rom/build.log")
 	dumpPointerTableDetails("rom/build.log", fh)
 
+	# Wipe Space
+	fh.seek(0x1FED020);
+	arr = []
+	for x in range(0x100):
+		arr.append(0)
+	fh.write(bytearray(arr))
+
 print("[7 / 7] - Generating BizHawk RAM watch")
 import generate_watch_file
 

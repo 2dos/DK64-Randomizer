@@ -10,3 +10,13 @@ extern void setWarpPosition(float x, float y, float z);
 extern void initHack(void);
 
 extern void level_order_rando_funcs(void);
+extern void unlockKongs(void);
+extern void unlockMoves(void);
+extern void tagAnywhere(void);
+extern void islesSpawn(void);
+extern void applyFastStart(void);
+extern void fixCastleAutowalk(void);
+extern void openCrownDoor(void);
+extern void openCoinDoor(void);
+extern void qualityOfLife_fixes(void);
+extern void qualityOfLife_shorteners(void);
