@@ -2,28 +2,13 @@
 from randomizer.Enums.Kongs import Kongs
 
 
-class Location:
-    """A shufflable location at which a random item can be placed."""
+class LocationLogic:
+    """Logic for a location."""
 
-    def __init__(self, name, logic):
+    def __init__(self, id, logic):
         """Initialize with given parameters."""
-        self.name = name
+        self.id = id
         self.logic = logic  # Lambda function for accessibility
-        self.item = None
-        self.delayedItem = None
-
-    def PlaceItem(self, item):
-        """Place item at this location."""
-        self.item = item
-
-    def SetDelayedItem(self, item):
-        """Sets an item to be added back later."""
-        self.delayedItem = item
-
-    def PlaceDelayedItem(self):
-        """Places the delayed item at this location."""
-        self.item = self.delayedItem
-        self.delayedItem = None
 
 
 class Event:

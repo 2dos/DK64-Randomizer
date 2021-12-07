@@ -4,14 +4,15 @@
 from randomizer.Enums.Events import Events
 from randomizer.Enums.Levels import Levels
 from randomizer.Enums.Regions import Regions
-from randomizer.LogicClasses import Event, Exit, Location, Region
+from randomizer.Enums.Locations import Locations
+from randomizer.LogicClasses import Event, Exit, LocationLogic, Region
 
 LogicRegions = {
     Regions.AngryAztecStart: Region("Angry Aztec Start", Levels.AngryAztec, True, [
-        Location("Aztec Donkey Free Llama", lambda l: Events.LlamaFreed in l.Events and l.isdonkey),
-        Location("Aztec Chunky Vases", lambda l: l.pineapple and l.ischunky),
-        Location("Aztec Donkey Kasplat", lambda l: l.coconut and l.strongKong and l.isdonkey),
-        Location("Aztec Diddy Kasplat", lambda l: l.jetpack and l.isdiddy),
+        LocationLogic(Locations.AztecDonkeyFreeLlama, lambda l: Events.LlamaFreed in l.Events and l.isdonkey),
+        LocationLogic(Locations.AztecChunkyVases, lambda l: l.pineapple and l.ischunky),
+        LocationLogic(Locations.AztecDonkeyKasplat, lambda l: l.coconut and l.strongKong and l.isdonkey),
+        LocationLogic(Locations.AztecDiddyKasplat, lambda l: l.jetpack and l.isdiddy),
     ], [
         Event(Events.AztecEntered, lambda l: True),
     ], [
@@ -23,26 +24,26 @@ LogicRegions = {
     ]),
 
     Regions.TempleStart: Region("Temple Start", Levels.AngryAztec, False, [
-        Location("Aztec Tiny Klaptrap Room", lambda l: l.mini and l.istiny),
-        Location("Aztec Chunky Klaptrap Room", lambda l: l.triangle and l.ischunky),
+        LocationLogic(Locations.AztecTinyKlaptrapRoom, lambda l: l.mini and l.istiny),
+        LocationLogic(Locations.AztecChunkyKlaptrapRoom, lambda l: l.triangle and l.ischunky),
     ], [], [
         Exit(Regions.AngryAztecStart, lambda l: True),
         Exit(Regions.TempleUnderwater, lambda l: l.Slam and l.guitar and l.diddyAccess),
     ]),
 
     Regions.TempleUnderwater: Region("Temple Underwater", Levels.AngryAztec, False, [
-        Location("Tiny Kong", lambda l: l.charge and l.isdiddy),
-        Location("Aztec Diddy Free Tiny", lambda l: l.charge and l.isdiddy),
-        Location("Aztec Lanky Vulture", lambda l: l.Slam and l.grape and l.islanky),
-        Location("Aztec Battle Arena", lambda l: l.Slam and l.grape and l.islanky),
+        LocationLogic(Locations.TinyKong, lambda l: l.charge and l.isdiddy),
+        LocationLogic(Locations.AztecDiddyFreeTiny, lambda l: l.charge and l.isdiddy),
+        LocationLogic(Locations.AztecLankyVulture, lambda l: l.Slam and l.grape and l.islanky),
+        LocationLogic(Locations.AztecBattleArena, lambda l: l.Slam and l.grape and l.islanky),
     ], [], []),
 
     Regions.AngryAztecMain: Region("Angry Aztec Main", Levels.AngryAztec, True, [
-        Location("Aztec Donkey Stealthy Snoop", lambda l: Events.AztecDonkeySwitch in l.Events and l.strongKong and l.isdonkey),
-        Location("Aztec Diddy Ram Gongs", lambda l: l.charge and l.jetpack and l.isdiddy),
-        Location("Aztec Diddy Vulture Race", lambda l: l.jetpack and l.isdiddy),
-        Location("Aztec Chunky Busy Barrel Barrage", lambda l: l.hunkyChunky and l.ischunky),
-        Location("Aztec Tiny Kasplat", lambda l: l.istiny),
+        LocationLogic(Locations.AztecDonkeyStealthySnoop, lambda l: Events.AztecDonkeySwitch in l.Events and l.strongKong and l.isdonkey),
+        LocationLogic(Locations.AztecDiddyRamGongs, lambda l: l.charge and l.jetpack and l.isdiddy),
+        LocationLogic(Locations.AztecDiddyVultureRace, lambda l: l.jetpack and l.isdiddy),
+        LocationLogic(Locations.AztecChunkyBusyBarrelBarrage, lambda l: l.hunkyChunky and l.ischunky),
+        LocationLogic(Locations.AztecTinyKasplat, lambda l: l.istiny),
     ], [
         Event(Events.FedTotem, lambda l: l.jetpack and l.peanut),
         Event(Events.LlamaFreed, lambda l: l.blast),
@@ -57,47 +58,47 @@ LogicRegions = {
     ]),
 
     Regions.DonkeyTemple: Region("Donkey Temple", Levels.AngryAztec, False, [
-        Location("Aztec Donkey 5 Door Temple", lambda l: l.coconut and l.isdonkey),
+        LocationLogic(Locations.AztecDonkey5DoorTemple, lambda l: l.coconut and l.isdonkey),
     ], [], [
         Exit(Regions.AngryAztecMain, lambda l: True),
     ]),
 
     Regions.DiddyTemple: Region("Diddy Temple", Levels.AngryAztec, False, [
-        Location("Aztec Diddy 5 Door Temple", lambda l: l.peanut and l.isdiddy),
+        LocationLogic(Locations.AztecDiddy5DoorTemple, lambda l: l.peanut and l.isdiddy),
     ], [], [
         Exit(Regions.AngryAztecMain, lambda l: True),
     ]),
 
     Regions.LankyTemple: Region("Lanky Temple", Levels.AngryAztec, False, [
-        Location("Aztec Lanky 5 Door Temple", lambda l: l.grape and l.islanky),
+        LocationLogic(Locations.AztecLanky5DoorTemple, lambda l: l.grape and l.islanky),
     ], [], [
         Exit(Regions.AngryAztecMain, lambda l: True),
     ]),
 
     Regions.TinyTemple: Region("Tiny Temple", Levels.AngryAztec, False, [
-        Location("Aztec Tiny 5 Door Temple", lambda l: l.feather and l.istiny),
-        Location("Aztec Banana Fairy Tiny Temple", lambda l: l.camera and l.feather and l.mini and l.istiny),
+        LocationLogic(Locations.AztecTiny5DoorTemple, lambda l: l.feather and l.istiny),
+        LocationLogic(Locations.AztecBananaFairyTinyTemple, lambda l: l.camera and l.feather and l.mini and l.istiny),
     ], [], [
         Exit(Regions.AngryAztecMain, lambda l: True),
     ]),
 
     Regions.ChunkyTemple: Region("Chunky Temple", Levels.AngryAztec, False, [
-        Location("Aztec Chunky 5 Door Temple", lambda l: l.pineapple and l.ischunky),
-        Location("Aztec Chunky Kasplat", lambda l: l.pineapple and l.ischunky),
+        LocationLogic(Locations.AztecChunky5DoorTemple, lambda l: l.pineapple and l.ischunky),
+        LocationLogic(Locations.AztecChunkyKasplat, lambda l: l.pineapple and l.ischunky),
     ], [], [
         Exit(Regions.AngryAztecMain, lambda l: True),
     ]),
 
     Regions.AztecTinyRace: Region("Aztec Tiny Race", Levels.AngryAztec, False, [
-        Location("Aztec Tiny Beetle Race", lambda l: l.istiny),
+        LocationLogic(Locations.AztecTinyBeetleRace, lambda l: l.istiny),
     ], [], []),
 
     Regions.LlamaTemple: Region("Llama Temple", Levels.AngryAztec, True, [
-        Location("Lanky Kong", lambda l: l.bongos and l.isdonkey),
-        Location("Aztec Donkey Free Lanky", lambda l: l.bongos and l.isdonkey),
-        Location("Aztec Lanky Teetering Turtle Trouble", lambda l: l.trombone and l.islanky),
-        Location("Aztec Lanky Matching Game", lambda l: l.grape and l.Slam and l.islanky),
-        Location("Aztec Banana Fairy Llama Temple", lambda l: l.camera),
+        LocationLogic(Locations.LankyKong, lambda l: l.bongos and l.isdonkey),
+        LocationLogic(Locations.AztecDonkeyFreeLanky, lambda l: l.bongos and l.isdonkey),
+        LocationLogic(Locations.AztecLankyTeeteringTurtleTrouble, lambda l: l.trombone and l.islanky),
+        LocationLogic(Locations.AztecLankyMatchingGame, lambda l: l.grape and l.Slam and l.islanky),
+        LocationLogic(Locations.AztecBananaFairyLlamaTemple, lambda l: l.camera),
     ], [
         Event(Events.AztecDonkeySwitch, lambda l: l.Slam and l.isdonkey),
     ], [
@@ -106,8 +107,8 @@ LogicRegions = {
     ]),
 
     Regions.LlamaTempleBack: Region("Llama Temple Back", Levels.AngryAztec, False, [
-        Location("Aztec Tiny Llama Temple", lambda l: l.Slam and l.twirl and l.istiny),
-        Location("Aztec Lanky Kasplat", lambda l: l.islanky),
+        LocationLogic(Locations.AztecTinyLlamaTemple, lambda l: l.Slam and l.twirl and l.istiny),
+        LocationLogic(Locations.AztecLankyKasplat, lambda l: l.islanky),
     ], [], []),
 
     Regions.AztecBossLobby: Region("Aztec Boss Lobby", Levels.AngryAztec, True, [], [], [
@@ -116,6 +117,6 @@ LogicRegions = {
     ]),
 
     Regions.AztecBoss: Region("Aztec Boss", Levels.AngryAztec, False, [
-        Location("Aztec Key", lambda l: l.isdiddy),
+        LocationLogic(Locations.AztecKey, lambda l: l.isdiddy),
     ], [], []),
 }

@@ -4,19 +4,20 @@
 from randomizer.Enums.Events import Events
 from randomizer.Enums.Levels import Levels
 from randomizer.Enums.Regions import Regions
-from randomizer.LogicClasses import Event, Exit, Location, Region
+from randomizer.Enums.Locations import Locations
+from randomizer.LogicClasses import Event, Exit, LocationLogic, Region
 
 LogicRegions = {
     Regions.CrystalCavesMain: Region("Crystal Caves Main", Levels.CrystalCaves, True, [
-        Location("Caves Donkey Baboon Blast", lambda l: l.blast and l.isdonkey),
-        Location("Caves Diddy Jetpack Barrel", lambda l: l.jetpack and l.isdiddy),
-        Location("Caves Tiny Krazy Kong Klamour", lambda l: l.mini and l.istiny),
-        Location("Caves Tiny Monkeyport Igloo", lambda l: l.monkeyport and l.mini and l.twirl and l.istiny),
-        Location("Caves Chunky Gorilla Gone", lambda l: l.punch and l.gorillaGone and l.ischunky),
-        Location("Caves Donkey Kasplat", lambda l: l.isdonkey),
-        Location("Caves Diddy Kasplat", lambda l: l.mini and l.twirl and l.isdiddy),
-        Location("Caves Lanky Kasplat", lambda l: l.jetpack and l.islanky),
-        Location("Caves Tiny Kasplat", lambda l: l.istiny),
+        LocationLogic(Locations.CavesDonkeyBaboonBlast, lambda l: l.blast and l.isdonkey),
+        LocationLogic(Locations.CavesDiddyJetpackBarrel, lambda l: l.jetpack and l.isdiddy),
+        LocationLogic(Locations.CavesTinyKrazyKongKlamour, lambda l: l.mini and l.istiny),
+        LocationLogic(Locations.CavesTinyMonkeyportIgloo, lambda l: l.monkeyport and l.mini and l.twirl and l.istiny),
+        LocationLogic(Locations.CavesChunkyGorillaGone, lambda l: l.punch and l.gorillaGone and l.ischunky),
+        LocationLogic(Locations.CavesDonkeyKasplat, lambda l: l.isdonkey),
+        LocationLogic(Locations.CavesDiddyKasplat, lambda l: l.mini and l.twirl and l.isdiddy),
+        LocationLogic(Locations.CavesLankyKasplat, lambda l: l.jetpack and l.islanky),
+        LocationLogic(Locations.CavesTinyKasplat, lambda l: l.istiny),
     ], [
         Event(Events.CavesEntered, lambda l: True),
         Event(Events.CavesSmallBoulderButton, lambda l: l.ischunky),
@@ -40,18 +41,18 @@ LogicRegions = {
     ]),
 
     Regions.CavesLankyRace: Region("Caves Lanky Race", Levels.CrystalCaves, False, [
-        Location("Caves Lanky Beetle Race", lambda l: l.sprint and l.islanky),
+        LocationLogic(Locations.CavesLankyBeetleRace, lambda l: l.sprint and l.islanky),
     ], [], []),
 
     Regions.FrozenCastle: Region("Frozen Castle", Levels.CrystalCaves, False, [
-        Location("Caves Lanky Castle", lambda l: l.Slam and l.islanky),
+        LocationLogic(Locations.CavesLankyCastle, lambda l: l.Slam and l.islanky),
     ], [], [
         Exit(Regions.CrystalCavesMain, lambda l: True),
     ]),
 
     Regions.IglooArea: Region("Igloo Area", Levels.CrystalCaves, True, [
-        Location("Caves Chunky Transparent Igloo", lambda l: Events.CavesLargeBoulderButton in l.Events and l.ischunky),
-        Location("Caves Chunky Kasplat", lambda l: l.ischunky),
+        LocationLogic(Locations.CavesChunkyTransparentIgloo, lambda l: Events.CavesLargeBoulderButton in l.Events and l.ischunky),
+        LocationLogic(Locations.CavesChunkyKasplat, lambda l: l.ischunky),
     ], [], [
         Exit(Regions.GiantKosha, lambda l: Events.CavesLargeBoulderButton in l.Events and l.monkeyport and l.istiny),
         Exit(Regions.DonkeyIgloo, lambda l: l.jetpack and l.bongos and l.isdonkey),
@@ -66,32 +67,32 @@ LogicRegions = {
     ], []),
 
     Regions.DonkeyIgloo: Region("Donkey Igloo", Levels.CrystalCaves, False, [
-        Location("Caves Donkey 5 Door Igloo", lambda l: l.isdonkey),
+        LocationLogic(Locations.CavesDonkey5DoorIgloo, lambda l: l.isdonkey),
     ], [], [
         Exit(Regions.IglooArea, lambda l: True),
     ]),
 
     Regions.DiddyIgloo: Region("Diddy Igloo", Levels.CrystalCaves, False, [
-        Location("Caves Diddy 5 Door Igloo", lambda l: l.isdiddy),
+        LocationLogic(Locations.CavesDiddy5DoorIgloo, lambda l: l.isdiddy),
     ], [], [
         Exit(Regions.IglooArea, lambda l: True),
     ]),
 
     Regions.LankyIgloo: Region("Lanky Igloo", Levels.CrystalCaves, False, [
-        Location("Caves Lanky 5 Door Igloo", lambda l: l.balloon and l.islanky),
+        LocationLogic(Locations.CavesLanky5DoorIgloo, lambda l: l.balloon and l.islanky),
     ], [], [
         Exit(Regions.IglooArea, lambda l: True),
     ]),
 
     Regions.TinyIgloo: Region("Tiny Igloo", Levels.CrystalCaves, False, [
-        Location("Caves Tiny 5 Door Igloo", lambda l: l.Slam and l.istiny),
-        Location("Caves Banana Fairy Igloo", lambda l: l.camera),
+        LocationLogic(Locations.CavesTiny5DoorIgloo, lambda l: l.Slam and l.istiny),
+        LocationLogic(Locations.CavesBananaFairyIgloo, lambda l: l.camera),
     ], [], [
         Exit(Regions.IglooArea, lambda l: True),
     ]),
 
     Regions.ChunkyIgloo: Region("Chunky Igloo", Levels.CrystalCaves, False, [
-        Location("Caves Chunky 5 Door Igloo", lambda l: l.ischunky),
+        LocationLogic(Locations.CavesChunky5DoorIgloo, lambda l: l.ischunky),
     ], [], [
         Exit(Regions.IglooArea, lambda l: True),
     ]),
@@ -109,14 +110,14 @@ LogicRegions = {
     ]),
 
     Regions.RotatingCabin: Region("Rotating Cabin", Levels.CrystalCaves, False, [
-        Location("Caves Donkey Rotating Cabin", lambda l: l.Slam and l.isdonkey),
-        Location("Caves Battle Crown", lambda l: l.Slam),
+        LocationLogic(Locations.CavesDonkeyRotatingCabin, lambda l: l.Slam and l.isdonkey),
+        LocationLogic(Locations.CavesBattleCrown, lambda l: l.Slam),
     ], [], [
         Exit(Regions.CabinArea, lambda l: True),
     ]),
 
     Regions.DonkeyCabin: Region("Donkey Cabin", Levels.CrystalCaves, False, [
-        Location("Caves Donkey 5 Door Cabin", lambda l: l.isdonkey),
+        LocationLogic(Locations.CavesDonkey5DoorCabin, lambda l: l.isdonkey),
     ], [], [
         Exit(Regions.CabinArea, lambda l: True),
     ]),
@@ -124,32 +125,32 @@ LogicRegions = {
     Regions.DiddyLowerCabin: Region("Diddy Lower Cabin", Levels.CrystalCaves, False, [
         # You're supposed to use the jetpack to get up the platforms,
         # but you can just backflip onto them
-        Location("Caves Diddy 5 Door Cabin Lower", lambda l: l.isdiddy),
+        LocationLogic(Locations.CavesDiddy5DoorCabinLower, lambda l: l.isdiddy),
     ], [], [
         Exit(Regions.CabinArea, lambda l: True),
     ]),
 
     Regions.DiddyUpperCabin: Region("Diddy Upper Cabin", Levels.CrystalCaves, False, [
-        Location("Caves Diddy 5 Door Cabin Upper", lambda l: (l.guitar or l.shockwave) and l.spring and l.jetpack and l.isdiddy),
-        Location("Caves Banana Fairy Cabin", lambda l: l.camera and (l.guitar or l.shockwave) and l.spring and l.jetpack and l.isdiddy),
+        LocationLogic(Locations.CavesDiddy5DoorCabinUpper, lambda l: (l.guitar or l.shockwave) and l.spring and l.jetpack and l.isdiddy),
+        LocationLogic(Locations.CavesBananaFairyCabin, lambda l: l.camera and (l.guitar or l.shockwave) and l.spring and l.jetpack and l.isdiddy),
     ], [], [
         Exit(Regions.CabinArea, lambda l: True),
     ]),
 
     Regions.LankyCabin: Region("Lanky Cabin", Levels.CrystalCaves, False, [
-        Location("Caves Lanky 1 Door Cabin", lambda l: l.sprint and l.balloon and l.islanky),
+        LocationLogic(Locations.CavesLanky1DoorCabin, lambda l: l.sprint and l.balloon and l.islanky),
     ], [], [
         Exit(Regions.CabinArea, lambda l: True),
     ]),
 
     Regions.TinyCabin: Region("Tiny Cabin", Levels.CrystalCaves, False, [
-        Location("Caves Tiny 5 Door Cabin", lambda l: l.istiny),
+        LocationLogic(Locations.CavesTiny5DoorCabin, lambda l: l.istiny),
     ], [], [
         Exit(Regions.CabinArea, lambda l: True),
     ]),
 
     Regions.ChunkyCabin: Region("Chunky Cabin", Levels.CrystalCaves, False, [
-        Location("Caves Chunky 5 Door Cabin", lambda l: l.gorillaGone and l.Slam and l.ischunky),
+        LocationLogic(Locations.CavesChunky5DoorCabin, lambda l: l.gorillaGone and l.Slam and l.ischunky),
     ], [], [
         Exit(Regions.CabinArea, lambda l: True),
     ]),
@@ -160,6 +161,6 @@ LogicRegions = {
     ]),
 
     Regions.CavesBoss: Region("Caves Boss", Levels.CrystalCaves, False, [
-        Location("Caves Key", lambda l: l.isdonkey),
+        LocationLogic(Locations.CavesKey, lambda l: l.isdonkey),
     ], [], []),
 }

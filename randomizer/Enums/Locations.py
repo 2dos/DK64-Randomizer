@@ -212,6 +212,7 @@ class Locations(IntEnum):
     CavesTinyMonkeyportIgloo = auto()
     CavesChunkyGorillaGone = auto()
     CavesDonkeyKasplat = auto()
+    CavesDiddyKasplat = auto()
     CavesLankyKasplat = auto()
     CavesTinyKasplat = auto()
     CavesLankBeetleRace = auto()
