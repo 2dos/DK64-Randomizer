@@ -4,7 +4,8 @@
 from randomizer.Enums.Events import Events
 from randomizer.Enums.Levels import Levels
 from randomizer.Enums.Regions import Regions
-from randomizer.LogicClasses import Event, Exit, Location, Region
+from randomizer.Enums.Locations import Locations
+from randomizer.LogicClasses import Event, Exit, LocationLogic, Region
 
 LogicRegions = {
     Regions.HideoutHelmStart: Region("Hideout Helm Start", Levels.HideoutHelm, True, [], [], [
@@ -13,15 +14,15 @@ LogicRegions = {
     ]),
 
     Regions.HideoutHelmMain: Region("Hideout Helm Main", Levels.HideoutHelm, True, [
-        Location("Helm Battle Arena", lambda l: l.jetpack),
-        Location("Helm Donkey Medal", lambda l: Events.HelmDonkeyDone in l.Events),
-        Location("Helm Chunky Medal", lambda l: Events.HelmChunkyDone in l.Events),
-        Location("Helm Tiny Medal", lambda l: Events.HelmTinyDone in l.Events),
-        Location("Helm Lanky Medal", lambda l: Events.HelmLankyDone in l.Events),
-        Location("Helm Diddy Medal", lambda l: Events.HelmDiddyDone in l.Events),
-        Location("Helm Banana Fairy 1", lambda l: l.camera and Events.HelmKeyAccess in l.Events),
-        Location("Helm Banana Fairy 2", lambda l: l.camera and Events.HelmKeyAccess in l.Events),
-        Location("Helm Key", lambda l: Events.HelmKeyAccess in l.Events),
+        LocationLogic(Locations.HelmBattleArena, lambda l: l.jetpack),
+        LocationLogic(Locations.HelmDonkeyMedal, lambda l: Events.HelmDonkeyDone in l.Events),
+        LocationLogic(Locations.HelmChunkyMedal, lambda l: Events.HelmChunkyDone in l.Events),
+        LocationLogic(Locations.HelmTinyMedal, lambda l: Events.HelmTinyDone in l.Events),
+        LocationLogic(Locations.HelmLankyMedal, lambda l: Events.HelmLankyDone in l.Events),
+        LocationLogic(Locations.HelmDiddyMedal, lambda l: Events.HelmDiddyDone in l.Events),
+        LocationLogic(Locations.HelmBananaFairy1, lambda l: l.camera and Events.HelmKeyAccess in l.Events),
+        LocationLogic(Locations.HelmBananaFairy2, lambda l: l.camera and Events.HelmKeyAccess in l.Events),
+        LocationLogic(Locations.HelmKey, lambda l: Events.HelmKeyAccess in l.Events),
     ], [
         Event(Events.HelmDoorsOpened, lambda l: l.grab and l.jetpack),
         Event(Events.HelmDonkeyDone, lambda l: Events.HelmDoorsOpened in l.Events and l.punch and l.bongos),

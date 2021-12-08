@@ -2,18 +2,13 @@
 from randomizer.Enums.Kongs import Kongs
 
 
-class Location:
-    """A shufflable location at which a random item can be placed."""
+class LocationLogic:
+    """Logic for a location."""
 
-    def __init__(self, name, logic):
+    def __init__(self, id, logic):
         """Initialize with given parameters."""
-        self.name = name
+        self.id = id
         self.logic = logic  # Lambda function for accessibility
-        self.item = None
-
-    def PlaceItem(self, item):
-        """Place item at this location."""
-        self.item = item
 
 
 class Event:
@@ -42,12 +37,13 @@ class Exit:
 class Collectible:
     """Class used for colored bananas and banana coins."""
 
-    def __init__(self, type, kong, logic, amount=1):
+    def __init__(self, type, kong, logic, coords, amount=1):
         """Initialize with given parameters."""
         self.type = type
         self.kong = kong
         self.logic = logic
         self.amount = amount
+        self.coords = coords
         self.added = False
 
 
@@ -118,7 +114,3 @@ class Region:
         self.lankyAccess = False
         self.tinyAccess = False
         self.chunkyAccess = False
-
-    def GetLocation(self, location):
-        """Get a specific location from this region given its name."""
-        return [x for x in self.locations if x.name == location][0]

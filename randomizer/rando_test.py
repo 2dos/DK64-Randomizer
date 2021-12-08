@@ -2,6 +2,8 @@
 import random
 import json
 from randomizer.Fill import Fill
+from randomizer.Spoiler import Spoiler
+from randomizer.Settings import Settings
 
 
 def run(fill_type):
@@ -14,4 +16,7 @@ def run(fill_type):
         str: Currently just a placeholder string return to prove the data moving back to the main UI.
     """
     random.seed()
-    return json.dumps(Fill(fill_type))
+    settings = Settings()
+    settings.algorithm = fill_type
+    spoiler = Spoiler(settings)
+    return json.dumps(Fill(spoiler))
