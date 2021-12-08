@@ -170,3 +170,5 @@ randomizer/test.py
 test.py
 *.sym
 base-hack/obj
+base-hack/rom/patch.bps
+base-hack/rom/dk64-randomizer-base.wch
