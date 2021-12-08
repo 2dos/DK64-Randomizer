@@ -1,3 +1,4 @@
+"""Dump the pointer tables of our modified rom."""
 from recompute_pointer_table import parsePointerTables, dumpPointerTableDetails
 
 ROMName = "./rom/dk64-randomizer-base-dev.z64"

@@ -1,3 +1,4 @@
+"""Character spawner names."""
 character_spawner_names = [
     "Beaver",
     "Giant Clam",
