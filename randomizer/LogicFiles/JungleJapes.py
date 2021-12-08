@@ -10,11 +10,11 @@ from randomizer.LogicClasses import Event, Exit, LocationLogic, Region
 
 LogicRegions = {
     Regions.JungleJapesMain: Region("Jungle Japes Main", Levels.JungleJapes, True, [
-        LocationLogic(Locations.JapesDonkeyMedal, lambda l: l.ColoredBananas[Levels.JungleJapes][Kongs.Donkey] >= 75),
-        LocationLogic(Locations.JapesDiddyMedal, lambda l: l.ColoredBananas[Levels.JungleJapes][Kongs.Diddy] >= 75),
-        LocationLogic(Locations.JapesLankyMedal, lambda l: l.ColoredBananas[Levels.JungleJapes][Kongs.Lanky] >= 75),
-        LocationLogic(Locations.JapesTinyMedal, lambda l: l.ColoredBananas[Levels.JungleJapes][Kongs.Tiny] >= 75),
-        LocationLogic(Locations.JapesChunkyMedal, lambda l: l.ColoredBananas[Levels.JungleJapes][Kongs.Chunky] >= 75),
+        LocationLogic(Locations.JapesDonkeyMedal, lambda l: l.ColoredBananas[Levels.JungleJapes][Kongs.donkey] >= 75),
+        LocationLogic(Locations.JapesDiddyMedal, lambda l: l.ColoredBananas[Levels.JungleJapes][Kongs.diddy] >= 75),
+        LocationLogic(Locations.JapesLankyMedal, lambda l: l.ColoredBananas[Levels.JungleJapes][Kongs.lanky] >= 75),
+        LocationLogic(Locations.JapesTinyMedal, lambda l: l.ColoredBananas[Levels.JungleJapes][Kongs.tiny] >= 75),
+        LocationLogic(Locations.JapesChunkyMedal, lambda l: l.ColoredBananas[Levels.JungleJapes][Kongs.chunky] >= 75),
         LocationLogic(Locations.DiddyKong, lambda l: l.coconut),
         LocationLogic(Locations.JapesDonkeyFrontofCage, lambda l: l.isdonkey),
         LocationLogic(Locations.JapesDonkeyFreeDiddy, lambda l: l.coconut and l.isdonkey),
@@ -121,8 +121,7 @@ LogicRegions = {
     ]),
 
     Regions.JapesBossLobby: Region("Japes Boss Lobby", Levels.JungleJapes, True, [], [], [
-        # 50 bananas
-        Exit(Regions.JapesBoss, lambda l: l.isdonkey),
+        Exit(Regions.JapesBoss, lambda l: l.isdonkey and sum(l.ColoredBananas[Levels.JungleJapes]) >= 50),
     ]),
 
     Regions.JapesBoss: Region("Japes Boss", Levels.JungleJapes, False, [

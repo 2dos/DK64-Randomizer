@@ -10,11 +10,11 @@ from randomizer.LogicClasses import Event, Exit, LocationLogic, Region
 
 LogicRegions = {
     Regions.CreepyCastleMain: Region("Creepy Castle Main", Levels.CreepyCastle, True, [
-        LocationLogic(Locations.CastleDonkeyMedal, lambda l: l.ColoredBananas[Levels.CreepyCastle][Kongs.Donkey] >= 75),
-        LocationLogic(Locations.CastleDiddyMedal, lambda l: l.ColoredBananas[Levels.CreepyCastle][Kongs.Diddy] >= 75),
-        LocationLogic(Locations.CastleLankyMedal, lambda l: l.ColoredBananas[Levels.CreepyCastle][Kongs.Lanky] >= 75),
-        LocationLogic(Locations.CastleTinyMedal, lambda l: l.ColoredBananas[Levels.CreepyCastle][Kongs.Tiny] >= 75),
-        LocationLogic(Locations.CastleChunkyMedal, lambda l: l.ColoredBananas[Levels.CreepyCastle][Kongs.Chunky] >= 75),
+        LocationLogic(Locations.CastleDonkeyMedal, lambda l: l.ColoredBananas[Levels.CreepyCastle][Kongs.donkey] >= 75),
+        LocationLogic(Locations.CastleDiddyMedal, lambda l: l.ColoredBananas[Levels.CreepyCastle][Kongs.diddy] >= 75),
+        LocationLogic(Locations.CastleLankyMedal, lambda l: l.ColoredBananas[Levels.CreepyCastle][Kongs.lanky] >= 75),
+        LocationLogic(Locations.CastleTinyMedal, lambda l: l.ColoredBananas[Levels.CreepyCastle][Kongs.tiny] >= 75),
+        LocationLogic(Locations.CastleChunkyMedal, lambda l: l.ColoredBananas[Levels.CreepyCastle][Kongs.chunky] >= 75),
         LocationLogic(Locations.CastleDiddyAboveCastle, lambda l: l.jetpack and l.isdiddy),
         LocationLogic(Locations.CastleLankyKasplat, lambda l: l.islanky),
         LocationLogic(Locations.CastleTinyKasplat, lambda l: l.istiny),
@@ -153,8 +153,7 @@ LogicRegions = {
     ]),
 
     Regions.CastleBossLobby: Region("Castle Boss Lobby", Levels.CreepyCastle, True, [], [], [
-        # 400 bananas
-        Exit(Regions.CastleBoss, lambda l: l.islanky),
+        Exit(Regions.CastleBoss, lambda l: l.islanky and sum(l.ColoredBananas[Levels.CreepyCastle]) >= 400),
     ]),
 
     Regions.CastleBoss: Region("Castle Boss", Levels.CreepyCastle, False, [

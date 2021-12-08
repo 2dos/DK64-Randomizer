@@ -10,11 +10,11 @@ from randomizer.LogicClasses import Event, Exit, LocationLogic, Region
 
 LogicRegions = {
     Regions.AngryAztecStart: Region("Angry Aztec Start", Levels.AngryAztec, True, [
-        LocationLogic(Locations.AztecDonkeyMedal, lambda l: l.ColoredBananas[Levels.AngryAztec][Kongs.Donkey] >= 75),
-        LocationLogic(Locations.AztecDiddyMedal, lambda l: l.ColoredBananas[Levels.AngryAztec][Kongs.Diddy] >= 75),
-        LocationLogic(Locations.AztecLankyMedal, lambda l: l.ColoredBananas[Levels.AngryAztec][Kongs.Lanky] >= 75),
-        LocationLogic(Locations.AztecTinyMedal, lambda l: l.ColoredBananas[Levels.AngryAztec][Kongs.Tiny] >= 75),
-        LocationLogic(Locations.AztecChunkyMedal, lambda l: l.ColoredBananas[Levels.AngryAztec][Kongs.Chunky] >= 75),
+        LocationLogic(Locations.AztecDonkeyMedal, lambda l: l.ColoredBananas[Levels.AngryAztec][Kongs.donkey] >= 75),
+        LocationLogic(Locations.AztecDiddyMedal, lambda l: l.ColoredBananas[Levels.AngryAztec][Kongs.diddy] >= 75),
+        LocationLogic(Locations.AztecLankyMedal, lambda l: l.ColoredBananas[Levels.AngryAztec][Kongs.lanky] >= 75),
+        LocationLogic(Locations.AztecTinyMedal, lambda l: l.ColoredBananas[Levels.AngryAztec][Kongs.tiny] >= 75),
+        LocationLogic(Locations.AztecChunkyMedal, lambda l: l.ColoredBananas[Levels.AngryAztec][Kongs.chunky] >= 75),
         LocationLogic(Locations.AztecDonkeyFreeLlama, lambda l: Events.LlamaFreed in l.Events and l.isdonkey),
         LocationLogic(Locations.AztecChunkyVases, lambda l: l.pineapple and l.ischunky),
         LocationLogic(Locations.AztecDonkeyKasplat, lambda l: l.coconut and l.strongKong and l.isdonkey),
@@ -118,8 +118,7 @@ LogicRegions = {
     ], [], []),
 
     Regions.AztecBossLobby: Region("Aztec Boss Lobby", Levels.AngryAztec, True, [], [], [
-        # 120 bananas
-        Exit(Regions.AztecBoss, lambda l: l.isdiddy),
+        Exit(Regions.AztecBoss, lambda l: l.isdiddy and sum(l.ColoredBananas[Levels.AngryAztec]) >= 120),
     ]),
 
     Regions.AztecBoss: Region("Aztec Boss", Levels.AngryAztec, False, [

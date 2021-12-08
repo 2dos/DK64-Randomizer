@@ -10,11 +10,11 @@ from randomizer.LogicClasses import Event, Exit, LocationLogic, Region
 
 LogicRegions = {
     Regions.CrystalCavesMain: Region("Crystal Caves Main", Levels.CrystalCaves, True, [
-        LocationLogic(Locations.CavesDonkeyMedal, lambda l: l.ColoredBananas[Levels.CrystalCaves][Kongs.Donkey] >= 75),
-        LocationLogic(Locations.CavesDiddyMedal, lambda l: l.ColoredBananas[Levels.CrystalCaves][Kongs.Diddy] >= 75),
-        LocationLogic(Locations.CavesLankyMedal, lambda l: l.ColoredBananas[Levels.CrystalCaves][Kongs.Lanky] >= 75),
-        LocationLogic(Locations.CavesTinyMedal, lambda l: l.ColoredBananas[Levels.CrystalCaves][Kongs.Tiny] >= 75),
-        LocationLogic(Locations.CavesChunkyMedal, lambda l: l.ColoredBananas[Levels.CrystalCaves][Kongs.Chunky] >= 75),
+        LocationLogic(Locations.CavesDonkeyMedal, lambda l: l.ColoredBananas[Levels.CrystalCaves][Kongs.donkey] >= 75),
+        LocationLogic(Locations.CavesDiddyMedal, lambda l: l.ColoredBananas[Levels.CrystalCaves][Kongs.diddy] >= 75),
+        LocationLogic(Locations.CavesLankyMedal, lambda l: l.ColoredBananas[Levels.CrystalCaves][Kongs.lanky] >= 75),
+        LocationLogic(Locations.CavesTinyMedal, lambda l: l.ColoredBananas[Levels.CrystalCaves][Kongs.tiny] >= 75),
+        LocationLogic(Locations.CavesChunkyMedal, lambda l: l.ColoredBananas[Levels.CrystalCaves][Kongs.chunky] >= 75),
         LocationLogic(Locations.CavesDonkeyBaboonBlast, lambda l: l.blast and l.isdonkey),
         LocationLogic(Locations.CavesDiddyJetpackBarrel, lambda l: l.jetpack and l.isdiddy),
         LocationLogic(Locations.CavesTinyKrazyKongKlamour, lambda l: l.mini and l.istiny),
@@ -162,8 +162,7 @@ LogicRegions = {
     ]),
 
     Regions.CavesBossLobby: Region("Caves Boss Lobby", Levels.CrystalCaves, True, [], [], [
-        # 350 bananas
-        Exit(Regions.CavesBoss, lambda l: l.isdonkey),
+        Exit(Regions.CavesBoss, lambda l: l.isdonkey and sum(l.ColoredBananas[Levels.CrystalCaves]) >= 350),
     ]),
 
     Regions.CavesBoss: Region("Caves Boss", Levels.CrystalCaves, False, [

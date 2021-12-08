@@ -64,6 +64,11 @@ LocationList = {
     Locations.BananaHoard: Location("Banana Hoard"),
 
     # Jungle Japes location
+    Locations.JapesDonkeyMedal: Location("Japes Donkey Medal"),
+    Locations.JapesDiddyMedal: Location("Japes Diddy Medal"),
+    Locations.JapesLankyMedal: Location("Japes Lanky Medal"),
+    Locations.JapesTinyMedal: Location("Japes Tiny Medal"),
+    Locations.JapesChunkyMedal: Location("Japes Chunky Medal"),
     Locations.DiddyKong: Location("Diddy Kong"),
     Locations.JapesDonkeyFrontofCage: Location("Japes Donkey Front of Cage"),
     Locations.JapesDonkeyFreeDiddy: Location("Japes Donkey Free Diddy"),
@@ -96,6 +101,11 @@ LocationList = {
     Locations.JapesKey: Location("Japes Key"),
 
     # Angry Aztec
+    Locations.AztecDonkeyMedal: Location("Aztec Donkey Medal"),
+    Locations.AztecDiddyMedal: Location("Aztec Diddy Medal"),
+    Locations.AztecLankyMedal: Location("Aztec Lanky Medal"),
+    Locations.AztecTinyMedal: Location("Aztec Tiny Medal"),
+    Locations.AztecChunkyMedal: Location("Aztec Chunky Medal"),
     Locations.AztecDonkeyFreeLlama: Location("Aztec Donkey Free Llama"),
     Locations.AztecChunkyVases: Location("Aztec Chunky Vases"),
     Locations.AztecDonkeyKasplat: Location("Aztec Donkey Kasplat"),
@@ -129,6 +139,11 @@ LocationList = {
     Locations.AztecKey: Location("Aztec Key"),
 
     # Frantic Factory locations
+    Locations.FactoryDonkeyMedal: Location("Factory Donkey Medal"),
+    Locations.FactoryDiddyMedal: Location("Factory Diddy Medal"),
+    Locations.FactoryLankyMedal: Location("Factory Lanky Medal"),
+    Locations.FactoryTinyMedal: Location("Factory Tiny Medal"),
+    Locations.FactoryChunkyMedal: Location("Factory Chunky Medal"),
     Locations.FactoryDonkeyNumberGame: Location("Factory Donkey Number Game"),
     Locations.FactoryDiddyBlockTower: Location("Factory Diddy Block Tower"),
     Locations.FactoryLankyBattyBarrelBandit: Location("Factory Lanky Batty Barrel Bandit"),
@@ -162,6 +177,11 @@ LocationList = {
     Locations.FactoryKey: Location("Factory Key"),
 
     # Gloomy Galleon locations
+    Locations.GalleonDonkeyMedal: Location("Galleon Donkey Medal"),
+    Locations.GalleonDiddyMedal: Location("Galleon Diddy Medal"),
+    Locations.GalleonLankyMedal: Location("Galleon Lanky Medal"),
+    Locations.GalleonTinyMedal: Location("Galleon Tiny Medal"),
+    Locations.GalleonChunkyMedal: Location("Galleon Chunky Medal"),
     Locations.GalleonChunkyChest: Location("Galleon Chunky Chest"),
     Locations.GalleonTinyKasplat: Location("Galleon Tiny Kasplat"),
     Locations.GalleonBattleArena: Location("Galleon Battle Arena"),
@@ -193,6 +213,11 @@ LocationList = {
     Locations.GalleonKey: Location("Galleon Key"),
 
     # Fungi Forest locations
+    Locations.ForestDonkeyMedal: Location("Forest Donkey Medal"),
+    Locations.ForestDiddyMedal: Location("Forest Diddy Medal"),
+    Locations.ForestLankyMedal: Location("Forest Lanky Medal"),
+    Locations.ForestTinyMedal: Location("Forest Tiny Medal"),
+    Locations.ForestChunkyMedal: Location("Forest Chunky Medal"),
     Locations.ForestChunkyMinecarts: Location("Forest Chunky Minecarts"),
     Locations.ForestDiddyTopofMushroom: Location("Forest Diddy Top of Mushroom"),
     Locations.ForestTinySpeedySwingSortie: Location("Forest Tiny Speedy Swing Sortie"),
@@ -224,6 +249,11 @@ LocationList = {
     Locations.ForestKey: Location("Forest Key"),
 
     # Crystal Caves locations
+    Locations.CavesDonkeyMedal: Location("Caves Donkey Medal"),
+    Locations.CavesDiddyMedal: Location("Caves Diddy Medal"),
+    Locations.CavesLankyMedal: Location("Caves Lanky Medal"),
+    Locations.CavesTinyMedal: Location("Caves Tiny Medal"),
+    Locations.CavesChunkyMedal: Location("Caves Chunky Medal"),
     Locations.CavesDonkeyBaboonBlast: Location("Caves Donkey Baboon Blast"),
     Locations.CavesDiddyJetpackBarrel: Location("Caves Diddy Jetpack Barrel"),
     Locations.CavesTinyKrazyKongKlamour: Location("Caves Tiny Krazy Kong Klamour"),
@@ -255,6 +285,11 @@ LocationList = {
     Locations.CavesKey: Location("Caves Key"),
 
     # Creepy Castle locations
+    Locations.CastleDonkeyMedal: Location("Castle Donkey Medal"),
+    Locations.CastleDiddyMedal: Location("Castle Diddy Medal"),
+    Locations.CastleLankyMedal: Location("Castle Lanky Medal"),
+    Locations.CastleTinyMedal: Location("Castle Tiny Medal"),
+    Locations.CastleChunkyMedal: Location("Castle Chunky Medal"),
     Locations.CastleDiddyAboveCastle: Location("Castle Diddy Above Castle"),
     Locations.CastleLankyKasplat: Location("Castle Lanky Kasplat"),
     Locations.CastleTinyKasplat: Location("Castle Tiny Kasplat"),

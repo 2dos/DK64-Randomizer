@@ -110,9 +110,9 @@ class LogicVarHolder:
 
         # Colored banana and coin arrays
         # Colored bananas as 8 arrays of 5, only need 7 but leave room for DK Isles since we use the enum
-        self.coloredBananas = []
+        self.ColoredBananas = []
         for i in range(8):
-            self.coloredBananas.append([0] * 5)
+            self.ColoredBananas.append([0] * 5)
         self.Coins = [0] * 5
 
         # These access variables based on current region
@@ -279,10 +279,15 @@ class LogicVarHolder:
                 self.Coins[collectible.kong] += collectible.amount
         # Add bananas for correct level for this kong
         elif collectible.type == Collectibles.banana:
-            self.coloredBananas[level][collectible.kong] += collectible.amount
+            if collectible.kong == Kongs.lanky:
+                a = 1
+            self.ColoredBananas[level][collectible.kong] += collectible.amount
+        # Add 5 times amount of banana bunches
+        elif collectible.type == Collectibles.bunch:
+            self.ColoredBananas[level][collectible.kong] += collectible.amount * 5
         # Add 10 bananas for a balloon
         elif collectible.type == Collectibles.balloon:
-            self.coloredBananas[level][collectible.kong] += 10
+            self.ColoredBananas[level][collectible.kong] += 10
         collectible.added = True
 
 
