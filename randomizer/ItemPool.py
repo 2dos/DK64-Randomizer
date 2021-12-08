@@ -2,6 +2,23 @@
 import itertools
 
 from randomizer.Enums.Items import Items
+from randomizer.Enums.Locations import Locations
+from randomizer.Location import LocationList
+
+
+def PlaceConstants():
+    """Place items which are to be put in a hard-coded location."""
+    # Banana Hoard: Pseudo-item used to represent game completion by defeating K. Rool
+    LocationList[Locations.BananaHoard].PlaceItem(Items.BananaHoard)
+    # Keys
+    LocationList[Locations.JapesKey].PlaceItem(Items.JungleJapesKey)
+    LocationList[Locations.AztecKey].PlaceItem(Items.AngryAztecKey)
+    LocationList[Locations.FactoryKey].PlaceItem(Items.FranticFactoryKey)
+    LocationList[Locations.GalleonKey].PlaceItem(Items.GloomyGalleonKey)
+    LocationList[Locations.ForestKey].PlaceItem(Items.FungiForestKey)
+    LocationList[Locations.CavesKey].PlaceItem(Items.CrystalCavesKey)
+    LocationList[Locations.CastleKey].PlaceItem(Items.CreepyCastleKey)
+    LocationList[Locations.HelmKey].PlaceItem(Items.HideoutHelmKey)
 
 
 def Blueprints():
@@ -139,8 +156,7 @@ def HighPriorityItems():
 
     Placing these first prevents fill failures.
     """
-    itemPool = Keys()
-    itemPool.extend(Kongs())
+    itemPool = Kongs()
     itemPool.extend(Guns())
     itemPool.extend(Instruments())
     itemPool.extend(Upgrades())

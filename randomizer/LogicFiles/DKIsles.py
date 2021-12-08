@@ -49,12 +49,12 @@ LogicRegions = {
         LocationLogic(Locations.IslesLankyPrisonOrangsprint, lambda l: l.sprint and l.islanky),
     ], [
         Event(Events.KLumsyTalkedTo, lambda l: True),
-        Event(Events.FirstKey, lambda l: l.JapesKey),
-        Event(Events.SecondKey, lambda l: l.AztecKey),
-        Event(Events.FourthKey, lambda l: l.GalleonKey),
-        Event(Events.FifthKey, lambda l: l.ForestKey),
-        Event(Events.SeventhKey, lambda l: l.CavesKey and l.CastleKey),
-        Event(Events.EigthKey, lambda l: l.FactoryKey and l.HelmKey),
+        Event(Events.FirstKey, lambda l: True),
+        Event(Events.SecondKey, lambda l: True),
+        Event(Events.FourthKey, lambda l: True),
+        Event(Events.FifthKey, lambda l: True),
+        Event(Events.SeventhKey, lambda l: True),
+        Event(Events.EigthKey, lambda l: l.JapesKey and l.AztecKey and l.FactoryKey and l.GalleonKey and l.ForestKey and l.CavesKey and l.CastleKey and l.HelmKey),
     ], [
         Exit(Regions.IslesMain, lambda l: True),
     ]),
@@ -149,7 +149,7 @@ LogicRegions = {
         LocationLogic(Locations.IslesDonkeyKasplat, lambda l: l.coconut),
     ], [], [
         Exit(Regions.IslesMain, lambda l: True),
-        Exit(Regions.HideoutHelmStart, lambda l: l.gorillaGone),
+        Exit(Regions.HideoutHelmStart, lambda l: l.gorillaGone and l.GoldenBananas >= 100),
     ]),
 
     Regions.KRool: Region("K. Rool", Levels.DKIsles, True, [

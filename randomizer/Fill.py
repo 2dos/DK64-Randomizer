@@ -218,8 +218,8 @@ def Fill(algorithm):
     retries = 0
     while retries < 5:
         try:
-            # First place win condition item at K Rool
-            LocationList[Locations.BananaHoard].PlaceItem(Items.BananaHoard)
+            # Place constant items
+            ItemPool.PlaceConstants()
             # Then place priority (logically very important) items
             highPriorityUnplaced = PlaceItems(algorithm, ItemPool.HighPriorityItems(), ItemPool.HighPriorityAssumedItems())
             if highPriorityUnplaced > 0:
