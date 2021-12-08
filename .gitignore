@@ -149,6 +149,8 @@ spoilerlog*.txt
 settings*.asm
 settings*.json
 *.z64
+*.n64
+*.v64
 *.bin
 *.bin.gz
 codeOutput.txt
@@ -165,4 +167,4 @@ tools/*
 tools/importers/*
 !tools/importers/*.py
 *.sym
-!base-hack/Build/
+base-hack/obj

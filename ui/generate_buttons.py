@@ -8,6 +8,7 @@ import inspect
 from ui.rando_options import update_disabled_progression
 from randomizer.rando_test import run
 import randomizer.worker as worker
+
 # from datetime import datetime
 
 
@@ -71,12 +72,14 @@ def generate_seed(event):
                     form_data[element.name] = False
         for element in disabled_options:
             element.setAttribute("disabled", "disabled")
+        print(data.get(":"))
         # TODO: This is the entrypoint of builds, we need to make sure we properly set this up
         # print(form_data)
         # print(datetime.now())
-        #worker.background(run, ["'assumed'"], test)
+        # worker.background(run, ["'assumed'"], test)
         # This is what the returning function used to be
         # patch_files.start_randomizing_seed(dict(data.get("form_data"))
+
 
 @bind("click", "nav-seed-gen-tab")
 @bind("click", "nav-patch-tab")
