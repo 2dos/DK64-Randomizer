@@ -4,15 +4,15 @@ import random
 
 import randomizer.ItemPool as ItemPool
 import randomizer.Logic as Logic
+import randomizer.Exceptions as Ex
 from randomizer.Location import LocationList
+from randomizer.Item import ItemList
+from randomizer.Logic import LogicVariables
 
 from randomizer.Enums.Items import Items
 from randomizer.Enums.Locations import Locations
 from randomizer.Enums.Regions import Regions
 from randomizer.Enums.SearchMode import SearchMode
-
-from randomizer.Item import ItemList
-from randomizer.Logic import LogicVariables
 
 
 def GetAccessibleLocations(ownedItems, searchType=SearchMode.GetReachable):
@@ -223,25 +223,25 @@ def Fill(algorithm):
             # Then place priority (logically very important) items
             highPriorityUnplaced = PlaceItems(algorithm, ItemPool.HighPriorityItems(), ItemPool.HighPriorityAssumedItems())
             if highPriorityUnplaced > 0:
-                raise Exception(str(highPriorityUnplaced) + " unplaced high priority items.")
+                raise Ex.ItemPlacementException(str(highPriorityUnplaced) + " unplaced high priority items.")
             # Then place blueprints
             Reset()
             blueprintsUnplaced = PlaceItems(algorithm, ItemPool.Blueprints(), ItemPool.BlueprintAssumedItems())
             if blueprintsUnplaced > 0:
-                raise Exception(str(blueprintsUnplaced) + " unplaced blueprints.")
+                raise Ex.ItemPlacementException(str(blueprintsUnplaced) + " unplaced blueprints.")
             # Then place the rest of items
             Reset()
             lowPriorityUnplaced = PlaceItems(algorithm, ItemPool.LowPriorityItems(), ItemPool.ExcessItems())
             if lowPriorityUnplaced > 0:
-                raise Exception(str(lowPriorityUnplaced) + " unplaced low priority items.")
+                raise Ex.ItemPlacementException(str(lowPriorityUnplaced) + " unplaced low priority items.")
             # Finally place excess items fully randomly
             excessUnplaced = RandomFill(ItemPool.ExcessItems())
             if excessUnplaced > 0:
-                raise Exception(str(excessUnplaced) + " unplaced excess items.")
+                raise Ex.ItemPlacementException(str(excessUnplaced) + " unplaced excess items.")
             # Check if game is beatable
             Reset()
             if not GetAccessibleLocations([], SearchMode.CheckBeatable):
-                raise Exception("Game unbeatable after placing all items.")
+                raise Ex.GameNotBeatableException("Game unbeatable after placing all items.")
             # Generate and display the playthrough
             Reset()
             PlaythroughLocations = GetAccessibleLocations([], SearchMode.GeneratePlaythrough)
