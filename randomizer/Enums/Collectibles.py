@@ -6,5 +6,6 @@ class Collectibles(IntEnum):
     """Collectible enum."""
 
     banana = auto()
+    bunch = auto()
     balloon = auto()
     coin = auto()

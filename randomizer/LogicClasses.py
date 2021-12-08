@@ -37,12 +37,13 @@ class Exit:
 class Collectible:
     """Class used for colored bananas and banana coins."""
 
-    def __init__(self, type, kong, logic, amount=1):
+    def __init__(self, type, kong, logic, coords, amount=1):
         """Initialize with given parameters."""
         self.type = type
         self.kong = kong
         self.logic = logic
         self.amount = amount
+        self.coords = coords
         self.added = False
 
 
