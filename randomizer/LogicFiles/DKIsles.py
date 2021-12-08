@@ -154,6 +154,6 @@ LogicRegions = {
 
     Regions.KRool: Region("K. Rool", Levels.DKIsles, True, [
         LocationLogic(Locations.BananaHoard, lambda l: l.donkeyAccess and l.jetpack and l.peanut and l.diddyAccess and l.trombone and l.lankyAccess
-                 and l.mini and l.feather and l.tinyAccess and l.superSlam and l.gorillaGone and l.hunkyChunky and l.chunkyAccess),
+                      and l.mini and l.feather and l.tinyAccess and l.superSlam and l.gorillaGone and l.hunkyChunky and l.chunkyAccess),
     ], [], []),
 }

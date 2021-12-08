@@ -1,8 +1,10 @@
+"""Spoiler class and functions."""
 
 from Location import LocationList
 from Item import ItemList
 
-class Spoiler():
+
+class Spoiler:
     """Class which contains all spoiler data passed into and out of randomizer."""
 
     def __init__(self, settings):

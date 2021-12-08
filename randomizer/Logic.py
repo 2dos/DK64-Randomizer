@@ -331,6 +331,7 @@ def ResetCollectibleRegions():
         for collectible in region:
             collectible.added = False
 
+
 def ClearAllLocations():
     """Clear item from every location."""
     for location in LocationList.values():

@@ -60,19 +60,27 @@ def GetAccessibleLocations(ownedItems, searchType=SearchMode.GetReachable):
             regionPool = [startRegion]
             addedRegions = [Regions.Start]
 
-            tagAccess = [(key, value) for (key, value) in Logic.Regions.items() if value.HasAccess(kong) and key not in addedRegions]
-            addedRegions.extend([x[0] for x in tagAccess]) # first value is the region key
-            regionPool.extend([x[1] for x in tagAccess]) # second value is the region itself
+            tagAccess = [
+                (key, value)
+                for (key, value) in Logic.Regions.items()
+                if value.HasAccess(kong) and key not in addedRegions
+            ]
+            addedRegions.extend([x[0] for x in tagAccess])  # first value is the region key
+            regionPool.extend([x[1] for x in tagAccess])  # second value is the region itself
 
             # Loop for each region until no more accessible regions found
             while len(regionPool) > 0:
                 region = regionPool.pop()
-                region.UpdateAccess(kong, LogicVariables) # Set that this kong has access to this region
-                LogicVariables.UpdateCurrentRegionAccess(region) # Set in logic as well
+                region.UpdateAccess(kong, LogicVariables)  # Set that this kong has access to this region
+                LogicVariables.UpdateCurrentRegionAccess(region)  # Set in logic as well
 
                 # Check accessibility for each location in this region
                 for location in region.locations:
-                    if location.logic(LogicVariables) and location.id not in newLocations and location.id not in accessible:
+                    if (
+                        location.logic(LogicVariables)
+                        and location.id not in newLocations
+                        and location.id not in accessible
+                    ):
                         newLocations.append(location.id)
                 # Check accessibility for each event in this region
                 for event in region.events:
@@ -222,7 +230,9 @@ def Fill(spoiler):
             # Place constant items
             ItemPool.PlaceConstants()
             # Then place priority (logically very important) items
-            highPriorityUnplaced = PlaceItems(algorithm, ItemPool.HighPriorityItems(), ItemPool.HighPriorityAssumedItems())
+            highPriorityUnplaced = PlaceItems(
+                algorithm, ItemPool.HighPriorityItems(), ItemPool.HighPriorityAssumedItems()
+            )
             if highPriorityUnplaced > 0:
                 raise Ex.ItemPlacementException(str(highPriorityUnplaced) + " unplaced high priority items.")
             # Then place blueprints

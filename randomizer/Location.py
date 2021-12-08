@@ -1,4 +1,7 @@
+"""Stores the Location class and a list of each location in the game."""
+
 from Enums.Locations import Locations
+
 
 class Location:
     """A shufflable location at which a random item can be placed."""
@@ -14,13 +17,14 @@ class Location:
         self.item = item
 
     def SetDelayedItem(self, item):
-        """Sets an item to be added back later."""
+        """Set an item to be added back later."""
         self.delayedItem = item
 
     def PlaceDelayedItem(self):
-        """Places the delayed item at this location."""
+        """Place the delayed item at this location."""
         self.item = self.delayedItem
         self.delayedItem = None
+
 
 LocationList = {
     # DK Isles locations
@@ -62,7 +66,6 @@ LocationList = {
     Locations.IslesChunkyHelmLobby: Location("Isles Chunky Helm Lobby"),
     Locations.IslesDonkeyKasplat: Location("Isles Donkey Kasplat"),
     Locations.BananaHoard: Location("Banana Hoard"),
-
     # Jungle Japes location
     Locations.JapesDonkeyMedal: Location("Japes Donkey Medal"),
     Locations.JapesDiddyMedal: Location("Japes Diddy Medal"),
@@ -99,7 +102,6 @@ LocationList = {
     Locations.JapesChunkyUnderground: Location("Japes Chunky Underground"),
     Locations.JapesChunkyKasplat: Location("Japes Chunky Kasplat"),
     Locations.JapesKey: Location("Japes Key"),
-
     # Angry Aztec
     Locations.AztecDonkeyMedal: Location("Aztec Donkey Medal"),
     Locations.AztecDiddyMedal: Location("Aztec Diddy Medal"),
@@ -137,7 +139,6 @@ LocationList = {
     Locations.AztecTinyLlamaTemple: Location("Aztec Tiny Llama Temple"),
     Locations.AztecLankyKasplat: Location("Aztec Lanky Kasplat"),
     Locations.AztecKey: Location("Aztec Key"),
-
     # Frantic Factory locations
     Locations.FactoryDonkeyMedal: Location("Factory Donkey Medal"),
     Locations.FactoryDiddyMedal: Location("Factory Diddy Medal"),
@@ -175,7 +176,6 @@ LocationList = {
     Locations.FactoryChunkyProductionRoom: Location("Factory Chunky Production Room"),
     Locations.FactoryDonkeyKasplat: Location("Factory Donkey Kasplat"),
     Locations.FactoryKey: Location("Factory Key"),
-
     # Gloomy Galleon locations
     Locations.GalleonDonkeyMedal: Location("Galleon Donkey Medal"),
     Locations.GalleonDiddyMedal: Location("Galleon Diddy Medal"),
@@ -211,7 +211,6 @@ LocationList = {
     Locations.GalleonBananaFairy5DoorShip: Location("Galleon Banana Fairy 5 Door Ship"),
     Locations.GalleonChunky5DoorShip: Location("Galleon Chunky 5 Door Ship"),
     Locations.GalleonKey: Location("Galleon Key"),
-
     # Fungi Forest locations
     Locations.ForestDonkeyMedal: Location("Forest Donkey Medal"),
     Locations.ForestDiddyMedal: Location("Forest Diddy Medal"),
@@ -247,7 +246,6 @@ LocationList = {
     Locations.ForestTinyBeanstalk: Location("Forest Tiny Beanstalk"),
     Locations.ForestChunkyApple: Location("Forest Chunky Apple"),
     Locations.ForestKey: Location("Forest Key"),
-
     # Crystal Caves locations
     Locations.CavesDonkeyMedal: Location("Caves Donkey Medal"),
     Locations.CavesDiddyMedal: Location("Caves Diddy Medal"),
@@ -283,7 +281,6 @@ LocationList = {
     Locations.CavesTiny5DoorCabin: Location("Caves Tiny 5 Door Cabin"),
     Locations.CavesChunky5DoorCabin: Location("Caves Chunky 5 Door Cabin"),
     Locations.CavesKey: Location("Caves Key"),
-
     # Creepy Castle locations
     Locations.CastleDonkeyMedal: Location("Castle Donkey Medal"),
     Locations.CastleDiddyMedal: Location("Castle Diddy Medal"),
@@ -319,7 +316,6 @@ LocationList = {
     Locations.CastleDiddyDungeon: Location("Castle Diddy Dungeon"),
     Locations.CastleLankyDungeon: Location("Castle Lanky Dungeon"),
     Locations.CastleKey: Location("Castle Key"),
-
     # Hideout Helm locations
     Locations.HelmBattleArena: Location("Helm Battle Arena"),
     Locations.HelmDonkeyMedal: Location("Helm Donkey Medal"),
@@ -330,7 +326,6 @@ LocationList = {
     Locations.HelmBananaFairy1: Location("Helm Banana Fairy 1"),
     Locations.HelmBananaFairy2: Location("Helm Banana Fairy 2"),
     Locations.HelmKey: Location("Helm Key"),
-
     # Shop locations
     Locations.CoconutGun: Location("Coconut Gun"),
     Locations.PeanutGun: Location("Peanut Gun"),
@@ -368,7 +363,6 @@ LocationList = {
     Locations.PrimatePunch: Location("Primate Punch"),
     Locations.GorillaGone: Location("Gorilla Gone"),
     Locations.RarewareCoin: Location("Rareware Coin"),
-
     Locations.TurnInDKIslesDonkeyBlueprint: Location("Turn In DK Isles Donkey Blueprint"),
     Locations.TurnInDKIslesDiddyBlueprint: Location("Turn In DK Isles Diddy Blueprint"),
     Locations.TurnInDKIslesLankyBlueprint: Location("Turn In DK Isles Lanky Blueprint"),

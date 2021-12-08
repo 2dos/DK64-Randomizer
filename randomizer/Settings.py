@@ -1,5 +1,7 @@
+"""Settings class and functions."""
 
-class Settings():
+
+class Settings:
     """Class used to store settings for seed generation."""
 
     def __init__(self):
