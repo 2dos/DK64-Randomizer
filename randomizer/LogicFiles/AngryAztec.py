@@ -5,10 +5,16 @@ from randomizer.Enums.Events import Events
 from randomizer.Enums.Levels import Levels
 from randomizer.Enums.Regions import Regions
 from randomizer.Enums.Locations import Locations
+from randomizer.Enums.Kongs import Kongs
 from randomizer.LogicClasses import Event, Exit, LocationLogic, Region
 
 LogicRegions = {
     Regions.AngryAztecStart: Region("Angry Aztec Start", Levels.AngryAztec, True, [
+        LocationLogic(Locations.AztecDonkeyMedal, lambda l: l.ColoredBananas[Levels.AngryAztec][Kongs.Donkey] >= 75),
+        LocationLogic(Locations.AztecDiddyMedal, lambda l: l.ColoredBananas[Levels.AngryAztec][Kongs.Diddy] >= 75),
+        LocationLogic(Locations.AztecLankyMedal, lambda l: l.ColoredBananas[Levels.AngryAztec][Kongs.Lanky] >= 75),
+        LocationLogic(Locations.AztecTinyMedal, lambda l: l.ColoredBananas[Levels.AngryAztec][Kongs.Tiny] >= 75),
+        LocationLogic(Locations.AztecChunkyMedal, lambda l: l.ColoredBananas[Levels.AngryAztec][Kongs.Chunky] >= 75),
         LocationLogic(Locations.AztecDonkeyFreeLlama, lambda l: Events.LlamaFreed in l.Events and l.isdonkey),
         LocationLogic(Locations.AztecChunkyVases, lambda l: l.pineapple and l.ischunky),
         LocationLogic(Locations.AztecDonkeyKasplat, lambda l: l.coconut and l.strongKong and l.isdonkey),

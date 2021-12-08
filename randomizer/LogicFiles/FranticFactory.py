@@ -5,10 +5,17 @@ from randomizer.Enums.Events import Events
 from randomizer.Enums.Levels import Levels
 from randomizer.Enums.Regions import Regions
 from randomizer.Enums.Locations import Locations
+from randomizer.Enums.Kongs import Kongs
 from randomizer.LogicClasses import Event, Exit, LocationLogic, Region
 
 LogicRegions = {
-    Regions.FranticFactoryStart: Region("Frantic Factory Start", Levels.FranticFactory, False, [], [
+    Regions.FranticFactoryStart: Region("Frantic Factory Start", Levels.FranticFactory, False, [
+        LocationLogic(Locations.FactoryDonkeyMedal, lambda l: l.ColoredBananas[Levels.FranticFactory][Kongs.Donkey] >= 75),
+        LocationLogic(Locations.FactoryDiddyMedal, lambda l: l.ColoredBananas[Levels.FranticFactory][Kongs.Diddy] >= 75),
+        LocationLogic(Locations.FactoryLankyMedal, lambda l: l.ColoredBananas[Levels.FranticFactory][Kongs.Lanky] >= 75),
+        LocationLogic(Locations.FactoryTinyMedal, lambda l: l.ColoredBananas[Levels.FranticFactory][Kongs.Tiny] >= 75),
+        LocationLogic(Locations.FactoryChunkyMedal, lambda l: l.ColoredBananas[Levels.FranticFactory][Kongs.Chunky] >= 75),
+    ], [
         Event(Events.FactoryEntered, lambda l: True),
     ], [
         Exit(Regions.FranticFactoryLobby, lambda l: True),

@@ -5,10 +5,16 @@ from randomizer.Enums.Events import Events
 from randomizer.Enums.Levels import Levels
 from randomizer.Enums.Regions import Regions
 from randomizer.Enums.Locations import Locations
+from randomizer.Enums.Kongs import Kongs
 from randomizer.LogicClasses import Event, Exit, LocationLogic, Region
 
 LogicRegions = {
     Regions.JungleJapesMain: Region("Jungle Japes Main", Levels.JungleJapes, True, [
+        LocationLogic(Locations.JapesDonkeyMedal, lambda l: l.ColoredBananas[Levels.JungleJapes][Kongs.Donkey] >= 75),
+        LocationLogic(Locations.JapesDiddyMedal, lambda l: l.ColoredBananas[Levels.JungleJapes][Kongs.Diddy] >= 75),
+        LocationLogic(Locations.JapesLankyMedal, lambda l: l.ColoredBananas[Levels.JungleJapes][Kongs.Lanky] >= 75),
+        LocationLogic(Locations.JapesTinyMedal, lambda l: l.ColoredBananas[Levels.JungleJapes][Kongs.Tiny] >= 75),
+        LocationLogic(Locations.JapesChunkyMedal, lambda l: l.ColoredBananas[Levels.JungleJapes][Kongs.Chunky] >= 75),
         LocationLogic(Locations.DiddyKong, lambda l: l.coconut),
         LocationLogic(Locations.JapesDonkeyFrontofCage, lambda l: l.isdonkey),
         LocationLogic(Locations.JapesDonkeyFreeDiddy, lambda l: l.coconut and l.isdonkey),

@@ -58,7 +58,7 @@ LogicRegions = {
         LocationLogic(Locations.PrimatePunch, lambda l: l.LevelEntered(Levels.FranticFactory) and l.ischunky),
         LocationLogic(Locations.GorillaGone, lambda l: l.LevelEntered(Levels.CrystalCaves) and l.ischunky),
 
-        LocationLogic(Locations.RarewareCoin, lambda l: l.BananaMedals >= 5),
+        LocationLogic(Locations.RarewareCoin, lambda l: l.BananaMedals >= 15),
     ], [], []),
 
     Regions.Snide: Region("Snide", Levels.Shops, False, [

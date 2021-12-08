@@ -158,6 +158,7 @@ def LowPriorityItems():
 
     itemPool.extend(itertools.repeat(Items.GoldenBanana, 100))
     itemPool.extend(itertools.repeat(Items.BananaFairy, 20))
+    itemPool.extend(itertools.repeat(Items.BananaMedal, 15))
     itemPool.extend(itertools.repeat(Items.BattleCrown, 4))
     itemPool.append(Items.NintendoCoin)
     itemPool.append(Items.RarewareCoin)
@@ -180,6 +181,6 @@ def ExcessItems():
     # Collectables
     itemPool.extend(itertools.repeat(Items.GoldenBanana, 101))
     itemPool.extend(itertools.repeat(Items.BattleCrown, 6))
-    itemPool.extend(itertools.repeat(Items.BananaMedal, 5))
+    itemPool.extend(itertools.repeat(Items.BananaMedal, 25))
 
     return itemPool

@@ -5,10 +5,17 @@ from randomizer.Enums.Events import Events
 from randomizer.Enums.Levels import Levels
 from randomizer.Enums.Regions import Regions
 from randomizer.Enums.Locations import Locations
+from randomizer.Enums.Kongs import Kongs
 from randomizer.LogicClasses import Event, Exit, LocationLogic, Region
 
 LogicRegions = {
-    Regions.FungiForestStart: Region("Fungi Forest Start", Levels.FungiForest, True, [], [
+    Regions.FungiForestStart: Region("Fungi Forest Start", Levels.FungiForest, True, [
+        LocationLogic(Locations.ForestDonkeyMedal, lambda l: l.ColoredBananas[Levels.FungiForest][Kongs.Donkey] >= 75),
+        LocationLogic(Locations.ForestDiddyMedal, lambda l: l.ColoredBananas[Levels.FungiForest][Kongs.Diddy] >= 75),
+        LocationLogic(Locations.ForestLankyMedal, lambda l: l.ColoredBananas[Levels.FungiForest][Kongs.Lanky] >= 75),
+        LocationLogic(Locations.ForestTinyMedal, lambda l: l.ColoredBananas[Levels.FungiForest][Kongs.Tiny] >= 75),
+        LocationLogic(Locations.ForestChunkyMedal, lambda l: l.ColoredBananas[Levels.FungiForest][Kongs.Chunky] >= 75),
+    ], [
         Event(Events.ForestEntered, lambda l: True),
         Event(Events.Night, lambda l: l.coconut or l.peanut or l.grape or l.feather or l.pineapple),
     ], [

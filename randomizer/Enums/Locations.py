@@ -46,6 +46,11 @@ class Locations(IntEnum):
     BananaHoard = auto()
 
     # Jungle Japes location
+    JapesDonkeyMedal = auto()
+    JapesDiddyMedal = auto()
+    JapesLankyMedal = auto()
+    JapesTinyMedal = auto()
+    JapesChunkyMedal = auto()
     DiddyKong = auto()
     JapesDonkeyFrontofCage = auto()
     JapesDonkeyFreeDiddy = auto()
@@ -78,6 +83,11 @@ class Locations(IntEnum):
     JapesKey = auto()
 
     # Angry Aztec
+    AztecDonkeyMedal = auto()
+    AztecDiddyMedal = auto()
+    AztecLankyMedal = auto()
+    AztecTinyMedal = auto()
+    AztecChunkyMedal = auto()
     AztecDonkeyFreeLlama = auto()
     AztecChunkyVases = auto()
     AztecDonkeyKasplat = auto()
@@ -111,6 +121,11 @@ class Locations(IntEnum):
     AztecKey = auto()
 
     # Frantic Factory locations
+    FactoryDonkeyMedal = auto()
+    FactoryDiddyMedal = auto()
+    FactoryLankyMedal = auto()
+    FactoryTinyMedal = auto()
+    FactoryChunkyMedal = auto()
     FactoryDonkeyNumberGame = auto()
     FactoryDiddyBlockTower = auto()
     FactoryLankyBattyBarrelBandit = auto()
@@ -144,6 +159,11 @@ class Locations(IntEnum):
     FactoryKey = auto()
 
     # Gloomy Galleon locations
+    GalleonDonkeyMedal = auto()
+    GalleonDiddyMedal = auto()
+    GalleonLankyMedal = auto()
+    GalleonTinyMedal = auto()
+    GalleonChunkyMedal = auto()
     GalleonChunkyChest = auto()
     GalleonTinyKasplat = auto()
     GalleonBattleArena = auto()
@@ -175,6 +195,11 @@ class Locations(IntEnum):
     GalleonKey = auto()
 
     # Fungi Forest locations
+    ForestDonkeyMedal = auto()
+    ForestDiddyMedal = auto()
+    ForestLankyMedal = auto()
+    ForestTinyMedal = auto()
+    ForestChunkyMedal = auto()
     ForestChunkyMinecarts = auto()
     ForestDiddyTopofMushroom = auto()
     ForestTinySpeedySwingSortie = auto()
@@ -206,6 +231,11 @@ class Locations(IntEnum):
     ForestKey = auto()
 
     # Crystal Caves locations
+    CavesDonkeyMedal = auto()
+    CavesDiddyMedal = auto()
+    CavesLankyMedal = auto()
+    CavesTinyMedal = auto()
+    CavesChunkyMedal = auto()
     CavesDonkeyBaboonBlast = auto()
     CavesDiddyJetpackBarrel = auto()
     CavesTinyKrazyKongKlamour = auto()
@@ -237,6 +267,11 @@ class Locations(IntEnum):
     CavesKey = auto()
 
     # Creepy Castle locations
+    CastleDonkeyMedal = auto()
+    CastleDiddyMedal = auto()
+    CastleLankyMedal = auto()
+    CastleTinyMedal = auto()
+    CastleChunkyMedal = auto()
     CastleDiddyAboveCastle = auto()
     CastleLankyKasplat = auto()
     CastleTinyKasplat = auto()
