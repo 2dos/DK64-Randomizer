@@ -213,9 +213,10 @@ def PlaceItems(algorithm, itemsToPlace, ownedItems=[]):
         return ForwardFill(itemsToPlace, ownedItems)
 
 
-def Fill(algorithm):
+def Fill(spoiler):
     """Place all items."""
     retries = 0
+    algorithm = spoiler.settings.algorithm
     while retries < 5:
         try:
             # Place constant items
@@ -246,15 +247,10 @@ def Fill(algorithm):
             Reset()
             PlaythroughLocations = GetAccessibleLocations([], SearchMode.GeneratePlaythrough)
             ParePlaythrough(PlaythroughLocations)
-            i = 0
-            spoiler_log = []
-            for sphere in PlaythroughLocations:
-                spoiler_log.append("\nSphere " + str(i))
-                i += 1
-                for locationId in sphere:
-                    location = LocationList[locationId]
-                    spoiler_log.append(location.name + ": " + ItemList[location.item].name)
-            return spoiler_log
+            # Write data to spoiler and return
+            spoiler.UpdateLocations(LocationList)
+            spoiler.UpdatePlaythrough(PlaythroughLocations)
+            return spoiler
         except Exception as ex:
             if retries == 4:
                 print("Fill failed, out of retries.")
