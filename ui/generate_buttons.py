@@ -72,6 +72,7 @@ def generate_seed(event):
                     form_data[element.name] = False
         for element in disabled_options:
             element.setAttribute("disabled", "disabled")
+        print(data.get(":"))
         # TODO: This is the entrypoint of builds, we need to make sure we properly set this up
         # print(form_data)
         # print(datetime.now())

@@ -1,0 +1,5 @@
+START_JUMPPATCH:
+	//J 	updateLag
+	//NOP
+.align 0x10
+END_JUMPPATCH:
