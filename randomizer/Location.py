@@ -1,6 +1,6 @@
 """Stores the Location class and a list of each location in the game."""
 
-from Enums.Locations import Locations
+from randomizer.Enums.Locations import Locations
 
 
 class Location:

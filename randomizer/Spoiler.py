@@ -1,7 +1,7 @@
 """Spoiler class and functions."""
 
-from Location import LocationList
-from Item import ItemList
+from randomizer.Location import LocationList
+from randomizer.Item import ItemList
 
 
 class Spoiler:
