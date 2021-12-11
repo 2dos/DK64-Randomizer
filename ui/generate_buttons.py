@@ -4,6 +4,7 @@ from ui.bindings import bind
 import json
 from ui.rando_options import update_disabled_progression
 from ui.progress_bar import ProgressBar
+from randomizer.Settings import Settings
 
 
 @bind("change", "jsonfileloader")
@@ -89,6 +90,8 @@ def generate_seed(event):
         # Re disable all previously disabled options
         for element in disabled_options:
             element.setAttribute("disabled", "disabled")
+        settings = Settings(form_data)
+        print(settings)
         # TODO: This is the entrypoint of builds, we need to make sure we properly set this up
         # print(form_data)
         # print(datetime.now())
@@ -97,15 +100,15 @@ def generate_seed(event):
         # patch_files.start_randomizing_seed(dict(data.get("form_data"))
 
 
-@bind("click", "downloadjson")
+@bind("click", "download_json")
 def update_seed_text(event):
-    """Set seed text based on the downloadjson click event.
+    """Set seed text based on the download_json click event.
 
     Args:
         event (DOMEvent): Javascript dom click event.
     """
     # When we click the download json event just change the button text
-    if js.document.getElementById("downloadjson").checked:
+    if js.document.getElementById("download_json").checked:
         js.document.getElementById("generate_seed").value = "Generate Patch File"
     else:
         js.document.getElementById("generate_seed").value = "Generate Seed"
