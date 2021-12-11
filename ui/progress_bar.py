@@ -28,7 +28,7 @@ class ProgressBar:
         self.text("")
         self.width(0)
         for css in js.document.getElementById("patchprogress").classList:
-            if not "progress" in css:
+            if "progress" not in css:
                 js.eval(self.bar + f".removeClass('{css}')")
 
     def width(self, val: int):

@@ -99,6 +99,11 @@ def generate_seed(event):
 
 @bind("click", "downloadjson")
 def update_seed_text(event):
+    """Set seed text based on the downloadjson click event.
+
+    Args:
+        event (DOMEvent): Javascript dom click event.
+    """
     # When we click the download json event just change the button text
     if js.document.getElementById("downloadjson").checked:
         js.document.getElementById("generate_seed").value = "Generate Patch File"
