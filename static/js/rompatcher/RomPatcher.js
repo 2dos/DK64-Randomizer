@@ -16,6 +16,15 @@ try {
     romFile._u8array = event.data.u8array;
     romFile._dataView = new DataView(event.data.u8array.buffer);
     apply_bps_javascript();
+    try {
+      document.getElementById("input-file-rom").title = "CRC32: " + padZeroes(crc32(romFile), 4);
+    } catch {}
+    try {
+      document.getElementById("input-file-rom_1").title = "CRC32: " + padZeroes(crc32(romFile), 4);
+    } catch {}
+    try {
+      document.getElementById("input-file-rom_2").title = "CRC32: " + padZeroes(crc32(romFile), 4);
+    } catch {}
   };
 } catch (e) {}
 
