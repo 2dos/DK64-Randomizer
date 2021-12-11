@@ -1,16 +1,21 @@
+// Used for generating the UI for the downloadable app
 const electron = require("electron");
 const app = electron.app;
 const BrowserWindow = electron.BrowserWindow;
-var static = require('node-static');
-var file = new static.Server(`${__dirname}`)
+var static = require("node-static");
+var file = new static.Server(`${__dirname}`);
 
 let mainWindow = null;
 
-require('http').createServer(function (request, response) {
-  request.addListener('end', function () {
-      file.serve(request, response)
-  }).resume()
-}).listen(9990)
+require("http")
+  .createServer(function (request, response) {
+    request
+      .addListener("end", function () {
+        file.serve(request, response);
+      })
+      .resume();
+  })
+  .listen(9990);
 
 const createWindow = () => {
   mainWindow = new BrowserWindow({
@@ -19,7 +24,7 @@ const createWindow = () => {
     webPreferences: {
       nodeIntegration: false,
     },
-    icon: __dirname + '/static/img/dk.png',
+    icon: __dirname + "/static/img/dk.png",
   });
   mainWindow.loadURL(
     require("url").format({
