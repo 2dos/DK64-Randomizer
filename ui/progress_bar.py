@@ -20,20 +20,20 @@ class ProgressBar:
         """
         # Call out to the js async function so we can run a slept function
         # js.sleep(time in seconds, function to run, args that will be expanded)
-        js.sleep(2, self.show, [])
-        js.sleep(2, self.width, [val])
-        js.sleep(2, self.text, [text])
+        js.sleep(2, self._show, [])
+        js.sleep(2, self._width, [val])
+        js.sleep(2, self._text, [text])
 
     def reset(self):
         """Set hide, text, width and added classes of the progressbar to nil."""
-        self.hide()
-        self.text("")
-        self.width(0)
+        js.sleep(2, self._hide, [])
+        js.sleep(2, self._width, [0])
+        js.sleep(2, self._text, [""])
         for css in js.document.getElementById("patchprogress").classList:
             if "progress" not in css:
-                js.eval(self.bar + f".removeClass('{css}')")
+                self.set_class(css)
 
-    def width(self, val: int):
+    def _width(self, val: int):
         """Set width to value converted to percentage.
 
         Args:
@@ -48,7 +48,7 @@ class ProgressBar:
         percent = quotient * 100
         js.eval(self.bar + f".width('{percent}%')")
 
-    def text(self, text: str):
+    def _text(self, text: str):
         """Set the text of the progress bar.
 
         Args:
@@ -56,11 +56,11 @@ class ProgressBar:
         """
         js.eval(self.status + f".text('{text}')")
 
-    def hide(self):
+    def _hide(self):
         """Hide the Modal."""
         js.eval(self.modal + ".modal('hide')")
 
-    def show(self):
+    def _show(self):
         """Show the Modal."""
         js.eval(self.modal + ".modal('show')")
 
@@ -71,6 +71,6 @@ class ProgressBar:
             css (str): Class to add.
         """
         if js.eval(self.bar + f".hasClass('{css}')"):
-            js.eval(self.bar + f".removeClass('{css}')")
+            js.sleep(2, js.eval(self.bar + f".removeClass('{css}')"), [])
         else:
-            js.eval(self.bar + f".addClass('{css}')")
+            js.sleep(2, js.eval(self.bar + f".addClass('{css}')"), [])
