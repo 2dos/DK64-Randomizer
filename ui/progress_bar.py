@@ -18,9 +18,11 @@ class ProgressBar:
             val (int): Percent of 100.
             text (str): Text to display.
         """
-        self.width(val)
-        self.text(text)
-        self.show()
+        # Call out to the js async function so we can run a slept function
+        # js.sleep(time in seconds, function to run, args that will be expanded)
+        js.sleep(2, self.show, [])
+        js.sleep(2, self.width, [val])
+        js.sleep(2, self.text, [text])
 
     def reset(self):
         """Set hide, text, width and added classes of the progressbar to nil."""
