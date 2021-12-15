@@ -562,48 +562,29 @@ def dumpPointerTableDetails(filename: str, fr: BinaryIO):
     for x in pointer_tables:
         entries = []
         for y in x["entries"]:
-
+            # Seek to the address and read the value
             fr.seek(x["new_absolute_address"] + y["index"] * 4)
+            # Find the new position
             pointing_to = (int.from_bytes(fr.read(4), "big") & 0x7FFFFFFF) + main_pointer_table_offset
-
             file_info = getFileInfo(x["index"], y["index"])
-            if file_info:
-                file_data = hex(len(file_info["data"]))
-            else:
-                file_data = None
-
             uncompressed_size = getOriginalUncompressedSize(fr, x["index"], y["index"])
-            if uncompressed_size > 0:
-                size = hex(uncompressed_size)
-            else:
-                size = None
-
-            if x["num_entries"] == 221:
-                index = maps[y["index"]]
-            else:
-                index = None
-
-            if "filename" in y:
-                file_name = y["filename"]
-            else:
-                file_name = None
             new_entry = {
-                "new_address": hex(x["new_absolute_address"] + y["index"] * 4),
-                "pointing_to": hex(pointing_to),
-                "compressed_size": file_data,
-                "uncompressed_size": size,
+                "new_address": int(x["new_absolute_address"] + y["index"] * 4),
+                "pointing_to": int(pointing_to),
+                "compressed_size": int(len(file_info["data"])) if file_info else None,
+                "uncompressed_size": int(uncompressed_size) if uncompressed_size > 0 else None,
                 "bit_set": y["bit_set"],
-                "map_index": index,
-                "file_name": file_name,
+                "map_index": maps[y["index"]] if x["num_entries"] == 221 else None,
+                "file_name": y.get("filename", None),
                 "sha": y["new_sha1"],
             }
             entries.insert(y["index"], new_entry)
         section_data = {
             "name": x["name"],
-            "address": hex(x["new_absolute_address"]),
+            "address": int(x["new_absolute_address"]),
             "total_entries": int(x["num_entries"]),
-            "starting_byte": hex(x["original_compressed_size"]),
-            "ending_byte": hex(getPointerTableCompressedSize(x["index"])),
+            "starting_byte": int(x["original_compressed_size"]),
+            "ending_byte": int(getPointerTableCompressedSize(x["index"])),
             "entries": entries,
         }
         dataset.insert(x["index"], section_data)
