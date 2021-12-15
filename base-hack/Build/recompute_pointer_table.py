@@ -2,6 +2,7 @@
 import hashlib
 from map_names import maps
 from typing import BinaryIO
+import json
 
 import encoders
 
@@ -554,7 +555,6 @@ def writeModifiedPointerTablesToROM(fh: BinaryIO):
 
 
 dataset = []
-import json
 
 
 def dumpPointerTableDetails(filename: str, fr: BinaryIO):
