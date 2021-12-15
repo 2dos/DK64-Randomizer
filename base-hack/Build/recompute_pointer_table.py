@@ -337,7 +337,13 @@ def parsePointerTables(fh: BinaryIO):
                 if not y["bit_set"]:
                     absolute_size = y["next_absolute_address"] - y["absolute_address"]
                     if absolute_size > 0:
-                        file_info = addFileToDatabase(fh, y["absolute_address"], absolute_size, x["index"], y["index"])
+                        file_info = addFileToDatabase(
+                            fh,
+                            y["absolute_address"],
+                            absolute_size,
+                            x["index"],
+                            y["index"],
+                        )
                         x["original_compressed_size"] += absolute_size
 
     # Go back over and look up SHA1s for the bit_set entries
@@ -356,7 +362,11 @@ def parsePointerTables(fh: BinaryIO):
 
 
 def addFileToDatabase(
-    fh: BinaryIO, absolute_address: int, absolute_size: int, pointer_table_index: int, file_index: int
+    fh: BinaryIO,
+    absolute_address: int,
+    absolute_size: int,
+    pointer_table_index: int,
+    file_index: int,
 ):
     """Add the files to the database."""
     # TODO: Get rid of this check
@@ -403,7 +413,13 @@ def getFileInfo(pointer_table_index: int, file_index: int):
     ]
 
 
-def replaceROMFile(pointer_table_index: int, file_index: int, data: bytes, uncompressed_size: int, filename: str = ""):
+def replaceROMFile(
+    pointer_table_index: int,
+    file_index: int,
+    data: bytes,
+    uncompressed_size: int,
+    filename: str = "",
+):
     """Replace the ROM file."""
     # TODO: Get this working
     if pointer_table_index == 8 and file_index == 0:
@@ -537,49 +553,60 @@ def writeModifiedPointerTablesToROM(fh: BinaryIO):
         fh.write((x["new_absolute_address"] - main_pointer_table_offset).to_bytes(4, "big"))
 
 
+dataset = []
+import json
+
+
 def dumpPointerTableDetails(filename: str, fr: BinaryIO):
     """Dump the pointer table info."""
-    with open(filename, "w") as fh:
-        for x in pointer_tables:
-            fh.write(
-                str(x["index"])
-                + ": "
-                + x["name"]
-                + ": "
-                + hex(x["new_absolute_address"])
-                + " ("
-                + str(x["num_entries"])
-                + " entries, "
-                + hex(x["original_compressed_size"])
-                + " -> "
-                + hex(getPointerTableCompressedSize(x["index"]))
-                + " bytes)"
-            )
-            fh.write("\n")
-            for y in x["entries"]:
-                fh.write(" - " + str(y["index"]) + ": ")
-                fh.write(hex(x["new_absolute_address"] + y["index"] * 4) + " -> ")
-                fr.seek(x["new_absolute_address"] + y["index"] * 4)
-                pointing_to = (int.from_bytes(fr.read(4), "big") & 0x7FFFFFFF) + main_pointer_table_offset
-                fh.write(hex(pointing_to))
+    for x in pointer_tables:
+        entries = []
+        for y in x["entries"]:
 
-                file_info = getFileInfo(x["index"], y["index"])
-                if file_info:
-                    fh.write(" (" + hex(len(file_info["data"])) + ")")
-                else:
-                    fh.write(" WARNING: File info not found")
+            fr.seek(x["new_absolute_address"] + y["index"] * 4)
+            pointing_to = (int.from_bytes(fr.read(4), "big") & 0x7FFFFFFF) + main_pointer_table_offset
 
-                uncompressed_size = getOriginalUncompressedSize(fr, x["index"], y["index"])
-                if uncompressed_size > 0:
-                    fh.write(" (" + hex(uncompressed_size) + ")")
-                fh.write(" (" + str(y["bit_set"]) + ")")
+            file_info = getFileInfo(x["index"], y["index"])
+            if file_info:
+                file_data = hex(len(file_info["data"]))
+            else:
+                file_data = None
 
-                if x["num_entries"] == 221:
-                    fh.write(" (" + maps[y["index"]] + ")")
+            uncompressed_size = getOriginalUncompressedSize(fr, x["index"], y["index"])
+            if uncompressed_size > 0:
+                size = hex(uncompressed_size)
+            else:
+                size = None
 
-                fh.write(" (" + str(y["new_sha1"]) + ")")
+            if x["num_entries"] == 221:
+                index = maps[y["index"]]
+            else:
+                index = None
 
-                if "filename" in y:
-                    fh.write(" (" + str(y["filename"]) + ")")
+            if "filename" in y:
+                file_name = y["filename"]
+            else:
+                file_name = None
+            new_entry = {
+                "new_address": hex(x["new_absolute_address"] + y["index"] * 4),
+                "pointing_to": hex(pointing_to),
+                "compressed_size": file_data,
+                "uncompressed_size": size,
+                "bit_set": y["bit_set"],
+                "map_index": index,
+                "file_name": file_name,
+                "sha": y["new_sha1"],
+            }
+            entries.insert(y["index"], new_entry)
+        section_data = {
+            "name": x["name"],
+            "address": hex(x["new_absolute_address"]),
+            "total_entries": int(x["num_entries"]),
+            "starting_byte": hex(x["original_compressed_size"]),
+            "ending_byte": hex(getPointerTableCompressedSize(x["index"])),
+            "entries": entries,
+        }
+        dataset.insert(x["index"], section_data)
 
-                fh.write("\n")
+    with open("../static/patches/pointer_addresses.json", "w") as fh:
+        fh.write(json.dumps(dataset))
