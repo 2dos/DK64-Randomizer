@@ -52,18 +52,27 @@ class LogicVarHolder:
         self.oranges = False
         self.barrels = False
 
+        self.progDonkey = 0
         self.blast = False
         self.strongKong = False
         self.grab = False
+
+        self.progDiddy = 0
         self.charge = False
         self.jetpack = False
         self.spring = False
+
+        self.progLanky = 0
         self.handstand = False
         self.balloon = False
         self.sprint = False
+
+        self.progTiny = 0
         self.mini = False
         self.twirl = False
         self.monkeyport = False
+
+        self.progChunky = 0
         self.hunkyChunky = False
         self.punch = False
         self.gorillaGone = False
@@ -140,21 +149,30 @@ class LogicVarHolder:
         self.oranges = self.oranges or Items.Oranges in ownedItems
         self.barrels = self.barrels or Items.Barrels in ownedItems
 
-        self.blast = self.blast or Items.BaboonBlast in ownedItems and self.donkey
-        self.strongKong = self.strongKong or Items.StrongKong in ownedItems and self.donkey
-        self.grab = self.grab or Items.GorillaGrab in ownedItems and self.donkey
-        self.charge = self.charge or Items.ChimpyCharge in ownedItems and self.diddy
-        self.jetpack = self.jetpack or Items.RocketbarrelBoost in ownedItems and self.diddy
-        self.spring = self.spring or Items.SimianSpring in ownedItems and self.diddy
-        self.handstand = self.handstand or Items.Orangstand in ownedItems and self.lanky
-        self.balloon = self.balloon or Items.BaboonBalloon in ownedItems and self.lanky
-        self.sprint = self.sprint or Items.OrangstandSprint in ownedItems and self.lanky
-        self.mini = self.mini or Items.MiniMonkey in ownedItems and self.tiny
-        self.twirl = self.twirl or Items.PonyTailTwirl in ownedItems and self.tiny
-        self.monkeyport = self.monkeyport or Items.Monkeyport in ownedItems and self.tiny
-        self.hunkyChunky = self.hunkyChunky or Items.HunkyChunky in ownedItems and self.chunky
-        self.punch = self.punch or Items.PrimatePunch in ownedItems and self.chunky
-        self.gorillaGone = self.gorillaGone or Items.GorillaGone in ownedItems and self.chunky
+        self.progDonkey = sum(1 for x in ownedItems if x == Items.ProgressiveDonkeyPotion)
+        self.blast = self.blast or (Items.BaboonBlast in ownedItems or self.progDonkey >= 1) and self.donkey
+        self.strongKong = self.strongKong or (Items.StrongKong in ownedItems or self.progDonkey >= 2) and self.donkey
+        self.grab = self.grab or (Items.GorillaGrab in ownedItems or self.progDonkey >= 3) and self.donkey
+
+        self.progDiddy = sum(1 for x in ownedItems if x == Items.ProgressiveDiddyPotion)
+        self.charge = self.charge or (Items.ChimpyCharge in ownedItems or self.progDiddy >= 1) and self.diddy
+        self.jetpack = self.jetpack or (Items.RocketbarrelBoost in ownedItems or self.progDiddy >= 2) and self.diddy
+        self.spring = self.spring or (Items.SimianSpring in ownedItems or self.progDiddy >= 3) and self.diddy
+
+        self.progLanky = sum(1 for x in ownedItems if x == Items.ProgressiveLankyPotion)
+        self.handstand = self.handstand or (Items.Orangstand in ownedItems or self.progLanky >= 1) and self.lanky
+        self.balloon = self.balloon or (Items.BaboonBalloon in ownedItems or self.progLanky >= 2) and self.lanky
+        self.sprint = self.sprint or (Items.OrangstandSprint in ownedItems or self.progLanky >= 3) and self.lanky
+
+        self.progTiny = sum(1 for x in ownedItems if x == Items.ProgressiveTinyPotion)
+        self.mini = self.mini or (Items.MiniMonkey in ownedItems or self.progTiny >= 1) and self.tiny
+        self.twirl = self.twirl or (Items.PonyTailTwirl in ownedItems or self.progTiny >= 2) and self.tiny
+        self.monkeyport = self.monkeyport or (Items.Monkeyport in ownedItems or self.progTiny >= 3) and self.tiny
+
+        self.progChunky = sum(1 for x in ownedItems if x == Items.ProgressiveChunkyPotion)
+        self.hunkyChunky = self.hunkyChunky or (Items.HunkyChunky in ownedItems or self.progChunky >= 1) and self.chunky
+        self.punch = self.punch or (Items.PrimatePunch in ownedItems or self.progChunky >= 2) and self.chunky
+        self.gorillaGone = self.gorillaGone or (Items.GorillaGone in ownedItems or self.progChunky >= 3) and self.chunky
 
         self.coconut = self.coconut or Items.Coconut in ownedItems and self.donkey
         self.peanut = self.peanut or Items.Peanut in ownedItems and self.diddy

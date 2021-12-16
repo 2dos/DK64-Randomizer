@@ -332,7 +332,7 @@ LocationList = {
     Locations.GrapeGun: Location("Grape Gun"),
     Locations.FeatherGun: Location("Feather Gun"),
     Locations.PineappleGun: Location("Pineapple Gun"),
-    Locations.AmmoBelt1: Location("Ammo Belt1"),
+    Locations.AmmoBelt1: Location("Ammo Belt 1"),
     Locations.HomingAmmo: Location("Homing Ammo"),
     Locations.AmmoBelt2: Location("Ammo Belt 2"),
     Locations.SniperSight: Location("Sniper Sight"),

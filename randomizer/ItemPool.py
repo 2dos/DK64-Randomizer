@@ -6,11 +6,11 @@ from randomizer.Enums.Locations import Locations
 from randomizer.Location import LocationList
 
 
-def PlaceConstants():
+def PlaceConstants(settings):
     """Place items which are to be put in a hard-coded location."""
     # Banana Hoard: Pseudo-item used to represent game completion by defeating K. Rool
     LocationList[Locations.BananaHoard].PlaceItem(Items.BananaHoard)
-    # Keys
+    # Keys kept at key locations so boss completion requires
     LocationList[Locations.JapesKey].PlaceItem(Items.JungleJapesKey)
     LocationList[Locations.AztecKey].PlaceItem(Items.AngryAztecKey)
     LocationList[Locations.FactoryKey].PlaceItem(Items.FranticFactoryKey)
@@ -19,6 +19,12 @@ def PlaceConstants():
     LocationList[Locations.CavesKey].PlaceItem(Items.CrystalCavesKey)
     LocationList[Locations.CastleKey].PlaceItem(Items.CreepyCastleKey)
     LocationList[Locations.HelmKey].PlaceItem(Items.HideoutHelmKey)
+    # Settings-dependent locations
+    if not settings.ShuffleTrainingBarrels:
+        LocationList[Locations.IslesVinesTrainingBarrel].PlaceItem(Items.Vines)
+        LocationList[Locations.IslesSwimTrainingBarrel].PlaceItem(Items.Swim)
+        LocationList[Locations.IslesOrangesTrainingBarrel].PlaceItem(Items.Oranges)
+        LocationList[Locations.IslesBarrelsTrainingBarrel].PlaceItem(Items.Barrels)
 
 
 def Blueprints():
@@ -122,36 +128,55 @@ def Instruments():
     ]
     return instruments
 
-
-def Upgrades():
-    """Return all upgrade items."""
-    upgrades = [
+def TrainingBarrelAbilities():
+    """Return all training barrel abilities."""
+    barrelAbilities = [
         Items.Vines,
         Items.Swim,
         Items.Oranges,
         Items.Barrels,
-        Items.BaboonBlast,
-        Items.StrongKong,
-        Items.GorillaGrab,
-        Items.ChimpyCharge,
-        Items.RocketbarrelBoost,
-        Items.SimianSpring,
-        Items.Orangstand,
-        Items.BaboonBalloon,
-        Items.OrangstandSprint,
-        Items.MiniMonkey,
-        Items.PonyTailTwirl,
-        Items.Monkeyport,
-        Items.HunkyChunky,
-        Items.PrimatePunch,
-        Items.GorillaGone,
-        Items.CameraAndShockwave,
     ]
+    return barrelAbilities
+
+
+def Upgrades(settings):
+    """Return all upgrade items."""
+    upgrades = []
     upgrades.extend(itertools.repeat(Items.ProgressiveSlam, 3))
+    # Add training barrel items to item pool if shuffled
+    if settings.ShuffleTrainingBarrels:
+        upgrades.extend(TrainingBarrelAbilities())
+    # Add either progressive upgrade items or individual ones depending on settings
+    if settings.ProgressiveUpgrades:
+        upgrades.extend(itertools.repeat(Items.ProgressiveDonkeyPotion, 3))
+        upgrades.extend(itertools.repeat(Items.ProgressiveDiddyPotion, 3))
+        upgrades.extend(itertools.repeat(Items.ProgressiveLankyPotion, 3))
+        upgrades.extend(itertools.repeat(Items.ProgressiveTinyPotion, 3))
+        upgrades.extend(itertools.repeat(Items.ProgressiveChunkyPotion, 3))
+    else:
+        upgrades.extend([
+            Items.BaboonBlast,
+            Items.StrongKong,
+            Items.GorillaGrab,
+            Items.ChimpyCharge,
+            Items.RocketbarrelBoost,
+            Items.SimianSpring,
+            Items.Orangstand,
+            Items.BaboonBalloon,
+            Items.OrangstandSprint,
+            Items.MiniMonkey,
+            Items.PonyTailTwirl,
+            Items.Monkeyport,
+            Items.HunkyChunky,
+            Items.PrimatePunch,
+            Items.GorillaGone,
+        ])
+    upgrades.append(Items.CameraAndShockwave)
+    
     return upgrades
 
 
-def HighPriorityItems():
+def HighPriorityItems(settings):
     """Get all items which are of high importance logically.
 
     Placing these first prevents fill failures.
@@ -159,7 +184,7 @@ def HighPriorityItems():
     itemPool = Kongs()
     itemPool.extend(Guns())
     itemPool.extend(Instruments())
-    itemPool.extend(Upgrades())
+    itemPool.extend(Upgrades(settings))
     return itemPool
 
 

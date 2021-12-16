@@ -31,13 +31,16 @@ def GetAccessibleLocations(ownedItems, searchType=SearchMode.GetReachable):
             # If this location has an item placed, add it to owned items
             if location.item is not None:
                 ownedItems.append(location.item)
-            # If we want to generate the playthrough and the item is a playthrough item, add it to the sphere
-            if searchType == SearchMode.GeneratePlaythrough and ItemList[location.item].playthrough:
-                # Banana hoard in a sphere by itself
-                if location.item == Items.BananaHoard:
-                    sphere = [locationId]
-                    break
-                sphere.append(locationId)
+            try:
+                # If we want to generate the playthrough and the item is a playthrough item, add it to the sphere
+                if searchType == SearchMode.GeneratePlaythrough and ItemList[location.item].playthrough:
+                    # Banana hoard in a sphere by itself
+                    if location.item == Items.BananaHoard:
+                        sphere = [locationId]
+                        break
+                    sphere.append(locationId)
+            except:
+                a = 1
             # If we're checking beatability, just want to know if we have access to the banana hoard
             if searchType == SearchMode.CheckBeatable and location.item == Items.BananaHoard:
                 return True
@@ -224,14 +227,14 @@ def PlaceItems(algorithm, itemsToPlace, ownedItems=[]):
 def Fill(spoiler):
     """Place all items."""
     retries = 0
-    algorithm = spoiler.settings.algorithm
+    algorithm = spoiler.settings.Algorithm
     while retries < 5:
         try:
-            # Place constant items
-            ItemPool.PlaceConstants()
+            # First place constant items
+            ItemPool.PlaceConstants(spoiler.settings)
             # Then place priority (logically very important) items
             highPriorityUnplaced = PlaceItems(
-                algorithm, ItemPool.HighPriorityItems(), ItemPool.HighPriorityAssumedItems()
+                algorithm, ItemPool.HighPriorityItems(spoiler.settings), ItemPool.HighPriorityAssumedItems()
             )
             if highPriorityUnplaced > 0:
                 raise Ex.ItemPlacementException(str(highPriorityUnplaced) + " unplaced high priority items.")
@@ -270,3 +273,9 @@ def Fill(spoiler):
                 print("Fill failed. Retrying. Tries: " + str(retries))
                 Reset()
                 Logic.ClearAllLocations()
+
+def Generate(spoiler):
+    """Generate a complete spoiler based on input settings."""
+    # Handle ER, etc...
+    # Place items
+    Fill(spoiler)

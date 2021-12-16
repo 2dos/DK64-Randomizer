@@ -1,5 +1,7 @@
 """Spoiler class and functions."""
 
+import json
+
 from Location import LocationList
 from Item import ItemList
 
@@ -12,6 +14,10 @@ class Spoiler:
         self.settings = settings
         self.locations = {}
         self.playthrough = []
+
+    def toJson(self):
+        """Converts spoiler to JSON."""
+        return json.dumps(self, default=lambda o: o.__dict__, sort_keys=True, indent=4)
 
     def UpdateLocations(self, locations):
         """Update location list for what was produced by the fill."""
