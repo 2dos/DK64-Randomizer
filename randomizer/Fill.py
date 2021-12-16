@@ -31,16 +31,13 @@ def GetAccessibleLocations(ownedItems, searchType=SearchMode.GetReachable):
             # If this location has an item placed, add it to owned items
             if location.item is not None:
                 ownedItems.append(location.item)
-            try:
-                # If we want to generate the playthrough and the item is a playthrough item, add it to the sphere
-                if searchType == SearchMode.GeneratePlaythrough and ItemList[location.item].playthrough:
-                    # Banana hoard in a sphere by itself
-                    if location.item == Items.BananaHoard:
-                        sphere = [locationId]
-                        break
-                    sphere.append(locationId)
-            except:
-                a = 1
+            # If we want to generate the playthrough and the item is a playthrough item, add it to the sphere
+            if searchType == SearchMode.GeneratePlaythrough and ItemList[location.item].playthrough:
+                # Banana hoard in a sphere by itself
+                if location.item == Items.BananaHoard:
+                    sphere = [locationId]
+                    break
+                sphere.append(locationId)
             # If we're checking beatability, just want to know if we have access to the banana hoard
             if searchType == SearchMode.CheckBeatable and location.item == Items.BananaHoard:
                 return True
@@ -264,7 +261,7 @@ def Fill(spoiler):
             spoiler.UpdateLocations(LocationList)
             spoiler.UpdatePlaythrough(PlaythroughLocations)
             return spoiler
-        except Exception as ex:
+        except Ex.FillException as ex:
             if retries == 4:
                 print("Fill failed, out of retries.")
                 raise ex

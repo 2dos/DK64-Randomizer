@@ -4,6 +4,7 @@ import itertools
 from randomizer.Enums.Items import Items
 from randomizer.Enums.Locations import Locations
 from randomizer.Location import LocationList
+from randomizer.Item import ItemFromKong
 
 
 def PlaceConstants(settings):
@@ -20,12 +21,40 @@ def PlaceConstants(settings):
     LocationList[Locations.CastleKey].PlaceItem(Items.CreepyCastleKey)
     LocationList[Locations.HelmKey].PlaceItem(Items.HideoutHelmKey)
     # Settings-dependent locations
-    if not settings.ShuffleTrainingBarrels:
+    if settings.TrainingBarrels == "normal":
         LocationList[Locations.IslesVinesTrainingBarrel].PlaceItem(Items.Vines)
         LocationList[Locations.IslesSwimTrainingBarrel].PlaceItem(Items.Swim)
         LocationList[Locations.IslesOrangesTrainingBarrel].PlaceItem(Items.Oranges)
         LocationList[Locations.IslesBarrelsTrainingBarrel].PlaceItem(Items.Barrels)
-
+    elif settings.TrainingBarrels == "startwith":
+        LocationList[Locations.IslesVinesTrainingBarrel].PlaceItem(Items.NoItem)
+        LocationList[Locations.IslesSwimTrainingBarrel].PlaceItem(Items.NoItem)
+        LocationList[Locations.IslesOrangesTrainingBarrel].PlaceItem(Items.NoItem)
+        LocationList[Locations.IslesBarrelsTrainingBarrel].PlaceItem(Items.NoItem)
+    if settings.StartWithKongs:
+        LocationList[Locations.DiddyKong].PlaceItem(Items.NoItem)
+        LocationList[Locations.LankyKong].PlaceItem(Items.NoItem)
+        LocationList[Locations.TinyKong].PlaceItem(Items.NoItem)
+        LocationList[Locations.ChunkyKong].PlaceItem(Items.NoItem)
+    if settings.StartWithCrankyMoves:
+        LocationList[Locations.SimianSlam].PlaceItem(Items.NoItem)
+        LocationList[Locations.SuperSimianSlam].PlaceItem(Items.NoItem)
+        LocationList[Locations.SuperDuperSimianSlam].PlaceItem(Items.NoItem)
+        LocationList[Locations.BaboonBlast].PlaceItem(Items.NoItem)
+        LocationList[Locations.StrongKong].PlaceItem(Items.NoItem)
+        LocationList[Locations.GorillaGrab].PlaceItem(Items.NoItem)
+        LocationList[Locations.ChimpyCharge].PlaceItem(Items.NoItem)
+        LocationList[Locations.RocketbarrelBoost].PlaceItem(Items.NoItem)
+        LocationList[Locations.SimianSpring].PlaceItem(Items.NoItem)
+        LocationList[Locations.Orangstand].PlaceItem(Items.NoItem)
+        LocationList[Locations.BaboonBalloon].PlaceItem(Items.NoItem)
+        LocationList[Locations.OrangstandSprint].PlaceItem(Items.NoItem)
+        LocationList[Locations.MiniMonkey].PlaceItem(Items.NoItem)
+        LocationList[Locations.PonyTailTwirl].PlaceItem(Items.NoItem)
+        LocationList[Locations.Monkeyport].PlaceItem(Items.NoItem)
+        LocationList[Locations.HunkyChunky].PlaceItem(Items.NoItem)
+        LocationList[Locations.PrimatePunch].PlaceItem(Items.NoItem)
+        LocationList[Locations.GorillaGone].PlaceItem(Items.NoItem)
 
 def Blueprints():
     """Return all blueprint items."""
@@ -94,14 +123,18 @@ def Keys():
     return keys
 
 
-def Kongs():
-    """Return all Kong items."""
-    kongs = [
-        Items.Diddy,
-        Items.Lanky,
-        Items.Tiny,
-        Items.Chunky,
-    ]
+def Kongs(settings):
+    """Return Kong items depending on settings."""
+    kongs = []
+    if not settings.StartWithKongs:
+        kongs = [
+            Items.Donkey,
+            Items.Diddy,
+            Items.Lanky,
+            Items.Tiny,
+            Items.Chunky
+        ]
+        kongs.remove(ItemFromKong(settings.StartingKong))
     return kongs
 
 
@@ -142,35 +175,36 @@ def TrainingBarrelAbilities():
 def Upgrades(settings):
     """Return all upgrade items."""
     upgrades = []
-    upgrades.extend(itertools.repeat(Items.ProgressiveSlam, 3))
     # Add training barrel items to item pool if shuffled
-    if settings.ShuffleTrainingBarrels:
+    if settings.TrainingBarrels == "shuffled":
         upgrades.extend(TrainingBarrelAbilities())
     # Add either progressive upgrade items or individual ones depending on settings
-    if settings.ProgressiveUpgrades:
-        upgrades.extend(itertools.repeat(Items.ProgressiveDonkeyPotion, 3))
-        upgrades.extend(itertools.repeat(Items.ProgressiveDiddyPotion, 3))
-        upgrades.extend(itertools.repeat(Items.ProgressiveLankyPotion, 3))
-        upgrades.extend(itertools.repeat(Items.ProgressiveTinyPotion, 3))
-        upgrades.extend(itertools.repeat(Items.ProgressiveChunkyPotion, 3))
-    else:
-        upgrades.extend([
-            Items.BaboonBlast,
-            Items.StrongKong,
-            Items.GorillaGrab,
-            Items.ChimpyCharge,
-            Items.RocketbarrelBoost,
-            Items.SimianSpring,
-            Items.Orangstand,
-            Items.BaboonBalloon,
-            Items.OrangstandSprint,
-            Items.MiniMonkey,
-            Items.PonyTailTwirl,
-            Items.Monkeyport,
-            Items.HunkyChunky,
-            Items.PrimatePunch,
-            Items.GorillaGone,
-        ])
+    if not settings.StartWithCrankyMoves:
+        upgrades.extend(itertools.repeat(Items.ProgressiveSlam, 3))
+        if settings.ProgressiveUpgrades:
+            upgrades.extend(itertools.repeat(Items.ProgressiveDonkeyPotion, 3))
+            upgrades.extend(itertools.repeat(Items.ProgressiveDiddyPotion, 3))
+            upgrades.extend(itertools.repeat(Items.ProgressiveLankyPotion, 3))
+            upgrades.extend(itertools.repeat(Items.ProgressiveTinyPotion, 3))
+            upgrades.extend(itertools.repeat(Items.ProgressiveChunkyPotion, 3))
+        else:
+            upgrades.extend([
+                Items.BaboonBlast,
+                Items.StrongKong,
+                Items.GorillaGrab,
+                Items.ChimpyCharge,
+                Items.RocketbarrelBoost,
+                Items.SimianSpring,
+                Items.Orangstand,
+                Items.BaboonBalloon,
+                Items.OrangstandSprint,
+                Items.MiniMonkey,
+                Items.PonyTailTwirl,
+                Items.Monkeyport,
+                Items.HunkyChunky,
+                Items.PrimatePunch,
+                Items.GorillaGone,
+            ])
     upgrades.append(Items.CameraAndShockwave)
     
     return upgrades
@@ -181,7 +215,8 @@ def HighPriorityItems(settings):
 
     Placing these first prevents fill failures.
     """
-    itemPool = Kongs()
+    itemPool = []
+    itemPool.extend(Kongs(settings))
     itemPool.extend(Guns())
     itemPool.extend(Instruments())
     itemPool.extend(Upgrades(settings))

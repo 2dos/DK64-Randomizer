@@ -11,6 +11,7 @@ class Settings:
         # forward
         # assumed
         self.Algorithm = "forward"
+
         # EntryGBs: list(int)
         self.EntryGBs = [
             0, # Japes
@@ -22,6 +23,7 @@ class Settings:
             0, # Castle
             100, # Helm
         ]
+
         # BossBananas: list(int)
         self.BossBananas = [
             50, # Japes
@@ -32,9 +34,21 @@ class Settings:
             350, # Caves
             400, # Castle
         ]
+
+        # TrainingBarrels: str
+        # normal
+        # shuffled
+        # startwith
+        self.TrainingBarrels = "shuffled"
+
         # StartingKong: Kongs enum
         self.StartingKong = Kongs.donkey
-        # ShuffleTrainingBarrels: bool
-        self.ShuffleTrainingBarrels = True
+
+        # StartWithKongs: bool
+        self.StartWithKongs = False
+
+        # StartWithCrankyMoves: bool
+        self.StartWithCrankyMoves = True
+
         # ProgressiveUpgrades: bool
-        self.ProgressiveUpgrades = False
+        self.ProgressiveUpgrades = True

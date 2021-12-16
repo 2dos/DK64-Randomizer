@@ -1,5 +1,6 @@
 """Stores the item class and a list of each item with its attributes."""
 from randomizer.Enums.Items import Items
+from randomizer.Enums.Kongs import Kongs
 
 
 class Item:
@@ -10,8 +11,22 @@ class Item:
         self.name = name
         self.playthrough = playthrough
 
+def ItemFromKong(kong):
+    """Gets the item representation of a Kong enum."""
+    if kong == Kongs.donkey:
+        return Items.Donkey
+    elif kong == Kongs.diddy:
+        return Items.Diddy
+    elif kong == Kongs.lanky:
+        return Items.Lanky
+    elif kong == Kongs.tiny:
+        return Items.Tiny
+    else:
+        return Items.Chunky
+
 
 ItemList = {
+    Items.NoItem: Item("No Item", False),
     Items.Donkey: Item("Donkey", True),
     Items.Diddy: Item("Diddy", True),
     Items.Lanky: Item("Lanky", True),

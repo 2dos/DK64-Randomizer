@@ -45,41 +45,41 @@ class LogicVarHolder:
         Done between reachability searches and upon initialization.
         """
 
-        self.donkey = self.startkong == Kongs.donkey
-        self.diddy = self.startkong == Kongs.diddy
-        self.lanky = self.startkong == Kongs.lanky
-        self.tiny = self.startkong == Kongs.tiny
-        self.chunky = self.startkong == Kongs.chunky
+        self.donkey = self.startkong == Kongs.donkey or self.settings.StartWithKongs
+        self.diddy = self.startkong == Kongs.diddy or self.settings.StartWithKongs
+        self.lanky = self.startkong == Kongs.lanky or self.settings.StartWithKongs
+        self.tiny = self.startkong == Kongs.tiny or self.settings.StartWithKongs
+        self.chunky = self.startkong == Kongs.chunky or self.settings.StartWithKongs
 
-        self.vines = False
-        self.swim = False
-        self.oranges = False
-        self.barrels = False
+        self.vines = self.settings.TrainingBarrels == "startwith"
+        self.swim = self.settings.TrainingBarrels == "startwith"
+        self.oranges = self.settings.TrainingBarrels == "startwith"
+        self.barrels = self.settings.TrainingBarrels == "startwith"
 
-        self.progDonkey = 0
-        self.blast = False
-        self.strongKong = False
-        self.grab = False
+        self.progDonkey = 3 if self.settings.StartWithCrankyMoves else 0
+        self.blast = self.settings.StartWithCrankyMoves
+        self.strongKong = self.settings.StartWithCrankyMoves
+        self.grab = self.settings.StartWithCrankyMoves
 
-        self.progDiddy = 0
-        self.charge = False
-        self.jetpack = False
-        self.spring = False
+        self.progDiddy = 3 if self.settings.StartWithCrankyMoves else 0
+        self.charge = self.settings.StartWithCrankyMoves
+        self.jetpack = self.settings.StartWithCrankyMoves
+        self.spring = self.settings.StartWithCrankyMoves
 
-        self.progLanky = 0
-        self.handstand = False
-        self.balloon = False
-        self.sprint = False
+        self.progLanky = 3 if self.settings.StartWithCrankyMoves else 0
+        self.handstand = self.settings.StartWithCrankyMoves
+        self.balloon = self.settings.StartWithCrankyMoves
+        self.sprint = self.settings.StartWithCrankyMoves
 
-        self.progTiny = 0
-        self.mini = False
-        self.twirl = False
-        self.monkeyport = False
+        self.progTiny = 3 if self.settings.StartWithCrankyMoves else 0
+        self.mini = self.settings.StartWithCrankyMoves
+        self.twirl = self.settings.StartWithCrankyMoves
+        self.monkeyport = self.settings.StartWithCrankyMoves
 
-        self.progChunky = 0
-        self.hunkyChunky = False
-        self.punch = False
-        self.gorillaGone = False
+        self.progChunky = 3 if self.settings.StartWithCrankyMoves else 0
+        self.hunkyChunky = self.settings.StartWithCrankyMoves
+        self.punch = self.settings.StartWithCrankyMoves
+        self.gorillaGone = self.settings.StartWithCrankyMoves
 
         self.coconut = False
         self.peanut = False
@@ -108,14 +108,14 @@ class LogicVarHolder:
         self.CastleKey = False
         self.HelmKey = False
 
-        self.Slam = 0
+        self.Slam = 3 if self.settings.StartWithCrankyMoves else 0
         self.GoldenBananas = 0
         self.BananaFairies = 0
         self.BananaMedals = 0
         self.BattleCrowns = 0
 
-        self.superSlam = False
-        self.superDuperSlam = False
+        self.superSlam = self.settings.StartWithCrankyMoves
+        self.superDuperSlam = self.settings.StartWithCrankyMoves
 
         self.Blueprints = []
 
@@ -202,7 +202,7 @@ class LogicVarHolder:
         self.CastleKey = self.CastleKey or Items.CreepyCastleKey in ownedItems
         self.HelmKey = self.HelmKey or Items.HideoutHelmKey in ownedItems
 
-        self.Slam = sum(1 for x in ownedItems if x == Items.ProgressiveSlam)
+        self.Slam = 3 if self.settings.StartWithCrankyMoves else sum(1 for x in ownedItems if x == Items.ProgressiveSlam)
         self.GoldenBananas = sum(1 for x in ownedItems if x == Items.GoldenBanana)
         self.BananaFairies = sum(1 for x in ownedItems if x == Items.BananaFairy)
         self.BananaMedals = sum(1 for x in ownedItems if x == Items.BananaMedal)

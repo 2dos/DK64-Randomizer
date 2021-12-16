@@ -5,6 +5,8 @@ from enum import IntEnum, auto
 class Items(IntEnum):
     """Item enum."""
 
+    NoItem = auto()
+
     Donkey = auto()
     Diddy = auto()
     Lanky = auto()
