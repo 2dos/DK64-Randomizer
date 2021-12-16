@@ -52,3 +52,12 @@ class Settings:
 
         # ProgressiveUpgrades: bool
         self.ProgressiveUpgrades = True
+
+        # OpenCrownDoor: bool
+        self.OpenCrownDoor = True
+
+        # OpenCoinDoor: bool
+        self.OpenCoinDoor = True
+
+        # StartWithCameraAndShockwave: bool
+        self.StartWithCameraAndShockwave = True

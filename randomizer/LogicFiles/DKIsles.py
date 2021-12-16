@@ -60,7 +60,7 @@ LogicRegions = {
     ]),
 
     Regions.BananaFairyRoom: Region("Banana Fairy Room", Levels.DKIsles, False, [
-        LocationLogic(Locations.CameraandShockwave, lambda l: True),
+        LocationLogic(Locations.CameraAndShockwave, lambda l: True),
         LocationLogic(Locations.RarewareBanana, lambda l: l.BananaFairies >= 20 and l.istiny),
     ], [], [
         Exit(Regions.IslesMain, lambda l: True),

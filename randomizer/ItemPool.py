@@ -55,8 +55,10 @@ def PlaceConstants(settings):
         LocationList[Locations.HunkyChunky].PlaceItem(Items.NoItem)
         LocationList[Locations.PrimatePunch].PlaceItem(Items.NoItem)
         LocationList[Locations.GorillaGone].PlaceItem(Items.NoItem)
+    if settings.StartWithCameraAndShockwave:
+        LocationList[Locations.CameraAndShockwave].PlaceItem(Items.NoItem)
 
-def Blueprints():
+def Blueprints(settings):
     """Return all blueprint items."""
     blueprints = [
         Items.DKIslesDonkeyBlueprint,
@@ -103,9 +105,9 @@ def Blueprints():
     return blueprints
 
 
-def BlueprintAssumedItems():
+def BlueprintAssumedItems(settings):
     """Items which are assumed to be owned while placing blueprints."""
-    return LowPriorityItems() + ExcessItems()
+    return LowPriorityItems(settings) + ExcessItems(settings)
 
 
 def Keys():
@@ -205,7 +207,8 @@ def Upgrades(settings):
                 Items.PrimatePunch,
                 Items.GorillaGone,
             ])
-    upgrades.append(Items.CameraAndShockwave)
+    if not settings.StartWithCameraAndShockwave:
+        upgrades.append(Items.CameraAndShockwave)
     
     return upgrades
 
@@ -223,26 +226,28 @@ def HighPriorityItems(settings):
     return itemPool
 
 
-def HighPriorityAssumedItems():
+def HighPriorityAssumedItems(settings):
     """Items which are assumed to be owned while placing high priority items."""
-    return Blueprints() + LowPriorityItems() + ExcessItems()
+    return Blueprints(settings) + LowPriorityItems(settings) + ExcessItems(settings)
 
 
-def LowPriorityItems():
+def LowPriorityItems(settings):
     """While most of these items still have logical value they are not as important."""
     itemPool = []
 
     itemPool.extend(itertools.repeat(Items.GoldenBanana, 100))
     itemPool.extend(itertools.repeat(Items.BananaFairy, 20))
     itemPool.extend(itertools.repeat(Items.BananaMedal, 15))
-    itemPool.extend(itertools.repeat(Items.BattleCrown, 4))
-    itemPool.append(Items.NintendoCoin)
-    itemPool.append(Items.RarewareCoin)
+    if not settings.OpenCrownDoor:
+        itemPool.extend(itertools.repeat(Items.BattleCrown, 4))
+    if not settings.OpenCoinDoor:
+        itemPool.append(Items.NintendoCoin)
+        itemPool.append(Items.RarewareCoin)
 
     return itemPool
 
 
-def ExcessItems():
+def ExcessItems(settings):
     """Items which either have no logical value or are excess copies of those that do."""
     itemPool = []
 
@@ -256,7 +261,12 @@ def ExcessItems():
 
     # Collectables
     itemPool.extend(itertools.repeat(Items.GoldenBanana, 101))
-    itemPool.extend(itertools.repeat(Items.BattleCrown, 6))
     itemPool.extend(itertools.repeat(Items.BananaMedal, 25))
+    itemPool.extend(itertools.repeat(Items.BattleCrown, 6))
+    if settings.OpenCrownDoor:
+        itemPool.extend(itertools.repeat(Items.BattleCrown, 4))
+    if settings.OpenCoinDoor:
+        itemPool.append(Items.NintendoCoin)
+        itemPool.append(Items.RarewareCoin)
 
     return itemPool

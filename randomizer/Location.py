@@ -42,7 +42,7 @@ LocationList = {
     Locations.IslesBananaFairyIsland: Location("Isles Banana Fairy Island"),
     Locations.IslesBananaFairyCrocodisleIsle: Location("Isles Banana Fairy Crocodisle Isle"),
     Locations.IslesLankyPrisonOrangsprint: Location("Isles Lanky Prison Orangsprint"),
-    Locations.CameraandShockwave: Location("Camera and Shockwave"),
+    Locations.CameraAndShockwave: Location("Camera and Shockwave"),
     Locations.RarewareBanana: Location("Rareware Banana"),
     Locations.IslesLankyInstrumentPad: Location("Isles Lanky Instrument Pad"),
     Locations.IslesTinyBigBugBash: Location("Isles Tiny Big Bug Bash"),

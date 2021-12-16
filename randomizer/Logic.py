@@ -96,8 +96,8 @@ class LogicVarHolder:
         self.nintendoCoin = False
         self.rarewareCoin = False
 
-        self.camera = False
-        self.shockwave = False
+        self.camera = self.settings.StartWithCameraAndShockwave
+        self.shockwave = self.settings.StartWithCameraAndShockwave
 
         self.JapesKey = False
         self.AztecKey = False

@@ -31,6 +31,7 @@ LogicRegions = {
         # You're supposed to sprint through the maze but you can make it without
         Event(Events.HelmLankyDone, lambda l: Events.HelmTinyDone in l.Events and l.trombone and l.grape),
         Event(Events.HelmDiddyDone, lambda l: Events.HelmLankyDone in l.Events and l.guitar and l.Slam and l.peanut),
-        Event(Events.HelmKeyAccess, lambda l: Events.HelmDiddyDone in l.Events and l.BattleCrowns >= 4 and l.nintendoCoin and l.rarewareCoin),
+        Event(Events.HelmKeyAccess, lambda l: Events.HelmDiddyDone in l.Events 
+                    and (l.settings.OpenCrownDoor or l.BattleCrowns >= 4) and (l.settings.OpenCoinDoor or l.nintendoCoin and l.rarewareCoin)),
     ], []),
 }
