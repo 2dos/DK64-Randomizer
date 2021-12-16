@@ -76,6 +76,17 @@ file_dict = [
 
 map_replacements = []
 
+for x in range(175):
+    if x > 0:
+        file_dict.append({
+            "name": "Song " + str(x),
+            "pointer_table_index": 0,
+            "file_index": x,
+            "source_file": "song" + str(x) + ".bin",
+            "do_not_compress": True,
+            "target_compressed_size": 0x2DDE,
+        })
+
 print("DK64 Extractor")
 
 with open(ROMName, "rb") as fh:
@@ -198,6 +209,26 @@ for x in file_dict:
 with open(newROMName, "r+b") as fh:
     print("[4 / 7] - Writing patched files to ROM")
     for x in file_dict:
+        if "target_compressed_size" in x:
+            x["do_not_compress"] = True;
+            with open(x["source_file"],"rb") as fg:
+                byte_read = fg.read()
+                uncompressed_size = len(byte_read)
+            precomp = gzip.compress(byte_read, compresslevel=9)
+            byte_append = 0
+            diff = x["target_compressed_size"] - len(precomp)
+            if diff > 0:
+                precomp += byte_append.to_bytes(diff,"big")
+            compress = bytearray(precomp)
+            # Zero out timestamp in gzip header to make builds deterministic
+            compress[4] = 0
+            compress[5] = 0
+            compress[6] = 0
+            compress[7] = 0
+            with open(x["source_file"],"wb") as fg:
+                fg.write(compress)
+            x["output_file"] = x["source_file"]
+
         if "texture_format" in x:
             if x["texture_format"] in ["rgba5551", "i4", "ia4", "i8", "ia8"]:
                 result = subprocess.check_output(["./build/n64tex.exe", x["texture_format"], x["source_file"]])
