@@ -162,7 +162,7 @@ LogicRegions = {
     ]),
 
     Regions.CavesBossLobby: Region("Caves Boss Lobby", Levels.CrystalCaves, True, [], [], [
-        Exit(Regions.CavesBoss, lambda l: l.isdonkey and sum(l.ColoredBananas[Levels.CrystalCaves]) >= 350),
+        Exit(Regions.CavesBoss, lambda l: l.isdonkey and sum(l.ColoredBananas[Levels.CrystalCaves]) >= l.settings.BossBananas[Levels.CrystalCaves - 1]),
     ]),
 
     Regions.CavesBoss: Region("Caves Boss", Levels.CrystalCaves, False, [

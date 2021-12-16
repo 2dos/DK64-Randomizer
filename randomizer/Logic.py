@@ -31,9 +31,12 @@ from randomizer.Location import LocationList
 class LogicVarHolder:
     """Used to store variables when checking logic conditions."""
 
-    def __init__(self, startkong):
+    def __init__(self, settings=None):
         """Initialize with given parameters."""
-        self.startkong = startkong
+        if settings == None:
+            return
+        self.settings = settings
+        self.startkong = self.settings.StartingKong
         self.Reset()
 
     def Reset(self):
@@ -41,6 +44,7 @@ class LogicVarHolder:
 
         Done between reachability searches and upon initialization.
         """
+
         self.donkey = self.startkong == Kongs.donkey
         self.diddy = self.startkong == Kongs.diddy
         self.lanky = self.startkong == Kongs.lanky
@@ -308,9 +312,7 @@ class LogicVarHolder:
             self.ColoredBananas[level][collectible.kong] += 10
         collectible.added = True
 
-
-# Initialize logic variables, for now assume start with donkey
-LogicVariables = LogicVarHolder(Kongs.donkey)
+LogicVariables = LogicVarHolder()
 
 # Import regions from logic files
 Regions = {}

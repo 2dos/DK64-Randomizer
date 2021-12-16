@@ -121,7 +121,7 @@ LogicRegions = {
     ]),
 
     Regions.JapesBossLobby: Region("Japes Boss Lobby", Levels.JungleJapes, True, [], [], [
-        Exit(Regions.JapesBoss, lambda l: l.isdonkey and sum(l.ColoredBananas[Levels.JungleJapes]) >= 50),
+        Exit(Regions.JapesBoss, lambda l: l.isdonkey and sum(l.ColoredBananas[Levels.JungleJapes]) >= l.settings.BossBananas[Levels.JungleJapes - 1]),
     ]),
 
     Regions.JapesBoss: Region("Japes Boss", Levels.JungleJapes, False, [

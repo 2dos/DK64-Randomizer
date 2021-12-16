@@ -70,14 +70,14 @@ LogicRegions = {
         LocationLogic(Locations.IslesLankyInstrumentPad, lambda l: l.chunkyAccess and l.trombone and l.islanky),
     ], [], [
         Exit(Regions.IslesMain, lambda l: True),
-        Exit(Regions.JungleJapesMain, lambda l: True),
+        Exit(Regions.JungleJapesMain, lambda l: l.GoldenBananas >= l.settings.EntryGBs[Levels.JungleJapes - 1]),
     ]),
 
     Regions.AngryAztecLobby: Region("Angry Aztec Lobby", Levels.DKIsles, True, [
         LocationLogic(Locations.IslesTinyBigBugBash, lambda l: l.charge and l.twirl and l.istiny),
     ], [], [
         Exit(Regions.IslesMain, lambda l: True),
-        Exit(Regions.AngryAztecStart, lambda l: True),
+        Exit(Regions.AngryAztecStart, lambda l: l.GoldenBananas >= l.settings.EntryGBs[Levels.AngryAztec - 1]),
     ]),
 
     Regions.CrocodileIsleBeyondLift: Region("Crocodile Isle Beyond Lift", Levels.DKIsles, False, [
@@ -101,7 +101,7 @@ LogicRegions = {
         LocationLogic(Locations.IslesBananaFairyFactoryLobby, lambda l: l.camera and l.punch),
     ], [], [
         Exit(Regions.CrocodileIsleBeyondLift, lambda l: True),
-        Exit(Regions.FranticFactoryStart, lambda l: True),
+        Exit(Regions.FranticFactoryStart, lambda l: l.GoldenBananas >= l.settings.EntryGBs[Levels.FranticFactory - 1]),
     ]),
 
     Regions.GloomyGalleonLobby: Region("Gloomy Galleon Lobby", Levels.DKIsles, True, [
@@ -109,7 +109,7 @@ LogicRegions = {
         LocationLogic(Locations.IslesChunkyKasplat, lambda l: l.ischunky),
     ], [], [
         Exit(Regions.IslesMain, lambda l: True),
-        Exit(Regions.GloomyGalleonStart, lambda l: True),
+        Exit(Regions.GloomyGalleonStart, lambda l: l.GoldenBananas >= l.settings.EntryGBs[Levels.GloomyGalleon - 1]),
     ]),
 
     Regions.CabinIsle: Region("Cabin Isle", Levels.DKIsles, False, [
@@ -124,7 +124,7 @@ LogicRegions = {
         LocationLogic(Locations.IslesBananaFairyForestLobby, lambda l: l.camera and l.feather),
     ], [], [
         Exit(Regions.CabinIsle, lambda l: True),
-        Exit(Regions.FungiForestStart, lambda l: True),
+        Exit(Regions.FungiForestStart, lambda l: l.GoldenBananas >= l.settings.EntryGBs[Levels.FungiForest - 1]),
     ]),
 
     Regions.CrystalCavesLobby: Region("Crystal Caves Lobby", Levels.DKIsles, True, [
@@ -133,7 +133,7 @@ LogicRegions = {
         LocationLogic(Locations.IslesLankyKasplat, lambda l: l.punch and l.islanky),
     ], [], [
         Exit(Regions.IslesMain, lambda l: True),
-        Exit(Regions.CrystalCavesMain, lambda l: True),
+        Exit(Regions.CrystalCavesMain, lambda l: l.GoldenBananas >= l.settings.EntryGBs[Levels.CrystalCaves - 1]),
     ]),
 
     Regions.CreepyCastleLobby: Region("Creepy Castle Lobby", Levels.DKIsles, True, [
@@ -141,7 +141,7 @@ LogicRegions = {
         LocationLogic(Locations.IslesDiddyKasplat, lambda l: l.coconut and l.diddy),
     ], [], [
         Exit(Regions.IslesMain, lambda l: True),
-        Exit(Regions.CreepyCastleMain, lambda l: True),
+        Exit(Regions.CreepyCastleMain, lambda l: l.GoldenBananas >= l.settings.EntryGBs[Levels.CreepyCastle - 1]),
     ]),
 
     Regions.HideoutHelmLobby: Region("Hideout Helm Lobby", Levels.DKIsles, True, [
@@ -149,7 +149,7 @@ LogicRegions = {
         LocationLogic(Locations.IslesDonkeyKasplat, lambda l: l.coconut),
     ], [], [
         Exit(Regions.IslesMain, lambda l: True),
-        Exit(Regions.HideoutHelmStart, lambda l: l.gorillaGone and l.GoldenBananas >= 100),
+        Exit(Regions.HideoutHelmStart, lambda l: l.gorillaGone and l.GoldenBananas >= l.settings.EntryGBs[Levels.HideoutHelm - 1]),
     ]),
 
     Regions.KRool: Region("K. Rool", Levels.DKIsles, True, [

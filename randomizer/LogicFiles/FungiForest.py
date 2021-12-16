@@ -217,7 +217,7 @@ LogicRegions = {
     ]),
 
     Regions.ForestBossLobby: Region("Forest Boss Lobby", Levels.FungiForest, True, [], [], [
-        Exit(Regions.ForestBoss, lambda l: l.ischunky and sum(l.ColoredBananas[Levels.FungiForest]) >= 300),
+        Exit(Regions.ForestBoss, lambda l: l.ischunky and sum(l.ColoredBananas[Levels.FungiForest]) >= l.settings.BossBananas[Levels.FungiForest - 1]),
     ]),
 
     Regions.ForestBoss: Region("Forest Boss", Levels.FungiForest, False, [

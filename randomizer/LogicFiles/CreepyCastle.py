@@ -153,7 +153,7 @@ LogicRegions = {
     ]),
 
     Regions.CastleBossLobby: Region("Castle Boss Lobby", Levels.CreepyCastle, True, [], [], [
-        Exit(Regions.CastleBoss, lambda l: l.islanky and sum(l.ColoredBananas[Levels.CreepyCastle]) >= 400),
+        Exit(Regions.CastleBoss, lambda l: l.islanky and sum(l.ColoredBananas[Levels.CreepyCastle]) >= l.settings.BossBananas[Levels.CreepyCastle - 1]),
     ]),
 
     Regions.CastleBoss: Region("Castle Boss", Levels.CreepyCastle, False, [

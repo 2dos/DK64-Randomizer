@@ -7,7 +7,7 @@ import randomizer.Logic as Logic
 import randomizer.Exceptions as Ex
 from randomizer.Location import LocationList
 from randomizer.Item import ItemList
-from randomizer.Logic import LogicVariables
+from randomizer.Logic import LogicVarHolder, LogicVariables
 
 from randomizer.Enums.Items import Items
 from randomizer.Enums.Locations import Locations
@@ -276,6 +276,9 @@ def Fill(spoiler):
 
 def Generate(spoiler):
     """Generate a complete spoiler based on input settings."""
+    # Init logic vars with settings
+    global LogicVariables
+    LogicVariables = LogicVarHolder(spoiler.settings)
     # Handle ER, etc...
     # Place items
     Fill(spoiler)

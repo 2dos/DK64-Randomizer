@@ -111,7 +111,7 @@ LogicRegions = {
     ], [], []),
 
     Regions.FactoryBossLobby: Region("Factory Boss Lobby", Levels.FranticFactory, False, [], [], [
-        Exit(Regions.FactoryBoss, lambda l: l.istiny and sum(l.ColoredBananas[Levels.FranticFactory]) >= 200),
+        Exit(Regions.FactoryBoss, lambda l: l.istiny and sum(l.ColoredBananas[Levels.FranticFactory]) >= l.settings.BossBananas[Levels.FranticFactory - 1]),
     ]),
 
     Regions.FactoryBoss: Region("Factory Boss", Levels.FranticFactory, False, [

@@ -1,5 +1,6 @@
 """Settings class and functions."""
 
+from randomizer.Enums.Kongs import Kongs
 
 class Settings:
     """Class used to store settings for seed generation."""
@@ -10,7 +11,30 @@ class Settings:
         # forward
         # assumed
         self.Algorithm = "forward"
+        # EntryGBs: list(int)
+        self.EntryGBs = [
+            0, # Japes
+            0, # Aztec
+            0, # Factory
+            0, # Galleon
+            0, # Forest
+            0, # Caves
+            0, # Castle
+            100, # Helm
+        ]
+        # BossBananas: list(int)
+        self.BossBananas = [
+            50, # Japes
+            120, # Aztec
+            200, # Factory
+            250, # Galleon
+            300, # Forest
+            350, # Caves
+            400, # Castle
+        ]
+        # StartingKong: Kongs enum
+        self.StartingKong = Kongs.donkey
         # ShuffleTrainingBarrels: bool
-        self.ShuffleTrainingBarrels = False
+        self.ShuffleTrainingBarrels = True
         # ProgressiveUpgrades: bool
-        self.ProgressiveUpgrades = True
+        self.ProgressiveUpgrades = False
