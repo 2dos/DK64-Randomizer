@@ -559,6 +559,7 @@ dataset = []
 
 def dumpPointerTableDetails(filename: str, fr: BinaryIO):
     """Dump the pointer table info."""
+    print("Dumping Pointer Table Details to " + filename)
     for x in pointer_tables:
         entries = []
         for y in x["entries"]:
@@ -591,3 +592,36 @@ def dumpPointerTableDetails(filename: str, fr: BinaryIO):
 
     with open("../static/patches/pointer_addresses.json", "w") as fh:
         fh.write(json.dumps(dataset))
+
+def dumpPointerTableDetailsLegacy(filename : str, fr : BinaryIO):
+    with open(filename, "w") as fh:
+        for x in pointer_tables:
+            fh.write(str(x["index"]) + ": " + x["name"] + ": " + hex(x["new_absolute_address"]) + " (" + str(x["num_entries"]) + " entries, " + hex(x["original_compressed_size"]) + " -> " + hex(getPointerTableCompressedSize(x["index"])) + " bytes)")
+            fh.write("\n")
+            for y in x["entries"]:
+                fh.write(" - " + str(y["index"]) + ": ")
+                fh.write(hex(x["new_absolute_address"] + y["index"] * 4) + " -> ")
+                fr.seek(x["new_absolute_address"] + y["index"] * 4)
+                pointing_to = (int.from_bytes(fr.read(4), "big") & 0x7FFFFFFF) + main_pointer_table_offset
+                fh.write(hex(pointing_to))
+
+                file_info = getFileInfo(x["index"], y["index"])
+                if file_info:
+                    fh.write(" (" + hex(len(file_info["data"])) + ")")
+                else:
+                    fh.write(" WARNING: File info not found")
+
+                uncompressed_size = getOriginalUncompressedSize(fr, x["index"], y["index"])
+                if uncompressed_size > 0:
+                    fh.write(" (" + hex(uncompressed_size) + ")")
+                fh.write(" (" + str(y["bit_set"]) + ")")
+
+                if x["num_entries"] == 221:
+                    fh.write(" (" + maps[y["index"]] + ")")
+
+                fh.write(" (" + str(y["new_sha1"]) + ")")
+
+                if "filename" in y:
+                    fh.write(" (" + str(y["filename"]) + ")")
+
+                fh.write("\n")
