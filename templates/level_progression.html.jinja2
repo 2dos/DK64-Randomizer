@@ -1,38 +1,58 @@
 <!--Create table for level progression-->
 <div style="margin-top: 20px;">
-   <table id="leveltable" style="width: 100%">
-      <tr>
-         <th>Progression</th>
-         <th>B Locker</th>
-         <th>Troff N Scoff</th>
-      </tr>
-      <tr>
-         <td>Presets</td>
-         <td>
-            <select name="blocker_selected" class="form-select" id="blocker_selected" ></select>
-         </td>
-         <td>
-            <select name="troff_selected" class="form-select" id="troff_selected" ></select>
-         </td>
-      </tr>
-      {% for i in range(0, 8) %}
-      <tr>
-         <td>Level {{ i }}</td>
-         <td>
-            <input class="form-control" min="0" max="200" name="blocker_{{ i }}" id="blocker_{{ i }}" style="width: 100%" value="{{ i }}" type="number" title="You can adjust each individual B Locker amount to any number between 0-200.
+    <table id="leveltable" style="width: 100%;">
+        <tr>
+            <th>Progression</th>
+            <th>B Locker</th>
+            <th>Troff N Scoff</th>
+        </tr>
+        <tr>
+            <td>Presets</td>
+            <td>
+                <select name="blocker_selected" class="form-select" id="blocker_selected"></select>
+            </td>
+            <td>
+                <select name="troff_selected" class="form-select" id="troff_selected"></select>
+            </td>
+        </tr>
+        {% for i in range(0, 8) %}
+        <tr>
+            <td>Level {{ i }}</td>
+            <td>
+                <input
+                    class="form-control"
+                    min="0"
+                    max="200"
+                    name="blocker_{{ i }}"
+                    id="blocker_{{ i }}"
+                    style="width: 100%;"
+                    value="{{ i }}"
+                    type="number"
+                    title="You can adjust each individual B Locker amount to any number between 0-200.
                Note that you could make it impossible to beat the game glitchless if certain levels are set too high,
                as the program does not validate if a game is beatable glitchless with adjusted B Locker settings.
-               If you are unsure what to adjust the level values to, use the presets dropdown instead."/>
-         </td>
-         {% if i < 7 %}
-         <td>
-            <input class="form-control" min="1" max="500" name="troff_{{ i }}" id="troff_{{ i }}" style="width: 100%" value="{{ i }}" type="number" title="You can adjust each individual Troff n Scoff amount to any number between 1-500.
+               If you are unsure what to adjust the level values to, use the presets dropdown instead."
+                />
+            </td>
+            {% if i < 7 %}
+            <td>
+                <input
+                    class="form-control"
+                    min="1"
+                    max="500"
+                    name="troff_{{ i }}"
+                    id="troff_{{ i }}"
+                    style="width: 100%;"
+                    value="{{ i }}"
+                    type="number"
+                    title="You can adjust each individual Troff n Scoff amount to any number between 1-500.
                Note that you could make it impossible to beat the game glitchless if early levels are set too high,
                as the program does not validate if a game is beatable glitchless with adjusted Troff n Scoff settings.
-               If you are unsure what to adjust the level values to, use the presets dropdown instead."/>
-         </td>
-         {% endif %}
-      </tr>
-      {% endfor %}
-   </table>
+               If you are unsure what to adjust the level values to, use the presets dropdown instead."
+                />
+            </td>
+            {% endif %}
+        </tr>
+        {% endfor %}
+    </table>
 </div>

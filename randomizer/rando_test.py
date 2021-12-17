@@ -1,9 +1,10 @@
 """Temp file used for testing new logic system."""
-import random
 import json
+import random
+
 from randomizer.Fill import Fill
-from randomizer.Spoiler import Spoiler
 from randomizer.Settings import Settings
+from randomizer.Spoiler import Spoiler
 
 
 def run(fill_type):

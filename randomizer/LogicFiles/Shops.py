@@ -2,10 +2,10 @@
 """Logic file for shops."""
 
 from randomizer.Enums.Items import Items
-from randomizer.Enums.Levels import Levels
-from randomizer.Enums.Regions import Regions
-from randomizer.Enums.Locations import Locations
 from randomizer.Enums.Kongs import Kongs
+from randomizer.Enums.Levels import Levels
+from randomizer.Enums.Locations import Locations
+from randomizer.Enums.Regions import Regions
 from randomizer.LogicClasses import Event, Exit, LocationLogic, Region
 
 """

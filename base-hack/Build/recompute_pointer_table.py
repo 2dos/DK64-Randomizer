@@ -1,10 +1,10 @@
 """Recompute all the pointers within the rom."""
 import hashlib
-from map_names import maps
-from typing import BinaryIO
 import json
+from typing import BinaryIO
 
 import encoders
+from map_names import maps
 
 pointer_tables = [
     {
@@ -558,7 +558,7 @@ dataset = []
 
 
 def dumpPointerTableDetails(filename: str, fr: BinaryIO):
-    """Dump the pointer table info."""
+    """Dump the pointer table info into a JSON readable pointer table."""
     print("Dumping Pointer Table Details to " + filename)
     for x in pointer_tables:
         entries = []
@@ -593,10 +593,25 @@ def dumpPointerTableDetails(filename: str, fr: BinaryIO):
     with open("../static/patches/pointer_addresses.json", "w") as fh:
         fh.write(json.dumps(dataset))
 
-def dumpPointerTableDetailsLegacy(filename : str, fr : BinaryIO):
+
+def dumpPointerTableDetailsLegacy(filename: str, fr: BinaryIO):
+    """Dump the table details in the legacy log format."""
     with open(filename, "w") as fh:
         for x in pointer_tables:
-            fh.write(str(x["index"]) + ": " + x["name"] + ": " + hex(x["new_absolute_address"]) + " (" + str(x["num_entries"]) + " entries, " + hex(x["original_compressed_size"]) + " -> " + hex(getPointerTableCompressedSize(x["index"])) + " bytes)")
+            fh.write(
+                str(x["index"])
+                + ": "
+                + x["name"]
+                + ": "
+                + hex(x["new_absolute_address"])
+                + " ("
+                + str(x["num_entries"])
+                + " entries, "
+                + hex(x["original_compressed_size"])
+                + " -> "
+                + hex(getPointerTableCompressedSize(x["index"]))
+                + " bytes)"
+            )
             fh.write("\n")
             for y in x["entries"]:
                 fh.write(" - " + str(y["index"]) + ": ")

@@ -2,10 +2,10 @@
 """Logic file for Creepy Castle."""
 
 from randomizer.Enums.Events import Events
-from randomizer.Enums.Levels import Levels
-from randomizer.Enums.Regions import Regions
-from randomizer.Enums.Locations import Locations
 from randomizer.Enums.Kongs import Kongs
+from randomizer.Enums.Levels import Levels
+from randomizer.Enums.Locations import Locations
+from randomizer.Enums.Regions import Regions
 from randomizer.LogicClasses import Event, Exit, LocationLogic, Region
 
 LogicRegions = {

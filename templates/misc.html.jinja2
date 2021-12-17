@@ -1,81 +1,129 @@
-<div class="form-check form-switch" style="margin-top: 20px;">
-   <label  title="This option enables spoiler log files to be created on randomizer generation.">
-   <input class="form-check-input" type="checkbox" id="generate_spoilerlog" name="generate_spoilerlog" value="True"
-      checked  />
-   Generate Spoiler Log
-   </label>
-</div>
-<div class="form-check form-switch">
-   <label  title="This option will make all 5 kongs available from the start without freeing them.
-The golden bananas awarded when freeing specific kongs still must be collected even with this option on.
-If using Level Progression Randomizer and playing through glitchless, this option is forced on.">
-   <input class="form-check-input" type="checkbox" id="unlock_all_kongs" name="unlock_all_kongs" value="True"
-      checked  disabled/>
-   Unlock All Kongs
-   </label>
-</div>
-<div class="form-check form-switch">
-   <label  title="This option will make all moves available from the start without purchasing them.
-Includes all Cranky, all Candy, and almost all Funky purchasables.
-Does not include access to JetPac in Cranky; you will still need 15 banana medals.
-Does not include snipe scope to reduce 1st person camera lag. Is still purchasable.
-Does not include the shockwave attack from the banana fairy queen.">
-   <input class="form-check-input" type="checkbox" name="unlock_all_moves" value="True"  />
-   Unlock All Purchasable Moves
-   </label>
-</div>
-<div class="form-check form-switch">
-   <label  title="This option makes the fairy camera and shockwave attack available from the start.
-Normally obtainable by visiting the Banana Fairy Queen with Tiny as Mini Monkey.">
-   <input class="form-check-input" type="checkbox" name="unlock_fairy_shockwave" value="True"/>
-   Fairy Camera and Shockwave Attack
-   </label>
-</div>
-<div class="form-check form-switch">
-   <label  title="This option will allow you to switch kongs almost anywhere using DPad left or DPad right.
-You will still need to unlock the kong you want if Unlock All Kongs isn't enabled.
-You cannot switch kongs in rooms or areas that would otherwise break the puzzle.">
-   <input class="form-check-input" type="checkbox" name="enable_tag_anywhere" value="True"/>
-   Enable Tag Anywhere
-   </label>
-</div>
-<div class="form-check form-switch">
-   <label  title="Training Barrels complete, start with Simian Slam, spawn in DK Isles, Japes lobby entrance open.">
-   <input class="form-check-input" type="checkbox" name="fast_start_beginning_of_game" value="True" checked/>
-   Fast Start - Beginning of Game
-   </label>
-</div>
-<div class="form-check form-switch">
-   <label  title="This option will shorten the time it takes to beat Hideout Helm with the following changes:
-- You will spawn in the Blast o Matic room.
-- Opens the roman numeral doors to each Kong's room.
-- The gates in front of the music pads are gone.">
-   <input class="form-check-input" type="checkbox" name="fast_start_hideout_helm" value="True" checked/>
-   Fast Start - Hideout Helm
-   </label>
-</div>
-<div class="form-check form-switch">
-   <label  title="You do not need to collect 4 crowns to collect Key 8.">
-   <input class="form-check-input" type="checkbox" name="crown_door_open" value="True" checked/>
-   Open Crown Door
-   </label>
-</div>
-<div class="form-check form-switch">
-   <label  title="You do not need to collect the Nintendo and Rareware coin to collect Key 8.
-You will not be able to collect the GB from DK Arcade with this option enabled.">
-   <input class="form-check-input" type="checkbox" name="coin_door_open" value="True" checked/>
-   Open Nintendo + Rareware Coin Door
-   </label>
-</div>
-<div class="form-check form-switch">
-   <label  title="This option enables the following quality of life changes to the game:
+<div class="container" style="margin-top: 20px;">
+    <div class="row">
+        <div class="col border">
+            <h3>Quality of Life</h3>
+            <div class="form-check form-switch">
+                <label title="Training Barrels complete, start with Simian Slam, spawn in DK Isles, Japes lobby entrance open.">
+                    <input class="form-check-input" type="checkbox" name="fast_start_beginning_of_game" value="True" checked />
+                    Fast Start - Beginning of Game
+                </label>
+            </div>
+            <div class="form-check form-switch">
+                <label
+                    title="This option enables the following quality of life changes to the game:
 - Removes first time text.
 - Removes first time boss cutscenes.
 - Removes first time area visit cutscenes.
 - Removes banana dance cutscenes.
 - Remove cutscenes from the startup sequence.
-- Story Skip option in the main menu set to On by default.">
-   <input class="form-check-input" type="checkbox" name="quality_of_life" value="True" checked/>
-   Quality of Life Changes
-   </label>
+- Story Skip option in the main menu set to On by default."
+                >
+                    <input class="form-check-input" type="checkbox" name="quality_of_life" value="True" checked />
+                    Quality of Life Changes
+                </label>
+            </div>
+            <div class="form-check form-switch">
+                <label
+                    title="This option will allow you to switch kongs almost anywhere using DPad left or DPad right.
+You will still need to unlock the kong you want if Unlock All Kongs isn't enabled.
+You cannot switch kongs in rooms or areas that would otherwise break the puzzle."
+                >
+                    <input class="form-check-input" type="checkbox" name="enable_tag_anywhere" value="True" />
+                    Enable Tag Anywhere
+                </label>
+            </div>
+        </div>
+        <div class="col border">
+            <h3>Unlocks</h3>
+
+            <div class="form-check form-switch">
+                <label
+                    title="This option will make all 5 kongs available from the start without freeing them.
+The golden bananas awarded when freeing specific kongs still must be collected even with this option on.
+If using Level Progression Randomizer and playing through glitchless, this option is forced on."
+                >
+                    <input class="form-check-input" type="checkbox" id="unlock_all_kongs" name="unlock_all_kongs" value="True" checked disabled />
+                    Unlock All Kongs
+                </label>
+            </div>
+            <div class="form-check form-switch">
+                <label
+                    title="This option will make all moves available from the start without purchasing them.
+Includes all Cranky, all Candy, and almost all Funky purchasables.
+Does not include access to JetPac in Cranky; you will still need 15 banana medals.
+Does not include snipe scope to reduce 1st person camera lag. Is still purchasable.
+Does not include the shockwave attack from the banana fairy queen."
+                >
+                    <input class="form-check-input" type="checkbox" name="unlock_all_moves" value="True" />
+                    Unlock All Purchasable Moves
+                </label>
+            </div>
+            <div class="form-check form-switch">
+                <label
+                    title="This option makes the fairy camera and shockwave attack available from the start.
+Normally obtainable by visiting the Banana Fairy Queen with Tiny as Mini Monkey."
+                >
+                    <input class="form-check-input" type="checkbox" name="unlock_fairy_shockwave" value="True" />
+                    Unlock Fairy Camera and Shockwave Attack
+                </label>
+            </div>
+
+            <div class="form-check form-switch">
+                <label
+                    title="This option will shorten the time it takes to beat Hideout Helm with the following changes:
+- You will spawn in the Blast o Matic room.
+- Opens the roman numeral doors to each Kong's room.
+- The gates in front of the music pads are gone."
+                >
+                    <input class="form-check-input" type="checkbox" name="fast_start_hideout_helm" value="True" checked />
+                    Fast Start - Hideout Helm
+                </label>
+            </div>
+            <div class="form-check form-switch">
+                <label title="You do not need to collect 4 crowns to collect Key 8.">
+                    <input class="form-check-input" type="checkbox" name="crown_door_open" value="True" checked />
+                    Open Crown Door
+                </label>
+            </div>
+            <div class="form-check form-switch">
+                <label
+                    title="You do not need to collect the Nintendo and Rareware coin to collect Key 8.
+You will not be able to collect the GB from DK Arcade with this option enabled."
+                >
+                    <input class="form-check-input" type="checkbox" name="coin_door_open" value="True" checked />
+                    Open Nintendo + Rareware Coin Door
+                </label>
+            </div>
+        </div>
+        <div class="w-100"></div>
+        <div class="col border">
+            <h3>Music Rando</h3>
+            <div>
+                Background Music
+                <select name="music_bgm" style="width: 60%;" class="form-select center-div" aria-label="Background Music">
+                    <option selected value="default">Default Music</option>
+                    <option value="randomized">Randomized</option>
+                    <option value="chaos">Chaos</option>
+                    <option disabled value="uploaded">Upload your own - Disabled</option>
+                </select>
+            </div>
+            <div>
+                Fanfares
+                <select name="music_fanfares" style="width: 60%;" class="form-select center-div" aria-label="Fanfares">
+                    <option selected value="default">Default Fanfares</option>
+                    <option value="randomized">Randomized</option>
+                    <option disabled value="uploaded">Upload your own - Disabled</option>
+                </select>
+            </div>
+            <div>
+                Events
+                <select name="music_events" style="width: 60%;" class="form-select center-div" aria-label="Events">
+                    <option selected value="default">Default Events</option>
+                    <option value="randomized">Randomized</option>
+                    <option disabled value="uploaded">Upload your own - Disabled</option>
+                </select>
+            </div>
+        </div>
+        <div class="col border"></div>
+    </div>
 </div>

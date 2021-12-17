@@ -30,15 +30,15 @@ class ROM:
         """
         self.rom.writeU8(val)
 
-    def writeBytes(self, bytes: list):
+    def writeBytes(self, byte_data: bytes):
         """Write an array a bytes to the current position.
 
         Starts at 0x0 as the inital position without seeking.
 
         Args:
-            bytes (list): List of bytes to write to current position.
+            byte_data (bytes): Bytes object to write to current position.
         """
-        self.rom.writeBytes(bytes)
+        self.rom.writeBytes(bytes(byte_data))
 
     def writeString(self, string: str, length: int):
         """Write a string to the current position.
@@ -123,9 +123,9 @@ class ROM:
             len (int): Length to read.
 
         Returns:
-            list: List of bytes read from current position.
+            bytes: List of bytes read from current position.
         """
-        return list(self.rom.readBytes(len))
+        return bytes(self.rom.readBytes(len))
 
     def fixChecksum(self):
         """Fix the checksum of the current file."""

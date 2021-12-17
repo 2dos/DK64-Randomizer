@@ -356,6 +356,9 @@ MarcFile.prototype.writeU32 = function (u32) {
 };
 
 MarcFile.prototype.writeBytes = function (a) {
+  if (a.type == "bytes") {
+    a = new Uint8Array(a);
+  }
   for (var i = 0; i < a.length; i++) this._u8array[this.offset + i] = a[i];
 
   this.offset += a.length;

@@ -1,10 +1,14 @@
 """File containing main UI button events that travel between tabs."""
-import js
-from ui.bindings import bind
 import json
-from ui.rando_options import update_disabled_progression
-from ui.progress_bar import ProgressBar
+
+import js
+
+from randomizer.MusicRando import randomize_music
+from randomizer.Patcher import ROM
 from randomizer.Settings import Settings
+from ui.bindings import bind
+from ui.progress_bar import ProgressBar
+from ui.rando_options import update_disabled_progression
 
 
 @bind("change", "jsonfileloader")
@@ -91,13 +95,12 @@ def generate_seed(event):
         for element in disabled_options:
             element.setAttribute("disabled", "disabled")
         settings = Settings(form_data)
-        print(settings)
         # TODO: This is the entrypoint of builds, we need to make sure we properly set this up
-        # print(form_data)
-        # print(datetime.now())
+        # randomize_music(settings)
+        # ROM().fixSecurityValue()
+        # ROM().save("dk64-test.z64")
+        # Below comment will run the rando_test function in the background
         # worker.background(run, ["'assumed'"], test)
-        # This is what the returning function used to be
-        # patch_files.start_randomizing_seed(dict(data.get("form_data"))
 
 
 @bind("click", "download_json")

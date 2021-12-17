@@ -1,7 +1,7 @@
 """Compile the C Code."""
-import subprocess
 import os
 import shutil
+import subprocess
 
 # Compile C Code
 avoids = []

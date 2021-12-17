@@ -1,8 +1,10 @@
 """Options for the main rando tab."""
-from js import document
-import js
-from ui.bindings import bind
 import random
+
+import js
+from js import document
+
+from ui.bindings import bind
 
 
 @bind("click", "randomize_progression")

@@ -3,9 +3,8 @@ async function run_python_file(file) {
   await pyodide.runPythonAsync(await (await fetch(file)).text());
 }
 run_python_file("ui/__init__.py");
-async function sleep(seconds, func, args) 
-{
-  setTimeout(function(){
+async function sleep(seconds, func, args) {
+  setTimeout(function () {
     func(...args);
-}, seconds * 1000);
+  }, seconds * 1000);
 }

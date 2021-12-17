@@ -18,6 +18,13 @@ button,
     margin-top: 5px;
 }
 
+.center-div {
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 5px;
+    margin-top: 5px;
+}
+
 .center_image {
     display: block;
     margin-left: auto;

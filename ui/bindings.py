@@ -1,6 +1,7 @@
 """Decorator function for UI elements to bind events to buttons."""
-from js import document
 from functools import wraps
+
+from js import document
 
 
 def bind(event, id, iterations=0):

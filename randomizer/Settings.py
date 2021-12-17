@@ -56,6 +56,9 @@ class Settings:
         self.quality_of_life = None
         self.unlock_fairy_shockwave = None
         self.enable_tag_anywhere = None
+        self.music_bgm = None
+        self.music_fanfares = None
+        self.music_events = None
 
     def __repr__(self):
         """Return printable version of the object as json.

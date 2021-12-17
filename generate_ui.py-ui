@@ -2,14 +2,17 @@
 # This file will fail linting generally as await calls are not supposed to be run on a main thread
 # However this file is loaded as an async call by javascript so while python linters complain the file is valid
 # So for the time being we've moved this to a py-ui file to ignore linting on it
-import js
-from js import document
-import micropip
-from jinja2 import Environment, FunctionLoader
-from pyodide import to_js
 import json
 
-await micropip.install("pyodide-importer")  # type: ignore  # noqa
+import js
+import micropip
+from jinja2 import Environment, FunctionLoader
+from js import document
+from pyodide import to_js
+
+# This await is logical code we just don't have the whole script as async
+await micropip.install("pyodide-importer")
+# Against normal logic we have to import the hook register because we install it as we load the page
 from pyodide_importer import register_hook  # type: ignore  # noqa
 
 register_hook("/")
@@ -32,7 +35,8 @@ for file in json.loads(ajax_call("static/presets/preset_files.json")).get("progr
 
 templateEnv = Environment(loader=FunctionLoader(loader_func), enable_async=True)
 template = templateEnv.get_template("base.html.jinja2")
-rendered = await template.render()  # type: ignore  # noqa
+# This await is logical code we just don't have the whole script as async
+rendered = await template.render()
 js.document.documentElement.innerHTML = ""
 js.document.open()
 js.document.write(rendered)
@@ -52,3 +56,10 @@ if cookie_data:
             document.getElementById(key).value = json_data[key]
         except Exception:
             pass
+
+# Load our pointer info from the JSON database
+js.pointer_addresses = json.loads(
+    js.jquery.ajax(
+        js.Object.fromEntries(to_js({"url": "./static/patches/pointer_addresses.json", "async": False}))
+    ).responseText
+)
