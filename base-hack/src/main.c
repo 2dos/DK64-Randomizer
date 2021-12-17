@@ -11,21 +11,19 @@ void cFuncLoop(void) {
 	islesSpawn();
 	//fixCastleAutowalk();
 	level_order_rando_funcs();
-	DKTVKong = 0;
 	qualityOfLife_fixes();
 	qualityOfLife_shorteners();
 	if (Rando.quality_of_life) {
-		if (CurrentMap == NINTENDO_LOGO) {
-			if (TransitionSpeed > 0) {
-				CutsceneFadeActive = 0;
-				DestExit = 16;
-			}
-		}
-		if (CurrentMap == JAPES_MAIN) {
-			if (Gamemode == 3) {
-				if (TransitionSpeed < 0) {
-					TransitionType = 1;
-				}
+		// DKTVKong = 0;
+		// if (CurrentMap == NINTENDO_LOGO) {
+		// 	if (TransitionSpeed > 0) {
+		// 		CutsceneFadeActive = 0;
+		// 		DestExit = 16;
+		// 	}
+		// }
+		if (Gamemode == 3) {
+			if (TransitionSpeed < 0) {
+				TransitionType = 1;
 			}
 		}
 	}

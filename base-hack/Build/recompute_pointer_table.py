@@ -108,7 +108,7 @@ pointer_tables = [
     },
     {
         "index": 17,
-        "name": "Unknown 17",
+        "name": "DKTV Inputs",
     },
     {
         "index": 18,
