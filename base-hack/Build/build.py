@@ -1,31 +1,32 @@
 """Build the ROM."""
-import subprocess
+import gzip
 import os
 import shutil
-import gzip
+import subprocess
 import zlib
+
 import generate_watch_file
 
 # Infrastructure for recomputing DK64 global pointer tables
 from map_names import maps
-from recompute_pointer_table import (
-    pointer_tables,
-    dumpPointerTableDetails,
-    replaceROMFile,
-    writeModifiedPointerTablesToROM,
-    parsePointerTables,
-    getFileInfo,
-    make_safe_filename,
-)
+
+# Patcher functions for the extracted files
+from patch_text import patchDolbyText
 from recompute_overlays import (
     isROMAddressOverlay,
     readOverlayOriginalData,
     replaceOverlayData,
     writeModifiedOverlaysToROM,
 )
-
-# Patcher functions for the extracted files
-from patch_text import patchDolbyText
+from recompute_pointer_table import (
+    dumpPointerTableDetails,
+    getFileInfo,
+    make_safe_filename,
+    parsePointerTables,
+    pointer_tables,
+    replaceROMFile,
+    writeModifiedPointerTablesToROM,
+)
 from staticcode import patchStaticCode
 
 ROMName = "rom/dk64.z64"
@@ -78,21 +79,25 @@ map_replacements = []
 
 for x in range(175):
     if x > 0:
-        file_dict.append({
-            "name": "Song " + str(x),
-            "pointer_table_index": 0,
-            "file_index": x,
-            "source_file": "song" + str(x) + ".bin",
-            "target_compressed_size": 0x2DDE,
-        })
+        file_dict.append(
+            {
+                "name": "Song " + str(x),
+                "pointer_table_index": 0,
+                "file_index": x,
+                "source_file": "song" + str(x) + ".bin",
+                "target_compressed_size": 0x2DDE,
+            }
+        )
 for x in range(6):
-    file_dict.append({
-        "name": "DKTV Inputs " + str(x),
-        "pointer_table_index": 17,
-        "file_index": x,
-        "source_file": "dktv" + str(x) + ".bin",
-        "target_compressed_size": 0x718,
-    })
+    file_dict.append(
+        {
+            "name": "DKTV Inputs " + str(x),
+            "pointer_table_index": 17,
+            "file_index": x,
+            "source_file": "dktv" + str(x) + ".bin",
+            "target_compressed_size": 0x718,
+        }
+    )
 
 print("DK64 Extractor")
 
@@ -217,22 +222,22 @@ with open(newROMName, "r+b") as fh:
     print("[4 / 7] - Writing patched files to ROM")
     for x in file_dict:
         if "target_compressed_size" in x:
-            x["do_not_compress"] = True;
-            with open(x["source_file"],"rb") as fg:
+            x["do_not_compress"] = True
+            with open(x["source_file"], "rb") as fg:
                 byte_read = fg.read()
                 uncompressed_size = len(byte_read)
             precomp = gzip.compress(byte_read, compresslevel=9)
             byte_append = 0
             diff = x["target_compressed_size"] - len(precomp)
             if diff > 0:
-                precomp += byte_append.to_bytes(diff,"big")
+                precomp += byte_append.to_bytes(diff, "big")
             compress = bytearray(precomp)
             # Zero out timestamp in gzip header to make builds deterministic
             compress[4] = 0
             compress[5] = 0
             compress[6] = 0
             compress[7] = 0
-            with open(x["source_file"],"wb") as fg:
+            with open(x["source_file"], "wb") as fg:
                 fg.write(compress)
             x["output_file"] = x["source_file"]
 
@@ -254,11 +259,11 @@ with open(newROMName, "r+b") as fh:
 
         if os.path.exists(x["output_file"]):
             byte_read = bytes()
-            if not "target_compressed_size" in x:
+            if "target_compressed_size" not in x:
                 uncompressed_size = 0
             with open(x["output_file"], "rb") as fg:
                 byte_read = fg.read()
-                if not "target_compressed_size" in x:
+                if "target_compressed_size" not in x:
                     uncompressed_size = len(byte_read)
 
             if "do_not_compress" in x and x["do_not_compress"]:
