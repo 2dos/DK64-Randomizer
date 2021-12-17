@@ -73,6 +73,7 @@ extern void copyFunc(int rom_offset, int size, void* write_location);
 extern void* getMapData(data_indexes data_idx, int _index, char compressbyte0, char compressbyte1);
 extern void loadSetup(void* setup_file, int unk0, int unk1);
 extern int getParentDataIndex(int map);
+extern void WarpToDKTV(void);
 
 extern int* initDisplayList(int* dl);
 extern int getTextStyleHeight(int style);
