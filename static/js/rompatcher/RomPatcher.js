@@ -16,18 +16,32 @@ try {
     romFile._u8array = event.data.u8array;
     romFile._dataView = new DataView(event.data.u8array.buffer);
     apply_bps_javascript();
-    try {
-      document.getElementById("input-file-rom").title =
-        "CRC32: " + padZeroes(crc32(romFile), 4);
-    } catch {}
-    try {
-      document.getElementById("input-file-rom_1").title =
-        "CRC32: " + padZeroes(crc32(romFile), 4);
-    } catch {}
-    try {
-      document.getElementById("input-file-rom_2").title =
-        "CRC32: " + padZeroes(crc32(romFile), 4);
-    } catch {}
+    boxes = ["input-file-rom", "input-file-rom_1", "input-file-rom_2"];
+    for (var input_box in boxes) {
+      try {
+        document.getElementById(boxes[input_box]).classList.remove("is-valid");
+        document
+          .getElementById(boxes[input_box])
+          .classList.remove("is-invalid");
+      } catch {}
+      if (
+        ["d44b4fc6", "aa0a5979", "96972d67"].includes(
+          padZeroes(crc32(romFile), 4)
+        )
+      ) {
+        try {
+          document.getElementById(boxes[input_box]).title =
+            "CRC32: " + padZeroes(crc32(romFile), 4);
+          document.getElementById(boxes[input_box]).classList.add("is-valid");
+        } catch {}
+      } else {
+        try {
+          document.getElementById(boxes[input_box]).title =
+            "CRC32: " + padZeroes(crc32(romFile), 4);
+          document.getElementById(boxes[input_box]).classList.add("is-invalid");
+        } catch {}
+      }
+    }
   };
 } catch (e) {}
 
