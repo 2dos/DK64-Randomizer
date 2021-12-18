@@ -17,6 +17,8 @@ def randomize_music(settings: Settings):
     Args:
         settings (Settings): Settings object from the windows form.
     """
+    random.seed(settings.seed)
+    uncompressed_data_table = js.pointer_addresses[26]["entries"][0]
     # Check if we have anything beyond default set for BGM
     if settings.music_bgm != "default":
         # If the user selected standard rando
@@ -37,6 +39,11 @@ def randomize_music(settings: Settings):
                 stored_data = ROM().readBytes(song["compressed_size"])
                 ROM().seek(song_list[shuffled_music.index(song)]["pointing_to"])
                 ROM().writeBytes(stored_data)
+                # Update the uncompressed data table to have our new size.
+                ROM().seek(uncompressed_data_table["pointing_to"] + (4 * song_list.index(song)))
+                new_bytes = ROM().readBytes(4)
+                ROM().seek(uncompressed_data_table["pointing_to"] + (4 * shuffled_music.index(song)))
+                ROM().writeBytes(new_bytes)
         # If the user was a poor sap and selected chaos put DK rap for everything
         elif settings.music_bgm == "chaos":
             # Find the DK rap in the list
@@ -57,6 +64,11 @@ def randomize_music(settings: Settings):
             for song in song_list:
                 ROM().seek(song["pointing_to"])
                 ROM().writeBytes(stored_data)
+                # Update the uncompressed data table to have our new size.
+                ROM().seek(uncompressed_data_table["pointing_to"] + (4 * song_list.index(song)))
+                new_bytes = ROM().readBytes(4)
+                ROM().seek(uncompressed_data_table["pointing_to"] + (4 * song_list.index(rap)))
+                ROM().writeBytes(new_bytes)
     # If the user wants to randomize fanfares
     if settings.music_fanfares != "default":
         # Check if our setting is just rando
@@ -77,6 +89,11 @@ def randomize_music(settings: Settings):
                 stored_data = ROM().readBytes(song["compressed_size"])
                 ROM().seek(fanfare_list[shuffled_music.index(song)]["pointing_to"])
                 ROM().writeBytes(stored_data)
+                # Update the uncompressed data table to have our new size.
+                ROM().seek(uncompressed_data_table["pointing_to"] + (4 * fanfare_list.index(song)))
+                new_bytes = ROM().readBytes(4)
+                ROM().seek(uncompressed_data_table["pointing_to"] + (4 * shuffled_music.index(song)))
+                ROM().writeBytes(new_bytes)
     # If the user wants to randomize events
     if settings.music_events != "default":
         # Check if our setting is just rando
@@ -97,3 +114,8 @@ def randomize_music(settings: Settings):
                 stored_data = ROM().readBytes(song["compressed_size"])
                 ROM().seek(event_list[shuffled_music.index(song)]["pointing_to"])
                 ROM().writeBytes(stored_data)
+                # Update the uncompressed data table to have our new size.
+                ROM().seek(uncompressed_data_table["pointing_to"] + (4 * event_list.index(song)))
+                new_bytes = ROM().readBytes(4)
+                ROM().seek(uncompressed_data_table["pointing_to"] + (4 * shuffled_music.index(song)))
+                ROM().writeBytes(new_bytes)
