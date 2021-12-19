@@ -13,7 +13,7 @@ class Spoiler:
         """Initialize spoiler just with settings."""
         self.settings = settings
         self.locations = {}
-        self.playthrough = []
+        self.playthrough = {}
 
     def toJson(self):
         """Converts spoiler to JSON."""
@@ -21,14 +21,18 @@ class Spoiler:
 
     def UpdateLocations(self, locations):
         """Update location list for what was produced by the fill."""
-        self.locations = locations.copy()
+        self.locations = {}
+        for location in locations.values():
+            self.locations[location.name] = ItemList[location.item].name
 
-    def UpdatePlaythrough(self, playthroughLocations):
+    def UpdatePlaythrough(self, locations, playthroughLocations):
         """Write playthrough as a list of dicts of location/item pairs."""
-        self.playthrough = []
+        self.playthrough = {}
+        i = 0
         for sphere in playthroughLocations:
             newSphere = {}
             for locationId in sphere:
-                location = self.locations[locationId]
+                location = locations[locationId]
                 newSphere[location.name] = ItemList[location.item].name
-            self.playthrough.append(newSphere)
+            self.playthrough[i] = newSphere
+            i += 1

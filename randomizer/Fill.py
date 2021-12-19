@@ -259,7 +259,7 @@ def Fill(spoiler):
             ParePlaythrough(PlaythroughLocations)
             # Write data to spoiler and return
             spoiler.UpdateLocations(LocationList)
-            spoiler.UpdatePlaythrough(PlaythroughLocations)
+            spoiler.UpdatePlaythrough(LocationList, PlaythroughLocations)
             return spoiler
         except Ex.FillException as ex:
             if retries == 4:
@@ -293,5 +293,5 @@ def Generate(spoiler):
         # ParePlaythrough(PlaythroughLocations)
         # # Write data to spoiler and return
         # spoiler.UpdateLocations(LocationList)
-        # spoiler.UpdatePlaythrough(PlaythroughLocations)
+        # spoiler.UpdatePlaythrough(LocationList, PlaythroughLocations)
     return spoiler
