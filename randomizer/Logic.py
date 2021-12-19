@@ -56,42 +56,42 @@ class LogicVarHolder:
         self.oranges = self.settings.TrainingBarrels == "startwith"
         self.barrels = self.settings.TrainingBarrels == "startwith"
 
-        self.progDonkey = 3 if self.settings.StartWithCrankyMoves else 0
-        self.blast = self.settings.StartWithCrankyMoves
-        self.strongKong = self.settings.StartWithCrankyMoves
-        self.grab = self.settings.StartWithCrankyMoves
+        self.progDonkey = 3 if self.settings.StartWithShopMoves else 0
+        self.blast = self.settings.StartWithShopMoves
+        self.strongKong = self.settings.StartWithShopMoves
+        self.grab = self.settings.StartWithShopMoves
 
-        self.progDiddy = 3 if self.settings.StartWithCrankyMoves else 0
-        self.charge = self.settings.StartWithCrankyMoves
-        self.jetpack = self.settings.StartWithCrankyMoves
-        self.spring = self.settings.StartWithCrankyMoves
+        self.progDiddy = 3 if self.settings.StartWithShopMoves else 0
+        self.charge = self.settings.StartWithShopMoves
+        self.jetpack = self.settings.StartWithShopMoves
+        self.spring = self.settings.StartWithShopMoves
 
-        self.progLanky = 3 if self.settings.StartWithCrankyMoves else 0
-        self.handstand = self.settings.StartWithCrankyMoves
-        self.balloon = self.settings.StartWithCrankyMoves
-        self.sprint = self.settings.StartWithCrankyMoves
+        self.progLanky = 3 if self.settings.StartWithShopMoves else 0
+        self.handstand = self.settings.StartWithShopMoves
+        self.balloon = self.settings.StartWithShopMoves
+        self.sprint = self.settings.StartWithShopMoves
 
-        self.progTiny = 3 if self.settings.StartWithCrankyMoves else 0
-        self.mini = self.settings.StartWithCrankyMoves
-        self.twirl = self.settings.StartWithCrankyMoves
-        self.monkeyport = self.settings.StartWithCrankyMoves
+        self.progTiny = 3 if self.settings.StartWithShopMoves else 0
+        self.mini = self.settings.StartWithShopMoves
+        self.twirl = self.settings.StartWithShopMoves
+        self.monkeyport = self.settings.StartWithShopMoves
 
-        self.progChunky = 3 if self.settings.StartWithCrankyMoves else 0
-        self.hunkyChunky = self.settings.StartWithCrankyMoves
-        self.punch = self.settings.StartWithCrankyMoves
-        self.gorillaGone = self.settings.StartWithCrankyMoves
+        self.progChunky = 3 if self.settings.StartWithShopMoves else 0
+        self.hunkyChunky = self.settings.StartWithShopMoves
+        self.punch = self.settings.StartWithShopMoves
+        self.gorillaGone = self.settings.StartWithShopMoves
 
-        self.coconut = False
-        self.peanut = False
-        self.grape = False
-        self.feather = False
-        self.pineapple = False
+        self.coconut = self.settings.StartWithShopMoves
+        self.peanut = self.settings.StartWithShopMoves
+        self.grape = self.settings.StartWithShopMoves
+        self.feather = self.settings.StartWithShopMoves
+        self.pineapple = self.settings.StartWithShopMoves
 
-        self.bongos = False
-        self.guitar = False
-        self.trombone = False
-        self.saxophone = False
-        self.triangle = False
+        self.bongos = self.settings.StartWithShopMoves
+        self.guitar = self.settings.StartWithShopMoves
+        self.trombone = self.settings.StartWithShopMoves
+        self.saxophone = self.settings.StartWithShopMoves
+        self.triangle = self.settings.StartWithShopMoves
 
         self.nintendoCoin = False
         self.rarewareCoin = False
@@ -108,14 +108,14 @@ class LogicVarHolder:
         self.CastleKey = False
         self.HelmKey = False
 
-        self.Slam = 3 if self.settings.StartWithCrankyMoves else 0
+        self.Slam = 3 if self.settings.StartWithShopMoves else 0
         self.GoldenBananas = 0
         self.BananaFairies = 0
         self.BananaMedals = 0
         self.BattleCrowns = 0
 
-        self.superSlam = self.settings.StartWithCrankyMoves
-        self.superDuperSlam = self.settings.StartWithCrankyMoves
+        self.superSlam = self.settings.StartWithShopMoves
+        self.superDuperSlam = self.settings.StartWithShopMoves
 
         self.Blueprints = []
 
@@ -202,7 +202,7 @@ class LogicVarHolder:
         self.CastleKey = self.CastleKey or Items.CreepyCastleKey in ownedItems
         self.HelmKey = self.HelmKey or Items.HideoutHelmKey in ownedItems
 
-        self.Slam = 3 if self.settings.StartWithCrankyMoves else sum(1 for x in ownedItems if x == Items.ProgressiveSlam)
+        self.Slam = 3 if self.settings.StartWithShopMoves else sum(1 for x in ownedItems if x == Items.ProgressiveSlam)
         self.GoldenBananas = sum(1 for x in ownedItems if x == Items.GoldenBanana)
         self.BananaFairies = sum(1 for x in ownedItems if x == Items.BananaFairy)
         self.BananaMedals = sum(1 for x in ownedItems if x == Items.BananaMedal)

@@ -36,7 +36,8 @@ def PlaceConstants(settings):
         LocationList[Locations.LankyKong].PlaceItem(Items.NoItem)
         LocationList[Locations.TinyKong].PlaceItem(Items.NoItem)
         LocationList[Locations.ChunkyKong].PlaceItem(Items.NoItem)
-    if settings.StartWithCrankyMoves:
+    if settings.StartWithShopMoves:
+        # Empty all shop locations EXCEPT sniper scope which is still optional
         LocationList[Locations.SimianSlam].PlaceItem(Items.NoItem)
         LocationList[Locations.SuperSimianSlam].PlaceItem(Items.NoItem)
         LocationList[Locations.SuperDuperSimianSlam].PlaceItem(Items.NoItem)
@@ -55,6 +56,22 @@ def PlaceConstants(settings):
         LocationList[Locations.HunkyChunky].PlaceItem(Items.NoItem)
         LocationList[Locations.PrimatePunch].PlaceItem(Items.NoItem)
         LocationList[Locations.GorillaGone].PlaceItem(Items.NoItem)
+        LocationList[Locations.CoconutGun].PlaceItem(Items.NoItem)
+        LocationList[Locations.PeanutGun].PlaceItem(Items.NoItem)
+        LocationList[Locations.GrapeGun].PlaceItem(Items.NoItem)
+        LocationList[Locations.FeatherGun].PlaceItem(Items.NoItem)
+        LocationList[Locations.PineappleGun].PlaceItem(Items.NoItem)
+        LocationList[Locations.AmmoBelt1].PlaceItem(Items.NoItem)
+        LocationList[Locations.HomingAmmo].PlaceItem(Items.NoItem)
+        LocationList[Locations.AmmoBelt2].PlaceItem(Items.NoItem)
+        LocationList[Locations.Bongos].PlaceItem(Items.NoItem)
+        LocationList[Locations.Guitar].PlaceItem(Items.NoItem)
+        LocationList[Locations.Trombone].PlaceItem(Items.NoItem)
+        LocationList[Locations.Saxophone].PlaceItem(Items.NoItem)
+        LocationList[Locations.Triangle].PlaceItem(Items.NoItem)
+        LocationList[Locations.MusicUpgrade1].PlaceItem(Items.NoItem)
+        LocationList[Locations.ThirdMelon].PlaceItem(Items.NoItem)
+        LocationList[Locations.MusicUpgrade2].PlaceItem(Items.NoItem)
     if settings.StartWithCameraAndShockwave:
         LocationList[Locations.CameraAndShockwave].PlaceItem(Items.NoItem)
 
@@ -140,27 +157,31 @@ def Kongs(settings):
     return kongs
 
 
-def Guns():
+def Guns(settings):
     """Return all gun items."""
-    guns = [
-        Items.Coconut,
-        Items.Peanut,
-        Items.Grape,
-        Items.Feather,
-        Items.Pineapple,
-    ]
+    guns = []
+    if not settings.StartWithShopMoves:
+        guns.extend([
+            Items.Coconut,
+            Items.Peanut,
+            Items.Grape,
+            Items.Feather,
+            Items.Pineapple,
+        ])
     return guns
 
 
-def Instruments():
+def Instruments(settings):
     """Return all instrument items."""
-    instruments = [
-        Items.Bongos,
-        Items.Guitar,
-        Items.Trombone,
-        Items.Saxophone,
-        Items.Triangle,
-    ]
+    instruments = []
+    if not settings.StartWithShopMoves:
+        instruments.extend([
+            Items.Bongos,
+            Items.Guitar,
+            Items.Trombone,
+            Items.Saxophone,
+            Items.Triangle,
+        ])
     return instruments
 
 def TrainingBarrelAbilities():
@@ -181,7 +202,7 @@ def Upgrades(settings):
     if settings.TrainingBarrels == "shuffled":
         upgrades.extend(TrainingBarrelAbilities())
     # Add either progressive upgrade items or individual ones depending on settings
-    if not settings.StartWithCrankyMoves:
+    if not settings.StartWithShopMoves:
         upgrades.extend(itertools.repeat(Items.ProgressiveSlam, 3))
         if settings.ProgressiveUpgrades:
             upgrades.extend(itertools.repeat(Items.ProgressiveDonkeyPotion, 3))
@@ -220,8 +241,8 @@ def HighPriorityItems(settings):
     """
     itemPool = []
     itemPool.extend(Kongs(settings))
-    itemPool.extend(Guns())
-    itemPool.extend(Instruments())
+    itemPool.extend(Guns(settings))
+    itemPool.extend(Instruments(settings))
     itemPool.extend(Upgrades(settings))
     return itemPool
 
@@ -250,14 +271,15 @@ def LowPriorityItems(settings):
 def ExcessItems(settings):
     """Items which either have no logical value or are excess copies of those that do."""
     itemPool = []
-
-    # Weapon upgrades
-    itemPool.append(Items.HomingAmmo)
     itemPool.append(Items.SniperSight)
-    itemPool.extend(itertools.repeat(Items.ProgressiveAmmoBelt, 2))
+    
+    if not settings.StartWithShopMoves:
+        # Weapon upgrades
+        itemPool.append(Items.HomingAmmo)
+        itemPool.extend(itertools.repeat(Items.ProgressiveAmmoBelt, 2))
 
-    # Instrument upgrades
-    itemPool.extend(itertools.repeat(Items.ProgressiveInstrumentUpgrade, 3))
+        # Instrument upgrades
+        itemPool.extend(itertools.repeat(Items.ProgressiveInstrumentUpgrade, 3))
 
     # Collectables
     itemPool.extend(itertools.repeat(Items.GoldenBanana, 101))

@@ -37,7 +37,9 @@ LogicRegions = {
         LocationLogic(Locations.AmmoBelt1, lambda l: l.LevelEntered(Levels.FranticFactory) and any(x >= 57 for x in l.Coins)),
         LocationLogic(Locations.HomingAmmo, lambda l: l.LevelEntered(Levels.FungiForest) and any(x >= 62 for x in l.Coins)),
         LocationLogic(Locations.AmmoBelt2, lambda l: l.LevelEntered(Levels.CrystalCaves) and any(x >= 67 for x in l.Coins)),
-        LocationLogic(Locations.SniperSight, lambda l: l.LevelEntered(Levels.CreepyCastle) and any(x >= 74 for x in l.Coins)),
+        # Sniper sight is the only non-Snide shop location not zeroed out when starting with all shop moves.
+        LocationLogic(Locations.SniperSight, lambda l: l.LevelEntered(Levels.CreepyCastle) 
+            and (any(x >= 74 for x in l.Coins) or (l.settings.StartWithShopMoves and any(x >= 7 for x in l.Coins)))),
     ], [], []),
 
     Regions.Candy: Region("Candy", Levels.Shops, False, [

@@ -47,8 +47,8 @@ class Settings:
         # StartWithKongs: bool
         self.StartWithKongs = False
 
-        # StartWithCrankyMoves: bool
-        self.StartWithCrankyMoves = True
+        # StartWithShopMoves: bool
+        self.StartWithShopMoves = True
 
         # ProgressiveUpgrades: bool
         self.ProgressiveUpgrades = True
