@@ -25,3 +25,46 @@ if (
   lightmode.disabled = undefined;
   footer.style.backgroundColor = undefined;
 }
+
+var cosmetics;
+document
+  .getElementById("music_file")
+  .addEventListener("change", function (evt) {
+    var fileToLoad = document.getElementById("music_file").files[0];
+    var fileReader = new FileReader();
+    fileReader.onload = function (fileLoadedEvent) {
+      var new_zip = new JSZip();
+      new_zip.loadAsync(fileLoadedEvent.target.result).then(function () {
+        bgm = [];
+        fanfares = [];
+        events = [];
+        for (var file in new_zip.files) {
+          if (file.slice(-1) != "/" && file.includes("bgm/")) {
+            new_zip
+              .file(file)
+              .async("Uint8Array")
+              .then(function (content) {
+                bgm.push(content);
+              });
+          } else if (file.slice(-1) != "/" && file.includes("fanfares/")) {
+            new_zip
+              .file(file)
+              .async("Uint8Array")
+              .then(function (content) {
+                fanfares.push(content);
+              });
+          } else if (file.slice(-1) != "/" && file.includes("events/")) {
+            new_zip
+              .file(file)
+              .async("Uint8Array")
+              .then(function (content) {
+                events.push(content);
+              });
+          }
+        }
+        cosmetics = { bgm: bgm, fanfares: fanfares, events: events };
+      });
+    };
+
+    fileReader.readAsArrayBuffer(fileToLoad);
+  });

@@ -3,8 +3,8 @@ import json
 
 import js
 
-from randomizer.MusicRando import randomize_music
 from randomizer.DKTV import randomize_dktv
+from randomizer.MusicRando import randomize_music
 from randomizer.Patcher import ROM
 from randomizer.Settings import Settings
 from ui.bindings import bind
@@ -101,10 +101,10 @@ def generate_seed(event):
             element.setAttribute("disabled", "disabled")
         settings = Settings(form_data)
         # TODO: This is the entrypoint of builds, we need to make sure we properly set this up
-        # randomize_music(settings)
+        randomize_music(settings)
         # randomize_dktv(settings)
-        # ROM().fixSecurityValue()
-        # ROM().save("dk64-test.z64")
+        ROM().fixSecurityValue()
+        ROM().save("dk64-test.z64")
         # Below comment will run the rando_test function in the background
         # worker.background(run, ["'assumed'"], test)
 
