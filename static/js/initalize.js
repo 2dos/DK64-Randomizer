@@ -39,21 +39,21 @@ document
         fanfares = [];
         events = [];
         for (var file in new_zip.files) {
-          if (file.slice(-1) != "/" && file.includes("bgm/")) {
+          if (file.includes("bgm/") && file.slice(-4) == ".bin") {
             new_zip
               .file(file)
               .async("Uint8Array")
               .then(function (content) {
                 bgm.push(content);
               });
-          } else if (file.slice(-1) != "/" && file.includes("fanfares/")) {
+          } else if (file.includes("fanfares/") && file.slice(-4) == ".bin") {
             new_zip
               .file(file)
               .async("Uint8Array")
               .then(function (content) {
                 fanfares.push(content);
               });
-          } else if (file.slice(-1) != "/" && file.includes("events/")) {
+          } else if (file.includes("events/") && file.slice(-4) == ".bin") {
             new_zip
               .file(file)
               .async("Uint8Array")
