@@ -17,3 +17,8 @@ class GameNotBeatableException(FillException):
     """Exception triggered when all items were placed but the game was not beatable."""
 
     pass
+
+class VanillaItemsGameNotBeatableException(FillException):
+    """Exception triggered when all locations have vanilla items but the game was not beatable."""
+
+    pass

@@ -278,4 +278,20 @@ def Generate(spoiler):
     LogicVariables = LogicVarHolder(spoiler.settings)
     # Handle ER, etc...
     # Place items
-    Fill(spoiler)
+    if spoiler.settings.ShuffleItems:
+        Fill(spoiler)
+    else:
+        # Just check if normal item locations are beatable with given settings
+        for location in LocationList:
+            LocationList[location].PlaceDefaultItem()
+        ItemPool.PlaceConstants(spoiler.settings)
+        if not GetAccessibleLocations([], SearchMode.CheckBeatable):
+            raise Ex.VanillaItemsGameNotBeatableException("Game unbeatable.")
+        # Playthrough and location list probably unnecessary with vanilla items
+        # Reset()
+        # PlaythroughLocations = GetAccessibleLocations([], SearchMode.GeneratePlaythrough)
+        # ParePlaythrough(PlaythroughLocations)
+        # # Write data to spoiler and return
+        # spoiler.UpdateLocations(LocationList)
+        # spoiler.UpdatePlaythrough(PlaythroughLocations)
+    return spoiler

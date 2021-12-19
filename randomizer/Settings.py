@@ -39,25 +39,28 @@ class Settings:
         # normal
         # shuffled
         # startwith
-        self.TrainingBarrels = "shuffled"
+        self.TrainingBarrels = "normal"
 
         # StartingKong: Kongs enum
         self.StartingKong = Kongs.donkey
+
+        # ShuffleItems: bool
+        self.ShuffleItems = False
 
         # StartWithKongs: bool
         self.StartWithKongs = False
 
         # StartWithShopMoves: bool
-        self.StartWithShopMoves = True
+        self.StartWithShopMoves = False
 
         # ProgressiveUpgrades: bool
-        self.ProgressiveUpgrades = True
+        self.ProgressiveUpgrades = False
 
         # OpenCrownDoor: bool
-        self.OpenCrownDoor = True
+        self.OpenCrownDoor = False
 
         # OpenCoinDoor: bool
-        self.OpenCoinDoor = True
+        self.OpenCoinDoor = False
 
         # StartWithCameraAndShockwave: bool
-        self.StartWithCameraAndShockwave = True
+        self.StartWithCameraAndShockwave = False

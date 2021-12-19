@@ -27,6 +27,10 @@ class Location:
         self.item = self.delayedItem
         self.delayedItem = None
 
+    def PlaceDefaultItem(self):
+        """Place whatever this location's default (vanilla) item is at it."""
+        self.item = self.default
+
 
 LocationList = {
     # DK Isles locations
