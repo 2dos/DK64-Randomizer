@@ -32,6 +32,10 @@ def UpdateHint(WrinklyHint: Hint, message: str):
             else:
                 padding += "\\0"
                 cur_length += 2
+    elif len(message) == WrinklyHint.length:
+        pass
+    else:
+        raise Exception("Hint message is longer than allowed.")
 
     loadedBytes.write(message + padding)
     loadedBytes.seek(0)
