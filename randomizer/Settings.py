@@ -64,3 +64,6 @@ class Settings:
 
         # StartWithCameraAndShockwave: bool
         self.StartWithCameraAndShockwave = False
+
+        # ShuffleLoadingZones: bool
+        self.ShuffleLoadingZones = False
