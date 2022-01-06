@@ -33,5 +33,7 @@ LogicRegions = {
         Event(Events.HelmDiddyDone, lambda l: Events.HelmLankyDone in l.Events and l.guitar and l.Slam and l.peanut),
         Event(Events.HelmKeyAccess, lambda l: Events.HelmDiddyDone in l.Events 
                     and (l.settings.OpenCrownDoor or l.BattleCrowns >= 4) and (l.settings.OpenCoinDoor or l.nintendoCoin and l.rarewareCoin)),
-    ], []),
+    ], [
+        Exit(Regions.HideoutHelmStart, lambda l: True),
+    ]),
 }

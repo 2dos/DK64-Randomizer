@@ -35,7 +35,9 @@ LogicRegions = {
     Regions.GalleonBeyondPineappleGate: Region("Galleon Beyond Pineapple Gate", Levels.GloomyGalleon, False, [
         LocationLogic(Locations.GalleonChunkyCannonGame, lambda l: l.ischunky),
         LocationLogic(Locations.GalleonLankyKasplat, lambda l: l.islanky),
-    ], [], []),
+    ], [], [
+        Exit(Regions.GloomyGalleonStart, lambda l: True),
+    ]),
 
     Regions.LighthouseArea: Region("Lighthouse Area", Levels.GloomyGalleon, True, [
         LocationLogic(Locations.GalleonDiddyShipSwitch, lambda l: Events.ActivatedLighthouse in l.Events and l.jetpack and l.Slam),
@@ -47,6 +49,7 @@ LogicRegions = {
         Event(Events.MechafishSummoned, lambda l: l.jetpack and l.guitar),
         Event(Events.GalleonChunkyPad, lambda l: l.triangle),
     ], [
+        Exit(Regions.GloomyGalleonStart, lambda l: True),
         Exit(Regions.Lighthouse, lambda l: l.Slam and l.isdonkey),
         Exit(Regions.MermaidRoom, lambda l: l.mini and l.istiny),
         Exit(Regions.SickBay, lambda l: Events.ActivatedLighthouse in l.Events and l.Slam and l.ischunky),
@@ -80,6 +83,7 @@ LogicRegions = {
     ], [
         Event(Events.ShipyardEnguarde, lambda l: l.islanky),
     ], [
+        Exit(Regions.GloomyGalleonStart, lambda l: True),
         Exit(Regions.SealRace, lambda l: Events.SealReleased in l.Events and l.isdonkey),
         Exit(Regions.TreasureRoom, lambda l: Events.ShipyardEnguarde in l.Events),
         Exit(Regions.Submarine, lambda l: l.mini and l.istiny),
@@ -107,6 +111,7 @@ LogicRegions = {
     ], [
         Event(Events.TreasureRoomTeleporterUnlocked, lambda l: l.spring),
     ], [
+        Exit(Regions.Shipyard, lambda l: True),
         Exit(Regions.TinyChest, lambda l: l.mini and l.istiny),
     ]),
 

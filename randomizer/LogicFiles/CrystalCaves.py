@@ -43,6 +43,7 @@ LogicRegions = {
     Regions.BoulderIgloo: Region("Boulder Igloo", Levels.CrystalCaves, True, [], [
         Event(Events.CavesLargeBoulderButton, lambda l: Events.CavesSmallBoulderButton in l.Events and l.hunkyChunky),
     ], [
+        Exit(Regions.CrystalCavesMain, lambda l: True),
         Exit(Regions.CavesBossLobby, lambda l: True),
     ]),
 
@@ -60,6 +61,7 @@ LogicRegions = {
         LocationLogic(Locations.CavesChunkyTransparentIgloo, lambda l: Events.CavesLargeBoulderButton in l.Events and l.ischunky),
         LocationLogic(Locations.CavesChunkyKasplat, lambda l: l.ischunky),
     ], [], [
+        Exit(Regions.CrystalCavesMain, lambda l: True),
         Exit(Regions.GiantKosha, lambda l: Events.CavesLargeBoulderButton in l.Events and l.monkeyport and l.istiny),
         Exit(Regions.DonkeyIgloo, lambda l: l.jetpack and l.bongos and l.isdonkey),
         Exit(Regions.DiddyIgloo, lambda l: l.jetpack and l.guitar and l.isdiddy),
@@ -104,6 +106,7 @@ LogicRegions = {
     ]),
 
     Regions.CabinArea: Region("Cabin Area", Levels.CrystalCaves, True, [], [], [
+        Exit(Regions.CrystalCavesMain, lambda l: True),
         Exit(Regions.RotatingCabin, lambda l: l.bongos and l.isdonkey),
         Exit(Regions.DonkeyCabin, lambda l: l.bongos and l.isdonkey),
         Exit(Regions.DiddyLowerCabin, lambda l: l.guitar and l.isdiddy),

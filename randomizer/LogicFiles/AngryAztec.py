@@ -42,7 +42,9 @@ LogicRegions = {
         LocationLogic(Locations.AztecDiddyFreeTiny, lambda l: l.charge and l.isdiddy),
         LocationLogic(Locations.AztecLankyVulture, lambda l: l.Slam and l.grape and l.islanky),
         LocationLogic(Locations.AztecBattleArena, lambda l: l.Slam and l.grape and l.islanky),
-    ], [], []),
+    ], [], [
+        Exit(Regions.TempleStart, lambda l: True),
+    ]),
 
     Regions.AngryAztecMain: Region("Angry Aztec Main", Levels.AngryAztec, True, [
         LocationLogic(Locations.AztecDonkeyStealthySnoop, lambda l: Events.AztecDonkeySwitch in l.Events and l.strongKong and l.isdonkey),
@@ -51,9 +53,10 @@ LogicRegions = {
         LocationLogic(Locations.AztecChunkyBusyBarrelBarrage, lambda l: l.hunkyChunky and l.ischunky),
         LocationLogic(Locations.AztecTinyKasplat, lambda l: l.istiny),
     ], [
-        Event(Events.FedTotem, lambda l: l.jetpack and l.peanut),
+        Event(Events.FedTotem, lambda l: l.jetpack and l.peanut and l.Slam),
         Event(Events.LlamaFreed, lambda l: l.blast),
     ], [
+        Exit(Regions.AngryAztecStart, lambda l: True),
         Exit(Regions.DonkeyTemple, lambda l: Events.FedTotem in l.Events and l.coconut and l.isdonkey),
         Exit(Regions.DiddyTemple, lambda l: Events.FedTotem in l.Events and l.peanut and l.isdiddy),
         Exit(Regions.LankyTemple, lambda l: Events.FedTotem in l.Events and l.grape and l.islanky),
@@ -115,7 +118,9 @@ LogicRegions = {
     Regions.LlamaTempleBack: Region("Llama Temple Back", Levels.AngryAztec, False, [
         LocationLogic(Locations.AztecTinyLlamaTemple, lambda l: l.Slam and l.twirl and l.istiny),
         LocationLogic(Locations.AztecLankyKasplat, lambda l: l.islanky),
-    ], [], []),
+    ], [], [
+        Exit(Regions.LlamaTemple, lambda l: True),
+    ]),
 
     Regions.AztecBossLobby: Region("Aztec Boss Lobby", Levels.AngryAztec, True, [], [], [
         Exit(Regions.AztecBoss, lambda l: l.isdiddy and sum(l.ColoredBananas[Levels.AngryAztec]) >= l.settings.BossBananas[Levels.AngryAztec - 1]),

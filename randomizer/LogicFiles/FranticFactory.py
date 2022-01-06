@@ -34,6 +34,7 @@ LogicRegions = {
     ], [
         Event(Events.DartsPlayed, lambda l: l.Slam and l.mini and l.feather),
     ], [
+        Exit(Regions.FranticFactoryStart, lambda l: True),
         Exit(Regions.RandD, lambda l: True),
         Exit(Regions.Snide, lambda l: True),
         Exit(Regions.Funky, lambda l: Events.DartsPlayed in l.Events),
@@ -47,6 +48,7 @@ LogicRegions = {
         LocationLogic(Locations.FactoryLankyKasplat, lambda l: l.islanky),
         LocationLogic(Locations.FactoryBattleArena, lambda l: l.grab),
     ], [], [
+        Exit(Regions.Testing, lambda l: True),
         Exit(Regions.FactoryTinyRace, lambda l: l.mini and l.istiny),
         Exit(Regions.ChunkyRoomPlatform, lambda l: True),
         Exit(Regions.FactoryBossLobby, lambda l: True),
@@ -89,6 +91,7 @@ LogicRegions = {
         Event(Events.TinyCoreSwitch, lambda l: l.Slam and l.istiny),
         Event(Events.ChunkyCoreSwitch, lambda l: l.Slam and l.ischunky),
     ], [
+        Exit(Regions.FranticFactoryStart, lambda l: True),
         Exit(Regions.InsideCore, lambda l: Events.MainCoreActivated in l.Events),
         Exit(Regions.MainCore, lambda l: Events.MainCoreActivated in l.Events),
         Exit(Regions.Cranky, lambda l: True),
@@ -108,7 +111,9 @@ LogicRegions = {
         LocationLogic(Locations.FactoryTinyProductionRoom, lambda l: Events.TinyCoreSwitch in l.Events and l.twirl and l.istiny),
         LocationLogic(Locations.FactoryChunkyProductionRoom, lambda l: Events.ChunkyCoreSwitch in l.Events and l.ischunky),
         LocationLogic(Locations.FactoryDonkeyKasplat, lambda l: l.isdonkey)
-    ], [], []),
+    ], [], [
+        Exit(Regions.BeyondHatch, lambda l: True),
+    ]),
 
     Regions.FactoryBossLobby: Region("Factory Boss Lobby", Levels.FranticFactory, False, [], [], [
         Exit(Regions.FactoryBoss, lambda l: l.istiny and sum(l.ColoredBananas[Levels.FranticFactory]) >= l.settings.BossBananas[Levels.FranticFactory - 1]),

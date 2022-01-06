@@ -32,6 +32,7 @@ LogicRegions = {
         Event(Events.IslesDiddyBarrelSpawn, lambda l: l.chunkyAccess and l.trombone and l.islanky),
         Event(Events.IslesChunkyBarrelSpawn, lambda l: l.monkeyport and l.saxophone and l.istiny),
     ], [
+        Exit(Regions.Start, lambda l: True),
         Exit(Regions.Prison, lambda l: True),
         Exit(Regions.BananaFairyRoom, lambda l: l.mini and l.istiny),
         Exit(Regions.JungleJapesLobby, lambda l: Events.KLumsyTalkedTo in l.Events),
@@ -83,6 +84,7 @@ LogicRegions = {
     Regions.CrocodileIsleBeyondLift: Region("Crocodile Isle Beyond Lift", Levels.DKIsles, False, [
         LocationLogic(Locations.IslesDonkeyCagedBanana, lambda l: l.coconut and l.isdonkey),
     ], [], [
+        Exit(Regions.IslesMain, lambda l: True),
         Exit(Regions.IslesSnideRoom, lambda l: True),
         Exit(Regions.FranticFactoryLobby, lambda l: True),
     ]),

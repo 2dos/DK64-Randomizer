@@ -47,6 +47,7 @@ LogicRegions = {
         LocationLogic(Locations.JapesLankyMadMazeMaul, lambda l: l.grape and l.islanky),
         LocationLogic(Locations.JapesTinySplishSplashSalvage, lambda l: l.feather and l.istiny),
     ], [], [
+        Exit(Regions.JungleJapesMain, lambda l: True),
         Exit(Regions.JapesBossLobby, lambda l: True),
     ]),
 
@@ -54,6 +55,7 @@ LogicRegions = {
         LocationLogic(Locations.JapesDonkeyKasplat, lambda l: l.isdonkey),
         LocationLogic(Locations.JapesTinyKasplat, lambda l: l.istiny),
     ], [], [
+        Exit(Regions.JungleJapesMain, lambda l: True),
         Exit(Regions.JapesBeyondFeatherGate, lambda l: l.feather and l.tinyAccess),
     ]),
 
@@ -61,6 +63,7 @@ LogicRegions = {
         LocationLogic(Locations.JapesTinyStump, lambda l: l.mini and l.istiny),
         LocationLogic(Locations.JapesChunkyMinecartMayhem, lambda l: l.hunkyChunky and l.ischunky),
     ], [], [
+        Exit(Regions.JapesBeyondCoconutGate1, lambda l: True),
         Exit(Regions.TinyHive, lambda l: l.mini and l.istiny),
     ]),
 
@@ -81,6 +84,7 @@ LogicRegions = {
         Event(Events.JapesLankySwitch, lambda l: Events.Rambi in l.Events and l.Slam and l.islanky),
         Event(Events.JapesTinySwitch, lambda l: Events.Rambi in l.Events and l.Slam and l.istiny),
     ], [
+        Exit(Regions.JungleJapesMain, lambda l: True),
         Exit(Regions.BeyondRambiGate, lambda l: Events.Rambi in l.Events),
         Exit(Regions.Cranky, lambda l: True),
     ]),
@@ -90,6 +94,7 @@ LogicRegions = {
     ], [
         Event(Events.JapesChunkySwitch, lambda l: l.Slam and l.ischunky),
     ], [
+        Exit(Regions.JapesBeyondCoconutGate2, lambda l: True),
         Exit(Regions.JapesBossLobby, lambda l: True),
     ]),
 
