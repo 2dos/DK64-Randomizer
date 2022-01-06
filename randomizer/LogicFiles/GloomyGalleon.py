@@ -15,21 +15,21 @@ LogicRegions = {
         LocationLogic(Locations.GalleonLankyMedal, lambda l: l.ColoredBananas[Levels.GloomyGalleon][Kongs.lanky] >= 75),
         LocationLogic(Locations.GalleonTinyMedal, lambda l: l.ColoredBananas[Levels.GloomyGalleon][Kongs.tiny] >= 75),
         LocationLogic(Locations.GalleonChunkyMedal, lambda l: l.ColoredBananas[Levels.GloomyGalleon][Kongs.chunky] >= 75),
-        LocationLogic(Locations.GalleonChunkyChest, lambda l: l.punch),
-        LocationLogic(Locations.GalleonTinyKasplat, lambda l: l.istiny),
-        LocationLogic(Locations.GalleonBattleArena, lambda l: l.punch),
-        LocationLogic(Locations.GalleonBananaFairybyCranky, lambda l: l.camera and l.punch),
+        LocationLogic(Locations.GalleonChunkyChest, lambda l: l.punch and l.chunky),
+        LocationLogic(Locations.GalleonTinyKasplat, lambda l: l.tiny),
+        LocationLogic(Locations.GalleonBattleArena, lambda l: l.punch and l.chunky),
+        LocationLogic(Locations.GalleonBananaFairybyCranky, lambda l: l.camera and l.punch and l.chunky),
     ], [
         Event(Events.GalleonEntered, lambda l: True),
-        Event(Events.GalleonLankySwitch, lambda l: l.Slam and l.islanky),
-        Event(Events.GalleonTinySwitch, lambda l: l.Slam and l.istiny),
-        Event(Events.LighthouseGateOpened, lambda l: l.coconut),
+        Event(Events.GalleonLankySwitch, lambda l: l.Slam and l.lanky),
+        Event(Events.GalleonTinySwitch, lambda l: l.Slam and l.tiny),
+        Event(Events.LighthouseGateOpened, lambda l: l.coconut and l.donkey),
     ], [
         Exit(Regions.GloomyGalleonLobby, lambda l: True),
-        Exit(Regions.GalleonBeyondPineappleGate, lambda l: l.pineapple),
+        Exit(Regions.GalleonBeyondPineappleGate, lambda l: l.pineapple and l.chunky),
         Exit(Regions.LighthouseArea, lambda l: Events.LighthouseGateOpened in l.Events),
         # Gate to shipyard opened in rando if loading zones randomized
-        Exit(Regions.Shipyard, lambda l: l.settings.ShuffleLoadingZones or l.peanut),
+        Exit(Regions.Shipyard, lambda l: l.settings.ShuffleLoadingZones or (l.peanut and l.diddy)),
         Exit(Regions.Cranky, lambda l: True),
         Exit(Regions.GalleonBossLobby, lambda l: True),
     ]),
@@ -42,15 +42,15 @@ LogicRegions = {
     ]),
 
     Regions.LighthouseArea: Region("Lighthouse Area", Levels.GloomyGalleon, True, [
-        LocationLogic(Locations.GalleonDiddyShipSwitch, lambda l: Events.ActivatedLighthouse in l.Events and l.jetpack and l.Slam),
-        LocationLogic(Locations.GalleonLankyEnguardeChest, lambda l: Events.LighthouseEnguarde in l.Events and l.islanky),
-        LocationLogic(Locations.GalleonDiddyKasplat, lambda l: l.isdiddy),
+        LocationLogic(Locations.GalleonDiddyShipSwitch, lambda l: Events.ActivatedLighthouse in l.Events and l.jetpack and l.Slam and l.diddy),
+        LocationLogic(Locations.GalleonLankyEnguardeChest, lambda l: Events.LighthouseEnguarde in l.Events and l.lanky),
+        LocationLogic(Locations.GalleonDiddyKasplat, lambda l: l.diddy),
     ], [
         Event(Events.WaterSwitch, lambda l: True),
-        Event(Events.LighthouseEnguarde, lambda l: l.islanky),
-        Event(Events.SealReleased, lambda l: l.blast),
-        Event(Events.MechafishSummoned, lambda l: l.jetpack and l.guitar),
-        Event(Events.GalleonChunkyPad, lambda l: l.triangle),
+        Event(Events.LighthouseEnguarde, lambda l: l.lanky),
+        Event(Events.SealReleased, lambda l: l.blast and l.donkey),
+        Event(Events.MechafishSummoned, lambda l: l.jetpack and l.guitar and l.diddy),
+        Event(Events.GalleonChunkyPad, lambda l: l.triangle and l.chunky),
     ], [
         # Rare case of needing to open gate before being able to go through backwards
         Exit(Regions.GloomyGalleonStart, lambda l: Events.LighthouseGateOpened in l.Events),
@@ -82,10 +82,10 @@ LogicRegions = {
     ]),
 
     Regions.Shipyard: Region("Shipyard", Levels.GloomyGalleon, True, [
-        LocationLogic(Locations.GalleonDonkeyFreetheSeal, lambda l: Events.SealReleased in l.Events and Events.WaterSwitch in l.Events and l.isdonkey),
-        LocationLogic(Locations.GalleonChunkyKasplat, lambda l: l.ischunky),
+        LocationLogic(Locations.GalleonDonkeyFreetheSeal, lambda l: Events.SealReleased in l.Events and Events.WaterSwitch in l.Events and l.donkey),
+        LocationLogic(Locations.GalleonChunkyKasplat, lambda l: l.chunky),
     ], [
-        Event(Events.ShipyardEnguarde, lambda l: l.islanky),
+        Event(Events.ShipyardEnguarde, lambda l: l.lanky),
     ], [
         Exit(Regions.GloomyGalleonStart, lambda l: True),
         Exit(Regions.SealRace, lambda l: Events.SealReleased in l.Events and Events.WaterSwitch in l.Events and l.isdonkey),
@@ -109,11 +109,11 @@ LogicRegions = {
     ], [], []),
 
     Regions.TreasureRoom: Region("Treasure Room", Levels.GloomyGalleon, True, [
-        LocationLogic(Locations.GalleonDiddyGoldTower, lambda l: l.spring),
-        LocationLogic(Locations.GalleonLankyGoldTower, lambda l: l.balloon),
-        LocationLogic(Locations.GalleonDonkeyKasplat, lambda l: Events.TreasureRoomTeleporterUnlocked in l.Events and l.isdonkey),
+        LocationLogic(Locations.GalleonDiddyGoldTower, lambda l: l.spring and l.diddy),
+        LocationLogic(Locations.GalleonLankyGoldTower, lambda l: l.balloon and l.lanky),
+        LocationLogic(Locations.GalleonDonkeyKasplat, lambda l: Events.TreasureRoomTeleporterUnlocked in l.Events and l.donkey),
     ], [
-        Event(Events.TreasureRoomTeleporterUnlocked, lambda l: l.spring),
+        Event(Events.TreasureRoomTeleporterUnlocked, lambda l: l.spring and l.diddy),
     ], [
         Exit(Regions.Shipyard, lambda l: True),
         Exit(Regions.TinyChest, lambda l: l.mini and l.istiny),

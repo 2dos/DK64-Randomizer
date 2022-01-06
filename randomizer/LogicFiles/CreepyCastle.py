@@ -15,9 +15,9 @@ LogicRegions = {
         LocationLogic(Locations.CastleLankyMedal, lambda l: l.ColoredBananas[Levels.CreepyCastle][Kongs.lanky] >= 75),
         LocationLogic(Locations.CastleTinyMedal, lambda l: l.ColoredBananas[Levels.CreepyCastle][Kongs.tiny] >= 75),
         LocationLogic(Locations.CastleChunkyMedal, lambda l: l.ColoredBananas[Levels.CreepyCastle][Kongs.chunky] >= 75),
-        LocationLogic(Locations.CastleDiddyAboveCastle, lambda l: l.jetpack and l.isdiddy),
-        LocationLogic(Locations.CastleLankyKasplat, lambda l: l.islanky),
-        LocationLogic(Locations.CastleTinyKasplat, lambda l: l.istiny),
+        LocationLogic(Locations.CastleDiddyAboveCastle, lambda l: l.jetpack and l.diddy),
+        LocationLogic(Locations.CastleLankyKasplat, lambda l: l.lanky),
+        LocationLogic(Locations.CastleTinyKasplat, lambda l: l.tiny),
     ], [
         Event(Events.CastleEntered, lambda l: True),
     ], [
@@ -105,7 +105,7 @@ LogicRegions = {
     ]),
 
     Regions.LowerCave: Region("Lower Cave", Levels.CreepyCastle, True, [
-        LocationLogic(Locations.CastleDiddyKasplat, lambda l: l.isdiddy),
+        LocationLogic(Locations.CastleDiddyKasplat, lambda l: l.diddy),
     ], [], [
         Exit(Regions.CreepyCastleMain, lambda l: True),
         Exit(Regions.Crypt, lambda l: (l.coconut and l.isdonkey) or (l.peanut and l.isdiddy) or (l.pineapple and l.ischunky)),
@@ -134,8 +134,8 @@ LogicRegions = {
     ]),
 
     Regions.UpperCave: Region("Upper Cave", Levels.CreepyCastle, True, [
-        LocationLogic(Locations.CastleTinyOverChasm, lambda l: l.twirl and l.istiny),
-        LocationLogic(Locations.CastleChunkyKasplat, lambda l: l.ischunky),
+        LocationLogic(Locations.CastleTinyOverChasm, lambda l: l.twirl and l.tiny),
+        LocationLogic(Locations.CastleChunkyKasplat, lambda l: l.chunky),
     ], [], [
         Exit(Regions.CreepyCastleMain, lambda l: True),
         Exit(Regions.CastleWaterfall, lambda l: True),
@@ -145,9 +145,9 @@ LogicRegions = {
     ]),
 
     Regions.Dungeon: Region("Dungeon", Levels.CreepyCastle, True, [
-        LocationLogic(Locations.CastleDonkeyDungeon, lambda l: l.superDuperSlam and l.isdonkey),
-        LocationLogic(Locations.CastleDiddyDungeon, lambda l: l.superDuperSlam and l.peanut and l.isdiddy),
-        LocationLogic(Locations.CastleLankyDungeon, lambda l: l.superDuperSlam and l.trombone and l.balloon and l.islanky),
+        LocationLogic(Locations.CastleDonkeyDungeon, lambda l: l.superDuperSlam and l.donkey),
+        LocationLogic(Locations.CastleDiddyDungeon, lambda l: l.superDuperSlam and l.peanut and l.diddy),
+        LocationLogic(Locations.CastleLankyDungeon, lambda l: l.superDuperSlam and l.trombone and l.balloon and l.lanky),
     ], [], [
         Exit(Regions.UpperCave, lambda l: True),
     ]),

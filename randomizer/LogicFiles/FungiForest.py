@@ -17,8 +17,9 @@ LogicRegions = {
         LocationLogic(Locations.ForestChunkyMedal, lambda l: l.ColoredBananas[Levels.FungiForest][Kongs.chunky] >= 75),
     ], [
         Event(Events.ForestEntered, lambda l: True),
-        Event(Events.Night, lambda l: l.coconut or l.peanut or l.grape or l.feather or l.pineapple),
-        Event(Events.WormGatesOpened, lambda l: l.feather and l.pineapple),
+        Event(Events.Night, lambda l: (l.coconut and l.donkey) or (l.peanut and l.diddy) 
+            or (l.grape and l.lanky) or (l.feather and l.tiny) or (l.pineapple and l.chunky)),
+        Event(Events.WormGatesOpened, lambda l: (l.feather and l.tiny) and (l.pineapple and l.chunky)),
     ], [
         Exit(Regions.FungiForestLobby, lambda l: True),
         Exit(Regions.ForestMinecarts, lambda l: l.Slam and l.ischunky),
@@ -32,9 +33,9 @@ LogicRegions = {
     ], [], []),
 
     Regions.GiantMushroomArea: Region("Giant Mushroom Area", Levels.FungiForest, True, [
-        LocationLogic(Locations.ForestDiddyTopofMushroom, lambda l: l.jetpack),
+        LocationLogic(Locations.ForestDiddyTopofMushroom, lambda l: l.jetpack and l.diddy),
     ], [
-        Event(Events.HollowTreeGateOpened, lambda l: l.grape),
+        Event(Events.HollowTreeGateOpened, lambda l: l.grape and l.lanky),
     ], [
         Exit(Regions.FungiForestStart, lambda l: True),
         Exit(Regions.MushroomLower, lambda l: True),
@@ -45,10 +46,11 @@ LogicRegions = {
     ]),
 
     Regions.MushroomLower: Region("Mushroom Lower", Levels.FungiForest, True, [
-        LocationLogic(Locations.ForestTinySpeedySwingSortie, lambda l: l.superSlam and l.istiny),
+        LocationLogic(Locations.ForestTinySpeedySwingSortie, lambda l: l.superSlam and l.tiny),
     ], [
-        Event(Events.MushroomCannonsSpawned, lambda l: l.coconut and l.peanut and l.grape and l.feather and l.pineapple),
-        Event(Events.DonkeyMushroomSwitch, lambda l: l.superSlam and l.isdonkey)
+        Event(Events.MushroomCannonsSpawned, lambda l: l.coconut and l.peanut and l.grape and l.feather and l.pineapple
+            and l.donkey and l.diddy and l.lanky and l.tiny and l.chunky),
+        Event(Events.DonkeyMushroomSwitch, lambda l: l.superSlam and l.donkey)
     ], [
         Exit(Regions.GiantMushroomArea, lambda l: True),
         Exit(Regions.MushroomLowerExterior, lambda l: True),
@@ -56,8 +58,8 @@ LogicRegions = {
     ]),
 
     Regions.MushroomLowerExterior: Region("Mushroom Lower Exterior", Levels.FungiForest, True, [
-        LocationLogic(Locations.ForestDonkeyBaboonBlast, lambda l: l.blast and l.isdonkey),
-        LocationLogic(Locations.ForestTinyKasplat, lambda l: l.istiny),
+        LocationLogic(Locations.ForestDonkeyBaboonBlast, lambda l: l.blast and l.donkey),
+        LocationLogic(Locations.ForestTinyKasplat, lambda l: l.tiny),
     ], [], [
         Exit(Regions.GiantMushroomArea, lambda l: True),
         Exit(Regions.MushroomLower, lambda l: True),
@@ -66,7 +68,7 @@ LogicRegions = {
 
     Regions.MushroomUpper: Region("Mushroom Upper", Levels.FungiForest, True, [
         LocationLogic(Locations.ForestDonkeyMushroomCannons, lambda l: Events.MushroomCannonsSpawned in l.Events and Events.DonkeyMushroomSwitch in l.Events),
-        LocationLogic(Locations.ForestDiddyKasplat, lambda l: l.isdiddy),
+        LocationLogic(Locations.ForestDiddyKasplat, lambda l: l.diddy),
     ], [], [
         Exit(Regions.MushroomLower, lambda l: True),
         Exit(Regions.MushroomLowerExterior, lambda l: True),
@@ -118,9 +120,9 @@ LogicRegions = {
     ]),
 
     Regions.HollowTreeArea: Region("Hollow Tree Area", Levels.FungiForest, True, [
-        LocationLogic(Locations.ForestDiddyOwlRace, lambda l: Events.Night in l.Events and l.jetpack and l.guitar),
-        LocationLogic(Locations.ForestLankyRabbitRace, lambda l: l.trombone and l.sprint),
-        LocationLogic(Locations.ForestLankyKasplat, lambda l: l.islanky),
+        LocationLogic(Locations.ForestDiddyOwlRace, lambda l: Events.Night in l.Events and l.jetpack and l.guitar and l.diddy),
+        LocationLogic(Locations.ForestLankyRabbitRace, lambda l: l.trombone and l.sprint and l.lanky),
+        LocationLogic(Locations.ForestLankyKasplat, lambda l: l.lanky),
     ], [], [
         Exit(Regions.GiantMushroomArea, lambda l: Events.HollowTreeGateOpened in l.Events),
         Exit(Regions.Anthill, lambda l: l.mini and l.saxophone),
@@ -136,8 +138,8 @@ LogicRegions = {
     ]),
 
     Regions.MillArea: Region("Mill Area", Levels.FungiForest, True, [
-        LocationLogic(Locations.ForestDonkeyMill, lambda l: Events.ConveyorActivated in l.Events and Events.Night in l.Events and l.isdonkey),
-        LocationLogic(Locations.ForestDiddyCagedBanana, lambda l: Events.WenchRaised in l.Events and Events.Night in l.Events and l.isdiddy),
+        LocationLogic(Locations.ForestDonkeyMill, lambda l: Events.ConveyorActivated in l.Events and Events.Night in l.Events and l.donkey),
+        LocationLogic(Locations.ForestDiddyCagedBanana, lambda l: Events.WenchRaised in l.Events and Events.Night in l.Events and l.diddy),
     ], [], [
         Exit(Regions.FungiForestStart, lambda l: True),
         Exit(Regions.MillChunkyArea, lambda l: l.punch and l.ischunky),
@@ -174,9 +176,9 @@ LogicRegions = {
     ]),
 
     Regions.GrinderRoom: Region("Grinder Room", Levels.FungiForest, True, [
-        LocationLogic(Locations.ForestChunkyKegs, lambda l: Events.GrinderActivated in l.Events and Events.ConveyorActivated in l.Events and l.ischunky),
+        LocationLogic(Locations.ForestChunkyKegs, lambda l: Events.GrinderActivated in l.Events and Events.ConveyorActivated in l.Events and l.chunky),
     ], [
-        Event(Events.ConveyorActivated, lambda l: l.superSlam and l.grab and l.isdonkey),
+        Event(Events.ConveyorActivated, lambda l: l.superSlam and l.grab and l.donkey),
     ], [
         Exit(Regions.MillArea, lambda l: True),
         Exit(Regions.MillTinyArea, lambda l: l.mini and l.istiny),
@@ -202,7 +204,7 @@ LogicRegions = {
     ]),
 
     Regions.ThornvineArea: Region("Thornvine Area", Levels.FungiForest, True, [
-        LocationLogic(Locations.ForestDonkeyKasplat, lambda l: l.isdonkey),
+        LocationLogic(Locations.ForestDonkeyKasplat, lambda l: l.donkey),
     ], [], [
         Exit(Regions.MillArea, lambda l: Events.Night in l.Events),
         # You're supposed to use strong kong to hit the switch in the thorns, but can brute force it
@@ -218,8 +220,8 @@ LogicRegions = {
     ]),
 
     Regions.WormArea: Region("Worm Area", Levels.FungiForest, True, [
-        LocationLogic(Locations.ForestTinyBeanstalk, lambda l: Events.Bean in l.Events and l.saxophone and l.mini),
-        LocationLogic(Locations.ForestChunkyApple, lambda l: l.hunkyChunky),
+        LocationLogic(Locations.ForestTinyBeanstalk, lambda l: Events.Bean in l.Events and l.saxophone and l.mini and l.tiny),
+        LocationLogic(Locations.ForestChunkyApple, lambda l: l.hunkyChunky and l.chunky),
     ], [], [
         Exit(Regions.FungiForestStart, lambda l: True),
         Exit(Regions.Funky, lambda l: True),

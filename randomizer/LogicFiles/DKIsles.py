@@ -19,18 +19,18 @@ LogicRegions = {
     ]),
 
     Regions.IslesMain: Region("Isles Main", Levels.DKIsles, True, [
-        LocationLogic(Locations.IslesDonkeyJapesRock, lambda l: Events.KLumsyTalkedTo in l.Events and l.isdonkey),
-        LocationLogic(Locations.IslesTinyCagedBanana, lambda l: l.feather and l.istiny),
-        LocationLogic(Locations.IslesTinyInstrumentPad, lambda l: Events.IslesChunkyBarrelSpawn in l.Events and l.istiny),
-        LocationLogic(Locations.IslesLankyCagedBanana, lambda l: l.grape and l.islanky),
-        LocationLogic(Locations.IslesChunkyCagedBanana, lambda l: l.pineapple and l.ischunky),
-        LocationLogic(Locations.IslesChunkyInstrumentPad, lambda l: l.triangle and l.ischunky),
-        LocationLogic(Locations.IslesChunkyPoundtheX, lambda l: Events.IslesChunkyBarrelSpawn in l.Events and l.hunkyChunky and l.Slam and l.ischunky),
+        LocationLogic(Locations.IslesDonkeyJapesRock, lambda l: Events.KLumsyTalkedTo in l.Events and l.donkey),
+        LocationLogic(Locations.IslesTinyCagedBanana, lambda l: l.feather and l.tiny),
+        LocationLogic(Locations.IslesTinyInstrumentPad, lambda l: Events.IslesChunkyBarrelSpawn in l.Events and l.tiny),
+        LocationLogic(Locations.IslesLankyCagedBanana, lambda l: l.grape and l.lanky),
+        LocationLogic(Locations.IslesChunkyCagedBanana, lambda l: l.pineapple and l.chunky),
+        LocationLogic(Locations.IslesChunkyInstrumentPad, lambda l: l.triangle and l.chunky),
+        LocationLogic(Locations.IslesChunkyPoundtheX, lambda l: Events.IslesChunkyBarrelSpawn in l.Events and l.hunkyChunky and l.Slam and l.chunky),
         LocationLogic(Locations.IslesBananaFairyIsland, lambda l: l.camera),
-        LocationLogic(Locations.IslesBananaFairyCrocodisleIsle, lambda l: l.camera and l.monkeyport and l.istiny),
+        LocationLogic(Locations.IslesBananaFairyCrocodisleIsle, lambda l: l.camera and l.monkeyport and l.tiny),
     ], [
-        Event(Events.IslesDiddyBarrelSpawn, lambda l: l.chunkyAccess and l.trombone and l.islanky),
-        Event(Events.IslesChunkyBarrelSpawn, lambda l: l.monkeyport and l.saxophone and l.istiny),
+        Event(Events.IslesDiddyBarrelSpawn, lambda l: l.chunky and l.trombone and l.lanky),
+        Event(Events.IslesChunkyBarrelSpawn, lambda l: l.monkeyport and l.saxophone and l.tiny),
     ], [
         Exit(Regions.Start, lambda l: True),
         Exit(Regions.Prison, lambda l: True),
@@ -68,14 +68,14 @@ LogicRegions = {
     ]),
 
     Regions.JungleJapesLobby: Region("Jungle Japes Lobby", Levels.DKIsles, True, [
-        LocationLogic(Locations.IslesLankyInstrumentPad, lambda l: l.chunkyAccess and l.trombone and l.islanky),
+        LocationLogic(Locations.IslesLankyInstrumentPad, lambda l: l.chunky and l.trombone and l.lanky),
     ], [], [
         Exit(Regions.IslesMain, lambda l: True),
         Exit(Regions.JungleJapesMain, lambda l: l.GoldenBananas >= l.settings.EntryGBs[Levels.JungleJapes - 1]),
     ]),
 
     Regions.AngryAztecLobby: Region("Angry Aztec Lobby", Levels.DKIsles, True, [
-        LocationLogic(Locations.IslesTinyBigBugBash, lambda l: l.charge and l.twirl and l.istiny),
+        LocationLogic(Locations.IslesTinyBigBugBash, lambda l: l.charge and l.diddy and l.twirl and l.tiny),
     ], [], [
         Exit(Regions.IslesMain, lambda l: True),
         Exit(Regions.AngryAztecStart, lambda l: l.GoldenBananas >= l.settings.EntryGBs[Levels.AngryAztec - 1]),
@@ -98,17 +98,17 @@ LogicRegions = {
     ]),
 
     Regions.FranticFactoryLobby: Region("Frantic Factory Lobby", Levels.DKIsles, True, [
-        LocationLogic(Locations.IslesDonkeyInstrumentPad, lambda l: l.grab and l.bongos and l.isdonkey),
-        LocationLogic(Locations.IslesTinyKasplat, lambda l: l.punch and l.istiny),
-        LocationLogic(Locations.IslesBananaFairyFactoryLobby, lambda l: l.camera and l.punch),
+        LocationLogic(Locations.IslesDonkeyInstrumentPad, lambda l: l.grab and l.bongos and l.donkey),
+        LocationLogic(Locations.IslesTinyKasplat, lambda l: l.punch and l.chunky and l.tiny),
+        LocationLogic(Locations.IslesBananaFairyFactoryLobby, lambda l: l.camera and l.punch and l.chunky),
     ], [], [
         Exit(Regions.CrocodileIsleBeyondLift, lambda l: True),
         Exit(Regions.FranticFactoryStart, lambda l: l.GoldenBananas >= l.settings.EntryGBs[Levels.FranticFactory - 1]),
     ]),
 
     Regions.GloomyGalleonLobby: Region("Gloomy Galleon Lobby", Levels.DKIsles, True, [
-        LocationLogic(Locations.IslesTinyGalleonLobby, lambda l: l.chunkyAccess and l.superSlam and l.mini and l.istiny),
-        LocationLogic(Locations.IslesChunkyKasplat, lambda l: l.ischunky),
+        LocationLogic(Locations.IslesTinyGalleonLobby, lambda l: l.chunky and l.superSlam and l.mini and l.tiny),
+        LocationLogic(Locations.IslesChunkyKasplat, lambda l: l.chunky),
     ], [], [
         Exit(Regions.IslesMain, lambda l: True),
         Exit(Regions.GloomyGalleonStart, lambda l: l.GoldenBananas >= l.settings.EntryGBs[Levels.GloomyGalleon - 1]),
@@ -122,40 +122,41 @@ LogicRegions = {
     ]),
 
     Regions.FungiForestLobby: Region("Fungi Forest Lobby", Levels.DKIsles, True, [
-        LocationLogic(Locations.IslesBattleArena2, lambda l: l.coconut and l.peanut and l.grape and l.feather and l.pineapple and l.gorillaGone),
-        LocationLogic(Locations.IslesBananaFairyForestLobby, lambda l: l.camera and l.feather),
+        LocationLogic(Locations.IslesBattleArena2, lambda l: (l.coconut and l.donkey) and (l.peanut and l.diddy) 
+            and (l.grape and l.lanky) and (l.feather and l.tiny) and (l.pineapple and l.chunky) and l.gorillaGone and l.ischunky),
+        LocationLogic(Locations.IslesBananaFairyForestLobby, lambda l: l.camera and l.feather and l.tiny),
     ], [], [
         Exit(Regions.CabinIsle, lambda l: True),
         Exit(Regions.FungiForestStart, lambda l: l.GoldenBananas >= l.settings.EntryGBs[Levels.FungiForest - 1]),
     ]),
 
     Regions.CrystalCavesLobby: Region("Crystal Caves Lobby", Levels.DKIsles, True, [
-        LocationLogic(Locations.IslesDonkeyLavaBanana, lambda l: l.punch and l.strongKong and l.isdonkey),
-        LocationLogic(Locations.IslesDiddyInstrumentPad, lambda l: l.jetpack and l.guitar and l.isdiddy),
-        LocationLogic(Locations.IslesLankyKasplat, lambda l: l.punch and l.islanky),
+        LocationLogic(Locations.IslesDonkeyLavaBanana, lambda l: l.punch and l.chunky and l.strongKong and l.donkey),
+        LocationLogic(Locations.IslesDiddyInstrumentPad, lambda l: l.jetpack and l.guitar and l.diddy),
+        LocationLogic(Locations.IslesLankyKasplat, lambda l: l.punch and l.chunky and l.lanky),
     ], [], [
         Exit(Regions.IslesMain, lambda l: True),
         Exit(Regions.CrystalCavesMain, lambda l: l.GoldenBananas >= l.settings.EntryGBs[Levels.CrystalCaves - 1]),
     ]),
 
     Regions.CreepyCastleLobby: Region("Creepy Castle Lobby", Levels.DKIsles, True, [
-        LocationLogic(Locations.IslesLankyCastleLobby, lambda l: l.punch and l.balloon and l.islanky),
-        LocationLogic(Locations.IslesDiddyKasplat, lambda l: l.coconut and l.diddy),
+        LocationLogic(Locations.IslesLankyCastleLobby, lambda l: l.punch and l.chunky and l.balloon and l.lanky),
+        LocationLogic(Locations.IslesDiddyKasplat, lambda l: l.coconut and l.donkey and l.diddy),
     ], [], [
         Exit(Regions.IslesMain, lambda l: True),
         Exit(Regions.CreepyCastleMain, lambda l: l.GoldenBananas >= l.settings.EntryGBs[Levels.CreepyCastle - 1]),
     ]),
 
     Regions.HideoutHelmLobby: Region("Hideout Helm Lobby", Levels.DKIsles, True, [
-        LocationLogic(Locations.IslesChunkyHelmLobby, lambda l: l.gorillaGone),
-        LocationLogic(Locations.IslesDonkeyKasplat, lambda l: l.coconut),
+        LocationLogic(Locations.IslesChunkyHelmLobby, lambda l: l.gorillaGone and l.chunky),
+        LocationLogic(Locations.IslesDonkeyKasplat, lambda l: l.coconut and l.donkey),
     ], [], [
         Exit(Regions.IslesMain, lambda l: True),
-        Exit(Regions.HideoutHelmStart, lambda l: l.gorillaGone and l.GoldenBananas >= l.settings.EntryGBs[Levels.HideoutHelm - 1]),
+        Exit(Regions.HideoutHelmStart, lambda l: l.gorillaGone and l.chunky and l.GoldenBananas >= l.settings.EntryGBs[Levels.HideoutHelm - 1]),
     ]),
 
     Regions.KRool: Region("K. Rool", Levels.DKIsles, True, [
-        LocationLogic(Locations.BananaHoard, lambda l: l.donkeyAccess and l.jetpack and l.peanut and l.diddyAccess and l.trombone and l.lankyAccess
-                      and l.mini and l.feather and l.tinyAccess and l.superSlam and l.gorillaGone and l.hunkyChunky and l.chunkyAccess),
+        LocationLogic(Locations.BananaHoard, lambda l: l.donkey and l.jetpack and l.peanut and l.diddy and l.trombone and l.lanky
+                      and l.mini and l.feather and l.tiny and l.superSlam and l.gorillaGone and l.hunkyChunky and l.chunky),
     ], [], []),
 }
