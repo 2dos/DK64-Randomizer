@@ -10,24 +10,38 @@ var romFile,
   oldHeader,
   patchedRom;
 
-var patchData = {
-  _data: [],
-  Seek: function (pos) {
-    this._data.push({ seek: pos });
-  },
-  Write: function (pos) {
-    this._data.push({ write: pos });
-  },
-  Clear: function () {
-    _data = [];
-  },
-};
-
 try {
   webWorkerCrc = new Worker("./static/js/rompatcher/worker_crc.js");
   webWorkerCrc.onmessage = (event) => {
     romFile._u8array = event.data.u8array;
     romFile._dataView = new DataView(event.data.u8array.buffer);
+    apply_bps_javascript();
+    boxes = ["input-file-rom", "input-file-rom_1", "input-file-rom_2"];
+    for (var input_box in boxes) {
+      try {
+        document.getElementById(boxes[input_box]).classList.remove("is-valid");
+        document
+          .getElementById(boxes[input_box])
+          .classList.remove("is-invalid");
+      } catch {}
+      if (
+        ["d44b4fc6", "aa0a5979", "96972d67"].includes(
+          padZeroes(crc32(romFile), 4)
+        )
+      ) {
+        try {
+          document.getElementById(boxes[input_box]).title =
+            "CRC32: " + padZeroes(crc32(romFile), 4);
+          document.getElementById(boxes[input_box]).classList.add("is-valid");
+        } catch {}
+      } else {
+        try {
+          document.getElementById(boxes[input_box]).title =
+            "CRC32: " + padZeroes(crc32(romFile), 4);
+          document.getElementById(boxes[input_box]).classList.add("is-invalid");
+        } catch {}
+      }
+    }
   };
 } catch (e) {}
 
@@ -39,12 +53,29 @@ function addEvent(e, ev, f) {
 /* initialize app */
 addEvent(window, "load", function () {
   fetchPatch("./static/patches/shrink-dk64.bps");
-  addEvent(document.getElementById("input-file-rom"), "change", function () {
-    romFile = new MarcFile(this, _parseROM);
-  });
-  addEvent(document.getElementById("input-file-rom_2"), "change", function () {
-    romFile = new MarcFile(this, _parseROM);
-  });
+  try {
+    addEvent(document.getElementById("input-file-rom"), "change", function () {
+      romFile = new MarcFile(this, _parseROM);
+    });
+  } catch {}
+  try {
+    addEvent(
+      document.getElementById("input-file-rom_1"),
+      "change",
+      function () {
+        romFile = new MarcFile(this, _parseROM);
+      }
+    );
+  } catch {}
+  try {
+    addEvent(
+      document.getElementById("input-file-rom_2"),
+      "change",
+      function () {
+        romFile = new MarcFile(this, _parseROM);
+      }
+    );
+  } catch {}
 });
 
 function _parseROM() {
@@ -79,19 +110,23 @@ function _readPatchFile() {
   patch = parseBPSFile(patchFile);
 }
 
-function preparePatchedRom(originalRom, patchedRom, binary_data) {
-  patchedRom.fileName = originalRom.fileName =
-    "dk64-randomizer-" + document.getElementById("seed").value + ".z64";
-  patchedRom.fileType = originalRom.fileType;
-  patchedRom.save();
-  $("#patchprogress").width("100%");
-  $("#progress-text").text("ROM has been patched");
-  setTimeout(function () {
-    $("#progressmodal").modal("hide");
-    $("#patchprogress").width("0%");
-    $("#progress-text").text("");
-  }, 2000);
+function apply_bps_javascript() {
+  console.log("Converting Rom");
+  romFile.convert();
+  console.log("Applying base BPS");
+  if (patch && romFile) {
+    var romFile_internal = new MarcFile(romFile._u8array);
+    var patchFile_internal = new MarcFile(patchFile._u8array);
+    bps = parseBPSFile(patchFile_internal);
+    try {
+      patchedRom = bps.apply(romFile_internal, false);
+    } catch (evt) {
+      errorMessage = evt.message;
+      console.log(evt);
+    }
+  }
 }
+
 function expand_rom_size(size) {
   patchedRom._u8array = concatTypedArrays(
     patchedRom._u8array,
@@ -104,20 +139,4 @@ function concatTypedArrays(a, b) {
   c.set(a, 0);
   c.set(b, a.length);
   return c;
-}
-
-function apply_bps_javascript() {
-  if (patch && romFile) {
-    var romFile_internal = new MarcFile(romFile._u8array);
-    var patchFile_internal = new MarcFile(patchFile._u8array);
-    bps = parseBPSFile(patchFile_internal);
-    try {
-      console.log("Patching BPS");
-      patchedRom = bps.apply(romFile_internal, false);
-      console.log("BPS Patched");
-    } catch (evt) {
-      errorMessage = evt.message;
-      console.log(evt);
-    }
-  }
 }

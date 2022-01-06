@@ -120,5 +120,4 @@ function updateChecksum(marcFile, newChecksum) {
 function fixChecksum(marcFile) {
   var newChecksum = recalculateChecksum(marcFile);
   updateChecksum(marcFile, newChecksum);
-  return true;
 }

@@ -59,6 +59,7 @@
 .definelabel loadSetup, 0x806886E0
 .definelabel getParentDataIndex, 0x80688D64
 .definelabel getScreenPosition, 0x80626F8C
+.definelabel WarpToDKTV, 0x807131BC
 
 .definelabel initDisplayList, 0x807132DC
 .definelabel getTextStyleHeight, 0x806FD894

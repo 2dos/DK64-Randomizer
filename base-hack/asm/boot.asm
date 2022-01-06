@@ -47,6 +47,19 @@ mainASMFunctionVanilla:
 	JAL	0x805FC2B0
 	NOP
 
+NinWarpHook:
+	J 	NinWarpCode
+	NOP
+
+loadExtraHooks:
+	LUI t3, hi(NinWarpHook)
+	LW t3, lo(NinWarpHook) (t3)
+	LUI t4, 0x8071
+	SW t3, 0x32BC (t4) // Store Hook
+	SW r0, 0x32C0 (t4) // Store NOP
+	JR ra
+	NOP
+
 getObjectArrayAddr:
 	// a0 = initial address
 	// a1 = common object size

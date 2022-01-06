@@ -1,4 +1,5 @@
 """Settings class and functions."""
+import json
 
 from randomizer.Enums.Kongs import Kongs
 

@@ -1,6 +1,7 @@
 """Decorator function for UI elements to bind events to buttons."""
-from js import document
 from functools import wraps
+
+from js import document
 
 
 def bind(event, id, iterations=0):
@@ -22,7 +23,7 @@ def bind(event, id, iterations=0):
             func: The original function to return.
         """
         if iterations == 0:
-            document.getElementById(id).addEventListener(event, function)
+            document.getElementById(id).addEventListener(event, function, False)
         else:
             for i in range(0, iterations):
                 try:

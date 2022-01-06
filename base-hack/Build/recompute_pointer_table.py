@@ -1,9 +1,10 @@
 """Recompute all the pointers within the rom."""
 import hashlib
-from map_names import maps
+import json
 from typing import BinaryIO
 
 import encoders
+from map_names import maps
 
 pointer_tables = [
     {
@@ -107,7 +108,7 @@ pointer_tables = [
     },
     {
         "index": 17,
-        "name": "Unknown 17",
+        "name": "DKTV Inputs",
     },
     {
         "index": 18,
@@ -337,7 +338,13 @@ def parsePointerTables(fh: BinaryIO):
                 if not y["bit_set"]:
                     absolute_size = y["next_absolute_address"] - y["absolute_address"]
                     if absolute_size > 0:
-                        file_info = addFileToDatabase(fh, y["absolute_address"], absolute_size, x["index"], y["index"])
+                        file_info = addFileToDatabase(
+                            fh,
+                            y["absolute_address"],
+                            absolute_size,
+                            x["index"],
+                            y["index"],
+                        )
                         x["original_compressed_size"] += absolute_size
 
     # Go back over and look up SHA1s for the bit_set entries
@@ -356,7 +363,11 @@ def parsePointerTables(fh: BinaryIO):
 
 
 def addFileToDatabase(
-    fh: BinaryIO, absolute_address: int, absolute_size: int, pointer_table_index: int, file_index: int
+    fh: BinaryIO,
+    absolute_address: int,
+    absolute_size: int,
+    pointer_table_index: int,
+    file_index: int,
 ):
     """Add the files to the database."""
     # TODO: Get rid of this check
@@ -403,7 +414,13 @@ def getFileInfo(pointer_table_index: int, file_index: int):
     ]
 
 
-def replaceROMFile(pointer_table_index: int, file_index: int, data: bytes, uncompressed_size: int, filename: str = ""):
+def replaceROMFile(
+    pointer_table_index: int,
+    file_index: int,
+    data: bytes,
+    uncompressed_size: int,
+    filename: str = "",
+):
     """Replace the ROM file."""
     # TODO: Get this working
     if pointer_table_index == 8 and file_index == 0:
@@ -537,8 +554,48 @@ def writeModifiedPointerTablesToROM(fh: BinaryIO):
         fh.write((x["new_absolute_address"] - main_pointer_table_offset).to_bytes(4, "big"))
 
 
+dataset = []
+
+
 def dumpPointerTableDetails(filename: str, fr: BinaryIO):
-    """Dump the pointer table info."""
+    """Dump the pointer table info into a JSON readable pointer table."""
+    print("Dumping Pointer Table Details to " + filename)
+    for x in pointer_tables:
+        entries = []
+        for y in x["entries"]:
+            # Seek to the address and read the value
+            fr.seek(x["new_absolute_address"] + y["index"] * 4)
+            # Find the new position
+            pointing_to = (int.from_bytes(fr.read(4), "big") & 0x7FFFFFFF) + main_pointer_table_offset
+            file_info = getFileInfo(x["index"], y["index"])
+            uncompressed_size = getOriginalUncompressedSize(fr, x["index"], y["index"])
+            new_entry = {
+                "new_address": int(x["new_absolute_address"] + y["index"] * 4),
+                "pointing_to": int(pointing_to),
+                "compressed_size": int(len(file_info["data"])) if file_info else None,
+                "uncompressed_size": int(uncompressed_size) if uncompressed_size > 0 else None,
+                "bit_set": y["bit_set"],
+                "map_index": maps[y["index"]] if x["num_entries"] == 221 else None,
+                "file_name": y.get("filename", None),
+                "sha": y["new_sha1"],
+            }
+            entries.insert(y["index"], new_entry)
+        section_data = {
+            "name": x["name"],
+            "address": int(x["new_absolute_address"]),
+            "total_entries": int(x["num_entries"]),
+            "starting_byte": int(x["original_compressed_size"]),
+            "ending_byte": int(getPointerTableCompressedSize(x["index"])),
+            "entries": entries,
+        }
+        dataset.insert(x["index"], section_data)
+
+    with open("../static/patches/pointer_addresses.json", "w") as fh:
+        fh.write(json.dumps(dataset))
+
+
+def dumpPointerTableDetailsLegacy(filename: str, fr: BinaryIO):
+    """Dump the table details in the legacy log format."""
     with open(filename, "w") as fh:
         for x in pointer_tables:
             fh.write(

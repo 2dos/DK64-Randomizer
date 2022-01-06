@@ -1,5 +1,5 @@
 """Dump pointer tables of the vanilla rom."""
-from recompute_pointer_table import parsePointerTables, dumpPointerTableDetails
+from recompute_pointer_table import dumpPointerTableDetails, parsePointerTables
 
 newROMName = "./rom/dk64.z64"
 

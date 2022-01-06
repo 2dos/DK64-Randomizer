@@ -2,6 +2,7 @@
 import copy
 import random
 
+import randomizer.Exceptions as Ex
 import randomizer.ItemPool as ItemPool
 import randomizer.Logic as Logic
 import randomizer.Exceptions as Ex
@@ -10,7 +11,6 @@ from randomizer.Item import ItemList
 from randomizer.Logic import LogicVarHolder, LogicVariables
 
 from randomizer.Enums.Items import Items
-from randomizer.Enums.Locations import Locations
 from randomizer.Enums.Regions import Regions
 from randomizer.Enums.SearchMode import SearchMode
 
