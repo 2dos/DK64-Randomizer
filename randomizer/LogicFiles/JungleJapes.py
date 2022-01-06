@@ -6,6 +6,7 @@ from randomizer.Enums.Levels import Levels
 from randomizer.Enums.Regions import Regions
 from randomizer.Enums.Locations import Locations
 from randomizer.Enums.Kongs import Kongs
+from randomizer.Enums.Exits import Exits
 from randomizer.LogicClasses import Event, Exit, LocationLogic, Region
 
 LogicRegions = {
@@ -30,13 +31,13 @@ LogicRegions = {
     ], [
         Event(Events.JapesEntered, lambda l: True),
     ], [
-        Exit(Regions.JungleJapesLobby, lambda l: True),
+        Exit(Regions.JungleJapesLobby, lambda l: True, Exits.JapesToIsles),
         Exit(Regions.JapesBeyondPeanutGate, lambda l: l.peanut and l.diddy),
         Exit(Regions.JapesBeyondCoconutGate1, lambda l: l.coconut and l.donkey),
         Exit(Regions.JapesBeyondCoconutGate2, lambda l: l.coconut and l.donkey),
-        Exit(Regions.Mine, lambda l: l.peanut and l.isdiddy),
-        Exit(Regions.JapesLankyCave, lambda l: l.peanut and l.diddy and l.handstand and l.islanky),
-        Exit(Regions.JapesCatacomb, lambda l: l.Slam and l.chunkyAccess),
+        Exit(Regions.Mine, lambda l: l.peanut and l.isdiddy, Exits.JapesMainToMine),
+        Exit(Regions.JapesLankyCave, lambda l: l.peanut and l.diddy and l.handstand and l.islanky, Exits.JapesMainToLankyCave),
+        Exit(Regions.JapesCatacomb, lambda l: l.Slam and l.chunkyAccess, Exits.JapesMainToCatacomb),
         Exit(Regions.Funky, lambda l: True),
         Exit(Regions.Snide, lambda l: True),
         Exit(Regions.JapesBossLobby, lambda l: True),
@@ -64,13 +65,13 @@ LogicRegions = {
         LocationLogic(Locations.JapesChunkyMinecartMayhem, lambda l: l.hunkyChunky and l.chunky),
     ], [], [
         Exit(Regions.JapesBeyondCoconutGate1, lambda l: True),
-        Exit(Regions.TinyHive, lambda l: l.mini and l.istiny),
+        Exit(Regions.TinyHive, lambda l: l.mini and l.istiny, Exits.JapesMainToTinyHive),
     ]),
 
     Regions.TinyHive: Region("Tiny Hive", Levels.JungleJapes, False, [
         LocationLogic(Locations.JapesTinyBeehive, lambda l: l.Slam and l.istiny),
     ], [], [
-        Exit(Regions.JapesBeyondFeatherGate, lambda l: True),
+        Exit(Regions.JapesBeyondFeatherGate, lambda l: True, Exits.JapesTinyHiveToMain),
     ]),
 
     Regions.JapesBeyondCoconutGate2: Region("Japes Beyond Coconut Gate 2", Levels.JungleJapes, True, [
@@ -102,7 +103,7 @@ LogicRegions = {
         LocationLogic(Locations.JapesLankyFairyCave, lambda l: l.grape and l.islanky),
         LocationLogic(Locations.JapesBananaFairyLankyCave, lambda l: l.grape and l.camera and l.islanky),
     ], [], [
-        Exit(Regions.JungleJapesMain, lambda l: True),
+        Exit(Regions.JungleJapesMain, lambda l: True, Exits.JapesLankyCaveToMain),
     ]),
 
     Regions.Mine: Region("Mine", Levels.JungleJapes, False, [], [
@@ -110,19 +111,21 @@ LogicRegions = {
         # but can just jump without too much trouble.
         Event(Events.JapesDiddySwitch2, lambda l: l.Slam and l.isdiddy),
     ], [
-        Exit(Regions.JungleJapesMain, lambda l: True),
-        Exit(Regions.JapesMinecarts, lambda l: l.charge and l.Slam and l.isdiddy),
+        Exit(Regions.JungleJapesMain, lambda l: True, Exits.JapesMineToMain),
+        Exit(Regions.JapesMinecarts, lambda l: l.charge and l.Slam and l.isdiddy, Exits.JapesMineToCarts),
     ]),
 
     Regions.JapesMinecarts: Region("Japes Minecarts", Levels.JungleJapes, False, [
         LocationLogic(Locations.JapesDiddyMinecarts, lambda l: l.isdiddy),
-    ], [], []),
+    ], [], [
+        Exit(Regions.Mine, lambda l: True, Exits.JapesCartsToMine),
+    ]),
 
     Regions.JapesCatacomb: Region("Japes Catacomb", Levels.JungleJapes, False, [
         LocationLogic(Locations.JapesChunkyUnderground, lambda l: l.pineapple and l.ischunky),
         LocationLogic(Locations.JapesChunkyKasplat, lambda l: l.pineapple and l.ischunky),
     ], [], [
-        Exit(Regions.JungleJapesMain, lambda l: True),
+        Exit(Regions.JungleJapesMain, lambda l: True, Exits.JapesCatacombToMain),
     ]),
 
     Regions.JapesBossLobby: Region("Japes Boss Lobby", Levels.JungleJapes, True, [], [], [

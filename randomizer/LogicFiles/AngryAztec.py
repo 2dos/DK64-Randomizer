@@ -6,6 +6,7 @@ from randomizer.Enums.Levels import Levels
 from randomizer.Enums.Regions import Regions
 from randomizer.Enums.Locations import Locations
 from randomizer.Enums.Kongs import Kongs
+from randomizer.Enums.Exits import Exits
 from randomizer.LogicClasses import Event, Exit, LocationLogic, Region
 
 LogicRegions = {
@@ -22,8 +23,9 @@ LogicRegions = {
     ], [
         Event(Events.AztecEntered, lambda l: True),
     ], [
-        Exit(Regions.AngryAztecLobby, lambda l: True),
-        Exit(Regions.TempleStart, lambda l: (l.peanut and l.isdiddy) or (l.grape and l.islanky) or (l.feather and l.istiny) or (l.pineapple and l.ischunky)),
+        Exit(Regions.AngryAztecLobby, lambda l: True, Exits.AztecToIsles),
+        Exit(Regions.TempleStart, lambda l: (l.peanut and l.isdiddy) or (l.grape and l.islanky) 
+            or (l.feather and l.istiny) or (l.pineapple and l.ischunky), Exits.AztecStartToTemple),
         # Door to main area opened in rando if loading zones randomized
         Exit(Regions.AngryAztecMain, lambda l: l.settings.ShuffleLoadingZones or (l.jetpack and l.guitar and l.diddy)),
         Exit(Regions.Candy, lambda l: True),
@@ -34,7 +36,7 @@ LogicRegions = {
         LocationLogic(Locations.AztecTinyKlaptrapRoom, lambda l: l.mini and l.istiny),
         LocationLogic(Locations.AztecChunkyKlaptrapRoom, lambda l: l.triangle and l.ischunky),
     ], [], [
-        Exit(Regions.AngryAztecStart, lambda l: True),
+        Exit(Regions.AngryAztecStart, lambda l: True, Exits.AztecTempleToStart),
         Exit(Regions.TempleUnderwater, lambda l: l.Slam and l.guitar and l.diddyAccess),
     ]),
 
@@ -58,50 +60,53 @@ LogicRegions = {
         Event(Events.LlamaFreed, lambda l: l.blast and l.donkey),
     ], [
         Exit(Regions.AngryAztecStart, lambda l: True),
-        Exit(Regions.DonkeyTemple, lambda l: Events.FedTotem in l.Events and l.coconut and l.isdonkey),
-        Exit(Regions.DiddyTemple, lambda l: Events.FedTotem in l.Events and l.peanut and l.isdiddy),
-        Exit(Regions.LankyTemple, lambda l: Events.FedTotem in l.Events and l.grape and l.islanky),
-        Exit(Regions.TinyTemple, lambda l: Events.FedTotem in l.Events and l.feather and l.istiny),
-        Exit(Regions.ChunkyTemple, lambda l: Events.FedTotem in l.Events and l.pineapple and l.ischunky),
-        Exit(Regions.AztecTinyRace, lambda l: l.charge and l.jetpack and l.diddy and l.mini and l.saxophone and l.istiny),
-        Exit(Regions.LlamaTemple, lambda l: Events.LlamaFreed in l.Events and ((l.coconut and l.isdonkey) or (l.grape and l.islanky) or (l.feather and l.istiny))),
+        Exit(Regions.DonkeyTemple, lambda l: Events.FedTotem in l.Events and l.coconut and l.isdonkey, Exits.AztecMainToDonkey),
+        Exit(Regions.DiddyTemple, lambda l: Events.FedTotem in l.Events and l.peanut and l.isdiddy, Exits.AztecMainToDiddy),
+        Exit(Regions.LankyTemple, lambda l: Events.FedTotem in l.Events and l.grape and l.islanky, Exits.AztecMainToLanky),
+        Exit(Regions.TinyTemple, lambda l: Events.FedTotem in l.Events and l.feather and l.istiny, Exits.AztecMainToTiny),
+        Exit(Regions.ChunkyTemple, lambda l: Events.FedTotem in l.Events and l.pineapple and l.ischunky, Exits.AztecMainToChunky),
+        Exit(Regions.AztecTinyRace, lambda l: l.charge and l.jetpack and l.diddy and l.mini and l.saxophone and l.istiny, Exits.AztecMainToRace),
+        Exit(Regions.LlamaTemple, lambda l: Events.LlamaFreed in l.Events and ((l.coconut and l.isdonkey) 
+            or (l.grape and l.islanky) or (l.feather and l.istiny)), Exits.AztecMainToLlama),
     ]),
 
     Regions.DonkeyTemple: Region("Donkey Temple", Levels.AngryAztec, False, [
         LocationLogic(Locations.AztecDonkey5DoorTemple, lambda l: l.coconut and l.isdonkey),
     ], [], [
-        Exit(Regions.AngryAztecMain, lambda l: True),
+        Exit(Regions.AngryAztecMain, lambda l: True, Exits.AztecDonkeyToMain),
     ]),
 
     Regions.DiddyTemple: Region("Diddy Temple", Levels.AngryAztec, False, [
         LocationLogic(Locations.AztecDiddy5DoorTemple, lambda l: l.peanut and l.isdiddy),
     ], [], [
-        Exit(Regions.AngryAztecMain, lambda l: True),
+        Exit(Regions.AngryAztecMain, lambda l: True, Exits.AztecDiddyToMain),
     ]),
 
     Regions.LankyTemple: Region("Lanky Temple", Levels.AngryAztec, False, [
         LocationLogic(Locations.AztecLanky5DoorTemple, lambda l: l.grape and l.islanky),
     ], [], [
-        Exit(Regions.AngryAztecMain, lambda l: True),
+        Exit(Regions.AngryAztecMain, lambda l: True, Exits.AztecLankyToMain),
     ]),
 
     Regions.TinyTemple: Region("Tiny Temple", Levels.AngryAztec, False, [
         LocationLogic(Locations.AztecTiny5DoorTemple, lambda l: l.feather and l.istiny),
         LocationLogic(Locations.AztecBananaFairyTinyTemple, lambda l: l.camera and l.feather and l.mini and l.istiny),
     ], [], [
-        Exit(Regions.AngryAztecMain, lambda l: True),
+        Exit(Regions.AngryAztecMain, lambda l: True, Exits.AztecTinyToMain),
     ]),
 
     Regions.ChunkyTemple: Region("Chunky Temple", Levels.AngryAztec, False, [
         LocationLogic(Locations.AztecChunky5DoorTemple, lambda l: l.pineapple and l.ischunky),
         LocationLogic(Locations.AztecChunkyKasplat, lambda l: l.pineapple and l.ischunky),
     ], [], [
-        Exit(Regions.AngryAztecMain, lambda l: True),
+        Exit(Regions.AngryAztecMain, lambda l: True, Exits.AztecChunkyToMain),
     ]),
 
     Regions.AztecTinyRace: Region("Aztec Tiny Race", Levels.AngryAztec, False, [
         LocationLogic(Locations.AztecTinyBeetleRace, lambda l: l.istiny),
-    ], [], []),
+    ], [], [
+        Exit(Regions.AngryAztecMain, lambda l: True, Exits.AztecRaceToMain),
+    ]),
 
     Regions.LlamaTemple: Region("Llama Temple", Levels.AngryAztec, True, [
         LocationLogic(Locations.LankyKong, lambda l: l.bongos and l.donkey),
@@ -112,7 +117,7 @@ LogicRegions = {
     ], [
         Event(Events.AztecDonkeySwitch, lambda l: l.Slam and l.donkey),
     ], [
-        Exit(Regions.AngryAztecMain, lambda l: True),
+        Exit(Regions.AngryAztecMain, lambda l: True, Exits.AztecLlamaToMain),
         Exit(Regions.LlamaTempleBack, lambda l: l.mini and l.tiny),
     ]),
 

@@ -5,11 +5,12 @@ from randomizer.Enums.Events import Events
 from randomizer.Enums.Levels import Levels
 from randomizer.Enums.Regions import Regions
 from randomizer.Enums.Locations import Locations
+from randomizer.Enums.Exits import Exits
 from randomizer.LogicClasses import Event, Exit, LocationLogic, Region
 
 LogicRegions = {
     Regions.HideoutHelmStart: Region("Hideout Helm Start", Levels.HideoutHelm, True, [], [], [
-        Exit(Regions.HideoutHelmLobby, lambda l: True),
+        Exit(Regions.HideoutHelmLobby, lambda l: True, Exits.HelmToIsles),
         Exit(Regions.HideoutHelmMain, lambda l: l.handstand and l.lanky and l.pineapple and l.chunky and l.mini and l.istiny),
     ]),
 

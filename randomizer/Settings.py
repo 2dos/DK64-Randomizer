@@ -45,7 +45,7 @@ class Settings:
         self.StartingKong = Kongs.donkey
 
         # ShuffleItems: bool
-        self.ShuffleItems = False
+        self.ShuffleItems = True
 
         # StartWithKongs: bool
         self.StartWithKongs = False
