@@ -70,4 +70,4 @@ class Settings:
         self.ShuffleLevels = True
 
         # ShuffleLoadingZones: bool
-        self.ShuffleLoadingZones = False
+        self.ShuffleLoadingZones = True

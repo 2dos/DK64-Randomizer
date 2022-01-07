@@ -116,6 +116,8 @@ def GetAccessibleLocations(ownedItems, searchType=SearchMode.GetReachable):
         return False
     elif searchType == SearchMode.GeneratePlaythrough:
         return playthroughLocations
+    elif searchType == SearchMode.CheckAllReachable:
+        return len(accessible) == len(LocationList)
 
 
 def RandomFill(itemsToPlace):
@@ -287,15 +289,12 @@ def Generate(spoiler):
     # Handle ER
     if spoiler.settings.ShuffleLevels or spoiler.settings.ShuffleLoadingZones:
         ExitShuffle(spoiler.settings)
-        Reset()
         spoiler.UpdateExits()
     # Place items
     if spoiler.settings.ShuffleItems:
         Fill(spoiler)
     else:
         # Just check if normal item locations are beatable with given settings
-        for location in LocationList:
-            LocationList[location].PlaceDefaultItem()
         ItemPool.PlaceConstants(spoiler.settings)
         if not GetAccessibleLocations([], SearchMode.CheckBeatable):
             raise Ex.VanillaItemsGameNotBeatableException("Game unbeatable.")

@@ -5,6 +5,11 @@ class EntrancePlacementException(Exception):
 
     pass
 
+class EntranceOutOfDestinations(EntrancePlacementException):
+    """Exception triggered when an entrance attempted to be shuffled has no valid destinations."""
+
+    pass
+
 class EntranceAttemptCountExceeded(EntrancePlacementException):
     """Exception triggered when too many attempts were made to place entrances."""
 

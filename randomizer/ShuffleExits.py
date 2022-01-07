@@ -2,7 +2,7 @@
 import random
 
 import randomizer.Fill as Fill
-from randomizer.ItemPool import AllItems
+from randomizer.ItemPool import AllItems, PlaceConstants
 from randomizer.Location import LocationList
 import randomizer.Exceptions as Ex
 
@@ -10,17 +10,20 @@ from randomizer.Enums.Exits import Exits
 from randomizer.Enums.ExitCategories import ExitCategories
 from randomizer.Enums.Regions import Regions
 from randomizer.Enums.Levels import Levels
+from randomizer.Enums.SearchMode import SearchMode
 
 
 class ShufflableExit:
     """Class that stores data about an exit to be shuffled."""
     def __init__(self, name, region, reverse, category=None):
+        """Initializes with given parameters."""
         self.name = name
         self.region = region
         self.reverse = reverse
         self.category = category
         # Here dest is the entrance to go to, rather than just the target region
-        self.dest = None
+        # Initialized as its default reverse value
+        self.dest = reverse 
         self.shuffled = False
         self.ignore = False # used for spoiler so reverse entrances are not printed if not decoupled
 
@@ -254,11 +257,31 @@ LevelExitPool = [
 ]
 
 def Reset():
+    """Resets shufflable exit properties set during shuffling."""
     for exit in ShufflableExits.values():
         exit.dest = None
         exit.shuffled = False
 
-def ShuffleExitsInPool(exitpool):
+def VerifyWorld(settings):
+    PlaceConstants(settings)
+    allReachable = Fill.GetAccessibleLocations(AllItems(settings), SearchMode.CheckAllReachable)
+    Fill.Reset()
+    return allReachable
+
+def AttemptConnect(settings, target, targetId, dest, destId):
+    # Connect target to destination, and its reverse to the target's reverse
+    target.dest = destId
+    reverse = ShufflableExits[target.reverse]
+    reverse.dest = dest.reverse
+    # if not decoupled
+    # Do the same for the destination to the target
+    dest.dest = targetId
+    destReverse = ShufflableExits[dest.reverse]
+    destReverse.dest = target.reverse
+    return VerifyWorld(settings)
+
+def ShuffleExitsInPool(settings, exitpool):
+    """Shuffles exits within a specific pool."""
     while len(exitpool) > 0:
         random.shuffle(exitpool)
         targetId = exitpool.pop()
@@ -269,37 +292,50 @@ def ShuffleExitsInPool(exitpool):
             destinations = [x for x in destinations if ShufflableExits[x].category is None or ShufflableExits[x].category != target.category]
         random.shuffle(destinations)
         # Select the destination
-        destId = destinations.pop()
-        target.dest = destId
-        target.shuffled = True
-        # if not decoupled
-        dest = ShufflableExits[destId]
-        dest.dest = targetId
-        dest.shuffled = True
-        exitpool.remove(destId)
+        for destId in destinations:
+            dest = ShufflableExits[destId]
+            if AttemptConnect(settings, target, targetId, dest, destId):
+                target.shuffled = True
+                # if not decoupled
+                dest.shuffled = True
+                exitpool.remove(destId)
+            else:
+                # Undo connection
+                target.dest = target.reverse
+                reverse = ShufflableExits[target.reverse]
+                reverse.dest = targetId
+                # if not decoupled
+                dest.dest = dest.reverse
+                destReverse = ShufflableExits[dest.reverse]
+                destReverse.dest = destId
+        if not target.shuffled:
+            raise Ex.EntranceOutOfDestinations
 
 
 def ShuffleExits(settings):
+    """Shuffles exit pools depending on settings."""
     if settings.ShuffleLevels:
-        ShuffleExitsInPool(LevelExitPool)
+        ShuffleExitsInPool(settings, LevelExitPool.copy())
+    if settings.ShuffleLoadingZones:
+        LoadingZonePool = [x for x in ShufflableExits.keys() if x not in LevelExitPool]
+        ShuffleExitsInPool(settings, LoadingZonePool)
 
 def ExitShuffle(settings):
+    """Wrapper function to facilitate shuffling of exits."""
     retries = 0
     while True:
         try:
             # Shuffle entrances based on settings
             ShuffleExits(settings)
             # Verify world by assuring all locations are still reachable
-            accessible = Fill.GetAccessibleLocations(AllItems(settings))
-            if len(accessible) < len(LocationList):
+            if not VerifyWorld(settings):
                 raise Ex.EntrancePlacementException
             return
         except Ex.EntrancePlacementException:
             if retries == 14:
+                print("Entrance placement failed, out of retries.")
                 raise Ex.EntranceAttemptCountExceeded
             else:
                 retries += 1
                 print("Entrance placement failed. Retrying. Tries: " + str(retries))
                 Reset()
-
-

@@ -74,11 +74,13 @@ def PlaceConstants(settings):
         LocationList[Locations.MusicUpgrade2].PlaceItem(Items.NoItem)
     if settings.StartWithCameraAndShockwave:
         LocationList[Locations.CameraAndShockwave].PlaceItem(Items.NoItem)
+    if not settings.ShuffleItems:
+        for location in LocationList:
+            LocationList[location].PlaceDefaultItem()
 
 def AllItems(settings):
     """Return all shuffled items."""
     allItems = []
-    allItems.extend(Keys())
     allItems.extend(Blueprints(settings))
     allItems.extend(HighPriorityItems(settings))
     allItems.extend(LowPriorityItems(settings))
