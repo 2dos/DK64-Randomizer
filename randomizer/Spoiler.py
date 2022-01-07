@@ -20,6 +20,14 @@ class Spoiler:
         """Converts spoiler to JSON."""
         return json.dumps(self, default=lambda o: o.__dict__, sort_keys=True, indent=4)
 
+    def UpdateExits(self):
+        """Update list of shuffled exits."""
+        self.shuffled_exits = {}
+        for key, exit in sorted(ShufflableExits.items()):
+            # If entrances aren't decoupled, only print the "front" (i.e. odd numbered) entrances
+            if exit.shuffled and key % 2 != 0:
+                self.shuffled_exits[exit.name] = ShufflableExits[exit.dest].name
+
     def UpdateLocations(self, locations):
         """Update location list for what was produced by the fill."""
         self.locations = {}

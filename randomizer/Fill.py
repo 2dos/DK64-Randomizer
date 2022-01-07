@@ -288,6 +288,7 @@ def Generate(spoiler):
     if spoiler.settings.ShuffleLevels or spoiler.settings.ShuffleLoadingZones:
         ExitShuffle(spoiler.settings)
         Reset()
+        spoiler.UpdateExits()
     # Place items
     if spoiler.settings.ShuffleItems:
         Fill(spoiler)
