@@ -127,8 +127,8 @@ LogicRegions = {
             and (l.grape and l.lanky) and (l.feather and l.tiny) and (l.pineapple and l.chunky) and l.gorillaGone and l.ischunky),
         LocationLogic(Locations.IslesBananaFairyForestLobby, lambda l: l.camera and l.feather and l.tiny),
     ], [], [
-        Exit(Regions.CabinIsle, lambda l: True, Exits.IslesFactoryLobbyToMain),
-        Exit(Regions.FungiForestStart, lambda l: l.GoldenBananas >= l.settings.EntryGBs[Levels.FungiForest - 1], Exits.IslesToFactory),
+        Exit(Regions.CabinIsle, lambda l: True, Exits.IslesForestLobbyToMain),
+        Exit(Regions.FungiForestStart, lambda l: l.GoldenBananas >= l.settings.EntryGBs[Levels.FungiForest - 1], Exits.IslesToForest),
     ]),
 
     Regions.CrystalCavesLobby: Region("Crystal Caves Lobby", Levels.DKIsles, True, [

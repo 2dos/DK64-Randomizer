@@ -13,6 +13,7 @@ from randomizer.Logic import LogicVarHolder, LogicVariables
 from randomizer.Enums.Items import Items
 from randomizer.Enums.Regions import Regions
 from randomizer.Enums.SearchMode import SearchMode
+from randomizer.ShuffleExits import ShufflableExits, ExitShuffle
 
 
 def GetAccessibleLocations(ownedItems, searchType=SearchMode.GetReachable):
@@ -89,11 +90,18 @@ def GetAccessibleLocations(ownedItems, searchType=SearchMode.GetReachable):
                         LogicVariables.Events.append(event.name)
                 # Check accessibility for each exit in this region
                 for exit in region.exits:
+                    destination = exit.dest
+                    # If this exit has an entrance shuffle id and the shufflable exits list has it marked as shuffled,
+                    # use the entrance it was shuffled to by getting the region of the destination exit.
+                    if exit.entranceShuffleId is not None:
+                        shuffledExit = ShufflableExits[exit.entranceShuffleId]
+                        if shuffledExit.shuffled:
+                            destination = ShufflableExits[shuffledExit.dest].region
                     # If a region is accessible through this exit and has not yet been added, add it to the queue to be visited eventually
-                    if exit.dest not in addedRegions and exit.logic(LogicVariables):
-                        addedRegions.append(exit.dest)
-                        newRegion = Logic.Regions[exit.dest]
-                        newRegion.id = exit.dest
+                    if destination not in addedRegions and exit.logic(LogicVariables):
+                        addedRegions.append(destination)
+                        newRegion = Logic.Regions[destination]
+                        newRegion.id = destination
                         regionPool.append(newRegion)
                 # Finally check accessibility for collectibles
                 if region.id in Logic.CollectibleRegions.keys():
@@ -225,7 +233,7 @@ def Fill(spoiler):
     """Place all items."""
     retries = 0
     algorithm = spoiler.settings.Algorithm
-    while retries < 5:
+    while True:
         try:
             # First place constant items
             ItemPool.PlaceConstants(spoiler.settings)
@@ -276,7 +284,10 @@ def Generate(spoiler):
     # Init logic vars with settings
     global LogicVariables
     LogicVariables = LogicVarHolder(spoiler.settings)
-    # Handle ER, etc...
+    # Handle ER
+    if spoiler.settings.ShuffleLevels or spoiler.settings.ShuffleLoadingZones:
+        ExitShuffle(spoiler.settings)
+        Reset()
     # Place items
     if spoiler.settings.ShuffleItems:
         Fill(spoiler)

@@ -75,6 +75,16 @@ def PlaceConstants(settings):
     if settings.StartWithCameraAndShockwave:
         LocationList[Locations.CameraAndShockwave].PlaceItem(Items.NoItem)
 
+def AllItems(settings):
+    """Return all shuffled items."""
+    allItems = []
+    allItems.extend(Keys())
+    allItems.extend(Blueprints(settings))
+    allItems.extend(HighPriorityItems(settings))
+    allItems.extend(LowPriorityItems(settings))
+    allItems.extend(ExcessItems(settings))
+    return allItems
+
 def Blueprints(settings):
     """Return all blueprint items."""
     blueprints = [

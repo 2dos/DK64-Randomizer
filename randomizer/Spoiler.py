@@ -4,6 +4,7 @@ import json
 
 from randomizer.Location import LocationList
 from randomizer.Item import ItemList
+from randomizer.ShuffleExits import ShufflableExits
 
 
 class Spoiler:

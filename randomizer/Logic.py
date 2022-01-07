@@ -30,7 +30,7 @@ class LogicVarHolder:
 
     def __init__(self, settings=None):
         """Initialize with given parameters."""
-        if settings == None:
+        if settings is None:
             return
         self.settings = settings
         self.startkong = self.settings.StartingKong

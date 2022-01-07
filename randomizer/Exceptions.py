@@ -1,5 +1,14 @@
 """Custom exceptions for randomizer operations."""
 
+class EntrancePlacementException(Exception):
+    """Exception triggered when shuffled entrances fails to produce a valid world."""
+
+    pass
+
+class EntranceAttemptCountExceeded(EntrancePlacementException):
+    """Exception triggered when too many attempts were made to place entrances."""
+
+    pass
 
 class FillException(Exception):
     """Exception triggered during the fill process."""
