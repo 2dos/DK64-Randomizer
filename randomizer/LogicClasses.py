@@ -28,12 +28,12 @@ class Event:
 class Exit:
     """Exit from one region to another."""
 
-    def __init__(self, dest, logic, entranceShuffleId=None):
+    def __init__(self, dest, logic, exitShuffleId=None):
         """Initialize with given parameters."""
         self.dest = dest
         self.logic = logic  # Lambda function for accessibility
         # Used to identify this exit for entrance shuffle purposes
-        self.entranceShuffleId = entranceShuffleId
+        self.exitShuffleId = exitShuffleId
 
 
 class Collectible:

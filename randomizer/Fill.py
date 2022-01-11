@@ -56,10 +56,10 @@ def GetAccessibleLocations(ownedItems, searchType=SearchMode.GetReachable):
         for kong in LogicVariables.GetKongs():
             LogicVariables.SetKong(kong)
 
-            startRegion = Logic.Regions[Regions.Start]
-            startRegion.id = Regions.Start
+            startRegion = Logic.Regions[Regions.IslesMain]
+            startRegion.id = Regions.IslesMain
             regionPool = [startRegion]
-            addedRegions = [Regions.Start]
+            addedRegions = [Regions.IslesMain]
 
             tagAccess = [
                 (key, value)
@@ -93,8 +93,8 @@ def GetAccessibleLocations(ownedItems, searchType=SearchMode.GetReachable):
                     destination = exit.dest
                     # If this exit has an entrance shuffle id and the shufflable exits list has it marked as shuffled,
                     # use the entrance it was shuffled to by getting the region of the destination exit.
-                    if exit.entranceShuffleId is not None:
-                        shuffledExit = ShufflableExits[exit.entranceShuffleId]
+                    if exit.exitShuffleId is not None:
+                        shuffledExit = ShufflableExits[exit.exitShuffleId]
                         if shuffledExit.shuffled:
                             destination = ShufflableExits[shuffledExit.dest].region
                     # If a region is accessible through this exit and has not yet been added, add it to the queue to be visited eventually

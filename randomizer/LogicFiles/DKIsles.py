@@ -9,7 +9,7 @@ from randomizer.Enums.Exits import Exits
 from randomizer.LogicClasses import Event, Exit, LocationLogic, Region
 
 LogicRegions = {
-    Regions.Start: Region("Start", Levels.DKIsles, True, [
+    Regions.StartArea: Region("Start Area", Levels.DKIsles, True, [
         LocationLogic(Locations.IslesVinesTrainingBarrel, lambda l: True),
         LocationLogic(Locations.IslesSwimTrainingBarrel, lambda l: True),
         LocationLogic(Locations.IslesOrangesTrainingBarrel, lambda l: True),
@@ -33,7 +33,7 @@ LogicRegions = {
         Event(Events.IslesDiddyBarrelSpawn, lambda l: l.chunky and l.trombone and l.lanky),
         Event(Events.IslesChunkyBarrelSpawn, lambda l: l.monkeyport and l.saxophone and l.tiny),
     ], [
-        Exit(Regions.Start, lambda l: True, Exits.IslesStartToMain),
+        Exit(Regions.StartArea, lambda l: True, Exits.IslesStartToMain),
         Exit(Regions.Prison, lambda l: True, Exits.IslesMainToPrison),
         Exit(Regions.BananaFairyRoom, lambda l: l.mini and l.istiny, Exits.IslesMainToFairy),
         Exit(Regions.JungleJapesLobby, lambda l: Events.KLumsyTalkedTo in l.Events, Exits.IslesMainToJapesLobby),
