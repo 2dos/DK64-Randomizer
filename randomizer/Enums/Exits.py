@@ -214,7 +214,7 @@ class Exits(IntEnum):
     CastleRaceToBallroom = auto()
     CastleLowerToCrypt = auto()
     CastleCryptToLower = auto()
-    CastleLowerToMauseoleum = auto()
+    CastleLowerToMausoleum = auto()
     CastleMausoleumToLower = auto()
     CastleCryptToCarts = auto()
     CastleCartsToCrypt = auto()

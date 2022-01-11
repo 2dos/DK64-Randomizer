@@ -90,7 +90,7 @@ LogicRegions = {
     ]),
 
     Regions.TrashCan: Region("Trash Can", Levels.CreepyCastle, False, [
-        LocationLogic(Locations.CastleTinyTrashCan, lambda l: l.feather and l.istiny),
+        LocationLogic(Locations.CastleTiny, lambda l: l.feather and l.istiny),
     ], [], [
         Exit(Regions.CreepyCastleMain, lambda l: True, Exits.CastleTrashToMain),
     ]),
