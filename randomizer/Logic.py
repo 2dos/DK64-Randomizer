@@ -22,7 +22,7 @@ from randomizer.Enums.Events import Events
 from randomizer.Enums.Items import Items
 from randomizer.Enums.Kongs import Kongs
 from randomizer.Enums.Levels import Levels
-from randomizer.Location import LocationList
+from randomizer.Lists.Location import LocationList
 
 
 class LogicVarHolder:

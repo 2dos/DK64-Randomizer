@@ -7,7 +7,7 @@ import js
 from randomizer.Enums.SongType import SongType
 from randomizer.Patcher import ROM
 from randomizer.Settings import Settings
-from randomizer.Songs import song_data
+from randomizer.Lists.Songs import song_data
 
 
 def randomize_music(settings: Settings):

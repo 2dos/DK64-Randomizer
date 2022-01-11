@@ -2,12 +2,12 @@
 import copy
 import random
 
-import randomizer.Exceptions as Ex
+import randomizer.Lists.Exceptions as Ex
 import randomizer.ItemPool as ItemPool
 import randomizer.Logic as Logic
-import randomizer.Exceptions as Ex
-from randomizer.Location import LocationList
-from randomizer.Item import ItemList
+import randomizer.Lists.Exceptions as Ex
+from randomizer.Lists.Location import LocationList
+from randomizer.Lists.Item import ItemList
 from randomizer.Logic import LogicVarHolder, LogicVariables
 
 from randomizer.Enums.Items import Items

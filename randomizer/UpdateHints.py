@@ -6,7 +6,7 @@ import js
 
 from randomizer.Enums.WrinklyKong import WrinklyKong
 from randomizer.Patcher import ROM
-from randomizer.WrinklyHints import Hint
+from randomizer.Lists.WrinklyHints import Hint
 
 
 def UpdateHint(WrinklyHint: Hint, message: str):

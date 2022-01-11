@@ -90,7 +90,7 @@ LogicRegions = {
     ]),
 
     Regions.TrashCan: Region("Trash Can", Levels.CreepyCastle, False, [
-        LocationLogic(Locations.CastleTiny, lambda l: l.feather and l.istiny),
+        LocationLogic(Locations.CastleTinyTrashCan, lambda l: l.feather and l.istiny),
     ], [], [
         Exit(Regions.CreepyCastleMain, lambda l: True, Exits.CastleTrashToMain),
     ]),
@@ -112,7 +112,7 @@ LogicRegions = {
     ], [], [
         Exit(Regions.CreepyCastleMain, lambda l: True, Exits.CastleLowerToMain),
         Exit(Regions.Crypt, lambda l: (l.coconut and l.isdonkey) or (l.peanut and l.isdiddy) or (l.pineapple and l.ischunky), Exits.CastleLowerToCrypt),
-        Exit(Regions.Mausoleum, lambda l: (l.grape and l.islanky) or (l.feather and l.istiny), Exits.CastleLowerToMauseoleum),
+        Exit(Regions.Mausoleum, lambda l: (l.grape and l.islanky) or (l.feather and l.istiny), Exits.CastleLowerToMausoleum),
         Exit(Regions.Funky, lambda l: True),
         Exit(Regions.CastleBossLobby, lambda l: True),
     ]),
