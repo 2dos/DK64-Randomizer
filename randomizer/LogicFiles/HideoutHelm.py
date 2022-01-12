@@ -33,6 +33,6 @@ LogicRegions = {
         Event(Events.HelmLankyDone, lambda l: Events.HelmTinyDone in l.Events and l.trombone and l.grape and l.lanky),
         Event(Events.HelmDiddyDone, lambda l: Events.HelmLankyDone in l.Events and l.guitar and l.Slam and l.peanut and l.diddy),
         Event(Events.HelmKeyAccess, lambda l: Events.HelmDiddyDone in l.Events 
-                    and (l.settings.OpenCrownDoor or l.BattleCrowns >= 4) and (l.settings.OpenCoinDoor or l.nintendoCoin and l.rarewareCoin)),
+                    and (l.settings.crown_door_open or l.BattleCrowns >= 4) and (l.settings.coin_door_open or l.nintendoCoin and l.rarewareCoin)),
     ], []),
 }

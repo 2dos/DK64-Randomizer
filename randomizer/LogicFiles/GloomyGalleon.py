@@ -30,7 +30,7 @@ LogicRegions = {
         Exit(Regions.GalleonBeyondPineappleGate, lambda l: Events.WaterSwitch in l.Events and l.pineapple and l.chunky),
         Exit(Regions.LighthouseArea, lambda l: Events.LighthouseGateOpened in l.Events),
         # Gate to shipyard opened in rando if loading zones randomized
-        Exit(Regions.Shipyard, lambda l: l.settings.ShuffleLoadingZones or (l.peanut and l.diddy)),
+        Exit(Regions.Shipyard, lambda l: l.settings.shuffle_loading_zones or (l.peanut and l.diddy)),
         Exit(Regions.Cranky, lambda l: True),
         Exit(Regions.GalleonBossLobby, lambda l: True),
     ]),

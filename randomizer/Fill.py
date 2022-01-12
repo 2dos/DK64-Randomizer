@@ -234,7 +234,7 @@ def PlaceItems(algorithm, itemsToPlace, ownedItems=[]):
 def Fill(spoiler):
     """Place all items."""
     retries = 0
-    algorithm = spoiler.settings.Algorithm
+    algorithm = spoiler.settings.algorithm
     while True:
         try:
             # First place constant items
@@ -287,11 +287,11 @@ def Generate(spoiler):
     global LogicVariables
     LogicVariables = LogicVarHolder(spoiler.settings)
     # Handle ER
-    if spoiler.settings.ShuffleLevels or spoiler.settings.ShuffleLoadingZones:
+    if spoiler.settings.shuffle_levels or spoiler.settings.shuffle_loading_zones:
         ExitShuffle(spoiler.settings)
         spoiler.UpdateExits()
     # Place items
-    if spoiler.settings.ShuffleItems:
+    if spoiler.settings.shuffle_items:
         Fill(spoiler)
     else:
         # Just check if normal item locations are beatable with given settings

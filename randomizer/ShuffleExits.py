@@ -134,9 +134,9 @@ def ShuffleExits(settings):
     # Set up front and back entrance pools for each setting
     # Assume all shuffled exits reachable by default
     pools = []
-    if settings.ShuffleLevels:
+    if settings.shuffle_levels:
         AssumeExits(pools, LevelExitPool)
-    if settings.ShuffleLoadingZones:
+    if settings.shuffle_loading_zones:
         LoadingZonePool = [x for x in ShufflableExits.keys() if x not in LevelExitPool]
         AssumeExits(pools, LoadingZonePool)
     # Shuffle each entrance pool

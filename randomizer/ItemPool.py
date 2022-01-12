@@ -21,22 +21,22 @@ def PlaceConstants(settings):
     LocationList[Locations.CastleKey].PlaceItem(Items.CreepyCastleKey)
     LocationList[Locations.HelmKey].PlaceItem(Items.HideoutHelmKey)
     # Settings-dependent locations
-    if settings.TrainingBarrels == "normal":
+    if settings.training_barrels == "normal":
         LocationList[Locations.IslesVinesTrainingBarrel].PlaceItem(Items.Vines)
         LocationList[Locations.IslesSwimTrainingBarrel].PlaceItem(Items.Swim)
         LocationList[Locations.IslesOrangesTrainingBarrel].PlaceItem(Items.Oranges)
         LocationList[Locations.IslesBarrelsTrainingBarrel].PlaceItem(Items.Barrels)
-    elif settings.TrainingBarrels == "startwith":
+    elif settings.training_barrels == "startwith":
         LocationList[Locations.IslesVinesTrainingBarrel].PlaceItem(Items.NoItem)
         LocationList[Locations.IslesSwimTrainingBarrel].PlaceItem(Items.NoItem)
         LocationList[Locations.IslesOrangesTrainingBarrel].PlaceItem(Items.NoItem)
         LocationList[Locations.IslesBarrelsTrainingBarrel].PlaceItem(Items.NoItem)
-    if settings.StartWithKongs:
+    if settings.unlock_all_kongs:
         LocationList[Locations.DiddyKong].PlaceItem(Items.NoItem)
         LocationList[Locations.LankyKong].PlaceItem(Items.NoItem)
         LocationList[Locations.TinyKong].PlaceItem(Items.NoItem)
         LocationList[Locations.ChunkyKong].PlaceItem(Items.NoItem)
-    if settings.StartWithShopMoves:
+    if settings.unlock_all_moves:
         # Empty all shop locations EXCEPT sniper scope which is still optional
         LocationList[Locations.SimianSlam].PlaceItem(Items.NoItem)
         LocationList[Locations.SuperSimianSlam].PlaceItem(Items.NoItem)
@@ -72,9 +72,9 @@ def PlaceConstants(settings):
         LocationList[Locations.MusicUpgrade1].PlaceItem(Items.NoItem)
         LocationList[Locations.ThirdMelon].PlaceItem(Items.NoItem)
         LocationList[Locations.MusicUpgrade2].PlaceItem(Items.NoItem)
-    if settings.StartWithCameraAndShockwave:
+    if settings.unlock_fairy_shockwave:
         LocationList[Locations.CameraAndShockwave].PlaceItem(Items.NoItem)
-    if not settings.ShuffleItems:
+    if not settings.shuffle_items:
         for location in LocationList:
             LocationList[location].PlaceDefaultItem()
 
@@ -157,7 +157,7 @@ def Keys():
 def Kongs(settings):
     """Return Kong items depending on settings."""
     kongs = []
-    if not settings.StartWithKongs:
+    if not settings.unlock_all_kongs:
         kongs = [
             Items.Donkey,
             Items.Diddy,
@@ -165,14 +165,14 @@ def Kongs(settings):
             Items.Tiny,
             Items.Chunky
         ]
-        kongs.remove(ItemFromKong(settings.StartingKong))
+        kongs.remove(ItemFromKong(settings.starting_kong))
     return kongs
 
 
 def Guns(settings):
     """Return all gun items."""
     guns = []
-    if not settings.StartWithShopMoves:
+    if not settings.unlock_all_moves:
         guns.extend([
             Items.Coconut,
             Items.Peanut,
@@ -186,7 +186,7 @@ def Guns(settings):
 def Instruments(settings):
     """Return all instrument items."""
     instruments = []
-    if not settings.StartWithShopMoves:
+    if not settings.unlock_all_moves:
         instruments.extend([
             Items.Bongos,
             Items.Guitar,
@@ -211,12 +211,12 @@ def Upgrades(settings):
     """Return all upgrade items."""
     upgrades = []
     # Add training barrel items to item pool if shuffled
-    if settings.TrainingBarrels == "shuffled":
+    if settings.training_barrels == "shuffled":
         upgrades.extend(TrainingBarrelAbilities())
     # Add either progressive upgrade items or individual ones depending on settings
-    if not settings.StartWithShopMoves:
+    if not settings.unlock_all_moves:
         upgrades.extend(itertools.repeat(Items.ProgressiveSlam, 3))
-        if settings.ProgressiveUpgrades:
+        if settings.progressive_upgrades:
             upgrades.extend(itertools.repeat(Items.ProgressiveDonkeyPotion, 3))
             upgrades.extend(itertools.repeat(Items.ProgressiveDiddyPotion, 3))
             upgrades.extend(itertools.repeat(Items.ProgressiveLankyPotion, 3))
@@ -240,7 +240,7 @@ def Upgrades(settings):
                 Items.PrimatePunch,
                 Items.GorillaGone,
             ])
-    if not settings.StartWithCameraAndShockwave:
+    if not settings.unlock_fairy_shockwave:
         upgrades.append(Items.CameraAndShockwave)
     
     return upgrades
@@ -271,9 +271,9 @@ def LowPriorityItems(settings):
     itemPool.extend(itertools.repeat(Items.GoldenBanana, 100))
     itemPool.extend(itertools.repeat(Items.BananaFairy, 20))
     itemPool.extend(itertools.repeat(Items.BananaMedal, 15))
-    if not settings.OpenCrownDoor:
+    if not settings.crown_door_open:
         itemPool.extend(itertools.repeat(Items.BattleCrown, 4))
-    if not settings.OpenCoinDoor:
+    if not settings.coin_door_open:
         itemPool.append(Items.NintendoCoin)
         itemPool.append(Items.RarewareCoin)
 
@@ -285,7 +285,7 @@ def ExcessItems(settings):
     itemPool = []
     itemPool.append(Items.SniperSight)
     
-    if not settings.StartWithShopMoves:
+    if not settings.unlock_all_moves:
         # Weapon upgrades
         itemPool.append(Items.HomingAmmo)
         itemPool.extend(itertools.repeat(Items.ProgressiveAmmoBelt, 2))
@@ -297,9 +297,9 @@ def ExcessItems(settings):
     itemPool.extend(itertools.repeat(Items.GoldenBanana, 101))
     itemPool.extend(itertools.repeat(Items.BananaMedal, 25))
     itemPool.extend(itertools.repeat(Items.BattleCrown, 6))
-    if settings.OpenCrownDoor:
+    if settings.crown_door_open:
         itemPool.extend(itertools.repeat(Items.BattleCrown, 4))
-    if settings.OpenCoinDoor:
+    if settings.coin_door_open:
         itemPool.append(Items.NintendoCoin)
         itemPool.append(Items.RarewareCoin)
 

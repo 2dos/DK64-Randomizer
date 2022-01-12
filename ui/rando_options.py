@@ -7,11 +7,11 @@ from js import document
 from ui.bindings import bind
 
 
-@bind("click", "randomize_progression")
+@bind("click", "shuffle_levels")
 def update_disabled_progression(evt):
     """Disable certain page flags depending on checkboxes."""
     # Check the checked status of the randomize progression button
-    if document.getElementById("randomize_progression").checked:
+    if document.getElementById("shuffle_levels").checked:
         # Disable the kongs button and enable the seed button
         try:
             document.getElementById("seed").removeAttribute("disabled")

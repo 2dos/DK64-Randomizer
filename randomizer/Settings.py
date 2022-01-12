@@ -6,68 +6,117 @@ from randomizer.Enums.Kongs import Kongs
 class Settings:
     """Class used to store settings for seed generation."""
 
-    def __init__(self):
-        """Initialize all settings to empty initially."""
-        # Algorithm: str
-        # forward
-        # assumed
-        self.Algorithm = "forward"
+    def __init__(self, form_data: dict):
+        """Init all the settings using the form data to set the flags.
 
-        # EntryGBs: list(int)
+        Args:
+            form_data (dict): Post data from the html form.
+        """
+        self.algorithm = None
+        self.generate_main()
+        self.generate_progression()
+        self.generate_misc()
+        for k, v in form_data.items():
+            setattr(self, k, v)
+        # Store banana values in array
         self.EntryGBs = [
-            0, # Japes
-            0, # Aztec
-            0, # Factory
-            0, # Galleon
-            0, # Forest
-            0, # Caves
-            0, # Castle
-            100, # Helm
+            self.blocker_0,
+            self.blocker_1,
+            self.blocker_2,
+            self.blocker_3,
+            self.blocker_4,
+            self.blocker_5,
+            self.blocker_6,
+            self.blocker_7,
         ]
-
-        # BossBananas: list(int)
         self.BossBananas = [
-            50, # Japes
-            120, # Aztec
-            200, # Factory
-            250, # Galleon
-            300, # Forest
-            350, # Caves
-            400, # Castle
+            self.troff_0,
+            self.troff_1,
+            self.troff_2,
+            self.troff_3,
+            self.troff_4,
+            self.troff_5,
+            self.troff_6,
         ]
 
-        # TrainingBarrels: str
+        # Settings which are not yet implemented on the web page
+        
+        # training_barrels: str
         # normal
         # shuffled
         # startwith
-        self.TrainingBarrels = "normal"
+        self.training_barrels = "startwith"
+        
+        # starting_kong: Kongs enum
+        self.starting_kong = Kongs.donkey
 
-        # StartingKong: Kongs enum
-        self.StartingKong = Kongs.donkey
+        # shuffle_items: bool
+        self.shuffle_items = False
 
-        # ShuffleItems: bool
-        self.ShuffleItems = True
+        # progressive_upgrades: bool
+        self.progressive_upgrades = True
 
-        # StartWithKongs: bool
-        self.StartWithKongs = False
+        # shuffle_loading_zones: bool
+        self.shuffle_loading_zones = True
 
-        # StartWithShopMoves: bool
-        self.StartWithShopMoves = False
+    def generate_main(self):
+        """Set Default items on main page."""
+        # shuffle_levels: bool
+        self.shuffle_levels = None
+        self.seed = None
+        self.download_json = None
 
-        # ProgressiveUpgrades: bool
-        self.ProgressiveUpgrades = False
+    def generate_progression(self):
+        """Set default items on progression page."""
+        self.blocker_selected = None
+        self.troff_selected = None
+        self.blocker_0 = None
+        self.blocker_1 = None
+        self.blocker_2 = None
+        self.blocker_3 = None
+        self.blocker_4 = None
+        self.blocker_5 = None
+        self.blocker_6 = None
+        self.blocker_7 = None
+        self.troff_0 = None
+        self.troff_1 = None
+        self.troff_2 = None
+        self.troff_3 = None
+        self.troff_4 = None
+        self.troff_5 = None
+        self.troff_6 = None
 
-        # OpenCrownDoor: bool
-        self.OpenCrownDoor = False
+    def generate_misc(self):
+        """Set default items on misc page."""
+        ## Settings which affect logic 
+        # start_with_moves: bool
+        self.unlock_all_moves = None
+        # unlock_all_kongs: bool
+        self.unlock_all_kongs = None
+        # crown_door_open: bool
+        self.crown_door_open = None
+        # coin_door_open: bool
+        self.coin_door_open = None
+        # unlock_fairy_shockwave: bool
+        self.unlock_fairy_shockwave = None
+        # enable_tag_anywhere: bool
+        self.enable_tag_anywhere = None
 
-        # OpenCoinDoor: bool
-        self.OpenCoinDoor = False
+        ## Music
+        self.music_bgm = None
+        self.music_fanfares = None
+        self.music_events = None
 
-        # StartWithCameraAndShockwave: bool
-        self.StartWithCameraAndShockwave = False
+        ## Misc
+        self.generate_spoilerlog = None
+        self.fast_start_beginning_of_game = None
+        self.fast_start_hideout_helm = None
+        self.quality_of_life = None
 
-        # ShuffleLevels: bool
-        self.ShuffleLevels = True
+    def __repr__(self):
+        """Return printable version of the object as json.
 
-        # ShuffleLoadingZones: bool
-        self.ShuffleLoadingZones = True
+        Returns:
+            str: Json string of the dict.
+        """
+        return json.dumps(self.__dict__)

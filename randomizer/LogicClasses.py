@@ -67,7 +67,7 @@ class Region:
     def UpdateAccess(self, kong, logicVariables):
         """Set that given kong has access to this region."""
         # If this region contains a tag barrel, all owned kongs also have access
-        if self.tagbarrel:
+        if self.tagbarrel or logicVariables.settings.enable_tag_anywhere:
             self.donkeyAccess = logicVariables.donkey
             self.diddyAccess = logicVariables.diddy
             self.lankyAccess = logicVariables.lanky
