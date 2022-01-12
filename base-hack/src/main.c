@@ -3,6 +3,7 @@
 #define MAIN_MENU 0x50
 #define NINTENDO_LOGO 0x28
 #define JAPES_MAIN 7
+#define CRANKY 5
 
 void cFuncLoop(void) {
 	initHack();
@@ -13,6 +14,10 @@ void cFuncLoop(void) {
 	level_order_rando_funcs();
 	qualityOfLife_fixes();
 	qualityOfLife_shorteners();
+	if (CurrentMap == CRANKY) {
+		PatchCrankyCode();
+		*(int*)(0x80025E9C) = 0x0C009751; // Set Bitfield Move
+	}
 	if (Rando.quality_of_life) {
 		// DKTVKong = 0;
 		// if (CurrentMap == NINTENDO_LOGO) {

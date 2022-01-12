@@ -20,3 +20,5 @@ extern void openCrownDoor(void);
 extern void openCoinDoor(void);
 extern void qualityOfLife_fixes(void);
 extern void qualityOfLife_shorteners(void);
+
+extern void PatchCrankyCode(void);

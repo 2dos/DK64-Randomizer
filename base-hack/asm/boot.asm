@@ -50,6 +50,9 @@ mainASMFunctionVanilla:
 NinWarpHook:
 	J 	NinWarpCode
 	NOP
+InstanceScriptHook:
+	J 	InstanceScriptCheck
+	NOP
 
 loadExtraHooks:
 	LUI t3, hi(NinWarpHook)
@@ -57,6 +60,12 @@ loadExtraHooks:
 	LUI t4, 0x8071
 	SW t3, 0x32BC (t4) // Store Hook
 	SW r0, 0x32C0 (t4) // Store NOP
+
+	LUI t3, hi(InstanceScriptHook)
+	LW t3, lo(InstanceScriptHook) (t3)
+	LUI t4, 0x8064
+	SW t3, 0xEE08 (t4) // Store Hook
+	SW r0, 0xEE0C (t4) // Store NOP
 	JR ra
 	NOP
 
