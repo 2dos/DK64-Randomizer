@@ -86,7 +86,7 @@ class Exits(IntEnum):
     FactoryPowerToChunkyRoom = auto()
     FactoryBeyondHatchToInsideCore = auto()
     FactoryInsideCoreToBeyondHatch = auto()
-    
+
     # Gloomy Galleon Exits
     GalleonLighthouseAreaToLighthouse = auto()
     GalleonLighthouseToLighthouseArea = auto()
@@ -116,7 +116,7 @@ class Exits(IntEnum):
     GalleonTriangleToShipyard = auto()
     GalleonTreasureToChest = auto()
     GalleonChestToTreasure = auto()
-    
+
     # Fungi Forest Exits
     ForestMainToCarts = auto()
     ForestCartsToMain = auto()

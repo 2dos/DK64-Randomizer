@@ -11,8 +11,9 @@ class Item:
         self.name = name
         self.playthrough = playthrough
 
+
 def ItemFromKong(kong):
-    """Gets the item representation of a Kong enum."""
+    """Get the item representation of a Kong enum."""
     if kong == Kongs.donkey:
         return Items.Donkey
     elif kong == Kongs.diddy:

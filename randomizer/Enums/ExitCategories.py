@@ -3,10 +3,7 @@ from enum import IntEnum, auto
 
 
 class ExitCategories(IntEnum):
-    """
-    These categories are used to ensure loading zones with multiple 
-    exits don't lead back to themselves.
-    """
+    """These categories are used to ensure loading zones with multiple exits don't lead back to themselves."""
 
     IslesLevelExits = auto()
     LevelExits = auto()

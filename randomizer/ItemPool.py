@@ -78,6 +78,7 @@ def PlaceConstants(settings):
         for location in LocationList:
             LocationList[location].PlaceDefaultItem()
 
+
 def AllItems(settings):
     """Return all shuffled items."""
     allItems = []
@@ -86,6 +87,7 @@ def AllItems(settings):
     allItems.extend(LowPriorityItems(settings))
     allItems.extend(ExcessItems(settings))
     return allItems
+
 
 def Blueprints(settings):
     """Return all blueprint items."""
@@ -158,13 +160,7 @@ def Kongs(settings):
     """Return Kong items depending on settings."""
     kongs = []
     if not settings.unlock_all_kongs:
-        kongs = [
-            Items.Donkey,
-            Items.Diddy,
-            Items.Lanky,
-            Items.Tiny,
-            Items.Chunky
-        ]
+        kongs = [Items.Donkey, Items.Diddy, Items.Lanky, Items.Tiny, Items.Chunky]
         kongs.remove(ItemFromKong(settings.starting_kong))
     return kongs
 
@@ -173,13 +169,15 @@ def Guns(settings):
     """Return all gun items."""
     guns = []
     if not settings.unlock_all_moves:
-        guns.extend([
-            Items.Coconut,
-            Items.Peanut,
-            Items.Grape,
-            Items.Feather,
-            Items.Pineapple,
-        ])
+        guns.extend(
+            [
+                Items.Coconut,
+                Items.Peanut,
+                Items.Grape,
+                Items.Feather,
+                Items.Pineapple,
+            ]
+        )
     return guns
 
 
@@ -187,14 +185,17 @@ def Instruments(settings):
     """Return all instrument items."""
     instruments = []
     if not settings.unlock_all_moves:
-        instruments.extend([
-            Items.Bongos,
-            Items.Guitar,
-            Items.Trombone,
-            Items.Saxophone,
-            Items.Triangle,
-        ])
+        instruments.extend(
+            [
+                Items.Bongos,
+                Items.Guitar,
+                Items.Trombone,
+                Items.Saxophone,
+                Items.Triangle,
+            ]
+        )
     return instruments
+
 
 def TrainingBarrelAbilities():
     """Return all training barrel abilities."""
@@ -223,26 +224,28 @@ def Upgrades(settings):
             upgrades.extend(itertools.repeat(Items.ProgressiveTinyPotion, 3))
             upgrades.extend(itertools.repeat(Items.ProgressiveChunkyPotion, 3))
         else:
-            upgrades.extend([
-                Items.BaboonBlast,
-                Items.StrongKong,
-                Items.GorillaGrab,
-                Items.ChimpyCharge,
-                Items.RocketbarrelBoost,
-                Items.SimianSpring,
-                Items.Orangstand,
-                Items.BaboonBalloon,
-                Items.OrangstandSprint,
-                Items.MiniMonkey,
-                Items.PonyTailTwirl,
-                Items.Monkeyport,
-                Items.HunkyChunky,
-                Items.PrimatePunch,
-                Items.GorillaGone,
-            ])
+            upgrades.extend(
+                [
+                    Items.BaboonBlast,
+                    Items.StrongKong,
+                    Items.GorillaGrab,
+                    Items.ChimpyCharge,
+                    Items.RocketbarrelBoost,
+                    Items.SimianSpring,
+                    Items.Orangstand,
+                    Items.BaboonBalloon,
+                    Items.OrangstandSprint,
+                    Items.MiniMonkey,
+                    Items.PonyTailTwirl,
+                    Items.Monkeyport,
+                    Items.HunkyChunky,
+                    Items.PrimatePunch,
+                    Items.GorillaGone,
+                ]
+            )
     if not settings.unlock_fairy_shockwave:
         upgrades.append(Items.CameraAndShockwave)
-    
+
     return upgrades
 
 
@@ -284,7 +287,7 @@ def ExcessItems(settings):
     """Items which either have no logical value or are excess copies of those that do."""
     itemPool = []
     itemPool.append(Items.SniperSight)
-    
+
     if not settings.unlock_all_moves:
         # Weapon upgrades
         itemPool.append(Items.HomingAmmo)

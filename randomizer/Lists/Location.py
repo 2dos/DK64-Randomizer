@@ -1,3 +1,4 @@
+# fmt: off
 """Stores the Location class and a list of each location in the game."""
 
 from randomizer.Enums.Locations import Locations

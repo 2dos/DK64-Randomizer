@@ -17,7 +17,7 @@ class Spoiler:
         self.playthrough = {}
 
     def toJson(self):
-        """Converts spoiler to JSON."""
+        """Convert spoiler to JSON."""
         return json.dumps(self, default=lambda o: o.__dict__, sort_keys=True, indent=4)
 
     def UpdateExits(self):

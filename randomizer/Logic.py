@@ -41,7 +41,6 @@ class LogicVarHolder:
 
         Done between reachability searches and upon initialization.
         """
-
         self.donkey = self.startkong == Kongs.donkey or self.settings.unlock_all_kongs
         self.diddy = self.startkong == Kongs.diddy or self.settings.unlock_all_kongs
         self.lanky = self.startkong == Kongs.lanky or self.settings.unlock_all_kongs
@@ -308,6 +307,7 @@ class LogicVarHolder:
         elif collectible.type == Collectibles.balloon:
             self.ColoredBananas[level][collectible.kong] += 10
         collectible.added = True
+
 
 LogicVariables = LogicVarHolder()
 

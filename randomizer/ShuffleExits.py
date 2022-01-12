@@ -34,23 +34,28 @@ LevelExitPool = [
 # Root is the starting spawn, which is the main area of DK Isles.
 root = Regions.IslesMain
 
+
 def GetRootExit(exitId):
-    """Queries the world root to return an exit with a matching exit id."""
+    """Query the world root to return an exit with a matching exit id."""
     return [x for x in Logic.Regions[root].exits if x.exitShuffleId is not None and x.exitShuffleId == exitId][0]
 
+
 def RemoveRootExit(exit):
-    """Removes an exit from the world root."""
+    """Remove an exit from the world root."""
     Logic.Regions[root].exits.remove(exit)
 
+
 def AddRootExit(exit):
-    """Adds an exit to the world root."""
+    """Add an exit to the world root."""
     Logic.Regions[root].exits.append(exit)
 
+
 def Reset():
-    """Resets shufflable exit properties set during shuffling."""
+    """Reset shufflable exit properties set during shuffling."""
     for exit in ShufflableExits.values():
         exit.dest = exit.reverse
         exit.shuffled = False
+
 
 def VerifyWorld(settings):
     """Make sure all item locations are reachable on current world graph with constant items placed and all other items owned."""
@@ -58,6 +63,7 @@ def VerifyWorld(settings):
     allReachable = Fill.GetAccessibleLocations(AllItems(settings), SearchMode.CheckAllReachable)
     Fill.Reset()
     return allReachable
+
 
 def AttemptConnect(settings, front, frontId, back, backId):
     """Attempt to connect two exits, checking if the world is valid if they are connected."""
@@ -86,8 +92,9 @@ def AttemptConnect(settings, front, frontId, back, backId):
         back.dest = None
     return valid
 
+
 def ShuffleExitsInPool(settings, frontpool, backpool):
-    """Shuffles exits within a specific pool."""
+    """Shuffle exits within a specific pool."""
     random.shuffle(frontpool)
     # For each front exit, select a random valid back exit to attach to it
     while len(frontpool) > 0:
@@ -96,7 +103,11 @@ def ShuffleExitsInPool(settings, frontpool, backpool):
         destinations = backpool.copy()
         # If our target exit to shuffle has a category, ensure it's not shuffled to entrances with the same category
         if front.category is not None:
-            destinations = [x for x in destinations if ShufflableExits[x].category is None or ShufflableExits[x].category != front.category]
+            destinations = [
+                x
+                for x in destinations
+                if ShufflableExits[x].category is None or ShufflableExits[x].category != front.category
+            ]
         random.shuffle(destinations)
         # Select the destination
         for backId in destinations:
@@ -108,8 +119,9 @@ def ShuffleExitsInPool(settings, frontpool, backpool):
         if not front.shuffled:
             raise Ex.EntranceOutOfDestinations
 
+
 def AssumeExits(pools, newpool):
-    """Splits exit pool into front and back pools, and assumes exits reachable from root."""
+    """Split exit pool into front and back pools, and assumes exits reachable from root."""
     frontpool = []
     backpool = []
     for i in range(len(newpool)):
@@ -129,8 +141,9 @@ def AssumeExits(pools, newpool):
     pools.append(frontpool)
     pools.append(backpool)
 
+
 def ShuffleExits(settings):
-    """Shuffles exit pools depending on settings."""
+    """Shuffle exit pools depending on settings."""
     # Set up front and back entrance pools for each setting
     # Assume all shuffled exits reachable by default
     pools = []
@@ -141,10 +154,11 @@ def ShuffleExits(settings):
         AssumeExits(pools, LoadingZonePool)
     # Shuffle each entrance pool
     for i in range(0, len(pools), 2):
-        ShuffleExitsInPool(settings, pools[i], pools[i+1])
+        ShuffleExitsInPool(settings, pools[i], pools[i + 1])
+
 
 def ExitShuffle(settings):
-    """Wrapper function to facilitate shuffling of exits."""
+    """Facilitate shuffling of exits."""
     retries = 0
     while True:
         try:

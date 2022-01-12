@@ -241,18 +241,24 @@ def Fill(spoiler):
             ItemPool.PlaceConstants(spoiler.settings)
             # Then place priority (logically very important) items
             highPriorityUnplaced = PlaceItems(
-                algorithm, ItemPool.HighPriorityItems(spoiler.settings), ItemPool.HighPriorityAssumedItems(spoiler.settings)
+                algorithm,
+                ItemPool.HighPriorityItems(spoiler.settings),
+                ItemPool.HighPriorityAssumedItems(spoiler.settings),
             )
             if highPriorityUnplaced > 0:
                 raise Ex.ItemPlacementException(str(highPriorityUnplaced) + " unplaced high priority items.")
             # Then place blueprints
             Reset()
-            blueprintsUnplaced = PlaceItems(algorithm, ItemPool.Blueprints(spoiler.settings), ItemPool.BlueprintAssumedItems(spoiler.settings))
+            blueprintsUnplaced = PlaceItems(
+                algorithm, ItemPool.Blueprints(spoiler.settings), ItemPool.BlueprintAssumedItems(spoiler.settings)
+            )
             if blueprintsUnplaced > 0:
                 raise Ex.ItemPlacementException(str(blueprintsUnplaced) + " unplaced blueprints.")
             # Then place the rest of items
             Reset()
-            lowPriorityUnplaced = PlaceItems(algorithm, ItemPool.LowPriorityItems(spoiler.settings), ItemPool.ExcessItems(spoiler.settings))
+            lowPriorityUnplaced = PlaceItems(
+                algorithm, ItemPool.LowPriorityItems(spoiler.settings), ItemPool.ExcessItems(spoiler.settings)
+            )
             if lowPriorityUnplaced > 0:
                 raise Ex.ItemPlacementException(str(lowPriorityUnplaced) + " unplaced low priority items.")
             # Finally place excess items fully randomly
@@ -280,6 +286,7 @@ def Fill(spoiler):
                 print("Fill failed. Retrying. Tries: " + str(retries))
                 Reset()
                 Logic.ClearAllLocations()
+
 
 def Generate(spoiler):
     """Generate a complete spoiler based on input settings."""

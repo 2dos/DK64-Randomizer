@@ -3,6 +3,7 @@ import json
 
 from randomizer.Enums.Kongs import Kongs
 
+
 class Settings:
     """Class used to store settings for seed generation."""
 
@@ -40,13 +41,13 @@ class Settings:
         ]
 
         # Settings which are not yet implemented on the web page
-        
+
         # training_barrels: str
         # normal
         # shuffled
         # startwith
         self.training_barrels = "startwith"
-        
+
         # starting_kong: Kongs enum
         self.starting_kong = Kongs.donkey
 
@@ -88,7 +89,7 @@ class Settings:
 
     def generate_misc(self):
         """Set default items on misc page."""
-        ## Settings which affect logic 
+        #  Settings which affect logic
         # start_with_moves: bool
         self.unlock_all_moves = None
         # unlock_all_kongs: bool
@@ -102,12 +103,12 @@ class Settings:
         # enable_tag_anywhere: bool
         self.enable_tag_anywhere = None
 
-        ## Music
+        #  Music
         self.music_bgm = None
         self.music_fanfares = None
         self.music_events = None
 
-        ## Misc
+        #  Misc
         self.generate_spoilerlog = None
         self.fast_start_beginning_of_game = None
         self.fast_start_hideout_helm = None

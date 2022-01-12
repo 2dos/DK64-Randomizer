@@ -1,3 +1,4 @@
+# fmt: off
 """Shufflable exit class and list file."""
 
 from randomizer.Enums.Exits import Exits
@@ -7,17 +8,19 @@ from randomizer.Enums.Regions import Regions
 
 class ShufflableExit:
     """Class that stores data about an exit to be shuffled."""
+
     def __init__(self, name, region, reverse, category=None):
-        """Initializes with given parameters."""
+        """Initialize with given parameters."""
         self.name = name
         self.region = region
         self.reverse = reverse
         self.category = category
         # Here dest is the entrance to go to, rather than just the target region
         # Initialized as its default reverse value
-        self.dest = reverse 
+        self.dest = reverse
         self.shuffled = False
-        self.ignore = False # used for spoiler so reverse entrances are not printed if not decoupled
+        self.ignore = False  # used for spoiler so reverse entrances are not printed if not decoupled
+
 
 ShufflableExits = {
     # Level Exits

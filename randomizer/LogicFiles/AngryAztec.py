@@ -24,8 +24,8 @@ LogicRegions = {
         Event(Events.AztecEntered, lambda l: True),
     ], [
         Exit(Regions.AngryAztecLobby, lambda l: True, Exits.AztecToIsles),
-        Exit(Regions.TempleStart, lambda l: (l.peanut and l.isdiddy) or (l.grape and l.islanky) 
-            or (l.feather and l.istiny) or (l.pineapple and l.ischunky), Exits.AztecStartToTemple),
+        Exit(Regions.TempleStart, lambda l: (l.peanut and l.isdiddy) or (l.grape and l.islanky)
+             or (l.feather and l.istiny) or (l.pineapple and l.ischunky), Exits.AztecStartToTemple),
         # Door to main area opened in rando if loading zones randomized
         Exit(Regions.AngryAztecMain, lambda l: l.settings.shuffle_loading_zones or (l.jetpack and l.guitar and l.diddy)),
         Exit(Regions.Candy, lambda l: True),
@@ -66,8 +66,8 @@ LogicRegions = {
         Exit(Regions.TinyTemple, lambda l: Events.FedTotem in l.Events and l.feather and l.istiny, Exits.AztecMainToTiny),
         Exit(Regions.ChunkyTemple, lambda l: Events.FedTotem in l.Events and l.pineapple and l.ischunky, Exits.AztecMainToChunky),
         Exit(Regions.AztecTinyRace, lambda l: l.charge and l.jetpack and l.diddy and l.mini and l.saxophone and l.istiny, Exits.AztecMainToRace),
-        Exit(Regions.LlamaTemple, lambda l: Events.LlamaFreed in l.Events and ((l.coconut and l.isdonkey) 
-            or (l.grape and l.islanky) or (l.feather and l.istiny)), Exits.AztecMainToLlama),
+        Exit(Regions.LlamaTemple, lambda l: Events.LlamaFreed in l.Events and ((l.coconut and l.isdonkey)
+             or (l.grape and l.islanky) or (l.feather and l.istiny)), Exits.AztecMainToLlama),
     ]),
 
     Regions.DonkeyTemple: Region("Donkey Temple", Levels.AngryAztec, False, [
