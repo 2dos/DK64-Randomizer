@@ -16,7 +16,7 @@ void cFuncLoop(void) {
 	qualityOfLife_shorteners();
 	if (CurrentMap == CRANKY) {
 		PatchCrankyCode();
-		*(int*)(0x80025E9C) = 0x0C009751; // Set Bitfield Move
+		*(int*)(0x80025E9C) = 0x0C009751; // Change writing of move to "write bitfield move" function call
 	}
 	if (Rando.quality_of_life) {
 		// DKTVKong = 0;

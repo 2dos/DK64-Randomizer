@@ -53,6 +53,9 @@ NinWarpHook:
 InstanceScriptHook:
 	J 	InstanceScriptCheck
 	NOP
+SaveToFileFixesHook:
+	J 	SaveToFileFixes
+	NOP
 
 loadExtraHooks:
 	LUI t3, hi(NinWarpHook)
@@ -66,6 +69,13 @@ loadExtraHooks:
 	LUI t4, 0x8064
 	SW t3, 0xEE08 (t4) // Store Hook
 	SW r0, 0xEE0C (t4) // Store NOP
+
+	LUI t3, hi(SaveToFileFixesHook)
+	LW t3, lo(SaveToFileFixesHook) (t3)
+	LUI t4, 0x8061
+	SW t3, 0xDFF4 (t4) // Store Hook
+	SW r0, 0xDFF8 (t4) // Store NOP
+
 	JR ra
 	NOP
 

@@ -49,5 +49,19 @@ START_HOOK:
 			J 	0x8063EE1C
 			NOP
 
+	SaveToFileFixes:
+		BNEZ 	s0, SaveToFileFixes_Not0
+		ANDI 	a1, s3, 0xFF
+		B 		SaveToFileFixes_Finish
+		ADDIU  	a0, r0, 10 // Stores it in unused slot
+
+		SaveToFileFixes_Not0:
+			ADDIU 	a0, s0, 4
+
+		SaveToFileFixes_Finish:
+			J 		0x8060DFFC
+			NOP
+
+
 .align 0x10
 END_HOOK:
