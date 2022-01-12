@@ -1,10 +1,14 @@
 """Spoiler class and functions."""
 
 import json
+import copy
+from typing import OrderedDict
 
 from randomizer.Lists.Location import LocationList
-from randomizer.Lists.Item import ItemList
+from randomizer.Lists.Item import ItemFromKong, ItemList
 from randomizer.ShuffleExits import ShufflableExits
+
+from randomizer.Enums.Items import Items
 
 
 class Spoiler:
@@ -13,26 +17,73 @@ class Spoiler:
     def __init__(self, settings):
         """Initialize spoiler just with settings."""
         self.settings = settings
-        self.locations = {}
         self.playthrough = {}
+        self.shuffled_exit_data = {}
+        self.location_data = {}
 
     def toJson(self):
         """Convert spoiler to JSON."""
-        return json.dumps(self, default=lambda o: o.__dict__, sort_keys=True, indent=4)
+        # We want to convert raw spoiler data into the important bits and in human-readable formats.
+        humanspoiler = OrderedDict()
+
+        # Settings data
+        settings = OrderedDict()
+        settings["seed"] = self.settings.seed
+        settings["algorithm"] = self.settings.algorithm
+        settings["shuffle_items"] = self.settings.shuffle_items
+        settings["shuffle_levels"] = self.settings.shuffle_levels
+        settings["shuffle_loading_zones"] = self.settings.shuffle_loading_zones
+        settings["unlock_all_moves"] = self.settings.unlock_all_moves
+        settings["unlock_all_kongs"] = self.settings.unlock_all_kongs
+        settings["starting_kong"] = ItemList[ItemFromKong(self.settings.starting_kong)].name
+        settings["crown_door_open"] = self.settings.crown_door_open
+        settings["coin_door_open"] = self.settings.coin_door_open
+        settings["unlock_fairy_shockwave"] = self.settings.unlock_fairy_shockwave
+        settings["enable_tag_anywhere"] = self.settings.enable_tag_anywhere
+        settings["music_bgm"] = self.settings.music_bgm
+        settings["music_fanfares"] = self.settings.music_fanfares
+        settings["music_events"] = self.settings.music_events
+        settings["fast_start_beginning_of_game"] = self.settings.fast_start_beginning_of_game
+        settings["fast_start_hideout_helm"] = self.settings.fast_start_hideout_helm
+        settings["quality_of_life"] = self.settings.quality_of_life
+        settings["blocker_golden_bananas"] = self.settings.EntryGBs
+        settings["troff_n_scoff_bananas"] = self.settings.BossBananas 
+        humanspoiler["Settings"] = settings
+
+        if self.settings.shuffle_items:
+            # Playthrough data
+            humanspoiler["Playthrough"] = self.playthrough
+
+            # Item location data
+            locations = OrderedDict()
+            for location, item in self.location_data.items():
+                if item != Items.NoItem:
+                    locations[LocationList[location].name] = ItemList[item].name
+            humanspoiler["Locations"] = locations
+
+        if self.settings.shuffle_levels or self.settings.shuffle_loading_zones:
+            # Shuffled exit data
+            shuffled_exits = OrderedDict()
+            for exit, dest in self.shuffled_exit_data.items():
+                # If not decoupled, only want to show "front" exits
+                if exit % 2 != 0:  # or not decoupled
+                    shuffled_exits[ShufflableExits[exit].name] = ShufflableExits[dest].name
+            humanspoiler["Shuffled Exits"] = shuffled_exits
+
+        return json.dumps(humanspoiler, indent=4)
 
     def UpdateExits(self):
         """Update list of shuffled exits."""
-        self.shuffled_exits = {}
+        self.shuffled_exit_data = {}
         for key, exit in ShufflableExits.items():
-            # If entrances aren't decoupled, only print the "front" (i.e. odd numbered) entrances
-            if exit.shuffled and key % 2 != 0:
-                self.shuffled_exits[exit.name] = ShufflableExits[exit.dest].name
+            if exit.shuffled:
+                self.shuffled_exit_data[key] = exit.dest
 
     def UpdateLocations(self, locations):
         """Update location list for what was produced by the fill."""
-        self.locations = {}
-        for location in locations.values():
-            self.locations[location.name] = ItemList[location.item].name
+        self.location_data = {}
+        for id, location in locations.items():
+            self.location_data[id] = location.item
 
     def UpdatePlaythrough(self, locations, playthroughLocations):
         """Write playthrough as a list of dicts of location/item pairs."""

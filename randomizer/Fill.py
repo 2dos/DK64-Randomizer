@@ -288,7 +288,7 @@ def Fill(spoiler):
                 Logic.ClearAllLocations()
 
 
-def Generate(spoiler):
+def Generate_Spoiler(spoiler):
     """Generate a complete spoiler based on input settings."""
     # Init logic vars with settings
     global LogicVariables

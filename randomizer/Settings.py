@@ -58,7 +58,7 @@ class Settings:
         self.progressive_upgrades = True
 
         # shuffle_loading_zones: bool
-        self.shuffle_loading_zones = True
+        self.shuffle_loading_zones = False
 
     def generate_main(self):
         """Set Default items on main page."""
