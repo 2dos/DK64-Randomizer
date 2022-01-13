@@ -168,6 +168,7 @@ tools/importers/*
 !tools/importers/*.py
 randomizer/test.py
 test.py
+output.json
 *.sym
 base-hack/obj
 base-hack/rom/patch.bps

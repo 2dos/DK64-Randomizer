@@ -20,7 +20,7 @@ class Locations(IntEnum):
     IslesBananaFairyIsland = auto()
     IslesBananaFairyCrocodisleIsle = auto()
     IslesLankyPrisonOrangsprint = auto()
-    CameraandShockwave = auto()
+    CameraAndShockwave = auto()
     RarewareBanana = auto()
     IslesLankyInstrumentPad = auto()
     IslesTinyBigBugBash = auto()

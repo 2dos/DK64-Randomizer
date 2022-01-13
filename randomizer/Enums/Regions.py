@@ -6,7 +6,7 @@ class Regions(IntEnum):
     """Region enum."""
 
     # DK Isles Regions
-    Start = auto()
+    StartArea = auto()
     IslesMain = auto()
     Prison = auto()
     BananaFairyRoom = auto()
@@ -114,7 +114,7 @@ class Regions(IntEnum):
     WenchRoom = auto()
     MillAttic = auto()
     ThornvineArea = auto()
-    ThornvineHut = auto()
+    ThornvineBarn = auto()
     WormArea = auto()
     ForestBossLobby = auto()
     ForestBoss = auto()

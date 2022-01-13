@@ -2,16 +2,18 @@
 import copy
 import random
 
-import randomizer.Exceptions as Ex
+import randomizer.Lists.Exceptions as Ex
 import randomizer.ItemPool as ItemPool
 import randomizer.Logic as Logic
+import randomizer.Lists.Exceptions as Ex
+from randomizer.Lists.Location import LocationList
+from randomizer.Lists.Item import ItemList
+from randomizer.Logic import LogicVarHolder, LogicVariables
+
 from randomizer.Enums.Items import Items
-from randomizer.Enums.Locations import Locations
 from randomizer.Enums.Regions import Regions
 from randomizer.Enums.SearchMode import SearchMode
-from randomizer.Item import ItemList
-from randomizer.Location import LocationList
-from randomizer.Logic import LogicVariables
+from randomizer.ShuffleExits import ShufflableExits, ExitShuffle
 
 
 def GetAccessibleLocations(ownedItems, searchType=SearchMode.GetReachable):
@@ -54,10 +56,10 @@ def GetAccessibleLocations(ownedItems, searchType=SearchMode.GetReachable):
         for kong in LogicVariables.GetKongs():
             LogicVariables.SetKong(kong)
 
-            startRegion = Logic.Regions[Regions.Start]
-            startRegion.id = Regions.Start
+            startRegion = Logic.Regions[Regions.IslesMain]
+            startRegion.id = Regions.IslesMain
             regionPool = [startRegion]
-            addedRegions = [Regions.Start]
+            addedRegions = [Regions.IslesMain]
 
             tagAccess = [
                 (key, value)
@@ -88,11 +90,18 @@ def GetAccessibleLocations(ownedItems, searchType=SearchMode.GetReachable):
                         LogicVariables.Events.append(event.name)
                 # Check accessibility for each exit in this region
                 for exit in region.exits:
+                    destination = exit.dest
+                    # If this exit has an entrance shuffle id and the shufflable exits list has it marked as shuffled,
+                    # use the entrance it was shuffled to by getting the region of the destination exit.
+                    if exit.exitShuffleId is not None:
+                        shuffledExit = ShufflableExits[exit.exitShuffleId]
+                        if shuffledExit.shuffled:
+                            destination = ShufflableExits[shuffledExit.dest].region
                     # If a region is accessible through this exit and has not yet been added, add it to the queue to be visited eventually
-                    if exit.dest not in addedRegions and exit.logic(LogicVariables):
-                        addedRegions.append(exit.dest)
-                        newRegion = Logic.Regions[exit.dest]
-                        newRegion.id = exit.dest
+                    if destination not in addedRegions and exit.logic(LogicVariables):
+                        addedRegions.append(destination)
+                        newRegion = Logic.Regions[destination]
+                        newRegion.id = destination
                         regionPool.append(newRegion)
                 # Finally check accessibility for collectibles
                 if region.id in Logic.CollectibleRegions.keys():
@@ -107,6 +116,8 @@ def GetAccessibleLocations(ownedItems, searchType=SearchMode.GetReachable):
         return False
     elif searchType == SearchMode.GeneratePlaythrough:
         return playthroughLocations
+    elif searchType == SearchMode.CheckAllReachable:
+        return len(accessible) == len(LocationList)
 
 
 def RandomFill(itemsToPlace):
@@ -224,28 +235,34 @@ def Fill(spoiler):
     """Place all items."""
     retries = 0
     algorithm = spoiler.settings.algorithm
-    while retries < 5:
+    while True:
         try:
-            # Place constant items
-            ItemPool.PlaceConstants()
+            # First place constant items
+            ItemPool.PlaceConstants(spoiler.settings)
             # Then place priority (logically very important) items
             highPriorityUnplaced = PlaceItems(
-                algorithm, ItemPool.HighPriorityItems(), ItemPool.HighPriorityAssumedItems()
+                algorithm,
+                ItemPool.HighPriorityItems(spoiler.settings),
+                ItemPool.HighPriorityAssumedItems(spoiler.settings),
             )
             if highPriorityUnplaced > 0:
                 raise Ex.ItemPlacementException(str(highPriorityUnplaced) + " unplaced high priority items.")
             # Then place blueprints
             Reset()
-            blueprintsUnplaced = PlaceItems(algorithm, ItemPool.Blueprints(), ItemPool.BlueprintAssumedItems())
+            blueprintsUnplaced = PlaceItems(
+                algorithm, ItemPool.Blueprints(spoiler.settings), ItemPool.BlueprintAssumedItems(spoiler.settings)
+            )
             if blueprintsUnplaced > 0:
                 raise Ex.ItemPlacementException(str(blueprintsUnplaced) + " unplaced blueprints.")
             # Then place the rest of items
             Reset()
-            lowPriorityUnplaced = PlaceItems(algorithm, ItemPool.LowPriorityItems(), ItemPool.ExcessItems())
+            lowPriorityUnplaced = PlaceItems(
+                algorithm, ItemPool.LowPriorityItems(spoiler.settings), ItemPool.ExcessItems(spoiler.settings)
+            )
             if lowPriorityUnplaced > 0:
                 raise Ex.ItemPlacementException(str(lowPriorityUnplaced) + " unplaced low priority items.")
             # Finally place excess items fully randomly
-            excessUnplaced = RandomFill(ItemPool.ExcessItems())
+            excessUnplaced = RandomFill(ItemPool.ExcessItems(spoiler.settings))
             if excessUnplaced > 0:
                 raise Ex.ItemPlacementException(str(excessUnplaced) + " unplaced excess items.")
             # Check if game is beatable
@@ -258,9 +275,9 @@ def Fill(spoiler):
             ParePlaythrough(PlaythroughLocations)
             # Write data to spoiler and return
             spoiler.UpdateLocations(LocationList)
-            spoiler.UpdatePlaythrough(PlaythroughLocations)
+            spoiler.UpdatePlaythrough(LocationList, PlaythroughLocations)
             return spoiler
-        except Exception as ex:
+        except Ex.FillException as ex:
             if retries == 4:
                 print("Fill failed, out of retries.")
                 raise ex
@@ -269,3 +286,30 @@ def Fill(spoiler):
                 print("Fill failed. Retrying. Tries: " + str(retries))
                 Reset()
                 Logic.ClearAllLocations()
+
+
+def Generate_Spoiler(spoiler):
+    """Generate a complete spoiler based on input settings."""
+    # Init logic vars with settings
+    global LogicVariables
+    LogicVariables = LogicVarHolder(spoiler.settings)
+    # Handle ER
+    if spoiler.settings.shuffle_levels or spoiler.settings.shuffle_loading_zones:
+        ExitShuffle(spoiler.settings)
+        spoiler.UpdateExits()
+    # Place items
+    if spoiler.settings.shuffle_items:
+        Fill(spoiler)
+    else:
+        # Just check if normal item locations are beatable with given settings
+        ItemPool.PlaceConstants(spoiler.settings)
+        if not GetAccessibleLocations([], SearchMode.CheckBeatable):
+            raise Ex.VanillaItemsGameNotBeatableException("Game unbeatable.")
+        # Playthrough and location list probably unnecessary with vanilla items
+        # Reset()
+        # PlaythroughLocations = GetAccessibleLocations([], SearchMode.GeneratePlaythrough)
+        # ParePlaythrough(PlaythroughLocations)
+        # # Write data to spoiler and return
+        # spoiler.UpdateLocations(LocationList)
+        # spoiler.UpdatePlaythrough(LocationList, PlaythroughLocations)
+    return spoiler

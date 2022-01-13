@@ -22,15 +22,18 @@ from randomizer.Enums.Events import Events
 from randomizer.Enums.Items import Items
 from randomizer.Enums.Kongs import Kongs
 from randomizer.Enums.Levels import Levels
-from randomizer.Location import LocationList
+from randomizer.Lists.Location import LocationList
 
 
 class LogicVarHolder:
     """Used to store variables when checking logic conditions."""
 
-    def __init__(self, startkong):
+    def __init__(self, settings=None):
         """Initialize with given parameters."""
-        self.startkong = startkong
+        if settings is None:
+            return
+        self.settings = settings
+        self.startkong = self.settings.starting_kong
         self.Reset()
 
     def Reset(self):
@@ -38,50 +41,59 @@ class LogicVarHolder:
 
         Done between reachability searches and upon initialization.
         """
-        self.donkey = self.startkong == Kongs.donkey
-        self.diddy = self.startkong == Kongs.diddy
-        self.lanky = self.startkong == Kongs.lanky
-        self.tiny = self.startkong == Kongs.tiny
-        self.chunky = self.startkong == Kongs.chunky
+        self.donkey = self.startkong == Kongs.donkey or self.settings.unlock_all_kongs
+        self.diddy = self.startkong == Kongs.diddy or self.settings.unlock_all_kongs
+        self.lanky = self.startkong == Kongs.lanky or self.settings.unlock_all_kongs
+        self.tiny = self.startkong == Kongs.tiny or self.settings.unlock_all_kongs
+        self.chunky = self.startkong == Kongs.chunky or self.settings.unlock_all_kongs
 
-        self.vines = False
-        self.swim = False
-        self.oranges = False
-        self.barrels = False
+        self.vines = self.settings.training_barrels == "startwith"
+        self.swim = self.settings.training_barrels == "startwith"
+        self.oranges = self.settings.training_barrels == "startwith"
+        self.barrels = self.settings.training_barrels == "startwith"
 
-        self.blast = False
-        self.strongKong = False
-        self.grab = False
-        self.charge = False
-        self.jetpack = False
-        self.spring = False
-        self.handstand = False
-        self.balloon = False
-        self.sprint = False
-        self.mini = False
-        self.twirl = False
-        self.monkeyport = False
-        self.hunkyChunky = False
-        self.punch = False
-        self.gorillaGone = False
+        self.progDonkey = 3 if self.settings.unlock_all_moves else 0
+        self.blast = self.settings.unlock_all_moves
+        self.strongKong = self.settings.unlock_all_moves
+        self.grab = self.settings.unlock_all_moves
 
-        self.coconut = False
-        self.peanut = False
-        self.grape = False
-        self.feather = False
-        self.pineapple = False
+        self.progDiddy = 3 if self.settings.unlock_all_moves else 0
+        self.charge = self.settings.unlock_all_moves
+        self.jetpack = self.settings.unlock_all_moves
+        self.spring = self.settings.unlock_all_moves
 
-        self.bongos = False
-        self.guitar = False
-        self.trombone = False
-        self.saxophone = False
-        self.triangle = False
+        self.progLanky = 3 if self.settings.unlock_all_moves else 0
+        self.handstand = self.settings.unlock_all_moves
+        self.balloon = self.settings.unlock_all_moves
+        self.sprint = self.settings.unlock_all_moves
+
+        self.progTiny = 3 if self.settings.unlock_all_moves else 0
+        self.mini = self.settings.unlock_all_moves
+        self.twirl = self.settings.unlock_all_moves
+        self.monkeyport = self.settings.unlock_all_moves
+
+        self.progChunky = 3 if self.settings.unlock_all_moves else 0
+        self.hunkyChunky = self.settings.unlock_all_moves
+        self.punch = self.settings.unlock_all_moves
+        self.gorillaGone = self.settings.unlock_all_moves
+
+        self.coconut = self.settings.unlock_all_moves
+        self.peanut = self.settings.unlock_all_moves
+        self.grape = self.settings.unlock_all_moves
+        self.feather = self.settings.unlock_all_moves
+        self.pineapple = self.settings.unlock_all_moves
+
+        self.bongos = self.settings.unlock_all_moves
+        self.guitar = self.settings.unlock_all_moves
+        self.trombone = self.settings.unlock_all_moves
+        self.saxophone = self.settings.unlock_all_moves
+        self.triangle = self.settings.unlock_all_moves
 
         self.nintendoCoin = False
         self.rarewareCoin = False
 
-        self.camera = False
-        self.shockwave = False
+        self.camera = self.settings.unlock_fairy_shockwave
+        self.shockwave = self.settings.unlock_fairy_shockwave
 
         self.JapesKey = False
         self.AztecKey = False
@@ -92,14 +104,14 @@ class LogicVarHolder:
         self.CastleKey = False
         self.HelmKey = False
 
-        self.Slam = 0
+        self.Slam = 3 if self.settings.unlock_all_moves else 0
         self.GoldenBananas = 0
         self.BananaFairies = 0
         self.BananaMedals = 0
         self.BattleCrowns = 0
 
-        self.superSlam = False
-        self.superDuperSlam = False
+        self.superSlam = self.settings.unlock_all_moves
+        self.superDuperSlam = self.settings.unlock_all_moves
 
         self.Blueprints = []
 
@@ -137,21 +149,30 @@ class LogicVarHolder:
         self.oranges = self.oranges or Items.Oranges in ownedItems
         self.barrels = self.barrels or Items.Barrels in ownedItems
 
-        self.blast = self.blast or Items.BaboonBlast in ownedItems and self.donkey
-        self.strongKong = self.strongKong or Items.StrongKong in ownedItems and self.donkey
-        self.grab = self.grab or Items.GorillaGrab in ownedItems and self.donkey
-        self.charge = self.charge or Items.ChimpyCharge in ownedItems and self.diddy
-        self.jetpack = self.jetpack or Items.RocketbarrelBoost in ownedItems and self.diddy
-        self.spring = self.spring or Items.SimianSpring in ownedItems and self.diddy
-        self.handstand = self.handstand or Items.Orangstand in ownedItems and self.lanky
-        self.balloon = self.balloon or Items.BaboonBalloon in ownedItems and self.lanky
-        self.sprint = self.sprint or Items.OrangstandSprint in ownedItems and self.lanky
-        self.mini = self.mini or Items.MiniMonkey in ownedItems and self.tiny
-        self.twirl = self.twirl or Items.PonyTailTwirl in ownedItems and self.tiny
-        self.monkeyport = self.monkeyport or Items.Monkeyport in ownedItems and self.tiny
-        self.hunkyChunky = self.hunkyChunky or Items.HunkyChunky in ownedItems and self.chunky
-        self.punch = self.punch or Items.PrimatePunch in ownedItems and self.chunky
-        self.gorillaGone = self.gorillaGone or Items.GorillaGone in ownedItems and self.chunky
+        self.progDonkey = sum(1 for x in ownedItems if x == Items.ProgressiveDonkeyPotion)
+        self.blast = self.blast or (Items.BaboonBlast in ownedItems or self.progDonkey >= 1) and self.donkey
+        self.strongKong = self.strongKong or (Items.StrongKong in ownedItems or self.progDonkey >= 2) and self.donkey
+        self.grab = self.grab or (Items.GorillaGrab in ownedItems or self.progDonkey >= 3) and self.donkey
+
+        self.progDiddy = sum(1 for x in ownedItems if x == Items.ProgressiveDiddyPotion)
+        self.charge = self.charge or (Items.ChimpyCharge in ownedItems or self.progDiddy >= 1) and self.diddy
+        self.jetpack = self.jetpack or (Items.RocketbarrelBoost in ownedItems or self.progDiddy >= 2) and self.diddy
+        self.spring = self.spring or (Items.SimianSpring in ownedItems or self.progDiddy >= 3) and self.diddy
+
+        self.progLanky = sum(1 for x in ownedItems if x == Items.ProgressiveLankyPotion)
+        self.handstand = self.handstand or (Items.Orangstand in ownedItems or self.progLanky >= 1) and self.lanky
+        self.balloon = self.balloon or (Items.BaboonBalloon in ownedItems or self.progLanky >= 2) and self.lanky
+        self.sprint = self.sprint or (Items.OrangstandSprint in ownedItems or self.progLanky >= 3) and self.lanky
+
+        self.progTiny = sum(1 for x in ownedItems if x == Items.ProgressiveTinyPotion)
+        self.mini = self.mini or (Items.MiniMonkey in ownedItems or self.progTiny >= 1) and self.tiny
+        self.twirl = self.twirl or (Items.PonyTailTwirl in ownedItems or self.progTiny >= 2) and self.tiny
+        self.monkeyport = self.monkeyport or (Items.Monkeyport in ownedItems or self.progTiny >= 3) and self.tiny
+
+        self.progChunky = sum(1 for x in ownedItems if x == Items.ProgressiveChunkyPotion)
+        self.hunkyChunky = self.hunkyChunky or (Items.HunkyChunky in ownedItems or self.progChunky >= 1) and self.chunky
+        self.punch = self.punch or (Items.PrimatePunch in ownedItems or self.progChunky >= 2) and self.chunky
+        self.gorillaGone = self.gorillaGone or (Items.GorillaGone in ownedItems or self.progChunky >= 3) and self.chunky
 
         self.coconut = self.coconut or Items.Coconut in ownedItems and self.donkey
         self.peanut = self.peanut or Items.Peanut in ownedItems and self.diddy
@@ -177,7 +198,7 @@ class LogicVarHolder:
         self.CastleKey = self.CastleKey or Items.CreepyCastleKey in ownedItems
         self.HelmKey = self.HelmKey or Items.HideoutHelmKey in ownedItems
 
-        self.Slam = sum(1 for x in ownedItems if x == Items.ProgressiveSlam)
+        self.Slam = 3 if self.settings.unlock_all_moves else sum(1 for x in ownedItems if x == Items.ProgressiveSlam)
         self.GoldenBananas = sum(1 for x in ownedItems if x == Items.GoldenBanana)
         self.BananaFairies = sum(1 for x in ownedItems if x == Items.BananaFairy)
         self.BananaMedals = sum(1 for x in ownedItems if x == Items.BananaMedal)
@@ -288,8 +309,7 @@ class LogicVarHolder:
         collectible.added = True
 
 
-# Initialize logic variables, for now assume start with donkey
-LogicVariables = LogicVarHolder(Kongs.donkey)
+LogicVariables = LogicVarHolder()
 
 # Import regions from logic files
 Regions = {}

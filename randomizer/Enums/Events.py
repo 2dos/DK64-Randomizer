@@ -43,6 +43,8 @@ class Events(IntEnum):
     # Gloomy Galleon events
     GalleonLankySwitch = auto()
     GalleonTinySwitch = auto()
+    LighthouseGateOpened = auto()
+    WaterSwitch = auto()
     LighthouseEnguarde = auto()
     SealReleased = auto()
     MechafishSummoned = auto()
@@ -54,6 +56,8 @@ class Events(IntEnum):
 
     # Fungi Forest events
     Night = auto()
+    WormGatesOpened = auto()
+    HollowTreeGateOpened = auto()
     MushroomCannonsSpawned = auto()
     DonkeyMushroomSwitch = auto()
     Bean = auto()

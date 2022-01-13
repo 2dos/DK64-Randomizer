@@ -1,5 +1,6 @@
 """Stores the item class and a list of each item with its attributes."""
 from randomizer.Enums.Items import Items
+from randomizer.Enums.Kongs import Kongs
 
 
 class Item:
@@ -11,7 +12,22 @@ class Item:
         self.playthrough = playthrough
 
 
+def ItemFromKong(kong):
+    """Get the item representation of a Kong enum."""
+    if kong == Kongs.donkey:
+        return Items.Donkey
+    elif kong == Kongs.diddy:
+        return Items.Diddy
+    elif kong == Kongs.lanky:
+        return Items.Lanky
+    elif kong == Kongs.tiny:
+        return Items.Tiny
+    else:
+        return Items.Chunky
+
+
 ItemList = {
+    Items.NoItem: Item("No Item", False),
     Items.Donkey: Item("Donkey", True),
     Items.Diddy: Item("Diddy", True),
     Items.Lanky: Item("Lanky", True),
@@ -22,18 +38,23 @@ ItemList = {
     Items.Oranges: Item("Oranges", True),
     Items.Barrels: Item("Barrels", True),
     Items.ProgressiveSlam: Item("Progressive Slam", True),
+    Items.ProgressiveDonkeyPotion: Item("Progressive Donkey Potion", True),
     Items.BaboonBlast: Item("Baboon Blast", True),
     Items.StrongKong: Item("Strong Kong", True),
     Items.GorillaGrab: Item("Gorilla Grab", True),
+    Items.ProgressiveDiddyPotion: Item("Progressive Diddy Potion", True),
     Items.ChimpyCharge: Item("Chimpy Charge", True),
     Items.RocketbarrelBoost: Item("Rocketbarrel Boost", True),
     Items.SimianSpring: Item("Simian Spring", True),
+    Items.ProgressiveLankyPotion: Item("Progressive Lanky Potion", True),
     Items.Orangstand: Item("Orangstand", True),
     Items.BaboonBalloon: Item("Baboon Balloon", True),
     Items.OrangstandSprint: Item("Orangstand Sprint", True),
+    Items.ProgressiveTinyPotion: Item("Progressive Tiny Potion", True),
     Items.MiniMonkey: Item("Mini Monkey", True),
     Items.PonyTailTwirl: Item("Pony Tail Twirl", True),
     Items.Monkeyport: Item("Monkeyport", True),
+    Items.ProgressiveChunkyPotion: Item("Progressive Chunky Potion", True),
     Items.HunkyChunky: Item("Hunky Chunky", True),
     Items.PrimatePunch: Item("Primate Punch", True),
     Items.GorillaGone: Item("Gorilla Gone", True),
