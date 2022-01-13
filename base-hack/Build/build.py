@@ -98,6 +98,16 @@ for x in range(6):
             "target_compressed_size": 0x718,
         }
     )
+for x in range(216):
+    file_dict.append(
+        {
+            "name": "Zones for map " + str(x),
+            "pointer_table_index": 18,
+            "file_index": x,
+            "source_file": "lz" + str(x) + ".bin",
+            "target_compressed_size": 0x850,
+        }
+    )
 
 print("DK64 Extractor")
 
