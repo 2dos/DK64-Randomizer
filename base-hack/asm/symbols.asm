@@ -198,6 +198,7 @@
 .definelabel BLockerCheatArray, 0x807446E0 // u16 item size, [u8 - GB, u8 - Kong]
 .definelabel CheckmarkKeyArray, 0x80744710 // u16 item size
 .definelabel KongFlagArray, 0x807505B0
+.definelabel MainMenuMoves, 0x80033938
 
 //hack data
 .definelabel ViewedSnagWatches, 0x807FFF18 // u8 array (size = 4)

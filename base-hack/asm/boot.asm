@@ -50,6 +50,24 @@ mainASMFunctionVanilla:
 NinWarpHook:
 	J 	NinWarpCode
 	NOP
+InstanceScriptHook:
+	J 	InstanceScriptCheck
+	NOP
+SaveToFileFixesHook:
+	J 	SaveToFileFixes
+	NOP
+BarrelMovesFixesHook:
+	J 	BarrelMovesFixes
+	NOP
+ChimpyChargeFixHook:
+	J 	ChimpyChargeFix
+	NOP
+OStandFixHook:
+	J 	OStandFix
+	NOP
+HunkyChunkyFix2Hook:
+	J 	HunkyChunkyFix2
+	NOP
 
 loadExtraHooks:
 	LUI t3, hi(NinWarpHook)
@@ -57,6 +75,43 @@ loadExtraHooks:
 	LUI t4, 0x8071
 	SW t3, 0x32BC (t4) // Store Hook
 	SW r0, 0x32C0 (t4) // Store NOP
+
+	LUI t3, hi(InstanceScriptHook)
+	LW t3, lo(InstanceScriptHook) (t3)
+	LUI t4, 0x8064
+	SW t3, 0xEE08 (t4) // Store Hook
+	SW r0, 0xEE0C (t4) // Store NOP
+
+	LUI t3, hi(SaveToFileFixesHook)
+	LW t3, lo(SaveToFileFixesHook) (t3)
+	LUI t4, 0x8061
+	SW t3, 0xDFF4 (t4) // Store Hook
+	SW r0, 0xDFF8 (t4) // Store NOP
+
+	LUI t3, hi(BarrelMovesFixesHook)
+	LW t3, lo(BarrelMovesFixesHook) (t3)
+	LUI t4, 0x806F
+	SW t3, 0x6EA0 (t4) // Store Hook
+	SW r0, 0x6EA4 (t4) // Store NOP
+
+	LUI t3, hi(ChimpyChargeFixHook)
+	LW t3, lo(ChimpyChargeFixHook) (t3)
+	LUI t4, 0x806E
+	SW t3, 0x4930 (t4) // Store Hook
+	SW r0, 0x4934 (t4) // Store NOP
+
+	LUI t3, hi(OStandFixHook)
+	LW t3, lo(OStandFixHook) (t3)
+	LUI t4, 0x806E
+	SW t3, 0x48AC (t4) // Store Hook
+	SW r0, 0x48B0 (t4) // Store NOP
+
+	LUI t3, hi(HunkyChunkyFix2Hook)
+	LW t3, lo(HunkyChunkyFix2Hook) (t3)
+	LUI t4, 0x8068
+	SW t3, 0xECB8 (t4) // Store Hook
+	SW r0, 0xECBC (t4) // Store NOP
+
 	JR ra
 	NOP
 

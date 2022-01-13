@@ -13,6 +13,7 @@ void cFuncLoop(void) {
 	level_order_rando_funcs();
 	qualityOfLife_fixes();
 	qualityOfLife_shorteners();
+	decouple_moves_fixes();
 	if (Rando.quality_of_life) {
 		// DKTVKong = 0;
 		// if (CurrentMap == NINTENDO_LOGO) {

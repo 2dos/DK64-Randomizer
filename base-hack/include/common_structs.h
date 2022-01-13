@@ -523,3 +523,12 @@ typedef struct blocker_cheat {
 	/* 0x000 */ unsigned char gb_count;
 	/* 0x001 */ char kong_index;
 } blocker_cheat;
+
+typedef struct main_menu_moves_struct {
+	/* 0x000 */ short map;
+	/* 0x002 */ short kong;
+	/* 0x004 */ char moves;
+	/* 0x005 */ char slam_level;
+	/* 0x006 */ char instrument;
+	/* 0x007 */ char melons;
+} main_menu_moves_struct;

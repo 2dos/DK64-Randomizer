@@ -5,5 +5,101 @@ START_HOOK:
 		J 		0x807132CC
 		NOP
 
+	Jump_CrankyDecouple:
+		J 		CrankyDecouple
+		NOP
+
+	PatchCrankyCode:
+		LUI t3, hi(Jump_CrankyDecouple)
+		LW t3, lo(Jump_CrankyDecouple) (t3)
+		LUI t4, 0x8002
+		SW t3, 0x60E0 (t4) // Store Hook
+		SW r0, 0x60E4 (t4) // Store NOP
+		JR 		ra
+		NOP
+
+	CrankyDecouple:
+		BEQ		a0, t0, CrankyDecouple_Bitfield
+		OR 		v1, a0, r0
+		BEQZ 	a0, CrankyDecouple_Bitfield
+		NOP
+
+		CrankyDecouple_Progessive:
+			J 		0x8002611C
+			NOP
+
+		CrankyDecouple_Bitfield:
+			J 		0x800260F0
+			NOP
+
+	InstanceScriptCheck:
+		ADDIU 	t1, r0, 1
+		ADDI 	t4, t4, -1 // Reduce move_index by 1
+		SLLV 	t4, t1, t4 // 1 << move_index
+		ADDIU 	t1, r0, 0
+		AND 	at, t6, t4 // at = kong_moves & move_index
+		BEQZ 	at, InstanceScriptCheck_Fail
+		NOP
+
+		InstanceScriptCheck_Success:
+			J 	0x8063EE14
+			NOP
+
+		InstanceScriptCheck_Fail:
+			J 	0x8063EE1C
+			NOP
+
+	SaveToFileFixes:
+		BNEZ 	s0, SaveToFileFixes_Not0
+		ANDI 	a1, s3, 0xFF
+		B 		SaveToFileFixes_Finish
+		ADDIU  	a0, r0, 10 // Stores it in unused slot
+
+		SaveToFileFixes_Not0:
+			ADDIU 	a0, s0, 4
+
+		SaveToFileFixes_Finish:
+			J 		0x8060DFFC
+			NOP
+
+	BarrelMovesFixes:
+		LBU 	t0, 0x4238 (t0) // Load Barrel Moves Array Slot
+		ADDI 	t0, t0, -1 // Reduce move_value by 1
+		ADDIU 	v1, r0, 1
+		SLLV 	t0, v1, t0 // Get bitfield value
+		AND  	v1, t0, t9
+		BEQZ 	v1, BarrelMovesFixes_Finish
+		NOP
+		ADDIU 	v1, r0, 1
+
+		BarrelMovesFixes_Finish:
+			J 		0x806F6EB4
+			NOP
+
+	ChimpyChargeFix:
+		ANDI 	t6, t6, 1
+		LUI	 	v1, 0x8080
+		J 		0x806E4938
+		ADDIU 	v1, v1, 0xBB40
+
+	OStandFix:
+		LBU 	t2, 0xCA0C (t2)
+		ANDI 	t2, t2, 1
+		J 		0x806E48B4
+		ADDIU 	a0, r0, 0x25
+
+	HunkyChunkyFix2:
+		BNEL 	v1, at, HunkyChunkyFix2_Finish
+		LI 		at, 4
+		ANDI 	a2, a0, 1
+		BLEZL 	a2, HunkyChunkyFix2_Finish
+		LI 		at, 4
+		J 		0x8067ECC8
+		NOP
+
+		HunkyChunkyFix2_Finish:
+			J 		0x8067ECD0
+			nop
+
 .align 0x10
 END_HOOK:
