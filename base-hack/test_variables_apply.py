@@ -44,7 +44,7 @@ with open("include/variable_space_structs.h", "r") as varspace:
         start = "ATTR_LINE"
         y = x.replace("\t", start)
         if y[:9] == start:
-            struct_data.append(x.split("//")[0].replace("\n", "").replace("\t", ""))
+            struct_data.append(x.split(" //")[0].replace("\n", "").replace("\t", ""))
     struct_data2 = []
     for x in struct_data:
         location = x[3:8]
