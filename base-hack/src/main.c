@@ -5,6 +5,7 @@
 #define JAPES_MAIN 7
 
 void cFuncLoop(void) {
+	DataIsCompressed[18] = 0;
 	initHack();
 	unlockKongs();
 	tagAnywhere();

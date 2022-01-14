@@ -207,6 +207,7 @@ extern blocker_cheat BLockerCheatArray[8]; // u16 item size, [u8 - GB, u8 - Kong
 extern short CheckmarkKeyArray[8]; // u16 item size
 extern short KongFlagArray[4];
 extern main_menu_moves_struct MainMenuMoves[8];
+extern char DataIsCompressed[32];
 
 //hack data
 extern int TestVariable;
