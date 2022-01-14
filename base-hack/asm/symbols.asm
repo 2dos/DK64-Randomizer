@@ -199,6 +199,7 @@
 .definelabel CheckmarkKeyArray, 0x80744710 // u16 item size
 .definelabel KongFlagArray, 0x807505B0
 .definelabel MainMenuMoves, 0x80033938
+.definelabel DataIsCompressed, 0x80748E18
 
 //hack data
 .definelabel ViewedSnagWatches, 0x807FFF18 // u8 array (size = 4)

@@ -14,6 +14,19 @@ START:
 		//
 		LUI v0, 0x8001
 		ADDIU v0, v0, 0xDCC4
+		// Write LZ Update
+		//LUI t3, 0x2406
+		//ADDIU t3, t3, 1
+		//LUI t4, 0x8073
+		//SW t3, 0xE764 (t4)
+
+		LUI t3, 0x8075
+		SB r0, 0x8E2A (t3)
+
+		LUI t3, 0x2407
+		ADDIU t3, t3, 1
+		LUI t4, 0x8073
+		SW t3, 0xE76C (t4)
 		//write per frame hook
 		//
 		LUI t3, hi(mainASMFunctionJump)

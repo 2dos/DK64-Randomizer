@@ -98,6 +98,17 @@ for x in range(6):
             "target_compressed_size": 0x718,
         }
     )
+for x in range(221):
+    file_dict.append(
+        {
+            "name": "Zones for map " + str(x),
+            "pointer_table_index": 18,
+            "file_index": x,
+            "source_file": "lz" + str(x) + ".bin",
+            "target_compressed_size": 0x850,
+            "do_not_recompress": True,
+        }
+    )
 
 print("DK64 Extractor")
 
@@ -226,17 +237,20 @@ with open(newROMName, "r+b") as fh:
             with open(x["source_file"], "rb") as fg:
                 byte_read = fg.read()
                 uncompressed_size = len(byte_read)
-            precomp = gzip.compress(byte_read, compresslevel=9)
-            byte_append = 0
-            diff = x["target_compressed_size"] - len(precomp)
-            if diff > 0:
-                precomp += byte_append.to_bytes(diff, "big")
-            compress = bytearray(precomp)
-            # Zero out timestamp in gzip header to make builds deterministic
-            compress[4] = 0
-            compress[5] = 0
-            compress[6] = 0
-            compress[7] = 0
+            if "do_not_recompress" in x and x["do_not_recompress"]:
+                compress = bytearray(byte_read)
+            else:
+                precomp = gzip.compress(byte_read, compresslevel=9)
+                byte_append = 0
+                diff = x["target_compressed_size"] - len(precomp)
+                if diff > 0:
+                    precomp += byte_append.to_bytes(diff, "big")
+                compress = bytearray(precomp)
+                # Zero out timestamp in gzip header to make builds deterministic
+                compress[4] = 0
+                compress[5] = 0
+                compress[6] = 0
+                compress[7] = 0
             with open(x["source_file"], "wb") as fg:
                 fg.write(compress)
             x["output_file"] = x["source_file"]
