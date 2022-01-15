@@ -570,6 +570,7 @@ def dumpPointerTableDetails(filename: str, fr: BinaryIO):
             file_info = getFileInfo(x["index"], y["index"])
             uncompressed_size = getOriginalUncompressedSize(fr, x["index"], y["index"])
             new_entry = {
+                "index": int(len(entries)),
                 "new_address": int(x["new_absolute_address"] + y["index"] * 4),
                 "pointing_to": int(pointing_to),
                 "compressed_size": int(len(file_info["data"])) if file_info else None,
