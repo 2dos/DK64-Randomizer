@@ -517,6 +517,7 @@ typedef struct cannon {
 	/* 0x000 */ char unk_00[0x376];
 	/* 0x376 */ short source_map;
 	/* 0x378 */ short destination_map;
+	/* 0x37A */ short destination_exit;
 } cannon;
 
 typedef struct blocker_cheat {
@@ -532,3 +533,15 @@ typedef struct main_menu_moves_struct {
 	/* 0x006 */ char instrument;
 	/* 0x007 */ char melons;
 } main_menu_moves_struct;
+
+typedef struct purchase_struct {
+	/* 0x000 */ short purchase_type; // 0 = Moves, 1 = Simian Slam, 2 = Weapon Bitfield, 3 = Ammo Belt, 4 = Instrument Bitfield, -1 = No offer
+	/* 0x002 */ short purchase_value;
+	/* 0x004 */ short price;
+} purchase_struct;
+
+typedef struct race_exit_struct {
+	/* 0x000 */ int race_map;
+	/* 0x004 */ int container_map;
+	/* 0x008 */ int container_exit;
+} race_exit_struct;

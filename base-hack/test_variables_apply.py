@@ -14,6 +14,14 @@ set_variables = {
     "crown_door_open": 0,
     "coin_door_open": 0,
     "quality_of_life": 1,
+    "price_rando_on": 1,
+    "special_move_prices": [
+        [1,2,3],
+        [4,5,6],
+        [7,8,9],
+        [1,2,3],
+        [4,5,6],
+    ]
 }
 
 
@@ -68,16 +76,28 @@ with open("include/variable_space_structs.h", "r") as varspace:
         elif "int" in data_type:
             other_data[1] = 4
         struct_data2.append(other_data)
+    #print(struct_data2)
     test_keys = set_variables.keys()
     for x in test_keys:
-        for y in struct_data2:
-            if x == y[2]:
-                if type(set_variables[x]) is int:
-                    if y[3] == 1:
-                        writeToROM(y[0], set_variables[x], y[1])
-                    # print(type(set_variables[x]))
-                elif type(set_variables[x]) is list:
-                    for z in range(min([int(y[3]), len(set_variables[x])])):
-                        writeToROM(y[0] + (z * y[1]), set_variables[x][z], y[1])
+        if x == "special_move_prices":
+            for y in struct_data2:
+                if x == y[2]:
+                    size = y[1];
+                    offset = y[0];
+                    for kong in set_variables["special_move_prices"]:
+                        for lvl in kong:
+                            writeToROM(offset, lvl, size)
+                            offset += size;
+
+        else:
+            for y in struct_data2:
+                if x == y[2]:
+                    if type(set_variables[x]) is int:
+                        if y[3] == 1:
+                            writeToROM(y[0], set_variables[x], y[1])
+                        # print(type(set_variables[x]))
+                    elif type(set_variables[x]) is list:
+                        for z in range(min([int(y[3]), len(set_variables[x])])):
+                            writeToROM(y[0] + (z * y[1]), set_variables[x][z], y[1])
                     # print(type(set_variables[x]))
     # print(struct_data2)

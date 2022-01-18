@@ -81,6 +81,22 @@ OStandFixHook:
 HunkyChunkyFix2Hook:
 	J 	HunkyChunkyFix2
 	NOP
+EarlyFrameHook:
+	J 	EarlyFrameCode
+	NOP
+DisplayListHook:
+	J 	displayListCode
+	NOP
+LobbyExitHook:
+	J 	getLobbyExit
+	NOP
+LobbyReplaceCode1:
+	LUI t7, hi(ReplacementLobbiesArray)
+	ADDIU t7, t7, lo(ReplacementLobbiesArray)
+
+LobbyReplaceCode2:
+	LUI a0, hi(ReplacementLobbiesArray)
+	LHU a0, lo(ReplacementLobbiesArray) (a0)
 
 loadExtraHooks:
 	LUI t3, hi(NinWarpHook)
@@ -124,6 +140,42 @@ loadExtraHooks:
 	LUI t4, 0x8068
 	SW t3, 0xECB8 (t4) // Store Hook
 	SW r0, 0xECBC (t4) // Store NOP
+
+	LUI t3, hi(EarlyFrameHook)
+	LW t3, lo(EarlyFrameHook) (t3)
+	LUI t4, 0x8060
+	SW t3, 0xC3FC (t4) // Store Hook
+	SW r0, 0xC400 (t4) // Store NOP
+
+	LUI t3, hi(DisplayListHook)
+	LW t3, lo(DisplayListHook) (t3)
+	LUI t4, 0x8071
+	SW t3, 0x417C (t4) // Store Hook
+	SW r0, 0x4180 (t4) // Store NOP
+
+	LUI t3, hi(LobbyExitHook)
+	LW t3, lo(LobbyExitHook) (t3)
+	LUI t4, 0x8060
+	SW t3, 0x005C (t4) // Store Hook
+	SW r0, 0x0060 (t4) // Store NOP
+
+	LUI t3, hi(LobbyReplaceCode1)
+	LW t3, lo(LobbyReplaceCode1) (t3)
+	LUI t4, 0x8068
+	SW t3, 0xABE8 (t4)
+	LUI t3, hi(LobbyReplaceCode1)
+	ADDIU t3, t3, 4
+	LW t3, lo(LobbyReplaceCode1) (t3)
+	SW t3, 0xABEC (t4)
+
+	LUI t3, hi(LobbyReplaceCode2)
+	LW t3, lo(LobbyReplaceCode2) (t3)
+	LUI t4, 0x8060
+	SW t3, 0x0058 (t4)
+	LUI t3, hi(LobbyReplaceCode2)
+	ADDIU t3, t3, 4
+	LW t3, lo(LobbyReplaceCode2) (t3)
+	SW t3, 0x006C (t4)
 
 	JR ra
 	NOP

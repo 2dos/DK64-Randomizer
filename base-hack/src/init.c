@@ -28,6 +28,8 @@ void initHack(void) {
 		// PPUnch
 		*(int*)(0x806E48F4) = 0x31810002; // ANDI $at $t4 2
 		*(int*)(0x806E48F8) = 0x50200074; // BEQL $at $r0 0xF
+		replace_zones(1);
+		randomize_bosses();
 		loadExtraHooks();
 		LoadedHooks = 1;
 	}

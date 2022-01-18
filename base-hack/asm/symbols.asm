@@ -60,6 +60,7 @@
 .definelabel getParentDataIndex, 0x80688D64
 .definelabel getScreenPosition, 0x80626F8C
 .definelabel WarpToDKTV, 0x807131BC
+.definelabel textDraw, 0x806FD490
 
 .definelabel initDisplayList, 0x807132DC
 .definelabel getTextStyleHeight, 0x806FD894
@@ -200,20 +201,20 @@
 .definelabel KongFlagArray, 0x807505B0
 .definelabel MainMenuMoves, 0x80033938
 .definelabel DataIsCompressed, 0x80748E18
+.definelabel CrankyMoves, 0x80033260
+.definelabel CandyMoves, 0x80033334
+.definelabel FunkyMoves, 0x80033408
+.definelabel WorldArray, 0x8074809C
+.definelabel WorldExitArray, 0x807480AC
+.definelabel LobbiesArray, 0x80744734
+.definelabel RaceExitArray, 0x807447A0
+.definelabel BossMapArray, 0x80744700
+.definelabel BossKongArray, 0x807446F0
 
 //hack data
-.definelabel ViewedSnagWatches, 0x807FFF18 // u8 array (size = 4)
-.definelabel ActiveTools_Error, 0x807FFF1C // 0x4
-.definelabel style128Mtx, 0x807FF900 // 0x20
-.definelabel style6Mtx, 0x807FF920 // 0x20
-.definelabel style2Mtx, 0x807FF940 // 0x20
-.definelabel watchActive, 0x807FFF60 // u8
-.definelabel stateLoadTimer, 0x807FFF61 // u8
-.definelabel StoredSettings, 0x807ED5A0 // Follows savedSettings struct
-
-.definelabel TimerData, 0x807FFE90 // 0x14 bytes
-
+.definelabel StoredLag, 0x807FFFFA // 0x2
 .definelabel TestVariable, 0x807FFFFC
 .definelabel LoadedHooks, 0x807FFFEF // u8
-
 .definelabel Rando, 0x807FF800 // u8
+.definelabel ReplacementLobbiesArray, 0x807FFFD0 // 0x10
+.definelabel ReplacementLobbyExitsArray, 0x807FFFE0 // 0x10

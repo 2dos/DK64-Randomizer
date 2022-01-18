@@ -25,7 +25,7 @@ START_HOOK:
 		NOP
 
 		CrankyDecouple_Progessive:
-			J 		0x8002611C
+			J 		0x800260E8
 			NOP
 
 		CrankyDecouple_Bitfield:
@@ -100,6 +100,44 @@ START_HOOK:
 		HunkyChunkyFix2_Finish:
 			J 		0x8067ECD0
 			nop
+
+	EarlyFrameCode:
+		JAL 	earlyFrame
+		NOP
+		JAL 	0x805FC668
+		NOP
+		J 		0x805FC404
+		NOP
+
+	displayListCode:
+		JAL 	displayListModifiers
+		OR 		a0, s0, r0
+		OR 		s0, v0, r0
+		LUI 	a0, 0x8075
+		ADDIU 	a0, a0, 0x531C
+		LHU 	v1, 0x0 (a0)
+		LUI 	v0, 0x8075
+		J 		0x80714184
+		LBU 	v0, 0x5314 (v0)
+
+	updateLag:
+		LUI 	t6, hi(FrameReal)
+		LW 		a0, lo(FrameReal) (t6)
+		LUI 	t6, hi(FrameLag)
+		LW 		a1, lo(FrameLag) (t6)
+		SUBU 	a1, a0, a1
+		LUI 	t6, hi(StoredLag)
+		SH 		a1, lo(StoredLag) (t6)
+		LUI 	t6, 0x8077
+		J 		0x8060067C
+		LBU 	t6, 0xAF14 (t6)
+
+	getLobbyExit:
+		LUI 	a1, hi(ReplacementLobbyExitsArray)
+		SLL 	t7, t6, 1
+		ADDU 	a1, a1, t7
+		J 		0x80600064
+		LHU 	a1, lo(ReplacementLobbyExitsArray) (a1)
 
 .align 0x10
 END_HOOK:

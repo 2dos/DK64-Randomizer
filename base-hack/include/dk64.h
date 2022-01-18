@@ -80,6 +80,7 @@ extern int getTextStyleHeight(int style);
 extern int* displayText(int* dl, int style, int x, int y, void* text_pointer, char unk0);
 extern int* displayImage(int* dl, int texture_index, int unk3, codecs codec_index, int width, int height, int x, int y, float xScale, float yScale, int unk11, float unk12);
 extern void getScreenPosition(float x, float y, float z, float* x_store, float* y_store, int unk8, float scale, char player_index);
+extern int* textDraw(int* dl, int style, int x, int y, char* str);
 
 //vanilla data
 extern float TransitionSpeed;
@@ -209,7 +210,22 @@ extern short KongFlagArray[4];
 extern main_menu_moves_struct MainMenuMoves[8];
 extern char DataIsCompressed[32];
 
+extern purchase_struct CrankyMoves[5][7];
+extern purchase_struct CandyMoves[5][7];
+extern purchase_struct FunkyMoves[5][7];
+
+extern short LobbiesArray[8];
+extern short WorldArray[8];
+extern short WorldExitArray[8];
+extern race_exit_struct RaceExitArray[8];
+
+extern short BossMapArray[8];
+extern char BossKongArray[16];
+
 //hack data
 extern int TestVariable;
 extern char LoadedHooks;
 extern varspace Rando;
+extern short StoredLag;
+extern short ReplacementLobbiesArray[8];
+extern short ReplacementLobbyExitsArray[8];
