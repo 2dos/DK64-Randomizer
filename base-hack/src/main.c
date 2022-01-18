@@ -22,6 +22,7 @@ void cFuncLoop(void) {
 	decouple_moves_fixes();
 	determine_krool_order();
 	replace_zones(0);
+	krool_order_indicator();
 	if (Rando.quality_of_life) {
 		// DKTVKong = 0;
 		// if (CurrentMap == NINTENDO_LOGO) {

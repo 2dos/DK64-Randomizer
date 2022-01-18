@@ -89,7 +89,7 @@ void replace_zones(int init_flag) {
 					break;
 				}
 				if (race_flag) {
-					RaceExitArray[i].container_map  race_container_map;
+					RaceExitArray[i].container_map = race_container_map;
 					RaceExitArray[i].container_exit = race_container_exit;
 				}
 			}

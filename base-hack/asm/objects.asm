@@ -6,6 +6,7 @@
 .importobj "obj/src_fixes_decouple_moves.o"
 .importobj "obj/src_fixes_quality_fixes.o"
 .importobj "obj/src_fixes_tag_anywhere.o"
+.importobj "obj/src_randomizers_boss_rando.o"
 .importobj "obj/src_randomizers_every_lz_rando.o"
 .importobj "obj/src_randomizers_k_rool_order.o"
 .importobj "obj/src_randomizers_level_order.o"

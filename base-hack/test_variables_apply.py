@@ -15,6 +15,7 @@ set_variables = {
     "coin_door_open": 0,
     "quality_of_life": 1,
     "price_rando_on": 1,
+    "k_rool_order": [4,3,0,2,1],
     "special_move_prices": [
         [1,2,3],
         [4,5,6],
