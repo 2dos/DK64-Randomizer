@@ -23,16 +23,8 @@ def UpdateHint(WrinklyHint: Hint, message: str):
     loadedBytes = BytesIO(decompressed)
     loadedBytes.seek(WrinklyHint.address)
     padding = ""
-    if len(message) < WrinklyHint.length:
-        cur_length = len(message)
-        while cur_length < WrinklyHint.length:
-            if (WrinklyHint.length - 1) == cur_length:
-                padding = " " + padding
-                cur_length += 1
-            else:
-                padding += "\\0"
-                cur_length += 2
-    elif len(message) == WrinklyHint.length:
+    if len(message) <= WrinklyHint.length:
+        # We're safely below the character limit
         pass
     else:
         raise Exception("Hint message is longer than allowed.")
