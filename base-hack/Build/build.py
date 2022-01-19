@@ -28,6 +28,7 @@ from recompute_pointer_table import (
     writeModifiedPointerTablesToROM,
 )
 from staticcode import patchStaticCode
+# from convertSetup import convertSetup
 
 ROMName = "rom/dk64.z64"
 newROMName = "rom/dk64-randomizer-base.z64"
@@ -113,6 +114,18 @@ for x in range(221):
             "file_index": x,
             "source_file": "lz" + str(x) + ".bin",
             "target_compressed_size": 0x850,
+            "do_not_recompress": True,
+        }
+    )
+for x in range(221):
+    file_dict.append(
+        {
+            "name": "Setup for map " + str(x),
+            "pointer_table_index": 9,
+            "file_index": x,
+            "source_file": "setup" + str(x) + ".bin",
+            "target_compressed_size": 0x8000,
+            "target_uncompressed_size": 0x8000,
             "do_not_recompress": True,
         }
     )
@@ -241,11 +254,20 @@ with open(newROMName, "r+b") as fh:
     for x in file_dict:
         if "target_compressed_size" in x:
             x["do_not_compress"] = True
+            # if x["source_file"][:5] == "setup":
+            #     convertSetup(x["source_file"])
             with open(x["source_file"], "rb") as fg:
                 byte_read = fg.read()
                 uncompressed_size = len(byte_read)
             if "do_not_recompress" in x and x["do_not_recompress"]:
                 compress = bytearray(byte_read)
+                if "target_uncompressed_size" in x:
+                    diff = x["target_uncompressed_size"] - len(byte_read)
+                    byte_append = 0;
+                    if diff > 0:
+                        byte_read += byte_append.to_bytes(diff,"big")
+                    compress = bytearray(byte_read)
+                    uncompressed_size = x["target_uncompressed_size"]
             else:
                 precomp = gzip.compress(byte_read, compresslevel=9)
                 byte_append = 0

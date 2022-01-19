@@ -67,6 +67,10 @@
 .definelabel displayText, 0x806FC530
 .definelabel displayImage, 0x8068C5A8
 
+.definelabel getWorld, 0x805FF030
+.definelabel displayImageOnObject, 0x80635018
+.definelabel drawNumberObject, 0x80635098
+
 .definelabel setArcadeTextXY, 0x80024508
 .definelabel spawnArcadeText, 0x8002451C
 .definelabel setArcadeTextColor, 0x800244E4

@@ -82,6 +82,10 @@ extern int* displayImage(int* dl, int texture_index, int unk3, codecs codec_inde
 extern void getScreenPosition(float x, float y, float z, float* x_store, float* y_store, int unk8, float scale, char player_index);
 extern int* textDraw(int* dl, int style, int x, int y, char* str);
 
+extern int getWorld(int map, int unk2);
+extern void displayImageOnObject(int obj_id, int position, int image_index, int unk4);
+extern void drawNumberObject(int model, int unk2, int image_index, int unk4);
+
 //vanilla data
 extern float TransitionSpeed;
 extern char CutsceneWillPlay;

@@ -19,6 +19,9 @@ set_variables = {
     "damage_multiplier": 2,
     "fps_on": 1,
     "no_health_refill": 1,
+    "slam_prices": [4,5],
+    "move_rando_on": 1,
+    "dk_crankymoves": [0x03,0x01,0x02,0x12,0x12,0xFF,0xFF],
     "special_move_prices": [
         [1,2,3],
         [4,5,6],

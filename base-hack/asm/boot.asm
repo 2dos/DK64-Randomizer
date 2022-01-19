@@ -5,8 +5,8 @@ START:
 	displacedBootCode:
 		// Load Variable Space
 		LUI a0, hi(dataStart)
-		LUI a1, hi(dataStart + 0x100)
-		ADDIU a1, a1, lo(dataStart + 0x100)
+		LUI a1, hi(dataStart + 0x200)
+		ADDIU a1, a1, lo(dataStart + 0x200)
 		ADDIU a0, a0, lo(dataStart)
 		LUI a2, 0x807F
 		JAL dmaFileTransfer
@@ -21,6 +21,7 @@ START:
 		//SW t3, 0xE764 (t4)
 
 		LUI t3, 0x8075
+		SB r0, 0x8E21 (t3)
 		SB r0, 0x8E2A (t3)
 
 		LUI t3, 0x2407
@@ -164,7 +165,7 @@ loadExtraHooks:
 
 	LUI t3, hi(LobbyReplaceCode1)
 	LW t3, lo(LobbyReplaceCode1) (t3)
-	LUI t4, 0x8068
+	LUI t4, 0x8069
 	SW t3, 0xABE8 (t4)
 	LUI t3, hi(LobbyReplaceCode1)
 	ADDIU t3, t3, 4

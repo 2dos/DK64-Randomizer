@@ -238,7 +238,9 @@ typedef struct SwapObjectData {
 } SwapObjectData;
 
 typedef struct ModelTwoData {
-	/* 0x000 */ char unk_00[0x7C];
+	/* 0x000 */ char unk_00[0x20];
+	/* 0x020 */ void* model_pointer;
+	/* 0x024 */ char unk_24[0x7C-0x24];
 	/* 0x07C */ void* behaviour_pointer;
 	/* 0x080 */ char unk_80[0x84-0x80];
 	/* 0x084 */ short object_type;
