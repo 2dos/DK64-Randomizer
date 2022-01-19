@@ -8,6 +8,9 @@ START_HOOK:
 	Jump_CrankyDecouple:
 		J 		CrankyDecouple
 		NOP
+	Jump_ForceToBuyMoveInOneLevel:
+		J 		ForceToBuyMoveInOneLevel
+		NOP
 
 	PatchCrankyCode:
 		LUI t3, hi(Jump_CrankyDecouple)
@@ -15,6 +18,14 @@ START_HOOK:
 		LUI t4, 0x8002
 		SW t3, 0x60E0 (t4) // Store Hook
 		SW r0, 0x60E4 (t4) // Store NOP
+
+		LUI t3, hi(Jump_ForceToBuyMoveInOneLevel)
+		LW t3, lo(Jump_ForceToBuyMoveInOneLevel) (t3)
+		LUI t4, 0x8002
+		SW 	t3, 0x60A8 (t4) // Store Hook
+		SW 	r0, 0x60AC (t4) // Store NOP
+		SW 	r0, 0x6160 (t4) // Store NOP to prevent loop
+
 		JR 		ra
 		NOP
 
@@ -31,6 +42,16 @@ START_HOOK:
 		CrankyDecouple_Bitfield:
 			J 		0x800260F0
 			NOP
+
+	ForceToBuyMoveInOneLevel:
+		ADDU 	t3, t3, t9
+		SLL 	t3, t3, 1
+		LBU 	t2, 0xC (s2) // Current Level
+		SLL 	t1, t2, 2
+		SUBU 	t1, t1, t2
+		SLL 	t1, t1, 1 // Current Level * 6
+		J 		0x800260B4
+		ADDU 	v1, v1, t1
 
 	InstanceScriptCheck:
 		ADDIU 	t1, r0, 1

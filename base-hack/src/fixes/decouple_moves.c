@@ -6,7 +6,7 @@
 static const char moves_values[] = {1,1,3,1,7,1,1,7};
 
 void decouple_moves_fixes(void) {
-	if (TransitionSpeed < 0) {
+	if (ObjectModel2Timer < 5) {
 		if (CurrentMap == CRANKY) {
 			PatchCrankyCode();
 			*(int*)(0x80025E9C) = 0x0C009751; // Change writing of move to "write bitfield move" function call

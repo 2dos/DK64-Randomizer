@@ -61,6 +61,7 @@ void cFuncLoop(void) {
 };
 
 void earlyFrame(void) {
+	decouple_moves_fixes();
 	replace_moves();
 	price_rando();
 }
