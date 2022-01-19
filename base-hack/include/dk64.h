@@ -229,3 +229,4 @@ extern varspace Rando;
 extern short StoredLag;
 extern short ReplacementLobbiesArray[8];
 extern short ReplacementLobbyExitsArray[8];
+extern unsigned char DamageMultiplier;

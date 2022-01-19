@@ -38,7 +38,9 @@ typedef struct varspace {
 	/* 0x076 */ unsigned short k_rool_exit; // Same as "aztec_beetle_enter" but for the loading zone dictated by the name
 	/* 0x078 */ unsigned short exit_levels[8]; // Same as "aztec_beetle_enter" but for the loading zone dictated by the name
 	/* 0x088 */ unsigned short enter_levels[7]; // Same as "aztec_beetle_enter" but for the loading zone dictated by the name
-	/* 0x08A */ char fps_on; // 0 = FPS display off, 1 = On.
-	/* 0x08B */ char boss_kong[7]; // Array of kongs used to fight the boss, in order of vanilla level sequence. If no changes are made, supply the vanilla values
-	/* 0x092 */ unsigned char boss_map[7]; // Array of boss maps, in order of vanilla level sequence. If no changes are made, supply the vanilla values
+	/* 0x096 */ char fps_on; // 0 = FPS display off, 1 = On.
+	/* 0x097 */ char boss_kong[7]; // Array of kongs used to fight the boss, in order of vanilla level sequence. If no changes are made, supply the vanilla values
+	/* 0x09E */ unsigned char boss_map[7]; // Array of boss maps, in order of vanilla level sequence. If no changes are made, supply the vanilla values
+	/* 0x0A5 */ char damage_multiplier; // 1 = Normal. 2 = Double. Any value greater than 11 will be 1 hit KO
+	/* 0x0A6 */ char no_health_refill; // 0 = Vanilla health refills. 1 = No health refill for Tag Barrels, "Voiding", Bonus Barrels and Fairies
 } varspace;

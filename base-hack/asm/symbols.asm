@@ -213,6 +213,7 @@
 
 //hack data
 .definelabel StoredLag, 0x807FFFFA // 0x2
+.definelabel DamageMultiplier, 0x807FFFF9 // u8
 .definelabel TestVariable, 0x807FFFFC
 .definelabel LoadedHooks, 0x807FFFEF // u8
 .definelabel Rando, 0x807FF800 // u8

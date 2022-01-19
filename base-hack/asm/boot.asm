@@ -97,6 +97,9 @@ LobbyReplaceCode1:
 LobbyReplaceCode2:
 	LUI a0, hi(ReplacementLobbiesArray)
 	LHU a0, lo(ReplacementLobbiesArray) (a0)
+damageMultiplerHook:
+	J 	damageMultiplerCode
+	NOP
 
 loadExtraHooks:
 	LUI t3, hi(NinWarpHook)
@@ -176,6 +179,12 @@ loadExtraHooks:
 	ADDIU t3, t3, 4
 	LW t3, lo(LobbyReplaceCode2) (t3)
 	SW t3, 0x006C (t4)
+
+	LUI t3, hi(damageMultiplerHook)
+	LW t3, lo(damageMultiplerHook) (t3)
+	LUI t4, 0x806D
+	SW t3, 0x9A7C (t4) // Store Hook
+	SW r0, 0x9A80 (t4) // Store NOP
 
 	JR ra
 	NOP

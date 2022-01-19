@@ -73,6 +73,13 @@ file_dict = [
         "source_file": "assets/Non-Code/transition/transition-body.png",
         "texture_format": "ia4",
     },
+    {
+        "name": "Wrinkly Text",
+        "pointer_table_index": 12,
+        "file_index": 41,
+        "source_file": "wrinky_text.bin",
+        "target_compressed_size": 0x1000,
+    }
 ]
 
 map_replacements = []
