@@ -37,8 +37,9 @@ void initHack(void) {
 			// *(int*)(0x806C9BC0) = 0; // Multiplayer
 			*(int*)(0x806CB340) = 0; // Voiding
 			*(int*)(0x806DEFE4) = 0; // Fairies
-			*(int*)(0x80708C9C) = 0; // Bonus Barrels (Taking Damge)
-			*(int*)(0x80708CA4) = 0; // Bonus Barrels (Full Health)
+			// *(int*)(0x80708C9C) = 0; // Bonus Barrels (Taking Damge) & Watermelons
+			// *(int*)(0x80708CA4) = 0; // Bonus Barrels (Full Health) & Watermelons
+			*(int*)(0x806A6EA8) = 0; // Bonus Barrels
 		}
 		replace_zones(1);
 		randomize_bosses();

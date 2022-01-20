@@ -161,13 +161,16 @@ START_HOOK:
 		LHU 	a1, lo(ReplacementLobbyExitsArray) (a1)
 
 	damageMultiplerCode:
+		BGEZ 	a3, damageMultiplerCode_Finish
 		LB 		t9, 0x2FD (v0)
 		LUI 	t2, hi(DamageMultiplier)
 		LBU 	t2, lo(DamageMultiplier) (t2)
 		MULTU 	a3, t2
 		MFLO 	a3
-		J 		0x806C9A84
-		ADDU 	t0, t9, a3
+
+		damageMultiplerCode_Finish:
+			J 		0x806C9A84
+			ADDU 	t0, t9, a3
 
 .align 0x10
 END_HOOK:
