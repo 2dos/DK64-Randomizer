@@ -85,12 +85,18 @@ file_dict = [
         "name": "Isles Object Instance Scripts",
         "pointer_table_index": 10,
         "file_index": 34,
-        #"source_file": "assets/Non-Code/instance_scripts/isles.raw",
         "source_file": "assets/Non-Code/instance_scripts/isles.bin",
         "bps_file": "assets/Non-Code/instance_scripts/isles.bps",
         "is_diff_patch": True,
-        #"do_not_delete_source": True,
-    }
+    },
+    {
+        "name": "Helm Object Instance Scripts",
+        "pointer_table_index": 10,
+        "file_index": 17,
+        "source_file": "assets/Non-Code/instance_scripts/helm.bin",
+        "bps_file": "assets/Non-Code/instance_scripts/helm.bps",
+        "is_diff_patch": True,
+    },
 ]
 
 map_replacements = []

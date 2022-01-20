@@ -83,7 +83,7 @@ void krool_order_indicator(void) {
 
 void disable_krool_health_refills(void) {
 	if (ObjectModel2Timer < 5) {
-		if (Rando.no_health_refill & 2) {
+		if (Rando.no_health_refill) {
 			if (CurrentMap >= 0xCB) {
 				if (CurrentMap <= 0xCF) {
 					*(int*)(0x800289B0) = 0; // Between Phases
