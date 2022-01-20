@@ -80,6 +80,16 @@ file_dict = [
         "file_index": 41,
         "source_file": "wrinky_text.bin",
         "target_compressed_size": 0x1000,
+    },
+    {
+        "name": "Isles Object Instance Scripts",
+        "pointer_table_index": 10,
+        "file_index": 34,
+        #"source_file": "assets/Non-Code/instance_scripts/isles.raw",
+        "source_file": "assets/Non-Code/instance_scripts/isles.bin",
+        "bps_file": "assets/Non-Code/instance_scripts/isles.bps",
+        "is_diff_patch": True,
+        #"do_not_delete_source": True,
     }
 ]
 
@@ -284,6 +294,12 @@ with open(newROMName, "r+b") as fh:
                 fg.write(compress)
             x["output_file"] = x["source_file"]
 
+        if "is_diff_patch" in x and x["is_diff_patch"]:
+            with open(x["source_file"], "rb") as fg:
+                byte_read = fg.read()
+                uncompressed_size = len(byte_read)
+            subprocess.Popen(["build\\flips.exe","--apply",x["bps_file"],x["source_file"],x["source_file"]]).wait()
+
         if "texture_format" in x:
             if x["texture_format"] in ["rgba5551", "i4", "ia4", "i8", "ia8"]:
                 result = subprocess.check_output(["./build/n64tex.exe", x["texture_format"], x["source_file"]])
@@ -368,6 +384,11 @@ with open(newROMName, "r+b") as fh:
 
     print("[6 / 7] - Dumping details of all pointer tables to rom/build.log")
     dumpPointerTableDetails("rom/build.log", fh)
+
+    # for x in file_dict:
+    #     if "is_diff_patch" in x and x["is_diff_patch"]:
+    #         if os.path.exists(x["source_file"]):
+    #             os.remove(x["source_file"])
 
     # Wipe Space
     fh.seek(0x1FED020)

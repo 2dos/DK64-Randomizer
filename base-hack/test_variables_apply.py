@@ -15,7 +15,7 @@ set_variables = {
     "coin_door_open": 0,
     "quality_of_life": 1,
     "price_rando_on": 1,
-    "k_rool_order": [4,3,0,2,1],
+    "k_rool_order": [0,3,1,2,4],
     "damage_multiplier": 2,
     "fps_on": 1,
     "no_health_refill": 1,

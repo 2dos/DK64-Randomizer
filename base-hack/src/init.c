@@ -29,7 +29,7 @@ void initHack(void) {
 		*(int*)(0x806E48F4) = 0x31810002; // ANDI $at $t4 2
 		*(int*)(0x806E48F8) = 0x50200074; // BEQL $at $r0 0xF
 		DamageMultiplier = Rando.damage_multiplier;
-		if (Rando.no_health_refill) {
+		if (Rando.no_health_refill & 1) {
 			*(int*)(0x80683A34) = 0; // Cancel Tag Health Refill
 			// *(int*)(0x8060DD10) = 0; // Load File
 			// *(int*)(0x806C8010) = 0; // Load into map with < 1 health

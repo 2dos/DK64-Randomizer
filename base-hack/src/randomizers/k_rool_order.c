@@ -1,10 +1,10 @@
 #include "../../include/common.h"
 
-static const short* krool_write_locations[] = {
-	(short*)0x8002DBCE, // DK > Diddy
-	(short*)0x8002E71A, // Diddy > Lanky
-	(short*)0x8002F04E, // Lanky > Tiny
-	(short*)0x8002FAF2, // Tiny > Chunky
+static const int krool_write_locations[] = {
+	0x8002DBCE, // DK > Diddy
+	0x8002E716, // Diddy > Lanky
+	0x8002F04E, // Lanky > Tiny
+	0x8002FAF2, // Tiny > Chunky
 };
 
 static char inside_sound_zone = 0;
@@ -18,7 +18,7 @@ void determine_krool_order(void) {
 	int containing = 0;
 	int destination = 0;
 	int current_phase = 0;
-	if (TransitionSpeed < 0) {
+	if (ObjectModel2Timer < 5) {
 		if (CurrentMap >= 0xCB) {
 			if (CurrentMap <= 0xCF) {
 				current_phase = CurrentMap - 0xCB;
@@ -28,8 +28,8 @@ void determine_krool_order(void) {
 				for (int i = 0; i < 4; i++) {
 					containing = Rando.k_rool_order[i];
 					destination = Rando.k_rool_order[i + 1];
-					if (containing > -1) {
-						*(short*)(krool_write_locations[containing]) = 0xCB + destination;
+					if ((containing > -1) && (destination > -1)) {
+						*(short*)(*(int*)((int)&krool_write_locations[containing])) = 0xCB + destination;
 					}
 				}
 			}
@@ -75,6 +75,18 @@ void krool_order_indicator(void) {
 				inside_sound_zone = 0;
 				for (int i = 0; i < 5; i++) {
 					sounds_played[i] = 0;
+				}
+			}
+		}
+	}
+}
+
+void disable_krool_health_refills(void) {
+	if (ObjectModel2Timer < 5) {
+		if (Rando.no_health_refill & 2) {
+			if (CurrentMap >= 0xCB) {
+				if (CurrentMap <= 0xCF) {
+					*(int*)(0x800289B0) = 0; // Between Phases
 				}
 			}
 		}

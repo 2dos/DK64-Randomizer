@@ -20,7 +20,6 @@ void cFuncLoop(void) {
 	qualityOfLife_fixes();
 	qualityOfLife_shorteners();
 	decouple_moves_fixes();
-	determine_krool_order();
 	replace_zones(0);
 	krool_order_indicator();
 	alter_boss_key_flags();
@@ -67,6 +66,8 @@ void earlyFrame(void) {
 	write_kutoutorder();
 	remove_blockers();
 	resolve_barrels();
+	determine_krool_order();
+	disable_krool_health_refills();
 }
 
 static char fpsStr[15] = "";
