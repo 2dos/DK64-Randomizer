@@ -60,4 +60,6 @@ typedef struct varspace {
 	/* 0x103 */ unsigned char tiny_candymoves[7]; // See "dk_crankymoves"
 	/* 0x10A */ unsigned char chunky_candymoves[7]; // See "dk_crankymoves"
 	/* 0x111 */ char kut_out_kong_order[5]; // Value of item: 0 = DK, 1 = Diddy, 2 = Lanky, 3 = Tiny, 4 = Chunky. Kongs can be repeated
+	/* 0x116 */ unsigned char remove_blockers; // Bitfield of B. Lockers to remove. 0 = Remove None. 0x7F = remove all except Helm Lobby. 0xFF = Remove all.
+	/* 0x117 */ char resolve_bonus; // Bitfield. 0000 0001 = auto-complete bonus barrels. 0000 0010 = auto-complete helm barrels. 0 = Off. 3 = Resolve Helm & Bonus Barrels
 } varspace;

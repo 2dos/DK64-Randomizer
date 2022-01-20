@@ -41,6 +41,10 @@ void initHack(void) {
 			// *(int*)(0x80708CA4) = 0; // Bonus Barrels (Full Health) & Watermelons
 			*(int*)(0x806A6EA8) = 0; // Bonus Barrels
 		}
+		if (Rando.resolve_bonus & 1) {
+			*(short*)(0x806818DE) = 0x4248; // Make Aztec Lobby GB spawn above the trapdoor)
+			*(int*)(0x80681690) = 0; // Make some barrels not play a cutscene
+		}
 		replace_zones(1);
 		randomize_bosses();
 		loadExtraHooks();

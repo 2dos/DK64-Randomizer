@@ -3,7 +3,7 @@ set_variables = {
     "level_order_rando_on": 1,
     "level_order": [1, 5, 4, 0, 6, 2, 3],
     "troff_scoff_count": [100, 200, 300, 400, 410, 420, 430],
-    "blocker_normal_count": [2, 3, 4, 5, 6, 7, 8],
+    "blocker_normal_count": [2, 3, 4, 5, 6, 7, 8, 9],
     "key_flags": [0x4A, 0x8A, 0xA8, 0xEC, 0x124, 0x13D, 0x1A],
     "unlock_kongs": 0,
     "unlock_moves": 0,
@@ -23,6 +23,8 @@ set_variables = {
     "move_rando_on": 1,
     "dk_crankymoves": [0x03,0x01,0x02,0x12,0x12,0xFF,0xFF],
     "kut_out_kong_order": [0,0,0,0,0],
+    "remove_blockers": 0x7F,
+    "resolve_bonus": 3,
     "special_move_prices": [
         [1,2,3],
         [4,5,6],

@@ -65,6 +65,8 @@ void earlyFrame(void) {
 	replace_moves();
 	price_rando();
 	write_kutoutorder();
+	remove_blockers();
+	resolve_barrels();
 }
 
 static char fpsStr[15] = "";

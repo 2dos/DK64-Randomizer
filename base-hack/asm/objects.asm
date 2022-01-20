@@ -6,6 +6,8 @@
 .importobj "obj/src_fixes_decouple_moves.o"
 .importobj "obj/src_fixes_quality_fixes.o"
 .importobj "obj/src_fixes_tag_anywhere.o"
+.importobj "obj/src_misc_remove_blockers.o"
+.importobj "obj/src_misc_remove_bonus.o"
 .importobj "obj/src_misc_tns_number.o"
 .importobj "obj/src_randomizers_boss_rando.o"
 .importobj "obj/src_randomizers_every_lz_rando.o"

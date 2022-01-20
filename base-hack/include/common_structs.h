@@ -330,9 +330,11 @@ typedef struct actorNames {
 } actorNames;
 
 typedef struct actorSpawnerData {
-	/* 0x000 */ char unk_00[4];
+	/* 0x000 */ unsigned short actor_type; // Offset by 0x10
+	/* 0x002 */ char unk_02[2];
 	/* 0x004 */ floatPos positions;
-	/* 0x010 */ char unk_10[0x44-0x10];
+	/* 0x010 */ char unk_10[0x40-0x10];
+	/* 0x040 */ float barrel_resolved;
 	/* 0x044 */ void* tied_actor;
 	/* 0x048 */ char unk_48[0x5A-0x58];
 	/* 0x05A */ short id;
