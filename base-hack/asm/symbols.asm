@@ -199,6 +199,7 @@
 .definelabel TriggerSize, 0x807FDCB0
 .definelabel CastleCannonPointer, 0x807F5BE8
 .definelabel TroffNScoffReqArray, 0x807446C0 // u16 item size
+.definelabel TroffNScoffTurnedArray, 0x807FC930 // u16 item size
 .definelabel BLockerDefaultArray, 0x807446D0 // u16 item size
 .definelabel BLockerCheatArray, 0x807446E0 // u16 item size, [u8 - GB, u8 - Kong]
 .definelabel CheckmarkKeyArray, 0x80744710 // u16 item size

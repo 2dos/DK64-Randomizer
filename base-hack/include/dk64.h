@@ -207,6 +207,7 @@ extern int* TriggerArray;
 extern short TriggerSize;
 extern cannon* CastleCannonPointer;
 extern short TroffNScoffReqArray[8]; // u16 item size
+extern unsigned short TroffNScoffTurnedArray[8]; // u16 item size
 extern short BLockerDefaultArray[8]; // u16 item size
 extern blocker_cheat BLockerCheatArray[8]; // u16 item size, [u8 - GB, u8 - Kong]
 extern short CheckmarkKeyArray[8]; // u16 item size

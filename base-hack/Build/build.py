@@ -28,7 +28,7 @@ from recompute_pointer_table import (
     writeModifiedPointerTablesToROM,
 )
 from staticcode import patchStaticCode
-# from convertSetup import convertSetup
+from convertSetup import convertSetup
 
 ROMName = "rom/dk64.z64"
 newROMName = "rom/dk64-randomizer-base.z64"
@@ -254,8 +254,8 @@ with open(newROMName, "r+b") as fh:
     for x in file_dict:
         if "target_compressed_size" in x:
             x["do_not_compress"] = True
-            # if x["source_file"][:5] == "setup":
-            #     convertSetup(x["source_file"])
+            if x["source_file"][:5] == "setup":
+                convertSetup(x["source_file"])
             with open(x["source_file"], "rb") as fg:
                 byte_read = fg.read()
                 uncompressed_size = len(byte_read)
