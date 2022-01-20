@@ -22,6 +22,7 @@ set_variables = {
     "slam_prices": [4,5],
     "move_rando_on": 1,
     "dk_crankymoves": [0x03,0x01,0x02,0x12,0x12,0xFF,0xFF],
+    "kut_out_kong_order": [0,0,0,0,0],
     "special_move_prices": [
         [1,2,3],
         [4,5,6],

@@ -215,6 +215,7 @@
 .definelabel RaceExitArray, 0x807447A0
 .definelabel BossMapArray, 0x80744700
 .definelabel BossKongArray, 0x807446F0
+.definelabel KutOutKongArray, 0x80035B44
 
 //hack data
 .definelabel StoredLag, 0x807FFFFA // 0x2

@@ -214,6 +214,7 @@ extern short CheckmarkKeyArray[8]; // u16 item size
 extern short KongFlagArray[4];
 extern main_menu_moves_struct MainMenuMoves[8];
 extern char DataIsCompressed[32];
+extern char KutOutKongArray[5];
 
 extern purchase_struct CrankyMoves[5][7];
 extern purchase_struct CandyMoves[5][7];
