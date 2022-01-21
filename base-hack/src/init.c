@@ -59,6 +59,8 @@ void initHack(void) {
 		*(short*)(0x806A986A) = 4; // Yes/No Prompt
 		*(int*)(0x806A9990) = 0x2A210270; // SLTI $at, $s1, 0x2A8
 		PauseSlot3TextPointer = (char*)&exittoisles;
+		// Object Instance Scripts
+		*(int*)(0x80748064) = (int)&change_object_scripts;
 		LoadedHooks = 1;
 	}
 }

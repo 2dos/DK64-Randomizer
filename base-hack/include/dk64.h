@@ -240,3 +240,4 @@ extern unsigned char DamageMultiplier;
 extern char* PauseSlot3TextPointer;
 extern char ExpandPauseMenu;
 extern unsigned short InitialPauseHeight;
+extern short InstanceScriptParams[4];

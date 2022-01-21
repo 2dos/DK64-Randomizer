@@ -9,10 +9,10 @@
 		- Castle Car Race (!)
 	Exiting Levels (!)
 	Entering Levels (!)
-	Entering Seasick
+	Entering Seasick (!)
 	Entering Mech Fish // Ignore - This one is weird
-	Entering Aztec Beetle Race
-	Enter Fungi Minecart
+	Entering Aztec Beetle Race (!)
+	Enter Fungi Minecart (!)
 	Exit K Rool (!)
 	Exit Fungi Minecart (!)
 	Exit Japes Minecart (!)

@@ -38,6 +38,8 @@ extern void disable_krool_health_refills(void);
 extern void pre_turn_keys(void);
 extern void handle_WTI(void);
 
+extern void change_object_scripts(int code_pointer, int id, int index, int param2);
+
 extern int* drawTri(int* dl, short x1, short y1, short x2, short y2, short x3, short y3, int red, int green, int blue, int alpha);
 extern int* drawImage(int* dl, int text_index, codecs codec_index, int img_width, int img_height, int x, int y, float xScale, float yScale, int opacity);
 extern int* drawPixelText(int* dl, int x, int y, char* str, int red, int green, int blue, int alpha);

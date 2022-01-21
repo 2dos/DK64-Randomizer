@@ -97,6 +97,30 @@ file_dict = [
         "bps_file": "assets/Non-Code/instance_scripts/helm.bps",
         "is_diff_patch": True,
     },
+    {
+        "name": "Galleon Object Instance Scripts",
+        "pointer_table_index": 10,
+        "file_index": 0x1E,
+        "source_file": "assets/Non-Code/instance_scripts/galleon.bin",
+        "bps_file": "assets/Non-Code/instance_scripts/galleon.bps",
+        "is_diff_patch": True,
+    },
+    {
+        "name": "Aztec Object Instance Scripts",
+        "pointer_table_index": 10,
+        "file_index": 0x26,
+        "source_file": "assets/Non-Code/instance_scripts/aztec.bin",
+        "bps_file": "assets/Non-Code/instance_scripts/aztec.bps",
+        "is_diff_patch": True,
+    },
+    {
+        "name": "Fungi Object Instance Scripts",
+        "pointer_table_index": 10,
+        "file_index": 0x30,
+        "source_file": "assets/Non-Code/instance_scripts/fungi.bin",
+        "bps_file": "assets/Non-Code/instance_scripts/fungi.bps",
+        "is_diff_patch": True,
+    },
 ]
 
 map_replacements = []

@@ -226,6 +226,7 @@
 .definelabel InitialPauseHeight, 0x807FFFF6
 .definelabel LoadedHooks, 0x807FFFEF // u8
 .definelabel Rando, 0x807FF800 // 0x200
+.definelabel InstanceScriptParams, 0x807FFFB4 // 0x8
 .definelabel PauseSlot3TextPointer, 0x807FFFBC // ptr
 .definelabel ReplacementLobbiesArray, 0x807FFFC0 // 0x10
 .definelabel ReplacementLobbyExitsArray, 0x807FFFD0 // 0x10
