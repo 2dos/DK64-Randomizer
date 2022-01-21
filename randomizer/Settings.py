@@ -60,6 +60,9 @@ class Settings:
         # shuffle_loading_zones: bool
         self.shuffle_loading_zones = False
 
+        # decoupled_loading_zones: bool
+        self.decoupled_loading_zones = False
+
     def generate_main(self):
         """Set Default items on main page."""
         # shuffle_levels: bool

@@ -70,15 +70,16 @@ def AttemptConnect(settings, front, frontId, back, backId):
     # Remove connections to world root
     frontExit = GetRootExit(frontId)
     RemoveRootExit(frontExit)
-    # if not decoupled
-    backExit = GetRootExit(backId)
-    RemoveRootExit(backExit)
+    backExit = None
+    if not settings.decoupled_loading_zones:
+        backExit = GetRootExit(backId)
+        RemoveRootExit(backExit)
     # Add connection between selected exits
     front.shuffled = True
     front.dest = backId
-    # if not decoupled
-    back.shuffled = True
-    back.dest = frontId
+    if not settings.decoupled_loading_zones:
+        back.shuffled = True
+        back.dest = frontId
     # Attempt to verify world
     valid = VerifyWorld(settings)
     # If world is not valid, restore root connections and undo new connections
@@ -86,10 +87,10 @@ def AttemptConnect(settings, front, frontId, back, backId):
         AddRootExit(frontExit)
         front.shuffled = False
         front.dest = None
-        # if not decoupled
-        AddRootExit(backExit)
-        back.shuffled = False
-        back.dest = None
+        if not settings.decoupled_loading_zones:
+            AddRootExit(backExit)
+            back.shuffled = False
+            back.dest = None
     return valid
 
 
@@ -113,14 +114,13 @@ def ShuffleExitsInPool(settings, frontpool, backpool):
         for backId in destinations:
             back = ShufflableExits[backId]
             if AttemptConnect(settings, front, frontId, back, backId):
-                # if not decoupled
                 backpool.remove(backId)
                 break
         if not front.shuffled:
             raise Ex.EntranceOutOfDestinations
 
 
-def AssumeExits(pools, newpool):
+def AssumeExits(settings, pools, newpool):
     """Split exit pool into front and back pools, and assumes exits reachable from root."""
     frontpool = []
     backpool = []
@@ -140,6 +140,9 @@ def AssumeExits(pools, newpool):
         AddRootExit(newExit)
     pools.append(frontpool)
     pools.append(backpool)
+    if settings.decoupled_loading_zones:
+        pools.append(backpool.copy())
+        pools.append(frontpool.copy())
 
 
 def ShuffleExits(settings):
@@ -148,10 +151,10 @@ def ShuffleExits(settings):
     # Assume all shuffled exits reachable by default
     pools = []
     if settings.shuffle_levels:
-        AssumeExits(pools, LevelExitPool)
+        AssumeExits(settings, pools, LevelExitPool)
     if settings.shuffle_loading_zones:
         LoadingZonePool = [x for x in ShufflableExits.keys() if x not in LevelExitPool]
-        AssumeExits(pools, LoadingZonePool)
+        AssumeExits(settings, pools, LoadingZonePool)
     # Shuffle each entrance pool
     for i in range(0, len(pools), 2):
         ShuffleExitsInPool(settings, pools[i], pools[i + 1])

@@ -41,8 +41,8 @@ ShufflableExits = {
     Exits.IslesToHelm: ShufflableExit("DK Isles to Hideout Helm", Regions.HideoutHelmLobby, Exits.HelmToIsles, ExitCategories.IslesLevelExits),
     Exits.HelmToIsles: ShufflableExit("Hideout Helm to DK Isles", Regions.HideoutHelmStart, Exits.IslesToHelm, ExitCategories.LevelExits),
     # DK Isles Exits
-    Exits.IslesStartToMain: ShufflableExit("DK Isles Start Area to Main", Regions.StartArea, Exits.IslesMainToStart),
     Exits.IslesMainToStart: ShufflableExit("DK Isles Main to Start Area", Regions.IslesMain, Exits.IslesStartToMain, ExitCategories.IslesExterior),
+    Exits.IslesStartToMain: ShufflableExit("DK Isles Start Area to Main", Regions.StartArea, Exits.IslesMainToStart),
     Exits.IslesMainToPrison: ShufflableExit("DK Isles Main to Prison", Regions.IslesMain, Exits.IslesPrisonToMain, ExitCategories.IslesExterior),
     Exits.IslesPrisonToMain: ShufflableExit("DK Isles Prison to Main", Regions.Prison, Exits.IslesMainToPrison),
     Exits.IslesMainToFairy: ShufflableExit("DK Isles Main to Banana Fairy Queen", Regions.IslesMain, Exits.IslesFairyToMain, ExitCategories.IslesExterior),

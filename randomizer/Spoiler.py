@@ -66,7 +66,7 @@ class Spoiler:
             shuffled_exits = OrderedDict()
             for exit, dest in self.shuffled_exit_data.items():
                 # If not decoupled, only want to show "front" exits
-                if exit % 2 != 0:  # or not decoupled
+                if exit % 2 != 0 or self.settings.decoupled_loading_zones:
                     shuffled_exits[ShufflableExits[exit].name] = ShufflableExits[dest].name
             humanspoiler["Shuffled Exits"] = shuffled_exits
 
