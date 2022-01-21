@@ -22,6 +22,7 @@ START:
 
 		LUI t3, 0x8075
 		SB r0, 0x8E21 (t3)
+		SB r0, 0x8E24 (t3)
 		SB r0, 0x8E2A (t3)
 
 		LUI t3, 0x2407

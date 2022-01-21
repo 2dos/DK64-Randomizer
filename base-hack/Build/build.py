@@ -11,7 +11,7 @@ import generate_watch_file
 from map_names import maps
 
 # Patcher functions for the extracted files
-from patch_text import patchDolbyText
+import patch_text
 from recompute_overlays import (
     isROMAddressOverlay,
     readOverlayOriginalData,
@@ -47,18 +47,18 @@ file_dict = [
         "patcher": patchStaticCode,
     },
     {
+        "name": "Dolby Logo",
+        "pointer_table_index": 14,
+        "file_index": 176,
+        "source_file": "assets/Non-Code/Dolby/DolbyThin.png",
+        "texture_format": "ia4",
+    },
+    {
         "name": "Thumb Image",
         "pointer_table_index": 14,
         "file_index": 94,
         "source_file": "assets/Non-Code/Nintendo Logo/Nintendo.png",
         "texture_format": "rgba5551",
-    },
-    {
-        "name": "Dolby Text",
-        "pointer_table_index": 12,
-        "file_index": 13,
-        "source_file": "DolbyText.bin",
-        "patcher": patchDolbyText,
     },
     {
         "name": "DKTV Image",
@@ -73,13 +73,6 @@ file_dict = [
         "file_index": 95,
         "source_file": "assets/Non-Code/transition/transition-body.png",
         "texture_format": "ia4",
-    },
-    {
-        "name": "Wrinkly Text",
-        "pointer_table_index": 12,
-        "file_index": 41,
-        "source_file": "wrinky_text.bin",
-        "target_compressed_size": 0x1000,
     },
     {
         "name": "Isles Object Instance Scripts",
@@ -169,6 +162,30 @@ for x in range(221):
             "do_not_recompress": True,
         }
     )
+for x in range(43):
+    if (x != 13):
+        file_dict.append(
+            {
+                "name": "Text " + str(x),
+                "pointer_table_index": 12,
+                "file_index": x,
+                "source_file": "text" + str(x) + ".bin",
+                "target_compressed_size": 0x2000,
+                "target_uncompressed_size": 0x2000,
+                "do_not_recompress": True,
+            }
+        )
+file_dict.append(
+    {
+         "name": "Dolby Text",
+         "pointer_table_index": 12,
+         "file_index": 13,
+         "source_file": "dolby_text.bin",
+         "do_not_compress": True,
+         "do_not_delete_source": True
+    },
+)
+
 
 print("DK64 Extractor")
 
