@@ -1,5 +1,7 @@
 #include "../include/common.h"
 
+static const char exittoisles[] = "EXIT TO ISLES";
+
 void initHack(void) {
 	if ((LoadedHooks == 0) && (CurrentMap == 0x28)) {
 		DebugInfoOn = 1;
@@ -48,6 +50,15 @@ void initHack(void) {
 		replace_zones(1);
 		randomize_bosses();
 		loadExtraHooks();
+		// Pause Menu Exit To Isles Slot
+		*(short*)(0x806A85EE) = 4; // Yes/No Prompt
+		*(short*)(0x806A8716) = 4; // Yes/No Prompt
+		//*(short*)(0x806A87BE) = 3;
+		*(short*)(0x806A880E) = 4; // Yes/No Prompt
+		//*(short*)(0x806A8766) = 4;
+		*(short*)(0x806A986A) = 4; // Yes/No Prompt
+		*(int*)(0x806A9990) = 0x2A210270; // SLTI $at, $s1, 0x2A8
+		PauseSlot3TextPointer = (char*)&exittoisles;
 		LoadedHooks = 1;
 	}
 }

@@ -85,6 +85,7 @@ extern int* textDraw(int* dl, int style, int x, int y, char* str);
 extern int getWorld(int map, int unk2);
 extern void displayImageOnObject(int obj_id, int position, int image_index, int unk4);
 extern void drawNumberObject(int model, int unk2, int image_index, int unk4);
+extern int isLobby(int map);
 
 //vanilla data
 extern float TransitionSpeed;
@@ -236,3 +237,6 @@ extern short StoredLag;
 extern short ReplacementLobbiesArray[8];
 extern short ReplacementLobbyExitsArray[8];
 extern unsigned char DamageMultiplier;
+extern char* PauseSlot3TextPointer;
+extern char ExpandPauseMenu;
+extern unsigned short InitialPauseHeight;

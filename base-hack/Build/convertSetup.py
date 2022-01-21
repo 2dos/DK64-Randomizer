@@ -11,9 +11,8 @@ def convertSetup(file_name):
 	if os.path.exists(file_name):
 		os.remove(file_name)
 	shutil.copyfile("_" + file_name.replace(".bin","_.bin"), file_name)
-	if map_index != 0x2A:
-		if os.path.exists("_" + file_name):
-			os.remove("_" + file_name)
+	if os.path.exists("_" + file_name):
+		os.remove("_" + file_name)
 	if os.path.exists("_" + file_name.replace(".bin","_.bin")):
 		os.remove("_" + file_name.replace(".bin","_.bin"))
 

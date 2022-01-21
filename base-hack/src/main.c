@@ -68,6 +68,8 @@ void earlyFrame(void) {
 	resolve_barrels();
 	determine_krool_order();
 	disable_krool_health_refills();
+	pre_turn_keys();
+	handle_WTI();
 }
 
 static char fpsStr[15] = "";

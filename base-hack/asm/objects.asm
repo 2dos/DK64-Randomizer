@@ -9,6 +9,7 @@
 .importobj "obj/src_misc_remove_blockers.o"
 .importobj "obj/src_misc_remove_bonus.o"
 .importobj "obj/src_misc_tns_number.o"
+.importobj "obj/src_misc_warp_to_isles.o"
 .importobj "obj/src_randomizers_boss_rando.o"
 .importobj "obj/src_randomizers_every_lz_rando.o"
 .importobj "obj/src_randomizers_kut_out.o"
@@ -20,4 +21,5 @@
 .importobj "obj/src_shorteners_helm.o"
 .importobj "obj/src_shorteners_kongs.o"
 .importobj "obj/src_shorteners_moves.o"
+.importobj "obj/src_shorteners_pre_turns.o"
 .importobj "obj/src_shorteners_quality_shorteners.o"

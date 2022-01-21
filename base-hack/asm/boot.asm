@@ -101,6 +101,21 @@ LobbyReplaceCode2:
 damageMultiplerHook:
 	J 	damageMultiplerCode
 	NOP
+PauseExtraSlotHook:
+	J 	PauseExtraSlotCode
+	NOP
+PauseExtraHeightHook:
+	J 	PauseExtraHeight
+	NOP
+PauseExtraSlotClamp0Hook:
+	J 	PauseExtraSlotClamp0
+	NOP
+PauseExtraSlotClamp1Hook:
+	J 	PauseExtraSlotClamp1
+	NOP
+PauseExtraSlotCustomHook:
+	J 	PauseExtraSlotCustomCode
+	NOP
 
 loadExtraHooks:
 	LUI t3, hi(NinWarpHook)
@@ -186,6 +201,36 @@ loadExtraHooks:
 	LUI t4, 0x806D
 	SW t3, 0x9A7C (t4) // Store Hook
 	SW r0, 0x9A80 (t4) // Store NOP
+
+	LUI t3, hi(PauseExtraSlotHook)
+	LW t3, lo(PauseExtraSlotHook) (t3)
+	LUI t4, 0x806B
+	SW t3, 0x995C (t4) // Store Hook
+	SW r0, 0x9960 (t4) // Store NOP
+
+	LUI t3, hi(PauseExtraHeightHook)
+	LW t3, lo(PauseExtraHeightHook) (t3)
+	LUI t4, 0x806B
+	SW t3, 0x9818 (t4) // Store Hook
+	SW r0, 0x981C (t4) // Store NOP
+
+	LUI t3, hi(PauseExtraSlotClamp0Hook)
+	LW t3, lo(PauseExtraSlotClamp0Hook) (t3)
+	LUI t4, 0x806B
+	SW t3, 0x87BC (t4) // Store Hook
+	SW r0, 0x87C0 (t4) // Store NOP
+
+	LUI t3, hi(PauseExtraSlotClamp1Hook)
+	LW t3, lo(PauseExtraSlotClamp1Hook) (t3)
+	LUI t4, 0x806B
+	SW t3, 0x8760 (t4) // Store Hook
+	SW r0, 0x8764 (t4) // Store NOP
+
+	LUI t3, hi(PauseExtraSlotCustomHook)
+	LW t3, lo(PauseExtraSlotCustomHook) (t3)
+	LUI t4, 0x806B
+	SW t3, 0x8804 (t4) // Store Hook
+	SW r0, 0x8808 (t4) // Store NOP
 
 	JR ra
 	NOP
