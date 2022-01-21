@@ -84,10 +84,10 @@ class Events(IntEnum):
 
     # K Rool Phases
     KRoolDonkey = auto()
-    KroolDiddy = auto()
-    KroolLanky = auto()
-    KroolTiny = auto()
-    KroolChunky = auto()
+    KRoolDiddy = auto()
+    KRoolLanky = auto()
+    KRoolTiny = auto()
+    KRoolChunky = auto()
 
     # Level entered events for shops
     JapesEntered = auto()

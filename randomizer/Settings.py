@@ -129,14 +129,24 @@ class Settings:
 
         phases = ["donkey", "diddy", "lanky", "tiny"]
         phases = random.sample(phases, self.krool_phase_count - 1)
+        orderedPhases = []
         if "donkey" in phases:
             self.krool_donkey = True
+            orderedPhases.append("donkey")
         if "diddy" in phases:
             self.krool_diddy = True
+            orderedPhases.append("diddy")
         if "lanky" in phases:
             self.krool_lanky = True
+            orderedPhases.append("lanky")
         if "tiny" in phases:
             self.krool_tiny = True
+            orderedPhases.append("tiny")
+
+        if self.random_krool_phase_order:
+            random.shuffle(orderedPhases)
+        orderedPhases.append("chunky")
+        self.krool_order = orderedPhases
 
     def __repr__(self):
         """Return printable version of the object as json.
