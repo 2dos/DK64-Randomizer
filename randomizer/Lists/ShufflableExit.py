@@ -1,8 +1,8 @@
 # fmt: off
 """Shufflable exit class and list file."""
 
-from randomizer.Enums.Exits import Exits
 from randomizer.Enums.ExitCategories import ExitCategories
+from randomizer.Enums.Exits import Exits
 from randomizer.Enums.Regions import Regions
 
 

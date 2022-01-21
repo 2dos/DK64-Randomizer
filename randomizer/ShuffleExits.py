@@ -2,15 +2,14 @@
 import random
 
 import randomizer.Fill as Fill
-import randomizer.Logic as Logic
-from randomizer.LogicClasses import Exit
-from randomizer.Lists.ShufflableExit import ShufflableExits
-from randomizer.ItemPool import AllItems, PlaceConstants
 import randomizer.Lists.Exceptions as Ex
-
+import randomizer.Logic as Logic
 from randomizer.Enums.Exits import Exits
 from randomizer.Enums.Regions import Regions
 from randomizer.Enums.SearchMode import SearchMode
+from randomizer.ItemPool import AllItems, PlaceConstants
+from randomizer.Lists.ShufflableExit import ShufflableExits
+from randomizer.LogicClasses import Exit
 
 LevelExitPool = [
     Exits.IslesToJapes,

@@ -3,10 +3,9 @@ import json
 
 import js
 
-from randomizer.DKTV import randomize_dktv
-from randomizer.MusicRando import randomize_music
-from randomizer.Patcher import ROM
-from randomizer.Settings import Settings
+from randomizer.ApplyRandomizer import patching_response
+from randomizer.BackgroundRandomizer import generate_playthrough
+from randomizer.Worker import background
 from ui.bindings import bind
 from ui.progress_bar import ProgressBar
 from ui.rando_options import update_disabled_progression
@@ -85,12 +84,24 @@ def generate_seed(event):
         # Serialize the form into json
         form = js.jquery("#form").serializeArray()
         form_data = {}
-        # Verify each object if its value is a string convert it to a bool
+
+        def is_number(s):
+            """Check if a string is a number or not."""
+            try:
+                int(s)
+                return True
+            except ValueError:
+                pass
+
         for obj in form:
+            # Verify each object if its value is a string convert it to a bool
             if obj.value.lower() in ["true", "false"]:
                 form_data[obj.name] = bool(obj.value)
             else:
-                form_data[obj.name] = obj.value
+                if is_number(obj.value):
+                    form_data[obj.name] = int(obj.value)
+                else:
+                    form_data[obj.name] = obj.value
         # find all input boxes and verify their checked status
         for element in js.document.getElementsByTagName("input"):
             if element.type == "checkbox" and not element.checked:
@@ -99,14 +110,14 @@ def generate_seed(event):
         # Re disable all previously disabled options
         for element in disabled_options:
             element.setAttribute("disabled", "disabled")
-        settings = Settings(form_data)
+        ProgressBar().update_progress(1, "Randomizing, this may take some time depending on settings.")
+        background(generate_playthrough, ["'''" + json.dumps(form_data) + "'''"], patching_response)
         # TODO: This is the entrypoint of builds, we need to make sure we properly set this up
-        randomize_music(settings)
+        # randomize_music(settings)
         # randomize_dktv(settings)
-        ROM().fixSecurityValue()
-        ROM().save("dk64-test.z64")
+        # ROM().fixSecurityValue()
+        # ROM().save("dk64-test.z64")
         # Below comment will run the rando_test function in the background
-        # worker.background(run, ["'assumed'"], test)
 
 
 @bind("click", "download_json")

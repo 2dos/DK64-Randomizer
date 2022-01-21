@@ -1,5 +1,6 @@
 """Settings class and functions."""
 import json
+import random
 
 from randomizer.Enums.Kongs import Kongs
 
@@ -13,12 +14,13 @@ class Settings:
         Args:
             form_data (dict): Post data from the html form.
         """
-        self.algorithm = None
+        self.algorithm = "forward"
         self.generate_main()
         self.generate_progression()
         self.generate_misc()
         for k, v in form_data.items():
             setattr(self, k, v)
+        random.seed(self.seed)
         # Store banana values in array
         self.EntryGBs = [
             self.blocker_0,

@@ -1,14 +1,13 @@
 """Spoiler class and functions."""
 
-import json
 import copy
+import json
 from typing import OrderedDict
 
-from randomizer.Lists.Location import LocationList
-from randomizer.Lists.Item import ItemFromKong, ItemList
-from randomizer.ShuffleExits import ShufflableExits
-
 from randomizer.Enums.Items import Items
+from randomizer.Lists.Item import ItemFromKong, ItemList
+from randomizer.Lists.Location import LocationList
+from randomizer.ShuffleExits import ShufflableExits
 
 
 class Spoiler:

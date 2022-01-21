@@ -3,8 +3,8 @@ import itertools
 
 from randomizer.Enums.Items import Items
 from randomizer.Enums.Locations import Locations
-from randomizer.Lists.Location import LocationList
 from randomizer.Lists.Item import ItemFromKong
+from randomizer.Lists.Location import LocationList
 
 
 def PlaceConstants(settings):

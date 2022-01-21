@@ -2,18 +2,16 @@
 import copy
 import random
 
-import randomizer.Lists.Exceptions as Ex
 import randomizer.ItemPool as ItemPool
-import randomizer.Logic as Logic
 import randomizer.Lists.Exceptions as Ex
-from randomizer.Lists.Location import LocationList
-from randomizer.Lists.Item import ItemList
-from randomizer.Logic import LogicVarHolder, LogicVariables
-
+import randomizer.Logic as Logic
 from randomizer.Enums.Items import Items
 from randomizer.Enums.Regions import Regions
 from randomizer.Enums.SearchMode import SearchMode
-from randomizer.ShuffleExits import ShufflableExits, ExitShuffle
+from randomizer.Lists.Item import ItemList
+from randomizer.Lists.Location import LocationList
+from randomizer.Logic import LogicVarHolder, LogicVariables
+from randomizer.ShuffleExits import ExitShuffle, ShufflableExits
 
 
 def GetAccessibleLocations(ownedItems, searchType=SearchMode.GetReachable):
