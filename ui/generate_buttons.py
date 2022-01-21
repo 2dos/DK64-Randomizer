@@ -110,14 +110,8 @@ def generate_seed(event):
         # Re disable all previously disabled options
         for element in disabled_options:
             element.setAttribute("disabled", "disabled")
-        ProgressBar().update_progress(1, "Randomizing, this may take some time depending on settings.")
+        ProgressBar().update_progress(2, "Randomizing, this may take some time depending on settings.")
         background(generate_playthrough, ["'''" + json.dumps(form_data) + "'''"], patching_response)
-        # TODO: This is the entrypoint of builds, we need to make sure we properly set this up
-        # randomize_music(settings)
-        # randomize_dktv(settings)
-        # ROM().fixSecurityValue()
-        # ROM().save("dk64-test.z64")
-        # Below comment will run the rando_test function in the background
 
 
 @bind("click", "download_json")

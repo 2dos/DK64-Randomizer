@@ -7,14 +7,9 @@ from randomizer.Patcher import ROM
 from randomizer.Settings import Settings
 
 
-def randomize_dktv(settings: Settings):
-    """Set our DKTV to a random intro.
-
-    Args:
-        settings (Settings): Settings post data from the form.
-    """
+def randomize_dktv():
+    """Set our DKTV to a random intro."""
     # Set our seed and randomly format the TV intro based off of it
-    random.seed(int(settings.seed))
     tvintro = random.randint(0, 5)
     # Define the entries as a dict so we can format correctly
     tv_dict: list = js.pointer_addresses[17]["entries"]

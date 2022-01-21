@@ -13,7 +13,7 @@ if (window.Worker) {
     import js
     import json
     exec(json.loads(js.event_response_data).get("returning_func"))
-    eval(str(json.loads(js.event_response_data).get("returning_func").split()[-1]) + "(" + js.event_response_data + ")")
+    eval(str(json.loads(js.event_response_data).get("returning_func").split()[-1]) + "(" + json.dumps(json.loads(js.event_response_data)['response']) + ")")
     `
     );
   };
