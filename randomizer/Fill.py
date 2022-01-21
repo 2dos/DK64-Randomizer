@@ -75,6 +75,11 @@ def GetAccessibleLocations(ownedItems, searchType=SearchMode.GetReachable):
                 region.UpdateAccess(kong, LogicVariables)  # Set that this kong has access to this region
                 LogicVariables.UpdateCurrentRegionAccess(region)  # Set in logic as well
 
+                # Check accessibility for each event in this region
+                for event in region.events:
+                    if event.name not in LogicVariables.Events and event.logic(LogicVariables):
+                        eventAdded = True
+                        LogicVariables.Events.append(event.name)
                 # Check accessibility for each location in this region
                 for location in region.locations:
                     if (
@@ -83,11 +88,6 @@ def GetAccessibleLocations(ownedItems, searchType=SearchMode.GetReachable):
                         and location.id not in accessible
                     ):
                         newLocations.append(location.id)
-                # Check accessibility for each event in this region
-                for event in region.events:
-                    if event.name not in LogicVariables.Events and event.logic(LogicVariables):
-                        eventAdded = True
-                        LogicVariables.Events.append(event.name)
                 # Check accessibility for each exit in this region
                 for exit in region.exits:
                     destination = exit.dest

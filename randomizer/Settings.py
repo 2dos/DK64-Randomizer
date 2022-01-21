@@ -1,5 +1,6 @@
 """Settings class and functions."""
 import json
+import random
 
 from randomizer.Enums.Kongs import Kongs
 
@@ -60,6 +61,8 @@ class Settings:
         # shuffle_loading_zones: bool
         self.shuffle_loading_zones = False
 
+        self.resolve_settings()
+
     def generate_main(self):
         """Set Default items on main page."""
         # shuffle_levels: bool
@@ -100,8 +103,8 @@ class Settings:
         self.coin_door_open = None
         # unlock_fairy_shockwave: bool
         self.unlock_fairy_shockwave = None
-        # enable_tag_anywhere: bool
-        self.enable_tag_anywhere = None
+        # krool_phase_count: int, [1-5]
+        self.krool_phase_count = None
 
         #  Music
         self.music_bgm = None
@@ -113,6 +116,27 @@ class Settings:
         self.fast_start_beginning_of_game = None
         self.fast_start_hideout_helm = None
         self.quality_of_life = None
+        self.enable_tag_anywhere = None
+        self.random_krool_phase_order = None
+
+    def resolve_settings(self):
+        """Resolve settings which are not directly set through the UI."""
+        self.krool_donkey = False
+        self.krool_diddy = False
+        self.krool_lanky = False
+        self.krool_tiny = False
+        self.krool_chunky = True
+
+        phases = ["donkey", "diddy", "lanky", "tiny"]
+        phases = random.sample(phases, self.krool_phase_count - 1)
+        if "donkey" in phases:
+            self.krool_donkey = True
+        if "diddy" in phases:
+            self.krool_diddy = True
+        if "lanky" in phases:
+            self.krool_lanky = True
+        if "tiny" in phases:
+            self.krool_tiny = True
 
     def __repr__(self):
         """Return printable version of the object as json.

@@ -159,5 +159,11 @@ LogicRegions = {
     Regions.KRool: Region("K. Rool", Levels.DKIsles, True, [
         LocationLogic(Locations.BananaHoard, lambda l: l.donkey and l.jetpack and l.peanut and l.diddy and l.trombone and l.lanky
                       and l.mini and l.feather and l.tiny and l.superSlam and l.gorillaGone and l.hunkyChunky and l.chunky),
-    ], [], []),
+    ], [
+        Event(Events.KRoolDonkey, lambda l: not l.settings.krool_donkey or l.donkey),
+        Event(Events.KroolDiddy, lambda l: not l.settings.krool_diddy or (l.jetpack and l.peanut and l.diddy)),
+        Event(Events.KroolLanky, lambda l: not l.settings.krool_lanky or (l.trombone and l.lanky)),
+        Event(Events.KroolTiny, lambda l: not l.settings.krool_tiny or (l.mini and l.feather and l.tiny)),
+        Event(Events.KroolChunky, lambda l: not l.settings.krool_chunky or (l.superSlam and l.gorillaGone and l.hunkyChunky and l.chunky))
+    ], []),
 }
