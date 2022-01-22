@@ -96,7 +96,13 @@ def AttemptConnect(settings, front, frontId, back, backId):
 
 def ShuffleExitsInPool(settings, frontpool, backpool):
     """Shuffle exits within a specific pool."""
-    random.shuffle(frontpool)
+    # Ensure leaf regions are shuffled first to reduce chance of failure
+    leaves = [x for x in frontpool if ShufflableExits[x].category is None]
+    random.shuffle(leaves)
+    nonleaves = [x for x in frontpool if x not in leaves]
+    random.shuffle(nonleaves)
+    frontpool = leaves
+    frontpool.extend(nonleaves)
     # For each front exit, select a random valid back exit to attach to it
     while len(frontpool) > 0:
         frontId = frontpool.pop()
@@ -138,11 +144,11 @@ def AssumeExits(settings, pools, newpool):
         # 2) Attach to root of world (DK Isles)
         newExit = Exit(exit.region, lambda l: True, exitId)
         AddRootExit(newExit)
-    pools.append(frontpool)
-    pools.append(backpool)
     if settings.decoupled_loading_zones:
         pools.append(backpool.copy())
         pools.append(frontpool.copy())
+    pools.append(frontpool)
+    pools.append(backpool)
 
 
 def ShuffleExits(settings):
