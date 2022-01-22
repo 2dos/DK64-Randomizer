@@ -96,13 +96,24 @@ def AttemptConnect(settings, front, frontId, back, backId):
 
 def ShuffleExitsInPool(settings, frontpool, backpool):
     """Shuffle exits within a specific pool."""
-    # Ensure leaf regions are shuffled first to reduce chance of failure
-    leaves = [x for x in frontpool if ShufflableExits[x].category is None]
-    random.shuffle(leaves)
-    nonleaves = [x for x in frontpool if x not in leaves]
-    random.shuffle(nonleaves)
-    frontpool = leaves
-    frontpool.extend(nonleaves)
+    # Ensure non-tag regions and leaf regions are shuffled first to reduce chance of failure
+    NonTagRegions = [x for x in frontpool if not Logic.Regions[ShufflableExits[x].region].tagbarrel]
+    NonTagLeaves = [x for x in NonTagRegions if ShufflableExits[x].category is None]
+    random.shuffle(NonTagLeaves)
+    NonTagNonLeaves = [x for x in NonTagRegions if x not in NonTagLeaves]
+    random.shuffle(NonTagNonLeaves)
+
+    TagRegions = [x for x in frontpool if x not in NonTagRegions]
+    TagLeaves = [x for x in TagRegions if ShufflableExits[x].category is None]
+    random.shuffle(TagLeaves)
+    TagNonLeaves = [x for x in TagRegions if x not in TagLeaves]
+    random.shuffle(TagNonLeaves)
+
+    frontpool = NonTagLeaves
+    frontpool.extend(NonTagNonLeaves)
+    frontpool.extend(TagLeaves)
+    frontpool.extend(TagNonLeaves)
+
     # For each front exit, select a random valid back exit to attach to it
     while len(frontpool) > 0:
         frontId = frontpool.pop()

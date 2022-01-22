@@ -19,7 +19,6 @@ class ShufflableExit:
         # Initialized as its default reverse value
         self.dest = reverse
         self.shuffled = False
-        self.ignore = False  # used for spoiler so reverse entrances are not printed if not decoupled
 
 
 ShufflableExits = {

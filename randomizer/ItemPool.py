@@ -82,10 +82,11 @@ def PlaceConstants(settings):
 def AllItems(settings):
     """Return all shuffled items."""
     allItems = []
-    allItems.extend(Blueprints(settings))
-    allItems.extend(HighPriorityItems(settings))
-    allItems.extend(LowPriorityItems(settings))
-    allItems.extend(ExcessItems(settings))
+    if settings.shuffle_items:
+        allItems.extend(Blueprints(settings))
+        allItems.extend(HighPriorityItems(settings))
+        allItems.extend(LowPriorityItems(settings))
+        allItems.extend(ExcessItems(settings))
     return allItems
 
 

@@ -329,7 +329,7 @@ def Generate_Spoiler(spoiler):
     else:
         # Just check if normal item locations are beatable with given settings
         ItemPool.PlaceConstants(spoiler.settings)
-        if not GetAccessibleLocations([], SearchMode.CheckBeatable):
+        if not GetAccessibleLocations(spoiler.settings, [], SearchMode.CheckBeatable):
             raise Ex.VanillaItemsGameNotBeatableException("Game unbeatable.")
         # Playthrough and location list probably unnecessary with vanilla items
         # Reset()
