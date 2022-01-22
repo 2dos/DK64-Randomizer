@@ -10,7 +10,7 @@ from randomizer.Enums.Exits import Exits
 from randomizer.LogicClasses import Event, Exit, LocationLogic, Region
 
 LogicRegions = {
-    Regions.AngryAztecStart: Region("Angry Aztec Start", Levels.AngryAztec, True, [
+    Regions.AngryAztecStart: Region("Angry Aztec Start", Levels.AngryAztec, True, None, [
         LocationLogic(Locations.AztecDonkeyMedal, lambda l: l.ColoredBananas[Levels.AngryAztec][Kongs.donkey] >= 75),
         LocationLogic(Locations.AztecDiddyMedal, lambda l: l.ColoredBananas[Levels.AngryAztec][Kongs.diddy] >= 75),
         LocationLogic(Locations.AztecLankyMedal, lambda l: l.ColoredBananas[Levels.AngryAztec][Kongs.lanky] >= 75),
@@ -32,7 +32,7 @@ LogicRegions = {
         Exit(Regions.AztecBossLobby, lambda l: True),
     ]),
 
-    Regions.TempleStart: Region("Temple Start", Levels.AngryAztec, False, [
+    Regions.TempleStart: Region("Temple Start", Levels.AngryAztec, False, -1, [
         LocationLogic(Locations.AztecTinyKlaptrapRoom, lambda l: l.mini and l.istiny),
         LocationLogic(Locations.AztecChunkyKlaptrapRoom, lambda l: l.triangle and l.ischunky),
     ], [], [
@@ -40,7 +40,7 @@ LogicRegions = {
         Exit(Regions.TempleUnderwater, lambda l: l.Slam and l.guitar and l.diddyAccess),
     ]),
 
-    Regions.TempleUnderwater: Region("Temple Underwater", Levels.AngryAztec, False, [
+    Regions.TempleUnderwater: Region("Temple Underwater", Levels.AngryAztec, False, -1, [
         LocationLogic(Locations.TinyKong, lambda l: l.charge and l.isdiddy),
         LocationLogic(Locations.AztecDiddyFreeTiny, lambda l: l.charge and l.isdiddy),
         LocationLogic(Locations.AztecLankyVulture, lambda l: l.Slam and l.grape and l.islanky),
@@ -49,7 +49,7 @@ LogicRegions = {
         Exit(Regions.TempleStart, lambda l: True),
     ]),
 
-    Regions.AngryAztecMain: Region("Angry Aztec Main", Levels.AngryAztec, True, [
+    Regions.AngryAztecMain: Region("Angry Aztec Main", Levels.AngryAztec, True, None, [
         LocationLogic(Locations.AztecDonkeyStealthySnoop, lambda l: Events.AztecDonkeySwitch in l.Events and l.strongKong and l.donkey),
         LocationLogic(Locations.AztecDiddyRamGongs, lambda l: l.charge and l.jetpack and l.diddy),
         LocationLogic(Locations.AztecDiddyVultureRace, lambda l: l.jetpack and l.diddy),
@@ -70,45 +70,46 @@ LogicRegions = {
              or (l.grape and l.islanky) or (l.feather and l.istiny)), Exits.AztecMainToLlama),
     ]),
 
-    Regions.DonkeyTemple: Region("Donkey Temple", Levels.AngryAztec, False, [
+    # All the 5 door temple require their respective gun to die
+    Regions.DonkeyTemple: Region("Donkey Temple", Levels.AngryAztec, False, Exit(Regions.AngryAztecStart, lambda l: l.coconut and l.isdonkey), [
         LocationLogic(Locations.AztecDonkey5DoorTemple, lambda l: l.coconut and l.isdonkey),
     ], [], [
         Exit(Regions.AngryAztecMain, lambda l: True, Exits.AztecDonkeyToMain),
     ]),
 
-    Regions.DiddyTemple: Region("Diddy Temple", Levels.AngryAztec, False, [
+    Regions.DiddyTemple: Region("Diddy Temple", Levels.AngryAztec, False, Exit(Regions.AngryAztecStart, lambda l: l.peanut and l.isdiddy), [
         LocationLogic(Locations.AztecDiddy5DoorTemple, lambda l: l.peanut and l.isdiddy),
     ], [], [
         Exit(Regions.AngryAztecMain, lambda l: True, Exits.AztecDiddyToMain),
     ]),
 
-    Regions.LankyTemple: Region("Lanky Temple", Levels.AngryAztec, False, [
+    Regions.LankyTemple: Region("Lanky Temple", Levels.AngryAztec, False, Exit(Regions.AngryAztecStart, lambda l: l.grape and l.islanky), [
         LocationLogic(Locations.AztecLanky5DoorTemple, lambda l: l.grape and l.islanky),
     ], [], [
         Exit(Regions.AngryAztecMain, lambda l: True, Exits.AztecLankyToMain),
     ]),
 
-    Regions.TinyTemple: Region("Tiny Temple", Levels.AngryAztec, False, [
+    Regions.TinyTemple: Region("Tiny Temple", Levels.AngryAztec, False, Exit(Regions.AngryAztecStart, lambda l: l.feather and l.istiny), [
         LocationLogic(Locations.AztecTiny5DoorTemple, lambda l: l.feather and l.istiny),
         LocationLogic(Locations.AztecBananaFairyTinyTemple, lambda l: l.camera and l.feather and l.mini and l.istiny),
     ], [], [
         Exit(Regions.AngryAztecMain, lambda l: True, Exits.AztecTinyToMain),
     ]),
 
-    Regions.ChunkyTemple: Region("Chunky Temple", Levels.AngryAztec, False, [
+    Regions.ChunkyTemple: Region("Chunky Temple", Levels.AngryAztec, False, Exit(Regions.AngryAztecStart, lambda l: l.pineapple and l.ischunky), [
         LocationLogic(Locations.AztecChunky5DoorTemple, lambda l: l.pineapple and l.ischunky),
         LocationLogic(Locations.AztecChunkyKasplat, lambda l: l.pineapple and l.ischunky),
     ], [], [
         Exit(Regions.AngryAztecMain, lambda l: True, Exits.AztecChunkyToMain),
     ]),
 
-    Regions.AztecTinyRace: Region("Aztec Tiny Race", Levels.AngryAztec, False, [
+    Regions.AztecTinyRace: Region("Aztec Tiny Race", Levels.AngryAztec, False, None, [
         LocationLogic(Locations.AztecTinyBeetleRace, lambda l: l.istiny),
     ], [], [
         Exit(Regions.AngryAztecMain, lambda l: True, Exits.AztecRaceToMain),
     ]),
 
-    Regions.LlamaTemple: Region("Llama Temple", Levels.AngryAztec, True, [
+    Regions.LlamaTemple: Region("Llama Temple", Levels.AngryAztec, True, -1, [
         LocationLogic(Locations.LankyKong, lambda l: l.bongos and l.donkey),
         LocationLogic(Locations.AztecDonkeyFreeLanky, lambda l: l.bongos and l.donkey),
         LocationLogic(Locations.AztecLankyTeeteringTurtleTrouble, lambda l: l.trombone and l.lanky),
@@ -121,18 +122,18 @@ LogicRegions = {
         Exit(Regions.LlamaTempleBack, lambda l: l.mini and l.tiny),
     ]),
 
-    Regions.LlamaTempleBack: Region("Llama Temple Back", Levels.AngryAztec, False, [
+    Regions.LlamaTempleBack: Region("Llama Temple Back", Levels.AngryAztec, False, -1, [
         LocationLogic(Locations.AztecTinyLlamaTemple, lambda l: l.Slam and l.twirl and l.istiny),
         LocationLogic(Locations.AztecLankyKasplat, lambda l: l.islanky),
     ], [], [
         Exit(Regions.LlamaTemple, lambda l: True),
     ]),
 
-    Regions.AztecBossLobby: Region("Aztec Boss Lobby", Levels.AngryAztec, True, [], [], [
+    Regions.AztecBossLobby: Region("Aztec Boss Lobby", Levels.AngryAztec, True, None, [], [], [
         Exit(Regions.AztecBoss, lambda l: l.isdiddy and sum(l.ColoredBananas[Levels.AngryAztec]) >= l.settings.BossBananas[Levels.AngryAztec - 1]),
     ]),
 
-    Regions.AztecBoss: Region("Aztec Boss", Levels.AngryAztec, False, [
+    Regions.AztecBoss: Region("Aztec Boss", Levels.AngryAztec, False, None, [
         LocationLogic(Locations.AztecKey, lambda l: l.isdiddy),
     ], [], []),
 }

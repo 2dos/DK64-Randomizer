@@ -24,8 +24,10 @@ class Exits(IntEnum):
     HelmToIsles = auto()
 
     # DK Isles exits
-    IslesStartToMain = auto()
     IslesMainToStart = auto()
+    IslesStartToMain = auto()
+    IslesStartToTreehouse = auto()
+    IslesTreehouseToStart = auto()
     IslesMainToPrison = auto()
     IslesPrisonToMain = auto()
     IslesMainToFairy = auto()
@@ -146,8 +148,8 @@ class Exits(IntEnum):
     ForestGrinderToMain = auto()
     ForestMainToRafters = auto()
     ForestRaftersToMain = auto()
-    ForestMainToWench = auto()
-    ForestWenchToMain = auto()
+    ForestMainToWinch = auto()
+    ForestWinchToMain = auto()
     ForestMainToAttic = auto()
     ForestAtticToMain = auto()
     ForestTinyMillToSpider = auto()

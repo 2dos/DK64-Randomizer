@@ -308,6 +308,12 @@ class LogicVarHolder:
             self.ColoredBananas[level][collectible.kong] += 10
         collectible.added = True
 
+    def HasAccess(self, region, kong):
+        """Check if a certain kong has access to a certain region.
+        Usually the region's own HasAccess function is used, but this is necessary for checking access for other regions in logic files.
+        """
+        return Regions[region].HasAccess(kong)
+
 
 LogicVariables = LogicVarHolder()
 

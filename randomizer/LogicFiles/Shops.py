@@ -27,7 +27,7 @@ first upgrade will be 74 - 7 - 5 = 62.
 """
 
 LogicRegions = {
-    Regions.Funky: Region("Funky", Levels.Shops, False, [
+    Regions.Funky: Region("Funky", Levels.Shops, False, None, [
         LocationLogic(Locations.CoconutGun, lambda l: l.LevelEntered(Levels.JungleJapes) and l.isdonkey and l.Coins[Kongs.donkey] >= 54),
         LocationLogic(Locations.PeanutGun, lambda l: l.LevelEntered(Levels.JungleJapes) and l.isdiddy and l.Coins[Kongs.diddy] >= 54),
         LocationLogic(Locations.GrapeGun, lambda l: l.LevelEntered(Levels.JungleJapes) and l.islanky and l.Coins[Kongs.lanky] >= 54),
@@ -42,7 +42,7 @@ LogicRegions = {
                       and (any(x >= 74 for x in l.Coins) or (l.settings.unlock_all_moves and any(x >= 7 for x in l.Coins)))),
     ], [], []),
 
-    Regions.Candy: Region("Candy", Levels.Shops, False, [
+    Regions.Candy: Region("Candy", Levels.Shops, False, None, [
         LocationLogic(Locations.Bongos, lambda l: l.LevelEntered(Levels.AngryAztec) and l.isdonkey and l.Coins[Kongs.donkey] >= 53),
         LocationLogic(Locations.Guitar, lambda l: l.LevelEntered(Levels.AngryAztec) and l.isdiddy and l.Coins[Kongs.diddy] >= 53),
         LocationLogic(Locations.Trombone, lambda l: l.LevelEntered(Levels.AngryAztec) and l.islanky and l.Coins[Kongs.lanky] >= 53),
@@ -54,7 +54,7 @@ LogicRegions = {
         LocationLogic(Locations.MusicUpgrade2, lambda l: l.LevelEntered(Levels.CreepyCastle) and any(x >= 57 for x in l.Coins)),
     ], [], []),
 
-    Regions.Cranky: Region("Cranky", Levels.Shops, False, [
+    Regions.Cranky: Region("Cranky", Levels.Shops, False, None, [
         LocationLogic(Locations.SimianSlam, lambda l: True),
         LocationLogic(Locations.SuperSimianSlam, lambda l: l.LevelEntered(Levels.FungiForest) and any(x >= 67 for x in l.Coins)),
         LocationLogic(Locations.SuperDuperSimianSlam, lambda l: l.LevelEntered(Levels.CreepyCastle) and any(x >= 74 for x in l.Coins)),
@@ -82,7 +82,7 @@ LogicRegions = {
         LocationLogic(Locations.RarewareCoin, lambda l: l.BananaMedals >= 15),
     ], [], []),
 
-    Regions.Snide: Region("Snide", Levels.Shops, False, [
+    Regions.Snide: Region("Snide", Levels.Shops, False, None, [
         LocationLogic(Locations.TurnInDKIslesDonkeyBlueprint, lambda l: Items.DKIslesDonkeyBlueprint in l.Blueprints),
         LocationLogic(Locations.TurnInDKIslesDiddyBlueprint, lambda l: Items.DKIslesDiddyBlueprint in l.Blueprints),
         LocationLogic(Locations.TurnInDKIslesLankyBlueprint, lambda l: Items.DKIslesLankyBlueprint in l.Blueprints),

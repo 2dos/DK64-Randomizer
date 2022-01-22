@@ -1,5 +1,7 @@
 """Contains classes used in the logic system."""
 from randomizer.Enums.Kongs import Kongs
+from randomizer.Enums.Levels import Levels
+from randomizer.Enums.Regions import Regions
 
 
 class LocationLogic:
@@ -52,7 +54,7 @@ class Collectible:
 class Region:
     """Region contains shufflable locations, events, and exits to other regions."""
 
-    def __init__(self, name, level, tagbarrel, locations, events, exits):
+    def __init__(self, name, level, tagbarrel, deathwarp, locations, events, exits):
         """Initialize with given parameters."""
         self.name = name
         self.level = level
@@ -60,6 +62,19 @@ class Region:
         self.locations = locations
         self.events = events
         self.exits = exits
+
+        # If possible to die in this region, add an exit to where dying will take you
+        # deathwarp is also set to none in regions in which a deathwarp would take you to itself
+        # Or if there is loading-zone-less free access to the region it would take you to already
+        if deathwarp is not None:
+            # If deathwarp is itself an exit class (necessary when deathwarp requires custom logic) just add it directly
+            if isinstance(deathwarp, Exit):
+                self.exits.append(deathwarp)
+            else:
+                # If deathwarp is -1, indicates to use the default value for it, which is the starting area of the level
+                if deathwarp == -1:
+                    deathwarp = self.GetDefaultDeathwarp()
+                self.exits.append(Exit(deathwarp, lambda l: True))
 
         # Initially assume no access from any kong
         self.ResetAccess()
@@ -106,8 +121,10 @@ class Region:
             return self.lankyAccess
         elif kong == Kongs.tiny:
             return self.tinyAccess
-        else:
+        elif kong == Kongs.chunky:
             return self.chunkyAccess
+        else: # kongs == Kongs.rainbow, just need to check if any kong has access
+            return self.donkeyAccess or self.diddyAccess or self.lankyAccess or self.tinyAccess or self.chunkyAccess
 
     def ResetAccess(self):
         """Clear access for all kongs."""
@@ -116,3 +133,24 @@ class Region:
         self.lankyAccess = False
         self.tinyAccess = False
         self.chunkyAccess = False
+
+    def GetDefaultDeathwarp(self):
+        """Get the default deathwarp depending on the region's level."""
+        if self.level == Levels.DKIsles:
+            return Regions.IslesMain
+        elif self.level == Levels.JungleJapes:
+            return Regions.JungleJapesMain
+        elif self.level == Levels.AngryAztec:
+            return Regions.AngryAztecStart
+        elif self.level == Levels.FranticFactory:
+            return Regions.FranticFactoryStart
+        elif self.level == Levels.GloomyGalleon:
+            return Regions.GloomyGalleonStart
+        elif self.level == Levels.FungiForest:
+            return Regions.FungiForestStart
+        elif self.level == Levels.CrystalCaves:
+            return Regions.CrystalCavesMain
+        elif self.level == Levels.CreepyCastle:
+            return Regions.CreepyCastleMain
+        elif self.level == Levels.HideoutHelm:
+            return Regions.HideoutHelmStart

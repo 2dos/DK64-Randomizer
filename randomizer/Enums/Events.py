@@ -51,6 +51,7 @@ class Events(IntEnum):
     GalleonChunkyPad = auto()
     ActivatedLighthouse = auto()
     ShipyardEnguarde = auto()
+    ShipyardTreasureRoomOpened = auto()
     TreasureRoomTeleporterUnlocked = auto()
     PearlsCollected = auto()
 
@@ -64,7 +65,7 @@ class Events(IntEnum):
     GrinderActivated = auto()
     MillBoxBroken = auto()
     ConveyorActivated = auto()
-    WenchRaised = auto()
+    WinchRaised = auto()
 
     # Crystal Caves events
     CavesSmallBoulderButton = auto()

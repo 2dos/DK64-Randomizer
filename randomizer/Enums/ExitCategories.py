@@ -8,6 +8,7 @@ class ExitCategories(IntEnum):
     IslesLevelExits = auto()
     LevelExits = auto()
     IslesExterior = auto()
+    IslesStart = auto()
     JapesExterior = auto()
     JapesMine = auto()
     AztecExterior = auto()
