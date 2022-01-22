@@ -60,7 +60,7 @@ def Reset():
 def VerifyWorld(settings):
     """Make sure all item locations are reachable on current world graph with constant items placed and all other items owned."""
     PlaceConstants(settings)
-    allReachable = Fill.GetAccessibleLocations(AllItems(settings), SearchMode.CheckAllReachable)
+    allReachable = Fill.GetAccessibleLocations(settings, AllItems(settings), SearchMode.CheckAllReachable)
     Fill.Reset()
     return allReachable
 
