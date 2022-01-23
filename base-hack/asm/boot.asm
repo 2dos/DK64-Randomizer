@@ -5,8 +5,8 @@ START:
 	displacedBootCode:
 		// Load Variable Space
 		LUI a0, hi(dataStart)
-		LUI a1, hi(dataStart + 0x100)
-		ADDIU a1, a1, lo(dataStart + 0x100)
+		LUI a1, hi(dataStart + 0x200)
+		ADDIU a1, a1, lo(dataStart + 0x200)
 		ADDIU a0, a0, lo(dataStart)
 		LUI a2, 0x807F
 		JAL dmaFileTransfer
@@ -21,6 +21,8 @@ START:
 		//SW t3, 0xE764 (t4)
 
 		LUI t3, 0x8075
+		SB r0, 0x8E21 (t3)
+		SB r0, 0x8E24 (t3)
 		SB r0, 0x8E2A (t3)
 
 		LUI t3, 0x2407
@@ -81,6 +83,46 @@ OStandFixHook:
 HunkyChunkyFix2Hook:
 	J 	HunkyChunkyFix2
 	NOP
+EarlyFrameHook:
+	J 	EarlyFrameCode
+	NOP
+DisplayListHook:
+	J 	displayListCode
+	NOP
+LobbyExitHook:
+	J 	getLobbyExit
+	NOP
+LobbyReplaceCode1:
+	LUI t7, hi(ReplacementLobbiesArray)
+	ADDIU t7, t7, lo(ReplacementLobbiesArray)
+
+LobbyReplaceCode2:
+	LUI a0, hi(ReplacementLobbiesArray)
+	LHU a0, lo(ReplacementLobbiesArray) (a0)
+damageMultiplerHook:
+	J 	damageMultiplerCode
+	NOP
+PauseExtraSlotHook:
+	J 	PauseExtraSlotCode
+	NOP
+PauseExtraHeightHook:
+	J 	PauseExtraHeight
+	NOP
+PauseExtraSlotClamp0Hook:
+	J 	PauseExtraSlotClamp0
+	NOP
+PauseExtraSlotClamp1Hook:
+	J 	PauseExtraSlotClamp1
+	NOP
+PauseExtraSlotCustomHook:
+	J 	PauseExtraSlotCustomCode
+	NOP
+IGTFileReadHook:
+	J 	IGTLoadFromFile
+	NOP
+IGTSaveToFileHook:
+	J 	IGTSaveToFile
+	NOP
 
 loadExtraHooks:
 	LUI t3, hi(NinWarpHook)
@@ -124,6 +166,90 @@ loadExtraHooks:
 	LUI t4, 0x8068
 	SW t3, 0xECB8 (t4) // Store Hook
 	SW r0, 0xECBC (t4) // Store NOP
+
+	LUI t3, hi(EarlyFrameHook)
+	LW t3, lo(EarlyFrameHook) (t3)
+	LUI t4, 0x8060
+	SW t3, 0xC3FC (t4) // Store Hook
+	SW r0, 0xC400 (t4) // Store NOP
+
+	LUI t3, hi(DisplayListHook)
+	LW t3, lo(DisplayListHook) (t3)
+	LUI t4, 0x8071
+	SW t3, 0x417C (t4) // Store Hook
+	SW r0, 0x4180 (t4) // Store NOP
+
+	LUI t3, hi(LobbyExitHook)
+	LW t3, lo(LobbyExitHook) (t3)
+	LUI t4, 0x8060
+	SW t3, 0x005C (t4) // Store Hook
+	SW r0, 0x0060 (t4) // Store NOP
+
+	LUI t3, hi(LobbyReplaceCode1)
+	LW t3, lo(LobbyReplaceCode1) (t3)
+	LUI t4, 0x8069
+	SW t3, 0xABE8 (t4)
+	LUI t3, hi(LobbyReplaceCode1)
+	ADDIU t3, t3, 4
+	LW t3, lo(LobbyReplaceCode1) (t3)
+	SW t3, 0xABEC (t4)
+
+	LUI t3, hi(LobbyReplaceCode2)
+	LW t3, lo(LobbyReplaceCode2) (t3)
+	LUI t4, 0x8060
+	SW t3, 0x0058 (t4)
+	LUI t3, hi(LobbyReplaceCode2)
+	ADDIU t3, t3, 4
+	LW t3, lo(LobbyReplaceCode2) (t3)
+	SW t3, 0x006C (t4)
+
+	LUI t3, hi(damageMultiplerHook)
+	LW t3, lo(damageMultiplerHook) (t3)
+	LUI t4, 0x806D
+	SW t3, 0x9A7C (t4) // Store Hook
+	SW r0, 0x9A80 (t4) // Store NOP
+
+	LUI t3, hi(PauseExtraSlotHook)
+	LW t3, lo(PauseExtraSlotHook) (t3)
+	LUI t4, 0x806B
+	SW t3, 0x995C (t4) // Store Hook
+	SW r0, 0x9960 (t4) // Store NOP
+
+	LUI t3, hi(PauseExtraHeightHook)
+	LW t3, lo(PauseExtraHeightHook) (t3)
+	LUI t4, 0x806B
+	SW t3, 0x9818 (t4) // Store Hook
+	SW r0, 0x981C (t4) // Store NOP
+
+	LUI t3, hi(PauseExtraSlotClamp0Hook)
+	LW t3, lo(PauseExtraSlotClamp0Hook) (t3)
+	LUI t4, 0x806B
+	SW t3, 0x87BC (t4) // Store Hook
+	SW r0, 0x87C0 (t4) // Store NOP
+
+	LUI t3, hi(PauseExtraSlotClamp1Hook)
+	LW t3, lo(PauseExtraSlotClamp1Hook) (t3)
+	LUI t4, 0x806B
+	SW t3, 0x8760 (t4) // Store Hook
+	SW r0, 0x8764 (t4) // Store NOP
+
+	LUI t3, hi(PauseExtraSlotCustomHook)
+	LW t3, lo(PauseExtraSlotCustomHook) (t3)
+	LUI t4, 0x806B
+	SW t3, 0x8804 (t4) // Store Hook
+	SW r0, 0x8808 (t4) // Store NOP
+
+	LUI t3, hi(IGTFileReadHook)
+	LW t3, lo(IGTFileReadHook) (t3)
+	LUI t4, 0x8061
+	SW t3, 0xDD34 (t4) // Store Hook
+	SW r0, 0xDD38 (t4) // Store NOP
+
+	LUI t3, hi(IGTSaveToFileHook)
+	LW t3, lo(IGTSaveToFileHook) (t3)
+	LUI t4, 0x8061
+	SW t3, 0xDF44 (t4) // Store Hook
+	SW r0, 0xDF48 (t4) // Store NOP
 
 	JR ra
 	NOP

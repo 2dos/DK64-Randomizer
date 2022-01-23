@@ -10,7 +10,7 @@ void unlockMoves(void) {
 		CollectableBase.Film = 5;
 		
 		for (int i = 0; i < 5; i++) {
-			MovesBase[i].special_moves = 3;
+			MovesBase[i].special_moves = 7;
 			MovesBase[i].simian_slam = 3;
 			MovesBase[i].weapon_bitfield |= 3; // Sniper Scope not acquired due to lag
 			MovesBase[i].ammo_belt = 2;

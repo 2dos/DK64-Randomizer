@@ -238,7 +238,9 @@ typedef struct SwapObjectData {
 } SwapObjectData;
 
 typedef struct ModelTwoData {
-	/* 0x000 */ char unk_00[0x7C];
+	/* 0x000 */ char unk_00[0x20];
+	/* 0x020 */ void* model_pointer;
+	/* 0x024 */ char unk_24[0x7C-0x24];
 	/* 0x07C */ void* behaviour_pointer;
 	/* 0x080 */ char unk_80[0x84-0x80];
 	/* 0x084 */ short object_type;
@@ -328,9 +330,11 @@ typedef struct actorNames {
 } actorNames;
 
 typedef struct actorSpawnerData {
-	/* 0x000 */ char unk_00[4];
+	/* 0x000 */ unsigned short actor_type; // Offset by 0x10
+	/* 0x002 */ char unk_02[2];
 	/* 0x004 */ floatPos positions;
-	/* 0x010 */ char unk_10[0x44-0x10];
+	/* 0x010 */ char unk_10[0x40-0x10];
+	/* 0x040 */ float barrel_resolved;
 	/* 0x044 */ void* tied_actor;
 	/* 0x048 */ char unk_48[0x5A-0x58];
 	/* 0x05A */ short id;
@@ -517,6 +521,7 @@ typedef struct cannon {
 	/* 0x000 */ char unk_00[0x376];
 	/* 0x376 */ short source_map;
 	/* 0x378 */ short destination_map;
+	/* 0x37A */ short destination_exit;
 } cannon;
 
 typedef struct blocker_cheat {
@@ -532,3 +537,15 @@ typedef struct main_menu_moves_struct {
 	/* 0x006 */ char instrument;
 	/* 0x007 */ char melons;
 } main_menu_moves_struct;
+
+typedef struct purchase_struct {
+	/* 0x000 */ short purchase_type; // 0 = Moves, 1 = Simian Slam, 2 = Weapon Bitfield, 3 = Ammo Belt, 4 = Instrument Bitfield, -1 = No offer
+	/* 0x002 */ short purchase_value;
+	/* 0x004 */ short price;
+} purchase_struct;
+
+typedef struct race_exit_struct {
+	/* 0x000 */ int race_map;
+	/* 0x004 */ int container_map;
+	/* 0x008 */ int container_exit;
+} race_exit_struct;

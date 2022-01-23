@@ -1,5 +1,7 @@
 #include "../include/common.h"
 
+static const char exittoisles[] = "EXIT TO ISLES";
+
 void initHack(void) {
 	if ((LoadedHooks == 0) && (CurrentMap == 0x28)) {
 		DebugInfoOn = 1;
@@ -28,7 +30,37 @@ void initHack(void) {
 		// PPUnch
 		*(int*)(0x806E48F4) = 0x31810002; // ANDI $at $t4 2
 		*(int*)(0x806E48F8) = 0x50200074; // BEQL $at $r0 0xF
+		DamageMultiplier = Rando.damage_multiplier;
+		if (Rando.no_health_refill) {
+			*(int*)(0x80683A34) = 0; // Cancel Tag Health Refill
+			// *(int*)(0x8060DD10) = 0; // Load File
+			// *(int*)(0x806C8010) = 0; // Load into map with < 1 health
+			// *(int*)(0x806C94E4) = 0; // ?
+			// *(int*)(0x806C9BC0) = 0; // Multiplayer
+			*(int*)(0x806CB340) = 0; // Voiding
+			*(int*)(0x806DEFE4) = 0; // Fairies
+			// *(int*)(0x80708C9C) = 0; // Bonus Barrels (Taking Damge) & Watermelons
+			// *(int*)(0x80708CA4) = 0; // Bonus Barrels (Full Health) & Watermelons
+			*(int*)(0x806A6EA8) = 0; // Bonus Barrels
+		}
+		if (Rando.resolve_bonus & 1) {
+			*(short*)(0x806818DE) = 0x4248; // Make Aztec Lobby GB spawn above the trapdoor)
+			*(int*)(0x80681690) = 0; // Make some barrels not play a cutscene
+		}
+		replace_zones(1);
+		randomize_bosses();
 		loadExtraHooks();
+		// Pause Menu Exit To Isles Slot
+		*(short*)(0x806A85EE) = 4; // Yes/No Prompt
+		*(short*)(0x806A8716) = 4; // Yes/No Prompt
+		//*(short*)(0x806A87BE) = 3;
+		*(short*)(0x806A880E) = 4; // Yes/No Prompt
+		//*(short*)(0x806A8766) = 4;
+		*(short*)(0x806A986A) = 4; // Yes/No Prompt
+		*(int*)(0x806A9990) = 0x2A210270; // SLTI $at, $s1, 0x2A8
+		PauseSlot3TextPointer = (char*)&exittoisles;
+		// Object Instance Scripts
+		*(int*)(0x80748064) = (int)&change_object_scripts;
 		LoadedHooks = 1;
 	}
 }
