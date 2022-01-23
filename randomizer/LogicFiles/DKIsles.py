@@ -38,8 +38,8 @@ LogicRegions = {
         Event(Events.IslesDiddyBarrelSpawn, lambda l: l.chunky and l.trombone and l.lanky),
         Event(Events.IslesChunkyBarrelSpawn, lambda l: l.monkeyport and l.saxophone and l.tiny),
     ], [
-        Exit(Regions.StartArea, lambda l: True, Exits.IslesStartToMain),
-        Exit(Regions.Prison, lambda l: True, Exits.IslesMainToPrison),
+        Exit(Regions.StartArea, lambda l: True, Exits.IslesMainToStart),
+        Exit(Regions.Prison, lambda l: True),
         Exit(Regions.BananaFairyRoom, lambda l: l.mini and l.istiny, Exits.IslesMainToFairy),
         Exit(Regions.JungleJapesLobby, lambda l: True, Exits.IslesMainToJapesLobby),
         Exit(Regions.AngryAztecLobby, lambda l: True, Exits.IslesMainToAztecLobby),
@@ -57,7 +57,7 @@ LogicRegions = {
     ], [
         Event(Events.KeysTurnIn, lambda l: l.JapesKey and l.AztecKey and l.FactoryKey and l.GalleonKey and l.ForestKey and l.CavesKey and l.CastleKey and l.HelmKey),
     ], [
-        Exit(Regions.IslesMain, lambda l: True, Exits.IslesPrisonToMain),
+        Exit(Regions.IslesMain, lambda l: True),
     ]),
 
     Regions.BananaFairyRoom: Region("Banana Fairy Room", Levels.DKIsles, False, None, [

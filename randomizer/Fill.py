@@ -124,6 +124,8 @@ def GetAccessibleLocations(settings, ownedItems, searchType=SearchMode.GetReacha
                         shuffledExit = ShufflableExits[exit.exitShuffleId]
                         if shuffledExit.shuffled:
                             destination = ShufflableExits[shuffledExit.dest].region
+                        elif shuffledExit.toBeShuffled and not exit.assumed:
+                            continue
                     # If a region is accessible through this exit and has not yet been added, add it to the queue to be visited eventually
                     if destination not in addedRegions and exit.logic(LogicVariables):
                         addedRegions.append(destination)
@@ -320,7 +322,7 @@ def Generate_Spoiler(spoiler):
     global LogicVariables
     LogicVariables = LogicVarHolder(spoiler.settings)
     # Handle ER
-    if spoiler.settings.shuffle_levels or spoiler.settings.shuffle_loading_zones:
+    if spoiler.settings.shuffle_loading_zones != "none":
         ExitShuffle(spoiler.settings)
         spoiler.UpdateExits()
     # Place items

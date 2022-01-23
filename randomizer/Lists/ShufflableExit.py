@@ -19,6 +19,7 @@ class ShufflableExit:
         # Initialized as its default reverse value
         self.dest = reverse
         self.shuffled = False
+        self.toBeShuffled = False
 
 
 ShufflableExits = {
@@ -42,8 +43,6 @@ ShufflableExits = {
     Exits.IslesStartToMain: ShufflableExit("DK Isles Start Area to Main", Regions.StartArea, Exits.IslesMainToStart, ExitCategories.IslesStart),
     Exits.IslesStartToTreehouse: ShufflableExit("DK Isles Start Area to Treehouse", Regions.StartArea, Exits.IslesTreehouseToStart, ExitCategories.IslesStart),
     Exits.IslesTreehouseToStart: ShufflableExit("DK Isles Treehouse to Start", Regions.Treehouse, Exits.IslesStartToTreehouse),
-    Exits.IslesMainToPrison: ShufflableExit("DK Isles Main to Prison", Regions.IslesMain, Exits.IslesPrisonToMain, ExitCategories.IslesExterior),
-    Exits.IslesPrisonToMain: ShufflableExit("DK Isles Prison to Main", Regions.Prison, Exits.IslesMainToPrison),
     Exits.IslesMainToFairy: ShufflableExit("DK Isles Main to Banana Fairy Queen", Regions.IslesMain, Exits.IslesFairyToMain, ExitCategories.IslesExterior),
     Exits.IslesFairyToMain: ShufflableExit("DK Isles Banana Fairy Queen to Main", Regions.BananaFairyRoom, Exits.IslesMainToFairy),
     Exits.IslesMainToSnideRoom: ShufflableExit("DK Isles Crocodile Isle to Snide Room", Regions.CrocodileIsleBeyondLift, Exits.IslesSnideRoomToMain, ExitCategories.IslesExterior),
@@ -65,7 +64,7 @@ ShufflableExits = {
     # Jungle Japes Exits
     Exits.JapesMainToMine: ShufflableExit("Jungle Japes Main to Mine", Regions.JungleJapesMain, Exits.JapesMineToMain, ExitCategories.JapesExterior),
     Exits.JapesMineToMain: ShufflableExit("Jungle Japes Mine to Main", Regions.Mine, Exits.JapesMainToMine, ExitCategories.JapesMine),
-    Exits.JapesMainToLankyCave: ShufflableExit("Jungle Japes Main to Lanky Cave", Regions.IslesMain, Exits.JapesLankyCaveToMain, ExitCategories.JapesExterior),
+    Exits.JapesMainToLankyCave: ShufflableExit("Jungle Japes Main to Lanky Cave", Regions.JungleJapesMain, Exits.JapesLankyCaveToMain, ExitCategories.JapesExterior),
     Exits.JapesLankyCaveToMain: ShufflableExit("Jungle Japes Lanky Cave to Main", Regions.JapesLankyCave, Exits.JapesMainToLankyCave),
     Exits.JapesMainToCatacomb: ShufflableExit("Jungle Japes Main to Catacomb", Regions.JungleJapesMain, Exits.JapesCatacombToMain, ExitCategories.JapesExterior),
     Exits.JapesCatacombToMain: ShufflableExit("Jungle Japes Catacomb to Main", Regions.JapesCatacomb, Exits.JapesMainToCatacomb),
@@ -108,8 +107,6 @@ ShufflableExits = {
     Exits.GalleonSealToShipyard: ShufflableExit("Gloomy Galleon Seal Race to Main", Regions.SealRace, Exits.GalleonShipyardToSeal),
     Exits.GalleonShipyardToSubmarine: ShufflableExit("Gloomy Galleon Main to Submarine", Regions.Shipyard, Exits.GalleonSubmarineToShipyard, ExitCategories.GalleonExterior),
     Exits.GalleonSubmarineToShipyard: ShufflableExit("Gloomy Galleon Submarine to Main", Regions.Submarine, Exits.GalleonShipyardToSubmarine),
-    Exits.GalleonShipyardToMechafish: ShufflableExit("Gloomy Galleon Main to Mechafish", Regions.Shipyard, Exits.GalleyonMechafishToShipyard, ExitCategories.GalleonExterior),
-    Exits.GalleyonMechafishToShipyard: ShufflableExit("Gloomy Galleon Mechafish to Main", Regions.Mechafish, Exits.GalleonShipyardToMechafish),
     Exits.GalleonShipyardToLanky: ShufflableExit("Gloomy Galleon Main to Lanky 2DS", Regions.Shipyard, Exits.GalleonLankyToShipyard, ExitCategories.GalleonExterior),
     Exits.GalleonLankyToShipyard: ShufflableExit("Gloomy Galleon Lanky 2DS to Main", Regions.LankyShip, Exits.GalleonShipyardToLanky),
     Exits.GalleonShipyardToTiny: ShufflableExit("Gloomy Galleon Main to Tiny 2DS", Regions.Shipyard, Exits.GalleonTinyToShipyard, ExitCategories.GalleonExterior),
