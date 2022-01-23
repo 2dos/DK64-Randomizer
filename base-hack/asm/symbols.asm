@@ -66,6 +66,7 @@
 .definelabel getTextStyleHeight, 0x806FD894
 .definelabel displayText, 0x806FC530
 .definelabel displayImage, 0x8068C5A8
+.definelabel determineXRatioMovement, 0x80612794
 
 .definelabel getWorld, 0x805FF030
 .definelabel displayImageOnObject, 0x80635018
@@ -78,6 +79,8 @@
 .definelabel arcadeGetObjIndexOfType, 0x80024860
 .definelabel arcadeGetNextVacantSlot, 0x800247B8
 .definelabel setArcadeSong, 0x800252A4
+
+.definelabel countFlagArray, 0x80731AA8
 
 //vanilla data
 .definelabel TransitionSpeed, 0x807FD88C
@@ -218,6 +221,11 @@
 .definelabel BossKongArray, 0x807446F0
 .definelabel KutOutKongArray, 0x80035B44
 
+.definelabel KongUnlockedMenuArray, 0x80033804
+.definelabel FilePercentage, 0x80033F51
+.definelabel FileGBCount, 0x8003380C
+.definelabel FileScreenDLOffset, 0x80033F4C
+
 //hack data
 .definelabel TestVariable, 0x807FFFFC
 .definelabel StoredLag, 0x807FFFFA // 0x2
@@ -226,6 +234,7 @@
 .definelabel InitialPauseHeight, 0x807FFFF6
 .definelabel LoadedHooks, 0x807FFFEF // u8
 .definelabel Rando, 0x807FF800 // 0x200
+.definelabel BalancedIGT, 0x807FFFB0 // u32
 .definelabel InstanceScriptParams, 0x807FFFB4 // 0x8
 .definelabel PauseSlot3TextPointer, 0x807FFFBC // ptr
 .definelabel ReplacementLobbiesArray, 0x807FFFC0 // 0x10

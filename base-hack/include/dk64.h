@@ -86,6 +86,8 @@ extern int getWorld(int map, int unk2);
 extern void displayImageOnObject(int obj_id, int position, int image_index, int unk4);
 extern void drawNumberObject(int model, int unk2, int image_index, int unk4);
 extern int isLobby(int map);
+extern float determineXRatioMovement(unsigned int unk);
+extern int countFlagArray(int starting_flag, int count, int flagType);
 
 //vanilla data
 extern float TransitionSpeed;
@@ -229,6 +231,11 @@ extern race_exit_struct RaceExitArray[8];
 extern short BossMapArray[8];
 extern char BossKongArray[16];
 
+extern char KongUnlockedMenuArray[5];
+extern unsigned char FilePercentage;
+extern int FileGBCount;
+extern float FileScreenDLOffset;
+
 //hack data
 extern int TestVariable;
 extern char LoadedHooks;
@@ -241,3 +248,4 @@ extern char* PauseSlot3TextPointer;
 extern char ExpandPauseMenu;
 extern unsigned short InitialPauseHeight;
 extern short InstanceScriptParams[4];
+extern unsigned int BalancedIGT;

@@ -75,6 +75,20 @@ file_dict = [
         "texture_format": "ia4",
     },
     {
+        "name": "Moves Image",
+        "pointer_table_index": 14,
+        "file_index": 115,
+        "source_file": "assets/Non-Code/file_screen/moves.png",
+        "texture_format": "rgba5551",
+    },
+    {
+        "name": "Blueprint Image",
+        "pointer_table_index": 14,
+        "file_index": 116,
+        "source_file": "assets/Non-Code/file_screen/blueprint.png",
+        "texture_format": "rgba5551",
+    },
+    {
         "name": "Isles Object Instance Scripts",
         "pointer_table_index": 10,
         "file_index": 34,
@@ -160,6 +174,16 @@ for x in range(221):
             "target_compressed_size": 0x8000,
             "target_uncompressed_size": 0x8000,
             "do_not_recompress": True,
+        }
+    )
+for x in range(8):
+    file_dict.append(
+        {
+            "name": "Key " + str(x + 1) + " file screen",
+            "pointer_table_index": 14,
+            "file_index": 107 + x,
+            "source_file": "assets/Non-Code/file_screen/key" + str(x + 1) + ".png",
+            "texture_format": "rgba5551",
         }
     )
 for x in range(43):

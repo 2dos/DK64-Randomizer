@@ -117,6 +117,12 @@ PauseExtraSlotClamp1Hook:
 PauseExtraSlotCustomHook:
 	J 	PauseExtraSlotCustomCode
 	NOP
+IGTFileReadHook:
+	J 	IGTLoadFromFile
+	NOP
+IGTSaveToFileHook:
+	J 	IGTSaveToFile
+	NOP
 
 loadExtraHooks:
 	LUI t3, hi(NinWarpHook)
@@ -232,6 +238,18 @@ loadExtraHooks:
 	LUI t4, 0x806B
 	SW t3, 0x8804 (t4) // Store Hook
 	SW r0, 0x8808 (t4) // Store NOP
+
+	LUI t3, hi(IGTFileReadHook)
+	LW t3, lo(IGTFileReadHook) (t3)
+	LUI t4, 0x8061
+	SW t3, 0xDD34 (t4) // Store Hook
+	SW r0, 0xDD38 (t4) // Store NOP
+
+	LUI t3, hi(IGTSaveToFileHook)
+	LW t3, lo(IGTSaveToFileHook) (t3)
+	LUI t4, 0x8061
+	SW t3, 0xDF44 (t4) // Store Hook
+	SW r0, 0xDF48 (t4) // Store NOP
 
 	JR ra
 	NOP

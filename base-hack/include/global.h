@@ -31,6 +31,7 @@ extern void displayNumberOnTns(void);
 extern void replace_moves(void);
 
 extern void PatchCrankyCode(void);
+extern void FileScreenDLCode_Write(void);
 extern void write_kutoutorder(void);
 extern void remove_blockers(void);
 extern void resolve_barrels(void);

@@ -3,6 +3,8 @@
 #define MAIN_MENU 0x50
 #define NINTENDO_LOGO 0x28
 #define JAPES_MAIN 7
+#define ADVENTURE_MODE 6
+#define SNIDES_BONUS_GAMES 13
 
 #define LAG_CAP 10
 static short past_lag[LAG_CAP] = {};
@@ -57,6 +59,9 @@ void cFuncLoop(void) {
 	}
 	current_avg_lag = lag_sum;
 	current_avg_lag /= LAG_CAP;
+	if ((Gamemode == ADVENTURE_MODE) || (Gamemode == SNIDES_BONUS_GAMES)) {
+		BalancedIGT += 1;
+	}
 };
 
 void earlyFrame(void) {
@@ -70,6 +75,9 @@ void earlyFrame(void) {
 	disable_krool_health_refills();
 	pre_turn_keys();
 	handle_WTI();
+	if ((CurrentMap == MAIN_MENU) && (ObjectModel2Timer < 5)) {
+		FileScreenDLCode_Write();
+	}
 }
 
 static char fpsStr[15] = "";
