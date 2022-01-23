@@ -35,7 +35,7 @@ root = Regions.IslesMain
 
 def GetRootExit(exitId):
     """Query the world root to return an exit with a matching exit id."""
-    return [x for x in Logic.Regions[root].exits if x.exitShuffleId is not None and x.exitShuffleId == exitId][0]
+    return [x for x in Logic.Regions[root].exits if x.assumed and x.exitShuffleId is not None and x.exitShuffleId == exitId][0]
 
 
 def RemoveRootExit(exit):
@@ -98,6 +98,7 @@ def ShuffleExitsInPool(settings, frontpool, backpool):
     """Shuffle exits within a specific pool."""
     if settings.decoupled_loading_zones:
         frontpool.extend(backpool)
+        backpool = frontpool.copy()
 
     NonTagRegions = [x for x in frontpool if not Logic.Regions[ShufflableExits[x].region].tagbarrel]
     NonTagLeaves = [x for x in NonTagRegions if ShufflableExits[x].category is None]
@@ -121,13 +122,14 @@ def ShuffleExitsInPool(settings, frontpool, backpool):
         frontId = frontpool.pop(0)
         front = ShufflableExits[frontId]
         destinations = backpool.copy()
-        # If our target exit to shuffle has a category, ensure it's not shuffled to entrances with the same category
-        if front.category is not None:
-            destinations = [
-                x
-                for x in destinations
-                if x != frontId and (ShufflableExits[x].category is None or ShufflableExits[x].category != front.category)
-            ]
+        if frontId in destinations:
+            destinations.remove(frontId)
+        # if front.category is not None:
+        #     destinations = [
+        #         x
+        #         for x in destinations
+        #         if x != ShufflableExits[x].category is None or ShufflableExits[x].category != front.category
+        #     ]
         random.shuffle(destinations)
         # Select the destination
         for backId in destinations:
