@@ -61,11 +61,11 @@ class ROM:
             size (int): Size of the bytes to write.
         """
         arr = []
-        temp = value  
+        temp = value
         for x in range(size):
             arr.append(0)
         will_pass = True
-        idx = size -  1
+        idx = size - 1
         while will_pass:
             write = temp % 256
             arr[idx] = write

@@ -7,6 +7,7 @@ from typing import OrderedDict
 from randomizer.Enums.Items import Items
 from randomizer.Lists.Item import ItemFromKong, ItemList
 from randomizer.Lists.Location import LocationList
+from randomizer.Settings import Settings
 from randomizer.ShuffleExits import ShufflableExits
 
 
@@ -15,7 +16,7 @@ class Spoiler:
 
     def __init__(self, settings):
         """Initialize spoiler just with settings."""
-        self.settings = settings
+        self.settings: Settings = settings
         self.playthrough = {}
         self.shuffled_exit_data = {}
         self.location_data = {}

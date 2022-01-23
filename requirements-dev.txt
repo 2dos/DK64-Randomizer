@@ -1,0 +1,7 @@
+psutil
+jinja2
+pytest
+pytest-cov
+black
+pycodestyle
+pydocstyle

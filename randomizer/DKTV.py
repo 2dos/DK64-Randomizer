@@ -4,7 +4,6 @@ import random
 import js
 
 from randomizer.Patcher import ROM
-from randomizer.Settings import Settings
 
 
 def randomize_dktv():

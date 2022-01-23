@@ -7,18 +7,19 @@ import js
 from randomizer.Enums.SongType import SongType
 from randomizer.Lists.Songs import song_data
 from randomizer.Patcher import ROM
+from randomizer.Settings import Settings
 
 
-def randomize_music(settings: dict):
+def randomize_music(settings: Settings):
     """Randomize music passed from the misc music settings.
 
     Args:
-        settings (dict): Settings object from the windows form.
+        settings (Settings): Settings object from the windows form.
     """
     # Check if we have anything beyond default set for BGM
-    if settings.get("music_bgm") != "default":
+    if settings.music_bgm != "default":
         # If the user selected standard rando
-        if settings.get("music_bgm") == "randomized":
+        if settings.music_bgm == "randomized":
             # Generate the list of BGM songs
             song_list = []
             for song in song_data:
@@ -30,7 +31,7 @@ def randomize_music(settings: dict):
             random.shuffle(shuffled_music)
             shuffle_music(song_list, shuffled_music)
         # If the user was a poor sap and selected chaos put DK rap for everything
-        elif settings.get("music_bgm") == "chaos":
+        elif settings.music_bgm == "chaos":
             # Find the DK rap in the list
             rap = js.pointer_addresses[0]["entries"][
                 song_data.index(next((x for x in song_data if x.name == "DK Rap"), None))
@@ -54,7 +55,7 @@ def randomize_music(settings: dict):
                 new_bytes = ROM().readBytes(4)
                 ROM().seek(uncompressed_data_table["pointing_to"] + (4 * song_list.index(rap)))
                 ROM().writeBytes(new_bytes)
-        elif settings.get("music_bgm") == "uploaded":
+        elif settings.music_bgm == "uploaded":
             # Generate the list of BGM songs
             song_list = []
             for song in song_data:
@@ -85,9 +86,9 @@ def randomize_music(settings: dict):
             random.shuffle(duped_song_list)
             shuffle_music(song_list, duped_song_list)
     # If the user wants to randomize fanfares
-    if settings.get("music_fanfares") != "default":
+    if settings.music_fanfares != "default":
         # Check if our setting is just rando
-        if settings.get("music_fanfares") == "randomized":
+        if settings.music_fanfares == "randomized":
             # Load the list of fanfares
             fanfare_list = []
             for song in song_data:
@@ -98,7 +99,7 @@ def randomize_music(settings: dict):
             shuffled_music = fanfare_list.copy()
             random.shuffle(shuffled_music)
             shuffle_music(fanfare_list, shuffled_music)
-        elif settings.get("music_fanfares") == "uploaded":
+        elif settings.music_fanfares == "uploaded":
             # Generate the list of fanfares songs
             song_list = []
             for song in song_data:
@@ -130,9 +131,9 @@ def randomize_music(settings: dict):
             shuffle_music(song_list, duped_song_list)
 
     # If the user wants to randomize events
-    if settings.get("music_events") != "default":
+    if settings.music_events != "default":
         # Check if our setting is just rando
-        if settings.get("music_events") == "randomized":
+        if settings.music_events == "randomized":
             # Load the list of events
             event_list = []
             for song in song_data:

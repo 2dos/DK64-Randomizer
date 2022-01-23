@@ -1,0 +1,52 @@
+{
+  // See https://go.microsoft.com/fwlink/?LinkId=733558
+  // for the documentation about the tasks.json format
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "Install requirements",
+      "type": "shell",
+      "command": "${config:python.pythonPath} -m pip install -r ${workspaceFolder}/requirements-dev.txt",
+      "problemMatcher": []
+    },
+    {
+      "label": "Format Repo",
+      "type": "shell",
+      "command": "${config:python.pythonPath} -m black -l 120 ${workspaceFolder}",
+      "problemMatcher": []
+    },
+    {
+      "label": "Validate Styles",
+      "type": "shell",
+      "command": "${config:python.pythonPath} -m pycodestyle --ignore E501,W605,W503,E203 ${workspaceFolder}",
+      "problemMatcher": []
+    },
+    {
+      "label": "Validate Docstrings",
+      "type": "shell",
+      "command": "${config:python.pythonPath} -m pydocstyle ${workspaceFolder}",
+      "problemMatcher": []
+    },
+    {
+      "label": "Lint Repo",
+      "dependsOn": ["Format Repo", "Validate Styles", "Validate Docstrings"],
+      "problemMatcher": [],
+    },
+    {
+      "label": "Run Tests",
+      "type": "shell",
+      "command": "${config:python.pythonPath} -m pytest -v --cov=${workspaceFolder}/ --cov-report html ${workspaceFolder}/tests",
+      "problemMatcher": [],
+    },
+    {
+      "label": "Build BPS",
+      "type": "shell",
+      "command": "cd ${workspaceFolder}/base-hack/ && ./build.bat",
+      "problemMatcher": [],
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      }
+    },
+  ]
+}

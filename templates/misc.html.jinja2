@@ -83,37 +83,61 @@ You will not be able to collect the GB from DK Arcade with this option enabled."
         </div>
         <div class="w-100"></div>
         <div class="col border">
-            <h3>Music Rando</h3>
+            <h3>Difficulty</h3>
             <div>
-                Background Music
-                <select name="music_bgm" style="width: 60%;" class="form-select center-div" aria-label="Background Music">
-                    <option selected value="default">Default Music</option>
-                    <option value="randomized">Randomized</option>
-                    <option value="chaos">Chaos</option>
-                    <option value="uploaded">Upload your own</option>
+                Damage
+                <select name="damage_amount" style="width: 60%;" class="form-select center-div" aria-label="Damage Options">
+                    <option selected value="default">Normal</option>
+                    <option value="ohko">OHKO</option>
+                    <option value="double">Double Damage</option>
+                    <option value="quad">Quad Damage</option>
                 </select>
             </div>
-            <div>
-                Fanfares
-                <select name="music_fanfares" style="width: 60%;" class="form-select center-div" aria-label="Fanfares">
-                    <option selected value="default">Default Fanfares</option>
-                    <option value="randomized">Randomized</option>
-                    <option value="uploaded">Upload your own</option>
-                </select>
-            </div>
-            <div>
-                Events
-                <select name="music_events" style="width: 60%;" class="form-select center-div" aria-label="Events">
-                    <option selected value="default">Default Events</option>
-                    <option value="randomized">Randomized</option>
-                    <option value="uploaded">Upload your own</option>
-                </select>
+            <div class="form-check form-switch">
+                <label title="Tag Barrels, Boss Fights, Candy Upgrades etc don't heal you like they normally would.">
+                    <input class="form-check-input" type="checkbox" name="no_healing" value="False" />
+                    No Heals
+                </label>
             </div>
         </div>
         <div class="col border">
-            <h3>Cosmetics Data</h3>
-            Cosmetics ZIP (Check wiki for format)
-            <input accept=".zip" class="form-control" type="file" id="music_file" name="music_file" />
+            <h3>Other Randomizations</h3>
+            <div class="form-check form-switch">
+                <label title="All normal enemies that spawn in the world are randomized.">
+                    <input class="form-check-input" type="checkbox" name="enemy_rando" value="False" />
+                    Enemy Rando
+                </label>
+            </div>
+            <div class="form-check form-switch">
+                <label title="Battle Crown platforms are randomized in their spawn location.">
+                    <input class="form-check-input" type="checkbox" name="battle_crown_rando" value="False" />
+                    Battle Crown Rando
+                </label>
+            </div>
+            <div class="form-check form-switch">
+                <label title="The order of KRools boxing match will randomly order the sequence (Currently always ends on chunky).">
+                    <input class="form-check-input" type="checkbox" name="k_rool_phase_order" value="True" checked/>
+                    K Rool Phase Rando
+                </label>
+            </div>
+            <div class="form-check form-switch">
+                <label title="All prices in shops are randomized to a random number.">
+                    <input class="form-check-input" type="checkbox" name="shop_price_rando" value="False" />
+                    Shop Price Rando
+                </label>
+            </div>
+            <div class="form-check form-switch">
+                <label title="The boss you can get in a level is different than normal.">
+                    <input class="form-check-input" type="checkbox" name="boss_location_rando" value="True" checked/>
+                    Boss Location Rando
+                </label>
+            </div>
+            <div class="form-check form-switch">
+                <label title="Bonus Barrels are randomly chosen from the pool of available Bonus Barrels.">
+                    <input class="form-check-input" type="checkbox" name="bonus_barrel_rando" value="True" checked/>
+                    Bonus Barrel Rando
+                </label>
+            </div>
         </div>
     </div>
 </div>

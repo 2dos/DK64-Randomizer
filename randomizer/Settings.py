@@ -20,7 +20,7 @@ class Settings:
         self.generate_misc()
         for k, v in form_data.items():
             setattr(self, k, v)
-        random.seed(self.seed)
+        self.set_seed()
         # Store banana values in array
         self.EntryGBs = [
             self.blocker_0,
@@ -68,6 +68,10 @@ class Settings:
         self.shuffle_levels = None
         self.seed = None
         self.download_json = None
+
+    def set_seed(self):
+        """Forcibly re-set the random seed to the seed set in the config."""
+        random.seed(int(self.seed))
 
     def generate_progression(self):
         """Set default items on progression page."""

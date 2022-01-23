@@ -1,5 +1,7 @@
 """Generate Playthrough from the logic core."""
+import codecs
 import json
+import pickle
 import random
 
 from randomizer.Fill import Generate_Spoiler
@@ -25,4 +27,4 @@ def generate_playthrough(form_string: str):
         Generate_Spoiler(spoiler)
     except Exception as e:
         return json.dumps({"error": str(e)})
-    return spoiler.toJson()
+    return codecs.encode(pickle.dumps(spoiler), "base64").decode()

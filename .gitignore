@@ -138,7 +138,8 @@ dmypy.json
 cython_debug/
 
 # VSCode
-.vscode
+.vscode/settings.json
+!.vscode/tasks.json
 
 # Jekyll
 _site/
