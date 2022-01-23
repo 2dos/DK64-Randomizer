@@ -49,22 +49,22 @@ def patching_response(responded_data):
         for count in settings.get("troff_n_scoff_bananas"):
             ROM().seek(sav + 0x008 + order)
             ROM().write(count)
-            order += 1
+            order += 2
     else:
         ROM().seek(sav + 0x008 + 0)
-        ROM().write(60)
-        ROM().seek(sav + 0x008 + 1)
-        ROM().write(120)
+        ROM().writeMultipleBytes(60,2)
         ROM().seek(sav + 0x008 + 2)
-        ROM().write(200)
-        ROM().seek(sav + 0x008 + 3)
-        ROM().write(250)
+        ROM().writeMultipleBytes(120,2)
         ROM().seek(sav + 0x008 + 4)
-        ROM().write(300)
-        ROM().seek(sav + 0x008 + 5)
-        ROM().write(350)
+        ROM().writeMultipleBytes(200,2)
         ROM().seek(sav + 0x008 + 6)
-        ROM().write(400)
+        ROM().writeMultipleBytes(250,2)
+        ROM().seek(sav + 0x008 + 8)
+        ROM().writeMultipleBytes(300,2)
+        ROM().seek(sav + 0x008 + 10)
+        ROM().writeMultipleBytes(350,2)
+        ROM().seek(sav + 0x008 + 12)
+        ROM().writeMultipleBytes(400,2)
 
     if settings.get("blocker_golden_bananas"):
         order = 0
@@ -96,22 +96,28 @@ def patching_response(responded_data):
         for level in loaded_data:
             ROM().seek(sav + 0x01E + order)
             ROM().write(level)
-            order += 1
+            order += 2
     else:
         ROM().seek(sav + 0x01E + 0)
-        ROM().write(0x1A)
-        ROM().seek(sav + 0x01E + 1)
-        ROM().write(0x4A)
+        ROM().writeMultipleBytes(0x1A,2)
         ROM().seek(sav + 0x01E + 2)
-        ROM().write(0x8A)
-        ROM().seek(sav + 0x01E + 3)
-        ROM().write(0xA8)
+        ROM().writeMultipleBytes(0x4A,2)
+
         ROM().seek(sav + 0x01E + 4)
-        ROM().write(0xEC)
-        ROM().seek(sav + 0x01E + 5)
-        ROM().write(0x124)
+        ROM().writeMultipleBytes(0x8A,2)
+
         ROM().seek(sav + 0x01E + 6)
-        ROM().write(0x13D)
+        ROM().writeMultipleBytes(0xA8,2)
+
+        ROM().seek(sav + 0x01E + 8)
+        ROM().writeMultipleBytes(0xEC,2)
+
+        ROM().seek(sav + 0x01E + 10)
+        ROM().writeMultipleBytes(0x124,2)
+
+        ROM().seek(sav + 0x01E + 12)
+        ROM().writeMultipleBytes(0x13D,2)
+
 
     if settings.get("unlock_all_kongs"):
         ROM().seek(sav + 0x02C)

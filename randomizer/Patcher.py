@@ -51,6 +51,31 @@ class ROM:
         """
         self.rom.writeString(string, length)
 
+    def writeMultipleBytes(self, value: int, size: int):
+        """Write multiple bytes of a size to the current position.
+
+        Starts at 0x0 as the inital position without seeking.
+
+        Args:
+            value (int): Value to write.
+            size (int): Size of the bytes to write.
+        """
+        arr = []
+        temp = value  
+        for x in range(size):
+            arr.append(0)
+        will_pass = True
+        idx = size -  1
+        while will_pass:
+            write = temp % 256
+            arr[idx] = write
+            temp = int((temp - write) / 256)
+            if idx == 0 or temp == 0:
+                will_pass = False
+            idx -= 1
+        for x in arr:
+            self.write(x)
+
     def isEOF(self):
         """Get if we are currently at the end of the ROM.
 
