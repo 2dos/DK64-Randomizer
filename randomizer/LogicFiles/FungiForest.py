@@ -111,7 +111,7 @@ LogicRegions = {
     ]),
 
     Regions.MushroomLankyZingersRoom: Region("Mushroom Lanky Zingers Room", Levels.FungiForest, False, -1, [
-        LocationLogic(Locations.ForestLankyZingers, lambda l: l.grape and l.islanky),
+        LocationLogic(Locations.ForestLankyZingers, lambda l: l.islanky),
     ], [], [
         Exit(Regions.MushroomUpperExterior, lambda l: True, Exits.ForestZingersToExterior),
     ]),

@@ -98,7 +98,6 @@ def ShuffleExitsInPool(settings, frontpool, backpool):
     """Shuffle exits within a specific pool."""
     if settings.decoupled_loading_zones:
         frontpool.extend(backpool)
-        backpool = frontpool.copy()
 
     NonTagRegions = [x for x in frontpool if not Logic.Regions[ShufflableExits[x].region].tagbarrel]
     NonTagLeaves = [x for x in NonTagRegions if ShufflableExits[x].category is None]
