@@ -160,7 +160,7 @@ LogicRegions = {
         LocationLogic(Locations.IslesDonkeyKasplat, lambda l: l.coconut and l.donkey),
     ], [], [
         Exit(Regions.IslesMain, lambda l: True, Exits.IslesHelmLobbyToMain),
-        Exit(Regions.HideoutHelmStart, lambda l: l.gorillaGone and l.chunky and l.GoldenBananas >= l.settings.EntryGBs[Levels.HideoutHelm - 1], Exits.IslesToHelm),
+        Exit(Regions.HideoutHelmStart, lambda l: l.gorillaGone and l.chunky and l.GoldenBananas >= l.settings.EntryGBs[Levels.HideoutHelm - 1]),
     ]),
 
     Regions.KRool: Region("K. Rool", Levels.DKIsles, True, None, [

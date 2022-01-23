@@ -37,8 +37,6 @@ ShufflableExits = {
     Exits.CavesToIsles: ShufflableExit("Crystal Caves to DK Isles", Regions.CrystalCavesMain, Exits.IslesToCaves, ExitCategories.LevelExits),
     Exits.IslesToCastle: ShufflableExit("DK Isles to Creepy Castle", Regions.CreepyCastleLobby, Exits.CastleToIsles, ExitCategories.IslesLevelExits),
     Exits.CastleToIsles: ShufflableExit("Creepy Castle to DK Isles", Regions.CreepyCastleMain, Exits.IslesToCastle, ExitCategories.LevelExits),
-    Exits.IslesToHelm: ShufflableExit("DK Isles to Hideout Helm", Regions.HideoutHelmLobby, Exits.HelmToIsles, ExitCategories.IslesLevelExits),
-    Exits.HelmToIsles: ShufflableExit("Hideout Helm to DK Isles", Regions.HideoutHelmStart, Exits.IslesToHelm, ExitCategories.LevelExits),
     # DK Isles Exits
     Exits.IslesMainToStart: ShufflableExit("DK Isles Main to Start Area", Regions.IslesMain, Exits.IslesStartToMain, ExitCategories.IslesExterior),
     Exits.IslesStartToMain: ShufflableExit("DK Isles Start Area to Main", Regions.StartArea, Exits.IslesMainToStart, ExitCategories.IslesStart),

@@ -27,8 +27,6 @@ LevelExitPool = [
     Exits.CavesToIsles,
     Exits.IslesToCastle,
     Exits.CastleToIsles,
-    Exits.IslesToHelm,
-    Exits.HelmToIsles,
 ]
 
 # Root is the starting spawn, which is the main area of DK Isles.

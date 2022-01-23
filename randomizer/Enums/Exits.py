@@ -20,8 +20,6 @@ class Exits(IntEnum):
     CavesToIsles = auto()
     IslesToCastle = auto()
     CastleToIsles = auto()
-    IslesToHelm = auto()
-    HelmToIsles = auto()
 
     # DK Isles exits
     IslesMainToStart = auto()
