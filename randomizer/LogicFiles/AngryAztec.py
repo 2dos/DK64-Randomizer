@@ -116,7 +116,7 @@ LogicRegions = {
     ], [
         Event(Events.AztecDonkeySwitch, lambda l: l.Slam and l.donkey),
     ], [
-        Exit(Regions.AngryAztecMain, lambda l: True, Exits.AztecLlamaToMain),
+        Exit(Regions.AngryAztecMain, lambda l: True),
         Exit(Regions.LlamaTempleBack, lambda l: l.mini and l.tiny),
     ]),
 

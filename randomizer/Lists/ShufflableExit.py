@@ -60,7 +60,7 @@ ShufflableExits = {
     # Jungle Japes Exits
     Exits.JapesMainToMine: ShufflableExit("Jungle Japes Main to Mine", Regions.JungleJapesMain, Exits.JapesMineToMain, ExitCategories.JapesExterior),
     Exits.JapesMineToMain: ShufflableExit("Jungle Japes Mine to Main", Regions.Mine, Exits.JapesMainToMine, ExitCategories.JapesMine),
-    Exits.JapesMainToLankyCave: ShufflableExit("Jungle Japes Main to Lanky Cave", Regions.JungleJapesMain, Exits.JapesLankyCaveToMain, ExitCategories.JapesExterior),
+    Exits.JapesMainToLankyCave: ShufflableExit("Jungle Japes Main to Lanky Cave", Regions.IslesMain, Exits.JapesLankyCaveToMain, ExitCategories.JapesExterior),
     Exits.JapesLankyCaveToMain: ShufflableExit("Jungle Japes Lanky Cave to Main", Regions.JapesLankyCave, Exits.JapesMainToLankyCave),
     Exits.JapesMainToCatacomb: ShufflableExit("Jungle Japes Main to Catacomb", Regions.JungleJapesMain, Exits.JapesCatacombToMain, ExitCategories.JapesExterior),
     Exits.JapesCatacombToMain: ShufflableExit("Jungle Japes Catacomb to Main", Regions.JapesCatacomb, Exits.JapesMainToCatacomb),
@@ -84,7 +84,7 @@ ShufflableExits = {
     Exits.AztecMainToRace: ShufflableExit("Angry Aztec Main to Beetle Race", Regions.AngryAztecMain, Exits.AztecRaceToMain, ExitCategories.AztecExterior),
     Exits.AztecRaceToMain: ShufflableExit("Angry Aztec Beetle Race to Main", Regions.AztecTinyRace, Exits.AztecMainToRace),
     # Exits.AztecMainToLlama: ShufflableExit("Angry Aztec Main to Llama Temple", Regions.AngryAztecMain, Exits.AztecLlamaToMain, ExitCategories.AztecExterior),
-    Exits.AztecLlamaToMain: ShufflableExit("Angry Aztec Llama Temple to Main", Regions.LlamaTemple, Exits.AztecMainToLlama),
+    # Exits.AztecLlamaToMain: ShufflableExit("Angry Aztec Llama Temple to Main", Regions.LlamaTemple, Exits.AztecMainToLlama),
     # Frantic Factory Exits
     Exits.FactoryRandDToRace: ShufflableExit("Frantic Factory R&D to Car Race", Regions.RandD, Exits.FactoryRaceToRandD, ExitCategories.FactoryExterior),
     Exits.FactoryRaceToRandD: ShufflableExit("Frantic Factory Car Race to R&D", Regions.FactoryTinyRace, Exits.FactoryRandDToRace),
