@@ -93,7 +93,7 @@ LogicRegions = {
         Exit(Regions.SealRace, lambda l: Events.SealReleased in l.Events and Events.WaterSwitch in l.Events and l.isdonkey, Exits.GalleonShipyardToSeal),
         Exit(Regions.TreasureRoom, lambda l: Events.ShipyardTreasureRoomOpened in l.Events),
         Exit(Regions.Submarine, lambda l: l.mini and l.istiny, Exits.GalleonShipyardToSubmarine),
-        Exit(Regions.Mechafish, lambda l: Events.MechafishSummoned in l.Events and l.isdiddy, Exits.GalleonShipyardToMechafish),
+        Exit(Regions.Mechafish, lambda l: Events.MechafishSummoned in l.Events and l.isdiddy),
         Exit(Regions.LankyShip, lambda l: Events.GalleonLankySwitch in l.Events and l.islanky, Exits.GalleonShipyardToLanky),
         Exit(Regions.TinyShip, lambda l: Events.GalleonTinySwitch in l.Events and l.istiny, Exits.GalleonShipyardToTiny),
         Exit(Regions.BongosShip, lambda l: l.bongos and l.isdonkey, Exits.GalleonShipyardToBongos),
@@ -143,7 +143,7 @@ LogicRegions = {
     Regions.Mechafish: Region("Mechafish", Levels.GloomyGalleon, False, -1, [
         LocationLogic(Locations.GalleonDiddyMechafish, lambda l: l.peanut and l.isdiddy),
     ], [], [
-        Exit(Regions.Shipyard, lambda l: True, Exits.GalleyonMechafishToShipyard)
+        Exit(Regions.Shipyard, lambda l: True)
     ]),
 
     Regions.LankyShip: Region("Lanky Ship", Levels.GloomyGalleon, False, None, [

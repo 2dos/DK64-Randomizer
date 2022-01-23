@@ -30,12 +30,13 @@ class Event:
 class Exit:
     """Exit from one region to another."""
 
-    def __init__(self, dest, logic, exitShuffleId=None):
+    def __init__(self, dest, logic, exitShuffleId=None, assumed=False):
         """Initialize with given parameters."""
         self.dest = dest
         self.logic = logic  # Lambda function for accessibility
         # Used to identify this exit for entrance shuffle purposes
         self.exitShuffleId = exitShuffleId
+        self.assumed = assumed # Indicates this is an assumed exit attached to the root
 
 
 class Collectible:

@@ -99,8 +99,8 @@ LogicRegions = {
         Exit(Regions.MushroomNightExterior, lambda l: True),
         Exit(Regions.GiantMushroomArea, lambda l: True),
         Exit(Regions.MushroomChunkyRoom, lambda l: l.superSlam and l.ischunky, Exits.ForestExteriorToChunky),
-        Exit(Regions.MushroomLankyZingersRoom, lambda l: l.superSlam and l.islanky, Exits.ForestZingersToExterior),
-        Exit(Regions.MushroomLankyMushroomsRoom, lambda l: l.superSlam and l.islanky, Exits.ForestMushroomsToExterior),
+        Exit(Regions.MushroomLankyZingersRoom, lambda l: l.superSlam and l.islanky, Exits.ForestExteriorToZingers),
+        Exit(Regions.MushroomLankyMushroomsRoom, lambda l: l.superSlam and l.islanky, Exits.ForestExteriorToMushrooms),
         Exit(Regions.ForestBossLobby, lambda l: True),
     ]),
 
