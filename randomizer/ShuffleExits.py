@@ -106,6 +106,7 @@ def ShuffleExitsInPool(settings, frontpool, backpool):
     """Shuffle exits within a specific pool."""
     if settings.decoupled_loading_zones:
         frontpool.extend(backpool)
+        backpool = frontpool.copy()
 
     # Ensure non-tag regions and leaf regions are shuffled first to reduce chance of failure
     priority = [x for x in frontpool if x in PriorityEntrances]
@@ -123,12 +124,14 @@ def ShuffleExitsInPool(settings, frontpool, backpool):
     TagNonLeaves = [x for x in TagRegions if x not in TagLeaves]
     random.shuffle(TagNonLeaves)
 
-    frontpool = priority
-    frontpool.extend(NonTagLeaves)
-    frontpool.extend(NonTagNonLeaves)
-    frontpool.extend(TagLeaves)
+    # Since frontpool.pop() is used, the last added groups are handled first
+    frontpool = []
     frontpool.extend(TagNonLeaves)
-
+    frontpool.extend(TagLeaves)
+    frontpool.extend(NonTagNonLeaves)
+    frontpool.extend(NonTagLeaves)
+    frontpool.extend(priority)
+    
     # For each front exit, select a random valid back exit to attach to it
     while len(frontpool) > 0:
         frontId = frontpool.pop()
@@ -148,10 +151,12 @@ def ShuffleExitsInPool(settings, frontpool, backpool):
         for backId in destinations:
             back = ShufflableExits[backId]
             if AttemptConnect(settings, front, frontId, back, backId):
+                # print("Assigned " + front.name + " --> " + back.name)
                 if not settings.decoupled_loading_zones:
                     backpool.remove(backId)
                 break
         if not front.shuffled:
+            # print("Failed to connect " + front.name + " to any of remaining " + str(len(destinations)) + " destinations!")
             raise Ex.EntranceOutOfDestinations
 
 

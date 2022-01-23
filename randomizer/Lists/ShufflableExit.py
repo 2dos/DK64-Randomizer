@@ -38,10 +38,6 @@ ShufflableExits = {
     Exits.IslesToCastle: ShufflableExit("DK Isles to Creepy Castle", Regions.CreepyCastleLobby, Exits.CastleToIsles, ExitCategories.CastleLobby),
     Exits.CastleToIsles: ShufflableExit("Creepy Castle to DK Isles", Regions.CreepyCastleMain, Exits.IslesToCastle, ExitCategories.CastleExterior),
     # DK Isles Exits
-    Exits.IslesMainToStart: ShufflableExit("DK Isles Main to Start Area", Regions.IslesMain, Exits.IslesStartToMain, ExitCategories.IslesExterior),
-    Exits.IslesStartToMain: ShufflableExit("DK Isles Start Area to Main", Regions.StartArea, Exits.IslesMainToStart, ExitCategories.IslesStart),
-    Exits.IslesStartToTreehouse: ShufflableExit("DK Isles Start Area to Treehouse", Regions.StartArea, Exits.IslesTreehouseToStart, ExitCategories.IslesStart),
-    Exits.IslesTreehouseToStart: ShufflableExit("DK Isles Treehouse to Start", Regions.Treehouse, Exits.IslesStartToTreehouse),
     Exits.IslesMainToPrison: ShufflableExit("DK Isles Main to Prison", Regions.IslesMain, Exits.IslesPrisonToMain, ExitCategories.IslesExterior),
     Exits.IslesPrisonToMain: ShufflableExit("DK Isles Prison to Main", Regions.Prison, Exits.IslesMainToPrison),
     Exits.IslesMainToFairy: ShufflableExit("DK Isles Main to Banana Fairy Queen", Regions.IslesMain, Exits.IslesFairyToMain, ExitCategories.IslesExterior),
@@ -88,7 +84,7 @@ ShufflableExits = {
     Exits.AztecChunkyToMain: ShufflableExit("Angry Aztec Chunky 5DT to Main", Regions.ChunkyTemple, Exits.AztecMainToChunky),
     Exits.AztecMainToRace: ShufflableExit("Angry Aztec Main to Beetle Race", Regions.AngryAztecMain, Exits.AztecRaceToMain, ExitCategories.AztecExterior),
     Exits.AztecRaceToMain: ShufflableExit("Angry Aztec Beetle Race to Main", Regions.AztecTinyRace, Exits.AztecMainToRace),
-    Exits.AztecMainToLlama: ShufflableExit("Angry Aztec Main to Llama Temple", Regions.AngryAztecMain, Exits.AztecLlamaToMain, ExitCategories.AztecExterior),
+    # Exits.AztecMainToLlama: ShufflableExit("Angry Aztec Main to Llama Temple", Regions.AngryAztecMain, Exits.AztecLlamaToMain, ExitCategories.AztecExterior),
     Exits.AztecLlamaToMain: ShufflableExit("Angry Aztec Llama Temple to Main", Regions.LlamaTemple, Exits.AztecMainToLlama),
     # Frantic Factory Exits
     Exits.FactoryRandDToRace: ShufflableExit("Frantic Factory R&D to Car Race", Regions.RandD, Exits.FactoryRaceToRandD, ExitCategories.FactoryExterior),

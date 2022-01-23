@@ -10,7 +10,7 @@ from randomizer.LogicClasses import Event, Exit, LocationLogic, Region
 
 LogicRegions = {
     Regions.Treehouse: Region("Treehouse", Levels.DKIsles, False, None, [], [], [
-        Exit(Regions.StartArea, lambda l: True, Exits.IslesTreehouseToStart)
+        Exit(Regions.StartArea, lambda l: True)
     ]),
 
     Regions.StartArea: Region("Start Area", Levels.DKIsles, False, None, [
@@ -19,8 +19,8 @@ LogicRegions = {
         LocationLogic(Locations.IslesOrangesTrainingBarrel, lambda l: True),
         LocationLogic(Locations.IslesBarrelsTrainingBarrel, lambda l: True),
     ], [], [
-        Exit(Regions.IslesMain, lambda l: True, Exits.IslesStartToMain),
-        Exit(Regions.Treehouse, lambda l: True, Exits.IslesStartToTreehouse),
+        Exit(Regions.IslesMain, lambda l: True),
+        Exit(Regions.Treehouse, lambda l: True),
         Exit(Regions.Cranky, lambda l: True),
     ]),
 
@@ -38,7 +38,7 @@ LogicRegions = {
         Event(Events.IslesDiddyBarrelSpawn, lambda l: l.chunky and l.trombone and l.lanky),
         Event(Events.IslesChunkyBarrelSpawn, lambda l: l.monkeyport and l.saxophone and l.tiny),
     ], [
-        Exit(Regions.StartArea, lambda l: True, Exits.IslesStartToMain),
+        Exit(Regions.StartArea, lambda l: True),
         Exit(Regions.Prison, lambda l: True, Exits.IslesMainToPrison),
         Exit(Regions.BananaFairyRoom, lambda l: l.mini and l.istiny, Exits.IslesMainToFairy),
         Exit(Regions.JungleJapesLobby, lambda l: True, Exits.IslesMainToJapesLobby),
