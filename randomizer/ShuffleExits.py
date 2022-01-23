@@ -94,6 +94,9 @@ def AttemptConnect(settings, front, frontId, back, backId):
 
 def ShuffleExitsInPool(settings, frontpool, backpool):
     """Shuffle exits within a specific pool."""
+    if settings.decoupled_loading_zones:
+        frontpool.extend(backpool)
+
     # Ensure non-tag regions and leaf regions are shuffled first to reduce chance of failure
     NonTagRegions = [x for x in frontpool if not Logic.Regions[ShufflableExits[x].region].tagbarrel]
     NonTagLeaves = [x for x in NonTagRegions if ShufflableExits[x].category is None]
@@ -117,6 +120,8 @@ def ShuffleExitsInPool(settings, frontpool, backpool):
         frontId = frontpool.pop()
         front = ShufflableExits[frontId]
         destinations = backpool.copy()
+        if settings.decoupled_loading_zones:
+            destinations = frontpool.copy()
         # If our target exit to shuffle has a category, ensure it's not shuffled to entrances with the same category
         if front.category is not None:
             destinations = [
@@ -129,7 +134,8 @@ def ShuffleExitsInPool(settings, frontpool, backpool):
         for backId in destinations:
             back = ShufflableExits[backId]
             if AttemptConnect(settings, front, frontId, back, backId):
-                backpool.remove(backId)
+                if not settings.decoupled_loading_zones:
+                    backpool.remove(backId)
                 break
         if not front.shuffled:
             raise Ex.EntranceOutOfDestinations
@@ -153,9 +159,6 @@ def AssumeExits(settings, pools, newpool):
         # 2) Attach to root of world (DK Isles)
         newExit = Exit(exit.region, lambda l: True, exitId)
         AddRootExit(newExit)
-    if settings.decoupled_loading_zones:
-        pools.append(backpool.copy())
-        pools.append(frontpool.copy())
     pools.append(frontpool)
     pools.append(backpool)
 

@@ -62,8 +62,6 @@ ShufflableExits = {
     Exits.IslesCavesLobbyToMain: ShufflableExit("DK Isles Crystal Caves Lobby to Main", Regions.CrystalCavesLobby, Exits.IslesMainToCavesLobby),
     Exits.IslesMainToCastleLobby: ShufflableExit("DK Isles Main to Creepy Castle Lobby", Regions.IslesMain, Exits.IslesCastleLobbyToMain, ExitCategories.IslesExterior),
     Exits.IslesCastleLobbyToMain: ShufflableExit("DK Isles Creepy Castle Lobby to Main", Regions.CreepyCastleLobby, Exits.IslesMainToCastleLobby),
-    Exits.IslesMainToHelmLobby: ShufflableExit("DK Isles Crocodile Isle to Hideout Helm Lobby", Regions.IslesMain, Exits.IslesHelmLobbyToMain, ExitCategories.IslesExterior),
-    Exits.IslesHelmLobbyToMain: ShufflableExit("DK Isles Hideout Helm Lobby to Crocodile Isle", Regions.HideoutHelmLobby, Exits.IslesMainToHelmLobby),
     # Jungle Japes Exits
     Exits.JapesMainToMine: ShufflableExit("Jungle Japes Main to Mine", Regions.JungleJapesMain, Exits.JapesMineToMain, ExitCategories.JapesExterior),
     Exits.JapesMineToMain: ShufflableExit("Jungle Japes Mine to Main", Regions.Mine, Exits.JapesMainToMine, ExitCategories.JapesMine),

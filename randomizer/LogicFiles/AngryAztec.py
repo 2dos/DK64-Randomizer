@@ -16,7 +16,7 @@ LogicRegions = {
         LocationLogic(Locations.AztecLankyMedal, lambda l: l.ColoredBananas[Levels.AngryAztec][Kongs.lanky] >= 75),
         LocationLogic(Locations.AztecTinyMedal, lambda l: l.ColoredBananas[Levels.AngryAztec][Kongs.tiny] >= 75),
         LocationLogic(Locations.AztecChunkyMedal, lambda l: l.ColoredBananas[Levels.AngryAztec][Kongs.chunky] >= 75),
-        LocationLogic(Locations.AztecDonkeyFreeLlama, lambda l: Events.LlamaFreed in l.Events and l.donkey),
+        LocationLogic(Locations.AztecDonkeyFreeLlama, lambda l: l.donkey),
         LocationLogic(Locations.AztecChunkyVases, lambda l: l.pineapple and l.chunky),
         LocationLogic(Locations.AztecDonkeyKasplat, lambda l: l.coconut and l.strongKong and l.donkey),
         LocationLogic(Locations.AztecDiddyKasplat, lambda l: l.jetpack and l.diddy),
@@ -57,7 +57,6 @@ LogicRegions = {
         LocationLogic(Locations.AztecTinyKasplat, lambda l: l.tiny),
     ], [
         Event(Events.FedTotem, lambda l: l.jetpack and l.peanut and l.Slam and l.diddy),
-        Event(Events.LlamaFreed, lambda l: l.blast and l.donkey),
     ], [
         Exit(Regions.AngryAztecStart, lambda l: True),
         Exit(Regions.DonkeyTemple, lambda l: Events.FedTotem in l.Events and l.coconut and l.isdonkey, Exits.AztecMainToDonkey),
@@ -66,8 +65,7 @@ LogicRegions = {
         Exit(Regions.TinyTemple, lambda l: Events.FedTotem in l.Events and l.feather and l.istiny, Exits.AztecMainToTiny),
         Exit(Regions.ChunkyTemple, lambda l: Events.FedTotem in l.Events and l.pineapple and l.ischunky, Exits.AztecMainToChunky),
         Exit(Regions.AztecTinyRace, lambda l: l.charge and l.jetpack and l.diddy and l.mini and l.saxophone and l.istiny, Exits.AztecMainToRace),
-        Exit(Regions.LlamaTemple, lambda l: Events.LlamaFreed in l.Events and ((l.coconut and l.isdonkey)
-             or (l.grape and l.islanky) or (l.feather and l.istiny)), Exits.AztecMainToLlama),
+        Exit(Regions.LlamaTemple, lambda l: (l.coconut and l.isdonkey) or (l.grape and l.islanky) or (l.feather and l.istiny), Exits.AztecMainToLlama),
     ]),
 
     # All the 5 door temple require their respective gun to die

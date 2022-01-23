@@ -27,7 +27,7 @@ class Events(IntEnum):
 
     # Angry Aztec events
     FedTotem = auto()
-    LlamaFreed = auto()
+    # LlamaFreed = auto() # Decision to start with llama freed
     AztecDonkeySwitch = auto()
 
     # Frantic Factory events
