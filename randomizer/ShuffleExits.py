@@ -29,6 +29,16 @@ LevelExitPool = [
     Exits.CastleToIsles,
 ]
 
+PriorityEntrances = [
+    Exits.IslesMainToSnideRoom,
+    Exits.AztecLlamaToMain,
+    Exits.ForestNightToExterior,
+    Exits.ForestTinyMillToGrinder,
+    Exits.CastleDungeonToUpper,
+    Exits.CastleWaterfallToUpper,
+]
+PriorityEntrances.extend(LevelExitPool)
+
 # Root is the starting spawn, which is the main area of DK Isles.
 root = Regions.IslesMain
 
@@ -98,7 +108,10 @@ def ShuffleExitsInPool(settings, frontpool, backpool):
         frontpool.extend(backpool)
 
     # Ensure non-tag regions and leaf regions are shuffled first to reduce chance of failure
-    NonTagRegions = [x for x in frontpool if not Logic.Regions[ShufflableExits[x].region].tagbarrel]
+    priority = [x for x in frontpool if x in PriorityEntrances]
+    random.shuffle(priority)
+
+    NonTagRegions = [x for x in frontpool if not Logic.Regions[ShufflableExits[x].region].tagbarrel and x not in priority]
     NonTagLeaves = [x for x in NonTagRegions if ShufflableExits[x].category is None]
     random.shuffle(NonTagLeaves)
     NonTagNonLeaves = [x for x in NonTagRegions if x not in NonTagLeaves]
@@ -110,7 +123,8 @@ def ShuffleExitsInPool(settings, frontpool, backpool):
     TagNonLeaves = [x for x in TagRegions if x not in TagLeaves]
     random.shuffle(TagNonLeaves)
 
-    frontpool = NonTagLeaves
+    frontpool = priority
+    frontpool.extend(NonTagLeaves)
     frontpool.extend(NonTagNonLeaves)
     frontpool.extend(TagLeaves)
     frontpool.extend(TagNonLeaves)
@@ -168,11 +182,10 @@ def ShuffleExits(settings):
     # Set up front and back entrance pools for each setting
     # Assume all shuffled exits reachable by default
     pools = []
-    if settings.shuffle_levels:
+    if settings.shuffle_loading_zones == "levels":
         AssumeExits(settings, pools, LevelExitPool)
-    if settings.shuffle_loading_zones:
-        LoadingZonePool = [x for x in ShufflableExits.keys() if x not in LevelExitPool]
-        AssumeExits(settings, pools, LoadingZonePool)
+    elif settings.shuffle_loading_zones == "all":
+        AssumeExits(settings, pools, [x for x in ShufflableExits.keys()])
     # Shuffle each entrance pool
     for i in range(0, len(pools), 2):
         ShuffleExitsInPool(settings, pools[i], pools[i + 1])

@@ -25,7 +25,7 @@ LogicRegions = {
     ]),
 
     Regions.IslesMain: Region("Isles Main", Levels.DKIsles, True, None, [
-        LocationLogic(Locations.IslesDonkeyJapesRock, lambda l: Events.KLumsyTalkedTo in l.Events and l.donkey),
+        LocationLogic(Locations.IslesDonkeyJapesRock, lambda l: l.donkey),
         LocationLogic(Locations.IslesTinyCagedBanana, lambda l: l.feather and l.tiny),
         LocationLogic(Locations.IslesTinyInstrumentPad, lambda l: Events.IslesChunkyBarrelSpawn in l.Events and l.tiny),
         LocationLogic(Locations.IslesLankyCagedBanana, lambda l: l.grape and l.lanky),
@@ -41,27 +41,21 @@ LogicRegions = {
         Exit(Regions.StartArea, lambda l: True, Exits.IslesStartToMain),
         Exit(Regions.Prison, lambda l: True, Exits.IslesMainToPrison),
         Exit(Regions.BananaFairyRoom, lambda l: l.mini and l.istiny, Exits.IslesMainToFairy),
-        Exit(Regions.JungleJapesLobby, lambda l: Events.KLumsyTalkedTo in l.Events, Exits.IslesMainToJapesLobby),
+        Exit(Regions.JungleJapesLobby, lambda l: True, Exits.IslesMainToJapesLobby),
         Exit(Regions.AngryAztecLobby, lambda l: True, Exits.IslesMainToAztecLobby),
         Exit(Regions.CrocodileIsleBeyondLift, lambda l: True),
         Exit(Regions.GloomyGalleonLobby, lambda l: True, Exits.IslesMainToGalleonLobby),
         Exit(Regions.CabinIsle, lambda l: True),
         Exit(Regions.CrystalCavesLobby, lambda l: True, Exits.IslesMainToCavesLobby),
         Exit(Regions.CreepyCastleLobby, lambda l: True, Exits.IslesMainToCastleLobby),
-        Exit(Regions.HideoutHelmLobby, lambda l: True and l.monkeyport and l.istiny, Exits.IslesMainToHelmLobby),
-        Exit(Regions.KRool, lambda l: Events.EigthKey in l.Events),
+        Exit(Regions.HideoutHelmLobby, lambda l: True and l.monkeyport and l.istiny),
+        Exit(Regions.KRool, lambda l: Events.KeysTurnIn in l.Events),
     ]),
 
     Regions.Prison: Region("Prison", Levels.DKIsles, False, None, [
         LocationLogic(Locations.IslesLankyPrisonOrangsprint, lambda l: l.sprint and l.islanky),
     ], [
-        Event(Events.KLumsyTalkedTo, lambda l: True),
-        Event(Events.FirstKey, lambda l: True),
-        Event(Events.SecondKey, lambda l: True),
-        Event(Events.FourthKey, lambda l: True),
-        Event(Events.FifthKey, lambda l: True),
-        Event(Events.SeventhKey, lambda l: True),
-        Event(Events.EigthKey, lambda l: l.JapesKey and l.AztecKey and l.FactoryKey and l.GalleonKey and l.ForestKey and l.CavesKey and l.CastleKey and l.HelmKey),
+        Event(Events.KeysTurnIn, lambda l: l.JapesKey and l.AztecKey and l.FactoryKey and l.GalleonKey and l.ForestKey and l.CavesKey and l.CastleKey and l.HelmKey),
     ], [
         Exit(Regions.IslesMain, lambda l: True, Exits.IslesPrisonToMain),
     ]),
@@ -159,7 +153,7 @@ LogicRegions = {
         LocationLogic(Locations.IslesChunkyHelmLobby, lambda l: l.gorillaGone and l.chunky),
         LocationLogic(Locations.IslesDonkeyKasplat, lambda l: l.coconut and l.donkey),
     ], [], [
-        Exit(Regions.IslesMain, lambda l: True, Exits.IslesHelmLobbyToMain),
+        Exit(Regions.IslesMain, lambda l: True),
         Exit(Regions.HideoutHelmStart, lambda l: l.gorillaGone and l.chunky and l.GoldenBananas >= l.settings.EntryGBs[Levels.HideoutHelm - 1]),
     ]),
 

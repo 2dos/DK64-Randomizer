@@ -57,16 +57,17 @@ class Settings:
         # progressive_upgrades: bool
         self.progressive_upgrades = True
 
-        # shuffle_loading_zones: bool
-        self.shuffle_loading_zones = False
+        # shuffle_loading_zones: str
+        # none
+        # levels
+        # all
+        self.shuffle_loading_zones = "None"
 
         # decoupled_loading_zones: bool
         self.decoupled_loading_zones = False
 
     def generate_main(self):
         """Set Default items on main page."""
-        # shuffle_levels: bool
-        self.shuffle_levels = None
         self.seed = None
         self.download_json = None
 
