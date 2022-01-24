@@ -25,6 +25,7 @@ set_variables = {
     "kut_out_kong_order": [0,0,0,0,0],
     "remove_blockers": 0x7F,
     "resolve_bonus": 3,
+    "disable_drops": 1,
     "special_move_prices": [
         [1,2,3],
         [4,5,6],

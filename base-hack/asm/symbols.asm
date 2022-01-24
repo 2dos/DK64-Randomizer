@@ -220,6 +220,8 @@
 .definelabel BossMapArray, 0x80744700
 .definelabel BossKongArray, 0x807446F0
 .definelabel KutOutKongArray, 0x80035B44
+.definelabel EnemyDropsTable, 0x80750400
+
 
 .definelabel KongUnlockedMenuArray, 0x80033804
 .definelabel FilePercentage, 0x80033F51
