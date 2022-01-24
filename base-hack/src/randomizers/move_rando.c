@@ -75,6 +75,12 @@ void replace_moves(void) {
 						if (CrankyMoves[j][i].purchase_type == PURCHASE_SLAM) {
 							CrankyMoves[j][i].purchase_value = 3;
 						}
+						if (CandyMoves[j][i].purchase_type == PURCHASE_SLAM) {
+							CandyMoves[j][i].purchase_value = 3;
+						}
+						if (FunkyMoves[j][i].purchase_type == PURCHASE_SLAM) {
+							FunkyMoves[j][i].purchase_value = 3;
+						}
 					}
 				}
 			}
