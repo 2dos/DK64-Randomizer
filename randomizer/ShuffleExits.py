@@ -54,6 +54,11 @@ def Reset():
     for exit in ShufflableExits.values():
         exit.dest = exit.reverse
         exit.shuffled = False
+    assumedExits = []
+    for exit in [x for x in Logic.Regions[root].exits if x.assumed]:
+        assumedExits.append(exit)
+    for exit in assumedExits:
+        RemoveRootExit(exit)
 
 
 def VerifyWorld(settings):
@@ -123,8 +128,19 @@ def ShuffleExitsInPool(settings, frontpool, backpool):
     while len(backpool) > 0:
         backId = backpool.pop(0)
         back = ShufflableExits[backId]
-        origins = frontpool.copy()
-        random.shuffle(origins)
+        # Filter origins to make sure that if this target requires a certain kong's access, then the entrance will be accessible by that kong
+        # Only applicable for forwards exits
+        origins = [x for x in frontpool if x % 2 == 0 or ShufflableExits[x].kong is None or ShufflableExits[x].kong == back.kong]
+        # Also sort origins so that more restrictive origins are placed first
+        restrictive = [x for x in origins if ShufflableExits[x].kong is not None and ShufflableExits[x].move]
+        random.shuffle(restrictive)
+        kongreq = [x for x in origins if ShufflableExits[x].kong is not None and not ShufflableExits[x].move]
+        random.shuffle(kongreq)
+        nonrestrictive = [x for x in origins if x not in restrictive and x not in kongreq]
+        random.shuffle(nonrestrictive)
+        origins = restrictive
+        origins.extend(kongreq)
+        origins.extend(nonrestrictive)
         # Select a random origin
         for frontId in origins:
             front = ShufflableExits[frontId]
