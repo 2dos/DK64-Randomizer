@@ -36,7 +36,7 @@ root = Regions.IslesMain
 
 def GetRootExit(exitId):
     """Query the world root to return an exit with a matching exit id."""
-    return [x for x in Logic.Regions[root].exits if x.exitShuffleId is not None and x.exitShuffleId == exitId][0]
+    return [x for x in Logic.Regions[root].exits if x.assumed and x.exitShuffleId is not None and x.exitShuffleId == exitId][0]
 
 
 def RemoveRootExit(exit):
