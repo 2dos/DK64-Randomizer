@@ -1,4 +1,6 @@
 """Apply Patch data to the ROM."""
+import js
+
 import codecs
 import json
 import pickle
@@ -6,8 +8,10 @@ import pickle
 from randomizer.DKTV import randomize_dktv
 from randomizer.MusicRando import randomize_music
 from randomizer.Patcher import ROM
+
 # from randomizer.Spoiler import Spoiler
 from ui.progress_bar import ProgressBar
+from randomizer.Enums.Exits import Exits
 
 
 def patching_response(responded_data):
@@ -28,101 +32,129 @@ def patching_response(responded_data):
         pass
 
     ProgressBar().update_progress(5, "Applying Patches")
-    spoiler= pickle.loads(codecs.decode(responded_data.encode(), "base64"))
+    # spoiler: Spoiler = pickle.loads(codecs.decode(responded_data.encode(), "base64"))
+    spoiler = pickle.loads(codecs.decode(responded_data.encode(), "base64"))
     # Make sure we re-load the seed id
     spoiler.settings.set_seed()
-    settings = {}
+
     # Starting index for our settings
     sav = 0x1FED020
 
+    # Shuffle Levels
     if spoiler.settings.shuffle_levels:
         ROM().seek(sav + 0x000)
         ROM().write(1)
 
-    # TODO: Dummy function
-    if settings.get("Level_Order"):
-        order = 0
-        for level in loaded_data:
-            ROM().seek(sav + 0x001 + order)
-            ROM().write(level)
-            order += 1
-    else:
-        for i in range(0, 6):
-            ROM().seek(sav + 0x001 + i)
-            ROM().write(i)
+    # Update Level Order
+    vanilla_entrace_order = [
+        Exits.IslesToJapes,
+        Exits.IslesToAztec,
+        Exits.IslesToFactory,
+        Exits.IslesToGalleon,
+        Exits.IslesToForest,
+        Exits.IslesToCaves,
+        Exits.IslesToCastle,
+        Exits.IslesToHelm,
+    ]
+    vanilla_lobby_order = [
+        Exits.JapesToIsles, 
+        Exits.AztecToIsles,
+        Exits.FactoryToIsles,
+        Exits.GalleonToIsles,
+        Exits.ForestToIsles,
+        Exits.CavesToIsles,
+        Exits.CastleToIsles,
+        Exits.HelmToIsles
+    ]
+    order = 0
+    for level in vanilla_entrace_order:
+        ROM().seek(sav + 0x001 + order)
+        ROM().write(vanilla_lobby_order.index(spoiler.shuffled_exit_data[level]))
+        order += 1
 
+    # Color Banana Requirements
     order = 0
     for count in spoiler.settings.BossBananas:
         ROM().seek(sav + 0x008 + order)
         ROM().write(count)
         order += 2
 
+    # Golden Banana Requirements
     order = 0
     for count in spoiler.settings.EntryGBs:
         ROM().seek(sav + 0x016 + order)
         ROM().write(count)
         order += 1
 
-    # TODO: Dummy function
-    if settings.get("key_flags"):
-        order = 0
-        for level in loaded_data:
-            ROM().seek(sav + 0x01E + order)
-            ROM().write(level)
-            order += 2
-    else:
-        ROM().seek(sav + 0x01E + 0)
-        ROM().writeMultipleBytes(0x1A, 2)
-        ROM().seek(sav + 0x01E + 2)
-        ROM().writeMultipleBytes(0x4A, 2)
+    # Key Order
+    map_pointers = {
+        Exits.IslesToJapes: Exits.JapesToIsles,
+        Exits.IslesToAztec: Exits.AztecToIsles,
+        Exits.IslesToFactory: Exits.FactoryToIsles,
+        Exits.IslesToGalleon: Exits.GalleonToIsles,
+        Exits.IslesToForest: Exits.ForestToIsles,
+        Exits.IslesToCaves: Exits.CavesToIsles,
+        Exits.IslesToCastle: Exits.CastleToIsles,
+        Exits.IslesToHelm: Exits.HelmToIsles,
+    }
+    key_mapping = {
+        Exits.JapesToIsles: 0x01E,
+        Exits.AztecToIsles: 0x1A,
+        Exits.FactoryToIsles: 0x4A,
+        Exits.GalleonToIsles: 0x8A,
+        Exits.ForestToIsles: 0xA8,
+        Exits.CavesToIsles: 0xEC,
+        Exits.CastleToIsles: 0x124,
+        Exits.HelmToIsles: 0x13D,
+    }
+    order = 0
+    for key, value in map_pointers.items():
+        new_world = spoiler.shuffled_exit_data.get(key)
+        ROM().seek(sav + 0x01E + order)
+        ROM().writeMultipleBytes(key_mapping[new_world], 2)
+        order += 2
 
-        ROM().seek(sav + 0x01E + 4)
-        ROM().writeMultipleBytes(0x8A, 2)
-
-        ROM().seek(sav + 0x01E + 6)
-        ROM().writeMultipleBytes(0xA8, 2)
-
-        ROM().seek(sav + 0x01E + 8)
-        ROM().writeMultipleBytes(0xEC, 2)
-
-        ROM().seek(sav + 0x01E + 10)
-        ROM().writeMultipleBytes(0x124, 2)
-
-        ROM().seek(sav + 0x01E + 12)
-        ROM().writeMultipleBytes(0x13D, 2)
-
+    # Unlock All Kongs
     if spoiler.settings.unlock_all_kongs:
         ROM().seek(sav + 0x02C)
         ROM().write(1)
 
+    # Unlock All Moves
     if spoiler.settings.unlock_all_moves:
         ROM().seek(sav + 0x02D)
         ROM().write(1)
 
+    # Fast Start game
     if spoiler.settings.fast_start_beginning_of_game:
         ROM().seek(sav + 0x02E)
         ROM().write(1)
 
+    # Unlock Shockwave
     if spoiler.settings.unlock_fairy_shockwave:
         ROM().seek(sav + 0x02F)
         ROM().write(1)
 
+    # Enable Tag Anywhere
     if spoiler.settings.enable_tag_anywhere:
         ROM().seek(sav + 0x030)
         ROM().write(1)
 
+    # Fast Hideout
     if spoiler.settings.fast_start_hideout_helm:
         ROM().seek(sav + 0x031)
         ROM().write(1)
 
+    # Crown Door Open
     if spoiler.settings.crown_door_open:
         ROM().seek(sav + 0x032)
         ROM().write(1)
 
+    # Coin Door Open
     if spoiler.settings.coin_door_open:
         ROM().seek(sav + 0x033)
         ROM().write(1)
 
+    # Quality of Life
     if spoiler.settings.quality_of_life:
         ROM().seek(sav + 0x034)
         ROM().write(1)
@@ -133,3 +165,9 @@ def patching_response(responded_data):
     ROM().fixSecurityValue()
     ROM().save(f"dk64-{spoiler.settings.seed}.z64")
     ProgressBar().reset()
+    if spoiler.settings.generate_spoilerlog is True:
+        js.document.getElementById("nav-spoiler-tab").style.display = ""
+        js.document.getElementById("spoiler_log_text").value = spoiler.toJson()
+    else:
+        js.document.getElementById("nav-spoiler-tab").style.display = "none"
+        js.document.getElementById("spoiler_log_text").value = ""
