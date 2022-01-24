@@ -26,6 +26,7 @@ void cFuncLoop(void) {
 	krool_order_indicator();
 	alter_boss_key_flags();
 	displayNumberOnTns();
+	cancelMoveSoftlock();
 	if (Rando.quality_of_life) {
 		// DKTVKong = 0;
 		// if (CurrentMap == NINTENDO_LOGO) {

@@ -117,6 +117,7 @@
 .definelabel PreviousCameraState, 0x807F5CF0
 .definelabel CurrentCameraState, 0x807F5CF2
 .definelabel CameraStateChangeTimer, 0x807F5CEC
+.definelabel CutsceneStateBitfield, 0x807F5CF4
 .definelabel AutowalkPointer, 0x807FD70C
 .definelabel IsAutowalking, 0x807463B8
 .definelabel PositionWarpInfo, 0x807FC918 // WarpInfo Struct

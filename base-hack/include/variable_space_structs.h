@@ -54,11 +54,11 @@ typedef struct varspace {
 	/* 0x0D9 */ unsigned char lanky_funkymoves[7]; // See "dk_crankymoves"
 	/* 0x0E0 */ unsigned char tiny_funkymoves[7]; // See "dk_crankymoves"
 	/* 0x0E7 */ unsigned char chunky_funkymoves[7]; // See "dk_crankymoves"
-	/* 0x0EE */ unsigned char dk_candymoves[7]; // See "dk_crankymoves"
-	/* 0x0F5 */ unsigned char diddy_candymoves[7]; // See "dk_crankymoves"
-	/* 0x0FC */ unsigned char lanky_candymoves[7]; // See "dk_crankymoves"
-	/* 0x103 */ unsigned char tiny_candymoves[7]; // See "dk_crankymoves"
-	/* 0x10A */ unsigned char chunky_candymoves[7]; // See "dk_crankymoves"
+	/* 0x0EE */ unsigned char dk_candymoves[7]; // See "dk_crankymoves". Note: Do not assign anything to item 0 or 4 as there's no Candy's in Japes or Fungi
+	/* 0x0F5 */ unsigned char diddy_candymoves[7]; // See "dk_crankymoves". Note: Do not assign anything to item 0 or 4 as there's no Candy's in Japes or Fungi
+	/* 0x0FC */ unsigned char lanky_candymoves[7]; // See "dk_crankymoves". Note: Do not assign anything to item 0 or 4 as there's no Candy's in Japes or Fungi
+	/* 0x103 */ unsigned char tiny_candymoves[7]; // See "dk_crankymoves". Note: Do not assign anything to item 0 or 4 as there's no Candy's in Japes or Fungi
+	/* 0x10A */ unsigned char chunky_candymoves[7]; // See "dk_crankymoves". Note: Do not assign anything to item 0 or 4 as there's no Candy's in Japes or Fungi
 	/* 0x111 */ char kut_out_kong_order[5]; // Value of item: 0 = DK, 1 = Diddy, 2 = Lanky, 3 = Tiny, 4 = Chunky. Kongs can be repeated
 	/* 0x116 */ unsigned char remove_blockers; // Bitfield of B. Lockers to remove. 0 = Remove None. 0x7F = remove all except Helm Lobby. 0xFF = Remove all.
 	/* 0x117 */ char resolve_bonus; // Bitfield. 0000 0001 = auto-complete bonus barrels. 0000 0010 = auto-complete helm barrels. 0 = Off. 3 = Resolve Helm & Bonus Barrels

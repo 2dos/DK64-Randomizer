@@ -124,6 +124,7 @@ extern cutsceneType* CutsceneTypePointer;
 extern short PreviousCameraState;
 extern short CurrentCameraState;
 extern short CameraStateChangeTimer;
+extern unsigned short CutsceneStateBitfield;
 extern AutowalkData* AutowalkPointer;
 extern char IsAutowalking;
 extern WarpInfo PositionWarpInfo;
