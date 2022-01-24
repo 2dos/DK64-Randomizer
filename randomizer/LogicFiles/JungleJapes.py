@@ -113,13 +113,13 @@ LogicRegions = {
         Event(Events.JapesDiddySwitch2, lambda l: l.Slam and l.isdiddy),
     ], [
         Exit(Regions.JungleJapesMain, lambda l: True, Exits.JapesMineToMain),
-        Exit(Regions.JapesMinecarts, lambda l: l.charge and l.Slam and l.isdiddy, Exits.JapesMineToCarts),
+        Exit(Regions.JapesMinecarts, lambda l: l.charge and l.Slam and l.isdiddy),
     ]),
 
     Regions.JapesMinecarts: Region("Japes Minecarts", Levels.JungleJapes, False, None, [
         LocationLogic(Locations.JapesDiddyMinecarts, lambda l: l.isdiddy),
     ], [], [
-        Exit(Regions.Mine, lambda l: True, Exits.JapesCartsToMine),
+        Exit(Regions.JungleJapesMain, lambda l: True),
     ]),
 
     # Catacomb deaths lead back to itself

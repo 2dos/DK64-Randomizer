@@ -23,7 +23,7 @@ LogicRegions = {
         Event(Events.WormGatesOpened, lambda l: (l.feather and l.tiny) and (l.pineapple and l.chunky)),
     ], [
         Exit(Regions.FungiForestLobby, lambda l: True, Exits.ForestToIsles),
-        Exit(Regions.ForestMinecarts, lambda l: l.Slam and l.ischunky, Exits.ForestMainToCarts),
+        Exit(Regions.ForestMinecarts, lambda l: l.Slam and l.ischunky),
         Exit(Regions.GiantMushroomArea, lambda l: True),
         Exit(Regions.MillArea, lambda l: True),
         Exit(Regions.WormArea, lambda l: Events.WormGatesOpened in l.Events),
@@ -32,7 +32,7 @@ LogicRegions = {
     Regions.ForestMinecarts: Region("Forest Minecarts", Levels.FungiForest, False, None, [
         LocationLogic(Locations.ForestChunkyMinecarts, lambda l: l.ischunky),
     ], [], [
-        Exit(Regions.FungiForestStart, lambda l: True, Exits.ForestCartsToMain),
+        Exit(Regions.FungiForestStart, lambda l: True),
     ]),
 
     Regions.GiantMushroomArea: Region("Giant Mushroom Area", Levels.FungiForest, True, None, [

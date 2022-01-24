@@ -146,12 +146,14 @@ def GetAccessibleLocations(settings, ownedItems, searchType=SearchMode.GetReacha
     elif searchType == SearchMode.GeneratePlaythrough:
         return playthroughLocations
     elif searchType == SearchMode.CheckAllReachable:
-        isValid = len(accessible) == len(LocationList)
-        # if not isValid:
-        #     for location in LocationList:
-        #         if location not in accessible:
-        #            print("Couldn't reach location: " + location.name)
-        return isValid
+        return len(accessible) == len(LocationList)
+    elif searchType == SearchMode.GetUnreachable:
+        unreachable = []
+        for location in LocationList:
+            if location not in accessible:
+                unreachable.append(location)
+        return unreachable
+        
 
 
 def RandomFill(itemsToPlace):

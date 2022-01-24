@@ -29,9 +29,10 @@ LevelExitPool = [
     Exits.CastleToIsles,
 ]
 
+unreachables = []
+
 # Root is the starting spawn, which is the main area of DK Isles.
 root = Regions.IslesMain
-
 
 def GetRootExit(exitId):
     """Query the world root to return an exit with a matching exit id."""
@@ -58,22 +59,23 @@ def Reset():
 def VerifyWorld(settings):
     """Make sure all item locations are reachable on current world graph with constant items placed and all other items owned."""
     PlaceConstants(settings)
-    allReachable = Fill.GetAccessibleLocations(settings, AllItems(settings), SearchMode.CheckAllReachable)
+    # allReachable = Fill.GetAccessibleLocations(settings, AllItems(settings), SearchMode.CheckAllReachable)
+    global unreachables
+    unreachables = Fill.GetAccessibleLocations(settings, AllItems(settings), SearchMode.GetUnreachable)
+    isValid = len(unreachables) == 0
     Fill.Reset()
-    return allReachable
+    return isValid
 
 
 def AttemptConnect(settings, front, frontId, back, backId):
     """Attempt to connect two exits, checking if the world is valid if they are connected."""
     # Remove connections to world root
-    #frontExit = GetRootExit(front.reverse)
-    frontExit = GetRootExit(frontId)
-    RemoveRootExit(frontExit)
-    backExit = None
+    backExit = GetRootExit(backId)
+    RemoveRootExit(backExit)
+    frontExit = None
     if not settings.decoupled_loading_zones:
-        #backExit = GetRootExit(back.reverse)
-        backExit = GetRootExit(backId)
-        RemoveRootExit(backExit)
+        frontExit = GetRootExit(frontId)
+        RemoveRootExit(frontExit)
     # Add connection between selected exits
     front.shuffled = True
     front.dest = backId
@@ -84,11 +86,11 @@ def AttemptConnect(settings, front, frontId, back, backId):
     valid = VerifyWorld(settings)
     # If world is not valid, restore root connections and undo new connections
     if not valid:
-        AddRootExit(frontExit)
+        AddRootExit(backExit)
         front.shuffled = False
         front.dest = None
         if not settings.decoupled_loading_zones:
-            AddRootExit(backExit)
+            AddRootExit(frontExit)
             back.shuffled = False
             back.dest = None
     return valid
@@ -98,46 +100,42 @@ def ShuffleExitsInPool(settings, frontpool, backpool):
     """Shuffle exits within a specific pool."""
     if settings.decoupled_loading_zones:
         frontpool.extend(backpool)
+        backpool = frontpool.copy()
 
-    NonTagRegions = [x for x in frontpool if not Logic.Regions[ShufflableExits[x].region].tagbarrel]
+    NonTagRegions = [x for x in backpool if not Logic.Regions[ShufflableExits[x].region].tagbarrel]
     NonTagLeaves = [x for x in NonTagRegions if ShufflableExits[x].category is None]
     random.shuffle(NonTagLeaves)
     NonTagNonLeaves = [x for x in NonTagRegions if x not in NonTagLeaves]
     random.shuffle(NonTagNonLeaves)
 
-    TagRegions = [x for x in frontpool if x not in NonTagRegions]
+    TagRegions = [x for x in backpool if x not in NonTagRegions]
     TagLeaves = [x for x in TagRegions if ShufflableExits[x].category is None]
     random.shuffle(TagLeaves)
     TagNonLeaves = [x for x in TagRegions if x not in TagLeaves]
     random.shuffle(TagNonLeaves)
 
-    frontpool = NonTagLeaves
-    frontpool.extend(NonTagNonLeaves)
-    frontpool.extend(TagLeaves)
-    frontpool.extend(TagNonLeaves)
+    backpool = NonTagLeaves
+    backpool.extend(NonTagNonLeaves)
+    backpool.extend(TagLeaves)
+    backpool.extend(TagNonLeaves)
 
     # For each front exit, select a random valid back exit to attach to it
-    while len(frontpool) > 0:
-        frontId = frontpool.pop(0)
-        front = ShufflableExits[frontId]
-        destinations = backpool.copy()
-        # If our target exit to shuffle has a category, ensure it's not shuffled to entrances with the same category
-        if front.category is not None:
-            destinations = [
-                x
-                for x in destinations
-                if x != frontId and (ShufflableExits[x].category is None or ShufflableExits[x].category != front.category)
-            ]
-        random.shuffle(destinations)
-        # Select the destination
-        for backId in destinations:
-            back = ShufflableExits[backId]
+    while len(backpool) > 0:
+        backId = backpool.pop(0)
+        back = ShufflableExits[backId]
+        origins = frontpool.copy()
+        random.shuffle(origins)
+        # Select a random origin
+        for frontId in origins:
+            front = ShufflableExits[frontId]
             if AttemptConnect(settings, front, frontId, back, backId):
                 # print("Assigned " + front.name + " --> " + back.name)
-                backpool.remove(backId)
+                frontpool.remove(frontId)
                 break
         if not front.shuffled:
-            # print("Failed to connect " + front.name + " to any of remaining " + str(len(destinations)) + " destinations!")
+            print("Failed to connect to " + back.name + " from any of the remaining " + str(len(origins)) + " origins!")
+            global unreachables
+            print("Couldn't reach " + str(len(unreachables)) + " locations/items")
             raise Ex.EntranceOutOfDestinations
 
 
@@ -158,7 +156,7 @@ def AssumeExits(settings, pools, newpool):
         exit.dest = None
         exit.toBeShuffled = True
         # 2) Attach to root of world (DK Isles)
-        #newExit = Exit(ShufflableExits[exit.reverse].region, lambda l: True, exitId, True)
+        # newExit = Exit(ShufflableExits[exit.reverse].region, lambda l: True, exitId, True)
         newExit = Exit(exit.region, lambda l: True, exitId, True)
         AddRootExit(newExit)
     pools.append(frontpool)

@@ -66,8 +66,8 @@ ShufflableExits = {
     Exits.JapesCatacombToMain: ShufflableExit("Jungle Japes Catacomb to Main", Regions.JapesCatacomb, Exits.JapesMainToCatacomb),
     Exits.JapesMainToTinyHive: ShufflableExit("Jungle Japes Main to Tiny Hive", Regions.JapesBeyondFeatherGate, Exits.JapesTinyHiveToMain, ExitCategories.JapesExterior),
     Exits.JapesTinyHiveToMain: ShufflableExit("Jungle Japes Tiny Hive to Main", Regions.TinyHive, Exits.JapesMainToTinyHive),
-    Exits.JapesMineToCarts: ShufflableExit("Jungle Japes Mine to Minecarts", Regions.Mine, Exits.JapesCartsToMine, ExitCategories.JapesMine),
-    Exits.JapesCartsToMine: ShufflableExit("Jungle Japes Minecarts to Main", Regions.JapesMinecarts, Exits.JapesMineToCarts),
+    # Exits.JapesMineToCarts: ShufflableExit("Jungle Japes Mine to Minecarts", Regions.Mine, Exits.JapesCartsToMine, ExitCategories.JapesMine),
+    # Exits.JapesCartsToMine: ShufflableExit("Jungle Japes Minecarts to Main", Regions.JungleJapesMain, Exits.JapesMineToCarts),
     # Angry Aztec Exits
     Exits.AztecStartToTemple: ShufflableExit("Angry Aztec Start to Temple", Regions.AngryAztecStart, Exits.AztecTempleToStart, ExitCategories.AztecExterior),
     Exits.AztecTempleToStart: ShufflableExit("Angry Aztec Temple to Start", Regions.TempleStart, Exits.AztecStartToTemple),
@@ -120,8 +120,8 @@ ShufflableExits = {
     Exits.GalleonTreasureToChest: ShufflableExit("Gloomy Galleon Main to Chest", Regions.TreasureRoom, Exits.GalleonChestToTreasure, ExitCategories.GalleonExterior),
     Exits.GalleonChestToTreasure: ShufflableExit("Gloomy Galleon Chest to Main", Regions.TinyChest, Exits.GalleonTreasureToChest),
     # Fungi Forest Exits
-    Exits.ForestMainToCarts: ShufflableExit("Fungi Forest Main to Minecarts", Regions.FungiForestStart, Exits.ForestCartsToMain, ExitCategories.ForestExterior),
-    Exits.ForestCartsToMain: ShufflableExit("Fungi Forest Minecarts to Main", Regions.ForestMinecarts, Exits.ForestMainToCarts),
+    # Exits.ForestMainToCarts: ShufflableExit("Fungi Forest Main to Minecarts", Regions.FungiForestStart, Exits.ForestCartsToMain, ExitCategories.ForestExterior),
+    # Exits.ForestCartsToMain: ShufflableExit("Fungi Forest Minecarts to Main", Regions.ForestMinecarts, Exits.ForestMainToCarts),
     Exits.ForestMainToLowerMushroom: ShufflableExit("Fungi Forest Main to Mushroom Lower", Regions.GiantMushroomArea, Exits.ForestLowerMushroomToMain, ExitCategories.ForestExterior),
     Exits.ForestLowerMushroomToMain: ShufflableExit("Fungi Forest Mushroom Lower to Main", Regions.MushroomLower, Exits.ForestMainToLowerMushroom, ExitCategories.ForestMushroom),
     Exits.ForestLowerExteriorToLowerMushroom: ShufflableExit("Fungi Forest Lower Exterior to Lower Mushroom", Regions.MushroomLowerExterior, Exits.ForestLowerMushroomToLowerExterior, ExitCategories.ForestExterior),
