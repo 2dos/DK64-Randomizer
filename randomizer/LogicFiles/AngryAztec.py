@@ -25,7 +25,7 @@ LogicRegions = {
     ], [
         Exit(Regions.AngryAztecLobby, lambda l: True, Exits.AztecToIsles),
         Exit(Regions.TempleStart, lambda l: (l.peanut and l.isdiddy) or (l.grape and l.islanky)
-             or (l.feather and l.istiny) or (l.pineapple and l.ischunky), Exits.AztecStartToTemple),
+             or (l.feather and l.istiny) or (l.pineapple and l.ischunky)),
         # Door to main area opened in rando if loading zones randomized
         Exit(Regions.AngryAztecMain, lambda l: l.settings.shuffle_loading_zones or (l.jetpack and l.guitar and l.diddy)),
         Exit(Regions.Candy, lambda l: True),
@@ -36,7 +36,7 @@ LogicRegions = {
         LocationLogic(Locations.AztecTinyKlaptrapRoom, lambda l: l.mini and l.istiny),
         LocationLogic(Locations.AztecChunkyKlaptrapRoom, lambda l: l.triangle and l.ischunky),
     ], [], [
-        Exit(Regions.AngryAztecStart, lambda l: True, Exits.AztecTempleToStart),
+        Exit(Regions.AngryAztecStart, lambda l: True),
         Exit(Regions.TempleUnderwater, lambda l: l.Slam and l.guitar and l.diddyAccess),
     ]),
 

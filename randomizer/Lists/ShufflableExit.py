@@ -71,8 +71,8 @@ ShufflableExits = {
     Exits.JapesMainToTinyHive: ShufflableExit("Jungle Japes Main to Tiny Hive", Regions.JapesBeyondFeatherGate, Exits.JapesTinyHiveToMain, ExitCategories.JapesExterior, entryKongs={Kongs.tiny}, move=True),
     Exits.JapesTinyHiveToMain: ShufflableExit("Jungle Japes Tiny Hive to Main", Regions.TinyHive, Exits.JapesMainToTinyHive, regionKongs={Kongs.tiny}),
     # Angry Aztec Exits
-    Exits.AztecStartToTemple: ShufflableExit("Angry Aztec Start to Temple", Regions.AngryAztecStart, Exits.AztecTempleToStart, ExitCategories.AztecExterior),
-    Exits.AztecTempleToStart: ShufflableExit("Angry Aztec Temple to Start", Regions.TempleStart, Exits.AztecStartToTemple),
+    # Exits.AztecStartToTemple: ShufflableExit("Angry Aztec Start to Temple", Regions.AngryAztecStart, Exits.AztecTempleToStart, ExitCategories.AztecExterior),
+    # Exits.AztecTempleToStart: ShufflableExit("Angry Aztec Temple to Start", Regions.TempleStart, Exits.AztecStartToTemple),
     Exits.AztecMainToDonkey: ShufflableExit("Angry Aztec Main to Donkey 5DT", Regions.AngryAztecMain, Exits.AztecDonkeyToMain, ExitCategories.AztecExterior, entryKongs={Kongs.donkey}, move=True),
     Exits.AztecDonkeyToMain: ShufflableExit("Angry Aztec Donkey 5DT to Main", Regions.DonkeyTemple, Exits.AztecMainToDonkey, regionKongs={Kongs.donkey}),
     Exits.AztecMainToDiddy: ShufflableExit("Angry Aztec Main to Diddy 5DT", Regions.AngryAztecMain, Exits.AztecDiddyToMain, ExitCategories.AztecExterior, entryKongs={Kongs.diddy}, move=True),
