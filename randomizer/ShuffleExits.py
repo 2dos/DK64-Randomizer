@@ -123,8 +123,10 @@ def ShuffleExitsInPool(settings, frontpool, backpool):
     backpool.extend(NonTagNonLeaves)
     backpool.extend(TagLeaves)
     backpool.extend(TagNonLeaves)
+    
+    random.shuffle(frontpool)
 
-    # For each front exit, select a random valid back exit to attach to it
+    # For each back exit, select a random valid front entrance to attach to it
     while len(backpool) > 0:
         backId = backpool.pop(0)
         back = ShufflableExits[backId]

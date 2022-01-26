@@ -120,7 +120,8 @@ def GetAccessibleLocations(settings, ownedItems, searchType=SearchMode.GetReacha
                     destination = exit.dest
                     # If this exit has an entrance shuffle id and the shufflable exits list has it marked as shuffled,
                     # use the entrance it was shuffled to by getting the region of the destination exit.
-                    if exit.exitShuffleId is not None:
+                    # If the exit is assumed from root, do not look for a shuffled exit - just explore the destination
+                    if exit.exitShuffleId is not None and not exit.assumed:
                         shuffledExit = ShufflableExits[exit.exitShuffleId]
                         if shuffledExit.shuffled:
                             destination = ShufflableExits[shuffledExit.dest].region
