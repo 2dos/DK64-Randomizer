@@ -11,15 +11,19 @@
 #define PURCHASE_INSTRUMENT 4
 #define PURCHASE_NOTHING -1
 
-void alter_price(int purchase_type, int purchase_value, int kong, int level) {
-	int write = 0;
+#define SHOP_CRANKY 0
+#define SHOP_FUNKY 1
+#define SHOP_CANDY 2
+
+void alter_price(int purchase_type, int purchase_value, int kong, int level, int shop_index) {
+	int write = -1;
 	if (purchase_type > PURCHASE_NOTHING) {
 		switch(purchase_type) {
 			case PURCHASE_MOVES:
-				CrankyMoves[kong][level].price = Rando.special_move_prices[kong][purchase_value - 1];
+				write = Rando.special_move_prices[kong][purchase_value - 1];
 				break;
 			case PURCHASE_SLAM:
-				CrankyMoves[kong][level].price = Rando.slam_prices[purchase_value - 2];
+				write = Rando.slam_prices[purchase_value - 2];
 				break;
 			case PURCHASE_GUN:
 				if (purchase_value == 1) {
@@ -27,10 +31,9 @@ void alter_price(int purchase_type, int purchase_value, int kong, int level) {
 				} else {
 					write = Rando.gun_upgrade_prices[purchase_value - 2];
 				}
-				FunkyMoves[kong][level].price = write;
 				break;
 			case PURCHASE_AMMOBELT:
-				FunkyMoves[kong][level].price = Rando.ammo_belt_prices[purchase_value - 1];
+				write = Rando.ammo_belt_prices[purchase_value - 1];
 				break;
 			case PURCHASE_INSTRUMENT:
 				if (purchase_value == 1) {
@@ -38,8 +41,20 @@ void alter_price(int purchase_type, int purchase_value, int kong, int level) {
 				} else {
 					write = Rando.instrument_upgrade_prices[purchase_value - 2];
 				}
-				CandyMoves[kong][level].price = write;
 			break;
+		}
+		if (write > -1) {
+			switch (shop_index) {
+				case SHOP_CRANKY:
+					CrankyMoves[kong][level].price = write;
+					break;
+				case SHOP_FUNKY:
+					FunkyMoves[kong][level].price = write;
+					break;
+				case SHOP_CANDY:
+					CandyMoves[kong][level].price = write;
+				break;
+			}
 		}
 	}
 }
@@ -49,19 +64,19 @@ void price_rando(void) {
 		if (CurrentMap == CRANKY) {
 			for (int kong = 0; kong < 5; kong++) {
 				for (int level = 0; level < 7; level++) {
-					alter_price(CrankyMoves[kong][level].purchase_type,CrankyMoves[kong][level].purchase_value,kong,level);
+					alter_price(CrankyMoves[kong][level].purchase_type,CrankyMoves[kong][level].purchase_value,kong,level,SHOP_CRANKY);
 				}
 			}
 		} else if (CurrentMap == CANDY) {
 			for (int kong = 0; kong < 5; kong++) {
 				for (int level = 0; level < 7; level++) {
-					alter_price(CandyMoves[kong][level].purchase_type,CandyMoves[kong][level].purchase_value,kong,level);
+					alter_price(CandyMoves[kong][level].purchase_type,CandyMoves[kong][level].purchase_value,kong,level,SHOP_CANDY);
 				}
 			}
 		} else if (CurrentMap == FUNKY) {
 			for (int kong = 0; kong < 5; kong++) {
 				for (int level = 0; level < 7; level++) {
-					alter_price(FunkyMoves[kong][level].purchase_type,FunkyMoves[kong][level].purchase_value,kong,level);
+					alter_price(FunkyMoves[kong][level].purchase_type,FunkyMoves[kong][level].purchase_value,kong,level,SHOP_FUNKY);
 				}
 			}
 		}

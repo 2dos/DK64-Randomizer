@@ -549,3 +549,10 @@ typedef struct race_exit_struct {
 	/* 0x004 */ int container_map;
 	/* 0x008 */ int container_exit;
 } race_exit_struct;
+
+typedef struct enemy_drop_struct {
+	/* 0x000 */ short source_object_type;
+	/* 0x002 */ short dropped_object_type;
+	/* 0x004 */ unsigned char drop_music;
+	/* 0x005 */ unsigned char drop_count;
+} enemy_drop_struct;

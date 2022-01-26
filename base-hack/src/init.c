@@ -50,6 +50,7 @@ void initHack(void) {
 		replace_zones(1);
 		randomize_bosses();
 		loadExtraHooks();
+		no_enemy_drops();
 		// Pause Menu Exit To Isles Slot
 		*(short*)(0x806A85EE) = 4; // Yes/No Prompt
 		*(short*)(0x806A8716) = 4; // Yes/No Prompt

@@ -124,6 +124,7 @@ extern cutsceneType* CutsceneTypePointer;
 extern short PreviousCameraState;
 extern short CurrentCameraState;
 extern short CameraStateChangeTimer;
+extern unsigned short CutsceneStateBitfield;
 extern AutowalkData* AutowalkPointer;
 extern char IsAutowalking;
 extern WarpInfo PositionWarpInfo;
@@ -218,6 +219,7 @@ extern short KongFlagArray[4];
 extern main_menu_moves_struct MainMenuMoves[8];
 extern char DataIsCompressed[32];
 extern char KutOutKongArray[5];
+extern enemy_drop_struct EnemyDropsTable[27];
 
 extern purchase_struct CrankyMoves[5][7];
 extern purchase_struct CandyMoves[5][7];

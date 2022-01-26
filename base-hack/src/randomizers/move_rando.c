@@ -75,7 +75,25 @@ void replace_moves(void) {
 						if (CrankyMoves[j][i].purchase_type == PURCHASE_SLAM) {
 							CrankyMoves[j][i].purchase_value = 3;
 						}
+						if (CandyMoves[j][i].purchase_type == PURCHASE_SLAM) {
+							CandyMoves[j][i].purchase_value = 3;
+						}
+						if (FunkyMoves[j][i].purchase_type == PURCHASE_SLAM) {
+							FunkyMoves[j][i].purchase_value = 3;
+						}
 					}
+				}
+			}
+		}
+	}
+}
+
+void cancelMoveSoftlock(void) {
+	if (Rando.move_rando_on) {
+		if ((CurrentMap == CRANKY) || (CurrentMap == FUNKY) || (CurrentMap == CANDY)) {
+			if ((TBVoidByte & 0x30) == 0) {
+				if ((CutsceneActive) && (CutsceneIndex == 2) && (CutsceneTimer == 80)) {
+					CutsceneStateBitfield &= 0xFFCF;
 				}
 			}
 		}

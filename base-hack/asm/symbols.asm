@@ -117,6 +117,7 @@
 .definelabel PreviousCameraState, 0x807F5CF0
 .definelabel CurrentCameraState, 0x807F5CF2
 .definelabel CameraStateChangeTimer, 0x807F5CEC
+.definelabel CutsceneStateBitfield, 0x807F5CF4
 .definelabel AutowalkPointer, 0x807FD70C
 .definelabel IsAutowalking, 0x807463B8
 .definelabel PositionWarpInfo, 0x807FC918 // WarpInfo Struct
@@ -220,6 +221,8 @@
 .definelabel BossMapArray, 0x80744700
 .definelabel BossKongArray, 0x807446F0
 .definelabel KutOutKongArray, 0x80035B44
+.definelabel EnemyDropsTable, 0x80750400
+
 
 .definelabel KongUnlockedMenuArray, 0x80033804
 .definelabel FilePercentage, 0x80033F51
