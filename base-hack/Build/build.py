@@ -7,11 +7,12 @@ import zlib
 
 import generate_watch_file
 
-# Infrastructure for recomputing DK64 global pointer tables
-from map_names import maps
-
 # Patcher functions for the extracted files
 import patch_text
+from convertSetup import convertSetup
+
+# Infrastructure for recomputing DK64 global pointer tables
+from map_names import maps
 from recompute_overlays import (
     isROMAddressOverlay,
     readOverlayOriginalData,
@@ -28,7 +29,6 @@ from recompute_pointer_table import (
     writeModifiedPointerTablesToROM,
 )
 from staticcode import patchStaticCode
-from convertSetup import convertSetup
 
 ROMName = "rom/dk64.z64"
 newROMName = "rom/dk64-randomizer-base.z64"
@@ -187,7 +187,7 @@ for x in range(8):
         }
     )
 for x in range(43):
-    if (x != 13):
+    if x != 13:
         file_dict.append(
             {
                 "name": "Text " + str(x),
@@ -201,12 +201,12 @@ for x in range(43):
         )
 file_dict.append(
     {
-         "name": "Dolby Text",
-         "pointer_table_index": 12,
-         "file_index": 13,
-         "source_file": "dolby_text.bin",
-         "do_not_compress": True,
-         "do_not_delete_source": True
+        "name": "Dolby Text",
+        "pointer_table_index": 12,
+        "file_index": 13,
+        "source_file": "dolby_text.bin",
+        "do_not_compress": True,
+        "do_not_delete_source": True,
     },
 )
 
@@ -344,9 +344,9 @@ with open(newROMName, "r+b") as fh:
                 compress = bytearray(byte_read)
                 if "target_uncompressed_size" in x:
                     diff = x["target_uncompressed_size"] - len(byte_read)
-                    byte_append = 0;
+                    byte_append = 0
                     if diff > 0:
-                        byte_read += byte_append.to_bytes(diff,"big")
+                        byte_read += byte_append.to_bytes(diff, "big")
                     compress = bytearray(byte_read)
                     uncompressed_size = x["target_uncompressed_size"]
             else:
@@ -369,7 +369,7 @@ with open(newROMName, "r+b") as fh:
             with open(x["source_file"], "rb") as fg:
                 byte_read = fg.read()
                 uncompressed_size = len(byte_read)
-            subprocess.Popen(["build\\flips.exe","--apply",x["bps_file"],x["source_file"],x["source_file"]]).wait()
+            subprocess.Popen(["build\\flips.exe", "--apply", x["bps_file"], x["source_file"], x["source_file"]]).wait()
 
         if "texture_format" in x:
             if x["texture_format"] in ["rgba5551", "i4", "ia4", "i8", "ia8"]:

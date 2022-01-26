@@ -31,5 +31,6 @@ async def initialize():
     js.document.write(rendered)
     js.document.close()
 
+
 # Run the script (This will be run as async later on)
 initialize()

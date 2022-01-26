@@ -1,17 +1,17 @@
 """Apply Patch data to the ROM."""
-import js
-
 import codecs
 import json
 import pickle
 
+import js
+
 from randomizer.DKTV import randomize_dktv
+from randomizer.Enums.Exits import Exits
 from randomizer.MusicRando import randomize_music
 from randomizer.Patcher import ROM
 
 # from randomizer.Spoiler import Spoiler
 from ui.progress_bar import ProgressBar
-from randomizer.Enums.Exits import Exits
 
 
 def patching_response(responded_data):
@@ -57,14 +57,14 @@ def patching_response(responded_data):
         Exits.IslesToHelm,
     ]
     vanilla_lobby_order = [
-        Exits.JapesToIsles, 
+        Exits.JapesToIsles,
         Exits.AztecToIsles,
         Exits.FactoryToIsles,
         Exits.GalleonToIsles,
         Exits.ForestToIsles,
         Exits.CavesToIsles,
         Exits.CastleToIsles,
-        Exits.HelmToIsles
+        Exits.HelmToIsles,
     ]
     order = 0
     for level in vanilla_entrace_order:
