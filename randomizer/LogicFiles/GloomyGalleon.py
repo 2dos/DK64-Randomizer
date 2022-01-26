@@ -25,12 +25,13 @@ LogicRegions = {
         Event(Events.GalleonLankySwitch, lambda l: l.Slam and l.lanky),
         Event(Events.GalleonTinySwitch, lambda l: l.Slam and l.tiny),
         Event(Events.LighthouseGateOpened, lambda l: l.coconut and l.donkey),
+        Event(Events.ShipyardGateOpened, lambda l: l.peanut and l.diddy),
     ], [
         Exit(Regions.GloomyGalleonLobby, lambda l: True, Exits.GalleonToIsles),
         Exit(Regions.GalleonBeyondPineappleGate, lambda l: Events.WaterSwitch in l.Events and l.pineapple and l.chunky),
-        Exit(Regions.LighthouseArea, lambda l: Events.LighthouseGateOpened in l.Events),
+        Exit(Regions.LighthouseArea, lambda l: l.settings.shuffle_loading_zones == "all" or Events.LighthouseGateOpened in l.Events),
         # Gate to shipyard opened in rando if loading zones randomized
-        Exit(Regions.Shipyard, lambda l: l.settings.shuffle_loading_zones or (l.peanut and l.diddy)),
+        Exit(Regions.Shipyard, lambda l: l.settings.shuffle_loading_zones == "all" or Events.ShipyardGateOpened in l.Events),
         Exit(Regions.Cranky, lambda l: True),
         Exit(Regions.GalleonBossLobby, lambda l: True),
     ]),
@@ -54,7 +55,7 @@ LogicRegions = {
         Event(Events.GalleonChunkyPad, lambda l: l.triangle and l.chunky),
     ], [
         # Rare case of needing to open gate before being able to go through backwards
-        Exit(Regions.GloomyGalleonStart, lambda l: Events.LighthouseGateOpened in l.Events),
+        Exit(Regions.GloomyGalleonStart, lambda l: l.settings.shuffle_loading_zones == "all" or Events.LighthouseGateOpened in l.Events),
         Exit(Regions.Lighthouse, lambda l: l.Slam and l.isdonkey, Exits.GalleonLighthouseAreaToLighthouse),
         Exit(Regions.MermaidRoom, lambda l: l.mini and l.istiny, Exits.GalleonLighthousAreaToMermaid),
         Exit(Regions.SickBay, lambda l: Events.ActivatedLighthouse in l.Events and l.Slam and l.ischunky, Exits.GalleonLighthouseAreaToSickBay),
@@ -89,7 +90,7 @@ LogicRegions = {
         Event(Events.ShipyardEnguarde, lambda l: l.lanky),
         Event(Events.ShipyardTreasureRoomOpened, lambda l: Events.ShipyardEnguarde in l.Events and Events.WaterSwitch in l.Events),
     ], [
-        Exit(Regions.GloomyGalleonStart, lambda l: True),
+        Exit(Regions.GloomyGalleonStart, lambda l: Events.ShipyardGateOpened in l.Events),
         Exit(Regions.SealRace, lambda l: Events.SealReleased in l.Events and Events.WaterSwitch in l.Events and l.isdonkey, Exits.GalleonShipyardToSeal),
         Exit(Regions.TreasureRoom, lambda l: Events.ShipyardTreasureRoomOpened in l.Events),
         Exit(Regions.Submarine, lambda l: l.mini and l.istiny, Exits.GalleonShipyardToSubmarine),
