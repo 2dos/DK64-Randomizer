@@ -38,6 +38,7 @@ class Events(IntEnum):
     GalleonLankySwitch = auto()
     GalleonTinySwitch = auto()
     LighthouseGateOpened = auto()
+    ShipyardGateOpened = auto()
     WaterSwitch = auto()
     LighthouseEnguarde = auto()
     SealReleased = auto()

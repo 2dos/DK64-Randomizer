@@ -22,7 +22,7 @@ LogicRegions = {
         Exit(Regions.FranticFactoryLobby, lambda l: True, Exits.FactoryToIsles),
         Exit(Regions.Testing, lambda l: Events.TestingGateOpened in l.Events),
         # Hatch opened already in rando if loading zones randomized
-        Exit(Regions.BeyondHatch, lambda l: l.settings.shuffle_loading_zones or l.Slam),
+        Exit(Regions.BeyondHatch, lambda l: l.settings.shuffle_loading_zones == "all" or l.Slam),
     ]),
 
     Regions.Testing: Region("Testing", Levels.FranticFactory, True, None, [

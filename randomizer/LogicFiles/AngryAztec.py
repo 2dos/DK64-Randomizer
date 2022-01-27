@@ -27,7 +27,7 @@ LogicRegions = {
         Exit(Regions.TempleStart, lambda l: (l.peanut and l.isdiddy) or (l.grape and l.islanky)
              or (l.feather and l.istiny) or (l.pineapple and l.ischunky)),
         # Door to main area opened in rando if loading zones randomized
-        Exit(Regions.AngryAztecMain, lambda l: l.settings.shuffle_loading_zones or (l.jetpack and l.guitar and l.diddy)),
+        Exit(Regions.AngryAztecMain, lambda l: l.settings.shuffle_loading_zones == "all" or (l.jetpack and l.guitar and l.diddy)),
         Exit(Regions.Candy, lambda l: True),
         Exit(Regions.AztecBossLobby, lambda l: True),
     ]),
