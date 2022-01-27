@@ -16,9 +16,9 @@ class ShufflableExit:
         self.region = region
         self.reverse = reverse
         self.category = category
-        self.entryKongs = entryKongs # Indicates either need to be one of a certain set of kongs to gain access to this (front)
-        self.regionKongs = regionKongs # Indicates need to be a certain kong or kongs in this area. Should only apply if the region doesn't have a tag barrel
-        self.move = move # Indicates this exit needs a kong-specific move to access, so it's even more restrictive
+        self.entryKongs = entryKongs  # Indicates either need to be one of a certain set of kongs to gain access to this (front)
+        self.regionKongs = regionKongs  # Indicates need to be a certain kong or kongs in this area. Should only apply if the region doesn't have a tag barrel
+        self.move = move  # Indicates this exit needs a kong-specific move to access, so it's even more restrictive
         # Here dest is the entrance to go to, rather than just the target region
         # Initialized as its default reverse value
         self.dest = reverse

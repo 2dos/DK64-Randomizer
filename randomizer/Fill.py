@@ -18,6 +18,7 @@ from randomizer.Enums.SearchMode import SearchMode
 from randomizer.Enums.Levels import Levels
 from randomizer.Enums.Exits import Exits
 
+
 def GetExitLevelExit(level):
     """Get the exit that using the "Exit Level" button will take you to."""
     if level == Levels.JungleJapes:
@@ -34,6 +35,7 @@ def GetExitLevelExit(level):
         return ShufflableExits[Exits.CavesToIsles].dest
     elif level == Levels.CreepyCastle:
         return ShufflableExits[Exits.CastleToIsles].dest
+
 
 def GetAccessibleLocations(settings, ownedItems, searchType=SearchMode.GetReachable):
     """Search to find all reachable locations given owned items."""
@@ -149,12 +151,7 @@ def GetAccessibleLocations(settings, ownedItems, searchType=SearchMode.GetReacha
     elif searchType == SearchMode.CheckAllReachable:
         return len(accessible) == len(LocationList)
     elif searchType == SearchMode.GetUnreachable:
-        unreachable = []
-        for location in LocationList:
-            if location not in accessible:
-                unreachable.append(location)
-        return unreachable
-        
+        return [x for x in LocationList if x not in accessible]
 
 
 def RandomFill(itemsToPlace):
@@ -286,7 +283,9 @@ def Fill(spoiler):
             # Then place blueprints
             Reset()
             blueprintsUnplaced = PlaceItems(
-                spoiler.settings, ItemPool.Blueprints(spoiler.settings), ItemPool.BlueprintAssumedItems(spoiler.settings)
+                spoiler.settings,
+                ItemPool.Blueprints(spoiler.settings),
+                ItemPool.BlueprintAssumedItems(spoiler.settings),
             )
             if blueprintsUnplaced > 0:
                 raise Ex.ItemPlacementException(str(blueprintsUnplaced) + " unplaced blueprints.")

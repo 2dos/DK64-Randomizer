@@ -36,7 +36,7 @@ class Exit:
         self.logic = logic  # Lambda function for accessibility
         # Used to identify this exit for entrance shuffle purposes
         self.exitShuffleId = exitShuffleId
-        self.assumed = assumed # Indicates this is an assumed exit attached to the root
+        self.assumed = assumed  # Indicates this is an assumed exit attached to the root
 
 
 class Collectible:
@@ -124,7 +124,7 @@ class Region:
             return self.tinyAccess
         elif kong == Kongs.chunky:
             return self.chunkyAccess
-        else: # kongs == Kongs.rainbow, just need to check if any kong has access
+        else:  # kongs == Kongs.rainbow, just need to check if any kong has access
             return self.donkeyAccess or self.diddyAccess or self.lankyAccess or self.tinyAccess or self.chunkyAccess
 
     def ResetAccess(self):

@@ -29,14 +29,15 @@ LevelExitPool = [
     Exits.CastleToIsles,
 ]
 
-unreachables = []
-
 # Root is the starting spawn, which is the main area of DK Isles.
 root = Regions.IslesMain
 
+
 def GetRootExit(exitId):
     """Query the world root to return an exit with a matching exit id."""
-    return [x for x in Logic.Regions[root].exits if x.assumed and x.exitShuffleId is not None and x.exitShuffleId == exitId][0]
+    return [
+        x for x in Logic.Regions[root].exits if x.assumed and x.exitShuffleId is not None and x.exitShuffleId == exitId
+    ][0]
 
 
 def RemoveRootExit(exit):
@@ -64,8 +65,6 @@ def Reset():
 def VerifyWorld(settings):
     """Make sure all item locations are reachable on current world graph with constant items placed and all other items owned."""
     PlaceConstants(settings)
-    # allReachable = Fill.GetAccessibleLocations(settings, AllItems(settings), SearchMode.CheckAllReachable)
-    global unreachables
     unreachables = Fill.GetAccessibleLocations(settings, AllItems(settings), SearchMode.GetUnreachable)
     isValid = len(unreachables) == 0
     Fill.Reset()
@@ -123,7 +122,7 @@ def ShuffleExitsInPool(settings, frontpool, backpool):
     backpool.extend(NonTagNonLeaves)
     backpool.extend(TagLeaves)
     backpool.extend(TagNonLeaves)
-    
+
     random.shuffle(frontpool)
 
     # For each back exit, select a random valid front entrance to attach to it
@@ -132,18 +131,6 @@ def ShuffleExitsInPool(settings, frontpool, backpool):
         back = ShufflableExits[backId]
         # Filter origins to make sure that if this target requires a certain kong's access, then the entrance will be accessible by that kong
         origins = [x for x in frontpool if ShufflableExits[x].entryKongs.issuperset(back.regionKongs)]
-        # Only applicable for forwards exits
-        # origins = [x for x in frontpool if x % 2 == 0 or ShufflableExits[x].kong is None or ShufflableExits[x].kong == back.kong]
-        # # Also sort origins so that more restrictive origins are placed first
-        # restrictive = [x for x in origins if ShufflableExits[x].kong is not None and ShufflableExits[x].move]
-        # random.shuffle(restrictive)
-        # kongreq = [x for x in origins if ShufflableExits[x].kong is not None and not ShufflableExits[x].move]
-        # random.shuffle(kongreq)
-        # nonrestrictive = [x for x in origins if x not in restrictive and x not in kongreq]
-        # random.shuffle(nonrestrictive)
-        # origins = restrictive
-        # origins.extend(kongreq)
-        # origins.extend(nonrestrictive)
         # Select a random origin
         for frontId in origins:
             front = ShufflableExits[frontId]
@@ -152,9 +139,7 @@ def ShuffleExitsInPool(settings, frontpool, backpool):
                 frontpool.remove(frontId)
                 break
         if not front.shuffled:
-            print("Failed to connect to " + back.name + " from any of the remaining " + str(len(origins)) + " origins!")
-            global unreachables
-            print("Couldn't reach " + str(len(unreachables)) + " locations/items")
+            # print("Failed to connect to " + back.name + " from any of the remaining " + str(len(origins)) + " origins!")
             raise Ex.EntranceOutOfDestinations
 
 
@@ -175,7 +160,6 @@ def AssumeExits(settings, pools, newpool):
         exit.dest = None
         exit.toBeShuffled = True
         # 2) Attach to root of world (DK Isles)
-        # newExit = Exit(ShufflableExits[exit.reverse].region, lambda l: True, exitId, True)
         newExit = Exit(exit.region, lambda l: True, exitId, True)
         AddRootExit(newExit)
     pools.append(frontpool)

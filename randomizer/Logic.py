@@ -48,10 +48,10 @@ class LogicVarHolder:
         self.chunky = self.startkong == Kongs.chunky or self.settings.unlock_all_kongs
 
         # Right now assuming start with training barrels
-        self.vines = True #self.settings.training_barrels == "startwith"
-        self.swim = True #self.settings.training_barrels == "startwith"
-        self.oranges = True #self.settings.training_barrels == "startwith"
-        self.barrels = True #self.settings.training_barrels == "startwith"
+        self.vines = True  # self.settings.training_barrels == "startwith"
+        self.swim = True  # self.settings.training_barrels == "startwith"
+        self.oranges = True  # self.settings.training_barrels == "startwith"
+        self.barrels = True  # self.settings.training_barrels == "startwith"
 
         self.progDonkey = 3 if self.settings.unlock_all_moves else 0
         self.blast = self.settings.unlock_all_moves
@@ -105,7 +105,7 @@ class LogicVarHolder:
         self.CastleKey = False
         self.HelmKey = False
 
-        self.Slam = 3 if self.settings.unlock_all_moves else 1 # Right now assuming start with slam
+        self.Slam = 3 if self.settings.unlock_all_moves else 1  # Right now assuming start with slam
         self.GoldenBananas = 0
         self.BananaFairies = 0
         self.BananaMedals = 0
@@ -309,6 +309,7 @@ class LogicVarHolder:
 
     def HasAccess(self, region, kong):
         """Check if a certain kong has access to a certain region.
+
         Usually the region's own HasAccess function is used, but this is necessary for checking access for other regions in logic files.
         """
         return Regions[region].HasAccess(kong)

@@ -114,10 +114,7 @@ LogicRegions = {
 
     # Water level needs to be raised and you spring up as diddy to get killed by the kasplat
     # Or, any kong having teleporter access works too
-    Regions.TreasureRoom: Region("Treasure Room", Levels.GloomyGalleon, True, 
-        Exit(Regions.GloomyGalleonStart, lambda l: Events.TreasureRoomTeleporterUnlocked in l.Events and l.HasAccess(Regions.Shipyard, Kongs.rainbow) 
-             or (Events.WaterSwitch in l.Events and l.spring and l.isdiddy)), 
-        [
+    Regions.TreasureRoom: Region("Treasure Room", Levels.GloomyGalleon, True, Exit(Regions.GloomyGalleonStart, lambda l: Events.TreasureRoomTeleporterUnlocked in l.Events and l.HasAccess(Regions.Shipyard, Kongs.rainbow) or (Events.WaterSwitch in l.Events and l.spring and l.isdiddy)), [
         LocationLogic(Locations.GalleonDiddyGoldTower, lambda l: l.spring and l.diddy),
         LocationLogic(Locations.GalleonLankyGoldTower, lambda l: l.balloon and l.lanky),
         LocationLogic(Locations.GalleonDonkeyKasplat, lambda l: Events.TreasureRoomTeleporterUnlocked in l.Events and l.HasAccess(Regions.Shipyard, Kongs.donkey)),
