@@ -1,3 +1,4 @@
+<link href="./static/img/dk.png" rel="icon" />
 <img
   style="
     width: 20%;
@@ -27,9 +28,6 @@
     await pyodide.loadPackage("micropip");
     ui_script = await (await fetch("generate_ui.py")).text();
     await pyodide.runPythonAsync(ui_script);
-    setTimeout(async function () {
-      await pyodide.runPythonAsync(await (await fetch("version.py")).text());
-    }, 1000);
   }
   window.onload = load_delay;
   function load_delay() {

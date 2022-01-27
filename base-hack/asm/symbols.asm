@@ -60,11 +60,18 @@
 .definelabel getParentDataIndex, 0x80688D64
 .definelabel getScreenPosition, 0x80626F8C
 .definelabel WarpToDKTV, 0x807131BC
+.definelabel textDraw, 0x806FD490
 
 .definelabel initDisplayList, 0x807132DC
 .definelabel getTextStyleHeight, 0x806FD894
 .definelabel displayText, 0x806FC530
 .definelabel displayImage, 0x8068C5A8
+.definelabel determineXRatioMovement, 0x80612794
+
+.definelabel getWorld, 0x805FF030
+.definelabel displayImageOnObject, 0x80635018
+.definelabel drawNumberObject, 0x80635098
+.definelabel isLobby, 0x805FEF74
 
 .definelabel setArcadeTextXY, 0x80024508
 .definelabel spawnArcadeText, 0x8002451C
@@ -72,6 +79,8 @@
 .definelabel arcadeGetObjIndexOfType, 0x80024860
 .definelabel arcadeGetNextVacantSlot, 0x800247B8
 .definelabel setArcadeSong, 0x800252A4
+
+.definelabel countFlagArray, 0x80731AA8
 
 //vanilla data
 .definelabel TransitionSpeed, 0x807FD88C
@@ -108,6 +117,7 @@
 .definelabel PreviousCameraState, 0x807F5CF0
 .definelabel CurrentCameraState, 0x807F5CF2
 .definelabel CameraStateChangeTimer, 0x807F5CEC
+.definelabel CutsceneStateBitfield, 0x807F5CF4
 .definelabel AutowalkPointer, 0x807FD70C
 .definelabel IsAutowalking, 0x807463B8
 .definelabel PositionWarpInfo, 0x807FC918 // WarpInfo Struct
@@ -194,26 +204,41 @@
 .definelabel TriggerSize, 0x807FDCB0
 .definelabel CastleCannonPointer, 0x807F5BE8
 .definelabel TroffNScoffReqArray, 0x807446C0 // u16 item size
+.definelabel TroffNScoffTurnedArray, 0x807FC930 // u16 item size
 .definelabel BLockerDefaultArray, 0x807446D0 // u16 item size
 .definelabel BLockerCheatArray, 0x807446E0 // u16 item size, [u8 - GB, u8 - Kong]
 .definelabel CheckmarkKeyArray, 0x80744710 // u16 item size
 .definelabel KongFlagArray, 0x807505B0
 .definelabel MainMenuMoves, 0x80033938
 .definelabel DataIsCompressed, 0x80748E18
+.definelabel CrankyMoves, 0x80033260
+.definelabel CandyMoves, 0x80033334
+.definelabel FunkyMoves, 0x80033408
+.definelabel WorldArray, 0x8074809C
+.definelabel WorldExitArray, 0x807480AC
+.definelabel LobbiesArray, 0x80744734
+.definelabel RaceExitArray, 0x807447A0
+.definelabel BossMapArray, 0x80744700
+.definelabel BossKongArray, 0x807446F0
+.definelabel KutOutKongArray, 0x80035B44
+.definelabel EnemyDropsTable, 0x80750400
+
+
+.definelabel KongUnlockedMenuArray, 0x80033804
+.definelabel FilePercentage, 0x80033F51
+.definelabel FileGBCount, 0x8003380C
+.definelabel FileScreenDLOffset, 0x80033F4C
 
 //hack data
-.definelabel ViewedSnagWatches, 0x807FFF18 // u8 array (size = 4)
-.definelabel ActiveTools_Error, 0x807FFF1C // 0x4
-.definelabel style128Mtx, 0x807FF900 // 0x20
-.definelabel style6Mtx, 0x807FF920 // 0x20
-.definelabel style2Mtx, 0x807FF940 // 0x20
-.definelabel watchActive, 0x807FFF60 // u8
-.definelabel stateLoadTimer, 0x807FFF61 // u8
-.definelabel StoredSettings, 0x807ED5A0 // Follows savedSettings struct
-
-.definelabel TimerData, 0x807FFE90 // 0x14 bytes
-
 .definelabel TestVariable, 0x807FFFFC
+.definelabel StoredLag, 0x807FFFFA // 0x2
+.definelabel DamageMultiplier, 0x807FFFF9 // u8
+.definelabel ExpandPauseMenu, 0x807FFFF8
+.definelabel InitialPauseHeight, 0x807FFFF6
 .definelabel LoadedHooks, 0x807FFFEF // u8
-
-.definelabel Rando, 0x807FF800 // u8
+.definelabel Rando, 0x807FF800 // 0x200
+.definelabel BalancedIGT, 0x807FFFB0 // u32
+.definelabel InstanceScriptParams, 0x807FFFB4 // 0x8
+.definelabel PauseSlot3TextPointer, 0x807FFFBC // ptr
+.definelabel ReplacementLobbiesArray, 0x807FFFC0 // 0x10
+.definelabel ReplacementLobbyExitsArray, 0x807FFFD0 // 0x10

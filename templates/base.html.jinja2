@@ -49,64 +49,67 @@
                         <div class="tab-pane fade" id="nav-misc" role="tabpanel" aria-labelledby="nav-misc-tab">
                             {% include 'misc.html.jinja2' %}
                         </div>
+                        <div class="tab-pane fade" id="nav-cosmetics" role="tabpanel" aria-labelledby="nav-cosmetics-tab">
+                            {% include 'cosmetics.html.jinja2' %}
+                        </div>
                         <div class="tab-pane fade" id="nav-spoiler" role="tabpanel" aria-labelledby="nav-spoiler-tab">
                             {% include 'spoiler.html.jinja2' %}
                         </div>
                     </div>
                 </div>
-            </form>
-            <hr />
-            <div class="container" id="nav-gen-type-container">
-                <nav style="display: inline-block; float: none; vertical-align: top;">
-                    <div class="nav nav-tabs" id="nav-gen-type" role="tablist">
-                        <button class="nav-link active" id="nav-seed-gen-tab" data-bs-toggle="tab" data-bs-target="#nav-seed-gen" type="button" role="tab" aria-controls="nav-seed-gen" aria-selected="true">
-                            Generate New Seed
-                        </button>
-                        <button class="nav-link" id="nav-patch-tab" data-bs-toggle="tab" data-bs-target="#nav-patch-data" type="button" role="tab" aria-controls="nav-patch-data" aria-selected="false">
-                            Generate from Patch File
-                        </button>
-                    </div>
-                </nav>
-                <!--Populate tabs-->
-                <div class="tab-content" id="common_footer">
-                    <div class="tab-pane fade show active" id="nav-seed-gen" role="tabpanel" aria-labelledby="nav-seed-gen-tab">
-                        <div style="width: 80%;" class="center">
-                            <div class="form-group" style="margin-bottom: 10px; text-align: center;">
-                                <div class="row">
-                                    <div class="form-check form-switch" id="downloadsettings" style="margin-top: 20px; margin-bottom: -10px; float: left;">
-                                        <label title="Download generated ROM as patch file.">
-                                            <input class="form-check-input" type="checkbox" id="download_json" name="download_json" value="True" />
-                                            Download Patch File
-                                        </label>
-                                    </div>
-                                    <div class="form-check form-switch" style="margin-top: 20px; margin-bottom: -10px; float: left;">
-                                        <label title="This option enables spoiler log files to be created on randomizer generation.">
-                                            <input class="form-check-input" type="checkbox" id="generate_spoilerlog" name="generate_spoilerlog" value="True" checked />
-                                            Generate Spoiler Log
-                                        </label>
-                                    </div>
-                                </div>
-                                <label for="input-file-rom_1" id="romlabel" class="form-label mt-4">ROM File</label>
-                                <input accept=".z64,.n64,.v64" class="form-control" type="file" id="input-file-rom_1" name="rom_file" style="margin-right: 5px; width: 50%; height: 100%; margin: 0 auto;" required />
-                            </div>
-                            <br id="formbreak" />
-                            <input id="generate_seed" class="btn btn-primary" style="width: 60%; height: 50px; text-align: center;" type="button" value="Generate Seed" />
+                <hr />
+                <div class="container" id="nav-gen-type-container">
+                    <nav style="display: inline-block; float: none; vertical-align: top;">
+                        <div class="nav nav-tabs" id="nav-gen-type" role="tablist">
+                            <button class="nav-link active" id="nav-seed-gen-tab" data-bs-toggle="tab" data-bs-target="#nav-seed-gen" type="button" role="tab" aria-controls="nav-seed-gen" aria-selected="true">
+                                Generate New Seed
+                            </button>
+                            <button class="nav-link" id="nav-patch-tab" data-bs-toggle="tab" data-bs-target="#nav-patch-data" type="button" role="tab" aria-controls="nav-patch-data" aria-selected="false">
+                                Generate from Patch File
+                            </button>
                         </div>
-                    </div>
-                    <div class="tab-pane fade" id="nav-patch-data" role="tabpanel" aria-labelledby="nav-patch-tab">
-                        <div style="width: 80%;" class="center">
-                            <div class="form-group" style="margin-bottom: 10px; text-align: center;">
-                                <label for="jsonfileloader" id="patchlabel" class="form-label mt-4">Patch File</label>
-                                <input id="jsonfileloader" class="form-control" type="file" accept=".lanky" style="margin-right: 5px; width: 50%; height: 100%; margin: 0 auto;" />
-                                <label for="input-file-rom_2" id="romlabel" class="form-label mt-4">ROM File</label>
-                                <input accept=".z64,.n64,.v64" class="form-control" type="file" id="input-file-rom_2" name="rom_file" style="margin-right: 5px; width: 50%; height: 100%; margin: 0 auto;" required />
+                    </nav>
+                    <!--Populate tabs-->
+                    <div class="tab-content" id="common_footer">
+                        <div class="tab-pane fade show active" id="nav-seed-gen" role="tabpanel" aria-labelledby="nav-seed-gen-tab">
+                            <div style="width: 80%;" class="center">
+                                <div class="form-group" style="margin-bottom: 10px; text-align: center;">
+                                    <div class="row">
+                                        <div class="form-check form-switch" id="downloadsettings" style="margin-top: 20px; margin-bottom: -10px; float: left;">
+                                            <label title="Download generated ROM as patch file.">
+                                                <input class="form-check-input" type="checkbox" id="download_json" name="download_json" value="True" />
+                                                Download Patch File
+                                            </label>
+                                        </div>
+                                        <div class="form-check form-switch" style="margin-top: 20px; margin-bottom: -10px; float: left;">
+                                            <label title="This option enables spoiler log files to be created on randomizer generation.">
+                                                <input class="form-check-input" type="checkbox" id="generate_spoilerlog" name="generate_spoilerlog" value="True" checked />
+                                                Generate Spoiler Log
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <label for="input-file-rom_1" id="romlabel" class="form-label mt-4">ROM File</label>
+                                    <input accept=".z64,.n64,.v64" class="form-control" type="file" id="input-file-rom_1" name="rom_file" style="margin-right: 5px; width: 50%; height: 100%; margin: 0 auto;" required />
+                                </div>
+                                <br id="formbreak" />
+                                <input id="generate_seed" class="btn btn-primary" style="width: 60%; height: 50px; text-align: center;" type="button" value="Generate Seed" />
                             </div>
-                            <br id="formbreak" />
-                            <input id="generate_lanky_seed" class="btn btn-primary" style="width: 60%; height: 50px; text-align: center;" type="button" value="Generate Seed from Patch" />
+                        </div>
+                        <div class="tab-pane fade" id="nav-patch-data" role="tabpanel" aria-labelledby="nav-patch-tab">
+                            <div style="width: 80%;" class="center">
+                                <div class="form-group" style="margin-bottom: 10px; text-align: center;">
+                                    <label for="jsonfileloader" id="patchlabel" class="form-label mt-4">Patch File</label>
+                                    <input id="jsonfileloader" class="form-control" type="file" accept=".lanky" style="margin-right: 5px; width: 50%; height: 100%; margin: 0 auto;" />
+                                    <label for="input-file-rom_2" id="romlabel" class="form-label mt-4">ROM File</label>
+                                    <input accept=".z64,.n64,.v64" class="form-control" type="file" id="input-file-rom_2" name="rom_file" style="margin-right: 5px; width: 50%; height: 100%; margin: 0 auto;" required />
+                                </div>
+                                <br id="formbreak" />
+                                <input id="generate_lanky_seed" class="btn btn-primary" style="width: 60%; height: 50px; text-align: center;" type="button" value="Generate Seed from Patch" />
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
+            </form>
         </div>
     </div>
 </body>

@@ -6,14 +6,14 @@ if (window.Worker) {
   background_worker.onmessage = function (e) {
     // Convert the data sent as json to a string and store it as a global var we can pass
     // We convert it back to a string so we don't have to deal with inserting it into the function as a string
-    var event_response_data = JSON.stringify(e.data);
+    event_response_data = JSON.stringify(e.data);
     // Load the data saved as a var in javascript, convert it back to json and then eval the return function string so we can call it
     pyodide.runPython(
       `
     import js
     import json
     exec(json.loads(js.event_response_data).get("returning_func"))
-    eval(str(json.loads(js.event_response_data).get("returning_func").split()[-1]) + "(" + js.event_response_data + ")")
+    eval(str(json.loads(js.event_response_data).get("returning_func").split()[-1]) + "(" + json.dumps(json.loads(js.event_response_data)['response']) + ")")
     `
     );
   };

@@ -1,5 +1,6 @@
 """Settings class and functions."""
 import json
+import random
 
 from randomizer.Enums.Kongs import Kongs
 
@@ -13,12 +14,13 @@ class Settings:
         Args:
             form_data (dict): Post data from the html form.
         """
-        self.algorithm = None
+        self.algorithm = "forward"
         self.generate_main()
         self.generate_progression()
         self.generate_misc()
         for k, v in form_data.items():
             setattr(self, k, v)
+        self.set_seed()
         # Store banana values in array
         self.EntryGBs = [
             self.blocker_0,
@@ -70,6 +72,10 @@ class Settings:
         """Set Default items on main page."""
         self.seed = None
         self.download_json = None
+
+    def set_seed(self):
+        """Forcibly re-set the random seed to the seed set in the config."""
+        random.seed(int(self.seed))
 
     def generate_progression(self):
         """Set default items on progression page."""

@@ -26,9 +26,9 @@ class ProgressBar:
 
     def reset(self):
         """Set hide, text, width and added classes of the progressbar to nil."""
-        js.sleep(2, self._hide, [])
-        js.sleep(2, self._width, [0])
-        js.sleep(2, self._text, [""])
+        js.sleep(5, self._hide, [])
+        js.sleep(5, self._width, [0])
+        js.sleep(5, self._text, [""])
         for css in js.document.getElementById("patchprogress").classList:
             if "progress" not in css:
                 self.set_class(css)
@@ -70,7 +70,14 @@ class ProgressBar:
         Args:
             css (str): Class to add.
         """
+
+        def _remove():
+            js.eval(self.bar + f".removeClass('{css}')")
+
+        def _add():
+            js.eval(self.bar + f".addClass('{css}')")
+
         if js.eval(self.bar + f".hasClass('{css}')"):
-            js.sleep(2, js.eval(self.bar + f".removeClass('{css}')"), [])
+            js.sleep(2, _remove, [])
         else:
-            js.sleep(2, js.eval(self.bar + f".addClass('{css}')"), [])
+            js.sleep(2, _add, [])

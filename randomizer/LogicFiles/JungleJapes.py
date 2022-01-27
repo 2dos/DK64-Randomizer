@@ -2,11 +2,11 @@
 """Logic file for Jungle Japes."""
 
 from randomizer.Enums.Events import Events
+from randomizer.Enums.Exits import Exits
 from randomizer.Enums.Kongs import Kongs
 from randomizer.Enums.Levels import Levels
 from randomizer.Enums.Locations import Locations
 from randomizer.Enums.Regions import Regions
-from randomizer.Enums.Exits import Exits
 from randomizer.LogicClasses import Event, Exit, LocationLogic, Region
 
 LogicRegions = {

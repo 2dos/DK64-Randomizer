@@ -1,4 +1,8 @@
 """Static code patching."""
+jump_data_start = 0x1FFF000
+with open("rom/dk64-randomizer-base-temp.z64", "rb") as fg:
+    fg.seek(jump_data_start + 0x00)
+    patch_lag_hook = fg.read(8)
 
 
 def patchStaticCode(filename):
@@ -21,3 +25,6 @@ def patchStaticCode(filename):
         fh.write(bytearray([0x00, 0x00, 0x00, 0x00]))
         fh.seek(0x8F158)
         fh.write(bytearray([0x00, 0x00, 0x00, 0x00]))
+        # Lag Hook
+        fh.seek(0x5374)
+        fh.write(patch_lag_hook)

@@ -2,10 +2,9 @@
 import copy
 import random
 
-import randomizer.Lists.Exceptions as Ex
 import randomizer.ItemPool as ItemPool
-import randomizer.Logic as Logic
 import randomizer.Lists.Exceptions as Ex
+import randomizer.Logic as Logic
 from randomizer.Lists.Location import LocationList
 from randomizer.Lists.Item import ItemList
 from randomizer.Logic import LogicVarHolder, LogicVariables

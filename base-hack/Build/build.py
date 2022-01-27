@@ -7,11 +7,12 @@ import zlib
 
 import generate_watch_file
 
+# Patcher functions for the extracted files
+import patch_text
+from convertSetup import convertSetup
+
 # Infrastructure for recomputing DK64 global pointer tables
 from map_names import maps
-
-# Patcher functions for the extracted files
-from patch_text import patchDolbyText
 from recompute_overlays import (
     isROMAddressOverlay,
     readOverlayOriginalData,
@@ -46,18 +47,18 @@ file_dict = [
         "patcher": patchStaticCode,
     },
     {
+        "name": "Dolby Logo",
+        "pointer_table_index": 14,
+        "file_index": 176,
+        "source_file": "assets/Non-Code/Dolby/DolbyThin.png",
+        "texture_format": "ia4",
+    },
+    {
         "name": "Thumb Image",
         "pointer_table_index": 14,
         "file_index": 94,
         "source_file": "assets/Non-Code/Nintendo Logo/Nintendo.png",
         "texture_format": "rgba5551",
-    },
-    {
-        "name": "Dolby Text",
-        "pointer_table_index": 12,
-        "file_index": 13,
-        "source_file": "DolbyText.bin",
-        "patcher": patchDolbyText,
     },
     {
         "name": "DKTV Image",
@@ -72,6 +73,60 @@ file_dict = [
         "file_index": 95,
         "source_file": "assets/Non-Code/transition/transition-body.png",
         "texture_format": "ia4",
+    },
+    {
+        "name": "Moves Image",
+        "pointer_table_index": 14,
+        "file_index": 115,
+        "source_file": "assets/Non-Code/file_screen/moves.png",
+        "texture_format": "rgba5551",
+    },
+    {
+        "name": "Blueprint Image",
+        "pointer_table_index": 14,
+        "file_index": 116,
+        "source_file": "assets/Non-Code/file_screen/blueprint.png",
+        "texture_format": "rgba5551",
+    },
+    {
+        "name": "Isles Object Instance Scripts",
+        "pointer_table_index": 10,
+        "file_index": 34,
+        "source_file": "assets/Non-Code/instance_scripts/isles.bin",
+        "bps_file": "assets/Non-Code/instance_scripts/isles.bps",
+        "is_diff_patch": True,
+    },
+    {
+        "name": "Helm Object Instance Scripts",
+        "pointer_table_index": 10,
+        "file_index": 17,
+        "source_file": "assets/Non-Code/instance_scripts/helm.bin",
+        "bps_file": "assets/Non-Code/instance_scripts/helm.bps",
+        "is_diff_patch": True,
+    },
+    {
+        "name": "Galleon Object Instance Scripts",
+        "pointer_table_index": 10,
+        "file_index": 0x1E,
+        "source_file": "assets/Non-Code/instance_scripts/galleon.bin",
+        "bps_file": "assets/Non-Code/instance_scripts/galleon.bps",
+        "is_diff_patch": True,
+    },
+    {
+        "name": "Aztec Object Instance Scripts",
+        "pointer_table_index": 10,
+        "file_index": 0x26,
+        "source_file": "assets/Non-Code/instance_scripts/aztec.bin",
+        "bps_file": "assets/Non-Code/instance_scripts/aztec.bps",
+        "is_diff_patch": True,
+    },
+    {
+        "name": "Fungi Object Instance Scripts",
+        "pointer_table_index": 10,
+        "file_index": 0x30,
+        "source_file": "assets/Non-Code/instance_scripts/fungi.bin",
+        "bps_file": "assets/Non-Code/instance_scripts/fungi.bps",
+        "is_diff_patch": True,
     },
 ]
 
@@ -109,6 +164,52 @@ for x in range(221):
             "do_not_recompress": True,
         }
     )
+for x in range(221):
+    file_dict.append(
+        {
+            "name": "Setup for map " + str(x),
+            "pointer_table_index": 9,
+            "file_index": x,
+            "source_file": "setup" + str(x) + ".bin",
+            "target_compressed_size": 0x8000,
+            "target_uncompressed_size": 0x8000,
+            "do_not_recompress": True,
+        }
+    )
+for x in range(8):
+    file_dict.append(
+        {
+            "name": "Key " + str(x + 1) + " file screen",
+            "pointer_table_index": 14,
+            "file_index": 107 + x,
+            "source_file": "assets/Non-Code/file_screen/key" + str(x + 1) + ".png",
+            "texture_format": "rgba5551",
+        }
+    )
+for x in range(43):
+    if x != 13:
+        file_dict.append(
+            {
+                "name": "Text " + str(x),
+                "pointer_table_index": 12,
+                "file_index": x,
+                "source_file": "text" + str(x) + ".bin",
+                "target_compressed_size": 0x2000,
+                "target_uncompressed_size": 0x2000,
+                "do_not_recompress": True,
+            }
+        )
+file_dict.append(
+    {
+        "name": "Dolby Text",
+        "pointer_table_index": 12,
+        "file_index": 13,
+        "source_file": "dolby_text.bin",
+        "do_not_compress": True,
+        "do_not_delete_source": True,
+    },
+)
+
 
 print("DK64 Extractor")
 
@@ -234,11 +335,20 @@ with open(newROMName, "r+b") as fh:
     for x in file_dict:
         if "target_compressed_size" in x:
             x["do_not_compress"] = True
+            if x["source_file"][:5] == "setup":
+                convertSetup(x["source_file"])
             with open(x["source_file"], "rb") as fg:
                 byte_read = fg.read()
                 uncompressed_size = len(byte_read)
             if "do_not_recompress" in x and x["do_not_recompress"]:
                 compress = bytearray(byte_read)
+                if "target_uncompressed_size" in x:
+                    diff = x["target_uncompressed_size"] - len(byte_read)
+                    byte_append = 0
+                    if diff > 0:
+                        byte_read += byte_append.to_bytes(diff, "big")
+                    compress = bytearray(byte_read)
+                    uncompressed_size = x["target_uncompressed_size"]
             else:
                 precomp = gzip.compress(byte_read, compresslevel=9)
                 byte_append = 0
@@ -254,6 +364,12 @@ with open(newROMName, "r+b") as fh:
             with open(x["source_file"], "wb") as fg:
                 fg.write(compress)
             x["output_file"] = x["source_file"]
+
+        if "is_diff_patch" in x and x["is_diff_patch"]:
+            with open(x["source_file"], "rb") as fg:
+                byte_read = fg.read()
+                uncompressed_size = len(byte_read)
+            subprocess.Popen(["build\\flips.exe", "--apply", x["bps_file"], x["source_file"], x["source_file"]]).wait()
 
         if "texture_format" in x:
             if x["texture_format"] in ["rgba5551", "i4", "ia4", "i8", "ia8"]:
@@ -339,6 +455,11 @@ with open(newROMName, "r+b") as fh:
 
     print("[6 / 7] - Dumping details of all pointer tables to rom/build.log")
     dumpPointerTableDetails("rom/build.log", fh)
+
+    # for x in file_dict:
+    #     if "is_diff_patch" in x and x["is_diff_patch"]:
+    #         if os.path.exists(x["source_file"]):
+    #             os.remove(x["source_file"])
 
     # Wipe Space
     fh.seek(0x1FED020)
