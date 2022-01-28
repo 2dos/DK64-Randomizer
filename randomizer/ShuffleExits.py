@@ -73,12 +73,15 @@ def VerifyWorld(settings):
 def AttemptConnect(settings, front, frontId, back, backId):
     """Attempt to connect two exits, checking if the world is valid if they are connected."""
     # Remove connections to world root
-    backExit = GetRootExit(backId)
-    RemoveRootExit(backExit)
     frontExit = None
     if not settings.decoupled_loading_zones:
+        # Prevents an error if trying to assign an entrance back to itself
+        if frontId == backId:
+            return False
         frontExit = GetRootExit(frontId)
         RemoveRootExit(frontExit)
+    backExit = GetRootExit(backId)
+    RemoveRootExit(backExit)
     # Add connection between selected exits
     front.shuffled = True
     front.dest = backId
@@ -101,10 +104,6 @@ def AttemptConnect(settings, front, frontId, back, backId):
 
 def ShuffleExitsInPool(settings, frontpool, backpool):
     """Shuffle exits within a specific pool."""
-    if settings.decoupled_loading_zones:
-        frontpool.extend(backpool)
-        backpool = frontpool.copy()
-
     NonTagRegions = [x for x in backpool if not Logic.Regions[ShufflableExits[x].region].tagbarrel]
     NonTagLeaves = [x for x in NonTagRegions if ShufflableExits[x].category is None]
     random.shuffle(NonTagLeaves)
@@ -136,24 +135,24 @@ def ShuffleExitsInPool(settings, frontpool, backpool):
             if AttemptConnect(settings, front, frontId, back, backId):
                 # print("Assigned " + front.name + " --> " + back.name)
                 frontpool.remove(frontId)
+                if not settings.decoupled_loading_zones:
+                    # If coupled, the opposite pairing also needs to be removed from the pool
+                    frontpool.remove(backId)
+                    backpool.remove(frontId)
                 break
         if not front.shuffled:
             # print("Failed to connect to " + back.name + " from any of the remaining " + str(len(origins)) + " origins!")
             raise Ex.EntranceOutOfDestinations
 
 
-def AssumeExits(settings, pools, newpool):
+def AssumeExits(settings, frontpool, backpool, newpool):
     """Split exit pool into front and back pools, and assumes exits reachable from root."""
-    frontpool = []
-    backpool = []
     for i in range(len(newpool)):
         exitId = newpool[i]
         exit = ShufflableExits[exitId]
-        # Even-numbered exits are "front", odd-numbered are "back"
-        if i % 2 == 0:
-            frontpool.append(exitId)
-        else:
-            backpool.append(exitId)
+        # "front" is the entrance you go into, "back" is the exit you come out of
+        frontpool.append(exitId)
+        backpool.append(exitId)
         # Set up assumed connection
         # 1) Break connection
         exit.dest = None
@@ -161,22 +160,20 @@ def AssumeExits(settings, pools, newpool):
         # 2) Attach to root of world (DK Isles)
         newExit = Exit(exit.region, lambda l: True, exitId, True)
         AddRootExit(newExit)
-    pools.append(frontpool)
-    pools.append(backpool)
 
 
 def ShuffleExits(settings):
     """Shuffle exit pools depending on settings."""
     # Set up front and back entrance pools for each setting
     # Assume all shuffled exits reachable by default
-    pools = []
+    frontpool = []
+    backpool = []
     if settings.shuffle_loading_zones == "levels":
-        AssumeExits(settings, pools, LevelExitPool)
+        AssumeExits(settings, frontpool, backpool, LevelExitPool)
     elif settings.shuffle_loading_zones == "all":
-        AssumeExits(settings, pools, [x for x in ShufflableExits.keys()])
+        AssumeExits(settings, frontpool, backpool, [x for x in ShufflableExits.keys()])
     # Shuffle each entrance pool
-    for i in range(0, len(pools), 2):
-        ShuffleExitsInPool(settings, pools[i], pools[i + 1])
+    ShuffleExitsInPool(settings, frontpool, backpool)
 
 
 def ExitShuffle(settings):
