@@ -78,6 +78,13 @@ class Events(IntEnum):
     HelmDiddyDone = auto()
     HelmKeyAccess = auto()
 
+    # K Rool Phases
+    KRoolDonkey = auto()
+    KRoolDiddy = auto()
+    KRoolLanky = auto()
+    KRoolTiny = auto()
+    KRoolChunky = auto()
+
     # Level entered events for shops
     JapesEntered = auto()
     AztecEntered = auto()

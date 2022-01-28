@@ -157,8 +157,14 @@ LogicRegions = {
         Exit(Regions.HideoutHelmStart, lambda l: l.gorillaGone and l.chunky and l.GoldenBananas >= l.settings.EntryGBs[Levels.HideoutHelm - 1]),
     ]),
 
-    Regions.KRool: Region("K. Rool", Levels.DKIsles, True, None, [
-        LocationLogic(Locations.BananaHoard, lambda l: l.donkey and l.jetpack and l.peanut and l.diddy and l.trombone and l.lanky
-                      and l.mini and l.feather and l.tiny and l.superSlam and l.gorillaGone and l.hunkyChunky and l.chunky),
-    ], [], []),
+    Regions.KRool: Region("K. Rool", Levels.DKIsles, True, [
+        LocationLogic(Locations.BananaHoard, lambda l: Events.KRoolDonkey in l.Events and Events.KRoolDiddy in l.Events
+                      and Events.KRoolLanky in l.Events and Events.KRoolTiny in l.Events and Events.KRoolChunky in l.Events),
+    ], [
+        Event(Events.KRoolDonkey, lambda l: not l.settings.krool_donkey or l.donkey),
+        Event(Events.KRoolDiddy, lambda l: not l.settings.krool_diddy or (l.jetpack and l.peanut and l.diddy)),
+        Event(Events.KRoolLanky, lambda l: not l.settings.krool_lanky or (l.trombone and l.lanky)),
+        Event(Events.KRoolTiny, lambda l: not l.settings.krool_tiny or (l.mini and l.feather and l.tiny)),
+        Event(Events.KRoolChunky, lambda l: not l.settings.krool_chunky or (l.superSlam and l.gorillaGone and l.hunkyChunky and l.chunky))
+    ], []),
 }
