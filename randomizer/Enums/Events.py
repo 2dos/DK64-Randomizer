@@ -8,13 +8,7 @@ class Events(IntEnum):
     # DK Isles events
     IslesDiddyBarrelSpawn = auto()
     IslesChunkyBarrelSpawn = auto()
-    KLumsyTalkedTo = auto()
-    FirstKey = auto()
-    SecondKey = auto()
-    FourthKey = auto()
-    FifthKey = auto()
-    SeventhKey = auto()
-    EigthKey = auto()
+    KeysTurnIn = auto()
 
     # Jungle Japes events
     Rambi = auto()
@@ -27,7 +21,7 @@ class Events(IntEnum):
 
     # Angry Aztec events
     FedTotem = auto()
-    LlamaFreed = auto()
+    # LlamaFreed = auto() # Decision to start with llama freed
     AztecDonkeySwitch = auto()
 
     # Frantic Factory events
@@ -44,6 +38,7 @@ class Events(IntEnum):
     GalleonLankySwitch = auto()
     GalleonTinySwitch = auto()
     LighthouseGateOpened = auto()
+    ShipyardGateOpened = auto()
     WaterSwitch = auto()
     LighthouseEnguarde = auto()
     SealReleased = auto()
@@ -51,6 +46,7 @@ class Events(IntEnum):
     GalleonChunkyPad = auto()
     ActivatedLighthouse = auto()
     ShipyardEnguarde = auto()
+    ShipyardTreasureRoomOpened = auto()
     TreasureRoomTeleporterUnlocked = auto()
     PearlsCollected = auto()
 
@@ -64,7 +60,7 @@ class Events(IntEnum):
     GrinderActivated = auto()
     MillBoxBroken = auto()
     ConveyorActivated = auto()
-    WenchRaised = auto()
+    WinchRaised = auto()
 
     # Crystal Caves events
     CavesSmallBoulderButton = auto()

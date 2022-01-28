@@ -9,3 +9,4 @@ class SearchMode(IntEnum):
     GeneratePlaythrough = auto()
     CheckBeatable = auto()
     CheckAllReachable = auto()
+    GetUnreachable = auto()
