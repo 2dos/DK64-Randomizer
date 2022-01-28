@@ -1,8 +1,8 @@
 # fmt: off
 """Stores the Location class and a list of each location in the game."""
 
-from randomizer.Enums.Locations import Locations
 from randomizer.Enums.Items import Items
+from randomizer.Enums.Locations import Locations
 
 
 class Location:
@@ -264,14 +264,14 @@ LocationList = {
     Locations.CavesTinyKrazyKongKlamour: Location("Caves Tiny Krazy Kong Klamour", Items.GoldenBanana),
     Locations.CavesTinyMonkeyportIgloo: Location("Caves Tiny Monkeyport Igloo", Items.GoldenBanana),
     Locations.CavesChunkyGorillaGone: Location("Caves Chunky Gorilla Gone", Items.GoldenBanana),
-    Locations.CavesDonkeyKasplat: Location("Caves Donkey Kasplat", Items.FungiForestDonkeyBlueprint),
-    Locations.CavesDiddyKasplat: Location("Caves Diddy Kasplat", Items.FungiForestDiddyBlueprint),
-    Locations.CavesLankyKasplat: Location("Caves Lanky Kasplat", Items.FungiForestLankyBlueprint),
-    Locations.CavesTinyKasplat: Location("Caves Tiny Kasplat", Items.FungiForestTinyBlueprint),
+    Locations.CavesDonkeyKasplat: Location("Caves Donkey Kasplat", Items.CrystalCavesDonkeyBlueprint),
+    Locations.CavesDiddyKasplat: Location("Caves Diddy Kasplat", Items.CrystalCavesDiddyBlueprint),
+    Locations.CavesLankyKasplat: Location("Caves Lanky Kasplat", Items.CrystalCavesLankyBlueprint),
+    Locations.CavesTinyKasplat: Location("Caves Tiny Kasplat", Items.CrystalCavesTinyBlueprint),
     Locations.CavesLankyBeetleRace: Location("Caves Lanky Beetle Race", Items.GoldenBanana),
     Locations.CavesLankyCastle: Location("Caves Lanky Castle", Items.GoldenBanana),
     Locations.CavesChunkyTransparentIgloo: Location("Caves Chunky Transparent Igloo", Items.GoldenBanana),
-    Locations.CavesChunkyKasplat: Location("Caves Chunky Kasplat", Items.FungiForestChunkyBlueprint),
+    Locations.CavesChunkyKasplat: Location("Caves Chunky Kasplat", Items.CrystalCavesChunkyBlueprint),
     Locations.CavesDonkey5DoorIgloo: Location("Caves Donkey 5 Door Igloo", Items.GoldenBanana),
     Locations.CavesDiddy5DoorIgloo: Location("Caves Diddy 5 Door Igloo", Items.GoldenBanana),
     Locations.CavesLanky5DoorIgloo: Location("Caves Lanky 5 Door Igloo", Items.GoldenBanana),

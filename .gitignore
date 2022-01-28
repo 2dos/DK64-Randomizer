@@ -138,7 +138,8 @@ dmypy.json
 cython_debug/
 
 # VSCode
-.vscode
+.vscode/settings.json
+!.vscode/tasks.json
 
 # Jekyll
 _site/
@@ -173,3 +174,5 @@ output.json
 base-hack/obj
 base-hack/rom/patch.bps
 base-hack/rom/dk64-randomizer-base.wch
+base-hack/build/autopatch
+!base-hack/build/

@@ -5,8 +5,8 @@ from io import BytesIO
 import js
 
 from randomizer.Enums.WrinklyKong import WrinklyKong
-from randomizer.Patcher import ROM
 from randomizer.Lists.WrinklyHints import Hint
+from randomizer.Patcher import ROM
 
 
 def UpdateHint(WrinklyHint: Hint, message: str):

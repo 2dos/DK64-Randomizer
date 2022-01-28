@@ -36,8 +36,6 @@ void openCrownDoor(void) {
 
 void openCoinDoor(void) {
 	if (Rando.coin_door_open) {
-		setPermFlag(0x84);
-		setPermFlag(0x17B);
 		setPermFlag(0x303);
 	}
 }

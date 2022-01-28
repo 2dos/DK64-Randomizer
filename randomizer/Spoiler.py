@@ -1,14 +1,14 @@
 """Spoiler class and functions."""
 
-import json
 import copy
+import json
 from typing import OrderedDict
 
-from randomizer.Lists.Location import LocationList
-from randomizer.Lists.Item import ItemFromKong, ItemList
-from randomizer.ShuffleExits import ShufflableExits
-
 from randomizer.Enums.Items import Items
+from randomizer.Lists.Item import ItemFromKong, ItemList
+from randomizer.Lists.Location import LocationList
+from randomizer.Settings import Settings
+from randomizer.ShuffleExits import ShufflableExits
 
 
 class Spoiler:
@@ -16,7 +16,7 @@ class Spoiler:
 
     def __init__(self, settings):
         """Initialize spoiler just with settings."""
-        self.settings = settings
+        self.settings: Settings = settings
         self.playthrough = {}
         self.shuffled_exit_data = {}
         self.location_data = {}
@@ -67,7 +67,7 @@ class Spoiler:
             shuffled_exits = OrderedDict()
             for exit, dest in self.shuffled_exit_data.items():
                 # If not decoupled, only want to show "front" exits
-                if exit % 2 != 0:  # or not decoupled
+                if exit % 2 != 0 or self.settings.decoupled_loading_zones:
                     shuffled_exits[ShufflableExits[exit].name] = ShufflableExits[dest].name
             humanspoiler["Shuffled Exits"] = shuffled_exits
 

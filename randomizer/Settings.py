@@ -14,12 +14,13 @@ class Settings:
         Args:
             form_data (dict): Post data from the html form.
         """
-        self.algorithm = None
+        self.algorithm = "forward"
         self.generate_main()
         self.generate_progression()
         self.generate_misc()
         for k, v in form_data.items():
             setattr(self, k, v)
+        self.set_seed()
         # Store banana values in array
         self.EntryGBs = [
             self.blocker_0,
@@ -58,17 +59,25 @@ class Settings:
         # progressive_upgrades: bool
         self.progressive_upgrades = True
 
-        # shuffle_loading_zones: bool
-        self.shuffle_loading_zones = False
+        # shuffle_loading_zones: str
+        # none
+        # levels
+        # all
+        self.shuffle_loading_zones = "None"
+
+        # decoupled_loading_zones: bool
+        self.decoupled_loading_zones = False
 
         self.resolve_settings()
 
     def generate_main(self):
         """Set Default items on main page."""
-        # shuffle_levels: bool
-        self.shuffle_levels = None
         self.seed = None
         self.download_json = None
+
+    def set_seed(self):
+        """Forcibly re-set the random seed to the seed set in the config."""
+        random.seed(int(self.seed))
 
     def generate_progression(self):
         """Set default items on progression page."""

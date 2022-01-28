@@ -47,10 +47,11 @@ class LogicVarHolder:
         self.tiny = self.startkong == Kongs.tiny or self.settings.unlock_all_kongs
         self.chunky = self.startkong == Kongs.chunky or self.settings.unlock_all_kongs
 
-        self.vines = self.settings.training_barrels == "startwith"
-        self.swim = self.settings.training_barrels == "startwith"
-        self.oranges = self.settings.training_barrels == "startwith"
-        self.barrels = self.settings.training_barrels == "startwith"
+        # Right now assuming start with training barrels
+        self.vines = True  # self.settings.training_barrels == "startwith"
+        self.swim = True  # self.settings.training_barrels == "startwith"
+        self.oranges = True  # self.settings.training_barrels == "startwith"
+        self.barrels = True  # self.settings.training_barrels == "startwith"
 
         self.progDonkey = 3 if self.settings.unlock_all_moves else 0
         self.blast = self.settings.unlock_all_moves
@@ -104,7 +105,7 @@ class LogicVarHolder:
         self.CastleKey = False
         self.HelmKey = False
 
-        self.Slam = 3 if self.settings.unlock_all_moves else 0
+        self.Slam = 3 if self.settings.unlock_all_moves else 1  # Right now assuming start with slam
         self.GoldenBananas = 0
         self.BananaFairies = 0
         self.BananaMedals = 0
@@ -297,8 +298,6 @@ class LogicVarHolder:
                 self.Coins[collectible.kong] += collectible.amount
         # Add bananas for correct level for this kong
         elif collectible.type == Collectibles.banana:
-            if collectible.kong == Kongs.lanky:
-                a = 1
             self.ColoredBananas[level][collectible.kong] += collectible.amount
         # Add 5 times amount of banana bunches
         elif collectible.type == Collectibles.bunch:
@@ -307,6 +306,13 @@ class LogicVarHolder:
         elif collectible.type == Collectibles.balloon:
             self.ColoredBananas[level][collectible.kong] += 10
         collectible.added = True
+
+    def HasAccess(self, region, kong):
+        """Check if a certain kong has access to a certain region.
+
+        Usually the region's own HasAccess function is used, but this is necessary for checking access for other regions in logic files.
+        """
+        return Regions[region].HasAccess(kong)
 
 
 LogicVariables = LogicVarHolder()

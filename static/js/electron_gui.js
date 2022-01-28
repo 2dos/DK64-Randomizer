@@ -28,7 +28,7 @@ const createWindow = () => {
   });
   mainWindow.loadURL(
     require("url").format({
-      pathname: "127.0.0.1:9990",
+      pathname: "127.0.0.1:9990/randomizer.html",
       protocol: "http:",
       slashes: true,
     })
