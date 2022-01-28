@@ -129,6 +129,9 @@ def ShuffleExitsInPool(settings, frontpool, backpool):
         back = ShufflableExits[backId]
         # Filter origins to make sure that if this target requires a certain kong's access, then the entrance will be accessible by that kong
         origins = [x for x in frontpool if ShufflableExits[x].entryKongs.issuperset(back.regionKongs)]
+        if not settings.decoupled_loading_zones and back.category is None:
+            # In coupled, if both front & back are leaves, the result will be invalid
+            origins = [x for x in origins if ShufflableExits[x].category is not None]
         # Select a random origin
         for frontId in origins:
             front = ShufflableExits[frontId]
