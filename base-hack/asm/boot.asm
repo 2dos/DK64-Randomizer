@@ -14,12 +14,13 @@ START:
 		//
 		LUI v0, 0x8001
 		ADDIU v0, v0, 0xDCC4
+		// Bypass Setup Checks
+		LUI t3, 0x8075
+		ADDIU t4, r0, 1
+		SB t4, 0x00B0 (t3)
+		LUI t3, 0x8074
+		SB t4, 0x7D78 (t3)
 		// Write LZ Update
-		//LUI t3, 0x2406
-		//ADDIU t3, t3, 1
-		//LUI t4, 0x8073
-		//SW t3, 0xE764 (t4)
-
 		LUI t3, 0x8075
 		SB r0, 0x8E21 (t3)
 		SB r0, 0x8E24 (t3)
