@@ -128,6 +128,38 @@ file_dict = [
         "bps_file": "assets/Non-Code/instance_scripts/fungi.bps",
         "is_diff_patch": True,
     },
+    {
+        "name": "Chunky Phase Object Instance Scripts",
+        "pointer_table_index": 10,
+        "file_index": 207,
+        "source_file": "assets/Non-Code/instance_scripts/chunky_phase.bin",
+        "bps_file": "assets/Non-Code/instance_scripts/chunky_phase.bps",
+        "is_diff_patch": True,
+    },
+    {
+        "name": "Diddy 5DC Upper Object Instance Scripts",
+        "pointer_table_index": 10,
+        "file_index": 200,
+        "source_file": "assets/Non-Code/instance_scripts/diddy_5dc_upper.bin",
+        "bps_file": "assets/Non-Code/instance_scripts/diddy_5dc_upper.bps",
+        "is_diff_patch": True,
+    },
+    {
+        "name": "Dungeon Object Instance Scripts",
+        "pointer_table_index": 10,
+        "file_index": 163,
+        "source_file": "assets/Non-Code/instance_scripts/dungeon.bin",
+        "bps_file": "assets/Non-Code/instance_scripts/dungeon.bps",
+        "is_diff_patch": True,
+    },
+    {
+        "name": "Wind Tower Object Instance Scripts",
+        "pointer_table_index": 10,
+        "file_index": 105,
+        "source_file": "assets/Non-Code/instance_scripts/wind_tower.bin",
+        "bps_file": "assets/Non-Code/instance_scripts/wind_tower.bps",
+        "is_diff_patch": True,
+    },
 ]
 
 map_replacements = []
