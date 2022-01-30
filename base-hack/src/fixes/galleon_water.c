@@ -2,6 +2,7 @@
 
 #define GLOOMY_GALLEON 0x1E
 #define ANGRY_AZTEC 0x26
+#define FUNGI_FOREST 0x30
 #define CRYSTAL_CAVES 0x48
 
 void load_object_script(int obj_instance_id) {
@@ -32,6 +33,8 @@ void adjust_galleon_water(void) {
 			load_object_script(0xC1);
 		} else if (CurrentMap == CRYSTAL_CAVES) {
 			load_object_script(0x31);
+		} else if (CurrentMap == FUNGI_FOREST) {
+			load_object_script(0x4);
 		}
 	}
 }
