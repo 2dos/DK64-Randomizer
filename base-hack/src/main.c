@@ -76,6 +76,7 @@ void earlyFrame(void) {
 	disable_krool_health_refills();
 	pre_turn_keys();
 	handle_WTI();
+	adjust_galleon_water();
 	if ((CurrentMap == MAIN_MENU) && (ObjectModel2Timer < 5)) {
 		FileScreenDLCode_Write();
 	}

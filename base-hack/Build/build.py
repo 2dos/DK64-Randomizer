@@ -464,7 +464,7 @@ with open(newROMName, "r+b") as fh:
     # Wipe Space
     fh.seek(0x1FED020)
     arr = []
-    for x in range(0x100):
+    for x in range(0x200):
         arr.append(0)
     fh.write(bytearray(arr))
 

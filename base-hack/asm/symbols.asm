@@ -81,6 +81,10 @@
 .definelabel setArcadeSong, 0x800252A4
 
 .definelabel countFlagArray, 0x80731AA8
+.definelabel setWaterHeight, 0x80661398
+.definelabel loadObjectForScripting, 0x8063B4C0
+.definelabel updateObjectScript, 0x8063E078
+.definelabel executeBehaviourScript, 0x8063E0D4
 
 //vanilla data
 .definelabel TransitionSpeed, 0x807FD88C
@@ -222,7 +226,9 @@
 .definelabel BossKongArray, 0x807446F0
 .definelabel KutOutKongArray, 0x80035B44
 .definelabel EnemyDropsTable, 0x80750400
-
+.definelabel scriptLoadedArray, 0x807F60B0
+.definelabel scriptsLoaded, 0x807F60A8
+.definelabel scriptLoadsAttempted, 0x807F7140
 
 .definelabel KongUnlockedMenuArray, 0x80033804
 .definelabel FilePercentage, 0x80033F51

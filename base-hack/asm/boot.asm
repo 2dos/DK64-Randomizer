@@ -123,6 +123,9 @@ IGTFileReadHook:
 IGTSaveToFileHook:
 	J 	IGTSaveToFile
 	NOP
+AutowalkFixHook:
+	J 	AutowalkFix
+	NOP
 
 loadExtraHooks:
 	LUI t3, hi(NinWarpHook)
@@ -250,6 +253,12 @@ loadExtraHooks:
 	LUI t4, 0x8061
 	SW t3, 0xDF44 (t4) // Store Hook
 	SW r0, 0xDF48 (t4) // Store NOP
+
+	LUI t3, hi(AutowalkFixHook)
+	LW t3, lo(AutowalkFixHook) (t3)
+	LUI t4, 0x806F
+	SW t3, 0x3E74 (t4) // Store Hook
+	SW r0, 0x3E78 (t4) // Store NOP
 
 	JR ra
 	NOP

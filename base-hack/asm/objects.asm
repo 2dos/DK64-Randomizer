@@ -4,6 +4,7 @@
 .importobj "obj/src_main.o"
 .importobj "obj/src_fixes_castle_autowalk.o"
 .importobj "obj/src_fixes_decouple_moves.o"
+.importobj "obj/src_fixes_galleon_water.o"
 .importobj "obj/src_fixes_quality_fixes.o"
 .importobj "obj/src_fixes_tag_anywhere.o"
 .importobj "obj/src_misc_file_screen.o"
