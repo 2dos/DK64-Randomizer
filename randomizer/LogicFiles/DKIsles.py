@@ -157,7 +157,7 @@ LogicRegions = {
         Exit(Regions.HideoutHelmStart, lambda l: l.gorillaGone and l.chunky and l.GoldenBananas >= l.settings.EntryGBs[Levels.HideoutHelm - 1]),
     ]),
 
-    Regions.KRool: Region("K. Rool", Levels.DKIsles, True, [
+    Regions.KRool: Region("K. Rool", Levels.DKIsles, True, None, [
         LocationLogic(Locations.BananaHoard, lambda l: Events.KRoolDonkey in l.Events and Events.KRoolDiddy in l.Events
                       and Events.KRoolLanky in l.Events and Events.KRoolTiny in l.Events and Events.KRoolChunky in l.Events),
     ], [

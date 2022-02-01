@@ -54,7 +54,6 @@ def patching_response(responded_data):
         Exits.IslesToForest,
         Exits.IslesToCaves,
         Exits.IslesToCastle,
-        Exits.IslesToHelm,
     ]
     vanilla_lobby_order = [
         Exits.JapesToIsles,
@@ -64,7 +63,6 @@ def patching_response(responded_data):
         Exits.ForestToIsles,
         Exits.CavesToIsles,
         Exits.CastleToIsles,
-        Exits.HelmToIsles,
     ]
     order = 0
     for level in vanilla_entrace_order:
@@ -95,7 +93,6 @@ def patching_response(responded_data):
         Exits.IslesToForest: Exits.ForestToIsles,
         Exits.IslesToCaves: Exits.CavesToIsles,
         Exits.IslesToCastle: Exits.CastleToIsles,
-        Exits.IslesToHelm: Exits.HelmToIsles,
     }
     key_mapping = {
         Exits.JapesToIsles: 0x01E,
@@ -105,7 +102,6 @@ def patching_response(responded_data):
         Exits.ForestToIsles: 0xA8,
         Exits.CavesToIsles: 0xEC,
         Exits.CastleToIsles: 0x124,
-        Exits.HelmToIsles: 0x13D,
     }
     order = 0
     for key, value in map_pointers.items():

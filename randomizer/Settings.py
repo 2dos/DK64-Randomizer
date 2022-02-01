@@ -113,7 +113,7 @@ class Settings:
         # unlock_fairy_shockwave: bool
         self.unlock_fairy_shockwave = None
         # krool_phase_count: int, [1-5]
-        self.krool_phase_count = None
+        self.krool_phase_count = 5
 
         #  Music
         self.music_bgm = None

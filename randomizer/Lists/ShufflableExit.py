@@ -3,8 +3,8 @@
 
 from randomizer.Enums.ExitCategories import ExitCategories
 from randomizer.Enums.Exits import Exits
-from randomizer.Enums.Regions import Regions
 from randomizer.Enums.Kongs import Kongs
+from randomizer.Enums.Regions import Regions
 
 
 class ShufflableExit:

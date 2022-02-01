@@ -5,3 +5,5 @@ pytest-cov
 black
 pycodestyle
 pydocstyle
+css-html-js-minify
+python-minifier
