@@ -2,7 +2,7 @@
 """Logic file for Frantic Factory."""
 
 from randomizer.Enums.Events import Events
-from randomizer.Enums.Exits import Exits
+from randomizer.Enums.TransitionFronts import TransitionFronts
 from randomizer.Enums.Kongs import Kongs
 from randomizer.Enums.Levels import Levels
 from randomizer.Enums.Locations import Locations
@@ -19,7 +19,7 @@ LogicRegions = {
     ], [
         Event(Events.FactoryEntered, lambda l: True),
     ], [
-        TransitionFront(Regions.FranticFactoryLobby, lambda l: True, Exits.FactoryToIsles),
+        TransitionFront(Regions.FranticFactoryLobby, lambda l: True, TransitionFronts.FactoryToIsles),
         TransitionFront(Regions.Testing, lambda l: Events.TestingGateOpened in l.Events),
         # Hatch opened already in rando if loading zones randomized
         TransitionFront(Regions.BeyondHatch, lambda l: l.settings.shuffle_loading_zones == "all" or l.Slam),
@@ -51,7 +51,7 @@ LogicRegions = {
         LocationLogic(Locations.FactoryBattleArena, lambda l: l.grab and l.donkey),
     ], [], [
         TransitionFront(Regions.Testing, lambda l: True),
-        TransitionFront(Regions.FactoryTinyRace, lambda l: l.mini and l.istiny, Exits.FactoryRandDToRace),
+        TransitionFront(Regions.FactoryTinyRace, lambda l: l.mini and l.istiny, TransitionFronts.FactoryRandDToRace),
         TransitionFront(Regions.ChunkyRoomPlatform, lambda l: True),
         TransitionFront(Regions.FactoryBossLobby, lambda l: True),
     ]),
@@ -59,13 +59,13 @@ LogicRegions = {
     Regions.FactoryTinyRace: Region("Factory Tiny Race", Levels.FranticFactory, False, None, [
         LocationLogic(Locations.FactoryTinyCarRace, lambda l: l.istiny),
     ], [], [
-        TransitionFront(Regions.RandD, lambda l: True, Exits.FactoryRaceToRandD),
+        TransitionFront(Regions.RandD, lambda l: True, TransitionFronts.FactoryRaceToRandD),
     ]),
 
     Regions.ChunkyRoomPlatform: Region("Chunky Room Platform", Levels.FranticFactory, False, -1, [
         LocationLogic(Locations.FactoryDiddyBeaverBother, lambda l: l.Slam and l.isdiddy),
     ], [], [
-        TransitionFront(Regions.PowerHut, lambda l: True, Exits.FactoryChunkyRoomToPower),
+        TransitionFront(Regions.PowerHut, lambda l: True, TransitionFronts.FactoryChunkyRoomToPower),
         TransitionFront(Regions.BeyondHatch, lambda l: True),
     ]),
 
@@ -74,7 +74,7 @@ LogicRegions = {
     ], [
         Event(Events.MainCoreActivated, lambda l: l.coconut and l.grab and l.isdonkey),
     ], [
-        TransitionFront(Regions.ChunkyRoomPlatform, lambda l: True, Exits.FactoryPowerToChunkyRoom),
+        TransitionFront(Regions.ChunkyRoomPlatform, lambda l: True, TransitionFronts.FactoryPowerToChunkyRoom),
     ]),
 
     Regions.BeyondHatch: Region("Beyond Hatch", Levels.FranticFactory, True, None, [
@@ -96,7 +96,7 @@ LogicRegions = {
         Event(Events.ChunkyCoreSwitch, lambda l: l.Slam and l.chunky),
     ], [
         TransitionFront(Regions.FranticFactoryStart, lambda l: True),
-        TransitionFront(Regions.InsideCore, lambda l: Events.MainCoreActivated in l.Events, Exits.FactoryBeyondHatchToInsideCore),
+        TransitionFront(Regions.InsideCore, lambda l: Events.MainCoreActivated in l.Events, TransitionFronts.FactoryBeyondHatchToInsideCore),
         TransitionFront(Regions.MainCore, lambda l: Events.MainCoreActivated in l.Events),
         TransitionFront(Regions.Cranky, lambda l: True),
         TransitionFront(Regions.Candy, lambda l: True),
@@ -106,7 +106,7 @@ LogicRegions = {
     Regions.InsideCore: Region("Inside Core", Levels.FranticFactory, False, -1, [
         LocationLogic(Locations.FactoryDonkeyCrusherRoom, lambda l: l.strongKong and l.isdonkey),
     ], [], [
-        TransitionFront(Regions.BeyondHatch, lambda l: True, Exits.FactoryInsideCoreToBeyondHatch),
+        TransitionFront(Regions.BeyondHatch, lambda l: True, TransitionFronts.FactoryInsideCoreToBeyondHatch),
     ]),
 
     Regions.MainCore: Region("Main Core", Levels.FranticFactory, True, -1, [

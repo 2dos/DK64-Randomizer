@@ -15,25 +15,25 @@ from randomizer.Enums.Items import Items
 from randomizer.Enums.Regions import Regions
 from randomizer.Enums.SearchMode import SearchMode
 from randomizer.Enums.Levels import Levels
-from randomizer.Enums.Exits import Exits
+from randomizer.Enums.TransitionFronts import TransitionFronts
 
 
 def GetExitLevelExit(level):
     """Get the exit that using the "Exit Level" button will take you to."""
     if level == Levels.JungleJapes:
-        return ShufflableExits[Exits.JapesToIsles].dest
+        return ShufflableExits[TransitionFronts.JapesToIsles].dest
     elif level == Levels.AngryAztec:
-        return ShufflableExits[Exits.AztecToIsles].dest
+        return ShufflableExits[TransitionFronts.AztecToIsles].dest
     elif level == Levels.FranticFactory:
-        return ShufflableExits[Exits.FactoryToIsles].dest
+        return ShufflableExits[TransitionFronts.FactoryToIsles].dest
     elif level == Levels.GloomyGalleon:
-        return ShufflableExits[Exits.GalleonToIsles].dest
+        return ShufflableExits[TransitionFronts.GalleonToIsles].dest
     elif level == Levels.FungiForest:
-        return ShufflableExits[Exits.ForestToIsles].dest
+        return ShufflableExits[TransitionFronts.ForestToIsles].dest
     elif level == Levels.CrystalCaves:
-        return ShufflableExits[Exits.CavesToIsles].dest
+        return ShufflableExits[TransitionFronts.CavesToIsles].dest
     elif level == Levels.CreepyCastle:
-        return ShufflableExits[Exits.CastleToIsles].dest
+        return ShufflableExits[TransitionFronts.CastleToIsles].dest
 
 
 def GetAccessibleLocations(settings, ownedItems, searchType=SearchMode.GetReachable):

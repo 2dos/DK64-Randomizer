@@ -2,7 +2,7 @@
 """Logic file for Gloomy Galleon."""
 
 from randomizer.Enums.Events import Events
-from randomizer.Enums.Exits import Exits
+from randomizer.Enums.TransitionFronts import TransitionFronts
 from randomizer.Enums.Kongs import Kongs
 from randomizer.Enums.Levels import Levels
 from randomizer.Enums.Locations import Locations
@@ -27,7 +27,7 @@ LogicRegions = {
         Event(Events.LighthouseGateOpened, lambda l: l.coconut and l.donkey),
         Event(Events.ShipyardGateOpened, lambda l: l.peanut and l.diddy),
     ], [
-        TransitionFront(Regions.GloomyGalleonLobby, lambda l: True, Exits.GalleonToIsles),
+        TransitionFront(Regions.GloomyGalleonLobby, lambda l: True, TransitionFronts.GalleonToIsles),
         TransitionFront(Regions.GalleonBeyondPineappleGate, lambda l: Events.WaterSwitch in l.Events and l.pineapple and l.chunky),
         TransitionFront(Regions.LighthouseArea, lambda l: l.settings.shuffle_loading_zones == "all" or Events.LighthouseGateOpened in l.Events),
         # Gate to shipyard opened in rando if loading zones randomized
@@ -56,9 +56,9 @@ LogicRegions = {
     ], [
         # Rare case of needing to open gate before being able to go through backwards
         TransitionFront(Regions.GloomyGalleonStart, lambda l: l.settings.shuffle_loading_zones == "all" or Events.LighthouseGateOpened in l.Events),
-        TransitionFront(Regions.Lighthouse, lambda l: l.Slam and l.isdonkey, Exits.GalleonLighthouseAreaToLighthouse),
-        TransitionFront(Regions.MermaidRoom, lambda l: l.mini and l.istiny, Exits.GalleonLighthousAreaToMermaid),
-        TransitionFront(Regions.SickBay, lambda l: Events.ActivatedLighthouse in l.Events and l.Slam and l.ischunky, Exits.GalleonLighthouseAreaToSickBay),
+        TransitionFront(Regions.Lighthouse, lambda l: l.Slam and l.isdonkey, TransitionFronts.GalleonLighthouseAreaToLighthouse),
+        TransitionFront(Regions.MermaidRoom, lambda l: l.mini and l.istiny, TransitionFronts.GalleonLighthousAreaToMermaid),
+        TransitionFront(Regions.SickBay, lambda l: Events.ActivatedLighthouse in l.Events and l.Slam and l.ischunky, TransitionFronts.GalleonLighthouseAreaToSickBay),
         TransitionFront(Regions.Snide, lambda l: True),
         TransitionFront(Regions.GalleonBossLobby, lambda l: Events.LighthouseEnguarde in l.Events),
     ]),
@@ -68,19 +68,19 @@ LogicRegions = {
     ], [
         Event(Events.ActivatedLighthouse, lambda l: l.grab and l.isdonkey),
     ], [
-        TransitionFront(Regions.LighthouseArea, lambda l: True, Exits.GalleonLighthouseToLighthouseArea),
+        TransitionFront(Regions.LighthouseArea, lambda l: True, TransitionFronts.GalleonLighthouseToLighthouseArea),
     ]),
 
     Regions.MermaidRoom: Region("Mermaid Room", Levels.GloomyGalleon, False, None, [
         LocationLogic(Locations.GalleonTinyPearls, lambda l: Events.PearlsCollected in l.Events and l.istiny),
     ], [], [
-        TransitionFront(Regions.LighthouseArea, lambda l: True, Exits.GalleonMermaidToLighthouseArea),
+        TransitionFront(Regions.LighthouseArea, lambda l: True, TransitionFronts.GalleonMermaidToLighthouseArea),
     ]),
 
     Regions.SickBay: Region("Sick Bay", Levels.GloomyGalleon, False, -1, [
         LocationLogic(Locations.GalleonChunkySeasick, lambda l: l.punch and l.ischunky),
     ], [], [
-        TransitionFront(Regions.LighthouseArea, lambda l: True, Exits.GalleonSickBayToLighthouseArea),
+        TransitionFront(Regions.LighthouseArea, lambda l: True, TransitionFronts.GalleonSickBayToLighthouseArea),
     ]),
 
     Regions.Shipyard: Region("Shipyard", Levels.GloomyGalleon, True, None, [
@@ -91,17 +91,17 @@ LogicRegions = {
         Event(Events.ShipyardTreasureRoomOpened, lambda l: Events.ShipyardEnguarde in l.Events and Events.WaterSwitch in l.Events),
     ], [
         TransitionFront(Regions.GloomyGalleonStart, lambda l: Events.ShipyardGateOpened in l.Events),
-        TransitionFront(Regions.SealRace, lambda l: Events.SealReleased in l.Events and Events.WaterSwitch in l.Events and l.isdonkey, Exits.GalleonShipyardToSeal),
+        TransitionFront(Regions.SealRace, lambda l: Events.SealReleased in l.Events and Events.WaterSwitch in l.Events and l.isdonkey, TransitionFronts.GalleonShipyardToSeal),
         TransitionFront(Regions.TreasureRoom, lambda l: Events.ShipyardTreasureRoomOpened in l.Events),
-        TransitionFront(Regions.Submarine, lambda l: l.mini and l.istiny, Exits.GalleonShipyardToSubmarine),
+        TransitionFront(Regions.Submarine, lambda l: l.mini and l.istiny, TransitionFronts.GalleonShipyardToSubmarine),
         TransitionFront(Regions.Mechafish, lambda l: Events.MechafishSummoned in l.Events and l.isdiddy),
-        TransitionFront(Regions.LankyShip, lambda l: Events.GalleonLankySwitch in l.Events and l.islanky, Exits.GalleonShipyardToLanky),
-        TransitionFront(Regions.TinyShip, lambda l: Events.GalleonTinySwitch in l.Events and l.istiny, Exits.GalleonShipyardToTiny),
-        TransitionFront(Regions.BongosShip, lambda l: l.bongos and l.isdonkey, Exits.GalleonShipyardToBongos),
-        TransitionFront(Regions.GuitarShip, lambda l: l.guitar and l.isdiddy, Exits.GalleonShipyardToGuitar),
-        TransitionFront(Regions.TromboneShip, lambda l: l.trombone and l.islanky, Exits.GalleonShipyardToTrombone),
-        TransitionFront(Regions.SaxophoneShip, lambda l: l.saxophone and l.istiny, Exits.GalleonShipyardToSaxophone),
-        TransitionFront(Regions.TriangleShip, lambda l: Events.GalleonChunkyPad in l.Events and l.ischunky, Exits.GalleonShipyardToTriangle),
+        TransitionFront(Regions.LankyShip, lambda l: Events.GalleonLankySwitch in l.Events and l.islanky, TransitionFronts.GalleonShipyardToLanky),
+        TransitionFront(Regions.TinyShip, lambda l: Events.GalleonTinySwitch in l.Events and l.istiny, TransitionFronts.GalleonShipyardToTiny),
+        TransitionFront(Regions.BongosShip, lambda l: l.bongos and l.isdonkey, TransitionFronts.GalleonShipyardToBongos),
+        TransitionFront(Regions.GuitarShip, lambda l: l.guitar and l.isdiddy, TransitionFronts.GalleonShipyardToGuitar),
+        TransitionFront(Regions.TromboneShip, lambda l: l.trombone and l.islanky, TransitionFronts.GalleonShipyardToTrombone),
+        TransitionFront(Regions.SaxophoneShip, lambda l: l.saxophone and l.istiny, TransitionFronts.GalleonShipyardToSaxophone),
+        TransitionFront(Regions.TriangleShip, lambda l: Events.GalleonChunkyPad in l.Events and l.ischunky, TransitionFronts.GalleonShipyardToTriangle),
         TransitionFront(Regions.Candy, lambda l: True),
         TransitionFront(Regions.Funky, lambda l: True),
         TransitionFront(Regions.GalleonBossLobby, lambda l: True),
@@ -110,7 +110,7 @@ LogicRegions = {
     Regions.SealRace: Region("Seal Race", Levels.GloomyGalleon, False, None, [
         LocationLogic(Locations.GalleonDonkeySealRace, lambda l: l.isdonkey),
     ], [], [
-        TransitionFront(Regions.Shipyard, lambda l: True, Exits.GalleonSealToShipyard),
+        TransitionFront(Regions.Shipyard, lambda l: True, TransitionFronts.GalleonSealToShipyard),
     ]),
 
     # Water level needs to be raised and you spring up as diddy to get killed by the kasplat
@@ -123,19 +123,19 @@ LogicRegions = {
         Event(Events.TreasureRoomTeleporterUnlocked, lambda l: l.spring and l.diddy),
     ], [
         TransitionFront(Regions.Shipyard, lambda l: Events.ShipyardTreasureRoomOpened in l.Events),
-        TransitionFront(Regions.TinyChest, lambda l: l.mini and l.istiny, Exits.GalleonTreasureToChest),
+        TransitionFront(Regions.TinyChest, lambda l: l.mini and l.istiny, TransitionFronts.GalleonTreasureToChest),
     ]),
 
     Regions.TinyChest: Region("Tiny Chest", Levels.GloomyGalleon, False, -1, [], [
         Event(Events.PearlsCollected, lambda l: l.istiny),
     ], [
-        TransitionFront(Regions.TreasureRoom, lambda l: True, Exits.GalleonChestToTreasure),
+        TransitionFront(Regions.TreasureRoom, lambda l: True, TransitionFronts.GalleonChestToTreasure),
     ]),
 
     Regions.Submarine: Region("Submarine", Levels.GloomyGalleon, False, -1, [
         LocationLogic(Locations.GalleonTinySubmarine, lambda l: l.istiny),
     ], [], [
-        TransitionFront(Regions.Shipyard, lambda l: True, Exits.GalleonSubmarineToShipyard),
+        TransitionFront(Regions.Shipyard, lambda l: True, TransitionFronts.GalleonSubmarineToShipyard),
     ]),
 
     Regions.Mechafish: Region("Mechafish", Levels.GloomyGalleon, False, -1, [
@@ -147,44 +147,44 @@ LogicRegions = {
     Regions.LankyShip: Region("Lanky Ship", Levels.GloomyGalleon, False, None, [
         LocationLogic(Locations.GalleonLanky2DoorShip, lambda l: l.islanky),
     ], [], [
-        TransitionFront(Regions.Shipyard, lambda l: True, Exits.GalleonLankyToShipyard),
+        TransitionFront(Regions.Shipyard, lambda l: True, TransitionFronts.GalleonLankyToShipyard),
     ]),
 
     Regions.TinyShip: Region("Tiny Ship", Levels.GloomyGalleon, False, -1, [
         LocationLogic(Locations.GalleonTiny2DoorShip, lambda l: l.istiny),
     ], [], [
-        TransitionFront(Regions.Shipyard, lambda l: True, Exits.GalleonTinyToShipyard),
+        TransitionFront(Regions.Shipyard, lambda l: True, TransitionFronts.GalleonTinyToShipyard),
     ]),
 
     Regions.BongosShip: Region("Bongos Ship", Levels.GloomyGalleon, False, -1, [
         LocationLogic(Locations.GalleonDonkey5DoorShip, lambda l: l.isdonkey),
     ], [], [
-        TransitionFront(Regions.Shipyard, lambda l: True, Exits.GalleonBongosToShipyard),
+        TransitionFront(Regions.Shipyard, lambda l: True, TransitionFronts.GalleonBongosToShipyard),
     ]),
 
     Regions.GuitarShip: Region("Guitar Ship", Levels.GloomyGalleon, False, -1, [
         LocationLogic(Locations.GalleonDiddy5DoorShip, lambda l: l.isdiddy),
     ], [], [
-        TransitionFront(Regions.Shipyard, lambda l: True, Exits.GalleonGuitarToShipyard),
+        TransitionFront(Regions.Shipyard, lambda l: True, TransitionFronts.GalleonGuitarToShipyard),
     ]),
 
     Regions.TromboneShip: Region("Trombone Ship", Levels.GloomyGalleon, False, -1, [
         LocationLogic(Locations.GalleonLanky5DoorShip, lambda l: l.islanky),
     ], [], [
-        TransitionFront(Regions.Shipyard, lambda l: True, Exits.GalleonTromboneToShipyard),
+        TransitionFront(Regions.Shipyard, lambda l: True, TransitionFronts.GalleonTromboneToShipyard),
     ]),
 
     Regions.SaxophoneShip: Region("Saxophone Ship", Levels.GloomyGalleon, False, -1, [
         LocationLogic(Locations.GalleonTiny5DoorShip, lambda l: l.istiny),
         LocationLogic(Locations.GalleonBananaFairy5DoorShip, lambda l: l.camera),
     ], [], [
-        TransitionFront(Regions.Shipyard, lambda l: True, Exits.GalleonSaxophoneToShipyard),
+        TransitionFront(Regions.Shipyard, lambda l: True, TransitionFronts.GalleonSaxophoneToShipyard),
     ]),
 
     Regions.TriangleShip: Region("Triangle Ship", Levels.GloomyGalleon, False, -1, [
         LocationLogic(Locations.GalleonChunky5DoorShip, lambda l: l.ischunky),
     ], [], [
-        TransitionFront(Regions.Shipyard, lambda l: True, Exits.GalleonTriangleToShipyard),
+        TransitionFront(Regions.Shipyard, lambda l: True, TransitionFronts.GalleonTriangleToShipyard),
     ]),
 
     Regions.GalleonBossLobby: Region("Galleon Boss Lobby", Levels.GloomyGalleon, True, None, [], [], [

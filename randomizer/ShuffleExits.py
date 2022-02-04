@@ -4,7 +4,7 @@ import random
 import randomizer.Fill as Fill
 import randomizer.Lists.Exceptions as Ex
 import randomizer.Logic as Logic
-from randomizer.Enums.Exits import Exits
+from randomizer.Enums.TransitionFronts import TransitionFronts
 from randomizer.Enums.Regions import Regions
 from randomizer.Enums.SearchMode import SearchMode
 from randomizer.ItemPool import AllItems, PlaceConstants
@@ -12,20 +12,20 @@ from randomizer.Lists.ShufflableExit import ShufflableExits
 from randomizer.LogicClasses import TransitionBack, TransitionFront
 
 LevelExitPool = [
-    Exits.IslesToJapes,
-    Exits.JapesToIsles,
-    Exits.IslesToAztec,
-    Exits.AztecToIsles,
-    Exits.IslesToFactory,
-    Exits.FactoryToIsles,
-    Exits.IslesToGalleon,
-    Exits.GalleonToIsles,
-    Exits.IslesToForest,
-    Exits.ForestToIsles,
-    Exits.IslesToCaves,
-    Exits.CavesToIsles,
-    Exits.IslesToCastle,
-    Exits.CastleToIsles,
+    TransitionFronts.IslesToJapes,
+    TransitionFronts.JapesToIsles,
+    TransitionFronts.IslesToAztec,
+    TransitionFronts.AztecToIsles,
+    TransitionFronts.IslesToFactory,
+    TransitionFronts.FactoryToIsles,
+    TransitionFronts.IslesToGalleon,
+    TransitionFronts.GalleonToIsles,
+    TransitionFronts.IslesToForest,
+    TransitionFronts.ForestToIsles,
+    TransitionFronts.IslesToCaves,
+    TransitionFronts.CavesToIsles,
+    TransitionFronts.IslesToCastle,
+    TransitionFronts.CastleToIsles,
 ]
 
 # Root is the starting spawn, which is the main area of DK Isles.

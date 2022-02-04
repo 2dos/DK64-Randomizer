@@ -2,7 +2,7 @@
 """Logic file for Angry Aztec."""
 
 from randomizer.Enums.Events import Events
-from randomizer.Enums.Exits import Exits
+from randomizer.Enums.TransitionFronts import TransitionFronts
 from randomizer.Enums.Kongs import Kongs
 from randomizer.Enums.Levels import Levels
 from randomizer.Enums.Locations import Locations
@@ -23,7 +23,7 @@ LogicRegions = {
     ], [
         Event(Events.AztecEntered, lambda l: True),
     ], [
-        TransitionFront(Regions.AngryAztecLobby, lambda l: True, Exits.AztecToIsles),
+        TransitionFront(Regions.AngryAztecLobby, lambda l: True, TransitionFronts.AztecToIsles),
         TransitionFront(Regions.TempleStart, lambda l: (l.peanut and l.isdiddy) or (l.grape and l.islanky)
              or (l.feather and l.istiny) or (l.pineapple and l.ischunky)),
         # Door to main area opened in rando if loading zones randomized
@@ -59,12 +59,12 @@ LogicRegions = {
         Event(Events.FedTotem, lambda l: l.jetpack and l.peanut and l.Slam and l.diddy),
     ], [
         TransitionFront(Regions.AngryAztecStart, lambda l: True),
-        TransitionFront(Regions.DonkeyTemple, lambda l: Events.FedTotem in l.Events and l.coconut and l.isdonkey, Exits.AztecMainToDonkey),
-        TransitionFront(Regions.DiddyTemple, lambda l: Events.FedTotem in l.Events and l.peanut and l.isdiddy, Exits.AztecMainToDiddy),
-        TransitionFront(Regions.LankyTemple, lambda l: Events.FedTotem in l.Events and l.grape and l.islanky, Exits.AztecMainToLanky),
-        TransitionFront(Regions.TinyTemple, lambda l: Events.FedTotem in l.Events and l.feather and l.istiny, Exits.AztecMainToTiny),
-        TransitionFront(Regions.ChunkyTemple, lambda l: Events.FedTotem in l.Events and l.pineapple and l.ischunky, Exits.AztecMainToChunky),
-        TransitionFront(Regions.AztecTinyRace, lambda l: l.charge and l.jetpack and l.diddy and l.mini and l.saxophone and l.istiny, Exits.AztecMainToRace),
+        TransitionFront(Regions.DonkeyTemple, lambda l: Events.FedTotem in l.Events and l.coconut and l.isdonkey, TransitionFronts.AztecMainToDonkey),
+        TransitionFront(Regions.DiddyTemple, lambda l: Events.FedTotem in l.Events and l.peanut and l.isdiddy, TransitionFronts.AztecMainToDiddy),
+        TransitionFront(Regions.LankyTemple, lambda l: Events.FedTotem in l.Events and l.grape and l.islanky, TransitionFronts.AztecMainToLanky),
+        TransitionFront(Regions.TinyTemple, lambda l: Events.FedTotem in l.Events and l.feather and l.istiny, TransitionFronts.AztecMainToTiny),
+        TransitionFront(Regions.ChunkyTemple, lambda l: Events.FedTotem in l.Events and l.pineapple and l.ischunky, TransitionFronts.AztecMainToChunky),
+        TransitionFront(Regions.AztecTinyRace, lambda l: l.charge and l.jetpack and l.diddy and l.mini and l.saxophone and l.istiny, TransitionFronts.AztecMainToRace),
         TransitionFront(Regions.LlamaTemple, lambda l: (l.coconut and l.isdonkey) or (l.grape and l.islanky) or (l.feather and l.istiny)),
     ]),
 
@@ -72,39 +72,39 @@ LogicRegions = {
     Regions.DonkeyTemple: Region("Donkey Temple", Levels.AngryAztec, False, TransitionFront(Regions.AngryAztecStart, lambda l: l.coconut and l.isdonkey), [
         LocationLogic(Locations.AztecDonkey5DoorTemple, lambda l: l.coconut and l.isdonkey),
     ], [], [
-        TransitionFront(Regions.AngryAztecMain, lambda l: True, Exits.AztecDonkeyToMain),
+        TransitionFront(Regions.AngryAztecMain, lambda l: True, TransitionFronts.AztecDonkeyToMain),
     ]),
 
     Regions.DiddyTemple: Region("Diddy Temple", Levels.AngryAztec, False, TransitionFront(Regions.AngryAztecStart, lambda l: l.peanut and l.isdiddy), [
         LocationLogic(Locations.AztecDiddy5DoorTemple, lambda l: l.peanut and l.isdiddy),
     ], [], [
-        TransitionFront(Regions.AngryAztecMain, lambda l: True, Exits.AztecDiddyToMain),
+        TransitionFront(Regions.AngryAztecMain, lambda l: True, TransitionFronts.AztecDiddyToMain),
     ]),
 
     Regions.LankyTemple: Region("Lanky Temple", Levels.AngryAztec, False, TransitionFront(Regions.AngryAztecStart, lambda l: l.grape and l.islanky), [
         LocationLogic(Locations.AztecLanky5DoorTemple, lambda l: l.grape and l.islanky),
     ], [], [
-        TransitionFront(Regions.AngryAztecMain, lambda l: True, Exits.AztecLankyToMain),
+        TransitionFront(Regions.AngryAztecMain, lambda l: True, TransitionFronts.AztecLankyToMain),
     ]),
 
     Regions.TinyTemple: Region("Tiny Temple", Levels.AngryAztec, False, TransitionFront(Regions.AngryAztecStart, lambda l: l.feather and l.istiny), [
         LocationLogic(Locations.AztecTiny5DoorTemple, lambda l: l.feather and l.istiny),
         LocationLogic(Locations.AztecBananaFairyTinyTemple, lambda l: l.camera and l.feather and l.mini and l.istiny),
     ], [], [
-        TransitionFront(Regions.AngryAztecMain, lambda l: True, Exits.AztecTinyToMain),
+        TransitionFront(Regions.AngryAztecMain, lambda l: True, TransitionFronts.AztecTinyToMain),
     ]),
 
     Regions.ChunkyTemple: Region("Chunky Temple", Levels.AngryAztec, False, TransitionFront(Regions.AngryAztecStart, lambda l: l.pineapple and l.ischunky), [
         LocationLogic(Locations.AztecChunky5DoorTemple, lambda l: l.pineapple and l.ischunky),
         LocationLogic(Locations.AztecChunkyKasplat, lambda l: l.pineapple and l.ischunky),
     ], [], [
-        TransitionFront(Regions.AngryAztecMain, lambda l: True, Exits.AztecChunkyToMain),
+        TransitionFront(Regions.AngryAztecMain, lambda l: True, TransitionFronts.AztecChunkyToMain),
     ]),
 
     Regions.AztecTinyRace: Region("Aztec Tiny Race", Levels.AngryAztec, False, None, [
         LocationLogic(Locations.AztecTinyBeetleRace, lambda l: l.istiny),
     ], [], [
-        TransitionFront(Regions.AngryAztecMain, lambda l: True, Exits.AztecRaceToMain),
+        TransitionFront(Regions.AngryAztecMain, lambda l: True, TransitionFronts.AztecRaceToMain),
     ]),
 
     Regions.LlamaTemple: Region("Llama Temple", Levels.AngryAztec, True, -1, [

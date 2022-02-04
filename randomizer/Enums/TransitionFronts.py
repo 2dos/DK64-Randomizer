@@ -2,8 +2,8 @@
 from enum import IntEnum, auto
 
 
-class Exits(IntEnum):
-    """Exit enum, specifically for shufflable exits."""
+class TransitionFronts(IntEnum):
+    """Exit enum, specifically for shufflable transitions."""
 
     # Level entrances
     IslesToJapes = auto()
