@@ -10,18 +10,18 @@ from randomizer.Enums.Kongs import Kongs
 class ShufflableExit:
     """Class that stores data about an exit to be shuffled."""
 
-    def __init__(self, name, region, reverse, category=None, entryKongs={Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky}, regionKongs={}, move=False):
+    def __init__(self, name, region, originalDest, category=None, entryKongs={Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky}, regionKongs={}, move=False):
         """Initialize with given parameters."""
         self.name = name
         self.region = region
-        self.reverse = reverse
+        self.originalDest = originalDest
         self.category = category
         self.entryKongs = entryKongs  # Indicates either need to be one of a certain set of kongs to gain access to this (front)
         self.regionKongs = regionKongs  # Indicates need to be a certain kong or kongs in this area. Should only apply if the region doesn't have a tag barrel
         self.move = move  # Indicates this exit needs a kong-specific move to access, so it's even more restrictive
         # Here dest is the entrance to go to, rather than just the target region
-        # Initialized as its default reverse value
-        self.dest = reverse
+        # Initialized as its original value
+        self.dest = originalDest
         self.shuffled = False
         self.toBeShuffled = False
 

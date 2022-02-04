@@ -8,7 +8,7 @@ import randomizer.Logic as Logic
 from randomizer.Lists.Location import LocationList
 from randomizer.Lists.Item import ItemList
 from randomizer.Logic import LogicVarHolder, LogicVariables
-from randomizer.LogicClasses import Exit
+from randomizer.LogicClasses import TransitionFront
 from randomizer.ShuffleExits import ShufflableExits, ExitShuffle
 
 from randomizer.Enums.Items import Items
@@ -116,7 +116,7 @@ def GetAccessibleLocations(settings, ownedItems, searchType=SearchMode.GetReacha
                     # When shuffling levels, unplaced level entrances will have no destination yet
                     if dest is not None:
                         dest = ShufflableExits[dest].region
-                        exits.append(Exit(dest, lambda l: True))
+                        exits.append(TransitionFront(dest, lambda l: True))
                 for exit in exits:
                     destination = exit.dest
                     # If this exit has an entrance shuffle id and the shufflable exits list has it marked as shuffled,

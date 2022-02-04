@@ -7,7 +7,7 @@ from randomizer.Enums.Kongs import Kongs
 from randomizer.Enums.Levels import Levels
 from randomizer.Enums.Locations import Locations
 from randomizer.Enums.Regions import Regions
-from randomizer.LogicClasses import Event, Exit, LocationLogic, Region
+from randomizer.LogicClasses import Event, TransitionFront, LocationLogic, Region
 
 LogicRegions = {
     Regions.FranticFactoryStart: Region("Frantic Factory Start", Levels.FranticFactory, False, None, [
@@ -19,10 +19,10 @@ LogicRegions = {
     ], [
         Event(Events.FactoryEntered, lambda l: True),
     ], [
-        Exit(Regions.FranticFactoryLobby, lambda l: True, Exits.FactoryToIsles),
-        Exit(Regions.Testing, lambda l: Events.TestingGateOpened in l.Events),
+        TransitionFront(Regions.FranticFactoryLobby, lambda l: True, Exits.FactoryToIsles),
+        TransitionFront(Regions.Testing, lambda l: Events.TestingGateOpened in l.Events),
         # Hatch opened already in rando if loading zones randomized
-        Exit(Regions.BeyondHatch, lambda l: l.settings.shuffle_loading_zones == "all" or l.Slam),
+        TransitionFront(Regions.BeyondHatch, lambda l: l.settings.shuffle_loading_zones == "all" or l.Slam),
     ]),
 
     Regions.Testing: Region("Testing", Levels.FranticFactory, True, None, [
@@ -36,11 +36,11 @@ LogicRegions = {
     ], [
         Event(Events.DartsPlayed, lambda l: l.Slam and l.mini and l.feather and l.tiny),
     ], [
-        Exit(Regions.FranticFactoryStart, lambda l: True),
-        Exit(Regions.RandD, lambda l: True),
-        Exit(Regions.Snide, lambda l: True),
-        Exit(Regions.Funky, lambda l: Events.DartsPlayed in l.Events),
-        Exit(Regions.FactoryBossLobby, lambda l: True),
+        TransitionFront(Regions.FranticFactoryStart, lambda l: True),
+        TransitionFront(Regions.RandD, lambda l: True),
+        TransitionFront(Regions.Snide, lambda l: True),
+        TransitionFront(Regions.Funky, lambda l: Events.DartsPlayed in l.Events),
+        TransitionFront(Regions.FactoryBossLobby, lambda l: True),
     ]),
 
     Regions.RandD: Region("R&D", Levels.FranticFactory, True, -1, [
@@ -50,23 +50,23 @@ LogicRegions = {
         LocationLogic(Locations.FactoryLankyKasplat, lambda l: l.lanky),
         LocationLogic(Locations.FactoryBattleArena, lambda l: l.grab and l.donkey),
     ], [], [
-        Exit(Regions.Testing, lambda l: True),
-        Exit(Regions.FactoryTinyRace, lambda l: l.mini and l.istiny, Exits.FactoryRandDToRace),
-        Exit(Regions.ChunkyRoomPlatform, lambda l: True),
-        Exit(Regions.FactoryBossLobby, lambda l: True),
+        TransitionFront(Regions.Testing, lambda l: True),
+        TransitionFront(Regions.FactoryTinyRace, lambda l: l.mini and l.istiny, Exits.FactoryRandDToRace),
+        TransitionFront(Regions.ChunkyRoomPlatform, lambda l: True),
+        TransitionFront(Regions.FactoryBossLobby, lambda l: True),
     ]),
 
     Regions.FactoryTinyRace: Region("Factory Tiny Race", Levels.FranticFactory, False, None, [
         LocationLogic(Locations.FactoryTinyCarRace, lambda l: l.istiny),
     ], [], [
-        Exit(Regions.RandD, lambda l: True, Exits.FactoryRaceToRandD),
+        TransitionFront(Regions.RandD, lambda l: True, Exits.FactoryRaceToRandD),
     ]),
 
     Regions.ChunkyRoomPlatform: Region("Chunky Room Platform", Levels.FranticFactory, False, -1, [
         LocationLogic(Locations.FactoryDiddyBeaverBother, lambda l: l.Slam and l.isdiddy),
     ], [], [
-        Exit(Regions.PowerHut, lambda l: True, Exits.FactoryChunkyRoomToPower),
-        Exit(Regions.BeyondHatch, lambda l: True),
+        TransitionFront(Regions.PowerHut, lambda l: True, Exits.FactoryChunkyRoomToPower),
+        TransitionFront(Regions.BeyondHatch, lambda l: True),
     ]),
 
     Regions.PowerHut: Region("Power Hut", Levels.FranticFactory, False, None, [
@@ -74,7 +74,7 @@ LogicRegions = {
     ], [
         Event(Events.MainCoreActivated, lambda l: l.coconut and l.grab and l.isdonkey),
     ], [
-        Exit(Regions.ChunkyRoomPlatform, lambda l: True, Exits.FactoryPowerToChunkyRoom),
+        TransitionFront(Regions.ChunkyRoomPlatform, lambda l: True, Exits.FactoryPowerToChunkyRoom),
     ]),
 
     Regions.BeyondHatch: Region("Beyond Hatch", Levels.FranticFactory, True, None, [
@@ -95,18 +95,18 @@ LogicRegions = {
         Event(Events.TinyCoreSwitch, lambda l: l.Slam and l.tiny),
         Event(Events.ChunkyCoreSwitch, lambda l: l.Slam and l.chunky),
     ], [
-        Exit(Regions.FranticFactoryStart, lambda l: True),
-        Exit(Regions.InsideCore, lambda l: Events.MainCoreActivated in l.Events, Exits.FactoryBeyondHatchToInsideCore),
-        Exit(Regions.MainCore, lambda l: Events.MainCoreActivated in l.Events),
-        Exit(Regions.Cranky, lambda l: True),
-        Exit(Regions.Candy, lambda l: True),
-        Exit(Regions.FactoryBossLobby, lambda l: True),
+        TransitionFront(Regions.FranticFactoryStart, lambda l: True),
+        TransitionFront(Regions.InsideCore, lambda l: Events.MainCoreActivated in l.Events, Exits.FactoryBeyondHatchToInsideCore),
+        TransitionFront(Regions.MainCore, lambda l: Events.MainCoreActivated in l.Events),
+        TransitionFront(Regions.Cranky, lambda l: True),
+        TransitionFront(Regions.Candy, lambda l: True),
+        TransitionFront(Regions.FactoryBossLobby, lambda l: True),
     ]),
 
     Regions.InsideCore: Region("Inside Core", Levels.FranticFactory, False, -1, [
         LocationLogic(Locations.FactoryDonkeyCrusherRoom, lambda l: l.strongKong and l.isdonkey),
     ], [], [
-        Exit(Regions.BeyondHatch, lambda l: True, Exits.FactoryInsideCoreToBeyondHatch),
+        TransitionFront(Regions.BeyondHatch, lambda l: True, Exits.FactoryInsideCoreToBeyondHatch),
     ]),
 
     Regions.MainCore: Region("Main Core", Levels.FranticFactory, True, -1, [
@@ -116,11 +116,11 @@ LogicRegions = {
         LocationLogic(Locations.FactoryChunkyProductionRoom, lambda l: Events.ChunkyCoreSwitch in l.Events and l.chunky),
         LocationLogic(Locations.FactoryDonkeyKasplat, lambda l: l.donkey)
     ], [], [
-        Exit(Regions.BeyondHatch, lambda l: True),
+        TransitionFront(Regions.BeyondHatch, lambda l: True),
     ]),
 
     Regions.FactoryBossLobby: Region("Factory Boss Lobby", Levels.FranticFactory, False, None, [], [], [
-        Exit(Regions.FactoryBoss, lambda l: l.istiny and sum(l.ColoredBananas[Levels.FranticFactory]) >= l.settings.BossBananas[Levels.FranticFactory - 1]),
+        TransitionFront(Regions.FactoryBoss, lambda l: l.istiny and sum(l.ColoredBananas[Levels.FranticFactory]) >= l.settings.BossBananas[Levels.FranticFactory - 1]),
     ]),
 
     Regions.FactoryBoss: Region("Factory Boss", Levels.FranticFactory, False, None, [

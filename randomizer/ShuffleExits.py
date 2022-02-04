@@ -9,7 +9,7 @@ from randomizer.Enums.Regions import Regions
 from randomizer.Enums.SearchMode import SearchMode
 from randomizer.ItemPool import AllItems, PlaceConstants
 from randomizer.Lists.ShufflableExit import ShufflableExits
-from randomizer.LogicClasses import Exit
+from randomizer.LogicClasses import TransitionBack, TransitionFront
 
 LevelExitPool = [
     Exits.IslesToJapes,
@@ -52,7 +52,7 @@ def AddRootExit(exit):
 def Reset():
     """Reset shufflable exit properties set during shuffling."""
     for exit in ShufflableExits.values():
-        exit.dest = exit.reverse
+        exit.dest = exit.originalDest
         exit.shuffled = False
     assumedExits = []
     for exit in [x for x in Logic.Regions[root].exits if x.assumed]:
@@ -161,7 +161,7 @@ def AssumeExits(settings, frontpool, backpool, newpool):
         exit.dest = None
         exit.toBeShuffled = True
         # 2) Attach to root of world (DK Isles)
-        newExit = Exit(exit.region, lambda l: True, exitId, True)
+        newExit = TransitionFront(exit.region, lambda l: True, exitId, True)
         AddRootExit(newExit)
 
 

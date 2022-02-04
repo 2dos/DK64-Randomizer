@@ -27,8 +27,8 @@ class Event:
         self.logic = logic  # Lambda function for accessibility
 
 
-class Exit:
-    """Exit from one region to another."""
+class TransitionFront:
+    """The entered side of a transition between regions."""
 
     def __init__(self, dest, logic, exitShuffleId=None, assumed=False):
         """Initialize with given parameters."""
@@ -38,6 +38,14 @@ class Exit:
         self.exitShuffleId = exitShuffleId
         self.assumed = assumed  # Indicates this is an assumed exit attached to the root
 
+class TransitionBack:
+    """The exited side of a transition between regions."""
+
+    def __init__(self, origin, exitShuffleId=None):
+        """Initialize with given parameters."""
+        self.origin = origin
+        # Used to identify this exit for entrance shuffle purposes
+        self.exitShuffleId = exitShuffleId
 
 class Collectible:
     """Class used for colored bananas and banana coins."""
@@ -53,29 +61,29 @@ class Collectible:
 
 
 class Region:
-    """Region contains shufflable locations, events, and exits to other regions."""
+    """Region contains shufflable locations, events, and transitions to other regions."""
 
-    def __init__(self, name, level, tagbarrel, deathwarp, locations, events, exits):
+    def __init__(self, name, level, tagbarrel, deathwarp, locations, events, transitionFronts):
         """Initialize with given parameters."""
         self.name = name
         self.level = level
         self.tagbarrel = tagbarrel
         self.locations = locations
         self.events = events
-        self.exits = exits
+        self.exits = transitionFronts
 
         # If possible to die in this region, add an exit to where dying will take you
         # deathwarp is also set to none in regions in which a deathwarp would take you to itself
         # Or if there is loading-zone-less free access to the region it would take you to already
         if deathwarp is not None:
             # If deathwarp is itself an exit class (necessary when deathwarp requires custom logic) just add it directly
-            if isinstance(deathwarp, Exit):
+            if isinstance(deathwarp, TransitionFront):
                 self.exits.append(deathwarp)
             else:
                 # If deathwarp is -1, indicates to use the default value for it, which is the starting area of the level
                 if deathwarp == -1:
                     deathwarp = self.GetDefaultDeathwarp()
-                self.exits.append(Exit(deathwarp, lambda l: True))
+                self.exits.append(TransitionFront(deathwarp, lambda l: True))
 
         # Initially assume no access from any kong
         self.ResetAccess()

@@ -186,6 +186,7 @@ class Exits(IntEnum):
     # Creepy Castle Exits
     CastleMainToTree = auto()
     CastleTreeToMain = auto()
+    CastleTreeDrainToMain = auto()
     CastleMainToLibrary = auto()
     CastleLibraryToMain = auto()
     CastleMainToBallroom = auto()

@@ -31,8 +31,8 @@ class Spoiler:
         settings["seed"] = self.settings.seed
         settings["algorithm"] = self.settings.algorithm
         settings["shuffle_items"] = self.settings.shuffle_items
-        settings["shuffle_levels"] = self.settings.shuffle_levels
         settings["shuffle_loading_zones"] = self.settings.shuffle_loading_zones
+        settings["decoupled_loading_zones"] = self.settings.decoupled_loading_zones
         settings["unlock_all_moves"] = self.settings.unlock_all_moves
         settings["unlock_all_kongs"] = self.settings.unlock_all_kongs
         settings["starting_kong"] = ItemList[ItemFromKong(self.settings.starting_kong)].name

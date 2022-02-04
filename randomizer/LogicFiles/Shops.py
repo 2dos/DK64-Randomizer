@@ -6,7 +6,7 @@ from randomizer.Enums.Kongs import Kongs
 from randomizer.Enums.Levels import Levels
 from randomizer.Enums.Locations import Locations
 from randomizer.Enums.Regions import Regions
-from randomizer.LogicClasses import Event, Exit, LocationLogic, Region
+from randomizer.LogicClasses import LocationLogic, Region
 
 """
 So for coin logic, we want to make sure the player can't spend coins incorrectly and lock themselves out.
