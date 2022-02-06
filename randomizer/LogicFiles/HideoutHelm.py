@@ -2,7 +2,7 @@
 """Logic file for Hideout Helm."""
 
 from randomizer.Enums.Events import Events
-from randomizer.Enums.TransitionFronts import TransitionFronts
+from randomizer.Enums.Transitions import Transitions
 from randomizer.Enums.Levels import Levels
 from randomizer.Enums.Locations import Locations
 from randomizer.Enums.Regions import Regions

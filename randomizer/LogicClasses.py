@@ -26,27 +26,6 @@ class Event:
         self.name = name
         self.logic = logic  # Lambda function for accessibility
 
-
-class TransitionFront:
-    """The entered side of a transition between regions."""
-
-    def __init__(self, dest, logic, exitShuffleId=None, assumed=False):
-        """Initialize with given parameters."""
-        self.dest = dest
-        self.logic = logic  # Lambda function for accessibility
-        # Used to identify this exit for entrance shuffle purposes
-        self.exitShuffleId = exitShuffleId
-        self.assumed = assumed  # Indicates this is an assumed exit attached to the root
-
-class TransitionBack:
-    """The exited side of a transition between regions."""
-
-    def __init__(self, origin, exitShuffleId=None):
-        """Initialize with given parameters."""
-        self.origin = origin
-        # Used to identify this exit for entrance shuffle purposes
-        self.exitShuffleId = exitShuffleId
-
 class Collectible:
     """Class used for colored bananas and banana coins."""
 
@@ -70,7 +49,7 @@ class Region:
         self.tagbarrel = tagbarrel
         self.locations = locations
         self.events = events
-        self.exits = transitionFronts
+        self.exits = transitionFronts # In the context of a region, exits are how you leave the region
 
         # If possible to die in this region, add an exit to where dying will take you
         # deathwarp is also set to none in regions in which a deathwarp would take you to itself
@@ -163,3 +142,23 @@ class Region:
             return Regions.CreepyCastleMain
         elif self.level == Levels.HideoutHelm:
             return Regions.HideoutHelmStart
+
+class TransitionBack:
+    """The exited side of a transition between regions."""
+
+    def __init__(self, regionId, exitName):
+        """Initialize with given parameters."""
+        self.regionId = regionId
+        self.name = exitName
+
+class TransitionFront:
+    """The entered side of a transition between regions."""
+
+    def __init__(self, dest, logic, exitShuffleId=None, assumed=False):
+        """Initialize with given parameters."""
+        self.dest = dest # Planning to remove this
+        # self.back = back
+        self.logic = logic  # Lambda function for accessibility
+        # self.shufflable = shufflable
+        self.exitShuffleId = exitShuffleId # Planning to remove this
+        self.assumed = assumed  # Indicates this is an assumed exit attached to the root

@@ -59,6 +59,7 @@ class Regions(IntEnum):
     FranticFactoryStart = auto()
     Testing = auto()
     RandD = auto()
+    FactoryTinyRaceLobby = auto()
     FactoryTinyRace = auto()
     ChunkyRoomPlatform = auto()
     PowerHut = auto()

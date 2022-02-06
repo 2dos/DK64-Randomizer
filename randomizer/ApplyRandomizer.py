@@ -6,7 +6,7 @@ import pickle
 import js
 
 from randomizer.DKTV import randomize_dktv
-from randomizer.Enums.TransitionFronts import TransitionFronts
+from randomizer.Enums.Transitions import Transitions
 from randomizer.MusicRando import randomize_music
 from randomizer.Patcher import ROM
 
@@ -47,24 +47,24 @@ def patching_response(responded_data):
 
     # Update Level Order
     vanilla_entrace_order = [
-        TransitionFronts.IslesToJapes,
-        TransitionFronts.IslesToAztec,
-        TransitionFronts.IslesToFactory,
-        TransitionFronts.IslesToGalleon,
-        TransitionFronts.IslesToForest,
-        TransitionFronts.IslesToCaves,
-        TransitionFronts.IslesToCastle,
-        TransitionFronts.IslesToHelm,
+        Transitions.IslesToJapes,
+        Transitions.IslesToAztec,
+        Transitions.IslesToFactory,
+        Transitions.IslesToGalleon,
+        Transitions.IslesToForest,
+        Transitions.IslesToCaves,
+        Transitions.IslesToCastle,
+        Transitions.IslesToHelm,
     ]
     vanilla_lobby_order = [
-        TransitionFronts.JapesToIsles,
-        TransitionFronts.AztecToIsles,
-        TransitionFronts.FactoryToIsles,
-        TransitionFronts.GalleonToIsles,
-        TransitionFronts.ForestToIsles,
-        TransitionFronts.CavesToIsles,
-        TransitionFronts.CastleToIsles,
-        TransitionFronts.HelmToIsles,
+        Transitions.JapesToIsles,
+        Transitions.AztecToIsles,
+        Transitions.FactoryToIsles,
+        Transitions.GalleonToIsles,
+        Transitions.ForestToIsles,
+        Transitions.CavesToIsles,
+        Transitions.CastleToIsles,
+        Transitions.HelmToIsles,
     ]
     order = 0
     for level in vanilla_entrace_order:
@@ -88,24 +88,24 @@ def patching_response(responded_data):
 
     # Key Order
     map_pointers = {
-        TransitionFronts.IslesToJapes: TransitionFronts.JapesToIsles,
-        TransitionFronts.IslesToAztec: TransitionFronts.AztecToIsles,
-        TransitionFronts.IslesToFactory: TransitionFronts.FactoryToIsles,
-        TransitionFronts.IslesToGalleon: TransitionFronts.GalleonToIsles,
-        TransitionFronts.IslesToForest: TransitionFronts.ForestToIsles,
-        TransitionFronts.IslesToCaves: TransitionFronts.CavesToIsles,
-        TransitionFronts.IslesToCastle: TransitionFronts.CastleToIsles,
-        TransitionFronts.IslesToHelm: TransitionFronts.HelmToIsles,
+        Transitions.IslesToJapes: Transitions.JapesToIsles,
+        Transitions.IslesToAztec: Transitions.AztecToIsles,
+        Transitions.IslesToFactory: Transitions.FactoryToIsles,
+        Transitions.IslesToGalleon: Transitions.GalleonToIsles,
+        Transitions.IslesToForest: Transitions.ForestToIsles,
+        Transitions.IslesToCaves: Transitions.CavesToIsles,
+        Transitions.IslesToCastle: Transitions.CastleToIsles,
+        Transitions.IslesToHelm: Transitions.HelmToIsles,
     }
     key_mapping = {
-        TransitionFronts.JapesToIsles: 0x01E,
-        TransitionFronts.AztecToIsles: 0x1A,
-        TransitionFronts.FactoryToIsles: 0x4A,
-        TransitionFronts.GalleonToIsles: 0x8A,
-        TransitionFronts.ForestToIsles: 0xA8,
-        TransitionFronts.CavesToIsles: 0xEC,
-        TransitionFronts.CastleToIsles: 0x124,
-        TransitionFronts.HelmToIsles: 0x13D,
+        Transitions.JapesToIsles: 0x01E,
+        Transitions.AztecToIsles: 0x1A,
+        Transitions.FactoryToIsles: 0x4A,
+        Transitions.GalleonToIsles: 0x8A,
+        Transitions.ForestToIsles: 0xA8,
+        Transitions.CavesToIsles: 0xEC,
+        Transitions.CastleToIsles: 0x124,
+        Transitions.HelmToIsles: 0x13D,
     }
     order = 0
     for key, value in map_pointers.items():

@@ -4,28 +4,28 @@ import random
 import randomizer.Fill as Fill
 import randomizer.Lists.Exceptions as Ex
 import randomizer.Logic as Logic
-from randomizer.Enums.TransitionFronts import TransitionFronts
+from randomizer.Enums.Transitions import Transitions
 from randomizer.Enums.Regions import Regions
 from randomizer.Enums.SearchMode import SearchMode
 from randomizer.ItemPool import AllItems, PlaceConstants
-from randomizer.Lists.ShufflableExit import ShufflableExits
+from randomizer.Lists.ShufflableExit import ShufflableFronts
 from randomizer.LogicClasses import TransitionBack, TransitionFront
 
 LevelExitPool = [
-    TransitionFronts.IslesToJapes,
-    TransitionFronts.JapesToIsles,
-    TransitionFronts.IslesToAztec,
-    TransitionFronts.AztecToIsles,
-    TransitionFronts.IslesToFactory,
-    TransitionFronts.FactoryToIsles,
-    TransitionFronts.IslesToGalleon,
-    TransitionFronts.GalleonToIsles,
-    TransitionFronts.IslesToForest,
-    TransitionFronts.ForestToIsles,
-    TransitionFronts.IslesToCaves,
-    TransitionFronts.CavesToIsles,
-    TransitionFronts.IslesToCastle,
-    TransitionFronts.CastleToIsles,
+    Transitions.IslesToJapes,
+    Transitions.JapesToIsles,
+    Transitions.IslesToAztec,
+    Transitions.AztecToIsles,
+    Transitions.IslesToFactory,
+    Transitions.FactoryToIsles,
+    Transitions.IslesToGalleon,
+    Transitions.GalleonToIsles,
+    Transitions.IslesToForest,
+    Transitions.ForestToIsles,
+    Transitions.IslesToCaves,
+    Transitions.CavesToIsles,
+    Transitions.IslesToCastle,
+    Transitions.CastleToIsles,
 ]
 
 # Root is the starting spawn, which is the main area of DK Isles.
@@ -51,8 +51,8 @@ def AddRootExit(exit):
 
 def Reset():
     """Reset shufflable exit properties set during shuffling."""
-    for exit in ShufflableExits.values():
-        exit.dest = exit.originalDest
+    for exit in ShufflableFronts.values():
+        exit.dest = exit.back
         exit.shuffled = False
     assumedExits = []
     for exit in [x for x in Logic.Regions[root].exits if x.assumed]:
@@ -104,14 +104,14 @@ def AttemptConnect(settings, front, frontId, back, backId):
 
 def ShuffleExitsInPool(settings, frontpool, backpool):
     """Shuffle exits within a specific pool."""
-    NonTagRegions = [x for x in backpool if not Logic.Regions[ShufflableExits[x].region].tagbarrel]
-    NonTagLeaves = [x for x in NonTagRegions if ShufflableExits[x].category is None]
+    NonTagRegions = [x for x in backpool if not Logic.Regions[ShufflableFronts[x].region].tagbarrel]
+    NonTagLeaves = [x for x in NonTagRegions if ShufflableFronts[x].category is None]
     random.shuffle(NonTagLeaves)
     NonTagNonLeaves = [x for x in NonTagRegions if x not in NonTagLeaves]
     random.shuffle(NonTagNonLeaves)
 
     TagRegions = [x for x in backpool if x not in NonTagRegions]
-    TagLeaves = [x for x in TagRegions if ShufflableExits[x].category is None]
+    TagLeaves = [x for x in TagRegions if ShufflableFronts[x].category is None]
     random.shuffle(TagLeaves)
     TagNonLeaves = [x for x in TagRegions if x not in TagLeaves]
     random.shuffle(TagNonLeaves)
@@ -126,15 +126,15 @@ def ShuffleExitsInPool(settings, frontpool, backpool):
     # For each back exit, select a random valid front entrance to attach to it
     while len(backpool) > 0:
         backId = backpool.pop(0)
-        back = ShufflableExits[backId]
+        back = ShufflableFronts[backId]
         # Filter origins to make sure that if this target requires a certain kong's access, then the entrance will be accessible by that kong
-        origins = [x for x in frontpool if ShufflableExits[x].entryKongs.issuperset(back.regionKongs)]
+        origins = [x for x in frontpool if ShufflableFronts[x].entryKongs.issuperset(back.regionKongs)]
         if not settings.decoupled_loading_zones and back.category is None:
             # In coupled, if both front & back are leaves, the result will be invalid
-            origins = [x for x in origins if ShufflableExits[x].category is not None]
+            origins = [x for x in origins if ShufflableFronts[x].category is not None]
         # Select a random origin
         for frontId in origins:
-            front = ShufflableExits[frontId]
+            front = ShufflableFronts[frontId]
             if AttemptConnect(settings, front, frontId, back, backId):
                 # print("Assigned " + front.name + " --> " + back.name)
                 frontpool.remove(frontId)
@@ -152,7 +152,7 @@ def AssumeExits(settings, frontpool, backpool, newpool):
     """Split exit pool into front and back pools, and assumes exits reachable from root."""
     for i in range(len(newpool)):
         exitId = newpool[i]
-        exit = ShufflableExits[exitId]
+        exit = ShufflableFronts[exitId]
         # "front" is the entrance you go into, "back" is the exit you come out of
         frontpool.append(exitId)
         backpool.append(exitId)
@@ -174,7 +174,7 @@ def ShuffleExits(settings):
     if settings.shuffle_loading_zones == "levels":
         AssumeExits(settings, frontpool, backpool, LevelExitPool)
     elif settings.shuffle_loading_zones == "all":
-        AssumeExits(settings, frontpool, backpool, [x for x in ShufflableExits.keys()])
+        AssumeExits(settings, frontpool, backpool, [x for x in ShufflableFronts.keys()])
     # Shuffle each entrance pool
     ShuffleExitsInPool(settings, frontpool, backpool)
 
