@@ -1,4 +1,5 @@
 """File that shuffles loading zone exits."""
+from ast import And
 import random
 
 import randomizer.Fill as Fill
@@ -154,6 +155,9 @@ def AssumeExits(settings, frontpool, backpool, newpool):
     for i in range(len(newpool)):
         exitId = newpool[i]
         exit = ShufflableExits[exitId]
+        # When coupled, only transitions which have a reverse path can be included in the pools
+        if settings.decoupled_loading_zones == False and exit.reverse is None:
+            continue
         # "front" is the entrance you go into, "back" is the exit you come out of
         frontpool.append(exitId)
         backpool.append(exitId)
