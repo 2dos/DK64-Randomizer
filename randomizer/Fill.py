@@ -9,7 +9,7 @@ from randomizer.Lists.Location import LocationList
 from randomizer.Lists.Item import ItemList
 from randomizer.Logic import LogicVarHolder, LogicVariables
 from randomizer.LogicClasses import TransitionFront
-from randomizer.ShuffleExits import ShufflableFronts, ExitShuffle
+from randomizer.ShuffleExits import ShufflableExits, ExitShuffle
 
 from randomizer.Enums.Items import Items
 from randomizer.Enums.Regions import Regions
@@ -21,19 +21,19 @@ from randomizer.Enums.Transitions import Transitions
 def GetExitLevelExit(level):
     """Get the exit that using the "Exit Level" button will take you to."""
     if level == Levels.JungleJapes:
-        return ShufflableFronts[Transitions.JapesToIsles].dest
+        return ShufflableExits[Transitions.JapesToIsles].dest
     elif level == Levels.AngryAztec:
-        return ShufflableFronts[Transitions.AztecToIsles].dest
+        return ShufflableExits[Transitions.AztecToIsles].dest
     elif level == Levels.FranticFactory:
-        return ShufflableFronts[Transitions.FactoryToIsles].dest
+        return ShufflableExits[Transitions.FactoryToIsles].dest
     elif level == Levels.GloomyGalleon:
-        return ShufflableFronts[Transitions.GalleonToIsles].dest
+        return ShufflableExits[Transitions.GalleonToIsles].dest
     elif level == Levels.FungiForest:
-        return ShufflableFronts[Transitions.ForestToIsles].dest
+        return ShufflableExits[Transitions.ForestToIsles].dest
     elif level == Levels.CrystalCaves:
-        return ShufflableFronts[Transitions.CavesToIsles].dest
+        return ShufflableExits[Transitions.CavesToIsles].dest
     elif level == Levels.CreepyCastle:
-        return ShufflableFronts[Transitions.CastleToIsles].dest
+        return ShufflableExits[Transitions.CastleToIsles].dest
 
 
 def GetAccessibleLocations(settings, ownedItems, searchType=SearchMode.GetReachable):
@@ -115,7 +115,7 @@ def GetAccessibleLocations(settings, ownedItems, searchType=SearchMode.GetReacha
                     dest = GetExitLevelExit(region.level)
                     # When shuffling levels, unplaced level entrances will have no destination yet
                     if dest is not None:
-                        dest = ShufflableFronts[dest].region
+                        dest = ShufflableExits[dest].region
                         exits.append(TransitionFront(dest, lambda l: True))
                 for exit in exits:
                     destination = exit.dest
@@ -123,9 +123,9 @@ def GetAccessibleLocations(settings, ownedItems, searchType=SearchMode.GetReacha
                     # use the entrance it was shuffled to by getting the region of the destination exit.
                     # If the exit is assumed from root, do not look for a shuffled exit - just explore the destination
                     if exit.exitShuffleId is not None and not exit.assumed:
-                        shuffledExit = ShufflableFronts[exit.exitShuffleId]
+                        shuffledExit = ShufflableExits[exit.exitShuffleId]
                         if shuffledExit.shuffled:
-                            destination = ShufflableFronts[shuffledExit.dest].region
+                            destination = ShufflableExits[shuffledExit.dest].region
                         elif shuffledExit.toBeShuffled and not exit.assumed:
                             continue
                     # If a region is accessible through this exit and has not yet been added, add it to the queue to be visited eventually
