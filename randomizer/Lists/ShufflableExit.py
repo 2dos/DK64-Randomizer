@@ -44,47 +44,26 @@ ShufflableExits = {
     Transitions.IslesToCastle: ShufflableExit("DK Isles to Creepy Castle", Regions.CreepyCastleLobby, TransitionBack(Regions.CreepyCastleMain, "From Castle Lobby", Transitions.CastleToIsles), ExitCategories.CastleLobby),
     Transitions.CastleToIsles: ShufflableExit("Creepy Castle to DK Isles", Regions.CreepyCastleMain, TransitionBack(Regions.CreepyCastleLobby, "From Castle", Transitions.IslesToCastle), ExitCategories.CastleExterior),
     
-    
-    # DK Isles
-    # TransitionBack(Regions.IslesMain, "From Japes Lobby"),
-    # TransitionBack(Regions.IslesMain, "From Aztec Lobby"),
-    # TransitionBack(Regions.CrocodileIsleBeyondLift, "From Factory Lobby"),
-    # TransitionBack(Regions.IslesMain, "From Galleon Lobby"),
-    # TransitionBack(Regions.IslesMain, "From Fungi Lobby"),
-    # TransitionBack(Regions.CrocodileIsleBeyondLift, "From Helm Lobby"),
-    # TransitionBack(Regions.IslesMain, "From Banana Fairy Isle"),
-    # TransitionBack(Regions.CrocodileIsleBeyondLift, "From Snide's Room"),
-    # TransitionBack(Regions.IslesMain, "From Caves Lobby"),
-    # TransitionBack(Regions.IslesMain, "From Castle Lobby"),
-    # TransitionBack(Regions.IslesMain, "From K Rool"),
-    # TransitionBack(Regions.JungleJapesLobby, "From DK Isles"),
-    # TransitionBack(Regions.AngryAztecLobby,	"From DK Isles"),
-    # TransitionBack(Regions.FranticFactoryLobby, "From DK Isles"),
-    # TransitionBack(Regions.GloomyGalleonLobby, "From DK Isles"),
-    # TransitionBack(Regions.FungiForestLobby, "From DK Isles"),
-    # TransitionBack(Regions.CrystalCavesLobby, "From DK Isles"),
-    # TransitionBack(Regions.CreepyCastleLobby, "From DK Isles"),
-    # TransitionBack(Regions.HideoutHelmLobby, "From DK Isles"),
-    
     # DK Isles Exits
-    Transitions.IslesMainToFairy: ShufflableExit("DK Isles Main to Banana Fairy Queen", Regions.IslesMain, Transitions.IslesFairyToMain, ExitCategories.IslesExterior, entryKongs={Kongs.tiny}, move=True),
-    Transitions.IslesFairyToMain: ShufflableExit("DK Isles Banana Fairy Queen to Main", Regions.BananaFairyRoom, Transitions.IslesMainToFairy, regionKongs={Kongs.tiny}),
-    Transitions.IslesMainToSnideRoom: ShufflableExit("DK Isles Crocodile Isle to Snide Room", Regions.CrocodileIsleBeyondLift, Transitions.IslesSnideRoomToMain, ExitCategories.IslesExterior),
-    Transitions.IslesSnideRoomToMain: ShufflableExit("DK Isles Snide Room to Crocodile Isle", Regions.IslesSnideRoom, Transitions.IslesMainToSnideRoom),
-    Transitions.IslesMainToJapesLobby: ShufflableExit("DK Isles Main to Jungle Japes Lobby", Regions.IslesMain, Transitions.IslesJapesLobbyToMain, ExitCategories.IslesExterior),
-    Transitions.IslesJapesLobbyToMain: ShufflableExit("DK Isles Jungle Japes Lobby to Main", Regions.JungleJapesLobby, Transitions.IslesMainToJapesLobby, ExitCategories.JapesLobby),
-    Transitions.IslesMainToAztecLobby: ShufflableExit("DK Isles Main to Angry Aztec Lobby", Regions.IslesMain, Transitions.IslesAztecLobbyToMain, ExitCategories.IslesExterior),
-    Transitions.IslesAztecLobbyToMain: ShufflableExit("DK Isles Angry Aztec Lobby to Main", Regions.AngryAztecLobby, Transitions.IslesMainToAztecLobby, ExitCategories.AztecLobby),
-    Transitions.IslesMainToFactoryLobby: ShufflableExit("DK Isles Main to Frantic Factory Lobby", Regions.CrocodileIsleBeyondLift, Transitions.IslesFactoryLobbyToMain, ExitCategories.IslesExterior),
-    Transitions.IslesFactoryLobbyToMain: ShufflableExit("DK Isles Frantic Factory Lobby to Main", Regions.FranticFactoryLobby, Transitions.IslesMainToFactoryLobby, ExitCategories.FactoryLobby),
-    Transitions.IslesMainToGalleonLobby: ShufflableExit("DK Isles Main to Gloomy Galleon Lobby", Regions.IslesMain, Transitions.IslesGalleonLobbyToMain, ExitCategories.IslesExterior),
-    Transitions.IslesGalleonLobbyToMain: ShufflableExit("DK Isles Gloomy Galleon Lobby to Main", Regions.GloomyGalleonLobby, Transitions.IslesMainToGalleonLobby, ExitCategories.GalleonLobby),
-    Transitions.IslesMainToForestLobby: ShufflableExit("DK Isles Cabin Isle to Fungi Forest Lobby", Regions.CabinIsle, Transitions.IslesForestLobbyToMain, ExitCategories.IslesExterior),
-    Transitions.IslesForestLobbyToMain: ShufflableExit("DK Isles Fungi Forest Lobby to Cabin Isle", Regions.FungiForestLobby, Transitions.IslesMainToForestLobby, ExitCategories.ForestLobby),
-    Transitions.IslesMainToCavesLobby: ShufflableExit("DK Isles Main to Crystal Caves Lobby", Regions.IslesMain, Transitions.IslesCavesLobbyToMain, ExitCategories.IslesExterior),
-    Transitions.IslesCavesLobbyToMain: ShufflableExit("DK Isles Crystal Caves Lobby to Main", Regions.CrystalCavesLobby, Transitions.IslesMainToCavesLobby, ExitCategories.CavesLobby),
-    Transitions.IslesMainToCastleLobby: ShufflableExit("DK Isles Main to Creepy Castle Lobby", Regions.IslesMain, Transitions.IslesCastleLobbyToMain, ExitCategories.IslesExterior),
-    Transitions.IslesCastleLobbyToMain: ShufflableExit("DK Isles Creepy Castle Lobby to Main", Regions.CreepyCastleLobby, Transitions.IslesMainToCastleLobby, ExitCategories.CastleLobby),
+    Transitions.IslesMainToFairy: ShufflableExit("DK Isles Main to Banana Fairy Queen", Regions.IslesMain, TransitionBack(Regions.BananaFairyRoom, "From DK Isles", Transitions.IslesFairyToMain), ExitCategories.IslesExterior, entryKongs={Kongs.tiny}, move=True),
+    Transitions.IslesFairyToMain: ShufflableExit("DK Isles Banana Fairy Queen to Main", Regions.BananaFairyRoom, TransitionBack(Regions.IslesMain, "From Banana Fairy Isle", Transitions.IslesMainToFairy), regionKongs={Kongs.tiny}),
+    Transitions.IslesMainToSnideRoom: ShufflableExit("DK Isles Crocodile Isle to Snide Room", Regions.CrocodileIsleBeyondLift, TransitionBack(Regions.IslesSnideRoom, "From DK Isles", Transitions.IslesSnideRoomToMain), ExitCategories.IslesExterior),
+    Transitions.IslesSnideRoomToMain: ShufflableExit("DK Isles Snide Room to Crocodile Isle", Regions.IslesSnideRoom, TransitionBack(Regions.CrocodileIsleBeyondLift, "From Snide's Room", Transitions.IslesMainToSnideRoom)),
+    Transitions.IslesMainToJapesLobby: ShufflableExit("DK Isles Main to Jungle Japes Lobby", Regions.IslesMain, TransitionBack(Regions.JungleJapesLobby, "From DK Isles", Transitions.IslesJapesLobbyToMain), ExitCategories.IslesExterior),
+    Transitions.IslesJapesLobbyToMain: ShufflableExit("DK Isles Jungle Japes Lobby to Main", Regions.JungleJapesLobby, TransitionBack(Regions.IslesMain, "From Japes Lobby", Transitions.IslesMainToJapesLobby), ExitCategories.JapesLobby),
+    Transitions.IslesMainToAztecLobby: ShufflableExit("DK Isles Main to Angry Aztec Lobby", Regions.IslesMain, TransitionBack(Regions.AngryAztecLobby, "From DK Isles", Transitions.IslesAztecLobbyToMain), ExitCategories.IslesExterior),
+    Transitions.IslesAztecLobbyToMain: ShufflableExit("DK Isles Angry Aztec Lobby to Main", Regions.AngryAztecLobby, TransitionBack(Regions.IslesMain, "From Aztec Lobby", Transitions.IslesMainToAztecLobby), ExitCategories.AztecLobby),
+    Transitions.IslesMainToFactoryLobby: ShufflableExit("DK Isles Main to Frantic Factory Lobby", Regions.CrocodileIsleBeyondLift, TransitionBack(Regions.FranticFactoryLobby, "From DK Isles", Transitions.IslesFactoryLobbyToMain), ExitCategories.IslesExterior),
+    Transitions.IslesFactoryLobbyToMain: ShufflableExit("DK Isles Frantic Factory Lobby to Main", Regions.FranticFactoryLobby, TransitionBack(Regions.CrocodileIsleBeyondLift, "From Factory Lobby", Transitions.IslesMainToFactoryLobby), ExitCategories.FactoryLobby),
+    Transitions.IslesMainToGalleonLobby: ShufflableExit("DK Isles Main to Gloomy Galleon Lobby", Regions.IslesMain, TransitionBack(Regions.GloomyGalleonLobby, "From DK Isles",Transitions.IslesGalleonLobbyToMain), ExitCategories.IslesExterior),
+    Transitions.IslesGalleonLobbyToMain: ShufflableExit("DK Isles Gloomy Galleon Lobby to Main", Regions.GloomyGalleonLobby, TransitionBack(Regions.IslesMain, "From Galleon Lobby", Transitions.IslesMainToGalleonLobby), ExitCategories.GalleonLobby),
+    Transitions.IslesMainToForestLobby: ShufflableExit("DK Isles Cabin Isle to Fungi Forest Lobby", Regions.CabinIsle, TransitionBack(Regions.FungiForestLobby, "From DK Isles", Transitions.IslesForestLobbyToMain), ExitCategories.IslesExterior),
+    Transitions.IslesForestLobbyToMain: ShufflableExit("DK Isles Fungi Forest Lobby to Cabin Isle", Regions.FungiForestLobby, TransitionBack(Regions.IslesMain, "From Fungi Lobby", Transitions.IslesMainToForestLobby), ExitCategories.ForestLobby),
+    Transitions.IslesMainToCavesLobby: ShufflableExit("DK Isles Main to Crystal Caves Lobby", Regions.IslesMain, TransitionBack(Regions.CrystalCavesLobby, "From DK Isles", Transitions.IslesCavesLobbyToMain), ExitCategories.IslesExterior),
+    Transitions.IslesCavesLobbyToMain: ShufflableExit("DK Isles Crystal Caves Lobby to Main", Regions.CrystalCavesLobby, TransitionBack(Regions.IslesMain, "From Caves Lobby", Transitions.IslesMainToCavesLobby), ExitCategories.CavesLobby),
+    Transitions.IslesMainToCastleLobby: ShufflableExit("DK Isles Main to Creepy Castle Lobby", Regions.IslesMain, TransitionBack(Regions.CreepyCastleLobby, "From DK Isles",Transitions.IslesCastleLobbyToMain), ExitCategories.IslesExterior),
+    Transitions.IslesCastleLobbyToMain: ShufflableExit("DK Isles Creepy Castle Lobby to Main", Regions.CreepyCastleLobby, TransitionBack(Regions.IslesMain, "From Castle Lobby", Transitions.IslesMainToCastleLobby), ExitCategories.CastleLobby),
+    
     # Jungle Japes Exits
     Transitions.JapesMainToMine: ShufflableExit("Jungle Japes Main to Mine", Regions.JungleJapesMain, Transitions.JapesMineToMain, ExitCategories.JapesExterior, entryKongs={Kongs.diddy}, move=True),
     Transitions.JapesMineToMain: ShufflableExit("Jungle Japes Mine to Main", Regions.Mine, Transitions.JapesMainToMine, ExitCategories.JapesMine, regionKongs={Kongs.diddy}),
@@ -252,7 +231,7 @@ ShufflableExits = {
 ShufflableBacks = {
     
     # Jungle Japes
-    
+    TransitionBack(Regions.JungleJapesLobby, "From DK Isles"),
     TransitionBack(Regions.JapesBeyondFeatherGate, "From Beehive"),
     TransitionBack(Regions.JungleJapesMain, "From Mountain"),
     TransitionBack(Regions.JungleJapesMain, "From Painting Room"),
@@ -260,7 +239,7 @@ ShufflableBacks = {
     TransitionBack(Regions.JungleJapesMain,	"From Underground"),
     TransitionBack(Regions.JungleJapesMain, "From Minecart"),
     # Angry Aztec
-    
+    TransitionBack(Regions.AngryAztecLobby,	"From DK Isles"),
     TransitionBack(Regions.AngryAztecStart, "From Tiny Temple"),
     TransitionBack(Regions.AngryAztecMain, "From Llama Temple"),
     TransitionBack(Regions.AngryAztecMain, "From Tiny 5DTemple"),
@@ -272,12 +251,14 @@ ShufflableBacks = {
     TransitionBack(Regions.AngryAztecMain, "From Beetle Race"),
     # Frantic Factory
     
+    TransitionBack(Regions.FranticFactoryLobby, "From DK Isles"),
     TransitionBack(Regions.BeyondHatch,	"From Power Shed"),
     TransitionBack(Regions.BeyondHatch,	"From Crusher Room"),
     TransitionBack(Regions.BeyondHatch, "From BBlast"),
     TransitionBack(Regions.FactoryTinyRaceLobby, "From Car Race"),
 	# Gloomy Galleon
     
+    TransitionBack(Regions.GloomyGalleonLobby, "From DK Isles"),
     TransitionBack(Regions.Shipyard, "From Diddy 5DShip"),
     TransitionBack(Regions.Shipyard, "From Chunky 5DShip"),
     TransitionBack(Regions.Shipyard, "From Lanky 5DShip"),
@@ -301,6 +282,7 @@ ShufflableBacks = {
     TransitionBack(Regions.LankyShip, "From Galleon (Lanky Entrance)"),
     # Fungi Forest
     
+    TransitionBack(Regions.FungiForestLobby, "From DK Isles"),
     TransitionBack(Regions.MillArea, "From Lanky Attic"),
     TransitionBack(Regions.MillArea, "From Diddy Attic"),
     TransitionBack(Regions.MillArea, "From Diddy Barn"),
@@ -332,6 +314,7 @@ ShufflableBacks = {
     TransitionBack(Regions.MushroomUpper, "From Fungi (High)"),
     # Crystal Caves
     
+    TransitionBack(Regions.CrystalCavesLobby, "From DK Isles"),
     TransitionBack(Regions.IglooArea, "From Diddy 5DIgloo"),
     TransitionBack(Regions.IglooArea, "From DK 5DIgloo"),
     TransitionBack(Regions.IglooArea, "From Lanky 5DIgloo"),
@@ -349,6 +332,7 @@ ShufflableBacks = {
     TransitionBack(Regions.CrystalCavesMain, "From Tile Flipping"),
     # Creepy Castle
     
+    TransitionBack(Regions.CreepyCastleLobby, "From DK Isles"),
     TransitionBack(Regions.CreepyCastleMain, "From Tree (Entrance)"),
     TransitionBack(Regions.CreepyCastleMain, "From Tree (Exit)"),
     TransitionBack(Regions.CreepyCastleMain, "From Tunnel (Front)"),
