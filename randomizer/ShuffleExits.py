@@ -162,7 +162,7 @@ def AssumeExits(settings, frontpool, backpool, newpool):
         exit.dest = None
         exit.toBeShuffled = True
         # 2) Attach to root of world (DK Isles)
-        newExit = TransitionFront(exit.region, lambda l: True, exitId, True)
+        newExit = TransitionFront(exit.back.regionId, lambda l: True, exitId, True)
         AddRootExit(newExit)
 
 
