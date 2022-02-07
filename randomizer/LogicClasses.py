@@ -157,8 +157,6 @@ class TransitionFront:
     def __init__(self, dest, logic, exitShuffleId=None, assumed=False):
         """Initialize with given parameters."""
         self.dest = dest # Planning to remove this
-        # self.back = back
         self.logic = logic  # Lambda function for accessibility
-        # self.shufflable = shufflable
         self.exitShuffleId = exitShuffleId # Planning to remove this
         self.assumed = assumed  # Indicates this is an assumed exit attached to the root

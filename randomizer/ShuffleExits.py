@@ -70,35 +70,36 @@ def VerifyWorld(settings):
     return isValid
 
 
-def AttemptConnect(settings, front, frontId, back, backId):
+def AttemptConnect(settings, frontExit, frontId, backExit, backId):
     """Attempt to connect two exits, checking if the world is valid if they are connected."""
     # Remove connections to world root
-    frontExit = None
+    frontReverse = None
     if not settings.decoupled_loading_zones:
         # Prevents an error if trying to assign an entrance back to itself
-        if frontId == backId:
+        if frontExit.reverse == backId:
             return False
-        frontExit = GetRootExit(frontId)
-        RemoveRootExit(frontExit)
-    backExit = GetRootExit(backId)
-    RemoveRootExit(backExit)
+        frontReverse = GetRootExit(frontExit.reverse)
+        RemoveRootExit(frontReverse)
+    backRootExit = GetRootExit(backId)
+    RemoveRootExit(backRootExit)
     # Add connection between selected exits
-    front.shuffled = True
-    front.dest = backId
+    frontExit.shuffled = True
+    frontExit.dest = backId
     if not settings.decoupled_loading_zones:
-        back.shuffled = True
-        back.dest = frontId
+        backReverse = ShufflableExits[backExit.reverse]
+        backReverse.shuffled = True
+        backReverse.dest = frontExit.reverse
     # Attempt to verify world
     valid = VerifyWorld(settings)
     # If world is not valid, restore root connections and undo new connections
     if not valid:
-        AddRootExit(backExit)
-        front.shuffled = False
-        front.dest = None
+        AddRootExit(backRootExit)
+        frontExit.shuffled = False
+        frontExit.dest = None
         if not settings.decoupled_loading_zones:
-            AddRootExit(frontExit)
-            back.shuffled = False
-            back.dest = None
+            AddRootExit(frontReverse)
+            backReverse.shuffled = False
+            backReverse.dest = None
     return valid
 
 
@@ -126,24 +127,24 @@ def ShuffleExitsInPool(settings, frontpool, backpool):
     # For each back exit, select a random valid front entrance to attach to it
     while len(backpool) > 0:
         backId = backpool.pop(0)
-        back = ShufflableExits[backId]
+        backExit = ShufflableExits[backId]
         # Filter origins to make sure that if this target requires a certain kong's access, then the entrance will be accessible by that kong
-        origins = [x for x in frontpool if ShufflableExits[x].entryKongs.issuperset(back.regionKongs)]
-        if not settings.decoupled_loading_zones and back.category is None:
+        origins = [x for x in frontpool if ShufflableExits[x].entryKongs.issuperset(backExit.regionKongs)]
+        if not settings.decoupled_loading_zones and backExit.category is None:
             # In coupled, if both front & back are leaves, the result will be invalid
             origins = [x for x in origins if ShufflableExits[x].category is not None]
         # Select a random origin
         for frontId in origins:
-            front = ShufflableExits[frontId]
-            if AttemptConnect(settings, front, frontId, back, backId):
+            frontExit = ShufflableExits[frontId]
+            if AttemptConnect(settings, frontExit, frontId, backExit, backId):
                 # print("Assigned " + front.name + " --> " + back.name)
                 frontpool.remove(frontId)
                 if not settings.decoupled_loading_zones:
                     # If coupled, the opposite pairing also needs to be removed from the pool
-                    frontpool.remove(backId)
-                    backpool.remove(frontId)
+                    frontpool.remove(backExit.reverse)
+                    backpool.remove(frontExit.reverse)
                 break
-        if not front.shuffled:
+        if not frontExit.shuffled:
             # print("Failed to connect to " + back.name + " from any of the remaining " + str(len(origins)) + " origins!")
             raise Ex.EntranceOutOfDestinations
 

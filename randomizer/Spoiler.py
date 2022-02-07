@@ -3,6 +3,7 @@
 import copy
 import json
 from typing import OrderedDict
+from randomizer import Logic
 
 from randomizer.Enums.Items import Items
 from randomizer.Lists.Item import ItemFromKong, ItemList
@@ -65,7 +66,7 @@ class Spoiler:
             # Shuffled exit data
             shuffled_exits = OrderedDict()
             for exit, dest in self.shuffled_exit_data.items():
-                shuffled_exits[ShufflableExits[exit].name] = ShufflableExits[dest].name
+                shuffled_exits[ShufflableExits[exit].name] = Logic.Regions[dest.regionId].name + " " + dest.name
             humanspoiler["Shuffled Exits"] = shuffled_exits
 
         return json.dumps(humanspoiler, indent=4)
@@ -75,7 +76,7 @@ class Spoiler:
         self.shuffled_exit_data = {}
         for key, exit in ShufflableExits.items():
             if exit.shuffled:
-                self.shuffled_exit_data[key] = exit.dest
+                self.shuffled_exit_data[key] = ShufflableExits[exit.dest].back
 
     def UpdateLocations(self, locations):
         """Update location list for what was produced by the fill."""

@@ -112,10 +112,10 @@ def GetAccessibleLocations(settings, ownedItems, searchType=SearchMode.GetReacha
                 exits = region.exits.copy()
                 # If loading zones are shuffled, the "Exit Level" button in the pause menu could potentially take you somewhere new
                 if settings.shuffle_loading_zones and region.level != Levels.DKIsles and region.level != Levels.Shops:
-                    dest = GetExitLevelExit(region.level)
+                    levelExit = GetExitLevelExit(region.level)
                     # When shuffling levels, unplaced level entrances will have no destination yet
-                    if dest is not None:
-                        dest = ShufflableExits[dest].region
+                    if levelExit is not None:
+                        dest = ShufflableExits[levelExit].back.regionId
                         exits.append(TransitionFront(dest, lambda l: True))
                 for exit in exits:
                     destination = exit.dest
@@ -125,7 +125,7 @@ def GetAccessibleLocations(settings, ownedItems, searchType=SearchMode.GetReacha
                     if exit.exitShuffleId is not None and not exit.assumed:
                         shuffledExit = ShufflableExits[exit.exitShuffleId]
                         if shuffledExit.shuffled:
-                            destination = ShufflableExits[shuffledExit.dest].region
+                            destination = ShufflableExits[shuffledExit.dest].back.regionId
                         elif shuffledExit.toBeShuffled and not exit.assumed:
                             continue
                     # If a region is accessible through this exit and has not yet been added, add it to the queue to be visited eventually
