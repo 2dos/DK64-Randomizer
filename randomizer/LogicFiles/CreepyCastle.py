@@ -25,7 +25,9 @@ LogicRegions = {
         TransitionFront(Regions.CreepyCastleLobby, lambda l: True, Transitions.CastleToIsles),
         TransitionFront(Regions.CastleWaterfall, lambda l: True),
         TransitionFront(Regions.CastleTree, lambda l: l.blast, Transitions.CastleMainToTree),
-        TransitionFront(Regions.Library, lambda l: l.superDuperSlam and l.isdonkey, Transitions.CastleMainToLibrary),
+        TransitionFront(Regions.Library, lambda l: l.superDuperSlam and l.isdonkey, Transitions.CastleMainToLibraryStart),
+        # Special Case for back door - it's only open right when you leave
+        # TransitionFront(Regions.Library, lambda l: True, Transitions.CastleMainToLibraryEnd), 
         TransitionFront(Regions.Ballroom, lambda l: l.superDuperSlam and l.diddy, Transitions.CastleMainToBallroom),  # Stays open
         TransitionFront(Regions.Tower, lambda l: l.superDuperSlam and l.islanky, Transitions.CastleMainToTower),
         TransitionFront(Regions.Greenhouse, lambda l: l.superDuperSlam and l.islanky, Transitions.CastleMainToGreenhouse),
@@ -52,28 +54,35 @@ LogicRegions = {
         LocationLogic(Locations.CastleBananaFairyTree, lambda l: l.camera and l.coconut and l.isdonkey),
     ], [], [
         TransitionFront(Regions.CreepyCastleMain, lambda l: True, Transitions.CastleTreeToMain),
-        TransitionFront(Regions.CreepyCastleMain, lambda l: True), #Exits.CastleTreeDrainToMain
+        TransitionFront(Regions.CreepyCastleMain, lambda l: l.coconut and l.isdonkey, Transitions.CastleTreeDrainToMain),
     ]),
 
     Regions.Library: Region("Library", Levels.CreepyCastle, False, -1, [
         # Another case where you're supposed to use Strong Kong but it can be brute forced
         LocationLogic(Locations.CastleDonkeyLibrary, lambda l: l.superDuperSlam and l.isdonkey),
     ], [], [
-        TransitionFront(Regions.CreepyCastleMain, lambda l: True, Transitions.CastleLibraryToMain),
+        TransitionFront(Regions.CreepyCastleMain, lambda l: True, Transitions.CastleLibraryStartToMain),
+        TransitionFront(Regions.CreepyCastleMain, lambda l: l.superDuperSlam and l.isdonkey, Transitions.CastleLibraryEndToMain),
     ]),
 
     Regions.Ballroom: Region("Ballroom", Levels.CreepyCastle, False, -1, [
         LocationLogic(Locations.CastleDiddyBallroom, lambda l: l.jetpack and l.isdiddy),
-        LocationLogic(Locations.CastleBananaFairyBallroom, lambda l: l.camera and l.monkeyport and l.istiny),
     ], [], [
         TransitionFront(Regions.CreepyCastleMain, lambda l: True, Transitions.CastleBallroomToMain),
-        TransitionFront(Regions.CastleTinyRace, lambda l: l.monkeyport and l.mini and l.istiny, Transitions.CastleBallroomToRace),
+        TransitionFront(Regions.MuseumBehindGlass, lambda l: l.monkeyport and l.mini and l.istiny, Transitions.CastleBallroomToMuseum),
+    ]),
+
+    Regions.MuseumBehindGlass: Region("Museum Behind Glass", Levels.CreepyCastle, False, -1, [
+        LocationLogic(Locations.CastleBananaFairyBallroom, lambda l: l.camera),
+    ], [], [
+        TransitionFront(Regions.Ballroom, lambda l: l.monkeyport and l.mini and l.istiny, Transitions.CastleMuseumToBallroom),
+        TransitionFront(Regions.CastleTinyRace, lambda l: l.mini and l.istiny, Transitions.CastleMuseumToCarRace),
     ]),
 
     Regions.CastleTinyRace: Region("Castle Tiny Race", Levels.CreepyCastle, False, None, [
         LocationLogic(Locations.CastleTinyCarRace, lambda l: l.istiny),
     ], [], [
-        TransitionFront(Regions.Ballroom, lambda l: True, Transitions.CastleRaceToBallroom)
+        TransitionFront(Regions.MuseumBehindGlass, lambda l: True, Transitions.CastleRaceToMuseum)
     ]),
 
     Regions.Tower: Region("Tower", Levels.CreepyCastle, False, -1, [
@@ -83,11 +92,12 @@ LogicRegions = {
     ]),
 
     Regions.Greenhouse: Region("Greenhouse", Levels.CreepyCastle, False, -1, [
-        # Not sure if sprint is actually required
-        LocationLogic(Locations.CastleLankyGreenhouse, lambda l: l.sprint and l.islanky),
-        LocationLogic(Locations.CastleBattleArena, lambda l: l.sprint and l.islanky),
+        # Sprint is not actually required
+        LocationLogic(Locations.CastleLankyGreenhouse, lambda l: l.islanky),
+        LocationLogic(Locations.CastleBattleArena, lambda l: l.islanky),
     ], [], [
-        TransitionFront(Regions.CreepyCastleMain, lambda l: True, Transitions.CastleGreenhouseToMain),
+        TransitionFront(Regions.CreepyCastleMain, lambda l: True, Transitions.CastleGreenhouseStartToMain),
+        TransitionFront(Regions.CreepyCastleMain, lambda l: l.islanky, Transitions.CastleGreenhouseEndToMain),
     ]),
 
     Regions.TrashCan: Region("Trash Can", Levels.CreepyCastle, False, -1, [

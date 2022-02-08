@@ -150,6 +150,7 @@ class Regions(IntEnum):
     CastleTree = auto()
     Library = auto()
     Ballroom = auto()
+    MuseumBehindGlass = auto()
     CastleTinyRace = auto()
     Tower = auto()
     Greenhouse = auto()
