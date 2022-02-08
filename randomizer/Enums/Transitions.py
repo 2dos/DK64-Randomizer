@@ -58,6 +58,8 @@ class Transitions(IntEnum):
     JapesTinyHiveToMain = auto()
     JapesMineToCarts = auto()
     JapesCartsToMine = auto()
+    JapesMainToBBlast = auto()
+    JapesCartsToMain = auto()
 
     # Angry Aztec Exits
     AztecStartToTemple = auto()
