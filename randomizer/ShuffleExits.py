@@ -138,15 +138,16 @@ def ShuffleExitsInPool(settings, frontpool, backpool):
         for frontId in origins:
             frontExit = ShufflableExits[frontId]
             if AttemptConnect(settings, frontExit, frontId, backExit, backId):
-                # print("Assigned " + front.name + " --> " + back.name)
+                print("Assigned " + frontExit.name + " --> " + backExit.name)
                 frontpool.remove(frontId)
                 if not settings.decoupled_loading_zones:
                     # If coupled, the opposite pairing also needs to be removed from the pool
+                    # print("Assigned " + ShufflableExits[backExit.back.reverse].name + " --> " + ShufflableExits[frontExit.back.reverse].name)
                     frontpool.remove(backExit.back.reverse)
                     backpool.remove(frontExit.back.reverse)
                 break
         if not frontExit.shuffled:
-            # print("Failed to connect to " + back.name + " from any of the remaining " + str(len(origins)) + " origins!")
+            print("Failed to connect to " + backExit.name + " from any of the remaining " + str(len(origins)) + " origins!")
             raise Ex.EntranceOutOfDestinations
 
 
