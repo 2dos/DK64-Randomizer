@@ -106,14 +106,14 @@ def AttemptConnect(settings, frontExit, frontId, backExit, backId):
 
 def ShuffleExitsInPool(settings, frontpool, backpool):
     """Shuffle exits within a specific pool."""
-    NonTagRegions = [x for x in backpool if not Logic.Regions[ShufflableExits[x].region].tagbarrel]
-    NonTagLeaves = [x for x in NonTagRegions if ShufflableExits[x].category is None]
+    NonTagRegions = [x for x in backpool if not Logic.Regions[ShufflableExits[x].back.regionId].tagbarrel]
+    NonTagLeaves = [x for x in NonTagRegions if ShufflableExits[ShufflableExits[x].back.reverse].category is None]
     random.shuffle(NonTagLeaves)
     NonTagNonLeaves = [x for x in NonTagRegions if x not in NonTagLeaves]
     random.shuffle(NonTagNonLeaves)
 
     TagRegions = [x for x in backpool if x not in NonTagRegions]
-    TagLeaves = [x for x in TagRegions if ShufflableExits[x].category is None]
+    TagLeaves = [x for x in TagRegions if ShufflableExits[ShufflableExits[x].back.reverse].category is None]
     random.shuffle(TagLeaves)
     TagNonLeaves = [x for x in TagRegions if x not in TagLeaves]
     random.shuffle(TagNonLeaves)
@@ -133,12 +133,14 @@ def ShuffleExitsInPool(settings, frontpool, backpool):
         origins = [x for x in frontpool if ShufflableExits[x].entryKongs.issuperset(backExit.regionKongs)]
         if not settings.decoupled_loading_zones and backExit.category is None:
             # In coupled, if both front & back are leaves, the result will be invalid
-            origins = [x for x in origins if ShufflableExits[x].category is not None]
+            origins = [x for x in origins if ShufflableExits[ShufflableExits[x].back.reverse].category is not None]
+            # Also validate the entry & region kongs overlap in reverse direction
+            origins = [x for x in origins if ShufflableExits[backExit.back.reverse].entryKongs.issuperset(ShufflableExits[ShufflableExits[x].back.reverse].regionKongs)]
         # Select a random origin
         for frontId in origins:
             frontExit = ShufflableExits[frontId]
             if AttemptConnect(settings, frontExit, frontId, backExit, backId):
-                print("Assigned " + frontExit.name + " --> " + backExit.name)
+                # print("Assigned " + frontExit.name + " --> " + backExit.name)
                 frontpool.remove(frontId)
                 if not settings.decoupled_loading_zones:
                     # If coupled, the opposite pairing also needs to be removed from the pool
