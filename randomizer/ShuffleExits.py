@@ -107,13 +107,13 @@ def AttemptConnect(settings, frontExit, frontId, backExit, backId):
 def ShuffleExitsInPool(settings, frontpool, backpool):
     """Shuffle exits within a specific pool."""
     NonTagRegions = [x for x in backpool if not Logic.Regions[ShufflableExits[x].back.regionId].tagbarrel]
-    NonTagLeaves = [x for x in NonTagRegions if ShufflableExits[ShufflableExits[x].back.reverse].category is None]
+    NonTagLeaves = [x for x in NonTagRegions if len(Logic.Regions[ShufflableExits[x].back.regionId].exits) == 1]
     random.shuffle(NonTagLeaves)
     NonTagNonLeaves = [x for x in NonTagRegions if x not in NonTagLeaves]
     random.shuffle(NonTagNonLeaves)
 
     TagRegions = [x for x in backpool if x not in NonTagRegions]
-    TagLeaves = [x for x in TagRegions if ShufflableExits[ShufflableExits[x].back.reverse].category is None]
+    TagLeaves = [x for x in TagRegions if len(Logic.Regions[ShufflableExits[x].back.regionId].exits) == 1]
     random.shuffle(TagLeaves)
     TagNonLeaves = [x for x in TagRegions if x not in TagLeaves]
     random.shuffle(TagNonLeaves)
