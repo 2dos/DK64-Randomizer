@@ -54,7 +54,6 @@ def patching_response(responded_data):
         Transitions.IslesToForest,
         Transitions.IslesToCaves,
         Transitions.IslesToCastle,
-        Transitions.IslesToHelm,
     ]
     vanilla_lobby_order = [
         Transitions.JapesToIsles,
@@ -64,7 +63,6 @@ def patching_response(responded_data):
         Transitions.ForestToIsles,
         Transitions.CavesToIsles,
         Transitions.CastleToIsles,
-        Transitions.HelmToIsles,
     ]
     order = 0
     for level in vanilla_entrace_order:
@@ -95,7 +93,6 @@ def patching_response(responded_data):
         Transitions.IslesToForest: Transitions.ForestToIsles,
         Transitions.IslesToCaves: Transitions.CavesToIsles,
         Transitions.IslesToCastle: Transitions.CastleToIsles,
-        Transitions.IslesToHelm: Transitions.HelmToIsles,
     }
     key_mapping = {
         Transitions.JapesToIsles: 0x01E,
@@ -105,7 +102,6 @@ def patching_response(responded_data):
         Transitions.ForestToIsles: 0xA8,
         Transitions.CavesToIsles: 0xEC,
         Transitions.CastleToIsles: 0x124,
-        Transitions.HelmToIsles: 0x13D,
     }
     order = 0
     for key, value in map_pointers.items():

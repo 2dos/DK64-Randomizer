@@ -5,17 +5,16 @@ import random
 import randomizer.ItemPool as ItemPool
 import randomizer.Lists.Exceptions as Ex
 import randomizer.Logic as Logic
-from randomizer.Lists.Location import LocationList
-from randomizer.Lists.Item import ItemList
-from randomizer.Logic import LogicVarHolder, LogicVariables
-from randomizer.LogicClasses import TransitionFront
-from randomizer.ShuffleExits import ShufflableExits, ExitShuffle
-
+from randomizer.Enums.Transitions import Transitions
 from randomizer.Enums.Items import Items
+from randomizer.Enums.Levels import Levels
 from randomizer.Enums.Regions import Regions
 from randomizer.Enums.SearchMode import SearchMode
-from randomizer.Enums.Levels import Levels
-from randomizer.Enums.Transitions import Transitions
+from randomizer.Lists.Item import ItemList
+from randomizer.Lists.Location import LocationList
+from randomizer.Logic import LogicVarHolder, LogicVariables
+from randomizer.LogicClasses import TransitionFront
+from randomizer.ShuffleExits import ExitShuffle, ShufflableExits
 
 
 def GetExitLevelExit(level):
@@ -95,6 +94,11 @@ def GetAccessibleLocations(settings, ownedItems, searchType=SearchMode.GetReacha
                 region.UpdateAccess(kong, LogicVariables)  # Set that this kong has access to this region
                 LogicVariables.UpdateCurrentRegionAccess(region)  # Set in logic as well
 
+                # Check accessibility for each event in this region
+                for event in region.events:
+                    if event.name not in LogicVariables.Events and event.logic(LogicVariables):
+                        eventAdded = True
+                        LogicVariables.Events.append(event.name)
                 # Check accessibility for each location in this region
                 for location in region.locations:
                     if (
@@ -103,11 +107,6 @@ def GetAccessibleLocations(settings, ownedItems, searchType=SearchMode.GetReacha
                         and location.id not in accessible
                     ):
                         newLocations.append(location.id)
-                # Check accessibility for each event in this region
-                for event in region.events:
-                    if event.name not in LogicVariables.Events and event.logic(LogicVariables):
-                        eventAdded = True
-                        LogicVariables.Events.append(event.name)
                 # Check accessibility for each exit in this region
                 exits = region.exits.copy()
                 # If loading zones are shuffled, the "Exit Level" button in the pause menu could potentially take you somewhere new

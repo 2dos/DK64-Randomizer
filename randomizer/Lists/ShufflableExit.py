@@ -3,8 +3,8 @@
 
 from randomizer.Enums.ExitCategories import ExitCategories
 from randomizer.Enums.Transitions import Transitions
-from randomizer.Enums.Regions import Regions
 from randomizer.Enums.Kongs import Kongs
+from randomizer.Enums.Regions import Regions
 from randomizer.LogicClasses import Region, TransitionBack
 
 

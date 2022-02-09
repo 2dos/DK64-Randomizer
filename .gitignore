@@ -176,3 +176,5 @@ base-hack/rom/patch.bps
 base-hack/rom/dk64-randomizer-base.wch
 base-hack/build/autopatch
 !base-hack/build/
+web_cache/
+web_cache/*
