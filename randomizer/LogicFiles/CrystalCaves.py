@@ -16,7 +16,6 @@ LogicRegions = {
         LocationLogic(Locations.CavesLankyMedal, lambda l: l.ColoredBananas[Levels.CrystalCaves][Kongs.lanky] >= 75),
         LocationLogic(Locations.CavesTinyMedal, lambda l: l.ColoredBananas[Levels.CrystalCaves][Kongs.tiny] >= 75),
         LocationLogic(Locations.CavesChunkyMedal, lambda l: l.ColoredBananas[Levels.CrystalCaves][Kongs.chunky] >= 75),
-        LocationLogic(Locations.CavesDonkeyBaboonBlast, lambda l: l.blast and l.donkey),
         LocationLogic(Locations.CavesDiddyJetpackBarrel, lambda l: l.jetpack and l.diddy),
         LocationLogic(Locations.CavesTinyKrazyKongKlamour, lambda l: l.mini and l.tiny),
         LocationLogic(Locations.CavesTinyMonkeyportIgloo, lambda l: l.monkeyport and l.mini and l.twirl and l.tiny),
@@ -39,6 +38,13 @@ LogicRegions = {
         TransitionFront(Regions.Cranky, lambda l: True),
         TransitionFront(Regions.Snide, lambda l: l.punch),
         TransitionFront(Regions.CavesBossLobby, lambda l: l.punch),
+        TransitionFront(Regions.CavesBaboonBlast, lambda l: l.blast and l.isdonkey, Transitions.CavesMainToBBlast)
+    ]),
+
+    Regions.CavesBaboonBlast: Region("Caves Baboon Blast", Levels.CrystalCaves, False, None, [
+        LocationLogic(Locations.CavesDonkeyBaboonBlast, lambda l: l.isdonkey),
+    ], [], [
+        TransitionFront(Regions.CrystalCavesMain, lambda l: True)
     ]),
 
     Regions.BoulderIgloo: Region("Boulder Igloo", Levels.CrystalCaves, True, None, [], [

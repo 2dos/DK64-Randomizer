@@ -38,6 +38,7 @@ class Regions(IntEnum):
     JapesCatacomb = auto()
     JapesBossLobby = auto()
     JapesBoss = auto()
+    JapesBaboonBlast = auto()
 
     # Angry Aztec Regions
     AngryAztecStart = auto()
@@ -54,6 +55,7 @@ class Regions(IntEnum):
     LlamaTempleBack = auto()
     AztecBossLobby = auto()
     AztecBoss = auto()
+    AztecBaboonBlast = auto()
 
     # Frantic Factory Regions
     FranticFactoryStart = auto()
@@ -68,6 +70,7 @@ class Regions(IntEnum):
     MainCore = auto()
     FactoryBossLobby = auto()
     FactoryBoss = auto()
+    FactoryBaboonBlast = auto()
 
     # Gloomy Galleon Regions
     GloomyGalleonStart = auto()
@@ -91,6 +94,7 @@ class Regions(IntEnum):
     TriangleShip = auto()
     GalleonBossLobby = auto()
     GalleonBoss = auto()
+    GalleonBaboonBlast = auto()
 
     # Fungi Forest Regions
     FungiForestStart = auto()
@@ -120,6 +124,7 @@ class Regions(IntEnum):
     WormArea = auto()
     ForestBossLobby = auto()
     ForestBoss = auto()
+    ForestBaboonBlast = auto()
 
     # Crystal Caves Regions
     CrystalCavesMain = auto()
@@ -143,6 +148,7 @@ class Regions(IntEnum):
     ChunkyCabin = auto()
     CavesBossLobby = auto()
     CavesBoss = auto()
+    CavesBaboonBlast = auto()
 
     # Creepy Castle Regions
     CreepyCastleMain = auto()
@@ -165,6 +171,7 @@ class Regions(IntEnum):
     Dungeon = auto()
     CastleBossLobby = auto()
     CastleBoss = auto()
+    CastleBaboonBlast = auto()
 
     # Hideout Helm Regions
     HideoutHelmStart = auto()

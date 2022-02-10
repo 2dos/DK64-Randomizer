@@ -61,12 +61,18 @@ LogicRegions = {
     ]),
 
     Regions.MushroomLowerExterior: Region("Mushroom Lower Exterior", Levels.FungiForest, True, -1, [
-        LocationLogic(Locations.ForestDonkeyBaboonBlast, lambda l: l.blast and l.donkey),
         LocationLogic(Locations.ForestTinyKasplat, lambda l: l.tiny),
     ], [], [
         TransitionFront(Regions.GiantMushroomArea, lambda l: True),
         TransitionFront(Regions.MushroomLower, lambda l: True, Transitions.ForestLowerExteriorToLowerMushroom),
         TransitionFront(Regions.MushroomUpper, lambda l: True, Transitions.ForestLowerExteriorToUpperMushroom),
+        TransitionFront(Regions.ForestBaboonBlast, lambda l: l.blast and l.isdonkey, Transitions.ForestMainToBBlast)
+    ]),
+
+    Regions.ForestBaboonBlast: Region("Forest Baboon Blast", Levels.FungiForest, False, None, [
+        LocationLogic(Locations.ForestDonkeyBaboonBlast, lambda l: l.isdonkey),
+    ], [], [
+        TransitionFront(Regions.MushroomLowerExterior, lambda l: True)
     ]),
 
     Regions.MushroomUpper: Region("Mushroom Upper", Levels.FungiForest, True, -1, [
