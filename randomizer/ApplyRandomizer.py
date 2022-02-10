@@ -6,7 +6,7 @@ import pickle
 import js
 
 from randomizer.DKTV import randomize_dktv
-from randomizer.Enums.Exits import Exits
+from randomizer.Enums.Transitions import Transitions
 from randomizer.MusicRando import randomize_music
 from randomizer.Patcher import ROM
 
@@ -47,22 +47,22 @@ def patching_response(responded_data):
 
     # Update Level Order
     vanilla_entrace_order = [
-        Exits.IslesToJapes,
-        Exits.IslesToAztec,
-        Exits.IslesToFactory,
-        Exits.IslesToGalleon,
-        Exits.IslesToForest,
-        Exits.IslesToCaves,
-        Exits.IslesToCastle,
+        Transitions.IslesToJapes,
+        Transitions.IslesToAztec,
+        Transitions.IslesToFactory,
+        Transitions.IslesToGalleon,
+        Transitions.IslesToForest,
+        Transitions.IslesToCaves,
+        Transitions.IslesToCastle,
     ]
     vanilla_lobby_order = [
-        Exits.JapesToIsles,
-        Exits.AztecToIsles,
-        Exits.FactoryToIsles,
-        Exits.GalleonToIsles,
-        Exits.ForestToIsles,
-        Exits.CavesToIsles,
-        Exits.CastleToIsles,
+        Transitions.JapesToIsles,
+        Transitions.AztecToIsles,
+        Transitions.FactoryToIsles,
+        Transitions.GalleonToIsles,
+        Transitions.ForestToIsles,
+        Transitions.CavesToIsles,
+        Transitions.CastleToIsles,
     ]
     order = 0
     for level in vanilla_entrace_order:
@@ -86,22 +86,22 @@ def patching_response(responded_data):
 
     # Key Order
     map_pointers = {
-        Exits.IslesToJapes: Exits.JapesToIsles,
-        Exits.IslesToAztec: Exits.AztecToIsles,
-        Exits.IslesToFactory: Exits.FactoryToIsles,
-        Exits.IslesToGalleon: Exits.GalleonToIsles,
-        Exits.IslesToForest: Exits.ForestToIsles,
-        Exits.IslesToCaves: Exits.CavesToIsles,
-        Exits.IslesToCastle: Exits.CastleToIsles,
+        Transitions.IslesToJapes: Transitions.JapesToIsles,
+        Transitions.IslesToAztec: Transitions.AztecToIsles,
+        Transitions.IslesToFactory: Transitions.FactoryToIsles,
+        Transitions.IslesToGalleon: Transitions.GalleonToIsles,
+        Transitions.IslesToForest: Transitions.ForestToIsles,
+        Transitions.IslesToCaves: Transitions.CavesToIsles,
+        Transitions.IslesToCastle: Transitions.CastleToIsles,
     }
     key_mapping = {
-        Exits.JapesToIsles: 0x01E,
-        Exits.AztecToIsles: 0x1A,
-        Exits.FactoryToIsles: 0x4A,
-        Exits.GalleonToIsles: 0x8A,
-        Exits.ForestToIsles: 0xA8,
-        Exits.CavesToIsles: 0xEC,
-        Exits.CastleToIsles: 0x124,
+        Transitions.JapesToIsles: 0x01E,
+        Transitions.AztecToIsles: 0x1A,
+        Transitions.FactoryToIsles: 0x4A,
+        Transitions.GalleonToIsles: 0x8A,
+        Transitions.ForestToIsles: 0xA8,
+        Transitions.CavesToIsles: 0xEC,
+        Transitions.CastleToIsles: 0x124,
     }
     order = 0
     for key, value in map_pointers.items():

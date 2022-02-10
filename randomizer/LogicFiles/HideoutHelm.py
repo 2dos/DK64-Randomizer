@@ -2,16 +2,16 @@
 """Logic file for Hideout Helm."""
 
 from randomizer.Enums.Events import Events
-from randomizer.Enums.Exits import Exits
+from randomizer.Enums.Transitions import Transitions
 from randomizer.Enums.Levels import Levels
 from randomizer.Enums.Locations import Locations
 from randomizer.Enums.Regions import Regions
-from randomizer.LogicClasses import Event, Exit, LocationLogic, Region
+from randomizer.LogicClasses import Event, TransitionFront, LocationLogic, Region
 
 LogicRegions = {
     Regions.HideoutHelmStart: Region("Hideout Helm Start", Levels.HideoutHelm, True, None, [], [], [
-        Exit(Regions.HideoutHelmLobby, lambda l: True),
-        Exit(Regions.HideoutHelmMain, lambda l: l.handstand and l.lanky and l.pineapple and l.chunky and l.mini and l.istiny),
+        TransitionFront(Regions.HideoutHelmLobby, lambda l: True),
+        TransitionFront(Regions.HideoutHelmMain, lambda l: l.handstand and l.lanky and l.pineapple and l.chunky and l.mini and l.istiny),
     ]),
 
     Regions.HideoutHelmMain: Region("Hideout Helm Main", Levels.HideoutHelm, True, -1, [

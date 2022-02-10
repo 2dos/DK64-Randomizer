@@ -1,9 +1,9 @@
-"""Exit enum."""
+"""TransitionFront enum."""
 from enum import IntEnum, auto
 
 
-class Exits(IntEnum):
-    """Exit enum, specifically for shufflable exits."""
+class Transitions(IntEnum):
+    """Transition enum, specifically for shufflable transitions."""
 
     # Level entrances
     IslesToJapes = auto()
@@ -58,6 +58,8 @@ class Exits(IntEnum):
     JapesTinyHiveToMain = auto()
     JapesMineToCarts = auto()
     JapesCartsToMine = auto()
+    JapesMainToBBlast = auto()
+    JapesCartsToMain = auto()
 
     # Angry Aztec Exits
     AztecStartToTemple = auto()
@@ -186,14 +188,18 @@ class Exits(IntEnum):
     # Creepy Castle Exits
     CastleMainToTree = auto()
     CastleTreeToMain = auto()
-    CastleMainToLibrary = auto()
-    CastleLibraryToMain = auto()
+    CastleTreeDrainToMain = auto()
+    CastleMainToLibraryStart = auto()
+    CastleLibraryStartToMain = auto()
+    CastleMainToLibraryEnd = auto()
+    CastleLibraryEndToMain = auto()
     CastleMainToBallroom = auto()
     CastleBallroomToMain = auto()
     CastleMainToTower = auto()
     CastleTowerToMain = auto()
     CastleMainToGreenhouse = auto()
-    CastleGreenhouseToMain = auto()
+    CastleGreenhouseStartToMain = auto()
+    CastleGreenhouseEndToMain = auto()
     CastleMainToTrash = auto()
     CastleTrashToMain = auto()
     CastleMainToShed = auto()
@@ -206,8 +212,10 @@ class Exits(IntEnum):
     CastleUpperToMain = auto()
     CastleWaterfallToUpper = auto()
     CastleUpperToWaterfall = auto()
-    CastleBallroomToRace = auto()
-    CastleRaceToBallroom = auto()
+    CastleBallroomToMuseum = auto()
+    CastleMuseumToBallroom = auto()
+    CastleMuseumToCarRace = auto()
+    CastleRaceToMuseum = auto()
     CastleLowerToCrypt = auto()
     CastleCryptToLower = auto()
     CastleLowerToMausoleum = auto()

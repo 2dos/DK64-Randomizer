@@ -3,6 +3,7 @@
 import copy
 import json
 from typing import OrderedDict
+from randomizer import Logic
 
 from randomizer.Enums.Items import Items
 from randomizer.Lists.Item import ItemFromKong, ItemList
@@ -31,8 +32,8 @@ class Spoiler:
         settings["seed"] = self.settings.seed
         settings["algorithm"] = self.settings.algorithm
         settings["shuffle_items"] = self.settings.shuffle_items
-        settings["shuffle_levels"] = self.settings.shuffle_levels
         settings["shuffle_loading_zones"] = self.settings.shuffle_loading_zones
+        settings["decoupled_loading_zones"] = self.settings.decoupled_loading_zones
         settings["unlock_all_moves"] = self.settings.unlock_all_moves
         settings["unlock_all_kongs"] = self.settings.unlock_all_kongs
         settings["starting_kong"] = ItemList[ItemFromKong(self.settings.starting_kong)].name
@@ -66,9 +67,7 @@ class Spoiler:
             # Shuffled exit data
             shuffled_exits = OrderedDict()
             for exit, dest in self.shuffled_exit_data.items():
-                # If not decoupled, only want to show "front" exits
-                if exit % 2 != 0 or self.settings.decoupled_loading_zones:
-                    shuffled_exits[ShufflableExits[exit].name] = ShufflableExits[dest].name
+                shuffled_exits[ShufflableExits[exit].name] = Logic.Regions[dest.regionId].name + " " + dest.name
             humanspoiler["Shuffled Exits"] = shuffled_exits
 
         return json.dumps(humanspoiler, indent=4)
@@ -78,7 +77,7 @@ class Spoiler:
         self.shuffled_exit_data = {}
         for key, exit in ShufflableExits.items():
             if exit.shuffled:
-                self.shuffled_exit_data[key] = exit.dest
+                self.shuffled_exit_data[key] = ShufflableExits[exit.dest].back
 
     def UpdateLocations(self, locations):
         """Update location list for what was produced by the fill."""
