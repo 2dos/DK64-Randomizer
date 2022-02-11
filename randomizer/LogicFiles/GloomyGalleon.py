@@ -117,7 +117,8 @@ LogicRegions = {
         LocationLogic(Locations.GalleonDonkeySealRace, lambda l: l.isdonkey),
     ], [], [
         TransitionFront(Regions.Shipyard, lambda l: True, Transitions.GalleonSealToShipyard),
-    ]),
+    ],  Transitions.GalleonShipyardToSeal
+    ),
 
     # Water level needs to be raised and you spring up as diddy to get killed by the kasplat
     # Or, any kong having teleporter access works too

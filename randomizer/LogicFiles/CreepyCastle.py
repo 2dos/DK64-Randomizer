@@ -90,7 +90,8 @@ LogicRegions = {
         LocationLogic(Locations.CastleTinyCarRace, lambda l: l.istiny),
     ], [], [
         TransitionFront(Regions.MuseumBehindGlass, lambda l: True, Transitions.CastleRaceToMuseum)
-    ]),
+    ],  Transitions.CastleMuseumToCarRace
+    ),
 
     Regions.Tower: Region("Tower", Levels.CreepyCastle, False, -1, [
         LocationLogic(Locations.CastleLankyTower, lambda l: l.balloon and l.grape and l.islanky),
@@ -147,7 +148,8 @@ LogicRegions = {
         LocationLogic(Locations.CastleDonkeyMinecarts, lambda l: l.isdonkey),
     ], [], [
         TransitionFront(Regions.Crypt, lambda l: True, Transitions.CastleCartsToCrypt),
-    ]),
+    ],  Transitions.CastleCryptToCarts
+    ),
 
     Regions.Mausoleum: Region("Mausoleum", Levels.CreepyCastle, False, None, [
         LocationLogic(Locations.CastleLankyMausoleum, lambda l: l.grape and l.sprint and l.trombone and l.islanky),

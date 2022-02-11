@@ -58,7 +58,8 @@ LogicRegions = {
         LocationLogic(Locations.CavesLankyBeetleRace, lambda l: l.sprint and l.islanky),
     ], [], [
         TransitionFront(Regions.CrystalCavesMain, lambda l: True, Transitions.CavesRaceToMain),
-    ]),
+    ],  Transitions.CavesMainToRace
+    ),
 
     Regions.FrozenCastle: Region("Frozen Castle", Levels.CrystalCaves, False, None, [
         LocationLogic(Locations.CavesLankyCastle, lambda l: l.Slam and l.islanky),

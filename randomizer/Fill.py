@@ -17,9 +17,12 @@ from randomizer.LogicClasses import TransitionFront
 from randomizer.ShuffleExits import ExitShuffle, ShufflableExits
 
 
-def GetExitLevelExit(level):
+def GetExitLevelExit(settings, region):
     """Get the exit that using the "Exit Level" button will take you to."""
-    if level == Levels.JungleJapes:
+    level = region.level
+    if settings.shuffle_loading_zones == "all" and region.restart is not None:
+        return ShufflableExits[region.restart].dest
+    elif level == Levels.JungleJapes:
         return ShufflableExits[Transitions.JapesToIsles].dest
     elif level == Levels.AngryAztec:
         return ShufflableExits[Transitions.AztecToIsles].dest
@@ -33,7 +36,6 @@ def GetExitLevelExit(level):
         return ShufflableExits[Transitions.CavesToIsles].dest
     elif level == Levels.CreepyCastle:
         return ShufflableExits[Transitions.CastleToIsles].dest
-
 
 def GetAccessibleLocations(settings, ownedItems, searchType=SearchMode.GetReachable):
     """Search to find all reachable locations given owned items."""
@@ -111,7 +113,7 @@ def GetAccessibleLocations(settings, ownedItems, searchType=SearchMode.GetReacha
                 exits = region.exits.copy()
                 # If loading zones are shuffled, the "Exit Level" button in the pause menu could potentially take you somewhere new
                 if settings.shuffle_loading_zones and region.level != Levels.DKIsles and region.level != Levels.Shops:
-                    levelExit = GetExitLevelExit(region.level)
+                    levelExit = GetExitLevelExit(settings, region)
                     # When shuffling levels, unplaced level entrances will have no destination yet
                     if levelExit is not None:
                         dest = ShufflableExits[levelExit].back.regionId

@@ -67,7 +67,8 @@ LogicRegions = {
         LocationLogic(Locations.FactoryTinyCarRace, lambda l: l.istiny),
     ], [], [
         TransitionFront(Regions.FactoryTinyRaceLobby, lambda l: True, Transitions.FactoryRaceToRandD),
-    ]),
+    ],  Transitions.FactoryRandDToRace
+    ),
 
     Regions.ChunkyRoomPlatform: Region("Chunky Room Platform", Levels.FranticFactory, False, -1, [
         LocationLogic(Locations.FactoryDiddyBeaverBother, lambda l: l.Slam and l.isdiddy),

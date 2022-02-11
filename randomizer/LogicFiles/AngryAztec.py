@@ -113,7 +113,8 @@ LogicRegions = {
         LocationLogic(Locations.AztecTinyBeetleRace, lambda l: l.istiny),
     ], [], [
         TransitionFront(Regions.AngryAztecMain, lambda l: True, Transitions.AztecRaceToMain),
-    ]),
+    ],  Transitions.AztecMainToRace
+    ),
 
     Regions.LlamaTemple: Region("Llama Temple", Levels.AngryAztec, True, -1, [
         LocationLogic(Locations.LankyKong, lambda l: l.bongos and l.donkey),
