@@ -20,7 +20,6 @@ LogicRegions = {
         LocationLogic(Locations.JapesDonkeyFrontofCage, lambda l: l.donkey),
         LocationLogic(Locations.JapesDonkeyFreeDiddy, lambda l: l.coconut and l.donkey),
         LocationLogic(Locations.JapesDonkeyCagedBanana, lambda l: Events.JapesDonkeySwitch in l.Events and l.donkey),
-        LocationLogic(Locations.JapesDonkeyBaboonBlast, lambda l: l.blast and l.donkey),
         LocationLogic(Locations.JapesDiddyCagedBanana, lambda l: Events.JapesDiddySwitch1 in l.Events and l.diddy),
         LocationLogic(Locations.JapesDiddyMountain, lambda l: Events.JapesDiddySwitch2 in l.Events and l.diddy),
         LocationLogic(Locations.JapesLankyCagedBanana, lambda l: Events.JapesLankySwitch in l.Events and l.lanky),
@@ -41,6 +40,13 @@ LogicRegions = {
         TransitionFront(Regions.Funky, lambda l: True),
         TransitionFront(Regions.Snide, lambda l: True),
         TransitionFront(Regions.JapesBossLobby, lambda l: True),
+        TransitionFront(Regions.JapesBaboonBlast, lambda l: l.blast and l.isdonkey, Transitions.JapesMainToBBlast)
+    ]),
+
+    Regions.JapesBaboonBlast: Region("Japes Baboon Blast", Levels.JungleJapes, False, None, [
+        LocationLogic(Locations.JapesDonkeyBaboonBlast, lambda l: l.isdonkey),
+    ], [], [
+        TransitionFront(Regions.JungleJapesMain, lambda l: True)
     ]),
 
     Regions.JapesBeyondPeanutGate: Region("Japes Beyond Peanut Gate", Levels.JungleJapes, False, None, [
@@ -120,7 +126,8 @@ LogicRegions = {
         LocationLogic(Locations.JapesDiddyMinecarts, lambda l: l.isdiddy),
     ], [], [
         TransitionFront(Regions.JungleJapesMain, lambda l: True),
-    ]),
+    ],  Transitions.JapesMineToCarts
+    ),
 
     # Catacomb deaths lead back to itself
     Regions.JapesCatacomb: Region("Japes Catacomb", Levels.JungleJapes, False, None, [

@@ -50,7 +50,6 @@ LogicRegions = {
     ], [
         Event(Events.WaterSwitch, lambda l: True),
         Event(Events.LighthouseEnguarde, lambda l: l.lanky),
-        Event(Events.SealReleased, lambda l: l.blast and l.donkey),
         Event(Events.MechafishSummoned, lambda l: l.jetpack and l.guitar and l.diddy),
         Event(Events.GalleonChunkyPad, lambda l: l.triangle and l.chunky),
     ], [
@@ -61,6 +60,13 @@ LogicRegions = {
         TransitionFront(Regions.SickBay, lambda l: Events.ActivatedLighthouse in l.Events and l.Slam and l.ischunky, Transitions.GalleonLighthouseAreaToSickBay),
         TransitionFront(Regions.Snide, lambda l: True),
         TransitionFront(Regions.GalleonBossLobby, lambda l: Events.LighthouseEnguarde in l.Events),
+        TransitionFront(Regions.GalleonBaboonBlast, lambda l: l.blast and l.isdonkey, Transitions.GalleonMainToBBlast)
+    ]),
+
+    Regions.GalleonBaboonBlast: Region("Galleon Baboon Blast", Levels.GloomyGalleon, False, None, [], [
+        Event(Events.SealReleased, lambda l: l.isdonkey)
+    ], [
+        TransitionFront(Regions.LighthouseArea, lambda l: True)
     ]),
 
     Regions.Lighthouse: Region("Lighthouse", Levels.GloomyGalleon, False, -1, [
@@ -84,7 +90,7 @@ LogicRegions = {
     ]),
 
     Regions.Shipyard: Region("Shipyard", Levels.GloomyGalleon, True, None, [
-        LocationLogic(Locations.GalleonDonkeyFreetheSeal, lambda l: Events.SealReleased in l.Events and Events.WaterSwitch in l.Events and l.donkey),
+        LocationLogic(Locations.GalleonDonkeyFreetheSeal, lambda l: Events.SealReleased in l.Events and l.donkey),
         LocationLogic(Locations.GalleonChunkyKasplat, lambda l: l.chunky),
     ], [
         Event(Events.ShipyardEnguarde, lambda l: l.lanky),
@@ -111,7 +117,8 @@ LogicRegions = {
         LocationLogic(Locations.GalleonDonkeySealRace, lambda l: l.isdonkey),
     ], [], [
         TransitionFront(Regions.Shipyard, lambda l: True, Transitions.GalleonSealToShipyard),
-    ]),
+    ],  Transitions.GalleonShipyardToSeal
+    ),
 
     # Water level needs to be raised and you spring up as diddy to get killed by the kasplat
     # Or, any kong having teleporter access works too

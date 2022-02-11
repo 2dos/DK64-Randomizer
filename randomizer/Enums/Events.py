@@ -21,7 +21,7 @@ class Events(IntEnum):
 
     # Angry Aztec events
     FedTotem = auto()
-    # LlamaFreed = auto() # Decision to start with llama freed
+    LlamaFreed = auto()
     AztecDonkeySwitch = auto()
 
     # Frantic Factory events
@@ -67,7 +67,8 @@ class Events(IntEnum):
     CavesLargeBoulderButton = auto()
     GiantKoshaDefeated = auto()
 
-    # No Creepy Castle Events
+    # Creepy Castle Events
+    CastleTreeOpened = auto()
 
     # Hideout Helm Events
     HelmDoorsOpened = auto()

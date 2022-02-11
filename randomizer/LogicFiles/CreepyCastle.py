@@ -24,7 +24,7 @@ LogicRegions = {
     ], [
         TransitionFront(Regions.CreepyCastleLobby, lambda l: True, Transitions.CastleToIsles),
         TransitionFront(Regions.CastleWaterfall, lambda l: True),
-        TransitionFront(Regions.CastleTree, lambda l: l.blast, Transitions.CastleMainToTree),
+        TransitionFront(Regions.CastleTree, lambda l: Events.CastleTreeOpened in l.Events, Transitions.CastleMainToTree),
         TransitionFront(Regions.Library, lambda l: l.superDuperSlam and l.isdonkey, Transitions.CastleMainToLibraryStart),
         # Special Case for back door - it's only open right when you leave
         # TransitionFront(Regions.Library, lambda l: True, Transitions.CastleMainToLibraryEnd), 
@@ -39,6 +39,13 @@ LogicRegions = {
         TransitionFront(Regions.Cranky, lambda l: True),
         TransitionFront(Regions.Snide, lambda l: True),
         TransitionFront(Regions.CastleBossLobby, lambda l: True),
+        TransitionFront(Regions.CastleBaboonBlast, lambda l: l.blast and l.isdonkey, Transitions.CastleMainToBBlast)
+    ]),
+
+    Regions.CastleBaboonBlast: Region("Castle Baboon Blast", Levels.CreepyCastle, False, None, [], [
+        Event(Events.CastleTreeOpened, lambda l: l.isdonkey)
+    ], [
+        TransitionFront(Regions.CreepyCastleMain, lambda l: True)
     ]),
 
     # This region just exists to facilitate the multiple exits from the upper cave
@@ -83,7 +90,8 @@ LogicRegions = {
         LocationLogic(Locations.CastleTinyCarRace, lambda l: l.istiny),
     ], [], [
         TransitionFront(Regions.MuseumBehindGlass, lambda l: True, Transitions.CastleRaceToMuseum)
-    ]),
+    ],  Transitions.CastleMuseumToCarRace
+    ),
 
     Regions.Tower: Region("Tower", Levels.CreepyCastle, False, -1, [
         LocationLogic(Locations.CastleLankyTower, lambda l: l.balloon and l.grape and l.islanky),
@@ -140,7 +148,8 @@ LogicRegions = {
         LocationLogic(Locations.CastleDonkeyMinecarts, lambda l: l.isdonkey),
     ], [], [
         TransitionFront(Regions.Crypt, lambda l: True, Transitions.CastleCartsToCrypt),
-    ]),
+    ],  Transitions.CastleCryptToCarts
+    ),
 
     Regions.Mausoleum: Region("Mausoleum", Levels.CreepyCastle, False, None, [
         LocationLogic(Locations.CastleLankyMausoleum, lambda l: l.grape and l.sprint and l.trombone and l.islanky),

@@ -78,6 +78,7 @@ class Transitions(IntEnum):
     AztecRaceToMain = auto()
     AztecMainToLlama = auto()
     AztecLlamaToMain = auto()
+    AztecMainToBBlast = auto()
 
     # Frantic Factory Exits
     FactoryRandDToRace = auto()
@@ -86,6 +87,7 @@ class Transitions(IntEnum):
     FactoryPowerToChunkyRoom = auto()
     FactoryBeyondHatchToInsideCore = auto()
     FactoryInsideCoreToBeyondHatch = auto()
+    FactoryMainToBBlast = auto()
 
     # Gloomy Galleon Exits
     GalleonLighthouseAreaToLighthouse = auto()
@@ -114,6 +116,7 @@ class Transitions(IntEnum):
     GalleonTriangleToShipyard = auto()
     GalleonTreasureToChest = auto()
     GalleonChestToTreasure = auto()
+    GalleonMainToBBlast = auto()
 
     # Fungi Forest Exits
     ForestMainToCarts = auto()
@@ -154,6 +157,7 @@ class Transitions(IntEnum):
     ForestGrinderToTinyMill = auto()
     ForestMainToBarn = auto()
     ForestBarnToMain = auto()
+    ForestMainToBBlast = auto()
 
     # Crystal Caves Exits
     CavesMainToRace = auto()
@@ -184,6 +188,7 @@ class Transitions(IntEnum):
     CavesTinyToCabin = auto()
     CavesCabinToChunky = auto()
     CavesChunkyToCabin = auto()
+    CavesMainToBBlast = auto()
 
     # Creepy Castle Exits
     CastleMainToTree = auto()
@@ -224,3 +229,4 @@ class Transitions(IntEnum):
     CastleCartsToCrypt = auto()
     CastleUpperToDungeon = auto()
     CastleDungeonToUpper = auto()
+    CastleMainToBBlast = auto()

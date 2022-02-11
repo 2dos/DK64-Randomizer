@@ -1,4 +1,5 @@
 """Contains classes used in the logic system."""
+from randomizer.Enums.Transitions import Transitions
 from randomizer.Enums.Kongs import Kongs
 from randomizer.Enums.Levels import Levels
 from randomizer.Enums.Regions import Regions
@@ -42,7 +43,7 @@ class Collectible:
 class Region:
     """Region contains shufflable locations, events, and transitions to other regions."""
 
-    def __init__(self, name, level, tagbarrel, deathwarp, locations, events, transitionFronts):
+    def __init__(self, name, level, tagbarrel, deathwarp, locations, events, transitionFronts, restart = None):
         """Initialize with given parameters."""
         self.name = name
         self.level = level
@@ -50,6 +51,7 @@ class Region:
         self.locations = locations
         self.events = events
         self.exits = transitionFronts # In the context of a region, exits are how you leave the region
+        self.restart = restart
 
         # If possible to die in this region, add an exit to where dying will take you
         # deathwarp is also set to none in regions in which a deathwarp would take you to itself

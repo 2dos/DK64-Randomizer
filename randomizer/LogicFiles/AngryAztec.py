@@ -16,12 +16,13 @@ LogicRegions = {
         LocationLogic(Locations.AztecLankyMedal, lambda l: l.ColoredBananas[Levels.AngryAztec][Kongs.lanky] >= 75),
         LocationLogic(Locations.AztecTinyMedal, lambda l: l.ColoredBananas[Levels.AngryAztec][Kongs.tiny] >= 75),
         LocationLogic(Locations.AztecChunkyMedal, lambda l: l.ColoredBananas[Levels.AngryAztec][Kongs.chunky] >= 75),
-        LocationLogic(Locations.AztecDonkeyFreeLlama, lambda l: l.donkey),
+        LocationLogic(Locations.AztecDonkeyFreeLlama, lambda l: Events.LlamaFreed in l.Events and l.donkey),
         LocationLogic(Locations.AztecChunkyVases, lambda l: l.pineapple and l.chunky),
         LocationLogic(Locations.AztecDonkeyKasplat, lambda l: l.coconut and l.strongKong and l.donkey),
         LocationLogic(Locations.AztecDiddyKasplat, lambda l: l.jetpack and l.diddy),
     ], [
         Event(Events.AztecEntered, lambda l: True),
+        Event(Events.LlamaFreed, lambda l: True), # Decision to start with llama freed
     ], [
         TransitionFront(Regions.AngryAztecLobby, lambda l: True, Transitions.AztecToIsles),
         TransitionFront(Regions.TempleStart, lambda l: (l.peanut and l.isdiddy) or (l.grape and l.islanky)
@@ -66,6 +67,13 @@ LogicRegions = {
         TransitionFront(Regions.ChunkyTemple, lambda l: Events.FedTotem in l.Events and l.pineapple and l.ischunky, Transitions.AztecMainToChunky),
         TransitionFront(Regions.AztecTinyRace, lambda l: l.charge and l.jetpack and l.diddy and l.mini and l.saxophone and l.istiny, Transitions.AztecMainToRace),
         TransitionFront(Regions.LlamaTemple, lambda l: (l.coconut and l.isdonkey) or (l.grape and l.islanky) or (l.feather and l.istiny)),
+        TransitionFront(Regions.AztecBaboonBlast, lambda l: l.blast and l.isdonkey, Transitions.AztecMainToBBlast)
+    ]),
+
+    Regions.AztecBaboonBlast: Region("Aztec Baboon Blast", Levels.AngryAztec, False, None, [], [
+        Event(Events.LlamaFreed, lambda l: l.isdonkey)
+    ], [
+        TransitionFront(Regions.AngryAztecMain, lambda l: True)
     ]),
 
     # All the 5 door temple require their respective gun to die
@@ -105,7 +113,8 @@ LogicRegions = {
         LocationLogic(Locations.AztecTinyBeetleRace, lambda l: l.istiny),
     ], [], [
         TransitionFront(Regions.AngryAztecMain, lambda l: True, Transitions.AztecRaceToMain),
-    ]),
+    ],  Transitions.AztecMainToRace
+    ),
 
     Regions.LlamaTemple: Region("Llama Temple", Levels.AngryAztec, True, -1, [
         LocationLogic(Locations.LankyKong, lambda l: l.bongos and l.donkey),
