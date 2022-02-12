@@ -1,5 +1,4 @@
 """Module used to distribute items randomly."""
-import copy
 import random
 
 import randomizer.ItemPool as ItemPool
