@@ -21,21 +21,21 @@ def GetExitLevelExit(settings, region):
     """Get the exit that using the "Exit Level" button will take you to."""
     level = region.level
     if settings.shuffle_loading_zones == "all" and region.restart is not None:
-        return ShufflableExits[region.restart].dest
+        return ShufflableExits[region.restart].shuffledId
     elif level == Levels.JungleJapes:
-        return ShufflableExits[Transitions.JapesToIsles].dest
+        return ShufflableExits[Transitions.JapesToIsles].shuffledId
     elif level == Levels.AngryAztec:
-        return ShufflableExits[Transitions.AztecToIsles].dest
+        return ShufflableExits[Transitions.AztecToIsles].shuffledId
     elif level == Levels.FranticFactory:
-        return ShufflableExits[Transitions.FactoryToIsles].dest
+        return ShufflableExits[Transitions.FactoryToIsles].shuffledId
     elif level == Levels.GloomyGalleon:
-        return ShufflableExits[Transitions.GalleonToIsles].dest
+        return ShufflableExits[Transitions.GalleonToIsles].shuffledId
     elif level == Levels.FungiForest:
-        return ShufflableExits[Transitions.ForestToIsles].dest
+        return ShufflableExits[Transitions.ForestToIsles].shuffledId
     elif level == Levels.CrystalCaves:
-        return ShufflableExits[Transitions.CavesToIsles].dest
+        return ShufflableExits[Transitions.CavesToIsles].shuffledId
     elif level == Levels.CreepyCastle:
-        return ShufflableExits[Transitions.CastleToIsles].dest
+        return ShufflableExits[Transitions.CastleToIsles].shuffledId
 
 def GetAccessibleLocations(settings, ownedItems, searchType=SearchMode.GetReachable):
     """Search to find all reachable locations given owned items."""
@@ -126,7 +126,7 @@ def GetAccessibleLocations(settings, ownedItems, searchType=SearchMode.GetReacha
                     if exit.exitShuffleId is not None and not exit.assumed:
                         shuffledExit = ShufflableExits[exit.exitShuffleId]
                         if shuffledExit.shuffled:
-                            destination = ShufflableExits[shuffledExit.dest].back.regionId
+                            destination = ShufflableExits[shuffledExit.shuffledId].back.regionId
                         elif shuffledExit.toBeShuffled and not exit.assumed:
                             continue
                     # If a region is accessible through this exit and has not yet been added, add it to the queue to be visited eventually

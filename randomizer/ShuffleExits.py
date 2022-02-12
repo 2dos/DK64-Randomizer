@@ -53,7 +53,7 @@ def AddRootExit(exit):
 def Reset():
     """Reset shufflable exit properties set during shuffling."""
     for exit in ShufflableExits.values():
-        exit.dest = exit.back
+        exit.shuffledId = None
         exit.shuffled = False
     assumedExits = []
     for exit in [x for x in Logic.Regions[root].exits if x.assumed]:
@@ -85,22 +85,22 @@ def AttemptConnect(settings, frontExit, frontId, backExit, backId):
     RemoveRootExit(backRootExit)
     # Add connection between selected exits
     frontExit.shuffled = True
-    frontExit.dest = backId
+    frontExit.shuffledId = backId
     if not settings.decoupled_loading_zones:
         backReverse = ShufflableExits[backExit.back.reverse]
         backReverse.shuffled = True
-        backReverse.dest = frontExit.back.reverse
+        backReverse.shuffledId = frontExit.back.reverse
     # Attempt to verify world
     valid = VerifyWorld(settings)
     # If world is not valid, restore root connections and undo new connections
     if not valid:
         AddRootExit(backRootExit)
         frontExit.shuffled = False
-        frontExit.dest = None
+        frontExit.shuffledId = None
         if not settings.decoupled_loading_zones:
             AddRootExit(frontReverse)
             backReverse.shuffled = False
-            backReverse.dest = None
+            backReverse.shuffledId = None
     return valid
 
 
@@ -166,7 +166,7 @@ def AssumeExits(settings, frontpool, backpool, newpool):
         backpool.append(exitId)
         # Set up assumed connection
         # 1) Break connection
-        exit.dest = None
+        exit.shuffledId = None
         exit.toBeShuffled = True
         # 2) Attach to root of world (DK Isles)
         newExit = TransitionFront(exit.back.regionId, lambda l: True, exitId, True)

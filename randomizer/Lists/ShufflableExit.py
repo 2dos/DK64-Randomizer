@@ -20,9 +20,9 @@ class ShufflableExit:
         self.entryKongs = entryKongs  # Indicates either need to be one of a certain set of kongs to gain access to this transition
         self.regionKongs = regionKongs  # Indicates need to be a certain kong or kongs on the back side of the transition. Should only apply if the destination region doesn't have a tag barrel
         self.move = move  # Indicates this transition needs a kong-specific move to access, so it's even more restrictive
-        # Here dest is the entrance to go to, rather than just the target region
+        # shuffledId is pointing to the shuffled destination exit within ShufflableExits
         # Initialized as none until it gets shuffled
-        self.dest = None
+        self.shuffledId = None
         self.shuffled = False
         self.toBeShuffled = False
 

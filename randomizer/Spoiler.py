@@ -77,7 +77,7 @@ class Spoiler:
         self.shuffled_exit_data = {}
         for key, exit in ShufflableExits.items():
             if exit.shuffled:
-                self.shuffled_exit_data[key] = ShufflableExits[exit.dest].back
+                self.shuffled_exit_data[key] = ShufflableExits[exit.shuffledId].back
 
     def UpdateLocations(self, locations):
         """Update location list for what was produced by the fill."""
