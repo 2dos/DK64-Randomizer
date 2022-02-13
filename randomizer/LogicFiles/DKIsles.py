@@ -76,7 +76,7 @@ LogicRegions = {
     ]),
 
     Regions.AngryAztecLobby: Region("Angry Aztec Lobby", Levels.DKIsles, True, None, [
-        LocationLogic(Locations.IslesTinyBigBugBash, lambda l: l.charge and l.diddy and l.twirl and l.tiny),
+        LocationLogic(Locations.IslesTinyAztecLobby, lambda l: l.charge and l.diddy and l.twirl and l.istiny, True),
     ], [], [
         TransitionFront(Regions.IslesMain, lambda l: True, Transitions.IslesAztecLobbyToMain),
         TransitionFront(Regions.AngryAztecStart, lambda l: l.GoldenBananas >= l.settings.EntryGBs[Levels.AngryAztec - 1], Transitions.IslesToAztec),
@@ -91,7 +91,7 @@ LogicRegions = {
     ]),
 
     Regions.IslesSnideRoom: Region("Isles Snide Room", Levels.DKIsles, True, None, [
-        LocationLogic(Locations.IslesDiddySnidesLobby, lambda l: l.spring and l.isdiddy),
+        LocationLogic(Locations.IslesDiddySnidesLobby, lambda l: l.spring and l.isdiddy, True),
         LocationLogic(Locations.IslesBattleArena1, lambda l: l.ischunky),
     ], [], [
         TransitionFront(Regions.CrocodileIsleBeyondLift, lambda l: True, Transitions.IslesSnideRoomToMain),
@@ -117,7 +117,7 @@ LogicRegions = {
 
     Regions.CabinIsle: Region("Cabin Isle", Levels.DKIsles, False, None, [
         LocationLogic(Locations.IslesDiddyCagedBanana, lambda l: Events.IslesDiddyBarrelSpawn in l.Events and l.jetpack and l.isdiddy),
-        LocationLogic(Locations.IslesDiddySummit, lambda l: Events.IslesDiddyBarrelSpawn in l.Events and l.jetpack and l.peanut and l.isdiddy),
+        LocationLogic(Locations.IslesDiddySummit, lambda l: Events.IslesDiddyBarrelSpawn in l.Events and l.jetpack and l.peanut and l.isdiddy, True),
     ], [], [
         TransitionFront(Regions.IslesMain, lambda l: True),
         TransitionFront(Regions.FungiForestLobby, lambda l: True, Transitions.IslesMainToForestLobby),
@@ -142,7 +142,7 @@ LogicRegions = {
     ]),
 
     Regions.CreepyCastleLobby: Region("Creepy Castle Lobby", Levels.DKIsles, True, None, [
-        LocationLogic(Locations.IslesLankyCastleLobby, lambda l: l.punch and l.chunky and l.balloon and l.lanky),
+        LocationLogic(Locations.IslesLankyCastleLobby, lambda l: l.punch and l.chunky and l.balloon and l.islanky, True),
         LocationLogic(Locations.IslesDiddyKasplat, lambda l: l.coconut and l.donkey and l.diddy),
     ], [], [
         TransitionFront(Regions.IslesMain, lambda l: True, Transitions.IslesCastleLobbyToMain),
@@ -150,7 +150,7 @@ LogicRegions = {
     ]),
 
     Regions.HideoutHelmLobby: Region("Hideout Helm Lobby", Levels.DKIsles, True, None, [
-        LocationLogic(Locations.IslesChunkyHelmLobby, lambda l: l.gorillaGone and l.chunky),
+        LocationLogic(Locations.IslesChunkyHelmLobby, lambda l: l.gorillaGone and l.ischunky, True),
         LocationLogic(Locations.IslesDonkeyKasplat, lambda l: l.coconut and l.donkey),
     ], [], [
         TransitionFront(Regions.IslesMain, lambda l: True),

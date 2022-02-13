@@ -8,10 +8,11 @@ from randomizer.Enums.Regions import Regions
 class LocationLogic:
     """Logic for a location."""
 
-    def __init__(self, id, logic):
+    def __init__(self, id, logic, bonusBarrel=False):
         """Initialize with given parameters."""
         self.id = id
         self.logic = logic  # Lambda function for accessibility
+        self.bonusBarrel = bonusBarrel
 
 
 class Event:

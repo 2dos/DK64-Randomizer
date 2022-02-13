@@ -123,8 +123,8 @@ LogicRegions = {
     # Water level needs to be raised and you spring up as diddy to get killed by the kasplat
     # Or, any kong having teleporter access works too
     Regions.TreasureRoom: Region("Treasure Room", Levels.GloomyGalleon, True, TransitionFront(Regions.GloomyGalleonStart, lambda l: Events.TreasureRoomTeleporterUnlocked in l.Events and l.HasAccess(Regions.Shipyard, Kongs.rainbow) or (Events.WaterSwitch in l.Events and l.spring and l.isdiddy)), [
-        LocationLogic(Locations.GalleonDiddyGoldTower, lambda l: l.spring and l.diddy),
-        LocationLogic(Locations.GalleonLankyGoldTower, lambda l: l.balloon and l.lanky),
+        LocationLogic(Locations.GalleonDiddyGoldTower, lambda l: l.spring and l.isdiddy, True),
+        LocationLogic(Locations.GalleonLankyGoldTower, lambda l: l.balloon and l.islanky, True),
         LocationLogic(Locations.GalleonDonkeyKasplat, lambda l: Events.TreasureRoomTeleporterUnlocked in l.Events and l.HasAccess(Regions.Shipyard, Kongs.donkey)),
     ], [
         Event(Events.TreasureRoomTeleporterUnlocked, lambda l: l.spring and l.diddy),
@@ -140,7 +140,7 @@ LogicRegions = {
     ]),
 
     Regions.Submarine: Region("Submarine", Levels.GloomyGalleon, False, -1, [
-        LocationLogic(Locations.GalleonTinySubmarine, lambda l: l.istiny),
+        LocationLogic(Locations.GalleonTinySubmarine, lambda l: l.istiny, True),
     ], [], [
         TransitionFront(Regions.Shipyard, lambda l: True, Transitions.GalleonSubmarineToShipyard),
     ]),
@@ -158,19 +158,19 @@ LogicRegions = {
     ]),
 
     Regions.TinyShip: Region("Tiny Ship", Levels.GloomyGalleon, False, -1, [
-        LocationLogic(Locations.GalleonTiny2DoorShip, lambda l: l.istiny),
+        LocationLogic(Locations.GalleonTiny2DoorShip, lambda l: l.istiny, True),
     ], [], [
         TransitionFront(Regions.Shipyard, lambda l: True, Transitions.GalleonTinyToShipyard),
     ]),
 
     Regions.BongosShip: Region("Bongos Ship", Levels.GloomyGalleon, False, -1, [
-        LocationLogic(Locations.GalleonDonkey5DoorShip, lambda l: l.isdonkey),
+        LocationLogic(Locations.GalleonDonkey5DoorShip, lambda l: l.isdonkey, True),
     ], [], [
         TransitionFront(Regions.Shipyard, lambda l: True, Transitions.GalleonBongosToShipyard),
     ]),
 
     Regions.GuitarShip: Region("Guitar Ship", Levels.GloomyGalleon, False, -1, [
-        LocationLogic(Locations.GalleonDiddy5DoorShip, lambda l: l.isdiddy),
+        LocationLogic(Locations.GalleonDiddy5DoorShip, lambda l: l.isdiddy, True),
     ], [], [
         TransitionFront(Regions.Shipyard, lambda l: True, Transitions.GalleonGuitarToShipyard),
     ]),
@@ -189,7 +189,7 @@ LogicRegions = {
     ]),
 
     Regions.TriangleShip: Region("Triangle Ship", Levels.GloomyGalleon, False, -1, [
-        LocationLogic(Locations.GalleonChunky5DoorShip, lambda l: l.ischunky),
+        LocationLogic(Locations.GalleonChunky5DoorShip, lambda l: l.ischunky, True),
     ], [], [
         TransitionFront(Regions.Shipyard, lambda l: True, Transitions.GalleonTriangleToShipyard),
     ]),

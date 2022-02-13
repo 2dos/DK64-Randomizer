@@ -11,6 +11,7 @@ class Minigames(IntEnum):
     PerilPathPanic = auto()
     SearchlightSeek = auto()
     MadMazeMaul = auto()
+    MadMazeMaulShockwave = auto()
     MinecartMayhem = auto()
     SpeedySwingSortie = auto()
     SpeedySwingSortieTwirl = auto()
