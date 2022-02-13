@@ -37,7 +37,7 @@ LogicRegions = {
         TransitionFront(Regions.Mine, lambda l: l.peanut and l.isdiddy, Transitions.JapesMainToMine),
         TransitionFront(Regions.JapesLankyCave, lambda l: l.peanut and l.diddy and l.handstand and l.islanky, Transitions.JapesMainToLankyCave),
         TransitionFront(Regions.JapesCatacomb, lambda l: l.Slam and l.chunkyAccess, Transitions.JapesMainToCatacomb),
-        TransitionFront(Regions.Funky, lambda l: True),
+        TransitionFront(Regions.FunkyJapes, lambda l: True),
         TransitionFront(Regions.Snide, lambda l: True),
         TransitionFront(Regions.JapesBossLobby, lambda l: True),
         TransitionFront(Regions.JapesBaboonBlast, lambda l: l.blast and l.isdonkey, Transitions.JapesMainToBBlast)
@@ -93,7 +93,7 @@ LogicRegions = {
     ], [
         TransitionFront(Regions.JungleJapesMain, lambda l: True),
         TransitionFront(Regions.BeyondRambiGate, lambda l: Events.Rambi in l.Events),
-        TransitionFront(Regions.Cranky, lambda l: True),
+        TransitionFront(Regions.CrankyJapes, lambda l: True),
     ]),
 
     Regions.BeyondRambiGate: Region("Beyond Rambi Gate", Levels.JungleJapes, False, -1, [

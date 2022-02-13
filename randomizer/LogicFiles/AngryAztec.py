@@ -29,7 +29,7 @@ LogicRegions = {
                         or (l.feather and l.istiny) or (l.pineapple and l.ischunky)),
         # Door to main area opened in rando if loading zones randomized
         TransitionFront(Regions.AngryAztecMain, lambda l: l.settings.shuffle_loading_zones == "all" or (l.jetpack and l.guitar and l.diddy)),
-        TransitionFront(Regions.Candy, lambda l: True),
+        TransitionFront(Regions.CandyAztec, lambda l: True),
         TransitionFront(Regions.AztecBossLobby, lambda l: True),
     ]),
 
@@ -67,7 +67,10 @@ LogicRegions = {
         TransitionFront(Regions.ChunkyTemple, lambda l: Events.FedTotem in l.Events and l.pineapple and l.ischunky, Transitions.AztecMainToChunky),
         TransitionFront(Regions.AztecTinyRace, lambda l: l.charge and l.jetpack and l.diddy and l.mini and l.saxophone and l.istiny, Transitions.AztecMainToRace),
         TransitionFront(Regions.LlamaTemple, lambda l: (l.coconut and l.isdonkey) or (l.grape and l.islanky) or (l.feather and l.istiny)),
-        TransitionFront(Regions.AztecBaboonBlast, lambda l: l.blast and l.isdonkey, Transitions.AztecMainToBBlast)
+        TransitionFront(Regions.AztecBaboonBlast, lambda l: l.blast and l.isdonkey, Transitions.AztecMainToBBlast),
+        TransitionFront(Regions.CrankyAztec, lambda l: True),
+        TransitionFront(Regions.Snide, lambda l: True),
+        TransitionFront(Regions.FunkyGeneric, lambda l: True),
     ]),
 
     Regions.AztecBaboonBlast: Region("Aztec Baboon Blast", Levels.AngryAztec, False, None, [], [

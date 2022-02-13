@@ -62,6 +62,10 @@ class Settings:
         # shuffle_items: bool
         self.shuffle_items = False
 
+        # shuffle_moves: bool
+        # This will presumably be superceded by shuffle_items some day
+        self.shuffle_moves = False
+
         # progressive_upgrades: bool
         self.progressive_upgrades = True
 
@@ -69,7 +73,7 @@ class Settings:
         # none
         # levels
         # all
-        self.shuffle_loading_zones = "None"
+        self.shuffle_loading_zones = "none"
 
         # decoupled_loading_zones: bool
         self.decoupled_loading_zones = False

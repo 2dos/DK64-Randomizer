@@ -21,7 +21,7 @@ LogicRegions = {
     ], [], [
         TransitionFront(Regions.IslesMain, lambda l: True),
         TransitionFront(Regions.Treehouse, lambda l: True),
-        TransitionFront(Regions.Cranky, lambda l: True),
+        TransitionFront(Regions.CrankyGeneric, lambda l: True),
     ]),
 
     Regions.IslesMain: Region("Isles Main", Levels.DKIsles, True, None, [

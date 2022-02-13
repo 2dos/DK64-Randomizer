@@ -36,7 +36,7 @@ LogicRegions = {
         TransitionFront(Regions.Museum, lambda l: l.superDuperSlam and l.ischunky, Transitions.CastleMainToMuseum),
         TransitionFront(Regions.LowerCave, lambda l: True, Transitions.CastleMainToLower),
         TransitionFront(Regions.UpperCave, lambda l: True, Transitions.CastleMainToUpper),
-        TransitionFront(Regions.Cranky, lambda l: True),
+        TransitionFront(Regions.CrankyCastle, lambda l: True),
         TransitionFront(Regions.Snide, lambda l: True),
         TransitionFront(Regions.CastleBossLobby, lambda l: True),
         TransitionFront(Regions.CastleBaboonBlast, lambda l: l.blast and l.isdonkey, Transitions.CastleMainToBBlast)
@@ -132,7 +132,7 @@ LogicRegions = {
         TransitionFront(Regions.CreepyCastleMain, lambda l: True, Transitions.CastleLowerToMain),
         TransitionFront(Regions.Crypt, lambda l: (l.coconut and l.isdonkey) or (l.peanut and l.isdiddy) or (l.pineapple and l.ischunky), Transitions.CastleLowerToCrypt),
         TransitionFront(Regions.Mausoleum, lambda l: (l.grape and l.islanky) or (l.feather and l.istiny), Transitions.CastleLowerToMausoleum),
-        TransitionFront(Regions.Funky, lambda l: True),
+        TransitionFront(Regions.FunkyCastle, lambda l: True),
         TransitionFront(Regions.CastleBossLobby, lambda l: True),
     ]),
 
@@ -165,7 +165,7 @@ LogicRegions = {
         TransitionFront(Regions.CreepyCastleMain, lambda l: True, Transitions.CastleUpperToMain),
         TransitionFront(Regions.CastleWaterfall, lambda l: True, Transitions.CastleUpperToWaterfall),
         TransitionFront(Regions.Dungeon, lambda l: True, Transitions.CastleUpperToDungeon),
-        TransitionFront(Regions.Candy, lambda l: True),
+        TransitionFront(Regions.CandyCastle, lambda l: True),
         TransitionFront(Regions.CastleBossLobby, lambda l: True),
     ]),
 
