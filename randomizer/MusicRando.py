@@ -33,9 +33,7 @@ def randomize_music(settings: Settings):
         # If the user was a poor sap and selected chaos put DK rap for everything
         elif settings.music_bgm == "chaos":
             # Find the DK rap in the list
-            rap = js.pointer_addresses[0]["entries"][
-                song_data.index(next((x for x in song_data if x.name == "DK Rap"), None))
-            ]
+            rap = js.pointer_addresses[0]["entries"][song_data.index(next((x for x in song_data if x.name == "DK Rap"), None))]
             # Find all BGM songs
             song_list = []
             for song in song_data:

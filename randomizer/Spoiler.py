@@ -3,14 +3,14 @@
 import copy
 import json
 from typing import OrderedDict
-from randomizer import Logic
 
+from randomizer import Logic
 from randomizer.Enums.Items import Items
 from randomizer.Lists.Item import ItemFromKong, ItemList
 from randomizer.Lists.Location import LocationList
+from randomizer.Lists.Minigame import MinigameAssociations, MinigameRequirements
 from randomizer.Settings import Settings
 from randomizer.ShuffleExits import ShufflableExits
-from randomizer.Lists.Minigame import MinigameRequirements, MinigameAssociations
 
 
 class Spoiler:

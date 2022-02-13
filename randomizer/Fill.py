@@ -4,14 +4,14 @@ import random
 import randomizer.ItemPool as ItemPool
 import randomizer.Lists.Exceptions as Ex
 import randomizer.Logic as Logic
-from randomizer.Enums.Transitions import Transitions
 from randomizer.Enums.Items import Items
 from randomizer.Enums.Levels import Levels
 from randomizer.Enums.Regions import Regions
 from randomizer.Enums.SearchMode import SearchMode
-from randomizer.Lists.Minigame import MinigameRequirements, MinigameAssociations
+from randomizer.Enums.Transitions import Transitions
 from randomizer.Lists.Item import ItemList
 from randomizer.Lists.Location import LocationList
+from randomizer.Lists.Minigame import MinigameAssociations, MinigameRequirements
 from randomizer.Logic import LogicVarHolder, LogicVariables
 from randomizer.LogicClasses import TransitionFront
 from randomizer.ShuffleBarrels import BarrelShuffle
@@ -84,11 +84,7 @@ def GetAccessibleLocations(settings, ownedItems, searchType=SearchMode.GetReacha
             regionPool = [startRegion]
             addedRegions = [Regions.IslesMain]
 
-            tagAccess = [
-                (key, value)
-                for (key, value) in Logic.Regions.items()
-                if value.HasAccess(kong) and key not in addedRegions
-            ]
+            tagAccess = [(key, value) for (key, value) in Logic.Regions.items() if value.HasAccess(kong) and key not in addedRegions]
             addedRegions.extend([x[0] for x in tagAccess])  # first value is the region key
             regionPool.extend([x[1] for x in tagAccess])  # second value is the region itself
 
@@ -105,11 +101,7 @@ def GetAccessibleLocations(settings, ownedItems, searchType=SearchMode.GetReacha
                         LogicVariables.Events.append(event.name)
                 # Check accessibility for each location in this region
                 for location in region.locations:
-                    if (
-                        location.logic(LogicVariables)
-                        and location.id not in newLocations
-                        and location.id not in accessible
-                    ):
+                    if location.logic(LogicVariables) and location.id not in newLocations and location.id not in accessible:
                         # If this location is a bonus barrel, must make sure its logic is met as well
                         if location.bonusBarrel and settings.bonus_barrels != "skip":
                             minigame = MinigameAssociations[location.id]
@@ -307,9 +299,7 @@ def Fill(spoiler):
                 raise Ex.ItemPlacementException(str(blueprintsUnplaced) + " unplaced blueprints.")
             # Then place the rest of items
             Reset()
-            lowPriorityUnplaced = PlaceItems(
-                spoiler.settings, ItemPool.LowPriorityItems(spoiler.settings), ItemPool.ExcessItems(spoiler.settings)
-            )
+            lowPriorityUnplaced = PlaceItems(spoiler.settings, ItemPool.LowPriorityItems(spoiler.settings), ItemPool.ExcessItems(spoiler.settings))
             if lowPriorityUnplaced > 0:
                 raise Ex.ItemPlacementException(str(lowPriorityUnplaced) + " unplaced low priority items.")
             # Finally place excess items fully randomly

@@ -22,7 +22,7 @@ jobs:
           run: pip install black pycodestyle pydocstyle
 
         - name: Run black
-          run: black . --check -l 120
+          run: black . --check -l 200
 
         - name: Run pycodestyle
           run: pycodestyle --ignore E501,W605,W503,E203 .
