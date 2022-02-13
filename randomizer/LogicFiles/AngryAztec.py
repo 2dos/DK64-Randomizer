@@ -22,11 +22,11 @@ LogicRegions = {
         LocationLogic(Locations.AztecDiddyKasplat, lambda l: l.jetpack and l.diddy),
     ], [
         Event(Events.AztecEntered, lambda l: True),
-        Event(Events.LlamaFreed, lambda l: True), # Decision to start with llama freed
+        Event(Events.LlamaFreed, lambda l: True),  # Decision to start with llama freed
     ], [
         TransitionFront(Regions.AngryAztecLobby, lambda l: True, Transitions.AztecToIsles),
         TransitionFront(Regions.TempleStart, lambda l: (l.peanut and l.isdiddy) or (l.grape and l.islanky)
-             or (l.feather and l.istiny) or (l.pineapple and l.ischunky)),
+                        or (l.feather and l.istiny) or (l.pineapple and l.ischunky)),
         # Door to main area opened in rando if loading zones randomized
         TransitionFront(Regions.AngryAztecMain, lambda l: l.settings.shuffle_loading_zones == "all" or (l.jetpack and l.guitar and l.diddy)),
         TransitionFront(Regions.Candy, lambda l: True),
@@ -113,7 +113,7 @@ LogicRegions = {
         LocationLogic(Locations.AztecTinyBeetleRace, lambda l: l.istiny),
     ], [], [
         TransitionFront(Regions.AngryAztecMain, lambda l: True, Transitions.AztecRaceToMain),
-    ],  Transitions.AztecMainToRace
+    ], Transitions.AztecMainToRace
     ),
 
     Regions.LlamaTemple: Region("Llama Temple", Levels.AngryAztec, True, -1, [

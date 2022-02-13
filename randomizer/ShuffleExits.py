@@ -61,6 +61,7 @@ def Reset():
     for exit in assumedExits:
         RemoveRootExit(exit)
 
+
 def AttemptConnect(settings, frontExit, frontId, backExit, backId):
     """Attempt to connect two exits, checking if the world is valid if they are connected."""
     # Remove connections to world root
@@ -125,7 +126,13 @@ def ShuffleExitsInPool(settings, frontpool, backpool):
             # In coupled, if both front & back are leaves, the result will be invalid
             origins = [x for x in origins if ShufflableExits[ShufflableExits[x].back.reverse].category is not None]
             # Also validate the entry & region kongs overlap in reverse direction
-            origins = [x for x in origins if ShufflableExits[backExit.back.reverse].entryKongs.issuperset(ShufflableExits[ShufflableExits[x].back.reverse].regionKongs)]
+            origins = [
+                x
+                for x in origins
+                if ShufflableExits[backExit.back.reverse].entryKongs.issuperset(
+                    ShufflableExits[ShufflableExits[x].back.reverse].regionKongs
+                )
+            ]
         # Select a random origin
         for frontId in origins:
             frontExit = ShufflableExits[frontId]
@@ -139,7 +146,13 @@ def ShuffleExitsInPool(settings, frontpool, backpool):
                     backpool.remove(frontExit.back.reverse)
                 break
         if not frontExit.shuffled:
-            print("Failed to connect to " + backExit.name + " from any of the remaining " + str(len(origins)) + " origins!")
+            print(
+                "Failed to connect to "
+                + backExit.name
+                + " from any of the remaining "
+                + str(len(origins))
+                + " origins!"
+            )
             raise Ex.EntranceOutOfDestinations
 
 
@@ -149,7 +162,7 @@ def AssumeExits(settings, frontpool, backpool, newpool):
         exitId = newpool[i]
         exit = ShufflableExits[exitId]
         # When coupled, only transitions which have a reverse path can be included in the pools
-        if settings.decoupled_loading_zones == False and exit.back.reverse is None:
+        if not settings.decoupled_loading_zones and exit.back.reverse is None:
             continue
         # "front" is the entrance you go into, "back" is the exit you come out of
         frontpool.append(exitId)

@@ -38,6 +38,7 @@ def GetExitLevelExit(settings, region):
     elif level == Levels.CreepyCastle:
         return ShufflableExits[Transitions.CastleToIsles].dest
 
+
 def GetAccessibleLocations(settings, ownedItems, searchType=SearchMode.GetReachable):
     """Search to find all reachable locations given owned items."""
     accessible = []
@@ -159,6 +160,7 @@ def GetAccessibleLocations(settings, ownedItems, searchType=SearchMode.GetReacha
     elif searchType == SearchMode.GetUnreachable:
         return [x for x in LocationList if x not in accessible]
 
+
 def VerifyWorld(settings):
     """Make sure all item locations are reachable on current world graph with constant items placed and all other items owned."""
     ItemPool.PlaceConstants(settings)
@@ -209,6 +211,7 @@ def ParePlaythrough(settings, PlaythroughLocations):
     for locationId in locationsToAddBack:
         LocationList[locationId].PlaceDelayedItem()
 
+
 def RandomFill(itemsToPlace):
     """Randomly place given items in any location disregarding logic."""
     random.shuffle(itemsToPlace)
@@ -226,6 +229,7 @@ def RandomFill(itemsToPlace):
         locationId = empty.pop()
         LocationList[locationId].PlaceItem(item)
     return 0
+
 
 def ForwardFill(settings, itemsToPlace, ownedItems=[]):
     """Forward fill algorithm for item placement."""

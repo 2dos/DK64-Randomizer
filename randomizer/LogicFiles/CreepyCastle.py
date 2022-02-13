@@ -27,7 +27,7 @@ LogicRegions = {
         TransitionFront(Regions.CastleTree, lambda l: Events.CastleTreeOpened in l.Events, Transitions.CastleMainToTree),
         TransitionFront(Regions.Library, lambda l: l.superDuperSlam and l.isdonkey, Transitions.CastleMainToLibraryStart),
         # Special Case for back door - it's only open right when you leave
-        # TransitionFront(Regions.Library, lambda l: True, Transitions.CastleMainToLibraryEnd), 
+        # TransitionFront(Regions.Library, lambda l: True, Transitions.CastleMainToLibraryEnd),
         TransitionFront(Regions.Ballroom, lambda l: l.superDuperSlam and l.diddy, Transitions.CastleMainToBallroom),  # Stays open
         TransitionFront(Regions.Tower, lambda l: l.superDuperSlam and l.islanky, Transitions.CastleMainToTower),
         TransitionFront(Regions.Greenhouse, lambda l: l.superDuperSlam and l.islanky, Transitions.CastleMainToGreenhouse),
@@ -90,7 +90,7 @@ LogicRegions = {
         LocationLogic(Locations.CastleTinyCarRace, lambda l: l.istiny),
     ], [], [
         TransitionFront(Regions.MuseumBehindGlass, lambda l: True, Transitions.CastleRaceToMuseum)
-    ],  Transitions.CastleMuseumToCarRace
+    ], Transitions.CastleMuseumToCarRace
     ),
 
     Regions.Tower: Region("Tower", Levels.CreepyCastle, False, -1, [
@@ -148,7 +148,7 @@ LogicRegions = {
         LocationLogic(Locations.CastleDonkeyMinecarts, lambda l: l.isdonkey),
     ], [], [
         TransitionFront(Regions.Crypt, lambda l: True, Transitions.CastleCartsToCrypt),
-    ],  Transitions.CastleCryptToCarts
+    ], Transitions.CastleCryptToCarts
     ),
 
     Regions.Mausoleum: Region("Mausoleum", Levels.CreepyCastle, False, None, [

@@ -6,17 +6,20 @@ import randomizer.Lists.Exceptions as Ex
 from randomizer.Enums.Minigames import Minigames
 from randomizer.Lists.Minigame import MinigameAssociations
 
+
 def Reset(barrelLocations):
     """Reset bonus barrel associations."""
     for key in barrelLocations:
         MinigameAssociations[key] = Minigames.NoGame
 
+
 def ShuffleBarrels(settings, barrelLocations, minigamePool):
+    """Shuffle minigames to different barrels."""
     random.shuffle(barrelLocations)
     random.shuffle(minigamePool)
     while len(barrelLocations) > 0:
         location = barrelLocations.pop()
-        # Check each remaining minigame to see if placing it will produce a valid world 
+        # Check each remaining minigame to see if placing it will produce a valid world
         for minigame in minigamePool:
             MinigameAssociations[location] = minigame
             # If world is still valid, keep minigame associated there
@@ -25,6 +28,7 @@ def ShuffleBarrels(settings, barrelLocations, minigamePool):
                 break
             else:
                 MinigameAssociations[location] = Minigames.NoGame
+
 
 def BarrelShuffle(settings):
     """Facilitate shuffling of barrels."""

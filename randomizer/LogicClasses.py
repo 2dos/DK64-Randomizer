@@ -28,6 +28,7 @@ class Event:
         self.name = name
         self.logic = logic  # Lambda function for accessibility
 
+
 class Collectible:
     """Class used for colored bananas and banana coins."""
 
@@ -44,14 +45,14 @@ class Collectible:
 class Region:
     """Region contains shufflable locations, events, and transitions to other regions."""
 
-    def __init__(self, name, level, tagbarrel, deathwarp, locations, events, transitionFronts, restart = None):
+    def __init__(self, name, level, tagbarrel, deathwarp, locations, events, transitionFronts, restart=None):
         """Initialize with given parameters."""
         self.name = name
         self.level = level
         self.tagbarrel = tagbarrel
         self.locations = locations
         self.events = events
-        self.exits = transitionFronts # In the context of a region, exits are how you leave the region
+        self.exits = transitionFronts  # In the context of a region, exits are how you leave the region
         self.restart = restart
 
         # If possible to die in this region, add an exit to where dying will take you
@@ -146,21 +147,23 @@ class Region:
         elif self.level == Levels.HideoutHelm:
             return Regions.HideoutHelmStart
 
+
 class TransitionBack:
     """The exited side of a transition between regions."""
 
     def __init__(self, regionId, exitName, reverse=None):
         """Initialize with given parameters."""
-        self.regionId = regionId # Destination region
+        self.regionId = regionId  # Destination region
         self.name = exitName
-        self.reverse = reverse # Indicates a reverse direction transition, if one exists
+        self.reverse = reverse  # Indicates a reverse direction transition, if one exists
+
 
 class TransitionFront:
     """The entered side of a transition between regions."""
 
     def __init__(self, dest, logic, exitShuffleId=None, assumed=False):
         """Initialize with given parameters."""
-        self.dest = dest # Planning to remove this
+        self.dest = dest  # Planning to remove this
         self.logic = logic  # Lambda function for accessibility
-        self.exitShuffleId = exitShuffleId # Planning to remove this
+        self.exitShuffleId = exitShuffleId  # Planning to remove this
         self.assumed = assumed  # Indicates this is an assumed exit attached to the root

@@ -33,7 +33,7 @@ LogicRegions = {
         LocationLogic(Locations.ForestChunkyMinecarts, lambda l: l.ischunky),
     ], [], [
         TransitionFront(Regions.FungiForestStart, lambda l: True),
-    ],  Transitions.ForestMainToCarts
+    ], Transitions.ForestMainToCarts
     ),
 
     Regions.GiantMushroomArea: Region("Giant Mushroom Area", Levels.FungiForest, True, None, [

@@ -126,7 +126,7 @@ LogicRegions = {
         LocationLogic(Locations.JapesDiddyMinecarts, lambda l: l.isdiddy),
     ], [], [
         TransitionFront(Regions.JungleJapesMain, lambda l: True),
-    ],  Transitions.JapesMineToCarts
+    ], Transitions.JapesMineToCarts
     ),
 
     # Catacomb deaths lead back to itself
