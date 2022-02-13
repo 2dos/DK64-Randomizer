@@ -28,11 +28,11 @@ first upgrade will be 74 - 7 - 5 = 62.
 
 LogicRegions = {
     Regions.FunkyGeneric: Region("Funky Generic", Levels.Shops, False, None, [], [], [
-        TransitionFront(Regions.FunkyJapes, lambda l: not l.settings.shuffle_moves),
-        TransitionFront(Regions.FunkyFactory, lambda l: not l.settings.shuffle_moves),
-        TransitionFront(Regions.FunkyForest, lambda l: not l.settings.shuffle_moves),
-        TransitionFront(Regions.FunkyCaves, lambda l: not l.settings.shuffle_moves),
-        TransitionFront(Regions.FunkyCastle, lambda l: not l.settings.shuffle_moves),
+        TransitionFront(Regions.FunkyJapes, lambda l: l.settings.shuffle_items == "none"),
+        TransitionFront(Regions.FunkyFactory, lambda l: l.settings.shuffle_items == "none"),
+        TransitionFront(Regions.FunkyForest, lambda l: l.settings.shuffle_items == "none"),
+        TransitionFront(Regions.FunkyCaves, lambda l: l.settings.shuffle_items == "none"),
+        TransitionFront(Regions.FunkyCastle, lambda l: l.settings.shuffle_items == "none"),
     ]),
 
     Regions.FunkyJapes: Region("Funky Japes", Levels.Shops, False, None, [
@@ -42,25 +42,25 @@ LogicRegions = {
         LocationLogic(Locations.FeatherGun, lambda l: l.LevelEntered(Levels.JungleJapes) and l.istiny and l.Coins[Kongs.tiny] >= 54),
         LocationLogic(Locations.PineappleGun, lambda l: l.LevelEntered(Levels.JungleJapes) and l.ischunky and l.Coins[Kongs.chunky] >= 54),
     ], [], [
-        TransitionFront(Regions.FunkyGeneric, lambda l: not l.settings.shuffle_moves),
+        TransitionFront(Regions.FunkyGeneric, lambda l: l.settings.shuffle_items == "none"),
     ]),
 
     Regions.FunkyFactory: Region("Funky Factory", Levels.Shops, False, None, [
         LocationLogic(Locations.AmmoBelt1, lambda l: l.LevelEntered(Levels.FranticFactory) and any(x >= 57 for x in l.Coins)),
     ], [], [
-        TransitionFront(Regions.FunkyGeneric, lambda l: not l.settings.shuffle_moves),
+        TransitionFront(Regions.FunkyGeneric, lambda l: l.settings.shuffle_items == "none"),
     ]),
 
     Regions.FunkyForest: Region("Funky Forest", Levels.Shops, False, None, [
         LocationLogic(Locations.HomingAmmo, lambda l: l.LevelEntered(Levels.FungiForest) and any(x >= 62 for x in l.Coins)),
     ], [], [
-        TransitionFront(Regions.FunkyGeneric, lambda l: not l.settings.shuffle_moves),
+        TransitionFront(Regions.FunkyGeneric, lambda l: l.settings.shuffle_items == "none"),
     ]),
 
     Regions.FunkyCaves: Region("Funky Caves", Levels.Shops, False, None, [
         LocationLogic(Locations.AmmoBelt2, lambda l: l.LevelEntered(Levels.CrystalCaves) and any(x >= 67 for x in l.Coins)),
     ], [], [
-        TransitionFront(Regions.FunkyGeneric, lambda l: not l.settings.shuffle_moves),
+        TransitionFront(Regions.FunkyGeneric, lambda l: l.settings.shuffle_items == "none"),
     ]),
 
     Regions.FunkyCastle: Region("Funky Castle", Levels.Shops, False, None, [
@@ -68,14 +68,14 @@ LogicRegions = {
         LocationLogic(Locations.SniperSight, lambda l: l.LevelEntered(Levels.CreepyCastle)
                       and (any(x >= 74 for x in l.Coins) or (l.settings.unlock_all_moves and any(x >= 7 for x in l.Coins)))),
     ], [], [
-        TransitionFront(Regions.FunkyGeneric, lambda l: not l.settings.shuffle_moves),
+        TransitionFront(Regions.FunkyGeneric, lambda l: l.settings.shuffle_items == "none"),
     ]),
 
     Regions.CandyGeneric: Region("Candy Generic", Levels.Shops, False, None, [], [], [
-        TransitionFront(Regions.CandyAztec, lambda l: not l.settings.shuffle_moves),
-        TransitionFront(Regions.CandyGalleon, lambda l: not l.settings.shuffle_moves),
-        TransitionFront(Regions.CandyCaves, lambda l: not l.settings.shuffle_moves),
-        TransitionFront(Regions.CandyCastle, lambda l: not l.settings.shuffle_moves),
+        TransitionFront(Regions.CandyAztec, lambda l: l.settings.shuffle_items == "none"),
+        TransitionFront(Regions.CandyGalleon, lambda l: l.settings.shuffle_items == "none"),
+        TransitionFront(Regions.CandyCaves, lambda l: l.settings.shuffle_items == "none"),
+        TransitionFront(Regions.CandyCastle, lambda l: l.settings.shuffle_items == "none"),
     ]),
 
     Regions.CandyAztec: Region("Candy Aztec", Levels.Shops, False, None, [
@@ -85,37 +85,37 @@ LogicRegions = {
         LocationLogic(Locations.Saxophone, lambda l: l.LevelEntered(Levels.AngryAztec) and l.istiny and l.Coins[Kongs.tiny] >= 53),
         LocationLogic(Locations.Triangle, lambda l: l.LevelEntered(Levels.AngryAztec) and l.ischunky and l.Coins[Kongs.chunky] >= 53),
     ], [], [
-        TransitionFront(Regions.CandyGeneric, lambda l: not l.settings.shuffle_moves),
+        TransitionFront(Regions.CandyGeneric, lambda l: l.settings.shuffle_items == "none"),
     ]),
 
     Regions.CandyGalleon: Region("Candy Galleon", Levels.Shops, False, None, [
         LocationLogic(Locations.MusicUpgrade1, lambda l: l.LevelEntered(Levels.GloomyGalleon) and any(x >= 58 for x in l.Coins)),
     ], [], [
-        TransitionFront(Regions.CandyGeneric, lambda l: not l.settings.shuffle_moves),
+        TransitionFront(Regions.CandyGeneric, lambda l: l.settings.shuffle_items == "none"),
     ]),
 
     Regions.CandyCaves: Region("Candy Caves", Levels.Shops, False, None, [
         LocationLogic(Locations.ThirdMelon, lambda l: l.LevelEntered(Levels.CrystalCaves) and any(x >= 65 for x in l.Coins)),
     ], [], [
-        TransitionFront(Regions.CandyGeneric, lambda l: not l.settings.shuffle_moves),
+        TransitionFront(Regions.CandyGeneric, lambda l: l.settings.shuffle_items == "none"),
     ]),
 
     Regions.CandyCastle: Region("Candy Castle", Levels.Shops, False, None, [
         LocationLogic(Locations.MusicUpgrade2, lambda l: l.LevelEntered(Levels.CreepyCastle) and any(x >= 57 for x in l.Coins)),
     ], [], [
-        TransitionFront(Regions.CandyGeneric, lambda l: not l.settings.shuffle_moves),
+        TransitionFront(Regions.CandyGeneric, lambda l: l.settings.shuffle_items == "none"),
     ]),
 
     Regions.CrankyGeneric: Region("Cranky Generic", Levels.Shops, False, None, [
         LocationLogic(Locations.SimianSlam, lambda l: True),
         LocationLogic(Locations.RarewareCoin, lambda l: l.BananaMedals >= 15),
     ], [], [
-        TransitionFront(Regions.CrankyJapes, lambda l: not l.settings.shuffle_moves),
-        TransitionFront(Regions.CrankyAztec, lambda l: not l.settings.shuffle_moves),
-        TransitionFront(Regions.CrankyFactory, lambda l: not l.settings.shuffle_moves),
-        TransitionFront(Regions.CrankyForest, lambda l: not l.settings.shuffle_moves),
-        TransitionFront(Regions.CrankyCaves, lambda l: not l.settings.shuffle_moves),
-        TransitionFront(Regions.CrankyCastle, lambda l: not l.settings.shuffle_moves),
+        TransitionFront(Regions.CrankyJapes, lambda l: l.settings.shuffle_items == "none"),
+        TransitionFront(Regions.CrankyAztec, lambda l: l.settings.shuffle_items == "none"),
+        TransitionFront(Regions.CrankyFactory, lambda l: l.settings.shuffle_items == "none"),
+        TransitionFront(Regions.CrankyForest, lambda l: l.settings.shuffle_items == "none"),
+        TransitionFront(Regions.CrankyCaves, lambda l: l.settings.shuffle_items == "none"),
+        TransitionFront(Regions.CrankyCastle, lambda l: l.settings.shuffle_items == "none"),
     ]),
 
     Regions.CrankyJapes: Region("Cranky Japes", Levels.Shops, False, None, [

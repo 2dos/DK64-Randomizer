@@ -37,6 +37,7 @@ class Location:
     def PlaceDefaultItem(self):
         """Place whatever this location's default (vanilla) item is at it."""
         self.item = self.default
+        self.constant = True
 
 
 LocationList = {

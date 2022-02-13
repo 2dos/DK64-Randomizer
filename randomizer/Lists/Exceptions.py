@@ -25,13 +25,13 @@ class BarrelPlacementException(Exception):
     pass
 
 
-class BarrelOutOfMinigames(EntrancePlacementException):
+class BarrelOutOfMinigames(BarrelPlacementException):
     """Exception triggered when a barrel attempted to be shuffled has no valid minigames."""
 
     pass
 
 
-class BarrelAttemptCountExceeded(EntrancePlacementException):
+class BarrelAttemptCountExceeded(BarrelPlacementException):
     """Exception triggered when too many attempts were made to place minigames."""
 
     pass

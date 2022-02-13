@@ -59,12 +59,11 @@ class Settings:
         # starting_kong: Kongs enum
         self.starting_kong = Kongs.donkey
 
-        # shuffle_items: bool
-        self.shuffle_items = False
-
-        # shuffle_moves: bool
-        # This will presumably be superceded by shuffle_items some day
-        self.shuffle_moves = False
+        # shuffle_items: str
+        # none
+        # moves
+        # all (currently only theoretical)
+        self.shuffle_items = "none"
 
         # progressive_upgrades: bool
         self.progressive_upgrades = True

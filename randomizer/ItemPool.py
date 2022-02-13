@@ -85,9 +85,21 @@ def PlaceConstants(settings):
         LocationList[Locations.MusicUpgrade2].PlaceConstantItem(Items.NoItem)
     if settings.unlock_fairy_shockwave:
         LocationList[Locations.CameraAndShockwave].PlaceConstantItem(Items.NoItem)
-    if not settings.shuffle_items:
-        for location in LocationList:
-            LocationList[location].PlaceDefaultItem()
+    if settings.shuffle_items != "all":
+        if settings.shuffle_items == "moves":
+            moveLocations = []
+            moveLocations.extend(DonkeyMoveLocations)
+            moveLocations.extend(DiddyMoveLocations)
+            moveLocations.extend(LankyMoveLocations)
+            moveLocations.extend(TinyMoveLocations)
+            moveLocations.extend(ChunkyMoveLocations)
+            moveLocations.extend(SharedMoveLocations)
+            locations = [x for x in LocationList if x not in moveLocations]
+            for location in locations:
+                LocationList[location].PlaceDefaultItem()
+        else:
+            for location in LocationList:
+                LocationList[location].PlaceDefaultItem()
 
 
 def AllItems(settings):
@@ -98,6 +110,12 @@ def AllItems(settings):
         allItems.extend(HighPriorityItems(settings))
         allItems.extend(LowPriorityItems(settings))
         allItems.extend(ExcessItems(settings))
+    elif settings.shuffle_moves:
+        allItems.extend(DonkeyMoves)
+        allItems.extend(DiddyMoves)
+        allItems.extend(LankyMoves)
+        allItems.extend(TinyMoves)
+        allItems.extend(ChunkyMoves)
     return allItems
 
 
@@ -319,3 +337,102 @@ def ExcessItems(settings):
         itemPool.append(Items.RarewareCoin)
 
     return itemPool
+
+DonkeyMoveLocations = [
+    Locations.BaboonBlast,
+    Locations.StrongKong,
+    Locations.GorillaGrab,
+    Locations.CoconutGun,
+    Locations.Bongos,
+]
+DiddyMoveLocations = [
+    Locations.ChimpyCharge,
+    Locations.RocketbarrelBoost,
+    Locations.SimianSpring,
+    Locations.PeanutGun,
+    Locations.Guitar,
+]
+LankyMoveLocations = [
+    Locations.Orangstand,
+    Locations.BaboonBalloon,
+    Locations.OrangstandSprint,
+    Locations.GrapeGun,
+    Locations.Trombone,
+]
+TinyMoveLocations = [
+    Locations.MiniMonkey,
+    Locations.PonyTailTwirl,
+    Locations.Monkeyport,
+    Locations.FeatherGun,
+    Locations.Saxophone,
+]
+ChunkyMoveLocations = [
+    Locations.HunkyChunky,
+    Locations.PrimatePunch,
+    Locations.GorillaGone,
+    Locations.PineappleGun,
+    Locations.Triangle,
+]
+SharedMoveLocations = [
+    Locations.SuperSimianSlam,
+    Locations.SuperDuperSimianSlam,
+    Locations.SniperSight,
+    Locations.HomingAmmo,
+    Locations.AmmoBelt1,
+    Locations.AmmoBelt2,
+    Locations.MusicUpgrade1,
+    Locations.ThirdMelon,
+    Locations.MusicUpgrade2,
+]
+DonkeyMoves = [
+    Items.Coconut,
+    Items.Bongos,
+    Items.BaboonBlast,
+    Items.StrongKong,
+    Items.GorillaGrab,
+]
+DiddyMoves = [
+    Items.Peanut,
+    Items.Guitar,
+    Items.ChimpyCharge,
+    Items.RocketbarrelBoost,
+    Items.SimianSpring,
+    
+]
+LankyMoves = [
+    Items.Grape,
+    Items.Trombone,
+    Items.Orangstand,
+    Items.BaboonBalloon,
+    Items.OrangstandSprint,
+    
+]
+TinyMoves = [
+    Items.Feather,
+    Items.Saxophone,
+    Items.MiniMonkey,
+    Items.PonyTailTwirl,
+    Items.Monkeyport,
+    
+]
+ChunkyMoves = [
+    Items.Pineapple,
+    Items.Triangle,
+    Items.HunkyChunky,
+    Items.PrimatePunch,
+    Items.GorillaGone,
+    
+]
+ImportantSharedMoves = [
+    Items.ProgressiveSlam,
+    Items.ProgressiveSlam,
+    Items.SniperSight,
+    Items.HomingAmmo,
+]
+JunkSharedMoves = [
+    Items.ProgressiveAmmoBelt,
+    Items.ProgressiveAmmoBelt,
+    Items.ProgressiveInstrumentUpgrade,
+    Items.ProgressiveInstrumentUpgrade,
+    Items.ProgressiveInstrumentUpgrade,
+]
