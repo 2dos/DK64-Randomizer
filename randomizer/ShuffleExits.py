@@ -61,16 +61,6 @@ def Reset():
     for exit in assumedExits:
         RemoveRootExit(exit)
 
-
-def VerifyWorld(settings):
-    """Make sure all item locations are reachable on current world graph with constant items placed and all other items owned."""
-    PlaceConstants(settings)
-    unreachables = Fill.GetAccessibleLocations(settings, AllItems(settings), SearchMode.GetUnreachable)
-    isValid = len(unreachables) == 0
-    Fill.Reset()
-    return isValid
-
-
 def AttemptConnect(settings, frontExit, frontId, backExit, backId):
     """Attempt to connect two exits, checking if the world is valid if they are connected."""
     # Remove connections to world root
@@ -91,7 +81,7 @@ def AttemptConnect(settings, frontExit, frontId, backExit, backId):
         backReverse.shuffled = True
         backReverse.dest = frontExit.back.reverse
     # Attempt to verify world
-    valid = VerifyWorld(settings)
+    valid = Fill.VerifyWorld(settings)
     # If world is not valid, restore root connections and undo new connections
     if not valid:
         AddRootExit(backRootExit)
@@ -195,7 +185,7 @@ def ExitShuffle(settings):
             # Shuffle entrances based on settings
             ShuffleExits(settings)
             # Verify world by assuring all locations are still reachable
-            if not VerifyWorld(settings):
+            if not Fill.VerifyWorld(settings):
                 raise Ex.EntrancePlacementException
             return
         except Ex.EntrancePlacementException:

@@ -5,6 +5,7 @@ from enum import IntEnum, auto
 class Minigames(IntEnum):
     """Minigames enum."""
 
+    NoGame = auto()
     BattyBarrelBandit = auto()
     BigBugBash = auto()
     KremlingKosh = auto()
@@ -23,8 +24,8 @@ class Minigames(IntEnum):
     BeaverBother = auto()
     KrazyKongKlamour = auto()
     StashSnatch = auto()
-    DKRambi = auto()
-    DKTarget = auto()
+    DonkeyRambi = auto()
+    DonkeyTarget = auto()
     DiddyKremling = auto()
     DiddyRocketbarrel = auto()
     LankyMaze = auto()

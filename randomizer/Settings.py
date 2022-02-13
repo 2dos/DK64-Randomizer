@@ -53,8 +53,8 @@ class Settings:
         # bonus_barrels: str
         # skip
         # normal
-        # randomized
-        self.bonus_barrels = "normal"
+        # random
+        self.bonus_barrels = "random"
 
         # starting_kong: Kongs enum
         self.starting_kong = Kongs.donkey
