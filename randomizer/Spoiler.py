@@ -59,7 +59,7 @@ class Spoiler:
             # Item location data
             locations = OrderedDict()
             for location, item in self.location_data.items():
-                if item != Items.NoItem:
+                if not LocationList[location].constant:
                     locations[LocationList[location].name] = ItemList[item].name
             humanspoiler["Locations"] = locations
 

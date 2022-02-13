@@ -75,6 +75,17 @@ class Items(IntEnum):
     CreepyCastleKey = auto()
     HideoutHelmKey = auto()
 
+    HelmDonkey1 = auto()
+    HelmDonkey2 = auto()
+    HelmDiddy1 = auto()
+    HelmDiddy2 = auto()
+    HelmLanky1 = auto()
+    HelmLanky2 = auto()
+    HelmTiny1 = auto()
+    HelmTiny2 = auto()
+    HelmChunky1 = auto()
+    HelmChunky2 = auto()
+
     GoldenBanana = auto()
     BananaFairy = auto()
     BananaMedal = auto()

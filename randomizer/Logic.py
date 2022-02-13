@@ -105,6 +105,17 @@ class LogicVarHolder:
         self.CastleKey = False
         self.HelmKey = False
 
+        self.HelmDonkey1 = False
+        self.HelmDonkey2 = False
+        self.HelmDiddy1 = False
+        self.HelmDiddy2 = False
+        self.HelmLanky1 = False
+        self.HelmLanky2 = False
+        self.HelmTiny1 = False
+        self.HelmTiny2 = False
+        self.HelmChunky1 = False
+        self.HelmChunky2 = False
+
         self.Slam = 3 if self.settings.unlock_all_moves else 1  # Right now assuming start with slam
         self.GoldenBananas = 0
         self.BananaFairies = 0
@@ -198,6 +209,17 @@ class LogicVarHolder:
         self.CavesKey = self.CavesKey or Items.CrystalCavesKey in ownedItems
         self.CastleKey = self.CastleKey or Items.CreepyCastleKey in ownedItems
         self.HelmKey = self.HelmKey or Items.HideoutHelmKey in ownedItems
+
+        self.HelmDonkey1 = self.HelmDonkey1 or Items.HelmDonkey1 in ownedItems
+        self.HelmDonkey2 = self.HelmDonkey2 or Items.HelmDonkey2 in ownedItems
+        self.HelmDiddy1 = self.HelmDiddy1 or Items.HelmDiddy1 in ownedItems
+        self.HelmDiddy2 = self.HelmDiddy2 or Items.HelmDiddy2 in ownedItems
+        self.HelmLanky1 = self.HelmLanky1 or Items.HelmLanky1 in ownedItems
+        self.HelmLanky2 = self.HelmLanky2 or Items.HelmLanky2 in ownedItems
+        self.HelmTiny1 = self.HelmTiny1 or Items.HelmTiny1 in ownedItems
+        self.HelmTiny2 = self.HelmTiny2 or Items.HelmTiny2 in ownedItems
+        self.HelmChunky1 = self.HelmChunky1 or Items.HelmChunky1 in ownedItems
+        self.HelmChunky2 = self.HelmChunky2 or Items.HelmChunky2 in ownedItems
 
         self.Slam = 3 if self.settings.unlock_all_moves else sum(1 for x in ownedItems if x == Items.ProgressiveSlam)
         self.GoldenBananas = sum(1 for x in ownedItems if x == Items.GoldenBanana)

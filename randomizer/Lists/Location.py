@@ -14,10 +14,16 @@ class Location:
         self.default = default
         self.item = None
         self.delayedItem = None
+        self.constant = False
 
     def PlaceItem(self, item):
         """Place item at this location."""
         self.item = item
+
+    def PlaceConstantItem(self, item):
+        """Place item at this location, and set constant so it's ignored in the spoiler."""
+        self.item = item
+        self.constant = True
 
     def SetDelayedItem(self, item):
         """Set an item to be added back later."""
@@ -324,6 +330,16 @@ LocationList = {
     Locations.CastleLankyDungeon: Location("Castle Lanky Dungeon", Items.GoldenBanana),
     Locations.CastleKey: Location("Castle Key", Items.CreepyCastleKey),
     # Hideout Helm locations
+    Locations.HelmDonkey1: Location("", Items.HelmDonkey1),
+    Locations.HelmDonkey2: Location("", Items.HelmDonkey2),
+    Locations.HelmDiddy1: Location("", Items.HelmDiddy1),
+    Locations.HelmDiddy2: Location("", Items.HelmDiddy2),
+    Locations.HelmLanky1: Location("", Items.HelmLanky1),
+    Locations.HelmLanky2: Location("", Items.HelmLanky2),
+    Locations.HelmTiny1: Location("", Items.HelmTiny1),
+    Locations.HelmTiny2: Location("", Items.HelmTiny2),
+    Locations.HelmChunky1: Location("", Items.HelmChunky1),
+    Locations.HelmChunky2: Location("", Items.HelmChunky2),
     Locations.HelmBattleArena: Location("Helm Battle Arena", Items.BattleCrown),
     Locations.HelmDonkeyMedal: Location("Helm Donkey Medal", Items.BananaMedal),
     Locations.HelmChunkyMedal: Location("Helm Chunky Medal", Items.BananaMedal),
