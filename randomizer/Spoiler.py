@@ -10,6 +10,7 @@ from randomizer.Lists.Item import ItemFromKong, ItemList
 from randomizer.Lists.Location import LocationList
 from randomizer.Settings import Settings
 from randomizer.ShuffleExits import ShufflableExits
+from randomizer.Lists.Minigame import MinigameRequirements, MinigameAssociations
 
 
 class Spoiler:
@@ -19,6 +20,7 @@ class Spoiler:
         """Initialize spoiler just with settings."""
         self.settings: Settings = settings
         self.playthrough = {}
+        self.shuffled_barrel_data = {}
         self.shuffled_exit_data = {}
         self.location_data = {}
 
@@ -59,7 +61,7 @@ class Spoiler:
             # Item location data
             locations = OrderedDict()
             for location, item in self.location_data.items():
-                if item != Items.NoItem:
+                if not LocationList[location].constant:
                     locations[LocationList[location].name] = ItemList[item].name
             humanspoiler["Locations"] = locations
 
@@ -70,7 +72,19 @@ class Spoiler:
                 shuffled_exits[ShufflableExits[exit].name] = Logic.Regions[dest.regionId].name + " " + dest.name
             humanspoiler["Shuffled Exits"] = shuffled_exits
 
+        if self.settings.bonus_barrels == "random":
+            shuffled_barrels = OrderedDict()
+            for location, minigame in self.shuffled_barrel_data.items():
+                shuffled_barrels[LocationList[location].name] = MinigameRequirements[minigame].name
+            humanspoiler["Shuffled Bonus Barrels"] = shuffled_barrels
+
         return json.dumps(humanspoiler, indent=4)
+
+    def UpdateBarrels(self):
+        """Update list of shuffled barrel minigames."""
+        self.shuffled_barrel_data = {}
+        for location, minigame in MinigameAssociations.items():
+            self.shuffled_barrel_data[location] = minigame
 
     def UpdateExits(self):
         """Update list of shuffled exits."""

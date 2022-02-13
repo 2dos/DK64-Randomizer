@@ -1,5 +1,4 @@
 """Module used to distribute items randomly."""
-import copy
 import random
 
 import randomizer.ItemPool as ItemPool
@@ -10,10 +9,12 @@ from randomizer.Enums.Items import Items
 from randomizer.Enums.Levels import Levels
 from randomizer.Enums.Regions import Regions
 from randomizer.Enums.SearchMode import SearchMode
+from randomizer.Lists.Minigame import MinigameRequirements, MinigameAssociations
 from randomizer.Lists.Item import ItemList
 from randomizer.Lists.Location import LocationList
 from randomizer.Logic import LogicVarHolder, LogicVariables
 from randomizer.LogicClasses import TransitionFront
+from randomizer.ShuffleBarrels import BarrelShuffle
 from randomizer.ShuffleExits import ExitShuffle, ShufflableExits
 
 
@@ -36,6 +37,7 @@ def GetExitLevelExit(settings, region):
         return ShufflableExits[Transitions.CavesToIsles].dest
     elif level == Levels.CreepyCastle:
         return ShufflableExits[Transitions.CastleToIsles].dest
+
 
 def GetAccessibleLocations(settings, ownedItems, searchType=SearchMode.GetReachable):
     """Search to find all reachable locations given owned items."""
@@ -108,6 +110,11 @@ def GetAccessibleLocations(settings, ownedItems, searchType=SearchMode.GetReacha
                         and location.id not in newLocations
                         and location.id not in accessible
                     ):
+                        # If this location is a bonus barrel, must make sure its logic is met as well
+                        if location.bonusBarrel and settings.bonus_barrels != "skip":
+                            minigame = MinigameAssociations[location.id]
+                            if not MinigameRequirements[minigame].logic(LogicVariables):
+                                continue
                         newLocations.append(location.id)
                 # Check accessibility for each exit in this region
                 exits = region.exits.copy()
@@ -154,23 +161,13 @@ def GetAccessibleLocations(settings, ownedItems, searchType=SearchMode.GetReacha
         return [x for x in LocationList if x not in accessible]
 
 
-def RandomFill(itemsToPlace):
-    """Randomly place given items in any location disregarding logic."""
-    random.shuffle(itemsToPlace)
-    # Get all remaining empty locations
-    empty = []
-    for (id, location) in LocationList.items():
-        if location.item is None:
-            empty.append(id)
-    random.shuffle(empty)
-    # Place item in random locations
-    while len(itemsToPlace) > 0:
-        if len(empty) == 0:
-            return len(itemsToPlace)
-        item = itemsToPlace.pop()
-        locationId = empty.pop()
-        LocationList[locationId].PlaceItem(item)
-    return 0
+def VerifyWorld(settings):
+    """Make sure all item locations are reachable on current world graph with constant items placed and all other items owned."""
+    ItemPool.PlaceConstants(settings)
+    unreachables = GetAccessibleLocations(settings, ItemPool.AllItems(settings), SearchMode.GetUnreachable)
+    isValid = len(unreachables) == 0
+    Reset()
+    return isValid
 
 
 def Reset():
@@ -213,6 +210,25 @@ def ParePlaythrough(settings, PlaythroughLocations):
     # Re-place those items which were delayed earlier.
     for locationId in locationsToAddBack:
         LocationList[locationId].PlaceDelayedItem()
+
+
+def RandomFill(itemsToPlace):
+    """Randomly place given items in any location disregarding logic."""
+    random.shuffle(itemsToPlace)
+    # Get all remaining empty locations
+    empty = []
+    for (id, location) in LocationList.items():
+        if location.item is None:
+            empty.append(id)
+    random.shuffle(empty)
+    # Place item in random locations
+    while len(itemsToPlace) > 0:
+        if len(empty) == 0:
+            return len(itemsToPlace)
+        item = itemsToPlace.pop()
+        locationId = empty.pop()
+        LocationList[locationId].PlaceItem(item)
+    return 0
 
 
 def ForwardFill(settings, itemsToPlace, ownedItems=[]):
@@ -328,6 +344,10 @@ def Generate_Spoiler(spoiler):
     # Init logic vars with settings
     global LogicVariables
     LogicVariables = LogicVarHolder(spoiler.settings)
+    # Handle bonus barrels
+    if spoiler.settings.bonus_barrels == "random":
+        BarrelShuffle(spoiler.settings)
+        spoiler.UpdateBarrels()
     # Handle ER
     if spoiler.settings.shuffle_loading_zones != "none":
         ExitShuffle(spoiler.settings)

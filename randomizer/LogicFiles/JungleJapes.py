@@ -51,8 +51,8 @@ LogicRegions = {
 
     Regions.JapesBeyondPeanutGate: Region("Japes Beyond Peanut Gate", Levels.JungleJapes, False, None, [
         LocationLogic(Locations.JapesDiddyTunnel, lambda l: l.isdiddy),
-        LocationLogic(Locations.JapesLankyMadMazeMaul, lambda l: l.grape and l.islanky),
-        LocationLogic(Locations.JapesTinySplishSplashSalvage, lambda l: l.feather and l.istiny),
+        LocationLogic(Locations.JapesLankyGrapeGate, lambda l: l.grape and l.islanky, True),
+        LocationLogic(Locations.JapesTinyFeatherGateBarrel, lambda l: l.feather and l.istiny, True),
     ], [], [
         TransitionFront(Regions.JungleJapesMain, lambda l: True),
         TransitionFront(Regions.JapesBossLobby, lambda l: True),
@@ -68,7 +68,7 @@ LogicRegions = {
 
     Regions.JapesBeyondFeatherGate: Region("Japes Beyond Feather Gate", Levels.JungleJapes, True, -1, [
         LocationLogic(Locations.JapesTinyStump, lambda l: l.mini and l.tiny),
-        LocationLogic(Locations.JapesChunkyMinecartMayhem, lambda l: l.hunkyChunky and l.chunky),
+        LocationLogic(Locations.JapesChunkyGiantBonusBarrel, lambda l: l.hunkyChunky and l.ischunky, True),
     ], [], [
         TransitionFront(Regions.JapesBeyondCoconutGate1, lambda l: True),
         TransitionFront(Regions.TinyHive, lambda l: l.mini and l.istiny, Transitions.JapesMainToTinyHive),
@@ -81,7 +81,7 @@ LogicRegions = {
     ]),
 
     Regions.JapesBeyondCoconutGate2: Region("Japes Beyond Coconut Gate 2", Levels.JungleJapes, True, None, [
-        LocationLogic(Locations.JapesLankySpeedySwingSortie, lambda l: l.handstand and l.lanky),
+        LocationLogic(Locations.JapesLankySlope, lambda l: l.handstand and l.islanky, True),
         LocationLogic(Locations.JapesDiddyKasplat, lambda l: l.diddy),
         LocationLogic(Locations.JapesLankyKasplat, lambda l: l.lanky),
     ], [
@@ -126,7 +126,7 @@ LogicRegions = {
         LocationLogic(Locations.JapesDiddyMinecarts, lambda l: l.isdiddy),
     ], [], [
         TransitionFront(Regions.JungleJapesMain, lambda l: True),
-    ],  Transitions.JapesMineToCarts
+    ], Transitions.JapesMineToCarts
     ),
 
     # Catacomb deaths lead back to itself

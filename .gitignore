@@ -139,6 +139,7 @@ cython_debug/
 
 # VSCode
 .vscode/settings.json
+.vscode/launch.json
 !.vscode/tasks.json
 
 # Jekyll
