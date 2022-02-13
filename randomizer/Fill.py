@@ -14,7 +14,7 @@ from randomizer.Lists.Item import ItemList
 from randomizer.Lists.Location import LocationList
 from randomizer.Logic import LogicVarHolder, LogicVariables
 from randomizer.LogicClasses import TransitionFront
-from randomizer.BonusBarrels import BarrelShuffle
+from randomizer.ShuffleBarrels import BarrelShuffle
 from randomizer.ShuffleExits import ExitShuffle, ShufflableExits
 
 
