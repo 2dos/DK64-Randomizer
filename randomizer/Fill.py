@@ -9,6 +9,7 @@ from randomizer.Enums.Items import Items
 from randomizer.Enums.Levels import Levels
 from randomizer.Enums.Regions import Regions
 from randomizer.Enums.SearchMode import SearchMode
+from randomizer.Lists.Minigame import minigameRequirements, minigameAssociations
 from randomizer.Lists.Item import ItemList
 from randomizer.Lists.Location import LocationList
 from randomizer.Logic import LogicVarHolder, LogicVariables
@@ -107,6 +108,11 @@ def GetAccessibleLocations(settings, ownedItems, searchType=SearchMode.GetReacha
                         and location.id not in newLocations
                         and location.id not in accessible
                     ):
+                        # If this location is a bonus barrel, must make sure its logic is met as well
+                        if location.bonusBarrel and settings.bonus_barrels != "skip":
+                            minigame = minigameAssociations[location.id]
+                            if not minigameRequirements[minigame](LogicVariables):
+                                continue
                         newLocations.append(location.id)
                 # Check accessibility for each exit in this region
                 exits = region.exits.copy()

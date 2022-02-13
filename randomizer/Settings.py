@@ -50,6 +50,12 @@ class Settings:
         # startwith
         self.training_barrels = "startwith"
 
+        # bonus_barrels: str
+        # skip
+        # normal
+        # randomized
+        self.bonus_barrels = "normal"
+
         # starting_kong: Kongs enum
         self.starting_kong = Kongs.donkey
 
