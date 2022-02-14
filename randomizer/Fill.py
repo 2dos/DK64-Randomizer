@@ -4,14 +4,14 @@ import random
 import randomizer.ItemPool as ItemPool
 import randomizer.Lists.Exceptions as Ex
 import randomizer.Logic as Logic
-from randomizer.Enums.Transitions import Transitions
 from randomizer.Enums.Items import Items
 from randomizer.Enums.Levels import Levels
 from randomizer.Enums.Regions import Regions
 from randomizer.Enums.SearchMode import SearchMode
-from randomizer.Lists.Minigame import MinigameRequirements, MinigameAssociations
+from randomizer.Enums.Transitions import Transitions
 from randomizer.Lists.Item import ItemList
 from randomizer.Lists.Location import LocationList
+from randomizer.Lists.Minigame import MinigameAssociations, MinigameRequirements
 from randomizer.Logic import LogicVarHolder, LogicVariables
 from randomizer.LogicClasses import TransitionFront
 from randomizer.ShuffleBarrels import BarrelShuffle

@@ -1,13 +1,13 @@
 """File that shuffles loading zone exits."""
-from ast import And
 import random
+from ast import And
 
 import randomizer.Fill as Fill
 import randomizer.Lists.Exceptions as Ex
 import randomizer.Logic as Logic
-from randomizer.Enums.Transitions import Transitions
 from randomizer.Enums.Regions import Regions
 from randomizer.Enums.SearchMode import SearchMode
+from randomizer.Enums.Transitions import Transitions
 from randomizer.ItemPool import AllItems, PlaceConstants
 from randomizer.Lists.ShufflableExit import ShufflableExits
 from randomizer.LogicClasses import TransitionBack, TransitionFront

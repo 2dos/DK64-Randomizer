@@ -1,8 +1,8 @@
 """Contains classes used in the logic system."""
-from randomizer.Enums.Transitions import Transitions
 from randomizer.Enums.Kongs import Kongs
 from randomizer.Enums.Levels import Levels
 from randomizer.Enums.Regions import Regions
+from randomizer.Enums.Transitions import Transitions
 
 
 class LocationLogic:
