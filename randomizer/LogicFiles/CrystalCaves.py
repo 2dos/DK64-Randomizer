@@ -35,8 +35,8 @@ LogicRegions = {
         TransitionFront(Regions.FrozenCastle, lambda l: l.superSlam and l.islanky, Transitions.CavesMainToCastle),
         TransitionFront(Regions.IglooArea, lambda l: True),
         TransitionFront(Regions.CabinArea, lambda l: True),
-        TransitionFront(Regions.Funky, lambda l: True),
-        TransitionFront(Regions.Cranky, lambda l: True),
+        TransitionFront(Regions.FunkyCaves, lambda l: True),
+        TransitionFront(Regions.CrankyCaves, lambda l: True),
         TransitionFront(Regions.Snide, lambda l: l.punch),
         TransitionFront(Regions.CavesBossLobby, lambda l: l.punch),
         TransitionFront(Regions.CavesBaboonBlast, lambda l: l.blast and l.isdonkey, Transitions.CavesMainToBBlast)
@@ -126,7 +126,7 @@ LogicRegions = {
         TransitionFront(Regions.LankyCabin, lambda l: l.trombone and l.balloon and l.islanky, Transitions.CavesCabinToLanky),
         TransitionFront(Regions.TinyCabin, lambda l: l.saxophone and l.istiny, Transitions.CavesCabinToTiny),
         TransitionFront(Regions.ChunkyCabin, lambda l: l.triangle and l.ischunky, Transitions.CavesCabinToChunky),
-        TransitionFront(Regions.Candy, lambda l: True),
+        TransitionFront(Regions.CandyCaves, lambda l: True),
         TransitionFront(Regions.CavesBossLobby, lambda l: l.jetpack or l.balloon),
     ]),
 
@@ -139,7 +139,7 @@ LogicRegions = {
 
     # Lanky's and Diddy's cabins take you to the beginning of the level, others respawn there
     Regions.DonkeyCabin: Region("Donkey Cabin", Levels.CrystalCaves, False, None, [
-        LocationLogic(Locations.CavesDonkey5DoorCabin, lambda l: l.isdonkey),
+        LocationLogic(Locations.CavesDonkey5DoorCabin, lambda l: (l.homing or l.settings.hard_shooting) and l.coconut and l.isdonkey),
     ], [], [
         TransitionFront(Regions.CabinArea, lambda l: True, Transitions.CavesDonkeyToCabin),
     ]),

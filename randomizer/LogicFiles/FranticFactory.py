@@ -40,7 +40,7 @@ LogicRegions = {
         TransitionFront(Regions.FranticFactoryStart, lambda l: True),
         TransitionFront(Regions.RandD, lambda l: True),
         TransitionFront(Regions.Snide, lambda l: True),
-        TransitionFront(Regions.Funky, lambda l: Events.DartsPlayed in l.Events),
+        TransitionFront(Regions.FunkyFactory, lambda l: Events.DartsPlayed in l.Events),
         TransitionFront(Regions.FactoryBossLobby, lambda l: True),
     ]),
 
@@ -106,8 +106,8 @@ LogicRegions = {
         TransitionFront(Regions.FranticFactoryStart, lambda l: True),
         TransitionFront(Regions.InsideCore, lambda l: Events.MainCoreActivated in l.Events, Transitions.FactoryBeyondHatchToInsideCore),
         TransitionFront(Regions.MainCore, lambda l: Events.MainCoreActivated in l.Events),
-        TransitionFront(Regions.Cranky, lambda l: True),
-        TransitionFront(Regions.Candy, lambda l: True),
+        TransitionFront(Regions.CrankyFactory, lambda l: True),
+        TransitionFront(Regions.CandyGeneric, lambda l: True),
         TransitionFront(Regions.FactoryBossLobby, lambda l: True),
         TransitionFront(Regions.FactoryBaboonBlast, lambda l: l.blast and l.isdonkey, Transitions.FactoryMainToBBlast)
     ]),

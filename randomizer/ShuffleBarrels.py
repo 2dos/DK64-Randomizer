@@ -45,10 +45,10 @@ def BarrelShuffle(settings):
             if not Fill.VerifyWorld(settings):
                 raise Ex.BarrelPlacementException
             return
-        except Ex.EntrancePlacementException:
+        except Ex.BarrelPlacementException:
             if retries == 5:
-                print("Entrance placement failed, out of retries.")
+                print("Minigame placement failed, out of retries.")
                 raise Ex.BarrelAttemptCountExceeded
             else:
                 retries += 1
-                print("Entrance placement failed. Retrying. Tries: " + str(retries))
+                print("Minigame placement failed. Retrying. Tries: " + str(retries))

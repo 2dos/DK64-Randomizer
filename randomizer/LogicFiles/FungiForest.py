@@ -47,7 +47,7 @@ LogicRegions = {
         TransitionFront(Regions.MushroomLowerExterior, lambda l: l.jetpack),
         TransitionFront(Regions.MushroomUpperExterior, lambda l: l.jetpack),
         TransitionFront(Regions.HollowTreeArea, lambda l: Events.HollowTreeGateOpened in l.Events),
-        TransitionFront(Regions.Cranky, lambda l: True),
+        TransitionFront(Regions.CrankyForest, lambda l: True),
     ]),
 
     Regions.MushroomLower: Region("Mushroom Lower", Levels.FungiForest, True, None, [
@@ -209,7 +209,7 @@ LogicRegions = {
     ]),
 
     Regions.MillAttic: Region("Mill Attic", Levels.FungiForest, False, TransitionFront(Regions.FungiForestStart, lambda l: l.superSlam and l.islanky), [
-        LocationLogic(Locations.ForestLankyAttic, lambda l: l.grape and l.superSlam and l.islanky),
+        LocationLogic(Locations.ForestLankyAttic, lambda l: l.superSlam and (l.homing or l.settings.hard_shooting) and l.grape and l.islanky),
     ], [], [
         TransitionFront(Regions.MillArea, lambda l: True, Transitions.ForestAtticToMain),
     ]),
@@ -235,7 +235,7 @@ LogicRegions = {
         LocationLogic(Locations.ForestChunkyApple, lambda l: l.hunkyChunky and l.chunky),
     ], [], [
         TransitionFront(Regions.FungiForestStart, lambda l: True),
-        TransitionFront(Regions.Funky, lambda l: True),
+        TransitionFront(Regions.FunkyForest, lambda l: True),
         TransitionFront(Regions.ForestBossLobby, lambda l: Events.Night in l.Events),
     ]),
 

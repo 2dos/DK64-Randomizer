@@ -65,7 +65,7 @@ class Spoiler:
                     locations[LocationList[location].name] = ItemList[item].name
             humanspoiler["Locations"] = locations
 
-        if self.settings.shuffle_levels or self.settings.shuffle_loading_zones:
+        if self.settings.shuffle_loading_zones != "none":
             # Shuffled exit data
             shuffled_exits = OrderedDict()
             for exit, dest in self.shuffled_exit_data.items():

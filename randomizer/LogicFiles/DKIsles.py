@@ -22,7 +22,7 @@ LogicRegions = {
     ], [], [
         TransitionFront(Regions.IslesMain, lambda l: True),
         TransitionFront(Regions.Treehouse, lambda l: True),
-        TransitionFront(Regions.Cranky, lambda l: True),
+        TransitionFront(Regions.CrankyGeneric, lambda l: True),
     ]),
 
     Regions.IslesMain: Region("Isles Main", Levels.DKIsles, True, None, [
@@ -152,7 +152,7 @@ LogicRegions = {
 
     Regions.HideoutHelmLobby: Region("Hideout Helm Lobby", Levels.DKIsles, True, None, [
         LocationLogic(Locations.IslesChunkyHelmLobby, lambda l: l.gorillaGone and l.ischunky, True),
-        LocationLogic(Locations.IslesDonkeyKasplat, lambda l: l.coconut and l.donkey),
+        LocationLogic(Locations.IslesDonkeyKasplat, lambda l: l.scope and l.coconut and l.donkey),
     ], [], [
         TransitionFront(Regions.IslesMain, lambda l: True),
         TransitionFront(Regions.HideoutHelmStart, lambda l: l.gorillaGone and l.chunky and l.GoldenBananas >= l.settings.EntryGBs[Levels.HideoutHelm - 1]),

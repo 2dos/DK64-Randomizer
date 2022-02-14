@@ -204,13 +204,13 @@ def ParePlaythrough(settings, PlaythroughLocations):
         LocationList[locationId].PlaceDelayedItem()
 
 
-def RandomFill(itemsToPlace):
+def RandomFill(itemsToPlace, validLocations):
     """Randomly place given items in any location disregarding logic."""
     random.shuffle(itemsToPlace)
     # Get all remaining empty locations
     empty = []
     for (id, location) in LocationList.items():
-        if location.item is None:
+        if location.item is None and id in validLocations:
             empty.append(id)
     random.shuffle(empty)
     # Place item in random locations
@@ -223,7 +223,7 @@ def RandomFill(itemsToPlace):
     return 0
 
 
-def ForwardFill(settings, itemsToPlace, ownedItems=[]):
+def ForwardFill(settings, itemsToPlace, validLocations, ownedItems=[]):
     """Forward fill algorithm for item placement."""
     random.shuffle(itemsToPlace)
     ownedItems = ownedItems.copy()
@@ -231,7 +231,7 @@ def ForwardFill(settings, itemsToPlace, ownedItems=[]):
     while len(itemsToPlace) > 0:
         # Find a random empty location which is reachable with current items
         reachable = GetAccessibleLocations(settings, ownedItems.copy())
-        reachable = [x for x in reachable if LocationList[x].item is None]
+        reachable = [x for x in reachable if LocationList[x].item is None and x in validLocations]
         if len(reachable) == 0:  # If there are no empty reachable locations, reached a dead end
             return len(itemsToPlace)
         random.shuffle(reachable)
@@ -243,21 +243,21 @@ def ForwardFill(settings, itemsToPlace, ownedItems=[]):
     return 0
 
 
-def AssumedFill(settings, itemsToPlace, ownedItems=[]):
+def AssumedFill(settings, itemsToPlace, validLocations, ownedItems=[]):
     """Assumed fill algorithm for item placement."""
-    random.shuffle(itemsToPlace)
     # While there are items to place
+    random.shuffle(itemsToPlace)
     while len(itemsToPlace) > 0:
         # Get a random item, check which empty locations are still accessible without owning it
-        item = itemsToPlace.pop()
-        ownedItems = itemsToPlace.copy()
-        ownedItems.extend(ownedItems)
+        item = itemsToPlace.pop(0)
+        owned = itemsToPlace.copy()
+        owned.extend(ownedItems)
         Reset()
-        reachable = GetAccessibleLocations(settings, ownedItems.copy())
-        reachable = [x for x in reachable if LocationList[x].item is None]
+        reachable = GetAccessibleLocations(settings, owned)
+        reachable = [x for x in reachable if LocationList[x].item is None and x in validLocations]
         # If there are no empty reachable locations, reached a dead end
         if len(reachable) == 0:
-            return len(itemsToPlace)
+            return len(itemsToPlace) + 1
         # Get a random, empty, reachable location and place the item there
         random.shuffle(reachable)
         locationId = reachable.pop()
@@ -265,16 +265,21 @@ def AssumedFill(settings, itemsToPlace, ownedItems=[]):
     return 0
 
 
-def PlaceItems(settings, itemsToPlace, ownedItems=[]):
+def PlaceItems(settings, algorithm, itemsToPlace, ownedItems=[], validLocations=[]):
     """Places items using given algorithm."""
-    if settings.algorithm == "assumed":
-        return AssumedFill(settings, itemsToPlace, ownedItems)
-    elif settings.algorithm == "forward":
-        return ForwardFill(settings, itemsToPlace, ownedItems)
+    # If list of valid locations not provided, just use all valid locations
+    if len(validLocations) == 0:
+        validLocations = [x for x in LocationList]
+    if algorithm == "assumed":
+        return AssumedFill(settings, itemsToPlace, validLocations, ownedItems)
+    elif algorithm == "forward":
+        return ForwardFill(settings, itemsToPlace, validLocations, ownedItems)
+    elif algorithm == "random":
+        return RandomFill(itemsToPlace, validLocations)
 
 
 def Fill(spoiler):
-    """Place all items."""
+    """Fully randomizes and places all items. Currently theoretical."""
     retries = 0
     while True:
         try:
@@ -283,6 +288,7 @@ def Fill(spoiler):
             # Then place priority (logically very important) items
             highPriorityUnplaced = PlaceItems(
                 spoiler.settings,
+                spoiler.settings.algorithm,
                 ItemPool.HighPriorityItems(spoiler.settings),
                 ItemPool.HighPriorityAssumedItems(spoiler.settings),
             )
@@ -292,6 +298,7 @@ def Fill(spoiler):
             Reset()
             blueprintsUnplaced = PlaceItems(
                 spoiler.settings,
+                spoiler.settings.algorithm,
                 ItemPool.Blueprints(spoiler.settings),
                 ItemPool.BlueprintAssumedItems(spoiler.settings),
             )
@@ -299,11 +306,12 @@ def Fill(spoiler):
                 raise Ex.ItemPlacementException(str(blueprintsUnplaced) + " unplaced blueprints.")
             # Then place the rest of items
             Reset()
-            lowPriorityUnplaced = PlaceItems(spoiler.settings, ItemPool.LowPriorityItems(spoiler.settings), ItemPool.ExcessItems(spoiler.settings))
+            lowPriorityUnplaced = PlaceItems(spoiler.settings, spoiler.settings.algorithm, ItemPool.LowPriorityItems(spoiler.settings), ItemPool.ExcessItems(spoiler.settings))
             if lowPriorityUnplaced > 0:
                 raise Ex.ItemPlacementException(str(lowPriorityUnplaced) + " unplaced low priority items.")
             # Finally place excess items fully randomly
-            excessUnplaced = RandomFill(ItemPool.ExcessItems(spoiler.settings))
+            hi = ItemPool.ExcessItems(spoiler.settings)
+            excessUnplaced = PlaceItems(spoiler.settings, "random", ItemPool.ExcessItems(spoiler.settings))
             if excessUnplaced > 0:
                 raise Ex.ItemPlacementException(str(excessUnplaced) + " unplaced excess items.")
             # Check if game is beatable
@@ -329,6 +337,72 @@ def Fill(spoiler):
                 Logic.ClearAllLocations()
 
 
+def ShuffleMoves(spoiler):
+    """Just shuffles moves per kong to other move locations of same kong."""
+    retries = 0
+    while True:
+        try:
+            # First place constant items
+            ItemPool.PlaceConstants(spoiler.settings)
+            # Set up owned items
+            ownedItems = []
+            ownedItems.extend(ItemPool.DiddyMoves)
+            ownedItems.extend(ItemPool.LankyMoves)
+            ownedItems.extend(ItemPool.TinyMoves)
+            ownedItems.extend(ItemPool.ChunkyMoves)
+            ownedItems.extend(ItemPool.ImportantSharedMoves)
+            # For each kong, place their items in their valid locations, removing owneditems before each placement as they're placed
+            # Force assumed for move rando since it's so restrictive
+            donkeyUnplaced = PlaceItems(spoiler.settings, "assumed", ItemPool.DonkeyMoves.copy(), ownedItems, ItemPool.DonkeyMoveLocations)
+            if donkeyUnplaced > 0:
+                raise Ex.ItemPlacementException(str(donkeyUnplaced) + " unplaced donkey items.")
+            ownedItems = [x for x in ownedItems if x not in ItemPool.DiddyMoves]
+            Reset()
+            diddyUnplaced = PlaceItems(spoiler.settings, "assumed", ItemPool.DiddyMoves.copy(), ownedItems, ItemPool.DiddyMoveLocations)
+            if diddyUnplaced > 0:
+                raise Ex.ItemPlacementException(str(diddyUnplaced) + " unplaced diddy items.")
+            ownedItems = [x for x in ownedItems if x not in ItemPool.LankyMoves]
+            Reset()
+            lankyUnplaced = PlaceItems(spoiler.settings, "assumed", ItemPool.LankyMoves.copy(), ownedItems, ItemPool.LankyMoveLocations)
+            if lankyUnplaced > 0:
+                raise Ex.ItemPlacementException(str(lankyUnplaced) + " unplaced lanky items.")
+            ownedItems = [x for x in ownedItems if x not in ItemPool.TinyMoves]
+            Reset()
+            tinyUnplaced = PlaceItems(spoiler.settings, "assumed", ItemPool.TinyMoves.copy(), ownedItems, ItemPool.TinyMoveLocations)
+            if tinyUnplaced > 0:
+                raise Ex.ItemPlacementException(str(tinyUnplaced) + " unplaced tiny items.")
+            Reset()
+            ownedItems = [x for x in ownedItems if x not in ItemPool.ChunkyMoves]
+            chunkyUnplaced = PlaceItems(spoiler.settings, "assumed", ItemPool.ChunkyMoves.copy(), ownedItems, ItemPool.ChunkyMoveLocations)
+            if chunkyUnplaced > 0:
+                raise Ex.ItemPlacementException(str(chunkyUnplaced) + " unplaced chunky items.")
+            importantSharedUnplaced = PlaceItems(spoiler.settings, "assumed", ItemPool.ImportantSharedMoves.copy(), ownedItems, ItemPool.SharedMoveLocations)
+            if importantSharedUnplaced > 0:
+                raise Ex.ItemPlacementException(str(importantSharedUnplaced) + " unplaced shared important items.")
+            junkSharedUnplaced = PlaceItems(spoiler.settings, "random", ItemPool.JunkSharedMoves.copy(), [], ItemPool.SharedMoveLocations)
+            # Check if game is beatable
+            Reset()
+            if not GetAccessibleLocations(spoiler.settings, [], SearchMode.CheckBeatable):
+                raise Ex.GameNotBeatableException("Game unbeatable after placing all items.")
+            # Generate and display the playthrough
+            Reset()
+            PlaythroughLocations = GetAccessibleLocations(spoiler.settings, [], SearchMode.GeneratePlaythrough)
+            ParePlaythrough(spoiler.settings, PlaythroughLocations)
+            # Write data to spoiler and return
+            spoiler.UpdateLocations(LocationList)
+            spoiler.UpdatePlaythrough(LocationList, PlaythroughLocations)
+            return spoiler
+        except Ex.FillException as ex:
+            if retries == 99:
+                print("Fill failed, out of retries.")
+                raise ex
+            else:
+                retries += 1
+                print("Fill failed. Retrying. Tries: " + str(retries))
+                Reset()
+                Logic.ClearAllLocations()
+
+
 def Generate_Spoiler(spoiler):
     """Generate a complete spoiler based on input settings."""
     # Init logic vars with settings
@@ -343,8 +417,10 @@ def Generate_Spoiler(spoiler):
         ExitShuffle(spoiler.settings)
         spoiler.UpdateExits()
     # Place items
-    if spoiler.settings.shuffle_items:
+    if spoiler.settings.shuffle_items == "all":
         Fill(spoiler)
+    elif spoiler.settings.shuffle_items == "moves":
+        ShuffleMoves(spoiler)
     else:
         # Just check if normal item locations are beatable with given settings
         ItemPool.PlaceConstants(spoiler.settings)

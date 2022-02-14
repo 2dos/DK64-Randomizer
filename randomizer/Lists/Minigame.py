@@ -34,7 +34,10 @@ MinigameRequirements = {
     Minigames.SplishSplashSalvage: Minigame("Splish Splash Salvage", lambda l: l.swim),
     Minigames.SplishSplashSalvageVines: Minigame("Splish Splash Salvage (Vines)", lambda l: l.swim and l.vines),
     # Lanky excluded from this game because his gun is too long
-    Minigames.BusyBarrelBarrage: Minigame("Busy Barrel Barrage", lambda l: (l.isdonkey and l.coconut) or (l.isdiddy and l.peanut) or (l.istiny and l.feather) or (l.ischunky and l.pineapple)),
+    Minigames.BusyBarrelBarrage: Minigame(
+        "Busy Barrel Barrage",
+        lambda l: (l.isdonkey and l.coconut) or (l.isdiddy and l.peanut) or (l.istiny and l.feather) or (l.ischunky and l.pineapple),
+    ),
     # Helm barrels
     Minigames.DonkeyRambi: Minigame("Donkey Rambi", lambda l: True),
     Minigames.DonkeyTarget: Minigame("Donkey Targets", lambda l: l.isdonkey),
@@ -43,13 +46,16 @@ MinigameRequirements = {
     # Supposed to use sprint but can make it without), even with Chunky
     Minigames.LankyMaze: Minigame("Lanky Maze", lambda l: True),
     Minigames.LankyShooting: Minigame(
-        "Lanky Shooting", lambda l: (l.isdonkey and l.coconut) or (l.isdiddy and l.peanut) or (l.islanky and l.grape) or (l.istiny and l.feather) or (l.ischunky and l.pineapple)
+        "Lanky Shooting",
+        lambda l: (l.isdonkey and l.coconut) or (l.isdiddy and l.peanut) or (l.islanky and l.grape) or (l.istiny and l.feather) or (l.ischunky and l.pineapple),
     ),
     Minigames.TinyMushroom: Minigame("Tiny Mushrooms", lambda l: True),
     Minigames.TinyPonyTailTwirl: Minigame("Tiny PonyTail Twirl", lambda l: l.twirl and l.istiny),
     Minigames.ChunkyHiddenKremling: Minigame("Chunky Hidden Kremling", lambda l: l.hunkyChunky and l.punch and l.ischunky),
     Minigames.ChunkyShooting: Minigame(
-        "Chunky Shooting", lambda l: (l.isdonkey and l.coconut) or (l.isdiddy and l.peanut) or (l.islanky and l.grape) or (l.istiny and l.feather) or (l.ischunky and l.pineapple)
+        "Chunky Shooting",
+        lambda l: (l.scope or l.homing or l.settings.hard_shooting)
+        and ((l.isdonkey and l.coconut) or (l.isdiddy and l.peanut) or (l.islanky and l.grape) or (l.istiny and l.feather) or (l.ischunky and l.pineapple)),
     ),
 }
 

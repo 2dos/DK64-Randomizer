@@ -3,6 +3,7 @@ import json
 import random
 
 from randomizer.Enums.Kongs import Kongs
+from randomizer.Prices import VanillaPrices, RandomizePrices
 
 
 class Settings:
@@ -44,6 +45,16 @@ class Settings:
 
         # Settings which are not yet implemented on the web page
 
+        # hard_shooting: bool
+        self.hard_shooting = False
+
+        # random_prices: str
+        # vanilla
+        # low
+        # medium
+        # high
+        self.random_prices = "high"
+
         # training_barrels: str
         # normal
         # shuffled
@@ -59,8 +70,11 @@ class Settings:
         # starting_kong: Kongs enum
         self.starting_kong = Kongs.donkey
 
-        # shuffle_items: bool
-        self.shuffle_items = False
+        # shuffle_items: str
+        # none
+        # moves
+        # all (currently only theoretical)
+        self.shuffle_items = "none"
 
         # progressive_upgrades: bool
         self.progressive_upgrades = True
@@ -69,11 +83,12 @@ class Settings:
         # none
         # levels
         # all
-        self.shuffle_loading_zones = "None"
+        self.shuffle_loading_zones = "none"
 
         # decoupled_loading_zones: bool
         self.decoupled_loading_zones = False
 
+        self.prices = VanillaPrices.copy()
         self.resolve_settings()
 
     def generate_main(self):
@@ -136,6 +151,10 @@ class Settings:
 
     def resolve_settings(self):
         """Resolve settings which are not directly set through the UI."""
+        if self.random_prices != "vanilla":
+            self.prices = RandomizePrices(self.random_prices)
+
+        # Handle K. Rool Phases
         self.krool_donkey = False
         self.krool_diddy = False
         self.krool_lanky = False
