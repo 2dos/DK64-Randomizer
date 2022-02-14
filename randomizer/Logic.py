@@ -23,6 +23,7 @@ from randomizer.Enums.Items import Items
 from randomizer.Enums.Kongs import Kongs
 from randomizer.Enums.Levels import Levels
 from randomizer.Lists.Location import LocationList
+from randomizer.Prices import CanBuy
 
 
 class LogicVarHolder:
@@ -335,6 +336,10 @@ class LogicVarHolder:
         Usually the region's own HasAccess function is used, but this is necessary for checking access for other regions in logic files.
         """
         return Regions[region].HasAccess(kong)
+    
+    def CanBuy(self, location):
+        """Check if there are enough coins to purchase this location."""
+        return CanBuy(location, self.Coins, self.settings)
 
 
 LogicVariables = LogicVarHolder()

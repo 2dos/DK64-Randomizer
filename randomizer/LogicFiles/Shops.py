@@ -8,24 +8,6 @@ from randomizer.Enums.Locations import Locations
 from randomizer.Enums.Regions import Regions
 from randomizer.LogicClasses import LocationLogic, Region, TransitionFront
 
-"""
-So for coin logic, we want to make sure the player can't spend coins incorrectly and lock themselves out.
-This means every buyable item has to account for, potentially, buying every other possible item first.
-So each price will be inflated by a lot for logic purposes.
-Total prices are as follows:
-Cranky generic: 12
-Cranky specific: 15
-Candy generic: 21
-Candy specific: 3
-Funky generic: 20
-Funky specific: 3
-Total one kong can possibly spend: 74
-So basically, whatever "line" the kong is buying from, need to subtract prices
-from future entries in that line from 74.
-So since Cranky's upgrades cost 3, 5, and 7, the logical price of his
-first upgrade will be 74 - 7 - 5 = 62.
-"""
-
 LogicRegions = {
     Regions.FunkyGeneric: Region("Funky Generic", Levels.Shops, False, None, [], [], [
         TransitionFront(Regions.FunkyJapes, lambda l: l.settings.shuffle_items == "none"),
@@ -36,37 +18,36 @@ LogicRegions = {
     ]),
 
     Regions.FunkyJapes: Region("Funky Japes", Levels.Shops, False, None, [
-        LocationLogic(Locations.CoconutGun, lambda l: l.LevelEntered(Levels.JungleJapes) and l.isdonkey and l.Coins[Kongs.donkey] >= 54),
-        LocationLogic(Locations.PeanutGun, lambda l: l.LevelEntered(Levels.JungleJapes) and l.isdiddy and l.Coins[Kongs.diddy] >= 54),
-        LocationLogic(Locations.GrapeGun, lambda l: l.LevelEntered(Levels.JungleJapes) and l.islanky and l.Coins[Kongs.lanky] >= 54),
-        LocationLogic(Locations.FeatherGun, lambda l: l.LevelEntered(Levels.JungleJapes) and l.istiny and l.Coins[Kongs.tiny] >= 54),
-        LocationLogic(Locations.PineappleGun, lambda l: l.LevelEntered(Levels.JungleJapes) and l.ischunky and l.Coins[Kongs.chunky] >= 54),
+        LocationLogic(Locations.CoconutGun, lambda l: l.LevelEntered(Levels.JungleJapes) and l.isdonkey and l.CanBuy(Locations.CoconutGun)),
+        LocationLogic(Locations.PeanutGun, lambda l: l.LevelEntered(Levels.JungleJapes) and l.isdiddy and l.CanBuy(Locations.PeanutGun)),
+        LocationLogic(Locations.GrapeGun, lambda l: l.LevelEntered(Levels.JungleJapes) and l.islanky and l.CanBuy(Locations.GrapeGun)),
+        LocationLogic(Locations.FeatherGun, lambda l: l.LevelEntered(Levels.JungleJapes) and l.istiny and l.CanBuy(Locations.FeatherGun)),
+        LocationLogic(Locations.PineappleGun, lambda l: l.LevelEntered(Levels.JungleJapes) and l.ischunky and l.CanBuy(Locations.PineappleGun)),
     ], [], [
         TransitionFront(Regions.FunkyGeneric, lambda l: l.settings.shuffle_items == "none"),
     ]),
 
     Regions.FunkyFactory: Region("Funky Factory", Levels.Shops, False, None, [
-        LocationLogic(Locations.AmmoBelt1, lambda l: l.LevelEntered(Levels.FranticFactory) and any(x >= 57 for x in l.Coins)),
+        LocationLogic(Locations.AmmoBelt1, lambda l: l.LevelEntered(Levels.FranticFactory) and l.CanBuy(Locations.AmmoBelt1)),
     ], [], [
         TransitionFront(Regions.FunkyGeneric, lambda l: l.settings.shuffle_items == "none"),
     ]),
 
     Regions.FunkyForest: Region("Funky Forest", Levels.Shops, False, None, [
-        LocationLogic(Locations.HomingAmmo, lambda l: l.LevelEntered(Levels.FungiForest) and any(x >= 62 for x in l.Coins)),
+        LocationLogic(Locations.HomingAmmo, lambda l: l.LevelEntered(Levels.FungiForest) and l.CanBuy(Locations.HomingAmmo)),
     ], [], [
         TransitionFront(Regions.FunkyGeneric, lambda l: l.settings.shuffle_items == "none"),
     ]),
 
     Regions.FunkyCaves: Region("Funky Caves", Levels.Shops, False, None, [
-        LocationLogic(Locations.AmmoBelt2, lambda l: l.LevelEntered(Levels.CrystalCaves) and any(x >= 67 for x in l.Coins)),
+        LocationLogic(Locations.AmmoBelt2, lambda l: l.LevelEntered(Levels.CrystalCaves) and l.CanBuy(Locations.AmmoBelt2)),
     ], [], [
         TransitionFront(Regions.FunkyGeneric, lambda l: l.settings.shuffle_items == "none"),
     ]),
 
     Regions.FunkyCastle: Region("Funky Castle", Levels.Shops, False, None, [
         # Sniper sight is the only non-Snide shop location not zeroed out when starting with all shop moves.
-        LocationLogic(Locations.SniperSight, lambda l: l.LevelEntered(Levels.CreepyCastle)
-                      and (any(x >= 74 for x in l.Coins) or (l.settings.unlock_all_moves and any(x >= 7 for x in l.Coins)))),
+        LocationLogic(Locations.SniperSight, lambda l: l.LevelEntered(Levels.CreepyCastle) and l.CanBuy(Locations.SniperSight)),
     ], [], [
         TransitionFront(Regions.FunkyGeneric, lambda l: l.settings.shuffle_items == "none"),
     ]),
@@ -79,29 +60,29 @@ LogicRegions = {
     ]),
 
     Regions.CandyAztec: Region("Candy Aztec", Levels.Shops, False, None, [
-        LocationLogic(Locations.Bongos, lambda l: l.LevelEntered(Levels.AngryAztec) and l.isdonkey and l.Coins[Kongs.donkey] >= 53),
-        LocationLogic(Locations.Guitar, lambda l: l.LevelEntered(Levels.AngryAztec) and l.isdiddy and l.Coins[Kongs.diddy] >= 53),
-        LocationLogic(Locations.Trombone, lambda l: l.LevelEntered(Levels.AngryAztec) and l.islanky and l.Coins[Kongs.lanky] >= 53),
-        LocationLogic(Locations.Saxophone, lambda l: l.LevelEntered(Levels.AngryAztec) and l.istiny and l.Coins[Kongs.tiny] >= 53),
-        LocationLogic(Locations.Triangle, lambda l: l.LevelEntered(Levels.AngryAztec) and l.ischunky and l.Coins[Kongs.chunky] >= 53),
+        LocationLogic(Locations.Bongos, lambda l: l.LevelEntered(Levels.AngryAztec) and l.isdonkey and l.CanBuy(Locations.Bongos)),
+        LocationLogic(Locations.Guitar, lambda l: l.LevelEntered(Levels.AngryAztec) and l.isdiddy and l.CanBuy(Locations.Guitar)),
+        LocationLogic(Locations.Trombone, lambda l: l.LevelEntered(Levels.AngryAztec) and l.islanky and l.CanBuy(Locations.Trombone)),
+        LocationLogic(Locations.Saxophone, lambda l: l.LevelEntered(Levels.AngryAztec) and l.istiny and l.CanBuy(Locations.Saxophone)),
+        LocationLogic(Locations.Triangle, lambda l: l.LevelEntered(Levels.AngryAztec) and l.ischunky and l.CanBuy(Locations.Triangle)),
     ], [], [
         TransitionFront(Regions.CandyGeneric, lambda l: l.settings.shuffle_items == "none"),
     ]),
 
     Regions.CandyGalleon: Region("Candy Galleon", Levels.Shops, False, None, [
-        LocationLogic(Locations.MusicUpgrade1, lambda l: l.LevelEntered(Levels.GloomyGalleon) and any(x >= 58 for x in l.Coins)),
+        LocationLogic(Locations.MusicUpgrade1, lambda l: l.LevelEntered(Levels.GloomyGalleon) and l.CanBuy(Locations.MusicUpgrade1)),
     ], [], [
         TransitionFront(Regions.CandyGeneric, lambda l: l.settings.shuffle_items == "none"),
     ]),
 
     Regions.CandyCaves: Region("Candy Caves", Levels.Shops, False, None, [
-        LocationLogic(Locations.ThirdMelon, lambda l: l.LevelEntered(Levels.CrystalCaves) and any(x >= 65 for x in l.Coins)),
+        LocationLogic(Locations.ThirdMelon, lambda l: l.LevelEntered(Levels.CrystalCaves) and l.CanBuy(Locations.ThirdMelon)),
     ], [], [
         TransitionFront(Regions.CandyGeneric, lambda l: l.settings.shuffle_items == "none"),
     ]),
 
     Regions.CandyCastle: Region("Candy Castle", Levels.Shops, False, None, [
-        LocationLogic(Locations.MusicUpgrade2, lambda l: l.LevelEntered(Levels.CreepyCastle) and any(x >= 57 for x in l.Coins)),
+        LocationLogic(Locations.MusicUpgrade2, lambda l: l.LevelEntered(Levels.CreepyCastle) and l.CanBuy(Locations.MusicUpgrade2)),
     ], [], [
         TransitionFront(Regions.CandyGeneric, lambda l: l.settings.shuffle_items == "none"),
     ]),
@@ -119,48 +100,48 @@ LogicRegions = {
     ]),
 
     Regions.CrankyJapes: Region("Cranky Japes", Levels.Shops, False, None, [
-        LocationLogic(Locations.BaboonBlast, lambda l: l.LevelEntered(Levels.JungleJapes) and l.isdonkey and l.Coins[Kongs.donkey] >= 62),
-        LocationLogic(Locations.ChimpyCharge, lambda l: l.LevelEntered(Levels.JungleJapes) and l.isdiddy and l.Coins[Kongs.diddy] >= 62),
-        LocationLogic(Locations.Orangstand, lambda l: l.LevelEntered(Levels.JungleJapes) and l.islanky and l.Coins[Kongs.lanky] >= 62),
-        LocationLogic(Locations.MiniMonkey, lambda l: l.LevelEntered(Levels.JungleJapes) and l.istiny and l.Coins[Kongs.tiny] >= 62),
-        LocationLogic(Locations.HunkyChunky, lambda l: l.LevelEntered(Levels.JungleJapes) and l.ischunky and l.Coins[Kongs.chunky] >= 62),
+        LocationLogic(Locations.BaboonBlast, lambda l: l.LevelEntered(Levels.JungleJapes) and l.isdonkey and l.CanBuy(Locations.BaboonBlast)),
+        LocationLogic(Locations.ChimpyCharge, lambda l: l.LevelEntered(Levels.JungleJapes) and l.isdiddy and l.CanBuy(Locations.ChimpyCharge)),
+        LocationLogic(Locations.Orangstand, lambda l: l.LevelEntered(Levels.JungleJapes) and l.islanky and l.CanBuy(Locations.Orangstand)),
+        LocationLogic(Locations.MiniMonkey, lambda l: l.LevelEntered(Levels.JungleJapes) and l.istiny and l.CanBuy(Locations.MiniMonkey)),
+        LocationLogic(Locations.HunkyChunky, lambda l: l.LevelEntered(Levels.JungleJapes) and l.ischunky and l.CanBuy(Locations.HunkyChunky)),
     ], [], [
         TransitionFront(Regions.CrankyGeneric, lambda l: True),
     ]),
 
     Regions.CrankyAztec: Region("Cranky Aztec", Levels.Shops, False, None, [
-        LocationLogic(Locations.StrongKong, lambda l: l.LevelEntered(Levels.AngryAztec) and l.isdonkey and l.Coins[Kongs.donkey] >= 67),
-        LocationLogic(Locations.RocketbarrelBoost, lambda l: l.LevelEntered(Levels.AngryAztec) and l.isdiddy and l.Coins[Kongs.diddy] >= 67),
+        LocationLogic(Locations.StrongKong, lambda l: l.LevelEntered(Levels.AngryAztec) and l.isdonkey and l.CanBuy(Locations.StrongKong)),
+        LocationLogic(Locations.RocketbarrelBoost, lambda l: l.LevelEntered(Levels.AngryAztec) and l.isdiddy and l.CanBuy(Locations.RocketbarrelBoost)),
     ], [], [
         TransitionFront(Regions.CrankyGeneric, lambda l: True),
     ]),
 
     Regions.CrankyFactory: Region("Cranky Factory", Levels.Shops, False, None, [
-        LocationLogic(Locations.GorillaGrab, lambda l: l.LevelEntered(Levels.FranticFactory) and l.isdonkey and l.Coins[Kongs.donkey] >= 74),
-        LocationLogic(Locations.SimianSpring, lambda l: l.LevelEntered(Levels.FranticFactory) and l.isdiddy and l.Coins[Kongs.diddy] >= 74),
-        LocationLogic(Locations.BaboonBalloon, lambda l: l.LevelEntered(Levels.FranticFactory) and l.islanky and l.Coins[Kongs.lanky] >= 67),
-        LocationLogic(Locations.PonyTailTwirl, lambda l: l.LevelEntered(Levels.FranticFactory) and l.istiny and l.Coins[Kongs.tiny] >= 67),
-        LocationLogic(Locations.PrimatePunch, lambda l: l.LevelEntered(Levels.FranticFactory) and l.ischunky and l.Coins[Kongs.chunky] >= 67),
+        LocationLogic(Locations.GorillaGrab, lambda l: l.LevelEntered(Levels.FranticFactory) and l.isdonkey and l.CanBuy(Locations.GorillaGrab)),
+        LocationLogic(Locations.SimianSpring, lambda l: l.LevelEntered(Levels.FranticFactory) and l.isdiddy and l.CanBuy(Locations.SimianSpring)),
+        LocationLogic(Locations.BaboonBalloon, lambda l: l.LevelEntered(Levels.FranticFactory) and l.islanky and l.CanBuy(Locations.BaboonBalloon)),
+        LocationLogic(Locations.PonyTailTwirl, lambda l: l.LevelEntered(Levels.FranticFactory) and l.istiny and l.CanBuy(Locations.PonyTailTwirl)),
+        LocationLogic(Locations.PrimatePunch, lambda l: l.LevelEntered(Levels.FranticFactory) and l.ischunky and l.CanBuy(Locations.PrimatePunch)),
     ], [], [
         TransitionFront(Regions.CrankyGeneric, lambda l: True),
     ]),
 
     Regions.CrankyForest: Region("Cranky Forest", Levels.Shops, False, None, [
-        LocationLogic(Locations.SuperSimianSlam, lambda l: l.LevelEntered(Levels.FungiForest) and any(x >= 67 for x in l.Coins)),
+        LocationLogic(Locations.SuperSimianSlam, lambda l: l.LevelEntered(Levels.FungiForest) and l.CanBuy(Locations.SuperSimianSlam)),
     ], [], [
         TransitionFront(Regions.CrankyGeneric, lambda l: True),
     ]),
 
     Regions.CrankyCaves: Region("Cranky Caves", Levels.Shops, False, None, [
-        LocationLogic(Locations.OrangstandSprint, lambda l: l.LevelEntered(Levels.CrystalCaves) and l.islanky and l.Coins[Kongs.lanky] >= 74),
-        LocationLogic(Locations.Monkeyport, lambda l: l.LevelEntered(Levels.CrystalCaves) and l.istiny and l.Coins[Kongs.tiny] >= 74),
-        LocationLogic(Locations.GorillaGone, lambda l: l.LevelEntered(Levels.CrystalCaves) and l.ischunky and l.Coins[Kongs.chunky] >= 74),
+        LocationLogic(Locations.OrangstandSprint, lambda l: l.LevelEntered(Levels.CrystalCaves) and l.islanky and l.CanBuy(Locations.OrangstandSprint)),
+        LocationLogic(Locations.Monkeyport, lambda l: l.LevelEntered(Levels.CrystalCaves) and l.istiny and l.CanBuy(Locations.Monkeyport)),
+        LocationLogic(Locations.GorillaGone, lambda l: l.LevelEntered(Levels.CrystalCaves) and l.ischunky and l.CanBuy(Locations.GorillaGone)),
     ], [], [
         TransitionFront(Regions.CrankyGeneric, lambda l: True),
     ]),
 
     Regions.CrankyCastle: Region("Cranky Castle", Levels.Shops, False, None, [
-        LocationLogic(Locations.SuperDuperSimianSlam, lambda l: l.LevelEntered(Levels.CreepyCastle) and any(x >= 74 for x in l.Coins)),
+        LocationLogic(Locations.SuperDuperSimianSlam, lambda l: l.LevelEntered(Levels.CreepyCastle) and l.CanBuy(Locations.SuperDuperSimianSlam)),
     ], [], [
         TransitionFront(Regions.CrankyGeneric, lambda l: True),
     ]),

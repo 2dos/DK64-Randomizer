@@ -3,7 +3,7 @@ import json
 import random
 
 from randomizer.Enums.Kongs import Kongs
-
+from randomizer.Prices import VanillaPrices, GetMaxForKong
 
 class Settings:
     """Class used to store settings for seed generation."""
@@ -77,6 +77,7 @@ class Settings:
         # decoupled_loading_zones: bool
         self.decoupled_loading_zones = False
 
+        self.prices = VanillaPrices.copy()
         self.resolve_settings()
 
     def generate_main(self):
