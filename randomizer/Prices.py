@@ -1,5 +1,7 @@
 """Functions and data for setting and calculating prices."""
 
+import random
+
 from randomizer.Enums.Kongs import Kongs
 from randomizer.Enums.Locations import Locations
 from randomizer.ItemPool import DonkeyMoveLocations, DiddyMoveLocations, LankyMoveLocations, TinyMoveLocations, ChunkyMoveLocations, SharedMoveLocations
@@ -41,8 +43,30 @@ VanillaPrices = {
     Locations.MusicUpgrade2: 9,
 }
 
-# Get the maximum amount of coins the given kong can spend
+def RandomizePrices(weight):
+    """Generate randomized prices based on given weight (low, medium, or high)."""
+    prices = VanillaPrices.copy()
+    # Each kong can buy up to 14 items
+    # Vanilla: Can spend up to 74 coins, avg. price per item 5.2857
+    # Low: Want average max to be around 40, avg. price per item 2.8571
+    # Medium: Want average max to be around vanilla, use 5.3571 so it's midway between other 2
+    # High: Want average max to be around 110, avg. price per item 7.8571
+    avg = 5.3571
+    stddev = avg * 0.25
+    if weight == "high":
+        avg = 7.8571
+        stddev = avg * 0.2  # Lowered relative deviation for high so variance isn't so large
+    elif weight == "low":
+        avg = 2.8571
+        stddev = avg * 0.25
+    # Generate random prices using normal distribution with avg and std. deviation
+    # Round each price to nearest int
+    for location in prices.keys():
+        prices[location] = round(random.normalvariate(avg, stddev))
+    return prices
+
 def GetMaxForKong(settings, kong):
+    """Get the maximum amount of coins the given kong can spend"""
     total = sum([value for key, value in settings.prices.items() if key in SharedMoveLocations])
     if kong == Kongs.donkey:
         total += sum([value for key, value in settings.prices.items() if key in DonkeyMoveLocations])

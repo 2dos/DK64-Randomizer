@@ -3,7 +3,8 @@ import json
 import random
 
 from randomizer.Enums.Kongs import Kongs
-from randomizer.Prices import VanillaPrices, GetMaxForKong
+from randomizer.Prices import VanillaPrices, RandomizePrices
+
 
 class Settings:
     """Class used to store settings for seed generation."""
@@ -43,6 +44,13 @@ class Settings:
         ]
 
         # Settings which are not yet implemented on the web page
+
+        # random_prices: str
+        # vanilla
+        # low
+        # medium
+        # high
+        self.random_prices = "high"
 
         # training_barrels: str
         # normal
@@ -140,6 +148,11 @@ class Settings:
 
     def resolve_settings(self):
         """Resolve settings which are not directly set through the UI."""
+
+        if self.random_prices != "vanilla":
+            self.prices = RandomizePrices(self.random_prices)
+
+        # Handle K. Rool Phases
         self.krool_donkey = False
         self.krool_diddy = False
         self.krool_lanky = False
