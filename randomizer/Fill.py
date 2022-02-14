@@ -84,11 +84,7 @@ def GetAccessibleLocations(settings, ownedItems, searchType=SearchMode.GetReacha
             regionPool = [startRegion]
             addedRegions = [Regions.IslesMain]
 
-            tagAccess = [
-                (key, value)
-                for (key, value) in Logic.Regions.items()
-                if value.HasAccess(kong) and key not in addedRegions
-            ]
+            tagAccess = [(key, value) for (key, value) in Logic.Regions.items() if value.HasAccess(kong) and key not in addedRegions]
             addedRegions.extend([x[0] for x in tagAccess])  # first value is the region key
             regionPool.extend([x[1] for x in tagAccess])  # second value is the region itself
 
@@ -105,11 +101,7 @@ def GetAccessibleLocations(settings, ownedItems, searchType=SearchMode.GetReacha
                         LogicVariables.Events.append(event.name)
                 # Check accessibility for each location in this region
                 for location in region.locations:
-                    if (
-                        location.logic(LogicVariables)
-                        and location.id not in newLocations
-                        and location.id not in accessible
-                    ):
+                    if location.logic(LogicVariables) and location.id not in newLocations and location.id not in accessible:
                         # If this location is a bonus barrel, must make sure its logic is met as well
                         if location.bonusBarrel and settings.bonus_barrels != "skip":
                             minigame = MinigameAssociations[location.id]
@@ -314,9 +306,7 @@ def Fill(spoiler):
                 raise Ex.ItemPlacementException(str(blueprintsUnplaced) + " unplaced blueprints.")
             # Then place the rest of items
             Reset()
-            lowPriorityUnplaced = PlaceItems(
-                spoiler.settings, spoiler.settings.algorithm, ItemPool.LowPriorityItems(spoiler.settings), ItemPool.ExcessItems(spoiler.settings)
-            )
+            lowPriorityUnplaced = PlaceItems(spoiler.settings, spoiler.settings.algorithm, ItemPool.LowPriorityItems(spoiler.settings), ItemPool.ExcessItems(spoiler.settings))
             if lowPriorityUnplaced > 0:
                 raise Ex.ItemPlacementException(str(lowPriorityUnplaced) + " unplaced low priority items.")
             # Finally place excess items fully randomly
@@ -345,6 +335,7 @@ def Fill(spoiler):
                 print("Fill failed. Retrying. Tries: " + str(retries))
                 Reset()
                 Logic.ClearAllLocations()
+
 
 def ShuffleMoves(spoiler):
     """Just shuffles moves per kong to other move locations of same kong."""
@@ -410,7 +401,7 @@ def ShuffleMoves(spoiler):
                 print("Fill failed. Retrying. Tries: " + str(retries))
                 Reset()
                 Logic.ClearAllLocations()
-        
+
 
 def Generate_Spoiler(spoiler):
     """Generate a complete spoiler based on input settings."""

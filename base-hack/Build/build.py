@@ -379,9 +379,7 @@ with open(newROMName, "r+b") as fh:
 
         if "use_external_gzip" in x and x["use_external_gzip"]:
             if os.path.exists(x["source_file"]):
-                result = subprocess.check_output(
-                    ["./build/gzip.exe", "-f", "-n", "-k", "-q", "-9", x["output_file"].replace(".gz", "")]
-                )
+                result = subprocess.check_output(["./build/gzip.exe", "-f", "-n", "-k", "-q", "-9", x["output_file"].replace(".gz", "")])
                 if os.path.exists(x["output_file"]):
                     with open(x["output_file"], "r+b") as outputFile:
                         # Chop off gzip footer
@@ -430,13 +428,7 @@ with open(newROMName, "r+b") as fh:
                     fh.seek(x["start"])
                     fh.write(compress)
             else:
-                print(
-                    "  - WARNING: Can't find address information in file_dict entry to write "
-                    + x["output_file"]
-                    + " ("
-                    + hex(len(compress))
-                    + ") to ROM"
-                )
+                print("  - WARNING: Can't find address information in file_dict entry to write " + x["output_file"] + " (" + hex(len(compress)) + ") to ROM")
         else:
             print(x["output_file"] + " does not exist")
 

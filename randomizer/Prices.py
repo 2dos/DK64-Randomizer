@@ -43,6 +43,7 @@ VanillaPrices = {
     Locations.MusicUpgrade2: 9,
 }
 
+
 def RandomizePrices(weight):
     """Generate randomized prices based on given weight (low, medium, or high)."""
     prices = VanillaPrices.copy()
@@ -65,8 +66,9 @@ def RandomizePrices(weight):
         prices[location] = round(random.normalvariate(avg, stddev))
     return prices
 
+
 def GetMaxForKong(settings, kong):
-    """Get the maximum amount of coins the given kong can spend"""
+    """Get the maximum amount of coins the given kong can spend."""
     total = sum([value for key, value in settings.prices.items() if key in SharedMoveLocations])
     if kong == Kongs.donkey:
         total += sum([value for key, value in settings.prices.items() if key in DonkeyMoveLocations])
@@ -80,10 +82,8 @@ def GetMaxForKong(settings, kong):
         total += sum([value for key, value in settings.prices.items() if key in ChunkyMoveLocations])
     return total
 
-CrankySequence = [
-    Locations.SuperSimianSlam,
-    Locations.SuperDuperSimianSlam
-]
+
+CrankySequence = [Locations.SuperSimianSlam, Locations.SuperDuperSimianSlam]
 FunkySequence = [
     [Locations.CoconutGun, Locations.PeanutGun, Locations.GrapeGun, Locations.FeatherGun, Locations.PineappleGun],
     Locations.AmmoBelt1,
@@ -158,11 +158,12 @@ If moves are decoupled so that they don't need be bought in sequence, then any l
 meaning we just must consider the maximum price for every location.
 """
 
+
 def KongCanBuy(location, coins, settings, kong):
     """Check if given kong can logically purchase the specified location."""
     # Special case: If shop moves are unlocked then all are already bought except scope
     if settings.unlock_all_moves and location == Locations.SniperSight:
-        return coins[kong] >= settings.prices[location] 
+        return coins[kong] >= settings.prices[location]
     # Get the max coins this kong can possibly spend
     max = GetMaxForKong(settings, kong)
     # If locations can be bought in any order, just check greater than the max
@@ -190,10 +191,12 @@ def KongCanBuy(location, coins, settings, kong):
 
 
 def AnyKongCanBuy(location, coins, settings):
+    """Check if any kong can logically purchase this location."""
     for kong in [Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky]:
         if KongCanBuy(location, coins, settings, kong):
             return True
     return False
+
 
 def CanBuy(location, coins, settings):
     """Check if an appropriate kong can logically purchase this location."""

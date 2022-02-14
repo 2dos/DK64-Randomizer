@@ -342,7 +342,7 @@ class LogicVarHolder:
         Usually the region's own HasAccess function is used, but this is necessary for checking access for other regions in logic files.
         """
         return Regions[region].HasAccess(kong)
-    
+
     def CanBuy(self, location):
         """Check if there are enough coins to purchase this location."""
         return CanBuy(location, self.Coins, self.settings)

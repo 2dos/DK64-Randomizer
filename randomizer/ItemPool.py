@@ -319,7 +319,6 @@ def LowPriorityItems(settings):
 def ExcessItems(settings):
     """Items which either have no logical value or are excess copies of those that do."""
     itemPool = []
-    
 
     if not settings.unlock_all_moves:
         # Weapon upgrades
@@ -341,6 +340,7 @@ def ExcessItems(settings):
         itemPool.append(Items.RarewareCoin)
 
     return itemPool
+
 
 DonkeyMoveLocations = [
     Locations.BaboonBlast,
@@ -401,7 +401,6 @@ DiddyMoves = [
     Items.ChimpyCharge,
     Items.RocketbarrelBoost,
     Items.SimianSpring,
-    
 ]
 LankyMoves = [
     Items.Grape,
@@ -409,7 +408,6 @@ LankyMoves = [
     Items.Orangstand,
     Items.BaboonBalloon,
     Items.OrangstandSprint,
-    
 ]
 TinyMoves = [
     Items.Feather,
@@ -417,7 +415,6 @@ TinyMoves = [
     Items.MiniMonkey,
     Items.PonyTailTwirl,
     Items.Monkeyport,
-    
 ]
 ChunkyMoves = [
     Items.Pineapple,
@@ -425,7 +422,6 @@ ChunkyMoves = [
     Items.HunkyChunky,
     Items.PrimatePunch,
     Items.GorillaGone,
-    
 ]
 ImportantSharedMoves = [
     Items.ProgressiveSlam,

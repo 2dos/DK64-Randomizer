@@ -151,7 +151,6 @@ class Settings:
 
     def resolve_settings(self):
         """Resolve settings which are not directly set through the UI."""
-
         if self.random_prices != "vanilla":
             self.prices = RandomizePrices(self.random_prices)
 

@@ -62,9 +62,7 @@ def generate_seed(event):
         event (event): Javascript click event.
     """
     # Check if the rom filebox has a file loaded in it.
-    if len(str(js.document.getElementById("input-file-rom").value).strip()) == 0 or "is-valid" not in list(
-        js.document.getElementById("input-file-rom").classList
-    ):
+    if len(str(js.document.getElementById("input-file-rom").value).strip()) == 0 or "is-valid" not in list(js.document.getElementById("input-file-rom").classList):
         js.document.getElementById("input-file-rom").select()
         if "is-invalid" not in list(js.document.getElementById("input-file-rom").classList):
             js.document.getElementById("input-file-rom").classList.add("is-invalid")
