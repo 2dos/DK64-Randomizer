@@ -45,6 +45,9 @@ class Settings:
 
         # Settings which are not yet implemented on the web page
 
+        # hard_shooting: bool
+        self.hard_shooting = False
+
         # random_prices: str
         # vanilla
         # low

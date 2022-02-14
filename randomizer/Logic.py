@@ -97,6 +97,9 @@ class LogicVarHolder:
         self.camera = self.settings.unlock_fairy_shockwave
         self.shockwave = self.settings.unlock_fairy_shockwave
 
+        self.scope = False  # Start with moves doesn't give scope
+        self.homing = self.settings.unlock_all_moves
+
         self.JapesKey = False
         self.AztecKey = False
         self.FactoryKey = False
@@ -230,6 +233,9 @@ class LogicVarHolder:
 
         self.camera = self.camera or Items.CameraAndShockwave in ownedItems
         self.shockwave = self.shockwave or Items.CameraAndShockwave in ownedItems
+
+        self.scope = self.scope or Items.SniperSight in ownedItems
+        self.homing = self.homing or Items.HomingAmmo in ownedItems
 
         self.superSlam = self.Slam >= 2
         self.superDuperSlam = self.Slam >= 3

@@ -67,11 +67,12 @@ MinigameRequirements = {
     ),
     Minigames.ChunkyShooting: Minigame(
         "Chunky Shooting",
-        lambda l: (l.isdonkey and l.coconut)
+        lambda l: (l.scope or l.homing or l.settings.hard_shooting)
+        and ((l.isdonkey and l.coconut)
         or (l.isdiddy and l.peanut)
         or (l.islanky and l.grape)
         or (l.istiny and l.feather)
-        or (l.ischunky and l.pineapple),
+        or (l.ischunky and l.pineapple)),
     ),
 }
 

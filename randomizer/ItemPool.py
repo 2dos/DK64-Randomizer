@@ -105,17 +105,18 @@ def PlaceConstants(settings):
 def AllItems(settings):
     """Return all shuffled items."""
     allItems = []
-    if settings.shuffle_items:
+    if settings.shuffle_items == "all":
         allItems.extend(Blueprints(settings))
         allItems.extend(HighPriorityItems(settings))
         allItems.extend(LowPriorityItems(settings))
         allItems.extend(ExcessItems(settings))
-    elif settings.shuffle_moves:
+    elif settings.shuffle_items == "moves":
         allItems.extend(DonkeyMoves)
         allItems.extend(DiddyMoves)
         allItems.extend(LankyMoves)
         allItems.extend(TinyMoves)
         allItems.extend(ChunkyMoves)
+        allItems.extend(ImportantSharedMoves)
     return allItems
 
 
@@ -309,18 +310,21 @@ def LowPriorityItems(settings):
     if not settings.coin_door_open:
         itemPool.append(Items.NintendoCoin)
         itemPool.append(Items.RarewareCoin)
-
+    itemPool.append(Items.SniperSight)
+    if not settings.hard_shooting:
+        itemPool.append(Items.HomingAmmo)
     return itemPool
 
 
 def ExcessItems(settings):
     """Items which either have no logical value or are excess copies of those that do."""
     itemPool = []
-    itemPool.append(Items.SniperSight)
+    
 
     if not settings.unlock_all_moves:
         # Weapon upgrades
-        itemPool.append(Items.HomingAmmo)
+        if settings.hard_shooting:
+            itemPool.append(Items.HomingAmmo)
         itemPool.extend(itertools.repeat(Items.ProgressiveAmmoBelt, 2))
 
         # Instrument upgrades

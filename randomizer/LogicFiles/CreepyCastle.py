@@ -55,8 +55,8 @@ LogicRegions = {
     ]),
 
     Regions.CastleTree: Region("Castle Tree", Levels.CreepyCastle, False, -1, [
-        LocationLogic(Locations.CastleDonkeyTree, lambda l: l.coconut and l.isdonkey),
-        LocationLogic(Locations.CastleChunkyTree, lambda l: l.pineapple and l.punch and l.ischunky, True),
+        LocationLogic(Locations.CastleDonkeyTree, lambda l: l.scope and l.coconut and l.isdonkey),
+        LocationLogic(Locations.CastleChunkyTree, lambda l: (l.scope or l.settings.hard_shooting) and l.pineapple and l.punch and l.ischunky, True),
         LocationLogic(Locations.CastleDonkeyKasplat, lambda l: l.coconut and l.isdonkey),
         LocationLogic(Locations.CastleBananaFairyTree, lambda l: l.camera and l.coconut and l.isdonkey),
     ], [], [
@@ -94,7 +94,7 @@ LogicRegions = {
     ),
 
     Regions.Tower: Region("Tower", Levels.CreepyCastle, False, -1, [
-        LocationLogic(Locations.CastleLankyTower, lambda l: l.balloon and l.grape and l.islanky, True),
+        LocationLogic(Locations.CastleLankyTower, lambda l: (l.scope or l.homing) and l.balloon and l.grape and l.islanky, True),
     ], [], [
         TransitionFront(Regions.CreepyCastleMain, lambda l: True, Transitions.CastleTowerToMain),
     ]),
@@ -109,7 +109,7 @@ LogicRegions = {
     ]),
 
     Regions.TrashCan: Region("Trash Can", Levels.CreepyCastle, False, -1, [
-        LocationLogic(Locations.CastleTinyTrashCan, lambda l: (l.saxophone or l.feather) and l.istiny),
+        LocationLogic(Locations.CastleTinyTrashCan, lambda l: (l.saxophone or (l.feather and (l.homing or l.settings.hard_shooting))) and l.istiny),
     ], [], [
         TransitionFront(Regions.CreepyCastleMain, lambda l: True, Transitions.CastleTrashToMain),
     ]),
@@ -171,7 +171,7 @@ LogicRegions = {
 
     Regions.Dungeon: Region("Dungeon", Levels.CreepyCastle, True, None, [
         LocationLogic(Locations.CastleDonkeyDungeon, lambda l: l.superDuperSlam and l.donkey),
-        LocationLogic(Locations.CastleDiddyDungeon, lambda l: l.superDuperSlam and l.peanut and l.diddy),
+        LocationLogic(Locations.CastleDiddyDungeon, lambda l: l.superDuperSlam and l.scope and l.peanut and l.diddy),
         LocationLogic(Locations.CastleLankyDungeon, lambda l: l.superDuperSlam and l.trombone and l.balloon and l.islanky, True),
     ], [], [
         TransitionFront(Regions.UpperCave, lambda l: True, Transitions.CastleDungeonToUpper),

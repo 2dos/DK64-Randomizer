@@ -208,7 +208,7 @@ LogicRegions = {
     ]),
 
     Regions.MillAttic: Region("Mill Attic", Levels.FungiForest, False, TransitionFront(Regions.FungiForestStart, lambda l: l.superSlam and l.islanky), [
-        LocationLogic(Locations.ForestLankyAttic, lambda l: l.grape and l.superSlam and l.islanky),
+        LocationLogic(Locations.ForestLankyAttic, lambda l: l.superSlam and (l.homing or l.settings.hard_shooting) and l.grape and l.islanky),
     ], [], [
         TransitionFront(Regions.MillArea, lambda l: True, Transitions.ForestAtticToMain),
     ]),
