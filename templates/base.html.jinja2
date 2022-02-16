@@ -29,7 +29,7 @@
             </div>
         </div>
     </div>
-    <img src="./static/img/logo.png" alt="DK64 Randomizer" class="center_image" style="cursor: pointer;" onClick="window.location.reload();" />
+    <img src="./static/img/logo.png" alt="DK64 Randomizer" class="center_image" style="cursor: pointer;"  onClick="render_page('./index.html')" />
     <div style="width: 50%; min-width: 400px;" class="center">
         <div class="card bg-secondary">
             <form id="form" action="/" method="POST">
@@ -145,4 +145,16 @@
     <script type="text/javascript" src="./static/js/rompatcher/RomPatcher.js" defer></script>
     <script type="text/javascript" src="./static/js/rompatcher/filesaver.js" defer></script>
     <script type="text/javascript" src="./static/js/initalize.js"></script>
+    <script>
+        function render_page(page){                    
+            xmlhttp = new XMLHttpRequest();
+            xmlhttp.open("GET", page, false);
+            xmlhttp.send();
+            var data = xmlhttp.responseText;
+            document.documentElement.innerHTML = "";
+            document.open();
+            document.write(data);
+            document.close();
+        }
+    </script>
 </footer>

@@ -1,11 +1,11 @@
 /* BPS module for Rom Patcher JS v20180930 - Marc Robledo 2016-2018 - http://www.marcrobledo.com/license */
 /* File format specification: https://www.romhacking.net/documents/746/ */
 
-const BPS_MAGIC = "BPS1";
-const BPS_ACTION_SOURCE_READ = 0;
-const BPS_ACTION_TARGET_READ = 1;
-const BPS_ACTION_SOURCE_COPY = 2;
-const BPS_ACTION_TARGET_COPY = 3;
+BPS_MAGIC = "BPS1";
+BPS_ACTION_SOURCE_READ = 0;
+BPS_ACTION_TARGET_READ = 1;
+BPS_ACTION_SOURCE_COPY = 2;
+BPS_ACTION_TARGET_COPY = 3;
 
 function BPS() {
   this.sourceSize = 0;
