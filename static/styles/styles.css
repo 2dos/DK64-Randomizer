@@ -11322,11 +11322,14 @@ header.masthead {
   overflow: hidden;
   padding-top: calc(7rem + 72px);
   padding-bottom: 7rem;
-  background: linear-gradient(0deg, #ff6a00 0%, #ee0979 100%);
-  background-repeat: no-repeat;
-  background-position: center center;
+  background: linear-gradient(0deg, #003d03 0%, #003d03 100%);
+  background-image: url("/base-hack/assets/Non-Code/website/bgfinal.png");
+  background-repeat: repeat;
   background-attachment: scroll;
-  background-size: cover;
+  background-size: 45%;
+}
+.overlay-dark {
+  background-color: rgba(black, 0.4);
 }
 header.masthead .masthead-content {
   z-index: 1;
@@ -11371,7 +11374,7 @@ header.masthead .bg-circle-4 {
 
 @media (min-width: 992px) {
   header.masthead {
-    padding-top: calc(10rem + 55px);
+    padding-top: calc(10rem);
     padding-bottom: 10rem;
   }
   header.masthead .masthead-content .masthead-heading {
