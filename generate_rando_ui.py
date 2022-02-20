@@ -14,7 +14,10 @@ async def initialize():
     # Against normal logic we have to import the hook register because we install it as we load the page
     from pyodide_importer import register_hook  # type: ignore  # noqa
 
-    register_hook("/")
+    try:
+        register_hook("/")
+    except Exception:
+        pass
     js.listeners = []
     js.progression_presets = []
     js.background_worker = None
@@ -53,11 +56,7 @@ async def initialize():
                 pass
 
     # Load our pointer info from the JSON database
-    js.pointer_addresses = json.loads(
-        js.jquery.ajax(
-            js.Object.fromEntries(to_js({"url": "./static/patches/pointer_addresses.json", "async": False}))
-        ).responseText
-    )
+    js.pointer_addresses = json.loads(js.jquery.ajax(js.Object.fromEntries(to_js({"url": "./static/patches/pointer_addresses.json", "async": False}))).responseText)
 
 
 # Run the script (This will be run as async later on)

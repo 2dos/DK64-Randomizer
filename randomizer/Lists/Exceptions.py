@@ -19,6 +19,24 @@ class EntranceAttemptCountExceeded(EntrancePlacementException):
     pass
 
 
+class BarrelPlacementException(Exception):
+    """Exception triggered when shuffled barrel minigames fails to produce a valid world."""
+
+    pass
+
+
+class BarrelOutOfMinigames(BarrelPlacementException):
+    """Exception triggered when a barrel attempted to be shuffled has no valid minigames."""
+
+    pass
+
+
+class BarrelAttemptCountExceeded(BarrelPlacementException):
+    """Exception triggered when too many attempts were made to place minigames."""
+
+    pass
+
+
 class FillException(Exception):
     """Exception triggered during the fill process."""
 

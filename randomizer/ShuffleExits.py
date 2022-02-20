@@ -1,13 +1,13 @@
 """File that shuffles loading zone exits."""
-from ast import And
 import random
+from ast import And
 
 import randomizer.Fill as Fill
 import randomizer.Lists.Exceptions as Ex
 import randomizer.Logic as Logic
-from randomizer.Enums.Transitions import Transitions
 from randomizer.Enums.Regions import Regions
 from randomizer.Enums.SearchMode import SearchMode
+from randomizer.Enums.Transitions import Transitions
 from randomizer.ItemPool import AllItems, PlaceConstants
 from randomizer.Lists.ShufflableExit import ShufflableExits
 from randomizer.LogicClasses import TransitionFront
@@ -35,9 +35,7 @@ root = Regions.IslesMain
 
 def GetRootExit(exitId):
     """Query the world root to return an exit with a matching exit id."""
-    return [
-        x for x in Logic.Regions[root].exits if x.assumed and x.exitShuffleId is not None and x.exitShuffleId == exitId
-    ][0]
+    return [x for x in Logic.Regions[root].exits if x.assumed and x.exitShuffleId is not None and x.exitShuffleId == exitId][0]
 
 
 def RemoveRootExit(exit):
@@ -62,15 +60,6 @@ def Reset():
         RemoveRootExit(exit)
 
 
-def VerifyWorld(settings):
-    """Make sure all item locations are reachable on current world graph with constant items placed and all other items owned."""
-    PlaceConstants(settings)
-    unreachables = Fill.GetAccessibleLocations(settings, AllItems(settings), SearchMode.GetUnreachable)
-    isValid = len(unreachables) == 0
-    Fill.Reset()
-    return isValid
-
-
 def AttemptConnect(settings, frontExit, frontId, backExit, backId):
     """Attempt to connect two exits, checking if the world is valid if they are connected."""
     # Remove connections to world root
@@ -91,7 +80,7 @@ def AttemptConnect(settings, frontExit, frontId, backExit, backId):
         backReverse.shuffled = True
         backReverse.shuffledId = frontExit.back.reverse
     # Attempt to verify world
-    valid = VerifyWorld(settings)
+    valid = Fill.VerifyWorld(settings)
     # If world is not valid, restore root connections and undo new connections
     if not valid:
         AddRootExit(backRootExit)
@@ -159,7 +148,7 @@ def AssumeExits(settings, frontpool, backpool, newpool):
         exitId = newpool[i]
         exit = ShufflableExits[exitId]
         # When coupled, only transitions which have a reverse path can be included in the pools
-        if settings.decoupled_loading_zones == False and exit.back.reverse is None:
+        if not settings.decoupled_loading_zones and exit.back.reverse is None:
             continue
         # "front" is the entrance you go into, "back" is the exit you come out of
         frontpool.append(exitId)
@@ -195,7 +184,7 @@ def ExitShuffle(settings):
             # Shuffle entrances based on settings
             ShuffleExits(settings)
             # Verify world by assuring all locations are still reachable
-            if not VerifyWorld(settings):
+            if not Fill.VerifyWorld(settings):
                 raise Ex.EntrancePlacementException
             return
         except Ex.EntrancePlacementException:

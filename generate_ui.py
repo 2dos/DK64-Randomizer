@@ -11,7 +11,10 @@ async def initialize():
     # Against normal logic we have to import the hook register because we install it as we load the page
     from pyodide_importer import register_hook  # type: ignore  # noqa
 
-    register_hook("/")
+    try:
+        register_hook("/")
+    except Exception:
+        pass
     js.listeners = []
     js.progression_presets = []
     js.background_worker = None

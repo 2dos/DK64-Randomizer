@@ -21,9 +21,11 @@
   var pyodide;
   var jquery = $;
   async function load_inital() {
-    pyodide = await loadPyodide({
-      indexURL: "https://cdn.jsdelivr.net/pyodide/v0.18.1/full/",
-    });
+    try {
+      pyodide = await loadPyodide({
+        indexURL: "https://cdn.jsdelivr.net/pyodide/v0.18.1/full/",
+      });
+    } catch {}
     await pyodide.loadPackage("jinja2");
     await pyodide.loadPackage("micropip");
     ui_script = await (await fetch("generate_rando_ui.py")).text();

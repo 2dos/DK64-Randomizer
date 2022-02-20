@@ -2,12 +2,13 @@
 """Logic file for Jungle Japes."""
 
 from randomizer.Enums.Events import Events
-from randomizer.Enums.Transitions import Transitions
 from randomizer.Enums.Kongs import Kongs
 from randomizer.Enums.Levels import Levels
 from randomizer.Enums.Locations import Locations
 from randomizer.Enums.Regions import Regions
-from randomizer.LogicClasses import Event, TransitionFront, LocationLogic, Region
+from randomizer.Enums.Transitions import Transitions
+from randomizer.LogicClasses import (Event, LocationLogic, Region,
+                                     TransitionFront)
 
 LogicRegions = {
     Regions.JungleJapesMain: Region("Jungle Japes Main", Levels.JungleJapes, True, None, [
@@ -37,7 +38,7 @@ LogicRegions = {
         TransitionFront(Regions.Mine, lambda l: l.peanut and l.isdiddy, Transitions.JapesMainToMine),
         TransitionFront(Regions.JapesLankyCave, lambda l: l.peanut and l.diddy and l.handstand and l.islanky, Transitions.JapesMainToLankyCave),
         TransitionFront(Regions.JapesCatacomb, lambda l: l.Slam and l.chunkyAccess, Transitions.JapesMainToCatacomb),
-        TransitionFront(Regions.Funky, lambda l: True),
+        TransitionFront(Regions.FunkyJapes, lambda l: True),
         TransitionFront(Regions.Snide, lambda l: True),
         TransitionFront(Regions.JapesBossLobby, lambda l: True),
         TransitionFront(Regions.JapesBaboonBlast, lambda l: l.blast and l.isdonkey, Transitions.JapesMainToBBlast)
@@ -51,8 +52,8 @@ LogicRegions = {
 
     Regions.JapesBeyondPeanutGate: Region("Japes Beyond Peanut Gate", Levels.JungleJapes, False, None, [
         LocationLogic(Locations.JapesDiddyTunnel, lambda l: l.isdiddy),
-        LocationLogic(Locations.JapesLankyMadMazeMaul, lambda l: l.grape and l.islanky),
-        LocationLogic(Locations.JapesTinySplishSplashSalvage, lambda l: l.feather and l.istiny),
+        LocationLogic(Locations.JapesLankyGrapeGate, lambda l: l.grape and l.islanky, True),
+        LocationLogic(Locations.JapesTinyFeatherGateBarrel, lambda l: l.feather and l.istiny, True),
     ], [], [
         TransitionFront(Regions.JungleJapesMain, lambda l: True),
         TransitionFront(Regions.JapesBossLobby, lambda l: True),
@@ -68,7 +69,7 @@ LogicRegions = {
 
     Regions.JapesBeyondFeatherGate: Region("Japes Beyond Feather Gate", Levels.JungleJapes, True, -1, [
         LocationLogic(Locations.JapesTinyStump, lambda l: l.mini and l.tiny),
-        LocationLogic(Locations.JapesChunkyMinecartMayhem, lambda l: l.hunkyChunky and l.chunky),
+        LocationLogic(Locations.JapesChunkyGiantBonusBarrel, lambda l: l.hunkyChunky and l.ischunky, True),
     ], [], [
         TransitionFront(Regions.JapesBeyondCoconutGate1, lambda l: True),
         TransitionFront(Regions.TinyHive, lambda l: l.mini and l.istiny, Transitions.JapesMainToTinyHive),
@@ -81,7 +82,7 @@ LogicRegions = {
     ]),
 
     Regions.JapesBeyondCoconutGate2: Region("Japes Beyond Coconut Gate 2", Levels.JungleJapes, True, None, [
-        LocationLogic(Locations.JapesLankySpeedySwingSortie, lambda l: l.handstand and l.lanky),
+        LocationLogic(Locations.JapesLankySlope, lambda l: l.handstand and l.islanky, True),
         LocationLogic(Locations.JapesDiddyKasplat, lambda l: l.diddy),
         LocationLogic(Locations.JapesLankyKasplat, lambda l: l.lanky),
     ], [
@@ -93,7 +94,7 @@ LogicRegions = {
     ], [
         TransitionFront(Regions.JungleJapesMain, lambda l: True),
         TransitionFront(Regions.BeyondRambiGate, lambda l: Events.Rambi in l.Events),
-        TransitionFront(Regions.Cranky, lambda l: True),
+        TransitionFront(Regions.CrankyJapes, lambda l: True),
     ]),
 
     Regions.BeyondRambiGate: Region("Beyond Rambi Gate", Levels.JungleJapes, False, -1, [
@@ -126,7 +127,7 @@ LogicRegions = {
         LocationLogic(Locations.JapesDiddyMinecarts, lambda l: l.isdiddy),
     ], [], [
         TransitionFront(Regions.JungleJapesMain, lambda l: True),
-    ],  Transitions.JapesMineToCarts
+    ], Transitions.JapesMineToCarts
     ),
 
     # Catacomb deaths lead back to itself

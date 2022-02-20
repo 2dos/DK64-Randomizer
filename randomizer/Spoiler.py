@@ -3,11 +3,12 @@
 import copy
 import json
 from typing import OrderedDict
-from randomizer import Logic
 
+from randomizer import Logic
 from randomizer.Enums.Items import Items
 from randomizer.Lists.Item import ItemFromKong, ItemList
 from randomizer.Lists.Location import LocationList
+from randomizer.Lists.Minigame import MinigameAssociations, MinigameRequirements
 from randomizer.MapsAndExits import GetExitId, GetMapId
 from randomizer.Settings import Settings
 from randomizer.ShuffleExits import ShufflableExits
@@ -20,6 +21,7 @@ class Spoiler:
         """Initialize spoiler just with settings."""
         self.settings: Settings = settings
         self.playthrough = {}
+        self.shuffled_barrel_data = {}
         self.shuffled_exit_data = {}
         self.shuffled_exit_instructions = []
         self.location_data = {}
@@ -61,11 +63,11 @@ class Spoiler:
             # Item location data
             locations = OrderedDict()
             for location, item in self.location_data.items():
-                if item != Items.NoItem:
+                if not LocationList[location].constant:
                     locations[LocationList[location].name] = ItemList[item].name
             humanspoiler["Locations"] = locations
 
-        if self.settings.shuffle_levels or self.settings.shuffle_loading_zones:
+        if self.settings.shuffle_loading_zones != "none":
             # Shuffled exit data
             shuffled_exits = OrderedDict()
             for exit, dest in self.shuffled_exit_data.items():
@@ -74,7 +76,19 @@ class Spoiler:
             # humanspoiler["Shuffled Exit Json"] = json.dumps(self.shuffled_exit_instructions)
             humanspoiler["Shuffled Exit Json"] = self.shuffled_exit_instructions
 
+        if self.settings.bonus_barrels == "random":
+            shuffled_barrels = OrderedDict()
+            for location, minigame in self.shuffled_barrel_data.items():
+                shuffled_barrels[LocationList[location].name] = MinigameRequirements[minigame].name
+            humanspoiler["Shuffled Bonus Barrels"] = shuffled_barrels
+
         return json.dumps(humanspoiler, indent=4)
+
+    def UpdateBarrels(self):
+        """Update list of shuffled barrel minigames."""
+        self.shuffled_barrel_data = {}
+        for location, minigame in MinigameAssociations.items():
+            self.shuffled_barrel_data[location] = minigame
 
     def UpdateExits(self):
         """Update list of shuffled exits."""

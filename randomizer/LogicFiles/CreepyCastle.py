@@ -2,12 +2,13 @@
 """Logic file for Creepy Castle."""
 
 from randomizer.Enums.Events import Events
-from randomizer.Enums.Transitions import Transitions
 from randomizer.Enums.Kongs import Kongs
 from randomizer.Enums.Levels import Levels
 from randomizer.Enums.Locations import Locations
 from randomizer.Enums.Regions import Regions
-from randomizer.LogicClasses import TransitionFront, Event, LocationLogic, Region
+from randomizer.Enums.Transitions import Transitions
+from randomizer.LogicClasses import (Event, LocationLogic, Region,
+                                     TransitionFront)
 
 LogicRegions = {
     Regions.CreepyCastleMain: Region("Creepy Castle Main", Levels.CreepyCastle, True, None, [
@@ -16,7 +17,7 @@ LogicRegions = {
         LocationLogic(Locations.CastleLankyMedal, lambda l: l.ColoredBananas[Levels.CreepyCastle][Kongs.lanky] >= 75),
         LocationLogic(Locations.CastleTinyMedal, lambda l: l.ColoredBananas[Levels.CreepyCastle][Kongs.tiny] >= 75),
         LocationLogic(Locations.CastleChunkyMedal, lambda l: l.ColoredBananas[Levels.CreepyCastle][Kongs.chunky] >= 75),
-        LocationLogic(Locations.CastleDiddyAboveCastle, lambda l: l.jetpack and l.diddy),
+        LocationLogic(Locations.CastleDiddyAboveCastle, lambda l: l.jetpack and l.isdiddy, True),
         LocationLogic(Locations.CastleLankyKasplat, lambda l: l.lanky),
         LocationLogic(Locations.CastleTinyKasplat, lambda l: l.tiny),
     ], [
@@ -27,7 +28,7 @@ LogicRegions = {
         TransitionFront(Regions.CastleTree, lambda l: Events.CastleTreeOpened in l.Events, Transitions.CastleMainToTree),
         TransitionFront(Regions.Library, lambda l: l.superDuperSlam and l.isdonkey, Transitions.CastleMainToLibraryStart),
         # Special Case for back door - it's only open right when you leave
-        # TransitionFront(Regions.Library, lambda l: True, Transitions.CastleMainToLibraryEnd), 
+        # TransitionFront(Regions.Library, lambda l: True, Transitions.CastleMainToLibraryEnd),
         TransitionFront(Regions.Ballroom, lambda l: l.superDuperSlam and l.diddy, Transitions.CastleMainToBallroom),  # Stays open
         TransitionFront(Regions.Tower, lambda l: l.superDuperSlam and l.islanky, Transitions.CastleMainToTower),
         TransitionFront(Regions.Greenhouse, lambda l: l.superDuperSlam and l.islanky, Transitions.CastleMainToGreenhouse),
@@ -36,7 +37,7 @@ LogicRegions = {
         TransitionFront(Regions.Museum, lambda l: l.superDuperSlam and l.ischunky, Transitions.CastleMainToMuseum),
         TransitionFront(Regions.LowerCave, lambda l: True, Transitions.CastleMainToLower),
         TransitionFront(Regions.UpperCave, lambda l: True, Transitions.CastleMainToUpper),
-        TransitionFront(Regions.Cranky, lambda l: True),
+        TransitionFront(Regions.CrankyCastle, lambda l: True),
         TransitionFront(Regions.Snide, lambda l: True),
         TransitionFront(Regions.CastleBossLobby, lambda l: True),
         TransitionFront(Regions.CastleBaboonBlast, lambda l: l.blast and l.isdonkey, Transitions.CastleMainToBBlast)
@@ -55,8 +56,8 @@ LogicRegions = {
     ]),
 
     Regions.CastleTree: Region("Castle Tree", Levels.CreepyCastle, False, -1, [
-        LocationLogic(Locations.CastleDonkeyTree, lambda l: l.coconut and l.isdonkey),
-        LocationLogic(Locations.CastleChunkyTree, lambda l: l.pineapple and l.punch and l.ischunky),
+        LocationLogic(Locations.CastleDonkeyTree, lambda l: l.scope and l.coconut and l.isdonkey),
+        LocationLogic(Locations.CastleChunkyTree, lambda l: (l.scope or l.settings.hard_shooting) and l.pineapple and l.punch and l.ischunky, True),
         LocationLogic(Locations.CastleDonkeyKasplat, lambda l: l.coconut and l.isdonkey),
         LocationLogic(Locations.CastleBananaFairyTree, lambda l: l.camera and l.coconut and l.isdonkey),
     ], [], [
@@ -73,7 +74,7 @@ LogicRegions = {
     ]),
 
     Regions.Ballroom: Region("Ballroom", Levels.CreepyCastle, False, -1, [
-        LocationLogic(Locations.CastleDiddyBallroom, lambda l: l.jetpack and l.isdiddy),
+        LocationLogic(Locations.CastleDiddyBallroom, lambda l: l.jetpack and l.isdiddy, True),
     ], [], [
         TransitionFront(Regions.CreepyCastleMain, lambda l: True, Transitions.CastleBallroomToMain),
         TransitionFront(Regions.MuseumBehindGlass, lambda l: l.monkeyport and l.mini and l.istiny, Transitions.CastleBallroomToMuseum),
@@ -90,11 +91,11 @@ LogicRegions = {
         LocationLogic(Locations.CastleTinyCarRace, lambda l: l.istiny),
     ], [], [
         TransitionFront(Regions.MuseumBehindGlass, lambda l: True, Transitions.CastleRaceToMuseum)
-    ],  Transitions.CastleMuseumToCarRace
+    ], Transitions.CastleMuseumToCarRace
     ),
 
     Regions.Tower: Region("Tower", Levels.CreepyCastle, False, -1, [
-        LocationLogic(Locations.CastleLankyTower, lambda l: l.balloon and l.grape and l.islanky),
+        LocationLogic(Locations.CastleLankyTower, lambda l: (l.scope or l.homing) and l.balloon and l.grape and l.islanky, True),
     ], [], [
         TransitionFront(Regions.CreepyCastleMain, lambda l: True, Transitions.CastleTowerToMain),
     ]),
@@ -109,7 +110,7 @@ LogicRegions = {
     ]),
 
     Regions.TrashCan: Region("Trash Can", Levels.CreepyCastle, False, -1, [
-        LocationLogic(Locations.CastleTinyTrashCan, lambda l: (l.saxophone or l.feather) and l.istiny),
+        LocationLogic(Locations.CastleTinyTrashCan, lambda l: (l.saxophone or (l.feather and (l.homing or l.settings.hard_shooting))) and l.istiny),
     ], [], [
         TransitionFront(Regions.CreepyCastleMain, lambda l: True, Transitions.CastleTrashToMain),
     ]),
@@ -132,13 +133,13 @@ LogicRegions = {
         TransitionFront(Regions.CreepyCastleMain, lambda l: True, Transitions.CastleLowerToMain),
         TransitionFront(Regions.Crypt, lambda l: (l.coconut and l.isdonkey) or (l.peanut and l.isdiddy) or (l.pineapple and l.ischunky), Transitions.CastleLowerToCrypt),
         TransitionFront(Regions.Mausoleum, lambda l: (l.grape and l.islanky) or (l.feather and l.istiny), Transitions.CastleLowerToMausoleum),
-        TransitionFront(Regions.Funky, lambda l: True),
+        TransitionFront(Regions.FunkyCastle, lambda l: True),
         TransitionFront(Regions.CastleBossLobby, lambda l: True),
     ]),
 
     Regions.Crypt: Region("Crypt", Levels.CreepyCastle, False, -1, [
         LocationLogic(Locations.CastleDiddyCrypt, lambda l: l.peanut and l.charge and l.isdiddy),
-        LocationLogic(Locations.CastleChunkyCrypt, lambda l: l.pineapple and l.punch and l.ischunky),
+        LocationLogic(Locations.CastleChunkyCrypt, lambda l: l.pineapple and l.punch and l.ischunky, True),
     ], [], [
         TransitionFront(Regions.LowerCave, lambda l: True, Transitions.CastleCryptToLower),
         TransitionFront(Regions.CastleMinecarts, lambda l: l.coconut and l.grab and l.isdonkey, Transitions.CastleCryptToCarts),
@@ -148,7 +149,7 @@ LogicRegions = {
         LocationLogic(Locations.CastleDonkeyMinecarts, lambda l: l.isdonkey),
     ], [], [
         TransitionFront(Regions.Crypt, lambda l: True, Transitions.CastleCartsToCrypt),
-    ],  Transitions.CastleCryptToCarts
+    ], Transitions.CastleCryptToCarts
     ),
 
     Regions.Mausoleum: Region("Mausoleum", Levels.CreepyCastle, False, None, [
@@ -159,20 +160,20 @@ LogicRegions = {
     ]),
 
     Regions.UpperCave: Region("Upper Cave", Levels.CreepyCastle, True, -1, [
-        LocationLogic(Locations.CastleTinyOverChasm, lambda l: l.twirl and l.tiny),
+        LocationLogic(Locations.CastleTinyOverChasm, lambda l: l.twirl and l.istiny, True),
         LocationLogic(Locations.CastleChunkyKasplat, lambda l: l.chunky),
     ], [], [
         TransitionFront(Regions.CreepyCastleMain, lambda l: True, Transitions.CastleUpperToMain),
         TransitionFront(Regions.CastleWaterfall, lambda l: True, Transitions.CastleUpperToWaterfall),
         TransitionFront(Regions.Dungeon, lambda l: True, Transitions.CastleUpperToDungeon),
-        TransitionFront(Regions.Candy, lambda l: True),
+        TransitionFront(Regions.CandyCastle, lambda l: True),
         TransitionFront(Regions.CastleBossLobby, lambda l: True),
     ]),
 
     Regions.Dungeon: Region("Dungeon", Levels.CreepyCastle, True, None, [
         LocationLogic(Locations.CastleDonkeyDungeon, lambda l: l.superDuperSlam and l.donkey),
-        LocationLogic(Locations.CastleDiddyDungeon, lambda l: l.superDuperSlam and l.peanut and l.diddy),
-        LocationLogic(Locations.CastleLankyDungeon, lambda l: l.superDuperSlam and l.trombone and l.balloon and l.lanky),
+        LocationLogic(Locations.CastleDiddyDungeon, lambda l: l.superDuperSlam and l.scope and l.peanut and l.diddy),
+        LocationLogic(Locations.CastleLankyDungeon, lambda l: l.superDuperSlam and l.trombone and l.balloon and l.islanky, True),
     ], [], [
         TransitionFront(Regions.UpperCave, lambda l: True, Transitions.CastleDungeonToUpper),
     ]),

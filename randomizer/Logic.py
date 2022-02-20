@@ -23,6 +23,7 @@ from randomizer.Enums.Items import Items
 from randomizer.Enums.Kongs import Kongs
 from randomizer.Enums.Levels import Levels
 from randomizer.Lists.Location import LocationList
+from randomizer.Prices import CanBuy
 
 
 class LogicVarHolder:
@@ -96,6 +97,9 @@ class LogicVarHolder:
         self.camera = self.settings.unlock_fairy_shockwave
         self.shockwave = self.settings.unlock_fairy_shockwave
 
+        self.scope = False  # Start with moves doesn't give scope
+        self.homing = self.settings.unlock_all_moves
+
         self.JapesKey = False
         self.AztecKey = False
         self.FactoryKey = False
@@ -104,6 +108,17 @@ class LogicVarHolder:
         self.CavesKey = False
         self.CastleKey = False
         self.HelmKey = False
+
+        self.HelmDonkey1 = False
+        self.HelmDonkey2 = False
+        self.HelmDiddy1 = False
+        self.HelmDiddy2 = False
+        self.HelmLanky1 = False
+        self.HelmLanky2 = False
+        self.HelmTiny1 = False
+        self.HelmTiny2 = False
+        self.HelmChunky1 = False
+        self.HelmChunky2 = False
 
         self.Slam = 3 if self.settings.unlock_all_moves else 1  # Right now assuming start with slam
         self.GoldenBananas = 0
@@ -199,6 +214,17 @@ class LogicVarHolder:
         self.CastleKey = self.CastleKey or Items.CreepyCastleKey in ownedItems
         self.HelmKey = self.HelmKey or Items.HideoutHelmKey in ownedItems
 
+        self.HelmDonkey1 = self.HelmDonkey1 or Items.HelmDonkey1 in ownedItems
+        self.HelmDonkey2 = self.HelmDonkey2 or Items.HelmDonkey2 in ownedItems
+        self.HelmDiddy1 = self.HelmDiddy1 or Items.HelmDiddy1 in ownedItems
+        self.HelmDiddy2 = self.HelmDiddy2 or Items.HelmDiddy2 in ownedItems
+        self.HelmLanky1 = self.HelmLanky1 or Items.HelmLanky1 in ownedItems
+        self.HelmLanky2 = self.HelmLanky2 or Items.HelmLanky2 in ownedItems
+        self.HelmTiny1 = self.HelmTiny1 or Items.HelmTiny1 in ownedItems
+        self.HelmTiny2 = self.HelmTiny2 or Items.HelmTiny2 in ownedItems
+        self.HelmChunky1 = self.HelmChunky1 or Items.HelmChunky1 in ownedItems
+        self.HelmChunky2 = self.HelmChunky2 or Items.HelmChunky2 in ownedItems
+
         self.Slam = 3 if self.settings.unlock_all_moves else sum(1 for x in ownedItems if x == Items.ProgressiveSlam)
         self.GoldenBananas = sum(1 for x in ownedItems if x == Items.GoldenBanana)
         self.BananaFairies = sum(1 for x in ownedItems if x == Items.BananaFairy)
@@ -207,6 +233,9 @@ class LogicVarHolder:
 
         self.camera = self.camera or Items.CameraAndShockwave in ownedItems
         self.shockwave = self.shockwave or Items.CameraAndShockwave in ownedItems
+
+        self.scope = self.scope or Items.SniperSight in ownedItems
+        self.homing = self.homing or Items.HomingAmmo in ownedItems
 
         self.superSlam = self.Slam >= 2
         self.superDuperSlam = self.Slam >= 3
@@ -313,6 +342,10 @@ class LogicVarHolder:
         Usually the region's own HasAccess function is used, but this is necessary for checking access for other regions in logic files.
         """
         return Regions[region].HasAccess(kong)
+
+    def CanBuy(self, location):
+        """Check if there are enough coins to purchase this location."""
+        return CanBuy(location, self.Coins, self.settings)
 
 
 LogicVariables = LogicVarHolder()

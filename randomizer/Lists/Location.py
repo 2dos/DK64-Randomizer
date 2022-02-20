@@ -14,10 +14,16 @@ class Location:
         self.default = default
         self.item = None
         self.delayedItem = None
+        self.constant = False
 
     def PlaceItem(self, item):
         """Place item at this location."""
         self.item = item
+
+    def PlaceConstantItem(self, item):
+        """Place item at this location, and set constant so it's ignored in the spoiler."""
+        self.item = item
+        self.constant = True
 
     def SetDelayedItem(self, item):
         """Set an item to be added back later."""
@@ -31,6 +37,7 @@ class Location:
     def PlaceDefaultItem(self):
         """Place whatever this location's default (vanilla) item is at it."""
         self.item = self.default
+        self.constant = True
 
 
 LocationList = {
@@ -52,7 +59,7 @@ LocationList = {
     Locations.CameraAndShockwave: Location("Camera and Shockwave", Items.CameraAndShockwave),
     Locations.RarewareBanana: Location("Rareware Banana", Items.GoldenBanana),
     Locations.IslesLankyInstrumentPad: Location("Isles Lanky Instrument Pad", Items.GoldenBanana),
-    Locations.IslesTinyBigBugBash: Location("Isles Tiny Big Bug Bash", Items.GoldenBanana),
+    Locations.IslesTinyAztecLobby: Location("Isles Tiny Aztec Lobby", Items.GoldenBanana),
     Locations.IslesDonkeyCagedBanana: Location("Isles Donkey Caged Banana", Items.GoldenBanana),
     Locations.IslesDiddySnidesLobby: Location("Isles Diddy Snides Lobby", Items.GoldenBanana),
     Locations.IslesBattleArena1: Location("Isles Battle Arena 1", Items.BattleCrown),
@@ -92,14 +99,14 @@ LocationList = {
     Locations.JapesChunkyCagedBanana: Location("Japes Chunky Caged Banana", Items.GoldenBanana),
     Locations.JapesBattleArena: Location("Japes Battle Arena", Items.BattleCrown),
     Locations.JapesDiddyTunnel: Location("Japes Diddy Tunnel", Items.GoldenBanana),
-    Locations.JapesLankyMadMazeMaul: Location("Japes Lanky Mad Maze Maul", Items.GoldenBanana),
-    Locations.JapesTinySplishSplashSalvage: Location("Japes Tiny Splish Splash Salvage", Items.GoldenBanana),
+    Locations.JapesLankyGrapeGate: Location("Japes Lanky Grape Gate", Items.GoldenBanana),
+    Locations.JapesTinyFeatherGateBarrel: Location("Japes Tiny Feather Gate Barrel", Items.GoldenBanana),
     Locations.JapesDonkeyKasplat: Location("Japes Donkey Kasplat", Items.JungleJapesDonkeyBlueprint),
     Locations.JapesTinyKasplat: Location("Japes Tiny Kasplat", Items.JungleJapesTinyBlueprint),
     Locations.JapesTinyStump: Location("Japes Tiny Stump", Items.GoldenBanana),
-    Locations.JapesChunkyMinecartMayhem: Location("Japes Chunky Minecart Mayhem", Items.GoldenBanana),
+    Locations.JapesChunkyGiantBonusBarrel: Location("Japes Chunky Giant Bonus Barrel", Items.GoldenBanana),
     Locations.JapesTinyBeehive: Location("Japes Tiny Beehive", Items.GoldenBanana),
-    Locations.JapesLankySpeedySwingSortie: Location("Japes Lanky Speedy Swing Sortie", Items.GoldenBanana),
+    Locations.JapesLankySlope: Location("Japes Lanky Slope", Items.GoldenBanana),
     Locations.JapesDiddyKasplat: Location("Japes Diddy Kasplat", Items.JungleJapesDiddyBlueprint),
     Locations.JapesLankyKasplat: Location("Japes Lanky Kasplat", Items.JungleJapesLankyBlueprint),
     Locations.JapesBananaFairyRambiCave: Location("Japes Banana Fairy Rambi Cave", Items.BananaFairy),
@@ -125,10 +132,10 @@ LocationList = {
     Locations.AztecDiddyFreeTiny: Location("Aztec Diddy Free Tiny", Items.GoldenBanana),
     Locations.AztecLankyVulture: Location("Aztec Lanky Vulture", Items.GoldenBanana),
     Locations.AztecBattleArena: Location("Aztec Battle Arena", Items.BattleCrown),
-    Locations.AztecDonkeyStealthySnoop: Location("Aztec Donkey Stealthy Snoop", Items.GoldenBanana),
+    Locations.AztecDonkeyQuicksandCave: Location("Aztec Donkey Quicksand Cave", Items.GoldenBanana),
     Locations.AztecDiddyRamGongs: Location("Aztec Diddy Ram Gongs", Items.GoldenBanana),
     Locations.AztecDiddyVultureRace: Location("Aztec Diddy Vulture Race", Items.GoldenBanana),
-    Locations.AztecChunkyBusyBarrelBarrage: Location("Aztec Chunky Busy Barrel Barrage", Items.GoldenBanana),
+    Locations.AztecChunkyCagedBarrel: Location("Aztec Chunky Caged Barrel", Items.GoldenBanana),
     Locations.AztecTinyKasplat: Location("Aztec Tiny Kasplat", Items.AngryAztecTinyBlueprint),
     Locations.AztecDonkey5DoorTemple: Location("Aztec Donkey 5 Door Temple", Items.GoldenBanana),
     Locations.AztecDiddy5DoorTemple: Location("Aztec Diddy 5 Door Temple", Items.GoldenBanana),
@@ -140,7 +147,7 @@ LocationList = {
     Locations.AztecTinyBeetleRace: Location("Aztec Tiny Beetle Race", Items.GoldenBanana),
     Locations.LankyKong: Location("Lanky Kong", Items.Lanky),
     Locations.AztecDonkeyFreeLanky: Location("Aztec Donkey Free Lanky", Items.GoldenBanana),
-    Locations.AztecLankyTeeteringTurtleTrouble: Location("Aztec Lanky Teetering Turtle Trouble", Items.GoldenBanana),
+    Locations.AztecLankyLlamaTempleBarrel: Location("Aztec Lanky Llama Temple Barrel", Items.GoldenBanana),
     Locations.AztecLankyMatchingGame: Location("Aztec Lanky Matching Game", Items.GoldenBanana),
     Locations.AztecBananaFairyLlamaTemple: Location("Aztec Banana Fairy Llama Temple", Items.BananaFairy),
     Locations.AztecTinyLlamaTemple: Location("Aztec Tiny Llama Temple", Items.GoldenBanana),
@@ -154,7 +161,7 @@ LocationList = {
     Locations.FactoryChunkyMedal: Location("Factory Chunky Medal", Items.BananaMedal),
     Locations.FactoryDonkeyNumberGame: Location("Factory Donkey Number Game", Items.GoldenBanana),
     Locations.FactoryDiddyBlockTower: Location("Factory Diddy Block Tower", Items.GoldenBanana),
-    Locations.FactoryLankyBattyBarrelBandit: Location("Factory Lanky Batty Barrel Bandit", Items.GoldenBanana),
+    Locations.FactoryLankyTestingRoomBarrel: Location("Factory Lanky Testing Room Barrel", Items.GoldenBanana),
     Locations.FactoryTinyDartboard: Location("Factory Tiny Dartboard", Items.GoldenBanana),
     Locations.FactoryChunkyKasplat: Location("Factory Chunky Kasplat", Items.FranticFactoryChunkyBlueprint),
     Locations.FactoryBananaFairybyCounting: Location("Factory Banana Fairy by Counting", Items.BananaFairy),
@@ -165,7 +172,7 @@ LocationList = {
     Locations.FactoryLankyKasplat: Location("Factory Lanky Kasplat", Items.FranticFactoryLankyBlueprint),
     Locations.FactoryBattleArena: Location("Factory Battle Arena", Items.BattleCrown),
     Locations.FactoryTinyCarRace: Location("Factory Tiny Car Race", Items.GoldenBanana),
-    Locations.FactoryDiddyBeaverBother: Location("Factory Diddy Beaver Bother", Items.GoldenBanana),
+    Locations.FactoryDiddyChunkyRoomBarrel: Location("Factory Diddy Chunky Room Barrel", Items.GoldenBanana),
     Locations.FactoryDonkeyPowerHut: Location("Factory Donkey Power Hut", Items.GoldenBanana),
     Locations.ChunkyKong: Location("Chunky Kong", Items.Chunky),
     Locations.NintendoCoin: Location("Nintendo Coin", Items.NintendoCoin),
@@ -173,7 +180,7 @@ LocationList = {
     Locations.FactoryLankyFreeChunky: Location("Factory Lanky Free Chunky", Items.GoldenBanana),
     Locations.FactoryTinybyArcade: Location("Factory Tiny by Arcade", Items.GoldenBanana),
     Locations.FactoryChunkyDarkRoom: Location("Factory Chunky Dark Room", Items.GoldenBanana),
-    Locations.FactoryChunkyStashSnatch: Location("Factory Chunky Stash Snatch", Items.GoldenBanana),
+    Locations.FactoryChunkybyArcade: Location("Factory Chunky by Arcade", Items.GoldenBanana),
     Locations.FactoryDiddyKasplat: Location("Factory Diddy Kasplat", Items.FranticFactoryDiddyBlueprint),
     Locations.FactoryTinyKasplat: Location("Factory Tiny Kasplat", Items.FranticFactoryTinyBlueprint),
     Locations.FactoryDonkeyCrusherRoom: Location("Factory Donkey Crusher Room", Items.GoldenBanana),
@@ -226,7 +233,7 @@ LocationList = {
     Locations.ForestChunkyMedal: Location("Forest Chunky Medal", Items.BananaMedal),
     Locations.ForestChunkyMinecarts: Location("Forest Chunky Minecarts", Items.GoldenBanana),
     Locations.ForestDiddyTopofMushroom: Location("Forest Diddy Top of Mushroom", Items.GoldenBanana),
-    Locations.ForestTinySpeedySwingSortie: Location("Forest Tiny Speedy Swing Sortie", Items.GoldenBanana),
+    Locations.ForestTinyMushroomBarrel: Location("Forest Tiny Mushroom Barrel", Items.GoldenBanana),
     Locations.ForestDonkeyBaboonBlast: Location("Forest Donkey Baboon Blast", Items.GoldenBanana),
     Locations.ForestTinyKasplat: Location("Forest Tiny Kasplat", Items.FungiForestTinyBlueprint),
     Locations.ForestDonkeyMushroomCannons: Location("Forest Donkey Mushroom Cannons", Items.GoldenBanana),
@@ -248,7 +255,7 @@ LocationList = {
     Locations.ForestBananaFairyRafters: Location("Forest Banana Fairy Rafters", Items.BananaFairy),
     Locations.ForestLankyAttic: Location("Forest Lanky Attic", Items.GoldenBanana),
     Locations.ForestDonkeyKasplat: Location("Forest Donkey Kasplat", Items.FungiForestDonkeyBlueprint),
-    Locations.ForestDonkeyMinecartMayhem: Location("Forest Donkey Minecart Mayhem", Items.GoldenBanana),
+    Locations.ForestDonkeyBarn: Location("Forest Donkey Barn", Items.GoldenBanana),
     Locations.ForestBananaFairyThornvines: Location("Forest Banana Fairy Thornvines", Items.BananaFairy),
     Locations.ForestTinyBeanstalk: Location("Forest Tiny Beanstalk", Items.GoldenBanana),
     Locations.ForestChunkyApple: Location("Forest Chunky Apple", Items.GoldenBanana),
@@ -261,7 +268,7 @@ LocationList = {
     Locations.CavesChunkyMedal: Location("Caves Chunky Medal", Items.BananaMedal),
     Locations.CavesDonkeyBaboonBlast: Location("Caves Donkey Baboon Blast", Items.GoldenBanana),
     Locations.CavesDiddyJetpackBarrel: Location("Caves Diddy Jetpack Barrel", Items.GoldenBanana),
-    Locations.CavesTinyKrazyKongKlamour: Location("Caves Tiny Krazy Kong Klamour", Items.GoldenBanana),
+    Locations.CavesTinyCaveBarrel: Location("Caves Tiny Cave Barrel", Items.GoldenBanana),
     Locations.CavesTinyMonkeyportIgloo: Location("Caves Tiny Monkeyport Igloo", Items.GoldenBanana),
     Locations.CavesChunkyGorillaGone: Location("Caves Chunky Gorilla Gone", Items.GoldenBanana),
     Locations.CavesDonkeyKasplat: Location("Caves Donkey Kasplat", Items.CrystalCavesDonkeyBlueprint),
@@ -324,6 +331,16 @@ LocationList = {
     Locations.CastleLankyDungeon: Location("Castle Lanky Dungeon", Items.GoldenBanana),
     Locations.CastleKey: Location("Castle Key", Items.CreepyCastleKey),
     # Hideout Helm locations
+    Locations.HelmDonkey1: Location("Helm Donkey Barrel 1", Items.HelmDonkey1),
+    Locations.HelmDonkey2: Location("Helm Donkey Barrel 2", Items.HelmDonkey2),
+    Locations.HelmDiddy1: Location("Helm Diddy Barrel 1", Items.HelmDiddy1),
+    Locations.HelmDiddy2: Location("Helm Diddy Barrel 2", Items.HelmDiddy2),
+    Locations.HelmLanky1: Location("Helm Lanky Barrel 1", Items.HelmLanky1),
+    Locations.HelmLanky2: Location("Helm Lanky Barrel 2", Items.HelmLanky2),
+    Locations.HelmTiny1: Location("Helm Tiny Barrel 1", Items.HelmTiny1),
+    Locations.HelmTiny2: Location("Helm Tiny Barrel 2", Items.HelmTiny2),
+    Locations.HelmChunky1: Location("Helm Chunky Barrel 1", Items.HelmChunky1),
+    Locations.HelmChunky2: Location("Helm Chunky Barrel 2", Items.HelmChunky2),
     Locations.HelmBattleArena: Location("Helm Battle Arena", Items.BattleCrown),
     Locations.HelmDonkeyMedal: Location("Helm Donkey Medal", Items.BananaMedal),
     Locations.HelmChunkyMedal: Location("Helm Chunky Medal", Items.BananaMedal),

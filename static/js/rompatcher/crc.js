@@ -7,7 +7,7 @@ function padZeroes(intVal, nBytes) {
 }
 
 /* CRC32 - from Alex - https://stackoverflow.com/a/18639999 */
-const CRC32_TABLE = (function () {
+CRC32_TABLE = (function () {
   var c,
     crcTable = [];
   for (var n = 0; n < 256; n++) {
