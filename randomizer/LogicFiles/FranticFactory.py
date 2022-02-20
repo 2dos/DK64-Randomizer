@@ -7,7 +7,7 @@ from randomizer.Enums.Kongs import Kongs
 from randomizer.Enums.Levels import Levels
 from randomizer.Enums.Locations import Locations
 from randomizer.Enums.Regions import Regions
-from randomizer.LogicClasses import Event, TransitionBack, TransitionFront, LocationLogic, Region
+from randomizer.LogicClasses import Event, TransitionFront, LocationLogic, Region
 
 LogicRegions = {
     Regions.FranticFactoryStart: Region("Frantic Factory Start", Levels.FranticFactory, False, None, [

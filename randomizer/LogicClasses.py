@@ -148,10 +148,11 @@ class Region:
 class TransitionBack:
     """The exited side of a transition between regions."""
 
-    def __init__(self, regionId, exitName, reverse=None):
+    def __init__(self, regionId, mapId, exitName, reverse=None):
         """Initialize with given parameters."""
         self.regionId = regionId # Destination region
-        self.name = exitName
+        self.mapId = mapId # Destination map - represents physical game map which may not be the same as logical region
+        self.name = exitName # Destination Exit
         self.reverse = reverse # Indicates a reverse direction transition, if one exists
 
 class TransitionFront:

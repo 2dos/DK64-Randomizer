@@ -10,7 +10,7 @@ from randomizer.Enums.Regions import Regions
 from randomizer.Enums.SearchMode import SearchMode
 from randomizer.ItemPool import AllItems, PlaceConstants
 from randomizer.Lists.ShufflableExit import ShufflableExits
-from randomizer.LogicClasses import TransitionBack, TransitionFront
+from randomizer.LogicClasses import TransitionFront
 
 LevelExitPool = [
     Transitions.IslesToJapes,

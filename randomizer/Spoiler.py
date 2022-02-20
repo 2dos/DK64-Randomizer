@@ -8,6 +8,7 @@ from randomizer import Logic
 from randomizer.Enums.Items import Items
 from randomizer.Lists.Item import ItemFromKong, ItemList
 from randomizer.Lists.Location import LocationList
+from randomizer.MapsAndExits import GetExitId
 from randomizer.Settings import Settings
 from randomizer.ShuffleExits import ShufflableExits
 
@@ -20,6 +21,7 @@ class Spoiler:
         self.settings: Settings = settings
         self.playthrough = {}
         self.shuffled_exit_data = {}
+        self.shuffled_exit_instructions = []
         self.location_data = {}
 
     def toJson(self):
@@ -69,6 +71,7 @@ class Spoiler:
             for exit, dest in self.shuffled_exit_data.items():
                 shuffled_exits[ShufflableExits[exit].name] = Logic.Regions[dest.regionId].name + " " + dest.name
             humanspoiler["Shuffled Exits"] = shuffled_exits
+            humanspoiler["Shuffled Exit Json"] = json.dumps(self.shuffled_exit_instructions)
 
         return json.dumps(humanspoiler, indent=4)
 
@@ -77,7 +80,20 @@ class Spoiler:
         self.shuffled_exit_data = {}
         for key, exit in ShufflableExits.items():
             if exit.shuffled:
-                self.shuffled_exit_data[key] = ShufflableExits[exit.shuffledId].back
+                try:
+                    vanillaBack = exit.back
+                    shuffledBack = ShufflableExits[exit.shuffledId].back
+                    self.shuffled_exit_data[key] = shuffledBack
+                    loading_zone_mapping = {}
+                    loading_zone_mapping["container_map"] = exit.region
+                    loading_zone_mapping["destination_map"] = vanillaBack.mapId
+                    loading_zone_mapping["destination_exit"] = GetExitId(vanillaBack)
+                    loading_zone_mapping["new_map"] = shuffledBack.mapId
+                    loading_zone_mapping["new_exit"] = GetExitId(shuffledBack)
+                    self.shuffled_exit_instructions.append(loading_zone_mapping)
+                except Exception as ex:
+                    print(ex)
+                    
 
     def UpdateLocations(self, locations):
         """Update location list for what was produced by the fill."""
