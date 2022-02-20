@@ -1,9 +1,11 @@
+"""List of maps with in-game index."""
 from enum import IntEnum
 
 from randomizer.LogicClasses import Regions, TransitionBack
 
+
 class Maps(IntEnum):
-    '''List of Maps with in-game index'''
+    """List of Maps with in-game index."""
 
     # DK Isles
     Isles = 34
@@ -112,6 +114,7 @@ class Maps(IntEnum):
     CastleUpperCave = 151
     CastleDungeon = 163
     CastleBaboonBlast = 187
+
 
 RegionMapList = {
     # Isles
@@ -272,7 +275,7 @@ MapExitTable = {
         "From Caves Lobby",
         "From Castle Lobby",
         "From K Rool",
-        "From Training Grounds"
+        "From Training Grounds",
     ],
     Maps.JungleJapes: [
         "From Japes Lobby",
@@ -292,7 +295,7 @@ MapExitTable = {
         "From Minecart",
         "From Japes Lobby",
         "From DK Rap (DKTV Demo)",
-        "From Japes Lobby (Intro)"
+        "From Japes Lobby (Intro)",
     ],
     Maps.AngryAztec: [
         "From Aztec Lobby",
@@ -314,7 +317,7 @@ MapExitTable = {
         "From T&S (Funky's)",
         "From Beetle Race",
         "From Funky's",
-        "From Aztec Lobby"
+        "From Aztec Lobby",
     ],
     Maps.FranticFactory: [
         "From Factory Lobby",
@@ -335,7 +338,7 @@ MapExitTable = {
         "From BBlast",
         "From Car Race",
         "From Candy's",
-        "From Factory Lobby"
+        "From Factory Lobby",
     ],
     Maps.GloomyGalleon: [
         "From Galleon Lobby",
@@ -362,24 +365,11 @@ MapExitTable = {
         "From Submarine",
         "From Cranky's",
         "From Funky's",
-        "From Galleon Lobby"
+        "From Galleon Lobby",
     ],
-    Maps.Galleon5DShipDiddyLankyChunky: [
-        "From Galleon (Diddy Entrance)",
-        "From Galleon (Chunky Entrance)",
-        "From Galleon (Lanky Entrance)",
-        "From Galleon (Diddy Entrance)"
-    ],
-    Maps.Galleon5DShipDKTiny: [
-        "From Galleon (DK Entrance)",
-        "From Galleon (Tiny Entrance)",
-        "From Galleon (DK Entrance)"
-    ],
-    Maps.Galleon2DShip: [
-        "From Galleon (Tiny Entrance)",
-        "From Galleon (Lanky Entrance)",
-        "From Galleon (Tiny Entrance)"
-    ],
+    Maps.Galleon5DShipDiddyLankyChunky: ["From Galleon (Diddy Entrance)", "From Galleon (Chunky Entrance)", "From Galleon (Lanky Entrance)", "From Galleon (Diddy Entrance)"],
+    Maps.Galleon5DShipDKTiny: ["From Galleon (DK Entrance)", "From Galleon (Tiny Entrance)", "From Galleon (DK Entrance)"],
+    Maps.Galleon2DShip: ["From Galleon (Tiny Entrance)", "From Galleon (Lanky Entrance)", "From Galleon (Tiny Entrance)"],
     Maps.FungiForest: [
         "From Fungi Lobby",
         "From Mill Attic",
@@ -409,28 +399,11 @@ MapExitTable = {
         "From T&S (Tree)",
         "From BBlast",
         "From Fungi Lobby (?)",
-        "From Fungi Lobby"
+        "From Fungi Lobby",
     ],
-    Maps.ForestMillFront: [
-        "From Fungi (Front)",
-        "From Mill (Rear)",
-        "From Fungi (Front)"
-    ],
-    Maps.ForestMillBack: [
-        "From Fungi (PPunch Door)",
-        "From Spider Boss",
-        "From Mill (Front)",
-        "From Fungi (Tiny Hole)",
-        "From Fungi (PPunch Door)"
-    ],
-    Maps.ForestGiantMushroom: [
-        "From Fungi (Low)",
-        "From Fungi (Middle)",
-        "From Fungi (Low Middle)",
-        "From Fungi (High Middle)",
-        "From Fungi (High)",
-        "From Fungi (Low)"
-    ],
+    Maps.ForestMillFront: ["From Fungi (Front)", "From Mill (Rear)", "From Fungi (Front)"],
+    Maps.ForestMillBack: ["From Fungi (PPunch Door)", "From Spider Boss", "From Mill (Front)", "From Fungi (Tiny Hole)", "From Fungi (PPunch Door)"],
+    Maps.ForestGiantMushroom: ["From Fungi (Low)", "From Fungi (Middle)", "From Fungi (Low Middle)", "From Fungi (High Middle)", "From Fungi (High)", "From Fungi (Low)"],
     Maps.CrystalCaves: [
         "From Caves Lobby",
         "From Diddy 5DIgloo",
@@ -464,7 +437,7 @@ MapExitTable = {
         "From ? (Giant Kosha Room)",
         "From Tile Flipping",
         "From DK Treehouse (Secret Exit)",
-        "From Caves Lobby"
+        "From Caves Lobby",
     ],
     Maps.CreepyCastle: [
         "From Castle Lobby",
@@ -489,85 +462,34 @@ MapExitTable = {
         "From Snide's",
         "From Greenhouse (End)",
         "From Castle Lobby (Intro)",
-        "From Castle Lobby"
+        "From Castle Lobby",
     ],
-    Maps.CastleBallroom: [
-        "From Castle Main",
-        "From Museum (Monkeyport)",
-        "From Castle Main"
-    ],
-    Maps.CastleCrypt: [
-        "From Lower Cave",
-        "From Minecart",
-        "From Lower Cave"
-    ],
-    Maps.CastleMuseum: [
-        "From Castle Main",
-        "From Car Race",
-        "From Ballroom (Monkeyport)",
-        "From Castle Main"
-    ],
+    Maps.CastleBallroom: ["From Castle Main", "From Museum (Monkeyport)", "From Castle Main"],
+    Maps.CastleCrypt: ["From Lower Cave", "From Minecart", "From Lower Cave"],
+    Maps.CastleMuseum: ["From Castle Main", "From Car Race", "From Ballroom (Monkeyport)", "From Castle Main"],
     Maps.CastleLibrary: [
         "From Castle Main (Start)",
         "From Castle Main (End)",
     ],
-    Maps.CastleUpperCave: [
-        "From Castle (Front)",
-        "From Candy's",
-        "From Castle (Rear)",
-        "From T&S",
-        "From Dungeon",
-        "From Castle (Front)"
-    ],
-    Maps.CastleLowerCave: [
-        "From Castle Main",
-        "From Funky's",
-        "From T&S",
-        "From Crypt (DK/Diddy/Chunky)",
-        "From Mausoleum (Lanky/Tiny)",
-        "From Castle Main"
-    ],
-    Maps.JungleJapesLobby: [
-        "From DK Isles",
-        "From Japes",
-        "From DK Isles"
-    ],
-    Maps.AngryAztecLobby: [
-        "From DK Isles",
-        "From Aztec",
-        "From DK Isles"
-    ],
-    Maps.GloomyGalleonLobby: [
-        "From DK Isles",
-        "From Galleon",
-        "From DK Isles"
-    ],
-    Maps.FranticFactoryLobby: [
-        "From DK Isles",
-        "From Factory",
-        "From DK Isles"
-    ],
-    Maps.FungiForestLobby: [
-        "From DK Isles",
-        "From Fungi",
-        "From DK Isles"
-    ],
-    Maps.CreepyCastleLobby: [
-        "From DK Isles",
-        "From Castle",
-        "From DK Isles"
-    ],
-    Maps.CrystalCavesLobby: [
-        "From DK Isles",
-        "From Caves",
-        "From DK Isles"
-    ],
+    Maps.CastleUpperCave: ["From Castle (Front)", "From Candy's", "From Castle (Rear)", "From T&S", "From Dungeon", "From Castle (Front)"],
+    Maps.CastleLowerCave: ["From Castle Main", "From Funky's", "From T&S", "From Crypt (DK/Diddy/Chunky)", "From Mausoleum (Lanky/Tiny)", "From Castle Main"],
+    Maps.JungleJapesLobby: ["From DK Isles", "From Japes", "From DK Isles"],
+    Maps.AngryAztecLobby: ["From DK Isles", "From Aztec", "From DK Isles"],
+    Maps.GloomyGalleonLobby: ["From DK Isles", "From Galleon", "From DK Isles"],
+    Maps.FranticFactoryLobby: ["From DK Isles", "From Factory", "From DK Isles"],
+    Maps.FungiForestLobby: ["From DK Isles", "From Fungi", "From DK Isles"],
+    Maps.CreepyCastleLobby: ["From DK Isles", "From Castle", "From DK Isles"],
+    Maps.CrystalCavesLobby: ["From DK Isles", "From Caves", "From DK Isles"],
 }
 
-def GetMapId(back:TransitionBack):
+
+def GetMapId(back: TransitionBack):
+    """Get the map id of a transition."""
     return RegionMapList[back.regionId]
 
-def GetExitId(back:TransitionBack):
+
+def GetExitId(back: TransitionBack):
+    """Get exit id of a transition."""
     mapId = GetMapId(back)
     if mapId in MapExitTable:
         return MapExitTable[mapId].index(back.name)

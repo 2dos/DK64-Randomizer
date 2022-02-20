@@ -108,7 +108,6 @@ class Spoiler:
                     self.shuffled_exit_instructions.append(loading_zone_mapping)
                 except Exception as ex:
                     print(ex)
-                    
 
     def UpdateLocations(self, locations):
         """Update location list for what was produced by the fill."""

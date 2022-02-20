@@ -6,10 +6,18 @@ dev_version = "0.4.5 Beta"
 
 url = js.location.href.lower().replace("/", "").replace("http:", "").replace("https:", "")
 
+only_version = "0.0"
+current_version = "DK64R 0.0"
 if url == "dk64randomizer.com":
     current_version = "DK64 Randomizer v" + stable_version
+    only_version = stable_version
 else:
     current_version = "DK64R Dev v" + dev_version
+    only_version = dev_version
+
 
 js.document.title = current_version
-js.document.getElementById("live-version").text = current_version + " | "
+try:
+    js.document.getElementById("live-version").text = current_version + " | "
+except Exception:
+    pass

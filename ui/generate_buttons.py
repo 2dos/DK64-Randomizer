@@ -149,13 +149,16 @@ def disable_input(event):
             js.document.getElementById("input-file-rom").id = "input-file-rom_2"
         except Exception:
             pass
-        js.document.getElementById("input-file-rom_1").id = "input-file-rom"
+        try:
+            js.document.getElementById("input-file-rom_1").id = "input-file-rom"
+        except Exception:
+            pass
     else:
         try:
             js.document.getElementById("input-file-rom").id = "input-file-rom_1"
         except Exception:
             pass
-        js.document.getElementById("input-file-rom_2").id = "input-file-rom"
-
-
-disable_input(None)
+        try:
+            js.document.getElementById("input-file-rom_2").id = "input-file-rom"
+        except Exception:
+            pass
