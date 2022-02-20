@@ -4,6 +4,7 @@ import random
 import randomizer.ItemPool as ItemPool
 import randomizer.Lists.Exceptions as Ex
 import randomizer.Logic as Logic
+import randomizer.ShuffleExits as ShuffleExits
 from randomizer.Enums.Items import Items
 from randomizer.Enums.Levels import Levels
 from randomizer.Enums.Regions import Regions
@@ -15,28 +16,27 @@ from randomizer.Lists.Minigame import MinigameAssociations, MinigameRequirements
 from randomizer.Logic import LogicVarHolder, LogicVariables
 from randomizer.LogicClasses import TransitionFront
 from randomizer.ShuffleBarrels import BarrelShuffle
-from randomizer.ShuffleExits import ExitShuffle, ShufflableExits
 
 
 def GetExitLevelExit(settings, region):
     """Get the exit that using the "Exit Level" button will take you to."""
     level = region.level
     if settings.shuffle_loading_zones == "all" and region.restart is not None:
-        return ShufflableExits[region.restart].shuffledId
+        return ShuffleExits.ShufflableExits[region.restart].shuffledId
     elif level == Levels.JungleJapes:
-        return ShufflableExits[Transitions.JapesToIsles].shuffledId
+        return ShuffleExits.ShufflableExits[Transitions.JapesToIsles].shuffledId
     elif level == Levels.AngryAztec:
-        return ShufflableExits[Transitions.AztecToIsles].shuffledId
+        return ShuffleExits.ShufflableExits[Transitions.AztecToIsles].shuffledId
     elif level == Levels.FranticFactory:
-        return ShufflableExits[Transitions.FactoryToIsles].shuffledId
+        return ShuffleExits.ShufflableExits[Transitions.FactoryToIsles].shuffledId
     elif level == Levels.GloomyGalleon:
-        return ShufflableExits[Transitions.GalleonToIsles].shuffledId
+        return ShuffleExits.ShufflableExits[Transitions.GalleonToIsles].shuffledId
     elif level == Levels.FungiForest:
-        return ShufflableExits[Transitions.ForestToIsles].shuffledId
+        return ShuffleExits.ShufflableExits[Transitions.ForestToIsles].shuffledId
     elif level == Levels.CrystalCaves:
-        return ShufflableExits[Transitions.CavesToIsles].shuffledId
+        return ShuffleExits.ShufflableExits[Transitions.CavesToIsles].shuffledId
     elif level == Levels.CreepyCastle:
-        return ShufflableExits[Transitions.CastleToIsles].shuffledId
+        return ShuffleExits.ShufflableExits[Transitions.CastleToIsles].shuffledId
 
 
 def GetAccessibleLocations(settings, ownedItems, searchType=SearchMode.GetReachable):
@@ -115,7 +115,7 @@ def GetAccessibleLocations(settings, ownedItems, searchType=SearchMode.GetReacha
                     levelExit = GetExitLevelExit(settings, region)
                     # When shuffling levels, unplaced level entrances will have no destination yet
                     if levelExit is not None:
-                        dest = ShufflableExits[levelExit].back.regionId
+                        dest = ShuffleExits.ShufflableExits[levelExit].back.regionId
                         exits.append(TransitionFront(dest, lambda l: True))
                 for exit in exits:
                     destination = exit.dest
@@ -123,9 +123,9 @@ def GetAccessibleLocations(settings, ownedItems, searchType=SearchMode.GetReacha
                     # use the entrance it was shuffled to by getting the region of the destination exit.
                     # If the exit is assumed from root, do not look for a shuffled exit - just explore the destination
                     if exit.exitShuffleId is not None and not exit.assumed:
-                        shuffledExit = ShufflableExits[exit.exitShuffleId]
+                        shuffledExit = ShuffleExits.ShufflableExits[exit.exitShuffleId]
                         if shuffledExit.shuffled:
-                            destination = ShufflableExits[shuffledExit.shuffledId].back.regionId
+                            destination = ShuffleExits.ShufflableExits[shuffledExit.shuffledId].back.regionId
                         elif shuffledExit.toBeShuffled and not exit.assumed:
                             continue
                     # If a region is accessible through this exit and has not yet been added, add it to the queue to be visited eventually
@@ -414,7 +414,7 @@ def Generate_Spoiler(spoiler):
         spoiler.UpdateBarrels()
     # Handle ER
     if spoiler.settings.shuffle_loading_zones != "none":
-        ExitShuffle(spoiler.settings)
+        ShuffleExits.ExitShuffle(spoiler.settings)
         spoiler.UpdateExits()
     # Place items
     if spoiler.settings.shuffle_items == "all":

@@ -100,10 +100,10 @@ class Spoiler:
                     shuffledBack = ShufflableExits[exit.shuffledId].back
                     self.shuffled_exit_data[key] = shuffledBack
                     loading_zone_mapping = {}
-                    loading_zone_mapping["container_map"] = exit.region
-                    loading_zone_mapping["destination_map"] = GetMapId(vanillaBack)
+                    loading_zone_mapping["container_map"] = GetMapId(exit.region)
+                    loading_zone_mapping["destination_map"] = GetMapId(vanillaBack.regionId)
                     loading_zone_mapping["destination_exit"] = GetExitId(vanillaBack)
-                    loading_zone_mapping["new_map"] = GetMapId(shuffledBack)
+                    loading_zone_mapping["new_map"] = GetMapId(shuffledBack.regionId)
                     loading_zone_mapping["new_exit"] = GetExitId(shuffledBack)
                     self.shuffled_exit_instructions.append(loading_zone_mapping)
                 except Exception as ex:
