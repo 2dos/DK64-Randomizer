@@ -8,7 +8,7 @@ from randomizer import Logic
 from randomizer.Enums.Items import Items
 from randomizer.Lists.Item import ItemFromKong, ItemList
 from randomizer.Lists.Location import LocationList
-from randomizer.MapsAndExits import GetExitId
+from randomizer.MapsAndExits import GetExitId, GetMapId
 from randomizer.Settings import Settings
 from randomizer.ShuffleExits import ShufflableExits
 
@@ -86,9 +86,9 @@ class Spoiler:
                     self.shuffled_exit_data[key] = shuffledBack
                     loading_zone_mapping = {}
                     loading_zone_mapping["container_map"] = exit.region
-                    loading_zone_mapping["destination_map"] = vanillaBack.mapId
+                    loading_zone_mapping["destination_map"] = GetMapId(vanillaBack)
                     loading_zone_mapping["destination_exit"] = GetExitId(vanillaBack)
-                    loading_zone_mapping["new_map"] = shuffledBack.mapId
+                    loading_zone_mapping["new_map"] = GetMapId(shuffledBack)
                     loading_zone_mapping["new_exit"] = GetExitId(shuffledBack)
                     self.shuffled_exit_instructions.append(loading_zone_mapping)
                 except Exception as ex:

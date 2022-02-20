@@ -1,11 +1,11 @@
 from enum import IntEnum
 
-from randomizer.LogicClasses import TransitionBack
+from randomizer.LogicClasses import Regions, TransitionBack
 
 class Maps(IntEnum):
     '''List of Maps with in-game index'''
 
-    # DK Isles Regions
+    # DK Isles
     Isles = 34
     BananaFairyRoom = 189
     JungleJapesLobby = 169
@@ -17,7 +17,7 @@ class Maps(IntEnum):
     CrystalCavesLobby = 194
     CreepyCastleLobby = 193
 
-    # Jungle Japes Regions
+    # Jungle Japes
     JungleJapes = 7
     JapesTinyHive = 12
     JapesLankyCave = 13
@@ -26,7 +26,7 @@ class Maps(IntEnum):
     JapesUnderGround = 33
     JapesBaboonBlast = 37
 
-    # Angry Aztec Regions
+    # Angry Aztec
     AngryAztec = 38
     AztecTinyTemple = 16
     AztecDonkey5DTemple = 19
@@ -38,14 +38,14 @@ class Maps(IntEnum):
     AztecLlamaTemple = 20
     AztecBaboonBlast = 41
 
-    # Frantic Factory Regions
+    # Frantic Factory
     FranticFactory = 26
     FactoryTinyRace = 27
     FactoryPowerHut = 29
     FactoryCrusher = 36
     FactoryBaboonBlast = 110
 
-    # Gloomy Galleon Regions
+    # Gloomy Galleon
     GloomyGalleon = 30
     GalleonLighthouse = 49
     GalleonMermaidRoom = 45
@@ -59,7 +59,7 @@ class Maps(IntEnum):
     Galleon2DShip = 47
     GalleonBaboonBlast = 54
 
-    # Fungi Forest Regions
+    # Fungi Forest
     FungiForest = 48
     ForestMinecarts = 55
     ForestGiantMushroom = 64
@@ -76,7 +76,7 @@ class Maps(IntEnum):
     ForestThornvineBarn = 59
     ForestBaboonBlast = 188
 
-    # Crystal Caves Regions
+    # Crystal Caves
     CrystalCaves = 72
     CavesLankyRace = 82
     CavesFrozenCastle = 98
@@ -94,7 +94,7 @@ class Maps(IntEnum):
     CavesChunkyCabin = 90
     CavesBaboonBlast = 186
 
-    # Creepy Castle Regions
+    # Creepy Castle
     CreepyCastle = 87
     CastleTree = 164
     CastleLibrary = 114
@@ -112,6 +112,150 @@ class Maps(IntEnum):
     CastleUpperCave = 151
     CastleDungeon = 163
     CastleBaboonBlast = 187
+
+RegionMapList = {
+    # Isles
+    Regions.IslesMain: Maps.Isles,
+    Regions.CrocodileIsleBeyondLift: Maps.Isles,
+    Regions.IslesSnideRoom: Maps.IslesSnideRoom,
+    Regions.CabinIsle: Maps.Isles,
+    Regions.BananaFairyRoom: Maps.BananaFairyRoom,
+    Regions.JungleJapesLobby: Maps.JungleJapesLobby,
+    Regions.AngryAztecLobby: Maps.AngryAztecLobby,
+    Regions.FranticFactoryLobby: Maps.FranticFactoryLobby,
+    Regions.GloomyGalleonLobby: Maps.GloomyGalleonLobby,
+    Regions.FungiForestLobby: Maps.FungiForestLobby,
+    Regions.CrystalCavesLobby: Maps.CrystalCavesLobby,
+    Regions.CreepyCastleLobby: Maps.CreepyCastleLobby,
+    # Japes
+    Regions.JungleJapesMain: Maps.JungleJapes,
+    Regions.JapesBeyondCoconutGate1: Maps.JungleJapes,
+    Regions.JapesBeyondCoconutGate2: Maps.JungleJapes,
+    Regions.JapesBeyondPeanutGate: Maps.JungleJapes,
+    Regions.JapesBeyondFeatherGate: Maps.JungleJapes,
+    Regions.TinyHive: Maps.JapesTinyHive,
+    Regions.BeyondRambiGate: Maps.JungleJapes,
+    Regions.JapesLankyCave: Maps.JapesLankyCave,
+    Regions.Mine: Maps.JapesMountain,
+    Regions.JapesMinecarts: Maps.JapesMinecarts,
+    Regions.JapesCatacomb: Maps.JapesUnderGround,
+    Regions.JapesBaboonBlast: Maps.JapesBaboonBlast,
+    # Aztec
+    Regions.AngryAztecStart: Maps.AngryAztec,
+    Regions.TempleStart: Maps.AztecTinyTemple,
+    Regions.TempleUnderwater: Maps.AztecTinyTemple,
+    Regions.AngryAztecMain: Maps.AngryAztec,
+    Regions.DonkeyTemple: Maps.AztecDonkey5DTemple,
+    Regions.DiddyTemple: Maps.AztecDiddy5DTemple,
+    Regions.LankyTemple: Maps.AztecLanky5DTemple,
+    Regions.TinyTemple: Maps.AztecTiny5DTemple,
+    Regions.ChunkyTemple: Maps.AztecChunky5DTemple,
+    Regions.AztecTinyRace: Maps.AztecTinyRace,
+    Regions.LlamaTemple: Maps.AztecLlamaTemple,
+    Regions.LlamaTempleBack: Maps.AztecLlamaTemple,
+    Regions.AztecBaboonBlast: Maps.AztecBaboonBlast,
+    # Factory
+    Regions.FranticFactoryStart: Maps.FranticFactory,
+    Regions.Testing: Maps.FranticFactory,
+    Regions.RandD: Maps.FranticFactory,
+    Regions.FactoryTinyRaceLobby: Maps.FranticFactory,
+    Regions.FactoryTinyRace: Maps.FactoryTinyRace,
+    Regions.ChunkyRoomPlatform: Maps.FranticFactory,
+    Regions.PowerHut: Maps.FactoryPowerHut,
+    Regions.BeyondHatch: Maps.FranticFactory,
+    Regions.InsideCore: Maps.FactoryCrusher,
+    Regions.MainCore: Maps.FranticFactory,
+    Regions.FactoryBaboonBlast: Maps.FactoryBaboonBlast,
+    # Galleon
+    Regions.GloomyGalleonStart: Maps.GloomyGalleon,
+    Regions.GalleonBeyondPineappleGate: Maps.GloomyGalleon,
+    Regions.LighthouseArea: Maps.GloomyGalleon,
+    Regions.Lighthouse: Maps.GalleonLighthouse,
+    Regions.MermaidRoom: Maps.GalleonMermaidRoom,
+    Regions.SickBay: Maps.GalleonSickBay,
+    Regions.Shipyard: Maps.GloomyGalleon,
+    Regions.SealRace: Maps.GalleonSealRace,
+    Regions.TreasureRoom: Maps.GloomyGalleon,
+    Regions.TinyChest: Maps.GalleonTreasureChest,
+    Regions.Submarine: Maps.GalleonSubmarine,
+    Regions.Mechafish: Maps.GalleonMechafish,
+    Regions.LankyShip: Maps.Galleon2DShip,
+    Regions.TinyShip: Maps.Galleon2DShip,
+    Regions.BongosShip: Maps.Galleon5DShipDKTiny,
+    Regions.SaxophoneShip: Maps.Galleon5DShipDKTiny,
+    Regions.GuitarShip: Maps.Galleon5DShipDiddyLankyChunky,
+    Regions.TromboneShip: Maps.Galleon5DShipDiddyLankyChunky,
+    Regions.TriangleShip: Maps.Galleon5DShipDiddyLankyChunky,
+    Regions.GalleonBaboonBlast: Maps.GalleonBaboonBlast,
+    # Fungi
+    Regions.FungiForestStart: Maps.FungiForest,
+    Regions.ForestMinecarts: Maps.ForestMinecarts,
+    Regions.GiantMushroomArea: Maps.FungiForest,
+    Regions.MushroomLower: Maps.ForestGiantMushroom,
+    Regions.MushroomLowerExterior: Maps.FungiForest,
+    Regions.MushroomUpper: Maps.ForestGiantMushroom,
+    Regions.MushroomNightDoor: Maps.ForestGiantMushroom,
+    Regions.MushroomNightExterior: Maps.FungiForest,
+    Regions.MushroomUpperExterior: Maps.FungiForest,
+    Regions.MushroomChunkyRoom: Maps.ForestChunkyFaceRoom,
+    Regions.MushroomLankyMushroomsRoom: Maps.ForestLankyMushroomsRoom,
+    Regions.MushroomLankyZingersRoom: Maps.ForestLankyZingersRoom,
+    Regions.HollowTreeArea: Maps.FungiForest,
+    Regions.Anthill: Maps.ForestAnthill,
+    Regions.MillArea: Maps.FungiForest,
+    Regions.MillChunkyArea: Maps.ForestMillBack,
+    Regions.MillTinyArea: Maps.ForestMillBack,
+    Regions.SpiderRoom: Maps.ForestSpider,
+    Regions.GrinderRoom: Maps.ForestMillFront,
+    Regions.MillRafters: Maps.ForestRafters,
+    Regions.WinchRoom: Maps.ForestWinchRoom,
+    Regions.MillAttic: Maps.ForestMillAttic,
+    Regions.ThornvineArea: Maps.FungiForest,
+    Regions.ThornvineBarn: Maps.ForestThornvineBarn,
+    Regions.WormArea: Maps.FungiForest,
+    Regions.ForestBaboonBlast: Maps.ForestBaboonBlast,
+    # Caves
+    Regions.CrystalCavesMain: Maps.CrystalCaves,
+    Regions.BoulderIgloo: Maps.CrystalCaves,
+    Regions.CavesLankyRace: Maps.CavesLankyRace,
+    Regions.FrozenCastle: Maps.CavesFrozenCastle,
+    Regions.IglooArea: Maps.CrystalCaves,
+    Regions.GiantKosha: Maps.CrystalCaves,
+    Regions.DonkeyIgloo: Maps.CavesDonkeyIgloo,
+    Regions.DiddyIgloo: Maps.CavesDiddyIgloo,
+    Regions.LankyIgloo: Maps.CavesLankyIgloo,
+    Regions.TinyIgloo: Maps.CavesTinyIgloo,
+    Regions.ChunkyIgloo: Maps.CavesChunkyIgloo,
+    Regions.CabinArea: Maps.CrystalCaves,
+    Regions.RotatingCabin: Maps.CavesRotatingCabin,
+    Regions.DonkeyCabin: Maps.CavesDonkeyCabin,
+    Regions.DiddyLowerCabin: Maps.CavesDiddyLowerCabin,
+    Regions.DiddyUpperCabin: Maps.CavesDiddyUpperCabin,
+    Regions.LankyCabin: Maps.CavesLankyCabin,
+    Regions.TinyCabin: Maps.CavesTinyCabin,
+    Regions.ChunkyCabin: Maps.CavesChunkyCabin,
+    Regions.CavesBaboonBlast: Maps.CavesBaboonBlast,
+    # Castle
+    Regions.CreepyCastleMain: Maps.CreepyCastle,
+    Regions.CastleWaterfall: Maps.CreepyCastle,
+    Regions.CastleTree: Maps.CastleTree,
+    Regions.Library: Maps.CastleLibrary,
+    Regions.Ballroom: Maps.CastleBallroom,
+    Regions.MuseumBehindGlass: Maps.CastleMuseum,
+    Regions.CastleTinyRace: Maps.CastleTinyRace,
+    Regions.Tower: Maps.CastleTower,
+    Regions.Greenhouse: Maps.CastleGreenhouse,
+    Regions.TrashCan: Maps.CastleTrashCan,
+    Regions.Shed: Maps.CastleShed,
+    Regions.Museum: Maps.CastleMuseum,
+    Regions.LowerCave: Maps.CastleLowerCave,
+    Regions.Crypt: Maps.CastleCrypt,
+    Regions.CastleMinecarts: Maps.CastleMinecarts,
+    Regions.Mausoleum: Maps.CastleMausoleum,
+    Regions.UpperCave: Maps.CastleUpperCave,
+    Regions.Dungeon: Maps.CastleDungeon,
+    Regions.CastleBaboonBlast: Maps.CastleBaboonBlast,
+}
 
 MapExitTable = {
     Maps.Isles: [
@@ -324,7 +468,7 @@ MapExitTable = {
     ],
     Maps.CreepyCastle: [
         "From Castle Lobby",
-        "From Tree (Exit)",
+        "From Tree (Drain)",
         "From Tunnel (Front)",
         "From T&S (W2)",
         "From Lower Cave",
@@ -420,9 +564,13 @@ MapExitTable = {
     ],
 }
 
+def GetMapId(back:TransitionBack):
+    return RegionMapList[back.regionId]
+
 def GetExitId(back:TransitionBack):
-    if back.mapId in MapExitTable:
-        return MapExitTable[back.mapId].index(back.name)
+    mapId = GetMapId(back)
+    if mapId in MapExitTable:
+        return MapExitTable[mapId].index(back.name)
     else:
         # Default exit number should be zero for all maps that don't have multiple exits
         return 0
