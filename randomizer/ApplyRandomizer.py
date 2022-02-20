@@ -65,11 +65,11 @@ def patching_response(responded_data):
         Transitions.CavesToIsles,
         Transitions.CastleToIsles,
     ]
-    order = 0
-    for level in vanilla_entrace_order:
-        ROM().seek(sav + 0x001 + order)
-        ROM().write(vanilla_lobby_order.index(spoiler.shuffled_exit_data[level]))
-        order += 1
+    # order = 0
+    # for level in vanilla_entrace_order:
+    #     ROM().seek(sav + 0x001 + order)
+    #     ROM().write(vanilla_lobby_order.index(spoiler.shuffled_exit_data[level]))
+    #     order += 1
 
     # Color Banana Requirements
     order = 0
@@ -104,12 +104,12 @@ def patching_response(responded_data):
         Transitions.CavesToIsles: 0xEC,
         Transitions.CastleToIsles: 0x124,
     }
-    order = 0
-    for key, value in map_pointers.items():
-        new_world = spoiler.shuffled_exit_data.get(key)
-        ROM().seek(sav + 0x01E + order)
-        ROM().writeMultipleBytes(key_mapping[new_world], 2)
-        order += 2
+    # order = 0
+    # for key, value in map_pointers.items():
+    #     new_world = spoiler.shuffled_exit_data.get(key)
+    #     ROM().seek(sav + 0x01E + order)
+    #     ROM().writeMultipleBytes(key_mapping[new_world], 2)
+    #     order += 2
 
     # Unlock All Kongs
     if spoiler.settings.unlock_all_kongs:
@@ -159,8 +159,8 @@ def patching_response(responded_data):
     randomize_dktv()
     randomize_music(spoiler.settings)
 
-    if spoiler.shuffle_loading_zones != "none":
-        randomize_entrances(spoiler)
+    # if spoiler.settings.shuffle_loading_zones != "none":
+    #     randomize_entrances(spoiler)
 
     ProgressBar().update_progress(10, "Seed Generated.")
     ROM().fixSecurityValue()

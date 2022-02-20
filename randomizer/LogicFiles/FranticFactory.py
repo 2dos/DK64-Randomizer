@@ -108,7 +108,7 @@ LogicRegions = {
         TransitionFront(Regions.CrankyFactory, lambda l: True),
         TransitionFront(Regions.CandyGeneric, lambda l: True),
         TransitionFront(Regions.FactoryBossLobby, lambda l: True),
-        TransitionFront(Regions.FactoryBaboonBlast, lambda l: l.blast and l.isdonkey, Transitions.FactoryMainToBBlast)
+        TransitionFront(Regions.FactoryBaboonBlast, lambda l: l.blast and l.isdonkey) #, Transitions.FactoryMainToBBlast)
     ]),
 
     Regions.FactoryBaboonBlast: Region("Factory Baboon Blast", Levels.FranticFactory, False, None, [], [

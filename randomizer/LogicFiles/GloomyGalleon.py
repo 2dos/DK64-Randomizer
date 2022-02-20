@@ -61,7 +61,7 @@ LogicRegions = {
         TransitionFront(Regions.SickBay, lambda l: Events.ActivatedLighthouse in l.Events and l.Slam and l.ischunky, Transitions.GalleonLighthouseAreaToSickBay),
         TransitionFront(Regions.Snide, lambda l: True),
         TransitionFront(Regions.GalleonBossLobby, lambda l: Events.LighthouseEnguarde in l.Events),
-        TransitionFront(Regions.GalleonBaboonBlast, lambda l: l.blast and l.isdonkey, Transitions.GalleonMainToBBlast)
+        TransitionFront(Regions.GalleonBaboonBlast, lambda l: l.blast and l.isdonkey) #, Transitions.GalleonMainToBBlast)
     ]),
 
     Regions.GalleonBaboonBlast: Region("Galleon Baboon Blast", Levels.GloomyGalleon, False, None, [], [

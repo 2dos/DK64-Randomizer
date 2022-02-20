@@ -41,7 +41,7 @@ LogicRegions = {
         TransitionFront(Regions.FunkyJapes, lambda l: True),
         TransitionFront(Regions.Snide, lambda l: True),
         TransitionFront(Regions.JapesBossLobby, lambda l: True),
-        TransitionFront(Regions.JapesBaboonBlast, lambda l: l.blast and l.isdonkey, Transitions.JapesMainToBBlast)
+        TransitionFront(Regions.JapesBaboonBlast, lambda l: l.blast and l.isdonkey) #, Transitions.JapesMainToBBlast)
     ]),
 
     Regions.JapesBaboonBlast: Region("Japes Baboon Blast", Levels.JungleJapes, False, None, [

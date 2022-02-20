@@ -73,8 +73,7 @@ class Spoiler:
             for exit, dest in self.shuffled_exit_data.items():
                 shuffled_exits[ShufflableExits[exit].name] = Logic.Regions[dest.regionId].name + " " + dest.name
             humanspoiler["Shuffled Exits"] = shuffled_exits
-            # humanspoiler["Shuffled Exit Json"] = json.dumps(self.shuffled_exit_instructions)
-            humanspoiler["Shuffled Exit Json"] = self.shuffled_exit_instructions
+            # humanspoiler["Shuffled Exit Json"] = self.shuffled_exit_instructions
 
         if self.settings.bonus_barrels == "random":
             shuffled_barrels = OrderedDict()

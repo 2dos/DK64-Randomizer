@@ -86,7 +86,7 @@ class Settings:
         self.shuffle_loading_zones = "none"
 
         # decoupled_loading_zones: bool
-        self.decoupled_loading_zones = False
+        self.decoupled_loading_zones = True
 
         self.prices = VanillaPrices.copy()
         self.resolve_settings()

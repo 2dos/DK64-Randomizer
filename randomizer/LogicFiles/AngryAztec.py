@@ -67,7 +67,7 @@ LogicRegions = {
         TransitionFront(Regions.ChunkyTemple, lambda l: Events.FedTotem in l.Events and l.pineapple and l.ischunky, Transitions.AztecMainToChunky),
         TransitionFront(Regions.AztecTinyRace, lambda l: l.charge and l.jetpack and l.diddy and l.mini and l.saxophone and l.istiny, Transitions.AztecMainToRace),
         TransitionFront(Regions.LlamaTemple, lambda l: (l.coconut and l.isdonkey) or (l.grape and l.islanky) or (l.feather and l.istiny)),
-        TransitionFront(Regions.AztecBaboonBlast, lambda l: l.blast and l.isdonkey, Transitions.AztecMainToBBlast),
+        TransitionFront(Regions.AztecBaboonBlast, lambda l: l.blast and l.isdonkey), #, Transitions.AztecMainToBBlast),
         TransitionFront(Regions.CrankyAztec, lambda l: True),
         TransitionFront(Regions.Snide, lambda l: True),
         TransitionFront(Regions.FunkyGeneric, lambda l: True),
