@@ -41,19 +41,22 @@ async def initialize():
     js.document.close()
 
     # Load settings from the cookies if it exists
-    cookie_data = document.cookie
-    if cookie_data:
-        for cookie in cookie_data.split(";"):
-            if "settings=" in cookie:
-                settings_cookie = str(cookie).replace("settings=", "")
-                break
-        json_data = json.loads(settings_cookie)
-        for key in json_data:
-            try:
-                # TODO: Validate this still works now that we switched engines
-                document.getElementById(key).value = json_data[key]
-            except Exception:
-                pass
+    try:
+        cookie_data = document.cookie
+        if cookie_data:
+            for cookie in cookie_data.split(";"):
+                if "settings=" in cookie:
+                    settings_cookie = str(cookie).replace("settings=", "")
+                    break
+            json_data = json.loads(settings_cookie)
+            for key in json_data:
+                try:
+                    # TODO: Validate this still works now that we switched engines
+                    document.getElementById(key).value = json_data[key]
+                except Exception:
+                    pass
+    except Exception:
+        pass
 
     # Load our pointer info from the JSON database
     js.pointer_addresses = json.loads(js.jquery.ajax(js.Object.fromEntries(to_js({"url": "./static/patches/pointer_addresses.json", "async": False}))).responseText)

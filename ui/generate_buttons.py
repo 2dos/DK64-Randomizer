@@ -145,19 +145,21 @@ def disable_input(event):
     # and set our input file box as the correct name so we can use two fileboxes as the same name
     if ev_type is False:
         update_disabled_progression(None)
-        try:
-            js.document.getElementById("input-file-rom").id = "input-file-rom_2"
-        except Exception:
-            pass
+        if not js.document.getElementById("input-file-rom_2"):
+            try:
+                js.document.getElementById("input-file-rom").id = "input-file-rom_2"
+            except Exception:
+                pass
         try:
             js.document.getElementById("input-file-rom_1").id = "input-file-rom"
         except Exception:
             pass
     else:
-        try:
-            js.document.getElementById("input-file-rom").id = "input-file-rom_1"
-        except Exception:
-            pass
+        if not js.document.getElementById("input-file-rom_1"):
+            try:
+                js.document.getElementById("input-file-rom").id = "input-file-rom_1"
+            except Exception:
+                pass
         try:
             js.document.getElementById("input-file-rom_2").id = "input-file-rom"
         except Exception:
