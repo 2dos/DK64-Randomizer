@@ -15,6 +15,10 @@ async def initialize():
         register_hook("/")
     except Exception:
         pass
+
+    # We import version after register_hook so we can actively use it.
+    import version
+
     js.listeners = []
     js.progression_presets = []
     js.background_worker = None
@@ -28,7 +32,7 @@ async def initialize():
 
     templateEnv = Environment(loader=FunctionLoader(loader_func), enable_async=True)
     template = templateEnv.get_template("frontpage.html.jinja2")
-    rendered = await template.render()
+    rendered = await template.render(version=version)
     js.document.documentElement.innerHTML = ""
     js.document.open()
     js.document.write(rendered)

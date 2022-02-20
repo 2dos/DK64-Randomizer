@@ -31,8 +31,8 @@
             <div class="masthead-content">
                 <div class="container px-5">
                     <img src="/base-hack/assets/Non-Code/DKTV/logo.png" width="100%">
-                    <p>Version 1.0.0</p>
-                    <a class="btn btn-info btn-xl rounded-pill mt-5" href="#" onClick="render_page('./randomizer.html')">Play Now</a>
+                    <p>Version {{version.only_version}}</p>
+                    <a class="btn btn-info btn-xl rounded-pill mt-5" onClick="render_page('./randomizer.html')">Play Now</a>
                     <a class="btn btn-light btn-xl rounded-pill mt-5" href="#overview">More Info</a>
                 </div>
             </div>
@@ -113,7 +113,7 @@
             </div>
         </section>
         <footer class="py-5 bg-black">
-            <div class="container px-5"><p class="m-0 text-center text-white small">DK64 Randomizer v1.0.0
+            <div class="container px-5"><p class="m-0 text-center text-white small">{{version.current_version}}
                 <br>Randomizer by 2dos and Ballaam | Web Generator by Killklli
                 <br>In-game characters, images and logos copyright © 1999-2022 Nintendo or Rareware respectively.
                 <br>DK64Randomizer.com does not distribute copyright material.</p></div>
@@ -129,6 +129,7 @@
                 document.open();
                 document.write(data);
                 document.close();
+                history.pushState({}, "page 1", "randomizer.html");
             }
         </script>
     </body>

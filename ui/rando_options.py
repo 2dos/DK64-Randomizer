@@ -33,17 +33,10 @@ def update_disabled_progression(evt):
             pass
 
 
-# Trigger it once so we make sure all options are synced up
-update_disabled_progression(None)
-
-
 @bind("click", "seed_button")
 def randomseed(evt):
     """Randomly generate a seed ID."""
     document.getElementById("seed").value = str(random.randint(100000, 999999))
-
-
-randomseed(None)
 
 
 @bind("input", "seed")
@@ -182,7 +175,3 @@ def set_blocker_preset(event):
     for pre in response.get("blocker_progression"):
         document.getElementById("blocker_" + str(count)).value = pre
         count += 1
-
-
-set_blocker_preset(None)
-set_troff_preset(None)
