@@ -89,6 +89,11 @@ extern int isLobby(int map);
 extern float determineXRatioMovement(unsigned int unk);
 extern int countFlagArray(int starting_flag, int count, int flagType);
 
+extern void setWaterHeight(int chunk, float height, float unk2);
+extern void loadObjectForScripting(void* unk0, int unk1);
+extern void updateObjectScript(void* behaviour_pointer);
+extern void executeBehaviourScript(void* behaviour_pointer, int unk0);
+
 //vanilla data
 extern float TransitionSpeed;
 extern char CutsceneWillPlay;
@@ -220,6 +225,9 @@ extern main_menu_moves_struct MainMenuMoves[8];
 extern char DataIsCompressed[32];
 extern char KutOutKongArray[5];
 extern enemy_drop_struct EnemyDropsTable[27];
+extern short scriptLoadedArray[0x46];
+extern short scriptsLoaded;
+extern unsigned char scriptLoadsAttempted;
 
 extern purchase_struct CrankyMoves[5][7];
 extern purchase_struct CandyMoves[5][7];

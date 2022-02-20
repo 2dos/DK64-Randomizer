@@ -269,5 +269,63 @@ START_HOOK:
 		J 		0x80029690
 		ADDIU 	s2, v0, 0
 
+	AutowalkFix:
+		// Free Variables
+		// at, t2, a0, t7, t8
+		LUI 	a0, hi(TransitionSpeed)
+		LHU 	a0, lo(TransitionSpeed) (a0)
+		ANDI 	a0, a0, 0x8000 // Get sign
+		BEQZ 	a0, AutowalkFix_Vanilla // No transition exit
+		NOP
+		LUI 	t7, hi(DestMap)
+		LW 		t7, lo(DestMap) (t7)
+		LUI 	t8, hi(DestExit)
+		LW 		t8, lo(DestExit) (t8)
+		ADDIU 	t2, r0, 0x22
+		BNE 	t7, t2, AutowalkFix_NotAztecDoor
+		ADDIU 	a0, r0, 3
+		BEQ 	t8, a0, AutowalkFix_Finish
+		LUI 	at, 0x44F2
+
+		AutowalkFix_NotAztecDoor:
+			ADDIU 	t2, r0, 0x1A
+			BNE 	t7, t2, AutowalkFix_NotCrusher
+			ADDIU 	a0, r0, 8
+			LUI 	at, 0x4536
+			BEQ 	t8, a0, AutowalkFix_Finish
+			ADDIU 	at, at, 0x4000
+
+		AutowalkFix_NotCrusher:
+			ADDIU 	t2, r0, 0x57
+			BNE 	t7, t2, AutowalkFix_NotCastle
+			ADDIU 	a0, r0, 15
+			LUI 	at, 0x452F
+			BEQ 	t8, a0, AutowalkFix_Finish // Castle Tree
+			ADDIU 	at, at, 0x9000
+			ADDIU 	a0, r0, 11
+			LUI 	at, 0x4552
+			BEQ 	t8, a0, AutowalkFix_Finish // Castle Ballroom
+			ADDIU 	at, at, 0x4000
+			ADDIU 	a0, r0, 21
+			LUI 	at, 0x45FD
+			BEQ 	t8, a0, AutowalkFix_Finish // Castle Entry (Cancel Autowalk)
+			ADDIU 	at, at, 0x2000
+
+		AutowalkFix_NotCastle:
+			ADDIU 	t2, r0, 0x70
+			BNE  	t7, t2, AutowalkFix_Vanilla
+			ADDIU 	a0, r0, 1
+			BEQ 	t8, a0, AutowalkFix_Finish
+			LUI 	at, 0x4361
+
+		AutowalkFix_Vanilla:
+			LUI 	at, 0x42C8
+
+		AutowalkFix_Finish:
+			LUI 	t7, hi(TestVariable)
+			SW 		at, lo(TestVariable) (t7)
+
+			J 		0x806F3E7C
+			OR 		t2, r0, r0
 .align 0x10
 END_HOOK:
