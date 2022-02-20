@@ -7,8 +7,7 @@ from randomizer.Enums.Levels import Levels
 from randomizer.Enums.Locations import Locations
 from randomizer.Enums.Regions import Regions
 from randomizer.Enums.Transitions import Transitions
-from randomizer.LogicClasses import (Event, LocationLogic, Region,
-                                     TransitionBack, TransitionFront)
+from randomizer.LogicClasses import (Event, LocationLogic, Region, TransitionFront)
 
 LogicRegions = {
     Regions.AngryAztecStart: Region("Angry Aztec Start", Levels.AngryAztec, True, None, [

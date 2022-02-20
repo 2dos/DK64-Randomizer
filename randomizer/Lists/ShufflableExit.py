@@ -5,7 +5,7 @@ from randomizer.Enums.ExitCategories import ExitCategories
 from randomizer.Enums.Kongs import Kongs
 from randomizer.Enums.Regions import Regions
 from randomizer.Enums.Transitions import Transitions
-from randomizer.LogicClasses import Region, TransitionBack
+from randomizer.LogicClasses import TransitionBack
 
 
 class ShufflableExit:
@@ -20,9 +20,9 @@ class ShufflableExit:
         self.entryKongs = entryKongs  # Indicates either need to be one of a certain set of kongs to gain access to this transition
         self.regionKongs = regionKongs  # Indicates need to be a certain kong or kongs on the back side of the transition. Should only apply if the destination region doesn't have a tag barrel
         self.move = move  # Indicates this transition needs a kong-specific move to access, so it's even more restrictive
-        # Here dest is the entrance to go to, rather than just the target region
+        # shuffledId is pointing to the shuffled destination exit within ShufflableExits
         # Initialized as none until it gets shuffled
-        self.dest = None
+        self.shuffledId = None
         self.shuffled = False
         self.toBeShuffled = False
 
@@ -114,27 +114,27 @@ ShufflableExits = {
     Transitions.GalleonSealToShipyard: ShufflableExit("Gloomy Galleon Seal Race to Main", Regions.SealRace, TransitionBack(Regions.Shipyard, "From Seal Race", Transitions.GalleonShipyardToSeal)),
     Transitions.GalleonShipyardToSubmarine: ShufflableExit("Gloomy Galleon Main to Submarine", Regions.Shipyard, TransitionBack(Regions.Submarine, "From Galleon Main", Transitions.GalleonSubmarineToShipyard), ExitCategories.GalleonExterior, entryKongs={Kongs.tiny}, regionKongs={Kongs.tiny}, move=True),
     Transitions.GalleonSubmarineToShipyard: ShufflableExit("Gloomy Galleon Submarine to Main", Regions.Submarine, TransitionBack(Regions.Shipyard, "From Submarine", Transitions.GalleonShipyardToSubmarine)),
-    Transitions.GalleonShipyardToLanky: ShufflableExit("Gloomy Galleon Main to Lanky 2DS", Regions.Shipyard, TransitionBack(Regions.LankyShip, "From Galleon Main", Transitions.GalleonLankyToShipyard), ExitCategories.GalleonExterior, entryKongs={Kongs.lanky}, regionKongs={Kongs.lanky}),
+    Transitions.GalleonShipyardToLanky: ShufflableExit("Gloomy Galleon Main to Lanky 2DS", Regions.Shipyard, TransitionBack(Regions.LankyShip, "From Galleon (Lanky Entrance)", Transitions.GalleonLankyToShipyard), ExitCategories.GalleonExterior, entryKongs={Kongs.lanky}, regionKongs={Kongs.lanky}),
     Transitions.GalleonLankyToShipyard: ShufflableExit("Gloomy Galleon Lanky 2DS to Main", Regions.LankyShip, TransitionBack(Regions.Shipyard, "From Lanky 2DShip", Transitions.GalleonShipyardToLanky)),
-    Transitions.GalleonShipyardToTiny: ShufflableExit("Gloomy Galleon Main to Tiny 2DS", Regions.Shipyard, TransitionBack(Regions.TinyShip, "From Galleon Main", Transitions.GalleonTinyToShipyard), ExitCategories.GalleonExterior, entryKongs={Kongs.tiny}, regionKongs={Kongs.tiny}),
+    Transitions.GalleonShipyardToTiny: ShufflableExit("Gloomy Galleon Main to Tiny 2DS", Regions.Shipyard, TransitionBack(Regions.TinyShip, "From Galleon (Tiny Entrance)", Transitions.GalleonTinyToShipyard), ExitCategories.GalleonExterior, entryKongs={Kongs.tiny}, regionKongs={Kongs.tiny}),
     Transitions.GalleonTinyToShipyard: ShufflableExit("Gloomy Galleon Tiny 2DS to Main", Regions.TinyShip, TransitionBack(Regions.Shipyard, "From Tiny 2DShip", Transitions.GalleonShipyardToTiny)),
-    Transitions.GalleonShipyardToBongos: ShufflableExit("Gloomy Galleon Main to Donkey 5DS", Regions.Shipyard, TransitionBack(Regions.BongosShip, "From Galleon Main", Transitions.GalleonBongosToShipyard), ExitCategories.GalleonExterior, entryKongs={Kongs.donkey}, regionKongs={Kongs.donkey}, move=True),
+    Transitions.GalleonShipyardToBongos: ShufflableExit("Gloomy Galleon Main to Donkey 5DS", Regions.Shipyard, TransitionBack(Regions.BongosShip, "From Galleon (DK Entrance)", Transitions.GalleonBongosToShipyard), ExitCategories.GalleonExterior, entryKongs={Kongs.donkey}, regionKongs={Kongs.donkey}, move=True),
     Transitions.GalleonBongosToShipyard: ShufflableExit("Gloomy Galleon Donkey 5DS to Main", Regions.BongosShip, TransitionBack(Regions.Shipyard, "From Donkey 5DShip", Transitions.GalleonShipyardToBongos)),
-    Transitions.GalleonShipyardToGuitar: ShufflableExit("Gloomy Galleon Main to Diddy 5DS", Regions.Shipyard, TransitionBack(Regions.GuitarShip, "From Galleon Main", Transitions.GalleonGuitarToShipyard), ExitCategories.GalleonExterior, entryKongs={Kongs.diddy}, regionKongs={Kongs.diddy}, move=True),
+    Transitions.GalleonShipyardToGuitar: ShufflableExit("Gloomy Galleon Main to Diddy 5DS", Regions.Shipyard, TransitionBack(Regions.GuitarShip, "From Galleon (Diddy Entrance)", Transitions.GalleonGuitarToShipyard), ExitCategories.GalleonExterior, entryKongs={Kongs.diddy}, regionKongs={Kongs.diddy}, move=True),
     Transitions.GalleonGuitarToShipyard: ShufflableExit("Gloomy Galleon Diddy 5DS to Main", Regions.GuitarShip, TransitionBack(Regions.Shipyard, "From Diddy 5DShip", Transitions.GalleonShipyardToGuitar)),
-    Transitions.GalleonShipyardToTrombone: ShufflableExit("Gloomy Galleon Main to Lanky 5DS", Regions.Shipyard, TransitionBack(Regions.TromboneShip, "From Galleon Main", Transitions.GalleonTromboneToShipyard), ExitCategories.GalleonExterior, entryKongs={Kongs.lanky}, regionKongs={Kongs.lanky}, move=True),
+    Transitions.GalleonShipyardToTrombone: ShufflableExit("Gloomy Galleon Main to Lanky 5DS", Regions.Shipyard, TransitionBack(Regions.TromboneShip, "From Galleon (Lanky Entrance)", Transitions.GalleonTromboneToShipyard), ExitCategories.GalleonExterior, entryKongs={Kongs.lanky}, regionKongs={Kongs.lanky}, move=True),
     Transitions.GalleonTromboneToShipyard: ShufflableExit("Gloomy Galleon Lanky 5DS to Main", Regions.TromboneShip, TransitionBack(Regions.Shipyard, "From Lanky 5DShip", Transitions.GalleonShipyardToTrombone)),
-    Transitions.GalleonShipyardToSaxophone: ShufflableExit("Gloomy Galleon Main to Tiny 5DS", Regions.Shipyard, TransitionBack(Regions.SaxophoneShip, "From Galleon Main", Transitions.GalleonSaxophoneToShipyard), ExitCategories.GalleonExterior, entryKongs={Kongs.tiny}, regionKongs={Kongs.tiny}, move=True),
+    Transitions.GalleonShipyardToSaxophone: ShufflableExit("Gloomy Galleon Main to Tiny 5DS", Regions.Shipyard, TransitionBack(Regions.SaxophoneShip, "From Galleon (Tiny Entrance)", Transitions.GalleonSaxophoneToShipyard), ExitCategories.GalleonExterior, entryKongs={Kongs.tiny}, regionKongs={Kongs.tiny}, move=True),
     Transitions.GalleonSaxophoneToShipyard: ShufflableExit("Gloomy Galleon Tiny 5DS to Main", Regions.SaxophoneShip, TransitionBack(Regions.Shipyard, "From Tiny 5DShip", Transitions.GalleonShipyardToSaxophone)),
-    Transitions.GalleonShipyardToTriangle: ShufflableExit("Gloomy Galleon Main to Chunky 5DS", Regions.Shipyard, TransitionBack(Regions.TriangleShip, "From Galleon Main", Transitions.GalleonTriangleToShipyard), ExitCategories.GalleonExterior, entryKongs={Kongs.chunky}, regionKongs={Kongs.chunky}, move=True),
+    Transitions.GalleonShipyardToTriangle: ShufflableExit("Gloomy Galleon Main to Chunky 5DS", Regions.Shipyard, TransitionBack(Regions.TriangleShip, "From Galleon (Chunky Entrance)", Transitions.GalleonTriangleToShipyard), ExitCategories.GalleonExterior, entryKongs={Kongs.chunky}, regionKongs={Kongs.chunky}, move=True),
     Transitions.GalleonTriangleToShipyard: ShufflableExit("Gloomy Galleon Chunky 5DS to Main", Regions.TriangleShip, TransitionBack(Regions.Shipyard, "From Chunky 5DShip", Transitions.GalleonShipyardToTriangle)),
     Transitions.GalleonTreasureToChest: ShufflableExit("Gloomy Galleon Main to Chest", Regions.TreasureRoom, TransitionBack(Regions.TinyChest, "From Galleon Main", Transitions.GalleonChestToTreasure), ExitCategories.GalleonExterior, entryKongs={Kongs.tiny}, regionKongs={Kongs.tiny}, move=True),
-    Transitions.GalleonChestToTreasure: ShufflableExit("Gloomy Galleon Chest to Main", Regions.TinyChest, TransitionBack(Regions.TreasureRoom, "From Chest", Transitions.GalleonTreasureToChest)),
+    Transitions.GalleonChestToTreasure: ShufflableExit("Gloomy Galleon Chest to Main", Regions.TinyChest, TransitionBack(Regions.TreasureRoom, "From Treasure Chest", Transitions.GalleonTreasureToChest)),
     Transitions.GalleonMainToBBlast: ShufflableExit("Gloomy Galleon Main to BBlast", Regions.LighthouseArea, TransitionBack(Regions.GalleonBaboonBlast, "From Galleon Main"), ExitCategories.GalleonExterior, entryKongs={Kongs.donkey}, regionKongs={Kongs.donkey}, move=True),
 
     # Fungi Forest Exits
     Transitions.ForestMainToCarts: ShufflableExit("Fungi Forest Main To Minecart", Regions.FungiForestStart, TransitionBack(Regions.ForestMinecarts, "From Fungi Main"), ExitCategories.ForestExterior, entryKongs={Kongs.chunky}, regionKongs={Kongs.chunky}),
-    Transitions.ForestCartsToMain: ShufflableExit("Fungi Forest Minecart To Main", Regions.ForestMinecarts, TransitionBack(Regions.MillArea, "From Fungi Minecart (Chunky)")),
+    Transitions.ForestCartsToMain: ShufflableExit("Fungi Forest Minecart To Main", Regions.ForestMinecarts, TransitionBack(Regions.MillArea, "From Minecart")),
     Transitions.ForestMainToLowerMushroom: ShufflableExit("Fungi Forest Main to Mushroom Lower", Regions.GiantMushroomArea, TransitionBack(Regions.MushroomLower, "From Fungi (Low)", Transitions.ForestLowerMushroomToMain), ExitCategories.ForestExterior),
     Transitions.ForestLowerMushroomToMain: ShufflableExit("Fungi Forest Mushroom Lower to Main", Regions.MushroomLower, TransitionBack(Regions.GiantMushroomArea, "From G. Mush (Low)", Transitions.ForestMainToLowerMushroom), ExitCategories.ForestMushroom),
     Transitions.ForestLowerExteriorToLowerMushroom: ShufflableExit("Fungi Forest Lower Exterior to Lower Mushroom", Regions.MushroomLowerExterior, TransitionBack(Regions.MushroomLower, "From Fungi (Low Middle)", Transitions.ForestLowerMushroomToLowerExterior), ExitCategories.ForestExterior),
