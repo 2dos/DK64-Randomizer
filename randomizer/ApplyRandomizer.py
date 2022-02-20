@@ -6,6 +6,7 @@ import pickle
 import js
 
 from randomizer.DKTV import randomize_dktv
+from randomizer.EntranceRando import randomize_entrances
 from randomizer.Enums.Transitions import Transitions
 from randomizer.MusicRando import randomize_music
 from randomizer.Patcher import ROM
@@ -157,6 +158,10 @@ def patching_response(responded_data):
 
     randomize_dktv()
     randomize_music(spoiler.settings)
+
+    if spoiler.shuffle_loading_zones != "none":
+        randomize_entrances(spoiler)
+
     ProgressBar().update_progress(10, "Seed Generated.")
     ROM().fixSecurityValue()
     ROM().save(f"dk64-{spoiler.settings.seed}.z64")
