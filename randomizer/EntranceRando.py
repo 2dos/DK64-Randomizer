@@ -36,7 +36,6 @@ def randomize_entrances(spoiler:Spoiler):
         for cont_map in spoiler.shuffled_exit_instructions:
             # Pointer table 18, use the map index detailed in cont_map["container_map"] to get the starting address of the map lz file
             cont_map_id = int(cont_map["container_map"])
-            print(js.pointer_addresses[18]["entries"])
             cont_map_lzs_address = js.pointer_addresses[18]["entries"][cont_map_id]["pointing_to"]
             ROM().seek(cont_map_lzs_address)
             lz_count = int.from_bytes(ROM().readBytes(2), "big")
