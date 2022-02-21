@@ -74,7 +74,7 @@ ShufflableExits = {
     Transitions.JapesMainToTinyHive: ShufflableExit("Jungle Japes Main to Tiny Hive", Regions.JapesBeyondFeatherGate, TransitionBack(Regions.TinyHive, "From Japes Main", Transitions.JapesTinyHiveToMain), ExitCategories.JapesExterior, entryKongs={Kongs.tiny}, regionKongs={Kongs.tiny}, move=True),
     Transitions.JapesTinyHiveToMain: ShufflableExit("Jungle Japes Tiny Hive to Main", Regions.TinyHive, TransitionBack(Regions.JapesBeyondFeatherGate, "From Beehive", Transitions.JapesMainToTinyHive)),
     # Transitions.JapesMainToBBlast: ShufflableExit("Jungle Japes Main to BBlast", Regions.JungleJapesMain, TransitionBack(Regions.JapesBaboonBlast, "From Japes Main"), ExitCategories.JapesExterior, entryKongs={Kongs.donkey}, regionKongs={Kongs.donkey}, move=True),
-    Transitions.JapesMineToCarts: ShufflableExit("Jungle Japes Mine to Minecart", Regions.Mine, TransitionBack(Regions.Mine, "From Mountain"), ExitCategories.JapesMine, entryKongs={Kongs.diddy}, regionKongs={Kongs.diddy}),
+    Transitions.JapesMineToCarts: ShufflableExit("Jungle Japes Mine to Minecart", Regions.Mine, TransitionBack(Regions.JapesMinecarts, "From Mountain"), ExitCategories.JapesMine, entryKongs={Kongs.diddy}, regionKongs={Kongs.diddy}),
     Transitions.JapesCartsToMain: ShufflableExit("Jungle Japes Minecart to Main", Regions.JapesMinecarts, TransitionBack(Regions.JungleJapesMain, "From Minecart")),
 
     # Angry Aztec Exits

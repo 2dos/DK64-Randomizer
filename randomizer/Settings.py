@@ -83,7 +83,7 @@ class Settings:
         # none
         # levels
         # all
-        self.shuffle_loading_zones = "none"
+        self.shuffle_loading_zones = "all"
 
         # decoupled_loading_zones: bool
         self.decoupled_loading_zones = True

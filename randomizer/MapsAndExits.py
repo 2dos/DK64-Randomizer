@@ -23,7 +23,7 @@ class Maps(IntEnum):
     JungleJapes = 7
     JapesTinyHive = 12
     JapesLankyCave = 13
-    JapesMountain = 5
+    JapesMountain = 4
     JapesMinecarts = 6
     JapesUnderGround = 33
     JapesBaboonBlast = 37
