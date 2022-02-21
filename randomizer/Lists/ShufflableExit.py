@@ -73,7 +73,7 @@ ShufflableExits = {
     Transitions.JapesCatacombToMain: ShufflableExit("Jungle Japes Catacomb to Main", Regions.JapesCatacomb, TransitionBack(Regions.JungleJapesMain, "From Underground", Transitions.JapesMainToCatacomb)),
     Transitions.JapesMainToTinyHive: ShufflableExit("Jungle Japes Main to Tiny Hive", Regions.JapesBeyondFeatherGate, TransitionBack(Regions.TinyHive, "From Japes Main", Transitions.JapesTinyHiveToMain), ExitCategories.JapesExterior, entryKongs={Kongs.tiny}, regionKongs={Kongs.tiny}, move=True),
     Transitions.JapesTinyHiveToMain: ShufflableExit("Jungle Japes Tiny Hive to Main", Regions.TinyHive, TransitionBack(Regions.JapesBeyondFeatherGate, "From Beehive", Transitions.JapesMainToTinyHive)),
-    Transitions.JapesMainToBBlast: ShufflableExit("Jungle Japes Main to BBlast", Regions.JungleJapesMain, TransitionBack(Regions.JapesBaboonBlast, "From Japes Main"), ExitCategories.JapesExterior, entryKongs={Kongs.donkey}, regionKongs={Kongs.donkey}, move=True),
+    # Transitions.JapesMainToBBlast: ShufflableExit("Jungle Japes Main to BBlast", Regions.JungleJapesMain, TransitionBack(Regions.JapesBaboonBlast, "From Japes Main"), ExitCategories.JapesExterior, entryKongs={Kongs.donkey}, regionKongs={Kongs.donkey}, move=True),
     Transitions.JapesMineToCarts: ShufflableExit("Jungle Japes Mine to Minecart", Regions.Mine, TransitionBack(Regions.Mine, "From Mountain"), ExitCategories.JapesMine, entryKongs={Kongs.diddy}, regionKongs={Kongs.diddy}),
     Transitions.JapesCartsToMain: ShufflableExit("Jungle Japes Minecart to Main", Regions.JapesMinecarts, TransitionBack(Regions.JungleJapesMain, "From Minecart")),
 
@@ -92,7 +92,7 @@ ShufflableExits = {
     Transitions.AztecMainToRace: ShufflableExit("Angry Aztec Main to Beetle Race", Regions.AngryAztecMain, TransitionBack(Regions.AztecTinyRace, "From Aztec Main", Transitions.AztecRaceToMain), ExitCategories.AztecExterior, entryKongs={Kongs.tiny}, regionKongs={Kongs.tiny}, move=True),
     Transitions.AztecRaceToMain: ShufflableExit("Angry Aztec Beetle Race to Main", Regions.AztecTinyRace, TransitionBack(Regions.AngryAztecMain, "From Beetle Race", Transitions.AztecMainToRace)),
     Transitions.AztecLlamaToMain: ShufflableExit("Angry Aztec Llama Temple to Main", Regions.LlamaTemple, TransitionBack(Regions.AngryAztecMain, "From Llama Temple")),
-    Transitions.AztecMainToBBlast: ShufflableExit("Angry Aztec Main to BBlast", Regions.AngryAztecMain, TransitionBack(Regions.AztecBaboonBlast, "From Aztec Main"), ExitCategories.AztecExterior, entryKongs={Kongs.donkey}, regionKongs={Kongs.donkey}, move=True),
+    # Transitions.AztecMainToBBlast: ShufflableExit("Angry Aztec Main to BBlast", Regions.AngryAztecMain, TransitionBack(Regions.AztecBaboonBlast, "From Aztec Main"), ExitCategories.AztecExterior, entryKongs={Kongs.donkey}, regionKongs={Kongs.donkey}, move=True),
 
     # Frantic Factory Exits
     Transitions.FactoryRandDToRace: ShufflableExit("Frantic Factory R&D to Car Race", Regions.RandD, TransitionBack(Regions.FactoryTinyRace, "From Factory Main", Transitions.FactoryRaceToRandD), ExitCategories.FactoryExterior, entryKongs={Kongs.tiny}, regionKongs={Kongs.tiny}, move=True),
@@ -101,7 +101,7 @@ ShufflableExits = {
     Transitions.FactoryPowerToChunkyRoom: ShufflableExit("Frantic Factory Power Room to Chunky Room", Regions.PowerHut, TransitionBack(Regions.BeyondHatch, "From Power Shed", Transitions.FactoryChunkyRoomToPower)),
     Transitions.FactoryBeyondHatchToInsideCore: ShufflableExit("Frantic Factory Beyond Hatch to Inside Core", Regions.BeyondHatch, TransitionBack(Regions.InsideCore, "From Factory Main", Transitions.FactoryInsideCoreToBeyondHatch), ExitCategories.FactoryExterior, regionKongs={Kongs.donkey, Kongs.lanky}),
     Transitions.FactoryInsideCoreToBeyondHatch: ShufflableExit("Frantic Factory Inside Core to Beyond Hatch", Regions.InsideCore, TransitionBack(Regions.BeyondHatch, "From Crusher Room", Transitions.FactoryBeyondHatchToInsideCore)),
-    Transitions.FactoryMainToBBlast: ShufflableExit("Frantic Factory Main to BBlast", Regions.BeyondHatch, TransitionBack(Regions.FactoryBaboonBlast, "From Factory Main"), ExitCategories.FactoryExterior, entryKongs={Kongs.donkey}, regionKongs={Kongs.donkey}, move=True),
+    # Transitions.FactoryMainToBBlast: ShufflableExit("Frantic Factory Main to BBlast", Regions.BeyondHatch, TransitionBack(Regions.FactoryBaboonBlast, "From Factory Main"), ExitCategories.FactoryExterior, entryKongs={Kongs.donkey}, regionKongs={Kongs.donkey}, move=True),
 
     # Gloomy Galleon Exits
     Transitions.GalleonLighthouseAreaToLighthouse: ShufflableExit("Gloomy Galleon Main to Lighthouse", Regions.LighthouseArea, TransitionBack(Regions.Lighthouse, "From Galleon Main", Transitions.GalleonLighthouseToLighthouseArea), ExitCategories.GalleonExterior, entryKongs={Kongs.donkey}, regionKongs={Kongs.donkey}),
@@ -130,7 +130,7 @@ ShufflableExits = {
     Transitions.GalleonTriangleToShipyard: ShufflableExit("Gloomy Galleon Chunky 5DS to Main", Regions.TriangleShip, TransitionBack(Regions.Shipyard, "From Chunky 5DShip", Transitions.GalleonShipyardToTriangle)),
     Transitions.GalleonTreasureToChest: ShufflableExit("Gloomy Galleon Main to Chest", Regions.TreasureRoom, TransitionBack(Regions.TinyChest, "From Galleon Main", Transitions.GalleonChestToTreasure), ExitCategories.GalleonExterior, entryKongs={Kongs.tiny}, regionKongs={Kongs.tiny}, move=True),
     Transitions.GalleonChestToTreasure: ShufflableExit("Gloomy Galleon Chest to Main", Regions.TinyChest, TransitionBack(Regions.TreasureRoom, "From Treasure Chest", Transitions.GalleonTreasureToChest)),
-    Transitions.GalleonMainToBBlast: ShufflableExit("Gloomy Galleon Main to BBlast", Regions.LighthouseArea, TransitionBack(Regions.GalleonBaboonBlast, "From Galleon Main"), ExitCategories.GalleonExterior, entryKongs={Kongs.donkey}, regionKongs={Kongs.donkey}, move=True),
+    # Transitions.GalleonMainToBBlast: ShufflableExit("Gloomy Galleon Main to BBlast", Regions.LighthouseArea, TransitionBack(Regions.GalleonBaboonBlast, "From Galleon Main"), ExitCategories.GalleonExterior, entryKongs={Kongs.donkey}, regionKongs={Kongs.donkey}, move=True),
 
     # Fungi Forest Exits
     Transitions.ForestMainToCarts: ShufflableExit("Fungi Forest Main To Minecart", Regions.FungiForestStart, TransitionBack(Regions.ForestMinecarts, "From Fungi Main"), ExitCategories.ForestExterior, entryKongs={Kongs.chunky}, regionKongs={Kongs.chunky}),
@@ -143,7 +143,7 @@ ShufflableExits = {
     Transitions.ForestUpperMushroomToLowerExterior: ShufflableExit("Fungi Forest Upper Mushroom to Lower Exterior", Regions.MushroomUpper, TransitionBack(Regions.MushroomLowerExterior, "From G. Mush (Middle)", Transitions.ForestLowerExteriorToUpperMushroom), ExitCategories.ForestMushroom),
     Transitions.ForestUpperExteriorToUpperMushroom: ShufflableExit("Fungi Forest Upper Exterior to Upper Mushroom", Regions.MushroomUpperExterior, TransitionBack(Regions.MushroomUpper, "From Fungi (High)", Transitions.ForestUpperMushroomToUpperExterior), ExitCategories.ForestExterior),
     Transitions.ForestUpperMushroomToUpperExterior: ShufflableExit("Fungi Forest Upper Mushroom to Upper Exterior", Regions.MushroomUpper, TransitionBack(Regions.MushroomUpperExterior, "From G. Mush (High)", Transitions.ForestUpperExteriorToUpperMushroom), ExitCategories.ForestMushroom),
-    Transitions.ForestMainToBBlast: ShufflableExit("Fungi Forest Main to BBlast", Regions.MushroomLowerExterior, TransitionBack(Regions.ForestBaboonBlast, "From Fungi Main"), ExitCategories.ForestExterior, entryKongs={Kongs.donkey}, regionKongs={Kongs.donkey}, move=True),
+    # Transitions.ForestMainToBBlast: ShufflableExit("Fungi Forest Main to BBlast", Regions.MushroomLowerExterior, TransitionBack(Regions.ForestBaboonBlast, "From Fungi Main"), ExitCategories.ForestExterior, entryKongs={Kongs.donkey}, regionKongs={Kongs.donkey}, move=True),
     Transitions.ForestExteriorToNight: ShufflableExit("Fungi Forest Night Exterior to Night Door", Regions.MushroomNightExterior, TransitionBack(Regions.MushroomNightDoor, "From Fungi (High Middle)", Transitions.ForestNightToExterior), ExitCategories.ForestExterior),
     Transitions.ForestNightToExterior: ShufflableExit("Fungi Forest Night Door to Night Exterior", Regions.MushroomNightDoor, TransitionBack(Regions.MushroomNightExterior, "From G. Mush (High Middle)", Transitions.ForestExteriorToNight), ExitCategories.ForestMushroom),
     Transitions.ForestExteriorToChunky: ShufflableExit("Fungi Forest Upper Exterior to Chunky Room", Regions.MushroomUpperExterior, TransitionBack(Regions.MushroomChunkyRoom, "From Fungi Main", Transitions.ForestChunkyToExterior), ExitCategories.ForestExterior, entryKongs={Kongs.chunky}, regionKongs={Kongs.chunky}),
@@ -202,10 +202,10 @@ ShufflableExits = {
     Transitions.CavesTinyToCabin: ShufflableExit("Crystal Caves Tiny 5DC to Main", Regions.TinyCabin, TransitionBack(Regions.CabinArea, "From Tiny 5DCabin", Transitions.CavesCabinToTiny)),
     Transitions.CavesCabinToChunky: ShufflableExit("Crystal Caves Main to Chunky 5DC", Regions.CabinArea, TransitionBack(Regions.ChunkyCabin, "From Caves Main", Transitions.CavesChunkyToCabin), ExitCategories.CavesExterior, entryKongs={Kongs.chunky}, regionKongs={Kongs.chunky}, move=True),
     Transitions.CavesChunkyToCabin: ShufflableExit("Crystal Caves Chunky 5DC to Main", Regions.ChunkyCabin, TransitionBack(Regions.CabinArea, "From Chunky 5DCabin", Transitions.CavesCabinToChunky)),
-    Transitions.CavesMainToBBlast: ShufflableExit("Crystal Caves Main to BBlast", Regions.CrystalCavesMain, TransitionBack(Regions.CavesBaboonBlast, "From Caves Main"), ExitCategories.CavesExterior, entryKongs={Kongs.donkey}, regionKongs={Kongs.donkey}, move=True),
+    # Transitions.CavesMainToBBlast: ShufflableExit("Crystal Caves Main to BBlast", Regions.CrystalCavesMain, TransitionBack(Regions.CavesBaboonBlast, "From Caves Main"), ExitCategories.CavesExterior, entryKongs={Kongs.donkey}, regionKongs={Kongs.donkey}, move=True),
 
     # Creepy Castle Exits
-    Transitions.CastleMainToBBlast: ShufflableExit("Creepy Castle Main to BBlast", Regions.CreepyCastleMain, TransitionBack(Regions.CastleBaboonBlast, "From Castle Main"), ExitCategories.CastleExterior, entryKongs={Kongs.donkey}, regionKongs={Kongs.donkey}, move=True),
+    # Transitions.CastleMainToBBlast: ShufflableExit("Creepy Castle Main to BBlast", Regions.CreepyCastleMain, TransitionBack(Regions.CastleBaboonBlast, "From Castle Main"), ExitCategories.CastleExterior, entryKongs={Kongs.donkey}, regionKongs={Kongs.donkey}, move=True),
     Transitions.CastleMainToTree: ShufflableExit("Creepy Castle Main to Tree", Regions.CreepyCastleMain, TransitionBack(Regions.CastleTree, "From Castle Main", Transitions.CastleTreeToMain), ExitCategories.CastleExterior, regionKongs={Kongs.donkey, Kongs.chunky}),
     Transitions.CastleTreeToMain: ShufflableExit("Creepy Castle Tree to Main", Regions.CastleTree, TransitionBack(Regions.CreepyCastleMain, "From Tree (Entrance)", Transitions.CastleMainToTree)),
     Transitions.CastleTreeDrainToMain: ShufflableExit("Creepy Castle Tree Drain to Main", Regions.CastleTree, TransitionBack(Regions.CreepyCastleMain, "From Tree (Drain)"), entryKongs={Kongs.donkey}),

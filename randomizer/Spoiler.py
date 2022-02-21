@@ -73,8 +73,7 @@ class Spoiler:
             for exit, dest in self.shuffled_exit_data.items():
                 shuffled_exits[ShufflableExits[exit].name] = Logic.Regions[dest.regionId].name + " " + dest.name
             humanspoiler["Shuffled Exits"] = shuffled_exits
-            # humanspoiler["Shuffled Exit Json"] = json.dumps(self.shuffled_exit_instructions)
-            humanspoiler["Shuffled Exit Json"] = self.shuffled_exit_instructions
+            # humanspoiler["Shuffled Exit Json"] = self.shuffled_exit_instructions
 
         if self.settings.bonus_barrels == "random":
             shuffled_barrels = OrderedDict()
@@ -93,21 +92,29 @@ class Spoiler:
     def UpdateExits(self):
         """Update list of shuffled exits."""
         self.shuffled_exit_data = {}
+        containerMaps = {}
         for key, exit in ShufflableExits.items():
             if exit.shuffled:
                 try:
                     vanillaBack = exit.back
                     shuffledBack = ShufflableExits[exit.shuffledId].back
                     self.shuffled_exit_data[key] = shuffledBack
+                    containerMapId = GetMapId(exit.region)
+                    if containerMapId not in containerMaps:
+                        containerMaps[containerMapId] = {
+                            "container_map": containerMapId,  # DK Isles
+                            "zones": [],
+                        }
                     loading_zone_mapping = {}
-                    loading_zone_mapping["container_map"] = exit.region
-                    loading_zone_mapping["destination_map"] = GetMapId(vanillaBack)
-                    loading_zone_mapping["destination_exit"] = GetExitId(vanillaBack)
-                    loading_zone_mapping["new_map"] = GetMapId(shuffledBack)
+                    loading_zone_mapping["vanilla_map"] = GetMapId(vanillaBack.regionId)
+                    loading_zone_mapping["vanilla_exit"] = GetExitId(vanillaBack)
+                    loading_zone_mapping["new_map"] = GetMapId(shuffledBack.regionId)
                     loading_zone_mapping["new_exit"] = GetExitId(shuffledBack)
-                    self.shuffled_exit_instructions.append(loading_zone_mapping)
+                    containerMaps[containerMapId]["zones"].append(loading_zone_mapping)
                 except Exception as ex:
                     print(ex)
+        for key, containerMap in containerMaps.items():
+            self.shuffled_exit_instructions.append(containerMap)
 
     def UpdateLocations(self, locations):
         """Update location list for what was produced by the fill."""

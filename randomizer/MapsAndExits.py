@@ -483,14 +483,14 @@ MapExitTable = {
 }
 
 
-def GetMapId(back: TransitionBack):
+def GetMapId(regionId):
     """Get the map id of a transition."""
-    return RegionMapList[back.regionId]
+    return RegionMapList[regionId]
 
 
 def GetExitId(back: TransitionBack):
     """Get exit id of a transition."""
-    mapId = GetMapId(back)
+    mapId = GetMapId(back.regionId)
     if mapId in MapExitTable:
         return MapExitTable[mapId].index(back.name)
     else:

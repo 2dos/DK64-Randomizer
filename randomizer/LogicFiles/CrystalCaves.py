@@ -39,7 +39,7 @@ LogicRegions = {
         TransitionFront(Regions.CrankyCaves, lambda l: True),
         TransitionFront(Regions.Snide, lambda l: l.punch),
         TransitionFront(Regions.CavesBossLobby, lambda l: l.punch),
-        TransitionFront(Regions.CavesBaboonBlast, lambda l: l.blast and l.isdonkey, Transitions.CavesMainToBBlast)
+        TransitionFront(Regions.CavesBaboonBlast, lambda l: l.blast and l.isdonkey) #, Transitions.CavesMainToBBlast)
     ]),
 
     Regions.CavesBaboonBlast: Region("Caves Baboon Blast", Levels.CrystalCaves, False, None, [
