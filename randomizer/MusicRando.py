@@ -1,35 +1,50 @@
 """Randomize Music passed from Misc options."""
 import gzip
+import json
 import random
 
 import js
-
+from randomizer.Spoiler import Spoiler
 from randomizer.Enums.SongType import SongType
-from randomizer.Lists.Songs import song_data
+from randomizer.Lists.Songs import Song, song_data
 from randomizer.Patcher import ROM
 from randomizer.Settings import Settings
 
 
-def randomize_music(settings: Settings):
+def randomize_music(spoiler:Spoiler):
     """Randomize music passed from the misc music settings.
 
     Args:
         settings (Settings): Settings object from the windows form.
     """
+    settings:Settings = spoiler.settings
     # Check if we have anything beyond default set for BGM
     if settings.music_bgm != "default":
         # If the user selected standard rando
         if settings.music_bgm == "randomized":
+            
+            # These lines exist for testing only
+            # file = open('static/patches/pointer_addresses.json')
+            # pointer_addresses = json.load(file)
+
             # Generate the list of BGM songs
             song_list = []
             for song in song_data:
                 if song.type == SongType.BGM:
+                    # For testing, flip these two lines
+                    # song_list.append(pointer_addresses[0]["entries"][song_data.index(song)])
                     song_list.append(js.pointer_addresses[0]["entries"][song_data.index(song)])
 
             # Copy the existing list of songs and shuffle it
             shuffled_music = song_list.copy()
             random.shuffle(shuffled_music)
-            shuffle_music(song_list, shuffled_music)
+            # shuffle_music(song_list, shuffled_music)
+            for i, song_item in enumerate(song_list):
+                shuffled_song_item = shuffled_music[i]
+                vanillaSong:Song = song_data[song_item["index"]]
+                newSong:Song = song_data[shuffled_song_item["index"]]
+                spoiler.music_bgm_data[vanillaSong.name] = newSong.name
+
         # If the user was a poor sap and selected chaos put DK rap for everything
         elif settings.music_bgm == "chaos":
             # Find the DK rap in the list

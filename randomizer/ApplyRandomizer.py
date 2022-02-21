@@ -158,7 +158,7 @@ def patching_response(responded_data):
         ROM().write(1)
 
     randomize_dktv()
-    randomize_music(spoiler.settings)
+    randomize_music(spoiler)
     randomize_entrances(spoiler)
 
     ProgressBar().update_progress(10, "Seed Generated.")
