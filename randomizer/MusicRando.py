@@ -42,8 +42,8 @@ def randomize_music(spoiler:Spoiler):
             shuffle_music(song_list, shuffled_music)
             for i, song_item in enumerate(song_list):
                 shuffled_song_item = shuffled_music[i]
-                vanillaSong:Song = song_data[song_item["index"]]
-                newSong:Song = song_data[shuffled_song_item["index"]]
+                newSong:Song = song_data[song_item["index"]]
+                vanillaSong:Song = song_data[shuffled_song_item["index"]]
                 spoiler.music_bgm_data[vanillaSong.name] = newSong.name
 
         # If the user was a poor sap and selected chaos put DK rap for everything
