@@ -38,7 +38,8 @@ def randomize_music(spoiler:Spoiler):
             # Copy the existing list of songs and shuffle it
             shuffled_music = song_list.copy()
             random.shuffle(shuffled_music)
-            # shuffle_music(song_list, shuffled_music)
+            # For testing, comment out shuffle_music
+            shuffle_music(song_list, shuffled_music)
             for i, song_item in enumerate(song_list):
                 shuffled_song_item = shuffled_music[i]
                 vanillaSong:Song = song_data[song_item["index"]]
