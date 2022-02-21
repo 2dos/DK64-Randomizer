@@ -169,14 +169,26 @@ def shuffle_music(pool_to_shuffle, shuffled_list):
         shuffled_list (list): Shuffled order list.
     """
     uncompressed_data_table = js.pointer_addresses[26]["entries"][0]
+    stored_song_data = {}
+    stored_song_sizes = {}
     # For each song in the shuffled list, randomize it into the pool using the shuffled list as a base
+    # First loop over all songs to read data from ROM
     for song in pool_to_shuffle:
         ROM().seek(song["pointing_to"])
         stored_data = ROM().readBytes(song["compressed_size"])
-        ROM().seek(shuffled_list[pool_to_shuffle.index(song)]["pointing_to"])
-        ROM().writeBytes(stored_data)
+        stored_song_data[song["index"]] = stored_data
         # Update the uncompressed data table to have our new size.
-        ROM().seek(uncompressed_data_table["pointing_to"] + (4 * shuffled_list.index(song)))
+        ROM().seek(uncompressed_data_table["pointing_to"] + (4 * song["index"]))
         new_bytes = ROM().readBytes(4)
-        ROM().seek(uncompressed_data_table["pointing_to"] + (4 * pool_to_shuffle.index(song)))
-        ROM().writeBytes(new_bytes)
+        stored_song_sizes[song["index"]] = new_bytes
+        
+    # Second loop over all songs to write data into ROM
+    for song in pool_to_shuffle:
+        song_data = stored_song_data[song["index"]]
+        shuffled_song = shuffled_list[pool_to_shuffle.index(song)]
+        ROM().seek(shuffled_song["pointing_to"])
+        ROM().writeBytes(song_data)
+        # Update the uncompressed data table to have our new size.
+        song_size = stored_song_sizes[song["index"]]
+        ROM().seek(uncompressed_data_table["pointing_to"] + (4 * shuffled_song["index"]))
+        ROM().writeBytes(song_size)
