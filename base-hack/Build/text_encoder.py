@@ -14,7 +14,7 @@ def writeText(file_name, text):
                 fh.write(bytearray([0, 0]))
                 position += len(string)
             fh.write(bytearray([0, 0, 0, 0]))
-        fh.write(bytearray(position.to_bytes(2,"big")))
+        fh.write(bytearray(position.to_bytes(2, "big")))
         for textbox in text:
             for string in textbox:
                 fh.write(string.encode("ascii"))
