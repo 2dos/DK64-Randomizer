@@ -32,7 +32,7 @@ def intToArr(val, size):
     return arr
 
 def randomize_entrances(spoiler:Spoiler):
-    if spoiler.shuffled_exit_instructions != None:
+    if spoiler.settings.shuffle_loading_zones != "none" and spoiler.shuffled_exit_instructions != None:
         for cont_map in spoiler.shuffled_exit_instructions:
             # Pointer table 18, use the map index detailed in cont_map["container_map"] to get the starting address of the map lz file
             cont_map_id = int(cont_map["container_map"])

@@ -160,8 +160,7 @@ def patching_response(responded_data):
     randomize_dktv()
     randomize_music(spoiler.settings)
 
-    # if spoiler.settings.shuffle_loading_zones != "none":
-    #     randomize_entrances(spoiler)
+    randomize_entrances(spoiler)
 
     ProgressBar().update_progress(10, "Seed Generated.")
     ROM().fixSecurityValue()
