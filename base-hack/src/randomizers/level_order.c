@@ -74,9 +74,15 @@ void swapRequirements(void) {
 	}
 }
 
+void barrier_fixes(void) {
+	setPermFlag(109); // Hatch
+	setPermFlag(0xA1); // Peanut Gate Galleon
+}
+
 void level_order_rando_funcs(void) {
 	if (Rando.level_order_rando_on) {
 		randomizeLevelOrder();
 		swapRequirements();
+		barrier_fixes();
 	}
 }
