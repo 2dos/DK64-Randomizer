@@ -187,7 +187,7 @@ def Shuffle_BGM(spoiler:Spoiler, song_list):
             shuffle_music(song_list, shuffled_music)
             return
         except Ex.MusicPlacementExceededMapThreshold:
-            if retries == 100:
+            if retries == 2000:
                 print("Music rando failed, out of retries.")
                 raise Ex.MusicAttemptCountExceeded
             else:
