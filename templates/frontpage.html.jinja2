@@ -20,18 +20,17 @@
                     <ul class="navbar-nav ms-auto">
                         <li class="nav-item"><a class="nav-link" href="#overview">Overview</a></li>
                         <li class="nav-item"><a class="nav-link" href="https://github.com/2dos/DK64-Randomizer/wiki/Consoles-and-Emulators">Setup</a></li>
-                        <li class="nav-item"><a class="nav-link" href="https://github.com/2dos/DK64-Randomizer" target="_blank">Github</a></li>
                         <li class="nav-item"><a class="nav-link" href="https://github.com/2dos/DK64-Randomizer/wiki" target="_blank">Wiki</a></li>
                         <li class="nav-item"><a class="nav-link" href="https://discord.dk64randomizer.com" target="_blank">Discord</a></li>
                     </ul>
                 </div>
             </div>
         </nav>
-        <header class="masthead text-center text-white overlay-dark">
+        <header class="masthead text-center text-white">
             <div class="masthead-content">
                 <div class="container px-5">
                     <img src="/base-hack/assets/Non-Code/DKTV/logo.png" width="100%">
-                    <p>Version {{version.only_version}}</p>
+                    <p style="font-weight: bold;">Version {{version.only_version}}</p>
                     <a class="btn btn-info btn-xl rounded-pill mt-5" onClick="render_page('./randomizer.html')">Play Now</a>
                     <a class="btn btn-light btn-xl rounded-pill mt-5" href="#overview">More Info</a>
                 </div>
@@ -41,19 +40,18 @@
             <div class="container px-5">
                 <div class="row gx-5 align-items-center">
                     <div class="col-lg-6 order-lg-2">
+                        <br>
                         <iframe width="100%" height="315" src="https://www.youtube.com/embed/X7JpXswBJGo" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
                     </div>
                     <div class="col-lg-6 order-lg-1">
                         <div class="p-5">
-                            <h2 class="display-4">What is DK64 Randomizer?</h2>
+                            <h2 class="display-6">What is DK64 Randomizer?</h2>
                             <p>
                             Experience DK64 like you never have before! 
                             Change up where the loading zones take you, where moves are purchased and even the difficulty of the game! 
                             Built-in game logic ensures every generated game is beatable and every item is reachable. 
-                            Check out the video for an introduction to DK64 Randomizer along with the full features list!
-                            <br>
-                            (Button for text version of full features list)
-                            </p>
+                            Check out the video for an introduction to DK64 Randomizer along with the full features list!</p>
+                            <a class="btn btn-success rounded-pill" href="#overview">Full Feature List</a>
                         </div>
                     </div>
                 </div>
@@ -67,21 +65,19 @@
                     </div>
                     <div class="col-lg-6 order-lg-1">
                         <div class="p-5">
-                            <h2 class="display-4">Compatibility</h2>
+                            <h2 class="display-6">Compatibility</h2>
                             <p>The NTSC-U version of the game (the US release) is the compatible DK64 version for DK64 Randomizer. 
                             The NTSC-J (Japan) and PAL (Europe) versions of the game are incompatible. 
                             The following are the supported platforms:</p>
                             <ul>
-                                <li>Nintendo 64 Flashcarts (such as Everdrive 2.5 or higher)</li>
+                                <li>Most Nintendo 64 Flashcarts</li>
                                 <li>Wii U VC inject</li>
                                 <li>Bizhawk DK64 Fork</li>
                                 <li>Project 64 Version 3.0 or above</li>
                             </ul>
                             <p>Other platforms may be compatible but are not supported at this time. 
-                            Check out the video for setting up DK64 Randomizer.
-                            <br>
-                            (Button for text version of setup)
-                            </p>
+                            Check out the video for setting up DK64 Randomizer.</p>
+                            <a class="btn btn-success rounded-pill" href="#overview">Text Version of Setup</a>
                         </div>
                     </div>
                 </div>
@@ -92,21 +88,18 @@
                 <div class="row gx-5 align-items-center">
                     <div class="col-lg-6 order-lg-2">
                         <div class="p-5">
-                            <h2 class="display-4">Development</h2>
-                            <p>Interested in contributing various features to DK64 randomizer or just want to check out the inner workings? 
-                            The DK64 Randomizer project is open source and is available for view on Github!
-                            <br>
-                            (Button for link to GitHub)
-                            </p>
+                            <h2 class="display-6">Development</h2>
+                            <p>Interested in contributing various features to DK64 randomizer? Want to run DK64 randomizer locally? Just want to check out the inner workings? 
+                            The DK64 Randomizer project is open source and is available for view on Github!</p>
+                            <a class="btn btn-success rounded-pill" href="https://github.com/2dos/DK64-Randomizer">View on Github</a>
                         </div>
                     </div>
                     <div class="col-lg-6 order-lg-1">
                         <div class="p-5">
-                            <h2 class="display-4">Community</h2>
+                            <h2 class="display-6">Community</h2>
                             <p>The DK64 Randomizer Discord server is available to talk about DK64 Randomizer with other players! 
-                            Share your playthrough, get help, and talk about strategies and tricks! 
-                            <br>
-                            (Button for link to Discord)</p>
+                            Share your playthrough, get help, and talk about strategies and tricks!</p>
+                            <a class="btn btn-success rounded-pill" href="https://discord.dk64randomizer.com">Join the Discord</a>
                         </div>
                     </div>
                 </div>

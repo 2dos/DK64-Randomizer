@@ -3091,13 +3091,13 @@ textarea.form-control-lg {
 
 .btn-success {
   color: #fff;
-  background-color: #198754;
-  border-color: #198754;
+  background-color: #41b450;
+  border-color: #41b450;
 }
 .btn-success:hover {
   color: #fff;
-  background-color: #157347;
-  border-color: #146c43;
+  background-color: #48c959;
+  border-color: #48c959;
 }
 .btn-check:focus + .btn-success, .btn-success:focus {
   color: #fff;
@@ -3126,8 +3126,8 @@ textarea.form-control-lg {
 }
 .btn-info:hover {
   color: #000;
-  background-color: #31d2f2;
-  border-color: #25cff2;
+  background-color: #56d6f0;
+  border-color: #56d6f0;
 }
 .btn-check:focus + .btn-info, .btn-info:focus {
   color: #000;
@@ -11323,7 +11323,7 @@ header.masthead {
   padding-top: calc(7rem + 72px);
   padding-bottom: 7rem;
   background: linear-gradient(0deg, #003d03 0%, #003d03 100%);
-  background-image: url("/base-hack/assets/Non-Code/website/bgfinal.png");
+  background-image: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url("/base-hack/assets/Non-Code/website/bgfinal.png");
   background-repeat: repeat;
   background-attachment: scroll;
   background-size: 45%;
