@@ -4,6 +4,8 @@ import json
 import random
 
 import js
+import randomizer.Lists.Exceptions as Ex
+from randomizer.MapsAndExits import Maps
 from randomizer.Spoiler import Spoiler
 from randomizer.Enums.SongType import SongType
 from randomizer.Lists.Songs import Song, song_data
@@ -35,17 +37,8 @@ def randomize_music(spoiler:Spoiler):
                     # song_list.append(pointer_addresses[0]["entries"][song_data.index(song)])
                     song_list.append(js.pointer_addresses[0]["entries"][song_data.index(song)])
 
-            # Copy the existing list of songs and shuffle it
-            shuffled_music = song_list.copy()
-            random.shuffle(shuffled_music)
-            # For testing, comment out shuffle_music
-            shuffle_music(song_list, shuffled_music)
-            for i, song_item in enumerate(song_list):
-                shuffled_song_item = shuffled_music[i]
-                newSong:Song = song_data[song_item["index"]]
-                vanillaSong:Song = song_data[shuffled_song_item["index"]]
-                spoiler.music_bgm_data[vanillaSong.name] = newSong.name
-
+            Shuffle_BGM(spoiler, song_list)
+            
         # If the user was a poor sap and selected chaos put DK rap for everything
         elif settings.music_bgm == "chaos":
             # Find the DK rap in the list
@@ -159,6 +152,48 @@ def randomize_music(spoiler:Spoiler):
             random.shuffle(shuffled_music)
 
             shuffle_music(event_list, shuffled_music)
+
+def Shuffle_BGM(spoiler:Spoiler, song_list):
+    """Facilitate shuffling of exits."""
+    retries = 0
+    while True:
+        try:
+            # Copy the existing list of songs and shuffle it
+            shuffled_music = song_list.copy()
+            random.shuffle(shuffled_music)
+            song_map_vanillaTotalSize = {}
+            song_map_newTotalSize = {}
+            for i, song_item in enumerate(song_list):
+                shuffled_song_item = shuffled_music[i]
+                newSong:Song = song_data[song_item["index"]]
+                vanillaSong:Song = song_data[shuffled_song_item["index"]]
+                spoiler.music_bgm_data[vanillaSong.name] = newSong.name
+                if vanillaSong.map != None:
+                    mapName = Maps(vanillaSong.map).name
+                    if mapName not in song_map_vanillaTotalSize:
+                        song_map_vanillaTotalSize[mapName] = 0
+                    song_map_vanillaTotalSize[mapName] += song_item["uncompressed_size"]
+                    if mapName not in song_map_newTotalSize:
+                        song_map_newTotalSize[mapName] = 0
+                    song_map_newTotalSize[mapName] += shuffled_song_item["uncompressed_size"]
+            print(song_map_vanillaTotalSize)
+            print(song_map_newTotalSize)
+            # Verify maps with multiple songs didn't get overloaded
+            for map, size in song_map_vanillaTotalSize.items():
+                if song_map_newTotalSize[map] > size:
+                    print(map + " exceeded size limit")
+                    raise Ex.MusicPlacementExceededMapThreshold
+            # For testing, comment out shuffle_music
+            shuffle_music(song_list, shuffled_music)
+            return
+        except Ex.MusicPlacementExceededMapThreshold:
+            if retries == 100:
+                print("Music rando failed, out of retries.")
+                raise Ex.MusicAttemptCountExceeded
+            else:
+                retries += 1
+                print("Music rando failed. Retrying. Tries: " + str(retries))
+                spoiler.music_bgm_data = {} # Reset spoiler object
 
 
 def shuffle_music(pool_to_shuffle, shuffled_list):
