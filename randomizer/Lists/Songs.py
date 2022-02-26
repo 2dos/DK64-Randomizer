@@ -28,6 +28,7 @@ class SongGroup(IntEnum):
     Isles = auto()
     Pause = auto()
     Wrinkly = auto()
+    BarrelMove = auto()
 
 song_data = [
     Song("Silence", SongType.System),
@@ -46,8 +47,8 @@ song_data = [
     Song("Saxaphone Slam", SongType.Event),
     Song("Angry Aztec", SongType.BGM, SongGroup.AngryAztec),
     Song("Transformation", SongType.Event),
-    Song("Mini Monkey", SongType.BGM),
-    Song("Hunky Chunky", SongType.BGM),
+    Song("Mini Monkey", SongType.BGM, SongGroup.BarrelMove),
+    Song("Hunky Chunky", SongType.BGM, SongGroup.BarrelMove),
     Song("GB/Key Get", SongType.Fanfare),
     Song("Angry Aztec (Beetle Slide)", SongType.BGM),
     Song("Oh Banana", SongType.Fanfare),
@@ -101,9 +102,9 @@ song_data = [
     Song("Fungi Forest (Day)", SongType.BGM, SongGroup.FungiForest),
     Song("Blueprint Get", SongType.Fanfare),
     Song("Fungi Forest (Night)", SongType.BGM, SongGroup.FungiForest),
-    Song("Strong Kong", SongType.BGM),
-    Song("Rocketbarrel Boost", SongType.BGM),
-    Song("Orangstand Sprint", SongType.BGM),
+    Song("Strong Kong", SongType.BGM, SongGroup.BarrelMove),
+    Song("Rocketbarrel Boost", SongType.BGM, SongGroup.BarrelMove),
+    Song("Orangstand Sprint", SongType.BGM, SongGroup.BarrelMove),
     Song("Fungi Forest (Minecart)", SongType.BGM),
     Song("DK Rap", SongType.BGM),
     Song("Blueprint Drop", SongType.Fanfare),

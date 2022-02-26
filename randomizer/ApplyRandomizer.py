@@ -157,7 +157,8 @@ def patching_response(responded_data):
         ROM().seek(sav + 0x034)
         ROM().write(1)
 
-    randomize_dktv()
+    # Currently crashing most of the time
+    # randomize_dktv()
     randomize_music(spoiler)
     randomize_entrances(spoiler)
 
