@@ -61,12 +61,6 @@ class Settings:
         # startwith
         self.training_barrels = "startwith"
 
-        # bonus_barrels: str
-        # skip
-        # normal
-        # random
-        self.bonus_barrels = "random"
-
         # starting_kong: Kongs enum
         self.starting_kong = Kongs.donkey
 
@@ -78,15 +72,6 @@ class Settings:
 
         # progressive_upgrades: bool
         self.progressive_upgrades = True
-
-        # shuffle_loading_zones: str
-        # none
-        # levels
-        # all
-        self.shuffle_loading_zones = "none"
-
-        # decoupled_loading_zones: bool
-        self.decoupled_loading_zones = True
 
         self.prices = VanillaPrices.copy()
         self.resolve_settings()
@@ -136,6 +121,21 @@ class Settings:
         # krool_phase_count: int, [1-5]
         self.krool_phase_count = 5
 
+        # bonus_barrels: str
+        # skip - NOT IMPLEMENTED YET
+        # normal
+        # random
+        self.bonus_barrels = "normal"
+
+        # shuffle_loading_zones: str
+        # none
+        # levels
+        # all
+        self.shuffle_loading_zones = "none"
+
+        # decoupled_loading_zones: bool
+        self.decoupled_loading_zones = True
+
         #  Music
         self.music_bgm = None
         self.music_fanfares = None
@@ -181,6 +181,16 @@ class Settings:
             random.shuffle(orderedPhases)
         orderedPhases.append("chunky")
         self.krool_order = orderedPhases
+
+        # Bonus Barrel Rando
+        if self.bonus_barrel_rando:
+            self.bonus_barrels = "random"
+        
+        # Loading Zone Rando
+        if self.loading_zone_rando:
+            self.shuffle_loading_zones = "all"
+        if self.loading_zone_coupled:
+            self.decoupled_loading_zones = False
 
     def __repr__(self):
         """Return printable version of the object as json.

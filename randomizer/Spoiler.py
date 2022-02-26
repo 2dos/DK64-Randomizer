@@ -9,6 +9,7 @@ from randomizer.Enums.Items import Items
 from randomizer.Lists.Item import ItemFromKong, ItemList
 from randomizer.Lists.Location import LocationList
 from randomizer.Lists.Minigame import MinigameAssociations, MinigameRequirements
+from randomizer.Lists.Songs import Song
 from randomizer.MapsAndExits import GetExitId, GetMapId
 from randomizer.Settings import Settings
 from randomizer.ShuffleExits import ShufflableExits
@@ -24,6 +25,9 @@ class Spoiler:
         self.shuffled_barrel_data = {}
         self.shuffled_exit_data = {}
         self.shuffled_exit_instructions = []
+        self.music_bgm_data = {}
+        self.music_fanfare_data = {}
+        self.music_event_data = {}
         self.location_data = {}
 
     def toJson(self):
@@ -73,13 +77,17 @@ class Spoiler:
             for exit, dest in self.shuffled_exit_data.items():
                 shuffled_exits[ShufflableExits[exit].name] = Logic.Regions[dest.regionId].name + " " + dest.name
             humanspoiler["Shuffled Exits"] = shuffled_exits
-            # humanspoiler["Shuffled Exit Json"] = self.shuffled_exit_instructions
 
         if self.settings.bonus_barrels == "random":
             shuffled_barrels = OrderedDict()
             for location, minigame in self.shuffled_barrel_data.items():
                 shuffled_barrels[LocationList[location].name] = MinigameRequirements[minigame].name
             humanspoiler["Shuffled Bonus Barrels"] = shuffled_barrels
+
+        if self.settings.music_bgm != "default":
+            humanspoiler["Shuffled Music (BGM)"] = self.music_bgm_data
+        # if self.settings.music_fanfares != "default":
+        # if self.settings.music_events != "default":
 
         return json.dumps(humanspoiler, indent=4)
 
