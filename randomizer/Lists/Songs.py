@@ -25,7 +25,6 @@ class SongGroup(IntEnum):
     CrystalCaves = auto()
     Isles = auto()
     Self = auto()
-    Small = auto()
 
 song_data = [
     Song("Silence", SongType.System), # 0
@@ -61,7 +60,7 @@ song_data = [
     Song("Jungle Japes (Tunnels)", SongType.BGM, SongGroup.Self), # 30
     Song("Candy's Music Shop", SongType.BGM),
     Song("Minecart Coin Get", SongType.Fanfare),
-    Song("Melon Slice Get", SongType.Fanfare, SongGroup.Small),
+    Song("Melon Slice Get", SongType.Fanfare),
     Song("Pause Menu", SongType.BGM, SongGroup.Self),
     Song("Crystal Coconut Get", SongType.Fanfare), # 35
     Song("Rambi", SongType.BGM, SongGroup.JungleJapes),
