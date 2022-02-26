@@ -169,30 +169,29 @@ def Shuffle_BGM(spoiler:Spoiler, song_list:list):
                 song_item = vanilla_music.pop(0)
                 vanillaSong:Song = song_data[song_item["index"]]
                 newSong:Song = None
-                isShuffled = False
                 for shuffled_song_item in shuffled_music:
                     newSong:Song = song_data[shuffled_song_item["index"]]
-                    if vanillaSong.map == None:
-                        shuffled_music.remove(shuffled_song_item)
-                        isShuffled = True
-                        break
-                    else:
-                        mapName = SongGroup(vanillaSong.map).name
-                        if mapName not in song_map_vanillaTotalSize:
-                            song_map_vanillaTotalSize[mapName] = 0
-                        if mapName not in song_map_newTotalSize:
-                            song_map_newTotalSize[mapName] = 0
-                        # If the new size doesn't exceed the old, keep going
-                        if (song_map_newTotalSize[mapName] + shuffled_song_item["uncompressed_size"]) <= (song_map_vanillaTotalSize[mapName] + song_item["uncompressed_size"]):
-                            song_map_vanillaTotalSize[mapName] += song_item["uncompressed_size"]
-                            song_map_newTotalSize[mapName] += shuffled_song_item["uncompressed_size"]
-                            shuffled_music.remove(shuffled_song_item)
-                            isShuffled = True
-                            break
-                if isShuffled:
+                    if vanillaSong.map != None:
+                        groupName = SongGroup(vanillaSong.map).name
+                        if groupName not in song_map_vanillaTotalSize:
+                            song_map_vanillaTotalSize[groupName] = 0
+                        if groupName not in song_map_newTotalSize:
+                            song_map_newTotalSize[groupName] = 0
+                        if SongGroup(vanillaSong.map) == SongGroup.Self:
+                            if shuffled_song_item["uncompressed_size"] > song_item["uncompressed_size"]:
+                                continue
+                        else:
+                            # If the new size exceeds the vanilla size, pick a different song
+                            if (song_map_newTotalSize[groupName] + shuffled_song_item["uncompressed_size"]) > (song_map_vanillaTotalSize[groupName] + song_item["uncompressed_size"]):
+                                continue
+                        song_map_vanillaTotalSize[groupName] += song_item["uncompressed_size"]
+                        song_map_newTotalSize[groupName] += shuffled_song_item["uncompressed_size"]
+                    # If it gets this far, the assignment is good
+                    shuffled_music.remove(shuffled_song_item)
                     vanilla_song_list.append(song_item)
                     new_song_list.append(shuffled_song_item)
                     spoiler.music_bgm_data[vanillaSong.name] = newSong.name
+                    break
                 else:
                     raise Ex.MusicPlacementExceededMapThreshold
 
