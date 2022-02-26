@@ -84,10 +84,12 @@ class Spoiler:
                 shuffled_barrels[LocationList[location].name] = MinigameRequirements[minigame].name
             humanspoiler["Shuffled Bonus Barrels"] = shuffled_barrels
 
-        if self.settings.music_bgm != "default":
+        if self.settings.music_bgm == "randomized":
             humanspoiler["Shuffled Music (BGM)"] = self.music_bgm_data
-        # if self.settings.music_fanfares != "default":
-        # if self.settings.music_events != "default":
+        if self.settings.music_fanfares == "randomized":
+            humanspoiler["Shuffled Music Fanfares"] = self.music_fanfare_data
+        if self.settings.music_events == "randomized":
+            humanspoiler["Shuffled Music Events"] = self.music_event_data
 
         return json.dumps(humanspoiler, indent=4)
 

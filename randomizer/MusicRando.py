@@ -105,6 +105,13 @@ def randomize_music(spoiler:Spoiler):
             shuffled_music = fanfare_list.copy()
             random.shuffle(shuffled_music)
             shuffle_music(fanfare_list, shuffled_music)
+            # Write to spoiler
+            for i, fanfare_item in enumerate(fanfare_list):
+                shuffled_fanfare_item = shuffled_music[i]
+                vanillaFanfare:Song = song_data[fanfare_item["index"]]
+                newFanfare:Song = song_data[shuffled_fanfare_item["index"]]
+                spoiler.music_fanfare_data[vanillaFanfare.name] = newFanfare.name
+
         elif settings.music_fanfares == "uploaded":
             # Generate the list of fanfares songs
             song_list = []
@@ -149,8 +156,13 @@ def randomize_music(spoiler:Spoiler):
             # Shuffle the event list
             shuffled_music = event_list.copy()
             random.shuffle(shuffled_music)
-
             shuffle_music(event_list, shuffled_music)
+            # Write to spoiler
+            for i, event_item in enumerate(event_list):
+                shuffled_event_item = shuffled_music[i]
+                vanillaEvent:Song = song_data[event_item["index"]]
+                newEvent:Song = song_data[shuffled_event_item["index"]]
+                spoiler.music_event_data[vanillaEvent.name] = newEvent.name
 
 def Shuffle_BGM(spoiler:Spoiler, song_list:list):
     """Facilitate shuffling of background music."""
