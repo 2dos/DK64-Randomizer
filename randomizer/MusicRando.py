@@ -5,10 +5,9 @@ import random
 
 import js
 import randomizer.Lists.Exceptions as Ex
-from randomizer.MapsAndExits import Maps
 from randomizer.Spoiler import Spoiler
 from randomizer.Enums.SongType import SongType
-from randomizer.Lists.Songs import Song, song_data
+from randomizer.Lists.Songs import Song, SongGroup, song_data
 from randomizer.Patcher import ROM
 from randomizer.Settings import Settings
 
@@ -153,29 +152,49 @@ def randomize_music(spoiler:Spoiler):
 
             shuffle_music(event_list, shuffled_music)
 
-def Shuffle_BGM(spoiler:Spoiler, song_list):
-    """Facilitate shuffling of exits."""
+def Shuffle_BGM(spoiler:Spoiler, song_list:list):
+    """Facilitate shuffling of background music."""
     retries = 0
     while True:
         try:
             # Copy the existing list of songs and shuffle it
             shuffled_music = song_list.copy()
             random.shuffle(shuffled_music)
+            vanilla_song_list = []
+            new_song_list = []
             song_map_vanillaTotalSize = {}
             song_map_newTotalSize = {}
-            for i, song_item in enumerate(song_list):
-                shuffled_song_item = shuffled_music[i]
-                newSong:Song = song_data[song_item["index"]]
-                vanillaSong:Song = song_data[shuffled_song_item["index"]]
-                spoiler.music_bgm_data[vanillaSong.name] = newSong.name
-                if vanillaSong.map != None:
-                    mapName = Maps(vanillaSong.map).name
-                    if mapName not in song_map_vanillaTotalSize:
-                        song_map_vanillaTotalSize[mapName] = 0
-                    song_map_vanillaTotalSize[mapName] += song_item["uncompressed_size"]
-                    if mapName not in song_map_newTotalSize:
-                        song_map_newTotalSize[mapName] = 0
-                    song_map_newTotalSize[mapName] += shuffled_song_item["uncompressed_size"]
+            while len(song_list) > 0:
+                song_item = song_list.pop(0)
+                vanillaSong:Song = song_data[song_item["index"]]
+                newSong:Song = None
+                isShuffled = False
+                for shuffled_song_item in shuffled_music:
+                    newSong:Song = song_data[shuffled_song_item["index"]]
+                    if vanillaSong.map == None:
+                        shuffled_music.remove(shuffled_song_item)
+                        isShuffled = True
+                        break
+                    else:
+                        mapName = SongGroup(vanillaSong.map).name
+                        if mapName not in song_map_vanillaTotalSize:
+                            song_map_vanillaTotalSize[mapName] = 0
+                        if mapName not in song_map_newTotalSize:
+                            song_map_newTotalSize[mapName] = 0
+                        # If the new size doesn't exceed the old, keep going
+                        if (song_map_newTotalSize[mapName] + shuffled_song_item["uncompressed_size"]) <= (song_map_vanillaTotalSize[mapName] + song_item["uncompressed_size"]):
+                            song_map_vanillaTotalSize[mapName] += song_item["uncompressed_size"]
+                            song_map_newTotalSize[mapName] += shuffled_song_item["uncompressed_size"]
+                            shuffled_music.remove(shuffled_song_item)
+                            isShuffled = True
+                            break
+                if isShuffled:
+                    vanilla_song_list.append(song_item)
+                    new_song_list.append(shuffled_song_item)
+                    spoiler.music_bgm_data[vanillaSong.name] = newSong.name
+                else:
+                    raise Ex.MusicPlacementExceededMapThreshold
+
             print(song_map_vanillaTotalSize)
             print(song_map_newTotalSize)
             # Verify maps with multiple songs didn't get overloaded
@@ -184,10 +203,10 @@ def Shuffle_BGM(spoiler:Spoiler, song_list):
                     print(map + " exceeded size limit")
                     raise Ex.MusicPlacementExceededMapThreshold
             # For testing, comment out shuffle_music
-            shuffle_music(song_list, shuffled_music)
+            shuffle_music(vanilla_song_list, new_song_list)
             return
         except Ex.MusicPlacementExceededMapThreshold:
-            if retries == 2000:
+            if retries == 20:
                 print("Music rando failed, out of retries.")
                 raise Ex.MusicAttemptCountExceeded
             else:
@@ -219,11 +238,11 @@ def shuffle_music(pool_to_shuffle, shuffled_list):
         
     # Second loop over all songs to write data into ROM
     for song in pool_to_shuffle:
-        song_data = stored_song_data[song["index"]]
         shuffled_song = shuffled_list[pool_to_shuffle.index(song)]
-        ROM().seek(shuffled_song["pointing_to"])
+        song_data = stored_song_data[shuffled_song["index"]]
+        ROM().seek(song["pointing_to"])
         ROM().writeBytes(song_data)
         # Update the uncompressed data table to have our new size.
-        song_size = stored_song_sizes[song["index"]]
-        ROM().seek(uncompressed_data_table["pointing_to"] + (4 * shuffled_song["index"]))
+        song_size = stored_song_sizes[shuffled_song["index"]]
+        ROM().seek(uncompressed_data_table["pointing_to"] + (4 * song["index"]))
         ROM().writeBytes(song_size)

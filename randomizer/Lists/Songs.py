@@ -1,6 +1,6 @@
 """Data of the song breakdowns in ROM."""
+from enum import IntEnum, auto
 from randomizer.Enums.SongType import SongType
-from randomizer.MapsAndExits import Maps
 
 class Song:
     """Class used for managing song objects."""
@@ -14,12 +14,21 @@ class Song:
         """
         self.name = name
         self.type = type
-        self.map = map # Use this to avoid overloading certain maps with too many large songs
+        self.map = map # Use this to avoid overloading certain SongGroup with too many large songs
 
+class SongGroup(IntEnum):
+    JungleJapes = auto()
+    AngryAztec = auto()
+    FranticFactory = auto()
+    GloomyGalleon = auto()
+    FungiForest = auto()
+    CrystalCaves = auto()
+    Isles = auto()
+    Pause = auto()
 
 song_data = [
     Song("Silence", SongType.System),
-    Song("Jungle Japes (Starting Area)", SongType.BGM, Maps.JungleJapes),
+    Song("Jungle Japes (Starting Area)", SongType.BGM, SongGroup.JungleJapes),
     Song("Cranky's Lab", SongType.BGM),
     Song("Jungle Japes (Minecart)", SongType.BGM),
     Song("Jungle Japes (Army Dillo)", SongType.BGM),
@@ -32,7 +41,7 @@ song_data = [
     Song("Bongo Blast", SongType.Event),
     Song("Trombone Tremor", SongType.Event),
     Song("Saxaphone Slam", SongType.Event),
-    Song("Angry Aztec", SongType.BGM, Maps.AngryAztec),
+    Song("Angry Aztec", SongType.BGM, SongGroup.AngryAztec),
     Song("Transformation", SongType.Event),
     Song("Mini Monkey", SongType.BGM),
     Song("Hunky Chunky", SongType.BGM),
@@ -46,16 +55,16 @@ song_data = [
     Song("Angry Aztec (Dogadon)", SongType.BGM),
     Song("Angry Aztec (5DT)", SongType.BGM),
     Song("Frantic Factory (Car Race)", SongType.BGM),
-    Song("Frantic Factory", SongType.BGM),
+    Song("Frantic Factory", SongType.BGM, SongGroup.FranticFactory),
     Song("Snide's HQ", SongType.BGM),
-    Song("Jungle Japes (Tunnels)", SongType.BGM, Maps.JungleJapes),
+    Song("Jungle Japes (Tunnels)", SongType.BGM, SongGroup.JungleJapes),
     Song("Candy's Music Shop", SongType.BGM),
     Song("Minecart Coin Get", SongType.Fanfare),
     Song("Melon Slice Get", SongType.Fanfare),
-    Song("Pause Menu", SongType.BGM),
+    Song("Pause Menu", SongType.BGM, SongGroup.Pause),
     Song("Crystal Coconut Get", SongType.Fanfare),
-    Song("Rambi", SongType.BGM, Maps.JungleJapes),
-    Song("Angry Aztec (Tunnels)", SongType.BGM, Maps.AngryAztec),
+    Song("Rambi", SongType.BGM, SongGroup.JungleJapes),
+    Song("Angry Aztec (Tunnels)", SongType.BGM, SongGroup.AngryAztec),
     Song("Water Droplets", SongType.Ambient),
     Song("Frantic Factory (Mad Jack)", SongType.BGM),
     Song("Success", SongType.Event),
@@ -69,26 +78,26 @@ song_data = [
     Song("Angry Aztec (Chunky Klaptraps)", SongType.BGM),
     Song("Frantic Factory (Crusher Room)", SongType.BGM),
     Song("Jungle Japes (Baboon Blast)", SongType.BGM),
-    Song("Frantic Factory (R&D)", SongType.BGM, Maps.FranticFactory),
-    Song("Frantic Factory (Production Room)", SongType.BGM, Maps.FranticFactory),
+    Song("Frantic Factory (R&D)", SongType.BGM, SongGroup.FranticFactory),
+    Song("Frantic Factory (Production Room)", SongType.BGM, SongGroup.FranticFactory),
     Song("Troff 'n' Scoff", SongType.BGM),
     Song("Boss Defeat", SongType.Event),
     Song("Angry Aztec (Baboon Blast)", SongType.BGM),
-    Song("Gloomy Galleon (Outside)", SongType.BGM, Maps.GloomyGalleon),
+    Song("Gloomy Galleon (Outside)", SongType.BGM, SongGroup.GloomyGalleon),
     Song("Boss Unlock", SongType.Event),
     Song("Awaiting Entering the Boss", SongType.BGM),
     Song("Generic Twinkly Sounds", SongType.Ambient),
     Song("Gloomy Galleon (Pufftoss)", SongType.BGM),
     Song("Gloomy Galleon (Seal Race)", SongType.BGM),
-    Song("Gloomy Galleon (Tunnels)", SongType.BGM, Maps.GloomyGalleon),
+    Song("Gloomy Galleon (Tunnels)", SongType.BGM, SongGroup.GloomyGalleon),
     Song("Gloomy Galleon (Lighthouse)", SongType.BGM),
     Song("Battle Arena", SongType.BGM),
     Song("Drop Coins (Minecart)", SongType.Fanfare),
     Song("Fairy Nearby", SongType.Ambient),
     Song("Checkpoint", SongType.Fanfare),
-    Song("Fungi Forest (Day)", SongType.BGM, Maps.FungiForest),
+    Song("Fungi Forest (Day)", SongType.BGM, SongGroup.FungiForest),
     Song("Blueprint Get", SongType.Fanfare),
-    Song("Fungi Forest (Night)", SongType.BGM, Maps.FungiForest),
+    Song("Fungi Forest (Night)", SongType.BGM, SongGroup.FungiForest),
     Song("Strong Kong", SongType.BGM),
     Song("Rocketbarrel Boost", SongType.BGM),
     Song("Orangstand Sprint", SongType.BGM),
@@ -101,8 +110,8 @@ song_data = [
     Song("Gloomy Galleon (Mermaid Palace)", SongType.BGM),
     Song("Fungi Forest (Dogadon)", SongType.BGM),
     Song("Mad Maze Maul", SongType.BGM),
-    Song("Crystal Caves", SongType.BGM, Maps.CrystalCaves),
-    Song("Crystal Caves (Giant Kosha Tantrum)", SongType.BGM, Maps.CrystalCaves),
+    Song("Crystal Caves", SongType.BGM, SongGroup.CrystalCaves),
+    Song("Crystal Caves (Giant Kosha Tantrum)", SongType.BGM, SongGroup.CrystalCaves),
     Song("Nintendo Logo (Old?)", SongType.System),
     Song("Success (Races)", SongType.Event),
     Song("Failure (Races & Try Again)", SongType.Event),
@@ -127,10 +136,10 @@ song_data = [
     Song("Creepy Castle (Minecart)", SongType.BGM),
     Song("Baboon Balloon", SongType.Event),
     Song("Gorilla Gone", SongType.BGM),
-    Song("DK Isles", SongType.BGM, Maps.Isles),
-    Song("DK Isles (K Rool's Ship)", SongType.BGM, Maps.Isles),
-    Song("DK Isles (Banana Fairy Island)", SongType.BGM, Maps.Isles),
-    Song("DK Isles (K-Lumsy's Prison)", SongType.BGM, Maps.Isles),
+    Song("DK Isles", SongType.BGM, SongGroup.Isles),
+    Song("DK Isles (K Rool's Ship)", SongType.BGM, SongGroup.Isles),
+    Song("DK Isles (Banana Fairy Island)", SongType.BGM, SongGroup.Isles),
+    Song("DK Isles (K-Lumsy's Prison)", SongType.BGM, SongGroup.Isles),
     Song("Hideout Helm (Blast-O-Matic On)", SongType.BGM),
     Song("Move Get", SongType.Fanfare),
     Song("Gun Get", SongType.Fanfare),
@@ -142,7 +151,7 @@ song_data = [
     Song("Creepy Castle (Tunnels)", SongType.BGM),
     Song("Intro Story Medley", SongType.BGM),
     Song("Training Grounds", SongType.BGM),
-    Song("Enguarde", SongType.BGM, Maps.GloomyGalleon),
+    Song("Enguarde", SongType.BGM, SongGroup.GloomyGalleon),
     Song("K-Lumsy Celebration", SongType.Event),
     Song("Creepy Castle (Crypt)", SongType.BGM),
     Song("Headphones Get", SongType.Fanfare),
@@ -178,8 +187,8 @@ song_data = [
     Song("Creepy Castle (Trash Can)", SongType.BGM),
     Song("End Sequence", SongType.BGM),
     Song("K-Lumsy Ending", SongType.BGM),
-    Song("Jungle Japes", SongType.BGM, Maps.JungleJapes),
-    Song("Jungle Japes (Cranky's Area)", SongType.BGM, Maps.JungleJapes),
+    Song("Jungle Japes", SongType.BGM, SongGroup.JungleJapes),
+    Song("Jungle Japes (Cranky's Area)", SongType.BGM, SongGroup.JungleJapes),
     Song("K Rool Takeoff", SongType.System),
     Song("Crystal Caves (Baboon Blast)", SongType.BGM),
     Song("Fungi Forest (Baboon Blast)", SongType.BGM),
