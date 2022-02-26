@@ -18,13 +18,16 @@ class Song:
 
 class SongGroup(IntEnum):
     JungleJapes = auto()
+    JapesTunnel = auto()
     AngryAztec = auto()
     FranticFactory = auto()
     GloomyGalleon = auto()
+    GalleonTunnel = auto()
     FungiForest = auto()
     CrystalCaves = auto()
     Isles = auto()
     Pause = auto()
+    Wrinkly = auto()
 
 song_data = [
     Song("Silence", SongType.System),
@@ -57,7 +60,7 @@ song_data = [
     Song("Frantic Factory (Car Race)", SongType.BGM),
     Song("Frantic Factory", SongType.BGM, SongGroup.FranticFactory),
     Song("Snide's HQ", SongType.BGM),
-    Song("Jungle Japes (Tunnels)", SongType.BGM, SongGroup.JungleJapes),
+    Song("Jungle Japes (Tunnels)", SongType.BGM, SongGroup.JapesTunnel),
     Song("Candy's Music Shop", SongType.BGM),
     Song("Minecart Coin Get", SongType.Fanfare),
     Song("Melon Slice Get", SongType.Fanfare),
@@ -89,7 +92,7 @@ song_data = [
     Song("Generic Twinkly Sounds", SongType.Ambient),
     Song("Gloomy Galleon (Pufftoss)", SongType.BGM),
     Song("Gloomy Galleon (Seal Race)", SongType.BGM),
-    Song("Gloomy Galleon (Tunnels)", SongType.BGM, SongGroup.GloomyGalleon),
+    Song("Gloomy Galleon (Tunnels)", SongType.BGM, SongGroup.GalleonTunnel),
     Song("Gloomy Galleon (Lighthouse)", SongType.BGM),
     Song("Battle Arena", SongType.BGM),
     Song("Drop Coins (Minecart)", SongType.Fanfare),
@@ -198,7 +201,7 @@ song_data = [
     Song("Monkey Smash", SongType.BGM),
     Song("Fungi Forest (Rabbit Race)", SongType.BGM),
     Song("Game Over", SongType.Event),
-    Song("Wrinkly Kong", SongType.BGM),
+    Song("Wrinkly Kong", SongType.BGM, SongGroup.Wrinkly),
     Song("100th CB Get", SongType.System),
     Song("K Rool's Defeat", SongType.System),
     Song("Nintendo Logo", SongType.BGM),

@@ -158,14 +158,15 @@ def Shuffle_BGM(spoiler:Spoiler, song_list:list):
     while True:
         try:
             # Copy the existing list of songs and shuffle it
+            vanilla_music = song_list.copy()
             shuffled_music = song_list.copy()
             random.shuffle(shuffled_music)
             vanilla_song_list = []
             new_song_list = []
             song_map_vanillaTotalSize = {}
             song_map_newTotalSize = {}
-            while len(song_list) > 0:
-                song_item = song_list.pop(0)
+            while len(vanilla_music) > 0:
+                song_item = vanilla_music.pop(0)
                 vanillaSong:Song = song_data[song_item["index"]]
                 newSong:Song = None
                 isShuffled = False
