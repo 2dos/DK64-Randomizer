@@ -11323,7 +11323,7 @@ header.masthead {
   padding-top: calc(7rem + 72px);
   padding-bottom: 7rem;
   background: linear-gradient(0deg, #003d03 0%, #003d03 100%);
-  background-image: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url("/base-hack/assets/Non-Code/website/bgfinal.png");
+  background-image: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url("/static/img/bgfinal.png");
   background-repeat: repeat;
   background-attachment: scroll;
   background-size: 45%;

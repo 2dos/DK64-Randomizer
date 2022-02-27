@@ -60,10 +60,12 @@ class VanillaItemsGameNotBeatableException(FillException):
 
     pass
 
+
 class MusicPlacementExceededMapThreshold(Exception):
     """Exception triggered when shuffled music leads to a map having too big music files."""
 
     pass
+
 
 class MusicAttemptCountExceeded(Exception):
     """Exception triggered when too many attempts were made to place music."""
