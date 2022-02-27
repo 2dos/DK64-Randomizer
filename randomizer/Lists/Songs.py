@@ -5,7 +5,7 @@ from randomizer.Enums.SongType import SongType
 class Song:
     """Class used for managing song objects."""
 
-    def __init__(self, name, type=SongType.System, map=None):
+    def __init__(self, name, type=SongType.System, group=None):
         """Init SONG objects.
 
         Args:
@@ -14,7 +14,7 @@ class Song:
         """
         self.name = name
         self.type = type
-        self.map = map # Use this to avoid overloading certain SongGroup with too many large songs
+        self.group = group # Use this to avoid overloading certain SongGroup with too many large songs
 
 class SongGroup(IntEnum):
     JungleJapes = auto()

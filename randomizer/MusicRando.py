@@ -1,4 +1,5 @@
 """Randomize Music passed from Misc options."""
+from ast import And
 import gzip
 import json
 import random
@@ -36,7 +37,7 @@ def randomize_music(spoiler:Spoiler):
                     # song_list.append(pointer_addresses[0]["entries"][song_data.index(song)])
                     song_list.append(js.pointer_addresses[0]["entries"][song_data.index(song)])
 
-            Shuffle_BGM(spoiler, song_list)
+            ShuffleMusicWithSizeCheck(spoiler, song_list)
             
         # If the user was a poor sap and selected chaos put DK rap for everything
         elif settings.music_bgm == "chaos":
@@ -102,9 +103,8 @@ def randomize_music(spoiler:Spoiler):
                     fanfare_list.append(js.pointer_addresses[0]["entries"][song_data.index(song)])
 
             # Shuffle the fanfare list
-            shuffled_music = fanfare_list.copy()
-            random.shuffle(shuffled_music)
-            shuffle_music(fanfare_list, shuffled_music)
+            ShuffleMusicWithSizeCheck(spoiler, fanfare_list)
+
         elif settings.music_fanfares == "uploaded":
             # Generate the list of fanfares songs
             song_list = []
@@ -147,13 +147,10 @@ def randomize_music(spoiler:Spoiler):
                     event_list.append(js.pointer_addresses[0]["entries"][song_data.index(song)])
 
             # Shuffle the event list
-            shuffled_music = event_list.copy()
-            random.shuffle(shuffled_music)
+            ShuffleMusicWithSizeCheck(spoiler, event_list)
 
-            shuffle_music(event_list, shuffled_music)
-
-def Shuffle_BGM(spoiler:Spoiler, song_list:list):
-    """Facilitate shuffling of background music."""
+def ShuffleMusicWithSizeCheck(spoiler:Spoiler, song_list:list):
+    """Facilitate shuffling of music."""
     retries = 0
     while True:
         try:
@@ -171,13 +168,14 @@ def Shuffle_BGM(spoiler:Spoiler, song_list:list):
                 newSong:Song = None
                 for shuffled_song_item in shuffled_music:
                     newSong:Song = song_data[shuffled_song_item["index"]]
-                    if vanillaSong.map != None:
-                        groupName = SongGroup(vanillaSong.map).name
+                    # BGM has groups to control size of assigned songs
+                    if vanillaSong.group != None and vanillaSong.type == SongType.BGM:
+                        groupName = SongGroup(vanillaSong.group).name
                         if groupName not in song_map_vanillaTotalSize:
                             song_map_vanillaTotalSize[groupName] = 0
                         if groupName not in song_map_newTotalSize:
                             song_map_newTotalSize[groupName] = 0
-                        if SongGroup(vanillaSong.map) == SongGroup.Self:
+                        if SongGroup(vanillaSong.group) == SongGroup.Self:
                             if shuffled_song_item["uncompressed_size"] > song_item["uncompressed_size"]:
                                 continue
                         else:
@@ -186,22 +184,29 @@ def Shuffle_BGM(spoiler:Spoiler, song_list:list):
                                 continue
                         song_map_vanillaTotalSize[groupName] += song_item["uncompressed_size"]
                         song_map_newTotalSize[groupName] += shuffled_song_item["uncompressed_size"]
+                    # Fanfares have different rule for limiting size
+                    elif vanillaSong.type == SongType.Fanfare:
+                        if shuffled_song_item["uncompressed_size"] > song_item["uncompressed_size"] * 1.5:
+                            continue
                     # If it gets this far, the assignment is good
                     shuffled_music.remove(shuffled_song_item)
                     vanilla_song_list.append(song_item)
                     new_song_list.append(shuffled_song_item)
-                    spoiler.music_bgm_data[vanillaSong.name] = newSong.name
+
+                    # Write to spoiler
+                    if vanillaSong.type == SongType.BGM:
+                        spoiler.music_bgm_data[vanillaSong.name] = newSong.name
+                    elif vanillaSong.type == SongType.Fanfare:
+                        spoiler.music_fanfare_data[vanillaSong.name] = newSong.name
+                    elif vanillaSong.type == SongType.Event:
+                        spoiler.music_event_data[vanillaSong.name] = newSong.name
+
                     break
                 else:
                     raise Ex.MusicPlacementExceededMapThreshold
 
             print(song_map_vanillaTotalSize)
             print(song_map_newTotalSize)
-            # Verify maps with multiple songs didn't get overloaded
-            for map, size in song_map_vanillaTotalSize.items():
-                if song_map_newTotalSize[map] > size:
-                    print(map + " exceeded size limit")
-                    raise Ex.MusicPlacementExceededMapThreshold
             # For testing, comment out shuffle_music
             shuffle_music(vanilla_song_list, new_song_list)
             return
@@ -212,7 +217,13 @@ def Shuffle_BGM(spoiler:Spoiler, song_list:list):
             else:
                 retries += 1
                 print("Music rando failed. Retrying. Tries: " + str(retries))
-                spoiler.music_bgm_data = {} # Reset spoiler object
+                # Reset spoiler object
+                if vanillaSong.type == SongType.BGM:
+                    spoiler.music_bgm_data = {}
+                elif vanillaSong.type == SongType.Fanfare:
+                    spoiler.music_fanfare_data = {}
+                elif vanillaSong.type == SongType.Event:
+                    spoiler.music_event_data = {}
 
 
 def shuffle_music(pool_to_shuffle, shuffled_list):
