@@ -12,6 +12,7 @@ from randomizer.MusicRando import randomize_music
 from randomizer.Patcher import ROM
 
 # from randomizer.Spoiler import Spoiler
+from randomizer.Settings import Settings
 from ui.progress_bar import ProgressBar
 
 
@@ -35,6 +36,8 @@ def patching_response(responded_data):
     ProgressBar().update_progress(5, "Applying Patches")
     # spoiler: Spoiler = pickle.loads(codecs.decode(responded_data.encode(), "base64"))
     spoiler = pickle.loads(codecs.decode(responded_data.encode(), "base64"))
+    spoiler.settings.verify_hash()
+    Settings({"seed": 0}).compare_hash(spoiler.settings.public_hash)
     # Make sure we re-load the seed id
     spoiler.settings.set_seed()
 

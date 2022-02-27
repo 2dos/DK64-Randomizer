@@ -1,9 +1,12 @@
 """Settings class and functions."""
+import hashlib
+import inspect
 import json
 import random
+import sys
 
 from randomizer.Enums.Kongs import Kongs
-from randomizer.Prices import VanillaPrices, RandomizePrices
+from randomizer.Prices import RandomizePrices, VanillaPrices
 
 
 class Settings:
@@ -15,6 +18,8 @@ class Settings:
         Args:
             form_data (dict): Post data from the html form.
         """
+        self.__hash = self.__get_hash()
+        self.public_hash = self.__get_hash()
         self.algorithm = "forward"
         self.generate_main()
         self.generate_progression()
@@ -80,6 +85,9 @@ class Settings:
         """Set Default items on main page."""
         self.seed = None
         self.download_json = None
+        self.bonus_barrel_rando = None
+        self.loading_zone_rando = None
+        self.loading_zone_coupled = None
 
     def set_seed(self):
         """Forcibly re-set the random seed to the seed set in the config."""
@@ -185,7 +193,7 @@ class Settings:
         # Bonus Barrel Rando
         if self.bonus_barrel_rando:
             self.bonus_barrels = "random"
-        
+
         # Loading Zone Rando
         if self.loading_zone_rando:
             self.shuffle_loading_zones = "all"
@@ -199,3 +207,42 @@ class Settings:
             str: Json string of the dict.
         """
         return json.dumps(self.__dict__)
+
+    def __get_hash(self):
+        """Get the hash value of all of the source code loaded."""
+        hash_value = []
+        files = []
+        files.append(inspect.getsource(Settings))
+        files.append(inspect.getsource(__import__("randomizer.Spoiler")))
+        files.append(inspect.getsource(__import__("randomizer.Fill")))
+        files.append(inspect.getsource(__import__("randomizer.BackgroundRandomizer")))
+        for file in sorted(files):
+            hash_value.append(hashlib.md5(file.encode("utf-8")).hexdigest())
+        return "".join(hash_value)
+
+    def compare_hash(self, hash):
+        """Compare our hash with a passed hash value."""
+        if self.__hash != hash:
+            raise Exception("Error: Comparison failed, Hashes do not match.")
+
+    def verify_hash(self):
+        """Verify our hash files match our existing code."""
+        try:
+            if self.__hash == self.__get_hash():
+                return True
+            else:
+                raise Exception("Error: Hashes do not match")
+        except Exception:
+            return False
+
+    def __setattr__(self, name, value):
+        """Set an attributes value but only after verifying our hash."""
+        self.verify_hash()
+        super().__setattr__(name, value)
+
+    def __delattr__(self, name):
+        """Delete an attribute if its not our settings hash or if the code has been modified."""
+        self.verify_hash()
+        if name == "_Settings__hash":
+            raise Exception("Error: Attempted deletion of race hash.")
+        super().__delattr__(name)

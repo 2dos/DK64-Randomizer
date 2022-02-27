@@ -1,6 +1,5 @@
 """Spoiler class and functions."""
 
-import copy
 import json
 from typing import OrderedDict
 
@@ -32,6 +31,8 @@ class Spoiler:
 
     def toJson(self):
         """Convert spoiler to JSON."""
+        # Verify we match our hash
+        self.settings.verify_hash()
         # We want to convert raw spoiler data into the important bits and in human-readable formats.
         humanspoiler = OrderedDict()
 
