@@ -26,6 +26,7 @@ class Settings:
         self.generate_misc()
         for k, v in form_data.items():
             setattr(self, k, v)
+        self.seed = str(self.seed) + self.__hash
         self.set_seed()
         # Store banana values in array
         self.EntryGBs = [
@@ -91,7 +92,7 @@ class Settings:
 
     def set_seed(self):
         """Forcibly re-set the random seed to the seed set in the config."""
-        random.seed(int(self.seed))
+        random.seed(self.seed)
 
     def generate_progression(self):
         """Set default items on progression page."""
@@ -216,6 +217,7 @@ class Settings:
         files.append(inspect.getsource(__import__("randomizer.Spoiler")))
         files.append(inspect.getsource(__import__("randomizer.Fill")))
         files.append(inspect.getsource(__import__("randomizer.BackgroundRandomizer")))
+        files.append(inspect.getsource(__import__("version")))
         for file in sorted(files):
             hash_value.append(hashlib.md5(file.encode("utf-8")).hexdigest())
         return "".join(hash_value)

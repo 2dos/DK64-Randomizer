@@ -15,8 +15,10 @@ else:
     current_version = "DK64R Dev v" + dev_version
     only_version = dev_version
 
-
-js.document.title = current_version
+try:
+    js.document.title = current_version
+except Exception:
+    pass
 try:
     js.document.getElementById("live-version").text = current_version + " | "
 except Exception:
