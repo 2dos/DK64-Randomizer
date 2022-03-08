@@ -6,6 +6,9 @@ from typing import OrderedDict
 
 from randomizer import Logic
 from randomizer.Enums.Items import Items
+from randomizer.Enums.Kongs import Kongs
+from randomizer.Enums.Types import Types
+from randomizer.Enums.MoveTypes import MoveTypes
 from randomizer.Lists.Item import ItemFromKong, ItemList
 from randomizer.Lists.Location import LocationList
 from randomizer.Lists.Minigame import MinigameAssociations, MinigameRequirements
@@ -29,6 +32,19 @@ class Spoiler:
         self.music_fanfare_data = {}
         self.music_event_data = {}
         self.location_data = {}
+
+        self.move_data = []
+        # 0: Cranky, 1: Funky, 2: Candy
+        for i in range(3):
+            moves = []
+            # One for each kong
+            for j in range(5):
+                kongmoves = []
+                # One for each level
+                for k in range(7):
+                    kongmoves.append(0)
+                moves.append(kongmoves)
+            self.move_data.append(moves)
 
     def toJson(self):
         """Convert spoiler to JSON."""
@@ -130,7 +146,21 @@ class Spoiler:
         """Update location list for what was produced by the fill."""
         self.location_data = {}
         for id, location in locations.items():
-
+            if location.type == Types.Shop:
+                # Get indices from the location
+                shop_index = 0 # cranky
+                if location.movetype in [MoveTypes.Guns, MoveTypes.AmmoBelt]:
+                    shop_index = 1 # funky
+                elif location.movetype == MoveTypes.Intrument:
+                    shop_index = 2 # candy
+                kong_indices = [location.kong]
+                if location.kong == Kongs.any:
+                    kong_indices = [Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky]
+                level_index = location.level
+                # Use the item to find the data to write
+                data = (ItemList[location.item].movetype << 4) | ItemList[location.item].index
+                for kong_index in kong_indices:
+                    self.move_data[shop_index][kong_index][level_index] = data    
             self.location_data[id] = location.item
 
     def UpdatePlaythrough(self, locations, playthroughLocations):
