@@ -3,16 +3,21 @@
 from randomizer.Enums.Items import Items
 from randomizer.Enums.Kongs import Kongs
 from randomizer.Enums.Types import Types
+from randomizer.Enums.MoveTypes import MoveTypes
 
 
 class Item:
     """Stores information about an item."""
 
-    def __init__(self, name, playthrough, type):
+    def __init__(self, name, playthrough, type, data=[]):
         """Initialize with given parameters."""
         self.name = name
         self.playthrough = playthrough
         self.type = type
+        if type == Types.Shop:
+            self.kong = data[0]
+            self.movetype = data[1]
+            self.index = data[2]
 
 
 def ItemFromKong(kong):
@@ -40,41 +45,41 @@ ItemList = {
     Items.Swim: Item("Swim", True, Types.TrainingBarrel),
     Items.Oranges: Item("Oranges", True, Types.TrainingBarrel),
     Items.Barrels: Item("Barrels", True, Types.TrainingBarrel),
-    Items.ProgressiveSlam: Item("Progressive Slam", True, Types.Shop),
-    Items.ProgressiveDonkeyPotion: Item("Progressive Donkey Potion", True, Types.Shop),
-    Items.BaboonBlast: Item("Baboon Blast", True, Types.Shop),
-    Items.StrongKong: Item("Strong Kong", True, Types.Shop),
-    Items.GorillaGrab: Item("Gorilla Grab", True, Types.Shop),
-    Items.ProgressiveDiddyPotion: Item("Progressive Diddy Potion", True, Types.Shop),
-    Items.ChimpyCharge: Item("Chimpy Charge", True, Types.Shop),
-    Items.RocketbarrelBoost: Item("Rocketbarrel Boost", True, Types.Shop),
-    Items.SimianSpring: Item("Simian Spring", True, Types.Shop),
-    Items.ProgressiveLankyPotion: Item("Progressive Lanky Potion", True, Types.Shop),
-    Items.Orangstand: Item("Orangstand", True, Types.Shop),
-    Items.BaboonBalloon: Item("Baboon Balloon", True, Types.Shop),
-    Items.OrangstandSprint: Item("Orangstand Sprint", True, Types.Shop),
-    Items.ProgressiveTinyPotion: Item("Progressive Tiny Potion", True, Types.Shop),
-    Items.MiniMonkey: Item("Mini Monkey", True, Types.Shop),
-    Items.PonyTailTwirl: Item("Pony Tail Twirl", True, Types.Shop),
-    Items.Monkeyport: Item("Monkeyport", True, Types.Shop),
-    Items.ProgressiveChunkyPotion: Item("Progressive Chunky Potion", True, Types.Shop),
-    Items.HunkyChunky: Item("Hunky Chunky", True, Types.Shop),
-    Items.PrimatePunch: Item("Primate Punch", True, Types.Shop),
-    Items.GorillaGone: Item("Gorilla Gone", True, Types.Shop),
-    Items.Coconut: Item("Coconut", True, Types.Shop),
-    Items.Peanut: Item("Peanut", True, Types.Shop),
-    Items.Grape: Item("Grape", True, Types.Shop),
-    Items.Feather: Item("Feather", True, Types.Shop),
-    Items.Pineapple: Item("Pineapple", True, Types.Shop),
-    Items.HomingAmmo: Item("Homing Ammo", False, Types.Shop),
-    Items.SniperSight: Item("Sniper Sight", False, Types.Shop),
-    Items.ProgressiveAmmoBelt: Item("Progressive Ammo Belt", False, Types.Shop),
-    Items.Bongos: Item("Bongos", True, Types.Shop),
-    Items.Guitar: Item("Guitar", True, Types.Shop),
-    Items.Trombone: Item("Trombone", True, Types.Shop),
-    Items.Saxophone: Item("Saxophone", True, Types.Shop),
-    Items.Triangle: Item("Triangle", True, Types.Shop),
-    Items.ProgressiveInstrumentUpgrade: Item("Progressive Instrument Upgrade", False, Types.Shop),
+    Items.ProgressiveSlam: Item("Progressive Slam", True, Types.Shop,                               [Kongs.any, MoveTypes.Slam, 1]),
+    Items.ProgressiveDonkeyPotion: Item("Progressive Donkey Potion", True, Types.Shop,              [Kongs.donkey, MoveTypes.Moves, 1]),
+    Items.BaboonBlast: Item("Baboon Blast", True, Types.Shop,                                       [Kongs.donkey, MoveTypes.Moves, 1]),
+    Items.StrongKong: Item("Strong Kong", True, Types.Shop,                                         [Kongs.donkey, MoveTypes.Moves, 2]),
+    Items.GorillaGrab: Item("Gorilla Grab", True, Types.Shop,                                       [Kongs.donkey, MoveTypes.Moves, 3]),
+    Items.ProgressiveDiddyPotion: Item("Progressive Diddy Potion", True, Types.Shop,                [Kongs.diddy, MoveTypes.Moves, 1]),
+    Items.ChimpyCharge: Item("Chimpy Charge", True, Types.Shop,                                     [Kongs.diddy, MoveTypes.Moves, 1]),
+    Items.RocketbarrelBoost: Item("Rocketbarrel Boost", True, Types.Shop,                           [Kongs.diddy, MoveTypes.Moves, 2]),
+    Items.SimianSpring: Item("Simian Spring", True, Types.Shop,                                     [Kongs.diddy, MoveTypes.Moves, 3]),
+    Items.ProgressiveLankyPotion: Item("Progressive Lanky Potion", True, Types.Shop,                [Kongs.lanky, MoveTypes.Moves, 1]),
+    Items.Orangstand: Item("Orangstand", True, Types.Shop,                                          [Kongs.lanky, MoveTypes.Moves, 1]),
+    Items.BaboonBalloon: Item("Baboon Balloon", True, Types.Shop,                                   [Kongs.lanky, MoveTypes.Moves, 2]),
+    Items.OrangstandSprint: Item("Orangstand Sprint", True, Types.Shop,                             [Kongs.lanky, MoveTypes.Moves, 3]),
+    Items.ProgressiveTinyPotion: Item("Progressive Tiny Potion", True, Types.Shop,                  [Kongs.tiny, MoveTypes.Moves, 1]),
+    Items.MiniMonkey: Item("Mini Monkey", True, Types.Shop,                                         [Kongs.tiny, MoveTypes.Moves, 1]),
+    Items.PonyTailTwirl: Item("Pony Tail Twirl", True, Types.Shop,                                  [Kongs.tiny, MoveTypes.Moves, 2]),
+    Items.Monkeyport: Item("Monkeyport", True, Types.Shop,                                          [Kongs.tiny, MoveTypes.Moves, 3]),
+    Items.ProgressiveChunkyPotion: Item("Progressive Chunky Potion", True, Types.Shop,              [Kongs.chunky, MoveTypes.Moves, 1]),
+    Items.HunkyChunky: Item("Hunky Chunky", True, Types.Shop,                                       [Kongs.chunky, MoveTypes.Moves, 1]),
+    Items.PrimatePunch: Item("Primate Punch", True, Types.Shop,                                     [Kongs.chunky, MoveTypes.Moves, 2]),
+    Items.GorillaGone: Item("Gorilla Gone", True, Types.Shop,                                       [Kongs.chunky, MoveTypes.Moves, 3]),
+    Items.Coconut: Item("Coconut", True, Types.Shop,                                                [Kongs.donkey, MoveTypes.Guns, 1]),
+    Items.Peanut: Item("Peanut", True, Types.Shop,                                                  [Kongs.diddy, MoveTypes.Guns, 1]),
+    Items.Grape: Item("Grape", True, Types.Shop,                                                    [Kongs.lanky, MoveTypes.Guns, 2]),
+    Items.Feather: Item("Feather", True, Types.Shop,                                                [Kongs.tiny, MoveTypes.Guns, 3]),
+    Items.Pineapple: Item("Pineapple", True, Types.Shop,                                            [Kongs.chunky, MoveTypes.Guns, 1]),
+    Items.HomingAmmo: Item("Homing Ammo", False, Types.Shop,                                        [Kongs.any, MoveTypes.Guns, 2]),
+    Items.SniperSight: Item("Sniper Sight", False, Types.Shop,                                      [Kongs.any, MoveTypes.Guns, 3]),
+    Items.ProgressiveAmmoBelt: Item("Progressive Ammo Belt", False, Types.Shop,                     [Kongs.any, MoveTypes.AmmoBelt, 1]),
+    Items.Bongos: Item("Bongos", True, Types.Shop,                                                  [Kongs.donkey, MoveTypes.Intrument, 1]),
+    Items.Guitar: Item("Guitar", True, Types.Shop,                                                  [Kongs.diddy, MoveTypes.Intrument, 1]),
+    Items.Trombone: Item("Trombone", True, Types.Shop,                                              [Kongs.lanky, MoveTypes.Intrument, 1]),
+    Items.Saxophone: Item("Saxophone", True, Types.Shop,                                            [Kongs.tiny, MoveTypes.Intrument, 1]),
+    Items.Triangle: Item("Triangle", True, Types.Shop,                                              [Kongs.chunky, MoveTypes.Intrument, 1]),
+    Items.ProgressiveInstrumentUpgrade: Item("Progressive Instrument Upgrade", False, Types.Shop,   [Kongs.any, MoveTypes.Intrument, 2]),
     Items.NintendoCoin: Item("Nintendo Coin", True, Types.Coin),
     Items.RarewareCoin: Item("Rareware Coin", True, Types.Coin),
     Items.CameraAndShockwave: Item("Camera and Shockwave", True, Types.Shockwave),

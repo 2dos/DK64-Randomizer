@@ -4,12 +4,15 @@
 from randomizer.Enums.Items import Items
 from randomizer.Enums.Locations import Locations
 from randomizer.Enums.Types import Types
+from randomizer.Enums.Levels import Levels
+from randomizer.Enums.Kongs import Kongs
+from randomizer.Enums.MoveTypes import MoveTypes
 
 
 class Location:
     """A shufflable location at which a random item can be placed."""
 
-    def __init__(self, name, default, type):
+    def __init__(self, name, default, type, data=[]):
         """Initialize with given parameters."""
         self.name = name
         self.default = default
@@ -17,6 +20,11 @@ class Location:
         self.item = None
         self.delayedItem = None
         self.constant = False
+        if type == Types.Shop:
+            self.level = data[0]
+            self.kong = data[1]
+            self.movetype = data[2]
+            self.index = data[3]
 
     def PlaceItem(self, item):
         """Place item at this location."""
@@ -353,42 +361,43 @@ LocationList = {
     Locations.HelmBananaFairy2: Location("Helm Banana Fairy 2", Items.BananaFairy, Types.Fairy),
     Locations.HelmKey: Location("Helm Key", Items.HideoutHelmKey, Types.Key),
     # Shop locations
-    Locations.CoconutGun: Location("Coconut Gun", Items.Coconut, Types.Shop),
-    Locations.PeanutGun: Location("Peanut Gun", Items.Peanut, Types.Shop),
-    Locations.GrapeGun: Location("Grape Gun", Items.Grape, Types.Shop),
-    Locations.FeatherGun: Location("Feather Gun", Items.Feather, Types.Shop),
-    Locations.PineappleGun: Location("Pineapple Gun", Items.Pineapple, Types.Shop),
-    Locations.AmmoBelt1: Location("Ammo Belt 1", Items.ProgressiveAmmoBelt, Types.Shop),
-    Locations.HomingAmmo: Location("Homing Ammo", Items.HomingAmmo, Types.Shop),
-    Locations.AmmoBelt2: Location("Ammo Belt 2", Items.ProgressiveAmmoBelt, Types.Shop),
-    Locations.SniperSight: Location("Sniper Sight", Items.SniperSight, Types.Shop),
-    Locations.Bongos: Location("Bongos", Items.Bongos, Types.Shop),
-    Locations.Guitar: Location("Guitar", Items.Guitar, Types.Shop),
-    Locations.Trombone: Location("Trombone", Items.Trombone, Types.Shop),
-    Locations.Saxophone: Location("Saxophone", Items.Saxophone, Types.Shop),
-    Locations.Triangle: Location("Triangle", Items.Triangle, Types.Shop),
-    Locations.MusicUpgrade1: Location("Music Upgrade 1", Items.ProgressiveInstrumentUpgrade, Types.Shop),
-    Locations.ThirdMelon: Location("Third Melon", Items.ProgressiveInstrumentUpgrade, Types.Shop),
-    Locations.MusicUpgrade2: Location("Music Upgrade 2", Items.ProgressiveInstrumentUpgrade, Types.Shop),
-    Locations.SimianSlam: Location("Simian Slam", Items.ProgressiveSlam, Types.Shop),
-    Locations.SuperSimianSlam: Location("Super Simian Slam", Items.ProgressiveSlam, Types.Shop),
-    Locations.SuperDuperSimianSlam: Location("Super Duper Simian Slam", Items.ProgressiveSlam, Types.Shop),
-    Locations.BaboonBlast: Location("Baboon Blast", Items.BaboonBlast, Types.Shop),
-    Locations.StrongKong: Location("Strong Kong", Items.StrongKong, Types.Shop),
-    Locations.GorillaGrab: Location("Gorilla Grab", Items.GorillaGrab, Types.Shop),
-    Locations.ChimpyCharge: Location("Chimpy Charge", Items.ChimpyCharge, Types.Shop),
-    Locations.RocketbarrelBoost: Location("Rocketbarrel Boost", Items.RocketbarrelBoost, Types.Shop),
-    Locations.SimianSpring: Location("Simian Spring", Items.SimianSpring, Types.Shop),
-    Locations.Orangstand: Location("Orangstand", Items.Orangstand, Types.Shop),
-    Locations.BaboonBalloon: Location("Baboon Balloon", Items.BaboonBalloon, Types.Shop),
-    Locations.OrangstandSprint: Location("Orangstand Sprint", Items.OrangstandSprint, Types.Shop),
-    Locations.MiniMonkey: Location("Mini Monkey", Items.MiniMonkey, Types.Shop),
-    Locations.PonyTailTwirl: Location("Pony Tail Twirl", Items.PonyTailTwirl, Types.Shop),
-    Locations.Monkeyport: Location("Monkeyport", Items.Monkeyport, Types.Shop),
-    Locations.HunkyChunky: Location("Hunky Chunky", Items.HunkyChunky, Types.Shop),
-    Locations.PrimatePunch: Location("Primate Punch", Items.PrimatePunch, Types.Shop),
-    Locations.GorillaGone: Location("Gorilla Gone", Items.GorillaGone, Types.Shop),
+    Locations.CoconutGun: Location("Coconut Gun", Items.Coconut, Types.Shop,                                [Levels.JungleJapes, Kongs.donkey, MoveTypes.Guns, 1]),
+    Locations.PeanutGun: Location("Peanut Gun", Items.Peanut, Types.Shop,                                   [Levels.JungleJapes, Kongs.diddy, MoveTypes.Guns, 1]),
+    Locations.GrapeGun: Location("Grape Gun", Items.Grape, Types.Shop,                                      [Levels.JungleJapes, Kongs.lanky, MoveTypes.Guns, 1]),
+    Locations.FeatherGun: Location("Feather Gun", Items.Feather, Types.Shop,                                [Levels.JungleJapes, Kongs.tiny, MoveTypes.Guns, 1]),
+    Locations.PineappleGun: Location("Pineapple Gun", Items.Pineapple, Types.Shop,                          [Levels.JungleJapes, Kongs.chunky, MoveTypes.Guns, 1]),
+    Locations.AmmoBelt1: Location("Ammo Belt 1", Items.ProgressiveAmmoBelt, Types.Shop,                     [Levels.FranticFactory, Kongs.any, MoveTypes.AmmoBelt, 1]),
+    Locations.HomingAmmo: Location("Homing Ammo", Items.HomingAmmo, Types.Shop,                             [Levels.FungiForest, Kongs.any, MoveTypes.Guns, 2]),
+    Locations.AmmoBelt2: Location("Ammo Belt 2", Items.ProgressiveAmmoBelt, Types.Shop,                     [Levels.CrystalCaves, Kongs.any, MoveTypes.AmmoBelt, 2]),
+    Locations.SniperSight: Location("Sniper Sight", Items.SniperSight, Types.Shop,                          [Levels.CreepyCastle, Kongs.any, MoveTypes.Guns, 3]),
+    Locations.Bongos: Location("Bongos", Items.Bongos, Types.Shop,                                          [Levels.AngryAztec, Kongs.donkey, MoveTypes.Intrument, 1]),
+    Locations.Guitar: Location("Guitar", Items.Guitar, Types.Shop,                                          [Levels.AngryAztec, Kongs.diddy, MoveTypes.Intrument, 1]),
+    Locations.Trombone: Location("Trombone", Items.Trombone, Types.Shop,                                    [Levels.AngryAztec, Kongs.lanky, MoveTypes.Intrument, 1]),
+    Locations.Saxophone: Location("Saxophone", Items.Saxophone, Types.Shop,                                 [Levels.AngryAztec, Kongs.tiny, MoveTypes.Intrument, 1]),
+    Locations.Triangle: Location("Triangle", Items.Triangle, Types.Shop,                                    [Levels.AngryAztec, Kongs.chunky, MoveTypes.Intrument, 1]),
+    Locations.MusicUpgrade1: Location("Music Upgrade 1", Items.ProgressiveInstrumentUpgrade, Types.Shop,    [Levels.GloomyGalleon, Kongs.any, MoveTypes.Intrument, 2]),
+    Locations.ThirdMelon: Location("Third Melon", Items.ProgressiveInstrumentUpgrade, Types.Shop,           [Levels.CrystalCaves, Kongs.any, MoveTypes.Intrument, 3]),
+    Locations.MusicUpgrade2: Location("Music Upgrade 2", Items.ProgressiveInstrumentUpgrade, Types.Shop,    [Levels.CreepyCastle, Kongs.any, MoveTypes.Intrument, 4]),
+    Locations.SimianSlam: Location("Simian Slam", Items.ProgressiveSlam, Types.Shop,                        [Levels.DKIsles, Kongs.any, MoveTypes.Slam, 1]),
+    Locations.SuperSimianSlam: Location("Super Simian Slam", Items.ProgressiveSlam, Types.Shop,             [Levels.FungiForest, Kongs.any, MoveTypes.Slam, 2]),
+    Locations.SuperDuperSimianSlam: Location("Super Duper Simian Slam", Items.ProgressiveSlam, Types.Shop,  [Levels.CreepyCastle, Kongs.any, MoveTypes.Slam, 3]),
+    Locations.BaboonBlast: Location("Baboon Blast", Items.BaboonBlast, Types.Shop,                          [Levels.JungleJapes, Kongs.donkey, MoveTypes.Moves, 1]),
+    Locations.StrongKong: Location("Strong Kong", Items.StrongKong, Types.Shop,                             [Levels.AngryAztec, Kongs.donkey, MoveTypes.Moves, 2]),
+    Locations.GorillaGrab: Location("Gorilla Grab", Items.GorillaGrab, Types.Shop,                          [Levels.FranticFactory, Kongs.donkey, MoveTypes.Moves, 3]),
+    Locations.ChimpyCharge: Location("Chimpy Charge", Items.ChimpyCharge, Types.Shop,                       [Levels.JungleJapes, Kongs.diddy, MoveTypes.Moves, 1]),
+    Locations.RocketbarrelBoost: Location("Rocketbarrel Boost", Items.RocketbarrelBoost, Types.Shop,        [Levels.AngryAztec, Kongs.diddy, MoveTypes.Moves, 2]),
+    Locations.SimianSpring: Location("Simian Spring", Items.SimianSpring, Types.Shop,                       [Levels.FranticFactory, Kongs.diddy, MoveTypes.Moves, 3]),
+    Locations.Orangstand: Location("Orangstand", Items.Orangstand, Types.Shop,                              [Levels.JungleJapes, Kongs.lanky, MoveTypes.Moves, 1]),
+    Locations.BaboonBalloon: Location("Baboon Balloon", Items.BaboonBalloon, Types.Shop,                    [Levels.FranticFactory, Kongs.lanky, MoveTypes.Moves, 2]),
+    Locations.OrangstandSprint: Location("Orangstand Sprint", Items.OrangstandSprint, Types.Shop,           [Levels.CrystalCaves, Kongs.lanky, MoveTypes.Moves, 3]),
+    Locations.MiniMonkey: Location("Mini Monkey", Items.MiniMonkey, Types.Shop,                             [Levels.JungleJapes, Kongs.tiny, MoveTypes.Moves, 1]),
+    Locations.PonyTailTwirl: Location("Pony Tail Twirl", Items.PonyTailTwirl, Types.Shop,                   [Levels.FranticFactory, Kongs.tiny, MoveTypes.Moves, 2]),
+    Locations.Monkeyport: Location("Monkeyport", Items.Monkeyport, Types.Shop,                              [Levels.CrystalCaves, Kongs.tiny, MoveTypes.Moves, 3]),
+    Locations.HunkyChunky: Location("Hunky Chunky", Items.HunkyChunky, Types.Shop,                          [Levels.JungleJapes, Kongs.chunky, MoveTypes.Moves, 1]),
+    Locations.PrimatePunch: Location("Primate Punch", Items.PrimatePunch, Types.Shop,                       [Levels.FranticFactory, Kongs.chunky, MoveTypes.Moves, 2]),
+    Locations.GorillaGone: Location("Gorilla Gone", Items.GorillaGone, Types.Shop,                          [Levels.CrystalCaves, Kongs.chunky, MoveTypes.Moves, 3]),
     Locations.RarewareCoin: Location("Rareware Coin", Items.RarewareCoin, Types.Coin),
+    # Blueprints
     Locations.TurnInDKIslesDonkeyBlueprint: Location("Turn In DK Isles Donkey Blueprint", Items.GoldenBanana, Types.Banana),
     Locations.TurnInDKIslesDiddyBlueprint: Location("Turn In DK Isles Diddy Blueprint", Items.GoldenBanana, Types.Banana),
     Locations.TurnInDKIslesLankyBlueprint: Location("Turn In DK Isles Lanky Blueprint", Items.GoldenBanana, Types.Banana),

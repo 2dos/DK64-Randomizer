@@ -60,7 +60,7 @@ class Spoiler:
         settings["troff_n_scoff_bananas"] = self.settings.BossBananas
         humanspoiler["Settings"] = settings
 
-        if self.settings.shuffle_items:
+        if self.settings.shuffle_items != "none":
             # Playthrough data
             humanspoiler["Playthrough"] = self.playthrough
 
@@ -130,6 +130,7 @@ class Spoiler:
         """Update location list for what was produced by the fill."""
         self.location_data = {}
         for id, location in locations.items():
+
             self.location_data[id] = location.item
 
     def UpdatePlaythrough(self, locations, playthroughLocations):
