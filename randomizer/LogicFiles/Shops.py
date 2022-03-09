@@ -60,11 +60,11 @@ LogicRegions = {
 
     Regions.FunkyForest: Region("Funky Forest", Levels.Shops, False, None, [
         LocationLogic(Locations.HomingAmmo, lambda l: l.LevelEntered(Levels.FungiForest) and l.CanBuy(Locations.HomingAmmo)),
-        LocationLogic(Locations.DonkeyFungiGun, lambda l: l.LevelEntered(Levels.FungiForest) and l.isdonkey),
-        LocationLogic(Locations.DiddyFungiGun, lambda l: l.LevelEntered(Levels.FungiForest) and l.isdiddy),
-        LocationLogic(Locations.LankyFungiGun, lambda l: l.LevelEntered(Levels.FungiForest) and l.islanky),
-        LocationLogic(Locations.TinyFungiGun, lambda l: l.LevelEntered(Levels.FungiForest) and l.istiny),
-        LocationLogic(Locations.ChunkyFungiGun, lambda l: l.LevelEntered(Levels.FungiForest) and l.ischunky),
+        LocationLogic(Locations.DonkeyForestGun, lambda l: l.LevelEntered(Levels.FungiForest) and l.isdonkey),
+        LocationLogic(Locations.DiddyForestGun, lambda l: l.LevelEntered(Levels.FungiForest) and l.isdiddy),
+        LocationLogic(Locations.LankyForestGun, lambda l: l.LevelEntered(Levels.FungiForest) and l.islanky),
+        LocationLogic(Locations.TinyForestGun, lambda l: l.LevelEntered(Levels.FungiForest) and l.istiny),
+        LocationLogic(Locations.ChunkyForestGun, lambda l: l.LevelEntered(Levels.FungiForest) and l.ischunky),
     ], [], [
         TransitionFront(Regions.FunkyGeneric, lambda l: l.settings.shuffle_items == "none"),
     ]),

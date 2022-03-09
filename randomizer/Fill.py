@@ -55,16 +55,16 @@ def GetAccessibleLocations(settings, ownedItems, searchType=SearchMode.GetReacha
             # If this location has an item placed, add it to owned items
             if location.item is not None:
                 ownedItems.append(location.item)
-            # If we want to generate the playthrough and the item is a playthrough item, add it to the sphere
-            if searchType == SearchMode.GeneratePlaythrough and ItemList[location.item].playthrough:
-                # Banana hoard in a sphere by itself
-                if location.item == Items.BananaHoard:
-                    sphere = [locationId]
-                    break
-                sphere.append(locationId)
-            # If we're checking beatability, just want to know if we have access to the banana hoard
-            if searchType == SearchMode.CheckBeatable and location.item == Items.BananaHoard:
-                return True
+                # If we want to generate the playthrough and the item is a playthrough item, add it to the sphere
+                if searchType == SearchMode.GeneratePlaythrough and ItemList[location.item].playthrough:
+                    # Banana hoard in a sphere by itself
+                    if location.item == Items.BananaHoard:
+                        sphere = [locationId]
+                        break
+                    sphere.append(locationId)
+                # If we're checking beatability, just want to know if we have access to the banana hoard
+                if searchType == SearchMode.CheckBeatable and location.item == Items.BananaHoard:
+                    return True
         if len(sphere) > 0:
             playthroughLocations.append(sphere)
             if LocationList[sphere[0]].item == Items.BananaHoard:
@@ -393,7 +393,7 @@ def ShuffleMoves(spoiler):
             spoiler.UpdatePlaythrough(LocationList, PlaythroughLocations)
             return spoiler
         except Ex.FillException as ex:
-            if retries == 99:
+            if retries == 10:
                 print("Fill failed, out of retries.")
                 raise ex
             else:
