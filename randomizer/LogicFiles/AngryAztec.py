@@ -71,7 +71,7 @@ LogicRegions = {
         TransitionFront(Regions.AztecBaboonBlast, lambda l: l.blast and l.isdonkey), #, Transitions.AztecMainToBBlast),
         TransitionFront(Regions.CrankyAztec, lambda l: True),
         TransitionFront(Regions.Snide, lambda l: True),
-        TransitionFront(Regions.FunkyGeneric, lambda l: True),
+        TransitionFront(Regions.FunkyAztec, lambda l: True),
     ]),
 
     Regions.AztecBaboonBlast: Region("Aztec Baboon Blast", Levels.AngryAztec, False, None, [], [
