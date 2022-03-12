@@ -131,10 +131,11 @@ class Spoiler:
         """Update location list for what was produced by the fill."""
         self.location_data = {}
         for id, location in locations.items():
-            if location.item is None:
-                self.location_data[id] = Items.NoItem
-            else:
+            if location.item is not None:
                 self.location_data[id] = location.item
+            # Uncomment for more verbose spoiler with all locations
+            # else:
+            #     self.location_data[id] = Items.NoItem
 
     def UpdatePlaythrough(self, locations, playthroughLocations):
         """Write playthrough as a list of dicts of location/item pairs."""
