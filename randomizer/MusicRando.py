@@ -173,7 +173,7 @@ def ShuffleMusicWithSizeCheck(spoiler: Spoiler, song_list: list):
                 for shuffled_song_item in shuffled_music:
                     newSong: Song = song_data[shuffled_song_item["index"]]
                     # BGM has groups to control size of assigned songs
-                    if vanillaSong.group != None and vanillaSong.type == SongType.BGM:
+                    if vanillaSong.group is not None and vanillaSong.type == SongType.BGM:
                         groupName = SongGroup(vanillaSong.group).name
                         if groupName not in song_map_vanillaTotalSize:
                             song_map_vanillaTotalSize[groupName] = 0

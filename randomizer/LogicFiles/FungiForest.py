@@ -68,7 +68,7 @@ LogicRegions = {
         TransitionFront(Regions.GiantMushroomArea, lambda l: True),
         TransitionFront(Regions.MushroomLower, lambda l: True, Transitions.ForestLowerExteriorToLowerMushroom),
         TransitionFront(Regions.MushroomUpper, lambda l: True, Transitions.ForestLowerExteriorToUpperMushroom),
-        TransitionFront(Regions.ForestBaboonBlast, lambda l: l.blast and l.isdonkey) #, Transitions.ForestMainToBBlast)
+        TransitionFront(Regions.ForestBaboonBlast, lambda l: l.blast and l.isdonkey)  # , Transitions.ForestMainToBBlast)
     ]),
 
     Regions.ForestBaboonBlast: Region("Forest Baboon Blast", Levels.FungiForest, False, None, [

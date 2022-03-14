@@ -350,7 +350,7 @@ LocationList = {
     Locations.HelmBananaFairy1: Location("Helm Banana Fairy 1", Items.BananaFairy),
     Locations.HelmBananaFairy2: Location("Helm Banana Fairy 2", Items.BananaFairy),
     Locations.HelmKey: Location("Helm Key", Items.HideoutHelmKey),
-    
+
     # Shop locations - includes additional locations for randomized moves
     Locations.SimianSlam: Location("Simian Slam", Items.ProgressiveSlam),
     # Japes
@@ -360,7 +360,6 @@ LocationList = {
     Locations.Orangstand: Location("Japes Cranky Lanky", Items.Orangstand),
     Locations.MiniMonkey: Location("Japes Cranky Tiny", Items.MiniMonkey),
     Locations.HunkyChunky: Location("Japes Cranky Chunky", Items.HunkyChunky),
-
     Locations.SharedJapesGun: Location("Japes Funky Shared", Items.NoItem),
     Locations.CoconutGun: Location("Japes Funky Donkey", Items.Coconut),
     Locations.PeanutGun: Location("Japes Funky Diddy", Items.Peanut),
@@ -374,21 +373,18 @@ LocationList = {
     Locations.LankyAztecPotion: Location("Aztec Cranky Lanky", Items.NoItem),
     Locations.TinyAztecPotion: Location("Aztec Cranky Tiny", Items.NoItem),
     Locations.ChunkyAztecPotion: Location("Aztec Cranky Chunky", Items.NoItem),
-
     Locations.SharedAztecGun: Location("Aztec Funky Shared", Items.NoItem),
     Locations.DonkeyAztecGun: Location("Aztec Funky Donkey", Items.NoItem),
     Locations.DiddyAztecGun: Location("Aztec Funky Diddy", Items.NoItem),
     Locations.LankyAztecGun: Location("Aztec Funky Lanky", Items.NoItem),
     Locations.TinyAztecGun: Location("Aztec Funky Tiny", Items.NoItem),
     Locations.ChunkyAztecGun: Location("Aztec Funky Chunky", Items.NoItem),
-
     Locations.SharedAztecInstrument: Location("Aztec Candy Shared", Items.NoItem),
     Locations.Bongos: Location("Aztec Candy Donkey", Items.Bongos),
     Locations.Guitar: Location("Aztec Candy Diddy", Items.Guitar),
     Locations.Trombone: Location("Aztec Candy Lanky", Items.Trombone),
     Locations.Saxophone: Location("Aztec Candy Tiny", Items.Saxophone),
     Locations.Triangle: Location("Aztec Candy Chunky", Items.Triangle),
-    
     # Factory
     Locations.SharedFactoryPotion: Location("Factory Cranky Shared", Items.NoItem),
     Locations.GorillaGrab: Location("Factory Cranky Donkey", Items.GorillaGrab),
@@ -396,43 +392,37 @@ LocationList = {
     Locations.BaboonBalloon: Location("Factory Cranky Lanky", Items.BaboonBalloon),
     Locations.PonyTailTwirl: Location("Factory Cranky Tiny", Items.PonyTailTwirl),
     Locations.PrimatePunch: Location("Factory Cranky Chunky", Items.PrimatePunch),
-    
     Locations.AmmoBelt1: Location("Factory Funky Shared", Items.ProgressiveAmmoBelt),
     Locations.DonkeyFactoryGun: Location("Factory Funky Donkey", Items.NoItem),
     Locations.DiddyFactoryGun: Location("Factory Funky Diddy", Items.NoItem),
     Locations.LankyFactoryGun: Location("Factory Funky Lanky", Items.NoItem),
     Locations.TinyFactoryGun: Location("Factory Funky Tiny", Items.NoItem),
     Locations.ChunkyFactoryGun: Location("Factory Funky Chunky", Items.NoItem),
-
     Locations.SharedFactoryInstrument: Location("Factory Candy Shared", Items.NoItem),
     Locations.DonkeyFactoryInstrument: Location("Factory Candy Donkey", Items.NoItem),
     Locations.DiddyFactoryInstrument: Location("Factory Candy Diddy", Items.NoItem),
     Locations.LankyFactoryInstrument: Location("Factory Candy Lanky", Items.NoItem),
     Locations.TinyFactoryInstrument: Location("Factory Candy Tiny", Items.NoItem),
     Locations.ChunkyFactoryInstrument: Location("Factory Candy Chunky", Items.NoItem),
-
     # Galleon
     Locations.SharedGalleonPotion: Location("Galleon Cranky Shared", Items.NoItem),
     Locations.DonkeyGalleonPotion: Location("Galleon Cranky Donkey", Items.NoItem),
     Locations.DiddyGalleonPotion: Location("Galleon Cranky Diddy", Items.NoItem),
     Locations.LankyGalleonPotion: Location("Galleon Cranky Lanky", Items.NoItem),
-    Locations.TinyGalleonPotion: Location("Galleon Cranky Tiny", Items.NoItem), 
-    Locations.ChunkyGalleonPotion: Location("Galleon Cranky Chunky", Items.NoItem), 
-    
+    Locations.TinyGalleonPotion: Location("Galleon Cranky Tiny", Items.NoItem),
+    Locations.ChunkyGalleonPotion: Location("Galleon Cranky Chunky", Items.NoItem),
     Locations.SharedGalleonGun: Location("Galleon Funky Shared", Items.NoItem),
     Locations.DonkeyGalleonGun: Location("Galleon Funky Donkey", Items.NoItem),
     Locations.DiddyGalleonGun: Location("Galleon Funky Diddy", Items.NoItem),
     Locations.LankyGalleonGun: Location("Galleon Funky Lanky", Items.NoItem),
     Locations.TinyGalleonGun: Location("Galleon Funky Tiny", Items.NoItem),
     Locations.ChunkyGalleonGun: Location("Galleon Funky Chunky", Items.NoItem),
-
     Locations.MusicUpgrade1: Location("Galleon Candy Shared", Items.ProgressiveInstrumentUpgrade),
     Locations.DonkeyGalleonInstrument: Location("Galleon Candy Donkey", Items.NoItem),
     Locations.DiddyGalleonInstrument: Location("Galleon Candy Diddy", Items.NoItem),
     Locations.LankyGalleonInstrument: Location("Galleon Candy Lanky", Items.NoItem),
     Locations.TinyGalleonInstrument: Location("Galleon Candy Tiny", Items.NoItem),
     Locations.ChunkyGalleonInstrument: Location("Galleon Candy Chunky", Items.NoItem),
-
     # Forest
     Locations.SuperSimianSlam: Location("Forest Cranky Shared", Items.ProgressiveSlam),
     Locations.DonkeyForestPotion: Location("Forest Cranky Donkey", Items.NoItem),
@@ -440,14 +430,12 @@ LocationList = {
     Locations.LankyForestPotion: Location("Forest Cranky Lanky", Items.NoItem),
     Locations.TinyForestPotion: Location("Forest Cranky Tiny", Items.NoItem),
     Locations.ChunkyForestPotion: Location("Forest Cranky Chunky", Items.NoItem),
-
     Locations.HomingAmmo: Location("Forest Funky Shared", Items.HomingAmmo),
     Locations.DonkeyForestGun: Location("Forest Funky Donkey", Items.NoItem),
     Locations.DiddyForestGun: Location("Forest Funky Diddy", Items.NoItem),
     Locations.LankyForestGun: Location("Forest Funky Lanky", Items.NoItem),
     Locations.TinyForestGun: Location("Forest Funky Tiny", Items.NoItem),
     Locations.ChunkyForestGun: Location("Forest Funky Chunky", Items.NoItem),
-
     # Caves
     Locations.SharedCavesPotion: Location("Caves Cranky Shared", Items.NoItem),
     Locations.DonkeyCavesPotion: Location("Caves Cranky Donkey", Items.NoItem),
@@ -455,21 +443,18 @@ LocationList = {
     Locations.OrangstandSprint: Location("Caves Cranky Lanky", Items.OrangstandSprint),
     Locations.Monkeyport: Location("Caves Cranky Tiny", Items.Monkeyport),
     Locations.GorillaGone: Location("Caves Cranky Chunky", Items.GorillaGone),
-
     Locations.AmmoBelt2: Location("Caves Funky Shared", Items.ProgressiveAmmoBelt),
     Locations.DonkeyCavesGun: Location("Caves Funky Donkey", Items.NoItem),
     Locations.DiddyCavesGun: Location("Caves Funky Diddy", Items.NoItem),
     Locations.LankyCavesGun: Location("Caves Funky Lanky", Items.NoItem),
     Locations.TinyCavesGun: Location("Caves Funky Tiny", Items.NoItem),
     Locations.ChunkyCavesGun: Location("Caves Funky Chunky", Items.NoItem),
-
     Locations.ThirdMelon: Location("Caves Candy Shared", Items.ProgressiveInstrumentUpgrade),
     Locations.DonkeyCavesInstrument: Location("Caves Candy Donkey", Items.NoItem),
     Locations.DiddyCavesInstrument: Location("Caves Candy Diddy", Items.NoItem),
     Locations.LankyCavesInstrument: Location("Caves Candy Lanky", Items.NoItem),
     Locations.TinyCavesInstrument: Location("Caves Candy Tiny", Items.NoItem),
     Locations.ChunkyCavesInstrument: Location("Caves Candy Chunky", Items.NoItem),
-
     # Castle
     Locations.SuperDuperSimianSlam: Location("Castle Cranky Shared", Items.ProgressiveSlam),
     Locations.DonkeyCastlePotion: Location("Castle Cranky Donkey", Items.NoItem),
@@ -477,21 +462,19 @@ LocationList = {
     Locations.LankyCastlePotion: Location("Castle Cranky Lanky", Items.NoItem),
     Locations.TinyCastlePotion: Location("Castle Cranky Tiny", Items.NoItem),
     Locations.ChunkyCastlePotion: Location("Castle Cranky Chunky", Items.NoItem),
-    
     Locations.SniperSight: Location("Castle Funky Shared", Items.SniperSight),
     Locations.DonkeyCastleGun: Location("Castle Funky Donkey", Items.NoItem),
     Locations.DiddyCastleGun: Location("Castle Funky Diddy", Items.NoItem),
     Locations.LankyCastleGun: Location("Castle Funky Lanky", Items.NoItem),
     Locations.TinyCastleGun: Location("Castle Funky Tiny", Items.NoItem),
     Locations.ChunkyCastleGun: Location("Castle Funky Chunky", Items.NoItem),
-
     Locations.MusicUpgrade2: Location("Castle Candy Shared", Items.ProgressiveInstrumentUpgrade),
     Locations.DonkeyCastleInstrument: Location("Castle Candy Donkey", Items.NoItem),
     Locations.DiddyCastleInstrument: Location("Castle Candy Diddy", Items.NoItem),
     Locations.LankyCastleInstrument: Location("Castle Candy Lanky", Items.NoItem),
     Locations.TinyCastleInstrument: Location("Castle Candy Tiny", Items.NoItem),
     Locations.ChunkyCastleInstrument: Location("Castle Candy Chunky", Items.NoItem),
-    
+
     Locations.RarewareCoin: Location("Rareware Coin", Items.RarewareCoin),
     Locations.TurnInDKIslesDonkeyBlueprint: Location("Turn In DK Isles Donkey Blueprint", Items.GoldenBanana),
     Locations.TurnInDKIslesDiddyBlueprint: Location("Turn In DK Isles Diddy Blueprint", Items.GoldenBanana),
