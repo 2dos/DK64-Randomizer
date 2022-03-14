@@ -11,7 +11,7 @@ from randomizer.Enums.Regions import Regions
 from randomizer.Enums.SearchMode import SearchMode
 from randomizer.Enums.Transitions import Transitions
 from randomizer.Lists.Item import ItemList
-from randomizer.Lists.Location import LocationList
+from randomizer.Lists.Location import Location, LocationList
 from randomizer.Lists.Minigame import MinigameAssociations, MinigameRequirements
 from randomizer.Logic import LogicVarHolder, LogicVariables
 from randomizer.LogicClasses import TransitionFront
@@ -55,16 +55,16 @@ def GetAccessibleLocations(settings, ownedItems, searchType=SearchMode.GetReacha
             # If this location has an item placed, add it to owned items
             if location.item is not None:
                 ownedItems.append(location.item)
-            # If we want to generate the playthrough and the item is a playthrough item, add it to the sphere
-            if searchType == SearchMode.GeneratePlaythrough and ItemList[location.item].playthrough:
-                # Banana hoard in a sphere by itself
-                if location.item == Items.BananaHoard:
-                    sphere = [locationId]
-                    break
-                sphere.append(locationId)
-            # If we're checking beatability, just want to know if we have access to the banana hoard
-            if searchType == SearchMode.CheckBeatable and location.item == Items.BananaHoard:
-                return True
+                # If we want to generate the playthrough and the item is a playthrough item, add it to the sphere
+                if searchType == SearchMode.GeneratePlaythrough and ItemList[location.item].playthrough:
+                    # Banana hoard in a sphere by itself
+                    if location.item == Items.BananaHoard:
+                        sphere = [locationId]
+                        break
+                    sphere.append(locationId)
+                # If we're checking beatability, just want to know if we have access to the banana hoard
+                if searchType == SearchMode.CheckBeatable and location.item == Items.BananaHoard:
+                    return True
         if len(sphere) > 0:
             playthroughLocations.append(sphere)
             if LocationList[sphere[0]].item == Items.BananaHoard:
@@ -84,7 +84,11 @@ def GetAccessibleLocations(settings, ownedItems, searchType=SearchMode.GetReacha
             regionPool = [startRegion]
             addedRegions = [Regions.IslesMain]
 
-            tagAccess = [(key, value) for (key, value) in Logic.Regions.items() if value.HasAccess(kong) and key not in addedRegions]
+            tagAccess = [
+                (key, value)
+                for (key, value) in Logic.Regions.items()
+                if value.HasAccess(kong) and key not in addedRegions
+            ]
             addedRegions.extend([x[0] for x in tagAccess])  # first value is the region key
             regionPool.extend([x[1] for x in tagAccess])  # second value is the region itself
 
@@ -101,7 +105,11 @@ def GetAccessibleLocations(settings, ownedItems, searchType=SearchMode.GetReacha
                         LogicVariables.Events.append(event.name)
                 # Check accessibility for each location in this region
                 for location in region.locations:
-                    if location.logic(LogicVariables) and location.id not in newLocations and location.id not in accessible:
+                    if (
+                        location.logic(LogicVariables)
+                        and location.id not in newLocations
+                        and location.id not in accessible
+                    ):
                         # If this location is a bonus barrel, must make sure its logic is met as well
                         if location.bonusBarrel and settings.bonus_barrels != "skip":
                             minigame = MinigameAssociations[location.id]
@@ -306,7 +314,12 @@ def Fill(spoiler):
                 raise Ex.ItemPlacementException(str(blueprintsUnplaced) + " unplaced blueprints.")
             # Then place the rest of items
             Reset()
-            lowPriorityUnplaced = PlaceItems(spoiler.settings, spoiler.settings.algorithm, ItemPool.LowPriorityItems(spoiler.settings), ItemPool.ExcessItems(spoiler.settings))
+            lowPriorityUnplaced = PlaceItems(
+                spoiler.settings,
+                spoiler.settings.algorithm,
+                ItemPool.LowPriorityItems(spoiler.settings),
+                ItemPool.ExcessItems(spoiler.settings),
+            )
             if lowPriorityUnplaced > 0:
                 raise Ex.ItemPlacementException(str(lowPriorityUnplaced) + " unplaced low priority items.")
             # Finally place excess items fully randomly
@@ -346,40 +359,95 @@ def ShuffleMoves(spoiler):
             ItemPool.PlaceConstants(spoiler.settings)
             # Set up owned items
             ownedItems = []
+            ownedItems.extend(ItemPool.DonkeyMoves)
             ownedItems.extend(ItemPool.DiddyMoves)
             ownedItems.extend(ItemPool.LankyMoves)
             ownedItems.extend(ItemPool.TinyMoves)
             ownedItems.extend(ItemPool.ChunkyMoves)
             ownedItems.extend(ItemPool.ImportantSharedMoves)
+
             # For each kong, place their items in their valid locations, removing owneditems before each placement as they're placed
             # Force assumed for move rando since it's so restrictive
-            donkeyUnplaced = PlaceItems(spoiler.settings, "assumed", ItemPool.DonkeyMoves.copy(), ownedItems, ItemPool.DonkeyMoveLocations)
+
+            # When a shared move is assigned to a shop in any particular level, that shop cannot also hold any kong-specific moves.
+            # To avoid conflicts, first determine which level shops will have shared moves then remove these shops from each kong's valid locations list
+            importantSharedUnplaced = PlaceItems(
+                spoiler.settings,
+                "assumed",
+                ItemPool.ImportantSharedMoves.copy(),
+                ownedItems,
+                ItemPool.SharedMoveLocations,
+            )
+            if importantSharedUnplaced > 0:
+                raise Ex.ItemPlacementException(str(importantSharedUnplaced) + " unplaced shared important items.")
+            junkSharedUnplaced = PlaceItems(
+                spoiler.settings, "random", ItemPool.JunkSharedMoves.copy(), [], ItemPool.SharedMoveLocations
+            )
+            if junkSharedUnplaced > 0:
+                raise Ex.ItemPlacementException(
+                    str(junkSharedUnplaced) + " unplaced shared junk items."
+                )  # This might not warrant an exception
+
+            sharedMoveShops = []
+            for sharedLocation in ItemPool.SharedMoveLocations:
+                if LocationList[sharedLocation].item is not None:
+                    sharedMoveShops.append(sharedLocation)
+
+            locationsToRemove = ItemPool.GetMoveLocationsToRemove(sharedMoveShops)
+
+            donkeyUnplaced = PlaceItems(
+                spoiler.settings,
+                "assumed",
+                ItemPool.DonkeyMoves.copy(),
+                ownedItems,
+                ItemPool.DonkeyMoveLocations - locationsToRemove,
+            )
             if donkeyUnplaced > 0:
                 raise Ex.ItemPlacementException(str(donkeyUnplaced) + " unplaced donkey items.")
             ownedItems = [x for x in ownedItems if x not in ItemPool.DiddyMoves]
             Reset()
-            diddyUnplaced = PlaceItems(spoiler.settings, "assumed", ItemPool.DiddyMoves.copy(), ownedItems, ItemPool.DiddyMoveLocations)
+            diddyUnplaced = PlaceItems(
+                spoiler.settings,
+                "assumed",
+                ItemPool.DiddyMoves.copy(),
+                ownedItems,
+                ItemPool.DiddyMoveLocations - locationsToRemove,
+            )
             if diddyUnplaced > 0:
                 raise Ex.ItemPlacementException(str(diddyUnplaced) + " unplaced diddy items.")
             ownedItems = [x for x in ownedItems if x not in ItemPool.LankyMoves]
             Reset()
-            lankyUnplaced = PlaceItems(spoiler.settings, "assumed", ItemPool.LankyMoves.copy(), ownedItems, ItemPool.LankyMoveLocations)
+            lankyUnplaced = PlaceItems(
+                spoiler.settings,
+                "assumed",
+                ItemPool.LankyMoves.copy(),
+                ownedItems,
+                ItemPool.LankyMoveLocations - locationsToRemove,
+            )
             if lankyUnplaced > 0:
                 raise Ex.ItemPlacementException(str(lankyUnplaced) + " unplaced lanky items.")
             ownedItems = [x for x in ownedItems if x not in ItemPool.TinyMoves]
             Reset()
-            tinyUnplaced = PlaceItems(spoiler.settings, "assumed", ItemPool.TinyMoves.copy(), ownedItems, ItemPool.TinyMoveLocations)
+            tinyUnplaced = PlaceItems(
+                spoiler.settings,
+                "assumed",
+                ItemPool.TinyMoves.copy(),
+                ownedItems,
+                ItemPool.TinyMoveLocations - locationsToRemove,
+            )
             if tinyUnplaced > 0:
                 raise Ex.ItemPlacementException(str(tinyUnplaced) + " unplaced tiny items.")
             Reset()
             ownedItems = [x for x in ownedItems if x not in ItemPool.ChunkyMoves]
-            chunkyUnplaced = PlaceItems(spoiler.settings, "assumed", ItemPool.ChunkyMoves.copy(), ownedItems, ItemPool.ChunkyMoveLocations)
+            chunkyUnplaced = PlaceItems(
+                spoiler.settings,
+                "assumed",
+                ItemPool.ChunkyMoves.copy(),
+                ownedItems,
+                ItemPool.ChunkyMoveLocations - locationsToRemove,
+            )
             if chunkyUnplaced > 0:
                 raise Ex.ItemPlacementException(str(chunkyUnplaced) + " unplaced chunky items.")
-            importantSharedUnplaced = PlaceItems(spoiler.settings, "assumed", ItemPool.ImportantSharedMoves.copy(), ownedItems, ItemPool.SharedMoveLocations)
-            if importantSharedUnplaced > 0:
-                raise Ex.ItemPlacementException(str(importantSharedUnplaced) + " unplaced shared important items.")
-            junkSharedUnplaced = PlaceItems(spoiler.settings, "random", ItemPool.JunkSharedMoves.copy(), [], ItemPool.SharedMoveLocations)
             # Check if game is beatable
             Reset()
             if not GetAccessibleLocations(spoiler.settings, [], SearchMode.CheckBeatable):
@@ -393,7 +461,7 @@ def ShuffleMoves(spoiler):
             spoiler.UpdatePlaythrough(LocationList, PlaythroughLocations)
             return spoiler
         except Ex.FillException as ex:
-            if retries == 99:
+            if retries == 10:
                 print("Fill failed, out of retries.")
                 raise ex
             else:

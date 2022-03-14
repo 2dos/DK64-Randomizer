@@ -1,6 +1,5 @@
 """Spoiler class and functions."""
 
-import copy
 import json
 from typing import OrderedDict
 
@@ -48,6 +47,8 @@ class Spoiler:
 
     def toJson(self):
         """Convert spoiler to JSON."""
+        # Verify we match our hash
+        self.settings.verify_hash()
         # We want to convert raw spoiler data into the important bits and in human-readable formats.
         humanspoiler = OrderedDict()
 
@@ -146,22 +147,27 @@ class Spoiler:
         """Update location list for what was produced by the fill."""
         self.location_data = {}
         for id, location in locations.items():
-            if location.type == Types.Shop:
-                # Get indices from the location
-                shop_index = 0 # cranky
-                if location.movetype in [MoveTypes.Guns, MoveTypes.AmmoBelt]:
-                    shop_index = 1 # funky
-                elif location.movetype == MoveTypes.Intrument:
-                    shop_index = 2 # candy
-                kong_indices = [location.kong]
-                if location.kong == Kongs.any:
-                    kong_indices = [Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky]
-                level_index = location.level
-                # Use the item to find the data to write
-                data = (ItemList[location.item].movetype << 4) | ItemList[location.item].index
-                for kong_index in kong_indices:
-                    self.move_data[shop_index][kong_index][level_index] = data    
-            self.location_data[id] = location.item
+            if location.item is not None:
+                self.location_data[id] = location.item
+                if location.type == Types.Shop:
+                    # Get indices from the location
+                    shop_index = 0 # cranky
+                    if location.movetype in [MoveTypes.Guns, MoveTypes.AmmoBelt]:
+                        shop_index = 1 # funky
+                    elif location.movetype == MoveTypes.Intrument:
+                        shop_index = 2 # candy
+                    kong_indices = [location.kong]
+                    if location.kong == Kongs.any:
+                        kong_indices = [Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky]
+                    level_index = location.level
+                    # Use the item to find the data to write
+                    data = (ItemList[location.item].movetype << 4) | ItemList[location.item].index
+                    for kong_index in kong_indices:
+                        self.move_data[shop_index][kong_index][level_index] = data
+            # Uncomment for more verbose spoiler with all locations
+            # else:
+            #     self.location_data[id] = Items.NoItem
+
 
     def UpdatePlaythrough(self, locations, playthroughLocations):
         """Write playthrough as a list of dicts of location/item pairs."""

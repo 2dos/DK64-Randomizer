@@ -12,28 +12,47 @@ def update_disabled_progression(evt):
     """Disable certain page flags depending on checkboxes."""
     # Check the checked status of the randomize progression button
     if document.getElementById("shuffle_levels").checked:
-        # Disable the kongs button and enable the seed button
-        try:
-            document.getElementById("seed").removeAttribute("disabled")
-        except Exception:
-            pass
-        try:
-            document.getElementById("seed_button").removeAttribute("disabled")
-        except Exception:
-            pass
+        # Disable the kongs button
         document.getElementById("unlock_all_kongs").setAttribute("disabled", "disabled")
         document.getElementById("unlock_all_kongs").checked = True
     else:
-        # Swap the kong and seeed button disables
-        document.getElementById("seed").setAttribute("disabled", "disabled")
-        document.getElementById("seed_button").setAttribute("disabled", "disabled")
+        # Swap the kong
         try:
             document.getElementById("unlock_all_kongs").removeAttribute("disabled")
         except Exception:
             pass
 
 
-@bind("click", "seed_button")
+@bind("click", "loading_zone_rando")
+def toggle_loading_zone_coupling(event):
+    """Set toggling for loading zone coupling."""
+    if document.getElementById("loading_zone_rando").checked:
+        js.document.getElementById("loading_zone_coupled").removeAttribute("disabled")
+    else:
+        js.document.getElementById("loading_zone_coupled").setAttribute("disabled", "disabled")
+
+
+@bind("click", "loading_zone_rando")
+@bind("click", "shuffle_levels")
+def toggle_loading_zone_level_order(event):
+    """Set toggling for level order."""
+    try:
+        if event.target.id == "loading_zone_rando":
+            if document.getElementById("loading_zone_rando").checked:
+                js.document.getElementById("shuffle_levels").setAttribute("disabled", "disabled")
+                js.document.getElementById("shuffle_levels").removeAttribute("checked")
+            else:
+                js.document.getElementById("shuffle_levels").removeAttribute("disabled")
+        elif event.target.id == "shuffle_levels":
+            if document.getElementById("shuffle_levels").checked:
+                js.document.getElementById("loading_zone_rando").setAttribute("disabled", "disabled")
+                js.document.getElementById("loading_zone_rando").removeAttribute("checked")
+            else:
+                js.document.getElementById("loading_zone_rando").removeAttribute("disabled")
+    except Exception:
+        pass
+
+
 def randomseed(evt):
     """Randomly generate a seed ID."""
     document.getElementById("seed").value = str(random.randint(100000, 999999))
@@ -109,49 +128,10 @@ def key_down(event):
         pass
 
 
-@bind("change", "troff_selected")
-def set_troff_preset(event):
-    """Set the troff n Scoff Presets on the page."""
-    # Check what the selected dropdown item is
-    element = document.getElementById("troff_selected")
-    preset = element.value
-    # Set a preset if its not selected
-    if not preset:
-        preset = "Vanilla"
-    children = []
-    # Find all the items in the dropdown
-    for child in element.children:
-        children.append(child.value)
-    # Find out dropdown item and set our selected item text to it
-    for val in js.progression_presets:
-        if val.get("name") not in children:
-            opt = document.createElement("option")
-            opt.value = val.get("name")
-            opt.innerHTML = val.get("name")
-            opt.title = val.get("description_troff")
-            element.appendChild(opt)
-            # If we're the preset just set the current value to the preset
-            if preset == "Vanilla":
-                element.value = preset
-        # Check if our current value
-        if val.get("name") == preset:
-            response = val
-    count = 0
-    # Iterate over the form options and set the value defined
-    for pre in response.get("troff_progression"):
-        document.getElementById("troff_" + str(count)).value = pre
-        count += 1
-
-
-@bind("change", "blocker_selected")
-def set_blocker_preset(event):
+def set_preset_options():
     """Set the Blocker presets on the page."""
     # Check what the selected dropdown item is
-    element = document.getElementById("blocker_selected")
-    preset = element.value
-    # Set a preset if its not selected
-    if not preset:
-        preset = "Vanilla"
+    element = document.getElementById("presets")
     children = []
     # Find all the items in the dropdown
     for child in element.children:
@@ -162,16 +142,6 @@ def set_blocker_preset(event):
             opt = document.createElement("option")
             opt.value = val.get("name")
             opt.innerHTML = val.get("name")
-            opt.title = val.get("description_blocker")
+            opt.title = val.get("description")
             element.appendChild(opt)
-            # If we're the preset just set the current value to the preset
-            if preset == "Vanilla":
-                element.value = preset
-        # Check if our current value
-        if val.get("name") == preset:
-            response = val
-    count = 0
-    # Iterate over the form options and set the value defined
-    for pre in response.get("blocker_progression"):
-        document.getElementById("blocker_" + str(count)).value = pre
-        count += 1
+    js.jq("#presets").val("Vanilla")

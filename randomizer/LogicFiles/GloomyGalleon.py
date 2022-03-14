@@ -33,7 +33,7 @@ LogicRegions = {
         TransitionFront(Regions.LighthouseArea, lambda l: l.settings.shuffle_loading_zones == "all" or Events.LighthouseGateOpened in l.Events),
         # Gate to shipyard opened in rando if loading zones randomized
         TransitionFront(Regions.Shipyard, lambda l: l.settings.shuffle_loading_zones == "all" or Events.ShipyardGateOpened in l.Events),
-        TransitionFront(Regions.CrankyGeneric, lambda l: True),
+        TransitionFront(Regions.CrankyGalleon, lambda l: True),
         TransitionFront(Regions.GalleonBossLobby, lambda l: True),
     ]),
 
@@ -61,7 +61,7 @@ LogicRegions = {
         TransitionFront(Regions.SickBay, lambda l: Events.ActivatedLighthouse in l.Events and l.Slam and l.ischunky, Transitions.GalleonLighthouseAreaToSickBay),
         TransitionFront(Regions.Snide, lambda l: True),
         TransitionFront(Regions.GalleonBossLobby, lambda l: Events.LighthouseEnguarde in l.Events),
-        TransitionFront(Regions.GalleonBaboonBlast, lambda l: l.blast and l.isdonkey) #, Transitions.GalleonMainToBBlast)
+        TransitionFront(Regions.GalleonBaboonBlast, lambda l: l.blast and l.isdonkey)  # , Transitions.GalleonMainToBBlast)
     ]),
 
     Regions.GalleonBaboonBlast: Region("Galleon Baboon Blast", Levels.GloomyGalleon, False, None, [], [
@@ -110,7 +110,7 @@ LogicRegions = {
         TransitionFront(Regions.SaxophoneShip, lambda l: l.saxophone and l.istiny, Transitions.GalleonShipyardToSaxophone),
         TransitionFront(Regions.TriangleShip, lambda l: Events.GalleonChunkyPad in l.Events and l.ischunky, Transitions.GalleonShipyardToTriangle),
         TransitionFront(Regions.CandyGalleon, lambda l: True),
-        TransitionFront(Regions.FunkyGeneric, lambda l: True),
+        TransitionFront(Regions.FunkyGalleon, lambda l: True),
         TransitionFront(Regions.GalleonBossLobby, lambda l: True),
     ]),
 

@@ -11,7 +11,7 @@ def background(function, args, returning_func):
     This is a fully isolated function, you can not access the UIs DOM.
 
     Args:
-        function (func): Function to run.
+        function (func): The function we run after backgrounding.
         args (list): List of args to pass to the function.
         returning_func (func): Function to run once we complete the main function.
     """

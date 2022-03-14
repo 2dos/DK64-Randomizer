@@ -1,9 +1,11 @@
-"""Randomize Entrances based on shuffled_exit_instructions"""
+"""Randomize Entrances passed from Misc options."""
 import js
+
 from randomizer.Patcher import ROM
 from randomizer.Spoiler import Spoiler
 
 valid_lz_types = [9, 12, 13, 16]
+
 
 def intToArr(val, size):
     """Convert INT to an array.
@@ -31,8 +33,10 @@ def intToArr(val, size):
             break
     return arr
 
-def randomize_entrances(spoiler:Spoiler):
-    if spoiler.settings.shuffle_loading_zones != "none" and spoiler.shuffled_exit_instructions != None:
+
+def randomize_entrances(spoiler: Spoiler):
+    """Randomize Entrances based on shuffled_exit_instructions."""
+    if spoiler.settings.shuffle_loading_zones != "none" and spoiler.shuffled_exit_instructions is not None:
         for cont_map in spoiler.shuffled_exit_instructions:
             # Pointer table 18, use the map index detailed in cont_map["container_map"] to get the starting address of the map lz file
             cont_map_id = int(cont_map["container_map"])

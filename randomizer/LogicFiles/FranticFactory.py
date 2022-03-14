@@ -7,7 +7,8 @@ from randomizer.Enums.Levels import Levels
 from randomizer.Enums.Locations import Locations
 from randomizer.Enums.Regions import Regions
 from randomizer.Enums.Transitions import Transitions
-from randomizer.LogicClasses import (Event, LocationLogic, Region, TransitionFront)
+from randomizer.LogicClasses import (Event, LocationLogic, Region,
+                                     TransitionFront)
 
 LogicRegions = {
     Regions.FranticFactoryStart: Region("Frantic Factory Start", Levels.FranticFactory, False, None, [
@@ -106,9 +107,9 @@ LogicRegions = {
         TransitionFront(Regions.InsideCore, lambda l: Events.MainCoreActivated in l.Events, Transitions.FactoryBeyondHatchToInsideCore),
         TransitionFront(Regions.MainCore, lambda l: Events.MainCoreActivated in l.Events),
         TransitionFront(Regions.CrankyFactory, lambda l: True),
-        TransitionFront(Regions.CandyGeneric, lambda l: True),
+        TransitionFront(Regions.CandyFactory, lambda l: True),
         TransitionFront(Regions.FactoryBossLobby, lambda l: True),
-        TransitionFront(Regions.FactoryBaboonBlast, lambda l: l.blast and l.isdonkey) #, Transitions.FactoryMainToBBlast)
+        TransitionFront(Regions.FactoryBaboonBlast, lambda l: l.blast and l.isdonkey)  # , Transitions.FactoryMainToBBlast)
     ]),
 
     Regions.FactoryBaboonBlast: Region("Factory Baboon Blast", Levels.FranticFactory, False, None, [], [

@@ -1,30 +1,31 @@
 """Randomize Music passed from Misc options."""
-from ast import And
 import gzip
 import json
 import random
+from ast import And
 
 import js
+
 import randomizer.Lists.Exceptions as Ex
-from randomizer.Spoiler import Spoiler
 from randomizer.Enums.SongType import SongType
 from randomizer.Lists.Songs import Song, SongGroup, song_data
 from randomizer.Patcher import ROM
 from randomizer.Settings import Settings
+from randomizer.Spoiler import Spoiler
 
 
-def randomize_music(spoiler:Spoiler):
+def randomize_music(spoiler: Spoiler):
     """Randomize music passed from the misc music settings.
 
     Args:
         settings (Settings): Settings object from the windows form.
     """
-    settings:Settings = spoiler.settings
+    settings: Settings = spoiler.settings
     # Check if we have anything beyond default set for BGM
     if settings.music_bgm != "default":
         # If the user selected standard rando
         if settings.music_bgm == "randomized":
-            
+
             # These lines exist for testing only
             # file = open('static/patches/pointer_addresses.json')
             # pointer_addresses = json.load(file)
@@ -38,11 +39,13 @@ def randomize_music(spoiler:Spoiler):
                     song_list.append(js.pointer_addresses[0]["entries"][song_data.index(song)])
 
             ShuffleMusicWithSizeCheck(spoiler, song_list)
-            
+
         # If the user was a poor sap and selected chaos put DK rap for everything
         elif settings.music_bgm == "chaos":
             # Find the DK rap in the list
-            rap = js.pointer_addresses[0]["entries"][song_data.index(next((x for x in song_data if x.name == "DK Rap"), None))]
+            rap = js.pointer_addresses[0]["entries"][
+                song_data.index(next((x for x in song_data if x.name == "DK Rap"), None))
+            ]
             # Find all BGM songs
             song_list = []
             for song in song_data:
@@ -149,7 +152,8 @@ def randomize_music(spoiler:Spoiler):
             # Shuffle the event list
             ShuffleMusicWithSizeCheck(spoiler, event_list)
 
-def ShuffleMusicWithSizeCheck(spoiler:Spoiler, song_list:list):
+
+def ShuffleMusicWithSizeCheck(spoiler: Spoiler, song_list: list):
     """Facilitate shuffling of music."""
     retries = 0
     while True:
@@ -164,12 +168,12 @@ def ShuffleMusicWithSizeCheck(spoiler:Spoiler, song_list:list):
             song_map_newTotalSize = {}
             while len(vanilla_music) > 0:
                 song_item = vanilla_music.pop(0)
-                vanillaSong:Song = song_data[song_item["index"]]
-                newSong:Song = None
+                vanillaSong: Song = song_data[song_item["index"]]
+                newSong: Song = None
                 for shuffled_song_item in shuffled_music:
-                    newSong:Song = song_data[shuffled_song_item["index"]]
+                    newSong: Song = song_data[shuffled_song_item["index"]]
                     # BGM has groups to control size of assigned songs
-                    if vanillaSong.group != None and vanillaSong.type == SongType.BGM:
+                    if vanillaSong.group is not None and vanillaSong.type == SongType.BGM:
                         groupName = SongGroup(vanillaSong.group).name
                         if groupName not in song_map_vanillaTotalSize:
                             song_map_vanillaTotalSize[groupName] = 0
@@ -180,7 +184,9 @@ def ShuffleMusicWithSizeCheck(spoiler:Spoiler, song_list:list):
                                 continue
                         else:
                             # If the new size exceeds the vanilla size, pick a different song
-                            if (song_map_newTotalSize[groupName] + shuffled_song_item["uncompressed_size"]) > (song_map_vanillaTotalSize[groupName] + song_item["uncompressed_size"]):
+                            if (song_map_newTotalSize[groupName] + shuffled_song_item["uncompressed_size"]) > (
+                                song_map_vanillaTotalSize[groupName] + song_item["uncompressed_size"]
+                            ):
                                 continue
                         song_map_vanillaTotalSize[groupName] += song_item["uncompressed_size"]
                         song_map_newTotalSize[groupName] += shuffled_song_item["uncompressed_size"]
@@ -246,7 +252,7 @@ def shuffle_music(pool_to_shuffle, shuffled_list):
         ROM().seek(uncompressed_data_table["pointing_to"] + (4 * song["index"]))
         new_bytes = ROM().readBytes(4)
         stored_song_sizes[song["index"]] = new_bytes
-        
+
     # Second loop over all songs to write data into ROM
     for song in pool_to_shuffle:
         shuffled_song = shuffled_list[pool_to_shuffle.index(song)]
