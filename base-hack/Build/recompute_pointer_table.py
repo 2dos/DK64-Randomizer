@@ -265,16 +265,7 @@ def writeUncompressedSize(fh: BinaryIO, pointer_table_index: int, file_index: in
     if uncompressed_size % 2 == 1:
         uncompressed_size += 1
 
-    print(
-        " - Writing new uncompressed size "
-        + hex(uncompressed_size)
-        + " for file "
-        + str(pointer_table_index)
-        + "->"
-        + str(file_index)
-        + " to ROM address "
-        + hex(ROMAddress)
-    )
+    print(" - Writing new uncompressed size " + hex(uncompressed_size) + " for file " + str(pointer_table_index) + "->" + str(file_index) + " to ROM address " + hex(ROMAddress))
 
     fh.seek(ROMAddress)
     fh.write(int.to_bytes(uncompressed_size, 4, "big"))
@@ -403,15 +394,10 @@ def getFileInfo(pointer_table_index: int, file_index: int):
     if file_index not in range(len(pointer_tables[pointer_table_index]["entries"])):
         return
 
-    if (
-        not pointer_tables[pointer_table_index]["entries"][file_index]["new_sha1"]
-        in pointer_table_files[pointer_table_index]
-    ):
+    if not pointer_tables[pointer_table_index]["entries"][file_index]["new_sha1"] in pointer_table_files[pointer_table_index]:
         return
 
-    return pointer_table_files[pointer_table_index][
-        pointer_tables[pointer_table_index]["entries"][file_index]["new_sha1"]
-    ]
+    return pointer_table_files[pointer_table_index][pointer_tables[pointer_table_index]["entries"][file_index]["new_sha1"]]
 
 
 def replaceROMFile(
@@ -424,9 +410,7 @@ def replaceROMFile(
     """Replace the ROM file."""
     # TODO: Get this working
     if pointer_table_index == 8 and file_index == 0:
-        print(
-            " - WARNING: Tried to replace Test Map cutscenes. This will replace global cutscenes, so it has been disabled for now to prevent crashes."
-        )
+        print(" - WARNING: Tried to replace Test Map cutscenes. This will replace global cutscenes, so it has been disabled for now to prevent crashes.")
         return
 
     # Align data to 2 byte boundary for DMA

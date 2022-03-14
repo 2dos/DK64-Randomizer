@@ -16,4 +16,4 @@ class Types(IntEnum):
     Kong = auto()
     Medal = auto()
     Shockwave = auto()
-    Constant = auto()    
+    Constant = auto()

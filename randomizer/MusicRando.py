@@ -43,9 +43,7 @@ def randomize_music(spoiler: Spoiler):
         # If the user was a poor sap and selected chaos put DK rap for everything
         elif settings.music_bgm == "chaos":
             # Find the DK rap in the list
-            rap = js.pointer_addresses[0]["entries"][
-                song_data.index(next((x for x in song_data if x.name == "DK Rap"), None))
-            ]
+            rap = js.pointer_addresses[0]["entries"][song_data.index(next((x for x in song_data if x.name == "DK Rap"), None))]
             # Find all BGM songs
             song_list = []
             for song in song_data:
@@ -184,9 +182,7 @@ def ShuffleMusicWithSizeCheck(spoiler: Spoiler, song_list: list):
                                 continue
                         else:
                             # If the new size exceeds the vanilla size, pick a different song
-                            if (song_map_newTotalSize[groupName] + shuffled_song_item["uncompressed_size"]) > (
-                                song_map_vanillaTotalSize[groupName] + song_item["uncompressed_size"]
-                            ):
+                            if (song_map_newTotalSize[groupName] + shuffled_song_item["uncompressed_size"]) > (song_map_vanillaTotalSize[groupName] + song_item["uncompressed_size"]):
                                 continue
                         song_map_vanillaTotalSize[groupName] += song_item["uncompressed_size"]
                         song_map_newTotalSize[groupName] += shuffled_song_item["uncompressed_size"]

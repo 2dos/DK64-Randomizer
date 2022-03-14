@@ -151,11 +151,11 @@ class Spoiler:
                 self.location_data[id] = location.item
                 if location.type == Types.Shop:
                     # Get indices from the location
-                    shop_index = 0 # cranky
+                    shop_index = 0  # cranky
                     if location.movetype in [MoveTypes.Guns, MoveTypes.AmmoBelt]:
-                        shop_index = 1 # funky
+                        shop_index = 1  # funky
                     elif location.movetype == MoveTypes.Intrument:
-                        shop_index = 2 # candy
+                        shop_index = 2  # candy
                     kong_indices = [location.kong]
                     if location.kong == Kongs.any:
                         kong_indices = [Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky]
@@ -167,7 +167,6 @@ class Spoiler:
             # Uncomment for more verbose spoiler with all locations
             # else:
             #     self.location_data[id] = Items.NoItem
-
 
     def UpdatePlaythrough(self, locations, playthroughLocations):
         """Write playthrough as a list of dicts of location/item pairs."""

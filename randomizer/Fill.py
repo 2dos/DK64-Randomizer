@@ -84,11 +84,7 @@ def GetAccessibleLocations(settings, ownedItems, searchType=SearchMode.GetReacha
             regionPool = [startRegion]
             addedRegions = [Regions.IslesMain]
 
-            tagAccess = [
-                (key, value)
-                for (key, value) in Logic.Regions.items()
-                if value.HasAccess(kong) and key not in addedRegions
-            ]
+            tagAccess = [(key, value) for (key, value) in Logic.Regions.items() if value.HasAccess(kong) and key not in addedRegions]
             addedRegions.extend([x[0] for x in tagAccess])  # first value is the region key
             regionPool.extend([x[1] for x in tagAccess])  # second value is the region itself
 
@@ -105,11 +101,7 @@ def GetAccessibleLocations(settings, ownedItems, searchType=SearchMode.GetReacha
                         LogicVariables.Events.append(event.name)
                 # Check accessibility for each location in this region
                 for location in region.locations:
-                    if (
-                        location.logic(LogicVariables)
-                        and location.id not in newLocations
-                        and location.id not in accessible
-                    ):
+                    if location.logic(LogicVariables) and location.id not in newLocations and location.id not in accessible:
                         # If this location is a bonus barrel, must make sure its logic is met as well
                         if location.bonusBarrel and settings.bonus_barrels != "skip":
                             minigame = MinigameAssociations[location.id]
@@ -380,13 +372,9 @@ def ShuffleMoves(spoiler):
             )
             if importantSharedUnplaced > 0:
                 raise Ex.ItemPlacementException(str(importantSharedUnplaced) + " unplaced shared important items.")
-            junkSharedUnplaced = PlaceItems(
-                spoiler.settings, "random", ItemPool.JunkSharedMoves.copy(), [], ItemPool.SharedMoveLocations
-            )
+            junkSharedUnplaced = PlaceItems(spoiler.settings, "random", ItemPool.JunkSharedMoves.copy(), [], ItemPool.SharedMoveLocations)
             if junkSharedUnplaced > 0:
-                raise Ex.ItemPlacementException(
-                    str(junkSharedUnplaced) + " unplaced shared junk items."
-                )  # This might not warrant an exception
+                raise Ex.ItemPlacementException(str(junkSharedUnplaced) + " unplaced shared junk items.")  # This might not warrant an exception
 
             sharedMoveShops = []
             for sharedLocation in ItemPool.SharedMoveLocations:
