@@ -35,7 +35,9 @@ root = Regions.IslesMain
 
 def GetRootExit(exitId):
     """Query the world root to return an exit with a matching exit id."""
-    return [x for x in Logic.Regions[root].exits if x.assumed and x.exitShuffleId is not None and x.exitShuffleId == exitId][0]
+    return [
+        x for x in Logic.Regions[root].exits if x.assumed and x.exitShuffleId is not None and x.exitShuffleId == exitId
+    ][0]
 
 
 def RemoveRootExit(exit):
@@ -124,7 +126,13 @@ def ShuffleExitsInPool(settings, frontpool, backpool):
             # In coupled, if both front & back are leaves, the result will be invalid
             origins = [x for x in origins if ShufflableExits[ShufflableExits[x].back.reverse].category is not None]
             # Also validate the entry & region kongs overlap in reverse direction
-            origins = [x for x in origins if ShufflableExits[backExit.back.reverse].entryKongs.issuperset(ShufflableExits[ShufflableExits[x].back.reverse].regionKongs)]
+            origins = [
+                x
+                for x in origins
+                if ShufflableExits[backExit.back.reverse].entryKongs.issuperset(
+                    ShufflableExits[ShufflableExits[x].back.reverse].regionKongs
+                )
+            ]
         # Select a random origin
         for frontId in origins:
             frontExit = ShufflableExits[frontId]
@@ -138,7 +146,13 @@ def ShuffleExitsInPool(settings, frontpool, backpool):
                     backpool.remove(frontExit.back.reverse)
                 break
         if not frontExit.shuffled:
-            print("Failed to connect to " + backExit.name + " from any of the remaining " + str(len(origins)) + " origins!")
+            print(
+                "Failed to connect to "
+                + backExit.name
+                + " from any of the remaining "
+                + str(len(origins))
+                + " origins!"
+            )
             raise Ex.EntranceOutOfDestinations
 
 

@@ -59,7 +59,11 @@ async def initialize():
         pass
 
     # Load our pointer info from the JSON database
-    js.pointer_addresses = json.loads(js.jquery.ajax(js.Object.fromEntries(to_js({"url": "./static/patches/pointer_addresses.json", "async": False}))).responseText)
+    js.pointer_addresses = json.loads(
+        js.jquery.ajax(
+            js.Object.fromEntries(to_js({"url": "./static/patches/pointer_addresses.json", "async": False}))
+        ).responseText
+    )
 
 
 # Run the script (This will be run as async later on)

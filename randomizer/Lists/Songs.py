@@ -16,10 +16,12 @@ class Song:
         """
         self.name = name
         self.type = type
-        self.group = group  # Use this to avoid overloading certain SongGroup with too many large songs
+        self.group = group
 
 
 class SongGroup(IntEnum):
+    """Used to avoid overloading a song or group of songs with larger music data which can crash the game."""
+
     JungleJapes = auto()
     AngryAztec = auto()
     FranticFactory = auto()
