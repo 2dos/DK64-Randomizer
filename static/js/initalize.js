@@ -9,22 +9,6 @@ async function sleep(seconds, func, args) {
     func(...args);
   }, seconds * 1000);
 }
-// Set page Dark mode or Light mode based off your browser theme
-lightmode = document.getElementById("light-mode");
-darkmode = document.getElementById("dark-mode");
-footer = document.getElementById("footer");
-if (
-  window.matchMedia &&
-  window.matchMedia("(prefers-color-scheme: dark)").matches
-) {
-  lightmode.disabled = "disabled";
-  darkmode.disabled = undefined;
-  footer.style.backgroundColor = "#414141";
-} else {
-  darkmode.disabled = "disabled";
-  lightmode.disabled = undefined;
-  footer.style.backgroundColor = undefined;
-}
 
 var cosmetics;
 document
@@ -68,3 +52,5 @@ document
 
     fileReader.readAsArrayBuffer(fileToLoad);
   });
+
+jq = $

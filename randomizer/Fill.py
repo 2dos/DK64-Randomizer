@@ -306,7 +306,12 @@ def Fill(spoiler):
                 raise Ex.ItemPlacementException(str(blueprintsUnplaced) + " unplaced blueprints.")
             # Then place the rest of items
             Reset()
-            lowPriorityUnplaced = PlaceItems(spoiler.settings, spoiler.settings.algorithm, ItemPool.LowPriorityItems(spoiler.settings), ItemPool.ExcessItems(spoiler.settings))
+            lowPriorityUnplaced = PlaceItems(
+                spoiler.settings,
+                spoiler.settings.algorithm,
+                ItemPool.LowPriorityItems(spoiler.settings),
+                ItemPool.ExcessItems(spoiler.settings),
+            )
             if lowPriorityUnplaced > 0:
                 raise Ex.ItemPlacementException(str(lowPriorityUnplaced) + " unplaced low priority items.")
             # Finally place excess items fully randomly
@@ -358,7 +363,13 @@ def ShuffleMoves(spoiler):
 
             # When a shared move is assigned to a shop in any particular level, that shop cannot also hold any kong-specific moves.
             # To avoid conflicts, first determine which level shops will have shared moves then remove these shops from each kong's valid locations list
-            importantSharedUnplaced = PlaceItems(spoiler.settings, "assumed", ItemPool.ImportantSharedMoves.copy(), ownedItems, ItemPool.SharedMoveLocations)
+            importantSharedUnplaced = PlaceItems(
+                spoiler.settings,
+                "assumed",
+                ItemPool.ImportantSharedMoves.copy(),
+                ownedItems,
+                ItemPool.SharedMoveLocations,
+            )
             if importantSharedUnplaced > 0:
                 raise Ex.ItemPlacementException(str(importantSharedUnplaced) + " unplaced shared important items.")
             junkSharedUnplaced = PlaceItems(spoiler.settings, "random", ItemPool.JunkSharedMoves.copy(), [], ItemPool.SharedMoveLocations)

@@ -6,25 +6,25 @@
     {
       "label": "Install requirements",
       "type": "shell",
-      "command": "${config:python.pythonPath} -m pip install -r ${workspaceFolder}/requirements-dev.txt",
+      "command": "${command:python.interpreterPath} -m pip install -r ${workspaceFolder}/requirements-dev.txt",
       "problemMatcher": []
     },
     {
       "label": "Format Repo",
       "type": "shell",
-      "command": "${config:python.pythonPath} -m black -l 120 ${workspaceFolder}",
+      "command": "${command:python.interpreterPath} -m black -l 120 ${workspaceFolder}",
       "problemMatcher": []
     },
     {
       "label": "Validate Styles",
       "type": "shell",
-      "command": "${config:python.pythonPath} -m pycodestyle --ignore E501,W605,W503,E203 ${workspaceFolder}",
+      "command": "${command:python.interpreterPath} -m pycodestyle --ignore E501,W605,W503,E203 ${workspaceFolder}",
       "problemMatcher": []
     },
     {
       "label": "Validate Docstrings",
       "type": "shell",
-      "command": "${config:python.pythonPath} -m pydocstyle ${workspaceFolder}",
+      "command": "${command:python.interpreterPath} -m pydocstyle ${workspaceFolder}",
       "problemMatcher": []
     },
     {
@@ -35,7 +35,7 @@
     {
       "label": "Run Tests",
       "type": "shell",
-      "command": "${config:python.pythonPath} -m pytest -v --cov=${workspaceFolder}/ --cov-report html ${workspaceFolder}/tests",
+      "command": "${command:python.interpreterPath} -m pytest -v --cov=${workspaceFolder}/ --cov-report html ${workspaceFolder}/tests",
       "problemMatcher": [],
     },
     {
