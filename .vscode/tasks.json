@@ -12,7 +12,7 @@
     {
       "label": "Format Repo",
       "type": "shell",
-      "command": "${command:python.interpreterPath} -m black -l 120 ${workspaceFolder}",
+      "command": "${command:python.interpreterPath} -m black -l 200 ${workspaceFolder}",
       "problemMatcher": []
     },
     {
