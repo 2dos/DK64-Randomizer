@@ -341,7 +341,8 @@ def ExcessItems(settings):
 
     return itemPool
 
-def GetMoveLocationsToRemove(sharedMoveShops:set):
+
+def GetMoveLocationsToRemove(sharedMoveShops: set):
     locationsToRemove = []
     for sharedMoveShop in sharedMoveShops:
         # Japes Shops
