@@ -154,7 +154,7 @@ class Spoiler:
                     shop_index = 0  # cranky
                     if location.movetype in [MoveTypes.Guns, MoveTypes.AmmoBelt]:
                         shop_index = 1  # funky
-                    elif location.movetype == MoveTypes.Intrument:
+                    elif location.movetype == MoveTypes.Instruments:
                         shop_index = 2  # candy
                     kong_indices = [location.kong]
                     if location.kong == Kongs.any:

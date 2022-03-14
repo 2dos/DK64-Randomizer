@@ -374,7 +374,7 @@ def ShuffleMoves(spoiler):
                 raise Ex.ItemPlacementException(str(importantSharedUnplaced) + " unplaced shared important items.")
             junkSharedUnplaced = PlaceItems(spoiler.settings, "random", ItemPool.JunkSharedMoves.copy(), [], ItemPool.SharedMoveLocations)
             if junkSharedUnplaced > 0:
-                raise Ex.ItemPlacementException(str(junkSharedUnplaced) + " unplaced shared junk items.")  # This might not warrant an exception
+                raise Ex.ItemPlacementException(str(junkSharedUnplaced) + " unplaced shared junk items.")
 
             sharedMoveShops = []
             for sharedLocation in ItemPool.SharedMoveLocations:

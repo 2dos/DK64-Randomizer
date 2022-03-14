@@ -9,4 +9,4 @@ class MoveTypes(IntEnum):
     Slam = auto()
     Guns = auto()
     AmmoBelt = auto()
-    Intrument = auto()
+    Instruments = auto()
