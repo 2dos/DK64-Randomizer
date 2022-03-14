@@ -343,6 +343,7 @@ def ExcessItems(settings):
 
 
 def GetMoveLocationsToRemove(sharedMoveShops: set):
+    """Determine locations to remove from the move pool based on where shared moves got placed."""
     locationsToRemove = []
     for sharedMoveShop in sharedMoveShops:
         # Japes Shops
