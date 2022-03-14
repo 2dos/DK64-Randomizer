@@ -13,8 +13,21 @@ from convertSetup import convertSetup
 
 # Infrastructure for recomputing DK64 global pointer tables
 from map_names import maps
-from recompute_overlays import isROMAddressOverlay, readOverlayOriginalData, replaceOverlayData, writeModifiedOverlaysToROM
-from recompute_pointer_table import dumpPointerTableDetails, getFileInfo, make_safe_filename, parsePointerTables, pointer_tables, replaceROMFile, writeModifiedPointerTablesToROM
+from recompute_overlays import (
+    isROMAddressOverlay,
+    readOverlayOriginalData,
+    replaceOverlayData,
+    writeModifiedOverlaysToROM,
+)
+from recompute_pointer_table import (
+    dumpPointerTableDetails,
+    getFileInfo,
+    make_safe_filename,
+    parsePointerTables,
+    pointer_tables,
+    replaceROMFile,
+    writeModifiedPointerTablesToROM,
+)
 from staticcode import patchStaticCode
 
 ROMName = "rom/dk64.z64"

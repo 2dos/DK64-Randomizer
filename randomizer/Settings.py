@@ -96,8 +96,6 @@ class Settings:
 
     def generate_progression(self):
         """Set default items on progression page."""
-        self.blocker_selected = None
-        self.troff_selected = None
         self.blocker_0 = None
         self.blocker_1 = None
         self.blocker_2 = None

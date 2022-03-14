@@ -4,7 +4,14 @@ import random
 
 from randomizer.Enums.Kongs import Kongs
 from randomizer.Enums.Locations import Locations
-from randomizer.ItemPool import ChunkyMoveLocations, DiddyMoveLocations, DonkeyMoveLocations, LankyMoveLocations, SharedMoveLocations, TinyMoveLocations
+from randomizer.ItemPool import (
+    ChunkyMoveLocations,
+    DiddyMoveLocations,
+    DonkeyMoveLocations,
+    LankyMoveLocations,
+    SharedMoveLocations,
+    TinyMoveLocations,
+)
 
 VanillaPrices = {
     Locations.SuperSimianSlam: 5,
