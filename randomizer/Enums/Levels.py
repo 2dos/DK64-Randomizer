@@ -5,8 +5,7 @@ from enum import IntEnum, auto
 class Levels(IntEnum):
     """Level enum."""
 
-    DKIsles = 0
-    JungleJapes = auto()
+    JungleJapes = 0
     AngryAztec = auto()
     FranticFactory = auto()
     GloomyGalleon = auto()
@@ -14,4 +13,5 @@ class Levels(IntEnum):
     CrystalCaves = auto()
     CreepyCastle = auto()
     HideoutHelm = auto()
+    DKIsles = auto()
     Shops = auto()

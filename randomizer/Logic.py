@@ -286,7 +286,7 @@ class LogicVarHolder:
             return self.istiny
         if kong == Kongs.chunky:
             return self.ischunky
-        if kong == Kongs.rainbow:
+        if kong == Kongs.any:
             return True
 
     def UpdateCurrentRegionAccess(self, region):
@@ -319,7 +319,7 @@ class LogicVarHolder:
         """Add a collectible."""
         if collectible.type == Collectibles.coin:
             # Rainbow coin, add 5 coins for each kong
-            if collectible.kong == Kongs.rainbow:
+            if collectible.kong == Kongs.any:
                 for i in range(5):
                     self.Coins[i] += 5
             # Normal coins, add amount for the kong

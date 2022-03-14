@@ -115,7 +115,7 @@ class Region:
             return self.tinyAccess
         elif kong == Kongs.chunky:
             return self.chunkyAccess
-        else:  # kongs == Kongs.rainbow, just need to check if any kong has access
+        else:  # kongs == Kongs.any, just need to check if any kong has access
             return self.donkeyAccess or self.diddyAccess or self.lankyAccess or self.tinyAccess or self.chunkyAccess
 
     def ResetAccess(self):
