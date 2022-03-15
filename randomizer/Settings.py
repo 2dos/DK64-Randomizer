@@ -215,7 +215,10 @@ class Settings:
         files.append(inspect.getsource(__import__("randomizer.Spoiler")))
         files.append(inspect.getsource(__import__("randomizer.Fill")))
         files.append(inspect.getsource(__import__("randomizer.BackgroundRandomizer")))
-        files.append(inspect.getsource(__import__("version")))
+        try:
+            files.append(inspect.getsource(__import__("version")))
+        except: # Fails if running python by itself
+            pass
         for file in sorted(files):
             hash_value.append(hashlib.md5(file.encode("utf-8")).hexdigest())
         return "".join(hash_value)

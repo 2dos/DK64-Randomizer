@@ -20,7 +20,7 @@ class Location:
         self.item = None
         self.delayedItem = None
         self.constant = False
-        if type == Types.Shop and default != Items.NoItem:
+        if type == Types.Shop:
             self.level = data[0]
             self.kong = data[1]
             self.movetype = data[2]
@@ -362,7 +362,7 @@ LocationList = {
     Locations.HelmKey: Location("Helm Key", Items.HideoutHelmKey, Types.Key),
 
     # Normal shop locations
-    Locations.SimianSlam: Location("Simian Slam", Items.ProgressiveSlam, Types.Shop, [Levels.DKIsles, Kongs.any, MoveTypes.Slam, 1]),
+    Locations.SimianSlam: Location("Simian Slam", Items.ProgressiveSlam, Types.Shop, [Levels.DKIsles, Kongs.any, MoveTypes.Slam, 1]), # No Item since slam unlocked by default
     Locations.BaboonBlast: Location("Japes Cranky Donkey", Items.BaboonBlast, Types.Shop, [Levels.JungleJapes, Kongs.donkey, MoveTypes.Moves, 1]),
     Locations.ChimpyCharge: Location("Japes Cranky Diddy", Items.ChimpyCharge, Types.Shop, [Levels.JungleJapes, Kongs.diddy, MoveTypes.Moves, 1]),
     Locations.Orangstand: Location("Japes Cranky Lanky", Items.Orangstand, Types.Shop, [Levels.JungleJapes, Kongs.lanky, MoveTypes.Moves, 1]),
