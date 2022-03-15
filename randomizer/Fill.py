@@ -356,7 +356,6 @@ def ShuffleMoves(spoiler):
             ownedItems.extend(ItemPool.LankyMoves)
             ownedItems.extend(ItemPool.TinyMoves)
             ownedItems.extend(ItemPool.ChunkyMoves)
-            ownedItems.extend(ItemPool.ImportantSharedMoves)
 
             # For each kong, place their items in their valid locations, removing owneditems before each placement as they're placed
             # Force assumed for move rando since it's so restrictive
@@ -382,7 +381,8 @@ def ShuffleMoves(spoiler):
                     sharedMoveShops.append(sharedLocation)
 
             locationsToRemove = ItemPool.GetMoveLocationsToRemove(sharedMoveShops)
-
+            Reset()
+            ownedItems = [x for x in ownedItems if x not in ItemPool.DonkeyMoves]
             donkeyUnplaced = PlaceItems(
                 spoiler.settings,
                 "assumed",
@@ -392,8 +392,8 @@ def ShuffleMoves(spoiler):
             )
             if donkeyUnplaced > 0:
                 raise Ex.ItemPlacementException(str(donkeyUnplaced) + " unplaced donkey items.")
-            ownedItems = [x for x in ownedItems if x not in ItemPool.DiddyMoves]
             Reset()
+            ownedItems = [x for x in ownedItems if x not in ItemPool.DiddyMoves]
             diddyUnplaced = PlaceItems(
                 spoiler.settings,
                 "assumed",
@@ -403,8 +403,8 @@ def ShuffleMoves(spoiler):
             )
             if diddyUnplaced > 0:
                 raise Ex.ItemPlacementException(str(diddyUnplaced) + " unplaced diddy items.")
-            ownedItems = [x for x in ownedItems if x not in ItemPool.LankyMoves]
             Reset()
+            ownedItems = [x for x in ownedItems if x not in ItemPool.LankyMoves]
             lankyUnplaced = PlaceItems(
                 spoiler.settings,
                 "assumed",
@@ -414,8 +414,8 @@ def ShuffleMoves(spoiler):
             )
             if lankyUnplaced > 0:
                 raise Ex.ItemPlacementException(str(lankyUnplaced) + " unplaced lanky items.")
-            ownedItems = [x for x in ownedItems if x not in ItemPool.TinyMoves]
             Reset()
+            ownedItems = [x for x in ownedItems if x not in ItemPool.TinyMoves]
             tinyUnplaced = PlaceItems(
                 spoiler.settings,
                 "assumed",

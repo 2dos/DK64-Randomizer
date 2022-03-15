@@ -196,7 +196,7 @@ LogicRegions = {
     ]),
 
     Regions.GalleonBossLobby: Region("Galleon Boss Lobby", Levels.GloomyGalleon, True, None, [], [], [
-        TransitionFront(Regions.GalleonBoss, lambda l: l.islanky and sum(l.ColoredBananas[Levels.GloomyGalleon]) >= l.settings.BossBananas[Levels.GloomyGalleon - 1]),
+        TransitionFront(Regions.GalleonBoss, lambda l: l.islanky and sum(l.ColoredBananas[Levels.GloomyGalleon]) >= l.settings.BossBananas[Levels.GloomyGalleon]),
     ]),
 
     Regions.GalleonBoss: Region("Galleon Boss", Levels.GloomyGalleon, False, None, [
