@@ -217,7 +217,7 @@ class Settings:
         files.append(inspect.getsource(__import__("randomizer.BackgroundRandomizer")))
         try:
             files.append(inspect.getsource(__import__("version")))
-        except: # Fails if running python by itself
+        except Exception:  # Fails if running python by itself
             pass
         for file in sorted(files):
             hash_value.append(hashlib.md5(file.encode("utf-8")).hexdigest())

@@ -426,12 +426,11 @@ def ShuffleMoves(spoiler):
             if tinyUnplaced > 0:
                 raise Ex.ItemPlacementException(str(tinyUnplaced) + " unplaced tiny items.")
             Reset()
-            ownedItems = [x for x in ownedItems if x not in ItemPool.ChunkyMoves]
             chunkyUnplaced = PlaceItems(
                 spoiler.settings,
                 "assumed",
                 ItemPool.ChunkyMoves.copy(),
-                ownedItems,
+                [],
                 ItemPool.ChunkyMoveLocations - locationsToRemove,
             )
             if chunkyUnplaced > 0:

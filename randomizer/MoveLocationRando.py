@@ -38,6 +38,7 @@ lanky_candymoves = []
 tiny_candymoves = []
 chunky_candymoves = []
 
+
 def randomize_moves(spoiler: Spoiler):
     """Randomize Move locations based on move_data from spoiler."""
     if spoiler.settings.shuffle_items == "moves" and spoiler.move_data is not None:
@@ -49,7 +50,7 @@ def randomize_moves(spoiler: Spoiler):
                 for level in range(7):
                     if move_arrays[shop][kong][level] == 0:
                         move_arrays[shop][kong][level] = 0xFF
-                    
+
         dk_crankymoves = move_arrays[0][0]
         diddy_crankymoves = move_arrays[0][1]
         lanky_crankymoves = move_arrays[0][2]
@@ -65,7 +66,7 @@ def randomize_moves(spoiler: Spoiler):
         lanky_candymoves = move_arrays[2][2]
         tiny_candymoves = move_arrays[2][3]
         chunky_candymoves = move_arrays[2][4]
-        
+
     if move_rando_on:
         ROM().seek(varspaceOffset + moveRandoOffset)
         ROM().write(0x1)
