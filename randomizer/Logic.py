@@ -134,9 +134,9 @@ class LogicVarHolder:
         self.Events = []
 
         # Colored banana and coin arrays
-        # Colored bananas as 8 arrays of 5, only need 7 but leave room for DK Isles since we use the enum
+        # Colored bananas as 7 arrays of 5 (7 levels for 5 kongs)
         self.ColoredBananas = []
-        for i in range(8):
+        for i in range(7):
             self.ColoredBananas.append([0] * 5)
         self.Coins = [0] * 5
 

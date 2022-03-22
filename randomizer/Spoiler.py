@@ -147,14 +147,14 @@ class Spoiler:
         """Update location list for what was produced by the fill."""
         self.location_data = {}
         for id, location in locations.items():
-            if location.item is not None:
+            if location.item is not None and not location.constant:
                 self.location_data[id] = location.item
                 if location.type == Types.Shop:
                     # Get indices from the location
                     shop_index = 0  # cranky
                     if location.movetype in [MoveTypes.Guns, MoveTypes.AmmoBelt]:
                         shop_index = 1  # funky
-                    elif location.movetype == MoveTypes.Intrument:
+                    elif location.movetype == MoveTypes.Instruments:
                         shop_index = 2  # candy
                     kong_indices = [location.kong]
                     if location.kong == Kongs.any:
