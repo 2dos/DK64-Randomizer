@@ -8,6 +8,7 @@ import js
 from randomizer.DKTV import randomize_dktv
 from randomizer.EntranceRando import randomize_entrances
 from randomizer.Enums.Transitions import Transitions
+from randomizer.MoveLocationRando import randomize_moves
 from randomizer.MusicRando import randomize_music
 from randomizer.Patcher import ROM
 
@@ -164,6 +165,7 @@ def patching_response(responded_data):
     # randomize_dktv()
     randomize_music(spoiler)
     randomize_entrances(spoiler)
+    randomize_moves(spoiler)
 
     ProgressBar().update_progress(10, "Seed Generated.")
     ROM().fixSecurityValue()
