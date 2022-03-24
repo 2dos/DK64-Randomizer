@@ -41,7 +41,7 @@
     {
       "label": "Build BPS",
       "type": "shell",
-      "command": "cd ${workspaceFolder}/base-hack/ && ./build.bat",
+      "command": "cd ${workspaceFolder}/base-hack/ ; ./build.bat",
       "problemMatcher": [],
       "group": {
         "kind": "build",
