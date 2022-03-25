@@ -59,7 +59,7 @@ class Settings:
         # low
         # medium
         # high
-        self.random_prices = "high"
+        self.random_prices = "vanilla"
 
         # training_barrels: str
         # normal
