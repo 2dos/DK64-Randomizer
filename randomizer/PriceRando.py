@@ -7,8 +7,13 @@ def randomize_prices(spoiler: Spoiler):
     """Write prices to ROM variable space based on settings"""
     if spoiler.settings.random_prices != "vanilla" or spoiler.settings.shuffle_items != "none":
         varspaceOffset = 0x1FED020  # TODO: Define this as constant in a more global place
-        pricesOffset = 0x036
+        pricesOffset = 0x035
         ROM().seek(varspaceOffset + pricesOffset)
+        # /* 0x035 */ char price_rando_on; // 0 = Price Randomizer off, 1 = On
+        if (spoiler.settings.random_prices != "vanilla"):
+            ROM().write(1)
+        else:
+            ROM().write(0)
         # 0x036 */ unsigned char special_move_prices[5][3]; // Array of an array of prices [[1,2,3],[1,2,3],[1,2,3],[1,2,3],[1,2,3]]. Each item of the parent array is for a kong, each item of the sub arrays is the price of the moves in order of their vanilla purchase (eg. DK: Baboon Blast > Strong Kong > Gorilla Grab)
         ROM().write(spoiler.settings.prices[Locations.BaboonBlast])
         ROM().write(spoiler.settings.prices[Locations.StrongKong])
