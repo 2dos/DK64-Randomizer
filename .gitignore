@@ -179,3 +179,5 @@ base-hack/build/autopatch
 !base-hack/build/
 web_cache/
 web_cache/*
+n64chain.zip
+base-hack/build/n64chain

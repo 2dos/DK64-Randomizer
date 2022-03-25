@@ -2,6 +2,12 @@
 set test_on=%1
 set python_ver=%2
 echo Started: %date% %time%
+IF EXIST "rom/dk64.z64" (
+    echo 'ROM Exists.'
+) ELSE (
+    echo 'Error: DK64.z64 file missing from base-hack/rom/'
+	exit 1
+)
 mkdir obj
 IF NOT DEFINED python_ver (set python_ver="python3")
 IF DEFINED test_on (echo "Building patch file")  ELSE (set test_on="")
