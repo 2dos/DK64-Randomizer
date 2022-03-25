@@ -59,7 +59,7 @@ class Settings:
         # low
         # medium
         # high
-        self.random_prices = "high"
+        self.random_prices = "vanilla"
 
         # training_barrels: str
         # normal
@@ -89,6 +89,7 @@ class Settings:
         self.bonus_barrel_rando = None
         self.loading_zone_rando = None
         self.loading_zone_coupled = None
+        self.shop_location_rando = None
 
     def set_seed(self):
         """Forcibly re-set the random seed to the seed set in the config."""
@@ -198,6 +199,10 @@ class Settings:
             self.shuffle_loading_zones = "all"
         if self.loading_zone_coupled:
             self.decoupled_loading_zones = False
+
+        # Move Location Rando
+        if self.shop_location_rando:
+            self.shuffle_items = "moves"
 
     def __repr__(self):
         """Return printable version of the object as json.

@@ -11,6 +11,7 @@ from randomizer.Enums.Transitions import Transitions
 from randomizer.MoveLocationRando import randomize_moves
 from randomizer.MusicRando import randomize_music
 from randomizer.Patcher import ROM
+from randomizer.PriceRando import randomize_prices
 
 # from randomizer.Spoiler import Spoiler
 from randomizer.Settings import Settings
@@ -166,6 +167,7 @@ def patching_response(responded_data):
     randomize_music(spoiler)
     randomize_entrances(spoiler)
     randomize_moves(spoiler)
+    randomize_prices(spoiler)
 
     ProgressBar().update_progress(10, "Seed Generated.")
     ROM().fixSecurityValue()

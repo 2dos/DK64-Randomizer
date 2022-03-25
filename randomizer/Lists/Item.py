@@ -45,7 +45,7 @@ ItemList = {
     Items.Swim: Item("Swim", True, Types.TrainingBarrel),
     Items.Oranges: Item("Oranges", True, Types.TrainingBarrel),
     Items.Barrels: Item("Barrels", True, Types.TrainingBarrel),
-    Items.ProgressiveSlam: Item("Progressive Slam", True, Types.Shop, [Kongs.any, MoveTypes.Slam, 1]),
+    Items.ProgressiveSlam: Item("Progressive Slam", True, Types.Shop, [Kongs.any, MoveTypes.Slam, 2]),
     Items.ProgressiveDonkeyPotion: Item("Progressive Donkey Potion", True, Types.Shop, [Kongs.donkey, MoveTypes.Moves, 1]),
     Items.BaboonBlast: Item("Baboon Blast", True, Types.Shop, [Kongs.donkey, MoveTypes.Moves, 1]),
     Items.StrongKong: Item("Strong Kong", True, Types.Shop, [Kongs.donkey, MoveTypes.Moves, 2]),

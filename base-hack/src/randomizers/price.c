@@ -60,7 +60,7 @@ void alter_price(int purchase_type, int purchase_value, int kong, int level, int
 }
 
 void price_rando(void) {
-	if (Rando.price_rando_on) {
+	if ((Rando.price_rando_on == 1) || (Rando.move_rando_on == 1)) {
 		if (CurrentMap == CRANKY) {
 			for (int kong = 0; kong < 5; kong++) {
 				for (int level = 0; level < 7; level++) {

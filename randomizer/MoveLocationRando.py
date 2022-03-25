@@ -21,7 +21,7 @@ from randomizer.Spoiler import Spoiler
 
 varspaceOffset = 0x1FED020  # TODO: Define this as constant in a more global place
 moveRandoOffset = 0x0A7
-move_rando_on = 0
+
 dk_crankymoves = []
 diddy_crankymoves = []
 lanky_crankymoves = []
@@ -42,7 +42,6 @@ chunky_candymoves = []
 def randomize_moves(spoiler: Spoiler):
     """Randomize Move locations based on move_data from spoiler."""
     if spoiler.settings.shuffle_items == "moves" and spoiler.move_data is not None:
-        move_rando_on = 1
         # Take a copy of move_data before modifying
         move_arrays = spoiler.move_data.copy()
         for shop in range(3):
@@ -67,7 +66,6 @@ def randomize_moves(spoiler: Spoiler):
         tiny_candymoves = move_arrays[2][3]
         chunky_candymoves = move_arrays[2][4]
 
-    if move_rando_on:
         ROM().seek(varspaceOffset + moveRandoOffset)
         ROM().write(0x1)
         ROM().writeBytes(bytearray(dk_crankymoves))
