@@ -17,6 +17,7 @@ if len(avoids) > 0:
     for x in avoids:
         print("\t- " + x)
 if not os.path.exists("build/n64chain"):
+    print("Downloading N64Chain from GitHub. This may take a while...")
     url = "https://github.com/tj90241/n64chain/releases/download/9.1.0/n64chain-windows.zip"
     r = requests.get(url, allow_redirects=True)
     open("n64chain.zip", "wb").write(r.content)

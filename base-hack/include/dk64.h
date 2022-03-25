@@ -75,6 +75,10 @@ extern void loadSetup(void* setup_file, int unk0, int unk1);
 extern int getParentDataIndex(int map);
 extern void WarpToDKTV(void);
 
+extern void wipeStoredSetup(void* setup);
+extern void complex_free(void* ptr);
+extern void createCollision(int type, void* player, collision_types subtype, int map, int exit, int x, int y, int z);
+
 extern int* initDisplayList(int* dl);
 extern int getTextStyleHeight(int style);
 extern int* displayText(int* dl, int style, int x, int y, void* text_pointer, char unk0);
@@ -108,7 +112,7 @@ extern int DestExit;
 extern char StorySkip;
 extern char HelmTimerShown;
 extern char TempFlagBlock[0x10];
-extern submapInfo SubmapData;
+extern submapInfo SubmapData[0x12];
 extern char HelmTimerPaused;
 extern int LagBoost;
 extern int FrameLag;
@@ -211,6 +215,9 @@ extern char DKTVKong;
 
 extern short screenCenterX;
 extern short screenCenterY;
+extern float collisionPos[3];
+extern char FileIndex;
+extern int LockStackCount;
 
 extern int* TriggerArray;
 extern short TriggerSize;
@@ -259,3 +266,4 @@ extern char ExpandPauseMenu;
 extern unsigned short InitialPauseHeight;
 extern short InstanceScriptParams[4];
 extern unsigned int BalancedIGT;
+extern settingsData StoredSettings;

@@ -27,6 +27,7 @@ void cFuncLoop(void) {
 	alter_boss_key_flags();
 	displayNumberOnTns();
 	cancelMoveSoftlock();
+	callParentMapFilter();
 	if (Rando.quality_of_life) {
 		// DKTVKong = 0;
 		// if (CurrentMap == NINTENDO_LOGO) {
@@ -44,11 +45,14 @@ void cFuncLoop(void) {
 	if (CurrentMap == MAIN_MENU) {
 		if (CutsceneActive == 6) {
 			if (!checkFlag(0x346,0)) {
+				// New File
 				unlockMoves();
 				applyFastStart();
 				openCrownDoor();
 				openCoinDoor();
 				setPermFlag(0x346);
+				StoredSettings.file_extra[(int)FileIndex].location_sss_purchased = 0;
+				SaveToGlobal();
 			}
 		}
 	}

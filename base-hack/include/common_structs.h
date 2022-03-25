@@ -269,12 +269,20 @@ typedef struct cutsceneType {
 } cutsceneType;
 
 typedef struct submapInfo {
-	/* 0x000 */ char in_submap;
+	/* 0x000 */ char slot_populated;
 	/* 0x001 */ char unk_01;
-	/* 0x003 */ short transition_properties_bitfield;
-	/* 0x004 */ char unk_04[0x12-4];
+	/* 0x002 */ short transition_properties_bitfield;
+	/* 0x004 */ float x;
+	/* 0x008 */ float y;
+	/* 0x00C */ float z;
+	/* 0x010 */ short angle;
 	/* 0x012 */ short parent_map;
 	/* 0x014 */ char parent_exit;
+	/* 0x015 */ char unk_15[0x18-0x15];
+	/* 0x018 */ void* setup;
+	/* 0x01C */ int uses_extra_setup;
+	/* 0x020 */ void* setup2;
+	/* 0x024 */ char unk_24[0xC0-0x24];
 } submapInfo;
 
 typedef struct SpawnerInfo {
@@ -556,3 +564,25 @@ typedef struct enemy_drop_struct {
 	/* 0x004 */ unsigned char drop_music;
 	/* 0x005 */ unsigned char drop_count;
 } enemy_drop_struct;
+
+typedef enum collision_types {
+	/* 0x000 */ COLLISION_BBLAST,
+	/* 0x001 */ COLLISION_UNKNOWN_1,
+	/* 0x002 */ COLLISION_SIMIAN_SPRING,
+	/* 0x003 */ COLLISION_MONKEYPORT_WARP,
+	/* 0x004 */ COLLISION_GORILLA_GONE,
+	/* 0x005 */ COLLISION_BANANAPORT,
+	/* 0x006 */ COLLISION_BABOON_BALLOON,
+	/* 0x007 */ COLLISION_BATTLE_CROWN,
+	/* 0x008 */ COLLISION_UNKNOWN_8,
+	/* 0x009 */ COLLISION_MULTI_BANANAPORT,
+	/* 0x00A */ COLLISION_MAPWARP,
+} collision_types;
+
+typedef struct fileExtraStorage {
+	/* 0x000 */ unsigned char location_sss_purchased; // 0lll 0pss. l = level (0-7), p = purchased (0-1), s = shop (0-2. Cranky, Funky, Candy)
+} fileExtraStorage;
+
+typedef struct settingsData {
+	/* 0x000 */ fileExtraStorage file_extra[3];
+} settingsData;

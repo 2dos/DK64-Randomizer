@@ -62,6 +62,14 @@ void initHack(void) {
 		PauseSlot3TextPointer = (char*)&exittoisles;
 		// Object Instance Scripts
 		*(int*)(0x80748064) = (int)&change_object_scripts;
+		// Sniper Scope Check
+		*(int*)(0x806D2988) = 0x93190002; // LBU $t9, 0x2 ($t8)
+		*(int*)(0x806D2990) = 0x33210004; // ANDI $at, $t9, 0x4
+		*(short*)(0x806D299C) = 0x1020; // BEQ $at, $r0
+		// Speedy T&S Turn-Ins
+		*(int*)(0x806BE3E0) = 0; // NOP
+		// EEPROM Patch
+		*(int*)(0x8060D588) = 0; // NOP
 		LoadedHooks = 1;
 	}
 }

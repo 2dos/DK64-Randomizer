@@ -61,6 +61,9 @@
 .definelabel getScreenPosition, 0x80626F8C
 .definelabel WarpToDKTV, 0x807131BC
 .definelabel textDraw, 0x806FD490
+.definelabel wipeStoredSetup, 0x80611614
+.definelabel complex_free, 0x8061130C
+.definelabel createCollision, 0x8067ABC0
 
 .definelabel initDisplayList, 0x807132DC
 .definelabel getTextStyleHeight, 0x806FD894
@@ -203,6 +206,9 @@
 
 .definelabel screenCenterX, 0x80744490
 .definelabel screenCenterY, 0x80744494
+.definelabel collisionPos, 0x807F621C
+.definelabel FileIndex, 0x807467C8
+.definelabel LockStackCount, 0x807F5A68
 
 .definelabel TriggerArray, 0x807FDCB4
 .definelabel TriggerSize, 0x807FDCB0
@@ -248,3 +254,4 @@
 .definelabel PauseSlot3TextPointer, 0x807FFFBC // ptr
 .definelabel ReplacementLobbiesArray, 0x807FFFC0 // 0x10
 .definelabel ReplacementLobbyExitsArray, 0x807FFFD0 // 0x10
+.definelabel StoredSettings, 0x807ED5A0

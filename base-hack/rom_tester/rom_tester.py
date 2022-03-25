@@ -50,8 +50,9 @@ def getTrueFalse(fh,offset,size):
 	return False
 
 def getMapExit(fh,offset):
-	val = getValue(fh,offset,2);
-	return f"Map {(val>>16)&0xFF}, Exit {val & 0xFF}"
+	val_m = getValue(fh,offset,1);
+	val_e = getValue(fh,offset+1,1);
+	return f"Map {val_m}, Exit {val_e}"
 
 def getKong(fh,offset):
 	val = getValue(fh,offset,1)
@@ -120,6 +121,8 @@ for f in files:
 			print(f"\t\tCastle Minecart Exit: {getMapExit(fh,0x72)}")
 			print(f"\t\tCastle Lobby Entrance: {getMapExit(fh,0x74)}")
 			print(f"\t\tK. Rool Exit: {getMapExit(fh,0x76)}")
+			print(f"\t\tBallroom to Museum (Monkeyport): {getMapExit(fh,0x120)}")
+			print(f"\t\tMuseum to Ballroom (Monkeyport): {getMapExit(fh,0x122)}")
 			for x in range(8):
 				print(f"\t\t{levels[x]} Exit: {getMapExit(fh,0x78+(2*x))}")
 			for x in range(7):

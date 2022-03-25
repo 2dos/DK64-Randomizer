@@ -53,3 +53,7 @@ void customHideHUD(void) {
 		HUD->item[i].hud_state = 0;
 	}
 }
+
+void createCollisionObjInstance(collision_types subtype, int map, int exit) {
+	createCollision(0,Player,subtype,map,exit,collisionPos[0],collisionPos[1],collisionPos[2]);
+}

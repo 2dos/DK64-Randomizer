@@ -160,6 +160,22 @@ file_dict = [
         "bps_file": "assets/Non-Code/instance_scripts/wind_tower.bps",
         "is_diff_patch": True,
     },
+    {
+        "name": "Ballroom Object Instance Scripts",
+        "pointer_table_index": 10,
+        "file_index": 88,
+        "source_file": "assets/Non-Code/instance_scripts/ballroom.bin",
+        "bps_file": "assets/Non-Code/instance_scripts/ballroom.bps",
+        "is_diff_patch": True,
+    },
+    {
+        "name": "Museum Object Instance Scripts",
+        "pointer_table_index": 10,
+        "file_index": 113,
+        "source_file": "assets/Non-Code/instance_scripts/museum.bin",
+        "bps_file": "assets/Non-Code/instance_scripts/museum.bps",
+        "is_diff_patch": True,
+    },
 ]
 
 map_replacements = []

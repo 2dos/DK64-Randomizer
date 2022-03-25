@@ -47,11 +47,20 @@ START_HOOK:
 		ADDU 	t3, t3, t9
 		SLL 	t3, t3, 1
 		LBU 	t2, 0xC (s2) // Current Level
+		SLTIU 	t1, t2, 7
+		BEQZ 	t1, ForceToBuyMoveInOneLevel_Skip // If level < 7 (In one of the main 7 levels, progress. Otherwise skip)
+		NOP
 		SLL 	t1, t2, 2
 		SUBU 	t1, t1, t2
 		SLL 	t1, t1, 1 // Current Level * 6
 		J 		0x800260B4
 		ADDU 	v1, v1, t1
+
+		ForceToBuyMoveInOneLevel_Skip:
+			LUI 	s1, 0x8002
+			SW 		r0, 0x6194 (s1)
+			J 		0x80026168
+			ADDIU 	s1, r0, 0
 
 	InstanceScriptCheck:
 		ADDIU 	t1, r0, 1
@@ -322,9 +331,6 @@ START_HOOK:
 			LUI 	at, 0x42C8
 
 		AutowalkFix_Finish:
-			LUI 	t7, hi(TestVariable)
-			SW 		at, lo(TestVariable) (t7)
-
 			J 		0x806F3E7C
 			OR 		t2, r0, r0
 .align 0x10
