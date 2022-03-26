@@ -9,6 +9,7 @@ extern void customHideHUD(void);
 extern void setWarpPosition(float x, float y, float z);
 extern void initHack(void);
 extern void callParentMapFilter(void);
+extern void shiftBrokenJapesPortal(void);
 
 extern void level_order_rando_funcs(void);
 extern void unlockKongs(void);
@@ -51,3 +52,4 @@ extern int* drawImage(int* dl, int text_index, codecs codec_index, int img_width
 extern int* drawPixelText(int* dl, int x, int y, char* str, int red, int green, int blue, int alpha);
 extern int* drawPixelTextContainer(int* dl, int x, int y, char* str, int red, int green, int blue, int alpha, int offset);
 extern int* drawScreenRect(int* dl, int x1, int y1, int x2, int y2, int red, int green, int blue, int alpha);
+extern int* drawTextContainer(int* dl, int style, float x, float y, char* str, int red, int green, int blue, int opacity, int background);

@@ -91,3 +91,44 @@ int* drawScreenRect(int* dl, int x1, int y1, int x2, int y2, int red, int green,
 	*(unsigned int*)(dl++) = ((x1 & 0x3FF) << 12) | (y1 & 0x3FF);
 	return dl;
 }
+
+int* drawString(int* dl, int style, float x, float y, char* str) {
+	float height = (float)getTextStyleHeight(style);
+	float text_y = y - (height * 0x5);
+	int* dl_copy = displayText(dl, style, 4 * x, 4 * text_y, str, 0);
+	return dl_copy;
+}
+
+int* drawText(int* dl, int style, float x, float y, char* str, int red, int green, int blue, int opacity) {
+	dl = initDisplayList(dl);
+	if (style == 1) {
+		*(unsigned int*)(dl++) = 0xFCFFFFFF;
+		*(unsigned int*)(dl++) = 0xFFFCF279;
+		*(unsigned int*)(dl++) = 0xDA380003;
+		*(unsigned int*)(dl++) = 0x807FDAC0;
+	} else {
+		*(unsigned int*)(dl++) = 0xDE000000; // G_DL 0
+		*(unsigned int*)(dl++) = 0x01000118; // G_VTX 0 11
+		*(unsigned int*)(dl++) = 0xFC119623; // G_SETCOMBINE
+		*(unsigned int*)(dl++) = 0xFF2FFFFF; // G_SETCIMG format: 1, 1, -1
+		if (style == 6) {
+			*(unsigned int*)(dl++) = 0xDA380003;
+			*(unsigned int*)(dl++) = (int)&style6Mtx[0];
+		} else if (style == 2) {
+			*(unsigned int*)(dl++) = 0xDA380003;
+			*(unsigned int*)(dl++) = (int)&style2Mtx[0];
+		}
+		gDPSetPrimColor(dl, 0, 0, red, green, blue, opacity);
+		dl += 2;
+	}
+	dl = drawString(dl,style,x,y,str);
+	return dl;
+}
+
+int* drawTextContainer(int* dl, int style, float x, float y, char* str, int red, int green, int blue, int opacity, int background) {
+	if (background) {
+		dl = drawText(dl,style,x-background,y+background,str,0,0,0,opacity);
+	}
+	dl = drawText(dl,style,x,y,str,red,green,blue,opacity);
+	return dl;
+}

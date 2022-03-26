@@ -234,6 +234,8 @@ START_HOOK:
 		ADDIU 	a0, r0, 0x22
 		JAL 	0x805FF378 // Init Map Change
 		ADDIU 	a1, r0, 0
+		JAL 	resetMap
+		NOP
 		J 		0x806A8A20
 		ADDIU 	at, r0, 2
 		

@@ -25,6 +25,9 @@ void cFuncLoop(void) {
 	replace_zones(0);
 	krool_order_indicator();
 	alter_boss_key_flags();
+	if (ObjectModel2Timer <= 2) {
+		shiftBrokenJapesPortal();
+	}
 	displayNumberOnTns();
 	cancelMoveSoftlock();
 	callParentMapFilter();
@@ -88,6 +91,8 @@ void earlyFrame(void) {
 
 static char fpsStr[15] = "";
 #define HERTZ 60
+#define ACTOR_MAINMENUCONTROLLER 0x146
+static unsigned char hash_textures[] = {48,49,50,51,55,62,63,64,65,76};
 int* displayListModifiers(int* dl) {
 	if (CurrentMap != NINTENDO_LOGO) {
 		if (Rando.fps_on) {
@@ -98,6 +103,26 @@ int* displayListModifiers(int* dl) {
 			int fps_int = fps;
 			dk_strFormat((char *)fpsStr, "FPS %d", fps_int);
 			dl = drawPixelTextContainer(dl, 250, 210, fpsStr, 0xFF, 0xFF, 0xFF, 0xFF, 1);
+		}
+	}
+	if (CurrentMap == MAIN_MENU) {
+		int j = 0;
+		while (j < LoadedActorCount) {
+			if (LoadedActorArray[j].actor) {
+				if (LoadedActorArray[j].actor->actorType == ACTOR_MAINMENUCONTROLLER) {
+					int screen = *(char*)((int)(LoadedActorArray[j].actor) + 0x18A);
+					//int next_screen = *(char*)((int)(LoadedActorArray[i].actor) + 0x18B);
+					if ((screen <= 5) && (screen != 3)) {
+						dl = drawTextContainer(dl, 1, 25, 500, "SEED HASH", 0xFF, 0xFF, 0xFF, 0xFF, 0);
+						for (int i = 0; i < 5; i++) {
+							int hash_index = Rando.hash[i] % 10;
+							dl = drawImage(dl, hash_textures[hash_index], RGBA16, 32, 32, 125 + (100 * i), 850, 3.0f, 3.0f, 0xFF);
+						}
+					}
+					break;
+				}
+			}
+			j++;
 		}
 	}
 	return dl;

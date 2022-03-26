@@ -1,7 +1,9 @@
 #include "../../include/common.h"
 
 typedef struct model_struct {
-	/* 0x000 */ char unk_00[0xC];
+	/* 0x000 */ float x;
+	/* 0x004 */ float y;
+	/* 0x008 */ float z;
 	/* 0x00C */ float scale;
 	/* 0x010 */ char unk_10[0x50-0x10];
 	/* 0x050 */ int unk_50;
@@ -16,6 +18,19 @@ void displayNumberOnObject(int id, int param2, int imageindex, int param4) {
 	model_struct* _model = _object->model_pointer;
 	if (_model) {
 		drawNumberObject(_model->unk_B8,param2,imageindex,param4);
+	}
+}
+
+void shiftBrokenJapesPortal(void) {
+	if (CurrentMap == 7) {
+		int* m2location = ObjectModel2Pointer;
+		int slot = convertIDToIndex(0x220);
+		ModelTwoData* _object = getObjectArrayAddr(m2location,0x90,slot);
+		model_struct* _model = _object->model_pointer;
+		if (_model) {
+			_model->x = 722.473f;
+			_model->z = 2386.608f;
+		}
 	}
 }
 

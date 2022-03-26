@@ -51,6 +51,15 @@ void initHack(void) {
 		randomize_bosses();
 		loadExtraHooks();
 		no_enemy_drops();
+		// Style 6 Mtx
+		int base_mtx = 75;
+		style6Mtx[0x0] = base_mtx;
+		style6Mtx[0x5] = base_mtx;
+		style6Mtx[0xF] = 100;
+		base_mtx = 12;
+		style2Mtx[0x0] = base_mtx;
+		style2Mtx[0x5] = base_mtx;
+		style2Mtx[0xF] = 10;
 		// Pause Menu Exit To Isles Slot
 		*(short*)(0x806A85EE) = 4; // Yes/No Prompt
 		*(short*)(0x806A8716) = 4; // Yes/No Prompt

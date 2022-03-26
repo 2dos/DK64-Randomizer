@@ -266,4 +266,7 @@ extern char ExpandPauseMenu;
 extern unsigned short InitialPauseHeight;
 extern short InstanceScriptParams[4];
 extern unsigned int BalancedIGT;
+extern short style128Mtx[0x10];
+extern short style6Mtx[0x10];
+extern short style2Mtx[0x10];
 extern settingsData StoredSettings;

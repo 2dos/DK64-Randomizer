@@ -55,7 +55,7 @@ void randomizeLevelOrder(void) {
 	}
 }
 
-void swapRequirements(void) {
+void swapRequirements(int key_swap) {
 	if (TransitionSpeed < 0) {
 		for (int i = 0; i < 8; i++) {
 			if (i < 7) {
@@ -63,11 +63,13 @@ void swapRequirements(void) {
 			}
 			BLockerDefaultArray[i] = Rando.blocker_normal_count[i];
 			BLockerCheatArray[i].gb_count = Rando.blocker_normal_count[i];
-			if (levelIndexMapping[CurrentMap] == 7) {
-				// In Isles
-				CheckmarkKeyArray[i] = Rando.key_flags[i];
-			} else {
-				CheckmarkKeyArray[i] = normal_key_flags[i];
+			if (key_swap) {
+				if (levelIndexMapping[CurrentMap] == 7) {
+					// In Isles
+					CheckmarkKeyArray[i] = Rando.key_flags[i];
+				} else {
+					CheckmarkKeyArray[i] = normal_key_flags[i];
+				}
 			}
 			
 		}
@@ -82,7 +84,9 @@ void barrier_fixes(void) {
 void level_order_rando_funcs(void) {
 	if (Rando.level_order_rando_on) {
 		randomizeLevelOrder();
-		swapRequirements();
+		swapRequirements(1);
 		barrier_fixes();
+	} else {
+		swapRequirements(0);
 	}
 }

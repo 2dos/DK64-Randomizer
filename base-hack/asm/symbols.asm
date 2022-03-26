@@ -254,4 +254,7 @@
 .definelabel PauseSlot3TextPointer, 0x807FFFBC // ptr
 .definelabel ReplacementLobbiesArray, 0x807FFFC0 // 0x10
 .definelabel ReplacementLobbyExitsArray, 0x807FFFD0 // 0x10
+.definelabel style2Mtx, 0x807FFF90
+.definelabel style6Mtx, 0x807FFF70
+.definelabel style128Mtx, 0x807FFF50
 .definelabel StoredSettings, 0x807ED5A0
