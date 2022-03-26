@@ -115,6 +115,14 @@ class Maps(IntEnum):
     CastleDungeon = 163
     CastleBaboonBlast = 187
 
+    # Level Bosses
+    JapesBoss = 8
+    AztecBoss = 197
+    FactoryBoss = 154
+    GalleonBoss = 111
+    FungiBoss = 83
+    CavesBoss = 196
+    CastleBoss = 199
 
 RegionMapList = {
     # Isles

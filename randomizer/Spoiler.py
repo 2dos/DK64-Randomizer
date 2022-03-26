@@ -11,7 +11,7 @@ from randomizer.Enums.MoveTypes import MoveTypes
 from randomizer.Lists.Item import ItemFromKong, ItemList
 from randomizer.Lists.Location import LocationList
 from randomizer.Lists.Minigame import MinigameAssociations, MinigameRequirements
-from randomizer.MapsAndExits import GetExitId, GetMapId
+from randomizer.MapsAndExits import GetExitId, GetMapId, Maps
 from randomizer.Settings import Settings
 from randomizer.ShuffleExits import ShufflableExits
 
@@ -121,6 +121,12 @@ class Spoiler:
             for location, minigame in self.shuffled_barrel_data.items():
                 shuffled_barrels[LocationList[location].name] = MinigameRequirements[minigame].name
             humanspoiler["Shuffled Bonus Barrels"] = shuffled_barrels
+
+        if self.settings.boss_location_rando:
+            shuffled_bosses = OrderedDict()
+            for i in range(7):
+                shuffled_bosses["Boss " + str(i+1)] = Maps(self.settings.boss_maps[i]).name
+            humanspoiler["Shuffled Boss Order"] = shuffled_bosses
 
         if self.settings.music_bgm == "randomized":
             humanspoiler["Shuffled Music (BGM)"] = self.music_bgm_data

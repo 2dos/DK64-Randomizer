@@ -4,6 +4,7 @@ import inspect
 import json
 import random
 import sys
+from randomizer.BossShuffle import ShuffleBosses
 
 from randomizer.Enums.Kongs import Kongs
 from randomizer.Prices import RandomizePrices, VanillaPrices
@@ -91,6 +92,8 @@ class Settings:
         self.loading_zone_coupled = None
         self.shop_location_rando = None
         self.shop_price_rando = None
+        self.boss_location_rando = None
+        self.boss_kong_rando = None
 
     def set_seed(self):
         """Forcibly re-set the random seed to the seed set in the config."""
@@ -194,6 +197,9 @@ class Settings:
             random.shuffle(orderedPhases)
         orderedPhases.append("chunky")
         self.krool_order = orderedPhases
+
+        # Boss Location Rando
+        self.boss_maps = ShuffleBosses(self.boss_location_rando)
 
         # Bonus Barrel Rando
         if self.bonus_barrel_rando:
