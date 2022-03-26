@@ -88,6 +88,12 @@ class Spoiler:
                     locations[LocationList[location].name] = ItemList[item].name
             humanspoiler["Locations"] = locations
 
+        if self.settings.random_prices != "vanilla":
+            prices = OrderedDict()
+            for location, price in self.settings.prices.items():
+                prices[LocationList[location].default.name] = price
+            humanspoiler["Prices"] = prices
+
         if self.settings.shuffle_loading_zones != "none":
             # Shuffled exit data
             shuffled_exits = OrderedDict()
