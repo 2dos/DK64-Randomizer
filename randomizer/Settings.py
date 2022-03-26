@@ -4,7 +4,7 @@ import inspect
 import json
 import random
 import sys
-
+from randomizer.BossShuffle import ShuffleBossKongs, ShuffleBosses
 from randomizer.Enums.Kongs import Kongs
 from randomizer.Prices import RandomizePrices, VanillaPrices
 
@@ -90,6 +90,9 @@ class Settings:
         self.loading_zone_rando = None
         self.loading_zone_coupled = None
         self.shop_location_rando = None
+        self.shop_price_rando = None
+        self.boss_location_rando = None
+        self.boss_kong_rando = None
 
     def set_seed(self):
         """Forcibly re-set the random seed to the seed set in the config."""
@@ -159,6 +162,10 @@ class Settings:
 
     def resolve_settings(self):
         """Resolve settings which are not directly set through the UI."""
+        # Price Rando
+        if self.shop_price_rando:
+            self.random_prices = "medium" # TODO Make a UI option to set price difficulty
+
         if self.random_prices != "vanilla":
             self.prices = RandomizePrices(self.random_prices)
 
@@ -189,6 +196,10 @@ class Settings:
             random.shuffle(orderedPhases)
         orderedPhases.append("chunky")
         self.krool_order = orderedPhases
+
+        # Boss Rando
+        self.boss_maps = ShuffleBosses(self.boss_location_rando)
+        self.boss_kongs = ShuffleBossKongs(self.boss_maps, self.boss_kong_rando)
 
         # Bonus Barrel Rando
         if self.bonus_barrel_rando:
