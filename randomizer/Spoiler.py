@@ -4,14 +4,13 @@ import json
 from typing import OrderedDict
 
 from randomizer import Logic
-from randomizer.Enums.Items import Items
+from randomizer.Enums.Locations import Locations
 from randomizer.Enums.Kongs import Kongs
 from randomizer.Enums.Types import Types
 from randomizer.Enums.MoveTypes import MoveTypes
 from randomizer.Lists.Item import ItemFromKong, ItemList
 from randomizer.Lists.Location import LocationList
 from randomizer.Lists.Minigame import MinigameAssociations, MinigameRequirements
-from randomizer.Lists.Songs import Song
 from randomizer.MapsAndExits import GetExitId, GetMapId
 from randomizer.Settings import Settings
 from randomizer.ShuffleExits import ShufflableExits
@@ -91,7 +90,23 @@ class Spoiler:
         if self.settings.random_prices != "vanilla":
             prices = OrderedDict()
             for location, price in self.settings.prices.items():
-                prices[LocationList[location].default.name] = price
+                if location == Locations.SuperSimianSlam:
+                    movename = "Super Simian Slam"
+                elif location == Locations.SuperDuperSimianSlam:
+                    movename = "Super Duper Simian Slam"
+                elif location == Locations.AmmoBelt1:
+                    movename = "Ammo Belt 1"
+                elif location == Locations.AmmoBelt2:
+                    movename = "Ammo Belt 2"
+                elif location == Locations.MusicUpgrade1:
+                    movename = "Music Upgrade 1"
+                elif location == Locations.MusicUpgrade2:
+                    movename = "Music Upgrade 2"
+                elif location == Locations.ThirdMelon:
+                    movename = "Third Melon"
+                else:
+                    movename = LocationList[location].default.name
+                prices[movename] = price
             humanspoiler["Prices"] = prices
 
         if self.settings.shuffle_loading_zones != "none":
