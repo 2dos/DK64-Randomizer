@@ -12,7 +12,7 @@ from randomizer.MoveLocationRando import randomize_moves
 from randomizer.MusicRando import randomize_music
 from randomizer.Patcher import ROM
 from randomizer.PriceRando import randomize_prices
-from randomizer.BossLocationRando import randomize_bosses
+from randomizer.BossRando import randomize_bosses
 
 # from randomizer.Spoiler import Spoiler
 from randomizer.Settings import Settings

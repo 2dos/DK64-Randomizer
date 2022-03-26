@@ -4,8 +4,7 @@ import inspect
 import json
 import random
 import sys
-from randomizer.BossShuffle import ShuffleBosses
-
+from randomizer.BossShuffle import ShuffleBossKongs, ShuffleBosses
 from randomizer.Enums.Kongs import Kongs
 from randomizer.Prices import RandomizePrices, VanillaPrices
 
@@ -198,8 +197,9 @@ class Settings:
         orderedPhases.append("chunky")
         self.krool_order = orderedPhases
 
-        # Boss Location Rando
+        # Boss Rando
         self.boss_maps = ShuffleBosses(self.boss_location_rando)
+        self.boss_kongs = ShuffleBossKongs(self.boss_maps, self.boss_kong_rando)
 
         # Bonus Barrel Rando
         if self.bonus_barrel_rando:
