@@ -11,3 +11,7 @@ def randomize_bosses(spoiler: Spoiler):
     ROM().seek(varspaceOffset + bossMapOffset)
     ROM().writeBytes(bytearray(spoiler.settings.boss_kongs))
     ROM().writeBytes(bytearray(spoiler.settings.boss_maps))
+    # /* 0x111 */ char kut_out_kong_order[5]; // Value of item: 0 = DK, 1 = Diddy, 2 = Lanky, 3 = Tiny, 4 = Chunky. Kongs can be repeated
+    kutoutOffset = 0x111
+    ROM().seek(varspaceOffset + kutoutOffset)
+    ROM().writeBytes(bytearray(spoiler.settings.kutout_kongs))

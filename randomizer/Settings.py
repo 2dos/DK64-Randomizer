@@ -4,7 +4,7 @@ import inspect
 import json
 import random
 import sys
-from randomizer.BossShuffle import ShuffleBossKongs, ShuffleBosses
+from randomizer.BossShuffle import ShuffleBossKongs, ShuffleBosses, ShuffleKutoutKongs
 from randomizer.Enums.Kongs import Kongs
 from randomizer.Prices import RandomizePrices, VanillaPrices
 
@@ -200,6 +200,7 @@ class Settings:
         # Boss Rando
         self.boss_maps = ShuffleBosses(self.boss_location_rando)
         self.boss_kongs = ShuffleBossKongs(self.boss_maps, self.boss_kong_rando)
+        self.kutout_kongs = ShuffleKutoutKongs(self.boss_maps, self.boss_kongs, self.boss_kong_rando)
 
         # Bonus Barrel Rando
         if self.bonus_barrel_rando:
