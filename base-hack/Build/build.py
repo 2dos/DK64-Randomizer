@@ -247,19 +247,11 @@ for x in range(43):
                 "do_not_recompress": True,
             }
         )
-hash_icons = ["bongos.png","dead_maro.png","dkcoin.png","fairy.png","guitar.png","nin_coin.png","orange.png","pauline.png","rw_coin.png","sax.png"]
-hash_indexes = [48,49,50,51,55,62,63,64,65,76]
+hash_icons = ["bongos.png", "dead_maro.png", "dkcoin.png", "fairy.png", "guitar.png", "nin_coin.png", "orange.png", "pauline.png", "rw_coin.png", "sax.png"]
+hash_indexes = [48, 49, 50, 51, 55, 62, 63, 64, 65, 76]
 for x in range(len(hash_indexes)):
-    idx = hash_indexes[x];
-    file_dict.append(
-        {
-            "name": f"Hash Icon {x+1}",
-            "pointer_table_index": 14,
-            "file_index": idx,
-            "source_file": f"assets/Non-Code/hash/{hash_icons[x]}",
-            "texture_format":"rgba5551"
-        }
-    )
+    idx = hash_indexes[x]
+    file_dict.append({"name": f"Hash Icon {x+1}", "pointer_table_index": 14, "file_index": idx, "source_file": f"assets/Non-Code/hash/{hash_icons[x]}", "texture_format": "rgba5551"})
 file_dict.append(
     {
         "name": "Dolby Text",

@@ -3,14 +3,15 @@ from randomizer.Enums.Locations import Locations
 from randomizer.Patcher import ROM
 from randomizer.Spoiler import Spoiler
 
+
 def randomize_prices(spoiler: Spoiler):
-    """Write prices to ROM variable space based on settings"""
+    """Write prices to ROM variable space based on settings."""
     if spoiler.settings.random_prices != "vanilla" or spoiler.settings.shuffle_items != "none":
         varspaceOffset = 0x1FED020  # TODO: Define this as constant in a more global place
         pricesOffset = 0x035
         ROM().seek(varspaceOffset + pricesOffset)
         # /* 0x035 */ char price_rando_on; // 0 = Price Randomizer off, 1 = On
-        if (spoiler.settings.random_prices != "vanilla"):
+        if spoiler.settings.random_prices != "vanilla":
             ROM().write(1)
         else:
             ROM().write(0)
@@ -55,4 +56,3 @@ def randomize_prices(spoiler: Spoiler):
         ROM().write(spoiler.settings.prices[Locations.MusicUpgrade1])
         ROM().write(spoiler.settings.prices[Locations.ThirdMelon])
         ROM().write(spoiler.settings.prices[Locations.MusicUpgrade2])
-        

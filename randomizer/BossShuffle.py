@@ -4,21 +4,17 @@ import random
 from randomizer.Enums.Kongs import Kongs
 from randomizer.MapsAndExits import Maps
 
-def ShuffleBosses(boss_location_rando:bool):
-    boss_maps = [
-        Maps.JapesBoss,
-        Maps.AztecBoss,
-        Maps.FactoryBoss,
-        Maps.GalleonBoss,
-        Maps.FungiBoss,
-        Maps.CavesBoss,
-        Maps.CastleBoss
-    ]
+
+def ShuffleBosses(boss_location_rando: bool):
+    """Shuffle boss locations."""
+    boss_maps = [Maps.JapesBoss, Maps.AztecBoss, Maps.FactoryBoss, Maps.GalleonBoss, Maps.FungiBoss, Maps.CavesBoss, Maps.CastleBoss]
     if boss_location_rando:
         random.shuffle(boss_maps)
     return boss_maps
 
-def ShuffleBossKongs(boss_maps:array, boss_kong_rando:bool):
+
+def ShuffleBossKongs(boss_maps: array, boss_kong_rando: bool):
+    """Shuffle the kongs required for the bosses."""
     vanillaBossKongs = {}
     vanillaBossKongs[Maps.JapesBoss] = Kongs.donkey
     vanillaBossKongs[Maps.AztecBoss] = Kongs.diddy
@@ -27,7 +23,7 @@ def ShuffleBossKongs(boss_maps:array, boss_kong_rando:bool):
     vanillaBossKongs[Maps.FungiBoss] = Kongs.chunky
     vanillaBossKongs[Maps.CavesBoss] = Kongs.donkey
     vanillaBossKongs[Maps.CastleBoss] = Kongs.lanky
-    
+
     boss_kongs = []
     for level in range(7):
         boss_map = boss_maps[level]
@@ -36,10 +32,12 @@ def ShuffleBossKongs(boss_maps:array, boss_kong_rando:bool):
         else:
             kong = vanillaBossKongs[boss_map]
         boss_kongs.append(kong)
-        
+
     return boss_kongs
 
-def SelectRandomKongForBoss(boss_map:Maps):
+
+def SelectRandomKongForBoss(boss_map: Maps):
+    """Randomly choses from the allowed list for the boss."""
     if boss_map == Maps.JapesBoss:
         possibleKongs = [Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky]
     elif boss_map == Maps.AztecBoss:
@@ -56,7 +54,9 @@ def SelectRandomKongForBoss(boss_map:Maps):
         possibleKongs = [Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky]
     return random.choice(possibleKongs)
 
-def ShuffleKutoutKongs(boss_maps:array, boss_kongs:array, boss_kong_rando:bool):
+
+def ShuffleKutoutKongs(boss_maps: array, boss_kongs: array, boss_kong_rando: bool):
+    """Shuffle the Kutout kong order."""
     vanillaKutoutKongs = [Kongs.lanky, Kongs.tiny, Kongs.chunky, Kongs.donkey, Kongs.diddy]
     kutout_kongs = []
     if boss_kong_rando:

@@ -165,7 +165,7 @@ class Settings:
         """Resolve settings which are not directly set through the UI."""
         # Price Rando
         if self.shop_price_rando:
-            self.random_prices = "medium" # TODO Make a UI option to set price difficulty
+            self.random_prices = "medium"  # TODO Make a UI option to set price difficulty
 
         if self.random_prices != "vanilla":
             self.prices = RandomizePrices(self.random_prices)

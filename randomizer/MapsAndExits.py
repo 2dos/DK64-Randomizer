@@ -124,6 +124,7 @@ class Maps(IntEnum):
     CavesBoss = 196
     CastleBoss = 199
 
+
 RegionMapList = {
     # Isles
     Regions.IslesMain: Maps.Isles,

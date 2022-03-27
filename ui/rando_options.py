@@ -145,3 +145,24 @@ def set_preset_options():
             opt.title = val.get("description")
             element.appendChild(opt)
     js.jq("#presets").val("Vanilla")
+
+
+@bind("change", "presets")
+def preset_select_changed(event):
+    """Trigger a change of the form via the JSON templates."""
+    element = document.getElementById("presets")
+    presets = None
+    for val in js.progression_presets:
+        if val.get("name") == element.value:
+            presets = val
+    for key in presets:
+        try:
+            if type(presets[key]) is bool:
+                if presets[key] is False:
+                    document.getElementsByName(key)[0].removeAttribute("checked")
+                else:
+                    document.getElementsByName(key)[0].setAttribute("checked")
+            else:
+                js.jq(f"#{key}").val(presets[key])
+        except Exception:
+            pass

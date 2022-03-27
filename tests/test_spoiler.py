@@ -84,6 +84,7 @@ def test_shuffles(generate_settings):
     except Exception:
         pass
 
+
 def test_assumed(generate_settings):
     generate_settings["algorithm"] = "assumed"
     settings = Settings(generate_settings)

@@ -2,6 +2,7 @@
 from randomizer.Patcher import ROM
 from randomizer.Spoiler import Spoiler
 
+
 def randomize_bosses(spoiler: Spoiler):
     """Apply Boss locations based on boss_maps from spoiler."""
     varspaceOffset = 0x1FED020  # TODO: Define this as constant in a more global place

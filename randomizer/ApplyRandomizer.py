@@ -173,7 +173,7 @@ def patching_response(responded_data):
     randomize_bosses(spoiler)
 
     # Apply Hash
-    hash_images = [random.randint(0,9) for i in range(5)]
+    hash_images = [random.randint(0, 9) for i in range(5)]
     order = 0
     for count in hash_images:
         ROM().seek(sav + 0x11A + order)

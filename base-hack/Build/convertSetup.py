@@ -72,8 +72,8 @@ def modify(file_name, map_index):
                 _id = int.from_bytes(byte_read[read_location + 0x2A : read_location + 0x2C], "big")
                 if map_index == 7:
                     if model2_index == 0x220:
-                        _x = int(float_to_hex(805.6618),16)
-                        _z = int(float_to_hex(2226.797),16)
+                        _x = int(float_to_hex(805.6618), 16)
+                        _z = int(float_to_hex(2226.797), 16)
                 added_model2.append(
                     {
                         "base_byte_stream": byte_stream,
