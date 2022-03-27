@@ -88,6 +88,7 @@ class Settings:
         self.seed = None
         self.download_json = None
         self.bonus_barrel_rando = None
+        self.shuffle_levels = None
         self.loading_zone_rando = None
         self.loading_zone_coupled = None
         self.shop_location_rando = None
@@ -210,6 +211,8 @@ class Settings:
         # Loading Zone Rando
         if self.loading_zone_rando:
             self.shuffle_loading_zones = "all"
+        elif self.shuffle_levels:
+            self.shuffle_loading_zones = "levels"
         if self.loading_zone_coupled:
             self.decoupled_loading_zones = False
 

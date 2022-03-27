@@ -73,11 +73,10 @@ def patching_response(responded_data):
         Transitions.CastleToIsles,
     ]
     order = 0
-    # for level in vanilla_entrace_order:
-    #     ROM().seek(sav + 0x001 + order)
-    #     print(spoiler.shuffled_exit_data)
-    #     ROM().write(vanilla_lobby_order.index(spoiler.shuffled_exit_data[int(level)]))
-    #     order += 1
+    for level in vanilla_entrace_order:
+        ROM().seek(sav + 0x001 + order)
+        ROM().write(vanilla_lobby_order.index(spoiler.shuffled_exit_data[int(level)].reverse))
+        order += 1
 
     # Color Banana Requirements
     order = 0
@@ -113,11 +112,11 @@ def patching_response(responded_data):
         Transitions.CastleToIsles: 0x124,
     }
     order = 0
-    # for key, value in map_pointers.items():
-    #     new_world = spoiler.shuffled_exit_data.get(key)
-    #     ROM().seek(sav + 0x01E + order)
-    #     ROM().writeMultipleBytes(key_mapping[int(new_world)], 2)
-    #     order += 2
+    for key, value in map_pointers.items():
+        new_world = spoiler.shuffled_exit_data.get(key).reverse
+        ROM().seek(sav + 0x01E + order)
+        ROM().writeMultipleBytes(key_mapping[int(new_world)], 2)
+        order += 2
 
     # Unlock All Kongs
     if spoiler.settings.unlock_all_kongs:
