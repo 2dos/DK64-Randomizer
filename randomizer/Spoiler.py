@@ -7,6 +7,7 @@ from randomizer import Logic
 from randomizer.Enums.Levels import Levels
 from randomizer.Enums.Locations import Locations
 from randomizer.Enums.Kongs import Kongs
+from randomizer.Enums.Transitions import Transitions
 from randomizer.Enums.Types import Types
 from randomizer.Enums.MoveTypes import MoveTypes
 from randomizer.Lists.Item import ItemFromKong, ItemList
@@ -110,19 +111,38 @@ class Spoiler:
                 prices[movename] = price
             humanspoiler["Prices"] = prices
 
-        if self.settings.shuffle_loading_zones != "none":
-            # Shuffled exit data
+        if self.settings.shuffle_loading_zones == "levels":
+            # Just show level order
+            shuffled_exits = OrderedDict()
+            lobby_entrance_order = {
+                Transitions.IslesMainToJapesLobby: Levels.JungleJapes,
+                Transitions.IslesMainToAztecLobby: Levels.AngryAztec,
+                Transitions.IslesMainToFactoryLobby: Levels.FranticFactory,
+                Transitions.IslesMainToGalleonLobby: Levels.GloomyGalleon,
+                Transitions.IslesMainToForestLobby: Levels.FungiForest,
+                Transitions.IslesMainToCavesLobby: Levels.CrystalCaves,
+                Transitions.IslesMainToCastleLobby: Levels.CreepyCastle,
+            }
+            lobby_exit_order = {
+                Transitions.IslesJapesLobbyToMain: Levels.JungleJapes,
+                Transitions.IslesAztecLobbyToMain: Levels.AngryAztec,
+                Transitions.IslesFactoryLobbyToMain: Levels.FranticFactory,
+                Transitions.IslesGalleonLobbyToMain: Levels.GloomyGalleon,
+                Transitions.IslesForestLobbyToMain: Levels.FungiForest,
+                Transitions.IslesCavesLobbyToMain: Levels.CrystalCaves,
+                Transitions.IslesCastleLobbyToMain: Levels.CreepyCastle,
+            }
+            for transition, vanilla_level in lobby_entrance_order.items():
+                shuffled_level = lobby_exit_order[self.shuffled_exit_data[transition].reverse]
+                shuffled_exits[vanilla_level.name] = shuffled_level.name
+            humanspoiler["Shuffled Level Order"] = shuffled_exits
+        elif self.settings.shuffle_loading_zones != "none":
+            # Show full shuffled_exits data if more than just levels are shuffled
             shuffled_exits = OrderedDict()
             for exit, dest in self.shuffled_exit_data.items():
                 shuffled_exits[ShufflableExits[exit].name] = Logic.Regions[dest.regionId].name + " " + dest.name
             humanspoiler["Shuffled Exits"] = shuffled_exits
-
-        if self.settings.bonus_barrels == "random":
-            shuffled_barrels = OrderedDict()
-            for location, minigame in self.shuffled_barrel_data.items():
-                shuffled_barrels[LocationList[location].name] = MinigameRequirements[minigame].name
-            humanspoiler["Shuffled Bonus Barrels"] = shuffled_barrels
-
+        
         if self.settings.boss_location_rando:
             shuffled_bosses = OrderedDict()
             for i in range(7):
@@ -138,6 +158,12 @@ class Spoiler:
             for kong in self.settings.kutout_kongs:
                 kutout_order = kutout_order + Kongs(kong).name + ", "
             humanspoiler["Shuffled Kutout Kong Order"] = kutout_order.removesuffix(", ")
+
+        if self.settings.bonus_barrels == "random":
+            shuffled_barrels = OrderedDict()
+            for location, minigame in self.shuffled_barrel_data.items():
+                shuffled_barrels[LocationList[location].name] = MinigameRequirements[minigame].name
+            humanspoiler["Shuffled Bonus Barrels"] = shuffled_barrels
 
         if self.settings.music_bgm == "randomized":
             humanspoiler["Shuffled Music (BGM)"] = self.music_bgm_data
