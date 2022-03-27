@@ -2,6 +2,7 @@
 import codecs
 import json
 import pickle
+import random
 
 import js
 
@@ -171,9 +172,17 @@ def patching_response(responded_data):
     randomize_prices(spoiler)
     randomize_bosses(spoiler)
 
+    # Apply Hash
+    hash_images = [random.randint(0,9) for i in range(5)]
+    order = 0
+    for count in hash_images:
+        ROM().seek(sav + 0x11A + order)
+        ROM().writeMultipleBytes(count, 2)
+        order += 2
+
     ProgressBar().update_progress(10, "Seed Generated.")
     ROM().fixSecurityValue()
-    ROM().save(f"dk64-{spoiler.settings.seed}.z64")
+    ROM().save(f"dk64-{spoiler.settings.seed_id}.z64")
     ProgressBar().reset()
     if spoiler.settings.generate_spoilerlog is True:
         js.document.getElementById("nav-spoiler-tab").style.display = ""

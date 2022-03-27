@@ -26,6 +26,7 @@ class Settings:
         self.generate_misc()
         for k, v in form_data.items():
             setattr(self, k, v)
+        self.seed_id = str(self.seed)
         self.seed = str(self.seed) + self.__hash
         self.set_seed()
         # Store banana values in array
