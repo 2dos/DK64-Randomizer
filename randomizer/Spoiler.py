@@ -134,6 +134,10 @@ class Spoiler:
             for i in range(7):
                 shuffled_boss_kongs[Levels(i).name] = Kongs(self.settings.boss_kongs[i]).name
             humanspoiler["Shuffled Boss Kongs"] = shuffled_boss_kongs
+            kutout_order = ""
+            for kong in self.settings.kutout_kongs:
+                kutout_order = kutout_order + Kongs(kong).name + ", "
+            humanspoiler["Shuffled Kutout Kong Order"] = kutout_order.removesuffix(", ")
 
         if self.settings.music_bgm == "randomized":
             humanspoiler["Shuffled Music (BGM)"] = self.music_bgm_data

@@ -55,3 +55,19 @@ def SelectRandomKongForBoss(boss_map:Maps):
     elif boss_map == Maps.CastleBoss:
         possibleKongs = [Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky]
     return random.choice(possibleKongs)
+
+def ShuffleKutoutKongs(boss_maps:array, boss_kongs:array, boss_kong_rando:bool):
+    vanillaKutoutKongs = [Kongs.lanky, Kongs.tiny, Kongs.chunky, Kongs.donkey, Kongs.diddy]
+    kutout_kongs = []
+    if boss_kong_rando:
+        kutoutLocation = boss_maps.index(Maps.CastleBoss)
+        starting_kong = boss_kongs[kutoutLocation]
+        kongPool = vanillaKutoutKongs.copy()
+        kongPool.remove(starting_kong)
+        random.shuffle(kongPool)
+
+        kutout_kongs.append(starting_kong)
+        kutout_kongs.extend(kongPool)
+    else:
+        kutout_kongs = vanillaKutoutKongs
+    return kutout_kongs
