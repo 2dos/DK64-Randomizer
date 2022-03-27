@@ -104,3 +104,12 @@ int* display_text(int* dl) {
 	dl = display_images(dl);
 	return dl;
 }
+
+static unsigned char hash_textures[] = {48,49,50,51,55,62,63,64,65,76};
+int* displayHash(int* dl, int y_offset) {
+	for (int i = 0; i < 5; i++) {
+		int hash_index = Rando.hash[i] % 10;
+		dl = drawImage(dl, hash_textures[hash_index], RGBA16, 32, 32, 440 + (100 * i), 920 - y_offset, 3.0f, 3.0f, 0xFF);
+	}
+	return dl;
+}

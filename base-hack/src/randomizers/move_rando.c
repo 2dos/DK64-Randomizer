@@ -29,6 +29,87 @@ int getMoveIndex(int value) {
 }
 
 static char stored_slam_level = 0;
+static char stored_belt_level = 0;
+static char stored_instrument_level = 0;
+
+void checkProgressive(
+		char* previous_storage,
+		char* current_storage,
+		unsigned char* eep_storage,
+		int lower_threshold,
+		int upper_threshold,
+		int level,
+		int purchase_type,
+		int purchase_level,
+		int is_bitfield) {
+	int pass = 0;
+	if (is_bitfield) {
+		if ((!(*previous_storage & (1 << lower_threshold))) && (*current_storage & (1 << lower_threshold))) {
+			pass = 1;
+		}
+	} else {
+		if ((*previous_storage == lower_threshold) && (*current_storage == upper_threshold)) {
+			pass = 1;
+		}
+	}
+	if (pass) {
+		// Just purchased SSS
+		int purchased = 0;
+		if (level >= 0 && level < 7) {
+			purchased = 1;
+		}
+		int shop = 0;
+		if (CurrentMap == FUNKY) {
+			shop = 1;
+		} else if (CurrentMap == CANDY) {
+			shop = 2;
+		}
+		*eep_storage = (level << 4) | (purchased << 2) | shop;
+		SaveToGlobal();
+	}
+	pass = 0;
+	if (is_bitfield) {
+		if (*current_storage & (1 << lower_threshold)) {
+			pass = 1;
+		}
+	} else {
+		if (*current_storage > lower_threshold) {
+			pass = 1;
+		}
+	}
+	if (pass) {
+		int encoded_sss_location = *eep_storage;
+		int shop = encoded_sss_location & 3;
+		int purchased = (encoded_sss_location >> 2) & 1;
+		int level = (encoded_sss_location >> 4) & 7;
+		for (int i = 0; i < 7; i++) {
+			for (int j = 0; j < 5; j++) {
+				if (CrankyMoves[j][i].purchase_type == purchase_type) {
+					if ((purchased) && (shop == 0) && (level == i)) {
+						CrankyMoves[j][i].purchase_type = PURCHASE_NOTHING;
+					} else {
+						CrankyMoves[j][i].purchase_value = purchase_level;
+					}
+				}
+				if (CandyMoves[j][i].purchase_type == purchase_type) {
+					if ((purchased) && (shop == 2) && (level == i)) {
+						CrankyMoves[j][i].purchase_type = PURCHASE_NOTHING;
+					} else {
+						CrankyMoves[j][i].purchase_value = purchase_level;
+					}
+				}
+				if (FunkyMoves[j][i].purchase_type == purchase_type) {
+					if ((purchased) && (shop == 1) && (level == i)) {
+						CrankyMoves[j][i].purchase_type = PURCHASE_NOTHING;
+					} else {
+						CrankyMoves[j][i].purchase_value = purchase_level;
+					}
+				}
+			}
+		}
+	}
+	*previous_storage = *current_storage;
+}
 
 void replace_moves(void) {
 	if (Rando.move_rando_on) {
@@ -85,53 +166,50 @@ void replace_moves(void) {
 					}
 				}
 			}
-			if ((stored_slam_level == 1) && (MovesBase[0].simian_slam == 2)) {
-				// Just purchased SSS
-				int purchased = 0;
-				if (level >= 0 && level < 7) {
-					purchased = 1;
-				}
-				int shop = 0;
-				if (CurrentMap == FUNKY) {
-					shop = 1;
-				} else if (CurrentMap == CANDY) {
-					shop = 2;
-				}
-				StoredSettings.file_extra[(int)FileIndex].location_sss_purchased = (level << 4) | (purchased << 2) | shop;
-				SaveToGlobal();
-			}
-			if (MovesBase[0].simian_slam > 1) {
-				int encoded_sss_location = StoredSettings.file_extra[(int)FileIndex].location_sss_purchased;
-				int shop = encoded_sss_location & 3;
-				int purchased = (encoded_sss_location >> 2) & 1;
-				int level = (encoded_sss_location >> 4) & 7;
-				for (int i = 0; i < 7; i++) {
-					for (int j = 0; j < 5; j++) {
-						if (CrankyMoves[j][i].purchase_type == PURCHASE_SLAM) {
-							if ((purchased) && (shop == 0) && (level == i)) {
-								CrankyMoves[j][i].purchase_type = PURCHASE_NOTHING;
-							} else {
-								CrankyMoves[j][i].purchase_value = 3;
-							}
-						}
-						if (CandyMoves[j][i].purchase_type == PURCHASE_SLAM) {
-							if ((purchased) && (shop == 2) && (level == i)) {
-								CrankyMoves[j][i].purchase_type = PURCHASE_NOTHING;
-							} else {
-								CrankyMoves[j][i].purchase_value = 3;
-							}
-						}
-						if (FunkyMoves[j][i].purchase_type == PURCHASE_SLAM) {
-							if ((purchased) && (shop == 1) && (level == i)) {
-								CrankyMoves[j][i].purchase_type = PURCHASE_NOTHING;
-							} else {
-								CrankyMoves[j][i].purchase_value = 3;
-							}
-						}
-					}
-				}
-			}
-			stored_slam_level = MovesBase[0].simian_slam;
+			checkProgressive(
+				&stored_slam_level,
+				&MovesBase[0].simian_slam,
+				&StoredSettings.file_extra[(int)FileIndex].location_sss_purchased,
+				1,
+				2,
+				level,
+				PURCHASE_SLAM,
+				3,
+				0
+			);
+			checkProgressive(
+				&stored_belt_level,
+				&MovesBase[0].ammo_belt,
+				&StoredSettings.file_extra[(int)FileIndex].location_ab1_purchased,
+				0,
+				1,
+				level,
+				PURCHASE_AMMOBELT,
+				2,
+				0
+			);
+			checkProgressive(
+				&stored_instrument_level,
+				&MovesBase[0].instrument_bitfield,
+				&StoredSettings.file_extra[(int)FileIndex].location_ug1_purchased,
+				1,
+				1,
+				level,
+				PURCHASE_INSTRUMENT,
+				3,
+				1
+			);
+			checkProgressive(
+				&stored_instrument_level,
+				&MovesBase[0].instrument_bitfield,
+				&StoredSettings.file_extra[(int)FileIndex].location_mln_purchased,
+				2,
+				2,
+				level,
+				PURCHASE_INSTRUMENT,
+				4,
+				1
+			);
 		}
 	}
 }

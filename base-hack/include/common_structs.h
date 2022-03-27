@@ -581,6 +581,9 @@ typedef enum collision_types {
 
 typedef struct fileExtraStorage {
 	/* 0x000 */ unsigned char location_sss_purchased; // 0lll 0pss. l = level (0-7), p = purchased (0-1), s = shop (0-2. Cranky, Funky, Candy)
+	/* 0x001 */ unsigned char location_ab1_purchased;
+	/* 0x002 */ unsigned char location_ug1_purchased;
+	/* 0x003 */ unsigned char location_mln_purchased;
 } fileExtraStorage;
 
 typedef struct settingsData {

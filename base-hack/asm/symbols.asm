@@ -241,6 +241,8 @@
 .definelabel FileGBCount, 0x8003380C
 .definelabel FileScreenDLOffset, 0x80033F4C
 
+.definelabel CBTurnedInArray, 0x807FC930
+
 //hack data
 .definelabel TestVariable, 0x807FFFFC
 .definelabel StoredLag, 0x807FFFFA // 0x2

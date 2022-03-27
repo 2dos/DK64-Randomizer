@@ -264,14 +264,24 @@ START_HOOK:
 	FileScreenDLCode_Jump:
 		J 		FileScreenDLCode
 		NOP
+	FileSelectDLCode_Jump:
+		J 		FileSelectDLCode
+		NOP
 
 	FileScreenDLCode_Write:
 		LUI t3, hi(FileScreenDLCode_Jump)
 		LW t3, lo(FileScreenDLCode_Jump) (t3)
 		LUI t4, 0x8003
 		SW t3, 0x937C (t4) // Store Hook
-		JR 	ra
 		SW r0, 0x9380 (t4) // Store NOP
+
+		LUI t3, hi(FileSelectDLCode_Jump)
+		LW t3, lo(FileSelectDLCode_Jump) (t3)
+		LUI t4, 0x8003
+		SW t3, 0x8E90 (t4) // Store Hook
+		SW r0, 0x8E94 (t4) // Store NOP
+		JR 	ra
+		NOP
 
 	FileScreenDLCode:
 		ADDIU 	s0, t4, -0x140
@@ -335,5 +345,20 @@ START_HOOK:
 		AutowalkFix_Finish:
 			J 		0x806F3E7C
 			OR 		t2, r0, r0
+
+	FileSelectDLCode:
+		JAL 		0x806ABB98
+		SRA 		a2, t3, 0x10
+		ADDIU 		a0, v0, 0
+		LWC1		f6, 0xF8 (sp)
+		LUI 		a1, 0x4080
+		MTC1 		a1, f0
+		MUL.S 		f6, f6, f0
+		TRUNC.W.S 	f6, f6
+		JAL 		displayHash
+		MFC1 		a1, f6
+		J 			0x80028E98
+		NOP
+
 .align 0x10
 END_HOOK:

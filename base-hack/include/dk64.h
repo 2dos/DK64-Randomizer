@@ -252,6 +252,7 @@ extern char KongUnlockedMenuArray[5];
 extern unsigned char FilePercentage;
 extern int FileGBCount;
 extern float FileScreenDLOffset;
+extern short CBTurnedInArray[8];
 
 //hack data
 extern int TestVariable;

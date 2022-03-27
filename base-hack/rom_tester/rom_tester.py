@@ -61,6 +61,7 @@ bosses = [
     {"name": "King Kut Out", "map": 0xC7},
 ]
 move_types = ["Special Move", "Slam", "Gun", "Ammo Belt", "Instrument"]
+key_goals = ["Angry Aztec","Factory & Galleon","K. Rool Part 1","Fungi","Caves & Castle","Helm Part 1","Helm Part 2"]
 
 
 def getValue(fh, offset, size):
@@ -138,7 +139,7 @@ for f in files:
                 flag_val = getValue(fh, 0x1E + (2 * x), 2)
                 if flag_val in keys:
                     key_str = f" (Key {keys.index(flag_val)+1})"
-                output(f"\t\t{levels[x]} Boss: {hex(flag_val)}{key_str}")
+                output(f"\t\tOpens {key_goals[x]}: {hex(flag_val)}{key_str}")
             output(f"\tUnlock Kongs: {str(getTrueFalse(fh,0x2C,1))}")
             output(f"\tUnlock Moves: {str(getTrueFalse(fh,0x2D,1))}")
             output(f"\tFast Start (Beginning): {str(getTrueFalse(fh,0x2E,1))}")

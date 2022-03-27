@@ -59,11 +59,16 @@ void swapRequirements(int key_swap) {
 	if (TransitionSpeed < 0) {
 		for (int i = 0; i < 8; i++) {
 			if (i < 7) {
-				TroffNScoffReqArray[i] = Rando.troff_scoff_count[i];
+				if (Rando.troff_scoff_count[i] > 0) {
+					TroffNScoffReqArray[i] = Rando.troff_scoff_count[i];
+				} else {
+					TroffNScoffReqArray[i] = 1;
+					CBTurnedInArray[i] = 1;
+				}
 			}
 			BLockerDefaultArray[i] = Rando.blocker_normal_count[i];
 			BLockerCheatArray[i].gb_count = Rando.blocker_normal_count[i];
-			if (key_swap) {
+			if ((key_swap) && (i < 7)) {
 				if (levelIndexMapping[CurrentMap] == 7) {
 					// In Isles
 					CheckmarkKeyArray[i] = Rando.key_flags[i];
