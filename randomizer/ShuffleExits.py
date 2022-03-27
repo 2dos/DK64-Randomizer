@@ -12,21 +12,24 @@ from randomizer.ItemPool import AllItems, PlaceConstants
 from randomizer.Lists.ShufflableExit import ShufflableExits
 from randomizer.LogicClasses import TransitionFront
 
+# Used when level order rando is ON
 LevelExitPool = [
-    Transitions.IslesToJapes,
-    Transitions.JapesToIsles,
-    Transitions.IslesToAztec,
-    Transitions.AztecToIsles,
-    Transitions.IslesToFactory,
-    Transitions.FactoryToIsles,
-    Transitions.IslesToGalleon,
-    Transitions.GalleonToIsles,
-    Transitions.IslesToForest,
-    Transitions.ForestToIsles,
-    Transitions.IslesToCaves,
-    Transitions.CavesToIsles,
-    Transitions.IslesToCastle,
-    Transitions.CastleToIsles,
+    # Going into lobbies
+    Transitions.IslesMainToJapesLobby,
+    Transitions.IslesMainToAztecLobby,
+    Transitions.IslesMainToFactoryLobby,
+    Transitions.IslesMainToGalleonLobby,
+    Transitions.IslesMainToForestLobby,
+    Transitions.IslesMainToCavesLobby,
+    Transitions.IslesMainToCastleLobby,
+    # Going out of lobbies
+    Transitions.IslesJapesLobbyToMain,
+    Transitions.IslesAztecLobbyToMain,
+    Transitions.IslesFactoryLobbyToMain,
+    Transitions.IslesGalleonLobbyToMain,
+    Transitions.IslesForestLobbyToMain,
+    Transitions.IslesCavesLobbyToMain,
+    Transitions.IslesCastleLobbyToMain,
 ]
 
 # Root is the starting spawn, which is the main area of DK Isles.

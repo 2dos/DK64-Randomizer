@@ -54,28 +54,28 @@ def patching_response(responded_data):
         ROM().write(1)
 
     # Update Level Order
-    vanilla_entrace_order = [
-        Transitions.IslesToJapes,
-        Transitions.IslesToAztec,
-        Transitions.IslesToFactory,
-        Transitions.IslesToGalleon,
-        Transitions.IslesToForest,
-        Transitions.IslesToCaves,
-        Transitions.IslesToCastle,
+    vanilla_lobby_entrance_order = [
+        Transitions.IslesMainToJapesLobby,
+        Transitions.IslesMainToAztecLobby,
+        Transitions.IslesMainToFactoryLobby,
+        Transitions.IslesMainToGalleonLobby,
+        Transitions.IslesMainToForestLobby,
+        Transitions.IslesMainToCavesLobby,
+        Transitions.IslesMainToCastleLobby,
     ]
-    vanilla_lobby_order = [
-        Transitions.JapesToIsles,
-        Transitions.AztecToIsles,
-        Transitions.FactoryToIsles,
-        Transitions.GalleonToIsles,
-        Transitions.ForestToIsles,
-        Transitions.CavesToIsles,
-        Transitions.CastleToIsles,
+    vanilla_lobby_exit_order = [
+        Transitions.IslesJapesLobbyToMain,
+        Transitions.IslesAztecLobbyToMain,
+        Transitions.IslesFactoryLobbyToMain,
+        Transitions.IslesGalleonLobbyToMain,
+        Transitions.IslesForestLobbyToMain,
+        Transitions.IslesCavesLobbyToMain,
+        Transitions.IslesCastleLobbyToMain,
     ]
     order = 0
-    for level in vanilla_entrace_order:
+    for level in vanilla_lobby_entrance_order:
         ROM().seek(sav + 0x001 + order)
-        ROM().write(vanilla_lobby_order.index(spoiler.shuffled_exit_data[int(level)].reverse))
+        ROM().write(vanilla_lobby_exit_order.index(spoiler.shuffled_exit_data[int(level)].reverse))
         order += 1
 
     # Color Banana Requirements
@@ -94,23 +94,23 @@ def patching_response(responded_data):
 
     # Key Order
     map_pointers = {
-        Transitions.IslesToJapes: Transitions.JapesToIsles,
-        Transitions.IslesToAztec: Transitions.AztecToIsles,
-        Transitions.IslesToFactory: Transitions.FactoryToIsles,
-        Transitions.IslesToGalleon: Transitions.GalleonToIsles,
-        Transitions.IslesToForest: Transitions.ForestToIsles,
-        Transitions.IslesToCaves: Transitions.CavesToIsles,
-        Transitions.IslesToCastle: Transitions.CastleToIsles,
+        Transitions.IslesMainToJapesLobby: Transitions.IslesJapesLobbyToMain,
+        Transitions.IslesMainToAztecLobby: Transitions.IslesAztecLobbyToMain,
+        Transitions.IslesMainToFactoryLobby: Transitions.IslesFactoryLobbyToMain,
+        Transitions.IslesMainToGalleonLobby: Transitions.IslesGalleonLobbyToMain,
+        Transitions.IslesMainToForestLobby: Transitions.IslesForestLobbyToMain,
+        Transitions.IslesMainToCavesLobby: Transitions.IslesCavesLobbyToMain,
+        Transitions.IslesMainToCastleLobby: Transitions.IslesCastleLobbyToMain,
     }
     key_mapping = {
         # key given in each level. (Item 1 is Japes etc. flags=[0x1A,0x4A,0x8A,0xA8,0xEC,0x124,0x13D] <- Item 1 of this array is Key 1 etc.)
-        Transitions.JapesToIsles: 0x1A,
-        Transitions.AztecToIsles: 0x4A,
-        Transitions.FactoryToIsles: 0x8A,
-        Transitions.GalleonToIsles: 0xA8,
-        Transitions.ForestToIsles: 0xEC,
-        Transitions.CavesToIsles: 0x124,
-        Transitions.CastleToIsles: 0x13D,
+        Transitions.IslesJapesLobbyToMain: 0x1A,
+        Transitions.IslesAztecLobbyToMain: 0x4A,
+        Transitions.IslesFactoryLobbyToMain: 0x8A,
+        Transitions.IslesGalleonLobbyToMain: 0xA8,
+        Transitions.IslesForestLobbyToMain: 0xEC,
+        Transitions.IslesCavesLobbyToMain: 0x124,
+        Transitions.IslesCastleLobbyToMain: 0x13D,
     }
     order = 0
     for key, value in map_pointers.items():
