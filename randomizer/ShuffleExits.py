@@ -11,10 +11,10 @@ from randomizer.Enums.Transitions import Transitions
 from randomizer.ItemPool import AllItems, PlaceConstants
 from randomizer.Lists.ShufflableExit import ShufflableExits
 from randomizer.LogicClasses import TransitionFront
+from randomizer.Settings import Settings
 
 # Used when level order rando is ON
-LevelExitPool = [
-    # Going into lobbies
+LobbyEntrancePool = [
     Transitions.IslesMainToJapesLobby,
     Transitions.IslesMainToAztecLobby,
     Transitions.IslesMainToFactoryLobby,
@@ -22,7 +22,8 @@ LevelExitPool = [
     Transitions.IslesMainToForestLobby,
     Transitions.IslesMainToCavesLobby,
     Transitions.IslesMainToCastleLobby,
-    # Going out of lobbies
+]
+LobbyExitPool = [
     Transitions.IslesJapesLobbyToMain,
     Transitions.IslesAztecLobbyToMain,
     Transitions.IslesFactoryLobbyToMain,
@@ -165,19 +166,23 @@ def AssumeExits(settings, frontpool, backpool, newpool):
         AddRootExit(newExit)
 
 
-def ShuffleExits(settings):
+def ShuffleExits(settings:Settings):
     """Shuffle exit pools depending on settings."""
     # Set up front and back entrance pools for each setting
     # Assume all shuffled exits reachable by default
     frontpool = []
     backpool = []
     if settings.shuffle_loading_zones == "levels":
+        LevelExitPool = LobbyEntrancePool.copy()
+        LevelExitPool.extend(LobbyExitPool)
         AssumeExits(settings, frontpool, backpool, LevelExitPool)
     elif settings.shuffle_loading_zones == "all":
         AssumeExits(settings, frontpool, backpool, [x for x in ShufflableExits.keys()])
     # Shuffle each entrance pool
     ShuffleExitsInPool(settings, frontpool, backpool)
-
+    # If levels rando is on, need to update Blocker and T&S requirements to match
+    if settings.shuffle_loading_zones == "levels":
+        UpdateLevelProgression(settings)
 
 def ExitShuffle(settings):
     """Facilitate shuffling of exits."""
@@ -198,3 +203,24 @@ def ExitShuffle(settings):
                 retries += 1
                 print("Entrance placement failed. Retrying. Tries: " + str(retries))
                 Reset()
+
+def UpdateLevelProgression(settings:Settings):
+    newEntryGBs = settings.EntryGBs.copy()
+    newBossBananas = settings.BossBananas.copy()
+    lobbies = [
+        Regions.JungleJapesLobby,
+        Regions.AngryAztecLobby,
+        Regions.FranticFactoryLobby,
+        Regions.GloomyGalleonLobby,
+        Regions.FungiForestLobby,
+        Regions.CrystalCavesLobby,
+        Regions.CreepyCastleLobby
+    ]
+    for levelIndex in range(len(lobbies)):
+        shuffledEntrance = ShufflableExits[LobbyEntrancePool[levelIndex]].shuffledId
+        newDestRegion = ShufflableExits[shuffledEntrance].back.regionId
+        newIndex = lobbies.index(newDestRegion)
+        newEntryGBs[newIndex] = settings.EntryGBs[levelIndex]
+        newBossBananas[newIndex] = settings.BossBananas[levelIndex]
+    settings.EntryGBs = newEntryGBs
+    settings.BossBananas = newBossBananas
