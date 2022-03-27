@@ -76,6 +76,9 @@
 .definelabel drawNumberObject, 0x80635098
 .definelabel isLobby, 0x805FEF74
 
+.definelabel cancelPausedCutscene, 0x8061CB08
+.definelabel pauseCutscene, 0x8061CAD8
+
 .definelabel setArcadeTextXY, 0x80024508
 .definelabel spawnArcadeText, 0x8002451C
 .definelabel setArcadeTextColor, 0x800244E4
