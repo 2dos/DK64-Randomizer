@@ -46,39 +46,31 @@ void alter_price(int purchase_type, int purchase_value, int kong, int level, int
 		if (write > -1) {
 			switch (shop_index) {
 				case SHOP_CRANKY:
-					CrankyMoves[kong][level].price = write;
+					CrankyMoves_New[kong][level].price = write;
 					break;
 				case SHOP_FUNKY:
-					FunkyMoves[kong][level].price = write;
+					FunkyMoves_New[kong][level].price = write;
 					break;
 				case SHOP_CANDY:
-					CandyMoves[kong][level].price = write;
+					CandyMoves_New[kong][level].price = write;
 				break;
 			}
 		}
 	}
 }
 
+void priceTransplant(void) {
+	for (int kong = 0; kong < 5; kong++) {
+		for (int level = 0; level < 7; level++) {
+			alter_price(CrankyMoves_New[kong][level].purchase_type,CrankyMoves_New[kong][level].purchase_value,kong,level,SHOP_CRANKY);
+			alter_price(CandyMoves_New[kong][level].purchase_type,CandyMoves_New[kong][level].purchase_value,kong,level,SHOP_CANDY);
+			alter_price(FunkyMoves_New[kong][level].purchase_type,FunkyMoves_New[kong][level].purchase_value,kong,level,SHOP_FUNKY);
+		}
+	}
+}
+
 void price_rando(void) {
 	if ((Rando.price_rando_on == 1) || (Rando.move_rando_on == 1)) {
-		if (CurrentMap == CRANKY) {
-			for (int kong = 0; kong < 5; kong++) {
-				for (int level = 0; level < 7; level++) {
-					alter_price(CrankyMoves[kong][level].purchase_type,CrankyMoves[kong][level].purchase_value,kong,level,SHOP_CRANKY);
-				}
-			}
-		} else if (CurrentMap == CANDY) {
-			for (int kong = 0; kong < 5; kong++) {
-				for (int level = 0; level < 7; level++) {
-					alter_price(CandyMoves[kong][level].purchase_type,CandyMoves[kong][level].purchase_value,kong,level,SHOP_CANDY);
-				}
-			}
-		} else if (CurrentMap == FUNKY) {
-			for (int kong = 0; kong < 5; kong++) {
-				for (int level = 0; level < 7; level++) {
-					alter_price(FunkyMoves[kong][level].purchase_type,FunkyMoves[kong][level].purchase_value,kong,level,SHOP_FUNKY);
-				}
-			}
-		}
+		priceTransplant();
 	}
 }

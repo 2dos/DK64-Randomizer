@@ -273,4 +273,7 @@ extern unsigned int BalancedIGT;
 extern short style128Mtx[0x10];
 extern short style6Mtx[0x10];
 extern short style2Mtx[0x10];
+extern purchase_struct CrankyMoves_New[5][7];
+extern purchase_struct CandyMoves_New[5][7];
+extern purchase_struct FunkyMoves_New[5][7];
 extern settingsData StoredSettings;

@@ -127,6 +127,9 @@ IGTSaveToFileHook:
 AutowalkFixHook:
 	J 	AutowalkFix
 	NOP
+LoadCodeReplacements:
+	J 	DynamicCodeFixes
+	NOP
 
 loadExtraHooks:
 	LUI t3, hi(NinWarpHook)
@@ -260,6 +263,12 @@ loadExtraHooks:
 	LUI t4, 0x806F
 	SW t3, 0x3E74 (t4) // Store Hook
 	SW r0, 0x3E78 (t4) // Store NOP
+
+	LUI t3, hi(LoadCodeReplacements)
+	LW t3, lo(LoadCodeReplacements) (t3)
+	LUI t4, 0x8061
+	SW t3, 0x0948 (t4) // Store Hook
+	SW r0, 0x094C (t4) // Store NOP
 
 	JR ra
 	NOP

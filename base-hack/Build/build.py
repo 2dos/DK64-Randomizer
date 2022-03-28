@@ -29,6 +29,7 @@ from recompute_pointer_table import (
     writeModifiedPointerTablesToROM,
 )
 from staticcode import patchStaticCode
+from vanilla_move_data import writeVanillaMoveData
 
 ROMName = "rom/dk64.z64"
 newROMName = "rom/dk64-randomizer-base.z64"
@@ -512,6 +513,7 @@ with open(newROMName, "r+b") as fh:
     for x in range(0x200):
         arr.append(0)
     fh.write(bytearray(arr))
+    writeVanillaMoveData(fh)
 
 print("[7 / 7] - Generating BizHawk RAM watch")
 

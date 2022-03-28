@@ -55,6 +55,9 @@ void cFuncLoop(void) {
 				openCoinDoor();
 				setPermFlag(0x346);
 				StoredSettings.file_extra[(int)FileIndex].location_sss_purchased = 0;
+				StoredSettings.file_extra[(int)FileIndex].location_ab1_purchased = 0;
+				StoredSettings.file_extra[(int)FileIndex].location_ug1_purchased = 0;
+				StoredSettings.file_extra[(int)FileIndex].location_mln_purchased = 0;
 				SaveToGlobal();
 			}
 		}
@@ -73,9 +76,15 @@ void cFuncLoop(void) {
 };
 
 void earlyFrame(void) {
-	decouple_moves_fixes();
-	replace_moves();
-	price_rando();
+	if (ObjectModel2Timer == 2) {
+		updateProgressive();
+		price_rando();
+	}
+	if ((CurrentMap == 5) || (CurrentMap == 1) || (CurrentMap == 0x19)) {
+		if ((CutsceneActive) && (CutsceneIndex == 2)) {
+			updateProgressive();
+		}
+	}
 	write_kutoutorder();
 	remove_blockers();
 	resolve_barrels();

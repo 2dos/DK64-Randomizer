@@ -31,6 +31,9 @@ extern void krool_order_indicator(void);
 extern void alter_boss_key_flags(void);
 extern void displayNumberOnTns(void);
 extern void replace_moves(void);
+extern void updateProgressive(void);
+extern void moveTransplant(void);
+extern void priceTransplant(void);
 
 extern void PatchCrankyCode(void);
 extern void FileScreenDLCode_Write(void);

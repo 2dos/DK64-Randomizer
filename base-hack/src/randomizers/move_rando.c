@@ -21,11 +21,7 @@ int getMoveType(int value) {
 }
 
 int getMoveIndex(int value) {
-	if (((value >> 4) & 0xF) == 0xF) {
-		return 0;
-	} else {
-		return value & 0xF;
-	}
+	return value & 0xF;
 }
 
 static char stored_slam_level = 0;
@@ -53,7 +49,7 @@ void checkProgressive(
 		}
 	}
 	if (pass) {
-		// Just purchased SSS
+		// Just purchased Move
 		int purchased = 0;
 		if (level >= 0 && level < 7) {
 			purchased = 1;
@@ -84,25 +80,25 @@ void checkProgressive(
 		int level = (encoded_sss_location >> 4) & 7;
 		for (int i = 0; i < 7; i++) {
 			for (int j = 0; j < 5; j++) {
-				if (CrankyMoves[j][i].purchase_type == purchase_type) {
+				if (CrankyMoves_New[j][i].purchase_type == purchase_type) {
 					if ((purchased) && (shop == 0) && (level == i)) {
-						CrankyMoves[j][i].purchase_type = PURCHASE_NOTHING;
+						CrankyMoves_New[j][i].purchase_type = PURCHASE_NOTHING;
 					} else {
-						CrankyMoves[j][i].purchase_value = purchase_level;
+						CrankyMoves_New[j][i].purchase_value = purchase_level;
 					}
 				}
-				if (CandyMoves[j][i].purchase_type == purchase_type) {
+				if (CandyMoves_New[j][i].purchase_type == purchase_type) {
 					if ((purchased) && (shop == 2) && (level == i)) {
-						CrankyMoves[j][i].purchase_type = PURCHASE_NOTHING;
+						CrankyMoves_New[j][i].purchase_type = PURCHASE_NOTHING;
 					} else {
-						CrankyMoves[j][i].purchase_value = purchase_level;
+						CrankyMoves_New[j][i].purchase_value = purchase_level;
 					}
 				}
-				if (FunkyMoves[j][i].purchase_type == purchase_type) {
+				if (FunkyMoves_New[j][i].purchase_type == purchase_type) {
 					if ((purchased) && (shop == 1) && (level == i)) {
-						CrankyMoves[j][i].purchase_type = PURCHASE_NOTHING;
+						CrankyMoves_New[j][i].purchase_type = PURCHASE_NOTHING;
 					} else {
-						CrankyMoves[j][i].purchase_value = purchase_level;
+						CrankyMoves_New[j][i].purchase_value = purchase_level;
 					}
 				}
 			}
@@ -111,106 +107,99 @@ void checkProgressive(
 	*previous_storage = *current_storage;
 }
 
+void updateProgressive(void) {
+	if (Rando.move_rando_on) {
+		int level = getWorld(CurrentMap,0);
+		checkProgressive(
+			&stored_slam_level,
+			&MovesBase[0].simian_slam,
+			&StoredSettings.file_extra[(int)FileIndex].location_sss_purchased,
+			1,
+			2,
+			level,
+			PURCHASE_SLAM,
+			3,
+			0
+		);
+		checkProgressive(
+			&stored_belt_level,
+			&MovesBase[0].ammo_belt,
+			&StoredSettings.file_extra[(int)FileIndex].location_ab1_purchased,
+			0,
+			1,
+			level,
+			PURCHASE_AMMOBELT,
+			2,
+			0
+		);
+		checkProgressive(
+			&stored_instrument_level,
+			&MovesBase[0].instrument_bitfield,
+			&StoredSettings.file_extra[(int)FileIndex].location_ug1_purchased,
+			1,
+			1,
+			level,
+			PURCHASE_INSTRUMENT,
+			3,
+			1
+		);
+		checkProgressive(
+			&stored_instrument_level,
+			&MovesBase[0].instrument_bitfield,
+			&StoredSettings.file_extra[(int)FileIndex].location_mln_purchased,
+			2,
+			2,
+			level,
+			PURCHASE_INSTRUMENT,
+			4,
+			1
+		);
+	}
+}
+
+void moveTransplant(void) {
+	for (int i = 0; i < 7; i++) {
+		CrankyMoves_New[0][i].purchase_type = getMoveType(Rando.dk_crankymoves[i]);
+		CrankyMoves_New[0][i].purchase_value = getMoveIndex(Rando.dk_crankymoves[i]);
+		CandyMoves_New[0][i].purchase_type = getMoveType(Rando.dk_candymoves[i]);
+		CandyMoves_New[0][i].purchase_value = getMoveIndex(Rando.dk_candymoves[i]);
+		FunkyMoves_New[0][i].purchase_type = getMoveType(Rando.dk_funkymoves[i]);
+		FunkyMoves_New[0][i].purchase_value = getMoveIndex(Rando.dk_funkymoves[i]);
+
+		CrankyMoves_New[1][i].purchase_type = getMoveType(Rando.diddy_crankymoves[i]);
+		CrankyMoves_New[1][i].purchase_value = getMoveIndex(Rando.diddy_crankymoves[i]);
+		CandyMoves_New[1][i].purchase_type = getMoveType(Rando.diddy_candymoves[i]);
+		CandyMoves_New[1][i].purchase_value = getMoveIndex(Rando.diddy_candymoves[i]);
+		FunkyMoves_New[1][i].purchase_type = getMoveType(Rando.diddy_funkymoves[i]);
+		FunkyMoves_New[1][i].purchase_value = getMoveIndex(Rando.diddy_funkymoves[i]);
+
+		CrankyMoves_New[2][i].purchase_type = getMoveType(Rando.lanky_crankymoves[i]);
+		CrankyMoves_New[2][i].purchase_value = getMoveIndex(Rando.lanky_crankymoves[i]);
+		CandyMoves_New[2][i].purchase_type = getMoveType(Rando.lanky_candymoves[i]);
+		CandyMoves_New[2][i].purchase_value = getMoveIndex(Rando.lanky_candymoves[i]);
+		FunkyMoves_New[2][i].purchase_type = getMoveType(Rando.lanky_funkymoves[i]);
+		FunkyMoves_New[2][i].purchase_value = getMoveIndex(Rando.lanky_funkymoves[i]);
+
+		CrankyMoves_New[3][i].purchase_type = getMoveType(Rando.tiny_crankymoves[i]);
+		CrankyMoves_New[3][i].purchase_value = getMoveIndex(Rando.tiny_crankymoves[i]);
+		CandyMoves_New[3][i].purchase_type = getMoveType(Rando.tiny_candymoves[i]);
+		CandyMoves_New[3][i].purchase_value = getMoveIndex(Rando.tiny_candymoves[i]);
+		FunkyMoves_New[3][i].purchase_type = getMoveType(Rando.tiny_funkymoves[i]);
+		FunkyMoves_New[3][i].purchase_value = getMoveIndex(Rando.tiny_funkymoves[i]);
+
+		CrankyMoves_New[4][i].purchase_type = getMoveType(Rando.chunky_crankymoves[i]);
+		CrankyMoves_New[4][i].purchase_value = getMoveIndex(Rando.chunky_crankymoves[i]);
+		CandyMoves_New[4][i].purchase_type = getMoveType(Rando.chunky_candymoves[i]);
+		CandyMoves_New[4][i].purchase_value = getMoveIndex(Rando.chunky_candymoves[i]);
+		FunkyMoves_New[4][i].purchase_type = getMoveType(Rando.chunky_funkymoves[i]);
+		FunkyMoves_New[4][i].purchase_value = getMoveIndex(Rando.chunky_funkymoves[i]);
+	}
+}
+
 void replace_moves(void) {
 	if (Rando.move_rando_on) {
-		if ((CurrentMap == CRANKY) || (CurrentMap == FUNKY) || (CurrentMap == CANDY)) {
-			int level = getWorld(CurrentMap,0);
-			if (TransitionSpeed < 0) {
-				if (level >= 0 && level < 7) {
-					for (int i = 0; i < 7; i++) {
-						CrankyMoves[0][i].purchase_type = getMoveType(Rando.dk_crankymoves[i]);
-						CrankyMoves[0][i].purchase_value = getMoveIndex(Rando.dk_crankymoves[i]);
-						CandyMoves[0][i].purchase_type = getMoveType(Rando.dk_candymoves[i]);
-						CandyMoves[0][i].purchase_value = getMoveIndex(Rando.dk_candymoves[i]);
-						FunkyMoves[0][i].purchase_type = getMoveType(Rando.dk_funkymoves[i]);
-						FunkyMoves[0][i].purchase_value = getMoveIndex(Rando.dk_funkymoves[i]);
-
-						CrankyMoves[1][i].purchase_type = getMoveType(Rando.diddy_crankymoves[i]);
-						CrankyMoves[1][i].purchase_value = getMoveIndex(Rando.diddy_crankymoves[i]);
-						CandyMoves[1][i].purchase_type = getMoveType(Rando.diddy_candymoves[i]);
-						CandyMoves[1][i].purchase_value = getMoveIndex(Rando.diddy_candymoves[i]);
-						FunkyMoves[1][i].purchase_type = getMoveType(Rando.diddy_funkymoves[i]);
-						FunkyMoves[1][i].purchase_value = getMoveIndex(Rando.diddy_funkymoves[i]);
-
-						CrankyMoves[2][i].purchase_type = getMoveType(Rando.lanky_crankymoves[i]);
-						CrankyMoves[2][i].purchase_value = getMoveIndex(Rando.lanky_crankymoves[i]);
-						CandyMoves[2][i].purchase_type = getMoveType(Rando.lanky_candymoves[i]);
-						CandyMoves[2][i].purchase_value = getMoveIndex(Rando.lanky_candymoves[i]);
-						FunkyMoves[2][i].purchase_type = getMoveType(Rando.lanky_funkymoves[i]);
-						FunkyMoves[2][i].purchase_value = getMoveIndex(Rando.lanky_funkymoves[i]);
-
-						CrankyMoves[3][i].purchase_type = getMoveType(Rando.tiny_crankymoves[i]);
-						CrankyMoves[3][i].purchase_value = getMoveIndex(Rando.tiny_crankymoves[i]);
-						CandyMoves[3][i].purchase_type = getMoveType(Rando.tiny_candymoves[i]);
-						CandyMoves[3][i].purchase_value = getMoveIndex(Rando.tiny_candymoves[i]);
-						FunkyMoves[3][i].purchase_type = getMoveType(Rando.tiny_funkymoves[i]);
-						FunkyMoves[3][i].purchase_value = getMoveIndex(Rando.tiny_funkymoves[i]);
-
-						CrankyMoves[4][i].purchase_type = getMoveType(Rando.chunky_crankymoves[i]);
-						CrankyMoves[4][i].purchase_value = getMoveIndex(Rando.chunky_crankymoves[i]);
-						CandyMoves[4][i].purchase_type = getMoveType(Rando.chunky_candymoves[i]);
-						CandyMoves[4][i].purchase_value = getMoveIndex(Rando.chunky_candymoves[i]);
-						FunkyMoves[4][i].purchase_type = getMoveType(Rando.chunky_funkymoves[i]);
-						FunkyMoves[4][i].purchase_value = getMoveIndex(Rando.chunky_funkymoves[i]);
-					}
-				} else {
-					for (int i = 0; i < 7; i++) {
-						for (int j = 0; j < 5; j++) {
-							CrankyMoves[j][i].purchase_type = -1;
-							CrankyMoves[j][i].purchase_value = 0;
-							CandyMoves[j][i].purchase_type = -1;
-							CandyMoves[j][i].purchase_value = 0;
-							FunkyMoves[j][i].purchase_type = -1;
-							FunkyMoves[j][i].purchase_value = 0;
-						}
-					}
-				}
-			}
-			checkProgressive(
-				&stored_slam_level,
-				&MovesBase[0].simian_slam,
-				&StoredSettings.file_extra[(int)FileIndex].location_sss_purchased,
-				1,
-				2,
-				level,
-				PURCHASE_SLAM,
-				3,
-				0
-			);
-			checkProgressive(
-				&stored_belt_level,
-				&MovesBase[0].ammo_belt,
-				&StoredSettings.file_extra[(int)FileIndex].location_ab1_purchased,
-				0,
-				1,
-				level,
-				PURCHASE_AMMOBELT,
-				2,
-				0
-			);
-			checkProgressive(
-				&stored_instrument_level,
-				&MovesBase[0].instrument_bitfield,
-				&StoredSettings.file_extra[(int)FileIndex].location_ug1_purchased,
-				1,
-				1,
-				level,
-				PURCHASE_INSTRUMENT,
-				3,
-				1
-			);
-			checkProgressive(
-				&stored_instrument_level,
-				&MovesBase[0].instrument_bitfield,
-				&StoredSettings.file_extra[(int)FileIndex].location_mln_purchased,
-				2,
-				2,
-				level,
-				PURCHASE_INSTRUMENT,
-				4,
-				1
-			);
-		}
+		moveTransplant();
+		updateProgressive();
 	}
 }
 

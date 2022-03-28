@@ -26,6 +26,20 @@ START_HOOK:
 		SW 	r0, 0x60AC (t4) // Store NOP
 		SW 	r0, 0x6160 (t4) // Store NOP to prevent loop
 
+		LUI t3, 0x8002
+		ADDIU t4, r0, hi(CrankyMoves_New)
+		SH t4, 0x6072 (t3)
+		ADDIU t4, r0, lo(CrankyMoves_New)
+		SH t4, 0x607A (t3)
+		ADDIU t4, r0, hi(CandyMoves_New)
+		SH t4, 0x607E (t3)
+		ADDIU t4, r0, lo(CandyMoves_New)
+		SH t4, 0x6086 (t3)
+		ADDIU t4, r0, hi(FunkyMoves_New)
+		SH t4, 0x608A (t3)
+		ADDIU t4, r0, lo(FunkyMoves_New)
+		SH t4, 0x608E (t3)
+
 		JR 		ra
 		NOP
 
@@ -359,6 +373,13 @@ START_HOOK:
 		MFC1 		a1, f6
 		J 			0x80028E98
 		NOP
+
+	DynamicCodeFixes:
+		JAL 		decouple_moves_fixes
+		NOP
+		LUI 		a1, 0x8074
+		J 			0x80610950
+		LUI 		t1, 0x8074
 
 .align 0x10
 END_HOOK:

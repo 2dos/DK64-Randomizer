@@ -263,3 +263,7 @@
 .definelabel style6Mtx, 0x807FFF70
 .definelabel style128Mtx, 0x807FFF50
 .definelabel StoredSettings, 0x807ED5A0
+
+.definelabel CrankyMoves_New, 0x807FF400
+.definelabel CandyMoves_New, 0x807FF4D4
+.definelabel FunkyMoves_New, 0x807FF5A8

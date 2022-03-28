@@ -51,6 +51,15 @@ void initHack(void) {
 		randomize_bosses();
 		loadExtraHooks();
 		no_enemy_drops();
+		// Moves & Prices
+		replace_moves();
+		price_rando();
+		if (!Rando.move_rando_on) {
+			moveTransplant();
+			if (!Rando.price_rando_on) {
+				priceTransplant();
+			}
+		}
 		// Style 6 Mtx
 		int base_mtx = 75;
 		style6Mtx[0x0] = base_mtx;
