@@ -190,6 +190,16 @@ def patching_response(responded_data):
     if spoiler.settings.bonus_barrel_auto_complete:
         ROM().seek(sav + 0x117)
         ROM().write(3)
+    
+    # Enable or disable the warp to isles option in the UI
+    if spoiler.settings.warp_to_isles:
+        ROM().seek(sav + 0x125)
+        ROM().write(1)
+
+    # Enables the counter for the shop indications
+    if spoiler.settings.shop_indicator:
+        ROM().seek(sav + 0x124)
+        ROM().write(1)
 
     # Currently crashing most of the time
     # randomize_dktv(spoiler)
