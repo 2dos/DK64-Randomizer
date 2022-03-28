@@ -13,6 +13,7 @@
 .importobj "obj/src_misc_object_instance_script_changes.o"
 .importobj "obj/src_misc_remove_blockers.o"
 .importobj "obj/src_misc_remove_bonus.o"
+.importobj "obj/src_misc_shop_indicator.o"
 .importobj "obj/src_misc_tns_number.o"
 .importobj "obj/src_misc_warp_to_isles.o"
 .importobj "obj/src_randomizers_boss_rando.o"

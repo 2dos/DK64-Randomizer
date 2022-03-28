@@ -2,6 +2,7 @@
 import os
 import shutil
 import struct
+from getMoveSignLocations import getMoveSignData
 
 
 def convertSetup(file_name):
@@ -40,6 +41,7 @@ def float_to_hex(f):
     """Convert float to hex."""
     return hex(struct.unpack("<I", struct.pack("<f", f))[0])
 
+base_stream = 0;
 
 def modify(file_name, map_index):
     """Modify the file to be updated.
@@ -48,6 +50,7 @@ def modify(file_name, map_index):
         file_name (str): File name.
         map_index (int): Map index.
     """
+    global base_stream
     with open(file_name, "r+b") as fh:
         byte_read = fh.read()
         model2_count = int.from_bytes(byte_read[:4], "big")
@@ -61,6 +64,7 @@ def modify(file_name, map_index):
             byte_stream = byte_read[read_location : read_location + 0x30]
             _type = int.from_bytes(byte_read[read_location + 0x28 : read_location + 0x2A], "big")
             if _type == 0x2AC and map_index != 0x2A:
+                base_stream = byte_stream;
                 _x = int.from_bytes(byte_read[read_location + 0 : read_location + 4], "big")
                 _y = int.from_bytes(byte_read[read_location + 4 : read_location + 8], "big")
                 _yf = int_to_float(_y) - 30
@@ -95,6 +99,11 @@ def modify(file_name, map_index):
             }
             model2.append(data)
             read_location += 0x30
+        shop_signs = getMoveSignData(map_index, base_stream);
+        # if len(shop_signs) != 0:
+        #     print(shop_signs)
+        for sign in shop_signs:
+            added_model2.append(sign);
         mystery_count = int.from_bytes(byte_read[read_location : read_location + 4], "big")
         read_location += 4
         for x in range(mystery_count):

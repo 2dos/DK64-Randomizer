@@ -277,3 +277,4 @@ extern purchase_struct CrankyMoves_New[5][7];
 extern purchase_struct CandyMoves_New[5][7];
 extern purchase_struct FunkyMoves_New[5][7];
 extern settingsData StoredSettings;
+extern char WarpToIslesEnabled;
