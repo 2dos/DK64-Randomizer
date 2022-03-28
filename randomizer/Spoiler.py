@@ -142,7 +142,7 @@ class Spoiler:
             for exit, dest in self.shuffled_exit_data.items():
                 shuffled_exits[ShufflableExits[exit].name] = Logic.Regions[dest.regionId].name + " " + dest.name
             humanspoiler["Shuffled Exits"] = shuffled_exits
-        
+
         if self.settings.boss_location_rando:
             shuffled_bosses = OrderedDict()
             for i in range(7):

@@ -175,7 +175,7 @@ def patching_response(responded_data):
             ROM().write(4)
     else:
         ROM().write(1)
-    
+
     # Disable healing
     if spoiler.settings.no_healing:
         ROM().seek(sav + 0x0A6)
@@ -185,6 +185,11 @@ def patching_response(responded_data):
     if spoiler.settings.no_melons:
         ROM().seek(sav + 0x119)
         ROM().write(1)
+
+    # Auto complete bonus barrels
+    if spoiler.settings.bonus_barrel_auto_complete:
+        ROM().seek(sav + 0x117)
+        ROM().write(3)
 
     # Currently crashing most of the time
     # randomize_dktv(spoiler)
