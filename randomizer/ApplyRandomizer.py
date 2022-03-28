@@ -164,8 +164,30 @@ def patching_response(responded_data):
         ROM().seek(sav + 0x034)
         ROM().write(1)
 
+    # Damage amount
+    ROM().seek(sav + 0x0A5)
+    if spoiler.settings.damage_amount != "default":
+        if spoiler.settings.damage_amount == "double":
+            ROM().write(2)
+        elif spoiler.settings.damage_amount == "ohko":
+            ROM().write(11)
+        elif spoiler.settings.damage_amount == "quad":
+            ROM().write(4)
+    else:
+        ROM().write(1)
+    
+    # Disable healing
+    if spoiler.settings.no_healing:
+        ROM().seek(sav + 0x0A6)
+        ROM().write(1)
+
+    # Disable melon drops
+    if spoiler.settings.no_melons:
+        ROM().seek(sav + 0x119)
+        ROM().write(1)
+
     # Currently crashing most of the time
-    # randomize_dktv()
+    # randomize_dktv(spoiler)
     randomize_music(spoiler)
     randomize_entrances(spoiler)
     randomize_moves(spoiler)
