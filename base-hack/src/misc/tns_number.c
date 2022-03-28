@@ -11,13 +11,17 @@ typedef struct model_struct {
 	/* 0X0B8 */ int unk_B8;
 } model_struct;
 
-void displayNumberOnObject(int id, int param2, int imageindex, int param4) {
+void displayNumberOnObject(int id, int param2, int imageindex, int param4, int subtype) {
 	int* m2location = ObjectModel2Pointer;
 	int slot = convertIDToIndex(id);
 	ModelTwoData* _object = getObjectArrayAddr(m2location,0x90,slot);
 	model_struct* _model = _object->model_pointer;
 	if (_model) {
-		drawNumberObject(_model->unk_B8,param2,imageindex,param4);
+		if (subtype == 0) {
+			drawNumberObject(_model->unk_B8,param2,imageindex,param4);
+		} else {
+			drawNumberObject(_model->unk_50,param2,imageindex,param4);
+		}
 	}
 }
 
@@ -85,7 +89,7 @@ void displayNumberOnTns(void) {
 						display_number = 0;
 					}
 					for (int i = 1; i < 4; i++) {
-						displayNumberOnObject(0x220 + j,i,(((10-i) + display_number % 10) % 10) - 1, 0);
+						displayNumberOnObject(0x220 + j,i,(((10-i) + display_number % 10) % 10) - 1, 0, 0);
 						display_number /= 10;
 					}
 				}

@@ -29,6 +29,7 @@ void cFuncLoop(void) {
 		shiftBrokenJapesPortal();
 	}
 	displayNumberOnTns();
+	displayShopIndicator();
 	cancelMoveSoftlock();
 	callParentMapFilter();
 	if (Rando.quality_of_life) {

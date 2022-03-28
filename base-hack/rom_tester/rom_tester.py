@@ -210,3 +210,6 @@ for f in files:
             output(f"\tHash:")
             for x in range(5):
                 output(f"\t\t[{x}] - {str(getValue(fh,0x11A + x,1))}")
+            output(f"\tMusic Rando On: {str(getTrueFalse(fh,0x11F,1))}")
+            output(f"\tShop Indicator On: {str(getTrueFalse(fh,0x124,1))}")
+            output(f"\tWarp to Isles Enabled: {str(getTrueFalse(fh,0x125,1))}")

@@ -89,16 +89,16 @@ void checkProgressive(
 				}
 				if (CandyMoves_New[j][i].purchase_type == purchase_type) {
 					if ((purchased) && (shop == 2) && (level == i)) {
-						CrankyMoves_New[j][i].purchase_type = PURCHASE_NOTHING;
+						CandyMoves_New[j][i].purchase_type = PURCHASE_NOTHING;
 					} else {
-						CrankyMoves_New[j][i].purchase_value = purchase_level;
+						CandyMoves_New[j][i].purchase_value = purchase_level;
 					}
 				}
 				if (FunkyMoves_New[j][i].purchase_type == purchase_type) {
 					if ((purchased) && (shop == 1) && (level == i)) {
-						CrankyMoves_New[j][i].purchase_type = PURCHASE_NOTHING;
+						FunkyMoves_New[j][i].purchase_type = PURCHASE_NOTHING;
 					} else {
-						CrankyMoves_New[j][i].purchase_value = purchase_level;
+						FunkyMoves_New[j][i].purchase_value = purchase_level;
 					}
 				}
 			}

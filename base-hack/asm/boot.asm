@@ -216,6 +216,11 @@ loadExtraHooks:
 	SW t3, 0x9A7C (t4) // Store Hook
 	SW r0, 0x9A80 (t4) // Store NOP
 
+	LUI t3, hi(WarpToIslesEnabled)
+	LBU t3, lo(WarpToIslesEnabled) (t3)
+	BEQZ t3, loadExtraHooks_0
+	NOP
+
 	LUI t3, hi(PauseExtraSlotHook)
 	LW t3, lo(PauseExtraSlotHook) (t3)
 	LUI t4, 0x806B
@@ -246,6 +251,8 @@ loadExtraHooks:
 	SW t3, 0x8804 (t4) // Store Hook
 	SW r0, 0x8808 (t4) // Store NOP
 
+
+	loadExtraHooks_0:
 	LUI t3, hi(IGTFileReadHook)
 	LW t3, lo(IGTFileReadHook) (t3)
 	LUI t4, 0x8061
