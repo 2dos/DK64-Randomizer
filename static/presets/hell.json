@@ -49,5 +49,5 @@
   "enable_tag_anywhere": false,
   "wrinkly_hints": false,
   "fps_display": false,
-  "portal_numbers": false
+  "portal_numbers": true
 }

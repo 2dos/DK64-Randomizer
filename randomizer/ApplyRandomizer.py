@@ -14,6 +14,7 @@ from randomizer.MusicRando import randomize_music
 from randomizer.Patcher import ROM
 from randomizer.PriceRando import randomize_prices
 from randomizer.BossRando import randomize_bosses
+from randomizer.BarrelRando import randomize_barrels
 
 # from randomizer.Spoiler import Spoiler
 from randomizer.Settings import Settings
@@ -190,7 +191,7 @@ def patching_response(responded_data):
     if spoiler.settings.bonus_barrel_auto_complete:
         ROM().seek(sav + 0x117)
         ROM().write(3)
-    
+
     # Enable or disable the warp to isles option in the UI
     if spoiler.settings.warp_to_isles:
         ROM().seek(sav + 0x125)
@@ -208,6 +209,7 @@ def patching_response(responded_data):
     randomize_moves(spoiler)
     randomize_prices(spoiler)
     randomize_bosses(spoiler)
+    randomize_barrels(spoiler)
 
     # Apply Hash
     hash_images = [random.randint(0, 9) for i in range(5)]
