@@ -42,14 +42,20 @@ int doesKongPossessMove(int purchase_type, int purchase_value, int kong) {
 		if (purchase_value > 0) {
 			if (purchase_type == PURCHASE_MOVES) {
 				if (MovesBase[kong].special_moves & (1 << (purchase_value - 1))) {
+					return 0;
+				} else {
 					return 1;
 				}
 			} else if (purchase_type == PURCHASE_SLAM) {
 				if (MovesBase[kong].simian_slam >= purchase_value) {
+					return 0;
+				} else {
 					return 2;
 				}
 			} else if (purchase_type == PURCHASE_GUN) {
 				if (MovesBase[kong].weapon_bitfield & (1 << (purchase_value - 1))) {
+					return 0;
+				} else {
 					if (purchase_value == 1) {
 						return 1;
 					} else {
@@ -58,10 +64,14 @@ int doesKongPossessMove(int purchase_type, int purchase_value, int kong) {
 				}
 			} else if (purchase_type == PURCHASE_AMMOBELT) {
 				if (MovesBase[kong].ammo_belt >= purchase_value) {
+					return 0;
+				} else {
 					return 4;
 				}
 			} else if (purchase_type == PURCHASE_INSTRUMENT) {
 				if (MovesBase[kong].instrument_bitfield & (1 << (purchase_value - 1))) {
+					return 0;
+				} else {
 					if (purchase_value == 1) {
 						return 1;
 					} else {
