@@ -15,6 +15,7 @@ from randomizer.Patcher import ROM
 from randomizer.PriceRando import randomize_prices
 from randomizer.BossRando import randomize_bosses
 from randomizer.BarrelRando import randomize_barrels
+from randomizer.BananaPortRando import randomize_bananaport
 
 # from randomizer.Spoiler import Spoiler
 from randomizer.Settings import Settings
@@ -210,6 +211,7 @@ def patching_response(responded_data):
     randomize_prices(spoiler)
     randomize_bosses(spoiler)
     randomize_barrels(spoiler)
+    randomize_bananaport(spoiler)
 
     # Apply Hash
     hash_images = [random.randint(0, 9) for i in range(5)]
