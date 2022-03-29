@@ -72,7 +72,7 @@ def on_input(event):
     """
     # Make sure we limit the max items in each of these text boxes values
     if "troff" in event.target.id:
-        min_max(event, 1, 500)
+        min_max(event, 0, 500)
     elif "blocker" in event.target.id:
         min_max(event, 0, 200)
     elif "seed" in event.target.id:

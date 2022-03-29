@@ -9,6 +9,10 @@ async function sleep(seconds, func, args) {
     func(...args);
   }, seconds * 1000);
 }
+function save_text_as_file(text, file) {
+  var blob = new Blob([text], { type: "text/plain;charset=utf-8" });
+  saveAs(blob, file);
+}
 
 var cosmetics;
 document
@@ -53,4 +57,4 @@ document
     fileReader.readAsArrayBuffer(fileToLoad);
   });
 
-jq = $
+jq = $;

@@ -25,7 +25,7 @@
                         {% if i < 7 %}
                             <td>
                                 <input class="form-control"
-                                       min="1"
+                                       min="0"
                                        max="500"
                                        name="troff_{{ i }}"
                                        id="troff_{{ i }}"
@@ -78,6 +78,16 @@
                                name="no_melons"
                                value="False"/>
                         No Melon Slice Drops
+                    </label>
+                </div>
+                <div class="form-check form-switch w-75">
+                    <label title="Enabling this setting means logic may expect you to do some difficult shooting challenges without help. If this setting is disabled, then the following requirements exist: &#013; * Lanky's attic in Fungi Forest requires homing ammo. &#013; * Donkey's 5 door cabin in Crystal Caves requires homing ammo. &#013; * Tiny's trash can in Creepy Castle requires homing ammo &#013; * Chunky's tree banana in Creepy Castle requires sniper scope. (This requirement can be skipped by shooting from below the switch.) &#013; * Chunky's shooting barrel in Hideout Helm requires either sniper scope or homing ammo."
+                           style="text-align: left;">
+                        <input class="form-check-input"
+                               type="checkbox"
+                               name="hard_shooting"
+                               value="False"/>
+                        Hard Shooting
                     </label>
                 </div>
             </div>

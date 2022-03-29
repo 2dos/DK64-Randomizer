@@ -11,7 +11,7 @@ from ui.progress_bar import ProgressBar
 from ui.rando_options import update_disabled_progression
 
 
-@bind("change", "jsonfileloader")
+@bind("change", "patchfileloader")
 def lanky_file_changed(event):
     """On the event of a lanky file being loaded.
 
@@ -20,24 +20,15 @@ def lanky_file_changed(event):
     """
 
     def onload(e):
-        # Load the text of the json file
-        loaded_json = json.loads(e.target.result)
-        # For all the loaded vars set them to the proper value
-        # Also set each option to disabled
-        for key in loaded_json:
-            if loaded_json[key] is True:
-                js.document.getElementsByName(key)[0].checked = True
-                js.document.getElementsByName(key)[0].disabled = True
-            elif loaded_json[key] is False:
-                js.document.getElementsByName(key)[0].checked = False
-                js.document.getElementsByName(key)[0].disabled = True
-            else:
-                js.document.getElementsByName(key)[0].value = loaded_json[key]
-                js.document.getElementsByName(key)[0].disabled = True
+        # Load the text of the patch
+        loaded_patch = str(e.target.result)
+        # TODO: Don't just assume the file is valid first
+        js.document.getElementById("patchfileloader").classList.add("is-valid")
+        js.loaded_patch = loaded_patch
 
     # Attempt to find what file was loaded
     file = None
-    for uploaded_file in js.document.getElementById("jsonfileloader").files:
+    for uploaded_file in js.document.getElementById("patchfileloader").files:
         file = uploaded_file
         break
     reader = js.FileReader.new()
@@ -45,15 +36,24 @@ def lanky_file_changed(event):
     if file is not None:
         reader.readAsText(file)
         reader.addEventListener("load", onload)
-    # If we unloaded a file, find all element on the form and re-enable it.
-    # But also make sure we make sure we re disable progression form options
-    else:
-        for element in js.document.getElementById("form").elements:
-            element.disabled = False
-        update_disabled_progression(None)
 
 
 @bind("click", "generate_lanky_seed")
+def generate_seed_from_patch(event):
+    """Generate a seed from a patch file."""
+    # Check if the rom filebox has a file loaded in it.
+    if len(str(js.document.getElementById("input-file-rom").value).strip()) == 0 or "is-valid" not in list(js.document.getElementById("input-file-rom").classList):
+        js.document.getElementById("input-file-rom").select()
+        if "is-invalid" not in list(js.document.getElementById("input-file-rom").classList):
+            js.document.getElementById("input-file-rom").classList.add("is-invalid")
+    elif len(str(js.document.getElementById("patchfileloader").value).strip()) == 0:
+        js.document.getElementById("patchfileloader").select()
+        if "is-invalid" not in list(js.document.getElementById("patchfileloader").classList):
+            js.document.getElementById("patchfileloader").classList.add("is-invalid")
+    else:
+        patching_response(str(js.loaded_patch))
+
+
 @bind("click", "generate_seed")
 def generate_seed(event):
     """Generate a seed based off the current settings.
@@ -112,16 +112,16 @@ def generate_seed(event):
         background(generate_playthrough, ["'''" + json.dumps(form_data) + "'''"], patching_response)
 
 
-@bind("click", "download_json")
+@bind("click", "download_patch_file")
 def update_seed_text(event):
-    """Set seed text based on the download_json click event.
+    """Set seed text based on the download_patch_file click event.
 
     Args:
         event (DOMEvent): Javascript dom click event.
     """
     # When we click the download json event just change the button text
-    if js.document.getElementById("download_json").checked:
-        js.document.getElementById("generate_seed").value = "Generate Patch File"
+    if js.document.getElementById("download_patch_file").checked:
+        js.document.getElementById("generate_seed").value = "Generate Patch File and Seed"
     else:
         js.document.getElementById("generate_seed").value = "Generate Seed"
 

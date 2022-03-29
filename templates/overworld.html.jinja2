@@ -67,8 +67,8 @@
             <div class="center">K-Rool Phase Length</div>
             <div>
                 <input type="text"
-                       name="k_rool_phase_length"
-                       id="k_rool_phase_length"
+                       name="krool_phase_count"
+                       id="krool_phase_count"
                        data-provide="slider"
                        data-slider-ticks="[1, 2, 3, 4, 5]"
                        data-slider-ticks-labels='["1 Phase", "2 Phases", "3 Phases", "4 Phases", "5 Phases"]'
@@ -98,7 +98,7 @@
 <script>
 $('.nav-tabs').click(function(){
  setTimeout(() => {
-      $('#k_rool_phase_length').slider("relayout");
+      $('#krool_phase_count').slider("relayout");
       $('#lumsy_keys_required').slider("relayout");
     }, 500);
 })

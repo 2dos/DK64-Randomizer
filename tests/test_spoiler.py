@@ -40,7 +40,7 @@ def generate_settings():
     data["krool_phase_count"] = 4
 
     # not important things
-    data["download_json"] = True
+    data["download_patch_file"] = True
 
     data["music_bgm"] = True
     data["music_fanfares"] = True

@@ -52,9 +52,6 @@ class Settings:
 
         # Settings which are not yet implemented on the web page
 
-        # hard_shooting: bool
-        self.hard_shooting = False
-
         # random_prices: str
         # vanilla
         # low
@@ -86,7 +83,7 @@ class Settings:
     def generate_main(self):
         """Set Default items on main page."""
         self.seed = None
-        self.download_json = None
+        self.download_patch_file = None
         self.bonus_barrel_rando = None
         self.shuffle_levels = None
         self.loading_zone_rando = None
@@ -140,6 +137,9 @@ class Settings:
         # random
         self.bonus_barrels = "normal"
 
+        # hard_shooting: bool
+        self.hard_shooting = False
+
         # shuffle_loading_zones: str
         # none
         # levels
@@ -161,6 +161,7 @@ class Settings:
         self.quality_of_life = None
         self.enable_tag_anywhere = None
         self.random_krool_phase_order = None
+        self.shop_indicator = False
 
     def resolve_settings(self):
         """Resolve settings which are not directly set through the UI."""

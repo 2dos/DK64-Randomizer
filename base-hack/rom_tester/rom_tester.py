@@ -61,7 +61,7 @@ bosses = [
     {"name": "King Kut Out", "map": 0xC7},
 ]
 move_types = ["Special Move", "Slam", "Gun", "Ammo Belt", "Instrument"]
-key_goals = ["Angry Aztec","Factory & Galleon","K. Rool Part 1","Fungi","Caves & Castle","Helm Part 1","Helm Part 2"]
+key_goals = ["Angry Aztec", "Factory & Galleon", "K. Rool Part 1", "Fungi", "Caves & Castle", "Helm Part 1", "Helm Part 2"]
 
 
 def getValue(fh, offset, size):

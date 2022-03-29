@@ -166,7 +166,7 @@ def AssumeExits(settings, frontpool, backpool, newpool):
         AddRootExit(newExit)
 
 
-def ShuffleExits(settings:Settings):
+def ShuffleExits(settings: Settings):
     """Shuffle exit pools depending on settings."""
     # Set up front and back entrance pools for each setting
     # Assume all shuffled exits reachable by default
@@ -183,6 +183,7 @@ def ShuffleExits(settings:Settings):
     # If levels rando is on, need to update Blocker and T&S requirements to match
     if settings.shuffle_loading_zones == "levels":
         UpdateLevelProgression(settings)
+
 
 def ExitShuffle(settings):
     """Facilitate shuffling of exits."""
@@ -204,7 +205,9 @@ def ExitShuffle(settings):
                 print("Entrance placement failed. Retrying. Tries: " + str(retries))
                 Reset()
 
-def UpdateLevelProgression(settings:Settings):
+
+def UpdateLevelProgression(settings: Settings):
+    """Update level progression."""
     newEntryGBs = settings.EntryGBs.copy()
     newBossBananas = settings.BossBananas.copy()
     lobbies = [
@@ -214,7 +217,7 @@ def UpdateLevelProgression(settings:Settings):
         Regions.GloomyGalleonLobby,
         Regions.FungiForestLobby,
         Regions.CrystalCavesLobby,
-        Regions.CreepyCastleLobby
+        Regions.CreepyCastleLobby,
     ]
     for levelIndex in range(len(lobbies)):
         shuffledEntrance = ShufflableExits[LobbyEntrancePool[levelIndex]].shuffledId

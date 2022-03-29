@@ -14,6 +14,8 @@ from randomizer.MusicRando import randomize_music
 from randomizer.Patcher import ROM
 from randomizer.PriceRando import randomize_prices
 from randomizer.BossRando import randomize_bosses
+from randomizer.BarrelRando import randomize_barrels
+from randomizer.BananaPortRando import randomize_bananaport
 
 # from randomizer.Spoiler import Spoiler
 from randomizer.Settings import Settings
@@ -44,7 +46,10 @@ def patching_response(responded_data):
     Settings({"seed": 0}).compare_hash(spoiler.settings.public_hash)
     # Make sure we re-load the seed id
     spoiler.settings.set_seed()
+    if spoiler.settings.download_patch_file:
+        spoiler.settings.download_patch_file = False
 
+        js.save_text_as_file(codecs.encode(pickle.dumps(spoiler), "base64").decode(), f"dk64-{spoiler.settings.seed_id}.lanky")
     # Starting index for our settings
     sav = 0x1FED020
 
@@ -164,21 +169,60 @@ def patching_response(responded_data):
         ROM().seek(sav + 0x034)
         ROM().write(1)
 
+    # Damage amount
+    ROM().seek(sav + 0x0A5)
+    if spoiler.settings.damage_amount != "default":
+        if spoiler.settings.damage_amount == "double":
+            ROM().write(2)
+        elif spoiler.settings.damage_amount == "ohko":
+            ROM().write(11)
+        elif spoiler.settings.damage_amount == "quad":
+            ROM().write(4)
+    else:
+        ROM().write(1)
+
+    # Disable healing
+    if spoiler.settings.no_healing:
+        ROM().seek(sav + 0x0A6)
+        ROM().write(1)
+
+    # Disable melon drops
+    if spoiler.settings.no_melons:
+        ROM().seek(sav + 0x119)
+        ROM().write(1)
+
+    # Auto complete bonus barrels
+    if spoiler.settings.bonus_barrel_auto_complete:
+        ROM().seek(sav + 0x117)
+        ROM().write(3)
+
+    # Enable or disable the warp to isles option in the UI
+    if spoiler.settings.warp_to_isles:
+        ROM().seek(sav + 0x125)
+        ROM().write(1)
+
+    # Enables the counter for the shop indications
+    if spoiler.settings.shop_indicator:
+        ROM().seek(sav + 0x124)
+        ROM().write(1)
+
     # Currently crashing most of the time
-    # randomize_dktv()
+    # randomize_dktv(spoiler)
     randomize_music(spoiler)
     randomize_entrances(spoiler)
     randomize_moves(spoiler)
     randomize_prices(spoiler)
     randomize_bosses(spoiler)
+    randomize_barrels(spoiler)
+    randomize_bananaport(spoiler)
 
     # Apply Hash
     hash_images = [random.randint(0, 9) for i in range(5)]
     order = 0
     for count in hash_images:
         ROM().seek(sav + 0x11A + order)
-        ROM().writeMultipleBytes(count, 2)
-        order += 2
+        ROM().write(count)
+        order += 1
 
     ProgressBar().update_progress(10, "Seed Generated.")
     ROM().fixSecurityValue()
