@@ -19,8 +19,8 @@ jobs:
     - name: Install packages
       run: pip install -r requirements-dev.txt
 
-    - name: Build minified versions
-      run: python3 ./tools/prepare_offline.py
+    # - name: Build minified versions
+    #   run: python3 ./tools/prepare_offline.py
   
     - name: Deploy To GHPages
       uses: manzoorwanijk/action-deploy-to-repo@master
