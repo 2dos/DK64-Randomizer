@@ -80,6 +80,8 @@ void earlyFrame(void) {
 	if (ObjectModel2Timer == 2) {
 		updateProgressive();
 		price_rando();
+		setFlag(0x5D,1,2);
+		setFlag(0x58,1,2);
 	}
 	if ((CurrentMap == 5) || (CurrentMap == 1) || (CurrentMap == 0x19)) {
 		if ((CutsceneActive) && (CutsceneIndex == 2)) {
