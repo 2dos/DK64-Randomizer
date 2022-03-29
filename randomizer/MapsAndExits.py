@@ -124,6 +124,13 @@ class Maps(IntEnum):
     CavesBoss = 196
     CastleBoss = 199
 
+    # K rool phases
+    KroolDonkeyPhase = 203
+    KroolDiddyPhase = 204
+    KroolLankyPhase = 205
+    KroolTinyPhase = 206
+    KroolChunkyPhase = 207
+
 
 RegionMapList = {
     # Isles
