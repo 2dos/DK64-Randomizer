@@ -10,12 +10,15 @@
 static short past_lag[LAG_CAP] = {};
 static char lag_counter = 0;
 static float current_avg_lag = 0;
+static short past_crystals = 0;
 
 void cFuncLoop(void) {
 	DataIsCompressed[18] = 0;
 	initHack();
 	unlockKongs();
-	tagAnywhere();
+	int crystal_count = CollectableBase.Crystals;
+	tagAnywhere(past_crystals);
+	past_crystals = crystal_count;
 	islesSpawn();
 	//fixCastleAutowalk();
 	level_order_rando_funcs();
@@ -32,6 +35,7 @@ void cFuncLoop(void) {
 	displayShopIndicator();
 	cancelMoveSoftlock();
 	callParentMapFilter();
+	recolorKongControl();
 	if (Rando.quality_of_life) {
 		// DKTVKong = 0;
 		// if (CurrentMap == NINTENDO_LOGO) {
@@ -82,6 +86,9 @@ void earlyFrame(void) {
 		price_rando();
 		setFlag(0x5D,1,2);
 		setFlag(0x58,1,2);
+		if (CurrentMap == 0x22) {
+			KRoolRound = 0;
+		}
 	}
 	if ((CurrentMap == 5) || (CurrentMap == 1) || (CurrentMap == 0x19)) {
 		if ((CutsceneActive) && (CutsceneIndex == 2)) {

@@ -254,6 +254,7 @@
 .definelabel InitialPauseHeight, 0x807FFFF6
 .definelabel LoadedHooks, 0x807FFFEF // u8
 .definelabel WarpToIslesEnabled, 0x807FFFEE // u8
+.definelabel SkipDance, 0x807FFFED // u8
 .definelabel Rando, 0x807FF800 // 0x200
 .definelabel BalancedIGT, 0x807FFFB0 // u32
 .definelabel InstanceScriptParams, 0x807FFFB4 // 0x8

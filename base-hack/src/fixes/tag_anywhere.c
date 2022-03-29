@@ -92,9 +92,20 @@ static const unsigned char banned_maps[] = {
 };
 static const short kong_flags[] = {0x181,0x6,0x46,0x42,0x75};
 
-void tagAnywhere(void) {
+void tagAnywhere(int prev_crystals) {
 	if (Rando.tag_anywhere) {
 		if (Player) {
+            char hud_items[] = {0,1,5,8,10,12,13,14};
+            if (HUD) {
+                for (int i = 0; i < sizeof(hud_items); i++) {
+                    if (HUD->item[(int)hud_items[i]].hud_state) {
+                        return;
+                    }
+                }
+            }
+            if ((prev_crystals - 1) == CollectableBase.Crystals) {
+                return;
+            }
 			if (Character < TAG_ANYWHERE_KONG_LIMIT) {
 				int change = 0;
 				if (NewlyPressedControllerInput.Buttons & D_Left) {

@@ -21,6 +21,7 @@ space_offset = 0x1FED020
 
 def writeVanillaMoveData(fh):
     """Write vanilla move data."""
+    print("Writing vanilla move data")
     fh.seek(space_offset + price_offset)
     for x in range(5):
         fh.write(bytearray(special_move_prices))

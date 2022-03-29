@@ -381,5 +381,44 @@ START_HOOK:
 		J 			0x80610950
 		LUI 		t1, 0x8074
 
+	danceSkip0:
+		LUI 		a1, hi(SkipDance)
+		LBU 		a1, lo(SkipDance) (a1)
+		BNEZ 		a1, danceSkip0_Skip
+		NOP
+		JAL 		0x80614E78
+		ADDIU 		a1, r0, 0x5B
+		J 			0x806EFB90
+		NOP
+
+		danceSkip0_Skip:
+			LUI 	t1, 0x8080
+			J 		0x806EFBAC
+			LUI 	t2, 0x8080
+
+	danceSkip1:
+		LUI 		t4, hi(SkipDance)
+		LBU 		t4, lo(SkipDance) (t4)
+		BNEZ 		t4, danceSkip1_Skip
+		NOP
+		LW 			t4, 0x0 (s0)
+		SH 			v0, 0xE6 (t4)
+
+		danceSkip1_Skip:
+			J 		0x806EFC10
+			NOP
+
+	danceSkip2:
+		LUI 		a3, hi(SkipDance)
+		LBU 		a3, lo(SkipDance) (a3)
+		BNEZ 		a3, danceSkip2_Skip
+		NOP
+		JAL 		0x80627948
+		ADDIU 		a3, r0, 5
+
+		danceSkip2_Skip:
+			J 		0x806EFC24
+			NOP
+
 .align 0x10
 END_HOOK:

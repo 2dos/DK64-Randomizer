@@ -30,6 +30,8 @@ from recompute_pointer_table import (
 )
 from staticcode import patchStaticCode
 from vanilla_move_data import writeVanillaMoveData
+from adjust_exits import adjustExits
+from replace_simslam_text import replaceSimSlam
 
 ROMName = "rom/dk64.z64"
 newROMName = "rom/dk64-randomizer-base.z64"
@@ -222,6 +224,18 @@ for x in range(221):
             "source_file": "setup" + str(x) + ".bin",
             "target_compressed_size": 0x8000,
             "target_uncompressed_size": 0x8000,
+            "do_not_recompress": True,
+        }
+    )
+for x in range(221):
+    file_dict.append(
+        {
+            "name": "Character Spawners for map " + str(x),
+            "pointer_table_index": 16,
+            "file_index": x,
+            "source_file": "charspawners" + str(x) + ".bin",
+            "target_compressed_size": 0x1000,
+            "target_uncompressed_size": 0x1000,
             "do_not_recompress": True,
         }
     )
@@ -514,6 +528,8 @@ with open(newROMName, "r+b") as fh:
         arr.append(0)
     fh.write(bytearray(arr))
     writeVanillaMoveData(fh)
+    adjustExits(fh)
+    replaceSimSlam(fh)
 
 print("[7 / 7] - Generating BizHawk RAM watch")
 

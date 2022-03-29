@@ -9,6 +9,7 @@
 #define FRANTIC_FACTORY 0x1A
 #define CRYSTAL_CAVES 0x48
 #define CREEPY_CASTLE 0x57
+#define DK_ISLES 0x22
 
 #define FUNGI_MINECART_GRATE 0x22
 #define SEASICK_SHIP 0x27
@@ -22,6 +23,16 @@
 #define AZTEC_BBLAST 0x2E
 #define GALLEON_BBLAST 0x34
 #define FUNGI_BBLAST 0x4C
+
+#define ISLES_JAPESBOULDER 0x03
+#define ISLES_AZTECDOOR 0x02
+#define ISLES_FACTORYPLATFORM 0x05
+#define ISLES_FACTORYDOOR 0x06
+#define ISLES_GALLEONBARS 0x1A
+#define ISLES_FUNGIBOULDER 0x21
+#define ISLES_CAVESBOULDER 0x1B
+#define ISLES_CASTLEROCK 0x34
+#define ISLES_HELMJAW 0x1C
 
 void change_object_scripts(int code_pointer, int id, int index, int param2) {
 	if ((CurrentMap == GLOOMY_GALLEON) && (id == SEASICK_SHIP)) {
@@ -54,6 +65,8 @@ void change_object_scripts(int code_pointer, int id, int index, int param2) {
 		} else {
 			createCollisionObjInstance(COLLISION_MAPWARP,88,1);
 		}
+	} else if (CurrentMap == DK_ISLES) {
+
 	}
 	InstanceScriptParams[1] = id;
 	InstanceScriptParams[2] = index;

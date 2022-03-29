@@ -30,19 +30,6 @@ static const char shop_btf[] = {
 	BTF_CRANKY, // Training Grounds
 };
 
-static const char shop_count[] = {
-	2,
-	3,
-	3,
-	3,
-	2,
-	3,
-	1,
-	1,
-	1,
-	1,
-};
-
 #define PURCHASE_MOVES 0
 #define PURCHASE_SLAM 1
 #define PURCHASE_GUN 2
@@ -55,14 +42,20 @@ int doesKongPossessMove(int purchase_type, int purchase_value, int kong) {
 		if (purchase_value > 0) {
 			if (purchase_type == PURCHASE_MOVES) {
 				if (MovesBase[kong].special_moves & (1 << (purchase_value - 1))) {
+					return 0;
+				} else {
 					return 1;
 				}
 			} else if (purchase_type == PURCHASE_SLAM) {
 				if (MovesBase[kong].simian_slam >= purchase_value) {
+					return 0;
+				} else {
 					return 2;
 				}
 			} else if (purchase_type == PURCHASE_GUN) {
 				if (MovesBase[kong].weapon_bitfield & (1 << (purchase_value - 1))) {
+					return 0;
+				} else {
 					if (purchase_value == 1) {
 						return 1;
 					} else {
@@ -71,10 +64,14 @@ int doesKongPossessMove(int purchase_type, int purchase_value, int kong) {
 				}
 			} else if (purchase_type == PURCHASE_AMMOBELT) {
 				if (MovesBase[kong].ammo_belt >= purchase_value) {
+					return 0;
+				} else {
 					return 4;
 				}
 			} else if (purchase_type == PURCHASE_INSTRUMENT) {
 				if (MovesBase[kong].instrument_bitfield & (1 << (purchase_value - 1))) {
+					return 0;
+				} else {
 					if (purchase_value == 1) {
 						return 1;
 					} else {

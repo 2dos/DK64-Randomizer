@@ -6,7 +6,7 @@ set_variables = {
     "blocker_normal_count": [2, 3, 4, 5, 6, 7, 8, 9],
     "key_flags": [0x4A, 0x8A, 0xA8, 0xEC, 0x124, 0x13D, 0x1A],
     "unlock_kongs": 1,
-    "unlock_moves": 1,
+    "unlock_moves": 0,
     "fast_start_beginning": 1,
     "camera_unlocked": 0,
     "tag_anywhere": 1,
@@ -35,6 +35,7 @@ set_variables = {
     "disable_drops": 1,
     "shop_indicator_on": 1,
     "warp_to_isles_enabled": 1,
+    "keys_preturned": 0xFF,
     "special_move_prices": [
         [1, 2, 3],
         [4, 5, 6],
