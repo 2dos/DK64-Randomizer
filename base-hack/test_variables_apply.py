@@ -35,6 +35,7 @@ set_variables = {
     "disable_drops": 1,
     "shop_indicator_on": 1,
     "warp_to_isles_enabled": 1,
+    "keys_preturned": 0xFF,
     "special_move_prices": [
         [1, 2, 3],
         [4, 5, 6],

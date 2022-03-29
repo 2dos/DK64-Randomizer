@@ -86,6 +86,9 @@ void earlyFrame(void) {
 		price_rando();
 		setFlag(0x5D,1,2);
 		setFlag(0x58,1,2);
+		if (CurrentMap == 0x22) {
+			KRoolRound = 0;
+		}
 	}
 	if ((CurrentMap == 5) || (CurrentMap == 1) || (CurrentMap == 0x19)) {
 		if ((CutsceneActive) && (CutsceneIndex == 2)) {
