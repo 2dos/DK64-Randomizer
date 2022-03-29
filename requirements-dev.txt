@@ -8,3 +8,5 @@ pydocstyle
 css-html-js-minify
 python-minifier
 requests
+bs4
+beautifulsoup4
