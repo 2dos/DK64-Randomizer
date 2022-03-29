@@ -78,4 +78,5 @@ typedef struct varspace {
 	/* 0x133 */ unsigned char chunky_rgb_components[3]; // Item 0 = Red component, Item 1 = Green component, Item 2 = Blue Component
 	/* 0x136 */ unsigned char rambi_rgb_components[3]; // Item 0 = Red component, Item 1 = Green component, Item 2 = Blue Component
 	/* 0x139 */ unsigned char enguarde_rgb_components[3]; // Item 0 = Red component, Item 1 = Green component, Item 2 = Blue Component
+	/* 0x13C */ char lobbies_open_bitfield; // hccf gfaj
 } varspace;
