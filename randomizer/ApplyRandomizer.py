@@ -206,6 +206,10 @@ def patching_response(responded_data):
         ROM().seek(sav + 0x124)
         ROM().write(1)
 
+    # K rool order
+    ROM().seek(sav + 0x058)
+    ROM().writeMultipleBytes(spoiler.settings.krool_order, 5)
+    
     # Currently crashing most of the time
     # randomize_dktv(spoiler)
     randomize_music(spoiler)

@@ -184,20 +184,19 @@ class Settings:
         orderedPhases = []
         if "donkey" in phases:
             self.krool_donkey = True
-            orderedPhases.append("donkey")
+            orderedPhases.append(0)
         if "diddy" in phases:
             self.krool_diddy = True
-            orderedPhases.append("diddy")
+            orderedPhases.append(1)
         if "lanky" in phases:
             self.krool_lanky = True
-            orderedPhases.append("lanky")
+            orderedPhases.append(2)
         if "tiny" in phases:
             self.krool_tiny = True
-            orderedPhases.append("tiny")
-
+            orderedPhases.append(3)
         if self.random_krool_phase_order:
             random.shuffle(orderedPhases)
-        orderedPhases.append("chunky")
+        orderedPhases.append(4)
         self.krool_order = orderedPhases
 
         # Boss Rando

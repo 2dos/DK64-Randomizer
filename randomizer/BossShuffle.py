@@ -49,7 +49,7 @@ def SelectRandomKongForBoss(boss_map: Maps):
     elif boss_map == Maps.FungiBoss:
         possibleKongs = [Kongs.chunky]
     elif boss_map == Maps.CavesBoss:
-        possibleKongs = [Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky]
+        possibleKongs = [Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.chunky]
     elif boss_map == Maps.CastleBoss:
         possibleKongs = [Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky]
     return random.choice(possibleKongs)
