@@ -30,19 +30,6 @@ static const char shop_btf[] = {
 	BTF_CRANKY, // Training Grounds
 };
 
-static const char shop_count[] = {
-	2,
-	3,
-	3,
-	3,
-	2,
-	3,
-	1,
-	1,
-	1,
-	1,
-};
-
 #define PURCHASE_MOVES 0
 #define PURCHASE_SLAM 1
 #define PURCHASE_GUN 2

@@ -22,9 +22,10 @@ START:
 		//SB t4, 0x7D78 (t3)
 		// Write LZ Update
 		LUI t3, 0x8075
-		SB r0, 0x8E21 (t3)
-		SB r0, 0x8E24 (t3)
-		SB r0, 0x8E2A (t3)
+		SB r0, 0x8E21 (t3) // Setup
+		SB r0, 0x8E24 (t3) // Text
+		SB r0, 0x8E2A (t3) // Loading Zones
+		SB r0, 0x8E28 (t3) // Character Spawners
 
 		LUI t3, 0x2407
 		ADDIU t3, t3, 1
