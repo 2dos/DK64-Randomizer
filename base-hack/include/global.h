@@ -14,7 +14,7 @@ extern void shiftBrokenJapesPortal(void);
 extern void level_order_rando_funcs(void);
 extern void unlockKongs(void);
 extern void unlockMoves(void);
-extern void tagAnywhere(void);
+extern void tagAnywhere(int prev_crystals);
 extern void islesSpawn(void);
 extern void applyFastStart(void);
 extern void fixCastleAutowalk(void);
@@ -59,3 +59,4 @@ extern int* drawTextContainer(int* dl, int style, float x, float y, char* str, i
 
 extern void displayNumberOnObject(int id, int param2, int imageindex, int param4, int subtype);
 extern void displayShopIndicator(void);
+extern void recolorKongControl(void);

@@ -40,6 +40,7 @@ static const short ftt_flags[] = {
     257, // Fungi CS
     303, // DK 5DI
     349, // Castle CS
+    42, // Japes Diddy Help Me Cutscene
     27, // Japes CS
     95, // Aztec CS
     93, // Lanky Help Me
@@ -72,17 +73,9 @@ void qualityOfLife_shorteners(void) {
 			(CurrentMap == 82) ||
 			(CurrentMap == 185)
 		) {
-			*(int*)(0x806EFB9C) = 0xA1EE0154; // Movement Write
-			*(int*)(0x806EFC1C) = 0x0C189E52; // CS Play
-			*(int*)(0x806EFB88) = 0x0C18539E; // Animation Write
-			*(int*)(0x806EFC0C) = 0xA58200E6; // Change Rotation
-			*(int*)(0x806EFBA8) = 0xA3000155; // Control State Progress
+			SkipDance = 0;
 		} else {
-			*(int*)(0x806EFB9C) = 0; // Movement Write
-			*(int*)(0x806EFC1C) = 0; // CS Play
-			*(int*)(0x806EFB88) = 0; // Animation Write
-			*(int*)(0x806EFC0C) = 0; // Change Rotation
-			*(int*)(0x806EFBA8) = 0; // Control State Progress
+			SkipDance = 1;
 		}
 		// Shorter Boss Cutscenes
 		TempFlagBlock[0xC] |= 0x80;

@@ -131,6 +131,15 @@ AutowalkFixHook:
 LoadCodeReplacements:
 	J 	DynamicCodeFixes
 	NOP
+DanceSkipHook0:
+	J 	danceSkip0
+	NOP
+DanceSkipHook1:
+	J 	danceSkip1
+	NOP
+DanceSkipHook2:
+	J 	danceSkip2
+	NOP
 
 loadExtraHooks:
 	LUI t3, hi(NinWarpHook)
@@ -277,6 +286,24 @@ loadExtraHooks:
 	LUI t4, 0x8061
 	SW t3, 0x0948 (t4) // Store Hook
 	SW r0, 0x094C (t4) // Store NOP
+
+	LUI t3, hi(DanceSkipHook0)
+	LW t3, lo(DanceSkipHook0) (t3)
+	LUI t4, 0x806F
+	SW t3, 0xFB88 (t4) // Store Hook
+	SW r0, 0xFB8C (t4) // Store NOP
+
+	LUI t3, hi(DanceSkipHook1)
+	LW t3, lo(DanceSkipHook1) (t3)
+	LUI t4, 0x806F
+	SW t3, 0xFC08 (t4) // Store Hook
+	SW r0, 0xFC0C (t4) // Store NOP
+
+	LUI t3, hi(DanceSkipHook2)
+	LW t3, lo(DanceSkipHook2) (t3)
+	LUI t4, 0x806F
+	SW t3, 0xFC1C (t4) // Store Hook
+	SW r0, 0xFC20 (t4) // Store NOP
 
 	JR ra
 	NOP

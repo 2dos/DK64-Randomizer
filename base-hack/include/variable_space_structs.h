@@ -70,4 +70,12 @@ typedef struct varspace {
 	/* 0x122 */ unsigned short museum_to_ballroom; // Same as "aztec_beetle_enter" but for the loading zone dictated by the nametc
 	/* 0x124 */ char shop_indicator_on; // 0 = Off, 1 = Render amount of moves that can be purchased from that shop
 	/* 0x125 */ char warp_to_isles_enabled; // 0 = Off, 1 = Add Warp to Isles option
+	/* 0x126 */ char kong_rgb_enabled; // 0 = No RGB Mask, 1 = Apply RGB Mask
+	/* 0x127 */ unsigned char dk_rgb_components[3]; // Item 0 = Red component, Item 1 = Green component, Item 2 = Blue Component
+	/* 0x12A */ unsigned char diddy_rgb_components[3]; // Item 0 = Red component, Item 1 = Green component, Item 2 = Blue Component
+	/* 0x12D */ unsigned char lanky_rgb_components[3]; // Item 0 = Red component, Item 1 = Green component, Item 2 = Blue Component
+	/* 0x130 */ unsigned char tiny_rgb_components[3]; // Item 0 = Red component, Item 1 = Green component, Item 2 = Blue Component
+	/* 0x133 */ unsigned char chunky_rgb_components[3]; // Item 0 = Red component, Item 1 = Green component, Item 2 = Blue Component
+	/* 0x136 */ unsigned char rambi_rgb_components[3]; // Item 0 = Red component, Item 1 = Green component, Item 2 = Blue Component
+	/* 0x139 */ unsigned char enguarde_rgb_components[3]; // Item 0 = Red component, Item 1 = Green component, Item 2 = Blue Component
 } varspace;

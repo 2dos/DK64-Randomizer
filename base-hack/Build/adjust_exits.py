@@ -73,7 +73,6 @@ def adjustExits(fh):
 		_map = x["containing_map"]
 		fh.seek(ptr_table + (4 * _map))
 		start = int.from_bytes(fh.read(4),"big") + pointer_table_address
-		print(f"{hex(_map)}: {hex(start)}")
 		for exit in x["exits"]:
 			fh.seek(start + (exit["exit_index"] * 0xA) + 0)
 			fh.write(exit["x"].to_bytes(2,"big"))

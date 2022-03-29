@@ -130,7 +130,9 @@ typedef struct playerData {
 	/* 0x148 */ char unk_148[0x154 - 0x148];
 	/* 0x154 */ char control_state;
 	/* 0x155 */ char control_state_progress;
-	/* 0x156 */ char unk_156[0x18A-0x156];
+	/* 0x156 */ char unk_156[0x16A-0x156];
+	/* 0x16A */ unsigned char rgb_components[3];
+	/* 0x16D */ char unk_16D[0x18A-0x16D];
 	/* 0x18A */ short moving_angle;
 	/* 0x18C */ char unk_18C[0x1B8-0x18C];
 	/* 0x1B8 */ float velocity_cap;

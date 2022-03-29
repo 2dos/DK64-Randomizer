@@ -213,3 +213,9 @@ for f in files:
             output(f"\tMusic Rando On: {str(getTrueFalse(fh,0x11F,1))}")
             output(f"\tShop Indicator On: {str(getTrueFalse(fh,0x124,1))}")
             output(f"\tWarp to Isles Enabled: {str(getTrueFalse(fh,0x125,1))}")
+            output(f"\tColor Kongs: {str(getTrueFalse(fh,0x126,1))}")
+            rgb_offset = 0x127
+            for x in range(8):
+                if x != 5:
+                    output(f"\t\t{kongs[x]} RGB: {hex(getValue(fh,rgb_offset,3))}")
+                    rgb_offset += 3; 
