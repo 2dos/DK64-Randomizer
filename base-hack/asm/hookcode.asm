@@ -1,0 +1,385 @@
+START_HOOK:
+	NinWarpCode:
+		JAL 	checkNinWarp
+		NOP
+		J 		0x807132CC
+		NOP
+
+	Jump_CrankyDecouple:
+		J 		CrankyDecouple
+		NOP
+	Jump_ForceToBuyMoveInOneLevel:
+		J 		ForceToBuyMoveInOneLevel
+		NOP
+
+	PatchCrankyCode:
+		LUI t3, hi(Jump_CrankyDecouple)
+		LW t3, lo(Jump_CrankyDecouple) (t3)
+		LUI t4, 0x8002
+		SW t3, 0x60E0 (t4) // Store Hook
+		SW r0, 0x60E4 (t4) // Store NOP
+
+		LUI t3, hi(Jump_ForceToBuyMoveInOneLevel)
+		LW t3, lo(Jump_ForceToBuyMoveInOneLevel) (t3)
+		LUI t4, 0x8002
+		SW 	t3, 0x60A8 (t4) // Store Hook
+		SW 	r0, 0x60AC (t4) // Store NOP
+		SW 	r0, 0x6160 (t4) // Store NOP to prevent loop
+
+		LUI t3, 0x8002
+		ADDIU t4, r0, hi(CrankyMoves_New)
+		SH t4, 0x6072 (t3)
+		ADDIU t4, r0, lo(CrankyMoves_New)
+		SH t4, 0x607A (t3)
+		ADDIU t4, r0, hi(CandyMoves_New)
+		SH t4, 0x607E (t3)
+		ADDIU t4, r0, lo(CandyMoves_New)
+		SH t4, 0x6086 (t3)
+		ADDIU t4, r0, hi(FunkyMoves_New)
+		SH t4, 0x608A (t3)
+		ADDIU t4, r0, lo(FunkyMoves_New)
+		SH t4, 0x608E (t3)
+
+		JR 		ra
+		NOP
+
+	CrankyDecouple:
+		BEQ		a0, t0, CrankyDecouple_Bitfield
+		OR 		v1, a0, r0
+		BEQZ 	a0, CrankyDecouple_Bitfield
+		NOP
+
+		CrankyDecouple_Progessive:
+			J 		0x800260E8
+			NOP
+
+		CrankyDecouple_Bitfield:
+			J 		0x800260F0
+			NOP
+
+	ForceToBuyMoveInOneLevel:
+		ADDU 	t3, t3, t9
+		SLL 	t3, t3, 1
+		LBU 	t2, 0xC (s2) // Current Level
+		SLTIU 	t1, t2, 7
+		BEQZ 	t1, ForceToBuyMoveInOneLevel_Skip // If level < 7 (In one of the main 7 levels, progress. Otherwise skip)
+		NOP
+		SLL 	t1, t2, 2
+		SUBU 	t1, t1, t2
+		SLL 	t1, t1, 1 // Current Level * 6
+		J 		0x800260B4
+		ADDU 	v1, v1, t1
+
+		ForceToBuyMoveInOneLevel_Skip:
+			LUI 	s1, 0x8002
+			SW 		r0, 0x6194 (s1)
+			J 		0x80026168
+			ADDIU 	s1, r0, 0
+
+	InstanceScriptCheck:
+		ADDIU 	t1, r0, 1
+		ADDI 	t4, t4, -1 // Reduce move_index by 1
+		SLLV 	t4, t1, t4 // 1 << move_index
+		ADDIU 	t1, r0, 0
+		AND 	at, t6, t4 // at = kong_moves & move_index
+		BEQZ 	at, InstanceScriptCheck_Fail
+		NOP
+
+		InstanceScriptCheck_Success:
+			J 	0x8063EE14
+			NOP
+
+		InstanceScriptCheck_Fail:
+			J 	0x8063EE1C
+			NOP
+
+	SaveToFileFixes:
+		BNEZ 	s0, SaveToFileFixes_Not0
+		ANDI 	a1, s3, 0xFF
+		B 		SaveToFileFixes_Finish
+		ADDIU  	a0, r0, 10 // Stores it in unused slot
+
+		SaveToFileFixes_Not0:
+			ADDIU 	a0, s0, 4
+
+		SaveToFileFixes_Finish:
+			J 		0x8060DFFC
+			NOP
+
+	BarrelMovesFixes:
+		LBU 	t0, 0x4238 (t0) // Load Barrel Moves Array Slot
+		ADDI 	t0, t0, -1 // Reduce move_value by 1
+		ADDIU 	v1, r0, 1
+		SLLV 	t0, v1, t0 // Get bitfield value
+		AND  	v1, t0, t9
+		BEQZ 	v1, BarrelMovesFixes_Finish
+		NOP
+		ADDIU 	v1, r0, 1
+
+		BarrelMovesFixes_Finish:
+			J 		0x806F6EB4
+			NOP
+
+	ChimpyChargeFix:
+		ANDI 	t6, t6, 1
+		LUI	 	v1, 0x8080
+		J 		0x806E4938
+		ADDIU 	v1, v1, 0xBB40
+
+	OStandFix:
+		LBU 	t2, 0xCA0C (t2)
+		ANDI 	t2, t2, 1
+		J 		0x806E48B4
+		ADDIU 	a0, r0, 0x25
+
+	HunkyChunkyFix2:
+		BNEL 	v1, at, HunkyChunkyFix2_Finish
+		LI 		at, 4
+		ANDI 	a2, a0, 1
+		BLEZL 	a2, HunkyChunkyFix2_Finish
+		LI 		at, 4
+		J 		0x8067ECC8
+		NOP
+
+		HunkyChunkyFix2_Finish:
+			J 		0x8067ECD0
+			nop
+
+	EarlyFrameCode:
+		JAL 	earlyFrame
+		NOP
+		JAL 	0x805FC668
+		NOP
+		J 		0x805FC404
+		NOP
+
+	displayListCode:
+		JAL 	displayListModifiers
+		OR 		a0, s0, r0
+		OR 		s0, v0, r0
+		LUI 	a0, 0x8075
+		ADDIU 	a0, a0, 0x531C
+		LHU 	v1, 0x0 (a0)
+		LUI 	v0, 0x8075
+		J 		0x80714184
+		LBU 	v0, 0x5314 (v0)
+
+	updateLag:
+		LUI 	t6, hi(FrameReal)
+		LW 		a0, lo(FrameReal) (t6)
+		LUI 	t6, hi(FrameLag)
+		LW 		a1, lo(FrameLag) (t6)
+		SUBU 	a1, a0, a1
+		LUI 	t6, hi(StoredLag)
+		SH 		a1, lo(StoredLag) (t6)
+		LUI 	t6, 0x8077
+		J 		0x8060067C
+		LBU 	t6, 0xAF14 (t6)
+
+	getLobbyExit:
+		LUI 	a1, hi(ReplacementLobbyExitsArray)
+		SLL 	t7, t6, 1
+		ADDU 	a1, a1, t7
+		J 		0x80600064
+		LHU 	a1, lo(ReplacementLobbyExitsArray) (a1)
+
+	damageMultiplerCode:
+		BGEZ 	a3, damageMultiplerCode_Finish
+		LB 		t9, 0x2FD (v0)
+		LUI 	t2, hi(DamageMultiplier)
+		LBU 	t2, lo(DamageMultiplier) (t2)
+		MULTU 	a3, t2
+		MFLO 	a3
+
+		damageMultiplerCode_Finish:
+			J 		0x806C9A84
+			ADDU 	t0, t9, a3
+
+	PauseExtraHeight:
+		LUI 	s1, hi(InitialPauseHeight)
+		LHU 	s1, lo(InitialPauseHeight) (s1)
+		J 		0x806A9820
+		ADDIU 	s0, s0, 0x5CC
+
+	PauseExtraSlotCode:
+		LUI 	t9, hi(InitialPauseHeight)
+		LHU 	t9, lo(InitialPauseHeight) (t9)
+		ADDIU 	t9, t9, 0xCC
+		BNE 	s1, t9, PauseExtraSlotCode_Normal
+		NOP
+		LUI 	t9, hi(ExpandPauseMenu)
+		LBU 	t9, lo(ExpandPauseMenu) (t9)
+		BEQZ  	t9, PauseExtraSlotCode_Skip
+		SRA 	t4, a2, 0x10
+		SLL 	t6, t7, 2
+		LUI 	t9, hi(PauseSlot3TextPointer)
+		J 		0x806A996C
+		ADDIU 	t8, t9, lo(PauseSlot3TextPointer)
+
+		PauseExtraSlotCode_Skip:
+			J 		0x806A9980
+			NOP
+
+		PauseExtraSlotCode_Normal:
+			LW 		t9, 0x0 (s6)
+			J 		0x806A9964
+			SRA 	t4, a2, 0x10
+
+	PauseExtraSlotClamp0:
+		LUI 	a2, 0x427C
+		LUI 	t4, hi(ExpandPauseMenu)
+		LBU 	t4, lo(ExpandPauseMenu) (t4)
+		J 		0x806A87C4
+		ADDIU 	t4, t4, 2
+
+	PauseExtraSlotClamp1:
+		LUI 	a3, 0x3F80
+		LUI 	at, hi(ExpandPauseMenu)
+		LBU 	at, lo(ExpandPauseMenu) (at)
+		SUBU 	at, t8, at
+		J 		0x806A8768
+		SLTI 	at, at, 0x3
+
+	PauseExtraSlotCustomCode:
+		LB 		v0, 0x17 (s0) // Load Slot Position
+		ADDIU 	at, r0, 3
+		BNE 	at, v0, PauseExtraSlotCustomCode_Finish
+		NOP
+		ADDIU 	a0, r0, 0x22
+		JAL 	0x805FF378 // Init Map Change
+		ADDIU 	a1, r0, 0
+		JAL 	resetMap
+		NOP
+		J 		0x806A8A20
+		ADDIU 	at, r0, 2
+		
+		PauseExtraSlotCustomCode_Finish:
+			J 		0x806A880C
+			ADDIU 	at, r0, 2
+
+	IGTLoadFromFile:
+		SLL 	at, v0, 2
+		SUBU 	at, at, v0
+		SLL 	v0, at, 1
+		LUI 	at, hi(BalancedIGT)
+		J 		0x8060DD3C
+		SW 		v0, lo(BalancedIGT) (at)
+
+	IGTSaveToFile:
+		ADDIU 	at, r0, 6
+		LUI	 	s0, hi(BalancedIGT)
+		LWU 	s0, lo(BalancedIGT) (s0)
+		DIVU 	s0, at
+		MFLO 	s0
+		LUI 	at, 0x40
+		J 		0x8060DF4C
+		SLTU 	at, s0, at
+
+	FileScreenDLCode_Jump:
+		J 		FileScreenDLCode
+		NOP
+	FileSelectDLCode_Jump:
+		J 		FileSelectDLCode
+		NOP
+
+	FileScreenDLCode_Write:
+		LUI t3, hi(FileScreenDLCode_Jump)
+		LW t3, lo(FileScreenDLCode_Jump) (t3)
+		LUI t4, 0x8003
+		SW t3, 0x937C (t4) // Store Hook
+		SW r0, 0x9380 (t4) // Store NOP
+
+		LUI t3, hi(FileSelectDLCode_Jump)
+		LW t3, lo(FileSelectDLCode_Jump) (t3)
+		LUI t4, 0x8003
+		SW t3, 0x8E90 (t4) // Store Hook
+		SW r0, 0x8E94 (t4) // Store NOP
+		JR 	ra
+		NOP
+
+	FileScreenDLCode:
+		ADDIU 	s0, t4, -0x140
+		JAL 	display_text
+		ADDIU 	a0, s2, 8
+		J 		0x80029690
+		ADDIU 	s2, v0, 0
+
+	AutowalkFix:
+		// Free Variables
+		// at, t2, a0, t7, t8
+		LUI 	a0, hi(TransitionSpeed)
+		LHU 	a0, lo(TransitionSpeed) (a0)
+		ANDI 	a0, a0, 0x8000 // Get sign
+		BEQZ 	a0, AutowalkFix_Vanilla // No transition exit
+		NOP
+		LUI 	t7, hi(DestMap)
+		LW 		t7, lo(DestMap) (t7)
+		LUI 	t8, hi(DestExit)
+		LW 		t8, lo(DestExit) (t8)
+		ADDIU 	t2, r0, 0x22
+		BNE 	t7, t2, AutowalkFix_NotAztecDoor
+		ADDIU 	a0, r0, 3
+		BEQ 	t8, a0, AutowalkFix_Finish
+		LUI 	at, 0x44F2
+
+		AutowalkFix_NotAztecDoor:
+			ADDIU 	t2, r0, 0x1A
+			BNE 	t7, t2, AutowalkFix_NotCrusher
+			ADDIU 	a0, r0, 8
+			LUI 	at, 0x4536
+			BEQ 	t8, a0, AutowalkFix_Finish
+			ADDIU 	at, at, 0x4000
+
+		AutowalkFix_NotCrusher:
+			ADDIU 	t2, r0, 0x57
+			BNE 	t7, t2, AutowalkFix_NotCastle
+			ADDIU 	a0, r0, 15
+			LUI 	at, 0x452F
+			BEQ 	t8, a0, AutowalkFix_Finish // Castle Tree
+			ADDIU 	at, at, 0x9000
+			ADDIU 	a0, r0, 11
+			LUI 	at, 0x4552
+			BEQ 	t8, a0, AutowalkFix_Finish // Castle Ballroom
+			ADDIU 	at, at, 0x4000
+			ADDIU 	a0, r0, 21
+			LUI 	at, 0x45FD
+			BEQ 	t8, a0, AutowalkFix_Finish // Castle Entry (Cancel Autowalk)
+			ADDIU 	at, at, 0x2000
+
+		AutowalkFix_NotCastle:
+			ADDIU 	t2, r0, 0x70
+			BNE  	t7, t2, AutowalkFix_Vanilla
+			ADDIU 	a0, r0, 1
+			BEQ 	t8, a0, AutowalkFix_Finish
+			LUI 	at, 0x4361
+
+		AutowalkFix_Vanilla:
+			LUI 	at, 0x42C8
+
+		AutowalkFix_Finish:
+			J 		0x806F3E7C
+			OR 		t2, r0, r0
+
+	FileSelectDLCode:
+		JAL 		0x806ABB98
+		SRA 		a2, t3, 0x10
+		ADDIU 		a0, v0, 0
+		LWC1		f6, 0xF8 (sp)
+		LUI 		a1, 0x4080
+		MTC1 		a1, f0
+		MUL.S 		f6, f6, f0
+		TRUNC.W.S 	f6, f6
+		JAL 		displayHash
+		MFC1 		a1, f6
+		J 			0x80028E98
+		NOP
+
+	DynamicCodeFixes:
+		JAL 		decouple_moves_fixes
+		NOP
+		LUI 		a1, 0x8074
+		J 			0x80610950
+		LUI 		t1, 0x8074
+
+.align 0x10
+END_HOOK:

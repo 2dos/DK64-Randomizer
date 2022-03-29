@@ -8,13 +8,7 @@ class Events(IntEnum):
     # DK Isles events
     IslesDiddyBarrelSpawn = auto()
     IslesChunkyBarrelSpawn = auto()
-    KLumsyTalkedTo = auto()
-    FirstKey = auto()
-    SecondKey = auto()
-    FourthKey = auto()
-    FifthKey = auto()
-    SeventhKey = auto()
-    EigthKey = auto()
+    KeysTurnIn = auto()
 
     # Jungle Japes events
     Rambi = auto()
@@ -43,31 +37,38 @@ class Events(IntEnum):
     # Gloomy Galleon events
     GalleonLankySwitch = auto()
     GalleonTinySwitch = auto()
+    LighthouseGateOpened = auto()
+    ShipyardGateOpened = auto()
+    WaterSwitch = auto()
     LighthouseEnguarde = auto()
     SealReleased = auto()
     MechafishSummoned = auto()
     GalleonChunkyPad = auto()
     ActivatedLighthouse = auto()
     ShipyardEnguarde = auto()
+    ShipyardTreasureRoomOpened = auto()
     TreasureRoomTeleporterUnlocked = auto()
     PearlsCollected = auto()
 
     # Fungi Forest events
     Night = auto()
+    WormGatesOpened = auto()
+    HollowTreeGateOpened = auto()
     MushroomCannonsSpawned = auto()
     DonkeyMushroomSwitch = auto()
     Bean = auto()
     GrinderActivated = auto()
     MillBoxBroken = auto()
     ConveyorActivated = auto()
-    WenchRaised = auto()
+    WinchRaised = auto()
 
     # Crystal Caves events
     CavesSmallBoulderButton = auto()
     CavesLargeBoulderButton = auto()
     GiantKoshaDefeated = auto()
 
-    # No Creepy Castle Events
+    # Creepy Castle Events
+    CastleTreeOpened = auto()
 
     # Hideout Helm Events
     HelmDoorsOpened = auto()
@@ -77,6 +78,13 @@ class Events(IntEnum):
     HelmLankyDone = auto()
     HelmDiddyDone = auto()
     HelmKeyAccess = auto()
+
+    # K Rool Phases
+    KRoolDonkey = auto()
+    KRoolDiddy = auto()
+    KRoolLanky = auto()
+    KRoolTiny = auto()
+    KRoolChunky = auto()
 
     # Level entered events for shops
     JapesEntered = auto()

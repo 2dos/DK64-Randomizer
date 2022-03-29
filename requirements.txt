@@ -1,3 +1,0 @@
-brython
-psutil
-mockbrython

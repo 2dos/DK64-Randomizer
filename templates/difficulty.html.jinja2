@@ -1,0 +1,96 @@
+<div class="container" style="margin-top: 20px;">
+    <div class="row">
+        <div class="col border">
+            <h3>Progression</h3>
+            <table id="leveltable" style="width: 100%;">
+                <tr>
+                    <th>Progression</th>
+                    <th>B Locker</th>
+                    <th>Troff N Scoff</th>
+                </tr>
+                {% for i in range(0, 8) %}
+                    <tr>
+                        <td>Level {{ i }}</td>
+                        <td>
+                            <input class="form-control"
+                                   min="0"
+                                   max="200"
+                                   name="blocker_{{ i }}"
+                                   id="blocker_{{ i }}"
+                                   style="width: 100%;"
+                                   value="{{ i+1 }}"
+                                   type="number"
+                                   title="You can adjust each individual B Locker amount to any number between 0-200. &#013;Note that you could make it impossible to beat the game glitchless if certain levels are set too high, as the program does not validate if a game is beatable glitchless with adjusted B Locker settings. &#013;If you are unsure what to adjust the level values to, use the presets dropdown instead."/>
+                        </td>
+                        {% if i < 7 %}
+                            <td>
+                                <input class="form-control"
+                                       min="0"
+                                       max="500"
+                                       name="troff_{{ i }}"
+                                       id="troff_{{ i }}"
+                                       style="width: 100%;"
+                                       value="{{ i+1 }}"
+                                       type="number"
+                                       title="You can adjust each individual Troff n Scoff amount to any number between 1-500. &#013;Note that you could make it impossible to beat the game glitchless if early levels are set too high, as the program does not validate if a game is beatable glitchless with adjusted Troff n Scoff settings. &#013;If you are unsure what to adjust the level values to, use the presets dropdown instead."/>
+                            </td>
+                        {% endif %}
+                    </tr>
+                {% endfor %}
+            </table>
+        </div>
+        <div class="col border">
+            <h3>Damage Options</h3>
+            <div class="checkboxes">
+                <div>
+                    Damage
+                    <select name="damage_amount"
+                            style="width: 60%;"
+                            class="form-select center-div"
+                            aria-label="Damage Options">
+                        <option selected value="default">
+                            Normal
+                        </option>
+                        <option value="ohko">
+                            OHKO
+                        </option>
+                        <option value="double">
+                            Double Damage
+                        </option>
+                        <option value="quad">
+                            Quad Damage
+                        </option>
+                    </select>
+                </div>
+                <div class="form-check form-switch w-75">
+                    <label title="Tag Barrels, Boss Fights, Candy Upgrades etc don't heal you like they normally would.">
+                        <input class="form-check-input"
+                               type="checkbox"
+                               name="no_healing"
+                               value="False"/>
+                        No Heals
+                    </label>
+                </div>
+                <div class="form-check form-switch w-75">
+                    <label title="No melons are dropped from enemies." style="text-align: left;">
+                        <input class="form-check-input"
+                               type="checkbox"
+                               name="no_melons"
+                               value="False"/>
+                        No Melon Slice Drops
+                    </label>
+                </div>
+                <div class="form-check form-switch w-75">
+                    <label title="Enabling this setting means logic may expect you to do some difficult shooting challenges without help. If this setting is disabled, then the following requirements exist: &#013; * Lanky's attic in Fungi Forest requires homing ammo. &#013; * Donkey's 5 door cabin in Crystal Caves requires homing ammo. &#013; * Tiny's trash can in Creepy Castle requires homing ammo &#013; * Chunky's tree banana in Creepy Castle requires sniper scope. (This requirement can be skipped by shooting from below the switch.) &#013; * Chunky's shooting barrel in Hideout Helm requires either sniper scope or homing ammo."
+                           style="text-align: left;">
+                        <input class="form-check-input"
+                               type="checkbox"
+                               name="hard_shooting"
+                               value="False"/>
+                        Hard Shooting
+                    </label>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

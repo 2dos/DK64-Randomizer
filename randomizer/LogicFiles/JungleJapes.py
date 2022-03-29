@@ -1,124 +1,148 @@
 # fmt: off
 """Logic file for Jungle Japes."""
 
-from LogicClasses import Region, Location, Event, Exit
-from Enums.Events import Events
-from Enums.Regions import Regions
-from Enums.Levels import Levels
+from randomizer.Enums.Events import Events
+from randomizer.Enums.Kongs import Kongs
+from randomizer.Enums.Levels import Levels
+from randomizer.Enums.Locations import Locations
+from randomizer.Enums.Regions import Regions
+from randomizer.Enums.Transitions import Transitions
+from randomizer.LogicClasses import (Event, LocationLogic, Region,
+                                     TransitionFront)
 
 LogicRegions = {
-    Regions.JungleJapesMain: Region("Jungle Japes Main", Levels.JungleJapes, True, [
-        Location("Diddy Kong", lambda l: l.coconut),
-        Location("Japes Donkey Front of Cage", lambda l: l.isdonkey),
-        Location("Japes Donkey Free Diddy", lambda l: l.coconut and l.isdonkey),
-        Location("Japes Donkey Caged Banana", lambda l: Events.JapesDonkeySwitch in l.Events and l.isdonkey),
-        Location("Japes Donkey Baboon Blast", lambda l: l.blast and l.isdonkey),
-        Location("Japes Diddy Caged Banana", lambda l: Events.JapesDiddySwitch1 in l.Events and l.isdiddy),
-        Location("Japes Diddy Mountain", lambda l: Events.JapesDiddySwitch2 in l.Events and l.isdiddy),
-        Location("Japes Lanky Caged Banana", lambda l: Events.JapesLankySwitch in l.Events and l.islanky),
-        Location("Japes Tiny Caged Banana", lambda l: Events.JapesTinySwitch in l.Events and l.istiny),
-        Location("Japes Chunky Boulder", lambda l: l.ischunky),
-        Location("Japes Chunky Caged Banana", lambda l: Events.JapesChunkySwitch and l.ischunky),
-        Location("Japes Battle Arena", lambda l: True),
+    Regions.JungleJapesMain: Region("Jungle Japes Main", Levels.JungleJapes, True, None, [
+        LocationLogic(Locations.JapesDonkeyMedal, lambda l: l.ColoredBananas[Levels.JungleJapes][Kongs.donkey] >= 75),
+        LocationLogic(Locations.JapesDiddyMedal, lambda l: l.ColoredBananas[Levels.JungleJapes][Kongs.diddy] >= 75),
+        LocationLogic(Locations.JapesLankyMedal, lambda l: l.ColoredBananas[Levels.JungleJapes][Kongs.lanky] >= 75),
+        LocationLogic(Locations.JapesTinyMedal, lambda l: l.ColoredBananas[Levels.JungleJapes][Kongs.tiny] >= 75),
+        LocationLogic(Locations.JapesChunkyMedal, lambda l: l.ColoredBananas[Levels.JungleJapes][Kongs.chunky] >= 75),
+        LocationLogic(Locations.DiddyKong, lambda l: l.coconut and l.donkey),
+        LocationLogic(Locations.JapesDonkeyFrontofCage, lambda l: l.donkey),
+        LocationLogic(Locations.JapesDonkeyFreeDiddy, lambda l: l.coconut and l.donkey),
+        LocationLogic(Locations.JapesDonkeyCagedBanana, lambda l: Events.JapesDonkeySwitch in l.Events and l.donkey),
+        LocationLogic(Locations.JapesDiddyCagedBanana, lambda l: Events.JapesDiddySwitch1 in l.Events and l.diddy),
+        LocationLogic(Locations.JapesDiddyMountain, lambda l: Events.JapesDiddySwitch2 in l.Events and l.diddy),
+        LocationLogic(Locations.JapesLankyCagedBanana, lambda l: Events.JapesLankySwitch in l.Events and l.lanky),
+        LocationLogic(Locations.JapesTinyCagedBanana, lambda l: Events.JapesTinySwitch in l.Events and l.tiny),
+        LocationLogic(Locations.JapesChunkyBoulder, lambda l: l.chunky),
+        LocationLogic(Locations.JapesChunkyCagedBanana, lambda l: Events.JapesChunkySwitch and l.chunky),
+        LocationLogic(Locations.JapesBattleArena, lambda l: True),
     ], [
         Event(Events.JapesEntered, lambda l: True),
     ], [
-        Exit(Regions.JungleJapesLobby, lambda l: True),
-        Exit(Regions.JapesBeyondPeanutGate, lambda l: l.peanut),
-        Exit(Regions.JapesBeyondCoconutGate1, lambda l: l.coconut),
-        Exit(Regions.JapesBeyondCoconutGate2, lambda l: l.coconut),
-        Exit(Regions.Mine, lambda l: l.peanut and l.isdiddy),
-        Exit(Regions.JapesLankyCave, lambda l: l.peanut and l.handstand and l.islanky),
-        Exit(Regions.JapesCatacomb, lambda l: l.Slam and l.chunkyAccess),
-        Exit(Regions.Funky, lambda l: True),
-        Exit(Regions.Snide, lambda l: True),
-        Exit(Regions.JapesBossLobby, lambda l: True),
+        TransitionFront(Regions.JungleJapesLobby, lambda l: True, Transitions.JapesToIsles),
+        TransitionFront(Regions.JapesBeyondPeanutGate, lambda l: l.peanut and l.diddy),
+        TransitionFront(Regions.JapesBeyondCoconutGate1, lambda l: l.coconut and l.donkey),
+        TransitionFront(Regions.JapesBeyondCoconutGate2, lambda l: l.coconut and l.donkey),
+        TransitionFront(Regions.Mine, lambda l: l.peanut and l.isdiddy, Transitions.JapesMainToMine),
+        TransitionFront(Regions.JapesLankyCave, lambda l: l.peanut and l.diddy and l.handstand and l.islanky, Transitions.JapesMainToLankyCave),
+        TransitionFront(Regions.JapesCatacomb, lambda l: l.Slam and l.chunkyAccess, Transitions.JapesMainToCatacomb),
+        TransitionFront(Regions.FunkyJapes, lambda l: True),
+        TransitionFront(Regions.Snide, lambda l: True),
+        TransitionFront(Regions.JapesBossLobby, lambda l: True),
+        TransitionFront(Regions.JapesBaboonBlast, lambda l: l.blast and l.isdonkey)  # , Transitions.JapesMainToBBlast)
     ]),
 
-    Regions.JapesBeyondPeanutGate: Region("Japes Beyond Peanut Gate", Levels.JungleJapes, False, [
-        Location("Japes Diddy Tunnel", lambda l: l.isdiddy),
-        Location("Japes Lanky Mad Maze Maul", lambda l: l.grape and l.islanky),
-        Location("Japes Tiny Splish Splash Salvage", lambda l: l.feather and l.istiny),
+    Regions.JapesBaboonBlast: Region("Japes Baboon Blast", Levels.JungleJapes, False, None, [
+        LocationLogic(Locations.JapesDonkeyBaboonBlast, lambda l: l.isdonkey),
     ], [], [
-        Exit(Regions.JapesBossLobby, lambda l: True),
+        TransitionFront(Regions.JungleJapesMain, lambda l: True)
     ]),
 
-    Regions.JapesBeyondCoconutGate1: Region("Japes Beyond Coconut Gate 1", Levels.JungleJapes, False, [
-        Location("Japes Donkey Kasplat", lambda l: l.isdonkey),
-        Location("Japes Tiny Kasplat", lambda l: l.istiny),
+    Regions.JapesBeyondPeanutGate: Region("Japes Beyond Peanut Gate", Levels.JungleJapes, False, None, [
+        LocationLogic(Locations.JapesDiddyTunnel, lambda l: l.isdiddy),
+        LocationLogic(Locations.JapesLankyGrapeGate, lambda l: l.grape and l.islanky, True),
+        LocationLogic(Locations.JapesTinyFeatherGateBarrel, lambda l: l.feather and l.istiny, True),
     ], [], [
-        Exit(Regions.JapesBeyondFeatherGate, lambda l: l.feather and l.tinyAccess),
+        TransitionFront(Regions.JungleJapesMain, lambda l: True),
+        TransitionFront(Regions.JapesBossLobby, lambda l: True),
     ]),
 
-    Regions.JapesBeyondFeatherGate: Region("Japes Beyond Feather Gate", Levels.JungleJapes, True, [
-        Location("Japes Tiny Stump", lambda l: l.mini and l.istiny),
-        Location("Japes Chunky Minecart Mayhem", lambda l: l.hunkyChunky and l.ischunky),
+    Regions.JapesBeyondCoconutGate1: Region("Japes Beyond Coconut Gate 1", Levels.JungleJapes, False, None, [
+        LocationLogic(Locations.JapesDonkeyKasplat, lambda l: l.isdonkey),
+        LocationLogic(Locations.JapesTinyKasplat, lambda l: l.istiny),
     ], [], [
-        Exit(Regions.TinyHive, lambda l: l.mini and l.istiny),
+        TransitionFront(Regions.JungleJapesMain, lambda l: True),
+        TransitionFront(Regions.JapesBeyondFeatherGate, lambda l: l.feather and l.tinyAccess),
     ]),
 
-    Regions.TinyHive: Region("Tiny Hive", Levels.JungleJapes, False, [
-        Location("Japes Tiny Beehive", lambda l: l.Slam and l.istiny),
+    Regions.JapesBeyondFeatherGate: Region("Japes Beyond Feather Gate", Levels.JungleJapes, True, -1, [
+        LocationLogic(Locations.JapesTinyStump, lambda l: l.mini and l.tiny),
+        LocationLogic(Locations.JapesChunkyGiantBonusBarrel, lambda l: l.hunkyChunky and l.ischunky, True),
     ], [], [
-        Exit(Regions.JapesBeyondFeatherGate, lambda l: True),
+        TransitionFront(Regions.JapesBeyondCoconutGate1, lambda l: True),
+        TransitionFront(Regions.TinyHive, lambda l: l.mini and l.istiny, Transitions.JapesMainToTinyHive),
     ]),
 
-    Regions.JapesBeyondCoconutGate2: Region("Japes Beyond Coconut Gate 2", Levels.JungleJapes, True, [
-        Location("Japes Lanky Speedy Swing Sortie", lambda l: l.handstand and l.islanky),
-        Location("Japes Diddy Kasplat", lambda l: l.isdiddy),
-        Location("Japes Lanky Kasplat", lambda l: l.islanky),
+    Regions.TinyHive: Region("Tiny Hive", Levels.JungleJapes, False, -1, [
+        LocationLogic(Locations.JapesTinyBeehive, lambda l: l.Slam and l.istiny),
+    ], [], [
+        TransitionFront(Regions.JapesBeyondFeatherGate, lambda l: True, Transitions.JapesTinyHiveToMain),
+    ]),
+
+    Regions.JapesBeyondCoconutGate2: Region("Japes Beyond Coconut Gate 2", Levels.JungleJapes, True, None, [
+        LocationLogic(Locations.JapesLankySlope, lambda l: l.handstand and l.islanky, True),
+        LocationLogic(Locations.JapesDiddyKasplat, lambda l: l.diddy),
+        LocationLogic(Locations.JapesLankyKasplat, lambda l: l.lanky),
     ], [
         Event(Events.Rambi, lambda l: l.coconut),
-        Event(Events.JapesDonkeySwitch, lambda l: Events.Rambi in l.Events and l.Slam and l.isdonkey),
-        Event(Events.JapesDiddySwitch1, lambda l: Events.Rambi in l.Events and l.Slam and l.isdiddy),
-        Event(Events.JapesLankySwitch, lambda l: Events.Rambi in l.Events and l.Slam and l.islanky),
-        Event(Events.JapesTinySwitch, lambda l: Events.Rambi in l.Events and l.Slam and l.istiny),
+        Event(Events.JapesDonkeySwitch, lambda l: Events.Rambi in l.Events and l.Slam and l.donkey),
+        Event(Events.JapesDiddySwitch1, lambda l: Events.Rambi in l.Events and l.Slam and l.diddy),
+        Event(Events.JapesLankySwitch, lambda l: Events.Rambi in l.Events and l.Slam and l.lanky),
+        Event(Events.JapesTinySwitch, lambda l: Events.Rambi in l.Events and l.Slam and l.tiny),
     ], [
-        Exit(Regions.BeyondRambiGate, lambda l: Events.Rambi in l.Events),
-        Exit(Regions.Cranky, lambda l: True),
+        TransitionFront(Regions.JungleJapesMain, lambda l: True),
+        TransitionFront(Regions.BeyondRambiGate, lambda l: Events.Rambi in l.Events),
+        TransitionFront(Regions.CrankyJapes, lambda l: True),
     ]),
 
-    Regions.BeyondRambiGate: Region("Beyond Rambi Gate", Levels.JungleJapes, False, [
-        Location("Japes Banana Fairy Rambi Cave", lambda l: l.camera),
+    Regions.BeyondRambiGate: Region("Beyond Rambi Gate", Levels.JungleJapes, False, -1, [
+        LocationLogic(Locations.JapesBananaFairyRambiCave, lambda l: l.camera),
     ], [
         Event(Events.JapesChunkySwitch, lambda l: l.Slam and l.ischunky),
     ], [
-        Exit(Regions.JapesBossLobby, lambda l: True),
+        TransitionFront(Regions.JapesBeyondCoconutGate2, lambda l: True),
+        TransitionFront(Regions.JapesBossLobby, lambda l: True),
     ]),
 
-    Regions.JapesLankyCave: Region("Japes Lanky Cave", Levels.JungleJapes, False, [
-        Location("Japes Lanky Fairy Cave", lambda l: l.grape and l.islanky),
-        Location("Japes Banana Fairy Lanky Cave", lambda l: l.grape and l.camera and l.islanky),
+    # Lanky Cave deathwarp: Requires you to be lanky and have simian slam so you can slam the pegs and summon zingers to kill you
+    Regions.JapesLankyCave: Region("Japes Lanky Cave", Levels.JungleJapes, False, TransitionFront(Regions.JungleJapesMain, lambda l: l.Slam and l.islanky), [
+        LocationLogic(Locations.JapesLankyFairyCave, lambda l: l.grape and l.Slam and l.islanky),
+        LocationLogic(Locations.JapesBananaFairyLankyCave, lambda l: l.grape and l.camera and l.Slam and l.islanky),
     ], [], [
-        Exit(Regions.JungleJapesMain, lambda l: True),
+        TransitionFront(Regions.JungleJapesMain, lambda l: True, Transitions.JapesLankyCaveToMain),
     ]),
 
-    Regions.Mine: Region("Mine", Levels.JungleJapes, False, [], [
+    Regions.Mine: Region("Mine", Levels.JungleJapes, False, -1, [], [
         # You're supposed to get to the switch by shooting a peanut switch,
         # but can just jump without too much trouble.
         Event(Events.JapesDiddySwitch2, lambda l: l.Slam and l.isdiddy),
     ], [
-        Exit(Regions.JungleJapesMain, lambda l: True),
-        Exit(Regions.JapesMinecarts, lambda l: l.charge and l.Slam and l.isdiddy),
+        TransitionFront(Regions.JungleJapesMain, lambda l: True, Transitions.JapesMineToMain),
+        TransitionFront(Regions.JapesMinecarts, lambda l: l.charge and l.Slam and l.isdiddy),
     ]),
 
-    Regions.JapesMinecarts: Region("Japes Minecarts", Levels.JungleJapes, False, [
-        Location("Japes Diddy Minecarts", lambda l: l.isdiddy),
-    ], [], []),
-
-    Regions.JapesCatacomb: Region("Japes Catacomb", Levels.JungleJapes, False, [
-        Location("Japes Chunky Underground", lambda l: l.pineapple and l.ischunky),
-        Location("Japes Chunky Kasplat", lambda l: l.pineapple and l.ischunky),
+    Regions.JapesMinecarts: Region("Japes Minecarts", Levels.JungleJapes, False, None, [
+        LocationLogic(Locations.JapesDiddyMinecarts, lambda l: l.isdiddy),
     ], [], [
-        Exit(Regions.JungleJapesMain, lambda l: True),
+        TransitionFront(Regions.JungleJapesMain, lambda l: True),
+    ], Transitions.JapesMineToCarts
+    ),
+
+    # Catacomb deaths lead back to itself
+    Regions.JapesCatacomb: Region("Japes Catacomb", Levels.JungleJapes, False, None, [
+        LocationLogic(Locations.JapesChunkyUnderground, lambda l: l.pineapple and l.ischunky),
+        LocationLogic(Locations.JapesChunkyKasplat, lambda l: l.pineapple and l.ischunky),
+    ], [], [
+        TransitionFront(Regions.JungleJapesMain, lambda l: True, Transitions.JapesCatacombToMain),
     ]),
 
-    Regions.JapesBossLobby: Region("Japes Boss Lobby", Levels.JungleJapes, True, [], [], [
-        # 50 bananas
-        Exit(Regions.JapesBoss, lambda l: l.isdonkey),
+    Regions.JapesBossLobby: Region("Japes Boss Lobby", Levels.JungleJapes, True, None, [], [], [
+        TransitionFront(Regions.JapesBoss, lambda l: l.isdonkey and sum(l.ColoredBananas[Levels.JungleJapes]) >= l.settings.BossBananas[Levels.JungleJapes]),
     ]),
 
-    Regions.JapesBoss: Region("Japes Boss", Levels.JungleJapes, False, [
-        Location("Japes Key", lambda l: l.isdonkey),
+    Regions.JapesBoss: Region("Japes Boss", Levels.JungleJapes, False, None, [
+        LocationLogic(Locations.JapesKey, lambda l: l.isdonkey),
     ], [], []),
 }

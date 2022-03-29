@@ -1,0 +1,9 @@
+psutil
+jinja2
+pytest
+pytest-cov
+black
+pycodestyle
+pydocstyle
+css-html-js-minify
+python-minifier

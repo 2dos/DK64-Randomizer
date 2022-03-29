@@ -10,4 +10,4 @@ class Kongs(IntEnum):
     lanky = auto()
     tiny = auto()
     chunky = auto()
-    rainbow = auto()
+    any = auto()

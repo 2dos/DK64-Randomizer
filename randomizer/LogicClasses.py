@@ -1,19 +1,18 @@
 """Contains classes used in the logic system."""
-from Enums.Kongs import Kongs
+from randomizer.Enums.Kongs import Kongs
+from randomizer.Enums.Levels import Levels
+from randomizer.Enums.Regions import Regions
+from randomizer.Enums.Transitions import Transitions
 
 
-class Location:
-    """A shufflable location at which a random item can be placed."""
+class LocationLogic:
+    """Logic for a location."""
 
-    def __init__(self, name, logic):
+    def __init__(self, id, logic, bonusBarrel=False):
         """Initialize with given parameters."""
-        self.name = name
+        self.id = id
         self.logic = logic  # Lambda function for accessibility
-        self.item = None
-
-    def PlaceItem(self, item):
-        """Place item at this location."""
-        self.item = item
+        self.bonusBarrel = bonusBarrel
 
 
 class Event:
@@ -30,38 +29,44 @@ class Event:
         self.logic = logic  # Lambda function for accessibility
 
 
-class Exit:
-    """Exit from one region to another."""
-
-    def __init__(self, dest, logic):
-        """Initialize with given parameters."""
-        self.dest = dest
-        self.logic = logic  # Lambda function for accessibility
-
-
 class Collectible:
     """Class used for colored bananas and banana coins."""
 
-    def __init__(self, type, kong, logic, amount=1):
+    def __init__(self, type, kong, logic, coords, amount=1):
         """Initialize with given parameters."""
         self.type = type
         self.kong = kong
         self.logic = logic
         self.amount = amount
+        self.coords = coords
         self.added = False
 
 
 class Region:
-    """Region contains shufflable locations, events, and exits to other regions."""
+    """Region contains shufflable locations, events, and transitions to other regions."""
 
-    def __init__(self, name, level, tagbarrel, locations, events, exits):
+    def __init__(self, name, level, tagbarrel, deathwarp, locations, events, transitionFronts, restart=None):
         """Initialize with given parameters."""
         self.name = name
         self.level = level
         self.tagbarrel = tagbarrel
         self.locations = locations
         self.events = events
-        self.exits = exits
+        self.exits = transitionFronts  # In the context of a region, exits are how you leave the region
+        self.restart = restart
+
+        # If possible to die in this region, add an exit to where dying will take you
+        # deathwarp is also set to none in regions in which a deathwarp would take you to itself
+        # Or if there is loading-zone-less free access to the region it would take you to already
+        if deathwarp is not None:
+            # If deathwarp is itself an exit class (necessary when deathwarp requires custom logic) just add it directly
+            if isinstance(deathwarp, TransitionFront):
+                self.exits.append(deathwarp)
+            else:
+                # If deathwarp is -1, indicates to use the default value for it, which is the starting area of the level
+                if deathwarp == -1:
+                    deathwarp = self.GetDefaultDeathwarp()
+                self.exits.append(TransitionFront(deathwarp, lambda l: True))
 
         # Initially assume no access from any kong
         self.ResetAccess()
@@ -108,8 +113,10 @@ class Region:
             return self.lankyAccess
         elif kong == Kongs.tiny:
             return self.tinyAccess
-        else:
+        elif kong == Kongs.chunky:
             return self.chunkyAccess
+        else:  # kongs == Kongs.any, just need to check if any kong has access
+            return self.donkeyAccess or self.diddyAccess or self.lankyAccess or self.tinyAccess or self.chunkyAccess
 
     def ResetAccess(self):
         """Clear access for all kongs."""
@@ -119,6 +126,44 @@ class Region:
         self.tinyAccess = False
         self.chunkyAccess = False
 
-    def GetLocation(self, location):
-        """Get a specific location from this region given its name."""
-        return [x for x in self.locations if x.name == location][0]
+    def GetDefaultDeathwarp(self):
+        """Get the default deathwarp depending on the region's level."""
+        if self.level == Levels.DKIsles:
+            return Regions.IslesMain
+        elif self.level == Levels.JungleJapes:
+            return Regions.JungleJapesMain
+        elif self.level == Levels.AngryAztec:
+            return Regions.AngryAztecStart
+        elif self.level == Levels.FranticFactory:
+            return Regions.FranticFactoryStart
+        elif self.level == Levels.GloomyGalleon:
+            return Regions.GloomyGalleonStart
+        elif self.level == Levels.FungiForest:
+            return Regions.FungiForestStart
+        elif self.level == Levels.CrystalCaves:
+            return Regions.CrystalCavesMain
+        elif self.level == Levels.CreepyCastle:
+            return Regions.CreepyCastleMain
+        elif self.level == Levels.HideoutHelm:
+            return Regions.HideoutHelmStart
+
+
+class TransitionBack:
+    """The exited side of a transition between regions."""
+
+    def __init__(self, regionId, exitName, reverse=None):
+        """Initialize with given parameters."""
+        self.regionId = regionId  # Destination region
+        self.name = exitName
+        self.reverse = reverse  # Indicates a reverse direction transition, if one exists
+
+
+class TransitionFront:
+    """The entered side of a transition between regions."""
+
+    def __init__(self, dest, logic, exitShuffleId=None, assumed=False):
+        """Initialize with given parameters."""
+        self.dest = dest  # Planning to remove this
+        self.logic = logic  # Lambda function for accessibility
+        self.exitShuffleId = exitShuffleId  # Planning to remove this
+        self.assumed = assumed  # Indicates this is an assumed exit attached to the root

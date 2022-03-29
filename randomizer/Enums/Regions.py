@@ -6,7 +6,8 @@ class Regions(IntEnum):
     """Region enum."""
 
     # DK Isles Regions
-    Start = auto()
+    Treehouse = auto()
+    StartArea = auto()
     IslesMain = auto()
     Prison = auto()
     BananaFairyRoom = auto()
@@ -37,6 +38,7 @@ class Regions(IntEnum):
     JapesCatacomb = auto()
     JapesBossLobby = auto()
     JapesBoss = auto()
+    JapesBaboonBlast = auto()
 
     # Angry Aztec Regions
     AngryAztecStart = auto()
@@ -53,11 +55,13 @@ class Regions(IntEnum):
     LlamaTempleBack = auto()
     AztecBossLobby = auto()
     AztecBoss = auto()
+    AztecBaboonBlast = auto()
 
     # Frantic Factory Regions
     FranticFactoryStart = auto()
     Testing = auto()
     RandD = auto()
+    FactoryTinyRaceLobby = auto()
     FactoryTinyRace = auto()
     ChunkyRoomPlatform = auto()
     PowerHut = auto()
@@ -66,6 +70,7 @@ class Regions(IntEnum):
     MainCore = auto()
     FactoryBossLobby = auto()
     FactoryBoss = auto()
+    FactoryBaboonBlast = auto()
 
     # Gloomy Galleon Regions
     GloomyGalleonStart = auto()
@@ -89,6 +94,7 @@ class Regions(IntEnum):
     TriangleShip = auto()
     GalleonBossLobby = auto()
     GalleonBoss = auto()
+    GalleonBaboonBlast = auto()
 
     # Fungi Forest Regions
     FungiForestStart = auto()
@@ -111,13 +117,14 @@ class Regions(IntEnum):
     SpiderRoom = auto()
     GrinderRoom = auto()
     MillRafters = auto()
-    WenchRoom = auto()
+    WinchRoom = auto()
     MillAttic = auto()
     ThornvineArea = auto()
-    ThornvineHut = auto()
+    ThornvineBarn = auto()
     WormArea = auto()
     ForestBossLobby = auto()
     ForestBoss = auto()
+    ForestBaboonBlast = auto()
 
     # Crystal Caves Regions
     CrystalCavesMain = auto()
@@ -141,6 +148,7 @@ class Regions(IntEnum):
     ChunkyCabin = auto()
     CavesBossLobby = auto()
     CavesBoss = auto()
+    CavesBaboonBlast = auto()
 
     # Creepy Castle Regions
     CreepyCastleMain = auto()
@@ -148,6 +156,7 @@ class Regions(IntEnum):
     CastleTree = auto()
     Library = auto()
     Ballroom = auto()
+    MuseumBehindGlass = auto()
     CastleTinyRace = auto()
     Tower = auto()
     Greenhouse = auto()
@@ -162,13 +171,33 @@ class Regions(IntEnum):
     Dungeon = auto()
     CastleBossLobby = auto()
     CastleBoss = auto()
+    CastleBaboonBlast = auto()
 
     # Hideout Helm Regions
     HideoutHelmStart = auto()
     HideoutHelmMain = auto()
 
     # Shop Regions
-    Funky = auto()
-    Candy = auto()
-    Cranky = auto()
+    FunkyGeneric = auto()
+    FunkyJapes = auto()
+    FunkyAztec = auto()
+    FunkyFactory = auto()
+    FunkyGalleon = auto()
+    FunkyForest = auto()
+    FunkyCaves = auto()
+    FunkyCastle = auto()
+    CandyGeneric = auto()
+    CandyAztec = auto()
+    CandyFactory = auto()
+    CandyGalleon = auto()
+    CandyCaves = auto()
+    CandyCastle = auto()
+    CrankyGeneric = auto()
+    CrankyJapes = auto()
+    CrankyAztec = auto()
+    CrankyFactory = auto()
+    CrankyGalleon = auto()
+    CrankyForest = auto()
+    CrankyCaves = auto()
+    CrankyCastle = auto()
     Snide = auto()

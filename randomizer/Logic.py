@@ -1,37 +1,40 @@
 """Contains the class which holds logic variables, and the master copy of regions."""
-from Enums.Items import Items
-from Enums.Events import Events
-from Enums.Levels import Levels
-from Enums.Kongs import Kongs
-from Enums.Collectibles import Collectibles
-
-import LogicFiles.DKIsles
-import LogicFiles.JungleJapes
-import LogicFiles.AngryAztec
-import LogicFiles.FranticFactory
-import LogicFiles.GloomyGalleon
-import LogicFiles.FungiForest
-import LogicFiles.CrystalCaves
-import LogicFiles.CreepyCastle
-import LogicFiles.HideoutHelm
-import LogicFiles.Shops
-
-import CollectibleLogicFiles.DKIsles
-import CollectibleLogicFiles.JungleJapes
-import CollectibleLogicFiles.AngryAztec
-import CollectibleLogicFiles.FranticFactory
-import CollectibleLogicFiles.GloomyGalleon
-import CollectibleLogicFiles.FungiForest
-import CollectibleLogicFiles.CrystalCaves
-import CollectibleLogicFiles.CreepyCastle
+import randomizer.CollectibleLogicFiles.AngryAztec
+import randomizer.CollectibleLogicFiles.CreepyCastle
+import randomizer.CollectibleLogicFiles.CrystalCaves
+import randomizer.CollectibleLogicFiles.DKIsles
+import randomizer.CollectibleLogicFiles.FranticFactory
+import randomizer.CollectibleLogicFiles.FungiForest
+import randomizer.CollectibleLogicFiles.GloomyGalleon
+import randomizer.CollectibleLogicFiles.JungleJapes
+import randomizer.LogicFiles.AngryAztec
+import randomizer.LogicFiles.CreepyCastle
+import randomizer.LogicFiles.CrystalCaves
+import randomizer.LogicFiles.DKIsles
+import randomizer.LogicFiles.FranticFactory
+import randomizer.LogicFiles.FungiForest
+import randomizer.LogicFiles.GloomyGalleon
+import randomizer.LogicFiles.HideoutHelm
+import randomizer.LogicFiles.JungleJapes
+import randomizer.LogicFiles.Shops
+from randomizer.Enums.Collectibles import Collectibles
+from randomizer.Enums.Events import Events
+from randomizer.Enums.Items import Items
+from randomizer.Enums.Kongs import Kongs
+from randomizer.Enums.Levels import Levels
+from randomizer.Lists.Location import LocationList
+from randomizer.Prices import CanBuy
 
 
 class LogicVarHolder:
     """Used to store variables when checking logic conditions."""
 
-    def __init__(self, startkong):
+    def __init__(self, settings=None):
         """Initialize with given parameters."""
-        self.startkong = startkong
+        if settings is None:
+            return
+        self.settings = settings
+        self.startkong = self.settings.starting_kong
         self.Reset()
 
     def Reset(self):
@@ -39,50 +42,63 @@ class LogicVarHolder:
 
         Done between reachability searches and upon initialization.
         """
-        self.donkey = self.startkong == Kongs.donkey
-        self.diddy = self.startkong == Kongs.diddy
-        self.lanky = self.startkong == Kongs.lanky
-        self.tiny = self.startkong == Kongs.tiny
-        self.chunky = self.startkong == Kongs.chunky
+        self.donkey = self.startkong == Kongs.donkey or self.settings.unlock_all_kongs
+        self.diddy = self.startkong == Kongs.diddy or self.settings.unlock_all_kongs
+        self.lanky = self.startkong == Kongs.lanky or self.settings.unlock_all_kongs
+        self.tiny = self.startkong == Kongs.tiny or self.settings.unlock_all_kongs
+        self.chunky = self.startkong == Kongs.chunky or self.settings.unlock_all_kongs
 
-        self.vines = False
-        self.swim = False
-        self.oranges = False
-        self.barrels = False
+        # Right now assuming start with training barrels
+        self.vines = True  # self.settings.training_barrels == "startwith"
+        self.swim = True  # self.settings.training_barrels == "startwith"
+        self.oranges = True  # self.settings.training_barrels == "startwith"
+        self.barrels = True  # self.settings.training_barrels == "startwith"
 
-        self.blast = False
-        self.strongKong = False
-        self.grab = False
-        self.charge = False
-        self.jetpack = False
-        self.spring = False
-        self.handstand = False
-        self.balloon = False
-        self.sprint = False
-        self.mini = False
-        self.twirl = False
-        self.monkeyport = False
-        self.hunkyChunky = False
-        self.punch = False
-        self.gorillaGone = False
+        self.progDonkey = 3 if self.settings.unlock_all_moves else 0
+        self.blast = self.settings.unlock_all_moves
+        self.strongKong = self.settings.unlock_all_moves
+        self.grab = self.settings.unlock_all_moves
 
-        self.coconut = False
-        self.peanut = False
-        self.grape = False
-        self.feather = False
-        self.pineapple = False
+        self.progDiddy = 3 if self.settings.unlock_all_moves else 0
+        self.charge = self.settings.unlock_all_moves
+        self.jetpack = self.settings.unlock_all_moves
+        self.spring = self.settings.unlock_all_moves
 
-        self.bongos = False
-        self.guitar = False
-        self.trombone = False
-        self.saxophone = False
-        self.triangle = False
+        self.progLanky = 3 if self.settings.unlock_all_moves else 0
+        self.handstand = self.settings.unlock_all_moves
+        self.balloon = self.settings.unlock_all_moves
+        self.sprint = self.settings.unlock_all_moves
+
+        self.progTiny = 3 if self.settings.unlock_all_moves else 0
+        self.mini = self.settings.unlock_all_moves
+        self.twirl = self.settings.unlock_all_moves
+        self.monkeyport = self.settings.unlock_all_moves
+
+        self.progChunky = 3 if self.settings.unlock_all_moves else 0
+        self.hunkyChunky = self.settings.unlock_all_moves
+        self.punch = self.settings.unlock_all_moves
+        self.gorillaGone = self.settings.unlock_all_moves
+
+        self.coconut = self.settings.unlock_all_moves
+        self.peanut = self.settings.unlock_all_moves
+        self.grape = self.settings.unlock_all_moves
+        self.feather = self.settings.unlock_all_moves
+        self.pineapple = self.settings.unlock_all_moves
+
+        self.bongos = self.settings.unlock_all_moves
+        self.guitar = self.settings.unlock_all_moves
+        self.trombone = self.settings.unlock_all_moves
+        self.saxophone = self.settings.unlock_all_moves
+        self.triangle = self.settings.unlock_all_moves
 
         self.nintendoCoin = False
         self.rarewareCoin = False
 
-        self.camera = False
-        self.shockwave = False
+        self.camera = self.settings.unlock_fairy_shockwave
+        self.shockwave = self.settings.unlock_fairy_shockwave
+
+        self.scope = False  # Start with moves doesn't give scope
+        self.homing = self.settings.unlock_all_moves
 
         self.JapesKey = False
         self.AztecKey = False
@@ -93,24 +109,35 @@ class LogicVarHolder:
         self.CastleKey = False
         self.HelmKey = False
 
-        self.Slam = 0
+        self.HelmDonkey1 = False
+        self.HelmDonkey2 = False
+        self.HelmDiddy1 = False
+        self.HelmDiddy2 = False
+        self.HelmLanky1 = False
+        self.HelmLanky2 = False
+        self.HelmTiny1 = False
+        self.HelmTiny2 = False
+        self.HelmChunky1 = False
+        self.HelmChunky2 = False
+
+        self.Slam = 3 if self.settings.unlock_all_moves else 1  # Right now assuming start with slam
         self.GoldenBananas = 0
         self.BananaFairies = 0
         self.BananaMedals = 0
         self.BattleCrowns = 0
 
-        self.superSlam = False
-        self.superDuperSlam = False
+        self.superSlam = self.settings.unlock_all_moves
+        self.superDuperSlam = self.settings.unlock_all_moves
 
         self.Blueprints = []
 
         self.Events = []
 
         # Colored banana and coin arrays
-        # Colored bananas as 8 arrays of 5, only need 7 but leave room for DK Isles since we use the enum
-        self.coloredBananas = []
-        for i in range(8):
-            self.coloredBananas.append([0] * 5)
+        # Colored bananas as 7 arrays of 5 (7 levels for 5 kongs)
+        self.ColoredBananas = []
+        for i in range(7):
+            self.ColoredBananas.append([0] * 5)
         self.Coins = [0] * 5
 
         # These access variables based on current region
@@ -138,21 +165,30 @@ class LogicVarHolder:
         self.oranges = self.oranges or Items.Oranges in ownedItems
         self.barrels = self.barrels or Items.Barrels in ownedItems
 
-        self.blast = self.blast or Items.BaboonBlast in ownedItems and self.donkey
-        self.strongKong = self.strongKong or Items.StrongKong in ownedItems and self.donkey
-        self.grab = self.grab or Items.GorillaGrab in ownedItems and self.donkey
-        self.charge = self.charge or Items.ChimpyCharge in ownedItems and self.diddy
-        self.jetpack = self.jetpack or Items.RocketbarrelBoost in ownedItems and self.diddy
-        self.spring = self.spring or Items.SimianSpring in ownedItems and self.diddy
-        self.handstand = self.handstand or Items.Orangstand in ownedItems and self.lanky
-        self.balloon = self.balloon or Items.BaboonBalloon in ownedItems and self.lanky
-        self.sprint = self.sprint or Items.OrangstandSprint in ownedItems and self.lanky
-        self.mini = self.mini or Items.MiniMonkey in ownedItems and self.tiny
-        self.twirl = self.twirl or Items.PonyTailTwirl in ownedItems and self.tiny
-        self.monkeyport = self.monkeyport or Items.Monkeyport in ownedItems and self.tiny
-        self.hunkyChunky = self.hunkyChunky or Items.HunkyChunky in ownedItems and self.chunky
-        self.punch = self.punch or Items.PrimatePunch in ownedItems and self.chunky
-        self.gorillaGone = self.gorillaGone or Items.GorillaGone in ownedItems and self.chunky
+        self.progDonkey = sum(1 for x in ownedItems if x == Items.ProgressiveDonkeyPotion)
+        self.blast = self.blast or (Items.BaboonBlast in ownedItems or self.progDonkey >= 1) and self.donkey
+        self.strongKong = self.strongKong or (Items.StrongKong in ownedItems or self.progDonkey >= 2) and self.donkey
+        self.grab = self.grab or (Items.GorillaGrab in ownedItems or self.progDonkey >= 3) and self.donkey
+
+        self.progDiddy = sum(1 for x in ownedItems if x == Items.ProgressiveDiddyPotion)
+        self.charge = self.charge or (Items.ChimpyCharge in ownedItems or self.progDiddy >= 1) and self.diddy
+        self.jetpack = self.jetpack or (Items.RocketbarrelBoost in ownedItems or self.progDiddy >= 2) and self.diddy
+        self.spring = self.spring or (Items.SimianSpring in ownedItems or self.progDiddy >= 3) and self.diddy
+
+        self.progLanky = sum(1 for x in ownedItems if x == Items.ProgressiveLankyPotion)
+        self.handstand = self.handstand or (Items.Orangstand in ownedItems or self.progLanky >= 1) and self.lanky
+        self.balloon = self.balloon or (Items.BaboonBalloon in ownedItems or self.progLanky >= 2) and self.lanky
+        self.sprint = self.sprint or (Items.OrangstandSprint in ownedItems or self.progLanky >= 3) and self.lanky
+
+        self.progTiny = sum(1 for x in ownedItems if x == Items.ProgressiveTinyPotion)
+        self.mini = self.mini or (Items.MiniMonkey in ownedItems or self.progTiny >= 1) and self.tiny
+        self.twirl = self.twirl or (Items.PonyTailTwirl in ownedItems or self.progTiny >= 2) and self.tiny
+        self.monkeyport = self.monkeyport or (Items.Monkeyport in ownedItems or self.progTiny >= 3) and self.tiny
+
+        self.progChunky = sum(1 for x in ownedItems if x == Items.ProgressiveChunkyPotion)
+        self.hunkyChunky = self.hunkyChunky or (Items.HunkyChunky in ownedItems or self.progChunky >= 1) and self.chunky
+        self.punch = self.punch or (Items.PrimatePunch in ownedItems or self.progChunky >= 2) and self.chunky
+        self.gorillaGone = self.gorillaGone or (Items.GorillaGone in ownedItems or self.progChunky >= 3) and self.chunky
 
         self.coconut = self.coconut or Items.Coconut in ownedItems and self.donkey
         self.peanut = self.peanut or Items.Peanut in ownedItems and self.diddy
@@ -178,7 +214,18 @@ class LogicVarHolder:
         self.CastleKey = self.CastleKey or Items.CreepyCastleKey in ownedItems
         self.HelmKey = self.HelmKey or Items.HideoutHelmKey in ownedItems
 
-        self.Slam = sum(1 for x in ownedItems if x == Items.ProgressiveSlam)
+        self.HelmDonkey1 = self.HelmDonkey1 or Items.HelmDonkey1 in ownedItems
+        self.HelmDonkey2 = self.HelmDonkey2 or Items.HelmDonkey2 in ownedItems
+        self.HelmDiddy1 = self.HelmDiddy1 or Items.HelmDiddy1 in ownedItems
+        self.HelmDiddy2 = self.HelmDiddy2 or Items.HelmDiddy2 in ownedItems
+        self.HelmLanky1 = self.HelmLanky1 or Items.HelmLanky1 in ownedItems
+        self.HelmLanky2 = self.HelmLanky2 or Items.HelmLanky2 in ownedItems
+        self.HelmTiny1 = self.HelmTiny1 or Items.HelmTiny1 in ownedItems
+        self.HelmTiny2 = self.HelmTiny2 or Items.HelmTiny2 in ownedItems
+        self.HelmChunky1 = self.HelmChunky1 or Items.HelmChunky1 in ownedItems
+        self.HelmChunky2 = self.HelmChunky2 or Items.HelmChunky2 in ownedItems
+
+        self.Slam = 3 if self.settings.unlock_all_moves else sum(1 for x in ownedItems if x == Items.ProgressiveSlam)
         self.GoldenBananas = sum(1 for x in ownedItems if x == Items.GoldenBanana)
         self.BananaFairies = sum(1 for x in ownedItems if x == Items.BananaFairy)
         self.BananaMedals = sum(1 for x in ownedItems if x == Items.BananaMedal)
@@ -186,6 +233,9 @@ class LogicVarHolder:
 
         self.camera = self.camera or Items.CameraAndShockwave in ownedItems
         self.shockwave = self.shockwave or Items.CameraAndShockwave in ownedItems
+
+        self.scope = self.scope or Items.SniperSight in ownedItems
+        self.homing = self.homing or Items.HomingAmmo in ownedItems
 
         self.superSlam = self.Slam >= 2
         self.superDuperSlam = self.Slam >= 3
@@ -236,7 +286,7 @@ class LogicVarHolder:
             return self.istiny
         if kong == Kongs.chunky:
             return self.ischunky
-        if kong == Kongs.rainbow:
+        if kong == Kongs.any:
             return True
 
     def UpdateCurrentRegionAccess(self, region):
@@ -269,7 +319,7 @@ class LogicVarHolder:
         """Add a collectible."""
         if collectible.type == Collectibles.coin:
             # Rainbow coin, add 5 coins for each kong
-            if collectible.kong == Kongs.rainbow:
+            if collectible.kong == Kongs.any:
                 for i in range(5):
                     self.Coins[i] += 5
             # Normal coins, add amount for the kong
@@ -277,39 +327,52 @@ class LogicVarHolder:
                 self.Coins[collectible.kong] += collectible.amount
         # Add bananas for correct level for this kong
         elif collectible.type == Collectibles.banana:
-            self.coloredBananas[level][collectible.kong] += collectible.amount
+            self.ColoredBananas[level][collectible.kong] += collectible.amount
+        # Add 5 times amount of banana bunches
+        elif collectible.type == Collectibles.bunch:
+            self.ColoredBananas[level][collectible.kong] += collectible.amount * 5
         # Add 10 bananas for a balloon
         elif collectible.type == Collectibles.balloon:
-            self.coloredBananas[level][collectible.kong] += 10
+            self.ColoredBananas[level][collectible.kong] += 10
         collectible.added = True
 
+    def HasAccess(self, region, kong):
+        """Check if a certain kong has access to a certain region.
 
-# Initialize logic variables, for now assume start with donkey
-LogicVariables = LogicVarHolder(Kongs.donkey)
+        Usually the region's own HasAccess function is used, but this is necessary for checking access for other regions in logic files.
+        """
+        return Regions[region].HasAccess(kong)
+
+    def CanBuy(self, location):
+        """Check if there are enough coins to purchase this location."""
+        return CanBuy(location, self.Coins, self.settings)
+
+
+LogicVariables = LogicVarHolder()
 
 # Import regions from logic files
 Regions = {}
-Regions.update(LogicFiles.DKIsles.LogicRegions)
-Regions.update(LogicFiles.JungleJapes.LogicRegions)
-Regions.update(LogicFiles.AngryAztec.LogicRegions)
-Regions.update(LogicFiles.FranticFactory.LogicRegions)
-Regions.update(LogicFiles.GloomyGalleon.LogicRegions)
-Regions.update(LogicFiles.FungiForest.LogicRegions)
-Regions.update(LogicFiles.CrystalCaves.LogicRegions)
-Regions.update(LogicFiles.CreepyCastle.LogicRegions)
-Regions.update(LogicFiles.HideoutHelm.LogicRegions)
-Regions.update(LogicFiles.Shops.LogicRegions)
+Regions.update(randomizer.LogicFiles.DKIsles.LogicRegions)
+Regions.update(randomizer.LogicFiles.JungleJapes.LogicRegions)
+Regions.update(randomizer.LogicFiles.AngryAztec.LogicRegions)
+Regions.update(randomizer.LogicFiles.FranticFactory.LogicRegions)
+Regions.update(randomizer.LogicFiles.GloomyGalleon.LogicRegions)
+Regions.update(randomizer.LogicFiles.FungiForest.LogicRegions)
+Regions.update(randomizer.LogicFiles.CrystalCaves.LogicRegions)
+Regions.update(randomizer.LogicFiles.CreepyCastle.LogicRegions)
+Regions.update(randomizer.LogicFiles.HideoutHelm.LogicRegions)
+Regions.update(randomizer.LogicFiles.Shops.LogicRegions)
 
 # Auxillary regions for colored bananas and banana coins
 CollectibleRegions = {}
-CollectibleRegions.update(CollectibleLogicFiles.DKIsles.LogicRegions)
-CollectibleRegions.update(CollectibleLogicFiles.JungleJapes.LogicRegions)
-CollectibleRegions.update(CollectibleLogicFiles.AngryAztec.LogicRegions)
-CollectibleRegions.update(CollectibleLogicFiles.FranticFactory.LogicRegions)
-CollectibleRegions.update(CollectibleLogicFiles.GloomyGalleon.LogicRegions)
-CollectibleRegions.update(CollectibleLogicFiles.FungiForest.LogicRegions)
-CollectibleRegions.update(CollectibleLogicFiles.CrystalCaves.LogicRegions)
-CollectibleRegions.update(CollectibleLogicFiles.CreepyCastle.LogicRegions)
+CollectibleRegions.update(randomizer.CollectibleLogicFiles.DKIsles.LogicRegions)
+CollectibleRegions.update(randomizer.CollectibleLogicFiles.JungleJapes.LogicRegions)
+CollectibleRegions.update(randomizer.CollectibleLogicFiles.AngryAztec.LogicRegions)
+CollectibleRegions.update(randomizer.CollectibleLogicFiles.FranticFactory.LogicRegions)
+CollectibleRegions.update(randomizer.CollectibleLogicFiles.GloomyGalleon.LogicRegions)
+CollectibleRegions.update(randomizer.CollectibleLogicFiles.FungiForest.LogicRegions)
+CollectibleRegions.update(randomizer.CollectibleLogicFiles.CrystalCaves.LogicRegions)
+CollectibleRegions.update(randomizer.CollectibleLogicFiles.CreepyCastle.LogicRegions)
 
 
 def ResetRegionAccess():
@@ -325,14 +388,7 @@ def ResetCollectibleRegions():
             collectible.added = False
 
 
-def UpdateAllRegionsAccess(tempRegions):
-    """Update access of master regions list from a temp list of regions."""
-    for (key, value) in Regions.items():
-        value.UpdateAccessFromRegion(tempRegions[key])
-
-
-def UpdateCollectiblesAdded(tempRegions):
-    """Update which collectibles have been added."""
-    for (key, value) in CollectibleRegions.items():
-        for i in range(len(value)):
-            value[i].added = tempRegions[key][i].added
+def ClearAllLocations():
+    """Clear item from every location."""
+    for location in LocationList.values():
+        location.item = None
