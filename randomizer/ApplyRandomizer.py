@@ -221,8 +221,8 @@ def patching_response(responded_data):
     order = 0
     for count in hash_images:
         ROM().seek(sav + 0x11A + order)
-        ROM().writeMultipleBytes(count, 2)
-        order += 2
+        ROM().write(count)
+        order += 1
 
     ProgressBar().update_progress(10, "Seed Generated.")
     ROM().fixSecurityValue()
