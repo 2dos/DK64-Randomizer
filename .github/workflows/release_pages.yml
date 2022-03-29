@@ -24,6 +24,9 @@ jobs:
 
     - name: Move Files
       run: mkdir ./deploy-directory && mv -f ./* ./deploy-directory/ || true
+    
+    - name: Pre Write Files
+      run: echo 'This repo Dev Github Pages for DK64Rando, you need to go to https://github.com/2dos/DK64-Randomizer' > ./deploy-directory/README.md && echo 'dev.dk64randomizer.com' > ./deploy-directory/CNAME && touch ./deploy-directory/.nojekyll
 
     - name: Deploy to Github Pages
       uses: hpcodecraft/action-deploy-workspace-to-repo@v2.2
@@ -34,4 +37,4 @@ jobs:
         DEST_REPO: DK64-Randomizer-Dev
         DEST_BRANCH: main
         DEST_FOLDER: ./
-        DEST_PREDEPLOY_CLEANUP: rm -rf ./* && echo 'This repo Dev Github Pages for DK64Rando, you need to go to https://github.com/2dos/DK64-Randomizer' > README.md && echo 'dev.dk64randomizer.com' > CNAME && touch .nojekyll
+        DEST_PREDEPLOY_CLEANUP: rm -rf ./*
