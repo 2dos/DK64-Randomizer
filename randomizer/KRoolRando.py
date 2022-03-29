@@ -6,6 +6,7 @@ from randomizer.MapsAndExits import Maps
 from randomizer.Patcher import ROM
 from randomizer.Spoiler import Spoiler
 
+
 def randomize_krool(spoiler: Spoiler):
     """Apply K Rool Phase order based on krool_order from spoiler."""
     varspaceOffset = 0x1FED020  # TODO: Define this as constant in a more global place
@@ -14,18 +15,12 @@ def randomize_krool(spoiler: Spoiler):
     ROM().seek(varspaceOffset + kroolOffset)
     phaseCount = len(spoiler.settings.krool_order)
     ROM().writeBytes(bytearray(spoiler.settings.krool_order))
-    for i in range(5-phaseCount):
+    for i in range(5 - phaseCount):
         ROM().write(-1)
-    
+
     firstPhase = spoiler.settings.krool_order[0]
-    if firstPhase != 0:  #If not starting with DK
-        KroolPhaseMaps = [
-            Maps.KroolDonkeyPhase,
-            Maps.KroolDiddyPhase,
-            Maps.KroolLankyPhase,
-            Maps.KroolTinyPhase,
-            Maps.KroolChunkyPhase
-        ]
+    if firstPhase != 0:  # If not starting with DK
+        KroolPhaseMaps = [Maps.KroolDonkeyPhase, Maps.KroolDiddyPhase, Maps.KroolLankyPhase, Maps.KroolTinyPhase, Maps.KroolChunkyPhase]
         # Get new first phase map to write
         firstPhaseMap = KroolPhaseMaps[firstPhase]
 
