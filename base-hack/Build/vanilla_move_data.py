@@ -1,3 +1,4 @@
+"""Get vanilla move data."""
 from typing import BinaryIO
 
 special_move_prices = [3, 5, 7]
@@ -19,6 +20,7 @@ space_offset = 0x1FED020
 
 
 def writeVanillaMoveData(fh):
+    """Write vanilla move data."""
     fh.seek(space_offset + price_offset)
     for x in range(5):
         fh.write(bytearray(special_move_prices))

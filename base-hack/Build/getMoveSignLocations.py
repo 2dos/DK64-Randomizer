@@ -1,3 +1,4 @@
+"""Get move sign data."""
 import struct
 
 sign_data = [
@@ -63,10 +64,12 @@ def float_to_hex(f):
 
 
 def convertCoord(f):
+    """Convert a cord to an int."""
     return int(float_to_hex(f), 16)
 
 
 def getMoveSignData(map_index, base_stream):
+    """Get current move sign data."""
     sign_arr = []
     for map_data in sign_data:
         if map_data["map_index"] == map_index:

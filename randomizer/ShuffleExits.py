@@ -207,6 +207,7 @@ def ExitShuffle(settings):
 
 
 def UpdateLevelProgression(settings: Settings):
+    """Update level progression."""
     newEntryGBs = settings.EntryGBs.copy()
     newBossBananas = settings.BossBananas.copy()
     lobbies = [

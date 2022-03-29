@@ -4,6 +4,7 @@ from randomizer.Spoiler import Spoiler
 
 
 def randomize_barrels(spoiler: Spoiler):
+    """Randomize barrel locations."""
     barrel_replacements = [
         {
             "containing_map": 0x26,

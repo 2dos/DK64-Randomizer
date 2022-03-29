@@ -1,8 +1,10 @@
+"""Rando write bananaport locations."""
 from randomizer.Patcher import ROM
 from randomizer.Spoiler import Spoiler
 
 
 def randomize_bananaport(spoiler: Spoiler):
+    """Rando write bananaport locations."""
     bananaport_replacements = [
         {
             "containing_map": 0x14,

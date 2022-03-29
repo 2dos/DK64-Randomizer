@@ -40,6 +40,7 @@ def lanky_file_changed(event):
 
 @bind("click", "generate_lanky_seed")
 def generate_seed_from_patch(event):
+    """Generate a seed from a patch file."""
     # Check if the rom filebox has a file loaded in it.
     if len(str(js.document.getElementById("input-file-rom").value).strip()) == 0 or "is-valid" not in list(js.document.getElementById("input-file-rom").classList):
         js.document.getElementById("input-file-rom").select()
