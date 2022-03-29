@@ -180,22 +180,23 @@ class Settings:
         self.krool_chunky = True
 
         phases = ["donkey", "diddy", "lanky", "tiny"]
+        if self.random_krool_phase_order:
+            random.shuffle(phases)
         phases = random.sample(phases, self.krool_phase_count - 1)
         orderedPhases = []
-        if "donkey" in phases:
-            self.krool_donkey = True
-            orderedPhases.append(0)
-        if "diddy" in phases:
-            self.krool_diddy = True
-            orderedPhases.append(1)
-        if "lanky" in phases:
-            self.krool_lanky = True
-            orderedPhases.append(2)
-        if "tiny" in phases:
-            self.krool_tiny = True
-            orderedPhases.append(3)
-        if self.random_krool_phase_order:
-            random.shuffle(orderedPhases)
+        for kong in phases:
+            if kong == "donkey":
+                self.krool_donkey = True
+                orderedPhases.append(0)
+            if kong == "diddy":
+                self.krool_diddy = True
+                orderedPhases.append(1)
+            if kong == "lanky":
+                self.krool_lanky = True
+                orderedPhases.append(2)
+            if kong == "tiny":
+                self.krool_tiny = True
+                orderedPhases.append(3)
         orderedPhases.append(4)
         self.krool_order = orderedPhases
 
