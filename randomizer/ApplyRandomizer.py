@@ -46,7 +46,10 @@ def patching_response(responded_data):
     Settings({"seed": 0}).compare_hash(spoiler.settings.public_hash)
     # Make sure we re-load the seed id
     spoiler.settings.set_seed()
+    if spoiler.settings.download_patch_file:
+        spoiler.settings.download_patch_file = False
 
+        js.save_text_as_file(codecs.encode(pickle.dumps(spoiler), "base64").decode(), f"dk64-{spoiler.settings.seed_id}.lanky")
     # Starting index for our settings
     sav = 0x1FED020
 

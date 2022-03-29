@@ -83,7 +83,7 @@ class Settings:
     def generate_main(self):
         """Set Default items on main page."""
         self.seed = None
-        self.download_json = None
+        self.download_patch_file = None
         self.bonus_barrel_rando = None
         self.shuffle_levels = None
         self.loading_zone_rando = None
