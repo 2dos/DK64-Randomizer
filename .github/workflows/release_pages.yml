@@ -21,14 +21,17 @@ jobs:
 
     # - name: Build minified versions
     #   run: python3 ./tools/prepare_offline.py
-  
-    - name: Deploy To GHPages
-      uses: manzoorwanijk/action-deploy-to-repo@master
-      with:
-        src_dir: /
-        target_owner: 2dos
-        target_repo: DK64-Randomizer-Dev
-        target_dir: /
-        target_branch: main
-        access_token: ${{ secrets.ACCESS_TOKEN }}
-        precommit_command: "echo 'This repo Dev Github Pages for DK64Rando, you need to go to https://github.com/2dos/DK64-Randomizer' > README.md && echo 'dev.dk64randomizer.com' > CNAME && touch .nojekyll"
+
+    - name: Move Files
+      run: mkdir ./deploy-directory && mv -f ./* ./deploy-directory/ || true
+
+    - name: Deploy to Github Pages
+      uses: hpcodecraft/action-deploy-workspace-to-repo@v2.2
+      env:
+        GITHUB_ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
+        SRC_FOLDER: ./deploy-directory
+        DEST_OWNER: 2dos
+        DEST_REPO: DK64-Randomizer-Dev
+        DEST_BRANCH: main
+        DEST_FOLDER: ./
+        DEST_PREDEPLOY_CLEANUP: rm -rf ./* && echo 'This repo Dev Github Pages for DK64Rando, you need to go to https://github.com/2dos/DK64-Randomizer' > README.md && echo 'dev.dk64randomizer.com' > CNAME && touch .nojekyll
