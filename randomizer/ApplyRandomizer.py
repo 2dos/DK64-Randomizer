@@ -1,5 +1,4 @@
 """Apply Patch data to the ROM."""
-from cmath import phase
 import codecs
 import json
 import pickle
