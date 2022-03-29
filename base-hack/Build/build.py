@@ -31,6 +31,7 @@ from recompute_pointer_table import (
 from staticcode import patchStaticCode
 from vanilla_move_data import writeVanillaMoveData
 from adjust_exits import adjustExits
+from replace_simslam_text import replaceSimSlam
 
 ROMName = "rom/dk64.z64"
 newROMName = "rom/dk64-randomizer-base.z64"
@@ -528,6 +529,7 @@ with open(newROMName, "r+b") as fh:
     fh.write(bytearray(arr))
     writeVanillaMoveData(fh)
     adjustExits(fh)
+    replaceSimSlam(fh)
 
 print("[7 / 7] - Generating BizHawk RAM watch")
 

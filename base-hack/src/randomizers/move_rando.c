@@ -27,6 +27,7 @@ int getMoveIndex(int value) {
 static char stored_slam_level = 0;
 static char stored_belt_level = 0;
 static char stored_instrument_level = 0;
+static char stored_melons = 0;
 
 void checkProgressive(
 		char* previous_storage,
@@ -37,14 +38,15 @@ void checkProgressive(
 		int level,
 		int purchase_type,
 		int purchase_level,
-		int is_bitfield) {
+		int is_bitfield,
+		int progressive_floor) {
 	int pass = 0;
 	if (is_bitfield) {
 		if ((!(*previous_storage & (1 << lower_threshold))) && (*current_storage & (1 << lower_threshold))) {
 			pass = 1;
 		}
 	} else {
-		if ((*previous_storage == lower_threshold) && (*current_storage == upper_threshold)) {
+		if ((*previous_storage <= lower_threshold) && (*current_storage >= upper_threshold)) {
 			pass = 1;
 		}
 	}
@@ -84,21 +86,27 @@ void checkProgressive(
 					if ((purchased) && (shop == 0) && (level == i)) {
 						CrankyMoves_New[j][i].purchase_type = PURCHASE_NOTHING;
 					} else {
-						CrankyMoves_New[j][i].purchase_value = purchase_level;
+						if (CrankyMoves_New[j][i].purchase_value > progressive_floor) {
+							CrankyMoves_New[j][i].purchase_value = purchase_level;
+						}
 					}
 				}
 				if (CandyMoves_New[j][i].purchase_type == purchase_type) {
 					if ((purchased) && (shop == 2) && (level == i)) {
 						CandyMoves_New[j][i].purchase_type = PURCHASE_NOTHING;
 					} else {
-						CandyMoves_New[j][i].purchase_value = purchase_level;
+						if (CandyMoves_New[j][i].purchase_value > progressive_floor) {
+							CandyMoves_New[j][i].purchase_value = purchase_level;
+						}
 					}
 				}
 				if (FunkyMoves_New[j][i].purchase_type == purchase_type) {
 					if ((purchased) && (shop == 1) && (level == i)) {
 						FunkyMoves_New[j][i].purchase_type = PURCHASE_NOTHING;
 					} else {
-						FunkyMoves_New[j][i].purchase_value = purchase_level;
+						if (FunkyMoves_New[j][i].purchase_value > progressive_floor) {
+							FunkyMoves_New[j][i].purchase_value = purchase_level;
+						}
 					}
 				}
 			}
@@ -119,6 +127,7 @@ void updateProgressive(void) {
 			level,
 			PURCHASE_SLAM,
 			3,
+			0,
 			0
 		);
 		checkProgressive(
@@ -130,6 +139,7 @@ void updateProgressive(void) {
 			level,
 			PURCHASE_AMMOBELT,
 			2,
+			0,
 			0
 		);
 		checkProgressive(
@@ -141,17 +151,19 @@ void updateProgressive(void) {
 			level,
 			PURCHASE_INSTRUMENT,
 			3,
+			1,
 			1
 		);
 		checkProgressive(
-			&stored_instrument_level,
-			&MovesBase[0].instrument_bitfield,
+			&stored_melons,
+			&CollectableBase.Melons,
 			&StoredSettings.file_extra[(int)FileIndex].location_mln_purchased,
 			2,
-			2,
+			3,
 			level,
 			PURCHASE_INSTRUMENT,
 			4,
+			0,
 			1
 		);
 	}
