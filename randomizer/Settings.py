@@ -182,7 +182,8 @@ class Settings:
         phases = ["donkey", "diddy", "lanky", "tiny"]
         if self.random_krool_phase_order:
             random.shuffle(phases)
-        phases = random.sample(phases, self.krool_phase_count - 1)
+        if self.krool_phase_count < 5:
+            phases = random.sample(phases, self.krool_phase_count - 1)
         orderedPhases = []
         for kong in phases:
             if kong == "donkey":
