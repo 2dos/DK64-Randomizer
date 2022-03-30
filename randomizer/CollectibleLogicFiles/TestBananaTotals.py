@@ -12,7 +12,8 @@ from randomizer.Enums.Kongs import Kongs
 from randomizer.Enums.Levels import Levels
 from randomizer.LogicClasses import Collectible
 
-def CountBananasForLevel(bananaTotals, collectibles, level):
+
+def __CountBananasForLevel(bananaTotals, collectibles, level):
     for collectible in collectibles:
         multiplier = 1
         if collectible.type == Collectibles.balloon:
@@ -21,36 +22,39 @@ def CountBananasForLevel(bananaTotals, collectibles, level):
             multiplier = 5
         bananaTotals[level][collectible.kong] += collectible.amount * multiplier
 
+
 bananaTotals = []
 for i in range(7):
-    bananaTotals.append({
-        Kongs.donkey: 0,
-        Kongs.diddy: 0,
-        Kongs.lanky: 0,
-        Kongs.tiny: 0,
-        Kongs.chunky: 0,
-    })
+    bananaTotals.append(
+        {
+            Kongs.donkey: 0,
+            Kongs.diddy: 0,
+            Kongs.lanky: 0,
+            Kongs.tiny: 0,
+            Kongs.chunky: 0,
+        }
+    )
 
 for region, collectibles in JungleJapes.LogicRegions.items():
-    CountBananasForLevel(bananaTotals, collectibles, Levels.JungleJapes)
+    __CountBananasForLevel(bananaTotals, collectibles, Levels.JungleJapes)
 
 for region, collectibles in AngryAztec.LogicRegions.items():
-    CountBananasForLevel(bananaTotals, collectibles, Levels.AngryAztec)
+    __CountBananasForLevel(bananaTotals, collectibles, Levels.AngryAztec)
 
 for region, collectibles in FranticFactory.LogicRegions.items():
-    CountBananasForLevel(bananaTotals, collectibles, Levels.FranticFactory)
+    __CountBananasForLevel(bananaTotals, collectibles, Levels.FranticFactory)
 
 for region, collectibles in GloomyGalleon.LogicRegions.items():
-    CountBananasForLevel(bananaTotals, collectibles, Levels.GloomyGalleon)
+    __CountBananasForLevel(bananaTotals, collectibles, Levels.GloomyGalleon)
 
 for region, collectibles in FungiForest.LogicRegions.items():
-    CountBananasForLevel(bananaTotals, collectibles, Levels.FungiForest)
+    __CountBananasForLevel(bananaTotals, collectibles, Levels.FungiForest)
 
 for region, collectibles in CrystalCaves.LogicRegions.items():
-    CountBananasForLevel(bananaTotals, collectibles, Levels.CrystalCaves)
+    __CountBananasForLevel(bananaTotals, collectibles, Levels.CrystalCaves)
 
 for region, collectibles in CreepyCastle.LogicRegions.items():
-    CountBananasForLevel(bananaTotals, collectibles, Levels.CreepyCastle)
+    __CountBananasForLevel(bananaTotals, collectibles, Levels.CreepyCastle)
 
 for level in range(7):
     print(Levels(level).name + " Totals:")
