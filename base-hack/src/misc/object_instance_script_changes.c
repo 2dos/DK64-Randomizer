@@ -119,8 +119,8 @@ void change_object_scripts(behaviour_data* behaviour_pointer, int id, int index,
 				unkObjFunction2(id,3,1);
 			}
 		} else {
-			TestVariable = (int)behaviour_pointer;
-			*(int*)(0x807FF700) = id;
+			// TestVariable = (int)behaviour_pointer;
+			// *(int*)(0x807FF700) = id;
 		}
 	}
 	InstanceScriptParams[1] = id;

@@ -85,6 +85,7 @@ extern void unkObjFunction0(int id, int unk0, int unk1);
 extern void unkObjFunction1(int id, int unk0, int unk1);
 extern void unkObjFunction2(int id, int unk0, int unk1);
 extern int touchingModel2Object(int id);
+extern int GetKongUnlockedFlag(int actor_type, int kong_index);
 
 extern int* initDisplayList(int* dl);
 extern int getTextStyleHeight(int style);
@@ -286,3 +287,5 @@ extern purchase_struct FunkyMoves_New[5][7];
 extern settingsData StoredSettings;
 extern char WarpToIslesEnabled;
 extern char SkipDance;
+extern char permaLossMode;
+extern char disableBossKongCheck;

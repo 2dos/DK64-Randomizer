@@ -432,5 +432,34 @@ START_HOOK:
 			J 		0x8067B6CC
 			NOP
 
+	permaLossTagCheck:
+		JAL 		determineKongUnlock
+		LW 			a0, 0x58 (t5)
+		J 			0x80682F48
+		NOP
+
+	permaLossTagSet:
+		JAL	 		unlockKongPermaLoss
+		LW 			a0, 0x58 (t9)
+		J 			0x80683640
+		NOP
+
+	permaLossTagDisplayCheck:
+		JAL 		determineKongUnlock
+		OR 			a1, s0, r0
+		J 			0x806840e0
+		NOP
+
+	disableBossKongCheckCode:
+		LUI 		t7, hi(disableBossKongCheck)
+		LBU 		t7, lo(disableBossKongCheck) (t7)
+		BNEZ 		t7, disableBossKongCheckCode_disabled
+		ADDIU 		v0, r0, 1
+		SLTIU 		v0, v0, 1
+		
+		disableBossKongCheckCode_disabled:
+			J 		0x8064EBFC
+			ANDI 	t7, v0, 0xFF
+
 .align 0x10
 END_HOOK:

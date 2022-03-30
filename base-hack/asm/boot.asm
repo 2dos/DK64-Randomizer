@@ -143,6 +143,18 @@ DanceSkipHook2:
 CannonCheckHook:
 	J 	cannonCheckCode
 	NOP
+TagPermaLossCheckHook:
+	J 	permaLossTagCheck
+	NOP
+TagPermaLossSetHook:
+	J 	permaLossTagSet
+	NOP
+TagPermaLossDisplayHook:
+	J 	permaLossTagDisplayCheck
+	NOP
+DisableBossKongHook:
+	J 	disableBossKongCheckCode
+	NOP
 
 loadExtraHooks:
 	LUI t3, hi(NinWarpHook)
@@ -264,7 +276,6 @@ loadExtraHooks:
 	SW t3, 0x8804 (t4) // Store Hook
 	SW r0, 0x8808 (t4) // Store NOP
 
-
 	loadExtraHooks_0:
 	LUI t3, hi(IGTFileReadHook)
 	LW t3, lo(IGTFileReadHook) (t3)
@@ -313,6 +324,36 @@ loadExtraHooks:
 	LUI t4, 0x8068
 	SW t3, 0xB694 (t4) // Store Hook
 	SW r0, 0xB698 (t4) // Store NOP
+
+	LUI t3, hi(permaLossMode)
+	LBU t3, lo(permaLossMode) (t3)
+	BEQZ t3, loadExtraHooks_1
+	NOP
+
+	LUI t3, hi(TagPermaLossCheckHook)
+	LW t3, lo(TagPermaLossCheckHook) (t3)
+	LUI t4, 0x8068
+	SW t3, 0x2F2C (t4) // Store Hook
+	SW r0, 0x2F30 (t4) // Store NOP
+
+	LUI t3, hi(TagPermaLossSetHook)
+	LW t3, lo(TagPermaLossSetHook) (t3)
+	LUI t4, 0x8068
+	SW t3, 0x3620 (t4) // Store Hook
+	SW r0, 0x3624 (t4) // Store NOP
+
+	LUI t3, hi(TagPermaLossDisplayHook)
+	LW t3, lo(TagPermaLossDisplayHook) (t3)
+	LUI t4, 0x8068
+	SW t3, 0x40C4 (t4) // Store Hook
+	SW r0, 0x40C8 (t4) // Store NOP
+
+	loadExtraHooks_1:
+	LUI t3, hi(DisableBossKongHook)
+	LW t3, lo(DisableBossKongHook) (t3)
+	LUI t4, 0x8065
+	SW t3, 0xEBF4 (t4) // Store Hook
+	SW r0, 0xEBF8 (t4) // Store NOP
 
 	JR ra
 	NOP

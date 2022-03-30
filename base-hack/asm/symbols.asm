@@ -70,6 +70,7 @@
 .definelabel unkObjFunction1, 0x80650A04
 .definelabel unkObjFunction2, 0x806508B4
 .definelabel touchingModel2Object, 0x806F70A8
+.definelabel GetKongUnlockedFlag, 0x805FF018
 
 .definelabel initDisplayList, 0x807132DC
 .definelabel getTextStyleHeight, 0x806FD894
@@ -261,6 +262,8 @@
 .definelabel LoadedHooks, 0x807FFFEF // u8
 .definelabel WarpToIslesEnabled, 0x807FFFEE // u8
 .definelabel SkipDance, 0x807FFFED // u8
+.definelabel permaLossMode, 0x807FFFEC // u8
+.definelabel disableBossKongCheck, 0x807FFFEB // u8
 .definelabel Rando, 0x807FF800 // 0x200
 .definelabel BalancedIGT, 0x807FFFB0 // u32
 .definelabel InstanceScriptParams, 0x807FFFB4 // 0x8

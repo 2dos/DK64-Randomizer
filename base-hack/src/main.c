@@ -37,7 +37,10 @@ void cFuncLoop(void) {
 	callParentMapFilter();
 	recolorKongControl();
 	spawnCannonWrapper();
-	fixkey8();
+	if (Rando.perma_lose_kongs) {
+		preventBossCheese();
+		kong_has_died();
+	}
 	if (Rando.quality_of_life) {
 		// DKTVKong = 0;
 		// if (CurrentMap == NINTENDO_LOGO) {
@@ -66,6 +69,9 @@ void cFuncLoop(void) {
 				StoredSettings.file_extra[(int)FileIndex].location_ug1_purchased = 0;
 				StoredSettings.file_extra[(int)FileIndex].location_mln_purchased = 0;
 				SaveToGlobal();
+			} else {
+				// Used File
+				determineStartKong_PermaLossMode();
 			}
 		}
 	}

@@ -125,7 +125,18 @@ void tagAnywhere(int prev_crystals) {
 					int i = 0;
 					int reached_limit = 0;
 					do {
-						if (checkFlag(kong_flags[next_character],0)) {
+                        int pass = 0;
+                        if (checkFlag(kong_flags[next_character],0)) {
+                            pass = 1;
+                            if (Rando.perma_lose_kongs) {
+                                if (checkFlag(KONG_LOCKED_START + next_character,0)) {
+                                    if (!curseRemoved()) {
+                                        pass = 0;
+                                    }
+                                }
+                            }
+                        }
+						if (pass) {
 							break;
 						} else {
 							if ((i + 1) == TAG_ANYWHERE_KONG_LIMIT) {

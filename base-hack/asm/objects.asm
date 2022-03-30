@@ -12,6 +12,7 @@
 .importobj "obj/src_misc_file_screen.o"
 .importobj "obj/src_misc_no_enemy_drops.o"
 .importobj "obj/src_misc_object_instance_script_changes.o"
+.importobj "obj/src_misc_perma_kong_loss.o"
 .importobj "obj/src_misc_recolor_kong.o"
 .importobj "obj/src_misc_remove_blockers.o"
 .importobj "obj/src_misc_remove_bonus.o"

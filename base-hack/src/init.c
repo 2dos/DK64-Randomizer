@@ -32,6 +32,8 @@ void initHack(void) {
 		*(int*)(0x806E48F8) = 0x50200074; // BEQL $at $r0 0xF
 		DamageMultiplier = Rando.damage_multiplier;
 		WarpToIslesEnabled = Rando.warp_to_isles_enabled;
+		permaLossMode = Rando.perma_lose_kongs;
+		disableBossKongCheck = Rando.disable_boss_kong_check;
 		if (Rando.no_health_refill) {
 			*(int*)(0x80683A34) = 0; // Cancel Tag Health Refill
 			// *(int*)(0x8060DD10) = 0; // Load File
