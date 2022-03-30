@@ -176,7 +176,7 @@ def patching_response(responded_data):
         if spoiler.settings.damage_amount == "double":
             ROM().write(2)
         elif spoiler.settings.damage_amount == "ohko":
-            ROM().write(11)
+            ROM().write(12)
         elif spoiler.settings.damage_amount == "quad":
             ROM().write(4)
     else:

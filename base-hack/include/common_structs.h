@@ -13,13 +13,19 @@ typedef struct shortPos {
 typedef struct actorData {
 	/* 0x000 */ char unk_00[0x58];
 	/* 0x058 */ int actorType;
-	/* 0x05C */ char unk_5C[0x7C-0x5C];
+	/* 0x05C */ char unk_5C[0x60-0x5C];
+	/* 0x060 */ int obj_props_bitfield;
+	/* 0x064 */ char unk_64[0x7C-0x64];
 	/* 0x07C */ float xPos;
 	/* 0x080 */ float yPos;
 	/* 0x084 */ float zPos;
 	/* 0x088 */ char unk_80[0xB8-0x88];
 	/* 0x0B8 */ float hSpeed;
-	/* 0x0BC */ char unk_BC[0x154-0xBC];
+	/* 0x0BC */ char unk_BC[0x128-0xBC];
+	/* 0x128 */ short shadow_intensity;
+	/* 0x12A */ char unk_12A[0x144-0x12A];
+	/* 0x144 */ char noclip_byte;
+	/* 0x145 */ char unk_145[0x154-0x145];
 	/* 0x154 */ char control_state;
 	/* 0x155 */ char control_state_progress;
 	/* 0x156 */ char unk_156[0x180-0x156];
@@ -591,3 +597,30 @@ typedef struct fileExtraStorage {
 typedef struct settingsData {
 	/* 0x000 */ fileExtraStorage file_extra[3];
 } settingsData;
+
+typedef struct behaviour_data {
+	/* 0x000 */ char unk_00[0x44];
+	/* 0x044 */ unsigned short timer;
+	/* 0x046 */ char unk_46[0x48-0x46];
+	/* 0x048 */ unsigned char current_state;
+	/* 0x049 */ char unk_49[0x4B-0x49];
+	/* 0x04B */ unsigned char next_state;
+	/* 0x04C */ char unk_4C[0x54-0x4C];
+	/* 0x054 */ char pause_state;
+	/* 0x055 */ char unk_55[0x58-0x55];
+	/* 0x058 */ int distance_cap;
+	/* 0x05C */ char unk_5C[0x60-0x5C];
+	/* 0x060 */ char unk_60;
+	/* 0x061 */ char unk_61;
+	/* 0x062 */ unsigned short unk_62;
+	/* 0x064 */ char unk_64[0x66-0x64];
+	/* 0x066 */ unsigned char unk_66;
+	/* 0x067 */ char unk_67[0x70-0x67];
+	/* 0x070 */ char unk_70;
+	/* 0x071 */ char unk_71;
+	/* 0x072 */ char unk_72[0x94-0x72];
+	/* 0x094 */ void* cutscene_controller_pointer;
+	/* 0x098 */ char unk_98[0x9B-0x98];
+	/* 0x09B */ unsigned char persistance;
+	/* 0x09C */ char unk_9C[0xA0-0x9C];
+} behaviour_data;

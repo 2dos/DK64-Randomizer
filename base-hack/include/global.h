@@ -47,8 +47,9 @@ extern void no_enemy_drops(void);
 extern void cancelMoveSoftlock(void);
 extern void adjust_galleon_water(void);
 
-extern void change_object_scripts(int code_pointer, int id, int index, int param2);
+extern void change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, int param2);
 extern void createCollisionObjInstance(collision_types subtype, int map, int exit);
+extern int spawnCannonWrapper(void);
 
 extern int* drawTri(int* dl, short x1, short y1, short x2, short y2, short x3, short y3, int red, int green, int blue, int alpha);
 extern int* drawImage(int* dl, int text_index, codecs codec_index, int img_width, int img_height, int x, int y, float xScale, float yScale, int opacity);

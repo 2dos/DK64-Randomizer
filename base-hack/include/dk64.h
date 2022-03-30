@@ -74,10 +74,16 @@ extern void* getMapData(data_indexes data_idx, int _index, char compressbyte0, c
 extern void loadSetup(void* setup_file, int unk0, int unk1);
 extern int getParentDataIndex(int map);
 extern void WarpToDKTV(void);
+extern int getActorSpawnerIDFromTiedActor(void* actor);
 
 extern void wipeStoredSetup(void* setup);
 extern void complex_free(void* ptr);
 extern void createCollision(int type, void* player, collision_types subtype, int map, int exit, int x, int y, int z);
+extern void setScriptRunState(void* behaviour_pointer, int destination_state, int unk0);
+
+extern void unkObjFunction0(int id, int unk0, int unk1);
+extern void unkObjFunction1(int id, int unk0, int unk1);
+extern void unkObjFunction2(int id, int unk0, int unk1);
 
 extern int* initDisplayList(int* dl);
 extern int getTextStyleHeight(int style);

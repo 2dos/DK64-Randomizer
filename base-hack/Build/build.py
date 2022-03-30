@@ -96,7 +96,7 @@ file_dict = [
         "pointer_table_index": 10,
         "file_index": 34,
         "source_file": "assets/Non-Code/instance_scripts/isles.bin",
-        "bps_file": "assets/Non-Code/instance_scripts/isles.bps",
+        "bps_file": "assets/Non-Code/instance_scripts/isles_openworlds.bps",
         "is_diff_patch": True,
     },
     {

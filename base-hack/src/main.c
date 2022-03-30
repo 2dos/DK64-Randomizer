@@ -36,6 +36,7 @@ void cFuncLoop(void) {
 	cancelMoveSoftlock();
 	callParentMapFilter();
 	recolorKongControl();
+	spawnCannonWrapper();
 	if (Rando.quality_of_life) {
 		// DKTVKong = 0;
 		// if (CurrentMap == NINTENDO_LOGO) {

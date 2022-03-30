@@ -64,6 +64,11 @@
 .definelabel wipeStoredSetup, 0x80611614
 .definelabel complex_free, 0x8061130C
 .definelabel createCollision, 0x8067ABC0
+.definelabel setScriptRunState, 0x8064199C
+
+.definelabel unkObjFunction0, 0x80650BBC
+.definelabel unkObjFunction1, 0x80650A04
+.definelabel unkObjFunction2, 0x806508B4
 
 .definelabel initDisplayList, 0x807132DC
 .definelabel getTextStyleHeight, 0x806FD894

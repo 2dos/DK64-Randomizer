@@ -140,6 +140,9 @@ DanceSkipHook1:
 DanceSkipHook2:
 	J 	danceSkip2
 	NOP
+CannonCheckHook:
+	J 	cannonCheckCode
+	NOP
 
 loadExtraHooks:
 	LUI t3, hi(NinWarpHook)
@@ -304,6 +307,12 @@ loadExtraHooks:
 	LUI t4, 0x806F
 	SW t3, 0xFC1C (t4) // Store Hook
 	SW r0, 0xFC20 (t4) // Store NOP
+
+	LUI t3, hi(CannonCheckHook)
+	LW t3, lo(CannonCheckHook) (t3)
+	LUI t4, 0x8068
+	SW t3, 0xB694 (t4) // Store Hook
+	SW r0, 0xB698 (t4) // Store NOP
 
 	JR ra
 	NOP
