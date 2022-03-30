@@ -40,6 +40,7 @@ void cFuncLoop(void) {
 	if (Rando.perma_lose_kongs) {
 		preventBossCheese();
 		kong_has_died();
+		forceBossKong();
 	}
 	if (Rando.quality_of_life) {
 		// DKTVKong = 0;

@@ -38,6 +38,12 @@ void unlockKongPermaLoss(int actorType, int kong_index) {
 	setPermFlag(unlock_flag);
 }
 
+void giveKongMoves(int kong_index) {
+	MovesBase[kong_index].special_moves = 7; // All 3 cranky moves
+	MovesBase[kong_index].weapon_bitfield |= 1; // Gun
+	MovesBase[kong_index].instrument_bitfield |= 1; // Instrument
+}
+
 void kong_has_died(void) {
 	if (Rando.perma_lose_kongs) {
 		if (getWorld(CurrentMap,0) != 8) { // Not in Helm
@@ -69,6 +75,7 @@ void kong_has_died(void) {
 									} else {
 										pass = 0;
 										Character = new_kong;
+										giveKongMoves(init_kong);
 										return;
 									}
 								}
@@ -131,9 +138,41 @@ void changeKongOnTransition_Permaloss(void) {
 	}
 }
 
+void forceBossKong(void) {
+	if (Rando.perma_lose_kongs) {
+		if (CurrentMap == 0x2A) {
+			int transitioning_to_boss = 0;
+			for (int i = 0; i < 7; i++) {
+				if (BossMapArray[i] == DestMap) {
+					transitioning_to_boss = 1;
+				}
+			}
+			if (transitioning_to_boss) {
+				if (TransitionSpeed > 0.0f) {
+					if (LZFadeoutProgress == 30.0f) {
+						if (Player) {
+							int control_state = Player->control_state;
+							if ((control_state != 0x36) && (control_state != 0x3B)) {
+								int world = getWorld(CurrentMap, 0);
+								Character = BossKongArray[world];
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+}
+
 void preventBossCheese(void) {
 	if (Rando.perma_lose_kongs) {
-		if (CurrentMap == 0xC7) { // King Kut Out
+		int in_boss = 0;
+		for (int i = 0; i < 7; i++) {
+			if (BossMapArray[i] == CurrentMap) {
+				in_boss = 1;
+			}
+		}
+		if (in_boss) {
 			changeKongOnTransition_Permaloss();
 		}
 	}
