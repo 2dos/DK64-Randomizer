@@ -155,6 +155,9 @@ TagPermaLossDisplayHook:
 DisableBossKongHook:
 	J 	disableBossKongCheckCode
 	NOP
+TagPreventHook:
+	J 	tagPreventCode
+	NOP
 
 loadExtraHooks:
 	LUI t3, hi(NinWarpHook)
@@ -354,6 +357,12 @@ loadExtraHooks:
 	LUI t4, 0x8065
 	SW t3, 0xEBF4 (t4) // Store Hook
 	SW r0, 0xEBF8 (t4) // Store NOP
+
+	LUI t3, hi(TagPreventHook)
+	LW t3, lo(TagPreventHook) (t3)
+	LUI t4, 0x8069
+	SW t3, 0x9534 (t4) // Store Hook
+	SW r0, 0x9538 (t4) // Store NOP
 
 	JR ra
 	NOP

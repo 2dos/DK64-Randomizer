@@ -461,5 +461,30 @@ START_HOOK:
 			J 		0x8064EBFC
 			ANDI 	t7, v0, 0xFF
 
+	tagPreventCode:
+		LUI 		a1, hi(preventTagSpawn)
+		LBU 		a1, lo(preventTagSpawn) (a1)
+		BEQZ 		a1, tagPreventCode_Vanilla
+		NOP
+		LH 			a1, 0x0 (s1)
+		ADDIU 		a1, a1, 0x10
+		ADDIU 		t8, r0, 98
+		BEQ 		a1, t8, tagPreventCode_Prevent
+		NOP
+		ADDIU 		t8, r0, 136
+		BEQ 		a1, t8, tagPreventCode_Prevent
+		NOP
+
+		tagPreventCode_Vanilla:
+			LH 		a1, 0x0 (s1)
+			J 		0x8068953C
+			SUBU 	t3, t3, r0
+
+		tagPreventCode_Prevent:
+			J 		0x8068968C
+			NOP
+
+		
+
 .align 0x10
 END_HOOK:

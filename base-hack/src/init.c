@@ -34,6 +34,7 @@ void initHack(void) {
 		WarpToIslesEnabled = Rando.warp_to_isles_enabled;
 		permaLossMode = Rando.perma_lose_kongs;
 		disableBossKongCheck = Rando.disable_boss_kong_check;
+		preventTagSpawn = Rando.prevent_tag_spawn;
 		if (Rando.no_health_refill) {
 			*(int*)(0x80683A34) = 0; // Cancel Tag Health Refill
 			// *(int*)(0x8060DD10) = 0; // Load File

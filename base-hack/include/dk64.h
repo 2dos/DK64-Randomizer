@@ -289,3 +289,4 @@ extern char WarpToIslesEnabled;
 extern char SkipDance;
 extern char permaLossMode;
 extern char disableBossKongCheck;
+extern char preventTagSpawn;
