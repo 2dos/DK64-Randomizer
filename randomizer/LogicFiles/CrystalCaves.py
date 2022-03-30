@@ -22,7 +22,7 @@ LogicRegions = {
         LocationLogic(Locations.CavesTinyMonkeyportIgloo, lambda l: l.monkeyport and l.mini and l.twirl and l.tiny),
         LocationLogic(Locations.CavesChunkyGorillaGone, lambda l: l.punch and l.gorillaGone and l.chunky),
         LocationLogic(Locations.CavesDonkeyKasplat, lambda l: l.donkey),
-        LocationLogic(Locations.CavesDiddyKasplat, lambda l: l.mini and l.twirl and l.tiny and l.diddy),
+        LocationLogic(Locations.CavesDiddyKasplat, lambda l: l.mini and l.twirl and l.tiny and l.diddy and l.jetpack),
         LocationLogic(Locations.CavesLankyKasplat, lambda l: l.jetpack and l.diddy and l.lanky),
         LocationLogic(Locations.CavesTinyKasplat, lambda l: l.tiny),
     ], [
@@ -30,7 +30,7 @@ LogicRegions = {
         Event(Events.CavesSmallBoulderButton, lambda l: l.chunky),
     ], [
         TransitionFront(Regions.CrystalCavesLobby, lambda l: True, Transitions.CavesToIsles),
-        TransitionFront(Regions.BoulderIgloo, lambda l: l.punch),
+        TransitionFront(Regions.BoulderCave, lambda l: l.punch),
         TransitionFront(Regions.CavesLankyRace, lambda l: l.superSlam and l.balloon and l.islanky, Transitions.CavesMainToRace),
         TransitionFront(Regions.FrozenCastle, lambda l: l.superSlam and l.islanky, Transitions.CavesMainToCastle),
         TransitionFront(Regions.IglooArea, lambda l: True),
@@ -48,7 +48,7 @@ LogicRegions = {
         TransitionFront(Regions.CrystalCavesMain, lambda l: True)
     ]),
 
-    Regions.BoulderIgloo: Region("Boulder Igloo", Levels.CrystalCaves, True, None, [], [
+    Regions.BoulderCave: Region("Boulder Cave", Levels.CrystalCaves, True, None, [], [
         Event(Events.CavesLargeBoulderButton, lambda l: Events.CavesSmallBoulderButton in l.Events and l.hunkyChunky and l.chunky),
     ], [
         TransitionFront(Regions.CrystalCavesMain, lambda l: True),
