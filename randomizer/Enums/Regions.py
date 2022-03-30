@@ -128,7 +128,7 @@ class Regions(IntEnum):
 
     # Crystal Caves Regions
     CrystalCavesMain = auto()
-    BoulderIgloo = auto()
+    BoulderCave = auto()
     CavesLankyRace = auto()
     FrozenCastle = auto()
     IglooArea = auto()
