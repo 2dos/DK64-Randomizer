@@ -11,7 +11,7 @@ LogicRegions = {
     Regions.CrystalCavesMain: [
         Collectible(Collectibles.bunch, Kongs.donkey, lambda l: True, None, 1),  # Warp 1
         Collectible(Collectibles.banana, Kongs.donkey, lambda l: True, None, 5),  # Near BBlast
-        Collectible(Collectibles.balloon, Kongs.donkey, lambda l: l.punch and l.chunky, None, 1),  # Warp 1
+        Collectible(Collectibles.balloon, Kongs.donkey, lambda l: l.punch and l.chunky and l.coconut, None, 1),  # Warp 1
 
         Collectible(Collectibles.banana, Kongs.diddy, lambda l: True, None, 5),  # Near Funky
         Collectible(Collectibles.bunch, Kongs.diddy, lambda l: l.jetpack, None, 1),  # Near Bonus
@@ -27,7 +27,7 @@ LogicRegions = {
 
         Collectible(Collectibles.banana, Kongs.tiny, lambda l: True, None, 10),  # River To Igloo
         Collectible(Collectibles.bunch, Kongs.tiny, lambda l: l.mini, None, 1),  # Warp 3 cave
-        Collectible(Collectibles.balloon, Kongs.tiny, lambda l: l.mini and l.twirl, None, 1),  # Warp 4 cave
+        Collectible(Collectibles.balloon, Kongs.tiny, lambda l: l.mini and l.twirl and l.feather, None, 1),  # Warp 4 cave
 
         Collectible(Collectibles.bunch, Kongs.chunky, lambda l: l.punch, None, 1),  # Gorilla Gone room
         Collectible(Collectibles.banana, Kongs.chunky, lambda l: l.punch, None, 3),  # Gorilla Gone room
@@ -36,7 +36,7 @@ LogicRegions = {
         Collectible(Collectibles.banana, Kongs.chunky, lambda l: True, None, 3),  # Small Boulder and switch
         Collectible(Collectibles.banana, Kongs.chunky, lambda l: l.punch, None, 3),  # Near Snide
         Collectible(Collectibles.balloon, Kongs.chunky, lambda l: l.punch and l.pineapple, None, 1),  # Near Snide
-        Collectible(Collectibles.balloon, Kongs.chunky, lambda l: l.mini and l.twirl and l.tiny, None, 1),  # Warp 3 cave
+        Collectible(Collectibles.balloon, Kongs.chunky, lambda l: l.mini and l.twirl and l.tiny and l.pineapple, None, 1),  # Warp 3 cave
     ],
     Regions.CavesBaboonBlast: [
         Collectible(Collectibles.bunch, Kongs.donkey, lambda l: True, None, 4),
