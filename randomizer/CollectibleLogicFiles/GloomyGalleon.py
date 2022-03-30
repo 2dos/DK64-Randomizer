@@ -9,7 +9,6 @@ from randomizer.LogicClasses import Collectible
 
 LogicRegions = {
     Regions.GloomyGalleonStart: [
-        # Testing
         Collectible(Collectibles.balloon, Kongs.donkey, lambda l: l.coconut, None, 1),
         Collectible(Collectibles.bunch, Kongs.diddy, lambda l: True, None, 2),
         Collectible(Collectibles.banana, Kongs.lanky, lambda l: True, None, 5),
