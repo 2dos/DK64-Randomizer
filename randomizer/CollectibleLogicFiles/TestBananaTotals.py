@@ -1,5 +1,4 @@
 """Test file used for checking all kongs have 100 colored bananas per level."""
-from pyparsing import col
 import randomizer.CollectibleLogicFiles.AngryAztec as AngryAztec
 import randomizer.CollectibleLogicFiles.CreepyCastle as CreepyCastle
 import randomizer.CollectibleLogicFiles.CrystalCaves as CrystalCaves
@@ -15,11 +14,13 @@ from randomizer.LogicClasses import Collectible
 
 def __CountBananasForLevel(bananaTotals, collectibles, level):
     for collectible in collectibles:
-        multiplier = 1
+        multiplier = 0
         if collectible.type == Collectibles.balloon:
             multiplier = 10
         elif collectible.type == Collectibles.bunch:
             multiplier = 5
+        elif collectible.type == Collectibles.banana:
+            multiplier = 1
         bananaTotals[level][collectible.kong] += collectible.amount * multiplier
 
 
