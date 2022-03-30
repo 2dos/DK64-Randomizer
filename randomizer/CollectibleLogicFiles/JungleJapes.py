@@ -102,7 +102,7 @@ LogicRegions = {
         Collectible(Collectibles.banana, Kongs.tiny, lambda l: True, None, 7),
         Collectible(Collectibles.balloon, Kongs.tiny, lambda l: l.feather, None, 1),
         Collectible(Collectibles.bunch, Kongs.chunky, lambda l: True, None, 1),
-        Collectible(Collectibles.balloon, Kongs.chunky, lambda l: True, None, 3),
+        Collectible(Collectibles.balloon, Kongs.chunky, lambda l: l.pineapple, None, 3),
 
 
     ],
