@@ -23,6 +23,7 @@ class Events(IntEnum):
     FedTotem = auto()
     LlamaFreed = auto()
     AztecDonkeySwitch = auto()
+    AztecLlamaSpit = auto()
 
     # Frantic Factory events
     DartsPlayed = auto()
