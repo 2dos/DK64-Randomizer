@@ -38,7 +38,7 @@ class Collectible:
         self.kong = kong
         self.logic = logic
         self.amount = amount
-        self.coords = coords
+        self.coords = coords  # Null for vanilla collectibles for now. For custom, use (x,y,z) format
         self.added = False
 
 

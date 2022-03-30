@@ -333,7 +333,7 @@ class LogicVarHolder:
             self.ColoredBananas[level][collectible.kong] += collectible.amount * 5
         # Add 10 bananas for a balloon
         elif collectible.type == Collectibles.balloon:
-            self.ColoredBananas[level][collectible.kong] += 10
+            self.ColoredBananas[level][collectible.kong] += collectible.amount * 10
         collectible.added = True
 
     def HasAccess(self, region, kong):
