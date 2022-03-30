@@ -4,6 +4,7 @@
 .importobj "obj/src_main.o"
 .importobj "obj/src_fixes_castle_autowalk.o"
 .importobj "obj/src_fixes_decouple_moves.o"
+.importobj "obj/src_fixes_fake_key.o"
 .importobj "obj/src_fixes_level_modifiers.o"
 .importobj "obj/src_fixes_parent.o"
 .importobj "obj/src_fixes_quality_fixes.o"

@@ -69,6 +69,7 @@
 .definelabel unkObjFunction0, 0x80650BBC
 .definelabel unkObjFunction1, 0x80650A04
 .definelabel unkObjFunction2, 0x806508B4
+.definelabel touchingModel2Object, 0x806F70A8
 
 .definelabel initDisplayList, 0x807132DC
 .definelabel getTextStyleHeight, 0x806FD894

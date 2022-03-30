@@ -84,6 +84,7 @@ extern void setScriptRunState(void* behaviour_pointer, int destination_state, in
 extern void unkObjFunction0(int id, int unk0, int unk1);
 extern void unkObjFunction1(int id, int unk0, int unk1);
 extern void unkObjFunction2(int id, int unk0, int unk1);
+extern int touchingModel2Object(int id);
 
 extern int* initDisplayList(int* dl);
 extern int getTextStyleHeight(int style);
