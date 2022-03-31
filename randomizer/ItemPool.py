@@ -101,6 +101,7 @@ def PlaceConstants(settings):
     if settings.unlock_fairy_shockwave:
         LocationList[Locations.CameraAndShockwave].PlaceConstantItem(Items.NoItem)
 
+
 def AllItems(settings):
     """Return all shuffled items."""
     allItems = []

@@ -54,6 +54,7 @@ ProgressiveMoves = {
     Items.ProgressiveInstrumentUpgrade: 3,
 }
 
+
 def RandomizePrices(weight):
     """Generate randomized prices based on given weight (low, medium, or high)."""
     prices = VanillaPrices.copy()
@@ -182,19 +183,19 @@ def KongCanBuy(location, coins, settings, kong, slamLevel, ammoBelts, instUpgrad
         return True
     price = None
     if LocationList[location].item == Items.ProgressiveSlam:
-        if slamLevel in [1,2]:
-            price = settings.prices[LocationList[location].item][slamLevel-1]
+        if slamLevel in [1, 2]:
+            price = settings.prices[LocationList[location].item][slamLevel - 1]
         else:
             # Failsafe - should be no move to buy
             return False
     elif LocationList[location].item == Items.ProgressiveAmmoBelt:
-        if ammoBelts in [0,1]:
+        if ammoBelts in [0, 1]:
             price = settings.prices[LocationList[location].item][ammoBelts]
         else:
             # Failsafe - should be no move to buy
             return False
     elif LocationList[location].item == Items.ProgressiveInstrumentUpgrade:
-        if instUpgrades in [0,1,2]:
+        if instUpgrades in [0, 1, 2]:
             price = settings.prices[LocationList[location].item][instUpgrades]
         else:
             # Failsafe - should be no move to buy
