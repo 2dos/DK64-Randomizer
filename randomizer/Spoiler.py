@@ -33,6 +33,7 @@ class Spoiler:
         self.music_fanfare_data = {}
         self.music_event_data = {}
         self.location_data = {}
+        self.enemy_replacements = []
 
         self.move_data = []
         # 0: Cranky, 1: Funky, 2: Candy
@@ -177,6 +178,33 @@ class Spoiler:
             humanspoiler["Shuffled Music Events"] = self.music_event_data
 
         return json.dumps(humanspoiler, indent=4)
+
+    def UpdateKasplats(self, kasplat_map):
+        """Update kasplat data."""
+        for kasplat, kong in kasplat_map.items():
+            # Get kasplat info
+            location = LocationList[kasplat]
+            mapId = location.map
+            original = location.kong
+            map = None
+            # See if map already exists in enemy_replacements
+            for m in self.enemy_replacements:
+                if m["container_map"] == mapId:
+                    map = m
+                    break
+            # If not, create it
+            if map is None:
+                map = {}
+                map["container_map"] = mapId
+                self.enemy_replacements.append(map)
+            # Create kasplat_swaps section if doesn't exist
+            if "kasplat_swaps" not in map:
+                map["kasplat_swaps"] = []
+            # Create swap entry and add to map
+            swap = {}
+            swap["vanilla_location"] = original
+            swap["replace_with"] = kong
+            map["kasplat_swaps"].append(swap)
 
     def UpdateBarrels(self):
         """Update list of shuffled barrel minigames."""
