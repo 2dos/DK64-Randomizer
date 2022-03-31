@@ -158,6 +158,9 @@ DisableBossKongHook:
 TagPreventHook:
 	J 	tagPreventCode
 	NOP
+BonusAutocompleteHook:
+	J 	destroyAllBarrelsCode
+	NOP
 
 loadExtraHooks:
 	LUI t3, hi(NinWarpHook)
@@ -363,6 +366,12 @@ loadExtraHooks:
 	LUI t4, 0x8069
 	SW t3, 0x9534 (t4) // Store Hook
 	SW r0, 0x9538 (t4) // Store NOP
+
+	LUI t3, hi(BonusAutocompleteHook)
+	LW t3, lo(BonusAutocompleteHook) (t3)
+	LUI t4, 0x8068
+	SW t3, 0x0D10 (t4) // Store Hook
+	SW r0, 0x0D14 (t4) // Store NOP
 
 	JR ra
 	NOP

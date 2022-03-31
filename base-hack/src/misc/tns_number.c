@@ -1,16 +1,5 @@
 #include "../../include/common.h"
 
-typedef struct model_struct {
-	/* 0x000 */ float x;
-	/* 0x004 */ float y;
-	/* 0x008 */ float z;
-	/* 0x00C */ float scale;
-	/* 0x010 */ char unk_10[0x50-0x10];
-	/* 0x050 */ int unk_50;
-	/* 0x054 */ char unk_54[0xB8-0x54];
-	/* 0X0B8 */ int unk_B8;
-} model_struct;
-
 void displayNumberOnObject(int id, int param2, int imageindex, int param4, int subtype) {
 	int* m2location = ObjectModel2Pointer;
 	int slot = convertIDToIndex(id);

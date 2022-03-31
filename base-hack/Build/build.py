@@ -96,7 +96,7 @@ file_dict = [
         "pointer_table_index": 10,
         "file_index": 34,
         "source_file": "assets/Non-Code/instance_scripts/isles.bin",
-        "bps_file": "assets/Non-Code/instance_scripts/isles_openworlds.bps",
+        "bps_file": "assets/Non-Code/instance_scripts/isles.bps",
         "is_diff_patch": True,
     },
     {
@@ -178,6 +178,28 @@ file_dict = [
         "source_file": "assets/Non-Code/instance_scripts/museum.bin",
         "bps_file": "assets/Non-Code/instance_scripts/museum.bps",
         "is_diff_patch": True,
+    },
+    {
+        "name": "Llama Temple Instance Scripts",
+        "pointer_table_index": 10,
+        "file_index": 20,
+        "source_file": "assets/Non-Code/instance_scripts/llama_temple.bin",
+        "bps_file": "assets/Non-Code/instance_scripts/llama_temple.bps",
+        "is_diff_patch": True,
+    },
+    {
+        "name": "Tag Barrel Bottom Texture",
+        "pointer_table_index": 25,
+        "file_index": 4749,
+        "source_file": "assets/Non-Code/tagbarrel/bottom.png",
+        "texture_format": "rgba5551",
+    },
+    {
+        "name": "Tag Barrel Shell Texture",
+        "pointer_table_index": 25,
+        "file_index": 4938,
+        "source_file": "assets/Non-Code/tagbarrel/shell.png",
+        "texture_format": "rgba5551",
     },
 ]
 

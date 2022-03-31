@@ -71,3 +71,4 @@
 #define pointer_table_offset 0x101C50
 
 #define KONG_LOCKED_START 0x2E8
+#define SNOOPDOOR_OPEN 0x2ED

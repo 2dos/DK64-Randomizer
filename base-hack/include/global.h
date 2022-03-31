@@ -35,11 +35,13 @@ extern void updateProgressive(void);
 extern void moveTransplant(void);
 extern void priceTransplant(void);
 
+extern void adjustGalleonShopHeights(void);
+extern void changeCharSpawnerFlag(int map, int spawner_id, int new_flag);
+
 extern void PatchCrankyCode(void);
 extern void FileScreenDLCode_Write(void);
 extern void write_kutoutorder(void);
 extern void remove_blockers(void);
-extern void resolve_barrels(void);
 extern void disable_krool_health_refills(void);
 extern void pre_turn_keys(void);
 extern void handle_WTI(void);

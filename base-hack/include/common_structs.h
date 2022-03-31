@@ -37,7 +37,9 @@ typedef struct cameraData {
 	/* 0x07C */ float xPos;
 	/* 0x080 */ float yPos;
 	/* 0x084 */ float zPos;
-	/* 0x088 */ char unk_88[0x15F-0x88];
+	/* 0x088 */ char unk_88[0x12C-0x88];
+	/* 0x12C */ short chunk;
+	/* 0x12E */ char unk_12E[0x15F-0x12E];
 	/* 0x15F */ char facing_angle;
 	/* 0x160 */ char unk_160[0x1FC-0x160];
 	/* 0x1FC */ float viewportX;
@@ -241,12 +243,17 @@ typedef struct SwapObjectData {
 	/* 0x210 */ floatPos cameraPositions[4];
 	/* 0x240 */ char unk_21C[0x284-0x240];
 	/* 0x284 */ float near;
-	/* 0x288 */ char unk_288[0x29C-0x288];
+	/* 0x288 */ char unk_288[0x290-0x288];
+	/* 0x290 */ short chunk;
+	/* 0x292 */ char unk_292[0x29C-0x292];
 	/* 0x29C */ short action_type;
 } SwapObjectData;
 
 typedef struct ModelTwoData {
-	/* 0x000 */ char unk_00[0x20];
+	/* 0x000 */ float xPos;
+	/* 0x004 */ float yPos;
+	/* 0x008 */ float zPos;
+	/* 0x00C */ char unk_0C[0x20-0xC];
 	/* 0x020 */ void* model_pointer;
 	/* 0x024 */ char unk_24[0x7C-0x24];
 	/* 0x07C */ void* behaviour_pointer;
@@ -624,3 +631,22 @@ typedef struct behaviour_data {
 	/* 0x09B */ unsigned char persistance;
 	/* 0x09C */ char unk_9C[0xA0-0x9C];
 } behaviour_data;
+
+typedef struct model_struct {
+	/* 0x000 */ float x;
+	/* 0x004 */ float y;
+	/* 0x008 */ float z;
+	/* 0x00C */ float scale;
+	/* 0x010 */ char unk_10[0x50-0x10];
+	/* 0x050 */ int unk_50;
+	/* 0x054 */ char unk_54[0xB8-0x54];
+	/* 0X0B8 */ int unk_B8;
+} model_struct;
+
+typedef struct charspawner_flagstruct {
+	/* 0x000 */ unsigned char map;
+	/* 0x001 */ char unk_01;
+	/* 0x002 */ short spawner_id;
+	/* 0x004 */ short tied_flag;
+	/* 0x006 */ char unk_06[2];
+} charspawner_flagstruct;

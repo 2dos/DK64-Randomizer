@@ -484,7 +484,46 @@ START_HOOK:
 			J 		0x8068968C
 			NOP
 
-		
+	destroyAllBarrelsCode:
+		LW 			t6, 0x0 (s1)
+		SB 			v0, 0x131 (t6)
+		LUI 		a0, hi(Gamemode)
+		LBU 		a0, lo(Gamemode) (a0)
+		ADDIU 		t0, r0, 3
+		BEQ 		a0, t0, destroyAllBarrelsCode_Finish
+		NOP
+		LUI 		a0, hi(bonusAutocomplete)
+		LBU 		a0, lo(bonusAutocomplete) (a0)
+		ANDI 		t0, a0, 1
+		BEQZ 		t0, destroyAllBarrelsCode_Helm
+		NOP
+		LW 			t0, 0x58 (t6)
+		ADDIU 		v0, r0, 0x1C
+		BNE 		t0, v0, destroyAllBarrelsCode_Helm
+		NOP
+		ADDIU 		t0, r0, 0xC
+		SB 			t0, 0x154 (t6)
+		SB 			r0, 0x155 (t6)
+		ADDIU 		t0, r0, 1
+		SB 			t0, 0x185 (t6)
+
+		destroyAllBarrelsCode_Helm:
+		ANDI 		t0, a0, 2
+		BEQZ  		t0, destroyAllBarrelsCode_Finish
+		NOP
+		LW 			t0, 0x58 (t6)
+		ADDIU 		v0, r0, 0x6B
+		BNE 		t0, v0, destroyAllBarrelsCode_Finish
+		NOP
+		ADDIU 		t0, r0, 0xC
+		SB 			t0, 0x154 (t6)
+		SB 			r0, 0x155 (t6)
+		ADDIU 		t0, r0, 3
+		SB 			t0, 0x185 (t6)
+
+		destroyAllBarrelsCode_Finish:
+		J 			0x80680D18
+		NOP
 
 .align 0x10
 END_HOOK:

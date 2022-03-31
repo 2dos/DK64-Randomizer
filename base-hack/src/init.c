@@ -35,6 +35,8 @@ void initHack(void) {
 		permaLossMode = Rando.perma_lose_kongs;
 		disableBossKongCheck = Rando.disable_boss_kong_check;
 		preventTagSpawn = Rando.prevent_tag_spawn;
+		bonusAutocomplete = Rando.resolve_bonus;
+		changeCharSpawnerFlag(0x14, 2, 93); // Tie llama spawn to lanky help me cutscene flag
 		if (Rando.no_health_refill) {
 			*(int*)(0x80683A34) = 0; // Cancel Tag Health Refill
 			// *(int*)(0x8060DD10) = 0; // Load File

@@ -42,6 +42,7 @@ void cFuncLoop(void) {
 		kong_has_died();
 		forceBossKong();
 	}
+	adjustGalleonShopHeights();
 	if (Rando.quality_of_life) {
 		// DKTVKong = 0;
 		// if (CurrentMap == NINTENDO_LOGO) {
@@ -106,7 +107,6 @@ void earlyFrame(void) {
 	}
 	write_kutoutorder();
 	remove_blockers();
-	resolve_barrels();
 	determine_krool_order();
 	disable_krool_health_refills();
 	pre_turn_keys();

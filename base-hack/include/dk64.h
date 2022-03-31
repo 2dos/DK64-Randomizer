@@ -86,6 +86,7 @@ extern void unkObjFunction1(int id, int unk0, int unk1);
 extern void unkObjFunction2(int id, int unk0, int unk1);
 extern int touchingModel2Object(int id);
 extern int GetKongUnlockedFlag(int actor_type, int kong_index);
+extern void setNextTransitionType(int type);
 
 extern int* initDisplayList(int* dl);
 extern int getTextStyleHeight(int style);
@@ -265,6 +266,8 @@ extern int FileGBCount;
 extern float FileScreenDLOffset;
 extern short CBTurnedInArray[8];
 
+extern charspawner_flagstruct charspawnerflags[0x1F];
+
 //hack data
 extern int TestVariable;
 extern char LoadedHooks;
@@ -290,3 +293,4 @@ extern char SkipDance;
 extern char permaLossMode;
 extern char disableBossKongCheck;
 extern char preventTagSpawn;
+extern char bonusAutocomplete;

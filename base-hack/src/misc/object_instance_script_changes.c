@@ -10,6 +10,7 @@
 #define CRYSTAL_CAVES 0x48
 #define CREEPY_CASTLE 0x57
 #define DK_ISLES 0x22
+#define LLAMA_TEMPLE 0x14
 
 #define FUNGI_MINECART_GRATE 0x22
 #define SEASICK_SHIP 0x27
@@ -23,6 +24,8 @@
 #define AZTEC_BBLAST 0x2E
 #define GALLEON_BBLAST 0x34
 #define FUNGI_BBLAST 0x4C
+#define AZTEC_SNOOPDOOR 0x26
+#define LLAMA_SNOOPPAD 0x2C
 
 #define ISLES_JAPESBOULDER 0x19
 #define ISLES_AZTECDOOR 0x02
@@ -50,11 +53,25 @@ void change_object_scripts(behaviour_data* behaviour_pointer, int id, int index,
 		} else {
 			initiateTransition_0(31, 0, 0, 0);
 		}
-	} else if ((CurrentMap == ANGRY_AZTEC) && (id == AZTEC_BEETLE_GRATE)) {
-		if (Rando.randomize_more_loading_zones) {
-			initiateTransition_0((Rando.aztec_beetle_enter >> 8) & 0xFF, Rando.aztec_beetle_enter & 0xFF, 0, 0);
-		} else {
-			initiateTransition_0(14, 0, 0, 0);
+	} else if (CurrentMap == ANGRY_AZTEC) {
+		if (id == AZTEC_BEETLE_GRATE) {
+			if (Rando.randomize_more_loading_zones) {
+				initiateTransition_0((Rando.aztec_beetle_enter >> 8) & 0xFF, Rando.aztec_beetle_enter & 0xFF, 0, 0);
+			} else {
+				initiateTransition_0(14, 0, 0, 0);
+			}
+		} else if (id == AZTEC_SNOOPDOOR) {
+			if (index == 0) {
+				// Flag Check
+				if (checkFlag(SNOOPDOOR_OPEN,0)) {
+					behaviour_pointer->next_state = 40;
+					behaviour_pointer->current_state = 40;
+				}
+			} else if (index == 1) {
+				// Flag Set
+				setPermFlag(SNOOPDOOR_OPEN);
+				setNextTransitionType(0);
+			}
 		}
 	} else if ((CurrentMap == FUNGI_FOREST) && (id == FUNGI_MINECART_GRATE)) {
 		if (Rando.randomize_more_loading_zones) {
@@ -121,6 +138,13 @@ void change_object_scripts(behaviour_data* behaviour_pointer, int id, int index,
 		} else {
 			// TestVariable = (int)behaviour_pointer;
 			// *(int*)(0x807FF700) = id;
+		}
+	} else if (CurrentMap == LLAMA_TEMPLE) {
+		if (id == LLAMA_SNOOPPAD) {
+			if (checkFlag(SNOOPDOOR_OPEN,0)) {
+				behaviour_pointer->current_state = 20;
+				behaviour_pointer->next_state = 20;
+			}
 		}
 	}
 	InstanceScriptParams[1] = id;
