@@ -22,7 +22,9 @@ from randomizer.Enums.Events import Events
 from randomizer.Enums.Items import Items
 from randomizer.Enums.Kongs import Kongs
 from randomizer.Enums.Levels import Levels
+from randomizer.Enums.Locations import Locations
 from randomizer.Lists.Location import LocationList
+from randomizer.ShuffleKasplats import kasplat_map
 from randomizer.Prices import CanBuy
 
 
@@ -342,6 +344,18 @@ class LogicVarHolder:
         Usually the region's own HasAccess function is used, but this is necessary for checking access for other regions in logic files.
         """
         return Regions[region].HasAccess(kong)
+
+    def KasplatAccess(self, location):
+        kong = kasplat_map[location]
+        if location == Locations.GalleonDonkeyKasplat:
+            # Water level needs to be raised and you spring up as diddy to get killed by the kasplat
+            # Or, any kong having teleporter access works too
+            if kong == Kongs.diddy:
+                return Events.WaterSwitch in self.Events and self.IsKong(Kongs.diddy)
+            else:
+                return Events.TreasureRoomTeleporterUnlocked in self.Events and self.HasAccess(Regions.Shipyard, kong)
+        return self.IsKong(kong)
+
 
     def CanBuy(self, location):
         """Check if there are enough coins to purchase this location."""

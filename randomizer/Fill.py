@@ -10,9 +10,11 @@ from randomizer.Enums.Levels import Levels
 from randomizer.Enums.Regions import Regions
 from randomizer.Enums.SearchMode import SearchMode
 from randomizer.Enums.Transitions import Transitions
+from randomizer.Enums.Types import Types
 from randomizer.Lists.Item import ItemList
 from randomizer.Lists.Location import Location, LocationList
 from randomizer.Lists.Minigame import MinigameAssociations, MinigameRequirements
+from randomizer.ShuffleKasplats import KasplatShuffle
 from randomizer.Logic import LogicVarHolder, LogicVariables
 from randomizer.LogicClasses import TransitionFront
 from randomizer.ShuffleBarrels import BarrelShuffle
@@ -106,6 +108,10 @@ def GetAccessibleLocations(settings, ownedItems, searchType=SearchMode.GetReacha
                         if location.bonusBarrel and settings.bonus_barrels != "skip":
                             minigame = MinigameAssociations[location.id]
                             if not MinigameRequirements[minigame].logic(LogicVariables):
+                                continue
+                        # If this location is a blueprint, then make sure this is the correct kong
+                        elif location.type == Types.Blueprint:
+                            if not LogicVariables.KasplatAccess(location.id):
                                 continue
                         newLocations.append(location.id)
                 # Check accessibility for each exit in this region
@@ -463,6 +469,9 @@ def Generate_Spoiler(spoiler):
     # Init logic vars with settings
     global LogicVariables
     LogicVariables = LogicVarHolder(spoiler.settings)
+    # Handle kasplats
+    KasplatShuffle(spoiler.settings)
+    spoiler.UpdateKasplats()
     # Handle bonus barrels
     if spoiler.settings.bonus_barrels == "random":
         BarrelShuffle(spoiler.settings)
