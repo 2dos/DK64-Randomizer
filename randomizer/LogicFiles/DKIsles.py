@@ -51,7 +51,7 @@ LogicRegions = {
         TransitionFront(Regions.CreepyCastleLobby, lambda l: l.settings.open_lobbies or Events.ForestKeyTurnedIn in l.Events, Transitions.IslesMainToCastleLobby),
         TransitionFront(Regions.HideoutHelmLobby, lambda l: l.monkeyport and l.istiny
                         and (l.settings.open_lobbies or (Events.CavesKeyTurnedIn in l.Events and Events.CastleKeyTurnedIn in l.Events))),
-        TransitionFront(Regions.KRool, lambda l: Events.KeysTurnIn in l.Events),
+        TransitionFront(Regions.KRool, lambda l: l.CanAccessKRool()),
     ]),
 
     Regions.Prison: Region("Prison", Levels.DKIsles, False, None, [

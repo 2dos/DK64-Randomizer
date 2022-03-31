@@ -346,6 +346,13 @@ class LogicVarHolder:
     def CanBuy(self, location):
         """Check if there are enough coins to purchase this location."""
         return CanBuy(location, self.Coins, self.settings)
+    
+    def CanAccessKRool(self):
+        """Make sure that each required key has been turned in."""
+        for keyRequired in self.settings.krool_keys_required:
+            if keyRequired not in self.Events:
+                return False
+        return True
 
 
 LogicVariables = LogicVarHolder()
