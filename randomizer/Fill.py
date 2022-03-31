@@ -110,7 +110,7 @@ def GetAccessibleLocations(settings, ownedItems, searchType=SearchMode.GetReacha
                             if not MinigameRequirements[minigame].logic(LogicVariables):
                                 continue
                         # If this location is a blueprint, then make sure this is the correct kong
-                        elif location.type == Types.Blueprint:
+                        elif LocationList[location.id].type == Types.Blueprint:
                             if not LogicVariables.KasplatAccess(location.id):
                                 continue
                         newLocations.append(location.id)
@@ -470,8 +470,8 @@ def Generate_Spoiler(spoiler):
     global LogicVariables
     LogicVariables = LogicVarHolder(spoiler.settings)
     # Handle kasplats
-    KasplatShuffle(spoiler.settings)
-    spoiler.UpdateKasplats()
+    KasplatShuffle(LogicVariables)
+    spoiler.UpdateKasplats(LogicVariables.kasplat_map)
     # Handle bonus barrels
     if spoiler.settings.bonus_barrels == "random":
         BarrelShuffle(spoiler.settings)

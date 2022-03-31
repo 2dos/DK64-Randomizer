@@ -36,6 +36,23 @@ class BarrelAttemptCountExceeded(BarrelPlacementException):
 
     pass
 
+class KasplatPlacementException(Exception):
+    """Exception triggered when shuffled kasplats minigames fails to produce a valid world."""
+
+    pass
+
+
+class KasplatOutOfKongs(KasplatPlacementException):
+    """Exception triggered when a kasplat attempted to be shuffled has no valid kongs."""
+
+    pass
+
+
+class KasplatAttemptCountExceeded(KasplatPlacementException):
+    """Exception triggered when too many attempts were made to place kasplats."""
+
+    pass
+
 
 class FillException(Exception):
     """Exception triggered during the fill process."""

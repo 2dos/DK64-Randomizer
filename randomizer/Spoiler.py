@@ -13,7 +13,6 @@ from randomizer.Enums.MoveTypes import MoveTypes
 from randomizer.Lists.Item import ItemFromKong, ItemList
 from randomizer.Lists.Location import LocationList
 from randomizer.Lists.Minigame import MinigameAssociations, MinigameRequirements
-from randomizer.ShuffleKasplats import kasplat_map
 from randomizer.MapsAndExits import GetExitId, GetMapId, Maps
 from randomizer.Settings import Settings
 from randomizer.ShuffleExits import ShufflableExits
@@ -175,7 +174,7 @@ class Spoiler:
 
         return json.dumps(humanspoiler, indent=4)
 
-    def UpdateKasplats(self):
+    def UpdateKasplats(self, kasplat_map):
         """Update kasplat data."""
         pass
 
