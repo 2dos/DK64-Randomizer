@@ -27,6 +27,7 @@ class Settings:
         self.generate_misc()
         for k, v in form_data.items():
             setattr(self, k, v)
+        self.update_progression_totals()
         self.seed_id = str(self.seed)
         self.seed = str(self.seed) + self.__hash
         self.set_seed()
@@ -99,6 +100,30 @@ class Settings:
 
         self.prices = VanillaPrices.copy()
         self.resolve_settings()
+
+    def update_progression_totals(self):
+        """Update the troff and blocker totals if we're randomly setting them."""
+        if self.randomize_cb_required_amounts:
+            randomlist = random.sample(range(0, 350), 7)
+            cbs = sorted(randomlist)
+            self.troff_0 = cbs[0]
+            self.troff_1 = cbs[1]
+            self.troff_2 = cbs[2]
+            self.troff_3 = cbs[3]
+            self.troff_4 = cbs[4]
+            self.troff_5 = cbs[5]
+            self.troff_6 = cbs[6]
+        if self.randomize_blocker_required_amounts:
+            randomlist = random.sample(range(0, 70), 7)
+            b_lockers = sorted(randomlist)
+            self.blocker_0 = 1
+            self.blocker_1 = b_lockers[0]
+            self.blocker_2 = b_lockers[1]
+            self.blocker_3 = b_lockers[2]
+            self.blocker_4 = b_lockers[3]
+            self.blocker_5 = b_lockers[4]
+            self.blocker_6 = b_lockers[5]
+            self.blocker_7 = b_lockers[6]
 
     def generate_main(self):
         """Set Default items on main page."""
@@ -182,6 +207,8 @@ class Settings:
         self.enable_tag_anywhere = None
         self.random_krool_phase_order = None
         self.shop_indicator = False
+        self.randomize_cb_required_amounts = False
+        self.randomize_blocker_required_amounts = False
 
     def resolve_settings(self):
         """Resolve settings which are not directly set through the UI."""
