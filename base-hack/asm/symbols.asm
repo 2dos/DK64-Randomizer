@@ -64,6 +64,14 @@
 .definelabel wipeStoredSetup, 0x80611614
 .definelabel complex_free, 0x8061130C
 .definelabel createCollision, 0x8067ABC0
+.definelabel setScriptRunState, 0x8064199C
+
+.definelabel unkObjFunction0, 0x80650BBC
+.definelabel unkObjFunction1, 0x80650A04
+.definelabel unkObjFunction2, 0x806508B4
+.definelabel touchingModel2Object, 0x806F70A8
+.definelabel GetKongUnlockedFlag, 0x805FF018
+.definelabel setNextTransitionType, 0x805FF158
 
 .definelabel initDisplayList, 0x807132DC
 .definelabel getTextStyleHeight, 0x806FD894
@@ -245,6 +253,7 @@
 .definelabel FileScreenDLOffset, 0x80033F4C
 
 .definelabel CBTurnedInArray, 0x807FC930
+.definelabel charspawnerflags, 0x80755DA8
 
 //hack data
 .definelabel TestVariable, 0x807FFFFC
@@ -255,6 +264,10 @@
 .definelabel LoadedHooks, 0x807FFFEF // u8
 .definelabel WarpToIslesEnabled, 0x807FFFEE // u8
 .definelabel SkipDance, 0x807FFFED // u8
+.definelabel permaLossMode, 0x807FFFEC // u8
+.definelabel disableBossKongCheck, 0x807FFFEB // u8
+.definelabel preventTagSpawn, 0x807FFFEA // u8
+.definelabel bonusAutocomplete, 0x807FFFE9 // u8
 .definelabel Rando, 0x807FF800 // 0x200
 .definelabel BalancedIGT, 0x807FFFB0 // u32
 .definelabel InstanceScriptParams, 0x807FFFB4 // 0x8
