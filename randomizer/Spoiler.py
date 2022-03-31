@@ -4,6 +4,7 @@ import json
 from typing import OrderedDict
 
 from randomizer import Logic
+from randomizer.Enums.Events import Events
 from randomizer.Enums.Levels import Levels
 from randomizer.Enums.Locations import Locations
 from randomizer.Enums.Kongs import Kongs
@@ -32,6 +33,7 @@ class Spoiler:
         self.music_fanfare_data = {}
         self.music_event_data = {}
         self.location_data = {}
+        self.enemy_replacements = []
 
         self.move_data = []
         # 0: Cranky, 1: Funky, 2: Candy
@@ -63,10 +65,13 @@ class Spoiler:
         settings["unlock_all_moves"] = self.settings.unlock_all_moves
         settings["unlock_all_kongs"] = self.settings.unlock_all_kongs
         settings["starting_kong"] = ItemList[ItemFromKong(self.settings.starting_kong)].name
+        settings["open_lobbies"] = self.settings.open_lobbies
         settings["crown_door_open"] = self.settings.crown_door_open
         settings["coin_door_open"] = self.settings.coin_door_open
         settings["unlock_fairy_shockwave"] = self.settings.unlock_fairy_shockwave
         settings["krool_phases"] = self.settings.krool_order
+        settings["krool_access"] = self.settings.krool_access
+        settings["krool_keys_required"] = self.GetKroolKeysRequired(self.settings.krool_keys_required)
         settings["music_bgm"] = self.settings.music_bgm
         settings["music_fanfares"] = self.settings.music_fanfares
         settings["music_events"] = self.settings.music_events
@@ -174,6 +179,33 @@ class Spoiler:
 
         return json.dumps(humanspoiler, indent=4)
 
+    def UpdateKasplats(self, kasplat_map):
+        """Update kasplat data."""
+        for kasplat, kong in kasplat_map.items():
+            # Get kasplat info
+            location = LocationList[kasplat]
+            mapId = location.map
+            original = location.kong
+            map = None
+            # See if map already exists in enemy_replacements
+            for m in self.enemy_replacements:
+                if m["container_map"] == mapId:
+                    map = m
+                    break
+            # If not, create it
+            if map is None:
+                map = {}
+                map["container_map"] = mapId
+                self.enemy_replacements.append(map)
+            # Create kasplat_swaps section if doesn't exist
+            if "kasplat_swaps" not in map:
+                map["kasplat_swaps"] = []
+            # Create swap entry and add to map
+            swap = {}
+            swap["vanilla_location"] = original
+            swap["replace_with"] = kong
+            map["kasplat_swaps"].append(swap)
+
     def UpdateBarrels(self):
         """Update list of shuffled barrel minigames."""
         self.shuffled_barrel_data = {}
@@ -243,3 +275,24 @@ class Spoiler:
                 newSphere[location.name] = ItemList[location.item].name
             self.playthrough[i] = newSphere
             i += 1
+
+    def GetKroolKeysRequired(self, keyEvents):
+        """Get key names from required key events to print in the spoiler."""
+        keys = []
+        if Events.JapesKeyTurnedIn in keyEvents:
+            keys.append("Jungle Japes Key")
+        if Events.AztecKeyTurnedIn in keyEvents:
+            keys.append("Angry Aztec Key")
+        if Events.FactoryKeyTurnedIn in keyEvents:
+            keys.append("Frantic Factory Key")
+        if Events.GalleonKeyTurnedIn in keyEvents:
+            keys.append("Gloomy Galleon Key")
+        if Events.ForestKeyTurnedIn in keyEvents:
+            keys.append("Fungi Forest Key")
+        if Events.CavesKeyTurnedIn in keyEvents:
+            keys.append("Crystal Caves Key")
+        if Events.CastleKeyTurnedIn in keyEvents:
+            keys.append("Creepy Castle Key")
+        if Events.HelmKeyTurnedIn in keyEvents:
+            keys.append("Hideout Helm Key")
+        return keys

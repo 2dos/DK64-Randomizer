@@ -227,12 +227,13 @@ def patching_response(responded_data):
         order += 1
 
     ProgressBar().update_progress(10, "Seed Generated.")
-    ROM().fixSecurityValue()
-    ROM().save(f"dk64-{spoiler.settings.seed_id}.z64")
-    ProgressBar().reset()
     if spoiler.settings.generate_spoilerlog is True:
         js.document.getElementById("nav-spoiler-tab").style.display = ""
         js.document.getElementById("spoiler_log_text").value = spoiler.toJson()
+        js.save_text_as_file(spoiler.toJson(), f"dk64-{spoiler.settings.seed_id}-spoiler-log.json")
     else:
         js.document.getElementById("nav-spoiler-tab").style.display = "none"
         js.document.getElementById("spoiler_log_text").value = ""
+    ROM().fixSecurityValue()
+    ROM().save(f"dk64-{spoiler.settings.seed_id}.z64")
+    ProgressBar().reset()

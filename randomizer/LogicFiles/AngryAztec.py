@@ -19,8 +19,8 @@ LogicRegions = {
         LocationLogic(Locations.AztecChunkyMedal, lambda l: l.ColoredBananas[Levels.AngryAztec][Kongs.chunky] >= 75),
         LocationLogic(Locations.AztecDonkeyFreeLlama, lambda l: Events.LlamaFreed in l.Events and l.donkey),
         LocationLogic(Locations.AztecChunkyVases, lambda l: l.pineapple and l.chunky),
-        LocationLogic(Locations.AztecDonkeyKasplat, lambda l: l.coconut and l.strongKong and l.donkey),
-        LocationLogic(Locations.AztecDiddyKasplat, lambda l: l.jetpack and l.diddy),
+        LocationLogic(Locations.AztecDonkeyKasplat, lambda l: l.coconut),
+        LocationLogic(Locations.AztecDiddyKasplat, lambda l: l.jetpack),
     ], [
         Event(Events.AztecEntered, lambda l: True),
         Event(Events.LlamaFreed, lambda l: True),  # Decision to start with llama freed
@@ -29,7 +29,7 @@ LogicRegions = {
         TransitionFront(Regions.TempleStart, lambda l: (l.peanut and l.isdiddy) or (l.grape and l.islanky)
                         or (l.feather and l.istiny) or (l.pineapple and l.ischunky)),
         # Door to main area opened in rando if loading zones randomized
-        TransitionFront(Regions.AngryAztecMain, lambda l: l.settings.shuffle_loading_zones == "all" or (l.jetpack and l.guitar and l.diddy)),
+        TransitionFront(Regions.AngryAztecMain, lambda l: l.settings.shuffle_loading_zones == "all" or (l.guitar and l.diddy)),
         TransitionFront(Regions.CandyAztec, lambda l: True),
         TransitionFront(Regions.AztecBossLobby, lambda l: True),
     ]),
@@ -56,7 +56,7 @@ LogicRegions = {
         LocationLogic(Locations.AztecDiddyRamGongs, lambda l: l.charge and l.jetpack and l.diddy),
         LocationLogic(Locations.AztecDiddyVultureRace, lambda l: l.jetpack and l.diddy),
         LocationLogic(Locations.AztecChunkyCagedBarrel, lambda l: l.hunkyChunky and l.ischunky, True),
-        LocationLogic(Locations.AztecTinyKasplat, lambda l: l.tiny),
+        LocationLogic(Locations.AztecTinyKasplat, lambda l: True),
     ], [
         Event(Events.FedTotem, lambda l: l.jetpack and l.peanut and l.Slam and l.diddy),
     ], [
@@ -128,6 +128,7 @@ LogicRegions = {
         LocationLogic(Locations.AztecBananaFairyLlamaTemple, lambda l: l.camera),
     ], [
         Event(Events.AztecDonkeySwitch, lambda l: l.Slam and l.donkey),
+        Event(Events.AztecLlamaSpit, lambda l: l.bongos and l.donkey),
     ], [
         TransitionFront(Regions.AngryAztecMain, lambda l: True),
         TransitionFront(Regions.LlamaTempleBack, lambda l: l.mini and l.tiny),
@@ -135,7 +136,7 @@ LogicRegions = {
 
     Regions.LlamaTempleBack: Region("Llama Temple Back", Levels.AngryAztec, False, -1, [
         LocationLogic(Locations.AztecTinyLlamaTemple, lambda l: l.Slam and l.twirl and l.istiny),
-        LocationLogic(Locations.AztecLankyKasplat, lambda l: l.islanky),
+        LocationLogic(Locations.AztecLankyKasplat, lambda l: True),
     ], [], [
         TransitionFront(Regions.LlamaTemple, lambda l: True),
     ]),
