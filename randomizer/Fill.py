@@ -6,6 +6,7 @@ import randomizer.Lists.Exceptions as Ex
 import randomizer.Logic as Logic
 import randomizer.ShuffleExits as ShuffleExits
 from randomizer.Enums.Items import Items
+from randomizer.Enums.Kongs import Kongs
 from randomizer.Enums.Levels import Levels
 from randomizer.Enums.Regions import Regions
 from randomizer.Enums.SearchMode import SearchMode
@@ -137,7 +138,7 @@ def GetAccessibleLocations(settings, ownedItems, searchType=SearchMode.GetReacha
                 # Finally check accessibility for collectibles
                 if region.id in Logic.CollectibleRegions.keys():
                     for collectible in Logic.CollectibleRegions[region.id]:
-                        if not collectible.added and kong == collectible.kong and collectible.logic(LogicVariables):
+                        if not collectible.added and (kong == collectible.kong or collectible.kong == Kongs.any) and collectible.logic(LogicVariables):
                             LogicVariables.AddCollectible(collectible, region.level)
 
     if searchType == SearchMode.GetReachable:
