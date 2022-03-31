@@ -17,12 +17,23 @@ LogicRegions = {
         Collectible(Collectibles.banana, Kongs.lanky, lambda l: True, None, 5),
         Collectible(Collectibles.bunch, Kongs.chunky, lambda l: l.pineapple, None, 4),
         Collectible(Collectibles.banana, Kongs.chunky, lambda l: True, None, 5),
+
+        Collectible(Collectibles.coin, Kongs.donkey, lambda l: True, None, 2),  # Llama cage
+        Collectible(Collectibles.coin, Kongs.donkey, lambda l: l.coconut and l.strongKong, None, 3),  # DK BP room
+        Collectible(Collectibles.coin, Kongs.any, lambda l: True, None, 1),  # Oasis
+        Collectible(Collectibles.coin, Kongs.diddy, lambda l: True, None, 5),  # W2
+        Collectible(Collectibles.coin, Kongs.tiny, lambda l: l.shockwave, None, 4),  # Oasis
+        Collectible(Collectibles.coin, Kongs.chunky, lambda l: True, None, 4),  # Outside Tiny Temple
     ],
     Regions.TempleStart: [
         Collectible(Collectibles.bunch, Kongs.diddy, lambda l: l.Slam, None, 3),
         Collectible(Collectibles.banana, Kongs.diddy, lambda l: l.Slam, None, 3),
         Collectible(Collectibles.bunch, Kongs.chunky, lambda l: True, None, 5),
         Collectible(Collectibles.banana, Kongs.chunky, lambda l: True, None, 4),
+
+        Collectible(Collectibles.coin, Kongs.diddy, lambda l: True, None, 1),  # On Guitar pad
+        Collectible(Collectibles.coin, Kongs.lanky, lambda l: True, None, 3),
+        Collectible(Collectibles.coin, Kongs.chunky, lambda l: True, None, 3),
     ],
     Regions.TempleUnderwater: [
         Collectible(Collectibles.banana, Kongs.diddy, lambda l: True, None, 7),
@@ -31,6 +42,9 @@ LogicRegions = {
         Collectible(Collectibles.banana, Kongs.tiny, lambda l: l.mini, None, 5),
         Collectible(Collectibles.balloon, Kongs.tiny, lambda l: l.feather, None, 2),
         Collectible(Collectibles.balloon, Kongs.chunky, lambda l: l.pineapple, None, 1),
+
+        Collectible(Collectibles.coin, Kongs.diddy, lambda l: True, None, 5),  # By Chimpy charge switch
+        Collectible(Collectibles.coin, Kongs.tiny, lambda l: True, None, 4),  # In vulture room
     ],
     Regions.AngryAztecMain: [
         Collectible(Collectibles.balloon, Kongs.donkey, lambda l: l.coconut, None, 2),  # Cranky
@@ -60,21 +74,45 @@ LogicRegions = {
 
         Collectible(Collectibles.banana, Kongs.chunky, lambda l: True, None, 10),  # Around Totem
         Collectible(Collectibles.banana, Kongs.chunky, lambda l: True, None, 6),  # Snide
+
+        Collectible(Collectibles.coin, Kongs.donkey, lambda l: True, None, 3),  # Around big boulder
+        Collectible(Collectibles.coin, Kongs.donkey, lambda l: True, None, 3),  # Near Snide's
+        Collectible(Collectibles.coin, Kongs.diddy, lambda l: True, None, 4),  # Around caged bonus barrel
+        Collectible(Collectibles.coin, Kongs.lanky, lambda l: True, None, 5),  # W4
+        Collectible(Collectibles.coin, Kongs.lanky, lambda l: True, None, 4),  # By Cranky
+        Collectible(Collectibles.coin, Kongs.lanky, lambda l: True, None, 3),  # Behind 5DT
+        Collectible(Collectibles.coin, Kongs.tiny, lambda l: True, None, 3),  # Around Hunky Chunky barrel
+        Collectible(Collectibles.coin, Kongs.tiny, lambda l: True, None, 5),  # W5
+        Collectible(Collectibles.coin, Kongs.chunky, lambda l: Events.AztecDonkeySwitch in l.Events and l.strongKong, None, 4),  # Behind W5
+        Collectible(Collectibles.coin, Kongs.chunky, lambda l: l.vines, None, 4),  # Vines by Snide's
     ],
     Regions.AztecBaboonBlast: [
     ],
     Regions.DonkeyTemple: [
+        Collectible(Collectibles.coin, Kongs.donkey, lambda l: l.coconut, None, 2),
     ],
     Regions.DiddyTemple: [
         Collectible(Collectibles.balloon, Kongs.diddy, lambda l: l.peanut, None, 1),
+
+        Collectible(Collectibles.coin, Kongs.diddy, lambda l: l.peanut, None, 1),  # First dead end
+        Collectible(Collectibles.coin, Kongs.diddy, lambda l: l.peanut, None, 1),  # Second dead end
     ],
     Regions.LankyTemple: [
         Collectible(Collectibles.balloon, Kongs.lanky, lambda l: l.grape, None, 1),
     ],
     Regions.TinyTemple: [
+        Collectible(Collectibles.coin, Kongs.tiny, lambda l: True, None, 1),  # Under first switch
+        Collectible(Collectibles.coin, Kongs.tiny, lambda l: l.feather, None, 1),  # Under second switch
+        Collectible(Collectibles.coin, Kongs.tiny, lambda l: l.feather, None, 1),  # Dead end
     ],
     Regions.ChunkyTemple: [
         Collectible(Collectibles.balloon, Kongs.chunky, lambda l: l.pineapple, None, 2),
+
+        Collectible(Collectibles.coin, Kongs.any, lambda l: l.shockwave, None, 1),
+        Collectible(Collectibles.coin, Kongs.chunky, lambda l: l.pineapple, None, 1),  # Start of second section
+        Collectible(Collectibles.coin, Kongs.chunky, lambda l: l.pineapple, None, 1),  # Under second pineapple switch
+        Collectible(Collectibles.coin, Kongs.chunky, lambda l: l.pineapple, None, 1),  # Under third pineapple switch
+        Collectible(Collectibles.coin, Kongs.chunky, lambda l: l.pineapple, None, 1),  # In front of door to GB
     ],
     Regions.AztecTinyRace: [
     ],
@@ -87,6 +125,10 @@ LogicRegions = {
 
         Collectible(Collectibles.balloon, Kongs.tiny, lambda l: l.feather, None, 1),
         Collectible(Collectibles.banana, Kongs.tiny, lambda l: True, None, 3),
+
+        Collectible(Collectibles.coin, Kongs.donkey, lambda l: True, None, 5),  # Instrument pad
+        Collectible(Collectibles.coin, Kongs.lanky, lambda l: l.grape and l.Slam and l.vines, None, 2),  # Matching game room
+        Collectible(Collectibles.coin, Kongs.tiny, lambda l: True, None, 3),  # By tag barrel
     ],
     Regions.LlamaTempleBack: [
         Collectible(Collectibles.banana, Kongs.tiny, lambda l: True, None, 2),
