@@ -355,11 +355,11 @@ loadExtraHooks:
 	SW r0, 0x40C8 (t4) // Store NOP
 
 	loadExtraHooks_1:
-	LUI t3, hi(DisableBossKongHook)
-	LW t3, lo(DisableBossKongHook) (t3)
-	LUI t4, 0x8065
-	SW t3, 0xEBF4 (t4) // Store Hook
-	SW r0, 0xEBF8 (t4) // Store NOP
+	//LUI t3, hi(DisableBossKongHook)
+	//LW t3, lo(DisableBossKongHook) (t3)
+	//LUI t4, 0x8065
+	//SW t3, 0xEBF4 (t4) // Store Hook
+	//SW r0, 0xEBF8 (t4) // Store NOP
 
 	LUI t3, hi(TagPreventHook)
 	LW t3, lo(TagPreventHook) (t3)
