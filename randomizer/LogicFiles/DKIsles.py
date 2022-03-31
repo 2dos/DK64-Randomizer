@@ -26,7 +26,7 @@ LogicRegions = {
     ]),
 
     Regions.IslesMain: Region("Isles Main", Levels.DKIsles, True, None, [
-        LocationLogic(Locations.IslesDonkeyJapesRock, lambda l: l.donkey),
+        LocationLogic(Locations.IslesDonkeyJapesRock, lambda l: l.donkey and (l.settings.open_lobbies or Events.KLumsyTalkedTo in l.Events)),
         LocationLogic(Locations.IslesTinyCagedBanana, lambda l: l.feather and l.tiny),
         LocationLogic(Locations.IslesTinyInstrumentPad, lambda l: Events.IslesChunkyBarrelSpawn in l.Events and l.tiny),
         LocationLogic(Locations.IslesLankyCagedBanana, lambda l: l.grape and l.lanky),
@@ -42,21 +42,30 @@ LogicRegions = {
         TransitionFront(Regions.StartArea, lambda l: True),
         TransitionFront(Regions.Prison, lambda l: True),
         TransitionFront(Regions.BananaFairyRoom, lambda l: l.mini and l.istiny, Transitions.IslesMainToFairy),
-        TransitionFront(Regions.JungleJapesLobby, lambda l: True, Transitions.IslesMainToJapesLobby),
-        TransitionFront(Regions.AngryAztecLobby, lambda l: True, Transitions.IslesMainToAztecLobby),
+        TransitionFront(Regions.JungleJapesLobby, lambda l: l.settings.open_lobbies or Events.KLumsyTalkedTo in l.Events, Transitions.IslesMainToJapesLobby),
+        TransitionFront(Regions.AngryAztecLobby, lambda l: l.settings.open_lobbies or Events.JapesKeyTurnedIn in l.Events, Transitions.IslesMainToAztecLobby),
         TransitionFront(Regions.CrocodileIsleBeyondLift, lambda l: True),
-        TransitionFront(Regions.GloomyGalleonLobby, lambda l: True, Transitions.IslesMainToGalleonLobby),
+        TransitionFront(Regions.GloomyGalleonLobby, lambda l: l.settings.open_lobbies or Events.AztecKeyTurnedIn in l.Events, Transitions.IslesMainToGalleonLobby),
         TransitionFront(Regions.CabinIsle, lambda l: True),
-        TransitionFront(Regions.CrystalCavesLobby, lambda l: True, Transitions.IslesMainToCavesLobby),
-        TransitionFront(Regions.CreepyCastleLobby, lambda l: True, Transitions.IslesMainToCastleLobby),
-        TransitionFront(Regions.HideoutHelmLobby, lambda l: True and l.monkeyport and l.istiny),
-        TransitionFront(Regions.KRool, lambda l: Events.KeysTurnIn in l.Events),
+        TransitionFront(Regions.CrystalCavesLobby, lambda l: l.settings.open_lobbies or Events.ForestKeyTurnedIn in l.Events, Transitions.IslesMainToCavesLobby),
+        TransitionFront(Regions.CreepyCastleLobby, lambda l: l.settings.open_lobbies or Events.ForestKeyTurnedIn in l.Events, Transitions.IslesMainToCastleLobby),
+        TransitionFront(Regions.HideoutHelmLobby, lambda l: l.monkeyport and l.istiny
+                        and (l.settings.open_lobbies or (Events.CavesKeyTurnedIn in l.Events and Events.CastleKeyTurnedIn in l.Events))),
+        TransitionFront(Regions.KRool, lambda l: l.CanAccessKRool()),
     ]),
 
     Regions.Prison: Region("Prison", Levels.DKIsles, False, None, [
         LocationLogic(Locations.IslesLankyPrisonOrangsprint, lambda l: l.sprint and l.islanky),
     ], [
-        Event(Events.KeysTurnIn, lambda l: l.JapesKey and l.AztecKey and l.FactoryKey and l.GalleonKey and l.ForestKey and l.CavesKey and l.CastleKey and l.HelmKey),
+        Event(Events.KLumsyTalkedTo, lambda l: True),
+        Event(Events.JapesKeyTurnedIn, lambda l: l.JapesKey),
+        Event(Events.AztecKeyTurnedIn, lambda l: l.AztecKey),
+        Event(Events.FactoryKeyTurnedIn, lambda l: l.FactoryKey),
+        Event(Events.GalleonKeyTurnedIn, lambda l: l.GalleonKey),
+        Event(Events.ForestKeyTurnedIn, lambda l: l.ForestKey),
+        Event(Events.CavesKeyTurnedIn, lambda l: l.CavesKey),
+        Event(Events.CastleKeyTurnedIn, lambda l: l.CastleKey),
+        Event(Events.HelmKeyTurnedIn, lambda l: l.HelmKey),
     ], [
         TransitionFront(Regions.IslesMain, lambda l: True),
     ]),
@@ -88,7 +97,7 @@ LogicRegions = {
     ], [], [
         TransitionFront(Regions.IslesMain, lambda l: True),
         TransitionFront(Regions.IslesSnideRoom, lambda l: True, Transitions.IslesMainToSnideRoom),
-        TransitionFront(Regions.FranticFactoryLobby, lambda l: True, Transitions.IslesMainToFactoryLobby),
+        TransitionFront(Regions.FranticFactoryLobby, lambda l: l.settings.open_lobbies or Events.AztecKeyTurnedIn in l.Events, Transitions.IslesMainToFactoryLobby),
     ]),
 
     Regions.IslesSnideRoom: Region("Isles Snide Room", Levels.DKIsles, True, None, [
@@ -121,7 +130,7 @@ LogicRegions = {
         LocationLogic(Locations.IslesDiddySummit, lambda l: Events.IslesDiddyBarrelSpawn in l.Events and l.jetpack and l.peanut and l.isdiddy, True),
     ], [], [
         TransitionFront(Regions.IslesMain, lambda l: True),
-        TransitionFront(Regions.FungiForestLobby, lambda l: True, Transitions.IslesMainToForestLobby),
+        TransitionFront(Regions.FungiForestLobby, lambda l: l.settings.open_lobbies or Events.GalleonKeyTurnedIn in l.Events, Transitions.IslesMainToForestLobby),
     ]),
 
     Regions.FungiForestLobby: Region("Fungi Forest Lobby", Levels.DKIsles, True, None, [
