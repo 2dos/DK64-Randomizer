@@ -54,6 +54,40 @@ def generate_seed_from_patch(event):
         patching_response(str(js.loaded_patch))
 
 
+@bind("click", "randomize_blocker_required_amounts")
+def toggle_counts_boxes(event):
+    """Toggle the textboxes for BLockers."""
+    disabled = False
+    if js.document.getElementById("blocker_0").disabled:
+        disabled = True
+    for i in range(0, 10):
+        blocker = js.document.getElementById(f"blocker_{i}")
+        try:
+            if disabled:
+                blocker.removeAttribute("disabled")
+            else:
+                blocker.setAttribute("disabled", "disabled")
+        except AttributeError:
+            pass
+
+
+@bind("click", "randomize_cb_required_amounts")
+def toggle_counts_boxes(event):
+    """Toggle the textboxes for Troff."""
+    disabled = False
+    if js.document.getElementById("troff_0").disabled:
+        disabled = True
+    for i in range(0, 10):
+        troff = js.document.getElementById(f"troff_{i}")
+        try:
+            if disabled:
+                troff.removeAttribute("disabled")
+            else:
+                troff.setAttribute("disabled", "disabled")
+        except AttributeError:
+            pass
+
+
 @bind("click", "generate_seed")
 def generate_seed(event):
     """Generate a seed based off the current settings.
