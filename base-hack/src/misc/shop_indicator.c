@@ -116,15 +116,55 @@ int getMoveCountInShop(int shop_index) {
 	return count;
 }
 
-void displayShopIndicator(void) {
+void adjustGalleonShopHeights(void) {
 	if (Rando.shop_indicator_on) {
-		int in_shop_container_map = -1;
-		for (int i = 0; i < 9; i++) {
-			if (shop_maps[i] == CurrentMap) {
-				in_shop_container_map = i;
+		if (CurrentMap == 0x1E) {
+			if (SwapObject) {
+				int cam_chunk = SwapObject->chunk;
+				int* m2location = ObjectModel2Pointer;
+				if ((cam_chunk == 12) || (cam_chunk == 15)) {
+					int candy = convertIDToIndex(0x36);
+					if (candy > -1) {
+						ModelTwoData* candy_object = getObjectArrayAddr(m2location,0x90,candy);
+						int candy_y = candy_object->yPos;
+						int candy_indicator = convertIDToIndex(0x232);
+						if (candy_indicator > -1) {
+							ModelTwoData* _object = getObjectArrayAddr(m2location,0x90,candy_indicator);
+							model_struct* _model = _object->model_pointer;
+							if (_model) {
+								_model->y = candy_y;
+							}
+						}
+					}
+				} else if (cam_chunk == 13) {
+					int funky = convertIDToIndex(0x1F4);
+					if (funky > -1) {
+						ModelTwoData* funky_object = getObjectArrayAddr(m2location,0x90,funky);
+						int funky_y = funky_object->yPos + 2.693f;
+						int funky_indicator = convertIDToIndex(0x231);
+						if (funky_indicator > -1) {
+							ModelTwoData* _object = getObjectArrayAddr(m2location,0x90,funky_indicator);
+							model_struct* _model = _object->model_pointer;
+							if (_model) {
+								_model->y = funky_y;
+							}
+						}
+					}
+				}
 			}
 		}
-		if (in_shop_container_map > -1) {
+	}
+}
+
+void displayShopIndicator(void) {
+	int in_shop_container_map = -1;
+	for (int i = 0; i < sizeof(shop_maps); i++) {
+		if (shop_maps[i] == CurrentMap) {
+			in_shop_container_map = i;
+		}
+	}
+	if (in_shop_container_map > -1) {
+		if (Rando.shop_indicator_on) {
 			for (int j = 0; j < 3; j++) {
 				if (shop_btf[in_shop_container_map] & (1 << j)) {
 					int display_number = getMoveCountInShop(j);
@@ -134,6 +174,18 @@ void displayShopIndicator(void) {
 					for (int i = 1; i < 4; i++) {
 						displayNumberOnObject(0x230 + j,i,(((10-i) + display_number % 10) % 10) - 1, 0, 0);
 						display_number /= 10;
+					}
+				}
+			}
+		} else {
+			int* m2location = ObjectModel2Pointer;
+			for (int j = 0; j < 3; j++) {
+				int slot = convertIDToIndex(0x230 + j);
+				if (slot > -1) {
+					ModelTwoData* _object = getObjectArrayAddr(m2location,0x90,slot);
+					model_struct* _model = _object->model_pointer;
+					if (_model) {
+						_model->scale = 0.0f;
 					}
 				}
 			}

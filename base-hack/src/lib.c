@@ -57,3 +57,13 @@ void customHideHUD(void) {
 void createCollisionObjInstance(collision_types subtype, int map, int exit) {
 	createCollision(0,Player,subtype,map,exit,collisionPos[0],collisionPos[1],collisionPos[2]);
 }
+
+void changeCharSpawnerFlag(int map, int spawner_id, int new_flag) {
+	for (int i = 0; i < 0x1F; i++) {
+		if (charspawnerflags[i].map == map) {
+			if (charspawnerflags[i].spawner_id == spawner_id) {
+				charspawnerflags[i].tied_flag = new_flag;
+			}
+		}
+	}
+}

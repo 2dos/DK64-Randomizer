@@ -13,13 +13,19 @@ typedef struct shortPos {
 typedef struct actorData {
 	/* 0x000 */ char unk_00[0x58];
 	/* 0x058 */ int actorType;
-	/* 0x05C */ char unk_5C[0x7C-0x5C];
+	/* 0x05C */ char unk_5C[0x60-0x5C];
+	/* 0x060 */ int obj_props_bitfield;
+	/* 0x064 */ char unk_64[0x7C-0x64];
 	/* 0x07C */ float xPos;
 	/* 0x080 */ float yPos;
 	/* 0x084 */ float zPos;
 	/* 0x088 */ char unk_80[0xB8-0x88];
 	/* 0x0B8 */ float hSpeed;
-	/* 0x0BC */ char unk_BC[0x154-0xBC];
+	/* 0x0BC */ char unk_BC[0x128-0xBC];
+	/* 0x128 */ short shadow_intensity;
+	/* 0x12A */ char unk_12A[0x144-0x12A];
+	/* 0x144 */ char noclip_byte;
+	/* 0x145 */ char unk_145[0x154-0x145];
 	/* 0x154 */ char control_state;
 	/* 0x155 */ char control_state_progress;
 	/* 0x156 */ char unk_156[0x180-0x156];
@@ -31,7 +37,9 @@ typedef struct cameraData {
 	/* 0x07C */ float xPos;
 	/* 0x080 */ float yPos;
 	/* 0x084 */ float zPos;
-	/* 0x088 */ char unk_88[0x15F-0x88];
+	/* 0x088 */ char unk_88[0x12C-0x88];
+	/* 0x12C */ short chunk;
+	/* 0x12E */ char unk_12E[0x15F-0x12E];
 	/* 0x15F */ char facing_angle;
 	/* 0x160 */ char unk_160[0x1FC-0x160];
 	/* 0x1FC */ float viewportX;
@@ -235,12 +243,17 @@ typedef struct SwapObjectData {
 	/* 0x210 */ floatPos cameraPositions[4];
 	/* 0x240 */ char unk_21C[0x284-0x240];
 	/* 0x284 */ float near;
-	/* 0x288 */ char unk_288[0x29C-0x288];
+	/* 0x288 */ char unk_288[0x290-0x288];
+	/* 0x290 */ short chunk;
+	/* 0x292 */ char unk_292[0x29C-0x292];
 	/* 0x29C */ short action_type;
 } SwapObjectData;
 
 typedef struct ModelTwoData {
-	/* 0x000 */ char unk_00[0x20];
+	/* 0x000 */ float xPos;
+	/* 0x004 */ float yPos;
+	/* 0x008 */ float zPos;
+	/* 0x00C */ char unk_0C[0x20-0xC];
 	/* 0x020 */ void* model_pointer;
 	/* 0x024 */ char unk_24[0x7C-0x24];
 	/* 0x07C */ void* behaviour_pointer;
@@ -591,3 +604,49 @@ typedef struct fileExtraStorage {
 typedef struct settingsData {
 	/* 0x000 */ fileExtraStorage file_extra[3];
 } settingsData;
+
+typedef struct behaviour_data {
+	/* 0x000 */ char unk_00[0x44];
+	/* 0x044 */ unsigned short timer;
+	/* 0x046 */ char unk_46[0x48-0x46];
+	/* 0x048 */ unsigned char current_state;
+	/* 0x049 */ char unk_49[0x4B-0x49];
+	/* 0x04B */ unsigned char next_state;
+	/* 0x04C */ char unk_4C[0x54-0x4C];
+	/* 0x054 */ char pause_state;
+	/* 0x055 */ char unk_55[0x58-0x55];
+	/* 0x058 */ int distance_cap;
+	/* 0x05C */ char unk_5C[0x60-0x5C];
+	/* 0x060 */ char unk_60;
+	/* 0x061 */ char unk_61;
+	/* 0x062 */ unsigned short unk_62;
+	/* 0x064 */ char unk_64[0x66-0x64];
+	/* 0x066 */ unsigned char unk_66;
+	/* 0x067 */ char unk_67[0x70-0x67];
+	/* 0x070 */ char unk_70;
+	/* 0x071 */ char unk_71;
+	/* 0x072 */ char unk_72[0x94-0x72];
+	/* 0x094 */ void* cutscene_controller_pointer;
+	/* 0x098 */ char unk_98[0x9B-0x98];
+	/* 0x09B */ unsigned char persistance;
+	/* 0x09C */ char unk_9C[0xA0-0x9C];
+} behaviour_data;
+
+typedef struct model_struct {
+	/* 0x000 */ float x;
+	/* 0x004 */ float y;
+	/* 0x008 */ float z;
+	/* 0x00C */ float scale;
+	/* 0x010 */ char unk_10[0x50-0x10];
+	/* 0x050 */ int unk_50;
+	/* 0x054 */ char unk_54[0xB8-0x54];
+	/* 0X0B8 */ int unk_B8;
+} model_struct;
+
+typedef struct charspawner_flagstruct {
+	/* 0x000 */ unsigned char map;
+	/* 0x001 */ char unk_01;
+	/* 0x002 */ short spawner_id;
+	/* 0x004 */ short tied_flag;
+	/* 0x006 */ char unk_06[2];
+} charspawner_flagstruct;

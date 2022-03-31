@@ -22,6 +22,7 @@ from randomizer.Enums.Events import Events
 from randomizer.Enums.Items import Items
 from randomizer.Enums.Kongs import Kongs
 from randomizer.Enums.Levels import Levels
+from randomizer.Enums.Locations import Locations
 from randomizer.Lists.Location import LocationList
 from randomizer.Prices import CanBuy
 
@@ -343,9 +344,28 @@ class LogicVarHolder:
         """
         return Regions[region].HasAccess(kong)
 
+    def KasplatAccess(self, location):
+        """Use the kasplat map to check kasplat logic for blueprint locations."""
+        kong = self.kasplat_map[location]
+        if location == Locations.GalleonDonkeyKasplat:
+            # Water level needs to be raised and you spring up as diddy to get killed by the kasplat
+            # Or, any kong having teleporter access works too
+            if kong == Kongs.diddy:
+                return Events.WaterSwitch in self.Events and self.IsKong(Kongs.diddy)
+            else:
+                return Events.TreasureRoomTeleporterUnlocked in self.Events and self.HasAccess(randomizer.Enums.Regions.Regions.Shipyard, kong)
+        return self.IsKong(kong)
+
     def CanBuy(self, location):
         """Check if there are enough coins to purchase this location."""
         return CanBuy(location, self.Coins, self.settings)
+
+    def CanAccessKRool(self):
+        """Make sure that each required key has been turned in."""
+        for keyRequired in self.settings.krool_keys_required:
+            if keyRequired not in self.Events:
+                return False
+        return True
 
 
 LogicVariables = LogicVarHolder()

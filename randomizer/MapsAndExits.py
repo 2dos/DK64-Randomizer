@@ -18,6 +18,7 @@ class Maps(IntEnum):
     FungiForestLobby = 178
     CrystalCavesLobby = 194
     CreepyCastleLobby = 193
+    HideoutHelmLobby = 170
 
     # Jungle Japes
     JungleJapes = 7
