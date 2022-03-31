@@ -20,14 +20,18 @@ def ShuffleBarrels(settings, barrelLocations, minigamePool):
     while len(barrelLocations) > 0:
         location = barrelLocations.pop()
         # Check each remaining minigame to see if placing it will produce a valid world
+        success = False
         for minigame in minigamePool:
             MinigameAssociations[location] = minigame
             # If world is still valid, keep minigame associated there
             if Fill.VerifyWorld(settings):
                 minigamePool.remove(minigame)
+                success = True
                 break
             else:
                 MinigameAssociations[location] = Minigames.NoGame
+        if not success:
+            raise Ex.BarrelOutOfMinigames
 
 
 def BarrelShuffle(settings):
