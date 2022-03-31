@@ -14,7 +14,7 @@
 from text_encoder import writeText
 
 move_hints = [
-	{
+    {
         "move": "Baboon Blast",
         "cranky": "I'VE PERFECTED ANOTHER POTION, DONKEY. THIS ONE WILL MAKE YOU BREAK THE DONKEY AIR-SPEED RECORD.",
         "funky": "PAY UP DUDE, FUNKY'S GOT A NEW MOVE FOR YOU WHICH WILL ENABLE YOU TO LAUNCH INTO THE STRATOSPHERE.",
