@@ -268,4 +268,3 @@ class Spoiler:
         if Events.HelmKeyTurnedIn in keyEvents:
             keys.append("Hideout Helm Key")
         return keys
-        
