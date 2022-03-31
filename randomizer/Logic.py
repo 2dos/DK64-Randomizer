@@ -121,6 +121,9 @@ class LogicVarHolder:
         self.HelmChunky2 = False
 
         self.Slam = 3 if self.settings.unlock_all_moves else 1  # Right now assuming start with slam
+        self.AmmoBelts = 2 if self.settings.unlock_all_moves else 0
+        self.InstUpgrades = 3 if self.settings.unlock_all_moves else 0
+
         self.GoldenBananas = 0
         self.BananaFairies = 0
         self.BananaMedals = 0
@@ -226,6 +229,9 @@ class LogicVarHolder:
         self.HelmChunky2 = self.HelmChunky2 or Items.HelmChunky2 in ownedItems
 
         self.Slam = 3 if self.settings.unlock_all_moves else sum(1 for x in ownedItems if x == Items.ProgressiveSlam)
+        self.AmmoBelts = 2 if self.settings.unlock_all_moves else sum(1 for x in ownedItems if x == Items.ProgressiveAmmoBelt)
+        self.InstUpgrades = 3 if self.settings.unlock_all_moves else sum(1 for x in ownedItems if x == Items.ProgressiveInstrumentUpgrade)
+
         self.GoldenBananas = sum(1 for x in ownedItems if x == Items.GoldenBanana)
         self.BananaFairies = sum(1 for x in ownedItems if x == Items.BananaFairy)
         self.BananaMedals = sum(1 for x in ownedItems if x == Items.BananaMedal)
@@ -345,7 +351,7 @@ class LogicVarHolder:
 
     def CanBuy(self, location):
         """Check if there are enough coins to purchase this location."""
-        return CanBuy(location, self.Coins, self.settings)
+        return CanBuy(location, self.Coins, self.settings, self.Slam, self.AmmoBelts, self.InstUpgrades)
 
 
 LogicVariables = LogicVarHolder()
