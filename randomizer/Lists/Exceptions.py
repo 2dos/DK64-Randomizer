@@ -36,6 +36,7 @@ class BarrelAttemptCountExceeded(BarrelPlacementException):
 
     pass
 
+
 class KasplatPlacementException(Exception):
     """Exception triggered when shuffled kasplats minigames fails to produce a valid world."""
 

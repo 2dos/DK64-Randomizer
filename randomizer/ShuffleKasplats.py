@@ -58,15 +58,17 @@ constants = {
     # Need to jetpack to the warp pad to get to the kasplat... can technically fall onto it but seems awful
     Locations.CavesDiddyKasplat: Kongs.diddy,
     # Coconut gate doesn't stay open
-    Locations.CastleDonkeyKasplat: Kongs.donkey
+    Locations.CastleDonkeyKasplat: Kongs.donkey,
 }
 
+
 def FindLevel(location):
-    """Finds the level given a location."""
+    """Find the level given a location."""
     for region in Logic.Regions.values():
         for loc in region.locations:
             if loc.id == location:
                 return region.level
+
 
 def ShuffleKasplats(LogicVariables):
     """Shuffles the kong assigned to each kasplat."""

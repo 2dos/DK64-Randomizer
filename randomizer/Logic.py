@@ -345,6 +345,7 @@ class LogicVarHolder:
         return Regions[region].HasAccess(kong)
 
     def KasplatAccess(self, location):
+        """Use the kasplat map to check kasplat logic for blueprint locations."""
         kong = self.kasplat_map[location]
         if location == Locations.GalleonDonkeyKasplat:
             # Water level needs to be raised and you spring up as diddy to get killed by the kasplat
@@ -354,7 +355,6 @@ class LogicVarHolder:
             else:
                 return Events.TreasureRoomTeleporterUnlocked in self.Events and self.HasAccess(randomizer.Enums.Regions.Regions.Shipyard, kong)
         return self.IsKong(kong)
-
 
     def CanBuy(self, location):
         """Check if there are enough coins to purchase this location."""

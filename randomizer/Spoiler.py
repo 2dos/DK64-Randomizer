@@ -185,22 +185,22 @@ class Spoiler:
             map = None
             # See if map already exists in enemy_replacements
             for m in self.enemy_replacements:
-                if m['container_map'] == mapId:
+                if m["container_map"] == mapId:
                     map = m
                     break
             # If not, create it
-            if map == None:
+            if map is None:
                 map = {}
-                map['container_map'] = mapId
+                map["container_map"] = mapId
                 self.enemy_replacements.append(map)
             # Create kasplat_swaps section if doesn't exist
-            if 'kasplat_swaps' not in map:
-                map['kasplat_swaps'] = []
+            if "kasplat_swaps" not in map:
+                map["kasplat_swaps"] = []
             # Create swap entry and add to map
             swap = {}
-            swap['vanilla_location'] = original
-            swap['replace_with'] = kong
-            map['kasplat_swaps'].append(swap)
+            swap["vanilla_location"] = original
+            swap["replace_with"] = kong
+            map["kasplat_swaps"].append(swap)
 
     def UpdateBarrels(self):
         """Update list of shuffled barrel minigames."""
