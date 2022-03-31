@@ -79,14 +79,11 @@ def ShuffleKasplats(LogicVariables):
     # Add a list of kongs for each level
     # Excludes Shops level, but will include a useless Helm level
     for i in range(len(Levels) - 1):
-        level_kongs.append(kongs)
+        level_kongs.append(kongs.copy())
     # Remove constants
     for loc, kong in constants.items():
         level = FindLevel(loc)
-        # python is weird and if you just do level_kongs[level].remove(kong) it removes that kong from all levels...
-        lks = level_kongs[level].copy()
-        lks.remove(kong)
-        level_kongs[level] = lks
+        level_kongs[level].remove(kong)
     # Set up kasplat map
     LogicVariables.kasplat_map = {}
     # Make all shufflable kasplats initially accessible as anyone
@@ -108,9 +105,7 @@ def ShuffleKasplats(LogicVariables):
             LogicVariables.kasplat_map[location] = kong
             if Fill.VerifyWorld(LogicVariables.settings):
                 # Successful placement, remove kong
-                lks = level_kongs[level].copy()
-                lks.remove(kong)
-                level_kongs[level] = lks
+                level_kongs[level].remove(kong)
                 success = True
                 break
         if not success:
