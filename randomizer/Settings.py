@@ -74,6 +74,9 @@ class Settings:
         # all (currently only theoretical)
         self.shuffle_items = "none"
 
+        # lobbies_open: bool
+        self.lobbies_open = True
+
         # progressive_upgrades: bool
         self.progressive_upgrades = True
 
