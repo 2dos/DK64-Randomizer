@@ -18,6 +18,7 @@ class Maps(IntEnum):
     FungiForestLobby = 178
     CrystalCavesLobby = 194
     CreepyCastleLobby = 193
+    HideoutHelmLobby = 170
 
     # Jungle Japes
     JungleJapes = 7
@@ -235,7 +236,7 @@ RegionMapList = {
     Regions.ForestBaboonBlast: Maps.ForestBaboonBlast,
     # Caves
     Regions.CrystalCavesMain: Maps.CrystalCaves,
-    Regions.BoulderIgloo: Maps.CrystalCaves,
+    Regions.BoulderCave: Maps.CrystalCaves,
     Regions.CavesLankyRace: Maps.CavesLankyRace,
     Regions.FrozenCastle: Maps.CavesFrozenCastle,
     Regions.IglooArea: Maps.CrystalCaves,
