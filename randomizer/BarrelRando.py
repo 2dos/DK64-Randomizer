@@ -19,16 +19,17 @@ def randomize_barrels(spoiler: Spoiler):
 
     barrels = [12, 91]
     if spoiler.settings.bonus_barrel_rando:
-        for cont_map in barrel_replacements:
-            aztec_setup = 0x235331C
+        for cont_map in barrel_replacements: # TODO: Change "barrel_replacements" with the appropriate spoiler array
+            cont_map_id = int(cont_map["container_map"])
+            cont_map_setup_address = js.pointer_addresses[9]["entries"][cont_map_id]["pointing_to"]
             # Pointer Table 9, use "containing_map" as a map index to grab setup start address
-            ROM().seek(aztec_setup)
+            ROM().seek(cont_map_setup_address)
             model2_count = int.from_bytes(ROM().readBytes(4), "big")
-            ROM().seek(aztec_setup + 4 + (model2_count * 0x30))
+            ROM().seek(cont_map_setup_address + 4 + (model2_count * 0x30))
             mystery_count = int.from_bytes(ROM().readBytes(4), "big")
-            ROM().seek(aztec_setup + 4 + (model2_count * 0x30) + 4 + (mystery_count * 0x24))
+            ROM().seek(cont_map_setup_address + 4 + (model2_count * 0x30) + 4 + (mystery_count * 0x24))
             actor_count = int.from_bytes(ROM().readBytes(4), "big")
-            start_of_actor_range = aztec_setup + 4 + (model2_count * 0x30) + 4 + (mystery_count * 0x24) + 4
+            start_of_actor_range = cont_map_setup_address + 4 + (model2_count * 0x30) + 4 + (mystery_count * 0x24) + 4
             # print(hex(start_of_actor_range))
             for x in range(actor_count):
                 start_of_actor = start_of_actor_range + (0x38 * x)
