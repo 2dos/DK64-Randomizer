@@ -104,7 +104,7 @@ class Settings:
     def update_progression_totals(self):
         """Update the troff and blocker totals if we're randomly setting them."""
         if self.randomize_cb_required_amounts:
-            randomlist = random.sample(range(0, 350), 7)
+            randomlist = random.sample(range(0, 260), 7)
             cbs = sorted(randomlist)
             self.troff_0 = cbs[0]
             self.troff_1 = cbs[1]

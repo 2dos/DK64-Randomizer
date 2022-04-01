@@ -1,5 +1,6 @@
 """File containing main UI button events that travel between tabs."""
 import json
+import random
 
 import js
 
@@ -142,6 +143,8 @@ def generate_seed(event):
         # Re disable all previously disabled options
         for element in disabled_options:
             element.setAttribute("disabled", "disabled")
+        if not form_data.get("seed"):
+            form_data["seed"] = str(random.randint(100000, 999999))
         ProgressBar().update_progress(2, "Randomizing, this may take some time depending on settings.")
         background(generate_playthrough, ["'''" + json.dumps(form_data) + "'''"], patching_response)
 

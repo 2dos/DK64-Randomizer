@@ -228,12 +228,27 @@ def patching_response(responded_data):
 
     ProgressBar().update_progress(10, "Seed Generated.")
     if spoiler.settings.generate_spoilerlog is True:
-        js.document.getElementById("nav-spoiler-tab").style.display = ""
+        js.document.getElementById("nav-settings-tab").style.display = ""
+        js.document.getElementById("spoiler_log_block").style.display = ""
         js.document.getElementById("spoiler_log_text").value = spoiler.toJson()
         js.save_text_as_file(spoiler.toJson(), f"dk64-{spoiler.settings.seed_id}-spoiler-log.json")
     else:
-        js.document.getElementById("nav-spoiler-tab").style.display = "none"
+        js.document.getElementById("nav-settings-tab").style.display = "none"
         js.document.getElementById("spoiler_log_text").value = ""
+        js.document.getElementById("spoiler_log_block").style.display = "none"
+        
+    js.document.getElementById("generated_seed_id").innerHTML = spoiler.settings.seed_id
+    loaded_settings = json.loads(spoiler.toJson())["Settings"]
+    js.document.getElementById("settings_table").innerHTML = ""
+    table = js.document.getElementById("settings_table")
+    for setting, value in loaded_settings.items():
+        if setting != "seed":
+            row = table.insertRow(-1)
+            name = row.insertCell(0)
+            description = row.insertCell(1)
+            name.innerHTML = setting
+            description.innerHTML = value
     ROM().fixSecurityValue()
     ROM().save(f"dk64-{spoiler.settings.seed_id}.z64")
     ProgressBar().reset()
+    js.jq('#nav-settings-tab').tab('show')
