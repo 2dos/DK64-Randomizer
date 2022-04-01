@@ -18,7 +18,6 @@ from randomizer.ShuffleKasplats import KasplatShuffle
 from randomizer.Logic import LogicVarHolder, LogicVariables
 from randomizer.LogicClasses import TransitionFront
 from randomizer.ShuffleBarrels import BarrelShuffle, ShuffleBarrels
-import randomizer.ShuffleBarrels as ShuffleBarrel
 
 
 def GetExitLevelExit(settings, region):
@@ -500,5 +499,4 @@ def Generate_Spoiler(spoiler):
         # spoiler.UpdatePlaythrough(LocationList, PlaythroughLocations)
     Reset()
     ShuffleExits.Reset()
-    ShuffleBarrel.Reset()
     return spoiler
