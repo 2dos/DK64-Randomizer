@@ -24,6 +24,9 @@ def ShuffleBarrels(settings, barrelLocations, minigamePool):
         for minigame in minigamePool:
             MinigameAssociations[location] = minigame
             enabled_for_map = True
+            if not MinigameRequirements[minigame].assign:
+                enabled_for_map = False
+                minigamePool.remove(minigame)
             # Check if banned in Helm and attempted to place in Helm
             if not MinigameRequirements[minigame].helm_enabled and BarrelMetaData[location].map == Maps.HideoutHelm:
                 enabled_for_map = False
@@ -31,7 +34,11 @@ def ShuffleBarrels(settings, barrelLocations, minigamePool):
             if Fill.VerifyWorld(settings) and enabled_for_map:
                 minigamePool.remove(minigame)
                 if MinigameRequirements[minigame].repeat:
-                    minigamePool.insert(randrange(len(minigamePool)+1), minigame)
+                    replacement_index = random.randint(0,len(minigamePool))
+                    if replacement_index >= len(minigamePool):
+                        minigamePool.append(minigame)
+                    else:
+                        minigamePool.insert(replacement_index,minigame)
                 success = True
                 break
             else:
@@ -44,7 +51,7 @@ def BarrelShuffle(settings):
     """Facilitate shuffling of barrels."""
     # First make master copies of locations and minigames
     barrelLocations = [x for x in BarrelMetaData.keys()]
-    minigamePool = [x for x in MinigameRequirements.keys()].remove(Minigames.NoGame)
+    minigamePool = [x for x in MinigameRequirements.keys()]
     retries = 0
     while True:
         try:
