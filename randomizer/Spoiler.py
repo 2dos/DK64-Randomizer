@@ -13,7 +13,7 @@ from randomizer.Enums.Types import Types
 from randomizer.Enums.MoveTypes import MoveTypes
 from randomizer.Lists.Item import ItemFromKong, ItemList
 from randomizer.Lists.Location import LocationList
-from randomizer.Lists.Minigame import MinigameAssociations, MinigameRequirements, BarrelMetaData
+from randomizer.Lists.Minigame import MinigameAssociations, MinigameRequirements
 from randomizer.MapsAndExits import GetExitId, GetMapId, Maps
 from randomizer.Settings import Settings
 from randomizer.ShuffleExits import ShufflableExits
