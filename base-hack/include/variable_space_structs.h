@@ -78,5 +78,8 @@ typedef struct varspace {
 	/* 0x133 */ unsigned char chunky_rgb_components[3]; // Item 0 = Red component, Item 1 = Green component, Item 2 = Blue Component
 	/* 0x136 */ unsigned char rambi_rgb_components[3]; // Item 0 = Red component, Item 1 = Green component, Item 2 = Blue Component
 	/* 0x139 */ unsigned char enguarde_rgb_components[3]; // Item 0 = Red component, Item 1 = Green component, Item 2 = Blue Component
-	/* 0x13C */ char lobbies_open_bitfield; // hccf gfaj
+	/* 0x13C */ unsigned char lobbies_open_bitfield; // hccf gfaj
+	/* 0x13D */ char perma_lose_kongs; // 0 = Off, 1 = On. AKA "iateyourpie mode"
+	/* 0x13E */ char disable_boss_kong_check; // 0 = Enable Check (Vanilla), 1 = Disabled
+	/* 0x13F */ char prevent_tag_spawn; // 0 = Off. 1 = Prevents tags from spawning except in T&S
 } varspace;

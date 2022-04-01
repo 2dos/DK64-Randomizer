@@ -6,6 +6,7 @@ import random
 import sys
 from randomizer.BossShuffle import ShuffleBossKongs, ShuffleBosses, ShuffleKutoutKongs
 from randomizer.Enums.Kongs import Kongs
+from randomizer.Enums.Events import Events
 from randomizer.Prices import RandomizePrices, VanillaPrices
 
 
@@ -26,6 +27,7 @@ class Settings:
         self.generate_misc()
         for k, v in form_data.items():
             setattr(self, k, v)
+        self.update_progression_totals()
         self.seed_id = str(self.seed)
         self.seed = str(self.seed) + self.__hash
         self.set_seed()
@@ -52,6 +54,7 @@ class Settings:
 
         # Settings which are not yet implemented on the web page
 
+        # Waiting on price branch
         # random_prices: str
         # vanilla
         # low
@@ -59,26 +62,68 @@ class Settings:
         # high
         self.random_prices = "vanilla"
 
+        # Always start with training barrels currently
         # training_barrels: str
         # normal
         # shuffled
         # startwith
         self.training_barrels = "startwith"
 
-        # starting_kong: Kongs enum
-        self.starting_kong = Kongs.donkey
-
+        # currently just set to moves by shop_location_rando
         # shuffle_items: str
         # none
         # moves
         # all (currently only theoretical)
         self.shuffle_items = "none"
 
+        # Not yet implemented
+        # starting_kong: Kongs enum
+        self.starting_kong = Kongs.donkey
+
+        # Pointless with just move rando, maybe have it once full rando
         # progressive_upgrades: bool
-        self.progressive_upgrades = True
+        self.progressive_upgrades = False
+
+        # Waiting for UI branch
+        # open_lobbies: bool
+        self.open_lobbies = True
+
+        # Waiting for UI branch
+        # krool_access: str
+        # vanilla (Keys 3 and 8)
+        # all (All keys)
+        # random (Each key has 50% chance of being required)
+        # random_helm (Same as random but helm is guaranteed)
+        # open (Ship is there from start)
+        self.krool_access = "random_helm"
+        self.krool_keys_required = []
 
         self.prices = VanillaPrices.copy()
         self.resolve_settings()
+
+    def update_progression_totals(self):
+        """Update the troff and blocker totals if we're randomly setting them."""
+        if self.randomize_cb_required_amounts:
+            randomlist = random.sample(range(0, 260), 7)
+            cbs = sorted(randomlist)
+            self.troff_0 = cbs[0]
+            self.troff_1 = cbs[1]
+            self.troff_2 = cbs[2]
+            self.troff_3 = cbs[3]
+            self.troff_4 = cbs[4]
+            self.troff_5 = cbs[5]
+            self.troff_6 = cbs[6]
+        if self.randomize_blocker_required_amounts:
+            randomlist = random.sample(range(0, 70), 7)
+            b_lockers = sorted(randomlist)
+            self.blocker_0 = 1
+            self.blocker_1 = b_lockers[0]
+            self.blocker_2 = b_lockers[1]
+            self.blocker_3 = b_lockers[2]
+            self.blocker_4 = b_lockers[3]
+            self.blocker_5 = b_lockers[4]
+            self.blocker_6 = b_lockers[5]
+            self.blocker_7 = b_lockers[6]
 
     def generate_main(self):
         """Set Default items on main page."""
@@ -162,6 +207,8 @@ class Settings:
         self.enable_tag_anywhere = None
         self.random_krool_phase_order = None
         self.shop_indicator = False
+        self.randomize_cb_required_amounts = False
+        self.randomize_blocker_required_amounts = False
 
     def resolve_settings(self):
         """Resolve settings which are not directly set through the UI."""
@@ -200,6 +247,28 @@ class Settings:
                 orderedPhases.append(3)
         orderedPhases.append(4)
         self.krool_order = orderedPhases
+
+        # Set keys required for KRool
+        KeyEvents = [
+            Events.JapesKeyTurnedIn,
+            Events.AztecKeyTurnedIn,
+            Events.FactoryKeyTurnedIn,
+            Events.GalleonKeyTurnedIn,
+            Events.ForestKeyTurnedIn,
+            Events.CavesKeyTurnedIn,
+            Events.CastleKeyTurnedIn,
+            Events.HelmKeyTurnedIn,
+        ]
+        if self.krool_access == "vanilla":
+            self.krool_keys_required.extend([Events.FactoryKeyTurnedIn, Events.HelmKeyTurnedIn])
+        elif self.krool_access == "all":
+            self.krool_keys_required.extend(KeyEvents)
+        elif self.krool_access == "random" or self.krool_access == "random_helm":
+            for event in KeyEvents:
+                if random.randint(1, 2) == 2:
+                    self.krool_keys_required.append(event)
+        if self.krool_access == "random_helm" and Events.HelmKeyTurnedIn not in self.krool_keys_required:
+            self.krool_keys_required.append(Events.HelmKeyTurnedIn)
 
         # Boss Rando
         self.boss_maps = ShuffleBosses(self.boss_location_rando)

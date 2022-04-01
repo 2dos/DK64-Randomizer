@@ -1,5 +1,6 @@
 """File containing main UI button events that travel between tabs."""
 import json
+import random
 
 import js
 
@@ -52,6 +53,40 @@ def generate_seed_from_patch(event):
             js.document.getElementById("patchfileloader").classList.add("is-invalid")
     else:
         patching_response(str(js.loaded_patch))
+
+
+@bind("click", "randomize_blocker_required_amounts")
+def toggle_counts_boxes(event):
+    """Toggle the textboxes for BLockers."""
+    disabled = False
+    if js.document.getElementById("blocker_0").disabled:
+        disabled = True
+    for i in range(0, 10):
+        blocker = js.document.getElementById(f"blocker_{i}")
+        try:
+            if disabled:
+                blocker.removeAttribute("disabled")
+            else:
+                blocker.setAttribute("disabled", "disabled")
+        except AttributeError:
+            pass
+
+
+@bind("click", "randomize_cb_required_amounts")
+def toggle_counts_boxes(event):
+    """Toggle the textboxes for Troff."""
+    disabled = False
+    if js.document.getElementById("troff_0").disabled:
+        disabled = True
+    for i in range(0, 10):
+        troff = js.document.getElementById(f"troff_{i}")
+        try:
+            if disabled:
+                troff.removeAttribute("disabled")
+            else:
+                troff.setAttribute("disabled", "disabled")
+        except AttributeError:
+            pass
 
 
 @bind("click", "generate_seed")
@@ -108,6 +143,8 @@ def generate_seed(event):
         # Re disable all previously disabled options
         for element in disabled_options:
             element.setAttribute("disabled", "disabled")
+        if not form_data.get("seed"):
+            form_data["seed"] = str(random.randint(100000, 999999))
         ProgressBar().update_progress(2, "Randomizing, this may take some time depending on settings.")
         background(generate_playthrough, ["'''" + json.dumps(form_data) + "'''"], patching_response)
 

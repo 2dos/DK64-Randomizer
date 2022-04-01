@@ -10,7 +10,7 @@
                 </tr>
                 {% for i in range(0, 8) %}
                     <tr>
-                        <td>Level {{ i }}</td>
+                        <td>Level {{ i + 1 }}</td>
                         <td>
                             <input class="form-control"
                                    min="0"
@@ -38,6 +38,26 @@
                     </tr>
                 {% endfor %}
             </table>
+            <div class="form-check form-switch w-75">
+                <label title="Randomize Required B-Locker totals">
+                    <input class="form-check-input"
+                            type="checkbox"
+                            name="randomize_blocker_required_amounts"
+                            id="randomize_blocker_required_amounts"
+                            value="True"/>
+                    Random B-Lockers
+                </label>
+            </div>
+            <div class="form-check form-switch w-75">
+                <label title="Randomize Required CB totals">
+                    <input class="form-check-input"
+                            type="checkbox"
+                            name="randomize_cb_required_amounts"
+                            id="randomize_cb_required_amounts"
+                            value="True"/>
+                    Random Troff Bananas
+                </label>
+            </div>
         </div>
         <div class="col border">
             <h3>Damage Options</h3>

@@ -18,6 +18,7 @@ class Maps(IntEnum):
     FungiForestLobby = 178
     CrystalCavesLobby = 194
     CreepyCastleLobby = 193
+    HideoutHelmLobby = 170
 
     # Jungle Japes
     JungleJapes = 7
@@ -115,6 +116,9 @@ class Maps(IntEnum):
     CastleDungeon = 163
     CastleBaboonBlast = 187
 
+    # Hideout Helm
+    HideoutHelm = 17
+
     # Level Bosses
     JapesBoss = 8
     AztecBoss = 197
@@ -130,6 +134,73 @@ class Maps(IntEnum):
     KroolLankyPhase = 205
     KroolTinyPhase = 206
     KroolChunkyPhase = 207
+
+    # Bonus Barrels
+    BattyBarrelBanditVEasy = 32
+    BattyBarrelBanditEasy = 121
+    BattyBarrelBanditNormal = 122
+    BattyBarrelBanditHard = 123
+    BigBugBashVEasy = 102
+    BigBugBashEasy = 148
+    BigBugBashNormal = 149
+    BigBugBashHard = 150
+    BusyBarrelBarrageEasy = 78
+    BusyBarrelBarrageNormal = 79
+    BusyBarrelBarrageHard = 131
+    MadMazeMaulEasy = 68
+    MadMazeMaulNormal = 69
+    MadMazeMaulHard = 66
+    MadMazeMaulInsane = 124
+    MinecartMayhemEasy = 77
+    MinecartMayhemNormal = 129
+    MinecartMayhemHard = 130
+    BeaverBotherEasy = 104
+    BeaverBotherNormal = 136
+    BeaverBotherHard = 137
+    TeeteringTurtleTroubleVEasy = 18
+    TeeteringTurtleTroubleEasy = 118
+    TeeteringTurtleTroubleNormal = 119
+    TeeteringTurtleTroubleHard = 120
+    StealthySnoopVEasy = 126
+    StealthySnoopEasy = 127
+    StealthySnoopNormal = 65
+    StealthySnoopHard = 128
+    StashSnatchEasy = 74
+    StashSnatchNormal = 67
+    StashSnatchHard = 75
+    StashSnatchInsane = 125
+    SplishSplashSalvageEasy = 133
+    SplishSplashSalvageNormal = 96
+    SplishSplashSalvageHard = 132
+    SpeedySwingSortieEasy = 99
+    SpeedySwingSortieNormal = 134
+    SpeedySwingSortieHard = 135
+    KrazyKongKlamourEasy = 101
+    KrazyKongKlamourNormal = 141
+    KrazyKongKlamourHard = 142
+    KrazyKongKlamourInsane = 143
+    SearchlightSeekVEasy = 103
+    SearchlightSeekEasy = 138
+    SearchlightSeekNormal = 139
+    SearchlightSeekHard = 140
+    KremlingKoshVEasy = 10
+    KremlingKoshEasy = 115
+    KremlingKoshNormal = 116
+    KremlingKoshHard = 117
+    PerilPathPanicVEasy = 144
+    PerilPathPanicEasy = 145
+    PerilPathPanicNormal = 146
+    PerilPathPanicHard = 147
+    HelmBarrelDKTarget = 35
+    HelmBarrelDKRambi = 212
+    HelmBarrelDiddyKremling = 165
+    HelmBarrelDiddyRocketbarrel = 201
+    HelmBarrelLankyMaze = 3
+    HelmBarrelLankyShooting = 202
+    HelmBarrelTinyPTT = 210
+    HelmBarrelTinyMush = 50
+    HelmBarrelChunkyHidden = 209
+    HelmBarrelChunkyShooting = 211
 
 
 RegionMapList = {

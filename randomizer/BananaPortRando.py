@@ -24,14 +24,15 @@ def randomize_bananaport(spoiler: Spoiler):
     pad_types = [0x214, 0x213, 0x211, 0x212, 0x210]
 
     if spoiler.settings.bananaport_rando:
-        pad_vanilla = []
-        for cont_map in bananaport_replacements:
-            aztec_llama_setup = 0x22C331C
+        for cont_map in bananaport_replacements:  # TODO: Change "bananaport_replacements" with the appropriate spoiler array
+            pad_vanilla = []
+            cont_map_id = int(cont_map["container_map"])
+            cont_map_setup_address = js.pointer_addresses[9]["entries"][cont_map_id]["pointing_to"]
             # Pointer Table 9, use "containing_map" as a map index to grab setup start address
-            ROM().seek(aztec_llama_setup)
+            ROM().seek(cont_map_setup_address)
             model2_count = int.from_bytes(ROM().readBytes(4), "big")
             for x in range(model2_count):
-                start = aztec_llama_setup + 4 + (x * 0x30)
+                start = cont_map_setup_address + 4 + (x * 0x30)
                 ROM().seek(start + 0x28)
                 obj_type = int.from_bytes(ROM().readBytes(2), "big")
                 if obj_type in pad_types:
@@ -67,8 +68,7 @@ def randomize_bananaport(spoiler: Spoiler):
                             "idx": obj_index,
                         }
                     )
-        for x in bananaport_replacements:
-            for y in x["pads"]:
+            for y in cont_map["pads"]:
                 warp_idx = y["warp_index"]
                 repl_ids = y["warp_ids"]
                 source_counter = 0
@@ -76,7 +76,7 @@ def randomize_bananaport(spoiler: Spoiler):
                     for vanilla_pad in pad_vanilla:
                         if vanilla_pad["_id"] == repl:
                             vanilla_idx = vanilla_pad["idx"]
-                            start = aztec_llama_setup + (0x30 * vanilla_idx) + 4
+                            start = cont_map_setup_address + (0x30 * vanilla_idx) + 4
                             ref_pad = {}
                             counter = 0
                             for vanilla_pad0 in pad_vanilla:
@@ -84,10 +84,6 @@ def randomize_bananaport(spoiler: Spoiler):
                                     if counter == source_counter:
                                         ref_pad = vanilla_pad0
                                     counter += 1
-                            # print("Source Pad:")
-                            # print(vanilla_pad)
-                            # print("Reference Pad:")
-                            # print(ref_pad)
                             ROM().seek(start + 0x28)
                             ROM().write(pad_types[vanilla_pad["pad_index"]].to_bytes(2, "big"))
                             ROM().seek(start + 0)

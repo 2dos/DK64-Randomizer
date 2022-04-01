@@ -74,10 +74,19 @@ extern void* getMapData(data_indexes data_idx, int _index, char compressbyte0, c
 extern void loadSetup(void* setup_file, int unk0, int unk1);
 extern int getParentDataIndex(int map);
 extern void WarpToDKTV(void);
+extern int getActorSpawnerIDFromTiedActor(void* actor);
 
 extern void wipeStoredSetup(void* setup);
 extern void complex_free(void* ptr);
 extern void createCollision(int type, void* player, collision_types subtype, int map, int exit, int x, int y, int z);
+extern void setScriptRunState(void* behaviour_pointer, int destination_state, int unk0);
+
+extern void unkObjFunction0(int id, int unk0, int unk1);
+extern void unkObjFunction1(int id, int unk0, int unk1);
+extern void unkObjFunction2(int id, int unk0, int unk1);
+extern int touchingModel2Object(int id);
+extern int GetKongUnlockedFlag(int actor_type, int kong_index);
+extern void setNextTransitionType(int type);
 
 extern int* initDisplayList(int* dl);
 extern int getTextStyleHeight(int style);
@@ -257,6 +266,8 @@ extern int FileGBCount;
 extern float FileScreenDLOffset;
 extern short CBTurnedInArray[8];
 
+extern charspawner_flagstruct charspawnerflags[0x1F];
+
 //hack data
 extern int TestVariable;
 extern char LoadedHooks;
@@ -279,3 +290,7 @@ extern purchase_struct FunkyMoves_New[5][7];
 extern settingsData StoredSettings;
 extern char WarpToIslesEnabled;
 extern char SkipDance;
+extern char permaLossMode;
+extern char disableBossKongCheck;
+extern char preventTagSpawn;
+extern char bonusAutocomplete;

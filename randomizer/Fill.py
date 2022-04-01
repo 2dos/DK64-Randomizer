@@ -11,12 +11,14 @@ from randomizer.Enums.Levels import Levels
 from randomizer.Enums.Regions import Regions
 from randomizer.Enums.SearchMode import SearchMode
 from randomizer.Enums.Transitions import Transitions
+from randomizer.Enums.Types import Types
 from randomizer.Lists.Item import ItemList
 from randomizer.Lists.Location import Location, LocationList
-from randomizer.Lists.Minigame import MinigameAssociations, MinigameRequirements
+from randomizer.Lists.Minigame import MinigameAssociations, MinigameRequirements, BarrelMetaData
+from randomizer.ShuffleKasplats import KasplatShuffle
 from randomizer.Logic import LogicVarHolder, LogicVariables
 from randomizer.LogicClasses import TransitionFront
-from randomizer.ShuffleBarrels import BarrelShuffle
+from randomizer.ShuffleBarrels import BarrelShuffle, ShuffleBarrels
 
 
 def GetExitLevelExit(settings, region):
@@ -107,6 +109,10 @@ def GetAccessibleLocations(settings, ownedItems, searchType=SearchMode.GetReacha
                         if location.bonusBarrel and settings.bonus_barrels != "skip":
                             minigame = MinigameAssociations[location.id]
                             if not MinigameRequirements[minigame].logic(LogicVariables):
+                                continue
+                        # If this location is a blueprint, then make sure this is the correct kong
+                        elif LocationList[location.id].type == Types.Blueprint:
+                            if not LogicVariables.KasplatAccess(location.id):
                                 continue
                         newLocations.append(location.id)
                 # Check accessibility for each exit in this region
@@ -464,6 +470,9 @@ def Generate_Spoiler(spoiler):
     # Init logic vars with settings
     global LogicVariables
     LogicVariables = LogicVarHolder(spoiler.settings)
+    # Handle kasplats
+    KasplatShuffle(LogicVariables)
+    spoiler.UpdateKasplats(LogicVariables.kasplat_map)
     # Handle bonus barrels
     if spoiler.settings.bonus_barrels == "random":
         BarrelShuffle(spoiler.settings)
@@ -489,4 +498,6 @@ def Generate_Spoiler(spoiler):
         # # Write data to spoiler and return
         # spoiler.UpdateLocations(LocationList)
         # spoiler.UpdatePlaythrough(LocationList, PlaythroughLocations)
+    Reset()
+    ShuffleExits.Reset()
     return spoiler

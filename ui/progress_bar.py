@@ -54,7 +54,8 @@ class ProgressBar:
         Args:
             text (str): Text to set.
         """
-        js.eval(self.status + f".text('{text}')")
+        message = text.replace("'", '"')
+        js.eval(self.status + f".text('{message}')")
 
     def _hide(self):
         """Hide the Modal."""
