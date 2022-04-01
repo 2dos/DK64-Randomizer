@@ -40,7 +40,7 @@ def patching_response(responded_data):
     except Exception:
         pass
 
-    ProgressBar().update_progress(5, "Applying Patches")
+    ProgressBar().update_progress(8, "Applying Patches")
     # spoiler: Spoiler = pickle.loads(codecs.decode(responded_data.encode(), "base64"))
     spoiler = pickle.loads(codecs.decode(responded_data.encode(), "base64"))
     spoiler.settings.verify_hash()

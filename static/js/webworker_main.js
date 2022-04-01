@@ -17,8 +17,6 @@ if (window.Worker) {
       js.document.getElementById('progress-text').innerHTML = loaded_data
       current_percentage = int(str(js.document.getElementById('patchprogress').style.width).replace("%", ""))
       new_percentage = current_percentage + 3
-      print(current_percentage)
-      print(new_percentage)
       js.document.getElementById('patchprogress').style.width = str(new_percentage) + "%"
     else:
       exec(loaded_data.get("returning_func"))
