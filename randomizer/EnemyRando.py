@@ -2,10 +2,12 @@
 from randomizer.Patcher import ROM
 from randomizer.Spoiler import Spoiler
 
+
 def randomize_enemies(spoiler: Spoiler):
+    """Write replaced enemies to ROM."""
     enemy_replacements = [
         {
-            "container_map": 0x7,
+            "container_map": 7,
             "kasplat_swaps": [
                 {
                     "vanilla_location": 0,  # Kong index which is tied to the kasplat. Eg. This would take the DK Kasplat location (DK is kong 0)
@@ -29,7 +31,6 @@ def randomize_enemies(spoiler: Spoiler):
             },
         }
     ]
-
     enemy_classes = {
         "ground_simple": [
             0x00,  # Blue Beaver
@@ -67,11 +68,10 @@ def randomize_enemies(spoiler: Spoiler):
             0x66,  # Pufftup
         ],
     }
-
     if spoiler.settings.enemy_rando or spoiler.settings.kasplat_rando:
         cont_map_id = int(cont_map["container_map"])
         cont_map_spawner_address = js.pointer_addresses[16]["entries"][cont_map_id]["pointing_to"]
-        for cont_map in enemy_replacements: # TODO: Change "enemy_replacements" with the appropriate spoiler array
+        for cont_map in enemy_replacements:  # TODO: Change "enemy_replacements" with the appropriate spoiler array
             vanilla_spawners = []
             ROM().seek(cont_map_spawner_address)
             fence_count = int.from_bytes(ROM().readBytes(2), "big")

@@ -202,6 +202,7 @@ class Maps(IntEnum):
     HelmBarrelChunkyHidden = 209
     HelmBarrelChunkyShooting = 211
 
+
 RegionMapList = {
     # Isles
     Regions.IslesMain: Maps.Isles,

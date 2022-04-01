@@ -24,7 +24,7 @@ def randomize_bananaport(spoiler: Spoiler):
     pad_types = [0x214, 0x213, 0x211, 0x212, 0x210]
 
     if spoiler.settings.bananaport_rando:
-        for cont_map in bananaport_replacements: # TODO: Change "bananaport_replacements" with the appropriate spoiler array
+        for cont_map in bananaport_replacements:  # TODO: Change "bananaport_replacements" with the appropriate spoiler array
             pad_vanilla = []
             cont_map_id = int(cont_map["container_map"])
             cont_map_setup_address = js.pointer_addresses[9]["entries"][cont_map_id]["pointing_to"]

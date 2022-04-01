@@ -7,6 +7,7 @@ from randomizer.Enums.Minigames import Minigames
 from randomizer.Lists.Minigame import MinigameAssociations, MinigameRequirements, BarrelMetaData
 from randomizer.MapsAndExits import Maps
 
+
 def Reset(barrelLocations):
     """Reset bonus barrel associations."""
     for key in barrelLocations:
@@ -34,11 +35,11 @@ def ShuffleBarrels(settings, barrelLocations, minigamePool):
             if Fill.VerifyWorld(settings) and enabled_for_map:
                 minigamePool.remove(minigame)
                 if MinigameRequirements[minigame].repeat:
-                    replacement_index = random.randint(0,len(minigamePool))
+                    replacement_index = random.randint(0, len(minigamePool))
                     if replacement_index >= len(minigamePool):
                         minigamePool.append(minigame)
                     else:
-                        minigamePool.insert(replacement_index,minigame)
+                        minigamePool.insert(replacement_index, minigame)
                 success = True
                 break
             else:

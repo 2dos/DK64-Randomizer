@@ -8,7 +8,6 @@ from randomizer.Lists.Minigame import MinigameAssociations, MinigameRequirements
 
 def randomize_barrels(spoiler: Spoiler):
     """Randomize barrel locations."""
-
     barrels = [12, 91]
     if spoiler.settings.bonus_barrel_rando:
         barrel_replacements = []
@@ -25,10 +24,7 @@ def randomize_barrels(spoiler: Spoiler):
                         x["barrels"].append(barrel_data)
                         new_map = False
             if new_map:
-                barrel_replacements.append({
-                    "containing_map":container_map,
-                    "barrels":[barrel_data]
-                })
+                barrel_replacements.append({"containing_map": container_map, "barrels": [barrel_data]})
         for cont_map in barrel_replacements:
             cont_map_id = int(cont_map["containing_map"])
             cont_map_setup_address = js.pointer_addresses[9]["entries"][cont_map_id]["pointing_to"]
@@ -50,4 +46,4 @@ def randomize_barrels(spoiler: Spoiler):
                     for barrel in cont_map["barrels"]:
                         if int(barrel["instance_id"]) == actor_id:
                             ROM().seek(start_of_actor + 0x12)
-                            ROM().writeMultipleBytes(barrel["new_map"],2)
+                            ROM().writeMultipleBytes(barrel["new_map"], 2)
