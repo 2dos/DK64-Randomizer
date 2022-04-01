@@ -236,7 +236,7 @@ def patching_response(responded_data):
         js.document.getElementById("nav-settings-tab").style.display = "none"
         js.document.getElementById("spoiler_log_text").value = ""
         js.document.getElementById("spoiler_log_block").style.display = "none"
-        
+
     js.document.getElementById("generated_seed_id").innerHTML = spoiler.settings.seed_id
     loaded_settings = json.loads(spoiler.toJson())["Settings"]
     js.document.getElementById("settings_table").innerHTML = ""
@@ -251,4 +251,4 @@ def patching_response(responded_data):
     ROM().fixSecurityValue()
     ROM().save(f"dk64-{spoiler.settings.seed_id}.z64")
     ProgressBar().reset()
-    js.jq('#nav-settings-tab').tab('show')
+    js.jq("#nav-settings-tab").tab("show")
