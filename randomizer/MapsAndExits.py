@@ -116,6 +116,9 @@ class Maps(IntEnum):
     CastleDungeon = 163
     CastleBaboonBlast = 187
 
+    # Hideout Helm
+    HideoutHelm = 17
+
     # Level Bosses
     JapesBoss = 8
     AztecBoss = 197

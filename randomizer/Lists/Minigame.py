@@ -55,10 +55,10 @@ MinigameRequirements = {
     Minigames.BeaverBotherNormal: Minigame(name="Beaver Bother (15 Slow Beavers)", map_id=Maps.BeaverBotherNormal, helm_enabled=False, difficulty_lvl=1),
     Minigames.BeaverBotherHard: Minigame(name="Beaver Bother (15 Fast Beavers)", map_id=Maps.BeaverBotherHard, helm_enabled=False, difficulty_lvl=2),
     # Teetering Turtle Trouble
-    Minigames.TeeteringTurtleTroubleVEasy: Minigame(name="Teetering Turtle Trouble (45 seconds, 2.5% help chance)", map_id=Maps.TeeteringTurtleTroubleVEasy),
-    Minigames.TeeteringTurtleTroubleEasy: Minigame(name="Teetering Turtle Trouble (45 seconds, 4% help chance)", map_id=Maps.TeeteringTurtleTroubleEasy, difficulty_lvl=1),
-    Minigames.TeeteringTurtleTroubleNormal: Minigame(name="Teetering Turtle Trouble (60 seconds, 5% help chance)", map_id=Maps.TeeteringTurtleTroubleNormal, difficulty_lvl=2),
-    Minigames.TeeteringTurtleTroubleHard: Minigame(name="Teetering Turtle Trouble (60 seconds, 7.5% help chance)", map_id=Maps.TeeteringTurtleTroubleHard, difficulty_lvl=3),
+    Minigames.TeeteringTurtleTroubleVEasy: Minigame(name="Teetering Turtle Trouble (45 seconds, 2.5%% help chance)", map_id=Maps.TeeteringTurtleTroubleVEasy),
+    Minigames.TeeteringTurtleTroubleEasy: Minigame(name="Teetering Turtle Trouble (45 seconds, 4%% help chance)", map_id=Maps.TeeteringTurtleTroubleEasy, difficulty_lvl=1),
+    Minigames.TeeteringTurtleTroubleNormal: Minigame(name="Teetering Turtle Trouble (60 seconds, 5%% help chance)", map_id=Maps.TeeteringTurtleTroubleNormal, difficulty_lvl=2),
+    Minigames.TeeteringTurtleTroubleHard: Minigame(name="Teetering Turtle Trouble (60 seconds, 7.5%% help chance)", map_id=Maps.TeeteringTurtleTroubleHard, difficulty_lvl=3),
     # Stealthy Snoop
     Minigames.StealthySnoopVEasy: Minigame(name="Stealthy Snoop (50 seconds)", map_id=Maps.StealthySnoopVEasy),
     Minigames.StealthySnoopEasy: Minigame(name="Stealthy Snoop (60 seconds)", map_id=Maps.StealthySnoopEasy, difficulty_lvl=1),
@@ -122,11 +122,11 @@ MinigameRequirements = {
 }
 
 MinigameAssociations = {
-    Locations.IslesDiddySnidesLobby: Minigames.BattyBarrelBandit,
-    Locations.IslesTinyAztecLobby: Minigames.BigBugBash,
-    Locations.IslesChunkyHelmLobby: Minigames.KremlingKosh,
-    Locations.IslesDiddySummit: Minigames.PerilPathPanic,
-    Locations.IslesLankyCastleLobby: Minigames.SearchlightSeek,
+    Locations.IslesDiddySnidesLobby: Minigames.BattyBarrelBanditNormal,
+    Locations.IslesTinyAztecLobby: Minigames.BigBugBashNormal,
+    Locations.IslesChunkyHelmLobby: Minigames.KremlingKoshHard,
+    Locations.IslesDiddySummit: Minigames.PerilPathPanicNormal,
+    Locations.IslesLankyCastleLobby: Minigames.SearchlightSeekHard,
     Locations.JapesLankyGrapeGate: Minigames.MadMazeMaulEasy,
     Locations.JapesChunkyGiantBonusBarrel: Minigames.MinecartMayhemEasy,
     Locations.JapesLankySlope: Minigames.SpeedySwingSortieEasy,
@@ -187,9 +187,9 @@ BarrelMetaData = {
     Locations.JapesChunkyGiantBonusBarrel: MinigameLocationData(Maps.JungleJapes,33),
     Locations.JapesLankySlope: MinigameLocationData(Maps.JungleJapes,34),
     Locations.JapesTinyFeatherGateBarrel: MinigameLocationData(Maps.JungleJapes,31),
-    Locations.AztecLanky5DoorTemple: MinigameLocationData(Maps.AztecLanky5DoorTemple,0),
+    Locations.AztecLanky5DoorTemple: MinigameLocationData(Maps.AztecLanky5DTemple,0),
     Locations.AztecChunkyCagedBarrel: MinigameLocationData(Maps.AngryAztec,35),
-    Locations.AztecChunky5DoorTemple: MinigameLocationData(Maps.AztecChunky5DoorTemple,0),
+    Locations.AztecChunky5DoorTemple: MinigameLocationData(Maps.AztecChunky5DTemple,0),
     Locations.AztecDonkeyQuicksandCave: MinigameLocationData(Maps.AngryAztec,33),
     Locations.AztecLankyLlamaTempleBarrel: MinigameLocationData(Maps.AztecLlamaTemple,2),
     Locations.FactoryLankyTestingRoomBarrel: MinigameLocationData(Maps.FranticFactory,15),
