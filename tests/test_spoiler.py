@@ -33,6 +33,7 @@ def generate_settings():
     data["troff_6"] = 100
 
     data["unlock_all_moves"] = False
+    data["kasplat"] = False
     data["unlock_all_kongs"] = False
     data["crown_door_open"] = False
     data["coin_door_open"] = False

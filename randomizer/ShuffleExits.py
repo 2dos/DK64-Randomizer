@@ -1,6 +1,7 @@
 """File that shuffles loading zone exits."""
 import random
 from ast import And
+import js
 
 import randomizer.Fill as Fill
 import randomizer.Lists.Exceptions as Ex
@@ -198,11 +199,11 @@ def ExitShuffle(settings):
             return
         except Ex.EntrancePlacementException:
             if retries == 20:
-                print("Entrance placement failed, out of retries.")
+                js.postMessage("Entrance placement failed, out of retries.")
                 raise Ex.EntranceAttemptCountExceeded
             else:
                 retries += 1
-                print("Entrance placement failed. Retrying. Tries: " + str(retries))
+                js.postMessage("Entrance placement failed. Retrying. Tries: " + str(retries))
                 Reset()
 
 

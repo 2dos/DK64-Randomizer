@@ -1,5 +1,6 @@
 """Module used to handle setting and randomizing bonus barrels."""
 import random
+import js
 
 import randomizer.Fill as Fill
 import randomizer.Lists.Exceptions as Ex
@@ -65,8 +66,8 @@ def BarrelShuffle(settings):
             return
         except Ex.BarrelPlacementException:
             if retries == 5:
-                print("Minigame placement failed, out of retries.")
+                js.postMessage("Minigame placement failed, out of retries.")
                 raise Ex.BarrelAttemptCountExceeded
             else:
                 retries += 1
-                print("Minigame placement failed. Retrying. Tries: " + str(retries))
+                js.postMessage("Minigame placement failed. Retrying. Tries: " + str(retries))

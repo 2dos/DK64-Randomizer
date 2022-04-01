@@ -17,7 +17,7 @@ from randomizer.Lists.Minigame import MinigameAssociations, MinigameRequirements
 from randomizer.ShuffleKasplats import KasplatShuffle
 from randomizer.Logic import LogicVarHolder, LogicVariables
 from randomizer.LogicClasses import TransitionFront
-from randomizer.ShuffleBarrels import BarrelShuffle
+from randomizer.ShuffleBarrels import BarrelShuffle, ShuffleBarrels
 
 
 def GetExitLevelExit(settings, region):
@@ -497,4 +497,6 @@ def Generate_Spoiler(spoiler):
         # # Write data to spoiler and return
         # spoiler.UpdateLocations(LocationList)
         # spoiler.UpdatePlaythrough(LocationList, PlaythroughLocations)
+    Reset()
+    ShuffleExits.Reset()
     return spoiler

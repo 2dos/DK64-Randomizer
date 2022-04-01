@@ -57,7 +57,7 @@ class Spoiler:
 
         # Settings data
         settings = OrderedDict()
-        settings["seed"] = self.settings.seed
+        settings["seed"] = self.settings.seed_id
         settings["algorithm"] = self.settings.algorithm
         settings["shuffle_items"] = self.settings.shuffle_items
         settings["shuffle_loading_zones"] = self.settings.shuffle_loading_zones
