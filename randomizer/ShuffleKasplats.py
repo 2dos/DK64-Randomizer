@@ -1,5 +1,6 @@
 """Module used to handle setting and randomizing kasplats."""
 import random
+import js
 
 import randomizer.Fill as Fill
 import randomizer.Lists.Exceptions as Ex
@@ -131,8 +132,8 @@ def KasplatShuffle(LogicVariables):
                 return
             except Ex.KasplatPlacementException:
                 if retries == 5:
-                    print("Kasplat placement failed, out of retries.")
+                    js.postMessage("Kasplat placement failed, out of retries.")
                     raise Ex.KasplatAttemptCountExceeded
                 else:
                     retries += 1
-                    print("Kasplat placement failed. Retrying. Tries: " + str(retries))
+                    js.postMessage("Kasplat placement failed. Retrying. Tries: " + str(retries))
