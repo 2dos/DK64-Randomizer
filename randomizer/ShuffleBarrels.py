@@ -4,8 +4,8 @@ import random
 import randomizer.Fill as Fill
 import randomizer.Lists.Exceptions as Ex
 from randomizer.Enums.Minigames import Minigames
-from randomizer.Lists.Minigame import MinigameAssociations
-
+from randomizer.Lists.Minigame import MinigameAssociations, MinigameRequirements, BarrelMetaData
+from randomizer.MapsAndExits import Maps
 
 def Reset(barrelLocations):
     """Reset bonus barrel associations."""
@@ -23,9 +23,15 @@ def ShuffleBarrels(settings, barrelLocations, minigamePool):
         success = False
         for minigame in minigamePool:
             MinigameAssociations[location] = minigame
+            enabled_for_map = True
+            # Check if banned in Helm and attempted to place in Helm
+            if not MinigameRequirements[minigame].helm_enabled and BarrelMetaData[location].map == Maps.HideoutHelm:
+                enabled_for_map = False
             # If world is still valid, keep minigame associated there
-            if Fill.VerifyWorld(settings):
+            if Fill.VerifyWorld(settings) and enabled_for_map:
                 minigamePool.remove(minigame)
+                if MinigameRequirements[minigame].repeat:
+                    minigamePool.insert(randrange(len(minigamePool)+1), minigame)
                 success = True
                 break
             else:
@@ -37,8 +43,8 @@ def ShuffleBarrels(settings, barrelLocations, minigamePool):
 def BarrelShuffle(settings):
     """Facilitate shuffling of barrels."""
     # First make master copies of locations and minigames
-    barrelLocations = [x for x in MinigameAssociations.keys()]
-    minigamePool = [x for x in MinigameAssociations.values()]
+    barrelLocations = [x for x in BarrelMetaData.keys()]
+    minigamePool = [x for x in MinigameRequirements.keys()].remove(Minigames.NoGame)
     retries = 0
     while True:
         try:

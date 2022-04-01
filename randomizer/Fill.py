@@ -13,7 +13,7 @@ from randomizer.Enums.Transitions import Transitions
 from randomizer.Enums.Types import Types
 from randomizer.Lists.Item import ItemList
 from randomizer.Lists.Location import Location, LocationList
-from randomizer.Lists.Minigame import MinigameAssociations, MinigameRequirements
+from randomizer.Lists.Minigame import MinigameAssociations, MinigameRequirements, BarrelMetaData
 from randomizer.ShuffleKasplats import KasplatShuffle
 from randomizer.Logic import LogicVarHolder, LogicVariables
 from randomizer.LogicClasses import TransitionFront
