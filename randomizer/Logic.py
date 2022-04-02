@@ -345,7 +345,7 @@ class LogicVarHolder:
             self.ColoredBananas[level][collectible.kong] += collectible.amount * 10
         collectible.added = True
 
-    def PurchaseShopItem(self, location:Location):
+    def PurchaseShopItem(self, location: Location):
         """Purchase items from shops and subtract price from logical coin counts."""
         if location.item is not None and location.item is not Items.NoItem:
             price = GetPriceOfMoveItem(location.item, self.settings, self.Slam, self.AmmoBelts, self.InstUpgrades)
