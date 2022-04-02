@@ -230,6 +230,7 @@ extern short screenCenterY;
 extern float collisionPos[3];
 extern char FileIndex;
 extern int LockStackCount;
+extern char CutsceneBarState;
 
 extern int* TriggerArray;
 extern short TriggerSize;
@@ -273,8 +274,8 @@ extern int TestVariable;
 extern char LoadedHooks;
 extern varspace Rando;
 extern short StoredLag;
-extern short ReplacementLobbiesArray[8];
-extern short ReplacementLobbyExitsArray[8];
+extern short ReplacementLobbiesArray[9];
+extern short ReplacementLobbyExitsArray[9];
 extern unsigned char DamageMultiplier;
 extern char* PauseSlot3TextPointer;
 extern char ExpandPauseMenu;

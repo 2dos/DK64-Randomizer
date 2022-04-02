@@ -48,7 +48,7 @@ sign_data = [
             {"sign_type": "funky", "data": [1461.363, 203.18, 304.011, 359.561]},
         ],
     },
-    {"map_index": 0x97, "signs": [{"sign_type": "candy", "data": [1115.306, 301.145, 2139.784, 271.67]}]},
+    {"map_index": 0x97, "signs": [{"sign_type": "candy", "data": [1115.306, 326.145, 2139.784, 271.67]}]},
     {"map_index": 0xB0, "signs": [{"sign_type": "cranky", "data": [651.318, 77.255, 1834.692, 126.914]}]},
 ]
 
