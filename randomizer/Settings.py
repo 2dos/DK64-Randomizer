@@ -137,6 +137,7 @@ class Settings:
         self.shop_price_rando = None
         self.boss_location_rando = None
         self.boss_kong_rando = None
+        self.kasplat = None
 
     def set_seed(self):
         """Forcibly re-set the random seed to the seed set in the config."""

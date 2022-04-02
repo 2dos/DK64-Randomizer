@@ -176,38 +176,45 @@ meaning we just must consider the maximum price for every location.
 """
 
 
+def GetPriceOfMoveItem(item, settings, slamLevel, ammoBelts, instUpgrades):
+    """Get price of a move item. Needs to know current level of owned progressive moves to give correct price for progressive items."""
+    if item == Items.ProgressiveSlam:
+        if slamLevel in [1, 2]:
+            return settings.prices[item][slamLevel - 1]
+        else:
+            # If already have max slam, there's move to buy
+            return None
+    elif item == Items.ProgressiveAmmoBelt:
+        if ammoBelts in [0, 1]:
+            return settings.prices[item][ammoBelts]
+        else:
+            # If already have max ammo belt, there's move to buy
+            return None
+    elif item == Items.ProgressiveInstrumentUpgrade:
+        if instUpgrades in [0, 1, 2]:
+            return settings.prices[item][instUpgrades]
+        else:
+            # If already have max instrument upgrade, there's move to buy
+            return None
+    else:
+        return settings.prices[item]
+
+
 def KongCanBuy(location, coins, settings, kong, slamLevel, ammoBelts, instUpgrades):
     """Check if given kong can logically purchase the specified location."""
     # If nothing is sold here, return true
     if LocationList[location].item is None or LocationList[location].item == Items.NoItem:
         return True
-    price = None
-    if LocationList[location].item == Items.ProgressiveSlam:
-        if slamLevel in [1, 2]:
-            price = settings.prices[LocationList[location].item][slamLevel - 1]
-        else:
-            # Failsafe - should be no move to buy
-            return False
-    elif LocationList[location].item == Items.ProgressiveAmmoBelt:
-        if ammoBelts in [0, 1]:
-            price = settings.prices[LocationList[location].item][ammoBelts]
-        else:
-            # Failsafe - should be no move to buy
-            return False
-    elif LocationList[location].item == Items.ProgressiveInstrumentUpgrade:
-        if instUpgrades in [0, 1, 2]:
-            price = settings.prices[LocationList[location].item][instUpgrades]
-        else:
-            # Failsafe - should be no move to buy
-            return False
-    else:
-        price = settings.prices[LocationList[location].item]
+    price = GetPriceOfMoveItem(LocationList[location].item, settings, slamLevel, ammoBelts, instUpgrades)
+
     # Simple price check - combination of purchases will be considered outside this method
     if price is not None:
         # print("KongCanBuy checking item: " + str(LocationList[location].item))
         # print("for kong: " + kong.name + " with " + str(coins[kong]) + " coins")
         # print("has price: " + str(price))
         return coins[kong] >= price
+    else:
+        return False
 
     # TODO: Remove the below once new price logic is done
     # Get the max coins this kong can possibly spend

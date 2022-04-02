@@ -4,6 +4,7 @@ import random
 import randomizer.ItemPool as ItemPool
 import randomizer.Lists.Exceptions as Ex
 import randomizer.Logic as Logic
+from randomizer.Prices import GetPriceOfMoveItem
 import randomizer.ShuffleExits as ShuffleExits
 from randomizer.Enums.Items import Items
 from randomizer.Enums.Kongs import Kongs
@@ -252,6 +253,9 @@ def ForwardFill(settings, itemsToPlace, validLocations, ownedItems=[]):
 
 def AssumedFill(settings, itemsToPlace, validLocations, ownedItems=[]):
     """Assumed fill algorithm for item placement."""
+    # Calculate total cost of moves
+    MaxCoinsSpent = GetMaxCoinsSpent(settings, itemsToPlace + ownedItems)
+
     # While there are items to place
     random.shuffle(itemsToPlace)
     while len(itemsToPlace) > 0:
@@ -259,8 +263,30 @@ def AssumedFill(settings, itemsToPlace, validLocations, ownedItems=[]):
         item = itemsToPlace.pop(0)
         owned = itemsToPlace.copy()
         owned.extend(ownedItems)
+
+        # Check current level of each progressive move
+        slamLevel = sum(1 for x in owned if x == Items.ProgressiveSlam)
+        ammoBelts = sum(1 for x in owned if x == Items.ProgressiveAmmoBelt)
+        instUpgrades = sum(1 for x in owned if x == Items.ProgressiveInstrumentUpgrade)
+        # print("slamLevel: " + str(slamLevel) + ", ammoBelts: " + str(ammoBelts) + ", instUpgrades: " + str(instUpgrades))
+
         Reset()
         reachable = GetAccessibleLocations(settings, owned)
+
+        if ItemList[item].type == Types.Shop:
+            # print("Placing item: " + ItemList[item].name)
+            moveKong = ItemList[item].kong
+            # print("Move Kong: " + moveKong.name)
+            movePrice = GetPriceOfMoveItem(item, settings, slamLevel, ammoBelts, instUpgrades)
+            # print("Move Price : " + str(movePrice))
+            if movePrice is not None:
+                if moveKong == Kongs.any:
+                    for anyKong in range(5):
+                        MaxCoinsSpent[anyKong] -= movePrice
+                else:
+                    MaxCoinsSpent[moveKong] -= movePrice
+            # print("MaxCoinsSpent: " + str(MaxCoinsSpent))
+
         reachable = [x for x in reachable if LocationList[x].item is None and x in validLocations]
         # If there are no empty reachable locations, reached a dead end
         if len(reachable) == 0:
@@ -270,6 +296,35 @@ def AssumedFill(settings, itemsToPlace, validLocations, ownedItems=[]):
         locationId = reachable.pop()
         LocationList[locationId].PlaceItem(item)
     return 0
+
+
+def GetMaxCoinsSpent(settings, ownedItems):
+    """Calculate the max number of coins each kong could have spent given the ownedItems and the price settings."""
+    MaxCoinsSpent = [0, 0, 0, 0, 0]
+    slamLevel = sum(1 for x in ownedItems if x == Items.ProgressiveSlam)
+    ammoBelts = sum(1 for x in ownedItems if x == Items.ProgressiveAmmoBelt)
+    instUpgrades = sum(1 for x in ownedItems if x == Items.ProgressiveInstrumentUpgrade)
+    for ownedItem in ownedItems:
+        if ItemList[ownedItem].type == Types.Shop:
+            moveKong = ItemList[ownedItem].kong
+            if ownedItem == Items.ProgressiveSlam:
+                slamLevel -= 1
+            elif ownedItem == Items.ProgressiveAmmoBelt:
+                ammoBelts -= 1
+            elif ownedItem == Items.ProgressiveInstrumentUpgrade:
+                instUpgrades -= 1
+            movePrice = GetPriceOfMoveItem(ownedItem, settings, slamLevel, ammoBelts, instUpgrades)
+            if movePrice is not None:
+                if moveKong == Kongs.any:
+                    # Shared moves could have been bought by any kong
+                    for anyKong in range(5):
+                        MaxCoinsSpent[anyKong] += movePrice
+                else:
+                    MaxCoinsSpent[moveKong] += movePrice
+            # print("Move Kong: " + moveKong.name)
+            # print("Move Price : " + str(movePrice))
+            # print("MaxCoinsSpent: " + str(MaxCoinsSpent))
+    return MaxCoinsSpent
 
 
 def PlaceItems(settings, algorithm, itemsToPlace, ownedItems=[], validLocations=[]):
@@ -363,6 +418,8 @@ def ShuffleMoves(spoiler):
             ownedItems.extend(ItemPool.LankyMoves)
             ownedItems.extend(ItemPool.TinyMoves)
             ownedItems.extend(ItemPool.ChunkyMoves)
+            ownedItems.extend(ItemPool.JunkSharedMoves)
+            ownedItems.append(Items.ProgressiveSlam)  # Always start with simian slam
 
             # For each kong, place their items in their valid locations, removing owneditems before each placement as they're placed
             # Force assumed for move rando since it's so restrictive
@@ -378,7 +435,9 @@ def ShuffleMoves(spoiler):
             )
             if importantSharedUnplaced > 0:
                 raise Ex.ItemPlacementException(str(importantSharedUnplaced) + " unplaced shared important items.")
-            junkSharedUnplaced = PlaceItems(spoiler.settings, "random", ItemPool.JunkSharedMoves.copy(), [], ItemPool.SharedMoveLocations)
+
+            ownedItems = [x for x in ownedItems if x not in ItemPool.JunkSharedMoves]
+            junkSharedUnplaced = PlaceItems(spoiler.settings, "assumed", ItemPool.JunkSharedMoves.copy(), ownedItems, ItemPool.SharedMoveLocations)
             if junkSharedUnplaced > 0:
                 raise Ex.ItemPlacementException(str(junkSharedUnplaced) + " unplaced shared junk items.")
 
@@ -433,11 +492,12 @@ def ShuffleMoves(spoiler):
             if tinyUnplaced > 0:
                 raise Ex.ItemPlacementException(str(tinyUnplaced) + " unplaced tiny items.")
             Reset()
+            ownedItems = [x for x in ownedItems if x not in ItemPool.ChunkyMoves]
             chunkyUnplaced = PlaceItems(
                 spoiler.settings,
                 "assumed",
                 ItemPool.ChunkyMoves.copy(),
-                [],
+                ownedItems,
                 ItemPool.ChunkyMoveLocations - locationsToRemove,
             )
             if chunkyUnplaced > 0:
