@@ -1,6 +1,9 @@
 """Apply Boss Locations."""
+import js
+import random
 from randomizer.Patcher import ROM
 from randomizer.Spoiler import Spoiler
+from randomizer.MapsAndExits import Maps
 
 
 def randomize_enemies(spoiler: Spoiler):
@@ -23,13 +26,93 @@ def randomize_enemies(spoiler: Spoiler):
                 },
                 {"vanilla_location": 3, "replace_with": 2},
             ],
-            "enemy_swaps": {
-                "ground_simple": [4, 3, 2, 3, 6, 12, 7, 3, 8, 3, 3, 12, 0, 5, 6, 10, 4, 12, 6, 8, 11, 7, 5, 9, 1, 7, 5, 5, 8, 6],
-                "air": [1, 3, 2, 2, 2, 1, 2, 2, 1, 1, 3, 3, 1, 0, 0, 2, 0, 3, 2, 2, 1, 3, 0, 1, 1, 2, 3, 2, 2, 3],
-                "ground_beefyboys": [1, 0, 2, 0, 1, 3, 0, 3, 3, 0, 0, 3, 0, 1, 2, 0, 0, 3, 0, 2, 0, 2, 3, 3, 2, 0, 3, 0, 2, 0],
-                "water": [2, 1, 1, 0, 1, 0, 0, 0, 2, 0, 1, 1, 2, 0, 1, 1, 2, 1, 2, 1, 0, 1, 0, 0, 0, 1, 0, 2, 0, 0],
-            },
         }
+    ]
+    valid_maps = [
+        Maps.JapesMountain,
+        Maps.JungleJapes,
+        Maps.JapesTinyHive,
+        Maps.JapesLankyCave,
+        Maps.AztecTinyTemple,
+        Maps.HideoutHelm,
+        Maps.AztecDonkey5DTemple,
+        Maps.AztecDiddy5DTemple,
+        Maps.AztecLanky5DTemple,
+        Maps.AztecTiny5DTemple,
+        Maps.AztecChunky5DTemple,
+        Maps.AztecLlamaTemple,
+        Maps.FranticFactory,
+        Maps.FactoryPowerHut,
+        Maps.GloomyGalleon,
+        Maps.GalleonSickBay,
+        Maps.JapesUnderGround,
+        Maps.Isles,
+        Maps.FactoryCrusher,
+        Maps.AngryAztec,
+        Maps.GalleonSealRace,
+        Maps.JapesBaboonBlast,
+        Maps.AztecBaboonBlast,
+        Maps.Galleon2DShip,
+        Maps.Galleon5DShipDiddyLankyChunky,
+        Maps.Galleon5DShipDKTiny,
+        Maps.GalleonTreasureChest,
+        Maps.GalleonMermaidRoom,
+        Maps.FungiForest,
+        Maps.GalleonLighthouse,
+        Maps.GalleonMechafish,
+        Maps.ForestAnthill,
+        Maps.GalleonBaboonBlast,
+        Maps.ForestMinecarts,
+        Maps.ForestMillAttic,
+        Maps.ForestRafters,
+        Maps.ForestMillAttic,
+        Maps.ForestThornvineBarn,
+        Maps.ForestSpider,
+        Maps.ForestMillFront,
+        Maps.ForestMillBack,
+        Maps.ForestLankyMushroomsRoom,
+        Maps.CrystalCaves,
+        Maps.CavesDonkeyIgloo,
+        Maps.CavesDiddyIgloo,
+        Maps.CavesLankyIgloo,
+        Maps.CavesTinyIgloo,
+        Maps.CavesChunkyIgloo,
+        Maps.CavesDonkeyCabin,
+        Maps.CavesDiddyLowerCabin,
+        Maps.CavesDiddyUpperCabin,
+        Maps.CavesLankyCabin,
+        Maps.CavesTinyCabin,
+        Maps.CavesChunkyCabin,
+        Maps.CreepyCastle,
+        Maps.CastleBallroom,
+        Maps.CavesRotatingCabin,
+        Maps.CavesFrozenCastle,
+        Maps.CastleCrypt,
+        Maps.CastleMausoleum,
+        Maps.CastleUpperCave,
+        Maps.CastleLowerCave,
+        Maps.CastleTower,
+        Maps.CastleMinecarts,
+        Maps.FactoryBaboonBlast,
+        Maps.CastleMuseum,
+        Maps.CastleLibrary,
+        Maps.CastleDungeon,
+        Maps.CastleTree,
+        Maps.CastleShed,
+        Maps.CastleTrashCan,
+        Maps.JungleJapesLobby,
+        Maps.AngryAztecLobby,
+        Maps.FranticFactoryLobby,
+        Maps.GloomyGalleonLobby,
+        Maps.FungiForestLobby,
+        Maps.CrystalCavesLobby,
+        Maps.CreepyCastleLobby,
+        Maps.HideoutHelmLobby,
+        Maps.GalleonSubmarine,
+        Maps.CavesBaboonBlast,
+        Maps.CastleBaboonBlast,
+        Maps.ForestBaboonBlast,
+        Maps.IslesSnideRoom,
     ]
     enemy_classes = {
         "ground_simple": [
@@ -69,9 +152,8 @@ def randomize_enemies(spoiler: Spoiler):
         ],
     }
     if spoiler.settings.enemy_rando or spoiler.settings.kasplat_rando:
-        cont_map_id = int(cont_map["container_map"])
-        cont_map_spawner_address = js.pointer_addresses[16]["entries"][cont_map_id]["pointing_to"]
-        for cont_map in enemy_replacements:  # TODO: Change "enemy_replacements" with the appropriate spoiler array
+        for cont_map_id in valid_maps:
+            cont_map_spawner_address = js.pointer_addresses[16]["entries"][cont_map_id]["pointing_to"]
             vanilla_spawners = []
             ROM().seek(cont_map_spawner_address)
             fence_count = int.from_bytes(ROM().readBytes(2), "big")
@@ -86,6 +168,13 @@ def randomize_enemies(spoiler: Spoiler):
                     offset += (point0_count * 10) + 6
             ROM().seek(cont_map_spawner_address + offset)
             spawner_count = int.from_bytes(ROM().readBytes(2), "big")
+            enemy_swaps = {}
+            # Generate Enemy Swaps lists
+            for enemy_class in enemy_classes:
+                arr = []
+                for x in range(spawner_count):
+                    arr.append(random.choice(enemy_classes[enemy_class]))
+                enemy_swaps[enemy_class] = arr
             offset += 2
             for x in range(spawner_count):
                 ROM().seek(cont_map_spawner_address + offset)
@@ -95,21 +184,21 @@ def randomize_enemies(spoiler: Spoiler):
                 extra_count = int.from_bytes(ROM().readBytes(1), "big")
                 offset += 0x16 + (extra_count * 2)
                 vanilla_spawners.append({"enemy_id": enemy_id, "offset": init_offset})
-            for kasplat in cont_map["kasplat_swaps"]:
-                source_kasplat_type = kasplat["vanilla_location"] + 0x3D
-                replacement_kasplat_type = kasplat["replace_with"] + 0x3D
-                for spawner in vanilla_spawners:
-                    if spawner["enemy_id"] == source_kasplat_type:
-                        ROM().seek(cont_map_spawner_address + spawner["offset"])
-                        ROM().write(replacement_kasplat_type.to_bytes(1, "big"))
-            for enemy_class in cont_map["enemy_swaps"]:
-                arr = cont_map["enemy_swaps"][enemy_class]
+            # Comment out kasplat rando until kasplat rando is implemented
+            # for kasplat in cont_map["kasplat_swaps"]:
+            #     source_kasplat_type = kasplat["vanilla_location"] + 0x3D
+            #     replacement_kasplat_type = kasplat["replace_with"] + 0x3D
+            #     for spawner in vanilla_spawners:
+            #         if spawner["enemy_id"] == source_kasplat_type:
+            #             ROM().seek(cont_map_spawner_address + spawner["offset"])
+            #             ROM().writeMultipleBytes(replacement_kasplat_type,1)
+            for enemy_class in enemy_swaps:
+                arr = enemy_swaps[enemy_class]
                 class_types = enemy_classes[enemy_class]
                 sub_index = 0
                 for spawner in vanilla_spawners:
                     if spawner["enemy_id"] in class_types:
-                        new_class_index = arr[sub_index]
-                        new_enemy_id = class_types[new_class_index]
+                        new_enemy_id = arr[sub_index]
                         ROM().seek(cont_map_spawner_address + spawner["offset"])
-                        ROM().write(new_enemy_id.to_bytes(1, "big"))
+                        ROM().writeMultipleBytes(new_enemy_id, 1)
                         sub_index += 1
