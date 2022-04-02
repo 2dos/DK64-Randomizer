@@ -220,6 +220,7 @@
 .definelabel collisionPos, 0x807F621C
 .definelabel FileIndex, 0x807467C8
 .definelabel LockStackCount, 0x807F5A68
+.definelabel CutsceneBarState, 0x8076A0B3
 
 .definelabel TriggerArray, 0x807FDCB4
 .definelabel TriggerSize, 0x807FDCB0
@@ -272,12 +273,12 @@
 .definelabel BalancedIGT, 0x807FFFB0 // u32
 .definelabel InstanceScriptParams, 0x807FFFB4 // 0x8
 .definelabel PauseSlot3TextPointer, 0x807FFFBC // ptr
-.definelabel ReplacementLobbiesArray, 0x807FFFC0 // 0x10
-.definelabel ReplacementLobbyExitsArray, 0x807FFFD0 // 0x10
+.definelabel ReplacementLobbiesArray, 0x807FFFC0 // 0x12
 .definelabel style2Mtx, 0x807FFF90
 .definelabel style6Mtx, 0x807FFF70
 .definelabel style128Mtx, 0x807FFF50
 .definelabel StoredSettings, 0x807ED5A0
+.definelabel ReplacementLobbyExitsArray, 0x807FFF3E // 0x12
 
 .definelabel CrankyMoves_New, 0x807FF400
 .definelabel CandyMoves_New, 0x807FF4D4

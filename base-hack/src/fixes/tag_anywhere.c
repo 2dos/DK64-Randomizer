@@ -90,6 +90,70 @@ static const unsigned char banned_maps[] = {
     214, // K. Rool's Shoe
     215, // K. Rool's Arena // Note: Handled by cutscene check?
 };
+
+static const unsigned char bad_movement_states[] = {
+	//0x02, // First Person Camera
+	//0x03, // First Person Camera (Water)
+	0x04, // Fairy Camera
+	0x05, // Fairy Camera (Water)
+	0x06, // Locked (Bonus Barrel)
+	0x15, // Slipping
+	0x16, // Slipping
+	0x18, // Baboon Blast Pad
+	0x1B, // Simian Spring
+	//0x1C, // Simian Slam // Note: As far as I know this doesn't break anything, so we'll save the CPU cycles
+	0x20, // Falling/Splat, // Note: Prevents quick recovery from fall damage, and I guess maybe switching to avoid fall damage?
+	0x2D, // Shockwave
+	0x2E, // Chimpy Charge
+	0x31, // Damaged
+	0x32, // Stunlocked
+	0x33, // Damaged
+	0x35, // Damaged
+	0x36, // Death
+	0x37, // Damaged (Underwater)
+	0x38, // Damaged
+	0x39, // Shrinking
+	0x42, // Barrel
+	0x43, // Barrel (Underwater)
+	0x44, // Baboon Blast Shot
+	0x45, // Cannon Shot
+	0x52, // Bananaporter
+	0x53, // Monkeyport
+	0x54, // Bananaporter (Multiplayer)
+	0x56, // Locked
+	0x57, // Swinging on Vine
+	0x58, // Leaving Vine
+	0x59, // Climbing Tree
+	0x5A, // Leaving Tree
+	0x5B, // Grabbed Ledge
+	0x5C, // Pulling up on Ledge
+	0x63, // Rocketbarrel // Note: Covered by crystal HUD check except for Helm & K. Rool
+	0x64, // Taking Photo
+	0x65, // Taking Photo
+	0x67, // Instrument
+	0x69, // Car
+	0x6A, // Learning Gun // Note: Handled by map check
+	0x6B, // Locked
+	0x6C, // Feeding T&S // Note: Handled by map check
+	0x6D, // Boat
+	0x6E, // Baboon Balloon
+	0x6F, // Updraft
+	0x70, // GB Dance
+	0x71, // Key Dance
+	0x72, // Crown Dance
+	0x73, // Loss Dance
+	0x74, // Victory Dance
+	0x78, // Gorilla Grab
+	0x79, // Learning Move // Note: Handled by map check
+	0x7A, // Locked
+	0x7B, // Locked
+	0x7C, // Trapped (spider miniBoss)
+	0x7D, // Klaptrap Kong (beaver bother) // Note: Handled by map check
+	0x83, // Fairy Refill
+	0x87, // Entering Portal
+	0x88, // Exiting Portal
+};
+
 static const short kong_flags[] = {0x181,0x6,0x46,0x42,0x75};
 
 void tagAnywhere(int prev_crystals) {
@@ -103,7 +167,16 @@ void tagAnywhere(int prev_crystals) {
                     }
                 }
             }
+            int control_state = Player->control_state;
+            for (int i = 0; i < sizeof(bad_movement_states); i++) {
+                if (bad_movement_states[i] == control_state) {
+                    return;
+                }
+            }
             if ((prev_crystals - 1) == CollectableBase.Crystals) {
+                return;
+            }
+            if (CutsceneActive) {
                 return;
             }
 			if (Character < TAG_ANYWHERE_KONG_LIMIT) {
@@ -148,17 +221,24 @@ void tagAnywhere(int prev_crystals) {
 						}
 					} while (i++ < TAG_ANYWHERE_KONG_LIMIT);
 					if ((!reached_limit) && (next_character != Character)) {
-						tagKong(next_character + 2);
+						if (((MovesBase[next_character].weapon_bitfield & 1) == 0) || (Player->was_gun_out == 0)) {
+                            Player->hand_state = 1;
+                            Player->was_gun_out = 0;
+                            // Without this, tags to and from Diddy mess up
+                            if (next_character == 1) {
+                                Player->hand_state = 0;
+                            }
+                        } else {
+                            Player->hand_state = 2;
+                            Player->was_gun_out = 1;
+                            // Without this, tags to and from Diddy mess up
+                            if (next_character == 1) {
+                                Player->hand_state = 3;
+                            }
+                        };
+                        tagKong(next_character + 2);
 						clearTagSlide(Player);
 						Player->new_kong = next_character + 2;
-						int _wb = MovesBase[next_character].weapon_bitfield;
-						if (((_wb & 1) == 0) || (Player->was_gun_out == 0)) {
-							Player->hand_state = next_character != 1;
-							Player->was_gun_out = 0;
-						} else {
-							Player->hand_state = 2 + (next_character == 1);
-							Player->was_gun_out = 1;
-						}
 					}
 				}
 			}

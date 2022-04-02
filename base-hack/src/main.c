@@ -12,6 +12,16 @@ static char lag_counter = 0;
 static float current_avg_lag = 0;
 static short past_crystals = 0;
 
+void giveCollectables(void) {
+	CollectableBase.StandardAmmo = 50 * MovesBase[0].ammo_belt;
+	if (MovesBase[0].weapon_bitfield & 2) {
+		CollectableBase.HomingAmmo = 25 * MovesBase[0].ammo_belt;
+	}
+	CollectableBase.Oranges = 10;
+	CollectableBase.Crystals = 1500;
+	CollectableBase.Film = 5;
+}
+
 void cFuncLoop(void) {
 	DataIsCompressed[18] = 0;
 	initHack();
@@ -65,6 +75,7 @@ void cFuncLoop(void) {
 				applyFastStart();
 				openCrownDoor();
 				openCoinDoor();
+				giveCollectables();
 				setPermFlag(0x346);
 				StoredSettings.file_extra[(int)FileIndex].location_sss_purchased = 0;
 				StoredSettings.file_extra[(int)FileIndex].location_ab1_purchased = 0;
@@ -74,6 +85,7 @@ void cFuncLoop(void) {
 			} else {
 				// Used File
 				determineStartKong_PermaLossMode();
+				giveCollectables();
 			}
 		}
 	}
@@ -98,6 +110,11 @@ void earlyFrame(void) {
 		setFlag(0x58,1,2);
 		if (CurrentMap == 0x22) {
 			KRoolRound = 0;
+		}
+	}
+	if (CurrentMap == 1) {
+		if ((CutsceneActive) && (CutsceneIndex == 2)) {
+			CutsceneBarState = 20;
 		}
 	}
 	if ((CurrentMap == 5) || (CurrentMap == 1) || (CurrentMap == 0x19)) {
