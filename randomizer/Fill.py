@@ -120,6 +120,9 @@ def GetAccessibleLocations(settings, ownedItems, searchType=SearchMode.GetReacha
                         elif LocationList[location.id].type == Types.Blueprint:
                             if not LogicVariables.KasplatAccess(location.id):
                                 continue
+                        # Any shop item with exception of simian slam has a price
+                        elif LocationList[location.id].type == Types.Shop and location.id != Locations.SimianSlam:
+                            LogicVariables.PurchaseShopItem(LocationList[location.id])
                         newLocations.append(location.id)
                 # Check accessibility for each exit in this region
                 exits = region.exits.copy()
@@ -276,7 +279,7 @@ def AssumedFill(settings, itemsToPlace, validLocations, ownedItems=[]):
         # print("slamLevel: " + str(slamLevel) + ", ammoBelts: " + str(ammoBelts) + ", instUpgrades: " + str(instUpgrades))
 
         Reset()
-        reachable = GetAccessibleLocations(settings, owned, SearchMode.GetReachableWithoutSpending)
+        reachable = GetAccessibleLocations(settings, owned)
         if ItemList[item].type == Types.Shop:
             moveKong = ItemList[item].kong
             movePrice = GetPriceOfMoveItem(item, settings, slamLevel, ammoBelts, instUpgrades)

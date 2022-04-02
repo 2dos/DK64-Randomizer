@@ -7,6 +7,8 @@ import randomizer.CollectibleLogicFiles.FranticFactory
 import randomizer.CollectibleLogicFiles.FungiForest
 import randomizer.CollectibleLogicFiles.GloomyGalleon
 import randomizer.CollectibleLogicFiles.JungleJapes
+from randomizer.Enums.Types import Types
+from randomizer.Lists.Item import ItemList
 import randomizer.LogicFiles.AngryAztec
 import randomizer.LogicFiles.CreepyCastle
 import randomizer.LogicFiles.CrystalCaves
@@ -23,8 +25,8 @@ from randomizer.Enums.Items import Items
 from randomizer.Enums.Kongs import Kongs
 from randomizer.Enums.Levels import Levels
 from randomizer.Enums.Locations import Locations
-from randomizer.Lists.Location import LocationList
-from randomizer.Prices import CanBuy
+from randomizer.Lists.Location import Location, LocationList
+from randomizer.Prices import CanBuy, GetPriceOfMoveItem
 
 
 class LogicVarHolder:
@@ -342,6 +344,20 @@ class LogicVarHolder:
         elif collectible.type == Collectibles.balloon:
             self.ColoredBananas[level][collectible.kong] += collectible.amount * 10
         collectible.added = True
+
+    def PurchaseShopItem(self, location:Location):
+        """Purchase items from shops and subtract price from logical coin counts."""
+        if location.item is not None and location.item is not Items.NoItem:
+            price = GetPriceOfMoveItem(location.item, self.settings, self.Slam, self.AmmoBelts, self.InstUpgrades)
+            # print("BuyShopItem for location: " + location.name)
+            # print("Item: " + ItemList[location.item].name + " has Price: " + str(price))
+            # If shared move, consider all kongs paid for it
+            if location.kong == Kongs.any:
+                for i in range(5):
+                    self.Coins[i] -= price
+            # If kong specific move, just that kong paid for it
+            else:
+                self.Coins[location.kong] -= price
 
     def HasAccess(self, region, kong):
         """Check if a certain kong has access to a certain region.
