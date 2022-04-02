@@ -287,13 +287,13 @@ def AssumedFill(settings, itemsToPlace, validLocations, ownedItems=[]):
                     MaxCoinsSpent[moveKong] -= movePrice
             # print("MaxCoinsSpent: " + str(MaxCoinsSpent))
 
-        reachable = [x for x in reachable if LocationList[x].item is None and x in validLocations]
+        validReachable = [x for x in reachable if LocationList[x].item is None and x in validLocations]
         # If there are no empty reachable locations, reached a dead end
-        if len(reachable) == 0:
+        if len(validReachable) == 0:
             return len(itemsToPlace) + 1
         # Get a random, empty, reachable location and place the item there
-        random.shuffle(reachable)
-        locationId = reachable.pop()
+        random.shuffle(validReachable)
+        locationId = validReachable.pop()
         LocationList[locationId].PlaceItem(item)
     return 0
 
