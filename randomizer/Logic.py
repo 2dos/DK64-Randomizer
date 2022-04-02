@@ -328,7 +328,7 @@ class LogicVarHolder:
             # Rainbow coin, add 5 coins for each kong
             if collectible.kong == Kongs.any:
                 for i in range(5):
-                    self.Coins[i] += 5
+                    self.Coins[i] += collectible.amount * 5
             # Normal coins, add amount for the kong
             else:
                 self.Coins[collectible.kong] += collectible.amount

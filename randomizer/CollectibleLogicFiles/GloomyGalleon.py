@@ -21,6 +21,13 @@ LogicRegions = {
         Collectible(Collectibles.bunch, Kongs.chunky, lambda l: True, None, 1),  # On Warp 2
         Collectible(Collectibles.banana, Kongs.chunky, lambda l: l.vines, None, 3),  # Near Warp 3
         Collectible(Collectibles.banana, Kongs.chunky, lambda l: True, None, 5),  # Chests
+
+        # Testing Coin access
+        Collectible(Collectibles.coin, Kongs.donkey, lambda l: True, None, 15),
+        Collectible(Collectibles.coin, Kongs.diddy, lambda l: True, None, 15),
+        Collectible(Collectibles.coin, Kongs.lanky, lambda l: True, None, 15),
+        Collectible(Collectibles.coin, Kongs.tiny, lambda l: True, None, 15),
+        Collectible(Collectibles.coin, Kongs.chunky, lambda l: True, None, 15),
     ],
     Regions.GalleonBeyondPineappleGate: [
         Collectible(Collectibles.bunch, Kongs.tiny, lambda l: True, None, 3),

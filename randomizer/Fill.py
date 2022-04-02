@@ -1,5 +1,6 @@
 """Module used to distribute items randomly."""
 import random
+from re import search
 
 import randomizer.ItemPool as ItemPool
 import randomizer.Lists.Exceptions as Ex
@@ -9,6 +10,7 @@ import randomizer.ShuffleExits as ShuffleExits
 from randomizer.Enums.Items import Items
 from randomizer.Enums.Kongs import Kongs
 from randomizer.Enums.Levels import Levels
+from randomizer.Enums.Locations import Locations
 from randomizer.Enums.Regions import Regions
 from randomizer.Enums.SearchMode import SearchMode
 from randomizer.Enums.Transitions import Transitions
@@ -56,6 +58,9 @@ def GetAccessibleLocations(settings, ownedItems, searchType=SearchMode.GetReacha
         for locationId in newLocations:
             accessible.append(locationId)
             location = LocationList[locationId]
+            # If searching for access without spending coins, don't add any shop locations (unless it's Simian Slam which is always free)
+            if searchType == SearchMode.GetReachableWithoutSpending and location.type == Types.Shop and locationId != Locations.SimianSlam:
+                continue
             # If this location has an item placed, add it to owned items
             if location.item is not None:
                 ownedItems.append(location.item)
@@ -148,7 +153,7 @@ def GetAccessibleLocations(settings, ownedItems, searchType=SearchMode.GetReacha
                         if not collectible.added and (kong == collectible.kong or collectible.kong == Kongs.any) and collectible.logic(LogicVariables):
                             LogicVariables.AddCollectible(collectible, region.level)
 
-    if searchType == SearchMode.GetReachable:
+    if searchType == SearchMode.GetReachable or searchType == SearchMode.GetReachableWithoutSpending:
         return accessible
     elif searchType == SearchMode.CheckBeatable:
         # If the search has completed and banana hoard has not been found, game is unbeatable
@@ -254,7 +259,7 @@ def ForwardFill(settings, itemsToPlace, validLocations, ownedItems=[]):
 def AssumedFill(settings, itemsToPlace, validLocations, ownedItems=[]):
     """Assumed fill algorithm for item placement."""
     # Calculate total cost of moves
-    MaxCoinsSpent = GetMaxCoinsSpent(settings, itemsToPlace + ownedItems)
+    maxCoinsSpent = GetMaxCoinsSpent(settings, itemsToPlace + ownedItems)
 
     # While there are items to place
     random.shuffle(itemsToPlace)
@@ -271,21 +276,31 @@ def AssumedFill(settings, itemsToPlace, validLocations, ownedItems=[]):
         # print("slamLevel: " + str(slamLevel) + ", ammoBelts: " + str(ammoBelts) + ", instUpgrades: " + str(instUpgrades))
 
         Reset()
-        reachable = GetAccessibleLocations(settings, owned)
-
+        reachable = GetAccessibleLocations(settings, owned, SearchMode.GetReachableWithoutSpending)
         if ItemList[item].type == Types.Shop:
-            # print("Placing item: " + ItemList[item].name)
             moveKong = ItemList[item].kong
-            # print("Move Kong: " + moveKong.name)
             movePrice = GetPriceOfMoveItem(item, settings, slamLevel, ammoBelts, instUpgrades)
-            # print("Move Price : " + str(movePrice))
+            movePriceArray = [0, 0, 0, 0, 0]
             if movePrice is not None:
                 if moveKong == Kongs.any:
                     for anyKong in range(5):
-                        MaxCoinsSpent[anyKong] -= movePrice
+                        maxCoinsSpent[anyKong] -= movePrice
+                        movePriceArray[anyKong] = movePrice
                 else:
-                    MaxCoinsSpent[moveKong] -= movePrice
-            # print("MaxCoinsSpent: " + str(MaxCoinsSpent))
+                    maxCoinsSpent[moveKong] -= movePrice
+                    movePriceArray[moveKong] = movePrice
+            currentCoins = [0, 0, 0, 0, 0]
+            for kong in range(5):
+                currentCoins[kong] = LogicVariables.Coins[kong] - maxCoinsSpent[kong]
+            # Breaking condition where we don't have access to enough coins
+            for kong in range(5):
+                if currentCoins[kong] < movePriceArray[kong]:
+                    print("Failed placing item: " + ItemList[item].name)
+                    print("movePriceArray: " + str(movePriceArray))
+                    print("Total Coins Accessible: " + str(LogicVariables.Coins))
+                    print("maxCoinsSpent: " + str(maxCoinsSpent))
+                    print("currentCoins: " + str(currentCoins))
+                    return len(itemsToPlace) + 1
 
         validReachable = [x for x in reachable if LocationList[x].item is None and x in validLocations]
         # If there are no empty reachable locations, reached a dead end
@@ -515,7 +530,7 @@ def ShuffleMoves(spoiler):
             spoiler.UpdatePlaythrough(LocationList, PlaythroughLocations)
             return spoiler
         except Ex.FillException as ex:
-            if retries == 10:
+            if retries == 20:
                 print("Fill failed, out of retries.")
                 raise ex
             else:
