@@ -1,9 +1,11 @@
+"""Locate Hash images for displaying on the website."""
 import zlib
 from randomizer.Patcher import ROM
 import base64
 
 
 def get_hash_images():
+    """Get and return a list of hash images for the website UI."""
     images = [
         {"name": "bongos", "format": "rgba16", "table": 25, "index": 5548, "w": 40, "h": 40},
         {"name": "crown", "format": "rgba16", "table": 25, "index": 5893, "w": 44, "h": 44},

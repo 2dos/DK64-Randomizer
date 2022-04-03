@@ -45,8 +45,8 @@ song_data = [
     Song("Triangle Trample", type=SongType.Event, memory=0x8C2),
     Song("Guitar Gazump", type=SongType.Event, memory=0x8C2),  # 10
     Song("Bongo Blast", type=SongType.Event, memory=0x8C2),
-    Song("Trombone Tremor", type=SongType.Event, memory=0X8C2),
-    Song("Saxaphone Slam", type=SongType.Event, memory=0X8C2),
+    Song("Trombone Tremor", type=SongType.Event, memory=0x8C2),
+    Song("Saxaphone Slam", type=SongType.Event, memory=0x8C2),
     Song("Angry Aztec", type=SongType.BGM, group=SongGroup.AngryAztec, memory=0x100),
     Song("Transformation", type=SongType.Event, memory=0xA34),  # 15
     Song("Mini Monkey", type=SongType.BGM, group=SongGroup.Self, memory=0x19A),
