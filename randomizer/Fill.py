@@ -50,6 +50,7 @@ def GetAccessibleLocations(settings, ownedItems, searchType=SearchMode.GetReacha
     accessible = []
     newLocations = []
     playthroughLocations = []
+    playthroughCollectibles = []
     eventAdded = True
     # Continue doing searches until nothing new is found
     while len(newLocations) > 0 or eventAdded:
@@ -76,6 +77,7 @@ def GetAccessibleLocations(settings, ownedItems, searchType=SearchMode.GetReacha
                     return True
         if len(sphere) > 0:
             playthroughLocations.append(sphere)
+            playthroughCollectibles.append(LogicVariables.Coins.copy())
             if LocationList[sphere[0]].item == Items.BananaHoard:
                 break
         eventAdded = False
@@ -108,6 +110,11 @@ def GetAccessibleLocations(settings, ownedItems, searchType=SearchMode.GetReacha
                     if event.name not in LogicVariables.Events and event.logic(LogicVariables):
                         eventAdded = True
                         LogicVariables.Events.append(event.name)
+                # Check accessibility for collectibles
+                if region.id in Logic.CollectibleRegions.keys():
+                    for collectible in Logic.CollectibleRegions[region.id]:
+                        if not collectible.added and (kong == collectible.kong or collectible.kong == Kongs.any) and collectible.logic(LogicVariables):
+                            LogicVariables.AddCollectible(collectible, region.level)
                 # Check accessibility for each location in this region
                 for location in region.locations:
                     if location.logic(LogicVariables) and location.id not in newLocations and location.id not in accessible:
@@ -150,19 +157,14 @@ def GetAccessibleLocations(settings, ownedItems, searchType=SearchMode.GetReacha
                         newRegion = Logic.Regions[destination]
                         newRegion.id = destination
                         regionPool.append(newRegion)
-                # Finally check accessibility for collectibles
-                if region.id in Logic.CollectibleRegions.keys():
-                    for collectible in Logic.CollectibleRegions[region.id]:
-                        if not collectible.added and (kong == collectible.kong or collectible.kong == Kongs.any) and collectible.logic(LogicVariables):
-                            LogicVariables.AddCollectible(collectible, region.level)
-
+                
     if searchType == SearchMode.GetReachable or searchType == SearchMode.GetReachableWithoutSpending:
         return accessible
     elif searchType == SearchMode.CheckBeatable:
         # If the search has completed and banana hoard has not been found, game is unbeatable
         return False
     elif searchType == SearchMode.GeneratePlaythrough:
-        return playthroughLocations
+        return playthroughLocations, playthroughCollectibles
     elif searchType == SearchMode.CheckAllReachable:
         return len(accessible) == len(LocationList)
     elif searchType == SearchMode.GetUnreachable:
@@ -185,7 +187,7 @@ def Reset():
     Logic.ResetCollectibleRegions()
 
 
-def ParePlaythrough(settings, PlaythroughLocations):
+def ParePlaythrough(settings, PlaythroughLocations, PlaythroughCollectibles):
     """Pares playthrough down to only the essential elements."""
     locationsToAddBack = []
     # Check every location in the list of spheres.
@@ -214,6 +216,7 @@ def ParePlaythrough(settings, PlaythroughLocations):
         sphere = PlaythroughLocations[i]
         if len(sphere) == 0:
             PlaythroughLocations.remove(sphere)
+            PlaythroughCollectibles.pop(i)
 
     # Re-place those items which were delayed earlier.
     for locationId in locationsToAddBack:
@@ -405,11 +408,11 @@ def Fill(spoiler):
                 raise Ex.GameNotBeatableException("Game unbeatable after placing all items.")
             # Generate and display the playthrough
             Reset()
-            PlaythroughLocations = GetAccessibleLocations(spoiler.settings, [], SearchMode.GeneratePlaythrough)
-            ParePlaythrough(spoiler.settings, PlaythroughLocations)
+            (PlaythroughLocations, PlaythroughCollectibles) = GetAccessibleLocations(spoiler.settings, [], SearchMode.GeneratePlaythrough)
+            ParePlaythrough(spoiler.settings, PlaythroughLocations, PlaythroughCollectibles)
             # Write data to spoiler and return
             spoiler.UpdateLocations(LocationList)
-            spoiler.UpdatePlaythrough(LocationList, PlaythroughLocations)
+            spoiler.UpdatePlaythrough(LocationList, PlaythroughLocations, PlaythroughCollectibles)
             return spoiler
         except Ex.FillException as ex:
             if retries == 4:
@@ -526,11 +529,11 @@ def ShuffleMoves(spoiler):
                 raise Ex.GameNotBeatableException("Game unbeatable after placing all items.")
             # Generate and display the playthrough
             Reset()
-            PlaythroughLocations = GetAccessibleLocations(spoiler.settings, [], SearchMode.GeneratePlaythrough)
-            ParePlaythrough(spoiler.settings, PlaythroughLocations)
+            (PlaythroughLocations, PlaythroughCollectibles) = GetAccessibleLocations(spoiler.settings, [], SearchMode.GeneratePlaythrough)
+            ParePlaythrough(spoiler.settings, PlaythroughLocations, PlaythroughCollectibles)
             # Write data to spoiler and return
             spoiler.UpdateLocations(LocationList)
-            spoiler.UpdatePlaythrough(LocationList, PlaythroughLocations)
+            spoiler.UpdatePlaythrough(LocationList, PlaythroughLocations, PlaythroughCollectibles)
             return spoiler
         except Ex.FillException as ex:
             if retries == 20:
