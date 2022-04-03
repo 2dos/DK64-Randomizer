@@ -155,7 +155,7 @@ def GetAccessibleLocations(settings, ownedItems, searchType=SearchMode.GetReacha
                         newRegion = Logic.Regions[destination]
                         newRegion.id = destination
                         regionPool.append(newRegion)
-                
+
     if searchType == SearchMode.GetReachable or searchType == SearchMode.GetReachableWithoutSpending:
         return accessible
     elif searchType == SearchMode.CheckBeatable:
