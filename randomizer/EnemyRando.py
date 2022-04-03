@@ -4,6 +4,7 @@ import random
 from randomizer.Patcher import ROM
 from randomizer.Spoiler import Spoiler
 from randomizer.MapsAndExits import Maps
+from randomizer.EnemyTypes import Enemies
 
 
 def randomize_enemies(spoiler: Spoiler):
@@ -76,7 +77,7 @@ def randomize_enemies(spoiler: Spoiler):
         Maps.CavesDiddyIgloo,
         Maps.CavesLankyIgloo,
         Maps.CavesTinyIgloo,
-        Maps.CavesChunkyIgloo,
+        # Maps.CavesChunkyIgloo, # Fireball with glasses is here
         Maps.CavesDonkeyCabin,
         Maps.CavesDiddyLowerCabin,
         Maps.CavesDiddyUpperCabin,
@@ -113,45 +114,48 @@ def randomize_enemies(spoiler: Spoiler):
         Maps.CastleBaboonBlast,
         Maps.ForestBaboonBlast,
         Maps.IslesSnideRoom,
+        Maps.ForestGiantMushroom,
+        Maps.ForestLankyZingersRoom,
     ]
     enemy_classes = {
         "ground_simple": [
-            0x00,  # Blue Beaver
-            # 0x06, # Klobber (General Barrel Hider)
-            # 0x10, # Kaboom (TNT Barrel Hider)
-            0x1B,  # Klaptrap (Green)
-            0x1E,  # Klaptrap (Purple)
-            0x1F,  # Klaptrap (Red)
-            0x21,  # Gold Beaver
-            # 0x2C, # Mushroom Man
-            0x33,  # Ruler
-            0x3B,  # Kremling
-            0x54,  # Krossbones
-            0x57,  # Mr. Dice (0)
-            0x58,  # Sir Domino
-            0x59,  # Mr. Dice (1)
-            0x5F,  # Spiderling
-            0x65,  # Kritter-in-a-sheet
+            Enemies.BeaverBlue,
+            Enemies.KlaptrapGreen,
+            Enemies.KlaptrapPurple,
+            Enemies.KlaptrapRed,
+            Enemies.BeaverGold,
+            Enemies.MushroomMan,
+            Enemies.Ruler,
+            Enemies.Kremling,
+            Enemies.Krossbones,
+            Enemies.MrDice0,
+            Enemies.MrDice1,
+            Enemies.SirDomino,
+            Enemies.FireballGlasses,
+            Enemies.SpiderSmall,
+            Enemies.Ghost,
         ],
         "air": [
-            0x05,  # Zinger (Charger)
-            0x1C,  # Zinger (Bomber)
-            0x53,  # Robo-Zinger
-            0x63,  # Bat
+            Enemies.ZingerCharger,
+            Enemies.ZingerLime,
+            Enemies.ZingerRobo,
+            Enemies.Bat,
         ],
         "ground_beefyboys": [
-            0x09,  # Klump
-            0x38,  # Robo-Kremling
-            0x64,  # Evil Tomato
-            0x67,  # Kosha
+            Enemies.Klump,
+            Enemies.RoboKremling,
+            # Enemies.EvilTomato, # Causes way too many problems
+            Enemies.Kosha,
+            Enemies.Klobber,
+            Enemies.Kaboom,
         ],
         "water": [
-            0x55,  # Shuri
-            0x56,  # Gimpfish
-            0x66,  # Pufftup
+            Enemies.Shuri,
+            Enemies.Gimpfish,
+            Enemies.Pufftup,
         ],
     }
-    if spoiler.settings.enemy_rando or spoiler.settings.kasplat_rando:
+    if spoiler.settings.enemy_rando:  # Add Kasplat Rando to this
         for cont_map_id in valid_maps:
             cont_map_spawner_address = js.pointer_addresses[16]["entries"][cont_map_id]["pointing_to"]
             vanilla_spawners = []
@@ -202,3 +206,6 @@ def randomize_enemies(spoiler: Spoiler):
                         ROM().seek(cont_map_spawner_address + spawner["offset"])
                         ROM().writeMultipleBytes(new_enemy_id, 1)
                         sub_index += 1
+                        if new_enemy_id == Enemies.EvilTomato or new_enemy_id == Enemies.Klobber or new_enemy_id == Enemies.Kaboom or new_enemy_id == Enemies.MushroomMan:
+                            ROM().seek(cont_map_spawner_address + spawner["offset"] + 0x10)
+                            ROM().writeMultipleBytes(4, 1)
