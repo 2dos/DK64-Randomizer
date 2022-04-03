@@ -145,7 +145,7 @@ def randomize_entrances(spoiler: Spoiler):
         ROM().write(GetMapId(shuffledBack.regionId))
         ROM().write(GetExitId(shuffledBack))
         # Helm exit is always vanilla
-        ROM().write(Maps.HideoutHelm)
+        ROM().write(Maps.HideoutHelmLobby)
         ROM().write(1)
         # /* 0x088 */ unsigned short enter_levels[7]; // Same as "aztec_beetle_enter" but for the loading zone dictated by the name
         shuffledBack = spoiler.shuffled_exit_data[Transitions.IslesToJapes]
