@@ -240,10 +240,10 @@ LogicRegions = {
     ]),
 
     Regions.ForestBossLobby: Region("Forest Boss Lobby", Levels.FungiForest, True, None, [], [], [
-        TransitionFront(Regions.ForestBoss, lambda l: l.ischunky and sum(l.ColoredBananas[Levels.FungiForest]) >= l.settings.BossBananas[Levels.FungiForest]),
+        TransitionFront(Regions.ForestBoss, lambda l: l.IsBossBeatable(Levels.FungiForest) and sum(l.ColoredBananas[Levels.FungiForest]) >= l.settings.BossBananas[Levels.FungiForest]),
     ]),
 
     Regions.ForestBoss: Region("Forest Boss", Levels.FungiForest, False, None, [
-        LocationLogic(Locations.ForestKey, lambda l: l.hunkyChunky and l.ischunky),
+        LocationLogic(Locations.ForestKey, lambda l: True),
     ], [], []),
 }

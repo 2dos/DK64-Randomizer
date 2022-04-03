@@ -135,10 +135,10 @@ LogicRegions = {
     ]),
 
     Regions.FactoryBossLobby: Region("Factory Boss Lobby", Levels.FranticFactory, False, None, [], [], [
-        TransitionFront(Regions.FactoryBoss, lambda l: l.istiny and sum(l.ColoredBananas[Levels.FranticFactory]) >= l.settings.BossBananas[Levels.FranticFactory]),
+        TransitionFront(Regions.FactoryBoss, lambda l: l.IsBossBeatable(Levels.FranticFactory) and sum(l.ColoredBananas[Levels.FranticFactory]) >= l.settings.BossBananas[Levels.FranticFactory]),
     ]),
 
     Regions.FactoryBoss: Region("Factory Boss", Levels.FranticFactory, False, None, [
-        LocationLogic(Locations.FactoryKey, lambda l: l.twirl and l.istiny),
+        LocationLogic(Locations.FactoryKey, lambda l: True),
     ], [], []),
 }
