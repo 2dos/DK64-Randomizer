@@ -33,6 +33,13 @@ LogicRegions = {
         Collectible(Collectibles.bunch, Kongs.chunky, lambda l: True, None, 2),  # On Funky's store
 
         Collectible(Collectibles.coin, Kongs.donkey, lambda l: l.vines, None, 3),  # Around BBlast pad
+
+        # Testing Coin access
+        Collectible(Collectibles.coin, Kongs.donkey, lambda l: True, None, 12),
+        Collectible(Collectibles.coin, Kongs.diddy, lambda l: True, None, 15),
+        Collectible(Collectibles.coin, Kongs.lanky, lambda l: True, None, 15),
+        Collectible(Collectibles.coin, Kongs.tiny, lambda l: True, None, 15),
+        Collectible(Collectibles.coin, Kongs.chunky, lambda l: True, None, 15),
     ],
     Regions.JapesBaboonBlast: [
         Collectible(Collectibles.bunch, Kongs.donkey, lambda l: True, None, 2),

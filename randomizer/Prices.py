@@ -4,6 +4,7 @@ import random
 
 from randomizer.Enums.Kongs import Kongs
 from randomizer.Enums.Locations import Locations
+from randomizer.Enums.Items import Items
 from randomizer.ItemPool import (
     ChunkyMoveLocations,
     DiddyMoveLocations,
@@ -12,42 +13,45 @@ from randomizer.ItemPool import (
     SharedMoveLocations,
     TinyMoveLocations,
 )
+from randomizer.Lists.Location import LocationList
 
 VanillaPrices = {
-    Locations.SuperSimianSlam: 5,
-    Locations.SuperDuperSimianSlam: 7,
-    Locations.BaboonBlast: 3,
-    Locations.StrongKong: 5,
-    Locations.GorillaGrab: 7,
-    Locations.ChimpyCharge: 3,
-    Locations.RocketbarrelBoost: 5,
-    Locations.SimianSpring: 7,
-    Locations.Orangstand: 3,
-    Locations.BaboonBalloon: 5,
-    Locations.OrangstandSprint: 7,
-    Locations.MiniMonkey: 3,
-    Locations.PonyTailTwirl: 5,
-    Locations.Monkeyport: 7,
-    Locations.HunkyChunky: 3,
-    Locations.PrimatePunch: 5,
-    Locations.GorillaGone: 7,
-    Locations.CoconutGun: 3,
-    Locations.PeanutGun: 3,
-    Locations.GrapeGun: 3,
-    Locations.FeatherGun: 3,
-    Locations.PineappleGun: 3,
-    Locations.AmmoBelt1: 3,
-    Locations.HomingAmmo: 5,
-    Locations.AmmoBelt2: 5,
-    Locations.SniperSight: 7,
-    Locations.Bongos: 3,
-    Locations.Guitar: 3,
-    Locations.Trombone: 3,
-    Locations.Saxophone: 3,
-    Locations.Triangle: 3,
-    Locations.MusicUpgrade1: 5,
-    Locations.ThirdMelon: 7,
-    Locations.MusicUpgrade2: 9,
+    Items.BaboonBlast: 3,
+    Items.StrongKong: 5,
+    Items.GorillaGrab: 7,
+    Items.ChimpyCharge: 3,
+    Items.RocketbarrelBoost: 5,
+    Items.SimianSpring: 7,
+    Items.Orangstand: 3,
+    Items.BaboonBalloon: 5,
+    Items.OrangstandSprint: 7,
+    Items.MiniMonkey: 3,
+    Items.PonyTailTwirl: 5,
+    Items.Monkeyport: 7,
+    Items.HunkyChunky: 3,
+    Items.PrimatePunch: 5,
+    Items.GorillaGone: 7,
+    Items.Coconut: 3,
+    Items.Peanut: 3,
+    Items.Grape: 3,
+    Items.Feather: 3,
+    Items.Pineapple: 3,
+    Items.HomingAmmo: 5,
+    Items.SniperSight: 7,
+    Items.Bongos: 3,
+    Items.Guitar: 3,
+    Items.Trombone: 3,
+    Items.Saxophone: 3,
+    Items.Triangle: 3,
+    Items.ProgressiveSlam: [5, 7],
+    Items.ProgressiveAmmoBelt: [3, 5],
+    Items.ProgressiveInstrumentUpgrade: [5, 7, 9],
+}
+
+ProgressiveMoves = {
+    Items.ProgressiveSlam: 2,
+    Items.ProgressiveAmmoBelt: 2,
+    Items.ProgressiveInstrumentUpgrade: 3,
 }
 
 
@@ -69,8 +73,14 @@ def RandomizePrices(weight):
         stddev = avg * 0.25
     # Generate random prices using normal distribution with avg and std. deviation
     # Round each price to nearest int
-    for location in prices.keys():
-        prices[location] = round(random.normalvariate(avg, stddev))
+    for item in prices.keys():
+        # Special Case for progressive moves, supply an array of prices, one for each time it appears
+        if item in ProgressiveMoves.keys():
+            prices[item] = []
+            for i in range(ProgressiveMoves[item]):
+                prices[item].append(round(random.normalvariate(avg, stddev)))
+        else:
+            prices[item] = round(random.normalvariate(avg, stddev))
     return prices
 
 
@@ -90,7 +100,7 @@ def GetMaxForKong(settings, kong):
     return total
 
 
-CrankySequence = [Locations.SuperSimianSlam, Locations.SuperDuperSimianSlam]
+SlamProgressiveSequence = [Locations.SuperSimianSlam, Locations.SuperDuperSimianSlam]
 FunkySequence = [
     [Locations.CoconutGun, Locations.PeanutGun, Locations.GrapeGun, Locations.FeatherGun, Locations.PineappleGun],
     Locations.AmmoBelt1,
@@ -130,7 +140,7 @@ ChunkySequence = [
     Locations.GorillaGone,
 ]
 Sequences = [
-    CrankySequence,
+    SlamProgressiveSequence,
     FunkySequence,
     CandySequence,
     DonkeySequence,
@@ -166,56 +176,74 @@ meaning we just must consider the maximum price for every location.
 """
 
 
-def KongCanBuy(location, coins, settings, kong):
+def GetPriceOfMoveItem(item, settings, slamLevel, ammoBelts, instUpgrades):
+    """Get price of a move item. Needs to know current level of owned progressive moves to give correct price for progressive items."""
+    if item == Items.ProgressiveSlam:
+        if slamLevel in [1, 2]:
+            return settings.prices[item][slamLevel - 1]
+        else:
+            # If already have max slam, there's move to buy
+            return None
+    elif item == Items.ProgressiveAmmoBelt:
+        if ammoBelts in [0, 1]:
+            return settings.prices[item][ammoBelts]
+        else:
+            # If already have max ammo belt, there's move to buy
+            return None
+    elif item == Items.ProgressiveInstrumentUpgrade:
+        if instUpgrades in [0, 1, 2]:
+            return settings.prices[item][instUpgrades]
+        else:
+            # If already have max instrument upgrade, there's move to buy
+            return None
+    else:
+        return settings.prices[item]
+
+
+def KongCanBuy(location, coins, settings, kong, slamLevel, ammoBelts, instUpgrades):
     """Check if given kong can logically purchase the specified location."""
-    # Special case: If shop moves are unlocked then all are already bought except scope
-    if settings.unlock_all_moves and location == Locations.SniperSight:
-        return coins[kong] >= settings.prices[location]
-    # Get the max coins this kong can possibly spend
-    max = GetMaxForKong(settings, kong)
-    # If locations can be bought in any order, just check greater than the max
-    if settings.shuffle_items != "none":
-        return coins[kong] >= max
-    # Else, can subtract future entries in the item's sequence from the price
-    # Find which sequence this location belongs to
-    sequence = None
-    for seq in Sequences:
-        # If given location is in this sequence, or in the first element of the sequence if it's a list
-        if location in seq or (isinstance(seq[0], list) and location in seq[0]):
-            sequence = seq
-            break
-    # Now set the initial price as the max, but subtract amount from future entries in sequence
-    price = max
-    i = len(sequence) - 1
-    # Don't check first item in sequence since there's no reason to
-    while i > 0:
-        if sequence[i] == location:
-            break
-        price -= settings.prices[sequence[i]]
-        i -= 1
-    # Now that the final price has been determined, check if kong can afford it
-    return coins[kong] >= price
+    # If nothing is sold here, return true
+    if LocationList[location].item is None or LocationList[location].item == Items.NoItem:
+        return True
+    price = GetPriceOfMoveItem(LocationList[location].item, settings, slamLevel, ammoBelts, instUpgrades)
+
+    # Simple price check - combination of purchases will be considered outside this method
+    if price is not None:
+        # print("KongCanBuy checking item: " + str(LocationList[location].item))
+        # print("for kong: " + kong.name + " with " + str(coins[kong]) + " coins")
+        # print("has price: " + str(price))
+        return coins[kong] >= price
+    else:
+        return False
 
 
-def AnyKongCanBuy(location, coins, settings):
+def AnyKongCanBuy(location, coins, settings, slamLevel, ammoBelts, instUpgrades):
     """Check if any kong can logically purchase this location."""
     for kong in [Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky]:
-        if KongCanBuy(location, coins, settings, kong):
+        if KongCanBuy(location, coins, settings, kong, slamLevel, ammoBelts, instUpgrades):
             return True
     return False
 
 
-def CanBuy(location, coins, settings):
+def EveryKongCanBuy(location, coins, settings, slamLevel, ammoBelts, instUpgrades):
+    """Check if any kong can logically purchase this location."""
+    for kong in [Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky]:
+        if not KongCanBuy(location, coins, settings, kong, slamLevel, ammoBelts, instUpgrades):
+            return False
+    return True
+
+
+def CanBuy(location, coins, settings, slamLevel, ammoBelts, instUpgrades):
     """Check if an appropriate kong can logically purchase this location."""
     if location in DonkeyMoveLocations:
-        return KongCanBuy(location, coins, settings, Kongs.donkey)
+        return KongCanBuy(location, coins, settings, Kongs.donkey, slamLevel, ammoBelts, instUpgrades)
     elif location in DiddyMoveLocations:
-        return KongCanBuy(location, coins, settings, Kongs.diddy)
+        return KongCanBuy(location, coins, settings, Kongs.diddy, slamLevel, ammoBelts, instUpgrades)
     elif location in LankyMoveLocations:
-        return KongCanBuy(location, coins, settings, Kongs.lanky)
+        return KongCanBuy(location, coins, settings, Kongs.lanky, slamLevel, ammoBelts, instUpgrades)
     elif location in TinyMoveLocations:
-        return KongCanBuy(location, coins, settings, Kongs.tiny)
+        return KongCanBuy(location, coins, settings, Kongs.tiny, slamLevel, ammoBelts, instUpgrades)
     elif location in ChunkyMoveLocations:
-        return KongCanBuy(location, coins, settings, Kongs.chunky)
+        return KongCanBuy(location, coins, settings, Kongs.chunky, slamLevel, ammoBelts, instUpgrades)
     else:  # Shared locations
-        return AnyKongCanBuy(location, coins, settings)
+        return EveryKongCanBuy(location, coins, settings, slamLevel, ammoBelts, instUpgrades)

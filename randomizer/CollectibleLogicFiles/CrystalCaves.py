@@ -37,6 +37,13 @@ LogicRegions = {
         Collectible(Collectibles.banana, Kongs.chunky, lambda l: l.punch, None, 3),  # Near Snide
         Collectible(Collectibles.balloon, Kongs.chunky, lambda l: l.punch and l.pineapple, None, 1),  # Near Snide
         Collectible(Collectibles.balloon, Kongs.chunky, lambda l: l.mini and l.twirl and l.tiny and l.pineapple, None, 1),  # Warp 3 cave
+
+        # Testing Coin access
+        Collectible(Collectibles.coin, Kongs.donkey, lambda l: True, None, 15),
+        Collectible(Collectibles.coin, Kongs.diddy, lambda l: True, None, 15),
+        Collectible(Collectibles.coin, Kongs.lanky, lambda l: True, None, 15),
+        Collectible(Collectibles.coin, Kongs.tiny, lambda l: True, None, 15),
+        Collectible(Collectibles.coin, Kongs.chunky, lambda l: True, None, 15),
     ],
     Regions.CavesBaboonBlast: [
         Collectible(Collectibles.bunch, Kongs.donkey, lambda l: True, None, 4),
