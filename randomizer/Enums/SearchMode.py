@@ -10,4 +10,3 @@ class SearchMode(IntEnum):
     CheckBeatable = auto()
     CheckAllReachable = auto()
     GetUnreachable = auto()
-    GetReachableWithoutSpending = auto()

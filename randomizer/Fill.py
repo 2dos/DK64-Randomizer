@@ -58,9 +58,6 @@ def GetAccessibleLocations(settings, ownedItems, searchType=SearchMode.GetReacha
         for locationId in newLocations:
             accessible.append(locationId)
             location = LocationList[locationId]
-            # If searching for access without spending coins, don't add any shop locations (unless it's Simian Slam which is always free)
-            if searchType == SearchMode.GetReachableWithoutSpending and location.type == Types.Shop and locationId != Locations.SimianSlam:
-                continue
             # If this location has an item placed, add it to owned items
             if location.item is not None:
                 ownedItems.append(location.item)
@@ -156,7 +153,7 @@ def GetAccessibleLocations(settings, ownedItems, searchType=SearchMode.GetReacha
                         newRegion.id = destination
                         regionPool.append(newRegion)
 
-    if searchType == SearchMode.GetReachable or searchType == SearchMode.GetReachableWithoutSpending:
+    if searchType == SearchMode.GetReachable:
         return accessible
     elif searchType == SearchMode.CheckBeatable:
         # If the search has completed and banana hoard has not been found, game is unbeatable
