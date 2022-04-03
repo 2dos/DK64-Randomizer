@@ -16,7 +16,7 @@ from randomizer.Enums.Transitions import Transitions
 from randomizer.Enums.Types import Types
 from randomizer.Lists.Item import ItemList
 from randomizer.Lists.Location import Location, LocationList
-from randomizer.Lists.Minigame import MinigameAssociations, MinigameRequirements, BarrelMetaData
+from randomizer.Lists.Minigame import MinigameRequirements, BarrelMetaData
 from randomizer.ShuffleKasplats import KasplatShuffle
 from randomizer.Logic import LogicVarHolder, LogicVariables
 from randomizer.LogicClasses import TransitionFront
@@ -114,7 +114,7 @@ def GetAccessibleLocations(settings, ownedItems, searchType=SearchMode.GetReacha
                     if location.logic(LogicVariables) and location.id not in newLocations and location.id not in accessible:
                         # If this location is a bonus barrel, must make sure its logic is met as well
                         if location.bonusBarrel and settings.bonus_barrels != "skip":
-                            minigame = MinigameAssociations[location.id]
+                            minigame = BarrelMetaData[location.id].minigame
                             if not MinigameRequirements[minigame].logic(LogicVariables):
                                 continue
                         # If this location is a blueprint, then make sure this is the correct kong
