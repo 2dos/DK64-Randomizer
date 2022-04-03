@@ -142,10 +142,10 @@ LogicRegions = {
     ]),
 
     Regions.AztecBossLobby: Region("Aztec Boss Lobby", Levels.AngryAztec, True, None, [], [], [
-        TransitionFront(Regions.AztecBoss, lambda l: l.isdiddy and sum(l.ColoredBananas[Levels.AngryAztec]) >= l.settings.BossBananas[Levels.AngryAztec]),
+        TransitionFront(Regions.AztecBoss, lambda l: l.IsBossBeatable(Levels.AngryAztec) and sum(l.ColoredBananas[Levels.AngryAztec]) >= l.settings.BossBananas[Levels.AngryAztec]),
     ]),
 
     Regions.AztecBoss: Region("Aztec Boss", Levels.AngryAztec, False, None, [
-        LocationLogic(Locations.AztecKey, lambda l: l.isdiddy),
+        LocationLogic(Locations.AztecKey, lambda l: True),
     ], [], []),
 }
