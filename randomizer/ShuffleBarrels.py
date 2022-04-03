@@ -5,14 +5,14 @@ import js
 import randomizer.Fill as Fill
 import randomizer.Lists.Exceptions as Ex
 from randomizer.Enums.Minigames import Minigames
-from randomizer.Lists.Minigame import MinigameAssociations, MinigameRequirements, BarrelMetaData
+from randomizer.Lists.Minigame import MinigameRequirements, BarrelMetaData
 from randomizer.MapsAndExits import Maps
 
 
 def Reset(barrelLocations):
     """Reset bonus barrel associations."""
     for key in barrelLocations:
-        MinigameAssociations[key] = Minigames.NoGame
+        BarrelMetaData[key].minigame = Minigames.NoGame
 
 
 def ShuffleBarrels(settings, barrelLocations, minigamePool):
@@ -24,16 +24,12 @@ def ShuffleBarrels(settings, barrelLocations, minigamePool):
         # Check each remaining minigame to see if placing it will produce a valid world
         success = False
         for minigame in minigamePool:
-            MinigameAssociations[location] = minigame
-            enabled_for_map = True
-            if not MinigameRequirements[minigame].assign:
-                enabled_for_map = False
-                minigamePool.remove(minigame)
+            BarrelMetaData[location].minigame = minigame
             # Check if banned in Helm and attempted to place in Helm
             if not MinigameRequirements[minigame].helm_enabled and BarrelMetaData[location].map == Maps.HideoutHelm:
-                enabled_for_map = False
+                continue
             # If world is still valid, keep minigame associated there
-            if Fill.VerifyWorld(settings) and enabled_for_map:
+            if Fill.VerifyWorld(settings):
                 minigamePool.remove(minigame)
                 if MinigameRequirements[minigame].repeat:
                     replacement_index = random.randint(0, len(minigamePool))
@@ -44,7 +40,7 @@ def ShuffleBarrels(settings, barrelLocations, minigamePool):
                 success = True
                 break
             else:
-                MinigameAssociations[location] = Minigames.NoGame
+                BarrelMetaData[location].minigame = Minigames.NoGame
         if not success:
             raise Ex.BarrelOutOfMinigames
 
@@ -53,7 +49,7 @@ def BarrelShuffle(settings):
     """Facilitate shuffling of barrels."""
     # First make master copies of locations and minigames
     barrelLocations = [x for x in BarrelMetaData.keys()]
-    minigamePool = [x for x in MinigameRequirements.keys()]
+    minigamePool = [x for x in MinigameRequirements.keys() if x != Minigames.NoGame]
     retries = 0
     while True:
         try:

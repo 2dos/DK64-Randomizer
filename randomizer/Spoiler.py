@@ -13,7 +13,7 @@ from randomizer.Enums.Types import Types
 from randomizer.Enums.MoveTypes import MoveTypes
 from randomizer.Lists.Item import ItemFromKong, ItemList
 from randomizer.Lists.Location import LocationList
-from randomizer.Lists.Minigame import MinigameAssociations, MinigameRequirements
+from randomizer.Lists.Minigame import MinigameRequirements, BarrelMetaData
 from randomizer.MapsAndExits import GetExitId, GetMapId, Maps
 from randomizer.Settings import Settings
 from randomizer.ShuffleExits import ShufflableExits
@@ -209,7 +209,7 @@ class Spoiler:
     def UpdateBarrels(self):
         """Update list of shuffled barrel minigames."""
         self.shuffled_barrel_data = {}
-        for location, minigame in MinigameAssociations.items():
+        for location, minigame in [(key, value.minigame) for (key, value) in BarrelMetaData.items()]:
             self.shuffled_barrel_data[location] = minigame
 
     def UpdateExits(self):
