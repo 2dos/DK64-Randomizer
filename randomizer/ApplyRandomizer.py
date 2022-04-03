@@ -2,7 +2,6 @@
 import codecs
 import json
 import pickle
-import random
 
 import js
 
@@ -18,6 +17,7 @@ from randomizer.BossRando import randomize_bosses
 from randomizer.BarrelRando import randomize_barrels
 from randomizer.BananaPortRando import randomize_bananaport
 from randomizer.EnemyRando import randomize_enemies
+from randomizer.Hash import get_hash_images
 
 # from randomizer.Spoiler import Spoiler
 from randomizer.Settings import Settings
@@ -221,14 +221,15 @@ def patching_response(responded_data):
     randomize_enemies(spoiler)
 
     # Apply Hash
-    hash_images = [random.randint(0, 9) for i in range(5)]
     order = 0
-    for count in hash_images:
+    for count in spoiler.settings.seed_hash:
         ROM().seek(sav + 0x11A + order)
         ROM().write(count)
         order += 1
 
     ProgressBar().update_progress(10, "Seed Generated.")
+    loaded_hash = get_hash_images()
+    # js.document.getElementById("test").src = "data:image/jpeg;base64," + loaded_hash[0]
     if spoiler.settings.generate_spoilerlog is True:
         js.document.getElementById("nav-settings-tab").style.display = ""
         js.document.getElementById("spoiler_log_block").style.display = ""
