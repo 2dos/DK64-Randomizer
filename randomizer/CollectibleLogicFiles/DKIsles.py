@@ -9,13 +9,7 @@ from randomizer.LogicClasses import Collectible
 
 LogicRegions = {
     Regions.IslesMain: [
-        Collectible(Collectibles.coin, Kongs.donkey, lambda l: l.isdonkey, [(1, 2, 3), (1, 2, 3), (1, 2, 3), ], 3),
-        Collectible(Collectibles.coin, Kongs.any, lambda l: l.shockwave, [(1, 2, 3), ]),
-        # Testing
-        Collectible(Collectibles.coin, Kongs.donkey, lambda l: True, [(1, 2, 3)], 170),
-        Collectible(Collectibles.coin, Kongs.diddy, lambda l: True, [(1, 2, 3)], 170),
-        Collectible(Collectibles.coin, Kongs.lanky, lambda l: True, [(1, 2, 3)], 170),
-        Collectible(Collectibles.coin, Kongs.tiny, lambda l: True, [(1, 2, 3)], 170),
-        Collectible(Collectibles.coin, Kongs.chunky, lambda l: True, [(1, 2, 3)], 170),
+        Collectible(Collectibles.coin, Kongs.donkey, lambda l: l.isdonkey, None, 3),  # in TG
+        Collectible(Collectibles.coin, Kongs.any, lambda l: l.shockwave, None, 4),  # 2 in TG, 1 under caves rock, 1 in Klumsy
     ],
 }

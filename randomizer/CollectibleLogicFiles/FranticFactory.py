@@ -12,8 +12,14 @@ LogicRegions = {
         Collectible(Collectibles.banana, Kongs.donkey, lambda l: True, None, 5),  # First tunnel
         Collectible(Collectibles.bunch, Kongs.lanky, lambda l: True, None, 1),  # W2
         Collectible(Collectibles.bunch, Kongs.chunky, lambda l: True, None, 1),  # W1
-        Collectible(Collectibles.balloon, Kongs.chunky, lambda l: l.pineapple, None, 1)  # Around hatch
+        Collectible(Collectibles.balloon, Kongs.chunky, lambda l: l.pineapple, None, 1),  # Around hatch
 
+        # Testing Coin access
+        Collectible(Collectibles.coin, Kongs.donkey, lambda l: True, None, 15),
+        Collectible(Collectibles.coin, Kongs.diddy, lambda l: True, None, 15),
+        Collectible(Collectibles.coin, Kongs.lanky, lambda l: True, None, 15),
+        Collectible(Collectibles.coin, Kongs.tiny, lambda l: True, None, 15),
+        Collectible(Collectibles.coin, Kongs.chunky, lambda l: True, None, 15),
     ],
     Regions.Testing: [
         Collectible(Collectibles.banana, Kongs.donkey, lambda l: True, None, 5),  # Path to Numbers game

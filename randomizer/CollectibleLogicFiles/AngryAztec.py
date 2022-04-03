@@ -17,6 +17,13 @@ LogicRegions = {
         Collectible(Collectibles.banana, Kongs.lanky, lambda l: True, None, 5),
         Collectible(Collectibles.bunch, Kongs.chunky, lambda l: l.pineapple, None, 4),
         Collectible(Collectibles.banana, Kongs.chunky, lambda l: True, None, 5),
+
+        # Testing Coin access
+        Collectible(Collectibles.coin, Kongs.donkey, lambda l: True, None, 15),
+        Collectible(Collectibles.coin, Kongs.diddy, lambda l: True, None, 15),
+        Collectible(Collectibles.coin, Kongs.lanky, lambda l: True, None, 15),
+        Collectible(Collectibles.coin, Kongs.tiny, lambda l: True, None, 15),
+        Collectible(Collectibles.coin, Kongs.chunky, lambda l: True, None, 15),
     ],
     Regions.TempleStart: [
         Collectible(Collectibles.bunch, Kongs.diddy, lambda l: l.Slam, None, 3),

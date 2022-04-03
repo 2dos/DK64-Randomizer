@@ -15,8 +15,14 @@ LogicRegions = {
         Collectible(Collectibles.bunch, Kongs.diddy, lambda l: l.jetpack, None, 1),  # On cloud at the top
         Collectible(Collectibles.balloon, Kongs.diddy, lambda l: l.peanut, None, 1),  # Above W1
         Collectible(Collectibles.banana, Kongs.tiny, lambda l: True, None, 45),  # Path from W2 to W5
-        Collectible(Collectibles.bunch, Kongs.tiny, lambda l: True, None, 1)  # W5
+        Collectible(Collectibles.bunch, Kongs.tiny, lambda l: True, None, 1),  # W5
 
+        # Testing Coin access
+        Collectible(Collectibles.coin, Kongs.donkey, lambda l: True, None, 15),
+        Collectible(Collectibles.coin, Kongs.diddy, lambda l: True, None, 15),
+        Collectible(Collectibles.coin, Kongs.lanky, lambda l: True, None, 15),
+        Collectible(Collectibles.coin, Kongs.tiny, lambda l: True, None, 15),
+        Collectible(Collectibles.coin, Kongs.chunky, lambda l: True, None, 15),
     ],
     Regions.CastleBaboonBlast: [
 

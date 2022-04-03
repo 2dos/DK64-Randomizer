@@ -32,6 +32,21 @@ def PlaceConstants(settings):
     LocationList[Locations.HelmChunky1].PlaceConstantItem(Items.HelmChunky1)
     LocationList[Locations.HelmChunky2].PlaceConstantItem(Items.HelmChunky2)
     # Settings-dependent locations
+    if settings.shuffle_items != "all":
+        if settings.shuffle_items == "moves":
+            moveLocations = []
+            moveLocations.extend(DonkeyMoveLocations)
+            moveLocations.extend(DiddyMoveLocations)
+            moveLocations.extend(LankyMoveLocations)
+            moveLocations.extend(TinyMoveLocations)
+            moveLocations.extend(ChunkyMoveLocations)
+            moveLocations.extend(SharedMoveLocations)
+            locations = [x for x in LocationList if x not in moveLocations]
+            for location in locations:
+                LocationList[location].PlaceDefaultItem()
+        else:
+            for location in LocationList:
+                LocationList[location].PlaceDefaultItem()
     if settings.training_barrels == "normal":
         LocationList[Locations.IslesVinesTrainingBarrel].PlaceConstantItem(Items.Vines)
         LocationList[Locations.IslesSwimTrainingBarrel].PlaceConstantItem(Items.Swim)
@@ -85,21 +100,6 @@ def PlaceConstants(settings):
         LocationList[Locations.MusicUpgrade2].PlaceConstantItem(Items.NoItem)
     if settings.unlock_fairy_shockwave:
         LocationList[Locations.CameraAndShockwave].PlaceConstantItem(Items.NoItem)
-    if settings.shuffle_items != "all":
-        if settings.shuffle_items == "moves":
-            moveLocations = []
-            moveLocations.extend(DonkeyMoveLocations)
-            moveLocations.extend(DiddyMoveLocations)
-            moveLocations.extend(LankyMoveLocations)
-            moveLocations.extend(TinyMoveLocations)
-            moveLocations.extend(ChunkyMoveLocations)
-            moveLocations.extend(SharedMoveLocations)
-            locations = [x for x in LocationList if x not in moveLocations]
-            for location in locations:
-                LocationList[location].PlaceDefaultItem()
-        else:
-            for location in LocationList:
-                LocationList[location].PlaceDefaultItem()
 
 
 def AllItems(settings):
