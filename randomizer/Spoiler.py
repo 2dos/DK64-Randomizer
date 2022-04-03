@@ -264,7 +264,7 @@ class Spoiler:
             # else:
             #     self.location_data[id] = Items.NoItem
 
-    def UpdatePlaythrough(self, locations, playthroughLocations, playthroughCollectibles):
+    def UpdatePlaythrough(self, locations, playthroughLocations):
         """Write playthrough as a list of dicts of location/item pairs."""
         self.playthrough = {}
         i = 0
@@ -273,7 +273,6 @@ class Spoiler:
             for locationId in sphere:
                 location = locations[locationId]
                 newSphere[location.name] = ItemList[location.item].name
-            newSphere["Total Coins"] = playthroughCollectibles[i]
             self.playthrough[i] = newSphere
             i += 1
 

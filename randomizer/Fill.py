@@ -50,7 +50,6 @@ def GetAccessibleLocations(settings, ownedItems, searchType=SearchMode.GetReacha
     accessible = []
     newLocations = []
     playthroughLocations = []
-    playthroughCollectibles = []
     eventAdded = True
     # Continue doing searches until nothing new is found
     while len(newLocations) > 0 or eventAdded:
@@ -77,7 +76,6 @@ def GetAccessibleLocations(settings, ownedItems, searchType=SearchMode.GetReacha
                     return True
         if len(sphere) > 0:
             playthroughLocations.append(sphere)
-            playthroughCollectibles.append(LogicVariables.Coins.copy())
             if LocationList[sphere[0]].item == Items.BananaHoard:
                 break
         eventAdded = False
@@ -164,7 +162,7 @@ def GetAccessibleLocations(settings, ownedItems, searchType=SearchMode.GetReacha
         # If the search has completed and banana hoard has not been found, game is unbeatable
         return False
     elif searchType == SearchMode.GeneratePlaythrough:
-        return playthroughLocations, playthroughCollectibles
+        return playthroughLocations
     elif searchType == SearchMode.CheckAllReachable:
         return len(accessible) == len(LocationList)
     elif searchType == SearchMode.GetUnreachable:
@@ -187,7 +185,7 @@ def Reset():
     Logic.ResetCollectibleRegions()
 
 
-def ParePlaythrough(settings, PlaythroughLocations, PlaythroughCollectibles):
+def ParePlaythrough(settings, PlaythroughLocations):
     """Pares playthrough down to only the essential elements."""
     locationsToAddBack = []
     # Check every location in the list of spheres.
@@ -216,7 +214,6 @@ def ParePlaythrough(settings, PlaythroughLocations, PlaythroughCollectibles):
         sphere = PlaythroughLocations[i]
         if len(sphere) == 0:
             PlaythroughLocations.remove(sphere)
-            PlaythroughCollectibles.pop(i)
 
     # Re-place those items which were delayed earlier.
     for locationId in locationsToAddBack:
@@ -408,11 +405,11 @@ def Fill(spoiler):
                 raise Ex.GameNotBeatableException("Game unbeatable after placing all items.")
             # Generate and display the playthrough
             Reset()
-            (PlaythroughLocations, PlaythroughCollectibles) = GetAccessibleLocations(spoiler.settings, [], SearchMode.GeneratePlaythrough)
-            ParePlaythrough(spoiler.settings, PlaythroughLocations, PlaythroughCollectibles)
+            PlaythroughLocations = GetAccessibleLocations(spoiler.settings, [], SearchMode.GeneratePlaythrough)
+            ParePlaythrough(spoiler.settings, PlaythroughLocations)
             # Write data to spoiler and return
             spoiler.UpdateLocations(LocationList)
-            spoiler.UpdatePlaythrough(LocationList, PlaythroughLocations, PlaythroughCollectibles)
+            spoiler.UpdatePlaythrough(LocationList, PlaythroughLocations)
             return spoiler
         except Ex.FillException as ex:
             if retries == 4:
@@ -529,11 +526,11 @@ def ShuffleMoves(spoiler):
                 raise Ex.GameNotBeatableException("Game unbeatable after placing all items.")
             # Generate and display the playthrough
             Reset()
-            (PlaythroughLocations, PlaythroughCollectibles) = GetAccessibleLocations(spoiler.settings, [], SearchMode.GeneratePlaythrough)
-            ParePlaythrough(spoiler.settings, PlaythroughLocations, PlaythroughCollectibles)
+            PlaythroughLocations = GetAccessibleLocations(spoiler.settings, [], SearchMode.GeneratePlaythrough)
+            ParePlaythrough(spoiler.settings, PlaythroughLocations)
             # Write data to spoiler and return
             spoiler.UpdateLocations(LocationList)
-            spoiler.UpdatePlaythrough(LocationList, PlaythroughLocations, PlaythroughCollectibles)
+            spoiler.UpdatePlaythrough(LocationList, PlaythroughLocations)
             return spoiler
         except Ex.FillException as ex:
             if retries == 20:
