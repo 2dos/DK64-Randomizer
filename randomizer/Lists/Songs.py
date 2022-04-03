@@ -17,6 +17,7 @@ class Song:
         self.name = name
         self.type = type
         self.group = group
+        self.memory = memory
 
 
 class SongGroup(IntEnum):
