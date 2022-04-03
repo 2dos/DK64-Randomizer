@@ -1,6 +1,5 @@
 """Module used to distribute items randomly."""
 import random
-from re import search
 
 import randomizer.ItemPool as ItemPool
 import randomizer.Lists.Exceptions as Ex

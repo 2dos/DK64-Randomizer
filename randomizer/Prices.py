@@ -216,32 +216,6 @@ def KongCanBuy(location, coins, settings, kong, slamLevel, ammoBelts, instUpgrad
     else:
         return False
 
-    # TODO: Remove the below once new price logic is done
-    # Get the max coins this kong can possibly spend
-    max = GetMaxForKong(settings, kong)
-    # If locations can be bought in any order, just check greater than the max
-    if settings.shuffle_items != "none":
-        return coins[kong] >= max
-    # Else, can subtract future entries in the item's sequence from the price
-    # Find which sequence this location belongs to
-    sequence = None
-    for seq in Sequences:
-        # If given location is in this sequence, or in the first element of the sequence if it's a list
-        if location in seq or (isinstance(seq[0], list) and location in seq[0]):
-            sequence = seq
-            break
-    # Now set the initial price as the max, but subtract amount from future entries in sequence
-    price = max
-    i = len(sequence) - 1
-    # Don't check first item in sequence since there's no reason to
-    while i > 0:
-        if sequence[i] == location:
-            break
-        price -= settings.prices[LocationList[sequence[i]].item]
-        i -= 1
-    # Now that the final price has been determined, check if kong can afford it
-    return coins[kong] >= price
-
 
 def AnyKongCanBuy(location, coins, settings, slamLevel, ammoBelts, instUpgrades):
     """Check if any kong can logically purchase this location."""
