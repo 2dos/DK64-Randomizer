@@ -5,6 +5,7 @@ from typing import OrderedDict
 
 from randomizer import Logic
 from randomizer.Enums.Events import Events
+from randomizer.Enums.Items import Items
 from randomizer.Enums.Levels import Levels
 from randomizer.Enums.Locations import Locations
 from randomizer.Enums.Kongs import Kongs
@@ -96,24 +97,19 @@ class Spoiler:
 
         if self.settings.random_prices != "vanilla":
             prices = OrderedDict()
-            for location, price in self.settings.prices.items():
-                if location == Locations.SuperSimianSlam:
-                    movename = "Super Simian Slam"
-                elif location == Locations.SuperDuperSimianSlam:
-                    movename = "Super Duper Simian Slam"
-                elif location == Locations.AmmoBelt1:
-                    movename = "Ammo Belt 1"
-                elif location == Locations.AmmoBelt2:
-                    movename = "Ammo Belt 2"
-                elif location == Locations.MusicUpgrade1:
-                    movename = "Music Upgrade 1"
-                elif location == Locations.MusicUpgrade2:
-                    movename = "Music Upgrade 2"
-                elif location == Locations.ThirdMelon:
-                    movename = "Third Melon"
+            for item, price in self.settings.prices.items():
+                if item == Items.ProgressiveSlam:
+                    prices["Super Simian Slam"] = price[0]
+                    prices["Super Duper Simian Slam"] = price[1]
+                elif item == Items.ProgressiveAmmoBelt:
+                    prices["Ammo Belt 1"] = price[0]
+                    prices["Ammo Belt 2"] = price[1]
+                elif item == Items.ProgressiveInstrumentUpgrade:
+                    prices["Music Upgrade 1"] = price[0]
+                    prices["Third Melon"] = price[1]
+                    prices["Music Upgrade 2"] = price[2]
                 else:
-                    movename = LocationList[location].default.name
-                prices[movename] = price
+                    prices[ItemList[item].name] = price
             humanspoiler["Prices"] = prices
 
         if self.settings.shuffle_loading_zones == "levels":

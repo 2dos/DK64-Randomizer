@@ -107,8 +107,8 @@ LogicRegions = {
         TransitionFront(Regions.MushroomNightExterior, lambda l: True),
         TransitionFront(Regions.GiantMushroomArea, lambda l: True),
         TransitionFront(Regions.MushroomChunkyRoom, lambda l: l.superSlam and l.ischunky, Transitions.ForestExteriorToChunky),
-        TransitionFront(Regions.MushroomLankyZingersRoom, lambda l: l.superSlam and l.islanky, Transitions.ForestExteriorToZingers),
-        TransitionFront(Regions.MushroomLankyMushroomsRoom, lambda l: l.superSlam and l.islanky, Transitions.ForestExteriorToMushrooms),
+        TransitionFront(Regions.MushroomLankyZingersRoom, lambda l: l.handstand and l.superSlam and l.islanky, Transitions.ForestExteriorToZingers),
+        TransitionFront(Regions.MushroomLankyMushroomsRoom, lambda l: l.handstand and l.superSlam and l.islanky, Transitions.ForestExteriorToMushrooms),
         TransitionFront(Regions.ForestBossLobby, lambda l: True),
     ]),
 
