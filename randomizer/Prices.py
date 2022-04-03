@@ -78,7 +78,7 @@ def RandomizePrices(weight):
         if item in ProgressiveMoves.keys():
             prices[item] = []
             for i in range(ProgressiveMoves[item]):
-                prices[item].append(random.normalvariate(avg, stddev))
+                prices[item].append(round(random.normalvariate(avg, stddev)))
         else:
             prices[item] = round(random.normalvariate(avg, stddev))
     return prices
