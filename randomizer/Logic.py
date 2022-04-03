@@ -394,9 +394,9 @@ class LogicVarHolder:
         bossFight = self.settings.boss_maps[level]
         hasRequiredMoves = True
         if bossFight == Maps.FactoryBoss and requiredKong == Kongs.tiny:
-            hasRequiredMoves == self.twirl
+            hasRequiredMoves = self.twirl
         elif bossFight == Maps.FungiBoss:
-            hasRequiredMoves == self.hunkyChunky
+            hasRequiredMoves = self.hunkyChunky
         return self.IsKong(requiredKong) and hasRequiredMoves
 
 
