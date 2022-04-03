@@ -504,7 +504,7 @@ START_HOOK:
 		ADDIU 		t0, r0, 0xC
 		SB 			t0, 0x154 (t6)
 		SB 			r0, 0x155 (t6)
-		ADDIU 		t0, r0, 1
+		ADDIU 		t0, r0, 3
 		SB 			t0, 0x185 (t6)
 
 		destroyAllBarrelsCode_Helm:
