@@ -24,6 +24,7 @@ from randomizer.Enums.Kongs import Kongs
 from randomizer.Enums.Levels import Levels
 from randomizer.Enums.Locations import Locations
 from randomizer.Lists.Location import Location, LocationList
+from randomizer.MapsAndExits import Maps
 from randomizer.Prices import CanBuy, GetPriceOfMoveItem
 
 
@@ -386,6 +387,17 @@ class LogicVarHolder:
             if keyRequired not in self.Events:
                 return False
         return True
+
+    def IsBossBeatable(self, level):
+        """Return true if the boss for a given level is beatable according to boss location rando and boss kong rando."""
+        requiredKong = self.settings.boss_kongs[level]
+        bossFight = self.settings.boss_maps[level]
+        hasRequiredMoves = True
+        if bossFight == Maps.FactoryBoss and requiredKong == Kongs.tiny:
+            hasRequiredMoves = self.twirl
+        elif bossFight == Maps.FungiBoss:
+            hasRequiredMoves = self.hunkyChunky
+        return self.IsKong(requiredKong) and hasRequiredMoves
 
 
 LogicVariables = LogicVarHolder()
