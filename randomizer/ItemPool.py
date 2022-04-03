@@ -3,23 +3,41 @@ import itertools
 
 from randomizer.Enums.Items import Items
 from randomizer.Enums.Locations import Locations
+from randomizer.Enums.Transitions import Transitions
 from randomizer.Lists.Item import ItemFromKong
+from randomizer.Lists.LevelInfo import LevelInfoList
 from randomizer.Lists.Location import LocationList
+from randomizer.Lists.ShufflableExit import ShufflableExits
 
 
 def PlaceConstants(settings):
     """Place items which are to be put in a hard-coded location."""
     # Banana Hoard: Pseudo-item used to represent game completion by defeating K. Rool
     LocationList[Locations.BananaHoard].PlaceConstantItem(Items.BananaHoard)
-    # Keys kept at key locations so boss completion requires
-    LocationList[Locations.JapesKey].PlaceConstantItem(Items.JungleJapesKey)
-    LocationList[Locations.AztecKey].PlaceConstantItem(Items.AngryAztecKey)
-    LocationList[Locations.FactoryKey].PlaceConstantItem(Items.FranticFactoryKey)
-    LocationList[Locations.GalleonKey].PlaceConstantItem(Items.GloomyGalleonKey)
-    LocationList[Locations.ForestKey].PlaceConstantItem(Items.FungiForestKey)
-    LocationList[Locations.CavesKey].PlaceConstantItem(Items.CrystalCavesKey)
-    LocationList[Locations.CastleKey].PlaceConstantItem(Items.CreepyCastleKey)
+    # Helm key is always vanilla
     LocationList[Locations.HelmKey].PlaceConstantItem(Items.HideoutHelmKey)
+    # Handle key placements
+    if settings.shuffle_loading_zones != "levels":
+        # Keys kept at key locations so boss completion required
+        LocationList[Locations.JapesKey].PlaceConstantItem(Items.JungleJapesKey)
+        LocationList[Locations.AztecKey].PlaceConstantItem(Items.AngryAztecKey)
+        LocationList[Locations.FactoryKey].PlaceConstantItem(Items.FranticFactoryKey)
+        LocationList[Locations.GalleonKey].PlaceConstantItem(Items.GloomyGalleonKey)
+        LocationList[Locations.ForestKey].PlaceConstantItem(Items.FungiForestKey)
+        LocationList[Locations.CavesKey].PlaceConstantItem(Items.CrystalCavesKey)
+        LocationList[Locations.CastleKey].PlaceConstantItem(Items.CreepyCastleKey)
+    else:
+        # Place keys in the lobbies they normally belong in
+        # Ex. Whatever level is in the Japes lobby entrance will always have the Japes key
+        for level in LevelInfoList.values():
+            # If level exit isn't shuffled, use vanilla key
+            if not ShufflableExits[level.TransitionTo].shuffled:
+                LocationList[level.KeyLocation].PlaceConstantItem(level.KeyItem)
+            else:
+                # Find the transition this exit is attached to, and use that to get the proper location to place this key
+                dest = ShufflableExits[level.TransitionTo].back.reverse
+                shuffledTo = [x for x in LevelInfoList.values() if x.TransitionsFrom == dest][0]
+                LocationList[shuffledTo.KeyLocation].PlaceConstantItem(level.KeyItem)
     # Helm locations (which are functionally events)
     LocationList[Locations.HelmDonkey1].PlaceConstantItem(Items.HelmDonkey1)
     LocationList[Locations.HelmDonkey2].PlaceConstantItem(Items.HelmDonkey2)
