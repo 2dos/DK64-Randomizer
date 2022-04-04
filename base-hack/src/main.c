@@ -14,9 +14,6 @@ static short past_crystals = 0;
 
 void giveCollectables(void) {
 	CollectableBase.StandardAmmo = 50 * MovesBase[0].ammo_belt;
-	if (MovesBase[0].weapon_bitfield & 2) {
-		CollectableBase.HomingAmmo = 25 * MovesBase[0].ammo_belt;
-	}
 	CollectableBase.Oranges = 10;
 	CollectableBase.Crystals = 1500;
 	CollectableBase.Film = 5;
