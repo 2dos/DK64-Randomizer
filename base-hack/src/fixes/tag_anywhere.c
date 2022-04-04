@@ -8,6 +8,7 @@ static const unsigned char banned_maps[] = {
     3, // K. Rool Barrel: Lanky's Maze
     5, // Cranky's Lab
     6, // Jungle Japes: Minecart
+    8, // Jungle Japes: Army Dillo
     9, // Jetpac
     10, // Kremling Kosh! (very easy)
     14, // Angry Aztec: Beetle Race // Note: Softlock at the end if enabled?
@@ -63,6 +64,7 @@ static const unsigned char banned_maps[] = {
     148, // Big Bug Bash! (easy)
     149, // Big Bug Bash! (normal)
     150, // Big Bug Bash! (hard)
+    154, // Frantic Factory: Mad Jack
     165, // K. Rool Barrel: Diddy's Kremling Game
     185, // Enguarde Arena // Note: Handled by character check
     186, // Creepy Castle: Car Race
@@ -72,6 +74,8 @@ static const unsigned char banned_maps[] = {
     190, // Kong Battle: Arena 2 // TODO: Would be really cool to get multiplayer working, currently just voids you out when activated
     191, // Rambi Arena // Note: Handled by character check
     192, // Kong Battle: Arena 3 // TODO: Would be really cool to get multiplayer working, currently just voids you out when activated
+    196, // Crystal Caves: Army Dillo
+    197, // Angry Aztec: Dogadon
     198, // Training Grounds (End Sequence) // Note: Handled by cutscene check
     199, // Creepy Castle: King Kut Out // Note: Doesn't break the kong order but since this fight is explicitly about tagging we might as well disable
     201, // K. Rool Barrel: Diddy's Rocketbarrel Game
@@ -177,6 +181,9 @@ void tagAnywhere(int prev_crystals) {
                 return;
             }
             if (CutsceneActive) {
+                return;
+            }
+            if (TBVoidByte & 3) {
                 return;
             }
 			if (Character < TAG_ANYWHERE_KONG_LIMIT) {

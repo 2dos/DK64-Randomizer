@@ -155,8 +155,8 @@ def randomize_enemies(spoiler: Spoiler):
             Enemies.Pufftup,
         ],
     }
-    if spoiler.settings.enemy_rando:  # Add Kasplat Rando to this
-        for cont_map_id in valid_maps:
+    if spoiler.settings.enemy_rando or spoiler.settings.kasplat:
+        for cont_map_id in range(216):
             cont_map_spawner_address = js.pointer_addresses[16]["entries"][cont_map_id]["pointing_to"]
             vanilla_spawners = []
             ROM().seek(cont_map_spawner_address)
@@ -188,24 +188,27 @@ def randomize_enemies(spoiler: Spoiler):
                 extra_count = int.from_bytes(ROM().readBytes(1), "big")
                 offset += 0x16 + (extra_count * 2)
                 vanilla_spawners.append({"enemy_id": enemy_id, "offset": init_offset})
-            # Comment out kasplat rando until kasplat rando is implemented
-            # for kasplat in cont_map["kasplat_swaps"]:
-            #     source_kasplat_type = kasplat["vanilla_location"] + 0x3D
-            #     replacement_kasplat_type = kasplat["replace_with"] + 0x3D
-            #     for spawner in vanilla_spawners:
-            #         if spawner["enemy_id"] == source_kasplat_type:
-            #             ROM().seek(cont_map_spawner_address + spawner["offset"])
-            #             ROM().writeMultipleBytes(replacement_kasplat_type,1)
-            for enemy_class in enemy_swaps:
-                arr = enemy_swaps[enemy_class]
-                class_types = enemy_classes[enemy_class]
-                sub_index = 0
-                for spawner in vanilla_spawners:
-                    if spawner["enemy_id"] in class_types:
-                        new_enemy_id = arr[sub_index]
-                        ROM().seek(cont_map_spawner_address + spawner["offset"])
-                        ROM().writeMultipleBytes(new_enemy_id, 1)
-                        sub_index += 1
-                        if new_enemy_id == Enemies.EvilTomato or new_enemy_id == Enemies.Klobber or new_enemy_id == Enemies.Kaboom or new_enemy_id == Enemies.MushroomMan:
-                            ROM().seek(cont_map_spawner_address + spawner["offset"] + 0x10)
-                            ROM().writeMultipleBytes(4, 1)
+            if spoiler.settings.kasplat:
+                for cont_map in spoiler.enemy_replacements:
+                    if cont_map["container_map"] == cont_map_id:
+                        for kasplat in cont_map["kasplat_swaps"]:
+                            source_kasplat_type = kasplat["vanilla_location"] + Enemies.KasplatDK
+                            replacement_kasplat_type = kasplat["replace_with"] + Enemies.KasplatDK
+                            for spawner in vanilla_spawners:
+                                if spawner["enemy_id"] == source_kasplat_type:
+                                    ROM().seek(cont_map_spawner_address + spawner["offset"])
+                                    ROM().writeMultipleBytes(replacement_kasplat_type, 1)
+            if spoiler.settings.enemy_rando and cont_map_id in valid_maps:
+                for enemy_class in enemy_swaps:
+                    arr = enemy_swaps[enemy_class]
+                    class_types = enemy_classes[enemy_class]
+                    sub_index = 0
+                    for spawner in vanilla_spawners:
+                        if spawner["enemy_id"] in class_types:
+                            new_enemy_id = arr[sub_index]
+                            ROM().seek(cont_map_spawner_address + spawner["offset"])
+                            ROM().writeMultipleBytes(new_enemy_id, 1)
+                            sub_index += 1
+                            if new_enemy_id == Enemies.EvilTomato or new_enemy_id == Enemies.Klobber or new_enemy_id == Enemies.Kaboom or new_enemy_id == Enemies.MushroomMan:
+                                ROM().seek(cont_map_spawner_address + spawner["offset"] + 0x10)
+                                ROM().writeMultipleBytes(4, 1)

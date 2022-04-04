@@ -162,6 +162,9 @@ TagPreventHook:
 BonusAutocompleteHook:
 	J 	destroyAllBarrelsCode
 	NOP
+initHook:
+	J 	initCode
+	NOP
 
 loadExtraHooks:
 	LUI t3, hi(NinWarpHook)
@@ -373,6 +376,12 @@ loadExtraHooks:
 	LUI t4, 0x8068
 	SW t3, 0x0D10 (t4) // Store Hook
 	SW r0, 0x0D14 (t4) // Store NOP
+
+	LUI t3, hi(initHook)
+	LW t3, lo(initHook) (t3)
+	LUI t4, 0x8060
+	SW t3, 0xBDEC (t4) // Store Hook
+	SW r0, 0xBDF0 (t4) // Store NOP
 
 	JR ra
 	NOP

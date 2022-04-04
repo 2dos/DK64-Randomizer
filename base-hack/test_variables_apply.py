@@ -37,6 +37,7 @@ set_variables = {
     "warp_to_isles_enabled": 1,
     "lobbies_open_bitfield": 0xFF,
     "perma_lose_kongs": 0,
+    "jetpac_medal_requirement": 1,
     "special_move_prices": [
         [1, 2, 3],
         [4, 5, 6],

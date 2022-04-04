@@ -546,6 +546,7 @@ def Generate_Spoiler(spoiler):
     LogicVariables = LogicVarHolder(spoiler.settings)
     # Handle kasplats
     KasplatShuffle(LogicVariables)
+    spoiler.human_kasplats = {}
     spoiler.UpdateKasplats(LogicVariables.kasplat_map)
     # Handle bonus barrels
     if spoiler.settings.bonus_barrels == "random":

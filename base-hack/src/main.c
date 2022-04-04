@@ -13,7 +13,11 @@ static float current_avg_lag = 0;
 static short past_crystals = 0;
 
 void giveCollectables(void) {
-	CollectableBase.StandardAmmo = 50 * MovesBase[0].ammo_belt;
+	int mult = 1;
+	if (MovesBase[0].ammo_belt > 0) {
+		mult = 2 * MovesBase[0].ammo_belt;
+	}
+	CollectableBase.StandardAmmo = 25 * mult;
 	CollectableBase.Oranges = 10;
 	CollectableBase.Crystals = 1500;
 	CollectableBase.Film = 5;
@@ -21,7 +25,6 @@ void giveCollectables(void) {
 
 void cFuncLoop(void) {
 	DataIsCompressed[18] = 0;
-	initHack();
 	unlockKongs();
 	int crystal_count = CollectableBase.Crystals;
 	tagAnywhere(past_crystals);
@@ -100,6 +103,7 @@ void cFuncLoop(void) {
 };
 
 void earlyFrame(void) {
+	initHack();
 	if (ObjectModel2Timer == 2) {
 		updateProgressive();
 		price_rando();
