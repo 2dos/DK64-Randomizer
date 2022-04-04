@@ -52,7 +52,7 @@ LogicRegions = {
         Collectible(Collectibles.coin, Kongs.donkey, lambda l: True, None, 3),  # By lever
         Collectible(Collectibles.coin, Kongs.diddy, lambda l: True, None, 5),  # Around vent to Chunky room
         Collectible(Collectibles.coin, Kongs.lanky, lambda l: True, None, 5),  # Top of pole to Block Tower room
-        Collectible(Collectibles.coin, Kongs.chunky, lambda l: l.grab, None, 4),  # In hole near Diddy's room
+        Collectible(Collectibles.coin, Kongs.chunky, lambda l: l.grab and l.donkey, None, 4),  # In hole near Diddy's room
     ],
     Regions.FactoryTinyRaceLobby: [
 

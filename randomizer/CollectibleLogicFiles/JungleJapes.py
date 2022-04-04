@@ -41,7 +41,7 @@ LogicRegions = {
         Collectible(Collectibles.coin, Kongs.tiny, lambda l: Events.JapesSpawnW5 in l.Events, None, 5),  # Around W5
         Collectible(Collectibles.coin, Kongs.chunky, lambda l: True, None, 3),  # By DK Portal
         Collectible(Collectibles.coin, Kongs.chunky, lambda l: True, None, 3),  # In river
-        Collectible(Collectibles.coin, Kongs.any, lambda l: l.shockwave and (l.handstand or l.twirl), None, 1),  # Rainbow coin
+        Collectible(Collectibles.coin, Kongs.any, lambda l: l.shockwave and ((l.handstand and l.lanky) or (l.twirl and l.tiny)), None, 1),  # Rainbow coin
     ],
     Regions.JapesBaboonBlast: [
         Collectible(Collectibles.bunch, Kongs.donkey, lambda l: True, None, 2),

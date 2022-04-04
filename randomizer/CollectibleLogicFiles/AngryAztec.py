@@ -22,7 +22,7 @@ LogicRegions = {
         Collectible(Collectibles.coin, Kongs.donkey, lambda l: l.coconut and l.strongKong, None, 3),  # DK BP room
         Collectible(Collectibles.coin, Kongs.any, lambda l: True, None, 1),  # Oasis
         Collectible(Collectibles.coin, Kongs.diddy, lambda l: True, None, 5),  # W2
-        Collectible(Collectibles.coin, Kongs.tiny, lambda l: l.shockwave, None, 4),  # Oasis
+        Collectible(Collectibles.coin, Kongs.tiny, lambda l: True, None, 4),  # Oasis
         Collectible(Collectibles.coin, Kongs.chunky, lambda l: True, None, 4),  # Outside Tiny Temple
     ],
     Regions.TempleStart: [
@@ -60,7 +60,7 @@ LogicRegions = {
         Collectible(Collectibles.bunch, Kongs.diddy, lambda l: True, None, 1),  # Sun Ring
         Collectible(Collectibles.bunch, Kongs.diddy, lambda l: True, None, 1),  # On top llama temple
         Collectible(Collectibles.banana, Kongs.diddy, lambda l: True, None, 4),  # 5DTemple Steps
-        Collectible(Collectibles.balloon, Kongs.diddy, lambda l: Events.AztecDonkeySwitch in l.Events and l.strongKong and l.peanut, None, 1),
+        Collectible(Collectibles.balloon, Kongs.diddy, lambda l: Events.AztecDonkeySwitch in l.Events and l.strongKong and l.peanut and l.donkey, None, 1),
 
         Collectible(Collectibles.banana, Kongs.lanky, lambda l: True, None, 5),  # Snake Road
         Collectible(Collectibles.bunch, Kongs.lanky, lambda l: True, None, 1),  # Cranky
@@ -83,7 +83,7 @@ LogicRegions = {
         Collectible(Collectibles.coin, Kongs.lanky, lambda l: True, None, 3),  # Behind 5DT
         Collectible(Collectibles.coin, Kongs.tiny, lambda l: True, None, 3),  # Around Hunky Chunky barrel
         Collectible(Collectibles.coin, Kongs.tiny, lambda l: True, None, 5),  # W5
-        Collectible(Collectibles.coin, Kongs.chunky, lambda l: Events.AztecDonkeySwitch in l.Events and l.strongKong, None, 4),  # Behind W5
+        Collectible(Collectibles.coin, Kongs.chunky, lambda l: Events.AztecDonkeySwitch in l.Events and l.strongKong and l.donkey, None, 4),  # Behind W5
         Collectible(Collectibles.coin, Kongs.chunky, lambda l: l.vines, None, 4),  # Vines by Snide's
     ],
     Regions.AztecBaboonBlast: [
