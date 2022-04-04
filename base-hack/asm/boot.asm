@@ -1,5 +1,6 @@
 .definelabel dataStart, 0x01FED020
 .definelabel dataRDRAM, 0x807FF800
+.definelabel musicInfo, 0x01FFF000
 
 START:
 	displacedBootCode:
