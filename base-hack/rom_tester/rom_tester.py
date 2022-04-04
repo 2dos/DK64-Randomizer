@@ -222,3 +222,11 @@ for f in files:
             output(f"\tLobbies Auto-opened:")
             for x in range(8):
                 output(f"\t\t{levels[x]} Lobby Entrance: {str(((getValue(fh,0x13C,1) >> x) & 1) != 0)}")
+            output(f"\tPerma-Lose Kongs: {str(getTrueFalse(fh,0x13D,1))}")
+            output(f"\tDisable Boss Kong Check: {str(getTrueFalse(fh,0x13E,1))}")
+            output(f"\tPrevent Tag Spawn: {str(getTrueFalse(fh,0x13F,1))}")
+            jetpac_req = getValue(fh, 0x140, 1)
+            if jetpac_req == 0:
+                output(f"\tJetpac Requirement: Vanilla")
+            else:
+                output(f"\tJetpac Requirement: {jetpac_req} Medals")

@@ -18,6 +18,7 @@ from randomizer.Lists.Minigame import MinigameRequirements, BarrelMetaData
 from randomizer.MapsAndExits import GetExitId, GetMapId, Maps
 from randomizer.Settings import Settings
 from randomizer.ShuffleExits import ShufflableExits
+from randomizer.Lists.KasplatLocations import KasplatLocationData
 
 
 class Spoiler:
@@ -172,6 +173,8 @@ class Spoiler:
             humanspoiler["Shuffled Music Fanfares"] = self.music_fanfare_data
         if self.settings.music_events == "randomized":
             humanspoiler["Shuffled Music Events"] = self.music_event_data
+        if self.settings.kasplat:
+            humanspoiler["Shuffled Kasplats"] = self.human_kasplats
 
         return json.dumps(humanspoiler, indent=4)
 
@@ -182,6 +185,10 @@ class Spoiler:
             location = LocationList[kasplat]
             mapId = location.map
             original = location.kong
+            kongNames = ["DK", "Diddy", "Lanky", "Tiny", "Chunky"]
+            for x in KasplatLocationData:
+                if x.map == mapId and x.location == original:
+                    self.human_kasplats[x.name] = kongNames[kong]
             map = None
             # See if map already exists in enemy_replacements
             for m in self.enemy_replacements:
