@@ -420,5 +420,110 @@ START_HOOK:
 			J 		0x806EFC24
 			NOP
 
+	cannonCheckCode:
+		JAL 		spawnCannonWrapper
+		NOP
+		BNEZ 		v0, cannonCheckCode_preventSpawn
+		LW 			t9, 0x0 (s1)
+		J 			0x8067B69C
+		ADDIU 		t8, r0, 0x14
+
+		cannonCheckCode_preventSpawn:
+			J 		0x8067B6CC
+			NOP
+
+	permaLossTagCheck:
+		JAL 		determineKongUnlock
+		LW 			a0, 0x58 (t5)
+		J 			0x80682F48
+		NOP
+
+	permaLossTagSet:
+		JAL	 		unlockKongPermaLoss
+		LW 			a0, 0x58 (t9)
+		J 			0x80683640
+		NOP
+
+	permaLossTagDisplayCheck:
+		JAL 		determineKongUnlock
+		OR 			a1, s0, r0
+		J 			0x806840e0
+		NOP
+
+	disableBossKongCheckCode:
+		LUI 		t7, hi(disableBossKongCheck)
+		LBU 		t7, lo(disableBossKongCheck) (t7)
+		BNEZ 		t7, disableBossKongCheckCode_disabled
+		ADDIU 		v0, r0, 1
+		SLTIU 		v0, v0, 1
+		
+		disableBossKongCheckCode_disabled:
+			J 		0x8064EBFC
+			ANDI 	t7, v0, 0xFF
+
+	tagPreventCode:
+		LUI 		a1, hi(preventTagSpawn)
+		LBU 		a1, lo(preventTagSpawn) (a1)
+		BEQZ 		a1, tagPreventCode_Vanilla
+		NOP
+		LH 			a1, 0x0 (s1)
+		ADDIU 		a1, a1, 0x10
+		ADDIU 		t8, r0, 98
+		BEQ 		a1, t8, tagPreventCode_Prevent
+		NOP
+		ADDIU 		t8, r0, 136
+		BEQ 		a1, t8, tagPreventCode_Prevent
+		NOP
+
+		tagPreventCode_Vanilla:
+			LH 		a1, 0x0 (s1)
+			J 		0x8068953C
+			SUBU 	t3, t3, r0
+
+		tagPreventCode_Prevent:
+			J 		0x8068968C
+			NOP
+
+	destroyAllBarrelsCode:
+		LW 			t6, 0x0 (s1)
+		SB 			v0, 0x131 (t6)
+		LUI 		a0, hi(Gamemode)
+		LBU 		a0, lo(Gamemode) (a0)
+		ADDIU 		t0, r0, 3
+		BEQ 		a0, t0, destroyAllBarrelsCode_Finish
+		NOP
+		LUI 		a0, hi(bonusAutocomplete)
+		LBU 		a0, lo(bonusAutocomplete) (a0)
+		ANDI 		t0, a0, 1
+		BEQZ 		t0, destroyAllBarrelsCode_Helm
+		NOP
+		LW 			t0, 0x58 (t6)
+		ADDIU 		v0, r0, 0x1C
+		BNE 		t0, v0, destroyAllBarrelsCode_Helm
+		NOP
+		ADDIU 		t0, r0, 0xC
+		SB 			t0, 0x154 (t6)
+		SB 			r0, 0x155 (t6)
+		ADDIU 		t0, r0, 1
+		SB 			t0, 0x185 (t6)
+
+		destroyAllBarrelsCode_Helm:
+		ANDI 		t0, a0, 2
+		BEQZ  		t0, destroyAllBarrelsCode_Finish
+		NOP
+		LW 			t0, 0x58 (t6)
+		ADDIU 		v0, r0, 0x6B
+		BNE 		t0, v0, destroyAllBarrelsCode_Finish
+		NOP
+		ADDIU 		t0, r0, 0xC
+		SB 			t0, 0x154 (t6)
+		SB 			r0, 0x155 (t6)
+		ADDIU 		t0, r0, 3
+		SB 			t0, 0x185 (t6)
+
+		destroyAllBarrelsCode_Finish:
+		J 			0x80680D18
+		NOP
+
 .align 0x10
 END_HOOK:

@@ -36,6 +36,13 @@ void cFuncLoop(void) {
 	cancelMoveSoftlock();
 	callParentMapFilter();
 	recolorKongControl();
+	spawnCannonWrapper();
+	if (Rando.perma_lose_kongs) {
+		preventBossCheese();
+		kong_has_died();
+		forceBossKong();
+	}
+	adjustGalleonShopHeights();
 	if (Rando.quality_of_life) {
 		// DKTVKong = 0;
 		// if (CurrentMap == NINTENDO_LOGO) {
@@ -64,6 +71,9 @@ void cFuncLoop(void) {
 				StoredSettings.file_extra[(int)FileIndex].location_ug1_purchased = 0;
 				StoredSettings.file_extra[(int)FileIndex].location_mln_purchased = 0;
 				SaveToGlobal();
+			} else {
+				// Used File
+				determineStartKong_PermaLossMode();
 			}
 		}
 	}
@@ -97,7 +107,6 @@ void earlyFrame(void) {
 	}
 	write_kutoutorder();
 	remove_blockers();
-	resolve_barrels();
 	determine_krool_order();
 	disable_krool_health_refills();
 	pre_turn_keys();

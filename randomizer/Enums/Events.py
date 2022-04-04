@@ -8,7 +8,15 @@ class Events(IntEnum):
     # DK Isles events
     IslesDiddyBarrelSpawn = auto()
     IslesChunkyBarrelSpawn = auto()
-    KeysTurnIn = auto()
+    KLumsyTalkedTo = auto()
+    JapesKeyTurnedIn = auto()
+    AztecKeyTurnedIn = auto()
+    FactoryKeyTurnedIn = auto()
+    GalleonKeyTurnedIn = auto()
+    ForestKeyTurnedIn = auto()
+    CavesKeyTurnedIn = auto()
+    CastleKeyTurnedIn = auto()
+    HelmKeyTurnedIn = auto()
 
     # Jungle Japes events
     Rambi = auto()

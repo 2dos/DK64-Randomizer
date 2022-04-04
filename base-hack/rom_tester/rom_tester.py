@@ -219,3 +219,6 @@ for f in files:
                 if x != 5:
                     output(f"\t\t{kongs[x]} RGB: {hex(getValue(fh,rgb_offset,3))}")
                     rgb_offset += 3
+            output(f"\tLobbies Auto-opened:")
+            for x in range(8):
+                output(f"\t\t{levels[x]} Lobby Entrance: {str(((getValue(fh,0x13C,1) >> x) & 1) != 0)}")
