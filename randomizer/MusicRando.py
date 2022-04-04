@@ -44,7 +44,7 @@ def randomize_music(spoiler: Spoiler):
             # ShuffleMusicWithSizeCheck(spoiler, song_list)
             shuffled_music = song_list.copy()
             random.shuffle(shuffled_music)
-            shuffle_music(song_list, shuffled_music)
+            shuffle_music(spoiler, song_list, shuffled_music)
         # If the user was a poor sap and selected chaos put DK rap for everything
         elif settings.music_bgm == "chaos":
             # Find the DK rap in the list
@@ -68,6 +68,9 @@ def randomize_music(spoiler: Spoiler):
                 new_bytes = ROM().readBytes(4)
                 ROM().seek(uncompressed_data_table["pointing_to"] + (4 * song_list.index(rap)))
                 ROM().writeBytes(new_bytes)
+                # Update data
+                ROM().seek(0x1FFF000 + (song["index"] * 2))
+                ROM().writeMultipleBytes(song_data[rap["index"]].memory, 2)
         elif settings.music_bgm == "uploaded":
             # Generate the list of BGM songs
             song_list = []
@@ -97,7 +100,7 @@ def randomize_music(spoiler: Spoiler):
                 check_song()
             duped_song_list = song_list.copy()
             random.shuffle(duped_song_list)
-            shuffle_music(song_list, duped_song_list)
+            shuffle_music(spoiler, song_list, duped_song_list)
     # If the user wants to randomize fanfares
     if settings.music_fanfares != "default":
         # Check if our setting is just rando
@@ -111,7 +114,7 @@ def randomize_music(spoiler: Spoiler):
             # ShuffleMusicWithSizeCheck(spoiler, fanfare_list)
             shuffled_music = fanfare_list.copy()
             random.shuffle(shuffled_music)
-            shuffle_music(fanfare_list, shuffled_music)
+            shuffle_music(spoiler, fanfare_list, shuffled_music)
         elif settings.music_fanfares == "uploaded":
             # Generate the list of fanfares songs
             song_list = []
@@ -141,7 +144,7 @@ def randomize_music(spoiler: Spoiler):
                 check_song()
             duped_song_list = song_list.copy()
             random.shuffle(duped_song_list)
-            shuffle_music(song_list, duped_song_list)
+            shuffle_music(spoiler, song_list, duped_song_list)
 
     # If the user wants to randomize events
     if settings.music_events != "default":
@@ -155,9 +158,9 @@ def randomize_music(spoiler: Spoiler):
 
             # Shuffle the event list
             # ShuffleMusicWithSizeCheck(spoiler, event_list)
-            duped_song_list = song_list.copy()
+            duped_song_list = event_list.copy()
             random.shuffle(duped_song_list)
-            shuffle_music(song_list, duped_song_list)
+            shuffle_music(spoiler, event_list, duped_song_list)
 
 
 def ShuffleMusicWithSizeCheck(spoiler: Spoiler, song_list: list):
@@ -237,7 +240,7 @@ def ShuffleMusicWithSizeCheck(spoiler: Spoiler, song_list: list):
                     spoiler.music_event_data = {}
 
 
-def shuffle_music(pool_to_shuffle, shuffled_list):
+def shuffle_music(spoiler: Spoiler, pool_to_shuffle, shuffled_list):
     """Shuffle the music pool based on the OG list and the shuffled list.
 
     Args:
@@ -259,6 +262,15 @@ def shuffle_music(pool_to_shuffle, shuffled_list):
         stored_song_sizes[song["index"]] = new_bytes
 
     # Second loop over all songs to write data into ROM
+    # test0 = []
+    # test1 = []
+    # for x in range(len(pool_to_shuffle)):
+    #     test0.append({
+    #         "vanilla": pool_to_shuffle[x]["index"],
+    #         "shuffled": shuffled_list[x]["index"]
+    #     })
+    # print(test0)
+
     for song in pool_to_shuffle:
         shuffled_song = shuffled_list[pool_to_shuffle.index(song)]
         songs = stored_song_data[shuffled_song["index"]]
@@ -273,3 +285,10 @@ def shuffle_music(pool_to_shuffle, shuffled_list):
         memory = song_data[shuffledIndex].memory
         ROM().seek(0x1FFF000 + 2 * originalIndex)
         ROM().writeMultipleBytes(memory, 2)
+        if song_data[originalIndex].type == SongType.BGM:
+            spoiler.music_bgm_data[song_data[originalIndex].name] = song_data[shuffledIndex].name
+        elif song_data[originalIndex].type == SongType.Fanfare:
+            spoiler.music_fanfare_data[song_data[originalIndex].name] = song_data[shuffledIndex].name
+        elif song_data[originalIndex].type == SongType.Event:
+            spoiler.music_event_data[song_data[originalIndex].name] = song_data[shuffledIndex].name
+        # print(f"Vanilla Index {originalIndex}: Song {shuffledIndex}")
