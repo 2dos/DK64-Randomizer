@@ -36,17 +36,15 @@ def randomize_music(spoiler: Spoiler):
 
             # Generate the list of BGM songs
             song_list = []
-            memory_list = []
             for song in song_data:
                 if song.type == SongType.BGM:
                     # For testing, flip these two lines
                     # song_list.append(pointer_addresses[0]["entries"][song_data.index(song)])
                     song_list.append(js.pointer_addresses[0]["entries"][song_data.index(song)])
-                    memory_list.append(song.memory)
             # ShuffleMusicWithSizeCheck(spoiler, song_list)
             shuffled_music = song_list.copy()
             random.shuffle(shuffled_music)
-            shuffle_music(song_list, shuffled_music, memory_list)
+            shuffle_music(song_list, shuffled_music)
         # If the user was a poor sap and selected chaos put DK rap for everything
         elif settings.music_bgm == "chaos":
             # Find the DK rap in the list
@@ -106,16 +104,14 @@ def randomize_music(spoiler: Spoiler):
         if settings.music_fanfares == "randomized":
             # Load the list of fanfares
             fanfare_list = []
-            memory_list = []
             for song in song_data:
                 if song.type == SongType.Fanfare:
                     fanfare_list.append(js.pointer_addresses[0]["entries"][song_data.index(song)])
-                    memory_list.append(song.memory)
             # Shuffle the fanfare list
             # ShuffleMusicWithSizeCheck(spoiler, fanfare_list)
             shuffled_music = fanfare_list.copy()
             random.shuffle(shuffled_music)
-            shuffle_music(fanfare_list, shuffled_music, memory_list)
+            shuffle_music(fanfare_list, shuffled_music)
         elif settings.music_fanfares == "uploaded":
             # Generate the list of fanfares songs
             song_list = []
@@ -153,17 +149,15 @@ def randomize_music(spoiler: Spoiler):
         if settings.music_events == "randomized":
             # Load the list of events
             event_list = []
-            memory_list = []
             for song in song_data:
                 if song.type == SongType.Event:
                     event_list.append(js.pointer_addresses[0]["entries"][song_data.index(song)])
-                    memory_list.append(song.memory)
 
             # Shuffle the event list
             # ShuffleMusicWithSizeCheck(spoiler, event_list)
             duped_song_list = song_list.copy()
             random.shuffle(duped_song_list)
-            shuffle_music(song_list, duped_song_list, memory_list)
+            shuffle_music(song_list, duped_song_list)
 
 def ShuffleMusicWithSizeCheck(spoiler: Spoiler, song_list: list):
     """Facilitate shuffling of music."""
@@ -242,7 +236,7 @@ def ShuffleMusicWithSizeCheck(spoiler: Spoiler, song_list: list):
                     spoiler.music_event_data = {}
 
 
-def shuffle_music(pool_to_shuffle, shuffled_list, memory):
+def shuffle_music(pool_to_shuffle, shuffled_list):
     """Shuffle the music pool based on the OG list and the shuffled list.
 
     Args:
@@ -252,7 +246,6 @@ def shuffle_music(pool_to_shuffle, shuffled_list, memory):
     uncompressed_data_table = js.pointer_addresses[26]["entries"][0]
     stored_song_data = {}
     stored_song_sizes = {}
-    stored_memory = {}
     # For each song in the shuffled list, randomize it into the pool using the shuffled list as a base
     # First loop over all songs to read data from ROM
     for song in pool_to_shuffle:
@@ -263,15 +256,19 @@ def shuffle_music(pool_to_shuffle, shuffled_list, memory):
         ROM().seek(uncompressed_data_table["pointing_to"] + (4 * song["index"]))
         new_bytes = ROM().readBytes(4)
         stored_song_sizes[song["index"]] = new_bytes
-        stored_memory[song["index"]] = memory[pool_to_shuffle.index(song)]
 
     # Second loop over all songs to write data into ROM
     for song in pool_to_shuffle:
         shuffled_song = shuffled_list[pool_to_shuffle.index(song)]
-        song_data = stored_song_data[shuffled_song["index"]]
+        songs = stored_song_data[shuffled_song["index"]]
         ROM().seek(song["pointing_to"])
-        ROM().writeBytes(song_data)
+        ROM().writeBytes(songs)
         # Update the uncompressed data table to have our new size.
         song_size = stored_song_sizes[shuffled_song["index"]]
         ROM().seek(uncompressed_data_table["pointing_to"] + (4 * song["index"]))
         ROM().writeBytes(song_size)
+        originalIndex = song["index"]
+        shuffledIndex = shuffled_song["index"]
+        memory = song_data[shuffledIndex].memory
+        ROM().seek(0x1FFF000 + 2 * originalIndex)
+        ROM().writeMultipleBytes(memory, 2)
