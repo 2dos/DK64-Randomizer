@@ -36,17 +36,21 @@ LogicRegions = {
         Collectible(Collectibles.banana, Kongs.chunky, lambda l: True, None, 3),  # Small Boulder and switch
         Collectible(Collectibles.banana, Kongs.chunky, lambda l: l.punch, None, 3),  # Near Snide
         Collectible(Collectibles.balloon, Kongs.chunky, lambda l: l.punch and l.pineapple, None, 1),  # Near Snide
-        Collectible(Collectibles.balloon, Kongs.chunky, lambda l: l.mini and l.twirl and l.tiny and l.pineapple, None, 1),  # Warp 3 cave
+        Collectible(Collectibles.balloon, Kongs.chunky, lambda l: l.mini and l.tiny and l.pineapple, None, 1),  # Warp 3 cave
 
-        # Testing Coin access
-        Collectible(Collectibles.coin, Kongs.donkey, lambda l: True, None, 15),
-        Collectible(Collectibles.coin, Kongs.diddy, lambda l: True, None, 15),
-        Collectible(Collectibles.coin, Kongs.lanky, lambda l: True, None, 15),
-        Collectible(Collectibles.coin, Kongs.tiny, lambda l: True, None, 15),
-        Collectible(Collectibles.coin, Kongs.chunky, lambda l: True, None, 15),
+        Collectible(Collectibles.coin, Kongs.donkey, lambda l: l.punch and l.chunky, None, 3),  # Gorilla Gone room
+        Collectible(Collectibles.coin, Kongs.diddy, lambda l: True, None, 4),  # On ice castle
+        Collectible(Collectibles.coin, Kongs.lanky, lambda l: True, None, 3),  # In water below Funky
+        Collectible(Collectibles.coin, Kongs.tiny, lambda l: l.twirl, None, 2),  # Pillar above warps
+        Collectible(Collectibles.coin, Kongs.tiny, lambda l: True, None, 3),  # In front of tunnel to W4 cave
+        Collectible(Collectibles.coin, Kongs.chunky, lambda l: True, None, 3),  # On slippery slope to Cranky
+        Collectible(Collectibles.coin, Kongs.chunky, lambda l: l.punch, None, 3),  # Snide's room
+        Collectible(Collectibles.coin, Kongs.chunky, lambda l: l.mini and l.tiny, None, 3),  # Warp 3 cave
     ],
     Regions.CavesBaboonBlast: [
         Collectible(Collectibles.bunch, Kongs.donkey, lambda l: True, None, 4),
+
+        Collectible(Collectibles.coin, Kongs.donkey, lambda l: True, None, 3),
     ],
     Regions.BoulderCave: [
         Collectible(Collectibles.banana, Kongs.donkey, lambda l: True, None, 3),
@@ -54,11 +58,15 @@ LogicRegions = {
 
         Collectible(Collectibles.banana, Kongs.chunky, lambda l: Events.CavesSmallBoulderButton in l.Events, None, 6),
         Collectible(Collectibles.bunch, Kongs.chunky, lambda l: Events.CavesSmallBoulderButton in l.Events and l.hunkyChunky, None, 1),
+
+        Collectible(Collectibles.coin, Kongs.donkey, lambda l: True, None, 3),
     ],
     Regions.CavesLankyRace: [
     ],
     Regions.FrozenCastle: [
         Collectible(Collectibles.balloon, Kongs.lanky, lambda l: l.grape, None, 1),
+
+        Collectible(Collectibles.coin, Kongs.lanky, lambda l: True, None, 2),
     ],
     Regions.IglooArea: [
         Collectible(Collectibles.bunch, Kongs.donkey, lambda l: True, None, 1),  # Warp 1
@@ -70,9 +78,16 @@ LogicRegions = {
         Collectible(Collectibles.bunch, Kongs.tiny, lambda l: l.monkeyport and l.mini and l.twirl, None, 1),  # Monkeyport Ice Shield
 
         Collectible(Collectibles.banana, Kongs.chunky, lambda l: Events.CavesLargeBoulderButton in l.Events, None, 5),  # Ice Shield
+
+        Collectible(Collectibles.coin, Kongs.lanky, lambda l: True, None, 3),  # In water by pillar
+        Collectible(Collectibles.coin, Kongs.tiny, lambda l: True, None, 3),  # In water behind W1
+        Collectible(Collectibles.coin, Kongs.chunky, lambda l: True, None, 3),  # In water behind tag barrel
     ],
     Regions.GiantKosha: [
         Collectible(Collectibles.bunch, Kongs.tiny, lambda l: True, None, 4),
+
+        Collectible(Collectibles.coin, Kongs.any, lambda l: l.shockwave, None, 1),
+        Collectible(Collectibles.coin, Kongs.tiny, lambda l: True, None, 3),
     ],
     Regions.DonkeyIgloo: [
         Collectible(Collectibles.banana, Kongs.donkey, lambda l: True, None, 7),
@@ -102,16 +117,23 @@ LogicRegions = {
         Collectible(Collectibles.balloon, Kongs.lanky, lambda l: l.grape, None, 1),
         Collectible(Collectibles.balloon, Kongs.tiny, lambda l: l.feather, None, 1),
         Collectible(Collectibles.bunch, Kongs.chunky, lambda l: True, None, 1),  # Warp 2
+
+        Collectible(Collectibles.coin, Kongs.lanky, lambda l: True, None, 3),  # Waterfall area, on ledge below Lanky Cabin
+        Collectible(Collectibles.coin, Kongs.chunky, lambda l: True, None, 3),  # In corner near rocketbarrel
     ],
     Regions.RotatingCabin: [
         Collectible(Collectibles.bunch, Kongs.donkey, lambda l: True, None, 1),
     ],
     Regions.DonkeyCabin: [
         Collectible(Collectibles.bunch, Kongs.donkey, lambda l: True, None, 1),
+
+        Collectible(Collectibles.coin, Kongs.donkey, lambda l: True, None, 2),
     ],
     Regions.DiddyLowerCabin: [
         Collectible(Collectibles.bunch, Kongs.diddy, lambda l: l.jetpack, None, 1),
         Collectible(Collectibles.banana, Kongs.diddy, lambda l: True, None, 5),
+
+        Collectible(Collectibles.coin, Kongs.diddy, lambda l: True, None, 4),
     ],
     Regions.DiddyUpperCabin: [
         Collectible(Collectibles.bunch, Kongs.diddy, lambda l: l.jetpack and l.spring, None, 3),

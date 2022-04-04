@@ -19,12 +19,10 @@ LogicRegions = {
         Collectible(Collectibles.bunch, Kongs.chunky, lambda l: True, None, 1),  # Warp 2
         Collectible(Collectibles.bunch, Kongs.chunky, lambda l: True, None, 1),  # Minecart Entry
 
-        # Testing Coin access
-        Collectible(Collectibles.coin, Kongs.donkey, lambda l: True, None, 15),
-        Collectible(Collectibles.coin, Kongs.diddy, lambda l: True, None, 15),
-        Collectible(Collectibles.coin, Kongs.lanky, lambda l: True, None, 15),
-        Collectible(Collectibles.coin, Kongs.tiny, lambda l: True, None, 15),
-        Collectible(Collectibles.coin, Kongs.chunky, lambda l: True, None, 15),
+        Collectible(Collectibles.coin, Kongs.donkey, lambda l: True, None, 3),  # Behind clock
+        Collectible(Collectibles.coin, Kongs.lanky, lambda l: l.vines, None, 3),  # On roof of Chunky Minecart entrance
+        Collectible(Collectibles.coin, Kongs.tiny, lambda l: l.twirl, None, 3),  # On pink tunnel entrance
+        Collectible(Collectibles.coin, Kongs.chunky, lambda l: True, None, 3),  # Near Chunky Minecart entrance
     ],
     Regions.ForestMinecarts: [
     ],
@@ -33,6 +31,8 @@ LogicRegions = {
         Collectible(Collectibles.bunch, Kongs.diddy, lambda l: True, None, 2),  # Rocketbarrel
         Collectible(Collectibles.bunch, Kongs.lanky, lambda l: True, None, 1),  # Warp 3
         Collectible(Collectibles.banana, Kongs.lanky, lambda l: True, None, 10),
+
+        Collectible(Collectibles.coin, Kongs.lanky, lambda l: True, None, 3),  # Under tag barrel behind giant mushroom
     ],
     Regions.MushroomLower: [
         Collectible(Collectibles.bunch, Kongs.donkey, lambda l: Events.MushroomCannonsSpawned in l.Events, None, 3),  # Cannon shots pathway
@@ -46,6 +46,9 @@ LogicRegions = {
     Regions.MushroomLowerExterior: [
         Collectible(Collectibles.banana, Kongs.donkey, lambda l: True, None, 15),
         Collectible(Collectibles.balloon, Kongs.tiny, lambda l: l.feather, None, 1),
+
+        Collectible(Collectibles.coin, Kongs.donkey, lambda l: True, None, 3),  # Around BBlast pad
+        Collectible(Collectibles.coin, Kongs.tiny, lambda l: True, None, 5),  # Around Tiny BP
     ],
     Regions.ForestBaboonBlast: [
         Collectible(Collectibles.bunch, Kongs.donkey, lambda l: True, None, 2),
@@ -71,6 +74,9 @@ LogicRegions = {
         Collectible(Collectibles.bunch, Kongs.donkey, lambda l: True, None, 1),  # Upper Warp 5
         Collectible(Collectibles.banana, Kongs.diddy, lambda l: True, None, 10),
         Collectible(Collectibles.bunch, Kongs.lanky, lambda l: l.handstand, None, 1),  # Top of mushroom
+
+        Collectible(Collectibles.coin, Kongs.diddy, lambda l: Events.Night in l.Events, None, 3),  # Around crown pad
+        Collectible(Collectibles.coin, Kongs.chunky, lambda l: True, None, 3),  # On switch to face puzzle room
     ],
     Regions.MushroomChunkyRoom: [
         Collectible(Collectibles.bunch, Kongs.chunky, lambda l: True, None, 1),
@@ -91,6 +97,10 @@ LogicRegions = {
         Collectible(Collectibles.bunch, Kongs.lanky, lambda l: True, None, 1),  # To Rabbit
         Collectible(Collectibles.banana, Kongs.tiny, lambda l: True, None, 8),
         Collectible(Collectibles.bunch, Kongs.tiny, lambda l: l.saxophone and l.mini, None, 1),
+
+        Collectible(Collectibles.coin, Kongs.diddy, lambda l: l.jetpack and Events.Night in l.Events, None, 4),  # Alcove in tree
+        Collectible(Collectibles.coin, Kongs.lanky, lambda l: True, None, 3),  # Near Lanky BP
+        Collectible(Collectibles.coin, Kongs.lanky, lambda l: l.trombone, None, 3),  # Beat first rabbit race
     ],
     Regions.Anthill: [
     ],
@@ -103,9 +113,16 @@ LogicRegions = {
         Collectible(Collectibles.bunch, Kongs.lanky, lambda l: True, None, 1),  # Above Balloon pad
         Collectible(Collectibles.bunch, Kongs.lanky, lambda l: Events.Night in l.Events, None, 1),  # Attic Entrance
         Collectible(Collectibles.banana, Kongs.tiny, lambda l: True, None, 17),  # Underwater
+
+        Collectible(Collectibles.coin, Kongs.any, lambda l: l.shockwave, None, 1),  # In patch of grass
+        Collectible(Collectibles.coin, Kongs.diddy, lambda l: True, None, 3),  # On mushroom near back Tag Barrel
+        Collectible(Collectibles.coin, Kongs.lanky, lambda l: True, None, 3),  # On mushroom near rafters attic
+        Collectible(Collectibles.coin, Kongs.chunky, lambda l: True, None, 3),  # On mushroom near Chunky minecart exit
     ],
     Regions.MillChunkyArea: [
         Collectible(Collectibles.bunch, Kongs.chunky, lambda l: l.punch, None, 1),
+
+        Collectible(Collectibles.coin, Kongs.chunky, lambda l: True, None, 3),
     ],
     Regions.MillTinyArea: [
         Collectible(Collectibles.bunch, Kongs.tiny, lambda l: True, None, 2),  # Near Spider
@@ -117,28 +134,42 @@ LogicRegions = {
     Regions.GrinderRoom: [
         Collectible(Collectibles.bunch, Kongs.donkey, lambda l: l.Slam, None, 1),  # In slam box
         Collectible(Collectibles.balloon, Kongs.donkey, lambda l: l.superSlam and l.coconut, None, 1),  # Behind gate
+
+        Collectible(Collectibles.coin, Kongs.lanky, lambda l: True, None, 3),
+        Collectible(Collectibles.coin, Kongs.tiny, lambda l: True, None, 3),
     ],
     Regions.MillRafters: [
         Collectible(Collectibles.bunch, Kongs.diddy, lambda l: l.guitar, None, 2),
     ],
     Regions.WinchRoom: [
         Collectible(Collectibles.balloon, Kongs.diddy, lambda l: l.peanut, None, 1),
+
+        Collectible(Collectibles.coin, Kongs.diddy, lambda l: True, None, 2),
     ],
     Regions.MillAttic: [
         Collectible(Collectibles.bunch, Kongs.lanky, lambda l: True, None, 1),
+
+        Collectible(Collectibles.coin, Kongs.diddy, lambda l: True, None, 3),
     ],
     Regions.ThornvineArea: [
         Collectible(Collectibles.banana, Kongs.donkey, lambda l: True, None, 5),
         Collectible(Collectibles.bunch, Kongs.donkey, lambda l: l.strongKong, None, 1),  # Behind on switch
         Collectible(Collectibles.balloon, Kongs.tiny, lambda l: l.feather, None, 1),
+
+        Collectible(Collectibles.coin, Kongs.donkey, lambda l: True, None, 3),  # On thorn vines
     ],
     Regions.ThornvineBarn: [
         Collectible(Collectibles.bunch, Kongs.donkey, lambda l: l.Slam, None, 1),  # In slam box
+        Collectible(Collectibles.coin, Kongs.donkey, lambda l: True, None, 3),  # In trough
     ],
     Regions.WormArea: [
         Collectible(Collectibles.bunch, Kongs.tiny, lambda l: True, None, 3),
         Collectible(Collectibles.banana, Kongs.tiny, lambda l: True, None, 1),  # Last one behind Pineapple gate
         Collectible(Collectibles.bunch, Kongs.chunky, lambda l: True, None, 1),  # Warp 2
         Collectible(Collectibles.banana, Kongs.chunky, lambda l: True, None, 9),
+
+        Collectible(Collectibles.coin, Kongs.any, lambda l: l.shockwave, None, 1),  # In front of beanstalk
+        Collectible(Collectibles.coin, Kongs.tiny, lambda l: True, None, 3),  # By Mini Monkey barrel
+        Collectible(Collectibles.coin, Kongs.chunky, lambda l: Events.Night in l.Events, None, 3),  # By T&S portal
     ],
 }
