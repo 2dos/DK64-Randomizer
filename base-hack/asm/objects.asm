@@ -23,6 +23,7 @@
 .importobj "obj/src_randomizers_kut_out.o"
 .importobj "obj/src_randomizers_k_rool_order.o"
 .importobj "obj/src_randomizers_level_order.o"
+.importobj "obj/src_randomizers_misc_requirements.o"
 .importobj "obj/src_randomizers_move_rando.o"
 .importobj "obj/src_randomizers_price.o"
 .importobj "obj/src_shorteners_fastStart.o"

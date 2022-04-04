@@ -525,5 +525,13 @@ START_HOOK:
 		J 			0x80680D18
 		NOP
 
+	initCode:
+		JAL 		0x80609140
+		SW 			r0, 0x14 (sp)
+		JAL 		initHack
+		NOP
+		J 			0x805FBDF4
+		NOP
+
 .align 0x10
 END_HOOK:
