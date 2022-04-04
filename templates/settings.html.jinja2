@@ -1,0 +1,49 @@
+<div style="margin-top: 15px;">
+    <h2>Hash</h2>
+    <div>
+        <img id="hash1">
+        <img id="hash2">
+        <img id="hash3">
+        <img id="hash4">
+        <img id="hash5">
+    </div>
+</div>
+<div style="margin-top: 15px;">
+    <h2>Seed Id</h2>
+    <h5 id="generated_seed_id">00000</h5>
+    <hr />
+    <h2>Settings</h2>
+    <table id="settings_table" class="table table-striped table-dark">
+    </table>
+</div>
+<div style="margin-top: 15px; margin-bottom: 15px" id="spoiler_log_block">
+    <hr />
+    <h2>Spoiler Log</h2>
+    <div style="margin-top: 15px; margin-bottom: 15px">
+        <button class="btn btn-primary"
+                type="button"
+                data-bs-toggle="collapse"
+                data-bs-target="#spoiler"
+                aria-expanded="false"
+                aria-controls="spoiler">
+            Show Spoiler Log
+        </button>
+        <div class="collapse" id="spoiler">
+            <div class="card bg-dark center rounded"
+                 style="width: 90%;
+                        height: 80%;
+                        min-height: 450px;">
+                <textarea id="spoiler_log_text"
+                          style="height: 100%;
+                                 background-color:#d3d3d3;"
+                          rows="20"
+                          readonly></textarea>
+            </div>
+        </div>
+    </div>
+    <button class="btn btn-primary"
+            type="button"
+            onClick="save_text_as_file(document.getElementById('spoiler_log_text').value, document.getElementById('generated_seed_id').innerHTML + '-spoilerlog.json')">
+        Save Log
+    </button>
+</div>

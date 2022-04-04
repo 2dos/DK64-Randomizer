@@ -58,7 +58,6 @@ def randomseed(evt):
     document.getElementById("seed").value = str(random.randint(100000, 999999))
 
 
-@bind("input", "seed")
 @bind("input", "blocker_", 8)
 @bind("input", "troff_", 8)
 def on_input(event):
@@ -75,13 +74,6 @@ def on_input(event):
         min_max(event, 0, 500)
     elif "blocker" in event.target.id:
         min_max(event, 0, 200)
-    elif "seed" in event.target.id:
-        # If we make a seed id longer than 6 numbers truncate
-        if len(event.target.value) > 6:
-            document.getElementById(event.target.id).value = event.target.value[:6]
-        # If we go below 0 just generate a random seed
-        elif len(event.target.value) <= 0:
-            randomseed(None)
 
 
 def min_max(event, min, max):
@@ -111,7 +103,6 @@ def min_max(event, min, max):
         document.getElementById(event.target.id).value = min
 
 
-@bind("keydown", "seed")
 @bind("keydown", "blocker_", 8)
 @bind("keydown", "troff_", 8)
 def key_down(event):

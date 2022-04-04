@@ -179,7 +179,7 @@ LogicRegions = {
     ]),
 
     Regions.CastleBossLobby: Region("Castle Boss Lobby", Levels.CreepyCastle, True, None, [], [], [
-        TransitionFront(Regions.CastleBoss, lambda l: l.islanky and sum(l.ColoredBananas[Levels.CreepyCastle]) >= l.settings.BossBananas[Levels.CreepyCastle]),
+        TransitionFront(Regions.CastleBoss, lambda l: l.IsBossBeatable(Levels.CreepyCastle) and sum(l.ColoredBananas[Levels.CreepyCastle]) >= l.settings.BossBananas[Levels.CreepyCastle]),
     ]),
 
     Regions.CastleBoss: Region("Castle Boss", Levels.CreepyCastle, False, None, [

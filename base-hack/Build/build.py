@@ -32,6 +32,7 @@ from staticcode import patchStaticCode
 from vanilla_move_data import writeVanillaMoveData
 from adjust_exits import adjustExits
 from replace_simslam_text import replaceSimSlam
+from populateSongData import writeVanillaSongData
 
 ROMName = "rom/dk64.z64"
 newROMName = "rom/dk64-randomizer-base.z64"
@@ -273,17 +274,18 @@ for x in range(8):
     )
 for x in range(43):
     if x != 13:
-        file_dict.append(
-            {
-                "name": "Text " + str(x),
-                "pointer_table_index": 12,
-                "file_index": x,
-                "source_file": "text" + str(x) + ".bin",
-                "target_compressed_size": 0x2000,
-                "target_uncompressed_size": 0x2000,
-                "do_not_recompress": True,
-            }
-        )
+        if x != 32:
+            file_dict.append(
+                {
+                    "name": "Text " + str(x),
+                    "pointer_table_index": 12,
+                    "file_index": x,
+                    "source_file": "text" + str(x) + ".bin",
+                    "target_compressed_size": 0x2000,
+                    "target_uncompressed_size": 0x2000,
+                    "do_not_recompress": True,
+                }
+            )
 hash_icons = ["bongos.png", "dead_maro.png", "dkcoin.png", "fairy.png", "guitar.png", "nin_coin.png", "orange.png", "pauline.png", "rw_coin.png", "sax.png"]
 hash_indexes = [48, 49, 50, 51, 55, 62, 63, 64, 65, 76]
 for x in range(len(hash_indexes)):
@@ -295,6 +297,16 @@ file_dict.append(
         "pointer_table_index": 12,
         "file_index": 13,
         "source_file": "dolby_text.bin",
+        "do_not_compress": True,
+        "do_not_delete_source": True,
+    },
+)
+file_dict.append(
+    {
+        "name": "Custom Text",
+        "pointer_table_index": 12,
+        "file_index": 32,
+        "source_file": "custom_text.bin",
         "do_not_compress": True,
         "do_not_delete_source": True,
     },
@@ -402,7 +414,8 @@ with open(ROMName, "rb") as fh:
                 if file_info:
                     x["start"] = file_info["new_absolute_address"]
                     x["compressed_size"] = len(file_info["data"])
-
+            if "start" not in x:
+                print(x)
             fh.seek(x["start"])
             byte_read = fh.read(x["compressed_size"])
 
@@ -552,6 +565,7 @@ with open(newROMName, "r+b") as fh:
     writeVanillaMoveData(fh)
     adjustExits(fh)
     replaceSimSlam(fh)
+    writeVanillaSongData(fh)
 
 print("[7 / 7] - Generating BizHawk RAM watch")
 

@@ -57,7 +57,6 @@ class Transitions(IntEnum):
     JapesMainToTinyHive = auto()
     JapesTinyHiveToMain = auto()
     JapesMineToCarts = auto()
-    JapesCartsToMine = auto()
     JapesMainToBBlast = auto()
     JapesCartsToMain = auto()
 

@@ -37,6 +37,8 @@ void replace_zones(int init_flag) {
 				}
 				ReplacementLobbiesArray[i] = (Rando.exit_levels[i] >> 8) & 0xFF;
 				ReplacementLobbyExitsArray[i] = Rando.exit_levels[i] & 0xFF;
+				ReplacementLobbiesArray[8] = ReplacementLobbiesArray[7];
+				ReplacementLobbyExitsArray[8] = ReplacementLobbyExitsArray[7];
 			}
 			krool_exit_map = (Rando.k_rool_exit >> 8) & 0xFF;
 			krool_exit_exit = Rando.k_rool_exit & 0xFF;
@@ -107,7 +109,7 @@ void replace_zones(int init_flag) {
 		}
 	} else {
 		if (init_flag) {
-			for (int i = 0; i < 8; i++) {
+			for (int i = 0; i < 9; i++) {
 				ReplacementLobbiesArray[i] = LobbiesArray[i];
 				ReplacementLobbyExitsArray[i] = 1;
 			}

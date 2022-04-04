@@ -23,8 +23,9 @@ from randomizer.Enums.Items import Items
 from randomizer.Enums.Kongs import Kongs
 from randomizer.Enums.Levels import Levels
 from randomizer.Enums.Locations import Locations
-from randomizer.Lists.Location import LocationList
-from randomizer.Prices import CanBuy
+from randomizer.Lists.Location import Location, LocationList
+from randomizer.MapsAndExits import Maps
+from randomizer.Prices import CanBuy, GetPriceOfMoveItem
 
 
 class LogicVarHolder:
@@ -122,6 +123,9 @@ class LogicVarHolder:
         self.HelmChunky2 = False
 
         self.Slam = 3 if self.settings.unlock_all_moves else 1  # Right now assuming start with slam
+        self.AmmoBelts = 2 if self.settings.unlock_all_moves else 0
+        self.InstUpgrades = 3 if self.settings.unlock_all_moves else 0
+
         self.GoldenBananas = 0
         self.BananaFairies = 0
         self.BananaMedals = 0
@@ -227,6 +231,9 @@ class LogicVarHolder:
         self.HelmChunky2 = self.HelmChunky2 or Items.HelmChunky2 in ownedItems
 
         self.Slam = 3 if self.settings.unlock_all_moves else sum(1 for x in ownedItems if x == Items.ProgressiveSlam)
+        self.AmmoBelts = 2 if self.settings.unlock_all_moves else sum(1 for x in ownedItems if x == Items.ProgressiveAmmoBelt)
+        self.InstUpgrades = 3 if self.settings.unlock_all_moves else sum(1 for x in ownedItems if x == Items.ProgressiveInstrumentUpgrade)
+
         self.GoldenBananas = sum(1 for x in ownedItems if x == Items.GoldenBanana)
         self.BananaFairies = sum(1 for x in ownedItems if x == Items.BananaFairy)
         self.BananaMedals = sum(1 for x in ownedItems if x == Items.BananaMedal)
@@ -322,7 +329,7 @@ class LogicVarHolder:
             # Rainbow coin, add 5 coins for each kong
             if collectible.kong == Kongs.any:
                 for i in range(5):
-                    self.Coins[i] += 5
+                    self.Coins[i] += collectible.amount * 5
             # Normal coins, add amount for the kong
             else:
                 self.Coins[collectible.kong] += collectible.amount
@@ -336,6 +343,20 @@ class LogicVarHolder:
         elif collectible.type == Collectibles.balloon:
             self.ColoredBananas[level][collectible.kong] += collectible.amount * 10
         collectible.added = True
+
+    def PurchaseShopItem(self, location: Location):
+        """Purchase items from shops and subtract price from logical coin counts."""
+        if location.item is not None and location.item is not Items.NoItem:
+            price = GetPriceOfMoveItem(location.item, self.settings, self.Slam, self.AmmoBelts, self.InstUpgrades)
+            # print("BuyShopItem for location: " + location.name)
+            # print("Item: " + ItemList[location.item].name + " has Price: " + str(price))
+            # If shared move, consider all kongs paid for it
+            if location.kong == Kongs.any:
+                for i in range(5):
+                    self.Coins[i] -= price
+            # If kong specific move, just that kong paid for it
+            else:
+                self.Coins[location.kong] -= price
 
     def HasAccess(self, region, kong):
         """Check if a certain kong has access to a certain region.
@@ -358,7 +379,7 @@ class LogicVarHolder:
 
     def CanBuy(self, location):
         """Check if there are enough coins to purchase this location."""
-        return CanBuy(location, self.Coins, self.settings)
+        return CanBuy(location, self.Coins, self.settings, self.Slam, self.AmmoBelts, self.InstUpgrades)
 
     def CanAccessKRool(self):
         """Make sure that each required key has been turned in."""
@@ -366,6 +387,17 @@ class LogicVarHolder:
             if keyRequired not in self.Events:
                 return False
         return True
+
+    def IsBossBeatable(self, level):
+        """Return true if the boss for a given level is beatable according to boss location rando and boss kong rando."""
+        requiredKong = self.settings.boss_kongs[level]
+        bossFight = self.settings.boss_maps[level]
+        hasRequiredMoves = True
+        if bossFight == Maps.FactoryBoss and requiredKong == Kongs.tiny:
+            hasRequiredMoves = self.twirl
+        elif bossFight == Maps.FungiBoss:
+            hasRequiredMoves = self.hunkyChunky
+        return self.IsKong(requiredKong) and hasRequiredMoves
 
 
 LogicVariables = LogicVarHolder()

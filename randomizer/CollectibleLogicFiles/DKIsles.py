@@ -17,13 +17,6 @@ LogicRegions = {
     Regions.IslesMain: [
         Collectible(Collectibles.coin, Kongs.any, lambda l: l.shockwave, None, ),  # Below Caves lobby
         Collectible(Collectibles.coin, Kongs.any, lambda l: l.shockwave and l.jetpack, None, ),  # On Aztec lobby
-
-        # Testing
-        Collectible(Collectibles.coin, Kongs.donkey, lambda l: True, None, 170),
-        Collectible(Collectibles.coin, Kongs.diddy, lambda l: True, None, 170),
-        Collectible(Collectibles.coin, Kongs.lanky, lambda l: True, None, 170),
-        Collectible(Collectibles.coin, Kongs.tiny, lambda l: True, None, 170),
-        Collectible(Collectibles.coin, Kongs.chunky, lambda l: True, None, 170),
     ],
     Regions.Prison: [
         Collectible(Collectibles.coin, Kongs.any, lambda l: l.shockwave, None, ),  # K. Lumsy

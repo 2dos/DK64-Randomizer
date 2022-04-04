@@ -51,7 +51,7 @@ class Settings:
             self.troff_5,
             self.troff_6,
         ]
-
+        self.seed_hash = [random.randint(0, 9) for i in range(5)]
         # Settings which are not yet implemented on the web page
 
         # Waiting on price branch
@@ -104,7 +104,7 @@ class Settings:
     def update_progression_totals(self):
         """Update the troff and blocker totals if we're randomly setting them."""
         if self.randomize_cb_required_amounts:
-            randomlist = random.sample(range(0, 350), 7)
+            randomlist = random.sample(range(0, 260), 7)
             cbs = sorted(randomlist)
             self.troff_0 = cbs[0]
             self.troff_1 = cbs[1]
@@ -137,6 +137,7 @@ class Settings:
         self.shop_price_rando = None
         self.boss_location_rando = None
         self.boss_kong_rando = None
+        self.kasplat = None
 
     def set_seed(self):
         """Forcibly re-set the random seed to the seed set in the config."""
@@ -209,6 +210,7 @@ class Settings:
         self.shop_indicator = False
         self.randomize_cb_required_amounts = False
         self.randomize_blocker_required_amounts = False
+        self.kasplat_rando = False
 
     def resolve_settings(self):
         """Resolve settings which are not directly set through the UI."""

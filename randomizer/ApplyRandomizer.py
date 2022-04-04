@@ -2,7 +2,6 @@
 import codecs
 import json
 import pickle
-import random
 
 import js
 
@@ -17,6 +16,8 @@ from randomizer.PriceRando import randomize_prices
 from randomizer.BossRando import randomize_bosses
 from randomizer.BarrelRando import randomize_barrels
 from randomizer.BananaPortRando import randomize_bananaport
+from randomizer.EnemyRando import randomize_enemies
+from randomizer.Hash import get_hash_images
 
 # from randomizer.Spoiler import Spoiler
 from randomizer.Settings import Settings
@@ -40,7 +41,7 @@ def patching_response(responded_data):
     except Exception:
         pass
 
-    ProgressBar().update_progress(5, "Applying Patches")
+    ProgressBar().update_progress(8, "Applying Patches")
     # spoiler: Spoiler = pickle.loads(codecs.decode(responded_data.encode(), "base64"))
     spoiler = pickle.loads(codecs.decode(responded_data.encode(), "base64"))
     spoiler.settings.verify_hash()
@@ -217,23 +218,40 @@ def patching_response(responded_data):
     randomize_krool(spoiler)
     randomize_barrels(spoiler)
     randomize_bananaport(spoiler)
+    randomize_enemies(spoiler)
 
     # Apply Hash
-    hash_images = [random.randint(0, 9) for i in range(5)]
     order = 0
-    for count in hash_images:
+    for count in spoiler.settings.seed_hash:
         ROM().seek(sav + 0x11A + order)
         ROM().write(count)
         order += 1
 
     ProgressBar().update_progress(10, "Seed Generated.")
+    loaded_hash = get_hash_images()
+    # js.document.getElementById("test").src = "data:image/jpeg;base64," + loaded_hash[0]
     if spoiler.settings.generate_spoilerlog is True:
-        js.document.getElementById("nav-spoiler-tab").style.display = ""
+        js.document.getElementById("nav-settings-tab").style.display = ""
+        js.document.getElementById("spoiler_log_block").style.display = ""
         js.document.getElementById("spoiler_log_text").value = spoiler.toJson()
         js.save_text_as_file(spoiler.toJson(), f"dk64-{spoiler.settings.seed_id}-spoiler-log.json")
     else:
-        js.document.getElementById("nav-spoiler-tab").style.display = "none"
+        js.document.getElementById("nav-settings-tab").style.display = "none"
         js.document.getElementById("spoiler_log_text").value = ""
+        js.document.getElementById("spoiler_log_block").style.display = "none"
+
+    js.document.getElementById("generated_seed_id").innerHTML = spoiler.settings.seed_id
+    loaded_settings = json.loads(spoiler.toJson())["Settings"]
+    js.document.getElementById("settings_table").innerHTML = ""
+    table = js.document.getElementById("settings_table")
+    for setting, value in loaded_settings.items():
+        if setting != "seed":
+            row = table.insertRow(-1)
+            name = row.insertCell(0)
+            description = row.insertCell(1)
+            name.innerHTML = setting
+            description.innerHTML = value
     ROM().fixSecurityValue()
     ROM().save(f"dk64-{spoiler.settings.seed_id}.z64")
     ProgressBar().reset()
+    js.jq("#nav-settings-tab").tab("show")

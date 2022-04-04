@@ -66,6 +66,12 @@ void initHack(void) {
 				priceTransplant();
 			}
 		}
+		// Music
+		if (Rando.music_rando_on) {
+			int* file_size;
+			*(int*)(&file_size) = 0x160;
+			copyFromROM(0x1FFF000,(int*)0x80745658,&file_size,0,0,0,0);
+		}
 		// Style 6 Mtx
 		int base_mtx = 75;
 		style6Mtx[0x0] = base_mtx;
