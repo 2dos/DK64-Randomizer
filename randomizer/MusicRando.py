@@ -24,7 +24,7 @@ def randomize_music(spoiler: Spoiler):
     if settings.music_bgm != "default" or settings.music_events != "default" or settings.music_fanfares != "default":
         sav = 0x1FED020
         ROM().seek(sav + 0x11F)
-        ROM().write(1)  
+        ROM().write(1)
     # Check if we have anything beyond default set for BGM
     if settings.music_bgm != "default":
         # If the user selected standard rando
@@ -158,6 +158,7 @@ def randomize_music(spoiler: Spoiler):
             duped_song_list = song_list.copy()
             random.shuffle(duped_song_list)
             shuffle_music(song_list, duped_song_list)
+
 
 def ShuffleMusicWithSizeCheck(spoiler: Spoiler, song_list: list):
     """Facilitate shuffling of music."""
