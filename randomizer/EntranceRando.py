@@ -57,7 +57,7 @@ def randomize_entrances(spoiler: Spoiler):
                     lz_exit = int.from_bytes(ROM().readBytes(2), "big")
                     for zone in cont_map["zones"]:
                         if lz_map == zone["vanilla_map"]:
-                            if lz_exit == zone["vanilla_exit"]:
+                            if lz_exit == zone["vanilla_exit"] or (lz_map == Maps.FactoryCrusher):
                                 ROM().seek(cont_map_lzs_address + start + 0x12)
                                 map_bytes = intToArr(zone["new_map"], 2)
                                 ROM().writeBytes(bytearray(map_bytes))
