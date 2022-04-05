@@ -528,8 +528,8 @@ START_HOOK:
 	initCode:
 		JAL 		0x80609140
 		SW 			r0, 0x14 (sp)
-		JAL 		initHack
-		NOP
+		//JAL 		initHack
+		//NOP
 		J 			0x805FBDF4
 		NOP
 
