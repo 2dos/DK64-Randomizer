@@ -30,6 +30,7 @@ void cFuncLoop(void) {
 	tagAnywhere(past_crystals);
 	past_crystals = crystal_count;
 	islesSpawn();
+	initHack();
 	//fixCastleAutowalk();
 	level_order_rando_funcs();
 	qualityOfLife_fixes();
@@ -103,7 +104,6 @@ void cFuncLoop(void) {
 };
 
 void earlyFrame(void) {
-	initHack();
 	if (ObjectModel2Timer == 2) {
 		updateProgressive();
 		price_rando();

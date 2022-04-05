@@ -8,8 +8,56 @@ from randomizer.Enums.Regions import Regions
 from randomizer.LogicClasses import Collectible
 
 LogicRegions = {
+    Regions.StartArea: [
+        Collectible(Collectibles.coin, Kongs.donkey, lambda l: True, None, 3),  # Cave
+        Collectible(Collectibles.coin, Kongs.any, lambda l: l.shockwave, None, ),  # Cave
+        Collectible(Collectibles.coin, Kongs.any, lambda l: l.vines and l.shockwave, None, ),  # Banana hoard
+
+    ],
     Regions.IslesMain: [
-        Collectible(Collectibles.coin, Kongs.donkey, lambda l: l.isdonkey, None, 3),  # in TG
-        Collectible(Collectibles.coin, Kongs.any, lambda l: l.shockwave, None, 4),  # 2 in TG, 1 under caves rock, 1 in Klumsy
+        Collectible(Collectibles.coin, Kongs.any, lambda l: l.shockwave, None, ),  # Below Caves lobby
+        Collectible(Collectibles.coin, Kongs.any, lambda l: l.shockwave and l.jetpack, None, ),  # On Aztec lobby
+    ],
+    Regions.Prison: [
+        Collectible(Collectibles.coin, Kongs.any, lambda l: l.shockwave, None, ),  # K. Lumsy
+
+    ],
+    Regions.BananaFairyRoom: [
+
+    ],
+    Regions.JungleJapesLobby: [
+
+    ],
+    Regions.AngryAztecLobby: [
+
+    ],
+    Regions.CrocodileIsleBeyondLift: [
+
+    ],
+    Regions.IslesSnideRoom: [
+
+    ],
+    Regions.FranticFactoryLobby: [
+
+    ],
+    Regions.GloomyGalleonLobby: [
+
+    ],
+    Regions.CabinIsle: [
+        Collectible(Collectibles.coin, Kongs.any, lambda l: l.shockwave, None, ),  # In front of fungi lobby
+
+    ],
+    Regions.FungiForestLobby: [
+
+    ],
+    Regions.CrystalCavesLobby: [
+
+    ],
+    Regions.CreepyCastleLobby: [
+        Collectible(Collectibles.coin, Kongs.any, lambda l: l.shockwave and l.balloon, None, ),  # In Castle lobby
+
+    ],
+    Regions.HideoutHelmLobby: [
+
     ],
 }
