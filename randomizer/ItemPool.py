@@ -35,8 +35,8 @@ def PlaceConstants(settings):
                 LocationList[level.KeyLocation].PlaceConstantItem(level.KeyItem)
             else:
                 # Find the transition this exit is attached to, and use that to get the proper location to place this key
-                dest = ShufflableExits[level.TransitionTo].back.reverse
-                shuffledTo = [x for x in LevelInfoList.values() if x.TransitionsFrom == dest][0]
+                dest = ShufflableExits[level.TransitionTo].shuffledId
+                shuffledTo = [x for x in LevelInfoList.values() if x.TransitionTo == dest][0]
                 LocationList[shuffledTo.KeyLocation].PlaceConstantItem(level.KeyItem)
     # Helm locations (which are functionally events)
     LocationList[Locations.HelmDonkey1].PlaceConstantItem(Items.HelmDonkey1)

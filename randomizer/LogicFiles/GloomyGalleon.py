@@ -29,7 +29,7 @@ LogicRegions = {
         Event(Events.ShipyardGateOpened, lambda l: l.peanut and l.diddy),
     ], [
         TransitionFront(Regions.GloomyGalleonLobby, lambda l: True, Transitions.GalleonToIsles),
-        TransitionFront(Regions.GalleonBeyondPineappleGate, lambda l: Events.WaterSwitch in l.Events and l.pineapple and l.chunky),
+        TransitionFront(Regions.GalleonBeyondPineappleGate, lambda l: l.pineapple and l.chunky),
         TransitionFront(Regions.LighthouseArea, lambda l: l.settings.shuffle_loading_zones == "all" or Events.LighthouseGateOpened in l.Events),
         # Gate to shipyard opened in rando if loading zones randomized
         TransitionFront(Regions.Shipyard, lambda l: l.settings.shuffle_loading_zones == "all" or Events.ShipyardGateOpened in l.Events),
@@ -38,8 +38,8 @@ LogicRegions = {
     ]),
 
     Regions.GalleonBeyondPineappleGate: Region("Galleon Beyond Pineapple Gate", Levels.GloomyGalleon, False, None, [
-        LocationLogic(Locations.GalleonChunkyCannonGame, lambda l: l.ischunky),
-        LocationLogic(Locations.GalleonLankyKasplat, lambda l: True),
+        LocationLogic(Locations.GalleonChunkyCannonGame, lambda l: Events.WaterSwitch in l.Events and l.ischunky),
+        LocationLogic(Locations.GalleonLankyKasplat, lambda l: Events.WaterSwitch in l.Events),
     ], [], [
         TransitionFront(Regions.GloomyGalleonStart, lambda l: True),
     ]),
