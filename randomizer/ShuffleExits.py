@@ -174,13 +174,11 @@ def ShuffleExits(settings: Settings):
     frontpool = []
     backpool = []
     if settings.shuffle_loading_zones == "levels":
-        LevelExitPool = LobbyEntrancePool.copy()
-        LevelExitPool.extend(LobbyExitPool)
-        AssumeExits(settings, frontpool, backpool, LevelExitPool)
+        ShuffleLevelExits(settings, LobbyEntrancePool.copy(), LobbyEntrancePool.copy())
     elif settings.shuffle_loading_zones == "all":
         AssumeExits(settings, frontpool, backpool, [x for x in ShufflableExits.keys()])
-    # Shuffle each entrance pool
-    ShuffleExitsInPool(settings, frontpool, backpool)
+        # Shuffle each entrance pool
+        ShuffleExitsInPool(settings, frontpool, backpool)
     # If levels rando is on, need to update Blocker and T&S requirements to match
     if settings.shuffle_loading_zones == "levels":
         UpdateLevelProgression(settings)
@@ -228,3 +226,24 @@ def UpdateLevelProgression(settings: Settings):
         newBossBananas[newIndex] = settings.BossBananas[levelIndex]
     settings.EntryGBs = newEntryGBs
     settings.BossBananas = newBossBananas
+
+def ShuffleLevelExits(settings, frontpool, backpool):
+    """Shuffle exits within a  pool."""
+    random.shuffle(frontpool)
+
+    # For each back exit, select a random valid front entrance to attach to it
+    while len(backpool) > 0:
+        backId = backpool.pop(0)
+        backExit = ShufflableExits[backId]
+        # Select a random origin
+        frontId = frontpool.pop()
+        frontExit = ShufflableExits[frontId]
+        # Add connection between selected exits
+        frontExit.shuffled = True
+        frontExit.shuffledId = backId
+        print("Assigned " + frontExit.name + " --> " + backExit.name)
+        # Add reverse connection
+        backReverse = ShufflableExits[backExit.back.reverse]
+        backReverse.shuffled = True
+        backReverse.shuffledId = frontExit.back.reverse
+        print("Assigned " + ShufflableExits[backExit.back.reverse].name + " --> " + ShufflableExits[frontExit.back.reverse].name)
