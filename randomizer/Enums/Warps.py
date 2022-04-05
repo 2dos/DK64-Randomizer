@@ -1,8 +1,10 @@
 """Bananaports enum."""
 from enum import IntEnum, auto
 
+
 class Warps(IntEnum):
     """Bananaports enum."""
+
     JapesNearPortal = auto()
     JapesEndOfTunnel = auto()
     JapesNearMainTag = auto()
@@ -83,3 +85,13 @@ class Warps(IntEnum):
     CryptFarCenter = auto()
     CryptNearRight = auto()
     CryptFarRight = auto()
+    IslesRing1 = auto()
+    IslesKLumsy = auto()
+    IslesRing2 = auto()
+    IslesAztecLobby = auto()
+    IslesRing3 = auto()
+    IslesWaterfall = auto()
+    IslesRing4 = auto()
+    IslesFactoryLobby = auto()
+    IslesRing5 = auto()
+    IslesFairyIsland = auto()

@@ -1,32 +1,19 @@
 """Rando write bananaport locations."""
+from imp import source_from_cache
+import js
+
 from randomizer.Patcher import ROM
 from randomizer.Spoiler import Spoiler
 
 
 def randomize_bananaport(spoiler: Spoiler):
     """Rando write bananaport locations."""
-    bananaport_replacements = [
-        {
-            "containing_map": 0x14,
-            "pads": [
-                {
-                    "warp_index": 0,
-                    "warp_ids": [0x58, 0x99],
-                },
-                {
-                    "warp_index": 1,
-                    "warp_ids": [0x4E, 0x9A],
-                },
-            ],
-        }
-    ]
-
     pad_types = [0x214, 0x213, 0x211, 0x212, 0x210]
 
     if spoiler.settings.bananaport_rando:
-        for cont_map in bananaport_replacements:  # TODO: Change "bananaport_replacements" with the appropriate spoiler array
+        for cont_map in spoiler.bananaport_replacements:
             pad_vanilla = []
-            cont_map_id = int(cont_map["container_map"])
+            cont_map_id = int(cont_map["containing_map"])
             cont_map_setup_address = js.pointer_addresses[9]["entries"][cont_map_id]["pointing_to"]
             # Pointer Table 9, use "containing_map" as a map index to grab setup start address
             ROM().seek(cont_map_setup_address)
@@ -85,19 +72,19 @@ def randomize_bananaport(spoiler: Spoiler):
                                         ref_pad = vanilla_pad0
                                     counter += 1
                             ROM().seek(start + 0x28)
-                            ROM().write(pad_types[vanilla_pad["pad_index"]].to_bytes(2, "big"))
+                            ROM().writeMultipleBytes(pad_types[vanilla_pad["pad_index"]], 2)
                             ROM().seek(start + 0)
-                            ROM().write(ref_pad["x"].to_bytes(4, "big"))
+                            ROM().writeMultipleBytes(ref_pad["x"], 4)
                             ROM().seek(start + 4)
-                            ROM().write(ref_pad["y"].to_bytes(4, "big"))
+                            ROM().writeMultipleBytes(ref_pad["y"], 4)
                             ROM().seek(start + 8)
-                            ROM().write(ref_pad["z"].to_bytes(4, "big"))
+                            ROM().writeMultipleBytes(ref_pad["z"], 4)
                             ROM().seek(start + 12)
-                            ROM().write(ref_pad["scale"].to_bytes(4, "big"))
+                            ROM().writeMultipleBytes(ref_pad["scale"], 4)
                             ROM().seek(start + 0x18)
-                            ROM().write(ref_pad["rx"].to_bytes(4, "big"))
+                            ROM().writeMultipleBytes(ref_pad["rx"], 4)
                             ROM().seek(start + 0x1C)
-                            ROM().write(ref_pad["ry"].to_bytes(4, "big"))
+                            ROM().writeMultipleBytes(ref_pad["ry"], 4)
                             ROM().seek(start + 0x20)
-                            ROM().write(ref_pad["rz"].to_bytes(4, "big"))
+                            ROM().writeMultipleBytes(ref_pad["rz"], 4)
                     source_counter += 1

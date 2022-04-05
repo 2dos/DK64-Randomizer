@@ -21,6 +21,7 @@ from randomizer.ShuffleKasplats import KasplatShuffle
 from randomizer.Logic import LogicVarHolder, LogicVariables
 from randomizer.LogicClasses import TransitionFront
 from randomizer.ShuffleBarrels import BarrelShuffle, ShuffleBarrels
+from randomizer.ShuffleWarps import shuffleWarps
 
 
 def GetExitLevelExit(settings, region):
@@ -556,6 +557,13 @@ def Generate_Spoiler(spoiler):
     if spoiler.settings.shuffle_loading_zones != "none":
         ShuffleExits.ExitShuffle(spoiler.settings)
         spoiler.UpdateExits()
+    # Handle Bananaports
+    if spoiler.settings.bananaport_rando:
+        replacements = []
+        human_replacements = {}
+        shuffleWarps(replacements, human_replacements)
+        spoiler.bananaport_replacements = replacements.copy()
+        spoiler.human_warp_locations = human_replacements
     # Place items
     if spoiler.settings.shuffle_items == "all":
         Fill(spoiler)
