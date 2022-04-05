@@ -104,3 +104,52 @@ class Enemies(IntEnum):
     Bug = 110
     FairyQueen = 111
     IceTomato = 112
+
+
+class EnemyData:
+    """Information about the enemy."""
+
+    def __init__(self, *, aggro=1, min_speed=15, max_speed=150):
+        """Initialize with given parameters."""
+        self.aggro = aggro
+        self.min_speed = min_speed
+        self.max_speed = max_speed
+
+
+EnemyMetaData = {
+    Enemies.BeaverBlue: EnemyData(),  #
+    Enemies.Book: EnemyData(aggro=6),
+    Enemies.ZingerCharger: EnemyData(),  #
+    Enemies.Klobber: EnemyData(aggro=4),
+    Enemies.Klump: EnemyData(),  #
+    Enemies.Kaboom: EnemyData(aggro=4),
+    Enemies.KlaptrapGreen: EnemyData(),  #
+    Enemies.ZingerLime: EnemyData(),  #
+    Enemies.KlaptrapPurple: EnemyData(),  #
+    Enemies.KlaptrapRed: EnemyData(),  #
+    Enemies.BeaverGold: EnemyData(),  #
+    Enemies.MushroomMan: EnemyData(aggro=4),
+    Enemies.Ruler: EnemyData(),  #
+    Enemies.RoboKremling: EnemyData(),  #
+    Enemies.Kremling: EnemyData(),  #
+    Enemies.KasplatDK: EnemyData(),  #
+    Enemies.KasplatDiddy: EnemyData(),  #
+    Enemies.KasplatLanky: EnemyData(),  #
+    Enemies.KasplatTiny: EnemyData(),  #
+    Enemies.KasplatChunky: EnemyData(),  #
+    Enemies.ZingerRobo: EnemyData(),  #
+    Enemies.Krossbones: EnemyData(),  #
+    Enemies.Shuri: EnemyData(),  #
+    Enemies.Gimpfish: EnemyData(aggro=2),
+    Enemies.MrDice0: EnemyData(),  # Should be aggro 4, but I think this is because it normally spawns in the BHDM fight
+    Enemies.SirDomino: EnemyData(),  #
+    Enemies.MrDice1: EnemyData(),  #
+    Enemies.FireballGlasses: EnemyData(aggro=35, min_speed=100, max_speed=255),  # 29 for if you want them to respond to the rabbit
+    Enemies.SpiderSmall: EnemyData(),  #
+    Enemies.Bat: EnemyData(),  #
+    Enemies.EvilTomato: EnemyData(aggro=4),
+    Enemies.Ghost: EnemyData(),  #
+    Enemies.Pufftup: EnemyData(),  #
+    Enemies.Kosha: EnemyData(),  #
+    Enemies.GetOut: EnemyData(aggro=6),
+}
