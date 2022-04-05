@@ -14,6 +14,24 @@ function save_text_as_file(text, file) {
   saveAs(blob, file);
 }
 
+window.onerror = function(error) {
+  toast_alert(error.toString());
+};
+function toast_alert(text) {
+  Toastify({
+    text: text,
+    duration: 15000,
+    close: true,
+    gravity: "top",
+    position: "right",
+    stopOnFocus: true,
+    style: {
+      background: "#800000",
+    },
+    onClick: function () {},
+  }).showToast();
+}
+
 var cosmetics;
 document
   .getElementById("music_file")
