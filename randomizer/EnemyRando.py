@@ -4,7 +4,7 @@ import random
 from randomizer.Patcher import ROM
 from randomizer.Spoiler import Spoiler
 from randomizer.MapsAndExits import Maps
-from randomizer.EnemyTypes import Enemies
+from randomizer.EnemyTypes import Enemies, EnemyMetaData
 
 
 def randomize_enemies(spoiler: Spoiler):
@@ -116,6 +116,7 @@ def randomize_enemies(spoiler: Spoiler):
         Maps.IslesSnideRoom,
         Maps.ForestGiantMushroom,
         Maps.ForestLankyZingersRoom,
+        Maps.CastleBoss,
     ]
     enemy_classes = {
         "ground_simple": [
@@ -140,6 +141,7 @@ def randomize_enemies(spoiler: Spoiler):
             Enemies.ZingerLime,
             Enemies.ZingerRobo,
             Enemies.Bat,
+            Enemies.Book,
         ],
         "ground_beefyboys": [
             Enemies.Klump,
@@ -206,9 +208,18 @@ def randomize_enemies(spoiler: Spoiler):
                     for spawner in vanilla_spawners:
                         if spawner["enemy_id"] in class_types:
                             new_enemy_id = arr[sub_index]
-                            ROM().seek(cont_map_spawner_address + spawner["offset"])
-                            ROM().writeMultipleBytes(new_enemy_id, 1)
                             sub_index += 1
-                            if new_enemy_id == Enemies.EvilTomato or new_enemy_id == Enemies.Klobber or new_enemy_id == Enemies.Kaboom or new_enemy_id == Enemies.MushroomMan:
-                                ROM().seek(cont_map_spawner_address + spawner["offset"] + 0x10)
-                                ROM().writeMultipleBytes(4, 1)
+                            if new_enemy_id != Enemies.Book or (cont_map_id != Maps.CavesDonkeyCabin and cont_map_id != Maps.JapesLankyCave and cont_map_id != Maps.AngryAztecLobby):
+                                ROM().seek(cont_map_spawner_address + spawner["offset"])
+                                ROM().writeMultipleBytes(new_enemy_id, 1)
+                                if new_enemy_id in EnemyMetaData.keys():
+                                    ROM().seek(cont_map_spawner_address + spawner["offset"] + 0x10)
+                                    ROM().writeMultipleBytes(EnemyMetaData[new_enemy_id].aggro, 1)
+                                    min_speed = EnemyMetaData[new_enemy_id].min_speed
+                                    max_speed = EnemyMetaData[new_enemy_id].max_speed
+                                    if min_speed > 0 and max_speed > 0:
+                                        ROM().seek(cont_map_spawner_address + spawner["offset"] + 0xD)
+                                        agg_speed = random.randint(min_speed, max_speed)
+                                        ROM().writeMultipleBytes(agg_speed, 1)
+                                        ROM().seek(cont_map_spawner_address + spawner["offset"] + 0xC)
+                                        ROM().writeMultipleBytes(random.randint(min_speed, agg_speed), 1)
