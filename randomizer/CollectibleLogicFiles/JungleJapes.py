@@ -32,21 +32,28 @@ LogicRegions = {
         Collectible(Collectibles.banana, Kongs.chunky, lambda l: True, None, 5),  # Around entrance to underground
         Collectible(Collectibles.bunch, Kongs.chunky, lambda l: True, None, 2),  # On Funky's store
 
+        Collectible(Collectibles.coin, Kongs.donkey, lambda l: True, None, 3),  # In first tunnel
         Collectible(Collectibles.coin, Kongs.donkey, lambda l: l.vines, None, 3),  # Around BBlast pad
-
-        # Testing Coin access
-        Collectible(Collectibles.coin, Kongs.donkey, lambda l: True, None, 12),
-        Collectible(Collectibles.coin, Kongs.diddy, lambda l: True, None, 15),
-        Collectible(Collectibles.coin, Kongs.lanky, lambda l: True, None, 15),
-        Collectible(Collectibles.coin, Kongs.tiny, lambda l: True, None, 15),
-        Collectible(Collectibles.coin, Kongs.chunky, lambda l: True, None, 15),
+        Collectible(Collectibles.coin, Kongs.diddy, lambda l: True, None, 3),  # In river
+        Collectible(Collectibles.coin, Kongs.diddy, lambda l: True, None, 2),  # Cannon to Diddy's cage
+        Collectible(Collectibles.coin, Kongs.lanky, lambda l: True, None, 2),  # In river
+        Collectible(Collectibles.coin, Kongs.lanky, lambda l: True, None, 3),  # By Snide's
+        Collectible(Collectibles.coin, Kongs.tiny, lambda l: Events.JapesSpawnW5 in l.Events, None, 5),  # Around W5
+        Collectible(Collectibles.coin, Kongs.chunky, lambda l: True, None, 3),  # By DK Portal
+        Collectible(Collectibles.coin, Kongs.chunky, lambda l: True, None, 3),  # In river
+        Collectible(Collectibles.coin, Kongs.any, lambda l: l.shockwave and ((l.handstand and l.lanky) or (l.twirl and l.tiny)), None, 1),  # Rainbow coin
     ],
     Regions.JapesBaboonBlast: [
         Collectible(Collectibles.bunch, Kongs.donkey, lambda l: True, None, 2),
 
+        Collectible(Collectibles.coin, Kongs.donkey, lambda l: True, None, 2),
+
     ],
     Regions.JapesBeyondCoconutGate1: [
         Collectible(Collectibles.banana, Kongs.chunky, lambda l: True, None, 10),
+
+        Collectible(Collectibles.coin, Kongs.donkey, lambda l: True, None, 3),  # By DK BP
+        Collectible(Collectibles.coin, Kongs.tiny, lambda l: True, None, 3),  # By Tiny BP
 
     ],
     Regions.JapesBeyondCoconutGate2: [
@@ -68,6 +75,10 @@ LogicRegions = {
         Collectible(Collectibles.balloon, Kongs.tiny, lambda l: l.feather, None, 1),  # By hut
         Collectible(Collectibles.bunch, Kongs.chunky, lambda l: True, None, 1),  # On Cranky's Lab
 
+        Collectible(Collectibles.coin, Kongs.donkey, lambda l: True, None, 1),  # Between vines
+        Collectible(Collectibles.coin, Kongs.donkey, lambda l: l.coconut, None, 3),  # In rambi box cage
+        Collectible(Collectibles.coin, Kongs.diddy, lambda l: True, None, 3),  # By Diddy BP
+        Collectible(Collectibles.coin, Kongs.lanky, lambda l: True, None, 3),  # By Lanky BP
     ],
     Regions.JapesBeyondFeatherGate: [
         Collectible(Collectibles.bunch, Kongs.tiny, lambda l: l.mini, None, 3),  # In hollow trunk to the left
@@ -75,26 +86,34 @@ LogicRegions = {
         Collectible(Collectibles.bunch, Kongs.tiny, lambda l: True, None, 1),  # By beehive
         Collectible(Collectibles.bunch, Kongs.chunky, lambda l: True, None, 4),
 
+        Collectible(Collectibles.coin, Kongs.chunky, lambda l: True, None, 3),  # Behind stump
     ],
     Regions.JapesBeyondPeanutGate: [
         Collectible(Collectibles.balloon, Kongs.diddy, lambda l: l.peanut, None, 1),
         Collectible(Collectibles.bunch, Kongs.lanky, lambda l: l.grape, None, 1),
         Collectible(Collectibles.bunch, Kongs.tiny, lambda l: l.feather, None, 1),
 
+        Collectible(Collectibles.coin, Kongs.diddy, lambda l: True, None, 3),
+        Collectible(Collectibles.coin, Kongs.lanky, lambda l: True, None, 3),
     ],
     Regions.Mine: [
         Collectible(Collectibles.banana, Kongs.diddy, lambda l: True, None, 5),  # In stream
         Collectible(Collectibles.bunch, Kongs.diddy, lambda l: True, None, 1),  # On mound by peanut switch
-        Collectible(Collectibles.bunch, Kongs.diddy, lambda l: True, None, 1),  # On box by conveyors
-        Collectible(Collectibles.bunch, Kongs.diddy, lambda l: True, None, 1),  # In minecart
-        Collectible(Collectibles.balloon, Kongs.diddy, lambda l: l.peanut, None, 1),  # In conveyor room
+        Collectible(Collectibles.bunch, Kongs.diddy, lambda l: l.Slam, None, 1),  # On box by conveyors
+        Collectible(Collectibles.bunch, Kongs.diddy, lambda l: l.Slam and l.charge, None, 1),  # In minecart
+        Collectible(Collectibles.balloon, Kongs.diddy, lambda l: l.Slam and l.peanut, None, 1),  # In conveyor room
 
+        Collectible(Collectibles.coin, Kongs.diddy, lambda l: True, None, 1),  # On bridge to switch
+        Collectible(Collectibles.coin, Kongs.diddy, lambda l: True, None, 1),  # On coal pile
+        Collectible(Collectibles.coin, Kongs.diddy, lambda l: l.charge, None, 1),  # Next to conveyor control
+        Collectible(Collectibles.coin, Kongs.diddy, lambda l: l.Slam, None, 1),  # Under conveyors
     ],
     Regions.JapesLankyCave: [
         Collectible(Collectibles.bunch, Kongs.lanky, lambda l: True, None, 2),  # On steps
         Collectible(Collectibles.bunch, Kongs.lanky, lambda l: True, None, 2),  # On pegs
         Collectible(Collectibles.balloon, Kongs.lanky, lambda l: l.grape, None, 1),
 
+        Collectible(Collectibles.coin, Kongs.lanky, lambda l: True, None, 2),
     ],
     Regions.BeyondRambiGate: [
         Collectible(Collectibles.banana, Kongs.lanky, lambda l: True, None, 5),
@@ -103,15 +122,19 @@ LogicRegions = {
         Collectible(Collectibles.bunch, Kongs.chunky, lambda l: True, None, 1),
         Collectible(Collectibles.balloon, Kongs.chunky, lambda l: l.pineapple, None, 3),
 
+        Collectible(Collectibles.coin, Kongs.tiny, lambda l: True, None, 5),  # In water by fairy
     ],
     Regions.TinyHive: [
         Collectible(Collectibles.banana, Kongs.tiny, lambda l: True, None, 8),
         Collectible(Collectibles.balloon, Kongs.tiny, lambda l: l.feather, None, 1),
 
+        Collectible(Collectibles.coin, Kongs.tiny, lambda l: True, None, 2),
     ],
     Regions.JapesCatacomb: [
         Collectible(Collectibles.banana, Kongs.chunky, lambda l: True, None, 5),
         Collectible(Collectibles.bunch, Kongs.chunky, lambda l: True, None, 2),
 
+        Collectible(Collectibles.coin, Kongs.tiny, lambda l: True, None, 3),
+        Collectible(Collectibles.coin, Kongs.chunky, lambda l: True, None, 3),
     ]
 }

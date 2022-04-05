@@ -50,6 +50,7 @@ class Region:
         self.name = name
         self.level = level
         self.tagbarrel = tagbarrel
+        self.deathwarp = None
         self.locations = locations
         self.events = events
         self.exits = transitionFronts  # In the context of a region, exits are how you leave the region
@@ -61,12 +62,12 @@ class Region:
         if deathwarp is not None:
             # If deathwarp is itself an exit class (necessary when deathwarp requires custom logic) just add it directly
             if isinstance(deathwarp, TransitionFront):
-                self.exits.append(deathwarp)
+                self.deathwarp = deathwarp
             else:
                 # If deathwarp is -1, indicates to use the default value for it, which is the starting area of the level
                 if deathwarp == -1:
                     deathwarp = self.GetDefaultDeathwarp()
-                self.exits.append(TransitionFront(deathwarp, lambda l: True))
+                self.deathwarp = TransitionFront(deathwarp, lambda l: True)
 
         # Initially assume no access from any kong
         self.ResetAccess()

@@ -27,9 +27,10 @@ from randomizer.ShuffleWarps import shuffleWarps
 def GetExitLevelExit(settings, region):
     """Get the exit that using the "Exit Level" button will take you to."""
     level = region.level
-    if settings.shuffle_loading_zones == "all" and region.restart is not None:
-        return ShuffleExits.ShufflableExits[region.restart].shuffledId
-    elif level == Levels.JungleJapes:
+    # For now, restarts will not be randomized
+    # if settings.shuffle_loading_zones == "all" and region.restart is not None:
+    #     return ShuffleExits.ShufflableExits[region.restart].shuffledId
+    if level == Levels.JungleJapes:
         return ShuffleExits.ShufflableExits[Transitions.JapesToIsles].shuffledId
     elif level == Levels.AngryAztec:
         return ShuffleExits.ShufflableExits[Transitions.AztecToIsles].shuffledId
@@ -148,6 +149,15 @@ def GetAccessibleLocations(settings, ownedItems, searchType=SearchMode.GetReacha
                             continue
                     # If a region is accessible through this exit and has not yet been added, add it to the queue to be visited eventually
                     if destination not in addedRegions and exit.logic(LogicVariables):
+                        addedRegions.append(destination)
+                        newRegion = Logic.Regions[destination]
+                        newRegion.id = destination
+                        regionPool.append(newRegion)
+                # Deathwarps currently send to the vanilla destination
+                if region.deathwarp is not None:
+                    destination = region.deathwarp.dest
+                    # If a region is accessible through this exit and has not yet been added, add it to the queue to be visited eventually
+                    if destination not in addedRegions and region.deathwarp.logic(LogicVariables):
                         addedRegions.append(destination)
                         newRegion = Logic.Regions[destination]
                         newRegion.id = destination
