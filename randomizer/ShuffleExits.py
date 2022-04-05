@@ -227,11 +227,13 @@ def UpdateLevelProgression(settings: Settings):
     settings.EntryGBs = newEntryGBs
     settings.BossBananas = newBossBananas
 
+
 def ShuffleLevelExits(settings, frontpool, backpool):
     """Shuffle exits within a  pool."""
     random.shuffle(frontpool)
 
     # For each back exit, select a random valid front entrance to attach to it
+    # Assuming there are no inherently invalid level orders, but if there are, validation will check after this
     while len(backpool) > 0:
         backId = backpool.pop(0)
         backExit = ShufflableExits[backId]
@@ -241,9 +243,9 @@ def ShuffleLevelExits(settings, frontpool, backpool):
         # Add connection between selected exits
         frontExit.shuffled = True
         frontExit.shuffledId = backId
-        print("Assigned " + frontExit.name + " --> " + backExit.name)
+        # print("Assigned " + frontExit.name + " --> " + backExit.name)
         # Add reverse connection
         backReverse = ShufflableExits[backExit.back.reverse]
         backReverse.shuffled = True
         backReverse.shuffledId = frontExit.back.reverse
-        print("Assigned " + ShufflableExits[backExit.back.reverse].name + " --> " + ShufflableExits[frontExit.back.reverse].name)
+        # print("Assigned " + ShufflableExits[backExit.back.reverse].name + " --> " + ShufflableExits[frontExit.back.reverse].name)
