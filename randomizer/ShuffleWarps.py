@@ -11,7 +11,7 @@ def getShuffleMaps():
     """Produce list of maps which contain a bananaport swap."""
     lst = []
     for x in BananaportVanilla.values():
-        if not x.map_id in lst:
+        if x.map_id not in lst:
             lst.append(x.map_id)
     return lst
 
