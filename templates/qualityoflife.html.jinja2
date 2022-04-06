@@ -2,93 +2,125 @@
     <div class="row">
         <div class="col border">
             <h3>Quality of Life</h3>
-            <div class="form-check form-switch w-75">
-                <label title="Training Barrels complete, start with Simian Slam, spawn in DK Isles, Japes lobby entrance open.">
-                    <input class="form-check-input"
-                           type="checkbox"
-                           name="fast_start_beginning_of_game"
-                           value="True"
-                           checked/>
-                    Fast Start - Beginning of Game
-                </label>
-            </div>
-            <div class="form-check form-switch w-75">
-                <label title="This option enables the following quality of life changes to the game: &#013;- Removes first time text. &#013;- Removes first time boss cutscenes. &#013;- Removes first time area visit cutscenes. &#013;- Removes banana dance cutscenes. &#013;- Remove cutscenes from the startup sequence. &#013;- Story Skip option in the main menu set to On by default.">
-                    <input class="form-check-input"
-                           type="checkbox"
-                           name="quality_of_life"
-                           value="True"
-                           checked/>
-                    Misc Changes Changes
-                </label>
-            </div>
-            <div class="form-check form-switch w-75">
-                <label title="This option will allow you to switch kongs almost anywhere using DPad left or DPad right. &#013;You will still need to unlock the kong you want if Unlock All Kongs isn't enabled. &#013;You cannot switch kongs in rooms or areas that would otherwise break the puzzle.">
-                    <input class="form-check-input"
-                           type="checkbox"
-                           name="enable_tag_anywhere"
-                           value="True"/>
-                    Enable Tag Anywhere
-                </label>
-            </div>
-            <div class="form-check form-switch w-75">
-                <label title="This option will be expanded in the future, for now it's general portal hints along with funny messages.">
-                    <input class="form-check-input"
-                           type="checkbox"
-                           name="wrinkly_hints"
-                           value="True"/>
-                    Wrinkly Hints
-                </label>
-            </div>
-            <div class="form-check form-switch w-75">
-                <label title="Displays an FPS counter tracked by the game itself.">
-                    <input class="form-check-input"
-                           type="checkbox"
-                           name="fps_display"
-                           value="True"/>
-                    FPS Display
-                </label>
-            </div>
-            <div class="form-check form-switch w-75">
-                <label title="Warping to the DK isles is directly allowed from the pause menu.">
-                    <input class="form-check-input"
-                           type="checkbox"
-                           name="warp_to_isles"
-                           value="True"
-                           checked/>
-                    Warp to Isles menu option
-                </label>
-            </div>
-            <div class="form-check form-switch w-75">
-                <label title="This option will shorten the time it takes to beat Hideout Helm with the following changes: &#013;- You will spawn in the Blast o Matic room. &#013;- Opens the roman numeral doors to each Kong's room. &#013;- The gates in front of the music pads are gone.">
-                    <input class="form-check-input"
-                           type="checkbox"
-                           name="fast_start_hideout_helm"
-                           value="True"
-                           checked/>
-                    Fast Start - Hideout Helm
-                </label>
-            </div>
-            <div class="form-check form-switch w-75">
-                <label title="Numbers are displayed on the outside portal of a troff n scoff zone of the amount of bananas still required.">
-                    <input class="form-check-input"
-                           type="checkbox"
-                           name="portal_numbers"
-                           value="True"
-                           checked/>
-                    Troff n Scoff portal numbers
-                </label>
-            </div>
-            <div class="form-check form-switch w-75">
-                <label title="Displays a count of how many moves are still available in a shop.">
-                    <input class="form-check-input"
-                           type="checkbox"
-                           name="shop_indicator"
-                           value="True"
-                           checked/>
-                    Shop Indicator
-                </label>
-            </div>
+            <table class="table table-striped table-dark">
+                <tr>
+                    <td>
+                        <div class="form-check form-switch w-75">
+                            <label title="Training Barrels complete, start with Simian Slam, spawn in DK Isles, Japes lobby entrance open.">
+                                <input class="form-check-input"
+                                       type="checkbox"
+                                       name="fast_start_beginning_of_game"
+                                       value="True"/>
+                                Fast Start - Beginning of Game
+                            </label>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <div class="form-check form-switch w-75">
+                            <label title="This option enables the following quality of life changes to the game: &#013;- Removes first time text. &#013;- Removes first time boss cutscenes. &#013;- Removes first time area visit cutscenes. &#013;- Removes banana dance cutscenes. &#013;- Remove cutscenes from the startup sequence. &#013;- Story Skip option in the main menu set to On by default.">
+                                <input class="form-check-input"
+                                       type="checkbox"
+                                       name="quality_of_life"
+                                       value="True"/>
+                                Misc Changes Changes
+                            </label>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <div class="form-check form-switch w-75">
+                            <label title="This option will allow you to switch kongs almost anywhere using DPad left or DPad right. &#013;You will still need to unlock the kong you want if Unlock All Kongs isn't enabled. &#013;You cannot switch kongs in rooms or areas that would otherwise break the puzzle.">
+                                <input class="form-check-input"
+                                       type="checkbox"
+                                       name="enable_tag_anywhere"
+                                       value="True"/>
+                                Enable Tag Anywhere
+                            </label>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <div class="form-check form-switch w-75">
+                            <label title="This option will be expanded in the future, for now it's general portal hints along with funny messages.">
+                                <input class="form-check-input"
+                                       type="checkbox"
+                                       name="wrinkly_hints"
+                                       value="True"/>
+                                Wrinkly Hints
+                            </label>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <div class="form-check form-switch w-75">
+                            <label title="Displays an FPS counter tracked by the game itself.">
+                                <input class="form-check-input"
+                                       type="checkbox"
+                                       name="fps_display"
+                                       value="True"/>
+                                FPS Display
+                            </label>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <div class="form-check form-switch w-75">
+                            <label title="Warping to the DK isles is directly allowed from the pause menu.">
+                                <input class="form-check-input"
+                                       type="checkbox"
+                                       name="warp_to_isles"
+                                       value="True"/>
+                                Warp to Isles menu option
+                            </label>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <div class="form-check form-switch w-75">
+                            <label title="This option will shorten the time it takes to beat Hideout Helm with the following changes: &#013;- You will spawn in the Blast o Matic room. &#013;- Opens the roman numeral doors to each Kong's room. &#013;- The gates in front of the music pads are gone.">
+                                <input class="form-check-input"
+                                       type="checkbox"
+                                       name="fast_start_hideout_helm"
+                                       value="True"/>
+                                Fast Start - Hideout Helm
+                            </label>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <div class="form-check form-switch w-75">
+                            <label title="Numbers are displayed on the outside portal of a troff n scoff zone of the amount of bananas still required.">
+                                <input class="form-check-input"
+                                       type="checkbox"
+                                       name="portal_numbers"
+                                       value="True"/>
+                                Troff n Scoff portal numbers
+                            </label>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <div class="form-check form-switch w-75">
+                            <label title="Displays a count of how many moves are still available in a shop.">
+                                <input class="form-check-input"
+                                       type="checkbox"
+                                       name="shop_indicator"
+                                       value="True"/>
+                                Shop Indicator
+                            </label>
+                        </div>
+                    </td>
+                </tr>
+            </table>
         </div>
     </div>
 </div>
