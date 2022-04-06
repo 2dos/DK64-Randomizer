@@ -2,65 +2,88 @@
     <div class="row">
         <div class="col border">
             <h3>Global Settings</h3>
-            <div class="form-check form-switch w-75">
-                <label title="This option will make all 5 kongs available from the start without freeing them. &#013;The golden bananas awarded when freeing specific kongs still must be collected even with this option on. &#013;If using Level Progression Randomizer and playing through glitchless, this option is forced on.">
-                    <input class="form-check-input"
-                           type="checkbox"
-                           id="unlock_all_kongs"
-                           name="unlock_all_kongs"
-                           value="True"
-                           checked
-                           disabled/>
-                    Unlock All Kongs
-                </label>
-            </div>
-            <div class="form-check form-switch w-75">
-                <label title="This option will make all moves available from the start without purchasing them. &#013;Includes all Cranky, all Candy, and almost all Funky purchasables. &#013;Does not include access to JetPac in Cranky; you will still need 15 banana medals. &#013;Does not include snipe scope to reduce 1st person camera lag. &#013;Is still purchasable. &#013;Does not include the shockwave attack from the banana fairy queen.">
-                    <input class="form-check-input"
-                           type="checkbox"
-                           name="unlock_all_moves"
-                           value="True"/>
-                    Unlock All Purchasable Moves
-                </label>
-            </div>
-            <div class="form-check form-switch w-75">
-                <label title="This option makes the fairy camera and shockwave attack available from the start. &#013;Normally obtainable by visiting the Banana Fairy Queen with Tiny as Mini Monkey.">
-                    <input class="form-check-input"
-                           type="checkbox"
-                           name="unlock_fairy_shockwave"
-                           value="True"/>
-                    Unlock Fairy Camera and Shockwave Attack
-                </label>
-            </div>
-            <div class="form-check form-switch w-75">
-                <label title="You do not need to collect 4 crowns to collect Key 8.">
-                    <input class="form-check-input"
-                           type="checkbox"
-                           name="crown_door_open"
-                           value="True"
-                           checked/>
-                    Open Crown Door
-                </label>
-            </div>
-            <div class="form-check form-switch w-75">
-                <label title="You do not need to collect the Nintendo and Rareware coin to collect Key 8. &#013;You will not be able to collect the GB from DK Arcade with this option enabled.">
-                    <input class="form-check-input"
-                           type="checkbox"
-                           name="coin_door_open"
-                           value="True"
-                           checked/>
-                    Open Nintendo + Rareware Coin Door
-                </label>
-            </div>
-            <div class="form-check form-switch w-75">
-                <label title="Bonus Barrels auto complete.">
-                    <input class="form-check-input"
-                           type="checkbox"
-                           name="bonus_barrel_auto_complete"
-                           value="True"/>
-                    Autocomplete Bonus Barrels
-                </label>
-            </div>
+            <table class="table table-striped table-dark">
+                <tr>
+                    <td>
+                        <div class="form-check form-switch w-75">
+                            <label title="This option will make all 5 kongs available from the start without freeing them. &#013;The golden bananas awarded when freeing specific kongs still must be collected even with this option on. &#013;If using Level Progression Randomizer and playing through glitchless, this option is forced on.">
+                                <input class="form-check-input"
+                                       type="checkbox"
+                                       id="unlock_all_kongs"
+                                       name="unlock_all_kongs"
+                                       value="True"
+                                       disabled/>
+                                Unlock All Kongs
+                            </label>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <div class="form-check form-switch w-75">
+                            <label title="This option will make all moves available from the start without purchasing them. &#013;Includes all Cranky, all Candy, and almost all Funky purchasables. &#013;Does not include access to JetPac in Cranky; you will still need 15 banana medals. &#013;Does not include snipe scope to reduce 1st person camera lag. &#013;Is still purchasable. &#013;Does not include the shockwave attack from the banana fairy queen.">
+                                <input class="form-check-input"
+                                       type="checkbox"
+                                       name="unlock_all_moves"
+                                       value="True"/>
+                                Unlock All Purchasable Moves
+                            </label>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <div class="form-check form-switch w-75">
+                            <label title="This option makes the fairy camera and shockwave attack available from the start. &#013;Normally obtainable by visiting the Banana Fairy Queen with Tiny as Mini Monkey.">
+                                <input class="form-check-input"
+                                       type="checkbox"
+                                       name="unlock_fairy_shockwave"
+                                       value="True"/>
+                                Unlock Fairy Camera and Shockwave Attack
+                            </label>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <div class="form-check form-switch w-75">
+                            <label title="You do not need to collect 4 crowns to collect Key 8.">
+                                <input class="form-check-input"
+                                       type="checkbox"
+                                       name="crown_door_open"
+                                       value="True"/>
+                                Open Crown Door
+                            </label>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <div class="form-check form-switch w-75">
+                            <label title="You do not need to collect the Nintendo and Rareware coin to collect Key 8. &#013;You will not be able to collect the GB from DK Arcade with this option enabled.">
+                                <input class="form-check-input"
+                                       type="checkbox"
+                                       name="coin_door_open"
+                                       value="True"/>
+                                Open Nintendo + Rareware Coin Door
+                            </label>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <div class="form-check form-switch w-75">
+                            <label title="Bonus Barrels auto complete.">
+                                <input class="form-check-input"
+                                       type="checkbox"
+                                       name="bonus_barrel_auto_complete"
+                                       value="True"/>
+                                Auto Complete Bonus Barrels
+                            </label>
+                        </div>
+                    </td>
+                </tr>
+            </table>
         </div>
         <div class="col border">
             <h3>Game Length Settings</h3>
