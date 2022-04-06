@@ -255,6 +255,7 @@
 
 .definelabel CBTurnedInArray, 0x807FC930
 .definelabel charspawnerflags, 0x80755DA8
+.definelabel songData, 0x80745658
 
 //hack data
 .definelabel TestVariable, 0x807FFFFC

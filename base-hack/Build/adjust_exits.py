@@ -51,7 +51,7 @@ exit_adjustments = [
         ],
     },
     {
-        "containing_map": 112,
+        "containing_map": 112,  # DDC Crypt
         "exits": [
             {
                 # Minecart
@@ -60,6 +60,49 @@ exit_adjustments = [
                 "y": 80,
                 "z": 2506,
             }
+        ],
+    },
+    {
+        "containing_map": 0x22,  # Isles
+        "exits": [
+            {
+                # Aztec Lobby
+                "exit_index": 3,
+                "x": 3464,
+                "y": 1040,
+                "z": 1716,
+            }
+        ],
+    },
+    {
+        "containing_map": 0x1A,  # Factory
+        "exits": [
+            {
+                # Crusher
+                "exit_index": 8,
+                "x": 814,
+                "y": 8,
+                "z": 1334,
+            }
+        ],
+    },
+    {
+        "containing_map": 0x57,  # Castle
+        "exits": [
+            {
+                # Tree
+                "exit_index": 15,
+                "x": 1293,
+                "y": 472,
+                "z": 238,
+            },
+            {
+                # Ballroom
+                "exit_index": 11,
+                "x": 1808,
+                "y": 1406,
+                "z": 1270,
+            },
         ],
     },
 ]

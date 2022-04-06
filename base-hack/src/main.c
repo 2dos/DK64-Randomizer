@@ -44,6 +44,13 @@ void cFuncLoop(void) {
 	}
 	displayNumberOnTns();
 	displayShopIndicator();
+	if (Rando.music_rando_on) {
+		if (CurrentMap == 0x28) {
+			if (ObjectModel2Timer == 5) {
+				preventSongPlaying = 0;
+			}
+		}
+	}
 	cancelMoveSoftlock();
 	callParentMapFilter();
 	recolorKongControl();
@@ -54,6 +61,7 @@ void cFuncLoop(void) {
 		forceBossKong();
 	}
 	adjustGalleonShopHeights();
+	changeHelmLZ();
 	if (Rando.quality_of_life) {
 		// DKTVKong = 0;
 		// if (CurrentMap == NINTENDO_LOGO) {
