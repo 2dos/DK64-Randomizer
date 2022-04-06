@@ -7,7 +7,7 @@
 void changeHelmLZ(void) {
 	if (Rando.fast_start_helm) {
 		if (CurrentMap == HELM_LOBBY) {
-			if (ObjectModel2Timer == 1) {
+			if (ObjectModel2Timer == 3) {
 				for (int i = 0; i < TriggerSize; i++) {
 					trigger* focused_trigger = getObjectArrayAddr(TriggerArray,TRIGGER_ELEMENT_SIZE,i);
 					if (focused_trigger->type == 9) {
