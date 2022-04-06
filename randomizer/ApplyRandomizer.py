@@ -245,7 +245,7 @@ def patching_response(responded_data):
     js.document.getElementById("settings_table").innerHTML = ""
     table = js.document.getElementById("settings_table")
     for setting, value in loaded_settings.items():
-        if setting != "seed":
+        if setting not in ["seed", "krool_phases", "blocker_golden_bananas", "troff_n_scoff_bananas", "krool_keys_required"]:
             row = table.insertRow(-1)
             name = row.insertCell(0)
             description = row.insertCell(1)

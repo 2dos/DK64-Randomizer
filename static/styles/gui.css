@@ -12,6 +12,7 @@ button,
 .form-switch {
   transform: scale(1.3);
 }
+input[type="number"]:disabled{background-color:rgb(70, 64, 64);}
 body {
   background: linear-gradient(0deg, #003d03 0%, #003d03 100%);
   background-image: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)),
@@ -25,8 +26,8 @@ body {
   text-align: center;
   margin-left: auto;
   margin-right: auto;
-  margin-bottom: 5px;
-  margin-top: 5px;
+  margin-bottom: 20px;
+  margin-top: 20px;
 }
 
 .center-div {

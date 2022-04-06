@@ -13,7 +13,9 @@
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-slider/11.0.2/bootstrap-slider.min.js"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-slider/11.0.2/css/bootstrap-slider.min.css"
           rel="stylesheet"/>
-    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
+    <link rel="stylesheet"
+          type="text/css"
+          href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
     <link href="static/styles/styles.css" rel="stylesheet" />
     <link href="./static/styles/gui.css" rel="stylesheet" type="text/css" />
 </head>
@@ -70,7 +72,8 @@
                              id="patchprogress"
                              style="width: 0%;">
                         </div>
-                        <small id="progress-text" style="color:black"
+                        <small id="progress-text"
+                               style="color:black"
                                class="justify-content-center d-flex position-absolute w-100">Initalizing</small>
                     </div>
                 </div>
@@ -171,8 +174,11 @@
                                                 <td>
                                                     <div class="form-group row">
                                                         <label for="seed" class="col-sm-4 col-form-label">Seed:</label>
-                                                        <div class="col-sm-4">
-                                                            <input name="seed" id="seed" style="height: 35px" />
+                                                        <div class="col-sm-5">
+                                                            <input name="seed"
+                                                                   id="seed"
+                                                                   style="height: 35px"
+                                                                   placeholder="Auto fills when empty"/>
                                                         </div>
                                                     </div>
                                                 </td>
@@ -188,16 +194,34 @@
                                             </table>
                                         </div>
                                         <div class="row">
-                                            <div class="form-check form-switch" id="downloadsettings">
-                                                <label title="Download generated ROM as patch file.">
-                                                    <input class="form-check-input"
-                                                           type="checkbox"
-                                                           id="download_patch_file"
-                                                           name="download_patch_file"
-                                                           value="True"/>
-                                                    Download Patch File
-                                                </label>
-                                            </div>
+                                            <table>
+                                                <tr>
+                                                    <td>
+                                                        <div class="form-check form-switch w-75" id="downloadsettings">
+                                                            <label title="Download generated ROM as patch file." style="font-size: 13px">
+                                                                <input class="form-check-input"
+                                                                       type="checkbox"
+                                                                       id="download_patch_file"
+                                                                       name="download_patch_file"
+                                                                       value="True"/>
+                                                                Generate Patch File
+                                                            </label>
+                                                        </div>
+                                                    </td>
+                                                    <td>
+                                                        <div class="form-check form-switch w-75">
+                                                            <label title="This option enables spoiler log files to be created on randomizer generation." style="font-size: 13px">
+                                                                <input class="form-check-input"
+                                                                       type="checkbox"
+                                                                       id="generate_spoilerlog"
+                                                                       name="generate_spoilerlog"
+                                                                       value="True"/>
+                                                                Generate Spoiler Log
+                                                            </label>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            </table>
                                         </div>
                                         <div class="row">
                                             <label for="input-file-rom_1" id="romlabel" class="form-label mt-4">ROM File</label>

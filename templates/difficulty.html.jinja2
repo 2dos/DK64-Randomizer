@@ -41,76 +41,88 @@
             <div class="form-check form-switch w-75">
                 <label title="Randomize Required B-Locker totals">
                     <input class="form-check-input"
-                            type="checkbox"
-                            name="randomize_blocker_required_amounts"
-                            id="randomize_blocker_required_amounts"
-                            value="True"/>
+                           type="checkbox"
+                           name="randomize_blocker_required_amounts"
+                           id="randomize_blocker_required_amounts"
+                           value="True"/>
                     Random B-Lockers
                 </label>
             </div>
             <div class="form-check form-switch w-75">
                 <label title="Randomize Required CB totals">
                     <input class="form-check-input"
-                            type="checkbox"
-                            name="randomize_cb_required_amounts"
-                            id="randomize_cb_required_amounts"
-                            value="True"/>
+                           type="checkbox"
+                           name="randomize_cb_required_amounts"
+                           id="randomize_cb_required_amounts"
+                           value="True"/>
                     Random Troff Bananas
                 </label>
             </div>
         </div>
         <div class="col border">
             <h3>Damage Options</h3>
-            <div class="checkboxes">
-                <div>
-                    Damage
-                    <select name="damage_amount"
-                            style="width: 60%;"
-                            class="form-select center-div"
-                            aria-label="Damage Options">
-                        <option selected value="default">
-                            Normal
-                        </option>
-                        <option value="ohko">
-                            OHKO
-                        </option>
-                        <option value="double">
-                            Double Damage
-                        </option>
-                        <option value="quad">
-                            Quad Damage
-                        </option>
-                    </select>
-                </div>
-                <div class="form-check form-switch w-75">
-                    <label title="Tag Barrels, Boss Fights, Candy Upgrades etc don't heal you like they normally would.">
-                        <input class="form-check-input"
-                               type="checkbox"
-                               name="no_healing"
-                               value="False"/>
-                        No Heals
-                    </label>
-                </div>
-                <div class="form-check form-switch w-75">
-                    <label title="No melons are dropped from enemies." style="text-align: left;">
-                        <input class="form-check-input"
-                               type="checkbox"
-                               name="no_melons"
-                               value="False"/>
-                        No Melon Slice Drops
-                    </label>
-                </div>
-                <div class="form-check form-switch w-75">
-                    <label title="Enabling this setting means logic may expect you to do some difficult shooting challenges without help. If this setting is disabled, then the following requirements exist: &#013; * Lanky's attic in Fungi Forest requires homing ammo. &#013; * Donkey's 5 door cabin in Crystal Caves requires homing ammo. &#013; * Tiny's trash can in Creepy Castle requires homing ammo &#013; * Chunky's tree banana in Creepy Castle requires sniper scope. (This requirement can be skipped by shooting from below the switch.) &#013; * Chunky's shooting barrel in Hideout Helm requires either sniper scope or homing ammo."
-                           style="text-align: left;">
-                        <input class="form-check-input"
-                               type="checkbox"
-                               name="hard_shooting"
-                               value="False"/>
-                        Hard Shooting
-                    </label>
-                </div>
+            <div>
+                Damage
+                <select name="damage_amount"
+                        style="width: 60%;"
+                        class="form-select center-div"
+                        aria-label="Damage Options">
+                    <option selected value="default">
+                        Normal
+                    </option>
+                    <option value="ohko">
+                        OHKO
+                    </option>
+                    <option value="double">
+                        Double Damage
+                    </option>
+                    <option value="quad">
+                        Quad Damage
+                    </option>
+                </select>
             </div>
+            <table class="table table-striped table-dark">
+                <tr>
+                    <td>
+                        <div class="form-check form-switch w-75">
+                            <label title="Tag Barrels, Boss Fights, Candy Upgrades etc don't heal you like they normally would.">
+                                <input class="form-check-input"
+                                       type="checkbox"
+                                       name="no_healing"
+                                       value="False"/>
+                                No Heals
+                            </label>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <div class="form-check form-switch w-75">
+                            <label title="No melons are dropped from enemies." style="text-align: left;">
+                                <input class="form-check-input"
+                                       type="checkbox"
+                                       name="no_melons"
+                                       value="False"/>
+                                No Melon Slice Drops
+                            </label>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <div class="form-check form-switch w-75">
+                            <label title="Enabling this setting means logic may expect you to do some difficult shooting challenges without help. If this setting is disabled, then the following requirements exist: &#013; * Lanky's attic in Fungi Forest requires homing ammo. &#013; * Donkey's 5 door cabin in Crystal Caves requires homing ammo. &#013; * Tiny's trash can in Creepy Castle requires homing ammo &#013; * Chunky's tree banana in Creepy Castle requires sniper scope. (This requirement can be skipped by shooting from below the switch.) &#013; * Chunky's shooting barrel in Hideout Helm requires either sniper scope or homing ammo."
+                                   style="text-align: left;">
+                                <input class="form-check-input"
+                                       type="checkbox"
+                                       name="hard_shooting"
+                                       value="False"/>
+                                Hard Shooting
+                            </label>
+                        </div>
+                    </td>
+                </tr>
+            </table>
         </div>
     </div>
 </div>
