@@ -162,7 +162,6 @@ def preset_select_changed(event):
             print(e)
 
 
-
 @bind("click", "randomize_blocker_required_amounts")
 def toggle_b_locker_boxes(event):
     """Toggle the textboxes for BLockers."""
