@@ -117,7 +117,26 @@ def ShuffleExitsInPool(settings, frontpool, backpool):
     backpool.extend(TagLeaves)
     backpool.extend(TagNonLeaves)
 
-    random.shuffle(frontpool)
+    # Coupled is more restrictive and need to also order the front pool to lower rate of failures
+    if not settings.decoupled_loading_zones:
+        NonTagRegions = [x for x in frontpool if not Logic.Regions[ShufflableExits[x].back.regionId].tagbarrel]
+        NonTagLeaves = [x for x in NonTagRegions if len(Logic.Regions[ShufflableExits[x].back.regionId].exits) == 1]
+        random.shuffle(NonTagLeaves)
+        NonTagNonLeaves = [x for x in NonTagRegions if x not in NonTagLeaves]
+        random.shuffle(NonTagNonLeaves)
+
+        TagRegions = [x for x in frontpool if x not in NonTagRegions]
+        TagLeaves = [x for x in TagRegions if len(Logic.Regions[ShufflableExits[x].back.regionId].exits) == 1]
+        random.shuffle(TagLeaves)
+        TagNonLeaves = [x for x in TagRegions if x not in TagLeaves]
+        random.shuffle(TagNonLeaves)
+
+        frontpool = NonTagLeaves
+        frontpool.extend(NonTagNonLeaves)
+        frontpool.extend(TagLeaves)
+        frontpool.extend(TagNonLeaves)
+    else:
+        random.shuffle(frontpool)
 
     # For each back exit, select a random valid front entrance to attach to it
     while len(backpool) > 0:
@@ -130,6 +149,9 @@ def ShuffleExitsInPool(settings, frontpool, backpool):
             origins = [x for x in origins if ShufflableExits[ShufflableExits[x].back.reverse].category is not None]
             # Also validate the entry & region kongs overlap in reverse direction
             origins = [x for x in origins if ShufflableExits[backExit.back.reverse].entryKongs.issuperset(ShufflableExits[ShufflableExits[x].back.reverse].regionKongs)]
+        if len(origins) == 0:
+            print("Failed to connect to " + backExit.name + ", found no suitable origins!")
+            raise Ex.EntranceOutOfDestinations
         # Select a random origin
         for frontId in origins:
             frontExit = ShufflableExits[frontId]
@@ -144,6 +166,9 @@ def ShuffleExitsInPool(settings, frontpool, backpool):
                 break
         if not frontExit.shuffled:
             print("Failed to connect to " + backExit.name + " from any of the remaining " + str(len(origins)) + " origins!")
+            raise Ex.EntranceOutOfDestinations
+        if len(frontpool) != len(backpool):
+            print("Length of frontpool " + len(frontpool) + " and length of backpool " + len(backpool) + " do not match!")
             raise Ex.EntranceOutOfDestinations
 
 
