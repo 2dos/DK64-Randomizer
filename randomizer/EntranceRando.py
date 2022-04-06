@@ -2,7 +2,6 @@
 import js
 
 from randomizer.Enums.Transitions import Transitions
-from randomizer.LogicClasses import TransitionBack
 from randomizer.MapsAndExits import GetExitId, GetMapId, MapExitTable, Maps
 from randomizer.Patcher import ROM
 from randomizer.Spoiler import Spoiler
