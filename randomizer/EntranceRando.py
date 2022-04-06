@@ -2,7 +2,7 @@
 import js
 
 from randomizer.Enums.Transitions import Transitions
-from randomizer.MapsAndExits import GetExitId, GetMapId, Maps
+from randomizer.MapsAndExits import GetExitId, GetMapId, MapExitTable, Maps
 from randomizer.Patcher import ROM
 from randomizer.Spoiler import Spoiler
 
@@ -99,17 +99,29 @@ def randomize_entrances(spoiler: Spoiler):
         ROM().write(GetMapId(shuffledBack.regionId))
         ROM().write(GetExitId(shuffledBack))
         # /* 0x06C */ unsigned short fungi_minecart_enter; // Same as "aztec_beetle_enter" but for the loading zone dictated by the name
-        shuffledBack = spoiler.shuffled_exit_data[Transitions.ForestMainToCarts]
-        ROM().write(GetMapId(shuffledBack.regionId))
-        ROM().write(GetExitId(shuffledBack))
+        if Transitions.ForestMainToCarts in spoiler.shuffled_exit_data:
+            shuffledBack = spoiler.shuffled_exit_data[Transitions.ForestMainToCarts]
+            ROM().write(GetMapId(shuffledBack.regionId))
+            ROM().write(GetExitId(shuffledBack))
+        else:
+            ROM().write(Maps.ForestMinecarts)
+            ROM().write(0)
         # /* 0x06E */ unsigned short fungi_minecart_exit; // Same as "aztec_beetle_enter" but for the loading zone dictated by the name
-        shuffledBack = spoiler.shuffled_exit_data[Transitions.ForestCartsToMain]
-        ROM().write(GetMapId(shuffledBack.regionId))
-        ROM().write(GetExitId(shuffledBack))
+        if Transitions.ForestCartsToMain in spoiler.shuffled_exit_data:
+            shuffledBack = spoiler.shuffled_exit_data[Transitions.ForestCartsToMain]
+            ROM().write(GetMapId(shuffledBack.regionId))
+            ROM().write(GetExitId(shuffledBack))
+        else:
+            ROM().write(Maps.FungiForest)
+            ROM().write(MapExitTable[Maps.FungiForest].index("From Minecart"))
         # /* 0x070 */ unsigned short japes_minecart_exit; // Same as "aztec_beetle_enter" but for the loading zone dictated by the name
-        shuffledBack = spoiler.shuffled_exit_data[Transitions.JapesCartsToMain]
-        ROM().write(GetMapId(shuffledBack.regionId))
-        ROM().write(GetExitId(shuffledBack))
+        if Transitions.JapesCartsToMain in spoiler.shuffled_exit_data:
+            shuffledBack = spoiler.shuffled_exit_data[Transitions.JapesCartsToMain]
+            ROM().write(GetMapId(shuffledBack.regionId))
+            ROM().write(GetExitId(shuffledBack))
+        else:
+            ROM().write(Maps.JungleJapes)
+            ROM().write(MapExitTable[Maps.JungleJapes].index("From Minecart"))
         # /* 0x072 */ unsigned short castle_minecart_exit; // Same as "aztec_beetle_enter" but for the loading zone dictated by the name
         shuffledBack = spoiler.shuffled_exit_data[Transitions.CastleCartsToCrypt]
         ROM().write(GetMapId(shuffledBack.regionId))
