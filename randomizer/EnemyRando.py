@@ -237,6 +237,12 @@ def randomize_enemies(spoiler: Spoiler):
                                     if new_enemy_id == Enemies.RoboKremling:
                                         ROM().seek(cont_map_spawner_address + spawner["offset"] + 0xB)
                                         ROM().writeMultipleBytes(0xC8, 1)
+                                    ROM().seek(cont_map_spawner_address + spawner["offset"] + 0xF)
+                                    default_scale = int.from_bytes(ROM().readBytes(1), "big")
+                                    if EnemyMetaData[new_enemy_id].size_cap > 0:
+                                        if default_scale > EnemyMetaData[new_enemy_id].size_cap:
+                                            ROM().seek(cont_map_spawner_address + spawner["offset"] + 0xF)
+                                            ROM().writeMultipleBytes(EnemyMetaData[new_enemy_id].size_cap, 1)
                                     min_speed = EnemyMetaData[new_enemy_id].min_speed
                                     max_speed = EnemyMetaData[new_enemy_id].max_speed
                                     if min_speed > 0 and max_speed > 0:
@@ -262,6 +268,12 @@ def randomize_enemies(spoiler: Spoiler):
                             if EnemyMetaData[new_enemy_id].air:
                                 ROM().seek(cont_map_spawner_address + spawner["offset"] + 0x6)
                                 ROM().writeMultipleBytes(300, 2)
+                            ROM().seek(cont_map_spawner_address + spawner["offset"] + 0xF)
+                            default_scale = int.from_bytes(ROM().readBytes(1), "big")
+                            if EnemyMetaData[new_enemy_id].size_cap > 0:
+                                if default_scale > EnemyMetaData[new_enemy_id].size_cap:
+                                    ROM().seek(cont_map_spawner_address + spawner["offset"] + 0xF)
+                                    ROM().writeMultipleBytes(EnemyMetaData[new_enemy_id].size_cap, 1)
                             min_speed = EnemyMetaData[new_enemy_id].min_speed
                             max_speed = EnemyMetaData[new_enemy_id].max_speed
                             if min_speed > 0 and max_speed > 0:

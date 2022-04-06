@@ -109,13 +109,14 @@ class Enemies(IntEnum):
 class EnemyData:
     """Information about the enemy."""
 
-    def __init__(self, *, aggro=1, min_speed=15, max_speed=150, crown_enabled=True, air=False):
+    def __init__(self, *, aggro=1, min_speed=15, max_speed=150, crown_enabled=True, air=False, size_cap=0):
         """Initialize with given parameters."""
         self.aggro = aggro
         self.min_speed = min_speed
         self.max_speed = max_speed
         self.crown_enabled = crown_enabled
         self.air = air
+        self.size_cap = size_cap
 
 
 EnemyMetaData = {
@@ -130,7 +131,7 @@ EnemyMetaData = {
     Enemies.KlaptrapPurple: EnemyData(),  #
     Enemies.KlaptrapRed: EnemyData(),  #
     Enemies.BeaverGold: EnemyData(),  #
-    Enemies.MushroomMan: EnemyData(aggro=4),
+    Enemies.MushroomMan: EnemyData(aggro=4, size_cap=60),
     Enemies.Ruler: EnemyData(),  #
     Enemies.RoboKremling: EnemyData(),  #
     Enemies.Kremling: EnemyData(),  #
@@ -142,7 +143,7 @@ EnemyMetaData = {
     Enemies.ZingerRobo: EnemyData(air=True),  #
     Enemies.Krossbones: EnemyData(),  #
     Enemies.Shuri: EnemyData(crown_enabled=False),  #
-    Enemies.Gimpfish: EnemyData(aggro=2, crown_enabled=False),
+    Enemies.Gimpfish: EnemyData(aggro=1, crown_enabled=False),
     Enemies.MrDice0: EnemyData(),  # Should be aggro 4, but I think this is because it normally spawns in the BHDM fight
     Enemies.SirDomino: EnemyData(),  #
     Enemies.MrDice1: EnemyData(),  #
@@ -151,7 +152,7 @@ EnemyMetaData = {
     Enemies.Bat: EnemyData(air=True),  #
     Enemies.EvilTomato: EnemyData(aggro=4, crown_enabled=False),
     Enemies.Ghost: EnemyData(),  #
-    Enemies.Pufftup: EnemyData(crown_enabled=False),  #
+    Enemies.Pufftup: EnemyData(crown_enabled=False, size_cap=40),  #
     Enemies.Kosha: EnemyData(),  #
     Enemies.GetOut: EnemyData(aggro=6, crown_enabled=False),
 }
