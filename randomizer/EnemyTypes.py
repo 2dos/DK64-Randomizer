@@ -109,22 +109,24 @@ class Enemies(IntEnum):
 class EnemyData:
     """Information about the enemy."""
 
-    def __init__(self, *, aggro=1, min_speed=15, max_speed=150):
+    def __init__(self, *, aggro=1, min_speed=15, max_speed=150, crown_enabled=True, air=False):
         """Initialize with given parameters."""
         self.aggro = aggro
         self.min_speed = min_speed
         self.max_speed = max_speed
+        self.crown_enabled = crown_enabled
+        self.air = air
 
 
 EnemyMetaData = {
     Enemies.BeaverBlue: EnemyData(),  #
-    Enemies.Book: EnemyData(aggro=6),
-    Enemies.ZingerCharger: EnemyData(),  #
+    Enemies.Book: EnemyData(aggro=6, crown_enabled=False, air=True),
+    Enemies.ZingerCharger: EnemyData(air=True),  #
     Enemies.Klobber: EnemyData(aggro=4),
     Enemies.Klump: EnemyData(),  #
     Enemies.Kaboom: EnemyData(aggro=4),
     Enemies.KlaptrapGreen: EnemyData(),  #
-    Enemies.ZingerLime: EnemyData(),  #
+    Enemies.ZingerLime: EnemyData(air=True),  #
     Enemies.KlaptrapPurple: EnemyData(),  #
     Enemies.KlaptrapRed: EnemyData(),  #
     Enemies.BeaverGold: EnemyData(),  #
@@ -137,19 +139,19 @@ EnemyMetaData = {
     Enemies.KasplatLanky: EnemyData(),  #
     Enemies.KasplatTiny: EnemyData(),  #
     Enemies.KasplatChunky: EnemyData(),  #
-    Enemies.ZingerRobo: EnemyData(),  #
+    Enemies.ZingerRobo: EnemyData(air=True),  #
     Enemies.Krossbones: EnemyData(),  #
-    Enemies.Shuri: EnemyData(),  #
-    Enemies.Gimpfish: EnemyData(aggro=2),
+    Enemies.Shuri: EnemyData(crown_enabled=False),  #
+    Enemies.Gimpfish: EnemyData(aggro=2, crown_enabled=False),
     Enemies.MrDice0: EnemyData(),  # Should be aggro 4, but I think this is because it normally spawns in the BHDM fight
     Enemies.SirDomino: EnemyData(),  #
     Enemies.MrDice1: EnemyData(),  #
     Enemies.FireballGlasses: EnemyData(aggro=35, min_speed=100, max_speed=255),  # 29 for if you want them to respond to the rabbit
     Enemies.SpiderSmall: EnemyData(),  #
-    Enemies.Bat: EnemyData(),  #
-    Enemies.EvilTomato: EnemyData(aggro=4),
+    Enemies.Bat: EnemyData(air=True),  #
+    Enemies.EvilTomato: EnemyData(aggro=4, crown_enabled=False),
     Enemies.Ghost: EnemyData(),  #
-    Enemies.Pufftup: EnemyData(),  #
+    Enemies.Pufftup: EnemyData(crown_enabled=False),  #
     Enemies.Kosha: EnemyData(),  #
-    Enemies.GetOut: EnemyData(aggro=6),
+    Enemies.GetOut: EnemyData(aggro=6, crown_enabled=False),
 }

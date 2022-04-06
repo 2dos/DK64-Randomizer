@@ -202,6 +202,18 @@ class Maps(IntEnum):
     HelmBarrelChunkyHidden = 209
     HelmBarrelChunkyShooting = 211
 
+    # Crowns
+    JapesCrown = 53
+    AztecCrown = 73
+    FactoryCrown = 155
+    GalleonCrown = 156
+    ForestCrown = 159
+    CavesCrown = 160
+    CastleCrown = 161
+    HelmCrown = 162
+    SnidesCrown = 158
+    LobbyCrown = 157
+
 
 RegionMapList = {
     # Isles
