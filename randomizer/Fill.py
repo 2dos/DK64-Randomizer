@@ -347,7 +347,7 @@ def AssumedFill(settings, itemsToPlace, validLocations, ownedItems=[]):
                 break
         if not itemShuffled:
             print("Failed placing item " + ItemList[item].name + " in any of remaining " + str(len(validLocations)) + " possible locations")
-            return itemsToPlace + 1
+            return len(itemsToPlace) + 1
     return 0
 
 
