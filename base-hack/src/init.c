@@ -2,6 +2,29 @@
 
 static const char exittoisles[] = "EXIT TO ISLES";
 
+typedef struct musicInfo {
+	/* 0x000 */ short data[0xB0];
+} musicInfo;
+
+void fixMusicRando(void) {
+	// Music
+	if (Rando.music_rando_on) {
+		int size = 0x160;
+		musicInfo* write_space = dk_malloc(size);
+		int* file_size;
+		*(int*)(&file_size) = size;
+		copyFromROM(0x1FFF000,write_space,&file_size,0,0,0,0);
+		for (int i = 0; i < 0xB0; i++) {
+			int subchannel = (write_space->data[i] & 6) >> 1;
+			int channel = (write_space->data[i] & 0x78) >> 3;
+			songData[i] &= 0xFF81;
+			songData[i] |= (subchannel & 3) << 1;
+			songData[i] |= (channel & 0xF) << 3;
+		}
+		complex_free(write_space);
+	}
+}
+
 void initHack(void) {
 	if ((LoadedHooks == 0) && (CurrentMap == 0x28)) {
 		DebugInfoOn = 1;
@@ -66,12 +89,7 @@ void initHack(void) {
 				priceTransplant();
 			}
 		}
-		// Music
-		if (Rando.music_rando_on) {
-			int* file_size;
-			*(int*)(&file_size) = 0x160;
-			copyFromROM(0x1FFF000,(int*)0x80745658,&file_size,0,0,0,0);
-		}
+		fixMusicRando();
 		// Style 6 Mtx
 		int base_mtx = 75;
 		style6Mtx[0x0] = base_mtx;

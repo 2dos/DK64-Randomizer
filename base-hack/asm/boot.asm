@@ -38,6 +38,13 @@ START:
 		LW t3, lo(mainASMFunctionJump) (t3)
 		LUI t4, 0x8060
 		SW t3, 0xC164 (t4) //store per frame hook
+		// Write Init Hook
+		LUI t3, hi(initHook)
+		LW t3, lo(initHook) (t3)
+		LUI t4, 0x8060
+		SW t3, 0xBDEC (t4) // Store Hook
+		SW r0, 0xBDF0 (t4) // Store NOP
+
 		LUI t3, 0
 		LUI t4, 1
 		LUI t5, 1
@@ -376,12 +383,6 @@ loadExtraHooks:
 	LUI t4, 0x8068
 	SW t3, 0x0D10 (t4) // Store Hook
 	SW r0, 0x0D14 (t4) // Store NOP
-
-	LUI t3, hi(initHook)
-	LW t3, lo(initHook) (t3)
-	LUI t4, 0x8060
-	SW t3, 0xBDEC (t4) // Store Hook
-	SW r0, 0xBDF0 (t4) // Store NOP
 
 	JR ra
 	NOP
