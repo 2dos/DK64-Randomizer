@@ -266,6 +266,7 @@ extern unsigned char FilePercentage;
 extern int FileGBCount;
 extern float FileScreenDLOffset;
 extern short CBTurnedInArray[8];
+extern short songData[0xB0];
 
 extern charspawner_flagstruct charspawnerflags[0x1F];
 

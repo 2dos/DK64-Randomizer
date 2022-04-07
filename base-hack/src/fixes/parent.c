@@ -15,6 +15,26 @@ void wipeParentSlot(int index) {
 	}
 }
 
+void shuffleParents(void) {
+	for (int i = 1; i < 0x12; i++) {
+		if (SubmapData[i].slot_populated) {
+			// Shuffle
+			int vacant = -1;
+			for (int j = 0; j < i; j++) {
+				if ((SubmapData[j].slot_populated == 0) && (SubmapData[j].parent_map != CurrentMap)) {
+					vacant = j;
+					wipeParentSlot(j);
+				}
+			}
+			if (vacant > -1) {
+				// Has previous vacant slot
+				dk_memcpy(&SubmapData[vacant].slot_populated, &SubmapData[i].slot_populated, 0xC0);
+				wipeMemory(&SubmapData[i].slot_populated,0xC0);
+			}
+		}
+	}
+}
+
 static const unsigned char main_levels[] = {0x7,0x26,0x1A,0x1E,0x30,0x48,0x57,0x11};
 static const unsigned char boss_maps[] = {0x8,0xC5,0x9A,0x6F,0x53,0xC4,0xC7};
 #define CUSTOM_CHAIN_LENGTH 0x12
@@ -56,9 +76,9 @@ void parentFilter(void) {
 						good_map = 1;
 					}
 				}
-				// 3
+				// 4
 				for (int j = 0; j < CUSTOM_CHAIN_LENGTH; j++) {
-					if ((custom_map_chain[j] == 5) || (custom_map_chain[j] == 15) || (custom_map_chain[j] == 0x2A)) {
+					if ((custom_map_chain[j] == 5) || (custom_map_chain[j] == 15) || (custom_map_chain[j] == 0x2A) || (custom_map_chain[j] == 1)) {
 						if (j > 0) {
 							if (curr_map == (custom_map_chain[j - 1])) {
 								good_map = 1;
@@ -97,9 +117,39 @@ void pushToCustomChain(int map) {
 	}
 }
 
+static const unsigned char banned_filter_non_boss_maps[] = {
+	1, // Funky's
+	2, // Arcade
+	5, // Cranky's
+	9, // Jetpac
+	15, // Snide's
+	0x19, // Candy's
+	0x2A, // T&S
+	0x33, // Mech Fish
+};
+
 void callParentMapFilter(void) {
 	if (ObjectModel2Timer == 2) {
+		*(int*)(0x807FF708) = (int)&custom_map_chain[0];
 		pushToCustomChain(CurrentMap);
-		parentFilter();
+		int curr = CurrentMap;
+		int banned = 0;
+		for (int i = 0; i < sizeof(banned_filter_non_boss_maps); i++) {
+			if (curr == banned_filter_non_boss_maps[i]) {
+				banned = 1;
+			}
+		}
+		for (int i = 0; i < sizeof(boss_maps); i++) {
+			if (curr == boss_maps[i]) {
+				banned = 1;
+			}
+		}
+		if ((levelIndexMapping[curr] == 9) || (levelIndexMapping[curr] == 0xD)) {
+			banned = 1;
+		}
+		if (!banned) {
+			parentFilter();
+			//shuffleParents();
+		}
 	}
 }

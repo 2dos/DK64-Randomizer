@@ -37,6 +37,7 @@ extern void priceTransplant(void);
 
 extern void adjustGalleonShopHeights(void);
 extern void changeCharSpawnerFlag(int map, int spawner_id, int new_flag);
+extern void changeHelmLZ(void);
 
 extern void PatchCrankyCode(void);
 extern void FileScreenDLCode_Write(void);
