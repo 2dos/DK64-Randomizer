@@ -38,6 +38,12 @@ set_variables = {
     "lobbies_open_bitfield": 0xFF,
     "perma_lose_kongs": 0,
     "jetpac_medal_requirement": 1,
+    "kong_recolor_enabled": 1,
+    "dk_color": 1,
+    "diddy_color": 1,
+    "lanky_color": 1,
+    "tiny_color": 1,
+    "chunky_color": 1,
     "special_move_prices": [
         [1, 2, 3],
         [4, 5, 6],

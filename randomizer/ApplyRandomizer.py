@@ -18,6 +18,8 @@ from randomizer.BarrelRando import randomize_barrels
 from randomizer.BananaPortRando import randomize_bananaport
 from randomizer.EnemyRando import randomize_enemies
 from randomizer.Hash import get_hash_images
+from randomizer.UpdateHints import PushHints
+from randomizer.compileHints import compileHints
 
 # from randomizer.Spoiler import Spoiler
 from randomizer.Settings import Settings
@@ -231,6 +233,9 @@ def patching_response(responded_data):
     randomize_barrels(spoiler)
     randomize_bananaport(spoiler)
     randomize_enemies(spoiler)
+    if spoiler.settings.wrinkly_hints:
+        compileHints(spoiler)
+        PushHints()
 
     # Apply Hash
     order = 0
