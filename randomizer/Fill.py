@@ -287,7 +287,7 @@ def AssumedFill(settings, itemsToPlace, validLocations, ownedItems=[]):
         validReachable = [x for x in reachable if LocationList[x].item is None and x in validLocations]
         # If there are no empty reachable locations, reached a dead end
         if len(validReachable) == 0:
-            print("No valid reachable locations with " + str(len(itemsToPlace) + 1) + " items left to place")
+            print("Failed placing item " + ItemList[item].name + ", no valid reachable locations without this move.")
             return len(itemsToPlace) + 1
         # Shop items need coin logic
         if ItemList[item].type == Types.Shop:
