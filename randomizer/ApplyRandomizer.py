@@ -208,6 +208,18 @@ def patching_response(responded_data):
         ROM().seek(sav + 0x124)
         ROM().write(1)
 
+    # Enable Perma Death
+    if spoiler.settings.perma_death:
+        ROM().seek(sav + 0x13D)
+        ROM().write(1)
+        ROM().seek(sav + 0x13E)
+        ROM().write(1)
+
+    # Disable Tag Barrels from spawning
+    if spoiler.settings.disable_tag_barrels:
+        ROM().seek(sav + 0x13F)
+        ROM().write(1)
+
     # Currently crashing most of the time
     # randomize_dktv(spoiler)
     randomize_music(spoiler)

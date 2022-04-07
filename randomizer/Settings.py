@@ -211,6 +211,8 @@ class Settings:
         self.randomize_cb_required_amounts = False
         self.randomize_blocker_required_amounts = False
         self.kasplat_rando = False
+        self.perma_death = False
+        self.disable_tag_barrels = False
 
     def resolve_settings(self):
         """Resolve settings which are not directly set through the UI."""
