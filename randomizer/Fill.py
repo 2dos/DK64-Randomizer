@@ -296,8 +296,6 @@ def AssumedFill(settings, itemsToPlace, validLocations, ownedItems=[]):
             return len(itemsToPlace) + 1
         # Shop items need coin logic
         if ItemList[item].type == Types.Shop:
-            # Calculate total cost of moves
-            maxCoinsSpent = GetMaxCoinsSpent(settings, itemsToPlace + ownedItems)
             moveKong = ItemList[item].kong
             movePrice = GetPriceOfMoveItem(item, settings, slamLevel, ammoBelts, instUpgrades)
             movePriceArray = [0, 0, 0, 0, 0]
