@@ -268,26 +268,31 @@ def ForwardFill(settings, itemsToPlace, validLocations, ownedItems=[]):
 
 def AssumedFill(settings, itemsToPlace, validLocations, ownedItems=[]):
     """Assumed fill algorithm for item placement."""
-    # Calculate total cost of moves
-    maxCoinsSpent = GetMaxCoinsSpent(settings, itemsToPlace + ownedItems)
-
     # While there are items to place
     random.shuffle(itemsToPlace)
     while len(itemsToPlace) > 0:
         # Get a random item, check which empty locations are still accessible without owning it
         item = itemsToPlace.pop(0)
+        itemShuffled = False
         owned = itemsToPlace.copy()
         owned.extend(ownedItems)
-
         # Check current level of each progressive move
         slamLevel = sum(1 for x in owned if x == Items.ProgressiveSlam)
         ammoBelts = sum(1 for x in owned if x == Items.ProgressiveAmmoBelt)
         instUpgrades = sum(1 for x in owned if x == Items.ProgressiveInstrumentUpgrade)
         # print("slamLevel: " + str(slamLevel) + ", ammoBelts: " + str(ammoBelts) + ", instUpgrades: " + str(instUpgrades))
-
+        # Find all valid reachable locations for this item
         Reset()
         reachable = GetAccessibleLocations(settings, owned)
+        validReachable = [x for x in reachable if LocationList[x].item is None and x in validLocations]
+        # If there are no empty reachable locations, reached a dead end
+        if len(validReachable) == 0:
+            print("No valid reachable locations with " + str(len(itemsToPlace) + 1) + " items left to place")
+            return len(itemsToPlace) + 1
+        # Shop items need coin logic
         if ItemList[item].type == Types.Shop:
+            # Calculate total cost of moves
+            maxCoinsSpent = GetMaxCoinsSpent(settings, itemsToPlace + ownedItems)
             moveKong = ItemList[item].kong
             movePrice = GetPriceOfMoveItem(item, settings, slamLevel, ammoBelts, instUpgrades)
             movePriceArray = [0, 0, 0, 0, 0]
@@ -299,27 +304,50 @@ def AssumedFill(settings, itemsToPlace, validLocations, ownedItems=[]):
                 else:
                     maxCoinsSpent[moveKong] -= movePrice
                     movePriceArray[moveKong] = movePrice
-            currentCoins = [0, 0, 0, 0, 0]
-            for kong in range(5):
-                currentCoins[kong] = LogicVariables.Coins[kong] - maxCoinsSpent[kong]
-            # Breaking condition where we don't have access to enough coins
-            for kong in range(5):
-                if currentCoins[kong] < movePriceArray[kong]:
-                    print("Failed placing item: " + ItemList[item].name)
-                    print("movePriceArray: " + str(movePriceArray))
-                    print("Total Coins Accessible: " + str(LogicVariables.Coins))
-                    print("maxCoinsSpent: " + str(maxCoinsSpent))
-                    print("currentCoins: " + str(currentCoins))
-                    return len(itemsToPlace) + 1
-
-        validReachable = [x for x in reachable if LocationList[x].item is None and x in validLocations]
-        # If there are no empty reachable locations, reached a dead end
-        if len(validReachable) == 0:
-            return len(itemsToPlace) + 1
-        # Get a random, empty, reachable location and place the item there
         random.shuffle(validReachable)
-        locationId = validReachable.pop()
-        LocationList[locationId].PlaceItem(item)
+        # Get a random, empty, reachable location
+        for locationId in validReachable:
+            # Atempt to place the item here
+            LocationList[locationId].PlaceItem(item)
+            # Check valid reachable after placing to see if it is broken
+            # Need to re-assign owned items since the search adds a bunch of extras
+            owned = itemsToPlace.copy()
+            owned.extend(ownedItems)
+            Reset()
+            reachable = GetAccessibleLocations(settings, owned)
+            nextReachable = [x for x in reachable if LocationList[x].item is None and x in validLocations]
+            valid = True
+            # If there are not enough empty reachable locations to cover the remaining items, this placement won't work
+            if len(nextReachable) < len(itemsToPlace):
+                print("Failed placing item " + ItemList[item].name + " in location " + LocationList[locationId].name + ", due to too few remaining locations in play")
+                valid = False
+            # Attempt to verify coins
+            if valid and ItemList[item].type == Types.Shop:
+                currentCoins = [0, 0, 0, 0, 0]
+                for kong in range(5):
+                    currentCoins[kong] = LogicVariables.Coins[kong] - maxCoinsSpent[kong]
+                # Breaking condition where we don't have access to enough coins
+                for kong in range(5):
+                    if currentCoins[kong] < movePriceArray[kong]:
+                        # if currentCoins[kong] < 0:
+                        print("Failed placing item: " + ItemList[item].name)
+                        print("movePriceArray: " + str(movePriceArray))
+                        print("Total Coins Accessible: " + str(LogicVariables.Coins))
+                        print("maxCoinsSpent: " + str(maxCoinsSpent))
+                        print("currentCoins: " + str(currentCoins))
+                        print("items left to place: " + str(len(itemsToPlace)))
+                        valid = False
+            # If world is not valid, undo item placement and try next location
+            if not valid:
+                LocationList[locationId].item = None
+                itemShuffled = False
+                continue
+            else:
+                itemShuffled = True
+                break
+        if not itemShuffled:
+            print("Failed placing item " + ItemList[item].name + " in any of remaining " + str(len(validLocations)) + " possible locations")
+            return itemsToPlace + 1
     return 0
 
 
