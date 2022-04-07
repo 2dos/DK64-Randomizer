@@ -234,14 +234,14 @@ def patching_response(responded_data):
 
     # Apply Hash
     order = 0
+    loaded_hash = get_hash_images()
     for count in spoiler.settings.seed_hash:
         ROM().seek(sav + 0x11A + order)
         ROM().write(count)
+        js.document.getElementById("hash" + str(order)).src = "data:image/jpeg;base64," + loaded_hash[count]
         order += 1
 
     ProgressBar().update_progress(10, "Seed Generated.")
-    loaded_hash = get_hash_images()
-    # js.document.getElementById("test").src = "data:image/jpeg;base64," + loaded_hash[0]
     if spoiler.settings.generate_spoilerlog is True:
         js.document.getElementById("nav-settings-tab").style.display = ""
         js.document.getElementById("spoiler_log_block").style.display = ""
