@@ -1,3 +1,4 @@
+function generate_worker() {
 // Main UI thread for the webworker
 if (window.Worker) {
   // Establishes the webworker.
@@ -21,9 +22,16 @@ if (window.Worker) {
     else:
       exec(loaded_data.get("returning_func"))
       eval(str(loaded_data.get("returning_func").split()[-1]) + "(" + json.dumps(loaded_data['response']) + ")")
+      js.cycle_worker()
     `
     );
   };
 } else {
   console.log("Your browser does not support web workers.");
 }
+}
+function cycle_worker() {
+  background_worker.terminate()
+  generate_worker()
+}
+generate_worker()
