@@ -12,7 +12,7 @@ void unlockMoves(void) {
 		for (int i = 0; i < 5; i++) {
 			MovesBase[i].special_moves = 7;
 			MovesBase[i].simian_slam = 3;
-			MovesBase[i].weapon_bitfield |= 3; // Sniper Scope not acquired due to lag
+			MovesBase[i].weapon_bitfield = 7;
 			MovesBase[i].ammo_belt = 2;
 			MovesBase[i].instrument_bitfield = 15;
 			MovesBase[i].instrument_energy = 12;
