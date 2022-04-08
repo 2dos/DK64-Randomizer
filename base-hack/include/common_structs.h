@@ -606,11 +606,14 @@ typedef struct settingsData {
 } settingsData;
 
 typedef struct behaviour_data {
-	/* 0x000 */ char unk_00[0x44];
+	/* 0x000 */ char unk_00[0x38];
+	/* 0x038 */ int unk_38;
+	/* 0x03C */ char unk_3C[0x44-0x3C];
 	/* 0x044 */ unsigned short timer;
 	/* 0x046 */ char unk_46[0x48-0x46];
 	/* 0x048 */ unsigned char current_state;
-	/* 0x049 */ char unk_49[0x4B-0x49];
+	/* 0x049 */ char counter;
+	/* 0x04A */ char unk_4A[0x4B-0x4A];
 	/* 0x04B */ unsigned char next_state;
 	/* 0x04C */ char unk_4C[0x54-0x4C];
 	/* 0x054 */ char pause_state;

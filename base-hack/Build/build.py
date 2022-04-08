@@ -33,6 +33,7 @@ from vanilla_move_data import writeVanillaMoveData
 from adjust_exits import adjustExits
 from replace_simslam_text import replaceSimSlam
 from populateSongData import writeVanillaSongData
+from convertPortalImage import convertPortalImage
 
 ROMName = "rom/dk64.z64"
 newROMName = "rom/dk64-randomizer-base.z64"
@@ -40,6 +41,10 @@ newROMName = "rom/dk64-randomizer-base.z64"
 if os.path.exists(newROMName):
     os.remove(newROMName)
 shutil.copyfile(ROMName, newROMName)
+
+portal_images = []
+portal_images.append(convertPortalImage("assets/Non-Code/portals/DK_rando_portal_1.png"))
+portal_images.append(convertPortalImage("assets/Non-Code/portals/DK_rando_portal_2.png"))
 
 file_dict = [
     {
@@ -189,6 +194,62 @@ file_dict = [
         "is_diff_patch": True,
     },
     {
+        "name": "Jungle Japes Instance Scripts",
+        "pointer_table_index": 10,
+        "file_index": 7,
+        "source_file": "assets/Non-Code/instance_scripts/japes.bin",
+        "bps_file": "assets/Non-Code/instance_scripts/japes.bps",
+        "is_diff_patch": True,
+    },
+    {
+        "name": "Mountain Instance Scripts",
+        "pointer_table_index": 10,
+        "file_index": 4,
+        "source_file": "assets/Non-Code/instance_scripts/japes_mountain.bin",
+        "bps_file": "assets/Non-Code/instance_scripts/japes_mountain.bps",
+        "is_diff_patch": True,
+    },
+    {
+        "name": "Frantic Factory Instance Scripts",
+        "pointer_table_index": 10,
+        "file_index": 0x1A,
+        "source_file": "assets/Non-Code/instance_scripts/factory.bin",
+        "bps_file": "assets/Non-Code/instance_scripts/factory.bps",
+        "is_diff_patch": True,
+    },
+    {
+        "name": "Mill Front Instance Scripts",
+        "pointer_table_index": 10,
+        "file_index": 61,
+        "source_file": "assets/Non-Code/instance_scripts/mill_front.bin",
+        "bps_file": "assets/Non-Code/instance_scripts/mill_front.bps",
+        "is_diff_patch": True,
+    },
+    {
+        "name": "Mill Rear Instance Scripts",
+        "pointer_table_index": 10,
+        "file_index": 62,
+        "source_file": "assets/Non-Code/instance_scripts/mill_rear.bin",
+        "bps_file": "assets/Non-Code/instance_scripts/mill_rear.bps",
+        "is_diff_patch": True,
+    },
+    {
+        "name": "Giant Mushroom Instance Scripts",
+        "pointer_table_index": 10,
+        "file_index": 64,
+        "source_file": "assets/Non-Code/instance_scripts/giant_mushroom.bin",
+        "bps_file": "assets/Non-Code/instance_scripts/giant_mushroom.bps",
+        "is_diff_patch": True,
+    },
+    {
+        "name": "Crystal Caves Instance Scripts",
+        "pointer_table_index": 10,
+        "file_index": 72,
+        "source_file": "assets/Non-Code/instance_scripts/caves.bin",
+        "bps_file": "assets/Non-Code/instance_scripts/caves.bps",
+        "is_diff_patch": True,
+    },
+    {
         "name": "Tag Barrel Bottom Texture",
         "pointer_table_index": 25,
         "file_index": 4749,
@@ -286,6 +347,31 @@ for x in range(43):
                     "do_not_recompress": True,
                 }
             )
+portal_image_order = [
+    ["SE", "NE", "SW", "NW"],
+    ["NW", "SW", "NE", "SE"],
+]
+for x in range(2):
+    order = portal_image_order[x]
+    image_series = portal_images[x]
+    for y in range(4):
+        segment = order[y]
+        found_image = ""
+        for image in image_series:
+            if segment in image:
+                found_image = image
+        if found_image != "":
+            file_dict.append(
+                {
+                    "name": f"Portal Image {x+1} - {segment}",
+                    "pointer_table_index": 7,
+                    "file_index": 931 + (4 * x) + y,
+                    "source_file": found_image,
+                    "texture_format": "rgba5551",
+                    "do_not_compress": True,
+                }
+            )
+
 hash_icons = ["bongos.png", "dead_maro.png", "dkcoin.png", "fairy.png", "guitar.png", "nin_coin.png", "orange.png", "pauline.png", "rw_coin.png", "sax.png"]
 hash_indexes = [48, 49, 50, 51, 55, 62, 63, 64, 65, 76]
 for x in range(len(hash_indexes)):
@@ -566,6 +652,10 @@ with open(newROMName, "r+b") as fh:
     adjustExits(fh)
     replaceSimSlam(fh)
     writeVanillaSongData(fh)
+    for x in portal_images:
+        for y in x:
+            if os.path.exists(y):
+                os.remove(y)
 
 print("[7 / 7] - Generating BizHawk RAM watch")
 
