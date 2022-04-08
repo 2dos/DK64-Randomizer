@@ -105,7 +105,7 @@ class Settings:
         """Update the troff and blocker totals if we're randomly setting them."""
         if self.randomize_cb_required_amounts:
             randomlist = random.sample(range(0, 260), 7)
-            cbs = sorted(randomlist)
+            cbs = randomlist
             self.troff_0 = cbs[0]
             self.troff_1 = cbs[1]
             self.troff_2 = cbs[2]
@@ -115,15 +115,17 @@ class Settings:
             self.troff_6 = cbs[6]
         if self.randomize_blocker_required_amounts:
             randomlist = random.sample(range(0, 70), 7)
-            b_lockers = sorted(randomlist)
-            self.blocker_0 = 1
-            self.blocker_1 = b_lockers[0]
-            self.blocker_2 = b_lockers[1]
-            self.blocker_3 = b_lockers[2]
-            self.blocker_4 = b_lockers[3]
-            self.blocker_5 = b_lockers[4]
-            self.blocker_6 = b_lockers[5]
-            self.blocker_7 = b_lockers[6]
+            b_lockers = randomlist
+            b_lockers.append(1)
+            random.shuffle(b_lockers)
+            self.blocker_0 = b_lockers[0]
+            self.blocker_1 = b_lockers[1]
+            self.blocker_2 = b_lockers[2]
+            self.blocker_3 = b_lockers[3]
+            self.blocker_4 = b_lockers[4]
+            self.blocker_5 = b_lockers[5]
+            self.blocker_6 = b_lockers[6]
+            self.blocker_7 = b_lockers[7]
 
     def generate_main(self):
         """Set Default items on main page."""
