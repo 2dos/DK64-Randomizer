@@ -69,6 +69,10 @@
 .definelabel unkObjFunction0, 0x80650BBC
 .definelabel unkObjFunction1, 0x80650A04
 .definelabel unkObjFunction2, 0x806508B4
+.definelabel unkObjFunction3, 0x80723020
+.definelabel unkObjFunction4, 0x80723320
+.definelabel unkObjFunction5, 0x8072334C
+.definelabel unkObjFunction6, 0x80723284
 .definelabel touchingModel2Object, 0x806F70A8
 .definelabel GetKongUnlockedFlag, 0x805FF018
 .definelabel setNextTransitionType, 0x805FF158

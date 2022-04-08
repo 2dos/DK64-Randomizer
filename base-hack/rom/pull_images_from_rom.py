@@ -1,5 +1,7 @@
 """Pull hash images from ROM."""
 import zlib
+import os
+from PIL import Image
 
 images = [
     {
@@ -59,5 +61,36 @@ with open("dk64.z64", "rb") as fh:
             dec = zlib.decompress(fh.read(img_size), 15 + 32)
         else:
             dec = fh.read(img_size)
-        with open(f"hashimg_{x['name']}.bin", "wb") as fg:
-            fg.write(dec)
+        img_name = f"hashimg_{x['name']}.png"
+        if os.path.exists(img_name):
+            os.remove(img_name)
+        with open(img_name, "wb") as fg:
+            fg.seek(0)
+        im = Image.new(mode="RGBA", size=(x["w"], x["h"]))
+        pix = im.load()
+        pix_count = x["w"] * x["h"]
+        for pixel in range(pix_count):
+            if x["format"] == "rgba16":
+                start = pixel * 2
+                end = start + 2
+                pixel_data = int.from_bytes(dec[start:end], "big")
+                red = (pixel_data >> 11) & 0x1F
+                green = (pixel_data >> 6) & 0x1F
+                blue = (pixel_data >> 1) & 0x1F
+                alpha = pixel_data & 1
+                red = int((red / 0x1F) * 0xFF)
+                green = int((green / 0x1F) * 0xFF)
+                blue = int((blue / 0x1F) * 0xFF)
+                alpha = alpha * 255
+            elif x["format"] == "rgba32":
+                start = pixel * 4
+                end = start + 4
+                pixel_data = int.from_bytes(dec[start:end], "big")
+                red = (pixel_data >> 24) & 0xFF
+                green = (pixel_data >> 16) & 0xFF
+                blue = (pixel_data >> 8) & 0xFF
+                alpha = pixel_data & 0xFF
+            pix_x = pixel % x["w"]
+            pix_y = int(pixel / x["w"])
+            pix[pix_x, pix_y] = (red, green, blue, alpha)
+        im.save(img_name)

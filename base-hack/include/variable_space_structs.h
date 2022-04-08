@@ -70,14 +70,13 @@ typedef struct varspace {
 	/* 0x122 */ unsigned short museum_to_ballroom; // Same as "aztec_beetle_enter" but for the loading zone dictated by the nametc
 	/* 0x124 */ char shop_indicator_on; // 0 = Off, 1 = Render amount of moves that can be purchased from that shop
 	/* 0x125 */ char warp_to_isles_enabled; // 0 = Off, 1 = Add Warp to Isles option
-	/* 0x126 */ char kong_rgb_enabled; // 0 = No RGB Mask, 1 = Apply RGB Mask
-	/* 0x127 */ unsigned char dk_rgb_components[3]; // Item 0 = Red component, Item 1 = Green component, Item 2 = Blue Component
-	/* 0x12A */ unsigned char diddy_rgb_components[3]; // Item 0 = Red component, Item 1 = Green component, Item 2 = Blue Component
-	/* 0x12D */ unsigned char lanky_rgb_components[3]; // Item 0 = Red component, Item 1 = Green component, Item 2 = Blue Component
-	/* 0x130 */ unsigned char tiny_rgb_components[3]; // Item 0 = Red component, Item 1 = Green component, Item 2 = Blue Component
-	/* 0x133 */ unsigned char chunky_rgb_components[3]; // Item 0 = Red component, Item 1 = Green component, Item 2 = Blue Component
-	/* 0x136 */ unsigned char rambi_rgb_components[3]; // Item 0 = Red component, Item 1 = Green component, Item 2 = Blue Component
-	/* 0x139 */ unsigned char enguarde_rgb_components[3]; // Item 0 = Red component, Item 1 = Green component, Item 2 = Blue Component
+	/* 0x126 */ char kong_recolor_enabled; // 0 = No kong color change, 1 = color change enabled
+	/* 0x127 */ char dk_color; // 0 = Vanilla, 1 = Blue, 2 = Green, 3 = Purple
+	/* 0x128 */ char diddy_color; // 0 = Vanilla, 1 = Dark Blue Cap, 2 = Yellow Cap, 3 = Light Blue Cap
+	/* 0x129 */ char lanky_color; // 0 = Vanilla, 1 = Green Straps, 2 = Purple Straps, 3 = Red Straps
+	/* 0x12A */ char tiny_color; // 0 = Vanilla, 1 = Green, 2 = Purple, 3 = Red
+	/* 0x12B */ char chunky_color; // 0 = Vanilla, 1 = Red, 2 = Purple/Blue, 3 = Green/Purple
+	/* 0x12C */ char unused[0x13C-0x12C]; // Space unused, was RGB values
 	/* 0x13C */ unsigned char lobbies_open_bitfield; // hccf gfaj
 	/* 0x13D */ char perma_lose_kongs; // 0 = Off, 1 = On. AKA "iateyourpie mode"
 	/* 0x13E */ char disable_boss_kong_check; // 0 = Enable Check (Vanilla), 1 = Disabled
