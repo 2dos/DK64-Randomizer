@@ -153,7 +153,7 @@ def randomize_enemies(spoiler: Spoiler):
             Enemies.ZingerLime,
             Enemies.ZingerRobo,
             Enemies.Bat,
-            Enemies.Book,
+            # Enemies.Book, # Causes way too many problems
         ],
         "ground_beefyboys": [
             Enemies.Klump,

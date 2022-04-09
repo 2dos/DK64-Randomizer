@@ -16,7 +16,7 @@ set_variables = {
     "quality_of_life": 1,
     "price_rando_on": 1,
     "k_rool_order": [0, 3, 1, 2, 4],
-    "damage_multiplier": 0,
+    "damage_multiplier": 4,
     "fps_on": 1,
     "no_health_refill": 1,
     "slam_prices": [4, 5],

@@ -67,3 +67,10 @@ void changeCharSpawnerFlag(int map, int spawner_id, int new_flag) {
 		}
 	}
 }
+
+void resetMapContainer(void) {
+	resetMap();
+	for (int i = 0; i < 0x12; i++) {
+		SubmapData[i].slot_populated = 0;
+	}
+}
