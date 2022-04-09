@@ -202,7 +202,7 @@ void callParentMapFilter(void) {
 				banned = 1;
 			}
 			if (!banned) {
-				resetMap();
+				resetMapContainer();
 			}
 		}
 	}

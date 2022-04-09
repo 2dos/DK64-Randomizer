@@ -36,7 +36,7 @@ def shuffleWarps(bananaport_replacements, human_ports):
         pad_list = []
         pad_temp_list = [[], [], [], [], []]
         for warp in BananaportVanilla.values():
-            if warp.map_id == warp_map:
+            if warp.map_id == warp_map and not warp.locked:
                 pad_temp_list[warp.new_warp].append(warp.obj_id_vanilla)
                 human_ports[warp.name] = "Warp " + str(warp.new_warp + 1)
         for warp_index in range(len(pad_temp_list)):
