@@ -10,6 +10,7 @@ void qualityOfLife_fixes(void) {
 		}
 		setPermFlag(0x309); // Cranky FTT
 		setPermFlag(0x17F); // Training Barrels Spawned
+		setPermFlag(300); // Giant Kosha Dead
 		fixkey8();
 	}
 }
