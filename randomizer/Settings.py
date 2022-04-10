@@ -281,7 +281,7 @@ class Settings:
         # Banana medals
         if self.random_medal_requirement:
             # Range roughly from 4 to 15, average around 10
-            self.BananaMedalsRequired = round(random.normalvariate(10, .15))
+            self.BananaMedalsRequired = round(random.normalvariate(10, 0.15))
         else:
             self.BananaMedalsRequired = 15
 
