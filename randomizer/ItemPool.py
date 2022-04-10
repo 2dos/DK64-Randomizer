@@ -81,7 +81,6 @@ def PlaceConstants(settings):
         LocationList[Locations.TinyKong].PlaceConstantItem(Items.NoItem)
         LocationList[Locations.ChunkyKong].PlaceConstantItem(Items.NoItem)
     if settings.unlock_all_moves:
-        # Empty all shop locations EXCEPT sniper scope which is still optional
         LocationList[Locations.SimianSlam].PlaceConstantItem(Items.NoItem)
         LocationList[Locations.SuperSimianSlam].PlaceConstantItem(Items.NoItem)
         LocationList[Locations.SuperDuperSimianSlam].PlaceConstantItem(Items.NoItem)
@@ -108,6 +107,7 @@ def PlaceConstants(settings):
         LocationList[Locations.AmmoBelt1].PlaceConstantItem(Items.NoItem)
         LocationList[Locations.HomingAmmo].PlaceConstantItem(Items.NoItem)
         LocationList[Locations.AmmoBelt2].PlaceConstantItem(Items.NoItem)
+        LocationList[Locations.SniperSight].PlaceConstantItem(Items.NoItem)
         LocationList[Locations.Bongos].PlaceConstantItem(Items.NoItem)
         LocationList[Locations.Guitar].PlaceConstantItem(Items.NoItem)
         LocationList[Locations.Trombone].PlaceConstantItem(Items.NoItem)
@@ -328,9 +328,10 @@ def LowPriorityItems(settings):
     if not settings.coin_door_open:
         itemPool.append(Items.NintendoCoin)
         itemPool.append(Items.RarewareCoin)
-    itemPool.append(Items.SniperSight)
-    if not settings.hard_shooting:
-        itemPool.append(Items.HomingAmmo)
+    if not settings.unlock_all_moves:
+        itemPool.append(Items.SniperSight)
+        if not settings.hard_shooting:
+            itemPool.append(Items.HomingAmmo)
     return itemPool
 
 

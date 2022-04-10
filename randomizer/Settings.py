@@ -209,6 +209,8 @@ class Settings:
         self.quality_of_life = None
         self.enable_tag_anywhere = None
         self.random_krool_phase_order = None
+        self.random_medal_requirement = True
+        self.bananaport_rando = False
         self.shop_indicator = False
         self.randomize_cb_required_amounts = False
         self.randomize_blocker_required_amounts = False
@@ -275,6 +277,13 @@ class Settings:
                     self.krool_keys_required.append(event)
         if self.krool_access == "random_helm" and Events.HelmKeyTurnedIn not in self.krool_keys_required:
             self.krool_keys_required.append(Events.HelmKeyTurnedIn)
+
+        # Banana medals
+        if self.random_medal_requirement:
+            # Range roughly from 4 to 15, average around 10
+            self.BananaMedalsRequired = round(random.normalvariate(10, 0.15))
+        else:
+            self.BananaMedalsRequired = 15
 
         # Boss Rando
         self.boss_maps = ShuffleBosses(self.boss_location_rando)

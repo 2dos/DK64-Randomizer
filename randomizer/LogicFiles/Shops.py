@@ -85,7 +85,6 @@ LogicRegions = {
     ]),
 
     Regions.FunkyCastle: Region("Funky Castle", Levels.Shops, False, None, [
-        # Sniper sight is the only non-Snide shop location not zeroed out when starting with all shop moves.
         LocationLogic(Locations.SniperSight, lambda l: l.LevelEntered(Levels.CreepyCastle) and l.CanBuy(Locations.SniperSight)),
         LocationLogic(Locations.DonkeyCastleGun, lambda l: l.LevelEntered(Levels.CreepyCastle) and l.isdonkey and l.CanBuy(Locations.DonkeyCastleGun)),
         LocationLogic(Locations.DiddyCastleGun, lambda l: l.LevelEntered(Levels.CreepyCastle) and l.isdiddy and l.CanBuy(Locations.DiddyCavesGun)),
@@ -160,7 +159,7 @@ LogicRegions = {
 
     Regions.CrankyGeneric: Region("Cranky Generic", Levels.Shops, False, None, [
         LocationLogic(Locations.SimianSlam, lambda l: True),
-        LocationLogic(Locations.RarewareCoin, lambda l: l.BananaMedals >= 15),
+        LocationLogic(Locations.RarewareCoin, lambda l: l.BananaMedals >= l.settings.BananaMedalsRequired),
     ], [], [
         TransitionFront(Regions.CrankyJapes, lambda l: l.settings.shuffle_items == "none"),
         TransitionFront(Regions.CrankyAztec, lambda l: l.settings.shuffle_items == "none"),
