@@ -328,9 +328,10 @@ def LowPriorityItems(settings):
     if not settings.coin_door_open:
         itemPool.append(Items.NintendoCoin)
         itemPool.append(Items.RarewareCoin)
-    itemPool.append(Items.SniperSight)
-    if not settings.hard_shooting:
-        itemPool.append(Items.HomingAmmo)
+    if not settings.unlock_all_moves:
+        itemPool.append(Items.SniperSight)
+        if not settings.hard_shooting:
+            itemPool.append(Items.HomingAmmo)
     return itemPool
 
 
