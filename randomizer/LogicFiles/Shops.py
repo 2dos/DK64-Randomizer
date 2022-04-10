@@ -85,7 +85,6 @@ LogicRegions = {
     ]),
 
     Regions.FunkyCastle: Region("Funky Castle", Levels.Shops, False, None, [
-        # Sniper sight is the only non-Snide shop location not zeroed out when starting with all shop moves.
         LocationLogic(Locations.SniperSight, lambda l: l.LevelEntered(Levels.CreepyCastle) and l.CanBuy(Locations.SniperSight)),
         LocationLogic(Locations.DonkeyCastleGun, lambda l: l.LevelEntered(Levels.CreepyCastle) and l.isdonkey and l.CanBuy(Locations.DonkeyCastleGun)),
         LocationLogic(Locations.DiddyCastleGun, lambda l: l.LevelEntered(Levels.CreepyCastle) and l.isdiddy and l.CanBuy(Locations.DiddyCavesGun)),
