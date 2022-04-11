@@ -29,6 +29,13 @@ exit_adjustments = [
                 "y": 115,
                 "z": 2026,
             },
+            {
+                # Mill Rear PPunch Door
+                "exit_index": 5,
+                "x": 4550,
+                "y": 162,
+                "z": 3646,
+            },
         ],
     },
     {

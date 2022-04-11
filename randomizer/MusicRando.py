@@ -36,15 +36,18 @@ def randomize_music(spoiler: Spoiler):
 
             # Generate the list of BGM songs
             song_list = []
+            for channel_index in range(12):
+                song_list.append([])
             for song in song_data:
                 if song.type == SongType.BGM:
                     # For testing, flip these two lines
                     # song_list.append(pointer_addresses[0]["entries"][song_data.index(song)])
-                    song_list.append(js.pointer_addresses[0]["entries"][song_data.index(song)])
+                    song_list[song.channel - 1].append(js.pointer_addresses[0]["entries"][song_data.index(song)])
             # ShuffleMusicWithSizeCheck(spoiler, song_list)
-            shuffled_music = song_list.copy()
-            random.shuffle(shuffled_music)
-            shuffle_music(spoiler, song_list, shuffled_music)
+            for channel_index in range(12):
+                shuffled_music = song_list[channel_index].copy()
+                random.shuffle(shuffled_music)
+                shuffle_music(spoiler, song_list[channel_index], shuffled_music)
         # If the user was a poor sap and selected chaos put DK rap for everything
         elif settings.music_bgm == "chaos":
             # Find the DK rap in the list

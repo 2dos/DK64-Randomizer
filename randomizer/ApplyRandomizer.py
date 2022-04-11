@@ -222,6 +222,9 @@ def patching_response(responded_data):
         ROM().seek(sav + 0x13F)
         ROM().write(1)
 
+    ROM().seek(sav + 0x140)
+    ROM().write(spoiler.jetpac_medals_required)
+
     # Currently crashing most of the time
     # randomize_dktv(spoiler)
     randomize_music(spoiler)
