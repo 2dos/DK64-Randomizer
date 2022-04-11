@@ -99,7 +99,7 @@ class LogicVarHolder:
         self.camera = self.settings.unlock_fairy_shockwave
         self.shockwave = self.settings.unlock_fairy_shockwave
 
-        self.scope = False  # Start with moves doesn't give scope
+        self.scope = self.settings.unlock_all_moves
         self.homing = self.settings.unlock_all_moves
 
         self.JapesKey = False

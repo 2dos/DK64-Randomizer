@@ -21,7 +21,7 @@
                 <tr>
                     <td>
                         <div class="form-check form-switch w-75">
-                            <label title="This option will make all moves available from the start without purchasing them. &#013;Includes all Cranky, all Candy, and almost all Funky purchasables. &#013;Does not include access to JetPac in Cranky; you will still need 15 banana medals. &#013;Does not include snipe scope to reduce 1st person camera lag. &#013;Is still purchasable. &#013;Does not include the shockwave attack from the banana fairy queen.">
+                            <label title="This option will make all moves available from the start without purchasing them. &#013;Includes all Cranky, all Candy, and almost all Funky purchasables. &#013;Does not include access to JetPac in Cranky; you will still need some banana medals. &#013;Does not include the shockwave attack from the banana fairy queen.">
                                 <input class="form-check-input"
                                        type="checkbox"
                                        name="unlock_all_moves"
@@ -104,8 +104,8 @@
             <div class="center">K. Lumsy Keys</div>
             <div>
                 <input type="text"
-                       name="lumsy_keys_required"
-                       id="lumsy_keys_required"
+                       name="krool_keys_required"
+                       id="krool_keys_required"
                        data-provide="slider"
                        data-slider-ticks="[0, 1, 2, 3, 4, 5, 6, 7, 8]"
                        data-slider-ticks-labels='["0", "1", "2", "3", "4", "5", "6", "7", "8"]'
@@ -122,7 +122,7 @@
 $('.nav-tabs').click(function(){
  setTimeout(() => {
       $('#krool_phase_count').slider("relayout");
-      $('#lumsy_keys_required').slider("relayout");
+      $('#krool_keys_required').slider("relayout");
     }, 500);
 })
 </script>

@@ -50,6 +50,8 @@ class Spoiler:
                 moves.append(kongmoves)
             self.move_data.append(moves)
 
+        self.jetpac_medals_required = self.settings.BananaMedalsRequired
+
     def toJson(self):
         """Convert spoiler to JSON."""
         # Verify we match our hash
@@ -71,6 +73,10 @@ class Spoiler:
         settings["crown_door_open"] = self.settings.crown_door_open
         settings["coin_door_open"] = self.settings.coin_door_open
         settings["unlock_fairy_shockwave"] = self.settings.unlock_fairy_shockwave
+        settings["random_medal_requirement"] = self.settings.random_medal_requirement
+        if self.settings.random_medal_requirement:
+            settings["banana_medals_required"] = self.settings.BananaMedalsRequired
+        settings["bananaport_rando"] = self.settings.bananaport_rando
         settings["krool_phases"] = self.settings.krool_order
         settings["krool_access"] = self.settings.krool_access
         settings["krool_keys_required"] = self.GetKroolKeysRequired(self.settings.krool_keys_required)

@@ -4,6 +4,7 @@ import js
 
 from randomizer.Patcher import ROM
 from randomizer.Spoiler import Spoiler
+from randomizer.Lists.Warps import BananaportVanilla
 
 
 def randomize_bananaport(spoiler: Spoiler):
@@ -41,20 +42,25 @@ def randomize_bananaport(spoiler: Spoiler):
                     ROM().seek(start + 0x20)
                     obj_rotz = int.from_bytes(ROM().readBytes(4), "big")
                     obj_index = x
-                    pad_vanilla.append(
-                        {
-                            "pad_index": pad_index,
-                            "_id": obj_id,
-                            "x": obj_x,
-                            "y": obj_y,
-                            "z": obj_z,
-                            "scale": obj_scale,
-                            "rx": obj_rotx,
-                            "ry": obj_roty,
-                            "rz": obj_rotz,
-                            "idx": obj_index,
-                        }
-                    )
+                    banned = False
+                    for warp in BananaportVanilla.values():
+                        if warp.map_id == cont_map_id and warp.obj_id_vanilla == obj_id and warp.locked:
+                            banned = True
+                    if not banned:
+                        pad_vanilla.append(
+                            {
+                                "pad_index": pad_index,
+                                "_id": obj_id,
+                                "x": obj_x,
+                                "y": obj_y,
+                                "z": obj_z,
+                                "scale": obj_scale,
+                                "rx": obj_rotx,
+                                "ry": obj_roty,
+                                "rz": obj_rotz,
+                                "idx": obj_index,
+                            }
+                        )
             for y in cont_map["pads"]:
                 warp_idx = y["warp_index"]
                 repl_ids = y["warp_ids"]

@@ -11,6 +11,7 @@ from pyodide import to_js
 async def initialize():
     """Shifted code into an async function so we can properly lint await calls."""
     await micropip.install("pyodide-importer")
+    await micropip.install("pillow")
     # Against normal logic we have to import the hook register because we install it as we load the page
     from pyodide_importer import register_hook  # type: ignore  # noqa
 

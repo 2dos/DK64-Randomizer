@@ -180,12 +180,22 @@ START_HOOK:
 		LUI 	a1, hi(ReplacementLobbyExitsArray)
 		SLL 	t7, t6, 1
 		ADDU 	a1, a1, t7
-		J 		0x80600064
 		LHU 	a1, lo(ReplacementLobbyExitsArray) (a1)
+		ADDU 	a0, a0, t7
+		JAL 	0x805FF378
+		LHU 	a0, lo(ReplacementLobbiesArray) (a0)
+		JAL 	resetMapContainer
+		NOP
+		J 		0x80600070
+		NOP
 
 	damageMultiplerCode:
 		BGEZ 	a3, damageMultiplerCode_Finish
 		LB 		t9, 0x2FD (v0)
+		SUBU 	t2, r0, a3
+		SLTI 	t2, t2, 12
+		BEQZ 	t2, damageMultiplerCode_Finish
+		NOP
 		LUI 	t2, hi(DamageMultiplier)
 		LBU 	t2, lo(DamageMultiplier) (t2)
 		MULTU 	a3, t2
@@ -248,7 +258,7 @@ START_HOOK:
 		ADDIU 	a0, r0, 0x22
 		JAL 	0x805FF378 // Init Map Change
 		ADDIU 	a1, r0, 0
-		JAL 	resetMap
+		JAL 	resetMapContainer
 		NOP
 		J 		0x806A8A20
 		ADDIU 	at, r0, 2

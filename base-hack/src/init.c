@@ -76,6 +76,11 @@ void initHack(void) {
 			*(short*)(0x806818DE) = 0x4248; // Make Aztec Lobby GB spawn above the trapdoor)
 			*(int*)(0x80681690) = 0; // Make some barrels not play a cutscene
 		}
+		if (Rando.kong_recolor_enabled) {
+			*(char*)(0x8068A62F) = 0;
+			*(int*)(0x8068A450) = 0;
+			*(int*)(0x8068A458) = 0;
+		}
 		replace_zones(1);
 		randomize_bosses();
 		loadExtraHooks();
@@ -90,6 +95,21 @@ void initHack(void) {
 			}
 		}
 		fixMusicRando();
+		// Disable Sniper Scope Overlay
+		int asm_code = 0x00801025; // OR $v0, $a0, $r0
+		*(int*)(0x806FF80C) = asm_code;
+		*(int*)(0x806FF85C) = asm_code;
+		*(int*)(0x806FF8AC) = asm_code;
+		*(int*)(0x806FF8FC) = asm_code;
+		*(int*)(0x806FF940) = asm_code;
+		*(int*)(0x806FF988) = asm_code;
+		*(int*)(0x806FF9D0) = asm_code;
+		*(int*)(0x806FFA18) = asm_code;
+		// Change Sniper Crosshair color
+		*(short*)(0x806FFA92) = 0xFFD7;
+		*(short*)(0x806FFA96) = 0x00FF;
+		// *(int*)(0x806FFA90) = 0x3C0D8080;
+		// *(int*)(0x806FFA94) = 0x8DADFFFC;
 		// Style 6 Mtx
 		int base_mtx = 75;
 		style6Mtx[0x0] = base_mtx;
