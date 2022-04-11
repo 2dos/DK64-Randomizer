@@ -204,6 +204,8 @@ void callParentMapFilter(void) {
 			if (!banned) {
 				resetMapContainer();
 			}
+		} else if (ObjectModel2Timer < 2) {
+			correctDKPortal();
 		}
 	}
 }

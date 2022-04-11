@@ -166,22 +166,29 @@ void tagAnywhere(int prev_crystals) {
             if (tag_countdown > 0) {
                 tag_countdown -= 1;
             }
-            if (CurrentMap == 0x2A) {
-                if (tag_countdown == 1) {
-                    int next_hud_state = 1;
-                    if (Player->touching_object) {
-                        if (Player->standing_on_index == 0) { // Standing on feed pad
-                            next_hud_state = 0;
-                        }
-                    }
-                    HUD->item[0].hud_state = next_hud_state;
-                }
-            } else {
+            if (CurrentMap != 0x2A) {
                 char hud_items[] = {0,1,5,8,10,12,13,14};
                 if (HUD) {
                     for (int i = 0; i < sizeof(hud_items); i++) {
                         if (HUD->item[(int)hud_items[i]].hud_state) {
                             return;
+                        }
+                    }
+                }
+            } else {
+                if (tag_countdown == 2) {
+                    HUD->item[0].hud_state = 1;
+                    if (Player->control_state == 108) {
+                        int world = getWorld(CurrentMap,0);
+                        if (MovesBase[(int)Character].cb_count[world] > 0) {
+                            HUD->item[0].hud_state = 0;
+                        }
+                    }
+                } else if (tag_countdown == 1) {
+                    if (Player->control_state == 108) {
+                        int world = getWorld(CurrentMap,0);
+                        if (MovesBase[(int)Character].cb_count[world] > 0) {
+                            HUD->item[0].hud_state = 1;
                         }
                     }
                 }
@@ -202,6 +209,12 @@ void tagAnywhere(int prev_crystals) {
                 if (MapState & 0x10) {
                     return;
                 }
+                if (hasTurnedInEnoughCBs()) {
+                    if (Player->zPos < 560.0f) {
+                        // Too close to boss door
+                        return;
+                    }
+                }
             }
             if (TBVoidByte & 3) {
                 return;
@@ -219,11 +232,6 @@ void tagAnywhere(int prev_crystals) {
 					return;
 				}
 				if (change != 0) {
-                    if (CurrentMap == 0x2A) {
-                        tag_countdown = 2;
-                        HUD->item[0].hud_state_timer = 0x100;
-                        HUD->item[0].hud_state = 0;
-                    }
 					for (int i = 0; i < sizeof(banned_maps); i++) {
 						if (banned_maps[i] == CurrentMap) {
 							return;
@@ -271,6 +279,13 @@ void tagAnywhere(int prev_crystals) {
                                 Player->hand_state = 3;
                             }
                         };
+                        if (CurrentMap == 0x2A) {
+                            if (!hasTurnedInEnoughCBs()) {
+                                tag_countdown = 3;
+                                HUD->item[0].hud_state_timer = 0x100;
+                                HUD->item[0].hud_state = 0;
+                            }
+                        }
                         tagKong(next_character + 2);
 						clearTagSlide(Player);
 						Player->new_kong = next_character + 2;

@@ -90,6 +90,7 @@
 
 .definelabel cancelPausedCutscene, 0x8061CB08
 .definelabel pauseCutscene, 0x8061CAD8
+.definelabel hasTurnedInEnoughCBs, 0x805FF0C8
 
 .definelabel setArcadeTextXY, 0x80024508
 .definelabel spawnArcadeText, 0x8002451C
@@ -271,7 +272,6 @@
 .definelabel WarpToIslesEnabled, 0x807FFFEE // u8
 .definelabel SkipDance, 0x807FFFED // u8
 .definelabel permaLossMode, 0x807FFFEC // u8
-.definelabel disableBossKongCheck, 0x807FFFEB // u8
 .definelabel preventTagSpawn, 0x807FFFEA // u8
 .definelabel bonusAutocomplete, 0x807FFFE9 // u8
 .definelabel Rando, 0x807FF800 // 0x200

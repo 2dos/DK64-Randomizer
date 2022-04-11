@@ -56,7 +56,6 @@ void initHack(void) {
 		DamageMultiplier = Rando.damage_multiplier;
 		WarpToIslesEnabled = Rando.warp_to_isles_enabled;
 		permaLossMode = Rando.perma_lose_kongs;
-		disableBossKongCheck = Rando.disable_boss_kong_check;
 		preventTagSpawn = Rando.prevent_tag_spawn;
 		bonusAutocomplete = Rando.resolve_bonus;
 		changeCharSpawnerFlag(0x14, 2, 93); // Tie llama spawn to lanky help me cutscene flag
@@ -93,6 +92,9 @@ void initHack(void) {
 			if (!Rando.price_rando_on) {
 				priceTransplant();
 			}
+		}
+		if (Rando.disable_boss_kong_check) {
+			*(int*)(0x8064EC00) = 0x24020001;
 		}
 		fixMusicRando();
 		// Disable Sniper Scope Overlay
