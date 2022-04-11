@@ -20,7 +20,7 @@ LogicRegions = {
 
         Collectible(Collectibles.coin, Kongs.donkey, lambda l: True, None, 2),  # Llama cage
         Collectible(Collectibles.coin, Kongs.donkey, lambda l: l.coconut and l.strongKong, None, 3),  # DK BP room
-        Collectible(Collectibles.coin, Kongs.any, lambda l: True, None, 1),  # Oasis
+        Collectible(Collectibles.coin, Kongs.any, lambda l: l.shockwave, None, 1),  # Oasis
         Collectible(Collectibles.coin, Kongs.diddy, lambda l: True, None, 5),  # W2
         Collectible(Collectibles.coin, Kongs.tiny, lambda l: True, None, 4),  # Oasis
         Collectible(Collectibles.coin, Kongs.chunky, lambda l: True, None, 4),  # Outside Tiny Temple
