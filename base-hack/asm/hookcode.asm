@@ -473,6 +473,9 @@ START_HOOK:
 		ADDIU 		t8, r0, 136
 		BEQ 		a1, t8, tagPreventCode_Prevent
 		NOP
+		ADDIU 		t8, r0, 137
+		BEQ 		a1, t8, tagPreventCode_Prevent
+		NOP
 
 		tagPreventCode_Vanilla:
 			LH 		a1, 0x0 (s1)

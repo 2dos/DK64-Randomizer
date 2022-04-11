@@ -42,7 +42,7 @@ def randomize_music(spoiler: Spoiler):
                 if song.type == SongType.BGM:
                     # For testing, flip these two lines
                     # song_list.append(pointer_addresses[0]["entries"][song_data.index(song)])
-                    song_list[song.channel-1].append(js.pointer_addresses[0]["entries"][song_data.index(song)])
+                    song_list[song.channel - 1].append(js.pointer_addresses[0]["entries"][song_data.index(song)])
             # ShuffleMusicWithSizeCheck(spoiler, song_list)
             for channel_index in range(12):
                 shuffled_music = song_list[channel_index].copy()
