@@ -269,7 +269,7 @@ def ForwardFill(settings, itemsToPlace, validLocations, ownedItems=[]):
 def AssumedFill(settings, itemsToPlace, validLocations, ownedItems=[]):
     """Assumed fill algorithm for item placement."""
     # Calculate total cost of moves
-    maxCoinsSpent = GetMaxCoinsSpent(settings, itemsToPlace + ownedItems)        
+    maxCoinsSpent = GetMaxCoinsSpent(settings, itemsToPlace + ownedItems)
     # While there are items to place
     random.shuffle(itemsToPlace)
     while len(itemsToPlace) > 0:
