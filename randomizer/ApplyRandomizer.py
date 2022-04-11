@@ -251,7 +251,6 @@ def patching_response(responded_data):
         js.document.getElementById("nav-settings-tab").style.display = ""
         js.document.getElementById("spoiler_log_block").style.display = ""
         js.document.getElementById("spoiler_log_text").value = spoiler.toJson()
-        js.save_text_as_file(spoiler.toJson(), f"dk64-{spoiler.settings.seed_id}-spoiler-log.json")
     else:
         js.document.getElementById("nav-settings-tab").style.display = "none"
         js.document.getElementById("spoiler_log_text").value = ""

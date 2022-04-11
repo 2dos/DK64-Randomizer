@@ -1,5 +1,6 @@
 """Module used to distribute items randomly."""
 import random
+import js
 
 import randomizer.ItemPool as ItemPool
 import randomizer.Lists.Exceptions as Ex
@@ -287,7 +288,7 @@ def AssumedFill(settings, itemsToPlace, validLocations, ownedItems=[]):
         validReachable = [x for x in reachable if LocationList[x].item is None and x in validLocations]
         # If there are no empty reachable locations, reached a dead end
         if len(validReachable) == 0:
-            print("Failed placing item " + ItemList[item].name + ", no valid reachable locations without this move.")
+            js.postMessage("Failed placing item " + ItemList[item].name + ", no valid reachable locations without this move.")
             return len(itemsToPlace) + 1
         # Shop items need coin logic
         if ItemList[item].type == Types.Shop:
@@ -319,7 +320,7 @@ def AssumedFill(settings, itemsToPlace, validLocations, ownedItems=[]):
             valid = True
             # If there are not enough empty reachable locations to cover the remaining items, this placement won't work
             if len(nextReachable) < len(itemsToPlace):
-                print("Failed placing item " + ItemList[item].name + " in location " + LocationList[locationId].name + ", due to too few remaining locations in play")
+                js.postMessage("Failed placing item " + ItemList[item].name + " in location " + LocationList[locationId].name + ", due to too few remaining locations in play")
                 valid = False
             # Attempt to verify coins
             if valid and ItemList[item].type == Types.Shop:
@@ -330,12 +331,12 @@ def AssumedFill(settings, itemsToPlace, validLocations, ownedItems=[]):
                 for kong in range(5):
                     if currentCoins[kong] < movePriceArray[kong]:
                         # if currentCoins[kong] < 0:
-                        print("Failed placing item: " + ItemList[item].name)
-                        print("movePriceArray: " + str(movePriceArray))
-                        print("Total Coins Accessible: " + str(LogicVariables.Coins))
-                        print("maxCoinsSpent: " + str(maxCoinsSpent))
-                        print("currentCoins: " + str(currentCoins))
-                        print("items left to place: " + str(len(itemsToPlace)))
+                        # print("Failed placing item: " + ItemList[item].name)
+                        # print("movePriceArray: " + str(movePriceArray))
+                        # print("Total Coins Accessible: " + str(LogicVariables.Coins))
+                        # print("maxCoinsSpent: " + str(maxCoinsSpent))
+                        # print("currentCoins: " + str(currentCoins))
+                        # print("items left to place: " + str(len(itemsToPlace)))
                         valid = False
             # If world is not valid, undo item placement and try next location
             if not valid:
@@ -346,7 +347,7 @@ def AssumedFill(settings, itemsToPlace, validLocations, ownedItems=[]):
                 itemShuffled = True
                 break
         if not itemShuffled:
-            print("Failed placing item " + ItemList[item].name + " in any of remaining " + str(len(validLocations)) + " possible locations")
+            js.postMessage("Failed placing item " + ItemList[item].name + " in any of remaining " + str(len(validLocations)) + " possible locations")
             return len(itemsToPlace) + 1
     return 0
 
@@ -448,11 +449,11 @@ def Fill(spoiler):
             return spoiler
         except Ex.FillException as ex:
             if retries == 4:
-                print("Fill failed, out of retries.")
+                js.postMessage("Fill failed, out of retries.")
                 raise ex
             else:
                 retries += 1
-                print("Fill failed. Retrying. Tries: " + str(retries))
+                js.postMessage("Fill failed. Retrying. Tries: " + str(retries))
                 Reset()
                 Logic.ClearAllLocations()
 
@@ -569,11 +570,11 @@ def ShuffleMoves(spoiler):
             return spoiler
         except Ex.FillException as ex:
             if retries == 20:
-                print("Fill failed, out of retries.")
+                js.postMessage("Fill failed, out of retries.")
                 raise ex
             else:
                 retries += 1
-                print("Fill failed. Retrying. Tries: " + str(retries))
+                js.postMessage("Fill failed. Retrying. Tries: " + str(retries))
                 Reset()
                 Logic.ClearAllLocations()
 

@@ -147,7 +147,6 @@ def disable_input(event):
     # As we rotate between the tabs, verify our disabled progression status
     # and set our input file box as the correct name so we can use two fileboxes as the same name
     if ev_type is False:
-        update_disabled_progression(None)
         if not js.document.getElementById("input-file-rom_2"):
             try:
                 js.document.getElementById("input-file-rom").id = "input-file-rom_2"
