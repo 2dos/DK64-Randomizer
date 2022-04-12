@@ -1,5 +1,6 @@
 """Convert 63x63 Portal image into 4 32x32 segments."""
 import os
+
 from PIL import Image
 
 

@@ -1,9 +1,8 @@
 """Update wrinkly hints compressed file."""
+import random
 from io import BytesIO
 
 import js
-import random
-
 from randomizer.Enums.WrinklyKong import WrinklyKong
 from randomizer.Lists.WrinklyHints import Hint, hints
 from randomizer.Patcher import ROM

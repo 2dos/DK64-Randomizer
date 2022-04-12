@@ -10,7 +10,6 @@ To use:
 import os
 from typing import BinaryIO
 
-
 levels = ["Japes", "Aztec", "Factory", "Galleon", "Fungi", "Caves", "Castle", "Helm"]
 keys = [0x1A, 0x4A, 0x8A, 0xA8, 0xEC, 0x124, 0x13D]
 special_moves = [

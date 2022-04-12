@@ -1,10 +1,10 @@
 """Rando write bananaport locations."""
 from imp import source_from_cache
-import js
 
+import js
+from randomizer.Lists.Warps import BananaportVanilla
 from randomizer.Patcher import ROM
 from randomizer.Spoiler import Spoiler
-from randomizer.Lists.Warps import BananaportVanilla
 
 
 def randomize_bananaport(spoiler: Spoiler):

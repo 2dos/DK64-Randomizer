@@ -4,9 +4,10 @@ import inspect
 import json
 import random
 import sys
-from randomizer.BossShuffle import ShuffleBossKongs, ShuffleBosses, ShuffleKutoutKongs
-from randomizer.Enums.Kongs import Kongs
+
+from randomizer.BossShuffle import ShuffleBosses, ShuffleBossKongs, ShuffleKutoutKongs
 from randomizer.Enums.Events import Events
+from randomizer.Enums.Kongs import Kongs
 from randomizer.Prices import RandomizePrices, VanillaPrices
 
 

@@ -1,6 +1,7 @@
 """Pull hash images from ROM."""
-import zlib
 import os
+import zlib
+
 from PIL import Image
 
 images = [

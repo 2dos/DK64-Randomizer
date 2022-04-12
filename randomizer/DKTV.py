@@ -2,7 +2,6 @@
 import random
 
 import js
-
 from randomizer.Patcher import ROM
 
 

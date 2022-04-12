@@ -2,17 +2,10 @@
 
 import random
 
+from randomizer.Enums.Items import Items
 from randomizer.Enums.Kongs import Kongs
 from randomizer.Enums.Locations import Locations
-from randomizer.Enums.Items import Items
-from randomizer.ItemPool import (
-    ChunkyMoveLocations,
-    DiddyMoveLocations,
-    DonkeyMoveLocations,
-    LankyMoveLocations,
-    SharedMoveLocations,
-    TinyMoveLocations,
-)
+from randomizer.ItemPool import ChunkyMoveLocations, DiddyMoveLocations, DonkeyMoveLocations, LankyMoveLocations, SharedMoveLocations, TinyMoveLocations
 from randomizer.Lists.Location import LocationList
 
 VanillaPrices = {

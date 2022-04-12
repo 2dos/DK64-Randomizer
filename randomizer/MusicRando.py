@@ -5,7 +5,6 @@ import random
 from ast import And
 
 import js
-
 import randomizer.Lists.Exceptions as Ex
 from randomizer.Enums.SongType import SongType
 from randomizer.Lists.Songs import Song, SongGroup, song_data

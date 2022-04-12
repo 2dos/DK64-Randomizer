@@ -1,11 +1,10 @@
 """Module used to distribute items randomly."""
 import random
-import js
 
+import js
 import randomizer.ItemPool as ItemPool
 import randomizer.Lists.Exceptions as Ex
 import randomizer.Logic as Logic
-from randomizer.Prices import GetPriceOfMoveItem
 import randomizer.ShuffleExits as ShuffleExits
 from randomizer.Enums.Items import Items
 from randomizer.Enums.Kongs import Kongs
@@ -17,11 +16,12 @@ from randomizer.Enums.Transitions import Transitions
 from randomizer.Enums.Types import Types
 from randomizer.Lists.Item import ItemList
 from randomizer.Lists.Location import Location, LocationList
-from randomizer.Lists.Minigame import MinigameRequirements, BarrelMetaData
-from randomizer.ShuffleKasplats import KasplatShuffle
+from randomizer.Lists.Minigame import BarrelMetaData, MinigameRequirements
 from randomizer.Logic import LogicVarHolder, LogicVariables
 from randomizer.LogicClasses import TransitionFront
+from randomizer.Prices import GetPriceOfMoveItem
 from randomizer.ShuffleBarrels import BarrelShuffle, ShuffleBarrels
+from randomizer.ShuffleKasplats import KasplatShuffle
 from randomizer.ShuffleWarps import shuffleWarps
 
 

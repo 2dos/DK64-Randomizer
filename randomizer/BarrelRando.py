@@ -1,9 +1,8 @@
 """Apply Boss Locations."""
 import js
-
+from randomizer.Lists.Minigame import BarrelMetaData, MinigameRequirements
 from randomizer.Patcher import ROM
 from randomizer.Spoiler import Spoiler
-from randomizer.Lists.Minigame import MinigameRequirements, BarrelMetaData
 
 
 def randomize_barrels(spoiler: Spoiler):

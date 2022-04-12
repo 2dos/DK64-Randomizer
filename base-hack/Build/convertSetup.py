@@ -2,6 +2,7 @@
 import os
 import shutil
 import struct
+
 from getMoveSignLocations import getMoveSignData
 
 

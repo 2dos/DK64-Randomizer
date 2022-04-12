@@ -1,12 +1,13 @@
 """Temp file used for testing new logic system."""
 import random
+from copy import deepcopy
 
 import pytest
-from copy import deepcopy
+
 from randomizer.Fill import Generate_Spoiler
+from randomizer.Lists import Exceptions
 from randomizer.Settings import Settings
 from randomizer.Spoiler import Spoiler
-from randomizer.Lists import Exceptions
 
 
 @pytest.fixture

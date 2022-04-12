@@ -2,7 +2,6 @@
 import js
 from randomizer.EntranceRando import intToArr
 from randomizer.MapsAndExits import Maps
-
 from randomizer.Patcher import ROM
 from randomizer.Spoiler import Spoiler
 

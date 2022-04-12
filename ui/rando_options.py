@@ -3,7 +3,6 @@ import random
 
 import js
 from js import document
-
 from ui.bindings import bind
 
 
@@ -20,7 +19,7 @@ def update_disabled_progression(evt):
         try:
             document.getElementById("unlock_all_kongs").removeAttribute("disabled")
         except Exception:
-            pass                
+            pass
 
 
 def randomseed(evt):
@@ -130,6 +129,7 @@ def preset_select_changed(event):
                 js.jq(f"#{key}").val(presets[key])
         except Exception as e:
             pass
+
 
 @bind("click", "randomize_blocker_required_amounts")
 def toggle_b_locker_boxes(event):
