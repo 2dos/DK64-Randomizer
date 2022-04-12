@@ -102,6 +102,7 @@ extern int* textDraw(int* dl, int style, int x, int y, char* str);
 extern void cancelPausedCutscene(void);
 extern void pauseCutscene(void);
 
+extern int hasTurnedInEnoughCBs(void);
 extern int getWorld(int map, int unk2);
 extern void displayImageOnObject(int obj_id, int position, int image_index, int unk4);
 extern void drawNumberObject(int model, int unk2, int image_index, int unk4);
@@ -297,6 +298,5 @@ extern settingsData StoredSettings;
 extern char WarpToIslesEnabled;
 extern char SkipDance;
 extern char permaLossMode;
-extern char disableBossKongCheck;
 extern char preventTagSpawn;
 extern char bonusAutocomplete;

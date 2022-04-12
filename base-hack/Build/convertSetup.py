@@ -65,6 +65,7 @@ def modify(file_name, map_index):
         for x in range(model2_count):
             byte_stream = byte_read[read_location : read_location + 0x30]
             _type = int.from_bytes(byte_read[read_location + 0x28 : read_location + 0x2A], "big")
+            _id = int.from_bytes(byte_read[read_location + 0x2A : read_location + 0x2C], "big")
             if _type == 0x2AC and map_index != 0x2A:
                 base_stream = byte_stream
                 _x = int.from_bytes(byte_read[read_location + 0 : read_location + 4], "big")
@@ -95,6 +96,16 @@ def modify(file_name, map_index):
                     }
                 )
                 model2_index += 1
+            if map_index == 7 and _id == 0x1A:
+                # Type 0x94
+                _type = 0xCE
+                repl_byte = b""
+                for x in range(0x29):
+                    repl_byte += byte_stream[x].to_bytes(1, "big")
+                repl_byte += _type.to_bytes(1, "big")
+                for x in range(0x30 - 0x2A):
+                    repl_byte += byte_stream[x + 0x2A].to_bytes(1, "big")
+                byte_stream = repl_byte
             data = {
                 "stream": byte_stream,
                 "type": _type,

@@ -21,7 +21,6 @@ static const unsigned char banned_maps[] = {
     35, // K. Rool Barrel: DK's Target Game
     37, // Jungle Japes: Barrel Blast // Note: The barrels don't work as other kongs so not much point enabling it on this map
     41, // Angry Aztec: Barrel Blast
-    42, // Troff 'n' Scoff
     50, // K. Rool Barrel: Tiny's Mushroom Game
     54, // Gloomy Galleon: Barrel Blast
     55, // Fungi Forest: Minecart
@@ -159,15 +158,38 @@ static const unsigned char bad_movement_states[] = {
 };
 
 static const short kong_flags[] = {0x181,0x6,0x46,0x42,0x75};
+static unsigned char tag_countdown = 0;
 
 void tagAnywhere(int prev_crystals) {
 	if (Rando.tag_anywhere) {
 		if (Player) {
-            char hud_items[] = {0,1,5,8,10,12,13,14};
-            if (HUD) {
-                for (int i = 0; i < sizeof(hud_items); i++) {
-                    if (HUD->item[(int)hud_items[i]].hud_state) {
-                        return;
+            if (tag_countdown > 0) {
+                tag_countdown -= 1;
+            }
+            if (CurrentMap != 0x2A) {
+                char hud_items[] = {0,1,5,8,10,12,13,14};
+                if (HUD) {
+                    for (int i = 0; i < sizeof(hud_items); i++) {
+                        if (HUD->item[(int)hud_items[i]].hud_state) {
+                            return;
+                        }
+                    }
+                }
+            } else {
+                if (tag_countdown == 2) {
+                    HUD->item[0].hud_state = 1;
+                    if (Player->control_state == 108) {
+                        int world = getWorld(CurrentMap,0);
+                        if (MovesBase[(int)Character].cb_count[world] > 0) {
+                            HUD->item[0].hud_state = 0;
+                        }
+                    }
+                } else if (tag_countdown == 1) {
+                    if (Player->control_state == 108) {
+                        int world = getWorld(CurrentMap,0);
+                        if (MovesBase[(int)Character].cb_count[world] > 0) {
+                            HUD->item[0].hud_state = 1;
+                        }
                     }
                 }
             }
@@ -183,7 +205,21 @@ void tagAnywhere(int prev_crystals) {
             if (CutsceneActive) {
                 return;
             }
+            if (CurrentMap == 0x2A) {
+                if (MapState & 0x10) {
+                    return;
+                }
+                if (hasTurnedInEnoughCBs()) {
+                    if (Player->zPos < 560.0f) {
+                        // Too close to boss door
+                        return;
+                    }
+                }
+            }
             if (TBVoidByte & 3) {
+                return;
+            }
+            if (tag_countdown != 0) {
                 return;
             }
 			if (Character < TAG_ANYWHERE_KONG_LIMIT) {
@@ -243,6 +279,13 @@ void tagAnywhere(int prev_crystals) {
                                 Player->hand_state = 3;
                             }
                         };
+                        if (CurrentMap == 0x2A) {
+                            if (!hasTurnedInEnoughCBs()) {
+                                tag_countdown = 3;
+                                HUD->item[0].hud_state_timer = 0x100;
+                                HUD->item[0].hud_state = 0;
+                            }
+                        }
                         tagKong(next_character + 2);
 						clearTagSlide(Player);
 						Player->new_kong = next_character + 2;

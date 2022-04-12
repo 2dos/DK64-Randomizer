@@ -460,17 +460,6 @@ START_HOOK:
 		J 			0x806840e0
 		NOP
 
-	disableBossKongCheckCode:
-		LUI 		t7, hi(disableBossKongCheck)
-		LBU 		t7, lo(disableBossKongCheck) (t7)
-		BNEZ 		t7, disableBossKongCheckCode_disabled
-		ADDIU 		v0, r0, 1
-		SLTIU 		v0, v0, 1
-		
-		disableBossKongCheckCode_disabled:
-			J 		0x8064EBFC
-			ANDI 	t7, v0, 0xFF
-
 	tagPreventCode:
 		LUI 		a1, hi(preventTagSpawn)
 		LBU 		a1, lo(preventTagSpawn) (a1)
@@ -482,6 +471,9 @@ START_HOOK:
 		BEQ 		a1, t8, tagPreventCode_Prevent
 		NOP
 		ADDIU 		t8, r0, 136
+		BEQ 		a1, t8, tagPreventCode_Prevent
+		NOP
+		ADDIU 		t8, r0, 137
 		BEQ 		a1, t8, tagPreventCode_Prevent
 		NOP
 

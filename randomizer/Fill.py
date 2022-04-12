@@ -269,6 +269,8 @@ def ForwardFill(settings, itemsToPlace, validLocations, ownedItems=[]):
 
 def AssumedFill(settings, itemsToPlace, validLocations, ownedItems=[]):
     """Assumed fill algorithm for item placement."""
+    # Calculate total cost of moves
+    maxCoinsSpent = GetMaxCoinsSpent(settings, itemsToPlace + ownedItems)
     # While there are items to place
     random.shuffle(itemsToPlace)
     while len(itemsToPlace) > 0:
@@ -288,12 +290,13 @@ def AssumedFill(settings, itemsToPlace, validLocations, ownedItems=[]):
         validReachable = [x for x in reachable if LocationList[x].item is None and x in validLocations]
         # If there are no empty reachable locations, reached a dead end
         if len(validReachable) == 0:
-            js.postMessage("Failed placing item " + ItemList[item].name + ", no valid reachable locations without this move.")
+            print("Failed placing item " + ItemList[item].name + ", no valid reachable locations without this move.")
+            currentMovesOwned = [ItemList[x].name for x in owned if ItemList[x].type == Types.Shop]
+            currentGbCount = len([x for x in owned if ItemList[x].type == Types.Banana])
+            js.postMessage("Current Moves owned at failure: " + str(currentMovesOwned) + " with GB count: " + str(currentGbCount))
             return len(itemsToPlace) + 1
         # Shop items need coin logic
         if ItemList[item].type == Types.Shop:
-            # Calculate total cost of moves
-            maxCoinsSpent = GetMaxCoinsSpent(settings, itemsToPlace + ownedItems)
             moveKong = ItemList[item].kong
             movePrice = GetPriceOfMoveItem(item, settings, slamLevel, ammoBelts, instUpgrades)
             movePriceArray = [0, 0, 0, 0, 0]
