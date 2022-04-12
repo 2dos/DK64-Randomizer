@@ -3,15 +3,14 @@ import random
 
 import js
 from js import document
-
 from ui.bindings import bind
 
 
-@bind("click", "shuffle_levels")
+@bind("change", "level_randomization")
 def update_disabled_progression(evt):
     """Disable certain page flags depending on checkboxes."""
-    # Check the checked status of the randomize progression button
-    if document.getElementById("shuffle_levels").checked:
+    element = document.getElementById("level_randomization")
+    if element.value == "level_order":
         # Disable the kongs button
         document.getElementById("unlock_all_kongs").setAttribute("disabled", "disabled")
         document.getElementById("unlock_all_kongs").checked = True
@@ -21,36 +20,6 @@ def update_disabled_progression(evt):
             document.getElementById("unlock_all_kongs").removeAttribute("disabled")
         except Exception:
             pass
-
-
-@bind("click", "loading_zone_rando")
-def toggle_loading_zone_coupling(event):
-    """Set toggling for loading zone coupling."""
-    if document.getElementById("loading_zone_rando").checked:
-        js.document.getElementById("loading_zone_coupled").removeAttribute("disabled")
-    else:
-        js.document.getElementById("loading_zone_coupled").setAttribute("disabled", "disabled")
-
-
-@bind("click", "loading_zone_rando")
-@bind("click", "shuffle_levels")
-def toggle_loading_zone_level_order(event):
-    """Set toggling for level order."""
-    try:
-        if event.target.id == "loading_zone_rando":
-            if document.getElementById("loading_zone_rando").checked:
-                js.document.getElementById("shuffle_levels").setAttribute("disabled", "disabled")
-                js.document.getElementById("shuffle_levels").removeAttribute("checked")
-            else:
-                js.document.getElementById("shuffle_levels").removeAttribute("disabled")
-        elif event.target.id == "shuffle_levels":
-            if document.getElementById("shuffle_levels").checked:
-                js.document.getElementById("loading_zone_rando").setAttribute("disabled", "disabled")
-                js.document.getElementById("loading_zone_rando").removeAttribute("checked")
-            else:
-                js.document.getElementById("loading_zone_rando").removeAttribute("disabled")
-    except Exception:
-        pass
 
 
 def randomseed(evt):
@@ -159,7 +128,7 @@ def preset_select_changed(event):
             else:
                 js.jq(f"#{key}").val(presets[key])
         except Exception as e:
-            print(e)
+            pass
 
 
 @bind("click", "randomize_blocker_required_amounts")

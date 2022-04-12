@@ -1,10 +1,10 @@
 """Randomizes Bananaports."""
 import random
-import js
 
-from randomizer.MapsAndExits import Maps
-from randomizer.Lists.Warps import BananaportVanilla
+import js
 from randomizer.Enums.Warps import Warps
+from randomizer.Lists.Warps import BananaportVanilla
+from randomizer.MapsAndExits import Maps
 
 
 def getShuffleMaps():

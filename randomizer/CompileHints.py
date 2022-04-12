@@ -1,8 +1,8 @@
 """Compile a list of hints based on the settings."""
 import random
 
-from randomizer.UpdateHints import updateRandomHint
 from randomizer.Spoiler import Spoiler
+from randomizer.UpdateHints import updateRandomHint
 
 
 def compileHints(spoiler: Spoiler):

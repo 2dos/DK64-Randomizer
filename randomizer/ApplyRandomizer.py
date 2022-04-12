@@ -4,25 +4,25 @@ import json
 import pickle
 
 import js
-
+from randomizer.BananaPortRando import randomize_bananaport
+from randomizer.BarrelRando import randomize_barrels
+from randomizer.BossRando import randomize_bosses
+from randomizer.CompileHints import compileHints
+from randomizer.CosmeticColors import apply_cosmetic_colors
 from randomizer.DKTV import randomize_dktv
+from randomizer.EnemyRando import randomize_enemies
 from randomizer.EntranceRando import randomize_entrances
 from randomizer.Enums.Transitions import Transitions
+from randomizer.Hash import get_hash_images
 from randomizer.KRoolRando import randomize_krool
 from randomizer.MoveLocationRando import randomize_moves
 from randomizer.MusicRando import randomize_music
 from randomizer.Patcher import ROM
 from randomizer.PriceRando import randomize_prices
-from randomizer.BossRando import randomize_bosses
-from randomizer.BarrelRando import randomize_barrels
-from randomizer.BananaPortRando import randomize_bananaport
-from randomizer.EnemyRando import randomize_enemies
-from randomizer.Hash import get_hash_images
-from randomizer.UpdateHints import PushHints
-from randomizer.CompileHints import compileHints
 
 # from randomizer.Spoiler import Spoiler
 from randomizer.Settings import Settings
+from randomizer.UpdateHints import PushHints
 from ui.progress_bar import ProgressBar
 
 
@@ -236,6 +236,7 @@ def patching_response(responded_data):
     randomize_barrels(spoiler)
     randomize_bananaport(spoiler)
     randomize_enemies(spoiler)
+    apply_cosmetic_colors(spoiler)
     if spoiler.settings.wrinkly_hints:
         compileHints(spoiler)
         PushHints()
@@ -254,7 +255,6 @@ def patching_response(responded_data):
         js.document.getElementById("nav-settings-tab").style.display = ""
         js.document.getElementById("spoiler_log_block").style.display = ""
         js.document.getElementById("spoiler_log_text").value = spoiler.toJson()
-        js.save_text_as_file(spoiler.toJson(), f"dk64-{spoiler.settings.seed_id}-spoiler-log.json")
     else:
         js.document.getElementById("nav-settings-tab").style.display = "none"
         js.document.getElementById("spoiler_log_text").value = ""

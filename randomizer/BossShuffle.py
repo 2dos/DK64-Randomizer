@@ -1,6 +1,7 @@
 """Randomize Boss Locations."""
-from array import array
 import random
+from array import array
+
 from randomizer.Enums.Kongs import Kongs
 from randomizer.MapsAndExits import Maps
 

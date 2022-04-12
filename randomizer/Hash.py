@@ -1,9 +1,11 @@
 """Locate Hash images for displaying on the website."""
-import zlib
-from randomizer.Patcher import ROM
-from PIL import Image
 import base64
 import io
+import zlib
+
+from PIL import Image
+
+from randomizer.Patcher import ROM
 
 
 def get_hash_images():

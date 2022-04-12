@@ -1,11 +1,11 @@
 """Module used to handle setting and randomizing bonus barrels."""
 import random
-import js
 
+import js
 import randomizer.Fill as Fill
 import randomizer.Lists.Exceptions as Ex
 from randomizer.Enums.Minigames import Minigames
-from randomizer.Lists.Minigame import MinigameRequirements, BarrelMetaData
+from randomizer.Lists.Minigame import BarrelMetaData, MinigameRequirements
 from randomizer.MapsAndExits import Maps
 
 

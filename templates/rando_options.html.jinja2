@@ -5,45 +5,26 @@
             <table class="table table-striped table-dark">
                 <tr>
                     <td>
-                        <!--Randomize Level Progression-->
-                        <div class="form-check form-switch w-75">
-                            <label title="This option will randomize the order the levels appear in. &#013;Specifically the level lobby entrances are randomized. &#013;The level will match the B Locker and Troff n Scoff requirements of the slot that it falls in. &#013;Hideout Helm will always be the final level.">
-                                <input class="form-check-input"
-                                       type="checkbox"
-                                       name="shuffle_levels"
-                                       id="shuffle_levels"
-                                       value="True"/>
-                                Shuffle Level Order
-                            </label>
-                        </div>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <div class="form-check form-switch w-75">
-                            <label title="Loading Zones are randomly chosen from the pool of available Loading Zones.">
-                                <input class="form-check-input"
-                                       type="checkbox"
-                                       name="loading_zone_rando"
-                                       id="loading_zone_rando"
-                                       disabled="disabled"
-                                       value="True"/>
-                                Shuffle Loading Zones
-                            </label>
-                        </div>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <div class="form-check form-switch w-75">
-                            <label title="Loading Zones will be coupled front to back.">
-                                <input class="form-check-input"
-                                       type="checkbox"
-                                       name="loading_zone_coupled"
-                                       id="loading_zone_coupled"
-                                       value="False"/>
-                                Loading Zone Coupling
-                            </label>
+                        <div>
+                            Level Randomizer Type
+                            <select name="level_randomization"
+                                    id="level_randomization"
+                                    style="width: 60%;"
+                                    class="form-select center-div"
+                                    aria-label="Randomization type">
+                                <option selected value="level_order">
+                                    Level Order
+                                </option>
+                                <option value="loadingzone">
+                                    Loading Zones
+                                </option>
+                                <option value="loadingzonesdecoupled">
+                                    Decoupled Loading Zones
+                                </option>
+                                <option value="vanilla">
+                                    Vanilla
+                                </option>
+                            </select>
                         </div>
                     </td>
                 </tr>
@@ -86,6 +67,32 @@
                         </div>
                     </td>
                 </tr>
+                <tr>
+                    <td>
+                        <div class="form-check form-switch w-75">
+                            <label title="Randomizes the amount of banana medals needed for Jetpac. Range is roughly 4 to 15 with an average of 10.">
+                                <input class="form-check-input"
+                                       type="checkbox"
+                                       name="random_medal_requirement"
+                                       value="False"/>
+                                Random Medal Requirement
+                            </label>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <div class="form-check form-switch w-75">
+                            <label title="All prices in shops are randomized to a random number.">
+                                <input class="form-check-input"
+                                       type="checkbox"
+                                       name="shop_price_rando"
+                                       value="False"/>
+                                Shuffle Shop Prices
+                            </label>
+                        </div>
+                    </td>
+                </tr>
             </table>
         </div>
         <div class="col border">
@@ -120,19 +127,6 @@
                 <tr>
                     <td>
                         <div class="form-check form-switch w-75">
-                            <label title="All prices in shops are randomized to a random number.">
-                                <input class="form-check-input"
-                                       type="checkbox"
-                                       name="shop_price_rando"
-                                       value="False"/>
-                                Shuffle Shop Prices
-                            </label>
-                        </div>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <div class="form-check form-switch w-75">
                             <label title="Bonus Barrels are randomly chosen from the pool of available Bonus Barrels.">
                                 <input class="form-check-input"
                                        type="checkbox"
@@ -152,32 +146,6 @@
                                        name="bananaport_rando"
                                        value="False"/>
                                 Shuffle Bananaports
-                            </label>
-                        </div>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <div class="form-check form-switch w-75">
-                            <label title="Randomizes the amount of banana medals needed for Jetpac. Range is roughly 4 to 15 with an average of 10.">
-                                <input class="form-check-input"
-                                       type="checkbox"
-                                       name="random_medal_requirement"
-                                       value="False"/>
-                                Random Medal Requirement
-                            </label>
-                        </div>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <div class="form-check form-switch w-75">
-                            <label title="Battle Crown platforms are randomized in their spawn location.">
-                                <input class="form-check-input"
-                                       type="checkbox"
-                                       name="battle_crown_rando"
-                                       value="False"/>
-                                Shuffle Battle Crown Locations
                             </label>
                         </div>
                     </td>

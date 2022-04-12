@@ -1,10 +1,11 @@
 """Apply Boss Locations."""
-import js
 import random
+
+import js
+from randomizer.EnemyTypes import Enemies, EnemyMetaData
+from randomizer.MapsAndExits import Maps
 from randomizer.Patcher import ROM
 from randomizer.Spoiler import Spoiler
-from randomizer.MapsAndExits import Maps
-from randomizer.EnemyTypes import Enemies, EnemyMetaData
 
 
 def randomize_enemies(spoiler: Spoiler):

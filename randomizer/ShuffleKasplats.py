@@ -1,15 +1,14 @@
 """Module used to handle setting and randomizing kasplats."""
 import random
-import js
 
+import js
 import randomizer.Fill as Fill
 import randomizer.Lists.Exceptions as Ex
 import randomizer.Logic as Logic
-from randomizer.Lists.Location import LocationList
+from randomizer.Enums.Kongs import Kongs
 from randomizer.Enums.Levels import Levels
 from randomizer.Enums.Locations import Locations
-from randomizer.Enums.Kongs import Kongs
-
+from randomizer.Lists.Location import LocationList
 
 shufflable = {
     Locations.IslesDonkeyKasplat: Kongs.donkey,

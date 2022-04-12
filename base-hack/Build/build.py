@@ -9,31 +9,18 @@ import generate_watch_file
 
 # Patcher functions for the extracted files
 import patch_text
+from adjust_exits import adjustExits
+from convertPortalImage import convertPortalImage
 from convertSetup import convertSetup
 
 # Infrastructure for recomputing DK64 global pointer tables
 from map_names import maps
-from recompute_overlays import (
-    isROMAddressOverlay,
-    readOverlayOriginalData,
-    replaceOverlayData,
-    writeModifiedOverlaysToROM,
-)
-from recompute_pointer_table import (
-    dumpPointerTableDetails,
-    getFileInfo,
-    make_safe_filename,
-    parsePointerTables,
-    pointer_tables,
-    replaceROMFile,
-    writeModifiedPointerTablesToROM,
-)
+from populateSongData import writeVanillaSongData
+from recompute_overlays import isROMAddressOverlay, readOverlayOriginalData, replaceOverlayData, writeModifiedOverlaysToROM
+from recompute_pointer_table import dumpPointerTableDetails, getFileInfo, make_safe_filename, parsePointerTables, pointer_tables, replaceROMFile, writeModifiedPointerTablesToROM
+from replace_simslam_text import replaceSimSlam
 from staticcode import patchStaticCode
 from vanilla_move_data import writeVanillaMoveData
-from adjust_exits import adjustExits
-from replace_simslam_text import replaceSimSlam
-from populateSongData import writeVanillaSongData
-from convertPortalImage import convertPortalImage
 
 ROMName = "rom/dk64.z64"
 newROMName = "rom/dk64-randomizer-base.z64"

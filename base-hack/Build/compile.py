@@ -2,8 +2,9 @@
 import os
 import shutil
 import subprocess
-import requests
 import zipfile
+
+import requests
 
 # Compile C Code
 avoids = []

@@ -1,8 +1,9 @@
 """Generate UI elements via jinja2 to display on page load."""
-import js
 import micropip
 from jinja2 import Environment, FunctionLoader
 from pyodide import to_js
+
+import js
 
 
 async def initialize():

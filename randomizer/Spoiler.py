@@ -6,19 +6,19 @@ from typing import OrderedDict
 from randomizer import Logic
 from randomizer.Enums.Events import Events
 from randomizer.Enums.Items import Items
+from randomizer.Enums.Kongs import Kongs
 from randomizer.Enums.Levels import Levels
 from randomizer.Enums.Locations import Locations
-from randomizer.Enums.Kongs import Kongs
+from randomizer.Enums.MoveTypes import MoveTypes
 from randomizer.Enums.Transitions import Transitions
 from randomizer.Enums.Types import Types
-from randomizer.Enums.MoveTypes import MoveTypes
 from randomizer.Lists.Item import ItemFromKong, ItemList
+from randomizer.Lists.KasplatLocations import KasplatLocationData
 from randomizer.Lists.Location import LocationList
-from randomizer.Lists.Minigame import MinigameRequirements, BarrelMetaData
+from randomizer.Lists.Minigame import BarrelMetaData, MinigameRequirements
 from randomizer.MapsAndExits import GetExitId, GetMapId, Maps
 from randomizer.Settings import Settings
 from randomizer.ShuffleExits import ShufflableExits
-from randomizer.Lists.KasplatLocations import KasplatLocationData
 
 
 class Spoiler:

@@ -2,11 +2,11 @@
 """Stores the Location class and a list of each location in the game."""
 
 from randomizer.Enums.Items import Items
-from randomizer.Enums.Locations import Locations
-from randomizer.Enums.Types import Types
-from randomizer.Enums.Levels import Levels
 from randomizer.Enums.Kongs import Kongs
+from randomizer.Enums.Levels import Levels
+from randomizer.Enums.Locations import Locations
 from randomizer.Enums.MoveTypes import MoveTypes
+from randomizer.Enums.Types import Types
 from randomizer.MapsAndExits import Maps
 
 

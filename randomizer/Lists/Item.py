@@ -2,8 +2,8 @@
 
 from randomizer.Enums.Items import Items
 from randomizer.Enums.Kongs import Kongs
-from randomizer.Enums.Types import Types
 from randomizer.Enums.MoveTypes import MoveTypes
+from randomizer.Enums.Types import Types
 
 
 class Item:
