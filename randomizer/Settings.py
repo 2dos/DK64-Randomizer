@@ -195,7 +195,7 @@ class Settings:
         self.shuffle_loading_zones = "none"
 
         # decoupled_loading_zones: bool
-        self.decoupled_loading_zones = True
+        self.decoupled_loading_zones = False
 
         #  Music
         self.music_bgm = None
@@ -217,6 +217,7 @@ class Settings:
         self.kasplat_rando = False
         self.perma_death = False
         self.disable_tag_barrels = False
+        self.level_randomization = "none"
 
     def resolve_settings(self):
         """Resolve settings which are not directly set through the UI."""
@@ -295,12 +296,15 @@ class Settings:
             self.bonus_barrels = "random"
 
         # Loading Zone Rando
-        if self.loading_zone_rando:
-            self.shuffle_loading_zones = "all"
-        elif self.shuffle_levels:
+        if self.level_randomization == "level_order":
             self.shuffle_loading_zones = "levels"
-        if self.loading_zone_coupled:
-            self.decoupled_loading_zones = False
+        elif self.level_randomization == "loadingzone":
+            self.shuffle_loading_zones = "all"
+        elif self.level_randomization == "loadingzonesdecoupled":
+            self.shuffle_loading_zones = "all"
+            self.decoupled_loading_zones = True
+        elif self.level_randomization == "vanilla":
+            self.shuffle_loading_zones = "none"
 
         # Move Location Rando
         if self.shop_location_rando:
