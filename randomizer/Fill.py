@@ -23,6 +23,7 @@ from randomizer.Prices import GetPriceOfMoveItem
 from randomizer.ShuffleBarrels import BarrelShuffle, ShuffleBarrels
 from randomizer.ShuffleKasplats import KasplatShuffle
 from randomizer.ShuffleWarps import shuffleWarps
+from randomizer.ShuffleKongs import ShuffleKongs
 
 
 def GetExitLevelExit(settings, region):
@@ -587,6 +588,16 @@ def Generate_Spoiler(spoiler):
     # Init logic vars with settings
     global LogicVariables
     LogicVariables = LogicVarHolder(spoiler.settings)
+    # Handle Kongs
+    if spoiler.settings.kong_rando:
+        spoiler.human_kong_rando = {}
+        ShuffleKongs(spoiler.settings)
+        kong_names = ["DK", "Diddy", "Lanky", "Tiny", "Chunky"]
+        for kong_map in spoiler.settings.shuffled_kong_placement.keys():
+            composed_str = kong_names[spoiler.settings.shuffled_kong_placement[kong_map]["locked"]["kong"]]
+            if "puzzle" in spoiler.settings.shuffled_kong_placement[kong_map].keys():
+                composed_str += " (Freed by " + kong_names[spoiler.settings.shuffled_kong_placement[kong_map]["puzzle"]["kong"]] + ")"
+            spoiler.human_kong_rando[kong_map] = composed_str
     # Handle kasplats
     KasplatShuffle(LogicVariables)
     spoiler.human_kasplats = {}

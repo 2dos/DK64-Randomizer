@@ -25,6 +25,7 @@ void fixMusicRando(void) {
 	}
 }
 
+static const short kong_flags[] = {385,6,70,66,117};
 void initHack(void) {
 	if ((LoadedHooks == 0) && (CurrentMap == 0x28)) {
 		DebugInfoOn = 1;
@@ -59,6 +60,12 @@ void initHack(void) {
 		preventTagSpawn = Rando.prevent_tag_spawn;
 		bonusAutocomplete = Rando.resolve_bonus;
 		changeCharSpawnerFlag(0x14, 2, 93); // Tie llama spawn to lanky help me cutscene flag
+		changeCharSpawnerFlag(0x7, 1, kong_flags[(int)Rando.free_target_japes]);
+		changeCharSpawnerFlag(0x10, 0x13, kong_flags[(int)Rando.free_target_ttemple]);
+		changeCharSpawnerFlag(0x14, 1, kong_flags[(int)Rando.free_target_llama]);
+		changeCharSpawnerFlag(0x1A, 1, kong_flags[(int)Rando.free_target_factory]);
+		alterGBKong(0x22, 0x4, Rando.starting_kong); // First GB
+		alterGBKong(0x7, 0x69, Rando.free_source_japes); // Front of Diddy Cage GB
 		if (Rando.no_health_refill) {
 			*(int*)(0x80683A34) = 0; // Cancel Tag Health Refill
 			// *(int*)(0x8060DD10) = 0; // Load File

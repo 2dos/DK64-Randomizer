@@ -82,4 +82,13 @@ typedef struct varspace {
 	/* 0x13E */ char disable_boss_kong_check; // 0 = Enable Check (Vanilla), 1 = Disabled
 	/* 0x13F */ char prevent_tag_spawn; // 0 = Off. 1 = Prevents tags from spawning except in T&S
 	/* 0x140 */ char jetpac_medal_requirement; // Lowest amount of medals required to access Jetpac. 0 = Don't apply new requirement
+	/* 0x141 */ char starting_kong; // Kong you start as upon file init
+	/* 0x142 */ char free_target_japes; // Kong you free in Japes
+	/* 0x143 */ char free_source_japes; // Kong who frees the kong in Japes
+	/* 0x144 */ char free_target_llama; // Kong you free in Llama Temple
+	/* 0x145 */ char free_source_llama; // Kong who frees the kong in Llama Temple
+	/* 0x146 */ char free_target_ttemple; // Kong you free in Tiny Temple
+	/* 0x147 */ char free_source_ttemple; // Kong who frees the kong in Tiny Temple
+	/* 0x148 */ char free_target_factory; // Kong you free in Factory
+	/* 0x149 */ char free_source_factory; // Kong who frees the kong in Factory
 } varspace;

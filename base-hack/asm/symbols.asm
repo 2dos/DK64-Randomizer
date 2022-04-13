@@ -87,6 +87,9 @@
 .definelabel displayImageOnObject, 0x80635018
 .definelabel drawNumberObject, 0x80635098
 .definelabel isLobby, 0x805FEF74
+.definelabel canHitSwitch, 0x806419F8
+.definelabel setSomeTimer, 0x80641724
+.definelabel indexOfNextObj, 0x80659470
 
 .definelabel cancelPausedCutscene, 0x8061CB08
 .definelabel pauseCutscene, 0x8061CAD8
@@ -257,6 +260,7 @@
 .definelabel FilePercentage, 0x80033F51
 .definelabel FileGBCount, 0x8003380C
 .definelabel FileScreenDLOffset, 0x80033F4C
+.definelabel GBDictionary, 0x80755A20
 
 .definelabel CBTurnedInArray, 0x807FC930
 .definelabel charspawnerflags, 0x80755DA8

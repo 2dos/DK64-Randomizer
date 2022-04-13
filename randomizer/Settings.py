@@ -219,6 +219,7 @@ class Settings:
         self.perma_death = False
         self.disable_tag_barrels = False
         self.level_randomization = "none"
+        self.kong_rando = False
 
     def resolve_settings(self):
         """Resolve settings which are not directly set through the UI."""

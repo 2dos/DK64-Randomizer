@@ -237,6 +237,22 @@ file_dict = [
         "is_diff_patch": True,
     },
     {
+        "name": "Training Grounds Instance Scripts",
+        "pointer_table_index": 10,
+        "file_index": 0xB0,
+        "source_file": "assets/Non-Code/instance_scripts/tgrounds.bin",
+        "bps_file": "assets/Non-Code/instance_scripts/tgrounds.bps",
+        "is_diff_patch": True,
+    },
+    {
+        "name": "Tiny Temple Instance Scripts",
+        "pointer_table_index": 10,
+        "file_index": 0x10,
+        "source_file": "assets/Non-Code/instance_scripts/tiny_temple.bin",
+        "bps_file": "assets/Non-Code/instance_scripts/tiny_temple.bps",
+        "is_diff_patch": True,
+    },
+    {
         "name": "Tag Barrel Bottom Texture",
         "pointer_table_index": 25,
         "file_index": 4749,
@@ -643,6 +659,24 @@ with open(newROMName, "r+b") as fh:
         for y in x:
             if os.path.exists(y):
                 os.remove(y)
+    fh.seek(0x1FED020 + 0x141)
+    fh.write((0).to_bytes(1, "big"))
+    fh.seek(0x1FED020 + 0x142)
+    fh.write((1).to_bytes(1, "big"))
+    fh.seek(0x1FED020 + 0x143)
+    fh.write((0).to_bytes(1, "big"))
+    fh.seek(0x1FED020 + 0x144)
+    fh.write((2).to_bytes(1, "big"))
+    fh.seek(0x1FED020 + 0x145)
+    fh.write((0).to_bytes(1, "big"))
+    fh.seek(0x1FED020 + 0x146)
+    fh.write((3).to_bytes(1, "big"))
+    fh.seek(0x1FED020 + 0x147)
+    fh.write((1).to_bytes(1, "big"))
+    fh.seek(0x1FED020 + 0x148)
+    fh.write((4).to_bytes(1, "big"))
+    fh.seek(0x1FED020 + 0x149)
+    fh.write((2).to_bytes(1, "big"))
 
 print("[7 / 7] - Generating BizHawk RAM watch")
 

@@ -6,6 +6,8 @@ void islesSpawn(void) {
 	}
 }
 
+static const short kong_flags[] = {385,6,70,66,117};
+
 void applyFastStart(void) {
 	if (Rando.fast_start_beginning) {
 		for (int i = 0; i < 4; i++) {
@@ -15,7 +17,7 @@ void applyFastStart(void) {
 		setPermFlag(0x186); // Isles Escape CS
 		setPermFlag(0x17F); // Training Barrels Spawned
 		setPermFlag(0x180); // Cranky given SSlam
-		setPermFlag(385); // DK Free
+		setPermFlag(kong_flags[(int)Rando.starting_kong]); // DK Free
 		if (Rando.camera_unlocked) {
 			setPermFlag(0x179);
 		}
