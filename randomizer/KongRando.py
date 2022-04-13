@@ -17,9 +17,9 @@ def apply_kongrando_cosmetic(spoiler: Spoiler):
         actors = [Enemies.CutsceneDK, Enemies.CutsceneDiddy, Enemies.CutsceneLanky, Enemies.CutsceneTiny, Enemies.CutsceneChunky]
 
         llama_entrance_switch = []
-        llama_kong = spoiler.settings.shuffled_kong_placement["Llama Temple"]["puzzle"]["kong"]
-        if llama_kong in [1, 4]:
-            llama_entrance_switch.append({"index": 0xD, "new_type": gunswitches[llama_kong]})
+        # llama_kong = spoiler.settings.shuffled_kong_placement["Llama Temple"]["puzzle"]["kong"]
+        # if llama_kong in [1, 4]:
+        #     llama_entrance_switch.append({"index": 0xD, "new_type": gunswitches[llama_kong]})
 
         kongrando_changes = [
             {
