@@ -32,11 +32,6 @@ int* display_images(int* dl) {
 
 
 int* display_text(int* dl) {
-	if (Rando.unlock_kongs) {
-		for (int i = 0; i < 5; i++) {
-			KongUnlockedMenuArray[i] = 1;
-		}
-	}
 	// File Percentage
 	int y = FileScreenDLOffset - 320;
 	dk_strFormat((char*)file_percentage, "%d%%", FilePercentage);
@@ -112,4 +107,23 @@ int* displayHash(int* dl, int y_offset) {
 		dl = drawImage(dl, hash_textures[hash_index], RGBA16, 32, 32, 440 + (100 * i), 920 - y_offset, 3.0f, 3.0f, 0xFF);
 	}
 	return dl;
+}
+
+static const short kong_flags[] = {385,6,70,66,117};
+void correctKongFaces(void) {
+	if (Rando.unlock_kongs) {
+		for (int i = 0; i < 5; i++) {
+			KongUnlockedMenuArray[i] = 1;
+		}
+	} else {
+		for (int i = 0; i < 5; i++) {
+			KongUnlockedMenuArray[i] = checkFlag(kong_flags[i],0);
+		}
+		KongUnlockedMenuArray[(int)Rando.starting_kong] = 1;
+		if (Rando.starting_kong != 0) {
+			if (!checkFlag(385,0)) {
+				KongUnlockedMenuArray[0] = 0;
+			}
+		}
+	}
 }

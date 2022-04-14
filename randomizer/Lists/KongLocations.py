@@ -21,7 +21,7 @@ class KongLocation:
 KongRequirements = {
     Maps.TrainingGrounds: KongLocation("Starting Kong", [0, 1, 2, 3, 4], []),
     Maps.JungleJapes: KongLocation("Jungle Japes", [0, 1, 2, 3, 4], [0, 1, 2, 3, 4]),
-    Maps.AztecLlamaTemple: KongLocation("Llama Temple", [0, 1, 2, 3, 4], [0, 1, 2, 3, 4]),
+    Maps.AztecLlamaTemple: KongLocation("Llama Temple", [0, 1, 2, 3, 4], [0, 2, 3]),
     Maps.AztecTinyTemple: KongLocation("Tiny Temple", [0, 2, 3, 4], [1]),
     Maps.FranticFactory: KongLocation("Frantic Factory", [0, 1, 2, 3, 4], [2, 3]),
 }
