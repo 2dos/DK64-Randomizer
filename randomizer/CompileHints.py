@@ -381,7 +381,7 @@ def compileHints(spoiler: Spoiler):
         {"kong": "Tiny", "color": "Purple"},
         {"kong": "Chunky", "color": "Green"},
     ]
-    padded_hints.append(f"Your seed is {spoiler.settings.seed}")
+    # padded_hints.append(f"Your seed is {spoiler.settings.seed}")
     padded_hints.append(f"You can find bananas in {random.choice(level_list)}, but also in other levels.")
     cb_hint = random.choice(cb_list)
     padded_hints.append(f"{cb_hint['kong']} can find {cb_hint['color']} bananas in {random.choice(level_list)}.")
