@@ -67,6 +67,7 @@ def get_hash_images():
             pix[pix_x, pix_y] = (red, green, blue, alpha)
 
         in_mem_file = io.BytesIO()
+        im = im.transpose(Image.FLIP_LEFT_RIGHT)
         im.save(in_mem_file, format="PNG")
         in_mem_file.seek(0)
         img_bytes = in_mem_file.read()

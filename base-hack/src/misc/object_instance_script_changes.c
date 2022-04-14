@@ -50,7 +50,7 @@
 #define TGROUNDS_BAMBOOGATE 0x46
 #define TGROUNDS_SWITCH 0x15
 #define JAPES_DIDDYBAMBOOGATE 0x46
-#define JAPES_GUNSWITCH0 0x30
+#define JAPES_GUNSWITCH0 0x2F
 #define JAPES_GUNSWITCH1 0x31
 #define JAPES_GUNSWITCH2 0x32
 #define JAPES_DIDDYFREEGB 0x47
@@ -289,7 +289,7 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 				} else if (index == 2) {
 					setPermFlag(kong_flags[(int)Rando.free_target_japes]);
 				}
-			} else if ((id == JAPES_GUNSWITCH0) || (id == JAPES_GUNSWITCH1) || (id == JAPES_GUNSWITCH2)) {
+			} else if ((id == JAPES_GUNSWITCH0) || (id == JAPES_GUNSWITCH1) || (id == JAPES_GUNSWITCH2) || (id == 0x30)) {
 				if (index == 0) {
 					return checkFlag(kong_flags[(int)Rando.free_target_japes],0);
 				} else if (index == 1) {

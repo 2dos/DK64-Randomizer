@@ -276,7 +276,7 @@ class Settings:
         required_key_count = self.krool_key_count
         if self.krool_access == "random_helm":
             key_list.remove(Events.HelmKeyTurnedIn)
-            required_key_count -= 1;
+            required_key_count -= 1
         if self.krool_access == "vanilla":
             self.krool_keys_required.extend([Events.FactoryKeyTurnedIn, Events.HelmKeyTurnedIn])
         elif self.krool_access == "all":

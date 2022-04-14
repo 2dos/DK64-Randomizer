@@ -37,7 +37,6 @@ void cFuncLoop(void) {
 	qualityOfLife_shorteners();
 	decouple_moves_fixes();
 	replace_zones(0);
-	krool_order_indicator();
 	alter_boss_key_flags();
 	if (ObjectModel2Timer <= 2) {
 		shiftBrokenJapesPortal();
