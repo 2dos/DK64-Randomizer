@@ -46,7 +46,7 @@ def compileHints(spoiler: Spoiler):
         "I had something to tell you, but I forgot what it is.",
         "I don't know anything.",
         "I'm as lost as you are. Good luck!",
-        "Wrinkly? Never heard of him."
+        "Wrinkly? Never heard of him.",
     ]
     # K. Rool Moves
     kong_cryptic = [
@@ -369,29 +369,17 @@ def compileHints(spoiler: Spoiler):
             updateRandomHint(f"The cardboard boss can be found in {level_name}")
 
     # PADDED HINTS
-    level_list = ["Jungle Japes","Angry Aztec","Frantic Factory","Gloomy Galleon","Fungi Forest","Crystal Caves","Creepy Castle"]
-    kong_list = ["DK","Diddy","Lanky","Tiny","Chunky"]
+    level_list = ["Jungle Japes", "Angry Aztec", "Frantic Factory", "Gloomy Galleon", "Fungi Forest", "Crystal Caves", "Creepy Castle"]
+    kong_list = ["DK", "Diddy", "Lanky", "Tiny", "Chunky"]
     cb_list = [
         {
             "kong": "DK",
             "color": "Yellow",
         },
-        {
-            "kong": "Diddy",
-            "color": "Red"
-        },
-        {
-            "kong": "Lanky",
-            "color": "Blue"
-        },
-        {
-            "kong": "Tiny",
-            "color": "Purple"
-        },
-        {
-            "kong": "Chunky",
-            "color": "Green"
-        }
+        {"kong": "Diddy", "color": "Red"},
+        {"kong": "Lanky", "color": "Blue"},
+        {"kong": "Tiny", "color": "Purple"},
+        {"kong": "Chunky", "color": "Green"},
     ]
     padded_hints.append(f"Your seed is {spoiler.settings.seed}")
     padded_hints.append(f"You can find bananas in {random.choice(level_list)}, but also in other levels.")
