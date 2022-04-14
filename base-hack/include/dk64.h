@@ -109,6 +109,9 @@ extern void drawNumberObject(int model, int unk2, int image_index, int unk4);
 extern int isLobby(int map);
 extern float determineXRatioMovement(unsigned int unk);
 extern int countFlagArray(int starting_flag, int count, int flagType);
+extern int canHitSwitch(void);
+extern void setSomeTimer(int model2_type);
+extern int indexOfNextObj(int id);
 
 extern void setWaterHeight(int chunk, float height, float unk2);
 extern void loadObjectForScripting(void* unk0, int unk1);
@@ -274,6 +277,7 @@ extern short CBTurnedInArray[8];
 extern short songData[0xB0];
 
 extern charspawner_flagstruct charspawnerflags[0x1F];
+extern GBDictItem GBDictionary[113];
 
 //hack data
 extern int TestVariable;

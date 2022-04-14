@@ -21,6 +21,20 @@ int convertIDToIndex(short obj_index) {
 	return index;
 }
 
+int convertSubIDToIndex(short obj_index) {
+	int _count = ObjectModel2Count;
+	int index = -1;
+	int* m2location = ObjectModel2Pointer;
+	for (int i = 0; i < _count; i++) {
+		ModelTwoData* _object = getObjectArrayAddr(m2location,0x90,i);
+		if (_object->sub_id == obj_index) {
+			index = i;
+		}
+	}
+	return index;
+}
+
+
 void* findActorWithType(int search_actor_type) {
 	for (int i = 0; i < ActorCount; i++) {
 		actorData* _actor_ = (actorData*)ActorArray[i];
@@ -100,6 +114,16 @@ void correctDKPortal(void) {
 					behav->current_state = portal_state;
 					//behav->next_state = portal_state;
 				}
+			}
+		}
+	}
+}
+
+void alterGBKong(int map, int id, int new_kong) {
+	for (int i = 0; i < 113; i++) {
+		if (GBDictionary[i].map == map) {
+			if (GBDictionary[i].model2_id == id) {
+				GBDictionary[i].intended_kong_actor = new_kong + 2;
 			}
 		}
 	}

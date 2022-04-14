@@ -50,10 +50,13 @@ extern void no_enemy_drops(void);
 extern void cancelMoveSoftlock(void);
 extern void adjust_galleon_water(void);
 
-extern void change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, int param2);
+extern int convertSubIDToIndex(short obj_index);
+extern int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, int param2);
 extern void createCollisionObjInstance(collision_types subtype, int map, int exit);
 extern int spawnCannonWrapper(void);
 extern void fixkey8(void);
+extern void alterGBKong(int map, int id, int new_kong);
+extern void fixDKFreeSoftlock(void);
 
 extern void preventBossCheese(void);
 extern void determineStartKong_PermaLossMode(void);
@@ -71,6 +74,7 @@ extern int* drawPixelText(int* dl, int x, int y, char* str, int red, int green, 
 extern int* drawPixelTextContainer(int* dl, int x, int y, char* str, int red, int green, int blue, int alpha, int offset);
 extern int* drawScreenRect(int* dl, int x1, int y1, int x2, int y2, int red, int green, int blue, int alpha);
 extern int* drawTextContainer(int* dl, int style, float x, float y, char* str, int red, int green, int blue, int opacity, int background);
+extern void correctKongFaces(void);
 
 extern void displayNumberOnObject(int id, int param2, int imageindex, int param4, int subtype);
 extern void displayShopIndicator(void);

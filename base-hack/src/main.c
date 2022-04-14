@@ -52,6 +52,7 @@ void cFuncLoop(void) {
 		}
 	}
 	cancelMoveSoftlock();
+	fixDKFreeSoftlock();
 	callParentMapFilter();
 	recolorKongControl();
 	spawnCannonWrapper();
@@ -86,6 +87,7 @@ void cFuncLoop(void) {
 				openCoinDoor();
 				giveCollectables();
 				setPermFlag(0x346);
+				Character = Rando.starting_kong;
 				StoredSettings.file_extra[(int)FileIndex].location_sss_purchased = 0;
 				StoredSettings.file_extra[(int)FileIndex].location_ab1_purchased = 0;
 				StoredSettings.file_extra[(int)FileIndex].location_ug1_purchased = 0;
@@ -93,6 +95,7 @@ void cFuncLoop(void) {
 				SaveToGlobal();
 			} else {
 				// Used File
+				Character = Rando.starting_kong;
 				determineStartKong_PermaLossMode();
 				giveCollectables();
 			}

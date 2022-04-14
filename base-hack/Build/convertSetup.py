@@ -44,6 +44,13 @@ def float_to_hex(f):
 
 
 base_stream = 0
+aztec_lanky_coord_locations = [
+    [2833.831, 120, 4354.875],
+    [2828.832, 120, 4319.88],
+    [3083, 120, 4388.861],
+    [3053.251, 120, 4388.674],
+    [3010.854, 120, 4380.918],
+]
 
 
 def modify(file_name, map_index):
@@ -97,7 +104,7 @@ def modify(file_name, map_index):
                     }
                 )
                 model2_index += 1
-            if map_index == 7 and _id == 0x1A:
+            if (map_index == 7 and _id == 0x1A) or (map_index == 0xB0 and _id == 0x39):
                 # Type 0x94
                 _type = 0xCE
                 repl_byte = b""
@@ -106,6 +113,17 @@ def modify(file_name, map_index):
                 repl_byte += _type.to_bytes(1, "big")
                 for x in range(0x30 - 0x2A):
                     repl_byte += byte_stream[x + 0x2A].to_bytes(1, "big")
+                byte_stream = repl_byte
+            if map_index == 0x26 and _id >= 0x1B1 and _id <= 0x1B5:
+                id_offset = _id - 0x1B1
+                repl_byte = b""
+                for coord in range(3):
+                    coord_val = aztec_lanky_coord_locations[id_offset][coord]
+                    coord_hex = float_to_hex(coord_val)
+                    coord_bytes = int(coord_hex, 16).to_bytes(4, "big")
+                    repl_byte += coord_bytes
+                for x in range(0x30 - 0x0C):
+                    repl_byte += byte_stream[x + 0xC].to_bytes(1, "big")
                 byte_stream = repl_byte
             data = {
                 "stream": byte_stream,

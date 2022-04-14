@@ -19,6 +19,7 @@ class Maps(IntEnum):
     CrystalCavesLobby = 194
     CreepyCastleLobby = 193
     HideoutHelmLobby = 170
+    TrainingGrounds = 176
 
     # Jungle Japes
     JungleJapes = 7

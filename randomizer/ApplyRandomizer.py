@@ -19,6 +19,7 @@ from randomizer.MoveLocationRando import randomize_moves
 from randomizer.MusicRando import randomize_music
 from randomizer.Patcher import ROM
 from randomizer.PriceRando import randomize_prices
+from randomizer.KongRando import apply_kongrando_cosmetic
 
 # from randomizer.Spoiler import Spoiler
 from randomizer.Settings import Settings
@@ -237,6 +238,7 @@ def patching_response(responded_data):
     randomize_bananaport(spoiler)
     randomize_enemies(spoiler)
     apply_cosmetic_colors(spoiler)
+    apply_kongrando_cosmetic(spoiler)
     if spoiler.settings.wrinkly_hints:
         compileHints(spoiler)
         PushHints()

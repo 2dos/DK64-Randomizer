@@ -261,7 +261,8 @@ typedef struct ModelTwoData {
 	/* 0x07C */ void* behaviour_pointer;
 	/* 0x080 */ char unk_80[0x84-0x80];
 	/* 0x084 */ short object_type;
-	/* 0x086 */ char unk_86[0x4];
+	/* 0x086 */ char unk_86[0x2];
+	/* 0x088 */ short sub_id;
 	/* 0x08A */ short object_id;
 	/* 0x08C */ char unk_8C[0x4];
 } ModelTwoData;
@@ -621,7 +622,9 @@ typedef struct behaviour_data {
 	/* 0x054 */ char pause_state;
 	/* 0x055 */ char unk_55[0x58-0x55];
 	/* 0x058 */ int distance_cap;
-	/* 0x05C */ char unk_5C[0x60-0x5C];
+	/* 0x05C */ char switch_pressed;
+	/* 0x05D */ char unk_5D;
+	/* 0x05E */ unsigned short contact_actor_type;
 	/* 0x060 */ char unk_60;
 	/* 0x061 */ char unk_61;
 	/* 0x062 */ unsigned short unk_62;
@@ -655,3 +658,12 @@ typedef struct charspawner_flagstruct {
 	/* 0x004 */ short tied_flag;
 	/* 0x006 */ char unk_06[2];
 } charspawner_flagstruct;
+
+typedef struct GBDictItem {
+	/* 0x000 */ unsigned char map;
+	/* 0x001 */ char unk_01;
+	/* 0x002 */ short model2_id;
+	/* 0x004 */ short flag_index;
+	/* 0x006 */ char intended_kong_actor;
+	/* 0x007 */ char unk_07;
+} GBDictItem;
