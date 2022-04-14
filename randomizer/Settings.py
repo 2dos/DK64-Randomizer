@@ -93,8 +93,8 @@ class Settings:
         # krool_access: str
         # vanilla (Keys 3 and 8)
         # all (All keys)
-        # random (Each key has 50% chance of being required)
-        # random_helm (Same as random but helm is guaranteed)
+        # random (Random keys dictated by the specified amount)
+        # random_helm (Random keys dictated by the specified amount, Key 8 is guaranteed)
         # open (Ship is there from start)
         self.krool_access = "random_helm"
         self.krool_keys_required = []
@@ -179,6 +179,8 @@ class Settings:
         self.unlock_fairy_shockwave = None
         # krool_phase_count: int, [1-5]
         self.krool_phase_count = 5
+        # krool_key_count: int, [0-8]
+        self.krool_key_count = 8
 
         # bonus_barrels: str
         # skip - NOT IMPLEMENTED YET
@@ -270,15 +272,20 @@ class Settings:
             Events.CastleKeyTurnedIn,
             Events.HelmKeyTurnedIn,
         ]
+        key_list = KeyEvents.copy()
+        required_key_count = self.krool_key_count
+        if self.krool_access == "random_helm":
+            key_list.remove(Events.HelmKeyTurnedIn)
+            required_key_count -= 1
         if self.krool_access == "vanilla":
             self.krool_keys_required.extend([Events.FactoryKeyTurnedIn, Events.HelmKeyTurnedIn])
         elif self.krool_access == "all":
             self.krool_keys_required.extend(KeyEvents)
         elif self.krool_access == "random" or self.krool_access == "random_helm":
-            for event in KeyEvents:
-                if random.randint(1, 2) == 2:
-                    self.krool_keys_required.append(event)
-        if self.krool_access == "random_helm" and Events.HelmKeyTurnedIn not in self.krool_keys_required:
+            random.shuffle(key_list)
+            for x in range(required_key_count):
+                self.krool_keys_required.append(key_list[x])
+        if self.krool_access == "random_helm":
             self.krool_keys_required.append(Events.HelmKeyTurnedIn)
 
         # Banana medals

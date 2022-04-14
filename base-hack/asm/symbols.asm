@@ -261,6 +261,7 @@
 .definelabel FileGBCount, 0x8003380C
 .definelabel FileScreenDLOffset, 0x80033F4C
 .definelabel GBDictionary, 0x80755A20
+.definelabel DKTVData, 0x8075E5C0
 
 .definelabel CBTurnedInArray, 0x807FC930
 .definelabel charspawnerflags, 0x80755DA8

@@ -253,13 +253,6 @@ file_dict = [
         "is_diff_patch": True,
     },
     {
-        "name": "Tag Barrel Bottom Texture",
-        "pointer_table_index": 25,
-        "file_index": 4749,
-        "source_file": "assets/Non-Code/tagbarrel/bottom.png",
-        "texture_format": "rgba5551",
-    },
-    {
         "name": "Tag Barrel Shell Texture",
         "pointer_table_index": 25,
         "file_index": 4938,
@@ -350,6 +343,14 @@ for x in range(43):
                     "do_not_recompress": True,
                 }
             )
+for x in range(10):
+    {
+        "name": f"Tag Barrel Bottom Texture ({x+1})",
+        "pointer_table_index": 25,
+        "file_index": 4749 + x,
+        "source_file": "assets/Non-Code/tagbarrel/bottom.png",
+        "texture_format": "rgba5551",
+    },
 portal_image_order = [
     ["SE", "NE", "SW", "NW"],
     ["NW", "SW", "NE", "SE"],

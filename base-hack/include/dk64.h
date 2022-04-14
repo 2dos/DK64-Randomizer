@@ -275,6 +275,7 @@ extern int FileGBCount;
 extern float FileScreenDLOffset;
 extern short CBTurnedInArray[8];
 extern short songData[0xB0];
+extern unsigned int DKTVData[5];
 
 extern charspawner_flagstruct charspawnerflags[0x1F];
 extern GBDictItem GBDictionary[113];

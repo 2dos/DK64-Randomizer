@@ -7,19 +7,17 @@ from randomizer.Patcher import ROM
 
 def randomize_dktv():
     """Set our DKTV to a random intro."""
-    # Set our seed and randomly format the TV intro based off of it
-    tvintro = random.randint(0, 5)
-    # Define the entries as a dict so we can format correctly
-    tv_dict: list = js.pointer_addresses[17]["entries"]
-    # Load the DKTV Data we're updating
-    ROM().seek(tv_dict[tvintro]["pointing_to"])
-    stored_data = ROM().readBytes(tv_dict[tvintro]["compressed_size"])
-    # Intentionally lock ALL the TVs to the one we selected so all players know they are on the same TV
-    for tv in tv_dict:
-        ROM().seek(tv["pointing_to"])
-        ROM().writeBytes(stored_data)
-        # Update the uncompressed address DB
-        ROM().seek(js.pointer_addresses[26]["entries"][17]["pointing_to"] + (4 * tv_dict.index(tv)))
-        new_bytes = ROM().readBytes(4)
-        ROM().seek(js.pointer_addresses[26]["entries"][17]["pointing_to"] + (4 * tv_dict.index(tv)))
-        ROM().writeBytes(new_bytes)
+    available_demos = [0, 1, 2, 3, 4, 5]
+    vanilla_data = [
+        0x040001E0,  # DK - Japes
+        0x00000294,  # Diddy - Minecart
+        0x010001E0,  # Lanky - Temple
+        0x03000258,  # Tiny - Race
+        0x02000258,  # Chunky - Underground
+        0x050001E0,  # DK - Seal Race (Length is assumed)
+    ]
+    random.shuffle(available_demos)
+    for x in range(5):
+        ROM().seek(0x1FED020 + 0x14C + (x * 4))
+        selected_demo = available_demos[x]
+        ROM().writeMultipleBytes(vanilla_data[selected_demo], 4)

@@ -27,7 +27,6 @@ extern void price_rando(void);
 extern void determine_krool_order(void);
 extern void replace_zones(int init_flag);
 extern void randomize_bosses(void);
-extern void krool_order_indicator(void);
 extern void alter_boss_key_flags(void);
 extern void displayNumberOnTns(void);
 extern void replace_moves(void);

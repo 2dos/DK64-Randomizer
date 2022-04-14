@@ -70,9 +70,10 @@ def updateRandomHint(message: str):
     for x in range(len(hints)):
         if hints[x].hint == "":
             hint_pool.append(x)
-    selected = random.choice(hint_pool)
-    # print(f"Set {hints[x].name} Wrinkly Text to {message}")
-    UpdateHint(hints[x], message)
+    if len(hint_pool) > 0:
+        selected = random.choice(hint_pool)
+        print(f"Set {hints[selected].name} Wrinkly Text to {message}")
+        UpdateHint(hints[selected], message)
 
 
 def PushHints():
