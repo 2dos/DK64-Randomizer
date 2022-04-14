@@ -386,14 +386,14 @@ def compileHints(spoiler: Spoiler):
     cb_hint = random.choice(cb_list)
     padded_hints.append(f"{cb_hint['kong']} can find {cb_hint['color']} bananas in {random.choice(level_list)}.")
     for x in range(8):
-        count = spoiler.settings.EntryGBs
+        count = spoiler.settings.EntryGBs[x]
         gb_name = "Golden Bananas"
         if count == 1:
             gb_name = "Golden Banana"
         level_name = random.choice(level_cryptic[x])
         padded_hints.append(f"The barrier to {level_name} can be cleared by obtaining {count} {gb_name}")
     for x in range(7):
-        count = spoiler.settings.BossBananas
+        count = spoiler.settings.BossBananas[x]
         cb_name = "Small Bananas"
         if count == 1:
             cb_name = "Small Banana"
