@@ -223,6 +223,18 @@ def patching_response(responded_data):
         ROM().seek(sav + 0x13F)
         ROM().write(1)
 
+    keys_turned_in = [0,1,2,3,4,5,6,7]
+    if len(spoiler.settings.krool_keys_required) > 0:
+        for key in spoiler.settings.krool_keys_required:
+            key_index = key - 4
+            if key_index in keys_turned_in:
+                keys_turned_in.remove(key_index)
+    key_bitfield = 0
+    for key in keys_turned_in:
+        key_bitfield = key_bitfield | (1 << key)
+    ROM().seek(sav + 0x118)
+    ROM().write(key_bitfield)
+
     ROM().seek(sav + 0x140)
     ROM().write(spoiler.jetpac_medals_required)
 
