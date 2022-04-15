@@ -65,9 +65,6 @@ def RandomizePrices(weight):
     elif weight == "low":
         avg = 2.8571
         stddev = avg * 0.25
-    elif weight == "free":
-        avg = 0
-        stddev = 0
     # Generate random prices using normal distribution with avg and std. deviation
     # Round each price to nearest int
     for item in prices.keys():
@@ -75,10 +72,25 @@ def RandomizePrices(weight):
         if item in ProgressiveMoves.keys():
             prices[item] = []
             for i in range(ProgressiveMoves[item]):
-                prices[item].append(round(random.normalvariate(avg, stddev)))
+                prices[item].append(GenerateRandomPrice(weight, avg, stddev))
         else:
-            prices[item] = round(random.normalvariate(avg, stddev))
+            prices[item] = GenerateRandomPrice(weight, avg, stddev)
     return prices
+
+
+def GenerateRandomPrice(weight, avg, stddev):
+    """Generate a random price to assign."""
+    lowerLimit = 1
+    upperLimit = 12
+    if weight == "free":
+        newPrice = 0
+    else:
+        newPrice = round(random.normalvariate(avg, stddev))
+        if newPrice < lowerLimit:
+            newPrice = lowerLimit
+        elif newPrice > upperLimit:
+            newPrice = upperLimit
+    return newPrice
 
 
 def GetMaxForKong(settings, kong):
