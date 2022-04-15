@@ -55,14 +55,6 @@ class Settings:
         self.seed_hash = [random.randint(0, 9) for i in range(5)]
         # Settings which are not yet implemented on the web page
 
-        # Waiting on price branch
-        # random_prices: str
-        # vanilla
-        # low
-        # medium
-        # high
-        self.random_prices = "vanilla"
-
         # Always start with training barrels currently
         # training_barrels: str
         # normal
@@ -137,7 +129,12 @@ class Settings:
         self.loading_zone_rando = None
         self.loading_zone_coupled = None
         self.shop_location_rando = None
-        self.shop_price_rando = None
+        # random_prices: str
+        # vanilla
+        # low
+        # medium
+        # high
+        self.random_prices = "vanilla"
         self.boss_location_rando = None
         self.boss_kong_rando = None
         self.kasplat = None
@@ -226,9 +223,6 @@ class Settings:
     def resolve_settings(self):
         """Resolve settings which are not directly set through the UI."""
         # Price Rando
-        if self.shop_price_rando:
-            self.random_prices = "medium"  # TODO Make a UI option to set price difficulty
-
         if self.random_prices != "vanilla":
             self.prices = RandomizePrices(self.random_prices)
 
