@@ -87,9 +87,9 @@ void initHack(void) {
 			*(int*)(0x8068A450) = 0;
 			*(int*)(0x8068A458) = 0;
 		}
-		for (int i = 0; i < 5; i++) {
-			DKTVData[i] = Rando.dktv_data[i];
-		}
+		// for (int i = 0; i < 5; i++) {
+		// 	DKTVData[i] = Rando.dktv_data[i];
+		// }
 		replace_zones(1);
 		randomize_bosses();
 		loadExtraHooks();
