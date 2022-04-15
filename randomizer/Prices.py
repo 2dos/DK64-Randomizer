@@ -49,13 +49,14 @@ ProgressiveMoves = {
 
 
 def RandomizePrices(weight):
-    """Generate randomized prices based on given weight (low, medium, or high)."""
+    """Generate randomized prices based on given weight (free, low, medium, or high)."""
     prices = VanillaPrices.copy()
     # Each kong can buy up to 14 items
     # Vanilla: Can spend up to 74 coins, avg. price per item 5.2857
     # Low: Want average max to be around 40, avg. price per item 2.8571
     # Medium: Want average max to be around vanilla, use 5.3571 so it's midway between other 2
     # High: Want average max to be around 110, avg. price per item 7.8571
+    # Free: All moves are zero coins
     avg = 5.3571
     stddev = avg * 0.25
     if weight == "high":
@@ -71,10 +72,25 @@ def RandomizePrices(weight):
         if item in ProgressiveMoves.keys():
             prices[item] = []
             for i in range(ProgressiveMoves[item]):
-                prices[item].append(round(random.normalvariate(avg, stddev)))
+                prices[item].append(GenerateRandomPrice(weight, avg, stddev))
         else:
-            prices[item] = round(random.normalvariate(avg, stddev))
+            prices[item] = GenerateRandomPrice(weight, avg, stddev)
     return prices
+
+
+def GenerateRandomPrice(weight, avg, stddev):
+    """Generate a random price to assign."""
+    lowerLimit = 1
+    upperLimit = 12
+    if weight == "free":
+        newPrice = 0
+    else:
+        newPrice = round(random.normalvariate(avg, stddev))
+        if newPrice < lowerLimit:
+            newPrice = lowerLimit
+        elif newPrice > upperLimit:
+            newPrice = upperLimit
+    return newPrice
 
 
 def GetMaxForKong(settings, kong):

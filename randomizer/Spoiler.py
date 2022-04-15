@@ -76,6 +76,7 @@ class Spoiler:
         settings["random_medal_requirement"] = self.settings.random_medal_requirement
         if self.settings.random_medal_requirement:
             settings["banana_medals_required"] = self.settings.BananaMedalsRequired
+        settings["random_prices"] = self.settings.random_prices
         settings["bananaport_rando"] = self.settings.bananaport_rando
         settings["krool_phases"] = self.settings.krool_order
         settings["krool_access"] = self.settings.krool_access

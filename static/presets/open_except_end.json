@@ -35,7 +35,7 @@
   "music_fanfares": "default",
   "music_events": "default",
   "enemy_rando": false,
-  "shop_price_rando": false,
+  "random_prices": "vanilla",
   "kasplat": false,
   "shop_location_rando": false,
   "loading_zone_rando": false,

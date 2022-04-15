@@ -82,14 +82,31 @@
                 </tr>
                 <tr>
                     <td>
-                        <div class="form-check form-switch w-75">
+                        <div>
                             <label title="All prices in shops are randomized to a random number.">
-                                <input class="form-check-input"
-                                       type="checkbox"
-                                       name="shop_price_rando"
-                                       value="False"/>
-                                Shuffle Shop Prices
+                                Random Shop Prices
                             </label>
+                            <select name="random_prices"
+                                    id="random_prices"
+                                    style="width: 60%;"
+                                    class="form-select center-div"
+                                    aria-label="Randomization type">
+                                <option selected value="vanilla">
+                                    Vanilla
+                                </option>
+                                <option value="free">
+                                    Free
+                                </option>
+                                <option value="low">
+                                    Low
+                                </option>
+                                <option value="medium">
+                                    Medium
+                                </option>
+                                <option value="high">
+                                    High
+                                </option>
+                            </select>
                         </div>
                     </td>
                 </tr>
