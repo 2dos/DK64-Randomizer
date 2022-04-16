@@ -294,7 +294,7 @@ def AssumedFill(settings, itemsToPlace, validLocations, ownedItems=[]):
             print("Failed placing item " + ItemList[item].name + ", no valid reachable locations without this move.")
             currentMovesOwned = [ItemList[x].name for x in owned if ItemList[x].type == Types.Shop]
             currentGbCount = len([x for x in owned if ItemList[x].type == Types.Banana])
-            js.postMessage("Current Moves owned at failure: " + str(currentMovesOwned) + " with GB count: " + str(currentGbCount))
+            print("Current Moves owned at failure: " + str(currentMovesOwned) + " with GB count: " + str(currentGbCount))
             return len(itemsToPlace) + 1
         # Shop items need coin logic
         if ItemList[item].type == Types.Shop:
@@ -359,7 +359,7 @@ def AssumedFill(settings, itemsToPlace, validLocations, ownedItems=[]):
 def GetMaxCoinsSpent(settings, ownedItems):
     """Calculate the max number of coins each kong could have spent given the ownedItems and the price settings."""
     MaxCoinsSpent = [0, 0, 0, 0, 0]
-    slamLevel = sum(1 for x in ownedItems if x == Items.ProgressiveSlam)
+    slamLevel = sum(1 for x in ownedItems if x == Items.ProgressiveSlam) + 1  # Need to add 1 for the starting simian slam
     ammoBelts = sum(1 for x in ownedItems if x == Items.ProgressiveAmmoBelt)
     instUpgrades = sum(1 for x in ownedItems if x == Items.ProgressiveInstrumentUpgrade)
     for ownedItem in ownedItems:
@@ -477,7 +477,6 @@ def ShuffleMoves(spoiler):
             ownedItems.extend(ItemPool.TinyMoves)
             ownedItems.extend(ItemPool.ChunkyMoves)
             ownedItems.extend(ItemPool.JunkSharedMoves)
-            ownedItems.append(Items.ProgressiveSlam)  # Always start with simian slam
 
             # For each kong, place their items in their valid locations, removing owneditems before each placement as they're placed
             # Force assumed for move rando since it's so restrictive
