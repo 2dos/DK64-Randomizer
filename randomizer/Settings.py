@@ -137,7 +137,7 @@ class Settings:
         self.random_prices = "vanilla"
         self.boss_location_rando = None
         self.boss_kong_rando = None
-        self.kasplat = None
+        self.kasplat_rando = None
 
     def set_seed(self):
         """Forcibly re-set the random seed to the seed set in the config."""
@@ -214,7 +214,6 @@ class Settings:
         self.shop_indicator = False
         self.randomize_cb_required_amounts = False
         self.randomize_blocker_required_amounts = False
-        self.kasplat_rando = False
         self.perma_death = False
         self.disable_tag_barrels = False
         self.level_randomization = "none"
@@ -285,7 +284,7 @@ class Settings:
         # Banana medals
         if self.random_medal_requirement:
             # Range roughly from 4 to 15, average around 10
-            self.BananaMedalsRequired = round(random.normalvariate(10, 0.15))
+            self.BananaMedalsRequired = round(random.normalvariate(10, 1.5))
         else:
             self.BananaMedalsRequired = 15
 

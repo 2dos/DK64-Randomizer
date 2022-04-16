@@ -20,9 +20,9 @@ from randomizer.Lists.Minigame import BarrelMetaData, MinigameRequirements
 from randomizer.Logic import LogicVarHolder, LogicVariables
 from randomizer.LogicClasses import TransitionFront
 from randomizer.Prices import GetPriceOfMoveItem
-from randomizer.ShuffleBarrels import BarrelShuffle, ShuffleBarrels
+from randomizer.ShuffleBarrels import BarrelShuffle
 from randomizer.ShuffleKasplats import KasplatShuffle
-from randomizer.ShuffleWarps import shuffleWarps
+from randomizer.ShuffleWarps import ShuffleWarps
 from randomizer.ShuffleKongs import ShuffleKongs
 
 
@@ -614,7 +614,7 @@ def Generate_Spoiler(spoiler):
     if spoiler.settings.bananaport_rando:
         replacements = []
         human_replacements = {}
-        shuffleWarps(replacements, human_replacements)
+        ShuffleWarps(replacements, human_replacements)
         spoiler.bananaport_replacements = replacements.copy()
         spoiler.human_warp_locations = human_replacements
     # Place items

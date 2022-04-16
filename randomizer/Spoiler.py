@@ -180,7 +180,7 @@ class Spoiler:
             humanspoiler["Shuffled Music Fanfares"] = self.music_fanfare_data
         if self.settings.music_events == "randomized":
             humanspoiler["Shuffled Music Events"] = self.music_event_data
-        if self.settings.kasplat:
+        if self.settings.kasplat_rando:
             humanspoiler["Shuffled Kasplats"] = self.human_kasplats
         if self.settings.kong_rando:
             humanspoiler["Shuffled Kong Locations"] = self.human_kong_rando

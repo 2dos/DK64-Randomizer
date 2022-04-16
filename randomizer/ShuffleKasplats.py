@@ -114,7 +114,7 @@ def ShuffleKasplats(LogicVariables):
 
 def KasplatShuffle(LogicVariables):
     """Facilitate the shuffling of kasplat types."""
-    if not LogicVariables.settings.kasplat:
+    if not LogicVariables.settings.kasplat_rando:
         # Just use default kasplat associations.
         LogicVariables.kasplat_map = {}
         LogicVariables.kasplat_map.update(shufflable)

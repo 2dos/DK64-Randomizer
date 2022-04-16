@@ -27,7 +27,7 @@
     "quality_of_life": true,
     "fast_start_hideout_helm": true,
     "enemy_rando": true,
-    "kasplat": true,
+    "kasplat_rando": true,
     "shop_location_rando": true,
     "bananaport_rando": true,
     "enable_tag_anywhere": true,
