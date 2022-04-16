@@ -267,16 +267,21 @@ def ForwardFill(settings, itemsToPlace, validLocations, ownedItems=[]):
         LocationList[locationId].PlaceItem(item)
     return 0
 
+def GetItemValidLocations(validLocations, item):
+    # If validLocations is a dictionary, check for this item's value
+    itemValidLocations = validLocations
+    if isinstance(validLocations, dict):
+        for itemKey in validLocations.keys():
+            if item == itemKey:
+                itemValidLocations = validLocations[itemKey]
+                break
+            # Valid locations entry wasn't found
+            itemValidLocations = [x for x in LocationList]
+    return itemValidLocations
+
 
 def AssumedFill(settings, itemsToPlace, validLocations, ownedItems=[]):
     """Assumed fill algorithm for item placement."""
-    # If validLocations is a dictionary, get all of them
-    allValidLocations = validLocations
-    if isinstance(validLocations, dict):
-        allValidLocations = []
-        for list in validLocations.values():
-            for location in [x for x in list if x not in allValidLocations]:
-                allValidLocations.append(location)
     # Calculate total cost of moves
     maxCoinsSpent = GetMaxCoinsSpent(settings, itemsToPlace + ownedItems)
     # While there are items to place
@@ -292,15 +297,7 @@ def AssumedFill(settings, itemsToPlace, validLocations, ownedItems=[]):
         ammoBelts = sum(1 for x in owned if x == Items.ProgressiveAmmoBelt)
         instUpgrades = sum(1 for x in owned if x == Items.ProgressiveInstrumentUpgrade)
         # print("slamLevel: " + str(slamLevel) + ", ammoBelts: " + str(ammoBelts) + ", instUpgrades: " + str(instUpgrades))
-        # If validLocations is a dictionary, check for this item's value
-        itemValidLocations = validLocations
-        if isinstance(validLocations, dict):
-            for itemKey in validLocations.keys():
-                if item == itemKey:
-                    itemValidLocations = validLocations[itemKey]
-                    break
-                # Valid locations entry wasn't found
-                itemValidLocations = [x for x in LocationList]
+        itemValidLocations = GetItemValidLocations(validLocations, item)
         # Find all valid reachable locations for this item
         Reset()
         reachable = GetAccessibleLocations(settings, owned)
@@ -336,12 +333,16 @@ def AssumedFill(settings, itemsToPlace, validLocations, ownedItems=[]):
             owned.extend(ownedItems)
             Reset()
             reachable = GetAccessibleLocations(settings, owned)
-            nextReachable = [x for x in reachable if LocationList[x].item is None and x in allValidLocations]
             valid = True
-            # If there are not enough empty reachable locations to cover the remaining items, this placement won't work
-            if len(nextReachable) < len(itemsToPlace):
-                js.postMessage("Failed placing item " + ItemList[item].name + " in location " + LocationList[locationId].name + ", due to too few remaining locations in play")
-                valid = False
+            # For each remaining item, ensure that it has a valid location reachable after placing this item
+            for checkItem in itemsToPlace:
+                itemValid = GetItemValidLocations(validLocations, checkItem)
+                validReachable = [x for x in reachable if x in itemValid]
+                if len(validReachable) == 0:
+                    js.postMessage("Failed placing item " + ItemList[item].name + " in location " + LocationList[locationId].name + ", due to too few remaining locations in play")
+                    valid = False
+                    break
+                reachable.remove(validReachable[0]) # Remove one so same location can't be "used" twice
             # Attempt to verify coins
             if valid and ItemList[item].type == Types.Shop:
                 currentCoins = [0, 0, 0, 0, 0]
@@ -535,12 +536,17 @@ def ShuffleMisc(spoiler):
             # Handle kong rando
             if spoiler.settings.kong_rando:
                 kongItems = ItemPool.Kongs(spoiler.settings)
-                itemsToPlace.extend(kongItems)
+                kongValidLocations = {}
                 kongLocations = [Locations.DiddyKong, Locations.LankyKong, Locations.TinyKong, Locations.ChunkyKong]
                 for item in kongItems:
-                    validLocations[item] = kongLocations
+                    kongValidLocations[item] = kongLocations
+                # Kongs could be shuffled in the following generic shuffle, but since they're so restrictive,
+                # a few failures are almost certain if they are, unfortunately.
+                Reset()
+                unplaced = PlaceItems(spoiler.settings, "assumed", kongItems, ownedItems=itemsToPlace, validLocations=kongValidLocations)
+                if unplaced > 0:
+                    raise Ex.ItemPlacementException(str(unplaced) + " unplaced kongs.")
             # Perform the shuffle
-            # Now we want to place all the individual kong moves
             Reset()
             unplaced = PlaceItems(spoiler.settings, "assumed", itemsToPlace, validLocations=validLocations)
             if unplaced > 0:

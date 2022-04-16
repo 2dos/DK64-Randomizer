@@ -299,6 +299,73 @@ class LogicVarHolder:
         if kong == Kongs.any:
             return True
 
+    def HasKong(self, kong):
+        """Check if logic currently owns a specific kong."""
+        if kong == Kongs.donkey:
+            return self.donkey
+        if kong == Kongs.diddy:
+            return self.diddy
+        if kong == Kongs.lanky:
+            return self.lanky
+        if kong == Kongs.tiny:
+            return self.tiny
+        if kong == Kongs.chunky:
+            return self.chunky
+        if kong == Kongs.any:
+            return True
+
+    def HasGun(self, kong):
+        """Check if logic currently is currently the specified kong and owns a gun for them."""
+        if kong == Kongs.donkey:
+            return self.coconut and self.isdonkey
+        if kong == Kongs.diddy:
+            return self.peanut and self.isdiddy
+        if kong == Kongs.lanky:
+            return self.grape and self.islanky
+        if kong == Kongs.tiny:
+            return self.feather and self.istiny
+        if kong == Kongs.chunky:
+            return self.pineapple and self.ischunky
+        if kong == Kongs.any:
+            return (self.coconut and self.isdonkey) or (self.peanut and self.isdiddy) or (self.grape and self.islanky) \
+                   or (self.feather and self.istiny) or (self.pineapple and self.ischunky)
+
+    def HasInstrument(self, kong):
+        """Check if logic currently is currently the specified kong and owns an instrument for them."""
+        if kong == Kongs.donkey:
+            return self.bongos and self.isdonkey
+        if kong == Kongs.diddy:
+            return self.guitar and self.isdiddy
+        if kong == Kongs.lanky:
+            return self.trombone and self.islanky
+        if kong == Kongs.tiny:
+            return self.saxophone and self.istiny
+        if kong == Kongs.chunky:
+            return self.triangle and self.ischunky
+        if kong == Kongs.any:
+            return (self.bongos and self.isdonkey) or (self.guitar and self.isdiddy) or (self.trombone and self.islanky) \
+                   or (self.saxophone and self.istiny) or (self.triangle and self.ischunky)
+
+    def CanFreeTiny(self):
+        """Check if Tiny can be freed,r equires either chimpy charge or primate punch."""
+        if self.settings.tiny_freeing_kong == Kongs.diddy:
+            return self.charge and self.isdiddy
+        # Theoretical: Free her with punches, currently not implemented
+        elif self.settings.tiny_freeing_kong == Kongs.chunky:
+            return self.punch and self.ischunky
+
+    def CanFreeLanky(self):
+        """Check if Lanky can be freed, requires freeing kong to have its gun and instrument."""
+        return self.HasGun(self.settings.lanky_freeing_kong) and self.HasInstrument(self.settings.lanky_freeing_kong)
+
+    def CanFreeChunky(self):
+        """Check if Chunky can be freed, requires either orangstand or ponytail twirl."""
+        if self.settings.chunky_freeing_kong == Kongs.lanky:
+            return self.handstand and self.Slam and self.islanky
+        elif self.settings.chunky_freeing_kong == Kongs.tiny:
+            return self.twirl and self.Slam and self.istiny
+
+
     def UpdateCurrentRegionAccess(self, region):
         """Set access of current region."""
         self.donkeyAccess = region.donkeyAccess

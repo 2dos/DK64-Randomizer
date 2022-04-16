@@ -26,7 +26,9 @@ LogicRegions = {
     ]),
 
     Regions.IslesMain: Region("Isles Main", Levels.DKIsles, True, None, [
-        LocationLogic(Locations.IslesDonkeyJapesRock, lambda l: l.donkey and (l.settings.open_lobbies or Events.KLumsyTalkedTo in l.Events)),
+        # Don't check for donkey for rock- If lobbies are closed and first B.Locker is not 0, this banana must be grabbable by
+        # the starting kong, so for logic we assume any kong can grab it since that's practically true.
+        LocationLogic(Locations.IslesDonkeyJapesRock, lambda l: (l.settings.open_lobbies or Events.KLumsyTalkedTo in l.Events)),
         LocationLogic(Locations.IslesTinyCagedBanana, lambda l: l.feather and l.tiny),
         LocationLogic(Locations.IslesTinyInstrumentPad, lambda l: Events.IslesChunkyBarrelSpawn in l.Events and l.tiny),
         LocationLogic(Locations.IslesLankyCagedBanana, lambda l: l.grape and l.lanky),

@@ -7,7 +7,7 @@ import sys
 
 from randomizer.BossShuffle import ShuffleBosses, ShuffleBossKongs, ShuffleKutoutKongs
 from randomizer.Enums.Events import Events
-from randomizer.Enums.Kongs import Kongs
+from randomizer.Enums.Kongs import Kongs, GetKongs
 from randomizer.Prices import RandomizePrices, VanillaPrices
 
 
@@ -69,10 +69,6 @@ class Settings:
         # all (currently only theoretical)
         self.shuffle_items = "none"
 
-        # Not yet implemented
-        # starting_kong: Kongs enum
-        self.starting_kong = Kongs.donkey
-
         # Pointless with just move rando, maybe have it once full rando
         # progressive_upgrades: bool
         self.progressive_upgrades = False
@@ -125,8 +121,6 @@ class Settings:
         self.seed = None
         self.download_patch_file = None
         self.bonus_barrel_rando = None
-        self.shuffle_levels = None
-        self.loading_zone_rando = None
         self.loading_zone_coupled = None
         self.shop_location_rando = None
         # random_prices: str
@@ -221,9 +215,28 @@ class Settings:
 
     def resolve_settings(self):
         """Resolve settings which are not directly set through the UI."""
+        kongs = GetKongs()
+
         # Price Rando
         if self.random_prices != "vanilla":
             self.prices = RandomizePrices(self.random_prices)
+
+        # Kong rando
+        if self.kong_rando:
+            self.starting_kong = random.choice(kongs)
+            if self.shuffle_loading_zones == "none":
+                self.diddy_freeing_kong = self.starting_kong
+            else:
+                self.diddy_freeing_kong = random.choice(kongs)
+            self.lanky_freeing_kong = random.choice(kongs)
+            self.tiny_freeing_kong = Kongs.diddy
+            self.chunky_freeing_kong = random.choice([Kongs.lanky, Kongs.tiny])
+        else:
+            self.starting_kong = Kongs.donkey
+            self.diddy_freeing_kong = Kongs.donkey
+            self.lanky_freeing_kong = Kongs.donkey
+            self.tiny_freeing_kong = Kongs.diddy
+            self.chunky_freeing_kong = Kongs.lanky
 
         # Handle K. Rool Phases
         self.krool_donkey = False
@@ -232,26 +245,26 @@ class Settings:
         self.krool_tiny = False
         self.krool_chunky = True
 
-        phases = ["donkey", "diddy", "lanky", "tiny"]
+        phases = [x for x in kongs if x != Kongs.chunky]
         if self.random_krool_phase_order:
             random.shuffle(phases)
         if self.krool_phase_count < 5:
             phases = random.sample(phases, self.krool_phase_count - 1)
         orderedPhases = []
         for kong in phases:
-            if kong == "donkey":
+            if kong == Kongs.donkey:
                 self.krool_donkey = True
-                orderedPhases.append(0)
-            if kong == "diddy":
+                orderedPhases.append(Kongs.donkey)
+            if kong == Kongs.diddy:
                 self.krool_diddy = True
-                orderedPhases.append(1)
-            if kong == "lanky":
+                orderedPhases.append(Kongs.diddy)
+            if kong == Kongs.lanky:
                 self.krool_lanky = True
-                orderedPhases.append(2)
-            if kong == "tiny":
+                orderedPhases.append(Kongs.lanky)
+            if kong == Kongs.tiny:
                 self.krool_tiny = True
-                orderedPhases.append(3)
-        orderedPhases.append(4)
+                orderedPhases.append(Kongs.tiny)
+        orderedPhases.append(Kongs.chunky)
         self.krool_order = orderedPhases
 
         # Set keys required for KRool

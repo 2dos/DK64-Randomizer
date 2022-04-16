@@ -1,7 +1,6 @@
 {
     "name": "Suggested",
     "description": "Suggested default options for randomization",
-    "shuffle_levels": true,
     "k_rool_phase_order": true,
     "boss_kong_rando": true,
     "boss_location_rando": true,

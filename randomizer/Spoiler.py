@@ -69,6 +69,10 @@ class Spoiler:
         settings["unlock_all_moves"] = self.settings.unlock_all_moves
         settings["unlock_all_kongs"] = self.settings.unlock_all_kongs
         settings["starting_kong"] = ItemList[ItemFromKong(self.settings.starting_kong)].name
+        settings["diddy_freeing_kong"] = ItemList[ItemFromKong(self.settings.diddy_freeing_kong)].name
+        settings["tiny_freeing_kong"] = ItemList[ItemFromKong(self.settings.tiny_freeing_kong)].name
+        settings["lanky_freeing_kong"] = ItemList[ItemFromKong(self.settings.lanky_freeing_kong)].name
+        settings["chunky_freeing_kong"] = ItemList[ItemFromKong(self.settings.chunky_freeing_kong)].name
         settings["open_lobbies"] = self.settings.open_lobbies
         settings["crown_door_open"] = self.settings.crown_door_open
         settings["coin_door_open"] = self.settings.coin_door_open
@@ -182,8 +186,6 @@ class Spoiler:
             humanspoiler["Shuffled Music Events"] = self.music_event_data
         if self.settings.kasplat_rando:
             humanspoiler["Shuffled Kasplats"] = self.human_kasplats
-        if self.settings.kong_rando:
-            humanspoiler["Shuffled Kong Locations"] = self.human_kong_rando
         # if self.settings.bananaport_rando:
         #     humanspoiler["Bananaports"] = self.human_warp_locations
 

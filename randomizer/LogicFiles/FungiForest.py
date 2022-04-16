@@ -19,8 +19,7 @@ LogicRegions = {
         LocationLogic(Locations.ForestChunkyMedal, lambda l: l.ColoredBananas[Levels.FungiForest][Kongs.chunky] >= 75),
     ], [
         Event(Events.ForestEntered, lambda l: True),
-        Event(Events.Night, lambda l: (l.coconut and l.donkey) or (l.peanut and l.diddy)
-              or (l.grape and l.lanky) or (l.feather and l.tiny) or (l.pineapple and l.chunky)),
+        Event(Events.Night, lambda l: l.HasGun(Kongs.any)),
         Event(Events.WormGatesOpened, lambda l: (l.feather and l.tiny) and (l.pineapple and l.chunky)),
     ], [
         TransitionFront(Regions.FungiForestLobby, lambda l: True, Transitions.ForestToIsles),

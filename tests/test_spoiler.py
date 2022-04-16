@@ -16,7 +16,6 @@ def generate_settings():
     data = {}
     data["seed"] = random.randint(0, 100000000)
     # important things
-    data["shuffle_levels"] = True
     data["blocker_0"] = 0
     data["blocker_1"] = 0
     data["blocker_2"] = 0

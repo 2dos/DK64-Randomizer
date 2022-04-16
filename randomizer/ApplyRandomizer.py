@@ -59,7 +59,7 @@ def patching_response(responded_data):
     sav = 0x1FED020
 
     # Shuffle Levels
-    if spoiler.settings.shuffle_levels:
+    if spoiler.settings.shuffle_loading_zones == "levels":
         ROM().seek(sav + 0x000)
         ROM().write(1)
 

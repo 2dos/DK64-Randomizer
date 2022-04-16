@@ -39,12 +39,12 @@ LogicRegions = {
         LocationLogic(Locations.AztecChunkyKlaptrapRoom, lambda l: l.triangle and l.ischunky),
     ], [], [
         TransitionFront(Regions.AngryAztecStart, lambda l: True),
-        TransitionFront(Regions.TempleUnderwater, lambda l: l.Slam and l.guitar and l.diddyAccess),
+        TransitionFront(Regions.TempleUnderwater, lambda l: True), # ice pre-melted, without it would be "l.Slam and l.guitar and l.diddyAccess"
     ]),
 
     Regions.TempleUnderwater: Region("Temple Underwater", Levels.AngryAztec, False, -1, [
-        LocationLogic(Locations.TinyKong, lambda l: l.charge and l.isdiddy),
-        LocationLogic(Locations.AztecDiddyFreeTiny, lambda l: l.charge and l.isdiddy),
+        LocationLogic(Locations.TinyKong, lambda l: l.CanFreeTiny()),
+        LocationLogic(Locations.AztecDiddyFreeTiny, lambda l: l.CanFreeTiny()),
         LocationLogic(Locations.AztecLankyVulture, lambda l: l.Slam and l.grape and l.islanky),
         LocationLogic(Locations.AztecBattleArena, lambda l: l.Slam and l.grape and l.islanky),
     ], [], [
@@ -121,8 +121,8 @@ LogicRegions = {
     ),
 
     Regions.LlamaTemple: Region("Llama Temple", Levels.AngryAztec, True, -1, [
-        LocationLogic(Locations.LankyKong, lambda l: l.bongos and l.donkey),
-        LocationLogic(Locations.AztecDonkeyFreeLanky, lambda l: l.bongos and l.donkey),
+        LocationLogic(Locations.LankyKong, lambda l: l.CanFreeLanky()),
+        LocationLogic(Locations.AztecDonkeyFreeLanky, lambda l: l.CanFreeLanky()),
         LocationLogic(Locations.AztecLankyLlamaTempleBarrel, lambda l: l.trombone and l.islanky, True),
         LocationLogic(Locations.AztecLankyMatchingGame, lambda l: l.grape and l.Slam and l.lanky),
         LocationLogic(Locations.AztecBananaFairyLlamaTemple, lambda l: l.camera),

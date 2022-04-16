@@ -1,7 +1,6 @@
 {
   "name": "Open Except End",
   "description": "All B.Lockers are pre-opened, except Helm still requires 100.",
-  "shuffle_levels": true,
   "k_rool_phase_order": true,
   "boss_kong_rando": true,
   "boss_location_rando": true,
@@ -38,7 +37,6 @@
   "random_prices": "vanilla",
   "kasplat_rando": false,
   "shop_location_rando": false,
-  "loading_zone_rando": false,
   "bananaport": false,
   "battle_crown_rando": false,
   "no_healing": false,

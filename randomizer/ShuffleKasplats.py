@@ -5,10 +5,9 @@ import js
 import randomizer.Fill as Fill
 import randomizer.Lists.Exceptions as Ex
 import randomizer.Logic as Logic
-from randomizer.Enums.Kongs import Kongs
+from randomizer.Enums.Kongs import Kongs, GetKongs
 from randomizer.Enums.Levels import Levels
 from randomizer.Enums.Locations import Locations
-from randomizer.Lists.Location import LocationList
 
 shufflable = {
     Locations.IslesDonkeyKasplat: Kongs.donkey,
@@ -75,7 +74,7 @@ def ShuffleKasplats(LogicVariables):
     global kasplat_map
     # Make sure only 1 of each kasplat per level, set up array to track that
     level_kongs = []
-    kongs = [x for x in Kongs if x != Kongs.any]
+    kongs = GetKongs()
     # Add a list of kongs for each level
     # Excludes Shops level, but will include a useless Helm level
     for i in range(len(Levels) - 1):

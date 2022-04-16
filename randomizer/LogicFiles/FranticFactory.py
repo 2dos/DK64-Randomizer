@@ -87,10 +87,10 @@ LogicRegions = {
     ]),
 
     Regions.BeyondHatch: Region("Beyond Hatch", Levels.FranticFactory, True, None, [
-        LocationLogic(Locations.ChunkyKong, lambda l: l.handstand and l.Slam and l.lanky),
+        LocationLogic(Locations.ChunkyKong, lambda l: l.CanFreeChunky()),
         LocationLogic(Locations.NintendoCoin, lambda l: Events.ArcadeLeverSpawned in l.Events and l.grab and l.donkey),
         LocationLogic(Locations.FactoryDonkeyDKArcade, lambda l: Events.ArcadeLeverSpawned in l.Events and l.grab and l.donkey),
-        LocationLogic(Locations.FactoryLankyFreeChunky, lambda l: l.handstand and l.Slam and l.lanky),
+        LocationLogic(Locations.FactoryLankyFreeChunky, lambda l: l.CanFreeChunky()),
         LocationLogic(Locations.FactoryTinybyArcade, lambda l: l.mini and l.tiny),
         LocationLogic(Locations.FactoryChunkyDarkRoom, lambda l: l.punch and l.Slam and l.chunky),
         LocationLogic(Locations.FactoryChunkybyArcade, lambda l: l.punch and l.ischunky, True),
