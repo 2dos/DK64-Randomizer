@@ -105,9 +105,9 @@ def set_preset_options():
             opt.title = val.get("description")
             element.appendChild(opt)
     js.jq("#presets").val("Suggested")
-    preset_select_changed(None)
     toggle_counts_boxes(None)
     toggle_b_locker_boxes(None)
+    js.load_cookies()
 
 
 @bind("change", "presets")
