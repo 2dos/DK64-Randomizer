@@ -51,20 +51,22 @@ def PlaceConstants(settings):
     LocationList[Locations.HelmChunky2].PlaceConstantItem(Items.HelmChunky2)
     # Settings-dependent locations
     if settings.shuffle_items != "all":
+        shuffledLocations = []
         if settings.shuffle_items == "moves":
-            moveLocations = []
-            moveLocations.extend(DonkeyMoveLocations)
-            moveLocations.extend(DiddyMoveLocations)
-            moveLocations.extend(LankyMoveLocations)
-            moveLocations.extend(TinyMoveLocations)
-            moveLocations.extend(ChunkyMoveLocations)
-            moveLocations.extend(SharedMoveLocations)
-            locations = [x for x in LocationList if x not in moveLocations]
-            for location in locations:
-                LocationList[location].PlaceDefaultItem()
-        else:
-            for location in LocationList:
-                LocationList[location].PlaceDefaultItem()
+            shuffledLocations.extend(DonkeyMoveLocations)
+            shuffledLocations.extend(DiddyMoveLocations)
+            shuffledLocations.extend(LankyMoveLocations)
+            shuffledLocations.extend(TinyMoveLocations)
+            shuffledLocations.extend(ChunkyMoveLocations)
+            shuffledLocations.extend(SharedMoveLocations)
+        if settings.kong_rando:
+            shuffledLocations.append(Locations.DiddyKong)
+            shuffledLocations.append(Locations.LankyKong)
+            shuffledLocations.append(Locations.TinyKong)
+            shuffledLocations.append(Locations.ChunkyKong)
+        locations = [x for x in LocationList if x not in shuffledLocations]
+        for location in locations:
+            LocationList[location].PlaceDefaultItem()
     if settings.training_barrels == "normal":
         LocationList[Locations.IslesVinesTrainingBarrel].PlaceConstantItem(Items.Vines)
         LocationList[Locations.IslesSwimTrainingBarrel].PlaceConstantItem(Items.Swim)
@@ -135,6 +137,8 @@ def AllItems(settings):
         allItems.extend(TinyMoves)
         allItems.extend(ChunkyMoves)
         allItems.extend(ImportantSharedMoves)
+    if settings.kong_rando:
+        allItems.extend(Kongs(settings))
     return allItems
 
 
@@ -265,7 +269,7 @@ def Upgrades(settings):
         upgrades.extend(TrainingBarrelAbilities())
     # Add either progressive upgrade items or individual ones depending on settings
     if not settings.unlock_all_moves:
-        upgrades.extend(itertools.repeat(Items.ProgressiveSlam, 3))
+        upgrades.extend(itertools.repeat(Items.ProgressiveSlam, 3 - 1)) # -1 for starting slam
         if settings.progressive_upgrades:
             upgrades.extend(itertools.repeat(Items.ProgressiveDonkeyPotion, 3))
             upgrades.extend(itertools.repeat(Items.ProgressiveDiddyPotion, 3))

@@ -28,6 +28,8 @@ from randomizer.MapsAndExits import Maps
 from randomizer.Prices import CanBuy, GetPriceOfMoveItem
 
 
+STARTING_SLAM = 1 # Currently we're assuming you always start with 1 slam
+
 class LogicVarHolder:
     """Used to store variables when checking logic conditions."""
 
@@ -122,7 +124,7 @@ class LogicVarHolder:
         self.HelmChunky1 = False
         self.HelmChunky2 = False
 
-        self.Slam = 3 if self.settings.unlock_all_moves else 1  # Right now assuming start with slam
+        self.Slam = 3 if self.settings.unlock_all_moves else STARTING_SLAM
         self.AmmoBelts = 2 if self.settings.unlock_all_moves else 0
         self.InstUpgrades = 3 if self.settings.unlock_all_moves else 0
 
@@ -230,7 +232,7 @@ class LogicVarHolder:
         self.HelmChunky1 = self.HelmChunky1 or Items.HelmChunky1 in ownedItems
         self.HelmChunky2 = self.HelmChunky2 or Items.HelmChunky2 in ownedItems
 
-        self.Slam = 3 if self.settings.unlock_all_moves else sum(1 for x in ownedItems if x == Items.ProgressiveSlam)
+        self.Slam = 3 if self.settings.unlock_all_moves else sum(1 for x in ownedItems if x == Items.ProgressiveSlam) + STARTING_SLAM
         self.AmmoBelts = 2 if self.settings.unlock_all_moves else sum(1 for x in ownedItems if x == Items.ProgressiveAmmoBelt)
         self.InstUpgrades = 3 if self.settings.unlock_all_moves else sum(1 for x in ownedItems if x == Items.ProgressiveInstrumentUpgrade)
 
