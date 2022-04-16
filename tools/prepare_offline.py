@@ -32,7 +32,7 @@ def find_list_resources(tag, attribute, soup):
     return list
 
 
-for f in get_files(os.getcwd(), "html.jinja2", recursive=True):
+for f in [*get_files(os.getcwd(), "html.jinja2", recursive=True), *get_files(os.getcwd(), "html", recursive=True)]:
     with open(f, "r") as reader:
         html: str = reader.read()
         soup = BeautifulSoup(html, features="html.parser")
@@ -50,7 +50,6 @@ for f in get_files(os.getcwd(), "html.jinja2", recursive=True):
                 with open(f, "w") as writer:
                     writer.write(html)
 
-subprocess.run(["purgecss", "--css", "static/styles/*", "--content", "templates/*.html.jinja2"], capture_output=True)
 subprocess.run(["css-html-js-minify", "static/styles/", "--overwrite"], capture_output=True)
 for f in get_files(os.getcwd(), "py", recursive=True):
     with open(f, "r") as reader:
