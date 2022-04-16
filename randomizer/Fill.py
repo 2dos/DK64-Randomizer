@@ -23,7 +23,6 @@ from randomizer.Prices import GetPriceOfMoveItem
 from randomizer.ShuffleBarrels import BarrelShuffle
 from randomizer.ShuffleKasplats import KasplatShuffle
 from randomizer.ShuffleWarps import ShuffleWarps
-from randomizer.ShuffleKongs import ShuffleKongs
 
 
 def GetExitLevelExit(settings, region):

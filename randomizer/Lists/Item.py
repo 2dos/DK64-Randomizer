@@ -33,6 +33,33 @@ def ItemFromKong(kong):
     else:
         return Items.Chunky
 
+def NameFromKong(kong):
+    """Get the name of a kong from its Kong enum value."""
+    if kong == Kongs.donkey:
+        return "Donkey"
+    elif kong == Kongs.diddy:
+        return "Diddy"
+    elif kong == Kongs.lanky:
+        return "Lanky"
+    elif kong == Kongs.tiny:
+        return "Tiny"
+    else:
+        return "Chunky"
+
+def KongFromItem(item):
+    """Get the Kong enum representation of a kong item."""
+    if item == Items.Donkey:
+        return Kongs.donkey
+    elif item == Items.Diddy:
+        return Kongs.diddy
+    elif item == Items.Lanky:
+        return Kongs.lanky
+    elif item == Items.Tiny:
+        return Kongs.tiny
+    else:
+        return Kongs.chunky
+
+
 
 ItemList = {
     Items.NoItem: Item("No Item", False, Types.Constant),
