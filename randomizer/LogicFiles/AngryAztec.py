@@ -19,8 +19,8 @@ LogicRegions = {
         LocationLogic(Locations.AztecChunkyMedal, lambda l: l.ColoredBananas[Levels.AngryAztec][Kongs.chunky] >= 75),
         LocationLogic(Locations.AztecDonkeyFreeLlama, lambda l: Events.LlamaFreed in l.Events and l.donkey),
         LocationLogic(Locations.AztecChunkyVases, lambda l: l.pineapple and l.chunky),
-        LocationLogic(Locations.AztecDonkeyKasplat, lambda l: l.coconut),
-        LocationLogic(Locations.AztecDiddyKasplat, lambda l: l.jetpack),
+        LocationLogic(Locations.AztecKasplatSandyBridge, lambda l: l.coconut),
+        LocationLogic(Locations.AztecKasplatOnTinyTemple, lambda l: l.jetpack),
     ], [
         Event(Events.AztecEntered, lambda l: True),
         Event(Events.LlamaFreed, lambda l: True),  # Decision to start with llama freed
@@ -56,7 +56,7 @@ LogicRegions = {
         LocationLogic(Locations.AztecDiddyRamGongs, lambda l: l.charge and l.jetpack and l.diddy),
         LocationLogic(Locations.AztecDiddyVultureRace, lambda l: l.jetpack and l.diddy),
         LocationLogic(Locations.AztecChunkyCagedBarrel, lambda l: l.hunkyChunky and l.ischunky, True),
-        LocationLogic(Locations.AztecTinyKasplat, lambda l: True),
+        LocationLogic(Locations.AztecKasplatNearLab, lambda l: True),
     ], [
         Event(Events.FedTotem, lambda l: l.jetpack and l.peanut and l.Slam and l.diddy),
     ], [
@@ -108,7 +108,7 @@ LogicRegions = {
 
     Regions.ChunkyTemple: Region("Chunky Temple", Levels.AngryAztec, False, TransitionFront(Regions.AngryAztecStart, lambda l: l.pineapple and l.ischunky), [
         LocationLogic(Locations.AztecChunky5DoorTemple, lambda l: l.pineapple and l.ischunky, True),
-        LocationLogic(Locations.AztecChunkyKasplat, lambda l: l.pineapple and l.ischunky),
+        LocationLogic(Locations.AztecKasplatChunky5DT, lambda l: l.pineapple and l.ischunky),
     ], [], [
         TransitionFront(Regions.AngryAztecMain, lambda l: True, Transitions.AztecChunkyToMain),
     ]),
@@ -136,7 +136,7 @@ LogicRegions = {
 
     Regions.LlamaTempleBack: Region("Llama Temple Back", Levels.AngryAztec, False, -1, [
         LocationLogic(Locations.AztecTinyLlamaTemple, lambda l: l.Slam and l.twirl and l.istiny),
-        LocationLogic(Locations.AztecLankyKasplat, lambda l: True),
+        LocationLogic(Locations.AztecKasplatLlamaTemple, lambda l: True),
     ], [], [
         TransitionFront(Regions.LlamaTemple, lambda l: True),
     ]),

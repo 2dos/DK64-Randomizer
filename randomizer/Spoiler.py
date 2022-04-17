@@ -13,7 +13,6 @@ from randomizer.Enums.MoveTypes import MoveTypes
 from randomizer.Enums.Transitions import Transitions
 from randomizer.Enums.Types import Types
 from randomizer.Lists.Item import ItemFromKong, NameFromKong, KongFromItem, ItemList
-from randomizer.Lists.KasplatLocations import KasplatLocationData
 from randomizer.Lists.Location import LocationList
 from randomizer.Lists.Minigame import BarrelMetaData, MinigameRequirements
 from randomizer.MapsAndExits import GetExitId, GetMapId, Maps
@@ -198,9 +197,7 @@ class Spoiler:
             location = LocationList[kasplat]
             mapId = location.map
             original = location.kong
-            for x in KasplatLocationData:
-                if x.map == mapId and x.location == original:
-                    self.human_kasplats[x.name] = NameFromKong(kong)
+            self.human_kasplats[location.name] = NameFromKong(kong)
             map = None
             # See if map already exists in enemy_replacements
             for m in self.enemy_replacements:

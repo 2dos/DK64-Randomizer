@@ -61,8 +61,8 @@ LogicRegions = {
     ]),
 
     Regions.JapesBeyondCoconutGate1: Region("Japes Beyond Coconut Gate 1", Levels.JungleJapes, False, None, [
-        LocationLogic(Locations.JapesDonkeyKasplat, lambda l: True),
-        LocationLogic(Locations.JapesTinyKasplat, lambda l: True),
+        LocationLogic(Locations.JapesKasplatLeftTunnelNear, lambda l: True),
+        LocationLogic(Locations.JapesKasplatLeftTunnelFar, lambda l: True),
     ], [], [
         TransitionFront(Regions.JungleJapesMain, lambda l: True),
         TransitionFront(Regions.JapesBeyondFeatherGate, lambda l: l.feather and l.tinyAccess),
@@ -84,8 +84,8 @@ LogicRegions = {
 
     Regions.JapesBeyondCoconutGate2: Region("Japes Beyond Coconut Gate 2", Levels.JungleJapes, True, None, [
         LocationLogic(Locations.JapesLankySlope, lambda l: l.handstand and l.islanky, True),
-        LocationLogic(Locations.JapesDiddyKasplat, lambda l: True),
-        LocationLogic(Locations.JapesLankyKasplat, lambda l: True),
+        LocationLogic(Locations.JapesKasplatNearPaintingRoom, lambda l: True),
+        LocationLogic(Locations.JapesKasplatNearLab, lambda l: True),
     ], [
         Event(Events.Rambi, lambda l: l.coconut),
         Event(Events.JapesDonkeySwitch, lambda l: Events.Rambi in l.Events and l.Slam and l.donkey),
@@ -134,7 +134,7 @@ LogicRegions = {
     # Catacomb deaths lead back to itself
     Regions.JapesCatacomb: Region("Japes Catacomb", Levels.JungleJapes, False, None, [
         LocationLogic(Locations.JapesChunkyUnderground, lambda l: l.pineapple and l.ischunky),
-        LocationLogic(Locations.JapesChunkyKasplat, lambda l: l.pineapple),
+        LocationLogic(Locations.JapesKasplatUnderground, lambda l: l.pineapple),
     ], [], [
         TransitionFront(Regions.JungleJapesMain, lambda l: True, Transitions.JapesCatacombToMain),
     ]),

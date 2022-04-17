@@ -21,10 +21,10 @@ LogicRegions = {
         LocationLogic(Locations.CavesTinyCaveBarrel, lambda l: l.mini and l.istiny, True),
         LocationLogic(Locations.CavesTinyMonkeyportIgloo, lambda l: l.monkeyport and l.mini and l.twirl and l.tiny),
         LocationLogic(Locations.CavesChunkyGorillaGone, lambda l: l.punch and l.gorillaGone and l.chunky),
-        LocationLogic(Locations.CavesDonkeyKasplat, lambda l: True),
-        LocationLogic(Locations.CavesDiddyKasplat, lambda l: l.mini and l.twirl and l.tiny and l.jetpack),
-        LocationLogic(Locations.CavesLankyKasplat, lambda l: l.jetpack and l.diddy),
-        LocationLogic(Locations.CavesTinyKasplat, lambda l: True),
+        LocationLogic(Locations.CavesKasplatNearLab, lambda l: True),
+        LocationLogic(Locations.CavesKasplatNearFunky, lambda l: l.mini and l.twirl and l.tiny and l.jetpack),
+        LocationLogic(Locations.CavesKasplatPillar, lambda l: l.jetpack and l.diddy),
+        LocationLogic(Locations.CavesKasplatNearCandy, lambda l: True),
     ], [
         Event(Events.CavesEntered, lambda l: True),
         Event(Events.CavesSmallBoulderButton, lambda l: l.chunky),
@@ -70,7 +70,7 @@ LogicRegions = {
 
     Regions.IglooArea: Region("Igloo Area", Levels.CrystalCaves, True, None, [
         LocationLogic(Locations.CavesChunkyTransparentIgloo, lambda l: Events.CavesLargeBoulderButton in l.Events and l.chunky),
-        LocationLogic(Locations.CavesChunkyKasplat, lambda l: True),
+        LocationLogic(Locations.CavesKasplatOn5DI, lambda l: True),
     ], [], [
         TransitionFront(Regions.CrystalCavesMain, lambda l: True),
         TransitionFront(Regions.GiantKosha, lambda l: Events.CavesLargeBoulderButton in l.Events and l.monkeyport and l.istiny),

@@ -18,8 +18,8 @@ LogicRegions = {
         LocationLogic(Locations.CastleTinyMedal, lambda l: l.ColoredBananas[Levels.CreepyCastle][Kongs.tiny] >= 75),
         LocationLogic(Locations.CastleChunkyMedal, lambda l: l.ColoredBananas[Levels.CreepyCastle][Kongs.chunky] >= 75),
         LocationLogic(Locations.CastleDiddyAboveCastle, lambda l: l.jetpack and l.isdiddy, True),
-        LocationLogic(Locations.CastleLankyKasplat, lambda l: True),
-        LocationLogic(Locations.CastleTinyKasplat, lambda l: True),
+        LocationLogic(Locations.CastleKasplatHalfway, lambda l: True),
+        LocationLogic(Locations.CastleKasplatLowerLedge, lambda l: True),
     ], [
         Event(Events.CastleEntered, lambda l: True),
     ], [
@@ -58,7 +58,7 @@ LogicRegions = {
     Regions.CastleTree: Region("Castle Tree", Levels.CreepyCastle, False, -1, [
         LocationLogic(Locations.CastleDonkeyTree, lambda l: l.scope and l.coconut and l.isdonkey),
         LocationLogic(Locations.CastleChunkyTree, lambda l: (l.scope or l.settings.hard_shooting) and l.pineapple and l.punch and l.ischunky, True),
-        LocationLogic(Locations.CastleDonkeyKasplat, lambda l: l.coconut and l.isdonkey),
+        LocationLogic(Locations.CastleKasplatTree, lambda l: l.coconut and l.isdonkey),
         LocationLogic(Locations.CastleBananaFairyTree, lambda l: l.camera and l.coconut and l.isdonkey),
     ], [], [
         TransitionFront(Regions.CreepyCastleMain, lambda l: True, Transitions.CastleTreeToMain),
@@ -128,7 +128,7 @@ LogicRegions = {
     ]),
 
     Regions.LowerCave: Region("Lower Cave", Levels.CreepyCastle, True, -1, [
-        LocationLogic(Locations.CastleDiddyKasplat, lambda l: True),
+        LocationLogic(Locations.CastleKasplatCrypt, lambda l: True),
     ], [], [
         TransitionFront(Regions.CreepyCastleMain, lambda l: True, Transitions.CastleLowerToMain),
         TransitionFront(Regions.Crypt, lambda l: (l.coconut and l.isdonkey) or (l.peanut and l.isdiddy) or (l.pineapple and l.ischunky), Transitions.CastleLowerToCrypt),
@@ -161,7 +161,7 @@ LogicRegions = {
 
     Regions.UpperCave: Region("Upper Cave", Levels.CreepyCastle, True, -1, [
         LocationLogic(Locations.CastleTinyOverChasm, lambda l: l.twirl and l.istiny, True),
-        LocationLogic(Locations.CastleChunkyKasplat, lambda l: True),
+        LocationLogic(Locations.CastleKasplatNearCandy, lambda l: True),
     ], [], [
         TransitionFront(Regions.CreepyCastleMain, lambda l: True, Transitions.CastleUpperToMain),
         TransitionFront(Regions.CastleWaterfall, lambda l: True, Transitions.CastleUpperToWaterfall),

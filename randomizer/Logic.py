@@ -437,7 +437,7 @@ class LogicVarHolder:
     def KasplatAccess(self, location):
         """Use the kasplat map to check kasplat logic for blueprint locations."""
         kong = self.kasplat_map[location]
-        if location == Locations.GalleonDonkeyKasplat:
+        if location == Locations.GalleonKasplatGoldTower:
             # Water level needs to be raised and you spring up as diddy to get killed by the kasplat
             # Or, any kong having teleporter access works too
             if kong == Kongs.diddy:
