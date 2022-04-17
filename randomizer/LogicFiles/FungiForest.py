@@ -19,8 +19,7 @@ LogicRegions = {
         LocationLogic(Locations.ForestChunkyMedal, lambda l: l.ColoredBananas[Levels.FungiForest][Kongs.chunky] >= 75),
     ], [
         Event(Events.ForestEntered, lambda l: True),
-        Event(Events.Night, lambda l: (l.coconut and l.donkey) or (l.peanut and l.diddy)
-              or (l.grape and l.lanky) or (l.feather and l.tiny) or (l.pineapple and l.chunky)),
+        Event(Events.Night, lambda l: l.HasGun(Kongs.any)),
         Event(Events.WormGatesOpened, lambda l: (l.feather and l.tiny) and (l.pineapple and l.chunky)),
     ], [
         TransitionFront(Regions.FungiForestLobby, lambda l: True, Transitions.ForestToIsles),
@@ -63,7 +62,7 @@ LogicRegions = {
     ]),
 
     Regions.MushroomLowerExterior: Region("Mushroom Lower Exterior", Levels.FungiForest, True, -1, [
-        LocationLogic(Locations.ForestTinyKasplat, lambda l: True),
+        LocationLogic(Locations.ForestKasplatLowerMushroomExterior, lambda l: True),
     ], [], [
         TransitionFront(Regions.GiantMushroomArea, lambda l: True),
         TransitionFront(Regions.MushroomLower, lambda l: True, Transitions.ForestLowerExteriorToLowerMushroom),
@@ -79,7 +78,7 @@ LogicRegions = {
 
     Regions.MushroomUpper: Region("Mushroom Upper", Levels.FungiForest, True, -1, [
         LocationLogic(Locations.ForestDonkeyMushroomCannons, lambda l: Events.MushroomCannonsSpawned in l.Events and Events.DonkeyMushroomSwitch in l.Events),
-        LocationLogic(Locations.ForestDiddyKasplat, lambda l: True),
+        LocationLogic(Locations.ForestKasplatInsideMushroom, lambda l: True),
     ], [], [
         TransitionFront(Regions.MushroomLower, lambda l: True),
         TransitionFront(Regions.MushroomLowerExterior, lambda l: True, Transitions.ForestUpperMushroomToLowerExterior),
@@ -94,7 +93,7 @@ LogicRegions = {
     ]),
 
     Regions.MushroomNightExterior: Region("Mushroom Night Exterior", Levels.FungiForest, False, None, [
-        LocationLogic(Locations.ForestChunkyKasplat, lambda l: True),
+        LocationLogic(Locations.ForestKasplatUpperMushroomExterior, lambda l: True),
     ], [], [
         TransitionFront(Regions.MushroomNightDoor, lambda l: Events.Night in l.Events, Transitions.ForestExteriorToNight),
         TransitionFront(Regions.GiantMushroomArea, lambda l: True),
@@ -133,7 +132,7 @@ LogicRegions = {
     Regions.HollowTreeArea: Region("Hollow Tree Area", Levels.FungiForest, True, -1, [
         LocationLogic(Locations.ForestDiddyOwlRace, lambda l: Events.Night in l.Events and l.jetpack and l.guitar and l.isdiddy, True),
         LocationLogic(Locations.ForestLankyRabbitRace, lambda l: l.trombone and l.sprint and l.lanky),
-        LocationLogic(Locations.ForestLankyKasplat, lambda l: True),
+        LocationLogic(Locations.ForestKasplatOwlTree, lambda l: True),
     ], [], [
         TransitionFront(Regions.GiantMushroomArea, lambda l: Events.HollowTreeGateOpened in l.Events),
         TransitionFront(Regions.Anthill, lambda l: l.mini and l.saxophone, Transitions.ForestTreeToAnthill),
@@ -215,7 +214,7 @@ LogicRegions = {
     ]),
 
     Regions.ThornvineArea: Region("Thornvine Area", Levels.FungiForest, True, -1, [
-        LocationLogic(Locations.ForestDonkeyKasplat, lambda l: True),
+        LocationLogic(Locations.ForestKasplatNearBarn, lambda l: True),
     ], [], [
         TransitionFront(Regions.MillArea, lambda l: Events.Night in l.Events),
         # You're supposed to use strong kong to hit the switch in the thorns, but can brute force it

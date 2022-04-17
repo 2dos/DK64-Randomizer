@@ -31,7 +31,7 @@ LogicRegions = {
         LocationLogic(Locations.FactoryDiddyBlockTower, lambda l: l.spring and l.isdiddy, True),
         LocationLogic(Locations.FactoryLankyTestingRoomBarrel, lambda l: l.balloon and l.islanky, True),
         LocationLogic(Locations.FactoryTinyDartboard, lambda l: Events.DartsPlayed in l.Events and l.tiny),
-        LocationLogic(Locations.FactoryChunkyKasplat, lambda l: True),
+        LocationLogic(Locations.FactoryKasplatBlocks, lambda l: True),
         LocationLogic(Locations.FactoryBananaFairybyCounting, lambda l: l.camera),
         LocationLogic(Locations.FactoryBananaFairybyFunky, lambda l: l.camera and Events.DartsPlayed in l.Events),
     ], [
@@ -48,7 +48,7 @@ LogicRegions = {
         LocationLogic(Locations.FactoryDiddyRandD, lambda l: l.guitar and l.charge and l.diddy),
         LocationLogic(Locations.FactoryLankyRandD, lambda l: l.trombone and l.Slam and l.lanky),
         LocationLogic(Locations.FactoryChunkyRandD, lambda l: l.triangle and l.punch and l.hunkyChunky and l.chunky),
-        LocationLogic(Locations.FactoryLankyKasplat, lambda l: True),
+        LocationLogic(Locations.FactoryKasplatRandD, lambda l: True),
         LocationLogic(Locations.FactoryBattleArena, lambda l: l.grab and l.donkey),
     ], [], [
         TransitionFront(Regions.Testing, lambda l: True),
@@ -87,15 +87,15 @@ LogicRegions = {
     ]),
 
     Regions.BeyondHatch: Region("Beyond Hatch", Levels.FranticFactory, True, None, [
-        LocationLogic(Locations.ChunkyKong, lambda l: l.handstand and l.Slam and l.lanky),
+        LocationLogic(Locations.ChunkyKong, lambda l: l.CanFreeChunky()),
         LocationLogic(Locations.NintendoCoin, lambda l: Events.ArcadeLeverSpawned in l.Events and l.grab and l.donkey),
         LocationLogic(Locations.FactoryDonkeyDKArcade, lambda l: Events.ArcadeLeverSpawned in l.Events and l.grab and l.donkey),
-        LocationLogic(Locations.FactoryLankyFreeChunky, lambda l: l.handstand and l.Slam and l.lanky),
+        LocationLogic(Locations.FactoryLankyFreeChunky, lambda l: l.CanFreeChunky()),
         LocationLogic(Locations.FactoryTinybyArcade, lambda l: l.mini and l.tiny),
         LocationLogic(Locations.FactoryChunkyDarkRoom, lambda l: l.punch and l.Slam and l.chunky),
         LocationLogic(Locations.FactoryChunkybyArcade, lambda l: l.punch and l.ischunky, True),
-        LocationLogic(Locations.FactoryDiddyKasplat, lambda l: True),
-        LocationLogic(Locations.FactoryTinyKasplat, lambda l: True),
+        LocationLogic(Locations.FactoryKasplatProductionBottom, lambda l: True),
+        LocationLogic(Locations.FactoryKasplatStorage, lambda l: True),
     ], [
         Event(Events.TestingGateOpened, lambda l: l.Slam),
         Event(Events.DiddyCoreSwitch, lambda l: l.Slam and l.diddy),
@@ -129,7 +129,7 @@ LogicRegions = {
         LocationLogic(Locations.FactoryLankyProductionRoom, lambda l: Events.LankyCoreSwitch in l.Events and l.handstand and l.lanky),
         LocationLogic(Locations.FactoryTinyProductionRoom, lambda l: Events.TinyCoreSwitch in l.Events and l.twirl and l.istiny, True),
         LocationLogic(Locations.FactoryChunkyProductionRoom, lambda l: Events.ChunkyCoreSwitch in l.Events and l.chunky),
-        LocationLogic(Locations.FactoryDonkeyKasplat, lambda l: True)
+        LocationLogic(Locations.FactoryKasplatProductionTop, lambda l: True)
     ], [], [
         TransitionFront(Regions.BeyondHatch, lambda l: True),
     ]),

@@ -2,7 +2,7 @@
 
 from randomizer.Enums.Locations import Locations
 from randomizer.Enums.Minigames import Minigames
-from randomizer.MapsAndExits import Maps
+from randomizer.Lists.MapsAndExits import Maps
 
 
 class Minigame:

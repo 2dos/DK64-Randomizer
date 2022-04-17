@@ -3,7 +3,7 @@ import random
 from array import array
 
 from randomizer.Enums.Kongs import Kongs
-from randomizer.MapsAndExits import Maps
+from randomizer.Lists.MapsAndExits import Maps
 
 
 def ShuffleBosses(boss_location_rando: bool):

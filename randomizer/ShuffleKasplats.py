@@ -5,60 +5,59 @@ import js
 import randomizer.Fill as Fill
 import randomizer.Lists.Exceptions as Ex
 import randomizer.Logic as Logic
-from randomizer.Enums.Kongs import Kongs
+from randomizer.Enums.Kongs import Kongs, GetKongs
 from randomizer.Enums.Levels import Levels
 from randomizer.Enums.Locations import Locations
-from randomizer.Lists.Location import LocationList
 
 shufflable = {
-    Locations.IslesDonkeyKasplat: Kongs.donkey,
-    Locations.IslesDiddyKasplat: Kongs.diddy,
-    Locations.IslesLankyKasplat: Kongs.lanky,
-    Locations.IslesTinyKasplat: Kongs.tiny,
-    Locations.IslesChunkyKasplat: Kongs.chunky,
-    Locations.JapesDonkeyKasplat: Kongs.donkey,
-    Locations.JapesDiddyKasplat: Kongs.diddy,
-    Locations.JapesLankyKasplat: Kongs.lanky,
-    Locations.JapesTinyKasplat: Kongs.tiny,
-    Locations.AztecDonkeyKasplat: Kongs.donkey,
-    Locations.AztecLankyKasplat: Kongs.lanky,
-    Locations.AztecTinyKasplat: Kongs.tiny,
-    Locations.FactoryDonkeyKasplat: Kongs.donkey,
-    Locations.FactoryDiddyKasplat: Kongs.diddy,
-    Locations.FactoryLankyKasplat: Kongs.lanky,
-    Locations.FactoryTinyKasplat: Kongs.tiny,
-    Locations.FactoryChunkyKasplat: Kongs.chunky,
-    Locations.GalleonDonkeyKasplat: Kongs.donkey,
-    Locations.GalleonDiddyKasplat: Kongs.diddy,
-    Locations.GalleonLankyKasplat: Kongs.lanky,
-    Locations.GalleonTinyKasplat: Kongs.tiny,
-    Locations.GalleonChunkyKasplat: Kongs.chunky,
-    Locations.ForestDonkeyKasplat: Kongs.donkey,
-    Locations.ForestDiddyKasplat: Kongs.diddy,
-    Locations.ForestLankyKasplat: Kongs.lanky,
-    Locations.ForestTinyKasplat: Kongs.tiny,
-    Locations.ForestChunkyKasplat: Kongs.chunky,
-    Locations.CavesDonkeyKasplat: Kongs.donkey,
-    Locations.CavesLankyKasplat: Kongs.lanky,
-    Locations.CavesTinyKasplat: Kongs.tiny,
-    Locations.CavesChunkyKasplat: Kongs.chunky,
-    Locations.CastleDiddyKasplat: Kongs.diddy,
-    Locations.CastleLankyKasplat: Kongs.lanky,
-    Locations.CastleTinyKasplat: Kongs.tiny,
-    Locations.CastleChunkyKasplat: Kongs.chunky,
+    Locations.IslesKasplatHelmLobby: Kongs.donkey,
+    Locations.IslesKasplatCastleLobby: Kongs.diddy,
+    Locations.IslesKasplatCavesLobby: Kongs.lanky,
+    Locations.IslesKasplatFactoryLobby: Kongs.tiny,
+    Locations.IslesKasplatGalleonLobby: Kongs.chunky,
+    Locations.JapesKasplatLeftTunnelNear: Kongs.donkey,
+    Locations.JapesKasplatNearPaintingRoom: Kongs.diddy,
+    Locations.JapesKasplatNearLab: Kongs.lanky,
+    Locations.JapesKasplatLeftTunnelFar: Kongs.tiny,
+    Locations.AztecKasplatSandyBridge: Kongs.donkey,
+    Locations.AztecKasplatLlamaTemple: Kongs.lanky,
+    Locations.AztecKasplatNearLab: Kongs.tiny,
+    Locations.FactoryKasplatProductionTop: Kongs.donkey,
+    Locations.FactoryKasplatProductionBottom: Kongs.diddy,
+    Locations.FactoryKasplatRandD: Kongs.lanky,
+    Locations.FactoryKasplatStorage: Kongs.tiny,
+    Locations.FactoryKasplatBlocks: Kongs.chunky,
+    Locations.GalleonKasplatGoldTower: Kongs.donkey,
+    Locations.GalleonKasplatLighthouseArea: Kongs.diddy,
+    Locations.GalleonKasplatCannons: Kongs.lanky,
+    Locations.GalleonKasplatNearLab: Kongs.tiny,
+    Locations.GalleonKasplatNearSub: Kongs.chunky,
+    Locations.ForestKasplatNearBarn: Kongs.donkey,
+    Locations.ForestKasplatInsideMushroom: Kongs.diddy,
+    Locations.ForestKasplatOwlTree: Kongs.lanky,
+    Locations.ForestKasplatLowerMushroomExterior: Kongs.tiny,
+    Locations.ForestKasplatUpperMushroomExterior: Kongs.chunky,
+    Locations.CavesKasplatNearLab: Kongs.donkey,
+    Locations.CavesKasplatPillar: Kongs.lanky,
+    Locations.CavesKasplatNearCandy: Kongs.tiny,
+    Locations.CavesKasplatOn5DI: Kongs.chunky,
+    Locations.CastleKasplatCrypt: Kongs.diddy,
+    Locations.CastleKasplatHalfway: Kongs.lanky,
+    Locations.CastleKasplatLowerLedge: Kongs.tiny,
+    Locations.CastleKasplatNearCandy: Kongs.chunky,
 }
 
 constants = {
     # Must be chunky since need to shoot pineapple to lower vines and they don't stay lowered
-    Locations.JapesChunkyKasplat: Kongs.chunky,
+    Locations.JapesKasplatUnderground: Kongs.chunky,
     # Need jetpack to reach so must be diddy
-    Locations.AztecDiddyKasplat: Kongs.diddy,
+    Locations.AztecKasplatOnTinyTemple: Kongs.diddy,
     # Pineapple doors don't stay open, so need to be chunky
-    Locations.AztecChunkyKasplat: Kongs.chunky,
+    Locations.AztecKasplatChunky5DT: Kongs.chunky,
     # Need to jetpack to the warp pad to get to the kasplat... can technically fall onto it but seems awful
-    Locations.CavesDiddyKasplat: Kongs.diddy,
+    Locations.CavesKasplatNearFunky: Kongs.diddy,
     # Coconut gate doesn't stay open
-    Locations.CastleDonkeyKasplat: Kongs.donkey,
+    Locations.CastleKasplatTree: Kongs.donkey,
 }
 
 
@@ -75,7 +74,7 @@ def ShuffleKasplats(LogicVariables):
     global kasplat_map
     # Make sure only 1 of each kasplat per level, set up array to track that
     level_kongs = []
-    kongs = [x for x in Kongs if x != Kongs.any]
+    kongs = GetKongs()
     # Add a list of kongs for each level
     # Excludes Shops level, but will include a useless Helm level
     for i in range(len(Levels) - 1):
@@ -114,7 +113,7 @@ def ShuffleKasplats(LogicVariables):
 
 def KasplatShuffle(LogicVariables):
     """Facilitate the shuffling of kasplat types."""
-    if not LogicVariables.settings.kasplat:
+    if not LogicVariables.settings.kasplat_rando:
         # Just use default kasplat associations.
         LogicVariables.kasplat_map = {}
         LogicVariables.kasplat_map.update(shufflable)

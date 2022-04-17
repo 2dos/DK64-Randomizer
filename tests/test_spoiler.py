@@ -16,7 +16,6 @@ def generate_settings():
     data = {}
     data["seed"] = random.randint(0, 100000000)
     # important things
-    data["shuffle_levels"] = True
     data["blocker_0"] = 0
     data["blocker_1"] = 0
     data["blocker_2"] = 0
@@ -34,7 +33,7 @@ def generate_settings():
     data["troff_6"] = 100
 
     data["unlock_all_moves"] = False
-    data["kasplat"] = False
+    data["kasplat_rando"] = False
     data["unlock_all_kongs"] = False
     data["crown_door_open"] = False
     data["coin_door_open"] = False

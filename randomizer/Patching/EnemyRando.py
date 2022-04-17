@@ -2,9 +2,9 @@
 import random
 
 import js
-from randomizer.EnemyTypes import Enemies, EnemyMetaData
-from randomizer.MapsAndExits import Maps
-from randomizer.Patcher import ROM
+from randomizer.Lists.EnemyTypes import Enemies, EnemyMetaData
+from randomizer.Lists.MapsAndExits import Maps
+from randomizer.Patching.Patcher import ROM
 from randomizer.Spoiler import Spoiler
 
 
@@ -171,7 +171,7 @@ def randomize_enemies(spoiler: Spoiler):
         ],
     }
     crown_enemies = []
-    if spoiler.settings.enemy_rando or spoiler.settings.kasplat:  # TODO: Add option for crown enemy rando
+    if spoiler.settings.enemy_rando or spoiler.settings.kasplat_rando:  # TODO: Add option for crown enemy rando
         for enemy in EnemyMetaData.keys():
             if EnemyMetaData[enemy].crown_enabled:
                 crown_enemies.append(enemy)
@@ -210,7 +210,7 @@ def randomize_enemies(spoiler: Spoiler):
                 extra_count = int.from_bytes(ROM().readBytes(1), "big")
                 offset += 0x16 + (extra_count * 2)
                 vanilla_spawners.append({"enemy_id": enemy_id, "offset": init_offset})
-            if spoiler.settings.kasplat:
+            if spoiler.settings.kasplat_rando:
                 for cont_map in spoiler.enemy_replacements:
                     if cont_map["container_map"] == cont_map_id:
                         for kasplat in cont_map["kasplat_swaps"]:

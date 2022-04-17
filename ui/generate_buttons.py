@@ -3,7 +3,7 @@ import json
 import random
 
 import js
-from randomizer.ApplyRandomizer import patching_response
+from randomizer.Patching.ApplyRandomizer import patching_response
 from randomizer.BackgroundRandomizer import generate_playthrough
 from randomizer.Worker import background
 from ui.bindings import bind

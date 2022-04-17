@@ -24,8 +24,11 @@ from randomizer.Enums.Kongs import Kongs
 from randomizer.Enums.Levels import Levels
 from randomizer.Enums.Locations import Locations
 from randomizer.Lists.Location import Location, LocationList
-from randomizer.MapsAndExits import Maps
+from randomizer.Lists.MapsAndExits import Maps
 from randomizer.Prices import CanBuy, GetPriceOfMoveItem
+
+
+STARTING_SLAM = 1  # Currently we're assuming you always start with 1 slam
 
 
 class LogicVarHolder:
@@ -122,7 +125,7 @@ class LogicVarHolder:
         self.HelmChunky1 = False
         self.HelmChunky2 = False
 
-        self.Slam = 3 if self.settings.unlock_all_moves else 1  # Right now assuming start with slam
+        self.Slam = 3 if self.settings.unlock_all_moves else STARTING_SLAM
         self.AmmoBelts = 2 if self.settings.unlock_all_moves else 0
         self.InstUpgrades = 3 if self.settings.unlock_all_moves else 0
 
@@ -230,7 +233,7 @@ class LogicVarHolder:
         self.HelmChunky1 = self.HelmChunky1 or Items.HelmChunky1 in ownedItems
         self.HelmChunky2 = self.HelmChunky2 or Items.HelmChunky2 in ownedItems
 
-        self.Slam = 3 if self.settings.unlock_all_moves else sum(1 for x in ownedItems if x == Items.ProgressiveSlam)
+        self.Slam = 3 if self.settings.unlock_all_moves else sum(1 for x in ownedItems if x == Items.ProgressiveSlam) + STARTING_SLAM
         self.AmmoBelts = 2 if self.settings.unlock_all_moves else sum(1 for x in ownedItems if x == Items.ProgressiveAmmoBelt)
         self.InstUpgrades = 3 if self.settings.unlock_all_moves else sum(1 for x in ownedItems if x == Items.ProgressiveInstrumentUpgrade)
 
@@ -296,6 +299,70 @@ class LogicVarHolder:
             return self.ischunky
         if kong == Kongs.any:
             return True
+
+    def HasKong(self, kong):
+        """Check if logic currently owns a specific kong."""
+        if kong == Kongs.donkey:
+            return self.donkey
+        if kong == Kongs.diddy:
+            return self.diddy
+        if kong == Kongs.lanky:
+            return self.lanky
+        if kong == Kongs.tiny:
+            return self.tiny
+        if kong == Kongs.chunky:
+            return self.chunky
+        if kong == Kongs.any:
+            return True
+
+    def HasGun(self, kong):
+        """Check if logic currently is currently the specified kong and owns a gun for them."""
+        if kong == Kongs.donkey:
+            return self.coconut and self.isdonkey
+        if kong == Kongs.diddy:
+            return self.peanut and self.isdiddy
+        if kong == Kongs.lanky:
+            return self.grape and self.islanky
+        if kong == Kongs.tiny:
+            return self.feather and self.istiny
+        if kong == Kongs.chunky:
+            return self.pineapple and self.ischunky
+        if kong == Kongs.any:
+            return (self.coconut and self.isdonkey) or (self.peanut and self.isdiddy) or (self.grape and self.islanky) or (self.feather and self.istiny) or (self.pineapple and self.ischunky)
+
+    def HasInstrument(self, kong):
+        """Check if logic currently is currently the specified kong and owns an instrument for them."""
+        if kong == Kongs.donkey:
+            return self.bongos and self.isdonkey
+        if kong == Kongs.diddy:
+            return self.guitar and self.isdiddy
+        if kong == Kongs.lanky:
+            return self.trombone and self.islanky
+        if kong == Kongs.tiny:
+            return self.saxophone and self.istiny
+        if kong == Kongs.chunky:
+            return self.triangle and self.ischunky
+        if kong == Kongs.any:
+            return (self.bongos and self.isdonkey) or (self.guitar and self.isdiddy) or (self.trombone and self.islanky) or (self.saxophone and self.istiny) or (self.triangle and self.ischunky)
+
+    def CanFreeTiny(self):
+        """Check if Tiny can be freed,r equires either chimpy charge or primate punch."""
+        if self.settings.tiny_freeing_kong == Kongs.diddy:
+            return self.charge and self.isdiddy
+        # Theoretical: Free her with punches, currently not implemented
+        elif self.settings.tiny_freeing_kong == Kongs.chunky:
+            return self.punch and self.ischunky
+
+    def CanFreeLanky(self):
+        """Check if Lanky can be freed, requires freeing kong to have its gun and instrument."""
+        return self.HasGun(self.settings.lanky_freeing_kong) and self.HasInstrument(self.settings.lanky_freeing_kong)
+
+    def CanFreeChunky(self):
+        """Check if Chunky can be freed, requires either orangstand or ponytail twirl."""
+        if self.settings.chunky_freeing_kong == Kongs.lanky:
+            return self.handstand and self.Slam and self.islanky
+        elif self.settings.chunky_freeing_kong == Kongs.tiny:
+            return self.twirl and self.Slam and self.istiny
 
     def UpdateCurrentRegionAccess(self, region):
         """Set access of current region."""
@@ -368,7 +435,7 @@ class LogicVarHolder:
     def KasplatAccess(self, location):
         """Use the kasplat map to check kasplat logic for blueprint locations."""
         kong = self.kasplat_map[location]
-        if location == Locations.GalleonDonkeyKasplat:
+        if location == Locations.GalleonKasplatGoldTower:
             # Water level needs to be raised and you spring up as diddy to get killed by the kasplat
             # Or, any kong having teleporter access works too
             if kong == Kongs.diddy:

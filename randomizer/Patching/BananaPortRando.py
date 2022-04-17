@@ -3,7 +3,7 @@ from imp import source_from_cache
 
 import js
 from randomizer.Lists.Warps import BananaportVanilla
-from randomizer.Patcher import ROM
+from randomizer.Patching.Patcher import ROM
 from randomizer.Spoiler import Spoiler
 
 

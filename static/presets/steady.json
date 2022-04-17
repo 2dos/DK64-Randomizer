@@ -1,7 +1,6 @@
 {
   "name": "Steady",
   "description": "Sets all troff settings to consistent",
-  "shuffle_levels": true,
   "k_rool_phase_order": true,
   "boss_kong_rando": true,
   "boss_location_rando": true,
@@ -36,9 +35,8 @@
   "music_events": "default",
   "enemy_rando": false,
   "random_prices": "vanilla",
-  "kasplat": false,
+  "kasplat_rando": false,
   "shop_location_rando": false,
-  "loading_zone_rando": false,
   "bananaport": false,
   "battle_crown_rando": false,
   "no_healing": false,

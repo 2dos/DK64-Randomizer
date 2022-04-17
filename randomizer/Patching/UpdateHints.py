@@ -5,7 +5,7 @@ from io import BytesIO
 import js
 from randomizer.Enums.WrinklyKong import WrinklyKong
 from randomizer.Lists.WrinklyHints import Hint, hints
-from randomizer.Patcher import ROM
+from randomizer.Patching.Patcher import ROM
 
 
 def writeWrinklyHints(file_start_offset, text):

@@ -11,3 +11,8 @@ class Kongs(IntEnum):
     tiny = auto()
     chunky = auto()
     any = auto()
+
+
+def GetKongs():
+    """Return list of kongs without any."""
+    return [Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky]

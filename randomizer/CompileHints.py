@@ -1,19 +1,19 @@
 """Compile a list of hints based on the settings."""
 import random
 
+from randomizer.Lists.Item import NameFromKong
 from randomizer.Spoiler import Spoiler
-from randomizer.UpdateHints import updateRandomHint
+from randomizer.Patching.UpdateHints import updateRandomHint
 
 
 def compileHints(spoiler: Spoiler):
     """Push hints to hint list based on settings."""
     # K Rool Order
-    kong_names = ["DK", "Diddy", "Lanky", "Tiny", "Chunky"]
     if spoiler.settings.k_rool_phase_order:
-        associated_hint = f"K. Rool order is {kong_names[spoiler.settings.krool_order[0]]}"
+        associated_hint = f"K. Rool order is {NameFromKong(spoiler.settings.krool_order[0])}"
         for x in range(len(spoiler.settings.krool_order)):
             if x != 0:
-                associated_hint += f" then {kong_names[spoiler.settings.krool_order[x]]}"
+                associated_hint += f" then {NameFromKong(spoiler.settings.krool_order[x])}"
         updateRandomHint(associated_hint)
     padded_hints = [
         "Did you know - Donkey Kong officially features in Donkey Kong 64",
@@ -327,7 +327,7 @@ def compileHints(spoiler: Spoiler):
             else:
                 padded_hints.append(text)
     if spoiler.settings.kong_rando:
-        kong_json = spoiler.settings.shuffled_kong_placement
+        kong_json = spoiler.shuffled_kong_placement
         placement_levels = [
             {
                 "name": "Jungle Japes",
@@ -370,12 +370,8 @@ def compileHints(spoiler: Spoiler):
 
     # PADDED HINTS
     level_list = ["Jungle Japes", "Angry Aztec", "Frantic Factory", "Gloomy Galleon", "Fungi Forest", "Crystal Caves", "Creepy Castle"]
-    kong_list = ["DK", "Diddy", "Lanky", "Tiny", "Chunky"]
     cb_list = [
-        {
-            "kong": "DK",
-            "color": "Yellow",
-        },
+        {"kong": "Donkey", "color": "Yellow"},
         {"kong": "Diddy", "color": "Red"},
         {"kong": "Lanky", "color": "Blue"},
         {"kong": "Tiny", "color": "Purple"},

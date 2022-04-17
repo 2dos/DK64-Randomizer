@@ -4,7 +4,7 @@ import random
 import js
 from randomizer.Enums.Warps import Warps
 from randomizer.Lists.Warps import BananaportVanilla
-from randomizer.MapsAndExits import Maps
+from randomizer.Lists.MapsAndExits import Maps
 
 
 def getShuffleMaps():
@@ -16,7 +16,7 @@ def getShuffleMaps():
     return lst
 
 
-def shuffleWarps(bananaport_replacements, human_ports):
+def ShuffleWarps(bananaport_replacements, human_ports):
     """Shuffles warps between themselves."""
     map_list = getShuffleMaps()
     for warp_map in map_list:

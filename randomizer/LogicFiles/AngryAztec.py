@@ -19,8 +19,8 @@ LogicRegions = {
         LocationLogic(Locations.AztecChunkyMedal, lambda l: l.ColoredBananas[Levels.AngryAztec][Kongs.chunky] >= 75),
         LocationLogic(Locations.AztecDonkeyFreeLlama, lambda l: Events.LlamaFreed in l.Events and l.donkey),
         LocationLogic(Locations.AztecChunkyVases, lambda l: l.pineapple and l.chunky),
-        LocationLogic(Locations.AztecDonkeyKasplat, lambda l: l.coconut),
-        LocationLogic(Locations.AztecDiddyKasplat, lambda l: l.jetpack),
+        LocationLogic(Locations.AztecKasplatSandyBridge, lambda l: l.coconut),
+        LocationLogic(Locations.AztecKasplatOnTinyTemple, lambda l: l.jetpack),
     ], [
         Event(Events.AztecEntered, lambda l: True),
         Event(Events.LlamaFreed, lambda l: True),  # Decision to start with llama freed
@@ -39,12 +39,12 @@ LogicRegions = {
         LocationLogic(Locations.AztecChunkyKlaptrapRoom, lambda l: l.triangle and l.ischunky),
     ], [], [
         TransitionFront(Regions.AngryAztecStart, lambda l: True),
-        TransitionFront(Regions.TempleUnderwater, lambda l: l.Slam and l.guitar and l.diddyAccess),
+        TransitionFront(Regions.TempleUnderwater, lambda l: True),  # Ice pre-melted, without it would be "l.Slam and l.guitar and l.diddyAccess"
     ]),
 
     Regions.TempleUnderwater: Region("Temple Underwater", Levels.AngryAztec, False, -1, [
-        LocationLogic(Locations.TinyKong, lambda l: l.charge and l.isdiddy),
-        LocationLogic(Locations.AztecDiddyFreeTiny, lambda l: l.charge and l.isdiddy),
+        LocationLogic(Locations.TinyKong, lambda l: l.CanFreeTiny()),
+        LocationLogic(Locations.AztecDiddyFreeTiny, lambda l: l.CanFreeTiny()),
         LocationLogic(Locations.AztecLankyVulture, lambda l: l.Slam and l.grape and l.islanky),
         LocationLogic(Locations.AztecBattleArena, lambda l: l.Slam and l.grape and l.islanky),
     ], [], [
@@ -56,7 +56,7 @@ LogicRegions = {
         LocationLogic(Locations.AztecDiddyRamGongs, lambda l: l.charge and l.jetpack and l.diddy),
         LocationLogic(Locations.AztecDiddyVultureRace, lambda l: l.jetpack and l.diddy),
         LocationLogic(Locations.AztecChunkyCagedBarrel, lambda l: l.hunkyChunky and l.ischunky, True),
-        LocationLogic(Locations.AztecTinyKasplat, lambda l: True),
+        LocationLogic(Locations.AztecKasplatNearLab, lambda l: True),
     ], [
         Event(Events.FedTotem, lambda l: l.jetpack and l.peanut and l.Slam and l.diddy),
     ], [
@@ -108,7 +108,7 @@ LogicRegions = {
 
     Regions.ChunkyTemple: Region("Chunky Temple", Levels.AngryAztec, False, TransitionFront(Regions.AngryAztecStart, lambda l: l.pineapple and l.ischunky), [
         LocationLogic(Locations.AztecChunky5DoorTemple, lambda l: l.pineapple and l.ischunky, True),
-        LocationLogic(Locations.AztecChunkyKasplat, lambda l: l.pineapple and l.ischunky),
+        LocationLogic(Locations.AztecKasplatChunky5DT, lambda l: l.pineapple and l.ischunky),
     ], [], [
         TransitionFront(Regions.AngryAztecMain, lambda l: True, Transitions.AztecChunkyToMain),
     ]),
@@ -121,8 +121,8 @@ LogicRegions = {
     ),
 
     Regions.LlamaTemple: Region("Llama Temple", Levels.AngryAztec, True, -1, [
-        LocationLogic(Locations.LankyKong, lambda l: l.bongos and l.donkey),
-        LocationLogic(Locations.AztecDonkeyFreeLanky, lambda l: l.bongos and l.donkey),
+        LocationLogic(Locations.LankyKong, lambda l: l.CanFreeLanky()),
+        LocationLogic(Locations.AztecDonkeyFreeLanky, lambda l: l.CanFreeLanky()),
         LocationLogic(Locations.AztecLankyLlamaTempleBarrel, lambda l: l.trombone and l.islanky, True),
         LocationLogic(Locations.AztecLankyMatchingGame, lambda l: l.grape and l.Slam and l.lanky),
         LocationLogic(Locations.AztecBananaFairyLlamaTemple, lambda l: l.camera),
@@ -136,7 +136,7 @@ LogicRegions = {
 
     Regions.LlamaTempleBack: Region("Llama Temple Back", Levels.AngryAztec, False, -1, [
         LocationLogic(Locations.AztecTinyLlamaTemple, lambda l: l.Slam and l.twirl and l.istiny),
-        LocationLogic(Locations.AztecLankyKasplat, lambda l: True),
+        LocationLogic(Locations.AztecKasplatLlamaTemple, lambda l: True),
     ], [], [
         TransitionFront(Regions.LlamaTemple, lambda l: True),
     ]),

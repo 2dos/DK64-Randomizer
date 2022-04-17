@@ -3,9 +3,9 @@ from imp import source_from_cache
 from random import shuffle
 
 import js
-from randomizer.Patcher import ROM
+from randomizer.Patching.Patcher import ROM
 from randomizer.Spoiler import Spoiler
-from randomizer.EnemyTypes import Enemies
+from randomizer.Lists.EnemyTypes import Enemies
 
 
 def apply_kongrando_cosmetic(spoiler: Spoiler):
@@ -17,7 +17,7 @@ def apply_kongrando_cosmetic(spoiler: Spoiler):
         actors = [Enemies.CutsceneDK, Enemies.CutsceneDiddy, Enemies.CutsceneLanky, Enemies.CutsceneTiny, Enemies.CutsceneChunky]
 
         llama_entrance_switch = []
-        # llama_kong = spoiler.settings.shuffled_kong_placement["Llama Temple"]["puzzle"]["kong"]
+        # llama_kong = spoiler.shuffled_kong_placement["Llama Temple"]["puzzle"]["kong"]
         # if llama_kong in [1, 4]:
         #     llama_entrance_switch.append({"index": 0xD, "new_type": gunswitches[llama_kong]})
 
@@ -27,19 +27,19 @@ def apply_kongrando_cosmetic(spoiler: Spoiler):
                 "model2_changes": [
                     {
                         "index": 0x30,
-                        "new_type": gunswitches[spoiler.settings.shuffled_kong_placement["Jungle Japes"]["puzzle"]["kong"]],
+                        "new_type": gunswitches[spoiler.shuffled_kong_placement["Jungle Japes"]["puzzle"]["kong"]],
                     },
                     {
                         "index": 0x31,
-                        "new_type": gunswitches[spoiler.settings.shuffled_kong_placement["Jungle Japes"]["puzzle"]["kong"]],
+                        "new_type": gunswitches[spoiler.shuffled_kong_placement["Jungle Japes"]["puzzle"]["kong"]],
                     },
                     {
                         "index": 0x32,
-                        "new_type": gunswitches[spoiler.settings.shuffled_kong_placement["Jungle Japes"]["puzzle"]["kong"]],
+                        "new_type": gunswitches[spoiler.shuffled_kong_placement["Jungle Japes"]["puzzle"]["kong"]],
                     },
                 ],
                 "charspawner_changes": [
-                    {"type": Enemies.CutsceneDiddy, "new_type": actors[spoiler.settings.shuffled_kong_placement["Jungle Japes"]["locked"]["kong"]]},
+                    {"type": Enemies.CutsceneDiddy, "new_type": actors[spoiler.shuffled_kong_placement["Jungle Japes"]["locked"]["kong"]]},
                 ],
             },
             {"map_index": 0x26, "model2_changes": llama_entrance_switch, "charspawner_changes": []},
@@ -48,15 +48,15 @@ def apply_kongrando_cosmetic(spoiler: Spoiler):
                 "model2_changes": [
                     {
                         "index": 0x16,
-                        "new_type": instrumentpads[spoiler.settings.shuffled_kong_placement["Llama Temple"]["puzzle"]["kong"]],
+                        "new_type": instrumentpads[spoiler.shuffled_kong_placement["Llama Temple"]["puzzle"]["kong"]],
                     },
                     {
                         "index": 0x12,
-                        "new_type": gunswitches[spoiler.settings.shuffled_kong_placement["Llama Temple"]["puzzle"]["kong"]],
+                        "new_type": gunswitches[spoiler.shuffled_kong_placement["Llama Temple"]["puzzle"]["kong"]],
                     },
                 ],
                 "charspawner_changes": [
-                    {"type": Enemies.CutsceneLanky, "new_type": actors[spoiler.settings.shuffled_kong_placement["Llama Temple"]["locked"]["kong"]]},
+                    {"type": Enemies.CutsceneLanky, "new_type": actors[spoiler.shuffled_kong_placement["Llama Temple"]["locked"]["kong"]]},
                 ],
             },
             {
@@ -64,15 +64,15 @@ def apply_kongrando_cosmetic(spoiler: Spoiler):
                 "model2_changes": [
                     {
                         "index": 0x0,
-                        "new_type": greenslamswitches[spoiler.settings.shuffled_kong_placement["Tiny Temple"]["puzzle"]["kong"]],
+                        "new_type": greenslamswitches[spoiler.shuffled_kong_placement["Tiny Temple"]["puzzle"]["kong"]],
                     },
                     {
                         "index": 0x4,
-                        "new_type": instrumentpads[spoiler.settings.shuffled_kong_placement["Tiny Temple"]["puzzle"]["kong"]],
+                        "new_type": instrumentpads[spoiler.shuffled_kong_placement["Tiny Temple"]["puzzle"]["kong"]],
                     },
                 ],
                 "charspawner_changes": [
-                    {"type": Enemies.CutsceneTiny, "new_type": actors[spoiler.settings.shuffled_kong_placement["Tiny Temple"]["locked"]["kong"]]},
+                    {"type": Enemies.CutsceneTiny, "new_type": actors[spoiler.shuffled_kong_placement["Tiny Temple"]["locked"]["kong"]]},
                 ],
             },
             {
@@ -80,19 +80,19 @@ def apply_kongrando_cosmetic(spoiler: Spoiler):
                 "model2_changes": [
                     {
                         "index": 0x24,
-                        "new_type": greenslamswitches[spoiler.settings.shuffled_kong_placement["Frantic Factory"]["puzzle"]["kong"]],
+                        "new_type": greenslamswitches[spoiler.shuffled_kong_placement["Frantic Factory"]["puzzle"]["kong"]],
                     },
                 ],
                 "charspawner_changes": [
-                    {"type": Enemies.CutsceneChunky, "new_type": actors[spoiler.settings.shuffled_kong_placement["Frantic Factory"]["locked"]["kong"]]},
+                    {"type": Enemies.CutsceneChunky, "new_type": actors[spoiler.shuffled_kong_placement["Frantic Factory"]["locked"]["kong"]]},
                 ],
             },
         ]
 
-        for kong_map in spoiler.settings.shuffled_kong_placement.keys():
-            for link_type in spoiler.settings.shuffled_kong_placement[kong_map].keys():
-                ROM().seek(0x1FED020 + spoiler.settings.shuffled_kong_placement[kong_map][link_type]["write"])
-                ROM().writeMultipleBytes(spoiler.settings.shuffled_kong_placement[kong_map][link_type]["kong"], 1)
+        for kong_map in spoiler.shuffled_kong_placement.keys():
+            for link_type in spoiler.shuffled_kong_placement[kong_map].keys():
+                ROM().seek(0x1FED020 + spoiler.shuffled_kong_placement[kong_map][link_type]["write"])
+                ROM().writeMultipleBytes(spoiler.shuffled_kong_placement[kong_map][link_type]["kong"], 1)
 
         for cont_map in kongrando_changes:
             cont_map_id = int(cont_map["map_index"])

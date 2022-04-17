@@ -1,8 +1,8 @@
 """Randomize Entrances passed from Misc options."""
 import js
 from randomizer.Enums.Transitions import Transitions
-from randomizer.MapsAndExits import GetExitId, GetMapId, MapExitTable, Maps
-from randomizer.Patcher import ROM
+from randomizer.Lists.MapsAndExits import GetExitId, GetMapId, MapExitTable, Maps
+from randomizer.Patching.Patcher import ROM
 from randomizer.Spoiler import Spoiler
 
 valid_lz_types = [9, 12, 13, 16]

@@ -12,11 +12,10 @@ from randomizer.Enums.Locations import Locations
 from randomizer.Enums.MoveTypes import MoveTypes
 from randomizer.Enums.Transitions import Transitions
 from randomizer.Enums.Types import Types
-from randomizer.Lists.Item import ItemFromKong, ItemList
-from randomizer.Lists.KasplatLocations import KasplatLocationData
+from randomizer.Lists.Item import ItemFromKong, NameFromKong, KongFromItem, ItemList
 from randomizer.Lists.Location import LocationList
 from randomizer.Lists.Minigame import BarrelMetaData, MinigameRequirements
-from randomizer.MapsAndExits import GetExitId, GetMapId, Maps
+from randomizer.Lists.MapsAndExits import GetExitId, GetMapId, Maps
 from randomizer.Settings import Settings
 from randomizer.ShuffleExits import ShufflableExits
 
@@ -69,6 +68,10 @@ class Spoiler:
         settings["unlock_all_moves"] = self.settings.unlock_all_moves
         settings["unlock_all_kongs"] = self.settings.unlock_all_kongs
         settings["starting_kong"] = ItemList[ItemFromKong(self.settings.starting_kong)].name
+        settings["diddy_freeing_kong"] = ItemList[ItemFromKong(self.settings.diddy_freeing_kong)].name
+        settings["tiny_freeing_kong"] = ItemList[ItemFromKong(self.settings.tiny_freeing_kong)].name
+        settings["lanky_freeing_kong"] = ItemList[ItemFromKong(self.settings.lanky_freeing_kong)].name
+        settings["chunky_freeing_kong"] = ItemList[ItemFromKong(self.settings.chunky_freeing_kong)].name
         settings["open_lobbies"] = self.settings.open_lobbies
         settings["crown_door_open"] = self.settings.crown_door_open
         settings["coin_door_open"] = self.settings.coin_door_open
@@ -180,10 +183,8 @@ class Spoiler:
             humanspoiler["Shuffled Music Fanfares"] = self.music_fanfare_data
         if self.settings.music_events == "randomized":
             humanspoiler["Shuffled Music Events"] = self.music_event_data
-        if self.settings.kasplat:
+        if self.settings.kasplat_rando:
             humanspoiler["Shuffled Kasplats"] = self.human_kasplats
-        if self.settings.kong_rando:
-            humanspoiler["Shuffled Kong Locations"] = self.human_kong_rando
         # if self.settings.bananaport_rando:
         #     humanspoiler["Bananaports"] = self.human_warp_locations
 
@@ -196,10 +197,7 @@ class Spoiler:
             location = LocationList[kasplat]
             mapId = location.map
             original = location.kong
-            kongNames = ["DK", "Diddy", "Lanky", "Tiny", "Chunky"]
-            for x in KasplatLocationData:
-                if x.map == mapId and x.location == original:
-                    self.human_kasplats[x.name] = kongNames[kong]
+            self.human_kasplats[location.name] = NameFromKong(kong)
             map = None
             # See if map already exists in enemy_replacements
             for m in self.enemy_replacements:
@@ -256,6 +254,15 @@ class Spoiler:
     def UpdateLocations(self, locations):
         """Update location list for what was produced by the fill."""
         self.location_data = {}
+        self.shuffled_kong_placement = {}
+        # Go ahead and set starting kong
+        startkong = {}
+        startkong["kong"] = self.settings.starting_kong
+        startkong["write"] = 0x141
+        trainingGrounds = {}
+        trainingGrounds["locked"] = startkong
+        self.shuffled_kong_placement["TrainingGrounds"] = trainingGrounds
+        # Loop through locations and set necessary data
         for id, location in locations.items():
             if location.item is not None and not location.constant:
                 self.location_data[id] = location.item
@@ -274,6 +281,37 @@ class Spoiler:
                     data = (ItemList[location.item].movetype << 4) | ItemList[location.item].index
                     for kong_index in kong_indices:
                         self.move_data[shop_index][kong_index][level_index] = data
+                elif location.type == Types.Kong:
+                    locationName = "Jungle Japes"
+                    unlockKong = self.settings.diddy_freeing_kong
+                    lockedwrite = 0x142
+                    puzzlewrite = 0x143
+                    if id == Locations.LankyKong:
+                        locationName = "Llama Temple"
+                        unlockKong = self.settings.lanky_freeing_kong
+                        lockedwrite = 0x144
+                        puzzlewrite = 0x145
+                    elif id == Locations.TinyKong:
+                        locationName = "Tiny Temple"
+                        unlockKong = self.settings.tiny_freeing_kong
+                        lockedwrite = 0x146
+                        puzzlewrite = 0x147
+                    elif id == Locations.ChunkyKong:
+                        locationName = "Frantic Factory"
+                        unlockKong = self.settings.chunky_freeing_kong
+                        lockedwrite = 0x148
+                        puzzlewrite = 0x149
+                    lockedkong = {}
+                    lockedkong["kong"] = KongFromItem(location.item)
+                    lockedkong["write"] = lockedwrite
+                    puzzlekong = {}
+                    puzzlekong["kong"] = unlockKong
+                    puzzlekong["write"] = puzzlewrite
+                    kongLocation = {}
+                    kongLocation["locked"] = lockedkong
+                    kongLocation["puzzle"] = puzzlekong
+                    self.shuffled_kong_placement[locationName] = kongLocation
+
             # Uncomment for more verbose spoiler with all locations
             # else:
             #     self.location_data[id] = Items.NoItem
