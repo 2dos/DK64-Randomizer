@@ -279,6 +279,7 @@ extern unsigned int DKTVData[5];
 
 extern charspawner_flagstruct charspawnerflags[0x1F];
 extern GBDictItem GBDictionary[113];
+extern actorData* CurrentActorPointer_0;
 
 //hack data
 extern int TestVariable;
@@ -305,3 +306,4 @@ extern char SkipDance;
 extern char permaLossMode;
 extern char preventTagSpawn;
 extern char bonusAutocomplete;
+extern void* StoredCounterTextures[7];

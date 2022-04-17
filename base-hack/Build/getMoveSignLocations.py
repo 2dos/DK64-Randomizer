@@ -64,8 +64,12 @@ def float_to_hex(f):
 
 
 def convertCoord(f):
-    """Convert a cord to an int."""
+    """Convert a coord to an int."""
     return int(float_to_hex(f), 16)
+
+def convertAngle(f):
+    """Convert an angle to DK64 Angle system."""
+    return int(((f/360)*4096))
 
 
 def getMoveSignData(map_index, base_stream):
@@ -85,14 +89,13 @@ def getMoveSignData(map_index, base_stream):
                 sign_arr.append(
                     {
                         "base_byte_stream": base_stream,
-                        "type": 0x2AB,
+                        "type": 70-16,
                         "x": convertCoord(sign["data"][0]),
                         "y": convertCoord(sign["data"][1]),
                         "z": convertCoord(sign["data"][2]),
                         "rx": 0,
-                        "ry": convertCoord(sign["data"][3]),
+                        "ry": convertAngle(sign["data"][3]),
                         "rz": 0,
-                        "id": sign_id,
                         "scale": int(float_to_hex(0.5), 16),
                     }
                 )

@@ -153,6 +153,7 @@
 .definelabel ChimpyCam, 0x80744530
 .definelabel ScreenRatio, 0x807444C0
 .definelabel CurrentActorPointer, 0x807FBB44
+.definelabel CurrentActorPointer_0, 0x807FBB40
 .definelabel LoadedActorCount, 0x807FBB35
 .definelabel LoadedActorArray, 0x807FB930
 .definelabel SpawnerMasterData, 0x807FDC88
@@ -289,6 +290,7 @@
 .definelabel style128Mtx, 0x807FFF50
 .definelabel StoredSettings, 0x807ED5A0
 .definelabel ReplacementLobbyExitsArray, 0x807FFF3E // 0x12
+.definelabel StoredCounterTextures, 0x807FFF30
 
 .definelabel CrankyMoves_New, 0x807FF400
 .definelabel CandyMoves_New, 0x807FF4D4
