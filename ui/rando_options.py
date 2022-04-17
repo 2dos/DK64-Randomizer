@@ -148,6 +148,19 @@ def toggle_b_locker_boxes(event):
             pass
 
 
+@bind("click", "unlock_all_kongs")
+def unlock_kongs_toggle(event):
+    """Toggle the textboxes for unlock_all_kongs."""
+    disabled = False
+    if js.document.getElementById("unlock_all_kongs").checked:
+        disabled = True
+    if disabled:
+        js.document.getElementById("kong_rando").setAttribute("disabled", "disabled")
+        js.document.getElementById("kong_rando").checked = False
+    else:
+        js.document.getElementById("kong_rando").removeAttribute("disabled")
+
+
 @bind("click", "randomize_cb_required_amounts")
 def toggle_counts_boxes(event):
     """Toggle the textboxes for Troff."""
