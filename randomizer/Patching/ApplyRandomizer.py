@@ -4,26 +4,26 @@ import json
 import pickle
 
 import js
-from randomizer.BananaPortRando import randomize_bananaport
-from randomizer.BarrelRando import randomize_barrels
-from randomizer.BossRando import randomize_bosses
+from randomizer.Patching.BananaPortRando import randomize_bananaport
+from randomizer.Patching.BarrelRando import randomize_barrels
+from randomizer.Patching.BossRando import randomize_bosses
 from randomizer.CompileHints import compileHints
-from randomizer.CosmeticColors import apply_cosmetic_colors
-from randomizer.DKTV import randomize_dktv
-from randomizer.EnemyRando import randomize_enemies
-from randomizer.EntranceRando import randomize_entrances
+from randomizer.Patching.CosmeticColors import apply_cosmetic_colors
+from randomizer.Patching.DKTV import randomize_dktv
+from randomizer.Patching.EnemyRando import randomize_enemies
+from randomizer.Patching.EntranceRando import randomize_entrances
 from randomizer.Enums.Transitions import Transitions
-from randomizer.Hash import get_hash_images
-from randomizer.KRoolRando import randomize_krool
-from randomizer.MoveLocationRando import randomize_moves
-from randomizer.MusicRando import randomize_music
-from randomizer.Patcher import ROM
-from randomizer.PriceRando import randomize_prices
-from randomizer.KongRando import apply_kongrando_cosmetic
+from randomizer.Patching.Hash import get_hash_images
+from randomizer.Patching.KRoolRando import randomize_krool
+from randomizer.Patching.MoveLocationRando import randomize_moves
+from randomizer.Patching.MusicRando import randomize_music
+from randomizer.Patching.Patcher import ROM
+from randomizer.Patching.PriceRando import randomize_prices
+from randomizer.Patching.KongRando import apply_kongrando_cosmetic
 
 # from randomizer.Spoiler import Spoiler
 from randomizer.Settings import Settings
-from randomizer.UpdateHints import PushHints
+from randomizer.Patching.UpdateHints import PushHints
 from ui.progress_bar import ProgressBar
 
 

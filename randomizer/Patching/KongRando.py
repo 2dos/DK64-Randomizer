@@ -3,9 +3,9 @@ from imp import source_from_cache
 from random import shuffle
 
 import js
-from randomizer.Patcher import ROM
+from randomizer.Patching.Patcher import ROM
 from randomizer.Spoiler import Spoiler
-from randomizer.EnemyTypes import Enemies
+from randomizer.Lists.EnemyTypes import Enemies
 
 
 def apply_kongrando_cosmetic(spoiler: Spoiler):

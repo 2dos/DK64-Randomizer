@@ -1,5 +1,5 @@
 """Randomize Move Locations."""
-from randomizer.Patcher import ROM
+from randomizer.Patching.Patcher import ROM
 from randomizer.Spoiler import Spoiler
 
 # /* 0x0A7 */ char move_rando_on; // O = No Move Randomization. 1 = On.

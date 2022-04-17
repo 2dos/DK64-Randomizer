@@ -6,7 +6,7 @@ import randomizer.Fill as Fill
 import randomizer.Lists.Exceptions as Ex
 from randomizer.Enums.Minigames import Minigames
 from randomizer.Lists.Minigame import BarrelMetaData, MinigameRequirements
-from randomizer.MapsAndExits import Maps
+from randomizer.Lists.MapsAndExits import Maps
 
 
 def Reset(barrelLocations):

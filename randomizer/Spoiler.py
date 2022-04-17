@@ -15,7 +15,7 @@ from randomizer.Enums.Types import Types
 from randomizer.Lists.Item import ItemFromKong, NameFromKong, KongFromItem, ItemList
 from randomizer.Lists.Location import LocationList
 from randomizer.Lists.Minigame import BarrelMetaData, MinigameRequirements
-from randomizer.MapsAndExits import GetExitId, GetMapId, Maps
+from randomizer.Lists.MapsAndExits import GetExitId, GetMapId, Maps
 from randomizer.Settings import Settings
 from randomizer.ShuffleExits import ShufflableExits
 

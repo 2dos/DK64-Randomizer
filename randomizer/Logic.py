@@ -24,7 +24,7 @@ from randomizer.Enums.Kongs import Kongs
 from randomizer.Enums.Levels import Levels
 from randomizer.Enums.Locations import Locations
 from randomizer.Lists.Location import Location, LocationList
-from randomizer.MapsAndExits import Maps
+from randomizer.Lists.MapsAndExits import Maps
 from randomizer.Prices import CanBuy, GetPriceOfMoveItem
 
 

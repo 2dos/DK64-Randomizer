@@ -5,7 +5,7 @@ import json
 import random
 import sys
 
-from randomizer.BossShuffle import ShuffleBosses, ShuffleBossKongs, ShuffleKutoutKongs
+from randomizer.ShuffleBosses import ShuffleBosses, ShuffleBossKongs, ShuffleKutoutKongs
 from randomizer.Enums.Events import Events
 from randomizer.Enums.Kongs import Kongs, GetKongs
 from randomizer.Prices import RandomizePrices, VanillaPrices

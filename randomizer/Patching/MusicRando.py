@@ -8,7 +8,7 @@ import js
 import randomizer.Lists.Exceptions as Ex
 from randomizer.Enums.SongType import SongType
 from randomizer.Lists.Songs import Song, SongGroup, song_data
-from randomizer.Patcher import ROM
+from randomizer.Patching.Patcher import ROM
 from randomizer.Settings import Settings
 from randomizer.Spoiler import Spoiler
 

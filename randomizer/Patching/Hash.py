@@ -5,7 +5,7 @@ import zlib
 
 from PIL import Image
 
-from randomizer.Patcher import ROM
+from randomizer.Patching.Patcher import ROM
 
 
 def get_hash_images():

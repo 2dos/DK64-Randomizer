@@ -1,8 +1,8 @@
 """Apply K Rool Phase order."""
 import js
-from randomizer.EntranceRando import intToArr
-from randomizer.MapsAndExits import Maps
-from randomizer.Patcher import ROM
+from randomizer.Patching.EntranceRando import intToArr
+from randomizer.Lists.MapsAndExits import Maps
+from randomizer.Patching.Patcher import ROM
 from randomizer.Spoiler import Spoiler
 
 

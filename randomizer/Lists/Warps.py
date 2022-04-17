@@ -1,7 +1,7 @@
 """Designates Bananaport properties."""
 
 from randomizer.Enums.Warps import Warps
-from randomizer.MapsAndExits import Maps
+from randomizer.Lists.MapsAndExits import Maps
 
 
 class BananaportData:

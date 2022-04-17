@@ -1,6 +1,6 @@
 """Randomize Price Locations."""
 from randomizer.Enums.Items import Items
-from randomizer.Patcher import ROM
+from randomizer.Patching.Patcher import ROM
 from randomizer.Spoiler import Spoiler
 
 

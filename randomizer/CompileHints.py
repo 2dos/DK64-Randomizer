@@ -3,7 +3,7 @@ import random
 
 from randomizer.Lists.Item import NameFromKong
 from randomizer.Spoiler import Spoiler
-from randomizer.UpdateHints import updateRandomHint
+from randomizer.Patching.UpdateHints import updateRandomHint
 
 
 def compileHints(spoiler: Spoiler):
