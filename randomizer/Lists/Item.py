@@ -33,6 +33,7 @@ def ItemFromKong(kong):
     else:
         return Items.Chunky
 
+
 def NameFromKong(kong):
     """Get the name of a kong from its Kong enum value."""
     if kong == Kongs.donkey:
@@ -46,6 +47,7 @@ def NameFromKong(kong):
     else:
         return "Chunky"
 
+
 def KongFromItem(item):
     """Get the Kong enum representation of a kong item."""
     if item == Items.Donkey:
@@ -58,7 +60,6 @@ def KongFromItem(item):
         return Kongs.tiny
     else:
         return Kongs.chunky
-
 
 
 ItemList = {

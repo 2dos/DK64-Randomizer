@@ -269,7 +269,7 @@ def Upgrades(settings):
         upgrades.extend(TrainingBarrelAbilities())
     # Add either progressive upgrade items or individual ones depending on settings
     if not settings.unlock_all_moves:
-        upgrades.extend(itertools.repeat(Items.ProgressiveSlam, 3 - 1)) # -1 for starting slam
+        upgrades.extend(itertools.repeat(Items.ProgressiveSlam, 3 - 1))  # -1 for starting slam
         if settings.progressive_upgrades:
             upgrades.extend(itertools.repeat(Items.ProgressiveDonkeyPotion, 3))
             upgrades.extend(itertools.repeat(Items.ProgressiveDiddyPotion, 3))

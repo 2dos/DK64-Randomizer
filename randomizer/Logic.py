@@ -28,7 +28,8 @@ from randomizer.Lists.MapsAndExits import Maps
 from randomizer.Prices import CanBuy, GetPriceOfMoveItem
 
 
-STARTING_SLAM = 1 # Currently we're assuming you always start with 1 slam
+STARTING_SLAM = 1  # Currently we're assuming you always start with 1 slam
+
 
 class LogicVarHolder:
     """Used to store variables when checking logic conditions."""
@@ -327,8 +328,7 @@ class LogicVarHolder:
         if kong == Kongs.chunky:
             return self.pineapple and self.ischunky
         if kong == Kongs.any:
-            return (self.coconut and self.isdonkey) or (self.peanut and self.isdiddy) or (self.grape and self.islanky) \
-                   or (self.feather and self.istiny) or (self.pineapple and self.ischunky)
+            return (self.coconut and self.isdonkey) or (self.peanut and self.isdiddy) or (self.grape and self.islanky) or (self.feather and self.istiny) or (self.pineapple and self.ischunky)
 
     def HasInstrument(self, kong):
         """Check if logic currently is currently the specified kong and owns an instrument for them."""
@@ -343,8 +343,7 @@ class LogicVarHolder:
         if kong == Kongs.chunky:
             return self.triangle and self.ischunky
         if kong == Kongs.any:
-            return (self.bongos and self.isdonkey) or (self.guitar and self.isdiddy) or (self.trombone and self.islanky) \
-                   or (self.saxophone and self.istiny) or (self.triangle and self.ischunky)
+            return (self.bongos and self.isdonkey) or (self.guitar and self.isdiddy) or (self.trombone and self.islanky) or (self.saxophone and self.istiny) or (self.triangle and self.ischunky)
 
     def CanFreeTiny(self):
         """Check if Tiny can be freed,r equires either chimpy charge or primate punch."""
@@ -364,7 +363,6 @@ class LogicVarHolder:
             return self.handstand and self.Slam and self.islanky
         elif self.settings.chunky_freeing_kong == Kongs.tiny:
             return self.twirl and self.Slam and self.istiny
-
 
     def UpdateCurrentRegionAccess(self, region):
         """Set access of current region."""

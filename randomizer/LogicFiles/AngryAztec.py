@@ -39,7 +39,7 @@ LogicRegions = {
         LocationLogic(Locations.AztecChunkyKlaptrapRoom, lambda l: l.triangle and l.ischunky),
     ], [], [
         TransitionFront(Regions.AngryAztecStart, lambda l: True),
-        TransitionFront(Regions.TempleUnderwater, lambda l: True), # ice pre-melted, without it would be "l.Slam and l.guitar and l.diddyAccess"
+        TransitionFront(Regions.TempleUnderwater, lambda l: True),  # Ice pre-melted, without it would be "l.Slam and l.guitar and l.diddyAccess"
     ]),
 
     Regions.TempleUnderwater: Region("Temple Underwater", Levels.AngryAztec, False, -1, [

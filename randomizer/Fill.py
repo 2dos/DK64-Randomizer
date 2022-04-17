@@ -266,7 +266,9 @@ def ForwardFill(settings, itemsToPlace, validLocations, ownedItems=[]):
         LocationList[locationId].PlaceItem(item)
     return 0
 
+
 def GetItemValidLocations(validLocations, item):
+    """Get the list of valid locations for this item."""
     # If validLocations is a dictionary, check for this item's value
     itemValidLocations = validLocations
     if isinstance(validLocations, dict):
@@ -341,7 +343,7 @@ def AssumedFill(settings, itemsToPlace, validLocations, ownedItems=[]):
                     js.postMessage("Failed placing item " + ItemList[item].name + " in location " + LocationList[locationId].name + ", due to too few remaining locations in play")
                     valid = False
                     break
-                reachable.remove(validReachable[0]) # Remove one so same location can't be "used" twice
+                reachable.remove(validReachable[0])  # Remove one so same location can't be "used" twice
             # Attempt to verify coins
             if valid and ItemList[item].type == Types.Shop:
                 currentCoins = [0, 0, 0, 0, 0]
@@ -493,11 +495,7 @@ def ShuffleMoves(spoiler):
     # When a shared move is assigned to a shop in any particular level, that shop cannot also hold any kong-specific moves.
     # To avoid conflicts, first determine which level shops will have shared moves then remove these shops from each kong's valid locations list
     importantSharedUnplaced = PlaceItems(
-        spoiler.settings,
-        "assumed",
-        ItemPool.ImportantSharedMoves.copy(),
-        [x for x in ItemPool.AllItems(spoiler.settings) if x not in ItemPool.ImportantSharedMoves],
-        ItemPool.SharedMoveLocations
+        spoiler.settings, "assumed", ItemPool.ImportantSharedMoves.copy(), [x for x in ItemPool.AllItems(spoiler.settings) if x not in ItemPool.ImportantSharedMoves], ItemPool.SharedMoveLocations
     )
     if importantSharedUnplaced > 0:
         raise Ex.ItemPlacementException(str(importantSharedUnplaced) + " unplaced shared important items.")
@@ -517,6 +515,7 @@ def ShuffleMoves(spoiler):
         for item in kongMoveArrays[i]:
             validLocations[item] = kongLocationArrays[i] - locationsToRemove
     return (kongMoves, validLocations)
+
 
 def ShuffleMisc(spoiler):
     """Facilitate shuffling individual pools of items in lieu of full item rando."""
@@ -571,6 +570,7 @@ def ShuffleMisc(spoiler):
                 js.postMessage("Fill failed. Retrying. Tries: " + str(retries))
                 Reset()
                 Logic.ClearAllLocations()
+
 
 def Generate_Spoiler(spoiler):
     """Generate a complete spoiler based on input settings."""
