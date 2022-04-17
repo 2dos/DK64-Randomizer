@@ -305,10 +305,12 @@ def AssumedFill(settings, itemsToPlace, validLocations, ownedItems=[]):
         validReachable = [x for x in reachable if LocationList[x].item is None and x in itemValidLocations]
         # If there are no empty reachable locations, reached a dead end
         if len(validReachable) == 0:
-            print("Failed placing item " + ItemList[item].name + ", no valid reachable locations without this move.")
+            print("Failed placing item " + ItemList[item].name + ", no valid reachable locations without this item.")
+            currentKongsFreed = [ItemList[x].name for x in owned if ItemList[x].type == Types.Kong]
+            currentKongsFreed.insert(0, settings.starting_kong.name)
             currentMovesOwned = [ItemList[x].name for x in owned if ItemList[x].type == Types.Shop]
             currentGbCount = len([x for x in owned if ItemList[x].type == Types.Banana])
-            js.postMessage("Current Moves owned at failure: " + str(currentMovesOwned) + " with GB count: " + str(currentGbCount))
+            js.postMessage("Current Moves owned at failure: " + str(currentMovesOwned) + " with GB count: " + str(currentGbCount) + " and kongs freed: " + str(currentKongsFreed))
             return len(itemsToPlace) + 1
         # Shop items need coin logic
         if ItemList[item].type == Types.Shop:
