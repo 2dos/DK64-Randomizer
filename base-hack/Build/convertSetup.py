@@ -45,6 +45,7 @@ def float_to_hex(f):
 
 base_stream = 0
 
+
 def modify(file_name, map_index):
     """Modify the file to be updated.
 
@@ -144,7 +145,7 @@ def modify(file_name, map_index):
             writedatatoarr(byte_stream_arr, x["scale"], 4, 0xC)
             writedatatoarr(byte_stream_arr, x["ry"], 2, 0x30)
             writedatatoarr(byte_stream_arr, x["type"], 2, 0x32)
-            actor.append({"stream":byte_stream_arr})
+            actor.append({"stream": byte_stream_arr})
         for x in added_model2:
             byte_stream_arr = []
             for y in range(0x10):

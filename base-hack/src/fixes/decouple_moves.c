@@ -25,9 +25,7 @@ void decouple_moves_fixes(void) {
 	}
 	if ((*(int*)(0x807FBB64) << 1) & 0x80000000) {
 		// Menu Overlay - Candy's Shop Glitch
-		int lim = (0x800276CC - 0x80027678) / 4;
-		for (int i = 0; i < lim; i++) {
-			*(int*)(0x80027678 + (4 * i)) = 0;
-		}
+		*(short*)(0x80027678) = 0x1000;
+		*(short*)(0x8002769C) = 0x1000;
 	}
 }

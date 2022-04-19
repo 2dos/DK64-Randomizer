@@ -2,49 +2,38 @@
 import struct
 
 sign_data = [
-    {
-        "map_index": 7,
-        "signs": [
-            {"sign_type": "cranky", "data": [1693.203, 280.964, 3934.433, 183.867,1]},
-            {"sign_type": "funky", "data": [2048.232, 522.388, 2195.41, 207.861,1]}
-        ]
-    },
+    {"map_index": 7, "signs": [{"sign_type": "cranky", "data": [1693.203, 280.964, 3934.433, 183.867, 1]}, {"sign_type": "funky", "data": [2048.232, 522.388, 2195.41, 207.861, 1]}]},
     {
         "map_index": 0x26,
         "signs": [
-            {"sign_type": "candy", "data": [2365.486, 120, 494.248, 358.418,1.12]},
-            {"sign_type": "cranky", "data": [2750.299, 124.339, 2522.297, 110.654,1]},
-            {"sign_type": "funky", "data": [2902.485, 123.604, 4490.055, 163.125,1]},
+            {"sign_type": "candy", "data": [2365.486, 120, 494.248, 358.418, 1.12]},
+            {"sign_type": "cranky", "data": [2750.299, 124.339, 2522.297, 110.654, 1]},
+            {"sign_type": "funky", "data": [2902.485, 123.604, 4490.055, 163.125, 1]},
         ],
     },
     {
         "map_index": 0x1A,
         "signs": [
-            {"sign_type": "candy", "data": [230.468, 225.5, 614.636, 37.002,1]},
-            {"sign_type": "funky", "data": [1471.488, 1132.888, 516.591, 43.066,1]},
-            {"sign_type": "cranky", "data": [229.027, 228.203, 850.685, 147.832,1]},
+            {"sign_type": "candy", "data": [230.468, 225.5, 614.636, 37.002, 1]},
+            {"sign_type": "funky", "data": [1471.488, 1132.888, 516.591, 43.066, 1]},
+            {"sign_type": "cranky", "data": [229.027, 228.203, 850.685, 147.832, 1]},
         ],
     },
     {
         "map_index": 0x1E,
         "signs": [
-            {"sign_type": "cranky", "data": [3301.647, 1792.776, 2427.058, 16.348,1]},
-            {"sign_type": "candy", "data": [2904.595, 1561.547, 564.17, 71.191,1.28]},
-            {"sign_type": "funky", "data": [3742.295, 1568.709, 1268.402, 64.863,1.12]},
+            {"sign_type": "cranky", "data": [3301.647, 1792.776, 2427.058, 16.348, 1]},
+            {"sign_type": "candy", "data": [2904.595, 1561.547, 564.17, 71.191, 1.28]},
+            {"sign_type": "funky", "data": [3742.295, 1568.709, 1268.402, 64.863, 1.12]},
         ],
     },
-    {
-        "map_index": 0x30,
-        "signs": [
-            {"sign_type": "cranky", "data": [984.411, 251.25, 332.849, 342.42,1.28]},
-            {"sign_type": "funky", "data": [3261.958, 181.03, 163.222, 353.232,1.16]}
-        ]},
+    {"map_index": 0x30, "signs": [{"sign_type": "cranky", "data": [984.411, 251.25, 332.849, 342.42, 1.28]}, {"sign_type": "funky", "data": [3261.958, 181.03, 163.222, 353.232, 1.16]}]},
     {
         "map_index": 0x48,
         "signs": [
-            {"sign_type": "cranky", "data": [1172.329, 282.911, 1618.7, 37.793,1]},
-            {"sign_type": "funky", "data": [2780.684, 283.12, 1283.243, 179.561,1.04]},
-            {"sign_type": "candy", "data": [3239.475,112.833, 2120.751, 208.916,1.26]},
+            {"sign_type": "cranky", "data": [1172.329, 282.911, 1618.7, 37.793, 1]},
+            {"sign_type": "funky", "data": [2780.684, 283.12, 1283.243, 179.561, 1.04]},
+            {"sign_type": "candy", "data": [3239.475, 112.833, 2120.751, 208.916, 1.26]},
         ],
     },
     {
@@ -56,11 +45,11 @@ sign_data = [
     {
         "map_index": 0xB7,
         "signs": [
-            {"sign_type": "funky", "data": [1461.363, 203.18, 304.011, 359.561,1.06]},
+            {"sign_type": "funky", "data": [1461.363, 203.18, 304.011, 359.561, 1.06]},
         ],
     },
-    {"map_index": 0x97, "signs": [{"sign_type": "candy", "data": [1077.46, 300, 2140.457, 271.67,1.7]}]},
-    {"map_index": 0xB0, "signs": [{"sign_type": "cranky", "data": [651.318, 77.255, 1834.692, 126.914,1]}]},
+    {"map_index": 0x97, "signs": [{"sign_type": "candy", "data": [1077.46, 300, 2140.457, 271.67, 1.7]}]},
+    {"map_index": 0xB0, "signs": [{"sign_type": "cranky", "data": [651.318, 77.255, 1834.692, 126.914, 1]}]},
 ]
 
 
@@ -78,9 +67,10 @@ def convertCoord(f):
     """Convert a coord to an int."""
     return int(float_to_hex(f), 16)
 
+
 def convertAngle(f):
     """Convert an angle to DK64 Angle system."""
-    return int(((f/360)*4096))
+    return int(((f / 360) * 4096))
 
 
 def getMoveSignData(map_index, base_stream):
@@ -99,7 +89,7 @@ def getMoveSignData(map_index, base_stream):
                 sign_arr.append(
                     {
                         "base_byte_stream": base_stream,
-                        "type": 70-16,
+                        "type": 70 - 16,
                         "x": convertCoord(sign["data"][0]),
                         "y": convertCoord(sign["data"][1] + (offset_mult * sign["data"][4])),
                         "z": convertCoord(sign["data"][2]),

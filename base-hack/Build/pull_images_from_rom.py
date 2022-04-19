@@ -83,20 +83,22 @@ images = [
     },
 ]
 
-kong_tex = ["chunky","tiny","lanky","diddy","dk"]
+kong_tex = ["chunky", "tiny", "lanky", "diddy", "dk"]
 tex_idx = 0x273
 for kong in kong_tex:
     for x in range(2):
-        images.append({
-            "name": f"{kong}_face_{x}",
-            "format": "rgba16",
-            "table": 25,
-            "index": tex_idx + x,
-            "w": 32,
-            "h": 64,
-            "resize": False,
-            "flip": True,
-        })
+        images.append(
+            {
+                "name": f"{kong}_face_{x}",
+                "format": "rgba16",
+                "table": 25,
+                "index": tex_idx + x,
+                "w": 32,
+                "h": 64,
+                "resize": False,
+                "flip": True,
+            }
+        )
     tex_idx += 2
 
 ptr_offset = 0x101C50
@@ -154,5 +156,5 @@ with open("rom/dk64.z64", "rb") as fh:
         if x["flip"]:
             im = im.transpose(Image.FLIP_TOP_BOTTOM)
         if x["resize"]:
-            im = im.resize((32,32))
+            im = im.resize((32, 32))
         im.save(img_name)

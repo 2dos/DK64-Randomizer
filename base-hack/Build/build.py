@@ -273,49 +273,49 @@ file_dict = [
         "pointer_table_index": 14,
         "file_index": 0x21,
         "source_file": "assets/Non-Code/displays/none.png",
-        "texture_format": "rgba32", 
+        "texture_format": "rgba32",
     },
     {
         "name": "DK Face",
         "pointer_table_index": 14,
         "file_index": 0x22,
         "source_file": "assets/Non-Code/displays/dk_face.png",
-        "texture_format": "rgba32", 
+        "texture_format": "rgba32",
     },
     {
         "name": "Diddy Face",
         "pointer_table_index": 14,
         "file_index": 0x23,
         "source_file": "assets/Non-Code/displays/diddy_face.png",
-        "texture_format": "rgba32", 
+        "texture_format": "rgba32",
     },
     {
         "name": "Lanky Face",
         "pointer_table_index": 14,
         "file_index": 0x24,
         "source_file": "assets/Non-Code/displays/lanky_face.png",
-        "texture_format": "rgba32", 
+        "texture_format": "rgba32",
     },
     {
         "name": "Tiny Face",
         "pointer_table_index": 14,
         "file_index": 0x25,
         "source_file": "assets/Non-Code/displays/tiny_face.png",
-        "texture_format": "rgba32", 
+        "texture_format": "rgba32",
     },
     {
         "name": "Chunky Face",
         "pointer_table_index": 14,
         "file_index": 0x26,
         "source_file": "assets/Non-Code/displays/chunky_face.png",
-        "texture_format": "rgba32", 
+        "texture_format": "rgba32",
     },
     {
         "name": "Shared Face",
         "pointer_table_index": 14,
         "file_index": 0x27,
         "source_file": "assets/Non-Code/displays/shared.png",
-        "texture_format": "rgba32", 
+        "texture_format": "rgba32",
     },
 ]
 
@@ -402,13 +402,15 @@ for x in range(43):
                 }
             )
 for x in range(10):
-    file_dict.append({
-        "name": f"Tag Barrel Bottom Texture ({x+1})",
-        "pointer_table_index": 25,
-        "file_index": 4749 + x,
-        "source_file": "assets/Non-Code/tagbarrel/bottom.png",
-        "texture_format": "rgba5551",
-    })
+    file_dict.append(
+        {
+            "name": f"Tag Barrel Bottom Texture ({x+1})",
+            "pointer_table_index": 25,
+            "file_index": 4749 + x,
+            "source_file": "assets/Non-Code/tagbarrel/bottom.png",
+            "texture_format": "rgba5551",
+        }
+    )
 portal_image_order = [
     ["SE", "NE", "SW", "NW"],
     ["NW", "SW", "NE", "SE"],
@@ -621,14 +623,14 @@ with open(newROMName, "r+b") as fh:
                 byte_read = fg.read()
                 uncompressed_size = len(byte_read)
             subprocess.Popen(["build\\flips.exe", "--apply", x["bps_file"], x["source_file"], x["source_file"]]).wait()
-            #shutil.copyfile(x["source_file"],x["source_file"].replace(".bin",".raw"))
+            # shutil.copyfile(x["source_file"],x["source_file"].replace(".bin",".raw"))
 
         if "texture_format" in x:
             if x["texture_format"] in ["rgba5551", "i4", "ia4", "i8", "ia8"]:
                 result = subprocess.check_output(["./build/n64tex.exe", x["texture_format"], x["source_file"]])
             elif x["texture_format"] == "rgba32":
                 convertToRGBA32(x["source_file"])
-                x["source_file"] = x["source_file"].replace(".png",".rgba32")
+                x["source_file"] = x["source_file"].replace(".png", ".rgba32")
             else:
                 print(" - ERROR: Unsupported texture format " + x["texture_format"])
 
@@ -746,9 +748,9 @@ with open(newROMName, "r+b") as fh:
         if os.path.exists(pth):
             os.remove(pth)
     other_remove = []
-    displays = ["dk_face","diddy_face","lanky_face","tiny_face","chunky_face","none","shared"]
+    displays = ["dk_face", "diddy_face", "lanky_face", "tiny_face", "chunky_face", "none", "shared"]
     for disp in displays:
-        for ext in [".png",".rgba32"]:
+        for ext in [".png", ".rgba32"]:
             other_remove.append(f"displays/{disp}{ext}")
     for x in range(8):
         other_remove.append(f"file_screen/key{x+1}.png")
