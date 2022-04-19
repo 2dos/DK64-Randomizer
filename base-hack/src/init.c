@@ -66,6 +66,10 @@ void initHack(void) {
 		changeCharSpawnerFlag(0x1A, 1, kong_flags[(int)Rando.free_target_factory]);
 		alterGBKong(0x22, 0x4, Rando.starting_kong); // First GB
 		alterGBKong(0x7, 0x69, Rando.free_source_japes); // Front of Diddy Cage GB
+		alterGBKong(0x7, 0x48, Rando.free_source_japes); // In Diddy's Cage
+		alterGBKong(0x10, 0x5B, Rando.free_source_ttemple); // In Tiny's Cage
+		alterGBKong(0x14, 0x6C, Rando.free_source_llama); // Free Lanky GB
+		alterGBKong(0x1A, 0x78, Rando.free_source_factory); // Free Chunky GB
 		if (Rando.no_health_refill) {
 			*(int*)(0x80683A34) = 0; // Cancel Tag Health Refill
 			// *(int*)(0x8060DD10) = 0; // Load File
@@ -106,6 +110,7 @@ void initHack(void) {
 		if (Rando.disable_boss_kong_check) {
 			*(int*)(0x8064EC00) = 0x24020001;
 		}
+		*(int*)(0x8074C1B8) = (int)&newCounterCode;
 		fixMusicRando();
 		// Disable Sniper Scope Overlay
 		int asm_code = 0x00801025; // OR $v0, $a0, $r0
@@ -152,6 +157,9 @@ void initHack(void) {
 		*(int*)(0x806BE3E0) = 0; // NOP
 		// EEPROM Patch
 		*(int*)(0x8060D588) = 0; // NOP
+		// Cancel Tamper
+		*(int*)(0x8060AEFC) = 0; // NOP
+		*(int*)(0x80611788) = 0; // NOP
 		LoadedHooks = 1;
 	}
 }

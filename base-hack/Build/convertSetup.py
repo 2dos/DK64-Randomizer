@@ -44,13 +44,6 @@ def float_to_hex(f):
 
 
 base_stream = 0
-aztec_lanky_coord_locations = [
-    [2833.831, 120, 4354.875],
-    [2828.832, 120, 4319.88],
-    [3083, 120, 4388.861],
-    [3053.251, 120, 4388.674],
-    [3010.854, 120, 4380.918],
-]
 
 
 def modify(file_name, map_index):
@@ -69,6 +62,7 @@ def modify(file_name, map_index):
         mystery = []
         actor = []
         added_model2 = []
+        added_actor = []
         model2_index = 0x220
         for x in range(model2_count):
             byte_stream = byte_read[read_location : read_location + 0x30]
@@ -114,17 +108,6 @@ def modify(file_name, map_index):
                 for x in range(0x30 - 0x2A):
                     repl_byte += byte_stream[x + 0x2A].to_bytes(1, "big")
                 byte_stream = repl_byte
-            if map_index == 0x26 and _id >= 0x1B1 and _id <= 0x1B5:
-                id_offset = _id - 0x1B1
-                repl_byte = b""
-                for coord in range(3):
-                    coord_val = aztec_lanky_coord_locations[id_offset][coord]
-                    coord_hex = float_to_hex(coord_val)
-                    coord_bytes = int(coord_hex, 16).to_bytes(4, "big")
-                    repl_byte += coord_bytes
-                for x in range(0x30 - 0x0C):
-                    repl_byte += byte_stream[x + 0xC].to_bytes(1, "big")
-                byte_stream = repl_byte
             data = {
                 "stream": byte_stream,
                 "type": _type,
@@ -135,7 +118,7 @@ def modify(file_name, map_index):
         # if len(shop_signs) != 0:
         #     print(shop_signs)
         for sign in shop_signs:
-            added_model2.append(sign)
+            added_actor.append(sign)
         mystery_count = int.from_bytes(byte_read[read_location : read_location + 4], "big")
         read_location += 4
         for x in range(mystery_count):
@@ -152,6 +135,17 @@ def modify(file_name, map_index):
             data = {"stream": byte_stream}
             actor.append(data)
             read_location += 0x38
+        for x in added_actor:
+            byte_stream_arr = []
+            for y in range(0x38):
+                byte_stream_arr.append(0)
+            writedatatoarr(byte_stream_arr, x["x"], 4, 0x0)
+            writedatatoarr(byte_stream_arr, x["y"], 4, 0x4)
+            writedatatoarr(byte_stream_arr, x["z"], 4, 0x8)
+            writedatatoarr(byte_stream_arr, x["scale"], 4, 0xC)
+            writedatatoarr(byte_stream_arr, x["ry"], 2, 0x30)
+            writedatatoarr(byte_stream_arr, x["type"], 2, 0x32)
+            actor.append({"stream": byte_stream_arr})
         for x in added_model2:
             byte_stream_arr = []
             for y in range(0x10):
