@@ -80,6 +80,7 @@ for file_info in number_crop:
 			key_im = key_im.crop(bbox)
 			key_im = key_im.resize((32,32))
 			key_im.save(f"assets/Non-Code/file_screen/key{key_num}.png")
+kong_res = (32,32)
 for kong in kongs:
 	base_dir = "assets/Non-Code/displays/"
 	if not os.path.exists(base_dir):
@@ -91,7 +92,8 @@ for kong in kongs:
 		if kong == "dk" or kong == "tiny":
 			x_p = 32 - x_p
 		Image.Image.paste(im,im1,(x_p,0))
-	im = im.resize((32,32))
+	im = im.resize(kong_res)
+	# im = im.resize((32,32))
 	im.save(f"{base_dir}{kong}_face.png")
 
 # Generate Shared Image
@@ -106,9 +108,10 @@ for x in range(5):
 	im.paste(im1,(shared_x_move[kong_index],shared_y_move[kong_index]),im1)
 bbox = im.getbbox()
 im = im.crop(bbox)
-im = im.resize((32,32))
+im = im.resize(kong_res)
 im.save(f"{disp_dir}shared.png")
-im = Image.new(mode="RGBA", size=(32, 32))
+im = Image.new(mode="RGBA", size=kong_res)
+#im.paste((255,0,0),[0,0,32,32])
 im.save(f"{disp_dir}none.png")
 
 rmve = ["01234.png","56789.png","boss_key.png"]

@@ -1,35 +1,5 @@
 #include "../../include/common.h"
 
-#define BTF_CRANKY 1
-#define BTF_FUNKY 2
-#define BTF_CANDY 4
-
-static const unsigned char shop_maps[] = {
-	0x07, // Japes
-	0x26, // Aztec
-	0x1A, // Factory
-	0x1E, // Galleon
-	0x30, // Fungi
-	0x48, // Caves
-	0x57, // Castle
-	0xB7, // Castle: Hub
-	0x97, // Castle: Tunnel
-	0xB0, // Training Grounds
-};
-
-static const char shop_btf[] = {
-	BTF_CRANKY | BTF_FUNKY, // Japes
-	BTF_CRANKY | BTF_FUNKY | BTF_CANDY, // Aztec
-	BTF_CRANKY | BTF_FUNKY | BTF_CANDY, // Factory
-	BTF_CRANKY | BTF_FUNKY | BTF_CANDY, // Galleon
-	BTF_CRANKY | BTF_FUNKY, // Fungi
-	BTF_CRANKY | BTF_FUNKY | BTF_CANDY, // Caves
-	BTF_CRANKY, // Castle
-	BTF_FUNKY, // Castle: Crypt
-	BTF_CANDY, // Castle: Tunnel
-	BTF_CRANKY, // Training Grounds
-};
-
 #define PURCHASE_MOVES 0
 #define PURCHASE_SLAM 1
 #define PURCHASE_GUN 2
@@ -122,101 +92,38 @@ int getMoveCountInShop(int shop_index) {
 	return btf;
 }
 
-void adjustGalleonShopHeights(void) {
-	if (Rando.shop_indicator_on) {
-		if (CurrentMap == 0x1E) {
-			if (SwapObject) {
-				int cam_chunk = SwapObject->chunk;
-				int* m2location = ObjectModel2Pointer;
-				if ((cam_chunk == 12) || (cam_chunk == 15)) {
-					int candy = convertIDToIndex(0x36);
-					if (candy > -1) {
-						ModelTwoData* candy_object = getObjectArrayAddr(m2location,0x90,candy);
-						int candy_y = candy_object->yPos;
-						int candy_indicator = convertIDToIndex(0x232);
-						if (candy_indicator > -1) {
-							ModelTwoData* _object = getObjectArrayAddr(m2location,0x90,candy_indicator);
-							model_struct* _model = _object->model_pointer;
-							if (_model) {
-								_model->y = candy_y;
-							}
-						}
-					}
-				} else if (cam_chunk == 13) {
-					int funky = convertIDToIndex(0x1F4);
-					if (funky > -1) {
-						ModelTwoData* funky_object = getObjectArrayAddr(m2location,0x90,funky);
-						int funky_y = funky_object->yPos + 2.693f;
-						int funky_indicator = convertIDToIndex(0x231);
-						if (funky_indicator > -1) {
-							ModelTwoData* _object = getObjectArrayAddr(m2location,0x90,funky_indicator);
-							model_struct* _model = _object->model_pointer;
-							if (_model) {
-								_model->y = funky_y;
-							}
-						}
-					}
-				}
-			}
-		}
-	}
-}
-
-void displayShopIndicator(void) {
-	int in_shop_container_map = -1;
-	for (int i = 0; i < sizeof(shop_maps); i++) {
-		if (shop_maps[i] == CurrentMap) {
-			in_shop_container_map = i;
-		}
-	}
-	if (in_shop_container_map > -1) {
-		if (Rando.shop_indicator_on) {
-			for (int j = 0; j < 3; j++) {
-				if (shop_btf[in_shop_container_map] & (1 << j)) {
-					int display_number = getMoveCountInShop(j);
-					if (display_number < 0) {
-						display_number = 0;
-					}
-					for (int i = 1; i < 4; i++) {
-						displayNumberOnObject(0x230 + j,i,(((10-i) + display_number % 10) % 10) - 1, 0, 0);
-						display_number /= 10;
-					}
-				}
-			}
-		} else {
-			int* m2location = ObjectModel2Pointer;
-			for (int j = 0; j < 3; j++) {
-				int slot = convertIDToIndex(0x230 + j);
-				if (slot > -1) {
-					ModelTwoData* _object = getObjectArrayAddr(m2location,0x90,slot);
-					model_struct* _model = _object->model_pointer;
-					if (_model) {
-						_model->scale = 0.0f;
-					}
-				}
-			}
-		}
-	}
-}
-
 typedef struct counter_paad {
 	/* 0x000 */ void* image_slots[3];
 } counter_paad;
 
+#define IMG_WIDTH 32
+
+void* loadFontTexture_Counter(void* slot, int index) {
+	return loadCounterFontTexture(0x21,slot,1,index,IMG_WIDTH);
+}
+
 void updateCounterDisplay(void) {
 	int kongs_btf = CurrentActorPointer_0->rgb_mask[1];
 	int index = CurrentActorPointer_0->rgb_mask[2];
+	int cap = CurrentActorPointer_0->rgb_mask[0] >> 4;
 	counter_paad* paad = CurrentActorPointer_0->paad;
 	if (kongs_btf & MOVEBTF_SHARED) {
 		index = 0;
-		paad->image_slots[1] = StoredCounterTextures[6];
+		paad->image_slots[1] = loadFontTexture_Counter(paad->image_slots[1],6);
 	} else {
 		int found_index = 0;
 		int kong = 0;
 		while (kong < 5) {
 			if (kongs_btf & (1 << kong)) {
-				paad->image_slots[1] = StoredCounterTextures[kong+1];
-				return;
+				if (found_index == index) {
+					paad->image_slots[1] = loadFontTexture_Counter(paad->image_slots[1],kong+1);
+					return;
+				} else {
+					found_index += 1;
+					if (found_index == cap) {
+						return;
+					}
+				}
 			}
 			kong++;
 		}
@@ -236,7 +143,7 @@ unsigned int getActorModelTwoDist(ModelTwoData* _object) {
 	return (dx * dx) + (dy * dy) + (dz * dz);
 }
 
-void getClosestShop(void) {
+int getClosestShop(void) {
 	/*
 		Cranky's: 0x73
 		Funky's Hut: 0x7A
@@ -272,12 +179,47 @@ void newCounterCode(void) {
 	counter_paad* paad = CurrentActorPointer_0->paad;
 	if ((CurrentActorPointer_0->obj_props_bitfield & 0x10) == 0) {
 		// Init Code
-		for (int i = 0; i < 3; i++) {
-			paad->image_slots[i] = StoredCounterTextures[0];
+		if (Rando.shop_indicator_on) {
+			for (int i = 0; i < 3; i++) {
+				paad->image_slots[i] = loadCounterFontTexture(0x21,paad->image_slots[i],i,0,IMG_WIDTH);
+			}
+			CurrentActorPointer_0->rot_z = 3072; // Facing vertical
+			CurrentActorPointer_0->rgb_mask[0] = getClosestShop();
+			CurrentActorPointer_0->rgb_mask[1] = getMoveCountInShop(CurrentActorPointer_0->rgb_mask[0] & 0xF);
+			updateCounterDisplay();
+			if (CurrentActorPointer_0->rgb_mask[1] == 0) {
+				deleteActorContainer(CurrentActorPointer_0);
+			}
+		} else {
+			deleteActorContainer(CurrentActorPointer_0);
 		}
-		CurrentActorPointer_0->rot_z = 3072; // Facing vertical
-		CurrentActorPointer_0->rgb_mask[0] = getClosestShop();
-		CurrentActorPointer_0->rgb_mask[1] = getMoveCountInShop(CurrentActorPointer_0->rgb_mask[0] & 0xF);
-		updateCounterDisplay();
+	} else {
+		if ((ObjectModel2Timer % 20) == 0) {
+			int lim = CurrentActorPointer_0->rgb_mask[0] >> 4;
+			if (lim > 1) {
+				CurrentActorPointer_0->rgb_mask[2] = (CurrentActorPointer_0->rgb_mask[2] + 1) % lim;
+				updateCounterDisplay();
+			}
+		}
+		if (CurrentMap == 0x1E) {
+			int shop = CurrentActorPointer_0->rgb_mask[0];
+			int* m2location = ObjectModel2Pointer;
+			if (shop == 1) {
+				int funky = convertIDToIndex(0x1F4);
+				if (funky > -1) {
+					ModelTwoData* funky_object = getObjectArrayAddr(m2location,0x90,funky);
+					int funky_y = funky_object->yPos;
+					CurrentActorPointer_0->yPos = funky_y + (40 * 1.12f);
+				}
+			} else if (shop == 2) {
+				int candy = convertIDToIndex(0x36);
+				if (candy > -1) {
+					ModelTwoData* candy_object = getObjectArrayAddr(m2location,0x90,candy);
+					int candy_y = candy_object->yPos;
+					CurrentActorPointer_0->yPos = candy_y + (40 * 1.28f);
+				}
+			}
+		}
 	}
+	renderActor(CurrentActorPointer_0,0);
 }

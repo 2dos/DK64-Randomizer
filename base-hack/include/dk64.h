@@ -75,6 +75,8 @@ extern void loadSetup(void* setup_file, int unk0, int unk1);
 extern int getParentDataIndex(int map);
 extern void WarpToDKTV(void);
 extern int getActorSpawnerIDFromTiedActor(void* actor);
+extern void deleteActorContainer(void* actor);
+extern void renderActor(void* actor, int unk0);
 
 extern void wipeStoredSetup(void* setup);
 extern void complex_free(void* ptr);
@@ -117,6 +119,7 @@ extern void setWaterHeight(int chunk, float height, float unk2);
 extern void loadObjectForScripting(void* unk0, int unk1);
 extern void updateObjectScript(void* behaviour_pointer);
 extern void executeBehaviourScript(void* behaviour_pointer, int unk0);
+extern void* loadCounterFontTexture(int texture_base, void* write_location, int position, int texture_offset, int width);
 
 //vanilla data
 extern float TransitionSpeed;

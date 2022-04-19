@@ -5,7 +5,9 @@
 #define FUNGI_FOREST 0x30
 #define CRYSTAL_CAVES 0x48
 
-void load_object_script(int obj_instance_id) {
+#define TORCH_ALT 0xC7
+
+void load_object_script(int obj_instance_id, int obj_script_id) {
 	scriptLoadsAttempted += 1;
 	int script_index = scriptsLoaded;
 	if (script_index != 0x46) {
@@ -16,25 +18,25 @@ void load_object_script(int obj_instance_id) {
 		ModelTwoData* _object = getObjectArrayAddr(m2location,0x90,obj_idx);
 		int* behav = _object->behaviour_pointer;
 		updateObjectScript(behav);
-		executeBehaviourScript(behav, obj_instance_id);
+		executeBehaviourScript(behav, obj_script_id);
 	}
 }
 
 void adjust_galleon_water(void) {
 	if (ObjectModel2Timer < 5) {
 		if (CurrentMap == GLOOMY_GALLEON) {
-			load_object_script(0);
+			load_object_script(0,0);
 			if (checkFlag(160,0)) {
 				for (int i = 0; i < 20; i++) {
 					setWaterHeight(i,55.0f,1000.0f);
 				}
 			}
 		} else if (CurrentMap == ANGRY_AZTEC) {
-			load_object_script(0xC1);
+			load_object_script(0xC1,0xC7);
 		} else if (CurrentMap == CRYSTAL_CAVES) {
-			load_object_script(0x31);
+			load_object_script(0x31,0x31);
 		} else if (CurrentMap == FUNGI_FOREST) {
-			load_object_script(0x4);
+			load_object_script(0x4,0x4);
 		}
 	}
 }

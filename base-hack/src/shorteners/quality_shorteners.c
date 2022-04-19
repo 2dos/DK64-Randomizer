@@ -55,6 +55,7 @@ static const short ftt_flags[] = {
     0x5C, // Llama CS
     0x45, // Tiny Temple Ice Melted
     0xA1, // Peanut Gate Opened in Galleon
+    0, // First Switch in Japes
 };
 static unsigned char parentMapCache = 0;
 

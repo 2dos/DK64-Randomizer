@@ -65,6 +65,7 @@
 .definelabel complex_free, 0x8061130C
 .definelabel createCollision, 0x8067ABC0
 .definelabel setScriptRunState, 0x8064199C
+.definelabel deleteActorContainer, 0x806782C0
 
 .definelabel unkObjFunction0, 0x80650BBC
 .definelabel unkObjFunction1, 0x80650A04
@@ -90,6 +91,7 @@
 .definelabel canHitSwitch, 0x806419F8
 .definelabel setSomeTimer, 0x80641724
 .definelabel indexOfNextObj, 0x80659470
+.definelabel renderActor, 0x806319C4
 
 .definelabel cancelPausedCutscene, 0x8061CB08
 .definelabel pauseCutscene, 0x8061CAD8
@@ -107,6 +109,7 @@
 .definelabel loadObjectForScripting, 0x8063B4C0
 .definelabel updateObjectScript, 0x8063E078
 .definelabel executeBehaviourScript, 0x8063E0D4
+.definelabel loadCounterFontTexture, 0x8069DC80
 
 //vanilla data
 .definelabel TransitionSpeed, 0x807FD88C

@@ -20,8 +20,15 @@ void cancelCutscene(void) {
 	}
 }
 
+static const short kong_flags[] = {385,6,70,66,117};
+
 void fixDKFreeSoftlock(void) {
 	if (CutsceneActive) {
+		if (CurrentMap == 7) {
+			if (CutsceneIndex == 6){
+				setPermFlag(kong_flags[(int)Rando.free_target_japes]);
+			}	
+		}
 		if (Rando.free_target_japes == 0) {
 			if (CurrentMap == 7) {
 				if (CutsceneIndex == 6) {
