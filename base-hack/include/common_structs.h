@@ -673,3 +673,15 @@ typedef struct GBDictItem {
 	/* 0x006 */ char intended_kong_actor;
 	/* 0x007 */ char unk_07;
 } GBDictItem;
+
+typedef struct shop_paad {
+	/* 0x000 */ char unk_00[4];
+	/* 0x004 */ short price;
+	/* 0x006 */ char unk_06[0xB-0x6];
+	/* 0x00B */ char purchase_type;
+	/* 0x00C */ char unk_0C;
+	/* 0x00D */ unsigned char state;
+	/* 0x00E */ char unk_0E[0x10-0x0E];
+	/* 0x010 */ unsigned char melons;
+	/* 0x011 */ unsigned char purchase_value;
+} shop_paad;

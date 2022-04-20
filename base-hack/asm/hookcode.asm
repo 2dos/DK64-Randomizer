@@ -5,13 +5,22 @@ START_HOOK:
 		J 		0x807132CC
 		NOP
 
+	Jump_AlwaysCandyInstrument:
+		J 		AlwaysCandyInstrument
+		NOP
 	Jump_CrankyDecouple:
 		J 		CrankyDecouple
 		NOP
 	Jump_ForceToBuyMoveInOneLevel:
 		J 		ForceToBuyMoveInOneLevel
 		NOP
-
+	Jump_MoveShow0:
+		J 		FixInvisibleText_0
+		NOP
+	Jump_MoveShow1:
+		J 		FixInvisibleText_1
+		NOP
+		
 	PatchCrankyCode:
 		LUI t3, hi(Jump_CrankyDecouple)
 		LW t3, lo(Jump_CrankyDecouple) (t3)
@@ -25,6 +34,24 @@ START_HOOK:
 		SW 	t3, 0x60A8 (t4) // Store Hook
 		SW 	r0, 0x60AC (t4) // Store NOP
 		SW 	r0, 0x6160 (t4) // Store NOP to prevent loop
+
+		LUI t3, hi(Jump_MoveShow0)
+		LW t3, lo(Jump_MoveShow0) (t3)
+		LUI t4, 0x8002
+		SW 	t3, 0x7AE8 (t4) // Store Hook
+		SW 	r0, 0x7AEC (t4) // Store NOP
+
+		LUI t3, hi(Jump_MoveShow1)
+		LW t3, lo(Jump_MoveShow1) (t3)
+		LUI t4, 0x8002
+		SW 	t3, 0x7B30 (t4) // Store Hook
+		SW 	r0, 0x7B34 (t4) // Store NOP
+
+		LUI 	t4, hi(Jump_AlwaysCandyInstrument)
+		LW 		t4, lo(Jump_AlwaysCandyInstrument) (t4)
+		LUI 	t3, 0x8002
+		SW 		t4, 0x6924 (t3)
+		SW 		r0, 0x6928 (t3)
 
 		LUI t3, 0x8002
 		ADDIU t4, r0, hi(CrankyMoves_New)
@@ -75,6 +102,35 @@ START_HOOK:
 			SW 		r0, 0x6194 (s1)
 			J 		0x80026168
 			ADDIU 	s1, r0, 0
+
+	AlwaysCandyInstrument:
+		LUI 	at, 0x8080
+		LW 		at, 0xBB40 (at)
+		LW 		t9, 0x58 (at)
+		ADDIU 	at, r0, 191
+		BEQ 	t9, at, AlwaysCandyInstrument_IsCandy
+		ADDIU 	t9, r0, 4
+		LBU 	t9, 0xB (s0)
+		
+		AlwaysCandyInstrument_IsCandy:
+			J 		0x8002692C
+			SLTIU 	at, t9, 0x5
+
+	FixInvisibleText_0:
+		LW 		a0, 0xC4 (sp)
+		ADDIU 	t8, r0, 0x81
+		SW 		t8, 0x90 (a0)
+		ADDIU 	a0, sp, 0x3C
+		J 		0x80027AF0
+		SLL 	t8, t7, 5
+
+	FixInvisibleText_1:
+		LW  	v0, 0xC4 (sp)
+		ADDIU 	a1, r0, 0x81
+		SW 		a1, 0x90 (v0)
+		OR 		v0, r0, r0
+		J 		0x80027B38
+		ADDIU 	a1, sp, 0x3C
 
 	InstanceScriptCheck:
 		ADDIU 	t1, r0, 1

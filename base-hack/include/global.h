@@ -77,3 +77,4 @@ extern void correctKongFaces(void);
 extern void displayNumberOnObject(int id, int param2, int imageindex, int param4, int subtype);
 extern void recolorKongControl(void);
 extern void newCounterCode(void);
+//extern void getRandoNextMovePurchase(shop_paad* shop_info, KongBase* moves);

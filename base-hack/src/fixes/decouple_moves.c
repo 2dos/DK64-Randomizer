@@ -8,11 +8,7 @@
 static const char moves_values[] = {1,1,3,1,7,1,1,7};
 
 void decouple_moves_fixes(void) {
-	DebugInfoOn = 1;
 	if ((CurrentMap == CRANKY) || (CurrentMap == CANDY) || (CurrentMap == FUNKY)) {
-		if (CurrentMap == CANDY) {
-			DebugInfoOn = 0;
-		}
 		PatchCrankyCode();
 		*(int*)(0x80025E9C) = 0x0C009751; // Change writing of move to "write bitfield move" function call
 		writeJetpacMedalReq(); // Adjust medal requirement for Jetpac
