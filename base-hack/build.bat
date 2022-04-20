@@ -11,6 +11,8 @@ IF EXIST "rom/dk64.z64" (
 mkdir obj
 IF NOT DEFINED python_ver (set python_ver="python3")
 IF DEFINED test_on (echo "Building patch file")  ELSE (set test_on="")
+%python_ver% build\pull_images_from_rom.py
+%python_ver% build\createComplexImages.py
 %python_ver% build\compile.py
 build\armips.exe asm/jump_list.asm
 %python_ver% build\build.py

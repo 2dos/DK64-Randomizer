@@ -5,6 +5,8 @@
 #define FUNGI_FOREST 0x30
 #define CRYSTAL_CAVES 0x48
 
+#define TORCH_ALT 0xC7
+
 void load_object_script(int obj_instance_id) {
 	scriptLoadsAttempted += 1;
 	int script_index = scriptsLoaded;
@@ -16,7 +18,7 @@ void load_object_script(int obj_instance_id) {
 		ModelTwoData* _object = getObjectArrayAddr(m2location,0x90,obj_idx);
 		int* behav = _object->behaviour_pointer;
 		updateObjectScript(behav);
-		executeBehaviourScript(behav, obj_instance_id);
+		executeBehaviourScript(behav, _object->sub_id);
 	}
 }
 

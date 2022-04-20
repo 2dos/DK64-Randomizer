@@ -65,6 +65,7 @@
 .definelabel complex_free, 0x8061130C
 .definelabel createCollision, 0x8067ABC0
 .definelabel setScriptRunState, 0x8064199C
+.definelabel deleteActorContainer, 0x806782C0
 
 .definelabel unkObjFunction0, 0x80650BBC
 .definelabel unkObjFunction1, 0x80650A04
@@ -90,6 +91,7 @@
 .definelabel canHitSwitch, 0x806419F8
 .definelabel setSomeTimer, 0x80641724
 .definelabel indexOfNextObj, 0x80659470
+.definelabel renderActor, 0x806319C4
 
 .definelabel cancelPausedCutscene, 0x8061CB08
 .definelabel pauseCutscene, 0x8061CAD8
@@ -107,6 +109,7 @@
 .definelabel loadObjectForScripting, 0x8063B4C0
 .definelabel updateObjectScript, 0x8063E078
 .definelabel executeBehaviourScript, 0x8063E0D4
+.definelabel loadCounterFontTexture, 0x8069DC80
 
 //vanilla data
 .definelabel TransitionSpeed, 0x807FD88C
@@ -153,6 +156,7 @@
 .definelabel ChimpyCam, 0x80744530
 .definelabel ScreenRatio, 0x807444C0
 .definelabel CurrentActorPointer, 0x807FBB44
+.definelabel CurrentActorPointer_0, 0x807FBB40
 .definelabel LoadedActorCount, 0x807FBB35
 .definelabel LoadedActorArray, 0x807FB930
 .definelabel SpawnerMasterData, 0x807FDC88
@@ -289,6 +293,7 @@
 .definelabel style128Mtx, 0x807FFF50
 .definelabel StoredSettings, 0x807ED5A0
 .definelabel ReplacementLobbyExitsArray, 0x807FFF3E // 0x12
+.definelabel StoredCounterTextures, 0x807FFF30
 
 .definelabel CrankyMoves_New, 0x807FF400
 .definelabel CandyMoves_New, 0x807FF4D4

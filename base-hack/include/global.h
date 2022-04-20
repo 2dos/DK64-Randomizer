@@ -34,7 +34,6 @@ extern void updateProgressive(void);
 extern void moveTransplant(void);
 extern void priceTransplant(void);
 
-extern void adjustGalleonShopHeights(void);
 extern void changeCharSpawnerFlag(int map, int spawner_id, int new_flag);
 extern void changeHelmLZ(void);
 
@@ -76,5 +75,5 @@ extern int* drawTextContainer(int* dl, int style, float x, float y, char* str, i
 extern void correctKongFaces(void);
 
 extern void displayNumberOnObject(int id, int param2, int imageindex, int param4, int subtype);
-extern void displayShopIndicator(void);
 extern void recolorKongControl(void);
+extern void newCounterCode(void);
