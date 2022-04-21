@@ -227,6 +227,7 @@ def ParePlaythrough(settings, PlaythroughLocations):
     for locationId in locationsToAddBack:
         LocationList[locationId].PlaceDelayedItem()
 
+
 def PareWoth(settings, PlaythroughLocations):
     """Pare playthrough to locations which are Way of the Hoard (hard required by logic)."""
     # The functionality is similar to ParePlaythrough, but we want to see if individual locations are
@@ -237,7 +238,7 @@ def PareWoth(settings, PlaythroughLocations):
         for loc in [x for x in sphere if not LocationList[x].constant]:
             WothLocations.append(loc)
     # Check every item location to see if removing it by itself makes the game unbeatable
-    for i in range(len(WothLocations)- 2, -1, -1):
+    for i in range(len(WothLocations) - 2, -1, -1):
         locationId = WothLocations[i]
         location = LocationList[locationId]
         item = location.item
@@ -250,6 +251,7 @@ def PareWoth(settings, PlaythroughLocations):
         # Either way, add location back
         location.PlaceItem(item)
     return WothLocations
+
 
 def RandomFill(itemsToPlace, validLocations):
     """Randomly place given items in any location disregarding logic."""

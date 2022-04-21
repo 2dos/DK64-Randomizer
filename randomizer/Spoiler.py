@@ -330,7 +330,7 @@ class Spoiler:
                 newSphere[location.name] = ItemList[location.item].name
             self.playthrough[i] = newSphere
             i += 1
-        
+
     def UpdateWoth(self, locations, wothLocations):
         """Write woth locations as a dict of location/item pairs."""
         self.woth = {}
