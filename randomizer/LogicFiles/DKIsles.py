@@ -11,17 +11,17 @@ from randomizer.LogicClasses import (Event, LocationLogic, Region,
 
 LogicRegions = {
     Regions.Treehouse: Region("Treehouse", Levels.DKIsles, False, None, [], [], [
-        TransitionFront(Regions.StartArea, lambda l: True)
+        TransitionFront(Regions.TrainingGrounds, lambda l: True, Transitions.IslesTreehouseToStart)
     ]),
 
-    Regions.StartArea: Region("Start Area", Levels.DKIsles, False, None, [
+    Regions.TrainingGrounds: Region("Training Grounds", Levels.DKIsles, False, None, [
         LocationLogic(Locations.IslesVinesTrainingBarrel, lambda l: True),
         LocationLogic(Locations.IslesSwimTrainingBarrel, lambda l: True),
         LocationLogic(Locations.IslesOrangesTrainingBarrel, lambda l: True),
         LocationLogic(Locations.IslesBarrelsTrainingBarrel, lambda l: True),
     ], [], [
-        TransitionFront(Regions.IslesMain, lambda l: True),
-        TransitionFront(Regions.Treehouse, lambda l: True),
+        TransitionFront(Regions.IslesMain, lambda l: True, Transitions.IslesStartToMain),
+        TransitionFront(Regions.Treehouse, lambda l: True, Transitions.IslesStartToTreehouse),
         TransitionFront(Regions.CrankyGeneric, lambda l: True),
     ]),
 
@@ -41,7 +41,7 @@ LogicRegions = {
         Event(Events.IslesDiddyBarrelSpawn, lambda l: l.chunky and l.trombone and l.lanky),
         Event(Events.IslesChunkyBarrelSpawn, lambda l: l.monkeyport and l.saxophone and l.tiny),
     ], [
-        TransitionFront(Regions.StartArea, lambda l: True),
+        TransitionFront(Regions.TrainingGrounds, lambda l: True, Transitions.IslesMainToStart),
         TransitionFront(Regions.Prison, lambda l: True),
         TransitionFront(Regions.BananaFairyRoom, lambda l: l.mini and l.istiny, Transitions.IslesMainToFairy),
         TransitionFront(Regions.JungleJapesLobby, lambda l: l.settings.open_lobbies or Events.KLumsyTalkedTo in l.Events, Transitions.IslesMainToJapesLobby),

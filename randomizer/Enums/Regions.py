@@ -7,7 +7,7 @@ class Regions(IntEnum):
 
     # DK Isles Regions
     Treehouse = auto()
-    StartArea = auto()
+    TrainingGrounds = auto()
     IslesMain = auto()
     Prison = auto()
     BananaFairyRoom = auto()
