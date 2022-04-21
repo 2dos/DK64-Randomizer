@@ -147,8 +147,15 @@ void initHack(void) {
 			*(int*)(0x806A9990) = 0x2A210270; // SLTI $at, $s1, 0x2A8
 			PauseSlot3TextPointer = (char*)&exittoisles;
 		}
+		if (Rando.quality_of_life) {
+			*(int*)(0x80748010) = 0x8064F2F0; // Cancel Sandstorm
+			*(int*)(0x806BDC24) = 0; // Cancel Takeoff
+			*(short*)(0x806BDC8C) = 0x1000; // Apply no cutscene to all keys
+			*(short*)(0x806BDC3C) = 0x1000; // Apply shorter timer to all keys
+		}
 		// Object Instance Scripts
 		*(int*)(0x80748064) = (int)&change_object_scripts;
+		*(int*)(0x806416BC) = 0; // Prevent parent map check in cross-map object change communications
 		// Sniper Scope Check
 		*(int*)(0x806D2988) = 0x93190002; // LBU $t9, 0x2 ($t8)
 		*(int*)(0x806D2990) = 0x33210004; // ANDI $at, $t9, 0x4

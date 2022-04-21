@@ -9,5 +9,6 @@ void writeJetpacMedalReq(void) {
 		}
 		*(unsigned char*)(0x80026513) = Rando.jetpac_medal_requirement; // Actual requirement
 		*(unsigned char*)(0x8002644B) = Rando.jetpac_medal_requirement; // Text variable
+		*(unsigned char*)(0x80027583) = Rando.jetpac_medal_requirement; // Text Variable
 	}
 }

@@ -616,5 +616,12 @@ START_HOOK:
 		J 			0x805FBDF4
 		NOP
 
+	KeyCompressionCode:
+		SRA 		s5, t7, 0x10
+		ADDIU 		t5, r0, 1
+		SB 			t5, 0x154 (t4)
+		J 			0x806BD330
+		SH 			t5, 0x146 (t4)
+
 .align 0x10
 END_HOOK:

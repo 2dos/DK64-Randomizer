@@ -16,19 +16,19 @@ def compileHints(spoiler: Spoiler):
                 associated_hint += f" then {NameFromKong(spoiler.settings.krool_order[x])}"
         updateRandomHint(associated_hint)
     padded_hints = [
-        "Did you know - Donkey Kong officially features in Donkey Kong 64",
-        "Fungi Forest was originally intended to be in the other N64 Rareware title, Banjo Kazooie",
-        "Holding up-left when trapped inside of a trap bubble will break you out of it without spinning your stick",
-        "Tiny Kong is the youngest sister of Dixie Kong",
-        "Mornin",
-        "Lanky Kong is the only kong with no canonical relation to the main Kong family tree",
-        "Despite the line in the DK Rap stating otherwise, Chunky is the kong who can jump highest in DK64",
-        "Despite the line in the DK Rap stating otherwise, Tiny is one of the two slowest kongs in DK64",
-        "Candy Kong does not appear in Jungle Japes or Fungi Forest",
-        "If you fail the twelfth round of K. Rool, the game will dictate that K. Rool is victorious and end the fight",
-        "Donkey Kong 64 Randomizer started as a LUA Script in early 2019, evolving into a ROM Hack in 2021",
-        "The maximum in-game time that the vanilla file screen time can display is 1165 hours and 5 minutes",
-        "Chunky Kong is the brother of Kiddy Kong",
+        "Did you know - Donkey Kong officially features in Donkey Kong 64.",
+        "Fungi Forest was originally intended to be in the other N64 Rareware title, Banjo Kazooie.",
+        "Holding up-left when trapped inside of a trap bubble will break you out of it without spinning your stick.",
+        "Tiny Kong is the youngest sister of Dixie Kong.",
+        "Mornin.",
+        "Lanky Kong is the only kong with no canonical relation to the main Kong family tree.",
+        "Despite the line in the DK Rap stating otherwise, Chunky is the kong who can jump highest in DK64.",
+        "Despite the line in the DK Rap stating otherwise, Tiny is one of the two slowest kongs in DK64.",
+        "Candy Kong does not appear in Jungle Japes or Fungi Forest.",
+        "If you fail the twelfth round of K. Rool, the game will dictate that K. Rool is victorious and end the fight.",
+        "Donkey Kong 64 Randomizer started as a LUA Script in early 2019, evolving into a ROM Hack in 2021.",
+        "The maximum in-game time that the vanilla file screen time can display is 1165 hours and 5 minutes.",
+        "Chunky Kong is the brother of Kiddy Kong.",
         "Fungi Forest contains mushrooms.",
         "Igloos can be found in Crystal Caves.",
         "Frantic Factory has multiple floors where things can be found.",
@@ -64,7 +64,7 @@ def compileHints(spoiler: Spoiler):
         ],
         [
             "The kong who inflates like a balloon, just like a balloon",
-            "The kong who waddles in his dungarees",
+            "The kong who waddles in his overalls",
             "The kong who has a cold race with an insect",
             "The kong who shares a home with a thirsty dweller",
         ],
@@ -93,7 +93,7 @@ def compileHints(spoiler: Spoiler):
         [
             "The level where it rains rocks",
             "The level with two ice shields",
-            "The level with a tile-flipping minigame",
+            "The level with an Ice Tomato",
         ],
         ["The level with constant rain", "The level with a dungeon, ballroom and a library", "The level with drawbridge and a moat"],
         ["The timed level", "The level with no boss", "The level with no small bananas"],
@@ -294,6 +294,7 @@ def compileHints(spoiler: Spoiler):
                 "important": False,
             },
         ]
+        shop_owners = ["Cranky", "Funky", "Candy"]
         shop_cryptic = [
             [
                 "The shop owner with a walking stick",
@@ -320,8 +321,8 @@ def compileHints(spoiler: Spoiler):
             kong_name = random.choice(kong_cryptic[move["kong"]])
             move_name = move["name"]
             level_name = random.choice(level_cryptic[move["level"]])
-            shop_name = random.choice(shop_cryptic[move["shop"]])
-            text = f"{move_name} can be purchased in {level_name} from {shop_name}"
+            shop_name = shop_owners[move["shop"]]
+            text = f"{move_name} can be purchased in {level_name} from {shop_name}."
             if move["important"]:
                 updateRandomHint(text)
             else:
@@ -351,22 +352,22 @@ def compileHints(spoiler: Spoiler):
             level_index = kong_map["level"]
             kong_name = random.choice(kong_cryptic[kong_index])
             level_name = random.choice(level_cryptic[level_index])
-            updateRandomHint(f"{kong_name} can be found in {level_name}")
+            updateRandomHint(f"{kong_name} can be found in {level_name}.")
     if spoiler.settings.BananaMedalsRequired:
-        updateRandomHint(f"{spoiler.settings.BananaMedalsRequired} medals are required to access Jetpac")
+        updateRandomHint(f"{spoiler.settings.BananaMedalsRequired} medals are required to access Jetpac.")
     if spoiler.settings.perma_death:
-        updateRandomHint("The curse can only be removed upon disabling K. Rools machine")
-    updateRandomHint(f"{spoiler.settings.krool_key_count} Keys are required to turn in K. Rool")
+        updateRandomHint("The curse can only be removed upon disabling K. Rools machine.")
+    updateRandomHint(f"{spoiler.settings.krool_key_count} Keys are required to turn in K. Rool.")
     if spoiler.settings.level_randomization != "level_order":
         for x in spoiler.settings.krool_keys_required:
             key_index = x - 4
             level_name = random.choice(level_cryptic[key_index])
-            updateRandomHint(f"You will need to obtain the key from {level_name} to fight your greatest foe")
+            updateRandomHint(f"You will need to obtain the key from {level_name} to fight your greatest foe.")
     for x in range(7):
         boss_map = spoiler.settings.boss_maps[x]
         level_name = random.choice(level_cryptic[x])
         if boss_map == 0xC7:
-            updateRandomHint(f"The cardboard boss can be found in {level_name}")
+            updateRandomHint(f"The cardboard boss can be found in {level_name}.")
 
     # PADDED HINTS
     level_list = ["Jungle Japes", "Angry Aztec", "Frantic Factory", "Gloomy Galleon", "Fungi Forest", "Crystal Caves", "Creepy Castle"]
@@ -387,14 +388,14 @@ def compileHints(spoiler: Spoiler):
         if count == 1:
             gb_name = "Golden Banana"
         level_name = random.choice(level_cryptic[x])
-        padded_hints.append(f"The barrier to {level_name} can be cleared by obtaining {count} {gb_name}")
+        padded_hints.append(f"The barrier to {level_name} can be cleared by obtaining {count} {gb_name}.")
     for x in range(7):
         count = spoiler.settings.BossBananas[x]
         cb_name = "Small Bananas"
         if count == 1:
             cb_name = "Small Banana"
         level_name = random.choice(level_cryptic[x])
-        padded_hints.append(f"The barrier to the boss in {level_name} can be cleared by obtaining {count} {cb_name}")
+        padded_hints.append(f"The barrier to the boss in {level_name} can be cleared by obtaining {count} {cb_name}.")
     padded_count = 35
     if len(padded_hints) < 35:
         padded_count = len(padded_hints)

@@ -202,7 +202,7 @@ void newCounterCode(void) {
 			}
 		}
 		if (CurrentMap == 0x1E) {
-			int shop = CurrentActorPointer_0->rgb_mask[0];
+			int shop = CurrentActorPointer_0->rgb_mask[0] & 0xF;
 			int* m2location = ObjectModel2Pointer;
 			if (shop == 1) {
 				int funky = convertIDToIndex(0x1F4);

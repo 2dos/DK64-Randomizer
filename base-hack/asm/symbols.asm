@@ -110,6 +110,7 @@
 .definelabel updateObjectScript, 0x8063E078
 .definelabel executeBehaviourScript, 0x8063E0D4
 .definelabel loadCounterFontTexture, 0x8069DC80
+.definelabel delayedObjectModel2Change, 0x8063DB3C
 
 //vanilla data
 .definelabel TransitionSpeed, 0x807FD88C
