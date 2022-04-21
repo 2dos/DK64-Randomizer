@@ -154,7 +154,7 @@ def randomize_enemies(spoiler: Spoiler):
             Enemies.ZingerLime,
             Enemies.ZingerRobo,
             Enemies.Bat,
-            # Enemies.Bug,
+            # Enemies.Bug, # Crashes on N64
             # Enemies.Book, # Causes way too many problems
         ],
         "ground_beefyboys": [

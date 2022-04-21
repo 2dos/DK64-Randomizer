@@ -120,6 +120,7 @@ extern void loadObjectForScripting(void* unk0, int unk1);
 extern void updateObjectScript(void* behaviour_pointer);
 extern void executeBehaviourScript(void* behaviour_pointer, int unk0);
 extern void* loadCounterFontTexture(int texture_base, void* write_location, int position, int texture_offset, int width);
+extern void delayedObjectModel2Change(int map, int model2_id, int state);
 
 //vanilla data
 extern float TransitionSpeed;

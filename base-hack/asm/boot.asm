@@ -169,6 +169,9 @@ BonusAutocompleteHook:
 initHook:
 	J 	initCode
 	NOP
+KeyCompressionHook:
+	J 	KeyCompressionCode
+	NOP
 
 loadExtraHooks:
 	LUI t3, hi(NinWarpHook)
@@ -374,6 +377,12 @@ loadExtraHooks:
 	LUI t4, 0x8068
 	SW t3, 0x0D10 (t4) // Store Hook
 	SW r0, 0x0D14 (t4) // Store NOP
+
+	LUI t3, hi(KeyCompressionHook)
+	LW t3, lo(KeyCompressionHook) (t3)
+	LUI t4, 0x806C
+	SW t3, 0xD328 (t4) // Store Hook
+	SW r0, 0xD32C (t4) // Store NOP
 
 	JR ra
 	NOP

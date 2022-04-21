@@ -98,6 +98,12 @@ void qualityOfLife_shorteners(void) {
 					snide[0x232] = 1;
 				}
 			}
-		}
+		} else if (CurrentMap == 0x57) {
+            if (ObjectModel2Timer <= 5) {
+                actorData* lzcontroller = (actorData*)findActorWithType(0xC);
+                char* lzpaad = (char*)lzcontroller->paad;
+                *(char*)(lzpaad) = 0;
+            }
+        }
 	}
 }
