@@ -7,7 +7,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v1
+    - uses: actions/checkout@v3.0.2
     - name: Deploy To GHPages
       uses: manzoorwanijk/action-deploy-to-repo@master
       with:
