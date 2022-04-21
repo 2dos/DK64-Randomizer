@@ -220,7 +220,7 @@ class Maps(IntEnum):
 RegionMapList = {
     # Isles
     Regions.Treehouse: Maps.Treehouse,
-    Regions.StartArea: Maps.TrainingGrounds,
+    Regions.TrainingGrounds: Maps.TrainingGrounds,
     Regions.IslesMain: Maps.Isles,
     Regions.CrocodileIsleBeyondLift: Maps.Isles,
     Regions.IslesSnideRoom: Maps.IslesSnideRoom,
