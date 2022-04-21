@@ -52,7 +52,12 @@ function addEvent(e, ev, f) {
 
 /* initialize app */
 addEvent(window, "load", function () {
-  fetchPatch("./static/patches/shrink-dk64.bps");
+  var dt = new Date();
+  var sec = dt.getSeconds();
+  var min = dt.getMinutes();
+  var hrs = dt.getHours();
+  var total_seconds = (hrs*3600) + (min*60) + sec;
+  fetchPatch("./static/patches/shrink-dk64.bps?currtime=" + total_seconds);
   try {
     addEvent(document.getElementById("input-file-rom"), "change", function () {
       romFile = new MarcFile(this, _parseROM);
