@@ -20,6 +20,7 @@ class Maps(IntEnum):
     CreepyCastleLobby = 193
     HideoutHelmLobby = 170
     TrainingGrounds = 176
+    Treehouse = 171
 
     # Jungle Japes
     JungleJapes = 7
@@ -218,6 +219,8 @@ class Maps(IntEnum):
 
 RegionMapList = {
     # Isles
+    Regions.Treehouse: Maps.Treehouse,
+    Regions.StartArea: Maps.TrainingGrounds,
     Regions.IslesMain: Maps.Isles,
     Regions.CrocodileIsleBeyondLift: Maps.Isles,
     Regions.IslesSnideRoom: Maps.IslesSnideRoom,

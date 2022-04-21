@@ -41,7 +41,7 @@ LogicRegions = {
         TransitionFront(Regions.JapesCatacomb, lambda l: l.Slam and l.chunkyAccess, Transitions.JapesMainToCatacomb),
         TransitionFront(Regions.FunkyJapes, lambda l: True),
         TransitionFront(Regions.Snide, lambda l: True),
-        TransitionFront(Regions.JapesBossLobby, lambda l: True),
+        TransitionFront(Regions.JapesBossLobby, lambda l: l.vines and (l.donkey or l.diddy or l.chunky)),  # Lanky and Tiny have a rough time with the vines and falling from top is not intuitive
         TransitionFront(Regions.JapesBaboonBlast, lambda l: l.blast and l.isdonkey)  # , Transitions.JapesMainToBBlast)
     ]),
 
