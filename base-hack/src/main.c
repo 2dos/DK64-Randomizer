@@ -42,7 +42,6 @@ void cFuncLoop(void) {
 		shiftBrokenJapesPortal();
 	}
 	displayNumberOnTns();
-	displayShopIndicator();
 	if (Rando.music_rando_on) {
 		if (CurrentMap == 0x28) {
 			if (ObjectModel2Timer == 5) {
@@ -60,7 +59,6 @@ void cFuncLoop(void) {
 		kong_has_died();
 		forceBossKong();
 	}
-	adjustGalleonShopHeights();
 	changeHelmLZ();
 	if (Rando.quality_of_life) {
 		// DKTVKong = 0;

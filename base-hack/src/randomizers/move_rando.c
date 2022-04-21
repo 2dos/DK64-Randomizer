@@ -238,3 +238,90 @@ void cancelMoveSoftlock(void) {
 		}
 	}
 }
+
+// void getPurchaseMoveForLevel(shop_paad* shop, int level, purchase_struct* shop_data, int kong) {
+// 	int purchaseable = 0;
+// 	int price = 0;
+// 	if (level < 7) {
+// 		purchase_struct* focus = getObjectArrayAddr(shop_data,6,kong);
+// 		focus = getObjectArrayAddr(focus,0x2A,level);
+// 		int _type = focus->purchase_type;
+// 		int sub_type = 0;
+// 		int base_value = 0;
+// 		int price = focus->price;
+// 		if (_type > -1) {
+// 			switch(_type) {
+// 				case PURCHASE_MOVES:
+// 					sub_type = 1;
+// 					base_value = MovesBase[kong].special_moves;
+// 					break;
+// 				case PURCHASE_SLAM:
+// 					sub_type = 0;
+// 					base_value = MovesBase[kong].simian_slam;
+// 					break;
+// 				case PURCHASE_GUN:
+// 					sub_type = 1;
+// 					base_value = MovesBase[kong].weapon_bitfield;
+// 					break;
+// 				case PURCHASE_AMMOBELT:
+// 					sub_type = 0;
+// 					base_value = MovesBase[kong].ammo_belt;
+// 					break;
+// 				case PURCHASE_INSTRUMENT:
+// 					sub_type = 1;
+// 					base_value = MovesBase[kong].instrument_bitfield;
+// 				break;
+// 			}
+// 			int p_value = focus->purchase_value;
+// 			if (sub_type == 1) {
+// 				// Bitfield
+// 				if (p_value > 0) {
+// 					int bit = 1 << (p_value - 1);
+// 					if ((base_value & bit) == 0) {
+// 						purchaseable = 1;
+// 					}
+// 				}
+// 			} else {
+// 				if (base_value < p_value) {
+// 					purchaseable = 1;
+// 				}
+// 			}
+// 			if (purchaseable) {
+// 				shop->purchase_type = _type;
+// 				*(short*)(0x80750AC8) = price;
+// 				shop->price = price;
+// 				shop->purchase_value = p_value;
+// 			}
+// 		}
+// 	}
+// 	if (!purchaseable) {
+// 		shop->price = 0;
+// 		*(short*)(0x80750AC8) = price;
+// 		shop->purchase_type = -2;
+// 	}
+// 	shop->melons = CollectableBase.Melons;
+// }
+
+// void getRandoNextMovePurchase(shop_paad* shop_info, KongBase* moves) {
+// 	int shop_type = CurrentActorPointer_0->actorType;
+// 	int world = getWorld(CurrentMap,0);
+// 	purchase_struct* shop_struct = (purchase_struct*)&CrankyMoves_New;
+// 	if (shop_type == 0xBE) {
+// 		shop_struct = (purchase_struct*)&FunkyMoves_New;
+// 	} else if (shop_type == 0xBF) {
+// 		shop_struct = (purchase_struct*)&CandyMoves_New;
+// 	}
+// 	getPurchaseMoveForLevel(shop_info,world,shop_struct,Character);
+// }
+
+/*
+JAL_NewMoveFunc:
+JAL 	getRandoNextMovePurchase
+NOP
+
+LUI 	t3, 0x8002
+LUI 	t4, hi(JAL_NewMoveFunc)
+LW 		t4, lo(JAL_NewMoveFunc) (t4)
+SW 		t4, 0x6720 (t3)
+SW 		t4, 0x683C (t3)
+*/

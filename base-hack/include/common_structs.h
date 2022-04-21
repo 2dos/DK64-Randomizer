@@ -21,14 +21,20 @@ typedef struct actorData {
 	/* 0x084 */ float zPos;
 	/* 0x088 */ char unk_80[0xB8-0x88];
 	/* 0x0B8 */ float hSpeed;
-	/* 0x0BC */ char unk_BC[0x128-0xBC];
+	/* 0x0BC */ char unk_BC[0xE8-0xBC];
+	/* 0x0E8 */ short rot_z;
+	/* 0x0EA */ char unk_EA[0x128-0xEA];
 	/* 0x128 */ short shadow_intensity;
 	/* 0x12A */ char unk_12A[0x144-0x12A];
 	/* 0x144 */ char noclip_byte;
 	/* 0x145 */ char unk_145[0x154-0x145];
 	/* 0x154 */ char control_state;
 	/* 0x155 */ char control_state_progress;
-	/* 0x156 */ char unk_156[0x180-0x156];
+	/* 0x156 */ char unk_156[0x16A-0x156];
+	/* 0x16A */ char rgb_mask[3];
+	/* 0x16D */ char unk_16D[0x174-0x16D];
+	/* 0x174 */ void* paad;
+	/* 0x178 */ char unk_178[0x180-0x178];
 	/* 0x180 */ void* tied_character_spawner;
 } actorData;
 
@@ -667,3 +673,15 @@ typedef struct GBDictItem {
 	/* 0x006 */ char intended_kong_actor;
 	/* 0x007 */ char unk_07;
 } GBDictItem;
+
+typedef struct shop_paad {
+	/* 0x000 */ char unk_00[4];
+	/* 0x004 */ short price;
+	/* 0x006 */ char unk_06[0xB-0x6];
+	/* 0x00B */ char purchase_type;
+	/* 0x00C */ char unk_0C;
+	/* 0x00D */ unsigned char state;
+	/* 0x00E */ char unk_0E[0x10-0x0E];
+	/* 0x010 */ unsigned char melons;
+	/* 0x011 */ unsigned char purchase_value;
+} shop_paad;

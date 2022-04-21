@@ -16,7 +16,6 @@ static const unsigned char banned_maps[] = {
     18, // Teetering Turtle Trouble! (very easy)
     25, // Candy's Music Shop
     27, // Frantic Factory: Car Race
-    31, // Gloomy Galleon: K. Rool's Ship // TODO: Test
     32, // Batty Barrel Bandit! (easy)
     35, // K. Rool Barrel: DK's Target Game
     37, // Jungle Japes: Barrel Blast // Note: The barrels don't work as other kongs so not much point enabling it on this map
@@ -192,6 +191,10 @@ void tagAnywhere(int prev_crystals) {
                         }
                     }
                 }
+            }
+            if (Player->strong_kong_ostand_bitfield & 0x100) {
+                // Seasick
+                return;
             }
             int control_state = Player->control_state;
             for (int i = 0; i < sizeof(bad_movement_states); i++) {
