@@ -365,7 +365,7 @@ RegionMapList = {
 
 MapExitTable = {
     Maps.TrainingGrounds: [
-        "From Isles Main",
+        "From DK Isles",
         "From Treehouse"
     ],
     Maps.Treehouse: [
