@@ -53,18 +53,18 @@ def RandomizePrices(weight):
     prices = VanillaPrices.copy()
     # Each kong can buy up to 14 items
     # Vanilla: Can spend up to 74 coins, avg. price per item 5.2857
-    # Low: Want average max to be around 40, avg. price per item 2.8571
-    # Medium: Want average max to be around vanilla, use 5.3571 so it's midway between other 2
-    # High: Want average max to be around 110, avg. price per item 7.8571
+    # Low: 1-4 coins most of the time
+    # Medium: 1-8 coins most of the time
+    # High: 1-12 coins (cannot be greater than 12)
     # Free: All moves are zero coins
-    avg = 5.3571
-    stddev = avg * 0.25
+    avg = 4.5
+    stddev = 2
     if weight == "high":
-        avg = 7.8571
-        stddev = avg * 0.2  # Lowered relative deviation for high so variance isn't so large
+        avg = 6.5
+        stddev = 3
     elif weight == "low":
-        avg = 2.8571
-        stddev = avg * 0.25
+        avg = 2.5
+        stddev = 1
     # Generate random prices using normal distribution with avg and std. deviation
     # Round each price to nearest int
     for item in prices.keys():
