@@ -99,6 +99,9 @@ class Spoiler:
             # Playthrough data
             humanspoiler["Playthrough"] = self.playthrough
 
+            # Woth data
+            humanspoiler["Way_of_the_Hoard"] = self.woth
+
             # Item location data
             locations = OrderedDict()
             for location, item in self.location_data.items():
@@ -327,6 +330,13 @@ class Spoiler:
                 newSphere[location.name] = ItemList[location.item].name
             self.playthrough[i] = newSphere
             i += 1
+        
+    def UpdateWoth(self, locations, wothLocations):
+        """Write woth locations as a dict of location/item pairs."""
+        self.woth = {}
+        for locationId in wothLocations:
+            location = locations[locationId]
+            self.woth[location.name] = ItemList[location.item].name
 
     def GetKroolKeysRequired(self, keyEvents):
         """Get key names from required key events to print in the spoiler."""

@@ -194,7 +194,7 @@ def Reset():
 
 
 def ParePlaythrough(settings, PlaythroughLocations):
-    """Pares playthrough down to only the essential elements."""
+    """Pare playthrough down to only the essential elements."""
     locationsToAddBack = []
     # Check every location in the list of spheres.
     for i in range(len(PlaythroughLocations) - 2, -1, -1):
@@ -227,6 +227,29 @@ def ParePlaythrough(settings, PlaythroughLocations):
     for locationId in locationsToAddBack:
         LocationList[locationId].PlaceDelayedItem()
 
+def PareWoth(settings, PlaythroughLocations):
+    """Pare playthrough to locations which are Way of the Hoard (hard required by logic)."""
+    # The functionality is similar to ParePlaythrough, but we want to see if individual locations are
+    # hard required, so items are added back after checking regardless of the outcome.
+    WothLocations = []
+    for sphere in PlaythroughLocations:
+        # Don't want constant locations in woth
+        for loc in [x for x in sphere if not LocationList[x].constant]:
+            WothLocations.append(loc)
+    # Check every item location to see if removing it by itself makes the game unbeatable
+    for i in range(len(WothLocations)- 2, -1, -1):
+        locationId = WothLocations[i]
+        location = LocationList[locationId]
+        item = location.item
+        location.item = None
+        # Check if game is still beatable
+        Reset()
+        if GetAccessibleLocations(settings, [], SearchMode.CheckBeatable):
+            # If game is still beatable, this location is not hard required
+            WothLocations.remove(locationId)
+        # Either way, add location back
+        location.PlaceItem(item)
+    return WothLocations
 
 def RandomFill(itemsToPlace, validLocations):
     """Randomly place given items in any location disregarding logic."""
@@ -559,9 +582,12 @@ def ShuffleMisc(spoiler):
             Reset()
             PlaythroughLocations = GetAccessibleLocations(spoiler.settings, [], SearchMode.GeneratePlaythrough)
             ParePlaythrough(spoiler.settings, PlaythroughLocations)
+            # Generate and display woth
+            WothLocations = PareWoth(spoiler.settings, PlaythroughLocations)
             # Write data to spoiler and return
             spoiler.UpdateLocations(LocationList)
             spoiler.UpdatePlaythrough(LocationList, PlaythroughLocations)
+            spoiler.UpdateWoth(LocationList, WothLocations)
             return spoiler
         except Ex.FillException as ex:
             if retries == 20:
