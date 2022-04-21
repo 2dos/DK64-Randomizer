@@ -364,6 +364,14 @@ RegionMapList = {
 }
 
 MapExitTable = {
+    Maps.TrainingGrounds: [
+        "From Isles Main",
+        "From Treehouse"
+    ],
+    Maps.Treehouse: [
+        "Test Cutscene",
+        "From Training Grounds"
+    ],
     Maps.Isles: [
         "From Training Grounds",
         "From K-Lumsy",

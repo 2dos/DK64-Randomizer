@@ -45,9 +45,9 @@ ShufflableExits = {
     Transitions.CastleToIsles: ShufflableExit("Creepy Castle to DK Isles", Regions.CreepyCastleMain, TransitionBack(Regions.CreepyCastleLobby, "From Castle", Transitions.IslesToCastle), ExitCategories.CastleExterior),
 
     # DK Isles Exits
-    Transitions.IslesTreehouseToStart: ShufflableExit("Treehouse to Training Grounds", Regions.Treehouse, TransitionBack(Regions.TrainingGrounds, "From Treehouse", Transitions.IslesStartToTreehouse)),
-    Transitions.IslesStartToTreehouse: ShufflableExit("Training Grounds to Treehouse", Regions.TrainingGrounds, TransitionBack(Regions.Treehouse, "From Training Grounds", Transitions.IslesTreehouseToStart), ExitCategories.IslesStart),
-    Transitions.IslesStartToMain: ShufflableExit("Training Grounds DK Isles Main", Regions.TrainingGrounds, TransitionBack(Regions.IslesMain, "From Training Grounds", Transitions.IslesMainToStart), ExitCategories.IslesStart),
+    Transitions.IslesTreehouseToStart: ShufflableExit("Treehouse to Training Grounds", Regions.Treehouse, TransitionBack(Regions.TrainingGrounds, "From Treehouse", Transitions.IslesStartToTreehouse), ExitCategories.IslesTreehouse),
+    Transitions.IslesStartToTreehouse: ShufflableExit("Training Grounds to Treehouse", Regions.TrainingGrounds, TransitionBack(Regions.Treehouse, "From Training Grounds", Transitions.IslesTreehouseToStart), ExitCategories.IslesTrainingGrounds),
+    Transitions.IslesStartToMain: ShufflableExit("Training Grounds DK Isles Main", Regions.TrainingGrounds, TransitionBack(Regions.IslesMain, "From Training Grounds", Transitions.IslesMainToStart), ExitCategories.IslesTrainingGrounds),
     Transitions.IslesMainToStart: ShufflableExit("DK Isles Main to Training Grounds", Regions.IslesMain, TransitionBack(Regions.TrainingGrounds, "From DK Isles", Transitions.IslesStartToMain), ExitCategories.IslesExterior),
     Transitions.IslesMainToFairy: ShufflableExit("DK Isles Main to Banana Fairy Queen", Regions.IslesMain, TransitionBack(Regions.BananaFairyRoom, "From DK Isles", Transitions.IslesFairyToMain), ExitCategories.IslesExterior, entryKongs={Kongs.tiny}, regionKongs={Kongs.tiny}, move=True),
     Transitions.IslesFairyToMain: ShufflableExit("DK Isles Banana Fairy Queen to Main", Regions.BananaFairyRoom, TransitionBack(Regions.IslesMain, "From Banana Fairy Isle", Transitions.IslesMainToFairy)),

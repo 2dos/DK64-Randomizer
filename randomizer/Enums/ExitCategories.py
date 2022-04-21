@@ -6,7 +6,8 @@ class ExitCategories(IntEnum):
     """These categories are used to categorize loading zones with multiple exits."""
 
     IslesExterior = auto()
-    IslesStart = auto()
+    IslesTreehouse = auto()
+    IslesTrainingGrounds = auto()
     JapesLobby = auto()
     AztecLobby = auto()
     FactoryLobby = auto()
