@@ -490,9 +490,12 @@ def Fill(spoiler):
             Reset()
             PlaythroughLocations = GetAccessibleLocations(spoiler.settings, [], SearchMode.GeneratePlaythrough)
             ParePlaythrough(spoiler.settings, PlaythroughLocations)
+            # Generate and display woth
+            WothLocations = PareWoth(spoiler.settings, PlaythroughLocations)
             # Write data to spoiler and return
             spoiler.UpdateLocations(LocationList)
             spoiler.UpdatePlaythrough(LocationList, PlaythroughLocations)
+            spoiler.UpdateWoth(LocationList, WothLocations)
             return spoiler
         except Ex.FillException as ex:
             if retries == 4:
