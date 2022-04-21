@@ -24,7 +24,7 @@
     "coin_door_open": true,
     "fast_start_beginning_of_game": true,
     "quality_of_life": true,
-    "fast_start_hideout_helm": true,
+    "helm_setting": "skip_start",
     "enemy_rando": true,
     "kasplat_rando": true,
     "shop_location_rando": true,

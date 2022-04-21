@@ -88,7 +88,7 @@ class Spoiler:
         settings["music_fanfares"] = self.settings.music_fanfares
         settings["music_events"] = self.settings.music_events
         settings["fast_start_beginning_of_game"] = self.settings.fast_start_beginning_of_game
-        settings["fast_start_hideout_helm"] = self.settings.fast_start_hideout_helm
+        settings["helm_setting"] = self.settings.helm_setting
         settings["quality_of_life"] = self.settings.quality_of_life
         settings["enable_tag_anywhere"] = self.settings.enable_tag_anywhere
         settings["blocker_golden_bananas"] = self.settings.EntryGBs

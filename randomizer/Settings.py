@@ -181,7 +181,7 @@ class Settings:
         #  Misc
         self.generate_spoilerlog = None
         self.fast_start_beginning_of_game = None
-        self.fast_start_hideout_helm = None
+        self.helm_setting = None
         self.quality_of_life = None
         self.enable_tag_anywhere = None
         self.random_krool_phase_order = None
