@@ -132,6 +132,8 @@ void initHack(void) {
 		style6Mtx[0x0] = base_mtx;
 		style6Mtx[0x5] = base_mtx;
 		style6Mtx[0xF] = 100;
+		style6Mtx[0x8] = 0xEA00;
+		style6Mtx[0x9] = 0xFD00;
 		base_mtx = 12;
 		style2Mtx[0x0] = base_mtx;
 		style2Mtx[0x5] = base_mtx;

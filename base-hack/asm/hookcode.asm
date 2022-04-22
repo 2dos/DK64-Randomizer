@@ -623,5 +623,14 @@ START_HOOK:
 		J 			0x806BD330
 		SH 			t5, 0x146 (t4)
 
+	HUDDisplayCode:
+		ADDIU 		a0, sp, 0x6C
+		SW 			s0, 0x10 (sp)
+		JAL 		writeHUDAmount
+		LW 	 		a3, 0x78 (sp)
+		J 			0x806F9F90
+		OR 			s0, v0, r0
+
+
 .align 0x10
 END_HOOK:

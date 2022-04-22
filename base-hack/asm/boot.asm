@@ -172,6 +172,9 @@ initHook:
 KeyCompressionHook:
 	J 	KeyCompressionCode
 	NOP
+HUDDisplayHook:
+	J 	HUDDisplayCode
+	NOP
 
 loadExtraHooks:
 	LUI t3, hi(NinWarpHook)
@@ -383,6 +386,12 @@ loadExtraHooks:
 	LUI t4, 0x806C
 	SW t3, 0xD328 (t4) // Store Hook
 	SW r0, 0xD32C (t4) // Store NOP
+
+	LUI t3, hi(HUDDisplayHook)
+	LW t3, lo(HUDDisplayHook) (t3)
+	LUI t4, 0x8070
+	SW t3, 0x9F88 (t4) // Store Hook
+	SW r0, 0x9F8C (t4) // Store NOP
 
 	JR ra
 	NOP
