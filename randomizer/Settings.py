@@ -185,6 +185,8 @@ class Settings:
         self.quality_of_life = None
         self.enable_tag_anywhere = None
         self.random_krool_phase_order = None
+        self.krool_access = None
+        self.open_lobbies = None
         self.random_medal_requirement = True
         self.bananaport_rando = False
         self.shop_indicator = False
