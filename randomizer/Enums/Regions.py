@@ -9,6 +9,7 @@ class Regions(IntEnum):
     Treehouse = auto()
     TrainingGrounds = auto()
     IslesMain = auto()
+    IslesMainUpper = auto()
     Prison = auto()
     BananaFairyRoom = auto()
     JungleJapesLobby = auto()
