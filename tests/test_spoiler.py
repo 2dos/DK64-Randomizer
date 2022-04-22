@@ -49,7 +49,7 @@ def generate_settings():
 
     data["generate_spoilerlog"] = True
     data["fast_start_beginning_of_game"] = False
-    data["fast_start_hideout_helm"] = False
+    data["helm_setting"] = "default"
     data["quality_of_life"] = True
     data["enable_tag_anywhere"] = False
     data["random_krool_phase_order"] = True

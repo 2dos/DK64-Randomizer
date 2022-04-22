@@ -81,6 +81,26 @@ images = [
         "resize": False,
         "flip": False,
     },
+    {
+        "name": "WXYL",
+        "format": "rgba16",
+        "table": 14,
+        "index": 12,
+        "w": 76,
+        "h": 24,
+        "resize": False,
+        "flip": False,
+    },
+    {
+        "name": "specialchars",
+        "format": "rgba16",
+        "table": 14,
+        "index": 0x1E,
+        "w": 64,
+        "h": 32,
+        "resize": False,
+        "flip": False,
+    },
 ]
 
 kong_tex = ["chunky", "tiny", "lanky", "diddy", "dk"]

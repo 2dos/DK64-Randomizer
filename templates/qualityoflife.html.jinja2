@@ -84,12 +84,23 @@
                 <tr>
                     <td>
                         <div class="form-check form-switch w-75">
-                            <label title="This option will shorten the time it takes to beat Hideout Helm with the following changes: &#013;- You will spawn in the Blast o Matic room. &#013;- Opens the roman numeral doors to each Kong's room. &#013;- The gates in front of the music pads are gone.">
-                                <input class="form-check-input"
-                                       type="checkbox"
-                                       name="fast_start_hideout_helm"
-                                       value="True"/>
-                                Fast Start - Hideout Helm
+                            <label title="This option will shorten the time it takes to beat Hideout Helm. Skip Start adds the following changes: &#013;- You will spawn in the Blast o Matic room. &#013;- Opens the roman numeral doors to each Kong's room. &#013;- The gates in front of the music pads are gone. Skip All simply spawns you at the crown door.">
+                                <div>
+                                    <select name="helm_setting"
+                                            id="helm_setting"
+                                            class="form-select center-div"
+                                            aria-label="Randomization type">
+                                        <option selected value="default">
+                                            Default
+                                        </option>
+                                        <option value="skip_start">
+                                            Skip Start
+                                        </option>
+                                        <option value="skip_all">
+                                            Skip All
+                                        </option>
+                                    </select>
+                                </div>
                             </label>
                         </div>
                     </td>

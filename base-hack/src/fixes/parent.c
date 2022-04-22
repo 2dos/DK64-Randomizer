@@ -170,17 +170,10 @@ static const unsigned char banned_filter_maps[] = {
 	0x53, // Fungi Dog
 	0xC4, // Caves Dillo
 	0xC7, // KKO
-	61, // Mill Front
-	62, // Mill Rear
-	0x14, // Llama Temple
-	0x26, // Angry Aztec
-	0x30, // Fungi Forest
-	0x4, // Mountain
 	0x29, // Aztec BBlast
 	0x36, // Galleon BBlast
 	0x6E, // Factory BBlast
 	0xBB, // Castle BBlast
-	0x7, // Japes
 	0x25, // Japes BBlast
 };
 

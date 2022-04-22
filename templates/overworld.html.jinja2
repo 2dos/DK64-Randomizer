@@ -83,6 +83,19 @@
                         </div>
                     </td>
                 </tr>
+                <tr>
+                    <td>
+                        <div class="form-check form-switch w-75">
+                            <label title="All lobbies will be open as if the key to K. Lumsy was already turned in. This does not affect K. Rool's ship.">
+                                <input class="form-check-input"
+                                       type="checkbox"
+                                       name="open_lobbies"
+                                       value="True"/>
+                                Open Nintendo + Rareware Coin Door
+                            </label>
+                        </div>
+                    </td>
+                </tr>
             </table>
         </div>
         <div class="col border">
@@ -101,14 +114,40 @@
                        data-slider-value="5"
                        style="width: 80%">
             </div>
+            <hr>
+            <div class="center">K. Rool Access</div>
+            <div>
+                <select name="krool_access"
+                        id="krool_access"
+                        style="width: 60%;"
+                        class="form-select center-div"
+                        aria-label="Randomization type">
+                    <option selected value="vanilla">
+                        Vanilla (Keys 3 and 8)
+                    </option>
+                    <option value="all">
+                        All Keys
+                    </option>
+                    <option value="random">
+                        Random Keys
+                    </option>
+                    <option value="random_helm">
+                        Random Keys, Helm Guaranteed
+                    </option>
+                    <option value="open">
+                        Open
+                    </option>
+                </select>
+            </div>
+            <hr>
             <div class="center">Keys required to beat K. Rool</div>
             <div>
                 <input type="text"
                        name="krool_key_count"
                        id="krool_key_count"
                        data-provide="slider"
-                       data-slider-ticks="[0, 1, 2, 3, 4, 5, 6, 7, 8]"
-                       data-slider-ticks-labels='["0", "1", "2", "3", "4", "5", "6", "7", "8"]'
+                       data-slider-ticks="[1, 2, 3, 4, 5, 6, 7, 8]"
+                       data-slider-ticks-labels='["1", "2", "3", "4", "5", "6", "7", "8"]'
                        data-slider-min="0"
                        data-slider-max="8"
                        data-slider-step="1"

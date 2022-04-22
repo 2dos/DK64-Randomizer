@@ -4,6 +4,20 @@ from PIL import Image
 import PIL
 import os
 
+pre = "../"
+cwd = os.getcwd()
+cwd_split = cwd.split("\\")
+last_part = cwd_split[len(cwd_split) - 1]
+pre = ""
+if last_part.upper() == "BUILD":
+    pre = "../"
+
+
+def getDir(directory):
+    """Convert directory into the right format based on where the script is run."""
+    return f"{pre}{directory}"
+
+
 print("Composing complex images")
 number_crop = [
     {
@@ -30,7 +44,7 @@ number_crop = [
 
 kongs = ["dk", "diddy", "lanky", "tiny", "chunky"]
 
-hash_dir = "assets/Non-Code/hash/"
+hash_dir = getDir("assets/Non-Code/hash/")
 if not os.path.exists(hash_dir):
     os.mkdir(hash_dir)
 
@@ -38,7 +52,7 @@ for file_info in number_crop:
     for num_info in file_info["image_list"]:
         key_num = num_info["num"]
         if key_num >= 1 and key_num <= 8:
-            base_dir = "assets/Non-Code/hash/"
+            base_dir = getDir("assets/Non-Code/hash/")
             if not os.path.exists(base_dir):
                 os.mkdir(base_dir)
             file_dir = f"{base_dir}{file_info['image']}"
@@ -51,10 +65,10 @@ for file_info in number_crop:
             bbox = key_im.getbbox()
             key_im = key_im.crop(bbox)
             key_im = key_im.resize((32, 32))
-            key_im.save(f"assets/Non-Code/file_screen/key{key_num}.png")
+            key_im.save(f"{getDir('assets/Non-Code/file_screen/key')}{key_num}.png")
 kong_res = (32, 32)
 for kong in kongs:
-    base_dir = "assets/Non-Code/displays/"
+    base_dir = getDir("assets/Non-Code/displays/")
     if not os.path.exists(base_dir):
         os.mkdir(base_dir)
     im = Image.new(mode="RGBA", size=(64, 64))
@@ -73,7 +87,7 @@ im = Image.new(mode="RGBA", size=(64, 64))
 shared_x_move = [4, 16, 30, 10, 26]
 shared_y_move = [0, 0, 0, 23, 23]
 kong_z_order = [0, 1, 2, 3, 4]
-disp_dir = "assets/Non-Code/displays/"
+disp_dir = getDir("assets/Non-Code/displays/")
 for x in range(5):
     kong_index = kong_z_order[x]
     im1 = Image.open(f"{disp_dir}{kongs[kong_index]}_face.png")
@@ -83,13 +97,30 @@ im = im.crop(bbox)
 im = im.resize(kong_res)
 im.save(f"{disp_dir}shared.png")
 im = Image.new(mode="RGBA", size=kong_res)
-# im.paste((255,0,0),[0,0,32,32])
 im.save(f"{disp_dir}none.png")
 
-rmve = ["01234.png", "56789.png", "boss_key.png"]
+# Generate / in spot of unused L button
+im = Image.open(f"{hash_dir}specialchars.png")
+im = im.crop((30, 0, 55, 32))
+bbox = im.getbbox()
+im = im.crop(bbox)
+imw, imh = im.size
+if imh == 0:
+    imh = 1
+imhb = 22
+scale = imhb / imh
+imw = int(imw * scale)
+im = im.resize((imw, imhb))
+im1 = Image.open(f"{hash_dir}WXYL.png")
+im2 = Image.new(mode="RGBA", size=(32, 32))
+Image.Image.paste(im1, im2, (61, 0))
+Image.Image.paste(im1, im, (65, 1))
+im1.save(f"{disp_dir}wxys.png")
+
+rmve = ["01234.png", "56789.png", "boss_key.png", "WXYL.png", "specialchars.png"]
 for kong in kongs:
     for x in range(2):
         rmve.append(f"{kong}_face_{x}.png")
 for x in rmve:
-    if os.path.exists(f"assets/Non-Code/hash/{x}"):
-        os.remove(f"assets/Non-Code/hash/{x}")
+    if os.path.exists(f"{getDir('assets/Non-Code/hash/')}{x}"):
+        os.remove(f"{getDir('assets/Non-Code/hash/')}{x}")

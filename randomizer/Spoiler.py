@@ -88,7 +88,7 @@ class Spoiler:
         settings["music_fanfares"] = self.settings.music_fanfares
         settings["music_events"] = self.settings.music_events
         settings["fast_start_beginning_of_game"] = self.settings.fast_start_beginning_of_game
-        settings["fast_start_hideout_helm"] = self.settings.fast_start_hideout_helm
+        settings["helm_setting"] = self.settings.helm_setting
         settings["quality_of_life"] = self.settings.quality_of_life
         settings["enable_tag_anywhere"] = self.settings.enable_tag_anywhere
         settings["blocker_golden_bananas"] = self.settings.EntryGBs
@@ -98,6 +98,9 @@ class Spoiler:
         if self.settings.shuffle_items != "none":
             # Playthrough data
             humanspoiler["Playthrough"] = self.playthrough
+
+            # Woth data
+            humanspoiler["Way_of_the_Hoard"] = self.woth
 
             # Item location data
             locations = OrderedDict()
@@ -327,6 +330,13 @@ class Spoiler:
                 newSphere[location.name] = ItemList[location.item].name
             self.playthrough[i] = newSphere
             i += 1
+
+    def UpdateWoth(self, locations, wothLocations):
+        """Write woth locations as a dict of location/item pairs."""
+        self.woth = {}
+        for locationId in wothLocations:
+            location = locations[locationId]
+            self.woth[location.name] = ItemList[location.item].name
 
     def GetKroolKeysRequired(self, keyEvents):
         """Get key names from required key events to print in the spoiler."""
