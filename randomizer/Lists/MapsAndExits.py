@@ -222,6 +222,7 @@ RegionMapList = {
     Regions.Treehouse: Maps.Treehouse,
     Regions.TrainingGrounds: Maps.TrainingGrounds,
     Regions.IslesMain: Maps.Isles,
+    Regions.IslesMainUpper: Maps.Isles,
     Regions.CrocodileIsleBeyondLift: Maps.Isles,
     Regions.IslesSnideRoom: Maps.IslesSnideRoom,
     Regions.CabinIsle: Maps.Isles,
