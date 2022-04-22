@@ -53,6 +53,7 @@ class Settings:
             self.troff_6,
         ]
         self.seed_hash = [random.randint(0, 9) for i in range(5)]
+        self.krool_keys_required = []
         # Settings which are not yet implemented on the web page
 
         # Always start with training barrels currently
@@ -72,20 +73,6 @@ class Settings:
         # Pointless with just move rando, maybe have it once full rando
         # progressive_upgrades: bool
         self.progressive_upgrades = False
-
-        # Waiting for UI branch
-        # open_lobbies: bool
-        self.open_lobbies = True
-
-        # Waiting for UI branch
-        # krool_access: str
-        # vanilla (Keys 3 and 8)
-        # all (All keys)
-        # random (Random keys dictated by the specified amount)
-        # random_helm (Random keys dictated by the specified amount, Key 8 is guaranteed)
-        # open (Ship is there from start)
-        self.krool_access = "random_helm"
-        self.krool_keys_required = []
 
         self.prices = VanillaPrices.copy()
         self.resolve_settings()
@@ -123,12 +110,7 @@ class Settings:
         self.bonus_barrel_rando = None
         self.loading_zone_coupled = None
         self.shop_location_rando = None
-        # random_prices: str
-        # vanilla
-        # low
-        # medium
-        # high
-        self.random_prices = "vanilla"
+        self.random_prices = None
         self.boss_location_rando = None
         self.boss_kong_rando = None
         self.kasplat_rando = None
@@ -199,7 +181,7 @@ class Settings:
         #  Misc
         self.generate_spoilerlog = None
         self.fast_start_beginning_of_game = None
-        self.fast_start_hideout_helm = None
+        self.helm_setting = None
         self.quality_of_life = None
         self.enable_tag_anywhere = None
         self.random_krool_phase_order = None
@@ -281,6 +263,8 @@ class Settings:
         key_list = KeyEvents.copy()
         required_key_count = self.krool_key_count
         if self.krool_access == "random_helm":
+            # If helm guaranteed, make sure it's added and included in the key count
+            self.krool_keys_required.append(Events.HelmKeyTurnedIn)
             key_list.remove(Events.HelmKeyTurnedIn)
             required_key_count -= 1
         if self.krool_access == "vanilla":
@@ -291,8 +275,6 @@ class Settings:
             random.shuffle(key_list)
             for x in range(required_key_count):
                 self.krool_keys_required.append(key_list[x])
-        if self.krool_access == "random_helm":
-            self.krool_keys_required.append(Events.HelmKeyTurnedIn)
 
         # Banana medals
         if self.random_medal_requirement:

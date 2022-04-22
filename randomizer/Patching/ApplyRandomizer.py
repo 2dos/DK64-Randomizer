@@ -155,7 +155,7 @@ def patching_response(responded_data):
         ROM().write(1)
 
     # Fast Hideout
-    if spoiler.settings.fast_start_hideout_helm:
+    if spoiler.settings.helm_setting == "skip_start":
         ROM().seek(sav + 0x031)
         ROM().write(1)
 

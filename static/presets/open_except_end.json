@@ -29,7 +29,7 @@
   "lumsy_keys_required": 8,
   "fast_start_beginning_of_game": true,
   "quality_of_life": true,
-  "fast_start_hideout_helm": true,
+  "helm_setting": "skip_start",
   "music_bgm": "default",
   "music_fanfares": "default",
   "music_events": "default",

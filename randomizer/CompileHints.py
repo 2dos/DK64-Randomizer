@@ -278,7 +278,7 @@ def compileHints(spoiler: Spoiler):
                 "important": False,
             },
             {
-                "name": "Saxapone Slam",
+                "name": "Saxophone Slam",
                 "key": 0x41,
                 "kong": 3,
                 "level": 0,
