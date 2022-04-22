@@ -151,7 +151,9 @@ void initHack(void) {
 		}
 		if (Rando.quality_of_life) {
 			*(int*)(0x80748010) = 0x8064F2F0; // Cancel Sandstorm
-			*(int*)(0x806BDC24) = 0; // Cancel Takeoff
+			*(short*)(0x80750680) = 0x22;
+			*(short*)(0x80750682) = 0x1;
+			*(int*)(0x806BDC24) = 0x0C17FCDE; // Change takeoff warp func
 			*(short*)(0x806BDC8C) = 0x1000; // Apply no cutscene to all keys
 			*(short*)(0x806BDC3C) = 0x1000; // Apply shorter timer to all keys
 		}
