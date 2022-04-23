@@ -24,15 +24,6 @@ LobbyEntrancePool = [
     Transitions.IslesMainToCavesLobby,
     Transitions.IslesMainToCastleLobby,
 ]
-LobbyExitPool = [
-    Transitions.IslesJapesLobbyToMain,
-    Transitions.IslesAztecLobbyToMain,
-    Transitions.IslesFactoryLobbyToMain,
-    Transitions.IslesGalleonLobbyToMain,
-    Transitions.IslesForestLobbyToMain,
-    Transitions.IslesCavesLobbyToMain,
-    Transitions.IslesCastleLobbyToMain,
-]
 
 # Root is the starting spawn, which is the main area of DK Isles.
 root = Regions.IslesMain
@@ -196,11 +187,11 @@ def ShuffleExits(settings: Settings):
     """Shuffle exit pools depending on settings."""
     # Set up front and back entrance pools for each setting
     # Assume all shuffled exits reachable by default
-    frontpool = []
-    backpool = []
     if settings.shuffle_loading_zones == "levels":
-        ShuffleLevelExits(settings, LobbyEntrancePool.copy(), LobbyEntrancePool.copy())
+        ShuffleLevelExits()
     elif settings.shuffle_loading_zones == "all":
+        frontpool = []
+        backpool = []
         AssumeExits(settings, frontpool, backpool, [x for x in ShufflableExits.keys()])
         # Shuffle each entrance pool
         ShuffleExitsInPool(settings, frontpool, backpool)
@@ -254,9 +245,16 @@ def UpdateLevelProgression(settings: Settings):
     settings.BossBananas = newBossBananas
 
 
-def ShuffleLevelExits(settings, frontpool, backpool):
-    """Shuffle exits within a  pool."""
-    random.shuffle(frontpool)
+def ShuffleLevelExits(newLevelOrder = None):
+    """Shuffle level exits according to new level order if provided, otherwise shuffle randomly."""
+    frontpool = LobbyEntrancePool.copy()
+    backpool = LobbyEntrancePool.copy()
+
+    if newLevelOrder is not None:
+        for i, level in newLevelOrder:
+            backpool[i] = LobbyEntrancePool[level]
+    else:
+        random.shuffle(frontpool)
 
     # For each back exit, select a random valid front entrance to attach to it
     # Assuming there are no inherently invalid level orders, but if there are, validation will check after this
