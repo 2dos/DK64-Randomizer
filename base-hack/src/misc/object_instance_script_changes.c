@@ -258,15 +258,16 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 			if (param2 == JAPES_DKCAGEGB) {
 				if (index == 0) {
 					if (checkFlag(DKJAPESCAGEGB_OPEN,0)) {
-						behaviour_pointer->current_state = 6;
-						behaviour_pointer->next_state = 6;
-						behaviour_pointer->unk_38 = unkObjFunction3(0,2,1,2,*(int*)(0x807F6220),*(int*)(0x807F6224),*(int*)(0x807F621C));
-						unkObjFunction4(behaviour_pointer->unk_38,1);
-						unkObjFunction5(behaviour_pointer->unk_38,1);
-						unkObjFunction6(behaviour_pointer->unk_38,5);
+						behaviour_pointer->current_state = 5;
+						behaviour_pointer->next_state = 5;
 					}
 				} else if (index == 1) {
 					setPermFlag(DKJAPESCAGEGB_OPEN);
+				} else if (index == 2) {
+					if (checkFlag(DKJAPESCAGEGB_OPEN,0)) {
+						behaviour_pointer->current_state = 6;
+						behaviour_pointer->next_state = 6;
+					}
 				}
 			} else if (param2 == JAPES_DKCAGESWITCH) {
 				if (checkFlag(DKJAPESCAGEGB_OPEN,0)) {
