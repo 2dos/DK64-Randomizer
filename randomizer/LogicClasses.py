@@ -152,10 +152,11 @@ class Region:
 class TransitionBack:
     """The exited side of a transition between regions."""
 
-    def __init__(self, regionId, exitName, reverse=None):
+    def __init__(self, regionId, exitName, spoilerName, reverse=None):
         """Initialize with given parameters."""
         self.regionId = regionId  # Destination region
         self.name = exitName
+        self.spoilerName = spoilerName
         self.reverse = reverse  # Indicates a reverse direction transition, if one exists
 
 
