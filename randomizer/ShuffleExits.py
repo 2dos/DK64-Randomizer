@@ -245,21 +245,21 @@ def UpdateLevelProgression(settings: Settings):
     settings.BossBananas = newBossBananas
 
 
-def ShuffleLevelExits(newLevelOrder = None):
+def ShuffleLevelExits(newLevelOrder:dict = None):
     """Shuffle level exits according to new level order if provided, otherwise shuffle randomly."""
     frontpool = LobbyEntrancePool.copy()
     backpool = LobbyEntrancePool.copy()
 
     if newLevelOrder is not None:
-        for i, level in newLevelOrder:
-            backpool[i] = LobbyEntrancePool[level]
+        for index, level in newLevelOrder.items():
+            backpool[index-1] = LobbyEntrancePool[level]
     else:
         random.shuffle(frontpool)
 
     # For each back exit, select a random valid front entrance to attach to it
     # Assuming there are no inherently invalid level orders, but if there are, validation will check after this
     while len(backpool) > 0:
-        backId = backpool.pop(0)
+        backId = backpool.pop()
         backExit = ShufflableExits[backId]
         # Select a random origin
         frontId = frontpool.pop()

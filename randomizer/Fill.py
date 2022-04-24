@@ -613,6 +613,7 @@ def ShuffleKongsAndLevels(spoiler):
     # 3. Determine the rest of the levels randomly
     newLevelOrder = ShuffleLevelOrderWithRestrictions(spoiler.settings)
     ShuffleExits.ShuffleLevelExits(newLevelOrder)
+    spoiler.UpdateExits()
     # 4. Determine the kong locations and assign puzzles to kongs already unlocked
 
     WipeProgressionTotals(spoiler.settings)
@@ -639,46 +640,48 @@ def ShuffleLevelOrderWithRestrictions(settings:Settings):
     levelIndexChoices.remove(aztecIndex)
 
     # Decide where Japes will go
+    japesOptions = []
     # If starting kong is Chunky, Japes needs to be in level 1-2 (until we can get Chunky to Free kong in Tiny Temple)
     if settings.starting_kong == Kongs.chunky:
-        japesIndex = random.choice(levelIndexChoices.intersection({1,2}))
+        japesOptions = list(levelIndexChoices.intersection({1,2}))
     # If starting kong is Donkey or Diddy & Aztec is not in level 1-2, Japes needs to be in 1-2 (since they cannot free kong in Factory)
     elif (settings.starting_kong == Kongs.donkey or settings.starting_kong == Kongs.diddy) and aztecIndex > 2:
-        japesIndex = random.choice(levelIndexChoices.intersection({1,2}))
+        japesOptions = list(levelIndexChoices.intersection({1,2}))
     # If Aztec is level 4, both of Japes/Factory need to be in level 1-3
     elif aztecIndex == 4:
-        japesIndex = random.choice(levelIndexChoices.intersection({1,3}))
+        japesOptions = list(levelIndexChoices.intersection({1,3}))
     else:
-        japesIndex = random.choice(levelIndexChoices.intersection({1,5}))
+        japesOptions = list(levelIndexChoices.intersection({1,5}))
+    japesIndex = random.choice(japesOptions)
     levelIndexChoices.remove(japesIndex)
 
     # Decide where Factory will go
+    factoryOptions = []
     # If Aztec is level 4, both of Japes/Factory need to be in level 1-3
     if aztecIndex == 4:
-        factoryIndex = random.choice(levelIndexChoices.intersection({1,3}))
+        factoryOptions = list(levelIndexChoices.intersection({1,3}))
     # If Aztec is level 3, one of Japes/Factory needs to be in level 1-2 and other in level 1-5
     elif aztecIndex == 3:
         if japesIndex < 3:
-            factoryIndex = random.choice(levelIndexChoices.intersection({1,5}))
+            factoryOptions = list(levelIndexChoices.intersection({1,5}))
         else:
-            factoryIndex = random.choice(levelIndexChoices.intersection({1,2}))
+            factoryOptions = list(levelIndexChoices.intersection({1,2}))
     # If Aztec is level 1 or 2, one of Japes/Factory needs to be in level 1-4 and other in level 1-5
     else:
         if japesIndex < 5:
-            factoryIndex = random.choice(levelIndexChoices.intersection({1,5}))
+            factoryOptions = list(levelIndexChoices.intersection({1,5}))
         else:
-            factoryIndex = random.choice(levelIndexChoices.intersection({1,4}))
+            factoryOptions = list(levelIndexChoices.intersection({1,4}))
+    factoryIndex = random.choice(factoryOptions)
     levelIndexChoices.remove(factoryIndex)
 
     # Decide the remaining level order randomly
-    galleonIndex = random.choice(levelIndexChoices)
-    levelIndexChoices.remove(galleonIndex)
-    forestIndex = random.choice(levelIndexChoices)
-    levelIndexChoices.remove(forestIndex)
-    cavesIndex = random.choice(levelIndexChoices)
-    levelIndexChoices.remove(cavesIndex)
-    castleIndex = random.choice(levelIndexChoices)
-    levelIndexChoices.remove(castleIndex)
+    remainingLevels = list(levelIndexChoices)
+    random.shuffle(remainingLevels)
+    galleonIndex = remainingLevels.pop()
+    forestIndex = remainingLevels.pop()
+    cavesIndex = remainingLevels.pop()
+    castleIndex = remainingLevels.pop()
     newLevelOrder = {
         japesIndex: Levels.JungleJapes,
         aztecIndex: Levels.AngryAztec,

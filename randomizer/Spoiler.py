@@ -27,6 +27,7 @@ class Spoiler:
         """Initialize spoiler just with settings."""
         self.settings: Settings = settings
         self.playthrough = {}
+        self.woth = {}
         self.shuffled_barrel_data = {}
         self.shuffled_exit_data = {}
         self.shuffled_exit_instructions = []
