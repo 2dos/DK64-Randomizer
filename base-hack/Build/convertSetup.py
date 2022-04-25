@@ -108,21 +108,21 @@ def modify(file_name, map_index):
                 for x in range(0x30 - 0x2A):
                     repl_byte += byte_stream[x + 0x2A].to_bytes(1, "big")
                 byte_stream = repl_byte
-            if (map_index == 0x1A and _id == 0x24):
+            if map_index == 0x1A and _id == 0x24:
                 repl_byte = b""
-                coord = [0,0,0]
+                coord = [0, 0, 0]
                 # raw_coords = [1418,725,6.5,522.716]
-                raw_coords = [1455.853,6.5,522.716]
+                raw_coords = [1455.853, 6.5, 522.716]
                 coord[0] = int(float_to_hex(raw_coords[0]), 16)
                 coord[1] = int(float_to_hex(raw_coords[1]), 16)
                 coord[2] = int(float_to_hex(raw_coords[2]), 16)
                 _ay = int(float_to_hex(0), 16)
                 for x in coord:
-                    repl_byte += x.to_bytes(4,"big")
-                for x in range(0x1C-0xC):
-                    repl_byte += byte_stream[x + 0xC].to_bytes(1,"big")
+                    repl_byte += x.to_bytes(4, "big")
+                for x in range(0x1C - 0xC):
+                    repl_byte += byte_stream[x + 0xC].to_bytes(1, "big")
                 repl_byte += _ay.to_bytes(4, "big")
-                for x in range(0x30-0x20):
+                for x in range(0x30 - 0x20):
                     repl_byte += byte_stream[x + 0x20].to_bytes(1, "big")
                 byte_stream = repl_byte
             data = {

@@ -745,18 +745,18 @@ with open(newROMName, "r+b") as fh:
     fh.write((2).to_bytes(1, "big"))
 
     vanilla_coin_reqs = [
-        {"offset":0x12C,"coins":50},
-        {"offset":0x12D,"coins":50},
-        {"offset":0x12E,"coins":10},
-        {"offset":0x12F,"coins":10},
-        {"offset":0x130,"coins":10},
-        {"offset":0x131,"coins":50},
-        {"offset":0x132,"coins":50},
-        {"offset":0x133,"coins":25},
+        {"offset": 0x12C, "coins": 50},
+        {"offset": 0x12D, "coins": 50},
+        {"offset": 0x12E, "coins": 10},
+        {"offset": 0x12F, "coins": 10},
+        {"offset": 0x130, "coins": 10},
+        {"offset": 0x131, "coins": 50},
+        {"offset": 0x132, "coins": 50},
+        {"offset": 0x133, "coins": 25},
     ]
     for coinreq in vanilla_coin_reqs:
         fh.seek(0x1FED020 + coinreq["offset"])
-        fh.write(coinreq["coins"].to_bytes(1,"big"))
+        fh.write(coinreq["coins"].to_bytes(1, "big"))
     for x in hash_icons:
         pth = f"assets/Non-Code/hash/{x}"
         if os.path.exists(pth):
