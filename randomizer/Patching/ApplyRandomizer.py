@@ -39,6 +39,7 @@ def patching_response(responded_data):
         if loaded_data.get("error"):
             error = loaded_data.get("error")
             ProgressBar().set_class("bg-danger")
+            js.toast_alert(error)
             ProgressBar().update_progress(10, f"Error: {error}")
             ProgressBar().reset()
             return None
