@@ -112,8 +112,14 @@ int getPressedSwitch(behaviour_data* behaviour_pointer, int bullet_type, int ID)
 int checkControlState(int target_control_state) {
 	if (Player) {
 		if (Player->control_state == target_control_state) {
-			if (Player->control_state_progress == 1) {
-				return 1;
+			if (target_control_state == 0x24) {
+				if (Player->control_state_progress == 2) {
+					return 1;
+				}
+			} else {
+				if (Player->control_state_progress == 1) {
+					return 1;
+				}
 			}
 		}
 	}
@@ -458,9 +464,9 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 			break;
 		case TINY_TEMPLE:
 			if (param2 == TTEMPLE_SWITCH) {
-				return Character == Rando.free_source_ttemple;
+				return Character == 1;
 			} else if (param2 == TTEMPLE_GUITARPAD) {
-				return Character == Rando.free_source_ttemple;
+				return Character == 1;
 			} else if (param2 == TTEMPLE_BAMBOOGATE) {
 				if (index == 0) {
 					return checkFlag(kong_flags[(int)Rando.free_target_ttemple],0);

@@ -49,6 +49,9 @@ void cFuncLoop(void) {
 			}
 		}
 	}
+	if (CurrentMap == 0x50) {
+		colorMenuSky();
+	}
 	cancelMoveSoftlock();
 	fixDKFreeSoftlock();
 	callParentMapFilter();

@@ -213,8 +213,8 @@ class Settings:
             else:
                 self.diddy_freeing_kong = random.choice(kongs)
             self.lanky_freeing_kong = random.choice(kongs)
-            self.tiny_freeing_kong = Kongs.diddy
-            self.chunky_freeing_kong = random.choice([Kongs.lanky, Kongs.tiny])
+            self.tiny_freeing_kong = random.choice([Kongs.diddy, Kongs.chunky])
+            self.chunky_freeing_kong = random.choice(kongs)
         else:
             self.starting_kong = Kongs.donkey
             self.diddy_freeing_kong = Kongs.donkey

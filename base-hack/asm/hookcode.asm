@@ -631,6 +631,5 @@ START_HOOK:
 		J 			0x806F9F90
 		OR 			s0, v0, r0
 
-
 .align 0x10
 END_HOOK:

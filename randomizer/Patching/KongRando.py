@@ -14,6 +14,7 @@ def apply_kongrando_cosmetic(spoiler: Spoiler):
         gunswitches = [0x129, 0x126, 0x128, 0x127, 0x125]
         greenslamswitches = [0x94, 0x93, 0x95, 0x96, 0x92]
         instrumentpads = [0xA8, 0xA9, 0xAC, 0xAA, 0xAB]
+        forceSwitches = [0xE3,0xE3,0xE3,0xE3,0x70]
         actors = [Enemies.CutsceneDK, Enemies.CutsceneDiddy, Enemies.CutsceneLanky, Enemies.CutsceneTiny, Enemies.CutsceneChunky]
 
         llama_entrance_switch = []
@@ -62,14 +63,18 @@ def apply_kongrando_cosmetic(spoiler: Spoiler):
             {
                 "map_index": 0x10,
                 "model2_changes": [
+                    # {
+                    #     "index": 0x0,
+                    #     "new_type": greenslamswitches[spoiler.shuffled_kong_placement["Tiny Temple"]["puzzle"]["kong"]],
+                    # },
+                    # {
+                    #     "index": 0x4,
+                    #     "new_type": instrumentpads[spoiler.shuffled_kong_placement["Tiny Temple"]["puzzle"]["kong"]],
+                    # },
                     {
-                        "index": 0x0,
-                        "new_type": greenslamswitches[spoiler.shuffled_kong_placement["Tiny Temple"]["puzzle"]["kong"]],
-                    },
-                    {
-                        "index": 0x4,
-                        "new_type": instrumentpads[spoiler.shuffled_kong_placement["Tiny Temple"]["puzzle"]["kong"]],
-                    },
+                        "index": 0x14,
+                        "new_type": forceSwitches[spoiler.shuffled_kong_placement["Tiny Temple"]["puzzle"]["kong"]]
+                    }
                 ],
                 "charspawner_changes": [
                     {"type": Enemies.CutsceneTiny, "new_type": actors[spoiler.shuffled_kong_placement["Tiny Temple"]["locked"]["kong"]]},
