@@ -448,6 +448,10 @@ class LogicVarHolder:
                 return False
         return True
 
+    def IsBossReachable(self, level):
+        """Check that the banana requirement is met."""
+        return sum(self.ColoredBananas[level]) >= self.settings.BossBananas[level]
+
     def IsBossBeatable(self, level):
         """Return true if the boss for a given level is beatable according to boss location rando and boss kong rando."""
         requiredKong = self.settings.boss_kongs[level]
