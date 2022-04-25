@@ -138,6 +138,7 @@ void initHack(void) {
 		style2Mtx[0x0] = base_mtx;
 		style2Mtx[0x5] = base_mtx;
 		style2Mtx[0xF] = 10;
+		writeCoinRequirements(0);
 		if (Rando.warp_to_isles_enabled) {
 			// Pause Menu Exit To Isles Slot
 			*(short*)(0x806A85EE) = 4; // Yes/No Prompt
@@ -171,6 +172,9 @@ void initHack(void) {
 		// Cancel Tamper
 		*(int*)(0x8060AEFC) = 0; // NOP
 		*(int*)(0x80611788) = 0; // NOP
+		// Fix HUD if DK not free
+		*(int*)(0x806FA324) = 0; // NOP
+		*(short*)(0x807505AE) = 385; // Set Flag to DK Flag
 		LoadedHooks = 1;
 	}
 }

@@ -358,11 +358,8 @@ class LogicVarHolder:
         return self.HasGun(self.settings.lanky_freeing_kong) and self.HasInstrument(self.settings.lanky_freeing_kong)
 
     def CanFreeChunky(self):
-        """Check if Chunky can be freed, requires either orangstand or ponytail twirl."""
-        if self.settings.chunky_freeing_kong == Kongs.lanky:
-            return self.handstand and self.Slam and self.islanky
-        elif self.settings.chunky_freeing_kong == Kongs.tiny:
-            return self.twirl and self.Slam and self.istiny
+        """Check if Chunky can be freed."""
+        return self.Slam and self.IsKong(self.settings.chunky_freeing_kong)
 
     def UpdateCurrentRegionAccess(self, region):
         """Set access of current region."""

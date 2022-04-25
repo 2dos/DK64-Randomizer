@@ -10,6 +10,7 @@
 .importobj "obj/src_fixes_parent.o"
 .importobj "obj/src_fixes_quality_fixes.o"
 .importobj "obj/src_fixes_tag_anywhere.o"
+.importobj "obj/src_misc_aesthetic.o"
 .importobj "obj/src_misc_file_screen.o"
 .importobj "obj/src_misc_no_enemy_drops.o"
 .importobj "obj/src_misc_object_instance_script_changes.o"

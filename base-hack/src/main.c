@@ -49,6 +49,9 @@ void cFuncLoop(void) {
 			}
 		}
 	}
+	if (CurrentMap == 0x50) {
+		colorMenuSky();
+	}
 	cancelMoveSoftlock();
 	fixDKFreeSoftlock();
 	callParentMapFilter();
@@ -84,6 +87,9 @@ void cFuncLoop(void) {
 				openCoinDoor();
 				giveCollectables();
 				setPermFlag(0x346);
+				if (Rando.fast_start_helm == 2) {
+					setPermFlag(770);
+				}
 				Character = Rando.starting_kong;
 				StoredSettings.file_extra[(int)FileIndex].location_sss_purchased = 0;
 				StoredSettings.file_extra[(int)FileIndex].location_ab1_purchased = 0;
