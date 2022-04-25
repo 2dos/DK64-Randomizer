@@ -8,14 +8,14 @@ import randomizer.Logic as Logic
 from randomizer.Settings import Settings
 import randomizer.ShuffleExits as ShuffleExits
 from randomizer.Enums.Items import Items
-from randomizer.Enums.Kongs import Kongs
+from randomizer.Enums.Kongs import GetKongs, Kongs
 from randomizer.Enums.Levels import Levels
 from randomizer.Enums.Locations import Locations
 from randomizer.Enums.Regions import Regions
 from randomizer.Enums.SearchMode import SearchMode
 from randomizer.Enums.Transitions import Transitions
 from randomizer.Enums.Types import Types
-from randomizer.Lists.Item import ItemList
+from randomizer.Lists.Item import ItemList, KongFromItem
 from randomizer.Lists.Location import Location, LocationList
 from randomizer.Lists.Minigame import BarrelMetaData, MinigameRequirements
 from randomizer.Logic import LogicVarHolder, LogicVariables, STARTING_SLAM
@@ -351,11 +351,23 @@ def AssumedFill(settings, itemsToPlace, validLocations, ownedItems=[]):
                 else:
                     maxCoinsSpent[moveKong] -= movePrice
                     movePriceArray[moveKong] = movePrice
+        elif ItemList[item].type == Types.Kong:
+            ownedKongs = [KongFromItem(x) for x in owned if ItemList[x].type == Types.Kong]
+            ownedKongs.insert(0, settings.starting_kong)
         random.shuffle(validReachable)
         # Get a random, empty, reachable location
         for locationId in validReachable:
             # Atempt to place the item here
             LocationList[locationId].PlaceItem(item)
+            # When placing a kong, also decide who among the owned kongs can free them
+            if ItemList[item].type == Types.Kong:
+                # Choose the puzzle solver
+                if locationId == Locations.DiddyKong or locationId == Locations.ChunkyKong:
+                    settings.diddy_freeing_kong = random.choice(ownedKongs)
+                elif locationId == Locations.LankyKong:
+                    settings.lanky_freeing_kong = random.choice(list(set(ownedKongs).intersection([Kongs.donkey, Kongs.lanky, Kongs.tiny])))
+                elif locationId == Locations.TinyKong:
+                    settings.tiny_freeing_kong = random.choice(list(set(ownedKongs).intersection([Kongs.diddy])))
             # Check valid reachable after placing to see if it is broken
             # Need to re-assign owned items since the search adds a bunch of extras
             owned = itemsToPlace.copy()
@@ -608,6 +620,20 @@ def ShuffleMisc(spoiler):
 
 def ShuffleKongsAndLevels(spoiler):
     '''Shuffle Kongs and Levels simultaneously accounting for restrictions.'''
+    # All methods here follow this Kongs vs level progression rule:
+    # Must be able to have 2 kongs no later than level 2
+    # Must be able to have 3 kongs no later than level 3
+    # Must be able to have 4 kongs no later than level 4
+    # Must be able to have 5 kongs no later than level 5
+    # Valid Example:
+    #   1. Caves - No kongs found
+    #   2. Aztec - Can free 2nd kong here, other kong is move locked
+    #   3. Japes - Can free 3rd kong here
+    #   4. Galleon - Find move to free other kong from aztec
+    #   5. Factory - Find last kong
+    #   6. Castle
+    #   7. Fungi
+    # ALGORITHM START
     # 1. Determine Starting Kong (done previously in Settings.resolve_settings)
     # 2. Determine where Japes, Aztec, and Factory fit in level order, with some restrictions
     # 3. Determine the rest of the levels randomly
@@ -615,12 +641,13 @@ def ShuffleKongsAndLevels(spoiler):
     ShuffleExits.ShuffleLevelExits(newLevelOrder)
     spoiler.UpdateExits()
     # 4. Determine the kong locations and assign puzzles to kongs already unlocked
+    ShuffleKongLocations(spoiler.settings, newLevelOrder)
+    
+    # 5. Place the moves required to free the kongs or make progress in the beginning
 
     WipeProgressionTotals(spoiler.settings)
 
-    # 5. Fill the moves required to free the kongs first
-    
-    # 6. Fill the rest of the moves
+    # 6. Fill the rest of the moves normally (shared, then the rest)
 
     # 7. Perform Boss Location & Boss Kong rando, ensuring the first boss can be beaten with an unlocked kong and so on.
 
@@ -641,14 +668,8 @@ def ShuffleLevelOrderWithRestrictions(settings:Settings):
 
     # Decide where Japes will go
     japesOptions = []
-    # If starting kong is Chunky, Japes needs to be in level 1-2 (until we can get Chunky to Free kong in Tiny Temple)
-    if settings.starting_kong == Kongs.chunky:
-        japesOptions = list(levelIndexChoices.intersection({1,2}))
-    # If starting kong is Donkey or Diddy & Aztec is not in level 1-2, Japes needs to be in 1-2 (since they cannot free kong in Factory)
-    elif (settings.starting_kong == Kongs.donkey or settings.starting_kong == Kongs.diddy) and aztecIndex > 2:
-        japesOptions = list(levelIndexChoices.intersection({1,2}))
     # If Aztec is level 4, both of Japes/Factory need to be in level 1-3
-    elif aztecIndex == 4:
+    if aztecIndex == 4:
         japesOptions = list(levelIndexChoices.intersection({1,3}))
     else:
         japesOptions = list(levelIndexChoices.intersection({1,5}))
@@ -657,8 +678,11 @@ def ShuffleLevelOrderWithRestrictions(settings:Settings):
 
     # Decide where Factory will go
     factoryOptions = []
+    # If starting kong is Chunky, one of Japes/Factory needs to be in level 1-2 (until we can get Chunky to Free kong in Tiny Temple)
+    if settings.starting_kong == Kongs.chunky and japesIndex > 2:
+        factoryOptions = list(levelIndexChoices.intersection({1,2}))
     # If Aztec is level 4, both of Japes/Factory need to be in level 1-3
-    if aztecIndex == 4:
+    elif aztecIndex == 4:
         factoryOptions = list(levelIndexChoices.intersection({1,3}))
     # If Aztec is level 3, one of Japes/Factory needs to be in level 1-2 and other in level 1-5
     elif aztecIndex == 3:
@@ -692,6 +716,32 @@ def ShuffleLevelOrderWithRestrictions(settings:Settings):
         castleIndex: Levels.CreepyCastle,
     }
     return newLevelOrder
+
+
+def ShuffleKongLocations(settings:Settings, levelOrder):
+    '''Shuffle kong locations and kong puzzles accounting for the level order.'''
+    allKongs = GetKongs()
+    # Consider available levels where we must find at least 1 new kong
+    ownedKongs = []
+    ownedKongs.append(settings.starting_kong)
+
+
+
+def GetAccessibleKongLocations(levels:list, ownedKongs:list):
+    '''Get all kong locations within the provided levels which are reachable by owned kongs.'''
+    kongLocations = []
+    for level in levels:
+        if level == Levels.JungleJapes:
+            kongLocations.append(Locations.DiddyKong)
+        elif level == Levels.AngryAztec:
+            if Kongs.donkey in ownedKongs or Kongs.lanky in ownedKongs or Kongs.tiny in ownedKongs:
+                kongLocations.append(Locations.LankyKong)
+            if Kongs.diddy in ownedKongs:
+                kongLocations.append(Locations.TinyKong)
+        elif level == Levels.FranticFactory:
+            if Kongs.lanky in ownedKongs or Kongs.tiny in ownedKongs:
+                kongLocations.append(Locations.ChunkyKong)
+    return kongLocations
 
 
 def WipeProgressionTotals(settings:Settings):
