@@ -161,6 +161,9 @@ def patching_response(responded_data):
     if spoiler.settings.helm_setting == "skip_start":
         ROM().seek(sav + 0x031)
         ROM().write(1)
+    elif spoiler.settings.helm_setting == "skip_all":
+        ROM().seek(sav + 0x031)
+        ROM().write(2)
 
     # Crown Door Open
     if spoiler.settings.crown_door_open:
