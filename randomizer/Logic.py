@@ -449,7 +449,7 @@ class LogicVarHolder:
         return True
 
     def IsBossReachable(self, level):
-        """Check that the banana requirement is met."""
+        """Check if the boss banana requirement is met."""
         return sum(self.ColoredBananas[level]) >= self.settings.BossBananas[level]
 
     def IsBossBeatable(self, level):
@@ -462,6 +462,10 @@ class LogicVarHolder:
         elif bossFight == Maps.FungiBoss:
             hasRequiredMoves = self.hunkyChunky
         return self.IsKong(requiredKong) and hasRequiredMoves
+
+    def IsLevelEnterable(self, level):
+        """Check if level entry requirement is met."""
+        return self.GoldenBananas >= self.settings.EntryGBs[level]
 
 
 LogicVariables = LogicVarHolder()

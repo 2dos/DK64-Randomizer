@@ -245,14 +245,14 @@ def UpdateLevelProgression(settings: Settings):
     settings.BossBananas = newBossBananas
 
 
-def ShuffleLevelExits(newLevelOrder:dict = None):
+def ShuffleLevelExits(newLevelOrder: dict = None):
     """Shuffle level exits according to new level order if provided, otherwise shuffle randomly."""
     frontpool = LobbyEntrancePool.copy()
     backpool = LobbyEntrancePool.copy()
 
     if newLevelOrder is not None:
         for index, level in newLevelOrder.items():
-            backpool[index-1] = LobbyEntrancePool[level]
+            backpool[index - 1] = LobbyEntrancePool[level]
     else:
         random.shuffle(frontpool)
 

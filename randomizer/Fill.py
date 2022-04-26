@@ -619,7 +619,7 @@ def ShuffleMisc(spoiler):
 
 
 def ShuffleKongsAndLevels(spoiler):
-    '''Shuffle Kongs and Levels simultaneously accounting for restrictions.'''
+    """Shuffle Kongs and Levels simultaneously accounting for restrictions."""
     # All methods here follow this Kongs vs level progression rule:
     # Must be able to have 2 kongs no later than level 2
     # Must be able to have 3 kongs no later than level 3
@@ -640,39 +640,38 @@ def ShuffleKongsAndLevels(spoiler):
     newLevelOrder = ShuffleLevelOrderWithRestrictions(spoiler.settings)
     ShuffleExits.ShuffleLevelExits(newLevelOrder)
     spoiler.UpdateExits()
-    # 4. Determine the kong locations and assign puzzles to kongs already unlocked
-    ShuffleKongLocations(spoiler.settings, newLevelOrder)
-    
-    # 5. Place the moves required to free the kongs or make progress in the beginning
+    # 4. TODO: Change level access logic to require a number of kongs to be free
 
+    # Assume all T&S and B.Lockers are zero for now
     WipeProgressionTotals(spoiler.settings)
+    # 5. Fill the kongs
 
-    # 6. Fill the rest of the moves normally (shared, then the rest)
+    # 6. Fill the moves
 
     # 7. Perform Boss Location & Boss Kong rando, ensuring the first boss can be beaten with an unlocked kong and so on.
 
     # 8. Determine upper limits for the B. Locker and T&S amounts based on accessible bananas & GBs, and pick random values capped by these.
 
 
-def ShuffleLevelOrderWithRestrictions(settings:Settings):
-    '''Determine level order given starting kong and the need to find more kongs along the way.'''
-    levelIndexChoices = {1,2,3,4,5,6,7}
+def ShuffleLevelOrderWithRestrictions(settings: Settings):
+    """Determine level order given starting kong and the need to find more kongs along the way."""
+    levelIndexChoices = {1, 2, 3, 4, 5, 6, 7}
 
     # Decide where Aztec will go
     # Diddy can reasonably make progress if Aztec is first level
     if settings.starting_kong == Kongs.diddy:
-        aztecIndex = random.randint(1,4)
+        aztecIndex = random.randint(1, 4)
     else:
-        aztecIndex = random.randint(2,4)
+        aztecIndex = random.randint(2, 4)
     levelIndexChoices.remove(aztecIndex)
 
     # Decide where Japes will go
     japesOptions = []
     # If Aztec is level 4, both of Japes/Factory need to be in level 1-3
     if aztecIndex == 4:
-        japesOptions = list(levelIndexChoices.intersection({1,3}))
+        japesOptions = list(levelIndexChoices.intersection({1, 3}))
     else:
-        japesOptions = list(levelIndexChoices.intersection({1,5}))
+        japesOptions = list(levelIndexChoices.intersection({1, 5}))
     japesIndex = random.choice(japesOptions)
     levelIndexChoices.remove(japesIndex)
 
@@ -680,22 +679,22 @@ def ShuffleLevelOrderWithRestrictions(settings:Settings):
     factoryOptions = []
     # If starting kong is Chunky, one of Japes/Factory needs to be in level 1-2 (until we can get Chunky to Free kong in Tiny Temple)
     if settings.starting_kong == Kongs.chunky and japesIndex > 2:
-        factoryOptions = list(levelIndexChoices.intersection({1,2}))
+        factoryOptions = list(levelIndexChoices.intersection({1, 2}))
     # If Aztec is level 4, both of Japes/Factory need to be in level 1-3
     elif aztecIndex == 4:
-        factoryOptions = list(levelIndexChoices.intersection({1,3}))
+        factoryOptions = list(levelIndexChoices.intersection({1, 3}))
     # If Aztec is level 3, one of Japes/Factory needs to be in level 1-2 and other in level 1-5
     elif aztecIndex == 3:
         if japesIndex < 3:
-            factoryOptions = list(levelIndexChoices.intersection({1,5}))
+            factoryOptions = list(levelIndexChoices.intersection({1, 5}))
         else:
-            factoryOptions = list(levelIndexChoices.intersection({1,2}))
+            factoryOptions = list(levelIndexChoices.intersection({1, 2}))
     # If Aztec is level 1 or 2, one of Japes/Factory needs to be in level 1-4 and other in level 1-5
     else:
         if japesIndex < 5:
-            factoryOptions = list(levelIndexChoices.intersection({1,5}))
+            factoryOptions = list(levelIndexChoices.intersection({1, 5}))
         else:
-            factoryOptions = list(levelIndexChoices.intersection({1,4}))
+            factoryOptions = list(levelIndexChoices.intersection({1, 4}))
     factoryIndex = random.choice(factoryOptions)
     levelIndexChoices.remove(factoryIndex)
 
@@ -718,17 +717,8 @@ def ShuffleLevelOrderWithRestrictions(settings:Settings):
     return newLevelOrder
 
 
-def ShuffleKongLocations(settings:Settings, levelOrder):
-    '''Shuffle kong locations and kong puzzles accounting for the level order.'''
-    allKongs = GetKongs()
-    # Consider available levels where we must find at least 1 new kong
-    ownedKongs = []
-    ownedKongs.append(settings.starting_kong)
-
-
-
-def GetAccessibleKongLocations(levels:list, ownedKongs:list):
-    '''Get all kong locations within the provided levels which are reachable by owned kongs.'''
+def GetAccessibleKongLocations(levels: list, ownedKongs: list):
+    """Get all kong locations within the provided levels which are reachable by owned kongs."""
     kongLocations = []
     for level in levels:
         if level == Levels.JungleJapes:
@@ -744,9 +734,9 @@ def GetAccessibleKongLocations(levels:list, ownedKongs:list):
     return kongLocations
 
 
-def WipeProgressionTotals(settings:Settings):
-    '''Wipe out progression totals to assume access through main 7 levels.'''
-    for i in range(0,6):
+def WipeProgressionTotals(settings: Settings):
+    """Wipe out progression totals to assume access through main 7 levels."""
+    for i in range(0, 6):
         settings.EntryGBs[i] = 0
         settings.BossBananas[i] = 0
 
@@ -785,7 +775,7 @@ def Generate_Spoiler(spoiler):
         # Handle Item Fill
         if spoiler.settings.shuffle_items == "all":
             Fill(spoiler)
-        elif (spoiler.settings.shuffle_items == "moves" or spoiler.settings.kong_rando):
+        elif spoiler.settings.shuffle_items == "moves" or spoiler.settings.kong_rando:
             ShuffleMisc(spoiler)
         else:
             # Just check if normal item locations are beatable with given settings
