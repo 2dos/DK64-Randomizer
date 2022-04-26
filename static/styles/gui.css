@@ -21,13 +21,31 @@ body {
   background-attachment: scroll;
   background-size: 45%;
 }
-.center,
-.form-check {
+
+.center {
   text-align: center;
   margin-left: auto;
   margin-right: auto;
   margin-bottom: 20px;
   margin-top: 20px;
+}
+
+.form-check {
+  text-align: left;
+  padding-left: 80px;
+  margin-bottom: 20px;
+  margin-top: 20px;
+}
+
+.form-title-select {
+  line-height: 48px;
+  margin-right: 5px;
+  display: flex;
+  white-space: nowrap;
+}
+
+.form-title-select p {
+  padding-right: 5px;
 }
 
 .center-div {
@@ -107,9 +125,11 @@ footer {
   border-bottom: 4px solid midnightblue;
   border-radius: 3px;
 }
+
 div {
   color: #e3e3e3;
 }
+
 .checkboxes label {
   width: 35%;
   text-align: left;
@@ -117,6 +137,7 @@ div {
   margin-right: auto;
   position: relative;
 }
+
 .checkbox-only label {
   left: 100px;
 }
