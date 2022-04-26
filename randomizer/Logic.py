@@ -25,6 +25,8 @@ from randomizer.Enums.Levels import Levels
 from randomizer.Enums.Locations import Locations
 from randomizer.Lists.Location import Location, LocationList
 from randomizer.Lists.MapsAndExits import Maps
+from randomizer.Lists.ShufflableExit import ShufflableExits
+from randomizer.Lists.LevelInfo import LevelInfoList
 from randomizer.Prices import CanBuy, GetPriceOfMoveItem
 
 
@@ -450,7 +452,18 @@ class LogicVarHolder:
 
     def IsBossReachable(self, level):
         """Check if the boss banana requirement is met."""
-        return sum(self.ColoredBananas[level]) >= self.settings.BossBananas[level]
+        return self.HasEnoughKongs(level) and sum(self.ColoredBananas[level]) >= self.settings.BossBananas[level]
+
+    def HasEnoughKongs(self, level):
+        """Check if kongs are required for progression, do we have enough to reach the given level."""
+        if self.settings.kongs_for_progression:
+            # Figure out where this level fits in the progression
+            lobbyExit = ShufflableExits[LevelInfoList[level].TransitionsFrom].shuffledId
+            levelIndex = [key for key, item in LevelInfoList.items() if item.TransitionsFrom == lobbyExit][0]
+            # Must have sufficient kongs freed to make forward progress
+            return len(self.GetKongs()) >= levelIndex
+        else:
+            return True
 
     def IsBossBeatable(self, level):
         """Return true if the boss for a given level is beatable according to boss location rando and boss kong rando."""
@@ -465,7 +478,7 @@ class LogicVarHolder:
 
     def IsLevelEnterable(self, level):
         """Check if level entry requirement is met."""
-        return self.GoldenBananas >= self.settings.EntryGBs[level]
+        return self.HasEnoughKongs(level - 1) and self.GoldenBananas >= self.settings.EntryGBs[level]
 
 
 LogicVariables = LogicVarHolder()

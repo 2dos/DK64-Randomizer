@@ -354,6 +354,9 @@ def AssumedFill(settings, itemsToPlace, validLocations, ownedItems=[]):
         elif ItemList[item].type == Types.Kong:
             ownedKongs = [KongFromItem(x) for x in owned if ItemList[x].type == Types.Kong]
             ownedKongs.insert(0, settings.starting_kong)
+            kongBeingPlaced = KongFromItem(item)
+            if kongBeingPlaced in ownedKongs:
+                ownedKongs.remove(kongBeingPlaced)  # Cannot free with the kong being placed
         random.shuffle(validReachable)
         # Get a random, empty, reachable location
         for locationId in validReachable:
@@ -365,9 +368,10 @@ def AssumedFill(settings, itemsToPlace, validLocations, ownedItems=[]):
                 if locationId == Locations.DiddyKong or locationId == Locations.ChunkyKong:
                     settings.diddy_freeing_kong = random.choice(ownedKongs)
                 elif locationId == Locations.LankyKong:
+                    # TODO: see if we can open this to all kongs
                     settings.lanky_freeing_kong = random.choice(list(set(ownedKongs).intersection([Kongs.donkey, Kongs.lanky, Kongs.tiny])))
                 elif locationId == Locations.TinyKong:
-                    settings.tiny_freeing_kong = random.choice(list(set(ownedKongs).intersection([Kongs.diddy])))
+                    settings.tiny_freeing_kong = random.choice(list(set(ownedKongs).intersection([Kongs.diddy, Kongs.chunky])))
             # Check valid reachable after placing to see if it is broken
             # Need to re-assign owned items since the search adds a bunch of extras
             owned = itemsToPlace.copy()
