@@ -94,6 +94,7 @@ int getMoveCountInShop(int shop_index) {
 
 typedef struct counter_paad {
 	/* 0x000 */ void* image_slots[3];
+	/* 0x00C */ behaviour_data* linked_behaviour;
 } counter_paad;
 
 #define IMG_WIDTH 32
@@ -152,27 +153,38 @@ int getClosestShop(void) {
 	unsigned int dists[3] = {0xFFFFFFFF,0xFFFFFFFF,0xFFFFFFFF};
 	int* m2location = ObjectModel2Pointer;
 	int found_counter = 0;
+	behaviour_data* behavs[3] = {};
+	counter_paad* paad = CurrentActorPointer_0->paad;
 	for (int i = 0; i < ObjectModel2Count; i++) {
 		if (found_counter < 3) {
 			ModelTwoData* _object = getObjectArrayAddr(m2location,0x90,i);
 			if (_object->object_type == 0x73) {
 				dists[0] = getActorModelTwoDist(_object);
+				behavs[0] = _object->behaviour_pointer;
 				found_counter += 1;
 			} else if (_object->object_type == 0x7A) {
 				dists[1] = getActorModelTwoDist(_object);
+				behavs[1] = _object->behaviour_pointer;
 				found_counter += 1;
 			} else if (_object->object_type == 0x124) {
 				dists[2] = getActorModelTwoDist(_object);
+				behavs[2] = _object->behaviour_pointer;
 				found_counter += 1;
 			}
 		}
 	}
+	int closest_index = 0;
 	if ((dists[2] < dists[1]) && (dists[2] < dists[0])) {
-		return 2;
+		paad->linked_behaviour = behavs[2];
+		closest_index = 2;
 	} else if ((dists[1] < dists[0]) && (dists[1] < dists[2])) {
-		return 1;
+		paad->linked_behaviour = behavs[1];
+		closest_index = 1;
 	}
-	return 0;
+	if (found_counter > 0) {
+		paad->linked_behaviour = behavs[closest_index];
+	}
+	return closest_index;
 }
 
 void newCounterCode(void) {
@@ -188,7 +200,7 @@ void newCounterCode(void) {
 			CurrentActorPointer_0->rgb_mask[1] = getMoveCountInShop(CurrentActorPointer_0->rgb_mask[0] & 0xF);
 			updateCounterDisplay();
 			if (CurrentActorPointer_0->rgb_mask[1] == 0) {
-				deleteActorContainer(CurrentActorPointer_0);
+				paad->image_slots[1] = loadFontTexture_Counter(paad->image_slots[1],7);
 			}
 		} else {
 			deleteActorContainer(CurrentActorPointer_0);
@@ -199,6 +211,13 @@ void newCounterCode(void) {
 			if (lim > 1) {
 				CurrentActorPointer_0->rgb_mask[2] = (CurrentActorPointer_0->rgb_mask[2] + 1) % lim;
 				updateCounterDisplay();
+			}
+		}
+		if (paad->linked_behaviour) {
+			if (paad->linked_behaviour->current_state == 0xC) {
+				CurrentActorPointer_0->obj_props_bitfield |= 0x4;
+			} else {
+				CurrentActorPointer_0->obj_props_bitfield &= 0xFFFFFFFB;
 			}
 		}
 		if (CurrentMap == 0x1E) {

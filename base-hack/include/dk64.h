@@ -312,3 +312,4 @@ extern char permaLossMode;
 extern char preventTagSpawn;
 extern char bonusAutocomplete;
 extern void* StoredCounterTextures[7];
+extern char QoLOn;

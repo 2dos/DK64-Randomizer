@@ -16,28 +16,42 @@ from text_encoder import writeText
 # move_hints = [
 #     {
 #         "move": "Baboon Blast",
-#         "cranky": "I'VE PERFECTED ANOTHER POTION, DONKEY. THIS ONE WILL MAKE YOU BREAK THE DONKEY AIR-SPEED RECORD.",
-#         "funky": "PAY UP DUDE, FUNKY'S GOT A NEW MOVE FOR YOU WHICH WILL ENABLE YOU TO LAUNCH INTO THE STRATOSPHERE.",
-#         "candy": "COME ON NOW DONKEY, GIVE ME SOME OF THOSE COINS AND I CAN HELP YOU MOVE UP INTO THE SKY."
+#         "kong": "Donkey",
+#         "cranky": "THIS ONE WILL MAKE YOU BREAK THE DONKEY AIR-SPEED RECORD.",
+#         "funky": " WHICH WILL ENABLE YOU TO LAUNCH INTO THE STRATOSPHERE.",
+#         "candy": "I CAN HELP YOU MOVE UP INTO THE SKY."
 #     },
 #     {
 #         "move": "Strong Kong",
-#         "cranky": "I'VE PERFECTED ANOTHER POTION, DONKEY. YOU MAY BE BIGGER AND FASTER, BUT THIS WILL HELP YOU FULFILL THE FINAL PART OF YOUR VERSE.",
-#         "funky": "PAY UP DUDE, FUNKY'S GOT A NEW MOVE FOR YOU. PERHAPS WITH THIS YOU'LL GET MUSCLES AS BIG AS MINE.",
-#         "candy": "COME ON NOW DONKEY, GIVE ME SOME OF THOSE COINS AND I WILL HELP YOU WALK WITH SPARKLES"
+#         "kong": "Donkey",
+#         "cranky": "YOU MAY BE BIGGER AND FASTER, BUT THIS WILL HELP YOU FULFILL THE FINAL PART OF YOUR VERSE.",
+#         "funky": ". PERHAPS WITH THIS YOU'LL GET MUSCLES AS BIG AS MINE.",
+#         "candy": "I WILL HELP YOU WALK WITH SPARKLES."
 #     },
 #     {
 #         "move": "Gorilla Grab",
-#         "cranky": "I'VE PERFECTED ANOTHER POTION, DONKEY. THIS ONE WILL ALLOW YOU TO TIME TRAVEL TO 1981.",
-#         "funky": "PAY UP DUDE, FUNKY'S GOT A NEW MOVE FOR YOU WHICH WILL HELP YOU GO BACK TO THEM GOOD OLD DAYS",
-#         "candy": "COME ON NOW DONKEY, GIVE ME SOME OF THOSE COINS AND I WILL HELP YOU OPEN UP YOUR MINECART RIDE"
+#         "kong": "Donkey",
+#         "cranky": "THIS ONE WILL ALLOW YOU TO TIME TRAVEL TO 1981.",
+#         "funky": " WHICH WILL HELP YOU GO BACK TO THEM GOOD OLD DAYS.",
+#         "candy": "I WILL HELP YOU OPEN UP YOUR MINECART RIDE."
 #     },
 #     {
 #         "move": "Chimpy Charge",
-#         "cranky": "I'VE PERFECTED ANOTHER POTION, DIDDY. BETTER GET THAT CRANIUM TOUGHENED IF YOU PURCHASE THIS MOVE",
-#         "funky": "",
+#         "kong": "Diddy",
+#         "cranky": "BETTER GET THAT CRANIUM TOUGHENED IF YOU PURCHASE THIS MOVE.",
+#         "funky": ". GOTTA WARN YOU, ALL THAT HEAD BASHING WILL LOSE YOU A FEW IQ POINTS.",
+#         "candy": "I WILL HELP YOU CHARGE INTO SWITCHES."
+#     },
+#     {
+#     	"move": "Rocketbarrel",
+#     	"kong": "Diddy",
+#     	"cranky": "THIS ONE WILL ALLOW YOU TO FLY HIGH INTO THE SKY",
+#     	"funky": ". PERHAPS THIS WILL "
 #     }
 # ]
+
+pre_amble = {"cranky": "I'VE PERFECTED ANOTHER POTION, {KONG}. ", "funky": "PAY UP DUDE, FUNKY'S GOT A NEW MOVE FOR YOU", "candy": "COME ON NOW {KONG}, GIVE ME SOME OF THOSE COINS AND "}
+
 
 writeText(
     "dolby_text.bin",

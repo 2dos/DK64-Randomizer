@@ -317,6 +317,13 @@ file_dict = [
         "source_file": "assets/Non-Code/displays/shared.png",
         "texture_format": "rgba32",
     },
+    {
+        "name": "Sold Out Face",
+        "pointer_table_index": 14,
+        "file_index": 0x28,
+        "source_file": "assets/Non-Code/displays/soldout_bismuth.png",
+        "texture_format": "rgba32",
+    },
     {"name": "WXY_Slash", "pointer_table_index": 14, "file_index": 12, "source_file": "assets/Non-Code/displays/wxys.png", "texture_format": "rgba5551"},
 ]
 
@@ -772,6 +779,9 @@ with open(newROMName, "r+b") as fh:
         pth = f"assets/Non-Code/{x}"
         if os.path.exists(pth):
             os.remove(pth)
+    pth = "assets/Non-Code/displays/soldout_bismuth.rgba32"
+    if os.path.exists(pth):
+        os.remove(pth)
 
 print("[7 / 7] - Generating BizHawk RAM watch")
 

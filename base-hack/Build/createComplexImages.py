@@ -99,6 +99,10 @@ im.save(f"{disp_dir}shared.png")
 im = Image.new(mode="RGBA", size=kong_res)
 im.save(f"{disp_dir}none.png")
 
+# im = Image.open(f"{disp_dir}soldout.png")
+# im = im.resize(kong_res)
+# im.save(f"{disp_dir}soldout32.png")
+
 # Generate / in spot of unused L button
 im = Image.open(f"{hash_dir}specialchars.png")
 im = im.crop((30, 0, 55, 32))

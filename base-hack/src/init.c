@@ -59,6 +59,7 @@ void initHack(void) {
 		permaLossMode = Rando.perma_lose_kongs;
 		preventTagSpawn = Rando.prevent_tag_spawn;
 		bonusAutocomplete = Rando.resolve_bonus;
+		QoLOn = Rando.quality_of_life;
 		changeCharSpawnerFlag(0x14, 2, 93); // Tie llama spawn to lanky help me cutscene flag
 		changeCharSpawnerFlag(0x7, 1, kong_flags[(int)Rando.free_target_japes]);
 		changeCharSpawnerFlag(0x10, 0x13, kong_flags[(int)Rando.free_target_ttemple]);
