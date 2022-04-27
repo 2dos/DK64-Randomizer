@@ -102,8 +102,8 @@ im.save(f"{disp_dir}none.png")
 #
 im = Image.open(f"{disp_dir}soldout_bismuth.png")
 im_height = 26
-im = im.resize((32,im_height))
-im1 = Image.new(mode="RGBA", size=(32,32))
+im = im.resize((32, im_height))
+im1 = Image.new(mode="RGBA", size=(32, 32))
 Image.Image.paste(im1, im, (0, int((32 - im_height) / 2)))
 im1.save(f"{disp_dir}soldout32.png")
 
