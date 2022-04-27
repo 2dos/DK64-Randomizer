@@ -347,8 +347,12 @@ class LogicVarHolder:
         if kong == Kongs.any:
             return (self.bongos and self.isdonkey) or (self.guitar and self.isdiddy) or (self.trombone and self.islanky) or (self.saxophone and self.istiny) or (self.triangle and self.ischunky)
 
+    def CanFreeDiddy(self):
+        """Check if kong at Diddy location can be freed."""
+        return self.HasGun(self.settings.diddy_freeing_kong) and self.IsKong(self.settings.diddy_freeing_kong)
+
     def CanFreeTiny(self):
-        """Check if Tiny can be freed,r equires either chimpy charge or primate punch."""
+        """Check if kong at Tiny location can be freed,r equires either chimpy charge or primate punch."""
         if self.settings.tiny_freeing_kong == Kongs.diddy:
             return self.charge and self.isdiddy
         # Theoretical: Free her with punches, currently not implemented
@@ -356,11 +360,11 @@ class LogicVarHolder:
             return self.punch and self.ischunky
 
     def CanFreeLanky(self):
-        """Check if Lanky can be freed, requires freeing kong to have its gun and instrument."""
-        return self.HasGun(self.settings.lanky_freeing_kong) and self.HasInstrument(self.settings.lanky_freeing_kong)
+        """Check if kong at Lanky location can be freed, requires freeing kong to have its gun and instrument."""
+        return self.HasGun(self.settings.lanky_freeing_kong) and self.HasInstrument(self.settings.lanky_freeing_kong) and self.IsKong(self.settings.lanky_freeing_kong)
 
     def CanFreeChunky(self):
-        """Check if Chunky can be freed."""
+        """Check if kong at Chunky location can be freed."""
         return self.Slam and self.IsKong(self.settings.chunky_freeing_kong)
 
     def UpdateCurrentRegionAccess(self, region):
