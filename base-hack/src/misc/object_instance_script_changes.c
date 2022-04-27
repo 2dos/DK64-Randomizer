@@ -112,8 +112,14 @@ int getPressedSwitch(behaviour_data* behaviour_pointer, int bullet_type, int ID)
 int checkControlState(int target_control_state) {
 	if (Player) {
 		if (Player->control_state == target_control_state) {
-			if (Player->control_state_progress == 1) {
-				return 1;
+			if (target_control_state == 0x24) {
+				if (Player->control_state_progress == 2) {
+					return 1;
+				}
+			} else {
+				if (Player->control_state_progress == 1) {
+					return 1;
+				}
 			}
 		}
 	}
@@ -258,15 +264,16 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 			if (param2 == JAPES_DKCAGEGB) {
 				if (index == 0) {
 					if (checkFlag(DKJAPESCAGEGB_OPEN,0)) {
-						behaviour_pointer->current_state = 6;
-						behaviour_pointer->next_state = 6;
-						behaviour_pointer->unk_38 = unkObjFunction3(0,2,1,2,*(int*)(0x807F6220),*(int*)(0x807F6224),*(int*)(0x807F621C));
-						unkObjFunction4(behaviour_pointer->unk_38,1);
-						unkObjFunction5(behaviour_pointer->unk_38,1);
-						unkObjFunction6(behaviour_pointer->unk_38,5);
+						behaviour_pointer->current_state = 5;
+						behaviour_pointer->next_state = 5;
 					}
 				} else if (index == 1) {
 					setPermFlag(DKJAPESCAGEGB_OPEN);
+				} else if (index == 2) {
+					if (checkFlag(DKJAPESCAGEGB_OPEN,0)) {
+						behaviour_pointer->current_state = 6;
+						behaviour_pointer->next_state = 6;
+					}
 				}
 			} else if (param2 == JAPES_DKCAGESWITCH) {
 				if (checkFlag(DKJAPESCAGEGB_OPEN,0)) {
@@ -457,9 +464,9 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 			break;
 		case TINY_TEMPLE:
 			if (param2 == TTEMPLE_SWITCH) {
-				return Character == Rando.free_source_ttemple;
+				return Character == 1;
 			} else if (param2 == TTEMPLE_GUITARPAD) {
-				return Character == Rando.free_source_ttemple;
+				return Character == 1;
 			} else if (param2 == TTEMPLE_BAMBOOGATE) {
 				if (index == 0) {
 					return checkFlag(kong_flags[(int)Rando.free_target_ttemple],0);

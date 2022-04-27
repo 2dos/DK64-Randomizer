@@ -72,7 +72,7 @@ def updateRandomHint(message: str):
             hint_pool.append(x)
     if len(hint_pool) > 0:
         selected = random.choice(hint_pool)
-        print(f"Set {hints[selected].name} Wrinkly Text to {message}")
+        # print(f"Set {hints[selected].name} Wrinkly Text to {message}")
         UpdateHint(hints[selected], message)
 
 

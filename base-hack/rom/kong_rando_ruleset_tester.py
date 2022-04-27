@@ -84,7 +84,27 @@ vanilla_ruleset = {
     },
 }
 
-ruleset = vanilla_ruleset
+expanded_random = {
+    "starting": [0, 1, 2, 3, 4],
+    "japes": {
+        "lock": [0, 1, 2, 3, 4],
+        "puzz": [0, 1, 2, 3, 4],
+    },
+    "llama": {
+        "lock": [0, 1, 2, 3, 4],
+        "puzz": [0, 1, 2, 3, 4],
+    },
+    "icetemple": {
+        "lock": [0, 1, 2, 3, 4],
+        "puzz": [1, 4],
+    },
+    "factory": {
+        "lock": [0, 1, 2, 3, 4],
+        "puzz": [0, 1, 2, 3, 4],
+    },
+}
+
+ruleset = expanded_random
 
 total_perm = 0
 checks = 0

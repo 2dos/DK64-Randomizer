@@ -317,6 +317,13 @@ file_dict = [
         "source_file": "assets/Non-Code/displays/shared.png",
         "texture_format": "rgba32",
     },
+    {
+        "name": "Sold Out Face",
+        "pointer_table_index": 14,
+        "file_index": 0x28,
+        "source_file": "assets/Non-Code/displays/soldout32.png",
+        "texture_format": "rgba32",
+    },
     {"name": "WXY_Slash", "pointer_table_index": 14, "file_index": 12, "source_file": "assets/Non-Code/displays/wxys.png", "texture_format": "rgba5551"},
 ]
 
@@ -744,12 +751,25 @@ with open(newROMName, "r+b") as fh:
     fh.seek(0x1FED020 + 0x149)
     fh.write((2).to_bytes(1, "big"))
 
+    vanilla_coin_reqs = [
+        {"offset": 0x12C, "coins": 50},
+        {"offset": 0x12D, "coins": 50},
+        {"offset": 0x12E, "coins": 10},
+        {"offset": 0x12F, "coins": 10},
+        {"offset": 0x130, "coins": 10},
+        {"offset": 0x131, "coins": 50},
+        {"offset": 0x132, "coins": 50},
+        {"offset": 0x133, "coins": 25},
+    ]
+    for coinreq in vanilla_coin_reqs:
+        fh.seek(0x1FED020 + coinreq["offset"])
+        fh.write(coinreq["coins"].to_bytes(1, "big"))
     for x in hash_icons:
         pth = f"assets/Non-Code/hash/{x}"
         if os.path.exists(pth):
             os.remove(pth)
     other_remove = []
-    displays = ["dk_face", "diddy_face", "lanky_face", "tiny_face", "chunky_face", "none", "shared", "wxys"]
+    displays = ["dk_face", "diddy_face", "lanky_face", "tiny_face", "chunky_face", "none", "shared", "soldout32", "wxys"]
     for disp in displays:
         for ext in [".png", ".rgba32"]:
             other_remove.append(f"displays/{disp}{ext}")
@@ -759,6 +779,9 @@ with open(newROMName, "r+b") as fh:
         pth = f"assets/Non-Code/{x}"
         if os.path.exists(pth):
             os.remove(pth)
+    # pth = "assets/Non-Code/displays/soldout_bismuth.rgba32"
+    # if os.path.exists(pth):
+    #     os.remove(pth)
 
 print("[7 / 7] - Generating BizHawk RAM watch")
 

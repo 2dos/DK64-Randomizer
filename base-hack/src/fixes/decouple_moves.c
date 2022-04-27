@@ -19,6 +19,7 @@ void decouple_moves_fixes(void) {
 			MainMenuMoves[i].moves = moves_values[i];
 		}
 	}
+	writeCoinRequirements(1);
 	if ((*(int*)(0x807FBB64) << 1) & 0x80000000) {
 		// Menu Overlay - Candy's Shop Glitch
 		*(short*)(0x80027678) = 0x1000;

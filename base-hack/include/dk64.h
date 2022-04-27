@@ -121,6 +121,7 @@ extern void updateObjectScript(void* behaviour_pointer);
 extern void executeBehaviourScript(void* behaviour_pointer, int unk0);
 extern void* loadCounterFontTexture(int texture_base, void* write_location, int position, int texture_offset, int width);
 extern void delayedObjectModel2Change(int map, int model2_id, int state);
+extern void cycleRNG(void);
 
 //vanilla data
 extern float TransitionSpeed;
@@ -170,8 +171,8 @@ extern int* CurrentActorPointer;
 extern char LoadedActorCount;
 extern loadedActorArr LoadedActorArray[64];
 extern SpawnerMasterInfo SpawnerMasterData;
-extern RGB MenuSkyTopRGB;
-extern RGB MenuSkyRGB;
+extern unsigned char MenuSkyTopRGB[3];
+extern unsigned char MenuSkyRGB[3];
 extern int* ActorArray[];
 extern short ActorCount;
 extern short ButtonsEnabledBitfield;
@@ -311,3 +312,4 @@ extern char permaLossMode;
 extern char preventTagSpawn;
 extern char bonusAutocomplete;
 extern void* StoredCounterTextures[7];
+extern char QoLOn;

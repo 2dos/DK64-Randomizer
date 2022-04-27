@@ -175,6 +175,9 @@ KeyCompressionHook:
 HUDDisplayHook:
 	J 	HUDDisplayCode
 	NOP
+HomingDisableHook:
+	J 	HomingDisable
+	NOP
 
 loadExtraHooks:
 	LUI t3, hi(NinWarpHook)
@@ -392,6 +395,12 @@ loadExtraHooks:
 	LUI t4, 0x8070
 	SW t3, 0x9F88 (t4) // Store Hook
 	SW r0, 0x9F8C (t4) // Store NOP
+
+	LUI t3, hi(HomingDisableHook)
+	LW t3, lo(HomingDisableHook) (t3)
+	LUI t4, 0x806E
+	SW t3, 0x22B0 (t4) // Store Hook
+	SW r0, 0x22B4 (t4) // Store NOP
 
 	JR ra
 	NOP

@@ -196,6 +196,9 @@ void tagAnywhere(int prev_crystals) {
                 // Seasick
                 return;
             }
+            if (Player->collision_queue_pointer) {
+                return;
+            }
             int control_state = Player->control_state;
             for (int i = 0; i < sizeof(bad_movement_states); i++) {
                 if (bad_movement_states[i] == control_state) {
