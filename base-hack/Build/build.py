@@ -321,7 +321,7 @@ file_dict = [
         "name": "Sold Out Face",
         "pointer_table_index": 14,
         "file_index": 0x28,
-        "source_file": "assets/Non-Code/displays/soldout_bismuth.png",
+        "source_file": "assets/Non-Code/displays/soldout32.png",
         "texture_format": "rgba32",
     },
     {"name": "WXY_Slash", "pointer_table_index": 14, "file_index": 12, "source_file": "assets/Non-Code/displays/wxys.png", "texture_format": "rgba5551"},
@@ -769,7 +769,7 @@ with open(newROMName, "r+b") as fh:
         if os.path.exists(pth):
             os.remove(pth)
     other_remove = []
-    displays = ["dk_face", "diddy_face", "lanky_face", "tiny_face", "chunky_face", "none", "shared", "wxys"]
+    displays = ["dk_face", "diddy_face", "lanky_face", "tiny_face", "chunky_face", "none", "shared", "soldout32", "wxys"]
     for disp in displays:
         for ext in [".png", ".rgba32"]:
             other_remove.append(f"displays/{disp}{ext}")
@@ -779,9 +779,9 @@ with open(newROMName, "r+b") as fh:
         pth = f"assets/Non-Code/{x}"
         if os.path.exists(pth):
             os.remove(pth)
-    pth = "assets/Non-Code/displays/soldout_bismuth.rgba32"
-    if os.path.exists(pth):
-        os.remove(pth)
+    # pth = "assets/Non-Code/displays/soldout_bismuth.rgba32"
+    # if os.path.exists(pth):
+    #     os.remove(pth)
 
 print("[7 / 7] - Generating BizHawk RAM watch")
 
