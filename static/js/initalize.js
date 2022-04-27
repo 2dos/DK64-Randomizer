@@ -2,6 +2,11 @@
 async function run_python_file(file) {
   await pyodide.runPythonAsync(await (await fetch(file)).text());
 }
+if (window.location.protocol != "https:") {
+  if (location.hostname != "localhost" && location.hostname != "127.0.0.1") {
+    location.href = location.href.replace("http://", "https://");
+  }
+}
 run_python_file("ui/__init__.py");
 // Sleep function to run functions after X seconds
 async function sleep(seconds, func, args) {
@@ -79,17 +84,17 @@ jq = $;
 
 $("#form input").on("input", function (e) {
   //This would be called if any of the input element has got a change inside the form
-  var disabled = $("form").find(':input:disabled').removeAttr('disabled');
+  var disabled = $("form").find(":input:disabled").removeAttr("disabled");
   const data = new FormData(document.querySelector("form"));
-  disabled.attr('disabled','disabled');
+  disabled.attr("disabled", "disabled");
   const json = Object.fromEntries(data.entries());
   setCookie("saved_settings", JSON.stringify(json), 30);
 });
 $("#form select").on("change", function (e) {
   //This would be called if any of the input element has got a change inside the form
-  var disabled = $("form").find(':input:disabled').removeAttr('disabled');
+  var disabled = $("form").find(":input:disabled").removeAttr("disabled");
   const data = new FormData(document.querySelector("form"));
-  disabled.attr('disabled','disabled');
+  disabled.attr("disabled", "disabled");
   const json = Object.fromEntries(data.entries());
   setCookie("saved_settings", JSON.stringify(json), 30);
 });

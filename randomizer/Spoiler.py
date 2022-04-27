@@ -155,7 +155,7 @@ class Spoiler:
             # Show full shuffled_exits data if more than just levels are shuffled
             shuffled_exits = OrderedDict()
             for exit, dest in self.shuffled_exit_data.items():
-                shuffled_exits[ShufflableExits[exit].name] = Logic.Regions[dest.regionId].name + " " + dest.name
+                shuffled_exits[ShufflableExits[exit].name] = dest.spoilerName
             humanspoiler["Shuffled Exits"] = shuffled_exits
 
         if self.settings.boss_location_rando:

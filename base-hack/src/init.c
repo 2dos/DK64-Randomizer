@@ -59,6 +59,7 @@ void initHack(void) {
 		permaLossMode = Rando.perma_lose_kongs;
 		preventTagSpawn = Rando.prevent_tag_spawn;
 		bonusAutocomplete = Rando.resolve_bonus;
+		QoLOn = Rando.quality_of_life;
 		changeCharSpawnerFlag(0x14, 2, 93); // Tie llama spawn to lanky help me cutscene flag
 		changeCharSpawnerFlag(0x7, 1, kong_flags[(int)Rando.free_target_japes]);
 		changeCharSpawnerFlag(0x10, 0x13, kong_flags[(int)Rando.free_target_ttemple]);
@@ -138,6 +139,7 @@ void initHack(void) {
 		style2Mtx[0x0] = base_mtx;
 		style2Mtx[0x5] = base_mtx;
 		style2Mtx[0xF] = 10;
+		writeCoinRequirements(0);
 		if (Rando.warp_to_isles_enabled) {
 			// Pause Menu Exit To Isles Slot
 			*(short*)(0x806A85EE) = 4; // Yes/No Prompt
@@ -151,7 +153,9 @@ void initHack(void) {
 		}
 		if (Rando.quality_of_life) {
 			*(int*)(0x80748010) = 0x8064F2F0; // Cancel Sandstorm
-			*(int*)(0x806BDC24) = 0; // Cancel Takeoff
+			*(short*)(0x80750680) = 0x22;
+			*(short*)(0x80750682) = 0x1;
+			*(int*)(0x806BDC24) = 0x0C17FCDE; // Change takeoff warp func
 			*(short*)(0x806BDC8C) = 0x1000; // Apply no cutscene to all keys
 			*(short*)(0x806BDC3C) = 0x1000; // Apply shorter timer to all keys
 		}
@@ -169,6 +173,9 @@ void initHack(void) {
 		// Cancel Tamper
 		*(int*)(0x8060AEFC) = 0; // NOP
 		*(int*)(0x80611788) = 0; // NOP
+		// Fix HUD if DK not free
+		*(int*)(0x806FA324) = 0; // NOP
+		*(short*)(0x807505AE) = 385; // Set Flag to DK Flag
 		LoadedHooks = 1;
 	}
 }
