@@ -454,14 +454,19 @@ class LogicVarHolder:
         """Check if the boss banana requirement is met."""
         return self.HasEnoughKongs(level) and sum(self.ColoredBananas[level]) >= self.settings.BossBananas[level]
 
-    def HasEnoughKongs(self, level):
+    def HasEnoughKongs(self, level, forPreviousLevel=False):
         """Check if kongs are required for progression, do we have enough to reach the given level."""
-        if self.settings.kongs_for_progression:
+        if self.settings.kongs_for_progression and level != Levels.HideoutHelm:
             # Figure out where this level fits in the progression
             lobbyExit = ShufflableExits[LevelInfoList[level].TransitionsFrom].shuffledId
             levelIndex = [key for key, item in LevelInfoList.items() if item.TransitionsFrom == lobbyExit][0]
-            # Must have sufficient kongs freed to make forward progress
-            return len(self.GetKongs()) >= levelIndex
+            if forPreviousLevel:
+                levelIndex = levelIndex - 1
+            # Must have sufficient kongs freed to make forward progress for first 5 levels
+            if levelIndex < 5:
+                return len(self.GetKongs()) >= levelIndex
+            else:
+                return True
         else:
             return True
 
@@ -478,7 +483,7 @@ class LogicVarHolder:
 
     def IsLevelEnterable(self, level):
         """Check if level entry requirement is met."""
-        return self.HasEnoughKongs(level - 1) and self.GoldenBananas >= self.settings.EntryGBs[level]
+        return self.HasEnoughKongs(level, forPreviousLevel=True) and self.GoldenBananas >= self.settings.EntryGBs[level]
 
 
 LogicVariables = LogicVarHolder()
