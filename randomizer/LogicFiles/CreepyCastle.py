@@ -179,10 +179,10 @@ LogicRegions = {
     ]),
 
     Regions.CastleBossLobby: Region("Castle Boss Lobby", Levels.CreepyCastle, True, None, [], [], [
-        TransitionFront(Regions.CastleBoss, lambda l: l.IsBossBeatable(Levels.CreepyCastle) and sum(l.ColoredBananas[Levels.CreepyCastle]) >= l.settings.BossBananas[Levels.CreepyCastle]),
+        TransitionFront(Regions.CastleBoss, lambda l: l.IsBossReachable(Levels.CreepyCastle)),
     ]),
 
     Regions.CastleBoss: Region("Castle Boss", Levels.CreepyCastle, False, None, [
-        LocationLogic(Locations.CastleKey, lambda l: True),
+        LocationLogic(Locations.CastleKey, lambda l: l.IsBossBeatable(Levels.CreepyCastle)),
     ], [], []),
 }

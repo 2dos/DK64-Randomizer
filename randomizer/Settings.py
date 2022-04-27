@@ -196,6 +196,7 @@ class Settings:
         self.disable_tag_barrels = False
         self.level_randomization = "none"
         self.kong_rando = False
+        self.kongs_for_progression = False
 
     def resolve_settings(self):
         """Resolve settings which are not directly set through the UI."""
@@ -208,7 +209,10 @@ class Settings:
         # Kong rando
         if self.kong_rando:
             self.starting_kong = random.choice(kongs)
-            if self.shuffle_loading_zones == "none":
+            if self.shuffle_loading_zones == "levels":
+                self.kongs_for_progression = True
+            # Remaining kong freers are decided in the fill, set as starting kong for now
+            elif self.shuffle_loading_zones == "none":
                 self.diddy_freeing_kong = self.starting_kong
             else:
                 self.diddy_freeing_kong = random.choice(kongs)
