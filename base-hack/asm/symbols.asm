@@ -285,6 +285,7 @@
 .definelabel permaLossMode, 0x807FFFEC // u8
 .definelabel preventTagSpawn, 0x807FFFEA // u8
 .definelabel bonusAutocomplete, 0x807FFFE9 // u8
+.definelabel QoLOn, 0x807FFFE8 // u8
 .definelabel Rando, 0x807FF800 // 0x200
 .definelabel BalancedIGT, 0x807FFFB0 // u32
 .definelabel InstanceScriptParams, 0x807FFFB4 // 0x8
