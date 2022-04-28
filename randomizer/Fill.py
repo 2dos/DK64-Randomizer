@@ -653,14 +653,33 @@ def ShuffleKongsAndLevels(spoiler):
         try:
             # Assume we can progress through the levels so long as we have enough kongs
             WipeProgressionRequirements(spoiler.settings)
+            # See Bosses & starting kong
+            print("Starting Kong: " + spoiler.settings.starting_kong.name)
+            for i in range(0, 7):
+                print("Level " + str(i+1) + " Boss: " + spoiler.settings.boss_maps[i].name + " with Kong: " + spoiler.settings.boss_kongs[i].name)
             # Fill the kongs and the moves
             FillKongsAndMoves(spoiler)
+            # TODO: Find for each level: # of accessible bananas, total GBs, owned kongs & owned moves
+            coloredBananaTotals = []
+            goldenBananaTotals = []
+            ownedKongs = []
+            ownedMoves = []
+            for level in range(0,7):
+                BlockAccessToLevel(spoiler.settings, level)
+                Reset()
+                accessible = GetAccessibleLocations(spoiler.settings, [])
+                coloredBananaTotals.append(LogicVariables.ColoredBananas[level])
+                goldenBananaTotals.append(LogicVariables.GoldenBananas)
+                ownedKongs.append(LogicVariables.GetKongs())
+                accessibleMoves = [x for x in accessible if LocationList[x].type == Types.Shop]
+                ownedMoves.append(accessibleMoves)
+
+            # TODO: Perform Boss Location & Boss Kong rando, ensuring the first boss can be beaten with an unlocked kong and so on.
+            # TODO: Determine B. Locker and T&S amounts based on accessible bananas & GBs, pick random values capped by these.
             # Check if game is beatable
             Reset()
             if not GetAccessibleLocations(spoiler.settings, [], SearchMode.CheckBeatable):
                 raise Ex.GameNotBeatableException("Game unbeatable after placing all items.")
-            # TODO: Perform Boss Location & Boss Kong rando, ensuring the first boss can be beaten with an unlocked kong and so on.
-            # TODO: Determine upper limits for the B. Locker and T&S amounts based on accessible bananas & GBs, and pick random values capped by these.
             # Generate and display the playthrough
             Reset()
             PlaythroughLocations = GetAccessibleLocations(spoiler.settings, [], SearchMode.GeneratePlaythrough)
@@ -714,6 +733,19 @@ def WipeProgressionRequirements(settings: Settings):
     settings.lanky_freeing_kong = settings.starting_kong
     settings.tiny_freeing_kong = settings.starting_kong
     settings.chunky_freeing_kong = settings.starting_kong
+
+
+def BlockAccessToLevel(settings: Settings, level):
+    """Assume the level index passed in is the furthest level you have access to in the level order."""
+    for i in range(0, 7):
+        if i >= level:
+            # This level and those after it are locked out
+            settings.EntryGBs[i] = 1000
+            settings.BossBananas[i] = 1000
+        else:
+            # Previous levels assumed accessible
+            settings.EntryGBs[i] = 0
+            settings.BossBananas[i] = 0
 
 
 def Generate_Spoiler(spoiler):
