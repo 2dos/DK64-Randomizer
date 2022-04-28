@@ -349,7 +349,7 @@ class LogicVarHolder:
 
     def CanFreeDiddy(self):
         """Check if kong at Diddy location can be freed."""
-        return self.HasGun(self.settings.diddy_freeing_kong) and self.IsKong(self.settings.diddy_freeing_kong)
+        return self.HasGun(self.settings.diddy_freeing_kong)
 
     def CanFreeTiny(self):
         """Check if kong at Tiny location can be freed,r equires either chimpy charge or primate punch."""
@@ -361,7 +361,7 @@ class LogicVarHolder:
 
     def CanFreeLanky(self):
         """Check if kong at Lanky location can be freed, requires freeing kong to have its gun and instrument."""
-        return self.HasGun(self.settings.lanky_freeing_kong) and self.HasInstrument(self.settings.lanky_freeing_kong) and self.IsKong(self.settings.lanky_freeing_kong)
+        return self.HasGun(self.settings.lanky_freeing_kong) and self.HasInstrument(self.settings.lanky_freeing_kong)
 
     def CanFreeChunky(self):
         """Check if kong at Chunky location can be freed."""
