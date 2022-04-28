@@ -1,7 +1,5 @@
 """File that shuffles loading zone exits."""
 import random
-from ast import And
-
 import js
 import randomizer.Fill as Fill
 import randomizer.Lists.Exceptions as Ex
@@ -335,4 +333,7 @@ def ShuffleLevelOrderWithRestrictions(settings: Settings):
         cavesIndex: Levels.CrystalCaves,
         castleIndex: Levels.CreepyCastle,
     }
-    return newLevelOrder
+    print("New Level Order:")
+    for i in range(1, 8):
+        print(str(i) + ": " + newLevelOrder[i].name)
+    ShuffleLevelExits(newLevelOrder)

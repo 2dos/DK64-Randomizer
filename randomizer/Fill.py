@@ -644,11 +644,7 @@ def ShuffleKongsAndLevels(spoiler):
     #   6. Castle
     #   7. Fungi
     # ALGORITHM START
-    newLevelOrder = ShuffleExits.ShuffleLevelOrderWithRestrictions(spoiler.settings)
-    print("New Level Order:")
-    for i in range(1, 8):
-        print(str(i) + ": " + newLevelOrder[i].name)
-    ShuffleExits.ShuffleLevelExits(newLevelOrder)
+    ShuffleExits.ShuffleLevelOrderWithRestrictions(spoiler.settings)
     spoiler.UpdateExits()
     # Need to place constants to update boss key items after shuffling levels
     ItemPool.PlaceConstants(spoiler.settings)
