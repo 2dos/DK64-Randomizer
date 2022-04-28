@@ -25,6 +25,13 @@ void fixMusicRando(void) {
 	}
 }
 
+void writeEndSequence(void) {
+	int size = 0x84;
+	int* file_size;
+	*(int*)(&file_size) = size;
+	copyFromROM(0x1FFF800,(int*)0x807506D0,&file_size,0,0,0,0);
+}
+
 static const short kong_flags[] = {385,6,70,66,117};
 void initHack(void) {
 	if ((LoadedHooks == 0) && (CurrentMap == 0x28)) {
@@ -140,6 +147,7 @@ void initHack(void) {
 		style2Mtx[0x5] = base_mtx;
 		style2Mtx[0xF] = 10;
 		writeCoinRequirements(0);
+		writeEndSequence();
 		if (Rando.warp_to_isles_enabled) {
 			// Pause Menu Exit To Isles Slot
 			*(short*)(0x806A85EE) = 4; // Yes/No Prompt
