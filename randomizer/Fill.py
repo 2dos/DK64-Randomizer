@@ -386,9 +386,19 @@ def AssumedFill(settings, itemsToPlace, validLocations, ownedItems=[]):
                     settings.diddy_freeing_kong = random.choice(ownedKongs)
                 elif locationId == Locations.LankyKong:
                     # TODO: see if we can open this to all kongs
-                    settings.lanky_freeing_kong = random.choice(list(set(ownedKongs).intersection([Kongs.donkey, Kongs.lanky, Kongs.tiny])))
+                    eligibleFreers = list(set(ownedKongs).intersection([Kongs.donkey, Kongs.lanky, Kongs.tiny]))
+                    if len(eligibleFreers) == 0:
+                        js.postMessage("Failed placing item " + ItemList[item].name + " in location " + LocationList[locationId].name + ", due to no kongs being able to free them")
+                        valid = False
+                        break
+                    settings.lanky_freeing_kong = random.choice(eligibleFreers)
                 elif locationId == Locations.TinyKong:
-                    settings.tiny_freeing_kong = random.choice(list(set(ownedKongs).intersection([Kongs.diddy, Kongs.chunky])))
+                    eligibleFreers = list(set(ownedKongs).intersection([Kongs.diddy, Kongs.chunky]))
+                    if len(eligibleFreers) == 0:
+                        js.postMessage("Failed placing item " + ItemList[item].name + " in location " + LocationList[locationId].name + ", due to no kongs being able to free them")
+                        valid = False
+                        break
+                    settings.tiny_freeing_kong = random.choice(eligibleFreers)
                 elif locationId == Locations.ChunkyKong:
                     settings.chunky_freeing_kong = random.choice(ownedKongs)
             # Check valid reachable after placing to see if it is broken
@@ -674,24 +684,8 @@ def ShuffleKongsAndLevels(spoiler):
             WipeProgressionRequirements(spoiler.settings)
             # Fill the kongs and the moves
             FillKongsAndMoves(spoiler)
-            # TODO: Find for each level: # of accessible bananas, total GBs, owned kongs & owned moves
-            coloredBananaTotals = []
-            goldenBananaTotals = []
-            ownedKongs = []
-            ownedMoves = []
-            for level in range(1, 8):
-                BlockAccessToLevel(spoiler.settings, level)
-                Reset()
-                accessible = GetAccessibleLocations(spoiler.settings, [])
-                previousLevel = ShuffleExits.GetLevelShuffledToIndex(level - 1)
-                coloredBananaTotals.append(LogicVariables.ColoredBananas[previousLevel])
-                goldenBananaTotals.append(LogicVariables.GoldenBananas)
-                ownedKongs.append(LogicVariables.GetKongs())
-                accessibleMoves = [LocationList[x].item for x in accessible if LocationList[x].type == Types.Shop and LocationList[x].item != Items.NoItem and LocationList[x].item is not None]
-                ownedMoves.append(accessibleMoves)
-
-            # TODO: Perform Boss Location & Boss Kong rando, ensuring the first boss can be beaten with an unlocked kong and so on.
-            # TODO: Determine B. Locker and T&S amounts based on accessible bananas & GBs, pick random values capped by these.
+            # Update progression requirements based on fill results
+            SetNewProgressionRequirements(spoiler.settings)
             # Check if game is beatable
             Reset()
             if not GetAccessibleLocations(spoiler.settings, [], SearchMode.CheckBeatable):
@@ -750,6 +744,48 @@ def WipeProgressionRequirements(settings: Settings):
     settings.tiny_freeing_kong = Kongs.any
     settings.chunky_freeing_kong = Kongs.any
 
+
+def SetNewProgressionRequirements(settings: Settings):
+    """Set new progression requirements based on what is owned or accessible heading into each level."""
+    # Find for each level: # of accessible bananas, total GBs, owned kongs & owned moves
+    coloredBananaCounts = []
+    goldenBananaTotals = []
+    ownedKongs = []
+    ownedMoves = []
+    for level in range(1, 8):
+        BlockAccessToLevel(settings, level)
+        Reset()
+        accessible = GetAccessibleLocations(settings, [])
+        previousLevel = ShuffleExits.GetLevelShuffledToIndex(level - 1)
+        coloredBananaCounts.append(LogicVariables.ColoredBananas[previousLevel])
+        goldenBananaTotals.append(LogicVariables.GoldenBananas)
+        ownedKongs.append(LogicVariables.GetKongs())
+        accessibleMoves = [LocationList[x].item for x in accessible if LocationList[x].type == Types.Shop and LocationList[x].item != Items.NoItem and LocationList[x].item is not None]
+        ownedMoves.append(accessibleMoves)
+    # Cap the B. Locker and T&S amounts based on accessible bananas & GBs
+    settings.EntryGBs = [
+        min(settings.blocker_0, 1),  # First B. Locker shouldn't be more than 1 GB
+        min(settings.blocker_1, goldenBananaTotals[0]),
+        min(settings.blocker_2, goldenBananaTotals[1]),
+        min(settings.blocker_3, goldenBananaTotals[2]),
+        min(settings.blocker_4, goldenBananaTotals[3]),
+        min(settings.blocker_5, goldenBananaTotals[4]),
+        min(settings.blocker_6, goldenBananaTotals[5]),
+        settings.blocker_7,  # Last B. Locker shouldn't be affected
+    ]
+    settings.BossBananas = [
+        min(settings.troff_0, sum(coloredBananaCounts[0])),
+        min(settings.troff_1, sum(coloredBananaCounts[1])),
+        min(settings.troff_2, sum(coloredBananaCounts[2])),
+        min(settings.troff_3, sum(coloredBananaCounts[3])),
+        min(settings.troff_4, sum(coloredBananaCounts[4])),
+        min(settings.troff_5, sum(coloredBananaCounts[5])),
+        min(settings.troff_6, sum(coloredBananaCounts[6])),
+    ]
+    # Update values based on actual level progression
+    ShuffleExits.UpdateLevelProgression(settings)
+    # TODO: Perform Boss Location & Boss Kong rando, ensuring the first boss can be beaten with an unlocked kong and so on.
+    
 
 def BlockAccessToLevel(settings: Settings, level):
     """Assume the level index passed in is the furthest level you have access to in the level order."""
