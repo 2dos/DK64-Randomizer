@@ -25,10 +25,8 @@ from randomizer.Enums.Levels import Levels
 from randomizer.Enums.Locations import Locations
 from randomizer.Lists.Location import Location, LocationList
 from randomizer.Lists.MapsAndExits import Maps
-from randomizer.Lists.ShufflableExit import ShufflableExits
-from randomizer.Lists.LevelInfo import LevelInfoList
 from randomizer.Prices import CanBuy, GetPriceOfMoveItem
-from randomizer.ShuffleExits import ShuffleExits, GetShuffledLevelIndex
+from randomizer.ShuffleExits import GetShuffledLevelIndex
 
 
 STARTING_SLAM = 1  # Currently we're assuming you always start with 1 slam

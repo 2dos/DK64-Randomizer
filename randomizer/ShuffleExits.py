@@ -245,9 +245,17 @@ def UpdateLevelProgression(settings: Settings):
 
 
 def GetShuffledLevelIndex(level):
+    """Get index of where the given level fits in the level order. Ex: If Caves is the 1st level, passing 5 will return 0."""
     lobbyExit = ShufflableExits[LevelInfoList[level].TransitionsFrom].shuffledId
     levelIndex = [key for key, item in LevelInfoList.items() if item.TransitionsFrom == lobbyExit][0]
     return levelIndex
+
+
+def GetLevelShuffledToIndex(levelIndex):
+    """Get level located at the given level index. Ex: If Caves is the 1st level, passing 0 will return 5."""
+    lobbyEntrance = ShufflableExits[LevelInfoList[levelIndex].TransitionTo].shuffledId
+    level = [key for key, item in LevelInfoList.items() if item.TransitionTo == lobbyEntrance][0]
+    return level
 
 
 def ShuffleLevelExits(newLevelOrder: dict = None):
@@ -345,5 +353,5 @@ def ShuffleLevelOrderWithRestrictions(settings: Settings):
     for i in range(1, 8):
         print(str(i) + ": " + newLevelOrder[i].name)
     if len(newLevelOrder) < 7:
-        raise Ex.EntrancePlacementException("Invalid level order with fewer than the 7 required main levels.") 
+        raise Ex.EntrancePlacementException("Invalid level order with fewer than the 7 required main levels.")
     ShuffleLevelExits(newLevelOrder)

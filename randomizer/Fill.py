@@ -366,7 +366,7 @@ def AssumedFill(settings, itemsToPlace, validLocations, ownedItems=[]):
                 aztecIndex = ShuffleExits.GetShuffledLevelIndex(Levels.AngryAztec)
                 factoryIndex = ShuffleExits.GetShuffledLevelIndex(Levels.FranticFactory)
                 kongPriority = {}
-                for i in range(0,5):
+                for i in range(0, 5):
                     if i == japesIndex:
                         kongPriority[Locations.DiddyKong] = i
                     elif i == aztecIndex:
@@ -679,11 +679,12 @@ def ShuffleKongsAndLevels(spoiler):
             goldenBananaTotals = []
             ownedKongs = []
             ownedMoves = []
-            for level in range(1,8):
+            for level in range(1, 8):
                 BlockAccessToLevel(spoiler.settings, level)
                 Reset()
                 accessible = GetAccessibleLocations(spoiler.settings, [])
-                coloredBananaTotals.append(LogicVariables.ColoredBananas[level - 1])
+                previousLevel = ShuffleExits.GetLevelShuffledToIndex(level - 1)
+                coloredBananaTotals.append(LogicVariables.ColoredBananas[previousLevel])
                 goldenBananaTotals.append(LogicVariables.GoldenBananas)
                 ownedKongs.append(LogicVariables.GetKongs())
                 accessibleMoves = [LocationList[x].item for x in accessible if LocationList[x].type == Types.Shop and LocationList[x].item != Items.NoItem and LocationList[x].item is not None]
