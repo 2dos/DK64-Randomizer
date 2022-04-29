@@ -339,6 +339,7 @@ def AssumedFill(settings, itemsToPlace, validLocations, ownedItems=[]):
             currentGbCount = len([x for x in owned if ItemList[x].type == Types.Banana])
             js.postMessage("Current Moves owned at failure: " + str(currentMovesOwned) + " with GB count: " + str(currentGbCount) + " and kongs freed: " + str(currentKongsFreed))
             return len(itemsToPlace) + 1
+        random.shuffle(validReachable)
         # Shop items need coin logic
         if ItemList[item].type == Types.Shop:
             moveKong = ItemList[item].kong
@@ -358,7 +359,22 @@ def AssumedFill(settings, itemsToPlace, validLocations, ownedItems=[]):
             kongBeingPlaced = KongFromItem(item)
             if kongBeingPlaced in ownedKongs:
                 ownedKongs.remove(kongBeingPlaced)  # Cannot free with the kong being placed
-        random.shuffle(validReachable)
+            # If kongs are needed for level progression
+            if settings.kongs_for_progression:
+                # To lower failure rate, place kongs from later to earlier levels
+                japesIndex = ShuffleExits.GetShuffledLevelIndex(Levels.JungleJapes)
+                aztecIndex = ShuffleExits.GetShuffledLevelIndex(Levels.AngryAztec)
+                factoryIndex = ShuffleExits.GetShuffledLevelIndex(Levels.FranticFactory)
+                kongPriority = {}
+                for i in range(0,5):
+                    if i == japesIndex:
+                        kongPriority[Locations.DiddyKong] = i
+                    elif i == aztecIndex:
+                        kongPriority[Locations.LankyKong] = i
+                        kongPriority[Locations.TinyKong] = i
+                    elif i == factoryIndex:
+                        kongPriority[Locations.ChunkyKong] = i
+                validReachable.sort(key=lambda x: kongPriority[x], reverse=True)
         # Get a random, empty, reachable location
         for locationId in validReachable:
             # Atempt to place the item here
@@ -648,6 +664,7 @@ def ShuffleKongsAndLevels(spoiler):
     # ALGORITHM START
     ShuffleExits.ShuffleLevelOrderWithRestrictions(spoiler.settings)
     spoiler.UpdateExits()
+    print("Starting Kong: " + spoiler.settings.starting_kong.name)
     # Need to place constants to update boss key items after shuffling levels
     ItemPool.PlaceConstants(spoiler.settings)
     retries = 0
@@ -655,10 +672,6 @@ def ShuffleKongsAndLevels(spoiler):
         try:
             # Assume we can progress through the levels so long as we have enough kongs
             WipeProgressionRequirements(spoiler.settings)
-            # See Bosses & starting kong
-            print("Starting Kong: " + spoiler.settings.starting_kong.name)
-            for i in range(0, 7):
-                print("Level " + str(i+1) + " Boss: " + spoiler.settings.boss_maps[i].name + " with Kong: " + spoiler.settings.boss_kongs[i].name)
             # Fill the kongs and the moves
             FillKongsAndMoves(spoiler)
             # TODO: Find for each level: # of accessible bananas, total GBs, owned kongs & owned moves
@@ -670,10 +683,10 @@ def ShuffleKongsAndLevels(spoiler):
                 BlockAccessToLevel(spoiler.settings, level)
                 Reset()
                 accessible = GetAccessibleLocations(spoiler.settings, [])
-                coloredBananaTotals.append(LogicVariables.ColoredBananas[level])
+                coloredBananaTotals.append(LogicVariables.ColoredBananas[level - 1])
                 goldenBananaTotals.append(LogicVariables.GoldenBananas)
                 ownedKongs.append(LogicVariables.GetKongs())
-                accessibleMoves = [x for x in accessible if LocationList[x].type == Types.Shop]
+                accessibleMoves = [LocationList[x].item for x in accessible if LocationList[x].type == Types.Shop and LocationList[x].item != Items.NoItem and LocationList[x].item is not None]
                 ownedMoves.append(accessibleMoves)
 
             # TODO: Perform Boss Location & Boss Kong rando, ensuring the first boss can be beaten with an unlocked kong and so on.
@@ -730,11 +743,11 @@ def WipeProgressionRequirements(settings: Settings):
         # Assume starting kong can beat all the bosses for now
         settings.boss_kongs[i] = settings.starting_kong
         settings.boss_maps[i] = Maps.JapesBoss
-    # Also for now consider starting kong can free any other kong, to avoid false failures in fill
-    settings.diddy_freeing_kong = settings.starting_kong
-    settings.lanky_freeing_kong = settings.starting_kong
-    settings.tiny_freeing_kong = settings.starting_kong
-    settings.chunky_freeing_kong = settings.starting_kong
+    # Also for now consider any kong can free any other kong, to avoid false failures in fill
+    settings.diddy_freeing_kong = Kongs.any
+    settings.lanky_freeing_kong = Kongs.any
+    settings.tiny_freeing_kong = Kongs.any
+    settings.chunky_freeing_kong = Kongs.any
 
 
 def BlockAccessToLevel(settings: Settings, level):
@@ -748,6 +761,8 @@ def BlockAccessToLevel(settings: Settings, level):
             # Previous levels assumed accessible
             settings.EntryGBs[i] = 0
             settings.BossBananas[i] = 0
+    # Update values based on actual level progression
+    ShuffleExits.UpdateLevelProgression(settings)
 
 
 def Generate_Spoiler(spoiler):

@@ -3,6 +3,7 @@ import random
 import js
 import randomizer.Fill as Fill
 import randomizer.Lists.Exceptions as Ex
+from randomizer.Lists.LevelInfo import LevelInfoList
 import randomizer.Logic as Logic
 from randomizer.Enums.Levels import Levels
 from randomizer.Enums.Kongs import Kongs
@@ -243,6 +244,12 @@ def UpdateLevelProgression(settings: Settings):
     settings.BossBananas = newBossBananas
 
 
+def GetShuffledLevelIndex(level):
+    lobbyExit = ShufflableExits[LevelInfoList[level].TransitionsFrom].shuffledId
+    levelIndex = [key for key, item in LevelInfoList.items() if item.TransitionsFrom == lobbyExit][0]
+    return levelIndex
+
+
 def ShuffleLevelExits(newLevelOrder: dict = None):
     """Shuffle level exits according to new level order if provided, otherwise shuffle randomly."""
     frontpool = LobbyEntrancePool.copy()
@@ -337,4 +344,6 @@ def ShuffleLevelOrderWithRestrictions(settings: Settings):
     print("New Level Order:")
     for i in range(1, 8):
         print(str(i) + ": " + newLevelOrder[i].name)
+    if len(newLevelOrder) < 7:
+        raise Ex.EntrancePlacementException("Invalid level order with fewer than the 7 required main levels.") 
     ShuffleLevelExits(newLevelOrder)
