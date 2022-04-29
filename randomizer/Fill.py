@@ -366,13 +366,15 @@ def AssumedFill(settings, itemsToPlace, validLocations, ownedItems=[]):
             # When placing a kong, also decide who among the owned kongs can free them
             if ItemList[item].type == Types.Kong:
                 # Choose the puzzle solver
-                if locationId == Locations.DiddyKong or locationId == Locations.ChunkyKong:
+                if locationId == Locations.DiddyKong:
                     settings.diddy_freeing_kong = random.choice(ownedKongs)
                 elif locationId == Locations.LankyKong:
                     # TODO: see if we can open this to all kongs
                     settings.lanky_freeing_kong = random.choice(list(set(ownedKongs).intersection([Kongs.donkey, Kongs.lanky, Kongs.tiny])))
                 elif locationId == Locations.TinyKong:
                     settings.tiny_freeing_kong = random.choice(list(set(ownedKongs).intersection([Kongs.diddy, Kongs.chunky])))
+                elif locationId == Locations.ChunkyKong:
+                    settings.chunky_freeing_kong = random.choice(ownedKongs)
             # Check valid reachable after placing to see if it is broken
             # Need to re-assign owned items since the search adds a bunch of extras
             owned = itemsToPlace.copy()
@@ -664,7 +666,7 @@ def ShuffleKongsAndLevels(spoiler):
             goldenBananaTotals = []
             ownedKongs = []
             ownedMoves = []
-            for level in range(0,7):
+            for level in range(1,8):
                 BlockAccessToLevel(spoiler.settings, level)
                 Reset()
                 accessible = GetAccessibleLocations(spoiler.settings, [])
