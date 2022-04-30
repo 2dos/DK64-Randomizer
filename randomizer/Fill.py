@@ -25,6 +25,7 @@ from randomizer.Prices import GetPriceOfMoveItem
 from randomizer.ShuffleBarrels import BarrelShuffle
 from randomizer.ShuffleKasplats import KasplatShuffle
 from randomizer.ShuffleWarps import ShuffleWarps
+from randomizer.ShuffleBosses import ShuffleBossesBasedOnOwnedItems
 
 
 def GetExitLevelExit(settings, region):
@@ -750,8 +751,8 @@ def SetNewProgressionRequirements(settings: Settings):
     # Find for each level: # of accessible bananas, total GBs, owned kongs & owned moves
     coloredBananaCounts = []
     goldenBananaTotals = []
-    ownedKongs = []
-    ownedMoves = []
+    ownedKongs = {}
+    ownedMoves = {}
     for level in range(1, 8):
         BlockAccessToLevel(settings, level)
         Reset()
@@ -759,9 +760,9 @@ def SetNewProgressionRequirements(settings: Settings):
         previousLevel = ShuffleExits.GetLevelShuffledToIndex(level - 1)
         coloredBananaCounts.append(LogicVariables.ColoredBananas[previousLevel])
         goldenBananaTotals.append(LogicVariables.GoldenBananas)
-        ownedKongs.append(LogicVariables.GetKongs())
+        ownedKongs[previousLevel] = LogicVariables.GetKongs()
         accessibleMoves = [LocationList[x].item for x in accessible if LocationList[x].type == Types.Shop and LocationList[x].item != Items.NoItem and LocationList[x].item is not None]
-        ownedMoves.append(accessibleMoves)
+        ownedMoves[previousLevel] = accessibleMoves
     # Cap the B. Locker and T&S amounts based on accessible bananas & GBs
     settings.EntryGBs = [
         min(settings.blocker_0, 1),  # First B. Locker shouldn't be more than 1 GB
@@ -784,8 +785,8 @@ def SetNewProgressionRequirements(settings: Settings):
     ]
     # Update values based on actual level progression
     ShuffleExits.UpdateLevelProgression(settings)
-    # TODO: Perform Boss Location & Boss Kong rando, ensuring the first boss can be beaten with an unlocked kong and so on.
-    
+    ShuffleBossesBasedOnOwnedItems(settings, ownedKongs, ownedMoves)
+
 
 def BlockAccessToLevel(settings: Settings, level):
     """Assume the level index passed in is the furthest level you have access to in the level order."""
@@ -827,6 +828,9 @@ def Generate_Spoiler(spoiler):
         # Force move rando on if not starting will all moves
         if not spoiler.settings.unlock_all_moves:
             spoiler.settings.shuffle_items = "moves"
+        # Force boss rando on
+        spoiler.settings.boss_location_rando = True
+        spoiler.settings.boss_kong_rando = True
         ShuffleKongsAndLevels(spoiler)
     else:
         # Handle ER
