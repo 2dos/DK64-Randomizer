@@ -206,23 +206,6 @@ class Settings:
         if self.random_prices != "vanilla":
             self.prices = RandomizePrices(self.random_prices)
 
-        # Kong rando
-        if self.kong_rando:
-            self.starting_kong = random.choice(kongs)
-            if self.shuffle_loading_zones == "levels":
-                self.kongs_for_progression = True
-            # Kong freers are decided in the fill, set as any kong for now
-            self.diddy_freeing_kong = Kongs.any
-            self.lanky_freeing_kong = Kongs.any
-            self.tiny_freeing_kong = Kongs.any
-            self.chunky_freeing_kong = Kongs.any
-        else:
-            self.starting_kong = Kongs.donkey
-            self.diddy_freeing_kong = Kongs.donkey
-            self.lanky_freeing_kong = Kongs.donkey
-            self.tiny_freeing_kong = Kongs.diddy
-            self.chunky_freeing_kong = Kongs.lanky
-
         # Handle K. Rool Phases
         self.krool_donkey = False
         self.krool_diddy = False
@@ -305,6 +288,23 @@ class Settings:
             self.decoupled_loading_zones = True
         elif self.level_randomization == "vanilla":
             self.shuffle_loading_zones = "none"
+
+        # Kong rando
+        if self.kong_rando:
+            self.starting_kong = random.choice(kongs)
+            if self.shuffle_loading_zones == "levels":
+                self.kongs_for_progression = True
+            # Kong freers are decided in the fill, set as any kong for now
+            self.diddy_freeing_kong = Kongs.any
+            self.lanky_freeing_kong = Kongs.any
+            self.tiny_freeing_kong = Kongs.any
+            self.chunky_freeing_kong = Kongs.any
+        else:
+            self.starting_kong = Kongs.donkey
+            self.diddy_freeing_kong = Kongs.donkey
+            self.lanky_freeing_kong = Kongs.donkey
+            self.tiny_freeing_kong = Kongs.diddy
+            self.chunky_freeing_kong = Kongs.lanky
 
         # Move Location Rando
         if self.shop_location_rando:
