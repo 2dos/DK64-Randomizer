@@ -536,17 +536,7 @@ def Fill(spoiler):
             Reset()
             if not GetAccessibleLocations(spoiler.settings, [], SearchMode.CheckBeatable):
                 raise Ex.GameNotBeatableException("Game unbeatable after placing all items.")
-            # Generate and display the playthrough
-            Reset()
-            PlaythroughLocations = GetAccessibleLocations(spoiler.settings, [], SearchMode.GeneratePlaythrough)
-            ParePlaythrough(spoiler.settings, PlaythroughLocations)
-            # Generate and display woth
-            WothLocations = PareWoth(spoiler.settings, PlaythroughLocations)
-            # Write data to spoiler and return
-            spoiler.UpdateLocations(LocationList)
-            spoiler.UpdatePlaythrough(LocationList, PlaythroughLocations)
-            spoiler.UpdateWoth(LocationList, WothLocations)
-            return spoiler
+            return
         except Ex.FillException as ex:
             if retries == 4:
                 js.postMessage("Fill failed, out of retries.")
@@ -605,17 +595,7 @@ def ShuffleMisc(spoiler):
             Reset()
             if not GetAccessibleLocations(spoiler.settings, [], SearchMode.CheckBeatable):
                 raise Ex.GameNotBeatableException("Game unbeatable after placing all items.")
-            # Generate and display the playthrough
-            Reset()
-            PlaythroughLocations = GetAccessibleLocations(spoiler.settings, [], SearchMode.GeneratePlaythrough)
-            ParePlaythrough(spoiler.settings, PlaythroughLocations)
-            # Generate and display woth
-            WothLocations = PareWoth(spoiler.settings, PlaythroughLocations)
-            # Write data to spoiler and return
-            spoiler.UpdateLocations(LocationList)
-            spoiler.UpdatePlaythrough(LocationList, PlaythroughLocations)
-            spoiler.UpdateWoth(LocationList, WothLocations)
-            return spoiler
+            return
         except Ex.FillException as ex:
             if retries == 20:
                 js.postMessage("Fill failed, out of retries.")
@@ -625,6 +605,20 @@ def ShuffleMisc(spoiler):
                 js.postMessage("Fill failed. Retrying. Tries: " + str(retries))
                 Reset()
                 Logic.ClearAllLocations()
+
+
+def GeneratePlaythrough(spoiler):
+    """Generate playthrough and way of the hoard and update spoiler."""
+    # Generate and display the playthrough
+    Reset()
+    PlaythroughLocations = GetAccessibleLocations(spoiler.settings, [], SearchMode.GeneratePlaythrough)
+    ParePlaythrough(spoiler.settings, PlaythroughLocations)
+    # Generate and display woth
+    WothLocations = PareWoth(spoiler.settings, PlaythroughLocations)
+    # Write data to spoiler and return
+    spoiler.UpdateLocations(LocationList)
+    spoiler.UpdatePlaythrough(LocationList, PlaythroughLocations)
+    spoiler.UpdateWoth(LocationList, WothLocations)
 
 
 def FillKongsAndMoves(spoiler):
@@ -686,23 +680,11 @@ def ShuffleKongsAndLevels(spoiler):
             WipeProgressionRequirements(spoiler.settings)
             # Fill the kongs and the moves
             FillKongsAndMoves(spoiler)
-            # Update progression requirements based on fill results
-            SetNewProgressionRequirements(spoiler.settings)
             # Check if game is beatable
             Reset()
             if not GetAccessibleLocations(spoiler.settings, [], SearchMode.CheckBeatable):
                 raise Ex.GameNotBeatableException("Game unbeatable after placing all items.")
-            # Generate and display the playthrough
-            Reset()
-            PlaythroughLocations = GetAccessibleLocations(spoiler.settings, [], SearchMode.GeneratePlaythrough)
-            ParePlaythrough(spoiler.settings, PlaythroughLocations)
-            # Generate and display woth
-            WothLocations = PareWoth(spoiler.settings, PlaythroughLocations)
-            # Write data to spoiler and return
-            spoiler.UpdateLocations(LocationList)
-            spoiler.UpdatePlaythrough(LocationList, PlaythroughLocations)
-            spoiler.UpdateWoth(LocationList, WothLocations)
-            return spoiler
+            return
         except Ex.FillException as ex:
             if retries == 20:
                 js.postMessage("Fill failed, out of retries.")
@@ -835,7 +817,7 @@ def Generate_Spoiler(spoiler):
         spoiler.bananaport_replacements = replacements.copy()
         spoiler.human_warp_locations = human_replacements
     # Handle Kong Rando + Level Rando combination separately since it is more restricted
-    if spoiler.settings.shuffle_loading_zones == "levels" and spoiler.settings.kong_rando:
+    if spoiler.settings.kongs_for_progression:
         # Force move rando on if not starting will all moves
         if not spoiler.settings.unlock_all_moves:
             spoiler.settings.shuffle_items = "moves"
@@ -858,13 +840,10 @@ def Generate_Spoiler(spoiler):
             ItemPool.PlaceConstants(spoiler.settings)
             if not GetAccessibleLocations(spoiler.settings, [], SearchMode.CheckBeatable):
                 raise Ex.VanillaItemsGameNotBeatableException("Game unbeatable.")
-            # Playthrough and location list probably unnecessary with vanilla items
-            # Reset()
-            # PlaythroughLocations = GetAccessibleLocations([], SearchMode.GeneratePlaythrough)
-            # ParePlaythrough(PlaythroughLocations)
-            # # Write data to spoiler and return
-            # spoiler.UpdateLocations(LocationList)
-            # spoiler.UpdatePlaythrough(LocationList, PlaythroughLocations)
+    if spoiler.settings.kongs_for_progression:
+        # Update progression requirements based on what is now accessible after all shuffles are done
+        SetNewProgressionRequirements(spoiler.settings)
+    GeneratePlaythrough(spoiler)
     Reset()
     ShuffleExits.Reset()
     return spoiler

@@ -34,8 +34,8 @@ LogicRegions = {
     ], [
         TransitionFront(Regions.JungleJapesLobby, lambda l: True, Transitions.JapesToIsles),
         TransitionFront(Regions.JapesBeyondPeanutGate, lambda l: l.peanut and l.diddy),
-        TransitionFront(Regions.JapesBeyondCoconutGate1, lambda l: l.coconut and l.donkey),
-        TransitionFront(Regions.JapesBeyondCoconutGate2, lambda l: l.coconut and l.donkey),
+        TransitionFront(Regions.JapesBeyondCoconutGate1, lambda l: l.CanFreeDiddy()),
+        TransitionFront(Regions.JapesBeyondCoconutGate2, lambda l: l.CanFreeDiddy()),
         TransitionFront(Regions.Mine, lambda l: l.peanut and l.isdiddy, Transitions.JapesMainToMine),
         TransitionFront(Regions.JapesLankyCave, lambda l: l.peanut and l.diddy and l.handstand and l.islanky, Transitions.JapesMainToLankyCave),
         TransitionFront(Regions.JapesCatacomb, lambda l: l.Slam and l.chunkyAccess, Transitions.JapesMainToCatacomb),
