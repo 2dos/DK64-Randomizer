@@ -8,7 +8,6 @@ from randomizer.BackgroundRandomizer import generate_playthrough
 from randomizer.Worker import background
 from ui.bindings import bind
 from ui.progress_bar import ProgressBar
-from ui.rando_options import update_disabled_progression
 
 
 @bind("change", "patchfileloader")
