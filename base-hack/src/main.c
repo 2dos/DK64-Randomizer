@@ -49,6 +49,9 @@ void cFuncLoop(void) {
 			}
 		}
 	}
+	if (CurrentMap == 0x50) {
+		colorMenuSky();
+	}
 	cancelMoveSoftlock();
 	fixDKFreeSoftlock();
 	callParentMapFilter();
@@ -60,6 +63,13 @@ void cFuncLoop(void) {
 		forceBossKong();
 	}
 	changeHelmLZ();
+	if (Rando.fast_start_helm == 2) {
+		if (TransitionSpeed > 0) {
+			if ((DestMap == 0x11) && (CurrentMap == 0xAA)) {
+				setPermFlag(770);
+			}
+		}
+	}
 	if (Rando.quality_of_life) {
 		// DKTVKong = 0;
 		// if (CurrentMap == NINTENDO_LOGO) {

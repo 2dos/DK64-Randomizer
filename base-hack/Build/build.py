@@ -22,6 +22,7 @@ from replace_simslam_text import replaceSimSlam
 from staticcode import patchStaticCode
 from vanilla_move_data import writeVanillaMoveData
 from image_converter import convertToRGBA32
+from end_seq_writer import createTextFile, createSquishFile
 
 ROMName = "rom/dk64.z64"
 newROMName = "rom/dk64-randomizer-base.z64"
@@ -33,6 +34,9 @@ shutil.copyfile(ROMName, newROMName)
 portal_images = []
 portal_images.append(convertPortalImage("assets/Non-Code/portals/DK_rando_portal_1.png"))
 portal_images.append(convertPortalImage("assets/Non-Code/portals/DK_rando_portal_2.png"))
+
+createTextFile("assets/Non-Code/credits")
+createSquishFile("assets/Non-Code/credits")
 
 file_dict = [
     {
@@ -317,6 +321,20 @@ file_dict = [
         "source_file": "assets/Non-Code/displays/shared.png",
         "texture_format": "rgba32",
     },
+    {
+        "name": "Sold Out Face",
+        "pointer_table_index": 14,
+        "file_index": 0x28,
+        "source_file": "assets/Non-Code/displays/soldout32.png",
+        "texture_format": "rgba32",
+    },
+    {
+        "name": "End Sequence Credits",
+        "pointer_table_index": 19,
+        "file_index": 7,
+        "source_file": "assets/Non-Code/credits/credits.bin",
+        "do_not_delete_source": True,
+    },
     {"name": "WXY_Slash", "pointer_table_index": 14, "file_index": 12, "source_file": "assets/Non-Code/displays/wxys.png", "texture_format": "rgba5551"},
 ]
 
@@ -412,6 +430,19 @@ for x in range(10):
             "texture_format": "rgba5551",
         }
     )
+barrel_faces = ["Dk", "Diddy", "Lanky", "Tiny", "Chunky"]
+barrel_offsets = [4817, 4815, 4819, 4769, 4747]
+for x in range(5):
+    for y in range(2):
+        file_dict.append(
+            {
+                "name": f"{barrel_faces[x]} Transform Barrel Shell ({y+1})",
+                "pointer_table_index": 25,
+                "file_index": barrel_offsets[x] + y,
+                "source_file": f"assets/Non-Code/tagbarrel/{barrel_faces[x]} barrel {y}.png",
+                "texture_format": "rgba5551",
+            }
+        )
 portal_image_order = [
     ["SE", "NE", "SW", "NW"],
     ["NW", "SW", "NE", "SE"],
@@ -744,12 +775,29 @@ with open(newROMName, "r+b") as fh:
     fh.seek(0x1FED020 + 0x149)
     fh.write((2).to_bytes(1, "big"))
 
+    with open("assets/Non-Code/credits/squish.bin", "rb") as squish:
+        fh.seek(0x1FFF800)
+        fh.write(squish.read())
+
+    vanilla_coin_reqs = [
+        {"offset": 0x12C, "coins": 50},
+        {"offset": 0x12D, "coins": 50},
+        {"offset": 0x12E, "coins": 10},
+        {"offset": 0x12F, "coins": 10},
+        {"offset": 0x130, "coins": 10},
+        {"offset": 0x131, "coins": 50},
+        {"offset": 0x132, "coins": 50},
+        {"offset": 0x133, "coins": 25},
+    ]
+    for coinreq in vanilla_coin_reqs:
+        fh.seek(0x1FED020 + coinreq["offset"])
+        fh.write(coinreq["coins"].to_bytes(1, "big"))
     for x in hash_icons:
         pth = f"assets/Non-Code/hash/{x}"
         if os.path.exists(pth):
             os.remove(pth)
     other_remove = []
-    displays = ["dk_face", "diddy_face", "lanky_face", "tiny_face", "chunky_face", "none", "shared", "wxys"]
+    displays = ["dk_face", "diddy_face", "lanky_face", "tiny_face", "chunky_face", "none", "shared", "soldout32", "wxys"]
     for disp in displays:
         for ext in [".png", ".rgba32"]:
             other_remove.append(f"displays/{disp}{ext}")
@@ -759,6 +807,14 @@ with open(newROMName, "r+b") as fh:
         pth = f"assets/Non-Code/{x}"
         if os.path.exists(pth):
             os.remove(pth)
+    credits_bins = ["credits", "squish"]
+    for x in credits_bins:
+        pth = f"assets/Non-Code/credits/{x}.bin"
+        if os.path.exists(pth):
+            os.remove(pth)
+    # pth = "assets/Non-Code/displays/soldout_bismuth.rgba32"
+    # if os.path.exists(pth):
+    #     os.remove(pth)
 
 print("[7 / 7] - Generating BizHawk RAM watch")
 

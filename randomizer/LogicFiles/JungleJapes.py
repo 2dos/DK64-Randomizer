@@ -17,7 +17,7 @@ LogicRegions = {
         LocationLogic(Locations.JapesLankyMedal, lambda l: l.ColoredBananas[Levels.JungleJapes][Kongs.lanky] >= 75),
         LocationLogic(Locations.JapesTinyMedal, lambda l: l.ColoredBananas[Levels.JungleJapes][Kongs.tiny] >= 75),
         LocationLogic(Locations.JapesChunkyMedal, lambda l: l.ColoredBananas[Levels.JungleJapes][Kongs.chunky] >= 75),
-        LocationLogic(Locations.DiddyKong, lambda l: l.HasGun(l.settings.diddy_freeing_kong)),
+        LocationLogic(Locations.DiddyKong, lambda l: l.CanFreeDiddy()),
         LocationLogic(Locations.JapesDonkeyFrontofCage, lambda l: l.HasKong(l.settings.diddy_freeing_kong)),
         LocationLogic(Locations.JapesDonkeyFreeDiddy, lambda l: l.HasGun(l.settings.diddy_freeing_kong)),
         LocationLogic(Locations.JapesDonkeyCagedBanana, lambda l: Events.JapesDonkeySwitch in l.Events and l.donkey),
@@ -140,10 +140,10 @@ LogicRegions = {
     ]),
 
     Regions.JapesBossLobby: Region("Japes Boss Lobby", Levels.JungleJapes, True, None, [], [], [
-        TransitionFront(Regions.JapesBoss, lambda l: l.IsBossBeatable(Levels.JungleJapes) and sum(l.ColoredBananas[Levels.JungleJapes]) >= l.settings.BossBananas[Levels.JungleJapes]),
+        TransitionFront(Regions.JapesBoss, lambda l: l.IsBossReachable(Levels.JungleJapes)),
     ]),
 
     Regions.JapesBoss: Region("Japes Boss", Levels.JungleJapes, False, None, [
-        LocationLogic(Locations.JapesKey, lambda l: True),
+        LocationLogic(Locations.JapesKey, lambda l: l.IsBossBeatable(Levels.JungleJapes)),
     ], [], []),
 }

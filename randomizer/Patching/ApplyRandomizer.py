@@ -20,6 +20,7 @@ from randomizer.Patching.MusicRando import randomize_music
 from randomizer.Patching.Patcher import ROM
 from randomizer.Patching.PriceRando import randomize_prices
 from randomizer.Patching.KongRando import apply_kongrando_cosmetic
+from randomizer.Patching.PuzzleRando import randomize_puzzles
 
 # from randomizer.Spoiler import Spoiler
 from randomizer.Settings import Settings
@@ -38,6 +39,7 @@ def patching_response(responded_data):
         if loaded_data.get("error"):
             error = loaded_data.get("error")
             ProgressBar().set_class("bg-danger")
+            js.toast_alert(error)
             ProgressBar().update_progress(10, f"Error: {error}")
             ProgressBar().reset()
             return None
@@ -158,6 +160,9 @@ def patching_response(responded_data):
     if spoiler.settings.helm_setting == "skip_start":
         ROM().seek(sav + 0x031)
         ROM().write(1)
+    elif spoiler.settings.helm_setting == "skip_all":
+        ROM().seek(sav + 0x031)
+        ROM().write(2)
 
     # Crown Door Open
     if spoiler.settings.crown_door_open:
@@ -250,6 +255,7 @@ def patching_response(responded_data):
     randomize_enemies(spoiler)
     apply_cosmetic_colors(spoiler)
     apply_kongrando_cosmetic(spoiler)
+    randomize_puzzles()
     if spoiler.settings.wrinkly_hints:
         compileHints(spoiler)
         PushHints()

@@ -23,7 +23,6 @@ LogicRegions = {
         LocationLogic(Locations.AztecKasplatOnTinyTemple, lambda l: l.jetpack),
     ], [
         Event(Events.AztecEntered, lambda l: True),
-        Event(Events.LlamaFreed, lambda l: True),  # Decision to start with llama freed
     ], [
         TransitionFront(Regions.AngryAztecLobby, lambda l: True, Transitions.AztecToIsles),
         TransitionFront(Regions.TempleStart, lambda l: (l.peanut and l.isdiddy) or (l.grape and l.islanky)
@@ -66,7 +65,7 @@ LogicRegions = {
         TransitionFront(Regions.TinyTemple, lambda l: Events.FedTotem in l.Events and l.feather and l.istiny, Transitions.AztecMainToTiny),
         TransitionFront(Regions.ChunkyTemple, lambda l: Events.FedTotem in l.Events and l.pineapple and l.ischunky, Transitions.AztecMainToChunky),
         TransitionFront(Regions.AztecTinyRace, lambda l: l.charge and l.jetpack and l.diddy and l.mini and l.saxophone and l.istiny, Transitions.AztecMainToRace),
-        TransitionFront(Regions.LlamaTemple, lambda l: (l.coconut and l.isdonkey) or (l.grape and l.islanky) or (l.feather and l.istiny)),
+        TransitionFront(Regions.LlamaTemple, lambda l: (l.coconut and l.isdonkey) or (l.grape and l.islanky) or (l.feather and l.istiny)),  # Decision to pre-spawn switches
         TransitionFront(Regions.AztecBaboonBlast, lambda l: l.blast and l.isdonkey),  # , Transitions.AztecMainToBBlast),
         TransitionFront(Regions.CrankyAztec, lambda l: True),
         TransitionFront(Regions.Snide, lambda l: True),
@@ -141,10 +140,10 @@ LogicRegions = {
     ]),
 
     Regions.AztecBossLobby: Region("Aztec Boss Lobby", Levels.AngryAztec, True, None, [], [], [
-        TransitionFront(Regions.AztecBoss, lambda l: l.IsBossBeatable(Levels.AngryAztec) and sum(l.ColoredBananas[Levels.AngryAztec]) >= l.settings.BossBananas[Levels.AngryAztec]),
+        TransitionFront(Regions.AztecBoss, lambda l: l.IsBossReachable(Levels.AngryAztec)),
     ]),
 
     Regions.AztecBoss: Region("Aztec Boss", Levels.AngryAztec, False, None, [
-        LocationLogic(Locations.AztecKey, lambda l: True),
+        LocationLogic(Locations.AztecKey, lambda l: l.IsBossBeatable(Levels.AngryAztec)),
     ], [], []),
 }

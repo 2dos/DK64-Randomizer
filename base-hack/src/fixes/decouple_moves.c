@@ -19,9 +19,20 @@ void decouple_moves_fixes(void) {
 			MainMenuMoves[i].moves = moves_values[i];
 		}
 	}
+	writeCoinRequirements(1);
 	if ((*(int*)(0x807FBB64) << 1) & 0x80000000) {
 		// Menu Overlay - Candy's Shop Glitch
 		*(short*)(0x80027678) = 0x1000;
 		*(short*)(0x8002769C) = 0x1000;
+	}
+	if (CurrentMap == 0x9A) {
+		*(short*)(0x80033B26) = 0x41F0; // Jumping Around
+		*(short*)(0x800331AA) = 0x41F0; // Random Square
+		*(short*)(0x800339EE) = 0x41F0; // Stationary
+		// *(float*)(0x80036C40) = 3.0f; // Phase 1 Jump speed
+		// *(float*)(0x80036C44) = 3.0f; // Phase 2
+		// *(float*)(0x80036C48) = 3.0f; // ...
+		// *(float*)(0x80036C4C) = 3.0f;
+		// *(float*)(0x80036C50) = 3.0f;
 	}
 }

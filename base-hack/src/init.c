@@ -25,6 +25,13 @@ void fixMusicRando(void) {
 	}
 }
 
+void writeEndSequence(void) {
+	int size = 0x84;
+	int* file_size;
+	*(int*)(&file_size) = size;
+	copyFromROM(0x1FFF800,(int*)0x807506D0,&file_size,0,0,0,0);
+}
+
 static const short kong_flags[] = {385,6,70,66,117};
 void initHack(void) {
 	if ((LoadedHooks == 0) && (CurrentMap == 0x28)) {
@@ -59,6 +66,7 @@ void initHack(void) {
 		permaLossMode = Rando.perma_lose_kongs;
 		preventTagSpawn = Rando.prevent_tag_spawn;
 		bonusAutocomplete = Rando.resolve_bonus;
+		QoLOn = Rando.quality_of_life;
 		changeCharSpawnerFlag(0x14, 2, 93); // Tie llama spawn to lanky help me cutscene flag
 		changeCharSpawnerFlag(0x7, 1, kong_flags[(int)Rando.free_target_japes]);
 		changeCharSpawnerFlag(0x10, 0x13, kong_flags[(int)Rando.free_target_ttemple]);
@@ -138,6 +146,8 @@ void initHack(void) {
 		style2Mtx[0x0] = base_mtx;
 		style2Mtx[0x5] = base_mtx;
 		style2Mtx[0xF] = 10;
+		writeCoinRequirements(0);
+		writeEndSequence();
 		if (Rando.warp_to_isles_enabled) {
 			// Pause Menu Exit To Isles Slot
 			*(short*)(0x806A85EE) = 4; // Yes/No Prompt
@@ -171,6 +181,9 @@ void initHack(void) {
 		// Cancel Tamper
 		*(int*)(0x8060AEFC) = 0; // NOP
 		*(int*)(0x80611788) = 0; // NOP
+		// Fix HUD if DK not free
+		*(int*)(0x806FA324) = 0; // NOP
+		*(short*)(0x807505AE) = 385; // Set Flag to DK Flag
 		LoadedHooks = 1;
 	}
 }

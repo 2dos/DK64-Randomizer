@@ -178,10 +178,10 @@ LogicRegions = {
     ]),
 
     Regions.CavesBossLobby: Region("Caves Boss Lobby", Levels.CrystalCaves, True, None, [], [], [
-        TransitionFront(Regions.CavesBoss, lambda l: l.IsBossBeatable(Levels.CrystalCaves) and sum(l.ColoredBananas[Levels.CrystalCaves]) >= l.settings.BossBananas[Levels.CrystalCaves]),
+        TransitionFront(Regions.CavesBoss, lambda l: l.IsBossReachable(Levels.CrystalCaves)),
     ]),
 
     Regions.CavesBoss: Region("Caves Boss", Levels.CrystalCaves, False, None, [
-        LocationLogic(Locations.CavesKey, lambda l: True),
+        LocationLogic(Locations.CavesKey, lambda l: l.IsBossBeatable(Levels.CrystalCaves)),
     ], [], []),
 }

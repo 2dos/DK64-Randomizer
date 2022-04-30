@@ -199,6 +199,11 @@
                 document.close();
                 history.pushState({}, "page 1", "randomizer.html");
             }
+            if(window.location.protocol != 'https:') {
+                if (location.hostname != "localhost" && location.hostname != "127.0.0.1") {
+                    location.href = location.href.replace("http://", "https://");
+                }
+            }
         </script>
     </body>
 </html>

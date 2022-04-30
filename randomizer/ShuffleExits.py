@@ -1,15 +1,13 @@
 """File that shuffles loading zone exits."""
 import random
-from ast import And
-
 import js
 import randomizer.Fill as Fill
 import randomizer.Lists.Exceptions as Ex
 import randomizer.Logic as Logic
+from randomizer.Enums.Levels import Levels
+from randomizer.Enums.Kongs import Kongs
 from randomizer.Enums.Regions import Regions
-from randomizer.Enums.SearchMode import SearchMode
 from randomizer.Enums.Transitions import Transitions
-from randomizer.ItemPool import AllItems, PlaceConstants
 from randomizer.Lists.ShufflableExit import ShufflableExits
 from randomizer.LogicClasses import TransitionFront
 from randomizer.Settings import Settings
@@ -23,15 +21,6 @@ LobbyEntrancePool = [
     Transitions.IslesMainToForestLobby,
     Transitions.IslesMainToCavesLobby,
     Transitions.IslesMainToCastleLobby,
-]
-LobbyExitPool = [
-    Transitions.IslesJapesLobbyToMain,
-    Transitions.IslesAztecLobbyToMain,
-    Transitions.IslesFactoryLobbyToMain,
-    Transitions.IslesGalleonLobbyToMain,
-    Transitions.IslesForestLobbyToMain,
-    Transitions.IslesCavesLobbyToMain,
-    Transitions.IslesCastleLobbyToMain,
 ]
 
 # Root is the starting spawn, which is the main area of DK Isles.
@@ -196,11 +185,11 @@ def ShuffleExits(settings: Settings):
     """Shuffle exit pools depending on settings."""
     # Set up front and back entrance pools for each setting
     # Assume all shuffled exits reachable by default
-    frontpool = []
-    backpool = []
     if settings.shuffle_loading_zones == "levels":
-        ShuffleLevelExits(settings, LobbyEntrancePool.copy(), LobbyEntrancePool.copy())
+        ShuffleLevelExits()
     elif settings.shuffle_loading_zones == "all":
+        frontpool = []
+        backpool = []
         AssumeExits(settings, frontpool, backpool, [x for x in ShufflableExits.keys()])
         # Shuffle each entrance pool
         ShuffleExitsInPool(settings, frontpool, backpool)
@@ -254,14 +243,21 @@ def UpdateLevelProgression(settings: Settings):
     settings.BossBananas = newBossBananas
 
 
-def ShuffleLevelExits(settings, frontpool, backpool):
-    """Shuffle exits within a  pool."""
-    random.shuffle(frontpool)
+def ShuffleLevelExits(newLevelOrder: dict = None):
+    """Shuffle level exits according to new level order if provided, otherwise shuffle randomly."""
+    frontpool = LobbyEntrancePool.copy()
+    backpool = LobbyEntrancePool.copy()
+
+    if newLevelOrder is not None:
+        for index, level in newLevelOrder.items():
+            backpool[index - 1] = LobbyEntrancePool[level]
+    else:
+        random.shuffle(frontpool)
 
     # For each back exit, select a random valid front entrance to attach to it
     # Assuming there are no inherently invalid level orders, but if there are, validation will check after this
     while len(backpool) > 0:
-        backId = backpool.pop(0)
+        backId = backpool.pop()
         backExit = ShufflableExits[backId]
         # Select a random origin
         frontId = frontpool.pop()
@@ -275,3 +271,72 @@ def ShuffleLevelExits(settings, frontpool, backpool):
         backReverse.shuffled = True
         backReverse.shuffledId = frontExit.back.reverse
         # print("Assigned " + ShufflableExits[backExit.back.reverse].name + " --> " + ShufflableExits[frontExit.back.reverse].name)
+
+
+def ShuffleLevelOrderWithRestrictions(settings: Settings):
+    """Determine level order given starting kong and the need to find more kongs along the way."""
+    levelIndexChoices = {1, 2, 3, 4, 5, 6, 7}
+
+    # Decide where Aztec will go
+    # Diddy can reasonably make progress if Aztec is first level
+    if settings.starting_kong == Kongs.diddy:
+        aztecIndex = random.randint(1, 4)
+    else:
+        aztecIndex = random.randint(2, 4)
+    levelIndexChoices.remove(aztecIndex)
+
+    # Decide where Japes will go
+    japesOptions = []
+    # If Aztec is level 4, both of Japes/Factory need to be in level 1-3
+    if aztecIndex == 4:
+        japesOptions = list(levelIndexChoices.intersection({1, 3}))
+    else:
+        japesOptions = list(levelIndexChoices.intersection({1, 5}))
+    japesIndex = random.choice(japesOptions)
+    levelIndexChoices.remove(japesIndex)
+
+    # Decide where Factory will go
+    factoryOptions = []
+    # If starting kong is Chunky, one of Japes/Factory needs to be in level 1-2 (until we can get Chunky to Free kong in Tiny Temple)
+    if settings.starting_kong == Kongs.chunky and japesIndex > 2:
+        factoryOptions = list(levelIndexChoices.intersection({1, 2}))
+    # If Aztec is level 4, both of Japes/Factory need to be in level 1-3
+    elif aztecIndex == 4:
+        factoryOptions = list(levelIndexChoices.intersection({1, 3}))
+    # If Aztec is level 3, one of Japes/Factory needs to be in level 1-2 and other in level 1-5
+    elif aztecIndex == 3:
+        if japesIndex < 3:
+            factoryOptions = list(levelIndexChoices.intersection({1, 5}))
+        else:
+            factoryOptions = list(levelIndexChoices.intersection({1, 2}))
+    # If Aztec is level 1 or 2, one of Japes/Factory needs to be in level 1-4 and other in level 1-5
+    else:
+        if japesIndex < 5:
+            factoryOptions = list(levelIndexChoices.intersection({1, 5}))
+        else:
+            factoryOptions = list(levelIndexChoices.intersection({1, 4}))
+    factoryIndex = random.choice(factoryOptions)
+    levelIndexChoices.remove(factoryIndex)
+
+    # Decide the remaining level order randomly
+    remainingLevels = list(levelIndexChoices)
+    random.shuffle(remainingLevels)
+    galleonIndex = remainingLevels.pop()
+    forestIndex = remainingLevels.pop()
+    cavesIndex = remainingLevels.pop()
+    castleIndex = remainingLevels.pop()
+    newLevelOrder = {
+        japesIndex: Levels.JungleJapes,
+        aztecIndex: Levels.AngryAztec,
+        factoryIndex: Levels.FranticFactory,
+        galleonIndex: Levels.GloomyGalleon,
+        forestIndex: Levels.FungiForest,
+        cavesIndex: Levels.CrystalCaves,
+        castleIndex: Levels.CreepyCastle,
+    }
+    print("New Level Order:")
+    for i in range(1, 8):
+        print(str(i) + ": " + newLevelOrder[i].name)
+    if len(newLevelOrder) < 7:
+        raise Ex.EntrancePlacementException("Invalid level order with fewer than the 7 required main levels.")
+    ShuffleLevelExits(newLevelOrder)

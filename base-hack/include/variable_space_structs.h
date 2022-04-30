@@ -76,7 +76,17 @@ typedef struct varspace {
 	/* 0x129 */ char lanky_color; // 0 = Vanilla, 1 = Green Straps, 2 = Purple Straps, 3 = Red Straps
 	/* 0x12A */ char tiny_color; // 0 = Vanilla, 1 = Green, 2 = Purple, 3 = Red
 	/* 0x12B */ char chunky_color; // 0 = Vanilla, 1 = Red, 2 = Purple/Blue, 3 = Green/Purple
-	/* 0x12C */ char unused[0x13C-0x12C]; // Space unused, was RGB values
+	/* 0x12C */ unsigned char coinreq_cavesbeetle;
+	/* 0x12D */ unsigned char coinreq_aztecbeetle;
+	/* 0x12E */ unsigned char coinreq_factorycar;
+	/* 0x12F */ unsigned char coinreq_sealrace;
+	/* 0x130 */ unsigned char coinreq_castlecar;
+	/* 0x131 */ unsigned char coinreq_japescart;
+	/* 0x132 */ unsigned char coinreq_fungicart;
+	/* 0x133 */ unsigned char coinreq_castlecart;
+	/* 0x134 */ unsigned char menusky_rgb_low[3];
+	/* 0x137 */ unsigned char menusky_rgb_high[3];
+	/* 0x13A */ char unused[0x13C-0x13A]; // Space unused, was RGB values
 	/* 0x13C */ unsigned char lobbies_open_bitfield; // hccf gfaj
 	/* 0x13D */ char perma_lose_kongs; // 0 = Off, 1 = On. AKA "iateyourpie mode"
 	/* 0x13E */ char disable_boss_kong_check; // 0 = Enable Check (Vanilla), 1 = Disabled

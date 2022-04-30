@@ -177,6 +177,88 @@ static const unsigned char banned_filter_maps[] = {
 	0x25, // Japes BBlast
 };
 
+typedef struct cutscene_wipe {
+	/* 0x000 */ unsigned char map;
+	/* 0x001 */ unsigned char cutscene;
+	/* 0x002 */ char cutscene_type;
+	/* 0x003 */ char unused;
+} cutscene_wipe;
+
+static const cutscene_wipe wipe_prevent_list[] = {
+	{
+		// Mountain GB Spawn Cutscene
+		.map = 7,
+		.cutscene = 13,
+		.cutscene_type = 0,
+	},
+	{
+		// Fungi Crusher On
+		.map = 61,
+		.cutscene = 2,
+		.cutscene_type = 0,
+	},
+	{
+		// Fungi Turn Waterwheel
+		.map = 48,
+		.cutscene = 10,
+		.cutscene_type = 0,
+	},
+	{
+		// Fungi Mill GB Spawn
+		.map = 48,
+		.cutscene = 9,
+		.cutscene_type = 0,
+	},
+	{
+		// Fungi break box
+		.map = 48,
+		.cutscene = 11,
+		.cutscene_type = 0,
+	},
+	{
+		// Aztec Snoop Door Open
+		.map = 38,
+		.cutscene = 17,
+		.cutscene_type = 0,
+	},
+	{
+		// Fungi Winch
+		.map = 48,
+		.cutscene = 7,
+		.cutscene_type = 0,	
+	},
+	{
+		// Factory Power Shed
+		.map = 26,
+		.cutscene = 7,
+		.cutscene_type = 0,
+	},
+	{
+		// Galleon Ship Spawn
+		.map = 30,
+		.cutscene = 14,
+		.cutscene_type = 0,
+	}
+};
+
+int isPreventCutscenePlaying(void) {
+	if (CutsceneActive) {
+		for (int i = 0; i < (sizeof(wipe_prevent_list)/4); i++) {
+			if (CutsceneIndex == wipe_prevent_list[i].cutscene) {
+				if ((wipe_prevent_list[i].cutscene_type == 1) && ((CutsceneStateBitfield & 4) != 0)) {
+					return 1;
+				}
+				if (CurrentMap == wipe_prevent_list[i].map) {
+					if ((wipe_prevent_list[i].cutscene_type == 0) && ((CutsceneStateBitfield & 4) == 0)) {
+						return 1;
+					}
+				}
+			}
+		}
+	}
+	return 0;
+}
+
 void callParentMapFilter(void) {
 	if (Rando.randomize_more_loading_zones) {
 		if (ObjectModel2Timer == 2) {
@@ -192,6 +274,9 @@ void callParentMapFilter(void) {
 				}
 			}
 			if ((level == 9) || (level == 0xD)) {
+				banned = 1;
+			}
+			if (isPreventCutscenePlaying()) {
 				banned = 1;
 			}
 			if (!banned) {

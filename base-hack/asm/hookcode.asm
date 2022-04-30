@@ -631,6 +631,22 @@ START_HOOK:
 		J 			0x806F9F90
 		OR 			s0, v0, r0
 
+	HomingDisable:
+		LBU 		t1, 0x2 (t0)
+		LUI			t2, hi(ControllerInput)
+		LHU 		t2, lo(ControllerInput) (t2)
+		ANDI 		t2, t2, 0x0020
+		BEQZ 		t2, HomingDisable_Finish
+		NOP
+		LUI 		t2, hi(QoLOn)
+		LBU 		t2, lo(QoLOn) (t2)
+		BEQZ 		t2, HomingDisable_Finish
+		NOP
+		ANDI 		t1, t1, 0xFFFD
+	
+		HomingDisable_Finish:
+			J 		0x806E22B8
+			ANDI 	t2, t1, 0x2
 
 .align 0x10
 END_HOOK:

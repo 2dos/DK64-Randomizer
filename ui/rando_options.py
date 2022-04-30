@@ -6,22 +6,6 @@ from js import document
 from ui.bindings import bind
 
 
-@bind("change", "level_randomization")
-def update_disabled_progression(evt):
-    """Disable certain page flags depending on checkboxes."""
-    element = document.getElementById("level_randomization")
-    if element.value == "level_order":
-        # Disable the kongs button
-        document.getElementById("unlock_all_kongs").setAttribute("disabled", "disabled")
-        document.getElementById("unlock_all_kongs").checked = True
-    else:
-        # Swap the kong
-        try:
-            document.getElementById("unlock_all_kongs").removeAttribute("disabled")
-        except Exception:
-            pass
-
-
 def randomseed(evt):
     """Randomly generate a seed ID."""
     document.getElementById("seed").value = str(random.randint(100000, 999999))
@@ -175,4 +159,21 @@ def toggle_counts_boxes(event):
             else:
                 troff.setAttribute("disabled", "disabled")
         except AttributeError:
+            pass
+
+
+@bind("change", "level_randomization")
+def update_boss_required(evt):
+    """Disable certain page flags depending on checkboxes."""
+    element = document.getElementById("level_randomization")
+    if element.value == "level_order":
+        document.getElementById("boss_location_rando").setAttribute("disabled", "disabled")
+        document.getElementById("boss_location_rando").checked = True
+        document.getElementById("boss_kong_rando").setAttribute("disabled", "disabled")
+        document.getElementById("boss_kong_rando").checked = True
+    else:
+        try:
+            document.getElementById("boss_kong_rando").removeAttribute("disabled")
+            document.getElementById("boss_location_rando").removeAttribute("disabled")
+        except Exception:
             pass

@@ -13,7 +13,11 @@ void changeHelmLZ(void) {
 					if (focused_trigger->type == 9) {
 						if (focused_trigger->map == HELM_MAIN) {
 							if (focused_trigger->exit == 0) {
-								focused_trigger->exit = 3;
+								if (Rando.fast_start_helm == 1) {
+									focused_trigger->exit = 3;
+								} else if (Rando.fast_start_helm == 2) {
+									focused_trigger->exit = 4;
+								}
 								setPermFlag(0x1CC); // Helm Story
 								setFlag(0x3B,1,2); // Roman Numeral Doors
 								for (int j = 0; j < 4; j++) {
