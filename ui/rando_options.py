@@ -10,16 +10,6 @@ from ui.bindings import bind
 def update_disabled_progression(evt):
     """Disable certain page flags depending on checkboxes."""
     element = document.getElementById("level_randomization")
-    if element.value == "level_order":
-        # Disable the kongs button
-        document.getElementById("unlock_all_kongs").setAttribute("disabled", "disabled")
-        document.getElementById("unlock_all_kongs").checked = True
-    else:
-        # Swap the kong
-        try:
-            document.getElementById("unlock_all_kongs").removeAttribute("disabled")
-        except Exception:
-            pass
 
 
 def randomseed(evt):
