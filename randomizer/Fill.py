@@ -4,7 +4,9 @@ import random
 import js
 import randomizer.ItemPool as ItemPool
 import randomizer.Lists.Exceptions as Ex
+from randomizer.Lists.ShufflableExit import GetLevelShuffledToIndex, GetShuffledLevelIndex
 import randomizer.Logic as Logic
+from randomizer.Settings import Settings
 import randomizer.ShuffleExits as ShuffleExits
 from randomizer.Enums.Items import Items
 from randomizer.Enums.Kongs import Kongs
@@ -14,8 +16,9 @@ from randomizer.Enums.Regions import Regions
 from randomizer.Enums.SearchMode import SearchMode
 from randomizer.Enums.Transitions import Transitions
 from randomizer.Enums.Types import Types
-from randomizer.Lists.Item import ItemList
-from randomizer.Lists.Location import Location, LocationList
+from randomizer.Lists.Item import ItemList, KongFromItem
+from randomizer.Lists.Location import LocationList
+from randomizer.Lists.MapsAndExits import Maps
 from randomizer.Lists.Minigame import BarrelMetaData, MinigameRequirements
 from randomizer.Logic import LogicVarHolder, LogicVariables, STARTING_SLAM
 from randomizer.LogicClasses import TransitionFront
@@ -23,9 +26,10 @@ from randomizer.Prices import GetPriceOfMoveItem
 from randomizer.ShuffleBarrels import BarrelShuffle
 from randomizer.ShuffleKasplats import KasplatShuffle
 from randomizer.ShuffleWarps import ShuffleWarps
+from randomizer.ShuffleBosses import ShuffleBossesBasedOnOwnedItems
 
 
-def GetExitLevelExit(settings, region):
+def GetExitLevelExit(region):
     """Get the exit that using the "Exit Level" button will take you to."""
     level = region.level
     # For now, restarts will not be randomized
@@ -132,7 +136,7 @@ def GetAccessibleLocations(settings, ownedItems, searchType=SearchMode.GetReacha
                 exits = region.exits.copy()
                 # If loading zones are shuffled, the "Exit Level" button in the pause menu could potentially take you somewhere new
                 if settings.shuffle_loading_zones and region.level != Levels.DKIsles and region.level != Levels.Shops:
-                    levelExit = GetExitLevelExit(settings, region)
+                    levelExit = GetExitLevelExit(region)
                     # When shuffling levels, unplaced level entrances will have no destination yet
                     if levelExit is not None:
                         dest = ShuffleExits.ShufflableExits[levelExit].back.regionId
@@ -337,6 +341,7 @@ def AssumedFill(settings, itemsToPlace, validLocations, ownedItems=[]):
             currentGbCount = len([x for x in owned if ItemList[x].type == Types.Banana])
             js.postMessage("Current Moves owned at failure: " + str(currentMovesOwned) + " with GB count: " + str(currentGbCount) + " and kongs freed: " + str(currentKongsFreed))
             return len(itemsToPlace) + 1
+        random.shuffle(validReachable)
         # Shop items need coin logic
         if ItemList[item].type == Types.Shop:
             moveKong = ItemList[item].kong
@@ -350,11 +355,54 @@ def AssumedFill(settings, itemsToPlace, validLocations, ownedItems=[]):
                 else:
                     maxCoinsSpent[moveKong] -= movePrice
                     movePriceArray[moveKong] = movePrice
-        random.shuffle(validReachable)
+        elif ItemList[item].type == Types.Kong:
+            ownedKongs = [KongFromItem(x) for x in owned if ItemList[x].type == Types.Kong]
+            ownedKongs.insert(0, settings.starting_kong)
+            kongBeingPlaced = KongFromItem(item)
+            if kongBeingPlaced in ownedKongs:
+                ownedKongs.remove(kongBeingPlaced)  # Cannot free with the kong being placed
+            # If kongs are needed for level progression
+            if settings.kongs_for_progression:
+                # To lower failure rate, place kongs from later to earlier levels
+                japesIndex = GetShuffledLevelIndex(Levels.JungleJapes)
+                aztecIndex = GetShuffledLevelIndex(Levels.AngryAztec)
+                factoryIndex = GetShuffledLevelIndex(Levels.FranticFactory)
+                kongPriority = {}
+                for i in range(0, 5):
+                    if i == japesIndex:
+                        kongPriority[Locations.DiddyKong] = i
+                    elif i == aztecIndex:
+                        kongPriority[Locations.LankyKong] = i
+                        kongPriority[Locations.TinyKong] = i
+                    elif i == factoryIndex:
+                        kongPriority[Locations.ChunkyKong] = i
+                validReachable.sort(key=lambda x: kongPriority[x], reverse=True)
         # Get a random, empty, reachable location
         for locationId in validReachable:
             # Atempt to place the item here
             LocationList[locationId].PlaceItem(item)
+            # When placing a kong, also decide who among the owned kongs can free them
+            if ItemList[item].type == Types.Kong:
+                # Choose the puzzle solver
+                if locationId == Locations.DiddyKong:
+                    settings.diddy_freeing_kong = random.choice(ownedKongs)
+                elif locationId == Locations.LankyKong:
+                    # TODO: see if we can open this to all kongs
+                    eligibleFreers = list(set(ownedKongs).intersection([Kongs.donkey, Kongs.lanky, Kongs.tiny]))
+                    if len(eligibleFreers) == 0:
+                        js.postMessage("Failed placing item " + ItemList[item].name + " in location " + LocationList[locationId].name + ", due to no kongs being able to free them")
+                        valid = False
+                        break
+                    settings.lanky_freeing_kong = random.choice(eligibleFreers)
+                elif locationId == Locations.TinyKong:
+                    eligibleFreers = list(set(ownedKongs).intersection([Kongs.diddy, Kongs.chunky]))
+                    if len(eligibleFreers) == 0:
+                        js.postMessage("Failed placing item " + ItemList[item].name + " in location " + LocationList[locationId].name + ", due to no kongs being able to free them")
+                        valid = False
+                        break
+                    settings.tiny_freeing_kong = random.choice(eligibleFreers)
+                elif locationId == Locations.ChunkyKong:
+                    settings.chunky_freeing_kong = random.choice(ownedKongs)
             # Check valid reachable after placing to see if it is broken
             # Need to re-assign owned items since the search adds a bunch of extras
             owned = itemsToPlace.copy()
@@ -510,7 +558,7 @@ def Fill(spoiler):
                 Logic.ClearAllLocations()
 
 
-def ShuffleMoves(spoiler):
+def ShuffleSharedMoves(spoiler):
     """Shuffles shared kong moves and then returns the remaining ones and their valid locations."""
     # First place constant items
     ItemPool.PlaceConstants(spoiler.settings)
@@ -552,33 +600,7 @@ def ShuffleMisc(spoiler):
     retries = 0
     while True:
         try:
-            itemsToPlace = []
-            validLocations = {}
-            # Handle move rando
-            if spoiler.settings.shuffle_items == "moves":
-                # Shuffle the shared move locations since they must be done first,
-                # and return the kong moves and their locations
-                (moveItems, moveLocations) = ShuffleMoves(spoiler)
-                itemsToPlace.extend(moveItems)
-                validLocations.update(moveLocations)
-            # Handle kong rando
-            if spoiler.settings.kong_rando:
-                kongItems = ItemPool.Kongs(spoiler.settings)
-                kongValidLocations = {}
-                kongLocations = [Locations.DiddyKong, Locations.LankyKong, Locations.TinyKong, Locations.ChunkyKong]
-                for item in kongItems:
-                    kongValidLocations[item] = kongLocations
-                # Kongs could be shuffled in the following generic shuffle, but since they're so restrictive,
-                # a few failures are almost certain if they are, unfortunately.
-                Reset()
-                unplaced = PlaceItems(spoiler.settings, "assumed", kongItems, ownedItems=itemsToPlace, validLocations=kongValidLocations)
-                if unplaced > 0:
-                    raise Ex.ItemPlacementException(str(unplaced) + " unplaced kongs.")
-            # Perform the shuffle
-            Reset()
-            unplaced = PlaceItems(spoiler.settings, "assumed", itemsToPlace, validLocations=validLocations)
-            if unplaced > 0:
-                raise Ex.ItemPlacementException(str(unplaced) + " unplaced items.")
+            FillKongsAndMoves(spoiler)
             # Check if game is beatable
             Reset()
             if not GetAccessibleLocations(spoiler.settings, [], SearchMode.CheckBeatable):
@@ -605,6 +627,193 @@ def ShuffleMisc(spoiler):
                 Logic.ClearAllLocations()
 
 
+def FillKongsAndMoves(spoiler):
+    """Fill shared moves, then kongs, then rest of moves."""
+    itemsToPlace = []
+    validLocations = {}
+    # Handle shared moves first for move rando
+    if spoiler.settings.shuffle_items == "moves":
+        # Shuffle the shared move locations since they must be done first,
+        # and return the kong moves and their locations
+        (moveItems, moveLocations) = ShuffleSharedMoves(spoiler)
+        itemsToPlace.extend(moveItems)
+        validLocations.update(moveLocations)
+    # Handle kong rando
+    if spoiler.settings.kong_rando:
+        kongItems = ItemPool.Kongs(spoiler.settings)
+        kongValidLocations = {}
+        kongLocations = [Locations.DiddyKong, Locations.LankyKong, Locations.TinyKong, Locations.ChunkyKong]
+        for item in kongItems:
+            kongValidLocations[item] = kongLocations
+        # Kongs could be shuffled in the following generic shuffle, but since they're so restrictive,
+        # a few failures are almost certain if they are, unfortunately.
+        Reset()
+        unplaced = PlaceItems(spoiler.settings, "assumed", kongItems, ownedItems=itemsToPlace, validLocations=kongValidLocations)
+        if unplaced > 0:
+            raise Ex.ItemPlacementException(str(unplaced) + " unplaced kongs.")
+    # Handle remaining moves/items
+    Reset()
+    unplaced = PlaceItems(spoiler.settings, "assumed", itemsToPlace, validLocations=validLocations)
+    if unplaced > 0:
+        raise Ex.ItemPlacementException(str(unplaced) + " unplaced items.")
+
+
+def ShuffleKongsAndLevels(spoiler):
+    """Shuffle Kongs and Levels simultaneously accounting for restrictions."""
+    # All methods here follow this Kongs vs level progression rule:
+    # Must be able to have 2 kongs no later than level 2
+    # Must be able to have 3 kongs no later than level 3
+    # Must be able to have 4 kongs no later than level 4
+    # Must be able to have 5 kongs no later than level 5
+    # Valid Example:
+    #   1. Caves - No kongs found
+    #   2. Aztec - Can free 2nd kong here, other kong is move locked
+    #   3. Japes - Can free 3rd kong here
+    #   4. Galleon - Find move to free other kong from aztec
+    #   5. Factory - Find last kong
+    #   6. Castle
+    #   7. Fungi
+    # ALGORITHM START
+    ShuffleExits.ShuffleLevelOrderWithRestrictions(spoiler.settings)
+    spoiler.UpdateExits()
+    print("Starting Kong: " + spoiler.settings.starting_kong.name)
+    # Need to place constants to update boss key items after shuffling levels
+    ItemPool.PlaceConstants(spoiler.settings)
+    retries = 0
+    while True:
+        try:
+            # Assume we can progress through the levels so long as we have enough kongs
+            WipeProgressionRequirements(spoiler.settings)
+            # Fill the kongs and the moves
+            FillKongsAndMoves(spoiler)
+            # Update progression requirements based on fill results
+            SetNewProgressionRequirements(spoiler.settings)
+            # Check if game is beatable
+            Reset()
+            if not GetAccessibleLocations(spoiler.settings, [], SearchMode.CheckBeatable):
+                raise Ex.GameNotBeatableException("Game unbeatable after placing all items.")
+            # Generate and display the playthrough
+            Reset()
+            PlaythroughLocations = GetAccessibleLocations(spoiler.settings, [], SearchMode.GeneratePlaythrough)
+            ParePlaythrough(spoiler.settings, PlaythroughLocations)
+            # Generate and display woth
+            WothLocations = PareWoth(spoiler.settings, PlaythroughLocations)
+            # Write data to spoiler and return
+            spoiler.UpdateLocations(LocationList)
+            spoiler.UpdatePlaythrough(LocationList, PlaythroughLocations)
+            spoiler.UpdateWoth(LocationList, WothLocations)
+            return spoiler
+        except Ex.FillException as ex:
+            if retries == 20:
+                js.postMessage("Fill failed, out of retries.")
+                raise ex
+            else:
+                retries += 1
+                js.postMessage("Fill failed. Retrying. Tries: " + str(retries))
+                Reset()
+                Logic.ClearAllLocations()
+
+
+def GetAccessibleKongLocations(levels: list, ownedKongs: list):
+    """Get all kong locations within the provided levels which are reachable by owned kongs."""
+    kongLocations = []
+    for level in levels:
+        if level == Levels.JungleJapes:
+            kongLocations.append(Locations.DiddyKong)
+        elif level == Levels.AngryAztec:
+            if Kongs.donkey in ownedKongs or Kongs.lanky in ownedKongs or Kongs.tiny in ownedKongs:
+                kongLocations.append(Locations.LankyKong)
+            if Kongs.diddy in ownedKongs:
+                kongLocations.append(Locations.TinyKong)
+        elif level == Levels.FranticFactory:
+            if Kongs.lanky in ownedKongs or Kongs.tiny in ownedKongs:
+                kongLocations.append(Locations.ChunkyKong)
+    return kongLocations
+
+
+def WipeProgressionRequirements(settings: Settings):
+    """Wipe out progression requirements to assume access through main 7 levels."""
+    for i in range(0, 7):
+        # Assume T&S and B.Locker amounts will be attainable for now
+        settings.EntryGBs[i] = 0
+        settings.BossBananas[i] = 0
+        # Assume starting kong can beat all the bosses for now
+        settings.boss_kongs[i] = settings.starting_kong
+        settings.boss_maps[i] = Maps.JapesBoss
+    # Also for now consider any kong can free any other kong, to avoid false failures in fill
+    settings.diddy_freeing_kong = Kongs.any
+    settings.lanky_freeing_kong = Kongs.any
+    settings.tiny_freeing_kong = Kongs.any
+    settings.chunky_freeing_kong = Kongs.any
+
+
+def SetNewProgressionRequirements(settings: Settings):
+    """Set new progression requirements based on what is owned or accessible heading into each level."""
+    # Find for each level: # of accessible bananas, total GBs, owned kongs & owned moves
+    coloredBananaCounts = []
+    goldenBananaTotals = []
+    ownedKongs = {}
+    ownedMoves = {}
+    if settings.unlock_all_moves:
+        allMoves = ItemPool.DonkeyMoves.copy()
+        allMoves.extend(ItemPool.DiddyMoves)
+        allMoves.extend(ItemPool.LankyMoves)
+        allMoves.extend(ItemPool.TinyMoves)
+        allMoves.extend(ItemPool.ChunkyMoves)
+        allMoves.extend(ItemPool.ImportantSharedMoves)
+    for level in range(1, 8):
+        BlockAccessToLevel(settings, level)
+        Reset()
+        accessible = GetAccessibleLocations(settings, [])
+        previousLevel = GetLevelShuffledToIndex(level - 1)
+        coloredBananaCounts.append(LogicVariables.ColoredBananas[previousLevel])
+        goldenBananaTotals.append(LogicVariables.GoldenBananas)
+        ownedKongs[previousLevel] = LogicVariables.GetKongs()
+        if settings.unlock_all_moves:
+            ownedMoves[previousLevel] = allMoves
+        else:
+            accessibleMoves = [LocationList[x].item for x in accessible if LocationList[x].type == Types.Shop and LocationList[x].item != Items.NoItem and LocationList[x].item is not None]
+            ownedMoves[previousLevel] = accessibleMoves
+    # Cap the B. Locker and T&S amounts based on accessible bananas & GBs
+    settings.EntryGBs = [
+        min(settings.blocker_0, 1),  # First B. Locker shouldn't be more than 1 GB
+        min(settings.blocker_1, goldenBananaTotals[0]),
+        min(settings.blocker_2, goldenBananaTotals[1]),
+        min(settings.blocker_3, goldenBananaTotals[2]),
+        min(settings.blocker_4, goldenBananaTotals[3]),
+        min(settings.blocker_5, goldenBananaTotals[4]),
+        min(settings.blocker_6, goldenBananaTotals[5]),
+        settings.blocker_7,  # Last B. Locker shouldn't be affected
+    ]
+    settings.BossBananas = [
+        min(settings.troff_0, sum(coloredBananaCounts[0])),
+        min(settings.troff_1, sum(coloredBananaCounts[1])),
+        min(settings.troff_2, sum(coloredBananaCounts[2])),
+        min(settings.troff_3, sum(coloredBananaCounts[3])),
+        min(settings.troff_4, sum(coloredBananaCounts[4])),
+        min(settings.troff_5, sum(coloredBananaCounts[5])),
+        min(settings.troff_6, sum(coloredBananaCounts[6])),
+    ]
+    # Update values based on actual level progression
+    ShuffleExits.UpdateLevelProgression(settings)
+    ShuffleBossesBasedOnOwnedItems(settings, ownedKongs, ownedMoves)
+
+
+def BlockAccessToLevel(settings: Settings, level):
+    """Assume the level index passed in is the furthest level you have access to in the level order."""
+    for i in range(0, 7):
+        if i >= level:
+            # This level and those after it are locked out
+            settings.EntryGBs[i] = 1000
+            settings.BossBananas[i] = 1000
+        else:
+            # Previous levels assumed accessible
+            settings.EntryGBs[i] = 0
+            settings.BossBananas[i] = 0
+    # Update values based on actual level progression
+    ShuffleExits.UpdateLevelProgression(settings)
+
+
 def Generate_Spoiler(spoiler):
     """Generate a complete spoiler based on input settings."""
     # Init logic vars with settings
@@ -618,10 +827,6 @@ def Generate_Spoiler(spoiler):
     if spoiler.settings.bonus_barrels == "random":
         BarrelShuffle(spoiler.settings)
         spoiler.UpdateBarrels()
-    # Handle ER
-    if spoiler.settings.shuffle_loading_zones != "none":
-        ShuffleExits.ExitShuffle(spoiler.settings)
-        spoiler.UpdateExits()
     # Handle Bananaports
     if spoiler.settings.bananaport_rando:
         replacements = []
@@ -629,23 +834,37 @@ def Generate_Spoiler(spoiler):
         ShuffleWarps(replacements, human_replacements)
         spoiler.bananaport_replacements = replacements.copy()
         spoiler.human_warp_locations = human_replacements
-    # Place items
-    if spoiler.settings.shuffle_items == "all":
-        Fill(spoiler)
-    elif spoiler.settings.shuffle_items == "moves" or spoiler.settings.kong_rando:
-        ShuffleMisc(spoiler)
+    # Handle Kong Rando + Level Rando combination separately since it is more restricted
+    if spoiler.settings.shuffle_loading_zones == "levels" and spoiler.settings.kong_rando:
+        # Force move rando on if not starting will all moves
+        if not spoiler.settings.unlock_all_moves:
+            spoiler.settings.shuffle_items = "moves"
+        # Force boss rando on
+        spoiler.settings.boss_location_rando = True
+        spoiler.settings.boss_kong_rando = True
+        ShuffleKongsAndLevels(spoiler)
     else:
-        # Just check if normal item locations are beatable with given settings
-        ItemPool.PlaceConstants(spoiler.settings)
-        if not GetAccessibleLocations(spoiler.settings, [], SearchMode.CheckBeatable):
-            raise Ex.VanillaItemsGameNotBeatableException("Game unbeatable.")
-        # Playthrough and location list probably unnecessary with vanilla items
-        # Reset()
-        # PlaythroughLocations = GetAccessibleLocations([], SearchMode.GeneratePlaythrough)
-        # ParePlaythrough(PlaythroughLocations)
-        # # Write data to spoiler and return
-        # spoiler.UpdateLocations(LocationList)
-        # spoiler.UpdatePlaythrough(LocationList, PlaythroughLocations)
+        # Handle ER
+        if spoiler.settings.shuffle_loading_zones != "none":
+            ShuffleExits.ExitShuffle(spoiler.settings)
+            spoiler.UpdateExits()
+        # Handle Item Fill
+        if spoiler.settings.shuffle_items == "all":
+            Fill(spoiler)
+        elif spoiler.settings.shuffle_items == "moves" or spoiler.settings.kong_rando:
+            ShuffleMisc(spoiler)
+        else:
+            # Just check if normal item locations are beatable with given settings
+            ItemPool.PlaceConstants(spoiler.settings)
+            if not GetAccessibleLocations(spoiler.settings, [], SearchMode.CheckBeatable):
+                raise Ex.VanillaItemsGameNotBeatableException("Game unbeatable.")
+            # Playthrough and location list probably unnecessary with vanilla items
+            # Reset()
+            # PlaythroughLocations = GetAccessibleLocations([], SearchMode.GeneratePlaythrough)
+            # ParePlaythrough(PlaythroughLocations)
+            # # Write data to spoiler and return
+            # spoiler.UpdateLocations(LocationList)
+            # spoiler.UpdatePlaythrough(LocationList, PlaythroughLocations)
     Reset()
     ShuffleExits.Reset()
     return spoiler

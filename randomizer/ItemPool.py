@@ -1,5 +1,6 @@
 """Contains functions related to setting up the pool of shuffled items."""
 import itertools
+from random import shuffle
 
 from randomizer.Enums.Items import Items
 from randomizer.Enums.Locations import Locations
@@ -12,21 +13,8 @@ from randomizer.Lists.ShufflableExit import ShufflableExits
 
 def PlaceConstants(settings):
     """Place items which are to be put in a hard-coded location."""
-    # Banana Hoard: Pseudo-item used to represent game completion by defeating K. Rool
-    LocationList[Locations.BananaHoard].PlaceConstantItem(Items.BananaHoard)
-    # Helm key is always vanilla
-    LocationList[Locations.HelmKey].PlaceConstantItem(Items.HideoutHelmKey)
     # Handle key placements
-    if settings.shuffle_loading_zones != "levels":
-        # Keys kept at key locations so boss completion required
-        LocationList[Locations.JapesKey].PlaceConstantItem(Items.JungleJapesKey)
-        LocationList[Locations.AztecKey].PlaceConstantItem(Items.AngryAztecKey)
-        LocationList[Locations.FactoryKey].PlaceConstantItem(Items.FranticFactoryKey)
-        LocationList[Locations.GalleonKey].PlaceConstantItem(Items.GloomyGalleonKey)
-        LocationList[Locations.ForestKey].PlaceConstantItem(Items.FungiForestKey)
-        LocationList[Locations.CavesKey].PlaceConstantItem(Items.CrystalCavesKey)
-        LocationList[Locations.CastleKey].PlaceConstantItem(Items.CreepyCastleKey)
-    else:
+    if settings.shuffle_loading_zones == "levels":
         # Place keys in the lobbies they normally belong in
         # Ex. Whatever level is in the Japes lobby entrance will always have the Japes key
         for level in LevelInfoList.values():
@@ -38,17 +26,6 @@ def PlaceConstants(settings):
                 dest = ShufflableExits[level.TransitionTo].shuffledId
                 shuffledTo = [x for x in LevelInfoList.values() if x.TransitionTo == dest][0]
                 LocationList[shuffledTo.KeyLocation].PlaceConstantItem(level.KeyItem)
-    # Helm locations (which are functionally events)
-    LocationList[Locations.HelmDonkey1].PlaceConstantItem(Items.HelmDonkey1)
-    LocationList[Locations.HelmDonkey2].PlaceConstantItem(Items.HelmDonkey2)
-    LocationList[Locations.HelmDiddy1].PlaceConstantItem(Items.HelmDiddy1)
-    LocationList[Locations.HelmDiddy2].PlaceConstantItem(Items.HelmDiddy2)
-    LocationList[Locations.HelmLanky1].PlaceConstantItem(Items.HelmLanky1)
-    LocationList[Locations.HelmLanky2].PlaceConstantItem(Items.HelmLanky2)
-    LocationList[Locations.HelmTiny1].PlaceConstantItem(Items.HelmTiny1)
-    LocationList[Locations.HelmTiny2].PlaceConstantItem(Items.HelmTiny2)
-    LocationList[Locations.HelmChunky1].PlaceConstantItem(Items.HelmChunky1)
-    LocationList[Locations.HelmChunky2].PlaceConstantItem(Items.HelmChunky2)
     # Settings-dependent locations
     if settings.shuffle_items != "all":
         shuffledLocations = []
@@ -64,7 +41,16 @@ def PlaceConstants(settings):
             shuffledLocations.append(Locations.LankyKong)
             shuffledLocations.append(Locations.TinyKong)
             shuffledLocations.append(Locations.ChunkyKong)
+        if settings.shuffle_loading_zones == "levels":
+            shuffledLocations.append(Locations.JapesKey)
+            shuffledLocations.append(Locations.AztecKey)
+            shuffledLocations.append(Locations.FactoryKey)
+            shuffledLocations.append(Locations.GalleonKey)
+            shuffledLocations.append(Locations.ForestKey)
+            shuffledLocations.append(Locations.CavesKey)
+            shuffledLocations.append(Locations.CastleKey)
         locations = [x for x in LocationList if x not in shuffledLocations]
+        # All locations NOT shuffled will place their default item here
         for location in locations:
             LocationList[location].PlaceDefaultItem()
     if settings.training_barrels == "normal":

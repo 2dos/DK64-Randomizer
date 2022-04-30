@@ -17,6 +17,7 @@ import randomizer.LogicFiles.GloomyGalleon
 import randomizer.LogicFiles.HideoutHelm
 import randomizer.LogicFiles.JungleJapes
 import randomizer.LogicFiles.Shops
+from randomizer.Lists.ShufflableExit import GetShuffledLevelIndex
 from randomizer.Enums.Collectibles import Collectibles
 from randomizer.Enums.Events import Events
 from randomizer.Enums.Items import Items
@@ -345,20 +346,26 @@ class LogicVarHolder:
         if kong == Kongs.any:
             return (self.bongos and self.isdonkey) or (self.guitar and self.isdiddy) or (self.trombone and self.islanky) or (self.saxophone and self.istiny) or (self.triangle and self.ischunky)
 
+    def CanFreeDiddy(self):
+        """Check if kong at Diddy location can be freed."""
+        return self.HasGun(self.settings.diddy_freeing_kong)
+
     def CanFreeTiny(self):
-        """Check if Tiny can be freed,r equires either chimpy charge or primate punch."""
+        """Check if kong at Tiny location can be freed,r equires either chimpy charge or primate punch."""
         if self.settings.tiny_freeing_kong == Kongs.diddy:
             return self.charge and self.isdiddy
-        # Theoretical: Free her with punches, currently not implemented
         elif self.settings.tiny_freeing_kong == Kongs.chunky:
             return self.punch and self.ischunky
+        # Used only as placeholder during fill when kong puzzles are not yet assigned
+        elif self.settings.tiny_freeing_kong == Kongs.any:
+            return True
 
     def CanFreeLanky(self):
-        """Check if Lanky can be freed, requires freeing kong to have its gun and instrument."""
+        """Check if kong at Lanky location can be freed, requires freeing kong to have its gun and instrument."""
         return self.HasGun(self.settings.lanky_freeing_kong) and self.HasInstrument(self.settings.lanky_freeing_kong)
 
     def CanFreeChunky(self):
-        """Check if Chunky can be freed."""
+        """Check if kong at Chunky location can be freed."""
         return self.Slam and self.IsKong(self.settings.chunky_freeing_kong)
 
     def UpdateCurrentRegionAccess(self, region):
@@ -452,6 +459,26 @@ class LogicVarHolder:
                 return False
         return True
 
+    def IsBossReachable(self, level):
+        """Check if the boss banana requirement is met."""
+        return self.HasEnoughKongs(level) and sum(self.ColoredBananas[level]) >= self.settings.BossBananas[level]
+
+    def HasEnoughKongs(self, level, forPreviousLevel=False):
+        """Check if kongs are required for progression, do we have enough to reach the given level."""
+        if self.settings.kongs_for_progression and level != Levels.HideoutHelm:
+            # Figure out where this level fits in the progression
+            levelIndex = GetShuffledLevelIndex(level)
+            if forPreviousLevel:
+                levelIndex = levelIndex - 1
+            # Must have sufficient kongs freed to make forward progress for first 5 levels
+            if levelIndex < 5:
+                return len(self.GetKongs()) > levelIndex
+            else:
+                # Expect to have all the kongs by level 6
+                return len(self.GetKongs()) == 5
+        else:
+            return True
+
     def IsBossBeatable(self, level):
         """Return true if the boss for a given level is beatable according to boss location rando and boss kong rando."""
         requiredKong = self.settings.boss_kongs[level]
@@ -462,6 +489,10 @@ class LogicVarHolder:
         elif bossFight == Maps.FungiBoss:
             hasRequiredMoves = self.hunkyChunky
         return self.IsKong(requiredKong) and hasRequiredMoves
+
+    def IsLevelEnterable(self, level):
+        """Check if level entry requirement is met."""
+        return self.HasEnoughKongs(level, forPreviousLevel=True) and self.GoldenBananas >= self.settings.EntryGBs[level]
 
 
 LogicVariables = LogicVarHolder()

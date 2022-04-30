@@ -1,8 +1,8 @@
 """Holds the version for DK64 Rando."""
 import js
 
-stable_version = "0.4 Beta"
-dev_version = "0.4.5 Beta"
+stable_version = "1.0"
+dev_version = "0.999999 Beta"
 
 url = js.location.href.lower().replace("/", "").replace("http:", "").replace("https:", "")
 
