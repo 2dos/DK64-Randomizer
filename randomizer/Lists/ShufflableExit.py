@@ -255,12 +255,18 @@ ShufflableExits = {
 def GetShuffledLevelIndex(level):
     """Get index of where the given level fits in the level order. Ex: If Caves is the 1st level, passing 5 will return 0."""
     lobbyExit = ShufflableExits[LevelInfoList[level].TransitionsFrom].shuffledId
-    levelIndex = [key for key, item in LevelInfoList.items() if item.TransitionsFrom == lobbyExit][0]
+    if lobbyExit is not None:
+        levelIndex = [key for key, item in LevelInfoList.items() if item.TransitionsFrom == lobbyExit][0]
+    else:
+        levelIndex = level
     return levelIndex
 
 
 def GetLevelShuffledToIndex(levelIndex):
     """Get level located at the given level index. Ex: If Caves is the 1st level, passing 0 will return 5."""
     lobbyEntrance = ShufflableExits[LevelInfoList[levelIndex].TransitionTo].shuffledId
-    level = [key for key, item in LevelInfoList.items() if item.TransitionTo == lobbyEntrance][0]
+    if lobbyEntrance is not None:
+        level = [key for key, item in LevelInfoList.items() if item.TransitionTo == lobbyEntrance][0]
+    else:
+        level = levelIndex
     return level
