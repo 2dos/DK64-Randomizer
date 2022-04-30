@@ -5,6 +5,7 @@ from randomizer.Enums.ExitCategories import ExitCategories
 from randomizer.Enums.Kongs import Kongs
 from randomizer.Enums.Regions import Regions
 from randomizer.Enums.Transitions import Transitions
+from randomizer.Lists.LevelInfo import LevelInfoList
 from randomizer.LogicClasses import TransitionBack
 
 
@@ -249,3 +250,17 @@ ShufflableExits = {
     Transitions.CastleUpperToDungeon: ShufflableExit("Creepy Castle Upper Cave to Dungeon", Regions.UpperCave, TransitionBack(Regions.Dungeon, "From Tunnel", "Creepy Castle Dungeon", Transitions.CastleDungeonToUpper), ExitCategories.CastleUpper),
     Transitions.CastleDungeonToUpper: ShufflableExit("Creepy Castle Dungeon to Upper Cave", Regions.Dungeon, TransitionBack(Regions.UpperCave, "From Dungeon", "Creepy Castle Upper Cave from Dungeon", Transitions.CastleUpperToDungeon)),
 }
+
+
+def GetShuffledLevelIndex(level):
+    """Get index of where the given level fits in the level order. Ex: If Caves is the 1st level, passing 5 will return 0."""
+    lobbyExit = ShufflableExits[LevelInfoList[level].TransitionsFrom].shuffledId
+    levelIndex = [key for key, item in LevelInfoList.items() if item.TransitionsFrom == lobbyExit][0]
+    return levelIndex
+
+
+def GetLevelShuffledToIndex(levelIndex):
+    """Get level located at the given level index. Ex: If Caves is the 1st level, passing 0 will return 5."""
+    lobbyEntrance = ShufflableExits[LevelInfoList[levelIndex].TransitionTo].shuffledId
+    level = [key for key, item in LevelInfoList.items() if item.TransitionTo == lobbyEntrance][0]
+    return level

@@ -4,6 +4,7 @@ import random
 import js
 import randomizer.ItemPool as ItemPool
 import randomizer.Lists.Exceptions as Ex
+from randomizer.Lists.ShufflableExit import GetLevelShuffledToIndex, GetShuffledLevelIndex
 import randomizer.Logic as Logic
 from randomizer.Settings import Settings
 import randomizer.ShuffleExits as ShuffleExits
@@ -25,9 +26,10 @@ from randomizer.Prices import GetPriceOfMoveItem
 from randomizer.ShuffleBarrels import BarrelShuffle
 from randomizer.ShuffleKasplats import KasplatShuffle
 from randomizer.ShuffleWarps import ShuffleWarps
+from randomizer.ShuffleBosses import ShuffleBossesBasedOnOwnedItems
 
 
-def GetExitLevelExit(settings, region):
+def GetExitLevelExit(region):
     """Get the exit that using the "Exit Level" button will take you to."""
     level = region.level
     # For now, restarts will not be randomized
@@ -134,7 +136,7 @@ def GetAccessibleLocations(settings, ownedItems, searchType=SearchMode.GetReacha
                 exits = region.exits.copy()
                 # If loading zones are shuffled, the "Exit Level" button in the pause menu could potentially take you somewhere new
                 if settings.shuffle_loading_zones and region.level != Levels.DKIsles and region.level != Levels.Shops:
-                    levelExit = GetExitLevelExit(settings, region)
+                    levelExit = GetExitLevelExit(region)
                     # When shuffling levels, unplaced level entrances will have no destination yet
                     if levelExit is not None:
                         dest = ShuffleExits.ShufflableExits[levelExit].back.regionId
@@ -339,6 +341,7 @@ def AssumedFill(settings, itemsToPlace, validLocations, ownedItems=[]):
             currentGbCount = len([x for x in owned if ItemList[x].type == Types.Banana])
             js.postMessage("Current Moves owned at failure: " + str(currentMovesOwned) + " with GB count: " + str(currentGbCount) + " and kongs freed: " + str(currentKongsFreed))
             return len(itemsToPlace) + 1
+        random.shuffle(validReachable)
         # Shop items need coin logic
         if ItemList[item].type == Types.Shop:
             moveKong = ItemList[item].kong
@@ -358,7 +361,22 @@ def AssumedFill(settings, itemsToPlace, validLocations, ownedItems=[]):
             kongBeingPlaced = KongFromItem(item)
             if kongBeingPlaced in ownedKongs:
                 ownedKongs.remove(kongBeingPlaced)  # Cannot free with the kong being placed
-        random.shuffle(validReachable)
+            # If kongs are needed for level progression
+            if settings.kongs_for_progression:
+                # To lower failure rate, place kongs from later to earlier levels
+                japesIndex = GetShuffledLevelIndex(Levels.JungleJapes)
+                aztecIndex = GetShuffledLevelIndex(Levels.AngryAztec)
+                factoryIndex = GetShuffledLevelIndex(Levels.FranticFactory)
+                kongPriority = {}
+                for i in range(0, 5):
+                    if i == japesIndex:
+                        kongPriority[Locations.DiddyKong] = i
+                    elif i == aztecIndex:
+                        kongPriority[Locations.LankyKong] = i
+                        kongPriority[Locations.TinyKong] = i
+                    elif i == factoryIndex:
+                        kongPriority[Locations.ChunkyKong] = i
+                validReachable.sort(key=lambda x: kongPriority[x], reverse=True)
         # Get a random, empty, reachable location
         for locationId in validReachable:
             # Atempt to place the item here
@@ -366,13 +384,25 @@ def AssumedFill(settings, itemsToPlace, validLocations, ownedItems=[]):
             # When placing a kong, also decide who among the owned kongs can free them
             if ItemList[item].type == Types.Kong:
                 # Choose the puzzle solver
-                if locationId == Locations.DiddyKong or locationId == Locations.ChunkyKong:
+                if locationId == Locations.DiddyKong:
                     settings.diddy_freeing_kong = random.choice(ownedKongs)
                 elif locationId == Locations.LankyKong:
                     # TODO: see if we can open this to all kongs
-                    settings.lanky_freeing_kong = random.choice(list(set(ownedKongs).intersection([Kongs.donkey, Kongs.lanky, Kongs.tiny])))
+                    eligibleFreers = list(set(ownedKongs).intersection([Kongs.donkey, Kongs.lanky, Kongs.tiny]))
+                    if len(eligibleFreers) == 0:
+                        js.postMessage("Failed placing item " + ItemList[item].name + " in location " + LocationList[locationId].name + ", due to no kongs being able to free them")
+                        valid = False
+                        break
+                    settings.lanky_freeing_kong = random.choice(eligibleFreers)
                 elif locationId == Locations.TinyKong:
-                    settings.tiny_freeing_kong = random.choice(list(set(ownedKongs).intersection([Kongs.diddy, Kongs.chunky])))
+                    eligibleFreers = list(set(ownedKongs).intersection([Kongs.diddy, Kongs.chunky]))
+                    if len(eligibleFreers) == 0:
+                        js.postMessage("Failed placing item " + ItemList[item].name + " in location " + LocationList[locationId].name + ", due to no kongs being able to free them")
+                        valid = False
+                        break
+                    settings.tiny_freeing_kong = random.choice(eligibleFreers)
+                elif locationId == Locations.ChunkyKong:
+                    settings.chunky_freeing_kong = random.choice(ownedKongs)
             # Check valid reachable after placing to see if it is broken
             # Need to re-assign owned items since the search adds a bunch of extras
             owned = itemsToPlace.copy()
@@ -644,12 +674,9 @@ def ShuffleKongsAndLevels(spoiler):
     #   6. Castle
     #   7. Fungi
     # ALGORITHM START
-    newLevelOrder = ShuffleLevelOrderWithRestrictions(spoiler.settings)
-    print("New Level Order:")
-    for i in range(1, 8):
-        print(str(i) + ": " + newLevelOrder[i].name)
-    ShuffleExits.ShuffleLevelExits(newLevelOrder)
+    ShuffleExits.ShuffleLevelOrderWithRestrictions(spoiler.settings)
     spoiler.UpdateExits()
+    print("Starting Kong: " + spoiler.settings.starting_kong.name)
     # Need to place constants to update boss key items after shuffling levels
     ItemPool.PlaceConstants(spoiler.settings)
     retries = 0
@@ -659,12 +686,12 @@ def ShuffleKongsAndLevels(spoiler):
             WipeProgressionRequirements(spoiler.settings)
             # Fill the kongs and the moves
             FillKongsAndMoves(spoiler)
+            # Update progression requirements based on fill results
+            SetNewProgressionRequirements(spoiler.settings)
             # Check if game is beatable
             Reset()
             if not GetAccessibleLocations(spoiler.settings, [], SearchMode.CheckBeatable):
                 raise Ex.GameNotBeatableException("Game unbeatable after placing all items.")
-            # TODO: Perform Boss Location & Boss Kong rando, ensuring the first boss can be beaten with an unlocked kong and so on.
-            # TODO: Determine upper limits for the B. Locker and T&S amounts based on accessible bananas & GBs, and pick random values capped by these.
             # Generate and display the playthrough
             Reset()
             PlaythroughLocations = GetAccessibleLocations(spoiler.settings, [], SearchMode.GeneratePlaythrough)
@@ -685,70 +712,6 @@ def ShuffleKongsAndLevels(spoiler):
                 js.postMessage("Fill failed. Retrying. Tries: " + str(retries))
                 Reset()
                 Logic.ClearAllLocations()
-
-
-def ShuffleLevelOrderWithRestrictions(settings: Settings):
-    """Determine level order given starting kong and the need to find more kongs along the way."""
-    levelIndexChoices = {1, 2, 3, 4, 5, 6, 7}
-
-    # Decide where Aztec will go
-    # Diddy can reasonably make progress if Aztec is first level
-    if settings.starting_kong == Kongs.diddy:
-        aztecIndex = random.randint(1, 4)
-    else:
-        aztecIndex = random.randint(2, 4)
-    levelIndexChoices.remove(aztecIndex)
-
-    # Decide where Japes will go
-    japesOptions = []
-    # If Aztec is level 4, both of Japes/Factory need to be in level 1-3
-    if aztecIndex == 4:
-        japesOptions = list(levelIndexChoices.intersection({1, 3}))
-    else:
-        japesOptions = list(levelIndexChoices.intersection({1, 5}))
-    japesIndex = random.choice(japesOptions)
-    levelIndexChoices.remove(japesIndex)
-
-    # Decide where Factory will go
-    factoryOptions = []
-    # If starting kong is Chunky, one of Japes/Factory needs to be in level 1-2 (until we can get Chunky to Free kong in Tiny Temple)
-    if settings.starting_kong == Kongs.chunky and japesIndex > 2:
-        factoryOptions = list(levelIndexChoices.intersection({1, 2}))
-    # If Aztec is level 4, both of Japes/Factory need to be in level 1-3
-    elif aztecIndex == 4:
-        factoryOptions = list(levelIndexChoices.intersection({1, 3}))
-    # If Aztec is level 3, one of Japes/Factory needs to be in level 1-2 and other in level 1-5
-    elif aztecIndex == 3:
-        if japesIndex < 3:
-            factoryOptions = list(levelIndexChoices.intersection({1, 5}))
-        else:
-            factoryOptions = list(levelIndexChoices.intersection({1, 2}))
-    # If Aztec is level 1 or 2, one of Japes/Factory needs to be in level 1-4 and other in level 1-5
-    else:
-        if japesIndex < 5:
-            factoryOptions = list(levelIndexChoices.intersection({1, 5}))
-        else:
-            factoryOptions = list(levelIndexChoices.intersection({1, 4}))
-    factoryIndex = random.choice(factoryOptions)
-    levelIndexChoices.remove(factoryIndex)
-
-    # Decide the remaining level order randomly
-    remainingLevels = list(levelIndexChoices)
-    random.shuffle(remainingLevels)
-    galleonIndex = remainingLevels.pop()
-    forestIndex = remainingLevels.pop()
-    cavesIndex = remainingLevels.pop()
-    castleIndex = remainingLevels.pop()
-    newLevelOrder = {
-        japesIndex: Levels.JungleJapes,
-        aztecIndex: Levels.AngryAztec,
-        factoryIndex: Levels.FranticFactory,
-        galleonIndex: Levels.GloomyGalleon,
-        forestIndex: Levels.FungiForest,
-        cavesIndex: Levels.CrystalCaves,
-        castleIndex: Levels.CreepyCastle,
-    }
-    return newLevelOrder
 
 
 def GetAccessibleKongLocations(levels: list, ownedKongs: list):
@@ -777,11 +740,78 @@ def WipeProgressionRequirements(settings: Settings):
         # Assume starting kong can beat all the bosses for now
         settings.boss_kongs[i] = settings.starting_kong
         settings.boss_maps[i] = Maps.JapesBoss
-    # Also for now consider starting kong can free any other kong, to avoid false failures in fill
-    settings.diddy_freeing_kong = settings.starting_kong
-    settings.lanky_freeing_kong = settings.starting_kong
-    settings.tiny_freeing_kong = settings.starting_kong
-    settings.chunky_freeing_kong = settings.starting_kong
+    # Also for now consider any kong can free any other kong, to avoid false failures in fill
+    settings.diddy_freeing_kong = Kongs.any
+    settings.lanky_freeing_kong = Kongs.any
+    settings.tiny_freeing_kong = Kongs.any
+    settings.chunky_freeing_kong = Kongs.any
+
+
+def SetNewProgressionRequirements(settings: Settings):
+    """Set new progression requirements based on what is owned or accessible heading into each level."""
+    # Find for each level: # of accessible bananas, total GBs, owned kongs & owned moves
+    coloredBananaCounts = []
+    goldenBananaTotals = []
+    ownedKongs = {}
+    ownedMoves = {}
+    if settings.unlock_all_moves:
+        allMoves = ItemPool.DonkeyMoves.copy()
+        allMoves.extend(ItemPool.DiddyMoves)
+        allMoves.extend(ItemPool.LankyMoves)
+        allMoves.extend(ItemPool.TinyMoves)
+        allMoves.extend(ItemPool.ChunkyMoves)
+        allMoves.extend(ItemPool.ImportantSharedMoves)
+    for level in range(1, 8):
+        BlockAccessToLevel(settings, level)
+        Reset()
+        accessible = GetAccessibleLocations(settings, [])
+        previousLevel = GetLevelShuffledToIndex(level - 1)
+        coloredBananaCounts.append(LogicVariables.ColoredBananas[previousLevel])
+        goldenBananaTotals.append(LogicVariables.GoldenBananas)
+        ownedKongs[previousLevel] = LogicVariables.GetKongs()
+        if settings.unlock_all_moves:
+            ownedMoves[previousLevel] = allMoves
+        else:
+            accessibleMoves = [LocationList[x].item for x in accessible if LocationList[x].type == Types.Shop and LocationList[x].item != Items.NoItem and LocationList[x].item is not None]
+            ownedMoves[previousLevel] = accessibleMoves
+    # Cap the B. Locker and T&S amounts based on accessible bananas & GBs
+    settings.EntryGBs = [
+        min(settings.blocker_0, 1),  # First B. Locker shouldn't be more than 1 GB
+        min(settings.blocker_1, goldenBananaTotals[0]),
+        min(settings.blocker_2, goldenBananaTotals[1]),
+        min(settings.blocker_3, goldenBananaTotals[2]),
+        min(settings.blocker_4, goldenBananaTotals[3]),
+        min(settings.blocker_5, goldenBananaTotals[4]),
+        min(settings.blocker_6, goldenBananaTotals[5]),
+        settings.blocker_7,  # Last B. Locker shouldn't be affected
+    ]
+    settings.BossBananas = [
+        min(settings.troff_0, sum(coloredBananaCounts[0])),
+        min(settings.troff_1, sum(coloredBananaCounts[1])),
+        min(settings.troff_2, sum(coloredBananaCounts[2])),
+        min(settings.troff_3, sum(coloredBananaCounts[3])),
+        min(settings.troff_4, sum(coloredBananaCounts[4])),
+        min(settings.troff_5, sum(coloredBananaCounts[5])),
+        min(settings.troff_6, sum(coloredBananaCounts[6])),
+    ]
+    # Update values based on actual level progression
+    ShuffleExits.UpdateLevelProgression(settings)
+    ShuffleBossesBasedOnOwnedItems(settings, ownedKongs, ownedMoves)
+
+
+def BlockAccessToLevel(settings: Settings, level):
+    """Assume the level index passed in is the furthest level you have access to in the level order."""
+    for i in range(0, 7):
+        if i >= level:
+            # This level and those after it are locked out
+            settings.EntryGBs[i] = 1000
+            settings.BossBananas[i] = 1000
+        else:
+            # Previous levels assumed accessible
+            settings.EntryGBs[i] = 0
+            settings.BossBananas[i] = 0
+    # Update values based on actual level progression
+    ShuffleExits.UpdateLevelProgression(settings)
 
 
 def Generate_Spoiler(spoiler):
@@ -809,6 +839,9 @@ def Generate_Spoiler(spoiler):
         # Force move rando on if not starting will all moves
         if not spoiler.settings.unlock_all_moves:
             spoiler.settings.shuffle_items = "moves"
+        # Force boss rando on
+        spoiler.settings.boss_location_rando = True
+        spoiler.settings.boss_kong_rando = True
         ShuffleKongsAndLevels(spoiler)
     else:
         # Handle ER

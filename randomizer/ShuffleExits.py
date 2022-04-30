@@ -1,15 +1,13 @@
 """File that shuffles loading zone exits."""
 import random
-from ast import And
-
 import js
 import randomizer.Fill as Fill
 import randomizer.Lists.Exceptions as Ex
 import randomizer.Logic as Logic
+from randomizer.Enums.Levels import Levels
+from randomizer.Enums.Kongs import Kongs
 from randomizer.Enums.Regions import Regions
-from randomizer.Enums.SearchMode import SearchMode
 from randomizer.Enums.Transitions import Transitions
-from randomizer.ItemPool import AllItems, PlaceConstants
 from randomizer.Lists.ShufflableExit import ShufflableExits
 from randomizer.LogicClasses import TransitionFront
 from randomizer.Settings import Settings
@@ -273,3 +271,72 @@ def ShuffleLevelExits(newLevelOrder: dict = None):
         backReverse.shuffled = True
         backReverse.shuffledId = frontExit.back.reverse
         # print("Assigned " + ShufflableExits[backExit.back.reverse].name + " --> " + ShufflableExits[frontExit.back.reverse].name)
+
+
+def ShuffleLevelOrderWithRestrictions(settings: Settings):
+    """Determine level order given starting kong and the need to find more kongs along the way."""
+    levelIndexChoices = {1, 2, 3, 4, 5, 6, 7}
+
+    # Decide where Aztec will go
+    # Diddy can reasonably make progress if Aztec is first level
+    if settings.starting_kong == Kongs.diddy:
+        aztecIndex = random.randint(1, 4)
+    else:
+        aztecIndex = random.randint(2, 4)
+    levelIndexChoices.remove(aztecIndex)
+
+    # Decide where Japes will go
+    japesOptions = []
+    # If Aztec is level 4, both of Japes/Factory need to be in level 1-3
+    if aztecIndex == 4:
+        japesOptions = list(levelIndexChoices.intersection({1, 3}))
+    else:
+        japesOptions = list(levelIndexChoices.intersection({1, 5}))
+    japesIndex = random.choice(japesOptions)
+    levelIndexChoices.remove(japesIndex)
+
+    # Decide where Factory will go
+    factoryOptions = []
+    # If starting kong is Chunky, one of Japes/Factory needs to be in level 1-2 (until we can get Chunky to Free kong in Tiny Temple)
+    if settings.starting_kong == Kongs.chunky and japesIndex > 2:
+        factoryOptions = list(levelIndexChoices.intersection({1, 2}))
+    # If Aztec is level 4, both of Japes/Factory need to be in level 1-3
+    elif aztecIndex == 4:
+        factoryOptions = list(levelIndexChoices.intersection({1, 3}))
+    # If Aztec is level 3, one of Japes/Factory needs to be in level 1-2 and other in level 1-5
+    elif aztecIndex == 3:
+        if japesIndex < 3:
+            factoryOptions = list(levelIndexChoices.intersection({1, 5}))
+        else:
+            factoryOptions = list(levelIndexChoices.intersection({1, 2}))
+    # If Aztec is level 1 or 2, one of Japes/Factory needs to be in level 1-4 and other in level 1-5
+    else:
+        if japesIndex < 5:
+            factoryOptions = list(levelIndexChoices.intersection({1, 5}))
+        else:
+            factoryOptions = list(levelIndexChoices.intersection({1, 4}))
+    factoryIndex = random.choice(factoryOptions)
+    levelIndexChoices.remove(factoryIndex)
+
+    # Decide the remaining level order randomly
+    remainingLevels = list(levelIndexChoices)
+    random.shuffle(remainingLevels)
+    galleonIndex = remainingLevels.pop()
+    forestIndex = remainingLevels.pop()
+    cavesIndex = remainingLevels.pop()
+    castleIndex = remainingLevels.pop()
+    newLevelOrder = {
+        japesIndex: Levels.JungleJapes,
+        aztecIndex: Levels.AngryAztec,
+        factoryIndex: Levels.FranticFactory,
+        galleonIndex: Levels.GloomyGalleon,
+        forestIndex: Levels.FungiForest,
+        cavesIndex: Levels.CrystalCaves,
+        castleIndex: Levels.CreepyCastle,
+    }
+    print("New Level Order:")
+    for i in range(1, 8):
+        print(str(i) + ": " + newLevelOrder[i].name)
+    if len(newLevelOrder) < 7:
+        raise Ex.EntrancePlacementException("Invalid level order with fewer than the 7 required main levels.")
+    ShuffleLevelExits(newLevelOrder)

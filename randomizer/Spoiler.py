@@ -268,7 +268,7 @@ class Spoiler:
         self.shuffled_kong_placement["TrainingGrounds"] = trainingGrounds
         # Loop through locations and set necessary data
         for id, location in locations.items():
-            if location.item is not None and not location.constant:
+            if location.item is not None and location.item is not Items.NoItem and not location.constant:
                 self.location_data[id] = location.item
                 if location.type == Types.Shop:
                     # Get indices from the location
