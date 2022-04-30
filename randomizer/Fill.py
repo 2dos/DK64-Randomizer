@@ -753,6 +753,13 @@ def SetNewProgressionRequirements(settings: Settings):
     goldenBananaTotals = []
     ownedKongs = {}
     ownedMoves = {}
+    if settings.unlock_all_moves:
+        allMoves = ItemPool.DonkeyMoves.copy()
+        allMoves.extend(ItemPool.DiddyMoves)
+        allMoves.extend(ItemPool.LankyMoves)
+        allMoves.extend(ItemPool.TinyMoves)
+        allMoves.extend(ItemPool.ChunkyMoves)
+        allMoves.extend(ItemPool.ImportantSharedMoves)
     for level in range(1, 8):
         BlockAccessToLevel(settings, level)
         Reset()
@@ -761,8 +768,11 @@ def SetNewProgressionRequirements(settings: Settings):
         coloredBananaCounts.append(LogicVariables.ColoredBananas[previousLevel])
         goldenBananaTotals.append(LogicVariables.GoldenBananas)
         ownedKongs[previousLevel] = LogicVariables.GetKongs()
-        accessibleMoves = [LocationList[x].item for x in accessible if LocationList[x].type == Types.Shop and LocationList[x].item != Items.NoItem and LocationList[x].item is not None]
-        ownedMoves[previousLevel] = accessibleMoves
+        if settings.unlock_all_moves:
+            ownedMoves[previousLevel] = allMoves
+        else:
+            accessibleMoves = [LocationList[x].item for x in accessible if LocationList[x].type == Types.Shop and LocationList[x].item != Items.NoItem and LocationList[x].item is not None]
+            ownedMoves[previousLevel] = accessibleMoves
     # Cap the B. Locker and T&S amounts based on accessible bananas & GBs
     settings.EntryGBs = [
         min(settings.blocker_0, 1),  # First B. Locker shouldn't be more than 1 GB
