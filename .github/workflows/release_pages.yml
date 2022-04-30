@@ -21,6 +21,9 @@ jobs:
 
     - name: Build minified versions
       run: python3 ./tools/prepare_offline.py
+    
+    - name: Remove Git Ignore (This might be changed in the future)
+      run: rm .gitignore
 
     - name: Move Files
       run: mkdir ./deploy-directory && mv -f ./* ./deploy-directory/ || true
