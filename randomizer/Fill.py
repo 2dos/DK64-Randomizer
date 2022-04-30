@@ -536,6 +536,7 @@ def Fill(spoiler):
             Reset()
             if not GetAccessibleLocations(spoiler.settings, [], SearchMode.CheckBeatable):
                 raise Ex.GameNotBeatableException("Game unbeatable after placing all items.")
+            return
         except Ex.FillException as ex:
             if retries == 4:
                 js.postMessage("Fill failed, out of retries.")
@@ -594,6 +595,7 @@ def ShuffleMisc(spoiler):
             Reset()
             if not GetAccessibleLocations(spoiler.settings, [], SearchMode.CheckBeatable):
                 raise Ex.GameNotBeatableException("Game unbeatable after placing all items.")
+            return
         except Ex.FillException as ex:
             if retries == 20:
                 js.postMessage("Fill failed, out of retries.")
