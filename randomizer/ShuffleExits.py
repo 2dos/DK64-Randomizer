@@ -3,7 +3,6 @@ import random
 import js
 import randomizer.Fill as Fill
 import randomizer.Lists.Exceptions as Ex
-from randomizer.Lists.LevelInfo import LevelInfoList
 import randomizer.Logic as Logic
 from randomizer.Enums.Levels import Levels
 from randomizer.Enums.Kongs import Kongs
@@ -242,20 +241,6 @@ def UpdateLevelProgression(settings: Settings):
         newBossBananas[newIndex] = settings.BossBananas[levelIndex]
     settings.EntryGBs = newEntryGBs
     settings.BossBananas = newBossBananas
-
-
-def GetShuffledLevelIndex(level):
-    """Get index of where the given level fits in the level order. Ex: If Caves is the 1st level, passing 5 will return 0."""
-    lobbyExit = ShufflableExits[LevelInfoList[level].TransitionsFrom].shuffledId
-    levelIndex = [key for key, item in LevelInfoList.items() if item.TransitionsFrom == lobbyExit][0]
-    return levelIndex
-
-
-def GetLevelShuffledToIndex(levelIndex):
-    """Get level located at the given level index. Ex: If Caves is the 1st level, passing 0 will return 5."""
-    lobbyEntrance = ShufflableExits[LevelInfoList[levelIndex].TransitionTo].shuffledId
-    level = [key for key, item in LevelInfoList.items() if item.TransitionTo == lobbyEntrance][0]
-    return level
 
 
 def ShuffleLevelExits(newLevelOrder: dict = None):

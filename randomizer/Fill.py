@@ -4,6 +4,7 @@ import random
 import js
 import randomizer.ItemPool as ItemPool
 import randomizer.Lists.Exceptions as Ex
+from randomizer.Lists.ShufflableExit import GetLevelShuffledToIndex, GetShuffledLevelIndex
 import randomizer.Logic as Logic
 from randomizer.Settings import Settings
 import randomizer.ShuffleExits as ShuffleExits
@@ -28,7 +29,7 @@ from randomizer.ShuffleWarps import ShuffleWarps
 from randomizer.ShuffleBosses import ShuffleBossesBasedOnOwnedItems
 
 
-def GetExitLevelExit(settings, region):
+def GetExitLevelExit(region):
     """Get the exit that using the "Exit Level" button will take you to."""
     level = region.level
     # For now, restarts will not be randomized
@@ -135,7 +136,7 @@ def GetAccessibleLocations(settings, ownedItems, searchType=SearchMode.GetReacha
                 exits = region.exits.copy()
                 # If loading zones are shuffled, the "Exit Level" button in the pause menu could potentially take you somewhere new
                 if settings.shuffle_loading_zones and region.level != Levels.DKIsles and region.level != Levels.Shops:
-                    levelExit = GetExitLevelExit(settings, region)
+                    levelExit = GetExitLevelExit(region)
                     # When shuffling levels, unplaced level entrances will have no destination yet
                     if levelExit is not None:
                         dest = ShuffleExits.ShufflableExits[levelExit].back.regionId
@@ -363,9 +364,9 @@ def AssumedFill(settings, itemsToPlace, validLocations, ownedItems=[]):
             # If kongs are needed for level progression
             if settings.kongs_for_progression:
                 # To lower failure rate, place kongs from later to earlier levels
-                japesIndex = ShuffleExits.GetShuffledLevelIndex(Levels.JungleJapes)
-                aztecIndex = ShuffleExits.GetShuffledLevelIndex(Levels.AngryAztec)
-                factoryIndex = ShuffleExits.GetShuffledLevelIndex(Levels.FranticFactory)
+                japesIndex = GetShuffledLevelIndex(Levels.JungleJapes)
+                aztecIndex = GetShuffledLevelIndex(Levels.AngryAztec)
+                factoryIndex = GetShuffledLevelIndex(Levels.FranticFactory)
                 kongPriority = {}
                 for i in range(0, 5):
                     if i == japesIndex:
@@ -764,7 +765,7 @@ def SetNewProgressionRequirements(settings: Settings):
         BlockAccessToLevel(settings, level)
         Reset()
         accessible = GetAccessibleLocations(settings, [])
-        previousLevel = ShuffleExits.GetLevelShuffledToIndex(level - 1)
+        previousLevel = GetLevelShuffledToIndex(level - 1)
         coloredBananaCounts.append(LogicVariables.ColoredBananas[previousLevel])
         goldenBananaTotals.append(LogicVariables.GoldenBananas)
         ownedKongs[previousLevel] = LogicVariables.GetKongs()
