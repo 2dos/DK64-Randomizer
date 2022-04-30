@@ -123,6 +123,7 @@ def AllItems(settings):
         allItems.extend(TinyMoves)
         allItems.extend(ChunkyMoves)
         allItems.extend(ImportantSharedMoves)
+        allItems.extend(JunkSharedMoves)
     if settings.kong_rando:
         allItems.extend(Kongs(settings))
     return allItems
