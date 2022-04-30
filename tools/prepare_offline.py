@@ -50,7 +50,7 @@ for f in [*get_files(os.getcwd(), "html.jinja2", recursive=True), *get_files(os.
                 with open(f, "w") as writer:
                     writer.write(html)
 
-subprocess.run(["css-html-js-minify", "static/styles/", "--overwrite"])
+# subprocess.run(["css-html-js-minify", "static/styles/", "--overwrite"])
 for f in get_files(os.getcwd(), "py", recursive=True):
     with open(f, "r") as reader:
         read_data = reader.read()
