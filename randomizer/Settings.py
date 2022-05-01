@@ -79,16 +79,30 @@ class Settings:
 
     def update_progression_totals(self):
         """Update the troff and blocker totals if we're randomly setting them."""
+
+        self.troff_min = 0
+        self.troff_max = 260
+        if self.level_randomization == "level_order":
+            self.troff_min = 100
+            self.troff_max = 300
+        self.troff_weight_0 = 0.7
+        self.troff_weight_1 = 0.8
+        self.troff_weight_2 = 0.9
+        self.troff_weight_3 = 1.0
+        self.troff_weight_4 = 1.1
+        self.troff_weight_5 = 1.2
+        self.troff_weight_6 = 1.3
+
         if self.randomize_cb_required_amounts:
-            randomlist = random.sample(range(0, 260), 7)
+            randomlist = random.sample(range(self.troff_min, self.troff_max), 7)
             cbs = randomlist
-            self.troff_0 = cbs[0]
-            self.troff_1 = cbs[1]
-            self.troff_2 = cbs[2]
-            self.troff_3 = cbs[3]
-            self.troff_4 = cbs[4]
-            self.troff_5 = cbs[5]
-            self.troff_6 = cbs[6]
+            self.troff_0 = cbs[0] * self.troff_weight_0
+            self.troff_1 = cbs[1] * self.troff_weight_1
+            self.troff_2 = cbs[2] * self.troff_weight_2
+            self.troff_3 = cbs[3] * self.troff_weight_3
+            self.troff_4 = cbs[4] * self.troff_weight_4
+            self.troff_5 = cbs[5] * self.troff_weight_5
+            self.troff_6 = cbs[6] * self.troff_weight_6
         if self.randomize_blocker_required_amounts:
             randomlist = random.sample(range(0, 70), 7)
             b_lockers = randomlist
@@ -136,6 +150,8 @@ class Settings:
         self.troff_4 = None
         self.troff_5 = None
         self.troff_6 = None
+        self.troff_min = None
+        self.troff_max = None
 
     def generate_misc(self):
         """Set default items on misc page."""
