@@ -79,7 +79,6 @@ class Settings:
 
     def update_progression_totals(self):
         """Update the troff and blocker totals if we're randomly setting them."""
-
         self.troff_min = 0
         self.troff_max = 260
         if self.level_randomization == "level_order":
