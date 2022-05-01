@@ -93,7 +93,10 @@ class Settings:
             randomlist = random.sample(range(0, 70), 7)
             b_lockers = randomlist
             b_lockers.append(1)
-            random.shuffle(b_lockers)
+            if self.shuffle_loading_zones == "all":
+                random.shuffle(b_lockers)
+            else:
+                b_lockers.sort()
             self.blocker_0 = b_lockers[0]
             self.blocker_1 = b_lockers[1]
             self.blocker_2 = b_lockers[2]
