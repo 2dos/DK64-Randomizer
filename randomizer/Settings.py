@@ -96,15 +96,15 @@ class Settings:
         if self.randomize_cb_required_amounts:
             randomlist = random.sample(range(self.troff_min, self.troff_max), 7)
             cbs = randomlist
-            self.troff_0 = cbs[0] * self.troff_weight_0
-            self.troff_1 = cbs[1] * self.troff_weight_1
-            self.troff_2 = cbs[2] * self.troff_weight_2
-            self.troff_3 = cbs[3] * self.troff_weight_3
-            self.troff_4 = cbs[4] * self.troff_weight_4
-            self.troff_5 = cbs[5] * self.troff_weight_5
-            self.troff_6 = cbs[6] * self.troff_weight_6
+            self.troff_0 = round(cbs[0] * self.troff_weight_0)
+            self.troff_1 = round(cbs[1] * self.troff_weight_1)
+            self.troff_2 = round(cbs[2] * self.troff_weight_2)
+            self.troff_3 = round(cbs[3] * self.troff_weight_3)
+            self.troff_4 = round(cbs[4] * self.troff_weight_4)
+            self.troff_5 = round(cbs[5] * self.troff_weight_5)
+            self.troff_6 = round(cbs[6] * self.troff_weight_6)
         if self.randomize_blocker_required_amounts:
-            randomlist = random.sample(range(0, 70), 7)
+            randomlist = random.sample(range(0, 50), 7)
             b_lockers = randomlist
             b_lockers.append(1)
             if self.shuffle_loading_zones == "all":

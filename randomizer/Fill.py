@@ -757,8 +757,8 @@ def SetNewProgressionRequirements(settings: Settings):
             accessibleMoves = [LocationList[x].item for x in accessible if LocationList[x].type == Types.Shop and LocationList[x].item != Items.NoItem and LocationList[x].item is not None]
             ownedMoves[previousLevel] = accessibleMoves
     # Cap the B. Locker and T&S amounts based on a random fraction of accessible bananas & GBs
-    BLOCKER_MIN = 0.5
-    BLOCKER_MAX = 0.8
+    BLOCKER_MIN = 0.4
+    BLOCKER_MAX = 0.7
     settings.EntryGBs = [
         min(settings.blocker_0, 1),  # First B. Locker shouldn't be more than 1 GB
         min(settings.blocker_1, round(random.uniform(BLOCKER_MIN, BLOCKER_MAX) * goldenBananaTotals[0])),
