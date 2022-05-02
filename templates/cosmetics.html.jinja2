@@ -2,9 +2,18 @@
     <div class="row">
         <div class="col border">
             <h3>Music Rando</h3>
+            <div class="form-check form-switch w-75">
+                <input class="form-check-input"
+                                       type="checkbox"
+                                       name="random_music"
+                                       id="random_music"
+                                       value="False"/>
+                    Randomize All
+            </div>
             <div>
                 Background Music
                 <select name="music_bgm"
+                        id="music_bgm"
                         style="width: 60%;"
                         class="form-select center-div"
                         aria-label="Background Music">
@@ -25,6 +34,7 @@
             <div>
                 Fanfares
                 <select name="music_fanfares"
+                        id="music_fanfares"
                         style="width: 60%;"
                         class="form-select center-div"
                         aria-label="Fanfares">
@@ -42,6 +52,7 @@
             <div>
                 Events
                 <select name="music_events"
+                        id="music_events"
                         style="width: 60%;"
                         class="form-select center-div"
                         aria-label="Events">
