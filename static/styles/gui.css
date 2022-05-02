@@ -13,6 +13,12 @@ button,
   transform: scale(1.3);
 }
 input[type="number"]:disabled{background-color:rgb(70, 64, 64);}
+
+.form-select:disabled{
+  background-color:rgb(70, 64, 64);
+  pointer-events: none;
+}
+
 body {
   background: linear-gradient(0deg, #003d03 0%, #003d03 100%);
   background-image: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)),
