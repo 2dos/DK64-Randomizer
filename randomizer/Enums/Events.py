@@ -20,6 +20,7 @@ class Events(IntEnum):
 
     # Jungle Japes events
     Rambi = auto()
+    JapesFreeKongOpenGates = auto()
     JapesDonkeySwitch = auto()
     JapesDiddySwitch1 = auto()
     JapesLankySwitch = auto()

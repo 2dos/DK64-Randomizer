@@ -19,7 +19,7 @@ LogicRegions = {
         LocationLogic(Locations.JapesChunkyMedal, lambda l: l.ColoredBananas[Levels.JungleJapes][Kongs.chunky] >= 75),
         LocationLogic(Locations.DiddyKong, lambda l: l.CanFreeDiddy()),
         LocationLogic(Locations.JapesDonkeyFrontofCage, lambda l: l.HasKong(l.settings.diddy_freeing_kong)),
-        LocationLogic(Locations.JapesDonkeyFreeDiddy, lambda l: l.HasGun(l.settings.diddy_freeing_kong)),
+        LocationLogic(Locations.JapesDonkeyFreeDiddy, lambda l: l.CanFreeDiddy()),
         LocationLogic(Locations.JapesDonkeyCagedBanana, lambda l: Events.JapesDonkeySwitch in l.Events and l.donkey),
         LocationLogic(Locations.JapesDiddyCagedBanana, lambda l: Events.JapesDiddySwitch1 in l.Events and l.diddy),
         LocationLogic(Locations.JapesDiddyMountain, lambda l: Events.JapesDiddySwitch2 in l.Events and l.diddy),
@@ -31,11 +31,12 @@ LogicRegions = {
     ], [
         Event(Events.JapesEntered, lambda l: True),
         Event(Events.JapesSpawnW5, lambda l: Events.JapesDiddySwitch2),
+        Event(Events.JapesFreeKongOpenGates, lambda l: l.CanFreeDiddy()),
     ], [
         TransitionFront(Regions.JungleJapesLobby, lambda l: True, Transitions.JapesToIsles),
         TransitionFront(Regions.JapesBeyondPeanutGate, lambda l: l.peanut and l.diddy),
-        TransitionFront(Regions.JapesBeyondCoconutGate1, lambda l: l.CanFreeDiddy()),
-        TransitionFront(Regions.JapesBeyondCoconutGate2, lambda l: l.CanFreeDiddy()),
+        TransitionFront(Regions.JapesBeyondCoconutGate1, lambda l: Events.JapesFreeKongOpenGates in l.Events),
+        TransitionFront(Regions.JapesBeyondCoconutGate2, lambda l: Events.JapesFreeKongOpenGates in l.Events),
         TransitionFront(Regions.Mine, lambda l: l.peanut and l.isdiddy, Transitions.JapesMainToMine),
         TransitionFront(Regions.JapesLankyCave, lambda l: l.peanut and l.diddy and l.handstand and l.islanky, Transitions.JapesMainToLankyCave),
         TransitionFront(Regions.JapesCatacomb, lambda l: l.Slam and l.chunkyAccess, Transitions.JapesMainToCatacomb),
