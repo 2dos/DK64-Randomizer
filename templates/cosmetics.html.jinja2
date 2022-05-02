@@ -2,9 +2,18 @@
     <div class="row">
         <div class="col border">
             <h3>Music Rando</h3>
+            <div class="form-check form-switch w-75">
+                <input class="form-check-input"
+                                       type="checkbox"
+                                       name="random_music"
+                                       id="random_music"
+                                       value="False"/>
+                    Randomize All
+            </div>
             <div>
                 Background Music
                 <select name="music_bgm"
+                        id="music_bgm"
                         style="width: 60%;"
                         class="form-select center-div"
                         aria-label="Background Music">
@@ -25,6 +34,7 @@
             <div>
                 Fanfares
                 <select name="music_fanfares"
+                        id="music_fanfares"
                         style="width: 60%;"
                         class="form-select center-div"
                         aria-label="Fanfares">
@@ -42,6 +52,7 @@
             <div>
                 Events
                 <select name="music_events"
+                        id="music_events"
                         style="width: 60%;"
                         class="form-select center-div"
                         aria-label="Events">
@@ -67,17 +78,29 @@
                    name="music_file"/>
             <hr />
             <h3>Colors</h3>
+            <div class="form-check form-switch w-75">
+                <input class="form-check-input"
+                                       type="checkbox"
+                                       name="random_colors"
+                                       id="random_colors"
+                                       value="False"/>
+                    Randomize All
+            </div>
             <table>
                 <tr>
                     <td>
                         <div>
                             DK
                             <select name="dk_colors"
+                                    id="dk_colors"
                                     style="width: 80%;"
                                     class="form-select center-div"
                                     aria-label="DK">
                                 <option selected value="vanilla">
                                     Vanilla
+                                </option>
+                                <option value="randomized">
+                                    Randomized
                                 </option>
                                 <option value="blue">
                                     Blue
@@ -95,11 +118,15 @@
                         <div>
                             Diddy
                             <select name="diddy_colors"
+                                    id="diddy_colors"
                                     style="width: 80%;"
                                     class="form-select center-div"
                                     aria-label="Diddy">
                                 <option selected value="vanilla">
                                     Vanilla
+                                </option>
+                                <option value="randomized">
+                                    Randomized
                                 </option>
                                 <option value="dark_blue">
                                     Dark Blue
@@ -119,11 +146,15 @@
                         <div>
                             Lanky
                             <select name="lanky_colors"
+                                    id="lanky_colors"
                                     style="width: 80%;"
                                     class="form-select center-div"
                                     aria-label="Lanky">
                                 <option selected value="vanilla">
                                     Vanilla
+                                </option>
+                                <option value="randomized">
+                                    Randomized
                                 </option>
                                 <option value="green">
                                     Green
@@ -141,11 +172,15 @@
                         <div>
                             Tiny
                             <select name="tiny_colors"
+                                    id="tiny_colors"
                                     style="width: 80%;"
                                     class="form-select center-div"
                                     aria-label="Tiny">
                                 <option selected value="vanilla">
                                     Vanilla
+                                </option>
+                                <option value="randomized">
+                                    Randomized
                                 </option>
                                 <option value="green">
                                     Green
@@ -165,11 +200,15 @@
                         <div>
                             Chunky
                             <select name="chunky_colors"
+                                    id="chunky_colors"
                                     style="width: 80%;"
                                     class="form-select center-div"
                                     aria-label="Chunky">
                                 <option selected value="vanilla">
                                     Vanilla
+                                </option>
+                                <option value="randomized">
+                                    Randomized
                                 </option>
                                 <option value="red">
                                     Red

@@ -20,6 +20,10 @@ def randomize_music(spoiler: Spoiler):
         settings (Settings): Settings object from the windows form.
     """
     settings: Settings = spoiler.settings
+    if spoiler.settings.random_music:
+        settings.music_bgm = "randomized"
+        settings.music_fanfares = "randomized"
+        settings.music_events = "randomized"
     if settings.music_bgm != "default" or settings.music_events != "default" or settings.music_fanfares != "default":
         sav = 0x1FED020
         ROM().seek(sav + 0x11F)
