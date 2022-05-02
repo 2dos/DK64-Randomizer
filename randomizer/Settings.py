@@ -28,10 +28,10 @@ class Settings:
         self.generate_misc()
         for k, v in form_data.items():
             setattr(self, k, v)
-        self.update_progression_totals()
         self.seed_id = str(self.seed)
         self.seed = str(self.seed) + self.__hash
         self.set_seed()
+        self.update_progression_totals()
         # Store banana values in array
         self.EntryGBs = [
             self.blocker_0,
