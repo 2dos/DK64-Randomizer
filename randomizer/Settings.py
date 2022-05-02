@@ -202,7 +202,7 @@ class Settings:
         self.helm_setting = None
         self.quality_of_life = None
         self.enable_tag_anywhere = None
-        self.random_krool_phase_order = None
+        self.krool_phase_order_rando = None
         self.krool_access = None
         self.open_lobbies = None
         self.random_medal_requirement = True
@@ -232,7 +232,7 @@ class Settings:
         self.krool_chunky = True
 
         phases = [x for x in kongs if x != Kongs.chunky]
-        if self.random_krool_phase_order:
+        if self.krool_phase_order_rando:
             random.shuffle(phases)
         if self.krool_phase_count < 5:
             phases = random.sample(phases, self.krool_phase_count - 1)

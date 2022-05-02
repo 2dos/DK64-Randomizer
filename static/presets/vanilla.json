@@ -1,7 +1,7 @@
 {
   "name": "Vanilla",
   "description": "Default Options",
-  "k_rool_phase_order": true,
+  "krool_phase_order_rando": true,
   "boss_kong_rando": true,
   "boss_location_rando": true,
   "bonus_barrel_rando": true,

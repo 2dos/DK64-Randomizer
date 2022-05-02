@@ -1,7 +1,7 @@
 {
   "name": "Open Except End",
   "description": "All B.Lockers are pre-opened, except Helm still requires 100.",
-  "k_rool_phase_order": true,
+  "krool_phase_order_rando": true,
   "boss_kong_rando": true,
   "boss_location_rando": true,
   "bonus_barrel_rando": true,
