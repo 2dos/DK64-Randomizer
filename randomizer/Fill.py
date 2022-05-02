@@ -387,13 +387,7 @@ def AssumedFill(settings, itemsToPlace, validLocations, ownedItems=[]):
                 if locationId == Locations.DiddyKong:
                     settings.diddy_freeing_kong = random.choice(ownedKongs)
                 elif locationId == Locations.LankyKong:
-                    # TODO: see if we can open this to all kongs
-                    eligibleFreers = list(set(ownedKongs).intersection([Kongs.donkey, Kongs.lanky, Kongs.tiny]))
-                    if len(eligibleFreers) == 0:
-                        js.postMessage("Failed placing item " + ItemList[item].name + " in location " + LocationList[locationId].name + ", due to no kongs being able to free them")
-                        valid = False
-                        break
-                    settings.lanky_freeing_kong = random.choice(eligibleFreers)
+                    settings.lanky_freeing_kong = random.choice(ownedKongs)
                 elif locationId == Locations.TinyKong:
                     eligibleFreers = list(set(ownedKongs).intersection([Kongs.diddy, Kongs.chunky]))
                     if len(eligibleFreers) == 0:

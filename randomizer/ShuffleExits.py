@@ -297,11 +297,8 @@ def ShuffleLevelOrderWithRestrictions(settings: Settings):
 
     # Decide where Factory will go
     factoryOptions = []
-    # If starting kong is Chunky, one of Japes/Factory needs to be in level 1-2 (until we can get Chunky to Free kong in Tiny Temple)
-    if settings.starting_kong == Kongs.chunky and japesIndex > 2:
-        factoryOptions = list(levelIndexChoices.intersection({1, 2}))
     # If Aztec is level 4, both of Japes/Factory need to be in level 1-3
-    elif aztecIndex == 4:
+    if aztecIndex == 4:
         factoryOptions = list(levelIndexChoices.intersection({1, 3}))
     # If Aztec is level 3, one of Japes/Factory needs to be in level 1-2 and other in level 1-5
     elif aztecIndex == 3:
@@ -309,6 +306,12 @@ def ShuffleLevelOrderWithRestrictions(settings: Settings):
             factoryOptions = list(levelIndexChoices.intersection({1, 5}))
         else:
             factoryOptions = list(levelIndexChoices.intersection({1, 2}))
+    # If Aztec is level 2 and don't start with diddy or chunky, one of Japes/Factory needs to be level 1 and other in level 3-5
+    elif aztecIndex == 2 and settings.starting_kong != Kongs.diddy and settings.starting_kong != Kongs.chunky:
+        if japesIndex == 1:
+            factoryOptions = list(levelIndexChoices.intersection({3, 5}))
+        else:
+            factoryOptions = list(levelIndexChoices.intersection({1}))
     # If Aztec is level 1 or 2, one of Japes/Factory needs to be in level 1-4 and other in level 1-5
     else:
         if japesIndex < 5:
