@@ -35,6 +35,12 @@ START_HOOK:
 		SW 	r0, 0x60AC (t4) // Store NOP
 		SW 	r0, 0x6160 (t4) // Store NOP to prevent loop
 
+		LUI t3, hi(CurrentMap)
+		LW 	t3, lo(CurrentMap) (t3)
+		ADDIU t4, r0, 0x5
+		BEQ t3, t4, PatchCrankyCode_Cranky
+		NOP
+
 		LUI t3, hi(Jump_MoveShow0)
 		LW t3, lo(Jump_MoveShow0) (t3)
 		LUI t4, 0x8002
@@ -47,25 +53,36 @@ START_HOOK:
 		SW 	t3, 0x7B30 (t4) // Store Hook
 		SW 	r0, 0x7B34 (t4) // Store NOP
 
-		LUI 	t4, hi(Jump_AlwaysCandyInstrument)
-		LW 		t4, lo(Jump_AlwaysCandyInstrument) (t4)
-		LUI 	t3, 0x8002
-		SW 		t4, 0x6924 (t3)
-		SW 		r0, 0x6928 (t3)
+		B 	PatchCrankyCode_More
+		NOP
 
-		LUI t3, 0x8002
-		ADDIU t4, r0, hi(CrankyMoves_New)
-		SH t4, 0x6072 (t3)
-		ADDIU t4, r0, lo(CrankyMoves_New)
-		SH t4, 0x607A (t3)
-		ADDIU t4, r0, hi(CandyMoves_New)
-		SH t4, 0x607E (t3)
-		ADDIU t4, r0, lo(CandyMoves_New)
-		SH t4, 0x6086 (t3)
-		ADDIU t4, r0, hi(FunkyMoves_New)
-		SH t4, 0x608A (t3)
-		ADDIU t4, r0, lo(FunkyMoves_New)
-		SH t4, 0x608E (t3)
+		PatchCrankyCode_Cranky:
+			LUI 	t3, 0x8002
+			ADDIU 	t4, r0, 300
+			SH 		t4, 0x7B72 (t3)
+			SH 		t4, 0x7BCA (t3)
+			SH 		t4, 0x7BFA (t3)
+
+		PatchCrankyCode_More:
+			LUI 	t4, hi(Jump_AlwaysCandyInstrument)
+			LW 		t4, lo(Jump_AlwaysCandyInstrument) (t4)
+			LUI 	t3, 0x8002
+			SW 		t4, 0x6924 (t3)
+			SW 		r0, 0x6928 (t3)
+
+			LUI t3, 0x8002
+			ADDIU t4, r0, hi(CrankyMoves_New)
+			SH t4, 0x6072 (t3)
+			ADDIU t4, r0, lo(CrankyMoves_New)
+			SH t4, 0x607A (t3)
+			ADDIU t4, r0, hi(CandyMoves_New)
+			SH t4, 0x607E (t3)
+			ADDIU t4, r0, lo(CandyMoves_New)
+			SH t4, 0x6086 (t3)
+			ADDIU t4, r0, hi(FunkyMoves_New)
+			SH t4, 0x608A (t3)
+			ADDIU t4, r0, lo(FunkyMoves_New)
+			SH t4, 0x608E (t3)
 
 		JR 		ra
 		NOP
@@ -104,12 +121,28 @@ START_HOOK:
 			ADDIU 	s1, r0, 0
 
 	AlwaysCandyInstrument:
+		// Candy
 		LUI 	at, 0x8080
 		LW 		at, 0xBB40 (at)
 		LW 		t9, 0x58 (at)
 		ADDIU 	at, r0, 191
 		BEQ 	t9, at, AlwaysCandyInstrument_IsCandy
 		ADDIU 	t9, r0, 4
+		// Funky
+		LUI 	at, 0x8080
+		LW 		at, 0xBB40 (at)
+		LW 		t9, 0x58 (at)
+		ADDIU 	at, r0, 190
+		BEQ 	t9, at, AlwaysCandyInstrument_IsCandy
+		ADDIU 	t9, r0, 2
+		// Cranky
+		LUI 	at, 0x8080
+		LW 		at, 0xBB40 (at)
+		LW 		t9, 0x58 (at)
+		ADDIU 	at, r0, 189
+		BEQ 	t9, at, AlwaysCandyInstrument_IsCandy
+		ADDIU 	t9, r0, 0
+		// Default
 		LBU 	t9, 0xB (s0)
 		
 		AlwaysCandyInstrument_IsCandy:
@@ -118,7 +151,7 @@ START_HOOK:
 
 	FixInvisibleText_0:
 		LW 		a0, 0xC4 (sp)
-		ADDIU 	t8, r0, 0x81
+		ADDIU 	t8, r0, 0x82
 		SW 		t8, 0x90 (a0)
 		ADDIU 	a0, sp, 0x3C
 		J 		0x80027AF0
@@ -126,7 +159,7 @@ START_HOOK:
 
 	FixInvisibleText_1:
 		LW  	v0, 0xC4 (sp)
-		ADDIU 	a1, r0, 0x81
+		ADDIU 	a1, r0, 0x82
 		SW 		a1, 0x90 (v0)
 		OR 		v0, r0, r0
 		J 		0x80027B38
@@ -647,6 +680,45 @@ START_HOOK:
 		HomingDisable_Finish:
 			J 		0x806E22B8
 			ANDI 	t2, t1, 0x2
+
+	DKCollectableFix:
+		LHU 		v0, 0x4A (s0)
+		ADDIU 		t8, r0, 0xD // CB Single
+		BEQ 		v0, t8, DKCollectableFix_IsCollectable
+		NOP
+		ADDIU 		t8, r0, 0x2B // CB Bunch
+		BEQ 		v0, t8, DKCollectableFix_IsCollectable
+		NOP
+		ADDIU 		t8, r0, 0x1D // Coin
+		BEQ 		v0, t8, DKCollectableFix_IsCollectable
+		NOP
+		SRA 		t8, a0, 0x10
+		J 			0x806324CC
+		OR 			a0, t8, r0
+
+		DKCollectableFix_IsCollectable:
+			J 		0x806324CC
+			ADDIU 	a0, r0, 385
+
+	Jump_KRoolLankyPhaseFix:
+		J 			KRoolLankyPhaseFix
+		NOP
+
+	PatchKRoolCode:
+		LUI 		t3, hi(Jump_KRoolLankyPhaseFix)
+		LW 			t3, lo(Jump_KRoolLankyPhaseFix) (t3)
+		LUI 		t4, 0x8003
+		SW 			t3, 0x8CCC (t4)
+		JR 			ra
+		SW 			r0, 0x8CD0 (t4)
+
+	KRoolLankyPhaseFix:
+		LUI 		a1, 0x8003
+		LBU 		a2, 0x43 (sp)
+		SLL 		a2, a2, 1
+		ADDU 		a1, a1, a2
+		J 			0x80028CD4
+		LH 			a1, 0x59A0 (a1)
 
 .align 0x10
 END_HOOK:

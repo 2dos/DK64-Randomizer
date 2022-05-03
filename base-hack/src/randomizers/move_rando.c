@@ -220,7 +220,7 @@ void cancelMoveSoftlock(void) {
 		if (CurrentMap == CRANKY) {
 			if ((TBVoidByte & 0x30) != 0) {
 				if ((CutsceneActive) && (CutsceneIndex == 2) && (CutsceneTimer == 80)) {
-					cancelPausedCutscene();
+					//cancelPausedCutscene();
 				}
 			}
 		} else if ((CurrentMap == FUNKY) || (CurrentMap == CANDY)) {

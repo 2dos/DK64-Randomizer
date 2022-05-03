@@ -23,6 +23,8 @@ from staticcode import patchStaticCode
 from vanilla_move_data import writeVanillaMoveData
 from image_converter import convertToRGBA32
 from end_seq_writer import createTextFile, createSquishFile
+from instance_script_maps import instance_script_maps
+from generate_yellow_wrinkly import generateYellowWrinkly
 
 ROMName = "rom/dk64.z64"
 newROMName = "rom/dk64-randomizer-base.z64"
@@ -37,6 +39,7 @@ portal_images.append(convertPortalImage("assets/Non-Code/portals/DK_rando_portal
 
 createTextFile("assets/Non-Code/credits")
 createSquishFile("assets/Non-Code/credits")
+generateYellowWrinkly()
 
 file_dict = [
     {
@@ -88,174 +91,6 @@ file_dict = [
         "file_index": 116,
         "source_file": "assets/Non-Code/file_screen/blueprint.png",
         "texture_format": "rgba5551",
-    },
-    {
-        "name": "Isles Object Instance Scripts",
-        "pointer_table_index": 10,
-        "file_index": 34,
-        "source_file": "assets/Non-Code/instance_scripts/isles.bin",
-        "bps_file": "assets/Non-Code/instance_scripts/isles.bps",
-        "is_diff_patch": True,
-    },
-    {
-        "name": "Helm Object Instance Scripts",
-        "pointer_table_index": 10,
-        "file_index": 17,
-        "source_file": "assets/Non-Code/instance_scripts/helm.bin",
-        "bps_file": "assets/Non-Code/instance_scripts/helm.bps",
-        "is_diff_patch": True,
-    },
-    {
-        "name": "Galleon Object Instance Scripts",
-        "pointer_table_index": 10,
-        "file_index": 0x1E,
-        "source_file": "assets/Non-Code/instance_scripts/galleon.bin",
-        "bps_file": "assets/Non-Code/instance_scripts/galleon.bps",
-        "is_diff_patch": True,
-    },
-    {
-        "name": "Aztec Object Instance Scripts",
-        "pointer_table_index": 10,
-        "file_index": 0x26,
-        "source_file": "assets/Non-Code/instance_scripts/aztec.bin",
-        "bps_file": "assets/Non-Code/instance_scripts/aztec.bps",
-        "is_diff_patch": True,
-    },
-    {
-        "name": "Fungi Object Instance Scripts",
-        "pointer_table_index": 10,
-        "file_index": 0x30,
-        "source_file": "assets/Non-Code/instance_scripts/fungi.bin",
-        "bps_file": "assets/Non-Code/instance_scripts/fungi.bps",
-        "is_diff_patch": True,
-    },
-    {
-        "name": "Chunky Phase Object Instance Scripts",
-        "pointer_table_index": 10,
-        "file_index": 207,
-        "source_file": "assets/Non-Code/instance_scripts/chunky_phase.bin",
-        "bps_file": "assets/Non-Code/instance_scripts/chunky_phase.bps",
-        "is_diff_patch": True,
-    },
-    {
-        "name": "Diddy 5DC Upper Object Instance Scripts",
-        "pointer_table_index": 10,
-        "file_index": 200,
-        "source_file": "assets/Non-Code/instance_scripts/diddy_5dc_upper.bin",
-        "bps_file": "assets/Non-Code/instance_scripts/diddy_5dc_upper.bps",
-        "is_diff_patch": True,
-    },
-    {
-        "name": "Dungeon Object Instance Scripts",
-        "pointer_table_index": 10,
-        "file_index": 163,
-        "source_file": "assets/Non-Code/instance_scripts/dungeon.bin",
-        "bps_file": "assets/Non-Code/instance_scripts/dungeon.bps",
-        "is_diff_patch": True,
-    },
-    {
-        "name": "Wind Tower Object Instance Scripts",
-        "pointer_table_index": 10,
-        "file_index": 105,
-        "source_file": "assets/Non-Code/instance_scripts/wind_tower.bin",
-        "bps_file": "assets/Non-Code/instance_scripts/wind_tower.bps",
-        "is_diff_patch": True,
-    },
-    {
-        "name": "Ballroom Object Instance Scripts",
-        "pointer_table_index": 10,
-        "file_index": 88,
-        "source_file": "assets/Non-Code/instance_scripts/ballroom.bin",
-        "bps_file": "assets/Non-Code/instance_scripts/ballroom.bps",
-        "is_diff_patch": True,
-    },
-    {
-        "name": "Museum Object Instance Scripts",
-        "pointer_table_index": 10,
-        "file_index": 113,
-        "source_file": "assets/Non-Code/instance_scripts/museum.bin",
-        "bps_file": "assets/Non-Code/instance_scripts/museum.bps",
-        "is_diff_patch": True,
-    },
-    {
-        "name": "Llama Temple Instance Scripts",
-        "pointer_table_index": 10,
-        "file_index": 20,
-        "source_file": "assets/Non-Code/instance_scripts/llama_temple.bin",
-        "bps_file": "assets/Non-Code/instance_scripts/llama_temple.bps",
-        "is_diff_patch": True,
-    },
-    {
-        "name": "Jungle Japes Instance Scripts",
-        "pointer_table_index": 10,
-        "file_index": 7,
-        "source_file": "assets/Non-Code/instance_scripts/japes.bin",
-        "bps_file": "assets/Non-Code/instance_scripts/japes.bps",
-        "is_diff_patch": True,
-    },
-    {
-        "name": "Mountain Instance Scripts",
-        "pointer_table_index": 10,
-        "file_index": 4,
-        "source_file": "assets/Non-Code/instance_scripts/japes_mountain.bin",
-        "bps_file": "assets/Non-Code/instance_scripts/japes_mountain.bps",
-        "is_diff_patch": True,
-    },
-    {
-        "name": "Frantic Factory Instance Scripts",
-        "pointer_table_index": 10,
-        "file_index": 0x1A,
-        "source_file": "assets/Non-Code/instance_scripts/factory.bin",
-        "bps_file": "assets/Non-Code/instance_scripts/factory.bps",
-        "is_diff_patch": True,
-    },
-    {
-        "name": "Mill Front Instance Scripts",
-        "pointer_table_index": 10,
-        "file_index": 61,
-        "source_file": "assets/Non-Code/instance_scripts/mill_front.bin",
-        "bps_file": "assets/Non-Code/instance_scripts/mill_front.bps",
-        "is_diff_patch": True,
-    },
-    {
-        "name": "Mill Rear Instance Scripts",
-        "pointer_table_index": 10,
-        "file_index": 62,
-        "source_file": "assets/Non-Code/instance_scripts/mill_rear.bin",
-        "bps_file": "assets/Non-Code/instance_scripts/mill_rear.bps",
-        "is_diff_patch": True,
-    },
-    {
-        "name": "Giant Mushroom Instance Scripts",
-        "pointer_table_index": 10,
-        "file_index": 64,
-        "source_file": "assets/Non-Code/instance_scripts/giant_mushroom.bin",
-        "bps_file": "assets/Non-Code/instance_scripts/giant_mushroom.bps",
-        "is_diff_patch": True,
-    },
-    {
-        "name": "Crystal Caves Instance Scripts",
-        "pointer_table_index": 10,
-        "file_index": 72,
-        "source_file": "assets/Non-Code/instance_scripts/caves.bin",
-        "bps_file": "assets/Non-Code/instance_scripts/caves.bps",
-        "is_diff_patch": True,
-    },
-    {
-        "name": "Training Grounds Instance Scripts",
-        "pointer_table_index": 10,
-        "file_index": 0xB0,
-        "source_file": "assets/Non-Code/instance_scripts/tgrounds.bin",
-        "bps_file": "assets/Non-Code/instance_scripts/tgrounds.bps",
-        "is_diff_patch": True,
-    },
-    {
-        "name": "Tiny Temple Instance Scripts",
-        "pointer_table_index": 10,
-        "file_index": 0x10,
-        "source_file": "assets/Non-Code/instance_scripts/tiny_temple.bin",
-        "bps_file": "assets/Non-Code/instance_scripts/tiny_temple.bps",
-        "is_diff_patch": True,
     },
     {
         "name": "Tag Barrel Shell Texture",
@@ -335,22 +170,79 @@ file_dict = [
         "source_file": "assets/Non-Code/credits/credits.bin",
         "do_not_delete_source": True,
     },
+    {
+        "name": "DK Wrinkly Door",
+        "pointer_table_index": 4,
+        "file_index": 0xF0,
+        "source_file": "assets/Non-Code/Gong/hint_door.bin",
+        "do_not_delete_source": True,
+    },
     {"name": "WXY_Slash", "pointer_table_index": 14, "file_index": 12, "source_file": "assets/Non-Code/displays/wxys.png", "texture_format": "rgba5551"},
 ]
 
 map_replacements = []
+song_replacements = [
+    {"name": "baboon_balloon", "index": 107},
+    {"name": "bonus_minigames", "index": 8},
+    {"name": "dk_rap", "index": 75},
+    {"name": "failure_races_try_again", "index": 87},
+    {"name": "move_get", "index": 114},
+    {"name": "nintendo_logo", "index": 174},
+    {"name": "success_races", "index": 86},
+]
+changed_song_indexes = []
+
+
+for song in song_replacements:
+    file_dict.append(
+        {
+            "name": song["name"].replace("_", " "),
+            "pointer_table_index": 0,
+            "file_index": song["index"],
+            "source_file": f"assets/Non-Code/music/{song['name']}.bin",
+            "bps_file": f"assets/Non-Code/music/{song['name']}.bps",
+            "target_compressed_size": 0x2DDE,
+            "is_diff_patch": True,
+        }
+    )
+    changed_song_indexes.append(song["index"])
+
+for x in range(2):
+    file_dict.append(
+        {
+            "name": f"Yellow Question Mark ({x+1})",
+            "pointer_table_index": 7,
+            "file_index": 993 + x,
+            "source_file": f"assets/Non-Code/displays/yellow_qmark_{x}.png",
+            "texture_format": "rgba5551",
+            "do_not_compress": True,
+        }
+    )
+
+for x in instance_script_maps:
+    file_dict.append(
+        {
+            "name": f"{x['name'].replace('_',' ')} Instance Scripts",
+            "pointer_table_index": 10,
+            "file_index": x["map"],
+            "source_file": f"assets/Non-Code/instance_scripts/{x['name']}.bin",
+            "bps_file": f"assets/Non-Code/instance_scripts/{x['name']}.bps",
+            "is_diff_patch": True,
+        }
+    )
 
 for x in range(175):
     if x > 0:
-        file_dict.append(
-            {
-                "name": "Song " + str(x),
-                "pointer_table_index": 0,
-                "file_index": x,
-                "source_file": "song" + str(x) + ".bin",
-                "target_compressed_size": 0x2DDE,
-            }
-        )
+        if x not in changed_song_indexes:
+            file_dict.append(
+                {
+                    "name": "Song " + str(x),
+                    "pointer_table_index": 0,
+                    "file_index": x,
+                    "source_file": "song" + str(x) + ".bin",
+                    "target_compressed_size": 0x2DDE,
+                }
+            )
 for x in range(6):
     file_dict.append(
         {
@@ -439,7 +331,7 @@ for x in range(5):
                 "name": f"{barrel_faces[x]} Transform Barrel Shell ({y+1})",
                 "pointer_table_index": 25,
                 "file_index": barrel_offsets[x] + y,
-                "source_file": f"assets/Non-Code/tagbarrel/{barrel_faces[x]} barrel {y}.png",
+                "source_file": f"assets/Non-Code/tagbarrel/{barrel_faces[x]} barrel {y}a.png",
                 "texture_format": "rgba5551",
             }
         )
@@ -618,6 +510,13 @@ for x in file_dict:
 with open(newROMName, "r+b") as fh:
     print("[4 / 7] - Writing patched files to ROM")
     for x in file_dict:
+        if "is_diff_patch" in x and x["is_diff_patch"]:
+            with open(x["source_file"], "rb") as fg:
+                byte_read = fg.read()
+                uncompressed_size = len(byte_read)
+            subprocess.Popen(["build\\flips.exe", "--apply", x["bps_file"], x["source_file"], x["source_file"]]).wait()
+            # shutil.copyfile(x["source_file"],x["source_file"].replace(".bin",".raw"))
+
         if "target_compressed_size" in x:
             x["do_not_compress"] = True
             if x["source_file"][:5] == "setup":
@@ -649,13 +548,6 @@ with open(newROMName, "r+b") as fh:
             with open(x["source_file"], "wb") as fg:
                 fg.write(compress)
             x["output_file"] = x["source_file"]
-
-        if "is_diff_patch" in x and x["is_diff_patch"]:
-            with open(x["source_file"], "rb") as fg:
-                byte_read = fg.read()
-                uncompressed_size = len(byte_read)
-            subprocess.Popen(["build\\flips.exe", "--apply", x["bps_file"], x["source_file"], x["source_file"]]).wait()
-            # shutil.copyfile(x["source_file"],x["source_file"].replace(".bin",".raw"))
 
         if "texture_format" in x:
             if x["texture_format"] in ["rgba5551", "i4", "ia4", "i8", "ia8"]:
@@ -797,7 +689,7 @@ with open(newROMName, "r+b") as fh:
         if os.path.exists(pth):
             os.remove(pth)
     other_remove = []
-    displays = ["dk_face", "diddy_face", "lanky_face", "tiny_face", "chunky_face", "none", "shared", "soldout32", "wxys"]
+    displays = ["dk_face", "diddy_face", "lanky_face", "tiny_face", "chunky_face", "none", "shared", "soldout32", "wxys", "yellow_qmark_0", "yellow_qmark_1"]
     for disp in displays:
         for ext in [".png", ".rgba32"]:
             other_remove.append(f"displays/{disp}{ext}")
@@ -812,6 +704,8 @@ with open(newROMName, "r+b") as fh:
         pth = f"assets/Non-Code/credits/{x}.bin"
         if os.path.exists(pth):
             os.remove(pth)
+    if os.path.exists("assets/Non-Code/Gong/hint_door.bin"):
+        os.remove("assets/Non-Code/Gong/hint_door.bin")
     # pth = "assets/Non-Code/displays/soldout_bismuth.rgba32"
     # if os.path.exists(pth):
     #     os.remove(pth)

@@ -57,10 +57,8 @@ static const short ftt_flags[] = {
     0xA1, // Peanut Gate Opened in Galleon
     0, // First Switch in Japes
 };
-static unsigned char parentMapCache = 0;
 
 void qualityOfLife_shorteners(void) {
-	char* snide = 0;
 	if (Rando.quality_of_life) {
 		// No FTTs
 		for (int i = 0; i < sizeof(ftt_flags) / 2; i++) {
@@ -81,24 +79,7 @@ void qualityOfLife_shorteners(void) {
 		// Shorter Boss Cutscenes
 		TempFlagBlock[0xC] |= 0x80;
 		TempFlagBlock[0xD] |= 0x3F;
-		// Snide Cutscene Compression
-		if (CurrentMap == 15) {
-			if (CutsceneIndex == 5) {
-				if (CutsceneTimer == 199) {
-					parentMapCache = parentData[0].map;
-				} else if (CutsceneTimer == 200) {
-					parentData[0].map = 0;
-				}
-			} else if (CutsceneIndex == 2) {
-				parentData[0].map = parentMapCache;
-			}
-			snide = findActorWithType(184);
-			if (snide) {
-				if (snide[0x232] != 0) {
-					snide[0x232] = 1;
-				}
-			}
-		} else if (CurrentMap == 0x57) {
+        if (CurrentMap == 0x57) {
             if (ObjectModel2Timer <= 5) {
                 actorData* lzcontroller = (actorData*)findActorWithType(0xC);
                 char* lzpaad = (char*)lzcontroller->paad;

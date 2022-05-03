@@ -102,10 +102,10 @@ int* drawString(int* dl, int style, float x, float y, char* str) {
 int* drawText(int* dl, int style, float x, float y, char* str, int red, int green, int blue, int opacity) {
 	dl = initDisplayList(dl);
 	if (style == 1) {
-		*(unsigned int*)(dl++) = 0xFCFFFFFF;
-		*(unsigned int*)(dl++) = 0xFFFCF279;
+		*(unsigned int*)(dl++) = 0xFC119623; // G_SETCOMBINE
+		*(unsigned int*)(dl++) = 0xFF2FFFFF; // G_SETCIMG format: 1, 1, -1
 		*(unsigned int*)(dl++) = 0xDA380003;
-		*(unsigned int*)(dl++) = 0x807FDAC0;
+		*(unsigned int*)(dl++) = (int)&style128Mtx[0];
 	} else {
 		*(unsigned int*)(dl++) = 0xDE000000; // G_DL 0
 		*(unsigned int*)(dl++) = 0x01000118; // G_VTX 0 11

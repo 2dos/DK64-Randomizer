@@ -61,6 +61,20 @@ void cFuncLoop(void) {
 		preventBossCheese();
 		kong_has_died();
 		forceBossKong();
+	} else {
+		if (Rando.patch_kutoutkongs) {
+			if (CurrentMap == 0xC7) {
+				if (TransitionSpeed > 0.0f) {
+					if (LZFadeoutProgress == 30.0f) {
+						for (int i = 0; i < 7; i++) {
+							if (BossMapArray[i] == 0xC7) {
+								Character = BossKongArray[i];
+							}
+						}
+					}
+				}
+			}
+		}
 	}
 	changeHelmLZ();
 	if (Rando.fast_start_helm == 2) {
@@ -154,6 +168,10 @@ void earlyFrame(void) {
 }
 
 static char fpsStr[15] = "";
+static char bp_numerator = 0;
+static char bp_denominator = 0;
+static char bpStr[10] = "";
+static char hud_timer = 0;
 #define HERTZ 60
 #define ACTOR_MAINMENUCONTROLLER 0x146
 int* displayListModifiers(int* dl) {
@@ -166,6 +184,38 @@ int* displayListModifiers(int* dl) {
 			int fps_int = fps;
 			dk_strFormat((char *)fpsStr, "FPS %d", fps_int);
 			dl = drawPixelTextContainer(dl, 250, 210, fpsStr, 0xFF, 0xFF, 0xFF, 0xFF, 1);
+		}
+		if (HUD) {
+			int hud_st = HUD->item[0xC].hud_state;
+			if (hud_st) {
+				if (hud_st == 1) {
+					bp_numerator = 0;
+					bp_denominator = 0;
+					for (int i = 0; i < 40; i++) {
+						int bp_has = checkFlag(469 + i,0);
+						int bp_turn = checkFlag(509 + i,0);
+						if ((bp_has) && (!bp_turn)) {
+							bp_numerator += 1;
+						}
+						if (!bp_turn) {
+							bp_denominator += 1;
+						}
+					}
+					hud_timer += 1;
+				} else if (hud_st == 3) {
+					hud_timer -= 1;
+					if (hud_timer < 0) {
+						hud_timer = 0;
+					}
+				}
+				dk_strFormat((char *)bpStr, "%dl%d", bp_numerator, bp_denominator);
+				float opacity = 255 * hud_timer;
+				opacity /= 12;
+				dl = drawText(dl, 1, 355.0f, 480.f + ((12 - hud_timer) * 4), bpStr, 0xFF, 0xFF, 0xFF, opacity);
+			} else {
+				hud_timer = 0;
+			}
+			TestVariable = hud_timer;
 		}
 	}
 	return dl;

@@ -38,6 +38,7 @@ extern void changeCharSpawnerFlag(int map, int spawner_id, int new_flag);
 extern void changeHelmLZ(void);
 
 extern void PatchCrankyCode(void);
+extern void PatchKRoolCode(void);
 extern void FileScreenDLCode_Write(void);
 extern void write_kutoutorder(void);
 extern void remove_blockers(void);
@@ -72,6 +73,7 @@ extern int* drawPixelText(int* dl, int x, int y, char* str, int red, int green, 
 extern int* drawPixelTextContainer(int* dl, int x, int y, char* str, int red, int green, int blue, int alpha, int offset);
 extern int* drawScreenRect(int* dl, int x1, int y1, int x2, int y2, int red, int green, int blue, int alpha);
 extern int* drawTextContainer(int* dl, int style, float x, float y, char* str, int red, int green, int blue, int opacity, int background);
+extern int* drawText(int* dl, int style, float x, float y, char* str, int red, int green, int blue, int opacity);
 extern void correctKongFaces(void);
 
 extern void displayNumberOnObject(int id, int param2, int imageindex, int param4, int subtype);
