@@ -125,7 +125,28 @@ Image.Image.paste(im1, im2, (61, 0))
 Image.Image.paste(im1, im, (65, 1))
 im1.save(f"{disp_dir}wxys.png")
 
-rmve = ["01234.png", "56789.png", "boss_key.png", "WXYL.png", "specialchars.png"]
+# Generate Yellow Q Mark
+for idx in range(2):
+    im = Image.open(f"{hash_dir}red_qmark_{idx}.png")
+    im_hsv = im.convert("HSV")
+    H, S, V = im_hsv.split()
+    H = H.point(lambda p: p + 40 if p < 10 else p)
+    im_hsv = Image.merge("HSV", (H, S, V))
+    im_rgb = im_hsv.convert("RGBA")
+    pix_alpha = im.load()
+    imw, imh = im.size
+    pix_hsv = im_rgb.load()
+    im_new = Image.new(mode="RGBA", size=(imw, imh))
+    pix_new = im_new.load()
+    for x in range(imw):
+        for y in range(imh):
+            r, g, b, a = im.getpixel((x, y))
+            r2, g2, b2, a2 = im_rgb.getpixel((x, y))
+            pix_new[x, y] = (r2, g2, b2, a)
+    im_new.save(f"{disp_dir}yellow_qmark_{idx}.png")
+
+
+rmve = ["01234.png", "56789.png", "boss_key.png", "WXYL.png", "specialchars.png", "red_qmark_0.png", "red_qmark_1.png"]
 for kong in kongs:
     for x in range(2):
         rmve.append(f"{kong}_face_{x}.png")

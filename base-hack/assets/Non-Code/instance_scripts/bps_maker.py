@@ -4,29 +4,12 @@ import os
 import subprocess
 import shutil
 
-maps = [
-    {"name": "aztec", "map": 0x26},
-    {"name": "ballroom", "map": 88},
-    {"name": "caves", "map": 0x48},
-    {"name": "chunky_phase", "map": 207},
-    {"name": "diddy_5dc_upper", "map": 200},
-    {"name": "dungeon", "map": 163},
-    {"name": "factory", "map": 0x1A},
-    {"name": "fungi", "map": 0x30},
-    {"name": "galleon", "map": 0x1E},
-    {"name": "giant_mushroom", "map": 64},
-    {"name": "helm", "map": 0x11},
-    {"name": "isles", "map": 0x22},
-    {"name": "japes", "map": 0x7},
-    {"name": "japes_mountain", "map": 4},
-    {"name": "llama_temple", "map": 0x14},
-    {"name": "mill_front", "map": 61},
-    {"name": "mill_rear", "map": 62},
-    {"name": "museum", "map": 113},
-    {"name": "tgrounds", "map": 0xB0},
-    {"name": "tiny_temple", "map": 0x10},
-    {"name": "wind_tower", "map": 105},
-]
+instance_name = "instance_script_maps.py"
+instance_copy = f"../../../Build/{instance_name}"
+shutil.copyfile(instance_copy, instance_name)
+from instance_script_maps import instance_script_maps
+
+maps = instance_script_maps.copy()
 
 script_dir = "../../../../../map_script_stuff/map_scripts_us/"
 files = [f for f in os.listdir(".") if os.path.isfile(f)]
@@ -65,4 +48,6 @@ for f in files:
 
 if os.path.exists("flips.exe"):
     os.remove("flips.exe")
+if os.path.exists(instance_name):
+    os.remove(instance_name)
 print(f"{converted}/{file_total} scripts converted")

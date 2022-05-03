@@ -113,8 +113,7 @@ void updateCounterDisplay(void) {
 		paad->image_slots[1] = loadFontTexture_Counter(paad->image_slots[1],6);
 	} else {
 		int found_index = 0;
-		int kong = 0;
-		while (kong < 5) {
+		for (int kong = 0; kong < 5; kong++) {
 			if (kongs_btf & (1 << kong)) {
 				if (found_index == index) {
 					paad->image_slots[1] = loadFontTexture_Counter(paad->image_slots[1],kong+1);
@@ -126,7 +125,6 @@ void updateCounterDisplay(void) {
 					}
 				}
 			}
-			kong++;
 		}
 	}
 }
@@ -198,6 +196,7 @@ void newCounterCode(void) {
 			CurrentActorPointer_0->rot_z = 3072; // Facing vertical
 			CurrentActorPointer_0->rgb_mask[0] = getClosestShop();
 			CurrentActorPointer_0->rgb_mask[1] = getMoveCountInShop(CurrentActorPointer_0->rgb_mask[0] & 0xF);
+			CurrentActorPointer_0->rgb_mask[2] = 0;
 			updateCounterDisplay();
 			if (CurrentActorPointer_0->rgb_mask[1] == 0) {
 				paad->image_slots[1] = loadFontTexture_Counter(paad->image_slots[1],7);
@@ -209,7 +208,10 @@ void newCounterCode(void) {
 		if ((ObjectModel2Timer % 20) == 0) {
 			int lim = CurrentActorPointer_0->rgb_mask[0] >> 4;
 			if (lim > 1) {
-				CurrentActorPointer_0->rgb_mask[2] = (CurrentActorPointer_0->rgb_mask[2] + 1) % lim;
+				CurrentActorPointer_0->rgb_mask[2] += 1;
+				if (CurrentActorPointer_0->rgb_mask[2] >= lim) {
+					CurrentActorPointer_0->rgb_mask[2] = 0;
+				}
 				updateCounterDisplay();
 			}
 		}

@@ -178,6 +178,9 @@ HUDDisplayHook:
 HomingDisableHook:
 	J 	HomingDisable
 	NOP
+DKCollectableFixHook:
+	J 	DKCollectableFix
+	NOP
 
 loadExtraHooks:
 	LUI t3, hi(NinWarpHook)
@@ -401,6 +404,12 @@ loadExtraHooks:
 	LUI t4, 0x806E
 	SW t3, 0x22B0 (t4) // Store Hook
 	SW r0, 0x22B4 (t4) // Store NOP
+
+	LUI t3, hi(DKCollectableFixHook)
+	LW t3, lo(DKCollectableFixHook) (t3)
+	LUI t4, 0x8063
+	SW t3, 0x24C4 (t4) // Store Hook
+	SW r0, 0x24C8 (t4) // Store NOP
 
 	JR ra
 	NOP

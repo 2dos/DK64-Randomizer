@@ -6,14 +6,13 @@ static char balanced_igt[20] = "";
 static char balanced_igt_seconds[10] = "";
 static char blueprints_count[5] = "";
 static char move_count_str[10] = "";
-static const short key_flag_array[] = {0x1A,0x4A,0x8A,0xA8,0xEC,0x124,0x13D,0x17C};
 
 #define LINE_GAP 0x8C
 
 int* display_images(int* dl) {
 	int y_offset = FileScreenDLOffset - 720;
 	for (int i = 0; i < 8; i++) {
-		float divisor = (checkFlag(key_flag_array[i],0) ^ 1) + 1;
+		float divisor = (checkFlag(444 + i,0) ^ 1) + 1;
 		if (divisor == 0) {
 			divisor = 1;
 		}

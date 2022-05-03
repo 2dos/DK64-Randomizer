@@ -4,6 +4,7 @@
 #define CRANKY 5
 #define CANDY 0x19
 #define MAIN_MENU 0x50
+#define SNIDE 0xF
 
 static const char moves_values[] = {1,1,3,1,7,1,1,7};
 
@@ -18,12 +19,18 @@ void decouple_moves_fixes(void) {
 		for (int i = 0; i < 8; i++) {
 			MainMenuMoves[i].moves = moves_values[i];
 		}
+	} else if (CurrentMap == SNIDE) {
+		*(int*)(0x8002402C) = 0x240E000C; // No extra contraption cutscenes
+		*(int*)(0x80024054) = 0x24080001; // 1 GB Turn in
 	}
 	writeCoinRequirements(1);
 	if ((*(int*)(0x807FBB64) << 1) & 0x80000000) {
 		// Menu Overlay - Candy's Shop Glitch
 		*(short*)(0x80027678) = 0x1000;
 		*(short*)(0x8002769C) = 0x1000;
+	}
+	if ((CurrentMap >= 0xCB) && (CurrentMap <= 0xCF)) {
+		PatchKRoolCode();
 	}
 	if (CurrentMap == 0x9A) {
 		*(short*)(0x80033B26) = 0x41F0; // Jumping Around

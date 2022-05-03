@@ -89,10 +89,16 @@ void initHack(void) {
 			// *(int*)(0x80708C9C) = 0; // Bonus Barrels (Taking Damge) & Watermelons
 			// *(int*)(0x80708CA4) = 0; // Bonus Barrels (Full Health) & Watermelons
 			*(int*)(0x806A6EA8) = 0; // Bonus Barrels
+		} else {
+			*(int*)(0x806A6EA8) = 0x0C1C2519; // Set Bonus Barrel to refill health
+
 		}
 		if (Rando.resolve_bonus & 1) {
 			*(short*)(0x806818DE) = 0x4248; // Make Aztec Lobby GB spawn above the trapdoor)
 			*(int*)(0x80681690) = 0; // Make some barrels not play a cutscene
+			*(int*)(0x8068188C) = 0; // Prevent disjoint mechanic for Caves/Fungi BBlast Bonus
+			*(short*)(0x80681898) = 0x1000;
+			*(int*)(0x8068191C) = 0; // Remove Oh Banana
 		}
 		if (Rando.kong_recolor_enabled) {
 			*(char*)(0x8068A62F) = 0;
@@ -146,6 +152,10 @@ void initHack(void) {
 		style2Mtx[0x0] = base_mtx;
 		style2Mtx[0x5] = base_mtx;
 		style2Mtx[0xF] = 10;
+		base_mtx = 50;
+		style128Mtx[0x0] = base_mtx;
+		style128Mtx[0x5] = base_mtx;
+		style128Mtx[0xF] = 100;
 		writeCoinRequirements(0);
 		writeEndSequence();
 		if (Rando.warp_to_isles_enabled) {
@@ -184,6 +194,12 @@ void initHack(void) {
 		// Fix HUD if DK not free
 		*(int*)(0x806FA324) = 0; // NOP
 		*(short*)(0x807505AE) = 385; // Set Flag to DK Flag
+		// Fix CB Spawning
+		*(short*)(0x806A7882) = 385; // DK Balloon
+		// Textbox Cancel
+		*(int*)(0x8070E84C) = 0;
+		*(int*)(0x8070E874) = 0;
+		*(int*)(0x8070E888) = 0;
 		LoadedHooks = 1;
 	}
 }

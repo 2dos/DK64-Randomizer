@@ -8,6 +8,16 @@ from randomizer.Patching.Patcher import ROM
 from randomizer.Spoiler import Spoiler
 
 
+def getBalancedCrownEnemyRando():
+    """Get array of weighted enemies."""
+    temp = []
+    for enemy in EnemyMetaData.keys():
+        if EnemyMetaData[enemy].crown_enabled:
+            for x in range(EnemyMetaData[enemy].crown_weight):
+                temp.append(enemy)
+    return temp
+
+
 def randomize_enemies(spoiler: Spoiler):
     """Write replaced enemies to ROM."""
     enemy_replacements = [
@@ -173,9 +183,7 @@ def randomize_enemies(spoiler: Spoiler):
     }
     crown_enemies = []
     if spoiler.settings.enemy_rando or spoiler.settings.kasplat_rando:  # TODO: Add option for crown enemy rando
-        for enemy in EnemyMetaData.keys():
-            if EnemyMetaData[enemy].crown_enabled:
-                crown_enemies.append(enemy)
+        crown_enemies = getBalancedCrownEnemyRando()
         for cont_map_id in range(216):
             cont_map_spawner_address = js.pointer_addresses[16]["entries"][cont_map_id]["pointing_to"]
             vanilla_spawners = []
