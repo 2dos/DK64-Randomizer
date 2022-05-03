@@ -284,7 +284,21 @@ def patching_response(responded_data):
     js.document.getElementById("settings_table").innerHTML = ""
     table = js.document.getElementById("settings_table")
     for setting, value in loaded_settings.items():
-        if setting not in ["seed", "krool_phases", "blocker_golden_bananas", "troff_n_scoff_bananas", "krool_keys_required"]:
+        hidden_settings = [
+            "seed",
+            "algorithm",
+            "starting_kong",
+            "diddy_freeing_kong",
+            "tiny_freeing_kong",
+            "lanky_freeing_kong",
+            "chunky_freeing_kong",
+            "banana_medals_required",
+            "krool_phases",
+            "krool_keys_required",
+            "blocker_golden_bananas",
+            "troff_n_scoff_bananas",
+        ]
+        if setting not in hidden_settings:
             row = table.insertRow(-1)
             name = row.insertCell(0)
             description = row.insertCell(1)

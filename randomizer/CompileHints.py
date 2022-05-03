@@ -9,7 +9,7 @@ from randomizer.Patching.UpdateHints import updateRandomHint
 def compileHints(spoiler: Spoiler):
     """Push hints to hint list based on settings."""
     # K Rool Order
-    if spoiler.settings.k_rool_phase_order:
+    if spoiler.settings.krool_phase_order_rando:
         associated_hint = f"K. Rool order is {NameFromKong(spoiler.settings.krool_order[0])}"
         for x in range(len(spoiler.settings.krool_order)):
             if x != 0:

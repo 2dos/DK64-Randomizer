@@ -52,7 +52,7 @@ def generate_settings():
     data["helm_setting"] = "default"
     data["quality_of_life"] = True
     data["enable_tag_anywhere"] = False
-    data["random_krool_phase_order"] = True
+    data["krool_phase_order_rando"] = True
     return data
 
 
