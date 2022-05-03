@@ -223,6 +223,10 @@ def patching_response(responded_data):
         ROM().seek(sav + 0x13E)
         ROM().write(1)
 
+    if spoiler.settings.open_lobbies:
+        ROM().seek(sav + 0x13C)
+        ROM().write(0xFF)
+
     # Disable Tag Barrels from spawning
     if spoiler.settings.disable_tag_barrels:
         ROM().seek(sav + 0x13F)
