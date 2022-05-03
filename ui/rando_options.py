@@ -177,3 +177,57 @@ def update_boss_required(evt):
             document.getElementById("boss_location_rando").removeAttribute("disabled")
         except Exception:
             pass
+
+
+@bind("click", "random_colors")
+def disable_colors(evt):
+    """Disable color options when Randomize All is selected."""
+    disabled = False
+    if js.document.getElementById("random_colors").checked:
+        disabled = True
+    for i in ["dk", "diddy", "tiny", "lanky", "chunky"]:
+        color = js.document.getElementById(f"{i}_colors")
+        try:
+            if disabled:
+                color.setAttribute("disabled", "disabled")
+            else:
+                color.removeAttribute("disabled")
+        except AttributeError:
+            pass
+
+
+@bind("click", "enable_tag_anywhere")
+def disable_tag_spawn(evt):
+    """Disable 'Disable Tag Spawn' option when 'Tag Anywhere' is off."""
+    disabled = False
+    if js.document.getElementById("enable_tag_anywhere").checked is False:
+        disabled = True
+    if disabled:
+        js.document.getElementById("disable_tag_barrels").setAttribute("disabled", "disabled")
+        js.document.getElementById("disable_tag_barrels").checked = False
+    else:
+        js.document.getElementById("disable_tag_barrels").removeAttribute("disabled")
+
+
+@bind("click", "disable_tag_barrels")
+def enable_tag_anywhere(evt):
+    """Enable 'Tag Anywhere' if 'Disable Tag Spawn' option is on."""
+    if js.document.getElementById("disable_tag_barrels").checked:
+        js.document.getElementById("enable_tag_anywhere").checked = True
+
+
+@bind("click", "random_music")
+def disable_music(evt):
+    """Disable music options when Randomize All is selected."""
+    disabled = False
+    if js.document.getElementById("random_music").checked:
+        disabled = True
+    for i in ["bgm", "fanfares", "events"]:
+        music = js.document.getElementById(f"music_{i}")
+        try:
+            if disabled:
+                music.setAttribute("disabled", "disabled")
+            else:
+                music.removeAttribute("disabled")
+        except AttributeError:
+            pass
