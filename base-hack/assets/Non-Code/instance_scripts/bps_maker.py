@@ -3,11 +3,11 @@
 import os
 import subprocess
 import shutil
+from instance_script_maps import instance_script_maps
 
 instance_name = "instance_script_maps.py"
 instance_copy = f"../../../Build/{instance_name}"
 shutil.copyfile(instance_copy, instance_name)
-from instance_script_maps import instance_script_maps
 
 maps = instance_script_maps.copy()
 
@@ -48,6 +48,4 @@ for f in files:
 
 if os.path.exists("flips.exe"):
     os.remove("flips.exe")
-if os.path.exists(instance_name):
-    os.remove(instance_name)
 print(f"{converted}/{file_total} scripts converted")
