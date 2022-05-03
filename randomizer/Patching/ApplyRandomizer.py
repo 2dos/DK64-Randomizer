@@ -2,6 +2,7 @@
 import codecs
 import json
 import pickle
+import random
 
 import js
 from randomizer.Patching.BananaPortRando import randomize_bananaport
@@ -248,7 +249,6 @@ def patching_response(responded_data):
     ROM().write(spoiler.jetpac_medals_required)
 
     randomize_dktv()
-    randomize_music(spoiler)
     randomize_entrances(spoiler)
     randomize_moves(spoiler)
     randomize_prices(spoiler)
@@ -257,9 +257,14 @@ def patching_response(responded_data):
     randomize_barrels(spoiler)
     randomize_bananaport(spoiler)
     randomize_enemies(spoiler)
-    apply_cosmetic_colors(spoiler)
     apply_kongrando_cosmetic(spoiler)
     randomize_puzzles()
+
+    random.seed(None)
+    randomize_music(spoiler)
+    apply_cosmetic_colors(spoiler)
+    random.seed(spoiler.settings.seed)
+
     if spoiler.settings.wrinkly_hints:
         compileHints(spoiler)
         PushHints()
