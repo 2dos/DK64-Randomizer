@@ -2,80 +2,81 @@
 from randomizer.Patching.Patcher import ROM
 from randomizer.Spoiler import Spoiler
 from random import randint
+import js
 
 
 def apply_cosmetic_colors(spoiler: Spoiler):
     """Apply cosmetic skins to kongs."""
     enable = False
     sav = 0x1FED020
-    if spoiler.settings.random_colors:
-        spoiler.settings.dk_colors = "randomized"
-        spoiler.settings.diddy_colors = "randomized"
-        spoiler.settings.lanky_colors = "randomized"
-        spoiler.settings.tiny_colors = "randomized"
-        spoiler.settings.chunky_colors = "randomized"
-    if spoiler.settings.dk_colors != "vanilla":
+    if js.document.getElementById("random_colors").value == "True":
+        js.document.getElementById("dk_colors").value = "randomized"
+        js.document.getElementById("diddy_colors").value = "randomized"
+        js.document.getElementById("lanky_colors").value = "randomized"
+        js.document.getElementById("tiny_colors").value = "randomized"
+        js.document.getElementById("chunky_colors").value = "randomized"
+    if js.document.getElementById("dk_colors").value != "vanilla":
         enable = True
         color = 0
-        if spoiler.settings.dk_colors == "randomized":
+        if js.document.getElementById("dk_colors").value == "randomized":
             color = randint(0, 3)
-        elif spoiler.settings.dk_colors == "blue":
+        elif js.document.getElementById("dk_colors").value == "blue":
             color = 1
-        elif spoiler.settings.dk_colors == "green":
+        elif js.document.getElementById("dk_colors").value == "green":
             color = 2
-        elif spoiler.settings.dk_colors == "purple":
+        elif js.document.getElementById("dk_colors").value == "purple":
             color = 3
         ROM().seek(sav + 0x127)
         ROM().write(color)
-    if spoiler.settings.diddy_colors != "vanilla":
+    if js.document.getElementById("diddy_colors").value != "vanilla":
         enable = True
         color = 0
-        if spoiler.settings.diddy_colors == "randomized":
+        if js.document.getElementById("diddy_colors").value == "randomized":
             color = randint(0, 3)
-        elif spoiler.settings.diddy_colors == "dark_blue":
+        elif js.document.getElementById("diddy_colors").value == "dark_blue":
             color = 1
-        elif spoiler.settings.diddy_colors == "yellow":
+        elif js.document.getElementById("diddy_colors").value == "yellow":
             color = 2
-        elif spoiler.settings.diddy_colors == "light_blue":
+        elif js.document.getElementById("diddy_colors").value == "light_blue":
             color = 3
         ROM().seek(sav + 0x128)
         ROM().write(color)
-    if spoiler.settings.lanky_colors != "vanilla":
+    if js.document.getElementById("lanky_colors").value != "vanilla":
         enable = True
         color = 0
-        if spoiler.settings.lanky_colors == "randomized":
+        if js.document.getElementById("lanky_colors").value == "randomized":
             color = randint(0, 3)
-        elif spoiler.settings.lanky_colors == "green":
+        elif js.document.getElementById("lanky_colors").value == "green":
             color = 1
-        elif spoiler.settings.lanky_colors == "purple":
+        elif js.document.getElementById("lanky_colors").value == "purple":
             color = 2
-        elif spoiler.settings.lanky_colors == "red":
+        elif js.document.getElementById("lanky_colors").value == "red":
             color = 3
         ROM().seek(sav + 0x129)
         ROM().write(color)
-    if spoiler.settings.tiny_colors != "vanilla":
+    if js.document.getElementById("tiny_colors").value != "vanilla":
         enable = True
         color = 0
-        if spoiler.settings.tiny_colors == "randomized":
+        if js.document.getElementById("tiny_colors").value == "randomized":
             color = randint(0, 3)
-        elif spoiler.settings.tiny_colors == "green":
+        elif js.document.getElementById("tiny_colors").value == "green":
             color = 1
-        elif spoiler.settings.tiny_colors == "purple":
+        elif js.document.getElementById("tiny_colors").value == "purple":
             color = 2
-        elif spoiler.settings.tiny_colors == "red":
+        elif js.document.getElementById("tiny_colors").value == "red":
             color = 3
         ROM().seek(sav + 0x12A)
         ROM().write(color)
-    if spoiler.settings.chunky_colors != "vanilla":
+    if js.document.getElementById("chunky_colors").value != "vanilla":
         enable = True
         color = 0
-        if spoiler.settings.chunky_colors == "randomized":
+        if js.document.getElementById("chunky_colors").value == "randomized":
             color = randint(0, 3)
-        elif spoiler.settings.chunky_colors == "red":
+        elif js.document.getElementById("chunky_colors").value == "red":
             color = 1
-        elif spoiler.settings.chunky_colors == "purple":
+        elif js.document.getElementById("chunky_colors").value == "purple":
             color = 2
-        elif spoiler.settings.chunky_colors == "green":
+        elif js.document.getElementById("chunky_colors").value == "green":
             color = 3
         ROM().seek(sav + 0x12B)
         ROM().write(color)
