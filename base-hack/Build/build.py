@@ -192,32 +192,19 @@ song_replacements = [
 ]
 changed_song_indexes = []
 
-
-for song in song_replacements:
-    file_dict.append(
-        {
-            "name": song["name"].replace("_", " "),
-            "pointer_table_index": 0,
-            "file_index": song["index"],
-            "source_file": f"assets/Non-Code/music/{song['name']}.bin",
-            "bps_file": f"assets/Non-Code/music/{song['name']}.bps",
-            "target_compressed_size": 0x2DDE,
-            "is_diff_patch": True,
-        }
-    )
-    changed_song_indexes.append(song["index"])
-
-for x in range(2):
-    file_dict.append(
-        {
-            "name": f"Yellow Question Mark ({x+1})",
-            "pointer_table_index": 7,
-            "file_index": 993 + x,
-            "source_file": f"assets/Non-Code/displays/yellow_qmark_{x}.png",
-            "texture_format": "rgba5551",
-            "do_not_compress": True,
-        }
-    )
+# for song in song_replacements:
+#     file_dict.append(
+#         {
+#             "name": song["name"].replace("_", " "),
+#             "pointer_table_index": 0,
+#             "file_index": song["index"],
+#             "source_file": f"assets/Non-Code/music/{song['name']}.bin",
+#             "bps_file": f"assets/Non-Code/music/{song['name']}.bps",
+#             "target_compressed_size": 0x2DDE,
+#             "is_diff_patch": True,
+#         }
+#     )
+#     changed_song_indexes.append(song["index"])
 
 for x in instance_script_maps:
     file_dict.append(

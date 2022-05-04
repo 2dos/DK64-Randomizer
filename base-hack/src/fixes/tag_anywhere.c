@@ -271,7 +271,7 @@ void tagAnywhere(int prev_crystals) {
 								reached_limit = 1;
 								return;
 							} else {
-								next_character = Character + change;
+								next_character = next_character + change;
                                 if (next_character < 0) {
                                     next_character = TAG_ANYWHERE_KONG_LIMIT - 1;
                                 } else if (next_character >= TAG_ANYWHERE_KONG_LIMIT) {

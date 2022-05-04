@@ -12,7 +12,13 @@ static char move_count_str[10] = "";
 int* display_images(int* dl) {
 	int y_offset = FileScreenDLOffset - 720;
 	for (int i = 0; i < 8; i++) {
-		float divisor = (checkFlag(444 + i,0) ^ 1) + 1;
+		int key_there = checkFlag(444 + i,0);
+		if (!key_there) {
+			if (Rando.keys_preturned & (1 << i)) {
+				key_there = 1;
+			}
+		}
+		float divisor = (key_there ^ 1) + 1;
 		if (divisor == 0) {
 			divisor = 1;
 		}
