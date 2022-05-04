@@ -62,14 +62,12 @@ void cFuncLoop(void) {
 		kong_has_died();
 		forceBossKong();
 	} else {
-		if (Rando.patch_kutoutkongs) {
-			if (CurrentMap == 0xC7) {
-				if (TransitionSpeed > 0.0f) {
-					if (LZFadeoutProgress == 30.0f) {
-						for (int i = 0; i < 7; i++) {
-							if (BossMapArray[i] == 0xC7) {
-								Character = BossKongArray[i];
-							}
+		if (CurrentMap == 0xC7) {
+			if (TransitionSpeed > 0.0f) {
+				if (LZFadeoutProgress == 30.0f) {
+					for (int i = 0; i < 7; i++) {
+						if (BossMapArray[i] == 0xC7) {
+							Character = BossKongArray[i];
 						}
 					}
 				}

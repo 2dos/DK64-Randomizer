@@ -544,18 +544,6 @@ START_HOOK:
 			J 		0x806EFC24
 			NOP
 
-	cannonCheckCode:
-		JAL 		spawnCannonWrapper
-		NOP
-		BNEZ 		v0, cannonCheckCode_preventSpawn
-		LW 			t9, 0x0 (s1)
-		J 			0x8067B69C
-		ADDIU 		t8, r0, 0x14
-
-		cannonCheckCode_preventSpawn:
-			J 		0x8067B6CC
-			NOP
-
 	permaLossTagCheck:
 		JAL 		determineKongUnlock
 		LW 			a0, 0x58 (t5)
