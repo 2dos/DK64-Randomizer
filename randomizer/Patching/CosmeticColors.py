@@ -9,7 +9,7 @@ def apply_cosmetic_colors(spoiler: Spoiler):
     """Apply cosmetic skins to kongs."""
     enable = False
     sav = 0x1FED020
-    if js.document.getElementById("random_colors").value == "True":
+    if js.document.getElementById("random_colors").checked:
         js.document.getElementById("dk_colors").value = "randomized"
         js.document.getElementById("diddy_colors").value = "randomized"
         js.document.getElementById("lanky_colors").value = "randomized"
