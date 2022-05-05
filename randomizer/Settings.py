@@ -56,6 +56,10 @@ class Settings:
         self.krool_keys_required = []
         # Settings which are not yet implemented on the web page
 
+        # B Locker and T&S max values
+        self.blocker_max = 50
+        self.troff_max = 270
+        self.troff_min = round(self.troff_max / 3)
         # Always start with training barrels currently
         # training_barrels: str
         # normal
@@ -79,11 +83,7 @@ class Settings:
 
     def update_progression_totals(self):
         """Update the troff and blocker totals if we're randomly setting them."""
-        self.troff_min = 0
-        self.troff_max = 260
-        if self.level_randomization == "level_order":
-            self.troff_min = 100
-            self.troff_max = 300
+        # Assign weights to Troff n Scoff based on level order if not shuffling loading zones
         self.troff_weight_0 = 0.7
         self.troff_weight_1 = 0.8
         self.troff_weight_2 = 0.9
@@ -91,19 +91,27 @@ class Settings:
         self.troff_weight_4 = 1.1
         self.troff_weight_5 = 1.2
         self.troff_weight_6 = 1.3
+        if self.level_randomization == "loadingzone" or self.level_randomization == "loadingzonesdecoupled":
+            self.troff_weight_0 = 1
+            self.troff_weight_1 = 1
+            self.troff_weight_2 = 1
+            self.troff_weight_3 = 1
+            self.troff_weight_4 = 1
+            self.troff_weight_5 = 1
+            self.troff_weight_6 = 1
 
         if self.randomize_cb_required_amounts:
             randomlist = random.sample(range(self.troff_min, self.troff_max), 7)
             cbs = randomlist
-            self.troff_0 = round(cbs[0] * self.troff_weight_0)
-            self.troff_1 = round(cbs[1] * self.troff_weight_1)
-            self.troff_2 = round(cbs[2] * self.troff_weight_2)
-            self.troff_3 = round(cbs[3] * self.troff_weight_3)
-            self.troff_4 = round(cbs[4] * self.troff_weight_4)
-            self.troff_5 = round(cbs[5] * self.troff_weight_5)
-            self.troff_6 = round(cbs[6] * self.troff_weight_6)
+            self.troff_0 = round(min(cbs[0] * self.troff_weight_0, 500))
+            self.troff_1 = round(min(cbs[1] * self.troff_weight_1, 500))
+            self.troff_2 = round(min(cbs[2] * self.troff_weight_2, 500))
+            self.troff_3 = round(min(cbs[3] * self.troff_weight_3, 500))
+            self.troff_4 = round(min(cbs[4] * self.troff_weight_4, 500))
+            self.troff_5 = round(min(cbs[5] * self.troff_weight_5, 500))
+            self.troff_6 = round(min(cbs[6] * self.troff_weight_6, 500))
         if self.randomize_blocker_required_amounts:
-            randomlist = random.sample(range(0, 50), 7)
+            randomlist = random.sample(range(1, self.blocker_max), 7)
             b_lockers = randomlist
             b_lockers.append(1)
             if self.shuffle_loading_zones == "all":
