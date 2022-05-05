@@ -168,7 +168,7 @@ LogicRegions = {
         Event(Events.GrinderActivated, lambda l: l.triangle and l.ischunky),
         Event(Events.MillBoxBroken, lambda l: l.punch and l.ischunky),
     ], [
-        TransitionFront(Regions.MillArea, lambda l: True, Transitions.ForestChunkyMillToMain),
+        TransitionFront(Regions.MillArea, lambda l: l.ischunky, Transitions.ForestChunkyMillToMain),
         TransitionFront(Regions.MillTinyArea, lambda l: True),
     ]),
 
