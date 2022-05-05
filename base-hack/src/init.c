@@ -124,6 +124,9 @@ void initHack(void) {
 		if (Rando.disable_boss_kong_check) {
 			*(int*)(0x8064EC00) = 0x24020001;
 		}
+		if (Rando.lobbies_open_bitfield) {
+			*(short*)(0x8067B68C) = 0x1000;
+		}
 		*(int*)(0x8074C1B8) = (int)&newCounterCode;
 		fixMusicRando();
 		// Disable Sniper Scope Overlay

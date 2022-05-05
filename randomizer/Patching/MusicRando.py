@@ -20,18 +20,18 @@ def randomize_music(spoiler: Spoiler):
         settings (Settings): Settings object from the windows form.
     """
     settings: Settings = spoiler.settings
-    if spoiler.settings.random_music:
-        settings.music_bgm = "randomized"
-        settings.music_fanfares = "randomized"
-        settings.music_events = "randomized"
-    if settings.music_bgm != "default" or settings.music_events != "default" or settings.music_fanfares != "default":
+    if js.document.getElementById("random_music").value == "True":
+        js.document.getElementById("music_bgm").value = "randomized"
+        js.document.getElementById("music_fanfares").value = "randomized"
+        js.document.getElementById("music_events").value = "randomized"
+    if js.document.getElementById("music_bgm").value != "default" or js.document.getElementById("music_events").value != "default" or js.document.getElementById("music_fanfares").value != "default":
         sav = 0x1FED020
         ROM().seek(sav + 0x11F)
         ROM().write(1)
     # Check if we have anything beyond default set for BGM
-    if settings.music_bgm != "default":
+    if js.document.getElementById("music_bgm").value != "default":
         # If the user selected standard rando
-        if settings.music_bgm == "randomized":
+        if js.document.getElementById("music_bgm").value == "randomized":
 
             # These lines exist for testing only
             # file = open('static/patches/pointer_addresses.json')
@@ -52,7 +52,7 @@ def randomize_music(spoiler: Spoiler):
                 random.shuffle(shuffled_music)
                 shuffle_music(spoiler, song_list[channel_index], shuffled_music)
         # If the user was a poor sap and selected chaos put DK rap for everything
-        elif settings.music_bgm == "chaos":
+        elif js.document.getElementById("music_bgm").value == "chaos":
             # Find the DK rap in the list
             rap = js.pointer_addresses[0]["entries"][song_data.index(next((x for x in song_data if x.name == "DK Rap"), None))]
             # Find all BGM songs
@@ -77,7 +77,7 @@ def randomize_music(spoiler: Spoiler):
                 # Update data
                 ROM().seek(0x1FFF000 + (song["index"] * 2))
                 ROM().writeMultipleBytes(song_data[rap["index"]].memory, 2)
-        elif settings.music_bgm == "uploaded":
+        elif js.document.getElementById("music_bgm").value == "uploaded":
             # Generate the list of BGM songs
             song_list = []
             for song in song_data:
@@ -108,9 +108,9 @@ def randomize_music(spoiler: Spoiler):
             random.shuffle(duped_song_list)
             shuffle_music(spoiler, song_list, duped_song_list)
     # If the user wants to randomize fanfares
-    if settings.music_fanfares != "default":
+    if js.document.getElementById("music_fanfares").value != "default":
         # Check if our setting is just rando
-        if settings.music_fanfares == "randomized":
+        if js.document.getElementById("music_fanfares").value == "randomized":
             # Load the list of fanfares
             fanfare_list = []
             for song in song_data:
@@ -121,7 +121,7 @@ def randomize_music(spoiler: Spoiler):
             shuffled_music = fanfare_list.copy()
             random.shuffle(shuffled_music)
             shuffle_music(spoiler, fanfare_list, shuffled_music)
-        elif settings.music_fanfares == "uploaded":
+        elif js.document.getElementById("music_fanfares").value == "uploaded":
             # Generate the list of fanfares songs
             song_list = []
             for song in song_data:
@@ -153,9 +153,9 @@ def randomize_music(spoiler: Spoiler):
             shuffle_music(spoiler, song_list, duped_song_list)
 
     # If the user wants to randomize events
-    if settings.music_events != "default":
+    if js.document.getElementById("music_events").value != "default":
         # Check if our setting is just rando
-        if settings.music_events == "randomized":
+        if js.document.getElementById("music_events").value == "randomized":
             # Load the list of events
             event_list = []
             for song in song_data:

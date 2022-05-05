@@ -34,8 +34,9 @@ def generateYellowWrinkly():
             elif rgb_val[0] == 0x3E and rgb_val[1] == 0x82 and rgb_val[2] == 0x1A:
                 wrinkly_door.seek(0x60C + (0x10 * x))
                 wrinkly_door.write(bytearray([0x91, 0x91, 0x00]))
-        offset = 993
+        left = 583
+        right = 590
         wrinkly_door.seek(0x132A)
-        wrinkly_door.write(offset.to_bytes(2, "big"))
+        wrinkly_door.write(left.to_bytes(2, "big"))
         wrinkly_door.seek(0x13AE)
-        wrinkly_door.write((offset + 1).to_bytes(2, "big"))
+        wrinkly_door.write(right.to_bytes(2, "big"))
