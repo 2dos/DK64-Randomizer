@@ -31,32 +31,17 @@ class Settings:
         self.seed_id = str(self.seed)
         self.seed = str(self.seed) + self.__hash
         self.set_seed()
-        self.update_progression_totals()
-        # Store banana values in array
-        self.EntryGBs = [
-            self.blocker_0,
-            self.blocker_1,
-            self.blocker_2,
-            self.blocker_3,
-            self.blocker_4,
-            self.blocker_5,
-            self.blocker_6,
-            self.blocker_7,
-        ]
-        self.BossBananas = [
-            self.troff_0,
-            self.troff_1,
-            self.troff_2,
-            self.troff_3,
-            self.troff_4,
-            self.troff_5,
-            self.troff_6,
-        ]
+
         self.seed_hash = [random.randint(0, 9) for i in range(5)]
         self.krool_keys_required = []
         # Settings which are not yet implemented on the web page
 
         # B Locker and T&S max values
+        # Shorter: 20 GB
+        # Short: 35 GB
+        # Medium: 50 GB
+        # Long: 65 GB
+        # Longer: 80 GB
         self.blocker_max = 50
         self.troff_max = 270
         self.troff_min = round(self.troff_max / 3)
@@ -126,6 +111,27 @@ class Settings:
             self.blocker_5 = b_lockers[5]
             self.blocker_6 = b_lockers[6]
             self.blocker_7 = b_lockers[7]
+
+        # Store banana values in array
+        self.EntryGBs = [
+            self.blocker_0,
+            self.blocker_1,
+            self.blocker_2,
+            self.blocker_3,
+            self.blocker_4,
+            self.blocker_5,
+            self.blocker_6,
+            self.blocker_7,
+        ]
+        self.BossBananas = [
+            self.troff_0,
+            self.troff_1,
+            self.troff_2,
+            self.troff_3,
+            self.troff_4,
+            self.troff_5,
+            self.troff_6,
+        ]
 
     def generate_main(self):
         """Set Default items on main page."""
@@ -231,6 +237,9 @@ class Settings:
         # Price Rando
         if self.random_prices != "vanilla":
             self.prices = RandomizePrices(self.random_prices)
+
+        # B Locker and Troff n Scoff amounts Rando
+        self.update_progression_totals()
 
         # Handle K. Rool Phases
         self.krool_donkey = False
