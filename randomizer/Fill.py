@@ -755,12 +755,12 @@ def SetNewProgressionRequirements(settings: Settings):
     BLOCKER_MAX = 0.7
     settings.EntryGBs = [
         min(settings.blocker_0, 1),  # First B. Locker shouldn't be more than 1 GB
-        min(settings.blocker_1, round(random.uniform(BLOCKER_MIN, BLOCKER_MAX) * goldenBananaTotals[0])),
-        min(settings.blocker_2, round(random.uniform(BLOCKER_MIN, BLOCKER_MAX) * goldenBananaTotals[1])),
-        min(settings.blocker_3, round(random.uniform(BLOCKER_MIN, BLOCKER_MAX) * goldenBananaTotals[2])),
-        min(settings.blocker_4, round(random.uniform(BLOCKER_MIN, BLOCKER_MAX) * goldenBananaTotals[3])),
-        min(settings.blocker_5, round(random.uniform(BLOCKER_MIN, BLOCKER_MAX) * goldenBananaTotals[4])),
-        min(settings.blocker_6, round(random.uniform(BLOCKER_MIN, BLOCKER_MAX) * goldenBananaTotals[5])),
+        min(settings.blocker_1, max(1, round(random.uniform(BLOCKER_MIN, BLOCKER_MAX) * goldenBananaTotals[0]))),
+        min(settings.blocker_2, max(1, round(random.uniform(BLOCKER_MIN, BLOCKER_MAX) * goldenBananaTotals[1]))),
+        min(settings.blocker_3, max(1, round(random.uniform(BLOCKER_MIN, BLOCKER_MAX) * goldenBananaTotals[2]))),
+        min(settings.blocker_4, max(1, round(random.uniform(BLOCKER_MIN, BLOCKER_MAX) * goldenBananaTotals[3]))),
+        min(settings.blocker_5, max(1, round(random.uniform(BLOCKER_MIN, BLOCKER_MAX) * goldenBananaTotals[4]))),
+        min(settings.blocker_6, max(1, round(random.uniform(BLOCKER_MIN, BLOCKER_MAX) * goldenBananaTotals[5]))),
         settings.blocker_7,  # Last B. Locker shouldn't be affected
     ]
     settings.BossBananas = [

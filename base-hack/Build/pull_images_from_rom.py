@@ -101,6 +101,26 @@ images = [
         "resize": False,
         "flip": False,
     },
+    {
+        "name": "red_qmark_0",
+        "format": "rgba16",
+        "table": 7,
+        "index": 508,
+        "w": 32,
+        "h": 64,
+        "resize": False,
+        "flip": False,
+    },
+    {
+        "name": "red_qmark_1",
+        "format": "rgba16",
+        "table": 7,
+        "index": 509,
+        "w": 32,
+        "h": 64,
+        "resize": False,
+        "flip": False,
+    },
 ]
 
 kong_tex = ["chunky", "tiny", "lanky", "diddy", "dk"]

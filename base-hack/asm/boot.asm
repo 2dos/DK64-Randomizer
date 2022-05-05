@@ -148,9 +148,6 @@ DanceSkipHook1:
 DanceSkipHook2:
 	J 	danceSkip2
 	NOP
-CannonCheckHook:
-	J 	cannonCheckCode
-	NOP
 TagPermaLossCheckHook:
 	J 	permaLossTagCheck
 	NOP
@@ -177,6 +174,9 @@ HUDDisplayHook:
 	NOP
 HomingDisableHook:
 	J 	HomingDisable
+	NOP
+DKCollectableFixHook:
+	J 	DKCollectableFix
 	NOP
 
 loadExtraHooks:
@@ -342,12 +342,6 @@ loadExtraHooks:
 	SW t3, 0xFC1C (t4) // Store Hook
 	SW r0, 0xFC20 (t4) // Store NOP
 
-	LUI t3, hi(CannonCheckHook)
-	LW t3, lo(CannonCheckHook) (t3)
-	LUI t4, 0x8068
-	SW t3, 0xB694 (t4) // Store Hook
-	SW r0, 0xB698 (t4) // Store NOP
-
 	LUI t3, hi(permaLossMode)
 	LBU t3, lo(permaLossMode) (t3)
 	BEQZ t3, loadExtraHooks_1
@@ -401,6 +395,12 @@ loadExtraHooks:
 	LUI t4, 0x806E
 	SW t3, 0x22B0 (t4) // Store Hook
 	SW r0, 0x22B4 (t4) // Store NOP
+
+	LUI t3, hi(DKCollectableFixHook)
+	LW t3, lo(DKCollectableFixHook) (t3)
+	LUI t4, 0x8063
+	SW t3, 0x24C4 (t4) // Store Hook
+	SW r0, 0x24C8 (t4) // Store NOP
 
 	JR ra
 	NOP

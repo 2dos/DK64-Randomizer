@@ -162,11 +162,9 @@ static unsigned char tag_countdown = 0;
 void tagAnywhere(int prev_crystals) {
 	if (Rando.tag_anywhere) {
 		if (Player) {
-            if (tag_countdown > 0) {
-                tag_countdown -= 1;
-            }
             if (CurrentMap != 0x2A) {
                 char hud_items[] = {0,1,5,8,10,12,13,14};
+                tag_countdown = 0;
                 if (HUD) {
                     for (int i = 0; i < sizeof(hud_items); i++) {
                         if (HUD->item[(int)hud_items[i]].hud_state) {
@@ -175,6 +173,9 @@ void tagAnywhere(int prev_crystals) {
                     }
                 }
             } else {
+                if (tag_countdown > 0) {
+                    tag_countdown -= 1;
+                }
                 if (tag_countdown == 2) {
                     HUD->item[0].hud_state = 1;
                     if (Player->control_state == 108) {
@@ -243,10 +244,15 @@ void tagAnywhere(int prev_crystals) {
 							return;
 						}
 					}
-                    int next_character = (Character + TAG_ANYWHERE_KONG_LIMIT + change) % TAG_ANYWHERE_KONG_LIMIT;
+                    int next_character = Character + change;
+                    if (next_character < 0) {
+                        next_character = TAG_ANYWHERE_KONG_LIMIT - 1;
+                    } else if (next_character >= TAG_ANYWHERE_KONG_LIMIT) {
+                        next_character = 0;
+                    }
 					int i = 0;
 					int reached_limit = 0;
-					do {
+					while (i < TAG_ANYWHERE_KONG_LIMIT) {
                         int pass = 0;
                         if (checkFlag(kong_flags[next_character],0)) {
                             pass = 1;
@@ -265,10 +271,16 @@ void tagAnywhere(int prev_crystals) {
 								reached_limit = 1;
 								return;
 							} else {
-								next_character = (next_character + TAG_ANYWHERE_KONG_LIMIT + change) % TAG_ANYWHERE_KONG_LIMIT;
+								next_character = next_character + change;
+                                if (next_character < 0) {
+                                    next_character = TAG_ANYWHERE_KONG_LIMIT - 1;
+                                } else if (next_character >= TAG_ANYWHERE_KONG_LIMIT) {
+                                    next_character = 0;
+                                }
 							}
 						}
-					} while (i++ < TAG_ANYWHERE_KONG_LIMIT);
+                        i++;
+                    }
 					if ((!reached_limit) && (next_character != Character)) {
 						if (((MovesBase[next_character].weapon_bitfield & 1) == 0) || (Player->was_gun_out == 0)) {
                             Player->hand_state = 1;

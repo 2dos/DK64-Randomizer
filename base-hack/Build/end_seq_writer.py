@@ -76,8 +76,9 @@ end_sequence_cards = [
             "cooldown": general_buffer,
         },
         "text": [
+            "Adam Whitmore",
             "Auphonium",
-            "ChelseyxLynn",
+            "CandyBoots",
         ],
     },
     {
@@ -87,6 +88,7 @@ end_sequence_cards = [
             "cooldown": general_buffer,
         },
         "text": [
+            "ChelseyXLynn",
             "ChristianVega64",
             "Connor75",
         ],
@@ -98,6 +100,7 @@ end_sequence_cards = [
             "cooldown": general_buffer,
         },
         "text": [
+            "CornCobx0",
             "Fuzzyness",
             "KaptainKohl",
         ],
@@ -108,7 +111,7 @@ end_sequence_cards = [
             "duration": names_length,
             "cooldown": general_buffer,
         },
-        "text": ["KiwiKiller67", "Nukkular Reaction"],
+        "text": ["KiwiKiller67", "Nukkuler"],
     },
     {
         "squish": {
