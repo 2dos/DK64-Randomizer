@@ -37,6 +37,13 @@
       load_inital();
     }, 1000);
   }
+  function getFile(file) {
+    return $.ajax({
+        type: "GET",
+        url: file,
+        async: false
+    }).responseText;
+  }
 </script>
 <style>
   body {

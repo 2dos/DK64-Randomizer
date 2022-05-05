@@ -3,7 +3,6 @@ import json
 
 import micropip
 from jinja2 import Environment, FunctionLoader
-from pyodide import to_js
 import time
 
 import js
@@ -28,7 +27,7 @@ async def initialize():
     js.background_worker = None
 
     def ajax_call(file):
-        resp = js.jquery.ajax(js.Object.fromEntries(to_js({"type": "GET", "url": file, "async": False}))).responseText
+        resp = js.getFile(file)
         return resp
 
     def loader_func(template_name):
@@ -66,7 +65,7 @@ async def initialize():
         pass
 
     # Load our pointer info from the JSON database
-    js.pointer_addresses = json.loads(js.jquery.ajax(js.Object.fromEntries(to_js({"url": "./static/patches/pointer_addresses.json", "async": False}))).responseText)
+    js.pointer_addresses = json.loads(js.getFile("./static/patches/pointer_addresses.json"))
 
 
 # Run the script (This will be run as async later on)

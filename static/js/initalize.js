@@ -36,7 +36,13 @@ function toast_alert(text) {
     onClick: function () {},
   }).showToast();
 }
-
+function getFile(file) {
+  return $.ajax({
+      type: "GET",
+      url: file,
+      async: false
+  }).responseText;
+}
 var cosmetics;
 document
   .getElementById("music_file")
