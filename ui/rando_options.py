@@ -13,6 +13,8 @@ def randomseed(evt):
 
 @bind("input", "blocker_", 8)
 @bind("input", "troff_", 8)
+@bind("input", "blocker_text")
+@bind("input", "troff_text")
 def on_input(event):
     """Limits inputs from input boxes on keypress.
 
@@ -58,6 +60,8 @@ def min_max(event, min, max):
 
 @bind("keydown", "blocker_", 8)
 @bind("keydown", "troff_", 8)
+@bind("keydown", "blocker_text")
+@bind("keydown", "troff_text")
 def key_down(event):
     """Check if a key is a proper number, deletion, navigation, Copy/Cut/Paste.
 
@@ -121,6 +125,11 @@ def toggle_b_locker_boxes(event):
     disabled = True
     if js.document.getElementById("randomize_blocker_required_amounts").checked:
         disabled = False
+    blocker_text = js.document.getElementById("blocker_text")
+    if disabled:
+        blocker_text.setAttribute("disabled", "disabled")
+    else:
+        blocker_text.removeAttribute("disabled")
     for i in range(0, 10):
         blocker = js.document.getElementById(f"blocker_{i}")
         try:
@@ -151,6 +160,11 @@ def toggle_counts_boxes(event):
     disabled = True
     if js.document.getElementById("randomize_cb_required_amounts").checked:
         disabled = False
+    troff_text = js.document.getElementById("troff_text")
+    if disabled:
+        troff_text.setAttribute("disabled", "disabled")
+    else:
+        troff_text.removeAttribute("disabled")
     for i in range(0, 10):
         troff = js.document.getElementById(f"troff_{i}")
         try:
