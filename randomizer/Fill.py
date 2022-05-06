@@ -199,7 +199,7 @@ def VerifyWorldWithWorstCoinUsage(settings):
     # ItemPool.PlaceConstants(settings)
     ownedItems = []
 
-    reachable = GetAccessibleLocations(settings, ownedItems, SearchMode.GetReachableWithoutPurchase)
+    reachable = GetAccessibleLocations(settings, ownedItems.copy(), SearchMode.GetReachableWithoutPurchase)
     # 1. For each accessible shop location
     reachableShops = [LocationList[x] for x in reachable if LocationList[x].type == Types.Shop and LocationList[x].item != None and LocationList[x].item != Items.NoItem]
     shopDifferentials = {}
@@ -207,11 +207,12 @@ def VerifyWorldWithWorstCoinUsage(settings):
         # Purchase the move
         coinsBefore = LogicVariables.Coins.copy()
         price = GetPriceOfMoveItem(shopLocation.item, LogicVariables.settings, LogicVariables.Slam, LogicVariables.AmmoBelts, LogicVariables.InstUpgrades)
-        ownedItems.append(shopLocation.item)
         print("Check buying " + shopLocation.item.name + " from location " + shopLocation.name)
         print("Move Price: " + str(price))
         # Recheck accessible to see how many coins will be available afterward
-        GetAccessibleLocations(settings, ownedItems, SearchMode.GetReachableWithoutPurchase)
+        tempOwned = ownedItems.copy()
+        tempOwned.append(shopLocation.item)
+        reachableAfter = GetAccessibleLocations(settings, tempOwned, SearchMode.GetReachableWithoutPurchase)
         coinsAfter = LogicVariables.Coins.copy()
         print("Coins before purchase: " + str(coinsBefore))
         print("Coins after purchase: " + str(coinsAfter))
