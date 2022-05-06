@@ -66,6 +66,9 @@ def GetAccessibleLocations(settings, ownedItems, searchType=SearchMode.GetReacha
             location = LocationList[locationId]
             # If this location has an item placed, add it to owned items
             if location.item is not None:
+                if location.type == Types.Shop and locationId != Locations.SimianSlam and searchType == SearchMode.GetReachableWithoutPurchase:
+                    # Don't add shop items for search mode GetReachableWithoutPurchase
+                    continue
                 ownedItems.append(location.item)
                 # If we want to generate the playthrough and the item is a playthrough item, add it to the sphere
                 if searchType == SearchMode.GeneratePlaythrough and ItemList[location.item].playthrough:
@@ -129,7 +132,8 @@ def GetAccessibleLocations(settings, ownedItems, searchType=SearchMode.GetReacha
                             if not LogicVariables.KasplatAccess(location.id):
                                 continue
                         # Any shop item with exception of simian slam has a price
-                        elif LocationList[location.id].type == Types.Shop and location.id != Locations.SimianSlam:
+                        elif LocationList[location.id].type == Types.Shop and location.id != Locations.SimianSlam and searchType != SearchMode.GetReachableWithoutPurchase:
+                            # Don't add shop items for search mode GetReachableWithoutPurchase
                             LogicVariables.PurchaseShopItem(LocationList[location.id])
                         newLocations.append(location.id)
                 # Check accessibility for each exit in this region
@@ -168,7 +172,7 @@ def GetAccessibleLocations(settings, ownedItems, searchType=SearchMode.GetReacha
                         newRegion.id = destination
                         regionPool.append(newRegion)
 
-    if searchType == SearchMode.GetReachable:
+    if searchType == SearchMode.GetReachable or searchType == SearchMode.GetReachableWithoutPurchase:
         return accessible
     elif searchType == SearchMode.CheckBeatable:
         # If the search has completed and banana hoard has not been found, game is unbeatable
@@ -188,6 +192,54 @@ def VerifyWorld(settings):
     isValid = len(unreachables) == 0
     Reset()
     return isValid
+
+def VerifyWorldWithWorstCoinUsage(settings):
+    """Make sure the game is beatable without it being possible to run out of coins for required moves."""
+    # TODO: Determine whether PlacsConstants is needed
+    # ItemPool.PlaceConstants(settings)
+    ownedItems = []
+
+    reachable = GetAccessibleLocations(settings, ownedItems, SearchMode.GetReachableWithoutPurchase)
+    # 1. For each accessible shop location
+    reachableShops = [LocationList[x] for x in reachable if LocationList[x].type == Types.Shop and LocationList[x].item != None and LocationList[x].item != Items.NoItem]
+    shopDifferentials = {}
+    for shopLocation in reachableShops:
+        # Purchase the move
+        coinsBefore = LogicVariables.Coins.copy()
+        price = GetPriceOfMoveItem(shopLocation.item, LogicVariables.settings, LogicVariables.Slam, LogicVariables.AmmoBelts, LogicVariables.InstUpgrades)
+        ownedItems.append(shopLocation.item)
+        print("Check buying " + shopLocation.item.name + " from location " + shopLocation.name)
+        print("Move Price: " + str(price))
+        # Recheck accessible to see how many coins will be available afterward
+        GetAccessibleLocations(settings, ownedItems, SearchMode.GetReachableWithoutPurchase)
+        coinsAfter = LogicVariables.Coins.copy()
+        print("Coins before purchase: " + str(coinsBefore))
+        print("Coins after purchase: " + str(coinsAfter))
+        # Calculate the coin differential
+        coinDifferential = [0, 0, 0, 0, 0]
+        canKongBuySharedMove = [False, False, False, False, False]
+        for kong in LogicVariables.GetKongs():
+            coinDifferential[kong] = coinsAfter[kong] - coinsBefore[kong]
+            # Subtract the price only for the purchasing kong
+            if shopLocation.kong == kong:
+                coinDifferential[kong] -= price
+            # Since shared moves may be accessible only for certain kongs which have enough coins, keep track of which kongs could buy it
+            elif shopLocation.kong == Kongs.any and coinsBefore[kong] >= price:
+                canKongBuySharedMove[kong] = True
+        # If this is a shared move, figure out which kong has the worst coin differential and use them to buy it
+        if shopLocation.kong == Kongs.any:
+            worstDifferential = 0
+            worstKongForSharedPurchase = settings.starting_kong
+            for kong in LogicVariables.GetKongs():
+                if coinDifferential[kong] < worstDifferential:
+                    worstDifferential = coinDifferential[kong]
+                    worstKongForSharedPurchase = kong
+            coinDifferential[worstKongForSharedPurchase] -= price
+        print("Coin differential: " + str(coinDifferential))
+    # 2. Purchase the move with the lowest differential & add to owned Items
+    # 3. Repeat from step 1 until Banana Hoard is in accessible locations
+    # 4. If no accessible shop locations found, means you got coin locked and the seed is not valid
+    return False
 
 
 def Reset():
@@ -587,7 +639,7 @@ def ShuffleMisc(spoiler):
             FillKongsAndMoves(spoiler)
             # Check if game is beatable
             Reset()
-            if not GetAccessibleLocations(spoiler.settings, [], SearchMode.CheckBeatable):
+            if not VerifyWorldWithWorstCoinUsage(spoiler.settings):
                 raise Ex.GameNotBeatableException("Game unbeatable after placing all items.")
             return
         except Ex.FillException as ex:
@@ -676,7 +728,7 @@ def ShuffleKongsAndLevels(spoiler):
             FillKongsAndMoves(spoiler)
             # Check if game is beatable
             Reset()
-            if not GetAccessibleLocations(spoiler.settings, [], SearchMode.CheckBeatable):
+            if not VerifyWorldWithWorstCoinUsage(spoiler.settings):
                 raise Ex.GameNotBeatableException("Game unbeatable after placing all items.")
             return
         except Ex.FillException as ex:
@@ -755,12 +807,12 @@ def SetNewProgressionRequirements(settings: Settings):
     BLOCKER_MAX = 0.7
     settings.EntryGBs = [
         min(settings.blocker_0, 1),  # First B. Locker shouldn't be more than 1 GB
-        min(settings.blocker_1, max(1, round(random.uniform(BLOCKER_MIN, BLOCKER_MAX) * goldenBananaTotals[0]))),
-        min(settings.blocker_2, max(1, round(random.uniform(BLOCKER_MIN, BLOCKER_MAX) * goldenBananaTotals[1]))),
-        min(settings.blocker_3, max(1, round(random.uniform(BLOCKER_MIN, BLOCKER_MAX) * goldenBananaTotals[2]))),
-        min(settings.blocker_4, max(1, round(random.uniform(BLOCKER_MIN, BLOCKER_MAX) * goldenBananaTotals[3]))),
-        min(settings.blocker_5, max(1, round(random.uniform(BLOCKER_MIN, BLOCKER_MAX) * goldenBananaTotals[4]))),
-        min(settings.blocker_6, max(1, round(random.uniform(BLOCKER_MIN, BLOCKER_MAX) * goldenBananaTotals[5]))),
+        min(settings.blocker_1, round(random.uniform(BLOCKER_MIN, BLOCKER_MAX) * goldenBananaTotals[0])),
+        min(settings.blocker_2, round(random.uniform(BLOCKER_MIN, BLOCKER_MAX) * goldenBananaTotals[1])),
+        min(settings.blocker_3, round(random.uniform(BLOCKER_MIN, BLOCKER_MAX) * goldenBananaTotals[2])),
+        min(settings.blocker_4, round(random.uniform(BLOCKER_MIN, BLOCKER_MAX) * goldenBananaTotals[3])),
+        min(settings.blocker_5, round(random.uniform(BLOCKER_MIN, BLOCKER_MAX) * goldenBananaTotals[4])),
+        min(settings.blocker_6, round(random.uniform(BLOCKER_MIN, BLOCKER_MAX) * goldenBananaTotals[5])),
         settings.blocker_7,  # Last B. Locker shouldn't be affected
     ]
     settings.BossBananas = [
