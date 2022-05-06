@@ -26,12 +26,12 @@ class Settings:
         self.generate_main()
         self.generate_progression()
         self.generate_misc()
+
         for k, v in form_data.items():
             setattr(self, k, v)
         self.seed_id = str(self.seed)
         self.seed = str(self.seed) + self.__hash
         self.set_seed()
-
         self.seed_hash = [random.randint(0, 9) for i in range(5)]
         self.krool_keys_required = []
         # Settings which are not yet implemented on the web page
@@ -41,9 +41,9 @@ class Settings:
         # Short: 35 GB
         # Medium: 50 GB
         # Long: 65 GB
-        # Longer: 80 GB
-        self.blocker_max = 50
-        self.troff_max = 270
+        # Longer: 80 GB\
+        self.blocker_max = self.blocker_text if self.blocker_text else 50
+        self.troff_max = self.troff_text if self.troff_text else 270
         self.troff_min = round(self.troff_max / 3)
         # Always start with training barrels currently
         # training_barrels: str
@@ -69,13 +69,13 @@ class Settings:
     def update_progression_totals(self):
         """Update the troff and blocker totals if we're randomly setting them."""
         # Assign weights to Troff n Scoff based on level order if not shuffling loading zones
-        self.troff_weight_0 = 0.7
-        self.troff_weight_1 = 0.8
-        self.troff_weight_2 = 0.9
-        self.troff_weight_3 = 1.0
-        self.troff_weight_4 = 1.1
-        self.troff_weight_5 = 1.2
-        self.troff_weight_6 = 1.3
+        self.troff_weight_0 = 0.5
+        self.troff_weight_1 = 0.55
+        self.troff_weight_2 = 0.6
+        self.troff_weight_3 = 0.7
+        self.troff_weight_4 = 0.8
+        self.troff_weight_5 = 0.9
+        self.troff_weight_6 = 1.0
         if self.level_randomization == "loadingzone" or self.level_randomization == "loadingzonesdecoupled":
             self.troff_weight_0 = 1
             self.troff_weight_1 = 1
@@ -113,25 +113,8 @@ class Settings:
             self.blocker_7 = b_lockers[7]
 
         # Store banana values in array
-        self.EntryGBs = [
-            self.blocker_0,
-            self.blocker_1,
-            self.blocker_2,
-            self.blocker_3,
-            self.blocker_4,
-            self.blocker_5,
-            self.blocker_6,
-            self.blocker_7,
-        ]
-        self.BossBananas = [
-            self.troff_0,
-            self.troff_1,
-            self.troff_2,
-            self.troff_3,
-            self.troff_4,
-            self.troff_5,
-            self.troff_6,
-        ]
+        self.EntryGBs = [self.blocker_0, self.blocker_1, self.blocker_2, self.blocker_3, self.blocker_4, self.blocker_5, self.blocker_6, self.blocker_7]
+        self.BossBananas = [self.troff_0, self.troff_1, self.troff_2, self.troff_3, self.troff_4, self.troff_5, self.troff_6]
 
     def generate_main(self):
         """Set Default items on main page."""
@@ -168,6 +151,8 @@ class Settings:
         self.troff_6 = None
         self.troff_min = None
         self.troff_max = None
+        self.blocker_text = None
+        self.troff_text = None
 
     def generate_misc(self):
         """Set default items on misc page."""
