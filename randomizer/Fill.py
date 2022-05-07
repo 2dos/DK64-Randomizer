@@ -204,6 +204,7 @@ def VerifyWorldWithWorstCoinUsage(settings):
         reachable = GetAccessibleLocations(settings, [], SearchMode.GetReachableWithoutPurchase, movesToPurchase)
         # If we found the BananaHoard, world is valid!
         if len([x for x in reachable if LocationList[x].item == Items.BananaHoard]) > 0:
+            Reset()
             return True
         # For each accessible shop location
         newReachableShops = [LocationList[x] for x in reachable if LocationList[x].type == Types.Shop 
@@ -214,6 +215,7 @@ def VerifyWorldWithWorstCoinUsage(settings):
         shopUnlocksItems = {}
         # If no accessible shop locations found, means you got coin locked and the seed is not valid
         if len(newReachableShops) == 0:
+            Reset()
             return False
         moveToBuy = None
         coinsBefore = LogicVariables.Coins.copy()
