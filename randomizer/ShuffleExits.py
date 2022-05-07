@@ -289,9 +289,17 @@ def ShuffleLevelOrderWithRestrictions(settings: Settings):
     japesOptions = []
     # If Aztec is level 4, both of Japes/Factory need to be in level 1-3
     if aztecIndex == 4:
-        japesOptions = list(levelIndexChoices.intersection({1, 3}))
+        # Tiny has no coins and no T&S access in Japes so it can't be first for her unless prices are free
+        if settings.starting_kong == Kongs.tiny and settings.random_prices != "free":
+            japesOptions = list(levelIndexChoices.intersection({2, 3}))
+        else:
+            japesOptions = list(levelIndexChoices.intersection({1, 3}))
     else:
-        japesOptions = list(levelIndexChoices.intersection({1, 5}))
+        # Tiny has no coins and no T&S access in Japes so it can't be first for her unless prices are free
+        if settings.starting_kong == Kongs.tiny and settings.random_prices != "free":
+            japesOptions = list(levelIndexChoices.intersection({2, 5}))
+        else:
+            japesOptions = list(levelIndexChoices.intersection({1, 5}))
     japesIndex = random.choice(japesOptions)
     levelIndexChoices.remove(japesIndex)
 
