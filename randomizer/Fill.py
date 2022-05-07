@@ -51,7 +51,7 @@ def GetExitLevelExit(region):
         return ShuffleExits.ShufflableExits[Transitions.CastleToIsles].shuffledId
 
 
-def GetAccessibleLocations(settings, ownedItems, searchType=SearchMode.GetReachable, allowedToBuy = []):
+def GetAccessibleLocations(settings, ownedItems, searchType=SearchMode.GetReachable, allowedToBuy=[]):
     """Search to find all reachable locations given owned items."""
     accessible = []
     newLocations = []
@@ -195,6 +195,7 @@ def VerifyWorld(settings):
     Reset()
     return isValid
 
+
 def VerifyWorldWithWorstCoinUsage(settings):
     """Make sure the game is beatable without it being possible to run out of coins for required moves."""
     movesToPurchase = []
@@ -207,10 +208,11 @@ def VerifyWorldWithWorstCoinUsage(settings):
             Reset()
             return True
         # For each accessible shop location
-        newReachableShops = [LocationList[x] for x in reachable if LocationList[x].type == Types.Shop 
-            and LocationList[x].item != None 
-            and LocationList[x].item != Items.NoItem
-            and LocationList[x].item not in movesToPurchase]
+        newReachableShops = [
+            LocationList[x]
+            for x in reachable
+            if LocationList[x].type == Types.Shop and LocationList[x].item is not None and LocationList[x].item != Items.NoItem and LocationList[x].item not in movesToPurchase
+        ]
         shopDifferentials = {}
         shopUnlocksItems = {}
         # If no accessible shop locations found, means you got coin locked and the seed is not valid
@@ -228,7 +230,7 @@ def VerifyWorldWithWorstCoinUsage(settings):
             tempMovesToBuy = movesToPurchase.copy()
             tempMovesToBuy.append(shopLocation.item)
             Reset()
-            reachableAfter : list = GetAccessibleLocations(settings, [], SearchMode.GetReachableWithoutPurchase, tempMovesToBuy)
+            reachableAfter: list = GetAccessibleLocations(settings, [], SearchMode.GetReachableWithoutPurchase, tempMovesToBuy)
             coinsAfter = LogicVariables.Coins.copy()
             print("Coins before purchase: " + str(coinsBefore))
             print("Coins after purchase: " + str(coinsAfter))
@@ -238,9 +240,9 @@ def VerifyWorldWithWorstCoinUsage(settings):
                 coinDifferential[kong] = coinsAfter[kong] - coinsBefore[kong]
             print("Coin differential: " + str(coinDifferential))
             shopDifferentials[shopLocation] = coinDifferential
-            shopUnlocksItems[shopLocation] = [LocationList[x].item for x in reachableAfter if x not in reachable and LocationList[x].item != None]
+            shopUnlocksItems[shopLocation] = [LocationList[x].item for x in reachableAfter if x not in reachable and LocationList[x].item is not None]
             # Determine if this is the new worst move
-            if moveToBuy == None:
+            if moveToBuy is None:
                 moveToBuy = shopLocation
                 continue
             # Coin differential must be negative for at least one kong to be considered new worst
