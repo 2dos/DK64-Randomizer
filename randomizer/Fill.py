@@ -224,21 +224,21 @@ def VerifyWorldWithWorstCoinUsage(settings):
         for shopLocation in newReachableShops:
             # Purchase the move
             price = GetPriceOfMoveItem(shopLocation.item, LogicVariables.settings, LogicVariables.Slam, LogicVariables.AmmoBelts, LogicVariables.InstUpgrades)
-            print("Check buying " + shopLocation.item.name + " from location " + shopLocation.name)
-            print("Move Price: " + str(price))
+            # print("Check buying " + shopLocation.item.name + " from location " + shopLocation.name)
+            # print("Move Price: " + str(price))
             # Recheck accessible to see how many coins will be available afterward
             tempMovesToBuy = movesToPurchase.copy()
             tempMovesToBuy.append(shopLocation.item)
             Reset()
             reachableAfter: list = GetAccessibleLocations(settings, [], SearchMode.GetReachableWithoutPurchase, tempMovesToBuy)
             coinsAfter = LogicVariables.Coins.copy()
-            print("Coins before purchase: " + str(coinsBefore))
-            print("Coins after purchase: " + str(coinsAfter))
+            # print("Coins before purchase: " + str(coinsBefore))
+            # print("Coins after purchase: " + str(coinsAfter))
             # Calculate the coin differential
             coinDifferential = [0, 0, 0, 0, 0]
             for kong in LogicVariables.GetKongs():
                 coinDifferential[kong] = coinsAfter[kong] - coinsBefore[kong]
-            print("Coin differential: " + str(coinDifferential))
+            # print("Coin differential: " + str(coinDifferential))
             shopDifferentials[shopLocation] = coinDifferential
             shopUnlocksItems[shopLocation] = [LocationList[x].item for x in reachableAfter if x not in reachable and LocationList[x].item is not None]
             # Determine if this is the new worst move
@@ -264,7 +264,7 @@ def VerifyWorldWithWorstCoinUsage(settings):
             if currentMoveCoinDiff < existingMoveCoinDiff:
                 moveToBuy = shopLocation
         # Purchase the "least helpful" move & add to owned Items
-        print("Choosing to buy " + moveToBuy.item.name)
+        # print("Choosing to buy " + moveToBuy.item.name)
         movesToPurchase.append(moveToBuy.item)
 
 
