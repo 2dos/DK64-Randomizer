@@ -200,6 +200,7 @@ def VerifyWorldWithWorstCoinUsage(settings):
     movesToPurchase = []
     reachable = []
     while True:
+        Reset()
         reachable = GetAccessibleLocations(settings, [], SearchMode.GetReachableWithoutPurchase, movesToPurchase)
         # If we found the BananaHoard, world is valid!
         if len([x for x in reachable if LocationList[x].item == Items.BananaHoard]) > 0:
@@ -215,15 +216,16 @@ def VerifyWorldWithWorstCoinUsage(settings):
         if len(newReachableShops) == 0:
             return False
         moveToBuy = None
+        coinsBefore = LogicVariables.Coins.copy()
         for shopLocation in newReachableShops:
             # Purchase the move
-            coinsBefore = LogicVariables.Coins.copy()
             price = GetPriceOfMoveItem(shopLocation.item, LogicVariables.settings, LogicVariables.Slam, LogicVariables.AmmoBelts, LogicVariables.InstUpgrades)
             print("Check buying " + shopLocation.item.name + " from location " + shopLocation.name)
             print("Move Price: " + str(price))
             # Recheck accessible to see how many coins will be available afterward
             tempMovesToBuy = movesToPurchase.copy()
             tempMovesToBuy.append(shopLocation.item)
+            Reset()
             reachableAfter : list = GetAccessibleLocations(settings, [], SearchMode.GetReachableWithoutPurchase, tempMovesToBuy)
             coinsAfter = LogicVariables.Coins.copy()
             print("Coins before purchase: " + str(coinsBefore))
@@ -234,7 +236,7 @@ def VerifyWorldWithWorstCoinUsage(settings):
                 coinDifferential[kong] = coinsAfter[kong] - coinsBefore[kong]
             print("Coin differential: " + str(coinDifferential))
             shopDifferentials[shopLocation] = coinDifferential
-            shopUnlocksItems[shopLocation] = [LocationList[x].item for x in reachableAfter if x not in reachable]
+            shopUnlocksItems[shopLocation] = [LocationList[x].item for x in reachableAfter if x not in reachable and LocationList[x].item != None]
             # Determine if this is the new worst move
             if moveToBuy == None:
                 moveToBuy = shopLocation
@@ -258,6 +260,7 @@ def VerifyWorldWithWorstCoinUsage(settings):
             if currentMoveCoinDiff < existingMoveCoinDiff:
                 moveToBuy = shopLocation
         # Purchase the "least helpful" move & add to owned Items
+        print("Choosing to buy " + moveToBuy.item.name)
         movesToPurchase.append(moveToBuy.item)
 
 
