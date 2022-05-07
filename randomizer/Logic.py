@@ -421,10 +421,11 @@ class LogicVarHolder:
             price = GetPriceOfMoveItem(location.item, self.settings, self.Slam, self.AmmoBelts, self.InstUpgrades)
             # print("BuyShopItem for location: " + location.name)
             # print("Item: " + ItemList[location.item].name + " has Price: " + str(price))
-            # If shared move, consider all kongs paid for it
+            # If shared move, take the price from all kongs who are able to buy it
             if location.kong == Kongs.any:
-                for i in range(5):
-                    self.Coins[i] -= price
+                for kong in self.GetKongs():
+                    if self.Coins[kong] >= price:
+                        self.Coins[kong] -= price
             # If kong specific move, just that kong paid for it
             else:
                 self.Coins[location.kong] -= price
