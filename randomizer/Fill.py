@@ -244,6 +244,10 @@ def VerifyWorldWithWorstCoinUsage(settings):
             shopDifferentials[shopLocation] = coinDifferential
             shopUnlocksItems[shopLocation] = [LocationList[x].item for x in reachableAfter if x not in reachable and LocationList[x].item is not None]
             # Determine if this is the new worst move
+            # If we can buy a junk move, no reason to consider other moves
+            if shopLocation.item in [Items.ProgressiveAmmoBelt, Items.ProgressiveInstrumentUpgrade]:
+                moveToBuy = shopLocation
+                break
             if moveToBuy is None:
                 moveToBuy = shopLocation
                 continue
