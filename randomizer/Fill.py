@@ -51,7 +51,7 @@ def GetExitLevelExit(region):
         return ShuffleExits.ShufflableExits[Transitions.CastleToIsles].shuffledId
 
 
-def GetAccessibleLocations(settings, ownedItems, searchType=SearchMode.GetReachable):
+def GetAccessibleLocations(settings, ownedItems, searchType=SearchMode.GetReachable, allowedToBuy = []):
     """Search to find all reachable locations given owned items."""
     accessible = []
     newLocations = []
@@ -66,9 +66,10 @@ def GetAccessibleLocations(settings, ownedItems, searchType=SearchMode.GetReacha
             location = LocationList[locationId]
             # If this location has an item placed, add it to owned items
             if location.item is not None:
-                if location.type == Types.Shop and locationId != Locations.SimianSlam and searchType == SearchMode.GetReachableWithoutPurchase:
-                    # Don't add shop items for search mode GetReachableWithoutPurchase
-                    continue
+                if location.type == Types.Shop and locationId != Locations.SimianSlam:
+                    # In search mode GetReachableWithoutPurchase, only allowed to purchase what is passed in as "allowedToBuy"
+                    if searchType == SearchMode.GetReachableWithoutPurchase and location.item not in allowedToBuy:
+                        continue
                 ownedItems.append(location.item)
                 # If we want to generate the playthrough and the item is a playthrough item, add it to the sphere
                 if searchType == SearchMode.GeneratePlaythrough and ItemList[location.item].playthrough:
@@ -132,9 +133,10 @@ def GetAccessibleLocations(settings, ownedItems, searchType=SearchMode.GetReacha
                             if not LogicVariables.KasplatAccess(location.id):
                                 continue
                         # Any shop item with exception of simian slam has a price
-                        elif LocationList[location.id].type == Types.Shop and location.id != Locations.SimianSlam and searchType != SearchMode.GetReachableWithoutPurchase:
-                            # Don't add shop items for search mode GetReachableWithoutPurchase
-                            LogicVariables.PurchaseShopItem(LocationList[location.id])
+                        elif LocationList[location.id].type == Types.Shop and location.id != Locations.SimianSlam:
+                            # In search mode GetReachableWithoutPurchase, only allowed to purchase what is passed in as "ownedItems"
+                            if searchType != SearchMode.GetReachableWithoutPurchase or LocationList[location.id].item in allowedToBuy:
+                                LogicVariables.PurchaseShopItem(LocationList[location.id])
                         newLocations.append(location.id)
                 # Check accessibility for each exit in this region
                 exits = region.exits.copy()
@@ -195,52 +197,68 @@ def VerifyWorld(settings):
 
 def VerifyWorldWithWorstCoinUsage(settings):
     """Make sure the game is beatable without it being possible to run out of coins for required moves."""
-    # TODO: Determine whether PlacsConstants is needed
-    # ItemPool.PlaceConstants(settings)
-    ownedItems = []
-
-    reachable = GetAccessibleLocations(settings, ownedItems.copy(), SearchMode.GetReachableWithoutPurchase)
-    # 1. For each accessible shop location
-    reachableShops = [LocationList[x] for x in reachable if LocationList[x].type == Types.Shop and LocationList[x].item != None and LocationList[x].item != Items.NoItem]
-    shopDifferentials = {}
-    for shopLocation in reachableShops:
-        # Purchase the move
-        coinsBefore = LogicVariables.Coins.copy()
-        price = GetPriceOfMoveItem(shopLocation.item, LogicVariables.settings, LogicVariables.Slam, LogicVariables.AmmoBelts, LogicVariables.InstUpgrades)
-        print("Check buying " + shopLocation.item.name + " from location " + shopLocation.name)
-        print("Move Price: " + str(price))
-        # Recheck accessible to see how many coins will be available afterward
-        tempOwned = ownedItems.copy()
-        tempOwned.append(shopLocation.item)
-        reachableAfter = GetAccessibleLocations(settings, tempOwned, SearchMode.GetReachableWithoutPurchase)
-        coinsAfter = LogicVariables.Coins.copy()
-        print("Coins before purchase: " + str(coinsBefore))
-        print("Coins after purchase: " + str(coinsAfter))
-        # Calculate the coin differential
-        coinDifferential = [0, 0, 0, 0, 0]
-        canKongBuySharedMove = [False, False, False, False, False]
-        for kong in LogicVariables.GetKongs():
-            coinDifferential[kong] = coinsAfter[kong] - coinsBefore[kong]
-            # Subtract the price only for the purchasing kong
-            if shopLocation.kong == kong:
-                coinDifferential[kong] -= price
-            # Since shared moves may be accessible only for certain kongs which have enough coins, keep track of which kongs could buy it
-            elif shopLocation.kong == Kongs.any and coinsBefore[kong] >= price:
-                canKongBuySharedMove[kong] = True
-        # If this is a shared move, figure out which kong has the worst coin differential and use them to buy it
-        if shopLocation.kong == Kongs.any:
-            worstDifferential = 0
-            worstKongForSharedPurchase = settings.starting_kong
+    movesToPurchase = []
+    reachable = []
+    while True:
+        reachable = GetAccessibleLocations(settings, [], SearchMode.GetReachableWithoutPurchase, movesToPurchase)
+        # If we found the BananaHoard, world is valid!
+        if len([x for x in reachable if LocationList[x].item == Items.BananaHoard]) > 0:
+            return True
+        # For each accessible shop location
+        newReachableShops = [LocationList[x] for x in reachable if LocationList[x].type == Types.Shop 
+            and LocationList[x].item != None 
+            and LocationList[x].item != Items.NoItem
+            and LocationList[x].item not in movesToPurchase]
+        shopDifferentials = {}
+        shopUnlocksItems = {}
+        # If no accessible shop locations found, means you got coin locked and the seed is not valid
+        if len(newReachableShops) == 0:
+            return False
+        moveToBuy = None
+        for shopLocation in newReachableShops:
+            # Purchase the move
+            coinsBefore = LogicVariables.Coins.copy()
+            price = GetPriceOfMoveItem(shopLocation.item, LogicVariables.settings, LogicVariables.Slam, LogicVariables.AmmoBelts, LogicVariables.InstUpgrades)
+            print("Check buying " + shopLocation.item.name + " from location " + shopLocation.name)
+            print("Move Price: " + str(price))
+            # Recheck accessible to see how many coins will be available afterward
+            tempMovesToBuy = movesToPurchase.copy()
+            tempMovesToBuy.append(shopLocation.item)
+            reachableAfter : list = GetAccessibleLocations(settings, [], SearchMode.GetReachableWithoutPurchase, tempMovesToBuy)
+            coinsAfter = LogicVariables.Coins.copy()
+            print("Coins before purchase: " + str(coinsBefore))
+            print("Coins after purchase: " + str(coinsAfter))
+            # Calculate the coin differential
+            coinDifferential = [0, 0, 0, 0, 0]
             for kong in LogicVariables.GetKongs():
-                if coinDifferential[kong] < worstDifferential:
-                    worstDifferential = coinDifferential[kong]
-                    worstKongForSharedPurchase = kong
-            coinDifferential[worstKongForSharedPurchase] -= price
-        print("Coin differential: " + str(coinDifferential))
-    # 2. Purchase the move with the lowest differential & add to owned Items
-    # 3. Repeat from step 1 until Banana Hoard is in accessible locations
-    # 4. If no accessible shop locations found, means you got coin locked and the seed is not valid
-    return False
+                coinDifferential[kong] = coinsAfter[kong] - coinsBefore[kong]
+            print("Coin differential: " + str(coinDifferential))
+            shopDifferentials[shopLocation] = coinDifferential
+            shopUnlocksItems[shopLocation] = [LocationList[x].item for x in reachableAfter if x not in reachable]
+            # Determine if this is the new worst move
+            if moveToBuy == None:
+                moveToBuy = shopLocation
+                continue
+            # Coin differential must be negative for at least one kong to be considered new worst
+            if len([x for x in shopDifferentials[shopLocation] if x < 0]) == 0:
+                continue
+            # If a move unlocks new kongs it is more useful than others, even if it has a worse coin differential
+            existingMoveKongsUnlocked = len([x for x in shopUnlocksItems[moveToBuy] if ItemList[x].type == Types.Kong])
+            currentMoveKongsUnlocked = len([x for x in shopUnlocksItems[shopLocation] if ItemList[x].type == Types.Kong])
+            if currentMoveKongsUnlocked > existingMoveKongsUnlocked:
+                continue
+            # If a move unlocks a new boss key it is more useful than others, even if it has a worse coin differential
+            existingMoveKeysUnlocked = len([x for x in shopUnlocksItems[moveToBuy] if ItemList[x].type == Types.Key])
+            currentMoveKeysUnlocked = len([x for x in shopUnlocksItems[shopLocation] if ItemList[x].type == Types.Key])
+            if currentMoveKeysUnlocked > existingMoveKeysUnlocked:
+                continue
+            # All else equal, pick the move with the lowest overall coin differential
+            existingMoveCoinDiff = sum([x for x in shopDifferentials[moveToBuy]])
+            currentMoveCoinDiff = sum([x for x in shopDifferentials[shopLocation]])
+            if currentMoveCoinDiff < existingMoveCoinDiff:
+                moveToBuy = shopLocation
+        # Purchase the "least helpful" move & add to owned Items
+        movesToPurchase.append(moveToBuy.item)
 
 
 def Reset():
