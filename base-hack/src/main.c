@@ -49,6 +49,9 @@ void cFuncLoop(void) {
 			}
 		}
 	}
+	if (ControllerInput.Buttons & L_Button) {
+		resetMapContainer();
+	}
 	if (CurrentMap == 0x50) {
 		colorMenuSky();
 	}
@@ -213,7 +216,6 @@ int* displayListModifiers(int* dl) {
 			} else {
 				hud_timer = 0;
 			}
-			TestVariable = hud_timer;
 		}
 	}
 	return dl;

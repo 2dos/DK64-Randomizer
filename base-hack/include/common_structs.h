@@ -34,7 +34,8 @@ typedef struct actorData {
 	/* 0x16A */ char rgb_mask[3];
 	/* 0x16D */ char unk_16D[0x174-0x16D];
 	/* 0x174 */ void* paad;
-	/* 0x178 */ char unk_178[0x180-0x178];
+	/* 0x178 */ void* paad2;
+	/* 0x17C */ void* paad3;
 	/* 0x180 */ void* tied_character_spawner;
 } actorData;
 
@@ -233,7 +234,7 @@ typedef struct KongBase {
 	/* 0x003 */ char ammo_belt;
 	/* 0x004 */ char instrument_bitfield;
 	/* 0x005 */ char unk_05[0x2];
-	/* 0x007 */ char coins;
+	/* 0x007 */ unsigned char coins;
 	/* 0x008 */ short instrument_energy;
 	/* 0x00A */ short cb_count[0xE];
 	/* 0x026 */ short tns_cb_count[0xE];

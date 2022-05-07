@@ -1,56 +1,97 @@
 """Patch some common text."""
 
-
-# def patchDolbyText(filename):
-#     """Patch the dolby text data."""
-#     with open(filename, "r+b") as fh:
-#         fh.seek(0x30)
-#         fh.write("PRESENTED IN".encode("ascii"))  # Originally: PRESENTED IN
-#         fh.seek(0x3C)
-#         fh.write("BY THE DK64 RANDOMIZER DEV TEAM\0".encode("ascii"))  # Originally: DOLBY AND THE DOUBLE-D SYMBOL ARE
-#         fh.seek(0x5D)
-#         fh.write("DK64RANDOMIZER.COM\0".encode("ascii"))  # Originally: TRADEMARKS OF DOLBY LABORATORIES.
-
 from text_encoder import writeText
+import shutil
 
-# move_hints = [
-#     {
-#         "move": "Baboon Blast",
-#         "kong": "Donkey",
-#         "cranky": "THIS ONE WILL MAKE YOU BREAK THE DONKEY AIR-SPEED RECORD.",
-#         "funky": " WHICH WILL ENABLE YOU TO LAUNCH INTO THE STRATOSPHERE.",
-#         "candy": "I CAN HELP YOU MOVE UP INTO THE SKY."
-#     },
-#     {
-#         "move": "Strong Kong",
-#         "kong": "Donkey",
-#         "cranky": "YOU MAY BE BIGGER AND FASTER, BUT THIS WILL HELP YOU FULFILL THE FINAL PART OF YOUR VERSE.",
-#         "funky": ". PERHAPS WITH THIS YOU'LL GET MUSCLES AS BIG AS MINE.",
-#         "candy": "I WILL HELP YOU WALK WITH SPARKLES."
-#     },
-#     {
-#         "move": "Gorilla Grab",
-#         "kong": "Donkey",
-#         "cranky": "THIS ONE WILL ALLOW YOU TO TIME TRAVEL TO 1981.",
-#         "funky": " WHICH WILL HELP YOU GO BACK TO THEM GOOD OLD DAYS.",
-#         "candy": "I WILL HELP YOU OPEN UP YOUR MINECART RIDE."
-#     },
-#     {
-#         "move": "Chimpy Charge",
-#         "kong": "Diddy",
-#         "cranky": "BETTER GET THAT CRANIUM TOUGHENED IF YOU PURCHASE THIS MOVE.",
-#         "funky": ". GOTTA WARN YOU, ALL THAT HEAD BASHING WILL LOSE YOU A FEW IQ POINTS.",
-#         "candy": "I WILL HELP YOU CHARGE INTO SWITCHES."
-#     },
-#     {
-#     	"move": "Rocketbarrel",
-#     	"kong": "Diddy",
-#     	"cranky": "THIS ONE WILL ALLOW YOU TO FLY HIGH INTO THE SKY",
-#     	"funky": ". PERHAPS THIS WILL "
-#     }
-# ]
+move_hints = [
+    {
+        "move": "Baboon Blast",
+        "kong": "Donkey",
+        "cranky": "",
+        "funky": "",
+        "candy": ""
+    },
+    {
+        "move": "Strong Kong",
+        "kong": "Donkey",
+        "cranky": "",
+        "funky": "",
+        "candy": ""
+    },
+    {
+        "move": "Gorilla Grab",
+        "kong": "Donkey",
+        "cranky": "",
+        "funky": "",
+        "candy": ""
+    },
+    {
+        "move": "Chimpy Charge",
+        "kong": "Diddy",
+        "cranky": "",
+        "funky": "",
+        "candy": ""
+    },
+    {
+    	"move": "Rocketbarrel",
+    	"kong": "Diddy",
+    	"cranky": "",
+        "funky": "",
+        "candy": ""
+    }
+]
 
 pre_amble = {"cranky": "I'VE PERFECTED ANOTHER POTION, {KONG}. ", "funky": "PAY UP DUDE, FUNKY'S GOT A NEW MOVE FOR YOU", "candy": "COME ON NOW {KONG}, GIVE ME SOME OF THOSE COINS AND "}
+
+moves = [
+	"Baboon Blast",
+	"Strong Kong",
+	"Gorilla Grab",
+	"Chimpy Charge",
+	"Rocketbarrel",
+	"Simian Spring",
+	"Orangstand",
+	"Baboon Balloon",
+	"Orangstand Sprint",
+	"Mini Monkey",
+	"Ponytail Twirl",
+	"Monkeyport",
+	"Hunky Chunky",
+	"Primate Punch",
+	"Gorilla Gone",
+	"Simian Slam Upgrade",
+	"Coconut Gun",
+	"Peanut Popguns",
+	"Grape Shooter",
+	"Feather Bow",
+	"Pineapple Launcher",
+	"Homing Ammo",
+	"Sniper Scope",
+	"Ammo Belt Upgrade",
+	"Bongo Blast",
+	"Guitar Gazump",
+	"Trombone Tremor",
+	"Saxophone Slam",
+	"Triangle Trample",
+	"Instrument Upgrade",
+	"Not enough coins - Special Move",
+	"Not enough coins - Slam",
+	"Not enough coins - Gun",
+	"Not enough coins - Ammo Belt",
+	"Not enough coins - Instrument"
+]
+
+shop_owners = [
+	"Cranky",
+	"Funky",
+	"Candy",
+]
+
+hint_text = []
+
+for move in moves:
+	for shop in shop_owners:
+		hint_text.append([f"{move.upper()} ({shop.upper()})"])
 
 
 writeText(
@@ -62,9 +103,7 @@ writeText(
     ],
 )
 
-# writeText(
-# 	"custom_text.bin",
-# 	[
-
-# 	]
-# )
+writeText(
+	"custom_text.bin",
+	hint_text
+)

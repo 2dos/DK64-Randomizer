@@ -96,6 +96,7 @@
 .definelabel cancelPausedCutscene, 0x8061CB08
 .definelabel pauseCutscene, 0x8061CAD8
 .definelabel hasTurnedInEnoughCBs, 0x805FF0C8
+.definelabel getTextPointer_0, 0x8070D8C0
 
 .definelabel setArcadeTextXY, 0x80024508
 .definelabel spawnArcadeText, 0x8002451C

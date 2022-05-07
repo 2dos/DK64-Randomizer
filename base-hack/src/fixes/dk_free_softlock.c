@@ -20,30 +20,38 @@ void cancelCutscene(void) {
 	}
 }
 
+void freeDK(void) {
+	cancelCutscene();
+	actorData* cutscene_dk = (actorData*)findActorWithType(196);
+	SpawnerInfo* spawner = cutscene_dk->tied_character_spawner;
+	spawner->spawn_state = 0;
+	deleteActorContainer(cutscene_dk);
+}
+
 void fixDKFreeSoftlock(void) {
 	if (CutsceneActive) {
 		if (Rando.free_target_japes == 0) {
 			if (CurrentMap == 7) {
 				if (CutsceneIndex == 6) {
-					cancelCutscene();
+					freeDK();
 				}
 			}
 		} else if (Rando.free_target_llama == 0) {
 			if (CurrentMap == 0x14) {
 				if (CutsceneIndex == 3) {
-					cancelCutscene();
+					freeDK();
 				}
 			}
 		} else if (Rando.free_target_ttemple == 0) {
 			if (CurrentMap == 0x10) {
 				if (CutsceneIndex == 6) {
-					cancelCutscene();
+					freeDK();
 				}
 			}
 		} else if (Rando.free_target_factory == 0) {
 			if (CurrentMap == 0x1A) {
 				if (CutsceneIndex == 8) {
-					cancelCutscene();
+					freeDK();
 				}
 			}
 		}
