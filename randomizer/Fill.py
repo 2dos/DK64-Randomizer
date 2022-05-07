@@ -205,6 +205,7 @@ def VerifyWorldWithWorstCoinUsage(settings):
         reachable = GetAccessibleLocations(settings, [], SearchMode.GetReachableWithoutPurchase, movesToPurchase)
         # If we found the BananaHoard, world is valid!
         if len([x for x in reachable if LocationList[x].item == Items.BananaHoard]) > 0:
+            print("Seed is valid with worst purchase order: " + str(movesToPurchase))
             Reset()
             return True
         # For each accessible shop location
@@ -217,6 +218,7 @@ def VerifyWorldWithWorstCoinUsage(settings):
         shopUnlocksItems = {}
         # If no accessible shop locations found, means you got coin locked and the seed is not valid
         if len(newReachableShops) == 0:
+            print("Seed is invalid, coin locked with purchase order: " + str(movesToPurchase))
             Reset()
             return False
         moveToBuy = None
