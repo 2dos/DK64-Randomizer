@@ -60,6 +60,7 @@ def GetAccessibleLocations(settings, ownedItems, searchType=SearchMode.GetReacha
     purchaseOrderLocal = purchaseOrder.copy()  # Prevent modifying list from caller
     purchased = []
     # Continue doing searches until nothing new is found
+    # TODO: Fix issue where it loops forever if some moves are accessible but they are blocked by other moves earlier in purchaseOrder
     while len(newLocations) > 0 or eventAdded:
         # Add items and events from the last search iteration
         sphere = []
@@ -758,8 +759,9 @@ def ShuffleKongsAndLevels(spoiler):
             WipeProgressionRequirements(spoiler.settings)
             # Fill the kongs and the moves
             FillKongsAndMoves(spoiler)
+            # Update progression requirements based on what is now accessible after all shuffles are done
+            SetNewProgressionRequirements(spoiler.settings)
             # Check if game is beatable
-            Reset()
             if not VerifyWorldWithWorstCoinUsage(spoiler.settings):
                 raise Ex.GameNotBeatableException("Game unbeatable after placing all items.")
             return
@@ -920,9 +922,6 @@ def Generate_Spoiler(spoiler):
             ItemPool.PlaceConstants(spoiler.settings)
             if not GetAccessibleLocations(spoiler.settings, [], SearchMode.CheckBeatable):
                 raise Ex.VanillaItemsGameNotBeatableException("Game unbeatable.")
-    if spoiler.settings.kongs_for_progression:
-        # Update progression requirements based on what is now accessible after all shuffles are done
-        SetNewProgressionRequirements(spoiler.settings)
     GeneratePlaythrough(spoiler)
     Reset()
     ShuffleExits.Reset()
