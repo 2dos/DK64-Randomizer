@@ -37,10 +37,10 @@ LogicRegions = {
     ], [
         Event(Events.DartsPlayed, lambda l: l.Slam and l.mini and l.feather and l.tiny),
     ], [
-        TransitionFront(Regions.FranticFactoryStart, lambda l: True),
+        TransitionFront(Regions.FranticFactoryStart, lambda l: Events.TestingGateOpened in l.Events),
         TransitionFront(Regions.RandD, lambda l: True),
         TransitionFront(Regions.Snide, lambda l: True),
-        TransitionFront(Regions.FunkyFactory, lambda l: Events.DartsPlayed in l.Events),
+        TransitionFront(Regions.FunkyFactory, lambda l: True),
         TransitionFront(Regions.FactoryBossLobby, lambda l: True),
     ]),
 
