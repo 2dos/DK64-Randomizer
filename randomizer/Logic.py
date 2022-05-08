@@ -423,7 +423,7 @@ class LogicVarHolder:
             # print("Item: " + ItemList[location.item].name + " has Price: " + str(price))
             # If shared move, take the price from all kongs EVEN IF THEY AREN'T FREED YET
             if location.kong == Kongs.any:
-                for kong in range(0,5):
+                for kong in range(0, 5):
                     self.Coins[kong] -= price
             # If kong specific move, just that kong paid for it
             else:
