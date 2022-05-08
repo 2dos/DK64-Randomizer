@@ -255,4 +255,4 @@ def CanBuy(location, coins, settings, slamLevel, ammoBelts, instUpgrades):
     elif location in ChunkyMoveLocations:
         return KongCanBuy(location, coins, settings, Kongs.chunky, slamLevel, ammoBelts, instUpgrades)
     else:  # Shared locations
-        return EveryKongCanBuy(location, coins, settings, slamLevel, ammoBelts, instUpgrades)
+        return AnyKongCanBuy(location, coins, settings, slamLevel, ammoBelts, instUpgrades)

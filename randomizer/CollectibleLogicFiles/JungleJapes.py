@@ -37,8 +37,7 @@ LogicRegions = {
         Collectible(Collectibles.coin, Kongs.diddy, lambda l: True, None, 3),  # In river
         Collectible(Collectibles.coin, Kongs.diddy, lambda l: True, None, 2),  # Cannon to Diddy's cage
         Collectible(Collectibles.coin, Kongs.lanky, lambda l: True, None, 2),  # In river
-        Collectible(Collectibles.coin, Kongs.lanky, lambda l: True, None, 3),  # By Snide's
-        Collectible(Collectibles.coin, Kongs.tiny, lambda l: Events.JapesSpawnW5 in l.Events, None, 5),  # Around W5
+        Collectible(Collectibles.coin, Kongs.lanky, lambda l: True, None, 5),  # By Snide's
         Collectible(Collectibles.coin, Kongs.chunky, lambda l: True, None, 3),  # By DK Portal
         Collectible(Collectibles.coin, Kongs.chunky, lambda l: True, None, 3),  # In river
         Collectible(Collectibles.coin, Kongs.any, lambda l: l.shockwave and ((l.handstand and l.lanky) or (l.twirl and l.tiny)), None, 1),  # Rainbow coin
@@ -86,6 +85,7 @@ LogicRegions = {
         Collectible(Collectibles.bunch, Kongs.tiny, lambda l: True, None, 1),  # By beehive
         Collectible(Collectibles.bunch, Kongs.chunky, lambda l: True, None, 4),
 
+        Collectible(Collectibles.coin, Kongs.tiny, lambda l: Events.JapesSpawnW5 in l.Events, None, 5),  # Around other W5, but need access from this region
         Collectible(Collectibles.coin, Kongs.chunky, lambda l: True, None, 3),  # Behind stump
     ],
     Regions.JapesBeyondPeanutGate: [

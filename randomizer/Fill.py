@@ -51,13 +51,16 @@ def GetExitLevelExit(region):
         return ShuffleExits.ShufflableExits[Transitions.CastleToIsles].shuffledId
 
 
-def GetAccessibleLocations(settings, ownedItems, searchType=SearchMode.GetReachable):
+def GetAccessibleLocations(settings, ownedItems, searchType=SearchMode.GetReachable, purchaseOrder=[]):
     """Search to find all reachable locations given owned items."""
     accessible = []
     newLocations = []
     playthroughLocations = []
     eventAdded = True
+    purchaseOrderLocal = purchaseOrder.copy()  # Prevent modifying list from caller
+    purchased = []
     # Continue doing searches until nothing new is found
+    # TODO: Fix issue where it loops forever if some moves are accessible but they are blocked by other moves earlier in purchaseOrder
     while len(newLocations) > 0 or eventAdded:
         # Add items and events from the last search iteration
         sphere = []
@@ -66,6 +69,13 @@ def GetAccessibleLocations(settings, ownedItems, searchType=SearchMode.GetReacha
             location = LocationList[locationId]
             # If this location has an item placed, add it to owned items
             if location.item is not None:
+                if location.type == Types.Shop and locationId != Locations.SimianSlam and searchType == SearchMode.GetReachableWithControlledPurchases:
+                    # In search mode GetReachableWithControlledPurchases, only allowed to purchase items as prescribed by purchaseOrder
+                    if len(purchaseOrderLocal) > 0 and locationId == purchaseOrderLocal[0]:
+                        purchaseOrderLocal.pop(0)
+                        purchased.append(locationId)
+                    else:
+                        continue
                 ownedItems.append(location.item)
                 # If we want to generate the playthrough and the item is a playthrough item, add it to the sphere
                 if searchType == SearchMode.GeneratePlaythrough and ItemList[location.item].playthrough:
@@ -118,7 +128,10 @@ def GetAccessibleLocations(settings, ownedItems, searchType=SearchMode.GetReacha
                             LogicVariables.AddCollectible(collectible, region.level)
                 # Check accessibility for each location in this region
                 for location in region.locations:
-                    if location.logic(LogicVariables) and location.id not in newLocations and location.id not in accessible:
+                    if location.logic(LogicVariables) and location.id not in newLocations:
+                        # Generally, don't check locations which were already accessible, unless we need to purchase them and haven't yet
+                        if location.id in accessible and (location.id in purchased or location.id not in purchaseOrderLocal):
+                            continue
                         # If this location is a bonus barrel, must make sure its logic is met as well
                         if location.bonusBarrel and settings.bonus_barrels != "skip":
                             minigame = BarrelMetaData[location.id].minigame
@@ -130,7 +143,9 @@ def GetAccessibleLocations(settings, ownedItems, searchType=SearchMode.GetReacha
                                 continue
                         # Any shop item with exception of simian slam has a price
                         elif LocationList[location.id].type == Types.Shop and location.id != Locations.SimianSlam:
-                            LogicVariables.PurchaseShopItem(LocationList[location.id])
+                            # In search mode GetReachableWithControlledPurchases, only allowed to purchase what is passed in as "ownedItems"
+                            if searchType != SearchMode.GetReachableWithControlledPurchases or (len(purchaseOrderLocal) > 0 and location.id == purchaseOrderLocal[0]):
+                                LogicVariables.PurchaseShopItem(LocationList[location.id])
                         newLocations.append(location.id)
                 # Check accessibility for each exit in this region
                 exits = region.exits.copy()
@@ -168,7 +183,7 @@ def GetAccessibleLocations(settings, ownedItems, searchType=SearchMode.GetReacha
                         newRegion.id = destination
                         regionPool.append(newRegion)
 
-    if searchType == SearchMode.GetReachable:
+    if searchType == SearchMode.GetReachable or searchType == SearchMode.GetReachableWithControlledPurchases:
         return accessible
     elif searchType == SearchMode.CheckBeatable:
         # If the search has completed and banana hoard has not been found, game is unbeatable
@@ -188,6 +203,76 @@ def VerifyWorld(settings):
     isValid = len(unreachables) == 0
     Reset()
     return isValid
+
+
+def VerifyWorldWithWorstCoinUsage(settings):
+    """Make sure the game is beatable without it being possible to run out of coins for required moves."""
+    locationsToPurchase = []
+    reachable = []
+    while True:
+        Reset()
+        reachable = GetAccessibleLocations(settings, [], SearchMode.GetReachableWithControlledPurchases, locationsToPurchase)
+        # If we found the BananaHoard, world is valid!
+        if len([x for x in reachable if LocationList[x].item == Items.BananaHoard]) > 0:
+            print("Seed is valid with worst purchase order: " + str([LocationList[x].name + ": " + LocationList[x].item.name + ", " for x in locationsToPurchase]))
+            Reset()
+            return True
+        # For each accessible shop location
+        newReachableShops = [x for x in reachable if LocationList[x].type == Types.Shop and LocationList[x].item is not None and LocationList[x].item != Items.NoItem and x not in locationsToPurchase]
+        shopDifferentials = {}
+        shopUnlocksItems = {}
+        # If no accessible shop locations found, means you got coin locked and the seed is not valid
+        if len(newReachableShops) == 0:
+            print("Seed is invalid, coin locked with purchase order: " + str([LocationList[x].name + ": " + LocationList[x].item.name + ", " for x in locationsToPurchase]))
+            Reset()
+            return False
+        locationToBuy = None
+        coinsBefore = LogicVariables.Coins.copy()
+        print("Accessible Shops: " + str([LocationList[x].name for x in newReachableShops]))
+        for shopLocation in newReachableShops:
+            print("Check buying " + LocationList[shopLocation].item.name + " from location " + LocationList[shopLocation].name)
+            # Recheck accessible to see how many coins will be available afterward
+            tempLocationsToPurchase = locationsToPurchase.copy()
+            tempLocationsToPurchase.append(shopLocation)
+            Reset()
+            reachableAfter: list = GetAccessibleLocations(settings, [], SearchMode.GetReachableWithControlledPurchases, tempLocationsToPurchase)
+            coinsAfter = LogicVariables.Coins.copy()
+            # Calculate the coin differential
+            coinDifferential = [0, 0, 0, 0, 0]
+            for kong in LogicVariables.GetKongs():
+                coinDifferential[kong] = coinsAfter[kong] - coinsBefore[kong]
+            print("Coin differential: " + str(coinDifferential))
+            shopDifferentials[shopLocation] = coinDifferential
+            shopUnlocksItems[shopLocation] = [LocationList[x].item for x in reachableAfter if x not in reachable and LocationList[x].item is not None]
+            # Determine if this is the new worst move
+            # If we can buy a junk move, no reason to consider other moves
+            if LocationList[shopLocation].item in [Items.ProgressiveAmmoBelt, Items.ProgressiveInstrumentUpgrade]:
+                locationToBuy = shopLocation
+                break
+            if locationToBuy is None:
+                locationToBuy = shopLocation
+                continue
+            # Coin differential must be negative for at least one kong to be considered new worst
+            if len([x for x in shopDifferentials[shopLocation] if x < 0]) == 0:
+                continue
+            # If a move unlocks new kongs it is more useful than others, even if it has a worse coin differential
+            existingMoveKongsUnlocked = len([x for x in shopUnlocksItems[locationToBuy] if ItemList[x].type == Types.Kong])
+            currentMoveKongsUnlocked = len([x for x in shopUnlocksItems[shopLocation] if ItemList[x].type == Types.Kong])
+            if currentMoveKongsUnlocked > existingMoveKongsUnlocked:
+                continue
+            # If a move unlocks a new boss key it is more useful than others, even if it has a worse coin differential
+            existingMoveKeysUnlocked = len([x for x in shopUnlocksItems[locationToBuy] if ItemList[x].type == Types.Key])
+            currentMoveKeysUnlocked = len([x for x in shopUnlocksItems[shopLocation] if ItemList[x].type == Types.Key])
+            if currentMoveKeysUnlocked > existingMoveKeysUnlocked:
+                continue
+            # All else equal, pick the move with the lowest overall coin differential
+            existingMoveCoinDiff = sum([x for x in shopDifferentials[locationToBuy]])
+            currentMoveCoinDiff = sum([x for x in shopDifferentials[shopLocation]])
+            if currentMoveCoinDiff < existingMoveCoinDiff:
+                locationToBuy = shopLocation
+        # Purchase the "least helpful" move & add to owned Items
+        print("Choosing to buy " + LocationList[locationToBuy].item.name + " from " + LocationList[locationToBuy].name)
+        locationsToPurchase.append(locationToBuy)
 
 
 def Reset():
@@ -587,7 +672,7 @@ def ShuffleMisc(spoiler):
             FillKongsAndMoves(spoiler)
             # Check if game is beatable
             Reset()
-            if not GetAccessibleLocations(spoiler.settings, [], SearchMode.CheckBeatable):
+            if not VerifyWorldWithWorstCoinUsage(spoiler.settings):
                 raise Ex.GameNotBeatableException("Game unbeatable after placing all items.")
             return
         except Ex.FillException as ex:
@@ -674,9 +759,10 @@ def ShuffleKongsAndLevels(spoiler):
             WipeProgressionRequirements(spoiler.settings)
             # Fill the kongs and the moves
             FillKongsAndMoves(spoiler)
+            # Update progression requirements based on what is now accessible after all shuffles are done
+            SetNewProgressionRequirements(spoiler.settings)
             # Check if game is beatable
-            Reset()
-            if not GetAccessibleLocations(spoiler.settings, [], SearchMode.CheckBeatable):
+            if not VerifyWorldWithWorstCoinUsage(spoiler.settings):
                 raise Ex.GameNotBeatableException("Game unbeatable after placing all items.")
             return
         except Ex.FillException as ex:
@@ -836,9 +922,6 @@ def Generate_Spoiler(spoiler):
             ItemPool.PlaceConstants(spoiler.settings)
             if not GetAccessibleLocations(spoiler.settings, [], SearchMode.CheckBeatable):
                 raise Ex.VanillaItemsGameNotBeatableException("Game unbeatable.")
-    if spoiler.settings.kongs_for_progression:
-        # Update progression requirements based on what is now accessible after all shuffles are done
-        SetNewProgressionRequirements(spoiler.settings)
     GeneratePlaythrough(spoiler)
     Reset()
     ShuffleExits.Reset()
