@@ -22,7 +22,7 @@ from randomizer.Lists.MapsAndExits import Maps
 from randomizer.Lists.Minigame import BarrelMetaData, MinigameRequirements
 from randomizer.Logic import LogicVarHolder, LogicVariables, STARTING_SLAM
 from randomizer.LogicClasses import TransitionFront
-from randomizer.Prices import GetPriceOfMoveItem
+from randomizer.Prices import GetMaxForKong, GetPriceOfMoveItem
 from randomizer.ShuffleBarrels import BarrelShuffle
 from randomizer.ShuffleKasplats import KasplatShuffle
 from randomizer.ShuffleWarps import ShuffleWarps
@@ -199,12 +199,35 @@ def VerifyWorldWithWorstCoinUsage(settings):
     """Make sure the game is beatable without it being possible to run out of coins for required moves."""
     locationsToPurchase = []
     reachable = []
+    maxCoins = [
+        GetMaxForKong(settings, Kongs.donkey),
+        GetMaxForKong(settings, Kongs.diddy),
+        GetMaxForKong(settings, Kongs.lanky),
+        GetMaxForKong(settings, Kongs.tiny),
+        GetMaxForKong(settings, Kongs.chunky),
+    ]
     while True:
         Reset()
         reachable = GetAccessibleLocations(settings, [], SearchMode.GetReachableWithControlledPurchases, locationsToPurchase)
+        # Subtract the price of the chosen location from maxCoinsNeeded
+        itemsToPurchase = [LocationList[x].item for x in locationsToPurchase]
+        coinsSpent = GetMaxCoinsSpent(settings, itemsToPurchase)
+        coinsNeeded = [maxCoins[kong] - coinsSpent[kong] for kong in range(0, 5)]
+        coinsBefore = LogicVariables.Coins.copy()
+        # If we found enough coins that every kong can buy all their moves, world is valid!
+        if (
+            coinsBefore[Kongs.donkey] >= coinsNeeded[Kongs.donkey]
+            and coinsBefore[Kongs.diddy] >= coinsNeeded[Kongs.diddy]
+            and coinsBefore[Kongs.lanky] >= coinsNeeded[Kongs.lanky]
+            and coinsBefore[Kongs.tiny] >= coinsNeeded[Kongs.tiny]
+            and coinsBefore[Kongs.chunky] >= coinsNeeded[Kongs.chunky]
+        ):
+            print("Seed is valid, found enough coins with worst purchase order: " + str([LocationList[x].name + ": " + LocationList[x].item.name + ", " for x in locationsToPurchase]))
+            Reset()
+            return True
         # If we found the BananaHoard, world is valid!
         if len([x for x in reachable if LocationList[x].item == Items.BananaHoard]) > 0:
-            print("Seed is valid with worst purchase order: " + str([LocationList[x].name + ": " + LocationList[x].item.name + ", " for x in locationsToPurchase]))
+            print("Seed is valid, found banana hoard with worst purchase order: " + str([LocationList[x].name + ": " + LocationList[x].item.name + ", " for x in locationsToPurchase]))
             Reset()
             return True
         # For each accessible shop location
@@ -217,7 +240,6 @@ def VerifyWorldWithWorstCoinUsage(settings):
             Reset()
             return False
         locationToBuy = None
-        coinsBefore = LogicVariables.Coins.copy()
         print("Accessible Shops: " + str([LocationList[x].name for x in newReachableShops]))
         for shopLocation in newReachableShops:
             print("Check buying " + LocationList[shopLocation].item.name + " from location " + LocationList[shopLocation].name)
