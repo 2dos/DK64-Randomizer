@@ -222,12 +222,12 @@ def VerifyWorldWithWorstCoinUsage(settings):
             and coinsBefore[Kongs.tiny] >= coinsNeeded[Kongs.tiny]
             and coinsBefore[Kongs.chunky] >= coinsNeeded[Kongs.chunky]
         ):
-            print("Seed is valid, found enough coins with worst purchase order: " + str([LocationList[x].name + ": " + LocationList[x].item.name + ", " for x in locationsToPurchase]))
+            # print("Seed is valid, found enough coins with worst purchase order: " + str([LocationList[x].name + ": " + LocationList[x].item.name + ", " for x in locationsToPurchase]))
             Reset()
             return True
         # If we found the BananaHoard, world is valid!
         if len([x for x in reachable if LocationList[x].item == Items.BananaHoard]) > 0:
-            print("Seed is valid, found banana hoard with worst purchase order: " + str([LocationList[x].name + ": " + LocationList[x].item.name + ", " for x in locationsToPurchase]))
+            # print("Seed is valid, found banana hoard with worst purchase order: " + str([LocationList[x].name + ": " + LocationList[x].item.name + ", " for x in locationsToPurchase]))
             Reset()
             return True
         # For each accessible shop location
@@ -240,9 +240,9 @@ def VerifyWorldWithWorstCoinUsage(settings):
             Reset()
             return False
         locationToBuy = None
-        print("Accessible Shops: " + str([LocationList[x].name for x in newReachableShops]))
+        # print("Accessible Shops: " + str([LocationList[x].name for x in newReachableShops]))
         for shopLocation in newReachableShops:
-            print("Check buying " + LocationList[shopLocation].item.name + " from location " + LocationList[shopLocation].name)
+            # print("Check buying " + LocationList[shopLocation].item.name + " from location " + LocationList[shopLocation].name)
             # Recheck accessible to see how many coins will be available afterward
             tempLocationsToPurchase = locationsToPurchase.copy()
             tempLocationsToPurchase.append(shopLocation)
@@ -253,7 +253,7 @@ def VerifyWorldWithWorstCoinUsage(settings):
             coinDifferential = [0, 0, 0, 0, 0]
             for kong in LogicVariables.GetKongs():
                 coinDifferential[kong] = coinsAfter[kong] - coinsBefore[kong]
-            print("Coin differential: " + str(coinDifferential))
+            # print("Coin differential: " + str(coinDifferential))
             shopDifferentials[shopLocation] = coinDifferential
             shopUnlocksItems[shopLocation] = [LocationList[x].item for x in reachableAfter if x not in reachable and LocationList[x].item is not None]
             # Determine if this is the new worst move
@@ -283,7 +283,7 @@ def VerifyWorldWithWorstCoinUsage(settings):
             if currentMoveCoinDiff < existingMoveCoinDiff:
                 locationToBuy = shopLocation
         # Purchase the "least helpful" move & add to owned Items
-        print("Choosing to buy " + LocationList[locationToBuy].item.name + " from " + LocationList[locationToBuy].name)
+        # print("Choosing to buy " + LocationList[locationToBuy].item.name + " from " + LocationList[locationToBuy].name)
         locationsToPurchase.append(locationToBuy)
 
 
