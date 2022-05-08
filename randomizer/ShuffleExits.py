@@ -329,12 +329,21 @@ def ShuffleLevelOrderWithRestrictions(settings: Settings):
     factoryIndex = random.choice(factoryOptions)
     levelIndexChoices.remove(factoryIndex)
 
+    # Decide where Caves will go - special case because T&S portals are not immediately accessible
+    cavesOptions = []
+    # Donkey and Tiny have no T&S access in Caves so it can't be the first level for them
+    if settings.starting_kong == Kongs.tiny or settings.starting_kong == Kongs.donkey:
+        cavesOptions = list(levelIndexChoices.intersection({2, 7}))
+    else:
+        cavesOptions = list(levelIndexChoices.intersection({1, 7}))
+    cavesIndex = random.choice(cavesOptions)
+    levelIndexChoices.remove(cavesIndex)
+
     # Decide the remaining level order randomly
     remainingLevels = list(levelIndexChoices)
     random.shuffle(remainingLevels)
     galleonIndex = remainingLevels.pop()
     forestIndex = remainingLevels.pop()
-    cavesIndex = remainingLevels.pop()
     castleIndex = remainingLevels.pop()
     newLevelOrder = {
         japesIndex: Levels.JungleJapes,
