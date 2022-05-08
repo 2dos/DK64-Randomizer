@@ -51,16 +51,13 @@ def GetExitLevelExit(region):
         return ShuffleExits.ShufflableExits[Transitions.CastleToIsles].shuffledId
 
 
-def GetAccessibleLocations(settings, ownedItems, searchType=SearchMode.GetReachable, purchaseOrder=[]):
+def GetAccessibleLocations(settings, ownedItems, searchType=SearchMode.GetReachable, purchaseList=[]):
     """Search to find all reachable locations given owned items."""
     accessible = []
     newLocations = []
     playthroughLocations = []
     eventAdded = True
-    purchaseOrderLocal = purchaseOrder.copy()  # Prevent modifying list from caller
-    purchased = []
     # Continue doing searches until nothing new is found
-    # TODO: Fix issue where it loops forever if some moves are accessible but they are blocked by other moves earlier in purchaseOrder
     while len(newLocations) > 0 or eventAdded:
         # Add items and events from the last search iteration
         sphere = []
@@ -69,13 +66,9 @@ def GetAccessibleLocations(settings, ownedItems, searchType=SearchMode.GetReacha
             location = LocationList[locationId]
             # If this location has an item placed, add it to owned items
             if location.item is not None:
-                if location.type == Types.Shop and locationId != Locations.SimianSlam and searchType == SearchMode.GetReachableWithControlledPurchases:
-                    # In search mode GetReachableWithControlledPurchases, only allowed to purchase items as prescribed by purchaseOrder
-                    if len(purchaseOrderLocal) > 0 and locationId == purchaseOrderLocal[0]:
-                        purchaseOrderLocal.pop(0)
-                        purchased.append(locationId)
-                    else:
-                        continue
+                # In search mode GetReachableWithControlledPurchases, only allowed to purchase items as prescribed by purchaseOrder
+                if location.type == Types.Shop and locationId != Locations.SimianSlam and searchType == SearchMode.GetReachableWithControlledPurchases and locationId not in purchaseList:
+                    continue
                 ownedItems.append(location.item)
                 # If we want to generate the playthrough and the item is a playthrough item, add it to the sphere
                 if searchType == SearchMode.GeneratePlaythrough and ItemList[location.item].playthrough:
@@ -128,10 +121,7 @@ def GetAccessibleLocations(settings, ownedItems, searchType=SearchMode.GetReacha
                             LogicVariables.AddCollectible(collectible, region.level)
                 # Check accessibility for each location in this region
                 for location in region.locations:
-                    if location.logic(LogicVariables) and location.id not in newLocations:
-                        # Generally, don't check locations which were already accessible, unless we need to purchase them and haven't yet
-                        if location.id in accessible and (location.id in purchased or location.id not in purchaseOrderLocal):
-                            continue
+                    if location.logic(LogicVariables) and location.id not in newLocations and location.id not in accessible:
                         # If this location is a bonus barrel, must make sure its logic is met as well
                         if location.bonusBarrel and settings.bonus_barrels != "skip":
                             minigame = BarrelMetaData[location.id].minigame
@@ -144,7 +134,7 @@ def GetAccessibleLocations(settings, ownedItems, searchType=SearchMode.GetReacha
                         # Any shop item with exception of simian slam has a price
                         elif LocationList[location.id].type == Types.Shop and location.id != Locations.SimianSlam:
                             # In search mode GetReachableWithControlledPurchases, only allowed to purchase what is passed in as "ownedItems"
-                            if searchType != SearchMode.GetReachableWithControlledPurchases or (len(purchaseOrderLocal) > 0 and location.id == purchaseOrderLocal[0]):
+                            if searchType != SearchMode.GetReachableWithControlledPurchases or location.id in purchaseList:
                                 LogicVariables.PurchaseShopItem(LocationList[location.id])
                         newLocations.append(location.id)
                 # Check accessibility for each exit in this region
