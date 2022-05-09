@@ -103,6 +103,7 @@ def GetMaxForKong(settings, kong):
             total += settings.prices[item][i]
     if kong == Kongs.donkey:
         total += sum([value for key, value in settings.prices.items() if key in DonkeyMoves])
+        total += 2  # For Arcade round 2
     elif kong == Kongs.diddy:
         total += sum([value for key, value in settings.prices.items() if key in DiddyMoves])
     elif kong == Kongs.lanky:

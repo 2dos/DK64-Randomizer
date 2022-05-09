@@ -1,6 +1,7 @@
 # fmt: off
 """Logic file for Frantic Factory."""
 
+from re import L
 from randomizer.Enums.Events import Events
 from randomizer.Enums.Kongs import Kongs
 from randomizer.Enums.Levels import Levels
@@ -19,11 +20,12 @@ LogicRegions = {
         LocationLogic(Locations.FactoryChunkyMedal, lambda l: l.ColoredBananas[Levels.FranticFactory][Kongs.chunky] >= 75),
     ], [
         Event(Events.FactoryEntered, lambda l: True),
+        Event(Events.HatchOpened, lambda l: l.Slam),
     ], [
         TransitionFront(Regions.FranticFactoryLobby, lambda l: True, Transitions.FactoryToIsles),
         TransitionFront(Regions.Testing, lambda l: Events.TestingGateOpened in l.Events),
         # Hatch opened already in rando if loading zones randomized
-        TransitionFront(Regions.BeyondHatch, lambda l: l.settings.shuffle_loading_zones == "all" or l.Slam),
+        TransitionFront(Regions.BeyondHatch, lambda l: l.settings.shuffle_loading_zones == "all" or Events.HatchOpened in l.Events),
     ]),
 
     Regions.Testing: Region("Testing", Levels.FranticFactory, True, None, [
@@ -103,7 +105,7 @@ LogicRegions = {
         Event(Events.TinyCoreSwitch, lambda l: l.Slam and l.tiny),
         Event(Events.ChunkyCoreSwitch, lambda l: l.Slam and l.chunky),
     ], [
-        TransitionFront(Regions.FranticFactoryStart, lambda l: True),
+        TransitionFront(Regions.FranticFactoryStart, lambda l: l.settings.shuffle_loading_zones == "all" or Events.HatchOpened in l.Events),
         TransitionFront(Regions.InsideCore, lambda l: Events.MainCoreActivated in l.Events, Transitions.FactoryBeyondHatchToInsideCore),
         TransitionFront(Regions.MainCore, lambda l: Events.MainCoreActivated in l.Events),
         TransitionFront(Regions.CrankyFactory, lambda l: True),
