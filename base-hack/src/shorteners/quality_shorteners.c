@@ -54,6 +54,7 @@ static const short ftt_flags[] = {
     378, // Training Grounds Intro
     0x5C, // Llama CS
     0x45, // Tiny Temple Ice Melted
+    109, // Hatch opened in Factory
     0xA1, // Peanut Gate Opened in Galleon
     0, // First Switch in Japes
 };
