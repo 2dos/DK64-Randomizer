@@ -136,6 +136,8 @@ def GetAccessibleLocations(settings, ownedItems, searchType=SearchMode.GetReacha
                             # In search mode GetReachableWithControlledPurchases, only allowed to purchase what is passed in as "ownedItems"
                             if searchType != SearchMode.GetReachableWithControlledPurchases or location.id in purchaseList:
                                 LogicVariables.PurchaseShopItem(LocationList[location.id])
+                        elif location.id == Locations.NintendoCoin:
+                            LogicVariables.Coins[Kongs.donkey] -= 2  # Subtract 2 coins for arcade lever
                         newLocations.append(location.id)
                 # Check accessibility for each exit in this region
                 exits = region.exits.copy()
