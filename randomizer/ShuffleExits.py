@@ -307,25 +307,31 @@ def ShuffleLevelOrderWithRestrictions(settings: Settings):
     factoryOptions = []
     # If Aztec is level 4, both of Japes/Factory need to be in level 1-3
     if aztecIndex == 4:
-        factoryOptions = list(levelIndexChoices.intersection({1, 3}))
+        factoryOptions = list(levelIndexChoices.intersection({1, 2, 3}))
     # If Aztec is level 3, one of Japes/Factory needs to be in level 1-2 and other in level 1-5
     elif aztecIndex == 3:
         if japesIndex < 3:
-            factoryOptions = list(levelIndexChoices.intersection({1, 5}))
+            factoryOptions = list(levelIndexChoices.intersection({1, 2, 3, 4, 5}))
         else:
             factoryOptions = list(levelIndexChoices.intersection({1, 2}))
     # If Aztec is level 2 and don't start with diddy or chunky, one of Japes/Factory needs to be level 1 and other in level 3-5
     elif aztecIndex == 2 and settings.starting_kong != Kongs.diddy and settings.starting_kong != Kongs.chunky:
         if japesIndex == 1:
-            factoryOptions = list(levelIndexChoices.intersection({3, 5}))
+            factoryOptions = list(levelIndexChoices.intersection({3, 4, 5}))
         else:
             factoryOptions = list(levelIndexChoices.intersection({1}))
+    # If Aztec is level 2 and start with chunky, one of Japes/Factory needs to be level 1-3 and other in level 3-5
+    elif aztecIndex == 2 and settings.starting_kong == Kongs.chunky:
+        if japesIndex == 1 or japesIndex == 3:
+            factoryOptions = list(levelIndexChoices.intersection({3, 4, 5}))
+        else:
+            factoryOptions = list(levelIndexChoices.intersection({1, 2, 3}))
     # If Aztec is level 1 or 2, one of Japes/Factory needs to be in level 1-4 and other in level 1-5
     else:
         if japesIndex < 5:
-            factoryOptions = list(levelIndexChoices.intersection({1, 5}))
+            factoryOptions = list(levelIndexChoices.intersection({1, 2, 3, 4, 5}))
         else:
-            factoryOptions = list(levelIndexChoices.intersection({1, 4}))
+            factoryOptions = list(levelIndexChoices.intersection({1, 2, 3, 4}))
     factoryIndex = random.choice(factoryOptions)
     levelIndexChoices.remove(factoryIndex)
 
