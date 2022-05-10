@@ -297,9 +297,9 @@ def ShuffleLevelOrderWithRestrictions(settings: Settings):
     else:
         # Tiny has no coins and no T&S access in Japes so it can't be first for her unless prices are free
         if settings.starting_kong == Kongs.tiny and settings.random_prices != "free":
-            japesOptions = list(levelIndexChoices.intersection({2, 5}))
+            japesOptions = list(levelIndexChoices.intersection({2, 3, 4, 5}))
         else:
-            japesOptions = list(levelIndexChoices.intersection({1, 5}))
+            japesOptions = list(levelIndexChoices.intersection({1, 2, 3, 4, 5}))
     japesIndex = random.choice(japesOptions)
     levelIndexChoices.remove(japesIndex)
 
