@@ -156,7 +156,7 @@ LogicRegions = {
         Collectible(Collectibles.bunch, Kongs.donkey, lambda l: l.strongKong, None, 1),  # Behind on switch
         Collectible(Collectibles.balloon, Kongs.tiny, lambda l: l.feather, None, 1),
 
-        Collectible(Collectibles.coin, Kongs.donkey, lambda l: True, None, 3),  # On thorn vines
+        Collectible(Collectibles.coin, Kongs.donkey, lambda l: l.strongKong, None, 3),  # On thorn vines
     ],
     Regions.ThornvineBarn: [
         Collectible(Collectibles.bunch, Kongs.donkey, lambda l: l.Slam, None, 1),  # In slam box
