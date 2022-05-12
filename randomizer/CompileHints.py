@@ -159,7 +159,7 @@ def compileHints(spoiler: Spoiler):
                 "important": False,
             },
             {
-                "name": "Gorilla Gone",
+                "name": "Gorilla Grab",
                 "key": 0x03,
                 "kong": 0,
                 "level": 0,

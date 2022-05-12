@@ -5,7 +5,8 @@ import random
 from randomizer.Enums.Items import Items
 from randomizer.Enums.Kongs import Kongs
 from randomizer.Enums.Locations import Locations
-from randomizer.ItemPool import ChunkyMoveLocations, DiddyMoveLocations, DonkeyMoveLocations, LankyMoveLocations, SharedMoveLocations, TinyMoveLocations
+from randomizer.ItemPool import ChunkyMoveLocations, DiddyMoveLocations, DonkeyMoveLocations, LankyMoveLocations, TinyMoveLocations
+from randomizer.ItemPool import DonkeyMoves, DiddyMoves, LankyMoves, TinyMoves, ChunkyMoves
 from randomizer.Lists.Location import LocationList
 
 VanillaPrices = {
@@ -95,17 +96,22 @@ def GenerateRandomPrice(weight, avg, stddev):
 
 def GetMaxForKong(settings, kong):
     """Get the maximum amount of coins the given kong can spend."""
-    total = sum([value for key, value in settings.prices.items() if key in SharedMoveLocations])
+    total = sum([value for key, value in settings.prices.items() if key in [Items.HomingAmmo, Items.SniperSight]])
+    # Special Case for progressive moves, supply an array of prices, one for each time it appears
+    for item in ProgressiveMoves.keys():
+        for i in range(ProgressiveMoves[item]):
+            total += settings.prices[item][i]
     if kong == Kongs.donkey:
-        total += sum([value for key, value in settings.prices.items() if key in DonkeyMoveLocations])
+        total += sum([value for key, value in settings.prices.items() if key in DonkeyMoves])
+        total += 2  # For Arcade round 2
     elif kong == Kongs.diddy:
-        total += sum([value for key, value in settings.prices.items() if key in DiddyMoveLocations])
+        total += sum([value for key, value in settings.prices.items() if key in DiddyMoves])
     elif kong == Kongs.lanky:
-        total += sum([value for key, value in settings.prices.items() if key in LankyMoveLocations])
+        total += sum([value for key, value in settings.prices.items() if key in LankyMoves])
     elif kong == Kongs.tiny:
-        total += sum([value for key, value in settings.prices.items() if key in TinyMoveLocations])
+        total += sum([value for key, value in settings.prices.items() if key in TinyMoves])
     else:  # chunky
-        total += sum([value for key, value in settings.prices.items() if key in ChunkyMoveLocations])
+        total += sum([value for key, value in settings.prices.items() if key in ChunkyMoves])
     return total
 
 
@@ -255,4 +261,4 @@ def CanBuy(location, coins, settings, slamLevel, ammoBelts, instUpgrades):
     elif location in ChunkyMoveLocations:
         return KongCanBuy(location, coins, settings, Kongs.chunky, slamLevel, ammoBelts, instUpgrades)
     else:  # Shared locations
-        return EveryKongCanBuy(location, coins, settings, slamLevel, ammoBelts, instUpgrades)
+        return AnyKongCanBuy(location, coins, settings, slamLevel, ammoBelts, instUpgrades)

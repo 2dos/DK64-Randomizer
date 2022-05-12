@@ -30,7 +30,7 @@ LogicRegions = {
         LocationLogic(Locations.JapesBattleArena, lambda l: True),
     ], [
         Event(Events.JapesEntered, lambda l: True),
-        Event(Events.JapesSpawnW5, lambda l: Events.JapesDiddySwitch2),
+        Event(Events.JapesSpawnW5, lambda l: Events.JapesDiddySwitch2 in l.Events),
         Event(Events.JapesFreeKongOpenGates, lambda l: l.CanFreeDiddy()),
     ], [
         TransitionFront(Regions.JungleJapesLobby, lambda l: True, Transitions.JapesToIsles),

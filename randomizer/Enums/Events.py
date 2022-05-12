@@ -36,6 +36,7 @@ class Events(IntEnum):
     AztecLlamaSpit = auto()
 
     # Frantic Factory events
+    HatchOpened = auto()
     DartsPlayed = auto()
     MainCoreActivated = auto()
     ArcadeLeverSpawned = auto()
