@@ -268,19 +268,14 @@ class Settings:
         ]
         key_list = KeyEvents.copy()
         required_key_count = self.krool_key_count
-        if self.krool_access == "random_helm":
+        if self.krool_access:
             # If helm guaranteed, make sure it's added and included in the key count
             self.krool_keys_required.append(Events.HelmKeyTurnedIn)
             key_list.remove(Events.HelmKeyTurnedIn)
             required_key_count -= 1
-        if self.krool_access == "vanilla":
-            self.krool_keys_required.extend([Events.FactoryKeyTurnedIn, Events.HelmKeyTurnedIn])
-        elif self.krool_access == "all":
-            self.krool_keys_required.extend(KeyEvents)
-        elif self.krool_access == "random" or self.krool_access == "random_helm":
-            random.shuffle(key_list)
-            for x in range(required_key_count):
-                self.krool_keys_required.append(key_list[x])
+        random.shuffle(key_list)
+        for x in range(required_key_count):
+            self.krool_keys_required.append(key_list[x])
 
         # Banana medals
         if self.random_medal_requirement:
