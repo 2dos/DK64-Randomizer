@@ -51,6 +51,7 @@ extern void adjust_galleon_water(void);
 
 extern int convertSubIDToIndex(short obj_index);
 extern int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, int param2);
+extern void setCrusher(void);
 extern void createCollisionObjInstance(collision_types subtype, int map, int exit);
 extern int spawnCannonWrapper(void);
 extern void fixkey8(void);
@@ -62,6 +63,7 @@ extern void determineStartKong_PermaLossMode(void);
 extern void kong_has_died(void);
 extern int curseRemoved(void);
 extern void forceBossKong(void);
+extern int hasPermaLossGrace(void);
 
 extern void writeJetpacMedalReq(void);
 extern void resetMapContainer(void);

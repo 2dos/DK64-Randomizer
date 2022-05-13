@@ -199,6 +199,8 @@ void initHack(void) {
 		*(short*)(0x807505AE) = 385; // Set Flag to DK Flag
 		// Fix CB Spawning
 		*(short*)(0x806A7882) = 385; // DK Balloon
+		// Fix Boss Doors if DK not free
+		*(int*)(0x80649358) = 0; // NOP
 		// Textbox Cancel
 		*(int*)(0x8070E84C) = 0;
 		*(int*)(0x8070E874) = 0;

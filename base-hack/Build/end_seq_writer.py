@@ -1,4 +1,6 @@
 """Write new end sequence text credits."""
+import os
+
 header_length = 0x78
 names_length = 0xA0
 general_buffer = 0x9A
@@ -201,6 +203,8 @@ end_sequence_cards = [
 
 def createTextFile(directory):
     """Create the text file associated with end sequence."""
+    if not os.path.exists(directory):
+        os.mkdir(directory)
     if len(end_sequence_cards) > 21:
         print("ERROR: Too many cards")
         exit()

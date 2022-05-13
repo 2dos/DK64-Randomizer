@@ -135,7 +135,7 @@ def patching_response(responded_data):
     # Unlock All Kongs
     if spoiler.settings.unlock_all_kongs:
         ROM().seek(sav + 0x02C)
-        ROM().write(1)
+        ROM().write(0x1F)
 
     # Unlock All Moves
     if spoiler.settings.unlock_all_moves:

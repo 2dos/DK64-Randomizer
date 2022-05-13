@@ -1,11 +1,11 @@
 """Set debugging vars to the build."""
 set_variables = {
-    "level_order_rando_on": 0,
+    "level_order_rando_on": 1,
     "level_order": [1, 5, 4, 0, 6, 2, 3],
     "troff_scoff_count": [100, 200, 300, 400, 410, 420, 430],
     "blocker_normal_count": [2, 3, 4, 5, 6, 7, 8, 9],
     "key_flags": [0x4A, 0x8A, 0xA8, 0xEC, 0x124, 0x13D, 0x1A],
-    "unlock_kongs": 1,
+    "unlock_kongs": 0x1F,
     "unlock_moves": 0,
     "fast_start_beginning": 1,
     "camera_unlocked": 0,
@@ -29,9 +29,10 @@ set_variables = {
     "dk_crankymoves": [0x01, 0x21, 0x41, 0x12, 0x12, 0xFF, 0xFF],
     "dk_candymoves": [0x02, 0x22, 0x42, 0x12, 0x12, 0xFF, 0xFF],
     "dk_funkymoves": [0x03, 0x23, 0x43, 0x12, 0x12, 0xFF, 0xFF],
+    "tiny_funkymoves": [0x02, 0x02, 0x02, 0x02, 0x02, 0x02, 0x02],
     "kut_out_kong_order": [0, 0, 0, 0, 0],
     "remove_blockers": 0x7F,
-    "resolve_bonus": 3,
+    "resolve_bonus": 0,
     "disable_drops": 1,
     "shop_indicator_on": 1,
     "warp_to_isles_enabled": 1,
@@ -47,6 +48,7 @@ set_variables = {
     "starting_kong": 1,
     "free_target_japes": 0,
     "free_source_japes": 1,
+    "keys_preturned": 0x01,
     "special_move_prices": [
         [1, 2, 3],
         [4, 5, 6],

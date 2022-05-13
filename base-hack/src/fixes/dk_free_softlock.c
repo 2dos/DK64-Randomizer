@@ -30,28 +30,30 @@ void freeDK(void) {
 
 void fixDKFreeSoftlock(void) {
 	if (CutsceneActive) {
-		if (Rando.free_target_japes == 0) {
-			if (CurrentMap == 7) {
-				if (CutsceneIndex == 6) {
-					freeDK();
+		if ((CutsceneStateBitfield & 4) == 0) {
+			if (Rando.free_target_japes == 0) {
+				if (CurrentMap == 7) {
+					if (CutsceneIndex == 6) {
+						freeDK();
+					}
 				}
-			}
-		} else if (Rando.free_target_llama == 0) {
-			if (CurrentMap == 0x14) {
-				if (CutsceneIndex == 3) {
-					freeDK();
+			} else if (Rando.free_target_llama == 0) {
+				if (CurrentMap == 0x14) {
+					if (CutsceneIndex == 3) {
+						freeDK();
+					}
 				}
-			}
-		} else if (Rando.free_target_ttemple == 0) {
-			if (CurrentMap == 0x10) {
-				if (CutsceneIndex == 6) {
-					freeDK();
+			} else if (Rando.free_target_ttemple == 0) {
+				if (CurrentMap == 0x10) {
+					if (CutsceneIndex == 6) {
+						freeDK();
+					}
 				}
-			}
-		} else if (Rando.free_target_factory == 0) {
-			if (CurrentMap == 0x1A) {
-				if (CutsceneIndex == 8) {
-					freeDK();
+			} else if (Rando.free_target_factory == 0) {
+				if (CurrentMap == 0x1A) {
+					if (CutsceneIndex == 8) {
+						freeDK();
+					}
 				}
 			}
 		}
