@@ -11,7 +11,7 @@ shutil.copyfile(instance_copy, instance_name)
 
 maps = instance_script_maps.copy()
 
-script_dir = "../../../../../map_script_stuff/map_scripts_us/"
+script_dir = "../../../../../map_scripts/map_scripts/"
 files = [f for f in os.listdir(".") if os.path.isfile(f)]
 printed = False
 file_total = 0

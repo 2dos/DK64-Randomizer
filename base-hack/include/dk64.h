@@ -103,6 +103,7 @@ extern int* textDraw(int* dl, int style, int x, int y, char* str);
 
 extern void cancelPausedCutscene(void);
 extern void pauseCutscene(void);
+extern void getTextPointer_0(void* actor, int text_file, int text_index);
 
 extern int hasTurnedInEnoughCBs(void);
 extern int getWorld(int map, int unk2);

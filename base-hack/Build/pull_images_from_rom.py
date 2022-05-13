@@ -194,7 +194,7 @@ with open("rom/dk64.z64", "rb") as fh:
             pix_y = int(pixel / x["w"])
             pix[pix_x, pix_y] = (red, green, blue, alpha)
         if x["flip"]:
-            im = im.transpose(Image.FLIP_TOP_BOTTOM)
+            im = im.transpose(Image.Transpose.FLIP_TOP_BOTTOM)
         if x["resize"]:
             im = im.resize((32, 32))
         im.save(img_name)

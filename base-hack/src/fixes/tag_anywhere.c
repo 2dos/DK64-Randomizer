@@ -258,7 +258,7 @@ void tagAnywhere(int prev_crystals) {
                             pass = 1;
                             if (Rando.perma_lose_kongs) {
                                 if (checkFlag(KONG_LOCKED_START + next_character,0)) {
-                                    if (!curseRemoved()) {
+                                    if ((!curseRemoved()) && (!hasPermaLossGrace())) {
                                         pass = 0;
                                     }
                                 }

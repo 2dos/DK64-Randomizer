@@ -80,12 +80,16 @@ def getMoveSignData(map_index, base_stream):
         if map_data["map_index"] == map_index:
             for sign in map_data["signs"]:
                 offset_mult = 40
+                id = 0x100
                 if sign["sign_type"] == "cranky":
                     offset_mult = 40
+                    id = 0x100
                 elif sign["sign_type"] == "funky":
                     offset_mult = 40
+                    id = 0x101
                 elif sign["sign_type"] == "candy":
                     offset_mult = 40
+                    id = 0x102
                 sign_arr.append(
                     {
                         "base_byte_stream": base_stream,
@@ -97,6 +101,7 @@ def getMoveSignData(map_index, base_stream):
                         "ry": (convertAngle(sign["data"][3]) + 2048) % 4096,
                         "rz": 0,
                         "scale": int(float_to_hex(0.25), 16),
+                        "id": id,
                     }
                 )
     return sign_arr
