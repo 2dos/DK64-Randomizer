@@ -33,6 +33,17 @@ void decouple_moves_fixes(void) {
 	if ((CurrentMap >= 0xCB) && (CurrentMap <= 0xCF)) {
 		PatchKRoolCode();
 	}
+	if ((CurrentMap == 0x65) || ((CurrentMap >= 0x8D) && (CurrentMap <= 0x8F))) {
+		PatchBonusCode();
+		// Adjust Krazy KK Flicker Speeds
+		// Defaults: 48/30. Start: 60. Scaling: 2.3
+		*(unsigned short*)(0x800293E6) = 110; // V Easy
+		*(unsigned short*)(0x800293FA) = 110; // Easy
+		*(unsigned short*)(0x8002940E) = 69; // Medium
+		*(unsigned short*)(0x80029422) = 69; // Hard
+		*(unsigned short*)(0x800295D2) = 138; // Start
+		*(unsigned short*)(0x800297D8) = 0x916B; // LB -> LBU
+	}
 	if (CurrentMap == 0x9A) {
 		*(short*)(0x80033B26) = 0x41F0; // Jumping Around
 		*(short*)(0x800331AA) = 0x41F0; // Random Square
