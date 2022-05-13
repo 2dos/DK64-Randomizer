@@ -60,12 +60,15 @@ def RandomizePrices(weight):
     # Free: All moves are zero coins
     avg = 4.5
     stddev = 2
+    upperLimit = 9
     if weight == "high":
         avg = 6.5
         stddev = 3
+        upperLimit = 12
     elif weight == "low":
         avg = 2.5
         stddev = 1
+        upperLimit = 6
     # Generate random prices using normal distribution with avg and std. deviation
     # Round each price to nearest int
     for item in prices.keys():
@@ -73,16 +76,15 @@ def RandomizePrices(weight):
         if item in ProgressiveMoves.keys():
             prices[item] = []
             for i in range(ProgressiveMoves[item]):
-                prices[item].append(GenerateRandomPrice(weight, avg, stddev))
+                prices[item].append(GenerateRandomPrice(weight, avg, stddev, upperLimit))
         else:
-            prices[item] = GenerateRandomPrice(weight, avg, stddev)
+            prices[item] = GenerateRandomPrice(weight, avg, stddev, upperLimit)
     return prices
 
 
-def GenerateRandomPrice(weight, avg, stddev):
+def GenerateRandomPrice(weight, avg, stddev, upperLimit):
     """Generate a random price to assign."""
     lowerLimit = 1
-    upperLimit = 12
     if weight == "free":
         newPrice = 0
     else:
