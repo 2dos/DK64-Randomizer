@@ -157,6 +157,11 @@ def patching_response(responded_data):
         ROM().seek(sav + 0x030)
         ROM().write(1)
 
+    # Enable FPS Display
+    if spoiler.settings.fps_display:
+        ROM().seek(sav + 0x096)
+        ROM().write(1)
+
     # Fast Hideout
     if spoiler.settings.helm_setting == "skip_start":
         ROM().seek(sav + 0x031)
