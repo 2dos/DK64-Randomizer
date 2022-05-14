@@ -195,6 +195,13 @@ class Settings:
         self.music_fanfares = None
         self.music_events = None
 
+        #  Color
+        self.dk_colors = None
+        self.diddy_colors = None
+        self.lanky_colors = None
+        self.tiny_colors = None
+        self.chunky_colors = None
+
         #  Misc
         self.generate_spoilerlog = None
         self.fast_start_beginning_of_game = None
