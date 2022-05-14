@@ -159,8 +159,6 @@ class Settings:
         #  Settings which affect logic
         # start_with_moves: bool
         self.unlock_all_moves = None
-        # unlock_all_kongs: bool
-        self.unlock_all_kongs = None
         # crown_door_open: bool
         self.crown_door_open = None
         # coin_door_open: bool
@@ -171,6 +169,8 @@ class Settings:
         self.krool_phase_count = 5
         # krool_key_count: int, [0-8]
         self.krool_key_count = 8
+        # starting_kongs_count: int, [1-5]
+        self.starting_kongs_count = 5
 
         # bonus_barrels: str
         # skip - NOT IMPLEMENTED YET
@@ -312,8 +312,15 @@ class Settings:
             self.shuffle_loading_zones = "none"
 
         # Kong rando
+        # Temp until Slider UI binding gets fixed
+        if self.starting_kongs_count == 5:
+            self.kong_rando = False
+        print(self.kong_rando)
         if self.kong_rando:
-            self.starting_kong = random.choice(kongs)
+            self.starting_kong_list = random.sample(kongs, self.starting_kongs_count)
+            self.starting_kong = random.choice(self.starting_kong_list)
+            print("Start List: ")
+            print(self.starting_kong_list)
             if self.shuffle_loading_zones == "levels":
                 self.kongs_for_progression = True
             # Kong freers are decided in the fill, set as any kong for now
@@ -322,6 +329,12 @@ class Settings:
             self.tiny_freeing_kong = Kongs.any
             self.chunky_freeing_kong = Kongs.any
         else:
+            self.possible_kong_list = kongs.copy()
+            self.possible_kong_list.remove(0)
+            self.starting_kong_list = random.sample(self.possible_kong_list, self.starting_kongs_count - 1)
+            self.starting_kong_list.append(Kongs.donkey)
+            print("Start List: ")
+            print(self.starting_kong_list)
             self.starting_kong = Kongs.donkey
             self.diddy_freeing_kong = Kongs.donkey
             self.lanky_freeing_kong = Kongs.donkey
