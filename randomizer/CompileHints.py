@@ -2,6 +2,7 @@
 import random
 
 from randomizer.Lists.Item import NameFromKong
+from randomizer.Lists.ShufflableExit import ShufflableExits
 from randomizer.Spoiler import Spoiler
 from randomizer.Patching.UpdateHints import updateRandomHint
 
@@ -369,6 +370,25 @@ def compileHints(spoiler: Spoiler):
         level_name = random.choice(level_cryptic[x])
         if boss_map == 0xC7:
             updateRandomHint(f"The cardboard boss can be found in {level_name}.")
+    if spoiler.settings.shuffle_loading_zones == "all":
+        hintedTransitions = random.sample(spoiler.shuffled_exit_data.keys(), 10)
+        for transition in hintedTransitions:
+            pathToHint = transition
+            # Don't hint entrances from dead-end rooms, follow the reverse pathway back until finding a place with multiple entrances
+            while ShufflableExits[pathToHint].category is None:
+                originPaths = [x for x, back in spoiler.shuffled_exit_data.items() if back.reverse == pathToHint]
+                # In a few cases, there is no reverse loading zone. In this case we must keep the original path to hint
+                if len(originPaths) == 0:
+                    break
+                pathToHint = originPaths[0]
+            entranceName = ShufflableExits[pathToHint].name
+            destinationName: str = spoiler.shuffled_exit_data[transition].spoilerName
+            fromExitName = destinationName.find(" from ")
+            if fromExitName != -1:
+                # Remove exit name from destination
+                destinationName = destinationName[:fromExitName]
+
+            updateRandomHint(f"If you're looking for {destinationName}, follow the path of {entranceName}.")
 
     # PADDED HINTS
     level_list = ["Jungle Japes", "Angry Aztec", "Frantic Factory", "Gloomy Galleon", "Fungi Forest", "Crystal Caves", "Creepy Castle"]
