@@ -17,7 +17,7 @@ class ShufflableExit:
         self.name = name
         self.region = region
         self.back = back
-        self.category = category
+        self.category = category  # Indicates the origin of this transition is in an area with multiple loading zones
         self.entryKongs = entryKongs  # Indicates either need to be one of a certain set of kongs to gain access to this transition
         self.regionKongs = regionKongs  # Indicates need to be a certain kong or kongs on the back side of the transition. Should only apply if the destination region doesn't have a tag barrel
         self.move = move  # Indicates this transition needs a kong-specific move to access, so it's even more restrictive
@@ -100,7 +100,7 @@ ShufflableExits = {
     # Transitions.AztecMainToBBlast: ShufflableExit("Angry Aztec Main to Baboon Blast", Regions.AngryAztecMain, TransitionBack(Regions.AztecBaboonBlast, "From Aztec Main", "Angry Aztec Baboon Blast"), ExitCategories.AztecExterior, entryKongs={Kongs.donkey}, regionKongs={Kongs.donkey}, move=True),
 
     # Frantic Factory Exits
-    Transitions.FactoryRandDToRace: ShufflableExit("Frantic Factory R&D to Car Race", Regions.RandD, TransitionBack(Regions.FactoryTinyRace, "From Factory Main", "Frantic Factory Car Race", Transitions.FactoryRaceToRandD), ExitCategories.FactoryExterior, entryKongs={Kongs.tiny}, regionKongs={Kongs.tiny}, move=True),
+    Transitions.FactoryRandDToRace: ShufflableExit("Frantic Factory R&D to Car Race", Regions.FactoryTinyRaceLobby, TransitionBack(Regions.FactoryTinyRace, "From Factory Main", "Frantic Factory Car Race", Transitions.FactoryRaceToRandD), ExitCategories.FactoryExterior, entryKongs={Kongs.tiny}, regionKongs={Kongs.tiny}, move=True),
     Transitions.FactoryRaceToRandD: ShufflableExit("Frantic Factory Car Race to R&D", Regions.FactoryTinyRace, TransitionBack(Regions.FactoryTinyRaceLobby, "From Car Race", "Frantic Factory Main from Car Race", Transitions.FactoryRandDToRace)),
     Transitions.FactoryChunkyRoomToPower: ShufflableExit("Frantic Factory Main to Power Shed", Regions.ChunkyRoomPlatform, TransitionBack(Regions.PowerHut, "From Factory Main", "Frantic Factory Power Shed", Transitions.FactoryPowerToChunkyRoom), ExitCategories.FactoryExterior, entryKongs={Kongs.donkey}, regionKongs={Kongs.donkey}),
     Transitions.FactoryPowerToChunkyRoom: ShufflableExit("Frantic Factory Power Room to Chunky Room", Regions.PowerHut, TransitionBack(Regions.BeyondHatch, "From Power Shed", "Frantic Factory Main from Power Shed", Transitions.FactoryChunkyRoomToPower)),
