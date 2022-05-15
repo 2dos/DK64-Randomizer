@@ -3,10 +3,9 @@ from enum import IntEnum, auto
 
 
 class ExitCategories(IntEnum):
-    """These categories are used to categorize loading zones with multiple exits."""
+    """These categories are used to categorize maps with multiple entrances."""
 
     IslesExterior = auto()
-    IslesTreehouse = auto()
     IslesTrainingGrounds = auto()
     JapesLobby = auto()
     AztecLobby = auto()
@@ -16,7 +15,6 @@ class ExitCategories(IntEnum):
     CavesLobby = auto()
     CastleLobby = auto()
     JapesExterior = auto()
-    JapesMine = auto()
     AztecExterior = auto()
     FactoryExterior = auto()
     GalleonExterior = auto()
@@ -29,4 +27,5 @@ class ExitCategories(IntEnum):
     CastleLower = auto()
     CastleUpper = auto()
     CastleBallroom = auto()
+    CastleCarRaceExterior = auto()
     CastleCrypt = auto()
