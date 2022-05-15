@@ -519,7 +519,8 @@ def AddLoadingZoneHints(spoiler: Spoiler):
             break
         elif TryAddingLoadingZoneHint(spoiler, transition):
             remainingHintCount -= 1
-    print("Unable to place remaining LZR hints!")
+    if remainingHintCount > 0:
+        print("Unable to place remaining LZR hints!")
 
 
 def TryAddingLoadingZoneHint(spoiler: Spoiler, transition, disallowedRegions: list = []):
@@ -535,7 +536,14 @@ def TryAddingLoadingZoneHint(spoiler: Spoiler, transition, disallowedRegions: li
             pathToHint = originPaths[0]
     # With coupled loading zones, never hint from a dead-end room, since it is forced to be coming from the same destination
     elif ShufflableExits[pathToHint].category is None:
-        print(f"Rejected hint from dead-end transition {pathToHint.name}.")
+        return False
+    # Validate the region of the hinted entrance is not in disallowedRegions
+    if ShufflableExits[pathToHint].region in disallowedRegions:
+        return False
+    # Validate the hinted destination is not the same as the hinted origin
+    entranceMap = GetMapId(ShufflableExits[pathToHint].region)
+    destinationMap = GetMapId(spoiler.shuffled_exit_data[transition].regionId)
+    if entranceMap == destinationMap:
         return False
     entranceName = ShufflableExits[pathToHint].name
     destinationName: str = spoiler.shuffled_exit_data[transition].spoilerName
@@ -543,15 +551,5 @@ def TryAddingLoadingZoneHint(spoiler: Spoiler, transition, disallowedRegions: li
     if fromExitName != -1:
         # Remove exit name from destination
         destinationName = destinationName[:fromExitName]
-    # Validate the region of the hinted entrance is not in disallowedRegions
-    if ShufflableExits[pathToHint].region in disallowedRegions:
-        print(f"Rejected hint for {destinationName} from {entranceName}.")
-        return False
-    # Validate the hinted destination is not the same as the hinted origin
-    entranceMap = GetMapId(ShufflableExits[pathToHint].region)
-    destinationMap = GetMapId(spoiler.shuffled_exit_data[transition].regionId)
-    if entranceMap == destinationMap:
-        print(f"Rejected hint for {destinationName} from {entranceName}.")
-        return False
     updateRandomHint(f"If you're looking for {destinationName}, follow the path from {entranceName}.")
     return True
