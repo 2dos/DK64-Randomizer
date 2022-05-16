@@ -727,5 +727,27 @@ START_HOOK:
 		J 			0x800295DC
 		SUBU 		t5, t4, t5
 
+	CannonForceCode:
+		LUI 		a0, hi(CurrentMap)
+		LW 			a0, lo(CurrentMap) (a0)
+		ADDIU 		v0, r0, 0x22
+		BEQ 		a0, v0, CannonForceCode_IsIsles
+		NOP
+		J 			0x8067B694
+		NOP
+
+		CannonForceCode_CheckFlag:
+			JAL 	0x8067B450
+			OR 		a0, s0, r0
+			J 		0x8067B68C
+			NOP
+
+		CannonForceCode_IsIsles:
+			LUI 	a0, hi(LobbiesOpen)
+			LBU		a0, lo(LobbiesOpen) (a0)
+			BEQZ 	a0, CannonForceCode_CheckFlag
+			NOP
+			J 		0x8067B6CC
+			NOP
 .align 0x10
 END_HOOK:

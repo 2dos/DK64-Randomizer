@@ -246,9 +246,9 @@ move_hints = [
 ]
 
 pre_amble = {
-    "cranky": "YOU'RE BACK AGAIN, ~? YOU'RE LUCKY I HAVE SOMETHING FOR YOU FOR @ COINS. ",
-    "funky": "WHAT'S UP, ~-DUDE! I JUST FINISHED MAKIN' THIS FOR YOU FOR @ COINS! ",
-    "candy": "WHY, ~, HAVE I GOT A TREAT FOR YOU. IT'S ONLY @ COINS. ",
+    "cranky": "YOU'RE BACK AGAIN, ~? YOU'RE LUCKY I HAVE SOMETHING FOR YOU. ",
+    "funky": "WHAT'S UP, ~-DUDE! I JUST FINISHED MAKIN' THIS! ",
+    "candy": "WHY, ~, HAVE I GOT A TREAT FOR YOU. ",
 }
 
 moves = [
@@ -301,7 +301,7 @@ for move in move_hints:
     for shop in shop_owners:
         hint_pre = pre_amble[shop]
         hint_post = move[shop]
-        hint_text.append([f"{hint_pre.upper()}{hint_post.upper()}"])
+        hint_text.append([f"{hint_pre}{hint_post}"])
 
 
 writeText(
@@ -314,3 +314,12 @@ writeText(
 )
 
 writeText("custom_text.bin", hint_text)
+
+writeText(
+    "dk_text.bin",
+    [
+        ["WHAT DID CRANKY MEAN ABOUT TRAINING? DONKEY ALL CONFUSED..."],
+        ["AW NO! SO THAT WHAT CRANKY MEAN ABOUT REPTILE...", "DONKEY NOT BELIEVE IT. KING K.ROOL? WE FINISHED K. ROOL OFF IN LAST GAME!"],
+        ["OKAY!", "DONKEY IS FREE NOW. THANK YOU, MY FRIEND.", "DONKEY CAN COLLECT YELLOW BANANAS.", "DONKEY WILL BE INSIDE THE TAG BARREL UNTIL YOU NEED MY HELP."],
+    ],
+)

@@ -415,7 +415,9 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 			if (param2 == GMUSH_BOARD) {
 				int switch_count = 0;
 				for (int i = 0; i < 5; i++) {
-					switch_count += checkFlag(0xE6 + i,0);
+					if (checkFlag(230 + i,0)) {
+						switch_count += 1;
+					}
 				}
 				if (switch_count == 5) {
 					behaviour_pointer->current_state = 6;
