@@ -3,9 +3,6 @@
 int getHintTextIndex(int shop_owner, shop_paad* shop_data) {
 	int purchase_type = shop_data->purchase_type;
 	int purchase_value = shop_data->purchase_value;
-	*(int*)(0x807FF704) = purchase_type;
-	*(int*)(0x807FF708) = purchase_value;
-	*(int*)(0x807FF70C) = (int)&shop_data;
 	int base = 0;
 	if (shop_data->price > MovesBase[(int)Character].coins) {
 		base = 30 + purchase_type;
@@ -35,7 +32,7 @@ int isGoodTextbox(int text_file, int text_index) {
 	} else if (text_file == 8) { // Cranky
 		return (text_index == 4) || (text_index == 5) || (text_index == 9);
 	} else if (text_file == 9)  { // Candy
-		return ((text_index >= 3) && (text_index <= 5)) || (text_index == 8) || (text_index == 9) || ((text_index >= 12) && (text_index <= 15));
+		return ((text_index >= 3) && (text_index <= 5)) || ((text_index >= 7) && (text_index <= 9)) || ((text_index >= 12) && (text_index <= 15));
 	}
 	return 1;
 }
@@ -43,13 +40,13 @@ int isGoodTextbox(int text_file, int text_index) {
 void getMoveHint(actorData* actor, int text_file, int text_index) {
 	int shop = actor->actorType - 189; // 0 = Cranky, 1 = Funky, 2 = Candy
 	if ((shop >= 0) && (shop <= 2)) {
+		// *(int*)(0x807FF700) = text_file;
+		// *(int*)(0x807FF704) = text_index;
 		shop_paad* shop_data = (shop_paad*)actor->paad2;
 		if (!isGoodTextbox(text_file,text_index)) {
 			getTextPointer_0(actor,text_file,text_index);
 		} else {
-			*(int*)(0x807FF700) = shop;
 			int hint_text_index = getHintTextIndex(shop,shop_data);
-			TestVariable = hint_text_index;
 			getTextPointer_0(actor,32,hint_text_index);
 		}
 	} else {

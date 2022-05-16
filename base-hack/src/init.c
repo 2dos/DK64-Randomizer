@@ -67,6 +67,7 @@ void initHack(void) {
 		preventTagSpawn = Rando.prevent_tag_spawn;
 		bonusAutocomplete = Rando.resolve_bonus;
 		QoLOn = Rando.quality_of_life;
+		LobbiesOpen = Rando.lobbies_open_bitfield;
 		changeCharSpawnerFlag(0x14, 2, 93); // Tie llama spawn to lanky help me cutscene flag
 		changeCharSpawnerFlag(0x7, 1, kong_flags[(int)Rando.free_target_japes]);
 		changeCharSpawnerFlag(0x10, 0x13, kong_flags[(int)Rando.free_target_ttemple]);
@@ -123,9 +124,6 @@ void initHack(void) {
 		}
 		if (Rando.disable_boss_kong_check) {
 			*(int*)(0x8064EC00) = 0x24020001;
-		}
-		if (Rando.lobbies_open_bitfield) {
-			*(short*)(0x8067B68C) = 0x1000;
 		}
 		*(int*)(0x8074C1B8) = (int)&newCounterCode;
 		fixMusicRando();
@@ -205,6 +203,8 @@ void initHack(void) {
 		*(int*)(0x8070E84C) = 0;
 		*(int*)(0x8070E874) = 0;
 		*(int*)(0x8070E888) = 0;
+		// Cutscene DK Code
+		*(int*)(0x8074C3B0) = (int)&cutsceneDKCode;
 		LoadedHooks = 1;
 	}
 }
