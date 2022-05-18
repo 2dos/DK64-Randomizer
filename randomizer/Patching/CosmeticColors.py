@@ -58,7 +58,7 @@ def apply_cosmetic_colors(spoiler: Spoiler):
         enable = True
         color = 0
         if js.document.getElementById("tiny_colors").value == "randomized":
-            color = randint(0, 3)
+            color = randint(0, 2)  # Change back to 3 once Red Tiny Color is fixed.
         elif js.document.getElementById("tiny_colors").value == "green":
             color = 1
         elif js.document.getElementById("tiny_colors").value == "purple":
