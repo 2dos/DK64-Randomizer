@@ -50,7 +50,7 @@ def compileHints(spoiler: Spoiler):
         "I don't know anything.",
         "I'm as lost as you are. Good luck!",
         "Wrinkly? Never heard of him.",
-        "This is it. The peak of all randomizers. No other randomizer exists besides dk64randomizer.com where you can listen to the dk rap in its natural habitat while freeing Chunky Kong in Jungle Japes.",
+        "This is it. The peak of all randomizers. No other randomizer exists besides DK64 Randomizer where you can listen to the dk rap in its natural habitat while freeing Chunky Kong in Jungle Japes.",
     ]
     # K. Rool Moves
     kong_cryptic = [
@@ -70,7 +70,7 @@ def compileHints(spoiler: Spoiler):
             "The kong who inflates like a balloon, just like a balloon",
             "The kong who waddles in his overalls",
             "The kong who has a cold race with an insect",
-            "The kong who shares a home with a thirsty dweller",
+            "The kong who lacks style, grace but not a funny face",
         ],
         ["The kong who likes jazz", "The kong who shoots K. Rool's tiny toes", "The kong who has ammo that is light as a feather", "The kong who can shrink in size"],
         [
@@ -86,7 +86,7 @@ def compileHints(spoiler: Spoiler):
             "The level with a dirt mountain",
             "The level which has two retailers and no race",
         ],
-        ["The level with sporadic gusts of sand", "The level with two kongs to free", "The level who is home to a humped animal"],
+        ["The level with sporadic gusts of sand", "The level with two kongs to free", "The level with a spinning totem"],
         [
             "The level with a toy production facility",
             "The level with a tower of blocks",
@@ -357,6 +357,8 @@ def compileHints(spoiler: Spoiler):
             kong_name = random.choice(kong_cryptic[kong_index])
             level_name = random.choice(level_cryptic[level_index])
             updateRandomHint(f"{kong_name} can be found in {level_name}.")
+    if spoiler.settings.shuffle_loading_zones == "all":
+        AddLoadingZoneHints(spoiler)
     if spoiler.settings.BananaMedalsRequired:
         updateRandomHint(f"{spoiler.settings.BananaMedalsRequired} medals are required to access Jetpac.")
     if spoiler.settings.perma_death:
@@ -372,8 +374,6 @@ def compileHints(spoiler: Spoiler):
         level_name = random.choice(level_cryptic[x])
         if boss_map == 0xC7:
             updateRandomHint(f"The cardboard boss can be found in {level_name}.")
-    if spoiler.settings.shuffle_loading_zones == "all":
-        AddLoadingZoneHints(spoiler)
 
     # PADDED HINTS
     level_list = ["Jungle Japes", "Angry Aztec", "Frantic Factory", "Gloomy Galleon", "Fungi Forest", "Crystal Caves", "Creepy Castle"]

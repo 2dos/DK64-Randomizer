@@ -81,7 +81,7 @@ BananaportVanilla = {
     Warps.CavesNearRight: BananaportData(name="Crystal Caves: Near Right", map_id=Maps.CrystalCaves, obj_id_vanilla=0x37, vanilla_warp=1),
     Warps.CavesWaterfall: BananaportData(name="Crystal Caves: Near Waterfall", map_id=Maps.CrystalCaves, obj_id_vanilla=0x36, vanilla_warp=1),
     Warps.CavesNearIglooTag: BananaportData(name="Crystal Caves: Near Igloo Tag", map_id=Maps.CrystalCaves, obj_id_vanilla=0x57, vanilla_warp=2),
-    Warps.CavesBonusRoom: BananaportData(name="Crystal Caves: Inside Bonus Room", map_id=Maps.CrystalCaves, obj_id_vanilla=0x56, vanilla_warp=2),
+    Warps.CavesBonusRoom: BananaportData(name="Crystal Caves: Inside Bonus Room", map_id=Maps.CrystalCaves, obj_id_vanilla=0x56, locked=True, vanilla_warp=2),
     Warps.CavesThinPillar: BananaportData(name="Crystal Caves: On the Thin Pillar", map_id=Maps.CrystalCaves, obj_id_vanilla=0x6B, vanilla_warp=3),
     Warps.CavesBlueprintRoom: BananaportData(name="Crystal Caves: Inside Blueprint Room", map_id=Maps.CrystalCaves, obj_id_vanilla=0x6A, locked=True, vanilla_warp=3),
     Warps.CavesThickPillar: BananaportData(name="Crystal Caves: On the Thick Pillar", map_id=Maps.CrystalCaves, obj_id_vanilla=0xB5, locked=True, vanilla_warp=4),

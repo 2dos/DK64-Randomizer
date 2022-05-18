@@ -938,7 +938,7 @@ def ShuffleMisc(spoiler):
     spoiler.human_kasplats = {}
     spoiler.UpdateKasplats(LogicVariables.kasplat_map)
     # Handle bonus barrels
-    if spoiler.settings.bonus_barrels == "random":
+    if spoiler.settings.bonus_barrels == "random" or spoiler.settings.bonus_barrels == "all_beaver_bother":
         BarrelShuffle(spoiler.settings)
         spoiler.UpdateBarrels()
     # Handle Bananaports
