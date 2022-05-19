@@ -374,6 +374,12 @@ def compileHints(spoiler: Spoiler):
         level_name = random.choice(level_cryptic[x])
         if boss_map == 0xC7:
             updateRandomHint(f"The cardboard boss can be found in {level_name}.")
+    # Way of the Hoard hints
+    shopNames = ["Candy", "Funky", "Cranky"]
+    wothLocations = [key for key in spoiler.woth.keys() if any(ele in key for ele in shopNames)]
+    selectedWothLocations = random.sample(wothLocations, min(5, len(wothLocations)))
+    for wothLocation in selectedWothLocations:
+        updateRandomHint(f"{wothLocation} is on the Way of the Hoard.")
 
     # PADDED HINTS
     level_list = ["Jungle Japes", "Angry Aztec", "Frantic Factory", "Gloomy Galleon", "Fungi Forest", "Crystal Caves", "Creepy Castle"]
