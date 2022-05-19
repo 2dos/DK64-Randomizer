@@ -174,7 +174,7 @@ LogicRegions = {
     ]),
 
     Regions.MillTinyArea: Region("Mill Tiny Area", Levels.FungiForest, False, -1, [], [], [
-        TransitionFront(Regions.MillArea, lambda l: l.mini and l.istiny, Transitions.ForestTinyMillToMain),
+        TransitionFront(Regions.MillArea, lambda l: Events.MillBoxBroken in l.Events and l.mini and l.istiny, Transitions.ForestTinyMillToMain),
         TransitionFront(Regions.MillChunkyArea, lambda l: True),
         TransitionFront(Regions.SpiderRoom, lambda l: True, Transitions.ForestTinyMillToSpider, time=Time.Night),
         TransitionFront(Regions.GrinderRoom, lambda l: l.mini and l.istiny, Transitions.ForestTinyMillToGrinder),
@@ -218,8 +218,8 @@ LogicRegions = {
         LocationLogic(Locations.ForestKasplatNearBarn, lambda l: True),
     ], [], [
         TransitionFront(Regions.MillArea, lambda l: True, time=Time.Night),
-        # You're supposed to use strong kong to hit the switch in the thorns, but can brute force it
-        TransitionFront(Regions.ThornvineBarn, lambda l: l.superSlam and l.isdonkey, Transitions.ForestMainToBarn),
+        # You're supposed to use strong kong to hit the switch in the thorns, but can brute force it, unless on higher damage values
+        TransitionFront(Regions.ThornvineBarn, lambda l: l.superSlam and l.isdonkey and (l.strongKong or l.settings.damage_amount == "default"), Transitions.ForestMainToBarn),
         TransitionFront(Regions.ForestBossLobby, lambda l: True),
     ]),
 

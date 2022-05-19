@@ -438,13 +438,13 @@ class LogicVarHolder:
         return Regions[region].HasAccess(kong)
 
     def TimeAccess(self, region, time):
-        """Checks if a certain region has the given time of day access."""
+        """Check if a certain region has the given time of day access."""
         if time == Time.Day:
             return Regions[region].dayAccess
         elif time == Time.Night:
             return Regions[region].nightAccess
         # Not sure when this'd be used
-        else: # if time == Time.Both
+        else:  # if time == Time.Both
             return Regions[region].dayAccess or Regions[region].nightAccess
 
     def KasplatAccess(self, location):

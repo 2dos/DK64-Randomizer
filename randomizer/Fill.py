@@ -188,7 +188,7 @@ def GetAccessibleLocations(settings, ownedItems, searchType=SearchMode.GetReacha
                         # If this region has day access and the exit isn't restricted to night-only, then the destination has day access
                         if region.dayAccess and exit.time != Time.Night and not Logic.Regions[destination].dayAccess:
                             Logic.Regions[destination].dayAccess = True
-                            # Count as event added so search doesn't get stuck if region is searched, 
+                            # Count as event added so search doesn't get stuck if region is searched,
                             # then later a new time of day access is found so it should be re-visited
                             eventAdded = True
                         # And vice versa
