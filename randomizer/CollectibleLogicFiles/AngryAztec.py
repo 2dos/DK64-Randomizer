@@ -31,7 +31,7 @@ LogicRegions = {
         Collectible(Collectibles.bunch, Kongs.chunky, lambda l: True, None, 5),
         Collectible(Collectibles.banana, Kongs.chunky, lambda l: True, None, 4),
 
-        Collectible(Collectibles.coin, Kongs.diddy, lambda l: True, None, 1),  # On Guitar pad
+        Collectible(Collectibles.coin, Kongs.diddy, lambda l: l.peanut, None, 1),  # On Guitar pad
         Collectible(Collectibles.coin, Kongs.lanky, lambda l: True, None, 3),
         Collectible(Collectibles.coin, Kongs.chunky, lambda l: True, None, 3),
     ],
