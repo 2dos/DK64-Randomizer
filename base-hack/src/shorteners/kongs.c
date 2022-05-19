@@ -2,9 +2,14 @@
 
 void unlockKongs(void) {
 	if (Rando.unlock_kongs) {
-		setPermFlag(0x181);
-		for (int i = 0; i < 4; i++) {
-			setPermFlag(KongFlagArray[i]);
+		for (int i = 0; i < 5; i++) {
+			if (Rando.unlock_kongs & (1 << i)) {
+				if (i == 0) {
+					setPermFlag(0x181);
+				} else {
+					setPermFlag(KongFlagArray[i - 1]);
+				}
+			}
 		}
 	}
 }

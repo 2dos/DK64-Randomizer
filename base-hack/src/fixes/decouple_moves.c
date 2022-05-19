@@ -13,7 +13,9 @@ void decouple_moves_fixes(void) {
 		PatchCrankyCode();
 		*(int*)(0x80025E9C) = 0x0C009751; // Change writing of move to "write bitfield move" function call
 		writeJetpacMedalReq(); // Adjust medal requirement for Jetpac
-		*(int*)(0x8002661C) = 0x0C000000 | (((int)&getMoveHint & 0xFFFFFF) >> 2);
+		if (Rando.shop_hints) {
+			*(int*)(0x8002661C) = 0x0C000000 | (((int)&getMoveHint & 0xFFFFFF) >> 2);
+		}
 	} else if (CurrentMap == MAIN_MENU) {
 		*(short*)(0x8002E266) = 7; // Enguarde Arena Movement Write
 		*(short*)(0x8002F01E) = 7; // Rambi Arena Movement Write
@@ -32,6 +34,18 @@ void decouple_moves_fixes(void) {
 	}
 	if ((CurrentMap >= 0xCB) && (CurrentMap <= 0xCF)) {
 		PatchKRoolCode();
+	}
+	if ((CurrentMap == 0x65) || ((CurrentMap >= 0x8D) && (CurrentMap <= 0x8F))) {
+		PatchBonusCode();
+		// Adjust Krazy KK Flicker Speeds
+		// Defaults: 48/30. Start: 60. Flicker Thresh: -30. Scaling: 2.3
+		*(unsigned short*)(0x800293E6) = 110; // V Easy
+		*(unsigned short*)(0x800293FA) = 110; // Easy
+		*(unsigned short*)(0x8002940E) = 69; // Medium
+		*(unsigned short*)(0x80029422) = 69; // Hard
+		*(unsigned short*)(0x800295D2) = 138; // Start
+		*(unsigned short*)(0x800297D8) = 0x916B; // LB -> LBU
+		*(short*)(0x800297CE) = -69; // Flicker Threshold
 	}
 	if (CurrentMap == 0x9A) {
 		*(short*)(0x80033B26) = 0x41F0; // Jumping Around

@@ -135,7 +135,7 @@ def patching_response(responded_data):
     # Unlock All Kongs
     if spoiler.settings.unlock_all_kongs:
         ROM().seek(sav + 0x02C)
-        ROM().write(1)
+        ROM().write(0x1F)
 
     # Unlock All Moves
     if spoiler.settings.unlock_all_moves:
@@ -155,6 +155,11 @@ def patching_response(responded_data):
     # Enable Tag Anywhere
     if spoiler.settings.enable_tag_anywhere:
         ROM().seek(sav + 0x030)
+        ROM().write(1)
+
+    # Enable FPS Display
+    if spoiler.settings.fps_display:
+        ROM().seek(sav + 0x096)
         ROM().write(1)
 
     # Fast Hideout

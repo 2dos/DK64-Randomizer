@@ -26,21 +26,27 @@ def ShuffleBarrels(settings, barrelLocations, minigamePool):
         for minigame in minigamePool:
             BarrelMetaData[location].minigame = minigame
             # Check if banned in Helm and attempted to place in Helm
-            if not MinigameRequirements[minigame].helm_enabled and BarrelMetaData[location].map == Maps.HideoutHelm:
-                continue
+            if settings.bonus_barrels != "all_beaver_bother":
+                if not MinigameRequirements[minigame].helm_enabled and BarrelMetaData[location].map == Maps.HideoutHelm:
+                    continue
             # If world is still valid, keep minigame associated there
-            if Fill.VerifyWorld(settings):
-                minigamePool.remove(minigame)
-                if MinigameRequirements[minigame].repeat:
-                    replacement_index = random.randint(20, len(minigamePool))
-                    if replacement_index >= len(minigamePool):
-                        minigamePool.append(minigame)
-                    else:
-                        minigamePool.insert(replacement_index, minigame)
+            if settings.bonus_barrels != "all_beaver_bother":
+                if Fill.VerifyWorld(settings):
+                    minigamePool.remove(minigame)
+                    if MinigameRequirements[minigame].repeat:
+                        replacement_index = random.randint(20, len(minigamePool))
+                        if replacement_index >= len(minigamePool):
+                            minigamePool.append(minigame)
+                        else:
+                            minigamePool.insert(replacement_index, minigame)
+                    success = True
+                    break
+                else:
+                    BarrelMetaData[location].minigame = Minigames.NoGame
+            else:
+                random.shuffle(minigamePool)
                 success = True
                 break
-            else:
-                BarrelMetaData[location].minigame = Minigames.NoGame
         if not success:
             raise Ex.BarrelOutOfMinigames
 
@@ -50,6 +56,8 @@ def BarrelShuffle(settings):
     # First make master copies of locations and minigames
     barrelLocations = [x for x in BarrelMetaData.keys()]
     minigamePool = [x for x in MinigameRequirements.keys() if x != Minigames.NoGame]
+    if settings.bonus_barrels == "all_beaver_bother":
+        minigamePool = [x for x in MinigameRequirements.keys() if x == Minigames.BeaverBotherEasy or x == Minigames.BeaverBotherNormal or x == Minigames.BeaverBotherHard]
     retries = 0
     while True:
         try:

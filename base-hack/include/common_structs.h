@@ -10,8 +10,25 @@ typedef struct shortPos {
 	/* 0x004 */ short zPos;
 } shortPos;
 
+typedef struct subrender {
+	/* 0x000 */ char unk_00[0x4];
+	/* 0x004 */ float unk_04;
+	/* 0x008 */ char unk_08[0x10-0x8];
+	/* 0x010 */ short unk_10;
+} subrender;
+
+typedef struct renderingParamsData {
+	/* 0x000 */ subrender* sub;
+	/* 0x004 */ char unk_04[0x34-0x4];
+	/* 0x034 */ float scale_x;
+	/* 0x038 */ float scale_y;
+	/* 0x03C */ float scale_z;
+} renderingParamsData;
+
 typedef struct actorData {
-	/* 0x000 */ char unk_00[0x58];
+	/* 0x000 */ void* model;
+	/* 0x004 */ renderingParamsData* render;
+	/* 0x008 */ char unk_08[0x58-0x8];
 	/* 0x058 */ int actorType;
 	/* 0x05C */ char unk_5C[0x60-0x5C];
 	/* 0x060 */ int obj_props_bitfield;

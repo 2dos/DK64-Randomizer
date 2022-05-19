@@ -60,6 +60,7 @@ void cFuncLoop(void) {
 	callParentMapFilter();
 	recolorKongControl();
 	spawnCannonWrapper();
+	setCrusher();
 	if (Rando.perma_lose_kongs) {
 		preventBossCheese();
 		kong_has_died();
@@ -192,9 +193,9 @@ int* displayListModifiers(int* dl) {
 				if (hud_st == 1) {
 					bp_numerator = 0;
 					bp_denominator = 0;
-					for (int i = 0; i < 40; i++) {
-						int bp_has = checkFlag(469 + i,0);
-						int bp_turn = checkFlag(509 + i,0);
+					for (int i = 0; i < 8; i++) {
+						int bp_has = checkFlag(469 + (i * 5) + Character,0);
+						int bp_turn = checkFlag(509 + (i * 5) + Character,0);
 						if ((bp_has) && (!bp_turn)) {
 							bp_numerator += 1;
 						}

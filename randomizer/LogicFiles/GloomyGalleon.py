@@ -26,13 +26,13 @@ LogicRegions = {
         Event(Events.GalleonLankySwitch, lambda l: l.Slam and l.lanky),
         Event(Events.GalleonTinySwitch, lambda l: l.Slam and l.tiny),
         Event(Events.LighthouseGateOpened, lambda l: l.coconut and l.donkey),
-        Event(Events.ShipyardGateOpened, lambda l: l.peanut and l.diddy),
+        # Gate to shipyard always open in rando
+        Event(Events.ShipyardGateOpened, lambda l: True),
     ], [
         TransitionFront(Regions.GloomyGalleonLobby, lambda l: True, Transitions.GalleonToIsles),
         TransitionFront(Regions.GalleonBeyondPineappleGate, lambda l: l.pineapple and l.chunky),
         TransitionFront(Regions.LighthouseArea, lambda l: Events.LighthouseGateOpened in l.Events),
-        # Gate to shipyard opened in rando if loading zones randomized
-        TransitionFront(Regions.Shipyard, lambda l: l.settings.shuffle_loading_zones == "all" or Events.ShipyardGateOpened in l.Events),
+        TransitionFront(Regions.Shipyard, lambda l: Events.ShipyardGateOpened in l.Events),
         TransitionFront(Regions.CrankyGalleon, lambda l: True),
         TransitionFront(Regions.GalleonBossLobby, lambda l: True),
     ]),

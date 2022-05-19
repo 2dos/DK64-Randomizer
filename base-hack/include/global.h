@@ -39,6 +39,7 @@ extern void changeHelmLZ(void);
 
 extern void PatchCrankyCode(void);
 extern void PatchKRoolCode(void);
+extern void PatchBonusCode(void);
 extern void FileScreenDLCode_Write(void);
 extern void write_kutoutorder(void);
 extern void remove_blockers(void);
@@ -51,6 +52,7 @@ extern void adjust_galleon_water(void);
 
 extern int convertSubIDToIndex(short obj_index);
 extern int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, int param2);
+extern void setCrusher(void);
 extern void createCollisionObjInstance(collision_types subtype, int map, int exit);
 extern int spawnCannonWrapper(void);
 extern void fixkey8(void);
@@ -62,6 +64,7 @@ extern void determineStartKong_PermaLossMode(void);
 extern void kong_has_died(void);
 extern int curseRemoved(void);
 extern void forceBossKong(void);
+extern int hasPermaLossGrace(void);
 
 extern void writeJetpacMedalReq(void);
 extern void resetMapContainer(void);
@@ -82,4 +85,5 @@ extern void newCounterCode(void);
 extern void writeCoinRequirements(int source);
 extern void colorMenuSky(void);
 extern void getMoveHint(actorData* actor, int text_file, int text_index);
+extern void cutsceneDKCode(void);
 //extern void getRandoNextMovePurchase(shop_paad* shop_info, KongBase* moves);

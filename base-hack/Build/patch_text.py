@@ -66,13 +66,13 @@ move_hints = [
         "kong": "Tiny",
         "cranky": "LEAP INTO MY SPECIAL BARREL AND PREPARE TO BE AMAZED AS YOU SHRINK IN SIZE!",
         "funky": "IT'S A MAGIC BARREL THAT'LL MAKE YOU THE SIZE OF A PEA.",
-        "candy": "THIS MAGIC POTION WILL MAKE YOU ITSY BITSY, {KONG}.",
+        "candy": "THIS MAGIC POTION WILL MAKE YOU ITSY BITSY, ~.",
     },
     {
         "move": "Ponytail Twirl",
         "kong": "Tiny",
         "cranky": "TIME TO DO SOMETHING WITH THAT SILLY HAIR OF YOURS.",
-        "funky": "TAKE A BIG LEAP AND FLY LIKE A {HAIRYCOPTER!}",  # Brackets make 'hairycopter' shaking letters
+        "funky": "TAKE A BIG LEAP AND FLY LIKE A \x01HAIRYCOPTER!\x01",
         "candy": "NO GAP WILL BE TOO FAR FOR YOU TO CROSS!",
     },
     {
@@ -170,7 +170,7 @@ move_hints = [
         "move": "Bongo Blast",
         "kong": "Donkey",
         "cranky": "I FOUND IT LYING SOMEWHERE. IT MAKES A FUNNY SOUND WHEN YOU SMACK IT.",
-        "funky": "GO ON AND PLAY A SICK BEAT, {KONG}!",
+        "funky": "GO ON AND PLAY A SICK BEAT, ~!",
         "candy": "I'LL SHOW YOU MY TWO BONGOS, AND HOW TO PLAY THEM, TOO.",
     },
     {
@@ -246,9 +246,9 @@ move_hints = [
 ]
 
 pre_amble = {
-    "cranky": "YOU'RE BACK AGAIN? YOU'RE LUCKY I HAVE SOMETHING FOR YOU. ",
-    "funky": "WHAT'S UP, {KONG}-DUDE! I JUST FINISHED MAKIN' THIS! ",
-    "candy": "WHY, {KONG}, HAVE I GOT A TREAT FOR YOU. ",
+    "cranky": "YOU'RE BACK AGAIN, ~? YOU'RE LUCKY I HAVE SOMETHING FOR YOU. ",
+    "funky": "WHAT'S UP, ~-DUDE! I JUST FINISHED MAKIN' THIS! ",
+    "candy": "WHY, ~, HAVE I GOT A TREAT FOR YOU. ",
 }
 
 moves = [
@@ -290,16 +290,18 @@ moves = [
 ]
 
 shop_owners = [
-    "Cranky",
-    "Funky",
-    "Candy",
+    "cranky",
+    "funky",
+    "candy",
 ]
 
 hint_text = []
 
-for move in moves:
+for move in move_hints:
     for shop in shop_owners:
-        hint_text.append([f"{move.upper()} ({shop.upper()})"])
+        hint_pre = pre_amble[shop]
+        hint_post = move[shop]
+        hint_text.append([f"{hint_pre}{hint_post}"])
 
 
 writeText(
@@ -312,3 +314,12 @@ writeText(
 )
 
 writeText("custom_text.bin", hint_text)
+
+writeText(
+    "dk_text.bin",
+    [
+        ["WHAT DID CRANKY MEAN ABOUT TRAINING? DONKEY ALL CONFUSED..."],
+        ["AW NO! SO THAT WHAT CRANKY MEAN ABOUT REPTILE...", "DONKEY NOT BELIEVE IT. KING K.ROOL? WE FINISHED K. ROOL OFF IN LAST GAME!"],
+        ["OKAY!", "DONKEY IS FREE NOW. THANK YOU, MY FRIEND.", "DONKEY CAN COLLECT YELLOW BANANAS.", "DONKEY WILL BE INSIDE THE TAG BARREL UNTIL YOU NEED MY HELP."],
+    ],
+)

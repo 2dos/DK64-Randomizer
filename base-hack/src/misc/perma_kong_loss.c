@@ -4,16 +4,17 @@ int curseRemoved(void) {
 	return checkFlag(770,0); // BoM turned off
 }
 
+int hasPermaLossGrace(void) {
+	return (CurrentMap == 0x11) || (CurrentMap == 0xAA);
+}
+
 int determineKongUnlock(int actorType, int kong_index) {
 	int unlock_flag = GetKongUnlockedFlag(actorType,kong_index);
 	int kong_freed = checkFlag(unlock_flag,0);
 	if (!Rando.perma_lose_kongs) {
 		return kong_freed;
 	}
-	if (CurrentMap == 0x11) {
-		return kong_freed;
-	}
-	if (CurrentMap == 0x2A) {
+	if (hasPermaLossGrace()) {
 		return kong_freed;
 	}
 	if (curseRemoved()) {

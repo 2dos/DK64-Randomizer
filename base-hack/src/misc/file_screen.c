@@ -118,7 +118,16 @@ static const short kong_flags[] = {385,6,70,66,117};
 void correctKongFaces(void) {
 	if (Rando.unlock_kongs) {
 		for (int i = 0; i < 5; i++) {
-			KongUnlockedMenuArray[i] = 1;
+			int flag = checkFlag(kong_flags[i],0);
+			KongUnlockedMenuArray[i] = flag;
+			if (!flag) {
+				KongUnlockedMenuArray[i] = (Rando.unlock_kongs & (1 << i)) != 0;
+			}
+		}
+		if (!checkFlag(385,0)) {
+			if ((Rando.unlock_kongs & 1) == 0) {
+				KongUnlockedMenuArray[0] = 0;
+			}
 		}
 	} else {
 		for (int i = 0; i < 5; i++) {

@@ -195,6 +195,13 @@ class Settings:
         self.music_fanfares = None
         self.music_events = None
 
+        #  Color
+        self.dk_colors = None
+        self.diddy_colors = None
+        self.lanky_colors = None
+        self.tiny_colors = None
+        self.chunky_colors = None
+
         #  Misc
         self.generate_spoilerlog = None
         self.fast_start_beginning_of_game = None
@@ -202,7 +209,7 @@ class Settings:
         self.quality_of_life = None
         self.enable_tag_anywhere = None
         self.krool_phase_order_rando = None
-        self.krool_access = None
+        self.krool_access = False
         self.open_lobbies = None
         self.random_medal_requirement = True
         self.bananaport_rando = False
@@ -268,19 +275,14 @@ class Settings:
         ]
         key_list = KeyEvents.copy()
         required_key_count = self.krool_key_count
-        if self.krool_access == "random_helm":
+        if self.krool_access:
             # If helm guaranteed, make sure it's added and included in the key count
             self.krool_keys_required.append(Events.HelmKeyTurnedIn)
             key_list.remove(Events.HelmKeyTurnedIn)
             required_key_count -= 1
-        if self.krool_access == "vanilla":
-            self.krool_keys_required.extend([Events.FactoryKeyTurnedIn, Events.HelmKeyTurnedIn])
-        elif self.krool_access == "all":
-            self.krool_keys_required.extend(KeyEvents)
-        elif self.krool_access == "random" or self.krool_access == "random_helm":
-            random.shuffle(key_list)
-            for x in range(required_key_count):
-                self.krool_keys_required.append(key_list[x])
+        random.shuffle(key_list)
+        for x in range(required_key_count):
+            self.krool_keys_required.append(key_list[x])
 
         # Banana medals
         if self.random_medal_requirement:

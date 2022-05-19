@@ -162,6 +162,7 @@ def modify(file_name, map_index):
             writedatatoarr(byte_stream_arr, x["scale"], 4, 0xC)
             writedatatoarr(byte_stream_arr, x["ry"], 2, 0x30)
             writedatatoarr(byte_stream_arr, x["type"], 2, 0x32)
+            writedatatoarr(byte_stream_arr, x["id"], 2, 0x34)
             actor.append({"stream": byte_stream_arr})
         for x in added_model2:
             byte_stream_arr = []

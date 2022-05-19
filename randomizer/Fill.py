@@ -24,7 +24,7 @@ from randomizer.Logic import LogicVarHolder, LogicVariables, STARTING_SLAM
 from randomizer.LogicClasses import TransitionFront
 from randomizer.Prices import GetMaxForKong, GetPriceOfMoveItem
 from randomizer.ShuffleBarrels import BarrelShuffle
-from randomizer.ShuffleKasplats import KasplatShuffle
+from randomizer.ShuffleKasplats import InitKasplatMap, KasplatShuffle
 from randomizer.ShuffleWarps import ShuffleWarps
 from randomizer.ShuffleBosses import ShuffleBossesBasedOnOwnedItems
 
@@ -674,7 +674,7 @@ def ShuffleSharedMoves(spoiler):
     return (kongMoves, validLocations)
 
 
-def ShuffleMisc(spoiler):
+def FillKongsAndMovesGeneric(spoiler):
     """Facilitate shuffling individual pools of items in lieu of full item rando."""
     retries = 0
     while True:
@@ -741,8 +741,8 @@ def FillKongsAndMoves(spoiler):
         raise Ex.ItemPlacementException(str(unplaced) + " unplaced items.")
 
 
-def ShuffleKongsAndLevels(spoiler):
-    """Shuffle Kongs and Levels simultaneously accounting for restrictions."""
+def FillKongsAndMovesForLevelRando(spoiler):
+    """Shuffle Kongs and Moves accounting for level order restrictions."""
     # All methods here follow this Kongs vs level progression rule:
     # Must be able to have 2 kongs no later than level 2
     # Must be able to have 3 kongs no later than level 3
@@ -757,8 +757,6 @@ def ShuffleKongsAndLevels(spoiler):
     #   6. Castle
     #   7. Fungi
     # ALGORITHM START
-    ShuffleExits.ShuffleLevelOrderWithRestrictions(spoiler.settings)
-    spoiler.UpdateExits()
     print("Starting Kong: " + spoiler.settings.starting_kong.name)
     # Need to place constants to update boss key items after shuffling levels
     ItemPool.PlaceConstants(spoiler.settings)
@@ -893,21 +891,8 @@ def Generate_Spoiler(spoiler):
     # Init logic vars with settings
     global LogicVariables
     LogicVariables = LogicVarHolder(spoiler.settings)
-    # Handle kasplats
-    KasplatShuffle(LogicVariables)
-    spoiler.human_kasplats = {}
-    spoiler.UpdateKasplats(LogicVariables.kasplat_map)
-    # Handle bonus barrels
-    if spoiler.settings.bonus_barrels == "random":
-        BarrelShuffle(spoiler.settings)
-        spoiler.UpdateBarrels()
-    # Handle Bananaports
-    if spoiler.settings.bananaport_rando:
-        replacements = []
-        human_replacements = {}
-        ShuffleWarps(replacements, human_replacements)
-        spoiler.bananaport_replacements = replacements.copy()
-        spoiler.human_warp_locations = human_replacements
+    # Initiate kasplat map with default
+    InitKasplatMap(LogicVariables)
     # Handle Kong Rando + Level Rando combination separately since it is more restricted
     if spoiler.settings.kongs_for_progression:
         # Force move rando on if not starting will all moves
@@ -916,17 +901,25 @@ def Generate_Spoiler(spoiler):
         # Force boss rando on
         spoiler.settings.boss_location_rando = True
         spoiler.settings.boss_kong_rando = True
-        ShuffleKongsAndLevels(spoiler)
+        # Handle Level Order
+        ShuffleExits.ShuffleLevelOrderWithRestrictions(spoiler.settings)
+        spoiler.UpdateExits()
+        # Handle misc randomizations
+        ShuffleMisc(spoiler)
+        # Handle Item Fill
+        FillKongsAndMovesForLevelRando(spoiler)
     else:
-        # Handle ER
+        # Handle Loading Zones
         if spoiler.settings.shuffle_loading_zones != "none":
             ShuffleExits.ExitShuffle(spoiler.settings)
             spoiler.UpdateExits()
+        # Handle misc randomizations
+        ShuffleMisc(spoiler)
         # Handle Item Fill
         if spoiler.settings.shuffle_items == "all":
             Fill(spoiler)
         elif spoiler.settings.shuffle_items == "moves" or spoiler.settings.kong_rando:
-            ShuffleMisc(spoiler)
+            FillKongsAndMovesGeneric(spoiler)
         else:
             # Just check if normal item locations are beatable with given settings
             ItemPool.PlaceConstants(spoiler.settings)
@@ -936,3 +929,22 @@ def Generate_Spoiler(spoiler):
     Reset()
     ShuffleExits.Reset()
     return spoiler
+
+
+def ShuffleMisc(spoiler):
+    """Shuffle miscellaneous objects outside of main fill algorithm, including Kasplats, Bonus barrels, and bananaport warps."""
+    # Handle kasplats
+    KasplatShuffle(LogicVariables)
+    spoiler.human_kasplats = {}
+    spoiler.UpdateKasplats(LogicVariables.kasplat_map)
+    # Handle bonus barrels
+    if spoiler.settings.bonus_barrels == "random" or spoiler.settings.bonus_barrels == "all_beaver_bother":
+        BarrelShuffle(spoiler.settings)
+        spoiler.UpdateBarrels()
+    # Handle Bananaports
+    if spoiler.settings.bananaport_rando:
+        replacements = []
+        human_replacements = {}
+        ShuffleWarps(replacements, human_replacements)
+        spoiler.bananaport_replacements = replacements.copy()
+        spoiler.human_warp_locations = human_replacements
