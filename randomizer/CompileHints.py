@@ -376,10 +376,14 @@ def compileHints(spoiler: Spoiler):
             updateRandomHint(f"The cardboard boss can be found in {level_name}.")
     # Way of the Hoard hints
     shopNames = ["Candy", "Funky", "Cranky"]
-    wothLocations = [key for key in spoiler.woth.keys() if any(ele in key for ele in shopNames)]
+    moveSpecificSuffixes = [" Donkey", " Diddy", " Lanky", " Tiny", " Chunky", " Shared"]
+    wothLocations = [key for key in spoiler.woth.keys() if any(shopName in key for shopName in shopNames)]
     selectedWothLocations = random.sample(wothLocations, min(5, len(wothLocations)))
     for wothLocation in selectedWothLocations:
-        updateRandomHint(f"{wothLocation} is on the Way of the Hoard.")
+        suffix = [specificSuffix for specificSuffix in moveSpecificSuffixes if specificSuffix in wothLocation]
+        if len(suffix) > 0:
+            wothHint = str(wothLocation).removesuffix(suffix[0])
+        updateRandomHint(f"{wothHint} is on the Way of the Hoard.")
 
     # PADDED HINTS
     level_list = ["Jungle Japes", "Angry Aztec", "Frantic Factory", "Gloomy Galleon", "Fungi Forest", "Crystal Caves", "Creepy Castle"]
