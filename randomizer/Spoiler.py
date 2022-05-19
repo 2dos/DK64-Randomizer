@@ -175,7 +175,7 @@ class Spoiler:
                 kutout_order = kutout_order + Kongs(kong).name + ", "
             humanspoiler["Shuffled Kutout Kong Order"] = kutout_order.removesuffix(", ")
 
-        if self.settings.bonus_barrels == "random":
+        if self.settings.bonus_barrels == "random" or self.settings.bonus_barrels == "all_beaver_bother":
             shuffled_barrels = OrderedDict()
             for location, minigame in self.shuffled_barrel_data.items():
                 shuffled_barrels[LocationList[location].name] = MinigameRequirements[minigame].name

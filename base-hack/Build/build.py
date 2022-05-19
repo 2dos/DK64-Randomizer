@@ -665,6 +665,9 @@ with open(newROMName, "r+b") as fh:
     fh.seek(0x1FED020 + 0x149)
     fh.write((2).to_bytes(1, "big"))
 
+    fh.seek(0x1FED020 + 0x13B)
+    fh.write((1).to_bytes(1, "big"))
+
     with open("assets/Non-Code/credits/squish.bin", "rb") as squish:
         fh.seek(0x1FFF800)
         fh.write(squish.read())
