@@ -216,6 +216,8 @@ def VerifyWorldWithWorstCoinUsage(settings):
         coinsSpent = GetMaxCoinsSpent(settings, itemsToPurchase)
         coinsNeeded = [maxCoins[kong] - coinsSpent[kong] for kong in range(0, 5)]
         coinsBefore = LogicVariables.Coins.copy()
+        # print("Coins owned during search: " + str(coinsBefore))
+        # print("Coins needed during search: " + str(coinsNeeded))
         # If we found enough coins that every kong can buy all their moves, world is valid!
         if (
             coinsBefore[Kongs.donkey] >= coinsNeeded[Kongs.donkey]
@@ -233,7 +235,11 @@ def VerifyWorldWithWorstCoinUsage(settings):
             Reset()
             return True
         # For each accessible shop location
-        newReachableShops = [x for x in reachable if LocationList[x].type == Types.Shop and LocationList[x].item is not None and LocationList[x].item != Items.NoItem and x not in locationsToPurchase]
+        newReachableShops = [
+            x
+            for x in reachable
+            if LocationList[x].type == Types.Shop and LocationList[x].item is not None and LocationList[x].item != Items.NoItem and x not in locationsToPurchase and LogicVariables.CanBuy(x)
+        ]
         shopDifferentials = {}
         shopUnlocksItems = {}
         # If no accessible shop locations found, means you got coin locked and the seed is not valid
