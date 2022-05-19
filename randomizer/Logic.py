@@ -24,6 +24,7 @@ from randomizer.Enums.Items import Items
 from randomizer.Enums.Kongs import Kongs
 from randomizer.Enums.Levels import Levels
 from randomizer.Enums.Locations import Locations
+from randomizer.Enums.Time import Time
 from randomizer.Lists.Location import Location, LocationList
 from randomizer.Lists.MapsAndExits import Maps
 from randomizer.Prices import CanBuy, GetPriceOfMoveItem
@@ -435,6 +436,16 @@ class LogicVarHolder:
         Usually the region's own HasAccess function is used, but this is necessary for checking access for other regions in logic files.
         """
         return Regions[region].HasAccess(kong)
+
+    def TimeAccess(self, region, time):
+        """Checks if a certain region has the given time of day access."""
+        if time == Time.Day:
+            return Regions[region].dayAccess
+        elif time == Time.Night:
+            return Regions[region].nightAccess
+        # Not sure when this'd be used
+        else: # if time == Time.Both
+            return Regions[region].dayAccess or Regions[region].nightAccess
 
     def KasplatAccess(self, location):
         """Use the kasplat map to check kasplat logic for blueprint locations."""
