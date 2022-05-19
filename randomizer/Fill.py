@@ -8,12 +8,14 @@ from randomizer.Lists.ShufflableExit import GetLevelShuffledToIndex, GetShuffled
 import randomizer.Logic as Logic
 from randomizer.Settings import Settings
 import randomizer.ShuffleExits as ShuffleExits
+from randomizer.Enums.Events import Events
 from randomizer.Enums.Items import Items
 from randomizer.Enums.Kongs import Kongs
 from randomizer.Enums.Levels import Levels
 from randomizer.Enums.Locations import Locations
 from randomizer.Enums.Regions import Regions
 from randomizer.Enums.SearchMode import SearchMode
+from randomizer.Enums.Time import Time
 from randomizer.Enums.Transitions import Transitions
 from randomizer.Enums.Types import Types
 from randomizer.Lists.Item import ItemList, KongFromItem
@@ -96,6 +98,8 @@ def GetAccessibleLocations(settings, ownedItems, searchType=SearchMode.GetReacha
 
             startRegion = Logic.Regions[Regions.IslesMain]
             startRegion.id = Regions.IslesMain
+            startRegion.dayAccess = True
+            startRegion.nightAccess = Events.Night in LogicVariables.Events
             regionPool = [startRegion]
             addedRegions = [Regions.IslesMain]
 
@@ -114,6 +118,11 @@ def GetAccessibleLocations(settings, ownedItems, searchType=SearchMode.GetReacha
                     if event.name not in LogicVariables.Events and event.logic(LogicVariables):
                         eventAdded = True
                         LogicVariables.Events.append(event.name)
+                    # Can start searching with night access
+                    # Check this even if Night's already been added, because you could
+                    # lose night access from start to Forest main, then regain it here
+                    if event.name == Events.Night and event.logic(LogicVariables):
+                        region.nightAccess = True
                 # Check accessibility for collectibles
                 if region.id in Logic.CollectibleRegions.keys():
                     for collectible in Logic.CollectibleRegions[region.id]:
@@ -161,10 +170,31 @@ def GetAccessibleLocations(settings, ownedItems, searchType=SearchMode.GetReacha
                             continue
                     # If a region is accessible through this exit and has not yet been added, add it to the queue to be visited eventually
                     if destination not in addedRegions and exit.logic(LogicVariables):
-                        addedRegions.append(destination)
-                        newRegion = Logic.Regions[destination]
-                        newRegion.id = destination
-                        regionPool.append(newRegion)
+                        # Check time of day
+                        timeAccess = True
+                        if exit.time == Time.Night and not region.nightAccess:
+                            timeAccess = False
+                        elif exit.time == Time.Day and not region.dayAccess:
+                            timeAccess = False
+                        if timeAccess:
+                            addedRegions.append(destination)
+                            newRegion = Logic.Regions[destination]
+                            newRegion.id = destination
+                            regionPool.append(newRegion)
+                    # If it's accessible, update time of day access whether already added or not
+                    # This way if a region has access from 2 different regions, one time-restricted and one not,
+                    # it will be known that it can be accessed during either time of day
+                    if exit.logic(LogicVariables):
+                        # If this region has day access and the exit isn't restricted to night-only, then the destination has day access
+                        if region.dayAccess and exit.time != Time.Night and not Logic.Regions[destination].dayAccess:
+                            Logic.Regions[destination].dayAccess = True
+                            # Count as event added so search doesn't get stuck if region is searched,
+                            # then later a new time of day access is found so it should be re-visited
+                            eventAdded = True
+                        # And vice versa
+                        if region.nightAccess and exit.time != Time.Day and not Logic.Regions[destination].nightAccess:
+                            Logic.Regions[destination].nightAccess = True
+                            eventAdded = True
                 # Deathwarps currently send to the vanilla destination
                 if region.deathwarp is not None:
                     destination = region.deathwarp.dest

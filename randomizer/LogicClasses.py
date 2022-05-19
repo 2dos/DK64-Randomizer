@@ -2,6 +2,7 @@
 from randomizer.Enums.Kongs import Kongs
 from randomizer.Enums.Levels import Levels
 from randomizer.Enums.Regions import Regions
+from randomizer.Enums.Time import Time
 from randomizer.Enums.Transitions import Transitions
 
 
@@ -55,6 +56,9 @@ class Region:
         self.events = events
         self.exits = transitionFronts  # In the context of a region, exits are how you leave the region
         self.restart = restart
+
+        self.dayAccess = False
+        self.nightAccess = False
 
         # If possible to die in this region, add an exit to where dying will take you
         # deathwarp is also set to none in regions in which a deathwarp would take you to itself
@@ -120,12 +124,16 @@ class Region:
             return self.donkeyAccess or self.diddyAccess or self.lankyAccess or self.tinyAccess or self.chunkyAccess
 
     def ResetAccess(self):
-        """Clear access for all kongs."""
+        """Clear access variables set during search."""
+        # Kong access
         self.donkeyAccess = False
         self.diddyAccess = False
         self.lankyAccess = False
         self.tinyAccess = False
         self.chunkyAccess = False
+        # Time access
+        self.dayAccess = False
+        self.nightAccess = False
 
     def GetDefaultDeathwarp(self):
         """Get the default deathwarp depending on the region's level."""
@@ -163,9 +171,17 @@ class TransitionBack:
 class TransitionFront:
     """The entered side of a transition between regions."""
 
-    def __init__(self, dest, logic, exitShuffleId=None, assumed=False):
+    def __init__(
+        self,
+        dest,
+        logic,
+        exitShuffleId=None,
+        assumed=False,
+        time=Time.Both,
+    ):
         """Initialize with given parameters."""
         self.dest = dest  # Planning to remove this
         self.logic = logic  # Lambda function for accessibility
         self.exitShuffleId = exitShuffleId  # Planning to remove this
+        self.time = time
         self.assumed = assumed  # Indicates this is an assumed exit attached to the root

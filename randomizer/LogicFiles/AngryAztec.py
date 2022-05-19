@@ -19,7 +19,8 @@ LogicRegions = {
         LocationLogic(Locations.AztecChunkyMedal, lambda l: l.ColoredBananas[Levels.AngryAztec][Kongs.chunky] >= 75),
         LocationLogic(Locations.AztecDonkeyFreeLlama, lambda l: Events.LlamaFreed in l.Events and l.donkey),
         LocationLogic(Locations.AztecChunkyVases, lambda l: l.pineapple and l.chunky),
-        LocationLogic(Locations.AztecKasplatSandyBridge, lambda l: l.coconut),
+        # If default damage can just walk to the bridge and take damage with any kong, otherwise need strong kong and to be donkey
+        LocationLogic(Locations.AztecKasplatSandyBridge, lambda l: l.coconut and ((l.strongKong and l.isdonkey) or l.settings.damage_amount == "default")),
         LocationLogic(Locations.AztecKasplatOnTinyTemple, lambda l: l.jetpack),
     ], [
         Event(Events.AztecEntered, lambda l: True),
