@@ -904,6 +904,8 @@ def Generate_Spoiler(spoiler):
         # Handle Level Order
         ShuffleExits.ShuffleLevelOrderWithRestrictions(spoiler.settings)
         spoiler.UpdateExits()
+        # Assume we can progress through the levels, since these will be adjusted within FillKongsAndMovesForLevelRando
+        WipeProgressionRequirements(spoiler.settings)
         # Handle misc randomizations
         ShuffleMisc(spoiler)
         # Handle Item Fill
