@@ -181,6 +181,9 @@ class Settings:
         # hard_shooting: bool
         self.hard_shooting = False
 
+        # damage multiplier
+        self.damage_amount = "default"
+
         # shuffle_loading_zones: str
         # none
         # levels
@@ -314,7 +317,7 @@ class Settings:
         # Kong rando
         if self.kong_rando:
             self.starting_kong = random.choice(kongs)
-            if self.shuffle_loading_zones == "levels":
+            if self.shuffle_loading_zones == "levels" or self.shuffle_loading_zones == "none":
                 self.kongs_for_progression = True
             # Kong freers are decided in the fill, set as any kong for now
             self.diddy_freeing_kong = Kongs.any

@@ -233,10 +233,12 @@ def UpdateLevelProgression(settings: Settings):
         Regions.CreepyCastleLobby,
     ]
     for levelIndex in range(len(lobbies)):
-        shuffledEntrance = ShufflableExits[LobbyEntrancePool[levelIndex]].shuffledId
-        newDestRegion = ShufflableExits[shuffledEntrance].back.regionId
-        # print(LobbyEntrancePool[levelIndex].name + " goes to " + newDestRegion.name)
-        newIndex = lobbies.index(newDestRegion)
+        newIndex = levelIndex
+        if settings.level_randomization != "none":
+            shuffledEntrance = ShufflableExits[LobbyEntrancePool[levelIndex]].shuffledId
+            newDestRegion = ShufflableExits[shuffledEntrance].back.regionId
+            # print(LobbyEntrancePool[levelIndex].name + " goes to " + newDestRegion.name)
+            newIndex = lobbies.index(newDestRegion)
         newEntryGBs[newIndex] = settings.EntryGBs[levelIndex]
         newBossBananas[newIndex] = settings.BossBananas[levelIndex]
     settings.EntryGBs = newEntryGBs

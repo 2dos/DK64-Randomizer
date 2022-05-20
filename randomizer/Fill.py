@@ -937,9 +937,10 @@ def Generate_Spoiler(spoiler):
         # Force boss rando on
         spoiler.settings.boss_location_rando = True
         spoiler.settings.boss_kong_rando = True
-        # Handle Level Order
-        ShuffleExits.ShuffleLevelOrderWithRestrictions(spoiler.settings)
-        spoiler.UpdateExits()
+        # Handle Level Order if randomized
+        if spoiler.settings.level_randomization == "levels":
+            ShuffleExits.ShuffleLevelOrderWithRestrictions(spoiler.settings)
+            spoiler.UpdateExits()
         # Assume we can progress through the levels, since these will be adjusted within FillKongsAndMovesForLevelRando
         WipeProgressionRequirements(spoiler.settings)
         # Handle misc randomizations
