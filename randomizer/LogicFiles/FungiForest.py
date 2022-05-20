@@ -6,6 +6,7 @@ from randomizer.Enums.Kongs import Kongs
 from randomizer.Enums.Levels import Levels
 from randomizer.Enums.Locations import Locations
 from randomizer.Enums.Regions import Regions
+from randomizer.Enums.Time import Time
 from randomizer.Enums.Transitions import Transitions
 from randomizer.LogicClasses import (Event, LocationLogic, Region,
                                      TransitionFront)
@@ -89,13 +90,13 @@ LogicRegions = {
     # This region basically just exists to facilitate the two entrances into upper mushroom
     Regions.MushroomNightDoor: Region("Mushroom Night Door", Levels.FungiForest, False, None, [], [], [
         TransitionFront(Regions.MushroomUpper, lambda l: True),
-        TransitionFront(Regions.MushroomNightExterior, lambda l: Events.Night in l.Events, Transitions.ForestNightToExterior),
+        TransitionFront(Regions.MushroomNightExterior, lambda l: True, Transitions.ForestNightToExterior, time=Time.Night),
     ]),
 
     Regions.MushroomNightExterior: Region("Mushroom Night Exterior", Levels.FungiForest, False, None, [
         LocationLogic(Locations.ForestKasplatUpperMushroomExterior, lambda l: True),
     ], [], [
-        TransitionFront(Regions.MushroomNightDoor, lambda l: Events.Night in l.Events, Transitions.ForestExteriorToNight),
+        TransitionFront(Regions.MushroomNightDoor, lambda l: True, Transitions.ForestExteriorToNight, time=Time.Night),
         TransitionFront(Regions.GiantMushroomArea, lambda l: True),
     ]),
 
@@ -130,8 +131,8 @@ LogicRegions = {
     ]),
 
     Regions.HollowTreeArea: Region("Hollow Tree Area", Levels.FungiForest, True, -1, [
-        LocationLogic(Locations.ForestDiddyOwlRace, lambda l: Events.Night in l.Events and l.jetpack and l.guitar and l.isdiddy, True),
-        LocationLogic(Locations.ForestLankyRabbitRace, lambda l: l.trombone and l.sprint and l.lanky),
+        LocationLogic(Locations.ForestDiddyOwlRace, lambda l: l.TimeAccess(Regions.HollowTreeArea, Time.Night) and l.jetpack and l.guitar and l.isdiddy, True),
+        LocationLogic(Locations.ForestLankyRabbitRace, lambda l: l.TimeAccess(Regions.HollowTreeArea, Time.Day) and l.trombone and l.sprint and l.lanky),
         LocationLogic(Locations.ForestKasplatOwlTree, lambda l: True),
     ], [], [
         TransitionFront(Regions.GiantMushroomArea, lambda l: Events.HollowTreeGateOpened in l.Events),
@@ -148,19 +149,19 @@ LogicRegions = {
     ]),
 
     Regions.MillArea: Region("Mill Area", Levels.FungiForest, True, None, [
-        LocationLogic(Locations.ForestDonkeyMill, lambda l: Events.ConveyorActivated in l.Events and Events.Night in l.Events and l.donkey),
-        LocationLogic(Locations.ForestDiddyCagedBanana, lambda l: Events.WinchRaised in l.Events and Events.Night in l.Events and l.diddy),
+        LocationLogic(Locations.ForestDonkeyMill, lambda l: l.TimeAccess(Regions.MillArea, Time.Night) and Events.ConveyorActivated in l.Events and l.donkey),
+        LocationLogic(Locations.ForestDiddyCagedBanana, lambda l: l.TimeAccess(Regions.MillArea, Time.Night) and Events.WinchRaised in l.Events and l.diddy),
     ], [], [
         TransitionFront(Regions.FungiForestStart, lambda l: True),
-        TransitionFront(Regions.MillChunkyArea, lambda l: l.punch and l.ischunky, Transitions.ForestMainToChunkyMill),
+        TransitionFront(Regions.MillChunkyArea, lambda l: l.punch and l.ischunky, Transitions.ForestMainToChunkyMill, time=Time.Day),
         TransitionFront(Regions.MillTinyArea, lambda l: Events.MillBoxBroken in l.Events and l.mini and l.istiny, Transitions.ForestMainToTinyMill),
-        TransitionFront(Regions.GrinderRoom, lambda l: True, Transitions.ForestMainToGrinder),
-        TransitionFront(Regions.MillRafters, lambda l: Events.Night in l.Events and l.spring and l.isdiddy, Transitions.ForestMainToRafters),
-        TransitionFront(Regions.WinchRoom, lambda l: Events.Night in l.Events and l.superSlam and l.isdiddy, Transitions.ForestMainToWinch),
-        TransitionFront(Regions.MillAttic, lambda l: Events.Night in l.Events, Transitions.ForestMainToAttic),
-        TransitionFront(Regions.ThornvineArea, lambda l: Events.Night in l.Events),
-        TransitionFront(Regions.Snide, lambda l: True),
-        TransitionFront(Regions.ForestBossLobby, lambda l: True),
+        TransitionFront(Regions.GrinderRoom, lambda l: True, Transitions.ForestMainToGrinder, time=Time.Day),
+        TransitionFront(Regions.MillRafters, lambda l: l.spring and l.isdiddy, Transitions.ForestMainToRafters, time=Time.Night),
+        TransitionFront(Regions.WinchRoom, lambda l: l.superSlam and l.isdiddy, Transitions.ForestMainToWinch, time=Time.Night),
+        TransitionFront(Regions.MillAttic, lambda l: True, Transitions.ForestMainToAttic, time=Time.Night),
+        TransitionFront(Regions.ThornvineArea, lambda l: True, time=Time.Night),
+        TransitionFront(Regions.Snide, lambda l: True, time=Time.Day),
+        TransitionFront(Regions.ForestBossLobby, lambda l: True, time=Time.Day),
     ]),
 
     # Physically chunky and tiny share an area but they're split for logical convenience
@@ -168,14 +169,14 @@ LogicRegions = {
         Event(Events.GrinderActivated, lambda l: l.triangle and l.ischunky),
         Event(Events.MillBoxBroken, lambda l: l.punch and l.ischunky),
     ], [
-        TransitionFront(Regions.MillArea, lambda l: l.ischunky, Transitions.ForestChunkyMillToMain),
+        TransitionFront(Regions.MillArea, lambda l: l.ischunky, Transitions.ForestChunkyMillToMain, time=Time.Day),
         TransitionFront(Regions.MillTinyArea, lambda l: True),
     ]),
 
     Regions.MillTinyArea: Region("Mill Tiny Area", Levels.FungiForest, False, -1, [], [], [
-        TransitionFront(Regions.MillArea, lambda l: l.mini and l.istiny, Transitions.ForestTinyMillToMain),
+        TransitionFront(Regions.MillArea, lambda l: Events.MillBoxBroken in l.Events and l.mini and l.istiny, Transitions.ForestTinyMillToMain),
         TransitionFront(Regions.MillChunkyArea, lambda l: True),
-        TransitionFront(Regions.SpiderRoom, lambda l: Events.Night in l.Events, Transitions.ForestTinyMillToSpider),
+        TransitionFront(Regions.SpiderRoom, lambda l: True, Transitions.ForestTinyMillToSpider, time=Time.Night),
         TransitionFront(Regions.GrinderRoom, lambda l: l.mini and l.istiny, Transitions.ForestTinyMillToGrinder),
     ]),
 
@@ -190,7 +191,7 @@ LogicRegions = {
     ], [
         Event(Events.ConveyorActivated, lambda l: l.superSlam and l.grab and l.donkey),
     ], [
-        TransitionFront(Regions.MillArea, lambda l: True, Transitions.ForestGrinderToMain),
+        TransitionFront(Regions.MillArea, lambda l: True, Transitions.ForestGrinderToMain, time=Time.Day),
         TransitionFront(Regions.MillTinyArea, lambda l: l.mini and l.istiny, Transitions.ForestGrinderToTinyMill),
     ]),
 
@@ -216,9 +217,9 @@ LogicRegions = {
     Regions.ThornvineArea: Region("Thornvine Area", Levels.FungiForest, True, -1, [
         LocationLogic(Locations.ForestKasplatNearBarn, lambda l: True),
     ], [], [
-        TransitionFront(Regions.MillArea, lambda l: Events.Night in l.Events),
-        # You're supposed to use strong kong to hit the switch in the thorns, but can brute force it
-        TransitionFront(Regions.ThornvineBarn, lambda l: l.superSlam and l.isdonkey, Transitions.ForestMainToBarn),
+        TransitionFront(Regions.MillArea, lambda l: True, time=Time.Night),
+        # You're supposed to use strong kong to hit the switch in the thorns, but can brute force it, unless on higher damage values
+        TransitionFront(Regions.ThornvineBarn, lambda l: l.superSlam and l.isdonkey and (l.strongKong or l.settings.damage_amount == "default"), Transitions.ForestMainToBarn),
         TransitionFront(Regions.ForestBossLobby, lambda l: True),
     ]),
 
@@ -235,7 +236,7 @@ LogicRegions = {
     ], [], [
         TransitionFront(Regions.FungiForestStart, lambda l: True),
         TransitionFront(Regions.FunkyForest, lambda l: True),
-        TransitionFront(Regions.ForestBossLobby, lambda l: Events.Night in l.Events),
+        TransitionFront(Regions.ForestBossLobby, lambda l: True, time=Time.Night),
     ]),
 
     Regions.ForestBossLobby: Region("Forest Boss Lobby", Levels.FungiForest, True, None, [], [], [
