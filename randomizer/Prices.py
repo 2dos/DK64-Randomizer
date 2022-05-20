@@ -236,18 +236,12 @@ def KongCanBuy(location, coins, settings, kong, slamLevel, ammoBelts, instUpgrad
 
 def AnyKongCanBuy(location, coins, settings, slamLevel, ammoBelts, instUpgrades):
     """Check if any kong can logically purchase this location."""
-    for kong in [Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky]:
-        if KongCanBuy(location, coins, settings, kong, slamLevel, ammoBelts, instUpgrades):
-            return True
-    return False
+    return any(KongCanBuy(location, coins, settings, kong, slamLevel, ammoBelts, instUpgrades) for kong in [Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky])
 
 
 def EveryKongCanBuy(location, coins, settings, slamLevel, ammoBelts, instUpgrades):
     """Check if any kong can logically purchase this location."""
-    for kong in [Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky]:
-        if not KongCanBuy(location, coins, settings, kong, slamLevel, ammoBelts, instUpgrades):
-            return False
-    return True
+    return all(KongCanBuy(location, coins, settings, kong, slamLevel, ammoBelts, instUpgrades) for kong in [Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky])
 
 
 def CanBuy(location, coins, settings, slamLevel, ammoBelts, instUpgrades):

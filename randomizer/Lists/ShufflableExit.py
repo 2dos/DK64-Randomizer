@@ -12,8 +12,12 @@ from randomizer.LogicClasses import TransitionBack
 class ShufflableExit:
     """Class that stores data about an exit to be shuffled."""
 
-    def __init__(self, name, region, back, category=None, entryKongs={Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky}, regionKongs={}, move=False):
+    def __init__(self, name, region, back, category=None, entryKongs=None, regionKongs=None, move=False):
         """Initialize with given parameters."""
+        if entryKongs is None:
+            entryKongs = {Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky}
+        if regionKongs is None:
+            regionKongs = {}
         self.name = name
         self.region = region
         self.back = back

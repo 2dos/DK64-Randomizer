@@ -151,7 +151,7 @@ MarcFile.prototype.convert = function () {
         this._u8array[position + 2],
         this._u8array[position + 3],
       ];
-      if (this._u8array[position + 4] == null) {
+      if (this._u8array[position + 4] === null) {
         break;
       }
       converted_chunk = convertchunk(data, byteswapped, wordswapped);

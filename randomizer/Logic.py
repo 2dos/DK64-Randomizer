@@ -430,14 +430,16 @@ class LogicVarHolder:
             else:
                 self.Coins[location.kong] -= price
 
-    def HasAccess(self, region, kong):
+    @staticmethod
+    def HasAccess(region, kong):
         """Check if a certain kong has access to a certain region.
 
         Usually the region's own HasAccess function is used, but this is necessary for checking access for other regions in logic files.
         """
         return Regions[region].HasAccess(kong)
 
-    def TimeAccess(self, region, time):
+    @staticmethod
+    def TimeAccess(region, time):
         """Check if a certain region has the given time of day access."""
         if time == Time.Day:
             return Regions[region].dayAccess
@@ -465,10 +467,7 @@ class LogicVarHolder:
 
     def CanAccessKRool(self):
         """Make sure that each required key has been turned in."""
-        for keyRequired in self.settings.krool_keys_required:
-            if keyRequired not in self.Events:
-                return False
-        return True
+        return all(not keyRequired not in self.Events for keyRequired in self.settings.krool_keys_required)
 
     def IsBossReachable(self, level):
         """Check if the boss banana requirement is met."""

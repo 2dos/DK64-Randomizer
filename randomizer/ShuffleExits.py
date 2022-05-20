@@ -190,7 +190,7 @@ def ShuffleExits(settings: Settings):
     elif settings.shuffle_loading_zones == "all":
         frontpool = []
         backpool = []
-        AssumeExits(settings, frontpool, backpool, [x for x in ShufflableExits.keys()])
+        AssumeExits(settings, frontpool, backpool, list(ShufflableExits.keys()))
         # Shuffle each entrance pool
         ShuffleExitsInPool(settings, frontpool, backpool)
     # If levels rando is on, need to update Blocker and T&S requirements to match
@@ -213,10 +213,9 @@ def ExitShuffle(settings):
             if retries == 20:
                 js.postMessage("Entrance placement failed, out of retries.")
                 raise Ex.EntranceAttemptCountExceeded
-            else:
-                retries += 1
-                js.postMessage("Entrance placement failed. Retrying. Tries: " + str(retries))
-                Reset()
+            retries += 1
+            js.postMessage("Entrance placement failed. Retrying. Tries: " + str(retries))
+            Reset()
 
 
 def UpdateLevelProgression(settings: Settings):
@@ -322,7 +321,7 @@ def ShuffleLevelOrderWithRestrictions(settings: Settings):
             factoryOptions = list(levelIndexChoices.intersection({1}))
     # If Aztec is level 2 and start with chunky, one of Japes/Factory needs to be level 1-3 and other in level 3-5
     elif aztecIndex == 2 and settings.starting_kong == Kongs.chunky:
-        if japesIndex == 1 or japesIndex == 3:
+        if japesIndex in (1, 3):
             factoryOptions = list(levelIndexChoices.intersection({3, 4, 5}))
         else:
             factoryOptions = list(levelIndexChoices.intersection({1, 2, 3}))
@@ -338,7 +337,7 @@ def ShuffleLevelOrderWithRestrictions(settings: Settings):
     # Decide where Caves will go - special case because T&S portals are not immediately accessible
     cavesOptions = []
     # Donkey and Tiny have no T&S access in Caves so it can't be the first level for them
-    if settings.starting_kong == Kongs.tiny or settings.starting_kong == Kongs.donkey:
+    if settings.starting_kong in (Kongs.tiny, Kongs.donkey):
         cavesOptions = list(levelIndexChoices.intersection({2, 7}))
     else:
         cavesOptions = list(levelIndexChoices.intersection({1, 7}))

@@ -54,10 +54,10 @@ def ShuffleBarrels(settings, barrelLocations, minigamePool):
 def BarrelShuffle(settings):
     """Facilitate shuffling of barrels."""
     # First make master copies of locations and minigames
-    barrelLocations = [x for x in BarrelMetaData.keys()]
+    barrelLocations = list(BarrelMetaData.keys())
     minigamePool = [x for x in MinigameRequirements.keys() if x != Minigames.NoGame]
     if settings.bonus_barrels == "all_beaver_bother":
-        minigamePool = [x for x in MinigameRequirements.keys() if x == Minigames.BeaverBotherEasy or x == Minigames.BeaverBotherNormal or x == Minigames.BeaverBotherHard]
+        minigamePool = [x for x in MinigameRequirements.keys() if x in (Minigames.BeaverBotherEasy, Minigames.BeaverBotherNormal, Minigames.BeaverBotherHard)]
     retries = 0
     while True:
         try:
@@ -72,6 +72,5 @@ def BarrelShuffle(settings):
             if retries == 5:
                 js.postMessage("Minigame placement failed, out of retries.")
                 raise Ex.BarrelAttemptCountExceeded
-            else:
-                retries += 1
-                js.postMessage("Minigame placement failed. Retrying. Tries: " + str(retries))
+            retries += 1
+            js.postMessage("Minigame placement failed. Retrying. Tries: " + str(retries))

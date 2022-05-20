@@ -175,7 +175,7 @@ class Spoiler:
                 kutout_order = kutout_order + Kongs(kong).name + ", "
             humanspoiler["Shuffled Kutout Kong Order"] = kutout_order.removesuffix(", ")
 
-        if self.settings.bonus_barrels == "random" or self.settings.bonus_barrels == "all_beaver_bother":
+        if self.settings.bonus_barrels in ("random", "all_beaver_bother"):
             shuffled_barrels = OrderedDict()
             for location, minigame in self.shuffled_barrel_data.items():
                 shuffled_barrels[LocationList[location].name] = MinigameRequirements[minigame].name
@@ -210,16 +210,13 @@ class Spoiler:
                     break
             # If not, create it
             if map is None:
-                map = {}
-                map["container_map"] = mapId
+                map = {"container_map": mapId}
                 self.enemy_replacements.append(map)
             # Create kasplat_swaps section if doesn't exist
             if "kasplat_swaps" not in map:
                 map["kasplat_swaps"] = []
             # Create swap entry and add to map
-            swap = {}
-            swap["vanilla_location"] = original
-            swap["replace_with"] = kong
+            swap = {"vanilla_location": original, "replace_with": kong}
             map["kasplat_swaps"].append(swap)
 
     def UpdateBarrels(self):
@@ -260,11 +257,8 @@ class Spoiler:
         self.location_data = {}
         self.shuffled_kong_placement = {}
         # Go ahead and set starting kong
-        startkong = {}
-        startkong["kong"] = self.settings.starting_kong
-        startkong["write"] = 0x141
-        trainingGrounds = {}
-        trainingGrounds["locked"] = startkong
+        startkong = {"kong": self.settings.starting_kong, "write": 0x141}
+        trainingGrounds = {"locked": startkong}
         self.shuffled_kong_placement["TrainingGrounds"] = trainingGrounds
         # Loop through locations and set necessary data
         for id, location in locations.items():
@@ -308,12 +302,8 @@ class Spoiler:
                     lockedkong = {}
                     lockedkong["kong"] = KongFromItem(location.item)
                     lockedkong["write"] = lockedwrite
-                    puzzlekong = {}
-                    puzzlekong["kong"] = unlockKong
-                    puzzlekong["write"] = puzzlewrite
-                    kongLocation = {}
-                    kongLocation["locked"] = lockedkong
-                    kongLocation["puzzle"] = puzzlekong
+                    puzzlekong = {"kong": unlockKong, "write": puzzlewrite}
+                    kongLocation = {"locked": lockedkong, "puzzle": puzzlekong}
                     self.shuffled_kong_placement[locationName] = kongLocation
 
             # Uncomment for more verbose spoiler with all locations
@@ -339,7 +329,8 @@ class Spoiler:
             location = locations[locationId]
             self.woth[location.name] = ItemList[location.item].name
 
-    def GetKroolKeysRequired(self, keyEvents):
+    @staticmethod
+    def GetKroolKeysRequired(keyEvents):
         """Get key names from required key events to print in the spoiler."""
         keys = []
         if Events.JapesKeyTurnedIn in keyEvents:
