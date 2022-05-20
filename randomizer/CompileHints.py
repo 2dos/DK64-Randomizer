@@ -331,7 +331,7 @@ def compileHints(spoiler: Spoiler):
                 kong_name = kong_list[move["kong"]]
                 level_name = level_list[move["level"]]
             move_name = move["name"]
-            
+
             shop_name = shop_owners[move["shop"]]
             text = f"{move_name} can be purchased from {shop_name} in {level_name}."
             if move["important"]:
