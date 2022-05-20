@@ -53,6 +53,7 @@ def compileHints(spoiler: Spoiler):
         "This is it. The peak of all randomizers. No other randomizer exists besides DK64 Randomizer where you can listen to the dk rap in its natural habitat while freeing Chunky Kong in Jungle Japes.",
     ]
     # K. Rool Moves
+    kong_list = ["Donkey", "Diddy", "Lanky", "Tiny", "Chunky"]
     kong_cryptic = [
         [
             "The kong who is bigger, faster and potentially stronger too",
@@ -80,6 +81,7 @@ def compileHints(spoiler: Spoiler):
             "The kong who bows down to a dragonfly",
         ],
     ]
+    level_list = ["Jungle Japes", "Angry Aztec", "Frantic Factory", "Gloomy Galleon", "Fungi Forest", "Crystal Caves", "Creepy Castle", "Hideout Helm"]
     level_cryptic = [
         [
             "The level with a localized storm",
@@ -322,11 +324,16 @@ def compileHints(spoiler: Spoiler):
                             move["level"] = level
                             move["shop"] = shop
         for move in moves_of_importance:
-            kong_name = random.choice(kong_cryptic[move["kong"]])
+            if spoiler.settings.cryptic_hints:
+                kong_name = random.choice(kong_cryptic[move["kong"]])
+                level_name = random.choice(level_cryptic[move["level"]])
+            else:
+                kong_name = kong_list[move["kong"]]
+                level_name = level_list[move["level"]]
             move_name = move["name"]
-            level_name = random.choice(level_cryptic[move["level"]])
+            
             shop_name = shop_owners[move["shop"]]
-            text = f"{move_name} can be purchased in {level_name} from {shop_name}."
+            text = f"{move_name} can be purchased from {shop_name} in {level_name}."
             if move["important"]:
                 updateRandomHint(text)
             else:
@@ -354,8 +361,12 @@ def compileHints(spoiler: Spoiler):
         for kong_map in placement_levels:
             kong_index = kong_json[kong_map["name"]]["locked"]["kong"]
             level_index = kong_map["level"]
-            kong_name = random.choice(kong_cryptic[kong_index])
-            level_name = random.choice(level_cryptic[level_index])
+            if spoiler.settings.cryptic_hints:
+                kong_name = random.choice(kong_cryptic[kong_index])
+                level_name = random.choice(level_cryptic[level_index])
+            else:
+                kong_name = kong_list[kong_index]
+                level_name = level_list[level_index]
             updateRandomHint(f"{kong_name} can be found in {level_name}.")
     if spoiler.settings.shuffle_loading_zones == "all":
         AddLoadingZoneHints(spoiler)
@@ -367,16 +378,21 @@ def compileHints(spoiler: Spoiler):
     if spoiler.settings.level_randomization != "level_order":
         for x in spoiler.settings.krool_keys_required:
             key_index = x - 4
-            level_name = random.choice(level_cryptic[key_index])
+            if spoiler.settings.cryptic_hints:
+                level_name = random.choice(level_cryptic[key_index])
+            else:
+                level_name = level_list[key_index]
             updateRandomHint(f"You will need to obtain the key from {level_name} to fight your greatest foe.")
     for x in range(7):
         boss_map = spoiler.settings.boss_maps[x]
-        level_name = random.choice(level_cryptic[x])
+        if spoiler.settings.cryptic_hints:
+            level_name = random.choice(level_cryptic[x])
+        else:
+            level_name = level_list[x]
         if boss_map == 0xC7:
             updateRandomHint(f"The cardboard boss can be found in {level_name}.")
 
     # PADDED HINTS
-    level_list = ["Jungle Japes", "Angry Aztec", "Frantic Factory", "Gloomy Galleon", "Fungi Forest", "Crystal Caves", "Creepy Castle"]
     cb_list = [
         {"kong": "Donkey", "color": "Yellow"},
         {"kong": "Diddy", "color": "Red"},
@@ -385,7 +401,7 @@ def compileHints(spoiler: Spoiler):
         {"kong": "Chunky", "color": "Green"},
     ]
     # padded_hints.append(f"Your seed is {spoiler.settings.seed}")
-    padded_hints.append(f"You can find bananas in {random.choice(level_list)}, but also in other levels.")
+    padded_hints.append(f"You can find bananas in {level_list[random.randint(0,6)]}, but also in other levels.")
     cb_hint = random.choice(cb_list)
     padded_hints.append(f"{cb_hint['kong']} can find {cb_hint['color']} bananas in {random.choice(level_list)}.")
     for x in range(8):
@@ -393,14 +409,20 @@ def compileHints(spoiler: Spoiler):
         gb_name = "Golden Bananas"
         if count == 1:
             gb_name = "Golden Banana"
-        level_name = random.choice(level_cryptic[x])
+        if spoiler.settings.cryptic_hints:
+            level_name = random.choice(level_cryptic[x])
+        else:
+            level_name = level_list[x]
         padded_hints.append(f"The barrier to {level_name} can be cleared by obtaining {count} {gb_name}.")
     for x in range(7):
         count = spoiler.settings.BossBananas[x]
         cb_name = "Small Bananas"
         if count == 1:
             cb_name = "Small Banana"
-        level_name = random.choice(level_cryptic[x])
+        if spoiler.settings.cryptic_hints:
+            level_name = random.choice(level_cryptic[x])
+        else:
+            level_name = level_list[x]
         padded_hints.append(f"The barrier to the boss in {level_name} can be cleared by obtaining {count} {cb_name}.")
     padded_count = 35
     if len(padded_hints) < 35:
