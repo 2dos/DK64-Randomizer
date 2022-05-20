@@ -55,7 +55,6 @@ class LogicVarHolder:
         self.tiny = Kongs.tiny in self.settings.starting_kong_list
         self.chunky = Kongs.chunky in self.settings.starting_kong_list
 
-
         # Right now assuming start with training barrels
         self.vines = True  # self.settings.training_barrels == "startwith"
         self.swim = True  # self.settings.training_barrels == "startwith"

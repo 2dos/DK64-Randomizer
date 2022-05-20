@@ -9,6 +9,7 @@ from randomizer.ShuffleBosses import ShuffleBosses, ShuffleBossKongs, ShuffleKut
 from randomizer.Enums.Events import Events
 from randomizer.Enums.Kongs import Kongs, GetKongs
 from randomizer.Prices import RandomizePrices, VanillaPrices
+from random import randint
 
 
 class Settings:
@@ -167,10 +168,13 @@ class Settings:
         self.unlock_fairy_shockwave = None
         # krool_phase_count: int, [1-5]
         self.krool_phase_count = 5
+        self.krool_random = False
         # krool_key_count: int, [0-8]
         self.krool_key_count = 8
+        self.keys_random = False
         # starting_kongs_count: int, [1-5]
         self.starting_kongs_count = 5
+        self.starting_random = False
 
         # bonus_barrels: str
         # skip - NOT IMPLEMENTED YET
@@ -243,6 +247,8 @@ class Settings:
         phases = [x for x in kongs if x != Kongs.chunky]
         if self.krool_phase_order_rando:
             random.shuffle(phases)
+        if self.krool_random:
+            self.krool_phase_count = randint(1, 5)
         if self.krool_phase_count < 5:
             phases = random.sample(phases, self.krool_phase_count - 1)
         orderedPhases = []
@@ -274,7 +280,10 @@ class Settings:
             Events.HelmKeyTurnedIn,
         ]
         key_list = KeyEvents.copy()
-        required_key_count = self.krool_key_count
+        if self.keys_random:
+            required_key_count = randint(0, 8)
+        else:
+            required_key_count = self.krool_key_count
         if self.krool_access:
             # If helm guaranteed, make sure it's added and included in the key count
             self.krool_keys_required.append(Events.HelmKeyTurnedIn)
@@ -313,6 +322,8 @@ class Settings:
 
         # Kong rando
         # Temp until Slider UI binding gets fixed
+        if self.starting_random:
+            self.starting_kongs_count = randint(1, 5)
         if self.starting_kongs_count == 5:
             self.kong_rando = False
         print(self.kong_rando)

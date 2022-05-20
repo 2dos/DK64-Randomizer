@@ -31,7 +31,6 @@ def on_input(event):
         min_max(event, 10, 200)
     elif "blocker" in event.target.id:
         min_max(event, 0, 200)
-    
 
 
 def min_max(event, min, max):
@@ -250,3 +249,19 @@ def enable_kong_rando(evt):
         kong_rando.setAttribute("disabled", "disabled")
     else:
         kong_rando.removeAttribute("disabled")
+
+
+@bind("click", "krool_random")
+def disable_krool_phases(evt):
+    """Disable music options when Randomize All is selected."""
+    disabled = False
+    krool = js.document.getElementById("krool_phase_count")
+    if js.document.getElementById("krool_random").checked:
+        disabled = True
+    try:
+        if disabled:
+            krool.setAttribute("disabled", "disabled")
+        else:
+            krool.removeAttribute("disabled")
+    except AttributeError:
+        pass

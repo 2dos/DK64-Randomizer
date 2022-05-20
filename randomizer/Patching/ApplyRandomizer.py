@@ -139,8 +139,8 @@ def patching_response(responded_data):
     else:
         bin_value = 0
         for x in spoiler.settings.starting_kong_list:
-            bin_value |= (1 << x)
-        ROM().seek(sav+ 0x02C)
+            bin_value |= 1 << x
+        ROM().seek(sav + 0x02C)
         ROM().write(bin_value)
 
     # Unlock All Moves

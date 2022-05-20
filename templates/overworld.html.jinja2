@@ -86,6 +86,16 @@
         <div class="col border">
             <h3>Game Length Settings</h3>
             <div class="center">K-Rool Phase Length</div>
+            <div class="form-check form-switch w-75" style="margin-left: 30%;">
+                <label title="Randomize number of K Rool Phases.">
+                    <input class="form-check-input"
+                            type="checkbox"
+                            name="krool_random"
+                            id="krool_random"
+                            value="True"/>
+                    Randomize
+                </label>
+            </div>
             <div>
                 <input type="text"
                        name="krool_phase_count"
@@ -100,7 +110,8 @@
                        style="width: 80%">
             </div>
             <hr>
-            <div class="form-check form-switch w-75" style="margin-left: 25%;">
+            <div class="center">Keys required to beat K. Rool</div>
+            <div class="form-check form-switch w-75" style="margin-left: 30%;">
                 <label title="Required to get Key 8 from Helm to access K Rool or leave it up to chance.">
                     <input class="form-check-input"
                             type="checkbox"
@@ -110,7 +121,16 @@
                     Key 8 Required
                 </label>
             </div>
-            <div class="center">Keys required to beat K. Rool</div>
+            <div class="form-check form-switch w-75" style="margin-left: 30%;">
+                <label title="Randomize how many Keys are pre-turned in.">
+                    <input class="form-check-input"
+                            type="checkbox"
+                            name="keys_random"
+                            id="keys_random"
+                            value="True"/>
+                    Randomize
+                </label>
+            </div>
             <div>
                 <input type="text"
                        name="krool_key_count"
@@ -126,6 +146,16 @@
             </div>
             <hr>
             <div class="center">Number of Starting Kongs</div>
+            <div class="form-check form-switch w-75" style="margin-left: 30%;">
+                <label title="Randomize how many kongs you start with.">
+                    <input class="form-check-input"
+                            type="checkbox"
+                            name="starting_random"
+                            id="starting_random"
+                            value="True"/>
+                    Randomize
+                </label>
+            </div>
             <div>
                 <input type="text"
                        name="starting_kongs_count"

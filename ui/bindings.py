@@ -12,7 +12,6 @@ def bind(event, id, iterations=0):
         id (str): ID of the element to bind to.
         iterations (int, optional): If we want to run this function multiple times with an increasing iteration. Defaults to 0.
     """
-    
 
     def real_decorator(function):
         """Return the main decorator back this is the main response.
