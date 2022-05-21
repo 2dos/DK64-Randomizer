@@ -34,7 +34,7 @@ def generate_settings():
 
     data["unlock_all_moves"] = False
     data["kasplat_rando"] = False
-    data["unlock_all_kongs"] = False
+    data["starting_kongs_count"] = 5
     data["crown_door_open"] = False
     data["coin_door_open"] = False
     data["unlock_fairy_shockwave"] = False
@@ -72,7 +72,7 @@ def test_shuffles(generate_settings):
     duped = deepcopy(settings)
     duped.training_barrels = True
     duped.unlock_all_moves = True
-    duped.unlock_all_kongs = True
+    duped.starting_kongs_count = 5
     duped.unlock_fairy_shockwave = True
     duped.shuffle_items = "moves"
     duped.shuffle_loading_zones = "all"
