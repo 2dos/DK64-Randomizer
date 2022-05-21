@@ -234,7 +234,7 @@ def UpdateLevelProgression(settings: Settings):
     ]
     for levelIndex in range(len(lobbies)):
         newIndex = levelIndex
-        if settings.level_randomization != "none":
+        if settings.shuffle_loading_zones == "levels":
             shuffledEntrance = ShufflableExits[LobbyEntrancePool[levelIndex]].shuffledId
             newDestRegion = ShufflableExits[shuffledEntrance].back.regionId
             # print(LobbyEntrancePool[levelIndex].name + " goes to " + newDestRegion.name)
