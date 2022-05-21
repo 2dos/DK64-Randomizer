@@ -467,11 +467,7 @@ def AssumedFill(settings, itemsToPlace, validLocations, ownedItems=[]):
         if len(validReachable) == 0:
             print("Failed placing item " + ItemList[item].name + ", no valid reachable locations without this item.")
             currentKongsFreed = [ItemList[x].name for x in owned if ItemList[x].type == Types.Kong]
-            startKongList = []
-            for x in settings.starting_kong_list:
-                startKongList.append(x.name.capitalize())
-            for i, kong in enumerate(startKongList):
-                currentKongsFreed.insert(i, kong)
+            currentKongsFreed.insert(0, settings.starting_kong.name)
             currentMovesOwned = [ItemList[x].name for x in owned if ItemList[x].type == Types.Shop]
             currentGbCount = len([x for x in owned if ItemList[x].type == Types.Banana])
             js.postMessage("Current Moves owned at failure: " + str(currentMovesOwned) + " with GB count: " + str(currentGbCount) + " and kongs freed: " + str(currentKongsFreed))
@@ -492,8 +488,7 @@ def AssumedFill(settings, itemsToPlace, validLocations, ownedItems=[]):
                     movePriceArray[moveKong] = movePrice
         elif ItemList[item].type == Types.Kong:
             ownedKongs = [KongFromItem(x) for x in owned if ItemList[x].type == Types.Kong]
-            for i, kong in enumerate(settings.starting_kong_list):
-                ownedKongs.insert(i, kong)
+            ownedKongs.insert(0, settings.starting_kong)
             kongBeingPlaced = KongFromItem(item)
             if kongBeingPlaced in ownedKongs:
                 ownedKongs.remove(kongBeingPlaced)  # Cannot free with the kong being placed

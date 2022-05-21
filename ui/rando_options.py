@@ -27,8 +27,6 @@ def on_input(event):
     # Make sure we limit the max items in each of these text boxes values
     if "troff" in event.target.id:
         min_max(event, 0, 500)
-    elif event.target.id == "blocker_text":  # Maybe change depending on how we handing low randomized maximums
-        min_max(event, 0, 200)
     elif "blocker" in event.target.id:
         min_max(event, 0, 200)
 
@@ -143,6 +141,19 @@ def toggle_b_locker_boxes(event):
             pass
 
 
+@bind("click", "unlock_all_kongs")
+def unlock_kongs_toggle(event):
+    """Toggle the textboxes for unlock_all_kongs."""
+    disabled = False
+    if js.document.getElementById("unlock_all_kongs").checked:
+        disabled = True
+    if disabled:
+        js.document.getElementById("kong_rando").setAttribute("disabled", "disabled")
+        js.document.getElementById("kong_rando").checked = False
+    else:
+        js.document.getElementById("kong_rando").removeAttribute("disabled")
+
+
 @bind("click", "randomize_cb_required_amounts")
 def toggle_counts_boxes(event):
     """Toggle the textboxes for Troff."""
@@ -174,13 +185,10 @@ def update_boss_required(evt):
         document.getElementById("boss_location_rando").checked = True
         document.getElementById("boss_kong_rando").setAttribute("disabled", "disabled")
         document.getElementById("boss_kong_rando").checked = True
-        document.getElementById("kong_rando").setAttribute("disabled", "disabled")
-        document.getElementById("kong_rando").checked = True
     else:
         try:
             document.getElementById("boss_kong_rando").removeAttribute("disabled")
             document.getElementById("boss_location_rando").removeAttribute("disabled")
-            document.getElementById("kong_rando").removeAttribute("disabled")
         except Exception:
             pass
 
@@ -237,31 +245,3 @@ def disable_music(evt):
                 music.removeAttribute("disabled")
         except AttributeError:
             pass
-
-
-@bind("change", "starting_kongs_count")
-def enable_kong_rando(evt):
-    """Enable Kong Rando if less than 5 starting kongs."""
-    print("Lanky")
-    kong_rando = js.document.getElementById("kong_rando")
-    if js.document.getElementById("starting_kongs_count").value == "5":
-        kong_rando.checked = False
-        kong_rando.setAttribute("disabled", "disabled")
-    else:
-        kong_rando.removeAttribute("disabled")
-
-
-@bind("click", "krool_random")
-def disable_krool_phases(evt):
-    """Disable music options when Randomize All is selected."""
-    disabled = False
-    krool = js.document.getElementById("krool_phase_count")
-    if js.document.getElementById("krool_random").checked:
-        disabled = True
-    try:
-        if disabled:
-            krool.setAttribute("disabled", "disabled")
-        else:
-            krool.removeAttribute("disabled")
-    except AttributeError:
-        pass
