@@ -9,7 +9,6 @@ from randomizer.ShuffleBosses import ShuffleBosses, ShuffleBossKongs, ShuffleKut
 from randomizer.Enums.Events import Events
 from randomizer.Enums.Kongs import Kongs, GetKongs
 from randomizer.Prices import RandomizePrices, VanillaPrices
-from random import randint
 
 
 class Settings:
@@ -160,6 +159,8 @@ class Settings:
         #  Settings which affect logic
         # start_with_moves: bool
         self.unlock_all_moves = None
+        # unlock_all_kongs: bool
+        self.unlock_all_kongs = None
         # crown_door_open: bool
         self.crown_door_open = None
         # coin_door_open: bool
@@ -168,13 +169,8 @@ class Settings:
         self.unlock_fairy_shockwave = None
         # krool_phase_count: int, [1-5]
         self.krool_phase_count = 5
-        self.krool_random = False
         # krool_key_count: int, [0-8]
         self.krool_key_count = 8
-        self.keys_random = False
-        # starting_kongs_count: int, [1-5]
-        self.starting_kongs_count = 5
-        self.starting_random = False
 
         # bonus_barrels: str
         # skip - NOT IMPLEMENTED YET
@@ -250,8 +246,6 @@ class Settings:
         phases = [x for x in kongs if x != Kongs.chunky]
         if self.krool_phase_order_rando:
             random.shuffle(phases)
-        if self.krool_random:
-            self.krool_phase_count = randint(1, 5)
         if self.krool_phase_count < 5:
             phases = random.sample(phases, self.krool_phase_count - 1)
         orderedPhases = []
@@ -283,10 +277,7 @@ class Settings:
             Events.HelmKeyTurnedIn,
         ]
         key_list = KeyEvents.copy()
-        if self.keys_random:
-            required_key_count = randint(0, 8)
-        else:
-            required_key_count = self.krool_key_count
+        required_key_count = self.krool_key_count
         if self.krool_access:
             # If helm guaranteed, make sure it's added and included in the key count
             self.krool_keys_required.append(Events.HelmKeyTurnedIn)
@@ -324,17 +315,8 @@ class Settings:
             self.shuffle_loading_zones = "none"
 
         # Kong rando
-        # Temp until Slider UI binding gets fixed
-        if self.starting_random:
-            self.starting_kongs_count = randint(1, 5)
-        if self.starting_kongs_count == 5:
-            self.kong_rando = False
-        print(self.kong_rando)
         if self.kong_rando:
-            self.starting_kong_list = random.sample(kongs, self.starting_kongs_count)
-            self.starting_kong = random.choice(self.starting_kong_list)
-            print("Start List: ")
-            print(self.starting_kong_list)
+            self.starting_kong = random.choice(kongs)
             if self.shuffle_loading_zones == "levels" or self.shuffle_loading_zones == "none":
                 self.kongs_for_progression = True
             # Kong freers are decided in the fill, set as any kong for now
@@ -343,12 +325,6 @@ class Settings:
             self.tiny_freeing_kong = Kongs.any
             self.chunky_freeing_kong = Kongs.any
         else:
-            self.possible_kong_list = kongs.copy()
-            self.possible_kong_list.remove(0)
-            self.starting_kong_list = random.sample(self.possible_kong_list, self.starting_kongs_count - 1)
-            self.starting_kong_list.append(Kongs.donkey)
-            print("Start List: ")
-            print(self.starting_kong_list)
             self.starting_kong = Kongs.donkey
             self.diddy_freeing_kong = Kongs.donkey
             self.lanky_freeing_kong = Kongs.donkey
