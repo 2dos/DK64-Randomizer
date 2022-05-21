@@ -68,6 +68,7 @@ class Spoiler:
         settings["decoupled_loading_zones"] = self.settings.decoupled_loading_zones
         settings["unlock_all_moves"] = self.settings.unlock_all_moves
         settings["starting_kong"] = ItemList[ItemFromKong(self.settings.starting_kong)].name
+        # list here
         settings["diddy_freeing_kong"] = ItemList[ItemFromKong(self.settings.diddy_freeing_kong)].name
         settings["tiny_freeing_kong"] = ItemList[ItemFromKong(self.settings.tiny_freeing_kong)].name
         settings["lanky_freeing_kong"] = ItemList[ItemFromKong(self.settings.lanky_freeing_kong)].name

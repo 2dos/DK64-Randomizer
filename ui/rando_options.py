@@ -27,8 +27,8 @@ def on_input(event):
     # Make sure we limit the max items in each of these text boxes values
     if "troff" in event.target.id:
         min_max(event, 0, 500)
-    elif event.target.id == "blocker_text":
-        min_max(event, 10, 200)
+    elif event.target.id == "blocker_text":  # Maybe change depending on how we handing low randomized maximums
+        min_max(event, 0, 200)
     elif "blocker" in event.target.id:
         min_max(event, 0, 200)
 
