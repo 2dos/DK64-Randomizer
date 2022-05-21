@@ -63,7 +63,7 @@ def PlaceConstants(settings):
         LocationList[Locations.IslesSwimTrainingBarrel].PlaceConstantItem(Items.NoItem)
         LocationList[Locations.IslesOrangesTrainingBarrel].PlaceConstantItem(Items.NoItem)
         LocationList[Locations.IslesBarrelsTrainingBarrel].PlaceConstantItem(Items.NoItem)
-    if settings.starting_kongs_count == 5:
+    if settings.unlock_all_kongs:
         LocationList[Locations.DiddyKong].PlaceConstantItem(Items.NoItem)
         LocationList[Locations.LankyKong].PlaceConstantItem(Items.NoItem)
         LocationList[Locations.TinyKong].PlaceConstantItem(Items.NoItem)
@@ -198,7 +198,7 @@ def Keys():
 def Kongs(settings):
     """Return Kong items depending on settings."""
     kongs = []
-    if settings.starting_kongs_count != 5:
+    if not settings.unlock_all_kongs:
         kongs = [Items.Donkey, Items.Diddy, Items.Lanky, Items.Tiny, Items.Chunky]
         kongs.remove(ItemFromKong(settings.starting_kong))
     return kongs

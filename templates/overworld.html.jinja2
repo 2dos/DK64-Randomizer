@@ -6,6 +6,20 @@
                 <tr>
                     <td>
                         <div class="form-check form-switch w-75">
+                            <label title="This option will make all 5 kongs available from the start without freeing them. &#013;The golden bananas awarded when freeing specific kongs still must be collected even with this option on. &#013;If using Level Progression Randomizer and playing through glitchless, this option is forced on.">
+                                <input class="form-check-input"
+                                       type="checkbox"
+                                       id="unlock_all_kongs"
+                                       name="unlock_all_kongs"
+                                       value="True"/>
+                                Unlock All Kongs
+                            </label>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <div class="form-check form-switch w-75">
                             <label title="This option will make all moves available from the start without purchasing them. &#013;Includes all Cranky, all Candy, and almost all Funky purchasables. &#013;Does not include access to JetPac in Cranky; you will still need some banana medals. &#013;Does not include the shockwave attack from the banana fairy queen.">
                                 <input class="form-check-input"
                                        type="checkbox"
@@ -86,16 +100,6 @@
         <div class="col border">
             <h3>Game Length Settings</h3>
             <div class="center">K-Rool Phase Length</div>
-            <div class="form-check form-switch w-75" style="margin-left: 30%;">
-                <label title="Randomize number of K Rool Phases.">
-                    <input class="form-check-input"
-                            type="checkbox"
-                            name="krool_random"
-                            id="krool_random"
-                            value="True"/>
-                    Randomize
-                </label>
-            </div>
             <div>
                 <input type="text"
                        name="krool_phase_count"
@@ -110,7 +114,6 @@
                        style="width: 80%">
             </div>
             <hr>
-            <div class="center">Keys required to beat K. Rool</div>
             <div class="form-check form-switch w-75" style="margin-left: 30%;">
                 <label title="Required to get Key 8 from Helm to access K Rool or leave it up to chance.">
                     <input class="form-check-input"
@@ -121,16 +124,8 @@
                     Key 8 Required
                 </label>
             </div>
-            <div class="form-check form-switch w-75" style="margin-left: 30%;">
-                <label title="Randomize how many Keys are pre-turned in.">
-                    <input class="form-check-input"
-                            type="checkbox"
-                            name="keys_random"
-                            id="keys_random"
-                            value="True"/>
-                    Randomize
-                </label>
-            </div>
+            <hr>
+            <div class="center">Keys required to beat K. Rool</div>
             <div>
                 <input type="text"
                        name="krool_key_count"
@@ -144,31 +139,6 @@
                        data-slider-value="8"
                        style="width: 80%">
             </div>
-            <hr>
-            <div class="center">Number of Starting Kongs</div>
-            <div class="form-check form-switch w-75" style="margin-left: 30%;">
-                <label title="Randomize how many kongs you start with.">
-                    <input class="form-check-input"
-                            type="checkbox"
-                            name="starting_random"
-                            id="starting_random"
-                            value="True"/>
-                    Randomize
-                </label>
-            </div>
-            <div>
-                <input type="text"
-                       name="starting_kongs_count"
-                       id="starting_kongs_count"
-                       data-provide="slider"
-                       data-slider-ticks="[1, 2, 3, 4, 5]"
-                       data-slider-ticks-labels='["1", "2", "3", "4", "5"]'
-                       data-slider-min="1"
-                       data-slider-max="5"
-                       data-slider-step="1"
-                       data-slider-value="5"
-                       style="width: 80%">
-            </div>
         </div>
     </div>
 </div>
@@ -177,7 +147,6 @@ $('.nav-tabs').click(function(){
  setTimeout(() => {
       $('#krool_phase_count').slider("relayout");
       $('#krool_key_count').slider("relayout");
-      $('#starting_kongs_count').slider("relayout");
     }, 200);
 })
 </script>
