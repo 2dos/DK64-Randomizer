@@ -777,7 +777,7 @@ def FillKongsAndMoves(spoiler):
         raise Ex.ItemPlacementException(str(unplaced) + " unplaced items.")
 
 
-def FillKongsAndMovesForLevelRando(spoiler):
+def FillKongsAndMovesForLevelOrder(spoiler):
     """Shuffle Kongs and Moves accounting for level order restrictions."""
     # All methods here follow this Kongs vs level progression rule:
     # Must be able to have 2 kongs no later than level 2
@@ -801,10 +801,13 @@ def FillKongsAndMovesForLevelRando(spoiler):
         try:
             # Assume we can progress through the levels so long as we have enough kongs
             WipeProgressionRequirements(spoiler.settings)
+            spoiler.settings.kongs_for_progression = True
             # Fill the kongs and the moves
             FillKongsAndMoves(spoiler)
             # Update progression requirements based on what is now accessible after all shuffles are done
             SetNewProgressionRequirements(spoiler.settings)
+            # Once progression requirements updated, no longer assume we need kongs freed for level progression
+            spoiler.settings.kongs_for_progression = False
             # Check if game is beatable
             if not VerifyWorldWithWorstCoinUsage(spoiler.settings):
                 raise Ex.GameNotBeatableException("Game unbeatable after placing all items.")
@@ -937,15 +940,16 @@ def Generate_Spoiler(spoiler):
         # Force boss rando on
         spoiler.settings.boss_location_rando = True
         spoiler.settings.boss_kong_rando = True
-        # Handle Level Order
-        ShuffleExits.ShuffleLevelOrderWithRestrictions(spoiler.settings)
-        spoiler.UpdateExits()
+        # Handle Level Order if randomized
+        if spoiler.settings.shuffle_loading_zones == "levels":
+            ShuffleExits.ShuffleLevelOrderWithRestrictions(spoiler.settings)
+            spoiler.UpdateExits()
         # Assume we can progress through the levels, since these will be adjusted within FillKongsAndMovesForLevelRando
         WipeProgressionRequirements(spoiler.settings)
         # Handle misc randomizations
         ShuffleMisc(spoiler)
         # Handle Item Fill
-        FillKongsAndMovesForLevelRando(spoiler)
+        FillKongsAndMovesForLevelOrder(spoiler)
     else:
         # Handle Loading Zones
         if spoiler.settings.shuffle_loading_zones != "none":

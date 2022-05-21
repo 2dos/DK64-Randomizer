@@ -102,11 +102,10 @@ def ShuffleKasplats(LogicVariables):
         success = False
         for kong in kongs:
             LogicVariables.kasplat_map[location] = kong
-            if Fill.VerifyWorld(LogicVariables.settings):
-                # Successful placement, remove kong
-                level_kongs[level].remove(kong)
-                success = True
-                break
+            # Assuming Successful placement, remove kong
+            level_kongs[level].remove(kong)
+            success = True
+            break
         if not success:
             raise Ex.KasplatOutOfKongs
 
