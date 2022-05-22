@@ -1,4 +1,0 @@
-flaskwebgui
-flask
-brython
-psutil
