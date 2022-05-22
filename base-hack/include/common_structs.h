@@ -192,6 +192,10 @@ typedef struct playerData {
 	/* 0x36D */ char unk_36D[0x36F - 0x36D];
 	/* 0x36F */ char new_kong;
 	/* 0x370 */ int strong_kong_ostand_bitfield;
+	/* 0x374 */ char unk_374[0x37D-0x374];
+	/* 0x37D */ unsigned char rambi_enabled;
+	/* 0x37E */ char unk_37E[0x3BE - 0x37E];
+	/* 0x3BE */ unsigned char detransform_timer;
 } playerData; //size 0x630
 
 typedef struct TextOverlay {

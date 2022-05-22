@@ -43,7 +43,7 @@ song_data = [
     Song("Jungle Japes (Army Dillo)", type=SongType.BGM, memory=0x189, channel=2),
     Song("Jungle Japes (Caves/Underground)", type=SongType.BGM, memory=0x100, channel=1),  # 5
     Song("Funky's Hut", type=SongType.BGM, memory=0x100, channel=1),
-    Song("Unused Coin Pickup", type=SongType.Fanfare, memory=0x440),
+    Song("Unused Coin Pickup", type=SongType.System, memory=0x440),
     Song("Bonus Minigames", type=SongType.BGM, memory=0x189, channel=2),
     Song("Triangle Trample", type=SongType.Event, memory=0x8C2),
     Song("Guitar Gazump", type=SongType.Event, memory=0x8C2),  # 10
