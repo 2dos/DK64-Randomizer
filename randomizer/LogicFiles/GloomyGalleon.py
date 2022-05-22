@@ -5,6 +5,7 @@ from randomizer.Enums.Events import Events
 from randomizer.Enums.Kongs import Kongs
 from randomizer.Enums.Levels import Levels
 from randomizer.Enums.Locations import Locations
+from randomizer.Enums.MinigameType import MinigameType
 from randomizer.Enums.Regions import Regions
 from randomizer.Enums.Transitions import Transitions
 from randomizer.LogicClasses import (Event, LocationLogic, Region,
@@ -122,8 +123,8 @@ LogicRegions = {
     ),
 
     Regions.TreasureRoom: Region("Treasure Room", Levels.GloomyGalleon, True, TransitionFront(Regions.GloomyGalleonStart, lambda l: Events.TreasureRoomTeleporterUnlocked in l.Events and l.HasAccess(Regions.Shipyard, Kongs.any) or (Events.WaterSwitch in l.Events and l.spring and l.isdiddy)), [
-        LocationLogic(Locations.GalleonDiddyGoldTower, lambda l: l.spring and l.isdiddy, True),
-        LocationLogic(Locations.GalleonLankyGoldTower, lambda l: l.balloon and l.islanky, True),
+        LocationLogic(Locations.GalleonDiddyGoldTower, lambda l: l.spring and l.isdiddy, MinigameType.BonusBarrel),
+        LocationLogic(Locations.GalleonLankyGoldTower, lambda l: l.balloon and l.islanky, MinigameType.BonusBarrel),
         # This Kasplat has special logic, handled in KasplatAccess()
         LocationLogic(Locations.GalleonKasplatGoldTower, lambda l: True),
     ], [
@@ -140,7 +141,7 @@ LogicRegions = {
     ]),
 
     Regions.Submarine: Region("Submarine", Levels.GloomyGalleon, False, -1, [
-        LocationLogic(Locations.GalleonTinySubmarine, lambda l: l.istiny, True),
+        LocationLogic(Locations.GalleonTinySubmarine, lambda l: l.istiny, MinigameType.BonusBarrel),
     ], [], [
         TransitionFront(Regions.Shipyard, lambda l: True, Transitions.GalleonSubmarineToShipyard),
     ]),
@@ -158,19 +159,19 @@ LogicRegions = {
     ]),
 
     Regions.TinyShip: Region("Tiny Ship", Levels.GloomyGalleon, False, -1, [
-        LocationLogic(Locations.GalleonTiny2DoorShip, lambda l: l.istiny, True),
+        LocationLogic(Locations.GalleonTiny2DoorShip, lambda l: l.istiny, MinigameType.BonusBarrel),
     ], [], [
         TransitionFront(Regions.Shipyard, lambda l: True, Transitions.GalleonTinyToShipyard),
     ]),
 
     Regions.BongosShip: Region("Bongos Ship", Levels.GloomyGalleon, False, -1, [
-        LocationLogic(Locations.GalleonDonkey5DoorShip, lambda l: l.isdonkey, True),
+        LocationLogic(Locations.GalleonDonkey5DoorShip, lambda l: l.isdonkey, MinigameType.BonusBarrel),
     ], [], [
         TransitionFront(Regions.Shipyard, lambda l: True, Transitions.GalleonBongosToShipyard),
     ]),
 
     Regions.GuitarShip: Region("Guitar Ship", Levels.GloomyGalleon, False, -1, [
-        LocationLogic(Locations.GalleonDiddy5DoorShip, lambda l: l.isdiddy, True),
+        LocationLogic(Locations.GalleonDiddy5DoorShip, lambda l: l.isdiddy, MinigameType.BonusBarrel),
     ], [], [
         TransitionFront(Regions.Shipyard, lambda l: True, Transitions.GalleonGuitarToShipyard),
     ]),
@@ -189,7 +190,7 @@ LogicRegions = {
     ]),
 
     Regions.TriangleShip: Region("Triangle Ship", Levels.GloomyGalleon, False, -1, [
-        LocationLogic(Locations.GalleonChunky5DoorShip, lambda l: l.ischunky, True),
+        LocationLogic(Locations.GalleonChunky5DoorShip, lambda l: l.ischunky, MinigameType.BonusBarrel),
     ], [], [
         TransitionFront(Regions.Shipyard, lambda l: True, Transitions.GalleonTriangleToShipyard),
     ]),

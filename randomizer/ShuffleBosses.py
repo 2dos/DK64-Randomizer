@@ -100,6 +100,12 @@ def ShuffleBossesBasedOnOwnedItems(settings, ownedKongs: dict, ownedMoves: dict)
         galleonBossKongOptions = set(ownedKongs[galleonBossIndex]).intersection({Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky})
         galleonBossKong = random.choice(list(galleonBossKongOptions))
         bossLevelOptions.remove(galleonBossIndex)
+        # Then place Armydillo 2
+        cavesBossOptions = [x for x in bossLevelOptions if Kongs.donkey in ownedKongs[x] or Kongs.diddy in ownedKongs[x] or Kongs.lanky in ownedKongs[x] or Kongs.chunky in ownedKongs[x]]
+        cavesBossIndex = random.choice(cavesBossOptions)
+        cavesBossKongOptions = set(ownedKongs[cavesBossIndex]).intersection({Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.chunky})
+        cavesBossKong = random.choice(list(cavesBossKongOptions))
+        bossLevelOptions.remove(cavesBossIndex)
         # Place the rest randomly
         remainingBosses = list(bossLevelOptions)
         random.shuffle(remainingBosses)
@@ -107,8 +113,6 @@ def ShuffleBossesBasedOnOwnedItems(settings, ownedKongs: dict, ownedMoves: dict)
         japesBossKong = random.choice(ownedKongs[japesBossIndex])
         aztecBossIndex = remainingBosses.pop()
         aztecBossKong = random.choice(ownedKongs[aztecBossIndex])
-        cavesBossIndex = remainingBosses.pop()
-        cavesBossKong = random.choice(ownedKongs[cavesBossIndex])
         castleBossIndex = remainingBosses.pop()
         castleBossKong = random.choice(ownedKongs[castleBossIndex])
         newBossMaps = []

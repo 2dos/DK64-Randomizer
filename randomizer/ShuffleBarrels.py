@@ -4,6 +4,7 @@ import random
 import js
 import randomizer.Fill as Fill
 import randomizer.Lists.Exceptions as Ex
+from randomizer.Settings import Settings
 from randomizer.Enums.Minigames import Minigames
 from randomizer.Lists.Minigame import BarrelMetaData, MinigameRequirements
 from randomizer.Lists.MapsAndExits import Maps
@@ -15,12 +16,17 @@ def Reset(barrelLocations):
         BarrelMetaData[key].minigame = Minigames.NoGame
 
 
-def ShuffleBarrels(settings, barrelLocations, minigamePool):
+def ShuffleBarrels(settings: Settings, barrelLocations, minigamePool):
     """Shuffle minigames to different barrels."""
     random.shuffle(barrelLocations)
     random.shuffle(minigamePool)
     while len(barrelLocations) > 0:
         location = barrelLocations.pop()
+        # Don't bother shuffling or validating barrel locations which are skipped
+        if BarrelMetaData[location].map == Maps.HideoutHelm and settings.helm_barrels == "skip":
+            continue
+        elif BarrelMetaData[location].map != Maps.HideoutHelm and settings.bonus_barrels == "skip":
+            continue
         # Check each remaining minigame to see if placing it will produce a valid world
         success = False
         for minigame in minigamePool:
@@ -51,27 +57,28 @@ def ShuffleBarrels(settings, barrelLocations, minigamePool):
             raise Ex.BarrelOutOfMinigames
 
 
-def BarrelShuffle(settings):
+def BarrelShuffle(settings: Settings):
     """Facilitate shuffling of barrels."""
-    # First make master copies of locations and minigames
-    barrelLocations = [x for x in BarrelMetaData.keys()]
-    minigamePool = [x for x in MinigameRequirements.keys() if x != Minigames.NoGame]
-    if settings.bonus_barrels == "all_beaver_bother":
-        minigamePool = [x for x in MinigameRequirements.keys() if x == Minigames.BeaverBotherEasy or x == Minigames.BeaverBotherNormal or x == Minigames.BeaverBotherHard]
-    retries = 0
-    while True:
-        try:
-            # Shuffle barrels
-            Reset(barrelLocations)
-            ShuffleBarrels(settings, barrelLocations.copy(), minigamePool.copy())
-            # Verify world by assuring all locations are still reachable
-            if not Fill.VerifyWorld(settings):
-                raise Ex.BarrelPlacementException
-            return
-        except Ex.BarrelPlacementException:
-            if retries == 5:
-                js.postMessage("Minigame placement failed, out of retries.")
-                raise Ex.BarrelAttemptCountExceeded
-            else:
-                retries += 1
-                js.postMessage("Minigame placement failed. Retrying. Tries: " + str(retries))
+    if settings.bonus_barrels == "random" or settings.bonus_barrels == "all_beaver_bother" or settings.helm_barrels == "random" or settings.helm_barrels == "all_beaver_bother":
+        # First make master copies of locations and minigames
+        barrelLocations = [x for x in BarrelMetaData.keys()]
+        minigamePool = [x for x in MinigameRequirements.keys() if x != Minigames.NoGame]
+        if settings.bonus_barrels == "all_beaver_bother" or settings.helm_barrels == "all_beaver_bother":
+            minigamePool = [x for x in MinigameRequirements.keys() if x == Minigames.BeaverBotherEasy or x == Minigames.BeaverBotherNormal or x == Minigames.BeaverBotherHard]
+        retries = 0
+        while True:
+            try:
+                # Shuffle barrels
+                Reset(barrelLocations)
+                ShuffleBarrels(settings, barrelLocations.copy(), minigamePool.copy())
+                # Verify world by assuring all locations are still reachable
+                if not Fill.VerifyWorld(settings):
+                    raise Ex.BarrelPlacementException
+                return
+            except Ex.BarrelPlacementException:
+                if retries == 5:
+                    js.postMessage("Minigame placement failed, out of retries.")
+                    raise Ex.BarrelAttemptCountExceeded
+                else:
+                    retries += 1
+                    js.postMessage("Minigame placement failed. Retrying. Tries: " + str(retries))

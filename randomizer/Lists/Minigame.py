@@ -18,6 +18,19 @@ class Minigame:
         self.logic = logic
 
 
+HelmMinigameLocations = [
+    Locations.HelmDonkey1,
+    Locations.HelmDonkey2,
+    Locations.HelmDiddy1,
+    Locations.HelmDiddy2,
+    Locations.HelmLanky1,
+    Locations.HelmLanky2,
+    Locations.HelmTiny1,
+    Locations.HelmTiny2,
+    Locations.HelmChunky1,
+    Locations.HelmChunky2,
+]
+
 MinigameRequirements = {
     Minigames.NoGame: Minigame(name="No Game", helm_enabled=False, logic=lambda l: True),
     # Batty Barrel Bandit

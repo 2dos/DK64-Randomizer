@@ -2,6 +2,7 @@
 import random
 
 import js
+from randomizer.Enums.MinigameType import MinigameType
 import randomizer.ItemPool as ItemPool
 import randomizer.Lists.Exceptions as Ex
 from randomizer.Lists.ShufflableExit import GetLevelShuffledToIndex, GetShuffledLevelIndex
@@ -132,7 +133,9 @@ def GetAccessibleLocations(settings, ownedItems, searchType=SearchMode.GetReacha
                 for location in region.locations:
                     if location.logic(LogicVariables) and location.id not in newLocations and location.id not in accessible:
                         # If this location is a bonus barrel, must make sure its logic is met as well
-                        if location.bonusBarrel and settings.bonus_barrels != "skip":
+                        if (location.bonusBarrel is MinigameType.BonusBarrel and settings.bonus_barrels != "skip") or (
+                            location.bonusBarrel is MinigameType.HelmBarrel and settings.helm_barrels != "skip"
+                        ):
                             minigame = BarrelMetaData[location.id].minigame
                             if not MinigameRequirements[minigame].logic(LogicVariables):
                                 continue
@@ -980,9 +983,8 @@ def ShuffleMisc(spoiler):
     spoiler.human_kasplats = {}
     spoiler.UpdateKasplats(LogicVariables.kasplat_map)
     # Handle bonus barrels
-    if spoiler.settings.bonus_barrels == "random" or spoiler.settings.bonus_barrels == "all_beaver_bother":
-        BarrelShuffle(spoiler.settings)
-        spoiler.UpdateBarrels()
+    BarrelShuffle(spoiler.settings)
+    spoiler.UpdateBarrels()
     # Handle Bananaports
     if spoiler.settings.bananaport_rando:
         replacements = []
