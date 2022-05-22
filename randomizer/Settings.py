@@ -173,10 +173,11 @@ class Settings:
         self.krool_key_count = 8
 
         # bonus_barrels: str
-        # skip - NOT IMPLEMENTED YET
+        # skip (auto-completed)
         # normal
         # random
         self.bonus_barrels = "normal"
+        self.bonus_barrel_auto_complete = False
 
         # hard_shooting: bool
         self.hard_shooting = False
@@ -300,7 +301,9 @@ class Settings:
         self.kutout_kongs = ShuffleKutoutKongs(self.boss_maps, self.boss_kongs, self.boss_kong_rando)
 
         # Bonus Barrel Rando
-        if self.bonus_barrel_rando:
+        if self.bonus_barrel_auto_complete:
+            self.bonus_barrels = "skip"
+        elif self.bonus_barrel_rando:
             self.bonus_barrels = "random"
 
         # Loading Zone Rando
