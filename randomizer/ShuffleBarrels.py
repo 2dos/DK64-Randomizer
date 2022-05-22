@@ -16,12 +16,17 @@ def Reset(barrelLocations):
         BarrelMetaData[key].minigame = Minigames.NoGame
 
 
-def ShuffleBarrels(settings, barrelLocations, minigamePool):
+def ShuffleBarrels(settings: Settings, barrelLocations, minigamePool):
     """Shuffle minigames to different barrels."""
     random.shuffle(barrelLocations)
     random.shuffle(minigamePool)
     while len(barrelLocations) > 0:
         location = barrelLocations.pop()
+        # Don't bother shuffling or validating barrel locations which are skipped
+        if BarrelMetaData[location].map == Maps.HideoutHelm and settings.helm_barrels == "skip":
+            continue
+        elif BarrelMetaData[location].map != Maps.HideoutHelm and settings.bonus_barrels == "skip":
+            continue
         # Check each remaining minigame to see if placing it will produce a valid world
         success = False
         for minigame in minigamePool:
