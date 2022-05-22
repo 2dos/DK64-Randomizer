@@ -14,7 +14,7 @@ from randomizer.Enums.Transitions import Transitions
 from randomizer.Enums.Types import Types
 from randomizer.Lists.Item import ItemFromKong, NameFromKong, KongFromItem, ItemList
 from randomizer.Lists.Location import LocationList
-from randomizer.Lists.Minigame import BarrelMetaData, MinigameRequirements
+from randomizer.Lists.Minigame import BarrelMetaData, HelmMinigameLocations, MinigameRequirements
 from randomizer.Lists.MapsAndExits import GetExitId, GetMapId, Maps
 from randomizer.Settings import Settings
 from randomizer.ShuffleExits import ShufflableExits
@@ -175,11 +175,16 @@ class Spoiler:
                 kutout_order = kutout_order + Kongs(kong).name + ", "
             humanspoiler["Shuffled Kutout Kong Order"] = kutout_order.removesuffix(", ")
 
-        if self.settings.bonus_barrels == "random" or self.settings.bonus_barrels == "all_beaver_bother":
+        if self.settings.bonus_barrel_rando:
             shuffled_barrels = OrderedDict()
             for location, minigame in self.shuffled_barrel_data.items():
+                if location in HelmMinigameLocations and self.settings.helm_barrels == "skip":
+                    continue
+                if location not in HelmMinigameLocations and self.settings.bonus_barrels == "skip":
+                    continue
                 shuffled_barrels[LocationList[location].name] = MinigameRequirements[minigame].name
-            humanspoiler["Shuffled Bonus Barrels"] = shuffled_barrels
+            if len(shuffled_barrels) > 0:
+                humanspoiler["Shuffled Bonus Barrels"] = shuffled_barrels
 
         if self.settings.music_bgm == "randomized":
             humanspoiler["Shuffled Music (BGM)"] = self.music_bgm_data

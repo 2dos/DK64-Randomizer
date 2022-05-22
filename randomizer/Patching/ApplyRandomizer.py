@@ -210,7 +210,7 @@ def patching_response(responded_data):
     # Auto complete bonus barrels
     if spoiler.settings.bonus_barrel_auto_complete:
         ROM().seek(sav + 0x117)
-        ROM().write(3)
+        ROM().write(1)
 
     # Enable or disable the warp to isles option in the UI
     if spoiler.settings.warp_to_isles:
