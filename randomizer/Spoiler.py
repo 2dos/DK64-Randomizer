@@ -67,8 +67,11 @@ class Spoiler:
         settings["shuffle_loading_zones"] = self.settings.shuffle_loading_zones
         settings["decoupled_loading_zones"] = self.settings.decoupled_loading_zones
         settings["unlock_all_moves"] = self.settings.unlock_all_moves
-        settings["unlock_all_kongs"] = self.settings.unlock_all_kongs
         settings["starting_kong"] = ItemList[ItemFromKong(self.settings.starting_kong)].name
+        startKongList = []
+        for x in settings.starting_kong_list:
+            startKongList.append(x.name.capitalize())
+        settings["starting_kong_list"] = startKongList
         settings["diddy_freeing_kong"] = ItemList[ItemFromKong(self.settings.diddy_freeing_kong)].name
         settings["tiny_freeing_kong"] = ItemList[ItemFromKong(self.settings.tiny_freeing_kong)].name
         settings["lanky_freeing_kong"] = ItemList[ItemFromKong(self.settings.lanky_freeing_kong)].name

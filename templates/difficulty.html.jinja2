@@ -20,7 +20,7 @@
                                    style="width: 100%;"
                                    value="{{ i+1 }}"
                                    type="number"
-                                   title="You can adjust each individual B Locker amount to any number between 0-200. &#013;Note that you could make it impossible to beat the game glitchless if certain levels are set too high, as the program does not validate if a game is beatable glitchless with adjusted B Locker settings. &#013;If you are unsure what to adjust the level values to, use the presets dropdown instead."/>
+                                   title="You can adjust each individual B Locker amount to any number between 0-200. &#013;Note that if you make the game impossible to beat the glitchless, the program does validate if a game is beatable glitchless by adjusting your B Locker settings. &#013;If you are unsure what to adjust the level values to, use the presets dropdown instead."/>
                         </td>
                         {% if i < 7 %}
                             <td>
@@ -32,7 +32,7 @@
                                        style="width: 100%;"
                                        value="{{ i+1 }}"
                                        type="number"
-                                       title="You can adjust each individual Troff n Scoff amount to any number between 1-500. &#013;Note that you could make it impossible to beat the game glitchless if early levels are set too high, as the program does not validate if a game is beatable glitchless with adjusted Troff n Scoff settings. &#013;If you are unsure what to adjust the level values to, use the presets dropdown instead."/>
+                                       title="You can adjust each individual Troff n Scoff amount to any number between 1-500. &#013;Note that if you make the game impossible to beat the glitchless, the program does validate if a game is beatable glitchless by adjusting your Troff n Scoff settings. &#013;If you are unsure what to adjust the level values to, use the presets dropdown instead."/>
                             </td>
                         {% endif %}
                     </tr>
@@ -58,7 +58,8 @@
                     style="width: 50%;display:inline-block;"
                     type="number"
                     title="Maximum Randomized value"
-                    default="50"/> 
+                    default="50"
+                    placeholder="50"/> 
             </label>
             <div class="form-check form-switch w-75">
                 <label title="Randomize Required CB totals">
@@ -80,7 +81,8 @@
                     style="width: 50%;display:inline-block;"
                     type="number"
                     title="Maximum Randomized value"
-                    placeholder="Max Value"/> 
+                    default="300"
+                    placeholder="300"/> 
             </label>
         </div>
         <div class="col border">
