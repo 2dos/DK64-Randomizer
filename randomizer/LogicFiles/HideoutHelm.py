@@ -4,6 +4,7 @@
 from randomizer.Enums.Events import Events
 from randomizer.Enums.Levels import Levels
 from randomizer.Enums.Locations import Locations
+from randomizer.Enums.MinigameType import MinigameType
 from randomizer.Enums.Regions import Regions
 from randomizer.Enums.Transitions import Transitions
 from randomizer.LogicClasses import (Event, LocationLogic, Region,
@@ -17,20 +18,20 @@ LogicRegions = {
 
     Regions.HideoutHelmMain: Region("Hideout Helm Main", Levels.HideoutHelm, True, -1, [
         LocationLogic(Locations.HelmBattleArena, lambda l: l.jetpack and l.diddy),
-        LocationLogic(Locations.HelmDonkey1, lambda l: (l.settings.helm_setting != "default" or l.bongos) and l.isdonkey, True),
-        LocationLogic(Locations.HelmDonkey2, lambda l: (l.settings.helm_setting != "default" or l.bongos) and l.isdonkey, True),
+        LocationLogic(Locations.HelmDonkey1, lambda l: (l.settings.helm_setting != "default" or l.bongos) and l.isdonkey, MinigameType.HelmBarrel),
+        LocationLogic(Locations.HelmDonkey2, lambda l: (l.settings.helm_setting != "default" or l.bongos) and l.isdonkey, MinigameType.HelmBarrel),
         LocationLogic(Locations.HelmDonkeyMedal, lambda l: Events.HelmDonkeyDone in l.Events),
-        LocationLogic(Locations.HelmChunky1, lambda l: (l.settings.helm_setting != "default" or l.triangle) and l.ischunky, True),
-        LocationLogic(Locations.HelmChunky2, lambda l: (l.settings.helm_setting != "default" or l.triangle) and l.ischunky, True),
+        LocationLogic(Locations.HelmChunky1, lambda l: (l.settings.helm_setting != "default" or l.triangle) and l.ischunky, MinigameType.HelmBarrel),
+        LocationLogic(Locations.HelmChunky2, lambda l: (l.settings.helm_setting != "default" or l.triangle) and l.ischunky, MinigameType.HelmBarrel),
         LocationLogic(Locations.HelmChunkyMedal, lambda l: Events.HelmChunkyDone in l.Events),
-        LocationLogic(Locations.HelmTiny1, lambda l: (l.settings.helm_setting != "default" or l.saxophone) and l.istiny, True),
-        LocationLogic(Locations.HelmTiny2, lambda l: (l.settings.helm_setting != "default" or l.saxophone) and l.istiny, True),
+        LocationLogic(Locations.HelmTiny1, lambda l: (l.settings.helm_setting != "default" or l.saxophone) and l.istiny, MinigameType.HelmBarrel),
+        LocationLogic(Locations.HelmTiny2, lambda l: (l.settings.helm_setting != "default" or l.saxophone) and l.istiny, MinigameType.HelmBarrel),
         LocationLogic(Locations.HelmTinyMedal, lambda l: Events.HelmTinyDone in l.Events),
-        LocationLogic(Locations.HelmLanky1, lambda l: (l.settings.helm_setting != "default" or l.trombone) and l.islanky, True),
-        LocationLogic(Locations.HelmLanky2, lambda l: (l.settings.helm_setting != "default" or l.trombone) and l.islanky, True),
+        LocationLogic(Locations.HelmLanky1, lambda l: (l.settings.helm_setting != "default" or l.trombone) and l.islanky, MinigameType.HelmBarrel),
+        LocationLogic(Locations.HelmLanky2, lambda l: (l.settings.helm_setting != "default" or l.trombone) and l.islanky, MinigameType.HelmBarrel),
         LocationLogic(Locations.HelmLankyMedal, lambda l: Events.HelmLankyDone in l.Events),
-        LocationLogic(Locations.HelmDiddy1, lambda l: (l.settings.helm_setting != "default" or l.guitar) and l.isdiddy, True),
-        LocationLogic(Locations.HelmDiddy2, lambda l: (l.settings.helm_setting != "default" or l.guitar) and l.isdiddy, True),
+        LocationLogic(Locations.HelmDiddy1, lambda l: (l.settings.helm_setting != "default" or l.guitar) and l.isdiddy, MinigameType.HelmBarrel),
+        LocationLogic(Locations.HelmDiddy2, lambda l: (l.settings.helm_setting != "default" or l.guitar) and l.isdiddy, MinigameType.HelmBarrel),
         LocationLogic(Locations.HelmDiddyMedal, lambda l: Events.HelmDiddyDone in l.Events),
         LocationLogic(Locations.HelmBananaFairy1, lambda l: l.camera and Events.HelmKeyAccess in l.Events),
         LocationLogic(Locations.HelmBananaFairy2, lambda l: l.camera and Events.HelmKeyAccess in l.Events),

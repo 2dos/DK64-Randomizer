@@ -177,6 +177,11 @@ class Settings:
         # normal
         # random
         self.bonus_barrels = "normal"
+        # helm_barrels: str
+        # skip (helm skip all)
+        # normal
+        # random
+        self.helm_barrels = "normal"
         self.bonus_barrel_auto_complete = False
 
         # hard_shooting: bool
@@ -305,6 +310,11 @@ class Settings:
             self.bonus_barrels = "skip"
         elif self.bonus_barrel_rando:
             self.bonus_barrels = "random"
+        # Helm Barrel Rando
+        if self.helm_setting == "skip_all":
+            self.helm_barrels = "skip"
+        elif self.bonus_barrel_rando:
+            self.helm_barrels = "random"
 
         # Loading Zone Rando
         if self.level_randomization == "level_order":

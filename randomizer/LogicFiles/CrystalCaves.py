@@ -5,6 +5,7 @@ from randomizer.Enums.Events import Events
 from randomizer.Enums.Kongs import Kongs
 from randomizer.Enums.Levels import Levels
 from randomizer.Enums.Locations import Locations
+from randomizer.Enums.MinigameType import MinigameType
 from randomizer.Enums.Regions import Regions
 from randomizer.Enums.Transitions import Transitions
 from randomizer.LogicClasses import (Event, LocationLogic, Region,
@@ -17,8 +18,8 @@ LogicRegions = {
         LocationLogic(Locations.CavesLankyMedal, lambda l: l.ColoredBananas[Levels.CrystalCaves][Kongs.lanky] >= 75),
         LocationLogic(Locations.CavesTinyMedal, lambda l: l.ColoredBananas[Levels.CrystalCaves][Kongs.tiny] >= 75),
         LocationLogic(Locations.CavesChunkyMedal, lambda l: l.ColoredBananas[Levels.CrystalCaves][Kongs.chunky] >= 75),
-        LocationLogic(Locations.CavesDiddyJetpackBarrel, lambda l: l.jetpack and l.isdiddy, True),
-        LocationLogic(Locations.CavesTinyCaveBarrel, lambda l: l.mini and l.istiny, True),
+        LocationLogic(Locations.CavesDiddyJetpackBarrel, lambda l: l.jetpack and l.isdiddy, MinigameType.BonusBarrel),
+        LocationLogic(Locations.CavesTinyCaveBarrel, lambda l: l.mini and l.istiny, MinigameType.BonusBarrel),
         LocationLogic(Locations.CavesTinyMonkeyportIgloo, lambda l: l.monkeyport and l.mini and l.twirl and l.tiny),
         LocationLogic(Locations.CavesChunkyGorillaGone, lambda l: l.punch and l.gorillaGone and l.chunky),
         LocationLogic(Locations.CavesKasplatNearLab, lambda l: True),
@@ -43,7 +44,7 @@ LogicRegions = {
     ]),
 
     Regions.CavesBaboonBlast: Region("Caves Baboon Blast", Levels.CrystalCaves, False, None, [
-        LocationLogic(Locations.CavesDonkeyBaboonBlast, lambda l: l.isdonkey, True),
+        LocationLogic(Locations.CavesDonkeyBaboonBlast, lambda l: l.isdonkey, MinigameType.BonusBarrel),
     ], [], [
         TransitionFront(Regions.CrystalCavesMain, lambda l: True)
     ]),
@@ -172,7 +173,7 @@ LogicRegions = {
     ]),
 
     Regions.ChunkyCabin: Region("Chunky Cabin", Levels.CrystalCaves, False, None, [
-        LocationLogic(Locations.CavesChunky5DoorCabin, lambda l: l.gorillaGone and l.Slam and l.ischunky, True),
+        LocationLogic(Locations.CavesChunky5DoorCabin, lambda l: l.gorillaGone and l.Slam and l.ischunky, MinigameType.BonusBarrel),
     ], [], [
         TransitionFront(Regions.CabinArea, lambda l: True, Transitions.CavesChunkyToCabin),
     ]),

@@ -5,6 +5,7 @@ from randomizer.Enums.Events import Events
 from randomizer.Enums.Kongs import Kongs
 from randomizer.Enums.Levels import Levels
 from randomizer.Enums.Locations import Locations
+from randomizer.Enums.MinigameType import MinigameType
 from randomizer.Enums.Regions import Regions
 from randomizer.Enums.Transitions import Transitions
 from randomizer.LogicClasses import (Event, LocationLogic, Region,
@@ -54,8 +55,8 @@ LogicRegions = {
 
     Regions.JapesBeyondPeanutGate: Region("Japes Beyond Peanut Gate", Levels.JungleJapes, False, None, [
         LocationLogic(Locations.JapesDiddyTunnel, lambda l: l.isdiddy),
-        LocationLogic(Locations.JapesLankyGrapeGate, lambda l: l.grape and l.islanky, True),
-        LocationLogic(Locations.JapesTinyFeatherGateBarrel, lambda l: l.feather and l.istiny, True),
+        LocationLogic(Locations.JapesLankyGrapeGate, lambda l: l.grape and l.islanky, MinigameType.BonusBarrel),
+        LocationLogic(Locations.JapesTinyFeatherGateBarrel, lambda l: l.feather and l.istiny, MinigameType.BonusBarrel),
     ], [], [
         TransitionFront(Regions.JungleJapesMain, lambda l: True),
         TransitionFront(Regions.JapesBossLobby, lambda l: True),
@@ -71,7 +72,7 @@ LogicRegions = {
 
     Regions.JapesBeyondFeatherGate: Region("Japes Beyond Feather Gate", Levels.JungleJapes, True, -1, [
         LocationLogic(Locations.JapesTinyStump, lambda l: l.mini and l.tiny),
-        LocationLogic(Locations.JapesChunkyGiantBonusBarrel, lambda l: l.hunkyChunky and l.ischunky, True),
+        LocationLogic(Locations.JapesChunkyGiantBonusBarrel, lambda l: l.hunkyChunky and l.ischunky, MinigameType.BonusBarrel),
     ], [], [
         TransitionFront(Regions.JapesBeyondCoconutGate1, lambda l: True),
         TransitionFront(Regions.TinyHive, lambda l: l.mini and l.istiny, Transitions.JapesMainToTinyHive),
@@ -84,7 +85,7 @@ LogicRegions = {
     ]),
 
     Regions.JapesBeyondCoconutGate2: Region("Japes Beyond Coconut Gate 2", Levels.JungleJapes, True, None, [
-        LocationLogic(Locations.JapesLankySlope, lambda l: l.handstand and l.islanky, True),
+        LocationLogic(Locations.JapesLankySlope, lambda l: l.handstand and l.islanky, MinigameType.BonusBarrel),
         LocationLogic(Locations.JapesKasplatNearPaintingRoom, lambda l: True),
         LocationLogic(Locations.JapesKasplatNearLab, lambda l: True),
     ], [
