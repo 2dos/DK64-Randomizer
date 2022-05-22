@@ -191,6 +191,9 @@ class Settings:
         # hard_shooting: bool
         self.hard_shooting = False
 
+        # damage multiplier
+        self.damage_amount = "default"
+
         # shuffle_loading_zones: str
         # none
         # levels

@@ -182,16 +182,7 @@ def BlueprintAssumedItems(settings):
 
 def Keys():
     """Return all key items."""
-    keys = [
-        Items.JungleJapesKey,
-        Items.AngryAztecKey,
-        Items.FranticFactoryKey,
-        Items.GloomyGalleonKey,
-        Items.FungiForestKey,
-        Items.CrystalCavesKey,
-        Items.CreepyCastleKey,
-        Items.HideoutHelmKey,
-    ]
+    keys = [Items.JungleJapesKey, Items.AngryAztecKey, Items.FranticFactoryKey, Items.GloomyGalleonKey, Items.FungiForestKey, Items.CrystalCavesKey, Items.CreepyCastleKey, Items.HideoutHelmKey]
     return keys
 
 
@@ -208,15 +199,7 @@ def Guns(settings):
     """Return all gun items."""
     guns = []
     if not settings.unlock_all_moves:
-        guns.extend(
-            [
-                Items.Coconut,
-                Items.Peanut,
-                Items.Grape,
-                Items.Feather,
-                Items.Pineapple,
-            ]
-        )
+        guns.extend([Items.Coconut, Items.Peanut, Items.Grape, Items.Feather, Items.Pineapple])
     return guns
 
 
@@ -224,26 +207,13 @@ def Instruments(settings):
     """Return all instrument items."""
     instruments = []
     if not settings.unlock_all_moves:
-        instruments.extend(
-            [
-                Items.Bongos,
-                Items.Guitar,
-                Items.Trombone,
-                Items.Saxophone,
-                Items.Triangle,
-            ]
-        )
+        instruments.extend([Items.Bongos, Items.Guitar, Items.Trombone, Items.Saxophone, Items.Triangle])
     return instruments
 
 
 def TrainingBarrelAbilities():
     """Return all training barrel abilities."""
-    barrelAbilities = [
-        Items.Vines,
-        Items.Swim,
-        Items.Oranges,
-        Items.Barrels,
-    ]
+    barrelAbilities = [Items.Vines, Items.Swim, Items.Oranges, Items.Barrels]
     return barrelAbilities
 
 
@@ -605,51 +575,10 @@ SharedMoveLocations = {
     Locations.SharedGalleonGun,
     Locations.SharedCavesPotion,
 }
-DonkeyMoves = [
-    Items.Coconut,
-    Items.Bongos,
-    Items.BaboonBlast,
-    Items.StrongKong,
-    Items.GorillaGrab,
-]
-DiddyMoves = [
-    Items.Peanut,
-    Items.Guitar,
-    Items.ChimpyCharge,
-    Items.RocketbarrelBoost,
-    Items.SimianSpring,
-]
-LankyMoves = [
-    Items.Grape,
-    Items.Trombone,
-    Items.Orangstand,
-    Items.BaboonBalloon,
-    Items.OrangstandSprint,
-]
-TinyMoves = [
-    Items.Feather,
-    Items.Saxophone,
-    Items.MiniMonkey,
-    Items.PonyTailTwirl,
-    Items.Monkeyport,
-]
-ChunkyMoves = [
-    Items.Pineapple,
-    Items.Triangle,
-    Items.HunkyChunky,
-    Items.PrimatePunch,
-    Items.GorillaGone,
-]
-ImportantSharedMoves = [
-    Items.ProgressiveSlam,
-    Items.ProgressiveSlam,
-    Items.SniperSight,
-    Items.HomingAmmo,
-]
-JunkSharedMoves = [
-    Items.ProgressiveAmmoBelt,
-    Items.ProgressiveAmmoBelt,
-    Items.ProgressiveInstrumentUpgrade,
-    Items.ProgressiveInstrumentUpgrade,
-    Items.ProgressiveInstrumentUpgrade,
-]
+DonkeyMoves = [Items.Coconut, Items.Bongos, Items.BaboonBlast, Items.StrongKong, Items.GorillaGrab]
+DiddyMoves = [Items.Peanut, Items.Guitar, Items.ChimpyCharge, Items.RocketbarrelBoost, Items.SimianSpring]
+LankyMoves = [Items.Grape, Items.Trombone, Items.Orangstand, Items.BaboonBalloon, Items.OrangstandSprint]
+TinyMoves = [Items.Feather, Items.Saxophone, Items.MiniMonkey, Items.PonyTailTwirl, Items.Monkeyport]
+ChunkyMoves = [Items.Pineapple, Items.Triangle, Items.HunkyChunky, Items.PrimatePunch, Items.GorillaGone]
+ImportantSharedMoves = [Items.ProgressiveSlam, Items.ProgressiveSlam, Items.SniperSight, Items.HomingAmmo]
+JunkSharedMoves = [Items.ProgressiveAmmoBelt, Items.ProgressiveAmmoBelt, Items.ProgressiveInstrumentUpgrade, Items.ProgressiveInstrumentUpgrade, Items.ProgressiveInstrumentUpgrade]

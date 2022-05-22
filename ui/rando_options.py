@@ -265,3 +265,20 @@ def disable_krool_phases(evt):
             krool.removeAttribute("disabled")
     except AttributeError:
         pass
+
+
+@bind("click", "unlock_all_moves")
+def disable_shuffle_shop(evt):
+    """Disable Shuffle Shop Move Location when All Moves are Unlocked."""
+    disabled = False
+    shop = js.document.getElementById("shop_location_rando")
+    if js.document.getElementById("unlock_all_moves").checked:
+        disabled = True
+    try:
+        if disabled:
+            shop.setAttribute("disabled", "disabled")
+            shop.checked = False
+        else:
+            shop.removeAttribute("disabled")
+    except AttributeError:
+        pass

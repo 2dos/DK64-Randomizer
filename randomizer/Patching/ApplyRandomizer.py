@@ -308,6 +308,7 @@ def patching_response(responded_data):
             "seed",
             "algorithm",
             "starting_kong",
+            "starting_kong_list",
             "diddy_freeing_kong",
             "tiny_freeing_kong",
             "lanky_freeing_kong",
