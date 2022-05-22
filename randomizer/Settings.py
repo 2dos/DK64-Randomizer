@@ -330,8 +330,6 @@ class Settings:
         # Kong rando
         if self.kong_rando:
             self.starting_kong = random.choice(kongs)
-            if self.shuffle_loading_zones == "levels" or self.shuffle_loading_zones == "none":
-                self.kongs_for_progression = True
             # Kong freers are decided in the fill, set as any kong for now
             self.diddy_freeing_kong = Kongs.any
             self.lanky_freeing_kong = Kongs.any
@@ -343,6 +341,10 @@ class Settings:
             self.lanky_freeing_kong = Kongs.donkey
             self.tiny_freeing_kong = Kongs.diddy
             self.chunky_freeing_kong = Kongs.lanky
+
+        # Kongs needed for level progression
+        if not self.unlock_all_kongs and (self.shuffle_loading_zones == "levels" or self.shuffle_loading_zones == "none"):
+            self.kongs_for_progression = True
 
         # Move Location Rando
         if self.shop_location_rando:
