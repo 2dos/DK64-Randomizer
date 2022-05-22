@@ -67,8 +67,11 @@ class Spoiler:
         settings["shuffle_loading_zones"] = self.settings.shuffle_loading_zones
         settings["decoupled_loading_zones"] = self.settings.decoupled_loading_zones
         settings["unlock_all_moves"] = self.settings.unlock_all_moves
-        settings["unlock_all_kongs"] = self.settings.unlock_all_kongs
         settings["starting_kong"] = ItemList[ItemFromKong(self.settings.starting_kong)].name
+        startKongList = []
+        for x in self.settings.starting_kong_list:
+            startKongList.append(x.name.capitalize())
+        settings["starting_kong_list"] = startKongList
         settings["diddy_freeing_kong"] = ItemList[ItemFromKong(self.settings.diddy_freeing_kong)].name
         settings["tiny_freeing_kong"] = ItemList[ItemFromKong(self.settings.tiny_freeing_kong)].name
         settings["lanky_freeing_kong"] = ItemList[ItemFromKong(self.settings.lanky_freeing_kong)].name
@@ -245,10 +248,7 @@ class Spoiler:
                     self.shuffled_exit_data[key] = shuffledBack
                     containerMapId = GetMapId(exit.region)
                     if containerMapId not in containerMaps:
-                        containerMaps[containerMapId] = {
-                            "container_map": containerMapId,  # DK Isles
-                            "zones": [],
-                        }
+                        containerMaps[containerMapId] = {"container_map": containerMapId, "zones": []}  # DK Isles
                     loading_zone_mapping = {}
                     loading_zone_mapping["vanilla_map"] = GetMapId(vanillaBack.regionId)
                     loading_zone_mapping["vanilla_exit"] = GetExitId(vanillaBack)

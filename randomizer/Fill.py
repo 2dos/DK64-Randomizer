@@ -470,7 +470,11 @@ def AssumedFill(settings, itemsToPlace, validLocations, ownedItems=[]):
         if len(validReachable) == 0:
             print("Failed placing item " + ItemList[item].name + ", no valid reachable locations without this item.")
             currentKongsFreed = [ItemList[x].name for x in owned if ItemList[x].type == Types.Kong]
-            currentKongsFreed.insert(0, settings.starting_kong.name)
+            startKongList = []
+            for x in settings.starting_kong_list:
+                startKongList.append(x.name.capitalize())
+            for i, kong in enumerate(startKongList):
+                currentKongsFreed.insert(i, kong)
             currentMovesOwned = [ItemList[x].name for x in owned if ItemList[x].type == Types.Shop]
             currentGbCount = len([x for x in owned if ItemList[x].type == Types.Banana])
             js.postMessage("Current Moves owned at failure: " + str(currentMovesOwned) + " with GB count: " + str(currentGbCount) + " and kongs freed: " + str(currentKongsFreed))
@@ -491,7 +495,8 @@ def AssumedFill(settings, itemsToPlace, validLocations, ownedItems=[]):
                     movePriceArray[moveKong] = movePrice
         elif ItemList[item].type == Types.Kong:
             ownedKongs = [KongFromItem(x) for x in owned if ItemList[x].type == Types.Kong]
-            ownedKongs.insert(0, settings.starting_kong)
+            for i, kong in enumerate(settings.starting_kong_list):
+                ownedKongs.insert(i, kong)
             kongBeingPlaced = KongFromItem(item)
             if kongBeingPlaced in ownedKongs:
                 ownedKongs.remove(kongBeingPlaced)  # Cannot free with the kong being placed
@@ -627,32 +632,17 @@ def Fill(spoiler):
             # First place constant items
             ItemPool.PlaceConstants(spoiler.settings)
             # Then place priority (logically very important) items
-            highPriorityUnplaced = PlaceItems(
-                spoiler.settings,
-                spoiler.settings.algorithm,
-                ItemPool.HighPriorityItems(spoiler.settings),
-                ItemPool.HighPriorityAssumedItems(spoiler.settings),
-            )
+            highPriorityUnplaced = PlaceItems(spoiler.settings, spoiler.settings.algorithm, ItemPool.HighPriorityItems(spoiler.settings), ItemPool.HighPriorityAssumedItems(spoiler.settings))
             if highPriorityUnplaced > 0:
                 raise Ex.ItemPlacementException(str(highPriorityUnplaced) + " unplaced high priority items.")
             # Then place blueprints
             Reset()
-            blueprintsUnplaced = PlaceItems(
-                spoiler.settings,
-                spoiler.settings.algorithm,
-                ItemPool.Blueprints(spoiler.settings),
-                ItemPool.BlueprintAssumedItems(spoiler.settings),
-            )
+            blueprintsUnplaced = PlaceItems(spoiler.settings, spoiler.settings.algorithm, ItemPool.Blueprints(spoiler.settings), ItemPool.BlueprintAssumedItems(spoiler.settings))
             if blueprintsUnplaced > 0:
                 raise Ex.ItemPlacementException(str(blueprintsUnplaced) + " unplaced blueprints.")
             # Then place the rest of items
             Reset()
-            lowPriorityUnplaced = PlaceItems(
-                spoiler.settings,
-                spoiler.settings.algorithm,
-                ItemPool.LowPriorityItems(spoiler.settings),
-                ItemPool.ExcessItems(spoiler.settings),
-            )
+            lowPriorityUnplaced = PlaceItems(spoiler.settings, spoiler.settings.algorithm, ItemPool.LowPriorityItems(spoiler.settings), ItemPool.ExcessItems(spoiler.settings))
             if lowPriorityUnplaced > 0:
                 raise Ex.ItemPlacementException(str(lowPriorityUnplaced) + " unplaced low priority items.")
             # Finally place excess items fully randomly
