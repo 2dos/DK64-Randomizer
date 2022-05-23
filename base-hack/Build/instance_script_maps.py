@@ -28,4 +28,6 @@ instance_script_maps = [
     {"name": "galleon_lobby", "map": 0xAE},
     {"name": "caves_lobby", "map": 0xC2},
     {"name": "castle_lobby", "map": 0xC1},
+    {"name": "chunky_5dc", "map": 0x5A},
+    {"name": "helm_lobby", "map": 0xAA},
 ]
