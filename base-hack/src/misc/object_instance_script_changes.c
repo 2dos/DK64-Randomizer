@@ -17,6 +17,8 @@
 #define FUNGI_GMUSH 0x40
 #define TRAINING_GROUNDS 0xB0
 #define TINY_TEMPLE 0x10
+#define CAVES_CHUNKY_5DC 0x5A
+#define HELM_LOBBY 0xAA
 
 #define FUNGI_MINECART_GRATE 0x22
 #define SEASICK_SHIP 0x27
@@ -79,6 +81,12 @@
 #define ISLES_CASTLEROCK 0x34
 #define ISLES_HELMJAW 0x1C
 
+#define CHUNKY5DC_GGONE 0x6
+#define CHUNKY5DC_TARGET0 0x3
+#define CHUNKY5DC_TARGET1 0x4
+#define CHUNKY5DC_TARGET2 0x5
+#define HELMLOBBY_GGONE 0x3
+
 void hideObject(behaviour_data* behaviour_pointer) {
 	behaviour_pointer->unk_60 = 1;
 	behaviour_pointer->unk_62 = 0;
@@ -86,6 +94,11 @@ void hideObject(behaviour_data* behaviour_pointer) {
 	behaviour_pointer->unk_70 = 0;
 	behaviour_pointer->unk_71 = 0;
 	setScriptRunState(behaviour_pointer,2,0);
+}
+
+int isBonus(int map) {
+	int level = levelIndexMapping[map];
+	return (level == 9) || (level == 0xD);
 }
 
 static const short kong_flags[] = {385,6,70,66,117};
@@ -277,6 +290,20 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 				} else if ((index == 3) || (index == 4)) {
 					return getPressedSwitch(behaviour_pointer,kong_pellets[(int)Rando.free_source_llama],id);
 				}
+			}
+			break;
+		case CAVES_CHUNKY_5DC:
+			if ((param2 == CHUNKY5DC_GGONE) || (param2 == CHUNKY5DC_TARGET0) || (param2 == CHUNKY5DC_TARGET1) || (param2 == CHUNKY5DC_TARGET2)) {
+				if (index == 0) {
+					return isBonus(PreviousMap);
+				} else if (index == 1) {
+					return !isBonus(PreviousMap);
+				}
+			}
+			break;
+		case HELM_LOBBY:
+			if (param2 == HELMLOBBY_GGONE) {
+				return isBonus(PreviousMap);
 			}
 			break;
 		case JUNGLE_JAPES:
