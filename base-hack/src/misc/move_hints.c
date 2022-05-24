@@ -32,7 +32,7 @@ int isGoodTextbox(int text_file, int text_index) {
 	} else if (text_file == 8) { // Cranky
 		return (text_index == 4) || (text_index == 5) || (text_index == 9);
 	} else if (text_file == 9)  { // Candy
-		return ((text_index >= 3) && (text_index <= 5)) || ((text_index >= 7) && (text_index <= 9)) || ((text_index >= 12) && (text_index <= 15));
+		return (text_index == 0) || ((text_index >= 3) && (text_index <= 9)) || ((text_index >= 12) && (text_index <= 15));
 	}
 	return 1;
 }
