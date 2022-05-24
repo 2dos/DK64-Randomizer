@@ -1,3 +1,5 @@
+"""Convert vanilla scripts into modified rando scripts."""
+
 from instance_script_maps import instance_script_maps
 import zlib
 import os
@@ -14,6 +16,7 @@ table = 10
 
 
 def getScriptName(script_list, id):
+    """Grab script name from ID."""
     for item in script_list:
         if item["id"] == id:
             return item["name"]
@@ -21,6 +24,7 @@ def getScriptName(script_list, id):
 
 
 def addToFile(name, folder, line):
+    """Add line to file if script is being modified."""
     if name != "":
         new_folder = f"{dump_dir}/{folder}"
         if not os.path.exists(new_folder):
@@ -31,6 +35,7 @@ def addToFile(name, folder, line):
 
 
 def parseData(data, folder_name, scripts_list):
+    """Parse a script file into subscripts."""
     temp_file = "temp.bin"
     with open(temp_file, "wb") as fh:
         fh.write(data)
@@ -81,6 +86,7 @@ def parseData(data, folder_name, scripts_list):
 
 
 def unpackFiles():
+    """Unpack ROM to grab script files."""
     with open(rom_dir, "rb") as rom:
         rom.seek(pointer_table_offset + (table * 4))
         table_location = pointer_table_offset + int.from_bytes(rom.read(4), "big")

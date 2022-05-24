@@ -1,3 +1,5 @@
+"""Decode text file into arrays of text items."""
+
 with open("1114DD6_ZLib.bin", "rb") as fh:
     fh.seek(0)
     count = int.from_bytes(fh.read(1), "big")
