@@ -51,6 +51,7 @@ def compileHints(spoiler: Spoiler):
         "I'm as lost as you are. Good luck!",
         "Wrinkly? Never heard of him.",
         "This is it. The peak of all randomizers. No other randomizer exists besides DK64 Randomizer where you can listen to the dk rap in its natural habitat while freeing Chunky Kong in Jungle Japes.",
+        "Why do they call it oven when you of in the cold food of out hot eat the food?"
     ]
     # K. Rool Moves
     kong_cryptic = [
