@@ -57,6 +57,7 @@ void cFuncLoop(void) {
 	callParentMapFilter();
 	recolorKongControl();
 	spawnCannonWrapper();
+	setCrusher();
 	if (Rando.perma_lose_kongs) {
 		preventBossCheese();
 		kong_has_died();
@@ -137,10 +138,13 @@ void earlyFrame(void) {
 	if (ObjectModel2Timer == 2) {
 		updateProgressive();
 		price_rando();
-		setFlag(0x5D,1,2);
-		setFlag(0x58,1,2);
+		setFlag(0x5D,1,2); // DK Phase Intro
+		setFlag(0x58,1,2); // Tiny Phase Intro
 		if (CurrentMap == 0x22) {
 			KRoolRound = 0;
+			for (int i = 0; i < 4; i++) {
+				setFlag(0x51 + i,0,2); // Clear Toes
+			}
 		}
 	}
 	if (CurrentMap == 1) {
@@ -189,9 +193,9 @@ int* displayListModifiers(int* dl) {
 				if (hud_st == 1) {
 					bp_numerator = 0;
 					bp_denominator = 0;
-					for (int i = 0; i < 40; i++) {
-						int bp_has = checkFlag(469 + i,0);
-						int bp_turn = checkFlag(509 + i,0);
+					for (int i = 0; i < 8; i++) {
+						int bp_has = checkFlag(469 + (i * 5) + Character,0);
+						int bp_turn = checkFlag(509 + (i * 5) + Character,0);
 						if ((bp_has) && (!bp_turn)) {
 							bp_numerator += 1;
 						}
@@ -213,7 +217,6 @@ int* displayListModifiers(int* dl) {
 			} else {
 				hud_timer = 0;
 			}
-			TestVariable = hud_timer;
 		}
 	}
 	return dl;

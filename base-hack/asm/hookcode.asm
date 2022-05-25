@@ -708,5 +708,46 @@ START_HOOK:
 		J 			0x80028CD4
 		LH 			a1, 0x59A0 (a1)
 
+	Jump_RemoveKrazyKKLagImpact:
+		J 			RemoveKrazyKKLagImpact
+		NOP
+
+	PatchBonusCode:
+		LUI 		t3, hi(Jump_RemoveKrazyKKLagImpact)
+		LW 			t3, lo(Jump_RemoveKrazyKKLagImpact) (t3)
+		LUI 		t4, 0x8003
+		SW 			t3, 0x95D4 (t4)
+		JR 			ra
+		SW 			r0, 0x95D8 (t4)
+
+	RemoveKrazyKKLagImpact:
+		LH 			t4, 0x0 (t0)
+		LUI 		t5, hi(StoredLag)
+		LHU 		t5, lo(StoredLag) (t5)
+		J 			0x800295DC
+		SUBU 		t5, t4, t5
+
+	CannonForceCode:
+		LUI 		a0, hi(CurrentMap)
+		LW 			a0, lo(CurrentMap) (a0)
+		ADDIU 		v0, r0, 0x22
+		BEQ 		a0, v0, CannonForceCode_IsIsles
+		NOP
+		J 			0x8067B694
+		NOP
+
+		CannonForceCode_CheckFlag:
+			JAL 	0x8067B450
+			OR 		a0, s0, r0
+			J 		0x8067B68C
+			NOP
+
+		CannonForceCode_IsIsles:
+			LUI 	a0, hi(LobbiesOpen)
+			LBU		a0, lo(LobbiesOpen) (a0)
+			BEQZ 	a0, CannonForceCode_CheckFlag
+			NOP
+			J 		0x8067B6CC
+			NOP
 .align 0x10
 END_HOOK:

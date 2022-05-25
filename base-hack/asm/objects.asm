@@ -12,6 +12,7 @@
 .importobj "obj/src_fixes_tag_anywhere.o"
 .importobj "obj/src_misc_aesthetic.o"
 .importobj "obj/src_misc_file_screen.o"
+.importobj "obj/src_misc_move_hints.o"
 .importobj "obj/src_misc_no_enemy_drops.o"
 .importobj "obj/src_misc_object_instance_script_changes.o"
 .importobj "obj/src_misc_perma_kong_loss.o"

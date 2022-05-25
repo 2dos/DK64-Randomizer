@@ -66,6 +66,17 @@
 .definelabel createCollision, 0x8067ABC0
 .definelabel setScriptRunState, 0x8064199C
 .definelabel deleteActorContainer, 0x806782C0
+.definelabel initCharSpawnerActor, 0x80729B00
+.definelabel cutsceneKongGenericCode, 0x806BFBF4
+.definelabel DisplayTextFlagCheck, 0x806C151C
+.definelabel handleCutsceneKong, 0x806F09F0
+.definelabel alterCutsceneKongProperties, 0x806C15E8
+.definelabel unkCutsceneKongFunction, 0x80714C08
+.definelabel spawnCutsceneKongText, 0x806C10A0
+.definelabel unkCutsceneKongFunction_0, 0x80724CA4
+.definelabel changeActorColor, 0x807149C8
+.definelabel unkCutsceneKongFunction_1, 0x80724E48
+.definelabel getAnimationTimer, 0x80614A54
 
 .definelabel unkObjFunction0, 0x80650BBC
 .definelabel unkObjFunction1, 0x80650A04
@@ -96,6 +107,7 @@
 .definelabel cancelPausedCutscene, 0x8061CB08
 .definelabel pauseCutscene, 0x8061CAD8
 .definelabel hasTurnedInEnoughCBs, 0x805FF0C8
+.definelabel getTextPointer_0, 0x8070D8C0
 
 .definelabel setArcadeTextXY, 0x80024508
 .definelabel spawnArcadeText, 0x8002451C
@@ -122,6 +134,7 @@
 .definelabel Mode, 0x80755318
 .definelabel TBVoidByte, 0x807FBB63
 .definelabel CurrentMap, 0x8076A0A8
+.definelabel PreviousMap, 0x8076AEF2
 .definelabel DestMap, 0x807444E4
 .definelabel DestExit, 0x807444E8
 .definelabel StorySkip, 0x8074452C
@@ -286,6 +299,7 @@
 .definelabel preventTagSpawn, 0x807FFFEA // u8
 .definelabel bonusAutocomplete, 0x807FFFE9 // u8
 .definelabel QoLOn, 0x807FFFE8 // u8
+.definelabel LobbiesOpen, 0x807FFFE7 // u8
 .definelabel Rando, 0x807FF800 // 0x200
 .definelabel BalancedIGT, 0x807FFFB0 // u32
 .definelabel InstanceScriptParams, 0x807FFFB4 // 0x8

@@ -24,6 +24,7 @@ from randomizer.Enums.Items import Items
 from randomizer.Enums.Kongs import Kongs
 from randomizer.Enums.Levels import Levels
 from randomizer.Enums.Locations import Locations
+from randomizer.Enums.Time import Time
 from randomizer.Lists.Location import Location, LocationList
 from randomizer.Lists.MapsAndExits import Maps
 from randomizer.Prices import CanBuy, GetPriceOfMoveItem
@@ -48,11 +49,11 @@ class LogicVarHolder:
 
         Done between reachability searches and upon initialization.
         """
-        self.donkey = self.startkong == Kongs.donkey or self.settings.unlock_all_kongs
-        self.diddy = self.startkong == Kongs.diddy or self.settings.unlock_all_kongs
-        self.lanky = self.startkong == Kongs.lanky or self.settings.unlock_all_kongs
-        self.tiny = self.startkong == Kongs.tiny or self.settings.unlock_all_kongs
-        self.chunky = self.startkong == Kongs.chunky or self.settings.unlock_all_kongs
+        self.donkey = Kongs.donkey in self.settings.starting_kong_list
+        self.diddy = Kongs.diddy in self.settings.starting_kong_list
+        self.lanky = Kongs.lanky in self.settings.starting_kong_list
+        self.tiny = Kongs.tiny in self.settings.starting_kong_list
+        self.chunky = Kongs.chunky in self.settings.starting_kong_list
 
         # Right now assuming start with training barrels
         self.vines = True  # self.settings.training_barrels == "startwith"
@@ -421,10 +422,10 @@ class LogicVarHolder:
             price = GetPriceOfMoveItem(location.item, self.settings, self.Slam, self.AmmoBelts, self.InstUpgrades)
             # print("BuyShopItem for location: " + location.name)
             # print("Item: " + ItemList[location.item].name + " has Price: " + str(price))
-            # If shared move, consider all kongs paid for it
+            # If shared move, take the price from all kongs EVEN IF THEY AREN'T FREED YET
             if location.kong == Kongs.any:
-                for i in range(5):
-                    self.Coins[i] -= price
+                for kong in range(0, 5):
+                    self.Coins[kong] -= price
             # If kong specific move, just that kong paid for it
             else:
                 self.Coins[location.kong] -= price
@@ -435,6 +436,16 @@ class LogicVarHolder:
         Usually the region's own HasAccess function is used, but this is necessary for checking access for other regions in logic files.
         """
         return Regions[region].HasAccess(kong)
+
+    def TimeAccess(self, region, time):
+        """Check if a certain region has the given time of day access."""
+        if time == Time.Day:
+            return Regions[region].dayAccess
+        elif time == Time.Night:
+            return Regions[region].nightAccess
+        # Not sure when this'd be used
+        else:  # if time == Time.Both
+            return Regions[region].dayAccess or Regions[region].nightAccess
 
     def KasplatAccess(self, location):
         """Use the kasplat map to check kasplat logic for blueprint locations."""

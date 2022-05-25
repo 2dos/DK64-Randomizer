@@ -87,7 +87,7 @@ typedef struct varspace {
 	/* 0x134 */ unsigned char menusky_rgb_low[3];
 	/* 0x137 */ unsigned char menusky_rgb_high[3];
 	/* 0x13A */ char patch_kutoutkongs; // 0 = Off, 1 = Forces exit kong to be boss required kong
-	/* 0x13B */ char unused[0x13C-0x13B]; // Space unused, was RGB values
+	/* 0x13B */ char shop_hints; // 0 = Off, 1 = Hints at the beginning of shops
 	/* 0x13C */ unsigned char lobbies_open_bitfield; // hccf gfaj
 	/* 0x13D */ char perma_lose_kongs; // 0 = Off, 1 = On. AKA "iateyourpie mode"
 	/* 0x13E */ char disable_boss_kong_check; // 0 = Enable Check (Vanilla), 1 = Disabled

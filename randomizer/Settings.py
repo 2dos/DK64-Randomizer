@@ -9,6 +9,7 @@ from randomizer.ShuffleBosses import ShuffleBosses, ShuffleBossKongs, ShuffleKut
 from randomizer.Enums.Events import Events
 from randomizer.Enums.Kongs import Kongs, GetKongs
 from randomizer.Prices import RandomizePrices, VanillaPrices
+from random import randint
 
 
 class Settings:
@@ -26,36 +27,25 @@ class Settings:
         self.generate_main()
         self.generate_progression()
         self.generate_misc()
+
         for k, v in form_data.items():
             setattr(self, k, v)
         self.seed_id = str(self.seed)
         self.seed = str(self.seed) + self.__hash
         self.set_seed()
-        self.update_progression_totals()
-        # Store banana values in array
-        self.EntryGBs = [
-            self.blocker_0,
-            self.blocker_1,
-            self.blocker_2,
-            self.blocker_3,
-            self.blocker_4,
-            self.blocker_5,
-            self.blocker_6,
-            self.blocker_7,
-        ]
-        self.BossBananas = [
-            self.troff_0,
-            self.troff_1,
-            self.troff_2,
-            self.troff_3,
-            self.troff_4,
-            self.troff_5,
-            self.troff_6,
-        ]
         self.seed_hash = [random.randint(0, 9) for i in range(5)]
         self.krool_keys_required = []
         # Settings which are not yet implemented on the web page
 
+        # B Locker and T&S max values
+        # Shorter: 20 GB
+        # Short: 35 GB
+        # Medium: 50 GB
+        # Long: 65 GB
+        # Longer: 80 GB\
+        self.blocker_max = self.blocker_text if self.blocker_text else 50
+        self.troff_max = self.troff_text if self.troff_text else 270
+        self.troff_min = round(self.troff_max / 3)
         # Always start with training barrels currently
         # training_barrels: str
         # normal
@@ -79,31 +69,35 @@ class Settings:
 
     def update_progression_totals(self):
         """Update the troff and blocker totals if we're randomly setting them."""
-        self.troff_min = 0
-        self.troff_max = 260
-        if self.level_randomization == "level_order":
-            self.troff_min = 100
-            self.troff_max = 300
-        self.troff_weight_0 = 0.7
-        self.troff_weight_1 = 0.8
-        self.troff_weight_2 = 0.9
-        self.troff_weight_3 = 1.0
-        self.troff_weight_4 = 1.1
-        self.troff_weight_5 = 1.2
-        self.troff_weight_6 = 1.3
+        # Assign weights to Troff n Scoff based on level order if not shuffling loading zones
+        self.troff_weight_0 = 0.5
+        self.troff_weight_1 = 0.55
+        self.troff_weight_2 = 0.6
+        self.troff_weight_3 = 0.7
+        self.troff_weight_4 = 0.8
+        self.troff_weight_5 = 0.9
+        self.troff_weight_6 = 1.0
+        if self.level_randomization == "loadingzone" or self.level_randomization == "loadingzonesdecoupled":
+            self.troff_weight_0 = 1
+            self.troff_weight_1 = 1
+            self.troff_weight_2 = 1
+            self.troff_weight_3 = 1
+            self.troff_weight_4 = 1
+            self.troff_weight_5 = 1
+            self.troff_weight_6 = 1
 
         if self.randomize_cb_required_amounts:
             randomlist = random.sample(range(self.troff_min, self.troff_max), 7)
             cbs = randomlist
-            self.troff_0 = round(cbs[0] * self.troff_weight_0)
-            self.troff_1 = round(cbs[1] * self.troff_weight_1)
-            self.troff_2 = round(cbs[2] * self.troff_weight_2)
-            self.troff_3 = round(cbs[3] * self.troff_weight_3)
-            self.troff_4 = round(cbs[4] * self.troff_weight_4)
-            self.troff_5 = round(cbs[5] * self.troff_weight_5)
-            self.troff_6 = round(cbs[6] * self.troff_weight_6)
+            self.troff_0 = round(min(cbs[0] * self.troff_weight_0, 500))
+            self.troff_1 = round(min(cbs[1] * self.troff_weight_1, 500))
+            self.troff_2 = round(min(cbs[2] * self.troff_weight_2, 500))
+            self.troff_3 = round(min(cbs[3] * self.troff_weight_3, 500))
+            self.troff_4 = round(min(cbs[4] * self.troff_weight_4, 500))
+            self.troff_5 = round(min(cbs[5] * self.troff_weight_5, 500))
+            self.troff_6 = round(min(cbs[6] * self.troff_weight_6, 500))
         if self.randomize_blocker_required_amounts:
-            randomlist = random.sample(range(0, 50), 7)
+            randomlist = random.sample(range(1, self.blocker_max), 7)
             b_lockers = randomlist
             b_lockers.append(1)
             if self.shuffle_loading_zones == "all":
@@ -118,6 +112,10 @@ class Settings:
             self.blocker_5 = b_lockers[5]
             self.blocker_6 = b_lockers[6]
             self.blocker_7 = b_lockers[7]
+
+        # Store banana values in array
+        self.EntryGBs = [self.blocker_0, self.blocker_1, self.blocker_2, self.blocker_3, self.blocker_4, self.blocker_5, self.blocker_6, self.blocker_7]
+        self.BossBananas = [self.troff_0, self.troff_1, self.troff_2, self.troff_3, self.troff_4, self.troff_5, self.troff_6]
 
     def generate_main(self):
         """Set Default items on main page."""
@@ -154,14 +152,14 @@ class Settings:
         self.troff_6 = None
         self.troff_min = None
         self.troff_max = None
+        self.blocker_text = None
+        self.troff_text = None
 
     def generate_misc(self):
         """Set default items on misc page."""
         #  Settings which affect logic
         # start_with_moves: bool
         self.unlock_all_moves = None
-        # unlock_all_kongs: bool
-        self.unlock_all_kongs = None
         # crown_door_open: bool
         self.crown_door_open = None
         # coin_door_open: bool
@@ -170,17 +168,31 @@ class Settings:
         self.unlock_fairy_shockwave = None
         # krool_phase_count: int, [1-5]
         self.krool_phase_count = 5
+        self.krool_random = False
         # krool_key_count: int, [0-8]
         self.krool_key_count = 8
+        self.keys_random = False
+        # starting_kongs_count: int, [1-5]
+        self.starting_kongs_count = 5
+        self.starting_random = False
 
         # bonus_barrels: str
-        # skip - NOT IMPLEMENTED YET
+        # skip (auto-completed)
         # normal
         # random
         self.bonus_barrels = "normal"
+        # helm_barrels: str
+        # skip (helm skip all)
+        # normal
+        # random
+        self.helm_barrels = "normal"
+        self.bonus_barrel_auto_complete = False
 
         # hard_shooting: bool
         self.hard_shooting = False
+
+        # damage multiplier
+        self.damage_amount = "default"
 
         # shuffle_loading_zones: str
         # none
@@ -196,6 +208,13 @@ class Settings:
         self.music_fanfares = None
         self.music_events = None
 
+        #  Color
+        self.dk_colors = None
+        self.diddy_colors = None
+        self.lanky_colors = None
+        self.tiny_colors = None
+        self.chunky_colors = None
+
         #  Misc
         self.generate_spoilerlog = None
         self.fast_start_beginning_of_game = None
@@ -203,7 +222,7 @@ class Settings:
         self.quality_of_life = None
         self.enable_tag_anywhere = None
         self.krool_phase_order_rando = None
-        self.krool_access = None
+        self.krool_access = False
         self.open_lobbies = None
         self.random_medal_requirement = True
         self.bananaport_rando = False
@@ -224,6 +243,9 @@ class Settings:
         if self.random_prices != "vanilla":
             self.prices = RandomizePrices(self.random_prices)
 
+        # B Locker and Troff n Scoff amounts Rando
+        self.update_progression_totals()
+
         # Handle K. Rool Phases
         self.krool_donkey = False
         self.krool_diddy = False
@@ -234,6 +256,8 @@ class Settings:
         phases = [x for x in kongs if x != Kongs.chunky]
         if self.krool_phase_order_rando:
             random.shuffle(phases)
+        if self.krool_random:
+            self.krool_phase_count = randint(1, 5)
         if self.krool_phase_count < 5:
             phases = random.sample(phases, self.krool_phase_count - 1)
         orderedPhases = []
@@ -265,20 +289,18 @@ class Settings:
             Events.HelmKeyTurnedIn,
         ]
         key_list = KeyEvents.copy()
-        required_key_count = self.krool_key_count
-        if self.krool_access == "random_helm":
+        if self.keys_random:
+            required_key_count = randint(0, 8)
+        else:
+            required_key_count = self.krool_key_count
+        if self.krool_access:
             # If helm guaranteed, make sure it's added and included in the key count
             self.krool_keys_required.append(Events.HelmKeyTurnedIn)
             key_list.remove(Events.HelmKeyTurnedIn)
             required_key_count -= 1
-        if self.krool_access == "vanilla":
-            self.krool_keys_required.extend([Events.FactoryKeyTurnedIn, Events.HelmKeyTurnedIn])
-        elif self.krool_access == "all":
-            self.krool_keys_required.extend(KeyEvents)
-        elif self.krool_access == "random" or self.krool_access == "random_helm":
-            random.shuffle(key_list)
-            for x in range(required_key_count):
-                self.krool_keys_required.append(key_list[x])
+        random.shuffle(key_list)
+        for x in range(required_key_count):
+            self.krool_keys_required.append(key_list[x])
 
         # Banana medals
         if self.random_medal_requirement:
@@ -293,8 +315,15 @@ class Settings:
         self.kutout_kongs = ShuffleKutoutKongs(self.boss_maps, self.boss_kongs, self.boss_kong_rando)
 
         # Bonus Barrel Rando
-        if self.bonus_barrel_rando:
+        if self.bonus_barrel_auto_complete:
+            self.bonus_barrels = "skip"
+        elif self.bonus_barrel_rando:
             self.bonus_barrels = "random"
+        # Helm Barrel Rando
+        if self.helm_setting == "skip_all":
+            self.helm_barrels = "skip"
+        elif self.bonus_barrel_rando:
+            self.helm_barrels = "random"
 
         # Loading Zone Rando
         if self.level_randomization == "level_order":
@@ -308,21 +337,33 @@ class Settings:
             self.shuffle_loading_zones = "none"
 
         # Kong rando
+        # Temp until Slider UI binding gets fixed
+        if self.starting_random:
+            self.starting_kongs_count = randint(1, 5)
+        if self.starting_kongs_count == 5:
+            self.kong_rando = False
         if self.kong_rando:
-            self.starting_kong = random.choice(kongs)
-            if self.shuffle_loading_zones == "levels":
-                self.kongs_for_progression = True
+            self.starting_kong_list = random.sample(kongs, self.starting_kongs_count)
+            self.starting_kong = random.choice(self.starting_kong_list)
             # Kong freers are decided in the fill, set as any kong for now
             self.diddy_freeing_kong = Kongs.any
             self.lanky_freeing_kong = Kongs.any
             self.tiny_freeing_kong = Kongs.any
             self.chunky_freeing_kong = Kongs.any
         else:
+            self.possible_kong_list = kongs.copy()
+            self.possible_kong_list.remove(0)
+            self.starting_kong_list = random.sample(self.possible_kong_list, self.starting_kongs_count - 1)
+            self.starting_kong_list.append(Kongs.donkey)
             self.starting_kong = Kongs.donkey
             self.diddy_freeing_kong = Kongs.donkey
             self.lanky_freeing_kong = Kongs.donkey
             self.tiny_freeing_kong = Kongs.diddy
             self.chunky_freeing_kong = Kongs.lanky
+
+        # Kongs needed for level progression
+        if self.starting_kongs_count < 5 and (self.shuffle_loading_zones == "levels" or self.shuffle_loading_zones == "none"):
+            self.kongs_for_progression = True
 
         # Move Location Rando
         if self.shop_location_rando:

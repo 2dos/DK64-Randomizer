@@ -5,6 +5,7 @@ from randomizer.Enums.Collectibles import Collectibles
 from randomizer.Enums.Events import Events
 from randomizer.Enums.Kongs import Kongs
 from randomizer.Enums.Regions import Regions
+from randomizer.Enums.Time import Time
 from randomizer.LogicClasses import Collectible
 
 LogicRegions = {
@@ -75,7 +76,7 @@ LogicRegions = {
         Collectible(Collectibles.banana, Kongs.diddy, lambda l: True, None, 10),
         Collectible(Collectibles.bunch, Kongs.lanky, lambda l: l.handstand, None, 1),  # Top of mushroom
 
-        Collectible(Collectibles.coin, Kongs.diddy, lambda l: Events.Night in l.Events, None, 3),  # Around crown pad
+        Collectible(Collectibles.coin, Kongs.diddy, lambda l: True, None, 3),  # Around crown pad
         Collectible(Collectibles.coin, Kongs.chunky, lambda l: True, None, 3),  # On switch to face puzzle room
     ],
     Regions.MushroomChunkyRoom: [
@@ -98,20 +99,20 @@ LogicRegions = {
         Collectible(Collectibles.banana, Kongs.tiny, lambda l: True, None, 8),
         Collectible(Collectibles.bunch, Kongs.tiny, lambda l: l.saxophone and l.mini, None, 1),
 
-        Collectible(Collectibles.coin, Kongs.diddy, lambda l: l.jetpack and Events.Night in l.Events, None, 4),  # Alcove in tree
+        Collectible(Collectibles.coin, Kongs.diddy, lambda l: l.jetpack and l.TimeAccess(Regions.HollowTreeArea, Time.Night), None, 4),  # Alcove in tree
         Collectible(Collectibles.coin, Kongs.lanky, lambda l: True, None, 3),  # Near Lanky BP
-        Collectible(Collectibles.coin, Kongs.lanky, lambda l: l.trombone, None, 3),  # Beat first rabbit race
+        Collectible(Collectibles.coin, Kongs.lanky, lambda l: l.TimeAccess(Regions.HollowTreeArea, Time.Day) and l.trombone, None, 3),  # Beat first rabbit race
     ],
     Regions.Anthill: [
     ],
     Regions.MillArea: [
         Collectible(Collectibles.balloon, Kongs.donkey, lambda l: l.coconut, None, 1),  # Behind Barn
-        Collectible(Collectibles.balloon, Kongs.diddy, lambda l: l.peanut, None, 1),  # Snide
+        Collectible(Collectibles.balloon, Kongs.diddy, lambda l: l.peanut and l.TimeAccess(Regions.MillArea, Time.Day), None, 1),  # Snide
         Collectible(Collectibles.banana, Kongs.diddy, lambda l: True, None, 3),  # Near Rafter Barn
         Collectible(Collectibles.bunch, Kongs.diddy, lambda l: l.spring, None, 1),  # Near Rafter Barn
         Collectible(Collectibles.banana, Kongs.lanky, lambda l: True, None, 7),  # Mill roof
         Collectible(Collectibles.bunch, Kongs.lanky, lambda l: True, None, 1),  # Above Balloon pad
-        Collectible(Collectibles.bunch, Kongs.lanky, lambda l: Events.Night in l.Events, None, 1),  # Attic Entrance
+        Collectible(Collectibles.bunch, Kongs.lanky, lambda l: l.TimeAccess(Regions.MillArea, Time.Night), None, 1),  # Attic Entrance
         Collectible(Collectibles.banana, Kongs.tiny, lambda l: True, None, 17),  # Underwater
 
         Collectible(Collectibles.coin, Kongs.any, lambda l: l.shockwave, None, 1),  # In patch of grass
@@ -156,7 +157,7 @@ LogicRegions = {
         Collectible(Collectibles.bunch, Kongs.donkey, lambda l: l.strongKong, None, 1),  # Behind on switch
         Collectible(Collectibles.balloon, Kongs.tiny, lambda l: l.feather, None, 1),
 
-        Collectible(Collectibles.coin, Kongs.donkey, lambda l: True, None, 3),  # On thorn vines
+        Collectible(Collectibles.coin, Kongs.donkey, lambda l: l.strongKong, None, 3),  # On thorn vines
     ],
     Regions.ThornvineBarn: [
         Collectible(Collectibles.bunch, Kongs.donkey, lambda l: l.Slam, None, 1),  # In slam box
@@ -170,6 +171,6 @@ LogicRegions = {
 
         Collectible(Collectibles.coin, Kongs.any, lambda l: l.shockwave, None, 1),  # In front of beanstalk
         Collectible(Collectibles.coin, Kongs.tiny, lambda l: True, None, 3),  # By Mini Monkey barrel
-        Collectible(Collectibles.coin, Kongs.chunky, lambda l: Events.Night in l.Events, None, 3),  # By T&S portal
+        Collectible(Collectibles.coin, Kongs.chunky, lambda l: l.TimeAccess(Regions.WormArea, Time.Night), None, 3),  # By T&S portal
     ],
 }

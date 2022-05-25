@@ -5,6 +5,7 @@ from randomizer.Enums.Events import Events
 from randomizer.Enums.Kongs import Kongs
 from randomizer.Enums.Levels import Levels
 from randomizer.Enums.Locations import Locations
+from randomizer.Enums.MinigameType import MinigameType
 from randomizer.Enums.Regions import Regions
 from randomizer.Enums.Transitions import Transitions
 from randomizer.LogicClasses import (Event, LocationLogic, Region,
@@ -19,7 +20,8 @@ LogicRegions = {
         LocationLogic(Locations.AztecChunkyMedal, lambda l: l.ColoredBananas[Levels.AngryAztec][Kongs.chunky] >= 75),
         LocationLogic(Locations.AztecDonkeyFreeLlama, lambda l: Events.LlamaFreed in l.Events and l.donkey),
         LocationLogic(Locations.AztecChunkyVases, lambda l: l.pineapple and l.chunky),
-        LocationLogic(Locations.AztecKasplatSandyBridge, lambda l: l.coconut),
+        # If default damage can just walk to the bridge and take damage with any kong, otherwise need strong kong and to be donkey
+        LocationLogic(Locations.AztecKasplatSandyBridge, lambda l: l.coconut and ((l.strongKong and l.isdonkey) or l.settings.damage_amount == "default")),
         LocationLogic(Locations.AztecKasplatOnTinyTemple, lambda l: l.jetpack),
     ], [
         Event(Events.AztecEntered, lambda l: True),
@@ -50,10 +52,10 @@ LogicRegions = {
     ]),
 
     Regions.AngryAztecMain: Region("Angry Aztec Main", Levels.AngryAztec, True, None, [
-        LocationLogic(Locations.AztecDonkeyQuicksandCave, lambda l: Events.AztecDonkeySwitch in l.Events and l.strongKong and l.isdonkey, True),
+        LocationLogic(Locations.AztecDonkeyQuicksandCave, lambda l: Events.AztecDonkeySwitch in l.Events and l.strongKong and l.isdonkey, MinigameType.BonusBarrel),
         LocationLogic(Locations.AztecDiddyRamGongs, lambda l: l.charge and l.jetpack and l.diddy),
         LocationLogic(Locations.AztecDiddyVultureRace, lambda l: l.jetpack and l.diddy),
-        LocationLogic(Locations.AztecChunkyCagedBarrel, lambda l: l.hunkyChunky and l.ischunky, True),
+        LocationLogic(Locations.AztecChunkyCagedBarrel, lambda l: l.hunkyChunky and l.ischunky, MinigameType.BonusBarrel),
         LocationLogic(Locations.AztecKasplatNearLab, lambda l: True),
     ], [
         Event(Events.FedTotem, lambda l: l.jetpack and l.peanut and l.Slam and l.diddy),
@@ -92,7 +94,7 @@ LogicRegions = {
     ]),
 
     Regions.LankyTemple: Region("Lanky Temple", Levels.AngryAztec, False, TransitionFront(Regions.AngryAztecStart, lambda l: l.grape and l.islanky), [
-        LocationLogic(Locations.AztecLanky5DoorTemple, lambda l: l.grape and l.islanky, True),
+        LocationLogic(Locations.AztecLanky5DoorTemple, lambda l: l.grape and l.islanky, MinigameType.BonusBarrel),
     ], [], [
         TransitionFront(Regions.AngryAztecMain, lambda l: True, Transitions.AztecLankyToMain),
     ]),
@@ -105,7 +107,7 @@ LogicRegions = {
     ]),
 
     Regions.ChunkyTemple: Region("Chunky Temple", Levels.AngryAztec, False, TransitionFront(Regions.AngryAztecStart, lambda l: l.pineapple and l.ischunky), [
-        LocationLogic(Locations.AztecChunky5DoorTemple, lambda l: l.pineapple and l.ischunky, True),
+        LocationLogic(Locations.AztecChunky5DoorTemple, lambda l: l.pineapple and l.ischunky, MinigameType.BonusBarrel),
         LocationLogic(Locations.AztecKasplatChunky5DT, lambda l: l.pineapple and l.ischunky),
     ], [], [
         TransitionFront(Regions.AngryAztecMain, lambda l: True, Transitions.AztecChunkyToMain),
@@ -121,7 +123,7 @@ LogicRegions = {
     Regions.LlamaTemple: Region("Llama Temple", Levels.AngryAztec, True, -1, [
         LocationLogic(Locations.LankyKong, lambda l: l.CanFreeLanky()),
         LocationLogic(Locations.AztecDonkeyFreeLanky, lambda l: l.CanFreeLanky()),
-        LocationLogic(Locations.AztecLankyLlamaTempleBarrel, lambda l: l.trombone and l.islanky, True),
+        LocationLogic(Locations.AztecLankyLlamaTempleBarrel, lambda l: l.trombone and l.islanky, MinigameType.BonusBarrel),
         LocationLogic(Locations.AztecLankyMatchingGame, lambda l: l.grape and l.Slam and l.lanky),
         LocationLogic(Locations.AztecBananaFairyLlamaTemple, lambda l: l.camera),
     ], [

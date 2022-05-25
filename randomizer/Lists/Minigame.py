@@ -18,13 +18,26 @@ class Minigame:
         self.logic = logic
 
 
+HelmMinigameLocations = [
+    Locations.HelmDonkey1,
+    Locations.HelmDonkey2,
+    Locations.HelmDiddy1,
+    Locations.HelmDiddy2,
+    Locations.HelmLanky1,
+    Locations.HelmLanky2,
+    Locations.HelmTiny1,
+    Locations.HelmTiny2,
+    Locations.HelmChunky1,
+    Locations.HelmChunky2,
+]
+
 MinigameRequirements = {
     Minigames.NoGame: Minigame(name="No Game", helm_enabled=False, logic=lambda l: True),
     # Batty Barrel Bandit
     Minigames.BattyBarrelBanditVEasy: Minigame(name="Batty Barrel Bandit (Slow)", map_id=Maps.BattyBarrelBanditVEasy, logic=lambda l: True),
     Minigames.BattyBarrelBanditEasy: Minigame(name="Batty Barrel Bandit (Progressive Speed)", map_id=Maps.BattyBarrelBanditEasy, difficulty_lvl=1, logic=lambda l: True),
-    Minigames.BattyBarrelBanditNormal: Minigame(name="Batty Barrel Bandit (Medium)", map_id=Maps.BattyBarrelBanditNormal, difficulty_lvl=2, logic=lambda l: True),
-    Minigames.BattyBarrelBanditHard: Minigame(name="Batty Barrel Bandit (Fast)", map_id=Maps.BattyBarrelBanditHard, difficulty_lvl=3, logic=lambda l: True),
+    Minigames.BattyBarrelBanditNormal: Minigame(name="Batty Barrel Bandit (Medium)", map_id=Maps.BattyBarrelBanditNormal, helm_enabled=False, difficulty_lvl=2, logic=lambda l: True),
+    Minigames.BattyBarrelBanditHard: Minigame(name="Batty Barrel Bandit (Fast)", map_id=Maps.BattyBarrelBanditHard, helm_enabled=False, difficulty_lvl=3, logic=lambda l: True),
     # Big Bug Bash
     Minigames.BigBugBashVEasy: Minigame(name="Big Bug Bash (4 Bugs)", map_id=Maps.BigBugBashVEasy, logic=lambda l: True),
     Minigames.BigBugBashEasy: Minigame(name="Big Bug Bash (6 Bugs)", map_id=Maps.BigBugBashEasy, difficulty_lvl=1, logic=lambda l: True),

@@ -136,9 +136,15 @@ def patching_response(responded_data):
         order += 1
 
     # Unlock All Kongs
-    if spoiler.settings.unlock_all_kongs:
+    if spoiler.settings.starting_kongs_count == 5:
         ROM().seek(sav + 0x02C)
-        ROM().write(1)
+        ROM().write(0x1F)
+    else:
+        bin_value = 0
+        for x in spoiler.settings.starting_kong_list:
+            bin_value |= 1 << x
+        ROM().seek(sav + 0x02C)
+        ROM().write(bin_value)
 
     # Unlock All Moves
     if spoiler.settings.unlock_all_moves:
@@ -158,6 +164,11 @@ def patching_response(responded_data):
     # Enable Tag Anywhere
     if spoiler.settings.enable_tag_anywhere:
         ROM().seek(sav + 0x030)
+        ROM().write(1)
+
+    # Enable FPS Display
+    if spoiler.settings.fps_display:
+        ROM().seek(sav + 0x096)
         ROM().write(1)
 
     # Fast Hideout
@@ -208,7 +219,7 @@ def patching_response(responded_data):
     # Auto complete bonus barrels
     if spoiler.settings.bonus_barrel_auto_complete:
         ROM().seek(sav + 0x117)
-        ROM().write(3)
+        ROM().write(1)
 
     # Enable or disable the warp to isles option in the UI
     if spoiler.settings.warp_to_isles:
@@ -300,6 +311,7 @@ def patching_response(responded_data):
             "seed",
             "algorithm",
             "starting_kong",
+            "starting_kong_list",
             "diddy_freeing_kong",
             "tiny_freeing_kong",
             "lanky_freeing_kong",

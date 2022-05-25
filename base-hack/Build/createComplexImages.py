@@ -59,7 +59,7 @@ for file_info in number_crop:
             key_dir = f"{base_dir}boss_key.png"
             num_im = Image.open(file_dir)
             key_im = Image.open(key_dir)
-            key_im = key_im.rotate(45, PIL.Image.NEAREST, expand=1)
+            key_im = key_im.rotate(45, PIL.Image.Resampling.NEAREST, expand=1)
             num_im = num_im.crop(num_info["crop"])
             Image.Image.paste(key_im, num_im, (40, 10))
             bbox = key_im.getbbox()

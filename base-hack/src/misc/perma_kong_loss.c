@@ -4,16 +4,17 @@ int curseRemoved(void) {
 	return checkFlag(770,0); // BoM turned off
 }
 
+int hasPermaLossGrace(void) {
+	return (CurrentMap == 0x11) || (CurrentMap == 0xAA);
+}
+
 int determineKongUnlock(int actorType, int kong_index) {
 	int unlock_flag = GetKongUnlockedFlag(actorType,kong_index);
 	int kong_freed = checkFlag(unlock_flag,0);
 	if (!Rando.perma_lose_kongs) {
 		return kong_freed;
 	}
-	if (CurrentMap == 0x11) {
-		return kong_freed;
-	}
-	if (CurrentMap == 0x2A) {
+	if (hasPermaLossGrace()) {
 		return kong_freed;
 	}
 	if (curseRemoved()) {
@@ -44,13 +45,17 @@ void giveKongMoves(int kong_index) {
 	MovesBase[kong_index].instrument_bitfield |= 1; // Instrument
 }
 
+int isDeathState(int control_state) {
+	return (control_state == 0x36) || (control_state == 0x3B) || (control_state == 0x39);
+}
+
 void kong_has_died(void) {
 	if (Rando.perma_lose_kongs) {
 		if (getWorld(CurrentMap,0) != 8) { // Not in Helm
 			if (!curseRemoved()) {
 				if (Player) {
 					int control_state = Player->control_state;
-					if ((control_state == 0x36) || (control_state == 0x3B)) {
+					if (isDeathState(control_state)) {
 						if (TransitionSpeed > 0.0f) {
 							if (LZFadeoutProgress == 30.0f) {
 								int init_kong = Character;
@@ -104,35 +109,39 @@ void determineStartKong_PermaLossMode(void) {
 	}
 }
 
+void transitionKong(void) {
+	if (!curseRemoved()) {
+		if (checkFlag(KONG_LOCKED_START + Character,0)) {
+			int new_kong = (Character + 1) % 5;
+			int pass = 1;
+			int counter = 0;
+			while (pass) {
+				int kong_locked = checkFlag(KONG_LOCKED_START + new_kong,0);
+				int unlock_flag = GetKongUnlockedFlag(Player->characterID,new_kong);
+				int kong_freed = checkFlag(unlock_flag,0);
+				if ((!kong_freed) || (kong_locked)) {
+					new_kong = (new_kong + 1) % 5;
+					counter += 1;
+					if (counter >= 5) {
+						pass = 0;
+						return;
+					}
+				} else {
+					pass = 0;
+					Character = new_kong;
+					return;
+				}
+			}
+		}
+	}
+}
+
 void changeKongOnTransition_Permaloss(void) {
 	if (TransitionSpeed > 0.0f) {
 		if (Player) {
 			int control_state = Player->control_state;
-			if ((control_state != 0x36) && (control_state != 0x3B)) {
-				if (!curseRemoved()) {
-					if (checkFlag(KONG_LOCKED_START + Character,0)) {
-						int new_kong = (Character + 1) % 5;
-						int pass = 1;
-						int counter = 0;
-						while (pass) {
-							int kong_locked = checkFlag(KONG_LOCKED_START + new_kong,0);
-							int unlock_flag = GetKongUnlockedFlag(Player->characterID,new_kong);
-							int kong_freed = checkFlag(unlock_flag,0);
-							if ((!kong_freed) || (kong_locked)) {
-								new_kong = (new_kong + 1) % 5;
-								counter += 1;
-								if (counter >= 5) {
-									pass = 0;
-									return;
-								}
-							} else {
-								pass = 0;
-								Character = new_kong;
-								return;
-							}
-						}
-					}
-				}
+			if (isDeathState(control_state)) {
+				transitionKong();
 			}
 		}
 	}
@@ -151,11 +160,8 @@ void forceBossKong(void) {
 				if (TransitionSpeed > 0.0f) {
 					if (LZFadeoutProgress == 30.0f) {
 						if (Player) {
-							int control_state = Player->control_state;
-							if ((control_state != 0x36) && (control_state != 0x3B)) {
-								int world = getWorld(CurrentMap, 0);
-								Character = BossKongArray[world];
-							}
+							int world = getWorld(CurrentMap, 0);
+							Character = BossKongArray[world];
 						}
 					}
 				}

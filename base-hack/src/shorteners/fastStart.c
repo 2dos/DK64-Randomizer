@@ -17,7 +17,7 @@ void applyFastStart(void) {
 		setPermFlag(0x186); // Isles Escape CS
 		setPermFlag(0x17F); // Training Barrels Spawned
 		setPermFlag(0x180); // Cranky given SSlam
-		setPermFlag(kong_flags[(int)Rando.starting_kong]); // DK Free
+		setPermFlag(kong_flags[(int)Rando.starting_kong]); // Starting Kong Free
 		if (Rando.camera_unlocked) {
 			setPermFlag(0x179);
 		}

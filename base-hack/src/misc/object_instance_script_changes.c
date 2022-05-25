@@ -17,6 +17,8 @@
 #define FUNGI_GMUSH 0x40
 #define TRAINING_GROUNDS 0xB0
 #define TINY_TEMPLE 0x10
+#define CAVES_CHUNKY_5DC 0x5A
+#define HELM_LOBBY 0xAA
 
 #define FUNGI_MINECART_GRATE 0x22
 #define SEASICK_SHIP 0x27
@@ -79,7 +81,11 @@
 #define ISLES_CASTLEROCK 0x34
 #define ISLES_HELMJAW 0x1C
 
-#define MILL_CRUSHER_PROGRESS 1
+#define CHUNKY5DC_GGONE 0x6
+#define CHUNKY5DC_TARGET0 0x3
+#define CHUNKY5DC_TARGET1 0x4
+#define CHUNKY5DC_TARGET2 0x5
+#define HELMLOBBY_GGONE 0x3
 
 void hideObject(behaviour_data* behaviour_pointer) {
 	behaviour_pointer->unk_60 = 1;
@@ -90,9 +96,15 @@ void hideObject(behaviour_data* behaviour_pointer) {
 	setScriptRunState(behaviour_pointer,2,0);
 }
 
+int isBonus(int map) {
+	int level = levelIndexMapping[map];
+	return (level == 9) || (level == 0xD);
+}
+
 static const short kong_flags[] = {385,6,70,66,117};
 static const unsigned char kong_press_states[] = {0x29,0x2E,0x26,0x29,0x24};
 static const unsigned char kong_pellets[] = {48,36,42,43,38};
+#define MILL_CRUSHER_PROGRESS 1
 
 int getPressedSwitch(behaviour_data* behaviour_pointer, int bullet_type, int ID) {
 	if (behaviour_pointer->switch_pressed == 1) {
@@ -107,6 +119,26 @@ int getPressedSwitch(behaviour_data* behaviour_pointer, int bullet_type, int ID)
 		}
 	}
 	return 0;
+}
+
+void setCrusher(void) {
+	if (CurrentMap == MILL_FRONT) {
+		if ((ObjectModel2Timer < 10) && (ObjectModel2Timer > 5)) {
+			int crusher_index = convertIDToIndex(8);
+			int* m2location = ObjectModel2Pointer;
+			if (crusher_index > -1) {
+				ModelTwoData* _object = getObjectArrayAddr(m2location,0x90,crusher_index);
+				if (_object) {
+					behaviour_data* behaviour = (behaviour_data*)_object->behaviour_pointer;
+					if (behaviour) {
+						if (behaviour->counter == 0) {
+							behaviour->counter = MILL_CRUSHER_PROGRESS;
+						}
+					}
+				}
+			}
+		}
+	}
 }
 
 int checkControlState(int target_control_state) {
@@ -260,6 +292,20 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 				}
 			}
 			break;
+		case CAVES_CHUNKY_5DC:
+			if ((param2 == CHUNKY5DC_GGONE) || (param2 == CHUNKY5DC_TARGET0) || (param2 == CHUNKY5DC_TARGET1) || (param2 == CHUNKY5DC_TARGET2)) {
+				if (index == 0) {
+					return isBonus(PreviousMap);
+				} else if (index == 1) {
+					return !isBonus(PreviousMap);
+				}
+			}
+			break;
+		case HELM_LOBBY:
+			if (param2 == HELMLOBBY_GGONE) {
+				return isBonus(PreviousMap);
+			}
+			break;
 		case JUNGLE_JAPES:
 			if (param2 == JAPES_DKCAGEGB) {
 				if (index == 0) {
@@ -363,15 +409,14 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 		case MILL_FRONT:
 			if (param2 == MILL_WARNINGLIGHTS) {
 				if (checkFlag(FUNGICRUSHERON,0)) {
-					//behaviour_pointer->current_state = MILL_CRUSHER_PROGRESS * 2;
-					//behaviour_pointer->next_state = MILL_CRUSHER_PROGRESS * 2;
+					behaviour_pointer->current_state = MILL_CRUSHER_PROGRESS * 2;
+					behaviour_pointer->next_state = MILL_CRUSHER_PROGRESS * 2;
 				}
 			} else if (param2 == MILL_CRUSHER) {
 				if (index == 0) {
 					if (checkFlag(FUNGICRUSHERON,0)) {
 						if (!checkFlag(221,0)) { // If GB not acquired
 							if (behaviour_pointer->counter == 0) {
-								// behaviour_pointer->counter = MILL_CRUSHER_PROGRESS;
 								behaviour_pointer->current_state = 12;
 								behaviour_pointer->next_state = 12;
 								unkObjFunction1(id,1,8);
@@ -397,7 +442,9 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 			if (param2 == GMUSH_BOARD) {
 				int switch_count = 0;
 				for (int i = 0; i < 5; i++) {
-					switch_count += checkFlag(0xE6 + i,0);
+					if (checkFlag(230 + i,0)) {
+						switch_count += 1;
+					}
 				}
 				if (switch_count == 5) {
 					behaviour_pointer->current_state = 6;

@@ -9,7 +9,7 @@ def apply_cosmetic_colors(spoiler: Spoiler):
     """Apply cosmetic skins to kongs."""
     enable = False
     sav = 0x1FED020
-    if js.document.getElementById("random_colors").value == "True":
+    if js.document.getElementById("random_colors").checked:
         js.document.getElementById("dk_colors").value = "randomized"
         js.document.getElementById("diddy_colors").value = "randomized"
         js.document.getElementById("lanky_colors").value = "randomized"
@@ -58,7 +58,7 @@ def apply_cosmetic_colors(spoiler: Spoiler):
         enable = True
         color = 0
         if js.document.getElementById("tiny_colors").value == "randomized":
-            color = randint(0, 3)
+            color = randint(0, 2)  # Change back to 3 once Red Tiny Color is fixed.
         elif js.document.getElementById("tiny_colors").value == "green":
             color = 1
         elif js.document.getElementById("tiny_colors").value == "purple":

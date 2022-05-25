@@ -20,7 +20,7 @@ def randomize_music(spoiler: Spoiler):
         settings (Settings): Settings object from the windows form.
     """
     settings: Settings = spoiler.settings
-    if js.document.getElementById("random_music").value == "True":
+    if js.document.getElementById("random_music").checked:
         js.document.getElementById("music_bgm").value = "randomized"
         js.document.getElementById("music_fanfares").value = "randomized"
         js.document.getElementById("music_events").value = "randomized"

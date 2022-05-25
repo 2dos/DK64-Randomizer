@@ -288,17 +288,18 @@ for x in range(8):
 for x in range(43):
     if x != 13:
         if x != 32:
-            file_dict.append(
-                {
-                    "name": "Text " + str(x),
-                    "pointer_table_index": 12,
-                    "file_index": x,
-                    "source_file": "text" + str(x) + ".bin",
-                    "target_compressed_size": 0x2000,
-                    "target_uncompressed_size": 0x2000,
-                    "do_not_recompress": True,
-                }
-            )
+            if x != 0x18:
+                file_dict.append(
+                    {
+                        "name": "Text " + str(x),
+                        "pointer_table_index": 12,
+                        "file_index": x,
+                        "source_file": "text" + str(x) + ".bin",
+                        "target_compressed_size": 0x2000,
+                        "target_uncompressed_size": 0x2000,
+                        "do_not_recompress": True,
+                    }
+                )
 for x in range(10):
     file_dict.append(
         {
@@ -371,6 +372,16 @@ file_dict.append(
         "do_not_compress": True,
         "do_not_delete_source": True,
     },
+)
+file_dict.append(
+    {
+        "name": "DK Text",
+        "pointer_table_index": 12,
+        "file_index": 0x18,
+        "source_file": "dk_text.bin",
+        "do_not_compress": True,
+        "do_not_delete_source": True,
+    }
 )
 
 
@@ -653,6 +664,9 @@ with open(newROMName, "r+b") as fh:
     fh.write((4).to_bytes(1, "big"))
     fh.seek(0x1FED020 + 0x149)
     fh.write((2).to_bytes(1, "big"))
+
+    fh.seek(0x1FED020 + 0x13B)
+    fh.write((1).to_bytes(1, "big"))
 
     with open("assets/Non-Code/credits/squish.bin", "rb") as squish:
         fh.seek(0x1FFF800)

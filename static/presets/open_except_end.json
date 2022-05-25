@@ -22,7 +22,6 @@
   "troff_6": 400,
   "blocker_7": 100,
   "damage_amount": "default",
-  "unlock_all_kongs": true,
   "crown_door_open": true,
   "coin_door_open": true,
   "krool_phase_count": 5,

@@ -178,6 +178,9 @@ HomingDisableHook:
 DKCollectableFixHook:
 	J 	DKCollectableFix
 	NOP
+CannonForceHook:
+	J 	CannonForceCode
+	NOP
 
 loadExtraHooks:
 	LUI t3, hi(NinWarpHook)
@@ -372,17 +375,29 @@ loadExtraHooks:
 	SW t3, 0x9534 (t4) // Store Hook
 	SW r0, 0x9538 (t4) // Store NOP
 
+	LUI t3, hi(bonusAutocomplete)
+	LBU t3, lo(bonusAutocomplete) (t3)
+	BEQZ t3, loadExtraHooks_2
+	NOP
+
 	LUI t3, hi(BonusAutocompleteHook)
 	LW t3, lo(BonusAutocompleteHook) (t3)
 	LUI t4, 0x8068
 	SW t3, 0x0D10 (t4) // Store Hook
 	SW r0, 0x0D14 (t4) // Store NOP
 
+	loadExtraHooks_2:
 	LUI t3, hi(KeyCompressionHook)
 	LW t3, lo(KeyCompressionHook) (t3)
 	LUI t4, 0x806C
 	SW t3, 0xD328 (t4) // Store Hook
 	SW r0, 0xD32C (t4) // Store NOP
+
+	LUI t3, hi(CannonForceHook)
+	LW t3, lo(CannonForceHook) (t3)
+	LUI t4, 0x8068
+	SW t3, 0xB684 (t4) // Store Hook
+	SW r0, 0xB688 (t4) // Store NOP
 
 	LUI t3, hi(HUDDisplayHook)
 	LW t3, lo(HUDDisplayHook) (t3)

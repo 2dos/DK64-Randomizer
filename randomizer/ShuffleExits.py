@@ -233,10 +233,12 @@ def UpdateLevelProgression(settings: Settings):
         Regions.CreepyCastleLobby,
     ]
     for levelIndex in range(len(lobbies)):
-        shuffledEntrance = ShufflableExits[LobbyEntrancePool[levelIndex]].shuffledId
-        newDestRegion = ShufflableExits[shuffledEntrance].back.regionId
-        # print(LobbyEntrancePool[levelIndex].name + " goes to " + newDestRegion.name)
-        newIndex = lobbies.index(newDestRegion)
+        newIndex = levelIndex
+        if settings.shuffle_loading_zones == "levels":
+            shuffledEntrance = ShufflableExits[LobbyEntrancePool[levelIndex]].shuffledId
+            newDestRegion = ShufflableExits[shuffledEntrance].back.regionId
+            # print(LobbyEntrancePool[levelIndex].name + " goes to " + newDestRegion.name)
+            newIndex = lobbies.index(newDestRegion)
         newEntryGBs[newIndex] = settings.EntryGBs[levelIndex]
         newBossBananas[newIndex] = settings.BossBananas[levelIndex]
     settings.EntryGBs = newEntryGBs
@@ -289,9 +291,17 @@ def ShuffleLevelOrderWithRestrictions(settings: Settings):
     japesOptions = []
     # If Aztec is level 4, both of Japes/Factory need to be in level 1-3
     if aztecIndex == 4:
-        japesOptions = list(levelIndexChoices.intersection({1, 3}))
+        # Tiny has no coins and no T&S access in Japes so it can't be first for her unless prices are free
+        if settings.starting_kong == Kongs.tiny and settings.random_prices != "free":
+            japesOptions = list(levelIndexChoices.intersection({2, 3}))
+        else:
+            japesOptions = list(levelIndexChoices.intersection({1, 3}))
     else:
-        japesOptions = list(levelIndexChoices.intersection({1, 5}))
+        # Tiny has no coins and no T&S access in Japes so it can't be first for her unless prices are free
+        if settings.starting_kong == Kongs.tiny and settings.random_prices != "free":
+            japesOptions = list(levelIndexChoices.intersection({2, 3, 4, 5}))
+        else:
+            japesOptions = list(levelIndexChoices.intersection({1, 2, 3, 4, 5}))
     japesIndex = random.choice(japesOptions)
     levelIndexChoices.remove(japesIndex)
 
@@ -299,34 +309,49 @@ def ShuffleLevelOrderWithRestrictions(settings: Settings):
     factoryOptions = []
     # If Aztec is level 4, both of Japes/Factory need to be in level 1-3
     if aztecIndex == 4:
-        factoryOptions = list(levelIndexChoices.intersection({1, 3}))
+        factoryOptions = list(levelIndexChoices.intersection({1, 2, 3}))
     # If Aztec is level 3, one of Japes/Factory needs to be in level 1-2 and other in level 1-5
     elif aztecIndex == 3:
         if japesIndex < 3:
-            factoryOptions = list(levelIndexChoices.intersection({1, 5}))
+            factoryOptions = list(levelIndexChoices.intersection({1, 2, 3, 4, 5}))
         else:
             factoryOptions = list(levelIndexChoices.intersection({1, 2}))
     # If Aztec is level 2 and don't start with diddy or chunky, one of Japes/Factory needs to be level 1 and other in level 3-5
     elif aztecIndex == 2 and settings.starting_kong != Kongs.diddy and settings.starting_kong != Kongs.chunky:
         if japesIndex == 1:
-            factoryOptions = list(levelIndexChoices.intersection({3, 5}))
+            factoryOptions = list(levelIndexChoices.intersection({3, 4, 5}))
         else:
             factoryOptions = list(levelIndexChoices.intersection({1}))
+    # If Aztec is level 2 and start with chunky, one of Japes/Factory needs to be level 1-3 and other in level 3-5
+    elif aztecIndex == 2 and settings.starting_kong == Kongs.chunky:
+        if japesIndex == 1 or japesIndex == 3:
+            factoryOptions = list(levelIndexChoices.intersection({3, 4, 5}))
+        else:
+            factoryOptions = list(levelIndexChoices.intersection({1, 2, 3}))
     # If Aztec is level 1 or 2, one of Japes/Factory needs to be in level 1-4 and other in level 1-5
     else:
         if japesIndex < 5:
-            factoryOptions = list(levelIndexChoices.intersection({1, 5}))
+            factoryOptions = list(levelIndexChoices.intersection({1, 2, 3, 4, 5}))
         else:
-            factoryOptions = list(levelIndexChoices.intersection({1, 4}))
+            factoryOptions = list(levelIndexChoices.intersection({1, 2, 3, 4}))
     factoryIndex = random.choice(factoryOptions)
     levelIndexChoices.remove(factoryIndex)
+
+    # Decide where Caves will go - special case because T&S portals are not immediately accessible
+    cavesOptions = []
+    # Donkey and Tiny have no T&S access in Caves so it can't be the first level for them
+    if settings.starting_kong == Kongs.tiny or settings.starting_kong == Kongs.donkey:
+        cavesOptions = list(levelIndexChoices.intersection({2, 7}))
+    else:
+        cavesOptions = list(levelIndexChoices.intersection({1, 7}))
+    cavesIndex = random.choice(cavesOptions)
+    levelIndexChoices.remove(cavesIndex)
 
     # Decide the remaining level order randomly
     remainingLevels = list(levelIndexChoices)
     random.shuffle(remainingLevels)
     galleonIndex = remainingLevels.pop()
     forestIndex = remainingLevels.pop()
-    cavesIndex = remainingLevels.pop()
     castleIndex = remainingLevels.pop()
     newLevelOrder = {
         japesIndex: Levels.JungleJapes,
