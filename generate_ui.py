@@ -1,7 +1,6 @@
 """Generate UI elements via jinja2 to display on page load."""
 import micropip
 from jinja2 import Environment, FunctionLoader
-from pyodide import to_js
 import time
 
 import js
@@ -27,7 +26,7 @@ async def initialize():
     js.background_worker = None
 
     def ajax_call(file):
-        resp = js.jquery.ajax(js.Object.fromEntries(to_js({"type": "GET", "url": file, "async": False}))).responseText
+        resp = js.getFile(file)
         return resp
 
     def loader_func(template_name):
