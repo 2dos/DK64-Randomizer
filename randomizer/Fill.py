@@ -54,8 +54,10 @@ def GetExitLevelExit(region):
         return ShuffleExits.ShufflableExits[Transitions.CastleToIsles].shuffledId
 
 
-def GetAccessibleLocations(settings, ownedItems, searchType=SearchMode.GetReachable, purchaseList=[]):
+def GetAccessibleLocations(settings, ownedItems, searchType=SearchMode.GetReachable, purchaseList=None):
     """Search to find all reachable locations given owned items."""
+    if purchaseList is None:
+        purchaseList = []
     accessible = []
     newLocations = []
     playthroughLocations = []
@@ -127,7 +129,7 @@ def GetAccessibleLocations(settings, ownedItems, searchType=SearchMode.GetReacha
                 # Check accessibility for collectibles
                 if region.id in Logic.CollectibleRegions.keys():
                     for collectible in Logic.CollectibleRegions[region.id]:
-                        if not collectible.added and (kong == collectible.kong or collectible.kong == Kongs.any) and collectible.logic(LogicVariables):
+                        if not collectible.added and collectible.kong in (kong, Kongs.any) and collectible.logic(LogicVariables):
                             LogicVariables.AddCollectible(collectible, region.level)
                 # Check accessibility for each location in this region
                 for location in region.locations:
@@ -208,7 +210,7 @@ def GetAccessibleLocations(settings, ownedItems, searchType=SearchMode.GetReacha
                         newRegion.id = destination
                         regionPool.append(newRegion)
 
-    if searchType == SearchMode.GetReachable or searchType == SearchMode.GetReachableWithControlledPurchases:
+    if searchType in (SearchMode.GetReachable, SearchMode.GetReachableWithControlledPurchases):
         return accessible
     elif searchType == SearchMode.CheckBeatable:
         # If the search has completed and banana hoard has not been found, game is unbeatable
@@ -315,8 +317,8 @@ def VerifyWorldWithWorstCoinUsage(settings):
             if currentMoveKeysUnlocked > existingMoveKeysUnlocked:
                 continue
             # All else equal, pick the move with the lowest overall coin differential
-            existingMoveCoinDiff = sum([x for x in shopDifferentials[locationToBuy]])
-            currentMoveCoinDiff = sum([x for x in shopDifferentials[shopLocation]])
+            existingMoveCoinDiff = sum(list(shopDifferentials[locationToBuy]))
+            currentMoveCoinDiff = sum(list(shopDifferentials[shopLocation]))
             if currentMoveCoinDiff < existingMoveCoinDiff:
                 locationToBuy = shopLocation
         # Purchase the "least helpful" move & add to owned Items
@@ -410,8 +412,10 @@ def RandomFill(itemsToPlace, validLocations):
     return 0
 
 
-def ForwardFill(settings, itemsToPlace, validLocations, ownedItems=[]):
+def ForwardFill(settings, itemsToPlace, validLocations, ownedItems=None):
     """Forward fill algorithm for item placement."""
+    if ownedItems is None:
+        ownedItems = []
     random.shuffle(itemsToPlace)
     ownedItems = ownedItems.copy()
     # While there are items to place
@@ -440,12 +444,14 @@ def GetItemValidLocations(validLocations, item):
                 itemValidLocations = validLocations[itemKey]
                 break
             # Valid locations entry wasn't found
-            itemValidLocations = [x for x in LocationList]
+            itemValidLocations = list(LocationList)
     return itemValidLocations
 
 
-def AssumedFill(settings, itemsToPlace, validLocations, ownedItems=[]):
+def AssumedFill(settings, itemsToPlace, validLocations, ownedItems=None):
     """Assumed fill algorithm for item placement."""
+    if ownedItems is None:
+        ownedItems = []
     # Calculate total cost of moves
     maxCoinsSpent = GetMaxCoinsSpent(settings, itemsToPlace + ownedItems)
     # While there are items to place
@@ -573,9 +579,8 @@ def AssumedFill(settings, itemsToPlace, validLocations, ownedItems=[]):
                 LocationList[locationId].item = None
                 itemShuffled = False
                 continue
-            else:
-                itemShuffled = True
-                break
+            itemShuffled = True
+            break
         if not itemShuffled:
             js.postMessage("Failed placing item " + ItemList[item].name + " in any of remaining " + str(len(validLocations)) + " possible locations")
             return len(itemsToPlace) + 1
@@ -611,11 +616,15 @@ def GetMaxCoinsSpent(settings, ownedItems):
     return MaxCoinsSpent
 
 
-def PlaceItems(settings, algorithm, itemsToPlace, ownedItems=[], validLocations=[]):
+def PlaceItems(settings, algorithm, itemsToPlace, ownedItems=None, validLocations=None):
     """Places items using given algorithm."""
+    if ownedItems is None:
+        ownedItems = []
+    if validLocations is None:
+        validLocations = []
     # If list of valid locations not provided, just use all valid locations
     if len(validLocations) == 0:
-        validLocations = [x for x in LocationList]
+        validLocations = list(LocationList)
     if algorithm == "assumed":
         return AssumedFill(settings, itemsToPlace, validLocations, ownedItems)
     elif algorithm == "forward":
@@ -659,11 +668,10 @@ def Fill(spoiler):
             if retries == 4:
                 js.postMessage("Fill failed, out of retries.")
                 raise ex
-            else:
-                retries += 1
-                js.postMessage("Fill failed. Retrying. Tries: " + str(retries))
-                Reset()
-                Logic.ClearAllLocations()
+            retries += 1
+            js.postMessage("Fill failed. Retrying. Tries: " + str(retries))
+            Reset()
+            Logic.ClearAllLocations()
 
 
 def ShuffleSharedMoves(spoiler):
@@ -718,11 +726,10 @@ def FillKongsAndMovesGeneric(spoiler):
             if retries == 20:
                 js.postMessage("Fill failed, out of retries.")
                 raise ex
-            else:
-                retries += 1
-                js.postMessage("Fill failed. Retrying. Tries: " + str(retries))
-                Reset()
-                Logic.ClearAllLocations()
+            retries += 1
+            js.postMessage("Fill failed. Retrying. Tries: " + str(retries))
+            Reset()
+            Logic.ClearAllLocations()
 
 
 def GeneratePlaythrough(spoiler):
@@ -809,11 +816,10 @@ def FillKongsAndMovesForLevelOrder(spoiler):
             if retries == 20:
                 js.postMessage("Fill failed, out of retries.")
                 raise ex
-            else:
-                retries += 1
-                js.postMessage("Fill failed. Retrying. Tries: " + str(retries))
-                Reset()
-                Logic.ClearAllLocations()
+            retries += 1
+            js.postMessage("Fill failed. Retrying. Tries: " + str(retries))
+            Reset()
+            Logic.ClearAllLocations()
 
 
 def GetAccessibleKongLocations(levels: list, ownedKongs: list):
@@ -973,8 +979,9 @@ def ShuffleMisc(spoiler):
     spoiler.human_kasplats = {}
     spoiler.UpdateKasplats(LogicVariables.kasplat_map)
     # Handle bonus barrels
-    BarrelShuffle(spoiler.settings)
-    spoiler.UpdateBarrels()
+    if spoiler.settings.bonus_barrels in ("random", "all_beaver_bother"):
+        BarrelShuffle(spoiler.settings)
+        spoiler.UpdateBarrels()
     # Handle Bananaports
     if spoiler.settings.bananaport_rando:
         replacements = []

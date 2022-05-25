@@ -234,16 +234,15 @@ def ShuffleMusicWithSizeCheck(spoiler: Spoiler, song_list: list):
             if retries == 20:
                 print("Music rando failed, out of retries.")
                 raise Ex.MusicAttemptCountExceeded
-            else:
-                retries += 1
-                print("Music rando failed. Retrying. Tries: " + str(retries))
-                # Reset spoiler object
-                if vanillaSong.type == SongType.BGM:
-                    spoiler.music_bgm_data = {}
-                elif vanillaSong.type == SongType.Fanfare:
-                    spoiler.music_fanfare_data = {}
-                elif vanillaSong.type == SongType.Event:
-                    spoiler.music_event_data = {}
+            retries += 1
+            print("Music rando failed. Retrying. Tries: " + str(retries))
+            # Reset spoiler object
+            if vanillaSong.type == SongType.BGM:
+                spoiler.music_bgm_data = {}
+            elif vanillaSong.type == SongType.Fanfare:
+                spoiler.music_fanfare_data = {}
+            elif vanillaSong.type == SongType.Event:
+                spoiler.music_event_data = {}
 
 
 def shuffle_music(spoiler: Spoiler, pool_to_shuffle, shuffled_list):

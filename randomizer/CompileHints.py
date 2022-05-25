@@ -534,8 +534,10 @@ def AddLoadingZoneHints(spoiler: Spoiler):
         print("Unable to place remaining LZR hints!")
 
 
-def TryAddingLoadingZoneHint(spoiler: Spoiler, transition, disallowedRegions: list = []):
+def TryAddingLoadingZoneHint(spoiler: Spoiler, transition, disallowedRegions: list = None):
     """Try to write a hint for the given transition. If this hint is determined to be bad, it will return false and not place the hint."""
+    if disallowedRegions is None:
+        disallowedRegions = []
     pathToHint = transition
     # Don't hint entrances from dead-end rooms, follow the reverse pathway back until finding a place with multiple entrances
     if spoiler.settings.decoupled_loading_zones:

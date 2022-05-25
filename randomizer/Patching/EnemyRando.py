@@ -241,7 +241,7 @@ def randomize_enemies(spoiler: Spoiler):
                             if cont_map_id != Maps.FranticFactory or spawner["index"] < 35 or spawner["index"] > 44:
                                 new_enemy_id = arr[sub_index]
                                 sub_index += 1
-                                if new_enemy_id != Enemies.Book or (cont_map_id != Maps.CavesDonkeyCabin and cont_map_id != Maps.JapesLankyCave and cont_map_id != Maps.AngryAztecLobby):
+                                if new_enemy_id != Enemies.Book or cont_map_id not in (Maps.CavesDonkeyCabin, Maps.JapesLankyCave, Maps.AngryAztecLobby):
                                     if new_enemy_id != Enemies.Bug or cont_map_id != Maps.CavesDiddyLowerCabin:
                                         ROM().seek(cont_map_spawner_address + spawner["offset"])
                                         ROM().writeMultipleBytes(new_enemy_id, 1)

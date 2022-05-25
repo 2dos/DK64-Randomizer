@@ -9,8 +9,10 @@ from randomizer.Enums.Types import Types
 class Item:
     """Stores information about an item."""
 
-    def __init__(self, name, playthrough, type, data=[]):
+    def __init__(self, name, playthrough, type, data=None):
         """Initialize with given parameters."""
+        if data is None:
+            data = []
         self.name = name
         self.playthrough = playthrough
         self.type = type

@@ -13,8 +13,10 @@ from randomizer.Lists.MapsAndExits import Maps
 class Location:
     """A shufflable location at which a random item can be placed."""
 
-    def __init__(self, name, default, type, data=[]):
+    def __init__(self, name, default, type, data=None):
         """Initialize with given parameters."""
+        if data is None:
+            data = []
         self.name = name
         self.default = default
         self.type = type

@@ -77,7 +77,7 @@ class Settings:
         self.troff_weight_4 = 0.8
         self.troff_weight_5 = 0.9
         self.troff_weight_6 = 1.0
-        if self.level_randomization == "loadingzone" or self.level_randomization == "loadingzonesdecoupled":
+        if self.level_randomization in ("loadingzone", "loadingzonesdecoupled"):
             self.troff_weight_0 = 1
             self.troff_weight_1 = 1
             self.troff_weight_2 = 1
@@ -377,7 +377,8 @@ class Settings:
         """
         return json.dumps(self.__dict__)
 
-    def __get_hash(self):
+    @staticmethod
+    def __get_hash():
         """Get the hash value of all of the source code loaded."""
         hash_value = []
         files = []

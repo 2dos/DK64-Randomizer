@@ -3,6 +3,7 @@ import gzip
 import os
 import shutil
 import subprocess
+import sys
 import zlib
 
 import generate_watch_file
@@ -713,4 +714,4 @@ with open(newROMName, "r+b") as fh:
 
 print("[7 / 7] - Generating BizHawk RAM watch")
 
-exit()
+sys.exit()

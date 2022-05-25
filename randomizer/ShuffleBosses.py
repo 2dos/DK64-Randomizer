@@ -19,14 +19,15 @@ def ShuffleBosses(boss_location_rando: bool):
 
 def ShuffleBossKongs(boss_maps: array, boss_kong_rando: bool):
     """Shuffle the kongs required for the bosses."""
-    vanillaBossKongs = {}
-    vanillaBossKongs[Maps.JapesBoss] = Kongs.donkey
-    vanillaBossKongs[Maps.AztecBoss] = Kongs.diddy
-    vanillaBossKongs[Maps.FactoryBoss] = Kongs.tiny
-    vanillaBossKongs[Maps.GalleonBoss] = Kongs.lanky
-    vanillaBossKongs[Maps.FungiBoss] = Kongs.chunky
-    vanillaBossKongs[Maps.CavesBoss] = Kongs.donkey
-    vanillaBossKongs[Maps.CastleBoss] = Kongs.lanky
+    vanillaBossKongs = {
+        Maps.JapesBoss: Kongs.donkey,
+        Maps.AztecBoss: Kongs.diddy,
+        Maps.FactoryBoss: Kongs.tiny,
+        Maps.GalleonBoss: Kongs.lanky,
+        Maps.FungiBoss: Kongs.chunky,
+        Maps.CavesBoss: Kongs.donkey,
+        Maps.CastleBoss: Kongs.lanky,
+    }
 
     boss_kongs = []
     for level in range(7):
