@@ -9,6 +9,7 @@ from randomizer.ShuffleBosses import ShuffleBosses, ShuffleBossKongs, ShuffleKut
 from randomizer.Enums.Events import Events
 from randomizer.Enums.Kongs import Kongs, GetKongs
 from randomizer.Prices import RandomizePrices, VanillaPrices
+from random import randint
 
 
 class Settings:
@@ -159,8 +160,6 @@ class Settings:
         #  Settings which affect logic
         # start_with_moves: bool
         self.unlock_all_moves = None
-        # unlock_all_kongs: bool
-        self.unlock_all_kongs = None
         # crown_door_open: bool
         self.crown_door_open = None
         # coin_door_open: bool
@@ -169,17 +168,31 @@ class Settings:
         self.unlock_fairy_shockwave = None
         # krool_phase_count: int, [1-5]
         self.krool_phase_count = 5
+        self.krool_random = False
         # krool_key_count: int, [0-8]
         self.krool_key_count = 8
+        self.keys_random = False
+        # starting_kongs_count: int, [1-5]
+        self.starting_kongs_count = 5
+        self.starting_random = False
 
         # bonus_barrels: str
-        # skip - NOT IMPLEMENTED YET
+        # skip (auto-completed)
         # normal
         # random
         self.bonus_barrels = "normal"
+        # helm_barrels: str
+        # skip (helm skip all)
+        # normal
+        # random
+        self.helm_barrels = "normal"
+        self.bonus_barrel_auto_complete = False
 
         # hard_shooting: bool
         self.hard_shooting = False
+
+        # damage multiplier
+        self.damage_amount = "default"
 
         # shuffle_loading_zones: str
         # none
@@ -243,6 +256,8 @@ class Settings:
         phases = [x for x in kongs if x != Kongs.chunky]
         if self.krool_phase_order_rando:
             random.shuffle(phases)
+        if self.krool_random:
+            self.krool_phase_count = randint(1, 5)
         if self.krool_phase_count < 5:
             phases = random.sample(phases, self.krool_phase_count - 1)
         orderedPhases = []
@@ -274,7 +289,10 @@ class Settings:
             Events.HelmKeyTurnedIn,
         ]
         key_list = KeyEvents.copy()
-        required_key_count = self.krool_key_count
+        if self.keys_random:
+            required_key_count = randint(0, 8)
+        else:
+            required_key_count = self.krool_key_count
         if self.krool_access:
             # If helm guaranteed, make sure it's added and included in the key count
             self.krool_keys_required.append(Events.HelmKeyTurnedIn)
@@ -297,8 +315,15 @@ class Settings:
         self.kutout_kongs = ShuffleKutoutKongs(self.boss_maps, self.boss_kongs, self.boss_kong_rando)
 
         # Bonus Barrel Rando
-        if self.bonus_barrel_rando:
+        if self.bonus_barrel_auto_complete:
+            self.bonus_barrels = "skip"
+        elif self.bonus_barrel_rando:
             self.bonus_barrels = "random"
+        # Helm Barrel Rando
+        if self.helm_setting == "skip_all":
+            self.helm_barrels = "skip"
+        elif self.bonus_barrel_rando:
+            self.helm_barrels = "random"
 
         # Loading Zone Rando
         if self.level_randomization == "level_order":
@@ -312,21 +337,33 @@ class Settings:
             self.shuffle_loading_zones = "none"
 
         # Kong rando
+        # Temp until Slider UI binding gets fixed
+        if self.starting_random:
+            self.starting_kongs_count = randint(1, 5)
+        if self.starting_kongs_count == 5:
+            self.kong_rando = False
         if self.kong_rando:
-            self.starting_kong = random.choice(kongs)
-            if self.shuffle_loading_zones == "levels":
-                self.kongs_for_progression = True
+            self.starting_kong_list = random.sample(kongs, self.starting_kongs_count)
+            self.starting_kong = random.choice(self.starting_kong_list)
             # Kong freers are decided in the fill, set as any kong for now
             self.diddy_freeing_kong = Kongs.any
             self.lanky_freeing_kong = Kongs.any
             self.tiny_freeing_kong = Kongs.any
             self.chunky_freeing_kong = Kongs.any
         else:
+            self.possible_kong_list = kongs.copy()
+            self.possible_kong_list.remove(0)
+            self.starting_kong_list = random.sample(self.possible_kong_list, self.starting_kongs_count - 1)
+            self.starting_kong_list.append(Kongs.donkey)
             self.starting_kong = Kongs.donkey
             self.diddy_freeing_kong = Kongs.donkey
             self.lanky_freeing_kong = Kongs.donkey
             self.tiny_freeing_kong = Kongs.diddy
             self.chunky_freeing_kong = Kongs.lanky
+
+        # Kongs needed for level progression
+        if self.starting_kongs_count < 5 and (self.shuffle_loading_zones == "levels" or self.shuffle_loading_zones == "none"):
+            self.kongs_for_progression = True
 
         # Move Location Rando
         if self.shop_location_rando:

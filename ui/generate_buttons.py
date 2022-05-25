@@ -1,10 +1,11 @@
 """File containing main UI button events that travel between tabs."""
+import asyncio
 import json
 import random
 
 import js
-from randomizer.Patching.ApplyRandomizer import patching_response
 from randomizer.BackgroundRandomizer import generate_playthrough
+from randomizer.Patching.ApplyRandomizer import patching_response
 from randomizer.Worker import background
 from ui.bindings import bind
 from ui.progress_bar import ProgressBar
@@ -67,7 +68,8 @@ def generate_seed(event):
             js.document.getElementById("input-file-rom").classList.add("is-invalid")
     else:
         # Start the progressbar
-        ProgressBar().update_progress(0, "Initalizing")
+        loop = asyncio.get_event_loop()
+        loop.run_until_complete(ProgressBar().update_progress(0, "Initalizing"))
         # Remove all the disabled attributes and store them for later
         disabled_options = []
         for element in js.document.getElementsByTagName("input"):
@@ -109,7 +111,7 @@ def generate_seed(event):
             element.setAttribute("disabled", "disabled")
         if not form_data.get("seed"):
             form_data["seed"] = str(random.randint(100000, 999999))
-        ProgressBar().update_progress(2, "Randomizing, this may take some time depending on settings.")
+        loop.run_until_complete(ProgressBar().update_progress(2, "Randomizing, this may take some time depending on settings."))
         background(generate_playthrough, ["'''" + json.dumps(form_data) + "'''"], patching_response)
 
 

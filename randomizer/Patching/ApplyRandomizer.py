@@ -1,31 +1,32 @@
 """Apply Patch data to the ROM."""
+import asyncio
 import codecs
 import json
 import pickle
 import random
 
 import js
+from randomizer.CompileHints import compileHints
+from randomizer.Enums.Transitions import Transitions
 from randomizer.Patching.BananaPortRando import randomize_bananaport
 from randomizer.Patching.BarrelRando import randomize_barrels
 from randomizer.Patching.BossRando import randomize_bosses
-from randomizer.CompileHints import compileHints
 from randomizer.Patching.CosmeticColors import apply_cosmetic_colors
 from randomizer.Patching.DKTV import randomize_dktv
 from randomizer.Patching.EnemyRando import randomize_enemies
 from randomizer.Patching.EntranceRando import randomize_entrances
-from randomizer.Enums.Transitions import Transitions
 from randomizer.Patching.Hash import get_hash_images
+from randomizer.Patching.KongRando import apply_kongrando_cosmetic
 from randomizer.Patching.KRoolRando import randomize_krool
 from randomizer.Patching.MoveLocationRando import randomize_moves
 from randomizer.Patching.MusicRando import randomize_music
 from randomizer.Patching.Patcher import ROM
 from randomizer.Patching.PriceRando import randomize_prices
-from randomizer.Patching.KongRando import apply_kongrando_cosmetic
 from randomizer.Patching.PuzzleRando import randomize_puzzles
+from randomizer.Patching.UpdateHints import PushHints
 
 # from randomizer.Spoiler import Spoiler
 from randomizer.Settings import Settings
-from randomizer.Patching.UpdateHints import PushHints
 from ui.progress_bar import ProgressBar
 
 
@@ -35,19 +36,21 @@ def patching_response(responded_data):
     Args:
         responded_data (str): Pickled data (or json)
     """
+    loop = asyncio.get_event_loop()
+
     try:
         loaded_data = json.loads(responded_data)
         if loaded_data.get("error"):
             error = loaded_data.get("error")
             ProgressBar().set_class("bg-danger")
             js.toast_alert(error)
-            ProgressBar().update_progress(10, f"Error: {error}")
-            ProgressBar().reset()
+            loop.run_until_complete(ProgressBar().update_progress(10, f"Error: {error}"))
+            loop.run_until_complete(ProgressBar().reset())
             return None
     except Exception:
         pass
 
-    ProgressBar().update_progress(8, "Applying Patches")
+    loop.run_until_complete(ProgressBar().update_progress(8, "Applying Patches"))
     # spoiler: Spoiler = pickle.loads(codecs.decode(responded_data.encode(), "base64"))
     spoiler = pickle.loads(codecs.decode(responded_data.encode(), "base64"))
     spoiler.settings.verify_hash()
@@ -133,9 +136,15 @@ def patching_response(responded_data):
         order += 1
 
     # Unlock All Kongs
-    if spoiler.settings.unlock_all_kongs:
+    if spoiler.settings.starting_kongs_count == 5:
         ROM().seek(sav + 0x02C)
         ROM().write(0x1F)
+    else:
+        bin_value = 0
+        for x in spoiler.settings.starting_kong_list:
+            bin_value |= 1 << x
+        ROM().seek(sav + 0x02C)
+        ROM().write(bin_value)
 
     # Unlock All Moves
     if spoiler.settings.unlock_all_moves:
@@ -210,7 +219,7 @@ def patching_response(responded_data):
     # Auto complete bonus barrels
     if spoiler.settings.bonus_barrel_auto_complete:
         ROM().seek(sav + 0x117)
-        ROM().write(3)
+        ROM().write(1)
 
     # Enable or disable the warp to isles option in the UI
     if spoiler.settings.warp_to_isles:
@@ -283,7 +292,7 @@ def patching_response(responded_data):
         js.document.getElementById("hash" + str(order)).src = "data:image/jpeg;base64," + loaded_hash[count]
         order += 1
 
-    ProgressBar().update_progress(10, "Seed Generated.")
+    loop.run_until_complete(ProgressBar().update_progress(10, "Seed Generated."))
     if spoiler.settings.generate_spoilerlog is True:
         js.document.getElementById("nav-settings-tab").style.display = ""
         js.document.getElementById("spoiler_log_block").style.display = ""
@@ -302,6 +311,7 @@ def patching_response(responded_data):
             "seed",
             "algorithm",
             "starting_kong",
+            "starting_kong_list",
             "diddy_freeing_kong",
             "tiny_freeing_kong",
             "lanky_freeing_kong",
@@ -320,5 +330,5 @@ def patching_response(responded_data):
             description.innerHTML = value
     ROM().fixSecurityValue()
     ROM().save(f"dk64-{spoiler.settings.seed_id}.z64")
-    ProgressBar().reset()
+    loop.run_until_complete(ProgressBar().reset())
     js.jq("#nav-settings-tab").tab("show")

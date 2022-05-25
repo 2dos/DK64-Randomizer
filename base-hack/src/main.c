@@ -138,10 +138,13 @@ void earlyFrame(void) {
 	if (ObjectModel2Timer == 2) {
 		updateProgressive();
 		price_rando();
-		setFlag(0x5D,1,2);
-		setFlag(0x58,1,2);
+		setFlag(0x5D,1,2); // DK Phase Intro
+		setFlag(0x58,1,2); // Tiny Phase Intro
 		if (CurrentMap == 0x22) {
 			KRoolRound = 0;
+			for (int i = 0; i < 4; i++) {
+				setFlag(0x51 + i,0,2); // Clear Toes
+			}
 		}
 	}
 	if (CurrentMap == 1) {

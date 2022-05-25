@@ -1,4 +1,6 @@
 """Manage the progressbar of the UI."""
+import asyncio
+
 import js
 
 
@@ -11,7 +13,7 @@ class ProgressBar:
         self.status = "$('#progress-text')"
         self.bar = "$('#patchprogress')"
 
-    def update_progress(self, val: int, text: str):
+    async def update_progress(self, val: int, text: str):
         """Update your progress percentage and text.
 
         Args:
@@ -20,15 +22,22 @@ class ProgressBar:
         """
         # Call out to the js async function so we can run a slept function
         # js.sleep(time in seconds, function to run, args that will be expanded)
-        js.sleep(2, self._show, [])
-        js.sleep(2, self._width, [val])
-        js.sleep(2, self._text, [text])
+        if val == 0:
+            self._show()
+            self._width(val)
+            self._text(text)
+        else:
+            await asyncio.sleep(3)
+            self._show()
+            self._width(val)
+            self._text(text)
 
-    def reset(self):
+    async def reset(self):
         """Set hide, text, width and added classes of the progressbar to nil."""
-        js.sleep(5, self._hide, [])
-        js.sleep(5, self._width, [0])
-        js.sleep(5, self._text, [""])
+        await asyncio.sleep(7)
+        self._hide()
+        self._width(0)
+        self._text("")
         for css in js.document.getElementById("patchprogress").classList:
             if "progress" not in css:
                 self.set_class(css)
@@ -82,6 +91,6 @@ class ProgressBar:
             js.eval(self.bar + f".addClass('{css}')")
 
         if js.eval(self.bar + f".hasClass('{css}')"):
-            js.sleep(2, _remove, [])
+            _remove()
         else:
-            js.sleep(2, _add, [])
+            _add()

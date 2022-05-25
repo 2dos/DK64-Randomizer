@@ -1,5 +1,6 @@
 """Decorator function for UI elements to bind events to buttons."""
 from functools import wraps
+from pyodide import create_proxy
 
 from js import document
 
@@ -22,6 +23,7 @@ def bind(event, id, iterations=0):
         Returns:
             func: The original function to return.
         """
+        function = create_proxy(function)
         if iterations == 0:
             document.getElementById(id).addEventListener(event, function, False)
         else:

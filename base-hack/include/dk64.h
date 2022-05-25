@@ -144,6 +144,7 @@ extern int PlayerOneColor;
 extern char Mode;
 extern char TBVoidByte;
 extern int CurrentMap;
+extern short PreviousMap;
 extern int DestMap;
 extern int DestExit;
 extern char StorySkip;

@@ -49,11 +49,11 @@ class LogicVarHolder:
 
         Done between reachability searches and upon initialization.
         """
-        self.donkey = self.startkong == Kongs.donkey or self.settings.unlock_all_kongs
-        self.diddy = self.startkong == Kongs.diddy or self.settings.unlock_all_kongs
-        self.lanky = self.startkong == Kongs.lanky or self.settings.unlock_all_kongs
-        self.tiny = self.startkong == Kongs.tiny or self.settings.unlock_all_kongs
-        self.chunky = self.startkong == Kongs.chunky or self.settings.unlock_all_kongs
+        self.donkey = Kongs.donkey in self.settings.starting_kong_list
+        self.diddy = Kongs.diddy in self.settings.starting_kong_list
+        self.lanky = Kongs.lanky in self.settings.starting_kong_list
+        self.tiny = Kongs.tiny in self.settings.starting_kong_list
+        self.chunky = Kongs.chunky in self.settings.starting_kong_list
 
         # Right now assuming start with training barrels
         self.vines = True  # self.settings.training_barrels == "startwith"
