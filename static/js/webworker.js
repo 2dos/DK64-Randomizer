@@ -5,7 +5,7 @@ onmessage = async function (e) {
   // Reload Pyodide
   // TODO: We should probably see about caching this load
   try {
-    importScripts("https://cdn.jsdelivr.net/pyodide/v0.20.0/full/pyodide.js");
+    importScripts("./static/js/pyodide/pyodide.js");
     pyodide = await loadPyodide();
     // Load Micropip so we can load the importers
     await pyodide.loadPackage("micropip");
