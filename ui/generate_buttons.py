@@ -51,6 +51,7 @@ def generate_seed_from_patch(event):
         if "is-invalid" not in list(js.document.getElementById("patchfileloader").classList):
             js.document.getElementById("patchfileloader").classList.add("is-invalid")
     else:
+        js.apply_bps_javascript()
         patching_response(str(js.loaded_patch))
 
 
@@ -111,6 +112,7 @@ def generate_seed(event):
             element.setAttribute("disabled", "disabled")
         if not form_data.get("seed"):
             form_data["seed"] = str(random.randint(100000, 999999))
+        js.apply_bps_javascript()
         loop.run_until_complete(ProgressBar().update_progress(2, "Randomizing, this may take some time depending on settings."))
         background(generate_playthrough, ["'''" + json.dumps(form_data) + "'''"], patching_response)
 

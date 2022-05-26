@@ -50,7 +50,7 @@ def randomize_music(spoiler: Spoiler):
             for channel_index in range(12):
                 shuffled_music = song_list[channel_index].copy()
                 random.shuffle(shuffled_music)
-                shuffle_music(spoiler, song_list[channel_index], shuffled_music)
+                shuffle_music(spoiler, song_list[channel_index].copy(), shuffled_music)
         # If the user was a poor sap and selected chaos put DK rap for everything
         elif js.document.getElementById("music_bgm").value == "chaos":
             # Find the DK rap in the list
@@ -106,7 +106,7 @@ def randomize_music(spoiler: Spoiler):
                 check_song()
             duped_song_list = song_list.copy()
             random.shuffle(duped_song_list)
-            shuffle_music(spoiler, song_list, duped_song_list)
+            shuffle_music(spoiler, song_list.copy(), duped_song_list)
     # If the user wants to randomize fanfares
     if js.document.getElementById("music_fanfares").value != "default":
         # Check if our setting is just rando
@@ -120,7 +120,7 @@ def randomize_music(spoiler: Spoiler):
             # ShuffleMusicWithSizeCheck(spoiler, fanfare_list)
             shuffled_music = fanfare_list.copy()
             random.shuffle(shuffled_music)
-            shuffle_music(spoiler, fanfare_list, shuffled_music)
+            shuffle_music(spoiler, fanfare_list.copy(), shuffled_music)
         elif js.document.getElementById("music_fanfares").value == "uploaded":
             # Generate the list of fanfares songs
             song_list = []
@@ -150,7 +150,7 @@ def randomize_music(spoiler: Spoiler):
                 check_song()
             duped_song_list = song_list.copy()
             random.shuffle(duped_song_list)
-            shuffle_music(spoiler, song_list, duped_song_list)
+            shuffle_music(spoiler, song_list.copy(), duped_song_list)
 
     # If the user wants to randomize events
     if js.document.getElementById("music_events").value != "default":
@@ -166,7 +166,7 @@ def randomize_music(spoiler: Spoiler):
             # ShuffleMusicWithSizeCheck(spoiler, event_list)
             duped_song_list = event_list.copy()
             random.shuffle(duped_song_list)
-            shuffle_music(spoiler, event_list, duped_song_list)
+            shuffle_music(spoiler, event_list.copy(), duped_song_list)
 
 
 def ShuffleMusicWithSizeCheck(spoiler: Spoiler, song_list: list):
@@ -243,7 +243,6 @@ def ShuffleMusicWithSizeCheck(spoiler: Spoiler, song_list: list):
                 spoiler.music_fanfare_data = {}
             elif vanillaSong.type == SongType.Event:
                 spoiler.music_event_data = {}
-
 
 def shuffle_music(spoiler: Spoiler, pool_to_shuffle, shuffled_list):
     """Shuffle the music pool based on the OG list and the shuffled list.
