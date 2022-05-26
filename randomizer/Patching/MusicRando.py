@@ -244,6 +244,7 @@ def ShuffleMusicWithSizeCheck(spoiler: Spoiler, song_list: list):
             elif vanillaSong.type == SongType.Event:
                 spoiler.music_event_data = {}
 
+
 def shuffle_music(spoiler: Spoiler, pool_to_shuffle, shuffled_list):
     """Shuffle the music pool based on the OG list and the shuffled list.
 
