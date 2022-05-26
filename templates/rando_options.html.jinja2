@@ -6,22 +6,22 @@
                 <tr>
                     <td>
                         <div>
-                            Level Randomizer Type
+                            Entrance Randomizer
                             <select name="level_randomization"
                                     id="level_randomization"
                                     style="width: 60%;"
                                     class="form-select center-div"
                                     aria-label="Randomization type">
-                                <option selected value="level_order">
+                                <option selected value="level_order" title="Randomize only the order that the levels are in.">
                                     Level Order
                                 </option>
-                                <option value="loadingzone">
+                                <option value="loadingzone" title="Randomize every entrance except for Helm/Helm Lobby.">
                                     Loading Zones
                                 </option>
-                                <option value="loadingzonesdecoupled">
+                                <option value="loadingzonesdecoupled" title="Randomize every entrance except for Helm/Helm Lobby. Going back through a entrance will take you somewhere else.">
                                     Decoupled Loading Zones
                                 </option>
-                                <option value="vanilla">
+                                <option value="vanilla" title="All entrances are the same as the base game.">
                                     Vanilla
                                 </option>
                             </select>
@@ -92,19 +92,19 @@
                                     style="width: 60%;"
                                     class="form-select center-div"
                                     aria-label="Randomization type">
-                                <option selected value="vanilla">
+                                <option selected value="vanilla" title="Same cost as base game.">
                                     Vanilla
                                 </option>
-                                <option value="free">
+                                <option value="free" title="All moves are free.">
                                     Free
                                 </option>
-                                <option value="low">
+                                <option value="low" title="Moves cost 1-4 coins most of the time. (Avg: 2.5)">
                                     Low
                                 </option>
-                                <option value="medium">
+                                <option value="medium" title="Moves cost 1-8 coins most of the time. (Avg: 4.5)">
                                     Medium
                                 </option>
-                                <option value="high">
+                                <option value="high" title="Moves cost 1-12 coins most of the time. (Avg: 6.5)">
                                     High
                                 </option>
                             </select>
