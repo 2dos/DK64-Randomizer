@@ -8,6 +8,11 @@ void changeHelmLZ(void) {
 	if (Rando.fast_start_helm) {
 		if (CurrentMap == HELM_LOBBY) {
 			if (ObjectModel2Timer == 3) {
+				setPermFlag(0x1CC); // Helm Story
+				setFlag(0x3B,1,2); // Roman Numeral Doors
+				for (int j = 0; j < 4; j++) {
+					setFlag(0x46 + j,1,2); // Gates knocked down
+				}
 				for (int i = 0; i < TriggerSize; i++) {
 					trigger* focused_trigger = getObjectArrayAddr(TriggerArray,TRIGGER_ELEMENT_SIZE,i);
 					if (focused_trigger->type == 9) {
@@ -17,11 +22,6 @@ void changeHelmLZ(void) {
 									focused_trigger->exit = 3;
 								} else if (Rando.fast_start_helm == 2) {
 									focused_trigger->exit = 4;
-								}
-								setPermFlag(0x1CC); // Helm Story
-								setFlag(0x3B,1,2); // Roman Numeral Doors
-								for (int j = 0; j < 4; j++) {
-									setFlag(0x46 + i,1,2); // Gates knocked down
 								}
 							}
 						}
