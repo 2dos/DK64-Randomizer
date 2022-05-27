@@ -142,6 +142,21 @@ class LogicVarHolder:
         self.Blueprints = []
 
         self.Events = []
+        
+        # Set key events for keys which are given to the player at start of game
+        keyEvents = [
+            Events.JapesKeyTurnedIn,
+            Events.AztecKeyTurnedIn,
+            Events.FactoryKeyTurnedIn,
+            Events.GalleonKeyTurnedIn,
+            Events.ForestKeyTurnedIn,
+            Events.CavesKeyTurnedIn,
+            Events.CastleKeyTurnedIn,
+            Events.HelmKeyTurnedIn,
+        ]
+        for keyEvent in keyEvents:
+            if keyEvent not in self.settings.krool_keys_required:
+                self.Events.append(keyEvent)
 
         # Colored banana and coin arrays
         # Colored bananas as 7 arrays of 5 (7 levels for 5 kongs)
