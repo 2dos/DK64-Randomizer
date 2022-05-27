@@ -631,9 +631,9 @@ with open(newROMName, "r+b") as fh:
     # Replace Helm Text
     main_pointer_table_offset = 0x101C50
     fh.seek(main_pointer_table_offset + (12 * 4))
-    text_table = main_pointer_table_offset + int.from_bytes(fh.read(4),"big")
+    text_table = main_pointer_table_offset + int.from_bytes(fh.read(4), "big")
     fh.seek(text_table + (19 * 4))
-    misc_text = main_pointer_table_offset + int.from_bytes(fh.read(4),"big")
+    misc_text = main_pointer_table_offset + int.from_bytes(fh.read(4), "big")
     fh.seek(misc_text + 0x750)
     fh.write(("?").encode("ascii"))
     for i in range(0x15):
