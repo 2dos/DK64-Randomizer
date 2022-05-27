@@ -157,6 +157,13 @@ void earlyFrame(void) {
 			updateProgressive();
 		}
 	}
+	if (CurrentMap == 0x6F) { // Pufftoss
+		if ((CutsceneActive) && (CutsceneIndex == 20) && (CutsceneTimer == 2)) { // Short Intro Cutscene
+			if (Rando.music_rando_on) {
+				MusicTrackChannels[0] = 0; // Disables boss intro music
+			}
+		}
+	}
 	write_kutoutorder();
 	remove_blockers();
 	determine_krool_order();
