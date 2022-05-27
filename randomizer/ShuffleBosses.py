@@ -140,8 +140,8 @@ def ShuffleBossesBasedOnOwnedItems(settings, ownedKongs: dict, ownedMoves: dict)
             elif level == castleBossIndex:
                 newBossMaps.append(Maps.CastleBoss)
                 newBossKongs.append(castleBossKong)
-        print("New Boss Order: " + str(newBossMaps))
-        print("New Boss Kongs: " + str(newBossKongs))
+        # print("New Boss Order: " + str(newBossMaps))
+        # print("New Boss Kongs: " + str(newBossKongs))
         if len(newBossMaps) < 7:
             raise FillException("Invalid boss order with fewer than the 7 required main levels.")
     except Exception as ex:

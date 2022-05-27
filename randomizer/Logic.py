@@ -142,7 +142,7 @@ class LogicVarHolder:
         self.Blueprints = []
 
         self.Events = []
-        
+
         # Set key events for keys which are given to the player at start of game
         keyEvents = [
             Events.JapesKeyTurnedIn,
