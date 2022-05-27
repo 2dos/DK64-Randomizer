@@ -20,7 +20,7 @@ jobs:
       run: pip install -r requirements-dev.txt
 
     - name: Build minified versions
-      run: python3 ./tools/prepare_offline.py
+      run: python3 ./tools/prepare_live.py
     
     - name: Remove Git Ignore (This might be changed in the future)
       run: rm .gitignore

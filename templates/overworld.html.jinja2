@@ -92,6 +92,7 @@
                     <input class="form-check-input"
                             type="checkbox"
                             name="krool_random"
+                            onclick="toggle_clicks()"
                             id="krool_random"
                             value="True"/>
                     Randomize
@@ -128,6 +129,7 @@
                             type="checkbox"
                             name="keys_random"
                             id="keys_random"
+                            onclick="toggle_clicks()"
                             value="True"/>
                     Randomize
                 </label>
@@ -153,6 +155,7 @@
                             type="checkbox"
                             name="starting_random"
                             id="starting_random"
+                            onclick="toggle_clicks()"
                             value="True"/>
                     Randomize
                 </label>
@@ -174,11 +177,35 @@
     </div>
 </div>
 <script>
-$('.nav-tabs').click(function(){
- setTimeout(() => {
-      $('#krool_phase_count').slider("relayout");
-      $('#krool_key_count').slider("relayout");
-      $('#starting_kongs_count').slider("relayout");
-    }, 200);
-})
+    $('.nav-tabs').click(function(){
+        setTimeout(() => {
+             $('#krool_phase_count').slider("relayout");
+             $('#krool_key_count').slider("relayout");
+             $('#starting_kongs_count').slider("relayout");
+             toggle_clicks()
+           }, 200);
+       })
+    function toggle_clicks(){
+        if (document.getElementById("krool_random").checked === true) {
+            $("#krool_phase_count").slider("disable")
+            $("#krool_phase_count").slider("setValue", 1)
+         }
+         else {
+            $("#krool_phase_count").slider("enable")
+         }
+         if (document.getElementById("keys_random").checked === true) {
+            $("#krool_key_count").slider("disable")
+            $("#krool_key_count").slider("setValue", 0)
+         }
+         else {
+            $("#krool_key_count").slider("enable")
+         }
+         if (document.getElementById("starting_random").checked === true) {
+            $("#starting_kongs_count").slider("disable")
+            $("#starting_kongs_count").slider("setValue", 1)
+         }
+         else {
+            $("#starting_kongs_count").slider("enable")
+         }
+    }
 </script>
