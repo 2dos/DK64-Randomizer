@@ -25,12 +25,36 @@ def on_input(event):
         bool: False if we need to stop the event.
     """
     # Make sure we limit the max items in each of these text boxes values
-    if "troff" in event.target.id:
+    if event.target.id == "blocker_text":
+        return
+    elif event.target.id == "troff_text":
+        return
+    elif "troff" in event.target.id:
         min_max(event, 0, 500)
-    elif event.target.id == "blocker_text":  # Maybe change depending on how we handing low randomized maximums
-        min_max(event, 0, 200)
     elif "blocker" in event.target.id:
         min_max(event, 0, 200)
+
+
+@bind("focusout", "blocker_text")
+def max_randomized_blocker(event):
+    """Validate blocker input on loss of focus."""
+    blocker_text = js.document.getElementById("blocker_text")
+    if not blocker_text.value:
+        blocker_text.value = 50
+    elif 0 <= int(blocker_text.value) < 8:
+        blocker_text.value = 8
+    elif int(blocker_text.value) > 200:
+        blocker_text.value = 200
+
+
+@bind("focusout", "troff_text")
+def max_randomized_troff(event):
+    """Validate troff input on loss of focus."""
+    troff_text = js.document.getElementById("troff_text")
+    if not troff_text.value:
+        troff_text.value = 300
+    elif int(troff_text.value) > 500:
+        troff_text.value = 500
 
 
 def min_max(event, min, max):
@@ -272,13 +296,34 @@ def disable_shuffle_shop(evt):
     """Disable Shuffle Shop Move Location when All Moves are Unlocked."""
     disabled = False
     shop = js.document.getElementById("shop_location_rando")
+    prices = js.document.getElementById("random_prices")
     if js.document.getElementById("unlock_all_moves").checked:
         disabled = True
     try:
         if disabled:
             shop.setAttribute("disabled", "disabled")
             shop.checked = False
+            prices.setAttribute("disabled", "disabled")
+            prices.value = "free"
         else:
             shop.removeAttribute("disabled")
+            prices.removeAttribute("disabled")
+    except AttributeError:
+        pass
+
+
+@bind("click", "gnawty_barrels")
+def disable_barrel_rando(evt):
+    """Disable Bonus Barrel Rando when Oops All Beaver Bother is selected."""
+    disabled = False
+    barrel = js.document.getElementById("bonus_barrel_rando")
+    if js.document.getElementById("gnawty_barrels").checked:
+        disabled = True
+    try:
+        if disabled:
+            barrel.setAttribute("disabled", "disabled")
+            barrel.checked = False
+        else:
+            barrel.removeAttribute("disabled")
     except AttributeError:
         pass

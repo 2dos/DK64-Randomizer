@@ -5,26 +5,15 @@
             <table class="table table-striped table-dark">
                 <tr>
                     <td>
-                        <div>
-                            Entrance Randomizer
-                            <select name="level_randomization"
-                                    id="level_randomization"
-                                    style="width: 60%;"
-                                    class="form-select center-div"
-                                    aria-label="Randomization type">
-                                <option selected value="level_order" title="Randomize only the order that the levels are in.">
-                                    Level Order
-                                </option>
-                                <option value="loadingzone" title="Randomize every entrance except for Helm/Helm Lobby.">
-                                    Loading Zones
-                                </option>
-                                <option value="loadingzonesdecoupled" title="Randomize every entrance except for Helm/Helm Lobby. Going back through a entrance will take you somewhere else.">
-                                    Decoupled Loading Zones
-                                </option>
-                                <option value="vanilla" title="All entrances are the same as the base game.">
-                                    Vanilla
-                                </option>
-                            </select>
+                        <div class="form-check form-switch w-75">
+                            <label title="This option will make all moves available from the start without purchasing them. &#013;Includes all Cranky, all Candy, and almost all Funky purchasables. &#013;Does not include access to JetPac in Cranky; you will still need some banana medals. &#013;Does not include the shockwave attack from the banana fairy queen.">
+                                <input class="form-check-input"
+                                       type="checkbox"
+                                       name="unlock_all_moves"
+                                       id="unlock_all_moves"
+                                       value="True"/>
+                                Unlock All Purchasable Moves
+                            </label>
                         </div>
                     </td>
                 </tr>
@@ -84,28 +73,24 @@
                 <tr>
                     <td>
                         <div>
-                            <label title="All prices in shops are randomized to a random number.">
-                                Random Shop Prices
-                            </label>
-                            <select name="random_prices"
-                                    id="random_prices"
+                            Entrance Randomizer
+                            <select name="level_randomization"
+                                    id="level_randomization"
                                     style="width: 60%;"
                                     class="form-select center-div"
-                                    aria-label="Randomization type">
-                                <option selected value="vanilla" title="Same cost as base game.">
+                                    aria-label="Randomization type"
+                                    title="Determines how entrances are randomized and placed.">
+                                <option selected value="level_order" title="Randomize only the order that the levels are in.">
+                                    Level Order
+                                </option>
+                                <option value="loadingzone" title="Randomize every entrance except for Helm/Helm Lobby.">
+                                    Loading Zones
+                                </option>
+                                <option value="loadingzonesdecoupled" title="Randomize every entrance except for Helm/Helm Lobby. Going back through a entrance will take you somewhere else.">
+                                    Decoupled Loading Zones
+                                </option>
+                                <option value="vanilla" title="All entrances are the same as the base game.">
                                     Vanilla
-                                </option>
-                                <option value="free" title="All moves are free.">
-                                    Free
-                                </option>
-                                <option value="low" title="Moves cost 1-4 coins most of the time. (Avg: 2.5)">
-                                    Low
-                                </option>
-                                <option value="medium" title="Moves cost 1-8 coins most of the time. (Avg: 4.5)">
-                                    Medium
-                                </option>
-                                <option value="high" title="Moves cost 1-12 coins most of the time. (Avg: 6.5)">
-                                    High
                                 </option>
                             </select>
                         </div>
@@ -126,33 +111,6 @@
                                        id="boss_location_rando"
                                        value="True"/>
                                 Shuffle Boss Location
-                            </label>
-                        </div>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <div class="form-check form-switch w-75">
-                            <label title="You can purchase moves from a different shop.">
-                                <input class="form-check-input"
-                                       type="checkbox"
-                                       name="shop_location_rando"
-                                       id="shop_location_rando"
-                                       value="True"/>
-                                Shuffle Shop Move Location
-                            </label>
-                        </div>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <div class="form-check form-switch w-75">
-                            <label title="Bonus Barrels are randomly chosen from the pool of available Bonus Barrels.">
-                                <input class="form-check-input"
-                                       type="checkbox"
-                                       name="bonus_barrel_rando"
-                                       value="True"/>
-                                Shuffle Bonus Barrels
                             </label>
                         </div>
                     </td>
@@ -191,6 +149,50 @@
                                        value="True"/>
                                 Shuffle Kongs
                             </label>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <div class="form-check form-switch w-75">
+                            <label title="You can purchase moves from a different shop.">
+                                <input class="form-check-input"
+                                       type="checkbox"
+                                       name="shop_location_rando"
+                                       id="shop_location_rando"
+                                       value="True"/>
+                                Shuffle Shop Move Location
+                            </label>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <div>
+                            <label title="All prices in shops are randomized to a random number.">
+                                Random Shop Prices
+                            </label>
+                            <select name="random_prices"
+                                    id="random_prices"
+                                    style="width: 60%;"
+                                    class="form-select center-div"
+                                    aria-label="Randomization type">
+                                <option selected value="vanilla" title="Same cost as base game.">
+                                    Vanilla
+                                </option>
+                                <option value="free" title="All moves are free.">
+                                    Free
+                                </option>
+                                <option value="low" title="Moves cost 1-4 coins most of the time. (Avg: 2.5)">
+                                    Low
+                                </option>
+                                <option value="medium" title="Moves cost 1-8 coins most of the time. (Avg: 4.5)">
+                                    Medium
+                                </option>
+                                <option value="high" title="Moves cost 1-12 coins most of the time. (Avg: 6.5)">
+                                    High
+                                </option>
+                            </select>
                         </div>
                     </td>
                 </tr>

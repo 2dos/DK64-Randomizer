@@ -187,6 +187,7 @@ class Settings:
         # random
         self.helm_barrels = "normal"
         self.bonus_barrel_auto_complete = False
+        self.gnawty_barrels = False
 
         # hard_shooting: bool
         self.hard_shooting = False
@@ -319,6 +320,8 @@ class Settings:
             self.bonus_barrels = "skip"
         elif self.bonus_barrel_rando:
             self.bonus_barrels = "random"
+        elif self.gnawty_barrels:
+            self.bonus_barrels = "all_beaver_bother"
         # Helm Barrel Rando
         if self.helm_setting == "skip_all":
             self.helm_barrels = "skip"
