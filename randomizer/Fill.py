@@ -35,6 +35,9 @@ from randomizer.ShuffleBosses import ShuffleBossesBasedOnOwnedItems
 def GetExitLevelExit(region):
     """Get the exit that using the "Exit Level" button will take you to."""
     level = region.level
+    # If you have option to restart, means there is no Exit Level option
+    if region.restart is not None:
+        return None
     # For now, restarts will not be randomized
     # if settings.shuffle_loading_zones == "all" and region.restart is not None:
     #     return ShuffleExits.ShufflableExits[region.restart].shuffledId
