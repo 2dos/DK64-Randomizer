@@ -361,9 +361,9 @@ def ShuffleLevelOrderWithRestrictions(settings: Settings):
         cavesIndex: Levels.CrystalCaves,
         castleIndex: Levels.CreepyCastle,
     }
-    print("New Level Order:")
-    for i in range(1, 8):
-        print(str(i) + ": " + newLevelOrder[i].name)
+    # print("New Level Order:")
+    # for i in range(1, 8):
+    #     print(str(i) + ": " + newLevelOrder[i].name)
     if len(newLevelOrder) < 7:
         raise Ex.EntrancePlacementException("Invalid level order with fewer than the 7 required main levels.")
     ShuffleLevelExits(newLevelOrder)

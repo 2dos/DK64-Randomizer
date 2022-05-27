@@ -793,7 +793,7 @@ def FillKongsAndMovesForLevelOrder(spoiler):
     #   6. Castle
     #   7. Fungi
     # ALGORITHM START
-    print("Starting Kong: " + spoiler.settings.starting_kong.name)
+    # print("Starting Kong: " + spoiler.settings.starting_kong.name)
     # Need to place constants to update boss key items after shuffling levels
     ItemPool.PlaceConstants(spoiler.settings)
     retries = 0
