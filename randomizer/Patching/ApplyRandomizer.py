@@ -238,6 +238,7 @@ def patching_response(responded_data):
         ROM().seek(sav + 0x13E)
         ROM().write(1)
 
+    # Enable Open Lobbies
     if spoiler.settings.open_lobbies:
         ROM().seek(sav + 0x13C)
         ROM().write(0xFF)
@@ -245,6 +246,11 @@ def patching_response(responded_data):
     # Disable Tag Barrels from spawning
     if spoiler.settings.disable_tag_barrels:
         ROM().seek(sav + 0x13F)
+        ROM().write(1)
+
+    # Turn off Shop Hints
+    if spoiler.settings.disable_shop_hints:
+        ROM().seek(sav + 0x13B)
         ROM().write(1)
 
     keys_turned_in = [0, 1, 2, 3, 4, 5, 6, 7]

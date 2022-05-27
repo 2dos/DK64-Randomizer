@@ -38,52 +38,60 @@
                     </tr>
                 {% endfor %}
             </table>
-            <div class="form-check form-switch w-75">
-                <label title="Randomize Required B-Locker totals">
-                    <input class="form-check-input"
-                           type="checkbox"
-                           name="randomize_blocker_required_amounts"
-                           id="randomize_blocker_required_amounts"
-                           value="True"/>
-                    Random B-Lockers
-                </label>
-            </div> 
-            <label>
-                Max Value: 
-                <input class="form-control"
-                    min="0"
-                    max="200"
-                    name="blocker_text"
-                    id="blocker_text"
-                    style="width: 50%;display:inline-block;"
-                    type="number"
-                    title="Maximum Randomized value"
-                    default="50"
-                    placeholder="50"/> 
-            </label>
-            <div class="form-check form-switch w-75">
-                <label title="Randomize Required CB totals">
-                    <input class="form-check-input"
-                           type="checkbox"
-                           name="randomize_cb_required_amounts"
-                           id="randomize_cb_required_amounts"
-                           value="True"/>
-                    Random Troff Bananas
-                </label>
+            <div class="row">
+                <div class="form-check form-switch w-75 col-sm">
+                    <label title="Randomize Required B-Locker totals">
+                        <input class="form-check-input"
+                            type="checkbox"
+                            name="randomize_blocker_required_amounts"
+                            id="randomize_blocker_required_amounts"
+                            value="True"/>
+                        Random B-Lockers
+                    </label>
+                </div>
+                <div class="col-sm" style="margin: auto;"> 
+                    <label>
+                        Max Value: 
+                        <input class="form-control"
+                            min="0"
+                            max="200"
+                            name="blocker_text"
+                            id="blocker_text"
+                            style="width: 50%;display:inline-block;"
+                            type="number"
+                            title="Maximum Randomized value"
+                            default="50"
+                            placeholder="50"/> 
+                    </label>
+                </div>
             </div>
-            <label style="padding-bottom:20px;">
-                Max Value:
-                <input class="form-control"
-                    min="0"
-                    max="500"
-                    name="troff_text"
-                    id="troff_text"
-                    style="width: 50%;display:inline-block;"
-                    type="number"
-                    title="Maximum Randomized value"
-                    default="300"
-                    placeholder="300"/> 
-            </label>
+            <div class="row">
+                <div class="form-check form-switch w-75 col-sm">
+                    <label title="Randomize Required CB totals">
+                        <input class="form-check-input"
+                                type="checkbox"
+                                name="randomize_cb_required_amounts"
+                                id="randomize_cb_required_amounts"
+                                value="True"/>
+                        Random Troff N' Scoff
+                    </label>
+                </div>
+                <div class="col-sm" style="margin: auto;"> 
+                    <label>
+                        Max Value:
+                        <input class="form-control"
+                            min="0"
+                            max="500"
+                            name="troff_text"
+                            id="troff_text"
+                            style="width: 50%;display:inline-block;"
+                            type="number"
+                            title="Maximum Randomized value"
+                            default="300"
+                            placeholder="300"/> 
+                    </label>
+                </div>
+            </div>
         </div>
         <div class="col border">
             <h3>Damage Options</h3>

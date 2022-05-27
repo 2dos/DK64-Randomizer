@@ -6,20 +6,6 @@
                 <tr>
                     <td>
                         <div class="form-check form-switch w-75">
-                            <label title="This option will make all moves available from the start without purchasing them. &#013;Includes all Cranky, all Candy, and almost all Funky purchasables. &#013;Does not include access to JetPac in Cranky; you will still need some banana medals. &#013;Does not include the shockwave attack from the banana fairy queen.">
-                                <input class="form-check-input"
-                                       type="checkbox"
-                                       name="unlock_all_moves"
-                                       id="unlock_all_moves"
-                                       value="True"/>
-                                Unlock All Purchasable Moves
-                            </label>
-                        </div>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <div class="form-check form-switch w-75">
                             <label title="This option makes the fairy camera and shockwave attack available from the start. &#013;Normally obtainable by visiting the Banana Fairy Queen with Tiny as Mini Monkey.">
                                 <input class="form-check-input"
                                        type="checkbox"
@@ -59,10 +45,39 @@
                 <tr>
                     <td>
                         <div class="form-check form-switch w-75">
-                            <label title="Bonus Barrels auto complete.">
+                            <label title="Bonus Barrels are randomly chosen from the pool of available Bonus Barrels.">
+                                <input class="form-check-input"
+                                       type="checkbox"
+                                       name="bonus_barrel_rando"
+                                       id="bonus_barrel_rando"
+                                       value="True"/>
+                                Shuffle Bonus Barrels
+                            </label>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <div class="form-check form-switch w-75">
+                            <label title="All Bonus Barrels are super fun easy minigames. :)">
+                                <input class="form-check-input"
+                                       type="checkbox"
+                                       name="gnawty_barrels"
+                                       id="gnawty_barrels"
+                                       value="True"/>
+                                Oops All Beaver Bother
+                            </label>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <div class="form-check form-switch w-75">
+                            <label title="Bonus Barrels outside of Helm auto complete.">
                                 <input class="form-check-input"
                                        type="checkbox"
                                        name="bonus_barrel_auto_complete"
+                                       id="bonus_barrel_auto_complete"
                                        value="True"/>
                                 Auto Complete Bonus Barrels
                             </label>
@@ -87,15 +102,15 @@
         <div class="col border">
             <h3>Game Length Settings</h3>
             <div class="center">K-Rool Phase Length</div>
-            <div class="form-check form-switch w-75" style="margin-left: 30%;">
-                <label title="Randomize number of K Rool Phases.">
+            <div class="form-check form-switch w-75" style="margin-left: 25%;">
+                <label title="Selects a random value from Slider to determine the number of K Rool Phases.">
                     <input class="form-check-input"
                             type="checkbox"
                             name="krool_random"
                             onclick="toggle_clicks()"
                             id="krool_random"
                             value="True"/>
-                    Randomize
+                    Random Selection
                 </label>
             </div>
             <div>
@@ -113,7 +128,7 @@
             </div>
             <hr>
             <div class="center">Keys required to beat K. Rool</div>
-            <div class="form-check form-switch w-75" style="margin-left: 30%;">
+            <div class="form-check form-switch w-75" style="margin-left: 25%;">
                 <label title="Required to get Key 8 from Helm to access K Rool or leave it up to chance.">
                     <input class="form-check-input"
                             type="checkbox"
@@ -123,15 +138,15 @@
                     Key 8 Required
                 </label>
             </div>
-            <div class="form-check form-switch w-75" style="margin-left: 30%;">
-                <label title="Randomize how many Keys are pre-turned in.">
+            <div class="form-check form-switch w-75" style="margin-left: 25%;">
+                <label title="Selects a random value from Slider to determine how many Keys are pre-turned in.">
                     <input class="form-check-input"
                             type="checkbox"
                             name="keys_random"
                             id="keys_random"
                             onclick="toggle_clicks()"
                             value="True"/>
-                    Randomize
+                    Random Selection
                 </label>
             </div>
             <div>
@@ -149,15 +164,15 @@
             </div>
             <hr>
             <div class="center">Number of Starting Kongs</div>
-            <div class="form-check form-switch w-75" style="margin-left: 30%;">
-                <label title="Randomize how many kongs you start with.">
+            <div class="form-check form-switch w-75" style="margin-left: 25%;">
+                <label title="Selects a random value from Slider to determine how many kongs you start with.">
                     <input class="form-check-input"
                             type="checkbox"
                             name="starting_random"
                             id="starting_random"
                             onclick="toggle_clicks()"
                             value="True"/>
-                    Randomize
+                    Random Selection
                 </label>
             </div>
             <div>

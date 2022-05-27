@@ -672,7 +672,7 @@ def Fill(spoiler):
                 js.postMessage("Fill failed, out of retries.")
                 raise ex
             retries += 1
-            js.postMessage("Fill failed. Retrying. Tries: " + str(retries))
+            js.postMessage("Retrying fill. Tries: " + str(retries))
             Reset()
             Logic.ClearAllLocations()
 
@@ -730,7 +730,7 @@ def FillKongsAndMovesGeneric(spoiler):
                 js.postMessage("Fill failed, out of retries.")
                 raise ex
             retries += 1
-            js.postMessage("Fill failed. Retrying. Tries: " + str(retries))
+            js.postMessage("Retrying fill. Tries: " + str(retries))
             Reset()
             Logic.ClearAllLocations()
 
@@ -820,7 +820,7 @@ def FillKongsAndMovesForLevelOrder(spoiler):
                 js.postMessage("Fill failed, out of retries.")
                 raise ex
             retries += 1
-            js.postMessage("Fill failed. Retrying. Tries: " + str(retries))
+            js.postMessage("Retrying fill. Tries: " + str(retries))
             Reset()
             Logic.ClearAllLocations()
 
