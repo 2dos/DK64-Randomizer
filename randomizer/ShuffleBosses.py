@@ -17,7 +17,7 @@ def ShuffleBosses(boss_location_rando: bool):
     return boss_maps
 
 
-def ShuffleBossKongs(boss_maps: array, boss_kong_rando: bool):
+def ShuffleBossKongs(settings):
     """Shuffle the kongs required for the bosses."""
     vanillaBossKongs = {
         Maps.JapesBoss: Kongs.donkey,
@@ -31,9 +31,9 @@ def ShuffleBossKongs(boss_maps: array, boss_kong_rando: bool):
 
     boss_kongs = []
     for level in range(7):
-        boss_map = boss_maps[level]
-        if boss_kong_rando:
-            kong = SelectRandomKongForBoss(boss_map)
+        boss_map = settings.boss_maps[level]
+        if settings.boss_kong_rando:
+            kong = SelectRandomKongForBoss(boss_map, settings.hard_mad_jack)
         else:
             kong = vanillaBossKongs[boss_map]
         boss_kongs.append(kong)
@@ -41,14 +41,18 @@ def ShuffleBossKongs(boss_maps: array, boss_kong_rando: bool):
     return boss_kongs
 
 
-def SelectRandomKongForBoss(boss_map: Maps):
+def SelectRandomKongForBoss(boss_map: Maps, hard_mad_jack: bool):
     """Randomly choses from the allowed list for the boss."""
+    possibleKongs = []
     if boss_map == Maps.JapesBoss:
         possibleKongs = [Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky]
     elif boss_map == Maps.AztecBoss:
         possibleKongs = [Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky]
     elif boss_map == Maps.FactoryBoss:
-        possibleKongs = [Kongs.donkey, Kongs.tiny, Kongs.chunky]
+        if hard_mad_jack:
+            possibleKongs = [Kongs.donkey, Kongs.tiny, Kongs.chunky]
+        else:
+            possibleKongs = [Kongs.tiny]
     elif boss_map == Maps.GalleonBoss:
         possibleKongs = [Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky]
     elif boss_map == Maps.FungiBoss:
