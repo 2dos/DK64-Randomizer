@@ -517,12 +517,14 @@ def AssumedFill(settings, itemsToPlace, validLocations, ownedItems=None):
                 factoryIndex = GetShuffledLevelIndex(Levels.FranticFactory)
                 kongPriority = {}
                 for i in range(0, 5):
-                    if i == japesIndex:
+                    if i == japesIndex and Locations.DiddyKong in settings.kong_locations:
                         kongPriority[Locations.DiddyKong] = i
                     elif i == aztecIndex:
-                        kongPriority[Locations.LankyKong] = i
-                        kongPriority[Locations.TinyKong] = i
-                    elif i == factoryIndex:
+                        if Locations.LankyKong in settings.kong_locations:
+                            kongPriority[Locations.LankyKong] = i
+                        if Locations.TinyKong in settings.kong_locations:
+                            kongPriority[Locations.TinyKong] = i
+                    elif i == factoryIndex and Locations.ChunkyKong in settings.kong_locations:
                         kongPriority[Locations.ChunkyKong] = i
                 validReachable.sort(key=lambda x: kongPriority[x], reverse=True)
         # Get a random, empty, reachable location
@@ -764,7 +766,7 @@ def FillKongsAndMoves(spoiler):
     if spoiler.settings.kong_rando:
         kongItems = ItemPool.Kongs(spoiler.settings)
         kongValidLocations = {}
-        kongLocations = [Locations.DiddyKong, Locations.LankyKong, Locations.TinyKong, Locations.ChunkyKong]
+        kongLocations = spoiler.settings.kong_locations
         for item in kongItems:
             kongValidLocations[item] = kongLocations
         # Kongs could be shuffled in the following generic shuffle, but since they're so restrictive,
@@ -796,7 +798,7 @@ def FillKongsAndMovesForLevelOrder(spoiler):
     #   6. Castle
     #   7. Fungi
     # ALGORITHM START
-    # print("Starting Kong: " + spoiler.settings.starting_kong.name)
+    print("Starting Kongs: " + spoiler.settings.starting_kong.name)
     # Need to place constants to update boss key items after shuffling levels
     ItemPool.PlaceConstants(spoiler.settings)
     retries = 0

@@ -402,6 +402,11 @@ def ShuffleLevelOrderForMultipleStartingKongs(settings: Settings):
     for i in range(0, settings.starting_kongs_count - 1):
         kongLocation = random.choice(kongCageLocations)
         kongCageLocations.remove(kongLocation)
+    # In case diddy is the only kong to free, he can't be in the llama temple since it's behind guitar door
+    if settings.starting_kongs_count == 4 and Kongs.diddy not in settings.starting_kong_list and Locations.LankyKong in kongCageLocations:
+        # Move diddy kong from llama temple to another cage randomly chosen
+        kongCageLocations.remove(Locations.LankyKong)
+        kongCageLocations.append(random.choice(Locations.DiddyKong, Locations.TinyKong, Locations.ChunkyKong))
     # Sort levels by most to least kongs
     kongsInLevels = {
         Levels.JungleJapes: 1 if Locations.DiddyKong in kongCageLocations else 0,
@@ -418,56 +423,55 @@ def ShuffleLevelOrderForMultipleStartingKongs(settings: Settings):
     for levelToPlace in levelsSortedByKongs:
         # Determine the latest this level can appear
         kongsUnplaced = kongsUnplaced - kongsInLevels[levelToPlace]
-        kongsOwned = settings.starting_kongs_count + kongsUnplaced
+        kongsOwned = settings.starting_kongs_count
         # Assume we can own the kongs for levels not yet placed
+        kongsAssumed = settings.starting_kongs_count + kongsUnplaced
         levelsReachable = []
         # Traverse through levels in order
         for level in range(1, 8):
-            # If this level contains kongs to free, stop if don't have enough kongs to reach this level
-            if kongsInLevels[levelToPlace] > 0 and level > kongsOwned + 1:
+            # If don't have 5 kongs yet, stop if don't have enough kongs to reach this level
+            if kongsAssumed < 5 and level > kongsAssumed + 1:
                 break
+            if kongsOwned == settings.starting_kongs_count:
+                # If reached aztec without freeing anyone yet, diddy and/or chunky are needed
+                if newLevelOrder[level] == Levels.AngryAztec:
+                    # If a kong is in Tiny Temple, either Diddy or Chunky can make progress
+                    if Locations.TinyKong in kongCageLocations:
+                        if Kongs.diddy not in settings.starting_kong_list and Kongs.chunky not in settings.starting_kong_list:
+                            break
+                    # If no kong in Tiny Temple but a kong is in Llama temple, need Diddy to open guitar door
+                    elif Locations.LankyKong in kongCageLocations:
+                        if Kongs.diddy not in settings.starting_kong_list:
+                            break
+                # If reached Japes without freeing anyone yet, Only Donkey, Diddy, and Chunky logically have access to T&S portal in Japes
+                elif (
+                    newLevelOrder[level] == Levels.JungleJapes
+                    and kongsInLevels[Levels.JungleJapes] == 0  # This restriciton only matters if there's no one to free in Japes
+                    and Kongs.donkey not in settings.starting_kong_list
+                    and Kongs.diddy not in settings.starting_kong_list
+                    and Kongs.chunky not in settings.starting_kong_list
+                ):
+                    break
+                # If reached Caves without freeing anyone yet, Only Diddy, Lanky, and Chunky logically have access to T&S portal in Caves
+                elif (
+                    newLevelOrder[level] == Levels.CrystalCaves
+                    and Kongs.diddy not in settings.starting_kong_list
+                    and Kongs.lanky not in settings.starting_kong_list
+                    and Kongs.chunky not in settings.starting_kong_list
+                ):
+                    break
             levelsReachable.append(level)
             # Check if a level has been assigned here
             if newLevelOrder[level] is not None:
-                # Update kongsOwned with kongs freeable in current level
+                # Update kongsOwned & kongsAssumed with kongs freeable in current level
                 kongsOwned = kongsOwned + kongsInLevels[newLevelOrder[level]]
+                kongsAssumed = kongsAssumed + kongsInLevels[newLevelOrder[level]]
         # Choose where levelWithKongs will go in new level order
         levelIndexOptions = list(levelIndicesToFill.intersection(levelsReachable))
-        # Filter levelIndexOptions based on specific breaking scenarios
-        # Only Diddy can reasonably make progress if Aztec is first level
-        if levelToPlace == Levels.AngryAztec and Kongs.diddy not in settings.starting_kong_list and 1 in levelIndexOptions:
-            levelIndexOptions.remove(1)
-        # Only Donkey, Diddy, and Chunky logically have access to T&S portal in Japes
-        elif (
-            levelToPlace == Levels.JungleJapes
-            and kongsInLevels[levelToPlace] == 0
-            and 1 in levelIndexOptions
-            and Kongs.donkey not in settings.starting_kong_list
-            and Kongs.diddy not in settings.starting_kong_list
-            and Kongs.chunky not in settings.starting_kong_list
-        ):
-            levelIndexOptions.remove(1)
-        # Only Diddy, Lanky, and Chunky logically have access to T&S portal in Caves
-        elif (
-            levelToPlace == Levels.CrystalCaves
-            and 1 in levelIndexOptions
-            and Kongs.diddy not in settings.starting_kong_list
-            and Kongs.lanky not in settings.starting_kong_list
-            and Kongs.chunky not in settings.starting_kong_list
-        ):
-            levelIndexOptions.remove(1)
-        # If Aztec is level 2 and don't start with diddy or chunky, need to be able to free a one of them in level 1
-        if (
-            newLevelOrder[2] == Levels.AngryAztec
-            and Kongs.diddy not in settings.starting_kong_list
-            and Kongs.chunky not in settings.starting_kong_list
-            and kongsInLevels[levelToPlace] > 0
-            and kongsUnplaced == 0
-            and newLevelOrder[1] is None
-        ):
-            levelIndexOptions = [1]
         # Place level in newLevelOrder and remove from list of remaining slots
         shuffledLevelIndex = random.choice(levelIndexOptions)
         levelIndicesToFill.remove(shuffledLevelIndex)
         newLevelOrder[shuffledLevelIndex] = levelToPlace
+    # Update settings for fill to know which kong locations will be used
+    settings.kong_locations = kongCageLocations
     return newLevelOrder

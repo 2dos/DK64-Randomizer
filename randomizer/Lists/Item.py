@@ -60,8 +60,10 @@ def KongFromItem(item):
         return Kongs.lanky
     elif item == Items.Tiny:
         return Kongs.tiny
-    else:
+    elif item == Items.Chunky:
         return Kongs.chunky
+    else:
+        return Kongs.any
 
 
 ItemList = {

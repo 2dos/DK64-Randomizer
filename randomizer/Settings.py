@@ -8,6 +8,7 @@ import sys
 from randomizer.ShuffleBosses import ShuffleBosses, ShuffleBossKongs, ShuffleKutoutKongs
 from randomizer.Enums.Events import Events
 from randomizer.Enums.Kongs import Kongs, GetKongs
+from randomizer.Enums.Locations import Locations
 from randomizer.Prices import RandomizePrices, VanillaPrices
 from random import randint
 
@@ -353,6 +354,8 @@ class Settings:
             self.lanky_freeing_kong = Kongs.any
             self.tiny_freeing_kong = Kongs.any
             self.chunky_freeing_kong = Kongs.any
+            # Kong locations are adjusted in the fill, set all possible for now
+            self.kong_locations = [Locations.DiddyKong, Locations.LankyKong, Locations.TinyKong, Locations.ChunkyKong]
         else:
             self.possible_kong_list = kongs.copy()
             self.possible_kong_list.remove(0)

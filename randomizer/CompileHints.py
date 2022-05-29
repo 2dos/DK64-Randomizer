@@ -1,5 +1,6 @@
 """Compile a list of hints based on the settings."""
 import random
+from randomizer.Enums.Kongs import Kongs
 from randomizer.Enums.Regions import Regions
 
 from randomizer.Lists.Item import NameFromKong
@@ -354,10 +355,11 @@ def compileHints(spoiler: Spoiler):
         ]
         for kong_map in placement_levels:
             kong_index = kong_json[kong_map["name"]]["locked"]["kong"]
-            level_index = kong_map["level"]
-            kong_name = random.choice(kong_cryptic[kong_index])
-            level_name = random.choice(level_cryptic[level_index])
-            updateRandomHint(f"{kong_name} can be found in {level_name}.")
+            if kong_index != Kongs.any:
+                level_index = kong_map["level"]
+                kong_name = random.choice(kong_cryptic[kong_index])
+                level_name = random.choice(level_cryptic[level_index])
+                updateRandomHint(f"{kong_name} can be found in {level_name}.")
     if spoiler.settings.shuffle_loading_zones == "all":
         AddLoadingZoneHints(spoiler)
     if spoiler.settings.BananaMedalsRequired:

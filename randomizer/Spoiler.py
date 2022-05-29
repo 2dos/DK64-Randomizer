@@ -265,6 +265,37 @@ class Spoiler:
         startkong = {"kong": self.settings.starting_kong, "write": 0x141}
         trainingGrounds = {"locked": startkong}
         self.shuffled_kong_placement["TrainingGrounds"] = trainingGrounds
+        # Write additional starting kongs to empty cages, if any
+        emptyCages = [x for x in [Locations.DiddyKong, Locations.LankyKong, Locations.TinyKong, Locations.ChunkyKong] if x not in self.settings.kong_locations]
+        other_starting_kongs = [x for x in self.settings.starting_kong_list if x != self.settings.starting_kong]
+        for emptyCage in emptyCages:
+            # TODO try to extract method for here and below
+            locationName = "Jungle Japes"
+            unlockKong = self.settings.diddy_freeing_kong
+            lockedwrite = 0x142
+            puzzlewrite = 0x143
+            if emptyCage == Locations.LankyKong:
+                locationName = "Llama Temple"
+                unlockKong = self.settings.lanky_freeing_kong
+                lockedwrite = 0x144
+                puzzlewrite = 0x145
+            elif emptyCage == Locations.TinyKong:
+                locationName = "Tiny Temple"
+                unlockKong = self.settings.tiny_freeing_kong
+                lockedwrite = 0x146
+                puzzlewrite = 0x147
+            elif emptyCage == Locations.ChunkyKong:
+                locationName = "Frantic Factory"
+                unlockKong = self.settings.chunky_freeing_kong
+                lockedwrite = 0x148
+                puzzlewrite = 0x149
+            lockedkong = {}
+            lockedkong["kong"] = KongFromItem(Items.NoItem)
+            lockedkong["write"] = lockedwrite
+            puzzlekong = {"kong": unlockKong, "write": puzzlewrite}
+            kongLocation = {"locked": lockedkong, "puzzle": puzzlekong}
+            self.shuffled_kong_placement[locationName] = kongLocation
+
         # Loop through locations and set necessary data
         for id, location in locations.items():
             if location.item is not None and location.item is not Items.NoItem and not location.constant:
