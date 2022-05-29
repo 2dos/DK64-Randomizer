@@ -6,7 +6,7 @@
                 <tr>
                     <td>
                         <div class="form-check form-switch w-75">
-                            <label title="This option makes the fairy camera and shockwave attack available from the start. &#013;Normally obtainable by visiting the Banana Fairy Queen with Tiny as Mini Monkey.">
+                            <label data-toggle="tooltip" title="This option makes the fairy camera and shockwave attack available from the start.&#10;Normally obtainable by visiting the Banana Fairy Queen with Tiny as Mini Monkey.">
                                 <input class="form-check-input"
                                        type="checkbox"
                                        name="unlock_fairy_shockwave"
@@ -19,7 +19,7 @@
                 <tr>
                     <td>
                         <div class="form-check form-switch w-75">
-                            <label title="You do not need to collect 4 crowns to collect Key 8.">
+                            <label data-toggle="tooltip" title="You do not need to collect 4 crowns to collect Key 8.">
                                 <input class="form-check-input"
                                        type="checkbox"
                                        name="crown_door_open"
@@ -32,7 +32,7 @@
                 <tr>
                     <td>
                         <div class="form-check form-switch w-75">
-                            <label title="You do not need to collect the Nintendo and Rareware coin to collect Key 8. &#013;You will not be able to collect the GB from DK Arcade with this option enabled.">
+                            <label data-toggle="tooltip" title="You do not need to collect the Nintendo and Rareware coin to collect Key 8.&#10;You will not be able to collect the GB from DK Arcade with this option enabled.">
                                 <input class="form-check-input"
                                        type="checkbox"
                                        name="coin_door_open"
@@ -45,7 +45,7 @@
                 <tr>
                     <td>
                         <div class="form-check form-switch w-75">
-                            <label title="Bonus Barrels are randomly chosen from the pool of available Bonus Barrels.">
+                            <label data-toggle="tooltip" title="Bonus Barrels are randomly chosen from the pool of available Bonus Barrels.">
                                 <input class="form-check-input"
                                        type="checkbox"
                                        name="bonus_barrel_rando"
@@ -59,7 +59,7 @@
                 <tr>
                     <td>
                         <div class="form-check form-switch w-75">
-                            <label title="All Bonus Barrels are super fun easy minigames. :)">
+                            <label data-toggle="tooltip" title="All Bonus Barrels are super fun easy minigames. :)">
                                 <input class="form-check-input"
                                        type="checkbox"
                                        name="gnawty_barrels"
@@ -73,7 +73,7 @@
                 <tr>
                     <td>
                         <div class="form-check form-switch w-75">
-                            <label title="Bonus Barrels outside of Helm auto complete.">
+                            <label data-toggle="tooltip" title="Bonus Barrels outside of Helm auto complete.">
                                 <input class="form-check-input"
                                        type="checkbox"
                                        name="bonus_barrel_auto_complete"
@@ -87,7 +87,7 @@
                 <tr>
                     <td>
                         <div class="form-check form-switch w-75">
-                            <label title="All lobbies will be open as if the key to K. Lumsy was already turned in. This does not affect K. Rool's ship.">
+                            <label data-toggle="tooltip" title="All lobbies will be open as if the key to K. Lumsy was already turned in.&#10;This does not affect K. Rool's ship.">
                                 <input class="form-check-input"
                                        type="checkbox"
                                        name="open_lobbies"
@@ -103,7 +103,7 @@
             <h3>Game Length Settings</h3>
             <div class="center">K-Rool Phase Length</div>
             <div class="form-check form-switch w-75" style="margin-left: 25%;">
-                <label title="Selects a random value from Slider to determine the number of K Rool Phases.">
+                <label data-toggle="tooltip" title="Selects a random value from Slider to determine the number of K Rool Phases.">
                     <input class="form-check-input"
                             type="checkbox"
                             name="krool_random"
@@ -129,7 +129,7 @@
             <hr>
             <div class="center">Keys required to beat K. Rool</div>
             <div class="form-check form-switch w-75" style="margin-left: 25%;">
-                <label title="Required to get Key 8 from Helm to access K Rool or leave it up to chance.">
+                <label data-toggle="tooltip" title="Required to get Key 8 from Helm to access K Rool or leave it up to chance.">
                     <input class="form-check-input"
                             type="checkbox"
                             name="krool_access"
@@ -139,7 +139,7 @@
                 </label>
             </div>
             <div class="form-check form-switch w-75" style="margin-left: 25%;">
-                <label title="Selects a random value from Slider to determine how many Keys are pre-turned in.">
+                <label data-toggle="tooltip" title="Selects a random value from Slider to determine how many Keys are pre-turned in.">
                     <input class="form-check-input"
                             type="checkbox"
                             name="keys_random"
@@ -165,7 +165,7 @@
             <hr>
             <div class="center">Number of Starting Kongs</div>
             <div class="form-check form-switch w-75" style="margin-left: 25%;">
-                <label title="Selects a random value from Slider to determine how many kongs you start with.">
+                <label data-toggle="tooltip" title="Selects a random value from Slider to determine how many kongs you start with.">
                     <input class="form-check-input"
                             type="checkbox"
                             name="starting_random"
@@ -223,4 +223,7 @@
             $("#starting_kongs_count").slider("enable")
          }
     }
+    $(function () {
+        $('[data-toggle="tooltip"]').tooltip()
+    })
 </script>

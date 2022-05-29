@@ -6,7 +6,7 @@
                 <tr>
                     <td>
                         <div class="form-check form-switch w-75">
-                            <label title="This option will make all moves available from the start without purchasing them. &#013;Includes all Cranky, all Candy, and almost all Funky purchasables. &#013;Does not include access to JetPac in Cranky; you will still need some banana medals. &#013;Does not include the shockwave attack from the banana fairy queen.">
+                            <label data-toggle="tooltip" title="This option will make all moves available from the start without purchasing them.&#10;Includes all Cranky, all Candy, and almost all Funky purchasables.&#10;Does not include access to JetPac in Cranky; you will still need some banana medals.&#10;Does not include the shockwave attack from the banana fairy queen.">
                                 <input class="form-check-input"
                                        type="checkbox"
                                        name="unlock_all_moves"
@@ -20,7 +20,7 @@
                 <tr>
                     <td>
                         <div class="form-check form-switch w-75">
-                            <label title="All normal enemies that spawn in the world are randomized.">
+                            <label data-toggle="tooltip" title="All normal enemies that spawn in the world are randomized.">
                                 <input class="form-check-input"
                                        type="checkbox"
                                        name="enemy_rando"
@@ -33,7 +33,7 @@
                 <tr>
                     <td>
                         <div class="form-check form-switch w-75">
-                            <label title="The order of KRools boxing match will randomly order the sequence (Currently always ends on chunky).">
+                            <label data-toggle="tooltip" title="The order of KRools boxing match will randomly order the sequence (Currently always ends on chunky).">
                                 <input class="form-check-input"
                                        type="checkbox"
                                        name="krool_phase_order_rando"
@@ -46,7 +46,7 @@
                 <tr>
                     <td>
                         <div class="form-check form-switch w-75">
-                            <label title="The kong you use to fight a boss is different instead of what is normally required.">
+                            <label data-toggle="tooltip" title="The kong you use to fight a boss is different instead of what is normally required.">
                                 <input class="form-check-input"
                                        type="checkbox"
                                        name="boss_kong_rando"
@@ -60,7 +60,7 @@
                 <tr>
                     <td>
                         <div class="form-check form-switch w-75">
-                            <label title="Randomizes the amount of banana medals needed for Jetpac. Range is roughly 4 to 15 with an average of 10.">
+                            <label data-toggle="tooltip" title="Randomizes the amount of banana medals needed for Jetpac. Range is roughly 4 to 15 with an average of 10.">
                                 <input class="form-check-input"
                                        type="checkbox"
                                        name="random_medal_requirement"
@@ -79,6 +79,7 @@
                                     style="width: 60%;"
                                     class="form-select center-div"
                                     aria-label="Randomization type"
+                                    data-toggle="tooltip"
                                     title="Determines how entrances are randomized and placed.">
                                 <option selected value="level_order" title="Randomize only the order that the levels are in.">
                                     Level Order
@@ -104,7 +105,7 @@
                 <tr>
                     <td>
                         <div class="form-check form-switch w-75">
-                            <label title="The boss you can get in a level is different than normal.">
+                            <label data-toggle="tooltip" title="The boss you can get in a level is different than normal.">
                                 <input class="form-check-input"
                                        type="checkbox"
                                        name="boss_location_rando"
@@ -118,7 +119,7 @@
                 <tr>
                     <td>
                         <div class="form-check form-switch w-75">
-                            <label title="Random mappings of bananaport locations.">
+                            <label data-toggle="tooltip" title="Random mappings of bananaport locations.">
                                 <input class="form-check-input"
                                        type="checkbox"
                                        name="bananaport_rando"
@@ -131,7 +132,7 @@
                 <tr>
                     <td>
                         <div class="form-check form-switch w-75">
-                            <label title="Random placement of kasplats between existing spawns.">
+                            <label data-toggle="tooltip" title="Random placement of kasplats between existing spawns.">
                                 <input class="form-check-input" type="checkbox" name="kasplat_rando" value="True" />
                                 Shuffle Kasplats
                             </label>
@@ -141,7 +142,7 @@
                 <tr>
                     <td>
                         <div class="form-check form-switch w-75">
-                            <label title="Starting kong and kong locations have been randomized.">
+                            <label data-toggle="tooltip" title="Starting kong and kong locations have been randomized.">
                                 <input class="form-check-input"
                                        type="checkbox"
                                        name="kong_rando"
@@ -155,7 +156,7 @@
                 <tr>
                     <td>
                         <div class="form-check form-switch w-75">
-                            <label title="You can purchase moves from a different shop.">
+                            <label data-toggle="tooltip" title="You can purchase moves from a different shop.">
                                 <input class="form-check-input"
                                        type="checkbox"
                                        name="shop_location_rando"
@@ -169,14 +170,16 @@
                 <tr>
                     <td>
                         <div>
-                            <label title="All prices in shops are randomized to a random number.">
+                            <label>
                                 Random Shop Prices
                             </label>
                             <select name="random_prices"
                                     id="random_prices"
                                     style="width: 60%;"
                                     class="form-select center-div"
-                                    aria-label="Randomization type">
+                                    aria-label="Randomization type"
+                                    data-toggle="tooltip"
+                                    title="All prices in shops are randomized to a random number.">
                                 <option selected value="vanilla" title="Same cost as base game.">
                                     Vanilla
                                 </option>
@@ -200,3 +203,9 @@
         </div>
     </div>
 </div>
+<script>
+    $(function () {
+         $('[data-toggle="tooltip"]').tooltip({
+                    trigger: 'hover'})
+    })
+</script>

@@ -191,3 +191,9 @@ div {
 .checkbox-only label {
   left: 100px;
 }
+
+.tooltip-inner {
+  max-width: 600px !important;
+  white-space: pre-wrap;
+  text-align: left;
+}
