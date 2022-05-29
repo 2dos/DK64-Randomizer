@@ -867,10 +867,11 @@ def WipeProgressionRequirements(settings: Settings):
         settings.boss_kongs[i] = settings.starting_kong
         settings.boss_maps[i] = Maps.JapesBoss
     # Also for now consider any kong can free any other kong, to avoid false failures in fill
-    settings.diddy_freeing_kong = Kongs.any
-    settings.lanky_freeing_kong = Kongs.any
-    settings.tiny_freeing_kong = Kongs.any
-    settings.chunky_freeing_kong = Kongs.any
+    if settings.kong_rando:
+        settings.diddy_freeing_kong = Kongs.any
+        settings.lanky_freeing_kong = Kongs.any
+        settings.tiny_freeing_kong = Kongs.any
+        settings.chunky_freeing_kong = Kongs.any
 
 
 def SetNewProgressionRequirements(settings: Settings):
