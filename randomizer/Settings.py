@@ -239,6 +239,7 @@ class Settings:
         self.level_randomization = "none"
         self.kong_rando = False
         self.kongs_for_progression = False
+        self.cryptic_hints = True
 
     def resolve_settings(self):
         """Resolve settings which are not directly set through the UI."""

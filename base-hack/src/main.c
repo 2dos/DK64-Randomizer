@@ -49,6 +49,9 @@ void cFuncLoop(void) {
 			}
 		}
 	}
+	if (ControllerInput.Buttons & L_Button) {
+		resetMapContainer();
+	}
 	if (CurrentMap == 0x50) {
 		colorMenuSky();
 	}
