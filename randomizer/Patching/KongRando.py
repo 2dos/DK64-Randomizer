@@ -1,8 +1,9 @@
 """Apply cosmetic elements of Kong Rando."""
 from imp import source_from_cache
-from random import shuffle
+import random
 
 import js
+from randomizer.Enums.Kongs import Kongs
 from randomizer.Patching.Patcher import ROM
 from randomizer.Spoiler import Spoiler
 from randomizer.Lists.EnemyTypes import Enemies
@@ -17,10 +18,29 @@ def apply_kongrando_cosmetic(spoiler: Spoiler):
         forceSwitches = [0xE3, 0xE3, 0xE3, 0xE3, 0x70]
         actors = [Enemies.CutsceneDK, Enemies.CutsceneDiddy, Enemies.CutsceneLanky, Enemies.CutsceneTiny, Enemies.CutsceneChunky]
 
+        japesPuzzleKong = spoiler.shuffled_kong_placement["Jungle Japes"]["puzzle"]["kong"]
+        japesLockedKong = spoiler.shuffled_kong_placement["Jungle Japes"]["locked"]["kong"]
+        if japesLockedKong == Kongs.any:
+            japesLockedKong = Kongs.diddy
+
+        tinyTemplePuzzleKong = spoiler.shuffled_kong_placement["Tiny Temple"]["puzzle"]["kong"]
+        tinyTempleLockedKong = spoiler.shuffled_kong_placement["Tiny Temple"]["locked"]["kong"]
+        if tinyTempleLockedKong == Kongs.any:
+            tinyTempleLockedKong = Kongs.tiny
+
+        llamaPuzzleKong = spoiler.shuffled_kong_placement["Llama Temple"]["puzzle"]["kong"]
+        llamaLockedKong = spoiler.shuffled_kong_placement["Llama Temple"]["locked"]["kong"]
+        if llamaLockedKong == Kongs.any:
+            llamaLockedKong = Kongs.lanky
+
+        factoryPuzzleKong = spoiler.shuffled_kong_placement["Frantic Factory"]["puzzle"]["kong"]
+        factoryLockedKong = spoiler.shuffled_kong_placement["Frantic Factory"]["locked"]["kong"]
+        if factoryLockedKong == Kongs.any:
+            factoryLockedKong = Kongs.chunky
+
         llama_entrance_switch = []
-        # llama_kong = spoiler.shuffled_kong_placement["Llama Temple"]["puzzle"]["kong"]
-        # if llama_kong in [1, 4]:
-        #     llama_entrance_switch.append({"index": 0xD, "new_type": gunswitches[llama_kong]})
+        # if llamaPuzzleKong in [1, 4]:
+        #     llama_entrance_switch.append({"index": 0xD, "new_type": gunswitches[llamaPuzzleKong]})
 
         kongrando_changes = [
             {
@@ -28,19 +48,19 @@ def apply_kongrando_cosmetic(spoiler: Spoiler):
                 "model2_changes": [
                     {
                         "index": 0x30,
-                        "new_type": gunswitches[spoiler.shuffled_kong_placement["Jungle Japes"]["puzzle"]["kong"]],
+                        "new_type": gunswitches[japesPuzzleKong],
                     },
                     {
                         "index": 0x31,
-                        "new_type": gunswitches[spoiler.shuffled_kong_placement["Jungle Japes"]["puzzle"]["kong"]],
+                        "new_type": gunswitches[japesPuzzleKong],
                     },
                     {
                         "index": 0x32,
-                        "new_type": gunswitches[spoiler.shuffled_kong_placement["Jungle Japes"]["puzzle"]["kong"]],
+                        "new_type": gunswitches[japesPuzzleKong],
                     },
                 ],
                 "charspawner_changes": [
-                    {"type": Enemies.CutsceneDiddy, "new_type": actors[spoiler.shuffled_kong_placement["Jungle Japes"]["locked"]["kong"]]},
+                    {"type": Enemies.CutsceneDiddy, "new_type": actors[japesLockedKong]},
                 ],
             },
             {"map_index": 0x26, "model2_changes": llama_entrance_switch, "charspawner_changes": []},
@@ -49,15 +69,15 @@ def apply_kongrando_cosmetic(spoiler: Spoiler):
                 "model2_changes": [
                     {
                         "index": 0x16,
-                        "new_type": instrumentpads[spoiler.shuffled_kong_placement["Llama Temple"]["puzzle"]["kong"]],
+                        "new_type": instrumentpads[llamaPuzzleKong],
                     },
                     {
                         "index": 0x12,
-                        "new_type": gunswitches[spoiler.shuffled_kong_placement["Llama Temple"]["puzzle"]["kong"]],
+                        "new_type": gunswitches[llamaPuzzleKong],
                     },
                 ],
                 "charspawner_changes": [
-                    {"type": Enemies.CutsceneLanky, "new_type": actors[spoiler.shuffled_kong_placement["Llama Temple"]["locked"]["kong"]]},
+                    {"type": Enemies.CutsceneLanky, "new_type": actors[llamaLockedKong]},
                 ],
             },
             {
@@ -65,16 +85,16 @@ def apply_kongrando_cosmetic(spoiler: Spoiler):
                 "model2_changes": [
                     # {
                     #     "index": 0x0,
-                    #     "new_type": greenslamswitches[spoiler.shuffled_kong_placement["Tiny Temple"]["puzzle"]["kong"]],
+                    #     "new_type": greenslamswitches[tinyTemplePuzzleKong],
                     # },
                     # {
                     #     "index": 0x4,
-                    #     "new_type": instrumentpads[spoiler.shuffled_kong_placement["Tiny Temple"]["puzzle"]["kong"]],
+                    #     "new_type": instrumentpads[tinyTemplePuzzleKong],
                     # },
-                    {"index": 0x14, "new_type": forceSwitches[spoiler.shuffled_kong_placement["Tiny Temple"]["puzzle"]["kong"]]}
+                    {"index": 0x14, "new_type": forceSwitches[tinyTemplePuzzleKong]}
                 ],
                 "charspawner_changes": [
-                    {"type": Enemies.CutsceneTiny, "new_type": actors[spoiler.shuffled_kong_placement["Tiny Temple"]["locked"]["kong"]]},
+                    {"type": Enemies.CutsceneTiny, "new_type": actors[tinyTempleLockedKong]},
                 ],
             },
             {
@@ -82,11 +102,11 @@ def apply_kongrando_cosmetic(spoiler: Spoiler):
                 "model2_changes": [
                     {
                         "index": 0x24,
-                        "new_type": greenslamswitches[spoiler.shuffled_kong_placement["Frantic Factory"]["puzzle"]["kong"]],
+                        "new_type": greenslamswitches[factoryPuzzleKong],
                     },
                 ],
                 "charspawner_changes": [
-                    {"type": Enemies.CutsceneChunky, "new_type": actors[spoiler.shuffled_kong_placement["Frantic Factory"]["locked"]["kong"]]},
+                    {"type": Enemies.CutsceneChunky, "new_type": actors[factoryLockedKong]},
                 ],
             },
         ]

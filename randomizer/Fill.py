@@ -516,14 +516,26 @@ def AssumedFill(settings, itemsToPlace, validLocations, ownedItems=None):
                 aztecIndex = GetShuffledLevelIndex(Levels.AngryAztec)
                 factoryIndex = GetShuffledLevelIndex(Levels.FranticFactory)
                 kongPriority = {}
-                for i in range(0, 5):
+                for i in range(0, 7):
                     if i == japesIndex:
-                        kongPriority[Locations.DiddyKong] = i
+                        if Locations.DiddyKong in settings.kong_locations:
+                            kongPriority[Locations.DiddyKong] = i
+                        else:
+                            kongPriority[Locations.DiddyKong] = -1
                     elif i == aztecIndex:
-                        kongPriority[Locations.LankyKong] = i
-                        kongPriority[Locations.TinyKong] = i
+                        if Locations.LankyKong in settings.kong_locations:
+                            kongPriority[Locations.LankyKong] = i
+                        else:
+                            kongPriority[Locations.LankyKong] = -1
+                        if Locations.TinyKong in settings.kong_locations:
+                            kongPriority[Locations.TinyKong] = i
+                        else:
+                            kongPriority[Locations.TinyKong] = -1
                     elif i == factoryIndex:
-                        kongPriority[Locations.ChunkyKong] = i
+                        if Locations.ChunkyKong in settings.kong_locations:
+                            kongPriority[Locations.ChunkyKong] = i
+                        else:
+                            kongPriority[Locations.ChunkyKong] = -1
                 validReachable.sort(key=lambda x: kongPriority[x], reverse=True)
         # Get a random, empty, reachable location
         for locationId in validReachable:
@@ -531,7 +543,10 @@ def AssumedFill(settings, itemsToPlace, validLocations, ownedItems=None):
             LocationList[locationId].PlaceItem(item)
             # When placing a kong, also decide who among the owned kongs can free them
             if ItemList[item].type == Types.Kong:
-                # Choose the puzzle solver
+                # If this is meant to be an empty cage, place no item here
+                if locationId not in settings.kong_locations:
+                    LocationList[locationId].PlaceItem(Items.NoItem)
+                # Choose the puzzle solver, even if it's an empty cage
                 if locationId == Locations.DiddyKong:
                     settings.diddy_freeing_kong = random.choice(ownedKongs)
                 elif locationId == Locations.LankyKong:
@@ -796,7 +811,7 @@ def FillKongsAndMovesForLevelOrder(spoiler):
     #   6. Castle
     #   7. Fungi
     # ALGORITHM START
-    # print("Starting Kong: " + spoiler.settings.starting_kong.name)
+    # print("Starting Kongs: " + str([kong.name + " " for kong in spoiler.settings.starting_kong_list]))
     # Need to place constants to update boss key items after shuffling levels
     ItemPool.PlaceConstants(spoiler.settings)
     retries = 0
@@ -852,10 +867,11 @@ def WipeProgressionRequirements(settings: Settings):
         settings.boss_kongs[i] = settings.starting_kong
         settings.boss_maps[i] = Maps.JapesBoss
     # Also for now consider any kong can free any other kong, to avoid false failures in fill
-    settings.diddy_freeing_kong = Kongs.any
-    settings.lanky_freeing_kong = Kongs.any
-    settings.tiny_freeing_kong = Kongs.any
-    settings.chunky_freeing_kong = Kongs.any
+    if settings.kong_rando:
+        settings.diddy_freeing_kong = Kongs.any
+        settings.lanky_freeing_kong = Kongs.any
+        settings.tiny_freeing_kong = Kongs.any
+        settings.chunky_freeing_kong = Kongs.any
 
 
 def SetNewProgressionRequirements(settings: Settings):
