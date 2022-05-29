@@ -19,29 +19,21 @@ def apply_kongrando_cosmetic(spoiler: Spoiler):
         actors = [Enemies.CutsceneDK, Enemies.CutsceneDiddy, Enemies.CutsceneLanky, Enemies.CutsceneTiny, Enemies.CutsceneChunky]
 
         japesPuzzleKong = spoiler.shuffled_kong_placement["Jungle Japes"]["puzzle"]["kong"]
-        if japesPuzzleKong == Kongs.any:
-            japesPuzzleKong = random.choice(spoiler.settings.starting_kong_list)
         japesLockedKong = spoiler.shuffled_kong_placement["Jungle Japes"]["locked"]["kong"]
         if japesLockedKong == Kongs.any:
             japesLockedKong = Kongs.diddy
 
         tinyTemplePuzzleKong = spoiler.shuffled_kong_placement["Tiny Temple"]["puzzle"]["kong"]
-        if tinyTemplePuzzleKong == Kongs.any:
-            tinyTemplePuzzleKong = random.choice([Kongs.diddy, Kongs.chunky])
         tinyTempleLockedKong = spoiler.shuffled_kong_placement["Tiny Temple"]["locked"]["kong"]
         if tinyTempleLockedKong == Kongs.any:
             tinyTempleLockedKong = Kongs.tiny
 
         llamaPuzzleKong = spoiler.shuffled_kong_placement["Llama Temple"]["puzzle"]["kong"]
-        if llamaPuzzleKong == Kongs.any:
-            llamaPuzzleKong = random.choice([Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky])
         llamaLockedKong = spoiler.shuffled_kong_placement["Llama Temple"]["locked"]["kong"]
         if llamaLockedKong == Kongs.any:
             llamaLockedKong = Kongs.lanky
 
         factoryPuzzleKong = spoiler.shuffled_kong_placement["Frantic Factory"]["puzzle"]["kong"]
-        if factoryPuzzleKong == Kongs.any:
-            factoryPuzzleKong = random.choice([Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky])
         factoryLockedKong = spoiler.shuffled_kong_placement["Frantic Factory"]["locked"]["kong"]
         if factoryLockedKong == Kongs.any:
             factoryLockedKong = Kongs.chunky
