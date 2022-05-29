@@ -20,7 +20,7 @@ def apply_kongrando_cosmetic(spoiler: Spoiler):
 
         japesPuzzleKong = spoiler.shuffled_kong_placement["Jungle Japes"]["puzzle"]["kong"]
         if japesPuzzleKong == Kongs.any:
-            japesPuzzleKong = random.choice([Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky])
+            japesPuzzleKong = random.choice(spoiler.settings.starting_kong_list)
         japesLockedKong = spoiler.shuffled_kong_placement["Jungle Japes"]["locked"]["kong"]
         if japesLockedKong == Kongs.any:
             japesLockedKong = Kongs.diddy
