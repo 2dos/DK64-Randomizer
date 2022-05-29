@@ -355,7 +355,7 @@ class Settings:
             self.tiny_freeing_kong = Kongs.any
             self.chunky_freeing_kong = Kongs.any
             # Kong locations are adjusted in the fill, set all possible for now
-            self.kong_locations = [Locations.DiddyKong, Locations.LankyKong, Locations.TinyKong, Locations.ChunkyKong]
+            self.kong_locations = self.SelectKongLocations()
         else:
             self.possible_kong_list = kongs.copy()
             self.possible_kong_list.remove(0)
@@ -366,6 +366,16 @@ class Settings:
             self.lanky_freeing_kong = Kongs.donkey
             self.tiny_freeing_kong = Kongs.diddy
             self.chunky_freeing_kong = Kongs.lanky
+            # Set up kong locations with vanilla kongs in them, removing any kongs we start with
+            self.kong_locations = [Locations.DiddyKong, Locations.LankyKong, Locations.TinyKong, Locations.ChunkyKong]
+            if Kongs.diddy in self.starting_kong_list:
+                self.kong_locations.remove(Locations.DiddyKong)
+            if Kongs.lanky in self.starting_kong_list:
+                self.kong_locations.remove(Locations.LankyKong)
+            if Kongs.tiny in self.starting_kong_list:
+                self.kong_locations.remove(Locations.TinyKong)
+            if Kongs.chunky in self.starting_kong_list:
+                self.kong_locations.remove(Locations.ChunkyKong)
 
         # Kongs needed for level progression
         if self.starting_kongs_count < 5 and (self.shuffle_loading_zones == "levels" or self.shuffle_loading_zones == "none"):
@@ -374,6 +384,26 @@ class Settings:
         # Move Location Rando
         if self.shop_location_rando:
             self.shuffle_items = "moves"
+
+    def SelectKongLocations(self):
+        """Select which random kong locations to use depending on number of starting kongs."""
+        # First determine which kong cages will have a kong to free
+        kongCageLocations = [
+            Locations.DiddyKong,
+            Locations.LankyKong,
+            Locations.TinyKong,
+            Locations.ChunkyKong,
+        ]
+        # Randomly decide which kong cages will not have kongs in them
+        for i in range(0, self.starting_kongs_count - 1):
+            kongLocation = random.choice(kongCageLocations)
+            kongCageLocations.remove(kongLocation)
+            # In case diddy is the only kong to free, he can't be in the llama temple since it's behind guitar door
+        if self.starting_kongs_count == 4 and Kongs.diddy not in self.starting_kong_list and Locations.LankyKong in kongCageLocations:
+            # Move diddy kong from llama temple to another cage randomly chosen
+            kongCageLocations.remove(Locations.LankyKong)
+            kongCageLocations.append(random.choice(Locations.DiddyKong, Locations.TinyKong, Locations.ChunkyKong))
+        return kongCageLocations
 
     def __repr__(self):
         """Return printable version of the object as json.

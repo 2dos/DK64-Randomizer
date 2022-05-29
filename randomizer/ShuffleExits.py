@@ -391,27 +391,11 @@ def ShuffleLevelOrderForMultipleStartingKongs(settings: Settings):
         6: None,
         7: None,
     }
-    # First determine which kong cages will have a kong to free
-    kongCageLocations = [
-        Locations.DiddyKong,
-        Locations.LankyKong,
-        Locations.TinyKong,
-        Locations.ChunkyKong,
-    ]
-    # Randomly decide which kong cages will not have kongs in them
-    for i in range(0, settings.starting_kongs_count - 1):
-        kongLocation = random.choice(kongCageLocations)
-        kongCageLocations.remove(kongLocation)
-    # In case diddy is the only kong to free, he can't be in the llama temple since it's behind guitar door
-    if settings.starting_kongs_count == 4 and Kongs.diddy not in settings.starting_kong_list and Locations.LankyKong in kongCageLocations:
-        # Move diddy kong from llama temple to another cage randomly chosen
-        kongCageLocations.remove(Locations.LankyKong)
-        kongCageLocations.append(random.choice(Locations.DiddyKong, Locations.TinyKong, Locations.ChunkyKong))
     # Sort levels by most to least kongs
     kongsInLevels = {
-        Levels.JungleJapes: 1 if Locations.DiddyKong in kongCageLocations else 0,
-        Levels.AngryAztec: len([x for x in [Locations.LankyKong, Locations.TinyKong] if x in kongCageLocations]),
-        Levels.FranticFactory: 1 if Locations.ChunkyKong in kongCageLocations else 0,
+        Levels.JungleJapes: 1 if Locations.DiddyKong in settings.kong_locations else 0,
+        Levels.AngryAztec: len([x for x in [Locations.LankyKong, Locations.TinyKong] if x in settings.kong_locations]),
+        Levels.FranticFactory: 1 if Locations.ChunkyKong in settings.kong_locations else 0,
         Levels.GloomyGalleon: 0,
         Levels.FungiForest: 0,
         Levels.CrystalCaves: 0,
@@ -436,11 +420,11 @@ def ShuffleLevelOrderForMultipleStartingKongs(settings: Settings):
                 # If reached aztec without freeing anyone yet, diddy and/or chunky are needed
                 if newLevelOrder[level] == Levels.AngryAztec:
                     # If a kong is in Tiny Temple, either Diddy or Chunky can make progress
-                    if Locations.TinyKong in kongCageLocations:
+                    if Locations.TinyKong in settings.kong_locations:
                         if Kongs.diddy not in settings.starting_kong_list and Kongs.chunky not in settings.starting_kong_list:
                             break
                     # If no kong in Tiny Temple but a kong is in Llama temple, need Diddy to open guitar door
-                    elif Locations.LankyKong in kongCageLocations:
+                    elif Locations.LankyKong in settings.kong_locations:
                         if Kongs.diddy not in settings.starting_kong_list:
                             break
                 # If reached Japes without freeing anyone yet, Only Donkey, Diddy, and Chunky logically have access to T&S portal in Japes
@@ -472,6 +456,4 @@ def ShuffleLevelOrderForMultipleStartingKongs(settings: Settings):
         shuffledLevelIndex = random.choice(levelIndexOptions)
         levelIndicesToFill.remove(shuffledLevelIndex)
         newLevelOrder[shuffledLevelIndex] = levelToPlace
-    # Update settings for fill to know which kong locations will be used
-    settings.kong_locations = kongCageLocations
     return newLevelOrder
