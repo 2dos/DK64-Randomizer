@@ -285,7 +285,7 @@ def patching_response(responded_data):
     apply_cosmetic_colors(spoiler)
     random.seed(spoiler.settings.seed)
 
-    if spoiler.settings.wrinkly_hints:
+    if spoiler.settings.wrinkly_hints in ["standard", "cryptic"]:
         compileHints(spoiler)
         PushHints()
 

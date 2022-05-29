@@ -326,7 +326,7 @@ def compileHints(spoiler: Spoiler):
                             move["level"] = level
                             move["shop"] = shop
         for move in moves_of_importance:
-            if spoiler.settings.cryptic_hints:
+            if spoiler.settings.wrinkly_hints == "cryptic":
                 kong_name = random.choice(kong_cryptic[move["kong"]])
                 level_name = random.choice(level_cryptic[move["level"]])
             else:
@@ -363,7 +363,7 @@ def compileHints(spoiler: Spoiler):
         for kong_map in placement_levels:
             kong_index = kong_json[kong_map["name"]]["locked"]["kong"]
             level_index = kong_map["level"]
-            if spoiler.settings.cryptic_hints:
+            if spoiler.settings.wrinkly_hints == "cryptic":
                 kong_name = random.choice(kong_cryptic[kong_index])
                 level_name = random.choice(level_cryptic[level_index])
             else:
@@ -382,14 +382,14 @@ def compileHints(spoiler: Spoiler):
     if spoiler.settings.level_randomization != "level_order":
         for x in spoiler.settings.krool_keys_required:
             key_index = x - 4
-            if spoiler.settings.cryptic_hints:
+            if spoiler.settings.wrinkly_hints == "cryptic":
                 level_name = random.choice(level_cryptic[key_index])
             else:
                 level_name = level_list[key_index]
             updateRandomHint(f"You will need to obtain the key from {level_name} to fight your greatest foe.")
     for x in range(7):
         boss_map = spoiler.settings.boss_maps[x]
-        if spoiler.settings.cryptic_hints:
+        if spoiler.settings.wrinkly_hints == "cryptic":
             level_name = random.choice(level_cryptic[x])
         else:
             level_name = level_list[x]
@@ -423,7 +423,7 @@ def compileHints(spoiler: Spoiler):
         gb_name = "Golden Bananas"
         if count == 1:
             gb_name = "Golden Banana"
-        if spoiler.settings.cryptic_hints:
+        if spoiler.settings.wrinkly_hints == "cryptic":
             level_name = random.choice(level_cryptic[x])
         else:
             level_name = level_list[x]
@@ -433,7 +433,7 @@ def compileHints(spoiler: Spoiler):
         cb_name = "Small Bananas"
         if count == 1:
             cb_name = "Small Banana"
-        if spoiler.settings.cryptic_hints:
+        if spoiler.settings.wrinkly_hints == "cryptic":
             level_name = random.choice(level_cryptic[x])
         else:
             level_name = level_list[x]

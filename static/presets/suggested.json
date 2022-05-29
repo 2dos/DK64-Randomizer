@@ -30,7 +30,7 @@
     "shop_location_rando": true,
     "bananaport_rando": true,
     "enable_tag_anywhere": true,
-    "wrinkly_hints": true,
+    "wrinkly_hints": "standard",
     "portal_numbers": true,
     "randomize_blocker_required_amounts": true,
     "randomize_cb_required_amounts": true,

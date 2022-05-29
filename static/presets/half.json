@@ -44,7 +44,7 @@
   "unlock_fairy_shockwave": false,
   "bonus_barrel_auto_complete": false,
   "enable_tag_anywhere": false,
-  "wrinkly_hints": false,
+  "wrinkly_hints": "standard",
   "fps_display": false,
   "portal_numbers": true
 }
