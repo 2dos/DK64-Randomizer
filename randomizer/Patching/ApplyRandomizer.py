@@ -251,7 +251,7 @@ def patching_response(responded_data):
     # Turn off Shop Hints
     if spoiler.settings.disable_shop_hints:
         ROM().seek(sav + 0x13B)
-        ROM().write(1)
+        ROM().write(0)
 
     keys_turned_in = [0, 1, 2, 3, 4, 5, 6, 7]
     if len(spoiler.settings.krool_keys_required) > 0:

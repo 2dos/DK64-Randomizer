@@ -193,6 +193,9 @@ class Settings:
         # hard_shooting: bool
         self.hard_shooting = False
 
+        # hard_mad_jack: bool
+        self.hard_mad_jack = False
+
         # damage multiplier
         self.damage_amount = "default"
 
@@ -313,7 +316,7 @@ class Settings:
 
         # Boss Rando
         self.boss_maps = ShuffleBosses(self.boss_location_rando)
-        self.boss_kongs = ShuffleBossKongs(self.boss_maps, self.boss_kong_rando)
+        self.boss_kongs = ShuffleBossKongs(self)
         self.kutout_kongs = ShuffleKutoutKongs(self.boss_maps, self.boss_kongs, self.boss_kong_rando)
 
         # Bonus Barrel Rando
