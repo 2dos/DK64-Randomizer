@@ -356,7 +356,7 @@ def compileHints(spoiler: Spoiler):
         for kong_map in placement_levels:
             kong_index = kong_json[kong_map["name"]]["locked"]["kong"]
             level_index = kong_map["level"]
-            if kong_index != Kongs.any:
+            if kong_index == Kongs.any:
                 kong_name = "An empty cage"
             else:
                 kong_name = random.choice(kong_cryptic[kong_index])
