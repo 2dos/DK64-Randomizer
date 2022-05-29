@@ -14,7 +14,7 @@ from randomizer.Enums.Transitions import Transitions
 from randomizer.Enums.Types import Types
 from randomizer.Lists.Item import ItemFromKong, NameFromKong, KongFromItem, ItemList
 from randomizer.Lists.Location import LocationList
-from randomizer.Lists.Minigame import BarrelMetaData, MinigameRequirements
+from randomizer.Lists.Minigame import BarrelMetaData, HelmMinigameLocations, MinigameRequirements
 from randomizer.Lists.MapsAndExits import GetExitId, GetMapId, Maps
 from randomizer.Settings import Settings
 from randomizer.ShuffleExits import ShufflableExits
@@ -67,8 +67,11 @@ class Spoiler:
         settings["shuffle_loading_zones"] = self.settings.shuffle_loading_zones
         settings["decoupled_loading_zones"] = self.settings.decoupled_loading_zones
         settings["unlock_all_moves"] = self.settings.unlock_all_moves
-        settings["unlock_all_kongs"] = self.settings.unlock_all_kongs
         settings["starting_kong"] = ItemList[ItemFromKong(self.settings.starting_kong)].name
+        startKongList = []
+        for x in self.settings.starting_kong_list:
+            startKongList.append(x.name.capitalize())
+        settings["starting_kong_list"] = startKongList
         settings["diddy_freeing_kong"] = ItemList[ItemFromKong(self.settings.diddy_freeing_kong)].name
         settings["tiny_freeing_kong"] = ItemList[ItemFromKong(self.settings.tiny_freeing_kong)].name
         settings["lanky_freeing_kong"] = ItemList[ItemFromKong(self.settings.lanky_freeing_kong)].name
@@ -175,11 +178,16 @@ class Spoiler:
                 kutout_order = kutout_order + Kongs(kong).name + ", "
             humanspoiler["Shuffled Kutout Kong Order"] = kutout_order.removesuffix(", ")
 
-        if self.settings.bonus_barrels == "random" or self.settings.bonus_barrels == "all_beaver_bother":
+        if self.settings.bonus_barrels in ("random", "all_beaver_bother"):
             shuffled_barrels = OrderedDict()
             for location, minigame in self.shuffled_barrel_data.items():
+                if location in HelmMinigameLocations and self.settings.helm_barrels == "skip":
+                    continue
+                if location not in HelmMinigameLocations and self.settings.bonus_barrels == "skip":
+                    continue
                 shuffled_barrels[LocationList[location].name] = MinigameRequirements[minigame].name
-            humanspoiler["Shuffled Bonus Barrels"] = shuffled_barrels
+            if len(shuffled_barrels) > 0:
+                humanspoiler["Shuffled Bonus Barrels"] = shuffled_barrels
 
         if self.settings.music_bgm == "randomized":
             humanspoiler["Shuffled Music (BGM)"] = self.music_bgm_data
@@ -210,16 +218,13 @@ class Spoiler:
                     break
             # If not, create it
             if map is None:
-                map = {}
-                map["container_map"] = mapId
+                map = {"container_map": mapId}
                 self.enemy_replacements.append(map)
             # Create kasplat_swaps section if doesn't exist
             if "kasplat_swaps" not in map:
                 map["kasplat_swaps"] = []
             # Create swap entry and add to map
-            swap = {}
-            swap["vanilla_location"] = original
-            swap["replace_with"] = kong
+            swap = {"vanilla_location": original, "replace_with": kong}
             map["kasplat_swaps"].append(swap)
 
     def UpdateBarrels(self):
@@ -240,10 +245,7 @@ class Spoiler:
                     self.shuffled_exit_data[key] = shuffledBack
                     containerMapId = GetMapId(exit.region)
                     if containerMapId not in containerMaps:
-                        containerMaps[containerMapId] = {
-                            "container_map": containerMapId,  # DK Isles
-                            "zones": [],
-                        }
+                        containerMaps[containerMapId] = {"container_map": containerMapId, "zones": []}  # DK Isles
                     loading_zone_mapping = {}
                     loading_zone_mapping["vanilla_map"] = GetMapId(vanillaBack.regionId)
                     loading_zone_mapping["vanilla_exit"] = GetExitId(vanillaBack)
@@ -260,12 +262,14 @@ class Spoiler:
         self.location_data = {}
         self.shuffled_kong_placement = {}
         # Go ahead and set starting kong
-        startkong = {}
-        startkong["kong"] = self.settings.starting_kong
-        startkong["write"] = 0x141
-        trainingGrounds = {}
-        trainingGrounds["locked"] = startkong
+        startkong = {"kong": self.settings.starting_kong, "write": 0x141}
+        trainingGrounds = {"locked": startkong}
         self.shuffled_kong_placement["TrainingGrounds"] = trainingGrounds
+        # Write additional starting kongs to empty cages, if any
+        emptyCages = [x for x in [Locations.DiddyKong, Locations.LankyKong, Locations.TinyKong, Locations.ChunkyKong] if x not in self.settings.kong_locations]
+        for emptyCage in emptyCages:
+            self.WriteKongPlacement(emptyCage, Items.NoItem)
+
         # Loop through locations and set necessary data
         for id, location in locations.items():
             if location.item is not None and location.item is not Items.NoItem and not location.constant:
@@ -286,39 +290,38 @@ class Spoiler:
                     for kong_index in kong_indices:
                         self.move_data[shop_index][kong_index][level_index] = data
                 elif location.type == Types.Kong:
-                    locationName = "Jungle Japes"
-                    unlockKong = self.settings.diddy_freeing_kong
-                    lockedwrite = 0x142
-                    puzzlewrite = 0x143
-                    if id == Locations.LankyKong:
-                        locationName = "Llama Temple"
-                        unlockKong = self.settings.lanky_freeing_kong
-                        lockedwrite = 0x144
-                        puzzlewrite = 0x145
-                    elif id == Locations.TinyKong:
-                        locationName = "Tiny Temple"
-                        unlockKong = self.settings.tiny_freeing_kong
-                        lockedwrite = 0x146
-                        puzzlewrite = 0x147
-                    elif id == Locations.ChunkyKong:
-                        locationName = "Frantic Factory"
-                        unlockKong = self.settings.chunky_freeing_kong
-                        lockedwrite = 0x148
-                        puzzlewrite = 0x149
-                    lockedkong = {}
-                    lockedkong["kong"] = KongFromItem(location.item)
-                    lockedkong["write"] = lockedwrite
-                    puzzlekong = {}
-                    puzzlekong["kong"] = unlockKong
-                    puzzlekong["write"] = puzzlewrite
-                    kongLocation = {}
-                    kongLocation["locked"] = lockedkong
-                    kongLocation["puzzle"] = puzzlekong
-                    self.shuffled_kong_placement[locationName] = kongLocation
-
+                    self.WriteKongPlacement(id, location.item)
             # Uncomment for more verbose spoiler with all locations
             # else:
             #     self.location_data[id] = Items.NoItem
+
+    def WriteKongPlacement(self, locationId, item):
+        """Write kong placement information for the given kong cage location."""
+        locationName = "Jungle Japes"
+        unlockKong = self.settings.diddy_freeing_kong
+        lockedwrite = 0x142
+        puzzlewrite = 0x143
+        if locationId == Locations.LankyKong:
+            locationName = "Llama Temple"
+            unlockKong = self.settings.lanky_freeing_kong
+            lockedwrite = 0x144
+            puzzlewrite = 0x145
+        elif locationId == Locations.TinyKong:
+            locationName = "Tiny Temple"
+            unlockKong = self.settings.tiny_freeing_kong
+            lockedwrite = 0x146
+            puzzlewrite = 0x147
+        elif locationId == Locations.ChunkyKong:
+            locationName = "Frantic Factory"
+            unlockKong = self.settings.chunky_freeing_kong
+            lockedwrite = 0x148
+            puzzlewrite = 0x149
+        lockedkong = {}
+        lockedkong["kong"] = KongFromItem(item)
+        lockedkong["write"] = lockedwrite
+        puzzlekong = {"kong": unlockKong, "write": puzzlewrite}
+        kongLocation = {"locked": lockedkong, "puzzle": puzzlekong}
+        self.shuffled_kong_placement[locationName] = kongLocation
 
     def UpdatePlaythrough(self, locations, playthroughLocations):
         """Write playthrough as a list of dicts of location/item pairs."""
@@ -339,7 +342,8 @@ class Spoiler:
             location = locations[locationId]
             self.woth[location.name] = ItemList[location.item].name
 
-    def GetKroolKeysRequired(self, keyEvents):
+    @staticmethod
+    def GetKroolKeysRequired(keyEvents):
         """Get key names from required key events to print in the spoiler."""
         keys = []
         if Events.JapesKeyTurnedIn in keyEvents:

@@ -141,10 +141,13 @@ void earlyFrame(void) {
 	if (ObjectModel2Timer == 2) {
 		updateProgressive();
 		price_rando();
-		setFlag(0x5D,1,2);
-		setFlag(0x58,1,2);
+		setFlag(0x5D,1,2); // DK Phase Intro
+		setFlag(0x58,1,2); // Tiny Phase Intro
 		if (CurrentMap == 0x22) {
 			KRoolRound = 0;
+			for (int i = 0; i < 4; i++) {
+				setFlag(0x51 + i,0,2); // Clear Toes
+			}
 		}
 	}
 	if (CurrentMap == 1) {
@@ -155,6 +158,13 @@ void earlyFrame(void) {
 	if ((CurrentMap == 5) || (CurrentMap == 1) || (CurrentMap == 0x19)) {
 		if ((CutsceneActive) && (CutsceneIndex == 2)) {
 			updateProgressive();
+		}
+	}
+	if (CurrentMap == 0x6F) { // Pufftoss
+		if ((CutsceneActive) && (CutsceneIndex == 20) && (CutsceneTimer == 2)) { // Short Intro Cutscene
+			if (Rando.music_rando_on) {
+				MusicTrackChannels[0] = 0; // Disables boss intro music
+			}
 		}
 	}
 	write_kutoutorder();

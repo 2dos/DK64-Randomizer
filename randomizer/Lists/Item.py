@@ -9,8 +9,10 @@ from randomizer.Enums.Types import Types
 class Item:
     """Stores information about an item."""
 
-    def __init__(self, name, playthrough, type, data=[]):
+    def __init__(self, name, playthrough, type, data=None):
         """Initialize with given parameters."""
+        if data is None:
+            data = []
         self.name = name
         self.playthrough = playthrough
         self.type = type
@@ -30,8 +32,10 @@ def ItemFromKong(kong):
         return Items.Lanky
     elif kong == Kongs.tiny:
         return Items.Tiny
-    else:
+    elif kong == Kongs.chunky:
         return Items.Chunky
+    else:
+        return Items.NoItem
 
 
 def NameFromKong(kong):
@@ -44,8 +48,10 @@ def NameFromKong(kong):
         return "Lanky"
     elif kong == Kongs.tiny:
         return "Tiny"
-    else:
+    elif kong == Kongs.chunky:
         return "Chunky"
+    else:
+        return "No Kong"
 
 
 def KongFromItem(item):
@@ -58,8 +64,10 @@ def KongFromItem(item):
         return Kongs.lanky
     elif item == Items.Tiny:
         return Kongs.tiny
-    else:
+    elif item == Items.Chunky:
         return Kongs.chunky
+    else:
+        return Kongs.any
 
 
 ItemList = {

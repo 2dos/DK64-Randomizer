@@ -12,6 +12,15 @@ void qualityOfLife_fixes(void) {
 		setPermFlag(0x17F); // Training Barrels Spawned
 		setPermFlag(300); // Giant Kosha Dead
 		fixkey8();
+		if (CurrentMap == JAPES_MAIN) {
+			if (Player) {
+				if (Character == 6) { // Rambi
+					if (Player->detransform_timer == 0) {
+						Player->rambi_enabled = 1;
+					}
+				}
+			}
+		}
 	}
 }
 

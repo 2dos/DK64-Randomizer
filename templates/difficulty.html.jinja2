@@ -20,7 +20,7 @@
                                    style="width: 100%;"
                                    value="{{ i+1 }}"
                                    type="number"
-                                   title="You can adjust each individual B Locker amount to any number between 0-200. &#013;Note that you could make it impossible to beat the game glitchless if certain levels are set too high, as the program does not validate if a game is beatable glitchless with adjusted B Locker settings. &#013;If you are unsure what to adjust the level values to, use the presets dropdown instead."/>
+                                   title="You can adjust each individual B Locker amount to any number between 0-200. &#013;Note that if you make the game impossible to beat the glitchless, the program does validate if a game is beatable glitchless by adjusting your B Locker settings. &#013;If you are unsure what to adjust the level values to, use the presets dropdown instead."/>
                         </td>
                         {% if i < 7 %}
                             <td>
@@ -32,56 +32,66 @@
                                        style="width: 100%;"
                                        value="{{ i+1 }}"
                                        type="number"
-                                       title="You can adjust each individual Troff n Scoff amount to any number between 1-500. &#013;Note that you could make it impossible to beat the game glitchless if early levels are set too high, as the program does not validate if a game is beatable glitchless with adjusted Troff n Scoff settings. &#013;If you are unsure what to adjust the level values to, use the presets dropdown instead."/>
+                                       title="You can adjust each individual Troff n Scoff amount to any number between 1-500. &#013;Note that if you make the game impossible to beat the glitchless, the program does validate if a game is beatable glitchless by adjusting your Troff n Scoff settings. &#013;If you are unsure what to adjust the level values to, use the presets dropdown instead."/>
                             </td>
                         {% endif %}
                     </tr>
                 {% endfor %}
             </table>
-            <div class="form-check form-switch w-75">
-                <label title="Randomize Required B-Locker totals">
-                    <input class="form-check-input"
-                           type="checkbox"
-                           name="randomize_blocker_required_amounts"
-                           id="randomize_blocker_required_amounts"
-                           value="True"/>
-                    Random B-Lockers
-                </label>
-            </div> 
-            <label>
-                Max Value: 
-                <input class="form-control"
-                    min="0"
-                    max="200"
-                    name="blocker_text"
-                    id="blocker_text"
-                    style="width: 50%;display:inline-block;"
-                    type="number"
-                    title="Maximum Randomized value"
-                    default="50"/> 
-            </label>
-            <div class="form-check form-switch w-75">
-                <label title="Randomize Required CB totals">
-                    <input class="form-check-input"
-                           type="checkbox"
-                           name="randomize_cb_required_amounts"
-                           id="randomize_cb_required_amounts"
-                           value="True"/>
-                    Random Troff Bananas
-                </label>
+            <div class="row">
+                <div class="form-check form-switch w-75 col-sm">
+                    <label title="Randomize Required B-Locker totals">
+                        <input class="form-check-input"
+                            type="checkbox"
+                            name="randomize_blocker_required_amounts"
+                            id="randomize_blocker_required_amounts"
+                            value="True"/>
+                        Random B-Lockers
+                    </label>
+                </div>
+                <div class="col-sm" style="margin: auto;"> 
+                    <label>
+                        Max Value: 
+                        <input class="form-control"
+                            min="0"
+                            max="200"
+                            name="blocker_text"
+                            id="blocker_text"
+                            style="width: 50%;display:inline-block;"
+                            type="number"
+                            title="Maximum Randomized value"
+                            default="50"
+                            placeholder="50"/> 
+                    </label>
+                </div>
             </div>
-            <label style="padding-bottom:20px;">
-                Max Value:
-                <input class="form-control"
-                    min="0"
-                    max="500"
-                    name="troff_text"
-                    id="troff_text"
-                    style="width: 50%;display:inline-block;"
-                    type="number"
-                    title="Maximum Randomized value"
-                    placeholder="Max Value"/> 
-            </label>
+            <div class="row">
+                <div class="form-check form-switch w-75 col-sm">
+                    <label title="Randomize Required CB totals">
+                        <input class="form-check-input"
+                                type="checkbox"
+                                name="randomize_cb_required_amounts"
+                                id="randomize_cb_required_amounts"
+                                value="True"/>
+                        Random Troff N' Scoff
+                    </label>
+                </div>
+                <div class="col-sm" style="margin: auto;"> 
+                    <label>
+                        Max Value:
+                        <input class="form-control"
+                            min="0"
+                            max="500"
+                            name="troff_text"
+                            id="troff_text"
+                            style="width: 50%;display:inline-block;"
+                            type="number"
+                            title="Maximum Randomized value"
+                            default="300"
+                            placeholder="300"/> 
+                    </label>
+                </div>
+            </div>
         </div>
         <div class="col border">
             <h3>Damage Options</h3>
@@ -146,6 +156,20 @@
                                        name="hard_shooting"
                                        value="True"/>
                                 Hard Shooting
+                            </label>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <div class="form-check form-switch w-75">
+                            <label title="If this setting and Boss Kong Shuffle are enabled, you may be required to fight Mad Jack as Donkey or Chunky.&#013;To make the jump between pillars as Donkey, you need to press B to jump-kick, press A again in mid-air to jump again, then press B again to extend your jump.&#013;As Chunky, you also need to extend your jump by pressing B in mid-air."
+                                   style="text-align: left;">
+                                <input class="form-check-input"
+                                       type="checkbox"
+                                       name="hard_mad_jack"
+                                       value="True"/>
+                                Hard Mad Jack
                             </label>
                         </div>
                     </td>

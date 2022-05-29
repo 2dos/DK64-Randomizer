@@ -17,22 +17,23 @@ def ShuffleBosses(boss_location_rando: bool):
     return boss_maps
 
 
-def ShuffleBossKongs(boss_maps: array, boss_kong_rando: bool):
+def ShuffleBossKongs(settings):
     """Shuffle the kongs required for the bosses."""
-    vanillaBossKongs = {}
-    vanillaBossKongs[Maps.JapesBoss] = Kongs.donkey
-    vanillaBossKongs[Maps.AztecBoss] = Kongs.diddy
-    vanillaBossKongs[Maps.FactoryBoss] = Kongs.tiny
-    vanillaBossKongs[Maps.GalleonBoss] = Kongs.lanky
-    vanillaBossKongs[Maps.FungiBoss] = Kongs.chunky
-    vanillaBossKongs[Maps.CavesBoss] = Kongs.donkey
-    vanillaBossKongs[Maps.CastleBoss] = Kongs.lanky
+    vanillaBossKongs = {
+        Maps.JapesBoss: Kongs.donkey,
+        Maps.AztecBoss: Kongs.diddy,
+        Maps.FactoryBoss: Kongs.tiny,
+        Maps.GalleonBoss: Kongs.lanky,
+        Maps.FungiBoss: Kongs.chunky,
+        Maps.CavesBoss: Kongs.donkey,
+        Maps.CastleBoss: Kongs.lanky,
+    }
 
     boss_kongs = []
     for level in range(7):
-        boss_map = boss_maps[level]
-        if boss_kong_rando:
-            kong = SelectRandomKongForBoss(boss_map)
+        boss_map = settings.boss_maps[level]
+        if settings.boss_kong_rando:
+            kong = SelectRandomKongForBoss(boss_map, settings.hard_mad_jack)
         else:
             kong = vanillaBossKongs[boss_map]
         boss_kongs.append(kong)
@@ -40,14 +41,18 @@ def ShuffleBossKongs(boss_maps: array, boss_kong_rando: bool):
     return boss_kongs
 
 
-def SelectRandomKongForBoss(boss_map: Maps):
+def SelectRandomKongForBoss(boss_map: Maps, hard_mad_jack: bool):
     """Randomly choses from the allowed list for the boss."""
+    possibleKongs = []
     if boss_map == Maps.JapesBoss:
         possibleKongs = [Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky]
     elif boss_map == Maps.AztecBoss:
         possibleKongs = [Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky]
     elif boss_map == Maps.FactoryBoss:
-        possibleKongs = [Kongs.donkey, Kongs.tiny, Kongs.chunky]
+        if hard_mad_jack:
+            possibleKongs = [Kongs.donkey, Kongs.tiny, Kongs.chunky]
+        else:
+            possibleKongs = [Kongs.tiny]
     elif boss_map == Maps.GalleonBoss:
         possibleKongs = [Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky]
     elif boss_map == Maps.FungiBoss:
@@ -100,6 +105,12 @@ def ShuffleBossesBasedOnOwnedItems(settings, ownedKongs: dict, ownedMoves: dict)
         galleonBossKongOptions = set(ownedKongs[galleonBossIndex]).intersection({Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky})
         galleonBossKong = random.choice(list(galleonBossKongOptions))
         bossLevelOptions.remove(galleonBossIndex)
+        # Then place Armydillo 2
+        cavesBossOptions = [x for x in bossLevelOptions if Kongs.donkey in ownedKongs[x] or Kongs.diddy in ownedKongs[x] or Kongs.lanky in ownedKongs[x] or Kongs.chunky in ownedKongs[x]]
+        cavesBossIndex = random.choice(cavesBossOptions)
+        cavesBossKongOptions = set(ownedKongs[cavesBossIndex]).intersection({Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.chunky})
+        cavesBossKong = random.choice(list(cavesBossKongOptions))
+        bossLevelOptions.remove(cavesBossIndex)
         # Place the rest randomly
         remainingBosses = list(bossLevelOptions)
         random.shuffle(remainingBosses)
@@ -107,8 +118,6 @@ def ShuffleBossesBasedOnOwnedItems(settings, ownedKongs: dict, ownedMoves: dict)
         japesBossKong = random.choice(ownedKongs[japesBossIndex])
         aztecBossIndex = remainingBosses.pop()
         aztecBossKong = random.choice(ownedKongs[aztecBossIndex])
-        cavesBossIndex = remainingBosses.pop()
-        cavesBossKong = random.choice(ownedKongs[cavesBossIndex])
         castleBossIndex = remainingBosses.pop()
         castleBossKong = random.choice(ownedKongs[castleBossIndex])
         newBossMaps = []
@@ -135,8 +144,8 @@ def ShuffleBossesBasedOnOwnedItems(settings, ownedKongs: dict, ownedMoves: dict)
             elif level == castleBossIndex:
                 newBossMaps.append(Maps.CastleBoss)
                 newBossKongs.append(castleBossKong)
-        print("New Boss Order: " + str(newBossMaps))
-        print("New Boss Kongs: " + str(newBossKongs))
+        # print("New Boss Order: " + str(newBossMaps))
+        # print("New Boss Kongs: " + str(newBossKongs))
         if len(newBossMaps) < 7:
             raise FillException("Invalid boss order with fewer than the 7 required main levels.")
     except Exception as ex:

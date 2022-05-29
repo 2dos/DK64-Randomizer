@@ -21,7 +21,7 @@ class Hint:
 
 
 hints = [
-    Hint("First Time Talk", WrinklyKong.ftt, WrinklyLocation.ftt, "WELCOME TO THE DONKEY KONG 64 RANDOMIZER. MADE BY 2DOS, BALLAAM, KILLKLLI, SHADOWSHINE, BISMUTH AND ZNERNICUS"),
+    Hint("First Time Talk", WrinklyKong.ftt, WrinklyLocation.ftt, "WELCOME TO THE DONKEY KONG 64 RANDOMIZER. MADE BY 2DOS, BALLAAM, KILLKLLI, SHADOWSHINE, CFOX, BISMUTH AND ZNERNICUS"),
     Hint("Japes DK", WrinklyKong.dk, WrinklyLocation.japes, ""),
     Hint("Japes Diddy", WrinklyKong.diddy, WrinklyLocation.japes, ""),
     Hint("Japes Lanky", WrinklyKong.lanky, WrinklyLocation.japes, ""),

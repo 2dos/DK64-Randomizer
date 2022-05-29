@@ -1,5 +1,6 @@
 """Write new end sequence text credits."""
 import os
+import sys
 
 header_length = 0x78
 names_length = 0xA0
@@ -207,7 +208,7 @@ def createTextFile(directory):
         os.mkdir(directory)
     if len(end_sequence_cards) > 21:
         print("ERROR: Too many cards")
-        exit()
+        sys.exit()
     with open(f"{directory}/credits.bin", "wb") as fh:
         for card in end_sequence_cards:
             for item in card["text"]:
@@ -221,7 +222,7 @@ def createSquishFile(directory):
     """Create the squish data associated with end sequence."""
     if len(end_sequence_cards) > 21:
         print("ERROR: Too many cards")
-        exit()
+        sys.exit()
     directions = ["top", "left", "bottom", "right"]
     with open(f"{directory}/squish.bin", "wb") as fh:
         for card in end_sequence_cards:

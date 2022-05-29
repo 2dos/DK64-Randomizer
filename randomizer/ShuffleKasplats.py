@@ -71,7 +71,6 @@ def FindLevel(location):
 
 def ShuffleKasplats(LogicVariables):
     """Shuffles the kong assigned to each kasplat."""
-    global kasplat_map
     # Make sure only 1 of each kasplat per level, set up array to track that
     level_kongs = []
     kongs = GetKongs()
@@ -90,7 +89,7 @@ def ShuffleKasplats(LogicVariables):
         LogicVariables.kasplat_map[location] = Kongs.any
     LogicVariables.kasplat_map.update(constants)
     # Do the shuffling
-    shuffle_locations = [x for x in shufflable.keys()]
+    shuffle_locations = list(shufflable.keys())
     random.shuffle(shuffle_locations)
     while len(shuffle_locations) > 0:
         location = shuffle_locations.pop()
@@ -102,11 +101,10 @@ def ShuffleKasplats(LogicVariables):
         success = False
         for kong in kongs:
             LogicVariables.kasplat_map[location] = kong
-            if Fill.VerifyWorld(LogicVariables.settings):
-                # Successful placement, remove kong
-                level_kongs[level].remove(kong)
-                success = True
-                break
+            # Assuming Successful placement, remove kong
+            level_kongs[level].remove(kong)
+            success = True
+            break
         if not success:
             raise Ex.KasplatOutOfKongs
 
@@ -127,9 +125,8 @@ def KasplatShuffle(LogicVariables):
                 if retries == 5:
                     js.postMessage("Kasplat placement failed, out of retries.")
                     raise Ex.KasplatAttemptCountExceeded
-                else:
-                    retries += 1
-                    js.postMessage("Kasplat placement failed. Retrying. Tries: " + str(retries))
+                retries += 1
+                js.postMessage("Kasplat placement failed. Retrying. Tries: " + str(retries))
 
 
 def InitKasplatMap(LogicVariables):

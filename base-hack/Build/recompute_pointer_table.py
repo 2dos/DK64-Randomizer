@@ -386,8 +386,6 @@ def addFileToDatabase(
 
 def getFileInfo(pointer_table_index: int, file_index: int):
     """Get the files info."""
-    global pointer_tables
-    global pointer_table_files
     if pointer_table_index not in range(len(pointer_tables)):
         return
 

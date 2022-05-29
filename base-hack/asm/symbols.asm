@@ -134,6 +134,7 @@
 .definelabel Mode, 0x80755318
 .definelabel TBVoidByte, 0x807FBB63
 .definelabel CurrentMap, 0x8076A0A8
+.definelabel PreviousMap, 0x8076AEF2
 .definelabel DestMap, 0x807444E4
 .definelabel DestExit, 0x807444E8
 .definelabel StorySkip, 0x8074452C
@@ -284,6 +285,7 @@
 .definelabel CBTurnedInArray, 0x807FC930
 .definelabel charspawnerflags, 0x80755DA8
 .definelabel songData, 0x80745658
+.definelabel MusicTrackChannels, 0x807458DC
 
 //hack data
 .definelabel TestVariable, 0x807FFFFC

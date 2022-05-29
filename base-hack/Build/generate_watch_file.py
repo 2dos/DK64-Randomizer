@@ -30,7 +30,7 @@ def read_h_file(symbols_data):
                             y = y.split("//")[0]
                         z = y.split(" ")
                         s = ""
-                        n = z[len(z) - 1].split(";")[0]
+                        n = z[-1].split(";")[-1]
                         if n == list(x)[1]:
                             for i in range(len(z) - 1):
                                 s += z[i] + " "

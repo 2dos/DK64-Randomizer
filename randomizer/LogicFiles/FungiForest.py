@@ -5,6 +5,7 @@ from randomizer.Enums.Events import Events
 from randomizer.Enums.Kongs import Kongs
 from randomizer.Enums.Levels import Levels
 from randomizer.Enums.Locations import Locations
+from randomizer.Enums.MinigameType import MinigameType
 from randomizer.Enums.Regions import Regions
 from randomizer.Enums.Time import Time
 from randomizer.Enums.Transitions import Transitions
@@ -38,7 +39,7 @@ LogicRegions = {
     ),
 
     Regions.GiantMushroomArea: Region("Giant Mushroom Area", Levels.FungiForest, True, None, [
-        LocationLogic(Locations.ForestDiddyTopofMushroom, lambda l: l.jetpack and l.isdiddy, True),
+        LocationLogic(Locations.ForestDiddyTopofMushroom, lambda l: l.jetpack and l.isdiddy, MinigameType.BonusBarrel),
     ], [
         Event(Events.HollowTreeGateOpened, lambda l: l.grape and l.lanky),
     ], [
@@ -51,7 +52,7 @@ LogicRegions = {
     ]),
 
     Regions.MushroomLower: Region("Mushroom Lower", Levels.FungiForest, True, None, [
-        LocationLogic(Locations.ForestTinyMushroomBarrel, lambda l: l.superSlam and l.istiny, True),
+        LocationLogic(Locations.ForestTinyMushroomBarrel, lambda l: l.superSlam and l.istiny, MinigameType.BonusBarrel),
     ], [
         Event(Events.MushroomCannonsSpawned, lambda l: l.coconut and l.peanut and l.grape and l.feather and l.pineapple
               and l.donkey and l.diddy and l.lanky and l.tiny and l.chunky),
@@ -72,7 +73,7 @@ LogicRegions = {
     ]),
 
     Regions.ForestBaboonBlast: Region("Forest Baboon Blast", Levels.FungiForest, False, None, [
-        LocationLogic(Locations.ForestDonkeyBaboonBlast, lambda l: l.isdonkey, True),
+        LocationLogic(Locations.ForestDonkeyBaboonBlast, lambda l: l.isdonkey, MinigameType.BonusBarrel),
     ], [], [
         TransitionFront(Regions.MushroomLowerExterior, lambda l: True)
     ]),
@@ -125,13 +126,13 @@ LogicRegions = {
     ]),
 
     Regions.MushroomLankyMushroomsRoom: Region("Mushroom Lanky Mushrooms Room", Levels.FungiForest, False, None, [
-        LocationLogic(Locations.ForestLankyColoredMushrooms, lambda l: l.Slam and l.islanky, True),
+        LocationLogic(Locations.ForestLankyColoredMushrooms, lambda l: l.Slam and l.islanky, MinigameType.BonusBarrel),
     ], [], [
         TransitionFront(Regions.MushroomUpperExterior, lambda l: True, Transitions.ForestMushroomsToExterior),
     ]),
 
     Regions.HollowTreeArea: Region("Hollow Tree Area", Levels.FungiForest, True, -1, [
-        LocationLogic(Locations.ForestDiddyOwlRace, lambda l: l.TimeAccess(Regions.HollowTreeArea, Time.Night) and l.jetpack and l.guitar and l.isdiddy, True),
+        LocationLogic(Locations.ForestDiddyOwlRace, lambda l: l.TimeAccess(Regions.HollowTreeArea, Time.Night) and l.jetpack and l.guitar and l.isdiddy, MinigameType.BonusBarrel),
         LocationLogic(Locations.ForestLankyRabbitRace, lambda l: l.TimeAccess(Regions.HollowTreeArea, Time.Day) and l.trombone and l.sprint and l.lanky),
         LocationLogic(Locations.ForestKasplatOwlTree, lambda l: True),
     ], [], [
@@ -224,7 +225,7 @@ LogicRegions = {
     ]),
 
     Regions.ThornvineBarn: Region("Thornvine Barn", Levels.FungiForest, False, -1, [
-        LocationLogic(Locations.ForestDonkeyBarn, lambda l: l.Slam and l.isdonkey, True),
+        LocationLogic(Locations.ForestDonkeyBarn, lambda l: l.Slam and l.isdonkey, MinigameType.BonusBarrel),
         LocationLogic(Locations.ForestBananaFairyThornvines, lambda l: l.camera),
     ], [], [
         TransitionFront(Regions.ThornvineArea, lambda l: True, Transitions.ForestBarnToMain),

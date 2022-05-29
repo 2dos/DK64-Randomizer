@@ -25,10 +25,36 @@ def on_input(event):
         bool: False if we need to stop the event.
     """
     # Make sure we limit the max items in each of these text boxes values
-    if "troff" in event.target.id:
+    if event.target.id == "blocker_text":
+        return
+    elif event.target.id == "troff_text":
+        return
+    elif "troff" in event.target.id:
         min_max(event, 0, 500)
     elif "blocker" in event.target.id:
         min_max(event, 0, 200)
+
+
+@bind("focusout", "blocker_text")
+def max_randomized_blocker(event):
+    """Validate blocker input on loss of focus."""
+    blocker_text = js.document.getElementById("blocker_text")
+    if not blocker_text.value:
+        blocker_text.value = 50
+    elif 0 <= int(blocker_text.value) < 8:
+        blocker_text.value = 8
+    elif int(blocker_text.value) > 200:
+        blocker_text.value = 200
+
+
+@bind("focusout", "troff_text")
+def max_randomized_troff(event):
+    """Validate troff input on loss of focus."""
+    troff_text = js.document.getElementById("troff_text")
+    if not troff_text.value:
+        troff_text.value = 300
+    elif int(troff_text.value) > 500:
+        troff_text.value = 500
 
 
 def min_max(event, min, max):
@@ -141,19 +167,6 @@ def toggle_b_locker_boxes(event):
             pass
 
 
-@bind("click", "unlock_all_kongs")
-def unlock_kongs_toggle(event):
-    """Toggle the textboxes for unlock_all_kongs."""
-    disabled = False
-    if js.document.getElementById("unlock_all_kongs").checked:
-        disabled = True
-    if disabled:
-        js.document.getElementById("kong_rando").setAttribute("disabled", "disabled")
-        js.document.getElementById("kong_rando").checked = False
-    else:
-        js.document.getElementById("kong_rando").removeAttribute("disabled")
-
-
 @bind("click", "randomize_cb_required_amounts")
 def toggle_counts_boxes(event):
     """Toggle the textboxes for Troff."""
@@ -185,10 +198,13 @@ def update_boss_required(evt):
         document.getElementById("boss_location_rando").checked = True
         document.getElementById("boss_kong_rando").setAttribute("disabled", "disabled")
         document.getElementById("boss_kong_rando").checked = True
+        document.getElementById("kong_rando").setAttribute("disabled", "disabled")
+        document.getElementById("kong_rando").checked = True
     else:
         try:
             document.getElementById("boss_kong_rando").removeAttribute("disabled")
             document.getElementById("boss_location_rando").removeAttribute("disabled")
+            document.getElementById("kong_rando").removeAttribute("disabled")
         except Exception:
             pass
 
@@ -245,3 +261,69 @@ def disable_music(evt):
                 music.removeAttribute("disabled")
         except AttributeError:
             pass
+
+
+@bind("change", "starting_kongs_count")
+def enable_kong_rando(evt):
+    """Enable Kong Rando if less than 5 starting kongs."""
+    print("Lanky")
+    kong_rando = js.document.getElementById("kong_rando")
+    if js.document.getElementById("starting_kongs_count").value == "5":
+        kong_rando.checked = False
+        kong_rando.setAttribute("disabled", "disabled")
+    else:
+        kong_rando.removeAttribute("disabled")
+
+
+@bind("click", "krool_random")
+def disable_krool_phases(evt):
+    """Disable music options when Randomize All is selected."""
+    disabled = False
+    krool = js.document.getElementById("krool_phase_count")
+    if js.document.getElementById("krool_random").checked:
+        disabled = True
+    try:
+        if disabled:
+            krool.setAttribute("disabled", "disabled")
+        else:
+            krool.removeAttribute("disabled")
+    except AttributeError:
+        pass
+
+
+@bind("click", "unlock_all_moves")
+def disable_shuffle_shop(evt):
+    """Disable Shuffle Shop Move Location when All Moves are Unlocked."""
+    disabled = False
+    shop = js.document.getElementById("shop_location_rando")
+    prices = js.document.getElementById("random_prices")
+    if js.document.getElementById("unlock_all_moves").checked:
+        disabled = True
+    try:
+        if disabled:
+            shop.setAttribute("disabled", "disabled")
+            shop.checked = False
+            prices.setAttribute("disabled", "disabled")
+            prices.value = "free"
+        else:
+            shop.removeAttribute("disabled")
+            prices.removeAttribute("disabled")
+    except AttributeError:
+        pass
+
+
+@bind("click", "gnawty_barrels")
+def disable_barrel_rando(evt):
+    """Disable Bonus Barrel Rando when Oops All Beaver Bother is selected."""
+    disabled = False
+    barrel = js.document.getElementById("bonus_barrel_rando")
+    if js.document.getElementById("gnawty_barrels").checked:
+        disabled = True
+    try:
+        if disabled:
+            barrel.setAttribute("disabled", "disabled")
+            barrel.checked = False
+        else:
+            barrel.removeAttribute("disabled")
+    except AttributeError:
+        pass

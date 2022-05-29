@@ -1,5 +1,6 @@
 """Compile a list of hints based on the settings."""
 import random
+from randomizer.Enums.Kongs import Kongs
 from randomizer.Enums.Regions import Regions
 
 from randomizer.Lists.Item import NameFromKong
@@ -51,6 +52,7 @@ def compileHints(spoiler: Spoiler):
         "I'm as lost as you are. Good luck!",
         "Wrinkly? Never heard of him.",
         "This is it. The peak of all randomizers. No other randomizer exists besides DK64 Randomizer where you can listen to the dk rap in its natural habitat while freeing Chunky Kong in Jungle Japes.",
+        "Why do they call it oven when you of in the cold food of out hot eat the food?",
     ]
     # K. Rool Moves
     kong_list = ["Donkey", "Diddy", "Lanky", "Tiny", "Chunky"]
@@ -367,6 +369,8 @@ def compileHints(spoiler: Spoiler):
             else:
                 kong_name = kong_list[kong_index]
                 level_name = level_list[level_index]
+            if kong_index == Kongs.any:
+                kong_name = "An empty cage"
             updateRandomHint(f"{kong_name} can be found in {level_name}.")
     if spoiler.settings.shuffle_loading_zones == "all":
         AddLoadingZoneHints(spoiler)
@@ -555,8 +559,10 @@ def AddLoadingZoneHints(spoiler: Spoiler):
         print("Unable to place remaining LZR hints!")
 
 
-def TryAddingLoadingZoneHint(spoiler: Spoiler, transition, disallowedRegions: list = []):
+def TryAddingLoadingZoneHint(spoiler: Spoiler, transition, disallowedRegions: list = None):
     """Try to write a hint for the given transition. If this hint is determined to be bad, it will return false and not place the hint."""
+    if disallowedRegions is None:
+        disallowedRegions = []
     pathToHint = transition
     # Don't hint entrances from dead-end rooms, follow the reverse pathway back until finding a place with multiple entrances
     if spoiler.settings.decoupled_loading_zones:

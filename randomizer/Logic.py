@@ -49,11 +49,11 @@ class LogicVarHolder:
 
         Done between reachability searches and upon initialization.
         """
-        self.donkey = self.startkong == Kongs.donkey or self.settings.unlock_all_kongs
-        self.diddy = self.startkong == Kongs.diddy or self.settings.unlock_all_kongs
-        self.lanky = self.startkong == Kongs.lanky or self.settings.unlock_all_kongs
-        self.tiny = self.startkong == Kongs.tiny or self.settings.unlock_all_kongs
-        self.chunky = self.startkong == Kongs.chunky or self.settings.unlock_all_kongs
+        self.donkey = Kongs.donkey in self.settings.starting_kong_list
+        self.diddy = Kongs.diddy in self.settings.starting_kong_list
+        self.lanky = Kongs.lanky in self.settings.starting_kong_list
+        self.tiny = Kongs.tiny in self.settings.starting_kong_list
+        self.chunky = Kongs.chunky in self.settings.starting_kong_list
 
         # Right now assuming start with training barrels
         self.vines = True  # self.settings.training_barrels == "startwith"
@@ -142,6 +142,21 @@ class LogicVarHolder:
         self.Blueprints = []
 
         self.Events = []
+
+        # Set key events for keys which are given to the player at start of game
+        keyEvents = [
+            Events.JapesKeyTurnedIn,
+            Events.AztecKeyTurnedIn,
+            Events.FactoryKeyTurnedIn,
+            Events.GalleonKeyTurnedIn,
+            Events.ForestKeyTurnedIn,
+            Events.CavesKeyTurnedIn,
+            Events.CastleKeyTurnedIn,
+            Events.HelmKeyTurnedIn,
+        ]
+        for keyEvent in keyEvents:
+            if keyEvent not in self.settings.krool_keys_required:
+                self.Events.append(keyEvent)
 
         # Colored banana and coin arrays
         # Colored bananas as 7 arrays of 5 (7 levels for 5 kongs)
@@ -430,14 +445,16 @@ class LogicVarHolder:
             else:
                 self.Coins[location.kong] -= price
 
-    def HasAccess(self, region, kong):
+    @staticmethod
+    def HasAccess(region, kong):
         """Check if a certain kong has access to a certain region.
 
         Usually the region's own HasAccess function is used, but this is necessary for checking access for other regions in logic files.
         """
         return Regions[region].HasAccess(kong)
 
-    def TimeAccess(self, region, time):
+    @staticmethod
+    def TimeAccess(region, time):
         """Check if a certain region has the given time of day access."""
         if time == Time.Day:
             return Regions[region].dayAccess
@@ -465,10 +482,7 @@ class LogicVarHolder:
 
     def CanAccessKRool(self):
         """Make sure that each required key has been turned in."""
-        for keyRequired in self.settings.krool_keys_required:
-            if keyRequired not in self.Events:
-                return False
-        return True
+        return all(not keyRequired not in self.Events for keyRequired in self.settings.krool_keys_required)
 
     def IsBossReachable(self, level):
         """Check if the boss banana requirement is met."""

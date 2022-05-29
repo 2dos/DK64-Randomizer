@@ -9,11 +9,11 @@ from randomizer.Enums.Transitions import Transitions
 class LocationLogic:
     """Logic for a location."""
 
-    def __init__(self, id, logic, bonusBarrel=False):
+    def __init__(self, id, logic, bonusBarrel=None):
         """Initialize with given parameters."""
         self.id = id
         self.logic = logic  # Lambda function for accessibility
-        self.bonusBarrel = bonusBarrel
+        self.bonusBarrel = bonusBarrel  # Uses MinigameType enum
 
 
 class Event:

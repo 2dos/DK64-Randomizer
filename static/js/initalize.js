@@ -36,7 +36,13 @@ function toast_alert(text) {
     onClick: function () {},
   }).showToast();
 }
-
+function getFile(file) {
+  return $.ajax({
+      type: "GET",
+      url: file,
+      async: false
+  }).responseText;
+}
 var cosmetics;
 document
   .getElementById("music_file")
@@ -125,7 +131,7 @@ function eraseCookie(name) {
 function load_cookies() {
   try {
     json = JSON.parse(getCookie("saved_settings"));
-    if (json != null) {
+    if (json !== null) {
       for (var key in json) {
         element = document.getElementsByName(key)[0];
         if (json[key] == "True") {

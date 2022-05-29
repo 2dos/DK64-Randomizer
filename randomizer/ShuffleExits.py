@@ -5,6 +5,7 @@ import randomizer.Fill as Fill
 import randomizer.Lists.Exceptions as Ex
 import randomizer.Logic as Logic
 from randomizer.Enums.Levels import Levels
+from randomizer.Enums.Locations import Locations
 from randomizer.Enums.Kongs import Kongs
 from randomizer.Enums.Regions import Regions
 from randomizer.Enums.Transitions import Transitions
@@ -190,7 +191,7 @@ def ShuffleExits(settings: Settings):
     elif settings.shuffle_loading_zones == "all":
         frontpool = []
         backpool = []
-        AssumeExits(settings, frontpool, backpool, [x for x in ShufflableExits.keys()])
+        AssumeExits(settings, frontpool, backpool, list(ShufflableExits.keys()))
         # Shuffle each entrance pool
         ShuffleExitsInPool(settings, frontpool, backpool)
     # If levels rando is on, need to update Blocker and T&S requirements to match
@@ -213,10 +214,9 @@ def ExitShuffle(settings):
             if retries == 20:
                 js.postMessage("Entrance placement failed, out of retries.")
                 raise Ex.EntranceAttemptCountExceeded
-            else:
-                retries += 1
-                js.postMessage("Entrance placement failed. Retrying. Tries: " + str(retries))
-                Reset()
+            retries += 1
+            js.postMessage("Entrance placement failed. Retrying. Tries: " + str(retries))
+            Reset()
 
 
 def UpdateLevelProgression(settings: Settings):
@@ -233,10 +233,12 @@ def UpdateLevelProgression(settings: Settings):
         Regions.CreepyCastleLobby,
     ]
     for levelIndex in range(len(lobbies)):
-        shuffledEntrance = ShufflableExits[LobbyEntrancePool[levelIndex]].shuffledId
-        newDestRegion = ShufflableExits[shuffledEntrance].back.regionId
-        # print(LobbyEntrancePool[levelIndex].name + " goes to " + newDestRegion.name)
-        newIndex = lobbies.index(newDestRegion)
+        newIndex = levelIndex
+        if settings.shuffle_loading_zones == "levels":
+            shuffledEntrance = ShufflableExits[LobbyEntrancePool[levelIndex]].shuffledId
+            newDestRegion = ShufflableExits[shuffledEntrance].back.regionId
+            # print(LobbyEntrancePool[levelIndex].name + " goes to " + newDestRegion.name)
+            newIndex = lobbies.index(newDestRegion)
         newEntryGBs[newIndex] = settings.EntryGBs[levelIndex]
         newBossBananas[newIndex] = settings.BossBananas[levelIndex]
     settings.EntryGBs = newEntryGBs
@@ -275,8 +277,21 @@ def ShuffleLevelExits(newLevelOrder: dict = None):
 
 def ShuffleLevelOrderWithRestrictions(settings: Settings):
     """Determine level order given starting kong and the need to find more kongs along the way."""
-    levelIndexChoices = {1, 2, 3, 4, 5, 6, 7}
+    if settings.starting_kongs_count == 1:
+        newLevelOrder = ShuffleLevelOrderForOneStartingKong(settings)
+    else:
+        newLevelOrder = ShuffleLevelOrderForMultipleStartingKongs(settings)
+    # print("New Level Order:")
+    # for i in range(1, 8):
+    #     print(str(i) + ": " + newLevelOrder[i].name)
+    if len(newLevelOrder) < 7:
+        raise Ex.EntrancePlacementException("Invalid level order with fewer than the 7 required main levels.")
+    ShuffleLevelExits(newLevelOrder)
 
+
+def ShuffleLevelOrderForOneStartingKong(settings):
+    """Determine level order given only starting with one kong and the need to find more kongs along the way."""
+    levelIndexChoices = {1, 2, 3, 4, 5, 6, 7}
     # Decide where Aztec will go
     # Diddy can reasonably make progress if Aztec is first level
     if settings.starting_kong == Kongs.diddy:
@@ -322,7 +337,7 @@ def ShuffleLevelOrderWithRestrictions(settings: Settings):
             factoryOptions = list(levelIndexChoices.intersection({1}))
     # If Aztec is level 2 and start with chunky, one of Japes/Factory needs to be level 1-3 and other in level 3-5
     elif aztecIndex == 2 and settings.starting_kong == Kongs.chunky:
-        if japesIndex == 1 or japesIndex == 3:
+        if japesIndex in (1, 3):
             factoryOptions = list(levelIndexChoices.intersection({3, 4, 5}))
         else:
             factoryOptions = list(levelIndexChoices.intersection({1, 2, 3}))
@@ -338,7 +353,7 @@ def ShuffleLevelOrderWithRestrictions(settings: Settings):
     # Decide where Caves will go - special case because T&S portals are not immediately accessible
     cavesOptions = []
     # Donkey and Tiny have no T&S access in Caves so it can't be the first level for them
-    if settings.starting_kong == Kongs.tiny or settings.starting_kong == Kongs.donkey:
+    if settings.starting_kong in (Kongs.tiny, Kongs.donkey):
         cavesOptions = list(levelIndexChoices.intersection({2, 7}))
     else:
         cavesOptions = list(levelIndexChoices.intersection({1, 7}))
@@ -360,9 +375,85 @@ def ShuffleLevelOrderWithRestrictions(settings: Settings):
         cavesIndex: Levels.CrystalCaves,
         castleIndex: Levels.CreepyCastle,
     }
-    print("New Level Order:")
-    for i in range(1, 8):
-        print(str(i) + ": " + newLevelOrder[i].name)
-    if len(newLevelOrder) < 7:
-        raise Ex.EntrancePlacementException("Invalid level order with fewer than the 7 required main levels.")
-    ShuffleLevelExits(newLevelOrder)
+    return newLevelOrder
+
+
+def ShuffleLevelOrderForMultipleStartingKongs(settings: Settings):
+    """Determine level order given starting with 2 to 4 kongs and the need to find more kongs along the way."""
+    levelIndicesToFill = {1, 2, 3, 4, 5, 6, 7}
+    # Initialize level order
+    newLevelOrder = {
+        1: None,
+        2: None,
+        3: None,
+        4: None,
+        5: None,
+        6: None,
+        7: None,
+    }
+    # Sort levels by most to least kongs
+    kongsInLevels = {
+        Levels.JungleJapes: 1 if Locations.DiddyKong in settings.kong_locations else 0,
+        Levels.AngryAztec: len([x for x in [Locations.LankyKong, Locations.TinyKong] if x in settings.kong_locations]),
+        Levels.FranticFactory: 1 if Locations.ChunkyKong in settings.kong_locations else 0,
+        Levels.GloomyGalleon: 0,
+        Levels.FungiForest: 0,
+        Levels.CrystalCaves: 0,
+        Levels.CreepyCastle: 0,
+    }
+    levelsSortedByKongs = [kongsInLevel[0] for kongsInLevel in sorted(kongsInLevels.items(), key=lambda x: x[1], reverse=True)]
+    # Iterate over levels to place them in the level order
+    kongsUnplaced = sum(kongsInLevels.values())
+    for levelToPlace in levelsSortedByKongs:
+        # Determine the latest this level can appear
+        kongsUnplaced = kongsUnplaced - kongsInLevels[levelToPlace]
+        kongsOwned = settings.starting_kongs_count
+        # Assume we can own the kongs for levels not yet placed
+        kongsAssumed = settings.starting_kongs_count + kongsUnplaced
+        levelsReachable = []
+        # Traverse through levels in order
+        for level in range(1, 8):
+            # If don't have 5 kongs yet, stop if don't have enough kongs to reach this level
+            if kongsAssumed < 5 and level > kongsAssumed + 1:
+                break
+            if kongsOwned == settings.starting_kongs_count:
+                # If reached aztec without freeing anyone yet, diddy and/or chunky are needed
+                if newLevelOrder[level] == Levels.AngryAztec:
+                    # If a kong is in Tiny Temple, either Diddy or Chunky can make progress
+                    if Locations.TinyKong in settings.kong_locations:
+                        if Kongs.diddy not in settings.starting_kong_list and Kongs.chunky not in settings.starting_kong_list:
+                            break
+                    # If no kong in Tiny Temple but a kong is in Llama temple, need Diddy to open guitar door
+                    elif Locations.LankyKong in settings.kong_locations:
+                        if Kongs.diddy not in settings.starting_kong_list:
+                            break
+                # If reached Japes without freeing anyone yet, Only Donkey, Diddy, and Chunky logically have access to T&S portal in Japes
+                elif (
+                    newLevelOrder[level] == Levels.JungleJapes
+                    and kongsInLevels[Levels.JungleJapes] == 0  # This restriciton only matters if there's no one to free in Japes
+                    and Kongs.donkey not in settings.starting_kong_list
+                    and Kongs.diddy not in settings.starting_kong_list
+                    and Kongs.chunky not in settings.starting_kong_list
+                ):
+                    break
+                # If reached Caves without freeing anyone yet, Only Diddy, Lanky, and Chunky logically have access to T&S portal in Caves
+                elif (
+                    newLevelOrder[level] == Levels.CrystalCaves
+                    and Kongs.diddy not in settings.starting_kong_list
+                    and Kongs.lanky not in settings.starting_kong_list
+                    and Kongs.chunky not in settings.starting_kong_list
+                ):
+                    break
+            levelsReachable.append(level)
+            # Check if a level has been assigned here
+            if newLevelOrder[level] is not None:
+                # Update kongsOwned & kongsAssumed with kongs freeable in current level
+                kongsOwned = kongsOwned + kongsInLevels[newLevelOrder[level]]
+                kongsAssumed = kongsAssumed + kongsInLevels[newLevelOrder[level]]
+        # Choose where levelWithKongs will go in new level order
+        levelIndexOptions = list(levelIndicesToFill.intersection(levelsReachable))
+        # Place level in newLevelOrder and remove from list of remaining slots
+        shuffledLevelIndex = random.choice(levelIndexOptions)
+        levelIndicesToFill.remove(shuffledLevelIndex)
+        newLevelOrder[shuffledLevelIndex] = levelToPlace
+    return newLevelOrder

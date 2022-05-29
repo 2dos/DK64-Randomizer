@@ -8,7 +8,9 @@ import sys
 from randomizer.ShuffleBosses import ShuffleBosses, ShuffleBossKongs, ShuffleKutoutKongs
 from randomizer.Enums.Events import Events
 from randomizer.Enums.Kongs import Kongs, GetKongs
+from randomizer.Enums.Locations import Locations
 from randomizer.Prices import RandomizePrices, VanillaPrices
+from random import randint
 
 
 class Settings:
@@ -76,7 +78,7 @@ class Settings:
         self.troff_weight_4 = 0.8
         self.troff_weight_5 = 0.9
         self.troff_weight_6 = 1.0
-        if self.level_randomization == "loadingzone" or self.level_randomization == "loadingzonesdecoupled":
+        if self.level_randomization in ("loadingzone", "loadingzonesdecoupled"):
             self.troff_weight_0 = 1
             self.troff_weight_1 = 1
             self.troff_weight_2 = 1
@@ -159,8 +161,6 @@ class Settings:
         #  Settings which affect logic
         # start_with_moves: bool
         self.unlock_all_moves = None
-        # unlock_all_kongs: bool
-        self.unlock_all_kongs = None
         # crown_door_open: bool
         self.crown_door_open = None
         # coin_door_open: bool
@@ -169,17 +169,35 @@ class Settings:
         self.unlock_fairy_shockwave = None
         # krool_phase_count: int, [1-5]
         self.krool_phase_count = 5
+        self.krool_random = False
         # krool_key_count: int, [0-8]
         self.krool_key_count = 8
+        self.keys_random = False
+        # starting_kongs_count: int, [1-5]
+        self.starting_kongs_count = 5
+        self.starting_random = False
 
         # bonus_barrels: str
-        # skip - NOT IMPLEMENTED YET
+        # skip (auto-completed)
         # normal
         # random
         self.bonus_barrels = "normal"
+        # helm_barrels: str
+        # skip (helm skip all)
+        # normal
+        # random
+        self.helm_barrels = "normal"
+        self.bonus_barrel_auto_complete = False
+        self.gnawty_barrels = False
 
         # hard_shooting: bool
         self.hard_shooting = False
+
+        # hard_mad_jack: bool
+        self.hard_mad_jack = False
+
+        # damage multiplier
+        self.damage_amount = "default"
 
         # shuffle_loading_zones: str
         # none
@@ -244,6 +262,8 @@ class Settings:
         phases = [x for x in kongs if x != Kongs.chunky]
         if self.krool_phase_order_rando:
             random.shuffle(phases)
+        if self.krool_random:
+            self.krool_phase_count = randint(1, 5)
         if self.krool_phase_count < 5:
             phases = random.sample(phases, self.krool_phase_count - 1)
         orderedPhases = []
@@ -275,7 +295,10 @@ class Settings:
             Events.HelmKeyTurnedIn,
         ]
         key_list = KeyEvents.copy()
-        required_key_count = self.krool_key_count
+        if self.keys_random:
+            required_key_count = randint(0, 8)
+        else:
+            required_key_count = self.krool_key_count
         if self.krool_access:
             # If helm guaranteed, make sure it's added and included in the key count
             self.krool_keys_required.append(Events.HelmKeyTurnedIn)
@@ -294,12 +317,21 @@ class Settings:
 
         # Boss Rando
         self.boss_maps = ShuffleBosses(self.boss_location_rando)
-        self.boss_kongs = ShuffleBossKongs(self.boss_maps, self.boss_kong_rando)
+        self.boss_kongs = ShuffleBossKongs(self)
         self.kutout_kongs = ShuffleKutoutKongs(self.boss_maps, self.boss_kongs, self.boss_kong_rando)
 
         # Bonus Barrel Rando
-        if self.bonus_barrel_rando:
+        if self.bonus_barrel_auto_complete:
+            self.bonus_barrels = "skip"
+        elif self.bonus_barrel_rando:
             self.bonus_barrels = "random"
+        elif self.gnawty_barrels:
+            self.bonus_barrels = "all_beaver_bother"
+        # Helm Barrel Rando
+        if self.helm_setting == "skip_all":
+            self.helm_barrels = "skip"
+        elif self.bonus_barrel_rando:
+            self.helm_barrels = "random"
 
         # Loading Zone Rando
         if self.level_randomization == "level_order":
@@ -313,25 +345,69 @@ class Settings:
             self.shuffle_loading_zones = "none"
 
         # Kong rando
+        # Temp until Slider UI binding gets fixed
+        if self.starting_random:
+            self.starting_kongs_count = randint(1, 5)
+        if self.starting_kongs_count == 5:
+            self.kong_rando = False
         if self.kong_rando:
-            self.starting_kong = random.choice(kongs)
-            if self.shuffle_loading_zones == "levels":
-                self.kongs_for_progression = True
+            self.starting_kong_list = random.sample(kongs, self.starting_kongs_count)
+            self.starting_kong = random.choice(self.starting_kong_list)
             # Kong freers are decided in the fill, set as any kong for now
             self.diddy_freeing_kong = Kongs.any
             self.lanky_freeing_kong = Kongs.any
             self.tiny_freeing_kong = Kongs.any
             self.chunky_freeing_kong = Kongs.any
+            # Kong locations are adjusted in the fill, set all possible for now
+            self.kong_locations = self.SelectKongLocations()
         else:
+            self.possible_kong_list = kongs.copy()
+            self.possible_kong_list.remove(0)
+            self.starting_kong_list = random.sample(self.possible_kong_list, self.starting_kongs_count - 1)
+            self.starting_kong_list.append(Kongs.donkey)
             self.starting_kong = Kongs.donkey
             self.diddy_freeing_kong = Kongs.donkey
             self.lanky_freeing_kong = Kongs.donkey
             self.tiny_freeing_kong = Kongs.diddy
             self.chunky_freeing_kong = Kongs.lanky
+            # Set up kong locations with vanilla kongs in them, removing any kongs we start with
+            self.kong_locations = [Locations.DiddyKong, Locations.LankyKong, Locations.TinyKong, Locations.ChunkyKong]
+            if Kongs.diddy in self.starting_kong_list:
+                self.kong_locations.remove(Locations.DiddyKong)
+            if Kongs.lanky in self.starting_kong_list:
+                self.kong_locations.remove(Locations.LankyKong)
+            if Kongs.tiny in self.starting_kong_list:
+                self.kong_locations.remove(Locations.TinyKong)
+            if Kongs.chunky in self.starting_kong_list:
+                self.kong_locations.remove(Locations.ChunkyKong)
+
+        # Kongs needed for level progression
+        if self.starting_kongs_count < 5 and (self.shuffle_loading_zones == "levels" or self.shuffle_loading_zones == "none"):
+            self.kongs_for_progression = True
 
         # Move Location Rando
         if self.shop_location_rando:
             self.shuffle_items = "moves"
+
+    def SelectKongLocations(self):
+        """Select which random kong locations to use depending on number of starting kongs."""
+        # First determine which kong cages will have a kong to free
+        kongCageLocations = [
+            Locations.DiddyKong,
+            Locations.LankyKong,
+            Locations.TinyKong,
+            Locations.ChunkyKong,
+        ]
+        # Randomly decide which kong cages will not have kongs in them
+        for i in range(0, self.starting_kongs_count - 1):
+            kongLocation = random.choice(kongCageLocations)
+            kongCageLocations.remove(kongLocation)
+            # In case diddy is the only kong to free, he can't be in the llama temple since it's behind guitar door
+        if self.starting_kongs_count == 4 and Kongs.diddy not in self.starting_kong_list and Locations.LankyKong in kongCageLocations:
+            # Move diddy kong from llama temple to another cage randomly chosen
+            kongCageLocations.remove(Locations.LankyKong)
+            kongCageLocations.append(random.choice(Locations.DiddyKong, Locations.TinyKong, Locations.ChunkyKong))
+        return kongCageLocations
 
     def __repr__(self):
         """Return printable version of the object as json.
@@ -341,7 +417,8 @@ class Settings:
         """
         return json.dumps(self.__dict__)
 
-    def __get_hash(self):
+    @staticmethod
+    def __get_hash():
         """Get the hash value of all of the source code loaded."""
         hash_value = []
         files = []
