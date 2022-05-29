@@ -516,16 +516,26 @@ def AssumedFill(settings, itemsToPlace, validLocations, ownedItems=None):
                 aztecIndex = GetShuffledLevelIndex(Levels.AngryAztec)
                 factoryIndex = GetShuffledLevelIndex(Levels.FranticFactory)
                 kongPriority = {}
-                for i in range(0, 5):
-                    if i == japesIndex and Locations.DiddyKong in settings.kong_locations:
-                        kongPriority[Locations.DiddyKong] = i
+                for i in range(0, 7):
+                    if i == japesIndex:
+                        if Locations.DiddyKong in settings.kong_locations:
+                            kongPriority[Locations.DiddyKong] = i
+                        else:
+                            kongPriority[Locations.DiddyKong] = -1
                     elif i == aztecIndex:
                         if Locations.LankyKong in settings.kong_locations:
                             kongPriority[Locations.LankyKong] = i
+                        else:
+                            kongPriority[Locations.LankyKong] = -1
                         if Locations.TinyKong in settings.kong_locations:
                             kongPriority[Locations.TinyKong] = i
-                    elif i == factoryIndex and Locations.ChunkyKong in settings.kong_locations:
-                        kongPriority[Locations.ChunkyKong] = i
+                        else:
+                            kongPriority[Locations.TinyKong] = -1
+                    elif i == factoryIndex:
+                        if Locations.ChunkyKong in settings.kong_locations:
+                            kongPriority[Locations.ChunkyKong] = i
+                        else:
+                            kongPriority[Locations.ChunkyKong] = -1
                 validReachable.sort(key=lambda x: kongPriority[x], reverse=True)
         # Get a random, empty, reachable location
         for locationId in validReachable:
@@ -533,7 +543,10 @@ def AssumedFill(settings, itemsToPlace, validLocations, ownedItems=None):
             LocationList[locationId].PlaceItem(item)
             # When placing a kong, also decide who among the owned kongs can free them
             if ItemList[item].type == Types.Kong:
-                # Choose the puzzle solver
+                # If this is meant to be an empty cage, place no item here
+                if locationId not in settings.kong_locations:
+                    LocationList[locationId].PlaceItem(Items.NoItem)
+                # Choose the puzzle solver, even if it's an empty cage
                 if locationId == Locations.DiddyKong:
                     settings.diddy_freeing_kong = random.choice(ownedKongs)
                 elif locationId == Locations.LankyKong:
@@ -766,7 +779,7 @@ def FillKongsAndMoves(spoiler):
     if spoiler.settings.kong_rando:
         kongItems = ItemPool.Kongs(spoiler.settings)
         kongValidLocations = {}
-        kongLocations = spoiler.settings.kong_locations
+        kongLocations = [Locations.DiddyKong, Locations.LankyKong, Locations.TinyKong, Locations.ChunkyKong]
         for item in kongItems:
             kongValidLocations[item] = kongLocations
         # Kongs could be shuffled in the following generic shuffle, but since they're so restrictive,

@@ -191,8 +191,7 @@ def Kongs(settings):
     kongs = []
     if settings.starting_kongs_count != 5:
         kongs = [Items.Donkey, Items.Diddy, Items.Lanky, Items.Tiny, Items.Chunky]
-        for starting_kong in settings.starting_kong_list:
-            kongs.remove(ItemFromKong(starting_kong))
+        kongs.remove(ItemFromKong(settings.starting_kong))
     return kongs
 
 

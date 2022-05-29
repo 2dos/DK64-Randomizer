@@ -32,8 +32,10 @@ def ItemFromKong(kong):
         return Items.Lanky
     elif kong == Kongs.tiny:
         return Items.Tiny
-    else:
+    elif kong == Kongs.chunky:
         return Items.Chunky
+    else:
+        return Items.NoItem
 
 
 def NameFromKong(kong):
@@ -46,8 +48,10 @@ def NameFromKong(kong):
         return "Lanky"
     elif kong == Kongs.tiny:
         return "Tiny"
-    else:
+    elif kong == Kongs.chunky:
         return "Chunky"
+    else:
+        return "No Kong"
 
 
 def KongFromItem(item):
