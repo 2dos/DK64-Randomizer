@@ -45,13 +45,24 @@
                 </tr>
                 <tr>
                     <td>
-                        <div class="form-check form-switch w-75">
-                            <label title="This option will be expanded in the future, for now it's general portal hints along with funny messages.">
-                                <input class="form-check-input"
-                                       type="checkbox"
-                                       name="wrinkly_hints"
-                                       value="True"/>
-                                Wrinkly Hints
+                        <div>
+                            <p>Wrinkly Hints</p>
+                            <label title="Wrinkly hints are replaced with useful hints throughout your playthrough.">
+                                    <select name="wrinkly_hints"
+                                            id="wrinkly_hints"
+                                            class="form-select center-div"
+                                            aria-label="Randomization type">
+                                        <option selected value="standard">
+                                            Standard
+                                        </option>
+                                        <option value="cryptic">
+                                            Cryptic
+                                        </option>
+                                        <option value="off">
+                                            Off
+                                        </option>
+                                    </select>
+                                </div>
                             </label>
                         </div>
                     </td>
