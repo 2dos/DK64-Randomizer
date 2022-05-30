@@ -68,6 +68,7 @@ def updateRandomHint(message: str):
     """
     hint_pool = []
     for x in range(len(hints)):
+        print(hints[x].hint)
         if hints[x].hint == "":
             hint_pool.append(x)
     if len(hint_pool) > 0:
@@ -85,3 +86,10 @@ def PushHints():
             replacement_hint = "PLACEHOLDER HINT"
         hint_arr.append([replacement_hint.upper()])
     writeWrinklyHints(js.pointer_addresses[12]["entries"][41]["pointing_to"], hint_arr)
+
+
+def wipeHints():
+    """Wipe the hint block."""
+    for x in range(len(hints)):
+        if hints[x].kong != WrinklyKong.ftt:
+            hints[x].hint = ""

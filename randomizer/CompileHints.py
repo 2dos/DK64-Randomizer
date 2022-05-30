@@ -364,10 +364,12 @@ def compileHints(spoiler: Spoiler):
             kong_index = kong_json[kong_map["name"]]["locked"]["kong"]
             level_index = kong_map["level"]
             if spoiler.settings.wrinkly_hints == "cryptic":
-                kong_name = random.choice(kong_cryptic[kong_index])
+                if not kong_index == Kongs.any:
+                    kong_name = random.choice(kong_cryptic[kong_index])
                 level_name = random.choice(level_cryptic[level_index])
             else:
-                kong_name = kong_list[kong_index]
+                if not kong_index == Kongs.any:
+                    kong_name = kong_list[kong_index]
                 level_name = level_list[level_index]
             if kong_index == Kongs.any:
                 kong_name = "An empty cage"
