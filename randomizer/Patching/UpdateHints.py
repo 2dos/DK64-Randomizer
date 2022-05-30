@@ -68,7 +68,6 @@ def updateRandomHint(message: str):
     """
     hint_pool = []
     for x in range(len(hints)):
-        print(hints[x].hint)
         if hints[x].hint == "":
             hint_pool.append(x)
     if len(hint_pool) > 0:
