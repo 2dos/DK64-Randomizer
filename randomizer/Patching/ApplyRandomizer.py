@@ -23,7 +23,7 @@ from randomizer.Patching.MusicRando import randomize_music
 from randomizer.Patching.Patcher import ROM
 from randomizer.Patching.PriceRando import randomize_prices
 from randomizer.Patching.PuzzleRando import randomize_puzzles
-from randomizer.Patching.UpdateHints import PushHints
+from randomizer.Patching.UpdateHints import PushHints, wipeHints
 
 # from randomizer.Spoiler import Spoiler
 from randomizer.Settings import Settings
@@ -286,6 +286,7 @@ def patching_response(responded_data):
     random.seed(spoiler.settings.seed)
 
     if spoiler.settings.wrinkly_hints in ["standard", "cryptic"]:
+        wipeHints()
         compileHints(spoiler)
         PushHints()
 
