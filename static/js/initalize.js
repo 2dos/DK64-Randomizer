@@ -129,11 +129,6 @@ function eraseCookie(name) {
 }
 
 function load_cookies() {
-  slider_info = [
-    {"item":"krool_phase_count","min":1,"max":5},
-    {"item":"krool_key_count","min":0,"max":8},
-    {"item":"starting_kongs_count","min":1,"max":5}
-  ]
   try {
     json = JSON.parse(getCookie("saved_settings"));
     if (json !== null) {
@@ -152,22 +147,10 @@ function load_cookies() {
         } catch {}
       }
     } else {
-      slider_info.forEach(i=>{
-        element = document.getElementsByName(i.item)[0]
-        if (element.hasAttribute("data-slider-value")) {
-          element.setAttribute("data-slider-value",Number(element.getAttribute("data-slider-max")));
-        }
-      })
       load_presets();
     }
   } catch {
     eraseCookie("saved_settings");
-    slider_info.forEach(i=>{
-      element = document.getElementsByName(i.item)[0]
-      if (element.hasAttribute("data-slider-value")) {
-        element.setAttribute("data-slider-value",Number(element.getAttribute("data-slider-max")));
-      }
-    })
   }
 }
 load_cookies();
