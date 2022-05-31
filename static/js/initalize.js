@@ -96,6 +96,14 @@ $("#form input").on("input", function (e) {
   const json = Object.fromEntries(data.entries());
   setCookie("saved_settings", JSON.stringify(json), 30);
 });
+$("#form input").on("change", function (e) {
+  //This would be called if any of the input element has got a change inside the form
+  var disabled = $("form").find(":input:disabled").removeAttr("disabled");
+  const data = new FormData(document.querySelector("form"));
+  disabled.attr("disabled", "disabled");
+  const json = Object.fromEntries(data.entries());
+  setCookie("saved_settings", JSON.stringify(json), 30);
+});
 $("#form select").on("change", function (e) {
   //This would be called if any of the input element has got a change inside the form
   var disabled = $("form").find(":input:disabled").removeAttr("disabled");
