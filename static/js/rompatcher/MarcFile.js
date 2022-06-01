@@ -125,15 +125,15 @@ MarcFile.prototype.convert = function () {
   wordswapped = [0x40, 0x12].includes(first);
   convert = false;
   if (byteswapped == false && wordswapped == false) {
-    // console.log("z64")
+    console.log("z64")
   } else if (byteswapped == true && wordswapped == false) {
-    // console.log("v64")
+    console.log("v64")
     convert = true;
   } else if (byteswapped == false && wordswapped == true) {
-    // console.log("n64")
+    console.log("n64")
     convert = true;
   } else if (byteswapped == true && wordswapped == true) {
-    // console.log("v64+n64")
+    console.log("v64+n64")
     convert = true;
   }
   if (convert == true) {
@@ -151,7 +151,7 @@ MarcFile.prototype.convert = function () {
         this._u8array[position + 2],
         this._u8array[position + 3],
       ];
-      if (this._u8array[position + 4] === null) {
+      if (this._u8array[position + 4] == null) {
         break;
       }
       converted_chunk = convertchunk(data, byteswapped, wordswapped);
