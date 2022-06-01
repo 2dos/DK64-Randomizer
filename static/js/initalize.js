@@ -88,7 +88,7 @@ document
 
 jq = $;
 
-$("#form input").on("input", function (e) {
+$("#form input").on("input change", function (e) {
   //This would be called if any of the input element has got a change inside the form
   var disabled = $("form").find(":input:disabled").removeAttr("disabled");
   const data = new FormData(document.querySelector("form"));
@@ -139,9 +139,11 @@ function load_cookies() {
         } else if (json[key] == "False") {
           element.checked = false;
         }
-
         try {
           element.value = json[key];
+          if (element.hasAttribute("data-slider-value")) {
+            element.setAttribute("data-slider-value",json[key]);
+          }
         } catch {}
       }
     } else {
