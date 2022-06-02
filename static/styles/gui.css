@@ -197,3 +197,18 @@ div {
   white-space: pre-wrap;
   text-align: left;
 }
+
+.slider.slider-disabled {
+  pointer-events: none;
+  opacity: 0.5;
+}
+.slider.slider-disabled .slider-track-high,
+.slider.slider-disabled .slider-tick {
+  background: #aebecb;
+}
+
+.slider.slider-disabled .in-selection,
+.slider.slider-disabled .slider-handle,
+.slider.slider-disabled .slider-selection {
+  background: #758088;
+}

@@ -127,7 +127,9 @@
                        style="width: 80%">
             </div>
             <hr>
-            <div class="center">Keys required to beat K. Rool</div>
+            <div class="center" data-toggle="tooltip" title="Determines how many Keys are left to be collected to access K. Rool.&#10;i.e. Selecting '5' means 3 keys will be pre-turned in and you need 5 more.">
+                Keys required to beat K. Rool
+            </div>
             <div class="form-check form-switch w-75" style="margin-left: 25%;">
                 <label data-toggle="tooltip" title="Required to get Key 8 from Helm to access K Rool or leave it up to chance.">
                     <input class="form-check-input"
@@ -203,21 +205,18 @@
     function toggle_clicks(){
         if (document.getElementById("krool_random").checked === true) {
             $("#krool_phase_count").slider("disable")
-            $("#krool_phase_count").slider("setValue", 1)
          }
          else {
             $("#krool_phase_count").slider("enable")
          }
          if (document.getElementById("keys_random").checked === true) {
             $("#krool_key_count").slider("disable")
-            $("#krool_key_count").slider("setValue", 0)
          }
          else {
             $("#krool_key_count").slider("enable")
          }
          if (document.getElementById("starting_random").checked === true) {
             $("#starting_kongs_count").slider("disable")
-            $("#starting_kongs_count").slider("setValue", 1)
          }
          else {
             $("#starting_kongs_count").slider("enable")
