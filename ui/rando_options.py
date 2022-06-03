@@ -192,19 +192,33 @@ def toggle_counts_boxes(event):
 @bind("change", "level_randomization")
 def update_boss_required(evt):
     """Disable certain page flags depending on checkboxes."""
-    element = document.getElementById("level_randomization")
-    if element.value == "level_order":
-        document.getElementById("boss_location_rando").setAttribute("disabled", "disabled")
-        document.getElementById("boss_location_rando").checked = True
-        document.getElementById("boss_kong_rando").setAttribute("disabled", "disabled")
-        document.getElementById("boss_kong_rando").checked = True
-        document.getElementById("kong_rando").setAttribute("disabled", "disabled")
-        document.getElementById("kong_rando").checked = True
+    level = document.getElementById("level_randomization")
+    boss_location = document.getElementById("boss_location_rando")
+    boss_kong = document.getElementById("boss_kong_rando")
+    kong_rando = document.getElementById("kong_rando")
+    shop = document.getElementById("shop_location_rando")
+    unlock_moves = document.getElementById("unlock_all_moves")
+    if level.value == "level_order":
+        boss_location.setAttribute("disabled", "disabled")
+        boss_location.checked = True
+        boss_kong.setAttribute("disabled", "disabled")
+        boss_kong.checked = True
+        kong_rando.setAttribute("disabled", "disabled")
+        kong_rando.checked = True
+        shop.setAttribute("disabled", "disabled")
+        shop.checked = True
     else:
         try:
-            document.getElementById("boss_kong_rando").removeAttribute("disabled")
-            document.getElementById("boss_location_rando").removeAttribute("disabled")
-            document.getElementById("kong_rando").removeAttribute("disabled")
+            boss_kong.removeAttribute("disabled")
+            boss_location.removeAttribute("disabled")
+            kong_rando.removeAttribute("disabled")
+            shop.removeAttribute("disabled")
+        except Exception:
+            pass
+    if unlock_moves.checked:
+        try:
+            shop.setAttribute("disabled", "disabled")
+            shop.checked = False
         except Exception:
             pass
 
@@ -297,17 +311,20 @@ def disable_shuffle_shop(evt):
     disabled = False
     shop = js.document.getElementById("shop_location_rando")
     prices = js.document.getElementById("random_prices")
-    if js.document.getElementById("unlock_all_moves").checked:
+    moves = js.document.getElementById("unlock_all_moves")
+    if moves.checked:
         disabled = True
     try:
         if disabled:
             shop.setAttribute("disabled", "disabled")
             shop.checked = False
             prices.setAttribute("disabled", "disabled")
-            prices.value = "free"
-        else:
+        elif js.document.getElementById("level_randomization").value != "level_order":
             shop.removeAttribute("disabled")
             prices.removeAttribute("disabled")
+        else:
+            prices.removeAttribute("disabled")
+            shop.checked = True
     except AttributeError:
         pass
 
