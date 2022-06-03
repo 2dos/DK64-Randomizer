@@ -168,18 +168,18 @@ def preset_select_changed(event):
                     tickcnt_el = slider_el.getElementsByClassName("slider-tick-container")[0]
                     labels = lblcnt_el.getElementsByClassName("slider-tick-label")
                     t_labels = tickcnt_el.getElementsByClassName("slider-tick")
-                    for l in range(len(labels)):
-                        l_val = int(labels[l].innerText)
+                    for label_index in range(len(labels)):
+                        l_val = int(labels[label_index].innerText)
                         if l_val == presets[key]:
-                            labels[l].classList.add("label-is-selection")
+                            labels[label_index].classList.add("label-is-selection")
                         else:
-                            labels[l].classList.remove("label-is-selection")
+                            labels[label_index].classList.remove("label-is-selection")
                         if l_val <= presets[key]:
-                            labels[l].classList.add("label-in-selection")
-                            t_labels[l].classList.add("in-selection")
+                            labels[label_index].classList.add("label-in-selection")
+                            t_labels[label_index].classList.add("in-selection")
                         else:
-                            labels[l].classList.remove("label-in-selection")
-                            t_labels[l].classList.remove("in-selection")
+                            labels[label_index].classList.remove("label-in-selection")
+                            t_labels[label_index].classList.remove("in-selection")
 
                     # Adjust Handle
                     handle_el = slider_el.getElementsByClassName("min-slider-handle")[0]
