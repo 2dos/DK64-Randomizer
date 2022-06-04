@@ -124,78 +124,6 @@ def set_preset_options():
     js.load_cookies()
 
 
-@bind("change", "presets")
-def preset_select_changed(event):
-    """Trigger a change of the form via the JSON templates."""
-    element = document.getElementById("presets")
-    presets = None
-    for val in js.progression_presets:
-        if val.get("name") == element.value:
-            presets = val
-    for key in presets:
-        try:
-            if type(presets[key]) is bool:
-                if presets[key] is False:
-                    document.getElementsByName(key)[0].removeAttribute("checked")
-                else:
-                    document.getElementsByName(key)[0].setAttribute("checked", "checked")
-            else:
-                if document.getElementsByName(key)[0].hasAttribute("data-slider-value"):
-                    el_i = document.getElementsByName(key)[0]
-                    input_el = document.getElementById(key)
-                    slider_container = input_el.parentElement
-                    slider_el = slider_container.getElementsByClassName("slider")[0]
-
-                    min_amt = int(el_i.getAttribute("data-slider-min"))
-                    max_amt = int(el_i.getAttribute("data-slider-max"))
-
-                    diff_amt = presets[key] - min_amt
-                    diff_range = max_amt - min_amt
-                    diff_perc = (diff_amt / diff_range) * 100
-
-                    # Adjusts background track
-                    track_el = slider_el.getElementsByClassName("slider-track")[0]
-                    track_el.getElementsByClassName("slider-selection")[0].style.width = str(diff_perc) + "%"
-                    track_el.getElementsByClassName("slider-track-high")[0].style.width = str(100 - diff_perc) + "%"
-
-                    # Adjust Tooltip
-                    tooltip_el = slider_el.getElementsByClassName("tooltip-main")[0]
-                    tooltip_el.style.left = str(diff_perc) + "%"
-                    tooltip_el.getElementsByClassName("tooltip-inner")[0].innerText = presets[key]
-
-                    # Adjust Ticks & Labels
-                    lblcnt_el = slider_el.getElementsByClassName("slider-tick-label-container")[0]
-                    tickcnt_el = slider_el.getElementsByClassName("slider-tick-container")[0]
-                    labels = lblcnt_el.getElementsByClassName("slider-tick-label")
-                    t_labels = tickcnt_el.getElementsByClassName("slider-tick")
-                    for label_index in range(len(labels)):
-                        l_val = int(labels[label_index].innerText)
-                        if l_val == presets[key]:
-                            labels[label_index].classList.add("label-is-selection")
-                        else:
-                            labels[label_index].classList.remove("label-is-selection")
-                        if l_val <= presets[key]:
-                            labels[label_index].classList.add("label-in-selection")
-                            t_labels[label_index].classList.add("in-selection")
-                        else:
-                            labels[label_index].classList.remove("label-in-selection")
-                            t_labels[label_index].classList.remove("in-selection")
-
-                    # Adjust Handle
-                    handle_el = slider_el.getElementsByClassName("min-slider-handle")[0]
-                    handle_el.setAttribute("aria-valuenow", str(presets[key]))
-                    handle_el.style.left = str(diff_perc) + "%"
-
-                    # Adjust Input
-                    input_el.setAttribute("data-value", str(presets[key]))
-                    input_el.setAttribute("value", str(presets[key]))
-                    document.getElementsByName(key)[0].setAttribute("data-slider-value", presets[key])
-                else:
-                    js.jq(f"#{key}").val(presets[key])
-        except Exception as e:
-            pass
-
-
 @bind("click", "randomize_blocker_required_amounts")
 def toggle_b_locker_boxes(event):
     """Toggle the textboxes for BLockers."""
@@ -395,3 +323,42 @@ def disable_barrel_rando(evt):
             barrel.removeAttribute("disabled")
     except AttributeError:
         pass
+
+
+@bind("change", "presets")
+def preset_select_changed(event):
+    """Trigger a change of the form via the JSON templates."""
+    element = document.getElementById("presets")
+    presets = None
+    for val in js.progression_presets:
+        if val.get("name") == element.value:
+            presets = val
+    for key in presets:
+        try:
+            if type(presets[key]) is bool:
+                if presets[key] is False:
+                    js.jq(f"#{key}").checked = False
+                    js.document.getElementsByName(key)[0].checked = False
+                else:
+                    js.jq(f"#{key}").checked = True
+                    js.document.getElementsByName(key)[0].checked = True
+                js.jq(f"#{key}").removeAttr("disabled")
+            else:
+                if js.document.getElementsByName(key)[0].hasAttribute("data-slider-value"):
+                    js.jq(f"#{key}").slider("setValue", presets[key])
+                    js.jq(f"#{key}").slider("enable")
+                    js.jq(f"#{key}").parent().find(".slider-disabled").removeClass("slider-disabled")
+                else:
+                    js.jq(f"#{key}").val(presets[key])
+                js.jq(f"#{key}").removeAttr("disabled")
+        except Exception as e:
+            pass
+    toggle_counts_boxes(None)
+    toggle_b_locker_boxes(None)
+    update_boss_required(None)
+    disable_colors(None)
+    disable_music(None)
+    disable_shuffle_shop(None)
+    max_randomized_blocker(None)
+    max_randomized_troff(None)
+    disable_barrel_rando(None)

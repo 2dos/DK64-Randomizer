@@ -10,7 +10,7 @@
     "random_medal_requirement":false,
     "bananaport_rando":false,
     "kasplat_rando":true,
-    "kong_rando":false,
+    "kong_rando":true,
     "shop_location_rando":false,
     "random_prices":"vanilla",
     "level_randomization":"level_order",
