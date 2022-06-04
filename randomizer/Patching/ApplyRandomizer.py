@@ -300,12 +300,11 @@ def patching_response(responded_data):
         order += 1
 
     loop.run_until_complete(ProgressBar().update_progress(10, "Seed Generated."))
+    js.document.getElementById("nav-settings-tab").style.display = ""
     if spoiler.settings.generate_spoilerlog is True:
-        js.document.getElementById("nav-settings-tab").style.display = ""
         js.document.getElementById("spoiler_log_block").style.display = ""
         js.document.getElementById("spoiler_log_text").value = spoiler.toJson()
     else:
-        js.document.getElementById("nav-settings-tab").style.display = "none"
         js.document.getElementById("spoiler_log_text").value = ""
         js.document.getElementById("spoiler_log_block").style.display = "none"
 
