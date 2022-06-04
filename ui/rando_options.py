@@ -118,7 +118,10 @@ def set_preset_options():
             opt.innerHTML = val.get("name")
             opt.title = val.get("description")
             element.appendChild(opt)
-    js.jq("#presets").val("Suggested")
+            if val.get("name") == "-- Select a Preset --":
+                opt.disabled = True
+                opt.hidden = True
+    js.jq("#presets").val("-- Select a Preset --")
     toggle_counts_boxes(None)
     toggle_b_locker_boxes(None)
     js.load_cookies()

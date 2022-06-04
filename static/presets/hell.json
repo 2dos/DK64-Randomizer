@@ -1,6 +1,6 @@
 {
     "name":"Hell Mode",
-    "description":"Pain",
+    "description":"Pain (May have a hard time generating)",
     "fast_start_beginning_of_game":true,
     "unlock_all_moves":false,
     "enemy_rando":true,
@@ -21,7 +21,7 @@
     "unlock_fairy_shockwave":false,
     "crown_door_open":false,
     "coin_door_open":false,
-    "bonus_barrel_rando":true,
+    "bonus_barrel_rando":false,
     "gnawty_barrels":true,
     "bonus_barrel_auto_complete":false,
     "open_lobbies":false,
