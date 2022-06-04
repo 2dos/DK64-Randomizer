@@ -264,6 +264,8 @@ class Settings:
             random.shuffle(phases)
         if self.krool_random:
             self.krool_phase_count = randint(1, 5)
+        if isinstance(self.krool_phase_count, str) == True:
+            self.krool_phase_count = 5
         if self.krool_phase_count < 5:
             phases = random.sample(phases, self.krool_phase_count - 1)
         orderedPhases = []
