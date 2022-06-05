@@ -153,8 +153,8 @@ def patching_response(responded_data):
 
         # Fast Start game
         # if spoiler.settings.fast_start_beginning_of_game:
-        ROM().seek(sav + 0x02E)
-        ROM().write(1)
+    ROM().seek(sav + 0x02E)
+    ROM().write(1)
 
     # Unlock Shockwave
     if spoiler.settings.unlock_fairy_shockwave:
