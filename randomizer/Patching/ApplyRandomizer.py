@@ -151,8 +151,8 @@ def patching_response(responded_data):
         ROM().seek(sav + 0x02D)
         ROM().write(1)
 
-    # Fast Start game
-    if spoiler.settings.fast_start_beginning_of_game:
+        # Fast Start game
+        # if spoiler.settings.fast_start_beginning_of_game:
         ROM().seek(sav + 0x02E)
         ROM().write(1)
 
