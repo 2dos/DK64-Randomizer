@@ -13,7 +13,7 @@ set_variables = {
     "fast_start_helm": 0,
     "crown_door_open": 0,
     "coin_door_open": 0,
-    "quality_of_life": 1,
+    "quality_of_life": 0,
     "price_rando_on": 1,
     "k_rool_order": [0, 3, 1, 2, 4],
     "damage_multiplier": 0,

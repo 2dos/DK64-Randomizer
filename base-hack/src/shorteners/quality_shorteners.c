@@ -3,7 +3,6 @@
 static const short ftt_flags[] = {
 	355, // Bananaporter
     358, // Crown Pad
-    359, // T&S (1)
     360, // Mini Monkey
     361, // Hunky Chunky
     362, // Orangstand Sprint
@@ -16,11 +15,8 @@ static const short ftt_flags[] = {
     369, // Tiny
     370, // Chunky
     372, // Snide's
-    373, // Buy Instruments
-    374, // Buy Guns
     376, // Wrinkly
     382, // B Locker
-    392, // T&S (2)
     775, // Funky
     776, // Snide's
     777, // Cranky
@@ -31,7 +27,6 @@ static const short ftt_flags[] = {
     782, // Fungi
     783, // Caves
     784, // Castle
-    785, // T&S (3)
     786, // Helm
     787, // Aztec
     282, // Caves CS
@@ -53,6 +48,14 @@ static const short ftt_flags[] = {
     299, // Giant Kosha
     378, // Training Grounds Intro
     0x5C, // Llama CS
+};
+
+static const short default_ftt_flags[] = {
+    359, // T&S (1)
+    392, // T&S (2)
+    785, // T&S (3)
+    373, // Buy Instruments
+    374, // Buy Guns
     0x45, // Tiny Temple Ice Melted
     109, // Hatch opened in Factory
     0xA1, // Peanut Gate Opened in Galleon
@@ -88,4 +91,9 @@ void qualityOfLife_shorteners(void) {
             }
         }
 	}
+    if (ObjectModel2Timer <= 5) {
+        for (int i = 0; i < sizeof(default_ftt_flags) / 2; i++) {
+            setPermFlag(default_ftt_flags[i]);
+        }
+    }
 }
