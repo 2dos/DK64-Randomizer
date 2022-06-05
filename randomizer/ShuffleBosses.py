@@ -92,12 +92,19 @@ def ShuffleBossesBasedOnOwnedItems(settings, ownedKongs: dict, ownedMoves: dict)
         forestBossKong = Kongs.chunky
         bossLevelOptions.remove(forestBossIndex)
         # Then place Mad jack (next most restrictive)
-        factoryBossOptions = [x for x in bossLevelOptions if Kongs.donkey in ownedKongs[x] or Kongs.chunky in ownedKongs[x] or (Kongs.tiny in ownedKongs[x] and Items.PonyTailTwirl in ownedMoves[x])]
-        factoryBossIndex = random.choice(factoryBossOptions)
-        factoryBossKongOptions = set(ownedKongs[factoryBossIndex]).intersection({Kongs.donkey, Kongs.chunky})
-        if Kongs.tiny in ownedKongs[factoryBossIndex] and Items.PonyTailTwirl in ownedMoves[factoryBossIndex]:
-            factoryBossKongOptions.add(Kongs.tiny)
-        factoryBossKong = random.choice(list(factoryBossKongOptions))
+        if settings.hard_mad_jack:
+            factoryBossOptions = [
+                x for x in bossLevelOptions if Kongs.donkey in ownedKongs[x] or Kongs.chunky in ownedKongs[x] or (Kongs.tiny in ownedKongs[x] and Items.PonyTailTwirl in ownedMoves[x])
+            ]
+            factoryBossIndex = random.choice(factoryBossOptions)
+            factoryBossKongOptions = set(ownedKongs[factoryBossIndex]).intersection({Kongs.donkey, Kongs.chunky})
+            if Kongs.tiny in ownedKongs[factoryBossIndex] and Items.PonyTailTwirl in ownedMoves[factoryBossIndex]:
+                factoryBossKongOptions.add(Kongs.tiny)
+            factoryBossKong = random.choice(list(factoryBossKongOptions))
+        else:
+            factoryBossOptions = [x for x in bossLevelOptions if Kongs.tiny in ownedKongs[x] and Items.PonyTailTwirl in ownedMoves[x]]
+            factoryBossIndex = random.choice(factoryBossOptions)
+            factoryBossKong = Kongs.tiny
         bossLevelOptions.remove(factoryBossIndex)
         # Then place Pufftoss (next most restrictive)
         galleonBossOptions = [x for x in bossLevelOptions if Kongs.diddy in ownedKongs[x] or Kongs.lanky in ownedKongs[x] or Kongs.tiny in ownedKongs[x] or Kongs.chunky in ownedKongs[x]]
