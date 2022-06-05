@@ -287,7 +287,7 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 					return !checkFlag(kong_flags[(int)Rando.free_target_llama],0);
 				} else if (index == 2) {
 					setPermFlag(kong_flags[(int)Rando.free_target_llama]);
-				} else if ((index == 3) || (index == 4)) {
+				} else if ((index >= 3) && (index <= 6)) {
 					return getPressedSwitch(behaviour_pointer,kong_pellets[(int)Rando.free_source_llama],id);
 				}
 			}
