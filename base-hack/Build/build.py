@@ -179,6 +179,34 @@ file_dict = [
         "do_not_delete_source": True,
     },
     {"name": "WXY_Slash", "pointer_table_index": 14, "file_index": 12, "source_file": "assets/Non-Code/displays/wxys.png", "texture_format": "rgba5551"},
+    {
+        "name": "Diddy Base Model",
+        "pointer_table_index": 5,
+        "file_index": 0,
+        "source_file": "Build/diddy_base.bin",
+        "do_not_delete_source": True,
+    },
+    {
+        "name": "Diddy Instrument Model",
+        "pointer_table_index": 5,
+        "file_index": 1,
+        "source_file": "Build/diddy_ins.bin",
+        "do_not_delete_source": True,
+    },
+    {
+        "name": "Lanky Base Model",
+        "pointer_table_index": 5,
+        "file_index": 5,
+        "source_file": "Build/lanky_base.bin",
+        "do_not_delete_source": True,
+    },
+    {
+        "name": "Lanky Instrument Model",
+        "pointer_table_index": 5,
+        "file_index": 6,
+        "source_file": "Build/lanky_ins.bin",
+        "do_not_delete_source": True,
+    }
 ]
 
 map_replacements = []
