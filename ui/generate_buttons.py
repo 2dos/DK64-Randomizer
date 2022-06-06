@@ -9,6 +9,7 @@ from randomizer.Patching.ApplyRandomizer import patching_response
 from randomizer.Worker import background
 from ui.bindings import bind
 from ui.progress_bar import ProgressBar
+from pyodide import create_proxy
 
 
 @bind("change", "patchfileloader")
@@ -35,7 +36,8 @@ def lanky_file_changed(event):
     # If we loaded a file, set up the event listener to wait for it to be loaded
     if file is not None:
         reader.readAsText(file)
-        reader.addEventListener("load", onload)
+        function = create_proxy(onload)
+        reader.addEventListener("load", function)
 
 
 @bind("click", "generate_lanky_seed")
