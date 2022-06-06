@@ -203,8 +203,6 @@ void initHack(void) {
 		*(int*)(0x8070E84C) = 0;
 		*(int*)(0x8070E874) = 0;
 		*(int*)(0x8070E888) = 0;
-		// Cutscene DK Code
-		*(int*)(0x8074C3B0) = (int)&cutsceneDKCode;
 		LoadedHooks = 1;
 	}
 }
