@@ -26,6 +26,7 @@ from image_converter import convertToRGBA32
 from end_seq_writer import createTextFile, createSquishFile
 from instance_script_maps import instance_script_maps
 from generate_yellow_wrinkly import generateYellowWrinkly
+import model_fix
 
 ROMName = "rom/dk64.z64"
 newROMName = "rom/dk64-randomizer-base.z64"
@@ -183,28 +184,28 @@ file_dict = [
         "name": "Diddy Base Model",
         "pointer_table_index": 5,
         "file_index": 0,
-        "source_file": "Build/diddy_base.bin",
+        "source_file": "diddy_base.bin",
         "do_not_delete_source": True,
     },
     {
         "name": "Diddy Instrument Model",
         "pointer_table_index": 5,
         "file_index": 1,
-        "source_file": "Build/diddy_ins.bin",
+        "source_file": "diddy_ins.bin",
         "do_not_delete_source": True,
     },
     {
         "name": "Lanky Base Model",
         "pointer_table_index": 5,
         "file_index": 5,
-        "source_file": "Build/lanky_base.bin",
+        "source_file": "lanky_base.bin",
         "do_not_delete_source": True,
     },
     {
         "name": "Lanky Instrument Model",
         "pointer_table_index": 5,
         "file_index": 6,
-        "source_file": "Build/lanky_ins.bin",
+        "source_file": "lanky_ins.bin",
         "do_not_delete_source": True,
     }
 ]
