@@ -61,7 +61,7 @@ LogicRegions = {
         Event(Events.IslesDiddyBarrelSpawn, lambda l: l.chunky and l.trombone and l.lanky),
     ], [
         TransitionFront(Regions.AngryAztecLobby, lambda l: l.settings.open_lobbies or Events.JapesKeyTurnedIn in l.Events, Transitions.IslesMainToAztecLobby),
-        TransitionFront(Regions.CrystalCavesLobby, lambda l: l.settings.open_lobbies or Events.ForestKeyTurnedIn in l.Events, Transitions.IslesMainToCavesLobby),
+        TransitionFront(Regions.CrystalCavesLobby, lambda l: (l.settings.open_lobbies or Events.ForestKeyTurnedIn in l.Events) and (l.isdonkey or l.ischunky or (l.istiny and l.twirl)), Transitions.IslesMainToCavesLobby),
     ]),
 
     Regions.Prison: Region("Prison", Levels.DKIsles, False, None, [
