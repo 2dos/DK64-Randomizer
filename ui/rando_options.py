@@ -189,6 +189,13 @@ def update_boss_required(evt):
         kong_rando.checked = True
         shop.setAttribute("disabled", "disabled")
         shop.checked = True
+    elif level.value == "vanilla" and kong_rando.checked:
+        boss_location.setAttribute("disabled", "disabled")
+        boss_location.checked = True
+        boss_kong.setAttribute("disabled", "disabled")
+        boss_kong.checked = True
+        kong_rando.removeAttribute("disabled")
+        shop.removeAttribute("disabled")
     else:
         try:
             boss_kong.removeAttribute("disabled")
@@ -203,6 +210,26 @@ def update_boss_required(evt):
             shop.checked = False
         except Exception:
             pass
+
+
+@bind("click", "kong_rando")
+def disable_boss_rando(evt):
+    """Disable Boss Kong and Boss Location Rando if Vanilla levels and Kong Rando."""
+    level = document.getElementById("level_randomization")
+    boss_location = document.getElementById("boss_location_rando")
+    boss_kong = document.getElementById("boss_kong_rando")
+    kong_rando = document.getElementById("kong_rando")
+    shop = document.getElementById("shop_location_rando")
+    if kong_rando.checked and level.value == "vanilla":
+        boss_location.setAttribute("disabled", "disabled")
+        boss_location.checked = True
+        boss_kong.setAttribute("disabled", "disabled")
+        boss_kong.checked = True
+        shop.removeAttribute("disabled")
+    else:
+        boss_kong.removeAttribute("disabled")
+        boss_location.removeAttribute("disabled")
+        kong_rando.removeAttribute("disabled")
 
 
 @bind("click", "random_colors")
@@ -262,7 +289,6 @@ def disable_music(evt):
 @bind("change", "starting_kongs_count")
 def enable_kong_rando(evt):
     """Enable Kong Rando if less than 5 starting kongs."""
-    print("Lanky")
     kong_rando = js.document.getElementById("kong_rando")
     if js.document.getElementById("starting_kongs_count").value == "5":
         kong_rando.checked = False
