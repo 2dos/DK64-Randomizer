@@ -952,12 +952,6 @@ def Generate_Spoiler(spoiler):
     InitKasplatMap(LogicVariables)
     # Handle Kong Rando + Level Rando combination separately since it is more restricted
     if spoiler.settings.kongs_for_progression:
-        # Force move rando on if not starting will all moves
-        if not spoiler.settings.unlock_all_moves:
-            spoiler.settings.shuffle_items = "moves"
-        # Force boss rando on
-        spoiler.settings.boss_location_rando = True
-        spoiler.settings.boss_kong_rando = True
         # Handle Level Order if randomized
         if spoiler.settings.shuffle_loading_zones == "levels":
             ShuffleExits.ShuffleLevelOrderWithRestrictions(spoiler.settings)

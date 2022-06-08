@@ -183,12 +183,6 @@ CannonForceHook:
 	NOP
 
 loadExtraHooks:
-	LUI t3, hi(NinWarpHook)
-	LW t3, lo(NinWarpHook) (t3)
-	LUI t4, 0x8071
-	SW t3, 0x32BC (t4) // Store Hook
-	SW r0, 0x32C0 (t4) // Store NOP
-
 	LUI t3, hi(InstanceScriptHook)
 	LW t3, lo(InstanceScriptHook) (t3)
 	LUI t4, 0x8064
@@ -416,6 +410,19 @@ loadExtraHooks:
 	LUI t4, 0x8063
 	SW t3, 0x24C4 (t4) // Store Hook
 	SW r0, 0x24C8 (t4) // Store NOP
+
+	LUI t3, hi(QoLOn)
+	LBU t3, lo(QoLOn) (t3)
+	BEQZ t3, loadExtraHooks_3
+	NOP
+
+	LUI t3, hi(NinWarpHook)
+	LW t3, lo(NinWarpHook) (t3)
+	LUI t4, 0x8071
+	SW t3, 0x32BC (t4) // Store Hook
+	SW r0, 0x32C0 (t4) // Store NOP
+
+	loadExtraHooks_3:
 
 	JR ra
 	NOP
