@@ -16,7 +16,6 @@ static const short ftt_flags[] = {
     370, // Chunky
     372, // Snide's
     376, // Wrinkly
-    382, // B Locker
     775, // Funky
     776, // Snide's
     777, // Cranky
@@ -60,6 +59,7 @@ static const short default_ftt_flags[] = {
     109, // Hatch opened in Factory
     0xA1, // Peanut Gate Opened in Galleon
     0, // First Switch in Japes
+    382, // B Locker
 };
 
 void qualityOfLife_shorteners(void) {
