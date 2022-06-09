@@ -164,6 +164,12 @@ void earlyFrame(void) {
 			}
 		}
 	}
+	// Cutscene DK Code
+	if ((CurrentMap == 0x28) || (CurrentMap == 0x4C)) {
+		*(int*)(0x8074C3B0) = 0x806C1640;
+	} else {
+		*(int*)(0x8074C3B0) = (int)&cutsceneDKCode;
+	}
 	write_kutoutorder();
 	remove_blockers();
 	determine_krool_order();

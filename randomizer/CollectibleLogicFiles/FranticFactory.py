@@ -46,8 +46,8 @@ LogicRegions = {
         Collectible(Collectibles.bunch, Kongs.lanky, lambda l: True, None, 1),  # W2
         Collectible(Collectibles.balloon, Kongs.lanky, lambda l: l.trombone and l.grape, None, 1),  # Piano game
         Collectible(Collectibles.banana, Kongs.tiny, lambda l: True, None, 10),  # To car race
-        Collectible(Collectibles.banana, Kongs.chunky, lambda l: l.triangle, None, 10),  # Toy Monster room
-        Collectible(Collectibles.balloon, Kongs.chunky, lambda l: l.triangle and l.pineapple, None, 1),  # Toy Monster room
+        Collectible(Collectibles.banana, Kongs.chunky, lambda l: l.punch and l.triangle, None, 10),  # Toy Monster room
+        Collectible(Collectibles.balloon, Kongs.chunky, lambda l: l.punch and l.triangle and l.pineapple, None, 1),  # Toy Monster room
 
         Collectible(Collectibles.coin, Kongs.donkey, lambda l: True, None, 3),  # By lever
         Collectible(Collectibles.coin, Kongs.diddy, lambda l: True, None, 5),  # Around vent to Chunky room
