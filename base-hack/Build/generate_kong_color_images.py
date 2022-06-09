@@ -6,8 +6,59 @@ color_palettes = [
         "zones": [
             {
                 "zone": "base",
-                "colors": ["#363430","#FFFFFF"],
+                "image": 3724,
+                "colors": ["#363430"],
+                "fill_type": "radial"
+            }
+        ]
+    },
+    {
+        "kong": "diddy",
+        "zones": [
+            {
+                "zone": "cap_shirt",
+                "image": 3686,
+                "colors": ["#363430"],
+                "fill_type": "radial"
+            }
+        ]
+    },
+    {
+        "kong": "lanky",
+        "zones": [
+            {
+                "zone": "overalls",
+                "image": 3689,
+                "colors": ["#363430"],
+                "fill_type": "radial",
+            }
+        ]
+    },
+    {
+        "kong": "tiny",
+        "zones": [
+            {
+                "zone": "overalls",
+                "image": 3689,
+                "colors": ["#363430"],
+                "fill_type": "radial",
+            }
+        ]
+    },
+    {
+        "kong": "chunky",
+        "zones": [
+            {
+                "zone": "shirt_back",
+                "image": 3769,
+                "colors": ["#FFFFFF","#000000"],
                 "fill_type": "checkered"
+            },
+            {
+                "zone": "shirt_front",
+                "image": 3687,
+                "colors": ["#363430"],
+                "fill_type": "radial"
             }
         ]
     }

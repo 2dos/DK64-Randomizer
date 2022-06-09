@@ -145,8 +145,6 @@ def randomize_enemies(spoiler: Spoiler):
         "ground_simple": [
             Enemies.BeaverBlue,
             Enemies.KlaptrapGreen,
-            Enemies.KlaptrapPurple,
-            Enemies.KlaptrapRed,
             Enemies.BeaverGold,
             Enemies.MushroomMan,
             Enemies.Ruler,
@@ -158,6 +156,7 @@ def randomize_enemies(spoiler: Spoiler):
             Enemies.FireballGlasses,
             Enemies.SpiderSmall,
             Enemies.Ghost,
+            Enemies.Guard,
         ],
         "air": [
             Enemies.ZingerCharger,
@@ -174,6 +173,8 @@ def randomize_enemies(spoiler: Spoiler):
             Enemies.Kosha,
             Enemies.Klobber,
             Enemies.Kaboom,
+            Enemies.KlaptrapPurple,
+            Enemies.KlaptrapRed,
         ],
         "water": [
             Enemies.Shuri,
