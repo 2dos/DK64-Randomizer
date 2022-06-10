@@ -101,11 +101,6 @@ void initHack(void) {
 			*(short*)(0x80681898) = 0x1000;
 			*(int*)(0x8068191C) = 0; // Remove Oh Banana
 		}
-		if (Rando.kong_recolor_enabled) {
-			*(char*)(0x8068A62F) = 0;
-			*(int*)(0x8068A450) = 0;
-			*(int*)(0x8068A458) = 0;
-		}
 		// for (int i = 0; i < 5; i++) {
 		// 	DKTVData[i] = Rando.dktv_data[i];
 		// }

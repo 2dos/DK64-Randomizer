@@ -181,41 +181,13 @@ file_dict = [
     },
     {"name": "WXY_Slash", "pointer_table_index": 14, "file_index": 12, "source_file": "assets/Non-Code/displays/wxys.png", "texture_format": "rgba5551"},
     {
-        "name": "Diddy Base Model",
-        "pointer_table_index": 5,
-        "file_index": 0,
-        "source_file": "diddy_base.bin",
-        "do_not_delete_source": True,
-    },
-    {
-        "name": "Diddy Instrument Model",
-        "pointer_table_index": 5,
-        "file_index": 1,
-        "source_file": "diddy_ins.bin",
-        "do_not_delete_source": True,
-    },
-    {
-        "name": "Lanky Base Model",
-        "pointer_table_index": 5,
-        "file_index": 5,
-        "source_file": "lanky_base.bin",
-        "do_not_delete_source": True,
-    },
-    {
-        "name": "Lanky Instrument Model",
-        "pointer_table_index": 5,
-        "file_index": 6,
-        "source_file": "lanky_ins.bin",
-        "do_not_delete_source": True,
-    },
-    {
         "name": "DK Tie Palette",
         "pointer_table_index": 25,
         "file_index": 6013,
         "source_file": "assets/Non-Code/hash/dk_tie_palette.png",
         "do_not_extract": True,
         "texture_format": "rgba5551",
-        "target_compressed_size": 32*32*2,
+        "target_compressed_size": 32 * 32 * 2,
     },
     {
         "name": "Tiny Overalls Palette",
@@ -224,7 +196,7 @@ file_dict = [
         "source_file": "assets/Non-Code/hash/tiny_palette.png",
         "do_not_extract": True,
         "texture_format": "rgba5551",
-        "target_compressed_size": 32*32*2,
+        "target_compressed_size": 32 * 32 * 2,
     },
 ]
 
@@ -358,6 +330,16 @@ for x in range(10):
             "texture_format": "rgba5551",
         }
     )
+for x in range(4761, 4768):
+    file_dict.append(
+        {
+            "name": f"Portal Ripple Texture ({x})",
+            "pointer_table_index": 25,
+            "file_index": x,
+            "source_file": "assets/Non-Code/displays/empty44.png",
+            "texture_format": "rgba5551",
+        }
+    )
 barrel_faces = ["Dk", "Diddy", "Lanky", "Tiny", "Chunky"]
 barrel_offsets = [4817, 4815, 4819, 4769, 4747]
 for x in range(5):
@@ -372,15 +354,30 @@ for x in range(5):
             }
         )
 
-kong_palettes = [0xE8C,0xE66,0xE69,0xEB9,0xE67]
+kong_palettes = [0xE8C, 0xE66, 0xE69, 0xEB9, 0xE67]
 for x in kong_palettes:
+    x_s = 32 * 32 * 2
+    if x == 0xEB9:  # Chunky Shirt Back
+        x_s = 43 * 32 * 2
+    file_dict.append({"name": f"Palette Expansion ({hex(x)})", "pointer_table_index": 25, "file_index": x, "source_file": f"palette_{x}.bin", "target_compressed_size": x_s})
+
+model_changes = [
+    {"model_index": 0, "model_file": "diddy_base.bin"},
+    {"model_index": 1, "model_file": "diddy_ins.bin"},
+    {"model_index": 5, "model_file": "lanky_base.bin"},
+    {"model_index": 6, "model_file": "lanky_ins.bin"},
+    {"model_index": 3, "model_file": "dk_base.bin"},
+    {"model_index": 8, "model_file": "tiny_base.bin"},
+    {"model_index": 9, "model_file": "tiny_ins.bin"},
+]
+for x in model_changes:
     file_dict.append(
         {
-            "name": f"Palette Expansion ({hex(x)})",
-            "pointer_table_index": 25,
-            "file_index": x,
-            "source_file": f"palette_{x}.bin",
-            "target_compressed_size": 32*32*2
+            "name": f"Model {x['model_index']}",
+            "pointer_table_index": 5,
+            "file_index": x["model_index"],
+            "source_file": x["model_file"],
+            "do_not_delete_source": True,
         }
     )
 
@@ -763,7 +760,7 @@ with open(newROMName, "r+b") as fh:
         if os.path.exists(pth):
             os.remove(pth)
     other_remove = []
-    displays = ["dk_face", "diddy_face", "lanky_face", "tiny_face", "chunky_face", "none", "shared", "soldout32", "wxys", "yellow_qmark_0", "yellow_qmark_1"]
+    displays = ["dk_face", "diddy_face", "lanky_face", "tiny_face", "chunky_face", "none", "shared", "soldout32", "wxys", "yellow_qmark_0", "yellow_qmark_1", "empty44"]
     for disp in displays:
         for ext in [".png", ".rgba32"]:
             other_remove.append(f"displays/{disp}{ext}")
@@ -780,6 +777,9 @@ with open(newROMName, "r+b") as fh:
             os.remove(pth)
     if os.path.exists("assets/Non-Code/Gong/hint_door.bin"):
         os.remove("assets/Non-Code/Gong/hint_door.bin")
+    for x in model_changes:
+        if os.path.exists(x["model_file"]):
+            os.remove(x["model_file"])
     # pth = "assets/Non-Code/displays/soldout_bismuth.rgba32"
     # if os.path.exists(pth):
     #     os.remove(pth)

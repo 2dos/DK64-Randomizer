@@ -98,6 +98,8 @@ im = im.resize(kong_res)
 im.save(f"{disp_dir}shared.png")
 im = Image.new(mode="RGBA", size=kong_res)
 im.save(f"{disp_dir}none.png")
+im = Image.new(mode="RGBA", size=(44, 44))
+im.save(f"{disp_dir}empty44.png")
 
 #
 im = Image.open(f"{disp_dir}soldout_bismuth.png")

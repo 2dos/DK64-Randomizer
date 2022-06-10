@@ -140,7 +140,7 @@ images = [
         "h": 32,
         "resize": False,
         "flip": False,
-    }
+    },
 ]
 
 kong_tex = ["chunky", "tiny", "lanky", "diddy", "dk"]

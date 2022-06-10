@@ -55,6 +55,14 @@ lanky_fix4 = """
     FC 12 18 24 FF 33 FF FF
 """
 
+dk_adjustment = """
+    17 7D
+"""
+
+tiny_adjustment = """
+    17 7E
+"""
+
 modifications = [
     {"model_index": 0, "model_file": "diddy_base.bin", "wipe": [[0x47D0, 0x4878]], "add": [diddy_fix]},
     {"model_index": 1, "model_file": "diddy_ins.bin", "wipe": [[0x4598, 0x4620]], "add": [diddy_fix]},
@@ -65,6 +73,9 @@ modifications = [
         "wipe": [[0x5BE8, 0x5BF0], [0x5EA0, 0x5EA8], [0x5940, 0x5980], [0x5FE8, 0x5FF0], [0x6070, 0x6078], [0x6058, 0x6060]],
         "add": [lanky_fix2, lanky_fix2, lanky_fix3, lanky_fix2, lanky_fix2, lanky_fix4],
     },
+    {"model_index": 3, "model_file": "dk_base.bin", "wipe": [[0x61A2, 0x61A4]], "add": [dk_adjustment]},
+    {"model_index": 8, "model_file": "tiny_base.bin", "wipe": [[0x63D4, 0x63D6]], "add": [tiny_adjustment]},
+    {"model_index": 9, "model_file": "tiny_ins.bin", "wipe": [[0x679C, 0x679E]], "add": [tiny_adjustment]},
 ]
 
 with open(rom_file, "rb") as rom:
