@@ -207,7 +207,25 @@ file_dict = [
         "file_index": 6,
         "source_file": "lanky_ins.bin",
         "do_not_delete_source": True,
-    }
+    },
+    {
+        "name": "DK Tie Palette",
+        "pointer_table_index": 25,
+        "file_index": 6013,
+        "source_file": "assets/Non-Code/hash/dk_tie_palette.png",
+        "do_not_extract": True,
+        "texture_format": "rgba5551",
+        "target_compressed_size": 32*32*2,
+    },
+    {
+        "name": "Tiny Overalls Palette",
+        "pointer_table_index": 25,
+        "file_index": 6014,
+        "source_file": "assets/Non-Code/hash/tiny_palette.png",
+        "do_not_extract": True,
+        "texture_format": "rgba5551",
+        "target_compressed_size": 32*32*2,
+    },
 ]
 
 map_replacements = []
@@ -353,6 +371,19 @@ for x in range(5):
                 "texture_format": "rgba5551",
             }
         )
+
+kong_palettes = [0xE8C,0xE66,0xE69,0xEB9,0xE67]
+for x in kong_palettes:
+    file_dict.append(
+        {
+            "name": f"Palette Expansion ({hex(x)})",
+            "pointer_table_index": 25,
+            "file_index": x,
+            "source_file": f"palette_{x}.bin",
+            "target_compressed_size": 32*32*2
+        }
+    )
+
 portal_image_order = [
     ["SE", "NE", "SW", "NW"],
     ["NW", "SW", "NE", "SE"],
@@ -545,6 +576,17 @@ with open(newROMName, "r+b") as fh:
             subprocess.Popen(["build\\flips.exe", "--apply", x["bps_file"], x["source_file"], x["source_file"]]).wait()
             # shutil.copyfile(x["source_file"],x["source_file"].replace(".bin",".raw"))
 
+        if "texture_format" in x:
+            if x["texture_format"] in ["rgba5551", "i4", "ia4", "i8", "ia8"]:
+                result = subprocess.check_output(["./build/n64tex.exe", x["texture_format"], x["source_file"]])
+                if "target_compressed_size" in x:
+                    x["source_file"] = x["source_file"].replace(".png", f".{x['texture_format']}")
+            elif x["texture_format"] == "rgba32":
+                convertToRGBA32(x["source_file"])
+                x["source_file"] = x["source_file"].replace(".png", ".rgba32")
+            else:
+                print(" - ERROR: Unsupported texture format " + x["texture_format"])
+
         if "target_compressed_size" in x:
             x["do_not_compress"] = True
             if x["source_file"][:5] == "setup":
@@ -576,15 +618,6 @@ with open(newROMName, "r+b") as fh:
             with open(x["source_file"], "wb") as fg:
                 fg.write(compress)
             x["output_file"] = x["source_file"]
-
-        if "texture_format" in x:
-            if x["texture_format"] in ["rgba5551", "i4", "ia4", "i8", "ia8"]:
-                result = subprocess.check_output(["./build/n64tex.exe", x["texture_format"], x["source_file"]])
-            elif x["texture_format"] == "rgba32":
-                convertToRGBA32(x["source_file"])
-                x["source_file"] = x["source_file"].replace(".png", ".rgba32")
-            else:
-                print(" - ERROR: Unsupported texture format " + x["texture_format"])
 
         if "use_external_gzip" in x and x["use_external_gzip"]:
             if os.path.exists(x["source_file"]):
