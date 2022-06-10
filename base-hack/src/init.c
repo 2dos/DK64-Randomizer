@@ -203,6 +203,8 @@ void initHack(void) {
 		*(int*)(0x8070E84C) = 0;
 		*(int*)(0x8070E874) = 0;
 		*(int*)(0x8070E888) = 0;
+		// Guard Animation Fix
+		*(short*)(0x806AF8C6) = 0x2C1;
 		LoadedHooks = 1;
 	}
 }

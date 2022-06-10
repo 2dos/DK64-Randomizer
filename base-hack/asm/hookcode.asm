@@ -749,5 +749,33 @@ START_HOOK:
 			NOP
 			J 		0x8067B6CC
 			NOP
+
+	GuardAutoclear:
+		// Check Overlay
+		LUI 		a1, 0x8080
+		LW 			a1, 0xBB64 (a1)
+		ANDI 		a0, a1, 0x4000
+		BEQZ 		a0, GuardAutoclear_NotSnoop
+		NOP
+		SRA 		a1, a1, 16
+		ANDI 		a0, a1, 0x10
+		BNEZ 		a0, GuardAutoclear_IsSnoop
+		NOP
+
+		GuardAutoclear_NotSnoop:
+			JAL 	0x805FF1B0 // Void Warp
+			NOP
+			B 		GuardAutoclear_Finish
+			NOP
+
+		GuardAutoclear_IsSnoop:
+			ADDIU 	a0, r0, 0x43
+			JAL 	0x806EB0C0
+			LW 		a1, 0x0 (s0)
+
+		GuardAutoclear_Finish:
+			J 		0x806AE564
+			NOP
+
 .align 0x10
 END_HOOK:

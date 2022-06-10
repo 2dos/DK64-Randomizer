@@ -181,6 +181,9 @@ DKCollectableFixHook:
 CannonForceHook:
 	J 	CannonForceCode
 	NOP
+GuardAutoclearHook:
+	J 	GuardAutoclear
+	NOP
 
 loadExtraHooks:
 	LUI t3, hi(InstanceScriptHook)
@@ -423,6 +426,11 @@ loadExtraHooks:
 	SW r0, 0x32C0 (t4) // Store NOP
 
 	loadExtraHooks_3:
+	LUI t3, hi(GuardAutoclearHook)
+	LW t3, lo(GuardAutoclearHook) (t3)
+	LUI t4, 0x806B
+	SW t3, 0xE55C (t4) // Store Hook
+	SW r0, 0xE560 (t4) // Store NOP
 
 	JR ra
 	NOP
