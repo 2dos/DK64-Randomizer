@@ -146,6 +146,10 @@ void earlyFrame(void) {
 				setFlag(0x51 + i,0,2); // Clear Toes
 			}
 		}
+		int boat_speed = 5000 << (CurrentMap == 0x6F);
+		for (int i = 0; i < 2; i++) {
+			BoatSpeeds[i] = boat_speed;
+		}
 	}
 	if (CurrentMap == 1) {
 		if ((CutsceneActive) && (CutsceneIndex == 2)) {

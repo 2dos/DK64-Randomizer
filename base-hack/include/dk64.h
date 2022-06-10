@@ -299,6 +299,7 @@ extern charspawner_flagstruct charspawnerflags[0x1F];
 extern GBDictItem GBDictionary[113];
 extern actorData* CurrentActorPointer_0;
 extern short MusicTrackChannels[12];
+extern float BoatSpeeds[2];
 
 //hack data
 extern int TestVariable;
