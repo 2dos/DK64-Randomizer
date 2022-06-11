@@ -172,6 +172,11 @@ void initHack(void) {
 			*(int*)(0x806BDC24) = 0x0C17FCDE; // Change takeoff warp func
 			*(short*)(0x806BDC8C) = 0x1000; // Apply no cutscene to all keys
 			*(short*)(0x806BDC3C) = 0x1000; // Apply shorter timer to all keys
+			// Fast Camera Photo
+			*(short*)(0x80699454) = 0x5000; // Fast tick/no mega-slowdown on Biz
+			int picture_timer = 0x14;
+			*(short*)(0x806992B6) = picture_timer; // No wait for camera film development
+			*(short*)(0x8069932A) = picture_timer;
 		}
 		// Object Instance Scripts
 		*(int*)(0x80748064) = (int)&change_object_scripts;

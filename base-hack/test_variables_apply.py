@@ -8,7 +8,7 @@ set_variables = {
     "unlock_kongs": 0x1F,
     "unlock_moves": 1,
     "fast_start_beginning": 1,
-    "camera_unlocked": 0,
+    "camera_unlocked": 1,
     "tag_anywhere": 1,
     "fast_start_helm": 0,
     "crown_door_open": 0,
