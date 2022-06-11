@@ -199,6 +199,11 @@ void initHack(void) {
 		*(short*)(0x806A7882) = 385; // DK Balloon
 		// Fix Boss Doors if DK not free
 		*(int*)(0x80649358) = 0; // NOP
+		// Fix Pause Menu
+		*(int*)(0x806ABFF8) = 0; // NOP (Write of first slot to 1)
+		*(short*)(0x806AC002) = 0x530;
+		*(short*)(0x806AC006) = 0x5B0;
+		*(unsigned char*)(0x8075054D) = 0xD7; // Change DK Q Mark to #FFD700
 		// Textbox Cancel
 		*(int*)(0x8070E84C) = 0;
 		*(int*)(0x8070E874) = 0;
