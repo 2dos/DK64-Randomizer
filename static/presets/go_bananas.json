@@ -7,7 +7,7 @@
     "krool_phase_order_rando":true,
     "boss_kong_rando":true,
     "boss_location_rando":true,
-    "random_medal_requirement":false,
+    "random_medal_requirement":true,
     "bananaport_rando":false,
     "kasplat_rando":true,
     "kong_rando":true,
