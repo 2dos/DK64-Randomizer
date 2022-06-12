@@ -39,7 +39,15 @@ void openCrownDoor(void) {
 }
 
 void openCoinDoor(void) {
-	if (Rando.coin_door_open) {
+	if (Rando.coin_door_open == 1) { // Always Open
 		setPermFlag(0x303);
+	} else if (Rando.coin_door_open == 2) { // Only requires RW Coin
+		if (checkFlag(132,0)) { // Has Nintendo Coin
+			setPermFlag(0x303);
+		}
+	} else if (Rando.coin_door_open == 3) { // Only requires Nin Coin
+		if (checkFlag(379,0)) { // Has Rareware Coin
+			setPermFlag(0x303);
+		}
 	}
 }

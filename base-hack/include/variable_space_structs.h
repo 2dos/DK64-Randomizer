@@ -11,7 +11,7 @@ typedef struct varspace {
 	/* 0x030 */ char tag_anywhere; // 0 = Tag Anywhere buttons not enabled. 1 = Enabled
 	/* 0x031 */ char fast_start_helm; // 0 = "Fast Start for Helm" setting not applied. 1 = Applied
 	/* 0x032 */ char crown_door_open; // 0 = Crown Door not opened by default. 1 = Opened by default
-	/* 0x033 */ char coin_door_open; // 0 = Coin Door not opened by default. 1 = Opened by default
+	/* 0x033 */ char coin_door_open; // 0 = Coin Door not opened by default. 1 = Opened by default. 2 = Only requires RW Coin. 3 = Only requires Nin Coin.
 	/* 0x034 */ char quality_of_life; // 0 = Quality of life features not applied. 1 = Applied
 	/* 0x035 */ char price_rando_on; // 0 = Price Randomizer off, 1 = On
 	/* 0x036 */ unsigned char special_move_prices[5][3]; // Array of an array of prices [[1,2,3],[1,2,3],[1,2,3],[1,2,3],[1,2,3]]. Each item of the parent array is for a kong, each item of the sub arrays is the price of the moves in order of their vanilla purchase (eg. DK: Baboon Blast > Strong Kong > Gorilla Grab)
