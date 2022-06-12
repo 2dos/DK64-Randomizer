@@ -634,6 +634,8 @@ START_HOOK:
 		SW 			r0, 0x14 (sp)
 		JAL 		fixMusicRando
 		NOP
+		JAL 		quickInit
+		NOP
 		J 			0x805FBDF4
 		NOP
 

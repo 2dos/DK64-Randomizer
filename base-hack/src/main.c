@@ -30,7 +30,7 @@ void cFuncLoop(void) {
 	tagAnywhere(past_crystals);
 	past_crystals = crystal_count;
 	islesSpawn();
-	initHack();
+	initHack(0);
 	//fixCastleAutowalk();
 	level_order_rando_funcs();
 	qualityOfLife_fixes();

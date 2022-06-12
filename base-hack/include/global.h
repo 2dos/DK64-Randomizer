@@ -7,9 +7,10 @@ extern void* findActorWithType(int search_actor_type);
 extern int isRDRAM(void* address);
 extern void customHideHUD(void);
 extern void setWarpPosition(float x, float y, float z);
-extern void initHack(void);
+extern void initHack(int source);
 extern void callParentMapFilter(void);
 extern void shiftBrokenJapesPortal(void);
+extern void quickInit(void);
 
 extern void level_order_rando_funcs(void);
 extern void unlockKongs(void);
