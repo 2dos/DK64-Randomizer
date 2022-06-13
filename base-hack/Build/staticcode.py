@@ -28,3 +28,19 @@ def patchStaticCode(filename):
         # Lag Hook
         fh.seek(0x5374)
         fh.write(patch_lag_hook)
+        # Nintendo Logo
+        # Width
+        dimensions = [256,140]
+        offset = 640 - (2 * dimensions[0])
+        fh.seek(0x5BA) # RDRAM 5FB8BA
+        fh.write(dimensions[0].to_bytes(2,"big"))
+        # Height
+        fh.seek(0x5FA) # RDRAM 5FB8FA
+        fh.write(dimensions[1].to_bytes(2,"big"))
+        # Pixels per line?
+        fh.seek(0x602) # RDRAM 5FB902
+        fh.write(offset.to_bytes(2,"big"))
+        # Screen Position
+        fh.seek(0x5AA) # RDRAM 5FB8AA
+        fh.write((0x7840).to_bytes(2,"big"))
+

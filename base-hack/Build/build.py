@@ -59,11 +59,18 @@ file_dict = [
         "source_file": "assets/Non-Code/Dolby/DolbyThin.png",
         "texture_format": "ia4",
     },
+    # {
+    #     "name": "Thumb Image",
+    #     "pointer_table_index": 14,
+    #     "file_index": 94,
+    #     "source_file": "assets/Non-Code/Nintendo Logo/Nintendo.png",
+    #     "texture_format": "rgba5551",
+    # },
     {
         "name": "Thumb Image",
         "pointer_table_index": 14,
         "file_index": 94,
-        "source_file": "assets/Non-Code/Nintendo Logo/Nintendo.png",
+        "source_file": "assets/Non-Code/Nintendo Logo/Nintendo4.png",
         "texture_format": "rgba5551",
     },
     {
