@@ -247,6 +247,7 @@ def disable_colors(evt):
                 color.removeAttribute("disabled")
         except AttributeError:
             pass
+    hide_rgb(None)
 
 
 @bind("click", "enable_tag_anywhere")
@@ -299,7 +300,7 @@ def enable_kong_rando(evt):
 
 @bind("click", "krool_random")
 def disable_krool_phases(evt):
-    """Disable music options when Randomize All is selected."""
+    """Disable K Rool options when Randomize All is selected."""
     disabled = False
     krool = js.document.getElementById("krool_phase_count")
     if js.document.getElementById("krool_random").checked:
@@ -391,3 +392,24 @@ def preset_select_changed(event):
     max_randomized_blocker(None)
     max_randomized_troff(None)
     disable_barrel_rando(None)
+
+
+@bind("change", "dk_colors")
+@bind("change", "diddy_colors")
+@bind("change", "lanky_colors")
+@bind("change", "tiny_colors")
+@bind("change", "chunky_colors")
+def hide_rgb(event):
+    """Show RGB Selector if Custom Color is selected."""
+    for i in ["dk", "diddy", "lanky", "tiny", "chunky"]:
+        hidden = True
+        color = js.document.getElementById(f"{i}_custom")
+        if js.document.getElementById(f"{i}_colors").value == "custom":
+            hidden = False
+        try:
+            if hidden or js.document.getElementById("random_colors").checked:
+                color.style.display = "none"
+            else:
+                color.style = ""
+        except AttributeError:
+            pass
