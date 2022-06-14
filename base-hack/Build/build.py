@@ -369,10 +369,10 @@ for x in kong_palettes:
     file_dict.append({"name": f"Palette Expansion ({hex(x)})", "pointer_table_index": 25, "file_index": x, "source_file": f"palette_{x}.bin", "target_compressed_size": x_s})
 
 model_changes = [
-    {"model_index": 0, "model_file": "diddy_base.bin"},
-    {"model_index": 1, "model_file": "diddy_ins.bin"},
-    {"model_index": 5, "model_file": "lanky_base.bin"},
-    {"model_index": 6, "model_file": "lanky_ins.bin"},
+    # {"model_index": 0, "model_file": "diddy_base.bin"},
+    # {"model_index": 1, "model_file": "diddy_ins.bin"},
+    # {"model_index": 5, "model_file": "lanky_base.bin"},
+    # {"model_index": 6, "model_file": "lanky_ins.bin"},
     {"model_index": 3, "model_file": "dk_base.bin"},
     {"model_index": 8, "model_file": "tiny_base.bin"},
     {"model_index": 9, "model_file": "tiny_ins.bin"},
