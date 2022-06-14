@@ -106,8 +106,8 @@
                             </option>
                         </select>
                         <div id="dk_custom">
-                            <div class="input-group mb-3 dkColorPicker" data-color="#000000">
-                                <input type="text" class="form-control" id="dk_custom_color" value="#000000">
+                            <div class="input-group mb-3 dkColorPicker">
+                                <input type="text" class="form-control" name="dk_custom_color" id="dk_custom_color">
                                 <button class="btn btn-default rgb-btn" type="button">&nbsp;</button>
                             </div>
                         </div>
@@ -132,8 +132,8 @@
                             </option>
                         </select>
                         <div id="diddy_custom">
-                            <div class="input-group mb-3 diddyColorPicker" data-color="#000000">
-                                <input type="text" class="form-control" id="diddy_custom_color" value="#000000">
+                            <div class="input-group mb-3 diddyColorPicker">
+                                <input type="text" class="form-control" name="diddy_custom_color" id="diddy_custom_color">
                                 <button class="btn btn-default rgb-btn" type="button">&nbsp;</button>
                             </div>
                         </div>
@@ -160,8 +160,8 @@
                             </option>
                         </select>
                         <div id="lanky_custom">
-                            <div class="input-group mb-3 lankyColorPicker" data-color="#000000">
-                                <input type="text" class="form-control" id="lanky_custom_color" value="#000000">
+                            <div class="input-group mb-3 lankyColorPicker">
+                                <input type="text" class="form-control" name="lanky_custom_color" id="lanky_custom_color">
                                 <button class="btn btn-default rgb-btn" type="button">&nbsp;</button>
                             </div>
                         </div>
@@ -186,8 +186,8 @@
                             </option>
                         </select>
                         <div id="tiny_custom">
-                            <div class="input-group mb-3 tinyColorPicker" data-color="#000000">
-                                <input type="text" class="form-control" id="tiny_custom_color" value="#000000">
+                            <div class="input-group mb-3 tinyColorPicker">
+                                <input type="text" class="form-control" name="tiny_custom_color" id="tiny_custom_color">
                                 <button class="btn btn-default rgb-btn" type="button">&nbsp;</button>
                             </div>
                         </div>
@@ -214,8 +214,8 @@
                             </option>
                         </select>
                         <div id="chunky_custom">
-                            <div class="input-group mb-3 chunkyColorPicker" data-color="#000000">
-                                <input type="text" class="form-control" id="chunky_custom_color" value="#000000">
+                            <div class="input-group mb-3 chunkyColorPicker">
+                                <input type="text" class="form-control" name="chunky_custom_color" id="chunky_custom_color" default="#000000">
                                 <button class="btn btn-default rgb-btn" type="button">&nbsp;</button>
                             </div>
                         </div>
@@ -229,29 +229,49 @@
    $(function(){
             $('.dkColorPicker').izoColorPicker({
                 myColors: '',
-                onApply: (color)=>{ 
-                    console.log('Selected color: '+color) 
+                onApply: (color)=>{
+                    $('#dk_custom_color').trigger("change")
                 }
             })
             $('.diddyColorPicker').izoColorPicker({
+                myColors: '',
                 onApply: (color)=>{
-                    console.log('Selected color: '+color) 
+                    $('#diddy_custom_color').trigger("change")
                 }
             })
             $('.lankyColorPicker').izoColorPicker({
+                myColors: '',
                 onApply: (color)=>{
-                    console.log('Selected color: '+color) 
+                    $('#lanky_custom_color').trigger("change")
                 }
             })
             $('.tinyColorPicker').izoColorPicker({
+                myColors: '',
                 onApply: (color)=>{
-                    console.log('Selected color: '+color) 
+                    $('#tiny_custom_color').trigger("change")
                 }
             })
             $('.chunkyColorPicker').izoColorPicker({
+                myColors: '',
                 onApply: (color)=>{
-                    console.log('Selected color: '+color) 
+                    $('#chunky_custom_color').trigger("change")
                 }
             }) 
+    })
+
+    $('.nav-tabs').click(function(){
+        var settings = (document.cookie).split('saved_settings=')
+        var object = JSON.parse(settings[1])
+        if (object.hasOwnProperty('dk_custom_color')) {
+            $('.dkColorPicker').attr('style', 'background-color:' + object.dk_custom_color + ';')
+        } if (object.hasOwnProperty('diddy_custom_color')) {
+            $('.diddyColorPicker').attr('style', 'background-color:' + object.diddy_custom_color + ';')
+        } if (object.hasOwnProperty('lanky_custom_color')) {
+            $('.lankyColorPicker').attr('style', 'background-color:' + object.lanky_custom_color + ';')
+        } if (object.hasOwnProperty('tiny_custom_color')) {
+            $('.tinyColorPicker').attr('style', 'background-color:' + object.tiny_custom_color + ';')
+        } if (object.hasOwnProperty('chunky_custom_color')) {
+            $('.chunkyColorPicker').attr('style', 'background-color:' + object.chunky_custom_color + ';')
+        }
     })
 </script>
