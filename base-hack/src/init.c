@@ -223,5 +223,6 @@ void quickInit(void) {
 		initiateTransition(0x50,0);
 		Gamemode = 5;
 		Mode = 5;
+		StorySkip = 1;
 	}
 }
