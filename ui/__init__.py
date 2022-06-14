@@ -12,7 +12,7 @@ from ui.rando_options import (
     max_randomized_troff,
     disable_barrel_rando,
     disable_boss_rando,
-    hide_rgb
+    hide_rgb,
 )
 
 disable_input(None)

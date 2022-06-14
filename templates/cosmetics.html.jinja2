@@ -107,7 +107,7 @@
                         </select>
                         <div id="dk_custom">
                             <div class="input-group mb-3 dkColorPicker" data-color="#000000">
-                                <input type="text" class="form-control" value="#000000">
+                                <input type="text" class="form-control" id="dk_custom_color" value="#000000">
                                 <button class="btn btn-default rgb-btn" type="button">&nbsp;</button>
                             </div>
                         </div>
@@ -133,7 +133,7 @@
                         </select>
                         <div id="diddy_custom">
                             <div class="input-group mb-3 diddyColorPicker" data-color="#000000">
-                                <input type="text" class="form-control" value="#000000">
+                                <input type="text" class="form-control" id="diddy_custom_color" value="#000000">
                                 <button class="btn btn-default rgb-btn" type="button">&nbsp;</button>
                             </div>
                         </div>
@@ -161,7 +161,7 @@
                         </select>
                         <div id="lanky_custom">
                             <div class="input-group mb-3 lankyColorPicker" data-color="#000000">
-                                <input type="text" class="form-control" value="#000000">
+                                <input type="text" class="form-control" id="lanky_custom_color" value="#000000">
                                 <button class="btn btn-default rgb-btn" type="button">&nbsp;</button>
                             </div>
                         </div>
@@ -187,7 +187,7 @@
                         </select>
                         <div id="tiny_custom">
                             <div class="input-group mb-3 tinyColorPicker" data-color="#000000">
-                                <input type="text" class="form-control" value="#000000">
+                                <input type="text" class="form-control" id="tiny_custom_color" value="#000000">
                                 <button class="btn btn-default rgb-btn" type="button">&nbsp;</button>
                             </div>
                         </div>
@@ -215,7 +215,7 @@
                         </select>
                         <div id="chunky_custom">
                             <div class="input-group mb-3 chunkyColorPicker" data-color="#000000">
-                                <input type="text" class="form-control" value="#000000">
+                                <input type="text" class="form-control" id="chunky_custom_color" value="#000000">
                                 <button class="btn btn-default rgb-btn" type="button">&nbsp;</button>
                             </div>
                         </div>
@@ -230,31 +230,26 @@
             $('.dkColorPicker').izoColorPicker({
                 myColors: '',
                 onApply: (color)=>{ 
-                    $('#dk_colors option[value="custom"]').prop('selected', 'selected')
                     console.log('Selected color: '+color) 
                 }
             })
             $('.diddyColorPicker').izoColorPicker({
-                onApply: (color)=>{ 
-                    $('#diddy_colors option[value="custom"]').prop('selected', 'selected')
+                onApply: (color)=>{
                     console.log('Selected color: '+color) 
                 }
             })
             $('.lankyColorPicker').izoColorPicker({
-                onApply: (color)=>{ 
-                    $('#lanky_colors option[value="custom"]').prop('selected', 'selected')
+                onApply: (color)=>{
                     console.log('Selected color: '+color) 
                 }
             })
             $('.tinyColorPicker').izoColorPicker({
-                onApply: (color)=>{ 
-                    $('#tiny_colors option[value="custom"]').prop('selected', 'selected')
+                onApply: (color)=>{
                     console.log('Selected color: '+color) 
                 }
             })
             $('.chunkyColorPicker').izoColorPicker({
-                onApply: (color)=>{ 
-                    $('#chunky_colors option[value="custom"]').prop('selected', 'selected')
+                onApply: (color)=>{
                     console.log('Selected color: '+color) 
                 }
             }) 
