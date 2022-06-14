@@ -212,3 +212,28 @@ div {
 .slider.slider-disabled .slider-selection {
   background: #758088;
 }
+
+#music_file {
+  margin-bottom: 20px;
+}
+
+select {
+  overflow-y: auto;
+}
+
+select option:checked {
+  background-color: #1985c9;
+  color: #e3e3e3;
+}
+
+select:disabled option:checked {
+  opacity: 50%;
+}
+
+.rgb-btn {
+  border: 1px solid #ced4da;
+}
+
+.color-selector {
+  min-height:200px
+}
