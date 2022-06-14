@@ -2,6 +2,7 @@
 import gzip
 import math
 from randomizer.Patching.Patcher import ROM
+import js
 
 
 def convertRGBAToBytearray(rgba_lst):
@@ -91,15 +92,6 @@ def convertColors(color_palettes):
                     ext = convertRGBAToBytearray([0, 0, 0, 0])
                     bytes_array.extend(ext)
 
-            with open(f"{palette['kong']}{zone['zone']}.bin", "wb") as fh:
-                fh.write(bytearray(bytes_array))
-
-            with open("rom/dk64-randomizer-base-dev.z64", "r+b") as fh:
-                ptr_offset = 0x101C50
-                fh.seek(ptr_offset + (25 * 0x4))
-                texture_table = ptr_offset + int.from_bytes(fh.read(4), "big")
-                fh.seek(texture_table + (zone["image"] * 4))
-                write_point = ptr_offset + int.from_bytes(fh.read(4), "big")
-                fh.seek(write_point)
-                comp = gzip.compress(bytearray(bytes_array), compresslevel=9)
-                fh.write(comp)
+            write_point = js.pointer_addresses[25]["entries"][zone["image"]]["pointing_to"]
+            ROM().seek(write_point)
+            ROM().writeBytes(gzip.compress(bytearray(bytes_array), compresslevel=9))
