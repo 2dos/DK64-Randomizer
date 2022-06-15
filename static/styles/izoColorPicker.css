@@ -11,7 +11,7 @@
     position: absolute;
     width: 244px;   
     padding: 10px 10px;
-    background-color: #fff;
+    background-color: #1a1a1a;
     -webkit-background-clip: padding-box;
     background-clip: padding-box;
     border: 1px solid #ccc;
@@ -151,7 +151,7 @@
 
 .izoColorPicker-9c-item-current:before,
 .izoColorPicker-sc-item-current:before{
-    content: "✓";
+    content: "\2713";
     color: white;    
     font-size: 18px;
 }
@@ -172,7 +172,7 @@
 }
 
 .izoColorPicker-8c-item-current:before {
-    content: "✓";
+    content: "\2713";
     color: white;    
     font-size: 18px;
 }
