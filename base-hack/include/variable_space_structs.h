@@ -102,6 +102,7 @@ typedef struct varspace {
 	/* 0x147 */ char free_source_ttemple; // Kong who frees the kong in Tiny Temple
 	/* 0x148 */ char free_target_factory; // Kong you free in Factory
 	/* 0x149 */ char free_source_factory; // Kong who frees the kong in Factory
-	/* 0x14A */ char unk_14A[0x14C-0x14A];
+	/* 0x14A */ char version; // 0 = Live, 1 = Dev Site, 2 = Superuser
+	/* 0x14B */ char unk_14B[0x14C-0x14B];
 	/* 0x14C */ unsigned int dktv_data[5]; // Struct, Byte 0 = Demo index, 1 is unused, 2/3 is the demo length
 } varspace;

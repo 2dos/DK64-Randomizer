@@ -179,6 +179,10 @@ void initHack(int source) {
 				*(short*)(0x806992B6) = picture_timer; // No wait for camera film development
 				*(short*)(0x8069932A) = picture_timer;
 			}
+			if (Rando.version > 0) {
+				// Disable Graphical Debugger
+				*(int*)(0x8060EEE0) = 0x240E0000; // ADDIU $t6, $r0, 0
+			}
 			// Object Instance Scripts
 			*(int*)(0x80748064) = (int)&change_object_scripts;
 			*(int*)(0x806416BC) = 0; // Prevent parent map check in cross-map object change communications
