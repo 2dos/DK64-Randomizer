@@ -46,6 +46,7 @@ extern void write_kutoutorder(void);
 extern void remove_blockers(void);
 extern void disable_krool_health_refills(void);
 extern void pre_turn_keys(void);
+extern void auto_turn_keys(void);
 extern void handle_WTI(void);
 extern void no_enemy_drops(void);
 extern void cancelMoveSoftlock(void);

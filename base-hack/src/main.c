@@ -150,6 +150,12 @@ void earlyFrame(void) {
 		for (int i = 0; i < 2; i++) {
 			BoatSpeeds[i] = boat_speed;
 		}
+		PauseText = 0;
+		if (isLobby(CurrentMap)) {
+			PauseText = 1;
+		} else if ((CurrentMap == 1) || (CurrentMap == 5) || (CurrentMap == 0x19)) {
+			PauseText = 1;
+		}
 	}
 	if (CurrentMap == 1) {
 		if ((CutsceneActive) && (CutsceneIndex == 2)) {
@@ -179,6 +185,9 @@ void earlyFrame(void) {
 	determine_krool_order();
 	disable_krool_health_refills();
 	pre_turn_keys();
+	if (Rando.auto_keys) {
+		auto_turn_keys();
+	}
 	handle_WTI();
 	adjust_galleon_water();
 	if ((CurrentMap == MAIN_MENU) && (ObjectModel2Timer < 5)) {

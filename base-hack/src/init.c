@@ -209,10 +209,6 @@ void initHack(int source) {
 			*(short*)(0x806AC002) = 0x530;
 			*(short*)(0x806AC006) = 0x5B0;
 			*(unsigned char*)(0x8075054D) = 0xD7; // Change DK Q Mark to #FFD700
-			// Textbox Cancel
-			*(int*)(0x8070E84C) = 0;
-			*(int*)(0x8070E874) = 0;
-			*(int*)(0x8070E888) = 0;
 			// Guard Animation Fix
 			*(short*)(0x806AF8C6) = 0x2C1;
 			LoadedHooks = 1;

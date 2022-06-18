@@ -313,6 +313,7 @@
 .definelabel StoredSettings, 0x807ED5A0
 .definelabel ReplacementLobbyExitsArray, 0x807FFF3E // 0x12
 .definelabel StoredCounterTextures, 0x807FFF30
+.definelabel PauseText, 0x807FFFE6
 
 .definelabel CrankyMoves_New, 0x807FF400
 .definelabel CandyMoves_New, 0x807FF4D4

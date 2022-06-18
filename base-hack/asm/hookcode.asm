@@ -779,5 +779,22 @@ START_HOOK:
 			J 		0x806AE564
 			NOP
 
+	TextHandler:
+		LUI 	t9, hi(PauseText)
+		LBU 	t9, lo(PauseText) (t9)
+		BEQZ 	t9, TextHandler_NoPause
+		NOP
+
+		TextHandler_Pause:
+			J 	0x8070E8B8
+			NOP
+
+		TextHandler_NoPause:
+			LW 	t9, 0x60 (a1)
+			J 	0x8070E844
+			LUI at, 0xFDFF
+
+		
+
 .align 0x10
 END_HOOK:

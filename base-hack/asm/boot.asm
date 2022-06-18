@@ -184,6 +184,9 @@ CannonForceHook:
 GuardAutoclearHook:
 	J 	GuardAutoclear
 	NOP
+TextHandlerHook:
+	J 	TextHandler
+	NOP
 
 loadExtraHooks:
 	LUI t3, hi(InstanceScriptHook)
@@ -424,6 +427,12 @@ loadExtraHooks:
 	LUI t4, 0x8071
 	SW t3, 0x32BC (t4) // Store Hook
 	SW r0, 0x32C0 (t4) // Store NOP
+
+	LUI t3, hi(TextHandlerHook)
+	LW t3, lo(TextHandlerHook) (t3)
+	LUI t4, 0x8071
+	SW t3, 0xE83C (t4) // Store Hook
+	SW r0, 0xE840 (t4) // Store NOP
 
 	loadExtraHooks_3:
 	LUI t3, hi(GuardAutoclearHook)
