@@ -4,7 +4,7 @@
     "fast_start_beginning_of_game":true,
     "unlock_all_moves":false,
     "enemy_rando":true,
-    "crown_rando":true,
+    "crown_enemy_rando":true,
     "enemy_speed_rando":true,
     "krool_phase_order_rando": true,
     "boss_kong_rando": true,

@@ -267,7 +267,7 @@ def randomize_enemies(spoiler: Spoiler):
                                                     ROM().writeMultipleBytes(agg_speed, 1)
                                                     ROM().seek(cont_map_spawner_address + spawner["offset"] + 0xC)
                                                     ROM().writeMultipleBytes(random.randint(min_speed, agg_speed), 1)
-            if spoiler.settings.crown_rando and cont_map_id in crown_maps:
+            if spoiler.settings.crown_enemy_rando and cont_map_id in crown_maps:
                 crown_index = 0
                 for spawner in vanilla_spawners:
                     if spawner["enemy_id"] in crown_enemies:
