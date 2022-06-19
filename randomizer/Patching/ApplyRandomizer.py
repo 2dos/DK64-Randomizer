@@ -24,6 +24,7 @@ from randomizer.Patching.Patcher import ROM
 from randomizer.Patching.PriceRando import randomize_prices
 from randomizer.Patching.PuzzleRando import randomize_puzzles
 from randomizer.Patching.UpdateHints import PushHints, wipeHints
+from GenTracker import generateTracker
 
 # from randomizer.Spoiler import Spoiler
 from randomizer.Settings import Settings
@@ -303,8 +304,10 @@ def patching_response(responded_data):
     if spoiler.settings.generate_spoilerlog is True:
         js.document.getElementById("spoiler_log_block").style.display = ""
         js.document.getElementById("spoiler_log_text").value = spoiler.toJson()
+        js.document.getElementById("tracker_text").value = generateTracker(spoiler.toJson())
     else:
         js.document.getElementById("spoiler_log_text").value = ""
+        js.document.getElementById("tracker_text").value = ""
         js.document.getElementById("spoiler_log_block").style.display = "none"
 
     js.document.getElementById("generated_seed_id").innerHTML = spoiler.settings.seed_id
