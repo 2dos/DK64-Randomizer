@@ -1,10 +1,29 @@
 #include "../../include/common.h"
 
-static const short normal_key_flags[] = {0x1A,0x4A,0x8A,0xA8,0xEC,0x124,0x13D,0x17C};
-static const short tnsportal_flags[] = {46,108,152,203,258,302,352};
+static const short normal_key_flags[] = {
+	FLAG_KEYHAVE_KEY1,
+	FLAG_KEYHAVE_KEY2,
+	FLAG_KEYHAVE_KEY3,
+	FLAG_KEYHAVE_KEY4,
+	FLAG_KEYHAVE_KEY5,
+	FLAG_KEYHAVE_KEY6,
+	FLAG_KEYHAVE_KEY7,
+	FLAG_KEYHAVE_KEY8
+};
+static const short tnsportal_flags[] = {
+	FLAG_PORTAL_JAPES,
+	FLAG_PORTAL_AZTEC,
+	FLAG_PORTAL_FACTORY,
+	FLAG_PORTAL_GALLEON,
+	FLAG_PORTAL_FUNGI,
+	FLAG_PORTAL_CAVES,
+	FLAG_PORTAL_CASTLE,
+};
 
 void apply_key(int index, int remove_troff, int set_key) {
-	setPermFlag(444 + index);
+	if (set_key) {
+		setPermFlag(FLAG_KEYIN_KEY1 + index);
+	}
 	if (index < 7) {
 		if (Rando.level_order_rando_on) {
 			if (set_key) {

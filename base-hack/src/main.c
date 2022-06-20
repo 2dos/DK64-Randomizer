@@ -40,6 +40,7 @@ void cFuncLoop(void) {
 	alter_boss_key_flags();
 	if (ObjectModel2Timer <= 2) {
 		shiftBrokenJapesPortal();
+		openCoinDoor();
 	}
 	displayNumberOnTns();
 	if (Rando.music_rando_on) {
@@ -79,7 +80,7 @@ void cFuncLoop(void) {
 	if (Rando.fast_start_helm == 2) {
 		if (TransitionSpeed > 0) {
 			if ((DestMap == 0x11) && (CurrentMap == 0xAA)) {
-				setPermFlag(770);
+				setPermFlag(FLAG_MODIFIER_HELMBOM);
 			}
 		}
 	}
@@ -99,14 +100,13 @@ void cFuncLoop(void) {
 	}
 	if (CurrentMap == MAIN_MENU) {
 		if (CutsceneActive == 6) {
-			if (!checkFlag(0x346,0)) {
+			if (!checkFlag(FLAG_COLLECTABLE_JAPES_DK_HIDDENCB,0)) {
 				// New File
 				unlockMoves();
 				applyFastStart();
 				openCrownDoor();
-				openCoinDoor();
 				giveCollectables();
-				setPermFlag(0x346);
+				setPermFlag(FLAG_COLLECTABLE_JAPES_DK_HIDDENCB);
 				Character = Rando.starting_kong;
 				StoredSettings.file_extra[(int)FileIndex].location_sss_purchased = 0;
 				StoredSettings.file_extra[(int)FileIndex].location_ab1_purchased = 0;
@@ -138,12 +138,12 @@ void earlyFrame(void) {
 	if (ObjectModel2Timer == 2) {
 		updateProgressive();
 		price_rando();
-		setFlag(0x5D,1,2); // DK Phase Intro
-		setFlag(0x58,1,2); // Tiny Phase Intro
+		setFlag(FLAG_KROOL_INTRO_DK,1,2); // DK Phase Intro
+		setFlag(FLAG_KROOL_INTRO_TINY,1,2); // Tiny Phase Intro
 		if (CurrentMap == 0x22) {
 			KRoolRound = 0;
 			for (int i = 0; i < 4; i++) {
-				setFlag(0x51 + i,0,2); // Clear Toes
+				setFlag(FLAG_KROOL_TOE_1 + i,0,2); // Clear Toes
 			}
 		}
 		int boat_speed = 5000 << (CurrentMap == 0x6F);
@@ -220,8 +220,8 @@ int* displayListModifiers(int* dl) {
 					bp_numerator = 0;
 					bp_denominator = 0;
 					for (int i = 0; i < 8; i++) {
-						int bp_has = checkFlag(469 + (i * 5) + Character,0);
-						int bp_turn = checkFlag(509 + (i * 5) + Character,0);
+						int bp_has = checkFlag(FLAG_BP_JAPES_DK_HAS + (i * 5) + Character,0);
+						int bp_turn = checkFlag(FLAG_BP_JAPES_DK_TURN + (i * 5) + Character,0);
 						if ((bp_has) && (!bp_turn)) {
 							bp_numerator += 1;
 						}

@@ -102,7 +102,7 @@ int isBonus(int map) {
 	return (level == 9) || (level == 0xD);
 }
 
-static const short kong_flags[] = {385,6,70,66,117};
+static const short kong_flags[] = {FLAG_KONG_DK,FLAG_KONG_DIDDY,FLAG_KONG_LANKY,FLAG_KONG_TINY,FLAG_KONG_CHUNKY};
 static const unsigned char kong_press_states[] = {0x29,0x2E,0x26,0x29,0x24};
 static const unsigned char kong_pellets[] = {48,36,42,43,38};
 #define MILL_CRUSHER_PROGRESS 1
@@ -422,7 +422,7 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 			} else if (param2 == MILL_CRUSHER) {
 				if (index == 0) {
 					if (checkFlag(FUNGICRUSHERON,0)) {
-						if (!checkFlag(221,0)) { // If GB not acquired
+						if (!checkFlag(FLAG_COLLECTABLE_FUNGI_CHUNKY_KEGGB,0)) { // If GB not acquired
 							if (behaviour_pointer->counter == 0) {
 								behaviour_pointer->current_state = 12;
 								behaviour_pointer->next_state = 12;
@@ -449,7 +449,7 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 			if (param2 == GMUSH_BOARD) {
 				int switch_count = 0;
 				for (int i = 0; i < 5; i++) {
-					if (checkFlag(230 + i,0)) {
+					if (checkFlag(FLAG_MUSHSWITCH_0 + i,0)) {
 						switch_count += 1;
 					}
 				}

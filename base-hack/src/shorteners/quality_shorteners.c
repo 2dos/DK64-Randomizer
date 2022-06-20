@@ -1,65 +1,65 @@
 #include "../../include/common.h"
 
 static const short ftt_flags[] = {
-	355, // Bananaporter
-    358, // Crown Pad
-    360, // Mini Monkey
-    361, // Hunky Chunky
-    362, // Orangstand Sprint
-    363, // Strong Kong
-    364, // Rainbow Coin
-    365, // Rambi
-    366, // Enguarde
-    367, // Diddy
-    368, // Lanky
-    369, // Tiny
-    370, // Chunky
-    372, // Snide's
-    376, // Wrinkly
-    775, // Funky
-    776, // Snide's
-    777, // Cranky
-    778, // Candy
-    779, // Japes
-    780, // Factory
-    781, // Galleon
-    782, // Fungi
-    783, // Caves
-    784, // Castle
-    786, // Helm
-    787, // Aztec
-    282, // Caves CS
-    194, // Galleon CS
-    256, // Daytime
-    257, // Fungi CS
-    303, // DK 5DI
-    349, // Castle CS
-    42, // Japes Diddy Help Me Cutscene
-    27, // Japes CS
-    95, // Aztec CS
-    93, // Lanky Help Me
-    94, // Tiny Help Me
-    140, // Chunky Help Me / Factory CS
-    195, // Water Raised
-    196, // Water Lowered
-    255, // Clock CS
-    277, // Rotating Room
-    299, // Giant Kosha
-    378, // Training Grounds Intro
-    0x5C, // Llama CS
+	FLAG_FTT_BANANAPORT, // Bananaporter
+    FLAG_FTT_CROWNPAD, // Crown Pad
+    FLAG_FTT_MINIMONKEY, // Mini Monkey
+    FLAG_FTT_HUNKYCHUNKY, // Hunky Chunky
+    FLAG_FTT_ORANGSPRINT, // Orangstand Sprint
+    FLAG_FTT_STRONGKONG, // Strong Kong
+    FLAG_FTT_RAINBOWCOIN, // Rainbow Coin
+    FLAG_FTT_RAMBI, // Rambi
+    FLAG_FTT_ENGUARDE, // Enguarde
+    FLAG_FTT_DIDDY, // Diddy
+    FLAG_FTT_LANKY, // Lanky
+    FLAG_FTT_TINY, // Tiny
+    FLAG_FTT_CHUNKY, // Chunky
+    FLAG_FTT_SNIDE, // Snide's
+    FLAG_FTT_WRINKLY, // Wrinkly
+    FLAG_FTT_FUNKY, // Funky
+    FLAG_FTT_SNIDE0, // Snide's
+    FLAG_FTT_CRANKY, // Cranky
+    FLAG_FTT_CANDY, // Candy
+    FLAG_FTT_JAPES,
+    FLAG_FTT_AZTEC,
+    FLAG_FTT_FACTORY,
+    FLAG_FTT_GALLEON,
+    FLAG_FTT_FUNGI,
+    FLAG_FTT_CAVES,
+    FLAG_FTT_CASTLE,
+    FLAG_FTT_HELM,
+    FLAG_INTRO_CAVES, // Caves CS
+    FLAG_INTRO_GALLEON, // Galleon CS
+    FLAG_FTT_TIMESWITCH, // Daytime
+    FLAG_INTRO_FUNGI, // Fungi CS
+    FLAG_FTT_DK5DI, // DK 5DI
+    FLAG_INTRO_CASTLE, // Castle CS
+    FLAG_CUTSCENE_DIDDYHELPME, // Japes Diddy Help Me Cutscene
+    FLAG_INTRO_JAPES, // Japes CS
+    FLAG_INTRO_AZTEC, // Aztec CS
+    FLAG_CUTSCENE_LANKYHELPME, // Lanky Help Me
+    FLAG_CUTSCENE_TINYHELPME, // Tiny Help Me
+    FLAG_INTRO_FACTORY, // Chunky Help Me / Factory CS
+    FLAG_CUTSCENE_WATERRAISED, // Water Raised
+    FLAG_CUTSCENE_WATERLOWERED, // Water Lowered
+    FLAG_CUTSCENE_CLOCK, // Clock CS
+    FLAG_CUTSCENE_ROTATING, // Rotating Room
+    FLAG_CUTSCENE_KOSHA, // Giant Kosha
+    FLAG_WATERFALL, // Training Grounds Intro
+    FLAG_CUTSCENE_LLAMA, // Llama CS
 };
 
 static const short default_ftt_flags[] = {
-    359, // T&S (1)
-    392, // T&S (2)
-    785, // T&S (3)
-    373, // Buy Instruments
-    374, // Buy Guns
-    0x45, // Tiny Temple Ice Melted
-    109, // Hatch opened in Factory
-    0xA1, // Peanut Gate Opened in Galleon
-    0, // First Switch in Japes
-    382, // B Locker
+    FLAG_TNS_0, // T&S (1)
+    FLAG_TNS_1, // T&S (2)
+    FLAG_TNS_2, // T&S (3)
+    FLAG_BUY_INSTRUMENT, // Buy Instruments
+    FLAG_BUY_GUNS, // Buy Guns
+    FLAG_ICEMELT, // Tiny Temple Ice Melted
+    FLAG_HATCH, // Hatch opened in Factory
+    FLAG_PEANUTGATE, // Peanut Gate Opened in Galleon
+    FLAG_FIRSTJAPESGATE, // First Switch in Japes
+    FLAG_FTT_BLOCKER, // B Locker
 };
 
 void qualityOfLife_shorteners(void) {
