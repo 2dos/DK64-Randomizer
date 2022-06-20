@@ -24,7 +24,7 @@ LogicRegions = {
         Event(Events.HatchOpened, lambda l: l.Slam),
     ], [
         TransitionFront(Regions.FranticFactoryLobby, lambda l: True, Transitions.FactoryToIsles),
-        TransitionFront(Regions.Testing, lambda l: Events.TestingGateOpened in l.Events),
+        TransitionFront(Regions.Testing, lambda l: l.settings.open_levels or Events.TestingGateOpened in l.Events),
         # Hatch opened already in rando if loading zones randomized
         TransitionFront(Regions.BeyondHatch, lambda l: l.settings.shuffle_loading_zones == "all" or Events.HatchOpened in l.Events),
     ]),
@@ -82,7 +82,7 @@ LogicRegions = {
     ]),
 
     Regions.PowerHut: Region("Power Hut", Levels.FranticFactory, False, None, [
-        LocationLogic(Locations.FactoryDonkeyPowerHut, lambda l: Events.MainCoreActivated in l.Events and l.isdonkey),
+        LocationLogic(Locations.FactoryDonkeyPowerHut, lambda l: (l.settings.open_levels or Events.MainCoreActivated in l.Events) and l.isdonkey),
     ], [
         Event(Events.MainCoreActivated, lambda l: l.coconut and l.grab and l.isdonkey),
     ], [
@@ -107,8 +107,8 @@ LogicRegions = {
         Event(Events.ChunkyCoreSwitch, lambda l: l.Slam and l.chunky),
     ], [
         TransitionFront(Regions.FranticFactoryStart, lambda l: l.settings.shuffle_loading_zones == "all" or Events.HatchOpened in l.Events),
-        TransitionFront(Regions.InsideCore, lambda l: Events.MainCoreActivated in l.Events, Transitions.FactoryBeyondHatchToInsideCore),
-        TransitionFront(Regions.MainCore, lambda l: Events.MainCoreActivated in l.Events),
+        TransitionFront(Regions.InsideCore, lambda l: l.settings.open_levels or Events.MainCoreActivated in l.Events, Transitions.FactoryBeyondHatchToInsideCore),
+        TransitionFront(Regions.MainCore, lambda l: l.settings.open_levels or Events.MainCoreActivated in l.Events),
         TransitionFront(Regions.CrankyFactory, lambda l: True),
         TransitionFront(Regions.CandyFactory, lambda l: True),
         TransitionFront(Regions.FactoryBossLobby, lambda l: True),
