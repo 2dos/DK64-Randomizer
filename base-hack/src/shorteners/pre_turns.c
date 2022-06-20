@@ -1,6 +1,6 @@
 #include "../../include/common.h"
 
-static const short normal_key_flags[] = {0x1A,0x4A,0x8A,0xA8,0xEC,0x124,0x13D};
+static const short normal_key_flags[] = {0x1A,0x4A,0x8A,0xA8,0xEC,0x124,0x13D,0x17C};
 static const short tnsportal_flags[] = {46,108,152,203,258,302,352};
 
 void apply_key(int index, int remove_troff, int set_key) {
