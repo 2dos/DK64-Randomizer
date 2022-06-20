@@ -24,6 +24,7 @@ from randomizer.Patching.Patcher import ROM
 from randomizer.Patching.PriceRando import randomize_prices
 from randomizer.Patching.PuzzleRando import randomize_puzzles
 from randomizer.Patching.UpdateHints import PushHints, wipeHints
+from randomizer.Patching.MiscSetupChanges import randomize_setup
 from GenTracker import generateTracker
 
 # from randomizer.Spoiler import Spoiler
@@ -248,6 +249,11 @@ def patching_response(responded_data):
         ROM().seek(sav + 0x13F)
         ROM().write(1)
 
+    # Enable Skip Arcade Round 1
+    if spoiler.settings.skip_arcader1:
+        ROM().seek(sav + 0x126)
+        ROM().write(1)
+
     # Turn off Shop Hints
     if spoiler.settings.disable_shop_hints:
         ROM().seek(sav + 0x13B)
@@ -278,6 +284,7 @@ def patching_response(responded_data):
     randomize_bananaport(spoiler)
     randomize_enemies(spoiler)
     apply_kongrando_cosmetic(spoiler)
+    randomize_setup(spoiler)
     randomize_puzzles()
 
     random.seed(spoiler.settings.seed)

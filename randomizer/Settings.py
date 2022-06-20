@@ -68,6 +68,9 @@ class Settings:
         self.prices = VanillaPrices.copy()
         self.resolve_settings()
 
+        self.skip_arcader1 = True
+        self.randomize_pickups = True
+
     def update_progression_totals(self):
         """Update the troff and blocker totals if we're randomly setting them."""
         # Assign weights to Troff n Scoff based on level order if not shuffling loading zones

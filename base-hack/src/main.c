@@ -173,6 +173,19 @@ void earlyFrame(void) {
 				MusicTrackChannels[0] = 0; // Disables boss intro music
 			}
 		}
+	} else if (CurrentMap == 0x6E) { // Factory BBlast
+		if (Rando.skip_arcade_round1) {
+			if (!checkFlag(FLAG_ARCADE_LEVER,0)) {
+				if (checkFlag(FLAG_ARCADE_ROUND1,0)) {
+					if (TransitionSpeed > 0) {
+						if (DestMap == 0x1A) {
+							delayedObjectModel2Change(0x1A,45,10);
+						}
+						setPermFlag(FLAG_ARCADE_LEVER);
+					}
+				}
+			}
+		}
 	}
 	// Cutscene DK Code
 	if ((CurrentMap == 0x28) || (CurrentMap == 0x4C)) {

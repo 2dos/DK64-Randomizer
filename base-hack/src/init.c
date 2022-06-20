@@ -183,6 +183,10 @@ void initHack(int source) {
 				// Disable Graphical Debugger
 				*(int*)(0x8060EEE0) = 0x240E0000; // ADDIU $t6, $r0, 0
 			}
+			if (Rando.skip_arcade_round1) {
+				*(unsigned char*)(0x80755B68) = 0x6E; // Modify GB Map
+				*(short*)(0x80755B6A) = 0; // Modify GB ID
+			}
 			// Object Instance Scripts
 			*(int*)(0x80748064) = (int)&change_object_scripts;
 			*(int*)(0x806416BC) = 0; // Prevent parent map check in cross-map object change communications
