@@ -48,6 +48,7 @@
 #define CAVES_BOULDERDOME 0x2B
 #define CAVES_SMALLBOULDERPAD 0x2E
 #define CAVES_BIGBOULDERPAD 0x2F
+#define GALLEON_DKSTAR 0xC
 
 #define TGROUNDS_BAMBOOGATE 0x49
 #define TGROUNDS_SWITCH 0x39
@@ -167,6 +168,12 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 				} else {
 					initiateTransition_0(31, 0, 0, 0);
 				}
+			} else if (param2 == GALLEON_DKSTAR) {
+				int progress = 1;
+				if (Rando.quality_of_life) {
+					progress = 3;
+				}
+				behaviour_pointer->next_state = progress;
 			}
 			break;
 		case ANGRY_AZTEC:
