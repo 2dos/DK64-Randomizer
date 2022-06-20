@@ -33,6 +33,7 @@
     "gnawty_barrels":false,
     "bonus_barrel_auto_complete":true,
     "open_lobbies":false,
+    "open_levels":false,
     "krool_random":false,
     "krool_phase_count":3,
     "krool_access":true,

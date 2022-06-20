@@ -232,6 +232,7 @@ class Settings:
         self.krool_phase_order_rando = None
         self.krool_access = False
         self.open_lobbies = None
+        self.open_levels = None
         self.random_medal_requirement = True
         self.bananaport_rando = False
         self.shop_indicator = False

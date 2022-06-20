@@ -32,7 +32,7 @@ LogicRegions = {
     ], [
         TransitionFront(Regions.GloomyGalleonLobby, lambda l: True, Transitions.GalleonToIsles),
         TransitionFront(Regions.GalleonBeyondPineappleGate, lambda l: l.pineapple and l.chunky),
-        TransitionFront(Regions.LighthouseArea, lambda l: Events.LighthouseGateOpened in l.Events),
+        TransitionFront(Regions.LighthouseArea, lambda l: l.settings.open_levels or Events.LighthouseGateOpened in l.Events),
         TransitionFront(Regions.Shipyard, lambda l: Events.ShipyardGateOpened in l.Events),
         TransitionFront(Regions.CrankyGalleon, lambda l: True),
         TransitionFront(Regions.GalleonBossLobby, lambda l: True),
@@ -56,7 +56,7 @@ LogicRegions = {
         Event(Events.GalleonChunkyPad, lambda l: l.triangle and l.chunky),
     ], [
         # Rare case of needing to open gate before being able to go through backwards
-        TransitionFront(Regions.GloomyGalleonStart, lambda l: Events.LighthouseGateOpened in l.Events),
+        TransitionFront(Regions.GloomyGalleonStart, lambda l: l.settings.open_levels or Events.LighthouseGateOpened in l.Events),
         TransitionFront(Regions.Lighthouse, lambda l: l.Slam and l.isdonkey, Transitions.GalleonLighthouseAreaToLighthouse),
         TransitionFront(Regions.MermaidRoom, lambda l: l.mini and l.istiny, Transitions.GalleonLighthousAreaToMermaid),
         TransitionFront(Regions.SickBay, lambda l: Events.ActivatedLighthouse in l.Events and l.Slam and l.ischunky, Transitions.GalleonLighthouseAreaToSickBay),
