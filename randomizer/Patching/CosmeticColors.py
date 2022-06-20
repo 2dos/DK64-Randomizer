@@ -57,6 +57,5 @@ def apply_cosmetic_colors(spoiler: Spoiler):
                 opp_color = f"#{format(255-red,'02x')}{format(255-green,'02x')}{format(255-blue,'02x')}"
                 base_obj["zones"][0]["colors"][1] = opp_color
             color_palettes.append(base_obj)
-    print(color_palettes)
     if len(color_palettes) > 0:
         convertColors(color_palettes)

@@ -78,6 +78,7 @@ class Spoiler:
         settings["chunky_freeing_kong"] = ItemList[ItemFromKong(self.settings.chunky_freeing_kong)].name
         settings["open_lobbies"] = self.settings.open_lobbies
         settings["open_levels"] = self.settings.open_levels
+        settings["randomize_pickups"] = self.settings.randomize_pickups
         settings["crown_door_open"] = self.settings.crown_door_open
         settings["coin_door_open"] = self.settings.coin_door_open
         settings["unlock_fairy_shockwave"] = self.settings.unlock_fairy_shockwave

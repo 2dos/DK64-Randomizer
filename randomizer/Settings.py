@@ -68,8 +68,6 @@ class Settings:
         self.prices = VanillaPrices.copy()
         self.resolve_settings()
 
-        self.skip_arcader1 = True
-        self.randomize_pickups = True
 
     def update_progression_totals(self):
         """Update the troff and blocker totals if we're randomly setting them."""
@@ -233,9 +231,11 @@ class Settings:
         self.krool_access = False
         self.open_lobbies = None
         self.open_levels = None
+        self.randomize_pickups = False
         self.random_medal_requirement = True
         self.bananaport_rando = False
         self.shop_indicator = False
+        self.skip_arcader1 = False
         self.randomize_cb_required_amounts = False
         self.randomize_blocker_required_amounts = False
         self.perma_death = False
