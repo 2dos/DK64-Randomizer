@@ -198,33 +198,52 @@ file_dict = [
         "texture_format": "rgba5551",
         "target_compressed_size": 32 * 32 * 2,
     },
+    {
+        "name": "Tiny Overalls Palette",
+        "pointer_table_index": 25,
+        "file_index": 6014,
+        "source_file": "assets/Non-Code/hash/tiny_palette.png",
+        "do_not_extract": True,
+        "texture_format": "rgba5551",
+        "target_compressed_size": 32 * 32 * 2,
+    },
 ]
+
+base_coin_sfx = "assets/Non-Code/music/Win95_startup.dk64song"
+new_coin_sfx = "assets/Non-Code/music/coin_sfx.bin"
+if os.path.exists(new_coin_sfx):
+    os.remove(new_coin_sfx)
+shutil.copyfile(base_coin_sfx,new_coin_sfx)
 
 map_replacements = []
 song_replacements = [
-    {"name": "baboon_balloon", "index": 107},
-    {"name": "bonus_minigames", "index": 8},
-    {"name": "dk_rap", "index": 75},
-    {"name": "failure_races_try_again", "index": 87},
-    {"name": "move_get", "index": 114},
-    {"name": "nintendo_logo", "index": 174},
-    {"name": "success_races", "index": 86},
+    # {"name": "baboon_balloon", "index": 107},
+    # {"name": "bonus_minigames", "index": 8},
+    # {"name": "dk_rap", "index": 75},
+    # {"name": "failure_races_try_again", "index": 87},
+    # {"name": "move_get", "index": 114},
+    # {"name": "nintendo_logo", "index": 174},
+    # {"name": "success_races", "index": 86},
+    {"name": "coin_sfx", "index": 7, "bps": False},
 ]
 changed_song_indexes = []
 
-# for song in song_replacements:
-#     file_dict.append(
-#         {
-#             "name": song["name"].replace("_", " "),
-#             "pointer_table_index": 0,
-#             "file_index": song["index"],
-#             "source_file": f"assets/Non-Code/music/{song['name']}.bin",
-#             "bps_file": f"assets/Non-Code/music/{song['name']}.bps",
-#             "target_compressed_size": 0x2DDE,
-#             "is_diff_patch": True,
-#         }
-#     )
-#     changed_song_indexes.append(song["index"])
+for song in song_replacements:
+    item = {
+        "name": song["name"].replace("_", " "),
+        "pointer_table_index": 0,
+        "file_index": song["index"],
+        "source_file": f"assets/Non-Code/music/{song['name']}.bin",
+        "target_compressed_size": 0x2DDE,
+    }
+    if song["bps"]:
+        item["is_diff_patch"] = True
+        item["bps_file"] = f"assets/Non-Code/music/{song['name']}.bps"
+    else:
+        item["do_not_delete_source"] = True
+        item["do_not_extract"] = True
+    file_dict.append(item)
+    changed_song_indexes.append(song["index"])
 
 for x in instance_script_maps:
     file_dict.append(
@@ -780,6 +799,8 @@ with open(newROMName, "r+b") as fh:
     for x in model_changes:
         if os.path.exists(x["model_file"]):
             os.remove(x["model_file"])
+    if os.path.exists(new_coin_sfx):
+        os.remove(new_coin_sfx)
     # pth = "assets/Non-Code/displays/soldout_bismuth.rgba32"
     # if os.path.exists(pth):
     #     os.remove(pth)

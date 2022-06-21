@@ -227,9 +227,11 @@ void initHack(int source) {
 void quickInit(void) {
 	if (Rando.quality_of_life) {
 		initHack(1);
-		initiateTransition(0x50,0);
+		initiateTransitionFade(0x51, 0, 5);
+		CutsceneWillPlay = 0;
 		Gamemode = 5;
 		Mode = 5;
 		StorySkip = 1;
+		*(char*)(0x80745D20) = 7;
 	}
 }
