@@ -16,6 +16,7 @@ from randomizer.Patching.DKTV import randomize_dktv
 from randomizer.Patching.EnemyRando import randomize_enemies
 from randomizer.Patching.EntranceRando import randomize_entrances
 from randomizer.Patching.Hash import get_hash_images
+from randomizer.Patching.KasplatLocationRando import randomize_kasplat_locations
 from randomizer.Patching.KongRando import apply_kongrando_cosmetic
 from randomizer.Patching.KRoolRando import randomize_krool
 from randomizer.Patching.MoveLocationRando import randomize_moves
@@ -282,6 +283,7 @@ def patching_response(responded_data):
     randomize_krool(spoiler)
     randomize_barrels(spoiler)
     randomize_bananaport(spoiler)
+    randomize_kasplat_locations(spoiler)
     randomize_enemies(spoiler)
     apply_kongrando_cosmetic(spoiler)
     randomize_setup(spoiler)
