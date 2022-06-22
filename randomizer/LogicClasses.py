@@ -188,7 +188,7 @@ class TransitionFront:
 
 
 class Sphere:
-    """A randomizer concept often used in spoiler logs. 
+    """A randomizer concept often used in spoiler logs.
     
     A 'sphere' is a collection of locations and items that are accessible 
     or obtainable with only the items available from earlier, smaller spheres.
@@ -198,5 +198,6 @@ class Sphere:
     """
     
     def __init__(self):
+        """Initialize with given parameters."""
         self.availableGBs = 0
         self.locations = []
