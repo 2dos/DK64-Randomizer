@@ -24,7 +24,7 @@ from randomizer.Lists.Location import LocationList
 from randomizer.Lists.MapsAndExits import Maps
 from randomizer.Lists.Minigame import BarrelMetaData, MinigameRequirements
 from randomizer.Logic import LogicVarHolder, LogicVariables, STARTING_SLAM
-from randomizer.LogicClasses import TransitionFront
+from randomizer.LogicClasses import Sphere, TransitionFront
 from randomizer.Prices import GetMaxForKong, GetPriceOfMoveItem
 from randomizer.ShuffleBarrels import BarrelShuffle
 from randomizer.ShuffleKasplats import InitKasplatMap, KasplatShuffle
@@ -68,7 +68,9 @@ def GetAccessibleLocations(settings, ownedItems, searchType=SearchMode.GetReacha
     # Continue doing searches until nothing new is found
     while len(newLocations) > 0 or eventAdded:
         # Add items and events from the last search iteration
-        sphere = []
+        sphere = Sphere()
+        if playthroughLocations:
+            sphere.availableGBs = playthroughLocations[-1].availableGBs
         for locationId in newLocations:
             accessible.append(locationId)
             location = LocationList[locationId]
@@ -82,15 +84,18 @@ def GetAccessibleLocations(settings, ownedItems, searchType=SearchMode.GetReacha
                 if searchType == SearchMode.GeneratePlaythrough and ItemList[location.item].playthrough:
                     # Banana hoard in a sphere by itself
                     if location.item == Items.BananaHoard:
-                        sphere = [locationId]
+                        sphere.locations = [locationId]
                         break
-                    sphere.append(locationId)
+                    if location.item == Items.GoldenBanana:
+                        sphere.availableGBs += 1
+                    else:
+                        sphere.locations.append(locationId)
                 # If we're checking beatability, just want to know if we have access to the banana hoard
                 if searchType == SearchMode.CheckBeatable and location.item == Items.BananaHoard:
                     return True
-        if len(sphere) > 0:
+        if len(sphere.locations) > 0:
             playthroughLocations.append(sphere)
-            if LocationList[sphere[0]].item == Items.BananaHoard:
+            if LocationList[sphere.locations[0]].item == Items.BananaHoard:
                 break
         eventAdded = False
         # Reset new lists
@@ -342,7 +347,7 @@ def ParePlaythrough(settings, PlaythroughLocations):
     # Check every location in the list of spheres.
     for i in range(len(PlaythroughLocations) - 2, -1, -1):
         sphere = PlaythroughLocations[i]
-        for locationId in sphere.copy():
+        for locationId in sphere.locations.copy():
             location = LocationList[locationId]
             # Copy out item from location
             item = location.item
@@ -351,7 +356,7 @@ def ParePlaythrough(settings, PlaythroughLocations):
             Reset()
             if GetAccessibleLocations(settings, [], SearchMode.CheckBeatable):
                 # If the game is still beatable, this is an unnecessary location, remove it.
-                sphere.remove(locationId)
+                sphere.locations.remove(locationId)
                 # We delay the item to ensure future locations which may rely on this one
                 # do not give a false positive for beatability.
                 location.SetDelayedItem(item)
@@ -363,7 +368,7 @@ def ParePlaythrough(settings, PlaythroughLocations):
     # Check if there are any empty spheres, if so remove them
     for i in range(len(PlaythroughLocations) - 2, -1, -1):
         sphere = PlaythroughLocations[i]
-        if len(sphere) == 0:
+        if len(sphere.locations) == 0:
             PlaythroughLocations.remove(sphere)
 
     # Re-place those items which were delayed earlier.
@@ -378,7 +383,7 @@ def PareWoth(settings, PlaythroughLocations):
     WothLocations = []
     for sphere in PlaythroughLocations:
         # Don't want constant locations in woth
-        for loc in [x for x in sphere if not LocationList[x].constant]:
+        for loc in [x for x in sphere.locations if not LocationList[x].constant]:
             WothLocations.append(loc)
     # Check every item location to see if removing it by itself makes the game unbeatable
     for i in range(len(WothLocations) - 2, -1, -1):

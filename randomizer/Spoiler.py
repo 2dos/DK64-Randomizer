@@ -331,8 +331,10 @@ class Spoiler:
         i = 0
         for sphere in playthroughLocations:
             newSphere = {}
-            for locationId in sphere:
-                location = locations[locationId]
+            newSphere["Available GBs"] = sphere.availableGBs
+            sphereLocations = list(map(lambda l: locations[l], sphere.locations))
+            sphereLocations.sort(key=lambda l: l.type == Types.Banana)
+            for location in sphereLocations:
                 newSphere[location.name] = ItemList[location.item].name
             self.playthrough[i] = newSphere
             i += 1
