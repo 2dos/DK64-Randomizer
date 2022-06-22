@@ -41,6 +41,7 @@ def randomize_kasplat_locations(spoiler: Spoiler):
             fence_count = int.from_bytes(ROM().readBytes(2), "big")
             offset = 2
             fence_bytes = []
+            used_fence_ids = []
             if fence_count > 0:
                 for x in range(fence_count):
                     fence = []
@@ -53,6 +54,8 @@ def randomize_kasplat_locations(spoiler: Spoiler):
                     offset += (point0_count * 10) + 6
                     fence_finish = cont_map_spawner_address + offset
                     fence_size = fence_finish - fence_start
+                    ROM().seek(fence_finish - 4)
+                    used_fence_ids.append(int.from_bytes(ROM().readBytes(2),"big"))
                     ROM().seek(fence_start)
                     for y in range(int(fence_size / 2)):
                         fence.append(int.from_bytes(ROM().readBytes(2),"big"))
@@ -83,12 +86,16 @@ def randomize_kasplat_locations(spoiler: Spoiler):
                         data_bytes.append(int.from_bytes(ROM().readBytes(1),"big"))
                     spawner_bytes.append(data_bytes)
             spawn_index = 1
+            fence_index = 1
             for level in KasplatLocationList:
                 kasplats = KasplatLocationList[level]
                 for kasplat in kasplats:
                     while spawn_index in used_enemy_indexes:
                         spawn_index += 1
+                    while fence_index in used_fence_ids:
+                        fence_index += 1
                     if cont_map_id == kasplat.map and kasplat.selected:
+                        # Spawner
                         data_bytes = []
                         data_bytes.append(kasplat_types[kasplat.selected_kong_idx])
                         data_bytes.append(0x7A)
@@ -103,7 +110,7 @@ def randomize_kasplat_locations(spoiler: Spoiler):
                             data_bytes.append(0)
                         data_bytes.append(0x23) # Idle Speed
                         data_bytes.append(0x3C) # Aggro Speed
-                        data_bytes.append(1) # Pen ID
+                        data_bytes.append(fence_index) # Fence ID
                         data_bytes.append(0x32) # Scale
                         data_bytes.append(1) # Init Control State
                         data_bytes.append(0) # Extra Data Count
@@ -112,8 +119,32 @@ def randomize_kasplat_locations(spoiler: Spoiler):
                         data_bytes.append(0x1E) # Init Respawn Timer
                         data_bytes.append(0)
                         spawner_bytes.append(data_bytes)
-            print(f"{cont_map_id}: {hex(spawner_count_location)}")
-            ROM().seek(spawner_count_location)
+                        # Fence
+                        new_fence_bytes = []
+                        fence_coords = [
+                            [kasplat.bounds[0],kasplat.coords[1],kasplat.bounds[2]],
+                            [kasplat.bounds[1],kasplat.coords[1],kasplat.bounds[2]],
+                            [kasplat.bounds[1],kasplat.coords[1],kasplat.bounds[3]],
+                            [kasplat.bounds[0],kasplat.coords[1],kasplat.bounds[2]]
+                        ]
+                        for a in range(2):
+                            new_fence_bytes.append(len(fence_coords)) # 0: Fence Block 0x6 Count, 1: Fence Block 0xA Count
+                            for x in fence_coords:
+                                for y in x:
+                                    if y < 0:
+                                        y += 65536 # Signed to unsigned conversion
+                                    new_fence_bytes.append(y)
+                                if a == 1:
+                                    for y in range(2):
+                                        new_fence_bytes.append(0)
+                        new_fence_bytes.append(fence_index)
+                        new_fence_bytes.append(1)
+                        fence_bytes.append(new_fence_bytes)
+            ROM().seek(cont_map_spawner_address)
+            ROM().writeMultipleBytes(len(fence_bytes),2)
+            for x in fence_bytes:
+                for y in x:
+                    ROM().writeMultipleBytes(y,2)
             ROM().writeMultipleBytes(len(spawner_bytes),2)
             for x in spawner_bytes:
                 for y in x:
