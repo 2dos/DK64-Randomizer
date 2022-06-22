@@ -65,7 +65,6 @@ class Settings:
         # progressive_upgrades: bool
         self.progressive_upgrades = False
 
-        self.random_patches = True
 
         self.prices = VanillaPrices.copy()
         self.resolve_settings()
@@ -128,6 +127,7 @@ class Settings:
         self.bonus_barrel_rando = None
         self.loading_zone_coupled = None
         self.shop_location_rando = None
+        self.random_patches = None
         self.random_prices = None
         self.boss_location_rando = None
         self.boss_kong_rando = None
