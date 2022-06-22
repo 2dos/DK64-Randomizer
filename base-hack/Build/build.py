@@ -309,8 +309,8 @@ for x in range(221):
             "pointer_table_index": 16,
             "file_index": x,
             "source_file": "charspawners" + str(x) + ".bin",
-            "target_compressed_size": 0x1000,
-            "target_uncompressed_size": 0x1000,
+            "target_compressed_size": 0x1400,
+            "target_uncompressed_size": 0x1400,
             "do_not_recompress": True,
         }
     )

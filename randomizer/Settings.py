@@ -65,6 +65,8 @@ class Settings:
         # progressive_upgrades: bool
         self.progressive_upgrades = False
 
+        self.random_patches = True
+
         self.prices = VanillaPrices.copy()
         self.resolve_settings()
 
