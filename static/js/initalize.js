@@ -105,6 +105,13 @@ $("#form select").on("change", function (e) {
   setCookie("saved_settings", JSON.stringify(json), 30);
 });
 
+function setLocalStorage(name, value){
+  localStorage[name] = value.split('\n').join('\\');
+}
+function getLocalStorage(name){
+  return localStorage[name].split('\\').join('\n');
+}
+
 function setCookie(name, value, days) {
   var expires = "";
   if (days) {
