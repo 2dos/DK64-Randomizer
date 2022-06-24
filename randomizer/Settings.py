@@ -65,10 +65,8 @@ class Settings:
         # progressive_upgrades: bool
         self.progressive_upgrades = False
 
-
         self.prices = VanillaPrices.copy()
         self.resolve_settings()
-
 
     def update_progression_totals(self):
         """Update the troff and blocker totals if we're randomly setting them."""
@@ -114,7 +112,10 @@ class Settings:
             self.blocker_4 = b_lockers[4]
             self.blocker_5 = b_lockers[5]
             self.blocker_6 = b_lockers[6]
-            self.blocker_7 = b_lockers[7]
+            if self.maximize_helm_blocker:
+                self.blocker_7 = self.blocker_max
+            else:
+                self.blocker_7 = b_lockers[7]
 
         # Store banana values in array
         self.EntryGBs = [self.blocker_0, self.blocker_1, self.blocker_2, self.blocker_3, self.blocker_4, self.blocker_5, self.blocker_6, self.blocker_7]
@@ -240,6 +241,7 @@ class Settings:
         self.skip_arcader1 = False
         self.randomize_cb_required_amounts = False
         self.randomize_blocker_required_amounts = False
+        self.maximize_helm_blocker = False
         self.perma_death = False
         self.disable_tag_barrels = False
         self.level_randomization = "none"
