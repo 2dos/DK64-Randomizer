@@ -2,6 +2,7 @@
 
 from randomizer.Lists.MapsAndExits import Maps
 
+
 class DirtPatchData:
     """Information about the dirt patch location."""
 
@@ -20,6 +21,7 @@ class DirtPatchData:
     def setPatch(self, used):
         """Set patch's state regarding rando."""
         self.selected = used
+
 
 DirtPatchLocations = [
     DirtPatchData(name="DK Isles: On Aztec Building", map_id=Maps.Isles, x=3509.673, y=1170.0, z=1733.509, rotation=1784, vanilla=True),

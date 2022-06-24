@@ -21,19 +21,41 @@ class KasplatLocation:
         self.selected_kong = None
 
     def setKasplat(self, state=True):
+        """Set Kasplat's collection state."""
         self.selected = state
 
 
 KasplatLocationList = {
     Levels.JungleJapes: [
         KasplatLocation(
-            name="Behind Rambi Wall", map_id=Maps.JungleJapes, kong_lst=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky], coords=[870, 280, 3578], xmin=740, xmax=990, zmin=3500, zmax=3700
+            name="Behind Rambi Wall",
+            map_id=Maps.JungleJapes,
+            kong_lst=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
+            coords=[870, 280, 3578],
+            xmin=740,
+            xmax=990,
+            zmin=3500,
+            zmax=3700,
         ),
         KasplatLocation(
-            name="On top of mountain", map_id=Maps.JungleJapes, kong_lst=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky], coords=[1592, 989, 2443], xmin=1570, xmax=1650, zmin=2380, zmax=2490
+            name="On top of mountain",
+            map_id=Maps.JungleJapes,
+            kong_lst=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
+            coords=[1592, 989, 2443],
+            xmin=1570,
+            xmax=1650,
+            zmin=2380,
+            zmax=2490,
         ),
         KasplatLocation(
-            name="Beehive Area", map_id=Maps.JungleJapes, kong_lst=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky], coords=[2270, 552, 3153], xmin=2180, xmax=2450, zmin=3050, zmax=3280
+            name="Beehive Area",
+            map_id=Maps.JungleJapes,
+            kong_lst=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
+            coords=[2270, 552, 3153],
+            xmin=2180,
+            xmax=2450,
+            zmin=3050,
+            zmax=3280,
         ),
         KasplatLocation(name="Lower area of Tunnel to Beehive", map_id=Maps.JungleJapes, kong_lst=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky], coords=[2769, 335, 2071]),
         KasplatLocation(name="Upper area of Tunnel to Beehive", map_id=Maps.JungleJapes, kong_lst=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky], coords=[3180, 437, 2379]),
@@ -41,12 +63,30 @@ KasplatLocationList = {
         KasplatLocation(name="Near Speedy Swing Sortie Bonus", map_id=Maps.JungleJapes, kong_lst=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky], coords=[2014, 251, 2767]),
         KasplatLocation(name="Near Painting Room", map_id=Maps.JungleJapes, kong_lst=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky], coords=[884, 280, 2578]),
         KasplatLocation(
-            name="Inside Tiny's Cage", map_id=Maps.JungleJapes, kong_lst=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky], coords=[1333, 280, 1938], xmin=1320, xmax=1360, zmin=1910, zmax=1960
+            name="Inside Tiny's Cage",
+            map_id=Maps.JungleJapes,
+            kong_lst=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
+            coords=[1333, 280, 1938],
+            xmin=1320,
+            xmax=1360,
+            zmin=1910,
+            zmax=1960,
         ),
-        KasplatLocation(name="Starting Area", map_id=Maps.JungleJapes, kong_lst=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky], coords=[899, 280, 640], xmin=800, xmax=1100, zmin=460, zmax=800),
-        KasplatLocation(name="Diddy Cave", map_id=Maps.JungleJapes, kong_lst=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky], coords=[2461, 280, 548], xmin=2370, xmax=2620, zmin=350, zmax=650),
         KasplatLocation(
-            name="In the river", map_id=Maps.JungleJapes, kong_lst=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky], coords=[1569, 160, 1844], xmin=1470, xmax=1750, zmin=1650, zmax=2100
+            name="Starting Area", map_id=Maps.JungleJapes, kong_lst=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky], coords=[899, 280, 640], xmin=800, xmax=1100, zmin=460, zmax=800
+        ),
+        KasplatLocation(
+            name="Diddy Cave", map_id=Maps.JungleJapes, kong_lst=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky], coords=[2461, 280, 548], xmin=2370, xmax=2620, zmin=350, zmax=650
+        ),
+        KasplatLocation(
+            name="In the river",
+            map_id=Maps.JungleJapes,
+            kong_lst=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
+            coords=[1569, 160, 1844],
+            xmin=1470,
+            xmax=1750,
+            zmin=1650,
+            zmax=2100,
         ),
         KasplatLocation(
             name="In the water near Rambi Wall",
@@ -59,10 +99,24 @@ KasplatLocationList = {
             zmax=2900,
         ),
         KasplatLocation(
-            name="Near Cranky's", map_id=Maps.JungleJapes, kong_lst=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky], coords=[1675, 280, 4197], xmin=1420, xmax=1950, zmin=4050, zmax=4350
+            name="Near Cranky's",
+            map_id=Maps.JungleJapes,
+            kong_lst=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
+            coords=[1675, 280, 4197],
+            xmin=1420,
+            xmax=1950,
+            zmin=4050,
+            zmax=4350,
         ),
         KasplatLocation(
-            name="In the T&S Alcove", map_id=Maps.JungleJapes, kong_lst=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky], coords=[773, 538, 2320], xmin=720, xmax=800, zmin=2295, zmax=2380
+            name="In the T&S Alcove",
+            map_id=Maps.JungleJapes,
+            kong_lst=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
+            coords=[773, 538, 2320],
+            xmin=720,
+            xmax=800,
+            zmin=2295,
+            zmax=2380,
         ),
     ],
     Levels.AngryAztec: [
@@ -80,16 +134,37 @@ KasplatLocationList = {
             name="On the Oasis", map_id=Maps.AngryAztec, kong_lst=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky], coords=[2467, 116, 990], xmin=2350, xmax=2500, zmin=880, zmax=1050
         ),
         KasplatLocation(
-            name="On the Llama's Cage", map_id=Maps.AngryAztec, kong_lst=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky], coords=[2129, 312, 1551], xmin=2110, xmax=2155, zmin=1525, zmax=1590
+            name="On the Llama's Cage",
+            map_id=Maps.AngryAztec,
+            kong_lst=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
+            coords=[2129, 312, 1551],
+            xmin=2110,
+            xmax=2155,
+            zmin=1525,
+            zmax=1590,
         ),
         KasplatLocation(
-            name="Near the giant boulder", map_id=Maps.AngryAztec, kong_lst=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky], coords=[3782, 120, 2391], xmin=3660, xmax=4060, zmin=2310, zmax=2510
+            name="Near the giant boulder",
+            map_id=Maps.AngryAztec,
+            kong_lst=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
+            coords=[3782, 120, 2391],
+            xmin=3660,
+            xmax=4060,
+            zmin=2310,
+            zmax=2510,
         ),
         KasplatLocation(name="Behind the DK Stone Door", map_id=Maps.AngryAztec, kong_lst=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky], coords=[1363, 162, 738]),
         KasplatLocation(name="In the lava room in Llama Temple", map_id=Maps.AztecLlamaTemple, kong_lst=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky], coords=[1378, 420, 3632]),
         KasplatLocation(name="Near the Hunky Chunky Barrel", map_id=Maps.AngryAztec, kong_lst=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky], coords=[3162, 120, 1845]),
         KasplatLocation(
-            name="Base of the Totem", map_id=Maps.AngryAztec, kong_lst=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky], coords=[3301, 97, 3776], xmin=3275, xmax=3308, zmin=3768, zmax=3790
+            name="Base of the Totem",
+            map_id=Maps.AngryAztec,
+            kong_lst=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
+            coords=[3301, 97, 3776],
+            xmin=3275,
+            xmax=3308,
+            zmin=3768,
+            zmax=3790,
         ),
         KasplatLocation(
             name="In the Vase Room", map_id=Maps.AngryAztec, kong_lst=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky], coords=[280, 138, 716], xmin=300, xmax=420, zmin=650, zmax=750
@@ -105,7 +180,14 @@ KasplatLocationList = {
             zmax=3520,
         ),
         KasplatLocation(
-            name="Near Snide's", map_id=Maps.AngryAztec, kong_lst=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky], coords=[3969, 190, 4037], xmin=3930, xmax=4020, zmin=3990, zmax=4080
+            name="Near Snide's",
+            map_id=Maps.AngryAztec,
+            kong_lst=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
+            coords=[3969, 190, 4037],
+            xmin=3930,
+            xmax=4020,
+            zmin=3990,
+            zmax=4080,
         ),
         KasplatLocation(
             name="Below the Llama in Llama Temple",
@@ -117,14 +199,30 @@ KasplatLocationList = {
             zmin=2360,
             zmax=2440,
         ),
-        KasplatLocation(name="In the Free Tiny Room", map_id=Maps.AztecTinyTemple, kong_lst=[Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky], coords=[453, 345, 1465], xmin=140, xmax=720, zmin=1200, zmax=1700),
+        KasplatLocation(
+            name="In the Free Tiny Room", map_id=Maps.AztecTinyTemple, kong_lst=[Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky], coords=[453, 345, 1465], xmin=140, xmax=720, zmin=1200, zmax=1700
+        ),
     ],
     Levels.FranticFactory: [
         KasplatLocation(
-            name="Starting Area", map_id=Maps.FranticFactory, kong_lst=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky], coords=[1712, 837, 2389], xmin=1680, xmax=1740, zmin=2300, zmax=2440
+            name="Starting Area",
+            map_id=Maps.FranticFactory,
+            kong_lst=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
+            coords=[1712, 837, 2389],
+            xmin=1680,
+            xmax=1740,
+            zmin=2300,
+            zmax=2440,
         ),
         KasplatLocation(
-            name="Near the Power Hut", map_id=Maps.FranticFactory, kong_lst=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky], coords=[1464, 127, 865], xmin=1400, xmax=1540, zmin=840, zmax=920
+            name="Near the Power Hut",
+            map_id=Maps.FranticFactory,
+            kong_lst=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
+            coords=[1464, 127, 865],
+            xmin=1400,
+            xmax=1540,
+            zmin=840,
+            zmax=920,
         ),
         KasplatLocation(
             name="Down the pole covered by a Hatch",
@@ -137,7 +235,14 @@ KasplatLocationList = {
             zmax=1820,
         ),
         KasplatLocation(
-            name="In the Dark Room", map_id=Maps.FranticFactory, kong_lst=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky], coords=[2053, 7, 573], xmin=2000, xmax=2100, zmin=500, zmax=850
+            name="In the Dark Room",
+            map_id=Maps.FranticFactory,
+            kong_lst=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
+            coords=[2053, 7, 573],
+            xmin=2000,
+            xmax=2100,
+            zmin=500,
+            zmax=850,
         ),
         KasplatLocation(
             name="On the lowest platform in Production Room",
@@ -149,7 +254,9 @@ KasplatLocationList = {
             zmin=1645,
             zmax=1705,
         ),
-        KasplatLocation(name="Near the slippery pipe in Production Room", map_id=Maps.FranticFactory, kong_lst=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky], coords=[782, 557, 1686]),
+        KasplatLocation(
+            name="Near the slippery pipe in Production Room", map_id=Maps.FranticFactory, kong_lst=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky], coords=[782, 557, 1686]
+        ),
         KasplatLocation(name="At the base of Production Room", map_id=Maps.FranticFactory, kong_lst=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky], coords=[509, 0, 1591]),
         KasplatLocation(name="In Research & Development", map_id=Maps.FranticFactory, kong_lst=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky], coords=[4148, 1336, 1016]),
         KasplatLocation(name="Below the pole to the DK Arcade Machine", map_id=Maps.FranticFactory, kong_lst=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky], coords=[1296, 6, 240]),
@@ -165,10 +272,24 @@ KasplatLocationList = {
             zmax=1360,
         ),
         KasplatLocation(
-            name="On Chunky's Cage", map_id=Maps.FranticFactory, kong_lst=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky], coords=[1276, 201, 710], xmin=1130, xmax=1540, zmin=530, zmax=900
+            name="On Chunky's Cage",
+            map_id=Maps.FranticFactory,
+            kong_lst=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
+            coords=[1276, 201, 710],
+            xmin=1130,
+            xmax=1540,
+            zmin=530,
+            zmax=900,
         ),
         KasplatLocation(
-            name="Near Snide's", map_id=Maps.FranticFactory, kong_lst=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky], coords=[1579, 811, 2197], xmin=1510, xmax=1660, zmin=2120, zmax=2240
+            name="Near Snide's",
+            map_id=Maps.FranticFactory,
+            kong_lst=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
+            coords=[1579, 811, 2197],
+            xmin=1510,
+            xmax=1660,
+            zmin=2120,
+            zmax=2240,
         ),
         KasplatLocation(name="In the Power Shed", map_id=Maps.FactoryPowerHut, kong_lst=[Kongs.donkey], coords=[116, 2, 121], xmin=68, xmax=151, zmin=66, zmax=154),
     ],
@@ -197,9 +318,18 @@ KasplatLocationList = {
         KasplatLocation(name="In the Alcove near the Lighthouse", map_id=Maps.GloomyGalleon, kong_lst=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky], coords=[699, 1564, 4093]),
         KasplatLocation(name="On the platforms in Cannon Game Room", map_id=Maps.GloomyGalleon, kong_lst=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky], coords=[1308, 1610, 2794]),
         KasplatLocation(name="Near the T&S near Cranky's", map_id=Maps.GloomyGalleon, kong_lst=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky], coords=[2806, 1890, 2969]),
-        KasplatLocation(name="On the Cactus near the sunken submarine", map_id=Maps.GloomyGalleon, kong_lst=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky], coords=[4372, 1650, 1031]),
         KasplatLocation(
-            name="On the Crown Pad", map_id=Maps.GloomyGalleon, kong_lst=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky], coords=[3307, 1680, 2451], xmin=3240, xmax=3360, zmin=2370, zmax=2500
+            name="On the Cactus near the sunken submarine", map_id=Maps.GloomyGalleon, kong_lst=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky], coords=[4372, 1650, 1031]
+        ),
+        KasplatLocation(
+            name="On the Crown Pad",
+            map_id=Maps.GloomyGalleon,
+            kong_lst=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
+            coords=[3307, 1680, 2451],
+            xmin=3240,
+            xmax=3360,
+            zmin=2370,
+            zmax=2500,
         ),
         KasplatLocation(
             name="In the water in Cannon Game Room",
@@ -212,7 +342,14 @@ KasplatLocationList = {
             zmax=3000,
         ),
         KasplatLocation(
-            name="Next to Cranky's", map_id=Maps.GloomyGalleon, kong_lst=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky], coords=[3314, 1792, 2498], xmin=3260, xmax=3370, zmin=2440, zmax=2540
+            name="Next to Cranky's",
+            map_id=Maps.GloomyGalleon,
+            kong_lst=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
+            coords=[3314, 1792, 2498],
+            xmin=3260,
+            xmax=3370,
+            zmin=2440,
+            zmax=2540,
         ),
     ],
     Levels.FungiForest: [
@@ -227,7 +364,14 @@ KasplatLocationList = {
             zmax=4420,
         ),
         KasplatLocation(
-            name="Behind the beanstalk", map_id=Maps.FungiForest, kong_lst=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky], coords=[1853, 230, 473], xmin=1780, xmax=1890, zmin=380, zmax=780
+            name="Behind the beanstalk",
+            map_id=Maps.FungiForest,
+            kong_lst=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
+            coords=[1853, 230, 473],
+            xmin=1780,
+            xmax=1890,
+            zmin=380,
+            zmax=780,
         ),
         KasplatLocation(
             name="Near the rocketbarrel near the Giant Mushroom",
@@ -250,7 +394,14 @@ KasplatLocationList = {
             zmax=580,
         ),
         KasplatLocation(
-            name="Near the Anthill", map_id=Maps.FungiForest, kong_lst=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky], coords=[1250, 270, 4400], xmin=1170, xmax=1390, zmin=4220, zmax=4575
+            name="Near the Anthill",
+            map_id=Maps.FungiForest,
+            kong_lst=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
+            coords=[1250, 270, 4400],
+            xmin=1170,
+            xmax=1390,
+            zmin=4220,
+            zmax=4575,
         ),
         KasplatLocation(
             name="Near the sleeping Rabbit",
@@ -275,12 +426,32 @@ KasplatLocationList = {
         KasplatLocation(name="Behind DK's Barn", map_id=Maps.FungiForest, kong_lst=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky], coords=[3693, 115, 1546]),
         KasplatLocation(name="Inside the Giant Mushroom", map_id=Maps.ForestGiantMushroom, kong_lst=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky], coords=[329, 534, 402]),
         KasplatLocation(name="Under the Owl's Tree", map_id=Maps.FungiForest, kong_lst=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky], coords=[1270, 249, 3927]),
-        KasplatLocation(name="On a low platform on the exterior of Giant Mushroom", map_id=Maps.FungiForest, kong_lst=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky], coords=[1290, 389, 678]),
-        KasplatLocation(name="On a high platform on the exterior of Giant Mushroom", map_id=Maps.FungiForest, kong_lst=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky], coords=[732, 979, 597]),
         KasplatLocation(
-            name="Behind the Cuckoo Clock", map_id=Maps.FungiForest, kong_lst=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky], coords=[2297, 604, 2318], xmin=2275, xmax=2350, zmin=2250, zmax=2400
+            name="On a low platform on the exterior of Giant Mushroom", map_id=Maps.FungiForest, kong_lst=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky], coords=[1290, 389, 678]
         ),
-        KasplatLocation(name="Inside the mill", map_id=Maps.ForestMillFront, kong_lst=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky], coords=[360, 0, 450], xmin=200, xmax=600, zmin=360, zmax=500),
+        KasplatLocation(
+            name="On a high platform on the exterior of Giant Mushroom", map_id=Maps.FungiForest, kong_lst=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky], coords=[732, 979, 597]
+        ),
+        KasplatLocation(
+            name="Behind the Cuckoo Clock",
+            map_id=Maps.FungiForest,
+            kong_lst=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
+            coords=[2297, 604, 2318],
+            xmin=2275,
+            xmax=2350,
+            zmin=2250,
+            zmax=2400,
+        ),
+        KasplatLocation(
+            name="Inside the mill",
+            map_id=Maps.ForestMillFront,
+            kong_lst=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
+            coords=[360, 0, 450],
+            xmin=200,
+            xmax=600,
+            zmin=360,
+            zmax=500,
+        ),
         KasplatLocation(
             name="In the moat around the Giant Mushroom",
             map_id=Maps.FungiForest,
@@ -293,7 +464,9 @@ KasplatLocationList = {
         ),
     ],
     Levels.CrystalCaves: [
-        KasplatLocation(name="Near Snide's", map_id=Maps.CrystalCaves, kong_lst=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky], coords=[1242, 65, 585], xmin=1160, xmax=1340, zmin=500, zmax=640),
+        KasplatLocation(
+            name="Near Snide's", map_id=Maps.CrystalCaves, kong_lst=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky], coords=[1242, 65, 585], xmin=1160, xmax=1340, zmin=500, zmax=640
+        ),
         KasplatLocation(
             name="In the room with Tiny's Bonus Barrel",
             map_id=Maps.CrystalCaves,
@@ -305,7 +478,14 @@ KasplatLocationList = {
             zmax=2600,
         ),
         KasplatLocation(
-            name="Inside an Ice Shield", map_id=Maps.CrystalCaves, kong_lst=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky], coords=[752, 53, 778], xmin=720, xmax=800, zmin=750, zmax=830
+            name="Inside an Ice Shield",
+            map_id=Maps.CrystalCaves,
+            kong_lst=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
+            coords=[752, 53, 778],
+            xmin=720,
+            xmax=800,
+            zmin=750,
+            zmax=830,
         ),
         KasplatLocation(
             name="On the Cabin with 5 Doors",
@@ -375,7 +555,14 @@ KasplatLocationList = {
             zmax=1360,
         ),
         KasplatLocation(
-            name="Inside the dungeon", map_id=Maps.CastleDungeon, kong_lst=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky], coords=[526, 195, 2013], xmin=480, xmax=600, zmin=1400, zmax=2570
+            name="Inside the dungeon",
+            map_id=Maps.CastleDungeon,
+            kong_lst=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
+            coords=[526, 195, 2013],
+            xmin=480,
+            xmax=600,
+            zmin=1400,
+            zmax=2570,
         ),
         KasplatLocation(
             name="Near the T&S at the back of Castle",
@@ -388,7 +575,14 @@ KasplatLocationList = {
             zmax=2090,
         ),
         KasplatLocation(
-            name="Inside the Ballroom", map_id=Maps.CastleBallroom, kong_lst=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky], coords=[547, 45, 613], xmin=340, xmax=770, zmin=330, zmax=880
+            name="Inside the Ballroom",
+            map_id=Maps.CastleBallroom,
+            kong_lst=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
+            coords=[547, 45, 613],
+            xmin=340,
+            xmax=770,
+            zmin=330,
+            zmax=880,
         ),
         KasplatLocation(
             name="At the top of the Castle",
@@ -403,13 +597,29 @@ KasplatLocationList = {
         KasplatLocation(name="Inside the Tree", map_id=Maps.CastleTree, kong_lst=[Kongs.donkey], coords=[937, 400, 1424]),
         KasplatLocation(name="In the Crypt straight ahead", map_id=Maps.CastleLowerCave, kong_lst=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky], coords=[1112, 200, 1242]),
         KasplatLocation(name="Near the upper Warp 2", map_id=Maps.CreepyCastle, kong_lst=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky], coords=[1892, 904, 1626]),
-        KasplatLocation(name="Near the Crypt Entrance on a lone platform", map_id=Maps.CreepyCastle, kong_lst=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky], coords=[66, 392, 911]),
+        KasplatLocation(
+            name="Near the Crypt Entrance on a lone platform", map_id=Maps.CreepyCastle, kong_lst=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky], coords=[66, 392, 911]
+        ),
         KasplatLocation(name="Near Candy's", map_id=Maps.CastleUpperCave, kong_lst=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky], coords=[536, 220, 2205]),
         KasplatLocation(
-            name="In the water near the Tree", map_id=Maps.CreepyCastle, kong_lst=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky], coords=[845, 330, 235], xmin=780, xmax=930, zmin=150, zmax=300
+            name="In the water near the Tree",
+            map_id=Maps.CreepyCastle,
+            kong_lst=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
+            coords=[845, 330, 235],
+            xmin=780,
+            xmax=930,
+            zmin=150,
+            zmax=300,
         ),
         KasplatLocation(
-            name="Near Cranky's Hut", map_id=Maps.CreepyCastle, kong_lst=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky], coords=[385, 1140, 1389], xmin=320, xmax=540, zmin=1335, zmax=1455
+            name="Near Cranky's Hut",
+            map_id=Maps.CreepyCastle,
+            kong_lst=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
+            coords=[385, 1140, 1389],
+            xmin=320,
+            xmax=540,
+            zmin=1335,
+            zmax=1455,
         ),
         KasplatLocation(
             name="Near the Rocketbarrel by the drawbridge",
@@ -424,7 +634,14 @@ KasplatLocationList = {
     ],
     Levels.DKIsles: [
         KasplatLocation(
-            name="On the Beaver Beach", map_id=Maps.Isles, kong_lst=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky], coords=[3557, 497, 1555], xmin=3410, xmax=3740, zmin=1460, zmax=1950
+            name="On the Beaver Beach",
+            map_id=Maps.Isles,
+            kong_lst=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
+            coords=[3557, 497, 1555],
+            xmin=3410,
+            xmax=3740,
+            zmin=1460,
+            zmax=1950,
         ),
         KasplatLocation(
             name="Inside Factory Lobby above the DK Portal",
@@ -462,7 +679,14 @@ KasplatLocationList = {
             zmax=3910,
         ),
         KasplatLocation(
-            name="On the Big X Platform", map_id=Maps.Isles, kong_lst=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky], coords=[1578, 499, 457], xmin=1475, xmax=1685, zmin=330, zmax=565
+            name="On the Big X Platform",
+            map_id=Maps.Isles,
+            kong_lst=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
+            coords=[1578, 499, 457],
+            xmin=1475,
+            xmax=1685,
+            zmin=330,
+            zmax=565,
         ),
         KasplatLocation(
             name="Behind the house to Fungi Lobby",

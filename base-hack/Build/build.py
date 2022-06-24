@@ -213,7 +213,7 @@ base_coin_sfx = "assets/Non-Code/music/Win95_startup.dk64song"
 new_coin_sfx = "assets/Non-Code/music/coin_sfx.bin"
 if os.path.exists(new_coin_sfx):
     os.remove(new_coin_sfx)
-shutil.copyfile(base_coin_sfx,new_coin_sfx)
+shutil.copyfile(base_coin_sfx, new_coin_sfx)
 
 map_replacements = []
 song_replacements = [

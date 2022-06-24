@@ -65,10 +65,8 @@ class Settings:
         # progressive_upgrades: bool
         self.progressive_upgrades = False
 
-
         self.prices = VanillaPrices.copy()
         self.resolve_settings()
-
 
     def update_progression_totals(self):
         """Update the troff and blocker totals if we're randomly setting them."""

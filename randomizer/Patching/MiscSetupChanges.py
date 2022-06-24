@@ -6,11 +6,13 @@ from randomizer.Patching.Patcher import ROM
 from randomizer.Spoiler import Spoiler
 from randomizer.Lists.Patches import DirtPatchLocations
 
+
 def float_to_hex(f):
     """Convert float to hex."""
     if f == 0:
         return "0x00000000"
     return hex(struct.unpack("<I", struct.pack("<f", f))[0])
+
 
 def randomize_setup(spoiler: Spoiler):
     """Randomize setup."""
@@ -66,10 +68,10 @@ def randomize_setup(spoiler: Spoiler):
                     if not actor_type == 139:
                         byte_list = []
                         ROM().seek(actor_start + 0x34)
-                        used_actor_ids.append(int.from_bytes(ROM().readBytes(2),"big"))
+                        used_actor_ids.append(int.from_bytes(ROM().readBytes(2), "big"))
                         ROM().seek(actor_start)
-                        for x in range(int(0x38/4)):
-                            byte_list.append(int.from_bytes(ROM().readBytes(4),"big"))
+                        for x in range(int(0x38 / 4)):
+                            byte_list.append(int.from_bytes(ROM().readBytes(4), "big"))
                         actor_bytes.append(byte_list.copy())
             if spoiler.settings.random_patches:
                 new_actor_id = 0x20
@@ -79,23 +81,21 @@ def randomize_setup(spoiler: Spoiler):
                             new_actor_id += 1
                     if patch.map_id == cont_map_id and patch.selected:
                         dirt_bytes = []
-                        dirt_bytes.append(int(float_to_hex(patch.x),16))
-                        dirt_bytes.append(int(float_to_hex(patch.y),16))
-                        dirt_bytes.append(int(float_to_hex(patch.z),16))
-                        dirt_bytes.append(int(float_to_hex(1),16))
+                        dirt_bytes.append(int(float_to_hex(patch.x), 16))
+                        dirt_bytes.append(int(float_to_hex(patch.y), 16))
+                        dirt_bytes.append(int(float_to_hex(patch.z), 16))
+                        dirt_bytes.append(int(float_to_hex(1), 16))
                         for x in range(8):
                             dirt_bytes.append(0)
                         rot_type_hex = hex(patch.rotation) + "007B"
-                        dirt_bytes.append(int(rot_type_hex,16))
+                        dirt_bytes.append(int(rot_type_hex, 16))
                         id_something_hex = hex(new_actor_id) + "46D0"
                         used_actor_ids.append(new_actor_id)
                         new_actor_id += 1
-                        dirt_bytes.append(int(id_something_hex,16))
+                        dirt_bytes.append(int(id_something_hex, 16))
                         actor_bytes.append(dirt_bytes)
                 ROM().seek(actor_block_start)
-                ROM().writeMultipleBytes(len(actor_bytes),4)
+                ROM().writeMultipleBytes(len(actor_bytes), 4)
                 for actor in actor_bytes:
                     for byte_list in actor:
-                        ROM().writeMultipleBytes(byte_list,4)
-                
-
+                        ROM().writeMultipleBytes(byte_list, 4)
