@@ -88,8 +88,7 @@ def GetAccessibleLocations(settings, ownedItems, searchType=SearchMode.GetReacha
                         break
                     if location.item == Items.GoldenBanana:
                         sphere.availableGBs += 1
-                    else:
-                        sphere.locations.append(locationId)
+                    sphere.locations.append(locationId)
                 # If we're checking beatability, just want to know if we have access to the banana hoard
                 if searchType == SearchMode.CheckBeatable and location.item == Items.BananaHoard:
                     return True
@@ -344,11 +343,20 @@ def Reset():
 def ParePlaythrough(settings, PlaythroughLocations):
     """Pare playthrough down to only the essential elements."""
     locationsToAddBack = []
+    mostExpensiveBLocker = max([settings.blocker_0, settings.blocker_1, settings.blocker_2, settings.blocker_3, settings.blocker_4, settings.blocker_5, settings.blocker_6, settings.blocker_7])
     # Check every location in the list of spheres.
     for i in range(len(PlaythroughLocations) - 2, -1, -1):
         sphere = PlaythroughLocations[i]
+        # If there are more available GBs than the most expensive B. Locker needs, none of them are logically required
+        # If there are fewer available GBs than the most expensive B. Locker requires, all of them are logically required
+        if sphere.availableGBs > mostExpensiveBLocker:
+            sphere.locations = [l for l in sphere.locations if LocationList[l].item != Items.GoldenBanana]
+            continue
         for locationId in sphere.locations.copy():
             location = LocationList[locationId]
+            # All GBs that make it here are logically required
+            if location.item == Items.GoldenBanana:
+                continue
             # Copy out item from location
             item = location.item
             location.item = None
