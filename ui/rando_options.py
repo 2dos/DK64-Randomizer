@@ -134,10 +134,13 @@ def toggle_b_locker_boxes(event):
     if js.document.getElementById("randomize_blocker_required_amounts").checked:
         disabled = False
     blocker_text = js.document.getElementById("blocker_text")
+    maximize_helm_blocker = js.document.getElementById("maximize_helm_blocker")
     if disabled:
         blocker_text.setAttribute("disabled", "disabled")
+        maximize_helm_blocker.setAttribute("disabled", "disabled")
     else:
         blocker_text.removeAttribute("disabled")
+        maximize_helm_blocker.removeAttribute("disabled")
     for i in range(0, 10):
         blocker = js.document.getElementById(f"blocker_{i}")
         try:
