@@ -71,7 +71,7 @@ def randomize_kasplat_locations(spoiler: Spoiler):
                 ROM().seek(cont_map_spawner_address + offset + 0x4)
                 enemy_coords = []
                 for y in range(3):
-                    coord = int.from_bytes(ROM().readBytes(2),"big")
+                    coord = int.from_bytes(ROM().readBytes(2), "big")
                     if coord > 32767:
                         coord -= 65536
                     enemy_coords.append(coord)
@@ -157,11 +157,11 @@ def randomize_kasplat_locations(spoiler: Spoiler):
                         a_23 = []
                         a_30 = []
                         for x in range(3):
-                            a_01.append(int((a_0[x]+a_1[x])/2))
-                            a_12.append(int((a_1[x]+a_2[x])/2))
-                            a_23.append(int((a_2[x]+a_3[x])/2))
-                            a_30.append(int((a_3[x]+a_0[x])/2))
-                        fence_coords = [a_0,a_01,a_1,a_12,a_2,a_23,a_3,a_30]
+                            a_01.append(int((a_0[x] + a_1[x]) / 2))
+                            a_12.append(int((a_1[x] + a_2[x]) / 2))
+                            a_23.append(int((a_2[x] + a_3[x]) / 2))
+                            a_30.append(int((a_3[x] + a_0[x]) / 2))
+                        fence_coords = [a_0, a_01, a_1, a_12, a_2, a_23, a_3, a_30]
                         new_fence_bytes.append(len(fence_coords))  # 0: Fence Block 0x6 Count, 1: Fence Block 0xA Count
                         for x in fence_coords:
                             for y in x:
