@@ -350,7 +350,7 @@ def ParePlaythrough(settings, PlaythroughLocations):
         # If there are more available GBs than the most expensive B. Locker needs, none of them are logically required
         # If there are fewer available GBs than the most expensive B. Locker requires, all of them are logically required
         if sphere.availableGBs > mostExpensiveBLocker:
-            sphere.locations = [l for l in sphere.locations if LocationList[l].item != Items.GoldenBanana]
+            sphere.locations = [locationId for locationId in sphere.locations if LocationList[locationId].item != Items.GoldenBanana]
             continue
         for locationId in sphere.locations.copy():
             location = LocationList[locationId]
