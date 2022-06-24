@@ -53,18 +53,30 @@
                 </div>
                 <div class="col-sm" style="margin: auto;"> 
                     <label>
-                        Max Value: 
-                        <input class="form-control"
-                            min="0"
-                            max="200"
-                            name="blocker_text"
-                            id="blocker_text"
-                            style="width: 50%;display:inline-block;"
-                            type="number"
-                            data-toggle="tooltip"
-                            title="Maximum Randomized value"
-                            default="50"
-                            placeholder="50"/> 
+                        Max Value:
+                        <div class="input-group mb-3">
+                            <div class="input-group-prepend">
+                                <div class="input-group-text">
+                                <input
+                                    type="checkbox"
+                                    value="True"
+                                    id="blocker_checkbox"
+                                    name="blocker_checkbox"
+                                    data-toggle="tooltip"
+                                    title="Check box to ensure Helm is 'Max Value'.">
+                                </div>
+                            </div> 
+                            <input class="form-control"
+                                min="0"
+                                max="200"
+                                name="blocker_text"
+                                id="blocker_text"
+                                type="number"
+                                data-toggle="tooltip"
+                                title="Maximum Randomized value"
+                                default="50"
+                                placeholder="50"/>
+                        </div> 
                     </label>
                 </div>
             </div>
@@ -95,17 +107,29 @@
                 <div class="col-sm" style="margin: auto;"> 
                     <label>
                         Max Value:
-                        <input class="form-control"
-                            min="0"
-                            max="500"
-                            name="troff_text"
-                            id="troff_text"
-                            style="width: 50%;display:inline-block;"
-                            type="number"
-                            data-toggle="tooltip"
-                            title="Maximum Randomized value"
-                            default="300"
-                            placeholder="300"/> 
+                        <div class="input-group mb-3">
+                            <div class="input-group-prepend">
+                                <div class="input-group-text">
+                                <input
+                                    type="checkbox"
+                                    value="True"
+                                    id="troff_checkbox"
+                                    name="troff_checkbox"
+                                    data-toggle="tooltip"
+                                    title="Check box to ensure Helm is 'Max Value'.">
+                                </div>
+                            </div>
+                            <input class="form-control"
+                                min="0"
+                                max="500"
+                                name="troff_text"
+                                id="troff_text"
+                                type="number"
+                                data-toggle="tooltip"
+                                title="Maximum Randomized value"
+                                default="300"
+                                placeholder="300"/>
+                        </div> 
                     </label>
                 </div>
             </div>
