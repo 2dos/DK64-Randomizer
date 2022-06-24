@@ -68,6 +68,13 @@ def randomize_kasplat_locations(spoiler: Spoiler):
             for x in range(spawner_count):
                 ROM().seek(cont_map_spawner_address + offset)
                 enemy_id = int.from_bytes(ROM().readBytes(1), "big")
+                ROM().seek(cont_map_spawner_address + offset + 0x4)
+                enemy_coords = []
+                for y in range(3):
+                    coord = int.from_bytes(ROM().readBytes(2),"big")
+                    if coord > 32767:
+                        coord -= 65536
+                    enemy_coords.append(coord)
                 ROM().seek(cont_map_spawner_address + offset + 0x13)
                 enemy_index = int.from_bytes(ROM().readBytes(1), "big")
                 used_enemy_indexes.append(enemy_index)
@@ -76,23 +83,45 @@ def randomize_kasplat_locations(spoiler: Spoiler):
                 extra_count = int.from_bytes(ROM().readBytes(1), "big")
                 offset += 0x16 + (extra_count * 2)
                 end_offset = offset
-                if enemy_id not in kasplat_types:
+                is_vanilla = False
+                new_id = 0
+                for level in KasplatLocationList:
+                    kasplats = KasplatLocationList[level]
+                    for kasplat in kasplats:
+                        if kasplat.vanilla and kasplat.selected and kasplat.map == cont_map_id:
+                            coord_match_count = 0
+                            for y in range(3):
+                                if enemy_coords[y] == kasplat.coords[y]:
+                                    coord_match_count += 1
+                            if coord_match_count == 3:
+                                is_vanilla = True
+                                new_id = kasplat_types[kasplat.selected_kong_idx]
+
+                if enemy_id not in kasplat_types or is_vanilla:
                     data_bytes = []
                     spawner_size = end_offset - init_offset
                     ROM().seek(cont_map_spawner_address + init_offset)
                     for x in range(spawner_size):
-                        data_bytes.append(int.from_bytes(ROM().readBytes(1), "big"))
+                        if x == 0 and is_vanilla:
+                            data_bytes.append(new_id)
+                            ROM().seek(cont_map_spawner_address + init_offset + 1)
+                        else:
+                            data_bytes.append(int.from_bytes(ROM().readBytes(1), "big"))
                     spawner_bytes.append(data_bytes)
             spawn_index = 1
             fence_index = 1
             for level in KasplatLocationList:
                 kasplats = KasplatLocationList[level]
                 for kasplat in kasplats:
-                    while spawn_index in used_enemy_indexes:
-                        spawn_index += 1
-                    while fence_index in used_fence_ids:
-                        fence_index += 1
-                    if cont_map_id == kasplat.map and kasplat.selected:
+                    if cont_map_id == kasplat.map and kasplat.selected and not kasplat.vanilla:
+                        if spawn_index in used_enemy_indexes:
+                            while spawn_index in used_enemy_indexes:
+                                spawn_index += 1
+                            used_enemy_indexes.append(spawn_index)
+                        if fence_index in used_fence_ids:
+                            while fence_index in used_fence_ids:
+                                fence_index += 1
+                            used_fence_ids.append(fence_index)
                         # Spawner
                         data_bytes = []
                         data_bytes.append(kasplat_types[kasplat.selected_kong_idx])
@@ -119,22 +148,27 @@ def randomize_kasplat_locations(spoiler: Spoiler):
                         spawner_bytes.append(data_bytes)
                         # Fence
                         new_fence_bytes = []
-                        fence_coords = [
-                            [kasplat.bounds[0], kasplat.coords[1], kasplat.bounds[2]],
-                            [kasplat.bounds[1], kasplat.coords[1], kasplat.bounds[2]],
-                            [kasplat.bounds[1], kasplat.coords[1], kasplat.bounds[3]],
-                            [kasplat.bounds[0], kasplat.coords[1], kasplat.bounds[2]],
-                        ]
-                        for a in range(2):
-                            new_fence_bytes.append(len(fence_coords))  # 0: Fence Block 0x6 Count, 1: Fence Block 0xA Count
-                            for x in fence_coords:
-                                for y in x:
-                                    if y < 0:
-                                        y += 65536  # Signed to unsigned conversion
-                                    new_fence_bytes.append(y)
-                                if a == 1:
-                                    for y in range(2):
-                                        new_fence_bytes.append(0)
+                        a_0 = [kasplat.bounds[0], 0, kasplat.bounds[2]]
+                        a_1 = [kasplat.bounds[1], 0, kasplat.bounds[2]]
+                        a_2 = [kasplat.bounds[1], 0, kasplat.bounds[3]]
+                        a_3 = [kasplat.bounds[0], 0, kasplat.bounds[3]]
+                        a_01 = []
+                        a_12 = []
+                        a_23 = []
+                        a_30 = []
+                        for x in range(3):
+                            a_01.append(int((a_0[x]+a_1[x])/2))
+                            a_12.append(int((a_1[x]+a_2[x])/2))
+                            a_23.append(int((a_2[x]+a_3[x])/2))
+                            a_30.append(int((a_3[x]+a_0[x])/2))
+                        fence_coords = [a_0,a_01,a_1,a_12,a_2,a_23,a_3,a_30]
+                        new_fence_bytes.append(len(fence_coords))  # 0: Fence Block 0x6 Count, 1: Fence Block 0xA Count
+                        for x in fence_coords:
+                            for y in x:
+                                if y < 0:
+                                    y += 65536  # Signed to unsigned conversion
+                                new_fence_bytes.append(y)
+                        new_fence_bytes.append(0)
                         new_fence_bytes.append(fence_index)
                         new_fence_bytes.append(1)
                         fence_bytes.append(new_fence_bytes)
