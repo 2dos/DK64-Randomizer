@@ -189,14 +189,14 @@ class TransitionFront:
 
 class Sphere:
     """A randomizer concept often used in spoiler logs.
-    
-    A 'sphere' is a collection of locations and items that are accessible 
+
+    A 'sphere' is a collection of locations and items that are accessible
     or obtainable with only the items available from earlier, smaller spheres.
-    Sphere 0 items are what you start with in a seed, sphere 1 items can be 
-    obtained with those items, sphere 2 items can be obtained with sphere 0 
+    Sphere 0 items are what you start with in a seed, sphere 1 items can be
+    obtained with those items, sphere 2 items can be obtained with sphere 0
     and sphere 1 items, and so on.
     """
-    
+
     def __init__(self):
         """Initialize with given parameters."""
         self.availableGBs = 0

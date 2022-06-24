@@ -213,7 +213,7 @@ base_coin_sfx = "assets/Non-Code/music/Win95_startup.dk64song"
 new_coin_sfx = "assets/Non-Code/music/coin_sfx.bin"
 if os.path.exists(new_coin_sfx):
     os.remove(new_coin_sfx)
-shutil.copyfile(base_coin_sfx,new_coin_sfx)
+shutil.copyfile(base_coin_sfx, new_coin_sfx)
 
 map_replacements = []
 song_replacements = [
@@ -309,8 +309,8 @@ for x in range(221):
             "pointer_table_index": 16,
             "file_index": x,
             "source_file": "charspawners" + str(x) + ".bin",
-            "target_compressed_size": 0x1000,
-            "target_uncompressed_size": 0x1000,
+            "target_compressed_size": 0x1400,
+            "target_uncompressed_size": 0x1400,
             "do_not_recompress": True,
         }
     )

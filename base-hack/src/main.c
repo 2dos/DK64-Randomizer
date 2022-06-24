@@ -102,13 +102,13 @@ void cFuncLoop(void) {
 	}
 	if (CurrentMap == MAIN_MENU) {
 		if (CutsceneActive == 6) {
-			if (!checkFlag(FLAG_COLLECTABLE_JAPES_DK_HIDDENCB,0)) {
+			if (!checkFlag(FLAG_ESCAPE,0)) {
 				// New File
 				unlockMoves();
 				applyFastStart();
 				openCrownDoor();
 				giveCollectables();
-				setPermFlag(FLAG_COLLECTABLE_JAPES_DK_HIDDENCB);
+				setPermFlag(FLAG_ESCAPE);
 				Character = Rando.starting_kong;
 				StoredSettings.file_extra[(int)FileIndex].location_sss_purchased = 0;
 				StoredSettings.file_extra[(int)FileIndex].location_ab1_purchased = 0;

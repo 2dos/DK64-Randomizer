@@ -40,6 +40,8 @@ def int_to_float(val):
 
 def float_to_hex(f):
     """Convert float to hex."""
+    if f == 0:
+        return "0x00000000"
     return hex(struct.unpack("<I", struct.pack("<f", f))[0])
 
 
