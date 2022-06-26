@@ -138,7 +138,7 @@
 
 // Keys in Possession
 #define FLAG_KEYHAVE_KEY1 0x1A // Key 1 Have
-#define FLAG_KEYHAVE_KEY2 0x4B // Key 2 Have
+#define FLAG_KEYHAVE_KEY2 0x4A // Key 2 Have
 #define FLAG_KEYHAVE_KEY3 0x8A // Key 3 Have
 #define FLAG_KEYHAVE_KEY4 0xA8 // Key 4 Have
 #define FLAG_KEYHAVE_KEY5 0xEC // Key 5 Have
