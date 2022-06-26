@@ -8,7 +8,7 @@
                                        name="random_music"
                                        id="random_music"
                                        value="True"/>
-                    Randomize All
+                    Randomize All Music
             </div>
             <div>
                 Background Music
@@ -75,16 +75,73 @@
                     id="music_file"
                     name="music_file"/>
             </div>
+            <div class="row">
+                <hr />
+                <h3>Transformation Colors</h3>
+                <div class="col-md-5">
+                    <div class="color-selector">
+                        Rambi
+                        <select name="rambi_colors"
+                                id="rambi_colors"
+                                class="form-select"
+                                aria-label="Rambi"
+                                multiple>
+                            <option selected value="vanilla">
+                                Vanilla
+                            </option>
+                            <option value="randomized">
+                                Randomized
+                            </option>
+                            <option value="custom">
+                                Custom
+                            </option>
+                        </select>
+                        <div id="rambi_custom">
+                            <div class="input-group mb-3 rambiColorPicker">
+                                <input type="text" class="form-control" name="rambi_custom_color" id="rambi_custom_color" default="#000000">
+                                <button class="btn btn-default rgb-btn" type="button">&nbsp;</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-5 offset-md-2">
+                    <div class="color-selector">
+                        Enguarde
+                        <select name="enguarde_colors"
+                                id="enguarde_colors"
+                                class="form-select"
+                                aria-label="Enguarde"
+                                multiple>
+                            <option selected value="vanilla">
+                                Vanilla
+                            </option>
+                            <option value="randomized">
+                                Randomized
+                            </option>
+                            <option value="custom">
+                                Custom
+                            </option>
+                        </select>
+                        <div id="enguarde_custom">
+                            <div class="input-group mb-3 enguardeColorPicker">
+                                <input type="text" class="form-control" name="enguarde_custom_color" id="enguarde_custom_color" default="#000000">
+                                <button class="btn btn-default rgb-btn" type="button">&nbsp;</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
+        
         <div class="col border">
-            <h3>Colors</h3>
+            <h3>Kong Colors</h3>
             <div class="form-check form-switch w-75" style="margin-left: 30%;">
                 <input class="form-check-input"
                         type="checkbox"
                         name="random_colors"
                         id="random_colors"
                         value="True"/>
-                    Randomize All
+                    Randomize All Colors
             </div>
             <div class="row">
                 <div class="col-md-5">
@@ -195,7 +252,7 @@
                 </div>
             </div>
             <div class="row">
-                <div class="col-md-5">
+                <div class="col-md-5 mx-auto">
                     <div class="color-selector">
                         Chunky
                         <select name="chunky_colors"
@@ -216,60 +273,6 @@
                         <div id="chunky_custom">
                             <div class="input-group mb-3 chunkyColorPicker">
                                 <input type="text" class="form-control" name="chunky_custom_color" id="chunky_custom_color" default="#000000">
-                                <button class="btn btn-default rgb-btn" type="button">&nbsp;</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-5 offset-md-2">
-                    <div class="color-selector">
-                        Rambi
-                        <select name="rambi_colors"
-                                id="rambi_colors"
-                                class="form-select"
-                                aria-label="Rambi"
-                                multiple>
-                            <option selected value="vanilla">
-                                Vanilla
-                            </option>
-                            <option value="randomized">
-                                Randomized
-                            </option>
-                            <option value="custom">
-                                Custom
-                            </option>
-                        </select>
-                        <div id="rambi_custom">
-                            <div class="input-group mb-3 rambiColorPicker">
-                                <input type="text" class="form-control" name="rambi_custom_color" id="rambi_custom_color" default="#000000">
-                                <button class="btn btn-default rgb-btn" type="button">&nbsp;</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-md-5 mx-auto">
-                    <div class="color-selector">
-                        Enguarde
-                        <select name="enguarde_colors"
-                                id="enguarde_colors"
-                                class="form-select"
-                                aria-label="Enguarde"
-                                multiple>
-                            <option selected value="vanilla">
-                                Vanilla
-                            </option>
-                            <option value="randomized">
-                                Randomized
-                            </option>
-                            <option value="custom">
-                                Custom
-                            </option>
-                        </select>
-                        <div id="enguarde_custom">
-                            <div class="input-group mb-3 enguardeColorPicker">
-                                <input type="text" class="form-control" name="enguarde_custom_color" id="enguarde_custom_color" default="#000000">
                                 <button class="btn btn-default rgb-btn" type="button">&nbsp;</button>
                             </div>
                         </div>

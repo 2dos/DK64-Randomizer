@@ -25,10 +25,7 @@ def apply_cosmetic_colors(spoiler: Spoiler):
         {"kong": "tiny", "palettes": [{"name": "overalls", "image": 6014, "fill_type": "radial"}], "base_setting": "tiny_colors", "custom_setting": "tiny_custom_color", "kong_index": 3},
         {
             "kong": "chunky",
-            "palettes": [
-                {"name": "shirt_back", "image": 3769, "fill_type": "checkered"},
-                {"name": "shirt_front", "image": 3687, "fill_type": "radial"},
-            ],
+            "palettes": [{"name": "shirt_back", "image": 3769, "fill_type": "checkered"}, {"name": "shirt_front", "image": 3687, "fill_type": "radial"}],
             "base_setting": "chunky_colors",
             "custom_setting": "chunky_custom_color",
             "kong_index": 4,
@@ -38,10 +35,7 @@ def apply_cosmetic_colors(spoiler: Spoiler):
     ]
 
     for kong in kong_settings:
-        base_obj = {
-            "kong": kong["kong"],
-            "zones": [],
-        }
+        base_obj = {"kong": kong["kong"], "zones": []}
         for palette in kong["palettes"]:
             arr = ["#000000"]
             if palette["fill_type"] == "checkered":
@@ -52,6 +46,8 @@ def apply_cosmetic_colors(spoiler: Spoiler):
                 color = f"#{format(randint(0, 0xFFFFFF), '06x')}"
             else:
                 color = js.document.getElementById(kong["custom_setting"]).value
+                if not color:
+                    color = "#000000"
             base_obj["zones"][0]["colors"][0] = color
             if kong["kong_index"] == 4:
                 base_obj["zones"][1]["colors"][0] = color
