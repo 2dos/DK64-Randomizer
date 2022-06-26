@@ -56,7 +56,7 @@ body {
   text-align: left;
   padding-left: 80px;
   margin-bottom: 20px;
-  margin-top: 20px;
+  margin-top: 30px;
 }
 
 .form-check-input {
@@ -236,4 +236,28 @@ select:disabled option:checked {
 
 .color-selector {
   min-height:200px
+}
+
+.input-group-text {
+  background-color: #171717;
+  height: 38px;
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+}
+
+#maximize_blocker_checkbox:disabled {
+  background-color:#252525;
+  color:#898989;
+  border-color:#898989;
+}
+
+i {
+  display: inline-block;
+  text-align: right;
+  vertical-align: top;
+  font-size: 10px;
+}
+
+.label {
+  padding:15px 0px 10px;
 }
