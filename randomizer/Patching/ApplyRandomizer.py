@@ -259,6 +259,10 @@ def patching_response(responded_data):
     if spoiler.settings.disable_shop_hints:
         ROM().seek(sav + 0x13B)
         ROM().write(0)
+    
+    if spoiler.settings.open_levels:
+        ROM().seek(sav + 0x127)
+        ROM().write(1)
 
     keys_turned_in = [0, 1, 2, 3, 4, 5, 6, 7]
     if len(spoiler.settings.krool_keys_required) > 0:

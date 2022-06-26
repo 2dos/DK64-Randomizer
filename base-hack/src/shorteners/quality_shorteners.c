@@ -63,13 +63,13 @@ static const short default_ftt_flags[] = {
 };
 
 static const short openlevels_flags[] = {
-    // Beehive Gate
+    FLAG_PROGRESSION_SHELLHIVEGATE, // Beehive Gate
     FLAG_PROGRESSION_AZTECTUNNEL, // Aztec Tunnel Door
-    // Factory neutral gate open
-    // Factory Prod Room On
-    // Galleon Coconut Gate Opened
+    FLAG_PROGRESSION_FACTORY_NEUTRALSWITCH, // Factory neutral gate open
+    FLAG_MODIFIER_PRODROOM, // Factory Prod Room On
+    FLAG_COCONUTGATE, // Galleon Coconut Gate Opened
     FLAG_PROGRESSION_FUNGIGREENTUNNEL_FEATHER, // Fungi Green Path Open (Feather)
-    // Fungi Green Path Open (Pineapple)
+    FLAG_PROGRESSION_FUNGIGREENTUNNEL_PINEAPPLE, // Fungi Green Path Open (Pineapple)
     FLAG_PROGRESSION_FUNGIGOLDTUNNEL, // Fungi Gold Path Open
     FLAG_PROGRESSION_5DIPADS, // Caves 5DI Pads spawned
 };
