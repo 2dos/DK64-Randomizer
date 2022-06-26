@@ -59,7 +59,6 @@ LogicRegions = {
         Collectible(Collectibles.bunch, Kongs.diddy, lambda l: True, None, 1),  # Sun Ring
         Collectible(Collectibles.bunch, Kongs.diddy, lambda l: True, None, 1),  # On top llama temple
         Collectible(Collectibles.banana, Kongs.diddy, lambda l: True, None, 4),  # 5DTemple Steps
-        Collectible(Collectibles.balloon, Kongs.diddy, lambda l: Events.AztecDonkeySwitch in l.Events and l.strongKong and l.peanut and l.donkey, None, 1),
 
         Collectible(Collectibles.banana, Kongs.lanky, lambda l: True, None, 5),  # Snake Road
         Collectible(Collectibles.bunch, Kongs.lanky, lambda l: True, None, 1),  # Cranky
@@ -86,6 +85,8 @@ LogicRegions = {
     ],
     Regions.AztecDonkeyQuicksandCave: [
         Collectible(Collectibles.bunch, Kongs.donkey, lambda l: l.strongKong, None, 4),
+
+        Collectible(Collectibles.balloon, Kongs.diddy, lambda l: l.peanut, None, 1),
 
         Collectible(Collectibles.coin, Kongs.chunky, lambda l: True, None, 4),  # Behind W5
     ],

@@ -24,7 +24,7 @@ static const short warpflags_aztec[] = {
 	FLAG_WARP_AZTEC_W4_TOTEM,
 	FLAG_WARP_AZTEC_W4_FUNKY,
 	FLAG_WARP_AZTEC_W5_TOTEM,
-	FLAG_WARP_AZTEC_W5_SNOOP,
+	//FLAG_WARP_AZTEC_W5_SNOOP, # Activating this warp despawns Donkey's GB
 	FLAG_WARP_LLAMA_W1_HIGH,
 	FLAG_WARP_LLAMA_W1_LOW,
 	FLAG_WARP_LLAMA_W2_FAR,
@@ -128,7 +128,7 @@ static const short* warpflags_list[LEVEL_COUNT] = {
 };
 
 static const char warpflags_count[LEVEL_COUNT] = {
-	10,14,10,9,10,10,16, /*2,*/ 10
+	10,13,10,9,10,10,16, /*2,*/ 10
 };
 
 void toggleWarpLevel(int levelIndex) {
