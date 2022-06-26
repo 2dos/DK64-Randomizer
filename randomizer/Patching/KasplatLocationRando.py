@@ -32,7 +32,7 @@ def randomize_kasplat_locations(spoiler: Spoiler):
         Maps.CreepyCastleLobby,
         Maps.CrystalCavesLobby,
         Maps.FranticFactoryLobby,
-        Maps.GloomyGalleonLobby
+        Maps.GloomyGalleonLobby,
     ]
     if spoiler.settings.kasplat_rando:
         for level in KasplatLocationList:

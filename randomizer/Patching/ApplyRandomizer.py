@@ -259,7 +259,7 @@ def patching_response(responded_data):
     if spoiler.settings.disable_shop_hints:
         ROM().seek(sav + 0x13B)
         ROM().write(0)
-    
+
     if spoiler.settings.open_levels:
         ROM().seek(sav + 0x127)
         ROM().write(1)

@@ -34,18 +34,8 @@ color_palettes = [
             {"zone": "shirt_front", "image": 3687, "colors": ["#000000"], "fill_type": "radial"},
         ],
     },
-    {
-        "kong": "rambi",
-        "zones": [
-            {"zone": "top", "image": 3826, "colors":["#070657"], "fill_type": "radial"}
-        ]
-    },
-    {
-        "kong": "enguarde",
-        "zones": [
-            {"zone": "top", "image": 3847, "colors":["FF0000"], "fill_type": "radial"}
-        ]
-    }
+    {"kong": "rambi", "zones": [{"zone": "top", "image": 3826, "colors": ["#070657"], "fill_type": "radial"}]},
+    {"kong": "enguarde", "zones": [{"zone": "top", "image": 3847, "colors": ["FF0000"], "fill_type": "radial"}]},
 ]
 
 
