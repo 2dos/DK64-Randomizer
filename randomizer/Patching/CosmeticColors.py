@@ -34,7 +34,7 @@ def apply_cosmetic_colors(spoiler: Spoiler):
             "kong_index": 4,
         },
         {"kong": "rambi", "palettes": [{"name": "base", "image": 3826, "fill_type": "radial"}], "base_setting": "rambi_colors", "custom_setting": "rambi_custom_color", "kong_index": 5},
-        {"kong": "enguarde", "palettes": [{"name":"base","image": 3847, "fill_type": "radial"}], "base_setting": "enguarde_colors", "custom_setting": "enguarde_custom_color", "kong_index": 6}
+        {"kong": "enguarde", "palettes": [{"name": "base", "image": 3847, "fill_type": "radial"}], "base_setting": "enguarde_colors", "custom_setting": "enguarde_custom_color", "kong_index": 6},
     ]
 
     for kong in kong_settings:
