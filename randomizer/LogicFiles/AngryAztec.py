@@ -52,7 +52,6 @@ LogicRegions = {
     ]),
 
     Regions.AngryAztecMain: Region("Angry Aztec Main", Levels.AngryAztec, True, None, [
-        LocationLogic(Locations.AztecDonkeyQuicksandCave, lambda l: Events.AztecDonkeySwitch in l.Events and l.strongKong and l.isdonkey, MinigameType.BonusBarrel),
         LocationLogic(Locations.AztecDiddyRamGongs, lambda l: l.charge and l.jetpack and l.diddy),
         LocationLogic(Locations.AztecDiddyVultureRace, lambda l: l.jetpack and l.diddy),
         LocationLogic(Locations.AztecChunkyCagedBarrel, lambda l: l.hunkyChunky and l.ischunky, MinigameType.BonusBarrel),
@@ -72,6 +71,13 @@ LogicRegions = {
         TransitionFront(Regions.CrankyAztec, lambda l: True),
         TransitionFront(Regions.Snide, lambda l: True),
         TransitionFront(Regions.FunkyAztec, lambda l: True),
+        TransitionFront(Regions.AztecDonkeyQuicksandCave, lambda l: Events.AztecDonkeySwitch in l.Events and l.strongKong and l.isdonkey)
+    ]),
+
+    Regions.AztecDonkeyQuicksandCave: Region("Aztec Donkey Sand Tunnel", Levels.AngryAztec, False, -1, [
+        LocationLogic(Locations.AztecDonkeyQuicksandCave, lambda l: l.isdonkey, MinigameType.BonusBarrel),
+    ], [], [
+        TransitionFront(Regions.AngryAztecMain, lambda l: l.isdonkey and l.strongKong)
     ]),
 
     Regions.AztecBaboonBlast: Region("Aztec Baboon Blast", Levels.AngryAztec, False, None, [], [

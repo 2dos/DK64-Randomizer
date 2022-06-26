@@ -35,6 +35,7 @@ class Regions(IntEnum):
     BeyondRambiGate = auto()
     JapesLankyCave = auto()
     Mine = auto()
+    JapesTopOfMountain = auto()
     JapesMinecarts = auto()
     JapesCatacomb = auto()
     JapesBossLobby = auto()
@@ -46,6 +47,7 @@ class Regions(IntEnum):
     TempleStart = auto()
     TempleUnderwater = auto()
     AngryAztecMain = auto()
+    AztecDonkeyQuicksandCave = auto()
     DonkeyTemple = auto()
     DiddyTemple = auto()
     LankyTemple = auto()
@@ -83,6 +85,7 @@ class Regions(IntEnum):
     Shipyard = auto()
     SealRace = auto()
     TreasureRoom = auto()
+    TreasureRoomDiddyGoldTower = auto()
     TinyChest = auto()
     Submarine = auto()
     Mechafish = auto()
@@ -129,6 +132,9 @@ class Regions(IntEnum):
 
     # Crystal Caves Regions
     CrystalCavesMain = auto()
+    CavesBlueprintCave = auto()
+    CavesBonusCave = auto()
+    CavesBlueprintPillar = auto()
     BoulderCave = auto()
     CavesLankyRace = auto()
     FrozenCastle = auto()

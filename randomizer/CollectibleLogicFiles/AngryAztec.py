@@ -49,7 +49,6 @@ LogicRegions = {
     Regions.AngryAztecMain: [
         Collectible(Collectibles.balloon, Kongs.donkey, lambda l: l.coconut, None, 2),  # Cranky
         Collectible(Collectibles.balloon, Kongs.donkey, lambda l: l.coconut, None, 1),  # Behind Llama Temple
-        Collectible(Collectibles.bunch, Kongs.donkey, lambda l: Events.AztecDonkeySwitch in l.Events and l.strongKong, None, 4),
         Collectible(Collectibles.banana, Kongs.donkey, lambda l: True, None, 3),  # Near Snide
         Collectible(Collectibles.banana, Kongs.donkey, lambda l: True, None, 4),  # Near Llama Temple
 
@@ -83,8 +82,12 @@ LogicRegions = {
         Collectible(Collectibles.coin, Kongs.lanky, lambda l: True, None, 3),  # Behind 5DT
         Collectible(Collectibles.coin, Kongs.tiny, lambda l: True, None, 3),  # Around Hunky Chunky barrel
         Collectible(Collectibles.coin, Kongs.tiny, lambda l: True, None, 5),  # W5
-        Collectible(Collectibles.coin, Kongs.chunky, lambda l: Events.AztecDonkeySwitch in l.Events and l.strongKong and l.donkey, None, 4),  # Behind W5
         Collectible(Collectibles.coin, Kongs.chunky, lambda l: l.vines, None, 4),  # Vines by Snide's
+    ],
+    Regions.AztecDonkeyQuicksandCave: [
+        Collectible(Collectibles.bunch, Kongs.donkey, lambda l: l.strongKong, None, 4),
+
+        Collectible(Collectibles.coin, Kongs.chunky, lambda l: True, None, 4),  # Behind W5
     ],
     Regions.AztecBaboonBlast: [
     ],

@@ -104,5 +104,6 @@ typedef struct varspace {
 	/* 0x149 */ char free_source_factory; // Kong who frees the kong in Factory
 	/* 0x14A */ char version; // 0 = Live, 1 = Dev Site, 2 = Superuser
 	/* 0x14B */ char auto_keys; // 0 = Vanilla, 1 = Keys turn in as soon as you get them
-	/* 0x14C */ unsigned int dktv_data[5]; // Struct, Byte 0 = Demo index, 1 is unused, 2/3 is the demo length
+	/* 0x14C */ char activate_all_bananaports; // 0 = Vanilla, 1 = All bananaports are activated from the start
+	/* 0x14D */ unsigned int dktv_data[5]; // Struct, Byte 0 = Demo index, 1 is unused, 2/3 is the demo length
 } varspace;

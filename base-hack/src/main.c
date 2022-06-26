@@ -108,6 +108,7 @@ void cFuncLoop(void) {
 				applyFastStart();
 				openCrownDoor();
 				giveCollectables();
+				activateBananaports();
 				setPermFlag(FLAG_ESCAPE);
 				Character = Rando.starting_kong;
 				StoredSettings.file_extra[(int)FileIndex].location_sss_purchased = 0;
