@@ -51,6 +51,7 @@ class Spoiler:
             self.move_data.append(moves)
 
         self.jetpac_medals_required = self.settings.BananaMedalsRequired
+        self.hint_list = {}
 
     def toJson(self):
         """Convert spoiler to JSON."""
@@ -202,6 +203,8 @@ class Spoiler:
             humanspoiler["Shuffled Kasplats"] = self.human_kasplats
         # if self.settings.bananaport_rando:
         #     humanspoiler["Bananaports"] = self.human_warp_locations
+        if len(self.hint_list) > 0:
+            humanspoiler["Wrinkly Hints"] = self.hint_list
 
         return json.dumps(humanspoiler, indent=4)
 
