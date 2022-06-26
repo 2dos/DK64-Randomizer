@@ -15,6 +15,8 @@ def apply_cosmetic_colors(spoiler: Spoiler):
         js.document.getElementById("lanky_colors").value = "randomized"
         js.document.getElementById("tiny_colors").value = "randomized"
         js.document.getElementById("chunky_colors").value = "randomized"
+        js.document.getElementById("rambi_colors").value = "randomized"
+        js.document.getElementById("enguarde_colors").value = "randomized"
 
     kong_settings = [
         {"kong": "dk", "palettes": [{"name": "base", "image": 3724, "fill_type": "radial"}], "base_setting": "dk_colors", "custom_setting": "dk_custom_color", "kong_index": 0},
@@ -31,6 +33,8 @@ def apply_cosmetic_colors(spoiler: Spoiler):
             "custom_setting": "chunky_custom_color",
             "kong_index": 4,
         },
+        {"kong": "rambi", "palettes": [{"name": "base", "image": 3826, "fill_type": "radial"}], "base_setting": "rambi_colors", "custom_setting": "rambi_custom_color", "kong_index": 5},
+        {"kong": "enguarde", "palettes": [{"name":"base","image": 3847, "fill_type": "radial"}], "base_setting": "enguarde_colors", "custom_setting": "enguarde_custom_color", "kong_index": 6}
     ]
 
     for kong in kong_settings:

@@ -71,7 +71,7 @@ typedef struct varspace {
 	/* 0x124 */ char shop_indicator_on; // 0 = Off, 1 = Render amount of moves that can be purchased from that shop
 	/* 0x125 */ char warp_to_isles_enabled; // 0 = Off, 1 = Add Warp to Isles option
 	/* 0x126 */ char skip_arcade_round1; // 0 = No Skip, 1 = Skip R1
-	/* 0x127 */ char dk_color; // 0 = Vanilla, 1 = Blue, 2 = Green, 3 = Purple
+	/* 0x127 */ char open_level_sections; // 0 = Off, 1 = On
 	/* 0x128 */ char diddy_color; // 0 = Vanilla, 1 = Dark Blue Cap, 2 = Yellow Cap, 3 = Light Blue Cap
 	/* 0x129 */ char lanky_color; // 0 = Vanilla, 1 = Green Straps, 2 = Purple Straps, 3 = Red Straps
 	/* 0x12A */ char tiny_color; // 0 = Vanilla, 1 = Green, 2 = Purple, 3 = Red

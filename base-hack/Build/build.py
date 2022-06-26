@@ -373,7 +373,7 @@ for x in range(5):
             }
         )
 
-kong_palettes = [0xE8C, 0xE66, 0xE69, 0xEB9, 0xE67]
+kong_palettes = [0xE8C, 0xE66, 0xE69, 0xEB9, 0xE67, 3826, 3847]
 for x in kong_palettes:
     x_s = 32 * 32 * 2
     if x == 0xEB9:  # Chunky Shirt Back
