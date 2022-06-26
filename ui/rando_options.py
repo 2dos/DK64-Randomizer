@@ -241,7 +241,7 @@ def disable_colors(evt):
     disabled = False
     if js.document.getElementById("random_colors").checked:
         disabled = True
-    for i in ["dk", "diddy", "tiny", "lanky", "chunky"]:
+    for i in ["dk", "diddy", "tiny", "lanky", "chunky", "rambi", "enguarde"]:
         color = js.document.getElementById(f"{i}_colors")
         try:
             if disabled:
