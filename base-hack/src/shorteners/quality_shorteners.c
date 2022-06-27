@@ -62,6 +62,18 @@ static const short default_ftt_flags[] = {
     FLAG_FTT_BLOCKER, // B Locker
 };
 
+static const short openlevels_flags[] = {
+    FLAG_PROGRESSION_SHELLHIVEGATE, // Beehive Gate
+    FLAG_PROGRESSION_AZTECTUNNEL, // Aztec Tunnel Door
+    FLAG_PROGRESSION_FACTORY_NEUTRALSWITCH, // Factory neutral gate open
+    FLAG_MODIFIER_PRODROOM, // Factory Prod Room On
+    FLAG_COCONUTGATE, // Galleon Coconut Gate Opened
+    FLAG_PROGRESSION_FUNGIGREENTUNNEL_FEATHER, // Fungi Green Path Open (Feather)
+    FLAG_PROGRESSION_FUNGIGREENTUNNEL_PINEAPPLE, // Fungi Green Path Open (Pineapple)
+    FLAG_PROGRESSION_FUNGIGOLDTUNNEL, // Fungi Gold Path Open
+    FLAG_PROGRESSION_5DIPADS, // Caves 5DI Pads spawned
+};
+
 void qualityOfLife_shorteners(void) {
 	if (Rando.quality_of_life) {
 		// No FTTs
@@ -94,6 +106,11 @@ void qualityOfLife_shorteners(void) {
     if (ObjectModel2Timer <= 5) {
         for (int i = 0; i < sizeof(default_ftt_flags) / 2; i++) {
             setPermFlag(default_ftt_flags[i]);
+        }
+        if (Rando.open_level_sections) {
+            for (int i = 0; i < sizeof(openlevels_flags)/2; i++) {
+                setPermFlag(openlevels_flags[i]);
+            }
         }
     }
 }

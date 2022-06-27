@@ -8,7 +8,7 @@
                                        name="random_music"
                                        id="random_music"
                                        value="True"/>
-                    Randomize All
+                    Randomize All Music
             </div>
             <div>
                 Background Music
@@ -75,16 +75,73 @@
                     id="music_file"
                     name="music_file"/>
             </div>
+            <div class="row">
+                <hr />
+                <h3>Transformation Colors</h3>
+                <div class="col-md-5">
+                    <div class="color-selector">
+                        Rambi
+                        <select name="rambi_colors"
+                                id="rambi_colors"
+                                class="form-select"
+                                aria-label="Rambi"
+                                multiple>
+                            <option selected value="vanilla">
+                                Vanilla
+                            </option>
+                            <option value="randomized">
+                                Randomized
+                            </option>
+                            <option value="custom">
+                                Custom
+                            </option>
+                        </select>
+                        <div id="rambi_custom">
+                            <div class="input-group mb-3 rambiColorPicker">
+                                <input type="text" class="form-control" name="rambi_custom_color" id="rambi_custom_color" default="#000000">
+                                <button class="btn btn-default rgb-btn" type="button">&nbsp;</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-5 offset-md-2">
+                    <div class="color-selector">
+                        Enguarde
+                        <select name="enguarde_colors"
+                                id="enguarde_colors"
+                                class="form-select"
+                                aria-label="Enguarde"
+                                multiple>
+                            <option selected value="vanilla">
+                                Vanilla
+                            </option>
+                            <option value="randomized">
+                                Randomized
+                            </option>
+                            <option value="custom">
+                                Custom
+                            </option>
+                        </select>
+                        <div id="enguarde_custom">
+                            <div class="input-group mb-3 enguardeColorPicker">
+                                <input type="text" class="form-control" name="enguarde_custom_color" id="enguarde_custom_color" default="#000000">
+                                <button class="btn btn-default rgb-btn" type="button">&nbsp;</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
+        
         <div class="col border">
-            <h3>Colors</h3>
+            <h3>Kong Colors</h3>
             <div class="form-check form-switch w-75" style="margin-left: 30%;">
                 <input class="form-check-input"
                         type="checkbox"
                         name="random_colors"
                         id="random_colors"
                         value="True"/>
-                    Randomize All
+                    Randomize All Colors
             </div>
             <div class="row">
                 <div class="col-md-5">
@@ -107,7 +164,7 @@
                         </select>
                         <div id="dk_custom">
                             <div class="input-group mb-3 dkColorPicker">
-                                <input type="text" class="form-control" name="dk_custom_color" id="dk_custom_color">
+                                <input type="text" class="form-control" name="dk_custom_color" id="dk_custom_color" default="#000000">
                                 <button class="btn btn-default rgb-btn" type="button">&nbsp;</button>
                             </div>
                         </div>
@@ -133,7 +190,7 @@
                         </select>
                         <div id="diddy_custom">
                             <div class="input-group mb-3 diddyColorPicker">
-                                <input type="text" class="form-control" name="diddy_custom_color" id="diddy_custom_color">
+                                <input type="text" class="form-control" name="diddy_custom_color" id="diddy_custom_color" default="#000000">
                                 <button class="btn btn-default rgb-btn" type="button">&nbsp;</button>
                             </div>
                         </div>
@@ -161,7 +218,7 @@
                         </select>
                         <div id="lanky_custom">
                             <div class="input-group mb-3 lankyColorPicker">
-                                <input type="text" class="form-control" name="lanky_custom_color" id="lanky_custom_color">
+                                <input type="text" class="form-control" name="lanky_custom_color" id="lanky_custom_color" default="#000000">
                                 <button class="btn btn-default rgb-btn" type="button">&nbsp;</button>
                             </div>
                         </div>
@@ -187,7 +244,7 @@
                         </select>
                         <div id="tiny_custom">
                             <div class="input-group mb-3 tinyColorPicker">
-                                <input type="text" class="form-control" name="tiny_custom_color" id="tiny_custom_color">
+                                <input type="text" class="form-control" name="tiny_custom_color" id="tiny_custom_color" default="#000000">
                                 <button class="btn btn-default rgb-btn" type="button">&nbsp;</button>
                             </div>
                         </div>
@@ -257,6 +314,18 @@
                     $('#chunky_custom_color').trigger("change")
                 }
             }) 
+            $('.rambiColorPicker').izoColorPicker({
+                myColors: '',
+                onApply: (color)=>{
+                    $('#rambi_custom_color').trigger("change")
+                }
+            }) 
+            $('.enguardeColorPicker').izoColorPicker({
+                myColors: '',
+                onApply: (color)=>{
+                    $('#enguarde_custom_color').trigger("change")
+                }
+            }) 
     })
 
     $('.nav-tabs').click(function(){
@@ -272,6 +341,10 @@
             $('.tinyColorPicker').attr('style', 'background-color:' + object.tiny_custom_color + ';')
         } if (object.hasOwnProperty('chunky_custom_color')) {
             $('.chunkyColorPicker').attr('style', 'background-color:' + object.chunky_custom_color + ';')
+        } if (object.hasOwnProperty('rambi_custom_color')) {
+            $('.rambiColorPicker').attr('style', 'background-color:' + object.rambi_custom_color + ';')
+        } if (object.hasOwnProperty('enguarde_custom_color')) {
+            $('.enguardeColorPicker').attr('style', 'background-color:' + object.enguarde_custom_color + ';')
         }
     })
 </script>

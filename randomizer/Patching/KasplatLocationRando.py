@@ -13,6 +13,27 @@ from randomizer.Enums.Kongs import GetKongs
 def randomize_kasplat_locations(spoiler: Spoiler):
     """Write replaced enemies to ROM."""
     kasplat_types = [Enemies.KasplatDK, Enemies.KasplatDiddy, Enemies.KasplatLanky, Enemies.KasplatTiny, Enemies.KasplatChunky]
+    vanilla_kasplat_maps = [
+        Maps.JungleJapes,
+        Maps.JapesUnderGround,
+        Maps.AngryAztec,
+        Maps.AztecChunky5DTemple,
+        Maps.AztecLlamaTemple,
+        Maps.FranticFactory,
+        Maps.GloomyGalleon,
+        Maps.FungiForest,
+        Maps.ForestGiantMushroom,
+        Maps.CrystalCaves,
+        Maps.CreepyCastle,
+        Maps.CastleUpperCave,
+        Maps.CastleLowerCave,
+        Maps.CastleTree,
+        Maps.HideoutHelmLobby,
+        Maps.CreepyCastleLobby,
+        Maps.CrystalCavesLobby,
+        Maps.FranticFactoryLobby,
+        Maps.GloomyGalleonLobby,
+    ]
     if spoiler.settings.kasplat_rando:
         for level in KasplatLocationList:
             print(level)
@@ -97,7 +118,7 @@ def randomize_kasplat_locations(spoiler: Spoiler):
                                 is_vanilla = True
                                 new_id = kasplat_types[kasplat.selected_kong_idx]
 
-                if enemy_id not in kasplat_types or is_vanilla:
+                if enemy_id not in kasplat_types or is_vanilla or cont_map_id not in vanilla_kasplat_maps:
                     data_bytes = []
                     spawner_size = end_offset - init_offset
                     ROM().seek(cont_map_spawner_address + init_offset)

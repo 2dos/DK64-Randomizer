@@ -223,6 +223,8 @@ class Settings:
         self.lanky_colors = None
         self.tiny_colors = None
         self.chunky_colors = None
+        self.rambi_colors = None
+        self.enguarde_colors = None
 
         #  Misc
         self.generate_spoilerlog = None
