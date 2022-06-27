@@ -18,6 +18,6 @@ def randomize_dktv():
     ]
     random.shuffle(available_demos)
     for x in range(5):
-        ROM().seek(0x1FED020 + 0x14D + (x * 4))
+        ROM().seek(0x1FED020 + 0x14C + (x * 4))
         selected_demo = available_demos[x]
         ROM().writeMultipleBytes(vanilla_data[selected_demo], 4)

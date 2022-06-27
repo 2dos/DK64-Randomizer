@@ -132,15 +132,15 @@ static const char warpflags_count[LEVEL_COUNT] = {
 };
 
 void toggleWarpLevel(int levelIndex) {
-	int count = warpflags_count[levelIndex];
-	for (int i = 0; i < count; i++) {
-		setPermFlag(warpflags_list[levelIndex][i]);
-	}
+    int count = sizeof(warpflags_list[levelIndex])/2;
+    for (int i = 0; i < count; i++) {
+        setPermFlag(warpflags_list[levelIndex][i]);
+    }
 }
 
 void activateBananaports() {
     if (Rando.activate_all_bananaports) {
-        for (int i = 0; i < LEVEL_COUNT; i++) {
+        for (int i = 0; i < sizeof(warpflags_list); i++) {
             toggleWarpLevel(i);
         }
     }

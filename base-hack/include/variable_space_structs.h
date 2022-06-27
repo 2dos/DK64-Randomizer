@@ -72,7 +72,7 @@ typedef struct varspace {
 	/* 0x125 */ char warp_to_isles_enabled; // 0 = Off, 1 = Add Warp to Isles option
 	/* 0x126 */ char skip_arcade_round1; // 0 = No Skip, 1 = Skip R1
 	/* 0x127 */ char open_level_sections; // 0 = Off, 1 = On
-	/* 0x128 */ char diddy_color; // 0 = Vanilla, 1 = Dark Blue Cap, 2 = Yellow Cap, 3 = Light Blue Cap
+	/* 0x128 */ char activate_all_bananaports; // 0 = Vanilla, 1 = Most bananaports are activated from the start
 	/* 0x129 */ char lanky_color; // 0 = Vanilla, 1 = Green Straps, 2 = Purple Straps, 3 = Red Straps
 	/* 0x12A */ char tiny_color; // 0 = Vanilla, 1 = Green, 2 = Purple, 3 = Red
 	/* 0x12B */ char chunky_color; // 0 = Vanilla, 1 = Red, 2 = Purple/Blue, 3 = Green/Purple
@@ -104,6 +104,5 @@ typedef struct varspace {
 	/* 0x149 */ char free_source_factory; // Kong who frees the kong in Factory
 	/* 0x14A */ char version; // 0 = Live, 1 = Dev Site, 2 = Superuser
 	/* 0x14B */ char auto_keys; // 0 = Vanilla, 1 = Keys turn in as soon as you get them
-	/* 0x14C */ char activate_all_bananaports; // 0 = Vanilla, 1 = All bananaports are activated from the start
-	/* 0x14D */ unsigned int dktv_data[5]; // Struct, Byte 0 = Demo index, 1 is unused, 2/3 is the demo length
+	/* 0x14C */ unsigned int dktv_data[5]; // Struct, Byte 0 = Demo index, 1 is unused, 2/3 is the demo length
 } varspace;

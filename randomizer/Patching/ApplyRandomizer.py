@@ -266,7 +266,7 @@ def patching_response(responded_data):
 
     # Activate Bananaports
     if spoiler.settings.activate_all_bananaports:
-        ROM().seek(sav + 0x14C)
+        ROM().seek(sav + 0x128)
         ROM().write(1)
 
     keys_turned_in = [0, 1, 2, 3, 4, 5, 6, 7]
