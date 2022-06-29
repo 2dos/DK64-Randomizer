@@ -1,5 +1,5 @@
 {
-    "name":"LO Rando Race",
+    "name":"Level Order Rando Race",
     "description":"Preset for racing DK64 Level Order Randomizer",
     "fast_start_beginning_of_game":true,
     "unlock_all_moves":false,
