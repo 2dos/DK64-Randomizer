@@ -47,17 +47,9 @@ def randomize_moves(spoiler: Spoiler):
         for shop in range(3):
             for kong in range(5):
                 for level in range(7):
-                    if move_arrays[shop][kong][level] == 0:
-                        move_arrays[shop][kong][level] = 0xFF
-                    data = move_arrays[shop][kong][level]
-                    move_type = (data >> 4) & 0xF
-                    move_value = data & 0xF
-                    if move_type == 0xF:
-                        move_type = 5
-                        move_value = 0
-                    else:
-                        move_value -= 1
-                    move_arrays[shop][kong][level] = ((move_type & 7) << 5) | ((move_value & 3) << 3) | (kong & 7)
+                    if move_arrays[shop][kong][level] == -1:
+                        no_move = 5
+                        move_arrays[shop][kong][level] = (no_move << 5)
 
         dk_crankymoves = move_arrays[0][0]
         diddy_crankymoves = move_arrays[0][1]

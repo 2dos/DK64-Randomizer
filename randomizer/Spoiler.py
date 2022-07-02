@@ -46,7 +46,7 @@ class Spoiler:
                 kongmoves = []
                 # One for each level
                 for k in range(7):
-                    kongmoves.append(0)
+                    kongmoves.append(-1)
                 moves.append(kongmoves)
             self.move_data.append(moves)
 
@@ -291,8 +291,14 @@ class Spoiler:
                         kong_indices = [Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky]
                     level_index = location.level
                     # Use the item to find the data to write
-                    data = (ItemList[location.item].movetype << 4) | ItemList[location.item].index
+                    move_type = ItemList[location.item].movetype
+                    move_level = ItemList[location.item].index - 1
+                    move_kong = ItemList[location.item].kong
                     for kong_index in kong_indices:
+                        print(f"Shop {shop_index}, Kong {kong_index}, Level {level_index} | Move: {move_type} lvl {move_level} for kong {move_kong}")
+                        if move_type == 1 or move_type == 3 or (move_type == 2 and move_level > 0) or (move_type == 4 and move_level > 0):
+                            move_kong = kong_index
+                        data = (move_type << 5) | (move_level << 3) | move_kong
                         self.move_data[shop_index][kong_index][level_index] = data
                 elif location.type == Types.Kong:
                     self.WriteKongPlacement(id, location.item)
