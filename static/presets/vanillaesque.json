@@ -2,7 +2,6 @@
     "name":"Vanilla-esque",
     "description":"Randomizer with a vanilla-esque feel.",
     "fast_start_beginning_of_game":true,
-    "unlock_all_moves":false,
     "enemy_rando":false,
     "crown_enemy_rando":false,
     "enemy_speed_rando":false,
