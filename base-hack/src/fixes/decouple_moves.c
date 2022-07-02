@@ -8,6 +8,21 @@
 
 static const char moves_values[] = {1,1,3,1,7,1,1,7};
 
+void crossKongInit(void) {
+	// Change target kong (Progressive)
+	*(int*)(0x80025EA0) = 0x90850004; // LBU 	a1, 0x4 (a0)
+	// Change target kong (Bitfield)
+	*(int*)(0x80025E80) = 0x90850004; // LBU 	a1, 0x4 (a0)
+	// Change price check
+	*(int*)(0x80026200) = 0x90CF0005; // LBU 	t7, 0x5 (a2)
+	// Change Special Moves Text
+	*(int*)(0x80027AE0) = 0x910F0004; // LBU 	t7, 0x4 (t0)
+	// Change Gun Text
+	*(int*)(0x80027BA0) = 0x91180004; // LBU 	t8, 0x4 (t0)
+	// Change Instrument Text
+	*(int*)(0x80027C14) = 0x910C0004; // LBU 	t4, 0x4 (t0)
+}
+
 void decouple_moves_fixes(void) {
 	if ((CurrentMap == CRANKY) || (CurrentMap == CANDY) || (CurrentMap == FUNKY)) {
 		PatchCrankyCode();
@@ -18,6 +33,10 @@ void decouple_moves_fixes(void) {
 			*(int*)(0x8002661C) = func_call;
 			*(int*)(0x800265F0) = func_call;
 		}
+		int func_call = 0x0C000000 | (((int)&getNextMovePurchase & 0xFFFFFF) >> 2);
+		*(int*)(0x80026720) = func_call;
+		*(int*)(0x8002683C) = func_call;
+		crossKongInit();
 	} else if (CurrentMap == MAIN_MENU) {
 		*(short*)(0x8002E266) = 7; // Enguarde Arena Movement Write
 		*(short*)(0x8002F01E) = 7; // Rambi Arena Movement Write

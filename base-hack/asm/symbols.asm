@@ -287,6 +287,7 @@
 .definelabel songData, 0x80745658
 .definelabel MusicTrackChannels, 0x807458DC
 .definelabel BoatSpeeds, 0x8075A04C
+.definelabel textParameter, 0x80750AC8
 
 //hack data
 .definelabel TestVariable, 0x807FFFFC

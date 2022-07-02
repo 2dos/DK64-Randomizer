@@ -596,7 +596,8 @@ typedef struct main_menu_moves_struct {
 typedef struct purchase_struct {
 	/* 0x000 */ short purchase_type; // 0 = Moves, 1 = Simian Slam, 2 = Weapon Bitfield, 3 = Ammo Belt, 4 = Instrument Bitfield, -1 = No offer
 	/* 0x002 */ short purchase_value;
-	/* 0x004 */ short price;
+	/* 0x004 */ unsigned char move_kong; // Kong that the move is normally assigned to. Eg Strong Kong = DK (0), Monkeyport = Tiny (3)
+	/* 0x005 */ unsigned char price;
 } purchase_struct;
 
 typedef struct race_exit_struct {
@@ -699,10 +700,11 @@ typedef struct GBDictItem {
 
 typedef struct shop_paad {
 	/* 0x000 */ char unk_00[4];
-	/* 0x004 */ short price;
+	/* 0x004 */ unsigned char kong;
+	/* 0x005 */ unsigned char price;
 	/* 0x006 */ char unk_06[0xB-0x6];
 	/* 0x00B */ char purchase_type;
-	/* 0x00C */ char unk_0C;
+	/* 0x00C */ char level;
 	/* 0x00D */ unsigned char state;
 	/* 0x00E */ char unk_0E[0x10-0x0E];
 	/* 0x010 */ unsigned char melons;

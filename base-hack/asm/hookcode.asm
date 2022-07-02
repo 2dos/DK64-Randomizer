@@ -20,6 +20,18 @@ START_HOOK:
 	Jump_MoveShow1:
 		J 		FixInvisibleText_1
 		NOP
+	Jump_PriceKongStore:
+		J 		PriceKongStore
+		NOP
+	Jump_CharacterCollectableBaseModify:
+		J 		CharacterCollectableBaseModify
+		NOP
+	Jump_SetMoveBaseBitfield:
+		J 		SetMoveBaseBitfield
+		NOP
+	Jump_SetMoveBaseProgressive:
+		J 		SetMoveBaseProgressive
+		NOP
 		
 	PatchCrankyCode:
 		LUI t3, hi(Jump_CrankyDecouple)
@@ -34,6 +46,30 @@ START_HOOK:
 		SW 	t3, 0x60A8 (t4) // Store Hook
 		SW 	r0, 0x60AC (t4) // Store NOP
 		SW 	r0, 0x6160 (t4) // Store NOP to prevent loop
+
+		LUI t3, hi(Jump_PriceKongStore)
+		LW t3, lo(Jump_PriceKongStore) (t3)
+		LUI t4, 0x8002
+		SW t3, 0x6140(t4) // Store Hook
+		SW r0, 0x6144 (t4) // Store NOP
+
+		LUI t3, hi(Jump_CharacterCollectableBaseModify)
+		LW t3, lo(Jump_CharacterCollectableBaseModify) (t3)
+		LUI t4, 0x8002
+		SW t3, 0x5FC0(t4) // Store Hook
+		SW r0, 0x5FC4 (t4) // Store NOP
+
+		LUI t3, hi(Jump_SetMoveBaseBitfield)
+		LW t3, lo(Jump_SetMoveBaseBitfield) (t3)
+		LUI t4, 0x8002
+		SW t3, 0x60F0(t4) // Store Hook
+		SW r0, 0x60F4 (t4) // Store NOP
+
+		LUI t3, hi(Jump_SetMoveBaseProgressive)
+		LW t3, lo(Jump_SetMoveBaseProgressive) (t3)
+		LUI t4, 0x8002
+		SW t3, 0x611C(t4) // Store Hook
+		SW r0, 0x6120 (t4) // Store NOP
 
 		LUI t3, hi(CurrentMap)
 		LW 	t3, lo(CurrentMap) (t3)
@@ -164,6 +200,48 @@ START_HOOK:
 		OR 		v0, r0, r0
 		J 		0x80027B38
 		ADDIU 	a1, sp, 0x3C
+
+	PriceKongStore:
+		// Stores price & kong correctly
+		// 0x80026140
+		LH 		v0, 0x4 (a1)
+		SH 		v0, 0x4 (s2)
+		ANDI 	t8, v0, 0xFF
+		J 		0x8002614C
+		SH 		t8, 0x0 (t2)
+
+	CharacterCollectableBaseModify:
+		// Replaces param2 with the start of the character collectable base
+		// 0x80025FC0
+		OR 		s2, a0, r0
+		LUI 	a1, hi(MovesBase)
+		ADDIU	a1, a1, lo(MovesBase)
+		J 		0x80025FC8
+		OR 		s3, a1, r0
+
+	SetMoveBaseBitfield:
+		// Sets the move base to the correct kong (Bitfield)
+		// 0x800260F0
+		LH 		t4, 0x2 (a1)
+		ADDU 	t8, s3, a0
+		LBU 	t9, 0x4 (a1)
+		ADDIU 	t6, r0, 0x5E
+		MULT 	t9, t6
+		MFLO 	t9
+		J 		0x800260F8
+		ADDU 	t8, t8, t9
+
+	SetMoveBaseProgressive:
+		// Sets the move base to the correct kong (Progressive)
+		// 0x8002611C
+		LBU 	t6, 0x4 (a1)
+		ADDIU 	t5, r0, 0x5E
+		MULT 	t6, t5
+		MFLO	t6
+		ADDU 	t4, t4, t6
+		LBU 	t6, 0x0 (t4)
+		J 		0x80026124
+		LH 		t5, 0x2 (a1)
 
 	InstanceScriptCheck:
 		ADDIU 	t1, r0, 1

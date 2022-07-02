@@ -300,6 +300,7 @@ extern GBDictItem GBDictionary[113];
 extern actorData* CurrentActorPointer_0;
 extern short MusicTrackChannels[12];
 extern float BoatSpeeds[2];
+extern short textParameter;
 
 //hack data
 extern int TestVariable;

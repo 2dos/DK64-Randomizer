@@ -88,4 +88,5 @@ extern void writeCoinRequirements(int source);
 extern void colorMenuSky(void);
 extern void getMoveHint(actorData* actor, int text_file, int text_index);
 extern void cutsceneDKCode(void);
+extern void getNextMovePurchase(shop_paad* paad, KongBase* movedata);
 //extern void getRandoNextMovePurchase(shop_paad* shop_info, KongBase* moves);
