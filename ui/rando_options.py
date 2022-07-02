@@ -181,7 +181,7 @@ def update_boss_required(evt):
     boss_location = document.getElementById("boss_location_rando")
     boss_kong = document.getElementById("boss_kong_rando")
     kong_rando = document.getElementById("kong_rando")
-    moves = document.getElementById("move_rando")
+    moves = document.getElementById("move_off")
     if level.value == "level_order":
         boss_location.setAttribute("disabled", "disabled")
         boss_location.checked = True
@@ -189,8 +189,9 @@ def update_boss_required(evt):
         boss_kong.checked = True
         kong_rando.setAttribute("disabled", "disabled")
         kong_rando.checked = True
+        if moves.selected is True:
+            document.getElementById("move_on").selected = True
         moves.setAttribute("disabled", "disabled")
-        moves.checked = True
     elif level.value == "vanilla" and kong_rando.checked:
         boss_location.setAttribute("disabled", "disabled")
         boss_location.checked = True
@@ -215,13 +216,11 @@ def disable_boss_rando(evt):
     boss_location = document.getElementById("boss_location_rando")
     boss_kong = document.getElementById("boss_kong_rando")
     kong_rando = document.getElementById("kong_rando")
-    shop = document.getElementById("move_rando")
     if kong_rando.checked and level.value == "vanilla":
         boss_location.setAttribute("disabled", "disabled")
         boss_location.checked = True
         boss_kong.setAttribute("disabled", "disabled")
         boss_kong.checked = True
-        shop.removeAttribute("disabled")
     else:
         boss_kong.removeAttribute("disabled")
         boss_location.removeAttribute("disabled")
