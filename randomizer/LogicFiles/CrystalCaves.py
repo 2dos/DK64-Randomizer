@@ -19,18 +19,18 @@ LogicRegions = {
         LocationLogic(Locations.CavesTinyMedal, lambda l: l.ColoredBananas[Levels.CrystalCaves][Kongs.tiny] >= 75),
         LocationLogic(Locations.CavesChunkyMedal, lambda l: l.ColoredBananas[Levels.CrystalCaves][Kongs.chunky] >= 75),
         LocationLogic(Locations.CavesDiddyJetpackBarrel, lambda l: l.jetpack and l.isdiddy, MinigameType.BonusBarrel),
-        LocationLogic(Locations.CavesTinyCaveBarrel, lambda l: l.mini and l.istiny, MinigameType.BonusBarrel),
         LocationLogic(Locations.CavesTinyMonkeyportIgloo, lambda l: l.monkeyport and l.mini and l.twirl and l.tiny),
         LocationLogic(Locations.CavesChunkyGorillaGone, lambda l: l.punch and l.gorillaGone and l.chunky),
         LocationLogic(Locations.CavesKasplatNearLab, lambda l: True),
-        LocationLogic(Locations.CavesKasplatNearFunky, lambda l: l.mini and l.twirl and l.tiny and l.jetpack),
-        LocationLogic(Locations.CavesKasplatPillar, lambda l: l.jetpack and l.diddy),
         LocationLogic(Locations.CavesKasplatNearCandy, lambda l: True),
     ], [
         Event(Events.CavesEntered, lambda l: True),
         Event(Events.CavesSmallBoulderButton, lambda l: l.chunky),
     ], [
         TransitionFront(Regions.CrystalCavesLobby, lambda l: True, Transitions.CavesToIsles),
+        TransitionFront(Regions.CavesBlueprintCave, lambda l: l.mini and l.twirl and l.tiny),
+        TransitionFront(Regions.CavesBonusCave, lambda l: l.mini and l.tiny),
+        TransitionFront(Regions.CavesBlueprintPillar, lambda l: l.jetpack and l.diddy),
         TransitionFront(Regions.BoulderCave, lambda l: l.punch),
         TransitionFront(Regions.CavesLankyRace, lambda l: l.superSlam and l.balloon and l.islanky, Transitions.CavesMainToRace),
         TransitionFront(Regions.FrozenCastle, lambda l: l.superSlam and l.islanky, Transitions.CavesMainToCastle),
@@ -41,6 +41,24 @@ LogicRegions = {
         TransitionFront(Regions.Snide, lambda l: l.punch),
         TransitionFront(Regions.CavesBossLobby, lambda l: l.punch),
         TransitionFront(Regions.CavesBaboonBlast, lambda l: l.blast and l.isdonkey)  # , Transitions.CavesMainToBBlast)
+    ]),
+
+    Regions.CavesBlueprintCave: Region("Caves Blueprint Cave", Levels.CrystalCaves, False, None, [
+        LocationLogic(Locations.CavesKasplatNearFunky, lambda l: True),
+    ], [], [
+        TransitionFront(Regions.CrystalCavesMain, lambda l: l.mini and l.istiny)
+    ]),
+
+    Regions.CavesBonusCave: Region("Caves Bonus Cave", Levels.CrystalCaves, False, None, [
+        LocationLogic(Locations.CavesTinyCaveBarrel, lambda l: True, MinigameType.BonusBarrel),
+    ], [], [
+        TransitionFront(Regions.CrystalCavesMain, lambda l: l.mini and l.istiny)
+    ]),
+
+    Regions.CavesBlueprintPillar: Region("Caves Blueprint Pillar", Levels.CrystalCaves, False, None, [
+        LocationLogic(Locations.CavesKasplatPillar, lambda l: True),
+    ], [], [
+        TransitionFront(Regions.CrystalCavesMain, lambda l: True)
     ]),
 
     Regions.CavesBaboonBlast: Region("Caves Baboon Blast", Levels.CrystalCaves, False, None, [

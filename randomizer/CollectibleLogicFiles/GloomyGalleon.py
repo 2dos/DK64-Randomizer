@@ -103,6 +103,8 @@ LogicRegions = {
         Collectible(Collectibles.bunch, Kongs.tiny, lambda l: True, None, 1),
         Collectible(Collectibles.balloon, Kongs.tiny, lambda l: l.feather, None, 1),
     ],
+    Regions.TreasureRoomDiddyGoldTower: [
+    ],
     Regions.TinyChest: [
         Collectible(Collectibles.coin, Kongs.tiny, lambda l: True, None, 4),
     ],
