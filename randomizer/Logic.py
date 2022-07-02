@@ -478,7 +478,7 @@ class LogicVarHolder:
 
     def CanBuy(self, location):
         """Check if there are enough coins to purchase this location."""
-        return CanBuy(location, self.Coins, self.settings, self.Slam, self.AmmoBelts, self.InstUpgrades)
+        return CanBuy(location, self)
 
     def CanAccessKRool(self):
         """Make sure that each required key has been turned in."""

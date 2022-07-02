@@ -193,28 +193,28 @@ meaning we just must consider the maximum price for every location.
 """
 
 
-def GetPriceOfMoveItem(item, logic):
+def GetPriceOfMoveItem(item, settings, slamLevel, ammoBelts, instUpgrades):
     """Get price of a move item. Needs to know current level of owned progressive moves to give correct price for progressive items."""
     if item == Items.ProgressiveSlam:
-        if logic.Slam in [1, 2]:
-            return logic.settings.prices[item][logic.Slam - 1]
+        if slamLevel in [1, 2]:
+            return settings.prices[item][slamLevel - 1]
         else:
             # If already have max slam, there's move to buy
             return None
     elif item == Items.ProgressiveAmmoBelt:
-        if logic.AmmoBelts in [0, 1]:
-            return logic.settings.prices[item][logic.AmmoBelts]
+        if ammoBelts in [0, 1]:
+            return settings.prices[item][ammoBelts]
         else:
             # If already have max ammo belt, there's move to buy
             return None
     elif item == Items.ProgressiveInstrumentUpgrade:
-        if logic.InstUpgrades in [0, 1, 2]:
-            return logic.settings.prices[item][logic.InstUpgrades]
+        if instUpgrades in [0, 1, 2]:
+            return settings.prices[item][instUpgrades]
         else:
             # If already have max instrument upgrade, there's move to buy
             return None
     else:
-        return logic.settings.prices[item]
+        return settings.prices[item]
 
 
 def KongCanBuy(location, logic, kong):
@@ -222,14 +222,14 @@ def KongCanBuy(location, logic, kong):
     # If nothing is sold here, return true
     if LocationList[location].item is None or LocationList[location].item == Items.NoItem:
         return True
-    price = GetPriceOfMoveItem(LocationList[location].item, logic)
+    price = GetPriceOfMoveItem(LocationList[location].item, logic.settings, logic.Slam, logic.AmmoBelts, logic.InstUpgrades)
 
     # Simple price check - combination of purchases will be considered outside this method
     if price is not None:
         # print("KongCanBuy checking item: " + str(LocationList[location].item))
         # print("for kong: " + kong.name + " with " + str(coins[kong]) + " coins")
         # print("has price: " + str(price))
-        return logic.coins[kong] >= price
+        return logic.Coins[kong] >= price
     else:
         return False
 
@@ -247,7 +247,7 @@ def EveryKongCanBuy(location, logic):
 def CanBuy(location, logic):
     """Check if an appropriate kong can logically purchase this location."""
     # Either have the setting that any kong can buy any move or it's a shared location so any kong can anyway
-    if logic.settings.shared_kong_purchases or location in SharedMoveLocations:
+    if logic.settings.move_rando == "on_shared" or location in SharedMoveLocations:
         return AnyKongCanBuy(location, logic)
     # Else a specific kong is required to buy it, so check that that's the current kong and they have enough coins
     elif location in DonkeyMoveLocations:

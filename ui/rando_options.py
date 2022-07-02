@@ -181,8 +181,7 @@ def update_boss_required(evt):
     boss_location = document.getElementById("boss_location_rando")
     boss_kong = document.getElementById("boss_kong_rando")
     kong_rando = document.getElementById("kong_rando")
-    shop = document.getElementById("shop_location_rando")
-    unlock_moves = document.getElementById("unlock_all_moves")
+    moves = document.getElementById("move_rando")
     if level.value == "level_order":
         boss_location.setAttribute("disabled", "disabled")
         boss_location.checked = True
@@ -190,27 +189,21 @@ def update_boss_required(evt):
         boss_kong.checked = True
         kong_rando.setAttribute("disabled", "disabled")
         kong_rando.checked = True
-        shop.setAttribute("disabled", "disabled")
-        shop.checked = True
+        moves.setAttribute("disabled", "disabled")
+        moves.checked = True
     elif level.value == "vanilla" and kong_rando.checked:
         boss_location.setAttribute("disabled", "disabled")
         boss_location.checked = True
         boss_kong.setAttribute("disabled", "disabled")
         boss_kong.checked = True
         kong_rando.removeAttribute("disabled")
-        shop.removeAttribute("disabled")
+        moves.removeAttribute("disabled")
     else:
         try:
             boss_kong.removeAttribute("disabled")
             boss_location.removeAttribute("disabled")
             kong_rando.removeAttribute("disabled")
-            shop.removeAttribute("disabled")
-        except Exception:
-            pass
-    if unlock_moves.checked:
-        try:
-            shop.setAttribute("disabled", "disabled")
-            shop.checked = False
+            moves.removeAttribute("disabled")
         except Exception:
             pass
 
@@ -222,7 +215,7 @@ def disable_boss_rando(evt):
     boss_location = document.getElementById("boss_location_rando")
     boss_kong = document.getElementById("boss_kong_rando")
     kong_rando = document.getElementById("kong_rando")
-    shop = document.getElementById("shop_location_rando")
+    shop = document.getElementById("move_rando")
     if kong_rando.checked and level.value == "vanilla":
         boss_location.setAttribute("disabled", "disabled")
         boss_location.checked = True
@@ -317,26 +310,16 @@ def disable_krool_phases(evt):
         pass
 
 
-@bind("click", "unlock_all_moves")
-def disable_shuffle_shop(evt):
-    """Disable Shuffle Shop Move Location when All Moves are Unlocked."""
-    disabled = False
-    shop = js.document.getElementById("shop_location_rando")
+@bind("change", "move_rando")
+def disable_prices(evt):
+    """Disable prices if move rando is set to start with all moves."""
+    moves = js.document.getElementById("move_rando")
     prices = js.document.getElementById("random_prices")
-    moves = js.document.getElementById("unlock_all_moves")
-    if moves.checked:
-        disabled = True
     try:
-        if disabled:
-            shop.setAttribute("disabled", "disabled")
-            shop.checked = False
+        if moves.value == "start_with":
             prices.setAttribute("disabled", "disabled")
-        elif js.document.getElementById("level_randomization").value != "level_order":
-            shop.removeAttribute("disabled")
-            prices.removeAttribute("disabled")
         else:
             prices.removeAttribute("disabled")
-            shop.checked = True
     except AttributeError:
         pass
 
@@ -391,7 +374,7 @@ def preset_select_changed(event):
     update_boss_required(None)
     disable_colors(None)
     disable_music(None)
-    disable_shuffle_shop(None)
+    disable_prices(None)
     max_randomized_blocker(None)
     max_randomized_troff(None)
     disable_barrel_rando(None)

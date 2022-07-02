@@ -64,11 +64,10 @@ class Spoiler:
         settings = OrderedDict()
         settings["seed"] = self.settings.seed_id
         settings["algorithm"] = self.settings.algorithm
-        settings["shuffle_items"] = self.settings.shuffle_items
+        settings["move_rando"] = self.settings.move_rando
         settings["shuffle_loading_zones"] = self.settings.shuffle_loading_zones
         settings["decoupled_loading_zones"] = self.settings.decoupled_loading_zones
-        settings["unlock_all_moves"] = self.settings.unlock_all_moves
-        settings["starting_kong"] = ItemList[ItemFromKong(self.settings.starting_kong)].name
+        settings["starting_kongs_count"] = self.settings.starting_kongs_count
         startKongList = []
         for x in self.settings.starting_kong_list:
             startKongList.append(x.name.capitalize())

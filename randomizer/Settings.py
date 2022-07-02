@@ -54,12 +54,15 @@ class Settings:
         # startwith
         self.training_barrels = "startwith"
 
-        # currently just set to moves by shop_location_rando
+        # currently just set to moves by move_rando
         # shuffle_items: str
         # none
         # moves
         # all (currently only theoretical)
         self.shuffle_items = "none"
+
+        # set to true if move_rando set to start_with
+        self.unlock_all_moves = False
 
         # Pointless with just move rando, maybe have it once full rando
         # progressive_upgrades: bool
@@ -127,7 +130,7 @@ class Settings:
         self.download_patch_file = None
         self.bonus_barrel_rando = None
         self.loading_zone_coupled = None
-        self.shop_location_rando = None
+        self.move_rando = None
         self.random_patches = None
         self.random_prices = None
         self.boss_location_rando = None
@@ -163,8 +166,6 @@ class Settings:
     def generate_misc(self):
         """Set default items on misc page."""
         #  Settings which affect logic
-        # start_with_moves: bool
-        self.unlock_all_moves = None
         # crown_door_open: bool
         self.crown_door_open = None
         # coin_door_open: bool
@@ -398,8 +399,10 @@ class Settings:
             self.kongs_for_progression = True
 
         # Move Location Rando
-        if self.shop_location_rando:
+        if self.move_rando in ["on", "on_shared"]:
             self.shuffle_items = "moves"
+        elif self.move_rando == "start_with":
+            self.unlock_all_moves = True
 
     def SelectKongLocations(self):
         """Select which random kong locations to use depending on number of starting kongs."""

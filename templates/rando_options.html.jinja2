@@ -6,20 +6,6 @@
                 <tr>
                     <td>
                         <div class="form-check form-switch w-75">
-                            <label data-toggle="tooltip" title="This option will make all moves available from the start without purchasing them.&#10;Includes all Cranky, all Candy, and almost all Funky purchasables.&#10;Does not include access to JetPac in Cranky; you will still need some banana medals.&#10;Does not include the shockwave attack from the banana fairy queen.">
-                                <input class="form-check-input"
-                                       type="checkbox"
-                                       name="unlock_all_moves"
-                                       id="unlock_all_moves"
-                                       value="True"/>
-                                Unlock All Purchasable Moves
-                            </label>
-                        </div>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <div class="form-check form-switch w-75">
                             <label data-toggle="tooltip" title="All normal enemies that spawn in the world are randomized.">
                                 <input class="form-check-input"
                                        type="checkbox"
@@ -187,15 +173,28 @@
                 </tr>
                 <tr>
                     <td>
-                        <div class="form-check form-switch w-75">
-                            <label data-toggle="tooltip" title="You can purchase moves from a different shop.">
-                                <input class="form-check-input"
-                                       type="checkbox"
-                                       name="shop_location_rando"
-                                       id="shop_location_rando"
-                                       value="True"/>
-                                Shuffle Shop Move Location
-                            </label>
+                        <div>
+                            Move Randomizer
+                            <select name="move_rando"
+                                    id="move_rando"
+                                    style="width: 60%;"
+                                    class="form-select center-div"
+                                    aria-label="Randomization type"
+                                    data-toggle="tooltip"
+                                    title="Determines if and how moves are randomized.">
+                                <option selected value="off" title="Moves are in their vanilla locations and can only be bought by their normal kongs.">
+                                    Off
+                                </option>
+                                <option value="on" title="Moves can be randomized to different shops, but must still be bought by their normal kong.&#10;Shared moves can be bought by any kong.">
+                                    On
+                                </option>
+                                <option value="on_shared" title="The same as On, but any kong can buy any move.">
+                                    On (Shared)
+                                </option>
+                                <option value="start_with" title="This option will make all moves available from the start without purchasing them.&#10;Includes all Cranky, all Candy, and almost all Funky purchasables.&#10;Does not include access to JetPac in Cranky; you will still need some banana medals.&#10;Does not include the shockwave attack from the banana fairy queen.">
+                                    Start With
+                                </option>
+                            </select>
                         </div>
                     </td>
                 </tr>
