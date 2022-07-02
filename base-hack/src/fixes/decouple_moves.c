@@ -13,6 +13,8 @@ void crossKongInit(void) {
 	*(int*)(0x80025EA0) = 0x90850004; // LBU 	a1, 0x4 (a0)
 	// Change target kong (Bitfield)
 	*(int*)(0x80025E80) = 0x90850004; // LBU 	a1, 0x4 (a0)
+	// Change price deducted
+	*(int*)(0x80025F70) = 0x93060005; // LBU 	a2, 0x5 (t8)
 	// Change price check
 	*(int*)(0x80026200) = 0x90CF0005; // LBU 	t7, 0x5 (a2)
 	// Change Special Moves Text
