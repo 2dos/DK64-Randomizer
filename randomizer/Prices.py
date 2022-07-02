@@ -5,7 +5,7 @@ import random
 from randomizer.Enums.Items import Items
 from randomizer.Enums.Kongs import Kongs
 from randomizer.Enums.Locations import Locations
-from randomizer.ItemPool import ChunkyMoveLocations, DiddyMoveLocations, DonkeyMoveLocations, LankyMoveLocations, TinyMoveLocations
+from randomizer.ItemPool import ChunkyMoveLocations, DiddyMoveLocations, DonkeyMoveLocations, LankyMoveLocations, SharedMoveLocations, TinyMoveLocations
 from randomizer.ItemPool import DonkeyMoves, DiddyMoves, LankyMoves, TinyMoves, ChunkyMoves
 from randomizer.Lists.Location import LocationList
 
@@ -193,68 +193,70 @@ meaning we just must consider the maximum price for every location.
 """
 
 
-def GetPriceOfMoveItem(item, settings, slamLevel, ammoBelts, instUpgrades):
+def GetPriceOfMoveItem(item, logic):
     """Get price of a move item. Needs to know current level of owned progressive moves to give correct price for progressive items."""
     if item == Items.ProgressiveSlam:
-        if slamLevel in [1, 2]:
-            return settings.prices[item][slamLevel - 1]
+        if logic.Slam in [1, 2]:
+            return logic.settings.prices[item][logic.Slam - 1]
         else:
             # If already have max slam, there's move to buy
             return None
     elif item == Items.ProgressiveAmmoBelt:
-        if ammoBelts in [0, 1]:
-            return settings.prices[item][ammoBelts]
+        if logic.AmmoBelts in [0, 1]:
+            return logic.settings.prices[item][logic.AmmoBelts]
         else:
             # If already have max ammo belt, there's move to buy
             return None
     elif item == Items.ProgressiveInstrumentUpgrade:
-        if instUpgrades in [0, 1, 2]:
-            return settings.prices[item][instUpgrades]
+        if logic.InstUpgrades in [0, 1, 2]:
+            return logic.settings.prices[item][logic.InstUpgrades]
         else:
             # If already have max instrument upgrade, there's move to buy
             return None
     else:
-        return settings.prices[item]
+        return logic.settings.prices[item]
 
 
-def KongCanBuy(location, coins, settings, kong, slamLevel, ammoBelts, instUpgrades):
+def KongCanBuy(location, logic, kong):
     """Check if given kong can logically purchase the specified location."""
     # If nothing is sold here, return true
     if LocationList[location].item is None or LocationList[location].item == Items.NoItem:
         return True
-    price = GetPriceOfMoveItem(LocationList[location].item, settings, slamLevel, ammoBelts, instUpgrades)
+    price = GetPriceOfMoveItem(LocationList[location].item, logic)
 
     # Simple price check - combination of purchases will be considered outside this method
     if price is not None:
         # print("KongCanBuy checking item: " + str(LocationList[location].item))
         # print("for kong: " + kong.name + " with " + str(coins[kong]) + " coins")
         # print("has price: " + str(price))
-        return coins[kong] >= price
+        return logic.coins[kong] >= price
     else:
         return False
 
 
-def AnyKongCanBuy(location, coins, settings, slamLevel, ammoBelts, instUpgrades):
+def AnyKongCanBuy(location, logic):
     """Check if any kong can logically purchase this location."""
-    return any(KongCanBuy(location, coins, settings, kong, slamLevel, ammoBelts, instUpgrades) for kong in [Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky])
+    return any(KongCanBuy(location, logic, kong) for kong in [Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky])
 
 
-def EveryKongCanBuy(location, coins, settings, slamLevel, ammoBelts, instUpgrades):
+def EveryKongCanBuy(location, logic):
     """Check if any kong can logically purchase this location."""
-    return all(KongCanBuy(location, coins, settings, kong, slamLevel, ammoBelts, instUpgrades) for kong in [Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky])
+    return all(KongCanBuy(location, logic, kong) for kong in [Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky])
 
 
-def CanBuy(location, coins, settings, slamLevel, ammoBelts, instUpgrades):
+def CanBuy(location, logic):
     """Check if an appropriate kong can logically purchase this location."""
-    if location in DonkeyMoveLocations:
-        return KongCanBuy(location, coins, settings, Kongs.donkey, slamLevel, ammoBelts, instUpgrades)
+    # Either have the setting that any kong can buy any move or it's a shared location so any kong can anyway
+    if logic.settings.shared_kong_purchases or location in SharedMoveLocations:
+        return AnyKongCanBuy(location, logic)
+    # Else a specific kong is required to buy it, so check that that's the current kong and they have enough coins
+    elif location in DonkeyMoveLocations:
+        return logic.isdonkey and KongCanBuy(location, logic, Kongs.donkey)
     elif location in DiddyMoveLocations:
-        return KongCanBuy(location, coins, settings, Kongs.diddy, slamLevel, ammoBelts, instUpgrades)
+        return logic.isdiddy and KongCanBuy(location, logic, Kongs.diddy)
     elif location in LankyMoveLocations:
-        return KongCanBuy(location, coins, settings, Kongs.lanky, slamLevel, ammoBelts, instUpgrades)
+        return logic.islanky and KongCanBuy(location, logic, Kongs.lanky)
     elif location in TinyMoveLocations:
-        return KongCanBuy(location, coins, settings, Kongs.tiny, slamLevel, ammoBelts, instUpgrades)
+        return logic.istiny and KongCanBuy(location, logic, Kongs.tiny)
     elif location in ChunkyMoveLocations:
-        return KongCanBuy(location, coins, settings, Kongs.chunky, slamLevel, ammoBelts, instUpgrades)
-    else:  # Shared locations
-        return AnyKongCanBuy(location, coins, settings, slamLevel, ammoBelts, instUpgrades)
+        return logic.ischunky and KongCanBuy(location, logic, Kongs.chunky)
