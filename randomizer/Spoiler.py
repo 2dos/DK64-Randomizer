@@ -80,6 +80,7 @@ class Spoiler:
         settings["open_levels"] = self.settings.open_levels
         settings["randomize_pickups"] = self.settings.randomize_pickups
         settings["random_patches"] = self.settings.random_patches
+        settings["puzzle_rando"] = self.settings.puzzle_rando
         settings["crown_door_open"] = self.settings.crown_door_open
         settings["coin_door_open"] = self.settings.coin_door_open
         settings["unlock_fairy_shockwave"] = self.settings.unlock_fairy_shockwave

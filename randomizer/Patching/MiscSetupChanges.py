@@ -2,9 +2,11 @@
 import js
 import random
 import struct
+import math
 from randomizer.Patching.Patcher import ROM
 from randomizer.Spoiler import Spoiler
 from randomizer.Lists.Patches import DirtPatchLocations
+from randomizer.Lists.MapsAndExits import Maps
 
 
 def float_to_hex(f):
@@ -23,6 +25,7 @@ def randomize_setup(spoiler: Spoiler):
         0x8F,  # Standard Ammo Crate
         0x11,  # Homing Ammo Crate
     ]
+    stone_heads = [0xBC, 0x22B, 0x229, 0x22A]
     if spoiler.settings.random_patches:
         dirt_list = []
         for x in DirtPatchLocations:
@@ -36,16 +39,24 @@ def randomize_setup(spoiler: Spoiler):
                     print(selected_patch_name)
                     dirt_list.remove(selected_patch_name)
 
-    if spoiler.settings.skip_arcader1 or spoiler.settings.randomize_pickups or spoiler.settings.random_patches:
+    allowed_settings = [spoiler.settings.skip_arcader1, spoiler.settings.randomize_pickups, spoiler.settings.random_patches, spoiler.settings.puzzle_rando]
+    enabled = False
+    for setting in allowed_settings:
+        enabled = enabled or setting
+
+    if enabled:
         for cont_map_id in range(216):
             cont_map_setup_address = js.pointer_addresses[9]["entries"][cont_map_id]["pointing_to"]
             ROM().seek(cont_map_setup_address)
             model2_count = int.from_bytes(ROM().readBytes(4), "big")
+            # Puzzle Stuff
+            offsets = []
+            positions = []
             for model2_item in range(model2_count):
                 item_start = cont_map_setup_address + 4 + (model2_item * 0x30)
                 ROM().seek(item_start + 0x28)
                 item_type = int.from_bytes(ROM().readBytes(2), "big")
-                if item_type == 0x196 and spoiler.settings.skip_arcader1 and cont_map_id == 0x6E:
+                if item_type == 0x196 and spoiler.settings.skip_arcader1 and cont_map_id == Maps.FactoryBaboonBlast:
                     ROM().seek(item_start + 0x28)
                     ROM().writeMultipleBytes(0x74, 2)
                     ROM().seek(item_start + 0xC)
@@ -53,6 +64,44 @@ def randomize_setup(spoiler: Spoiler):
                 elif item_type in pickup_list and spoiler.settings.randomize_pickups:
                     ROM().seek(item_start + 0x28)
                     ROM().writeMultipleBytes(random.choice(pickup_list), 2)
+                # elif (cont_map_id == Maps.FranticFactory and item_type >= 0xF4 and item_type <= 0x103) or (cont_map_id == Maps.AztecLlamaTemple and item_type in stone_heads):
+                # The above condition is broken for factory because Number Game shuffled looks megadumb
+                elif cont_map_id == Maps.AztecLlamaTemple and item_type in stone_heads:
+                    if spoiler.settings.puzzle_rando:
+                        offsets.append(item_start)
+                        ROM().seek(item_start)
+                        x = int.from_bytes(ROM().readBytes(4), "big")
+                        y = int.from_bytes(ROM().readBytes(4), "big")
+                        z = int.from_bytes(ROM().readBytes(4), "big")
+                        positions.append([x, y, z])
+                elif cont_map_id == Maps.GalleonBoss and item_type == 0x235 and spoiler.settings.puzzle_rando:
+                    puff_center = [1216, 1478]
+                    radius = random.uniform(188, 460)
+                    angle = random.uniform(0, math.pi * 2)
+                    star_a = random.uniform(0, 360)
+                    if angle == math.pi * 2:
+                        angle = 0
+                    if star_a == 360:
+                        star_a = 0
+                    star_dx = radius * math.sin(angle)
+                    star_dz = radius * math.cos(angle)
+                    star_x = puff_center[0] + star_dx
+                    star_z = puff_center[1] + star_dz
+                    ROM().seek(item_start)
+                    ROM().writeMultipleBytes(int(float_to_hex(star_x), 16), 4)
+                    ROM().seek(item_start + 8)
+                    ROM().writeMultipleBytes(int(float_to_hex(star_z), 16), 4)
+                    ROM().seek(item_start + 0x1C)
+                    ROM().writeMultipleBytes(int(float_to_hex(star_a), 16), 4)
+
+            if spoiler.settings.puzzle_rando:
+                if len(positions) > 0 and len(offsets) > 0:
+                    random.shuffle(positions)
+                    for index, offset in enumerate(offsets):
+                        ROM().seek(offset)
+                        for coord in range(3):
+                            ROM().writeMultipleBytes(positions[index][coord], 4)
+
             ROM().seek(cont_map_setup_address + 4 + (model2_count * 0x30))
             mystery_count = int.from_bytes(ROM().readBytes(4), "big")
             actor_block_start = cont_map_setup_address + 4 + (model2_count * 0x30) + 4 + (mystery_count * 0x24)

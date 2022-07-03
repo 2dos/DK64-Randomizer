@@ -291,7 +291,7 @@ def patching_response(responded_data):
     randomize_enemies(spoiler)
     apply_kongrando_cosmetic(spoiler)
     randomize_setup(spoiler)
-    randomize_puzzles()
+    randomize_puzzles(spoiler)
 
     random.seed(spoiler.settings.seed)
     randomize_music(spoiler)

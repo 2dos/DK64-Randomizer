@@ -136,6 +136,7 @@ class Settings:
         self.boss_location_rando = None
         self.boss_kong_rando = None
         self.kasplat_rando = None
+        self.puzzle_rando = None
 
     def set_seed(self):
         """Forcibly re-set the random seed to the seed set in the config."""
