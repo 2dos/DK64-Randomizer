@@ -736,9 +736,17 @@ def ShuffleSharedMoves(spoiler):
     validLocations = {}
     kongMoveArrays = [ItemPool.DonkeyMoves, ItemPool.DiddyMoves, ItemPool.LankyMoves, ItemPool.TinyMoves, ItemPool.ChunkyMoves]
     kongLocationArrays = [ItemPool.DonkeyMoveLocations, ItemPool.DiddyMoveLocations, ItemPool.LankyMoveLocations, ItemPool.TinyMoveLocations, ItemPool.ChunkyMoveLocations]
+    mergedLocationArrays = ItemPool.DonkeyMoveLocations.copy()
+    mergedLocationArrays.update(ItemPool.DiddyMoveLocations.copy())
+    mergedLocationArrays.update(ItemPool.LankyMoveLocations.copy())
+    mergedLocationArrays.update(ItemPool.TinyMoveLocations.copy())
+    mergedLocationArrays.update(ItemPool.ChunkyMoveLocations.copy())
     for i in range(5):
         for item in kongMoveArrays[i]:
-            validLocations[item] = kongLocationArrays[i] - locationsToRemove
+            if spoiler.settings.move_rando == "on_shared":
+                validLocations[item] = mergedLocationArrays - locationsToRemove
+            else:
+                validLocations[item] = kongLocationArrays[i] - locationsToRemove
     return (kongMoves, validLocations)
 
 
