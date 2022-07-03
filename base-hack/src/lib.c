@@ -16,6 +16,7 @@ int convertIDToIndex(short obj_index) {
 		ModelTwoData* _object = getObjectArrayAddr(m2location,0x90,i);
 		if (_object->object_id == obj_index) {
 			index = i;
+			return i;
 		}
 	}
 	return index;
@@ -29,6 +30,7 @@ int convertSubIDToIndex(short obj_index) {
 		ModelTwoData* _object = getObjectArrayAddr(m2location,0x90,i);
 		if (_object->sub_id == obj_index) {
 			index = i;
+			return i;
 		}
 	}
 	return index;

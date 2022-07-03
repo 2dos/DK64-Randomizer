@@ -102,9 +102,6 @@ void initHack(int source) {
 				*(short*)(0x80681898) = 0x1000;
 				*(int*)(0x8068191C) = 0; // Remove Oh Banana
 			}
-			// for (int i = 0; i < 5; i++) {
-			// 	DKTVData[i] = Rando.dktv_data[i];
-			// }
 			replace_zones(1);
 			randomize_bosses();
 			loadExtraHooks();

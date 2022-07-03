@@ -77,6 +77,7 @@
 .definelabel changeActorColor, 0x807149C8
 .definelabel unkCutsceneKongFunction_1, 0x80724E48
 .definelabel getAnimationTimer, 0x80614A54
+.definelabel playSFXFromObject, 0x806085DC
 
 .definelabel unkObjFunction0, 0x80650BBC
 .definelabel unkObjFunction1, 0x80650A04

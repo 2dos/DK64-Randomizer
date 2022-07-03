@@ -126,6 +126,7 @@ extern int countFlagArray(int starting_flag, int count, int flagType);
 extern int canHitSwitch(void);
 extern void setSomeTimer(int model2_type);
 extern int indexOfNextObj(int id);
+extern int playSFXFromObject(int object_index, short sfx, char unk0, char unk1, char unk2, char unk3, float unk4);
 
 extern void setWaterHeight(int chunk, float height, float unk2);
 extern void loadObjectForScripting(void* unk0, int unk1);

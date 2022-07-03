@@ -49,7 +49,7 @@ def randomize_moves(spoiler: Spoiler):
                 for level in range(7):
                     if move_arrays[shop][kong][level] == -1:
                         no_move = 5
-                        move_arrays[shop][kong][level] = (no_move << 5)
+                        move_arrays[shop][kong][level] = no_move << 5
 
         dk_crankymoves = move_arrays[0][0]
         diddy_crankymoves = move_arrays[0][1]

@@ -3,6 +3,22 @@ import random
 from randomizer.Patching.Patcher import ROM
 
 
+def chooseSFX():
+    """Choose random SFX from bank of acceptable SFX."""
+    banks = [
+        [98, 138],
+        [166, 255],
+        [398, 411],
+        [471, 476],
+        [519, 535],
+        [547, 575],
+        [614, 631],
+        [644, 650],
+    ]
+    bank = random.choice(banks)
+    return random.randint(bank[0], bank[1])
+
+
 def randomize_puzzles():
     """Shuffle elements of puzzles. Currently limited to coin challenge requirements but will be extended in future."""
     coin_req_info = [
@@ -18,3 +34,11 @@ def randomize_puzzles():
     for coinreq in coin_req_info:
         ROM().seek(0x1FED020 + coinreq["offset"])
         ROM().writeMultipleBytes(coinreq["coins"], 1)
+    chosen_sounds = []
+    for matching_head in range(8):
+        ROM().seek(0x1FED020 + 0x14C + (2 * matching_head))
+        sfx = chooseSFX()
+        while sfx in chosen_sounds:
+            sfx = chooseSFX()
+        chosen_sounds.append(sfx)
+        ROM().writeMultipleBytes(sfx, 2)
