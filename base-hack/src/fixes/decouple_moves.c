@@ -23,6 +23,9 @@ void crossKongInit(void) {
 	*(int*)(0x80027BA0) = 0x91180004; // LBU 	t8, 0x4 (t0)
 	// Change Instrument Text
 	*(int*)(0x80027C14) = 0x910C0004; // LBU 	t4, 0x4 (t0)
+	// Fix post-special move text
+	*(int*)(0x80026C08) = 0x91790011; // LBU 	t9, 0x11 (t3)
+	*(int*)(0x80026C00) = 0x916D0004; // LBU 	t5, 0x4 (t3)
 }
 
 void decouple_moves_fixes(void) {
