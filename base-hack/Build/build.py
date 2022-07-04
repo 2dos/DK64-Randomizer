@@ -217,13 +217,13 @@ shutil.copyfile(base_coin_sfx, new_coin_sfx)
 
 map_replacements = []
 song_replacements = [
-    # {"name": "baboon_balloon", "index": 107},
-    # {"name": "bonus_minigames", "index": 8},
-    # {"name": "dk_rap", "index": 75},
-    # {"name": "failure_races_try_again", "index": 87},
-    # {"name": "move_get", "index": 114},
-    # {"name": "nintendo_logo", "index": 174},
-    # {"name": "success_races", "index": 86},
+    {"name": "baboon_balloon", "index": 107, "bps": True},
+    {"name": "bonus_minigames", "index": 8, "bps": True},
+    {"name": "dk_rap", "index": 75, "bps": True},
+    {"name": "failure_races_try_again", "index": 87, "bps": True},
+    {"name": "move_get", "index": 114, "bps": True},
+    {"name": "nintendo_logo", "index": 174, "bps": True},
+    {"name": "success_races", "index": 86, "bps": True},
     {"name": "coin_sfx", "index": 7, "bps": False},
 ]
 changed_song_indexes = []
