@@ -835,11 +835,11 @@ START_HOOK:
 		LUI 		a1, 0x8080
 		LW 			a1, 0xBB64 (a1)
 		ANDI 		a0, a1, 0x4000
-		BEQZ 		a0, GuardAutoclear_NotSnoop
+		BNEZ 		a0, GuardAutoclear_IsSnoop
 		NOP
 		SRA 		a1, a1, 16
 		ANDI 		a0, a1, 0x10
-		BNEZ 		a0, GuardAutoclear_IsSnoop
+		BNEZ		a0, GuardAutoclear_IsSnoop
 		NOP
 
 		GuardAutoclear_NotSnoop:
@@ -855,6 +855,43 @@ START_HOOK:
 
 		GuardAutoclear_Finish:
 			J 		0x806AE564
+			NOP
+
+	GuardDeathHandle:
+		JAL 		0x806319C4
+		OR 			a1, r0, r0
+		LUI 		a1, 0x8080
+		LW 			a1, 0xBB64 (a1)
+		ANDI 		a0, a1, 0x4000
+		BNEZ 		a0, GuardDeathHandle_Finish
+		NOP
+		LUI 		a0, 0x8080
+		LW 			a0, 0xBB40 (a0)
+		LBU 		a2, 0x154 (a0)
+		ADDIU 		a1, r0, 0x16
+		BEQ 		a2, a1, GuardDeathHandle_Kill
+		NOP
+		LH 			a2, 0x134 (a0)
+		BLEZ 		a2, GuardDeathHandle_Kill
+		NOP
+		B 			GuardDeathHandle_Finish
+		NOP
+
+		GuardDeathHandle_Kill:
+			ADDIU 		a1, r0, 0x40
+			SB 			a1, 0x154 (a0)
+			// Spawn Sparkles
+			LW 			a1, 0x7C (a0)
+			MTC1 		a1, f12
+			LW 			a1, 0x80 (a0)
+			MTC1 		a1, f14
+			ADDIU 		a3, r0, 20
+			JAL 		0x80686E40
+			LW 			a2, 0x84 (a0)
+
+
+		GuardDeathHandle_Finish:
+			J 			0x806AFA4C
 			NOP
 
 	TextHandler:

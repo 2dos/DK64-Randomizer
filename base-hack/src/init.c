@@ -221,6 +221,8 @@ void initHack(int source) {
 			// Fix Diddy/Chunky Helm Medal Flag Mapping
 			*(short*)(0x80755D8C) = 0x024C;
 			*(short*)(0x80755DA4) = 0x0249;
+			// Remove flare effect from guards
+			*(int*)(0x806AE440) = 0;
 			LoadedHooks = 1;
 		}
 

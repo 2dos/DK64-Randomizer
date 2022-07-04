@@ -156,7 +156,6 @@ def randomize_enemies(spoiler: Spoiler):
             Enemies.FireballGlasses,
             Enemies.SpiderSmall,
             Enemies.Ghost,
-            Enemies.Guard,
         ],
         "air": [
             Enemies.ZingerCharger,
@@ -175,6 +174,7 @@ def randomize_enemies(spoiler: Spoiler):
             Enemies.Kaboom,
             Enemies.KlaptrapPurple,
             Enemies.KlaptrapRed,
+            Enemies.Guard,
         ],
         "water": [
             Enemies.Shuri,
