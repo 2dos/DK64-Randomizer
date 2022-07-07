@@ -159,7 +159,8 @@ typedef struct playerData {
 	/* 0x12E */ char unk_12E[0x13C - 0x12E];
 	/* 0x13C */ int* collision_queue_pointer;
 	/* 0x140 */ bonedata* bone_data;
-	/* 0x144 */ char unk_140[0x147 - 0x144];
+	/* 0x144 */ char noclip;
+	/* 0x145 */ char unk_145[0x147 - 0x145];
 	/* 0x147 */ char hand_state;
 	/* 0x148 */ char unk_148[0x154 - 0x148];
 	/* 0x154 */ char control_state;

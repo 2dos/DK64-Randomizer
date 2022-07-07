@@ -843,7 +843,7 @@ START_HOOK:
 		NOP
 
 		GuardAutoclear_NotSnoop:
-			JAL 	0x805FF1B0 // Void Warp
+			JAL 	guardCatch // Void Warp
 			NOP
 			B 		GuardAutoclear_Finish
 			NOP
@@ -888,7 +888,9 @@ START_HOOK:
 			ADDIU 		a3, r0, 20
 			JAL 		0x80686E40
 			LW 			a2, 0x84 (a0)
-
+			// Play SFX
+			JAL 		playSFX
+			ADDIU 		a0, r0, 493
 
 		GuardDeathHandle_Finish:
 			J 			0x806AFA4C
