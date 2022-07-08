@@ -18,13 +18,7 @@ def float_to_hex(f):
 
 def randomize_setup(spoiler: Spoiler):
     """Randomize setup."""
-    pickup_list = [
-        0x56,  # Oranges
-        0x98,  # Film
-        0x8E,  # Crystals
-        0x8F,  # Standard Ammo Crate
-        0x11,  # Homing Ammo Crate
-    ]
+    pickup_list = [0x56, 0x98, 0x8E, 0x8F, 0x11]  # Oranges  # Film  # Crystals  # Standard Ammo Crate  # Homing Ammo Crate
     if spoiler.settings.random_patches:
         dirt_list = []
         for x in DirtPatchLocations:
