@@ -107,11 +107,11 @@ def modify(file_name, map_index):
                     {
                         "base_byte_stream": byte_stream,
                         "type": 132,
-                        "x": int(float_to_hex(2457.471),16),
-                        "y": int(float_to_hex(1280),16),
-                        "z": int(float_to_hex(3458.604),16),
+                        "x": int(float_to_hex(2457.471), 16),
+                        "y": int(float_to_hex(1280), 16),
+                        "z": int(float_to_hex(3458.604), 16),
                         "rx": 0,
-                        "ry": int(float_to_hex(166),16),
+                        "ry": int(float_to_hex(166), 16),
                         "rz": 0,
                         "id": 0x100,
                         "scale": int(float_to_hex(1.18), 16),
@@ -168,7 +168,7 @@ def modify(file_name, map_index):
         read_location += 4
         for x in range(actor_count):
             byte_stream = byte_read[read_location : read_location + 0x38]
-            obj_id = int.from_bytes(byte_read[read_location + 0x34: read_location + 0x36],"big")
+            obj_id = int.from_bytes(byte_read[read_location + 0x34 : read_location + 0x36], "big")
             if map_index == 0x1A and obj_id == 13:
                 temp = []
                 for y in range(0x38):
@@ -176,8 +176,8 @@ def modify(file_name, map_index):
                 byte_stream = temp.copy()
                 new_x = 1237.001
                 new_z = 840.569
-                writedatatoarr(byte_stream, int(float_to_hex(new_x),16), 4, 0x0)
-                writedatatoarr(byte_stream, int(float_to_hex(new_z),16), 4, 0x8)
+                writedatatoarr(byte_stream, int(float_to_hex(new_x), 16), 4, 0x0)
+                writedatatoarr(byte_stream, int(float_to_hex(new_z), 16), 4, 0x8)
             data = {"stream": byte_stream}
             actor.append(data)
             read_location += 0x38
