@@ -233,6 +233,7 @@ class Settings:
         self.fast_start_beginning_of_game = None
         self.helm_setting = None
         self.quality_of_life = None
+        self.shorten_boss = False
         self.enable_tag_anywhere = None
         self.krool_phase_order_rando = None
         self.krool_access = False
