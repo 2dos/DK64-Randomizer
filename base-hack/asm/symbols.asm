@@ -128,6 +128,7 @@
 .definelabel voidWarp, 0x805FF1B0
 .definelabel setToeTexture, 0x8002FC48
 .definelabel applyFootDamage, 0x8002FC98
+.definelabel modifyCharSpawnerAttributes, 0x8072B79C
 
 //vanilla data
 .definelabel TransitionSpeed, 0x807FD88C

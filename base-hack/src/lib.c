@@ -130,3 +130,23 @@ void alterGBKong(int map, int id, int new_kong) {
 		}
 	}
 }
+
+void cancelCutscene(int enable_movement) {
+	if ((TBVoidByte & 2) == 0) {
+		if (CutsceneActive) {
+			if (CutsceneTypePointer) {
+				if (CutsceneTypePointer->cutscene_databank) {
+					int* databank = (int *)(CutsceneTypePointer->cutscene_databank);
+					short cam_state = *(short *)(getObjectArrayAddr(databank,0xC,CutsceneIndex));
+					// short cam_state = *( short*)(cs_databank + (0xC * CutsceneIndex));
+					CurrentCameraState = cam_state;
+					PreviousCameraState = cam_state;
+					CameraStateChangeTimer = 0;
+					if ((Player) && (enable_movement)) {
+						Player->control_state = 0xC;
+					}
+				}
+			}
+		}
+	}
+}

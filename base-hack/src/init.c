@@ -188,6 +188,9 @@ void initHack(int source) {
 				*(short*)(0x80698EEE) = 0x437A; // 250.0f
 				// Lower Aztec Lobby Bonus
 				*(short*)(0x80680D56) = 0x7C; // 0x89 if this needs to be unreachable without PTT
+				// Fast Vulture
+				*(short*)(0x806C4F8A) = 0x30; // Modify Vulture init cutscene
+				*(int*)(0x806C4FA8) = 0x0C000000 | (((int)&clearVultureCutscene & 0xFFFFFF) >> 2); // Modify Function Call
 			}
 			if (Rando.version > 0) {
 				// Disable Graphical Debugger

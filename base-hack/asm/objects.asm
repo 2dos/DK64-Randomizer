@@ -37,3 +37,4 @@
 .importobj "obj/src_shorteners_moves.o"
 .importobj "obj/src_shorteners_pre_turns.o"
 .importobj "obj/src_shorteners_quality_shorteners.o"
+.importobj "obj/src_shorteners_vulture.o"

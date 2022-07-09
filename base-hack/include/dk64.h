@@ -138,6 +138,7 @@ extern void cycleRNG(void);
 extern void voidWarp(void);
 extern void setToeTexture(void* actor, int data);
 extern void applyFootDamage(void* actor, int unk0, int unk1, int unk2);
+extern void modifyCharSpawnerAttributes(int unk0, int unk1, int unk2);
 
 //vanilla data
 extern float TransitionSpeed;
