@@ -281,10 +281,7 @@ def ShuffleLevelOrderWithRestrictions(settings: Settings):
         newLevelOrder = ShuffleLevelOrderForOneStartingKong(settings)
     else:
         newLevelOrder = ShuffleLevelOrderForMultipleStartingKongs(settings)
-    # print("New Level Order:")
-    # for i in range(1, 8):
-    #     print(str(i) + ": " + newLevelOrder[i].name)
-    if len(newLevelOrder) < 7:
+    if None in newLevelOrder.values():
         raise Ex.EntrancePlacementException("Invalid level order with fewer than the 7 required main levels.")
     ShuffleLevelExits(newLevelOrder)
 
@@ -430,7 +427,7 @@ def ShuffleLevelOrderForMultipleStartingKongs(settings: Settings):
                 # If reached Japes without freeing anyone yet, Only Donkey, Diddy, and Chunky logically have access to T&S portal in Japes
                 elif (
                     newLevelOrder[level] == Levels.JungleJapes
-                    and kongsInLevels[Levels.JungleJapes] == 0  # This restriciton only matters if there's no one to free in Japes
+                    and kongsInLevels[Levels.JungleJapes] == 0  # This restriction only matters if there's no one to free in Japes
                     and Kongs.donkey not in settings.starting_kong_list
                     and Kongs.diddy not in settings.starting_kong_list
                     and Kongs.chunky not in settings.starting_kong_list
@@ -452,6 +449,11 @@ def ShuffleLevelOrderForMultipleStartingKongs(settings: Settings):
                 kongsAssumed = kongsAssumed + kongsInLevels[newLevelOrder[level]]
         # Choose where levelWithKongs will go in new level order
         levelIndexOptions = list(levelIndicesToFill.intersection(levelsReachable))
+        # If we hit one of the `break`s above, it's likely we can't logically access any level past it
+        # If this happens, we got unlucky (settings dependending) and restart this process or else we crash
+        # The most common instance of this is when Aztec is level 1 and you don't start with Diddy
+        if levelIndexOptions == []:
+            return ShuffleLevelOrderForMultipleStartingKongs(settings)
         # Place level in newLevelOrder and remove from list of remaining slots
         shuffledLevelIndex = random.choice(levelIndexOptions)
         levelIndicesToFill.remove(shuffledLevelIndex)
