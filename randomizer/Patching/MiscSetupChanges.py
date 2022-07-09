@@ -43,8 +43,8 @@ def randomize_setup(spoiler: Spoiler):
     for setting in allowed_settings:
         enabled = enabled or setting
     swap_list = [
-        {"map":Maps.AztecLlamaTemple,"item_list":[0xBC, 0x22B, 0x229, 0x22A]},
-        {"map":Maps.CastleMuseum, "item_list":[0x17]},
+        {"map": Maps.AztecLlamaTemple, "item_list": [0xBC, 0x22B, 0x229, 0x22A]},
+        {"map": Maps.CastleMuseum, "item_list": [0x17]},
     ]
     number_gb_data = [
         {
@@ -54,20 +54,20 @@ def randomize_setup(spoiler: Spoiler):
                 {"number": 3, "rot": 1},
                 {"number": 5, "rot": 2},
                 {"number": 6, "rot": 3},
-            ]
+            ],
         },
         {
             "subtype": "edge",
             "numbers": [
-                {"number":8, "rot": 0},
-                {"number":10, "rot": 0},
-                {"number":7, "rot": 1},
-                {"number":16, "rot": 1},
-                {"number":14, "rot": 2},
-                {"number":9, "rot": 2},
-                {"number":4, "rot": 3},
-                {"number":1, "rot": 3},
-            ]
+                {"number": 8, "rot": 0},
+                {"number": 10, "rot": 0},
+                {"number": 7, "rot": 1},
+                {"number": 16, "rot": 1},
+                {"number": 14, "rot": 2},
+                {"number": 9, "rot": 2},
+                {"number": 4, "rot": 3},
+                {"number": 1, "rot": 3},
+            ],
         },
         {
             "subtype": "center",
@@ -76,8 +76,8 @@ def randomize_setup(spoiler: Spoiler):
                 {"number": 15, "rot": 0},
                 {"number": 11, "rot": 0},
                 {"number": 2, "rot": 0},
-            ]
-        }
+            ],
+        },
     ]
 
     if enabled:
@@ -101,7 +101,7 @@ def randomize_setup(spoiler: Spoiler):
                     "center": {
                         "offsets": [],
                         "positions": [],
-                    }
+                    },
                 }
             for model2_item in range(model2_count):
                 item_start = cont_map_setup_address + 4 + (model2_item * 0x30)
@@ -130,13 +130,13 @@ def randomize_setup(spoiler: Spoiler):
                 elif (cont_map_id == Maps.GalleonBoss or cont_map_id == Maps.HideoutHelm) and item_type == 0x235 and spoiler.settings.puzzle_rando:
                     if cont_map_id == Maps.HideoutHelm:
                         star_donut_center = [1055.704, 3446.966]
-                        star_donut_boundaries = [123.128,235.971]
-                        star_height_boundaries = [-131,500]
+                        star_donut_boundaries = [123.128, 235.971]
+                        star_height_boundaries = [-131, 500]
                     elif cont_map_id == Maps.GalleonBoss:
                         star_donut_center = [1216, 1478]
                         star_donut_boundaries = [188, 460]
                         star_height_boundaries = []
-                    radius = random.uniform(star_donut_boundaries[0],star_donut_boundaries[1])
+                    radius = random.uniform(star_donut_boundaries[0], star_donut_boundaries[1])
                     angle = random.uniform(0, math.pi * 2)
                     star_a = random.uniform(0, 360)
                     if angle == math.pi * 2:
@@ -154,7 +154,7 @@ def randomize_setup(spoiler: Spoiler):
                     ROM().seek(item_start + 0x1C)
                     ROM().writeMultipleBytes(int(float_to_hex(star_a), 16), 4)
                     if len(star_height_boundaries) > 0:
-                        star_y = random.uniform(star_height_boundaries[0],star_height_boundaries[1])
+                        star_y = random.uniform(star_height_boundaries[0], star_height_boundaries[1])
                         ROM().seek(item_start + 4)
                         ROM().writeMultipleBytes(int(float_to_hex(star_y), 16), 4)
                 elif cont_map_id == Maps.FranticFactory and spoiler.settings.puzzle_rando and item_type >= 0xF4 and item_type <= 0x103:
@@ -166,8 +166,8 @@ def randomize_setup(spoiler: Spoiler):
                                 x = int.from_bytes(ROM().readBytes(4), "big")
                                 y = int.from_bytes(ROM().readBytes(4), "big")
                                 z = int.from_bytes(ROM().readBytes(4), "big")
-                                number_replacement_data[subtype_name]["offsets"].append({"offset": item_start, "rotation": num_item["rot"], "number": item_type-0xF3})
-                                number_replacement_data[subtype_name]["positions"].append({"coords": [x,y,z], "rotation": num_item["rot"]})
+                                number_replacement_data[subtype_name]["offsets"].append({"offset": item_start, "rotation": num_item["rot"], "number": item_type - 0xF3})
+                                number_replacement_data[subtype_name]["positions"].append({"coords": [x, y, z], "rotation": num_item["rot"]})
 
             if spoiler.settings.puzzle_rando:
                 if len(positions) > 0 and len(offsets) > 0:
@@ -178,10 +178,10 @@ def randomize_setup(spoiler: Spoiler):
                             ROM().writeMultipleBytes(positions[index][coord], 4)
                 if cont_map_id == Maps.FranticFactory:
                     rotation_hexes = [
-                        "0x00000000", # 0
-                        "0x42B40000", # 90
-                        "0x43340000", # 180
-                        "0x43870000", # 270
+                        "0x00000000",  # 0
+                        "0x42B40000",  # 90
+                        "0x43340000",  # 180
+                        "0x43870000",  # 270
                     ]
                     for subtype in number_replacement_data:
                         subtype_name = subtype
@@ -193,16 +193,16 @@ def randomize_setup(spoiler: Spoiler):
                             for coord in range(3):
                                 coord_val = subtype["positions"][index]["coords"][coord]
                                 if coord == 1:
-                                    coord_val = int(float_to_hex(1002),16)
+                                    coord_val = int(float_to_hex(1002), 16)
                                 ROM().writeMultipleBytes(coord_val, 4)
                             new_rot = subtype["positions"][index]["rotation"]
                             rot_diff = ((base_rot - new_rot) + 4) % 4
                             print(f"Number {offset['number']} - Rotation Diff: {rot_diff}")
                             if subtype_name == "center":
-                                rot_diff = random.randint(0,3)
+                                rot_diff = random.randint(0, 3)
                             ROM().seek(offset["offset"] + 0x1C)
                             new_rot = (2 + rot_diff) % 4
-                            ROM().writeMultipleBytes(int(rotation_hexes[new_rot],16),4)
+                            ROM().writeMultipleBytes(int(rotation_hexes[new_rot], 16), 4)
 
             ROM().seek(cont_map_setup_address + 4 + (model2_count * 0x30))
             mystery_count = int.from_bytes(ROM().readBytes(4), "big")
