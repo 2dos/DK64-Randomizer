@@ -20,6 +20,7 @@
 .importobj "obj/src_misc_recolor_kong.o"
 .importobj "obj/src_misc_remove_blockers.o"
 .importobj "obj/src_misc_shop_indicator.o"
+.importobj "obj/src_misc_short_tiny.o"
 .importobj "obj/src_misc_tns_number.o"
 .importobj "obj/src_misc_warp_to_isles.o"
 .importobj "obj/src_randomizers_boss_rando.o"

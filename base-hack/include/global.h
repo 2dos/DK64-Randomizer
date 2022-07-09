@@ -92,4 +92,5 @@ extern void getNextMovePurchase(shop_paad* paad, KongBase* movedata);
 
 extern void guardCatch(void);
 extern void catchWarpHandle(void);
+extern void handleFootProgress(actorData* actor);
 //extern void getRandoNextMovePurchase(shop_paad* shop_info, KongBase* moves);

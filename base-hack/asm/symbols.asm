@@ -126,6 +126,8 @@
 .definelabel delayedObjectModel2Change, 0x8063DB3C
 .definelabel cycleRNG, 0x806119A0
 .definelabel voidWarp, 0x805FF1B0
+.definelabel setToeTexture, 0x8002FC48
+.definelabel applyFootDamage, 0x8002FC98
 
 //vanilla data
 .definelabel TransitionSpeed, 0x807FD88C
@@ -317,6 +319,7 @@
 .definelabel ReplacementLobbyExitsArray, 0x807FFF3E // 0x12
 .definelabel StoredCounterTextures, 0x807FFF30
 .definelabel PauseText, 0x807FFFE6
+.definelabel ShorterBosses, 0x807FFFE5
 
 .definelabel CrankyMoves_New, 0x807FF400
 .definelabel CandyMoves_New, 0x807FF4D4

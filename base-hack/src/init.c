@@ -69,6 +69,7 @@ void initHack(int source) {
 			bonusAutocomplete = Rando.resolve_bonus;
 			QoLOn = Rando.quality_of_life;
 			LobbiesOpen = Rando.lobbies_open_bitfield;
+			ShorterBosses = Rando.short_bosses;
 			changeCharSpawnerFlag(0x14, 2, 93); // Tie llama spawn to lanky help me cutscene flag
 			changeCharSpawnerFlag(0x7, 1, kong_flags[(int)Rando.free_target_japes]);
 			changeCharSpawnerFlag(0x10, 0x13, kong_flags[(int)Rando.free_target_ttemple]);
@@ -94,6 +95,10 @@ void initHack(int source) {
 			} else {
 				*(int*)(0x806A6EA8) = 0x0C1C2519; // Set Bonus Barrel to refill health
 
+			}
+			if (Rando.short_bosses) {
+				*(short*)(0x8074D474) = 44; // Dogadon Health: 3 + (62 * (2 / 3))
+				*(short*)(0x8074D3A8) = 3; // Dillo Health
 			}
 			if (Rando.resolve_bonus & 1) {
 				*(short*)(0x806818DE) = 0x4248; // Make Aztec Lobby GB spawn above the trapdoor)
@@ -181,6 +186,8 @@ void initHack(int source) {
 				*(short*)(0x8075037C) = new_vine_exit_speed;
 				*(short*)(0x80750380) = new_vine_exit_speed;
 				*(short*)(0x80698EEE) = 0x437A; // 250.0f
+				// Lower Aztec Lobby Bonus
+				*(short*)(0x80680D56) = 0x7C; // 0x89 if this needs to be unreachable without PTT
 			}
 			if (Rando.version > 0) {
 				// Disable Graphical Debugger

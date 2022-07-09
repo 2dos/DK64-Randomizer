@@ -75,7 +75,7 @@ typedef struct varspace {
 	/* 0x128 */ char diddy_color; // 0 = Vanilla, 1 = Dark Blue Cap, 2 = Yellow Cap, 3 = Light Blue Cap
 	/* 0x129 */ char lanky_color; // 0 = Vanilla, 1 = Green Straps, 2 = Purple Straps, 3 = Red Straps
 	/* 0x12A */ char tiny_color; // 0 = Vanilla, 1 = Green, 2 = Purple, 3 = Red
-	/* 0x12B */ char chunky_color; // 0 = Vanilla, 1 = Red, 2 = Purple/Blue, 3 = Green/Purple
+	/* 0x12B */ char short_bosses; // 0 = Vanilla fights, 1 = Short fights
 	/* 0x12C */ unsigned char coinreq_cavesbeetle;
 	/* 0x12D */ unsigned char coinreq_aztecbeetle;
 	/* 0x12E */ unsigned char coinreq_factorycar;
