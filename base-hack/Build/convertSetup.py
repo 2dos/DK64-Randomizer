@@ -66,6 +66,7 @@ def modify(file_name, map_index):
         added_model2 = []
         added_actor = []
         model2_index = 0x220
+        added_factory_barracade = False
         for x in range(model2_count):
             byte_stream = byte_read[read_location : read_location + 0x30]
             _type = int.from_bytes(byte_read[read_location + 0x28 : read_location + 0x2A], "big")
@@ -100,6 +101,22 @@ def modify(file_name, map_index):
                     }
                 )
                 model2_index += 1
+            if map_index == 0x22 and not added_factory_barracade and _id == 0x6:
+                added_factory_barracade = True
+                added_model2.append(
+                    {
+                        "base_byte_stream": byte_stream,
+                        "type": 132,
+                        "x": int(float_to_hex(2457.471),16),
+                        "y": int(float_to_hex(1280),16),
+                        "z": int(float_to_hex(3458.604),16),
+                        "rx": 0,
+                        "ry": int(float_to_hex(166),16),
+                        "rz": 0,
+                        "id": 0x100,
+                        "scale": int(float_to_hex(1.18), 16),
+                    }
+                )
             if (map_index == 7 and _id == 0x1A) or (map_index == 0xB0 and _id == 0x39):
                 # Type 0x94
                 _type = 0xCE

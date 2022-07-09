@@ -81,6 +81,7 @@
 #define ISLES_CAVESBOULDER 0x1B
 #define ISLES_CASTLEROCK 0x34
 #define ISLES_HELMJAW 0x1C
+#define ISLES_FACTORYDOORCOLLISION 0x100
 
 #define CHUNKY5DC_GGONE 0x6
 #define CHUNKY5DC_TARGET0 0x3
@@ -272,6 +273,11 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 			} else if (param2 == ISLES_FACTORYDOOR) {
 				if (Rando.lobbies_open_bitfield & 4) {
 					hideObject(behaviour_pointer);
+				}
+			} else if (param2 == ISLES_FACTORYDOORCOLLISION) {
+				if ((Rando.lobbies_open_bitfield & 4) || (checkFlag(FLAG_KEYIN_KEY2,0) || ((CutsceneIndex == 7) && (CutsceneActive == 1) && ((CutsceneStateBitfield & 4) == 0)))) {
+					hideObject(behaviour_pointer);
+					behaviour_pointer->next_state = 1;
 				}
 			} else if (param2 == ISLES_GALLEONBARS) {
 				if (Rando.lobbies_open_bitfield & 8) {
