@@ -151,6 +151,16 @@ def modify(file_name, map_index):
         read_location += 4
         for x in range(actor_count):
             byte_stream = byte_read[read_location : read_location + 0x38]
+            obj_id = int.from_bytes(byte_read[read_location + 0x34: read_location + 0x36],"big")
+            if map_index == 0x1A and obj_id == 13:
+                temp = []
+                for y in range(0x38):
+                    temp.append(byte_stream[y])
+                byte_stream = temp.copy()
+                new_x = 1237.001
+                new_z = 840.569
+                writedatatoarr(byte_stream, int(float_to_hex(new_x),16), 4, 0x0)
+                writedatatoarr(byte_stream, int(float_to_hex(new_z),16), 4, 0x8)
             data = {"stream": byte_stream}
             actor.append(data)
             read_location += 0x38
