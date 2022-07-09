@@ -771,14 +771,106 @@ START_HOOK:
 	Jump_KRoolLankyPhaseFix:
 		J 			KRoolLankyPhaseFix
 		NOP
+	Jump_MadJackShort:
+		J 			MadJackShort
+		NOP
+	Jump_PufftossShort:
+		J 			PufftossShort
+		NOP
+	Jump_DogadonRematchShort:
+		J 			DogadonRematchShort
+		NOP
+	Jump_DilloRematchShort:
+		J 			DilloRematchShort
+		NOP
+	Jump_DKPhaseShort:
+		J 			DKPhaseShort
+		NOP
+	Jump_ChunkyPhaseShort:
+		J 			ChunkyPhaseShort
+		NOP
+	Jump_TinyPhaseShort:
+		J 			TinyPhaseShort
+		NOP
+		
 
 	PatchKRoolCode:
 		LUI 		t3, hi(Jump_KRoolLankyPhaseFix)
 		LW 			t3, lo(Jump_KRoolLankyPhaseFix) (t3)
 		LUI 		t4, 0x8003
 		SW 			t3, 0x8CCC (t4)
-		JR 			ra
 		SW 			r0, 0x8CD0 (t4)
+
+		LUI 		t3, hi(ShorterBosses)
+		LBU 		t3, lo(ShorterBosses) (t3)
+		BEQZ 		t3, PatchKRoolCode_0
+		NOP
+
+		LUI 		t3, hi(Jump_MadJackShort)
+		LW 			t3, lo(Jump_MadJackShort) (t3)
+		LUI 		t4, 0x8003
+		SW 			t3, 0x5120 (t4)
+		SW 			r0, 0x5124 (t4)
+
+		// Mad Jack Cutscene Memery
+		LUI 		t3, 0x8003
+		ADDIU 		t4, r0, 2
+		SH 			t4, 0x50D2 (t3)
+
+		LUI 		t3, hi(Jump_PufftossShort)
+		LW 			t3, lo(Jump_PufftossShort) (t3)
+		LUI 		t4, 0x8003
+		SW 			t3, 0x9AAC (t4)
+		SW 			r0, 0x9AB0 (t4)
+
+		LUI 		t3, hi(Jump_DogadonRematchShort)
+		LW 			t3, lo(Jump_DogadonRematchShort) (t3)
+		LUI 		t4, 0x8003
+		SW 			t3, 0xACB0 (t4)
+		SW 			r0, 0xACB4 (t4)
+
+		LUI 		t3, hi(Jump_DilloRematchShort)
+		LW 			t3, lo(Jump_DilloRematchShort) (t3)
+		LUI 		t4, 0x8002
+		SW 			t3, 0x57CC (t4)
+		SW 			r0, 0x57D0 (t4)
+
+		// KKO Phase Hit Limit
+		LUI 		t3, 0x8003
+		ADDIU 		t4, r0, 2
+		SH 			t4, 0x22BA (t3)
+
+		LUI 		t3, hi(Jump_DKPhaseShort)
+		LW 			t3, lo(Jump_DKPhaseShort) (t3)
+		LUI 		t4, 0x8003
+		SW 			t3, 0xDB10 (t4)
+		SW 			r0, 0xDB14 (t4)
+
+		// Diddy Phase Hit Count
+		LUI 		t3, 0x8003
+		ADDIU 		t4, r0, 2
+		SH 			t4, 0xE52A (t3)
+
+		// Lanky Phase Hit Count
+		LUI 		t3, 0x8003
+		ADDIU 		t4, r0, 2
+		SH 			t4, 0xEF02 (t3)
+
+		LUI 		t3, hi(Jump_TinyPhaseShort)
+		LW 			t3, lo(Jump_TinyPhaseShort) (t3)
+		LUI 		t4, 0x8003
+		SW 			t3, 0x0370 (t4)
+		SW 			r0, 0x0374 (t4)
+
+		LUI 		t3, hi(Jump_ChunkyPhaseShort)
+		LW 			t3, lo(Jump_ChunkyPhaseShort) (t3)
+		LUI 		t4, 0x8003
+		SW 			t3, 0x14B4 (t4)
+		SW 			r0, 0x14B8 (t4)
+
+		PatchKRoolCode_0:
+			JR 			ra
+			NOP
 
 	KRoolLankyPhaseFix:
 		LUI 		a1, 0x8003
@@ -787,6 +879,98 @@ START_HOOK:
 		ADDU 		a1, a1, a2
 		J 			0x80028CD4
 		LH 			a1, 0x59A0 (a1)
+
+	MadJackShort:
+		ADDIU 		t1, r0, 1 // Phase 2
+		BEQ 		t1, t8, MadJackShort_Skip
+		NOP
+		ADDIU 		t1, r0, 3 // Phase 4
+		BNE 		t1, t8, MadJackShort_Finish
+		NOP
+
+		MadJackShort_Skip:
+			ADDIU 		t8, t8, 1
+
+		MadJackShort_Finish:
+			ANDI 		t1, t8, 0xFF
+			J 			0x80035128
+			SLL 		t0, t1, 2
+
+	PufftossShort:
+		ADDIU 		t6, r0, 1 // Phase 2
+		BEQ 		t5, t6, PufftossShort_Skip
+		NOP
+		ADDIU 		t6, r0, 3 // Phase 4
+		BNE 		t5, t6, PufftossShort_Finish
+		NOP
+
+		PufftossShort_Skip:
+			ADDIU 		t5, t5, 1
+
+		PufftossShort_Finish:
+			ANDI 		t6, t5, 0xFF
+			J 			0x80029AB4
+			SLL 		t7, t6, 2
+
+	DogadonRematchShort:
+		ADDIU 		v0, r0, 0x53 // Dogadon 2 Map
+		LUI 		t1, hi(CurrentMap)
+		LW 			t1, lo(CurrentMap) (t1)
+		BNE 		v0, t1, DogadonRematchShort_Finish
+		NOP
+		ADDIU 		v0, r0, 1 // Phase 2
+		BNE 		t0, v0, DogadonRematchShort_Finish
+		NOP
+		ADDIU 		t0, t0, 1
+
+		DogadonRematchShort_Finish:
+			ANDI 	v0, t0, 0xFF
+			J 		0x8002ACB8
+			SLL 	t1, v0, 2
+
+	DilloRematchShort:
+		ADDIU 		t4, t3, 1
+		ADDIU 		t5, r0, 0xC4 // Dillo 2 Map
+		LUI 		at, hi(CurrentMap)
+		LW 			at, lo(CurrentMap) (at)
+		BNE 		t5, at, DilloRematchShort_Finish
+		NOP
+		ADDIU 		t5, r0, 1 // Phase 2
+		BNE 		t5, t4, DilloRematchShort_Finish
+		NOP
+		ADDIU 		t4, t4, 1
+
+		DilloRematchShort_Finish:
+			J 		0x800257D4
+			LUI 	t5, 0x8077
+
+	DKPhaseShort:
+		ADDIU 		t4, r0, 2 // Phase 3
+		BNE 		t4, t3, DKPhaseShort_Finish
+		NOP
+		ADDIU 		t3, t3, 1
+
+		DKPhaseShort_Finish:
+			ANDI 	t4, t3, 0xFF
+			J 		0x8002DB18
+			SLL 	t5, t4, 2
+
+	TinyPhaseShort:
+		JAL 		handleFootProgress
+		OR 			a0, s0, r0
+		J 			0x800303DC
+		NOP
+
+	ChunkyPhaseShort:
+		ADDIU 		t6, r0, 2 // Phase 3
+		BNE 		t6, t5, ChunkyPhaseShort_Finish
+		NOP
+		ADDIU 		t5, t5, 1
+
+		ChunkyPhaseShort_Finish:
+			ANDI 	t6, t5, 0xFF
+			J 		0x800314BC
+			SLL 	t7, t6, 2
 
 	Jump_RemoveKrazyKKLagImpact:
 		J 			RemoveKrazyKKLagImpact
@@ -843,7 +1027,7 @@ START_HOOK:
 		NOP
 
 		GuardAutoclear_NotSnoop:
-			JAL 	0x805FF1B0 // Void Warp
+			JAL 	guardCatch // Void Warp
 			NOP
 			B 		GuardAutoclear_Finish
 			NOP
@@ -888,7 +1072,9 @@ START_HOOK:
 			ADDIU 		a3, r0, 20
 			JAL 		0x80686E40
 			LW 			a2, 0x84 (a0)
-
+			// Play SFX
+			JAL 		playSFX
+			ADDIU 		a0, r0, 493
 
 		GuardDeathHandle_Finish:
 			J 			0x806AFA4C

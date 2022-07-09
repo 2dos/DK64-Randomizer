@@ -28,6 +28,8 @@ void crossKongInit(void) {
 	*(int*)(0x80026C00) = 0x916D0004; // LBU 	t5, 0x4 (t3)
 }
 
+static const unsigned char boss_maps[] = {0x8,0xC5,0x9A,0x6F,0x53,0xC4,0xC7,0xCB,0xCC,0xCD,0xCE,0xCF,0xD6};
+
 void decouple_moves_fixes(void) {
 	if ((CurrentMap == CRANKY) || (CurrentMap == CANDY) || (CurrentMap == FUNKY)) {
 		PatchCrankyCode();
@@ -58,7 +60,13 @@ void decouple_moves_fixes(void) {
 		*(short*)(0x80027678) = 0x1000;
 		*(short*)(0x8002769C) = 0x1000;
 	}
-	if ((CurrentMap >= 0xCB) && (CurrentMap <= 0xCF)) {
+	int in_boss = 0;
+	for (int i = 0; i < sizeof(boss_maps); i++) {
+		if (CurrentMap == boss_maps[i]) {
+			in_boss = 1;
+		}
+	}
+	if (in_boss) {
 		PatchKRoolCode();
 	}
 	if ((CurrentMap == 0x65) || ((CurrentMap >= 0x8D) && (CurrentMap <= 0x8F))) {

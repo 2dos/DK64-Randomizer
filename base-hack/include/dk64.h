@@ -37,7 +37,7 @@ extern void alterSize(void* object, int size);
 extern void unkSizeFunction(void* object);
 extern void spawnRocketbarrel(void* object, int unk);
 extern void* getObjectArrayAddr(void* init_address, int common_object_size, int index);
-extern void playSong(int songIndex);
+extern void playSong(int songIndex, int volume);
 extern void loadExtraHooks();
 extern void playCutscene(void* actor, int cutscene_index, int cutscene_type);
 extern void setHUDItemAsInfinite(int item_index, int player_index, char isInfinite);
@@ -135,6 +135,9 @@ extern void executeBehaviourScript(void* behaviour_pointer, int unk0);
 extern void* loadCounterFontTexture(int texture_base, void* write_location, int position, int texture_offset, int width);
 extern void delayedObjectModel2Change(int map, int model2_id, int state);
 extern void cycleRNG(void);
+extern void voidWarp(void);
+extern void setToeTexture(void* actor, int data);
+extern void applyFootDamage(void* actor, int unk0, int unk1, int unk2);
 
 //vanilla data
 extern float TransitionSpeed;
@@ -332,3 +335,4 @@ extern char bonusAutocomplete;
 extern void* StoredCounterTextures[7];
 extern char QoLOn;
 extern unsigned char PauseText;
+extern unsigned char ShorterBosses;
