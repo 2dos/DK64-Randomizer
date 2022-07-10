@@ -12,7 +12,7 @@ static char move_count_str[10] = "";
 int* display_images(int* dl) {
 	int y_offset = FileScreenDLOffset - 720;
 	for (int i = 0; i < 8; i++) {
-		int key_there = checkFlag(444 + i,0);
+		int key_there = checkFlag(FLAG_KEYIN_KEY1 + i,0);
 		if (!key_there) {
 			if (Rando.keys_preturned & (1 << i)) {
 				key_there = 1;
@@ -50,7 +50,7 @@ int* display_text(int* dl) {
 		move_count += 32; // All moves except sniper and camera
 		move_count += (MovesBase[0].weapon_bitfield >> 2) & 1; // Sniper Scope
 	} else {
-		if ((!Rando.camera_unlocked) && (checkFlag(0x179,0))) {
+		if ((!Rando.camera_unlocked) && (checkFlag(FLAG_ABILITY_CAMERA,0))) {
 			move_count += 1; // Fairy Camera
 		}
 		if (MovesBase[0].simian_slam > 1) {
@@ -114,7 +114,7 @@ int* displayHash(int* dl, int y_offset) {
 	return dl;
 }
 
-static const short kong_flags[] = {385,6,70,66,117};
+static const short kong_flags[] = {FLAG_KONG_DK,FLAG_KONG_DIDDY,FLAG_KONG_LANKY,FLAG_KONG_TINY,FLAG_KONG_CHUNKY};
 void correctKongFaces(void) {
 	if (Rando.unlock_kongs) {
 		for (int i = 0; i < 5; i++) {
@@ -124,7 +124,7 @@ void correctKongFaces(void) {
 				KongUnlockedMenuArray[i] = (Rando.unlock_kongs & (1 << i)) != 0;
 			}
 		}
-		if (!checkFlag(385,0)) {
+		if (!checkFlag(FLAG_KONG_DK,0)) {
 			if ((Rando.unlock_kongs & 1) == 0) {
 				KongUnlockedMenuArray[0] = 0;
 			}
@@ -135,7 +135,7 @@ void correctKongFaces(void) {
 		}
 		KongUnlockedMenuArray[(int)Rando.starting_kong] = 1;
 		if (Rando.starting_kong != 0) {
-			if (!checkFlag(385,0)) {
+			if (!checkFlag(FLAG_KONG_DK,0)) {
 				KongUnlockedMenuArray[0] = 0;
 			}
 		}

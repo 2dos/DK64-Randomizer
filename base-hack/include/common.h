@@ -7,6 +7,7 @@
 #include "variable_space_structs.h"
 #include "dk64.h"
 #include "enums.h"
+#include "flags.h"
 #include "global.h"
 #include "vars.h"
 

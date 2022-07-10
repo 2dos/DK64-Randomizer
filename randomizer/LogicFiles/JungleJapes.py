@@ -36,8 +36,8 @@ LogicRegions = {
     ], [
         TransitionFront(Regions.JungleJapesLobby, lambda l: True, Transitions.JapesToIsles),
         TransitionFront(Regions.JapesBeyondPeanutGate, lambda l: l.peanut and l.diddy),
-        TransitionFront(Regions.JapesBeyondCoconutGate1, lambda l: Events.JapesFreeKongOpenGates in l.Events),
-        TransitionFront(Regions.JapesBeyondCoconutGate2, lambda l: Events.JapesFreeKongOpenGates in l.Events),
+        TransitionFront(Regions.JapesBeyondCoconutGate1, lambda l: l.settings.open_levels or Events.JapesFreeKongOpenGates in l.Events),
+        TransitionFront(Regions.JapesBeyondCoconutGate2, lambda l: l.settings.open_levels or Events.JapesFreeKongOpenGates in l.Events),
         TransitionFront(Regions.Mine, lambda l: l.peanut and l.isdiddy, Transitions.JapesMainToMine),
         TransitionFront(Regions.JapesLankyCave, lambda l: l.peanut and l.diddy and l.handstand and l.islanky, Transitions.JapesMainToLankyCave),
         TransitionFront(Regions.JapesCatacomb, lambda l: l.Slam and l.chunkyAccess, Transitions.JapesMainToCatacomb),
@@ -67,7 +67,7 @@ LogicRegions = {
         LocationLogic(Locations.JapesKasplatLeftTunnelFar, lambda l: True),
     ], [], [
         TransitionFront(Regions.JungleJapesMain, lambda l: True),
-        TransitionFront(Regions.JapesBeyondFeatherGate, lambda l: l.feather and l.tinyAccess),
+        TransitionFront(Regions.JapesBeyondFeatherGate, lambda l: l.settings.open_levels or (l.feather and l.tinyAccess)),
     ]),
 
     Regions.JapesBeyondFeatherGate: Region("Japes Beyond Feather Gate", Levels.JungleJapes, True, -1, [

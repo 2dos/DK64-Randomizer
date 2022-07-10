@@ -54,7 +54,7 @@ def SelectRandomKongForBoss(boss_map: Maps, hard_mad_jack: bool):
         else:
             possibleKongs = [Kongs.tiny]
     elif boss_map == Maps.GalleonBoss:
-        possibleKongs = [Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky]
+        possibleKongs = [Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky]
     elif boss_map == Maps.FungiBoss:
         possibleKongs = [Kongs.chunky]
     elif boss_map == Maps.CavesBoss:

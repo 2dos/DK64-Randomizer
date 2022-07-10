@@ -121,6 +121,26 @@ images = [
         "resize": False,
         "flip": False,
     },
+    {
+        "name": "dk_tie_palette",
+        "format": "rgba16",
+        "table": 25,
+        "index": 0xE66,
+        "w": 32,
+        "h": 32,
+        "resize": False,
+        "flip": False,
+    },
+    {
+        "name": "tiny_palette",
+        "format": "rgba16",
+        "table": 25,
+        "index": 0xE69,
+        "w": 32,
+        "h": 32,
+        "resize": False,
+        "flip": False,
+    },
 ]
 
 kong_tex = ["chunky", "tiny", "lanky", "diddy", "dk"]

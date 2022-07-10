@@ -2,10 +2,12 @@
 import random
 from randomizer.Enums.Kongs import Kongs
 from randomizer.Enums.Regions import Regions
+from randomizer.Enums.WrinklyKong import WrinklyKong
 
 from randomizer.Lists.Item import NameFromKong
 from randomizer.Lists.MapsAndExits import GetMapId
 from randomizer.Lists.ShufflableExit import ShufflableExits
+from randomizer.Lists.WrinklyHints import hints
 from randomizer.Spoiler import Spoiler
 from randomizer.Patching.UpdateHints import updateRandomHint
 
@@ -446,6 +448,8 @@ def compileHints(spoiler: Spoiler):
     random.shuffle(padded_hints)
     for x in range(padded_count):
         updateRandomHint(padded_hints[x])
+    UpdateSpoilerHintList(spoiler)
+    return True
 
 
 def AddLoadingZoneHints(spoiler: Spoiler):
@@ -593,3 +597,10 @@ def TryAddingLoadingZoneHint(spoiler: Spoiler, transition, disallowedRegions: li
         destinationName = destinationName[:fromExitName]
     updateRandomHint(f"If you're looking for {destinationName}, follow the path from {entranceName}.")
     return True
+
+
+def UpdateSpoilerHintList(spoiler: Spoiler):
+    """Write hints to spoiler object."""
+    for hint in hints:
+        if hint.kong != WrinklyKong.ftt:
+            spoiler.hint_list[hint.name] = hint.hint

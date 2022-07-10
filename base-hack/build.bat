@@ -22,6 +22,7 @@ rmdir /s /q .\obj > NUL
 if %test_on% == --test (
 	echo Applying test variables
 	%python_ver% test_variables_apply.py
+	%python_ver% build\generate_kong_color_images.py
 )
 build\n64crc.exe rom\dk64-randomizer-base-dev.z64
 %python_ver% build\dump_pointer_tables_vanilla.py

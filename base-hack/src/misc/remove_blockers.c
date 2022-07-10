@@ -5,7 +5,7 @@ void remove_blockers(void) {
 	if (ObjectModel2Timer < 5) {
 		for (int i = 0; i < 8; i++) {
 			if (Rando.remove_blockers & bitfield_check) {
-				setPermFlag(461 + i);
+				setPermFlag(FLAG_BLOCKER_JAPES + i);
 			}
 			bitfield_check <<= 1;
 		}

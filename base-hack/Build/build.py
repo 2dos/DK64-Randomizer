@@ -26,6 +26,7 @@ from image_converter import convertToRGBA32
 from end_seq_writer import createTextFile, createSquishFile
 from instance_script_maps import instance_script_maps
 from generate_yellow_wrinkly import generateYellowWrinkly
+import model_fix
 
 ROMName = "rom/dk64.z64"
 newROMName = "rom/dk64-randomizer-base.z64"
@@ -62,7 +63,7 @@ file_dict = [
         "name": "Thumb Image",
         "pointer_table_index": 14,
         "file_index": 94,
-        "source_file": "assets/Non-Code/Nintendo Logo/Nintendo.png",
+        "source_file": "assets/Non-Code/Nintendo Logo/Nintendo4.png",
         "texture_format": "rgba5551",
     },
     {
@@ -179,33 +180,70 @@ file_dict = [
         "do_not_delete_source": True,
     },
     {"name": "WXY_Slash", "pointer_table_index": 14, "file_index": 12, "source_file": "assets/Non-Code/displays/wxys.png", "texture_format": "rgba5551"},
+    {
+        "name": "DK Tie Palette",
+        "pointer_table_index": 25,
+        "file_index": 6013,
+        "source_file": "assets/Non-Code/hash/dk_tie_palette.png",
+        "do_not_extract": True,
+        "texture_format": "rgba5551",
+        "target_compressed_size": 32 * 32 * 2,
+    },
+    {
+        "name": "Tiny Overalls Palette",
+        "pointer_table_index": 25,
+        "file_index": 6014,
+        "source_file": "assets/Non-Code/hash/tiny_palette.png",
+        "do_not_extract": True,
+        "texture_format": "rgba5551",
+        "target_compressed_size": 32 * 32 * 2,
+    },
+    {
+        "name": "Tiny Overalls Palette",
+        "pointer_table_index": 25,
+        "file_index": 6014,
+        "source_file": "assets/Non-Code/hash/tiny_palette.png",
+        "do_not_extract": True,
+        "texture_format": "rgba5551",
+        "target_compressed_size": 32 * 32 * 2,
+    },
 ]
+
+base_coin_sfx = "assets/Non-Code/music/Win95_startup.dk64song"
+new_coin_sfx = "assets/Non-Code/music/coin_sfx.bin"
+if os.path.exists(new_coin_sfx):
+    os.remove(new_coin_sfx)
+shutil.copyfile(base_coin_sfx, new_coin_sfx)
 
 map_replacements = []
 song_replacements = [
-    {"name": "baboon_balloon", "index": 107},
-    {"name": "bonus_minigames", "index": 8},
-    {"name": "dk_rap", "index": 75},
-    {"name": "failure_races_try_again", "index": 87},
-    {"name": "move_get", "index": 114},
-    {"name": "nintendo_logo", "index": 174},
-    {"name": "success_races", "index": 86},
+    {"name": "baboon_balloon", "index": 107, "bps": True},
+    {"name": "bonus_minigames", "index": 8, "bps": True},
+    {"name": "dk_rap", "index": 75, "bps": True},
+    {"name": "failure_races_try_again", "index": 87, "bps": True},
+    {"name": "move_get", "index": 114, "bps": True},
+    {"name": "nintendo_logo", "index": 174, "bps": True},
+    {"name": "success_races", "index": 86, "bps": True},
+    {"name": "coin_sfx", "index": 7, "bps": False},
 ]
 changed_song_indexes = []
 
-# for song in song_replacements:
-#     file_dict.append(
-#         {
-#             "name": song["name"].replace("_", " "),
-#             "pointer_table_index": 0,
-#             "file_index": song["index"],
-#             "source_file": f"assets/Non-Code/music/{song['name']}.bin",
-#             "bps_file": f"assets/Non-Code/music/{song['name']}.bps",
-#             "target_compressed_size": 0x2DDE,
-#             "is_diff_patch": True,
-#         }
-#     )
-#     changed_song_indexes.append(song["index"])
+for song in song_replacements:
+    item = {
+        "name": song["name"].replace("_", " "),
+        "pointer_table_index": 0,
+        "file_index": song["index"],
+        "source_file": f"assets/Non-Code/music/{song['name']}.bin",
+        "target_compressed_size": 0x2DDE,
+    }
+    if song["bps"]:
+        item["is_diff_patch"] = True
+        item["bps_file"] = f"assets/Non-Code/music/{song['name']}.bps"
+    else:
+        item["do_not_delete_source"] = True
+        item["do_not_extract"] = True
+    file_dict.append(item)
+    changed_song_indexes.append(song["index"])
 
 for x in instance_script_maps:
     file_dict.append(
@@ -271,8 +309,8 @@ for x in range(221):
             "pointer_table_index": 16,
             "file_index": x,
             "source_file": "charspawners" + str(x) + ".bin",
-            "target_compressed_size": 0x1000,
-            "target_uncompressed_size": 0x1000,
+            "target_compressed_size": 0x1400,
+            "target_uncompressed_size": 0x1400,
             "do_not_recompress": True,
         }
     )
@@ -311,6 +349,16 @@ for x in range(10):
             "texture_format": "rgba5551",
         }
     )
+for x in range(4761, 4768):
+    file_dict.append(
+        {
+            "name": f"Portal Ripple Texture ({x})",
+            "pointer_table_index": 25,
+            "file_index": x,
+            "source_file": "assets/Non-Code/displays/empty44.png",
+            "texture_format": "rgba5551",
+        }
+    )
 barrel_faces = ["Dk", "Diddy", "Lanky", "Tiny", "Chunky"]
 barrel_offsets = [4817, 4815, 4819, 4769, 4747]
 for x in range(5):
@@ -324,6 +372,34 @@ for x in range(5):
                 "texture_format": "rgba5551",
             }
         )
+
+kong_palettes = [0xE8C, 0xE66, 0xE69, 0xEB9, 0xE67, 3826, 3847]
+for x in kong_palettes:
+    x_s = 32 * 32 * 2
+    if x == 0xEB9:  # Chunky Shirt Back
+        x_s = 43 * 32 * 2
+    file_dict.append({"name": f"Palette Expansion ({hex(x)})", "pointer_table_index": 25, "file_index": x, "source_file": f"palette_{x}.bin", "target_compressed_size": x_s})
+
+model_changes = [
+    {"model_index": 0, "model_file": "diddy_base.bin"},
+    {"model_index": 1, "model_file": "diddy_ins.bin"},
+    {"model_index": 5, "model_file": "lanky_base.bin"},
+    {"model_index": 6, "model_file": "lanky_ins.bin"},
+    {"model_index": 3, "model_file": "dk_base.bin"},
+    {"model_index": 8, "model_file": "tiny_base.bin"},
+    {"model_index": 9, "model_file": "tiny_ins.bin"},
+]
+for x in model_changes:
+    file_dict.append(
+        {
+            "name": f"Model {x['model_index']}",
+            "pointer_table_index": 5,
+            "file_index": x["model_index"],
+            "source_file": x["model_file"],
+            "do_not_delete_source": True,
+        }
+    )
+
 portal_image_order = [
     ["SE", "NE", "SW", "NW"],
     ["NW", "SW", "NE", "SE"],
@@ -516,6 +592,17 @@ with open(newROMName, "r+b") as fh:
             subprocess.Popen(["build\\flips.exe", "--apply", x["bps_file"], x["source_file"], x["source_file"]]).wait()
             # shutil.copyfile(x["source_file"],x["source_file"].replace(".bin",".raw"))
 
+        if "texture_format" in x:
+            if x["texture_format"] in ["rgba5551", "i4", "ia4", "i8", "ia8"]:
+                result = subprocess.check_output(["./build/n64tex.exe", x["texture_format"], x["source_file"]])
+                if "target_compressed_size" in x:
+                    x["source_file"] = x["source_file"].replace(".png", f".{x['texture_format']}")
+            elif x["texture_format"] == "rgba32":
+                convertToRGBA32(x["source_file"])
+                x["source_file"] = x["source_file"].replace(".png", ".rgba32")
+            else:
+                print(" - ERROR: Unsupported texture format " + x["texture_format"])
+
         if "target_compressed_size" in x:
             x["do_not_compress"] = True
             if x["source_file"][:5] == "setup":
@@ -547,15 +634,6 @@ with open(newROMName, "r+b") as fh:
             with open(x["source_file"], "wb") as fg:
                 fg.write(compress)
             x["output_file"] = x["source_file"]
-
-        if "texture_format" in x:
-            if x["texture_format"] in ["rgba5551", "i4", "ia4", "i8", "ia8"]:
-                result = subprocess.check_output(["./build/n64tex.exe", x["texture_format"], x["source_file"]])
-            elif x["texture_format"] == "rgba32":
-                convertToRGBA32(x["source_file"])
-                x["source_file"] = x["source_file"].replace(".png", ".rgba32")
-            else:
-                print(" - ERROR: Unsupported texture format " + x["texture_format"])
 
         if "use_external_gzip" in x and x["use_external_gzip"]:
             if os.path.exists(x["source_file"]):
@@ -701,7 +779,7 @@ with open(newROMName, "r+b") as fh:
         if os.path.exists(pth):
             os.remove(pth)
     other_remove = []
-    displays = ["dk_face", "diddy_face", "lanky_face", "tiny_face", "chunky_face", "none", "shared", "soldout32", "wxys", "yellow_qmark_0", "yellow_qmark_1"]
+    displays = ["dk_face", "diddy_face", "lanky_face", "tiny_face", "chunky_face", "none", "shared", "soldout32", "wxys", "yellow_qmark_0", "yellow_qmark_1", "empty44"]
     for disp in displays:
         for ext in [".png", ".rgba32"]:
             other_remove.append(f"displays/{disp}{ext}")
@@ -718,6 +796,11 @@ with open(newROMName, "r+b") as fh:
             os.remove(pth)
     if os.path.exists("assets/Non-Code/Gong/hint_door.bin"):
         os.remove("assets/Non-Code/Gong/hint_door.bin")
+    for x in model_changes:
+        if os.path.exists(x["model_file"]):
+            os.remove(x["model_file"])
+    if os.path.exists(new_coin_sfx):
+        os.remove(new_coin_sfx)
     # pth = "assets/Non-Code/displays/soldout_bismuth.rgba32"
     # if os.path.exists(pth):
     #     os.remove(pth)

@@ -24,7 +24,7 @@ from randomizer.Lists.Location import LocationList
 from randomizer.Lists.MapsAndExits import Maps
 from randomizer.Lists.Minigame import BarrelMetaData, MinigameRequirements
 from randomizer.Logic import LogicVarHolder, LogicVariables, STARTING_SLAM
-from randomizer.LogicClasses import TransitionFront
+from randomizer.LogicClasses import Sphere, TransitionFront
 from randomizer.Prices import GetMaxForKong, GetPriceOfMoveItem
 from randomizer.ShuffleBarrels import BarrelShuffle
 from randomizer.ShuffleKasplats import InitKasplatMap, KasplatShuffle
@@ -68,7 +68,9 @@ def GetAccessibleLocations(settings, ownedItems, searchType=SearchMode.GetReacha
     # Continue doing searches until nothing new is found
     while len(newLocations) > 0 or eventAdded:
         # Add items and events from the last search iteration
-        sphere = []
+        sphere = Sphere()
+        if playthroughLocations:
+            sphere.availableGBs = playthroughLocations[-1].availableGBs
         for locationId in newLocations:
             accessible.append(locationId)
             location = LocationList[locationId]
@@ -82,15 +84,17 @@ def GetAccessibleLocations(settings, ownedItems, searchType=SearchMode.GetReacha
                 if searchType == SearchMode.GeneratePlaythrough and ItemList[location.item].playthrough:
                     # Banana hoard in a sphere by itself
                     if location.item == Items.BananaHoard:
-                        sphere = [locationId]
+                        sphere.locations = [locationId]
                         break
-                    sphere.append(locationId)
+                    if location.item == Items.GoldenBanana:
+                        sphere.availableGBs += 1
+                    sphere.locations.append(locationId)
                 # If we're checking beatability, just want to know if we have access to the banana hoard
                 if searchType == SearchMode.CheckBeatable and location.item == Items.BananaHoard:
                     return True
-        if len(sphere) > 0:
+        if len(sphere.locations) > 0:
             playthroughLocations.append(sphere)
-            if LocationList[sphere[0]].item == Items.BananaHoard:
+            if LocationList[sphere.locations[0]].item == Items.BananaHoard:
                 break
         eventAdded = False
         # Reset new lists
@@ -339,11 +343,20 @@ def Reset():
 def ParePlaythrough(settings, PlaythroughLocations):
     """Pare playthrough down to only the essential elements."""
     locationsToAddBack = []
+    mostExpensiveBLocker = max([settings.blocker_0, settings.blocker_1, settings.blocker_2, settings.blocker_3, settings.blocker_4, settings.blocker_5, settings.blocker_6, settings.blocker_7])
     # Check every location in the list of spheres.
     for i in range(len(PlaythroughLocations) - 2, -1, -1):
         sphere = PlaythroughLocations[i]
-        for locationId in sphere.copy():
+        # If there are more available GBs than the most expensive B. Locker needs, none of them are logically required
+        # If there are fewer available GBs than the most expensive B. Locker requires, all of them are logically required
+        if sphere.availableGBs > mostExpensiveBLocker:
+            sphere.locations = [locationId for locationId in sphere.locations if LocationList[locationId].item != Items.GoldenBanana]
+            continue
+        for locationId in sphere.locations.copy():
             location = LocationList[locationId]
+            # All GBs that make it here are logically required
+            if location.item == Items.GoldenBanana:
+                continue
             # Copy out item from location
             item = location.item
             location.item = None
@@ -351,7 +364,7 @@ def ParePlaythrough(settings, PlaythroughLocations):
             Reset()
             if GetAccessibleLocations(settings, [], SearchMode.CheckBeatable):
                 # If the game is still beatable, this is an unnecessary location, remove it.
-                sphere.remove(locationId)
+                sphere.locations.remove(locationId)
                 # We delay the item to ensure future locations which may rely on this one
                 # do not give a false positive for beatability.
                 location.SetDelayedItem(item)
@@ -363,7 +376,7 @@ def ParePlaythrough(settings, PlaythroughLocations):
     # Check if there are any empty spheres, if so remove them
     for i in range(len(PlaythroughLocations) - 2, -1, -1):
         sphere = PlaythroughLocations[i]
-        if len(sphere) == 0:
+        if len(sphere.locations) == 0:
             PlaythroughLocations.remove(sphere)
 
     # Re-place those items which were delayed earlier.
@@ -378,7 +391,7 @@ def PareWoth(settings, PlaythroughLocations):
     WothLocations = []
     for sphere in PlaythroughLocations:
         # Don't want constant locations in woth
-        for loc in [x for x in sphere if not LocationList[x].constant]:
+        for loc in [x for x in sphere.locations if not LocationList[x].constant]:
             WothLocations.append(loc)
     # Check every item location to see if removing it by itself makes the game unbeatable
     for i in range(len(WothLocations) - 2, -1, -1):
@@ -723,9 +736,17 @@ def ShuffleSharedMoves(spoiler):
     validLocations = {}
     kongMoveArrays = [ItemPool.DonkeyMoves, ItemPool.DiddyMoves, ItemPool.LankyMoves, ItemPool.TinyMoves, ItemPool.ChunkyMoves]
     kongLocationArrays = [ItemPool.DonkeyMoveLocations, ItemPool.DiddyMoveLocations, ItemPool.LankyMoveLocations, ItemPool.TinyMoveLocations, ItemPool.ChunkyMoveLocations]
+    mergedLocationArrays = ItemPool.DonkeyMoveLocations.copy()
+    mergedLocationArrays.update(ItemPool.DiddyMoveLocations.copy())
+    mergedLocationArrays.update(ItemPool.LankyMoveLocations.copy())
+    mergedLocationArrays.update(ItemPool.TinyMoveLocations.copy())
+    mergedLocationArrays.update(ItemPool.ChunkyMoveLocations.copy())
     for i in range(5):
         for item in kongMoveArrays[i]:
-            validLocations[item] = kongLocationArrays[i] - locationsToRemove
+            if spoiler.settings.move_rando == "on_shared":
+                validLocations[item] = mergedLocationArrays - locationsToRemove
+            else:
+                validLocations[item] = kongLocationArrays[i] - locationsToRemove
     return (kongMoves, validLocations)
 
 

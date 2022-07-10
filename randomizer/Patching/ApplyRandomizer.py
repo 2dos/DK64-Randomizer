@@ -16,6 +16,7 @@ from randomizer.Patching.DKTV import randomize_dktv
 from randomizer.Patching.EnemyRando import randomize_enemies
 from randomizer.Patching.EntranceRando import randomize_entrances
 from randomizer.Patching.Hash import get_hash_images
+from randomizer.Patching.KasplatLocationRando import randomize_kasplat_locations
 from randomizer.Patching.KongRando import apply_kongrando_cosmetic
 from randomizer.Patching.KRoolRando import randomize_krool
 from randomizer.Patching.MoveLocationRando import randomize_moves
@@ -24,6 +25,8 @@ from randomizer.Patching.Patcher import ROM
 from randomizer.Patching.PriceRando import randomize_prices
 from randomizer.Patching.PuzzleRando import randomize_puzzles
 from randomizer.Patching.UpdateHints import PushHints, wipeHints
+from randomizer.Patching.MiscSetupChanges import randomize_setup
+from GenTracker import generateTracker
 
 # from randomizer.Spoiler import Spoiler
 from randomizer.Settings import Settings
@@ -247,10 +250,23 @@ def patching_response(responded_data):
         ROM().seek(sav + 0x13F)
         ROM().write(1)
 
+    # Enable Skip Arcade Round 1
+    if spoiler.settings.skip_arcader1:
+        ROM().seek(sav + 0x126)
+        ROM().write(1)
+
     # Turn off Shop Hints
     if spoiler.settings.disable_shop_hints:
         ROM().seek(sav + 0x13B)
         ROM().write(0)
+
+    if spoiler.settings.open_levels:
+        ROM().seek(sav + 0x127)
+        ROM().write(1)
+
+    if spoiler.settings.shorten_boss:
+        ROM().seek(sav + 0x12B)
+        ROM().write(1)
 
     keys_turned_in = [0, 1, 2, 3, 4, 5, 6, 7]
     if len(spoiler.settings.krool_keys_required) > 0:
@@ -275,9 +291,11 @@ def patching_response(responded_data):
     randomize_krool(spoiler)
     randomize_barrels(spoiler)
     randomize_bananaport(spoiler)
+    # randomize_kasplat_locations(spoiler)
     randomize_enemies(spoiler)
     apply_kongrando_cosmetic(spoiler)
-    randomize_puzzles()
+    randomize_setup(spoiler)
+    randomize_puzzles(spoiler)
 
     random.seed(spoiler.settings.seed)
     randomize_music(spoiler)
@@ -303,8 +321,10 @@ def patching_response(responded_data):
     if spoiler.settings.generate_spoilerlog is True:
         js.document.getElementById("spoiler_log_block").style.display = ""
         js.document.getElementById("spoiler_log_text").value = spoiler.toJson()
+        js.document.getElementById("tracker_text").value = generateTracker(spoiler.toJson())
     else:
         js.document.getElementById("spoiler_log_text").value = ""
+        js.document.getElementById("tracker_text").value = ""
         js.document.getElementById("spoiler_log_block").style.display = "none"
 
     js.document.getElementById("generated_seed_id").innerHTML = spoiler.settings.seed_id

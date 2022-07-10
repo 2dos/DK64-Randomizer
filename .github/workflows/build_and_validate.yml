@@ -2,9 +2,9 @@
 name: Build and Scan
 on:
   push:
-    branches: [ main, master, dev ]
+    branches: [ main, master, dev, v*.* ]
   pull_request:
-    branches: [ main, master, dev ]
+    branches: [ main, master, dev, v*.* ]
 
 jobs:
   lint:

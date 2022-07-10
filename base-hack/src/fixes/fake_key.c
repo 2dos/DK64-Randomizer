@@ -2,9 +2,9 @@
 
 void fixkey8(void) {
 	if (CurrentMap == 0x11) { // Hideout Helm
-		if (checkFlag(380,0) == 0) { // Doesn't have Key 8
+		if (checkFlag(FLAG_KEYHAVE_KEY8,0) == 0) { // Doesn't have Key 8
 			if (touchingModel2Object(0x5A)) {
-				setPermFlag(380); // Give Key 8
+				setPermFlag(FLAG_KEYHAVE_KEY8); // Give Key 8
 			}
 		}
 	}

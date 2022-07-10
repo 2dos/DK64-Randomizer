@@ -155,6 +155,7 @@ settings*.json
 *.v64
 *.bin
 *.bin.gz
+*.raw
 codeOutput.txt
 lockfile
 temprom.rom

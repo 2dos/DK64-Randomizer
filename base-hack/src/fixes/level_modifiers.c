@@ -27,7 +27,7 @@ void adjust_galleon_water(void) {
 		if (CurrentMap == GLOOMY_GALLEON) {
 			load_object_script(0); // Up Switch
 			load_object_script(1); // Down Switch
-			if (checkFlag(160,0)) {
+			if (checkFlag(FLAG_MODIFIER_GALLEONWATER,0)) {
 				for (int i = 0; i < 20; i++) {
 					setWaterHeight(i,55.0f,1000.0f);
 				}

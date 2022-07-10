@@ -156,5 +156,6 @@ EnemyMetaData = {
     Enemies.Pufftup: EnemyData(crown_enabled=False, size_cap=40),  #
     Enemies.Kosha: EnemyData(crown_weight=1),  #
     Enemies.GetOut: EnemyData(aggro=6, crown_weight=1),
+    Enemies.Guard: EnemyData(aggro=1, crown_enabled=False),
     # Enemies.Bug: EnemyData(aggro=0x40,crown_enabled=False),
 }

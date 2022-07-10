@@ -29,7 +29,7 @@ LogicRegions = {
         TransitionFront(Regions.AngryAztecLobby, lambda l: True, Transitions.AztecToIsles),
         TransitionFront(Regions.TempleStart, lambda l: (l.peanut and l.isdiddy) or (l.grape and l.islanky)
                         or (l.feather and l.istiny) or (l.pineapple and l.ischunky)),
-        TransitionFront(Regions.AngryAztecMain, lambda l: l.guitar and l.diddy),
+        TransitionFront(Regions.AngryAztecMain, lambda l: l.settings.open_levels or (l.guitar and l.diddy)),
         TransitionFront(Regions.CandyAztec, lambda l: True),
         TransitionFront(Regions.AztecBossLobby, lambda l: True),
     ]),

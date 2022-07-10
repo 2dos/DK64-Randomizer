@@ -82,6 +82,7 @@ instance_script_maps = [
         "scripts": [
             {"name": "seasick_ship", "id": 0x27},
             {"name": "seal_race_gate.script", "id": 0x56},
+            {"name": "dk_star", "id": 0xC},
         ],
     },
     {

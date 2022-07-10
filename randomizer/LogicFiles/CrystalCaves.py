@@ -75,11 +75,11 @@ LogicRegions = {
     ], [], [
         TransitionFront(Regions.CrystalCavesMain, lambda l: True),
         TransitionFront(Regions.GiantKosha, lambda l: Events.CavesLargeBoulderButton in l.Events and l.monkeyport and l.istiny),
-        TransitionFront(Regions.DonkeyIgloo, lambda l: l.jetpack and l.bongos and l.isdonkey, Transitions.CavesIglooToDonkey),
-        TransitionFront(Regions.DiddyIgloo, lambda l: l.jetpack and l.guitar and l.isdiddy, Transitions.CavesIglooToDiddy),
-        TransitionFront(Regions.LankyIgloo, lambda l: l.jetpack and l.trombone and l.islanky, Transitions.CavesIglooToLanky),
-        TransitionFront(Regions.TinyIgloo, lambda l: l.jetpack and l.saxophone and l.istiny, Transitions.CavesIglooToTiny),
-        TransitionFront(Regions.ChunkyIgloo, lambda l: l.jetpack and l.triangle and l.ischunky, Transitions.CavesIglooToChunky),
+        TransitionFront(Regions.DonkeyIgloo, lambda l: (l.settings.open_levels or l.jetpack) and l.bongos and l.isdonkey, Transitions.CavesIglooToDonkey),
+        TransitionFront(Regions.DiddyIgloo, lambda l: (l.settings.open_levels or l.jetpack) and l.guitar and l.isdiddy, Transitions.CavesIglooToDiddy),
+        TransitionFront(Regions.LankyIgloo, lambda l: (l.settings.open_levels or l.jetpack) and l.trombone and l.islanky, Transitions.CavesIglooToLanky),
+        TransitionFront(Regions.TinyIgloo, lambda l: (l.settings.open_levels or l.jetpack) and l.saxophone and l.istiny, Transitions.CavesIglooToTiny),
+        TransitionFront(Regions.ChunkyIgloo, lambda l: (l.settings.open_levels or l.jetpack) and l.triangle and l.ischunky, Transitions.CavesIglooToChunky),
     ]),
 
     Regions.GiantKosha: Region("Giant Kosha", Levels.CrystalCaves, False, -1, [], [
