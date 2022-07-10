@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport"
+              content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
+        <meta name="description" content="" />
+        <meta name="author" content="" />
+        <script src="https://use.fontawesome.com/releases/v5.15.4/js/all.js" crossorigin="anonymous"></script>
+        <link href="https://fonts.googleapis.com/css?family=Catamaran:100,200,300,400,500,600,700,800,900"
+              rel="stylesheet"/>
+        <link href="https://fonts.googleapis.com/css?family=Lato:100,100i,300,300i,400,400i,700,700i,900,900i"
+              rel="stylesheet"/>
+        <link href="static/styles/styles.css" rel="stylesheet" />
+        <link href="./static/styles/gui.css" rel="stylesheet" type="text/css" />
+    </head>
+    <body id="page-top">
+        <nav class="navbar navbar-expand-lg navbar-dark navbar-custom fixed-top">
+            <div class="container px-5">
+                <a class="navbar-brand" href="#page-top">DK64 Randomizer</a>
+                <button class="navbar-toggler"
+                        type="button"
+                        data-bs-toggle="collapse"
+                        data-bs-target="#navbarResponsive"
+                        aria-controls="navbarResponsive"
+                        aria-expanded="false"
+                        aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarResponsive">
+                    <ul class="navbar-nav ms-auto">
+                        <li class="nav-item">
+                            <a class="nav-link" href="#overview">Overview</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link"
+                               href="https://github.com/2dos/DK64-Randomizer/wiki/Consoles-and-Emulators">Setup</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link"
+                               href="https://github.com/2dos/DK64-Randomizer/wiki"
+                               target="_blank">Wiki</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link"
+                               href="https://discord.dk64randomizer.com"
+                               target="_blank">Discord</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+        <header class="masthead text-center text-white">
+            <div class="masthead-content">
+                <div class="container px-5">
+                    <img src="/base-hack/assets/Non-Code/DKTV/logo.png" width="100%">
+                    <p style="font-weight: bold;">
+                        Version {{ version.only_version }}
+                    </p>
+                    <a class="btn btn-info btn-xl rounded-pill mt-5"
+                       onClick="render_page('./randomizer.html')">Play Now</a>
+                    <a class="btn btn-light btn-xl rounded-pill mt-5" href="#overview">More Info</a>
+                </div>
+            </div>
+        </header>
+        <div class="card bg-dark">
+            <section id="overview">
+              <div class="container px-5">
+                <div class="row gx-5 align-items-center">
+                  <div class="col-lg-6 order-lg-2">
+                    <br />
+                    <iframe
+                      width="100%"
+                      height="315"
+                      src="https://www.youtube.com/embed/PuQTG2bQgwk"
+                      data-toggle="tooltip"
+                      title="YouTube video player"
+                      frameborder="0"
+                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                      allowfullscreen
+                    ></iframe>
+                  </div>
+                  <div class="col-lg-6 order-lg-1">
+                    <div class="p-5">
+                      <h2 class="display-6">What is DK64 Randomizer?</h2>
+                      <p>
+                        Experience DK64 like you never have before! Change up where
+                        the loading zones take you, where moves are purchased and even
+                        the difficulty of the game! Built-in game logic ensures every
+                        generated game is beatable and every item is reachable. Check
+                        out the video for an introduction to DK64 Randomizer along
+                        with the full features list!
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </section>
+            <section id="compatibility">
+              <div class="container px-5">
+                <div class="row gx-5 align-items-center">
+                  <div class="col-lg-6 order-lg-2">
+                    <div class="p-5">
+                      <h2 class="display-6">Feature List</h2>
+                      <p>
+                        DK64 Randomizer features tons of features that change up the
+                        game! A few of the features include:
+                      </p>
+                      <ul>
+                        <li>Loading Zone Randomizer</li>
+                        <li>Kong Starter and Location Randomizer</li>
+                        <li>Move and Shop Price Randomizer</li>
+                        <li>Bonus Barrel Game Randomizer</li>
+                        <li>Enemy Randomizer</li>
+                        <li>B Locker and Troff n Scoff Amount Randomizer</li>
+                        <li>Difficulty Modifiers</li>
+                      </ul>
+                      <p>
+                        And much more!
+                      </p>
+                      <a
+                        class="btn btn-success rounded-pill"
+                        href="https://github.com/2dos/DK64-Randomizer/wiki/Feature-List"
+                        >Full Feature List</a
+                      >
+                    </div>
+                  </div>
+                  <div class="col-lg-6 order-lg-1">
+                    <div class="p-5">
+                      <h2 class="display-6">Compatibility</h2>
+                      <p>
+                        The NTSC-U version of the game (the US release) is the
+                        compatible DK64 version for DK64 Randomizer. The NTSC-J
+                        (Japan) and PAL (Europe) versions of the game are
+                        incompatible. The following are the supported platforms:
+                      </p>
+                      <ul>
+                        <li>Most Nintendo 64 Flashcarts</li>
+                        <li>Wii U VC inject</li>
+                        <li>Bizhawk DK64 Fork</li>
+                        <li>Project 64 Version 3.0 or above</li>
+                      </ul>
+                      <p>
+                        Other platforms may be compatible but are not supported at
+                        this time. Check out the video for setting up DK64 Randomizer.
+                      </p>
+                      <a
+                        class="btn btn-success rounded-pill"
+                        href="https://github.com/2dos/DK64-Randomizer/wiki/Consoles-and-Emulators"
+                        >Wiki Version of Setup</a
+                      >
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </section>
+            <section id="community">
+              <div class="container px-5">
+                <div class="row gx-5 align-items-center">
+                  <div class="col-lg-6 order-lg-2">
+                    <div class="p-5">
+                      <h2 class="display-6">Development</h2>
+                      <p>
+                        Interested in contributing various features to DK64
+                        randomizer? Want to run DK64 randomizer locally? Just want to
+                        check out the inner workings? The DK64 Randomizer project is
+                        open source and is available for view on Github!
+                      </p>
+                      <a
+                        class="btn btn-success rounded-pill"
+                        href="https://github.com/2dos/DK64-Randomizer"
+                        >View on Github</a
+                      >
+                    </div>
+                  </div>
+                  <div class="col-lg-6 order-lg-1">
+                    <div class="p-5">
+                      <h2 class="display-6">Community</h2>
+                      <p>
+                        The DK64 Randomizer Discord server is available to talk about
+                        DK64 Randomizer with other players! Share your playthrough,
+                        get help, and talk about strategies and tricks!
+                      </p>
+                      <a
+                        class="btn btn-success rounded-pill"
+                        href="https://discord.dk64randomizer.com"
+                        >Join the Discord</a
+                      >
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </section>
+          </div>
+        <footer id="footer">
+            <div class="center">
+                <a href="https://github.com/2dos/DK64-Randomizer"
+                   target="_blank"
+                   style="text-decoration: none;">
+                    <img src="./static/img/github.png" alt="GitHub" />
+                </a>
+                <a href="https://github.com/2dos/DK64-Randomizer/wiki"
+                   target="_blank"
+                   style="text-decoration: none;">
+                    <img src="./static/img/wiki.png" alt="Wiki" />
+                </a>
+                <a href="https://discord.dk64randomizer.com"
+                   target="_blank"
+                   style="text-decoration: none;">
+                    <img src="./static/img/discord.png" alt="Discord" />
+                </a>
+            </div>
+            <div class="center" style="font-size: small; color:#e3e3e3;">
+                <a id="live-version">DK64 Randomizer |</a>
+                <a href="https://dev.dk64randomizer.com">Dev Branch</a>
+                <br />
+                Randomizer by 2dos and Ballaam | Web Generator by Killklli
+                <br />
+                In-game characters, images and logos copyright © 1999-2021 Nintendo or Rareware respectively.
+                <br />
+                DK64Randomizer.com does not distribute copyright material.
+            </div>
+        </footer>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+        <script>
+            function render_page(page){                    
+                xmlhttp = new XMLHttpRequest();
+                xmlhttp.open("GET", page, false);
+                xmlhttp.send();
+                var data = xmlhttp.responseText;
+                document.documentElement.innerHTML = "";
+                document.open();
+                document.write(data);
+                document.close();
+                history.pushState({}, "page 1", "randomizer.html");
+            }
+            if(window.location.protocol != 'https:') {
+                if (location.hostname != "localhost" && location.hostname != "127.0.0.1") {
+                    location.href = location.href.replace("http://", "https://");
+                }
+            }
+            $(function () {
+                $('[data-toggle="tooltip"]').tooltip({
+                    trigger: 'hover'})
+            })
+        </script>
+    </body>
+</html>

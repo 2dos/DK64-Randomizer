@@ -1,0 +1,53 @@
+<link href="./static/img/dk.png" rel="icon" />
+<meta Http-Equiv="Cache-Control" Content="no-cache">
+<meta Http-Equiv="Pragma" Content="no-cache">
+<meta Http-Equiv="Expires" Content="0">
+<meta Http-Equiv="Pragma-directive: no-cache">
+<meta Http-Equiv="Cache-directive: no-cache">
+<img style="
+    width: 20%;
+    height: 20%;
+    margin: 0;
+    position: absolute;
+    top: 50%;
+    left: 40%;
+    -ms-transform: translateY(-50%);
+    transform: translateY(-50%);
+  " src="./static/img/loading-icon-black.svg" />
+<script type="text/javascript" src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="./static/js/pyodide/pyodide.js"></script>
+<script>
+  var pyodide;
+  var jquery = $;
+  async function load_inital() {
+    try {
+      pyodide = await loadPyodide();
+    } catch { }
+    await pyodide.loadPackage("jinja2");
+    await pyodide.loadPackage("micropip");
+    ui_script = await (await fetch("generate_rando_ui.py")).text();
+    await pyodide.runPythonAsync(ui_script);
+    setTimeout(async function () {
+      await pyodide.runPythonAsync(await (await fetch("version.py")).text());
+    }, 1000);
+  }
+  window.onload = load_delay;
+  function load_delay() {
+    // Delay a section so the page scripts can load
+    setTimeout(function () {
+      load_inital();
+    }, 1000);
+  }
+  function getFile(file) {
+    return $.ajax({
+        type: "GET",
+        url: file,
+        async: false
+    }).responseText;
+  }
+</script>
+<style>
+  body {
+    background: #222222;
+  }
+</style>

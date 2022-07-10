@@ -138,16 +138,48 @@ dmypy.json
 cython_debug/
 
 # VSCode
-.vscode
+.vscode/settings.json
+.vscode/launch.json
+!.vscode/tasks.json
+
+# Jekyll
+_site/
+Gemfile.lock
 
 # Randomizer specific
 spoilerlog*.txt
 settings*.asm
 settings*.json
 *.z64
+*.n64
+*.v64
 *.bin
 *.bin.gz
 codeOutput.txt
 lockfile
 temprom.rom
 *.csv
+*.lanky
+*.bak
+package-lock.json
+node_modules/
+tools/*
+!tools/*.py
+!tools/importers
+tools/importers/*
+!tools/importers/*.py
+randomizer/test.py
+test.py
+output.json
+*.sym
+base-hack/obj
+base-hack/rom/patch.bps
+base-hack/rom/dk64-randomizer-base.wch
+base-hack/build/autopatch
+!base-hack/build/
+web_cache/
+web_cache/*
+n64chain.zip
+base-hack/build/n64chain
+base-hack/rom_tester/output.txt
+base-hack/assets/Non-Code/instance_scripts/dump
