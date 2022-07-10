@@ -54,6 +54,13 @@ void decouple_moves_fixes(void) {
 		*(int*)(0x8002402C) = 0x240E000C; // No extra contraption cutscenes
 		*(int*)(0x80024054) = 0x24080001; // 1 GB Turn in
 	}
+	if (Rando.short_bosses) {
+		if ((CurrentMap == 8) || (DestMap == 8)) {
+			*(short*)(0x8074D3A8) = 4; // Dillo Health - AD1
+		} else if ((CurrentMap == 0xC4) || (CurrentMap == 0xC4)) {
+			*(short*)(0x8074D3A8) = 3; // Dillo Health - AD2
+		}
+	}
 	writeCoinRequirements(1);
 	if ((*(int*)(0x807FBB64) << 1) & 0x80000000) {
 		// Menu Overlay - Candy's Shop Glitch
