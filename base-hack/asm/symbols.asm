@@ -129,6 +129,7 @@
 .definelabel setToeTexture, 0x8002FC48
 .definelabel applyFootDamage, 0x8002FC98
 .definelabel modifyCharSpawnerAttributes, 0x8072B79C
+.definelabel modifyObjectState, 0x8063DA40
 
 //vanilla data
 .definelabel TransitionSpeed, 0x807FD88C

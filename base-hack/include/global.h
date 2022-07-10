@@ -94,5 +94,5 @@ extern void guardCatch(void);
 extern void catchWarpHandle(void);
 extern void handleFootProgress(actorData* actor);
 extern void cancelCutscene(int enable_movement);
-extern void clearVultureCutscene(int unk0, int unk1, int unk2);
+extern void clearVultureCutscene(void);
 //extern void getRandoNextMovePurchase(shop_paad* shop_info, KongBase* moves);
