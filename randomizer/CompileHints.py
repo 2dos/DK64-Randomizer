@@ -119,26 +119,32 @@ def compileHints(spoiler: Spoiler):
                 "name_cryptic": "Their third special move",
                 "key": 0x03,
                 "kong": 3,
+                "move_type": 0,
+                "move_index": 3,
                 "level": 0,
                 "shop": 0,
                 "important": True,
             },
-            {"name": "Mini Monkey", "name_cryptic": "Their first special move", "key": 0x01, "kong": 3, "level": 0, "shop": 0, "important": True},
+            {"name": "Mini Monkey", "name_cryptic": "Their first special move", "key": 0x01, "kong": 3, "move_type": 0, "move_index": 1, "level": 0, "shop": 0, "important": True},
             {
                 "name": "Coconut Gun",
                 "name_cryptic": "Their gun",
                 "key": 0x21,
                 "kong": 0,
+                "move_type": 2,
+                "move_index": 1,
                 "level": 0,
                 "shop": 0,
                 "important": True,
             },
-            {"name": "Chimpy Charge", "name_cryptic": "Their first special move", "key": 0x01, "kong": 1, "level": 0, "shop": 0, "important": True},
+            {"name": "Chimpy Charge", "name_cryptic": "Their first special move", "key": 0x01, "kong": 1, "move_type": 0, "move_index": 1, "level": 0, "shop": 0, "important": True},
             {
                 "name": "Gorilla Gone",
                 "name_cryptic": "Their third special move",
                 "key": 0x03,
                 "kong": 4,
+                "move_type": 0,
+                "move_index": 3,
                 "level": 0,
                 "shop": 0,
                 "important": True,
@@ -147,6 +153,8 @@ def compileHints(spoiler: Spoiler):
                 "name": "Ponytail Twirl",
                 "key": 0x02,
                 "kong": 3,
+                "move_type": 0,
+                "move_index": 2,
                 "level": 0,
                 "shop": 0,
                 "important": False,
@@ -155,6 +163,8 @@ def compileHints(spoiler: Spoiler):
                 "name": "Baboon Blast",
                 "key": 0x01,
                 "kong": 0,
+                "move_type": 0,
+                "move_index": 1,
                 "level": 0,
                 "shop": 0,
                 "important": False,
@@ -163,6 +173,8 @@ def compileHints(spoiler: Spoiler):
                 "name": "Strong Kong",
                 "key": 0x02,
                 "kong": 0,
+                "move_type": 0,
+                "move_index": 2,
                 "level": 0,
                 "shop": 0,
                 "important": False,
@@ -171,6 +183,8 @@ def compileHints(spoiler: Spoiler):
                 "name": "Gorilla Grab",
                 "key": 0x03,
                 "kong": 0,
+                "move_type": 0,
+                "move_index": 3,
                 "level": 0,
                 "shop": 0,
                 "important": False,
@@ -179,6 +193,8 @@ def compileHints(spoiler: Spoiler):
                 "name": "Rocketbarrel Boost",
                 "key": 0x02,
                 "kong": 1,
+                "move_type": 0,
+                "move_index": 2,
                 "level": 0,
                 "shop": 0,
                 "important": False,
@@ -187,6 +203,8 @@ def compileHints(spoiler: Spoiler):
                 "name": "Simian Spring",
                 "key": 0x03,
                 "kong": 1,
+                "move_type": 0,
+                "move_index": 3,
                 "level": 0,
                 "shop": 0,
                 "important": False,
@@ -195,6 +213,8 @@ def compileHints(spoiler: Spoiler):
                 "name": "Orangstand",
                 "key": 0x01,
                 "kong": 2,
+                "move_type": 0,
+                "move_index": 1,
                 "level": 0,
                 "shop": 0,
                 "important": False,
@@ -203,6 +223,8 @@ def compileHints(spoiler: Spoiler):
                 "name": "Baboon Balloon",
                 "key": 0x02,
                 "kong": 2,
+                "move_type": 0,
+                "move_index": 2,
                 "level": 0,
                 "shop": 0,
                 "important": False,
@@ -211,6 +233,8 @@ def compileHints(spoiler: Spoiler):
                 "name": "Orangstand Sprint",
                 "key": 0x03,
                 "kong": 2,
+                "move_type": 0,
+                "move_index": 3,
                 "level": 0,
                 "shop": 0,
                 "important": False,
@@ -219,6 +243,8 @@ def compileHints(spoiler: Spoiler):
                 "name": "Hunky Chunky",
                 "key": 0x01,
                 "kong": 4,
+                "move_type": 0,
+                "move_index": 1,
                 "level": 0,
                 "shop": 0,
                 "important": False,
@@ -227,6 +253,8 @@ def compileHints(spoiler: Spoiler):
                 "name": "Primate Punch",
                 "key": 0x02,
                 "kong": 4,
+                "move_type": 0,
+                "move_index": 2,
                 "level": 0,
                 "shop": 0,
                 "important": False,
@@ -235,6 +263,8 @@ def compileHints(spoiler: Spoiler):
                 "name": "Peanut Popguns",
                 "key": 0x21,
                 "kong": 1,
+                "move_type": 2,
+                "move_index": 1,
                 "level": 0,
                 "shop": 0,
                 "important": False,
@@ -243,6 +273,8 @@ def compileHints(spoiler: Spoiler):
                 "name": "Grape Shooter",
                 "key": 0x21,
                 "kong": 2,
+                "move_type": 2,
+                "move_index": 1,
                 "level": 0,
                 "shop": 0,
                 "important": False,
@@ -251,6 +283,8 @@ def compileHints(spoiler: Spoiler):
                 "name": "Feather Bow",
                 "key": 0x21,
                 "kong": 3,
+                "move_type": 2,
+                "move_index": 1,
                 "level": 0,
                 "shop": 0,
                 "important": False,
@@ -260,6 +294,8 @@ def compileHints(spoiler: Spoiler):
                 "key": 0x21,
                 "kong": 4,
                 "level": 0,
+                "move_type": 2,
+                "move_index": 1,
                 "shop": 0,
                 "important": False,
             },
@@ -267,6 +303,8 @@ def compileHints(spoiler: Spoiler):
                 "name": "Bongo Blast",
                 "key": 0x41,
                 "kong": 0,
+                "move_type": 4,
+                "move_index": 1,
                 "level": 0,
                 "shop": 0,
                 "important": False,
@@ -275,6 +313,8 @@ def compileHints(spoiler: Spoiler):
                 "name": "Guitar Gazump",
                 "key": 0x41,
                 "kong": 1,
+                "move_type": 4,
+                "move_index": 1,
                 "level": 0,
                 "shop": 0,
                 "important": False,
@@ -283,6 +323,8 @@ def compileHints(spoiler: Spoiler):
                 "name": "Trombone Tremor",
                 "key": 0x41,
                 "kong": 2,
+                "move_type": 4,
+                "move_index": 1,
                 "level": 0,
                 "shop": 0,
                 "important": False,
@@ -291,6 +333,8 @@ def compileHints(spoiler: Spoiler):
                 "name": "Saxophone Slam",
                 "key": 0x41,
                 "kong": 3,
+                "move_type": 4,
+                "move_index": 1,
                 "level": 0,
                 "shop": 0,
                 "important": False,
@@ -299,6 +343,8 @@ def compileHints(spoiler: Spoiler):
                 "name": "Triangle Trample",
                 "key": 0x41,
                 "kong": 4,
+                "move_type": 4,
+                "move_index": 1,
                 "level": 0,
                 "shop": 0,
                 "important": False,
@@ -320,19 +366,23 @@ def compileHints(spoiler: Spoiler):
             ],
             ["The shop owner who is flirtatious", "The shop owner who is not present in Fungi Forest", "The shop owner who is not present in Jungle Japes", "The shop owner with blonde hair"],
         ]
+        for move in moves_of_importance:
+            move["key"] = ((move["move_type"] & 7) << 5) + (((move["move_index"] - 1) & 3) << 3) + (move["kong"] & 7)
+            move["purchase_kong"] = 0
         for shop in range(3):
             for kong in range(5):
                 for level in range(7):
                     for move in moves_of_importance:
-                        if spoiler.move_data[shop][kong][level] == move["key"] and kong == move["kong"]:
+                        if spoiler.move_data[shop][kong][level] == move["key"]:
                             move["level"] = level
                             move["shop"] = shop
+                            move["purchase_kong"] = kong
         for move in moves_of_importance:
             if spoiler.settings.wrinkly_hints == "cryptic":
-                kong_name = random.choice(kong_cryptic[move["kong"]])
+                kong_name = random.choice(kong_cryptic[move["purchase_kong"]])
                 level_name = random.choice(level_cryptic[move["level"]])
             else:
-                kong_name = kong_list[move["kong"]]
+                kong_name = kong_list[move["purchase_kong"]]
                 level_name = level_list[move["level"]]
             move_name = move["name"]
 
