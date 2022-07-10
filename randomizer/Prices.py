@@ -251,12 +251,12 @@ def CanBuy(location, logic):
         return AnyKongCanBuy(location, logic)
     # Else a specific kong is required to buy it, so check that that's the current kong and they have enough coins
     elif location in DonkeyMoveLocations:
-        return logic.isdonkey and KongCanBuy(location, logic, Kongs.donkey)
+        return KongCanBuy(location, logic, Kongs.donkey)
     elif location in DiddyMoveLocations:
-        return logic.isdiddy and KongCanBuy(location, logic, Kongs.diddy)
+        return KongCanBuy(location, logic, Kongs.diddy)
     elif location in LankyMoveLocations:
-        return logic.islanky and KongCanBuy(location, logic, Kongs.lanky)
+        return KongCanBuy(location, logic, Kongs.lanky)
     elif location in TinyMoveLocations:
-        return logic.istiny and KongCanBuy(location, logic, Kongs.tiny)
+        return KongCanBuy(location, logic, Kongs.tiny)
     elif location in ChunkyMoveLocations:
-        return logic.ischunky and KongCanBuy(location, logic, Kongs.chunky)
+        return KongCanBuy(location, logic, Kongs.chunky)
