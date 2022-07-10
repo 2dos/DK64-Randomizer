@@ -401,7 +401,7 @@ class Settings:
             self.kongs_for_progression = True
 
         # Move Location Rando
-        if self.move_rando in ["on", "on_shared"]:
+        if self.move_rando in ["on", "on_cross_purchase"]:
             self.shuffle_items = "moves"
         elif self.move_rando == "start_with":
             self.unlock_all_moves = True

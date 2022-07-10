@@ -247,7 +247,7 @@ def EveryKongCanBuy(location, logic):
 def CanBuy(location, logic):
     """Check if an appropriate kong can logically purchase this location."""
     # Either have the setting that any kong can buy any move or it's a shared location so any kong can anyway
-    if logic.settings.move_rando == "on_shared" or location in SharedMoveLocations:
+    if location in SharedMoveLocations:
         return AnyKongCanBuy(location, logic)
     # Else a specific kong is required to buy it, so check that that's the current kong and they have enough coins
     elif location in DonkeyMoveLocations:
