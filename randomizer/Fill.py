@@ -743,7 +743,7 @@ def ShuffleSharedMoves(spoiler):
     mergedLocationArrays.update(ItemPool.ChunkyMoveLocations.copy())
     for i in range(5):
         for item in kongMoveArrays[i]:
-            if spoiler.settings.move_rando == "on_shared":
+            if spoiler.settings.move_rando == "on_cross_purchase":
                 validLocations[item] = mergedLocationArrays - locationsToRemove
             else:
                 validLocations[item] = kongLocationArrays[i] - locationsToRemove
