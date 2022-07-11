@@ -232,6 +232,8 @@ def GetAccessibleLocations(settings, ownedItems, searchType=SearchMode.GetReacha
 
 def VerifyWorld(settings):
     """Make sure all item locations are reachable on current world graph with constant items placed and all other items owned."""
+    if settings.no_logic:
+        return True  # Don't verify world in no logic
     ItemPool.PlaceConstants(settings)
     unreachables = GetAccessibleLocations(settings, ItemPool.AllItems(settings), SearchMode.GetUnreachable)
     isValid = len(unreachables) == 0
@@ -241,6 +243,8 @@ def VerifyWorld(settings):
 
 def VerifyWorldWithWorstCoinUsage(settings):
     """Make sure the game is beatable without it being possible to run out of coins for required moves."""
+    if settings.no_logic:
+        return True  # Don't verify world in no logic
     locationsToPurchase = []
     reachable = []
     maxCoins = [
@@ -415,15 +419,16 @@ def RandomFill(itemsToPlace, validLocations):
     # Get all remaining empty locations
     empty = []
     for (id, location) in LocationList.items():
-        if location.item is None and id in validLocations:
+        if location.item is None:
             empty.append(id)
-    random.shuffle(empty)
     # Place item in random locations
     while len(itemsToPlace) > 0:
-        if len(empty) == 0:
-            return len(itemsToPlace)
         item = itemsToPlace.pop()
-        locationId = empty.pop()
+        itemEmpty = [x for x in empty if x in GetItemValidLocations(validLocations, item)]
+        if len(itemEmpty) == 0:
+            return len(itemsToPlace)
+        random.shuffle(itemEmpty)
+        locationId = itemEmpty.pop()
         LocationList[locationId].PlaceItem(item)
     return 0
 
@@ -653,6 +658,9 @@ def PlaceItems(settings, algorithm, itemsToPlace, ownedItems=None, validLocation
         ownedItems = []
     if validLocations is None:
         validLocations = []
+    # Always use random fill with no logic
+    if settings.no_logic:
+        algorithm = "random"
     # If list of valid locations not provided, just use all valid locations
     if len(validLocations) == 0:
         validLocations = list(LocationList)
