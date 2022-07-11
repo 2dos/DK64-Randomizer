@@ -205,6 +205,9 @@ class Settings:
         # damage multiplier
         self.damage_amount = "default"
 
+        # no_logic: bool
+        self.no_logic = False
+
         # shuffle_loading_zones: str
         # none
         # levels

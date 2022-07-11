@@ -63,7 +63,8 @@ class Spoiler:
         # Settings data
         settings = OrderedDict()
         settings["seed"] = self.settings.seed_id
-        settings["algorithm"] = self.settings.algorithm
+        # settings["algorithm"] = self.settings.algorithm # Don't need this for now, probably
+        settings["no_logic"] = self.settings.no_logic
         settings["move_rando"] = self.settings.move_rando
         settings["shuffle_loading_zones"] = self.settings.shuffle_loading_zones
         settings["decoupled_loading_zones"] = self.settings.decoupled_loading_zones
@@ -296,7 +297,7 @@ class Spoiler:
                     move_level = ItemList[location.item].index - 1
                     move_kong = ItemList[location.item].kong
                     for kong_index in kong_indices:
-                        print(f"Shop {shop_index}, Kong {kong_index}, Level {level_index} | Move: {move_type} lvl {move_level} for kong {move_kong}")
+                        # print(f"Shop {shop_index}, Kong {kong_index}, Level {level_index} | Move: {move_type} lvl {move_level} for kong {move_kong}")
                         if move_type == 1 or move_type == 3 or (move_type == 2 and move_level > 0) or (move_type == 4 and move_level > 0):
                             move_kong = kong_index
                         data = (move_type << 5) | (move_level << 3) | move_kong
