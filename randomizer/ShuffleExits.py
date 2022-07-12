@@ -283,6 +283,7 @@ def ShuffleLevelOrderWithRestrictions(settings: Settings):
         newLevelOrder = ShuffleLevelOrderForMultipleStartingKongs(settings)
     if None in newLevelOrder.values():
         raise Ex.EntrancePlacementException("Invalid level order with fewer than the 7 required main levels.")
+    settings.level_order = newLevelOrder
     ShuffleLevelExits(newLevelOrder)
 
 
@@ -372,6 +373,7 @@ def ShuffleLevelOrderForOneStartingKong(settings):
         cavesIndex: Levels.CrystalCaves,
         castleIndex: Levels.CreepyCastle,
     }
+    settings.level_order = newLevelOrder
     return newLevelOrder
 
 

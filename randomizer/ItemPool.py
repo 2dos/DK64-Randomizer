@@ -5,6 +5,7 @@ from random import shuffle
 from randomizer.Enums.Items import Items
 from randomizer.Enums.Locations import Locations
 from randomizer.Enums.Transitions import Transitions
+import randomizer.Enums.Kongs as KongObject
 from randomizer.Lists.Item import ItemFromKong
 from randomizer.Lists.LevelInfo import LevelInfoList
 from randomizer.Lists.Location import LocationList
@@ -128,6 +129,33 @@ def AllItems(settings):
     return allItems
 
 
+def AllKongMoves():
+    """Return all moves."""
+    allMoves = []
+    allMoves.extend(DonkeyMoves)
+    allMoves.extend(DiddyMoves)
+    allMoves.extend(LankyMoves)
+    allMoves.extend(TinyMoves)
+    allMoves.extend(ChunkyMoves)
+    allMoves.extend(ImportantSharedMoves)
+    return allMoves
+
+
+def OwnedKongMoves(kongs):
+    """Return all moves for the given list of Kongs."""
+    kongMoves = []
+    if KongObject.Kongs.donkey in kongs:
+        kongMoves.extend(DonkeyMoves)
+    if KongObject.Kongs.diddy in kongs:
+        kongMoves.extend(DiddyMoves)
+    if KongObject.Kongs.lanky in kongs:
+        kongMoves.extend(LankyMoves)
+    if KongObject.Kongs.tiny in kongs:
+        kongMoves.extend(TinyMoves)
+    if KongObject.Kongs.chunky in kongs:
+        kongMoves.extend(ChunkyMoves)
+
+
 def Blueprints(settings):
     """Return all blueprint items."""
     blueprints = [
@@ -193,6 +221,20 @@ def Kongs(settings):
         kongs = [Items.Donkey, Items.Diddy, Items.Lanky, Items.Tiny, Items.Chunky]
         kongs.remove(ItemFromKong(settings.starting_kong))
     return kongs
+
+
+def GetKongForItem(item):
+    """Return Kong object from kong-type item."""
+    if item == Items.Donkey:
+        return KongObject.Kongs.donkey
+    elif item == Items.Diddy:
+        return KongObject.Kongs.diddy
+    elif item == Items.Lanky:
+        return KongObject.Kongs.lanky
+    elif item == Items.Tiny:
+        return KongObject.Kongs.tiny
+    else:
+        return KongObject.Kongs.chunky
 
 
 def Guns(settings):
@@ -449,6 +491,67 @@ def GetMoveLocationsToRemove(sharedMoveShops: set):
     return set(locationsToRemove)
 
 
+def GetKongMoveOccupiedShops():
+    """Return shop locations that already contain a kong move and are therefore unable to hold a shared move."""
+    occupiedShops = []
+    kongMoveLocationsList = []
+    for location in DonkeyMoveLocations:
+        if LocationList[location].item is not None:
+            kongMoveLocationsList.append(location)
+    for location in DiddyMoveLocations:
+        if LocationList[location].item is not None:
+            kongMoveLocationsList.append(location)
+    for location in LankyMoveLocations:
+        if LocationList[location].item is not None:
+            kongMoveLocationsList.append(location)
+    for location in TinyMoveLocations:
+        if LocationList[location].item is not None:
+            kongMoveLocationsList.append(location)
+    for location in ChunkyMoveLocations:
+        if LocationList[location].item is not None:
+            kongMoveLocationsList.append(location)
+    for location in kongMoveLocationsList:
+        if location in JapesCrankyMoveLocations:
+            occupiedShops.append(Locations.SharedJapesPotion)
+        elif location in JapesFunkyMoveLocations:
+            occupiedShops.append(Locations.SharedJapesGun)
+        elif location in AztecCrankyMoveLocations:
+            occupiedShops.append(Locations.SharedAztecPotion)
+        elif location in AztecCandyMoveLocations:
+            occupiedShops.append(Locations.SharedAztecInstrument)
+        elif location in AztecFunkyMoveLocations:
+            occupiedShops.append(Locations.SharedAztecGun)
+        elif location in FactoryCrankyMoveLocations:
+            occupiedShops.append(Locations.SharedFactoryPotion)
+        elif location in FactoryCandyMoveLocations:
+            occupiedShops.append(Locations.SharedFactoryInstrument)
+        elif location in FactoryFunkyMoveLocations:
+            occupiedShops.append(Locations.AmmoBelt1)
+        elif location in GalleonCrankyMoveLocations:
+            occupiedShops.append(Locations.SharedGalleonPotion)
+        elif location in GalleonCandyMoveLocations:
+            occupiedShops.append(Locations.MusicUpgrade1)
+        elif location in GalleonFunkyMoveLocations:
+            occupiedShops.append(Locations.SharedGalleonGun)
+        elif location in ForestCrankyMoveLocations:
+            occupiedShops.append(Locations.SuperSimianSlam)
+        elif location in ForestFunkyMoveLocations:
+            occupiedShops.append(Locations.HomingAmmo)
+        elif location in CavesCrankyMoveLocations:
+            occupiedShops.append(Locations.SharedCavesPotion)
+        elif location in CavesCandyMoveLocations:
+            occupiedShops.append(Locations.ThirdMelon)
+        elif location in CavesFunkyMoveLocations:
+            occupiedShops.append(Locations.AmmoBelt2)
+        elif location in CastleCrankyMoveLocations:
+            occupiedShops.append(Locations.SuperDuperSimianSlam)
+        elif location in CastleCandyMoveLocations:
+            occupiedShops.append(Locations.MusicUpgrade2)
+        elif location in CastleFunkyMoveLocations:
+            occupiedShops.append(Locations.SniperSight)
+    return list(set(occupiedShops))
+
+
 DonkeyMoveLocations = {
     Locations.BaboonBlast,
     Locations.StrongKong,
@@ -582,3 +685,174 @@ TinyMoves = [Items.Feather, Items.Saxophone, Items.MiniMonkey, Items.PonyTailTwi
 ChunkyMoves = [Items.Pineapple, Items.Triangle, Items.HunkyChunky, Items.PrimatePunch, Items.GorillaGone]
 ImportantSharedMoves = [Items.ProgressiveSlam, Items.ProgressiveSlam, Items.SniperSight, Items.HomingAmmo]
 JunkSharedMoves = [Items.ProgressiveAmmoBelt, Items.ProgressiveAmmoBelt, Items.ProgressiveInstrumentUpgrade, Items.ProgressiveInstrumentUpgrade, Items.ProgressiveInstrumentUpgrade]
+
+JapesCrankyMoveLocations = {
+    Locations.BaboonBlast,
+    Locations.ChimpyCharge,
+    Locations.Orangstand,
+    Locations.MiniMonkey,
+    Locations.HunkyChunky,
+    Locations.SharedJapesPotion,
+}
+
+JapesFunkyMoveLocations = {
+    Locations.CoconutGun,
+    Locations.PeanutGun,
+    Locations.GrapeGun,
+    Locations.FeatherGun,
+    Locations.PineappleGun,
+    Locations.SharedJapesGun,
+}
+
+AztecCrankyMoveLocations = {
+    Locations.StrongKong,
+    Locations.RocketbarrelBoost,
+    Locations.LankyAztecPotion,
+    Locations.TinyAztecPotion,
+    Locations.ChunkyAztecPotion,
+    Locations.SharedAztecPotion,
+}
+
+AztecCandyMoveLocations = {
+    Locations.Bongos,
+    Locations.Guitar,
+    Locations.Trombone,
+    Locations.Saxophone,
+    Locations.Triangle,
+    Locations.SharedAztecInstrument,
+}
+
+AztecFunkyMoveLocations = {
+    Locations.DonkeyAztecGun,
+    Locations.DiddyAztecGun,
+    Locations.LankyAztecGun,
+    Locations.TinyAztecGun,
+    Locations.ChunkyAztecGun,
+    Locations.SharedAztecGun,
+}
+
+FactoryCrankyMoveLocations = {
+    Locations.GorillaGrab,
+    Locations.SimianSpring,
+    Locations.BaboonBalloon,
+    Locations.PonyTailTwirl,
+    Locations.PrimatePunch,
+    Locations.SharedFactoryPotion,
+}
+
+FactoryCandyMoveLocations = {
+    Locations.DonkeyFactoryInstrument,
+    Locations.DiddyFactoryInstrument,
+    Locations.LankyFactoryInstrument,
+    Locations.TinyFactoryInstrument,
+    Locations.ChunkyFactoryInstrument,
+    Locations.SharedFactoryInstrument,
+}
+
+FactoryFunkyMoveLocations = {
+    Locations.DonkeyFactoryGun,
+    Locations.DiddyFactoryGun,
+    Locations.LankyFactoryGun,
+    Locations.TinyFactoryGun,
+    Locations.ChunkyFactoryGun,
+    Locations.AmmoBelt1,
+}
+
+GalleonCrankyMoveLocations = {
+    Locations.DonkeyGalleonPotion,
+    Locations.DiddyGalleonPotion,
+    Locations.LankyGalleonPotion,
+    Locations.TinyGalleonPotion,
+    Locations.ChunkyGalleonPotion,
+    Locations.SharedGalleonPotion,
+}
+
+GalleonCandyMoveLocations = {
+    Locations.DonkeyGalleonInstrument,
+    Locations.DiddyGalleonInstrument,
+    Locations.LankyGalleonInstrument,
+    Locations.TinyGalleonInstrument,
+    Locations.ChunkyGalleonInstrument,
+    Locations.MusicUpgrade1,
+}
+
+GalleonFunkyMoveLocations = {
+    Locations.DonkeyGalleonGun,
+    Locations.DiddyGalleonGun,
+    Locations.LankyGalleonGun,
+    Locations.TinyGalleonGun,
+    Locations.ChunkyGalleonGun,
+    Locations.SharedGalleonGun,
+}
+
+ForestCrankyMoveLocations = {
+    Locations.DonkeyForestPotion,
+    Locations.DiddyForestPotion,
+    Locations.LankyForestPotion,
+    Locations.TinyForestPotion,
+    Locations.ChunkyForestPotion,
+    Locations.SuperSimianSlam,
+}
+
+ForestFunkyMoveLocations = {
+    Locations.DonkeyForestGun,
+    Locations.DiddyForestGun,
+    Locations.LankyForestGun,
+    Locations.TinyForestGun,
+    Locations.ChunkyForestGun,
+    Locations.HomingAmmo,
+}
+
+CavesCrankyMoveLocations = {
+    Locations.DonkeyCavesPotion,
+    Locations.DiddyCavesPotion,
+    Locations.OrangstandSprint,
+    Locations.Monkeyport,
+    Locations.GorillaGone,
+    Locations.SharedCavesPotion,
+}
+
+CavesCandyMoveLocations = {
+    Locations.DonkeyCavesInstrument,
+    Locations.DiddyCavesInstrument,
+    Locations.LankyCavesInstrument,
+    Locations.TinyCavesInstrument,
+    Locations.ChunkyCavesInstrument,
+    Locations.ThirdMelon,
+}
+
+CavesFunkyMoveLocations = {
+    Locations.DonkeyCavesGun,
+    Locations.DiddyCavesGun,
+    Locations.LankyCavesGun,
+    Locations.TinyCavesGun,
+    Locations.ChunkyCavesGun,
+    Locations.AmmoBelt2,
+}
+
+CastleCrankyMoveLocations = {
+    Locations.DonkeyCastlePotion,
+    Locations.DiddyCastlePotion,
+    Locations.LankyCastlePotion,
+    Locations.TinyCastlePotion,
+    Locations.ChunkyCastlePotion,
+    Locations.SuperDuperSimianSlam,
+}
+
+CastleCandyMoveLocations = {
+    Locations.DonkeyCastleInstrument,
+    Locations.DiddyCastleInstrument,
+    Locations.LankyCastleInstrument,
+    Locations.TinyCastleInstrument,
+    Locations.ChunkyCastleInstrument,
+    Locations.MusicUpgrade2,
+}
+
+CastleFunkyMoveLocations = {
+    Locations.DonkeyCastleGun,
+    Locations.DiddyCastleGun,
+    Locations.LankyCastleGun,
+    Locations.TinyCastleGun,
+    Locations.ChunkyCastleGun,
+    Locations.SniperSight,
+}
