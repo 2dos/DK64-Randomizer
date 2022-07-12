@@ -9,6 +9,7 @@ from randomizer.ShuffleBosses import ShuffleBosses, ShuffleBossKongs, ShuffleKut
 from randomizer.Enums.Events import Events
 from randomizer.Enums.Kongs import Kongs, GetKongs
 from randomizer.Enums.Locations import Locations
+from randomizer.Enums.Levels import Levels
 from randomizer.Prices import RandomizePrices, VanillaPrices
 from random import randint
 
@@ -69,6 +70,7 @@ class Settings:
         self.progressive_upgrades = False
 
         self.prices = VanillaPrices.copy()
+        self.level_order = {1: Levels.JungleJapes, 2: Levels.AngryAztec, 3: Levels.FranticFactory, 4: Levels.GloomyGalleon, 5: Levels.FungiForest, 6: Levels.CrystalCaves, 7: Levels.CreepyCastle}
         self.resolve_settings()
 
     def update_progression_totals(self):
@@ -257,13 +259,17 @@ class Settings:
         self.kongs_for_progression = False
         self.wrinkly_hints = "off"
 
+    def shuffle_prices(self):
+        """Price randomization. Reuseable if we need to reshuffle prices."""
+        # Price Rando
+        if self.random_prices != "vanilla":
+            self.prices = RandomizePrices(self.random_prices)
+
     def resolve_settings(self):
         """Resolve settings which are not directly set through the UI."""
         kongs = GetKongs()
 
-        # Price Rando
-        if self.random_prices != "vanilla":
-            self.prices = RandomizePrices(self.random_prices)
+        self.shuffle_prices()
 
         # B Locker and Troff n Scoff amounts Rando
         self.update_progression_totals()
