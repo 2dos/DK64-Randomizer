@@ -908,57 +908,87 @@ def GetLogicallyAccessibleKongLocations(spoiler, kongLocations, ownedKongs, late
 
 
 def PlaceKongs(spoiler, kongItems, kongLocations):
-    """For these settings, Kongs to place, and locations to place them in, place the Kongs in such a way the seed will never error."""
+    """For these settings, Kongs to place, and locations to place them in, place the Kongs in such a way the generation will never error here."""
     ownedKongs = [kong for kong in spoiler.settings.starting_kong_list]
-    latestLogicallyAllowedLevel = len(ownedKongs) + 1
-    logicallyAccessibleKongLocations = GetLogicallyAccessibleKongLocations(spoiler, kongLocations, ownedKongs, latestLogicallyAllowedLevel)
-    while len(ownedKongs) != 5:
-        # If there aren't any accessible Kong locations, then the level order shuffler has a bug (this shouldn't happen)
-        if not any(logicallyAccessibleKongLocations):
-            raise Ex.EntrancePlacementException("Levels shuffled in a way that makes Kong unlocks impossible.")
-        # Begin by finding the currently accessible Kong locations
-        # Randomly pick an accessible location
-        progressionLocation = random.choice(logicallyAccessibleKongLocations)
-        logicallyAccessibleKongLocations.remove(progressionLocation)
-        # Pick a Kong to free this location from the Kongs we currently have
-        if progressionLocation == Locations.DiddyKong:
-            spoiler.settings.diddy_freeing_kong = random.choice(ownedKongs)
-        elif progressionLocation == Locations.LankyKong:
-            spoiler.settings.lanky_freeing_kong = random.choice(ownedKongs)
-        elif progressionLocation == Locations.TinyKong:
-            eligibleFreers = list(set(ownedKongs).intersection([Kongs.diddy, Kongs.chunky]))
-            spoiler.settings.tiny_freeing_kong = random.choice(eligibleFreers)
-        elif progressionLocation == Locations.ChunkyKong:
+    # In entrance randomizer, it's too complicated to quickly determine kong accessibility.
+    # Instead, we place Kongs in a specific order to guarantee we'll at least have an eligible freer
+    if spoiler.settings.shuffle_loading_zones == "all":
+        random.shuffle(kongItems)
+        if Locations.ChunkyKong in kongLocations:
+            kongItemToBeFreed = kongItems.pop()
+            LocationList[Locations.ChunkyKong].PlaceItem(kongItemToBeFreed)
             spoiler.settings.chunky_freeing_kong = random.choice(ownedKongs)
-        # Remove this location from any considerations
-        kongLocations.remove(progressionLocation)
-        # Pick a Kong to unlock from the locked Kongs
-        kongToBeFreed = random.choice(kongItems)
-        # With this kong, we can progress one level further
-        latestLogicallyAllowedLevel += 1
-        # If this Kong must unlock more locked Kong locations, we have to be more careful
-        # The second condition here because we don't need to worry about the last placed Kong
-        if len(logicallyAccessibleKongLocations) == 0 and len(kongItems) > 1:
-            # First check if that newly accessible level adds a location. If it does, then it doesn't matter who we free here
-            logicallyAccessibleKongLocations = GetLogicallyAccessibleKongLocations(spoiler, kongLocations, ownedKongs, latestLogicallyAllowedLevel)
-            if not any(logicallyAccessibleKongLocations):
-                # If it doesn't, then we need to see which Kongs will open more Kongs
-                guaranteedProgressionKongItems = []
-                for kongItem in kongItems:
-                    # Test each Kong by temporarily owning them and seeing what we can now reach
-                    tempOwnedKongs = [x for x in ownedKongs]
-                    tempOwnedKongs.append(ItemPool.GetKongForItem(kongItem))
-                    newlyAccessibleKongLocations = GetLogicallyAccessibleKongLocations(spoiler, kongLocations, tempOwnedKongs, latestLogicallyAllowedLevel)
-                    if any(newlyAccessibleKongLocations):
-                        guaranteedProgressionKongItems.append(kongItem)
-                # Pick a random Kong from the Kongs that guarantee progression
-                kongToBeFreed = random.choice(guaranteedProgressionKongItems)
-        # Now that we have a combination guaranteed to not break the seed or logic, lock it in
-        LocationList[progressionLocation].PlaceItem(kongToBeFreed)
-        kongItems.remove(kongToBeFreed)
-        ownedKongs.append(ItemPool.GetKongForItem(kongToBeFreed))
-        # Refresh the location list and repeat until all Kongs are free
+            ownedKongs.append(ItemPool.GetKongForItem(kongItemToBeFreed))
+        if Locations.DiddyKong in kongLocations:
+            kongItemToBeFreed = kongItems.pop()
+            LocationList[Locations.DiddyKong].PlaceItem(kongItemToBeFreed)
+            spoiler.settings.diddy_freeing_kong = random.choice(ownedKongs)
+            ownedKongs.append(ItemPool.GetKongForItem(kongItemToBeFreed))
+        # The Lanky location can't be your first in cases where the Lanky freeing Kong can't get into the llama temple and you need a second Kong
+        if Locations.LankyKong in kongLocations:
+            kongItemToBeFreed = kongItems.pop()
+            LocationList[Locations.LankyKong].PlaceItem(kongItemToBeFreed)
+            spoiler.settings.lanky_freeing_kong = random.choice(ownedKongs)
+            ownedKongs.append(ItemPool.GetKongForItem(kongItemToBeFreed))
+        # Placing the Tiny location last guarantees we have one of Diddy or Chunky
+        if Locations.TinyKong in kongLocations:
+            kongItemToBeFreed = kongItems.pop()
+            LocationList[Locations.TinyKong].PlaceItem(kongItemToBeFreed)
+            eligibleFreers = list(set(ownedKongs).intersection([Kongs.diddy, Kongs.chunky]))
+            spoiler.settings.tiny_freeing_kong = random.choice(ownedKongs)
+            ownedKongs.append(ItemPool.GetKongForItem(kongItemToBeFreed))
+    # In level order shuffling, we need to be very particular about who we unlock and in what order so as to guarantee completion
+    # Vanilla levels can be treated as if the level shuffler randomly placed all the levels in the same order
+    elif spoiler.settings.shuffle_loading_zones in ("levels", "none"):
+        latestLogicallyAllowedLevel = len(ownedKongs) + 1
         logicallyAccessibleKongLocations = GetLogicallyAccessibleKongLocations(spoiler, kongLocations, ownedKongs, latestLogicallyAllowedLevel)
+        while len(ownedKongs) != 5:
+            # If there aren't any accessible Kong locations, then the level order shuffler has a bug (this shouldn't happen)
+            if not any(logicallyAccessibleKongLocations):
+                raise Ex.EntrancePlacementException("Levels shuffled in a way that makes Kong unlocks impossible.")
+            # Begin by finding the currently accessible Kong locations
+            # Randomly pick an accessible location
+            progressionLocation = random.choice(logicallyAccessibleKongLocations)
+            logicallyAccessibleKongLocations.remove(progressionLocation)
+            # Pick a Kong to free this location from the Kongs we currently have
+            if progressionLocation == Locations.DiddyKong:
+                spoiler.settings.diddy_freeing_kong = random.choice(ownedKongs)
+            elif progressionLocation == Locations.LankyKong:
+                spoiler.settings.lanky_freeing_kong = random.choice(ownedKongs)
+            elif progressionLocation == Locations.TinyKong:
+                eligibleFreers = list(set(ownedKongs).intersection([Kongs.diddy, Kongs.chunky]))
+                spoiler.settings.tiny_freeing_kong = random.choice(eligibleFreers)
+            elif progressionLocation == Locations.ChunkyKong:
+                spoiler.settings.chunky_freeing_kong = random.choice(ownedKongs)
+            # Remove this location from any considerations
+            kongLocations.remove(progressionLocation)
+            # Pick a Kong to unlock from the locked Kongs
+            kongToBeFreed = random.choice(kongItems)
+            # With this kong, we can progress one level further
+            latestLogicallyAllowedLevel += 1
+            # If this Kong must unlock more locked Kong locations, we have to be more careful
+            # The second condition here because we don't need to worry about the last placed Kong
+            if len(logicallyAccessibleKongLocations) == 0 and len(kongItems) > 1:
+                # First check if that newly accessible level adds a location. If it does, then it doesn't matter who we free here
+                logicallyAccessibleKongLocations = GetLogicallyAccessibleKongLocations(spoiler, kongLocations, ownedKongs, latestLogicallyAllowedLevel)
+                if not any(logicallyAccessibleKongLocations):
+                    # If it doesn't, then we need to see which Kongs will open more Kongs
+                    guaranteedProgressionKongItems = []
+                    for kongItem in kongItems:
+                        # Test each Kong by temporarily owning them and seeing what we can now reach
+                        tempOwnedKongs = [x for x in ownedKongs]
+                        tempOwnedKongs.append(ItemPool.GetKongForItem(kongItem))
+                        newlyAccessibleKongLocations = GetLogicallyAccessibleKongLocations(spoiler, kongLocations, tempOwnedKongs, latestLogicallyAllowedLevel)
+                        if any(newlyAccessibleKongLocations):
+                            guaranteedProgressionKongItems.append(kongItem)
+                    # Pick a random Kong from the Kongs that guarantee progression
+                    kongToBeFreed = random.choice(guaranteedProgressionKongItems)
+            # Now that we have a combination guaranteed to not break the seed or logic, lock it in
+            LocationList[progressionLocation].PlaceItem(kongToBeFreed)
+            kongItems.remove(kongToBeFreed)
+            ownedKongs.append(ItemPool.GetKongForItem(kongToBeFreed))
+            # Refresh the location list and repeat until all Kongs are free
+            logicallyAccessibleKongLocations = GetLogicallyAccessibleKongLocations(spoiler, kongLocations, ownedKongs, latestLogicallyAllowedLevel)
     # Pick freeing kongs for any that are still "any" with no restrictions.
     if spoiler.settings.diddy_freeing_kong == Kongs.any:
         spoiler.settings.diddy_freeing_kong = random.choice(GetKongs())
@@ -995,16 +1025,12 @@ def FillKongsAndMoves(spoiler):
             kongValidLocations[item] = kongLocations
         # We place Kongs first so we know what Kong moves are most important to place next
         Reset()
-        if spoiler.settings.shuffle_loading_zones == "levels":
-            # Specialized Kong placement function for level order rando that will never fail to find a beatable combination of Kong unlocks
-            PlaceKongs(spoiler, kongItems, [x for x in kongLocations])
-        else:
-            unplaced = PlaceItems(spoiler.settings, "assumed", kongItems, ownedItems=ItemPool.AllKongMoves(), validLocations=kongValidLocations)
-            if unplaced > 0:
-                raise Ex.ItemPlacementException(str(unplaced) + " unplaced kongs.")
+        # Specialized Kong placement function that will never fail to find a beatable combination of Kong unlocks
+        PlaceKongs(spoiler, kongItems, [x for x in kongLocations])
 
         # If kongs are our progression, then place moves that unlock those kongs before anything else
-        if spoiler.settings.kongs_for_progression:
+        # This logic only matters if the level order is critical to progression (i.e. not loading zone shuffled)
+        if spoiler.settings.kongs_for_progression and spoiler.settings.shuffle_loading_zones != "all":
             locationsLockingKongs = [location for location in kongLocations]
             ownedKongs = [kong for kong in spoiler.settings.starting_kong_list]
             latestLogicallyAllowedLevel = spoiler.settings.starting_kongs_count + 1
