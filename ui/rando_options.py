@@ -216,7 +216,7 @@ def disable_boss_rando(evt):
     boss_location = document.getElementById("boss_location_rando")
     boss_kong = document.getElementById("boss_kong_rando")
     kong_rando = document.getElementById("kong_rando")
-    if kong_rando.checked and level.value == "vanilla":
+    if kong_rando.checked and level.value == "vanilla" or level.value == "level_order":
         boss_location.setAttribute("disabled", "disabled")
         boss_location.checked = True
         boss_kong.setAttribute("disabled", "disabled")
