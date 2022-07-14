@@ -351,10 +351,12 @@ def ShuffleLevelOrderForOneStartingKong(settings):
     # Decide where Caves will go - special case because T&S portals are not immediately accessible
     cavesOptions = []
     # Donkey and Tiny have no T&S access in Caves so it can't be the first level for them
-    if settings.starting_kong in (Kongs.tiny, Kongs.donkey):
-        cavesOptions = list(levelIndexChoices.intersection({2, 7}))
+    # If Caves is level 2, we have to be careful of which Kong we unlock first, but we can handle that later (see "The Caves Issue" in Fill.py)
+    # All of this is irrelevant if the open levels setting is on
+    if not settings.open_levels and settings.starting_kong in (Kongs.tiny, Kongs.donkey):
+        cavesOptions = list(levelIndexChoices.intersection({2, 3, 4, 5, 6, 7}))
     else:
-        cavesOptions = list(levelIndexChoices.intersection({1, 7}))
+        cavesOptions = list(levelIndexChoices)
     cavesIndex = random.choice(cavesOptions)
     levelIndexChoices.remove(cavesIndex)
 
@@ -423,8 +425,11 @@ def ShuffleLevelOrderForMultipleStartingKongs(settings: Settings):
                         if Kongs.diddy not in settings.starting_kong_list and Kongs.chunky not in settings.starting_kong_list:
                             break
                     # If no kong in Tiny Temple but a kong is in Llama temple, need Diddy to open guitar door
+                    # You also need one of Donkey, Lanky, or Tiny to open the Llama temple
                     elif Locations.LankyKong in settings.kong_locations:
-                        if Kongs.diddy not in settings.starting_kong_list:
+                        if Kongs.diddy not in settings.starting_kong_list or (
+                            Kongs.donkey not in settings.starting_kong_list and Kongs.lanky not in settings.starting_kong_list and Kongs.tiny not in settings.starting_kong_list
+                        ):
                             break
                 # If reached Japes without freeing anyone yet, Only Donkey, Diddy, and Chunky logically have access to T&S portal in Japes
                 elif (
@@ -436,8 +441,10 @@ def ShuffleLevelOrderForMultipleStartingKongs(settings: Settings):
                 ):
                     break
                 # If reached Caves without freeing anyone yet, Only Diddy, Lanky, and Chunky logically have access to T&S portal in Caves
+                # If the open levels setting is on, this doesn't matter
                 elif (
-                    newLevelOrder[level] == Levels.CrystalCaves
+                    not settings.open_levels
+                    and newLevelOrder[level] == Levels.CrystalCaves
                     and Kongs.diddy not in settings.starting_kong_list
                     and Kongs.lanky not in settings.starting_kong_list
                     and Kongs.chunky not in settings.starting_kong_list

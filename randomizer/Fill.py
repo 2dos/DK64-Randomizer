@@ -969,20 +969,31 @@ def PlaceKongs(spoiler, kongItems, kongLocations):
             # If this Kong must unlock more locked Kong locations, we have to be more careful
             # The second condition here because we don't need to worry about the last placed Kong
             if len(logicallyAccessibleKongLocations) == 0 and len(kongItems) > 1:
+                progressionKongItems = [x for x in kongItems]
                 # First check if that newly accessible level adds a location. If it does, then it doesn't matter who we free here
                 logicallyAccessibleKongLocations = GetLogicallyAccessibleKongLocations(spoiler, kongLocations, ownedKongs, latestLogicallyAllowedLevel)
                 if not any(logicallyAccessibleKongLocations):
                     # If it doesn't, then we need to see which Kongs will open more Kongs
-                    guaranteedProgressionKongItems = []
+                    progressionKongItems = []
                     for kongItem in kongItems:
                         # Test each Kong by temporarily owning them and seeing what we can now reach
                         tempOwnedKongs = [x for x in ownedKongs]
                         tempOwnedKongs.append(ItemPool.GetKongForItem(kongItem))
                         newlyAccessibleKongLocations = GetLogicallyAccessibleKongLocations(spoiler, kongLocations, tempOwnedKongs, latestLogicallyAllowedLevel)
                         if any(newlyAccessibleKongLocations):
-                            guaranteedProgressionKongItems.append(kongItem)
-                    # Pick a random Kong from the Kongs that guarantee progression
-                    kongToBeFreed = random.choice(guaranteedProgressionKongItems)
+                            progressionKongItems.append(kongItem)
+                # The Caves Issue: Only Diddy, Lanky, and Chunky can access a Troff & Scoff.
+                # If you have only one Kong, start with DK or Tiny, and Caves is level 2 (it can't be 1 due to the level order shuffler already)
+                # Then the second Kong you unlock can't be DK or Tiny or else you can lock yourself behind Key 2 access
+                # Fortunately, if either of these Kongs were to lead to progression, so would Lanky
+                # This clause is necessary regardless of whether or not levels after Caves have accessible Kong locations
+                if not spoiler.settings.open_levels and len(ownedKongs) == 1 and (Kongs.donkey in ownedKongs or Kongs.tiny in ownedKongs) and spoiler.settings.level_order[2] == Levels.CrystalCaves:
+                    if Items.Tiny in progressionKongItems:
+                        progressionKongItems.remove(Items.Tiny)
+                    if Items.Donkey in progressionKongItems:
+                        progressionKongItems.remove(Items.Donkey)
+                # Pick a random Kong from the Kongs that guarantee progression
+                kongToBeFreed = random.choice(progressionKongItems)
             # Now that we have a combination guaranteed to not break the seed or logic, lock it in
             LocationList[progressionLocation].PlaceItem(kongToBeFreed)
             kongItems.remove(kongToBeFreed)
@@ -1039,8 +1050,28 @@ def FillKongsAndMoves(spoiler):
             # Loop until we've logically unlocked all the kongs
             # It may take multiple loops through available levels before we unlock all kongs
             while len(ownedKongs) != 5:
+                latestLogicallyAllowedLevel = len(ownedKongs) + 1
                 priorityItemsDict = {}
                 kongToBeGained = None
+                # The Caves Issue cont.: If Caves is a very early level, we may need to priority place a move that opens a Troff & Scoff portal if one is not yet placed.
+                # This is only an issue in very specific circumstances where shared moves could potentially take all available shops and we have very few Kongs.
+                if (
+                    spoiler.settings.level_order[levelIndex] == Levels.CrystalCaves
+                    and Items.RocketbarrelBoost not in preplacedPriorityMoves
+                    and Items.BaboonBalloon not in preplacedPriorityMoves
+                    and Items.PrimatePunch not in preplacedPriorityMoves
+                ):
+                    possibleCavesProgressionKongs = list(set(ownedKongs).intersection([Kongs.diddy, Kongs.lanky, Kongs.chunky]))
+                    cavesProgressionKong = random.choice(possibleCavesProgressionKongs)
+                    if cavesProgressionKong == Kongs.diddy:
+                        priorityItemsDict[Items.RocketbarrelBoost] = ItemPool.DiddyMoveLocations.copy()
+                    if cavesProgressionKong == Kongs.lanky:
+                        priorityItemsDict[Items.BaboonBalloon] = ItemPool.LankyMoveLocations.copy()
+                    if cavesProgressionKong == Kongs.chunky:
+                        priorityItemsDict[Items.PrimatePunch] = ItemPool.ChunkyMoveLocations.copy()
+                    # Temporarily block access to levels beyond Caves so this item isn't placed past it
+                    # Even though this may leave very few shops available, because we place it before shared moves, it can't fail to find a spot
+                    latestLogicallyAllowedLevel = levelIndex + 1
                 # For each level that has a locked kong, identify the items needed to unlock them
                 # We're about to place these items in accessible locations, so assume can we now own the kong
                 if spoiler.settings.level_order[levelIndex] == Levels.FranticFactory and Locations.ChunkyKong in locationsLockingKongs and spoiler.settings.chunky_freeing_kong in ownedKongs:
@@ -1124,7 +1155,6 @@ def FillKongsAndMoves(spoiler):
                 # Update progression with any newly acquired Kongs
                 if kongToBeGained is not None:
                     ownedKongs.append(kongToBeGained)
-                    latestLogicallyAllowedLevel = len(ownedKongs) + 1
                     checkedAllLogicallyAvailableLevels = False
                 # If we didn't find progression here, check the next logically available level
                 else:
