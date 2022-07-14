@@ -145,7 +145,7 @@ def randomize_enemies(spoiler: Spoiler):
         # Maps.BusyBarrelBarrageEasy, # Requires enemies be of a certain size
         # Maps.BusyBarrelBarrageHard, # ^
         # Maps.BusyBarrelBarrageNormal, # ^
-        Maps.HelmBarrelDiddyKremling,
+        # Maps.HelmBarrelDiddyKremling, # Only kremlings activate the switch
         Maps.HelmBarrelChunkyHidden,
         Maps.HelmBarrelChunkyShooting,
     ]
