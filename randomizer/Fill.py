@@ -1179,7 +1179,7 @@ def FillKongsAndMoves(spoiler):
     # Handle remaining moves/items
     Reset()
     itemsToPlace = [item for item in itemsToPlace if item not in preplacedPriorityMoves]
-    unplaced = PlaceItems(spoiler.settings, "assumed", itemsToPlace, [x for x in ItemPool.AllItems(spoiler.settings)], validLocations=validLocations)
+    unplaced = PlaceItems(spoiler.settings, "assumed", itemsToPlace, [], validLocations=validLocations)
     if unplaced > 0:
         raise Ex.ItemPlacementException(str(unplaced) + " unplaced items.")
 
