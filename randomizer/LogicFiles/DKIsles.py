@@ -52,6 +52,8 @@ LogicRegions = {
         TransitionFront(Regions.CreepyCastleLobby, lambda l: l.settings.open_lobbies or Events.ForestKeyTurnedIn in l.Events, Transitions.IslesMainToCastleLobby),
         TransitionFront(Regions.HideoutHelmLobby, lambda l: l.monkeyport and l.istiny
                         and (l.settings.open_lobbies or (Events.CavesKeyTurnedIn in l.Events and Events.CastleKeyTurnedIn in l.Events))),
+        # If you have monkeyport, you can warp up to the hideout helm entrance and drop down to the upper part of Crocodile Isle
+        TransitionFront(Regions.CrocodileIsleBeyondLift, lambda l: l.monkeyport and l.istiny),
         TransitionFront(Regions.KRool, lambda l: l.CanAccessKRool()),
     ]),
 
