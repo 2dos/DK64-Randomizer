@@ -590,7 +590,7 @@ with open(newROMName, "r+b") as fh:
                 byte_read = fg.read()
                 uncompressed_size = len(byte_read)
             subprocess.Popen(["build\\flips.exe", "--apply", x["bps_file"], x["source_file"], x["source_file"]]).wait()
-            # shutil.copyfile(x["source_file"],x["source_file"].replace(".bin",".raw"))
+            # shutil.copyfile(x["source_file"], x["source_file"].replace(".bin", ".raw"))
 
         if "texture_format" in x:
             if x["texture_format"] in ["rgba5551", "i4", "ia4", "i8", "ia8"]:

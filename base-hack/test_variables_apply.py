@@ -41,6 +41,7 @@ set_variables = {
     "keys_preturned": 0x01,
     "short_bosses": 1,
     "fast_warp": 1,
+    "activate_all_bananaports": 1,
     "special_move_prices": [
         [1, 2, 3],
         [4, 5, 6],

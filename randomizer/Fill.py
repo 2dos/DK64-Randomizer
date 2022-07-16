@@ -3,9 +3,11 @@ import random
 
 import js
 from randomizer.Enums.MinigameType import MinigameType
+from randomizer.Enums.Warps import Warps
 import randomizer.ItemPool as ItemPool
 import randomizer.Lists.Exceptions as Ex
 from randomizer.Lists.ShufflableExit import GetLevelShuffledToIndex, GetShuffledLevelIndex
+from randomizer.Lists.Warps import BananaportVanilla
 import randomizer.Logic as Logic
 from randomizer.Settings import Settings
 import randomizer.ShuffleExits as ShuffleExits
@@ -1399,3 +1401,24 @@ def ShuffleMisc(spoiler):
         ShuffleWarps(replacements, human_replacements)
         spoiler.bananaport_replacements = replacements.copy()
         spoiler.human_warp_locations = human_replacements
+
+    if spoiler.settings.activate_all_bananaports:
+        warpMapIds = set([BananaportVanilla[warp].map_id for warp in Warps])
+        for map_id in warpMapIds:
+            mapWarps = [BananaportVanilla[warp] for warp in Warps if BananaportVanilla[warp].map_id == map_id]
+            for warpData in mapWarps:
+                pairedWarpData = [
+                    BananaportVanilla[pair]
+                    for pair in Warps
+                    if BananaportVanilla[pair].map_id == map_id and BananaportVanilla[pair].new_warp == warpData.new_warp and BananaportVanilla[pair].name != warpData.name
+                ][0]
+                # Add an exit to each warp's region to the paired warp's region unless it's the same region
+                # or the destination is neither Galleon's Treasure Room nor Aztec's Quicksand Cave, as we do not activate those with this setting
+                if warpData.region_id != pairedWarpData.region_id and pairedWarpData.region_id != Regions.TreasureRoomDiddyGoldTower and pairedWarpData.region_id != Regions.AztecDonkeyQuicksandCave:
+                    warpRegion = Logic.Regions[warpData.region_id]
+                    bananaportExit = TransitionFront(pairedWarpData.region_id, lambda l: True)
+                    # The warp on top of the mountain in Japes is not active until you get the GB
+                    # It does work from the other direction, however, so only this exit is affected
+                    if warpRegion == Regions.JapesTopOfMountain:
+                        bananaportExit.logic = lambda l: Events.JapesDiddySwitch2 in l.Events and l.diddy
+                    warpRegion.exits.append(bananaportExit)

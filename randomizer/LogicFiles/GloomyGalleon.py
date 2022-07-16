@@ -122,16 +122,22 @@ LogicRegions = {
     ], Transitions.GalleonShipyardToSeal
     ),
 
-    Regions.TreasureRoom: Region("Treasure Room", Levels.GloomyGalleon, True, TransitionFront(Regions.GloomyGalleonStart, lambda l: Events.TreasureRoomTeleporterUnlocked in l.Events and l.HasAccess(Regions.Shipyard, Kongs.any) or (Events.WaterSwitch in l.Events and l.spring and l.isdiddy)), [
-        LocationLogic(Locations.GalleonDiddyGoldTower, lambda l: l.spring and l.isdiddy, MinigameType.BonusBarrel),
+    Regions.TreasureRoom: Region("Treasure Room", Levels.GloomyGalleon, True, None, [
         LocationLogic(Locations.GalleonLankyGoldTower, lambda l: l.balloon and l.islanky, MinigameType.BonusBarrel),
-        # This Kasplat has special logic, handled in KasplatAccess()
+        LocationLogic(Locations.GalleonKasplatGoldTower, lambda l: True),
+    ], [], [
+        TransitionFront(Regions.Shipyard, lambda l: Events.ShipyardTreasureRoomOpened in l.Events),
+        TransitionFront(Regions.TinyChest, lambda l: l.mini and l.istiny, Transitions.GalleonTreasureToChest),
+        TransitionFront(Regions.TreasureRoomDiddyGoldTower, lambda l: Events.WaterSwitch in l.Events and l.spring and l.isdiddy)
+    ]),
+
+    Regions.TreasureRoomDiddyGoldTower: Region("Treasure Room Diddy Gold Tower", Levels.GloomyGalleon, False, -1, [  # Deathwarp is possible without the kasplat, but you can only take fall damage once
+        LocationLogic(Locations.GalleonDiddyGoldTower, lambda l: l.spring and l.isdiddy, MinigameType.BonusBarrel),
         LocationLogic(Locations.GalleonKasplatGoldTower, lambda l: True),
     ], [
         Event(Events.TreasureRoomTeleporterUnlocked, lambda l: l.spring and l.diddy),
     ], [
-        TransitionFront(Regions.Shipyard, lambda l: Events.ShipyardTreasureRoomOpened in l.Events),
-        TransitionFront(Regions.TinyChest, lambda l: l.mini and l.istiny, Transitions.GalleonTreasureToChest),
+        TransitionFront(Regions.TreasureRoom, lambda l: True)
     ]),
 
     Regions.TinyChest: Region("Tiny Chest", Levels.GloomyGalleon, False, -1, [], [
