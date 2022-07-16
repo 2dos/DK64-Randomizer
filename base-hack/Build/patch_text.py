@@ -141,7 +141,7 @@ move_hints = [
     {
         "move": "Pineapple Launcher",
         "kong": "Chunky",
-        "cranky": "NOW, TAKE IT AND DONT POINT IT AT ME! YOU'D RIP MY FEEBLE HEAD OFF WITH THESE PINEAPPLES!",
+        "cranky": "NOW, TAKE IT AND DON'T POINT IT AT ME! YOU'D RIP MY FEEBLE HEAD OFF WITH THESE PINEAPPLES!",
         "funky": "THIS IS A REAL COOL LAUNCHER THAT'LL BLOW HOLES IN K.ROOL'S ARMY.",
         "candy": "USE IT TO FIRE MASSIVE PINEAPPLES TO CLEAR EVERYTHING ON YOUR PATH.",
     },
