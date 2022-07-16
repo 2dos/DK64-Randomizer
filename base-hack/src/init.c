@@ -191,6 +191,10 @@ void initHack(int source) {
 				// Fast Vulture
 				*(int*)(0x806C50BC) = 0x0C000000 | (((int)&clearVultureCutscene & 0xFFFFFF) >> 2); // Modify Function Call
 			}
+			// if (Rando.fast_warp) {
+			// 	// Fast Warps
+			// 	*(short*)(0x806EE692) = 0x54;
+			// }
 			if (Rando.version > 0) {
 				// Disable Graphical Debugger
 				*(int*)(0x8060EEE0) = 0x240E0000; // ADDIU $t6, $r0, 0
