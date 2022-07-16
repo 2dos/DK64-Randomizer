@@ -268,6 +268,10 @@ def patching_response(responded_data):
         ROM().seek(sav + 0x12B)
         ROM().write(1)
 
+    if spoiler.settings.fast_warps:
+        ROM().seek(sav + 0x12A)
+        ROM().write(1)
+
     keys_turned_in = [0, 1, 2, 3, 4, 5, 6, 7]
     if len(spoiler.settings.krool_keys_required) > 0:
         for key in spoiler.settings.krool_keys_required:

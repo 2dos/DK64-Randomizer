@@ -258,6 +258,7 @@ class Settings:
         self.kong_rando = False
         self.kongs_for_progression = False
         self.wrinkly_hints = "off"
+        self.fast_warps = False
 
     def shuffle_prices(self):
         """Price randomization. Reuseable if we need to reshuffle prices."""
