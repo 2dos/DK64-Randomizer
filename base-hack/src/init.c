@@ -69,6 +69,7 @@ void initHack(int source) {
 			bonusAutocomplete = Rando.resolve_bonus;
 			QoLOn = Rando.quality_of_life;
 			LobbiesOpen = Rando.lobbies_open_bitfield;
+			ShorterBosses = Rando.short_bosses;
 			changeCharSpawnerFlag(0x14, 2, 93); // Tie llama spawn to lanky help me cutscene flag
 			changeCharSpawnerFlag(0x7, 1, kong_flags[(int)Rando.free_target_japes]);
 			changeCharSpawnerFlag(0x10, 0x13, kong_flags[(int)Rando.free_target_ttemple]);
@@ -95,6 +96,10 @@ void initHack(int source) {
 				*(int*)(0x806A6EA8) = 0x0C1C2519; // Set Bonus Barrel to refill health
 
 			}
+			if (Rando.short_bosses) {
+				*(short*)(0x8074D474) = 44; // Dogadon Health: 3 + (62 * (2 / 3))
+				*(short*)(0x8074D3A8) = 3; // Dillo Health
+			}
 			if (Rando.resolve_bonus & 1) {
 				*(short*)(0x806818DE) = 0x4248; // Make Aztec Lobby GB spawn above the trapdoor)
 				*(int*)(0x80681690) = 0; // Make some barrels not play a cutscene
@@ -102,9 +107,6 @@ void initHack(int source) {
 				*(short*)(0x80681898) = 0x1000;
 				*(int*)(0x8068191C) = 0; // Remove Oh Banana
 			}
-			// for (int i = 0; i < 5; i++) {
-			// 	DKTVData[i] = Rando.dktv_data[i];
-			// }
 			replace_zones(1);
 			randomize_bosses();
 			loadExtraHooks();
@@ -171,6 +173,10 @@ void initHack(int source) {
 				*(short*)(0x80750680) = 0x22;
 				*(short*)(0x80750682) = 0x1;
 				*(int*)(0x806BDC24) = 0x0C17FCDE; // Change takeoff warp func
+				// No Rain
+				*(float*)(0x8075E3E0) = 0.0f; // Set Isles Rain Radius to 0
+
+				
 				*(short*)(0x806BDC8C) = 0x1000; // Apply no cutscene to all keys
 				*(short*)(0x806BDC3C) = 0x1000; // Apply shorter timer to all keys
 				// Fast Camera Photo
@@ -184,6 +190,15 @@ void initHack(int source) {
 				*(short*)(0x8075037C) = new_vine_exit_speed;
 				*(short*)(0x80750380) = new_vine_exit_speed;
 				*(short*)(0x80698EEE) = 0x437A; // 250.0f
+				// Lower Aztec Lobby Bonus
+				*(short*)(0x80680D56) = 0x7C; // 0x89 if this needs to be unreachable without PTT
+				// Fast Vulture
+				*(int*)(0x806C50BC) = 0x0C000000 | (((int)&clearVultureCutscene & 0xFFFFFF) >> 2); // Modify Function Call
+			}
+			if (Rando.fast_warp) {
+				// Replace vanilla warp animation (0x52) with monkeyport animation (0x53)
+				*(short*)(0x806EE692) = 0x54;
+				*(int*)(0x806DC2AC) = 0x0C000000 | (((int)&fastWarp & 0xFFFFFF) >> 2); // Modify Function Call
 			}
 			if (Rando.version > 0) {
 				// Disable Graphical Debugger
@@ -224,6 +239,8 @@ void initHack(int source) {
 			// Fix Diddy/Chunky Helm Medal Flag Mapping
 			*(short*)(0x80755D8C) = 0x024C;
 			*(short*)(0x80755DA4) = 0x0249;
+			// Remove flare effect from guards
+			*(int*)(0x806AE440) = 0;
 			LoadedHooks = 1;
 		}
 

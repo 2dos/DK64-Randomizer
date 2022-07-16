@@ -77,6 +77,7 @@
 .definelabel changeActorColor, 0x807149C8
 .definelabel unkCutsceneKongFunction_1, 0x80724E48
 .definelabel getAnimationTimer, 0x80614A54
+.definelabel playSFXFromObject, 0x806085DC
 
 .definelabel unkObjFunction0, 0x80650BBC
 .definelabel unkObjFunction1, 0x80650A04
@@ -88,6 +89,9 @@
 .definelabel touchingModel2Object, 0x806F70A8
 .definelabel GetKongUnlockedFlag, 0x805FF018
 .definelabel setNextTransitionType, 0x805FF158
+
+.definelabel unkMultiplayerWarpFunction, 0x8061EB04
+.definelabel renderScreenTransition, 0x806291B4
 
 .definelabel initDisplayList, 0x807132DC
 .definelabel getTextStyleHeight, 0x806FD894
@@ -124,6 +128,11 @@
 .definelabel loadCounterFontTexture, 0x8069DC80
 .definelabel delayedObjectModel2Change, 0x8063DB3C
 .definelabel cycleRNG, 0x806119A0
+.definelabel voidWarp, 0x805FF1B0
+.definelabel setToeTexture, 0x8002FC48
+.definelabel applyFootDamage, 0x8002FC98
+.definelabel modifyCharSpawnerAttributes, 0x8072B79C
+.definelabel modifyObjectState, 0x8063DA40
 
 //vanilla data
 .definelabel TransitionSpeed, 0x807FD88C
@@ -287,6 +296,7 @@
 .definelabel songData, 0x80745658
 .definelabel MusicTrackChannels, 0x807458DC
 .definelabel BoatSpeeds, 0x8075A04C
+.definelabel textParameter, 0x80750AC8
 
 //hack data
 .definelabel TestVariable, 0x807FFFFC
@@ -314,6 +324,7 @@
 .definelabel ReplacementLobbyExitsArray, 0x807FFF3E // 0x12
 .definelabel StoredCounterTextures, 0x807FFF30
 .definelabel PauseText, 0x807FFFE6
+.definelabel ShorterBosses, 0x807FFFE5
 
 .definelabel CrankyMoves_New, 0x807FF400
 .definelabel CandyMoves_New, 0x807FF4D4

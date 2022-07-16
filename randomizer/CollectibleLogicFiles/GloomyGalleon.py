@@ -85,7 +85,7 @@ LogicRegions = {
         Collectible(Collectibles.balloon, Kongs.chunky, lambda l: l.pineapple, None, 1),  # Near Warp 2
         Collectible(Collectibles.balloon, Kongs.chunky, lambda l: l.pineapple, None, 1),  # Cactus
 
-        Collectible(Collectibles.coin, Kongs.donkey, lambda l: True, None, 4),  # On floating plank near W5
+        Collectible(Collectibles.coin, Kongs.donkey, lambda l: Events.WaterSwitch in l.Events, None, 4),  # On floating plank near W5
         Collectible(Collectibles.coin, Kongs.donkey, lambda l: Events.ShipyardEnguarde in l.Events, None, 3),  # In chest around 5DS
         Collectible(Collectibles.coin, Kongs.diddy, lambda l: True, None, 4),  # Around cactus underwater
         Collectible(Collectibles.coin, Kongs.diddy, lambda l: Events.ShipyardEnguarde in l.Events, None, 3),  # In chest near mech fish

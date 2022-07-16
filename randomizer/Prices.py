@@ -5,7 +5,7 @@ import random
 from randomizer.Enums.Items import Items
 from randomizer.Enums.Kongs import Kongs
 from randomizer.Enums.Locations import Locations
-from randomizer.ItemPool import ChunkyMoveLocations, DiddyMoveLocations, DonkeyMoveLocations, LankyMoveLocations, TinyMoveLocations
+from randomizer.ItemPool import ChunkyMoveLocations, DiddyMoveLocations, DonkeyMoveLocations, LankyMoveLocations, SharedMoveLocations, TinyMoveLocations
 from randomizer.ItemPool import DonkeyMoves, DiddyMoves, LankyMoves, TinyMoves, ChunkyMoves
 from randomizer.Lists.Location import LocationList
 
@@ -217,44 +217,46 @@ def GetPriceOfMoveItem(item, settings, slamLevel, ammoBelts, instUpgrades):
         return settings.prices[item]
 
 
-def KongCanBuy(location, coins, settings, kong, slamLevel, ammoBelts, instUpgrades):
+def KongCanBuy(location, logic, kong):
     """Check if given kong can logically purchase the specified location."""
     # If nothing is sold here, return true
     if LocationList[location].item is None or LocationList[location].item == Items.NoItem:
         return True
-    price = GetPriceOfMoveItem(LocationList[location].item, settings, slamLevel, ammoBelts, instUpgrades)
+    price = GetPriceOfMoveItem(LocationList[location].item, logic.settings, logic.Slam, logic.AmmoBelts, logic.InstUpgrades)
 
     # Simple price check - combination of purchases will be considered outside this method
     if price is not None:
         # print("KongCanBuy checking item: " + str(LocationList[location].item))
         # print("for kong: " + kong.name + " with " + str(coins[kong]) + " coins")
         # print("has price: " + str(price))
-        return coins[kong] >= price
+        return logic.Coins[kong] >= price
     else:
         return False
 
 
-def AnyKongCanBuy(location, coins, settings, slamLevel, ammoBelts, instUpgrades):
+def AnyKongCanBuy(location, logic):
     """Check if any kong can logically purchase this location."""
-    return any(KongCanBuy(location, coins, settings, kong, slamLevel, ammoBelts, instUpgrades) for kong in [Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky])
+    return any(KongCanBuy(location, logic, kong) for kong in [Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky])
 
 
-def EveryKongCanBuy(location, coins, settings, slamLevel, ammoBelts, instUpgrades):
+def EveryKongCanBuy(location, logic):
     """Check if any kong can logically purchase this location."""
-    return all(KongCanBuy(location, coins, settings, kong, slamLevel, ammoBelts, instUpgrades) for kong in [Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky])
+    return all(KongCanBuy(location, logic, kong) for kong in [Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky])
 
 
-def CanBuy(location, coins, settings, slamLevel, ammoBelts, instUpgrades):
+def CanBuy(location, logic):
     """Check if an appropriate kong can logically purchase this location."""
-    if location in DonkeyMoveLocations:
-        return KongCanBuy(location, coins, settings, Kongs.donkey, slamLevel, ammoBelts, instUpgrades)
+    # Either have the setting that any kong can buy any move or it's a shared location so any kong can anyway
+    if location in SharedMoveLocations:
+        return AnyKongCanBuy(location, logic)
+    # Else a specific kong is required to buy it, so check that that's the current kong and they have enough coins
+    elif location in DonkeyMoveLocations:
+        return KongCanBuy(location, logic, Kongs.donkey)
     elif location in DiddyMoveLocations:
-        return KongCanBuy(location, coins, settings, Kongs.diddy, slamLevel, ammoBelts, instUpgrades)
+        return KongCanBuy(location, logic, Kongs.diddy)
     elif location in LankyMoveLocations:
-        return KongCanBuy(location, coins, settings, Kongs.lanky, slamLevel, ammoBelts, instUpgrades)
+        return KongCanBuy(location, logic, Kongs.lanky)
     elif location in TinyMoveLocations:
-        return KongCanBuy(location, coins, settings, Kongs.tiny, slamLevel, ammoBelts, instUpgrades)
+        return KongCanBuy(location, logic, Kongs.tiny)
     elif location in ChunkyMoveLocations:
-        return KongCanBuy(location, coins, settings, Kongs.chunky, slamLevel, ammoBelts, instUpgrades)
-    else:  # Shared locations
-        return AnyKongCanBuy(location, coins, settings, slamLevel, ammoBelts, instUpgrades)
+        return KongCanBuy(location, logic, Kongs.chunky)

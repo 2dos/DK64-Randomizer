@@ -8,6 +8,28 @@
 
 static const char moves_values[] = {1,1,3,1,7,1,1,7};
 
+void crossKongInit(void) {
+	// Change target kong (Progressive)
+	*(int*)(0x80025EA0) = 0x90850004; // LBU 	a1, 0x4 (a0)
+	// Change target kong (Bitfield)
+	*(int*)(0x80025E80) = 0x90850004; // LBU 	a1, 0x4 (a0)
+	// Change price deducted
+	*(int*)(0x80025F70) = 0x93060005; // LBU 	a2, 0x5 (t8)
+	// Change price check
+	*(int*)(0x80026200) = 0x90CF0005; // LBU 	t7, 0x5 (a2)
+	// Change Special Moves Text
+	*(int*)(0x80027AE0) = 0x910F0004; // LBU 	t7, 0x4 (t0)
+	// Change Gun Text
+	*(int*)(0x80027BA0) = 0x91180004; // LBU 	t8, 0x4 (t0)
+	// Change Instrument Text
+	*(int*)(0x80027C14) = 0x910C0004; // LBU 	t4, 0x4 (t0)
+	// Fix post-special move text
+	*(int*)(0x80026C08) = 0x91790011; // LBU 	t9, 0x11 (t3)
+	*(int*)(0x80026C00) = 0x916D0004; // LBU 	t5, 0x4 (t3)
+}
+
+static const unsigned char boss_maps[] = {0x8,0xC5,0x9A,0x6F,0x53,0xC4,0xC7,0xCB,0xCC,0xCD,0xCE,0xCF,0xD6};
+
 void decouple_moves_fixes(void) {
 	if ((CurrentMap == CRANKY) || (CurrentMap == CANDY) || (CurrentMap == FUNKY)) {
 		PatchCrankyCode();
@@ -18,6 +40,10 @@ void decouple_moves_fixes(void) {
 			*(int*)(0x8002661C) = func_call;
 			*(int*)(0x800265F0) = func_call;
 		}
+		int func_call = 0x0C000000 | (((int)&getNextMovePurchase & 0xFFFFFF) >> 2);
+		*(int*)(0x80026720) = func_call;
+		*(int*)(0x8002683C) = func_call;
+		crossKongInit();
 	} else if (CurrentMap == MAIN_MENU) {
 		*(short*)(0x8002E266) = 7; // Enguarde Arena Movement Write
 		*(short*)(0x8002F01E) = 7; // Rambi Arena Movement Write
@@ -28,13 +54,26 @@ void decouple_moves_fixes(void) {
 		*(int*)(0x8002402C) = 0x240E000C; // No extra contraption cutscenes
 		*(int*)(0x80024054) = 0x24080001; // 1 GB Turn in
 	}
+	if (Rando.short_bosses) {
+		if ((CurrentMap == 8) || (DestMap == 8)) {
+			*(short*)(0x8074D3A8) = 4; // Dillo Health - AD1
+		} else if ((CurrentMap == 0xC4) || (CurrentMap == 0xC4)) {
+			*(short*)(0x8074D3A8) = 3; // Dillo Health - AD2
+		}
+	}
 	writeCoinRequirements(1);
 	if ((*(int*)(0x807FBB64) << 1) & 0x80000000) {
 		// Menu Overlay - Candy's Shop Glitch
 		*(short*)(0x80027678) = 0x1000;
 		*(short*)(0x8002769C) = 0x1000;
 	}
-	if ((CurrentMap >= 0xCB) && (CurrentMap <= 0xCF)) {
+	int in_boss = 0;
+	for (int i = 0; i < sizeof(boss_maps); i++) {
+		if (CurrentMap == boss_maps[i]) {
+			in_boss = 1;
+		}
+	}
+	if (in_boss) {
 		PatchKRoolCode();
 	}
 	if ((CurrentMap == 0x65) || ((CurrentMap >= 0x8D) && (CurrentMap <= 0x8F))) {

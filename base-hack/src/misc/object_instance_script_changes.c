@@ -81,12 +81,30 @@
 #define ISLES_CAVESBOULDER 0x1B
 #define ISLES_CASTLEROCK 0x34
 #define ISLES_HELMJAW 0x1C
+#define ISLES_FACTORYDOORCOLLISION 0x100
 
 #define CHUNKY5DC_GGONE 0x6
 #define CHUNKY5DC_TARGET0 0x3
 #define CHUNKY5DC_TARGET1 0x4
 #define CHUNKY5DC_TARGET2 0x5
 #define HELMLOBBY_GGONE 0x3
+
+#define LLAMA_MATCHING_HEAD_SOUND0_0 0x1E // Sound 173
+#define LLAMA_MATCHING_HEAD_SOUND0_1 0x23
+#define LLAMA_MATCHING_HEAD_SOUND1_0 0x24 // Sound 171
+#define LLAMA_MATCHING_HEAD_SOUND1_1 0x27
+#define LLAMA_MATCHING_HEAD_SOUND2_0 0x1B // Sound 169
+#define LLAMA_MATCHING_HEAD_SOUND2_1 0x26
+#define LLAMA_MATCHING_HEAD_SOUND3_0 0x1D // Sound 174
+#define LLAMA_MATCHING_HEAD_SOUND3_1 0x21
+#define LLAMA_MATCHING_HEAD_SOUND4_0 0x1A // Sound 172
+#define LLAMA_MATCHING_HEAD_SOUND4_1 0x25
+#define LLAMA_MATCHING_HEAD_SOUND5_0 0x20 // Sound 175
+#define LLAMA_MATCHING_HEAD_SOUND5_1 0x22
+#define LLAMA_MATCHING_HEAD_SOUND6_0 0x19 // Sound 168
+#define LLAMA_MATCHING_HEAD_SOUND6_1 0x1F
+#define LLAMA_MATCHING_HEAD_SOUND7_0 0x1C // Sound 170
+#define LLAMA_MATCHING_HEAD_SOUND7_1 0x28
 
 void hideObject(behaviour_data* behaviour_pointer) {
 	behaviour_pointer->unk_60 = 1;
@@ -157,6 +175,18 @@ int checkControlState(int target_control_state) {
 		}
 	}
 	return 0;
+}
+
+void playSFXContainer(int id, int vanilla_sfx, int new_sfx) {
+	int index = convertIDToIndex(id);
+	if (index == -1) {
+		index = 0;
+	}
+	int sfx_played = new_sfx;
+	if (new_sfx == 0) {
+		sfx_played = vanilla_sfx;
+	}
+	playSFXFromObject(index,sfx_played,-1,127,0,0,0.3f);
 }
 
 int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, int param2) {
@@ -244,6 +274,11 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 				if (Rando.lobbies_open_bitfield & 4) {
 					hideObject(behaviour_pointer);
 				}
+			} else if (param2 == ISLES_FACTORYDOORCOLLISION) {
+				if ((Rando.lobbies_open_bitfield & 4) || (checkFlag(FLAG_KEYIN_KEY2,0) || ((CutsceneIndex == 7) && (CutsceneActive == 1) && ((CutsceneStateBitfield & 4) == 0)))) {
+					hideObject(behaviour_pointer);
+					behaviour_pointer->next_state = 1;
+				}
 			} else if (param2 == ISLES_GALLEONBARS) {
 				if (Rando.lobbies_open_bitfield & 8) {
 					hideObject(behaviour_pointer);
@@ -297,6 +332,36 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 				} else if ((index >= 3) && (index <= 6)) {
 					return getPressedSwitch(behaviour_pointer,kong_pellets[(int)Rando.free_source_llama],id);
 				}
+			} else {
+				int head_ids[] = {
+					LLAMA_MATCHING_HEAD_SOUND0_0,
+					LLAMA_MATCHING_HEAD_SOUND0_1,
+					LLAMA_MATCHING_HEAD_SOUND1_0,
+					LLAMA_MATCHING_HEAD_SOUND1_1,
+					LLAMA_MATCHING_HEAD_SOUND2_0,
+					LLAMA_MATCHING_HEAD_SOUND2_1,
+					LLAMA_MATCHING_HEAD_SOUND3_0,
+					LLAMA_MATCHING_HEAD_SOUND3_1,
+					LLAMA_MATCHING_HEAD_SOUND4_0,
+					LLAMA_MATCHING_HEAD_SOUND4_1,
+					LLAMA_MATCHING_HEAD_SOUND5_0,
+					LLAMA_MATCHING_HEAD_SOUND5_1,
+					LLAMA_MATCHING_HEAD_SOUND6_0,
+					LLAMA_MATCHING_HEAD_SOUND6_1,
+					LLAMA_MATCHING_HEAD_SOUND7_0,
+					LLAMA_MATCHING_HEAD_SOUND7_1,
+				};
+				int head_sounds[] = {173,171,169,174,172,175,168,170};
+				int selection = -1;
+				for (int k = 0; k < sizeof(head_ids)/4; k++) {
+					if (param2 == head_ids[k]) {
+						selection = k / 2;
+					}
+				}
+				if (selection > -1) {
+					playSFXContainer(param2,head_sounds[selection],Rando.matching_game_sounds[selection]);
+				}
+				
 			}
 			break;
 		case CAVES_CHUNKY_5DC:

@@ -217,13 +217,13 @@ shutil.copyfile(base_coin_sfx, new_coin_sfx)
 
 map_replacements = []
 song_replacements = [
-    # {"name": "baboon_balloon", "index": 107},
-    # {"name": "bonus_minigames", "index": 8},
-    # {"name": "dk_rap", "index": 75},
-    # {"name": "failure_races_try_again", "index": 87},
-    # {"name": "move_get", "index": 114},
-    # {"name": "nintendo_logo", "index": 174},
-    # {"name": "success_races", "index": 86},
+    {"name": "baboon_balloon", "index": 107, "bps": True},
+    {"name": "bonus_minigames", "index": 8, "bps": True},
+    {"name": "dk_rap", "index": 75, "bps": True},
+    {"name": "failure_races_try_again", "index": 87, "bps": True},
+    {"name": "move_get", "index": 114, "bps": True},
+    {"name": "nintendo_logo", "index": 174, "bps": True},
+    {"name": "success_races", "index": 86, "bps": True},
     {"name": "coin_sfx", "index": 7, "bps": False},
 ]
 changed_song_indexes = []
@@ -381,10 +381,10 @@ for x in kong_palettes:
     file_dict.append({"name": f"Palette Expansion ({hex(x)})", "pointer_table_index": 25, "file_index": x, "source_file": f"palette_{x}.bin", "target_compressed_size": x_s})
 
 model_changes = [
-    # {"model_index": 0, "model_file": "diddy_base.bin"},
-    # {"model_index": 1, "model_file": "diddy_ins.bin"},
-    # {"model_index": 5, "model_file": "lanky_base.bin"},
-    # {"model_index": 6, "model_file": "lanky_ins.bin"},
+    {"model_index": 0, "model_file": "diddy_base.bin"},
+    {"model_index": 1, "model_file": "diddy_ins.bin"},
+    {"model_index": 5, "model_file": "lanky_base.bin"},
+    {"model_index": 6, "model_file": "lanky_ins.bin"},
     {"model_index": 3, "model_file": "dk_base.bin"},
     {"model_index": 8, "model_file": "tiny_base.bin"},
     {"model_index": 9, "model_file": "tiny_ins.bin"},

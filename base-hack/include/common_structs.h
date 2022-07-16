@@ -42,12 +42,16 @@ typedef struct actorData {
 	/* 0x0E8 */ short rot_z;
 	/* 0x0EA */ char unk_EA[0x128-0xEA];
 	/* 0x128 */ short shadow_intensity;
-	/* 0x12A */ char unk_12A[0x144-0x12A];
+	/* 0x12A */ char unk_12A[0x138-0x12A];
+	/* 0x138 */ int takes_enemy_damage;
+	/* 0x13C */ char unk_13C[0x144-0x13C];
 	/* 0x144 */ char noclip_byte;
 	/* 0x145 */ char unk_145[0x154-0x145];
 	/* 0x154 */ char control_state;
 	/* 0x155 */ char control_state_progress;
-	/* 0x156 */ char unk_156[0x16A-0x156];
+	/* 0x156 */ char unk_156[0x15F-0x156];
+	/* 0x15F */ char sub_state;
+	/* 0x160 */ char unk_160[0x16A-0x160];
 	/* 0x16A */ char rgb_mask[3];
 	/* 0x16D */ char unk_16D[0x174-0x16D];
 	/* 0x174 */ void* paad;
@@ -159,7 +163,8 @@ typedef struct playerData {
 	/* 0x12E */ char unk_12E[0x13C - 0x12E];
 	/* 0x13C */ int* collision_queue_pointer;
 	/* 0x140 */ bonedata* bone_data;
-	/* 0x144 */ char unk_140[0x147 - 0x144];
+	/* 0x144 */ char noclip;
+	/* 0x145 */ char unk_145[0x147 - 0x145];
 	/* 0x147 */ char hand_state;
 	/* 0x148 */ char unk_148[0x154 - 0x148];
 	/* 0x154 */ char control_state;
@@ -596,7 +601,8 @@ typedef struct main_menu_moves_struct {
 typedef struct purchase_struct {
 	/* 0x000 */ short purchase_type; // 0 = Moves, 1 = Simian Slam, 2 = Weapon Bitfield, 3 = Ammo Belt, 4 = Instrument Bitfield, -1 = No offer
 	/* 0x002 */ short purchase_value;
-	/* 0x004 */ short price;
+	/* 0x004 */ unsigned char move_kong; // Kong that the move is normally assigned to. Eg Strong Kong = DK (0), Monkeyport = Tiny (3)
+	/* 0x005 */ unsigned char price;
 } purchase_struct;
 
 typedef struct race_exit_struct {
@@ -699,10 +705,11 @@ typedef struct GBDictItem {
 
 typedef struct shop_paad {
 	/* 0x000 */ char unk_00[4];
-	/* 0x004 */ short price;
+	/* 0x004 */ unsigned char kong;
+	/* 0x005 */ unsigned char price;
 	/* 0x006 */ char unk_06[0xB-0x6];
 	/* 0x00B */ char purchase_type;
-	/* 0x00C */ char unk_0C;
+	/* 0x00C */ char level;
 	/* 0x00D */ unsigned char state;
 	/* 0x00E */ char unk_0E[0x10-0x0E];
 	/* 0x010 */ unsigned char melons;

@@ -1,5 +1,6 @@
 """List of enemies with in-game index."""
 from enum import IntEnum
+from os import kill
 
 
 class Enemies(IntEnum):
@@ -109,7 +110,7 @@ class Enemies(IntEnum):
 class EnemyData:
     """Information about the enemy."""
 
-    def __init__(self, *, aggro=1, min_speed=15, max_speed=150, crown_enabled=True, air=False, size_cap=0, crown_weight=0):
+    def __init__(self, *, aggro=1, min_speed=15, max_speed=150, crown_enabled=True, air=False, size_cap=0, crown_weight=0, simple=False, minigame_enabled=True, killable=True):
         """Initialize with given parameters."""
         self.aggro = aggro
         self.min_speed = min_speed
@@ -118,44 +119,49 @@ class EnemyData:
         self.air = air
         self.size_cap = size_cap
         self.crown_weight = crown_weight
+        self.simple = simple
+        self.minigame_enabled = minigame_enabled
+        self.killable = killable
+        if air:
+            self.minigame_enabled = False
 
 
 EnemyMetaData = {
-    Enemies.BeaverBlue: EnemyData(crown_weight=10),  #
-    Enemies.Book: EnemyData(aggro=6, crown_enabled=False, air=True),
+    Enemies.BeaverBlue: EnemyData(crown_weight=10, simple=True),  #
+    Enemies.Book: EnemyData(aggro=6, crown_enabled=False, air=True, minigame_enabled=False),
     Enemies.ZingerCharger: EnemyData(air=True, crown_weight=7),  #
-    Enemies.Klobber: EnemyData(aggro=4, crown_weight=2),
-    Enemies.Klump: EnemyData(crown_weight=1),  #
-    Enemies.Kaboom: EnemyData(aggro=4, crown_weight=2),
-    Enemies.KlaptrapGreen: EnemyData(crown_weight=8),  #
+    Enemies.Klobber: EnemyData(aggro=4, crown_weight=2, killable=False),
+    Enemies.Klump: EnemyData(crown_weight=1, killable=False),  #
+    Enemies.Kaboom: EnemyData(aggro=4, crown_weight=2, killable=False),
+    Enemies.KlaptrapGreen: EnemyData(crown_weight=8, simple=True),  #
     Enemies.ZingerLime: EnemyData(air=True, crown_weight=5),  #
-    Enemies.KlaptrapPurple: EnemyData(crown_weight=2),  #
-    Enemies.KlaptrapRed: EnemyData(crown_weight=2),  #
-    Enemies.BeaverGold: EnemyData(crown_weight=10),  #
-    Enemies.MushroomMan: EnemyData(aggro=4, size_cap=60, crown_weight=10),
-    Enemies.Ruler: EnemyData(crown_weight=10),  #
-    Enemies.RoboKremling: EnemyData(crown_weight=2),  #
-    Enemies.Kremling: EnemyData(crown_weight=10),  #
+    Enemies.KlaptrapPurple: EnemyData(crown_weight=2, killable=False),  #
+    Enemies.KlaptrapRed: EnemyData(crown_weight=2, killable=False),  #
+    Enemies.BeaverGold: EnemyData(crown_weight=10, simple=True),  #
+    Enemies.MushroomMan: EnemyData(aggro=4, size_cap=60, crown_weight=10, simple=True),
+    Enemies.Ruler: EnemyData(crown_weight=10, simple=True),  #
+    Enemies.RoboKremling: EnemyData(crown_weight=2, killable=False),  #
+    Enemies.Kremling: EnemyData(crown_weight=10, simple=True),  #
     Enemies.KasplatDK: EnemyData(crown_weight=6),  #
     Enemies.KasplatDiddy: EnemyData(crown_weight=6),  #
     Enemies.KasplatLanky: EnemyData(crown_weight=6),  #
     Enemies.KasplatTiny: EnemyData(crown_weight=6),  #
     Enemies.KasplatChunky: EnemyData(crown_weight=6),  #
     Enemies.ZingerRobo: EnemyData(air=True, crown_weight=5),  #
-    Enemies.Krossbones: EnemyData(crown_weight=10),  #
-    Enemies.Shuri: EnemyData(crown_enabled=False),  #
-    Enemies.Gimpfish: EnemyData(aggro=1, crown_enabled=False),
-    Enemies.MrDice0: EnemyData(crown_weight=10),  # Should be aggro 4, but I think this is because it normally spawns in the BHDM fight
-    Enemies.SirDomino: EnemyData(crown_weight=10),  #
-    Enemies.MrDice1: EnemyData(crown_weight=10),  #
-    Enemies.FireballGlasses: EnemyData(aggro=35, min_speed=100, max_speed=255, crown_weight=10),  # 29 for if you want them to respond to the rabbit
+    Enemies.Krossbones: EnemyData(crown_weight=10, simple=True),  #
+    Enemies.Shuri: EnemyData(crown_enabled=False, minigame_enabled=False),  #
+    Enemies.Gimpfish: EnemyData(aggro=1, crown_enabled=False, minigame_enabled=False),
+    Enemies.MrDice0: EnemyData(crown_weight=10, simple=True),  # Should be aggro 4, but I think this is because it normally spawns in the BHDM fight
+    Enemies.SirDomino: EnemyData(crown_weight=10, simple=True),  #
+    Enemies.MrDice1: EnemyData(crown_weight=10, simple=True),  #
+    Enemies.FireballGlasses: EnemyData(aggro=35, min_speed=100, max_speed=255, crown_weight=10, killable=False),  # 29 for if you want them to respond to the rabbit
     Enemies.SpiderSmall: EnemyData(crown_weight=7),  #
-    Enemies.Bat: EnemyData(air=True, crown_weight=5),  #
-    Enemies.EvilTomato: EnemyData(aggro=4, crown_enabled=False),
-    Enemies.Ghost: EnemyData(crown_weight=10),  #
-    Enemies.Pufftup: EnemyData(crown_enabled=False, size_cap=40),  #
-    Enemies.Kosha: EnemyData(crown_weight=1),  #
-    Enemies.GetOut: EnemyData(aggro=6, crown_weight=1),
-    Enemies.Guard: EnemyData(aggro=1, crown_enabled=False),
+    Enemies.Bat: EnemyData(air=True, crown_weight=5, minigame_enabled=False),  #
+    Enemies.EvilTomato: EnemyData(aggro=4, crown_enabled=False, minigame_enabled=False),
+    Enemies.Ghost: EnemyData(crown_weight=10, simple=True),  #
+    Enemies.Pufftup: EnemyData(crown_enabled=False, size_cap=40, minigame_enabled=False),  #
+    Enemies.Kosha: EnemyData(crown_weight=1, killable=False),  #
+    Enemies.GetOut: EnemyData(aggro=6, crown_weight=1, minigame_enabled=False),
+    Enemies.Guard: EnemyData(aggro=1, crown_enabled=False, minigame_enabled=False),
     # Enemies.Bug: EnemyData(aggro=0x40,crown_enabled=False),
 }
