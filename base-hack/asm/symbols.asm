@@ -90,6 +90,9 @@
 .definelabel GetKongUnlockedFlag, 0x805FF018
 .definelabel setNextTransitionType, 0x805FF158
 
+.definelabel unkMultiplayerWarpFunction, 0x8061EB04
+.definelabel renderScreenTransition, 0x806291B4
+
 .definelabel initDisplayList, 0x807132DC
 .definelabel getTextStyleHeight, 0x806FD894
 .definelabel displayText, 0x806FC530
