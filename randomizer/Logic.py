@@ -467,13 +467,6 @@ class LogicVarHolder:
     def KasplatAccess(self, location):
         """Use the kasplat map to check kasplat logic for blueprint locations."""
         kong = self.kasplat_map[location]
-        if location == Locations.GalleonKasplatGoldTower:
-            # Water level needs to be raised and you spring up as diddy to get killed by the kasplat
-            # Or, any kong having teleporter access works too
-            if kong == Kongs.diddy:
-                return Events.WaterSwitch in self.Events and self.IsKong(Kongs.diddy)
-            else:
-                return Events.TreasureRoomTeleporterUnlocked in self.Events and self.HasAccess(randomizer.Enums.Regions.Regions.Shipyard, kong)
         return self.IsKong(kong)
 
     def CanBuy(self, location):
