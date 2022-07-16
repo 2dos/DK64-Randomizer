@@ -96,4 +96,5 @@ extern void handleFootProgress(actorData* actor);
 extern void cancelCutscene(int enable_movement);
 extern void clearVultureCutscene(void);
 extern void fastWarp(void* actor, int player_index);
+extern void activateBananaports(void);
 //extern void getRandoNextMovePurchase(shop_paad* shop_info, KongBase* moves);
