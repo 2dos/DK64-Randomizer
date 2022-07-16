@@ -89,3 +89,9 @@ class MusicAttemptCountExceeded(Exception):
     """Exception triggered when too many attempts were made to place music."""
 
     pass
+
+
+class BossOutOfLocationsException(FillException):
+    """Exception triggered when there are no valid levels to put a boss."""
+
+    pass

@@ -141,12 +141,34 @@ def randomize_enemies(spoiler: Spoiler):
         Maps.SnidesCrown,
         Maps.LobbyCrown,
     ]
+    minigame_maps_easy = [
+        # Maps.BusyBarrelBarrageEasy, # Requires enemies be of a certain size
+        # Maps.BusyBarrelBarrageHard, # ^
+        # Maps.BusyBarrelBarrageNormal, # ^
+        # Maps.HelmBarrelDiddyKremling, # Only kremlings activate the switch
+        Maps.HelmBarrelChunkyHidden,
+        Maps.HelmBarrelChunkyShooting,
+    ]
+    minigame_maps_beatable = [
+        Maps.MadMazeMaulEasy,
+        Maps.MadMazeMaulNormal,
+        Maps.MadMazeMaulHard,
+        Maps.MadMazeMaulInsane,
+    ]
+    minigame_maps_nolimit = [
+        Maps.HelmBarrelLankyMaze,
+        Maps.StashSnatchEasy,
+        Maps.StashSnatchNormal,
+        Maps.StashSnatchHard,
+        Maps.StashSnatchInsane,
+    ]
+    minigame_maps_total = minigame_maps_easy.copy()
+    minigame_maps_total.extend(minigame_maps_beatable)
+    minigame_maps_total.extend(minigame_maps_nolimit)
     enemy_classes = {
         "ground_simple": [
             Enemies.BeaverBlue,
             Enemies.KlaptrapGreen,
-            Enemies.KlaptrapPurple,
-            Enemies.KlaptrapRed,
             Enemies.BeaverGold,
             Enemies.MushroomMan,
             Enemies.Ruler,
@@ -174,6 +196,9 @@ def randomize_enemies(spoiler: Spoiler):
             Enemies.Kosha,
             Enemies.Klobber,
             Enemies.Kaboom,
+            Enemies.KlaptrapPurple,
+            Enemies.KlaptrapRed,
+            Enemies.Guard,
         ],
         "water": [
             Enemies.Shuri,
@@ -184,6 +209,16 @@ def randomize_enemies(spoiler: Spoiler):
     crown_enemies = []
     if spoiler.settings.enemy_rando or spoiler.settings.kasplat_rando:  # TODO: Add option for crown enemy rando
         crown_enemies = getBalancedCrownEnemyRando()
+        minigame_enemies_simple = []
+        minigame_enemies_beatable = []
+        minigame_enemies_nolimit = []
+        for enemy in EnemyMetaData:
+            if EnemyMetaData[enemy].minigame_enabled:
+                minigame_enemies_nolimit.append(enemy)
+                if EnemyMetaData[enemy].killable:
+                    minigame_enemies_beatable.append(enemy)
+                    if EnemyMetaData[enemy].simple:
+                        minigame_enemies_simple.append(enemy)
         for cont_map_id in range(216):
             cont_map_spawner_address = js.pointer_addresses[16]["entries"][cont_map_id]["pointing_to"]
             vanilla_spawners = []
@@ -222,6 +257,7 @@ def randomize_enemies(spoiler: Spoiler):
                 offset += 0x16 + (extra_count * 2)
                 vanilla_spawners.append({"enemy_id": enemy_id, "offset": init_offset, "index": enemy_index})
             if spoiler.settings.kasplat_rando:
+                # Shuffle within vanilla locations
                 for cont_map in spoiler.enemy_replacements:
                     if cont_map["container_map"] == cont_map_id:
                         for kasplat in cont_map["kasplat_swaps"]:
@@ -242,7 +278,7 @@ def randomize_enemies(spoiler: Spoiler):
                                 new_enemy_id = arr[sub_index]
                                 sub_index += 1
                                 if new_enemy_id != Enemies.Book or cont_map_id not in (Maps.CavesDonkeyCabin, Maps.JapesLankyCave, Maps.AngryAztecLobby):
-                                    if new_enemy_id != Enemies.Bug or cont_map_id != Maps.CavesDiddyLowerCabin:
+                                    if new_enemy_id != Enemies.Kosha or cont_map_id != Maps.CavesDiddyLowerCabin:
                                         ROM().seek(cont_map_spawner_address + spawner["offset"])
                                         ROM().writeMultipleBytes(new_enemy_id, 1)
                                         if new_enemy_id in EnemyMetaData.keys():
@@ -257,15 +293,53 @@ def randomize_enemies(spoiler: Spoiler):
                                                 if default_scale > EnemyMetaData[new_enemy_id].size_cap:
                                                     ROM().seek(cont_map_spawner_address + spawner["offset"] + 0xF)
                                                     ROM().writeMultipleBytes(EnemyMetaData[new_enemy_id].size_cap, 1)
-                                            min_speed = EnemyMetaData[new_enemy_id].min_speed
-                                            max_speed = EnemyMetaData[new_enemy_id].max_speed
-                                            if min_speed > 0 and max_speed > 0:
-                                                ROM().seek(cont_map_spawner_address + spawner["offset"] + 0xD)
-                                                agg_speed = random.randint(min_speed, max_speed)
-                                                ROM().writeMultipleBytes(agg_speed, 1)
-                                                ROM().seek(cont_map_spawner_address + spawner["offset"] + 0xC)
-                                                ROM().writeMultipleBytes(random.randint(min_speed, agg_speed), 1)
-            if spoiler.settings.enemy_rando and cont_map_id in crown_maps:  # TODO: Change the first condition to a unique condition
+                                            if spoiler.settings.enemy_speed_rando:
+                                                min_speed = EnemyMetaData[new_enemy_id].min_speed
+                                                max_speed = EnemyMetaData[new_enemy_id].max_speed
+                                                if min_speed > 0 and max_speed > 0:
+                                                    ROM().seek(cont_map_spawner_address + spawner["offset"] + 0xD)
+                                                    agg_speed = random.randint(min_speed, max_speed)
+                                                    ROM().writeMultipleBytes(agg_speed, 1)
+                                                    ROM().seek(cont_map_spawner_address + spawner["offset"] + 0xC)
+                                                    ROM().writeMultipleBytes(random.randint(min_speed, agg_speed), 1)
+            if spoiler.settings.enemy_rando and cont_map_id in minigame_maps_total:
+                tied_enemy_list = []
+                if cont_map_id in minigame_maps_easy:
+                    tied_enemy_list = minigame_enemies_simple.copy()
+                elif cont_map_id in minigame_maps_beatable:
+                    tied_enemy_list = minigame_enemies_beatable.copy()
+                elif cont_map_id in minigame_enemies_nolimit:
+                    tied_enemy_list = minigame_enemies_nolimit.copy()
+                for spawner in vanilla_spawners:
+                    if spawner["enemy_id"] in tied_enemy_list:
+                        new_enemy_id = random.choice(tied_enemy_list)
+                        ROM().seek(cont_map_spawner_address + spawner["offset"])
+                        ROM().writeMultipleBytes(new_enemy_id, 1)
+                        if new_enemy_id in EnemyMetaData.keys():
+                            ROM().seek(cont_map_spawner_address + spawner["offset"] + 0x10)
+                            ROM().writeMultipleBytes(EnemyMetaData[new_enemy_id].aggro, 1)
+                            if new_enemy_id == Enemies.RoboKremling:
+                                ROM().seek(cont_map_spawner_address + spawner["offset"] + 0xB)
+                                ROM().writeMultipleBytes(0xC8, 1)
+                            if EnemyMetaData[new_enemy_id].air:
+                                ROM().seek(cont_map_spawner_address + spawner["offset"] + 0x6)
+                                ROM().writeMultipleBytes(300, 2)
+                            ROM().seek(cont_map_spawner_address + spawner["offset"] + 0xF)
+                            default_scale = int.from_bytes(ROM().readBytes(1), "big")
+                            if EnemyMetaData[new_enemy_id].size_cap > 0:
+                                if default_scale > EnemyMetaData[new_enemy_id].size_cap:
+                                    ROM().seek(cont_map_spawner_address + spawner["offset"] + 0xF)
+                                    ROM().writeMultipleBytes(EnemyMetaData[new_enemy_id].size_cap, 1)
+                            if spoiler.settings.enemy_speed_rando:
+                                min_speed = EnemyMetaData[new_enemy_id].min_speed
+                                max_speed = EnemyMetaData[new_enemy_id].max_speed
+                                if min_speed > 0 and max_speed > 0:
+                                    ROM().seek(cont_map_spawner_address + spawner["offset"] + 0xD)
+                                    agg_speed = random.randint(min_speed, max_speed)
+                                    ROM().writeMultipleBytes(agg_speed, 1)
+                                    ROM().seek(cont_map_spawner_address + spawner["offset"] + 0xC)
+                                    ROM().writeMultipleBytes(random.randint(min_speed, agg_speed), 1)
+            if spoiler.settings.crown_enemy_rando and cont_map_id in crown_maps:
                 crown_index = 0
                 for spawner in vanilla_spawners:
                     if spawner["enemy_id"] in crown_enemies:
@@ -288,14 +362,15 @@ def randomize_enemies(spoiler: Spoiler):
                                 if default_scale > EnemyMetaData[new_enemy_id].size_cap:
                                     ROM().seek(cont_map_spawner_address + spawner["offset"] + 0xF)
                                     ROM().writeMultipleBytes(EnemyMetaData[new_enemy_id].size_cap, 1)
-                            min_speed = EnemyMetaData[new_enemy_id].min_speed
-                            max_speed = EnemyMetaData[new_enemy_id].max_speed
-                            if min_speed > 0 and max_speed > 0:
-                                ROM().seek(cont_map_spawner_address + spawner["offset"] + 0xD)
-                                agg_speed = random.randint(min_speed, max_speed)
-                                ROM().writeMultipleBytes(agg_speed, 1)
-                                ROM().seek(cont_map_spawner_address + spawner["offset"] + 0xC)
-                                ROM().writeMultipleBytes(random.randint(min_speed, agg_speed), 1)
+                            if spoiler.settings.enemy_speed_rando:
+                                min_speed = EnemyMetaData[new_enemy_id].min_speed
+                                max_speed = EnemyMetaData[new_enemy_id].max_speed
+                                if min_speed > 0 and max_speed > 0:
+                                    ROM().seek(cont_map_spawner_address + spawner["offset"] + 0xD)
+                                    agg_speed = random.randint(min_speed, max_speed)
+                                    ROM().writeMultipleBytes(agg_speed, 1)
+                                    ROM().seek(cont_map_spawner_address + spawner["offset"] + 0xC)
+                                    ROM().writeMultipleBytes(random.randint(min_speed, agg_speed), 1)
                     elif spawner["enemy_id"] == Enemies.BattleCrownController:
                         ROM().seek(cont_map_spawner_address + spawner["offset"] + 0xB)
                         ROM().writeMultipleBytes(random.randint(5, 60), 1)  # Determine Crown length. DK64 caps at 255 seconds

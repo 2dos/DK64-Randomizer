@@ -134,10 +134,13 @@ def toggle_b_locker_boxes(event):
     if js.document.getElementById("randomize_blocker_required_amounts").checked:
         disabled = False
     blocker_text = js.document.getElementById("blocker_text")
+    maximize_helm_blocker = js.document.getElementById("maximize_helm_blocker")
     if disabled:
         blocker_text.setAttribute("disabled", "disabled")
+        maximize_helm_blocker.setAttribute("disabled", "disabled")
     else:
         blocker_text.removeAttribute("disabled")
+        maximize_helm_blocker.removeAttribute("disabled")
     for i in range(0, 10):
         blocker = js.document.getElementById(f"blocker_{i}")
         try:
@@ -178,8 +181,7 @@ def update_boss_required(evt):
     boss_location = document.getElementById("boss_location_rando")
     boss_kong = document.getElementById("boss_kong_rando")
     kong_rando = document.getElementById("kong_rando")
-    shop = document.getElementById("shop_location_rando")
-    unlock_moves = document.getElementById("unlock_all_moves")
+    moves = document.getElementById("move_off")
     if level.value == "level_order":
         boss_location.setAttribute("disabled", "disabled")
         boss_location.checked = True
@@ -187,27 +189,22 @@ def update_boss_required(evt):
         boss_kong.checked = True
         kong_rando.setAttribute("disabled", "disabled")
         kong_rando.checked = True
-        shop.setAttribute("disabled", "disabled")
-        shop.checked = True
+        if moves.selected is True:
+            document.getElementById("move_on").selected = True
+        moves.setAttribute("disabled", "disabled")
     elif level.value == "vanilla" and kong_rando.checked:
         boss_location.setAttribute("disabled", "disabled")
         boss_location.checked = True
         boss_kong.setAttribute("disabled", "disabled")
         boss_kong.checked = True
         kong_rando.removeAttribute("disabled")
-        shop.removeAttribute("disabled")
+        moves.removeAttribute("disabled")
     else:
         try:
             boss_kong.removeAttribute("disabled")
             boss_location.removeAttribute("disabled")
             kong_rando.removeAttribute("disabled")
-            shop.removeAttribute("disabled")
-        except Exception:
-            pass
-    if unlock_moves.checked:
-        try:
-            shop.setAttribute("disabled", "disabled")
-            shop.checked = False
+            moves.removeAttribute("disabled")
         except Exception:
             pass
 
@@ -219,13 +216,11 @@ def disable_boss_rando(evt):
     boss_location = document.getElementById("boss_location_rando")
     boss_kong = document.getElementById("boss_kong_rando")
     kong_rando = document.getElementById("kong_rando")
-    shop = document.getElementById("shop_location_rando")
-    if kong_rando.checked and level.value == "vanilla":
+    if kong_rando.checked and level.value == "vanilla" or level.value == "level_order":
         boss_location.setAttribute("disabled", "disabled")
         boss_location.checked = True
         boss_kong.setAttribute("disabled", "disabled")
         boss_kong.checked = True
-        shop.removeAttribute("disabled")
     else:
         boss_kong.removeAttribute("disabled")
         boss_location.removeAttribute("disabled")
@@ -238,7 +233,7 @@ def disable_colors(evt):
     disabled = False
     if js.document.getElementById("random_colors").checked:
         disabled = True
-    for i in ["dk", "diddy", "tiny", "lanky", "chunky"]:
+    for i in ["dk", "diddy", "tiny", "lanky", "chunky", "rambi", "enguarde"]:
         color = js.document.getElementById(f"{i}_colors")
         try:
             if disabled:
@@ -247,6 +242,7 @@ def disable_colors(evt):
                 color.removeAttribute("disabled")
         except AttributeError:
             pass
+    hide_rgb(None)
 
 
 @bind("click", "enable_tag_anywhere")
@@ -299,7 +295,7 @@ def enable_kong_rando(evt):
 
 @bind("click", "krool_random")
 def disable_krool_phases(evt):
-    """Disable music options when Randomize All is selected."""
+    """Disable K Rool options when Randomize All is selected."""
     disabled = False
     krool = js.document.getElementById("krool_phase_count")
     if js.document.getElementById("krool_random").checked:
@@ -313,26 +309,16 @@ def disable_krool_phases(evt):
         pass
 
 
-@bind("click", "unlock_all_moves")
-def disable_shuffle_shop(evt):
-    """Disable Shuffle Shop Move Location when All Moves are Unlocked."""
-    disabled = False
-    shop = js.document.getElementById("shop_location_rando")
+@bind("change", "move_rando")
+def disable_prices(evt):
+    """Disable prices if move rando is set to start with all moves."""
+    moves = js.document.getElementById("move_rando")
     prices = js.document.getElementById("random_prices")
-    moves = js.document.getElementById("unlock_all_moves")
-    if moves.checked:
-        disabled = True
     try:
-        if disabled:
-            shop.setAttribute("disabled", "disabled")
-            shop.checked = False
+        if moves.value == "start_with":
             prices.setAttribute("disabled", "disabled")
-        elif js.document.getElementById("level_randomization").value != "level_order":
-            shop.removeAttribute("disabled")
-            prices.removeAttribute("disabled")
         else:
             prices.removeAttribute("disabled")
-            shop.checked = True
     except AttributeError:
         pass
 
@@ -387,7 +373,30 @@ def preset_select_changed(event):
     update_boss_required(None)
     disable_colors(None)
     disable_music(None)
-    disable_shuffle_shop(None)
+    disable_prices(None)
     max_randomized_blocker(None)
     max_randomized_troff(None)
     disable_barrel_rando(None)
+
+
+@bind("change", "dk_colors")
+@bind("change", "diddy_colors")
+@bind("change", "lanky_colors")
+@bind("change", "tiny_colors")
+@bind("change", "chunky_colors")
+@bind("change", "rambi_colors")
+@bind("change", "enguarde_colors")
+def hide_rgb(event):
+    """Show RGB Selector if Custom Color is selected."""
+    for i in ["dk", "diddy", "lanky", "tiny", "chunky", "rambi", "enguarde"]:
+        hidden = True
+        color = js.document.getElementById(f"{i}_custom")
+        if js.document.getElementById(f"{i}_colors").value == "custom":
+            hidden = False
+        try:
+            if hidden or js.document.getElementById("random_colors").checked:
+                color.style.display = "none"
+            else:
+                color.style = ""
+        except AttributeError:
+            pass

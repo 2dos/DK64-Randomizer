@@ -96,11 +96,12 @@ def getKong(fh, offset):
 def getMove(fh, offset):
     """Get the current move."""
     val = getValue(fh, offset, 1)
-    move_type = (val >> 4) & 0xF
-    move_lvl = val & 0xF
-    if move_type == 0xF:
+    move_type = (val >> 5) & 0x7
+    move_lvl = ((val >> 3) & 0x3) + 1
+    move_kong = val & 7
+    if move_type == 5:
         return "No Upgrade"
-    return f"{move_types[move_type]} level {str(move_lvl)}"
+    return f"{move_types[move_type]} level {str(move_lvl)} (Kong {move_kong})"
 
 
 output_file = "output.txt"

@@ -281,11 +281,9 @@ def ShuffleLevelOrderWithRestrictions(settings: Settings):
         newLevelOrder = ShuffleLevelOrderForOneStartingKong(settings)
     else:
         newLevelOrder = ShuffleLevelOrderForMultipleStartingKongs(settings)
-    # print("New Level Order:")
-    # for i in range(1, 8):
-    #     print(str(i) + ": " + newLevelOrder[i].name)
-    if len(newLevelOrder) < 7:
+    if None in newLevelOrder.values():
         raise Ex.EntrancePlacementException("Invalid level order with fewer than the 7 required main levels.")
+    settings.level_order = newLevelOrder
     ShuffleLevelExits(newLevelOrder)
 
 
@@ -353,10 +351,12 @@ def ShuffleLevelOrderForOneStartingKong(settings):
     # Decide where Caves will go - special case because T&S portals are not immediately accessible
     cavesOptions = []
     # Donkey and Tiny have no T&S access in Caves so it can't be the first level for them
-    if settings.starting_kong in (Kongs.tiny, Kongs.donkey):
-        cavesOptions = list(levelIndexChoices.intersection({2, 7}))
+    # If Caves is level 2, we have to be careful of which Kong we unlock first, but we can handle that later (see "The Caves Issue" in Fill.py)
+    # All of this is irrelevant if the open levels setting is on
+    if not settings.open_levels and settings.starting_kong in (Kongs.tiny, Kongs.donkey):
+        cavesOptions = list(levelIndexChoices.intersection({2, 3, 4, 5, 6, 7}))
     else:
-        cavesOptions = list(levelIndexChoices.intersection({1, 7}))
+        cavesOptions = list(levelIndexChoices)
     cavesIndex = random.choice(cavesOptions)
     levelIndexChoices.remove(cavesIndex)
 
@@ -375,6 +375,7 @@ def ShuffleLevelOrderForOneStartingKong(settings):
         cavesIndex: Levels.CrystalCaves,
         castleIndex: Levels.CreepyCastle,
     }
+    settings.level_order = newLevelOrder
     return newLevelOrder
 
 
@@ -424,21 +425,26 @@ def ShuffleLevelOrderForMultipleStartingKongs(settings: Settings):
                         if Kongs.diddy not in settings.starting_kong_list and Kongs.chunky not in settings.starting_kong_list:
                             break
                     # If no kong in Tiny Temple but a kong is in Llama temple, need Diddy to open guitar door
+                    # You also need one of Donkey, Lanky, or Tiny to open the Llama temple
                     elif Locations.LankyKong in settings.kong_locations:
-                        if Kongs.diddy not in settings.starting_kong_list:
+                        if Kongs.diddy not in settings.starting_kong_list or (
+                            Kongs.donkey not in settings.starting_kong_list and Kongs.lanky not in settings.starting_kong_list and Kongs.tiny not in settings.starting_kong_list
+                        ):
                             break
                 # If reached Japes without freeing anyone yet, Only Donkey, Diddy, and Chunky logically have access to T&S portal in Japes
                 elif (
                     newLevelOrder[level] == Levels.JungleJapes
-                    and kongsInLevels[Levels.JungleJapes] == 0  # This restriciton only matters if there's no one to free in Japes
+                    and kongsInLevels[Levels.JungleJapes] == 0  # This restriction only matters if there's no one to free in Japes
                     and Kongs.donkey not in settings.starting_kong_list
                     and Kongs.diddy not in settings.starting_kong_list
                     and Kongs.chunky not in settings.starting_kong_list
                 ):
                     break
                 # If reached Caves without freeing anyone yet, Only Diddy, Lanky, and Chunky logically have access to T&S portal in Caves
+                # If the open levels setting is on, this doesn't matter
                 elif (
-                    newLevelOrder[level] == Levels.CrystalCaves
+                    not settings.open_levels
+                    and newLevelOrder[level] == Levels.CrystalCaves
                     and Kongs.diddy not in settings.starting_kong_list
                     and Kongs.lanky not in settings.starting_kong_list
                     and Kongs.chunky not in settings.starting_kong_list
@@ -452,6 +458,11 @@ def ShuffleLevelOrderForMultipleStartingKongs(settings: Settings):
                 kongsAssumed = kongsAssumed + kongsInLevels[newLevelOrder[level]]
         # Choose where levelWithKongs will go in new level order
         levelIndexOptions = list(levelIndicesToFill.intersection(levelsReachable))
+        # If we hit one of the `break`s above, it's likely we can't logically access any level past it
+        # If this happens, we got unlucky (settings dependending) and restart this process or else we crash
+        # The most common instance of this is when Aztec is level 1 and you don't start with Diddy
+        if levelIndexOptions == []:
+            return ShuffleLevelOrderForMultipleStartingKongs(settings)
         # Place level in newLevelOrder and remove from list of remaining slots
         shuffledLevelIndex = random.choice(levelIndexOptions)
         levelIndicesToFill.remove(shuffledLevelIndex)

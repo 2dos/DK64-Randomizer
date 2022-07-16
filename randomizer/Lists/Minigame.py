@@ -98,7 +98,7 @@ MinigameRequirements = {
     Minigames.SpeedySwingSortieNormal: Minigame(
         name="Speedy Swing Sortie (45 seconds, 14 coins)", map_id=Maps.SpeedySwingSortieNormal, difficulty_lvl=1, logic=lambda l: l.vines and l.twirl and l.istiny
     ),
-    Minigames.SpeedySwingSortieHard: Minigame(name="Speedy Swing Sortie (60 seconds, 6 coins)", map_id=Maps.SpeedySwingSortieHard, difficulty_lvl=2, logic=lambda l: l.vines),
+    Minigames.SpeedySwingSortieHard: Minigame(name="Speedy Swing Sortie (60 seconds, 6 coins)", map_id=Maps.SpeedySwingSortieHard, helm_enabled=False, difficulty_lvl=2, logic=lambda l: l.vines),
     # Krazy Kong Klamour - Fast flicker games banned from Helm because Wii U semi-requires pause buffer to hit Bananas. Not expecting users to know this trick
     Minigames.KrazyKongKlamourEasy: Minigame(name="Krazy Kong Klamour (10 Bananas, Slow Flicker)", map_id=Maps.KrazyKongKlamourEasy, logic=lambda l: True),
     Minigames.KrazyKongKlamourNormal: Minigame(name="Krazy Kong Klamour (15 Bananas, Slow Flicker)", map_id=Maps.KrazyKongKlamourNormal, difficulty_lvl=1, logic=lambda l: True),

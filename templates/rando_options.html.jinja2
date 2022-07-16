@@ -6,13 +6,12 @@
                 <tr>
                     <td>
                         <div class="form-check form-switch w-75">
-                            <label data-toggle="tooltip" title="This option will make all moves available from the start without purchasing them.&#10;Includes all Cranky, all Candy, and almost all Funky purchasables.&#10;Does not include access to JetPac in Cranky; you will still need some banana medals.&#10;Does not include the shockwave attack from the banana fairy queen.">
+                            <label data-toggle="tooltip" title="If this is checked, then locations and entrances will be shuffled without logic.&#10;WARNING: This can lead to unbeatable seeds, or seeds that require a high level of glitch knowledge to complete.">
                                 <input class="form-check-input"
                                        type="checkbox"
-                                       name="unlock_all_moves"
-                                       id="unlock_all_moves"
-                                       value="True"/>
-                                Unlock All Purchasable Moves
+                                       name="no_logic"
+                                       value="False"/>
+                                No Logic
                             </label>
                         </div>
                     </td>
@@ -26,6 +25,24 @@
                                        name="enemy_rando"
                                        value="True"/>
                                 Shuffle Enemies
+                            </label>
+                        </div>
+                        <div class="form-check form-switch w-75">
+                            <label data-toggle="tooltip" title="Battle crown enemies are randomized.">
+                                <input class="form-check-input"
+                                    type="checkbox"
+                                    name="crown_enemy_rando"
+                                    value="True"/>
+                                Shuffle Crown Enemies
+                            </label>
+                        </div>
+                        <div class="form-check form-switch w-75">
+                            <label data-toggle="tooltip" title="Enemy speeds are randomized.">
+                                <input class="form-check-input"
+                                    type="checkbox"
+                                    name="enemy_speed_rando"
+                                    value="True"/>
+                                Shuffle Enemy Speed
                             </label>
                         </div>
                     </td>
@@ -66,6 +83,20 @@
                                        name="random_medal_requirement"
                                        value="True"/>
                                 Random Medal Requirement
+                            </label>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <div class="form-check form-switch w-75">
+                            <label data-toggle="tooltip" title="Shuffles the solutions to various puzzles in the game, including: &#10;- Minecart rides & Races &#10;- Llama Temple Matching Game.&#10- Pufftoss & Helm Star Placement.&#10- Factory Number Game.&#10- Museum Shields Order">
+                                <input class="form-check-input"
+                                       type="checkbox"
+                                       name="puzzle_rando"
+                                       id="puzzle_rando"
+                                       value="True"/>
+                                Shuffle Puzzle Solutions
                             </label>
                         </div>
                     </td>
@@ -156,14 +187,41 @@
                 <tr>
                     <td>
                         <div class="form-check form-switch w-75">
-                            <label data-toggle="tooltip" title="You can purchase moves from a different shop.">
+                            <label data-toggle="tooltip" title="Dirt Patches for Rainbow Coins are in random locations.">
                                 <input class="form-check-input"
                                        type="checkbox"
-                                       name="shop_location_rando"
-                                       id="shop_location_rando"
+                                       name="random_patches"
+                                       id="random_patches"
                                        value="True"/>
-                                Shuffle Shop Move Location
+                                Shuffle Dirt Patches
                             </label>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <div>
+                            Move Randomizer
+                            <select name="move_rando"
+                                    id="move_rando"
+                                    style="width: 60%;"
+                                    class="form-select center-div"
+                                    aria-label="Randomization type"
+                                    data-toggle="tooltip"
+                                    title="Determines if and how moves are randomized.">
+                                <option id="move_off" selected value="off" title="Moves are in their vanilla locations and can only be bought by their normal kongs.">
+                                    Vanilla
+                                </option>
+                                <option id="move_on" value="on" title="Moves can be randomized to different shops, but must still be bought by their normal kong.&#10;Shared moves can be bought by any kong.">
+                                    Shuffle
+                                </option>
+                                <option id="move_on_cross_purchase" value="on_cross_purchase" title="Kongs can now purchase another kongs moves.&#10;Shop Indicator will still show which kong buys the move.">
+                                    Cross Kong Purchases
+                                </option>
+                                <option id="move_start_with" value="start_with" title="This option will make all moves available from the start without purchasing them.&#10;Includes all Cranky, all Candy, and almost all Funky purchasables.&#10;Does not include access to JetPac in Cranky; you will still need some banana medals.&#10;Does not include the shockwave attack from the banana fairy queen.">
+                                    Unlock All Moves
+                                </option>
+                            </select>
                         </div>
                     </td>
                 </tr>
@@ -192,7 +250,7 @@
                                 <option value="medium" title="Moves cost 1-8 coins most of the time. (Avg: 4.5)">
                                     Medium
                                 </option>
-                                <option value="high" title="Moves cost 1-12 coins most of the time. (Avg: 6.5)">
+                                <option value="high" title="Moves cost 1-12 coins most of the time. (Avg: 6.5)&#10;WARNING: High Prices restricts move placements quite a bit and therefore Seeds have a hard time generating.&#10;Might take a few tries to generate a seed!">
                                     High
                                 </option>
                             </select>

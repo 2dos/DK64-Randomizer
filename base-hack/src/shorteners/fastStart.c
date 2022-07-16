@@ -6,20 +6,20 @@ void islesSpawn(void) {
 	}
 }
 
-static const short kong_flags[] = {385,6,70,66,117};
+static const short kong_flags[] = {FLAG_KONG_DK,FLAG_KONG_DIDDY,FLAG_KONG_LANKY,FLAG_KONG_TINY,FLAG_KONG_CHUNKY};
 
 void applyFastStart(void) {
 	if (Rando.fast_start_beginning) {
 		for (int i = 0; i < 4; i++) {
-			setPermFlag(386 + i); // Training Barrels Complete
+			setPermFlag(FLAG_TBARREL_DIVE + i); // Training Barrels Complete
 		}
-		setPermFlag(0x1BB); // Japes Boulder
-		setPermFlag(0x186); // Isles Escape CS
-		setPermFlag(0x17F); // Training Barrels Spawned
-		setPermFlag(0x180); // Cranky given SSlam
+		setPermFlag(FLAG_KEYIN_JAPES); // Japes Boulder
+		setPermFlag(FLAG_ESCAPE); // Isles Escape CS
+		setPermFlag(FLAG_TBARREL_SPAWNED); // Training Barrels Spawned
+		setPermFlag(FLAG_ABILITY_SIMSLAM); // Cranky given SSlam
 		setPermFlag(kong_flags[(int)Rando.starting_kong]); // Starting Kong Free
 		if (Rando.camera_unlocked) {
-			setPermFlag(0x179);
+			setPermFlag(FLAG_ABILITY_CAMERA);
 		}
 		if (MovesBase[0].simian_slam == 0) {
 			for (int i = 0; i < 5; i++) {

@@ -137,7 +137,7 @@ ItemList = {
     Items.HelmTiny2: Item("Helm Tiny Barrel 2", False, Types.Constant),
     Items.HelmChunky1: Item("Helm Chunky Barrel 1", False, Types.Constant),
     Items.HelmChunky2: Item("Helm Chunky Barrel 2", False, Types.Constant),
-    Items.GoldenBanana: Item("Golden Banana", False, Types.Banana),
+    Items.GoldenBanana: Item("Golden Banana", True, Types.Banana),
     Items.BananaFairy: Item("Banana Fairy", False, Types.Fairy),
     Items.BananaMedal: Item("Banana Medal", False, Types.Medal),
     Items.BattleCrown: Item("Battle Crown", False, Types.Crown),

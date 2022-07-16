@@ -1,0 +1,159 @@
+<html>
+    <head>
+        <style>
+            body {
+                color: #e3e3e3;
+                background-color: #212529;
+                font-family: "Lato", -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Helvetica Neue, Arial, sans-serif, Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol, Noto Color Emoji;;
+                font-size: 1rem;
+                line-height: 1.5rem;
+                font-weight: 400;
+            }
+
+            h3 {
+                font-size: 1.75rem;
+                font-family: "Catamaran", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+                margin-top: 0;
+                margin-bottom: 1rem;
+            }
+
+            h4 {
+                font-size: 1.5rem;
+                font-family: "Catamaran", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+                margin-top: 0;
+                margin-bottom: 1rem;
+            }
+
+            table {
+                width: 100%;
+                margin-bottom: 1rem;
+                vertical-align: top;
+                text-align: center;
+            }
+
+            tr:nth-child(even) {
+                background-color: #2c3034;
+            }
+
+            td {
+                width: 44.5%;
+            }
+
+            .check-cell {
+                width: 1%;
+            }
+
+            .state-row {
+                display: flex;
+                justify-content: flex-start;
+                margin-top: 1rem;
+                margin-bottom: 1rem;
+            }
+
+            .state-text {
+                margin: 0;
+            }
+
+            .state-item {
+                margin-right: 1rem!important;
+            }
+
+            .btn {
+                color: #fff;
+                background-color: #6c757d;
+                border-color: #6c757d;
+                border-style: solid;
+                border-radius: .25rem;
+                transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+            }
+            .btn:hover {
+                color: #fff;
+                background-color: #08caca;
+                border-color: #08caca;
+            }
+            .btn:active
+            {
+                border-color: black;
+            }
+
+            .spoiler {
+                background-color: gray;
+                color: gray;
+            }
+            .spoiler:hover {
+                background-color: transparent;
+                color: #e3e3e3;
+            }
+
+        </style>
+    </head>
+    <body>
+        <div class="state-row">
+            <h4 class="state-text state-item">Tracker State: </h4>
+            <input id="state" class="state-item" type="text"/><br/>
+            <button type="button" class="btn state-item" onclick="loadState()">Load State</button>
+        </div>
+        <!--Start Generated Content-->
+    </body>
+    <script>
+        function showRow(prefix, index, update=true) {
+            id = prefix + "_" + index;
+            checkId = prefix + "Check_" + index;
+            var row = document.getElementById(id);
+            var checkbox = document.getElementById(checkId);
+            if (checkbox.checked) {
+                row.classList.remove("spoiler");
+            }
+            else {
+                row.classList.add("spoiler");
+            }
+            if (update) {
+                updateState();
+            }
+        }
+
+        locCount = document.getElementById("locCount").value;
+        exitCount = document.getElementById("exitCount").value;
+
+        function updateState() {
+            state = {};
+            locations = {};
+            if (locCount > 0) {
+                for (var i = 0; i < locCount; i++) {
+                    checked = document.getElementById("itemCheck_" + i).checked;
+                    locations["loc_" + i] = checked;
+                }
+                state["locations"] = locations;
+            }
+            exits = {};
+            if (exitCount > 0) {
+                for (var i = 0; i < exitCount; i++) {
+                    checked = document.getElementById("backCheck_" + i).checked;
+                    exits["exit_" + i] = checked;
+                }
+                state["exits"] = exits;
+            }
+            stateEncoded = btoa(JSON.stringify(state));
+            document.getElementById("state").value = stateEncoded;
+        }
+
+        function loadState() {
+            stateEncoded = document.getElementById("state").value;
+            state = JSON.parse(atob(stateEncoded));
+            if ("locations" in state) {
+                for (const [key, value] of Object.entries(state["locations"])) {
+                    index = key.replace("loc_", "");
+                    document.getElementById("itemCheck_" + index).checked = value;
+                    showRow("item", index, false);
+                }
+            }
+            if ("exits" in state) {
+                for (const [key, value] of Object.entries(state["exits"])) {
+                    index = key.replace("exit_", "");
+                    document.getElementById("backCheck_" + index).checked = value;
+                    showRow("back", index, false);
+                }
+            }
+        }
+    </script>
+</html>

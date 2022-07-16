@@ -8,10 +8,10 @@ void changeHelmLZ(void) {
 	if (Rando.fast_start_helm) {
 		if (CurrentMap == HELM_LOBBY) {
 			if (ObjectModel2Timer == 3) {
-				setPermFlag(0x1CC); // Helm Story
-				setFlag(0x3B,1,2); // Roman Numeral Doors
+				setPermFlag(FLAG_STORY_HELM); // Helm Story
+				setFlag(FLAG_HELM_ROMANDOORS_OPEN,1,2); // Roman Numeral Doors
 				for (int j = 0; j < 4; j++) {
-					setFlag(0x46 + j,1,2); // Gates knocked down
+					setFlag(FLAG_HELM_GATE_0 + j,1,2); // Gates knocked down
 				}
 				for (int i = 0; i < TriggerSize; i++) {
 					trigger* focused_trigger = getObjectArrayAddr(TriggerArray,TRIGGER_ELEMENT_SIZE,i);
@@ -34,12 +34,20 @@ void changeHelmLZ(void) {
 
 void openCrownDoor(void) {
 	if (Rando.crown_door_open) {
-		setPermFlag(0x304);
+		setPermFlag(FLAG_HELM_CROWNDOOR);
 	}
 }
 
 void openCoinDoor(void) {
-	if (Rando.coin_door_open) {
-		setPermFlag(0x303);
+	if (Rando.coin_door_open == 1) { // Always Open
+		setPermFlag(FLAG_HELM_COINDOOR);
+	} else if (Rando.coin_door_open == 2) { // Only requires RW Coin
+		if (checkFlag(FLAG_COLLECTABLE_NINTENDOCOIN,0)) { // Has Nintendo Coin
+			setPermFlag(FLAG_HELM_COINDOOR);
+		}
+	} else if (Rando.coin_door_open == 3) { // Only requires Nin Coin
+		if (checkFlag(FLAG_COLLECTABLE_RAREWARECOIN,0)) { // Has Rareware Coin
+			setPermFlag(FLAG_HELM_COINDOOR);
+		}
 	}
 }

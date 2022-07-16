@@ -4,21 +4,22 @@ int getHintTextIndex(int shop_owner, shop_paad* shop_data) {
 	int purchase_type = shop_data->purchase_type;
 	int purchase_value = shop_data->purchase_value;
 	int base = 0;
+	int kong = shop_data->kong;
 	if (shop_data->price > MovesBase[(int)Character].coins) {
 		base = 30 + purchase_type;
 	} else {
 		if (purchase_type == 0) { // Special Potion Moves
-			base = (Character * 3) + (purchase_value - 1);
+			base = (kong * 3) + (purchase_value - 1);
 		} else if (purchase_type == 1) { // Slams
 			base = 15;
 		} else if ((purchase_type == 2) && (purchase_value == 1)) { // Base Guns
-			base = 16 + Character;
+			base = 16 + kong;
 		} else if ((purchase_type == 2) && (purchase_value != 1)) { // Homing/Sniper
 			base = 21 + (purchase_value - 2);
 		} else if (purchase_type == 3) { // Ammo Belt
 			base = 23;
 		} else if ((purchase_type == 4) && (purchase_value == 1)) { // Base Instruments
-			base = 24 + Character;
+			base = 24 + kong;
 		} else if ((purchase_type == 4) && (purchase_value != 1)) { // Instrument Upgrades
 			base = 29;
 		}

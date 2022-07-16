@@ -9,6 +9,7 @@ from randomizer.ShuffleBosses import ShuffleBosses, ShuffleBossKongs, ShuffleKut
 from randomizer.Enums.Events import Events
 from randomizer.Enums.Kongs import Kongs, GetKongs
 from randomizer.Enums.Locations import Locations
+from randomizer.Enums.Levels import Levels
 from randomizer.Prices import RandomizePrices, VanillaPrices
 from random import randint
 
@@ -54,18 +55,22 @@ class Settings:
         # startwith
         self.training_barrels = "startwith"
 
-        # currently just set to moves by shop_location_rando
+        # currently just set to moves by move_rando
         # shuffle_items: str
         # none
         # moves
         # all (currently only theoretical)
         self.shuffle_items = "none"
 
+        # set to true if move_rando set to start_with
+        self.unlock_all_moves = False
+
         # Pointless with just move rando, maybe have it once full rando
         # progressive_upgrades: bool
         self.progressive_upgrades = False
 
         self.prices = VanillaPrices.copy()
+        self.level_order = {1: Levels.JungleJapes, 2: Levels.AngryAztec, 3: Levels.FranticFactory, 4: Levels.GloomyGalleon, 5: Levels.FungiForest, 6: Levels.CrystalCaves, 7: Levels.CreepyCastle}
         self.resolve_settings()
 
     def update_progression_totals(self):
@@ -112,7 +117,10 @@ class Settings:
             self.blocker_4 = b_lockers[4]
             self.blocker_5 = b_lockers[5]
             self.blocker_6 = b_lockers[6]
-            self.blocker_7 = b_lockers[7]
+            if self.maximize_helm_blocker:
+                self.blocker_7 = self.blocker_max
+            else:
+                self.blocker_7 = b_lockers[7]
 
         # Store banana values in array
         self.EntryGBs = [self.blocker_0, self.blocker_1, self.blocker_2, self.blocker_3, self.blocker_4, self.blocker_5, self.blocker_6, self.blocker_7]
@@ -124,11 +132,13 @@ class Settings:
         self.download_patch_file = None
         self.bonus_barrel_rando = None
         self.loading_zone_coupled = None
-        self.shop_location_rando = None
+        self.move_rando = None
+        self.random_patches = None
         self.random_prices = None
         self.boss_location_rando = None
         self.boss_kong_rando = None
         self.kasplat_rando = None
+        self.puzzle_rando = None
 
     def set_seed(self):
         """Forcibly re-set the random seed to the seed set in the config."""
@@ -159,8 +169,6 @@ class Settings:
     def generate_misc(self):
         """Set default items on misc page."""
         #  Settings which affect logic
-        # start_with_moves: bool
-        self.unlock_all_moves = None
         # crown_door_open: bool
         self.crown_door_open = None
         # coin_door_open: bool
@@ -199,6 +207,9 @@ class Settings:
         # damage multiplier
         self.damage_amount = "default"
 
+        # no_logic: bool
+        self.no_logic = False
+
         # shuffle_loading_zones: str
         # none
         # levels
@@ -219,21 +230,28 @@ class Settings:
         self.lanky_colors = None
         self.tiny_colors = None
         self.chunky_colors = None
+        self.rambi_colors = None
+        self.enguarde_colors = None
 
         #  Misc
         self.generate_spoilerlog = None
         self.fast_start_beginning_of_game = None
         self.helm_setting = None
         self.quality_of_life = None
+        self.shorten_boss = False
         self.enable_tag_anywhere = None
         self.krool_phase_order_rando = None
         self.krool_access = False
         self.open_lobbies = None
+        self.open_levels = None
+        self.randomize_pickups = False
         self.random_medal_requirement = True
         self.bananaport_rando = False
         self.shop_indicator = False
+        self.skip_arcader1 = False
         self.randomize_cb_required_amounts = False
         self.randomize_blocker_required_amounts = False
+        self.maximize_helm_blocker = False
         self.perma_death = False
         self.disable_tag_barrels = False
         self.level_randomization = "none"
@@ -241,13 +259,17 @@ class Settings:
         self.kongs_for_progression = False
         self.wrinkly_hints = "off"
 
+    def shuffle_prices(self):
+        """Price randomization. Reuseable if we need to reshuffle prices."""
+        # Price Rando
+        if self.random_prices != "vanilla":
+            self.prices = RandomizePrices(self.random_prices)
+
     def resolve_settings(self):
         """Resolve settings which are not directly set through the UI."""
         kongs = GetKongs()
 
-        # Price Rando
-        if self.random_prices != "vanilla":
-            self.prices = RandomizePrices(self.random_prices)
+        self.shuffle_prices()
 
         # B Locker and Troff n Scoff amounts Rando
         self.update_progression_totals()
@@ -388,8 +410,10 @@ class Settings:
             self.kongs_for_progression = True
 
         # Move Location Rando
-        if self.shop_location_rando:
+        if self.move_rando in ["on", "on_cross_purchase"]:
             self.shuffle_items = "moves"
+        elif self.move_rando == "start_with":
+            self.unlock_all_moves = True
 
     def SelectKongLocations(self):
         """Select which random kong locations to use depending on number of starting kongs."""

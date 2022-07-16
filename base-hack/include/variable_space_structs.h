@@ -11,7 +11,7 @@ typedef struct varspace {
 	/* 0x030 */ char tag_anywhere; // 0 = Tag Anywhere buttons not enabled. 1 = Enabled
 	/* 0x031 */ char fast_start_helm; // 0 = "Fast Start for Helm" setting not applied. 1 = Applied
 	/* 0x032 */ char crown_door_open; // 0 = Crown Door not opened by default. 1 = Opened by default
-	/* 0x033 */ char coin_door_open; // 0 = Coin Door not opened by default. 1 = Opened by default
+	/* 0x033 */ char coin_door_open; // 0 = Coin Door not opened by default. 1 = Opened by default. 2 = Only requires RW Coin. 3 = Only requires Nin Coin.
 	/* 0x034 */ char quality_of_life; // 0 = Quality of life features not applied. 1 = Applied
 	/* 0x035 */ char price_rando_on; // 0 = Price Randomizer off, 1 = On
 	/* 0x036 */ unsigned char special_move_prices[5][3]; // Array of an array of prices [[1,2,3],[1,2,3],[1,2,3],[1,2,3],[1,2,3]]. Each item of the parent array is for a kong, each item of the sub arrays is the price of the moves in order of their vanilla purchase (eg. DK: Baboon Blast > Strong Kong > Gorilla Grab)
@@ -44,7 +44,7 @@ typedef struct varspace {
 	/* 0x0A5 */ char damage_multiplier; // 1 = Normal. 2 = Double. Any value greater than 11 will be 1 hit KO
 	/* 0x0A6 */ char no_health_refill; // 0 = Vanilla. 1 =  No health refill for Tag Barrels, "Voiding", Bonus Barrels, Fairies, K. Rool Health Refills
 	/* 0x0A7 */ char move_rando_on; // O = No Move Randomization. 1 = On.
-	/* 0x0A8 */ unsigned char dk_crankymoves[7]; // First 4 bits indicates the moves type, 0 = Moves, 1 = Slam, 2 = Guns, 3 = Ammo Belt, 4 = Instrument, 0xF = No Upgrade. Last 4 bits indicate move level (eg. 1 = Baboon Blast, 2 = Strong Kong, 3 = Gorilla Grab). Each item in the array indicates the level it is given (eg. 1st slot is purchased in Japes, 2nd for Aztec etc.)
+	/* 0x0A8 */ unsigned char dk_crankymoves[7]; // tttl lkkk. t = Type (0 = Moves, 1 = Slam, 2 = Guns, 3 = Ammo Belt, 4 = Instrument, 5 = No Move), l = move level, k = kong
 	/* 0x0AF */ unsigned char diddy_crankymoves[7]; // See "dk_crankymoves"
 	/* 0x0B6 */ unsigned char lanky_crankymoves[7]; // See "dk_crankymoves"
 	/* 0x0BD */ unsigned char tiny_crankymoves[7]; // See "dk_crankymoves"
@@ -70,12 +70,12 @@ typedef struct varspace {
 	/* 0x122 */ unsigned short museum_to_ballroom; // Same as "aztec_beetle_enter" but for the loading zone dictated by the nametc
 	/* 0x124 */ char shop_indicator_on; // 0 = Off, 1 = Render amount of moves that can be purchased from that shop
 	/* 0x125 */ char warp_to_isles_enabled; // 0 = Off, 1 = Add Warp to Isles option
-	/* 0x126 */ char kong_recolor_enabled; // 0 = No kong color change, 1 = color change enabled
-	/* 0x127 */ char dk_color; // 0 = Vanilla, 1 = Blue, 2 = Green, 3 = Purple
+	/* 0x126 */ char skip_arcade_round1; // 0 = No Skip, 1 = Skip R1
+	/* 0x127 */ char open_level_sections; // 0 = Off, 1 = On
 	/* 0x128 */ char diddy_color; // 0 = Vanilla, 1 = Dark Blue Cap, 2 = Yellow Cap, 3 = Light Blue Cap
 	/* 0x129 */ char lanky_color; // 0 = Vanilla, 1 = Green Straps, 2 = Purple Straps, 3 = Red Straps
 	/* 0x12A */ char tiny_color; // 0 = Vanilla, 1 = Green, 2 = Purple, 3 = Red
-	/* 0x12B */ char chunky_color; // 0 = Vanilla, 1 = Red, 2 = Purple/Blue, 3 = Green/Purple
+	/* 0x12B */ char short_bosses; // 0 = Vanilla fights, 1 = Short fights
 	/* 0x12C */ unsigned char coinreq_cavesbeetle;
 	/* 0x12D */ unsigned char coinreq_aztecbeetle;
 	/* 0x12E */ unsigned char coinreq_factorycar;
@@ -102,6 +102,7 @@ typedef struct varspace {
 	/* 0x147 */ char free_source_ttemple; // Kong who frees the kong in Tiny Temple
 	/* 0x148 */ char free_target_factory; // Kong you free in Factory
 	/* 0x149 */ char free_source_factory; // Kong who frees the kong in Factory
-	/* 0x14A */ char unk_14A[0x14C-0x14A];
-	/* 0x14C */ unsigned int dktv_data[5]; // Struct, Byte 0 = Demo index, 1 is unused, 2/3 is the demo length
+	/* 0x14A */ char version; // 0 = Live, 1 = Dev Site, 2 = Superuser
+	/* 0x14B */ char auto_keys; // 0 = Vanilla, 1 = Keys turn in as soon as you get them
+	/* 0x14C */ short matching_game_sounds[8]; // Sound effect 0 is treated as "sound not randomized"
 } varspace;

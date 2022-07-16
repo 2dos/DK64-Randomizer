@@ -73,11 +73,11 @@ int getMoveCountInShop(int shop_index) {
 	if (level < 7) {
 		for (int i = 0; i < 5; i++) {
 			if (shop_index == SHOPINDEX_CRANKY) {
-				possess = doesKongPossessMove(CrankyMoves_New[i][level].purchase_type, CrankyMoves_New[i][level].purchase_value, i);
+				possess = doesKongPossessMove(CrankyMoves_New[i][level].purchase_type, CrankyMoves_New[i][level].purchase_value, CrankyMoves_New[i][level].move_kong);
 			} else if (shop_index == SHOPINDEX_FUNKY) {
-				possess = doesKongPossessMove(FunkyMoves_New[i][level].purchase_type, FunkyMoves_New[i][level].purchase_value, i);
+				possess = doesKongPossessMove(FunkyMoves_New[i][level].purchase_type, FunkyMoves_New[i][level].purchase_value, FunkyMoves_New[i][level].move_kong);
 			} else if (shop_index == SHOPINDEX_CANDY) {
-				possess = doesKongPossessMove(CandyMoves_New[i][level].purchase_type, CandyMoves_New[i][level].purchase_value, i);
+				possess = doesKongPossessMove(CandyMoves_New[i][level].purchase_type, CandyMoves_New[i][level].purchase_value, CandyMoves_New[i][level].move_kong);
 			}
 			if (possess == 1) {
 				btf |= (1 << i);

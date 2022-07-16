@@ -28,7 +28,7 @@ LogicRegions = {
         TransitionFront(Regions.ForestMinecarts, lambda l: l.Slam and l.ischunky),
         TransitionFront(Regions.GiantMushroomArea, lambda l: True),
         TransitionFront(Regions.MillArea, lambda l: True),
-        TransitionFront(Regions.WormArea, lambda l: Events.WormGatesOpened in l.Events),
+        TransitionFront(Regions.WormArea, lambda l: l.settings.open_levels or Events.WormGatesOpened in l.Events),
     ]),
 
     Regions.ForestMinecarts: Region("Forest Minecarts", Levels.FungiForest, False, None, [
@@ -47,7 +47,7 @@ LogicRegions = {
         TransitionFront(Regions.MushroomLower, lambda l: True, Transitions.ForestMainToLowerMushroom),
         TransitionFront(Regions.MushroomLowerExterior, lambda l: l.jetpack),
         TransitionFront(Regions.MushroomUpperExterior, lambda l: l.jetpack),
-        TransitionFront(Regions.HollowTreeArea, lambda l: Events.HollowTreeGateOpened in l.Events),
+        TransitionFront(Regions.HollowTreeArea, lambda l: l.settings.open_levels or Events.HollowTreeGateOpened in l.Events),
         TransitionFront(Regions.CrankyForest, lambda l: True),
     ]),
 
@@ -136,7 +136,7 @@ LogicRegions = {
         LocationLogic(Locations.ForestLankyRabbitRace, lambda l: l.TimeAccess(Regions.HollowTreeArea, Time.Day) and l.trombone and l.sprint and l.lanky),
         LocationLogic(Locations.ForestKasplatOwlTree, lambda l: True),
     ], [], [
-        TransitionFront(Regions.GiantMushroomArea, lambda l: Events.HollowTreeGateOpened in l.Events),
+        TransitionFront(Regions.GiantMushroomArea, lambda l: l.settings.open_levels or Events.HollowTreeGateOpened in l.Events),
         TransitionFront(Regions.Anthill, lambda l: l.mini and l.saxophone, Transitions.ForestTreeToAnthill),
         TransitionFront(Regions.ForestBossLobby, lambda l: True),
     ]),

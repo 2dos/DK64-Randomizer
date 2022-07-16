@@ -46,11 +46,12 @@ class Spoiler:
                 kongmoves = []
                 # One for each level
                 for k in range(7):
-                    kongmoves.append(0)
+                    kongmoves.append(-1)
                 moves.append(kongmoves)
             self.move_data.append(moves)
 
         self.jetpac_medals_required = self.settings.BananaMedalsRequired
+        self.hint_list = {}
 
     def toJson(self):
         """Convert spoiler to JSON."""
@@ -62,12 +63,12 @@ class Spoiler:
         # Settings data
         settings = OrderedDict()
         settings["seed"] = self.settings.seed_id
-        settings["algorithm"] = self.settings.algorithm
-        settings["shuffle_items"] = self.settings.shuffle_items
+        # settings["algorithm"] = self.settings.algorithm # Don't need this for now, probably
+        settings["no_logic"] = self.settings.no_logic
+        settings["move_rando"] = self.settings.move_rando
         settings["shuffle_loading_zones"] = self.settings.shuffle_loading_zones
         settings["decoupled_loading_zones"] = self.settings.decoupled_loading_zones
-        settings["unlock_all_moves"] = self.settings.unlock_all_moves
-        settings["starting_kong"] = ItemList[ItemFromKong(self.settings.starting_kong)].name
+        settings["starting_kongs_count"] = self.settings.starting_kongs_count
         startKongList = []
         for x in self.settings.starting_kong_list:
             startKongList.append(x.name.capitalize())
@@ -77,6 +78,10 @@ class Spoiler:
         settings["lanky_freeing_kong"] = ItemList[ItemFromKong(self.settings.lanky_freeing_kong)].name
         settings["chunky_freeing_kong"] = ItemList[ItemFromKong(self.settings.chunky_freeing_kong)].name
         settings["open_lobbies"] = self.settings.open_lobbies
+        settings["open_levels"] = self.settings.open_levels
+        settings["randomize_pickups"] = self.settings.randomize_pickups
+        settings["random_patches"] = self.settings.random_patches
+        settings["puzzle_rando"] = self.settings.puzzle_rando
         settings["crown_door_open"] = self.settings.crown_door_open
         settings["coin_door_open"] = self.settings.coin_door_open
         settings["unlock_fairy_shockwave"] = self.settings.unlock_fairy_shockwave
@@ -199,6 +204,8 @@ class Spoiler:
             humanspoiler["Shuffled Kasplats"] = self.human_kasplats
         # if self.settings.bananaport_rando:
         #     humanspoiler["Bananaports"] = self.human_warp_locations
+        if len(self.hint_list) > 0:
+            humanspoiler["Wrinkly Hints"] = self.hint_list
 
         return json.dumps(humanspoiler, indent=4)
 
@@ -286,8 +293,14 @@ class Spoiler:
                         kong_indices = [Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky]
                     level_index = location.level
                     # Use the item to find the data to write
-                    data = (ItemList[location.item].movetype << 4) | ItemList[location.item].index
+                    move_type = ItemList[location.item].movetype
+                    move_level = ItemList[location.item].index - 1
+                    move_kong = ItemList[location.item].kong
                     for kong_index in kong_indices:
+                        # print(f"Shop {shop_index}, Kong {kong_index}, Level {level_index} | Move: {move_type} lvl {move_level} for kong {move_kong}")
+                        if move_type == 1 or move_type == 3 or (move_type == 2 and move_level > 0) or (move_type == 4 and move_level > 0):
+                            move_kong = kong_index
+                        data = (move_type << 5) | (move_level << 3) | move_kong
                         self.move_data[shop_index][kong_index][level_index] = data
                 elif location.type == Types.Kong:
                     self.WriteKongPlacement(id, location.item)
@@ -329,8 +342,10 @@ class Spoiler:
         i = 0
         for sphere in playthroughLocations:
             newSphere = {}
-            for locationId in sphere:
-                location = locations[locationId]
+            newSphere["Available GBs"] = sphere.availableGBs
+            sphereLocations = list(map(lambda l: locations[l], sphere.locations))
+            sphereLocations.sort(key=lambda l: l.type == Types.Banana)
+            for location in sphereLocations:
                 newSphere[location.name] = ItemList[location.item].name
             self.playthrough[i] = newSphere
             i += 1

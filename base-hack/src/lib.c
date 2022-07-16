@@ -16,6 +16,7 @@ int convertIDToIndex(short obj_index) {
 		ModelTwoData* _object = getObjectArrayAddr(m2location,0x90,i);
 		if (_object->object_id == obj_index) {
 			index = i;
+			return i;
 		}
 	}
 	return index;
@@ -29,6 +30,7 @@ int convertSubIDToIndex(short obj_index) {
 		ModelTwoData* _object = getObjectArrayAddr(m2location,0x90,i);
 		if (_object->sub_id == obj_index) {
 			index = i;
+			return i;
 		}
 	}
 	return index;
@@ -124,6 +126,26 @@ void alterGBKong(int map, int id, int new_kong) {
 		if (GBDictionary[i].map == map) {
 			if (GBDictionary[i].model2_id == id) {
 				GBDictionary[i].intended_kong_actor = new_kong + 2;
+			}
+		}
+	}
+}
+
+void cancelCutscene(int enable_movement) {
+	if ((TBVoidByte & 2) == 0) {
+		if (CutsceneActive) {
+			if (CutsceneTypePointer) {
+				if (CutsceneTypePointer->cutscene_databank) {
+					int* databank = (int *)(CutsceneTypePointer->cutscene_databank);
+					short cam_state = *(short *)(getObjectArrayAddr(databank,0xC,CutsceneIndex));
+					// short cam_state = *( short*)(cs_databank + (0xC * CutsceneIndex));
+					CurrentCameraState = cam_state;
+					PreviousCameraState = cam_state;
+					CameraStateChangeTimer = 0;
+					if ((Player) && (enable_movement)) {
+						Player->control_state = 0xC;
+					}
+				}
 			}
 		}
 	}

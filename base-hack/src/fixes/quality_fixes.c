@@ -8,9 +8,9 @@ void qualityOfLife_fixes(void) {
 		if (Gamemode == 0) {
 			StorySkip = 1;
 		}
-		setPermFlag(0x309); // Cranky FTT
-		setPermFlag(0x17F); // Training Barrels Spawned
-		setPermFlag(300); // Giant Kosha Dead
+		setPermFlag(FLAG_FTT_CRANKY); // Cranky FTT
+		setPermFlag(FLAG_TBARREL_SPAWNED); // Training Barrels Spawned
+		setPermFlag(FLAG_MODIFIER_KOSHADEAD); // Giant Kosha Dead
 		fixkey8();
 		if (CurrentMap == JAPES_MAIN) {
 			if (Player) {

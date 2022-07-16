@@ -42,9 +42,15 @@
             </div>
         </div>
     </div>
+    <textarea id="tracker_text" hidden readonly></textarea>
     <button class="btn btn-primary"
             type="button"
             onClick="save_text_as_file(document.getElementById('spoiler_log_text').value, document.getElementById('generated_seed_id').innerHTML + '-spoilerlog.json')">
         Save Log
+    </button>
+    <button class="btn btn-primary"
+            type="button"
+            onClick="save_text_as_file(document.getElementById('tracker_text').value, document.getElementById('generated_seed_id').innerHTML + '-tracker.html')">
+        Save Tracker
     </button>
 </div>

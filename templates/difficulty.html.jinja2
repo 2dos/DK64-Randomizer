@@ -52,20 +52,33 @@
                     </label>
                 </div>
                 <div class="col-sm" style="margin: auto;"> 
-                    <label>
-                        Max Value: 
-                        <input class="form-control"
-                            min="0"
-                            max="200"
-                            name="blocker_text"
-                            id="blocker_text"
-                            style="width: 50%;display:inline-block;"
-                            type="number"
-                            data-toggle="tooltip"
-                            title="Maximum Randomized value"
-                            default="50"
-                            placeholder="50"/> 
+                    <label class="label">
+                        Max Value:
+                        <i>*Tick box to ensure.</i>
                     </label>
+                        <div class="input-group mb-3" style="width:75%;margin-left:10%;">
+                            <div class="input-group-prepend" data-toggle="tooltip" title="Check box to ensure Helm is 'Max Value'.">
+                                <div class="input-group-text">
+                                <input
+                                    type="checkbox"
+                                    value="True"
+                                    id="maximize_helm_blocker"
+                                    name="maximize_helm_blocker"
+                                    >
+                                </div>
+                            </div> 
+                            <input class="form-control"
+                                min="0"
+                                max="200"
+                                name="blocker_text"
+                                id="blocker_text"
+                                type="number"
+                                data-toggle="tooltip"
+                                title="Maximum Randomized value"
+                                default="50"
+                                placeholder="50"/>
+                        </div> 
+                    
                 </div>
             </div>
             <div class="row">
@@ -80,20 +93,20 @@
                     </label>
                 </div>
                 <div class="col-sm" style="margin: auto;"> 
-                    <label>
+                    <label class="label">
                         Max Value:
-                        <input class="form-control"
-                            min="0"
-                            max="500"
-                            name="troff_text"
-                            id="troff_text"
-                            style="width: 50%;display:inline-block;"
-                            type="number"
-                            data-toggle="tooltip"
-                            title="Maximum Randomized value"
-                            default="300"
-                            placeholder="300"/> 
                     </label>
+                            <input class="form-control"
+                                min="0"
+                                max="500"
+                                name="troff_text"
+                                id="troff_text"
+                                style="width:75%;margin-left: 10%;"
+                                type="number"
+                                data-toggle="tooltip"
+                                title="Maximum Randomized value"
+                                default="300"
+                                placeholder="300"/>
                 </div>
             </div>
         </div>
@@ -105,6 +118,7 @@
                         <div>
                             Damage
                             <select name="damage_amount"
+                                    id="damage_amount"
                                     style="width: 60%;"
                                     class="form-select center-div"
                                     aria-label="Damage Options">

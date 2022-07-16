@@ -37,7 +37,7 @@ extern void alterSize(void* object, int size);
 extern void unkSizeFunction(void* object);
 extern void spawnRocketbarrel(void* object, int unk);
 extern void* getObjectArrayAddr(void* init_address, int common_object_size, int index);
-extern void playSong(int songIndex);
+extern void playSong(int songIndex, int volume);
 extern void loadExtraHooks();
 extern void playCutscene(void* actor, int cutscene_index, int cutscene_type);
 extern void setHUDItemAsInfinite(int item_index, int player_index, char isInfinite);
@@ -126,6 +126,7 @@ extern int countFlagArray(int starting_flag, int count, int flagType);
 extern int canHitSwitch(void);
 extern void setSomeTimer(int model2_type);
 extern int indexOfNextObj(int id);
+extern int playSFXFromObject(int object_index, short sfx, char unk0, char unk1, char unk2, char unk3, float unk4);
 
 extern void setWaterHeight(int chunk, float height, float unk2);
 extern void loadObjectForScripting(void* unk0, int unk1);
@@ -134,6 +135,11 @@ extern void executeBehaviourScript(void* behaviour_pointer, int unk0);
 extern void* loadCounterFontTexture(int texture_base, void* write_location, int position, int texture_offset, int width);
 extern void delayedObjectModel2Change(int map, int model2_id, int state);
 extern void cycleRNG(void);
+extern void voidWarp(void);
+extern void setToeTexture(void* actor, int data);
+extern void applyFootDamage(void* actor, int unk0, int unk1, int unk2);
+extern void modifyCharSpawnerAttributes(int unk0, int unk1, int unk2);
+extern void modifyObjectState(int object_id, int dest_state);
 
 //vanilla data
 extern float TransitionSpeed;
@@ -299,6 +305,8 @@ extern charspawner_flagstruct charspawnerflags[0x1F];
 extern GBDictItem GBDictionary[113];
 extern actorData* CurrentActorPointer_0;
 extern short MusicTrackChannels[12];
+extern float BoatSpeeds[2];
+extern short textParameter;
 
 //hack data
 extern int TestVariable;
@@ -328,3 +336,5 @@ extern char preventTagSpawn;
 extern char bonusAutocomplete;
 extern void* StoredCounterTextures[7];
 extern char QoLOn;
+extern unsigned char PauseText;
+extern unsigned char ShorterBosses;

@@ -21,6 +21,7 @@ class Maps(IntEnum):
     HideoutHelmLobby = 170
     TrainingGrounds = 176
     Treehouse = 171
+    KLumsy = 97
 
     # Jungle Japes
     JungleJapes = 7
