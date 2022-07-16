@@ -128,7 +128,7 @@ static const short* warpflags_list[LEVEL_COUNT] = {
 };
 
 static const char warpflags_count[LEVEL_COUNT] = {
-	10,13,10,9,10,10,16, /*2,*/ 10
+	10,14,10,10,10,10,16, /*2,*/ 10
 };
 
 void toggleWarpLevel(int levelIndex) {
