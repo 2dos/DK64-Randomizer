@@ -79,18 +79,20 @@ def modify(file_name, map_index):
                         # First add T&S
                         # Second add display
                         portal_y = 50.167
-                        added_model2.append({
-                            "base_byte_stream": byte_stream,
-                            "type": [0x2AC,0x2AB][k],
-                            "x": int(float_to_hex(120.997),16),
-                            "y": [int(float_to_hex(portal_y),16),int(float_to_hex(portal_y-30),16)][k],
-                            "z": int(float_to_hex(1182.974),16),
-                            "rx": 0,
-                            "ry": int(float_to_hex(75.146),16),
-                            "rz": 0,
-                            "id": [0x170,model2_index][k],
-                            "scale": [int(float_to_hex(1),16),int(float_to_hex(0.35),16)][k],
-                        })
+                        added_model2.append(
+                            {
+                                "base_byte_stream": byte_stream,
+                                "type": [0x2AC, 0x2AB][k],
+                                "x": int(float_to_hex(120.997), 16),
+                                "y": [int(float_to_hex(portal_y), 16), int(float_to_hex(portal_y - 30), 16)][k],
+                                "z": int(float_to_hex(1182.974), 16),
+                                "rx": 0,
+                                "ry": int(float_to_hex(75.146), 16),
+                                "rz": 0,
+                                "id": [0x170, model2_index][k],
+                                "scale": [int(float_to_hex(1), 16), int(float_to_hex(0.35), 16)][k],
+                            }
+                        )
                     model2_index += 1
                     added_caves_tns = True
                 base_stream = byte_stream
@@ -193,11 +195,11 @@ def modify(file_name, map_index):
                     repl_byte = b""
                     loc_x = 176.505
                     loc_z = 1089.408
-                    repl_byte += int(float_to_hex(loc_x),16).to_bytes(4, "big")
+                    repl_byte += int(float_to_hex(loc_x), 16).to_bytes(4, "big")
                     for x in range(4):
-                        repl_byte += byte_stream[x + 4].to_bytes(1,"big")
-                    repl_byte += int(float_to_hex(loc_z),16).to_bytes(4, "big")
-                    for x in range(0x30-0xC):
+                        repl_byte += byte_stream[x + 4].to_bytes(1, "big")
+                    repl_byte += int(float_to_hex(loc_z), 16).to_bytes(4, "big")
+                    for x in range(0x30 - 0xC):
                         repl_byte += byte_stream[x + 0xC].to_bytes(1, "big")
                     byte_stream = repl_byte
             data = {
