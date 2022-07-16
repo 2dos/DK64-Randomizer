@@ -1413,6 +1413,7 @@ def ShuffleMisc(spoiler):
                     if BananaportVanilla[pair].map_id == map_id and BananaportVanilla[pair].new_warp == warpData.new_warp and BananaportVanilla[pair].name != warpData.name
                 ][0]
                 # Add an exit to each warp's region to the paired warp's region unless it's the same region
-                warpRegion = Logic.Regions[warpData.region_id]
-                bananaportExit = TransitionFront(pairedWarpData.region_id, lambda l: True)
-                warpRegion.exits.append(bananaportExit)
+                if warpData.region_id != pairedWarpData.region_id:
+                    warpRegion = Logic.Regions[warpData.region_id]
+                    bananaportExit = TransitionFront(pairedWarpData.region_id, lambda l: True)
+                    warpRegion.exits.append(bananaportExit)
