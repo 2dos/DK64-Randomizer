@@ -173,6 +173,10 @@ void initHack(int source) {
 				*(short*)(0x80750680) = 0x22;
 				*(short*)(0x80750682) = 0x1;
 				*(int*)(0x806BDC24) = 0x0C17FCDE; // Change takeoff warp func
+				// No Rain
+				*(float*)(0x8075E3E0) = 0.0f; // Set Isles Rain Radius to 0
+
+				
 				*(short*)(0x806BDC8C) = 0x1000; // Apply no cutscene to all keys
 				*(short*)(0x806BDC3C) = 0x1000; // Apply shorter timer to all keys
 				// Fast Camera Photo
@@ -191,10 +195,11 @@ void initHack(int source) {
 				// Fast Vulture
 				*(int*)(0x806C50BC) = 0x0C000000 | (((int)&clearVultureCutscene & 0xFFFFFF) >> 2); // Modify Function Call
 			}
-			// if (Rando.fast_warp) {
-			// 	// Fast Warps
-			// 	*(short*)(0x806EE692) = 0x54;
-			// }
+			if (Rando.fast_warp) {
+				// Replace vanilla warp animation (0x52) with monkeyport animation (0x53)
+				*(short*)(0x806EE692) = 0x54;
+				*(int*)(0x806DC2AC) = 0x0C000000 | (((int)&fastWarp & 0xFFFFFF) >> 2); // Modify Function Call
+			}
 			if (Rando.version > 0) {
 				// Disable Graphical Debugger
 				*(int*)(0x8060EEE0) = 0x240E0000; // ADDIU $t6, $r0, 0
