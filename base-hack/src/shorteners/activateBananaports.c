@@ -24,7 +24,7 @@ static const short warpflags_aztec[] = {
 	FLAG_WARP_AZTEC_W4_TOTEM,
 	FLAG_WARP_AZTEC_W4_FUNKY,
 	FLAG_WARP_AZTEC_W5_TOTEM,
-	//FLAG_WARP_AZTEC_W5_SNOOP, # Activating this warp despawns Donkey's GB
+	AZTEC_SNOOPW5, // Custom Flag
 	FLAG_WARP_LLAMA_W1_HIGH,
 	FLAG_WARP_LLAMA_W1_LOW,
 	FLAG_WARP_LLAMA_W2_FAR,
@@ -50,7 +50,7 @@ static const short warpflags_galleon[] = {
 	FLAG_WARP_GALLEON_W3_SNIDE,
 	FLAG_WARP_GALLEON_W3_CRANKY,
 	FLAG_WARP_GALLEON_W4_SEAL,
-	//FLAG_WARP_GALLEON_W4_TOWER, # Activating the gold tower warp despawns Diddy's GB
+	GALLEON_TOWERW4, // Activating the gold tower warp despawns Diddy's GB
 	FLAG_WARP_GALLEON_W5_5DS,
 	FLAG_WARP_GALLEON_W5_LIGHTHOUSE,
 };
