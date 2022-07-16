@@ -67,11 +67,31 @@ def modify(file_name, map_index):
         added_actor = []
         model2_index = 0x220
         added_factory_barracade = False
+        added_caves_tns = False
         for x in range(model2_count):
             byte_stream = byte_read[read_location : read_location + 0x30]
             _type = int.from_bytes(byte_read[read_location + 0x28 : read_location + 0x2A], "big")
             _id = int.from_bytes(byte_read[read_location + 0x2A : read_location + 0x2C], "big")
             if _type == 0x2AC and map_index != 0x2A:
+                if map_index == 0x48 and not added_caves_tns and _id == 0x26:
+                    for k in range(2):
+                        # First add T&S
+                        # Second add display
+                        portal_y = 50.167
+                        added_model2.append({
+                            "base_byte_stream": byte_stream,
+                            "type": [0x2AC,0x2AB][k],
+                            "x": int(float_to_hex(133.609),16),
+                            "y": [int(float_to_hex(portal_y),16),int(float_to_hex(portal_y-30),16)][k],
+                            "z": int(float_to_hex(1127.204),16),
+                            "rx": 0,
+                            "ry": int(float_to_hex(75.938),16),
+                            "rz": 0,
+                            "id": [0x170,model2_index][k],
+                            "scale": [int(float_to_hex(1),16),int(float_to_hex(0.35),16)][k],
+                        })
+                    model2_index += 1
+                    added_caves_tns = True
                 base_stream = byte_stream
                 _x = int.from_bytes(byte_read[read_location + 0 : read_location + 4], "big")
                 _y = int.from_bytes(byte_read[read_location + 4 : read_location + 8], "big")
@@ -144,6 +164,28 @@ def modify(file_name, map_index):
                 for x in range(0x30 - 0x20):
                     repl_byte += byte_stream[x + 0x20].to_bytes(1, "big")
                 byte_stream = repl_byte
+            if map_index == 0x1A and _id >= 0x67 and _id <= 0x76:
+                # Number Game Switches
+                repl_byte = b""
+                switch_index = _id - 0x67
+                switch_y = switch_index % 4
+                switch_x = int(switch_index / 4)
+                tl_x = 2606.114
+                tl_z = 1767.899
+                switch_d = 37.7
+                coord = [0, 0, 0]
+                coord[0] = int(float_to_hex(tl_x + (switch_d * switch_x)), 16)
+                coord[1] = int(float_to_hex(1002), 16)
+                coord[2] = int(float_to_hex(tl_z + (switch_d * switch_y)), 16)
+                for x in coord:
+                    repl_byte += x.to_bytes(4, "big")
+                for x in range(0x1C - 0xC):
+                    repl_byte += byte_stream[x + 0xC].to_bytes(1, "big")
+                repl_byte += _ay.to_bytes(4, "big")
+                for x in range(0x30 - 0x20):
+                    repl_byte += byte_stream[x + 0x20].to_bytes(1, "big")
+                byte_stream = repl_byte
+                _ay = int(float_to_hex(180), 16)
             data = {
                 "stream": byte_stream,
                 "type": _type,

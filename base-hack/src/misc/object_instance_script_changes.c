@@ -351,7 +351,7 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 					LLAMA_MATCHING_HEAD_SOUND7_0,
 					LLAMA_MATCHING_HEAD_SOUND7_1,
 				};
-				int head_sounds[] = {173,171,169,174,172,175,168};
+				int head_sounds[] = {173,171,169,174,172,175,168,170};
 				int selection = -1;
 				for (int k = 0; k < sizeof(head_ids)/4; k++) {
 					if (param2 == head_ids[k]) {

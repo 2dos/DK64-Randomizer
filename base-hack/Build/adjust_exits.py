@@ -112,6 +112,17 @@ exit_adjustments = [
             },
         ],
     },
+    {
+        "containing_map": 0x48,
+        "exits": [
+            {
+                "exit_index": 11,
+                "x": 108,
+                "y": 50,
+                "z": 1115,
+            }
+        ]
+    }
 ]
 
 
