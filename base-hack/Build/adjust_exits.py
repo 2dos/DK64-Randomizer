@@ -4,6 +4,8 @@ from typing import BinaryIO
 pointer_table_address = 0x101C50
 pointer_table_index = 23
 
+new_caves_portal_coords = [120.997,50,1182.974]
+
 exit_adjustments = [
     {
         "containing_map": 0x30,  # Fungi Main
@@ -113,13 +115,14 @@ exit_adjustments = [
         ],
     },
     {
-        "containing_map": 0x48,
+        "containing_map": 0x48, # Caves
         "exits": [
             {
+                # Unused 5DI Portal Exit
                 "exit_index": 11,
-                "x": 108,
-                "y": 50,
-                "z": 1115,
+                "x": int(new_caves_portal_coords[0]-25),
+                "y": int(new_caves_portal_coords[1]),
+                "z": int(new_caves_portal_coords[2]-12),
             }
         ]
     }

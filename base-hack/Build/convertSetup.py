@@ -74,6 +74,7 @@ def modify(file_name, map_index):
             _id = int.from_bytes(byte_read[read_location + 0x2A : read_location + 0x2C], "big")
             if _type == 0x2AC and map_index != 0x2A:
                 if map_index == 0x48 and not added_caves_tns and _id == 0x26:
+                    # New T&S Portal
                     for k in range(2):
                         # First add T&S
                         # Second add display
@@ -81,11 +82,11 @@ def modify(file_name, map_index):
                         added_model2.append({
                             "base_byte_stream": byte_stream,
                             "type": [0x2AC,0x2AB][k],
-                            "x": int(float_to_hex(133.609),16),
+                            "x": int(float_to_hex(120.997),16),
                             "y": [int(float_to_hex(portal_y),16),int(float_to_hex(portal_y-30),16)][k],
-                            "z": int(float_to_hex(1127.204),16),
+                            "z": int(float_to_hex(1182.974),16),
                             "rx": 0,
-                            "ry": int(float_to_hex(75.938),16),
+                            "ry": int(float_to_hex(75.146),16),
                             "rz": 0,
                             "id": [0x170,model2_index][k],
                             "scale": [int(float_to_hex(1),16),int(float_to_hex(0.35),16)][k],
@@ -186,6 +187,19 @@ def modify(file_name, map_index):
                     repl_byte += byte_stream[x + 0x20].to_bytes(1, "big")
                 byte_stream = repl_byte
                 _ay = int(float_to_hex(180), 16)
+            if map_index == 0x48:
+                if _id == 0x57 or _id == 0xCF:
+                    # Move W3 and Tiny bunch near 5DI
+                    repl_byte = b""
+                    loc_x = 176.505
+                    loc_z = 1089.408
+                    repl_byte += int(float_to_hex(loc_x),16).to_bytes(4, "big")
+                    for x in range(4):
+                        repl_byte += byte_stream[x + 4].to_bytes(1,"big")
+                    repl_byte += int(float_to_hex(loc_z),16).to_bytes(4, "big")
+                    for x in range(0x30-0xC):
+                        repl_byte += byte_stream[x + 0xC].to_bytes(1, "big")
+                    byte_stream = repl_byte
             data = {
                 "stream": byte_stream,
                 "type": _type,
