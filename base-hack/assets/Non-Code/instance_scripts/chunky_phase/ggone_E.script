@@ -1,3 +1,6 @@
+.data
+id = 0xE
+.code
 COND 1 | 0 0 0
 EXEC 71 | 0 0 0
 EXEC 69 | 1 0 255

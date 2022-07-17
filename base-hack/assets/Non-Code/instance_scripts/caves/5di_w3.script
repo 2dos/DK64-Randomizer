@@ -1,3 +1,6 @@
+.data
+id = 0x57
+.code
 COND 1 | 0 0 0
 CONDINV 45 | 291 0 0
 EXEC 69 | 1 70 255

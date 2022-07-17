@@ -1,3 +1,6 @@
+.data
+id = 0x1B
+.code
 COND 1 | 0 0 0
 COND 45 | 448 0 0
 EXEC 69 | 1 0 255

@@ -1,3 +1,6 @@
+.data
+id = 0x3
+.code
 COND 1 | 0 0 0
 COND 6 | 7 0 3
 EXEC 1 | 20 0 0

@@ -5,6 +5,7 @@ import shutil
 import subprocess
 import sys
 import zlib
+import json
 
 import generate_watch_file
 
@@ -24,9 +25,10 @@ from staticcode import patchStaticCode
 from vanilla_move_data import writeVanillaMoveData
 from image_converter import convertToRGBA32
 from end_seq_writer import createTextFile, createSquishFile
-from instance_script_maps import instance_script_maps
 from generate_yellow_wrinkly import generateYellowWrinkly
 import model_fix
+import instance_script_maker
+
 
 ROMName = "rom/dk64.z64"
 newROMName = "rom/dk64-randomizer-base.z64"
@@ -245,15 +247,16 @@ for song in song_replacements:
     file_dict.append(item)
     changed_song_indexes.append(song["index"])
 
+with open("./instance_scripts_data.json", "r") as json_f:
+    instance_script_maps = json.load(json_f)
 for x in instance_script_maps:
     file_dict.append(
         {
             "name": f"{x['name'].replace('_',' ')} Instance Scripts",
             "pointer_table_index": 10,
             "file_index": x["map"],
-            "source_file": f"assets/Non-Code/instance_scripts/{x['name']}.bin",
-            "bps_file": f"assets/Non-Code/instance_scripts/{x['name']}.bps",
-            "is_diff_patch": True,
+            "source_file": f"{x['name']}.raw",
+            "do_not_delete_source": True,
         }
     )
 

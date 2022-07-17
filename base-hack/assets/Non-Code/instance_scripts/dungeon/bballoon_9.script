@@ -1,3 +1,6 @@
+.data
+id = 0x9
+.code
 COND 1 | 0 0 0
 EXEC 20 | 1 0 0
 EXEC 17 | 1 1 0
