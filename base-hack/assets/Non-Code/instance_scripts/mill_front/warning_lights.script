@@ -1,3 +1,6 @@
+.data
+id = 0xC
+.code
 COND 1 | 0 0 0
 EXEC 7 | 125 0 12
 ENDBLOCK

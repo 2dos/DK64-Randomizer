@@ -1,3 +1,6 @@
+.data
+id = 0x56
+.code
 COND 1 | 0 0 0
 CONDINV 45 | 759 0 0
 EXEC 71 | 0 0 0
