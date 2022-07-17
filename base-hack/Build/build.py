@@ -760,6 +760,11 @@ with open(newROMName, "r+b") as fh:
     fh.seek(0x1FED020 + 0x13B)
     fh.write((1).to_bytes(1, "big"))
 
+    piano_vanilla = [2,1,2,3,4,2,0]
+    for piano_index, piano_key in enumerate(piano_vanilla):
+        fh.seek(0x1FED020 + 0x15C + piano_index)
+        fh.write(piano_key.to_bytes(1,"big"))
+
     with open("assets/Non-Code/credits/squish.bin", "rb") as squish:
         fh.seek(0x1FFF800)
         fh.write(squish.read())

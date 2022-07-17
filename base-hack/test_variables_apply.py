@@ -42,6 +42,7 @@ set_variables = {
     "short_bosses": 1,
     "fast_warp": 1,
     "activate_all_bananaports": 1,
+    "piano_game_order": [5, 0, 1, 3, 5, 5, 3],
     "special_move_prices": [
         [1, 2, 3],
         [4, 5, 6],

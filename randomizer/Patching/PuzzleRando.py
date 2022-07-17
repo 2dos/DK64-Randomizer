@@ -44,3 +44,7 @@ def randomize_puzzles(spoiler: Spoiler):
                 sfx = chooseSFX()
             chosen_sounds.append(sfx)
             ROM().writeMultipleBytes(sfx, 2)
+        for piano_item in range(7):
+            ROM().seek(0x1FED0020 + 0x15C + piano_item)
+            key = random.randint(0,5)
+            ROM().writeMultipleBytes(key,1)

@@ -106,6 +106,8 @@
 #define LLAMA_MATCHING_HEAD_SOUND7_0 0x1C // Sound 170
 #define LLAMA_MATCHING_HEAD_SOUND7_1 0x28
 
+#define FACTORY_PIANO 0x14
+
 void hideObject(behaviour_data* behaviour_pointer) {
 	behaviour_pointer->unk_60 = 1;
 	behaviour_pointer->unk_62 = 0;
@@ -170,6 +172,23 @@ int checkControlState(int target_control_state) {
 			} else {
 				if (Player->control_state_progress == 1) {
 					return 1;
+				}
+			}
+		}
+	}
+	return 0;
+}
+
+int checkSlamLocation(int kong, int key, int id) {
+	if (Character == kong) {
+		if (Player) {
+			if ((Player->obj_props_bitfield & 0x2000) == 0) {
+				if (Player->touching_object == 1) {
+					if (id == Player->standing_on_index) {
+						if (Player->standing_on_subposition == key) {
+							return 1;
+						}
+					}
 				}
 			}
 		}
@@ -475,6 +494,17 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 					return checkFlag(kong_flags[(int)Rando.free_target_factory],0);
 				} else if (index == 1) {
 					return !checkFlag(kong_flags[(int)Rando.free_target_factory],0);
+				}
+			} else if (param2 == FACTORY_PIANO) {
+				if (index < 7) {
+					// Kremling appears
+					spawnPianoKremling(Rando.piano_game_order[index] + 5,0);
+				} else if (index < 14) {
+					setAcceptablePianoKey(id, Rando.piano_game_order[index - 7] + 1,2);
+				} else if (index < 21) {
+					return checkSlamLocation(2, Rando.piano_game_order[index - 14] + 1, id);
+				} else if (index < 28) {
+					return checkContactSublocation(behaviour_pointer,id,Rando.piano_game_order[index - 21] + 1, 0);
 				}
 			}
 			break;

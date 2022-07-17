@@ -133,6 +133,9 @@
 .definelabel applyFootDamage, 0x8002FC98
 .definelabel modifyCharSpawnerAttributes, 0x8072B79C
 .definelabel modifyObjectState, 0x8063DA40
+.definelabel spawnPianoKremling, 0x80641874
+.definelabel setAcceptablePianoKey, 0x806508B4
+.definelabel checkContactSublocation, 0x8064AB1C
 
 //vanilla data
 .definelabel TransitionSpeed, 0x807FD88C

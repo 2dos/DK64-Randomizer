@@ -154,7 +154,8 @@ typedef struct playerData {
 	/* 0x0EE */ short next_facing_angle;
 	/* 0x0F0 */ char unk_F0[0x10C - 0xF0];
 	/* 0x10C */ short standing_on_index;
-	/* 0x10E */ char unk_10E[0x110-0x10E];
+	/* 0x10E */ unsigned char standing_on_subposition;
+	/* 0x10F */ unsigned char standing_on_subposition_0;
 	/* 0x110 */ char touching_object;
 	/* 0x111 */ char unk_111[0x128 - 0x111];
 	/* 0x128 */ short strong_kong_value;
