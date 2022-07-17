@@ -1,0 +1,22 @@
+.data
+id = 0x5
+behav_9C = 0
+.code
+COND 1 | 0 0 0
+EXEC 39 | 1 0 0
+EXEC 1 | 1 0 0
+ENDBLOCK
+COND 1 | 1 0 0
+COND 16 | 4 1 0
+COND 4 | 0 0 0
+EXEC 5 | 2 2 0
+EXEC 96 | 0 0 0
+EXEC 69 | 1 0 20
+ENDBLOCK
+COND 1 | 1 0 0
+COND 16 | 4 1 0
+COND 4 | 0 0 0
+EXEC 83 | 3 0 0
+EXEC 28 | 14 1 1
+EXEC 1 | 6 0 0
+ENDBLOCK
