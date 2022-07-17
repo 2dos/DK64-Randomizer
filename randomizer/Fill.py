@@ -1111,7 +1111,7 @@ def FillKongsAndMoves(spoiler):
                     BlockAccessToLevel(spoiler.settings, latestLogicallyAllowedLevel)
                     Reset()
                     priorityItems = list(priorityItemsDict.keys())
-                    unplaced = PlaceItems(spoiler.settings, "assumed", priorityItems, ownedItems=ItemPool.OwnedKongMoves(ownedKongs), validLocations=priorityItemsDict)
+                    unplaced = PlaceItems(spoiler.settings, "assumed", priorityItems, ownedItems=[], validLocations=priorityItemsDict)
                     if unplaced > 0:
                         raise Ex.ItemPlacementException("Failed to place items that would unlock Kong number " + str(len(ownedKongs) + 1) + ", " + kongToBeGained.name)
                     preplacedPriorityMoves.extend(list(priorityItemsDict.keys()))
@@ -1233,7 +1233,7 @@ def FillKongsAndMovesForLevelOrder(spoiler):
                 js.postMessage("Retrying fill really hard. Tries: " + str(retries))
                 spoiler.settings.shuffle_prices()
                 if spoiler.settings.shuffle_loading_zones == "levels":
-                    ShuffleExits.ShuffleLevelOrderWithRestrictions(spoiler.settings)
+                    ShuffleExits.ShuffleExits(spoiler.settings)
                     spoiler.UpdateExits()
             else:
                 js.postMessage("Retrying fill. Tries: " + str(retries))
@@ -1353,7 +1353,7 @@ def Generate_Spoiler(spoiler):
     if spoiler.settings.kongs_for_progression:
         # Handle Level Order if randomized
         if spoiler.settings.shuffle_loading_zones == "levels":
-            ShuffleExits.ShuffleLevelOrderWithRestrictions(spoiler.settings)
+            ShuffleExits.ShuffleExits(spoiler.settings)
             spoiler.UpdateExits()
         # Assume we can progress through the levels, since these will be adjusted within FillKongsAndMovesForLevelRando
         WipeProgressionRequirements(spoiler.settings)

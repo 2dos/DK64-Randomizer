@@ -187,7 +187,10 @@ def ShuffleExits(settings: Settings):
     # Set up front and back entrance pools for each setting
     # Assume all shuffled exits reachable by default
     if settings.shuffle_loading_zones == "levels":
-        ShuffleLevelExits()
+        if settings.kongs_for_progression:
+            ShuffleLevelOrderWithRestrictions(settings)
+        else:
+            ShuffleLevelExits()
     elif settings.shuffle_loading_zones == "all":
         frontpool = []
         backpool = []
