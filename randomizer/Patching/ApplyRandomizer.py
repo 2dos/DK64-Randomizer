@@ -260,16 +260,24 @@ def patching_response(responded_data):
         ROM().seek(sav + 0x13B)
         ROM().write(0)
 
+    # Enable Open Levels
     if spoiler.settings.open_levels:
         ROM().seek(sav + 0x127)
         ROM().write(1)
 
+    # Enable Shorten Boss Fights
     if spoiler.settings.shorten_boss:
         ROM().seek(sav + 0x12B)
         ROM().write(1)
 
+    # Enable Fast Warps
     if spoiler.settings.fast_warps:
         ROM().seek(sav + 0x12A)
+        ROM().write(1)
+
+    # Enable D-Pad Display
+    if spoiler.settings.dpad_display:
+        ROM().seek(sav + 0x129)
         ROM().write(1)
 
     # Activate Bananaports
