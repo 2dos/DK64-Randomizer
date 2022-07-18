@@ -300,7 +300,7 @@ def patching_response(responded_data):
     ROM().seek(sav + 0x140)
     ROM().write(spoiler.jetpac_medals_required)
 
-    #randomize_dktv()
+    # randomize_dktv()
     randomize_entrances(spoiler)
     randomize_moves(spoiler)
     randomize_prices(spoiler)
