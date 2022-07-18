@@ -34,16 +34,12 @@ def randomize_setup(spoiler: Spoiler):
             "type": 0x8E,
             "weight": 4,
         },
-        {
-            "item": "standard_crate",
-            "type": 0x8F,
-            "weight": 4
-        },
+        {"item": "standard_crate", "type": 0x8F, "weight": 4},
         {
             "item": "homing_crate",
             "type": 0x11,
             "weight": 2,
-        }
+        },
     ]
     pickup_list = []
     for pickup in pickup_weights:

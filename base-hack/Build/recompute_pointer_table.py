@@ -260,9 +260,9 @@ def writeUncompressedSize(fh: BinaryIO, pointer_table_index: int, file_index: in
         return 0
 
     fh.seek(main_pointer_table_offset + (26 * 4))
-    unc_table = main_pointer_table_offset + int.from_bytes(fh.read(4),"big")
+    unc_table = main_pointer_table_offset + int.from_bytes(fh.read(4), "big")
     fh.seek(unc_table + (pointer_table_index * 4))
-    ROMAddress = main_pointer_table_offset + int.from_bytes(fh.read(4),"big") + file_index * 4
+    ROMAddress = main_pointer_table_offset + int.from_bytes(fh.read(4), "big") + file_index * 4
 
     # Game seems to align these mod 2
     if uncompressed_size % 2 == 1:
@@ -434,21 +434,23 @@ def replaceROMFile(
         diff = file_index - len(pointer_tables[pointer_table_index]["entries"]) + 1
         print(f"Appending {diff} extra entries to {pointer_tables[pointer_table_index]['name']} ({(file_index+1)-diff}->{file_index+1})")
         for d in range(diff):
-            pointer_tables[pointer_table_index]["entries"].append({
-                "index": file_index,
-                "bit_set": False,
-                "original_sha1": "",
-            })
+            pointer_tables[pointer_table_index]["entries"].append(
+                {
+                    "index": file_index,
+                    "bit_set": False,
+                    "original_sha1": "",
+                }
+            )
         rom.seek(main_pointer_table_offset + (4 * len(pointer_tables)) + (4 * pointer_table_index))
-        rom.write((file_index + 1).to_bytes(4,"big"))
+        rom.write((file_index + 1).to_bytes(4, "big"))
         pointer_tables[pointer_table_index]["num_entries"] = file_index + 1
 
         # Update uncompressed pointer table entry
         rom.seek(main_pointer_table_offset + (4 * 26))
-        uncompressed_table_location = main_pointer_table_offset + int.from_bytes(rom.read(4),"big")
+        uncompressed_table_location = main_pointer_table_offset + int.from_bytes(rom.read(4), "big")
         rom.seek(uncompressed_table_location + (4 * pointer_table_index))
-        uncompressed_start = main_pointer_table_offset + int.from_bytes(rom.read(4),"big")
-        uncompressed_finish = main_pointer_table_offset + int.from_bytes(rom.read(4),"big")
+        uncompressed_start = main_pointer_table_offset + int.from_bytes(rom.read(4), "big")
+        uncompressed_finish = main_pointer_table_offset + int.from_bytes(rom.read(4), "big")
         uncompressed_table_size = uncompressed_finish - uncompressed_start
         if uncompressed_table_size > 0:
             print(f"Expanding pointer table {pointer_table_index} from {uncompressed_table_size} bytes to {4 * (file_index + 1)} bytes")

@@ -148,7 +148,7 @@ for idx in range(2):
     im_new.save(f"{disp_dir}yellow_qmark_{idx}.png")
 
 # Ammo Crates
-crate_names = ["standard_crate","homing_crate"]
+crate_names = ["standard_crate", "homing_crate"]
 for crate in crate_names:
     base_dir = getDir("assets/Non-Code/displays/")
     if not os.path.exists(base_dir):

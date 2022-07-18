@@ -183,27 +183,25 @@ file_dict = [
     },
 ]
 
-kong_names = ["DK","Diddy","Lanky","Tiny","Chunky"]
-ammo_names = ["standard_crate","homing_crate"]
+kong_names = ["DK", "Diddy", "Lanky", "Tiny", "Chunky"]
+ammo_names = ["standard_crate", "homing_crate"]
 
 for ammo_index, ammo in enumerate(ammo_names):
-    file_dict.append({
-        "name": f"{ammo.replace('_',' ')} Image",
-        "pointer_table_index": 14,
-        "file_index": 188 + ammo_index,
-        "source_file": f"assets/Non-Code/displays/{ammo}.png",
-        "texture_format": "rgba5551"
-    })
+    file_dict.append(
+        {"name": f"{ammo.replace('_',' ')} Image", "pointer_table_index": 14, "file_index": 188 + ammo_index, "source_file": f"assets/Non-Code/displays/{ammo}.png", "texture_format": "rgba5551"}
+    )
 
 for kong_index, kong in enumerate(kong_names):
-    for x_i, x in enumerate(["rgba32","rgba5551"]):
-        file_dict.append({
-            "name": f"{kong} Face ({x})",
-            "pointer_table_index": 14,
-            "file_index": [0x22+kong_index,190+kong_index][x_i],
-            "source_file": f"assets/Non-Code/displays/{kong.lower()}_face.png",
-            "texture_format": x,
-        })
+    for x_i, x in enumerate(["rgba32", "rgba5551"]):
+        file_dict.append(
+            {
+                "name": f"{kong} Face ({x})",
+                "pointer_table_index": 14,
+                "file_index": [0x22 + kong_index, 190 + kong_index][x_i],
+                "source_file": f"assets/Non-Code/displays/{kong.lower()}_face.png",
+                "texture_format": x,
+            }
+        )
 
 base_coin_sfx = "assets/Non-Code/music/Win95_startup.dk64song"
 new_coin_sfx = "assets/Non-Code/music/coin_sfx.bin"
@@ -754,10 +752,10 @@ with open(newROMName, "r+b") as fh:
     fh.seek(0x1FED020 + 0x13B)
     fh.write((1).to_bytes(1, "big"))
 
-    piano_vanilla = [2,1,2,3,4,2,0]
+    piano_vanilla = [2, 1, 2, 3, 4, 2, 0]
     for piano_index, piano_key in enumerate(piano_vanilla):
         fh.seek(0x1FED020 + 0x15C + piano_index)
-        fh.write(piano_key.to_bytes(1,"big"))
+        fh.write(piano_key.to_bytes(1, "big"))
 
     with open("assets/Non-Code/credits/squish.bin", "rb") as squish:
         fh.seek(0x1FFF800)
