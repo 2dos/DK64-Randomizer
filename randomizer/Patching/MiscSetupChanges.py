@@ -18,7 +18,37 @@ def float_to_hex(f):
 
 def randomize_setup(spoiler: Spoiler):
     """Randomize setup."""
-    pickup_list = [0x56, 0x98, 0x8E, 0x8F, 0x11]  # Oranges  # Film  # Crystals  # Standard Ammo Crate  # Homing Ammo Crate
+    pickup_weights = [
+        {
+            "item": "orange",
+            "type": 0x56,
+            "weight": 3,
+        },
+        {
+            "item": "film",
+            "type": 0x98,
+            "weight": 1,
+        },
+        {
+            "item": "crystals",
+            "type": 0x8E,
+            "weight": 4,
+        },
+        {
+            "item": "standard_crate",
+            "type": 0x8F,
+            "weight": 4
+        },
+        {
+            "item": "homing_crate",
+            "type": 0x11,
+            "weight": 2,
+        }
+    ]
+    pickup_list = []
+    for pickup in pickup_weights:
+        for count in range(pickup["weight"]):
+            pickup_list.append(pickup["type"])
     if spoiler.settings.random_patches:
         dirt_list = []
         for x in DirtPatchLocations:
