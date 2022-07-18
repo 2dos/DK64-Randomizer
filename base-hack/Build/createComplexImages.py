@@ -147,6 +147,25 @@ for idx in range(2):
             pix_new[x, y] = (r2, g2, b2, a)
     im_new.save(f"{disp_dir}yellow_qmark_{idx}.png")
 
+# Ammo Crates
+crate_names = ["standard_crate", "homing_crate"]
+for crate in crate_names:
+    base_dir = getDir("assets/Non-Code/displays/")
+    if not os.path.exists(base_dir):
+        os.mkdir(base_dir)
+    im = Image.new(mode="RGBA", size=(64, 64))
+    crate_r_offset = 0
+    for x in range(2):
+        im1 = Image.open(f"{hash_dir}{crate}_{x}.png")
+        x_p = 32 * x
+        y_p = 0
+        if x == 1:
+            y_p = crate_r_offset
+        Image.Image.paste(im, im1, (x_p, y_p))
+    im = im.resize(kong_res)
+    # im = im.resize((32,32))
+    im.save(f"{base_dir}{crate}.png")
+
 
 rmve = ["01234.png", "56789.png", "boss_key.png", "WXYL.png", "specialchars.png", "red_qmark_0.png", "red_qmark_1.png"]
 for kong in kongs:

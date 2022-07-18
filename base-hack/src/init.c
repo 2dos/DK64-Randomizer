@@ -208,6 +208,8 @@ void initHack(int source) {
 				*(unsigned char*)(0x80755B68) = 0x6E; // Modify GB Map
 				*(short*)(0x80755B6A) = 0; // Modify GB ID
 			}
+			// Expand Display List
+			*(short*)(0x805FE56A) = 8000;
 			// Object Instance Scripts
 			*(int*)(0x80748064) = (int)&change_object_scripts;
 			*(int*)(0x806416BC) = 0; // Prevent parent map check in cross-map object change communications

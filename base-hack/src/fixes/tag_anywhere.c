@@ -158,21 +158,117 @@ static const unsigned char bad_movement_states[] = {
 
 static const short kong_flags[] = {0x181,0x6,0x46,0x42,0x75};
 static unsigned char tag_countdown = 0;
+static char can_tag_anywhere = 0;
+
+int canTagAnywhere(int prev_crystals) {
+    if (CurrentMap != 0x2A) {
+        char hud_items[] = {0,1,5,8,10,12,13,14};
+        tag_countdown = 0;
+        if (HUD) {
+            for (int i = 0; i < sizeof(hud_items); i++) {
+                if (HUD->item[(int)hud_items[i]].hud_state) {
+                    return 0;
+                }
+            }
+        }
+    }
+    if (Player->strong_kong_ostand_bitfield & 0x100) {
+        // Seasick
+        return 0;
+    }
+    if (Player->collision_queue_pointer) {
+        return 0;
+    }
+    int control_state = Player->control_state;
+    for (int i = 0; i < sizeof(bad_movement_states); i++) {
+        if (bad_movement_states[i] == control_state) {
+            return 0;
+        }
+    }
+    if ((prev_crystals - 1) == CollectableBase.Crystals) {
+        return 0;
+    }
+    if (CutsceneActive) {
+        return 0;
+    }
+    if (CurrentMap == 0x2A) {
+        if (MapState & 0x10) {
+            return 0;
+        }
+        if (hasTurnedInEnoughCBs()) {
+            if (Player->zPos < 560.0f) {
+                // Too close to boss door
+                return 0;
+            }
+        }
+    }
+    if (TBVoidByte & 3) {
+        return 0;
+    }
+    if (tag_countdown != 0) {
+        return 0;
+    }
+    for (int i = 0; i < sizeof(banned_maps); i++) {
+        if (banned_maps[i] == CurrentMap) {
+            return 0;
+        }
+    }
+    return 1;
+}
+
+int getTAState(void) {
+    return can_tag_anywhere;
+}
+
+int getTagAnywhereKong(int direction) {
+    int next_character = Character + direction;
+    if (next_character < 0) {
+        next_character = TAG_ANYWHERE_KONG_LIMIT - 1;
+    } else if (next_character >= TAG_ANYWHERE_KONG_LIMIT) {
+        next_character = 0;
+    }
+    int i = 0;
+    int reached_limit = 0;
+    while (i < TAG_ANYWHERE_KONG_LIMIT) {
+        int pass = 0;
+        if (checkFlag(kong_flags[next_character],0)) {
+            pass = 1;
+            if (Rando.perma_lose_kongs) {
+                if (checkFlag(KONG_LOCKED_START + next_character,0)) {
+                    if ((!curseRemoved()) && (!hasPermaLossGrace())) {
+                        pass = 0;
+                    }
+                }
+            }
+        }
+        if (pass) {
+            break;
+        } else {
+            if ((i + 1) == TAG_ANYWHERE_KONG_LIMIT) {
+                reached_limit = 1;
+                return Character;
+            } else {
+                next_character = next_character + direction;
+                if (next_character < 0) {
+                    next_character = TAG_ANYWHERE_KONG_LIMIT - 1;
+                } else if (next_character >= TAG_ANYWHERE_KONG_LIMIT) {
+                    next_character = 0;
+                }
+            }
+        }
+        i++;
+    }
+    if (reached_limit) {
+        return Character;
+    } else {
+        return next_character;
+    }
+}
 
 void tagAnywhere(int prev_crystals) {
 	if (Rando.tag_anywhere) {
 		if (Player) {
-            if (CurrentMap != 0x2A) {
-                char hud_items[] = {0,1,5,8,10,12,13,14};
-                tag_countdown = 0;
-                if (HUD) {
-                    for (int i = 0; i < sizeof(hud_items); i++) {
-                        if (HUD->item[(int)hud_items[i]].hud_state) {
-                            return;
-                        }
-                    }
-                }
-            } else {
+            if (CurrentMap == 0x2A) {
                 if (tag_countdown > 0) {
                     tag_countdown -= 1;
                 }
@@ -193,40 +289,9 @@ void tagAnywhere(int prev_crystals) {
                     }
                 }
             }
-            if (Player->strong_kong_ostand_bitfield & 0x100) {
-                // Seasick
-                return;
-            }
-            if (Player->collision_queue_pointer) {
-                return;
-            }
-            int control_state = Player->control_state;
-            for (int i = 0; i < sizeof(bad_movement_states); i++) {
-                if (bad_movement_states[i] == control_state) {
-                    return;
-                }
-            }
-            if ((prev_crystals - 1) == CollectableBase.Crystals) {
-                return;
-            }
-            if (CutsceneActive) {
-                return;
-            }
-            if (CurrentMap == 0x2A) {
-                if (MapState & 0x10) {
-                    return;
-                }
-                if (hasTurnedInEnoughCBs()) {
-                    if (Player->zPos < 560.0f) {
-                        // Too close to boss door
-                        return;
-                    }
-                }
-            }
-            if (TBVoidByte & 3) {
-                return;
-            }
-            if (tag_countdown != 0) {
+            int can_ta = canTagAnywhere(prev_crystals);
+            can_tag_anywhere = can_ta;
+            if (!can_ta) {
                 return;
             }
 			if (Character < TAG_ANYWHERE_KONG_LIMIT) {
@@ -239,49 +304,8 @@ void tagAnywhere(int prev_crystals) {
 					return;
 				}
 				if (change != 0) {
-					for (int i = 0; i < sizeof(banned_maps); i++) {
-						if (banned_maps[i] == CurrentMap) {
-							return;
-						}
-					}
-                    int next_character = Character + change;
-                    if (next_character < 0) {
-                        next_character = TAG_ANYWHERE_KONG_LIMIT - 1;
-                    } else if (next_character >= TAG_ANYWHERE_KONG_LIMIT) {
-                        next_character = 0;
-                    }
-					int i = 0;
-					int reached_limit = 0;
-					while (i < TAG_ANYWHERE_KONG_LIMIT) {
-                        int pass = 0;
-                        if (checkFlag(kong_flags[next_character],0)) {
-                            pass = 1;
-                            if (Rando.perma_lose_kongs) {
-                                if (checkFlag(KONG_LOCKED_START + next_character,0)) {
-                                    if ((!curseRemoved()) && (!hasPermaLossGrace())) {
-                                        pass = 0;
-                                    }
-                                }
-                            }
-                        }
-						if (pass) {
-							break;
-						} else {
-							if ((i + 1) == TAG_ANYWHERE_KONG_LIMIT) {
-								reached_limit = 1;
-								return;
-							} else {
-								next_character = next_character + change;
-                                if (next_character < 0) {
-                                    next_character = TAG_ANYWHERE_KONG_LIMIT - 1;
-                                } else if (next_character >= TAG_ANYWHERE_KONG_LIMIT) {
-                                    next_character = 0;
-                                }
-							}
-						}
-                        i++;
-                    }
-					if ((!reached_limit) && (next_character != Character)) {
+                    int next_character = getTagAnywhereKong(change);
+					if (next_character != Character) {
 						if (((MovesBase[next_character].weapon_bitfield & 1) == 0) || (Player->was_gun_out == 0)) {
                             Player->hand_state = 1;
                             Player->was_gun_out = 0;

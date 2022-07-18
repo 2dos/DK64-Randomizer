@@ -45,7 +45,7 @@ static const unsigned char tns_count[] = {
 	5,
 	5,
 	5,
-	4,
+	5,
 	3,
 	1,
 	1,

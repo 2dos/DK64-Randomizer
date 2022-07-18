@@ -75,6 +75,9 @@ void decouple_moves_fixes(void) {
 	}
 	if (in_boss) {
 		PatchKRoolCode();
+		if (Rando.quality_of_life) {
+			*(short*)(0x800359A6) = 3;
+		}
 	}
 	if ((CurrentMap == 0x65) || ((CurrentMap >= 0x8D) && (CurrentMap <= 0x8F))) {
 		PatchBonusCode();

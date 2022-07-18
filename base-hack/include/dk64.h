@@ -143,6 +143,9 @@ extern void setToeTexture(void* actor, int data);
 extern void applyFootDamage(void* actor, int unk0, int unk1, int unk2);
 extern void modifyCharSpawnerAttributes(int unk0, int unk1, int unk2);
 extern void modifyObjectState(int object_id, int dest_state);
+extern void spawnPianoKremling(int kremling_index, int unk0);
+extern void setAcceptablePianoKey(int id, int key, int unk0);
+extern int checkContactSublocation(void* behaviour_pointer, int id, int key, int unk0);
 
 //vanilla data
 extern float TransitionSpeed;
@@ -341,3 +344,4 @@ extern void* StoredCounterTextures[7];
 extern char QoLOn;
 extern unsigned char PauseText;
 extern unsigned char ShorterBosses;
+extern char ForceStandardAmmo;
