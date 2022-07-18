@@ -119,41 +119,6 @@ file_dict = [
         "texture_format": "rgba32",
     },
     {
-        "name": "DK Face",
-        "pointer_table_index": 14,
-        "file_index": 0x22,
-        "source_file": "assets/Non-Code/displays/dk_face.png",
-        "texture_format": "rgba32",
-    },
-    {
-        "name": "Diddy Face",
-        "pointer_table_index": 14,
-        "file_index": 0x23,
-        "source_file": "assets/Non-Code/displays/diddy_face.png",
-        "texture_format": "rgba32",
-    },
-    {
-        "name": "Lanky Face",
-        "pointer_table_index": 14,
-        "file_index": 0x24,
-        "source_file": "assets/Non-Code/displays/lanky_face.png",
-        "texture_format": "rgba32",
-    },
-    {
-        "name": "Tiny Face",
-        "pointer_table_index": 14,
-        "file_index": 0x25,
-        "source_file": "assets/Non-Code/displays/tiny_face.png",
-        "texture_format": "rgba32",
-    },
-    {
-        "name": "Chunky Face",
-        "pointer_table_index": 14,
-        "file_index": 0x26,
-        "source_file": "assets/Non-Code/displays/chunky_face.png",
-        "texture_format": "rgba32",
-    },
-    {
         "name": "Shared Face",
         "pointer_table_index": 14,
         "file_index": 0x27,
@@ -209,7 +174,34 @@ file_dict = [
         "texture_format": "rgba5551",
         "target_compressed_size": 32 * 32 * 2,
     },
+    {
+        "name": "DPad Image",
+        "pointer_table_index": 14,
+        "file_index": 187,
+        "source_file": "assets/Non-Code/displays/dpad.png",
+        "texture_format": "rgba5551",
+    },
 ]
+
+kong_names = ["DK", "Diddy", "Lanky", "Tiny", "Chunky"]
+ammo_names = ["standard_crate", "homing_crate"]
+
+for ammo_index, ammo in enumerate(ammo_names):
+    file_dict.append(
+        {"name": f"{ammo.replace('_',' ')} Image", "pointer_table_index": 14, "file_index": 188 + ammo_index, "source_file": f"assets/Non-Code/displays/{ammo}.png", "texture_format": "rgba5551"}
+    )
+
+for kong_index, kong in enumerate(kong_names):
+    for x_i, x in enumerate(["rgba32", "rgba5551"]):
+        file_dict.append(
+            {
+                "name": f"{kong} Face ({x})",
+                "pointer_table_index": 14,
+                "file_index": [0x22 + kong_index, 190 + kong_index][x_i],
+                "source_file": f"assets/Non-Code/displays/{kong.lower()}_face.png",
+                "texture_format": x,
+            }
+        )
 
 base_coin_sfx = "assets/Non-Code/music/Win95_startup.dk64song"
 new_coin_sfx = "assets/Non-Code/music/coin_sfx.bin"
@@ -680,7 +672,7 @@ with open(newROMName, "r+b") as fh:
             print(" - Writing " + x["output_file"] + " (" + hex(len(compress)) + ") to ROM")
             if "pointer_table_index" in x and "file_index" in x:
                 # More complicated write, update the pointer tables to point to the new data
-                replaceROMFile(x["pointer_table_index"], x["file_index"], compress, uncompressed_size)
+                replaceROMFile(fh, x["pointer_table_index"], x["file_index"], compress, uncompressed_size)
             elif "start" in x:
                 if isROMAddressOverlay(x["start"]):
                     replaceOverlayData(x["start"], compress)
@@ -759,6 +751,11 @@ with open(newROMName, "r+b") as fh:
 
     fh.seek(0x1FED020 + 0x13B)
     fh.write((1).to_bytes(1, "big"))
+
+    piano_vanilla = [2, 1, 2, 3, 4, 2, 0]
+    for piano_index, piano_key in enumerate(piano_vanilla):
+        fh.seek(0x1FED020 + 0x15C + piano_index)
+        fh.write(piano_key.to_bytes(1, "big"))
 
     with open("assets/Non-Code/credits/squish.bin", "rb") as squish:
         fh.seek(0x1FFF800)

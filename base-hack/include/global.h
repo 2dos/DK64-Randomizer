@@ -79,6 +79,8 @@ extern int* drawPixelTextContainer(int* dl, int x, int y, char* str, int red, in
 extern int* drawScreenRect(int* dl, int x1, int y1, int x2, int y2, int red, int green, int blue, int alpha);
 extern int* drawTextContainer(int* dl, int style, float x, float y, char* str, int red, int green, int blue, int opacity, int background);
 extern int* drawText(int* dl, int style, float x, float y, char* str, int red, int green, int blue, int opacity);
+extern int* drawDPad(int* dl);
+extern int* drawImageWithFilter(int* dl, int text_index, codecs codec_index, int img_width, int img_height, int x, int y, float xScale, float yScale, int red, int green, int blue, int opacity);
 extern void correctKongFaces(void);
 
 extern void displayNumberOnObject(int id, int param2, int imageindex, int param4, int subtype);
@@ -97,4 +99,8 @@ extern void cancelCutscene(int enable_movement);
 extern void clearVultureCutscene(void);
 extern void fastWarp(void* actor, int player_index);
 extern void activateBananaports(void);
+
+extern int getTagAnywhereKong(int direction);
+extern int getTAState(void);
+extern void toggleStandardAmmo(void);
 //extern void getRandoNextMovePurchase(shop_paad* shop_info, KongBase* moves);
