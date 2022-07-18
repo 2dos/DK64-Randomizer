@@ -734,9 +734,8 @@ START_HOOK:
 
 	HomingDisable:
 		LBU 		t1, 0x2 (t0)
-		LUI			t2, hi(ControllerInput)
-		LHU 		t2, lo(ControllerInput) (t2)
-		ANDI 		t2, t2, 0x0020
+		LUI			t2, hi(ForceStandardAmmo)
+		LBU 		t2, lo(ForceStandardAmmo) (t2)
 		BEQZ 		t2, HomingDisable_Finish
 		NOP
 		LUI 		t2, hi(QoLOn)

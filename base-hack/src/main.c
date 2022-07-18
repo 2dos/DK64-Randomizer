@@ -94,6 +94,7 @@ void cFuncLoop(void) {
 		// 		DestExit = 16;
 		// 	}
 		// }
+		toggleStandardAmmo();
 		if (Gamemode == 3) {
 			if (TransitionSpeed < 0) {
 				TransitionType = 1;
@@ -122,6 +123,7 @@ void cFuncLoop(void) {
 				determineStartKong_PermaLossMode();
 				giveCollectables();
 			}
+			ForceStandardAmmo = 0;
 		}
 	}
 	past_lag[(int)(lag_counter % LAG_CAP)] = StoredLag;
@@ -240,6 +242,7 @@ static const char* wait_texts[] = {
 	"STEALING THE BANANA HOARD"
 };
 static const char wait_x_offsets[] = {55, 85, 55, 53, 55};
+static unsigned char ammo_hud_timer = 0;
 
 #define HERTZ 60
 #define ACTOR_MAINMENUCONTROLLER 0x146
@@ -278,8 +281,6 @@ int* displayListModifiers(int* dl) {
 			if (right < LOADBAR_START) {
 				right = LOADBAR_START;
 			}
-			*(int*)(0x807FF700) = left;
-			*(int*)(0x807FF704) = right;
 			dl = drawScreenRect(dl, left, 475, right, 485, *(unsigned char*)(address + 0), *(unsigned char*)(address + 1), *(unsigned char*)(address + 2), *(unsigned char*)(address + 3));
 			dl = drawPixelTextContainer(dl, wait_x_offsets[(int)wait_progress_master], 130, (char*)wait_texts[(int)wait_progress_master], 0xFF, 0xFF, 0xFF, 0xFF, 1);
 			dl = drawPixelTextContainer(dl, 110, 150, "PLEASE WAIT", 0xFF, 0xFF, 0xFF, 0xFF, 1);
@@ -292,6 +293,24 @@ int* displayListModifiers(int* dl) {
 				int fps_int = fps;
 				dk_strFormat((char *)fpsStr, "FPS %d", fps_int);
 				dl = drawPixelTextContainer(dl, 250, 210, fpsStr, 0xFF, 0xFF, 0xFF, 0xFF, 1);
+			}
+			if (Rando.dpad_visual_enabled) {
+				dl = drawDPad(dl);
+			}
+			if (ammo_hud_timer) {
+				int ammo_x = 150;
+				int ammo_default_y = 850;
+				int ammo_y = ammo_default_y;
+				float ammo_o = 255.0f;
+				if (ammo_hud_timer > 40) {
+					ammo_y = ammo_default_y + (5 * (ammo_hud_timer - 40));
+					ammo_o = (50 - ammo_hud_timer) * 25.5f;
+				} else if (ammo_hud_timer < 10) {
+					ammo_y = ammo_default_y + (5 * (10 - ammo_hud_timer));
+					ammo_o = ammo_hud_timer * 25.5f;
+				}
+				dl = drawImage(dl, IMAGE_AMMO_START + (1 ^ ForceStandardAmmo), RGBA16, 32, 32, ammo_x, ammo_y, 4.0f, 4.0f, (int)ammo_o);
+				ammo_hud_timer -= 1;
 			}
 			if (HUD) {
 				int hud_st = HUD->item[0xC].hud_state;
@@ -328,3 +347,18 @@ int* displayListModifiers(int* dl) {
 	}
 	return dl;
 };
+
+void toggleStandardAmmo(void) {
+	if (Gamemode == 6) {
+		if (NewlyPressedControllerInput.Buttons & D_Down) {
+			if (MovesBase[(int)Character].weapon_bitfield & 2) {
+				if (CollectableBase.HomingAmmo > 0) {
+					ForceStandardAmmo = 1 ^ ForceStandardAmmo;
+					if (ammo_hud_timer == 0) {
+						ammo_hud_timer = 50;
+					}
+				}
+            }
+		}
+	}
+}

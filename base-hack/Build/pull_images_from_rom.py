@@ -4,6 +4,8 @@ import zlib
 
 from PIL import Image
 
+crate_frame_l = 7
+crate_frame_r = 9
 images = [
     {
         "name": "bongos",
@@ -140,6 +142,46 @@ images = [
         "h": 32,
         "resize": False,
         "flip": False,
+    },
+    {
+        "name": "homing_crate_0",
+        "format": "rgba16",
+        "table": 7,
+        "index": 176 + crate_frame_r,
+        "w": 32,
+        "h": 64,
+        "resize": False,
+        "flip": True,
+    },
+    {
+        "name": "homing_crate_1",
+        "format": "rgba16",
+        "table": 7,
+        "index": 193 + crate_frame_l,
+        "w": 32,
+        "h": 64,
+        "resize": False,
+        "flip": True,
+    },
+    {
+        "name": "standard_crate_0",
+        "format": "rgba16",
+        "table": 7,
+        "index": 383 + crate_frame_r,
+        "w": 32,
+        "h": 64,
+        "resize": False,
+        "flip": True,
+    },
+    {
+        "name": "standard_crate_1",
+        "format": "rgba16",
+        "table": 7,
+        "index": 400 + crate_frame_l,
+        "w": 32,
+        "h": 64,
+        "resize": False,
+        "flip": True,
     },
 ]
 

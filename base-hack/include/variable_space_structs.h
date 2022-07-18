@@ -73,7 +73,7 @@ typedef struct varspace {
 	/* 0x126 */ char skip_arcade_round1; // 0 = No Skip, 1 = Skip R1
 	/* 0x127 */ char open_level_sections; // 0 = Off, 1 = On
 	/* 0x128 */ char activate_all_bananaports; // 0 = Vanilla, 1 = Most bananaports are activated from the start
-	/* 0x129 */ char lanky_color; // 0 = Vanilla, 1 = Green Straps, 2 = Purple Straps, 3 = Red Straps
+	/* 0x129 */ char dpad_visual_enabled; // 0 = Vanilla, 1 = Visual shown
 	/* 0x12A */ char fast_warp; // 0 = Vanilla, 1 = Use Multiplayer warp
 	/* 0x12B */ char short_bosses; // 0 = Vanilla fights, 1 = Short fights
 	/* 0x12C */ unsigned char coinreq_cavesbeetle;

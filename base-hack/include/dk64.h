@@ -344,3 +344,4 @@ extern void* StoredCounterTextures[7];
 extern char QoLOn;
 extern unsigned char PauseText;
 extern unsigned char ShorterBosses;
+extern char ForceStandardAmmo;

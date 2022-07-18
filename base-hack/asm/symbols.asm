@@ -328,6 +328,7 @@
 .definelabel StoredCounterTextures, 0x807FFF30
 .definelabel PauseText, 0x807FFFE6
 .definelabel ShorterBosses, 0x807FFFE5
+.definelabel ForceStandardAmmo, 0x807FFFE4
 
 .definelabel CrankyMoves_New, 0x807FF400
 .definelabel CandyMoves_New, 0x807FF4D4
