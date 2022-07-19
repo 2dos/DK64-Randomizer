@@ -141,21 +141,6 @@ def AllKongMoves():
     return allMoves
 
 
-def OwnedKongMoves(kongs):
-    """Return all moves for the given list of Kongs."""
-    kongMoves = []
-    if KongObject.Kongs.donkey in kongs:
-        kongMoves.extend(DonkeyMoves)
-    if KongObject.Kongs.diddy in kongs:
-        kongMoves.extend(DiddyMoves)
-    if KongObject.Kongs.lanky in kongs:
-        kongMoves.extend(LankyMoves)
-    if KongObject.Kongs.tiny in kongs:
-        kongMoves.extend(TinyMoves)
-    if KongObject.Kongs.chunky in kongs:
-        kongMoves.extend(ChunkyMoves)
-
-
 def Blueprints(settings):
     """Return all blueprint items."""
     blueprints = [
