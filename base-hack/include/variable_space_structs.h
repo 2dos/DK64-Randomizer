@@ -106,4 +106,5 @@ typedef struct varspace {
 	/* 0x14B */ char auto_keys; // 0 = Vanilla, 1 = Keys turn in as soon as you get them
 	/* 0x14C */ short matching_game_sounds[8]; // Sound effect 0 is treated as "sound not randomized"
 	/* 0x15C */ char piano_game_order[7]; // Each item denotes a key, normally CBCDECA (2123420). A = 0, 1 = B, 2 = C, 3 = D, 4 = E, 5 = F
+	/* 0x16B */ char dartboard_order[6]; // Each item denotes a picture.
 } varspace;
