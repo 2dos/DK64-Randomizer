@@ -114,11 +114,11 @@ with open(base_rom, "rb") as fh:
                                     elif ".data" in script_line:
                                         contains_data = True
                                         data_start = line_index + 1
-                                script_data = {"id": -1, "behav_9C": -1}
+                                script_data = {"id": -1, "behav_9C": -1, "ignore": 0}
                                 if contains_data and data_start > -1:
                                     for data_line in script_info[data_start:data_end]:
                                         data_line = data_line.replace("\n", "")
-                                        for attr in ["id", "behav_9C"]:
+                                        for attr in ["id", "behav_9C", "ignore"]:
                                             if f"{attr} = " in data_line:
                                                 val = data_line.split(f"{attr} = ")[1]
                                                 if "0x" in val:
@@ -126,7 +126,10 @@ with open(base_rom, "rb") as fh:
                                                 else:
                                                     val = int(val)
                                                 script_data[attr] = val
-                                print(f"Compiling {file.replace('.script','')} ({hex(script_data['id'])})")
+                                pre_message = "Ignoring"
+                                if script_data["ignore"] == 0:
+                                    pre_message = "Compiling"
+                                print(f"{pre_message} {file.replace('.script','')} ({hex(script_data['id'])})")
                                 if contains_code and code_start > -1:
                                     resetCond(True)
                                     for code_line in script_info[code_start:]:
@@ -157,7 +160,7 @@ with open(base_rom, "rb") as fh:
                                             new_blocks.append(arr)
                                             resetCond(False)
                                             new_block_count += 1
-                                if script_data["id"] > -1:
+                                if script_data["id"] > -1 and script_data["ignore"] == 0:
                                     found_existing = False
                                     found_index = -1
                                     found_9c = -1
