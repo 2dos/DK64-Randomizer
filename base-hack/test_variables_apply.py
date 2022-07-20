@@ -45,6 +45,7 @@ set_variables = {
     "piano_game_order": [5, 0, 1, 3, 5, 5, 3],
     "dartboard_order": [0,1,2,3,4,5],
     "fast_gbs": 1,
+    "remove_high_requirements": 1,
     "special_move_prices": [
         [1, 2, 3],
         [4, 5, 6],
@@ -52,8 +53,6 @@ set_variables = {
         [1, 2, 3],
         [4, 5, 6],
     ],
-    "remove_high_requirements": 0,
-    "fast_gbs": 0,
 }
 
 
