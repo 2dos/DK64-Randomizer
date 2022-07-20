@@ -174,9 +174,8 @@ void initHack(int source) {
 				*(short*)(0x80750682) = 0x1;
 				*(int*)(0x806BDC24) = 0x0C17FCDE; // Change takeoff warp func
 				// No Rain
-				*(float*)(0x8075E3E0) = 0.0f; // Set Isles Rain Radius to 0
+				*(float*)(0x8075E3E0) = 0.0f; // Set Isles Rain Radius to 0 Chunky Toy box
 
-				
 				*(short*)(0x806BDC8C) = 0x1000; // Apply no cutscene to all keys
 				*(short*)(0x806BDC3C) = 0x1000; // Apply shorter timer to all keys
 				// Fast Camera Photo
@@ -207,6 +206,14 @@ void initHack(int source) {
 			if (Rando.skip_arcade_round1) {
 				*(unsigned char*)(0x80755B68) = 0x6E; // Modify GB Map
 				*(short*)(0x80755B6A) = 0; // Modify GB ID
+			}
+			if (Rando.fast_gbs) {
+				*(short*)(0x806BBB22) = 0x0005; // Chunky toy box speedup
+
+				*(short*)(0x806C58D6) = 0x0008; //Owl ring amount
+				*(short*)(0x806C5B16) = 0x0008;
+
+				*(short*)(0x806BEDFC) = 0x0001; //Spawn banana coins on beating 2nd rabbit race (BEQ uses round 1 flag being on instead of off.)
 			}
 			// Expand Display List
 			*(short*)(0x805FE56A) = 8000;
