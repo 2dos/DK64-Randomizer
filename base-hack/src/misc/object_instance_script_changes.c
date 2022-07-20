@@ -52,6 +52,7 @@
 #define CAVES_SMALLBOULDERPAD 0x2E
 #define CAVES_BIGBOULDERPAD 0x2F
 #define GALLEON_DKSTAR 0xC
+#define AZTEC_LLAMACOCONUT 0xD
 
 #define GALLEON_BONGO_PAD 0x11
 #define GALLEON_GUITAR_CACTUS_PAD 0x14
@@ -280,6 +281,10 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 					// Flag Set
 					setPermFlag(SNOOPDOOR_OPEN);
 					setNextTransitionType(0);
+				}
+			} else if (param2 == AZTEC_LLAMACOCONUT) {
+				if (!Rando.quality_of_life) {
+					PlayCutsceneFromModelTwoScript(behaviour_pointer,23,1,0);
 				}
 			}
 			break;
