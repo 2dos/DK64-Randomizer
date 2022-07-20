@@ -98,6 +98,7 @@ LogicRegions = {
         TransitionFront(Regions.LankyIgloo, lambda l: (l.settings.open_levels or l.jetpack) and l.trombone and l.islanky, Transitions.CavesIglooToLanky),
         TransitionFront(Regions.TinyIgloo, lambda l: (l.settings.open_levels or l.jetpack) and l.saxophone and l.istiny, Transitions.CavesIglooToTiny),
         TransitionFront(Regions.ChunkyIgloo, lambda l: (l.settings.open_levels or l.jetpack) and l.triangle and l.ischunky, Transitions.CavesIglooToChunky),
+        TransitionFront(Regions.CavesBossLobby, lambda l: True)  # This is the T&S we added by bananaport 3
     ]),
 
     Regions.GiantKosha: Region("Giant Kosha", Levels.CrystalCaves, False, -1, [], [
