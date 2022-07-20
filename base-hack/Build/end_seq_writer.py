@@ -24,11 +24,7 @@ end_sequence_cards = [
             "duration": names_length,
             "cooldown": general_buffer,
         },
-        "text": [
-            "2dos",
-            "Ballaam",
-            "Bismuth"
-        ],
+        "text": ["2dos", "Ballaam", "Bismuth"],
     },
     {
         "squish": {
@@ -36,7 +32,7 @@ end_sequence_cards = [
             "duration": names_length,
             "cooldown": general_buffer,
         },
-        "text": ["Cfox", "KillKlli","Lrauq"],
+        "text": ["Cfox", "KillKlli", "Lrauq"],
     },
     {
         "squish": {
@@ -44,11 +40,7 @@ end_sequence_cards = [
             "duration": names_length,
             "cooldown": general_buffer,
         },
-        "text": [
-            "Naramgamjan",
-            "ShadowShine57",
-            "Znernicus"
-        ],
+        "text": ["Naramgamjan", "ShadowShine57", "Znernicus"],
     },
     {
         "squish": {
