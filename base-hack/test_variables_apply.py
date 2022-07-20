@@ -32,7 +32,7 @@ set_variables = {
     "disable_drops": 1,
     "shop_indicator_on": 1,
     "warp_to_isles_enabled": 1,
-    "lobbies_open_bitfield": 0,
+    "lobbies_open_bitfield": 0xFF,
     "perma_lose_kongs": 0,
     "jetpac_medal_requirement": 1,
     "starting_kong": 0,
@@ -52,6 +52,8 @@ set_variables = {
         [1, 2, 3],
         [4, 5, 6],
     ],
+    "remove_high_requirements": 0,
+    "fast_gbs": 0,
 }
 
 
