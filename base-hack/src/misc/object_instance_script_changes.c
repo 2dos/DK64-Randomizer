@@ -21,6 +21,7 @@
 #define HELM_LOBBY 0xAA
 #define GALLEON_FISH 0x33
 #define TREASURE_CHEST 0x2C
+#define CAVES_DK5DI 0x56
 
 #define FUNGI_MINECART_GRATE 0x22
 #define SEASICK_SHIP 0x27
@@ -126,6 +127,7 @@
 
 #define FACTORY_PIANO 0x14
 #define FACTORY_DARTBOARD 0x7F
+#define ICE_MAZE 0x0
 
 void hideObject(behaviour_data* behaviour_pointer) {
 	behaviour_pointer->unk_60 = 1;
@@ -700,6 +702,22 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 						behaviour_pointer->next_state = 2;
 					}
 				}
+			}
+			break;
+		case CAVES_DK5DI:
+			if (param2 == ICE_MAZE) {
+				if (behaviour_pointer->switch_pressed == index) {
+					if ((behaviour_pointer->contact_actor_type >= 2) && (behaviour_pointer->contact_actor_type <= 6)) { // isKong
+						if (canHitSwitch()) {
+							int index = convertSubIDToIndex(id);
+							int* m2location = ObjectModel2Pointer;
+							ModelTwoData* _object = getObjectArrayAddr(m2location,0x90,index);
+							setSomeTimer(_object->object_type);
+							return 1;
+						}
+					}
+				}
+				return 0;
 			}
 			break;
 		case TINY_TEMPLE:

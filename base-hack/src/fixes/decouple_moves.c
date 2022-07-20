@@ -115,9 +115,5 @@ void decouple_moves_fixes(void) {
 		if(CurrentMap == 0x27) { //Seal Race
 			*(short*)(0x8002D0E2) = 0x0001; //1 Lap
 		}
-
-		if(CurrentMap == 0x30) { //Forest
-			setPermFlag(FLAG_RABBIT_ROUND1); //Start race at round 2
-		}
 	}
 }

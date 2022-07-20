@@ -213,7 +213,7 @@ void initHack(int source) {
 				*(short*)(0x806C58D6) = 0x0008; //Owl ring amount
 				*(short*)(0x806C5B16) = 0x0008;
 
-				*(short*)(0x806BEDFC) = 0x0001; //Spawn banana coins on beating 2nd rabbit race (BEQ uses round 1 flag being on instead of off.)
+				*(int*)(0x806BEDFC) = 0; //Spawn banana coins on beating 2nd rabbit race (BEQ uses round 1 flag being on instead of off.)
 			}
 			// Expand Display List
 			*(short*)(0x805FE56A) = 8000;
