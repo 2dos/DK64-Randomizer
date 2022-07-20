@@ -538,7 +538,7 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 				} else if (index < 28) {
 					return checkContactSublocation(behaviour_pointer,id,Rando.piano_game_order[index - 21] + 1, 0);
 				}
-			} else if (param2 == FACTORY_3124_SWITCH || param2 == FACTORY_4231_SWITCH || param2 == FACTORY_1342_SWITCH){
+			} else if (param2 == FACTORY_3124_SWITCH || param2 == FACTORY_4231_SWITCH || param2 == FACTORY_1342_SWITCH) {
 				if (index == 0) {
 					return Rando.fast_gbs;
 				} else if (index == 1) {
@@ -556,7 +556,7 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 					}
 				} else if (index == 2) {
 					disableDiddyRDDoors();
-        }
+        		}
 			} else if (param2 == FACTORY_DARTBOARD) {
 				if (index < 6) {
 					if (behaviour_pointer->switch_pressed == (Rando.dartboard_order[index] + 1)) {
