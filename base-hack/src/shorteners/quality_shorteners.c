@@ -74,6 +74,13 @@ static const short openlevels_flags[] = {
     FLAG_PROGRESSION_5DIPADS, // Caves 5DI Pads spawned
 };
 
+static const short highreq_flags[] = {
+    FLAG_5DT_SPAWNED, // 5DT Switches Spawned
+    FLAG_MODIFIER_PRODROOM, // Prod Room On
+    FLAG_MODIFIER_GALLEONSHIP, // Galleon Ship Spawned
+    FLAG_5DIPADS_SPAWNED, // Caves 5DI Pads Spawned
+};
+
 void qualityOfLife_shorteners(void) {
 	if (Rando.quality_of_life) {
 		// No FTTs
@@ -110,6 +117,11 @@ void qualityOfLife_shorteners(void) {
         if (Rando.open_level_sections) {
             for (int i = 0; i < sizeof(openlevels_flags)/2; i++) {
                 setPermFlag(openlevels_flags[i]);
+            }
+        }
+        if (Rando.remove_high_requirements) {
+            for (int i = 0; i < sizeof(highreq_flags)/2; i++) {
+                setPermFlag(highreq_flags[i]);
             }
         }
     }
