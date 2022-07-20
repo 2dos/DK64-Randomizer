@@ -66,19 +66,17 @@ static const short openlevels_flags[] = {
     FLAG_PROGRESSION_SHELLHIVEGATE, // Beehive Gate
     FLAG_PROGRESSION_AZTECTUNNEL, // Aztec Tunnel Door
     FLAG_PROGRESSION_FACTORY_NEUTRALSWITCH, // Factory neutral gate open
-    FLAG_MODIFIER_PRODROOM, // Factory Prod Room On
     FLAG_COCONUTGATE, // Galleon Coconut Gate Opened
     FLAG_PROGRESSION_FUNGIGREENTUNNEL_FEATHER, // Fungi Green Path Open (Feather)
     FLAG_PROGRESSION_FUNGIGREENTUNNEL_PINEAPPLE, // Fungi Green Path Open (Pineapple)
     FLAG_PROGRESSION_FUNGIGOLDTUNNEL, // Fungi Gold Path Open
-    FLAG_PROGRESSION_5DIPADS, // Caves 5DI Pads spawned
 };
 
 static const short highreq_flags[] = {
     FLAG_5DT_SPAWNED, // 5DT Switches Spawned
     FLAG_MODIFIER_PRODROOM, // Prod Room On
     FLAG_MODIFIER_GALLEONSHIP, // Galleon Ship Spawned
-    FLAG_5DIPADS_SPAWNED, // Caves 5DI Pads Spawned
+    FLAG_PROGRESSION_5DIPADS, // Caves 5DI Pads Spawned
 };
 
 void qualityOfLife_shorteners(void) {

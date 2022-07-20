@@ -62,6 +62,9 @@
 #define TGROUNDS_BAMBOOGATE 0x49
 #define TGROUNDS_SWITCH 0x39
 #define JAPES_DIDDYBAMBOOGATE 0x47
+#define JAPES_GATE0 0x2D
+#define JAPES_GATE1 0x2E
+#define JAPES_GATE2 0x2F
 #define JAPES_GUNSWITCH0 0x30
 #define JAPES_GUNSWITCH1 0x31
 #define JAPES_GUNSWITCH2 0x32
@@ -475,6 +478,13 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 					return !checkFlag(kong_flags[(int)Rando.free_target_japes],0);
 				} else if ((index == 2) || (index == 3)) {
 					return getPressedSwitch(behaviour_pointer, kong_pellets[(int)Rando.free_source_japes], id);
+				} else if (index == 4) {
+					return !Rando.quality_of_life; // TODO: Retry this
+				}
+			} else if ((param2 == JAPES_GATE0) || (param2 == JAPES_GATE1) || (param2 == JAPES_GATE2)) {
+				if (Rando.open_level_sections) {
+					behaviour_pointer->current_state = 20;
+					behaviour_pointer->next_state = 20;
 				}
 			} else if (param2 == JAPES_DIDDYFREEGB) {
 				if (index == 0) {
