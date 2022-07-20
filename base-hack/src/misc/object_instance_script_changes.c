@@ -50,6 +50,12 @@
 #define CAVES_BIGBOULDERPAD 0x2F
 #define GALLEON_DKSTAR 0xC
 
+#define GALLEON_BONGO_PAD 0x11
+#define GALLEON_GUITAR_CACTUS_PAD 0x14
+#define GALLEON_SAX_PAD 0x13
+#define GALLEON_TROMBONE_PAD 0x12
+#define GALLEON_TRIANGLE_PAD 0x1B
+
 #define TGROUNDS_BAMBOOGATE 0x49
 #define TGROUNDS_SWITCH 0x39
 #define JAPES_DIDDYBAMBOOGATE 0x47
@@ -71,6 +77,10 @@
 #define FACTORY_FREESWITCH 0x24
 #define FACTORY_CAGE 0x21
 #define FACTORY_FREEGB 0x78
+
+#define FACTORY_4231_SWITCH 0x3F
+#define FACTORY_3124_SWITCH 0x40
+#define FACTORY_1342_SWITCH 0x41
 
 #define ISLES_JAPESBOULDER 0x3
 #define ISLES_AZTECDOOR 0x02
@@ -223,6 +233,19 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 					progress = 3;
 				}
 				behaviour_pointer->next_state = progress;
+			}
+			else if(param2 == GALLEON_BONGO_PAD || param2 == GALLEON_GUITAR_CACTUS_PAD || param2 == GALLEON_TRIANGLE_PAD || param2 == GALLEON_SAX_PAD || param2 == GALLEON_TROMBONE_PAD){
+				if (index == 0) { 
+					return !Rando.remove_high_requirements;
+				}
+				else{
+					if (Rando.remove_high_requirements) {
+						behaviour_pointer->next_state = 6;
+					}
+					else {
+						behaviour_pointer->next_state = 5;
+					}
+				}
 			}
 			break;
 		case ANGRY_AZTEC:
@@ -506,6 +529,27 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 				} else if (index < 28) {
 					return checkContactSublocation(behaviour_pointer,id,Rando.piano_game_order[index - 21] + 1, 0);
 				}
+			} else if (param2 == FACTORY_3124_SWITCH || param2 == FACTORY_4231_SWITCH || param2 == FACTORY_1342_SWITCH){
+				if (index == 0) {
+					return Rando.fast_gbs;
+				}
+				else if (index == 1) {
+					// Check if GB is in a state >= 3, this means it was spawned.
+					int index = convertIDToIndex(96);
+					int* m2location = ObjectModel2Pointer;
+					if (index > -1) {
+						ModelTwoData* _object = getObjectArrayAddr(m2location,0x90,index);
+						behaviour_data* behaviour = (behaviour_data*)_object->behaviour_pointer;
+						if (_object && behaviour) {
+							if(behaviour->current_state <= 3) {
+								behaviour_pointer->current_state = 5;
+							}
+						}
+					}
+				}
+				else if (index == 2) {
+					disableDiddyRDDoors();
+				}
 			}
 			break;
 		case MILL_FRONT:
@@ -662,4 +706,16 @@ int spawnCannonWrapper(void) {
 		} 
 	}
 	return 0;
+}
+
+void disableDiddyRDDoors(void) {
+	for(int i = 63; i < 66; ++i) {
+		int index = convertIDToIndex(i);
+		int* m2location = ObjectModel2Pointer;
+		ModelTwoData* _object = getObjectArrayAddr(m2location,0x90,index);
+		behaviour_data* behaviour = (behaviour_data*)_object->behaviour_pointer;
+		if (behaviour) {
+			setScriptRunState(behaviour,2,0);
+		}
+	}
 }
