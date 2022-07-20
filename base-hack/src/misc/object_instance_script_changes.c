@@ -19,6 +19,8 @@
 #define TINY_TEMPLE 0x10
 #define CAVES_CHUNKY_5DC 0x5A
 #define HELM_LOBBY 0xAA
+#define GALLEON_FISH 0x33
+#define TREASURE_CHEST 0x2C
 
 #define FUNGI_MINECART_GRATE 0x22
 #define SEASICK_SHIP 0x27
@@ -116,7 +118,14 @@
 #define LLAMA_MATCHING_HEAD_SOUND7_0 0x1C // Sound 170
 #define LLAMA_MATCHING_HEAD_SOUND7_1 0x28
 
+#define FISH_SHIELD1 0x3
+#define FISH_SHIELD2 0x4
+#define FISH_SHIELD3 0x5
+
+#define CHEST_PEARL_0 0x0
+
 #define FACTORY_PIANO 0x14
+#define FACTORY_DARTBOARD 0x7F
 
 void hideObject(behaviour_data* behaviour_pointer) {
 	behaviour_pointer->unk_60 = 1;
@@ -532,8 +541,7 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 			} else if (param2 == FACTORY_3124_SWITCH || param2 == FACTORY_4231_SWITCH || param2 == FACTORY_1342_SWITCH){
 				if (index == 0) {
 					return Rando.fast_gbs;
-				}
-				else if (index == 1) {
+				} else if (index == 1) {
 					// Check if GB is in a state >= 3, this means it was spawned.
 					int index = convertIDToIndex(96);
 					int* m2location = ObjectModel2Pointer;
@@ -546,9 +554,23 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 							}
 						}
 					}
-				}
-				else if (index == 2) {
+				} else if (index == 2) {
 					disableDiddyRDDoors();
+        }
+			} else if (param2 == FACTORY_DARTBOARD) {
+				if (index < 6) {
+					if (behaviour_pointer->switch_pressed == (Rando.dartboard_order[index] + 1)) {
+						if (behaviour_pointer->contact_actor_type == 43) {
+							if (canHitSwitch()) {
+								int index = convertSubIDToIndex(id);
+								int* m2location = ObjectModel2Pointer;
+								ModelTwoData* _object = getObjectArrayAddr(m2location,0x90,index);
+								setSomeTimer(_object->object_type);
+								return 1;
+							}
+						}
+					}
+					return 0;
 				}
 			}
 			break;
@@ -652,6 +674,31 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 					return checkFlag(kong_flags[(int)Rando.starting_kong],0);
 				} else if (index == 1) {
 					return !checkFlag(kong_flags[(int)Rando.starting_kong],0);
+				}
+			}
+			break;
+		case GALLEON_FISH:
+			if ((param2 == FISH_SHIELD1) || (param2 == FISH_SHIELD2) || (param2 == FISH_SHIELD3)) {
+				int fish_state = 1;
+				if (Rando.fast_gbs) {
+					fish_state = 5;
+				}
+				behaviour_pointer->next_state = fish_state;
+			}
+			break;
+		case TREASURE_CHEST:
+			if (param2 == CHEST_PEARL_0) {
+				if (Rando.fast_gbs) {
+					int pearls_collected = 0;
+					for (int i = 0; i < 5; i++) {
+						pearls_collected += checkFlag(FLAG_PEARL_0_COLLECTED + i,0);
+					}
+					if (pearls_collected >= 1) {
+						for (int i = 0; i < 5; i++) {
+							setPermFlag(FLAG_PEARL_0_COLLECTED + i);
+						}
+						behaviour_pointer->next_state = 2;
+					}
 				}
 			}
 			break;
