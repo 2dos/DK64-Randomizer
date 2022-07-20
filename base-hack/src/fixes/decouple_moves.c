@@ -101,4 +101,23 @@ void decouple_moves_fixes(void) {
 		// *(float*)(0x80036C4C) = 3.0f;
 		// *(float*)(0x80036C50) = 3.0f;
 	}
+
+	if (Rando.fast_gbs) {
+
+		if (CurrentMap == 0x1B) { // Factory Car Race
+			*(short*)(0x8002D03A) = 0x0001; //1 Lap
+		}
+
+		if(CurrentMap == 0xB9) { //Castle Car Race
+			*(short*)(0x8002D096) = 0x0001; //1 Lap
+		}
+
+		if(CurrentMap == 0x27) { //Seal Race
+			*(short*)(0x8002D0E2) = 0x0001; //1 Lap
+		}
+
+		if(CurrentMap == 0x30) {
+			setPermFlag(FLAG_RABBIT_ROUND1);
+		}
+	}
 }
