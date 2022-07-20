@@ -19,19 +19,19 @@ def apply_cosmetic_colors(spoiler: Spoiler):
         js.document.getElementById("enguarde_colors").value = "randomized"
 
     kong_settings = [
-        {"kong": "dk", "palettes": [{"name": "base", "image": 3724, "fill_type": "radial"}], "base_setting": "dk_colors", "custom_setting": "dk_custom_color", "kong_index": 0},
-        {"kong": "diddy", "palettes": [{"name": "cap_shirt", "image": 3686, "fill_type": "radial"}], "base_setting": "diddy_colors", "custom_setting": "diddy_custom_color", "kong_index": 1},
-        {"kong": "lanky", "palettes": [{"name": "overalls", "image": 3689, "fill_type": "radial"}], "base_setting": "lanky_colors", "custom_setting": "lanky_custom_color", "kong_index": 2},
-        {"kong": "tiny", "palettes": [{"name": "overalls", "image": 6014, "fill_type": "radial"}], "base_setting": "tiny_colors", "custom_setting": "tiny_custom_color", "kong_index": 3},
+        {"kong": "dk", "palettes": [{"name": "base", "image": 3724, "fill_type": "block"}], "base_setting": "dk_colors", "custom_setting": "dk_custom_color", "kong_index": 0},
+        {"kong": "diddy", "palettes": [{"name": "cap_shirt", "image": 3686, "fill_type": "block"}], "base_setting": "diddy_colors", "custom_setting": "diddy_custom_color", "kong_index": 1},
+        {"kong": "lanky", "palettes": [{"name": "overalls", "image": 3689, "fill_type": "block"}], "base_setting": "lanky_colors", "custom_setting": "lanky_custom_color", "kong_index": 2},
+        {"kong": "tiny", "palettes": [{"name": "overalls", "image": 6014, "fill_type": "block"}], "base_setting": "tiny_colors", "custom_setting": "tiny_custom_color", "kong_index": 3},
         {
             "kong": "chunky",
-            "palettes": [{"name": "shirt_back", "image": 3769, "fill_type": "checkered"}, {"name": "shirt_front", "image": 3687, "fill_type": "radial"}],
+            "palettes": [{"name": "shirt_back", "image": 3769, "fill_type": "checkered"}, {"name": "shirt_front", "image": 3687, "fill_type": "block"}],
             "base_setting": "chunky_colors",
             "custom_setting": "chunky_custom_color",
             "kong_index": 4,
         },
-        {"kong": "rambi", "palettes": [{"name": "base", "image": 3826, "fill_type": "radial"}], "base_setting": "rambi_colors", "custom_setting": "rambi_custom_color", "kong_index": 5},
-        {"kong": "enguarde", "palettes": [{"name": "base", "image": 3847, "fill_type": "radial"}], "base_setting": "enguarde_colors", "custom_setting": "enguarde_custom_color", "kong_index": 6},
+        {"kong": "rambi", "palettes": [{"name": "base", "image": 3826, "fill_type": "block"}], "base_setting": "rambi_colors", "custom_setting": "rambi_custom_color", "kong_index": 5},
+        {"kong": "enguarde", "palettes": [{"name": "base", "image": 3847, "fill_type": "block"}], "base_setting": "enguarde_colors", "custom_setting": "enguarde_custom_color", "kong_index": 6},
     ]
 
     for kong in kong_settings:
