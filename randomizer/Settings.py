@@ -261,6 +261,8 @@ class Settings:
         self.wrinkly_hints = "off"
         self.fast_warps = False
         self.dpad_display = False
+        self.high_req = False
+        self.fast_gbs = False
 
     def shuffle_prices(self):
         """Price randomization. Reuseable if we need to reshuffle prices."""
