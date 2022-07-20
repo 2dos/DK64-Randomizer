@@ -74,7 +74,7 @@ LogicRegions = {
     Regions.Lighthouse: Region("Lighthouse", Levels.GloomyGalleon, False, -1, [
         LocationLogic(Locations.GalleonDonkeyLighthouse, lambda l: Events.ActivatedLighthouse in l.Events)
     ], [
-        Event(Events.ActivatedLighthouse, lambda l: l.grab and l.isdonkey),
+        Event(Events.ActivatedLighthouse, lambda l: l.settings.high_req or (l.slam and l.grab and l.isdonkey)),
     ], [
         TransitionFront(Regions.LighthouseArea, lambda l: True, Transitions.GalleonLighthouseToLighthouseArea),
     ]),
