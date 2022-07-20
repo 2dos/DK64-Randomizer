@@ -174,7 +174,7 @@ void initHack(int source) {
 				*(short*)(0x80750682) = 0x1;
 				*(int*)(0x806BDC24) = 0x0C17FCDE; // Change takeoff warp func
 				// No Rain
-				*(float*)(0x8075E3E0) = 0.0f; // Set Isles Rain Radius to 0 Chunky Toy box
+				*(float*)(0x8075E3E0) = 0.0f; // Set Isles Rain Radius to 0
 
 				*(short*)(0x806BDC8C) = 0x1000; // Apply no cutscene to all keys
 				*(short*)(0x806BDC3C) = 0x1000; // Apply shorter timer to all keys
