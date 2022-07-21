@@ -3,7 +3,7 @@ import gzip
 import math
 
 color_palettes = [
-    {"kong": "dk", "zones": [{"zone": "base", "image": 3724, "colors": ["#2da1ad"], "fill_type": "block"}]}, # 2da1ad
+    {"kong": "dk", "zones": [{"zone": "base", "image": 3724, "colors": ["#2da1ad"], "fill_type": "block"}]},  # 2da1ad
     {"kong": "diddy", "zones": [{"zone": "cap_shirt", "image": 3686, "colors": ["#00ff37"], "fill_type": "block"}]},
     {
         "kong": "lanky",
