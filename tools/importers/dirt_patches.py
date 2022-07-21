@@ -7,7 +7,7 @@ with open("dirt_patches.csv", newline="") as csvfile:
     patch_data_json = []
     for idx, row in enumerate(patch_data):
         if idx > 0:
-            patch_data_json.append({"map": row[1], "subname": row[3], "name": row[4], "coords": [float(row[5]), float(row[6]), float(row[7])], "rot": int(row[9]), "vanilla": row[10] == "YES"})
+            patch_data_json.append({"map": row[1], "levelname": row[2], "subname": row[3], "name": row[4], "coords": [float(row[5]), float(row[6]), float(row[7])], "rot": int(row[9]), "vanilla": row[10] == "YES", "group": int(row[11]), "resize": row[14]})
     print(f"{len(patch_data_json)} patches found")
     print("-----------------")
     for x in patch_data_json:
@@ -21,4 +21,4 @@ with open("dirt_patches.csv", newline="") as csvfile:
             post = re.sub(r"((?<=[a-z])[A-Z]|(?<!\A)[A-Z](?=[a-z]))", r" \1", post)
             subname = f"{pre} - {post}: "
         name = f"{subname}{x['name']}"
-        print(f"DirtPatchData(name=\"{name}\", map_id=Maps.{x['map']}, x={x['coords'][0]}, y={x['coords'][1]}, z={x['coords'][2]}, rotation={x['rot']}{vanilla_text}),")
+        print(f"DirtPatchData(name=\"{name}\", level=\"{x['levelname']}\", map_id=Maps.{x['map']}, x={x['coords'][0]}, y={x['coords'][1]}, z={x['coords'][2]}, rotation={x['rot']}{vanilla_text}, group={x['group']}, resize=\"{x['resize']}\"),")
