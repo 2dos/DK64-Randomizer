@@ -281,9 +281,28 @@ def patching_response(responded_data):
         ROM().write(1)
 
     # Activate Bananaports
-    if spoiler.settings.activate_all_bananaports:
+    if spoiler.settings.activate_all_bananaports == "all":
         ROM().seek(sav + 0x128)
         ROM().write(1)
+
+    if spoiler.settings.activate_all_bananaports == "isles":
+        ROM().seek(sav + 0x128)
+        ROM().write(2)
+
+    # Enable Remove High Requirements
+    if spoiler.settings.high_req:
+        ROM().seek(sav + 0x169)
+        ROM().write(1)
+
+    # Enable Fast GBs
+    if spoiler.settings.fast_gbs:
+        ROM().seek(sav + 0x16A)
+        ROM().write(1)
+
+    # Enable Auto Key Turn ins
+    # if spoiler.settings.auto_keys:
+    #    ROM().seek(sav + 0x14B)
+    #    ROM().write(1)
 
     keys_turned_in = [0, 1, 2, 3, 4, 5, 6, 7]
     if len(spoiler.settings.krool_keys_required) > 0:
@@ -363,6 +382,7 @@ def patching_response(responded_data):
             "krool_keys_required",
             "blocker_golden_bananas",
             "troff_n_scoff_bananas",
+            "colors",
         ]
         if setting not in hidden_settings:
             row = table.insertRow(-1)

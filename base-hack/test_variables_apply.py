@@ -47,6 +47,8 @@ set_variables = {
     "fast_gbs": 1,
     "remove_high_requirements": 1,
     "open_level_sections": 1,
+    "auto_keys": 1,
+    "test_zone": [0x40, 4],
     "special_move_prices": [
         [1, 2, 3],
         [4, 5, 6],
@@ -68,6 +70,21 @@ def valtolst(val, size):
             arr[size - x - 1] = int(conv % 256)
             conv = (conv - (conv % 256)) / 256
     return arr
+
+
+def readFromROM(offset, size):
+    """Read from ROM."""
+    with open("rom/dk64-randomizer-base-dev.z64", "rb") as rom:
+        rom.seek(offset)
+        return int.from_bytes(rom.read(size), "big")
+
+
+def writeToROMNoOffset(offset, value, size, name):
+    """Write to ROM without offset."""
+    print("- Writing " + name + " (offset " + hex(offset) + ") to " + str(value))
+    with open("rom/dk64-randomizer-base-dev.z64", "r+b") as rom:
+        rom.seek(offset)
+        rom.write(bytearray(valtolst(value, size)))
 
 
 def writeToROM(offset, value, size, name):
@@ -121,7 +138,20 @@ with open("include/variable_space_structs.h", "r") as varspace:
                         for lvl in kong:
                             writeToROM(offset, lvl, size, x)
                             offset += size
-
+        elif x == "test_zone":
+            ptr_table_offset = 0x101C50
+            lz_table = ptr_table_offset + readFromROM(ptr_table_offset + (18 * 4), 4)
+            isles_list = ptr_table_offset + readFromROM(lz_table + (0x22 * 4), 4)
+            isles_list_end = ptr_table_offset + readFromROM(lz_table + (0x22 * 4) + 4, 4)
+            isles_list_size = int((isles_list_end - isles_list) / 0x38)
+            isles_list += 2
+            for lz_index in range(isles_list_size):
+                lz_type = readFromROM(isles_list + (0x38 * lz_index) + 0x10, 2)
+                lz_map = readFromROM(isles_list + (0x38 * lz_index) + 0x12, 2)
+                lz_exit = readFromROM(isles_list + (0x38 * lz_index) + 0x14, 2)
+                if lz_type == 9 and lz_map == 0xB0 and lz_exit == 0:
+                    writeToROMNoOffset(isles_list + (0x38 * lz_index) + 0x12, set_variables[x][0], 2, "Isles -> TGrounds Zone Map")
+                    writeToROMNoOffset(isles_list + (0x38 * lz_index) + 0x14, set_variables[x][1], 2, "Isles -> TGrounds Zone Exit")
         else:
             for y in struct_data2:
                 if x == y[2]:

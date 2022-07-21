@@ -1,3 +1,5 @@
+"""Install packages that are required to build the base hack."""
+
 import pkg_resources
 import subprocess
 import sys

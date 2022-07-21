@@ -279,7 +279,7 @@ def randomize_enemies(spoiler: Spoiler):
                                 sub_index += 1
                                 if new_enemy_id != Enemies.Book or cont_map_id not in (Maps.CavesDonkeyCabin, Maps.JapesLankyCave, Maps.AngryAztecLobby):
                                     if new_enemy_id != Enemies.Kosha or cont_map_id != Maps.CavesDiddyLowerCabin:
-                                        if new_enemy_id != Enemies.Guard or cont_map_id not in (Maps.CavesDiddyLowerCabin, Maps.CavesTinyIgloo):
+                                        if new_enemy_id != Enemies.Guard or cont_map_id not in (Maps.CavesDiddyLowerCabin, Maps.CavesTinyIgloo, Maps.CavesTinyCabin):
                                             ROM().seek(cont_map_spawner_address + spawner["offset"])
                                             ROM().writeMultipleBytes(new_enemy_id, 1)
                                             if new_enemy_id in EnemyMetaData.keys():

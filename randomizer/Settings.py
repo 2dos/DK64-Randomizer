@@ -225,13 +225,7 @@ class Settings:
         self.music_events = None
 
         #  Color
-        self.dk_colors = None
-        self.diddy_colors = None
-        self.lanky_colors = None
-        self.tiny_colors = None
-        self.chunky_colors = None
-        self.rambi_colors = None
-        self.enguarde_colors = None
+        self.colors = {}
 
         #  Misc
         self.generate_spoilerlog = None
@@ -261,6 +255,8 @@ class Settings:
         self.wrinkly_hints = "off"
         self.fast_warps = False
         self.dpad_display = False
+        self.high_req = False
+        self.fast_gbs = False
 
     def shuffle_prices(self):
         """Price randomization. Reuseable if we need to reshuffle prices."""

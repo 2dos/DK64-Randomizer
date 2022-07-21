@@ -146,6 +146,7 @@ extern void modifyObjectState(int object_id, int dest_state);
 extern void spawnPianoKremling(int kremling_index, int unk0);
 extern void setAcceptablePianoKey(int id, int key, int unk0);
 extern int checkContactSublocation(void* behaviour_pointer, int id, int key, int unk0);
+extern void PlayCutsceneFromModelTwoScript(void* behavior_pointer, int cutscene, int unk0, int unk1);
 
 //vanilla data
 extern float TransitionSpeed;

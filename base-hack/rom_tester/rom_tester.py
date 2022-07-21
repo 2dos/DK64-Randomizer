@@ -213,12 +213,16 @@ for f in files:
             output(f"\tMusic Rando On: {str(getTrueFalse(fh,0x11F,1))}")
             output(f"\tShop Indicator On: {str(getTrueFalse(fh,0x124,1))}")
             output(f"\tWarp to Isles Enabled: {str(getTrueFalse(fh,0x125,1))}")
-            output(f"\tColor Kongs: {str(getTrueFalse(fh,0x126,1))}")
-            rgb_offset = 0x127
-            for x in range(8):
-                if x != 5:
-                    output(f"\t\t{kongs[x]} RGB: {hex(getValue(fh,rgb_offset,3))}")
-                    rgb_offset += 3
+            output(f"\tSkip Arcade Round 1: {str(getTrueFalse(fh,0x126,1))}")
+            output(f"\tOpen Levels: {str(getTrueFalse(fh,0x127,1))}")
+            output(f"\tActivate All Warps: {str(getTrueFalse(fh,0x128,1))}")
+            output(f"\tD-Pad Visual Showed: {str(getTrueFalse(fh,0x129,1))}")
+            output(f"\tFast Warps: {str(getTrueFalse(fh,0x12A,1))}")
+            output(f"\tShort Bosses: {str(getTrueFalse(fh,0x12B,1))}")
+            output(f"\tCoin Requirements")
+            for x_i, x in enumerate(["Caves Beetle Race", "Aztec Beetle Race", "Factory Car Race", "Seal Race", "Castle Car Race", "Japes Minecart", "Fungi Minecart", "Castle Minecart"]):
+                output(f"\t\t{x}: {str(getValue(fh,0x12C + x_i, 1))}")
+            output(f"\tShop Hints: {str(getTrueFalse(fh,0x13B,1))}")
             output(f"\tLobbies Auto-opened:")
             for x in range(8):
                 output(f"\t\t{levels[x]} Lobby Entrance: {str(((getValue(fh,0x13C,1) >> x) & 1) != 0)}")
@@ -230,3 +234,25 @@ for f in files:
                 output(f"\tJetpac Requirement: Vanilla")
             else:
                 output(f"\tJetpac Requirement: {jetpac_req} Medals")
+            output(f"\tStarting Kong: {str(getTrueFalse(fh,0x141,1))}")
+            output(f"\tLocked Kongs:")
+            for x_i, x in enumerate(["Japes", "Llama Temple", "Dome Temple", "Factory"]):
+                for y_i, y in enumerate(["Locked", "Puzzle Solver"]):
+                    output(f"\t\t{x} ({y}): {getKong(fh,0x142 + (x_i * 2) + y_i)}")
+            versions = ["Live", "Dev Site", "Localhost"]
+            output(f"\tVersion: {versions[getValue(fh,0x14A,1)]}")
+            output(f"\tAuto-Keys: {str(getTrueFalse(fh,0x14B,1))}")
+            output(f"\tMatching Game Sounds:")
+            for x in range(8):
+                output(f"\t\tSound {x+1}: {getValue(fh,0x14C + (2 * x),2)}")
+            piano_keys = ["A", "B", "C", "D", "E", "F"]
+            piano_str = ""
+            for x in range(7):
+                if x > 0:
+                    piano_str += f", {piano_keys[getValue(fh,0x15C + x,1)]}"
+                else:
+                    piano_str += piano_keys[getValue(fh, 0x15C + x, 1)]
+            output(f"\tPiano Game Order: {piano_str}")
+            # Dartboard: Skipped
+            output(f"\tRemove High Requirements: {str(getTrueFalse(fh,0x169,1))}")
+            output(f"\tFast GBs: {str(getTrueFalse(fh,0x16A,1))}")

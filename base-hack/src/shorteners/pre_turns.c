@@ -69,7 +69,7 @@ void auto_turn_keys(void) {
 	if (ObjectModel2Timer < 5) {
 		for (int i = 0; i < 8; i++) {
 			if (checkFlag(normal_key_flags[i],0)) {
-				apply_key(i,0,0);
+				apply_key(i,0,1);
 			}
 		}
 	}

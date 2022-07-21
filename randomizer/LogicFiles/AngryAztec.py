@@ -57,7 +57,7 @@ LogicRegions = {
         LocationLogic(Locations.AztecChunkyCagedBarrel, lambda l: l.hunkyChunky and l.ischunky, MinigameType.BonusBarrel),
         LocationLogic(Locations.AztecKasplatNearLab, lambda l: True),
     ], [
-        Event(Events.FedTotem, lambda l: l.jetpack and l.peanut and l.Slam and l.diddy),
+        Event(Events.FedTotem, lambda l: l.settings.high_req or (l.jetpack and l.peanut and l.Slam and l.diddy)),
     ], [
         TransitionFront(Regions.AngryAztecStart, lambda l: True),
         TransitionFront(Regions.DonkeyTemple, lambda l: Events.FedTotem in l.Events and l.coconut and l.isdonkey, Transitions.AztecMainToDonkey),
