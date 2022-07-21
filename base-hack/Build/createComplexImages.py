@@ -195,7 +195,6 @@ for num_type in num_types:
     line_num = num_type[1]
     line_im = Image.open(f"{hash_dir}{line_num}.png")
     line = line_im.crop((10, 23, 22, 26))
-    line.save(f"{hash_dir}test.png")
     num_im = Image.open(f"{hash_dir}{number}.png")
     line_y = 1
     num_im.paste(line, (7, line_y), line)

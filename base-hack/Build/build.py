@@ -797,7 +797,26 @@ with open(newROMName, "r+b") as fh:
         if os.path.exists(pth):
             os.remove(pth)
     other_remove = []
-    displays = ["dk_face", "diddy_face", "lanky_face", "tiny_face", "chunky_face", "none", "shared", "soldout32", "wxys", "yellow_qmark_0", "yellow_qmark_1", "empty44"]
+    displays = [
+        "dk_face",
+        "diddy_face",
+        "lanky_face",
+        "tiny_face",
+        "chunky_face",
+        "none",
+        "shared",
+        "soldout32",
+        "wxys",
+        "yellow_qmark_0",
+        "yellow_qmark_1",
+        "empty44",
+        "homing_crate",
+        "num_6_lit",
+        "num_6_unlit",
+        "num_9_lit",
+        "num_9_unlit",
+        "standard_crate",
+    ]
     for disp in displays:
         for ext in [".png", ".rgba32"]:
             other_remove.append(f"displays/{disp}{ext}")
@@ -807,6 +826,27 @@ with open(newROMName, "r+b") as fh:
         pth = f"assets/Non-Code/{x}"
         if os.path.exists(pth):
             os.remove(pth)
+    hash_items = [
+        "dk_tie_palette",
+        "homing_crate_0",
+        "homing_crate_1",
+        "num_1_lit",
+        "num_1_unlit",
+        "num_6_lit",
+        "num_6_unlit",
+        "num_7_lit",
+        "num_7_unlit",
+        "num_9_lit",
+        "num_9_unlit",
+        "standard_crate_0",
+        "standard_crate_1",
+        "tiny_palette",
+    ]
+    for hash_item in hash_items:
+        for f_t in ["rgba5551", "png"]:
+            pth = f"assets/Non-Code/hash/{hash_item}.{f_t}"
+            if os.path.exists(pth):
+                os.remove(pth)
     credits_bins = ["credits", "squish"]
     for x in credits_bins:
         pth = f"assets/Non-Code/credits/{x}.bin"
