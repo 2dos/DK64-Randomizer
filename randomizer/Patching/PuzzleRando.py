@@ -33,7 +33,7 @@ def randomize_puzzles(spoiler: Spoiler):
         if spoiler.setting.fast_gbs:
             race_requirements.factory_race = [3,8]
             race_requirements.castle_race = [5,12]
-            race_requirements.seal_race = [5,14]
+            race_requirements.seal_race = [5,10]
 
         coin_req_info = [
             {"offset": 0x12C, "coins": random.randint(10, 50)},  # Caves Beetle
