@@ -1380,7 +1380,7 @@ def ShuffleMisc(spoiler):
         spoiler.bananaport_replacements = replacements.copy()
         spoiler.human_warp_locations = human_replacements
 
-    if spoiler.settings.activate_all_bananaports in ["all","isles"]:
+    if spoiler.settings.activate_all_bananaports in ["all", "isles"]:
         warpMapIds = set([BananaportVanilla[warp].map_id for warp in Warps])
         for map_id in warpMapIds:
             mapWarps = [BananaportVanilla[warp] for warp in Warps if BananaportVanilla[warp].map_id == map_id]
