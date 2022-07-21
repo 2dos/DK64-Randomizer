@@ -3,7 +3,6 @@ import random
 from randomizer.Patching.Patcher import ROM
 from randomizer.Spoiler import Spoiler
 
-import array as array
 
 
 def chooseSFX():
