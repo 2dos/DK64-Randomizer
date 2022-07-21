@@ -166,6 +166,41 @@ for crate in crate_names:
     # im = im.resize((32,32))
     im.save(f"{base_dir}{crate}.png")
 
+# Number Game Images
+# 6 (1 as template)
+lit = ["num_6_lit", "num_1_lit"]
+unlit = ["num_6_unlit", "num_1_unlit"]
+num_types = [lit, unlit]
+base_dir = getDir("assets/Non-Code/displays/")
+hash_dir = getDir("assets/Non-Code/hash/")
+for num_type in num_types:
+    number = num_type[0]
+    line_num = num_type[1]
+    if not os.path.exists(base_dir):
+        os.mkdir(base_dir)
+    line_im = Image.open(f"{hash_dir}{line_num}.png")
+    line = line_im.crop((13, 5, 16, 18))
+    line_90 = line.rotate(90, PIL.Image.Resampling.NEAREST, expand=1)
+    num_im = Image.open(f"{hash_dir}{number}.png")
+    line_y = 2
+    num_im.paste(line_90, (5, line_y), line_90)
+    num_im.paste(line_90, (12, line_y), line_90)
+    num_im.save(f"{base_dir}{number}.png")
+# 9 (7 as template)
+lit = ["num_9_lit", "num_7_lit"]
+unlit = ["num_9_unlit", "num_7_unlit"]
+num_types = [lit, unlit]
+for num_type in num_types:
+    number = num_type[0]
+    line_num = num_type[1]
+    line_im = Image.open(f"{hash_dir}{line_num}.png")
+    line = line_im.crop((10, 23, 22, 26))
+    line.save(f"{hash_dir}test.png")
+    num_im = Image.open(f"{hash_dir}{number}.png")
+    line_y = 1
+    num_im.paste(line, (7, line_y), line)
+    num_im.paste(line, (14, line_y), line)
+    num_im.save(f"{base_dir}{number}.png")
 
 rmve = ["01234.png", "56789.png", "boss_key.png", "WXYL.png", "specialchars.png", "red_qmark_0.png", "red_qmark_1.png"]
 for kong in kongs:

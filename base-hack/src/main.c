@@ -138,7 +138,11 @@ void cFuncLoop(void) {
 	current_avg_lag = lag_sum;
 	current_avg_lag /= LAG_CAP;
 	if ((Gamemode == ADVENTURE_MODE) || (Gamemode == SNIDES_BONUS_GAMES)) {
-		BalancedIGT += 1;
+		if (CutsceneActive == 1) {
+			BalancedIGT += StoredLag;
+		} else {
+			BalancedIGT += 2;
+		}
 	}
 };
 

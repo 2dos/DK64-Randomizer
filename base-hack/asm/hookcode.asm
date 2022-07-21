@@ -748,6 +748,18 @@ START_HOOK:
 			J 		0x806E22B8
 			ANDI 	t2, t1, 0x2
 
+	HomingHUDHandle:
+		LUI 		a0, hi(ForceStandardAmmo)
+		LBU 		a0, lo(ForceStandardAmmo) (a0)
+		BEQZ 		a0, HomingHUDHandle_Finish
+		NOP
+		ADDIU 		a3, r0, 0x2
+
+		HomingHUDHandle_Finish:
+			OR 			a0, a3, r0
+			J 			0x806EB57C
+			OR 			a1, r0, r0
+
 	DKCollectableFix:
 		LHU 		v0, 0x4A (s0)
 		ADDIU 		t8, r0, 0xD // CB Single

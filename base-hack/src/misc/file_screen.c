@@ -87,10 +87,10 @@ int* display_text(int* dl) {
 	dl = displayText(dl,1,0x280,y,(char*)blueprints_count,0x81);
 	// Balanced IGT
 	y += LINE_GAP;
-	int secs = BalancedIGT % 1800;
+	int secs = BalancedIGT % 3600;
 	float secsf = secs;
-	secsf /= 30;
-	int hm = BalancedIGT / 1800;
+	secsf /= 60;
+	int hm = BalancedIGT / 3600;
 	int minutes = hm % 60;
 	int hours = hm / 60;
 	if (secs < 300) {

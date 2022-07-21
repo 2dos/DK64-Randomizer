@@ -183,6 +183,24 @@ file_dict = [
     },
 ]
 
+number_game_changes = [
+    {"number": 6, "state": "unlit", "texture": 520},
+    {"number": 6, "state": "lit", "texture": 521},
+    {"number": 9, "state": "unlit", "texture": 526},
+    {"number": 9, "state": "lit", "texture": 527},
+]
+for num in number_game_changes:
+    file_dict.append(
+        {
+            "name": f"Number Game ({num['number']}, {num['state']})",
+            "pointer_table_index": 7,
+            "file_index": num["texture"],
+            "source_file": f"assets/Non-Code/displays/num_{num['number']}_{num['state']}.png",
+            "texture_format": "rgba5551",
+            "do_not_compress": True,
+        }
+    )
+
 kong_names = ["DK", "Diddy", "Lanky", "Tiny", "Chunky"]
 ammo_names = ["standard_crate", "homing_crate"]
 

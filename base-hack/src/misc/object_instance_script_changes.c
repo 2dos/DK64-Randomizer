@@ -59,6 +59,11 @@
 #define GALLEON_SAX_PAD 0x13
 #define GALLEON_TROMBONE_PAD 0x12
 #define GALLEON_TRIANGLE_PAD 0x1B
+#define GALLEON_DK_5DSDOOR 0x19
+#define GALLEON_DIDDY_5DSDOOR 0x1A
+#define GALLEON_LANKY_5DSDOOR 0x17
+#define GALLEON_TINY_5DSDOOR 0x18
+#define GALLEON_CHUNKY_5DSDOOR 0x20
 
 #define TGROUNDS_BAMBOOGATE 0x49
 #define TGROUNDS_SWITCH 0x39
@@ -236,30 +241,79 @@ void playSFXContainer(int id, int vanilla_sfx, int new_sfx) {
 int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, int param2) {
 	switch(CurrentMap) {
 		case GLOOMY_GALLEON:
-			if (param2 == SEASICK_SHIP) {
-				if (Rando.randomize_more_loading_zones) {
-					initiateTransition_0((Rando.seasick_ship_enter >> 8) & 0xFF, Rando.seasick_ship_enter & 0xFF, 0, 0);
-				} else {
-					initiateTransition_0(31, 0, 0, 0);
-				}
-			} else if (param2 == GALLEON_DKSTAR) {
-				int progress = 1;
-				if (Rando.quality_of_life) {
-					progress = 3;
-				}
-				behaviour_pointer->next_state = progress;
-			}
-			else if(param2 == GALLEON_BONGO_PAD || param2 == GALLEON_GUITAR_CACTUS_PAD || param2 == GALLEON_TRIANGLE_PAD || param2 == GALLEON_SAX_PAD || param2 == GALLEON_TROMBONE_PAD){
-				if (index == 0) { 
-					return !Rando.remove_high_requirements;
-				}
-				else{
-					if (Rando.remove_high_requirements) {
-						behaviour_pointer->next_state = 6;
-					}
-					else {
-						behaviour_pointer->next_state = 5;
-					}
+			{
+				int gate_index = -1;
+				int gate_flag = -1;
+				switch (param2) {
+					case SEASICK_SHIP:
+						if (Rando.randomize_more_loading_zones) {
+							initiateTransition_0((Rando.seasick_ship_enter >> 8) & 0xFF, Rando.seasick_ship_enter & 0xFF, 0, 0);
+						} else {
+							initiateTransition_0(31, 0, 0, 0);
+						}
+						break;
+					case GALLEON_DKSTAR:
+						{
+							int progress = 1;
+							if (Rando.quality_of_life) {
+								progress = 3;
+							}
+							behaviour_pointer->next_state = progress;
+						}
+						break;
+					case GALLEON_BONGO_PAD:
+					case GALLEON_GUITAR_CACTUS_PAD:
+					case GALLEON_TRIANGLE_PAD:
+					case GALLEON_SAX_PAD:
+					case GALLEON_TROMBONE_PAD:
+						if (index == 0) { 
+							return !Rando.remove_high_requirements;
+						}
+						else{
+							if (Rando.remove_high_requirements) {
+								behaviour_pointer->next_state = 6;
+							}
+							else {
+								behaviour_pointer->next_state = 5;
+							}
+						}
+						break;
+					case GALLEON_DK_5DSDOOR:
+						gate_index = 0;
+						gate_flag = GALLEON_5DSOPEN_DK;
+					case GALLEON_DIDDY_5DSDOOR:
+						if (gate_index < 0) {
+							gate_index = 1;
+							gate_flag = GALLEON_5DSOPEN_DIDDY;
+						}
+					case GALLEON_LANKY_5DSDOOR:
+						if (gate_index < 0) {
+							gate_index = 2;
+							gate_flag = GALLEON_5DSOPEN_LANKY;
+						}
+					case GALLEON_TINY_5DSDOOR:
+						if (gate_index < 0) {
+							gate_index = 3;
+							gate_flag = GALLEON_5DSOPEN_TINY;
+						}
+					case GALLEON_CHUNKY_5DSDOOR:
+						if (gate_index < 0) {
+							gate_index = 4;
+							gate_flag = GALLEON_5DSOPEN_CHUNKY;
+						}
+						if (index == 0) {
+							if (Rando.remove_high_requirements) {
+								if (checkFlag(gate_flag,0)) {
+									behaviour_pointer->current_state = 10;
+									behaviour_pointer->next_state = 10;
+								}
+							}
+						} else {
+							if (Rando.remove_high_requirements) {
+								setPermFlag(gate_flag);
+							}
+						}
+					break;
 				}
 			}
 			break;
