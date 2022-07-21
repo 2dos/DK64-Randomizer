@@ -238,20 +238,50 @@ def modify(file_name, map_index):
                 writedatatoarr(byte_stream, int(float_to_hex(new_x), 16), 4, 0x0)
                 writedatatoarr(byte_stream, int(float_to_hex(new_y), 16), 4, 0x4)
                 writedatatoarr(byte_stream, int(float_to_hex(new_z), 16), 4, 0x8)
+            elif map_index == 0x40 and obj_id == 4:
+                # GMush Vines
+                added_actor.append(
+                    {
+                        "base_byte_stream": byte_stream,
+                        "x": int(float_to_hex(517.993), 16),
+                        "y": int(float_to_hex(1070.614), 16),
+                        "z": int(float_to_hex(510.374), 16),
+                        "id": 0xFF,
+                        "use_byte_stream": True,
+                    }
+                )
+                temp = []
+                for y in range(0x38):
+                    temp.append(byte_stream[y])
+                byte_stream = temp.copy()
+                new_x = 410.614
+                new_z = 512.886
+                writedatatoarr(byte_stream, int(float_to_hex(new_x), 16), 4, 0x0)
+                writedatatoarr(byte_stream, int(float_to_hex(new_z), 16), 4, 0x8)
             data = {"stream": byte_stream}
             actor.append(data)
             read_location += 0x38
         for x in added_actor:
             byte_stream_arr = []
             for y in range(0x38):
-                byte_stream_arr.append(0)
-            writedatatoarr(byte_stream_arr, x["x"], 4, 0x0)
-            writedatatoarr(byte_stream_arr, x["y"], 4, 0x4)
-            writedatatoarr(byte_stream_arr, x["z"], 4, 0x8)
-            writedatatoarr(byte_stream_arr, x["scale"], 4, 0xC)
-            writedatatoarr(byte_stream_arr, x["ry"], 2, 0x30)
-            writedatatoarr(byte_stream_arr, x["type"], 2, 0x32)
-            writedatatoarr(byte_stream_arr, x["id"], 2, 0x34)
+                if "use_byte_stream" in x and x["use_byte_stream"] and "base_byte_stream" in x:
+                    byte_stream_arr.append(x["base_byte_stream"][y])
+                else:
+                    byte_stream_arr.append(0)
+            if "x" in x:
+                writedatatoarr(byte_stream_arr, x["x"], 4, 0x0)
+            if "y" in x:
+                writedatatoarr(byte_stream_arr, x["y"], 4, 0x4)
+            if "z" in x:
+                writedatatoarr(byte_stream_arr, x["z"], 4, 0x8)
+            if "scale" in x:
+                writedatatoarr(byte_stream_arr, x["scale"], 4, 0xC)
+            if "ry" in x:
+                writedatatoarr(byte_stream_arr, x["ry"], 2, 0x30)
+            if "type" in x:
+                writedatatoarr(byte_stream_arr, x["type"], 2, 0x32)
+            if "id" in x:
+                writedatatoarr(byte_stream_arr, x["id"], 2, 0x34)
             actor.append({"stream": byte_stream_arr})
         for x in added_model2:
             byte_stream_arr = []
