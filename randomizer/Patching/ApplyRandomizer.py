@@ -281,9 +281,13 @@ def patching_response(responded_data):
         ROM().write(1)
 
     # Activate Bananaports
-    if spoiler.settings.activate_all_bananaports:
+    if spoiler.settings.activate_all_bananaports == "all":
         ROM().seek(sav + 0x128)
         ROM().write(1)
+
+    if spoiler.settings.activate_all_bananaports == "isles":
+        ROM().seek(sav + 0x128)
+        ROM().write(2)
 
     # Enable Remove High Requirements
     if spoiler.settings.high_req:
@@ -293,6 +297,11 @@ def patching_response(responded_data):
     # Enable Fast GBs
     if spoiler.settings.fast_gbs:
         ROM().seek(sav + 0x16A)
+        ROM().write(1)
+
+    # Enable Auto Key Turn ins
+    if spoiler.settings.auto_keys:
+        ROM().seek(sav + 0x14B)
         ROM().write(1)
 
     keys_turned_in = [0, 1, 2, 3, 4, 5, 6, 7]
