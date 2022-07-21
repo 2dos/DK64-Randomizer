@@ -46,17 +46,63 @@ def randomize_setup(spoiler: Spoiler):
         for count in range(pickup["weight"]):
             pickup_list.append(pickup["type"])
     if spoiler.settings.random_patches:
-        dirt_list = []
+        isles_dirt_list = []
+        round_one_level_dirt_list = []
+        round_two_level_dirt_list = []
+        drawn_level = ""
+        drawn_group = 0
         for x in DirtPatchLocations:
-            x.setPatch(False)
-            dirt_list.append(x.name)
-        for x in range(16):
-            selected_patch_name = random.choice(dirt_list)
+            x.setPatch(False) 
+            if x.level_name == "DK Isles":
+                isles_dirt_list.append(x.name)
+            else:
+                round_one_level_dirt_list.append(x.name) 
+                round_two_level_dirt_list.append(x.name) 
+        #draw 4 DK Isles Dirt Patches
+        for x in range(4):
+            selected_patch_name = random.choice(isles_dirt_list)
             for y in DirtPatchLocations:
                 if y.name == selected_patch_name:
                     y.setPatch(True)
                     print(selected_patch_name)
-                    dirt_list.remove(selected_patch_name)
+                    isles_dirt_list.remove(selected_patch_name)
+                    drawn_group = y.group
+            #clear out all the patches that should not be selected
+            for y in DirtPatchLocations:
+                if y.group == drawn_group:
+                    isles_dirt_list.remove(y.name)
+                
+        #Draw 7 non-DK Isles Dirt Patches, none of which are in the same level
+        for x in range(7):
+            selected_patch_name = random.choice(round_one_level_dirt_list)
+            for y in DirtPatchLocations:
+                if y.name == selected_patch_name:
+                    y.setPatch(True)
+                    print(selected_patch_name)
+                    round_one_level_dirt_list.remove(selected_patch_name)
+                    round_two_level_dirt_list.remove(selected_patch_name) #prevents the dirt patch from being selected in round 2
+                    drawn_level = y.level_name
+                    drawn_group = y.group
+            #clear out all the patches that should not be selected
+            for y in DirtPatchLocations:
+                if y.level_name == drawn_level:
+                    round_one_level_dirt_list.remove(y.name)
+                    if y.group == drawn_group:
+                        round_two_level_dirt_list.remove(y.name)
+                   
+
+        #Draw 5 extra non-DK Isles Dirt Patches, none of which are in the same level
+        for x in range(5):
+            selected_patch_name = random.choice(round_two_level_dirt_list)
+            for y in DirtPatchLocations:
+                if y.name == selected_patch_name:
+                    y.setPatch(True)
+                    print(selected_patch_name)
+                    round_two_level_dirt_list.remove(selected_patch_name)
+                    drawn_level = y.level_name
+            for y in DirtPatchLocations:
+                if y.level_name == drawn_level:
+                    round_two_level_dirt_list.remove(y.name)
 
     allowed_settings = [spoiler.settings.skip_arcader1, spoiler.settings.randomize_pickups, spoiler.settings.random_patches, spoiler.settings.puzzle_rando]
     enabled = False
