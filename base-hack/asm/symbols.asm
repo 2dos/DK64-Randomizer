@@ -136,6 +136,7 @@
 .definelabel spawnPianoKremling, 0x80641874
 .definelabel setAcceptablePianoKey, 0x806508B4
 .definelabel checkContactSublocation, 0x8064AB1C
+.definelabel PlayCutsceneFromModelTwoScript, 0x80641DA0
 
 //vanilla data
 .definelabel TransitionSpeed, 0x807FD88C

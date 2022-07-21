@@ -233,8 +233,10 @@ def modify(file_name, map_index):
                     temp.append(byte_stream[y])
                 byte_stream = temp.copy()
                 new_x = 1237.001
+                new_y = 175
                 new_z = 840.569
                 writedatatoarr(byte_stream, int(float_to_hex(new_x), 16), 4, 0x0)
+                writedatatoarr(byte_stream, int(float_to_hex(new_y), 16), 4, 0x4)
                 writedatatoarr(byte_stream, int(float_to_hex(new_z), 16), 4, 0x8)
             data = {"stream": byte_stream}
             actor.append(data)

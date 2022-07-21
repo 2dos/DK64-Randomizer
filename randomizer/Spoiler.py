@@ -100,6 +100,8 @@ class Spoiler:
         settings["helm_setting"] = self.settings.helm_setting
         settings["quality_of_life"] = self.settings.quality_of_life
         settings["enable_tag_anywhere"] = self.settings.enable_tag_anywhere
+        settings["fast_gbs"] = self.settings.fast_gbs
+        settings["high_req"] = self.settings.high_req
         settings["blocker_golden_bananas"] = self.settings.EntryGBs
         settings["troff_n_scoff_bananas"] = self.settings.BossBananas
         humanspoiler["Settings"] = settings

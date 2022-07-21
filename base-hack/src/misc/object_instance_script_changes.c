@@ -19,6 +19,9 @@
 #define TINY_TEMPLE 0x10
 #define CAVES_CHUNKY_5DC 0x5A
 #define HELM_LOBBY 0xAA
+#define GALLEON_FISH 0x33
+#define TREASURE_CHEST 0x2C
+#define CAVES_DK5DI 0x56
 
 #define FUNGI_MINECART_GRATE 0x22
 #define SEASICK_SHIP 0x27
@@ -49,10 +52,20 @@
 #define CAVES_SMALLBOULDERPAD 0x2E
 #define CAVES_BIGBOULDERPAD 0x2F
 #define GALLEON_DKSTAR 0xC
+#define AZTEC_LLAMACOCONUT 0xD
+
+#define GALLEON_BONGO_PAD 0x11
+#define GALLEON_GUITAR_CACTUS_PAD 0x14
+#define GALLEON_SAX_PAD 0x13
+#define GALLEON_TROMBONE_PAD 0x12
+#define GALLEON_TRIANGLE_PAD 0x1B
 
 #define TGROUNDS_BAMBOOGATE 0x49
 #define TGROUNDS_SWITCH 0x39
 #define JAPES_DIDDYBAMBOOGATE 0x47
+#define JAPES_GATE0 0x2D
+#define JAPES_GATE1 0x2E
+#define JAPES_GATE2 0x2F
 #define JAPES_GUNSWITCH0 0x30
 #define JAPES_GUNSWITCH1 0x31
 #define JAPES_GUNSWITCH2 0x32
@@ -71,6 +84,10 @@
 #define FACTORY_FREESWITCH 0x24
 #define FACTORY_CAGE 0x21
 #define FACTORY_FREEGB 0x78
+
+#define FACTORY_4231_SWITCH 0x3F
+#define FACTORY_3124_SWITCH 0x40
+#define FACTORY_1342_SWITCH 0x41
 
 #define ISLES_JAPESBOULDER 0x3
 #define ISLES_AZTECDOOR 0x02
@@ -106,7 +123,15 @@
 #define LLAMA_MATCHING_HEAD_SOUND7_0 0x1C // Sound 170
 #define LLAMA_MATCHING_HEAD_SOUND7_1 0x28
 
+#define FISH_SHIELD1 0x3
+#define FISH_SHIELD2 0x4
+#define FISH_SHIELD3 0x5
+
+#define CHEST_PEARL_0 0x0
+
 #define FACTORY_PIANO 0x14
+#define FACTORY_DARTBOARD 0x7F
+#define ICE_MAZE 0x0
 
 void hideObject(behaviour_data* behaviour_pointer) {
 	behaviour_pointer->unk_60 = 1;
@@ -224,6 +249,19 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 				}
 				behaviour_pointer->next_state = progress;
 			}
+			else if(param2 == GALLEON_BONGO_PAD || param2 == GALLEON_GUITAR_CACTUS_PAD || param2 == GALLEON_TRIANGLE_PAD || param2 == GALLEON_SAX_PAD || param2 == GALLEON_TROMBONE_PAD){
+				if (index == 0) { 
+					return !Rando.remove_high_requirements;
+				}
+				else{
+					if (Rando.remove_high_requirements) {
+						behaviour_pointer->next_state = 6;
+					}
+					else {
+						behaviour_pointer->next_state = 5;
+					}
+				}
+			}
 			break;
 		case ANGRY_AZTEC:
 			if (param2 == AZTEC_BEETLE_GRATE) {
@@ -243,6 +281,10 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 					// Flag Set
 					setPermFlag(SNOOPDOOR_OPEN);
 					setNextTransitionType(0);
+				}
+			} else if (param2 == AZTEC_LLAMACOCONUT) {
+				if (!Rando.quality_of_life) {
+					PlayCutsceneFromModelTwoScript(behaviour_pointer,23,1,0);
 				}
 			}
 			break;
@@ -441,6 +483,13 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 					return !checkFlag(kong_flags[(int)Rando.free_target_japes],0);
 				} else if ((index == 2) || (index == 3)) {
 					return getPressedSwitch(behaviour_pointer, kong_pellets[(int)Rando.free_source_japes], id);
+				} else if (index == 4) {
+					return !Rando.quality_of_life; // TODO: Retry this
+				}
+			} else if ((param2 == JAPES_GATE0) || (param2 == JAPES_GATE1) || (param2 == JAPES_GATE2)) {
+				if (Rando.open_level_sections) {
+					behaviour_pointer->current_state = 20;
+					behaviour_pointer->next_state = 20;
 				}
 			} else if (param2 == JAPES_DIDDYFREEGB) {
 				if (index == 0) {
@@ -505,6 +554,40 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 					return checkSlamLocation(2, Rando.piano_game_order[index - 14] + 1, id);
 				} else if (index < 28) {
 					return checkContactSublocation(behaviour_pointer,id,Rando.piano_game_order[index - 21] + 1, 0);
+				}
+			} else if (param2 == FACTORY_3124_SWITCH || param2 == FACTORY_4231_SWITCH || param2 == FACTORY_1342_SWITCH) {
+				if (index == 0) {
+					return Rando.fast_gbs;
+				} else if (index == 1) {
+					// Check if GB is in a state >= 3, this means it was spawned.
+					int index = convertIDToIndex(96);
+					int* m2location = ObjectModel2Pointer;
+					if (index > -1) {
+						ModelTwoData* _object = getObjectArrayAddr(m2location,0x90,index);
+						behaviour_data* behaviour = (behaviour_data*)_object->behaviour_pointer;
+						if (_object && behaviour) {
+							if(behaviour->current_state <= 3) {
+								behaviour_pointer->current_state = 5;
+							}
+						}
+					}
+				} else if (index == 2) {
+					disableDiddyRDDoors();
+        		}
+			} else if (param2 == FACTORY_DARTBOARD) {
+				if (index < 6) {
+					if (behaviour_pointer->switch_pressed == (Rando.dartboard_order[index] + 1)) {
+						if (behaviour_pointer->contact_actor_type == 43) {
+							if (canHitSwitch()) {
+								int index = convertSubIDToIndex(id);
+								int* m2location = ObjectModel2Pointer;
+								ModelTwoData* _object = getObjectArrayAddr(m2location,0x90,index);
+								setSomeTimer(_object->object_type);
+								return 1;
+							}
+						}
+					}
+					return 0;
 				}
 			}
 			break;
@@ -611,6 +694,47 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 				}
 			}
 			break;
+		case GALLEON_FISH:
+			if ((param2 == FISH_SHIELD1) || (param2 == FISH_SHIELD2) || (param2 == FISH_SHIELD3)) {
+				int fish_state = 1;
+				if (Rando.fast_gbs) {
+					fish_state = 5;
+				}
+				behaviour_pointer->next_state = fish_state;
+			}
+			break;
+		case TREASURE_CHEST:
+			if (param2 == CHEST_PEARL_0) {
+				if (Rando.fast_gbs) {
+					int pearls_collected = 0;
+					for (int i = 0; i < 5; i++) {
+						pearls_collected += checkFlag(FLAG_PEARL_0_COLLECTED + i,0);
+					}
+					if (pearls_collected >= 1) {
+						for (int i = 0; i < 5; i++) {
+							setPermFlag(FLAG_PEARL_0_COLLECTED + i);
+						}
+						behaviour_pointer->next_state = 2;
+					}
+				}
+			}
+			break;
+		case CAVES_DK5DI:
+			if (param2 == ICE_MAZE) {
+				if (behaviour_pointer->switch_pressed == index) {
+					if ((behaviour_pointer->contact_actor_type >= 2) && (behaviour_pointer->contact_actor_type <= 6)) { // isKong
+						if (canHitSwitch()) {
+							int index = convertSubIDToIndex(id);
+							int* m2location = ObjectModel2Pointer;
+							ModelTwoData* _object = getObjectArrayAddr(m2location,0x90,index);
+							setSomeTimer(_object->object_type);
+							return 1;
+						}
+					}
+				}
+				return 0;
+			}
+			break;
 		case TINY_TEMPLE:
 			if (param2 == TTEMPLE_SWITCH) {
 				return Character == 1;
@@ -662,4 +786,16 @@ int spawnCannonWrapper(void) {
 		} 
 	}
 	return 0;
+}
+
+void disableDiddyRDDoors(void) {
+	for(int i = 63; i < 66; ++i) {
+		int index = convertIDToIndex(i);
+		int* m2location = ObjectModel2Pointer;
+		ModelTwoData* _object = getObjectArrayAddr(m2location,0x90,index);
+		behaviour_data* behaviour = (behaviour_data*)_object->behaviour_pointer;
+		if (behaviour) {
+			setScriptRunState(behaviour,2,0);
+		}
+	}
 }

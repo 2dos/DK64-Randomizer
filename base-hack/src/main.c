@@ -110,6 +110,9 @@ void cFuncLoop(void) {
 				openCrownDoor();
 				giveCollectables();
 				activateBananaports();
+				if(Rando.fast_gbs) {
+					setPermFlag(FLAG_RABBIT_ROUND1); //Start race at round 2
+				}
 				setPermFlag(FLAG_ESCAPE);
 				Character = Rando.starting_kong;
 				StoredSettings.file_extra[(int)FileIndex].location_sss_purchased = 0;

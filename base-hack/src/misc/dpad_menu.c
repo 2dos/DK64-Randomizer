@@ -20,14 +20,14 @@ int* drawDPad(int* dl) {
         }
         if (Rando.quality_of_life) {
             // Homing Ammo Toggle
-            int render_homing = 1 ^ ForceStandardAmmo;
-            if ((MovesBase[(int)Character].weapon_bitfield & 2) == 0) {
-                render_homing = 0;
+            if (MovesBase[(int)Character].weapon_bitfield & 2) {
+                int render_homing = 1 ^ ForceStandardAmmo;
+                if (CollectableBase.HomingAmmo == 0) {
+                    render_homing = 0;
+                }
+                dl = drawImage(dl, IMAGE_AMMO_START + render_homing, RGBA16, 32, 32, 1100, 275, ICON_SCALE, ICON_SCALE, 0xFF);
+
             }
-            if (CollectableBase.HomingAmmo == 0) {
-                render_homing = 0;
-            }
-            dl = drawImage(dl, IMAGE_AMMO_START + render_homing, RGBA16, 32, 32, 1100, 275, ICON_SCALE, ICON_SCALE, 0xFF);
         }
     }
     return dl;

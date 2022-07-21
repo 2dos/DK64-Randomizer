@@ -8,7 +8,7 @@ def chooseSFX():
     """Choose random SFX from bank of acceptable SFX."""
     banks = [
         [98, 138],
-        [166, 255],
+        [166, 252],
         [398, 411],
         [471, 476],
         [519, 535],

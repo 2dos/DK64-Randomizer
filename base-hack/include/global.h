@@ -57,6 +57,7 @@ extern int change_object_scripts(behaviour_data* behaviour_pointer, int id, int 
 extern void setCrusher(void);
 extern void createCollisionObjInstance(collision_types subtype, int map, int exit);
 extern int spawnCannonWrapper(void);
+extern void disableDiddyRDDoors(void);
 extern void fixkey8(void);
 extern void alterGBKong(int map, int id, int new_kong);
 extern void fixDKFreeSoftlock(void);
