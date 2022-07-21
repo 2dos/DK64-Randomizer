@@ -351,21 +351,10 @@ def ShuffleLevelOrderForOneStartingKong(settings):
     factoryIndex = random.choice(factoryOptions)
     levelIndexChoices.remove(factoryIndex)
 
-    # Decide where Caves will go - special case because T&S portals are not immediately accessible
-    cavesOptions = []
-    # Donkey and Tiny have no T&S access in Caves so it can't be the first level for them
-    # If Caves is level 2, we have to be careful of which Kong we unlock first, but we can handle that later (see "The Caves Issue" in Fill.py)
-    # All of this is irrelevant if the open levels setting is on
-    if not settings.open_levels and settings.starting_kong in (Kongs.tiny, Kongs.donkey):
-        cavesOptions = list(levelIndexChoices.intersection({2, 3, 4, 5, 6, 7}))
-    else:
-        cavesOptions = list(levelIndexChoices)
-    cavesIndex = random.choice(cavesOptions)
-    levelIndexChoices.remove(cavesIndex)
-
     # Decide the remaining level order randomly
     remainingLevels = list(levelIndexChoices)
     random.shuffle(remainingLevels)
+    cavesIndex = remainingLevels.pop()
     galleonIndex = remainingLevels.pop()
     forestIndex = remainingLevels.pop()
     castleIndex = remainingLevels.pop()
@@ -440,16 +429,6 @@ def ShuffleLevelOrderForMultipleStartingKongs(settings: Settings):
                     and kongsInLevels[Levels.JungleJapes] == 0  # This restriction only matters if there's no one to free in Japes
                     and Kongs.donkey not in settings.starting_kong_list
                     and Kongs.diddy not in settings.starting_kong_list
-                    and Kongs.chunky not in settings.starting_kong_list
-                ):
-                    break
-                # If reached Caves without freeing anyone yet, Only Diddy, Lanky, and Chunky logically have access to T&S portal in Caves
-                # If the open levels setting is on, this doesn't matter
-                elif (
-                    not settings.open_levels
-                    and newLevelOrder[level] == Levels.CrystalCaves
-                    and Kongs.diddy not in settings.starting_kong_list
-                    and Kongs.lanky not in settings.starting_kong_list
                     and Kongs.chunky not in settings.starting_kong_list
                 ):
                     break
