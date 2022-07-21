@@ -5,15 +5,12 @@ import sys
 installed_packages = pkg_resources.working_set
 installed_packages_list = sorted(["%s==%s" % (i.key, i.version) for i in installed_packages])
 
-required_build_packages = ["pillow","requests"]
+required_build_packages = ["pillow", "requests"]
 current_packages = []
 
 for pkg in installed_packages_list:
     pkg_data = pkg.split("==")
-    current_packages.append({
-        "name": pkg_data[0],
-        "version": pkg_data[1]
-    })
+    current_packages.append({"name": pkg_data[0], "version": pkg_data[1]})
 
 print("Checking Packages:")
 for req_pkg in required_build_packages:
@@ -26,4 +23,4 @@ for req_pkg in required_build_packages:
     print(f"\t{req_pkg.capitalize()}: {installed_name}")
     if not installed:
         print(f"\t\tInstalling {req_pkg.capitalize()}")
-        subprocess.check_call([sys.executable, "-m", "pip", "install", req_pkg],stdout=subprocess.DEVNULL)
+        subprocess.check_call([sys.executable, "-m", "pip", "install", req_pkg], stdout=subprocess.DEVNULL)

@@ -43,7 +43,7 @@ set_variables = {
     "fast_warp": 1,
     "activate_all_bananaports": 1,
     "piano_game_order": [5, 0, 1, 3, 5, 5, 3],
-    "dartboard_order": [0,1,2,3,4,5],
+    "dartboard_order": [0, 1, 2, 3, 4, 5],
     "fast_gbs": 1,
     "remove_high_requirements": 1,
     "open_level_sections": 1,
