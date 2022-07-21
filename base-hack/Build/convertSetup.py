@@ -240,14 +240,16 @@ def modify(file_name, map_index):
                 writedatatoarr(byte_stream, int(float_to_hex(new_z), 16), 4, 0x8)
             elif map_index == 0x40 and obj_id == 4:
                 # GMush Vines
-                added_actor.append({
-                    "base_byte_stream": byte_stream,
-                    "x": int(float_to_hex(517.993), 16),
-                    "y": int(float_to_hex(1070.614), 16),
-                    "z": int(float_to_hex(510.374), 16),
-                    "id": 0xFF,
-                    "use_byte_stream": True
-                })
+                added_actor.append(
+                    {
+                        "base_byte_stream": byte_stream,
+                        "x": int(float_to_hex(517.993), 16),
+                        "y": int(float_to_hex(1070.614), 16),
+                        "z": int(float_to_hex(510.374), 16),
+                        "id": 0xFF,
+                        "use_byte_stream": True,
+                    }
+                )
                 temp = []
                 for y in range(0x38):
                     temp.append(byte_stream[y])
