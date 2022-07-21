@@ -225,13 +225,7 @@ class Settings:
         self.music_events = None
 
         #  Color
-        self.dk_colors = None
-        self.diddy_colors = None
-        self.lanky_colors = None
-        self.tiny_colors = None
-        self.chunky_colors = None
-        self.rambi_colors = None
-        self.enguarde_colors = None
+        self.colors = {}
 
         #  Misc
         self.generate_spoilerlog = None

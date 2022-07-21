@@ -373,6 +373,7 @@ def patching_response(responded_data):
             "krool_keys_required",
             "blocker_golden_bananas",
             "troff_n_scoff_bananas",
+            "colors",
         ]
         if setting not in hidden_settings:
             row = table.insertRow(-1)

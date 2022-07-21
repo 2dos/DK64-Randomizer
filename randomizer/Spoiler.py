@@ -73,6 +73,7 @@ class Spoiler:
         for x in self.settings.starting_kong_list:
             startKongList.append(x.name.capitalize())
         settings["starting_kong_list"] = startKongList
+        settings["colors"] = self.settings.colors
         settings["diddy_freeing_kong"] = ItemList[ItemFromKong(self.settings.diddy_freeing_kong)].name
         settings["tiny_freeing_kong"] = ItemList[ItemFromKong(self.settings.tiny_freeing_kong)].name
         settings["lanky_freeing_kong"] = ItemList[ItemFromKong(self.settings.lanky_freeing_kong)].name

@@ -9,6 +9,7 @@ import js
 def apply_cosmetic_colors(spoiler: Spoiler):
     """Apply cosmetic skins to kongs."""
     color_palettes = []
+    color_obj = {}
     if js.document.getElementById("random_colors").checked:
         js.document.getElementById("dk_colors").value = "randomized"
         js.document.getElementById("diddy_colors").value = "randomized"
@@ -57,5 +58,7 @@ def apply_cosmetic_colors(spoiler: Spoiler):
                 opp_color = f"#{format(255-red,'02x')}{format(255-green,'02x')}{format(255-blue,'02x')}"
                 base_obj["zones"][0]["colors"][1] = opp_color
             color_palettes.append(base_obj)
+            color_obj[f"{kong['kong']}"] = color
+    spoiler.settings.colors = color_obj
     if len(color_palettes) > 0:
         convertColors(color_palettes)
