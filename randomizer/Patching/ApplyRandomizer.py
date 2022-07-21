@@ -300,9 +300,9 @@ def patching_response(responded_data):
         ROM().write(1)
 
     # Enable Auto Key Turn ins
-    if spoiler.settings.auto_keys:
-        ROM().seek(sav + 0x14B)
-        ROM().write(1)
+    # if spoiler.settings.auto_keys:
+    #    ROM().seek(sav + 0x14B)
+    #    ROM().write(1)
 
     keys_turned_in = [0, 1, 2, 3, 4, 5, 6, 7]
     if len(spoiler.settings.krool_keys_required) > 0:
