@@ -3,6 +3,8 @@ import random
 from randomizer.Patching.Patcher import ROM
 from randomizer.Spoiler import Spoiler
 
+import array as array
+
 
 def chooseSFX():
     """Choose random SFX from bank of acceptable SFX."""
@@ -23,12 +25,22 @@ def chooseSFX():
 def randomize_puzzles(spoiler: Spoiler):
     """Shuffle elements of puzzles. Currently limited to coin challenge requirements but will be extended in future."""
     if spoiler.settings.puzzle_rando:
+        race_requirements = {
+            "factory_race"  : [5,15],
+            "castle_race"   : [5,15],
+            "seal_race"     : [5,12]
+        }
+        if spoiler.setting.fast_gbs:
+            race_requirements.factory_race = [3,8]
+            race_requirements.castle_race = [5,12]
+            race_requirements.seal_race = [5,14]
+
         coin_req_info = [
             {"offset": 0x12C, "coins": random.randint(10, 50)},  # Caves Beetle
             {"offset": 0x12D, "coins": random.randint(20, 50)},  # Aztec Beetle
-            {"offset": 0x12E, "coins": random.randint(5, 15)},  # Factory Car
-            {"offset": 0x12F, "coins": random.randint(5, 12)},  # Seal Race
-            {"offset": 0x130, "coins": random.randint(5, 15)},  # Castle Car
+            {"offset": 0x12E, "coins": random.randint(race_requirements.factory_race[1], race_requirements.factory_race[2])},  # Factory Car
+            {"offset": 0x12F, "coins": random.randint(race_requirements.seal_race[1],   race_requirements.seal_race[2])},      # Seal Race
+            {"offset": 0x130, "coins": random.randint(race_requirements.castle_race[1], race_requirements.castle_race[2])},    # Castle Car
             {"offset": 0x131, "coins": random.randint(40, 70)},  # Japes Cart
             {"offset": 0x132, "coins": random.randint(25, 55)},  # Fungi Cart
             {"offset": 0x133, "coins": random.randint(5, 45)},  # Castle Cart
