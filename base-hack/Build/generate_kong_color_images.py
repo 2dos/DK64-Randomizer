@@ -3,8 +3,8 @@ import gzip
 import math
 
 color_palettes = [
-    {"kong": "dk", "zones": [{"zone": "base", "image": 3724, "colors": ["#2da1ad"], "fill_type": "radial"}]},
-    {"kong": "diddy", "zones": [{"zone": "cap_shirt", "image": 3686, "colors": ["#00ff37"], "fill_type": "radial"}]},
+    {"kong": "dk", "zones": [{"zone": "base", "image": 3724, "colors": ["#2da1ad"], "fill_type": "block"}]}, # 2da1ad
+    {"kong": "diddy", "zones": [{"zone": "cap_shirt", "image": 3686, "colors": ["#00ff37"], "fill_type": "block"}]},
     {
         "kong": "lanky",
         "zones": [
@@ -12,7 +12,7 @@ color_palettes = [
                 "zone": "overalls",
                 "image": 3689,
                 "colors": ["#3e1c73"],
-                "fill_type": "radial",
+                "fill_type": "block",
             }
         ],
     },
@@ -23,7 +23,7 @@ color_palettes = [
                 "zone": "overalls",
                 "image": 6014,
                 "colors": ["#ff3beb"],
-                "fill_type": "radial",
+                "fill_type": "block",
             }
         ],
     },
@@ -31,11 +31,11 @@ color_palettes = [
         "kong": "chunky",
         "zones": [
             {"zone": "shirt_back", "image": 3769, "colors": ["#FF0000", "#FFFFFF"], "fill_type": "checkered"},
-            {"zone": "shirt_front", "image": 3687, "colors": ["#000000"], "fill_type": "radial"},
+            {"zone": "shirt_front", "image": 3687, "colors": ["#000000"], "fill_type": "block"},
         ],
     },
-    {"kong": "rambi", "zones": [{"zone": "top", "image": 3826, "colors": ["#070657"], "fill_type": "radial"}]},
-    {"kong": "enguarde", "zones": [{"zone": "top", "image": 3847, "colors": ["FF0000"], "fill_type": "radial"}]},
+    {"kong": "rambi", "zones": [{"zone": "top", "image": 3826, "colors": ["#070657"], "fill_type": "block"}]},
+    {"kong": "enguarde", "zones": [{"zone": "top", "image": 3847, "colors": ["FF0000"], "fill_type": "block"}]},
 ]
 
 
