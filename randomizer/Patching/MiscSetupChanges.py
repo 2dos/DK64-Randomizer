@@ -100,6 +100,7 @@ def randomize_setup(spoiler: Spoiler):
                     print(selected_patch_name)
                     round_two_level_dirt_list.remove(selected_patch_name)
                     drawn_level = y.level_name
+           #clear out all the patches that should not be selected
             for y in DirtPatchLocations:
                 if y.level_name == drawn_level:
                     round_two_level_dirt_list.remove(y.name)
