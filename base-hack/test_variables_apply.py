@@ -47,6 +47,7 @@ set_variables = {
     "fast_gbs": 1,
     "remove_high_requirements": 1,
     "open_level_sections": 1,
+    "auto_keys": 1,
     "special_move_prices": [
         [1, 2, 3],
         [4, 5, 6],

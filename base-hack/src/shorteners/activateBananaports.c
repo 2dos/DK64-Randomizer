@@ -139,9 +139,11 @@ void toggleWarpLevel(int levelIndex) {
 }
 
 void activateBananaports(void) {
-    if (Rando.activate_all_bananaports) {
+    if (Rando.activate_all_bananaports == 1) {
         for (int i = 0; i < LEVEL_COUNT; i++) {
             toggleWarpLevel(i);
         }
-    }
+    } else if (Rando.activate_all_bananaports == 2) {
+		toggleWarpLevel(7);
+	}
 }
