@@ -93,11 +93,7 @@ class Items(IntEnum):
 
     BananaHoard = auto()
 
-    DKIslesDonkeyBlueprint = auto()
-    DKIslesDiddyBlueprint = auto()
-    DKIslesLankyBlueprint = auto()
-    DKIslesTinyBlueprint = auto()
-    DKIslesChunkyBlueprint = auto()
+    # Blueprint items are intentionally grouped together in this specific order for Kasplat location logic.
     JungleJapesDonkeyBlueprint = auto()
     JungleJapesDiddyBlueprint = auto()
     JungleJapesLankyBlueprint = auto()
@@ -133,3 +129,8 @@ class Items(IntEnum):
     CreepyCastleLankyBlueprint = auto()
     CreepyCastleTinyBlueprint = auto()
     CreepyCastleChunkyBlueprint = auto()
+    DKIslesDonkeyBlueprint = auto()
+    DKIslesDiddyBlueprint = auto()
+    DKIslesLankyBlueprint = auto()
+    DKIslesTinyBlueprint = auto()
+    DKIslesChunkyBlueprint = auto()

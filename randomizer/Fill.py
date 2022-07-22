@@ -1036,7 +1036,7 @@ def FillKongsAndMoves(spoiler):
 
         # If kongs are our progression, then place moves that unlock those kongs before anything else
         # This logic only matters if the level order is critical to progression (i.e. not loading zone shuffled)
-        if spoiler.settings.kongs_for_progression and spoiler.settings.shuffle_loading_zones != "all":
+        if spoiler.settings.kongs_for_progression and spoiler.settings.shuffle_loading_zones != "all" and spoiler.settings.move_rando != "start_with":
             locationsLockingKongs = [location for location in kongLocations]
             ownedKongs = [kong for kong in spoiler.settings.starting_kong_list]
             latestLogicallyAllowedLevel = spoiler.settings.starting_kongs_count + 1
@@ -1118,7 +1118,7 @@ def FillKongsAndMoves(spoiler):
                             if location in ItemPool.ForestFunkyMoveLocations:
                                 # There's no way a kong locked behind Forest Funky can be your second kong
                                 # This _should_ be covered by the ownedItems=OwnedKongMoves preventing you from having the guns to get to it, which in turn prevents access to that shop unless you have both Chunky and Tiny
-                                if len(ownedKongs == 1):
+                                if len(ownedKongs) == 1:
                                     raise Ex.ItemPlacementException("Fungi Funky logic issue - SEND THIS TO A DEV!")
                                 if Items.Feather not in preplacedPriorityMoves:
                                     featherLocations = ItemPool.TinyMoveLocations.copy()
@@ -1341,12 +1341,12 @@ def Generate_Spoiler(spoiler):
         # Handle Item Fill
         FillKongsAndMovesForLevelOrder(spoiler)
     else:
+        # Handle misc randomizations
+        ShuffleMisc(spoiler)
         # Handle Loading Zones
         if spoiler.settings.shuffle_loading_zones != "none":
             ShuffleExits.ExitShuffle(spoiler.settings)
             spoiler.UpdateExits()
-        # Handle misc randomizations
-        ShuffleMisc(spoiler)
         # Handle Item Fill
         if spoiler.settings.shuffle_items == "all":
             Fill(spoiler)
@@ -1366,7 +1366,7 @@ def Generate_Spoiler(spoiler):
 def ShuffleMisc(spoiler):
     """Shuffle miscellaneous objects outside of main fill algorithm, including Kasplats, Bonus barrels, and bananaport warps."""
     # Handle kasplats
-    KasplatShuffle(LogicVariables)
+    KasplatShuffle(spoiler, LogicVariables)
     spoiler.human_kasplats = {}
     spoiler.UpdateKasplats(LogicVariables.kasplat_map)
     # Handle bonus barrels

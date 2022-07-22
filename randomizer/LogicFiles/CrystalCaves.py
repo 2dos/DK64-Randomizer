@@ -21,8 +21,8 @@ LogicRegions = {
         LocationLogic(Locations.CavesDiddyJetpackBarrel, lambda l: l.jetpack and l.isdiddy, MinigameType.BonusBarrel),
         LocationLogic(Locations.CavesTinyMonkeyportIgloo, lambda l: l.monkeyport and l.mini and l.twirl and l.tiny),
         LocationLogic(Locations.CavesChunkyGorillaGone, lambda l: l.punch and l.gorillaGone and l.chunky),
-        LocationLogic(Locations.CavesKasplatNearLab, lambda l: True),
-        LocationLogic(Locations.CavesKasplatNearCandy, lambda l: True),
+        LocationLogic(Locations.CavesKasplatNearLab, lambda l: not l.settings.kasplat_rando),
+        LocationLogic(Locations.CavesKasplatNearCandy, lambda l: not l.settings.kasplat_rando),
     ], [
         Event(Events.CavesEntered, lambda l: True),
         Event(Events.CavesSmallBoulderButton, lambda l: l.chunky),
@@ -44,7 +44,7 @@ LogicRegions = {
     ]),
 
     Regions.CavesBlueprintCave: Region("Caves Blueprint Cave", Levels.CrystalCaves, False, None, [
-        LocationLogic(Locations.CavesKasplatNearFunky, lambda l: True),
+        LocationLogic(Locations.CavesKasplatNearFunky, lambda l: not l.settings.kasplat_rando),
     ], [], [
         TransitionFront(Regions.CrystalCavesMain, lambda l: l.mini and l.istiny)
     ]),
@@ -56,7 +56,7 @@ LogicRegions = {
     ]),
 
     Regions.CavesBlueprintPillar: Region("Caves Blueprint Pillar", Levels.CrystalCaves, False, None, [
-        LocationLogic(Locations.CavesKasplatPillar, lambda l: True),
+        LocationLogic(Locations.CavesKasplatPillar, lambda l: not l.settings.kasplat_rando),
     ], [], [
         TransitionFront(Regions.CrystalCavesMain, lambda l: True)
     ]),
@@ -89,7 +89,7 @@ LogicRegions = {
 
     Regions.IglooArea: Region("Igloo Area", Levels.CrystalCaves, True, None, [
         LocationLogic(Locations.CavesChunkyTransparentIgloo, lambda l: Events.CavesLargeBoulderButton in l.Events and l.chunky),
-        LocationLogic(Locations.CavesKasplatOn5DI, lambda l: True),
+        LocationLogic(Locations.CavesKasplatOn5DI, lambda l: not l.settings.kasplat_rando),
     ], [], [
         TransitionFront(Regions.CrystalCavesMain, lambda l: True),
         TransitionFront(Regions.GiantKosha, lambda l: Events.CavesLargeBoulderButton in l.Events and l.monkeyport and l.istiny),
