@@ -19,8 +19,6 @@ class KasplatLocation:
         self.coords = coords
         self.bounds = [xmin, xmax, zmin, zmax]
         self.selected = False
-        self.selected_kong_idx = -1
-        self.selected_kong = None
         self.vanilla = vanilla
         self.region_id = region
         if additional_logic is None:
