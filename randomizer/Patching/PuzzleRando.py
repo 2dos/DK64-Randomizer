@@ -24,7 +24,7 @@ def randomize_puzzles(spoiler: Spoiler):
     """Shuffle elements of puzzles. Currently limited to coin challenge requirements but will be extended in future."""
     if spoiler.settings.puzzle_rando:
         race_requirements = {"factory_race": [5, 15], "castle_race": [5, 15], "seal_race": [5, 12]}
-        if spoiler.setting.fast_gbs:
+        if spoiler.settings.fast_gbs:
             race_requirements.factory_race = [3, 8]
             race_requirements.castle_race = [5, 12]
             race_requirements.seal_race = [5, 10]
