@@ -1,16 +1,17 @@
 """Hint location data for Wrinkly hints."""
-from randomizer.Enums.WrinklyKong import WrinklyKong, WrinklyLocation
+from randomizer.Enums.WrinklyKong import WrinklyLocation
+from randomizer.Enums.Kongs import Kongs
 
 
-class Hint:
+class HintLocation:
     """Hint object for Wrinkly hint data locations."""
 
-    def __init__(self, name, kong: WrinklyKong, location: WrinklyLocation, hint):
+    def __init__(self, name, kong: Kongs, location: WrinklyLocation, hint):
         """Create wrinkly hint object.
 
         Args:
             name (str): Location/String name of wrinkly.
-            kong (WrinklyKong): What kong the hint is for.
+            kong (Kongs): What kong the hint is for.
             location (WrinklyLocation): What lobby the hint is in.
             hint (str): Hint to be written to ROM
         """
@@ -21,40 +22,40 @@ class Hint:
 
 
 hints = [
-    Hint("First Time Talk", WrinklyKong.ftt, WrinklyLocation.ftt, "WELCOME TO THE DONKEY KONG 64 RANDOMIZER. MADE BY 2DOS, BALLAAM, KILLKLLI, SHADOWSHINE, CFOX, BISMUTH AND ZNERNICUS"),
-    Hint("Japes DK", WrinklyKong.dk, WrinklyLocation.japes, ""),
-    Hint("Japes Diddy", WrinklyKong.diddy, WrinklyLocation.japes, ""),
-    Hint("Japes Lanky", WrinklyKong.lanky, WrinklyLocation.japes, ""),
-    Hint("Japes Tiny", WrinklyKong.tiny, WrinklyLocation.japes, ""),
-    Hint("Japes Chunky", WrinklyKong.chunky, WrinklyLocation.japes, ""),
-    Hint("Aztec DK", WrinklyKong.dk, WrinklyLocation.aztec, ""),
-    Hint("Aztec Diddy", WrinklyKong.diddy, WrinklyLocation.aztec, ""),
-    Hint("Aztec Lanky", WrinklyKong.lanky, WrinklyLocation.aztec, ""),
-    Hint("Aztec Tiny", WrinklyKong.tiny, WrinklyLocation.aztec, ""),
-    Hint("Aztec Chunky", WrinklyKong.chunky, WrinklyLocation.aztec, ""),
-    Hint("Factory DK", WrinklyKong.dk, WrinklyLocation.factory, ""),
-    Hint("Factory Diddy", WrinklyKong.diddy, WrinklyLocation.factory, ""),
-    Hint("Factory Lanky", WrinklyKong.lanky, WrinklyLocation.factory, ""),
-    Hint("Factory Tiny", WrinklyKong.tiny, WrinklyLocation.factory, ""),
-    Hint("Factory Chunky", WrinklyKong.chunky, WrinklyLocation.factory, ""),
-    Hint("Galleon DK", WrinklyKong.dk, WrinklyLocation.galleon, ""),
-    Hint("Galleon Diddy", WrinklyKong.diddy, WrinklyLocation.galleon, ""),
-    Hint("Galleon Lanky", WrinklyKong.lanky, WrinklyLocation.galleon, ""),
-    Hint("Galleon Tiny", WrinklyKong.tiny, WrinklyLocation.galleon, ""),
-    Hint("Galleon Chunky", WrinklyKong.chunky, WrinklyLocation.galleon, ""),
-    Hint("Fungi DK", WrinklyKong.dk, WrinklyLocation.fungi, ""),
-    Hint("Fungi Diddy", WrinklyKong.diddy, WrinklyLocation.fungi, ""),
-    Hint("Fungi Lanky", WrinklyKong.lanky, WrinklyLocation.fungi, ""),
-    Hint("Fungi Tiny", WrinklyKong.tiny, WrinklyLocation.fungi, ""),
-    Hint("Fungi Chunky", WrinklyKong.chunky, WrinklyLocation.fungi, ""),
-    Hint("Caves DK", WrinklyKong.dk, WrinklyLocation.caves, ""),
-    Hint("Caves Diddy", WrinklyKong.diddy, WrinklyLocation.caves, ""),
-    Hint("Caves Lanky", WrinklyKong.lanky, WrinklyLocation.caves, ""),
-    Hint("Caves Tiny", WrinklyKong.tiny, WrinklyLocation.caves, ""),
-    Hint("Caves Chunky", WrinklyKong.chunky, WrinklyLocation.caves, ""),
-    Hint("Castle DK", WrinklyKong.dk, WrinklyLocation.castle, ""),
-    Hint("Castle Diddy", WrinklyKong.diddy, WrinklyLocation.castle, ""),
-    Hint("Castle Lanky", WrinklyKong.lanky, WrinklyLocation.castle, ""),
-    Hint("Castle Tiny", WrinklyKong.tiny, WrinklyLocation.castle, ""),
-    Hint("Castle Chunky", WrinklyKong.chunky, WrinklyLocation.castle, ""),
+    HintLocation("First Time Talk", Kongs.any, WrinklyLocation.ftt, "WELCOME TO THE DONKEY KONG 64 RANDOMIZER. MADE BY 2DOS, BALLAAM, KILLKLLI, SHADOWSHINE, CFOX, BISMUTH AND ZNERNICUS"),
+    HintLocation("Japes DK", Kongs.donkey, WrinklyLocation.japes, ""),
+    HintLocation("Japes Diddy", Kongs.diddy, WrinklyLocation.japes, ""),
+    HintLocation("Japes Lanky", Kongs.lanky, WrinklyLocation.japes, ""),
+    HintLocation("Japes Tiny", Kongs.tiny, WrinklyLocation.japes, ""),
+    HintLocation("Japes Chunky", Kongs.chunky, WrinklyLocation.japes, ""),
+    HintLocation("Aztec DK", Kongs.donkey, WrinklyLocation.aztec, ""),
+    HintLocation("Aztec Diddy", Kongs.diddy, WrinklyLocation.aztec, ""),
+    HintLocation("Aztec Lanky", Kongs.lanky, WrinklyLocation.aztec, ""),
+    HintLocation("Aztec Tiny", Kongs.tiny, WrinklyLocation.aztec, ""),
+    HintLocation("Aztec Chunky", Kongs.chunky, WrinklyLocation.aztec, ""),
+    HintLocation("Factory DK", Kongs.donkey, WrinklyLocation.factory, ""),
+    HintLocation("Factory Diddy", Kongs.diddy, WrinklyLocation.factory, ""),
+    HintLocation("Factory Lanky", Kongs.lanky, WrinklyLocation.factory, ""),
+    HintLocation("Factory Tiny", Kongs.tiny, WrinklyLocation.factory, ""),
+    HintLocation("Factory Chunky", Kongs.chunky, WrinklyLocation.factory, ""),
+    HintLocation("Galleon DK", Kongs.donkey, WrinklyLocation.galleon, ""),
+    HintLocation("Galleon Diddy", Kongs.diddy, WrinklyLocation.galleon, ""),
+    HintLocation("Galleon Lanky", Kongs.lanky, WrinklyLocation.galleon, ""),
+    HintLocation("Galleon Tiny", Kongs.tiny, WrinklyLocation.galleon, ""),
+    HintLocation("Galleon Chunky", Kongs.chunky, WrinklyLocation.galleon, ""),
+    HintLocation("Fungi DK", Kongs.donkey, WrinklyLocation.fungi, ""),
+    HintLocation("Fungi Diddy", Kongs.diddy, WrinklyLocation.fungi, ""),
+    HintLocation("Fungi Lanky", Kongs.lanky, WrinklyLocation.fungi, ""),
+    HintLocation("Fungi Tiny", Kongs.tiny, WrinklyLocation.fungi, ""),
+    HintLocation("Fungi Chunky", Kongs.chunky, WrinklyLocation.fungi, ""),
+    HintLocation("Caves DK", Kongs.donkey, WrinklyLocation.caves, ""),
+    HintLocation("Caves Diddy", Kongs.diddy, WrinklyLocation.caves, ""),
+    HintLocation("Caves Lanky", Kongs.lanky, WrinklyLocation.caves, ""),
+    HintLocation("Caves Tiny", Kongs.tiny, WrinklyLocation.caves, ""),
+    HintLocation("Caves Chunky", Kongs.chunky, WrinklyLocation.caves, ""),
+    HintLocation("Castle DK", Kongs.donkey, WrinklyLocation.castle, ""),
+    HintLocation("Castle Diddy", Kongs.diddy, WrinklyLocation.castle, ""),
+    HintLocation("Castle Lanky", Kongs.lanky, WrinklyLocation.castle, ""),
+    HintLocation("Castle Tiny", Kongs.tiny, WrinklyLocation.castle, ""),
+    HintLocation("Castle Chunky", Kongs.chunky, WrinklyLocation.castle, ""),
 ]
