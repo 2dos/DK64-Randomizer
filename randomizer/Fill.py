@@ -1038,7 +1038,7 @@ def FillKongsAndMoves(spoiler):
 
         # If kongs are our progression, then place moves that unlock those kongs before anything else
         # This logic only matters if the level order is critical to progression (i.e. not loading zone shuffled)
-        if spoiler.settings.kongs_for_progression and spoiler.settings.shuffle_loading_zones != "all":
+        if spoiler.settings.kongs_for_progression and spoiler.settings.shuffle_loading_zones != "all" and spoiler.settings.move_rando != "start_with":
             locationsLockingKongs = [location for location in kongLocations]
             ownedKongs = [kong for kong in spoiler.settings.starting_kong_list]
             latestLogicallyAllowedLevel = spoiler.settings.starting_kongs_count + 1
@@ -1343,12 +1343,12 @@ def Generate_Spoiler(spoiler):
         # Handle Item Fill
         FillKongsAndMovesForLevelOrder(spoiler)
     else:
+        # Handle misc randomizations
+        ShuffleMisc(spoiler)
         # Handle Loading Zones
         if spoiler.settings.shuffle_loading_zones != "none":
             ShuffleExits.ExitShuffle(spoiler.settings)
             spoiler.UpdateExits()
-        # Handle misc randomizations
-        ShuffleMisc(spoiler)
         # Handle Item Fill
         if spoiler.settings.shuffle_items == "all":
             Fill(spoiler)
