@@ -405,7 +405,7 @@ class Settings:
                 self.kong_locations.remove(Locations.ChunkyKong)
 
         # Kongs needed for level progression
-        if self.starting_kongs_count < 5 and (self.shuffle_loading_zones == "levels" or self.shuffle_loading_zones == "none"):
+        if self.starting_kongs_count < 5 and (self.shuffle_loading_zones == "levels" or self.shuffle_loading_zones == "none") and not self.no_logic:
             self.kongs_for_progression = True
 
         # Move Location Rando
