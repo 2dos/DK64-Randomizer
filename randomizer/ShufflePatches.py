@@ -100,11 +100,10 @@ def select_random_dirt_from_area(area_dirt, amount, spoiler: Spoiler, human_spoi
                 addPatch(patch)
                 human_spoiler.append(patch.name)
                 spoiler.dirt_patch_placement.append(patch.name)
-                print("selected " + selected_patch.name + " in group: ", selected_patch.group)
                 area_dirt.remove(selected_patch)
+                break
         if amount > 1:  # if multiple patches are picked, remove patches from the same group, prevent them from being picked
             # BAD CODE:
             for patch in area_dirt:
                 if patch.group == selected_patch.group:
-                    print("removed " + patch.name + " for being in group ", patch.group)
                     area_dirt.remove(patch)
