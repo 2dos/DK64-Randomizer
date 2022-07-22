@@ -327,7 +327,7 @@ def patching_response(responded_data):
     randomize_krool(spoiler)
     randomize_barrels(spoiler)
     randomize_bananaport(spoiler)
-    # randomize_kasplat_locations(spoiler)
+    randomize_kasplat_locations(spoiler)
     randomize_enemies(spoiler)
     apply_kongrando_cosmetic(spoiler)
     randomize_setup(spoiler)

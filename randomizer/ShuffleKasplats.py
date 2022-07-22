@@ -2,12 +2,18 @@
 import random
 
 import js
+from randomizer.Enums.Items import Items
+from randomizer.Enums.Types import Types
 import randomizer.Fill as Fill
 import randomizer.Lists.Exceptions as Ex
+from randomizer.Lists.KasplatLocations import KasplatLocationList
+from randomizer.Lists.Location import Location
+from randomizer.Lists.MapsAndExits import Maps
 import randomizer.Logic as Logic
 from randomizer.Enums.Kongs import Kongs, GetKongs
 from randomizer.Enums.Levels import Levels
 from randomizer.Enums.Locations import Locations
+from randomizer.LogicClasses import LocationLogic
 
 shufflable = {
     Locations.IslesKasplatHelmLobby: Kongs.donkey,
@@ -69,6 +75,71 @@ def FindLevel(location):
                 return region.level
 
 
+def GetBlueprintItemForKongAndLevel(level, kong):
+    """For the Level and Kong enum values, return the Blueprint Item enum tied to it."""
+    baseOffset = int(Items.JungleJapesDonkeyBlueprint)  # Japes/Donkey is the first Blueprint item and they're all grouped together
+    levelOffset = int(level)
+    # Other levels are 0-6 but Helm is 7, DK Isles is 8, and I'm too scared to change it so it's accounted for here
+    if levelOffset > 7:
+        levelOffset = 7
+    return Items(baseOffset + (5 * levelOffset) + int(kong))
+
+
+def GetBlueprintLocationForKongAndLevel(level, kong):
+    """For the Level and Kong enum values, return the generic Blueprint Location enum tied to it."""
+    baseOffset = int(Locations.JapesDonkeyKasplatRando)  # Japes/Donkey is the first generic Blueprint location and they're all grouped together
+    levelOffset = int(level)
+    # Other levels are 0-6 but Helm is 7, DK Isles is 8, and I'm too scared to change it so it's accounted for here
+    if levelOffset > 7:
+        levelOffset = 7
+    return Locations(baseOffset + (5 * levelOffset) + int(kong))
+
+
+def ShuffleKasplatsAndLocations(LogicVariables):
+    """Shuffle the location and kong assigned to each kasplat. This should replace ShuffleKasplats if all goes well."""
+    # Cull all locations for vanilla kasplats so they don't get in the way or have items shuffled into them
+    LogicVariables.kasplat_map = {}
+    for location in shufflable:
+        Logic.LocationList.pop(location, None)
+    for location in constants:
+        Logic.LocationList.pop(location, None)
+    # Fill kasplats level by level
+    for level in KasplatLocationList:
+        kasplats = KasplatLocationList[level]
+        # Reset this level's kasplats
+        for kasplat in kasplats:
+            kasplat.setKasplat(state=False)
+        # Fill kasplats kong by kong
+        kongs = GetKongs()
+        for idx, kong in enumerate(kongs):
+            available_for_kong = []
+            # Pick a random unselected kasplat from available ones for this kong
+            for kasplat in kasplats:
+                if not kasplat.selected and kong in kasplat.kong_lst:
+                    available_for_kong.append(kasplat.name)
+            selected_kasplat = random.choice(available_for_kong)
+            # Loop through kasplats until we find the relevant one
+            # We take our time doing these because we don't want to lose the references - the ROM writer looks at the KasplatLocationList later
+            for kasplat in kasplats:
+                if kasplat.name == selected_kasplat:
+                    kasplat.setKasplat()
+                    kasplat.selected_kong_idx = idx
+                    kasplat.selected_kong = kong
+                    # Figure out what blueprint should be placed where
+                    item_id = GetBlueprintItemForKongAndLevel(level, kong)
+                    location_id = GetBlueprintLocationForKongAndLevel(level, kong)
+                    # Assemble the Location object
+                    location = Location(level.name + " Kasplat located " + kasplat.name, item_id, Types.Blueprint, [kasplat.map, kong])
+                    location.PlaceDefaultItem()
+                    Logic.LocationList[location_id] = location
+                    # Insert the Location into the Region
+                    kasplatRegion = Logic.Regions[kasplat.region_id]
+                    kasplatRegion.locations.append(LocationLogic(location_id, lambda l: kasplat.additional_logic(l)))
+                    # Update logic variables for remainder of the Fill
+                    LogicVariables.kasplat_map[location_id] = kong
+                    break
+
+
 def ShuffleKasplats(LogicVariables):
     """Shuffles the kong assigned to each kasplat."""
     # Make sure only 1 of each kasplat per level, set up array to track that
@@ -116,7 +187,7 @@ def KasplatShuffle(LogicVariables):
         while True:
             try:
                 # Shuffle kasplats
-                ShuffleKasplats(LogicVariables)
+                ShuffleKasplatsAndLocations(LogicVariables)
                 # Verify world by assuring all locations are still reachable
                 if not Fill.VerifyWorld(LogicVariables.settings):
                     raise Ex.KasplatPlacementException
