@@ -234,27 +234,29 @@ def randomize_setup(spoiler: Spoiler):
                         actor_bytes.append(byte_list.copy())
             if spoiler.settings.random_patches:
                 new_actor_id = 0x20
-                for patch in DirtPatchLocations:
-                    if new_actor_id in used_actor_ids:
-                        while new_actor_id in used_actor_ids:
+                for dirt_item in spoiler.dirt_patch_placement:
+                    for patch in DirtPatchLocations:
+                        if patch.map_id == cont_map_id and patch.name == dirt_item:
+                            if new_actor_id in used_actor_ids:
+                                while new_actor_id in used_actor_ids:
+                                    new_actor_id += 1
+                            print(patch.name)
+                            dirt_bytes = []
+                            dirt_bytes.append(int(float_to_hex(patch.x), 16))
+                            dirt_bytes.append(int(float_to_hex(patch.y), 16))
+                            dirt_bytes.append(int(float_to_hex(patch.z), 16))
+                            dirt_bytes.append(int(float_to_hex(1), 16))
+                            for x in range(8):
+                                dirt_bytes.append(0)
+                            rot_type_hex = hex(patch.rotation) + "007B"
+                            dirt_bytes.append(int(rot_type_hex, 16))
+                            id_something_hex = hex(new_actor_id) + "46D0"
+                            used_actor_ids.append(new_actor_id)
                             new_actor_id += 1
-                    if patch.map_id == cont_map_id and patch.selected:
-                        dirt_bytes = []
-                        dirt_bytes.append(int(float_to_hex(patch.x), 16))
-                        dirt_bytes.append(int(float_to_hex(patch.y), 16))
-                        dirt_bytes.append(int(float_to_hex(patch.z), 16))
-                        dirt_bytes.append(int(float_to_hex(1), 16))
-                        for x in range(8):
-                            dirt_bytes.append(0)
-                        rot_type_hex = hex(patch.rotation) + "007B"
-                        dirt_bytes.append(int(rot_type_hex, 16))
-                        id_something_hex = hex(new_actor_id) + "46D0"
-                        used_actor_ids.append(new_actor_id)
-                        new_actor_id += 1
-                        dirt_bytes.append(int(id_something_hex, 16))
-                        actor_bytes.append(dirt_bytes)
-                ROM().seek(actor_block_start)
-                ROM().writeMultipleBytes(len(actor_bytes), 4)
-                for actor in actor_bytes:
-                    for byte_list in actor:
-                        ROM().writeMultipleBytes(byte_list, 4)
+                            dirt_bytes.append(int(id_something_hex, 16))
+                            actor_bytes.append(dirt_bytes)
+                    ROM().seek(actor_block_start)
+                    ROM().writeMultipleBytes(len(actor_bytes), 4)
+                    for actor in actor_bytes:
+                        for byte_list in actor:
+                            ROM().writeMultipleBytes(byte_list, 4)

@@ -552,7 +552,7 @@ def ResetCollectibleRegions():
     for region in CollectibleRegions.values():
         for collectible in region:
             collectible.added = False
-            collectible.enabled = collectible.vanilla
+            # collectible.enabled = collectible.vanilla
 
 
 def ClearAllLocations():

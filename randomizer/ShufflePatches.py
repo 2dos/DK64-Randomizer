@@ -14,20 +14,26 @@ from randomizer.LogicClasses import Collectible
 from randomizer.Enums.Kongs import Kongs
 from randomizer.Lists.Patches import DirtPatchLocations
 import random
+from randomizer.Spoiler import Spoiler
+
 
 def addPatch(patch):
     """Add patch to relevant Logic Region."""
     level_to_enum = {
-        "DK Isles": randomizer.CollectibleLogicFiles.DKIsles.LogicRegions,
-        "Jungle Japes": randomizer.CollectibleLogicFiles.JungleJapes.LogicRegions,
-        "Angry Aztec": randomizer.CollectibleLogicFiles.AngryAztec.LogicRegions,
-        "Frantic Factory": randomizer.CollectibleLogicFiles.FranticFactory.LogicRegions,
-        "Gloomy Galleon": randomizer.CollectibleLogicFiles.GloomyGalleon.LogicRegions,
-        "Fungi Forest": randomizer.CollectibleLogicFiles.FungiForest.LogicRegions,
-        "Crystal Caves": randomizer.CollectibleLogicFiles.CrystalCaves.LogicRegions,
-        "Creepy Castle": randomizer.CollectibleLogicFiles.CreepyCastle.LogicRegions,
+        Levels.DKIsles: randomizer.CollectibleLogicFiles.DKIsles.LogicRegions,
+        Levels.JungleJapes: randomizer.CollectibleLogicFiles.JungleJapes.LogicRegions,
+        Levels.AngryAztec: randomizer.CollectibleLogicFiles.AngryAztec.LogicRegions,
+        Levels.FranticFactory: randomizer.CollectibleLogicFiles.FranticFactory.LogicRegions,
+        Levels.GloomyGalleon: randomizer.CollectibleLogicFiles.GloomyGalleon.LogicRegions,
+        Levels.FungiForest: randomizer.CollectibleLogicFiles.FungiForest.LogicRegions,
+        Levels.CrystalCaves: randomizer.CollectibleLogicFiles.CrystalCaves.LogicRegions,
+        Levels.CreepyCastle: randomizer.CollectibleLogicFiles.CreepyCastle.LogicRegions,
     }
-    level_to_enum[patch.level_name][patch.logicregion].append(Collectible(Collectibles.coin,Kongs.any,patch.logic,None,1,True,False))
+    level_data = level_to_enum[patch.level_name]
+    if patch.logicregion in level_data:
+        level_data[patch.logicregion].append(Collectible(Collectibles.coin, Kongs.any, patch.logic, None, 1, True, False))
+    else:
+        level_data[patch.logicregion] = [Collectible(Collectibles.coin, Kongs.any, patch.logic, None, 1, True, False)]
 
 
 def removePatches():
@@ -49,10 +55,12 @@ def removePatches():
                 if collectible.type == Collectibles.coin and collectible.kong == Kongs.any:
                     collectible.enabled = False
 
-def ShufflePatches(human_spoiler):
+
+def ShufflePatches(spoiler: Spoiler, human_spoiler):
     """Shuffle Dirt Patch Locations."""
     removePatches()
     dirt_list = []
+    spoiler.dirt_patch_placement = []
     for x in DirtPatchLocations:
         x.setPatch(False)
         dirt_list.append(x.name)
@@ -62,4 +70,7 @@ def ShufflePatches(human_spoiler):
             if y.name == selected_patch_name:
                 y.setPatch(True)
                 addPatch(y)
+                human_spoiler.append(y.name)
+                spoiler.dirt_patch_placement.append(y.name)
                 dirt_list.remove(selected_patch_name)
+    return human_spoiler.copy()

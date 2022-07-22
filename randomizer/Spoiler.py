@@ -205,6 +205,8 @@ class Spoiler:
             humanspoiler["Shuffled Music Events"] = self.music_event_data
         if self.settings.kasplat_rando:
             humanspoiler["Shuffled Kasplats"] = self.human_kasplats
+        if self.settings.random_patches:
+            humanspoiler["Shuffled Dirt Patches"] = self.human_patches
         # if self.settings.bananaport_rando:
         #     humanspoiler["Bananaports"] = self.human_warp_locations
         if len(self.hint_list) > 0:
