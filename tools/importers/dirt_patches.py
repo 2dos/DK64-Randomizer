@@ -11,6 +11,7 @@ with open("dirt_patches.csv", newline="") as csvfile:
     print(f"{len(patch_data_json)} patches found")
     print("-----------------")
     for x in patch_data_json:
+        level_name = x['levelname'].replace(" ", "")
         vanilla_text = ""
         if x["vanilla"]:
             vanilla_text = ", vanilla=True"
@@ -25,4 +26,4 @@ with open("dirt_patches.csv", newline="") as csvfile:
             x['logic'] = "True"
         x['logic'] = x['logic'].replace("|", ",")
         logic = f"lambda l: {x['logic']}"
-        print(f"DirtPatchData(name=\"{name}\", level=\"{x['levelname']}\", map_id=Maps.{x['map']}, x={x['coords'][0]}, y={x['coords'][1]}, z={x['coords'][2]}, rotation={x['rot']}{vanilla_text}, group={x['group']}, logicregion=Regions.{x['logicregion']}, logic={logic}, resize=\"{x['resize']}\"),")
+        print(f"DirtPatchData(name=\"{name}\", level=Levels.{level_name}, map_id=Maps.{x['map']}, x={x['coords'][0]}, y={x['coords'][1]}, z={x['coords'][2]}, rotation={x['rot']}{vanilla_text}, group={x['group']}, logicregion=Regions.{x['logicregion']}, logic={logic}, resize=\"{x['resize']}\"),")

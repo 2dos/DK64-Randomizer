@@ -3,6 +3,7 @@ import js
 import random
 import struct
 import math
+from randomizer.Enums.Levels import Levels
 from randomizer.Patching.Patcher import ROM
 from randomizer.Spoiler import Spoiler
 from randomizer.Lists.Patches import DirtPatchLocations
@@ -263,61 +264,48 @@ def randomize_setup(spoiler: Spoiler):
                         ROM().writeMultipleBytes(byte_list, 4)
 
 def randomizeDirtPatches():
-    isles_dirt_list = []
-    round_one_level_dirt_list = []
-    round_two_level_dirt_list = []
-    drawn_level = ""
-    drawn_group = 0
-    for x in DirtPatchLocations:
-        x.setPatch(False) 
-        if x.level_name == "DK Isles":
-            isles_dirt_list.append(x.name)
-        else:
-            round_one_level_dirt_list.append(x.name) 
-            round_two_level_dirt_list.append(x.name) 
-    #draw 4 DK Isles Dirt Patches
-    for x in range(4):
-        selected_patch_name = random.choice(isles_dirt_list)
-        for y in DirtPatchLocations:
-            if y.name == selected_patch_name:
-                y.setPatch(True)
-                print(selected_patch_name)
-                isles_dirt_list.remove(selected_patch_name)
-                drawn_group = y.group
-        #clear out all the patches that should not be selected
-        for y in DirtPatchLocations:
-            if y.group == drawn_group:
-                isles_dirt_list.remove(y.name)
-            
-    #Draw 7 non-DK Isles Dirt Patches, none of which are in the same level
-    for x in range(7):
-        selected_patch_name = random.choice(round_one_level_dirt_list)
-        for y in DirtPatchLocations:
-            if y.name == selected_patch_name:
-                y.setPatch(True)
-                print(selected_patch_name)
-                round_one_level_dirt_list.remove(selected_patch_name)
-                round_two_level_dirt_list.remove(selected_patch_name) #prevents the dirt patch from being selected in round 2
-                drawn_level = y.level_name
-                drawn_group = y.group
-        #clear out all the patches that should not be selected
-        for y in DirtPatchLocations:
-            if y.level_name == drawn_level:
-                round_one_level_dirt_list.remove(y.name)
-                if y.group == drawn_group:
-                    round_two_level_dirt_list.remove(y.name)
-                
 
-    #Draw 5 extra non-DK Isles Dirt Patches, none of which are in the same level
-    for x in range(5):
-        selected_patch_name = random.choice(round_two_level_dirt_list)
+    for SingleDirtPatchLocation in DirtPatchLocations:
+        total_dirt_patch_list[SingleDirtPatchLocation.level_name].append(SingleDirtPatchLocation)
+
+    dk_isles_dirt_list = []
+    japes_dirt_list = []
+    aztec_dirt_list = []
+    factory_dirt_list = []
+    galleon_dirt_list = []
+    forest_dirt_list = []
+    caves_dirt_list = []
+    castle_dirt_list = []
+
+    total_dirt_patch_list = {
+        Levels.DKIsles          : dk_isles_dirt_list,
+        Levels.JungleJapes      : japes_dirt_list,
+        Levels.AngryAztec       : aztec_dirt_list,
+        Levels.FranticFactory   : factory_dirt_list,
+        Levels.GloomyGalleon    : galleon_dirt_list,
+        Levels.FungiForest      : forest_dirt_list,
+        Levels.CrystalCaves     : caves_dirt_list,
+        Levels.CreepyCastle     : castle_dirt_list
+    }
+
+    select_random_dirt_from_area(total_dirt_patch_list["dk_isles_dirt"], 4)
+    del total_dirt_patch_list["dk_isles_dirt"]
+
+    for SingleDirtPatchLocation in range(5):
+        area_key = random.choice(list(total_dirt_patch_list.keys()))
+        area_dirt = total_dirt_patch_list[area_key]
+        select_random_dirt_from_area(area_dirt , 2)
+        del total_dirt_patch_list[area_key]
+
+    for area_key in total_dirt_patch_list.keys():
+        area_dirt = total_dirt_patch_list[area_key]
+        select_random_dirt_from_area(area_dirt , 1)
+
+def select_random_dirt_from_area(area_dirt, amount):
+    for x in range(amount):
+        selected_patch_name = random.choice(area_dirt)
         for y in DirtPatchLocations:
             if y.name == selected_patch_name:
                 y.setPatch(True)
                 print(selected_patch_name)
-                round_two_level_dirt_list.remove(selected_patch_name)
-                drawn_level = y.level_name
-        #clear out all the patches that should not be selected
-        for y in DirtPatchLocations:
-            if y.level_name == drawn_level:
-                round_two_level_dirt_list.remove(y.name)
+                area_dirt.remove(selected_patch_name)
