@@ -59,18 +59,52 @@ def removePatches():
 def ShufflePatches(spoiler: Spoiler, human_spoiler):
     """Shuffle Dirt Patch Locations."""
     removePatches()
-    dirt_list = []
     spoiler.dirt_patch_placement = []
-    for x in DirtPatchLocations:
-        x.setPatch(False)
-        dirt_list.append(x.name)
-    for x in range(16):
-        selected_patch_name = random.choice(dirt_list)
-        for y in DirtPatchLocations:
-            if y.name == selected_patch_name:
-                y.setPatch(True)
-                addPatch(y)
-                human_spoiler.append(y.name)
-                spoiler.dirt_patch_placement.append(y.name)
-                dirt_list.remove(selected_patch_name)
+    total_dirt_patch_list = {
+        Levels.DKIsles: [],
+        Levels.JungleJapes: [],
+        Levels.AngryAztec: [],
+        Levels.FranticFactory: [],
+        Levels.GloomyGalleon: [],
+        Levels.FungiForest: [],
+        Levels.CrystalCaves: [],
+        Levels.CreepyCastle: [],
+    }
+
+    for SingleDirtPatchLocation in DirtPatchLocations:
+        SingleDirtPatchLocation.setPatch(False)
+        total_dirt_patch_list[SingleDirtPatchLocation.level_name].append(SingleDirtPatchLocation)
+
+    select_random_dirt_from_area(total_dirt_patch_list[Levels.DKIsles], 4, spoiler, human_spoiler)
+    del total_dirt_patch_list[Levels.DKIsles]
+
+    for SingleDirtPatchLocation in range(5):
+        area_key = random.choice(list(total_dirt_patch_list.keys()))
+        area_dirt = total_dirt_patch_list[area_key]
+        select_random_dirt_from_area(area_dirt, 2, spoiler, human_spoiler)
+        del total_dirt_patch_list[area_key]
+
+    for area_key in total_dirt_patch_list.keys():
+        area_dirt = total_dirt_patch_list[area_key]
+        select_random_dirt_from_area(area_dirt, 1, spoiler, human_spoiler)
     return human_spoiler.copy()
+
+
+def select_random_dirt_from_area(area_dirt, amount, spoiler: Spoiler, human_spoiler):
+    """Select <amount> random dirt patches from <area_dirt>, which is a list of dirt patches. Makes sure max 1 dirt patch per group is selected."""
+    for iterations in range(amount):
+        selected_patch = random.choice(area_dirt)  # selects a random patch from the list
+        for patch in DirtPatchLocations:  # enables the selected patch
+            if patch.name == selected_patch.name:
+                patch.setPatch(True)
+                addPatch(patch)
+                human_spoiler.append(patch.name)
+                spoiler.dirt_patch_placement.append(patch.name)
+                print("selected " + selected_patch.name + " in group: ", selected_patch.group)
+                area_dirt.remove(selected_patch)
+        if amount > 1:  # if multiple patches are picked, remove patches from the same group, prevent them from being picked
+            # BAD CODE:
+            for patch in area_dirt:
+                if patch.group == selected_patch.group:
+                    print("removed " + patch.name + " for being in group ", patch.group)
+                    area_dirt.remove(patch)
