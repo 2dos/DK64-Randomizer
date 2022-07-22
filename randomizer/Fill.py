@@ -32,6 +32,7 @@ from randomizer.ShuffleBarrels import BarrelShuffle
 from randomizer.ShuffleKasplats import InitKasplatMap, KasplatShuffle
 from randomizer.ShuffleWarps import ShuffleWarps
 from randomizer.ShuffleBosses import ShuffleBossesBasedOnOwnedItems
+from randomizer.ShufflePatches import ShufflePatches
 
 
 def GetExitLevelExit(region):
@@ -138,7 +139,7 @@ def GetAccessibleLocations(settings, ownedItems, searchType=SearchMode.GetReacha
                 # Check accessibility for collectibles
                 if region.id in Logic.CollectibleRegions.keys():
                     for collectible in Logic.CollectibleRegions[region.id]:
-                        if not collectible.added and collectible.kong in (kong, Kongs.any) and collectible.logic(LogicVariables):
+                        if not collectible.added and collectible.kong in (kong, Kongs.any) and collectible.logic(LogicVariables) and collectible.enabled:
                             LogicVariables.AddCollectible(collectible, region.level)
                 # Check accessibility for each location in this region
                 for location in region.locations:
@@ -1379,6 +1380,9 @@ def ShuffleMisc(spoiler):
         ShuffleWarps(replacements, human_replacements)
         spoiler.bananaport_replacements = replacements.copy()
         spoiler.human_warp_locations = human_replacements
+    if spoiler.settings.random_patches:
+        human_patches = []
+        spoiler.human_patches = ShufflePatches(spoiler, human_patches).copy()
 
     if spoiler.settings.activate_all_bananaports in ["all", "isles"]:
         warpMapIds = set([BananaportVanilla[warp].map_id for warp in Warps])

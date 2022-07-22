@@ -412,24 +412,25 @@ class LogicVarHolder:
 
     def AddCollectible(self, collectible, level):
         """Add a collectible."""
-        if collectible.type == Collectibles.coin:
-            # Rainbow coin, add 5 coins for each kong
-            if collectible.kong == Kongs.any:
-                for i in range(5):
-                    self.Coins[i] += collectible.amount * 5
-            # Normal coins, add amount for the kong
-            else:
-                self.Coins[collectible.kong] += collectible.amount
-        # Add bananas for correct level for this kong
-        elif collectible.type == Collectibles.banana:
-            self.ColoredBananas[level][collectible.kong] += collectible.amount
-        # Add 5 times amount of banana bunches
-        elif collectible.type == Collectibles.bunch:
-            self.ColoredBananas[level][collectible.kong] += collectible.amount * 5
-        # Add 10 bananas for a balloon
-        elif collectible.type == Collectibles.balloon:
-            self.ColoredBananas[level][collectible.kong] += collectible.amount * 10
-        collectible.added = True
+        if collectible.enabled:
+            if collectible.type == Collectibles.coin:
+                # Rainbow coin, add 5 coins for each kong
+                if collectible.kong == Kongs.any:
+                    for i in range(5):
+                        self.Coins[i] += collectible.amount * 5
+                # Normal coins, add amount for the kong
+                else:
+                    self.Coins[collectible.kong] += collectible.amount
+            # Add bananas for correct level for this kong
+            elif collectible.type == Collectibles.banana:
+                self.ColoredBananas[level][collectible.kong] += collectible.amount
+            # Add 5 times amount of banana bunches
+            elif collectible.type == Collectibles.bunch:
+                self.ColoredBananas[level][collectible.kong] += collectible.amount * 5
+            # Add 10 bananas for a balloon
+            elif collectible.type == Collectibles.balloon:
+                self.ColoredBananas[level][collectible.kong] += collectible.amount * 10
+            collectible.added = True
 
     def PurchaseShopItem(self, location: Location):
         """Purchase items from shops and subtract price from logical coin counts."""
@@ -551,6 +552,7 @@ def ResetCollectibleRegions():
     for region in CollectibleRegions.values():
         for collectible in region:
             collectible.added = False
+            # collectible.enabled = collectible.vanilla
 
 
 def ClearAllLocations():
