@@ -95,9 +95,10 @@ def GetBlueprintLocationForKongAndLevel(level, kong):
     return Locations(baseOffset + (5 * levelOffset) + int(kong))
 
 
-def ShuffleKasplatsAndLocations(LogicVariables):
+def ShuffleKasplatsAndLocations(spoiler, LogicVariables):
     """Shuffle the location and kong assigned to each kasplat. This should replace ShuffleKasplats if all goes well."""
     # Cull all locations for vanilla kasplats so they don't get in the way or have items shuffled into them
+    spoiler.shuffled_kasplat_map = {}
     LogicVariables.kasplat_map = {}
     for location in shufflable:
         Logic.LocationList.pop(location, None)
@@ -123,8 +124,6 @@ def ShuffleKasplatsAndLocations(LogicVariables):
             for kasplat in kasplats:
                 if kasplat.name == selected_kasplat:
                     kasplat.setKasplat()
-                    kasplat.selected_kong_idx = idx
-                    kasplat.selected_kong = kong
                     # Figure out what blueprint should be placed where
                     item_id = GetBlueprintItemForKongAndLevel(level, kong)
                     location_id = GetBlueprintLocationForKongAndLevel(level, kong)
@@ -137,6 +136,7 @@ def ShuffleKasplatsAndLocations(LogicVariables):
                     kasplatRegion.locations.append(LocationLogic(location_id, lambda l: kasplat.additional_logic(l)))
                     # Update logic variables for remainder of the Fill
                     LogicVariables.kasplat_map[location_id] = kong
+                    spoiler.shuffled_kasplat_map[kasplat.name] = idx
                     break
 
 
@@ -180,14 +180,14 @@ def ShuffleKasplats(LogicVariables):
             raise Ex.KasplatOutOfKongs
 
 
-def KasplatShuffle(LogicVariables):
+def KasplatShuffle(spoiler, LogicVariables):
     """Facilitate the shuffling of kasplat types."""
     if LogicVariables.settings.kasplat_rando:
         retries = 0
         while True:
             try:
                 # Shuffle kasplats
-                ShuffleKasplatsAndLocations(LogicVariables)
+                ShuffleKasplatsAndLocations(spoiler, LogicVariables)
                 # Verify world by assuring all locations are still reachable
                 if not Fill.VerifyWorld(LogicVariables.settings):
                     raise Ex.KasplatPlacementException
