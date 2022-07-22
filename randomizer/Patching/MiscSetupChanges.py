@@ -265,31 +265,22 @@ def randomize_setup(spoiler: Spoiler):
 
 def randomizeDirtPatches():
 
-    for SingleDirtPatchLocation in DirtPatchLocations:
-        total_dirt_patch_list[SingleDirtPatchLocation.level_name].append(SingleDirtPatchLocation)
-
-    dk_isles_dirt_list = []
-    japes_dirt_list = []
-    aztec_dirt_list = []
-    factory_dirt_list = []
-    galleon_dirt_list = []
-    forest_dirt_list = []
-    caves_dirt_list = []
-    castle_dirt_list = []
-
     total_dirt_patch_list = {
-        Levels.DKIsles          : dk_isles_dirt_list,
-        Levels.JungleJapes      : japes_dirt_list,
-        Levels.AngryAztec       : aztec_dirt_list,
-        Levels.FranticFactory   : factory_dirt_list,
-        Levels.GloomyGalleon    : galleon_dirt_list,
-        Levels.FungiForest      : forest_dirt_list,
-        Levels.CrystalCaves     : caves_dirt_list,
-        Levels.CreepyCastle     : castle_dirt_list
+        Levels.DKIsles          : [],
+        Levels.JungleJapes      : [],
+        Levels.AngryAztec       : [],
+        Levels.FranticFactory   : [],
+        Levels.GloomyGalleon    : [],
+        Levels.FungiForest      : [],
+        Levels.CrystalCaves     : [],
+        Levels.CreepyCastle     : []
     }
 
-    select_random_dirt_from_area(total_dirt_patch_list["dk_isles_dirt"], 4)
-    del total_dirt_patch_list["dk_isles_dirt"]
+    for SingleDirtPatchLocation in DirtPatchLocations:
+            total_dirt_patch_list[SingleDirtPatchLocation.level_name].append(SingleDirtPatchLocation)
+
+    select_random_dirt_from_area(total_dirt_patch_list[Levels.DKIsles], 4)
+    del total_dirt_patch_list[Levels.DKIsles]
 
     for SingleDirtPatchLocation in range(5):
         area_key = random.choice(list(total_dirt_patch_list.keys()))
@@ -302,10 +293,14 @@ def randomizeDirtPatches():
         select_random_dirt_from_area(area_dirt , 1)
 
 def select_random_dirt_from_area(area_dirt, amount):
-    for x in range(amount):
-        selected_patch_name = random.choice(area_dirt)
-        for y in DirtPatchLocations:
-            if y.name == selected_patch_name:
-                y.setPatch(True)
-                print(selected_patch_name)
-                area_dirt.remove(selected_patch_name)
+    for iterations in range(amount):
+        selected_patch = random.choice(area_dirt)
+        for patch in DirtPatchLocations:
+            if patch.name == selected_patch.name:
+                patch.setPatch(True)
+                print(selected_patch.name)
+                area_dirt.remove(selected_patch.name)
+        if amount > 1:
+            for patch in area_dirt:
+                if patch.group == selected_patch.group:
+                    area_dirt.remove(patch)
