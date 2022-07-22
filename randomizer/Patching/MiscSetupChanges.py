@@ -299,7 +299,7 @@ def select_random_dirt_from_area(area_dirt, amount):
             if patch.name == selected_patch.name:
                 patch.setPatch(True)
                 print(selected_patch.name)
-                area_dirt.remove(selected_patch.name)
+                area_dirt.remove(selected_patch)
         if amount > 1:
             for patch in area_dirt:
                 if patch.group == selected_patch.group:
