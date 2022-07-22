@@ -48,7 +48,6 @@ def randomize_setup(spoiler: Spoiler):
             pickup_list.append(pickup["type"])
     if spoiler.settings.random_patches:
         randomizeDirtPatches()
-        
 
     allowed_settings = [spoiler.settings.skip_arcader1, spoiler.settings.randomize_pickups, spoiler.settings.random_patches, spoiler.settings.puzzle_rando]
     enabled = False
@@ -263,22 +262,23 @@ def randomize_setup(spoiler: Spoiler):
                     for byte_list in actor:
                         ROM().writeMultipleBytes(byte_list, 4)
 
-def randomizeDirtPatches():
 
+def randomizeDirtPatches():
+    """Shuffle dirt patch locations."""
     total_dirt_patch_list = {
-        Levels.DKIsles          : [],
-        Levels.JungleJapes      : [],
-        Levels.AngryAztec       : [],
-        Levels.FranticFactory   : [],
-        Levels.GloomyGalleon    : [],
-        Levels.FungiForest      : [],
-        Levels.CrystalCaves     : [],
-        Levels.CreepyCastle     : []
+        Levels.DKIsles: [],
+        Levels.JungleJapes: [],
+        Levels.AngryAztec: [],
+        Levels.FranticFactory: [],
+        Levels.GloomyGalleon: [],
+        Levels.FungiForest: [],
+        Levels.CrystalCaves: [],
+        Levels.CreepyCastle: [],
     }
 
     for SingleDirtPatchLocation in DirtPatchLocations:
-            SingleDirtPatchLocation.setPatch(False)
-            total_dirt_patch_list[SingleDirtPatchLocation.level_name].append(SingleDirtPatchLocation)
+        SingleDirtPatchLocation.setPatch(False)
+        total_dirt_patch_list[SingleDirtPatchLocation.level_name].append(SingleDirtPatchLocation)
 
     select_random_dirt_from_area(total_dirt_patch_list[Levels.DKIsles], 4)
     del total_dirt_patch_list[Levels.DKIsles]
@@ -286,29 +286,31 @@ def randomizeDirtPatches():
     for SingleDirtPatchLocation in range(5):
         area_key = random.choice(list(total_dirt_patch_list.keys()))
         area_dirt = total_dirt_patch_list[area_key]
-        select_random_dirt_from_area(area_dirt , 2)
+        select_random_dirt_from_area(area_dirt, 2)
         del total_dirt_patch_list[area_key]
 
     for area_key in total_dirt_patch_list.keys():
         area_dirt = total_dirt_patch_list[area_key]
-        select_random_dirt_from_area(area_dirt , 1)
+        select_random_dirt_from_area(area_dirt, 1)
+
 
 def select_random_dirt_from_area(area_dirt, amount):
+    """Select <amount> random dirt patches from <area_dirt>, which is a list of dirt patches. Makes sure max 1 dirt patch per group is selected."""
     for iterations in range(amount):
-        selected_patch = random.choice(area_dirt) #selects a random patch from the list
-        for patch in DirtPatchLocations:#enables the selected patch
+        selected_patch = random.choice(area_dirt)  # selects a random patch from the list
+        for patch in DirtPatchLocations:  # enables the selected patch
             if patch.name == selected_patch.name:
                 patch.setPatch(True)
-                print("selected "+selected_patch.name+" in group: ", selected_patch.group)
+                print("selected " + selected_patch.name + " in group: ", selected_patch.group)
                 area_dirt.remove(selected_patch)
-        if amount > 1:#if multiple patches are picked, remove patches from the same group, prevent them from being picked
-            #BAD CODE: 
+        if amount > 1:  # if multiple patches are picked, remove patches from the same group, prevent them from being picked
+            # BAD CODE:
             for patch in area_dirt:
                 if patch.group == selected_patch.group:
-                    print("removed "+patch.name+" for being in group ", patch.group)
+                    print("removed " + patch.name + " for being in group ", patch.group)
                     area_dirt.remove(patch)
-                elif(patch.level_name == Levels.CreepyCastle):
-                        #I know it doubledips any patch it removes to also say it's NOT removing them, right after.
-                        print("Not removing "+patch.name+" in group ", patch.group)
+                elif patch.level_name == Levels.CreepyCastle:
+                    # I know it doubledips any patch it removes to also say it's NOT removing them, right after.
+                    print("Not removing " + patch.name + " in group ", patch.group)
                 else:
-                    print(patch.name+"'s level is ", patch.level_name)
+                    print(patch.name + "'s level is ", patch.level_name)

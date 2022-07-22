@@ -15,20 +15,18 @@ def generate_settings():
     # Setting test settings
     data = {}
     data["seed"] = 821515
-    #undivided
+    # undivided
     data["name"] = "test"
     data["description"] = "test"
-    
-    
-    
+
     data["move_rando"] = "on"  # usually "on"
-    #data["random_prices"] = "medium"  # usually "medium"
-    #data["blocker_text"] = 69
-    #data["troff_text"] = 400
-    #data["maximize_helm_blocker"] = True
+    # data["random_prices"] = "medium"  # usually "medium"
+    # data["blocker_text"] = 69
+    # data["troff_text"] = 400
+    # data["maximize_helm_blocker"] = True
     # important things
-    
-    #tab1
+
+    # tab1
     data["enemy_rando"] = False
     data["crown_enemy_rando"] = False
     data["enemy_speed_rando"] = False
@@ -36,15 +34,15 @@ def generate_settings():
     data["boss_kong_rando"] = True
     data["random_medal_requirement"] = False
     data["level_randomization"] = "vanilla"
-    
+
     data["boss_location_rando"] = True
     data["bananaport_rando"] = False
     data["kasplat_rando"] = False
-    data["kong_rando"] = True   
+    data["kong_rando"] = True
     data["random_patches"] = True
     data["unlock_all_moves"] = True
 
-    #tab2
+    # tab2
     data["blocker_0"] = 0
     data["blocker_1"] = 0
     data["blocker_2"] = 0
@@ -70,7 +68,7 @@ def generate_settings():
     data["hard_mad_jack"] = False
     data["perma_death"] = False
 
-    #tab3
+    # tab3
     data["unlock_fairy_shockwave"] = True
     data["crown_door_open"] = True
     data["coin_door_open"] = True
@@ -85,25 +83,24 @@ def generate_settings():
     data["krool_phase_count"] = 4
     data["krool_access"] = False
     data["keys_random"] = False
-    data["krool_key_count"] = 0 
+    data["krool_key_count"] = 0
     data["starting_random"] = False
     data["starting_kongs_count"] = 5
 
-    #tab4
+    # tab4
     data["quality_of_life"] = True
-    #unimportant missing setting
+    # unimportant missing setting
     data["enable_tag_anywhere"] = True
     data["wrinkly_hints"] = "standard"
     data["disable_shop_hints"] = False
     data["fps_display"] = False
     data["dpad_display"] = False
 
-
     data["warp_to_isles"] = True
     data["helm_setting"] = "skip_all"
     data["portal_numbers"] = True
     data["shop_indicator"] = True
-    #unimportant missing
+    # unimportant missing
     data["fast_warps"] = True
     data["activate_all_bananaports"] = True
 
@@ -116,10 +113,10 @@ def generate_settings():
 
     data["generate_spoilerlog"] = True
     data["fast_start_beginning_of_game"] = True
-    #data["helm_setting"] = "default"
-    #data["quality_of_life"] = True
-    #data["enable_tag_anywhere"] = False
-    #data["krool_phase_order_rando"] = True
+    # data["helm_setting"] = "default"
+    # data["quality_of_life"] = True
+    # data["enable_tag_anywhere"] = False
+    # data["krool_phase_order_rando"] = True
     return data
 
 
