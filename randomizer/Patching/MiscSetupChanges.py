@@ -295,13 +295,20 @@ def randomizeDirtPatches():
 
 def select_random_dirt_from_area(area_dirt, amount):
     for iterations in range(amount):
-        selected_patch = random.choice(area_dirt)
-        for patch in DirtPatchLocations:
+        selected_patch = random.choice(area_dirt) #selects a random patch from the list
+        for patch in DirtPatchLocations:#enables the selected patch
             if patch.name == selected_patch.name:
                 patch.setPatch(True)
-                print(selected_patch.name)
+                print("selected "+selected_patch.name+" in group: ", selected_patch.group)
                 area_dirt.remove(selected_patch)
-        if amount > 1:
+        if amount > 1:#if multiple patches are picked, remove patches from the same group, prevent them from being picked
+            #BAD CODE: 
             for patch in area_dirt:
                 if patch.group == selected_patch.group:
+                    print("removed "+patch.name+" for being in group ", patch.group)
                     area_dirt.remove(patch)
+                elif(patch.level_name == Levels.CreepyCastle):
+                        #I know it doubledips any patch it removes to also say it's NOT removing them, right after.
+                        print("Not removing "+patch.name+" in group ", patch.group)
+                else:
+                    print(patch.name+"'s level is ", patch.level_name)
