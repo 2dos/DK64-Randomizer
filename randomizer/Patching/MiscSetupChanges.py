@@ -277,6 +277,7 @@ def randomizeDirtPatches():
     }
 
     for SingleDirtPatchLocation in DirtPatchLocations:
+            SingleDirtPatchLocation.setPatch(False)
             total_dirt_patch_list[SingleDirtPatchLocation.level_name].append(SingleDirtPatchLocation)
 
     select_random_dirt_from_area(total_dirt_patch_list[Levels.DKIsles], 4)
