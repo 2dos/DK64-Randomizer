@@ -48,7 +48,7 @@ set_variables = {
     "remove_high_requirements": 1,
     "open_level_sections": 1,
     "auto_keys": 1,
-    "test_zone": [0x40, 4],
+    "test_zone": [0xc7, 0],
     "special_move_prices": [
         [1, 2, 3],
         [4, 5, 6],

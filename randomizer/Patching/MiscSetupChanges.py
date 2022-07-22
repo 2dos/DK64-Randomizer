@@ -45,18 +45,6 @@ def randomize_setup(spoiler: Spoiler):
     for pickup in pickup_weights:
         for count in range(pickup["weight"]):
             pickup_list.append(pickup["type"])
-    if spoiler.settings.random_patches:
-        dirt_list = []
-        for x in DirtPatchLocations:
-            x.setPatch(False)
-            dirt_list.append(x.name)
-        for x in range(16):
-            selected_patch_name = random.choice(dirt_list)
-            for y in DirtPatchLocations:
-                if y.name == selected_patch_name:
-                    y.setPatch(True)
-                    print(selected_patch_name)
-                    dirt_list.remove(selected_patch_name)
 
     allowed_settings = [spoiler.settings.skip_arcader1, spoiler.settings.randomize_pickups, spoiler.settings.random_patches, spoiler.settings.puzzle_rando]
     enabled = False
