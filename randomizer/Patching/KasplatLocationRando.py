@@ -35,25 +35,6 @@ def randomize_kasplat_locations(spoiler: Spoiler):
         Maps.GloomyGalleonLobby,
     ]
     if spoiler.settings.kasplat_rando:
-        for level in KasplatLocationList:
-            print(level)
-            kasplats = KasplatLocationList[level]
-            for kasplat in kasplats:
-                # Reset a level's kasplats
-                kasplat.setKasplat(state=False)
-            kongs = GetKongs()
-            for idx, kong in enumerate(kongs):
-                available_for_kong = []
-                for kasplat in kasplats:
-                    if not kasplat.selected and kong in kasplat.kong_lst:
-                        available_for_kong.append(kasplat.name)
-                selected_kasplat = random.choice(available_for_kong)
-                for kasplat in kasplats:
-                    if kasplat.name == selected_kasplat:
-                        kasplat.setKasplat()
-                        kasplat.selected_kong_idx = idx
-                        kasplat.selected_kong = kong
-                        print(selected_kasplat)
         for cont_map_id in range(216):
             cont_map_spawner_address = js.pointer_addresses[16]["entries"][cont_map_id]["pointing_to"]
             ROM().seek(cont_map_spawner_address)

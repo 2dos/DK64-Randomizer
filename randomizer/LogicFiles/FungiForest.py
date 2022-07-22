@@ -64,7 +64,7 @@ LogicRegions = {
     ]),
 
     Regions.MushroomLowerExterior: Region("Mushroom Lower Exterior", Levels.FungiForest, True, -1, [
-        LocationLogic(Locations.ForestKasplatLowerMushroomExterior, lambda l: True),
+        LocationLogic(Locations.ForestKasplatLowerMushroomExterior, lambda l: not l.settings.kasplat_rando),
     ], [], [
         TransitionFront(Regions.GiantMushroomArea, lambda l: True),
         TransitionFront(Regions.MushroomLower, lambda l: True, Transitions.ForestLowerExteriorToLowerMushroom),
@@ -80,7 +80,7 @@ LogicRegions = {
 
     Regions.MushroomUpper: Region("Mushroom Upper", Levels.FungiForest, True, -1, [
         LocationLogic(Locations.ForestDonkeyMushroomCannons, lambda l: Events.MushroomCannonsSpawned in l.Events and Events.DonkeyMushroomSwitch in l.Events),
-        LocationLogic(Locations.ForestKasplatInsideMushroom, lambda l: True),
+        LocationLogic(Locations.ForestKasplatInsideMushroom, lambda l: not l.settings.kasplat_rando),
     ], [], [
         TransitionFront(Regions.MushroomLower, lambda l: True),
         TransitionFront(Regions.MushroomLowerExterior, lambda l: True, Transitions.ForestUpperMushroomToLowerExterior),
@@ -95,7 +95,7 @@ LogicRegions = {
     ]),
 
     Regions.MushroomNightExterior: Region("Mushroom Night Exterior", Levels.FungiForest, False, None, [
-        LocationLogic(Locations.ForestKasplatUpperMushroomExterior, lambda l: True),
+        LocationLogic(Locations.ForestKasplatUpperMushroomExterior, lambda l: not l.settings.kasplat_rando),
     ], [], [
         TransitionFront(Regions.MushroomNightDoor, lambda l: True, Transitions.ForestExteriorToNight, time=Time.Night),
         TransitionFront(Regions.GiantMushroomArea, lambda l: True),
@@ -134,7 +134,7 @@ LogicRegions = {
     Regions.HollowTreeArea: Region("Hollow Tree Area", Levels.FungiForest, True, -1, [
         LocationLogic(Locations.ForestDiddyOwlRace, lambda l: l.TimeAccess(Regions.HollowTreeArea, Time.Night) and l.jetpack and l.guitar and l.isdiddy, MinigameType.BonusBarrel),
         LocationLogic(Locations.ForestLankyRabbitRace, lambda l: l.TimeAccess(Regions.HollowTreeArea, Time.Day) and l.trombone and l.sprint and l.lanky),
-        LocationLogic(Locations.ForestKasplatOwlTree, lambda l: True),
+        LocationLogic(Locations.ForestKasplatOwlTree, lambda l: not l.settings.kasplat_rando),
     ], [], [
         TransitionFront(Regions.GiantMushroomArea, lambda l: l.settings.open_levels or Events.HollowTreeGateOpened in l.Events),
         TransitionFront(Regions.Anthill, lambda l: l.mini and l.saxophone, Transitions.ForestTreeToAnthill),
@@ -216,7 +216,7 @@ LogicRegions = {
     ]),
 
     Regions.ThornvineArea: Region("Thornvine Area", Levels.FungiForest, True, -1, [
-        LocationLogic(Locations.ForestKasplatNearBarn, lambda l: True),
+        LocationLogic(Locations.ForestKasplatNearBarn, lambda l: not l.settings.kasplat_rando),
     ], [], [
         TransitionFront(Regions.MillArea, lambda l: True, time=Time.Night),
         # You're supposed to use strong kong to hit the switch in the thorns, but can brute force it, unless on higher damage values
