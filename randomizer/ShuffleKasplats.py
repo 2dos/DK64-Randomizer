@@ -120,7 +120,6 @@ def ShuffleKasplatsAndLocations(spoiler, LogicVariables):
                     available_for_kong.append(kasplat.name)
             selected_kasplat = random.choice(available_for_kong)
             # Loop through kasplats until we find the relevant one
-            # We take our time doing these because we don't want to lose the references - the ROM writer looks at the KasplatLocationList later
             for kasplat in kasplats:
                 if kasplat.name == selected_kasplat:
                     kasplat.setKasplat()
@@ -128,7 +127,7 @@ def ShuffleKasplatsAndLocations(spoiler, LogicVariables):
                     item_id = GetBlueprintItemForKongAndLevel(level, kong)
                     location_id = GetBlueprintLocationForKongAndLevel(level, kong)
                     # Assemble the Location object
-                    location = Location(level.name + " Kasplat located " + kasplat.name, item_id, Types.Blueprint, [kasplat.map, kong])
+                    location = Location(kasplat.name, item_id, Types.Blueprint, [kasplat.map, kong])
                     location.PlaceDefaultItem()
                     Logic.LocationList[location_id] = location
                     # Insert the Location into the Region
