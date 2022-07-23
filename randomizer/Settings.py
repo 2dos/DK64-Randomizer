@@ -240,7 +240,7 @@ class Settings:
         self.open_levels = None
         self.randomize_pickups = False
         self.random_medal_requirement = False
-        self.medal_requirement = None
+        self.medal_requirement = 0
         self.bananaport_rando = False
         self.activate_all_bananaports = False
         self.shop_indicator = False
