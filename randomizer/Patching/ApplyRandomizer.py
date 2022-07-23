@@ -328,8 +328,9 @@ def patching_response(responded_data):
     ROM().seek(sav + 0x118)
     ROM().write(key_bitfield)
 
-    ROM().seek(sav + 0x140)
-    ROM().write(spoiler.settings.medal_requirement)
+    if spoiler.settings.coin_door_open in ["need_both", "need_rw"]:
+        ROM().seek(sav + 0x140)
+        ROM().write(spoiler.settings.medal_requirement)
 
     # randomize_dktv()
     randomize_entrances(spoiler)
