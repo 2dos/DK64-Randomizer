@@ -626,7 +626,12 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 						}
 					}
 				} else if (index == 2) {
-					disableDiddyRDDoors();
+					if (Rando.fast_gbs) {
+						disableDiddyRDDoors();
+					}
+					else {
+						setScriptRunState(behaviour_pointer, 2, 0);
+					}
         		}
 			} else if (param2 == FACTORY_DARTBOARD) {
 				if (index < 6) {
