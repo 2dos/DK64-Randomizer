@@ -589,8 +589,8 @@ def compileHints(spoiler: Spoiler):
                 hint_list.append(Hint(hint=patch_text, priority=index + 4, important=importance == 0))
     if spoiler.settings.shuffle_loading_zones == "all":
         AddLoadingZoneHints(spoiler)
-    if spoiler.settings.BananaMedalsRequired and spoiler.settings.coin_door_open == "need_both" or spoiler.settings.coin_door_open == "need_rw":
-        hint_list.append(Hint(hint=f"{spoiler.settings.BananaMedalsRequired} medals are required to access Jetpac.", priority=4))
+    if spoiler.settings.coin_door_open == "need_both" or spoiler.settings.coin_door_open == "need_rw":
+        hint_list.append(Hint(hint=f"{spoiler.settings.medal_requirement} medals are required to access Jetpac.", priority=4))
     if spoiler.settings.perma_death:
         hint_list.append(Hint(hint="The curse can only be removed upon disabling K. Rools machine."))
     if spoiler.settings.level_randomization != "level_order":
