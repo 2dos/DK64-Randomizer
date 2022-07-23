@@ -86,7 +86,7 @@ class Spoiler:
         settings["coin_door_open"] = self.settings.coin_door_open
         settings["unlock_fairy_shockwave"] = self.settings.unlock_fairy_shockwave
         settings["random_medal_requirement"] = self.settings.random_medal_requirement
-        if settings.coin_door_open == "need_both" or settings.coin_door_open == "need_rw":
+        if self.settings.coin_door_open == "need_both" or self.settings.coin_door_open == "need_rw":
             settings["medal_requirement"] = self.settings.medal_requirement
         settings["random_prices"] = self.settings.random_prices
         settings["bananaport_rando"] = self.settings.bananaport_rando
