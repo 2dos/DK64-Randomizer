@@ -186,10 +186,22 @@ def patching_response(responded_data):
         ROM().seek(sav + 0x032)
         ROM().write(1)
 
-    # Coin Door Open
-    if spoiler.settings.coin_door_open:
+    # Coin Door Requirements
+    if spoiler.settings.coin_door_open == "need_both":
+        ROM().seek(sav + 0x033)
+        ROM().write(0)
+
+    elif spoiler.settings.coin_door_open == "need_zero":
         ROM().seek(sav + 0x033)
         ROM().write(1)
+
+    elif spoiler.settings.coin_door_open == "need_nin":
+        ROM().seek(sav + 0x033)
+        ROM().write(2)
+
+    elif spoiler.settings.coin_door_open == "need_rw":
+        ROM().seek(sav + 0x033)
+        ROM().write(3)
 
     # Quality of Life
     if spoiler.settings.quality_of_life:
@@ -317,7 +329,7 @@ def patching_response(responded_data):
     ROM().write(key_bitfield)
 
     ROM().seek(sav + 0x140)
-    ROM().write(spoiler.jetpac_medals_required)
+    ROM().write(spoiler.settings.medal_requirement)
 
     # randomize_dktv()
     randomize_entrances(spoiler)
@@ -377,7 +389,7 @@ def patching_response(responded_data):
             "tiny_freeing_kong",
             "lanky_freeing_kong",
             "chunky_freeing_kong",
-            "banana_medals_required",
+            "medal_requirement",
             "krool_phases",
             "krool_keys_required",
             "blocker_golden_bananas",
