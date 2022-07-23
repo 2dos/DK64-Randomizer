@@ -1,5 +1,6 @@
 .data
 id = 0x40
+ignore = 1
 behav_9C = 0
 .code
 COND 29 | 1 0 0
