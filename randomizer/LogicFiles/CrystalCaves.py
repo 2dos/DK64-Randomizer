@@ -62,7 +62,7 @@ LogicRegions = {
         TransitionFront(Regions.CrystalCavesMain, lambda l: True)
     ]),
 
-    Regions.CavesBananaportSpire: Region("Caves Bananaport Spire",Levels.CrystalCaves, False, None, [], [], [
+    Regions.CavesBananaportSpire: Region("Caves Bananaport Spire", Levels.CrystalCaves, False, None, [], [], [
         TransitionFront(Regions.CrystalCavesMain, lambda l: True)
     ]),
 
