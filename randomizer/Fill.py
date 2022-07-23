@@ -1120,7 +1120,7 @@ def FillKongsAndMoves(spoiler):
                             if location in ItemPool.ForestFunkyMoveLocations:
                                 # There's no way a kong locked behind Forest Funky can be your second kong
                                 # This _should_ be covered by the ownedItems=OwnedKongMoves preventing you from having the guns to get to it, which in turn prevents access to that shop unless you have both Chunky and Tiny
-                                if len(ownedKongs == 1):
+                                if len(ownedKongs) == 1:
                                     raise Ex.ItemPlacementException("Fungi Funky logic issue - SEND THIS TO A DEV!")
                                 if Items.Feather not in preplacedPriorityMoves:
                                     featherLocations = ItemPool.TinyMoveLocations.copy()
