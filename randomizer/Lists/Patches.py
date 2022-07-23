@@ -5,7 +5,6 @@ from randomizer.Enums.Regions import Regions
 from randomizer.Enums.Time import Time
 from randomizer.Lists.MapsAndExits import Maps
 from randomizer.Enums.Levels import Levels
-import randomizer.Logic
 
 
 class DirtPatchData:
@@ -261,7 +260,7 @@ DirtPatchLocations = [
         rotation=682,
         group=5,
         logicregion=Regions.Prison,
-        logic=lambda l: l.CanAccessKrool() and l.shockwave,
+        logic=lambda l: l.CanAccessKRool() and l.shockwave,
         resize="",
     ),
     DirtPatchData(

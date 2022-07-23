@@ -189,55 +189,67 @@ void newCounterCode(void) {
 	counter_paad* paad = CurrentActorPointer_0->paad;
 	if ((CurrentActorPointer_0->obj_props_bitfield & 0x10) == 0) {
 		// Init Code
-		if (Rando.shop_indicator_on) {
+		if (CurrentMap != 0x11) {
+			if (Rando.shop_indicator_on) {
+				for (int i = 0; i < 3; i++) {
+					paad->image_slots[i] = loadCounterFontTexture(0x21,paad->image_slots[i],i,0,IMG_WIDTH);
+				}
+				CurrentActorPointer_0->rot_z = 3072; // Facing vertical
+				CurrentActorPointer_0->rgb_mask[0] = getClosestShop();
+				CurrentActorPointer_0->rgb_mask[1] = getMoveCountInShop(CurrentActorPointer_0->rgb_mask[0] & 0xF);
+				CurrentActorPointer_0->rgb_mask[2] = 0;
+				updateCounterDisplay();
+				if (CurrentActorPointer_0->rgb_mask[1] == 0) {
+					paad->image_slots[1] = loadFontTexture_Counter(paad->image_slots[1],7);
+				}
+			} else {
+				deleteActorContainer(CurrentActorPointer_0);
+			}
+		} else {
 			for (int i = 0; i < 3; i++) {
 				paad->image_slots[i] = loadCounterFontTexture(0x21,paad->image_slots[i],i,0,IMG_WIDTH);
 			}
+			int id = getActorSpawnerIDFromTiedActor(CurrentActorPointer_0);
+			int face = Rando.k_rool_order[id - 0x100];
 			CurrentActorPointer_0->rot_z = 3072; // Facing vertical
-			CurrentActorPointer_0->rgb_mask[0] = getClosestShop();
-			CurrentActorPointer_0->rgb_mask[1] = getMoveCountInShop(CurrentActorPointer_0->rgb_mask[0] & 0xF);
-			CurrentActorPointer_0->rgb_mask[2] = 0;
-			updateCounterDisplay();
-			if (CurrentActorPointer_0->rgb_mask[1] == 0) {
-				paad->image_slots[1] = loadFontTexture_Counter(paad->image_slots[1],7);
-			}
-		} else {
-			deleteActorContainer(CurrentActorPointer_0);
+			paad->image_slots[1] = loadFontTexture_Counter(paad->image_slots[1],face+1);
 		}
 	} else {
-		if ((ObjectModel2Timer % 20) == 0) {
-			int lim = CurrentActorPointer_0->rgb_mask[0] >> 4;
-			if (lim > 1) {
-				CurrentActorPointer_0->rgb_mask[2] += 1;
-				if (CurrentActorPointer_0->rgb_mask[2] >= lim) {
-					CurrentActorPointer_0->rgb_mask[2] = 0;
+		if (CurrentMap != 0x11) {
+			if ((ObjectModel2Timer % 20) == 0) {
+				int lim = CurrentActorPointer_0->rgb_mask[0] >> 4;
+				if (lim > 1) {
+					CurrentActorPointer_0->rgb_mask[2] += 1;
+					if (CurrentActorPointer_0->rgb_mask[2] >= lim) {
+						CurrentActorPointer_0->rgb_mask[2] = 0;
+					}
+					updateCounterDisplay();
 				}
-				updateCounterDisplay();
 			}
-		}
-		if (paad->linked_behaviour) {
-			if (paad->linked_behaviour->current_state == 0xC) {
-				CurrentActorPointer_0->obj_props_bitfield |= 0x4;
-			} else {
-				CurrentActorPointer_0->obj_props_bitfield &= 0xFFFFFFFB;
-			}
-		}
-		if (CurrentMap == 0x1E) {
-			int shop = CurrentActorPointer_0->rgb_mask[0] & 0xF;
-			int* m2location = ObjectModel2Pointer;
-			if (shop == 1) {
-				int funky = convertIDToIndex(0x1F4);
-				if (funky > -1) {
-					ModelTwoData* funky_object = getObjectArrayAddr(m2location,0x90,funky);
-					int funky_y = funky_object->yPos;
-					CurrentActorPointer_0->yPos = funky_y + (40 * 1.12f);
+			if (paad->linked_behaviour) {
+				if (paad->linked_behaviour->current_state == 0xC) {
+					CurrentActorPointer_0->obj_props_bitfield |= 0x4;
+				} else {
+					CurrentActorPointer_0->obj_props_bitfield &= 0xFFFFFFFB;
 				}
-			} else if (shop == 2) {
-				int candy = convertIDToIndex(0x36);
-				if (candy > -1) {
-					ModelTwoData* candy_object = getObjectArrayAddr(m2location,0x90,candy);
-					int candy_y = candy_object->yPos;
-					CurrentActorPointer_0->yPos = candy_y + (40 * 1.28f);
+			}
+			if (CurrentMap == 0x1E) {
+				int shop = CurrentActorPointer_0->rgb_mask[0] & 0xF;
+				int* m2location = ObjectModel2Pointer;
+				if (shop == 1) {
+					int funky = convertIDToIndex(0x1F4);
+					if (funky > -1) {
+						ModelTwoData* funky_object = getObjectArrayAddr(m2location,0x90,funky);
+						int funky_y = funky_object->yPos;
+						CurrentActorPointer_0->yPos = funky_y + (40 * 1.12f);
+					}
+				} else if (shop == 2) {
+					int candy = convertIDToIndex(0x36);
+					if (candy > -1) {
+						ModelTwoData* candy_object = getObjectArrayAddr(m2location,0x90,candy);
+						int candy_y = candy_object->yPos;
+						CurrentActorPointer_0->yPos = candy_y + (40 * 1.28f);
+					}
 				}
 			}
 		}

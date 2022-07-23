@@ -68,6 +68,7 @@ def modify(file_name, map_index):
         model2_index = 0x220
         added_factory_barracade = False
         added_caves_tns = False
+        added_helm_faces = False
         for x in range(model2_count):
             byte_stream = byte_read[read_location : read_location + 0x30]
             _type = int.from_bytes(byte_read[read_location + 0x28 : read_location + 0x2A], "big")
@@ -258,6 +259,33 @@ def modify(file_name, map_index):
                 new_z = 512.886
                 writedatatoarr(byte_stream, int(float_to_hex(new_x), 16), 4, 0x0)
                 writedatatoarr(byte_stream, int(float_to_hex(new_z), 16), 4, 0x8)
+            elif map_index == 0x11 and not added_helm_faces:
+                face_z = 5423.538
+                face_hi = 160
+                face_lo = 104.5
+                face_coords = [
+                    [575.763, face_hi],
+                    [494.518, face_hi],
+                    [606.161, face_lo],
+                    [534.567, face_lo],
+                    [463.642, face_lo],
+                ]
+                for face_index, face in enumerate(face_coords):
+                    added_actor.append(
+                        {
+                            "base_byte_stream": byte_stream,
+                            "x": int(float_to_hex(face[0]), 16),
+                            "y": int(float_to_hex(face[1]), 16),
+                            "z": int(float_to_hex(face_z), 16),
+                            "id": 0x100 + face_index,
+                            "type": 70 - 16,
+                            "rx": 0,
+                            "ry": 0,
+                            "rz": 0,
+                            "scale": int(float_to_hex(0.35), 16),
+                        }
+                    )
+                added_helm_faces = True
             data = {"stream": byte_stream}
             actor.append(data)
             read_location += 0x38

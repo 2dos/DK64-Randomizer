@@ -37,7 +37,7 @@ void guardCatch(void) {
                     playAnimation(Player,0x34);
                 }
             }
-            Player->control_state = 0x73;
+            Player->control_state = 0x70;
             Player->control_state_progress = 0;
             Player->yVelocity = 0;
             Player->hSpeed = 0;
