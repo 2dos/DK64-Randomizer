@@ -428,8 +428,8 @@ def compileHints(spoiler: Spoiler):
             updateRandomHint(f"{kong_name} can be found in {level_name}.")
     if spoiler.settings.shuffle_loading_zones == "all":
         AddLoadingZoneHints(spoiler)
-    if spoiler.settings.BananaMedalsRequired:
-        updateRandomHint(f"{spoiler.settings.BananaMedalsRequired} medals are required to access Jetpac.")
+    if spoiler.settings.coin_door_open == "need_both" or spoiler.settings.coin_door_open == "need_rw":
+        updateRandomHint(f"{spoiler.settings.medal_requirement} medals are required to access Jetpac.")
     if spoiler.settings.perma_death:
         updateRandomHint("The curse can only be removed upon disabling K. Rools machine.")
     updateRandomHint(f"{spoiler.settings.krool_key_count} Keys are required to turn in K. Rool.")

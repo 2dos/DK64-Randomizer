@@ -159,7 +159,7 @@ LogicRegions = {
 
     Regions.CrankyGeneric: Region("Cranky Generic", Levels.Shops, False, None, [
         LocationLogic(Locations.SimianSlam, lambda l: True),
-        LocationLogic(Locations.RarewareCoin, lambda l: l.BananaMedals >= l.settings.BananaMedalsRequired),
+        LocationLogic(Locations.RarewareCoin, lambda l: l.BananaMedals >= l.settings.medal_requirement),
     ], [], [
         TransitionFront(Regions.CrankyJapes, lambda l: False),
         TransitionFront(Regions.CrankyAztec, lambda l: False),

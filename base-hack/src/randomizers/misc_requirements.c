@@ -2,10 +2,10 @@
 
 void writeJetpacMedalReq(void) {
 	if (Rando.jetpac_medal_requirement) {
-		if (Rando.jetpac_medal_requirement < 4) {
-			Rando.jetpac_medal_requirement = 4;
-		} else if (Rando.jetpac_medal_requirement > 15) {
-			Rando.jetpac_medal_requirement = 15;
+		if (Rando.jetpac_medal_requirement < 0) {
+			Rando.jetpac_medal_requirement = 0;
+		} else if (Rando.jetpac_medal_requirement > 40) {
+			Rando.jetpac_medal_requirement = 40;
 		}
 		*(unsigned char*)(0x80026513) = Rando.jetpac_medal_requirement; // Actual requirement
 		*(unsigned char*)(0x8002644B) = Rando.jetpac_medal_requirement; // Text variable
