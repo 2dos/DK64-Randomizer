@@ -62,7 +62,7 @@ def UpdateHint(WrinklyHint: HintLocation, message: str):
     return False
 
 
-def updateRandomHint(message: str, kongs_req=[]):
+def updateRandomHint(message: str, kongs_req=[], keywords=[]):
     """Update a random hint with the string specifed.
 
     Args:
@@ -71,7 +71,12 @@ def updateRandomHint(message: str, kongs_req=[]):
     hint_pool = []
     for x in range(len(hints)):
         if hints[x].hint == "" and hints[x].kong in kongs_req:
-            hint_pool.append(x)
+            is_banned = False
+            for banned in hints[x].banned_keywords:
+                if banned in keywords:
+                    is_banned = True
+            if not is_banned:
+                hint_pool.append(x)
     if len(hint_pool) > 0:
         selected = random.choice(hint_pool)
         # print(f"Set {hints[selected].name} Wrinkly Text to {message}")

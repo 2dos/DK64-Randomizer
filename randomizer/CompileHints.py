@@ -1,5 +1,6 @@
 """Compile a list of hints based on the settings."""
 import random
+from re import U
 from randomizer.Enums.Kongs import Kongs
 from randomizer.Enums.Regions import Regions
 
@@ -15,7 +16,7 @@ from randomizer.Lists.WrinklyHints import HintLocation, hints
 class Hint:
     """Hint object for Wrinkly hint text."""
 
-    def __init__(self, *, hint="", important=True, priority=1, kongs=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky], repeats=1, base=False):
+    def __init__(self, *, hint="", important=True, priority=1, kongs=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky], repeats=1, base=False, keywords=[]):
         """Create wrinkly hint text object."""
         self.kongs = kongs.copy()
         self.hint = hint
@@ -27,6 +28,7 @@ class Hint:
         self.was_important = important
         self.original_repeats = repeats
         self.original_priority = priority
+        self.keywords = keywords.copy()
 
     def use_hint(self):
         """Set hint as used."""
@@ -427,7 +429,9 @@ def compileHints(spoiler: Spoiler):
         ]
         for move in moves_of_importance:
             move["key"] = ((move["move_type"] & 7) << 5) + (((move["move_index"] - 1) & 3) << 3) + (move["kong"] & 7)
-            move["purchase_kong"] = 0
+            move["purchase_kong"] = -1
+            move["level"] = -1
+            move["shop"] = -1
         shop_contains = {}
         for shop in range(3):
             for kong in range(5):
@@ -471,7 +475,7 @@ def compileHints(spoiler: Spoiler):
                 item_names = " and ".join(shop_contains[shop]["moves"])
             else:
                 item_names = shop_contains[shop]["moves"][0]
-            hint_list.append(Hint(hint=f"{shop_name} contains {item_names}", priority=shop_priority, important=shop_importance, kongs=shop_contains[shop]["kongs"]))
+            hint_list.append(Hint(hint=f"{shop_name} contains {item_names}", priority=shop_priority, important=shop_importance, kongs=shop_contains[shop]["kongs"], keywords=shop_contains[shop]["moves"]))
             if shop_priority <= len(priority_barriers):
                 if (shop_index + 1) >= priority_barriers[shop_priority - 1]:
                     if shop_priority == len(priority_barriers):
@@ -480,17 +484,18 @@ def compileHints(spoiler: Spoiler):
                         shop_priority += 1
 
         for move in moves_of_importance:
-            if spoiler.settings.wrinkly_hints == "cryptic":
-                kong_name = random.choice(kong_cryptic[move["purchase_kong"]])
-                level_name = random.choice(level_cryptic[move["level"]])
-            else:
-                kong_name = kong_list[move["purchase_kong"]]
-                level_name = level_list[move["level"]]
-            move_name = move["name"]
+            if move["level"] > -1 and move["shop"] > -1 and move["purchase_kong"] > -1:
+                if spoiler.settings.wrinkly_hints == "cryptic":
+                    kong_name = random.choice(kong_cryptic[move["purchase_kong"]])
+                    level_name = random.choice(level_cryptic[move["level"]])
+                else:
+                    kong_name = kong_list[move["purchase_kong"]]
+                    level_name = level_list[move["level"]]
+                move_name = move["name"]
 
-            shop_name = shop_owners[move["shop"]]
-            text = f"{move_name} can be purchased from {shop_name} in {level_name}."
-            hint_list.append(Hint(hint=text, priority=2, kongs=[move["purchase_kong"]], important=move["important"]))
+                shop_name = shop_owners[move["shop"]]
+                text = f"{move_name} can be purchased from {shop_name} in {level_name}."
+                hint_list.append(Hint(hint=text, priority=2, kongs=[move["purchase_kong"]], important=move["important"], keywords=[move["name"]]))
     if spoiler.settings.kong_rando:
         kong_json = spoiler.shuffled_kong_placement
         placement_levels = [
@@ -528,6 +533,41 @@ def compileHints(spoiler: Spoiler):
                 kong_name = "An empty cage"
                 hint_priority = 2
             hint_list.append(Hint(hint=f"{kong_name} can be found in {level_name}.", kongs=[free_kong], priority=hint_priority, repeats=2))
+    if spoiler.settings.random_patches:
+        level_patches = {
+            "DK Isles": 0,
+            "Jungle Japes": 0,
+            "Angry Aztec": 0,
+            "Frantic Factory": 0,
+            "Gloomy Galleon": 0,
+            "Fungi Forest": 0,
+            "Crystal Caves": 0,
+            "Creepy Castle": 0,
+        }
+        for patch in spoiler.dirt_patch_placement:
+            for level in level_patches:
+                if level in patch:
+                    level_patches[level] += 1
+        level_ordering = list(level_patches.keys())
+        random.shuffle(level_ordering)
+        for importance in range(2):
+            for index in range(4):
+                level_name = level_ordering[index + (4 * importance)]
+                patch_count = level_patches[level_name]
+                patch_mult = "patches"
+                patch_pre = "are"
+                if patch_count == 1:
+                    patch_mult = "patch"
+                    patch_pre = "is"
+                patch_text = f"There {patch_pre} {patch_count} {patch_mult} in {level_name}"
+                hint_list.append(Hint(hint=patch_text,priority=index+3,important=importance==0))
+        patch_list = spoiler.dirt_patch_placement.copy()
+        random.shuffle(patch_list)
+        for importance in range(2):
+            for index in range(4):
+                patch_name = patch_list[index + (importance * 4)]
+                patch_text = f"There is a dirt patch located at {patch_name}"
+                hint_list.append(Hint(hint=patch_text,priority=index+4,important=importance==0))
     if spoiler.settings.shuffle_loading_zones == "all":
         AddLoadingZoneHints(spoiler)
     if spoiler.settings.BananaMedalsRequired:
@@ -575,7 +615,11 @@ def compileHints(spoiler: Spoiler):
             level_name = random.choice(level_cryptic[x])
         else:
             level_name = level_list[x]
-        hint_list.append(Hint(hint=f"The barrier to {level_name} can be cleared by obtaining {count} {gb_name}.", important=False))
+        gb_importance = False
+        if spoiler.settings.shuffle_loading_zones == "levels":
+            if x > 4:
+                gb_importance = True
+        hint_list.append(Hint(hint=f"The barrier to {level_name} can be cleared by obtaining {count} {gb_name}.", important=gb_importance,priority=3+x))
     for x in range(7):
         count = spoiler.settings.BossBananas[x]
         cb_name = "Small Bananas"
@@ -595,7 +639,7 @@ def compileHints(spoiler: Spoiler):
         for hint in hint_list:
             if hint.important and hint.priority == priority_level and not hint.used:
                 found_important = True
-                placed = updateRandomHint(hint.hint, hint.kongs.copy())
+                placed = updateRandomHint(hint.hint, hint.kongs.copy(), hint.keywords.copy())
                 if placed:
                     hint.use_hint()
                 else:
@@ -621,7 +665,7 @@ def compileHints(spoiler: Spoiler):
         while slot < vacant_slots:
             placed = False
             if not joke_hints[usage_slot].used:
-                placed = updateRandomHint(joke_hints[usage_slot].hint, joke_hints[usage_slot].kongs)
+                placed = updateRandomHint(joke_hints[usage_slot].hint, joke_hints[usage_slot].kongs, joke_hints[usage_slot].keywords.copy())
             if placed:
                 hint.use_hint()
                 slot += 1
