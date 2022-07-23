@@ -11,12 +11,24 @@ from randomizer.Lists.WrinklyHints import hints
 from randomizer.Spoiler import Spoiler
 from randomizer.Patching.UpdateHints import updateRandomHint
 from randomizer.Lists.WrinklyHints import HintLocation, hints
+from randomizer.Enums.Levels import Levels
 
 
 class Hint:
     """Hint object for Wrinkly hint text."""
 
-    def __init__(self, *, hint="", important=True, priority=1, kongs=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky], repeats=1, base=False, keywords=[]):
+    def __init__(
+        self,
+        *,
+        hint="",
+        important=True,
+        priority=1,
+        kongs=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
+        repeats=1,
+        base=False,
+        keywords=[],
+        permitted_levels=[Levels.JungleJapes, Levels.AngryAztec, Levels.FranticFactory, Levels.GloomyGalleon, Levels.FungiForest, Levels.CrystalCaves, Levels.CreepyCastle],
+    ):
         """Create wrinkly hint text object."""
         self.kongs = kongs.copy()
         self.hint = hint
@@ -29,6 +41,7 @@ class Hint:
         self.original_repeats = repeats
         self.original_priority = priority
         self.keywords = keywords.copy()
+        self.permitted_levels = permitted_levels.copy()
 
     def use_hint(self):
         """Set hint as used."""
@@ -82,6 +95,8 @@ hint_list = [
         base=True,
     ),
     Hint(hint="Why do they call it oven when you of in the cold food of out hot eat the food?", important=False, base=True),
+    Hint(hint="Wanna become famous? Buy followers, coconuts and donks at DK64Randomizer (DK64Randomizer . com)!", important=False, base=True),
+    Hint(hint="What you gonna do, SpikeVegeta?", important=False, base=True),
 ]
 
 
@@ -105,6 +120,7 @@ def resetHintList():
 def compileHints(spoiler: Spoiler):
     """Push hints to hint list based on settings."""
     resetHintList()
+    all_levels = [Levels.JungleJapes, Levels.AngryAztec, Levels.FranticFactory, Levels.GloomyGalleon, Levels.FungiForest, Levels.CrystalCaves, Levels.CreepyCastle]
     # K Rool Order
     if spoiler.settings.krool_phase_order_rando:
         associated_hint = f"K. Rool order is {NameFromKong(spoiler.settings.krool_order[0])}"
@@ -475,7 +491,9 @@ def compileHints(spoiler: Spoiler):
                 item_names = " and ".join(shop_contains[shop]["moves"])
             else:
                 item_names = shop_contains[shop]["moves"][0]
-            hint_list.append(Hint(hint=f"{shop_name} contains {item_names}", priority=shop_priority, important=shop_importance, kongs=shop_contains[shop]["kongs"], keywords=shop_contains[shop]["moves"]))
+            hint_list.append(
+                Hint(hint=f"{shop_name} contains {item_names}", priority=shop_priority, important=shop_importance, kongs=shop_contains[shop]["kongs"], keywords=shop_contains[shop]["moves"])
+            )
             if shop_priority <= len(priority_barriers):
                 if (shop_index + 1) >= priority_barriers[shop_priority - 1]:
                     if shop_priority == len(priority_barriers):
@@ -528,11 +546,11 @@ def compileHints(spoiler: Spoiler):
                 if not kong_index == Kongs.any:
                     kong_name = kong_list[kong_index]
                 level_name = level_list[level_index]
-            hint_priority = 1
+            hint_priority = 2
             if kong_index == Kongs.any:
                 kong_name = "An empty cage"
-                hint_priority = 2
-            hint_list.append(Hint(hint=f"{kong_name} can be found in {level_name}.", kongs=[free_kong], priority=hint_priority, repeats=2))
+                hint_priority = 3
+            hint_list.append(Hint(hint=f"{kong_name} can be found in {level_name}.", kongs=[free_kong], priority=hint_priority))
     if spoiler.settings.random_patches:
         level_patches = {
             "DK Isles": 0,
@@ -554,20 +572,21 @@ def compileHints(spoiler: Spoiler):
             for index in range(4):
                 level_name = level_ordering[index + (4 * importance)]
                 patch_count = level_patches[level_name]
-                patch_mult = "patches"
-                patch_pre = "are"
-                if patch_count == 1:
-                    patch_mult = "patch"
-                    patch_pre = "is"
-                patch_text = f"There {patch_pre} {patch_count} {patch_mult} in {level_name}"
-                hint_list.append(Hint(hint=patch_text,priority=index+3,important=importance==0))
+                if patch_count > 0:
+                    patch_mult = "patches"
+                    patch_pre = "are"
+                    if patch_count == 1:
+                        patch_mult = "patch"
+                        patch_pre = "is"
+                    patch_text = f"There {patch_pre} {patch_count} {patch_mult} in {level_name}"
+                    hint_list.append(Hint(hint=patch_text, priority=index + 3, important=importance == 0))
         patch_list = spoiler.dirt_patch_placement.copy()
         random.shuffle(patch_list)
         for importance in range(2):
             for index in range(4):
                 patch_name = patch_list[index + (importance * 4)]
                 patch_text = f"There is a dirt patch located at {patch_name}"
-                hint_list.append(Hint(hint=patch_text,priority=index+4,important=importance==0))
+                hint_list.append(Hint(hint=patch_text, priority=index + 4, important=importance == 0))
     if spoiler.settings.shuffle_loading_zones == "all":
         AddLoadingZoneHints(spoiler)
     if spoiler.settings.BananaMedalsRequired:
@@ -606,6 +625,11 @@ def compileHints(spoiler: Spoiler):
     cb_hint = random.choice(cb_list)
     hint_list.append(Hint(hint=f"{cb_hint['kong']} can find {cb_hint['color']} bananas in {random.choice(level_list)}.", important=False))
     hint_list.append(Hint(hint=f"{spoiler.settings.krool_key_count} Keys are required to reach K. Rool.", important=False))
+
+    if spoiler.settings.shuffle_loading_zones == "levels":
+        level_positions = {}
+        for x in range(7):
+            level_positions[spoiler.settings.level_order[x + 1]] = x
     for x in range(8):
         count = spoiler.settings.EntryGBs[x]
         gb_name = "Golden Bananas"
@@ -616,10 +640,21 @@ def compileHints(spoiler: Spoiler):
         else:
             level_name = level_list[x]
         gb_importance = False
+        permitted_levels = all_levels.copy()
+        priority_level = x + 1
         if spoiler.settings.shuffle_loading_zones == "levels":
-            if x > 4:
+            if x != 7:
+                current_level_order = level_positions[x]
+                permitted_levels = []
+                for y in range(7):
+                    if level_positions[y] >= current_level_order:
+                        permitted_levels.append(y)
+            if x > 3 and x < 7:
+                priority_level = x - 3
                 gb_importance = True
-        hint_list.append(Hint(hint=f"The barrier to {level_name} can be cleared by obtaining {count} {gb_name}.", important=gb_importance,priority=3+x))
+        hint_list.append(
+            Hint(hint=f"The barrier to {level_name} can be cleared by obtaining {count} {gb_name}.", important=gb_importance, priority=priority_level, permitted_levels=permitted_levels.copy())
+        )
     for x in range(7):
         count = spoiler.settings.BossBananas[x]
         cb_name = "Small Bananas"
@@ -629,7 +664,14 @@ def compileHints(spoiler: Spoiler):
             level_name = random.choice(level_cryptic[x])
         else:
             level_name = level_list[x]
-        hint_list.append(Hint(hint=f"The barrier to the boss in {level_name} can be cleared by obtaining {count} {cb_name}.", important=False))
+        permitted_levels = all_levels.copy()
+        if spoiler.settings.shuffle_loading_zones == "levels":
+            current_level_order = level_positions[x]
+            permitted_levels = []
+            for y in range(7):
+                if level_positions[y] >= current_level_order:
+                    permitted_levels.append(y)
+        hint_list.append(Hint(hint=f"The barrier to the boss in {level_name} can be cleared by obtaining {count} {cb_name}.", important=False, permitted_levels=permitted_levels.copy()))
     # Write Hints
     random.shuffle(hint_list)
     priority_level = 1
@@ -639,7 +681,7 @@ def compileHints(spoiler: Spoiler):
         for hint in hint_list:
             if hint.important and hint.priority == priority_level and not hint.used:
                 found_important = True
-                placed = updateRandomHint(hint.hint, hint.kongs.copy(), hint.keywords.copy())
+                placed = updateRandomHint(hint.hint, hint.kongs.copy(), hint.keywords.copy(), hint.permitted_levels.copy())
                 if placed:
                     hint.use_hint()
                 else:
@@ -665,7 +707,7 @@ def compileHints(spoiler: Spoiler):
         while slot < vacant_slots:
             placed = False
             if not joke_hints[usage_slot].used:
-                placed = updateRandomHint(joke_hints[usage_slot].hint, joke_hints[usage_slot].kongs, joke_hints[usage_slot].keywords.copy())
+                placed = updateRandomHint(joke_hints[usage_slot].hint, joke_hints[usage_slot].kongs, joke_hints[usage_slot].keywords.copy(), joke_hints[usage_slot].permitted_levels.copy())
             if placed:
                 hint.use_hint()
                 slot += 1

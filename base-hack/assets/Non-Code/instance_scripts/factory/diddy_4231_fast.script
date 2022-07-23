@@ -1,6 +1,5 @@
 .data
 id = 0x3F
-ignore = 1
 behav_9C = 0
 .code
 COND 29 | 1 0 0
