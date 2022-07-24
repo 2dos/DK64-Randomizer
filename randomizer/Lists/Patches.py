@@ -261,7 +261,7 @@ DirtPatchLocations = [
         rotation=682,
         group=5,
         logicregion=Regions.Prison,
-        logic=lambda l: l.CanAccessKrool(),
+        logic=lambda l: l.CanAccessKRool(),
         resize="",
     ),
     DirtPatchData(

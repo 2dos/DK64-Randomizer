@@ -103,7 +103,4 @@ def select_random_dirt_from_area(area_dirt, amount, spoiler: Spoiler, human_spoi
                 area_dirt.remove(selected_patch)
                 break
         if amount > 1:  # if multiple patches are picked, remove patches from the same group, prevent them from being picked
-            # BAD CODE:
-            for patch in area_dirt:
-                if patch.group == selected_patch.group:
-                    area_dirt.remove(patch)
+            area_dirt = [dirt for dirt in area_dirt if dirt.group != selected_patch.group]
