@@ -1,17 +1,17 @@
 """Designates Dirt Patch Location Properties."""
 
 from randomizer.Enums.Events import Events
+from randomizer.Enums.Levels import Levels
 from randomizer.Enums.Regions import Regions
 from randomizer.Enums.Time import Time
 from randomizer.Lists.MapsAndExits import Maps
 from randomizer.Enums.Levels import Levels
-import randomizer.Logic
 
 
 class DirtPatchData:
     """Information about the dirt patch location."""
 
-    def __init__(self, *, name="", level="", map_id=0, vanilla=False, x=0, y=0, z=0, rotation=0, group=0, logicregion="", logic=0, resize=""):
+    def __init__(self, *, name="", level=0, map_id=0, vanilla=False, x=0, y=0, z=0, rotation=0, group=0, logicregion="", logic=0, resize=""):
         """Initialize with given parameters."""
         self.name = name
         self.level_name = level
@@ -261,7 +261,7 @@ DirtPatchLocations = [
         rotation=682,
         group=5,
         logicregion=Regions.Prison,
-        logic=lambda l: l.CanAccessKrool() and l.shockwave,
+        logic=lambda l: l.CanAccessKRool() and l.shockwave,
         resize="",
     ),
     DirtPatchData(
