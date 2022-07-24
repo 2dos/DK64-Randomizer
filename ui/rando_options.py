@@ -57,6 +57,18 @@ def max_randomized_troff(event):
         troff_text.value = 500
 
 
+@bind("focusout", "medal_requirement")
+def max_randomized_blocker(event):
+    """Validate medal input on loss of focus."""
+    medal_requirement = js.document.getElementById("medal_requirement")
+    if not medal_requirement.value:
+        medal_requirement.value = 15
+    elif 0 > int(medal_requirement.value):
+        medal_requirement.value = 0
+    elif int(medal_requirement.value) > 40:
+        medal_requirement.value = 40
+
+
 def min_max(event, min, max):
     """Check if the data is within bounds of requirements.
 
@@ -399,4 +411,38 @@ def hide_rgb(event):
             else:
                 color.style = ""
         except AttributeError:
+            pass
+
+
+@bind("click", "random_medal_requirement")
+def toggle_medals_box(event):
+    """Toggle the textbox for Banana Medals."""
+    disabled = False
+    if js.document.getElementById("random_medal_requirement").checked:
+        disabled = True
+    medal = js.document.getElementById("medal_requirement")
+    if disabled:
+        medal.setAttribute("disabled", "disabled")
+    else:
+        medal.removeAttribute("disabled")
+
+
+@bind("change", "coin_door_open")
+def disable_rw(evt):
+    """Disable Banana Medal values from being changed if RW coin not needed."""
+    door = document.getElementById("coin_door_open")
+    random = document.getElementById("random_medal_requirement")
+    medal = document.getElementById("medal_requirement")
+    if door.value == "need_zero" or door.value == "need_nin":
+        try:
+            random.setAttribute("disabled", "disabled")
+            random.checked = False
+            medal.setAttribute("disabled", "disabled")
+        except Exception:
+            pass
+    else:
+        try:
+            random.removeAttribute("disabled")
+            medal.removeAttribute("disabled")
+        except Exception:
             pass

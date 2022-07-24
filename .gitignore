@@ -184,3 +184,4 @@ n64chain.zip
 base-hack/build/n64chain
 base-hack/rom_tester/output.txt
 base-hack/assets/Non-Code/instance_scripts/dump
+tests/test_spoiler.py

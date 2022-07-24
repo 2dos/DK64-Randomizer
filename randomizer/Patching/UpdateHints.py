@@ -3,9 +3,9 @@ import random
 from io import BytesIO
 
 import js
-from randomizer.Enums.WrinklyKong import WrinklyKong
-from randomizer.Lists.WrinklyHints import Hint, hints
+from randomizer.Lists.WrinklyHints import HintLocation, hints
 from randomizer.Patching.Patcher import ROM
+from randomizer.Enums.Kongs import Kongs
 
 
 def writeWrinklyHints(file_start_offset, text):
@@ -45,7 +45,7 @@ def writeWrinklyHints(file_start_offset, text):
             offset += len(string)
 
 
-def UpdateHint(WrinklyHint: Hint, message: str):
+def UpdateHint(WrinklyHint: HintLocation, message: str):
     """Update the wrinkly hint with the new string.
 
     Args:
@@ -56,11 +56,13 @@ def UpdateHint(WrinklyHint: Hint, message: str):
     if len(message) <= 914:
         # We're safely below the character limit
         WrinklyHint.hint = message
+        return True
     else:
         raise Exception("Hint message is longer than allowed.")
+    return False
 
 
-def updateRandomHint(message: str):
+def updateRandomHint(message: str, kongs_req=[], keywords=[], levels=[]):
     """Update a random hint with the string specifed.
 
     Args:
@@ -68,12 +70,18 @@ def updateRandomHint(message: str):
     """
     hint_pool = []
     for x in range(len(hints)):
-        if hints[x].hint == "":
-            hint_pool.append(x)
+        if hints[x].hint == "" and hints[x].kong in kongs_req and hints[x].level in levels:
+            is_banned = False
+            for banned in hints[x].banned_keywords:
+                if banned in keywords:
+                    is_banned = True
+            if not is_banned:
+                hint_pool.append(x)
     if len(hint_pool) > 0:
         selected = random.choice(hint_pool)
         # print(f"Set {hints[selected].name} Wrinkly Text to {message}")
-        UpdateHint(hints[selected], message)
+        return UpdateHint(hints[selected], message)
+    return False
 
 
 def PushHints():
@@ -90,5 +98,5 @@ def PushHints():
 def wipeHints():
     """Wipe the hint block."""
     for x in range(len(hints)):
-        if hints[x].kong != WrinklyKong.ftt:
+        if hints[x].kong != Kongs.any:
             hints[x].hint = ""

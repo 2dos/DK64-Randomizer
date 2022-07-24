@@ -37,7 +37,9 @@ with open("dirt_patches.csv", newline="") as csvfile:
             subname = f"{pre} - {post}: "
         name = f"{subname}{x['name']}"
         if x["logic"].strip() == "":
-            x["logic"] = "True"
+            x["logic"] = "l.shockwave"
+        else:
+            x["logic"] += " and l.shockwave"
         x["logic"] = x["logic"].replace("|", ",")
         logic = f"lambda l: {x['logic']}"
         print(

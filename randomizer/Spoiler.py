@@ -50,7 +50,6 @@ class Spoiler:
                 moves.append(kongmoves)
             self.move_data.append(moves)
 
-        self.jetpac_medals_required = self.settings.BananaMedalsRequired
         self.hint_list = {}
 
     def toJson(self):
@@ -87,8 +86,8 @@ class Spoiler:
         settings["coin_door_open"] = self.settings.coin_door_open
         settings["unlock_fairy_shockwave"] = self.settings.unlock_fairy_shockwave
         settings["random_medal_requirement"] = self.settings.random_medal_requirement
-        if self.settings.random_medal_requirement:
-            settings["banana_medals_required"] = self.settings.BananaMedalsRequired
+        if self.settings.coin_door_open in ["need_both", "need_rw"]:
+            settings["medal_requirement"] = self.settings.medal_requirement
         settings["random_prices"] = self.settings.random_prices
         settings["bananaport_rando"] = self.settings.bananaport_rando
         settings["krool_phases"] = self.settings.krool_order
