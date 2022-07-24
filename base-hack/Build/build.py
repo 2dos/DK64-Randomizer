@@ -28,6 +28,7 @@ from end_seq_writer import createTextFile, createSquishFile
 from generate_yellow_wrinkly import generateYellowWrinkly
 import model_fix
 import instance_script_maker
+import create_helm_geo
 
 
 ROMName = "rom/dk64.z64"
@@ -180,6 +181,13 @@ file_dict = [
         "file_index": 187,
         "source_file": "assets/Non-Code/displays/dpad.png",
         "texture_format": "rgba5551",
+    },
+    {
+        "name": "Helm Geometry",
+        "pointer_table_index": 1,
+        "file_index": 0x11,
+        "source_file": "helm.bin",
+        "do_not_delete_source": True,
     },
 ]
 
@@ -363,12 +371,15 @@ for x in range(10):
         }
     )
 for x in range(4761, 4768):
+    sz = "44"
+    if x == 4761:
+        sz = "3264"
     file_dict.append(
         {
             "name": f"Portal Ripple Texture ({x})",
             "pointer_table_index": 25,
             "file_index": x,
-            "source_file": "assets/Non-Code/displays/empty44.png",
+            "source_file": f"assets/Non-Code/displays/empty{sz}.png",
             "texture_format": "rgba5551",
         }
     )
@@ -810,6 +821,7 @@ with open(newROMName, "r+b") as fh:
         "yellow_qmark_0",
         "yellow_qmark_1",
         "empty44",
+        "empty3264",
         "homing_crate",
         "num_6_lit",
         "num_6_unlit",
@@ -859,6 +871,8 @@ with open(newROMName, "r+b") as fh:
             os.remove(x["model_file"])
     if os.path.exists(new_coin_sfx):
         os.remove(new_coin_sfx)
+    if os.path.exists("helm.bin"):
+        os.remove("helm.bin")
     # pth = "assets/Non-Code/displays/soldout_bismuth.rgba32"
     # if os.path.exists(pth):
     #     os.remove(pth)
