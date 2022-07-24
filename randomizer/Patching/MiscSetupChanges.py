@@ -240,7 +240,7 @@ def randomize_setup(spoiler: Spoiler):
                             if new_actor_id in used_actor_ids:
                                 while new_actor_id in used_actor_ids:
                                     new_actor_id += 1
-                            print(patch.name+" in group ", patch.group)
+                            print(patch.name + " in group ", patch.group)
                             dirt_bytes = []
                             dirt_bytes.append(int(float_to_hex(patch.x), 16))
                             dirt_bytes.append(int(float_to_hex(patch.y), 16))
