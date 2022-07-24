@@ -13,6 +13,8 @@ from ui.rando_options import (
     disable_barrel_rando,
     disable_boss_rando,
     hide_rgb,
+    toggle_medals_box,
+    disable_rw,
 )
 
 disable_input(None)
@@ -28,3 +30,5 @@ max_randomized_troff(None)
 disable_barrel_rando(None)
 disable_boss_rando(None)
 hide_rgb(None)
+toggle_medals_box(None)
+disable_rw(None)

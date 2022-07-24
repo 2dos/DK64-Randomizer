@@ -31,6 +31,7 @@ LogicRegions = {
         TransitionFront(Regions.CavesBlueprintCave, lambda l: l.mini and l.twirl and l.tiny),
         TransitionFront(Regions.CavesBonusCave, lambda l: l.mini and l.tiny),
         TransitionFront(Regions.CavesBlueprintPillar, lambda l: l.jetpack and l.diddy),
+        TransitionFront(Regions.CavesBananaportSpire, lambda l: l.jetpack and l.diddy),
         TransitionFront(Regions.BoulderCave, lambda l: l.punch),
         TransitionFront(Regions.CavesLankyRace, lambda l: l.superSlam and l.balloon and l.islanky, Transitions.CavesMainToRace),
         TransitionFront(Regions.FrozenCastle, lambda l: l.superSlam and l.islanky, Transitions.CavesMainToCastle),
@@ -58,6 +59,10 @@ LogicRegions = {
     Regions.CavesBlueprintPillar: Region("Caves Blueprint Pillar", Levels.CrystalCaves, False, None, [
         LocationLogic(Locations.CavesKasplatPillar, lambda l: True),
     ], [], [
+        TransitionFront(Regions.CrystalCavesMain, lambda l: True)
+    ]),
+
+    Regions.CavesBananaportSpire: Region("Caves Bananaport Spire", Levels.CrystalCaves, False, None, [], [], [
         TransitionFront(Regions.CrystalCavesMain, lambda l: True)
     ]),
 

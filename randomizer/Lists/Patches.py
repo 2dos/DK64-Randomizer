@@ -44,7 +44,7 @@ DirtPatchLocations = [
         vanilla=True,
         group=3,
         logicregion=Regions.CabinIsle,
-        logic=lambda l: Events.IslesDiddyBarrelSpawn in l.Events and l.jetpack and l.isdiddy,
+        logic=lambda l: Events.IslesDiddyBarrelSpawn in l.Events and l.jetpack and l.isdiddy and l.shockwave,
         resize="",
     ),
     DirtPatchData(
@@ -58,7 +58,7 @@ DirtPatchLocations = [
         vanilla=True,
         group=3,
         logicregion=Regions.IslesMain,
-        logic=lambda l: True,
+        logic=lambda l: l.shockwave,
         resize="",
     ),
     DirtPatchData(
@@ -72,7 +72,7 @@ DirtPatchLocations = [
         vanilla=True,
         group=2,
         logicregion=Regions.CabinIsle,
-        logic=lambda l: True,
+        logic=lambda l: l.shockwave,
         resize="",
     ),
     DirtPatchData(
@@ -86,7 +86,7 @@ DirtPatchLocations = [
         vanilla=True,
         group=1,
         logicregion=Regions.TrainingGrounds,
-        logic=lambda l: l.vines,
+        logic=lambda l: l.vines and l.shockwave,
         resize="",
     ),
     DirtPatchData(
@@ -100,7 +100,7 @@ DirtPatchLocations = [
         vanilla=True,
         group=1,
         logicregion=Regions.TrainingGrounds,
-        logic=lambda l: True,
+        logic=lambda l: l.shockwave,
         resize="",
     ),
     DirtPatchData(
@@ -114,7 +114,7 @@ DirtPatchLocations = [
         vanilla=True,
         group=5,
         logicregion=Regions.Prison,
-        logic=lambda l: True,
+        logic=lambda l: l.shockwave,
         resize="",
     ),
     DirtPatchData(
@@ -128,7 +128,7 @@ DirtPatchLocations = [
         vanilla=True,
         group=14,
         logicregion=Regions.CreepyCastleLobby,
-        logic=lambda l: l.chunky and l.balloon and l.islanky,
+        logic=lambda l: l.chunky and l.balloon and l.islanky and l.shockwave,
         resize="",
     ),
     DirtPatchData(
@@ -141,11 +141,11 @@ DirtPatchLocations = [
         rotation=3959,
         group=3,
         logicregion=Regions.IslesMain,
-        logic=lambda l: l.vines,
+        logic=lambda l: l.vines and l.shockwave,
         resize="",
     ),
     DirtPatchData(
-        name="DK Isles: Behind BFI", level=Levels.DKIsles, map_id=Maps.Isles, x=754.0, y=500.0, z=2386.0, rotation=807, group=4, logicregion=Regions.IslesMain, logic=lambda l: True, resize=""
+        name="DK Isles: Behind BFI", level=Levels.DKIsles, map_id=Maps.Isles, x=754.0, y=500.0, z=2386.0, rotation=807, group=4, logicregion=Regions.IslesMain, logic=lambda l: l.shockwave, resize=""
     ),
     DirtPatchData(
         name="DK Isles: Back of Kroc Isle (Lower)",
@@ -157,7 +157,7 @@ DirtPatchLocations = [
         rotation=1615,
         group=6,
         logicregion=Regions.IslesMain,
-        logic=lambda l: True,
+        logic=lambda l: l.shockwave,
         resize="",
     ),
     DirtPatchData(
@@ -170,7 +170,7 @@ DirtPatchLocations = [
         rotation=1956,
         group=6,
         logicregion=Regions.CrocodileIsleBeyondLift,
-        logic=lambda l: True,
+        logic=lambda l: l.shockwave,
         resize="",
     ),
     DirtPatchData(
@@ -183,7 +183,7 @@ DirtPatchLocations = [
         rotation=3891,
         group=6,
         logicregion=Regions.IslesMain,
-        logic=lambda l: l.monkeyport and l.istiny,
+        logic=lambda l: l.monkeyport and l.istiny and l.shockwave,
         resize="",
     ),
     DirtPatchData(
@@ -196,7 +196,7 @@ DirtPatchLocations = [
         rotation=1934,
         group=2,
         logicregion=Regions.IslesMain,
-        logic=lambda l: l.GalleonKey,
+        logic=lambda l: l.GalleonKey and l.shockwave,
         resize="",
     ),
     DirtPatchData(
@@ -209,7 +209,7 @@ DirtPatchLocations = [
         rotation=637,
         group=2,
         logicregion=Regions.CabinIsle,
-        logic=lambda l: True,
+        logic=lambda l: l.shockwave,
         resize="",
     ),
     DirtPatchData(
@@ -222,7 +222,7 @@ DirtPatchLocations = [
         rotation=2742,
         group=3,
         logicregion=Regions.IslesMainUpper,
-        logic=lambda l: l.vines,
+        logic=lambda l: l.vines and l.shockwave,
         resize="",
     ),
     DirtPatchData(
@@ -235,7 +235,7 @@ DirtPatchLocations = [
         rotation=1080,
         group=4,
         logicregion=Regions.BananaFairyRoom,
-        logic=lambda l: True,
+        logic=lambda l: l.shockwave,
         resize="",
     ),
     DirtPatchData(
@@ -248,7 +248,7 @@ DirtPatchLocations = [
         rotation=2048,
         group=4,
         logicregion=Regions.BananaFairyRoom,
-        logic=lambda l: l.BananaFairies >= 20,
+        logic=lambda l: l.BananaFairies >= 20 and l.shockwave,
         resize="",
     ),
     DirtPatchData(
@@ -261,7 +261,7 @@ DirtPatchLocations = [
         rotation=682,
         group=5,
         logicregion=Regions.Prison,
-        logic=lambda l: l.CanAccessKRool(),
+        logic=lambda l: l.CanAccessKRool() and l.shockwave,
         resize="",
     ),
     DirtPatchData(
@@ -274,7 +274,7 @@ DirtPatchLocations = [
         rotation=1024,
         group=7,
         logicregion=Regions.HideoutHelmLobby,
-        logic=lambda l: l.gorillaGone and l.ischunky,
+        logic=lambda l: l.gorillaGone and l.ischunky and l.shockwave,
         resize="",
     ),
     DirtPatchData(
@@ -287,7 +287,7 @@ DirtPatchLocations = [
         rotation=0,
         group=7,
         logicregion=Regions.HideoutHelmLobby,
-        logic=lambda l: l.coconut and l.scope,
+        logic=lambda l: l.coconut and l.scope and l.shockwave,
         resize="",
     ),
     DirtPatchData(
@@ -300,7 +300,7 @@ DirtPatchLocations = [
         rotation=1945,
         group=8,
         logicregion=Regions.JungleJapesLobby,
-        logic=lambda l: True,
+        logic=lambda l: l.shockwave,
         resize="",
     ),
     DirtPatchData(
@@ -313,7 +313,7 @@ DirtPatchLocations = [
         rotation=694,
         group=9,
         logicregion=Regions.AngryAztecLobby,
-        logic=lambda l: l.feather,
+        logic=lambda l: l.feather and l.shockwave,
         resize="",
     ),
     DirtPatchData(
@@ -326,7 +326,7 @@ DirtPatchLocations = [
         rotation=1024,
         group=10,
         logicregion=Regions.FranticFactoryLobby,
-        logic=lambda l: l.grab,
+        logic=lambda l: l.grab and l.shockwave,
         resize="",
     ),
     DirtPatchData(
@@ -339,7 +339,7 @@ DirtPatchLocations = [
         rotation=978,
         group=11,
         logicregion=Regions.GloomyGalleonLobby,
-        logic=lambda l: l.mini and l.superSlam,
+        logic=lambda l: l.mini and l.superSlam and l.shockwave,
         resize="",
     ),
     DirtPatchData(
@@ -352,7 +352,7 @@ DirtPatchLocations = [
         rotation=1024,
         group=12,
         logicregion=Regions.FungiForestLobby,
-        logic=lambda l: l.coconut and l.peanut and l.grape and l.feather and l.pineapple,
+        logic=lambda l: l.coconut and l.peanut and l.grape and l.feather and l.pineapple and l.shockwave,
         resize="",
     ),
     DirtPatchData(
@@ -365,7 +365,7 @@ DirtPatchLocations = [
         rotation=1024,
         group=12,
         logicregion=Regions.FungiForestLobby,
-        logic=lambda l: True,
+        logic=lambda l: l.shockwave,
         resize="",
     ),
     DirtPatchData(
@@ -378,7 +378,7 @@ DirtPatchLocations = [
         rotation=785,
         group=13,
         logicregion=Regions.CrystalCavesLobby,
-        logic=lambda l: l.punch and l.strongKong and l.isdonkey,
+        logic=lambda l: l.punch and l.strongKong and l.isdonkey and l.shockwave,
         resize="",
     ),
     DirtPatchData(
@@ -391,7 +391,7 @@ DirtPatchLocations = [
         rotation=773,
         group=14,
         logicregion=Regions.CreepyCastleLobby,
-        logic=lambda l: True,
+        logic=lambda l: l.shockwave,
         resize="",
     ),
     DirtPatchData(
@@ -404,7 +404,7 @@ DirtPatchLocations = [
         rotation=341,
         group=6,
         logicregion=Regions.IslesSnideRoom,
-        logic=lambda l: True,
+        logic=lambda l: l.shockwave,
         resize="",
     ),
     DirtPatchData(
@@ -417,7 +417,7 @@ DirtPatchLocations = [
         rotation=3026,
         group=1,
         logicregion=Regions.TrainingGrounds,
-        logic=lambda l: True,
+        logic=lambda l: l.shockwave,
         resize="",
     ),
     DirtPatchData(
@@ -430,7 +430,7 @@ DirtPatchLocations = [
         rotation=489,
         group=1,
         logicregion=Regions.TrainingGrounds,
-        logic=lambda l: True,
+        logic=lambda l: l.shockwave,
         resize="",
     ),
     DirtPatchData(
@@ -443,7 +443,7 @@ DirtPatchLocations = [
         rotation=3072,
         group=1,
         logicregion=Regions.Treehouse,
-        logic=lambda l: True,
+        logic=lambda l: l.shockwave,
         resize="",
     ),
     DirtPatchData(
@@ -457,7 +457,7 @@ DirtPatchLocations = [
         vanilla=True,
         group=1,
         logicregion=Regions.JungleJapesMain,
-        logic=lambda l: l.handstand or l.twirl,
+        logic=lambda l: l.handstand or l.twirl and l.shockwave,
         resize="",
     ),
     DirtPatchData(
@@ -470,7 +470,7 @@ DirtPatchLocations = [
         rotation=2427,
         group=3,
         logicregion=Regions.JapesBeyondPeanutGate,
-        logic=lambda l: True,
+        logic=lambda l: l.shockwave,
         resize="",
     ),
     DirtPatchData(
@@ -483,7 +483,7 @@ DirtPatchLocations = [
         rotation=2013,
         group=5,
         logicregion=Regions.Mine,
-        logic=lambda l: True,
+        logic=lambda l: l.shockwave,
         resize="",
     ),
     DirtPatchData(
@@ -496,7 +496,7 @@ DirtPatchLocations = [
         rotation=2707,
         group=1,
         logicregion=Regions.JungleJapesMain,
-        logic=lambda l: True,
+        logic=lambda l: l.shockwave,
         resize="",
     ),
     DirtPatchData(
@@ -509,7 +509,7 @@ DirtPatchLocations = [
         rotation=1160,
         group=6,
         logicregion=Regions.JapesBeyondFeatherGate,
-        logic=lambda l: True,
+        logic=lambda l: l.shockwave,
         resize="",
     ),
     DirtPatchData(
@@ -522,7 +522,7 @@ DirtPatchLocations = [
         rotation=2275,
         group=4,
         logicregion=Regions.JungleJapesMain,
-        logic=lambda l: True,
+        logic=lambda l: l.shockwave,
         resize="",
     ),
     DirtPatchData(
@@ -535,7 +535,7 @@ DirtPatchLocations = [
         rotation=3128,
         group=8,
         logicregion=Regions.JapesBeyondCoconutGate2,
-        logic=lambda l: True,
+        logic=lambda l: l.shockwave,
         resize="",
     ),
     DirtPatchData(
@@ -548,7 +548,7 @@ DirtPatchLocations = [
         rotation=2241,
         group=2,
         logicregion=Regions.JapesBeyondCoconutGate2,
-        logic=lambda l: l.handstand,
+        logic=lambda l: l.handstand and l.shockwave,
         resize="",
     ),
     DirtPatchData(
@@ -561,7 +561,7 @@ DirtPatchLocations = [
         rotation=2161,
         group=2,
         logicregion=Regions.JapesBeyondCoconutGate2,
-        logic=lambda l: True,
+        logic=lambda l: l.shockwave,
         resize="",
     ),
     DirtPatchData(
@@ -574,7 +574,7 @@ DirtPatchLocations = [
         rotation=0,
         group=2,
         logicregion=Regions.JapesBeyondCoconutGate2,
-        logic=lambda l: True,
+        logic=lambda l: l.shockwave,
         resize="",
     ),
     DirtPatchData(
@@ -587,7 +587,7 @@ DirtPatchLocations = [
         rotation=2142,
         group=2,
         logicregion=Regions.JapesBeyondCoconutGate2,
-        logic=lambda l: True,
+        logic=lambda l: l.shockwave,
         resize="",
     ),
     DirtPatchData(
@@ -600,7 +600,7 @@ DirtPatchLocations = [
         rotation=3784,
         group=2,
         logicregion=Regions.JungleJapesMain,
-        logic=lambda l: True,
+        logic=lambda l: l.shockwave,
         resize="",
     ),
     DirtPatchData(
@@ -613,7 +613,7 @@ DirtPatchLocations = [
         rotation=1171,
         group=3,
         logicregion=Regions.JungleJapesMain,
-        logic=lambda l: True,
+        logic=lambda l: l.shockwave,
         resize="",
     ),
     DirtPatchData(
@@ -626,7 +626,7 @@ DirtPatchLocations = [
         rotation=796,
         group=3,
         logicregion=Regions.JungleJapesMain,
-        logic=lambda l: True,
+        logic=lambda l: l.shockwave,
         resize="",
     ),
     DirtPatchData(
@@ -639,7 +639,7 @@ DirtPatchLocations = [
         rotation=3572,
         group=3,
         logicregion=Regions.JungleJapesMain,
-        logic=lambda l: True,
+        logic=lambda l: l.shockwave,
         resize="",
     ),
     DirtPatchData(
@@ -652,7 +652,7 @@ DirtPatchLocations = [
         rotation=2969,
         group=4,
         logicregion=Regions.JungleJapesMain,
-        logic=lambda l: True,
+        logic=lambda l: l.shockwave,
         resize="",
     ),
     DirtPatchData(
@@ -666,7 +666,7 @@ DirtPatchLocations = [
         vanilla=True,
         group=1,
         logicregion=Regions.AngryAztecStart,
-        logic=lambda l: True,
+        logic=lambda l: l.shockwave,
         resize="",
     ),
     DirtPatchData(
@@ -680,7 +680,7 @@ DirtPatchLocations = [
         vanilla=True,
         group=7,
         logicregion=Regions.ChunkyTemple,
-        logic=lambda l: True,
+        logic=lambda l: l.shockwave,
         resize="",
     ),
     DirtPatchData(
@@ -693,7 +693,7 @@ DirtPatchLocations = [
         rotation=2992,
         group=5,
         logicregion=Regions.AngryAztecMain,
-        logic=lambda l: True,
+        logic=lambda l: l.shockwave,
         resize="",
     ),
     DirtPatchData(
@@ -706,7 +706,7 @@ DirtPatchLocations = [
         rotation=4084,
         group=6,
         logicregion=Regions.AngryAztecStart,
-        logic=lambda l: True,
+        logic=lambda l: l.shockwave,
         resize="",
     ),
     DirtPatchData(
@@ -719,7 +719,7 @@ DirtPatchLocations = [
         rotation=4009,
         group=1,
         logicregion=Regions.AngryAztecStart,
-        logic=lambda l: True,
+        logic=lambda l: l.shockwave,
         resize="",
     ),
     DirtPatchData(
@@ -732,7 +732,7 @@ DirtPatchLocations = [
         rotation=3001,
         group=1,
         logicregion=Regions.AngryAztecStart,
-        logic=lambda l: True,
+        logic=lambda l: l.shockwave,
         resize="",
     ),
     DirtPatchData(
@@ -745,7 +745,7 @@ DirtPatchLocations = [
         rotation=3424,
         group=1,
         logicregion=Regions.AngryAztecStart,
-        logic=lambda l: True,
+        logic=lambda l: l.shockwave,
         resize="",
     ),
     DirtPatchData(
@@ -758,7 +758,7 @@ DirtPatchLocations = [
         rotation=3417,
         group=2,
         logicregion=Regions.TempleStart,
-        logic=lambda l: True,
+        logic=lambda l: l.shockwave,
         resize="",
     ),
     DirtPatchData(
@@ -771,7 +771,7 @@ DirtPatchLocations = [
         rotation=3959,
         group=2,
         logicregion=Regions.TempleUnderwater,
-        logic=lambda l: True,
+        logic=lambda l: l.shockwave,
         resize="",
     ),
     DirtPatchData(
@@ -784,7 +784,7 @@ DirtPatchLocations = [
         rotation=3492,
         group=1,
         logicregion=Regions.AngryAztecStart,
-        logic=lambda l: True,
+        logic=lambda l: l.shockwave,
         resize="",
     ),
     DirtPatchData(
@@ -797,7 +797,7 @@ DirtPatchLocations = [
         rotation=284,
         group=3,
         logicregion=Regions.AngryAztecMain,
-        logic=lambda l: True,
+        logic=lambda l: l.shockwave,
         resize="",
     ),
     DirtPatchData(
@@ -810,7 +810,7 @@ DirtPatchLocations = [
         rotation=1496,
         group=3,
         logicregion=Regions.AngryAztecMain,
-        logic=lambda l: True,
+        logic=lambda l: l.shockwave,
         resize="",
     ),
     DirtPatchData(
@@ -823,7 +823,7 @@ DirtPatchLocations = [
         rotation=3663,
         group=3,
         logicregion=Regions.AngryAztecMain,
-        logic=lambda l: True,
+        logic=lambda l: l.shockwave,
         resize="",
     ),
     DirtPatchData(
@@ -836,7 +836,7 @@ DirtPatchLocations = [
         rotation=3902,
         group=3,
         logicregion=Regions.AngryAztecMain,
-        logic=lambda l: True,
+        logic=lambda l: l.shockwave,
         resize="",
     ),
     DirtPatchData(
@@ -849,7 +849,7 @@ DirtPatchLocations = [
         rotation=1649,
         group=4,
         logicregion=Regions.LlamaTemple,
-        logic=lambda l: True,
+        logic=lambda l: l.shockwave,
         resize="",
     ),
     DirtPatchData(
@@ -862,7 +862,7 @@ DirtPatchLocations = [
         rotation=608,
         group=4,
         logicregion=Regions.LlamaTemple,
-        logic=lambda l: True,
+        logic=lambda l: l.shockwave,
         resize="",
     ),
     DirtPatchData(
@@ -876,7 +876,7 @@ DirtPatchLocations = [
         vanilla=True,
         group=3,
         logicregion=Regions.BeyondHatch,
-        logic=lambda l: l.punch,
+        logic=lambda l: l.punch and l.shockwave,
         resize="",
     ),
     DirtPatchData(
@@ -889,7 +889,7 @@ DirtPatchLocations = [
         rotation=3026,
         group=2,
         logicregion=Regions.Testing,
-        logic=lambda l: True,
+        logic=lambda l: l.shockwave,
         resize="",
     ),
     DirtPatchData(
@@ -902,7 +902,7 @@ DirtPatchLocations = [
         rotation=0,
         group=1,
         logicregion=Regions.FranticFactoryStart,
-        logic=lambda l: True,
+        logic=lambda l: l.shockwave,
         resize="",
     ),
     DirtPatchData(
@@ -915,7 +915,7 @@ DirtPatchLocations = [
         rotation=432,
         group=1,
         logicregion=Regions.FranticFactoryStart,
-        logic=lambda l: True,
+        logic=lambda l: l.shockwave,
         resize="",
     ),
     DirtPatchData(
@@ -928,7 +928,7 @@ DirtPatchLocations = [
         rotation=3618,
         group=1,
         logicregion=Regions.FranticFactoryStart,
-        logic=lambda l: True,
+        logic=lambda l: l.shockwave,
         resize="",
     ),
     DirtPatchData(
@@ -941,7 +941,7 @@ DirtPatchLocations = [
         rotation=4073,
         group=1,
         logicregion=Regions.BeyondHatch,
-        logic=lambda l: True,
+        logic=lambda l: l.shockwave,
         resize="",
     ),
     DirtPatchData(
@@ -954,7 +954,7 @@ DirtPatchLocations = [
         rotation=193,
         group=1,
         logicregion=Regions.BeyondHatch,
-        logic=lambda l: True,
+        logic=lambda l: l.shockwave,
         resize="",
     ),
     DirtPatchData(
@@ -967,7 +967,7 @@ DirtPatchLocations = [
         rotation=0,
         group=4,
         logicregion=Regions.BeyondHatch,
-        logic=lambda l: True,
+        logic=lambda l: l.shockwave,
         resize="",
     ),
     DirtPatchData(
@@ -980,7 +980,7 @@ DirtPatchLocations = [
         rotation=2163,
         group=5,
         logicregion=Regions.Testing,
-        logic=lambda l: True,
+        logic=lambda l: l.shockwave,
         resize="",
     ),
     DirtPatchData(
@@ -993,7 +993,7 @@ DirtPatchLocations = [
         rotation=2013,
         group=2,
         logicregion=Regions.Testing,
-        logic=lambda l: l.spring,
+        logic=lambda l: l.spring and l.shockwave,
         resize="Reduce scale",
     ),
     DirtPatchData(
@@ -1006,7 +1006,7 @@ DirtPatchLocations = [
         rotation=113,
         group=3,
         logicregion=Regions.RandD,
-        logic=lambda l: l.trombone,
+        logic=lambda l: l.trombone and l.shockwave,
         resize="",
     ),
     DirtPatchData(
@@ -1019,7 +1019,7 @@ DirtPatchLocations = [
         rotation=3528,
         group=3,
         logicregion=Regions.RandD,
-        logic=lambda l: l.guitar,
+        logic=lambda l: l.guitar and l.shockwave,
         resize="",
     ),
     DirtPatchData(
@@ -1032,7 +1032,7 @@ DirtPatchLocations = [
         rotation=2654,
         group=3,
         logicregion=Regions.RandD,
-        logic=lambda l: l.punch,
+        logic=lambda l: l.punch and l.shockwave,
         resize="",
     ),
     DirtPatchData(
@@ -1045,7 +1045,7 @@ DirtPatchLocations = [
         rotation=273,
         group=2,
         logicregion=Regions.Testing,
-        logic=lambda l: True,
+        logic=lambda l: l.shockwave,
         resize="",
     ),
     DirtPatchData(
@@ -1058,7 +1058,7 @@ DirtPatchLocations = [
         rotation=95,
         group=3,
         logicregion=Regions.FactoryTinyRaceLobby,
-        logic=lambda l: l.mini,
+        logic=lambda l: l.mini and l.shockwave,
         resize="",
     ),
     DirtPatchData(
@@ -1071,7 +1071,7 @@ DirtPatchLocations = [
         rotation=1604,
         group=3,
         logicregion=Regions.RandD,
-        logic=lambda l: True,
+        logic=lambda l: l.shockwave,
         resize="",
     ),
     DirtPatchData(
@@ -1085,7 +1085,7 @@ DirtPatchLocations = [
         vanilla=True,
         group=1,
         logicregion=Regions.Lighthouse,
-        logic=lambda l: True,
+        logic=lambda l: l.shockwave,
         resize="",
     ),
     DirtPatchData(
@@ -1098,7 +1098,7 @@ DirtPatchLocations = [
         rotation=2048,
         group=3,
         logicregion=Regions.GloomyGalleonStart,
-        logic=lambda l: True,
+        logic=lambda l: l.shockwave,
         resize="",
     ),
     DirtPatchData(
@@ -1111,7 +1111,7 @@ DirtPatchLocations = [
         rotation=2048,
         group=4,
         logicregion=Regions.GalleonBeyondPineappleGate,
-        logic=lambda l: Events.WaterSwitch in l.Events,
+        logic=lambda l: Events.WaterSwitch in l.Events and l.shockwave,
         resize="",
     ),
     DirtPatchData(
@@ -1124,7 +1124,7 @@ DirtPatchLocations = [
         rotation=3094,
         group=3,
         logicregion=Regions.GloomyGalleonStart,
-        logic=lambda l: True,
+        logic=lambda l: l.shockwave,
         resize="",
     ),
     DirtPatchData(
@@ -1137,7 +1137,7 @@ DirtPatchLocations = [
         rotation=3652,
         group=1,
         logicregion=Regions.LighthouseArea,
-        logic=lambda l: True,
+        logic=lambda l: l.shockwave,
         resize="",
     ),
     DirtPatchData(
@@ -1150,7 +1150,7 @@ DirtPatchLocations = [
         rotation=910,
         group=1,
         logicregion=Regions.LighthouseArea,
-        logic=lambda l: True,
+        logic=lambda l: l.shockwave,
         resize="Reduce scale",
     ),
     DirtPatchData(
@@ -1163,7 +1163,7 @@ DirtPatchLocations = [
         rotation=0,
         group=1,
         logicregion=Regions.Lighthouse,
-        logic=lambda l: True,
+        logic=lambda l: l.shockwave,
         resize="",
     ),
     DirtPatchData(
@@ -1176,7 +1176,7 @@ DirtPatchLocations = [
         rotation=3572,
         group=1,
         logicregion=Regions.Lighthouse,
-        logic=lambda l: True,
+        logic=lambda l: l.shockwave,
         resize="",
     ),
     DirtPatchData(
@@ -1189,7 +1189,7 @@ DirtPatchLocations = [
         rotation=2048,
         group=2,
         logicregion=Regions.SickBay,
-        logic=lambda l: True,
+        logic=lambda l: l.shockwave,
         resize="",
     ),
     DirtPatchData(
@@ -1202,7 +1202,7 @@ DirtPatchLocations = [
         rotation=2525,
         group=2,
         logicregion=Regions.SickBay,
-        logic=lambda l: True,
+        logic=lambda l: l.shockwave,
         resize="",
     ),
     DirtPatchData(
@@ -1215,7 +1215,7 @@ DirtPatchLocations = [
         rotation=978,
         group=2,
         logicregion=Regions.SickBay,
-        logic=lambda l: True,
+        logic=lambda l: l.shockwave,
         resize="",
     ),
     DirtPatchData(
@@ -1228,7 +1228,7 @@ DirtPatchLocations = [
         rotation=0,
         group=4,
         logicregion=Regions.GalleonBeyondPineappleGate,
-        logic=lambda l: Events.WaterSwitch in l.Events,
+        logic=lambda l: Events.WaterSwitch in l.Events and l.shockwave,
         resize="",
     ),
     DirtPatchData(
@@ -1241,7 +1241,7 @@ DirtPatchLocations = [
         rotation=0,
         group=4,
         logicregion=Regions.GalleonBeyondPineappleGate,
-        logic=lambda l: Events.WaterSwitch in l.Events,
+        logic=lambda l: Events.WaterSwitch in l.Events and l.shockwave,
         resize="",
     ),
     DirtPatchData(
@@ -1254,7 +1254,7 @@ DirtPatchLocations = [
         rotation=2503,
         group=3,
         logicregion=Regions.GloomyGalleonStart,
-        logic=lambda l: True,
+        logic=lambda l: l.shockwave,
         resize="",
     ),
     DirtPatchData(
@@ -1267,7 +1267,7 @@ DirtPatchLocations = [
         rotation=2264,
         group=3,
         logicregion=Regions.GloomyGalleonStart,
-        logic=lambda l: True,
+        logic=lambda l: l.shockwave,
         resize="",
     ),
     DirtPatchData(
@@ -1280,7 +1280,7 @@ DirtPatchLocations = [
         rotation=170,
         group=3,
         logicregion=Regions.GloomyGalleonStart,
-        logic=lambda l: True,
+        logic=lambda l: l.shockwave,
         resize="",
     ),
     DirtPatchData(
@@ -1294,7 +1294,7 @@ DirtPatchLocations = [
         vanilla=True,
         group=1,
         logicregion=Regions.WormArea,
-        logic=lambda l: True,
+        logic=lambda l: l.shockwave,
         resize="",
     ),
     DirtPatchData(
@@ -1308,7 +1308,7 @@ DirtPatchLocations = [
         vanilla=True,
         group=2,
         logicregion=Regions.MillArea,
-        logic=lambda l: True,
+        logic=lambda l: l.shockwave,
         resize="",
     ),
     DirtPatchData(
@@ -1321,7 +1321,7 @@ DirtPatchLocations = [
         rotation=34,
         group=5,
         logicregion=Regions.HollowTreeArea,
-        logic=lambda l: l.jetpack and l.isdiddy,
+        logic=lambda l: l.jetpack and l.isdiddy and l.shockwave,
         resize="",
     ),
     DirtPatchData(
@@ -1334,7 +1334,7 @@ DirtPatchLocations = [
         rotation=534,
         group=4,
         logicregion=Regions.MushroomLowerExterior,
-        logic=lambda l: True,
+        logic=lambda l: l.shockwave,
         resize="",
     ),
     DirtPatchData(
@@ -1347,7 +1347,7 @@ DirtPatchLocations = [
         rotation=2048,
         group=5,
         logicregion=Regions.HollowTreeArea,
-        logic=lambda l: True,
+        logic=lambda l: l.shockwave,
         resize="",
     ),
     DirtPatchData(
@@ -1360,7 +1360,7 @@ DirtPatchLocations = [
         rotation=1080,
         group=5,
         logicregion=Regions.HollowTreeArea,
-        logic=lambda l: True,
+        logic=lambda l: l.shockwave,
         resize="",
     ),
     DirtPatchData(
@@ -1373,7 +1373,7 @@ DirtPatchLocations = [
         rotation=2946,
         group=5,
         logicregion=Regions.HollowTreeArea,
-        logic=lambda l: True,
+        logic=lambda l: l.shockwave,
         resize="",
     ),
     DirtPatchData(
@@ -1386,7 +1386,7 @@ DirtPatchLocations = [
         rotation=352,
         group=3,
         logicregion=Regions.GrinderRoom,
-        logic=lambda l: True,
+        logic=lambda l: l.shockwave,
         resize="",
     ),
     DirtPatchData(
@@ -1399,7 +1399,7 @@ DirtPatchLocations = [
         rotation=2707,
         group=3,
         logicregion=Regions.MillChunkyArea,
-        logic=lambda l: True,
+        logic=lambda l: l.shockwave,
         resize="",
     ),
     DirtPatchData(
@@ -1412,7 +1412,7 @@ DirtPatchLocations = [
         rotation=345,
         group=2,
         logicregion=Regions.MillArea,
-        logic=lambda l: True,
+        logic=lambda l: l.shockwave,
         resize="",
     ),
     DirtPatchData(
@@ -1425,7 +1425,7 @@ DirtPatchLocations = [
         rotation=2048,
         group=6,
         logicregion=Regions.ThornvineBarn,
-        logic=lambda l: True,
+        logic=lambda l: l.shockwave,
         resize="",
     ),
     DirtPatchData(
@@ -1438,7 +1438,7 @@ DirtPatchLocations = [
         rotation=1137,
         group=4,
         logicregion=Regions.MushroomUpper,
-        logic=lambda l: l.twirl or l.donkey,
+        logic=lambda l: l.twirl or l.donkey and l.shockwave,
         resize="",
     ),
     DirtPatchData(
@@ -1451,7 +1451,7 @@ DirtPatchLocations = [
         rotation=3163,
         group=4,
         logicregion=Regions.MushroomUpper,
-        logic=lambda l: True,
+        logic=lambda l: l.shockwave,
         resize="",
     ),
     DirtPatchData(
@@ -1464,7 +1464,7 @@ DirtPatchLocations = [
         rotation=1525,
         group=2,
         logicregion=Regions.MillArea,
-        logic=lambda l: True,
+        logic=lambda l: l.shockwave,
         resize="",
     ),
     DirtPatchData(
@@ -1477,7 +1477,7 @@ DirtPatchLocations = [
         rotation=989,
         group=1,
         logicregion=Regions.WormArea,
-        logic=lambda l: True,
+        logic=lambda l: l.shockwave,
         resize="",
     ),
     DirtPatchData(
@@ -1490,7 +1490,7 @@ DirtPatchLocations = [
         rotation=2947,
         group=1,
         logicregion=Regions.WormArea,
-        logic=lambda l: l.TimeAccess(Regions.WormArea, Time.Night),
+        logic=lambda l: l.TimeAccess(Regions.WormArea, Time.Night) and l.shockwave,
         resize="",
     ),
     DirtPatchData(
@@ -1504,7 +1504,7 @@ DirtPatchLocations = [
         vanilla=True,
         group=5,
         logicregion=Regions.GiantKosha,
-        logic=lambda l: True,
+        logic=lambda l: l.shockwave,
         resize="",
     ),
     DirtPatchData(
@@ -1517,7 +1517,7 @@ DirtPatchLocations = [
         rotation=1103,
         group=1,
         logicregion=Regions.CrystalCavesMain,
-        logic=lambda l: True,
+        logic=lambda l: l.shockwave,
         resize="",
     ),
     DirtPatchData(
@@ -1530,7 +1530,7 @@ DirtPatchLocations = [
         rotation=3716,
         group=2,
         logicregion=Regions.CrystalCavesMain,
-        logic=lambda l: True,
+        logic=lambda l: l.shockwave,
         resize="",
     ),
     DirtPatchData(
@@ -1543,7 +1543,7 @@ DirtPatchLocations = [
         rotation=3072,
         group=1,
         logicregion=Regions.CrystalCavesMain,
-        logic=lambda l: True,
+        logic=lambda l: l.shockwave,
         resize="",
     ),
     DirtPatchData(
@@ -1556,7 +1556,7 @@ DirtPatchLocations = [
         rotation=3111,
         group=1,
         logicregion=Regions.CrystalCavesMain,
-        logic=lambda l: True,
+        logic=lambda l: l.shockwave,
         resize="",
     ),
     DirtPatchData(
@@ -1569,7 +1569,7 @@ DirtPatchLocations = [
         rotation=3584,
         group=2,
         logicregion=Regions.CrystalCavesMain,
-        logic=lambda l: True,
+        logic=lambda l: l.shockwave,
         resize="",
     ),
     DirtPatchData(
@@ -1582,7 +1582,7 @@ DirtPatchLocations = [
         rotation=227,
         group=1,
         logicregion=Regions.CrystalCavesMain,
-        logic=lambda l: True,
+        logic=lambda l: l.shockwave,
         resize="",
     ),
     DirtPatchData(
@@ -1595,7 +1595,7 @@ DirtPatchLocations = [
         rotation=2400,
         group=1,
         logicregion=Regions.CrystalCavesMain,
-        logic=lambda l: True,
+        logic=lambda l: l.shockwave,
         resize="",
     ),
     DirtPatchData(
@@ -1608,7 +1608,7 @@ DirtPatchLocations = [
         rotation=2225,
         group=1,
         logicregion=Regions.CrystalCavesMain,
-        logic=lambda l: True,
+        logic=lambda l: l.shockwave,
         resize="",
     ),
     DirtPatchData(
@@ -1621,7 +1621,7 @@ DirtPatchLocations = [
         rotation=3800,
         group=2,
         logicregion=Regions.FrozenCastle,
-        logic=lambda l: True,
+        logic=lambda l: l.shockwave,
         resize="",
     ),
     DirtPatchData(
@@ -1634,7 +1634,7 @@ DirtPatchLocations = [
         rotation=1786,
         group=2,
         logicregion=Regions.FrozenCastle,
-        logic=lambda l: True,
+        logic=lambda l: l.shockwave,
         resize="",
     ),
     DirtPatchData(
@@ -1647,7 +1647,7 @@ DirtPatchLocations = [
         rotation=1092,
         group=3,
         logicregion=Regions.CrystalCavesMain,
-        logic=lambda l: True,
+        logic=lambda l: l.shockwave,
         resize="",
     ),
     DirtPatchData(
@@ -1660,7 +1660,7 @@ DirtPatchLocations = [
         rotation=3276,
         group=3,
         logicregion=Regions.CrystalCavesMain,
-        logic=lambda l: True,
+        logic=lambda l: l.shockwave,
         resize="",
     ),
     DirtPatchData(
@@ -1673,7 +1673,7 @@ DirtPatchLocations = [
         rotation=2275,
         group=4,
         logicregion=Regions.CrystalCavesMain,
-        logic=lambda l: True,
+        logic=lambda l: l.shockwave,
         resize="",
     ),
     DirtPatchData(
@@ -1686,7 +1686,7 @@ DirtPatchLocations = [
         rotation=3219,
         group=4,
         logicregion=Regions.CrystalCavesMain,
-        logic=lambda l: True,
+        logic=lambda l: l.shockwave,
         resize="",
     ),
     DirtPatchData(
@@ -1699,7 +1699,7 @@ DirtPatchLocations = [
         rotation=375,
         group=4,
         logicregion=Regions.CrystalCavesMain,
-        logic=lambda l: True,
+        logic=lambda l: l.shockwave,
         resize="",
     ),
     DirtPatchData(
@@ -1713,7 +1713,7 @@ DirtPatchLocations = [
         vanilla=True,
         group=5,
         logicregion=Regions.CreepyCastleMain,
-        logic=lambda l: True,
+        logic=lambda l: l.shockwave,
         resize="",
     ),
     DirtPatchData(
@@ -1726,7 +1726,7 @@ DirtPatchLocations = [
         rotation=3151,
         group=4,
         logicregion=Regions.CreepyCastleMain,
-        logic=lambda l: True,
+        logic=lambda l: l.shockwave,
         resize="",
     ),
     DirtPatchData(
@@ -1739,7 +1739,7 @@ DirtPatchLocations = [
         rotation=3280,
         group=4,
         logicregion=Regions.CreepyCastleMain,
-        logic=lambda l: True,
+        logic=lambda l: l.shockwave,
         resize="",
     ),
     DirtPatchData(
@@ -1752,7 +1752,7 @@ DirtPatchLocations = [
         rotation=1479,
         group=5,
         logicregion=Regions.CreepyCastleMain,
-        logic=lambda l: True,
+        logic=lambda l: l.shockwave,
         resize="",
     ),
     DirtPatchData(
@@ -1765,7 +1765,7 @@ DirtPatchLocations = [
         rotation=546,
         group=1,
         logicregion=Regions.Ballroom,
-        logic=lambda l: True,
+        logic=lambda l: l.shockwave,
         resize="",
     ),
     DirtPatchData(
@@ -1778,7 +1778,7 @@ DirtPatchLocations = [
         rotation=3310,
         group=1,
         logicregion=Regions.Ballroom,
-        logic=lambda l: True,
+        logic=lambda l: l.shockwave,
         resize="",
     ),
     DirtPatchData(
@@ -1791,7 +1791,7 @@ DirtPatchLocations = [
         rotation=2969,
         group=2,
         logicregion=Regions.MuseumBehindGlass,
-        logic=lambda l: l.monkeyport,
+        logic=lambda l: l.monkeyport and l.shockwave,
         resize="",
     ),
     DirtPatchData(
@@ -1804,7 +1804,7 @@ DirtPatchLocations = [
         rotation=2628,
         group=2,
         logicregion=Regions.MuseumBehindGlass,
-        logic=lambda l: l.monkeyport,
+        logic=lambda l: l.monkeyport and l.shockwave,
         resize="",
     ),
     DirtPatchData(
@@ -1817,7 +1817,7 @@ DirtPatchLocations = [
         rotation=3697,
         group=2,
         logicregion=Regions.MuseumBehindGlass,
-        logic=lambda l: l.monkeyport,
+        logic=lambda l: l.monkeyport and l.shockwave,
         resize="",
     ),
     DirtPatchData(
@@ -1830,7 +1830,7 @@ DirtPatchLocations = [
         rotation=2309,
         group=5,
         logicregion=Regions.CreepyCastleMain,
-        logic=lambda l: True,
+        logic=lambda l: l.shockwave,
         resize="",
     ),
     DirtPatchData(
@@ -1843,7 +1843,7 @@ DirtPatchLocations = [
         rotation=3072,
         group=3,
         logicregion=Regions.Crypt,
-        logic=lambda l: True,
+        logic=lambda l: l.shockwave,
         resize="",
     ),
     DirtPatchData(
@@ -1856,7 +1856,7 @@ DirtPatchLocations = [
         rotation=3072,
         group=3,
         logicregion=Regions.Mausoleum,
-        logic=lambda l: True,
+        logic=lambda l: l.shockwave,
         resize="",
     ),
     DirtPatchData(
@@ -1869,7 +1869,7 @@ DirtPatchLocations = [
         rotation=3766,
         group=4,
         logicregion=Regions.CreepyCastleMain,
-        logic=lambda l: True,
+        logic=lambda l: l.shockwave,
         resize="",
     ),
     DirtPatchData(
@@ -1882,7 +1882,7 @@ DirtPatchLocations = [
         rotation=2814,
         group=4,
         logicregion=Regions.CreepyCastleMain,
-        logic=lambda l: True,
+        logic=lambda l: l.shockwave,
         resize="",
     ),
     DirtPatchData(
@@ -1895,7 +1895,7 @@ DirtPatchLocations = [
         rotation=3561,
         group=4,
         logicregion=Regions.CreepyCastleMain,
-        logic=lambda l: True,
+        logic=lambda l: l.shockwave,
         resize="",
     ),
     DirtPatchData(
@@ -1908,7 +1908,7 @@ DirtPatchLocations = [
         rotation=1024,
         group=3,
         logicregion=Regions.Dungeon,
-        logic=lambda l: l.punch,
+        logic=lambda l: l.punch and l.shockwave,
         resize="",
     ),
 ]

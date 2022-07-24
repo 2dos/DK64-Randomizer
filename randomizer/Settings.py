@@ -239,7 +239,8 @@ class Settings:
         self.open_lobbies = None
         self.open_levels = None
         self.randomize_pickups = False
-        self.random_medal_requirement = True
+        self.random_medal_requirement = False
+        self.medal_requirement = 0
         self.bananaport_rando = False
         self.activate_all_bananaports = False
         self.shop_indicator = False
@@ -334,9 +335,7 @@ class Settings:
         # Banana medals
         if self.random_medal_requirement:
             # Range roughly from 4 to 15, average around 10
-            self.BananaMedalsRequired = round(random.normalvariate(10, 1.5))
-        else:
-            self.BananaMedalsRequired = 15
+            self.medal_requirement = round(random.normalvariate(10, 1.5))
 
         # Boss Rando
         self.boss_maps = ShuffleBosses(self.boss_location_rando)
@@ -405,7 +404,7 @@ class Settings:
                 self.kong_locations.remove(Locations.ChunkyKong)
 
         # Kongs needed for level progression
-        if self.starting_kongs_count < 5 and (self.shuffle_loading_zones == "levels" or self.shuffle_loading_zones == "none"):
+        if self.starting_kongs_count < 5 and (self.shuffle_loading_zones == "levels" or self.shuffle_loading_zones == "none") and not self.no_logic:
             self.kongs_for_progression = True
 
         # Move Location Rando

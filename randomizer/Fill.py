@@ -433,6 +433,7 @@ def RandomFill(itemsToPlace, validLocations):
         random.shuffle(itemEmpty)
         locationId = itemEmpty.pop()
         LocationList[locationId].PlaceItem(item)
+        empty.remove(locationId)
     return 0
 
 
@@ -917,8 +918,9 @@ def PlaceKongs(spoiler, kongItems, kongLocations):
     """For these settings, Kongs to place, and locations to place them in, place the Kongs in such a way the generation will never error here."""
     ownedKongs = [kong for kong in spoiler.settings.starting_kong_list]
     # In entrance randomizer, it's too complicated to quickly determine kong accessibility.
-    # Instead, we place Kongs in a specific order to guarantee we'll at least have an eligible freer
-    if spoiler.settings.shuffle_loading_zones == "all":
+    # Instead, we place Kongs in a specific order to guarantee we'll at least have an eligible freer.
+    # To be at least somewhat nice to no logic users, we also use this section here so kongs don't lock each other.
+    if spoiler.settings.shuffle_loading_zones == "all" or spoiler.settings.no_logic:
         random.shuffle(kongItems)
         if Locations.ChunkyKong in kongLocations:
             kongItemToBeFreed = kongItems.pop()
@@ -941,7 +943,7 @@ def PlaceKongs(spoiler, kongItems, kongLocations):
             kongItemToBeFreed = kongItems.pop()
             LocationList[Locations.TinyKong].PlaceItem(kongItemToBeFreed)
             eligibleFreers = list(set(ownedKongs).intersection([Kongs.diddy, Kongs.chunky]))
-            spoiler.settings.tiny_freeing_kong = random.choice(ownedKongs)
+            spoiler.settings.tiny_freeing_kong = random.choice(eligibleFreers)
             ownedKongs.append(ItemPool.GetKongForItem(kongItemToBeFreed))
     # In level order shuffling, we need to be very particular about who we unlock and in what order so as to guarantee completion
     # Vanilla levels can be treated as if the level shuffler randomly placed all the levels in the same order
@@ -1118,7 +1120,7 @@ def FillKongsAndMoves(spoiler):
                             if location in ItemPool.ForestFunkyMoveLocations:
                                 # There's no way a kong locked behind Forest Funky can be your second kong
                                 # This _should_ be covered by the ownedItems=OwnedKongMoves preventing you from having the guns to get to it, which in turn prevents access to that shop unless you have both Chunky and Tiny
-                                if len(ownedKongs == 1):
+                                if len(ownedKongs) == 1:
                                     raise Ex.ItemPlacementException("Fungi Funky logic issue - SEND THIS TO A DEV!")
                                 if Items.Feather not in preplacedPriorityMoves:
                                     featherLocations = ItemPool.TinyMoveLocations.copy()

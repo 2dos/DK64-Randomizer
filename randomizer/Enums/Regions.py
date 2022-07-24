@@ -135,6 +135,7 @@ class Regions(IntEnum):
     CavesBlueprintCave = auto()
     CavesBonusCave = auto()
     CavesBlueprintPillar = auto()
+    CavesBananaportSpire = auto()
     BoulderCave = auto()
     CavesLankyRace = auto()
     FrozenCastle = auto()
