@@ -262,11 +262,6 @@ def patching_response(responded_data):
         ROM().seek(sav + 0x13F)
         ROM().write(1)
 
-    # Enable Skip Arcade Round 1
-    if spoiler.settings.skip_arcader1:
-        ROM().seek(sav + 0x126)
-        ROM().write(1)
-
     # Turn off Shop Hints
     if spoiler.settings.disable_shop_hints:
         ROM().seek(sav + 0x13B)
@@ -309,6 +304,9 @@ def patching_response(responded_data):
     # Enable Fast GBs
     if spoiler.settings.fast_gbs:
         ROM().seek(sav + 0x16A)
+        ROM().write(1)
+        # Skip Arcade Round 1
+        ROM().seek(sav + 0x126)
         ROM().write(1)
 
     # Enable Auto Key Turn ins
