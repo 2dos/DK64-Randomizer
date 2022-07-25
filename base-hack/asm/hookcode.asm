@@ -1066,6 +1066,9 @@ START_HOOK:
 		ADDIU 		a1, r0, 0x16
 		BEQ 		a2, a1, GuardDeathHandle_Kill
 		NOP
+		ADDIU 		a1, r0, 0x37
+		BEQ 		a2, a1, GuardDeathHandle_Disappear
+		NOP
 		LH 			a2, 0x134 (a0)
 		BLEZ 		a2, GuardDeathHandle_Kill
 		NOP
@@ -1073,8 +1076,10 @@ START_HOOK:
 		NOP
 
 		GuardDeathHandle_Kill:
-			ADDIU 		a1, r0, 0x40
+			ADDIU 		a1, r0, 0x37
 			SB 			a1, 0x154 (a0)
+			ADDIU 		a1, r0, 1
+			SB 			a1, 0x155 (a0)
 			// Spawn Sparkles
 			LW 			a1, 0x7C (a0)
 			MTC1 		a1, f12
@@ -1086,6 +1091,13 @@ START_HOOK:
 			// Play SFX
 			JAL 		playSFX
 			ADDIU 		a0, r0, 493
+			B 			GuardDeathHandle_Finish
+			NOP
+
+		GuardDeathHandle_Disappear:
+			ADDIU 		a1, r0, 0x40
+			SB 			a1, 0x154 (a0)
+			SB 			r0, 0x155 (a0)
 
 		GuardDeathHandle_Finish:
 			J 			0x806AFA4C

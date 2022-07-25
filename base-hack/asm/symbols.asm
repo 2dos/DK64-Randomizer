@@ -137,6 +137,18 @@
 .definelabel setAcceptablePianoKey, 0x806508B4
 .definelabel checkContactSublocation, 0x8064AB1C
 .definelabel PlayCutsceneFromModelTwoScript, 0x80641DA0
+.definelabel handleGuardDetection, 0x806AE394
+.definelabel guardShouldMove, 0x8072E54C
+.definelabel guardUnkFunction, 0x80724E48
+.definelabel generalActorHandle, 0x8072AB74
+.definelabel handleGuardDefaultAnimation, 0x8072B7CC
+.definelabel setActorSpeed, 0x8072B324
+.definelabel playActorAnimation, 0x80614EBC
+.definelabel actorUnkFunction, 0x8072A450
+.definelabel getRNGLower31, 0x80611A44
+.definelabel setActorAnimation, 0x8072DE44
+.definelabel actorUnkFunction_0, 0x8072D13C
+.definelabel spawnSparkles, 0x80686E40
 
 //vanilla data
 .definelabel TransitionSpeed, 0x807FD88C
@@ -301,6 +313,10 @@
 .definelabel MusicTrackChannels, 0x807458DC
 .definelabel BoatSpeeds, 0x8075A04C
 .definelabel textParameter, 0x80750AC8
+
+.definelabel collisionType, 0x807FBD70
+.definelabel collisionActive, 0x807FBB85
+.definelabel PlayerPointer_0, 0x807FDC94
 
 //hack data
 .definelabel TestVariable, 0x807FFFFC
