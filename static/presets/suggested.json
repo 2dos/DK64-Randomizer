@@ -9,7 +9,7 @@
     "boss_kong_rando": true,
     "boss_location_rando": true,
     "bananaport_rando":true,
-    "kasplat_rando":true,
+    "kasplat_rando_setting":"vanilla_locations",
     "kong_rando":true,
     "move_rando":"on",
     "random_prices":"vanilla",
