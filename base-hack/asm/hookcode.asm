@@ -1053,43 +1053,12 @@ START_HOOK:
 			NOP
 
 	GuardDeathHandle:
-		JAL 		0x806319C4
-		OR 			a1, r0, r0
-		LUI 		a1, 0x8080
-		LW 			a1, 0xBB64 (a1)
-		ANDI 		a0, a1, 0x4000
-		BNEZ 		a0, GuardDeathHandle_Finish
+		JAL 	newGuardCode
 		NOP
-		LUI 		a0, 0x8080
-		LW 			a0, 0xBB40 (a0)
-		LBU 		a2, 0x154 (a0)
-		ADDIU 		a1, r0, 0x16
-		BEQ 		a2, a1, GuardDeathHandle_Kill
+		LUI 	v1, 0x8080
+		LW 		s0, 0xBB40 (v1)
+		J 		0x806AF754
 		NOP
-		LH 			a2, 0x134 (a0)
-		BLEZ 		a2, GuardDeathHandle_Kill
-		NOP
-		B 			GuardDeathHandle_Finish
-		NOP
-
-		GuardDeathHandle_Kill:
-			ADDIU 		a1, r0, 0x40
-			SB 			a1, 0x154 (a0)
-			// Spawn Sparkles
-			LW 			a1, 0x7C (a0)
-			MTC1 		a1, f12
-			LW 			a1, 0x80 (a0)
-			MTC1 		a1, f14
-			ADDIU 		a3, r0, 20
-			JAL 		0x80686E40
-			LW 			a2, 0x84 (a0)
-			// Play SFX
-			JAL 		playSFX
-			ADDIU 		a0, r0, 493
-
-		GuardDeathHandle_Finish:
-			J 			0x806AFA4C
-			NOP
 
 	TextHandler:
 		LUI 	t9, hi(PauseText)

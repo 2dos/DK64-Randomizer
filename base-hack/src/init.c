@@ -193,6 +193,12 @@ void initHack(int source) {
 				*(short*)(0x80680D56) = 0x7C; // 0x89 if this needs to be unreachable without PTT
 				// Fast Vulture
 				*(int*)(0x806C50BC) = 0x0C000000 | (((int)&clearVultureCutscene & 0xFFFFFF) >> 2); // Modify Function Call
+				// Remove DKTV - Game Over
+				*(short*)(0x8071319E) = 0x50;
+				*(short*)(0x807131AA) = 5;
+				// Remove DKTV - End Seq
+				*(short*)(0x8071401E) = 0x50;
+				*(short*)(0x8071404E) = 5;
 			}
 			if (Rando.fast_warp) {
 				// Replace vanilla warp animation (0x52) with monkeyport animation (0x53)
@@ -250,6 +256,14 @@ void initHack(int source) {
 			*(short*)(0x80755DA4) = 0x0249;
 			// Remove flare effect from guards
 			*(int*)(0x806AE440) = 0;
+			// Boost Diddy/Tiny's Barrel Speed
+			*(float*)(0x807533A0) = 240.0f;
+			*(float*)(0x807533A8) = 240.0f;
+			// New Guard Code
+			*(short*)(0x806AF75C) = 0x1000;
+			// Gold Beaver Code
+			*(int*)(0x8074C3F0) = (int)&goldBeaverCode;
+			initItemDropTable();
 			LoadedHooks = 1;
 		}
 

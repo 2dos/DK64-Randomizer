@@ -147,6 +147,21 @@ extern void spawnPianoKremling(int kremling_index, int unk0);
 extern void setAcceptablePianoKey(int id, int key, int unk0);
 extern int checkContactSublocation(void* behaviour_pointer, int id, int key, int unk0);
 extern void PlayCutsceneFromModelTwoScript(void* behavior_pointer, int cutscene, int unk0, int unk1);
+extern void handleGuardDetection(float offset, float radius);
+extern int guardShouldMove(void);
+extern void guardUnkFunction(int unk0);
+extern void generalActorHandle(int control_state, int x, int z, int unk0, float unk1);
+extern void handleGuardDefaultAnimation(void);
+extern void setActorSpeed(void* actor, int speed);
+extern void playActorAnimation(void* actor, int animation);
+extern void actorUnkFunction(void);
+extern int getRNGLower31(void);
+extern void setActorAnimation(int animation);
+extern void actorUnkFunction_0(int control_state, int unk0);
+extern void spawnSparkles(float x, float y, float z, int size);
+extern void spawnEnemyDrops(void* actor);
+extern void* isActorLoaded(int actor_type);
+extern void beaverControlSwitchCase(int unk0, int unk1, int unk2);
 
 //vanilla data
 extern float TransitionSpeed;
@@ -314,6 +329,12 @@ extern actorData* CurrentActorPointer_0;
 extern short MusicTrackChannels[12];
 extern float BoatSpeeds[2];
 extern short textParameter;
+
+extern unsigned char collisionType;
+extern unsigned char collisionActive;
+extern actorData* PlayerPointer_0;
+extern SpawnerInfo* currentCharSpawner;
+extern short EnemiesKilledCounter;
 
 //hack data
 extern int TestVariable;

@@ -9,6 +9,15 @@ static unsigned char bad_guard_states[] = {
     0x67, // Instrument
 };
 
+typedef struct guard_paad {
+    /* 0x000 */ char unk_00[0xA];
+    /* 0x00A */ short x_something;
+    /* 0x00C */ char unk_0C[0x2];
+    /* 0x00E */ short z_something;
+    /* 0x010 */ char unk_10[0x1A-0x10];
+    /* 0x01A */ short unk_1A;
+} guard_paad;
+
 int isBadMovementState(void) {
     if (Player) {
         int control_state = Player->control_state;
@@ -62,5 +71,63 @@ void catchWarpHandle(void) {
             }
         }
         warp_timer -= 1;
+    }
+    if (TransitionSpeed != 0) {
+        warp_timer = 0;
+    }
+}
+
+void newGuardCode(void) {
+    unsigned int level_state = *(unsigned int*)(0x807FBB64);
+    if (CurrentActorPointer_0->control_state <= 0x35) {
+        handleGuardDetection(40.0f,70.0f);
+    }
+    if ((collisionType == 4) || (collisionType == 9) || (collisionActive)) {
+        if ((level_state & 0x104000) == 0) {
+            // Hit by ammo/oranges
+            if (CurrentActorPointer_0->health <= 0) {
+                playActorAnimation(CurrentActorPointer_0,0x201);
+                CurrentActorPointer_0->control_state = 0x42;
+                CurrentActorPointer_0->control_state_progress = 0;
+                CurrentActorPointer_0->noclip_byte = 1;
+                // CurrentActorPointer_0->yVelocity = 150.0f;
+                // CurrentActorPointer_0->yAccel = -20.0f;
+            } else {
+                playActorAnimation(CurrentActorPointer_0,0x1FF);
+                CurrentActorPointer_0->control_state = 0x41;
+                CurrentActorPointer_0->control_state_progress = 0;
+            }
+        }
+    }
+    int control_state = CurrentActorPointer_0->control_state;
+    if (control_state > 0x35) {
+        if (control_state == 0x37) {
+            CurrentActorPointer_0->control_state = 0x40;
+            CurrentActorPointer_0->control_state_progress = 0;
+            spawnEnemyDrops(CurrentActorPointer_0);
+        } else {
+            handleGuardDefaultAnimation();
+            switch(control_state) {
+                case 0x41:
+                    // Damage
+                    if (CurrentActorPointer_0->control_state_progress < 0xC) {
+                        CurrentActorPointer_0->control_state_progress += 1;
+                    } else {
+                        CurrentActorPointer_0->control_state = 0x1;
+                        CurrentActorPointer_0->control_state_progress = 0;
+                        playActorAnimation(CurrentActorPointer_0,0x2C1);
+                    }
+                    break;
+                case 0x42:
+                    // Death
+                    if (CurrentActorPointer_0->control_state_progress < 0x20) {
+                        CurrentActorPointer_0->control_state_progress += 1;
+                    } else {
+                        CurrentActorPointer_0->control_state = 0x37;
+                        CurrentActorPointer_0->control_state_progress = 1;
+                    }
+                break;
+            }
+        }
     }
 }

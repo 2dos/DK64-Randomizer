@@ -29,7 +29,7 @@ set_variables = {
     "kut_out_kong_order": [0, 0, 0, 0, 0],
     "remove_blockers": 0x7F,
     "resolve_bonus": 0,
-    "disable_drops": 1,
+    "disable_drops": 0,
     "shop_indicator_on": 1,
     "warp_to_isles_enabled": 1,
     "lobbies_open_bitfield": 0xFF,

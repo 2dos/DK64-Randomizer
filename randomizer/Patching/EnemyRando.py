@@ -1,4 +1,5 @@
 """Apply Boss Locations."""
+from email.policy import default
 import random
 
 import js
@@ -162,9 +163,15 @@ def randomize_enemies(spoiler: Spoiler):
         Maps.StashSnatchHard,
         Maps.StashSnatchInsane,
     ]
+    minigame_maps_beavers = [
+        Maps.BeaverBotherEasy,
+        Maps.BeaverBotherNormal,
+        Maps.BeaverBotherHard,
+    ]
     minigame_maps_total = minigame_maps_easy.copy()
     minigame_maps_total.extend(minigame_maps_beatable)
     minigame_maps_total.extend(minigame_maps_nolimit)
+    minigame_maps_total.extend(minigame_maps_beavers)
     enemy_classes = {
         "ground_simple": [
             Enemies.BeaverBlue,
@@ -212,9 +219,12 @@ def randomize_enemies(spoiler: Spoiler):
         minigame_enemies_simple = []
         minigame_enemies_beatable = []
         minigame_enemies_nolimit = []
+        minigame_enemies_beavers = []
         for enemy in EnemyMetaData:
             if EnemyMetaData[enemy].minigame_enabled:
                 minigame_enemies_nolimit.append(enemy)
+                if EnemyMetaData[enemy].beaver:
+                    minigame_enemies_beavers.append(enemy)
                 if EnemyMetaData[enemy].killable:
                     minigame_enemies_beatable.append(enemy)
                     if EnemyMetaData[enemy].simple:
@@ -309,11 +319,18 @@ def randomize_enemies(spoiler: Spoiler):
                     tied_enemy_list = minigame_enemies_simple.copy()
                 elif cont_map_id in minigame_maps_beatable:
                     tied_enemy_list = minigame_enemies_beatable.copy()
-                elif cont_map_id in minigame_enemies_nolimit:
+                elif cont_map_id in minigame_maps_nolimit:
                     tied_enemy_list = minigame_enemies_nolimit.copy()
+                elif cont_map_id in minigame_maps_beavers:
+                    tied_enemy_list = minigame_enemies_beavers.copy()
                 for spawner in vanilla_spawners:
                     if spawner["enemy_id"] in tied_enemy_list:
                         new_enemy_id = random.choice(tied_enemy_list)
+                        # Balance beaver bother so it's a 3:1 ratio of blue to gold beavers
+                        if cont_map_id in minigame_maps_beavers:
+                            comp_id = random.choice(tied_enemy_list)
+                            if new_enemy_id != Enemies.BeaverGold or comp_id != Enemies.BeaverGold:
+                                new_enemy_id = Enemies.BeaverBlue
                         ROM().seek(cont_map_spawner_address + spawner["offset"])
                         ROM().writeMultipleBytes(new_enemy_id, 1)
                         if new_enemy_id in EnemyMetaData.keys():
@@ -331,7 +348,7 @@ def randomize_enemies(spoiler: Spoiler):
                                 if default_scale > EnemyMetaData[new_enemy_id].size_cap:
                                     ROM().seek(cont_map_spawner_address + spawner["offset"] + 0xF)
                                     ROM().writeMultipleBytes(EnemyMetaData[new_enemy_id].size_cap, 1)
-                            if spoiler.settings.enemy_speed_rando:
+                            if spoiler.settings.enemy_speed_rando and cont_map_id not in minigame_maps_beavers:
                                 min_speed = EnemyMetaData[new_enemy_id].min_speed
                                 max_speed = EnemyMetaData[new_enemy_id].max_speed
                                 if min_speed > 0 and max_speed > 0:
@@ -340,6 +357,15 @@ def randomize_enemies(spoiler: Spoiler):
                                     ROM().writeMultipleBytes(agg_speed, 1)
                                     ROM().seek(cont_map_spawner_address + spawner["offset"] + 0xC)
                                     ROM().writeMultipleBytes(random.randint(min_speed, agg_speed), 1)
+                            if new_enemy_id == Enemies.BeaverGold and cont_map_id in minigame_maps_beavers:
+                                for speed_offset in [0xC, 0xD]:
+                                    ROM().seek(cont_map_spawner_address + spawner["offset"] + speed_offset)
+                                    default_speed = int.from_bytes(ROM().readBytes(1), "big")
+                                    new_speed = int(default_speed * 1.1)
+                                    if new_speed > 255:
+                                        new_speed = 255
+                                    ROM().seek(cont_map_spawner_address + spawner["offset"] + speed_offset)
+                                    ROM().writeMultipleBytes(new_speed, 1)
             if spoiler.settings.crown_enemy_rando and cont_map_id in crown_maps:
                 crown_index = 0
                 for spawner in vanilla_spawners:

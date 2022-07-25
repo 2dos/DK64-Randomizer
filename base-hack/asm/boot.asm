@@ -432,8 +432,8 @@ loadExtraHooks:
 	LUI t3, hi(GuardDeathHandleHook)
 	LW t3, lo(GuardDeathHandleHook) (t3)
 	LUI t4, 0x806B
-	SW t3, 0xFA44 (t4) // Store Hook
-	SW r0, 0xFA48 (t4) // Store NOP
+	SW t3, 0xF70C (t4) // Store Hook
+	SW r0, 0xF710 (t4) // Store NOP
 
 	LUI t3, hi(QoLOn)
 	LBU t3, lo(QoLOn) (t3)
