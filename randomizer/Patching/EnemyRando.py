@@ -164,9 +164,10 @@ def randomize_enemies(spoiler: Spoiler):
         Maps.StashSnatchInsane,
     ]
     minigame_maps_beavers = [
-        Maps.BeaverBotherEasy,
-        Maps.BeaverBotherNormal,
-        Maps.BeaverBotherHard,
+        # Currently crashes upon completion (Malloc issue)
+        # Maps.BeaverBotherEasy,
+        # Maps.BeaverBotherNormal,
+        # Maps.BeaverBotherHard,
     ]
     minigame_maps_total = minigame_maps_easy.copy()
     minigame_maps_total.extend(minigame_maps_beatable)
