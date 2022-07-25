@@ -142,9 +142,9 @@ def randomize_setup(spoiler: Spoiler):
                         star_height_boundaries = [-131, 500]
                     elif cont_map_id == Maps.GalleonBoss:
                         star_donut_center = [1216, 1478]
-                        star_donut_boundaries = [188, 460]
+                        star_donut_boundaries = [200, 460]
                         star_height_boundaries = []
-                    radius = random.uniform(star_donut_boundaries[0], star_donut_boundaries[1])
+                    radius = star_donut_boundaries[0] + (math.sqrt(random.random()) * (star_donut_boundaries[1] - star_donut_boundaries[0]))
                     angle = random.uniform(0, math.pi * 2)
                     star_a = random.uniform(0, 360)
                     if angle == math.pi * 2:
