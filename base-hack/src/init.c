@@ -260,9 +260,9 @@ void initHack(int source) {
 			*(float*)(0x807533A0) = 240.0f;
 			*(float*)(0x807533A8) = 240.0f;
 			// New Guard Code
-			// *(int*)(0x8074C4AC) = (int)&guardCode;
-			//*(int*)(0x806AF70C) = 0x0C000000 | (((int)&newGuardCode & 0xFFFFFF) >> 2); // Modify Function Call
 			*(short*)(0x806AF75C) = 0x1000;
+			// Gold Beaver Code
+			*(int*)(0x8074C3F0) = (int)&goldBeaverCode;
 			initItemDropTable();
 			LoadedHooks = 1;
 		}

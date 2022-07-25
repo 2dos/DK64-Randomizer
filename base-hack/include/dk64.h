@@ -160,6 +160,8 @@ extern void setActorAnimation(int animation);
 extern void actorUnkFunction_0(int control_state, int unk0);
 extern void spawnSparkles(float x, float y, float z, int size);
 extern void spawnEnemyDrops(void* actor);
+extern void* isActorLoaded(int actor_type);
+extern void beaverControlSwitchCase(int unk0, int unk1, int unk2);
 
 //vanilla data
 extern float TransitionSpeed;
@@ -331,6 +333,8 @@ extern short textParameter;
 extern unsigned char collisionType;
 extern unsigned char collisionActive;
 extern actorData* PlayerPointer_0;
+extern SpawnerInfo* currentCharSpawner;
+extern short EnemiesKilledCounter;
 
 //hack data
 extern int TestVariable;

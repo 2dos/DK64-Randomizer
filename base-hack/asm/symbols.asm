@@ -150,6 +150,8 @@
 .definelabel actorUnkFunction_0, 0x8072D13C
 .definelabel spawnSparkles, 0x80686E40
 .definelabel spawnEnemyDrops, 0x806A5C60
+.definelabel isActorLoaded, 0x8067ADB4
+.definelabel beaverControlSwitchCase, 0x806AD260
 
 //vanilla data
 .definelabel TransitionSpeed, 0x807FD88C
@@ -318,6 +320,8 @@
 .definelabel collisionType, 0x807FBD70
 .definelabel collisionActive, 0x807FBB85
 .definelabel PlayerPointer_0, 0x807FDC94
+.definelabel currentCharSpawner, 0x807FDC9C
+.definelabel EnemiesKilledCounter, 0x80744508
 
 //hack data
 .definelabel TestVariable, 0x807FFFFC
