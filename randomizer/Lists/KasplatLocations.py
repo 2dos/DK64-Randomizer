@@ -102,7 +102,7 @@ KasplatLocationList = {
         KasplatLocation(
             name="Japes Kasplat: Inside Tiny's Cage",
             map_id=Maps.JungleJapes,
-            kong_lst=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
+            kong_lst=[Kongs.tiny],
             coords=[1333, 280, 1938],
             xmin=1320,
             xmax=1360,

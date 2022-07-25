@@ -186,7 +186,10 @@ def KasplatShuffle(spoiler, LogicVariables):
         while True:
             try:
                 # Shuffle kasplats
-                ShuffleKasplatsAndLocations(spoiler, LogicVariables)
+                if LogicVariables.settings.kasplat_location_rando:
+                    ShuffleKasplatsAndLocations(spoiler, LogicVariables)
+                else:
+                    ShuffleKasplats(LogicVariables)
                 # Verify world by assuring all locations are still reachable
                 if not Fill.VerifyWorld(LogicVariables.settings):
                     raise Ex.KasplatPlacementException

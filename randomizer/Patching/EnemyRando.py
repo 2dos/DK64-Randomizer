@@ -266,17 +266,17 @@ def randomize_enemies(spoiler: Spoiler):
                 extra_count = int.from_bytes(ROM().readBytes(1), "big")
                 offset += 0x16 + (extra_count * 2)
                 vanilla_spawners.append({"enemy_id": enemy_id, "offset": init_offset, "index": enemy_index})
-            # if spoiler.settings.kasplat_rando:
-            #     # Shuffle within vanilla locations
-            #     for cont_map in spoiler.enemy_replacements:
-            #         if cont_map["container_map"] == cont_map_id:
-            #             for kasplat in cont_map["kasplat_swaps"]:
-            #                 source_kasplat_type = kasplat["vanilla_location"] + Enemies.KasplatDK
-            #                 replacement_kasplat_type = kasplat["replace_with"] + Enemies.KasplatDK
-            #                 for spawner in vanilla_spawners:
-            #                     if spawner["enemy_id"] == source_kasplat_type:
-            #                         ROM().seek(cont_map_spawner_address + spawner["offset"])
-            #                         ROM().writeMultipleBytes(replacement_kasplat_type, 1)
+            if spoiler.settings.kasplat_rando and not spoiler.settings.kasplat_location_rando:
+                # Shuffle within vanilla locations
+                for cont_map in spoiler.enemy_replacements:
+                    if cont_map["container_map"] == cont_map_id:
+                        for kasplat in cont_map["kasplat_swaps"]:
+                            source_kasplat_type = kasplat["vanilla_location"] + Enemies.KasplatDK
+                            replacement_kasplat_type = kasplat["replace_with"] + Enemies.KasplatDK
+                            for spawner in vanilla_spawners:
+                                if spawner["enemy_id"] == source_kasplat_type:
+                                    ROM().seek(cont_map_spawner_address + spawner["offset"])
+                                    ROM().writeMultipleBytes(replacement_kasplat_type, 1)
             if spoiler.settings.enemy_rando and cont_map_id in valid_maps:
                 for enemy_class in enemy_swaps:
                     arr = enemy_swaps[enemy_class]

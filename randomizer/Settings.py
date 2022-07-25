@@ -137,7 +137,7 @@ class Settings:
         self.random_prices = None
         self.boss_location_rando = None
         self.boss_kong_rando = None
-        self.kasplat_rando = None
+        self.kasplat_rando_setting = None
         self.puzzle_rando = None
 
     def set_seed(self):
@@ -411,6 +411,15 @@ class Settings:
             self.shuffle_items = "moves"
         elif self.move_rando == "start_with":
             self.unlock_all_moves = True
+
+        # Kasplat Rando
+        self.kasplat_rando = False
+        self.kasplat_location_rando = False
+        if self.kasplat_rando_setting == "vanilla_locations":
+            self.kasplat_rando = True
+        if self.kasplat_rando_setting == "location_shuffle":
+            self.kasplat_rando = True
+            self.kasplat_location_rando = True
 
     def SelectKongLocations(self):
         """Select which random kong locations to use depending on number of starting kongs."""
