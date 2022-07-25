@@ -186,7 +186,7 @@ void earlyFrame(void) {
 			}
 		}
 	} else if (CurrentMap == 0x6E) { // Factory BBlast
-		if (Rando.skip_arcade_round1) {
+		if (Rando.fast_gbs) {
 			if (!checkFlag(FLAG_ARCADE_LEVER,0)) {
 				if (checkFlag(FLAG_ARCADE_ROUND1,0)) {
 					if (TransitionSpeed > 0) {

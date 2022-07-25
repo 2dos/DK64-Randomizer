@@ -48,7 +48,8 @@ set_variables = {
     "remove_high_requirements": 1,
     "open_level_sections": 1,
     "auto_keys": 1,
-    "test_zone": [0xC7, 0],
+    "test_zone": [0x68, 0],
+    "klaptrap_color_bbother": 2,
     "special_move_prices": [
         [1, 2, 3],
         [4, 5, 6],

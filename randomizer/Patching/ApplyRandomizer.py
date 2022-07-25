@@ -305,9 +305,6 @@ def patching_response(responded_data):
     if spoiler.settings.fast_gbs:
         ROM().seek(sav + 0x16A)
         ROM().write(1)
-        # Skip Arcade Round 1
-        ROM().seek(sav + 0x126)
-        ROM().write(1)
 
     # Enable Auto Key Turn ins
     # if spoiler.settings.auto_keys:

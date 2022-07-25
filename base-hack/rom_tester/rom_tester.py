@@ -213,7 +213,7 @@ for f in files:
             output(f"\tMusic Rando On: {str(getTrueFalse(fh,0x11F,1))}")
             output(f"\tShop Indicator On: {str(getTrueFalse(fh,0x124,1))}")
             output(f"\tWarp to Isles Enabled: {str(getTrueFalse(fh,0x125,1))}")
-            output(f"\tSkip Arcade Round 1: {str(getTrueFalse(fh,0x126,1))}")
+            output(f"\tKlaptrap Color: {str(["Green","Purple","Red"][getValue(fh,0x126,1)])}")
             output(f"\tOpen Levels: {str(getTrueFalse(fh,0x127,1))}")
             output(f"\tActivate All Warps: {str(getTrueFalse(fh,0x128,1))}")
             output(f"\tD-Pad Visual Showed: {str(getTrueFalse(fh,0x129,1))}")
