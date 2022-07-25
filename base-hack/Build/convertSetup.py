@@ -69,6 +69,7 @@ def modify(file_name, map_index):
         added_factory_barracade = False
         added_caves_tns = False
         added_helm_faces = False
+        added_5di_strongkong = False
         for x in range(model2_count):
             byte_stream = byte_read[read_location : read_location + 0x30]
             _type = int.from_bytes(byte_read[read_location + 0x28 : read_location + 0x2A], "big")
@@ -286,6 +287,22 @@ def modify(file_name, map_index):
                         }
                     )
                 added_helm_faces = True
+            elif map_index == 0x56 and not added_5di_strongkong:
+                added_actor.append(
+                    {
+                        "base_byte_stream": byte_stream,
+                        "x": int(float_to_hex(118.011), 16),
+                        "y": int(float_to_hex(20), 16),
+                        "z": int(float_to_hex(462.749), 16),
+                        "id": 0x20,
+                        "type": 0x39 - 16,
+                        "rx": 0,
+                        "ry": 1024,
+                        "rz": 0,
+                        "scale": int(float_to_hex(1), 16),
+                    }
+                )
+                added_5di_strongkong = True
             data = {"stream": byte_stream}
             actor.append(data)
             read_location += 0x38

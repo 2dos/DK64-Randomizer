@@ -199,6 +199,11 @@ void initHack(int source) {
 				// Remove DKTV - End Seq
 				*(short*)(0x8071401E) = 0x50;
 				*(short*)(0x8071404E) = 5;
+				// Fast Barrel Animation
+				*(short*)(0x8067EAB2) = 1; // OSprint
+				*(short*)(0x8067EAC6) = 1; // HC Dogadon 2
+				*(short*)(0x8067EACA) = 1; // Others
+				*(short*)(0x8067EA92) = 1; // Others 2
 			}
 			if (Rando.fast_warp) {
 				// Replace vanilla warp animation (0x52) with monkeyport animation (0x53)
@@ -223,8 +228,11 @@ void initHack(int source) {
 				*(short*)(0x80755B6A) = 0; // Modify GB ID
 			}
 			// Change Beaver Bother Klaptrap Model
-			*(short*)(0x806F0376) = 0x21 + Rando.klaptrap_color_bbother;
-			*(short*)(0x806C8B42) = 0x21 + Rando.klaptrap_color_bbother;
+			if (Rando.klaptrap_color_bbother == 0) {
+				Rando.klaptrap_color_bbother = 0x21; // Set to default model if no model assigned
+			}
+			*(short*)(0x806F0376) = Rando.klaptrap_color_bbother;
+			*(short*)(0x806C8B42) = Rando.klaptrap_color_bbother;
 			// Expand Display List
 			*(short*)(0x805FE56A) = 8000;
 			// Object Instance Scripts
