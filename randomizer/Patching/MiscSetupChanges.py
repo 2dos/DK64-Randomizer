@@ -46,7 +46,7 @@ def randomize_setup(spoiler: Spoiler):
         for count in range(pickup["weight"]):
             pickup_list.append(pickup["type"])
 
-    allowed_settings = [spoiler.settings.skip_arcader1, spoiler.settings.randomize_pickups, spoiler.settings.random_patches, spoiler.settings.puzzle_rando]
+    allowed_settings = [spoiler.settings.fast_gbs, spoiler.settings.randomize_pickups, spoiler.settings.random_patches, spoiler.settings.puzzle_rando]
     enabled = False
     for setting in allowed_settings:
         enabled = enabled or setting
@@ -119,7 +119,7 @@ def randomize_setup(spoiler: Spoiler):
                 for swap in swap_list:
                     if swap["map"] == cont_map_id and item_type in swap["item_list"]:
                         is_swap = True
-                if item_type == 0x196 and spoiler.settings.skip_arcader1 and cont_map_id == Maps.FactoryBaboonBlast:
+                if item_type == 0x196 and spoiler.settings.fast_gbs and cont_map_id == Maps.FactoryBaboonBlast:
                     ROM().seek(item_start + 0x28)
                     ROM().writeMultipleBytes(0x74, 2)
                     ROM().seek(item_start + 0xC)

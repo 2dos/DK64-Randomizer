@@ -244,7 +244,6 @@ class Settings:
         self.bananaport_rando = False
         self.activate_all_bananaports = False
         self.shop_indicator = False
-        self.skip_arcader1 = False
         self.randomize_cb_required_amounts = False
         self.randomize_blocker_required_amounts = False
         self.maximize_helm_blocker = False
