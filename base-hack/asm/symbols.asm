@@ -149,6 +149,7 @@
 .definelabel setActorAnimation, 0x8072DE44
 .definelabel actorUnkFunction_0, 0x8072D13C
 .definelabel spawnSparkles, 0x80686E40
+.definelabel spawnEnemyDrops, 0x806A5C60
 
 //vanilla data
 .definelabel TransitionSpeed, 0x807FD88C

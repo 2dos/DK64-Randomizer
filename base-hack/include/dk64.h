@@ -159,6 +159,7 @@ extern int getRNGLower31(void);
 extern void setActorAnimation(int animation);
 extern void actorUnkFunction_0(int control_state, int unk0);
 extern void spawnSparkles(float x, float y, float z, int size);
+extern void spawnEnemyDrops(void* actor);
 
 //vanilla data
 extern float TransitionSpeed;

@@ -77,21 +77,11 @@ void catchWarpHandle(void) {
     }
 }
 
-void guardCode(void) {
-    initCharSpawnerActor();
-    guard_paad* paad = CurrentActorPointer_0->paad;
-    int update_state = 1;
-    int p = 0;
+void newGuardCode(void) {
     unsigned int level_state = *(unsigned int*)(0x807FBB64);
-    if ((CurrentActorPointer_0->obj_props_bitfield & 0x10) == 0) {
-        modifyCharSpawnerAttributes(0x2C0,0x2C1,0x2C1);
-        unkCutsceneKongFunction_0(0xE,1);
-        paad->unk_1A |= 0x800;
-        CurrentActorPointer_0->obj_props_bitfield |= 0x400;
+    if (CurrentActorPointer_0->control_state <= 0x35) {
+        handleGuardDetection(40.0f,70.0f);
     }
-    handleGuardDetection(40.0f,70.0f);
-    TestVariable = collisionType;
-    *(int*)(0x807FF700) = collisionActive;
     if ((collisionType == 4) || (collisionType == 9) || (collisionActive)) {
         if ((level_state & 0x104000) == 0) {
             // Hit by ammo/oranges
@@ -99,6 +89,7 @@ void guardCode(void) {
                 playActorAnimation(CurrentActorPointer_0,0x201);
                 CurrentActorPointer_0->control_state = 0x42;
                 CurrentActorPointer_0->control_state_progress = 0;
+                CurrentActorPointer_0->noclip_byte = 1;
                 // CurrentActorPointer_0->yVelocity = 150.0f;
                 // CurrentActorPointer_0->yAccel = -20.0f;
             } else {
@@ -113,22 +104,23 @@ void guardCode(void) {
         if (control_state == 0x37) {
             CurrentActorPointer_0->control_state = 0x40;
             CurrentActorPointer_0->control_state_progress = 0;
-        } else if (control_state < 0x41) {
-            handleGuardDefaultAnimation();
+            spawnEnemyDrops(CurrentActorPointer_0);
         } else {
+            handleGuardDefaultAnimation();
             switch(control_state) {
                 case 0x41:
                     // Damage
-                    if (CurrentActorPointer_0->control_state_progress < 0x10) {
+                    if (CurrentActorPointer_0->control_state_progress < 0xC) {
                         CurrentActorPointer_0->control_state_progress += 1;
                     } else {
                         CurrentActorPointer_0->control_state = 0x1;
                         CurrentActorPointer_0->control_state_progress = 0;
+                        playActorAnimation(CurrentActorPointer_0,0x2C1);
                     }
                     break;
                 case 0x42:
                     // Death
-                    if (CurrentActorPointer_0->control_state_progress < 0x10) {
+                    if (CurrentActorPointer_0->control_state_progress < 0x20) {
                         CurrentActorPointer_0->control_state_progress += 1;
                     } else {
                         CurrentActorPointer_0->control_state = 0x37;
@@ -138,90 +130,4 @@ void guardCode(void) {
             }
         }
     }
-    if (control_state < 0x12) {
-        switch(control_state) {
-            case 1:
-                if (guardShouldMove()) {
-                    CurrentActorPointer_0->control_state = 0x11;
-                    CurrentActorPointer_0->control_state_progress = 0;
-                }
-                p = 0;
-                if (CurrentActorPointer_0->control_state == 1) {
-                    p = 2;
-                }
-                guardUnkFunction(p);
-                generalActorHandle(CurrentActorPointer_0->control_state, *(int*)(&PlayerPointer_0->xPos), *(int*)(&PlayerPointer_0->zPos), 0, 0.0f);
-                break;
-            case 2:
-            case 3:
-            case 7:
-                p = 3;
-                if (control_state == 0x35) {
-                    p = 2;
-                }
-                guardUnkFunction(p);
-                generalActorHandle(CurrentActorPointer_0->control_state, paad->x_something, paad->z_something, 0, 0.0f);
-                break;
-            case 0x11:
-                guardUnkFunction(2);
-                int csp = CurrentActorPointer_0->control_state_progress;
-                if (csp == 0) {
-                    setActorSpeed(CurrentActorPointer_0,0);
-                    playActorAnimation(CurrentActorPointer_0,0x2C0);
-                    CurrentActorPointer_0->control_state_progress += 1;
-                } else {
-                    if (csp == 1) {
-                        generalActorHandle(CurrentActorPointer_0->control_state, *(int*)(&PlayerPointer_0->xPos), *(int*)(&PlayerPointer_0->zPos), 0, 0.0f);
-                        if (CurrentActorPointer_0->hSpeed >= 1.0f) {
-                            control_state = CurrentActorPointer_0->control_state;
-                        } else {
-                            CurrentActorPointer_0->control_state_progress += 1;
-                        }
-                    } else if (csp == 2) {
-                        actorUnkFunction();
-                        int rng = getRNGLower31();
-                        int rng_subset = (rng >> 0xF) & 1000;
-                        if (rng_subset > 995) {
-                            setActorAnimation(0x2C1);
-                        }
-                    } else {
-                        control_state = CurrentActorPointer_0->control_state;
-                    }
-                }
-                break;
-            default:
-                handleGuardDefaultAnimation();
-            break;
-        }
-    } else {
-        if (control_state != 0x35) {
-            handleGuardDefaultAnimation();
-        } else if (control_state < 0x41) {
-            p = 3;
-            if (control_state == 0x35) {
-                p = 2;
-            }
-            guardUnkFunction(p);
-            generalActorHandle(CurrentActorPointer_0->control_state, paad->x_something, paad->z_something, 0, 0.0f);
-        }
-    }
-    if (update_state == 1) {
-        control_state = CurrentActorPointer_0->control_state;
-    }
-    if ((control_state == 2) || (control_state == 3)) {
-        actorUnkFunction_0(control_state,1);
-    }
-    renderActor(CurrentActorPointer_0,0);
-    
-    // if ((level_state & 0x104000) == 0) {
-    //     if ((CurrentActorPointer_0->control_state == 0x16) || ((CurrentActorPointer_0->health <= 0) && (CurrentActorPointer_0->control_state < 0x35))) {
-    //         CurrentActorPointer_0->control_state = 0x37;
-    //         CurrentActorPointer_0->control_state_progress = 1;
-    //         spawnSparkles(CurrentActorPointer_0->xPos, CurrentActorPointer_0->yPos, CurrentActorPointer_0->zPos, 20);
-    //         playSFX(493);
-    //     } else if (CurrentActorPointer_0->control_state == 0x37) {
-    //         CurrentActorPointer_0->control_state = 0x40;
-    //         CurrentActorPointer_0->control_state_progress = 0;
-    //     }
-    // }
 }

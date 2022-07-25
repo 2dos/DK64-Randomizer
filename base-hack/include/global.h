@@ -105,5 +105,5 @@ extern int getTagAnywhereKong(int direction);
 extern int getTAState(void);
 extern void toggleStandardAmmo(void);
 extern void initItemDropTable(void);
-extern void guardCode(void);
+extern void newGuardCode(void);
 //extern void getRandoNextMovePurchase(shop_paad* shop_info, KongBase* moves);
