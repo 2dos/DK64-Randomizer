@@ -261,7 +261,13 @@ KasplatLocationList = {
         #     region=Regions.AngryAztecMain,
         # ),
         KasplatLocation(
-            name="Aztec Kasplat: On Tiny Temple", map_id=Maps.AngryAztec, kong_lst=[Kongs.diddy], coords=[3169, 445, 647], region=Regions.AngryAztecStart, additional_logic=lambda l: l.jetpack, vanilla=True
+            name="Aztec Kasplat: On Tiny Temple",
+            map_id=Maps.AngryAztec,
+            kong_lst=[Kongs.diddy],
+            coords=[3169, 445, 647],
+            region=Regions.AngryAztecStart,
+            additional_logic=lambda l: l.jetpack,
+            vanilla=True,
         ),
         KasplatLocation(
             name="Aztec Kasplat: In the Vase Room",
@@ -450,7 +456,9 @@ KasplatLocationList = {
             zmax=2240,
             region=Regions.Testing,
         ),
-        KasplatLocation(name="Factory Kasplat: In the Power Shed", map_id=Maps.FactoryPowerHut, kong_lst=[Kongs.donkey], coords=[116, 2, 121], xmin=68, xmax=151, zmin=66, zmax=154, region=Regions.PowerHut),
+        KasplatLocation(
+            name="Factory Kasplat: In the Power Shed", map_id=Maps.FactoryPowerHut, kong_lst=[Kongs.donkey], coords=[116, 2, 121], xmin=68, xmax=151, zmin=66, zmax=154, region=Regions.PowerHut
+        ),
     ],
     Levels.GloomyGalleon: [
         KasplatLocation(
@@ -783,11 +791,7 @@ KasplatLocationList = {
             vanilla=True,
         ),
         KasplatLocation(
-            name="Caves Kasplat: In the Hidden Room by Funky's",
-            map_id=Maps.CrystalCaves, kong_lst=[Kongs.diddy, Kongs.tiny],
-            coords=[3517, 286, 767],
-            region=Regions.CavesBlueprintCave,
-            vanilla=True
+            name="Caves Kasplat: In the Hidden Room by Funky's", map_id=Maps.CrystalCaves, kong_lst=[Kongs.diddy, Kongs.tiny], coords=[3517, 286, 767], region=Regions.CavesBlueprintCave, vanilla=True
         ),
         KasplatLocation(
             name="Caves Kasplat: On the platform near Funky's",
