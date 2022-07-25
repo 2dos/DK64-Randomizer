@@ -268,7 +268,7 @@ class LogicVarHolder:
         self.superSlam = self.Slam >= 2
         self.superDuperSlam = self.Slam >= 3
 
-        self.Blueprints = [x for x in ownedItems if x >= Items.DKIslesDonkeyBlueprint]
+        self.Blueprints = [x for x in ownedItems if x >= Items.JungleJapesDonkeyBlueprint]
 
     def AddEvent(self, event):
         """Add an event to events list so it can be checked for logically."""
