@@ -213,7 +213,10 @@ for f in files:
             output(f"\tMusic Rando On: {str(getTrueFalse(fh,0x11F,1))}")
             output(f"\tShop Indicator On: {str(getTrueFalse(fh,0x124,1))}")
             output(f"\tWarp to Isles Enabled: {str(getTrueFalse(fh,0x125,1))}")
-            output(f"\tSkip Arcade Round 1: {str(getTrueFalse(fh,0x126,1))}")
+            klap_model = getValue(fh, 0x126, 1)
+            if klap_model == 0:
+                klap_model == 0x21
+            output(f"\tKlaptrap Model: {hex(klap_model)}")
             output(f"\tOpen Levels: {str(getTrueFalse(fh,0x127,1))}")
             output(f"\tActivate All Warps: {str(getTrueFalse(fh,0x128,1))}")
             output(f"\tD-Pad Visual Showed: {str(getTrueFalse(fh,0x129,1))}")

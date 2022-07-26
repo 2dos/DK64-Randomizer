@@ -25,7 +25,7 @@
     "no_healing":true,
     "no_melons":true,
     "hard_shooting":true,
-    "hard_mad_jack":true,
+    "hard_bosses":true,
     "perma_death":false,
     "disable_tag_barrels":true,
     "unlock_fairy_shockwave":false,

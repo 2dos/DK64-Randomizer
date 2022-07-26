@@ -351,6 +351,8 @@
 .definelabel PauseText, 0x807FFFE6
 .definelabel ShorterBosses, 0x807FFFE5
 .definelabel ForceStandardAmmo, 0x807FFFE4
+.definelabel KKOPhaseRandoOn, 0x807FFFE0
+.definelabel KKOPhaseOrder, 0x807FFFE1
 
 .definelabel CrankyMoves_New, 0x807FF400
 .definelabel CandyMoves_New, 0x807FF4D4

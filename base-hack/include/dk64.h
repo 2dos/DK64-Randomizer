@@ -367,3 +367,5 @@ extern char QoLOn;
 extern unsigned char PauseText;
 extern unsigned char ShorterBosses;
 extern char ForceStandardAmmo;
+extern char KKOPhaseRandoOn;
+extern char KKOPhaseOrder[3];

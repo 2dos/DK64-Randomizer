@@ -185,6 +185,12 @@ class Spoiler:
                 kutout_order = kutout_order + Kongs(kong).name + ", "
             humanspoiler["Shuffled Kutout Kong Order"] = kutout_order.removesuffix(", ")
 
+        if self.settings.hard_bosses:
+            phase_names = []
+            for phase in self.settings.kko_phase_order:
+                phase_names.append(f"Phase {phase+1}")
+            humanspoiler["Shuffled Kutout Phases"] = ", ".join(phase_names)
+
         if self.settings.bonus_barrels in ("random", "all_beaver_bother"):
             shuffled_barrels = OrderedDict()
             for location, minigame in self.shuffled_barrel_data.items():

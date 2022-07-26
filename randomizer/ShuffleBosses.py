@@ -33,7 +33,7 @@ def ShuffleBossKongs(settings):
     for level in range(7):
         boss_map = settings.boss_maps[level]
         if settings.boss_kong_rando:
-            kong = SelectRandomKongForBoss(boss_map, settings.hard_mad_jack)
+            kong = SelectRandomKongForBoss(boss_map, settings.hard_bosses)
         else:
             kong = vanillaBossKongs[boss_map]
         boss_kongs.append(kong)
@@ -41,7 +41,7 @@ def ShuffleBossKongs(settings):
     return boss_kongs
 
 
-def SelectRandomKongForBoss(boss_map: Maps, hard_mad_jack: bool):
+def SelectRandomKongForBoss(boss_map: Maps, hard_bosses: bool):
     """Randomly choses from the allowed list for the boss."""
     possibleKongs = []
     if boss_map == Maps.JapesBoss:
@@ -49,7 +49,7 @@ def SelectRandomKongForBoss(boss_map: Maps, hard_mad_jack: bool):
     elif boss_map == Maps.AztecBoss:
         possibleKongs = [Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky]
     elif boss_map == Maps.FactoryBoss:
-        if hard_mad_jack:
+        if hard_bosses:
             possibleKongs = [Kongs.donkey, Kongs.tiny, Kongs.chunky]
         else:
             possibleKongs = [Kongs.tiny]
@@ -82,6 +82,16 @@ def ShuffleKutoutKongs(boss_maps: array, boss_kongs: array, boss_kong_rando: boo
     return kutout_kongs
 
 
+def ShuffleKKOPhaseOrder(settings):
+    """Shuffle the phase order in King Kut Out."""
+    kko_phases = [0, 1, 2, 3]
+    random.shuffle(kko_phases)
+    kko_phase_subset = []
+    for phase_slot in range(3):
+        kko_phase_subset.append(kko_phases[phase_slot])
+    return kko_phase_subset.copy()
+
+
 def ShuffleBossesBasedOnOwnedItems(settings, ownedKongs: dict, ownedMoves: dict):
     """Perform Boss Location & Boss Kong rando, ensuring each first boss can be beaten with an unlocked kong and owned moves."""
     try:
@@ -94,7 +104,7 @@ def ShuffleBossesBasedOnOwnedItems(settings, ownedKongs: dict, ownedMoves: dict)
         bossLevelOptions.remove(forestBossIndex)
         # Then place Mad jack (next most restrictive)
         bossTryingToBePlaced = "Mad Jack"
-        if settings.hard_mad_jack:
+        if settings.hard_bosses:
             factoryBossOptions = [
                 x for x in bossLevelOptions if Kongs.donkey in ownedKongs[x] or Kongs.chunky in ownedKongs[x] or (Kongs.tiny in ownedKongs[x] and Items.PonyTailTwirl in ownedMoves[x])
             ]

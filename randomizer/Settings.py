@@ -5,7 +5,7 @@ import json
 import random
 import sys
 
-from randomizer.ShuffleBosses import ShuffleBosses, ShuffleBossKongs, ShuffleKutoutKongs
+from randomizer.ShuffleBosses import ShuffleBosses, ShuffleBossKongs, ShuffleKutoutKongs, ShuffleKKOPhaseOrder
 from randomizer.Enums.Events import Events
 from randomizer.Enums.Kongs import Kongs, GetKongs
 from randomizer.Enums.Locations import Locations
@@ -201,8 +201,8 @@ class Settings:
         # hard_shooting: bool
         self.hard_shooting = False
 
-        # hard_mad_jack: bool
-        self.hard_mad_jack = False
+        # hard_bosses: bool
+        self.hard_bosses = False
 
         # damage multiplier
         self.damage_amount = "default"
@@ -226,6 +226,7 @@ class Settings:
 
         #  Color
         self.colors = {}
+        self.klaptrap_model = "green"
 
         #  Misc
         self.generate_spoilerlog = None
@@ -257,6 +258,8 @@ class Settings:
         self.dpad_display = False
         self.high_req = False
         self.fast_gbs = False
+        self.auto_keys = False
+        self.kko_phase_order = [0, 0, 0]
 
     def shuffle_prices(self):
         """Price randomization. Reuseable if we need to reshuffle prices."""
@@ -340,6 +343,7 @@ class Settings:
         self.boss_maps = ShuffleBosses(self.boss_location_rando)
         self.boss_kongs = ShuffleBossKongs(self)
         self.kutout_kongs = ShuffleKutoutKongs(self.boss_maps, self.boss_kongs, self.boss_kong_rando)
+        self.kko_phase_order = ShuffleKKOPhaseOrder(self)
 
         # Bonus Barrel Rando
         if self.bonus_barrel_auto_complete:

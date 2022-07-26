@@ -199,6 +199,11 @@ void initHack(int source) {
 				// Remove DKTV - End Seq
 				*(short*)(0x8071401E) = 0x50;
 				*(short*)(0x8071404E) = 5;
+				// Fast Barrel Animation
+				*(short*)(0x8067EAB2) = 1; // OSprint
+				*(short*)(0x8067EAC6) = 1; // HC Dogadon 2
+				*(short*)(0x8067EACA) = 1; // Others
+				*(short*)(0x8067EA92) = 1; // Others 2
 			}
 			if (Rando.fast_warp) {
 				// Replace vanilla warp animation (0x52) with monkeyport animation (0x53)
@@ -209,10 +214,7 @@ void initHack(int source) {
 				// Disable Graphical Debugger
 				*(int*)(0x8060EEE0) = 0x240E0000; // ADDIU $t6, $r0, 0
 			}
-			if (Rando.skip_arcade_round1) {
-				*(unsigned char*)(0x80755B68) = 0x6E; // Modify GB Map
-				*(short*)(0x80755B6A) = 0; // Modify GB ID
-			}
+
 			if (Rando.fast_gbs) {
 				*(short*)(0x806BBB22) = 0x0005; // Chunky toy box speedup
 
@@ -220,7 +222,25 @@ void initHack(int source) {
 				*(short*)(0x806C5B16) = 0x0008;
 
 				*(int*)(0x806BEDFC) = 0; //Spawn banana coins on beating rabbit 2 (Beating round 2 branches to banana coin spawning label before continuing)
+				
+				// Arcade R1
+				*(unsigned char*)(0x80755B68) = 0x6E; // Modify GB Map
+				*(short*)(0x80755B6A) = 0; // Modify GB ID
 			}
+			// Change Beaver Bother Klaptrap Model
+			if (Rando.klaptrap_color_bbother == 0) {
+				Rando.klaptrap_color_bbother = 0x21; // Set to default model if no model assigned
+			}
+			int kko_phase_rando = 0;
+			for (int i = 0; i < 3; i++) {
+				KKOPhaseOrder[i] = Rando.kut_out_phases[i];
+				if (Rando.kut_out_phases[i]) {
+					kko_phase_rando = 1;
+				}
+			}
+			KKOPhaseRandoOn = kko_phase_rando;
+			*(short*)(0x806F0376) = Rando.klaptrap_color_bbother;
+			*(short*)(0x806C8B42) = Rando.klaptrap_color_bbother;
 			// Expand Display List
 			*(short*)(0x805FE56A) = 8000;
 			// Object Instance Scripts
@@ -257,8 +277,10 @@ void initHack(int source) {
 			// Remove flare effect from guards
 			*(int*)(0x806AE440) = 0;
 			// Boost Diddy/Tiny's Barrel Speed
-			*(float*)(0x807533A0) = 240.0f;
-			*(float*)(0x807533A8) = 240.0f;
+			*(float*)(0x807533A0) = 240.0f; // Diddy Ground
+			*(float*)(0x807533A8) = 240.0f; // Tiny Ground
+			*(float*)(0x807553DC) = 260.0f; // Lanky Air
+			*(float*)(0x807553E0) = 260.0f; // Tiny Air
 			// New Guard Code
 			*(short*)(0x806AF75C) = 0x1000;
 			// Gold Beaver Code
