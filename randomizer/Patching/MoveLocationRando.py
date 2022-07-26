@@ -46,7 +46,7 @@ def randomize_moves(spoiler: Spoiler):
         move_arrays = spoiler.move_data.copy()
         for shop in range(3):
             for kong in range(5):
-                for level in range(7):
+                for level in range(8):
                     if move_arrays[shop][kong][level] == -1:
                         no_move = 5
                         move_arrays[shop][kong][level] = no_move << 5

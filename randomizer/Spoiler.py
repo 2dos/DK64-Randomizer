@@ -45,7 +45,7 @@ class Spoiler:
             for j in range(5):
                 kongmoves = []
                 # One for each level
-                for k in range(7):
+                for k in range(8):
                     kongmoves.append(-1)
                 moves.append(kongmoves)
             self.move_data.append(moves)
@@ -279,7 +279,7 @@ class Spoiler:
         self.location_data = {}
         self.shuffled_kong_placement = {}
         # Go ahead and set starting kong
-        startkong = {"kong": self.settings.starting_kong, "write": 0x141}
+        startkong = {"kong": self.settings.starting_kong, "write": 0x151}
         trainingGrounds = {"locked": startkong}
         self.shuffled_kong_placement["TrainingGrounds"] = trainingGrounds
         # Write additional starting kongs to empty cages, if any
@@ -322,23 +322,23 @@ class Spoiler:
         """Write kong placement information for the given kong cage location."""
         locationName = "Jungle Japes"
         unlockKong = self.settings.diddy_freeing_kong
-        lockedwrite = 0x142
-        puzzlewrite = 0x143
+        lockedwrite = 0x152
+        puzzlewrite = 0x153
         if locationId == Locations.LankyKong:
             locationName = "Llama Temple"
             unlockKong = self.settings.lanky_freeing_kong
-            lockedwrite = 0x144
-            puzzlewrite = 0x145
+            lockedwrite = 0x154
+            puzzlewrite = 0x155
         elif locationId == Locations.TinyKong:
             locationName = "Tiny Temple"
             unlockKong = self.settings.tiny_freeing_kong
-            lockedwrite = 0x146
-            puzzlewrite = 0x147
+            lockedwrite = 0x156
+            puzzlewrite = 0x157
         elif locationId == Locations.ChunkyKong:
             locationName = "Frantic Factory"
             unlockKong = self.settings.chunky_freeing_kong
-            lockedwrite = 0x148
-            puzzlewrite = 0x149
+            lockedwrite = 0x158
+            puzzlewrite = 0x159
         lockedkong = {}
         lockedkong["kong"] = KongFromItem(item)
         lockedkong["write"] = lockedwrite

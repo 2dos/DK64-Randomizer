@@ -26,7 +26,7 @@ def randomize_music(spoiler: Spoiler):
         js.document.getElementById("music_events").value = "randomized"
     if js.document.getElementById("music_bgm").value != "default" or js.document.getElementById("music_events").value != "default" or js.document.getElementById("music_fanfares").value != "default":
         sav = spoiler.settings.rom_data
-        ROM().seek(sav + 0x11F)
+        ROM().seek(sav + 0x12E)
         ROM().write(1)
     # Check if we have anything beyond default set for BGM
     if js.document.getElementById("music_bgm").value != "default":

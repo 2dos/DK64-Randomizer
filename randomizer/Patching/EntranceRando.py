@@ -182,7 +182,7 @@ def randomize_entrances(spoiler: Spoiler):
         ROM().write(GetExitId(shuffledBack))
         # /* 0x120 */ unsigned short ballroom_to_museum; // Same as "aztec_beetle_enter" but for the loading zone dictated by the name
         shuffledBack = spoiler.shuffled_exit_data[Transitions.CastleBallroomToMuseum]
-        ROM().seek(varspaceOffset + 0x120)
+        ROM().seek(varspaceOffset + 0x130)
         ROM().write(GetMapId(shuffledBack.regionId))
         ROM().write(GetExitId(shuffledBack))
         # /* 0x122 */ unsigned short museum_to_ballroom; // Same as "aztec_beetle_enter" but for the loading zone dictated by the name

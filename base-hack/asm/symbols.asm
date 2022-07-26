@@ -355,5 +355,5 @@
 .definelabel KKOPhaseOrder, 0x807FFFE1
 
 .definelabel CrankyMoves_New, 0x807FF400
-.definelabel CandyMoves_New, 0x807FF4D4
-.definelabel FunkyMoves_New, 0x807FF5A8
+.definelabel CandyMoves_New, 0x807FF4F0
+.definelabel FunkyMoves_New, 0x807FF5E0

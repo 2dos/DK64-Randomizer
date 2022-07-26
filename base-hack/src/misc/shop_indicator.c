@@ -70,7 +70,7 @@ int getMoveCountInShop(int shop_index) {
 	int possess = 0;
 	int btf = 0;
 	int count = 0;
-	if (level < 7) {
+	if (level < LEVEL_COUNT) {
 		for (int i = 0; i < 5; i++) {
 			if (shop_index == SHOPINDEX_CRANKY) {
 				possess = doesKongPossessMove(CrankyMoves_New[i][level].purchase_type, CrankyMoves_New[i][level].purchase_value, CrankyMoves_New[i][level].move_kong);

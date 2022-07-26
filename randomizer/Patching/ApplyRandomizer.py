@@ -69,7 +69,7 @@ def patching_response(responded_data):
 
     # Shuffle Levels
     if spoiler.settings.shuffle_loading_zones == "levels":
-        ROM().seek(sav + 0x000)
+        ROM().seek(sav + 0)
         ROM().write(1)
 
         # Update Level Order
@@ -93,7 +93,7 @@ def patching_response(responded_data):
         ]
         order = 0
         for level in vanilla_lobby_entrance_order:
-            ROM().seek(sav + 0x001 + order)
+            ROM().seek(sav + 1)
             ROM().write(vanilla_lobby_exit_order.index(spoiler.shuffled_exit_data[int(level)].reverse))
             order += 1
 
@@ -227,94 +227,94 @@ def patching_response(responded_data):
 
     # Disable melon drops
     if spoiler.settings.no_melons:
-        ROM().seek(sav + 0x119)
+        ROM().seek(sav + 0x128)
         ROM().write(1)
 
     # Auto complete bonus barrels
     if spoiler.settings.bonus_barrel_auto_complete:
-        ROM().seek(sav + 0x117)
+        ROM().seek(sav + 0x126)
         ROM().write(1)
 
     # Enable or disable the warp to isles option in the UI
     if spoiler.settings.warp_to_isles:
-        ROM().seek(sav + 0x125)
+        ROM().seek(sav + 0x135)
         ROM().write(1)
 
     # Enables the counter for the shop indications
     if spoiler.settings.shop_indicator:
-        ROM().seek(sav + 0x124)
+        ROM().seek(sav + 0x134)
         ROM().write(1)
 
     # Enable Perma Death
     if spoiler.settings.perma_death:
-        ROM().seek(sav + 0x13D)
+        ROM().seek(sav + 0x14D)
         ROM().write(1)
-        ROM().seek(sav + 0x13E)
+        ROM().seek(sav + 0x14E)
         ROM().write(1)
 
     # Enable Open Lobbies
     if spoiler.settings.open_lobbies:
-        ROM().seek(sav + 0x13C)
+        ROM().seek(sav + 0x14C)
         ROM().write(0xFF)
 
     # Disable Tag Barrels from spawning
     if spoiler.settings.disable_tag_barrels:
-        ROM().seek(sav + 0x13F)
+        ROM().seek(sav + 0x14F)
         ROM().write(1)
 
     # Turn off Shop Hints
     if spoiler.settings.disable_shop_hints:
-        ROM().seek(sav + 0x13B)
+        ROM().seek(sav + 0x14B)
         ROM().write(0)
 
     # Enable Open Levels
     if spoiler.settings.open_levels:
-        ROM().seek(sav + 0x127)
+        ROM().seek(sav + 0x137)
         ROM().write(1)
 
     # Enable Shorten Boss Fights
     if spoiler.settings.shorten_boss:
-        ROM().seek(sav + 0x12B)
+        ROM().seek(sav + 0x13B)
         ROM().write(1)
 
     # Enable Fast Warps
     if spoiler.settings.fast_warps:
-        ROM().seek(sav + 0x12A)
+        ROM().seek(sav + 0x13A)
         ROM().write(1)
 
     # Enable D-Pad Display
     if spoiler.settings.dpad_display:
-        ROM().seek(sav + 0x129)
+        ROM().seek(sav + 0x139)
         ROM().write(1)
 
     # Activate Bananaports
     if spoiler.settings.activate_all_bananaports == "all":
-        ROM().seek(sav + 0x128)
+        ROM().seek(sav + 0x138)
         ROM().write(1)
 
     if spoiler.settings.activate_all_bananaports == "isles":
-        ROM().seek(sav + 0x128)
+        ROM().seek(sav + 0x138)
         ROM().write(2)
 
     # Enable Remove High Requirements
     if spoiler.settings.high_req:
-        ROM().seek(sav + 0x169)
+        ROM().seek(sav + 0x179)
         ROM().write(1)
 
     # Enable Fast GBs
     if spoiler.settings.fast_gbs:
-        ROM().seek(sav + 0x16A)
+        ROM().seek(sav + 0x17A)
         ROM().write(1)
 
     # Enable Auto Key Turn ins
     if spoiler.settings.auto_keys:
-        ROM().seek(sav + 0x14B)
+        ROM().seek(sav + 0x15B)
         ROM().write(1)
 
     # KKO Phase Order
     if spoiler.settings.hard_bosses:
         for phase_slot in range(3):
-            ROM().seek(sav + 0x16B + phase_slot)
+            ROM().seek(sav + 0x17B + phase_slot)
             ROM().write(spoiler.settings.kko_phase_order[phase_slot])
 
     keys_turned_in = [0, 1, 2, 3, 4, 5, 6, 7]
@@ -326,11 +326,11 @@ def patching_response(responded_data):
     key_bitfield = 0
     for key in keys_turned_in:
         key_bitfield = key_bitfield | (1 << key)
-    ROM().seek(sav + 0x118)
+    ROM().seek(sav + 0x127)
     ROM().write(key_bitfield)
 
     if spoiler.settings.coin_door_open in ["need_both", "need_rw"]:
-        ROM().seek(sav + 0x140)
+        ROM().seek(sav + 0x150)
         ROM().write(spoiler.settings.medal_requirement)
 
     # randomize_dktv()
@@ -361,7 +361,7 @@ def patching_response(responded_data):
     order = 0
     loaded_hash = get_hash_images()
     for count in spoiler.settings.seed_hash:
-        ROM().seek(sav + 0x11A + order)
+        ROM().seek(sav + 0x129 + order)
         ROM().write(count)
         js.document.getElementById("hash" + str(order)).src = "data:image/jpeg;base64," + loaded_hash[count]
         order += 1

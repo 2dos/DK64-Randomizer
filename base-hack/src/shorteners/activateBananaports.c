@@ -1,6 +1,6 @@
 #include "../../include/common.h"
 
-#define LEVEL_COUNT 8 // # 9 if you included Helm warps
+#define WARPLEVELCOUNT 8 // # 9 if you included Helm warps
 
 static const short warpflags_japes[] = {
 	FLAG_WARP_JAPES_W1_PORTAL,
@@ -115,7 +115,7 @@ static const short warpflags_isles[] = {
 	//FLAG_WARP_LOBBY_W1_FAR,
 };
 
-static const short* warpflags_list[LEVEL_COUNT] = {
+static const short* warpflags_list[WARPLEVELCOUNT] = {
 	warpflags_japes,
 	warpflags_aztec,
 	warpflags_factory,
@@ -127,7 +127,7 @@ static const short* warpflags_list[LEVEL_COUNT] = {
 	warpflags_isles,
 };
 
-static const char warpflags_count[LEVEL_COUNT] = {
+static const char warpflags_count[WARPLEVELCOUNT] = {
 	10,14,10,10,10,10,16, /*2,*/ 10
 };
 
@@ -140,7 +140,7 @@ void toggleWarpLevel(int levelIndex) {
 
 void activateBananaports(void) {
     if (Rando.activate_all_bananaports == 1) {
-        for (int i = 0; i < LEVEL_COUNT; i++) {
+        for (int i = 0; i < WARPLEVELCOUNT; i++) {
             toggleWarpLevel(i);
         }
     } else if (Rando.activate_all_bananaports == 2) {

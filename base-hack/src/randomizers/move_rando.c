@@ -57,7 +57,7 @@ void checkProgressive(
 	if (pass) {
 		// Just purchased Move
 		int purchased = 0;
-		if (level >= 0 && level < 7) {
+		if (level >= 0 && level < LEVEL_COUNT) {
 			purchased = 1;
 		}
 		int shop = 0;
@@ -84,7 +84,7 @@ void checkProgressive(
 		int shop = encoded_sss_location & 3;
 		int purchased = (encoded_sss_location >> 2) & 1;
 		int level = (encoded_sss_location >> 4) & 7;
-		for (int i = 0; i < 7; i++) {
+		for (int i = 0; i < LEVEL_COUNT; i++) {
 			for (int j = 0; j < 5; j++) {
 				if (CrankyMoves_New[j][i].purchase_type == purchase_type) {
 					if ((purchased) && (shop == 0) && (level == i)) {
@@ -174,7 +174,7 @@ void updateProgressive(void) {
 }
 
 void moveTransplant(void) {
-	for (int i = 0; i < 7; i++) {
+	for (int i = 0; i < LEVEL_COUNT; i++) {
 		// DK
 		CrankyMoves_New[0][i].purchase_type = getMoveType(Rando.dk_crankymoves[i]);
 		CrankyMoves_New[0][i].move_kong = getMoveKong(Rando.dk_crankymoves[i]);
@@ -276,7 +276,7 @@ void cancelMoveSoftlock(void) {
 void getNextMovePurchase(shop_paad* paad, KongBase* movedata) {
 	int has_purchase = 0;
 	int latest_level_entered = 0;
-	int has_entered_level = 0;
+	int has_entered_level = 1; // Set to 0 forcing level entry requirement
 	for (int i = 0; i < 7; i++) {
 		if (checkFlag((FLAG_STORY_JAPES + i),0)) {
 			latest_level_entered = i;

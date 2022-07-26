@@ -12,8 +12,6 @@ from randomizer.Enums.Locations import Locations
 from randomizer.Enums.Levels import Levels
 from randomizer.Prices import RandomizePrices, VanillaPrices
 from random import randint
-
-
 class Settings:
     """Class used to store settings for seed generation."""
 
