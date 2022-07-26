@@ -50,7 +50,7 @@ set_variables = {
     "auto_keys": 1,
     "test_zone": [0xC7, 0],
     "klaptrap_color_bbother": 0x23,
-    "kut_out_phases": [3,1,0],
+    "kut_out_phases": [3, 1, 0],
     "special_move_prices": [
         [1, 2, 3],
         [4, 5, 6],

@@ -308,8 +308,14 @@ def patching_response(responded_data):
 
     # Enable Auto Key Turn ins
     if spoiler.settings.auto_keys:
-       ROM().seek(sav + 0x14B)
-       ROM().write(1)
+        ROM().seek(sav + 0x14B)
+        ROM().write(1)
+
+    # KKO Phase Order
+    if spoiler.settings.hard_bosses:
+        for phase_slot in range(3):
+            ROM().seek(sav + 0x16B + phase_slot)
+            ROM().write(spoiler.settings.kko_phase_order[phase_slot])
 
     keys_turned_in = [0, 1, 2, 3, 4, 5, 6, 7]
     if len(spoiler.settings.krool_keys_required) > 0:

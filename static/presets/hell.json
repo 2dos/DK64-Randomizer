@@ -23,7 +23,7 @@
     "no_healing":true,
     "no_melons":true,
     "hard_shooting":true,
-    "hard_mad_jack":true,
+    "hard_bosses":true,
     "perma_death":false,
     "unlock_fairy_shockwave":false,
     "crown_door_open":false,

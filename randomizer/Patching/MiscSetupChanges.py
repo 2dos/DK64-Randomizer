@@ -46,7 +46,7 @@ def randomize_setup(spoiler: Spoiler):
         for count in range(pickup["weight"]):
             pickup_list.append(pickup["type"])
 
-    allowed_settings = [spoiler.settings.fast_gbs, spoiler.settings.randomize_pickups, spoiler.settings.random_patches, spoiler.settings.puzzle_rando]
+    allowed_settings = [spoiler.settings.fast_gbs, spoiler.settings.randomize_pickups, spoiler.settings.random_patches, spoiler.settings.puzzle_rando, spoiler.settings.hard_bosses]
     enabled = False
     for setting in allowed_settings:
         enabled = enabled or setting
@@ -135,7 +135,7 @@ def randomize_setup(spoiler: Spoiler):
                         y = int.from_bytes(ROM().readBytes(4), "big")
                         z = int.from_bytes(ROM().readBytes(4), "big")
                         positions.append([x, y, z])
-                elif (cont_map_id == Maps.GalleonBoss or cont_map_id == Maps.HideoutHelm) and item_type == 0x235 and spoiler.settings.puzzle_rando:
+                elif item_type == 0x235 and ((cont_map_id == Maps.GalleonBoss and spoiler.settings.hard_bosses) or (cont_map_id == Maps.HideoutHelm and spoiler.settings.puzzle_rando)):
                     if cont_map_id == Maps.HideoutHelm:
                         star_donut_center = [1055.704, 3446.966]
                         star_donut_boundaries = [123.128, 235.971]
