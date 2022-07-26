@@ -231,6 +231,14 @@ void initHack(int source) {
 			if (Rando.klaptrap_color_bbother == 0) {
 				Rando.klaptrap_color_bbother = 0x21; // Set to default model if no model assigned
 			}
+			int kko_phase_rando = 0;
+			for (int i = 0; i < 3; i++) {
+				KKOPhaseOrder[i] = Rando.kut_out_phases[i];
+				if (Rando.kut_out_phases[i]) {
+					kko_phase_rando = 1;
+				}
+			}
+			KKOPhaseRandoOn = kko_phase_rando;
 			*(short*)(0x806F0376) = Rando.klaptrap_color_bbother;
 			*(short*)(0x806C8B42) = Rando.klaptrap_color_bbother;
 			// Expand Display List

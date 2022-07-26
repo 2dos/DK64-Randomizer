@@ -782,6 +782,12 @@ START_HOOK:
 	Jump_KRoolLankyPhaseFix:
 		J 			KRoolLankyPhaseFix
 		NOP
+	Jump_KKOPhaseHandler:
+		J 			KKOPhaseHandler
+		NOP
+	Jump_KKOInitPhase:
+		J 			KKOInitPhase
+		NOP
 	Jump_MadJackShort:
 		J 			MadJackShort
 		NOP
@@ -812,74 +818,97 @@ START_HOOK:
 		SW 			t3, 0x8CCC (t4)
 		SW 			r0, 0x8CD0 (t4)
 
-		LUI 		t3, hi(ShorterBosses)
-		LBU 		t3, lo(ShorterBosses) (t3)
+		LUI 		t3, hi(KKOPhaseRandoOn)
+		LBU 		t3, lo(KKOPhaseRandoOn) (t3)
 		BEQZ 		t3, PatchKRoolCode_0
 		NOP
 
-		LUI 		t3, hi(Jump_MadJackShort)
-		LW 			t3, lo(Jump_MadJackShort) (t3)
+		LUI 		t3, hi(Jump_KKOPhaseHandler)
+		LW 			t3, lo(Jump_KKOPhaseHandler) (t3)
 		LUI 		t4, 0x8003
-		SW 			t3, 0x5120 (t4)
-		SW 			r0, 0x5124 (t4)
+		SW 			t3, 0x2570 (t4)
+		SW 			r0, 0x2574 (t4)
 
-		// Mad Jack Cutscene Memery
+		LUI 		t3, hi(Jump_KKOInitPhase)
+		LW 			t3, lo(Jump_KKOInitPhase) (t3)
+		LUI 		t4, 0x8003
+		SW 			t3, 0x1B2C (t4)
+		SW 			r0, 0x1B30 (t4)
+
+		// KKO Last Phase Check
 		LUI 		t3, 0x8003
-		ADDIU 		t4, r0, 2
-		SH 			t4, 0x50D2 (t3)
-
-		LUI 		t3, hi(Jump_PufftossShort)
-		LW 			t3, lo(Jump_PufftossShort) (t3)
-		LUI 		t4, 0x8003
-		SW 			t3, 0x9AAC (t4)
-		SW 			r0, 0x9AB0 (t4)
-
-		LUI 		t3, hi(Jump_DogadonRematchShort)
-		LW 			t3, lo(Jump_DogadonRematchShort) (t3)
-		LUI 		t4, 0x8003
-		SW 			t3, 0xACB0 (t4)
-		SW 			r0, 0xACB4 (t4)
-
-		LUI 		t3, hi(Jump_DilloRematchShort)
-		LW 			t3, lo(Jump_DilloRematchShort) (t3)
-		LUI 		t4, 0x8002
-		SW 			t3, 0x57CC (t4)
-		SW 			r0, 0x57D0 (t4)
-
-		// KKO Phase Hit Limit
-		LUI 		t3, 0x8003
-		ADDIU 		t4, r0, 2
-		SH 			t4, 0x22BA (t3)
-
-		LUI 		t3, hi(Jump_DKPhaseShort)
-		LW 			t3, lo(Jump_DKPhaseShort) (t3)
-		LUI 		t4, 0x8003
-		SW 			t3, 0xDB10 (t4)
-		SW 			r0, 0xDB14 (t4)
-
-		// Diddy Phase Hit Count
-		LUI 		t3, 0x8003
-		ADDIU 		t4, r0, 2
-		SH 			t4, 0xE52A (t3)
-
-		// Lanky Phase Hit Count
-		LUI 		t3, 0x8003
-		ADDIU 		t4, r0, 2
-		SH 			t4, 0xEF02 (t3)
-
-		LUI 		t3, hi(Jump_TinyPhaseShort)
-		LW 			t3, lo(Jump_TinyPhaseShort) (t3)
-		LUI 		t4, 0x8003
-		SW 			t3, 0x0370 (t4)
-		SW 			r0, 0x0374 (t4)
-
-		LUI 		t3, hi(Jump_ChunkyPhaseShort)
-		LW 			t3, lo(Jump_ChunkyPhaseShort) (t3)
-		LUI 		t4, 0x8003
-		SW 			t3, 0x14B4 (t4)
-		SW 			r0, 0x14B8 (t4)
+		ADDIU 		t4, r0, 4
+		SH 			t4, 0x259A (t3)
 
 		PatchKRoolCode_0:
+			LUI 		t3, hi(ShorterBosses)
+			LBU 		t3, lo(ShorterBosses) (t3)
+			BEQZ 		t3, PatchKRoolCode_1
+			NOP
+
+			LUI 		t3, hi(Jump_MadJackShort)
+			LW 			t3, lo(Jump_MadJackShort) (t3)
+			LUI 		t4, 0x8003
+			SW 			t3, 0x5120 (t4)
+			SW 			r0, 0x5124 (t4)
+
+			// Mad Jack Cutscene Memery
+			LUI 		t3, 0x8003
+			ADDIU 		t4, r0, 2
+			SH 			t4, 0x50D2 (t3)
+
+			LUI 		t3, hi(Jump_PufftossShort)
+			LW 			t3, lo(Jump_PufftossShort) (t3)
+			LUI 		t4, 0x8003
+			SW 			t3, 0x9AAC (t4)
+			SW 			r0, 0x9AB0 (t4)
+
+			LUI 		t3, hi(Jump_DogadonRematchShort)
+			LW 			t3, lo(Jump_DogadonRematchShort) (t3)
+			LUI 		t4, 0x8003
+			SW 			t3, 0xACB0 (t4)
+			SW 			r0, 0xACB4 (t4)
+
+			LUI 		t3, hi(Jump_DilloRematchShort)
+			LW 			t3, lo(Jump_DilloRematchShort) (t3)
+			LUI 		t4, 0x8002
+			SW 			t3, 0x57CC (t4)
+			SW 			r0, 0x57D0 (t4)
+
+			// KKO Phase Hit Limit
+			LUI 		t3, 0x8003
+			ADDIU 		t4, r0, 2
+			SH 			t4, 0x22BA (t3)
+
+			LUI 		t3, hi(Jump_DKPhaseShort)
+			LW 			t3, lo(Jump_DKPhaseShort) (t3)
+			LUI 		t4, 0x8003
+			SW 			t3, 0xDB10 (t4)
+			SW 			r0, 0xDB14 (t4)
+
+			// Diddy Phase Hit Count
+			LUI 		t3, 0x8003
+			ADDIU 		t4, r0, 2
+			SH 			t4, 0xE52A (t3)
+
+			// Lanky Phase Hit Count
+			LUI 		t3, 0x8003
+			ADDIU 		t4, r0, 2
+			SH 			t4, 0xEF02 (t3)
+
+			LUI 		t3, hi(Jump_TinyPhaseShort)
+			LW 			t3, lo(Jump_TinyPhaseShort) (t3)
+			LUI 		t4, 0x8003
+			SW 			t3, 0x0370 (t4)
+			SW 			r0, 0x0374 (t4)
+
+			LUI 		t3, hi(Jump_ChunkyPhaseShort)
+			LW 			t3, lo(Jump_ChunkyPhaseShort) (t3)
+			LUI 		t4, 0x8003
+			SW 			t3, 0x14B4 (t4)
+			SW 			r0, 0x14B8 (t4)
+
+		PatchKRoolCode_1:
 			JR 			ra
 			NOP
 
@@ -890,6 +919,41 @@ START_HOOK:
 		ADDU 		a1, a1, a2
 		J 			0x80028CD4
 		LH 			a1, 0x59A0 (a1)
+
+	KKOPhaseHandler:
+		LUI 		v0, hi(KKOPhaseOrder)
+		ADDIU 		v0, v0, lo(KKOPhaseOrder)
+		LB 			a0, 0x0 (v0)
+		BNE 		t7, a0, KKOPhaseHandler_Slot2
+		NOP
+		B 			KKOPhaseHandler_Finish
+		LB 			t8, 0x1 (v0)
+
+		KKOPhaseHandler_Slot2:
+			LB 		a0, 0x1 (v0)
+			BNE 	t7, a0, KKOPhaseHandler_Slot3
+			NOP
+			B 		KKOPhaseHandler_Finish
+			LB 		t8, 0x2 (v0)
+
+		KKOPhaseHandler_Slot3:
+			LB 		a0, 0x2 (v0)
+			BNE 	t7, a0, KKOPhaseHandler_Finish
+			NOP
+			B 		KKOPhaseHandler_Finish
+			ADDIU 	t8, r0, 4
+
+		KKOPhaseHandler_Finish:
+			SB 		t8, 0x12 (s0)
+			J 		0x80032578
+			LB 		v0, 0x12 (s0)
+
+	KKOInitPhase:
+		LUI 		at, hi(KKOPhaseOrder)
+		LB 			at, lo(KKOPhaseOrder) (at)
+		SB 			at, 0x12 (s0)
+		J 			0x80031B34
+		LUI 		at, 0x8003
 
 	MadJackShort:
 		ADDIU 		t1, r0, 1 // Phase 2

@@ -109,4 +109,5 @@ typedef struct varspace {
 	/* 0x163 */ char dartboard_order[6]; // Each item denotes a picture. 0 = Crystal, 1 = Melon, 2 = Banana, 3 = Orange, 4 = Ammo Crate, 5 = Medal, 6 = Coin, 7 = Film
 	/* 0x169 */ char remove_high_requirements; // 0 = Off, 1 = On. Removes high requirements that lock certain areas.
 	/* 0x16A */ char fast_gbs; //0 = Off, 1 = On. Makes normally slow Golden Bananas faster.
+	/* 0x16B */ char kut_out_phases[3]; // 0 = Phase 1, 1 = Phase 2, 2 = Phase 3, 3 = Phase 4 (Unused)
 } varspace;
