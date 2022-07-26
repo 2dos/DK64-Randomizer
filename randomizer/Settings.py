@@ -226,6 +226,7 @@ class Settings:
 
         #  Color
         self.colors = {}
+        self.klaptrap_model = "green"
 
         #  Misc
         self.generate_spoilerlog = None
@@ -257,6 +258,7 @@ class Settings:
         self.dpad_display = False
         self.high_req = False
         self.fast_gbs = False
+        self.auto_keys = False
 
     def shuffle_prices(self):
         """Price randomization. Reuseable if we need to reshuffle prices."""

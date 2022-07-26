@@ -66,7 +66,6 @@ void pre_turn_keys(void) {
 }
 
 void writeKeyFlags(int index) {
-	setPermFlag(tnsportal_flags[index]);
 	setPermFlag(FLAG_KEYIN_KEY1 + index);
 }
 
@@ -74,12 +73,17 @@ void auto_turn_keys(void) {
 	if (ObjectModel2Timer < 5) {
 		for (int i = 0; i < 8; i++) {
 			if (Rando.level_order_rando_on) {
-				if (checkFlag(Rando.key_flags[i],0)) {
-
+				if (i < 7) {
+					if (checkFlag(Rando.key_flags[i],0)) {
+						writeKeyFlags(i);
+					}
+				}
+				if (checkFlag(normal_key_flags[7],0)) {
+					writeKeyFlags(7);
 				}
 			} else {
 				if (checkFlag(normal_key_flags[i],0)) {
-				
+					writeKeyFlags(i);
 				}
 			}
 		}

@@ -3,11 +3,57 @@ from randomizer.Patching.Patcher import ROM
 from randomizer.Spoiler import Spoiler
 from randomizer.Patching.generate_kong_color_images import convertColors
 from random import randint
+import random
 import js
 
 
 def apply_cosmetic_colors(spoiler: Spoiler):
     """Apply cosmetic skins to kongs."""
+    if spoiler.settings.klaptrap_model:
+        model_index = 0
+        model_setting = spoiler.settings.klaptrap_model
+        if model_setting == "green":
+            model_index = 0x21
+        elif model_setting == "purple":
+            model_index = 0x22
+        elif model_setting == "red":
+            model_index = 0x23
+        elif model_setting == "random_klap":
+            model_index = random.randint(0x21, 0x23)
+        elif model_setting == "random_model":
+            permitted_models = [
+                0x19,
+                0x1E,
+                0x20,
+                0x21,
+                0x22,
+                0x23,
+                0x24,
+                0x26,
+                0x27,
+                0x2E,
+                0x30,
+                0x34,
+                0x3E,
+                0x42,
+                0x47,
+                0x4B,
+                0x4D,
+                0x51,
+                0x54,
+                0x62,
+                0x69,
+                0x70,
+                0x72,
+                0x96,
+                0xA6,
+                0xB0,
+                0xB1,
+                0xBD,
+            ]
+            model_index = random.choice(permitted_models)
+        ROM().seek(0x1FED020 + 0x126)
+        ROM().writeMultipleBytes(model_index, 1)
     color_palettes = []
     color_obj = {}
     if js.document.getElementById("random_colors").checked:
