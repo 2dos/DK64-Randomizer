@@ -19,7 +19,6 @@ from randomizer.Spoiler import Spoiler
 # /* 0x103 */ unsigned char tiny_candymoves[7]; // See "dk_crankymoves". Note: Do not assign anything to item 0 or 4 as there's no Candy's in Japes or Fungi
 # /* 0x10A */ unsigned char chunky_candymoves[7]; // See "dk_crankymoves". Note: Do not assign anything to item 0 or 4 as there's no Candy's in Japes or Fungi
 
-varspaceOffset = 0x1FED020  # TODO: Define this as constant in a more global place
 moveRandoOffset = 0x0A7
 
 dk_crankymoves = []
@@ -41,6 +40,7 @@ chunky_candymoves = []
 
 def randomize_moves(spoiler: Spoiler):
     """Randomize Move locations based on move_data from spoiler."""
+    varspaceOffset = spoiler.settings.rom_data
     if spoiler.settings.shuffle_items == "moves" and spoiler.move_data is not None:
         # Take a copy of move_data before modifying
         move_arrays = spoiler.move_data.copy()

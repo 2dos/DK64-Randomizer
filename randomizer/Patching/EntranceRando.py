@@ -65,7 +65,7 @@ def randomize_entrances(spoiler: Spoiler):
                                 ROM().writeBytes(bytearray(exit_bytes))
 
         # /* 0x05D */ char randomize_more_loading_zones; // 0 = Not randomizing loading zones inside levels. 1 = On
-        varspaceOffset = 0x1FED020  # TODO: Define this as constant in a more global place
+        varspaceOffset = spoiler.settings.rom_data
         moreLoadingZonesOffset = 0x05D
         ROM().seek(varspaceOffset + moreLoadingZonesOffset)
         ROM().write(1)

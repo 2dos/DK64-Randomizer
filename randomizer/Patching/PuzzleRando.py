@@ -22,6 +22,7 @@ def chooseSFX():
 
 def randomize_puzzles(spoiler: Spoiler):
     """Shuffle elements of puzzles. Currently limited to coin challenge requirements but will be extended in future."""
+    sav = spoiler.settings.rom_data
     if spoiler.settings.puzzle_rando:
         race_requirements = {"factory_race": [5, 15], "castle_race": [5, 15], "seal_race": [5, 12]}
         if spoiler.settings.fast_gbs:
@@ -40,17 +41,17 @@ def randomize_puzzles(spoiler: Spoiler):
             {"offset": 0x133, "coins": random.randint(5, 45)},  # Castle Cart
         ]
         for coinreq in coin_req_info:
-            ROM().seek(0x1FED020 + coinreq["offset"])
+            ROM().seek(savs + coinreq["offset"])
             ROM().writeMultipleBytes(coinreq["coins"], 1)
         chosen_sounds = []
         for matching_head in range(8):
-            ROM().seek(0x1FED020 + 0x14C + (2 * matching_head))
+            ROM().seek(savs + 0x14C + (2 * matching_head))
             sfx = chooseSFX()
             while sfx in chosen_sounds:
                 sfx = chooseSFX()
             chosen_sounds.append(sfx)
             ROM().writeMultipleBytes(sfx, 2)
         for piano_item in range(7):
-            ROM().seek(0x1FED020 + 0x15C + piano_item)
+            ROM().seek(savs + 0x15C + piano_item)
             key = random.randint(0, 5)
             ROM().writeMultipleBytes(key, 1)

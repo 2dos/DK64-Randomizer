@@ -65,7 +65,7 @@ def patching_response(responded_data):
 
         js.save_text_as_file(codecs.encode(pickle.dumps(spoiler), "base64").decode(), f"dk64-{spoiler.settings.seed_id}.lanky")
     # Starting index for our settings
-    sav = 0x1FED020
+    sav = spoiler.settings.rom_data
 
     # Shuffle Levels
     if spoiler.settings.shuffle_loading_zones == "levels":

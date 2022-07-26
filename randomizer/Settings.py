@@ -29,6 +29,7 @@ class Settings:
         self.generate_main()
         self.generate_progression()
         self.generate_misc()
+        self.rom_data = 0x1FED020
 
         for k, v in form_data.items():
             setattr(self, k, v)
