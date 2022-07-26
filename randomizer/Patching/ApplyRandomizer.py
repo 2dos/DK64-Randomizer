@@ -93,7 +93,7 @@ def patching_response(responded_data):
         ]
         order = 0
         for level in vanilla_lobby_entrance_order:
-            ROM().seek(sav + 1)
+            ROM().seek(sav + 1 + order)
             ROM().write(vanilla_lobby_exit_order.index(spoiler.shuffled_exit_data[int(level)].reverse))
             order += 1
 

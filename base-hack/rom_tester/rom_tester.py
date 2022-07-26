@@ -10,6 +10,7 @@ To use:
 import os
 from typing import BinaryIO
 
+levels_isles = ["Japes", "Aztec", "Factory", "Galleon", "Fungi", "Caves", "Castle", "Isles"]
 levels = ["Japes", "Aztec", "Factory", "Galleon", "Fungi", "Caves", "Castle", "Helm"]
 keys = [0x1A, 0x4A, 0x8A, 0xA8, 0xEC, 0x124, 0x13D]
 special_moves = [
@@ -192,8 +193,8 @@ for f in files:
             output(f"\tMove Rando On: {str(getTrueFalse(fh,0xA7,1))}")
             for shop in range(3):
                 for kong in range(5):
-                    for level in range(7):
-                        output(f"\t\t{kongs[kong]} {shops[shop]} {levels[level]}: {getMove(fh,0xA8 + level + (8 * kong) + (40 * shop))}")
+                    for level in range(8):
+                        output(f"\t\t{kongs[kong]} {shops[shop]} {levels_isles[level]}: {getMove(fh,0xA8 + level + (8 * kong) + (40 * shop))}")
             output(f"\tKut Out Kong Order:")
             for x in range(5):
                 output(f"\t\t[{x}] - {getKong(fh,0x120+x)}")
