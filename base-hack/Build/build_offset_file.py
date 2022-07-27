@@ -1,3 +1,4 @@
+"""Build offset file for the web writer to use."""
 static_dir = "../randomizer/"
 
 with open(f"{static_dir}BaseHack.py", "w") as pyfile:
