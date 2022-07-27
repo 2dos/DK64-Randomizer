@@ -32,3 +32,25 @@ void checkNinWarp(void) {
 		initiateTransitionFade(0x4C,0,2);
 	}
 }
+
+static unsigned short previous_total_cbs = 0xFFFF;
+static unsigned char previous_world = 0xFF;
+
+void CBDing(void) {
+	if (Rando.quality_of_life) {
+		int world = getWorld(CurrentMap, 1);
+		int total_cbs = 0;
+		if (world < 7) {
+			total_cbs = CBTurnedInArray[world];
+			for (int kong = 0; kong < 5; kong++) {
+				total_cbs += MovesBase[kong].cb_count[world];
+			}
+			int req_cbs = TroffNScoffReqArray[world];
+			if ((previous_total_cbs < req_cbs) && (total_cbs >= req_cbs) && (previous_world == world)) {
+				playSFX(Bell);
+			}
+		}
+		previous_world = world;
+		previous_total_cbs = total_cbs;
+	}
+}

@@ -211,6 +211,7 @@ void earlyFrame(void) {
 	determine_krool_order();
 	disable_krool_health_refills();
 	pre_turn_keys();
+	CBDing();
 	if (Rando.auto_keys) {
 		auto_turn_keys();
 	}

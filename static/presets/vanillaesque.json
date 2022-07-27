@@ -3,7 +3,7 @@
     "description":"Randomizer with a vanilla-esque feel.",
     "fast_start_beginning_of_game":true,
     "enemy_rando":false,
-    "crown_enemy_rando":false,
+    "crown_enemy_rando":"off",
     "enemy_speed_rando":false,
     "krool_phase_order_rando":false,
     "boss_kong_rando":true,

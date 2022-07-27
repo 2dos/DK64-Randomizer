@@ -3,7 +3,7 @@
     "description":"Balanced settings for Coupled Loading Zone Randomizer.",
     "fast_start_beginning_of_game":true,
     "enemy_rando":true,
-    "crown_enemy_rando":true,
+    "crown_enemy_rando":"easy",
     "enemy_speed_rando":true,
     "krool_phase_order_rando":true,
     "boss_kong_rando":true,

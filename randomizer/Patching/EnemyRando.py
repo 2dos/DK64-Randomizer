@@ -9,13 +9,32 @@ from randomizer.Patching.Patcher import ROM
 from randomizer.Spoiler import Spoiler
 
 
-def getBalancedCrownEnemyRando():
+def getBalancedCrownEnemyRando(crown_setting):
     """Get array of weighted enemies."""
     temp = []
-    for enemy in EnemyMetaData.keys():
-        if EnemyMetaData[enemy].crown_enabled:
-            for x in range(EnemyMetaData[enemy].crown_weight):
-                temp.append(enemy)
+    if crown_setting != "off":
+        bias = 10
+        ban_getout = False
+        no_bias = False
+        if crown_setting == "easy":
+            bias = 10
+            ban_getout = True
+        elif crown_setting == "medium":
+            bias = 6
+        elif crown_setting == "hard":
+            bias = 2
+        for enemy in EnemyMetaData.keys():
+            if EnemyMetaData[enemy].crown_enabled:
+                if not ban_getout or enemy != Enemies.GetOut:
+                    base_weight = EnemyMetaData[enemy].crown_weight
+                    weight_diff = abs(base_weight - bias)
+                    new_weight = abs(10 - weight_diff)
+                    if no_bias:
+                        new_weight = 10
+                    if enemy == Enemies.GetOut:
+                        new_weight = 1
+                    for x in range(new_weight):
+                        temp.append(enemy)
     return temp
 
 
@@ -215,8 +234,8 @@ def randomize_enemies(spoiler: Spoiler):
         ],
     }
     crown_enemies = []
-    if spoiler.settings.enemy_rando or spoiler.settings.kasplat_rando:  # TODO: Add option for crown enemy rando
-        crown_enemies = getBalancedCrownEnemyRando()
+    if spoiler.settings.enemy_rando or spoiler.settings.kasplat_rando or spoiler.settings.crown_enemy_rando != "off":  # TODO: Add option for crown enemy rando
+        crown_enemies = getBalancedCrownEnemyRando(spoiler.settings.crown_enemy_rando)
         minigame_enemies_simple = []
         minigame_enemies_beatable = []
         minigame_enemies_nolimit = []
@@ -367,7 +386,7 @@ def randomize_enemies(spoiler: Spoiler):
                                         new_speed = 255
                                     ROM().seek(cont_map_spawner_address + spawner["offset"] + speed_offset)
                                     ROM().writeMultipleBytes(new_speed, 1)
-            if spoiler.settings.crown_enemy_rando and cont_map_id in crown_maps:
+            if spoiler.settings.crown_enemy_rando != "off" and cont_map_id in crown_maps:
                 crown_index = 0
                 for spawner in vanilla_spawners:
                     if spawner["enemy_id"] in crown_enemies:
@@ -401,4 +420,11 @@ def randomize_enemies(spoiler: Spoiler):
                                     ROM().writeMultipleBytes(random.randint(min_speed, agg_speed), 1)
                     elif spawner["enemy_id"] == Enemies.BattleCrownController:
                         ROM().seek(cont_map_spawner_address + spawner["offset"] + 0xB)
-                        ROM().writeMultipleBytes(random.randint(5, 60), 1)  # Determine Crown length. DK64 caps at 255 seconds
+                        low_limit = 5
+                        if spoiler.settings.crown_enemy_rando == "easy":
+                            low_limit = 5
+                        elif spoiler.settings.crown_enemy_rando == "medium":
+                            low_limit = 15
+                        elif spoiler.settings.crown_enemy_rando == "hard":
+                            low_limit = 30
+                        ROM().writeMultipleBytes(random.randint(low_limit, 60), 1)  # Determine Crown length. DK64 caps at 255 seconds
