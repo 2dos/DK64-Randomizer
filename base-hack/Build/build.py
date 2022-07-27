@@ -759,31 +759,34 @@ with open(newROMName, "r+b") as fh:
         for y in x:
             if os.path.exists(y):
                 os.remove(y)
-    fh.seek(0x1FED020 + 0x141)
+
+    # Kong Order
+    fh.seek(0x1FED020 + 0x151)
     fh.write((0).to_bytes(1, "big"))
-    fh.seek(0x1FED020 + 0x142)
+    fh.seek(0x1FED020 + 0x152)
     fh.write((1).to_bytes(1, "big"))
-    fh.seek(0x1FED020 + 0x143)
+    fh.seek(0x1FED020 + 0x153)
     fh.write((0).to_bytes(1, "big"))
-    fh.seek(0x1FED020 + 0x144)
+    fh.seek(0x1FED020 + 0x154)
     fh.write((2).to_bytes(1, "big"))
-    fh.seek(0x1FED020 + 0x145)
+    fh.seek(0x1FED020 + 0x155)
     fh.write((0).to_bytes(1, "big"))
-    fh.seek(0x1FED020 + 0x146)
+    fh.seek(0x1FED020 + 0x156)
     fh.write((3).to_bytes(1, "big"))
-    fh.seek(0x1FED020 + 0x147)
+    fh.seek(0x1FED020 + 0x157)
     fh.write((1).to_bytes(1, "big"))
-    fh.seek(0x1FED020 + 0x148)
+    fh.seek(0x1FED020 + 0x158)
     fh.write((4).to_bytes(1, "big"))
-    fh.seek(0x1FED020 + 0x149)
+    fh.seek(0x1FED020 + 0x159)
     fh.write((2).to_bytes(1, "big"))
 
-    fh.seek(0x1FED020 + 0x13B)
+    # Shop Hints
+    fh.seek(0x1FED020 + 0x14B)
     fh.write((1).to_bytes(1, "big"))
 
     piano_vanilla = [2, 1, 2, 3, 4, 2, 0]
     for piano_index, piano_key in enumerate(piano_vanilla):
-        fh.seek(0x1FED020 + 0x15C + piano_index)
+        fh.seek(0x1FED020 + 0x16C + piano_index)
         fh.write(piano_key.to_bytes(1, "big"))
 
     with open("assets/Non-Code/credits/squish.bin", "rb") as squish:
@@ -791,14 +794,14 @@ with open(newROMName, "r+b") as fh:
         fh.write(squish.read())
 
     vanilla_coin_reqs = [
-        {"offset": 0x12C, "coins": 50},
-        {"offset": 0x12D, "coins": 50},
-        {"offset": 0x12E, "coins": 10},
-        {"offset": 0x12F, "coins": 10},
-        {"offset": 0x130, "coins": 10},
-        {"offset": 0x131, "coins": 50},
-        {"offset": 0x132, "coins": 50},
-        {"offset": 0x133, "coins": 25},
+        {"offset": 0x13C, "coins": 50},
+        {"offset": 0x13D, "coins": 50},
+        {"offset": 0x13E, "coins": 10},
+        {"offset": 0x13F, "coins": 10},
+        {"offset": 0x140, "coins": 10},
+        {"offset": 0x141, "coins": 50},
+        {"offset": 0x142, "coins": 50},
+        {"offset": 0x143, "coins": 25},
     ]
     for coinreq in vanilla_coin_reqs:
         fh.seek(0x1FED020 + coinreq["offset"])

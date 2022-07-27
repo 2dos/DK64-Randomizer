@@ -534,6 +534,8 @@ def GetKongMoveOccupiedShops():
             occupiedShops.append(Locations.MusicUpgrade2)
         elif location in CastleFunkyMoveLocations:
             occupiedShops.append(Locations.SniperSight)
+        elif location in IslesCrankyMoveLocations:
+            occupiedShops.append(Locations.SimianSlam)
     return list(set(occupiedShops))
 
 
@@ -557,6 +559,7 @@ DonkeyMoveLocations = {
     Locations.DonkeyGalleonInstrument,
     Locations.DonkeyCavesInstrument,
     Locations.DonkeyCastleInstrument,
+    Locations.DonkeyIslesPotion,
 }
 DiddyMoveLocations = {
     Locations.ChimpyCharge,
@@ -578,6 +581,7 @@ DiddyMoveLocations = {
     Locations.DiddyGalleonInstrument,
     Locations.DiddyCavesInstrument,
     Locations.DiddyCastleInstrument,
+    Locations.DiddyIslesPotion,
 }
 LankyMoveLocations = {
     Locations.Orangstand,
@@ -599,6 +603,7 @@ LankyMoveLocations = {
     Locations.LankyGalleonInstrument,
     Locations.LankyCavesInstrument,
     Locations.LankyCastleInstrument,
+    Locations.LankyIslesPotion,
 }
 TinyMoveLocations = {
     Locations.MiniMonkey,
@@ -620,6 +625,7 @@ TinyMoveLocations = {
     Locations.TinyGalleonInstrument,
     Locations.TinyCavesInstrument,
     Locations.TinyCastleInstrument,
+    Locations.TinyIslesPotion,
 }
 ChunkyMoveLocations = {
     Locations.HunkyChunky,
@@ -641,8 +647,10 @@ ChunkyMoveLocations = {
     Locations.ChunkyGalleonInstrument,
     Locations.ChunkyCavesInstrument,
     Locations.ChunkyCastleInstrument,
+    Locations.ChunkyIslesPotion,
 }
 SharedMoveLocations = {
+    Locations.SimianSlam,
     Locations.SuperSimianSlam,
     Locations.SuperDuperSimianSlam,
     Locations.SniperSight,
@@ -841,3 +849,5 @@ CastleFunkyMoveLocations = {
     Locations.ChunkyCastleGun,
     Locations.SniperSight,
 }
+
+IslesCrankyMoveLocations = {Locations.DonkeyIslesPotion, Locations.DiddyIslesPotion, Locations.LankyIslesPotion, Locations.TinyIslesPotion, Locations.ChunkyIslesPotion, Locations.SimianSlam}

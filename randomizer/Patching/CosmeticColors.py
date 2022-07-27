@@ -51,7 +51,7 @@ def apply_cosmetic_colors(spoiler: Spoiler):
                 0xBD,
             ]
             model_index = random.choice(permitted_models)
-        ROM().seek(0x1FED020 + 0x126)
+        ROM().seek(spoiler.settings.rom_data + 0x136)
         ROM().writeMultipleBytes(model_index, 1)
     color_palettes = []
     color_obj = {}

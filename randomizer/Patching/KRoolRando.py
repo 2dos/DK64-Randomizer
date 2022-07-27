@@ -8,7 +8,7 @@ from randomizer.Spoiler import Spoiler
 
 def randomize_krool(spoiler: Spoiler):
     """Apply K Rool Phase order based on krool_order from spoiler."""
-    varspaceOffset = 0x1FED020  # TODO: Define this as constant in a more global place
+    varspaceOffset = spoiler.settings.rom_data
     # /* 0x058 */ char k_rool_order[5]; // Order of K. Rool phases: [0,1,2,3,4] dictates DK->Diddy->Lanky->Tiny->Chunky. If K. Rool is being shortened to less than 5 phases, put the unused phases as -1
     kroolOffset = 0x058
     ROM().seek(varspaceOffset + kroolOffset)
