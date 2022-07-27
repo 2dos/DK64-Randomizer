@@ -498,7 +498,7 @@ LocationList = {
     Locations.LankyIslesPotion: Location("Isles Cranky Lanky", Items.NoItem, Types.Shop, [Levels.DKIsles, Kongs.lanky, MoveTypes.Moves, 0]),
     Locations.TinyIslesPotion: Location("Isles Cranky Tiny", Items.NoItem, Types.Shop, [Levels.DKIsles, Kongs.tiny, MoveTypes.Moves, 0]),
     Locations.ChunkyIslesPotion: Location("Isles Cranky Chunky", Items.NoItem, Types.Shop, [Levels.DKIsles, Kongs.chunky, MoveTypes.Moves, 0]),
-    
+
     # Blueprints
     Locations.TurnInDKIslesDonkeyBlueprint: Location("Turn In DK Isles Donkey Blueprint", Items.GoldenBanana, Types.Banana),
     Locations.TurnInDKIslesDiddyBlueprint: Location("Turn In DK Isles Diddy Blueprint", Items.GoldenBanana, Types.Banana),

@@ -850,11 +850,4 @@ CastleFunkyMoveLocations = {
     Locations.SniperSight,
 }
 
-IslesCrankyMoveLocations = {
-    Locations.DonkeyIslesPotion,
-    Locations.DiddyIslesPotion,
-    Locations.LankyIslesPotion,
-    Locations.TinyIslesPotion,
-    Locations.ChunkyIslesPotion,
-    Locations.SimianSlam
-}
+IslesCrankyMoveLocations = {Locations.DonkeyIslesPotion, Locations.DiddyIslesPotion, Locations.LankyIslesPotion, Locations.TinyIslesPotion, Locations.ChunkyIslesPotion, Locations.SimianSlam}
