@@ -46,7 +46,6 @@ def apply_cosmetic_colors(spoiler: Spoiler):
                 0x70,
                 0x72,
                 0x96,
-                0xA6,
                 0xB0,
                 0xB1,
                 0xBD,
