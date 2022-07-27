@@ -23,7 +23,7 @@ LogicRegions = {
     ], [], [
         TransitionFront(Regions.IslesMain, lambda l: True, Transitions.IslesStartToMain),
         TransitionFront(Regions.Treehouse, lambda l: True, Transitions.IslesStartToTreehouse),
-        TransitionFront(Regions.CrankyGeneric, lambda l: True),
+        TransitionFront(Regions.CrankyIsles, lambda l: True),
     ]),
 
     Regions.IslesMain: Region("Isles Main", Levels.DKIsles, True, None, [

@@ -80,7 +80,7 @@ def GetAccessibleLocations(settings, ownedItems, searchType=SearchMode.GetReacha
             # If this location has an item placed, add it to owned items
             if location.item is not None:
                 # In search mode GetReachableWithControlledPurchases, only allowed to purchase items as prescribed by purchaseOrder
-                if location.type == Types.Shop and locationId != Locations.SimianSlam and searchType == SearchMode.GetReachableWithControlledPurchases and locationId not in purchaseList:
+                if location.type == Types.Shop and searchType == SearchMode.GetReachableWithControlledPurchases and locationId not in purchaseList:
                     continue
                 ownedItems.append(location.item)
                 # If we want to generate the playthrough and the item is a playthrough item, add it to the sphere
@@ -155,8 +155,8 @@ def GetAccessibleLocations(settings, ownedItems, searchType=SearchMode.GetReacha
                         elif LocationList[location.id].type == Types.Blueprint:
                             if not LogicVariables.KasplatAccess(location.id):
                                 continue
-                        # Any shop item with exception of simian slam has a price
-                        elif LocationList[location.id].type == Types.Shop and location.id != Locations.SimianSlam:
+                        # Every shop item has a price
+                        elif LocationList[location.id].type == Types.Shop:
                             # In search mode GetReachableWithControlledPurchases, only allowed to purchase what is passed in as "ownedItems"
                             if searchType != SearchMode.GetReachableWithControlledPurchases or location.id in purchaseList:
                                 LogicVariables.PurchaseShopItem(LocationList[location.id])
