@@ -1003,7 +1003,7 @@ def PlaceKongs(spoiler, kongItems, kongLocations):
     if spoiler.settings.lanky_freeing_kong == Kongs.any:
         spoiler.settings.lanky_freeing_kong = random.choice(GetKongs())
     if spoiler.settings.tiny_freeing_kong == Kongs.any:
-        spoiler.settings.tiny_freeing_kong = random.choice(GetKongs())
+        spoiler.settings.tiny_freeing_kong = random.choice([Kongs.diddy, Kongs.chunky])
     if spoiler.settings.chunky_freeing_kong == Kongs.any:
         spoiler.settings.chunky_freeing_kong = random.choice(GetKongs())
 
