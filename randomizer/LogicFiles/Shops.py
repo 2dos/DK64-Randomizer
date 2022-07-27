@@ -246,6 +246,17 @@ LogicRegions = {
         TransitionFront(Regions.CrankyGeneric, lambda l: True),
     ]),
 
+    Regions.CrankyIsles: Region("Cranky Isles", Levels.Shops, False, None, [
+        LocationLogic(Locations.SimianSlam, lambda l: l.CanBuy(Locations.SimianSlam)),
+        LocationLogic(Locations.DonkeyIslesPotion, lambda l: l.isdonkey and l.CanBuy(Locations.DonkeyIslesPotion)),
+        LocationLogic(Locations.DiddyIslesPotion, lambda l: l.isdiddy and l.CanBuy(Locations.DiddyIslesPotion)),
+        LocationLogic(Locations.LankyIslesPotion, lambda l: l.islanky and l.CanBuy(Locations.LankyIslesPotion)),
+        LocationLogic(Locations.TinyIslesPotion, lambda l: l.istiny and l.CanBuy(Locations.TinyIslesPotion)),
+        LocationLogic(Locations.ChunkyIslesPotion, lambda l: l.ischunky and l.CanBuy(Locations.ChunkyIslesPotion)),
+    ], [], [
+        TransitionFront(Regions.CrankyGeneric, lambda l: True),
+    ]),
+
     Regions.Snide: Region("Snide", Levels.Shops, False, None, [
         LocationLogic(Locations.TurnInDKIslesDonkeyBlueprint, lambda l: Items.DKIslesDonkeyBlueprint in l.Blueprints),
         LocationLogic(Locations.TurnInDKIslesDiddyBlueprint, lambda l: Items.DKIslesDiddyBlueprint in l.Blueprints),

@@ -208,4 +208,5 @@ class Regions(IntEnum):
     CrankyForest = auto()
     CrankyCaves = auto()
     CrankyCastle = auto()
+    CrankyIsles = auto()
     Snide = auto()

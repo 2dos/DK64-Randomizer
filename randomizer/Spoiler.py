@@ -3,7 +3,6 @@
 import json
 from typing import OrderedDict
 
-from randomizer import Logic
 from randomizer.Enums.Events import Events
 from randomizer.Enums.Items import Items
 from randomizer.Enums.Kongs import Kongs
@@ -302,6 +301,9 @@ class Spoiler:
                     if location.kong == Kongs.any:
                         kong_indices = [Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky]
                     level_index = location.level
+                    # Isles level index is 8, but we need it to be 7 to fit it in move_data
+                    if level_index == 8:
+                        level_index = 7
                     # Use the item to find the data to write
                     move_type = ItemList[location.item].movetype
                     move_level = ItemList[location.item].index - 1
