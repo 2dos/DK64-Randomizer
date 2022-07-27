@@ -473,6 +473,13 @@ def GetMoveLocationsToRemove(sharedMoveShops: set):
             locationsToRemove.append(Locations.LankyCastleInstrument)
             locationsToRemove.append(Locations.TinyCastleInstrument)
             locationsToRemove.append(Locations.ChunkyCastleInstrument)
+        # Isles Shops
+        elif sharedMoveShop == Locations.SimianSlam:
+            locationsToRemove.append(Locations.DonkeyIslesPotion)
+            locationsToRemove.append(Locations.DiddyIslesPotion)
+            locationsToRemove.append(Locations.LankyIslesPotion)
+            locationsToRemove.append(Locations.TinyIslesPotion)
+            locationsToRemove.append(Locations.ChunkyIslesPotion)
     return set(locationsToRemove)
 
 
