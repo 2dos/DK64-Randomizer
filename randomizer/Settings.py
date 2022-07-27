@@ -98,9 +98,6 @@ class Settings:
             for i in self.troff_min:
                 randomlist.append(random.randint(round(self.troff_max * i), self.troff_max))
             cbs = randomlist
-            print(cbs)
-            cbs.sort()
-            print(cbs)
             self.troff_0 = round(min(cbs[0] * self.troff_weight_0, 500))
             self.troff_1 = round(min(cbs[1] * self.troff_weight_1, 500))
             self.troff_2 = round(min(cbs[2] * self.troff_weight_2, 500))
