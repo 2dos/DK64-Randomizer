@@ -265,16 +265,17 @@ def randomize_enemies(spoiler: Spoiler):
                     offset += (point0_count * 10) + 6
             ROM().seek(cont_map_spawner_address + offset)
             spawner_count = int.from_bytes(ROM().readBytes(2), "big")
-            enemy_swaps = {}
-            crown_swaps = []
             # Generate Enemy Swaps lists
+            enemy_swaps = {}
             for enemy_class in enemy_classes:
                 arr = []
                 for x in range(spawner_count):
                     arr.append(random.choice(enemy_classes[enemy_class]))
                 enemy_swaps[enemy_class] = arr
-            for x in range(spawner_count):
-                crown_swaps.append(random.choice(crown_enemies))
+            if spoiler.settings.crown_enemy_rando != "off":
+                crown_swaps = []
+                for x in range(spawner_count):
+                    crown_swaps.append(random.choice(crown_enemies))
             offset += 2
             for x in range(spawner_count):
                 ROM().seek(cont_map_spawner_address + offset)
