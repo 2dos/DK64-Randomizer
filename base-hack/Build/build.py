@@ -733,9 +733,9 @@ with open(newROMName, "r+b") as fh:
     helm_geo_size = helm_geo_end - helm_geo
     fh.seek(helm_geo)
     for by_i in range(helm_geo_size):
-        fh.write((0).to_bytes(1,"big"))
+        fh.write((0).to_bytes(1, "big"))
     fh.seek(helm_geo)
-    with open("helm.bin","rb") as helm_geo:
+    with open("helm.bin", "rb") as helm_geo:
         fh.write(gzip.compress(helm_geo.read(), compresslevel=9))
 
     # Replace Helm Text
