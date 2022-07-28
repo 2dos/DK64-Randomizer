@@ -182,13 +182,6 @@ file_dict = [
         "source_file": "assets/Non-Code/displays/dpad.png",
         "texture_format": "rgba5551",
     },
-    {
-        "name": "Helm Geometry",
-        "pointer_table_index": 1,
-        "file_index": 0x11,
-        "source_file": "helm.bin",
-        "do_not_delete_source": True,
-    },
 ]
 
 number_game_changes = [
@@ -729,6 +722,21 @@ with open(newROMName, "r+b") as fh:
 
     print("[6 / 7] - Dumping details of all pointer tables to rom/build.log")
     dumpPointerTableDetails("rom/build.log", fh)
+
+    # Change Helm Geometry (Can't use main CL Build System because of forced duplication)
+    main_pointer_table_offset = 0x101C50
+    fh.seek(main_pointer_table_offset + 4)
+    geo_table = main_pointer_table_offset + int.from_bytes(fh.read(4), "big")
+    fh.seek(geo_table + (0x11 * 4))
+    helm_geo = main_pointer_table_offset + int.from_bytes(fh.read(4), "big")
+    helm_geo_end = main_pointer_table_offset + int.from_bytes(fh.read(4), "big")
+    helm_geo_size = helm_geo_end - helm_geo
+    fh.seek(helm_geo)
+    for by_i in range(helm_geo_size):
+        fh.write((0).to_bytes(1, "big"))
+    fh.seek(helm_geo)
+    with open("helm.bin", "rb") as helm_geo:
+        fh.write(gzip.compress(helm_geo.read(), compresslevel=9))
 
     # Replace Helm Text
     main_pointer_table_offset = 0x101C50
