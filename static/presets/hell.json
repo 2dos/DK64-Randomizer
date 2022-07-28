@@ -3,7 +3,7 @@
     "description":"Pain (May have a hard time generating)",
     "fast_start_beginning_of_game":true,
     "enemy_rando":true,
-    "crown_enemy_rando":true,
+    "crown_enemy_rando":"hard",
     "enemy_speed_rando":true,
     "krool_phase_order_rando":true,
     "boss_kong_rando":true,

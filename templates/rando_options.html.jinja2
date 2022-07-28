@@ -28,15 +28,6 @@
                             </label>
                         </div>
                         <div class="form-check form-switch w-75">
-                            <label data-toggle="tooltip" title="Battle crown enemies are randomized.">
-                                <input class="form-check-input"
-                                    type="checkbox"
-                                    name="crown_enemy_rando"
-                                    value="True"/>
-                                Shuffle Crown Enemies
-                            </label>
-                        </div>
-                        <div class="form-check form-switch w-75">
                             <label data-toggle="tooltip" title="Enemy speeds are randomized.">
                                 <input class="form-check-input"
                                     type="checkbox"
@@ -44,6 +35,29 @@
                                     value="True"/>
                                 Shuffle Enemy Speed
                             </label>
+                        </div>
+                        <div>
+                            Crown Enemies
+                            <select name="crown_enemy_rando"
+                                    id="crown_enemy_rando"
+                                    style="width: 60%;"
+                                    class="form-select center-div"
+                                    aria-label="Activate Bananaports"
+                                    data-toggle="tooltip"
+                                    title="Battle Crown Enemies are Randomized.">
+                                <option selected id="off" value="off" title="No crown enemy randomization will take place.">
+                                    Vanilla
+                                </option>
+                                <option id="easy" value="easy" title="Crown enemies are randomized with a bias towards the easier enemies.">
+                                    Easy
+                                </option>
+                                <option id="medium" value="medium" title="Crown enemies are randomized with a bias towards the medium-difficulty enemies.">
+                                    Medium
+                                </option>
+                                <option id="hard" value="hard" title="Crown enemies are randomized with a bias towards the hardest enemies.">
+                                    Hard
+                                </option>
+                            </select>
                         </div>
                     </td>
                 </tr>

@@ -22,33 +22,29 @@ def apply_cosmetic_colors(spoiler: Spoiler):
             model_index = random.randint(0x21, 0x23)
         elif model_setting == "random_model":
             permitted_models = [
-                0x19,
-                0x1E,
-                0x20,
-                0x21,
-                0x22,
-                0x23,
-                0x24,
-                0x26,
-                0x27,
-                0x2E,
-                0x30,
-                0x34,
-                0x3E,
-                0x42,
-                0x47,
-                0x4B,
-                0x4D,
-                0x51,
-                0x54,
-                0x62,
-                0x69,
-                0x70,
-                0x72,
-                0x96,
-                0xB0,
-                0xB1,
-                0xBD,
+                0x19,  # Beaver
+                0x1E,  # Klobber
+                0x20,  # Kaboom
+                0x21,  # Green Klap
+                0x22,  # Purple Klap
+                0x23,  # Red Klap
+                0x24,  # Klap Teeth
+                0x26,  # Krash
+                0x27,  # Troff
+                0x30,  # N64 Logo
+                0x34,  # Mech Fish
+                0x42,  # Krossbones
+                0x47,  # Rabbit
+                0x4B,  # Minecart Skeleton Head
+                0x51,  # Tomato
+                0x62,  # Ice Tomato
+                0x69,  # Golden Banana
+                0x70,  # Microbuffer
+                0x72,  # Bell
+                0x96,  # Missile (Car Race)
+                0xB0,  # Red Buoy
+                0xB1,  # Green Buoy
+                0xBD,  # Rareware Logo
             ]
             model_index = random.choice(permitted_models)
         ROM().seek(spoiler.settings.rom_data + 0x136)
