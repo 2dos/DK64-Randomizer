@@ -33,6 +33,7 @@ from randomizer.ShuffleKasplats import InitKasplatMap, KasplatShuffle
 from randomizer.ShuffleWarps import ShuffleWarps
 from randomizer.ShuffleBosses import ShuffleBossesBasedOnOwnedItems
 from randomizer.ShufflePatches import ShufflePatches
+from randomizer.ShuffleShopLocations import ShuffleShopLocations
 
 
 def GetExitLevelExit(region):
@@ -1385,7 +1386,8 @@ def ShuffleMisc(spoiler):
     if spoiler.settings.random_patches:
         human_patches = []
         spoiler.human_patches = ShufflePatches(spoiler, human_patches).copy()
-
+    if spoiler.settings.shuffle_shops:
+        ShuffleShopLocations(spoiler)
     if spoiler.settings.activate_all_bananaports in ["all", "isles"]:
         warpMapIds = set([BananaportVanilla[warp].map_id for warp in Warps])
         for map_id in warpMapIds:
