@@ -280,8 +280,8 @@ void initHack(int source) {
 			// Boost Diddy/Tiny's Barrel Speed
 			*(float*)(0x807533A0) = 240.0f; // Diddy Ground
 			*(float*)(0x807533A8) = 240.0f; // Tiny Ground
-			*(float*)(0x807553DC) = 260.0f; // Lanky Air
-			*(float*)(0x807553E0) = 260.0f; // Tiny Air
+			*(float*)(0x807533DC) = 260.0f; // Lanky Air
+			*(float*)(0x807533E0) = 260.0f; // Tiny Air
 			// New Guard Code
 			*(short*)(0x806AF75C) = 0x1000;
 			// Gold Beaver Code
