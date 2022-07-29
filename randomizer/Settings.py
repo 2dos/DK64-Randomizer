@@ -48,7 +48,7 @@ class Settings:
         # Longer: 80 GB\
         self.blocker_max = self.blocker_text if self.blocker_text else 50
         self.troff_max = self.troff_text if self.troff_text else 270
-        self.troff_min = round(self.troff_max / 3)
+        self.troff_min = [0.25, 0.3, 0.35, 0.4, 0.45, 0.5, 0.6]  # Weights for the minimum value of troff
         # Always start with training barrels currently
         # training_barrels: str
         # normal
@@ -94,7 +94,9 @@ class Settings:
             self.troff_weight_6 = 1
 
         if self.randomize_cb_required_amounts:
-            randomlist = random.sample(range(self.troff_min, self.troff_max), 7)
+            randomlist = []
+            for i in self.troff_min:
+                randomlist.append(random.randint(round(self.troff_max * i), self.troff_max))
             cbs = randomlist
             self.troff_0 = round(min(cbs[0] * self.troff_weight_0, 500))
             self.troff_1 = round(min(cbs[1] * self.troff_weight_1, 500))
