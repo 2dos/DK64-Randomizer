@@ -2,54 +2,71 @@
 import struct
 
 sign_data = [
-    {"map_index": 7, "signs": [{"sign_type": "cranky", "data": [1693.203, 280.964, 3934.433, 183.867, 1]}, {"sign_type": "funky", "data": [2048.232, 522.388, 2195.41, 207.861, 1]}]},
+    {
+        "map_index": 7,
+        "signs": [
+            {"sign_type": "cranky", "data": [1695.127, 280, 3998.528, 3]},
+            {"sign_type": "funky", "data": [2074.149, 520, 2248.571, 119]},
+            {"sign_type": "snide", "data": [2174.763, 680, 2581.554, 288]},
+        ],
+    },
     {
         "map_index": 0x26,
         "signs": [
-            {"sign_type": "candy", "data": [2365.486, 120, 494.248, 358.418, 1.12]},
-            {"sign_type": "cranky", "data": [2755.299, 124.339, 2522.297, 110.654, 1]},
-            {"sign_type": "funky", "data": [2902.485, 123.604, 4490.055, 163.125, 1]},
+            {"sign_type": "candy", "data": [2364.392, 120.5, 414.73, 0]},
+            {"sign_type": "cranky", "data": [2697.736, 120.5, 2538.648, 290]},
+            {"sign_type": "funky", "data": [2888.978, 121.051, 4546.7, 77]},
+            {"sign_type": "snide", "data": [4217.064, 120, 4468.096, 334]},
         ],
     },
     {
         "map_index": 0x1A,
         "signs": [
-            {"sign_type": "candy", "data": [235.468, 225.5, 620.636, 37.002, 1]},
-            {"sign_type": "funky", "data": [1471.488, 1132.888, 516.591, 43.066, 1]},
-            {"sign_type": "cranky", "data": [229.027, 228.203, 850.685, 147.832, 1]},
+            {"sign_type": "candy", "data": [192.108, 225.5, 567.249, 38]},
+            {"sign_type": "funky", "data": [1426.279, 1131.833, 468.852, 315]},
+            {"sign_type": "cranky", "data": [202.208, 225.5, 902.929, 335]},
+            {"sign_type": "snide", "data": [1753.705, 826, 2074.416, 34]},
         ],
     },
     {
         "map_index": 0x1E,
         "signs": [
-            {"sign_type": "cranky", "data": [3301.647, 1792.776, 2427.058, 16.348, 1]},
-            {"sign_type": "candy", "data": [2904.595, 1561.547, 564.17, 71.191, 1.28]},
-            {"sign_type": "funky", "data": [3742.295, 1568.709, 1268.402, 64.863, 1.12]},
+            {"sign_type": "cranky", "data": [3288.249, 1790, 2370.118, 196]},
+            {"sign_type": "candy", "data": [2816.421, 1564.253, 553.305, 82]},
+            {"sign_type": "funky", "data": [3676.859, 1560.177, 1235.449, 337]},
+            {"sign_type": "snide", "data": [2091.915, 1610, 4726.344, 307]},
         ],
     },
-    {"map_index": 0x30, "signs": [{"sign_type": "cranky", "data": [984.411, 251.25, 342.849, 342.42, 1.28]}, {"sign_type": "funky", "data": [3261.958, 181.03, 163.222, 353.232, 1.16]}]},
+    {
+        "map_index": 0x30,
+        "signs": [
+            {"sign_type": "cranky", "data": [1005.894, 247, 263.491, 164]},
+            {"sign_type": "funky", "data": [3271.472, 178.69, 93.169, 264]},
+            {"sign_type": "snide", "data": [3090.001, 267.011, 3588.082, 194]},
+        ],
+    },
     {
         "map_index": 0x48,
         "signs": [
-            {"sign_type": "cranky", "data": [1172.329, 282.911, 1618.7, 37.793, 1]},
-            {"sign_type": "funky", "data": [2780.684, 283.12, 1280.243, 179.561, 1.04]},
-            {"sign_type": "candy", "data": [3239.475, 112.833, 2120.751, 208.916, 1.26]},
+            {"sign_type": "cranky", "data": [1127.643, 281.527, 1574.504, 225]},
+            {"sign_type": "funky", "data": [2777.721, 280, 1340.63, 86]},
+            {"sign_type": "candy", "data": [3285.967, 112.833, 2187.781, 214]},
+            {"sign_type": "snide", "data": [1210.936, 64.5, 411.259, 110]},
         ],
     },
     {
         "map_index": 0x57,
-        "signs": [
-            {"sign_type": "cranky", "data": [294.081, 1138.622, 1405.777, 95.625, 1]},
-        ],
+        "signs": [{"sign_type": "cranky", "data": [235.221, 1135.469, 1412.605, 270]}, {"sign_type": "snide", "data": [784.377, 1794.167, 1362.74, 180]}],
     },
     {
         "map_index": 0xB7,
         "signs": [
-            {"sign_type": "funky", "data": [1463.363, 203.18, 310.011, 359.561, 1.06]},
+            {"sign_type": "funky", "data": [1456.806, 200, 246.614, 274]},
         ],
     },
-    {"map_index": 0x97, "signs": [{"sign_type": "candy", "data": [1077.46, 300, 2140.457, 271.67, 1.7]}]},
-    {"map_index": 0xB0, "signs": [{"sign_type": "cranky", "data": [651.318, 77.255, 1834.692, 126.914, 1]}]},
+    {"map_index": 0x97, "signs": [{"sign_type": "candy", "data": [1191.144, 300, 2142.678, 269]}]},
+    {"map_index": 0xB0, "signs": [{"sign_type": "cranky", "data": [602.935, 75, 1870.478, 309]}]},
+    {"map_index": 0xC3, "signs": [{"sign_type": "snide", "data": [449.519, 0, 468.524, 268]}]},
 ]
 
 
@@ -79,26 +96,29 @@ def getMoveSignData(map_index, base_stream):
     for map_data in sign_data:
         if map_data["map_index"] == map_index:
             for sign in map_data["signs"]:
-                offset_mult = 40
                 id = 0x100
+                a_offset = 0
                 if sign["sign_type"] == "cranky":
-                    offset_mult = 40
                     id = 0x100
+                    a_offset = 180
                 elif sign["sign_type"] == "funky":
-                    offset_mult = 40
                     id = 0x101
+                    a_offset = 90
                 elif sign["sign_type"] == "candy":
-                    offset_mult = 40
                     id = 0x102
+                    a_offset = 0
+                elif sign["sign_type"] == "snide":
+                    id = 0x103
+                    a_offset = 270
                 sign_arr.append(
                     {
                         "base_byte_stream": base_stream,
                         "type": 70 - 16,
                         "x": convertCoord(sign["data"][0]),
-                        "y": convertCoord(sign["data"][1] + (offset_mult * sign["data"][4])),
+                        "y": convertCoord(sign["data"][1]),
                         "z": convertCoord(sign["data"][2]),
                         "rx": 0,
-                        "ry": (convertAngle(sign["data"][3]) + 2048) % 4096,
+                        "ry": convertAngle(sign["data"][3] + a_offset) % 4096,
                         "rz": 0,
                         "scale": int(float_to_hex(0.25), 16),
                         "id": id,

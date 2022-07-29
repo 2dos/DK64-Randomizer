@@ -147,14 +147,15 @@ int getClosestShop(void) {
 		Cranky's: 0x73
 		Funky's Hut: 0x7A
 		Candy's Shop: 0x124
+		Snide's HQ: 0x79
 	*/
-	unsigned int dists[3] = {0xFFFFFFFF,0xFFFFFFFF,0xFFFFFFFF};
+	unsigned int dists[4] = {0xFFFFFFFF,0xFFFFFFFF,0xFFFFFFFF,0xFFFFFFFF};
 	int* m2location = ObjectModel2Pointer;
 	int found_counter = 0;
-	behaviour_data* behavs[3] = {};
+	behaviour_data* behavs[4] = {};
 	counter_paad* paad = CurrentActorPointer_0->paad;
 	for (int i = 0; i < ObjectModel2Count; i++) {
-		if (found_counter < 3) {
+		if (found_counter < 4) {
 			ModelTwoData* _object = getObjectArrayAddr(m2location,0x90,i);
 			if (_object->object_type == 0x73) {
 				dists[0] = getActorModelTwoDist(_object);
@@ -168,21 +169,70 @@ int getClosestShop(void) {
 				dists[2] = getActorModelTwoDist(_object);
 				behavs[2] = _object->behaviour_pointer;
 				found_counter += 1;
+			} else if (_object->object_type == 0x79) {
+				dists[3] = getActorModelTwoDist(_object);
+				behavs[3] = _object->behaviour_pointer;
+				found_counter += 1;
 			}
 		}
 	}
 	int closest_index = 0;
-	if ((dists[2] < dists[1]) && (dists[2] < dists[0])) {
+	if ((dists[2] < dists[1]) && (dists[2] < dists[0]) && (dists[2] < dists[3])) {
 		paad->linked_behaviour = behavs[2];
 		closest_index = 2;
-	} else if ((dists[1] < dists[0]) && (dists[1] < dists[2])) {
+	} else if ((dists[3] < dists[1]) && (dists[3] < dists[0]) && (dists[3] < dists[2])) {
+		paad->linked_behaviour = behavs[3];
+		closest_index = 3;
+	} else if ((dists[1] < dists[0]) && (dists[1] < dists[2]) && (dists[1] < dists[3])) {
 		paad->linked_behaviour = behavs[1];
 		closest_index = 1;
+	} else if ((dists[0] < dists[1]) && (dists[0] < dists[2]) && (dists[0] < dists[3])) {
+		paad->linked_behaviour = behavs[0];
+		closest_index = 0;
 	}
 	if (found_counter > 0) {
 		paad->linked_behaviour = behavs[closest_index];
 	}
 	return closest_index;
+}
+
+typedef struct ModelData {
+	/* 0x000 */ float pos[3];
+	/* 0x00C */ float scale;
+} ModelData;
+
+float getShopScale(int index) {
+	int* m2location = ObjectModel2Pointer;
+	for (int i = 0; i < ObjectModel2Count; i++) {
+		ModelTwoData* _object = getObjectArrayAddr(m2location,0x90,i);
+		if (_object) {
+			if (index == 0) { // Crankys
+				if (_object->object_type == 0x73) {
+					ModelData* model = _object->model_pointer;
+					if (model) {
+						return model->scale;
+					}
+				}
+			} else if (index == 1) { // Funkys
+				if (_object->object_type == 0x7A) {
+					ModelData* model = _object->model_pointer;
+					if (model) {
+						return model->scale;
+					}
+				}
+			} else if (index == 2) { // Candys
+				if (_object->object_type == 0x124) {
+					ModelData* model = _object->model_pointer;
+					if (model) {
+						return model->scale;
+					}
+				}
+			} else if (index == 3) { // Snide
+				return 1.0f;
+			}
+		}
+	}
+	return 1.0f;
 }
 
 void newCounterCode(void) {
@@ -195,12 +245,39 @@ void newCounterCode(void) {
 					paad->image_slots[i] = loadCounterFontTexture(0x21,paad->image_slots[i],i,0,IMG_WIDTH);
 				}
 				CurrentActorPointer_0->rot_z = 3072; // Facing vertical
-				CurrentActorPointer_0->rgb_mask[0] = getClosestShop();
-				CurrentActorPointer_0->rgb_mask[1] = getMoveCountInShop(CurrentActorPointer_0->rgb_mask[0] & 0xF);
-				CurrentActorPointer_0->rgb_mask[2] = 0;
-				updateCounterDisplay();
-				if (CurrentActorPointer_0->rgb_mask[1] == 0) {
-					paad->image_slots[1] = loadFontTexture_Counter(paad->image_slots[1],7);
+				int closest_shop = getClosestShop();
+				CurrentActorPointer_0->rgb_mask[0] = closest_shop;
+				if (closest_shop == 3) { // Snide is closest
+					deleteActorContainer(CurrentActorPointer_0);
+				} else {
+					CurrentActorPointer_0->rgb_mask[1] = getMoveCountInShop(CurrentActorPointer_0->rgb_mask[0] & 0xF);
+					CurrentActorPointer_0->rgb_mask[2] = 0;
+					updateCounterDisplay();
+					if (CurrentActorPointer_0->rgb_mask[1] == 0) {
+						paad->image_slots[1] = loadFontTexture_Counter(paad->image_slots[1],7);
+					}
+					// Update Position depending on scale
+					float h_factor = 1.0f;
+					float y_factor = 1.0f;
+					if (closest_shop == 0) { // Cranky
+						h_factor = 60.0f;
+						y_factor = 40.0f;
+					} else if (closest_shop == 1) { // Funky
+						h_factor = 60.0f;
+						y_factor = 40.0f;
+					} else if (closest_shop == 2) { // Candy
+						h_factor = 62.0f;
+						y_factor = 40.0f;
+					}
+					float scale = getShopScale(closest_shop);
+					float x_r = getXRatioMovement(CurrentActorPointer_0->rot_y);
+					float x_d = scale * h_factor * x_r;
+					float z_d = scale * h_factor * getZRatioMovement(CurrentActorPointer_0->rot_y);
+					float y_d = scale * y_factor;
+					CurrentActorPointer_0->xPos += x_d;
+					CurrentActorPointer_0->yPos += y_d;
+					CurrentActorPointer_0->zPos += z_d;
+					CurrentActorPointer_0->rot_y = (CurrentActorPointer_0->rot_y + 2048) % 4096;
 				}
 			} else {
 				deleteActorContainer(CurrentActorPointer_0);

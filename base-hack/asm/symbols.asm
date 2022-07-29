@@ -323,6 +323,9 @@
 .definelabel currentCharSpawner, 0x807FDC9C
 .definelabel EnemiesKilledCounter, 0x80744508
 
+.definelabel getXRatioMovement, 0x80612794
+.definelabel getZRatioMovement, 0x80612790
+
 //hack data
 .definelabel TestVariable, 0x807FFFFC
 .definelabel StoredLag, 0x807FFFFA // 0x2
