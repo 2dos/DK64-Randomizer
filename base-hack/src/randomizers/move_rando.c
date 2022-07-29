@@ -329,7 +329,6 @@ void getNextMovePurchase(shop_paad* paad, KongBase* movedata) {
 					break;
 				}
 				if (has_purchase) {
-					TestVariable = p_type;
 					paad->purchase_type = p_type;
 					int p_price = selected->price;
 					textParameter = p_price;

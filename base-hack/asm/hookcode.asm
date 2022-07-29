@@ -1139,7 +1139,50 @@ START_HOOK:
 			J 	0x8070E844
 			LUI at, 0xFDFF
 
-		
+	ShopImageHandler:
+		JAL 	0x807149B8
+		ADDIU 	a0, r0, 1
+		LH 		v0, 0x4A (sp)
+		LW 		t2, 0x44 (sp)
+		ADDIU 	at, r0, 0x90
+		MULTU 	t2, at
+		MFLO 	at
+		LUI 	t2, hi(ObjectModel2Pointer)
+		LW 		t2, lo(ObjectModel2Pointer) (t2)
+		ADDU 	t2, t2, at
+		LHU		t2, 0x84 (t2) // Object Type
+		ADDIU 	at, r0, 0x73
+		BEQ 	t2, at, ShopImageHandler_IsCranky
+		NOP
+		ADDIU 	at, r0, 0x7A
+		BEQ 	t2, at, ShopImageHandler_IsFunky
+		NOP
+		ADDIU 	at, r0, 0x124
+		BEQ 	t2, at, ShopImageHandler_IsCandy
+		NOP
+		ADDIU 	at, r0, 0x79
+		BEQ 	t2, at, ShopImageHandler_IsSnide
+		NOP
+		B 		ShopImageHandler_Finish
+		NOP
 
+		ShopImageHandler_IsCranky:
+			B 		ShopImageHandler_Finish
+			ADDIU 	v0, r0, 1
+			
+		ShopImageHandler_IsFunky:
+			B 		ShopImageHandler_Finish
+			ADDIU 	v0, r0, 2
+
+		ShopImageHandler_IsCandy:
+			B 		ShopImageHandler_Finish
+			ADDIU 	v0, r0, 0
+
+		ShopImageHandler_IsSnide:
+			ADDIU 	v0, r0, 3
+
+		ShopImageHandler_Finish:
+			J 		0x80648370
+			NOP
 .align 0x10
 END_HOOK:

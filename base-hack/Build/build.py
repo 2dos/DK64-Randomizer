@@ -27,6 +27,7 @@ from image_converter import convertToRGBA32
 from end_seq_writer import createTextFile, createSquishFile
 from generate_yellow_wrinkly import generateYellowWrinkly
 import model_fix
+import shop_instance_script
 import instance_script_maker
 import create_helm_geo
 

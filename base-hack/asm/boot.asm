@@ -193,6 +193,9 @@ TextHandlerHook:
 GuardDeathHandleHook:
 	J 	GuardDeathHandle
 	NOP
+ShopImageHandlerHook:
+	J 	ShopImageHandler
+	NOP
 
 loadExtraHooks:
 	LUI t3, hi(InstanceScriptHook)
@@ -200,6 +203,12 @@ loadExtraHooks:
 	LUI t4, 0x8064
 	SW t3, 0xEE08 (t4) // Store Hook
 	SW r0, 0xEE0C (t4) // Store NOP
+
+	LUI t3, hi(ShopImageHandlerHook)
+	LW t3, lo(ShopImageHandlerHook) (t3)
+	LUI t4, 0x8065
+	SW t3, 0x8364 (t4) // Store Hook
+	SW r0, 0x8368 (t4) // Store NOP
 
 	LUI t3, hi(SaveToFileFixesHook)
 	LW t3, lo(SaveToFileFixesHook) (t3)

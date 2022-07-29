@@ -111,12 +111,4 @@ typedef struct varspace {
 	/* 0x179 */ char remove_high_requirements; // 0 = Off, 1 = On. Removes high requirements that lock certain areas.
 	/* 0x17A */ char fast_gbs; //0 = Off, 1 = On. Makes normally slow Golden Bananas faster.
 	/* 0x17B */ char kut_out_phases[3]; // 0 = Phase 1, 1 = Phase 2, 2 = Phase 3, 3 = Phase 4 (Unused)
-	/* 0x17E */ unsigned char isles_shops[2]; // Item 0 = TG, Item 1 = Isles Snide Room
-	/* 0x180 */ unsigned char japes_shops[3]; // Item 0 = Storm, Item 1 = Lower Platform, Item 2 = Upper Platform
-	/* 0x183 */ unsigned char aztec_shops[4]; // Item 0 = Snake Road, Item 1 = Near 5DT, Item 2 = Oasis, Item 3 = Near Tower
-	/* 0x187 */ unsigned char factory_shops[4]; // Item 0 = Storage Left, Item 1 = Near Block Tower, Item 2 = Storage Right, Item 3 = Near Start
-	/* 0x18B */ unsigned char galleon_shops[4]; // Item 0 = Near Chest GB, Item 1 = Near Cactus, Item 2 = Near Seal Race, Item 3 = Lighthouse
-	/* 0x18F */ unsigned char fungi_shops[3]; // Item 0 = Near GMush, Item 1 = Near Beanstalk, Item 2 = Near Mill
-	/* 0x192 */ unsigned char caves_shops[4]; // Item 0 = Near Giant Boulder, Item 1 = Near W5 Pillar, Item 2 = Near 5DC, Item 3 = Near Level Start
-	/* 0x196 */ unsigned char castle_shops[4]; // Item 0 = Half way up Castle, Item 1 = Crypt Hub, Item 2 = Dungeon Tunnel, Item 3 = Top of Castle
 } varspace;
