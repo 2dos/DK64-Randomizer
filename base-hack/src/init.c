@@ -243,6 +243,7 @@ void initHack(int source) {
 			*(short*)(0x806C8B42) = Rando.klaptrap_color_bbother;
 			// Expand Display List
 			*(short*)(0x805FE56A) = 8000;
+			*(short*)(0x805FE592) = 0x4100; // SLL 4 (Doubles display list size)
 			// Object Instance Scripts
 			*(int*)(0x80748064) = (int)&change_object_scripts;
 			*(int*)(0x806416BC) = 0; // Prevent parent map check in cross-map object change communications
