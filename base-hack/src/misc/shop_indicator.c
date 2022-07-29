@@ -278,6 +278,11 @@ void newCounterCode(void) {
 					CurrentActorPointer_0->yPos += y_d;
 					CurrentActorPointer_0->zPos += z_d;
 					CurrentActorPointer_0->rot_y = (CurrentActorPointer_0->rot_y + 2048) % 4096;
+					renderingParamsData* render = CurrentActorPointer_0->render;
+					if (render) {
+						render->scale_x = 0.0375f * scale;
+						render->scale_z = 0.0375f * scale;
+					}
 				}
 			} else {
 				deleteActorContainer(CurrentActorPointer_0);

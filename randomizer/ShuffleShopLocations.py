@@ -95,8 +95,5 @@ def ShuffleShopLocations(spoiler: Spoiler):
                 assortment_in_level[shop.shop] = shop.new_shop
                 placement_index += 1
         assortment[level] = assortment_in_level
-        print(level)
-        print(assortment_in_level)
-        print("")
     # Write Assortment to spoiler
     spoiler.shuffled_shop_locations = assortment
