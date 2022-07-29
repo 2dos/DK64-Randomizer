@@ -8,6 +8,7 @@ from randomizer.Enums.Regions import Regions
 from randomizer.Lists.MapsAndExits import Maps
 from randomizer.Patching.Patcher import ROM
 
+
 def intf_to_float(intf):
     """Convert float as int format to float."""
     if intf == 0:
@@ -15,11 +16,13 @@ def intf_to_float(intf):
     else:
         return struct.unpack("!f", bytes.fromhex(hex(intf)[2:]))[0]
 
+
 def float_to_hex(f):
     """Convert float to hex."""
     if f == 0:
         return "0x00000000"
     return hex(struct.unpack("<I", struct.pack("<f", f))[0])
+
 
 def ApplyShopRandomizer(spoiler: Spoiler):
     """Write shop locations to ROM."""
@@ -61,12 +64,12 @@ def ApplyShopRandomizer(spoiler: Spoiler):
                             search_model = 0x73
                             search_lz = Maps.Cranky
                             search_rot = 180
-                            search_scale = 1.2
+                            search_scale = 1
                         else:
                             new_model = 0x73
                             new_lz = Maps.Cranky
                             new_rot = 180
-                            new_scale = 1.2
+                            new_scale = 1
                     elif x == Regions.CandyGeneric:
                         if x_i == 0:
                             search_model = 0x124
@@ -83,12 +86,12 @@ def ApplyShopRandomizer(spoiler: Spoiler):
                             search_model = 0x7A
                             search_lz = Maps.Funky
                             search_rot = 90
-                            search_scale = 1.5
+                            search_scale = 1
                         else:
                             new_model = 0x7A
                             new_lz = Maps.Funky
                             new_rot = 90
-                            new_scale = 1.5
+                            new_scale = 1
                     elif x == Regions.Snide:
                         if x_i == 0:
                             search_model = 0x79
@@ -146,20 +149,20 @@ def ApplyShopRandomizer(spoiler: Spoiler):
                 print(f"{hex(search_model)} > {hex(new_model)}: {placement['angle_change']}")
                 if placement["angle_change"] != 0:
                     ROM().seek(setup_item + 0x1C)
-                    original_angle = intf_to_float(int.from_bytes(ROM().readBytes(4),"big"))
+                    original_angle = intf_to_float(int.from_bytes(ROM().readBytes(4), "big"))
                     new_angle = original_angle + placement["angle_change"]
                     if new_angle < 0:
                         new_angle += 360
                     elif new_angle >= 360:
                         new_angle -= 360
                     ROM().seek(setup_item + 0x1C)
-                    ROM().writeMultipleBytes(int(float_to_hex(new_angle),16),4)
+                    ROM().writeMultipleBytes(int(float_to_hex(new_angle), 16), 4)
                 # Scale
                 ROM().seek(setup_item + 0xC)
-                original_scale = intf_to_float(int.from_bytes(ROM().readBytes(4),"big"))
+                original_scale = intf_to_float(int.from_bytes(ROM().readBytes(4), "big"))
                 new_scale = original_scale * placement["scale_factor"]
                 ROM().seek(setup_item + 0xC)
-                ROM().writeMultipleBytes(int(float_to_hex(new_scale),16),4)
+                ROM().writeMultipleBytes(int(float_to_hex(new_scale), 16), 4)
                 # Loading Zone
                 ROM().seek(lz_address + 2 + (placement["zone_index"] * 0x38) + 0x12)
                 ROM().writeMultipleBytes(placement["replace_zone"], 2)
