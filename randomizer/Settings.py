@@ -140,7 +140,7 @@ class Settings:
         self.boss_kong_rando = None
         self.kasplat_rando_setting = None
         self.puzzle_rando = None
-        self.shuffle_shops = None
+        self.shuffle_shops = True
 
     def set_seed(self):
         """Forcibly re-set the random seed to the seed set in the config."""

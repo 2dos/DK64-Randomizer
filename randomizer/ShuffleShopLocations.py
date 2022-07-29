@@ -29,6 +29,7 @@ available_shops = {
     Levels.JungleJapes: [
         ShopLocation(Regions.CrankyGeneric, Maps.JungleJapes),
         ShopLocation(Regions.Snide, Maps.JungleJapes),
+        ShopLocation(Regions.FunkyGeneric, Maps.JungleJapes),
     ],
     Levels.AngryAztec: [
         ShopLocation(Regions.CrankyGeneric, Maps.AngryAztec),
@@ -82,13 +83,20 @@ def ShuffleShopLocations(spoiler: Spoiler):
         # Get list of shops in level
         shops_in_levels = []
         for shop in shop_array:
-            shops_in_levels.append(shop.shop)
+            if not shop.locked:
+                shops_in_levels.append(shop.shop)
         random.shuffle(shops_in_levels)
         # Assign shuffle to data
         assortment_in_level = {}
+        placement_index = 0
         for shop_index, shop in enumerate(shop_array):
-            shop.setShop(shops_in_levels[shop_index])
-            assortment_in_level[shop.shop] = shop.new_shop
+            if not shop.locked:
+                shop.setShop(shops_in_levels[placement_index])
+                assortment_in_level[shop.shop] = shop.new_shop
+                placement_index += 1
         assortment[level] = assortment_in_level
+        print(level)
+        print(assortment_in_level)
+        print("")
     # Write Assortment to spoiler
     spoiler.shuffled_shop_locations = assortment
