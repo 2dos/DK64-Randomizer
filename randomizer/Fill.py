@@ -1161,7 +1161,7 @@ def FillKongsAndMoves(spoiler):
                         # debuginfo[item] = location
 
                         # Find what items are needed to get this item
-                        dependencyPriorityMoves = GetItemPrerequisites(spoiler, item, ownedKongs, location)
+                        dependencyPriorityMoves = GetItemPrerequisites(spoiler, item, ownedKongs)
                         # If there are any...
                         for move in dependencyPriorityMoves:
                             # If we haven't placed it already, find the possible locations and prep the dictionary for the next loop

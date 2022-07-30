@@ -176,6 +176,7 @@ KasplatLocationList = {
             zmin=2295,
             zmax=2380,
             region=Regions.JungleJapesMain,
+            additional_logic=lambda l: l.vines,
         ),
         KasplatLocation(
             name="Japes Kasplat: Inside the Mountain", map_id=Maps.JapesMountain, kong_lst=[Kongs.diddy], coords=[551, 101, 1192], xmin=525, xmax=576, zmin=1078, zmax=1236, region=Regions.Mine
