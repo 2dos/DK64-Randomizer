@@ -94,12 +94,12 @@ def ApplyShopRandomizer(spoiler: Spoiler):
                             search_model = 0x7A
                             search_lz = Maps.Funky
                             search_rot = 90
-                            search_scale = 1
+                            search_scale = 1.1
                         else:
                             new_model = 0x7A
                             new_lz = Maps.Funky
                             new_rot = 90
-                            new_scale = 1
+                            new_scale = 1.1
                     elif x == Regions.Snide:
                         if x_i == 0:
                             search_model = 0x79

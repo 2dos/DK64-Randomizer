@@ -56,7 +56,7 @@ sign_data = [
     },
     {
         "map_index": 0x57,
-        "signs": [{"sign_type": "cranky", "data": [235.221, 1135.469, 1412.605, 270]}, {"sign_type": "snide", "data": [784.377, 1794.167, 1362.74, 180]}],
+        "signs": [{"sign_type": "cranky", "data": [235.221, 1135.469, 1412.605, 278]}, {"sign_type": "snide", "data": [784.377, 1794.167, 1362.74, 180]}],
     },
     {
         "map_index": 0xB7,
