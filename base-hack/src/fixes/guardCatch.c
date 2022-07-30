@@ -85,13 +85,12 @@ void newGuardCode(void) {
     if ((collisionType == 4) || (collisionType == 9) || (collisionActive)) {
         if ((level_state & 0x104000) == 0) {
             // Hit by ammo/oranges
-            if (CurrentActorPointer_0->health <= 0) {
+            if ((CurrentActorPointer_0->health <= 0) || (collisionActive)) {
+                CurrentActorPointer_0->health = 0;
                 playActorAnimation(CurrentActorPointer_0,0x201);
                 CurrentActorPointer_0->control_state = 0x42;
                 CurrentActorPointer_0->control_state_progress = 0;
                 CurrentActorPointer_0->noclip_byte = 1;
-                // CurrentActorPointer_0->yVelocity = 150.0f;
-                // CurrentActorPointer_0->yAccel = -20.0f;
             } else {
                 playActorAnimation(CurrentActorPointer_0,0x1FF);
                 CurrentActorPointer_0->control_state = 0x41;

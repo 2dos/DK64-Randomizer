@@ -269,6 +269,30 @@ def modify(file_name, map_index):
                 new_z = 512.886
                 writedatatoarr(byte_stream, int(float_to_hex(new_x), 16), 4, 0x0)
                 writedatatoarr(byte_stream, int(float_to_hex(new_z), 16), 4, 0x8)
+            elif map_index == 0x22 and obj_id == 4:
+                # Isles Vines
+                added_actor.append(
+                    {
+                        "base_byte_stream": byte_stream,
+                        "x": int(float_to_hex(3178.968), 16),
+                        "y": int(float_to_hex(992.493), 16),
+                        "z": int(float_to_hex(1152.631), 16),
+                        "id": 0xFF,
+                        "use_byte_stream": True,
+                    }
+                )
+            elif map_index == 0x7 and obj_id == 26:
+                # Japes Vines
+                added_actor.append(
+                    {
+                        "base_byte_stream": byte_stream,
+                        "x": int(float_to_hex(802.113), 16),
+                        "y": int(float_to_hex(632.5), 16),
+                        "z": int(float_to_hex(2258.593), 16),
+                        "id": 0xFF,
+                        "use_byte_stream": True,
+                    }
+                )
             elif map_index == 0x11 and not added_helm_faces:
                 face_z = 5423.538
                 face_hi = 160
