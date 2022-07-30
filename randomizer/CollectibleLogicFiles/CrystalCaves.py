@@ -30,8 +30,6 @@ LogicRegions = {
         Collectible(Collectibles.bunch, Kongs.chunky, lambda l: True, None, 1),  # Warp 2
         Collectible(Collectibles.bunch, Kongs.chunky, lambda l: True, None, 2),  # Small Boulder and switch
         Collectible(Collectibles.banana, Kongs.chunky, lambda l: True, None, 3),  # Small Boulder and switch
-        Collectible(Collectibles.banana, Kongs.chunky, lambda l: l.punch, None, 3),  # Near Snide
-        Collectible(Collectibles.balloon, Kongs.chunky, lambda l: l.punch and l.pineapple, None, 1),  # Near Snide
 
         Collectible(Collectibles.coin, Kongs.donkey, lambda l: l.punch and l.chunky, None, 3),  # Gorilla Gone room
         Collectible(Collectibles.coin, Kongs.diddy, lambda l: True, None, 4),  # On ice castle
@@ -39,6 +37,11 @@ LogicRegions = {
         Collectible(Collectibles.coin, Kongs.tiny, lambda l: l.twirl, None, 2),  # Pillar above warps
         Collectible(Collectibles.coin, Kongs.tiny, lambda l: True, None, 3),  # In front of tunnel to W4 cave
         Collectible(Collectibles.coin, Kongs.chunky, lambda l: True, None, 3),  # On slippery slope to Cranky
+    ],
+    Regions.CavesSnideArea: [
+        Collectible(Collectibles.banana, Kongs.chunky, lambda l: l.punch, None, 3),  # Near Snide
+        Collectible(Collectibles.balloon, Kongs.chunky, lambda l: l.punch and l.pineapple, None, 1),  # Near Snide
+
         Collectible(Collectibles.coin, Kongs.chunky, lambda l: l.punch, None, 3),  # Snide's room
     ],
     Regions.CavesBlueprintCave: [

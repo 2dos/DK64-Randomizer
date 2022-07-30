@@ -975,8 +975,8 @@ KasplatLocationList = {
             xmax=1340,
             zmin=500,
             zmax=640,
-            region=Regions.CrystalCavesMain,
-            additional_logic=lambda l: l.chunky and l.punch,
+            region=Regions.CavesSnideArea,
+            additional_logic=lambda l: True,
         ),
         KasplatLocation(
             name="Caves Kasplat: In the room with Tiny's Bonus Barrel",

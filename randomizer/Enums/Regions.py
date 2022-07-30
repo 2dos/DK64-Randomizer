@@ -132,6 +132,7 @@ class Regions(IntEnum):
 
     # Crystal Caves Regions
     CrystalCavesMain = auto()
+    CavesSnideArea = auto()
     CavesBlueprintCave = auto()
     CavesBonusCave = auto()
     CavesBlueprintPillar = auto()
