@@ -196,6 +196,9 @@ GuardDeathHandleHook:
 ShopImageHandlerHook:
 	J 	ShopImageHandler
 	NOP
+FixPufftossInvalidWallCollisionHook:
+	J 	FixPufftossInvalidWallCollision
+	NOP
 
 loadExtraHooks:
 	LUI t3, hi(InstanceScriptHook)
@@ -209,6 +212,12 @@ loadExtraHooks:
 	LUI t4, 0x8065
 	SW t3, 0x8364 (t4) // Store Hook
 	SW r0, 0x8368 (t4) // Store NOP
+
+	LUI t3, hi(FixPufftossInvalidWallCollisionHook)
+	LW t3, lo(FixPufftossInvalidWallCollisionHook) (t3)
+	LUI t4, 0x8067
+	SW t3, 0x7C14 (t4) // Store Hook
+	SW r0, 0x7C18 (t4) // Store NOP
 
 	LUI t3, hi(SaveToFileFixesHook)
 	LW t3, lo(SaveToFileFixesHook) (t3)

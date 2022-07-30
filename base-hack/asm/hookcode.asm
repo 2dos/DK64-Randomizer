@@ -1184,5 +1184,24 @@ START_HOOK:
 		ShopImageHandler_Finish:
 			J 		0x80648370
 			NOP
+
+	FixPufftossInvalidWallCollision:
+		LW 		s0, 0x8C (s6)
+		BEQZ 	s0, FixPufftossInvalidWallCollision_Invalid
+		NOP
+		SRA 	t9, s0, 16
+		SLTIU 	t9, t9, 0x8000 // 1 if < 0x80000000
+		BNEZ 	t9, FixPufftossInvalidWallCollision_Invalid
+		NOP
+		SRA 	t9, s0, 16
+		SLTIU 	t9, t9, 0x8080 // 0 if > 0x80800000
+		BEQZ 	t9, FixPufftossInvalidWallCollision_Invalid
+		NOP
+		J 		0x80677C20
+		NOP
+
+		FixPufftossInvalidWallCollision_Invalid:
+			J 	0x80677C78
+			NOP
 .align 0x10
 END_HOOK:
