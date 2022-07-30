@@ -15,6 +15,7 @@
     "kasplat_rando_setting":"vanilla_locations",
     "kong_rando":true,
     "random_patches":true,
+    "shuffle_shops":true,
     "move_rando":"on",
     "random_prices":"low",
     "randomize_blocker_required_amounts":true,
