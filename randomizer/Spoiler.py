@@ -90,6 +90,7 @@ class Spoiler:
             settings["medal_requirement"] = self.settings.medal_requirement
         settings["random_prices"] = self.settings.random_prices
         settings["bananaport_rando"] = self.settings.bananaport_rando
+        settings["shuffle_shop_locations"] = self.settings.shuffle_shops
         settings["krool_phases"] = self.settings.krool_order
         settings["krool_access"] = self.settings.krool_access
         settings["krool_keys_required"] = self.GetKroolKeysRequired(self.settings.krool_keys_required)
