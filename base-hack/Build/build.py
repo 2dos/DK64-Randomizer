@@ -27,6 +27,7 @@ from image_converter import convertToRGBA32
 from end_seq_writer import createTextFile, createSquishFile
 from generate_yellow_wrinkly import generateYellowWrinkly
 import model_fix
+import shop_instance_script
 import instance_script_maker
 import create_helm_geo
 
@@ -865,6 +866,15 @@ with open(newROMName, "r+b") as fh:
         "standard_crate_1",
         "tiny_palette",
     ]
+    script_files = [x[0] for x in os.walk("assets/Non-Code/instance_scripts/")]
+    shop_files = ["snide.script", "cranky.script", "funky.script", "candy.script"]
+    for folder in script_files:
+        for file in os.listdir(folder):
+            file = f"{folder}/{file}"
+            for shop in shop_files:
+                if shop in file:
+                    if os.path.exists(file):
+                        os.remove(file)
     for hash_item in hash_items:
         for f_t in ["rgba5551", "png"]:
             pth = f"assets/Non-Code/hash/{hash_item}.{f_t}"

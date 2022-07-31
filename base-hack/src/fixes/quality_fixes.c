@@ -46,7 +46,7 @@ void CBDing(void) {
 				total_cbs += MovesBase[kong].cb_count[world];
 			}
 			int req_cbs = TroffNScoffReqArray[world];
-			if ((previous_total_cbs < req_cbs) && (total_cbs >= req_cbs) && (previous_world == world)) {
+			if ((previous_total_cbs < req_cbs) && (total_cbs >= req_cbs) && (previous_world == world) && (CurrentMap != 0x2A)) { // Ban in T&S because of delayed update to turn in array
 				playSFX(Bell);
 			}
 		}

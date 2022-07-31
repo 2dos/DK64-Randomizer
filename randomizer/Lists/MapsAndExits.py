@@ -217,6 +217,12 @@ class Maps(IntEnum):
     SnidesCrown = 158
     LobbyCrown = 157
 
+    # Shops
+    Cranky = 5
+    Candy = 25
+    Funky = 1
+    Snide = 15
+
 
 RegionMapList = {
     # Isles

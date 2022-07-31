@@ -163,6 +163,9 @@ extern void spawnEnemyDrops(void* actor);
 extern void* isActorLoaded(int actor_type);
 extern void beaverControlSwitchCase(int unk0, int unk1, int unk2);
 
+extern float getXRatioMovement(int dk64u_angle);
+extern float getZRatioMovement(int dk64u_angle);
+
 //vanilla data
 extern float TransitionSpeed;
 extern char CutsceneWillPlay;

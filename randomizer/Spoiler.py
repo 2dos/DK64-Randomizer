@@ -10,6 +10,7 @@ from randomizer.Enums.Levels import Levels
 from randomizer.Enums.Locations import Locations
 from randomizer.Enums.MoveTypes import MoveTypes
 from randomizer.Enums.Transitions import Transitions
+from randomizer.Enums.Regions import Regions
 from randomizer.Enums.Types import Types
 from randomizer.Lists.Item import ItemFromKong, NameFromKong, KongFromItem, ItemList
 from randomizer.Lists.Location import LocationList
@@ -89,6 +90,7 @@ class Spoiler:
             settings["medal_requirement"] = self.settings.medal_requirement
         settings["random_prices"] = self.settings.random_prices
         settings["bananaport_rando"] = self.settings.bananaport_rando
+        settings["shuffle_shop_locations"] = self.settings.shuffle_shops
         settings["krool_phases"] = self.settings.krool_order
         settings["krool_access"] = self.settings.krool_access
         settings["krool_keys_required"] = self.GetKroolKeysRequired(self.settings.krool_keys_required)
@@ -215,6 +217,34 @@ class Spoiler:
         #     humanspoiler["Bananaports"] = self.human_warp_locations
         if len(self.hint_list) > 0:
             humanspoiler["Wrinkly Hints"] = self.hint_list
+        if self.settings.shuffle_shops:
+            shop_location_dict = {}
+            for level in self.shuffled_shop_locations:
+                level_name = "Unknown Level"
+
+                level_dict = {
+                    Levels.DKIsles: "DK Isles",
+                    Levels.JungleJapes: "Jungle Japes",
+                    Levels.AngryAztec: "Angry Aztec",
+                    Levels.FranticFactory: "Frantic Factory",
+                    Levels.GloomyGalleon: "Gloomy Galleon",
+                    Levels.FungiForest: "Fungi Forest",
+                    Levels.CrystalCaves: "Crystal Caves",
+                    Levels.CreepyCastle: "Creepy Castle",
+                }
+                shop_dict = {Regions.CrankyGeneric: "Cranky", Regions.CandyGeneric: "Candy", Regions.FunkyGeneric: "Funky", Regions.Snide: "Snide"}
+                if level in level_dict:
+                    level_name = level_dict[level]
+                for shop in self.shuffled_shop_locations[level]:
+                    location_name = "Unknown Shop"
+                    shop_name = "Unknown Shop"
+                    new_shop = self.shuffled_shop_locations[level][shop]
+                    if shop in shop_dict:
+                        location_name = shop_dict[shop]
+                    if new_shop in shop_dict:
+                        shop_name = shop_dict[new_shop]
+                    shop_location_dict[f"{level_name} - {location_name}"] = shop_name
+            humanspoiler["Shop Locations"] = shop_location_dict
 
         return json.dumps(humanspoiler, indent=4)
 

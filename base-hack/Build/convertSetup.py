@@ -204,6 +204,15 @@ def modify(file_name, map_index):
                     for x in range(0x30 - 0xC):
                         repl_byte += byte_stream[x + 0xC].to_bytes(1, "big")
                     byte_stream = repl_byte
+            if map_index == 0x7 and _id == 0xC9:
+                repl_byte = b""
+                new_y = int(float_to_hex(400), 16)
+                for x in range(0x4):
+                    repl_byte += byte_stream[x].to_bytes(1, "big")
+                repl_byte += new_y.to_bytes(4, "big")
+                for x in range(0x30 - 0x8):
+                    repl_byte += byte_stream[x + 0x8].to_bytes(1, "big")
+                byte_stream = repl_byte
             data = {
                 "stream": byte_stream,
                 "type": _type,
@@ -260,6 +269,30 @@ def modify(file_name, map_index):
                 new_z = 512.886
                 writedatatoarr(byte_stream, int(float_to_hex(new_x), 16), 4, 0x0)
                 writedatatoarr(byte_stream, int(float_to_hex(new_z), 16), 4, 0x8)
+            elif map_index == 0x22 and obj_id == 4:
+                # Isles Vines
+                added_actor.append(
+                    {
+                        "base_byte_stream": byte_stream,
+                        "x": int(float_to_hex(3178.968), 16),
+                        "y": int(float_to_hex(992.493), 16),
+                        "z": int(float_to_hex(1152.631), 16),
+                        "id": 0xFF,
+                        "use_byte_stream": True,
+                    }
+                )
+            elif map_index == 0x7 and obj_id == 26:
+                # Japes Vines
+                added_actor.append(
+                    {
+                        "base_byte_stream": byte_stream,
+                        "x": int(float_to_hex(802.113), 16),
+                        "y": int(float_to_hex(632.5), 16),
+                        "z": int(float_to_hex(2258.593), 16),
+                        "id": 0xFF,
+                        "use_byte_stream": True,
+                    }
+                )
             elif map_index == 0x11 and not added_helm_faces:
                 face_z = 5423.538
                 face_hi = 160

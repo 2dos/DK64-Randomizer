@@ -26,6 +26,7 @@ from randomizer.Patching.PriceRando import randomize_prices
 from randomizer.Patching.PuzzleRando import randomize_puzzles
 from randomizer.Patching.UpdateHints import PushHints, wipeHints
 from randomizer.Patching.MiscSetupChanges import randomize_setup
+from randomizer.Patching.ShopRandomizer import ApplyShopRandomizer
 from GenTracker import generateTracker
 
 # from randomizer.Spoiler import Spoiler
@@ -346,6 +347,7 @@ def patching_response(responded_data):
     apply_kongrando_cosmetic(spoiler)
     randomize_setup(spoiler)
     randomize_puzzles(spoiler)
+    ApplyShopRandomizer(spoiler)
 
     random.seed(spoiler.settings.seed)
     randomize_music(spoiler)

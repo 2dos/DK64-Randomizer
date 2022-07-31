@@ -39,9 +39,14 @@ LogicRegions = {
         TransitionFront(Regions.CabinArea, lambda l: True),
         TransitionFront(Regions.FunkyCaves, lambda l: True),
         TransitionFront(Regions.CrankyCaves, lambda l: True),
-        TransitionFront(Regions.Snide, lambda l: l.punch),
+        TransitionFront(Regions.CavesSnideArea, lambda l: l.punch),
         TransitionFront(Regions.CavesBossLobby, lambda l: l.punch),
         TransitionFront(Regions.CavesBaboonBlast, lambda l: l.blast and l.isdonkey)  # , Transitions.CavesMainToBBlast)
+    ]),
+
+    Regions.CavesSnideArea: Region("Caves Snide Area", Levels.CrystalCaves, False, None, [], [], [
+        TransitionFront(Regions.Snide, lambda l: True),
+        TransitionFront(Regions.CavesBossLobby, lambda l: True),
     ]),
 
     Regions.CavesBlueprintCave: Region("Caves Blueprint Cave", Levels.CrystalCaves, False, None, [

@@ -243,6 +243,7 @@ void initHack(int source) {
 			*(short*)(0x806C8B42) = Rando.klaptrap_color_bbother;
 			// Expand Display List
 			*(short*)(0x805FE56A) = 8000;
+			*(short*)(0x805FE592) = 0x4100; // SLL 4 (Doubles display list size)
 			// Object Instance Scripts
 			*(int*)(0x80748064) = (int)&change_object_scripts;
 			*(int*)(0x806416BC) = 0; // Prevent parent map check in cross-map object change communications
@@ -279,8 +280,8 @@ void initHack(int source) {
 			// Boost Diddy/Tiny's Barrel Speed
 			*(float*)(0x807533A0) = 240.0f; // Diddy Ground
 			*(float*)(0x807533A8) = 240.0f; // Tiny Ground
-			*(float*)(0x807553DC) = 260.0f; // Lanky Air
-			*(float*)(0x807553E0) = 260.0f; // Tiny Air
+			*(float*)(0x807533DC) = 260.0f; // Lanky Air
+			*(float*)(0x807533E0) = 260.0f; // Tiny Air
 			// New Guard Code
 			*(short*)(0x806AF75C) = 0x1000;
 			// Gold Beaver Code
