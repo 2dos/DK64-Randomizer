@@ -55,6 +55,8 @@ def ApplyShopRandomizer(spoiler: Spoiler):
                         map_level = level
             placement_data = []
             for shop in shops_in_map:
+                if map_level not in shop_assortment.keys():
+                    continue
                 shop_data = {}
                 new_shop = shop_assortment[map_level][shop]
                 new_model = -1
