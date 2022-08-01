@@ -92,9 +92,10 @@ void decouple_moves_fixes(void) {
 		*(short*)(0x800297CE) = -69; // Flicker Threshold
 	}
 	if (CurrentMap == 0x9A) {
-		*(short*)(0x80033B26) = 0x41F0; // Jumping Around
-		*(short*)(0x800331AA) = 0x41F0; // Random Square
-		*(short*)(0x800339EE) = 0x41F0; // Stationary
+		// Change phase reset differential to 40.0f units
+		*(short*)(0x80033B26) = 0x4220; // Jumping Around
+		*(short*)(0x800331AA) = 0x4220; // Random Square
+		*(short*)(0x800339EE) = 0x4220; // Stationary
 		// *(float*)(0x80036C40) = 3.0f; // Phase 1 Jump speed
 		// *(float*)(0x80036C44) = 3.0f; // Phase 2
 		// *(float*)(0x80036C48) = 3.0f; // ...

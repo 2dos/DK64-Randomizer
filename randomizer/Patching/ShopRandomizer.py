@@ -179,42 +179,34 @@ def ApplyShopRandomizer(spoiler: Spoiler):
                 ROM().seek(setup_item + 0x8)
                 model_z = intf_to_float(int.from_bytes(ROM().readBytes(4), "big"))
                 # Get Base Zone X and Z
+                if model_x < 0:
+                    model_x = int(model_x) + 65536
+                else:
+                    model_x = int(model_x)
+                if model_z < 0:
+                    model_z = int(model_z) + 65536
+                else:
+                    model_z = int(model_z)
                 ROM().seek(zone_item)
-                zone_x = ushort_to_short(int.from_bytes(ROM().readBytes(2), "big"))
+                ROM().writeMultipleBytes(model_x, 2)
                 ROM().seek(zone_item + 0x4)
-                zone_z = ushort_to_short(int.from_bytes(ROM().readBytes(2), "big"))
-                # Get Base Distance
-                dx = zone_x - model_x
-                dz = zone_z - model_z
-                base_dist = math.sqrt((dx * dx) + (dz * dz))
-                # Get New Model -> LZ distance
-                base_model_scale = 1
+                ROM().writeMultipleBytes(model_z, 2)
+                # Overwrite new radius
+                base_model_scale = 88
                 if placement["replace_model"] == 0x73:
                     # Cranky
-                    base_model_scale = 35
+                    base_model_scale = 50
                 elif placement["replace_model"] == 0x7A:
                     # Funky
-                    base_model_scale = 43
+                    base_model_scale = 55
                 elif placement["replace_model"] == 0x124:
                     # Candy
-                    base_model_scale = 35
+                    base_model_scale = 40.1
                 elif placement["replace_model"] == 0x79:
                     # Snide
-                    base_model_scale = 50
-                dist_aim = base_model_scale * new_scale
-                dist_ratio = dist_aim / base_dist
-                new_dx = dx * dist_ratio
-                new_dz = dz * dist_ratio
-                new_x = model_x + new_dx
-                new_z = model_z + new_dz
-                if new_x < 0:
-                    new_x += 65536
-                if new_z < 0:
-                    new_z += 65536
-                ROM().seek(zone_item + 0x0)
-                ROM().writeMultipleBytes(new_x, 2)
-                ROM().seek(zone_item + 0x4)
-                ROM().writeMultipleBytes(new_z, 2)
+                    base_model_scale = 87.5
+                ROM().seek(zone_item + 0x6)
+                ROM().writeMultipleBytes(int(base_model_scale * new_scale), 2)
                 # Loading Zone
                 ROM().seek(zone_item + 0x12)
                 ROM().writeMultipleBytes(placement["replace_zone"], 2)
