@@ -120,29 +120,29 @@ MinigameRequirements = {
     Minigames.PerilPathPanicNormal: Minigame(name="Peril Path Panic (10 points)", map_id=Maps.PerilPathPanicNormal, difficulty_lvl=2, logic=lambda l: True),
     Minigames.PerilPathPanicHard: Minigame(name="Peril Path Panic (12 points)", map_id=Maps.PerilPathPanicHard, difficulty_lvl=3, logic=lambda l: True),
     # Helm barrels
-    Minigames.DonkeyRambi: Minigame(name="Hideout Helm: DK Rambi", map_id=Maps.HelmBarrelDKRambi, can_repeat=False, logic=lambda l: True),
-    Minigames.DonkeyTarget: Minigame(name="Hideout Helm: DK Targets", map_id=Maps.HelmBarrelDKTarget, can_repeat=False, logic=lambda l: l.isdonkey),
-    Minigames.DiddyKremling: Minigame(name="Hideout Helm: Diddy Kremlings", map_id=Maps.HelmBarrelDiddyKremling, can_repeat=False, logic=lambda l: l.Slam),
+    Minigames.DonkeyRambi: Minigame(name="Hideout Helm: DK Rambi", map_id=Maps.HelmBarrelDKRambi, can_repeat=True, logic=lambda l: True),
+    Minigames.DonkeyTarget: Minigame(name="Hideout Helm: DK Targets", map_id=Maps.HelmBarrelDKTarget, can_repeat=True, logic=lambda l: l.isdonkey),
+    Minigames.DiddyKremling: Minigame(name="Hideout Helm: Diddy Kremlings", map_id=Maps.HelmBarrelDiddyKremling, can_repeat=True, logic=lambda l: l.Slam),
     Minigames.DiddyRocketbarrel: Minigame(
-        name="Hideout Helm: Diddy Rocketbarrel", map_id=Maps.HelmBarrelDiddyRocketbarrel, can_repeat=False, logic=lambda l: l.Slam and l.jetpack and l.peanut and l.isdiddy
+        name="Hideout Helm: Diddy Rocketbarrel", map_id=Maps.HelmBarrelDiddyRocketbarrel, can_repeat=True, logic=lambda l: l.Slam and l.jetpack and l.peanut and l.isdiddy
     ),
     # Supposed to use sprint but can make it without), even with Chunky
-    Minigames.LankyMaze: Minigame(name="Hideout Helm: Lanky Maze", map_id=Maps.HelmBarrelLankyMaze, can_repeat=False, logic=lambda l: True),
+    Minigames.LankyMaze: Minigame(name="Hideout Helm: Lanky Maze", map_id=Maps.HelmBarrelLankyMaze, can_repeat=True, logic=lambda l: True),
     Minigames.LankyShooting: Minigame(
         name="Hideout Helm: Lanky Shooting",
         map_id=Maps.HelmBarrelLankyShooting,
-        can_repeat=False,
+        can_repeat=True,
         logic=lambda l: (l.isdonkey and l.coconut) or (l.isdiddy and l.peanut) or (l.islanky and l.grape) or (l.istiny and l.feather) or (l.ischunky and l.pineapple),
     ),
-    Minigames.TinyMushroom: Minigame(name="Hideout Helm: Tiny Mushroom", map_id=Maps.HelmBarrelTinyMush, helm_enabled=True, can_repeat=False, logic=lambda l: True),
-    Minigames.TinyPonyTailTwirl: Minigame(name="Hideout Helm: Tiny Ponytail Twirl", map_id=Maps.HelmBarrelTinyPTT, helm_enabled=True, can_repeat=False, logic=lambda l: l.twirl and l.istiny),
+    Minigames.TinyMushroom: Minigame(name="Hideout Helm: Tiny Mushroom", map_id=Maps.HelmBarrelTinyMush, helm_enabled=True, can_repeat=True, logic=lambda l: True),
+    Minigames.TinyPonyTailTwirl: Minigame(name="Hideout Helm: Tiny Ponytail Twirl", map_id=Maps.HelmBarrelTinyPTT, helm_enabled=True, can_repeat=True, logic=lambda l: l.twirl and l.istiny),
     Minigames.ChunkyHiddenKremling: Minigame(
-        name="Hideout Helm: Chunky Hidden Kremling", map_id=Maps.HelmBarrelChunkyHidden, helm_enabled=True, can_repeat=False, logic=lambda l: l.hunkyChunky and l.punch and l.ischunky
+        name="Hideout Helm: Chunky Hidden Kremling", map_id=Maps.HelmBarrelChunkyHidden, helm_enabled=True, can_repeat=True, logic=lambda l: l.hunkyChunky and l.punch and l.ischunky
     ),
     Minigames.ChunkyShooting: Minigame(
         name="Hideout Helm: Chunky Shooting",
         map_id=Maps.HelmBarrelChunkyShooting,
-        can_repeat=False,
+        can_repeat=True,
         logic=lambda l: (l.scope or l.homing or l.settings.hard_shooting)
         and ((l.isdonkey and l.coconut) or (l.isdiddy and l.peanut) or (l.islanky and l.grape) or (l.istiny and l.feather) or (l.ischunky and l.pineapple)),
     ),

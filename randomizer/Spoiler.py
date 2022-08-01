@@ -202,7 +202,7 @@ class Spoiler:
                 phase_names.append(f"Phase {phase+1}")
             humanspoiler["Shuffled Kutout Phases"] = ", ".join(phase_names)
 
-        if self.settings.bonus_barrels in ("random", "all_beaver_bother"):
+        if self.settings.bonus_barrels in ("random", "selected"):
             shuffled_barrels = OrderedDict()
             for location, minigame in self.shuffled_barrel_data.items():
                 if location in HelmMinigameLocations and self.settings.helm_barrels == "skip":

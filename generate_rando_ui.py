@@ -34,6 +34,10 @@ async def initialize():
         register_hook("/")
     except Exception:
         pass
+
+    # Module of Lists used for list_selector macro
+    import data_module
+
     js.listeners = []
     js.progression_presets = []
     js.background_worker = None
@@ -55,7 +59,7 @@ async def initialize():
 
     templateEnv = Environment(loader=FunctionLoader(loader_func), enable_async=True)
     template = templateEnv.get_template("base.html.jinja2")
-    rendered = await template.render()
+    rendered = await template.render(data_module=data_module)
     js.document.documentElement.innerHTML = ""
     js.document.open()
     js.document.write(rendered)
