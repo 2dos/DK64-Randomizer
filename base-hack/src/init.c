@@ -286,6 +286,8 @@ void initHack(int source) {
 			*(short*)(0x806AF75C) = 0x1000;
 			// Gold Beaver Code
 			*(int*)(0x8074C3F0) = (int)&goldBeaverCode;
+			// Spider Projectile
+			*(int*)(0x806ADDC0) = 0x0C000000 | (((int)&handleSpiderTrapCode & 0xFFFFFF) >> 2);
 			initItemDropTable();
 			LoadedHooks = 1;
 		}

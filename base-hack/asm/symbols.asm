@@ -152,6 +152,8 @@
 .definelabel spawnEnemyDrops, 0x806A5C60
 .definelabel isActorLoaded, 0x8067ADB4
 .definelabel beaverControlSwitchCase, 0x806AD260
+.definelabel spawnProjectile, 0x80690A28
+.definelabel updateActorProjectileInfo, 0x80690814
 
 //vanilla data
 .definelabel TransitionSpeed, 0x807FD88C
