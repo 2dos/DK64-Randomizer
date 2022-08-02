@@ -65,7 +65,7 @@ void handleSpiderTrapCode(void) {
         int rng = 0;
         if (CurrentActorPointer_0->control_state == 0x23) {
             rng = getRNGLower31();
-            if (950 < ((rng >> 0xF) % 1000)) { // Chance they are gonna goop you (20%)
+            if (949 < ((rng >> 0xF) % 1000)) { // Chance they are gonna goop you (5%)
                 if (CurrentActorPointer_0->grounded & 1) {
                     CurrentActorPointer_0->control_state = 0x28;
                     CurrentActorPointer_0->control_state_progress = 0;
@@ -83,7 +83,14 @@ void handleSpiderTrapCode(void) {
                 if (in_bad_state == 0) {
                     updateActorProjectileInfo(CurrentActorPointer_0,1);
                     rng = getRNGLower31();
-                    spawnProjectile(0x116, ((rng >> 0xF) % 3) + 1, 0x3F800000, PlayerPointer_0->xPos, PlayerPointer_0->yPos + PlayerPointer_0->height_offset, PlayerPointer_0->zPos, 300.0f, CurrentActorPointer_0);
+					int rng_target_diff = ((getRNGLower31() >> 0xF) % 2000);
+					float target_diff = (rng_target_diff / 1000) + 10.0f;
+					float diff_x = getXRatioMovement(PlayerPointer_0->rot_y) * target_diff;
+					float diff_z = getZRatioMovement(PlayerPointer_0->rot_y) * target_diff;
+					float target_x = PlayerPointer_0->xPos + diff_x;
+					float target_y = PlayerPointer_0->yPos + PlayerPointer_0->height_offset;
+					float target_z = PlayerPointer_0->zPos + diff_z;
+                    spawnProjectile(0x116, ((rng >> 0xF) % 3) + 1, 0x3F800000, target_x, target_y, target_z, 300.0f, CurrentActorPointer_0);
                 }
             }
         }
