@@ -198,6 +198,16 @@ void earlyFrame(void) {
 				}
 			}
 		}
+	} else if (CurrentMap == 0x9A) {
+		if ((CutsceneActive == 1) && ((CutsceneStateBitfield & 4) == 0)) {
+			if ((CutsceneIndex == 8) || (CutsceneIndex == 2) || (CutsceneIndex == 16) || (CutsceneIndex == 18) || (CutsceneIndex == 17)) {
+				// Falling off Mad Jack
+				if (Player) {
+					Player->control_state = 0xC;
+					Player->hSpeed = 0;
+				}
+			}
+		}
 	}
 	// Cutscene DK Code
 	if ((CurrentMap == 0x28) || (CurrentMap == 0x4C)) {
