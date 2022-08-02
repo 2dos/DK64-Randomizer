@@ -71,7 +71,7 @@ typedef struct varspace {
 	/* 0x132 */ unsigned short museum_to_ballroom; // Same as "aztec_beetle_enter" but for the loading zone dictated by the nametc
 	/* 0x134 */ char shop_indicator_on; // 0 = Off, 1 = Render amount of moves that can be purchased from that shop
 	/* 0x135 */ char warp_to_isles_enabled; // 0 = Off, 1 = Add Warp to Isles option
-	/* 0x136 */ char klaptrap_color_bbother; // 0 = Green, 1 = Purple, 2 = Red
+	/* 0x136 */ unsigned char klaptrap_color_bbother; // 0 = Green, 1 = Purple, 2 = Red
 	/* 0x137 */ char open_level_sections; // 0 = Off, 1 = On
 	/* 0x138 */ char activate_all_bananaports; // 0 = Vanilla, 1 = Most bananaports are activated from the start
 	/* 0x139 */ char dpad_visual_enabled; // 0 = Vanilla, 1 = Visual shown

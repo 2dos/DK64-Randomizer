@@ -108,4 +108,5 @@ extern void initItemDropTable(void);
 extern void newGuardCode(void);
 extern void goldBeaverCode(void);
 extern void CBDing(void);
+extern void handleSpiderTrapCode(void);
 //extern void getRandoNextMovePurchase(shop_paad* shop_info, KongBase* moves);

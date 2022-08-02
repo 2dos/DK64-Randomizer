@@ -165,6 +165,8 @@ extern void beaverControlSwitchCase(int unk0, int unk1, int unk2);
 
 extern float getXRatioMovement(int dk64u_angle);
 extern float getZRatioMovement(int dk64u_angle);
+extern void updateActorProjectileInfo(void* actor, int unk0);
+extern void spawnProjectile(short object, short subtype, int speed, float x, float y, float z, float unk0, void* actor);
 
 //vanilla data
 extern float TransitionSpeed;

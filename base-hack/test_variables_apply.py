@@ -47,9 +47,9 @@ set_variables = {
     "fast_gbs": 1,
     "remove_high_requirements": 1,
     "open_level_sections": 1,
-    "auto_keys": 1,
-    "test_zone": [0x26, 2],
-    "klaptrap_color_bbother": 0x23,
+    "auto_keys": 0,
+    "test_zone": [0x68, 2],
+    "klaptrap_color_bbother": 0x96,
     "kut_out_phases": [3, 1, 0],
     "dpad_visual_enabled": 1,
     "special_move_prices": [
