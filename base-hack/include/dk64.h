@@ -340,6 +340,7 @@ extern unsigned char collisionActive;
 extern actorData* PlayerPointer_0;
 extern SpawnerInfo* currentCharSpawner;
 extern short EnemiesKilledCounter;
+extern model2_collision_info ModelTwoCollisionArray[42];
 
 //hack data
 extern int TestVariable;

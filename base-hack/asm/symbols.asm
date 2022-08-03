@@ -327,6 +327,7 @@
 
 .definelabel getXRatioMovement, 0x80612794
 .definelabel getZRatioMovement, 0x80612790
+.definelabel ModelTwoCollisionArray, 0x80753EF0
 
 //hack data
 .definelabel TestVariable, 0x807FFFFC
