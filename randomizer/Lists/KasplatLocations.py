@@ -10,12 +10,11 @@ from randomizer.Enums.Kongs import Kongs
 class KasplatLocation:
     """Class which stores name and logic for a kasplat location."""
 
-    def __init__(self, *, name="No Location", map_id=0, kong_lst=[], logic=0, coords=[0, 0, 0], xmin=0, xmax=0, zmin=0, zmax=0, region, additional_logic=None, vanilla=False):
+    def __init__(self, *, name="No Location", map_id=0, kong_lst=[], coords=[0, 0, 0], xmin=0, xmax=0, zmin=0, zmax=0, region, additional_logic=None, vanilla=False):
         """Initialize with given parameters."""
         self.name = name
         self.map = map_id
         self.kong_lst = kong_lst
-        self.logic = logic
         self.coords = coords
         self.bounds = [xmin, xmax, zmin, zmax]
         self.selected = False
