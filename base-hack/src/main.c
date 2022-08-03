@@ -169,11 +169,6 @@ void earlyFrame(void) {
 			PauseText = 1;
 		}
 	}
-	if (CurrentMap == 1) {
-		if ((CutsceneActive) && (CutsceneIndex == 2)) {
-			CutsceneBarState = 20;
-		}
-	}
 	if ((CurrentMap == 5) || (CurrentMap == 1) || (CurrentMap == 0x19)) {
 		if ((CutsceneActive) && (CutsceneIndex == 2)) {
 			updateProgressive();

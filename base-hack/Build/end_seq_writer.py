@@ -58,7 +58,7 @@ end_sequence_cards = [
             "duration": names_length,
             "cooldown": general_buffer,
         },
-        "text": ["Almost Seagull", "GloriousLiar"],
+        "text": ["AlmostSeagull", "GloriousLiar"],
     },
     {
         "squish": {
