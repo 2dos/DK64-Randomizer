@@ -17,17 +17,20 @@ new_block = []
 new_conds = []
 new_execs = []
 
+
 class bcolors:
     """Color codes for printing to console."""
-    HEADER = '\033[95m'
-    OKBLUE = '\033[94m'
-    OKCYAN = '\033[96m'
-    OKGREEN = '\033[92m'
-    WARNING = '\033[93m'
-    FAIL = '\033[91m'
-    ENDC = '\033[0m'
-    BOLD = '\033[1m'
-    UNDERLINE = '\033[4m'
+
+    HEADER = "\033[95m"
+    OKBLUE = "\033[94m"
+    OKCYAN = "\033[96m"
+    OKGREEN = "\033[92m"
+    WARNING = "\033[93m"
+    FAIL = "\033[91m"
+    ENDC = "\033[0m"
+    BOLD = "\033[1m"
+    UNDERLINE = "\033[4m"
+
 
 def resetCond(reset_block):
     """Reset block data with relation to script."""
@@ -46,6 +49,7 @@ def resetCond(reset_block):
     new_block = []
     new_conds = []
     new_execs = []
+
 
 print("\nCOMPILING SCRIPTS")
 with open(base_rom, "rb") as fh:
