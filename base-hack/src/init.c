@@ -188,7 +188,8 @@ void initHack(int source) {
 				int new_vine_exit_speed = 200;
 				*(short*)(0x8075037C) = new_vine_exit_speed;
 				*(short*)(0x80750380) = new_vine_exit_speed;
-				*(short*)(0x80698EEE) = 0x4348; // 170.0f
+				*(short*)(0x80698EEE) = 0x4348; // 200.0f
+				*(short*)(0x806DCD3E) = 0x4348; // 200.0f
 				// Lower Aztec Lobby Bonus
 				*(short*)(0x80680D56) = 0x7C; // 0x89 if this needs to be unreachable without PTT
 				// Fast Vulture

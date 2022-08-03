@@ -17,6 +17,17 @@ new_block = []
 new_conds = []
 new_execs = []
 
+class bcolors:
+    """Color codes for printing to console."""
+    HEADER = '\033[95m'
+    OKBLUE = '\033[94m'
+    OKCYAN = '\033[96m'
+    OKGREEN = '\033[92m'
+    WARNING = '\033[93m'
+    FAIL = '\033[91m'
+    ENDC = '\033[0m'
+    BOLD = '\033[1m'
+    UNDERLINE = '\033[4m'
 
 def resetCond(reset_block):
     """Reset block data with relation to script."""
@@ -36,7 +47,7 @@ def resetCond(reset_block):
     new_conds = []
     new_execs = []
 
-
+print("\nCOMPILING SCRIPTS")
 with open(base_rom, "rb") as fh:
     fh.seek(pointer_table_offset + (10 * 4))
     script_table = pointer_table_offset + int.from_bytes(fh.read(4), "big")
@@ -126,10 +137,10 @@ with open(base_rom, "rb") as fh:
                                                 else:
                                                     val = int(val)
                                                 script_data[attr] = val
-                                pre_message = "Ignoring"
+                                pre_message = f"{bcolors.WARNING}Ignoring"
                                 if script_data["ignore"] == 0:
-                                    pre_message = "Compiling"
-                                print(f"{pre_message} {file.replace('.script','')} ({hex(script_data['id'])})")
+                                    pre_message = f"{bcolors.OKGREEN}Compiling"
+                                print(f"{pre_message} {file.replace('.script','')} ({hex(script_data['id'])}){bcolors.ENDC}")
                                 if contains_code and code_start > -1:
                                     resetCond(True)
                                     for code_line in script_info[code_start:]:
