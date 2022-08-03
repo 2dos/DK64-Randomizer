@@ -56,7 +56,7 @@ LogicRegions = {
     ]),
 
     Regions.CavesBonusCave: Region("Caves Bonus Cave", Levels.CrystalCaves, False, None, [
-        LocationLogic(Locations.CavesTinyCaveBarrel, lambda l: True, MinigameType.BonusBarrel),
+        LocationLogic(Locations.CavesTinyCaveBarrel, lambda l: l.istiny, MinigameType.BonusBarrel),
     ], [], [
         TransitionFront(Regions.CrystalCavesMain, lambda l: l.mini and l.istiny)
     ]),

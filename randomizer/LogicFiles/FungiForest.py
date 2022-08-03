@@ -235,7 +235,7 @@ LogicRegions = {
         LocationLogic(Locations.ForestTinyBeanstalk, lambda l: Events.Bean in l.Events and l.saxophone and l.mini and l.tiny),
         LocationLogic(Locations.ForestChunkyApple, lambda l: l.hunkyChunky and l.chunky),
     ], [], [
-        TransitionFront(Regions.FungiForestStart, lambda l: True),
+        TransitionFront(Regions.FungiForestStart, lambda l: Events.WormGatesOpened in l.Events),
         TransitionFront(Regions.FunkyForest, lambda l: True),
         TransitionFront(Regions.ForestBossLobby, lambda l: True, time=Time.Night),
     ]),
