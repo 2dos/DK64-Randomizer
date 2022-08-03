@@ -230,7 +230,7 @@ void earlyFrame(void) {
 			preventSongPlaying = 0;
 		}
 		int loaded = *(char*)(0x807F01A6);
-		if ((loaded) || (FrameLag > 800)) {
+		if ((loaded) || (ObjectModel2Timer > 800)) {
 			if (has_loaded == 0) {
 				initiateTransitionFade(0x50, 0, 5);
 				has_loaded = 1;

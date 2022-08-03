@@ -122,12 +122,12 @@ def compileHints(spoiler: Spoiler):
     resetHintList()
     all_levels = [Levels.JungleJapes, Levels.AngryAztec, Levels.FranticFactory, Levels.GloomyGalleon, Levels.FungiForest, Levels.CrystalCaves, Levels.CreepyCastle]
     # K Rool Order
-    if spoiler.settings.krool_phase_order_rando:
+    if spoiler.settings.krool_phase_order_rando and len(spoiler.settings.krool_order) > 1:
         associated_hint = f"K. Rool order is {NameFromKong(spoiler.settings.krool_order[0])}"
         for x in range(len(spoiler.settings.krool_order)):
             if x != 0:
                 associated_hint += f" then {NameFromKong(spoiler.settings.krool_order[x])}"
-        hint_list.append(Hint(hint=associated_hint, repeats=3, kongs=spoiler.settings.krool_order.copy()))
+        hint_list.append(Hint(hint=associated_hint, repeats=2, kongs=spoiler.settings.krool_order.copy()))
     # K. Rool Moves
     kong_list = ["Donkey", "Diddy", "Lanky", "Tiny", "Chunky"]
     kong_cryptic = [
@@ -158,6 +158,7 @@ def compileHints(spoiler: Spoiler):
         ],
     ]
     level_list = ["Jungle Japes", "Angry Aztec", "Frantic Factory", "Gloomy Galleon", "Fungi Forest", "Crystal Caves", "Creepy Castle", "Hideout Helm"]
+    level_list_isles = ["Jungle Japes", "Angry Aztec", "Frantic Factory", "Gloomy Galleon", "Fungi Forest", "Crystal Caves", "Creepy Castle", "DK Isles"]
     level_cryptic = [
         [
             "The level with a localized storm",
@@ -180,6 +181,11 @@ def compileHints(spoiler: Spoiler):
         ["The level with constant rain", "The level with a dungeon, ballroom and a library", "The level with drawbridge and a moat"],
         ["The timed level", "The level with no boss", "The level with no small bananas"],
     ]
+    # Make Isles Versions
+    level_cryptic_isles = level_cryptic.copy()
+    level_cryptic_isles.remove(level_cryptic_isles[-1])
+    level_cryptic_isles.append(["The hub world", "The world with DK's ugly mug on it", "The world with only a Cranky's Lab and Snide's HQ in it"])
+
     if spoiler.settings.shuffle_items == "moves" and spoiler.move_data is not None:
         krool_move_requirements = [0, 2, 1, 1, 4]
         total_moves_for_krool = 0
@@ -451,7 +457,7 @@ def compileHints(spoiler: Spoiler):
         shop_contains = {}
         for shop in range(3):
             for kong in range(5):
-                for level in range(7):
+                for level in range(8):
                     for move in moves_of_importance:
                         if spoiler.move_data[shop][kong][level] == move["key"]:
                             move["level"] = level
@@ -460,7 +466,7 @@ def compileHints(spoiler: Spoiler):
                             if spoiler.settings.wrinkly_hints == "cryptic":
                                 shop_level_name = f"{shop_owners[shop]}'s in {level}"
                             else:
-                                shop_level_name = f"{level_list[level]} {shop_owners[shop]}"
+                                shop_level_name = f"{level_list_isles[level]} {shop_owners[shop]}"
                             is_shared = False
                             if "shared" in move:
                                 is_shared = move["shared"]
@@ -483,7 +489,7 @@ def compileHints(spoiler: Spoiler):
             shop_name = shop
             if "'s in " in shop_name:
                 level_index = int(shop_name.split("'s in ")[1].strip())
-                shop_name = random.choice(level_cryptic[level_index])
+                shop_name = random.choice(level_cryptic_isles[level_index])
             if len(shop_contains[shop]["moves"]) > 2:
                 item_names = ", ".join(shop_contains[shop]["moves"][:-1])
                 item_names = f"{item_names} and {shop_contains[shop]['moves'][-1]}"
@@ -673,9 +679,25 @@ def compileHints(spoiler: Spoiler):
                     permitted_levels.append(y)
         hint_list.append(Hint(hint=f"The barrier to the boss in {level_name} can be cleared by obtaining {count} {cb_name}.", important=False, permitted_levels=permitted_levels.copy()))
     # Write Hints
+    # 1 Joke Hint
+    joke_hints = []
+    for hint in hint_list:
+        if not hint.important and not hint.used and hint.base:
+            joke_hints.append(hint)
+    random_joke_hint = random.choice(joke_hints)
+    placed = False
+    joke_hint_count = 0
+    while not placed:
+        placed = updateRandomHint(random_joke_hint.hint, random_joke_hint.kongs.copy(), random_joke_hint.keywords.copy(), random_joke_hint.permitted_levels.copy())
+        if placed:
+            random_joke_hint.use_hint()
+            joke_hint_count += 1
+            break
+    # Important
     random.shuffle(hint_list)
     priority_level = 1
     no_important_hints = False
+    important_hint_count = 0
     while not no_important_hints:
         found_important = False
         for hint in hint_list:
@@ -684,22 +706,24 @@ def compileHints(spoiler: Spoiler):
                 placed = updateRandomHint(hint.hint, hint.kongs.copy(), hint.keywords.copy(), hint.permitted_levels.copy())
                 if placed:
                     hint.use_hint()
+                    important_hint_count += 1
                 else:
                     hint.downgrade()
         if not found_important:
             no_important_hints = True
         priority_level += 1
+    # Unimportant
     joke_hints = []
-    vacant_slots = 35
+    vacant_slots = 0
     for hint in hint_list:
-        if not hint.important and not hint.used:
+        if not hint.important and not hint.used and not hint.base:
             joke_hints.append(hint)
-        if hint.used:
-            vacant_slots -= 1
-            if vacant_slots < 0:
-                vacant_slots = 0
+    for hint in hints:
+        if hint.hint == "":
+            vacant_slots += 1
     random.shuffle(joke_hints)
-    print(f"{vacant_slots} unimportant hints placed ({int((vacant_slots * 100)/35)}%)")
+    unimportant_hint_count = 0
+    error_hint_count = 0
     if vacant_slots > 0:
         slot = 0
         tries = 100
@@ -709,7 +733,8 @@ def compileHints(spoiler: Spoiler):
             if not joke_hints[usage_slot].used:
                 placed = updateRandomHint(joke_hints[usage_slot].hint, joke_hints[usage_slot].kongs, joke_hints[usage_slot].keywords.copy(), joke_hints[usage_slot].permitted_levels.copy())
             if placed:
-                hint.use_hint()
+                joke_hints[usage_slot].use_hint()
+                unimportant_hint_count += 1
                 slot += 1
             else:
                 tries -= 1
@@ -720,8 +745,11 @@ def compileHints(spoiler: Spoiler):
                 for hint in hints:
                     if hint.hint == "":
                         hint.hint = "I have so little to tell you that this hint got placed here. If you see this, please report with your spoiler log in the bug reports channel in the DK64 Randomizer discord."
+                        error_hint_count += 1
                 slot = vacant_slots
-
+    print(
+        f"Hint Distribution | Important: {important_hint_count}, Unimportant: {unimportant_hint_count}, Jokes: {joke_hint_count}, Errors: {error_hint_count}, Total Good: {important_hint_count + unimportant_hint_count + joke_hint_count}"
+    )
     UpdateSpoilerHintList(spoiler)
     return True
 

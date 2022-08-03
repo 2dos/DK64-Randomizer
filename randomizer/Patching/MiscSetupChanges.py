@@ -242,7 +242,6 @@ def randomize_setup(spoiler: Spoiler):
                                 ROM().writeMultipleBytes(coord_val, 4)
                             new_rot = subtype["positions"][index]["rotation"]
                             rot_diff = ((base_rot - new_rot) + 4) % 4
-                            print(f"Number {offset['number']} - Rotation Diff: {rot_diff}")
                             if subtype_name == "center":
                                 rot_diff = random.randint(0, 3)
                             ROM().seek(offset["offset"] + 0x1C)
