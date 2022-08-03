@@ -308,32 +308,33 @@ def randomize_enemies(spoiler: Spoiler):
                             if cont_map_id != Maps.FranticFactory or spawner["index"] < 35 or spawner["index"] > 44:
                                 new_enemy_id = arr[sub_index]
                                 sub_index += 1
-                                if new_enemy_id != Enemies.Book or cont_map_id not in (Maps.CavesDonkeyCabin, Maps.JapesLankyCave, Maps.AngryAztecLobby):
-                                    if new_enemy_id != Enemies.Kosha or cont_map_id != Maps.CavesDiddyLowerCabin:
-                                        if new_enemy_id != Enemies.Guard or cont_map_id not in (Maps.CavesDiddyLowerCabin, Maps.CavesTinyIgloo, Maps.CavesTinyCabin):
-                                            ROM().seek(cont_map_spawner_address + spawner["offset"])
-                                            ROM().writeMultipleBytes(new_enemy_id, 1)
-                                            if new_enemy_id in EnemyMetaData.keys():
-                                                ROM().seek(cont_map_spawner_address + spawner["offset"] + 0x10)
-                                                ROM().writeMultipleBytes(EnemyMetaData[new_enemy_id].aggro, 1)
-                                                if new_enemy_id == Enemies.RoboKremling:
-                                                    ROM().seek(cont_map_spawner_address + spawner["offset"] + 0xB)
-                                                    ROM().writeMultipleBytes(0xC8, 1)
-                                                ROM().seek(cont_map_spawner_address + spawner["offset"] + 0xF)
-                                                default_scale = int.from_bytes(ROM().readBytes(1), "big")
-                                                if EnemyMetaData[new_enemy_id].size_cap > 0:
-                                                    if default_scale > EnemyMetaData[new_enemy_id].size_cap:
-                                                        ROM().seek(cont_map_spawner_address + spawner["offset"] + 0xF)
-                                                        ROM().writeMultipleBytes(EnemyMetaData[new_enemy_id].size_cap, 1)
-                                                if spoiler.settings.enemy_speed_rando:
-                                                    min_speed = EnemyMetaData[new_enemy_id].min_speed
-                                                    max_speed = EnemyMetaData[new_enemy_id].max_speed
-                                                    if min_speed > 0 and max_speed > 0:
-                                                        ROM().seek(cont_map_spawner_address + spawner["offset"] + 0xD)
-                                                        agg_speed = random.randint(min_speed, max_speed)
-                                                        ROM().writeMultipleBytes(agg_speed, 1)
-                                                        ROM().seek(cont_map_spawner_address + spawner["offset"] + 0xC)
-                                                        ROM().writeMultipleBytes(random.randint(min_speed, agg_speed), 1)
+                                if cont_map_id != Maps.ForestSpider or EnemyMetaData[new_enemy_id].aggro != 4:  # Prevent enemies being stuck in the ceiling
+                                    if new_enemy_id != Enemies.Book or cont_map_id not in (Maps.CavesDonkeyCabin, Maps.JapesLankyCave, Maps.AngryAztecLobby):
+                                        if new_enemy_id != Enemies.Kosha or cont_map_id != Maps.CavesDiddyLowerCabin:
+                                            if new_enemy_id != Enemies.Guard or cont_map_id not in (Maps.CavesDiddyLowerCabin, Maps.CavesTinyIgloo, Maps.CavesTinyCabin):
+                                                ROM().seek(cont_map_spawner_address + spawner["offset"])
+                                                ROM().writeMultipleBytes(new_enemy_id, 1)
+                                                if new_enemy_id in EnemyMetaData.keys():
+                                                    ROM().seek(cont_map_spawner_address + spawner["offset"] + 0x10)
+                                                    ROM().writeMultipleBytes(EnemyMetaData[new_enemy_id].aggro, 1)
+                                                    if new_enemy_id == Enemies.RoboKremling:
+                                                        ROM().seek(cont_map_spawner_address + spawner["offset"] + 0xB)
+                                                        ROM().writeMultipleBytes(0xC8, 1)
+                                                    ROM().seek(cont_map_spawner_address + spawner["offset"] + 0xF)
+                                                    default_scale = int.from_bytes(ROM().readBytes(1), "big")
+                                                    if EnemyMetaData[new_enemy_id].size_cap > 0:
+                                                        if default_scale > EnemyMetaData[new_enemy_id].size_cap:
+                                                            ROM().seek(cont_map_spawner_address + spawner["offset"] + 0xF)
+                                                            ROM().writeMultipleBytes(EnemyMetaData[new_enemy_id].size_cap, 1)
+                                                    if spoiler.settings.enemy_speed_rando:
+                                                        min_speed = EnemyMetaData[new_enemy_id].min_speed
+                                                        max_speed = EnemyMetaData[new_enemy_id].max_speed
+                                                        if min_speed > 0 and max_speed > 0:
+                                                            ROM().seek(cont_map_spawner_address + spawner["offset"] + 0xD)
+                                                            agg_speed = random.randint(min_speed, max_speed)
+                                                            ROM().writeMultipleBytes(agg_speed, 1)
+                                                            ROM().seek(cont_map_spawner_address + spawner["offset"] + 0xC)
+                                                            ROM().writeMultipleBytes(random.randint(min_speed, agg_speed), 1)
             if spoiler.settings.enemy_rando and cont_map_id in minigame_maps_total:
                 tied_enemy_list = []
                 if cont_map_id in minigame_maps_easy:

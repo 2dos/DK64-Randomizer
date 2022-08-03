@@ -169,11 +169,6 @@ void earlyFrame(void) {
 			PauseText = 1;
 		}
 	}
-	if (CurrentMap == 1) {
-		if ((CutsceneActive) && (CutsceneIndex == 2)) {
-			CutsceneBarState = 20;
-		}
-	}
 	if ((CurrentMap == 5) || (CurrentMap == 1) || (CurrentMap == 0x19)) {
 		if ((CutsceneActive) && (CutsceneIndex == 2)) {
 			updateProgressive();
@@ -235,7 +230,7 @@ void earlyFrame(void) {
 			preventSongPlaying = 0;
 		}
 		int loaded = *(char*)(0x807F01A6);
-		if ((loaded) || (FrameLag > 800)) {
+		if ((loaded) || (ObjectModel2Timer > 800)) {
 			if (has_loaded == 0) {
 				initiateTransitionFade(0x50, 0, 5);
 				has_loaded = 1;

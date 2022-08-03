@@ -481,7 +481,7 @@ file_dict.append(
 )
 
 
-print("DK64 Extractor")
+print("\nDK64 Extractor\nBuilt by Isotarge")
 
 with open(ROMName, "rb") as fh:
     print("[1 / 7] - Parsing pointer tables")
