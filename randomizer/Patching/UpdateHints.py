@@ -79,7 +79,6 @@ def updateRandomHint(message: str, kongs_req=[], keywords=[], levels=[]):
                 hint_pool.append(x)
     if len(hint_pool) > 0:
         selected = random.choice(hint_pool)
-        # print(f"Set {hints[selected].name} Wrinkly Text to {message}")
         return UpdateHint(hints[selected], message)
     return False
 

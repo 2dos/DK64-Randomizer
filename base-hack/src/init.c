@@ -188,7 +188,8 @@ void initHack(int source) {
 				int new_vine_exit_speed = 200;
 				*(short*)(0x8075037C) = new_vine_exit_speed;
 				*(short*)(0x80750380) = new_vine_exit_speed;
-				*(short*)(0x80698EEE) = 0x4348; // 170.0f
+				*(short*)(0x80698EEE) = 0x4348; // 200.0f
+				*(short*)(0x806DCD3E) = 0x4348; // 200.0f
 				// Lower Aztec Lobby Bonus
 				*(short*)(0x80680D56) = 0x7C; // 0x89 if this needs to be unreachable without PTT
 				// Fast Vulture
@@ -288,6 +289,21 @@ void initHack(int source) {
 			*(int*)(0x8074C3F0) = (int)&goldBeaverCode;
 			// Spider Projectile
 			*(int*)(0x806ADDC0) = 0x0C000000 | (((int)&handleSpiderTrapCode & 0xFFFFFF) >> 2);
+			// Tag Anywhere collectable Fixes
+			// CB Bunch
+			int non_chunky_bunch_indexes[] = {10,11,13,14};
+			for (int i = 0; i < sizeof(non_chunky_bunch_indexes) / 4; i++) {
+				int index = non_chunky_bunch_indexes[i];
+				ModelTwoCollisionArray[index].actor_equivalent = 0;
+			}
+			*(int*)(0x806A65B8) = 0x240A0006; // Always ensure chunky bunch sprite
+			// Coins
+			int non_lanky_coin_indexes[] = {5,7,8,9};
+			for (int i = 0; i < sizeof(non_lanky_coin_indexes) / 4; i++) {
+				int index = non_lanky_coin_indexes[i];
+				ModelTwoCollisionArray[index].actor_equivalent = 0;
+			}
+			*(int*)(0x806A64B0) = 0x240A0004; // Always ensure lanky coin sprite
 			initItemDropTable();
 			LoadedHooks = 1;
 		}

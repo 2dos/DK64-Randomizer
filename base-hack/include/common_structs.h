@@ -728,3 +728,15 @@ typedef struct shop_paad {
 	/* 0x010 */ unsigned char melons;
 	/* 0x011 */ unsigned char purchase_value;
 } shop_paad;
+
+typedef struct model2_collision_info {
+	/* 0x000 */ unsigned short type;
+	/* 0x002 */ char collectable_type;
+	/* 0x003 */ unsigned char unk3;
+	/* 0x004 */ float unk4;
+	/* 0x008 */ float unk8;
+	/* 0x00C */ short intended_kong;
+	/* 0x00E */ short actor_equivalent;
+	/* 0x010 */ short unk10;
+	/* 0x012 */ short unk12;
+} model2_collision_info;
