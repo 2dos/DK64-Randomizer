@@ -1,6 +1,13 @@
 """Color Banana importer from Bismuths Spreadsheet."""
 
 
+def convertTruthiness(truth_string):
+    """Convert Excel truth strings to boolean."""
+    if truth_string == "TRUE":
+        return True
+    return False
+
+
 with open("import.csv", newline="") as csvfile:
     dataset = []
     group = None
@@ -16,11 +23,11 @@ with open("import.csv", newline="") as csvfile:
                 name = rowdata[1]
                 map = rowdata[2]
                 kongs = {
-                    "dk": bool(rowdata[9]),
-                    "diddy": bool(rowdata[10]),
-                    "lanky": bool(rowdata[11]),
-                    "tiny": bool(rowdata[12]),
-                    "chunky": bool(rowdata[13]),
+                    "dk": convertTruthiness(rowdata[9]),
+                    "diddy": convertTruthiness(rowdata[10]),
+                    "lanky": convertTruthiness(rowdata[11]),
+                    "tiny": convertTruthiness(rowdata[12]),
+                    "chunky": convertTruthiness(rowdata[13]),
                 }
                 dataset.append({"group": int(group), "map": map, "name": name, "kongs": kongs, "locations": []})
 

@@ -1,6 +1,13 @@
 """Balloon importer from Bismuths Spreadsheet."""
 
 
+def convertTruthiness(truth_string):
+    """Convert Excel truth strings to boolean."""
+    if truth_string == "TRUE":
+        return True
+    return False
+
+
 with open("import.csv", newline="") as csvfile:
     dataset = []
     balloon = None
@@ -18,11 +25,11 @@ with open("import.csv", newline="") as csvfile:
                 speed = rowdata[17]
                 map = rowdata[18]
                 kongs = {
-                    "dk": bool(rowdata[23]),
-                    "diddy": bool(rowdata[24]),
-                    "lanky": bool(rowdata[25]),
-                    "tiny": bool(rowdata[26]),
-                    "chunky": bool(rowdata[27]),
+                    "dk": convertTruthiness(rowdata[23]),
+                    "diddy": convertTruthiness(rowdata[24]),
+                    "lanky": convertTruthiness(rowdata[25]),
+                    "tiny": convertTruthiness(rowdata[26]),
+                    "chunky": convertTruthiness(rowdata[27]),
                 }
                 dataset.append({"balloon": int(balloon), "map": map, "name": name, "speed": int(speed), "kongs": kongs, "path": []})
             if rowdata[19] != "":
