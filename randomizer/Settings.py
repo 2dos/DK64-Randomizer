@@ -447,7 +447,13 @@ class Settings:
             kongCageLocations.remove(kongLocation)
         # In case both Diddy and Chunky need to be freed but only Aztec locations are available
         # This would be impossible, as one of them must free the Tiny location and Diddy is needed for the Lanky location
-        if self.starting_kongs_count == 3 and Kongs.diddy not in self.starting_kong_list and Kongs.chunky not in self.starting_kong_list and Locations.TinyKong in kongCageLocations and Locations.LankyKong in kongCageLocations:
+        if (
+            self.starting_kongs_count == 3
+            and Kongs.diddy not in self.starting_kong_list
+            and Kongs.chunky not in self.starting_kong_list
+            and Locations.TinyKong in kongCageLocations
+            and Locations.LankyKong in kongCageLocations
+        ):
             # Move a random location to a non-Aztec location
             kongCageLocations.pop()
             kongCageLocations.append(random.choice(Locations.DiddyKong, Locations.ChunkyKong))
