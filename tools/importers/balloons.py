@@ -49,8 +49,12 @@ with open("balloons.txt", "w") as outputfile:
                 kong_lst.append(f"Kongs.{kong}")
         points = []
         for pt in bln_data["path"]:
-            points.append({pt["order"], pt["x"], pt["y"], pt["z"]})
+            points.append([pt["order"], pt["x"], pt["y"], pt["z"]])
+        if len(points) > 0:
+            points.append("&nbsp;")
         translation = {39: None}
         outputfile.write(
-            f"Balloon(id={bln_data['balloon']}, map_id=Maps.{bln_data['map']}, name=\"{bln_data['name']}\", speed={bln_data['speed']}, konglist={str(kong_lst).translate(translation)}, region=\"\", points={points}),\n"
+            f"Balloon(id={bln_data['balloon']}, map_id=Maps.{bln_data['map']}, name=\"{bln_data['name']}\", speed={bln_data['speed']}, konglist={str(kong_lst).translate(translation)}, region=\"\", points={str(points)}),\n".replace(
+                " '&nbsp;'", ""
+            )
         )
