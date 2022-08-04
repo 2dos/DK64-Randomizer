@@ -742,3 +742,16 @@ typedef struct model2_collision_info {
 	/* 0x010 */ short unk10;
 	/* 0x012 */ short unk12;
 } model2_collision_info;
+
+typedef struct move_rom_item {
+	/* 0x000 */ unsigned char move_master_data; // tttl lkkk. t = Type (0 = Moves, 1 = Slam, 2 = Guns, 3 = Ammo Belt, 4 = Instrument, 5 = Flag, 6 = GB, 7 = Vacant), l = move level (reduced by 1), k = kong
+	/* 0x001 */ unsigned char text_item;
+	/* 0x002 */ short flag; // -1 = No Flag, -2 = Both Camera & Shockwave (Reserved)
+} move_rom_item;
+typedef struct move_block {
+	/* 0x000 */ move_rom_item cranky_moves[5][8];
+	/* 0x0A0 */ move_rom_item funky_moves[5][8];
+	/* 0x140 */ move_rom_item candy_moves[5][8];
+	/* 0x1E0 */ move_rom_item training_moves[4];
+	/* 0x1F0 */ move_rom_item bfi_move;
+} move_block;

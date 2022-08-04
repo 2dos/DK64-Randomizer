@@ -13,7 +13,7 @@
 
 int getMoveType(int value) {
 	int ret = (value >> 5) & 7;
-	if (ret == 5) {
+	if (ret == 7) {
 		return -1;
 	} else {
 		return ret;
@@ -173,73 +173,43 @@ void updateProgressive(void) {
 	}
 }
 
+move_block* getMoveBlock(void) {
+	int size = 0x200;
+	move_block* write_space = dk_malloc(size);
+	int* file_size;
+	*(int*)(&file_size) = size;
+	copyFromROM(0x1FEF000,write_space,&file_size,0,0,0,0);
+	return write_space;
+}
+
 void moveTransplant(void) {
-	for (int i = 0; i < LEVEL_COUNT; i++) {
-		// DK
-		CrankyMoves_New[0][i].purchase_type = getMoveType(Rando.dk_crankymoves[i]);
-		CrankyMoves_New[0][i].move_kong = getMoveKong(Rando.dk_crankymoves[i]);
-		CrankyMoves_New[0][i].purchase_value = getMoveIndex(Rando.dk_crankymoves[i]);
+	move_block* move_data = getMoveBlock();
+	if (move_data) {
+		for (int i = 0; i < LEVEL_COUNT; i++) {
+			for (int j = 0; j < 5; j++) {
+				CrankyMoves_New[j][i].purchase_type = getMoveType(move_data->cranky_moves[j][i].move_master_data);
+				CrankyMoves_New[j][i].move_kong = getMoveKong(move_data->cranky_moves[j][i].move_master_data);
+				CrankyMoves_New[j][i].purchase_value = getMoveIndex(move_data->cranky_moves[j][i].move_master_data);
 
-		CandyMoves_New[0][i].purchase_type = getMoveType(Rando.dk_candymoves[i]);
-		CandyMoves_New[0][i].move_kong = getMoveKong(Rando.dk_candymoves[i]);
-		CandyMoves_New[0][i].purchase_value = getMoveIndex(Rando.dk_candymoves[i]);
+				CandyMoves_New[j][i].purchase_type = getMoveType(move_data->candy_moves[j][i].move_master_data);
+				CandyMoves_New[j][i].move_kong = getMoveKong(move_data->candy_moves[j][i].move_master_data);
+				CandyMoves_New[j][i].purchase_value = getMoveIndex(move_data->candy_moves[j][i].move_master_data);
 
-		FunkyMoves_New[0][i].purchase_type = getMoveType(Rando.dk_funkymoves[i]);
-		FunkyMoves_New[0][i].move_kong = getMoveKong(Rando.dk_funkymoves[i]);
-		FunkyMoves_New[0][i].purchase_value = getMoveIndex(Rando.dk_funkymoves[i]);
-
-		// Diddy
-		CrankyMoves_New[1][i].purchase_type = getMoveType(Rando.diddy_crankymoves[i]);
-		CrankyMoves_New[1][i].move_kong = getMoveKong(Rando.diddy_crankymoves[i]);
-		CrankyMoves_New[1][i].purchase_value = getMoveIndex(Rando.diddy_crankymoves[i]);
-
-		CandyMoves_New[1][i].purchase_type = getMoveType(Rando.diddy_candymoves[i]);
-		CandyMoves_New[1][i].move_kong = getMoveKong(Rando.diddy_candymoves[i]);
-		CandyMoves_New[1][i].purchase_value = getMoveIndex(Rando.diddy_candymoves[i]);
-
-		FunkyMoves_New[1][i].purchase_type = getMoveType(Rando.diddy_funkymoves[i]);
-		FunkyMoves_New[1][i].move_kong = getMoveKong(Rando.diddy_funkymoves[i]);
-		FunkyMoves_New[1][i].purchase_value = getMoveIndex(Rando.diddy_funkymoves[i]);
-
-		// Lanky
-		CrankyMoves_New[2][i].purchase_type = getMoveType(Rando.lanky_crankymoves[i]);
-		CrankyMoves_New[2][i].move_kong = getMoveKong(Rando.lanky_crankymoves[i]);
-		CrankyMoves_New[2][i].purchase_value = getMoveIndex(Rando.lanky_crankymoves[i]);
-
-		CandyMoves_New[2][i].purchase_type = getMoveType(Rando.lanky_candymoves[i]);
-		CandyMoves_New[2][i].move_kong = getMoveKong(Rando.lanky_candymoves[i]);
-		CandyMoves_New[2][i].purchase_value = getMoveIndex(Rando.lanky_candymoves[i]);
-
-		FunkyMoves_New[2][i].purchase_type = getMoveType(Rando.lanky_funkymoves[i]);
-		FunkyMoves_New[2][i].move_kong = getMoveKong(Rando.lanky_funkymoves[i]);
-		FunkyMoves_New[2][i].purchase_value = getMoveIndex(Rando.lanky_funkymoves[i]);
-
-		// Tiny
-		CrankyMoves_New[3][i].purchase_type = getMoveType(Rando.tiny_crankymoves[i]);
-		CrankyMoves_New[3][i].move_kong = getMoveKong(Rando.tiny_crankymoves[i]);
-		CrankyMoves_New[3][i].purchase_value = getMoveIndex(Rando.tiny_crankymoves[i]);
-
-		CandyMoves_New[3][i].purchase_type = getMoveType(Rando.tiny_candymoves[i]);
-		CandyMoves_New[3][i].move_kong = getMoveKong(Rando.tiny_candymoves[i]);
-		CandyMoves_New[3][i].purchase_value = getMoveIndex(Rando.tiny_candymoves[i]);
-
-		FunkyMoves_New[3][i].purchase_type = getMoveType(Rando.tiny_funkymoves[i]);
-		FunkyMoves_New[3][i].move_kong = getMoveKong(Rando.tiny_funkymoves[i]);
-		FunkyMoves_New[3][i].purchase_value = getMoveIndex(Rando.tiny_funkymoves[i]);
-
-		// Chunky
-		CrankyMoves_New[4][i].purchase_type = getMoveType(Rando.chunky_crankymoves[i]);
-		CrankyMoves_New[4][i].move_kong = getMoveKong(Rando.chunky_crankymoves[i]);
-		CrankyMoves_New[4][i].purchase_value = getMoveIndex(Rando.chunky_crankymoves[i]);
-
-		CandyMoves_New[4][i].purchase_type = getMoveType(Rando.chunky_candymoves[i]);
-		CandyMoves_New[4][i].move_kong = getMoveKong(Rando.chunky_candymoves[i]);
-		CandyMoves_New[4][i].purchase_value = getMoveIndex(Rando.chunky_candymoves[i]);
-
-		FunkyMoves_New[4][i].purchase_type = getMoveType(Rando.chunky_funkymoves[i]);
-		FunkyMoves_New[4][i].move_kong = getMoveKong(Rando.chunky_funkymoves[i]);
-		FunkyMoves_New[4][i].purchase_value = getMoveIndex(Rando.chunky_funkymoves[i]);
+				FunkyMoves_New[j][i].purchase_type = getMoveType(move_data->funky_moves[j][i].move_master_data);
+				FunkyMoves_New[j][i].move_kong = getMoveKong(move_data->funky_moves[j][i].move_master_data);
+				FunkyMoves_New[j][i].purchase_value = getMoveIndex(move_data->funky_moves[j][i].move_master_data);
+			}
+		}
+		for (int i = 0; i < 4; i++) {
+			TrainingMoves_New[i].purchase_type = getMoveType(move_data->training_moves[i].move_master_data);
+			TrainingMoves_New[i].move_kong = getMoveKong(move_data->training_moves[i].move_master_data);
+			TrainingMoves_New[i].purchase_value = getMoveIndex(move_data->training_moves[i].move_master_data);
+		}
+		BFIMove_New.purchase_type = getMoveType(move_data->bfi_move.move_master_data);
+		BFIMove_New.move_kong = getMoveKong(move_data->bfi_move.move_master_data);
+		BFIMove_New.purchase_value = getMoveIndex(move_data->bfi_move.move_master_data);
 	}
+	complex_free(move_data);
 }
 
 void replace_moves(void) {
@@ -350,3 +320,52 @@ void getNextMovePurchase(shop_paad* paad, KongBase* movedata) {
 	}
 	paad->melons = CollectableBase.Melons;
 }
+
+typedef enum location_list {
+	/* 0x000 */ LOCATION_DIVE,
+	/* 0x001 */ LOCATION_ORANGE,
+	/* 0x002 */ LOCATION_BARREL,
+	/* 0x003 */ LOCATION_VINE,
+	/* 0x004 */ LOCATION_BFI
+} location_list;
+
+void setLocationStatus(location_list location_index) {
+	int location_int = (int)location_index;
+	if (location_int < 4) {
+		// TBarrels
+
+	} else if (location_index == LOCATION_BFI) {
+
+	}
+}
+
+int getLocationStatus(location_list location_index) {
+
+}
+
+// SetFlag Functions
+	// Training Barrels
+		// DBarrel Flag: 0x800295F4
+		// OBarrel Flag: 0x80029604
+		// VBarrel Flag: 0x800295FC
+		// BBarrel Flag: 0x800295D8
+		// TBarrel SetFlag: 0x80029610
+		// BFI Camera/Shockwave: 0x80027F28
+
+// CheckFlag Functions
+	// Training Barrels
+		// DBarrel Flag: 0x80681CE0
+		// OBarrel Flag: 0x80681CF8
+		// BBarrel Flag: 0x80681D04
+		// VBarrel Flag: 0x80681D10
+		// TBarrel CheckFlag: 0x80681D38
+		// All TBarrels Complete call: 0x80681C98
+		// Camera:
+			// Usage: 0x806E9814
+			// Isles Fairies Display: 0x806AB0F8
+			// Other Fairies Display: 0x806AAFB8
+			// Film Display: 0x806AA764
+			// Film Refill: 0x8060D988
+
+// Other
+	// Simian Slam: 0x80027318

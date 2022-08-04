@@ -363,3 +363,5 @@
 .definelabel CrankyMoves_New, 0x807FF400
 .definelabel CandyMoves_New, 0x807FF4F0
 .definelabel FunkyMoves_New, 0x807FF5E0
+.definelabel TrainingMoves_New, 0x807FF6D0
+.definelabel BFIMove_New, 0x807FF6E8
