@@ -48,7 +48,7 @@ class Settings:
         # Longer: 80 GB\
         self.blocker_max = self.blocker_text if self.blocker_text else 50
         self.troff_max = self.troff_text if self.troff_text else 270
-        self.troff_min = [0.25, 0.3, 0.35, 0.4, 0.45, 0.5, 0.6]  # Weights for the minimum value of troff
+        self.troff_min = [0.25, 0.3, 0.35, 0.4, 0.45, 0.5, 0.55]  # Weights for the minimum value of troff
         # Always start with training barrels currently
         # training_barrels: str
         # normal
