@@ -44,4 +44,6 @@ with open("coloredbananas.txt", "w") as outputfile:
         for loc in cb_group["locations"]:
             locations.append({loc["amount"], loc["scale"], loc["x"], loc["y"], loc["z"]})
         translation = {39: None}
-        outputfile.write(f"ColoredBananaGroup(group={cb_group['group']}, map_id=Maps.{cb_group['map']}, konglist={str(kong_lst).translate(translation)}, region=\"\", locations={locations}),\n")
+        outputfile.write(
+            f"ColoredBananaGroup(group={cb_group['group']}, map_id=Maps.{cb_group['map']}, name=\"{cb_group['name']}\", konglist={str(kong_lst).translate(translation)}, region=\"\", locations={locations}),\n"
+        )
