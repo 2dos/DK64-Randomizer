@@ -113,7 +113,7 @@ def ShuffleKasplatsAndLocations(spoiler, LogicVariables):
         # Fill kasplats kong by kong
         kongs = GetKongs()
         random.shuffle(kongs)
-        for idx, kong in enumerate(kongs):
+        for kong in kongs:
             available_for_kong = []
             # Pick a random unselected kasplat from available ones for this kong
             for kasplat in kasplats:
@@ -136,7 +136,7 @@ def ShuffleKasplatsAndLocations(spoiler, LogicVariables):
                     kasplatRegion.locations.append(LocationLogic(location_id, kasplat.additional_logic))
                     # Update logic variables for remainder of the Fill
                     LogicVariables.kasplat_map[location_id] = kong
-                    spoiler.shuffled_kasplat_map[kasplat.name] = idx
+                    spoiler.shuffled_kasplat_map[kasplat.name] = int(kong)
                     break
 
 
