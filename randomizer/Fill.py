@@ -1072,10 +1072,8 @@ def FillKongsAndMoves(spoiler):
     # Handle kong rando
     if spoiler.settings.kong_rando:
         # Determine what kong items need to be placed
-        kongItems = ItemPool.Kongs(spoiler.settings)
-        for kongItem in kongItems:
-            if ItemPool.GetKongForItem(kongItem) in spoiler.settings.starting_kong_list:
-                kongItems.remove(kongItem)
+        startingKongItems = [ItemPool.ItemFromKong(kong) for kong in spoiler.settings.starting_kong_list]
+        kongItems = [item for item in ItemPool.Kongs(spoiler.settings) if item not in startingKongItems]
         # Determine what locations the kong items need to be placed in
         kongValidLocations = {}
         kongLocations = [Locations.DiddyKong, Locations.LankyKong, Locations.TinyKong, Locations.ChunkyKong]
