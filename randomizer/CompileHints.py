@@ -173,20 +173,16 @@ def compileHints(spoiler: Spoiler):
             "The level with a dirt mountain",
             "The level which has two retailers and no race",
         ],
-        ["The level with sporadic gusts of sand", "The level with two kongs to free", "The level with a spinning totem"],
-        [
-            "The level with a toy production facility",
-            "The level with a tower of blocks",
-            "The level with Cranky and Candy adjacent to each other",
-        ],
+        ["The level with four vases", "The level with two kongs cages", "The level with a spinning totem"],
+        ["The level with a toy production facility", "The level with a tower of blocks", "The level with a game from 1981", "The level where you need two quarters to play"],
         ["The level with the most water", "The level where you free a water dweller", "The level with stacks of gold"],
         ["The level with only two retailers and two races", "The level where night can be acquired at will", "The level with a nocturnal tree dweller"],
         [
-            "The level where it rains rocks",
+            "The level with two inches of water",
             "The level with two ice shields",
             "The level with an Ice Tomato",
         ],
-        ["The level with constant rain", "The level with a dungeon, ballroom and a library", "The level with drawbridge and a moat"],
+        ["The level with battlements", "The level with a dungeon, ballroom and a library", "The level with drawbridge and a moat"],
         ["The timed level", "The level with no boss", "The level with no small bananas"],
     ]
     # Make Isles Versions
@@ -673,21 +669,20 @@ def compileHints(spoiler: Spoiler):
         }
         level_positions = {}
         level_order = {}
+        shuffled_level_list = []
         for transition, vanilla_level in lobby_entrance_order.items():
             shuffled_level = lobby_exit_order[spoiler.shuffled_exit_data[transition].reverse]
             level_positions[shuffled_level] = vanilla_level
             level_order[vanilla_level] = shuffled_level
-    if spoiler.settings.randomize_blocker_required_amounts == True:
-        shuffled_level_list = list(spoiler.settings.level_order.values())
+    if spoiler.settings.randomize_blocker_required_amounts is True:
+        for i in list(level_order.values()):
+            shuffled_level_list.append(i.name)
         for x in range(8):
             count = spoiler.settings.EntryGBs[x]
             gb_name = "Golden Bananas"
             if count == 1:
                 gb_name = "Golden Banana"
-            if spoiler.settings.wrinkly_hints == "cryptic":
-                level_name = random.choice(level_cryptic[x])
-            else:
-                level_name = level_list[x]
+            level_name = level_list[x]
             # current_level_position = level_positions.index(level_name)
             gb_importance = False
             permitted_levels = all_levels.copy()
@@ -699,14 +694,15 @@ def compileHints(spoiler: Spoiler):
                     for y in range(7):
                         if y < current_level_order:
                             permitted_levels.append(level_order[y])
-                    print(shuffled_level_list)
-                    if level_name in shuffled_level_list[4:7]:
-                        priority_level = 9 - level_order[x].value
+                    if level_name.replace(" ", "") in shuffled_level_list[4:7]:
+                        priority_level = 4
                         gb_importance = True
-                if spoiler.settings.maximize_helm_blocker == False and x == 7:
+                if spoiler.settings.maximize_helm_blocker is False and x == 7:
                     priority_level = 1
                     gb_importance = True
-                
+            if spoiler.settings.wrinkly_hints == "cryptic":
+                level_name = random.choice(level_cryptic[x])
+
             hint_list.append(
                 Hint(
                     hint=f"The barrier to {level_name} can be cleared by obtaining {count} {gb_name}.",
