@@ -8,7 +8,7 @@
 #define FLAG_FTT_TINY 0x171 // Tiny FTT
 #define FLAG_FTT_CHUNKY 0x172 // Chunky FTT
 
-#define FLAG_ABILITY_CAMERA 0x179 // Camera
+#define FLAG_ABILITY_SHOCKWAVE 0x179 // Camera
 #define FLAG_ABILITY_SIMSLAM 0x180 // Cranky Sim Slam Acquired
 
 // Warp Flags

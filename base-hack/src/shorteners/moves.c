@@ -25,6 +25,6 @@ void unlockMoves(void) {
 		}
 	}
 	if (Rando.camera_unlocked) {
-		setPermFlag(FLAG_ABILITY_CAMERA);
+		setPermFlag(FLAG_ABILITY_SHOCKWAVE);
 	}
 }

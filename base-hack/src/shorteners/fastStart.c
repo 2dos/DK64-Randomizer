@@ -19,7 +19,7 @@ void applyFastStart(void) {
 		setPermFlag(FLAG_ABILITY_SIMSLAM); // Cranky given SSlam
 		setPermFlag(kong_flags[(int)Rando.starting_kong]); // Starting Kong Free
 		if (Rando.camera_unlocked) {
-			setPermFlag(FLAG_ABILITY_CAMERA);
+			setPermFlag(FLAG_ABILITY_SHOCKWAVE);
 		}
 		if (MovesBase[0].simian_slam == 0) {
 			for (int i = 0; i < 5; i++) {

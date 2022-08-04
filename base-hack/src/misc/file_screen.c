@@ -50,7 +50,7 @@ int* display_text(int* dl) {
 		move_count += 32; // All moves except sniper and camera
 		move_count += (MovesBase[0].weapon_bitfield >> 2) & 1; // Sniper Scope
 	} else {
-		if ((!Rando.camera_unlocked) && (checkFlag(FLAG_ABILITY_CAMERA,0))) {
+		if ((!Rando.camera_unlocked) && (checkFlag(FLAG_ABILITY_SHOCKWAVE,0))) {
 			move_count += 1; // Fairy Camera
 		}
 		if (MovesBase[0].simian_slam > 1) {

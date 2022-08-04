@@ -304,6 +304,12 @@ void initHack(int source) {
 				ModelTwoCollisionArray[index].actor_equivalent = 0;
 			}
 			*(int*)(0x806A64B0) = 0x240A0004; // Always ensure lanky coin sprite
+			// Decouple Camera from Shockwave
+			*(short*)(0x806E9812) = FLAG_ABILITY_CAMERA; // Usage
+			*(short*)(0x806AB0F6) = FLAG_ABILITY_CAMERA; // Isles Fairies Display
+			*(short*)(0x806AAFB6) = FLAG_ABILITY_CAMERA; // Other Fairies Display
+			*(short*)(0x806AA762) = FLAG_ABILITY_CAMERA; // Film Display
+			*(short*)(0x8060D986) = FLAG_ABILITY_CAMERA; // Film Refill
 			initItemDropTable();
 			LoadedHooks = 1;
 		}

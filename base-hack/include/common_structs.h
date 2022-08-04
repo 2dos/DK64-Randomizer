@@ -755,3 +755,11 @@ typedef struct move_block {
 	/* 0x1E0 */ move_rom_item training_moves[4];
 	/* 0x1F0 */ move_rom_item bfi_move;
 } move_block;
+
+typedef enum location_list {
+	/* 0x000 */ LOCATION_DIVE,
+	/* 0x001 */ LOCATION_ORANGE,
+	/* 0x002 */ LOCATION_BARREL,
+	/* 0x003 */ LOCATION_VINE,
+	/* 0x004 */ LOCATION_BFI
+} location_list;

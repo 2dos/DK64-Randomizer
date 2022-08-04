@@ -9,6 +9,8 @@
 #define PURCHASE_GUN 2
 #define PURCHASE_AMMOBELT 3
 #define PURCHASE_INSTRUMENT 4
+#define PURCHASE_FLAG 5
+#define PURCHASE_GB 6
 #define PURCHASE_NOTHING -1
 
 int getMoveType(int value) {
@@ -296,6 +298,13 @@ void getNextMovePurchase(shop_paad* paad, KongBase* movedata) {
 						if (MovesBase[p_kong].ammo_belt < p_value) {
 							has_purchase = 1;
 						}
+					case PURCHASE_GB:
+					case PURCHASE_FLAG:
+						if (p_value == -2) {
+							has_purchase = checkFlag(FLAG_ABILITY_CAMERA,0) & checkFlag(FLAG_ABILITY_SHOCKWAVE,0);
+						} else {
+							has_purchase = checkFlag(p_value,0);
+						}
 					break;
 				}
 				if (has_purchase) {
@@ -321,26 +330,139 @@ void getNextMovePurchase(shop_paad* paad, KongBase* movedata) {
 	paad->melons = CollectableBase.Melons;
 }
 
-typedef enum location_list {
-	/* 0x000 */ LOCATION_DIVE,
-	/* 0x001 */ LOCATION_ORANGE,
-	/* 0x002 */ LOCATION_BARREL,
-	/* 0x003 */ LOCATION_VINE,
-	/* 0x004 */ LOCATION_BFI
-} location_list;
+void setLocation(purchase_struct* purchase_data) {
+	int p_type = purchase_data->purchase_type;
+	int bitfield_index = purchase_data->purchase_value - 1;
+	int p_kong = purchase_data->move_kong;
+	if (p_type != PURCHASE_NOTHING) {
+		if (p_type < PURCHASE_FLAG) {
+			switch(p_type) {
+				case PURCHASE_MOVES:
+					MovesBase[p_kong].special_moves |= (1 << bitfield_index);
+					break;
+				case PURCHASE_SLAM:
+					MovesBase[p_kong].simian_slam = purchase_data->purchase_value;
+					break;
+				case PURCHASE_GUN:
+					MovesBase[p_kong].weapon_bitfield |= (1 << bitfield_index);
+					break;
+				case PURCHASE_AMMOBELT:
+					MovesBase[p_kong].ammo_belt = purchase_data->purchase_value;
+					break;
+				case PURCHASE_INSTRUMENT:
+					MovesBase[p_kong].instrument_bitfield |= (1 << bitfield_index);
+				break;
+			}
+		} else if ((p_type == PURCHASE_FLAG) && (purchase_data->purchase_value == -2)) {
+			// BFI Coupled Moves
+			setPermFlag(FLAG_ABILITY_SHOCKWAVE);
+			setPermFlag(FLAG_ABILITY_CAMERA);
+		} else if (p_type == PURCHASE_FLAG) {
+			// IsFlag
+			setPermFlag(purchase_data->purchase_value);
+		} else if (p_type == PURCHASE_GB) {
+			// IsFlag + GB Update
+			setPermFlag(purchase_data->purchase_value);
+			MovesBase[p_kong].gb_count[getWorld(CurrentMap,1)] += 1;
+		}
+	}
+}
+
+int getLocation(purchase_struct* purchase_data) {
+	int p_type = purchase_data->purchase_type;
+	int bitfield_index = purchase_data->purchase_value - 1;
+	int p_kong = purchase_data->move_kong;
+	if (p_type != PURCHASE_NOTHING) {
+		if (p_type < PURCHASE_FLAG) {
+			switch(p_type) {
+				case PURCHASE_MOVES:
+					return (MovesBase[p_kong].special_moves & (1 << bitfield_index)) != 0;
+					break;
+				case PURCHASE_SLAM:
+					return MovesBase[p_kong].simian_slam >= purchase_data->purchase_value;
+					break;
+				case PURCHASE_GUN:
+					return (MovesBase[p_kong].weapon_bitfield & (1 << bitfield_index)) != 0;
+					break;
+				case PURCHASE_AMMOBELT:
+					return MovesBase[p_kong].ammo_belt >= purchase_data->purchase_value;
+					break;
+				case PURCHASE_INSTRUMENT:
+					return (MovesBase[p_kong].instrument_bitfield & (1 << bitfield_index)) != 0;
+				break;
+			}
+		} else if ((p_type == PURCHASE_FLAG) && (purchase_data->purchase_value == -2)) {
+			// BFI Coupled Moves
+			return checkFlag(FLAG_ABILITY_CAMERA) & checkFlag(FLAG_ABILITY_SHOCKWAVE,0);
+		} else if ((p_type == PURCHASE_FLAG) || (p_type == PURCHASE_GB)) {
+			// IsFlag
+			return checkFlag(purchase_data->purchase_value,0);
+		}
+	}
+}
 
 void setLocationStatus(location_list location_index) {
 	int location_int = (int)location_index;
 	if (location_int < 4) {
 		// TBarrels
-
+		setLocation((purchase_struct*)&TrainingMoves_New[location_int]);
 	} else if (location_index == LOCATION_BFI) {
-
+		// BFI
+		setLocation((purchase_struct*)&BFIMove_New);
 	}
 }
 
 int getLocationStatus(location_list location_index) {
+	int location_int = (int)location_index;
+	if (location_int < 4) {
+		// TBarrels
+		return getLocation((purchase_struct*)&TrainingMoves_New[location_int]);
+	} else if (location_index == LOCATION_BFI) {
+		// BFI
+		return getLocation((purchase_struct*)&BFIMove_New);
+	}
+}
 
+void fixTBarrelsAndBFI(int init) {
+	if (init) {
+		// Individual Barrel Checks
+		*(short*)(0x80681CE2) = (short)LOCATION_DIVE;
+		*(short*)(0x80681CFA) = (short)LOCATION_ORANGE;
+		*(short*)(0x80681D06) = (short)LOCATION_BARREL;
+		*(short*)(0x80681D12) = (short)LOCATION_VINE;
+		*(int*)(0x80681D38) = 0x0C000000 | (((int)&getLocationStatus & 0xFFFFFF) >> 2); // Get TBarrels Move
+		// All Barrels Complete check
+		*(short*)(0x80681C8A) = (short)LOCATION_DIVE;
+		*(int*)(0x80681C98) = 0x0C000000 | (((int)&getLocationStatus & 0xFFFFFF) >> 2); // Get TBarrels Move
+	} else {
+		unsigned char tbarrel_bfi_maps[] = {
+			0xB0, // TGrounds
+			0xB1, // Dive
+			0xB4, // Orange
+			0xB5, // Barrel
+			0xB6, // Vine
+			0xBD, // BFI
+		};
+		int is_in_tbarrel_bfi = 0;
+		for (int i = 0; i < sizeof(tbarrel_bfi_maps); i++) {
+			if (tbarrel_bfi_maps[i] == CurrentMap) {
+				is_in_tbarrel_bfi = 1;
+			}
+		}
+		if (is_in_tbarrel_bfi) {
+			// TBarrels
+			*(short*)(0x800295F6) = (short)LOCATION_DIVE;
+			*(short*)(0x80029606) = (short)LOCATION_ORANGE;
+			*(short*)(0x800295FE) = (short)LOCATION_VINE;
+			*(short*)(0x800295DA) = (short)LOCATION_BARREL;
+			*(int*)(0x80029610) = 0x0C000000 | (((int)&setLocationStatus & 0xFFFFFF) >> 2); // Set TBarrels Move
+			// BFI
+			*(short*)(0x80027F2A) = (short)LOCATION_BFI;
+			*(short*)(0x80027E1A) = (short)LOCATION_BFI;
+			*(int*)(0x80027F24) = 0x0C000000 | (((int)&setLocationStatus & 0xFFFFFF) >> 2); // Set BFI Move
+			*(int*)(0x80027E20) = 0x0C000000 | (((int)&getLocationStatus & 0xFFFFFF) >> 2); // Get BFI Move
+		}
+	}
 }
 
 // SetFlag Functions
