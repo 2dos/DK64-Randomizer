@@ -674,7 +674,7 @@ def compileHints(spoiler: Spoiler):
             shuffled_level = lobby_exit_order[spoiler.shuffled_exit_data[transition].reverse]
             level_positions[shuffled_level] = vanilla_level
             level_order[vanilla_level] = shuffled_level
-    if spoiler.settings.randomize_blocker_required_amounts is True:
+    if spoiler.settings.randomize_blocker_required_amounts is True and spoiler.settings.shuffle_loading_zones == "levels":
         for i in list(level_order.values()):
             shuffled_level_list.append(i.name)
         for x in range(8):
