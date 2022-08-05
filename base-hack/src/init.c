@@ -112,6 +112,7 @@ void initHack(int source) {
 			loadExtraHooks();
 			no_enemy_drops();
 			// Moves & Prices
+			fixTBarrelsAndBFI(1);
 			replace_moves();
 			price_rando();
 			if (!Rando.move_rando_on) {

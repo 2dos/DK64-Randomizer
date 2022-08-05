@@ -44,6 +44,10 @@ void decouple_moves_fixes(void) {
 		*(int*)(0x80026720) = func_call;
 		*(int*)(0x8002683C) = func_call;
 		crossKongInit();
+		// Write Modified purchase move stuff
+		int func_call = 0x0C000000 | (((int)&purchaseMove & 0xFFFFFF) >> 2);
+		*(int*)(0x80027324) = func_call;
+		*(int*)(0x8002691C) = func_call;
 	} else if (CurrentMap == MAIN_MENU) {
 		*(short*)(0x8002E266) = 7; // Enguarde Arena Movement Write
 		*(short*)(0x8002F01E) = 7; // Rambi Arena Movement Write
@@ -62,6 +66,7 @@ void decouple_moves_fixes(void) {
 		}
 	}
 	writeCoinRequirements(1);
+	fixTBarrelsAndBFI(0);
 	if ((*(int*)(0x807FBB64) << 1) & 0x80000000) {
 		// Menu Overlay - Candy's Shop Glitch
 		*(short*)(0x80027678) = 0x1000;

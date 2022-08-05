@@ -154,6 +154,13 @@
 .definelabel beaverControlSwitchCase, 0x806AD260
 .definelabel spawnProjectile, 0x80690A28
 .definelabel updateActorProjectileInfo, 0x80690814
+.definelabel crystalsUnlocked, 0x806F6E58
+.definelabel setMovesForAllKongs, 0x80025D8C
+.definelabel setMoveProgressive, 0x80025D14
+.definelabel setMoveBitfield, 0x80025D44
+.definelabel refillHealth, 0x80709464
+.definelabel changeCollectableCount, 0x806F91B4
+.definelabel save, 0x8060DEC8
 
 //vanilla data
 .definelabel TransitionSpeed, 0x807FD88C
@@ -328,6 +335,7 @@
 .definelabel getXRatioMovement, 0x80612794
 .definelabel getZRatioMovement, 0x80612790
 .definelabel ModelTwoCollisionArray, 0x80753EF0
+.definelabel MelonArray, 0x800334DC
 
 //hack data
 .definelabel TestVariable, 0x807FFFFC

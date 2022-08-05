@@ -44,14 +44,26 @@ int* display_text(int* dl) {
 	// Move Count
 	int move_count = 1;
 	if (Rando.camera_unlocked) {
-		move_count += 1;
+		move_count += 2;
 	}
 	if (Rando.unlock_moves) {
-		move_count += 32; // All moves except sniper and camera
-		move_count += (MovesBase[0].weapon_bitfield >> 2) & 1; // Sniper Scope
+		move_count += 33; // All moves except camera and shockwave
+		if (!Rando.camera_unlocked) {
+			if (checkFlag(FLAG_ABILITY_CAMERA,0)) {
+				move_count += 1;
+			}
+			if (checkFlag(FLAG_ABILITY_SHOCKWAVE,0)) {
+				move_count += 1;
+			}
+		}
 	} else {
-		if ((!Rando.camera_unlocked) && (checkFlag(FLAG_ABILITY_SHOCKWAVE,0))) {
-			move_count += 1; // Fairy Camera
+		if ((!Rando.camera_unlocked)) {
+			if (checkFlag(FLAG_ABILITY_CAMERA,0)) {
+				move_count += 1;
+			}
+			if (checkFlag(FLAG_ABILITY_SHOCKWAVE,0)) {
+				move_count += 1;
+			}
 		}
 		if (MovesBase[0].simian_slam > 1) {
 			move_count += (MovesBase[0].simian_slam - 1); // Simian Slam

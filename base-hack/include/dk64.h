@@ -168,6 +168,14 @@ extern float getZRatioMovement(int dk64u_angle);
 extern void updateActorProjectileInfo(void* actor, int unk0);
 extern void spawnProjectile(short object, short subtype, int speed, float x, float y, float z, float unk0, void* actor);
 
+extern int crystalsUnlocked(int kong);
+extern void setMovesForAllKongs(shop_paad* paad, int is_bitfield);
+extern void setMoveProgressive(shop_paad* paad, int kong);
+extern void setMoveBitfield(shop_paad* paad, int kong);
+extern void refillHealth(int player_index);
+extern void changeCollectableCount(int item, int player_index, int change);
+extern void save(void);
+
 //vanilla data
 extern float TransitionSpeed;
 extern char CutsceneWillPlay;
@@ -341,6 +349,7 @@ extern actorData* PlayerPointer_0;
 extern SpawnerInfo* currentCharSpawner;
 extern short EnemiesKilledCounter;
 extern model2_collision_info ModelTwoCollisionArray[42];
+extern unsigned char MelonArray[6];
 
 //hack data
 extern int TestVariable;

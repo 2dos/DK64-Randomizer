@@ -22,8 +22,12 @@ int getMoveType(int value) {
 	}
 }
 
-int getMoveIndex(int value) {
-	return ((value >> 3) & 3) + 1;
+int getMoveIndex(move_rom_item* item) {
+	int item_type = getMoveType(item->move_master_data);
+	if ((item_type == PURCHASE_FLAG) || (item_type == PURCHASE_GB)) {
+		return item->flag;
+	}
+	return ((item->move_master_data >> 3) & 3) + 1;
 }
 
 int getMoveKong(int value) {
@@ -191,25 +195,25 @@ void moveTransplant(void) {
 			for (int j = 0; j < 5; j++) {
 				CrankyMoves_New[j][i].purchase_type = getMoveType(move_data->cranky_moves[j][i].move_master_data);
 				CrankyMoves_New[j][i].move_kong = getMoveKong(move_data->cranky_moves[j][i].move_master_data);
-				CrankyMoves_New[j][i].purchase_value = getMoveIndex(move_data->cranky_moves[j][i].move_master_data);
+				CrankyMoves_New[j][i].purchase_value = getMoveIndex((move_rom_item *)&move_data->cranky_moves[j][i]);
 
 				CandyMoves_New[j][i].purchase_type = getMoveType(move_data->candy_moves[j][i].move_master_data);
 				CandyMoves_New[j][i].move_kong = getMoveKong(move_data->candy_moves[j][i].move_master_data);
-				CandyMoves_New[j][i].purchase_value = getMoveIndex(move_data->candy_moves[j][i].move_master_data);
+				CandyMoves_New[j][i].purchase_value = getMoveIndex((move_rom_item *)&move_data->candy_moves[j][i]);
 
 				FunkyMoves_New[j][i].purchase_type = getMoveType(move_data->funky_moves[j][i].move_master_data);
 				FunkyMoves_New[j][i].move_kong = getMoveKong(move_data->funky_moves[j][i].move_master_data);
-				FunkyMoves_New[j][i].purchase_value = getMoveIndex(move_data->funky_moves[j][i].move_master_data);
+				FunkyMoves_New[j][i].purchase_value = getMoveIndex((move_rom_item *)&move_data->funky_moves[j][i]);
 			}
 		}
 		for (int i = 0; i < 4; i++) {
 			TrainingMoves_New[i].purchase_type = getMoveType(move_data->training_moves[i].move_master_data);
 			TrainingMoves_New[i].move_kong = getMoveKong(move_data->training_moves[i].move_master_data);
-			TrainingMoves_New[i].purchase_value = getMoveIndex(move_data->training_moves[i].move_master_data);
+			TrainingMoves_New[i].purchase_value = getMoveIndex((move_rom_item *)&move_data->training_moves[i]);
 		}
 		BFIMove_New.purchase_type = getMoveType(move_data->bfi_move.move_master_data);
 		BFIMove_New.move_kong = getMoveKong(move_data->bfi_move.move_master_data);
-		BFIMove_New.purchase_value = getMoveIndex(move_data->bfi_move.move_master_data);
+		BFIMove_New.purchase_value = getMoveIndex((move_rom_item *)&move_data->bfi_move);
 	}
 	complex_free(move_data);
 }
@@ -330,6 +334,56 @@ void getNextMovePurchase(shop_paad* paad, KongBase* movedata) {
 	paad->melons = CollectableBase.Melons;
 }
 
+void purchaseMove(shop_paad* paad) {
+	int item_given = -1;
+	int crystals_unlocked = crystalsUnlocked(paad->kong);
+	int p_type = paad->purchase_type;
+	switch(p_type) {
+		case PURCHASE_MOVES:
+			setMoveBitfield(paad, paad->kong);
+			break;
+		case PURCHASE_SLAM:
+		case PURCHASE_AMMOBELT:
+			setMovesForAllKongs(paad, 0);
+			break;
+		case PURCHASE_GUN:
+		case PURCHASE_INSTRUMENT:
+			if (paad->purchase_value == 1) {
+				setMoveBitfield(paad, paad->kong);
+			} else {
+				setMovesForAllKongs(paad, 1);
+			}
+			break;
+		case PURCHASE_GB:
+			MovesBase[(int)paad->kong].gb_count[getWorld(CurrentMap,1)] += 1;
+		case PURCHASE_FLAG:
+			setPermFlag(paad->purchase_value);
+		break;
+	}
+	if (p_type == PURCHASE_INSTRUMENT) {
+		int melon_cap = MelonArray[(int)paad->purchase_value]
+		if (CollectableBase.Melons < melon_cap) {
+			CollectableBase.Melons = melon_cap;
+			refillHealth(0);
+			SwapObject->unk_2e2 |= 0x11;
+		}
+	}
+	if (p_type == PURCHASE_MOVES) {
+		if ((!crystals_unlocked) && (crystalsUnlocked(paad->kong))) {
+			item_given = 5;
+		}
+	} else if ((p_type == PURCHASE_GUN) || (p_type == PURCHASE_AMMOBELT)) {
+		item_given = 2;
+	} else if ((p_type == PURCHASE_INSTRUMENT)) {
+		item_given = 7;
+	}
+	changeCollectableCount(1, 0, (0 - paad->price));
+	if (item_given > -1) {
+		changeCollectableCount(item_given, 0, 9999);
+	}
+	save();
+}
+
 void setLocation(purchase_struct* purchase_data) {
 	int p_type = purchase_data->purchase_type;
 	int bitfield_index = purchase_data->purchase_value - 1;
@@ -393,12 +447,13 @@ int getLocation(purchase_struct* purchase_data) {
 			}
 		} else if ((p_type == PURCHASE_FLAG) && (purchase_data->purchase_value == -2)) {
 			// BFI Coupled Moves
-			return checkFlag(FLAG_ABILITY_CAMERA) & checkFlag(FLAG_ABILITY_SHOCKWAVE,0);
+			return checkFlag(FLAG_ABILITY_CAMERA,0) & checkFlag(FLAG_ABILITY_SHOCKWAVE,0);
 		} else if ((p_type == PURCHASE_FLAG) || (p_type == PURCHASE_GB)) {
 			// IsFlag
 			return checkFlag(purchase_data->purchase_value,0);
 		}
 	}
+	return 0;
 }
 
 void setLocationStatus(location_list location_index) {
@@ -421,6 +476,7 @@ int getLocationStatus(location_list location_index) {
 		// BFI
 		return getLocation((purchase_struct*)&BFIMove_New);
 	}
+	return 0;
 }
 
 void fixTBarrelsAndBFI(int init) {

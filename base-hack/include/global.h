@@ -114,4 +114,6 @@ extern void fastWarpShockwaveFix(void);
 extern move_block* getMoveBlock(void);
 extern void setLocationStatus(location_list location_index);
 extern int getLocationStatus(location_list location_index);
+extern void fixTBarrelsAndBFI(int init);
+extern void purchaseMove(shop_paad* paad);
 //extern void getRandoNextMovePurchase(shop_paad* shop_info, KongBase* moves);
