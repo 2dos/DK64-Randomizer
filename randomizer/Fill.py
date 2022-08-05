@@ -719,15 +719,15 @@ def GetItemPrerequisites(spoiler, targetItemId, ownedKongs=[]):
 def GetValidLocationsForMove(spoiler, move):
     """Return the valid locations for the given move. Currently only returns shop locations for moves."""
     validLocations = []
-    if spoiler.settings.move_rando == "on_cross_purchase" or move in ItemPool.DonkeyMoves:
+    if spoiler.settings.move_rando == "cross_purchase" or move in ItemPool.DonkeyMoves:
         validLocations.extend(ItemPool.DonkeyMoveLocations.copy())
-    if spoiler.settings.move_rando == "on_cross_purchase" or move in ItemPool.DiddyMoves:
+    if spoiler.settings.move_rando == "cross_purchase" or move in ItemPool.DiddyMoves:
         validLocations.extend(ItemPool.DiddyMoveLocations.copy())
-    if spoiler.settings.move_rando == "on_cross_purchase" or move in ItemPool.TinyMoves:
+    if spoiler.settings.move_rando == "cross_purchase" or move in ItemPool.TinyMoves:
         validLocations.extend(ItemPool.TinyMoveLocations.copy())
-    if spoiler.settings.move_rando == "on_cross_purchase" or move in ItemPool.ChunkyMoves:
+    if spoiler.settings.move_rando == "cross_purchase" or move in ItemPool.ChunkyMoves:
         validLocations.extend(ItemPool.ChunkyMoveLocations.copy())
-    if spoiler.settings.move_rando == "on_cross_purchase" or move in ItemPool.LankyMoves:
+    if spoiler.settings.move_rando == "cross_purchase" or move in ItemPool.LankyMoves:
         validLocations.extend(ItemPool.LankyMoveLocations.copy())
     return list(validLocations)
 
@@ -841,7 +841,7 @@ def ShuffleSharedMoves(spoiler):
     mergedLocationArrays.update(ItemPool.ChunkyMoveLocations.copy())
     for i in range(5):
         for item in kongMoveArrays[i]:
-            if spoiler.settings.move_rando == "on_cross_purchase":
+            if spoiler.settings.move_rando == "cross_purchase":
                 validLocations[item] = mergedLocationArrays - locationsToRemove
             else:
                 validLocations[item] = kongLocationArrays[i] - locationsToRemove
