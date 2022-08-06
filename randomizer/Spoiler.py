@@ -213,8 +213,9 @@ class Spoiler:
             humanspoiler["Shuffled Kasplats"] = self.human_kasplats
         if self.settings.random_patches:
             humanspoiler["Shuffled Dirt Patches"] = self.human_patches
-        # if self.settings.bananaport_rando:
-        #     humanspoiler["Bananaports"] = self.human_warp_locations
+        # Deactivated until the shuffler is fixed
+        # if self.settings.bananaport_rando and self.settings.activate_all_bananaports == "all":
+        #     humanspoiler["Activated Bananaports"] = self.human_warp_locations
         if len(self.hint_list) > 0:
             humanspoiler["Wrinkly Hints"] = self.hint_list
         if self.settings.shuffle_shops:
