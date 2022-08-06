@@ -40,6 +40,22 @@ class Balloon:
             self.logic = lambda l: True
         else:
             self.logic = logic
+        self.spawnPoint = self.setSpawnPoint(points)
+
+    def setSpawnPoint(self, points=[]):
+        """Set the spawn point of a balloon based on its path"""
+        spawnX = 0
+        spawnY = 0
+        spawnZ = 0
+        for p in points:
+            spawnX += p[0]
+            spawnY += p[1]
+            spawnZ += p[2]
+        spawnX /= len(points)
+        spawnY /= len(points)
+        spawnY -= 100  # Most balloons are at least 100 units off the ground
+        spawnZ /= len(points)
+        return [int(spawnX), int(spawnY), int(spawnZ)]
 
 
 ColoredBananaGroupList = {
@@ -1432,8 +1448,8 @@ BalloonList = {
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.GalleonBeyondPineappleGate,
         points=[
-            [1, 1206, 1680, 2714],
-            [2, 1187, 1685, 3072],
+            [1206, 1680, 2714],
+            [1187, 1685, 3072],
         ],
     ),
     Balloon(
@@ -1444,8 +1460,8 @@ BalloonList = {
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.GloomyGalleonStart,
         points=[
-            [1, 2920, 1950, 3339],
-            [2, 2920, 1950, 3000],
+            [2920, 1950, 3339],
+            [2920, 1950, 3000],
         ],
     ),
     Balloon(
@@ -1456,8 +1472,8 @@ BalloonList = {
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.GloomyGalleonStart,
         points=[
-            [1, 3217, 1950, 3450],
-            [2, 3170, 1950, 3118],
+            [3217, 1950, 3450],
+            [3170, 1950, 3118],
         ],
     ),
     Balloon(
@@ -1468,14 +1484,14 @@ BalloonList = {
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.GloomyGalleonStart,
         points=[
-            [1, 3184, 1910, 2565],
-            [2, 3236, 1920, 2627],
-            [3, 3362, 1925, 2671],
-            [4, 3462, 1920, 2546],
-            [5, 3443, 1910, 2429],
-            [6, 3462, 1920, 2546],
-            [7, 3362, 1925, 2671],
-            [8, 3236, 1920, 2627],
+            [3184, 1910, 2565],
+            [3236, 1920, 2627],
+            [3362, 1925, 2671],
+            [3462, 1920, 2546],
+            [3443, 1910, 2429],
+            [3462, 1920, 2546],
+            [3362, 1925, 2671],
+            [3236, 1920, 2627],
         ],
     ),
     Balloon(
@@ -1486,12 +1502,12 @@ BalloonList = {
         konglist=[Kongs.diddy],
         region=Regions.LighthouseArea,
         points=[
-            [1, 1515, 2315, 4222],
-            [2, 1362, 2310, 4099],
-            [3, 1454, 2300, 3913],
-            [4, 1617, 2305, 3930],
-            [5, 1666, 2300, 4060],
-            [6, 1626, 2310, 4177],
+            [1515, 2315, 4222],
+            [1362, 2310, 4099],
+            [1454, 2300, 3913],
+            [1617, 2305, 3930],
+            [1666, 2300, 4060],
+            [1626, 2310, 4177],
         ],
     ),
     Balloon(
@@ -1502,10 +1518,10 @@ BalloonList = {
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.Shipyard,
         points=[
-            [1, 3800, 1750, 1707],
-            [2, 4038, 1760, 1624],
-            [3, 4142, 1750, 1400],
-            [4, 3914, 1740, 1564],
+            [3800, 1750, 1707],
+            [4038, 1760, 1624],
+            [4142, 1750, 1400],
+            [3914, 1740, 1564],
         ],
     ),
     Balloon(
@@ -1516,8 +1532,8 @@ BalloonList = {
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.Shipyard,
         points=[
-            [1, 3035, 1750, 750],
-            [2, 3175, 1750, 430],
+            [3035, 1750, 750],
+            [3175, 1750, 430],
         ],
     ),
     Balloon(
@@ -1528,8 +1544,8 @@ BalloonList = {
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.TreasureRoomDiddyGoldTower,
         points=[
-            [1, 1984, 1840, 962],
-            [2, 1620, 1850, 770],
+            [1984, 1840, 962],
+            [1620, 1850, 770],
         ],
     ),
     Balloon(
@@ -1540,8 +1556,8 @@ BalloonList = {
         konglist=[Kongs.chunky],
         region=Regions.SickBay,
         points=[
-            [1, 730, 110, 893],
-            [2, 440, 110, 984],
+            [730, 110, 893],
+            [440, 110, 984],
         ],
     ),
     Balloon(
@@ -1552,14 +1568,14 @@ BalloonList = {
         konglist=[Kongs.donkey],
         region=Regions.Lighthouse,
         points=[
-            [1, 372, 800, 315],
-            [2, 298, 807, 418],
-            [3, 298, 804, 535],
-            [4, 396, 810, 616],
-            [5, 517, 803, 616],
-            [6, 601, 808, 527],
-            [7, 601, 802, 407],
-            [8, 534, 806, 315],
+            [372, 800, 315],
+            [298, 807, 418],
+            [298, 804, 535],
+            [396, 810, 616],
+            [517, 803, 616],
+            [601, 808, 527],
+            [601, 802, 407],
+            [534, 806, 315],
         ],
     ),
 }
