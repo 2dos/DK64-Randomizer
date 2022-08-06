@@ -445,10 +445,14 @@ class Settings:
         for i in range(0, self.starting_kongs_count - 1):
             kongLocation = random.choice(kongCageLocations)
             kongCageLocations.remove(kongLocation)
+
+        # The following cases do not apply if you could bypass the Guitar door without Diddy
+        bypass_guitar_door = self.open_levels or self.activate_all_bananaports == "all"
         # In case both Diddy and Chunky need to be freed but only Aztec locations are available
         # This would be impossible, as one of them must free the Tiny location and Diddy is needed for the Lanky location
         if (
-            self.starting_kongs_count == 3
+            not bypass_guitar_door
+            and self.starting_kongs_count == 3
             and Kongs.diddy not in self.starting_kong_list
             and Kongs.chunky not in self.starting_kong_list
             and Locations.TinyKong in kongCageLocations
@@ -457,8 +461,8 @@ class Settings:
             # Move a random location to a non-Aztec location
             kongCageLocations.pop()
             kongCageLocations.append(random.choice(Locations.DiddyKong, Locations.ChunkyKong))
-        # In case diddy is the only kong to free, he can't be in the llama temple since it's behind guitar door
-        if self.starting_kongs_count == 4 and Kongs.diddy not in self.starting_kong_list and Locations.LankyKong in kongCageLocations:
+        # In case Diddy is the only kong to free, he can't be in the Llama Temple since it's behind the Guitar door
+        if not bypass_guitar_door and self.starting_kongs_count == 4 and Kongs.diddy not in self.starting_kong_list and Locations.LankyKong in kongCageLocations:
             # Move diddy kong from llama temple to another cage randomly chosen
             kongCageLocations.remove(Locations.LankyKong)
             kongCageLocations.append(random.choice(Locations.DiddyKong, Locations.TinyKong, Locations.ChunkyKong))
