@@ -361,7 +361,7 @@ void purchaseMove(shop_paad* paad) {
 		break;
 	}
 	if (p_type == PURCHASE_INSTRUMENT) {
-		int melon_cap = MelonArray[(int)paad->purchase_value]
+		int melon_cap = MelonArray[(int)paad->purchase_value];
 		if (CollectableBase.Melons < melon_cap) {
 			CollectableBase.Melons = melon_cap;
 			refillHealth(0);

@@ -32,9 +32,7 @@ cranky_0 = [
         "item_type": "slam",
         "item_index": 3,
     },
-    {
-        "item_type": "nothing"
-    }
+    {"item_type": "nothing"},
 ]
 cranky_1 = [
     {
@@ -61,9 +59,7 @@ cranky_1 = [
         "item_type": "slam",
         "item_index": 3,
     },
-    {
-        "item_type": "nothing"
-    }
+    {"item_type": "nothing"},
 ]
 
 funky = [
@@ -71,9 +67,7 @@ funky = [
         "item_type": "gun",
         "item_index": 1,
     },
-    {
-        "item_type": "nothing"
-    },
+    {"item_type": "nothing"},
     {
         "item_type": "ammo_belt",
         "item_index": 1,
@@ -93,29 +87,21 @@ funky = [
         "item_type": "gun",
         "item_index": 3,
     },
-    {
-        "item_type": "nothing"
-    }
+    {"item_type": "nothing"},
 ]
 
 candy = [
-    {
-        "item_type": "nothing"
-    },
+    {"item_type": "nothing"},
     {
         "item_type": "instrument",
         "item_index": 1,
     },
-    {
-        "item_type": "nothing"
-    },
+    {"item_type": "nothing"},
     {
         "item_type": "instrument",
         "item_index": 2,
     },
-    {
-        "item_type": "nothing"
-    },
+    {"item_type": "nothing"},
     {
         "item_type": "instrument",
         "item_index": 3,
@@ -124,9 +110,7 @@ candy = [
         "item_type": "instrument",
         "item_index": 4,
     },
-    {
-        "item_type": "nothing"
-    }
+    {"item_type": "nothing"},
 ]
 
 cranky_moves = {
@@ -154,37 +138,26 @@ candy_moves = {
 }
 
 training = {
-    "dive": {
-        "item_type": "flag",
-        "flag": 0x182
-    },
-    "orange": {
-        "item_type": "flag",
-        "flag": 0x184
-    },
-    "barrel": {
-        "item_type": "flag",
-        "flag": 0x185
-    },
-    "vine": {
-        "item_type": "flag",
-        "flag": 0x183
-    },
+    "dive": {"item_type": "flag", "flag": 0x182},
+    "orange": {"item_type": "flag", "flag": 0x184},
+    "barrel": {"item_type": "flag", "flag": 0x185},
+    "vine": {"item_type": "flag", "flag": 0x183},
 }
 
 bfi = {
     "item_type": "flag",
-    "flag": -2, # Both BFI Moves
+    "flag": -2,  # Both BFI Moves
 }
+
 
 def convertItem(item: dict, kong: int) -> int:
     """Convert move item to encoded int."""
     master_info = 0
     text_index = 0
-    flag = 0xFFFF # -1
-    types = ["special","slam","gun","ammo_belt","instrument","flag","gb"]
-    flag_types = ["flag","gb"]
-    shared_types = ["slam","ammo_belt"] # Instrument covered by diff
+    flag = 0xFFFF  # -1
+    types = ["special", "slam", "gun", "ammo_belt", "instrument", "flag", "gb"]
+    flag_types = ["flag", "gb"]
+    shared_types = ["slam", "ammo_belt"]  # Instrument covered by diff
     if item["item_type"] == "nothing":
         master_info = 7 << 5
     elif item["item_type"] in types:
@@ -198,7 +171,7 @@ def convertItem(item: dict, kong: int) -> int:
         move_lvl = 0
         if "item_index" in item:
             move_lvl = (item["item_index"] - 1) & 3
-        master_info |= (move_lvl << 3)
+        master_info |= move_lvl << 3
         master_info |= move_kong
         if item["item_type"] in flag_types:
             flag = item["flag"]
@@ -244,15 +217,15 @@ def writeVanillaMoveData(fh):
     fh.write(bytearray(ins_upg_prices))
     # Space Data
     fh.seek(move_offset)
-    for x in range(int(0x400/4)):
-        fh.write((0).to_bytes(4,"big"))
+    for x in range(int(0x400 / 4)):
+        fh.write((0).to_bytes(4, "big"))
     fh.seek(move_offset)
-    move_blocks = [cranky_moves,funky_moves,candy_moves]
+    move_blocks = [cranky_moves, funky_moves, candy_moves]
     for block in move_blocks:
         for kong_index, kong in enumerate(block):
             for level in block[kong]:
-                fh.write(convertItem(level,kong_index).to_bytes(4,"big"))
+                fh.write(convertItem(level, kong_index).to_bytes(4, "big"))
     for training_barrel in training:
         training_item = training[training_barrel]
-        fh.write(convertItem(training_item,0).to_bytes(4,"big"))
-    fh.write(convertItem(bfi,0).to_bytes(4,"big"))
+        fh.write(convertItem(training_item, 0).to_bytes(4, "big"))
+    fh.write(convertItem(bfi, 0).to_bytes(4, "big"))

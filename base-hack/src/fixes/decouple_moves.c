@@ -35,17 +35,18 @@ void decouple_moves_fixes(void) {
 		PatchCrankyCode();
 		*(int*)(0x80025E9C) = 0x0C009751; // Change writing of move to "write bitfield move" function call
 		writeJetpacMedalReq(); // Adjust medal requirement for Jetpac
+		int func_call = 0;
 		if (Rando.shop_hints) {
-			int func_call = 0x0C000000 | (((int)&getMoveHint & 0xFFFFFF) >> 2);
+			func_call = 0x0C000000 | (((int)&getMoveHint & 0xFFFFFF) >> 2);
 			*(int*)(0x8002661C) = func_call;
 			*(int*)(0x800265F0) = func_call;
 		}
-		int func_call = 0x0C000000 | (((int)&getNextMovePurchase & 0xFFFFFF) >> 2);
+		func_call = 0x0C000000 | (((int)&getNextMovePurchase & 0xFFFFFF) >> 2);
 		*(int*)(0x80026720) = func_call;
 		*(int*)(0x8002683C) = func_call;
 		crossKongInit();
 		// Write Modified purchase move stuff
-		int func_call = 0x0C000000 | (((int)&purchaseMove & 0xFFFFFF) >> 2);
+		func_call = 0x0C000000 | (((int)&purchaseMove & 0xFFFFFF) >> 2);
 		*(int*)(0x80027324) = func_call;
 		*(int*)(0x8002691C) = func_call;
 	} else if (CurrentMap == MAIN_MENU) {
