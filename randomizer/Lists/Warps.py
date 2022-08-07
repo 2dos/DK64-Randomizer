@@ -42,10 +42,8 @@ BananaportVanilla = {
     Warps.AztecCranky: BananaportData(name="Angry Aztec: Outside Cranky's", map_id=Maps.AngryAztec, region_id=Regions.AngryAztecMain, obj_id_vanilla=0x95, vanilla_warp=2),
     Warps.AztecTotemNearRight: BananaportData(name="Angry Aztec: Near Llama Temple", map_id=Maps.AngryAztec, region_id=Regions.AngryAztecMain, obj_id_vanilla=0x73, vanilla_warp=3),
     Warps.AztecFunky: BananaportData(name="Angry Aztec: Outside Funky's", map_id=Maps.AngryAztec, region_id=Regions.AngryAztecMain, obj_id_vanilla=0xB1, vanilla_warp=3),
-    # Locked until the warp shuffler is fixed
-    Warps.AztecNearSnide: BananaportData(name="Angry Aztec: Near Snide's", map_id=Maps.AngryAztec, region_id=Regions.AngryAztecMain, obj_id_vanilla=0x82, locked=True, vanilla_warp=4),
-    # Locked until the warp shuffler is fixed
-    Warps.AztecSnoopTunnel: BananaportData(name="Angry Aztec: Sandy Tunnel", map_id=Maps.AngryAztec, region_id=Regions.AztecDonkeyQuicksandCave, obj_id_vanilla=0x87, locked=True, vanilla_warp=4),
+    Warps.AztecNearSnide: BananaportData(name="Angry Aztec: Near Snide's", map_id=Maps.AngryAztec, region_id=Regions.AngryAztecMain, obj_id_vanilla=0x82, vanilla_warp=4),
+    Warps.AztecSnoopTunnel: BananaportData(name="Angry Aztec: Sandy Tunnel", map_id=Maps.AngryAztec, region_id=Regions.AztecDonkeyQuicksandCave, obj_id_vanilla=0x87, vanilla_warp=4),
     Warps.LlamaNearLeft: BananaportData(name="Llama Temple: Near the Bongo Pad", map_id=Maps.AztecLlamaTemple, region_id=Regions.LlamaTemple, obj_id_vanilla=0x58, vanilla_warp=0),
     Warps.LlamaMatchingGame: BananaportData(name="Llama Temple: Outside Matching Game", map_id=Maps.AztecLlamaTemple, region_id=Regions.LlamaTemple, obj_id_vanilla=0x4E, vanilla_warp=0),
     Warps.LlamaNearRight: BananaportData(name="Llama Temple: Near the Trombone Pad", map_id=Maps.AztecLlamaTemple, region_id=Regions.LlamaTemple, obj_id_vanilla=0x9A, vanilla_warp=1),
@@ -70,10 +68,7 @@ BananaportVanilla = {
     Warps.GalleonNear2DS: BananaportData(name="Gloomy Galleon: Near 2-Door Ship", map_id=Maps.GloomyGalleon, region_id=Regions.Shipyard, obj_id_vanilla=0x6C, locked=True, vanilla_warp=1),
     Warps.GalleonNearCranky: BananaportData(name="Gloomy Galleon: Near Cranky's", map_id=Maps.GloomyGalleon, region_id=Regions.GloomyGalleonStart, obj_id_vanilla=0x60, vanilla_warp=2),
     Warps.GalleonSnides: BananaportData(name="Gloomy Galleon: Outside Snide's", map_id=Maps.GloomyGalleon, region_id=Regions.LighthouseArea, obj_id_vanilla=0x66, vanilla_warp=2),
-    # Locked until the warp shuffler is fixed
-    Warps.GalleonGoldTower: BananaportData(
-        name="Gloomy Galleon: On a Gold Tower", map_id=Maps.GloomyGalleon, region_id=Regions.TreasureRoomDiddyGoldTower, obj_id_vanilla=0x55, locked=True, vanilla_warp=3
-    ),
+    Warps.GalleonGoldTower: BananaportData(name="Gloomy Galleon: On a Gold Tower", map_id=Maps.GloomyGalleon, region_id=Regions.TreasureRoomDiddyGoldTower, obj_id_vanilla=0x55, vanilla_warp=3),
     Warps.GalleonNearSeal: BananaportData(name="Gloomy Galleon: Near Seal Race", map_id=Maps.GloomyGalleon, region_id=Regions.Shipyard, obj_id_vanilla=0x56, locked=True, vanilla_warp=3),
     Warps.GalleonNearRocketbarrel: BananaportData(
         name="Gloomy Galleon: Near Lighthouse Rocketbarrel", map_id=Maps.GloomyGalleon, region_id=Regions.LighthouseArea, obj_id_vanilla=0x16, vanilla_warp=4
@@ -82,13 +77,11 @@ BananaportVanilla = {
     Warps.FungiClock1: BananaportData(name="Fungi Forest: Clock (1)", map_id=Maps.FungiForest, region_id=Regions.FungiForestStart, obj_id_vanilla=0x36, vanilla_warp=0),
     Warps.FungiMill: BananaportData(name="Fungi Forest: Mill", map_id=Maps.FungiForest, region_id=Regions.MillArea, obj_id_vanilla=0x35, vanilla_warp=0),
     Warps.FungiClock2: BananaportData(name="Fungi Forest: Clock (2)", map_id=Maps.FungiForest, region_id=Regions.FungiForestStart, obj_id_vanilla=0x49, vanilla_warp=1),
-    # Locked until the warp shuffler is fixed
-    Warps.FungiFunky: BananaportData(name="Fungi Forest: Outside Funky's", map_id=Maps.FungiForest, region_id=Regions.WormArea, obj_id_vanilla=0x4A, locked=True, vanilla_warp=1),
+    Warps.FungiFunky: BananaportData(name="Fungi Forest: Outside Funky's", map_id=Maps.FungiForest, region_id=Regions.WormArea, obj_id_vanilla=0x4A, vanilla_warp=1),
     Warps.FungiClock3: BananaportData(name="Fungi Forest: Clock (3)", map_id=Maps.FungiForest, region_id=Regions.FungiForestStart, obj_id_vanilla=0x4B, vanilla_warp=2),
     Warps.FungiMushEntrance: BananaportData(name="Fungi Forest: Giant Mushroom Lowest Entrance", map_id=Maps.FungiForest, region_id=Regions.GiantMushroomArea, obj_id_vanilla=0x4E, vanilla_warp=2),
     Warps.FungiClock4: BananaportData(name="Fungi Forest: Clock (4)", map_id=Maps.FungiForest, region_id=Regions.FungiForestStart, obj_id_vanilla=0x4F, vanilla_warp=3),
-    # Locked until the warp shuffler is fixed
-    Warps.FungiOwlTree: BananaportData(name="Fungi Forest: Owl Tree", map_id=Maps.FungiForest, region_id=Regions.HollowTreeArea, obj_id_vanilla=0x51, locked=True, vanilla_warp=3),
+    Warps.FungiOwlTree: BananaportData(name="Fungi Forest: Owl Tree", map_id=Maps.FungiForest, region_id=Regions.HollowTreeArea, obj_id_vanilla=0x51, vanilla_warp=3),
     Warps.FungiTopMush: BananaportData(name="Fungi Forest: Giant Mushroom (Top)", map_id=Maps.FungiForest, region_id=Regions.MushroomUpperExterior, obj_id_vanilla=0x56, vanilla_warp=4),
     Warps.FungiLowMush: BananaportData(name="Fungi Forest: Giant Mushroom (Bottom)", map_id=Maps.FungiForest, region_id=Regions.GiantMushroomArea, obj_id_vanilla=0x55, vanilla_warp=4),
     Warps.CavesNearLeft: BananaportData(name="Crystal Caves: Near Left", map_id=Maps.CrystalCaves, region_id=Regions.CrystalCavesMain, obj_id_vanilla=0x22, vanilla_warp=0),
