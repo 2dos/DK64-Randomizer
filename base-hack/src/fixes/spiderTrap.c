@@ -65,7 +65,7 @@ void handleSpiderTrapCode(void) {
         int rng = 0;
         if (CurrentActorPointer_0->control_state == 0x23) {
             rng = getRNGLower31();
-            if (989 < ((rng >> 0xF) % 1000)) { // Chance they are gonna goop you (1%)
+            if (979 < ((rng >> 0xF) % 1000)) { // Chance they are gonna goop you (1%)
                 if (CurrentActorPointer_0->grounded & 1) {
                     CurrentActorPointer_0->control_state = 0x28;
                     CurrentActorPointer_0->control_state_progress = 0;

@@ -840,6 +840,12 @@ START_HOOK:
 		ADDIU 		t4, r0, 4
 		SH 			t4, 0x259A (t3)
 
+		// KKO Enemy Check
+		LUI 		t3, hi(KKOPhaseOrder + 1)
+		LBU 		t3, lo(KKOPhaseOrder + 1) (t3)
+		LUI 		t4, 0x8003
+		SH 			t3, 0x2566 (t4)
+
 		PatchKRoolCode_0:
 			LUI 		t3, hi(ShorterBosses)
 			LBU 		t3, lo(ShorterBosses) (t3)

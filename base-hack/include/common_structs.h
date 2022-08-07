@@ -196,7 +196,9 @@ typedef struct playerData {
 	/* 0x20D */ char unk_20D[0x23C - 0x20D];
 	/* 0x23C */ short unk_rocketbarrel_value1;
 	/* 0x23E */ short unk_rocketbarrel_value2;
-	/* 0x240 */ char unk_240[0x284 - 0x240];
+	/* 0x240 */ char unk_240[0x248 - 0x240];
+	/* 0x248 */ short shockwave_timer;
+	/* 0x24A */ char unk_24A[0x284 - 0x24A];
 	/* 0x284 */ cameraData* camera_pointer;
 	/* 0x288 */ char unk_288[0x2BC - 0x288];
 	/* 0x2BC */ floatPos grabPos;

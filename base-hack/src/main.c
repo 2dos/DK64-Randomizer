@@ -210,6 +210,7 @@ void earlyFrame(void) {
 	} else {
 		*(int*)(0x8074C3B0) = (int)&cutsceneDKCode;
 	}
+	fastWarpShockwaveFix();
 	catchWarpHandle();
 	write_kutoutorder();
 	remove_blockers();
