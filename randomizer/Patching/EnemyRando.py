@@ -11,31 +11,94 @@ from randomizer.Spoiler import Spoiler
 
 def getBalancedCrownEnemyRando(crown_setting):
     """Get array of weighted enemies."""
-    temp = []
+    #this library will contain a list for every enemy it needs to generate
+    enemy_swaps_library = {}
+
+    
     if crown_setting != "off":
-        bias = 10
-        ban_getout = False
-        no_bias = False
-        if crown_setting == "easy":
-            bias = 10
-            ban_getout = True
-        elif crown_setting == "medium":
-            bias = 6
-        elif crown_setting == "hard":
+        enemy_swaps_library = {
+            Maps.JapesCrown: [],
+            Maps.AztecCrown: [],
+            Maps.FactoryCrown: [],
+            Maps.GalleonCrown: [],
+            Maps.ForestCrown: [],
+            Maps.CavesCrown: [],
+            Maps.CastleCrown: [],
+            Maps.HelmCrown: [],
+            Maps.SnidesCrown: [],
+            Maps.LobbyCrown: [],
+        }
+        every_enemy = []
+        disruptive_max_1 = []
+        disruptive_at_most_kasplat = []
+        disruptive_0 = []
+        legeacy_hard_mode = []
+
+        for enemy in EnemyMetaData:
+            every_enemy.append(enemy)
+            if EnemyMetaData[enemy].disruptive == 1:
+                disruptive_max_1.append(enemy)
+            if EnemyMetaData[enemy].kasplat == True:
+                disruptive_at_most_kasplat.append(enemy)
+            if EnemyMetaData[enemy].disruptive == 0:
+                disruptive_at_most_kasplat.append(enemy)
+                disruptive_0.append(enemy)
+            
             bias = 2
-        for enemy in EnemyMetaData.keys():
-            if EnemyMetaData[enemy].crown_enabled:
-                if not ban_getout or enemy != Enemies.GetOut:
+            for enemy in EnemyMetaData.keys():
+                if EnemyMetaData[enemy].crown_enabled:
                     base_weight = EnemyMetaData[enemy].crown_weight
                     weight_diff = abs(base_weight - bias)
                     new_weight = abs(10 - weight_diff)
-                    if no_bias:
-                        new_weight = 10
-                    if enemy == Enemies.GetOut:
-                        new_weight = 1
-                    for x in range(new_weight):
-                        temp.append(enemy)
-    return temp
+                    for count in range(new_weight):
+                        legeacy_hard_mode.append(enemy)
+
+        if crown_setting == "easy":
+            for map_id in enemy_swaps_library:
+                enemy_swaps_library[map_id].append(random.choice(disruptive_0)) 
+                enemy_swaps_library[map_id].append(random.choice(disruptive_at_most_kasplat))
+                enemy_swaps_library[map_id].append(random.choice(disruptive_at_most_kasplat))
+                if(map_id == Maps.GalleonCrown or map_id == Maps.HelmCrown):
+                     enemy_swaps_library[map_id].append(random.choice(disruptive_0)) 
+        elif crown_setting == "medium":
+            count_disruptive = 0
+            count_kasplats = 0
+            new_enemy = 0
+            for map_id in enemy_swaps_library:
+                number_of_enemies = 3
+                if(map_id == Maps.GalleonCrown or map_id == Maps.HelmCrown):
+                    number_of_enemies = 4
+                for count in range(number_of_enemies):
+                    if count_disruptive == 0:
+                        if count_kasplats < 2: 
+                            new_enemy = random.choice(every_enemy)
+                        elif count_kasplats == 2:
+                            new_enemy = random.choice(disruptive_max_1)
+                        elif count_kasplats == 3:
+                            new_enemy = random.choice(disruptive_0)
+                    elif count_disruptive == 1:
+                        if count_kasplats < 2: 
+                            new_enemy = random.choice(disruptive_max_1)
+                        elif count_kasplats == 2:
+                            new_enemy = random.choice(disruptive_0)
+                    elif count_disruptive == 2:
+                        if count_kasplats == 0: 
+                            new_enemy = random.choice(disruptive_at_most_kasplat)
+                        elif count_kasplats == 1:
+                            new_enemy = random.choice(disruptive_0)
+                    elif count_kasplats > 3 or (count_kasplats > 2 and count_disruptive > 1) or (count_kasplats == 2 and count_disruptive == 2):
+                        print("This is a mistake in the algorithm")
+                        new_enemy = Enemies.BeaverGold
+                    enemy_swaps_library[map_id].append(new_enemy)
+        elif crown_setting == "hard":
+            for map_id in enemy_swaps_library:
+                number_of_enemies = 3
+                if(map_id == Maps.GalleonCrown or map_id == Maps.HelmCrown):
+                    number_of_enemies = 4
+                for count in range(number_of_enemies):
+                    enemy_swaps_library[map_id].append(random.choie(legeacy_hard_mode))
+
+    return enemy_swaps_library
 
 
 def randomize_enemies(spoiler: Spoiler):
@@ -233,9 +296,13 @@ def randomize_enemies(spoiler: Spoiler):
             Enemies.Pufftup,
         ],
     }
+    crown_enemies_library = {}
     crown_enemies = []
+    for enemy in EnemyMetaData:
+        if EnemyMetaData[enemy].crown_enabled == True:
+            crown_enemies.append(enemy)
     if spoiler.settings.enemy_rando or spoiler.settings.kasplat_rando or spoiler.settings.crown_enemy_rando != "off":  # TODO: Add option for crown enemy rando
-        crown_enemies = getBalancedCrownEnemyRando(spoiler.settings.crown_enemy_rando)
+        crown_enemies_library = getBalancedCrownEnemyRando(spoiler.settings.crown_enemy_rando)
         minigame_enemies_simple = []
         minigame_enemies_beatable = []
         minigame_enemies_nolimit = []
@@ -272,10 +339,6 @@ def randomize_enemies(spoiler: Spoiler):
                 for x in range(spawner_count):
                     arr.append(random.choice(enemy_classes[enemy_class]))
                 enemy_swaps[enemy_class] = arr
-            if spoiler.settings.crown_enemy_rando != "off":
-                crown_swaps = []
-                for x in range(spawner_count):
-                    crown_swaps.append(random.choice(crown_enemies))
             offset += 2
             for x in range(spawner_count):
                 ROM().seek(cont_map_spawner_address + offset)
@@ -389,13 +452,13 @@ def randomize_enemies(spoiler: Spoiler):
                                     ROM().seek(cont_map_spawner_address + spawner["offset"] + speed_offset)
                                     ROM().writeMultipleBytes(new_speed, 1)
             if spoiler.settings.crown_enemy_rando != "off" and cont_map_id in crown_maps:
-                crown_index = 0
                 for spawner in vanilla_spawners:
                     if spawner["enemy_id"] in crown_enemies:
-                        new_enemy_id = crown_swaps[crown_index]
+                        if len(crown_enemies_library[cont_map_id]) == 0:
+                            print("There are more spawners in {cont_map_id} than originally thought.")
+                        new_enemy_id = crown_enemies_library[cont_map_id].pop()
                         ROM().seek(cont_map_spawner_address + spawner["offset"])
                         ROM().writeMultipleBytes(new_enemy_id, 1)
-                        crown_index += 1
                         if new_enemy_id in EnemyMetaData.keys():
                             ROM().seek(cont_map_spawner_address + spawner["offset"] + 0x10)
                             ROM().writeMultipleBytes(EnemyMetaData[new_enemy_id].aggro, 1)
