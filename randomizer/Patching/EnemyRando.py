@@ -35,14 +35,15 @@ def getBalancedCrownEnemyRando(crown_setting):
         legeacy_hard_mode = []
 
         for enemy in EnemyMetaData:
-            every_enemy.append(enemy)
-            if EnemyMetaData[enemy].disruptive == 1:
-                disruptive_max_1.append(enemy)
-            if EnemyMetaData[enemy].kasplat == True:
-                disruptive_at_most_kasplat.append(enemy)
-            if EnemyMetaData[enemy].disruptive == 0:
-                disruptive_at_most_kasplat.append(enemy)
-                disruptive_0.append(enemy)
+            if EnemyMetaData[enemy].crown_enabled:
+                every_enemy.append(enemy)
+                if EnemyMetaData[enemy].disruptive == 1:
+                    disruptive_max_1.append(enemy)
+                if EnemyMetaData[enemy].kasplat == True:
+                    disruptive_at_most_kasplat.append(enemy)
+                if EnemyMetaData[enemy].disruptive == 0:
+                    disruptive_at_most_kasplat.append(enemy)
+                    disruptive_0.append(enemy)
             
             bias = 2
             for enemy in EnemyMetaData.keys():
