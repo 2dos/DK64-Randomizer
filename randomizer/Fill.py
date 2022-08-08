@@ -694,7 +694,15 @@ def GetItemPrerequisites(spoiler, targetItemId, ownedKongs=[]):
             break
     # If we didn't find a required move, the item was placed improperly somehow (this shouldn't happen)
     if lastRequiredMove is None:
-        raise Ex.ItemPlacementException("Item placed in an inaccessible location??")
+        # DEBUG CODE - This helps find where items are being placed
+        mysteryLocation = None
+        for possibleLocationThisItemGotPlaced in GetValidLocationsForMove(spoiler, targetItemId):
+            if LocationList[possibleLocationThisItemGotPlaced].item == targetItemId:
+                mysteryLocation = LocationList[possibleLocationThisItemGotPlaced]
+                break
+        if mysteryLocation is None:
+            raise Ex.ItemPlacementException("Target item not placed??")
+        raise Ex.ItemPlacementException("Item placed in an inaccessible location: " + str(mysteryLocation.name))
     # requiredMoves now contains all items that are required, but probably a bunch of useless stuff too
     # Time to cull moves until we get to only exactly what we need
     while requiredMoves != [] and requiredMoves[0] != lastRequiredMove:
@@ -856,6 +864,8 @@ def FillKongsAndMovesGeneric(spoiler):
                 js.postMessage("Fill failed, out of retries.")
                 raise ex
             retries += 1
+            if retries % 5 == 0:
+                spoiler.settings.shuffle_prices()
             js.postMessage("Retrying fill. Tries: " + str(retries))
             Reset()
             Logic.ClearAllLocations()
