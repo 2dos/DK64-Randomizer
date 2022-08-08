@@ -7,6 +7,14 @@ if (window.location.protocol != "https:") {
     location.href = location.href.replace("http://", "https://");
   }
 }
+if (location.hostname == "dev.dk64randomizer.com") {
+  var _LTracker = _LTracker || [];
+  _LTracker.push({
+    logglyKey: "5d3aa1b3-6ef7-4bc3-80ae-778d48a571b0",
+    sendConsoleErrors: true,
+    tag: "loggly-jslogger",
+  });
+}
 run_python_file("ui/__init__.py");
 // Sleep function to run functions after X seconds
 async function sleep(seconds, func, args) {
@@ -23,6 +31,9 @@ window.onerror = function (error) {
   toast_alert(error.toString());
 };
 function toast_alert(text) {
+  try {
+    _LTracker.push(text);
+  } catch {}
   Toastify({
     text: text,
     duration: 15000,
@@ -38,9 +49,9 @@ function toast_alert(text) {
 }
 function getFile(file) {
   return $.ajax({
-      type: "GET",
-      url: file,
-      async: false
+    type: "GET",
+    url: file,
+    async: false,
   }).responseText;
 }
 var cosmetics;
@@ -142,7 +153,7 @@ function load_cookies() {
         try {
           element.value = json[key];
           if (element.hasAttribute("data-slider-value")) {
-            element.setAttribute("data-slider-value",json[key]);
+            element.setAttribute("data-slider-value", json[key]);
           }
         } catch {}
       }
