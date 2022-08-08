@@ -448,6 +448,7 @@ def disable_rw(evt):
         except Exception:
             pass
 
+
 @bind("change", "unlock_fairy_shockwave")
 def toggle_extreme_prices_option(event):
     """Determine the visibility of the extreme prices option."""
