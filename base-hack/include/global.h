@@ -110,4 +110,5 @@ extern void goldBeaverCode(void);
 extern void CBDing(void);
 extern void handleSpiderTrapCode(void);
 extern void fastWarpShockwaveFix(void);
+extern void fixRBSlowTurn(void);
 //extern void getRandoNextMovePurchase(shop_paad* shop_info, KongBase* moves);

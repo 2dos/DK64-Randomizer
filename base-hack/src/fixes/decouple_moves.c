@@ -66,6 +66,8 @@ void decouple_moves_fixes(void) {
 		// Menu Overlay - Candy's Shop Glitch
 		*(short*)(0x80027678) = 0x1000;
 		*(short*)(0x8002769C) = 0x1000;
+	} else if (*(int*)(0x807FBB64) & 0x104000) {
+		*(short*)(0x80024266) = 1; // Set Minigame oranges as infinite
 	}
 	int in_boss = 0;
 	for (int i = 0; i < sizeof(boss_maps); i++) {

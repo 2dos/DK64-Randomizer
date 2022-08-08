@@ -809,6 +809,9 @@ START_HOOK:
 	Jump_TinyPhaseShort:
 		J 			TinyPhaseShort
 		NOP
+	Jump_ChunkyPhaseAddedSave:
+		J 			ChunkyPhaseAddedSave
+		NOP
 		
 
 	PatchKRoolCode:
@@ -915,6 +918,13 @@ START_HOOK:
 			SW 			r0, 0x14B8 (t4)
 
 		PatchKRoolCode_1:
+			LUI 		t3, hi(Jump_ChunkyPhaseAddedSave)
+			LW 			t3, lo(Jump_ChunkyPhaseAddedSave) (t3)
+			LUI 		t4, 0x8003
+			SW 			t3, 0x1378 (t4)
+			SW 			r0, 0x137C (t4)
+
+
 			JR 			ra
 			NOP
 
@@ -1052,6 +1062,14 @@ START_HOOK:
 			ANDI 	t6, t5, 0xFF
 			J 		0x800314BC
 			SLL 	t7, t6, 2
+
+	ChunkyPhaseAddedSave:
+		JAL 	setFlag
+		OR 		a2, r0, r0
+		JAL 	0x8060DEC8
+		NOP
+		J 		0x80031380
+		NOP
 
 	Jump_RemoveKrazyKKLagImpact:
 		J 			RemoveKrazyKKLagImpact
