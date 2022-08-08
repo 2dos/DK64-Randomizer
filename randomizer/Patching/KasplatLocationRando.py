@@ -1,13 +1,10 @@
-"""Apply Boss Locations."""
-import random
-
+"""Apply Kasplat Locations."""
 import js
-from randomizer.Lists.EnemyTypes import Enemies, EnemyMetaData
+from randomizer.Lists.EnemyTypes import Enemies
 from randomizer.Lists.MapsAndExits import Maps
 from randomizer.Patching.Patcher import ROM
 from randomizer.Spoiler import Spoiler
 from randomizer.Lists.KasplatLocations import KasplatLocationList
-from randomizer.Enums.Kongs import GetKongs
 
 
 def randomize_kasplat_locations(spoiler: Spoiler):
@@ -34,26 +31,8 @@ def randomize_kasplat_locations(spoiler: Spoiler):
         Maps.FranticFactoryLobby,
         Maps.GloomyGalleonLobby,
     ]
-    if spoiler.settings.kasplat_rando:
-        for level in KasplatLocationList:
-            print(level)
-            kasplats = KasplatLocationList[level]
-            for kasplat in kasplats:
-                # Reset a level's kasplats
-                kasplat.setKasplat(state=False)
-            kongs = GetKongs()
-            for idx, kong in enumerate(kongs):
-                available_for_kong = []
-                for kasplat in kasplats:
-                    if not kasplat.selected and kong in kasplat.kong_lst:
-                        available_for_kong.append(kasplat.name)
-                selected_kasplat = random.choice(available_for_kong)
-                for kasplat in kasplats:
-                    if kasplat.name == selected_kasplat:
-                        kasplat.setKasplat()
-                        kasplat.selected_kong_idx = idx
-                        kasplat.selected_kong = kong
-                        print(selected_kasplat)
+    if spoiler.settings.kasplat_location_rando:
+        selected_kasplat_names = [name for name in spoiler.shuffled_kasplat_map.keys()]
         for cont_map_id in range(216):
             cont_map_spawner_address = js.pointer_addresses[16]["entries"][cont_map_id]["pointing_to"]
             ROM().seek(cont_map_spawner_address)
@@ -109,14 +88,15 @@ def randomize_kasplat_locations(spoiler: Spoiler):
                 for level in KasplatLocationList:
                     kasplats = KasplatLocationList[level]
                     for kasplat in kasplats:
-                        if kasplat.vanilla and kasplat.selected and kasplat.map == cont_map_id:
+                        if kasplat.vanilla and kasplat.name in selected_kasplat_names and kasplat.map == cont_map_id:
                             coord_match_count = 0
                             for y in range(3):
                                 if enemy_coords[y] == kasplat.coords[y]:
                                     coord_match_count += 1
                             if coord_match_count == 3:
                                 is_vanilla = True
-                                new_id = kasplat_types[kasplat.selected_kong_idx]
+                                kong_idx = spoiler.shuffled_kasplat_map[kasplat.name]
+                                new_id = kasplat_types[kong_idx]
 
                 if enemy_id not in kasplat_types or is_vanilla or cont_map_id not in vanilla_kasplat_maps:
                     data_bytes = []
@@ -134,7 +114,7 @@ def randomize_kasplat_locations(spoiler: Spoiler):
             for level in KasplatLocationList:
                 kasplats = KasplatLocationList[level]
                 for kasplat in kasplats:
-                    if cont_map_id == kasplat.map and kasplat.selected and not kasplat.vanilla:
+                    if cont_map_id == kasplat.map and kasplat.name in selected_kasplat_names and not kasplat.vanilla:
                         if spawn_index in used_enemy_indexes:
                             while spawn_index in used_enemy_indexes:
                                 spawn_index += 1
@@ -145,7 +125,8 @@ def randomize_kasplat_locations(spoiler: Spoiler):
                             used_fence_ids.append(fence_index)
                         # Spawner
                         data_bytes = []
-                        data_bytes.append(kasplat_types[kasplat.selected_kong_idx])
+                        kong_idx = spoiler.shuffled_kasplat_map[kasplat.name]
+                        data_bytes.append(kasplat_types[kong_idx])
                         data_bytes.append(0x7A)
                         for x in range(2):
                             data_bytes.append(0)

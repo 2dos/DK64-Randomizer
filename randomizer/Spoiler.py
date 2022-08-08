@@ -3,7 +3,6 @@
 import json
 from typing import OrderedDict
 
-from randomizer import Logic
 from randomizer.Enums.Events import Events
 from randomizer.Enums.Items import Items
 from randomizer.Enums.Kongs import Kongs
@@ -11,6 +10,7 @@ from randomizer.Enums.Levels import Levels
 from randomizer.Enums.Locations import Locations
 from randomizer.Enums.MoveTypes import MoveTypes
 from randomizer.Enums.Transitions import Transitions
+from randomizer.Enums.Regions import Regions
 from randomizer.Enums.Types import Types
 from randomizer.Lists.Item import ItemFromKong, NameFromKong, KongFromItem, ItemList
 from randomizer.Lists.Location import LocationList
@@ -45,12 +45,11 @@ class Spoiler:
             for j in range(5):
                 kongmoves = []
                 # One for each level
-                for k in range(7):
+                for k in range(8):
                     kongmoves.append(-1)
                 moves.append(kongmoves)
             self.move_data.append(moves)
 
-        self.jetpac_medals_required = self.settings.BananaMedalsRequired
         self.hint_list = {}
 
     def toJson(self):
@@ -87,10 +86,11 @@ class Spoiler:
         settings["coin_door_open"] = self.settings.coin_door_open
         settings["unlock_fairy_shockwave"] = self.settings.unlock_fairy_shockwave
         settings["random_medal_requirement"] = self.settings.random_medal_requirement
-        if self.settings.random_medal_requirement:
-            settings["banana_medals_required"] = self.settings.BananaMedalsRequired
+        if self.settings.coin_door_open in ["need_both", "need_rw"]:
+            settings["medal_requirement"] = self.settings.medal_requirement
         settings["random_prices"] = self.settings.random_prices
         settings["bananaport_rando"] = self.settings.bananaport_rando
+        settings["shuffle_shop_locations"] = self.settings.shuffle_shops
         settings["krool_phases"] = self.settings.krool_order
         settings["krool_access"] = self.settings.krool_access
         settings["krool_keys_required"] = self.GetKroolKeysRequired(self.settings.krool_keys_required)
@@ -186,6 +186,12 @@ class Spoiler:
                 kutout_order = kutout_order + Kongs(kong).name + ", "
             humanspoiler["Shuffled Kutout Kong Order"] = kutout_order.removesuffix(", ")
 
+        if self.settings.hard_bosses:
+            phase_names = []
+            for phase in self.settings.kko_phase_order:
+                phase_names.append(f"Phase {phase+1}")
+            humanspoiler["Shuffled Kutout Phases"] = ", ".join(phase_names)
+
         if self.settings.bonus_barrels in ("random", "all_beaver_bother"):
             shuffled_barrels = OrderedDict()
             for location, minigame in self.shuffled_barrel_data.items():
@@ -207,10 +213,38 @@ class Spoiler:
             humanspoiler["Shuffled Kasplats"] = self.human_kasplats
         if self.settings.random_patches:
             humanspoiler["Shuffled Dirt Patches"] = self.human_patches
-        # if self.settings.bananaport_rando:
-        #     humanspoiler["Bananaports"] = self.human_warp_locations
+        if self.settings.bananaport_rando:
+            humanspoiler["Shuffled Bananaports"] = self.human_warp_locations
         if len(self.hint_list) > 0:
             humanspoiler["Wrinkly Hints"] = self.hint_list
+        if self.settings.shuffle_shops:
+            shop_location_dict = {}
+            for level in self.shuffled_shop_locations:
+                level_name = "Unknown Level"
+
+                level_dict = {
+                    Levels.DKIsles: "DK Isles",
+                    Levels.JungleJapes: "Jungle Japes",
+                    Levels.AngryAztec: "Angry Aztec",
+                    Levels.FranticFactory: "Frantic Factory",
+                    Levels.GloomyGalleon: "Gloomy Galleon",
+                    Levels.FungiForest: "Fungi Forest",
+                    Levels.CrystalCaves: "Crystal Caves",
+                    Levels.CreepyCastle: "Creepy Castle",
+                }
+                shop_dict = {Regions.CrankyGeneric: "Cranky", Regions.CandyGeneric: "Candy", Regions.FunkyGeneric: "Funky", Regions.Snide: "Snide"}
+                if level in level_dict:
+                    level_name = level_dict[level]
+                for shop in self.shuffled_shop_locations[level]:
+                    location_name = "Unknown Shop"
+                    shop_name = "Unknown Shop"
+                    new_shop = self.shuffled_shop_locations[level][shop]
+                    if shop in shop_dict:
+                        location_name = shop_dict[shop]
+                    if new_shop in shop_dict:
+                        shop_name = shop_dict[new_shop]
+                    shop_location_dict[f"{level_name} - {location_name}"] = shop_name
+            humanspoiler["Shop Locations"] = shop_location_dict
 
         return json.dumps(humanspoiler, indent=4)
 
@@ -274,7 +308,7 @@ class Spoiler:
         self.location_data = {}
         self.shuffled_kong_placement = {}
         # Go ahead and set starting kong
-        startkong = {"kong": self.settings.starting_kong, "write": 0x141}
+        startkong = {"kong": self.settings.starting_kong, "write": 0x151}
         trainingGrounds = {"locked": startkong}
         self.shuffled_kong_placement["TrainingGrounds"] = trainingGrounds
         # Write additional starting kongs to empty cages, if any
@@ -297,6 +331,9 @@ class Spoiler:
                     if location.kong == Kongs.any:
                         kong_indices = [Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky]
                     level_index = location.level
+                    # Isles level index is 8, but we need it to be 7 to fit it in move_data
+                    if level_index == 8:
+                        level_index = 7
                     # Use the item to find the data to write
                     move_type = ItemList[location.item].movetype
                     move_level = ItemList[location.item].index - 1
@@ -317,23 +354,23 @@ class Spoiler:
         """Write kong placement information for the given kong cage location."""
         locationName = "Jungle Japes"
         unlockKong = self.settings.diddy_freeing_kong
-        lockedwrite = 0x142
-        puzzlewrite = 0x143
+        lockedwrite = 0x152
+        puzzlewrite = 0x153
         if locationId == Locations.LankyKong:
             locationName = "Llama Temple"
             unlockKong = self.settings.lanky_freeing_kong
-            lockedwrite = 0x144
-            puzzlewrite = 0x145
+            lockedwrite = 0x154
+            puzzlewrite = 0x155
         elif locationId == Locations.TinyKong:
             locationName = "Tiny Temple"
             unlockKong = self.settings.tiny_freeing_kong
-            lockedwrite = 0x146
-            puzzlewrite = 0x147
+            lockedwrite = 0x156
+            puzzlewrite = 0x157
         elif locationId == Locations.ChunkyKong:
             locationName = "Frantic Factory"
             unlockKong = self.settings.chunky_freeing_kong
-            lockedwrite = 0x148
-            puzzlewrite = 0x149
+            lockedwrite = 0x158
+            puzzlewrite = 0x159
         lockedkong = {}
         lockedkong["kong"] = KongFromItem(item)
         lockedkong["write"] = lockedwrite

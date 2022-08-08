@@ -5,7 +5,7 @@ import json
 import random
 import sys
 
-from randomizer.ShuffleBosses import ShuffleBosses, ShuffleBossKongs, ShuffleKutoutKongs
+from randomizer.ShuffleBosses import ShuffleBosses, ShuffleBossKongs, ShuffleKutoutKongs, ShuffleKKOPhaseOrder
 from randomizer.Enums.Events import Events
 from randomizer.Enums.Kongs import Kongs, GetKongs
 from randomizer.Enums.Locations import Locations
@@ -29,6 +29,7 @@ class Settings:
         self.generate_main()
         self.generate_progression()
         self.generate_misc()
+        self.rom_data = 0x1FED020
 
         for k, v in form_data.items():
             setattr(self, k, v)
@@ -47,7 +48,7 @@ class Settings:
         # Longer: 80 GB\
         self.blocker_max = self.blocker_text if self.blocker_text else 50
         self.troff_max = self.troff_text if self.troff_text else 270
-        self.troff_min = round(self.troff_max / 3)
+        self.troff_min = [0.25, 0.3, 0.35, 0.4, 0.45, 0.5, 0.55]  # Weights for the minimum value of troff
         # Always start with training barrels currently
         # training_barrels: str
         # normal
@@ -93,7 +94,9 @@ class Settings:
             self.troff_weight_6 = 1
 
         if self.randomize_cb_required_amounts:
-            randomlist = random.sample(range(self.troff_min, self.troff_max), 7)
+            randomlist = []
+            for i in self.troff_min:
+                randomlist.append(random.randint(round(self.troff_max * i), self.troff_max))
             cbs = randomlist
             self.troff_0 = round(min(cbs[0] * self.troff_weight_0, 500))
             self.troff_1 = round(min(cbs[1] * self.troff_weight_1, 500))
@@ -137,8 +140,9 @@ class Settings:
         self.random_prices = None
         self.boss_location_rando = None
         self.boss_kong_rando = None
-        self.kasplat_rando = None
+        self.kasplat_rando_setting = None
         self.puzzle_rando = None
+        self.shuffle_shops = None
 
     def set_seed(self):
         """Forcibly re-set the random seed to the seed set in the config."""
@@ -201,8 +205,8 @@ class Settings:
         # hard_shooting: bool
         self.hard_shooting = False
 
-        # hard_mad_jack: bool
-        self.hard_mad_jack = False
+        # hard_bosses: bool
+        self.hard_bosses = False
 
         # damage multiplier
         self.damage_amount = "default"
@@ -226,6 +230,7 @@ class Settings:
 
         #  Color
         self.colors = {}
+        self.klaptrap_model = "green"
 
         #  Misc
         self.generate_spoilerlog = None
@@ -239,11 +244,11 @@ class Settings:
         self.open_lobbies = None
         self.open_levels = None
         self.randomize_pickups = False
-        self.random_medal_requirement = True
+        self.random_medal_requirement = False
+        self.medal_requirement = 0
         self.bananaport_rando = False
         self.activate_all_bananaports = False
         self.shop_indicator = False
-        self.skip_arcader1 = False
         self.randomize_cb_required_amounts = False
         self.randomize_blocker_required_amounts = False
         self.maximize_helm_blocker = False
@@ -257,6 +262,11 @@ class Settings:
         self.dpad_display = False
         self.high_req = False
         self.fast_gbs = False
+        self.auto_keys = False
+        self.kko_phase_order = [0, 0, 0]
+        self.enemy_rando = False
+        self.crown_enemy_rando = "off"
+        self.enemy_speed_rando = False
 
     def shuffle_prices(self):
         """Price randomization. Reuseable if we need to reshuffle prices."""
@@ -334,14 +344,13 @@ class Settings:
         # Banana medals
         if self.random_medal_requirement:
             # Range roughly from 4 to 15, average around 10
-            self.BananaMedalsRequired = round(random.normalvariate(10, 1.5))
-        else:
-            self.BananaMedalsRequired = 15
+            self.medal_requirement = round(random.normalvariate(10, 1.5))
 
         # Boss Rando
         self.boss_maps = ShuffleBosses(self.boss_location_rando)
         self.boss_kongs = ShuffleBossKongs(self)
         self.kutout_kongs = ShuffleKutoutKongs(self.boss_maps, self.boss_kongs, self.boss_kong_rando)
+        self.kko_phase_order = ShuffleKKOPhaseOrder(self)
 
         # Bonus Barrel Rando
         if self.bonus_barrel_auto_complete:
@@ -414,6 +423,15 @@ class Settings:
         elif self.move_rando == "start_with":
             self.unlock_all_moves = True
 
+        # Kasplat Rando
+        self.kasplat_rando = False
+        self.kasplat_location_rando = False
+        if self.kasplat_rando_setting == "vanilla_locations":
+            self.kasplat_rando = True
+        if self.kasplat_rando_setting == "location_shuffle":
+            self.kasplat_rando = True
+            self.kasplat_location_rando = True
+
     def SelectKongLocations(self):
         """Select which random kong locations to use depending on number of starting kongs."""
         # First determine which kong cages will have a kong to free
@@ -427,8 +445,24 @@ class Settings:
         for i in range(0, self.starting_kongs_count - 1):
             kongLocation = random.choice(kongCageLocations)
             kongCageLocations.remove(kongLocation)
-            # In case diddy is the only kong to free, he can't be in the llama temple since it's behind guitar door
-        if self.starting_kongs_count == 4 and Kongs.diddy not in self.starting_kong_list and Locations.LankyKong in kongCageLocations:
+
+        # The following cases do not apply if you could bypass the Guitar door without Diddy
+        bypass_guitar_door = self.open_levels or self.activate_all_bananaports == "all"
+        # In case both Diddy and Chunky need to be freed but only Aztec locations are available
+        # This would be impossible, as one of them must free the Tiny location and Diddy is needed for the Lanky location
+        if (
+            not bypass_guitar_door
+            and self.starting_kongs_count == 3
+            and Kongs.diddy not in self.starting_kong_list
+            and Kongs.chunky not in self.starting_kong_list
+            and Locations.TinyKong in kongCageLocations
+            and Locations.LankyKong in kongCageLocations
+        ):
+            # Move a random location to a non-Aztec location
+            kongCageLocations.pop()
+            kongCageLocations.append(random.choice(Locations.DiddyKong, Locations.ChunkyKong))
+        # In case Diddy is the only kong to free, he can't be in the Llama Temple since it's behind the Guitar door
+        if not bypass_guitar_door and self.starting_kongs_count == 4 and Kongs.diddy not in self.starting_kong_list and Locations.LankyKong in kongCageLocations:
             # Move diddy kong from llama temple to another cage randomly chosen
             kongCageLocations.remove(Locations.LankyKong)
             kongCageLocations.append(random.choice(Locations.DiddyKong, Locations.TinyKong, Locations.ChunkyKong))

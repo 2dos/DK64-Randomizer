@@ -129,3 +129,20 @@ void fastWarp(void* actor, int player_index) {
     unkMultiplayerWarpFunction(actor,player_index);
     renderScreenTransition(6);
 }
+
+void fastWarpShockwaveFix(void) {
+    if (Rando.fast_warp) {
+        if (Player) {
+            if (Player->control_state == 0x54) { // Multiplayer Warp
+                if (Player->shockwave_timer != -1) { // Charging Shockwave
+                    if (Player->shockwave_timer < 5) {
+                        Player->shockwave_timer += 1;
+                        if (Player->shockwave_timer < 2) {
+                            Player->shockwave_timer += 1; // Prevent ever being a frame where you can shockwave
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

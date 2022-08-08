@@ -10,6 +10,7 @@ To use:
 import os
 from typing import BinaryIO
 
+levels_isles = ["Japes", "Aztec", "Factory", "Galleon", "Fungi", "Caves", "Castle", "Isles"]
 levels = ["Japes", "Aztec", "Factory", "Galleon", "Fungi", "Caves", "Castle", "Helm"]
 keys = [0x1A, 0x4A, 0x8A, 0xA8, 0xEC, 0x124, 0x13D]
 special_moves = [
@@ -169,8 +170,8 @@ for f in files:
             output(f"\t\tCastle Minecart Exit: {getMapExit(fh,0x72)}")
             output(f"\t\tCastle Lobby Entrance: {getMapExit(fh,0x74)}")
             output(f"\t\tK. Rool Exit: {getMapExit(fh,0x76)}")
-            output(f"\t\tBallroom to Museum (Monkeyport): {getMapExit(fh,0x120)}")
-            output(f"\t\tMuseum to Ballroom (Monkeyport): {getMapExit(fh,0x122)}")
+            output(f"\t\tBallroom to Museum (Monkeyport): {getMapExit(fh,0x130)}")
+            output(f"\t\tMuseum to Ballroom (Monkeyport): {getMapExit(fh,0x132)}")
             for x in range(8):
                 output(f"\t\t{levels[x]} Exit: {getMapExit(fh,0x78+(2*x))}")
             for x in range(7):
@@ -192,67 +193,70 @@ for f in files:
             output(f"\tMove Rando On: {str(getTrueFalse(fh,0xA7,1))}")
             for shop in range(3):
                 for kong in range(5):
-                    for level in range(7):
-                        output(f"\t\t{kongs[kong]} {shops[shop]} {levels[level]}: {getMove(fh,0xA8 + level + (7 * kong) + (35 * shop))}")
+                    for level in range(8):
+                        output(f"\t\t{kongs[kong]} {shops[shop]} {levels_isles[level]}: {getMove(fh,0xA8 + level + (8 * kong) + (40 * shop))}")
             output(f"\tKut Out Kong Order:")
             for x in range(5):
-                output(f"\t\t[{x}] - {getKong(fh,0x111+x)}")
+                output(f"\t\t[{x}] - {getKong(fh,0x120+x)}")
             output(f"\tRemove B. Lockers:")
             for x in range(8):
-                output(f"\t\t{levels[x]} Lobby: {str(((getValue(fh,0x116,1) >> x) & 1) != 0)}")
+                output(f"\t\t{levels[x]} Lobby: {str(((getValue(fh,0x125,1) >> x) & 1) != 0)}")
             output(f"\tRemove Minigame Barrels:")
-            output(f"\t\tBonus Barrels: {str((getValue(fh,0x117,1) & 1) != 0)}")
-            output(f"\t\tHelm Barrels: {str((getValue(fh,0x117,1) & 2) != 0)}")
+            output(f"\t\tBonus Barrels: {str((getValue(fh,0x126,1) & 1) != 0)}")
+            output(f"\t\tHelm Barrels: {str((getValue(fh,0x126,1) & 2) != 0)}")
             output(f"\tKeys Pre-Turned:")
             for x in range(8):
-                output(f"\t\tKey {x+1}: {str(((getValue(fh,0x118,1) >> x) & 1) != 0)}")
-            output(f"\tDisable Drops: {str(getTrueFalse(fh,0x119,1))}")
+                output(f"\t\tKey {x+1}: {str(((getValue(fh,0x127,1) >> x) & 1) != 0)}")
+            output(f"\tDisable Drops: {str(getTrueFalse(fh,0x128,1))}")
             output(f"\tHash:")
             for x in range(5):
-                output(f"\t\t[{x}] - {str(getValue(fh,0x11A + x,1))}")
-            output(f"\tMusic Rando On: {str(getTrueFalse(fh,0x11F,1))}")
-            output(f"\tShop Indicator On: {str(getTrueFalse(fh,0x124,1))}")
-            output(f"\tWarp to Isles Enabled: {str(getTrueFalse(fh,0x125,1))}")
-            output(f"\tSkip Arcade Round 1: {str(getTrueFalse(fh,0x126,1))}")
-            output(f"\tOpen Levels: {str(getTrueFalse(fh,0x127,1))}")
-            output(f"\tActivate All Warps: {str(getTrueFalse(fh,0x128,1))}")
-            output(f"\tD-Pad Visual Showed: {str(getTrueFalse(fh,0x129,1))}")
-            output(f"\tFast Warps: {str(getTrueFalse(fh,0x12A,1))}")
-            output(f"\tShort Bosses: {str(getTrueFalse(fh,0x12B,1))}")
+                output(f"\t\t[{x}] - {str(getValue(fh,0x129 + x,1))}")
+            output(f"\tMusic Rando On: {str(getTrueFalse(fh,0x12E,1))}")
+            output(f"\tShop Indicator On: {str(getTrueFalse(fh,0x134,1))}")
+            output(f"\tWarp to Isles Enabled: {str(getTrueFalse(fh,0x135,1))}")
+            klap_model = getValue(fh, 0x136, 1)
+            if klap_model == 0:
+                klap_model == 0x21
+            output(f"\tKlaptrap Model: {hex(klap_model)}")
+            output(f"\tOpen Levels: {str(getTrueFalse(fh,0x137,1))}")
+            output(f"\tActivate All Warps: {str(getTrueFalse(fh,0x138,1))}")
+            output(f"\tD-Pad Visual Showed: {str(getTrueFalse(fh,0x139,1))}")
+            output(f"\tFast Warps: {str(getTrueFalse(fh,0x13A,1))}")
+            output(f"\tShort Bosses: {str(getTrueFalse(fh,0x13B,1))}")
             output(f"\tCoin Requirements")
             for x_i, x in enumerate(["Caves Beetle Race", "Aztec Beetle Race", "Factory Car Race", "Seal Race", "Castle Car Race", "Japes Minecart", "Fungi Minecart", "Castle Minecart"]):
-                output(f"\t\t{x}: {str(getValue(fh,0x12C + x_i, 1))}")
-            output(f"\tShop Hints: {str(getTrueFalse(fh,0x13B,1))}")
+                output(f"\t\t{x}: {str(getValue(fh,0x13C + x_i, 1))}")
+            output(f"\tShop Hints: {str(getTrueFalse(fh,0x14B,1))}")
             output(f"\tLobbies Auto-opened:")
             for x in range(8):
-                output(f"\t\t{levels[x]} Lobby Entrance: {str(((getValue(fh,0x13C,1) >> x) & 1) != 0)}")
-            output(f"\tPerma-Lose Kongs: {str(getTrueFalse(fh,0x13D,1))}")
-            output(f"\tDisable Boss Kong Check: {str(getTrueFalse(fh,0x13E,1))}")
-            output(f"\tPrevent Tag Spawn: {str(getTrueFalse(fh,0x13F,1))}")
-            jetpac_req = getValue(fh, 0x140, 1)
+                output(f"\t\t{levels[x]} Lobby Entrance: {str(((getValue(fh,0x14C,1) >> x) & 1) != 0)}")
+            output(f"\tPerma-Lose Kongs: {str(getTrueFalse(fh,0x14D,1))}")
+            output(f"\tDisable Boss Kong Check: {str(getTrueFalse(fh,0x14E,1))}")
+            output(f"\tPrevent Tag Spawn: {str(getTrueFalse(fh,0x14F,1))}")
+            jetpac_req = getValue(fh, 0x150, 1)
             if jetpac_req == 0:
                 output(f"\tJetpac Requirement: Vanilla")
             else:
                 output(f"\tJetpac Requirement: {jetpac_req} Medals")
-            output(f"\tStarting Kong: {str(getTrueFalse(fh,0x141,1))}")
+            output(f"\tStarting Kong: {str(getTrueFalse(fh,0x151,1))}")
             output(f"\tLocked Kongs:")
             for x_i, x in enumerate(["Japes", "Llama Temple", "Dome Temple", "Factory"]):
                 for y_i, y in enumerate(["Locked", "Puzzle Solver"]):
-                    output(f"\t\t{x} ({y}): {getKong(fh,0x142 + (x_i * 2) + y_i)}")
+                    output(f"\t\t{x} ({y}): {getKong(fh,0x152 + (x_i * 2) + y_i)}")
             versions = ["Live", "Dev Site", "Localhost"]
-            output(f"\tVersion: {versions[getValue(fh,0x14A,1)]}")
-            output(f"\tAuto-Keys: {str(getTrueFalse(fh,0x14B,1))}")
+            output(f"\tVersion: {versions[getValue(fh,0x15A,1)]}")
+            output(f"\tAuto-Keys: {str(getTrueFalse(fh,0x15B,1))}")
             output(f"\tMatching Game Sounds:")
             for x in range(8):
-                output(f"\t\tSound {x+1}: {getValue(fh,0x14C + (2 * x),2)}")
+                output(f"\t\tSound {x+1}: {getValue(fh,0x15C + (2 * x),2)}")
             piano_keys = ["A", "B", "C", "D", "E", "F"]
             piano_str = ""
             for x in range(7):
                 if x > 0:
-                    piano_str += f", {piano_keys[getValue(fh,0x15C + x,1)]}"
+                    piano_str += f", {piano_keys[getValue(fh,0x16C + x,1)]}"
                 else:
-                    piano_str += piano_keys[getValue(fh, 0x15C + x, 1)]
+                    piano_str += piano_keys[getValue(fh, 0x16C + x, 1)]
             output(f"\tPiano Game Order: {piano_str}")
             # Dartboard: Skipped
-            output(f"\tRemove High Requirements: {str(getTrueFalse(fh,0x169,1))}")
-            output(f"\tFast GBs: {str(getTrueFalse(fh,0x16A,1))}")
+            output(f"\tRemove High Requirements: {str(getTrueFalse(fh,0x179,1))}")
+            output(f"\tFast GBs: {str(getTrueFalse(fh,0x17A,1))}")

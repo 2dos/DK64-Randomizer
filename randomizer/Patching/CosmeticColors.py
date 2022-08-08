@@ -3,11 +3,52 @@ from randomizer.Patching.Patcher import ROM
 from randomizer.Spoiler import Spoiler
 from randomizer.Patching.generate_kong_color_images import convertColors
 from random import randint
+import random
 import js
 
 
 def apply_cosmetic_colors(spoiler: Spoiler):
     """Apply cosmetic skins to kongs."""
+    if spoiler.settings.klaptrap_model:
+        model_index = 0
+        model_setting = spoiler.settings.klaptrap_model
+        if model_setting == "green":
+            model_index = 0x21
+        elif model_setting == "purple":
+            model_index = 0x22
+        elif model_setting == "red":
+            model_index = 0x23
+        elif model_setting == "random_klap":
+            model_index = random.randint(0x21, 0x23)
+        elif model_setting == "random_model":
+            permitted_models = [
+                0x19,  # Beaver
+                0x1E,  # Klobber
+                0x20,  # Kaboom
+                0x21,  # Green Klap
+                0x22,  # Purple Klap
+                0x23,  # Red Klap
+                0x24,  # Klap Teeth
+                0x26,  # Krash
+                0x27,  # Troff
+                0x30,  # N64 Logo
+                0x34,  # Mech Fish
+                0x42,  # Krossbones
+                0x47,  # Rabbit
+                0x4B,  # Minecart Skeleton Head
+                0x51,  # Tomato
+                0x62,  # Ice Tomato
+                0x69,  # Golden Banana
+                0x70,  # Microbuffer
+                0x72,  # Bell
+                0x96,  # Missile (Car Race)
+                0xB0,  # Red Buoy
+                0xB1,  # Green Buoy
+                0xBD,  # Rareware Logo
+            ]
+            model_index = random.choice(permitted_models)
+        ROM().seek(spoiler.settings.rom_data + 0x136)
+        ROM().writeMultipleBytes(model_index, 1)
     color_palettes = []
     color_obj = {}
     if js.document.getElementById("random_colors").checked:

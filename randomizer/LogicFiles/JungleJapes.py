@@ -43,7 +43,7 @@ LogicRegions = {
         TransitionFront(Regions.JapesCatacomb, lambda l: l.Slam and l.chunkyAccess, Transitions.JapesMainToCatacomb),
         TransitionFront(Regions.FunkyJapes, lambda l: True),
         TransitionFront(Regions.Snide, lambda l: True),
-        TransitionFront(Regions.JapesBossLobby, lambda l: l.vines and (l.donkey or l.diddy or l.chunky)),  # Lanky and Tiny have a rough time with the vines and falling from top is not intuitive
+        TransitionFront(Regions.JapesBossLobby, lambda l: l.vines),  # Falling from top is not intuitive
         TransitionFront(Regions.JapesBaboonBlast, lambda l: l.blast and l.isdonkey)  # , Transitions.JapesMainToBBlast)
     ]),
 
@@ -69,8 +69,8 @@ LogicRegions = {
     ]),
 
     Regions.JapesBeyondCoconutGate1: Region("Japes Beyond Coconut Gate 1", Levels.JungleJapes, False, None, [
-        LocationLogic(Locations.JapesKasplatLeftTunnelNear, lambda l: True),
-        LocationLogic(Locations.JapesKasplatLeftTunnelFar, lambda l: True),
+        LocationLogic(Locations.JapesKasplatLeftTunnelNear, lambda l: not l.settings.kasplat_location_rando),
+        LocationLogic(Locations.JapesKasplatLeftTunnelFar, lambda l: not l.settings.kasplat_location_rando),
     ], [], [
         TransitionFront(Regions.JungleJapesMain, lambda l: True),
         TransitionFront(Regions.JapesBeyondFeatherGate, lambda l: l.settings.open_levels or (l.feather and l.tinyAccess)),
@@ -82,6 +82,7 @@ LogicRegions = {
     ], [], [
         TransitionFront(Regions.JapesBeyondCoconutGate1, lambda l: True),
         TransitionFront(Regions.TinyHive, lambda l: l.mini and l.istiny, Transitions.JapesMainToTinyHive),
+        TransitionFront(Regions.JapesTopOfMountain, lambda l: Events.JapesDiddySwitch2 in l.Events)
     ]),
 
     Regions.TinyHive: Region("Tiny Hive", Levels.JungleJapes, False, -1, [
@@ -92,8 +93,8 @@ LogicRegions = {
 
     Regions.JapesBeyondCoconutGate2: Region("Japes Beyond Coconut Gate 2", Levels.JungleJapes, True, None, [
         LocationLogic(Locations.JapesLankySlope, lambda l: l.handstand and l.islanky, MinigameType.BonusBarrel),
-        LocationLogic(Locations.JapesKasplatNearPaintingRoom, lambda l: True),
-        LocationLogic(Locations.JapesKasplatNearLab, lambda l: True),
+        LocationLogic(Locations.JapesKasplatNearPaintingRoom, lambda l: not l.settings.kasplat_location_rando),
+        LocationLogic(Locations.JapesKasplatNearLab, lambda l: not l.settings.kasplat_location_rando),
     ], [
         Event(Events.Rambi, lambda l: l.coconut),
         Event(Events.JapesDonkeySwitch, lambda l: Events.Rambi in l.Events and l.Slam and l.donkey),
@@ -142,7 +143,7 @@ LogicRegions = {
     # Catacomb deaths lead back to itself
     Regions.JapesCatacomb: Region("Japes Catacomb", Levels.JungleJapes, False, None, [
         LocationLogic(Locations.JapesChunkyUnderground, lambda l: l.pineapple and l.ischunky),
-        LocationLogic(Locations.JapesKasplatUnderground, lambda l: l.pineapple),
+        LocationLogic(Locations.JapesKasplatUnderground, lambda l: not l.settings.kasplat_location_rando and l.pineapple),
     ], [], [
         TransitionFront(Regions.JungleJapesMain, lambda l: True, Transitions.JapesCatacombToMain),
     ]),

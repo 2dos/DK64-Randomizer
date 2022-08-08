@@ -159,7 +159,7 @@ LogicRegions = {
 
     Regions.CrankyGeneric: Region("Cranky Generic", Levels.Shops, False, None, [
         LocationLogic(Locations.SimianSlam, lambda l: True),
-        LocationLogic(Locations.RarewareCoin, lambda l: l.BananaMedals >= l.settings.BananaMedalsRequired),
+        LocationLogic(Locations.RarewareCoin, lambda l: l.BananaMedals >= l.settings.medal_requirement),
     ], [], [
         TransitionFront(Regions.CrankyJapes, lambda l: False),
         TransitionFront(Regions.CrankyAztec, lambda l: False),
@@ -242,6 +242,17 @@ LogicRegions = {
         LocationLogic(Locations.LankyCastlePotion, lambda l: l.islanky and l.CanBuy(Locations.LankyCastlePotion)),
         LocationLogic(Locations.TinyCastlePotion, lambda l: l.istiny and l.CanBuy(Locations.TinyCastlePotion)),
         LocationLogic(Locations.ChunkyCastlePotion, lambda l: l.ischunky and l.CanBuy(Locations.ChunkyCastlePotion)),
+    ], [], [
+        TransitionFront(Regions.CrankyGeneric, lambda l: True),
+    ]),
+
+    Regions.CrankyIsles: Region("Cranky Isles", Levels.Shops, False, None, [
+        LocationLogic(Locations.SimianSlam, lambda l: l.CanBuy(Locations.SimianSlam)),
+        LocationLogic(Locations.DonkeyIslesPotion, lambda l: l.isdonkey and l.CanBuy(Locations.DonkeyIslesPotion)),
+        LocationLogic(Locations.DiddyIslesPotion, lambda l: l.isdiddy and l.CanBuy(Locations.DiddyIslesPotion)),
+        LocationLogic(Locations.LankyIslesPotion, lambda l: l.islanky and l.CanBuy(Locations.LankyIslesPotion)),
+        LocationLogic(Locations.TinyIslesPotion, lambda l: l.istiny and l.CanBuy(Locations.TinyIslesPotion)),
+        LocationLogic(Locations.ChunkyIslesPotion, lambda l: l.ischunky and l.CanBuy(Locations.ChunkyIslesPotion)),
     ], [], [
         TransitionFront(Regions.CrankyGeneric, lambda l: True),
     ]),

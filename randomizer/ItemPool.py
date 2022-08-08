@@ -141,6 +141,22 @@ def AllKongMoves():
     return allMoves
 
 
+def OwnedKongMoves(kongs):
+    """Return all moves for the given list of Kongs."""
+    kongMoves = []
+    if KongObject.Kongs.donkey in kongs:
+        kongMoves.extend(DonkeyMoves)
+    if KongObject.Kongs.diddy in kongs:
+        kongMoves.extend(DiddyMoves)
+    if KongObject.Kongs.lanky in kongs:
+        kongMoves.extend(LankyMoves)
+    if KongObject.Kongs.tiny in kongs:
+        kongMoves.extend(TinyMoves)
+    if KongObject.Kongs.chunky in kongs:
+        kongMoves.extend(ChunkyMoves)
+    return kongMoves
+
+
 def Blueprints(settings):
     """Return all blueprint items."""
     blueprints = [
@@ -473,6 +489,13 @@ def GetMoveLocationsToRemove(sharedMoveShops: set):
             locationsToRemove.append(Locations.LankyCastleInstrument)
             locationsToRemove.append(Locations.TinyCastleInstrument)
             locationsToRemove.append(Locations.ChunkyCastleInstrument)
+        # Isles Shops
+        elif sharedMoveShop == Locations.SimianSlam:
+            locationsToRemove.append(Locations.DonkeyIslesPotion)
+            locationsToRemove.append(Locations.DiddyIslesPotion)
+            locationsToRemove.append(Locations.LankyIslesPotion)
+            locationsToRemove.append(Locations.TinyIslesPotion)
+            locationsToRemove.append(Locations.ChunkyIslesPotion)
     return set(locationsToRemove)
 
 
@@ -534,6 +557,8 @@ def GetKongMoveOccupiedShops():
             occupiedShops.append(Locations.MusicUpgrade2)
         elif location in CastleFunkyMoveLocations:
             occupiedShops.append(Locations.SniperSight)
+        elif location in IslesCrankyMoveLocations:
+            occupiedShops.append(Locations.SimianSlam)
     return list(set(occupiedShops))
 
 
@@ -557,6 +582,7 @@ DonkeyMoveLocations = {
     Locations.DonkeyGalleonInstrument,
     Locations.DonkeyCavesInstrument,
     Locations.DonkeyCastleInstrument,
+    Locations.DonkeyIslesPotion,
 }
 DiddyMoveLocations = {
     Locations.ChimpyCharge,
@@ -578,6 +604,7 @@ DiddyMoveLocations = {
     Locations.DiddyGalleonInstrument,
     Locations.DiddyCavesInstrument,
     Locations.DiddyCastleInstrument,
+    Locations.DiddyIslesPotion,
 }
 LankyMoveLocations = {
     Locations.Orangstand,
@@ -599,6 +626,7 @@ LankyMoveLocations = {
     Locations.LankyGalleonInstrument,
     Locations.LankyCavesInstrument,
     Locations.LankyCastleInstrument,
+    Locations.LankyIslesPotion,
 }
 TinyMoveLocations = {
     Locations.MiniMonkey,
@@ -620,6 +648,7 @@ TinyMoveLocations = {
     Locations.TinyGalleonInstrument,
     Locations.TinyCavesInstrument,
     Locations.TinyCastleInstrument,
+    Locations.TinyIslesPotion,
 }
 ChunkyMoveLocations = {
     Locations.HunkyChunky,
@@ -641,8 +670,10 @@ ChunkyMoveLocations = {
     Locations.ChunkyGalleonInstrument,
     Locations.ChunkyCavesInstrument,
     Locations.ChunkyCastleInstrument,
+    Locations.ChunkyIslesPotion,
 }
 SharedMoveLocations = {
+    Locations.SimianSlam,
     Locations.SuperSimianSlam,
     Locations.SuperDuperSimianSlam,
     Locations.SniperSight,
@@ -841,3 +872,5 @@ CastleFunkyMoveLocations = {
     Locations.ChunkyCastleGun,
     Locations.SniperSight,
 }
+
+IslesCrankyMoveLocations = {Locations.DonkeyIslesPotion, Locations.DiddyIslesPotion, Locations.LankyIslesPotion, Locations.TinyIslesPotion, Locations.ChunkyIslesPotion, Locations.SimianSlam}

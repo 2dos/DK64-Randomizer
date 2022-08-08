@@ -133,6 +133,7 @@
 #define FISH_SHIELD3 0x5
 
 #define CHEST_PEARL_0 0x0
+#define MILLREAR_CHUNKYCHECK_RATE 0xF
 
 #define FACTORY_PIANO 0x14
 #define FACTORY_DARTBOARD 0x7F
@@ -608,6 +609,18 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 					return checkSlamLocation(2, Rando.piano_game_order[index - 14] + 1, id);
 				} else if (index < 28) {
 					return checkContactSublocation(behaviour_pointer,id,Rando.piano_game_order[index - 21] + 1, 0);
+				} else if (index == 28) {
+					if (Rando.fast_gbs) {
+						behaviour_pointer->next_state = 26;
+					} else {
+						behaviour_pointer->next_state = 17;
+					}
+				} else if (index == 29) {
+					if (Rando.fast_gbs) {
+						behaviour_pointer->next_state = 50;
+					} else {
+						behaviour_pointer->next_state = 37;
+					}
 				}
 			} else if (param2 == FACTORY_3124_SWITCH || param2 == FACTORY_4231_SWITCH || param2 == FACTORY_1342_SWITCH) {
 				if (index == 0) {
@@ -626,7 +639,12 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 						}
 					}
 				} else if (index == 2) {
-					disableDiddyRDDoors();
+					if (Rando.fast_gbs) {
+						disableDiddyRDDoors();
+					}
+					else {
+						setScriptRunState(behaviour_pointer, 2, 0);
+					}
         		}
 			} else if (param2 == FACTORY_DARTBOARD) {
 				if (index < 6) {
@@ -675,6 +693,8 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 					behaviour_pointer->current_state = 3;
 					behaviour_pointer->next_state = 3;
 				}
+			} else if (param2 == MILLREAR_CHUNKYCHECK_RATE) {
+				return Player->characterID == 6 || Rando.quality_of_life;
 			}
 			break;
 		case FUNGI_GMUSH:

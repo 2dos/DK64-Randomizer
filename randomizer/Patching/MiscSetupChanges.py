@@ -40,13 +40,45 @@ def randomize_setup(spoiler: Spoiler):
             "type": 0x11,
             "weight": 2,
         },
+        # {
+        #     "item": "feather_single",
+        #     "type": 0x15D,
+        #     "weight": 3,
+        # },
+        # {
+        #     "item": "grape_single",
+        #     "type": 0x15E,
+        #     "weight": 3,
+        # },
+        # {
+        #     "item": "pineapple_single",
+        #     "type": 0x15F,
+        #     "weight": 3,
+        # },
+        # {
+        #     "item": "coconut_single",
+        #     "type": 0x160,
+        #     "weight": 3,
+        # },
+        # {
+        #     "item": "peanut_single",
+        #     "type": 0x91,
+        #     "weight": 3,
+        # },
     ]
     pickup_list = []
     for pickup in pickup_weights:
         for count in range(pickup["weight"]):
             pickup_list.append(pickup["type"])
 
-    allowed_settings = [spoiler.settings.skip_arcader1, spoiler.settings.randomize_pickups, spoiler.settings.random_patches, spoiler.settings.puzzle_rando]
+    allowed_settings = [
+        spoiler.settings.fast_gbs,
+        spoiler.settings.randomize_pickups,
+        spoiler.settings.random_patches,
+        spoiler.settings.puzzle_rando,
+        spoiler.settings.hard_bosses,
+        spoiler.settings.high_req,
+    ]
     enabled = False
     for setting in allowed_settings:
         enabled = enabled or setting
@@ -119,7 +151,7 @@ def randomize_setup(spoiler: Spoiler):
                 for swap in swap_list:
                     if swap["map"] == cont_map_id and item_type in swap["item_list"]:
                         is_swap = True
-                if item_type == 0x196 and spoiler.settings.skip_arcader1 and cont_map_id == Maps.FactoryBaboonBlast:
+                if item_type == 0x196 and spoiler.settings.fast_gbs and cont_map_id == Maps.FactoryBaboonBlast:
                     ROM().seek(item_start + 0x28)
                     ROM().writeMultipleBytes(0x74, 2)
                     ROM().seek(item_start + 0xC)
@@ -135,16 +167,16 @@ def randomize_setup(spoiler: Spoiler):
                         y = int.from_bytes(ROM().readBytes(4), "big")
                         z = int.from_bytes(ROM().readBytes(4), "big")
                         positions.append([x, y, z])
-                elif (cont_map_id == Maps.GalleonBoss or cont_map_id == Maps.HideoutHelm) and item_type == 0x235 and spoiler.settings.puzzle_rando:
+                elif item_type == 0x235 and ((cont_map_id == Maps.GalleonBoss and spoiler.settings.hard_bosses) or (cont_map_id == Maps.HideoutHelm and spoiler.settings.puzzle_rando)):
                     if cont_map_id == Maps.HideoutHelm:
                         star_donut_center = [1055.704, 3446.966]
                         star_donut_boundaries = [123.128, 235.971]
                         star_height_boundaries = [-131, 500]
                     elif cont_map_id == Maps.GalleonBoss:
                         star_donut_center = [1216, 1478]
-                        star_donut_boundaries = [188, 460]
+                        star_donut_boundaries = [200, 460]
                         star_height_boundaries = []
-                    radius = random.uniform(star_donut_boundaries[0], star_donut_boundaries[1])
+                    radius = star_donut_boundaries[0] + (math.sqrt(random.random()) * (star_donut_boundaries[1] - star_donut_boundaries[0]))
                     angle = random.uniform(0, math.pi * 2)
                     star_a = random.uniform(0, 360)
                     if angle == math.pi * 2:
@@ -165,6 +197,11 @@ def randomize_setup(spoiler: Spoiler):
                         star_y = random.uniform(star_height_boundaries[0], star_height_boundaries[1])
                         ROM().seek(item_start + 4)
                         ROM().writeMultipleBytes(int(float_to_hex(star_y), 16), 4)
+                elif item_type == 0x74 and cont_map_id == Maps.GalleonLighthouse and spoiler.settings.high_req:
+                    new_gb_coords = [407.107, 720, 501.02]
+                    for coord_i, coord in enumerate(new_gb_coords):
+                        ROM().seek(item_start + (coord_i * 4))
+                        ROM().writeMultipleBytes(int(float_to_hex(coord), 16), 4)
                 elif cont_map_id == Maps.FranticFactory and spoiler.settings.puzzle_rando and item_type >= 0xF4 and item_type <= 0x103:
                     for subtype_item in number_gb_data:
                         for num_item in subtype_item["numbers"]:
@@ -205,7 +242,6 @@ def randomize_setup(spoiler: Spoiler):
                                 ROM().writeMultipleBytes(coord_val, 4)
                             new_rot = subtype["positions"][index]["rotation"]
                             rot_diff = ((base_rot - new_rot) + 4) % 4
-                            print(f"Number {offset['number']} - Rotation Diff: {rot_diff}")
                             if subtype_name == "center":
                                 rot_diff = random.randint(0, 3)
                             ROM().seek(offset["offset"] + 0x1C)
@@ -240,7 +276,6 @@ def randomize_setup(spoiler: Spoiler):
                             if new_actor_id in used_actor_ids:
                                 while new_actor_id in used_actor_ids:
                                     new_actor_id += 1
-                            print(patch.name)
                             dirt_bytes = []
                             dirt_bytes.append(int(float_to_hex(patch.x), 16))
                             dirt_bytes.append(int(float_to_hex(patch.y), 16))

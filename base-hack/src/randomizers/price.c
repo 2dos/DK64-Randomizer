@@ -61,7 +61,7 @@ void alter_price(int purchase_type, int purchase_value, int kong, int level, int
 
 void priceTransplant(void) {
 	for (int kong = 0; kong < 5; kong++) {
-		for (int level = 0; level < 7; level++) {
+		for (int level = 0; level < LEVEL_COUNT; level++) {
 			alter_price(CrankyMoves_New[kong][level].purchase_type,CrankyMoves_New[kong][level].purchase_value,kong,level,SHOP_CRANKY);
 			alter_price(CandyMoves_New[kong][level].purchase_type,CandyMoves_New[kong][level].purchase_value,kong,level,SHOP_CANDY);
 			alter_price(FunkyMoves_New[kong][level].purchase_type,FunkyMoves_New[kong][level].purchase_value,kong,level,SHOP_FUNKY);

@@ -137,6 +137,23 @@
 .definelabel setAcceptablePianoKey, 0x806508B4
 .definelabel checkContactSublocation, 0x8064AB1C
 .definelabel PlayCutsceneFromModelTwoScript, 0x80641DA0
+.definelabel handleGuardDetection, 0x806AE394
+.definelabel guardShouldMove, 0x8072E54C
+.definelabel guardUnkFunction, 0x80724E48
+.definelabel generalActorHandle, 0x8072AB74
+.definelabel handleGuardDefaultAnimation, 0x8072B7CC
+.definelabel setActorSpeed, 0x8072B324
+.definelabel playActorAnimation, 0x80614EBC
+.definelabel actorUnkFunction, 0x8072A450
+.definelabel getRNGLower31, 0x80611A44
+.definelabel setActorAnimation, 0x8072DE44
+.definelabel actorUnkFunction_0, 0x8072D13C
+.definelabel spawnSparkles, 0x80686E40
+.definelabel spawnEnemyDrops, 0x806A5C60
+.definelabel isActorLoaded, 0x8067ADB4
+.definelabel beaverControlSwitchCase, 0x806AD260
+.definelabel spawnProjectile, 0x80690A28
+.definelabel updateActorProjectileInfo, 0x80690814
 
 //vanilla data
 .definelabel TransitionSpeed, 0x807FD88C
@@ -302,6 +319,16 @@
 .definelabel BoatSpeeds, 0x8075A04C
 .definelabel textParameter, 0x80750AC8
 
+.definelabel collisionType, 0x807FBD70
+.definelabel collisionActive, 0x807FBB85
+.definelabel PlayerPointer_0, 0x807FDC94
+.definelabel currentCharSpawner, 0x807FDC9C
+.definelabel EnemiesKilledCounter, 0x80744508
+
+.definelabel getXRatioMovement, 0x80612794
+.definelabel getZRatioMovement, 0x80612790
+.definelabel ModelTwoCollisionArray, 0x80753EF0
+
 //hack data
 .definelabel TestVariable, 0x807FFFFC
 .definelabel StoredLag, 0x807FFFFA // 0x2
@@ -330,7 +357,9 @@
 .definelabel PauseText, 0x807FFFE6
 .definelabel ShorterBosses, 0x807FFFE5
 .definelabel ForceStandardAmmo, 0x807FFFE4
+.definelabel KKOPhaseRandoOn, 0x807FFFE0
+.definelabel KKOPhaseOrder, 0x807FFFE1
 
 .definelabel CrankyMoves_New, 0x807FF400
-.definelabel CandyMoves_New, 0x807FF4D4
-.definelabel FunkyMoves_New, 0x807FF5A8
+.definelabel CandyMoves_New, 0x807FF4F0
+.definelabel FunkyMoves_New, 0x807FF5E0

@@ -11,3 +11,4 @@ class SearchMode(IntEnum):
     CheckAllReachable = auto()
     GetUnreachable = auto()
     GetReachableWithControlledPurchases = auto()
+    CheckSpecificItemReachable = auto()

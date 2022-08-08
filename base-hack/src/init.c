@@ -188,11 +188,23 @@ void initHack(int source) {
 				int new_vine_exit_speed = 200;
 				*(short*)(0x8075037C) = new_vine_exit_speed;
 				*(short*)(0x80750380) = new_vine_exit_speed;
-				*(short*)(0x80698EEE) = 0x4348; // 170.0f
+				*(short*)(0x80698EEE) = 0x4348; // 200.0f
+				*(short*)(0x806DCD3E) = 0x4348; // 200.0f
 				// Lower Aztec Lobby Bonus
 				*(short*)(0x80680D56) = 0x7C; // 0x89 if this needs to be unreachable without PTT
 				// Fast Vulture
 				*(int*)(0x806C50BC) = 0x0C000000 | (((int)&clearVultureCutscene & 0xFFFFFF) >> 2); // Modify Function Call
+				// Remove DKTV - Game Over
+				*(short*)(0x8071319E) = 0x50;
+				*(short*)(0x807131AA) = 5;
+				// Remove DKTV - End Seq
+				*(short*)(0x8071401E) = 0x50;
+				*(short*)(0x8071404E) = 5;
+				// Fast Barrel Animation
+				*(short*)(0x8067EAB2) = 1; // OSprint
+				*(short*)(0x8067EAC6) = 1; // HC Dogadon 2
+				*(short*)(0x8067EACA) = 1; // Others
+				*(short*)(0x8067EA92) = 1; // Others 2
 			}
 			if (Rando.fast_warp) {
 				// Replace vanilla warp animation (0x52) with monkeyport animation (0x53)
@@ -203,10 +215,7 @@ void initHack(int source) {
 				// Disable Graphical Debugger
 				*(int*)(0x8060EEE0) = 0x240E0000; // ADDIU $t6, $r0, 0
 			}
-			if (Rando.skip_arcade_round1) {
-				*(unsigned char*)(0x80755B68) = 0x6E; // Modify GB Map
-				*(short*)(0x80755B6A) = 0; // Modify GB ID
-			}
+
 			if (Rando.fast_gbs) {
 				*(short*)(0x806BBB22) = 0x0005; // Chunky toy box speedup
 
@@ -214,9 +223,28 @@ void initHack(int source) {
 				*(short*)(0x806C5B16) = 0x0008;
 
 				*(int*)(0x806BEDFC) = 0; //Spawn banana coins on beating rabbit 2 (Beating round 2 branches to banana coin spawning label before continuing)
+				
+				// Arcade R1
+				*(unsigned char*)(0x80755B68) = 0x6E; // Modify GB Map
+				*(short*)(0x80755B6A) = 0; // Modify GB ID
 			}
+			// Change Beaver Bother Klaptrap Model
+			if (Rando.klaptrap_color_bbother == 0) {
+				Rando.klaptrap_color_bbother = 0x21; // Set to default model if no model assigned
+			}
+			int kko_phase_rando = 0;
+			for (int i = 0; i < 3; i++) {
+				KKOPhaseOrder[i] = Rando.kut_out_phases[i];
+				if (Rando.kut_out_phases[i]) {
+					kko_phase_rando = 1;
+				}
+			}
+			KKOPhaseRandoOn = kko_phase_rando;
+			*(short*)(0x806F0376) = Rando.klaptrap_color_bbother;
+			*(short*)(0x806C8B42) = Rando.klaptrap_color_bbother;
 			// Expand Display List
 			*(short*)(0x805FE56A) = 8000;
+			*(short*)(0x805FE592) = 0x4100; // SLL 4 (Doubles display list size)
 			// Object Instance Scripts
 			*(int*)(0x80748064) = (int)&change_object_scripts;
 			*(int*)(0x806416BC) = 0; // Prevent parent map check in cross-map object change communications
@@ -250,6 +278,33 @@ void initHack(int source) {
 			*(short*)(0x80755DA4) = 0x0249;
 			// Remove flare effect from guards
 			*(int*)(0x806AE440) = 0;
+			// Boost Diddy/Tiny's Barrel Speed
+			*(float*)(0x807533A0) = 240.0f; // Diddy Ground
+			*(float*)(0x807533A8) = 240.0f; // Tiny Ground
+			*(float*)(0x807533DC) = 260.0f; // Lanky Air
+			*(float*)(0x807533E0) = 260.0f; // Tiny Air
+			// New Guard Code
+			*(short*)(0x806AF75C) = 0x1000;
+			// Gold Beaver Code
+			*(int*)(0x8074C3F0) = (int)&goldBeaverCode;
+			// Spider Projectile
+			//*(int*)(0x806ADDC0) = 0x0C000000 | (((int)&handleSpiderTrapCode & 0xFFFFFF) >> 2); // Remove buff until we think of something better
+			// Tag Anywhere collectable Fixes
+			// CB Bunch
+			int non_chunky_bunch_indexes[] = {10,11,13,14};
+			for (int i = 0; i < sizeof(non_chunky_bunch_indexes) / 4; i++) {
+				int index = non_chunky_bunch_indexes[i];
+				ModelTwoCollisionArray[index].actor_equivalent = 0;
+			}
+			*(int*)(0x806A65B8) = 0x240A0006; // Always ensure chunky bunch sprite
+			// Coins
+			int non_lanky_coin_indexes[] = {5,7,8,9};
+			for (int i = 0; i < sizeof(non_lanky_coin_indexes) / 4; i++) {
+				int index = non_lanky_coin_indexes[i];
+				ModelTwoCollisionArray[index].actor_equivalent = 0;
+			}
+			*(int*)(0x806A64B0) = 0x240A0004; // Always ensure lanky coin sprite
+			initItemDropTable();
 			LoadedHooks = 1;
 		}
 

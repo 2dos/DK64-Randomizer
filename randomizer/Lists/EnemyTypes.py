@@ -110,7 +110,7 @@ class Enemies(IntEnum):
 class EnemyData:
     """Information about the enemy."""
 
-    def __init__(self, *, aggro=1, min_speed=15, max_speed=150, crown_enabled=True, air=False, size_cap=0, crown_weight=0, simple=False, minigame_enabled=True, killable=True):
+    def __init__(self, *, aggro=1, min_speed=15, max_speed=150, crown_enabled=True, air=False, size_cap=0, crown_weight=0, simple=False, minigame_enabled=True, killable=True, beaver=False):
         """Initialize with given parameters."""
         self.aggro = aggro
         self.min_speed = min_speed
@@ -122,12 +122,13 @@ class EnemyData:
         self.simple = simple
         self.minigame_enabled = minigame_enabled
         self.killable = killable
+        self.beaver = beaver
         if air:
             self.minigame_enabled = False
 
 
 EnemyMetaData = {
-    Enemies.BeaverBlue: EnemyData(crown_weight=10, simple=True),  #
+    Enemies.BeaverBlue: EnemyData(crown_weight=10, simple=True, beaver=True),  #
     Enemies.Book: EnemyData(aggro=6, crown_enabled=False, air=True, minigame_enabled=False),
     Enemies.ZingerCharger: EnemyData(air=True, crown_weight=7),  #
     Enemies.Klobber: EnemyData(aggro=4, crown_weight=2, killable=False),
@@ -137,7 +138,7 @@ EnemyMetaData = {
     Enemies.ZingerLime: EnemyData(air=True, crown_weight=5),  #
     Enemies.KlaptrapPurple: EnemyData(crown_weight=2, killable=False),  #
     Enemies.KlaptrapRed: EnemyData(crown_weight=2, killable=False),  #
-    Enemies.BeaverGold: EnemyData(crown_weight=10, simple=True),  #
+    Enemies.BeaverGold: EnemyData(crown_weight=10, simple=True, beaver=True),  #
     Enemies.MushroomMan: EnemyData(aggro=4, size_cap=60, crown_weight=10, simple=True),
     Enemies.Ruler: EnemyData(crown_weight=10, simple=True),  #
     Enemies.RoboKremling: EnemyData(crown_weight=2, killable=False),  #

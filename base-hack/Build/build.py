@@ -27,7 +27,9 @@ from image_converter import convertToRGBA32
 from end_seq_writer import createTextFile, createSquishFile
 from generate_yellow_wrinkly import generateYellowWrinkly
 import model_fix
+import shop_instance_script
 import instance_script_maker
+import create_helm_geo
 
 
 ROMName = "rom/dk64.z64"
@@ -236,6 +238,7 @@ song_replacements = [
     {"name": "move_get", "index": 114, "bps": True},
     {"name": "nintendo_logo", "index": 174, "bps": True},
     {"name": "success_races", "index": 86, "bps": True},
+    {"name": "klumsy_celebration", "index": 125, "bps": True},
     {"name": "coin_sfx", "index": 7, "bps": False},
 ]
 changed_song_indexes = []
@@ -363,12 +366,15 @@ for x in range(10):
         }
     )
 for x in range(4761, 4768):
+    sz = "44"
+    if x == 4761:
+        sz = "3264"
     file_dict.append(
         {
             "name": f"Portal Ripple Texture ({x})",
             "pointer_table_index": 25,
             "file_index": x,
-            "source_file": "assets/Non-Code/displays/empty44.png",
+            "source_file": f"assets/Non-Code/displays/empty{sz}.png",
             "texture_format": "rgba5551",
         }
     )
@@ -475,7 +481,7 @@ file_dict.append(
 )
 
 
-print("DK64 Extractor")
+print("\nDK64 Extractor\nBuilt by Isotarge")
 
 with open(ROMName, "rb") as fh:
     print("[1 / 7] - Parsing pointer tables")
@@ -719,6 +725,21 @@ with open(newROMName, "r+b") as fh:
     print("[6 / 7] - Dumping details of all pointer tables to rom/build.log")
     dumpPointerTableDetails("rom/build.log", fh)
 
+    # Change Helm Geometry (Can't use main CL Build System because of forced duplication)
+    main_pointer_table_offset = 0x101C50
+    fh.seek(main_pointer_table_offset + 4)
+    geo_table = main_pointer_table_offset + int.from_bytes(fh.read(4), "big")
+    fh.seek(geo_table + (0x11 * 4))
+    helm_geo = main_pointer_table_offset + int.from_bytes(fh.read(4), "big")
+    helm_geo_end = main_pointer_table_offset + int.from_bytes(fh.read(4), "big")
+    helm_geo_size = helm_geo_end - helm_geo
+    fh.seek(helm_geo)
+    for by_i in range(helm_geo_size):
+        fh.write((0).to_bytes(1, "big"))
+    fh.seek(helm_geo)
+    with open("helm.bin", "rb") as helm_geo:
+        fh.write(gzip.compress(helm_geo.read(), compresslevel=9))
+
     # Replace Helm Text
     main_pointer_table_offset = 0x101C50
     fh.seek(main_pointer_table_offset + (12 * 4))
@@ -748,31 +769,34 @@ with open(newROMName, "r+b") as fh:
         for y in x:
             if os.path.exists(y):
                 os.remove(y)
-    fh.seek(0x1FED020 + 0x141)
+
+    # Kong Order
+    fh.seek(0x1FED020 + 0x151)
     fh.write((0).to_bytes(1, "big"))
-    fh.seek(0x1FED020 + 0x142)
+    fh.seek(0x1FED020 + 0x152)
     fh.write((1).to_bytes(1, "big"))
-    fh.seek(0x1FED020 + 0x143)
+    fh.seek(0x1FED020 + 0x153)
     fh.write((0).to_bytes(1, "big"))
-    fh.seek(0x1FED020 + 0x144)
+    fh.seek(0x1FED020 + 0x154)
     fh.write((2).to_bytes(1, "big"))
-    fh.seek(0x1FED020 + 0x145)
+    fh.seek(0x1FED020 + 0x155)
     fh.write((0).to_bytes(1, "big"))
-    fh.seek(0x1FED020 + 0x146)
+    fh.seek(0x1FED020 + 0x156)
     fh.write((3).to_bytes(1, "big"))
-    fh.seek(0x1FED020 + 0x147)
+    fh.seek(0x1FED020 + 0x157)
     fh.write((1).to_bytes(1, "big"))
-    fh.seek(0x1FED020 + 0x148)
+    fh.seek(0x1FED020 + 0x158)
     fh.write((4).to_bytes(1, "big"))
-    fh.seek(0x1FED020 + 0x149)
+    fh.seek(0x1FED020 + 0x159)
     fh.write((2).to_bytes(1, "big"))
 
-    fh.seek(0x1FED020 + 0x13B)
+    # Shop Hints
+    fh.seek(0x1FED020 + 0x14B)
     fh.write((1).to_bytes(1, "big"))
 
     piano_vanilla = [2, 1, 2, 3, 4, 2, 0]
     for piano_index, piano_key in enumerate(piano_vanilla):
-        fh.seek(0x1FED020 + 0x15C + piano_index)
+        fh.seek(0x1FED020 + 0x16C + piano_index)
         fh.write(piano_key.to_bytes(1, "big"))
 
     with open("assets/Non-Code/credits/squish.bin", "rb") as squish:
@@ -780,14 +804,14 @@ with open(newROMName, "r+b") as fh:
         fh.write(squish.read())
 
     vanilla_coin_reqs = [
-        {"offset": 0x12C, "coins": 50},
-        {"offset": 0x12D, "coins": 50},
-        {"offset": 0x12E, "coins": 10},
-        {"offset": 0x12F, "coins": 10},
-        {"offset": 0x130, "coins": 10},
-        {"offset": 0x131, "coins": 50},
-        {"offset": 0x132, "coins": 50},
-        {"offset": 0x133, "coins": 25},
+        {"offset": 0x13C, "coins": 50},
+        {"offset": 0x13D, "coins": 50},
+        {"offset": 0x13E, "coins": 10},
+        {"offset": 0x13F, "coins": 10},
+        {"offset": 0x140, "coins": 10},
+        {"offset": 0x141, "coins": 50},
+        {"offset": 0x142, "coins": 50},
+        {"offset": 0x143, "coins": 25},
     ]
     for coinreq in vanilla_coin_reqs:
         fh.seek(0x1FED020 + coinreq["offset"])
@@ -810,6 +834,7 @@ with open(newROMName, "r+b") as fh:
         "yellow_qmark_0",
         "yellow_qmark_1",
         "empty44",
+        "empty3264",
         "homing_crate",
         "num_6_lit",
         "num_6_unlit",
@@ -842,6 +867,15 @@ with open(newROMName, "r+b") as fh:
         "standard_crate_1",
         "tiny_palette",
     ]
+    script_files = [x[0] for x in os.walk("assets/Non-Code/instance_scripts/")]
+    shop_files = ["snide.script", "cranky.script", "funky.script", "candy.script"]
+    for folder in script_files:
+        for file in os.listdir(folder):
+            file = f"{folder}/{file}"
+            for shop in shop_files:
+                if shop in file:
+                    if os.path.exists(file):
+                        os.remove(file)
     for hash_item in hash_items:
         for f_t in ["rgba5551", "png"]:
             pth = f"assets/Non-Code/hash/{hash_item}.{f_t}"
@@ -859,6 +893,8 @@ with open(newROMName, "r+b") as fh:
             os.remove(x["model_file"])
     if os.path.exists(new_coin_sfx):
         os.remove(new_coin_sfx)
+    if os.path.exists("helm.bin"):
+        os.remove("helm.bin")
     # pth = "assets/Non-Code/displays/soldout_bismuth.rgba32"
     # if os.path.exists(pth):
     #     os.remove(pth)

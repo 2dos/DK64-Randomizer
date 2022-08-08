@@ -169,11 +169,6 @@ void earlyFrame(void) {
 			PauseText = 1;
 		}
 	}
-	if (CurrentMap == 1) {
-		if ((CutsceneActive) && (CutsceneIndex == 2)) {
-			CutsceneBarState = 20;
-		}
-	}
 	if ((CurrentMap == 5) || (CurrentMap == 1) || (CurrentMap == 0x19)) {
 		if ((CutsceneActive) && (CutsceneIndex == 2)) {
 			updateProgressive();
@@ -186,7 +181,7 @@ void earlyFrame(void) {
 			}
 		}
 	} else if (CurrentMap == 0x6E) { // Factory BBlast
-		if (Rando.skip_arcade_round1) {
+		if (Rando.fast_gbs) {
 			if (!checkFlag(FLAG_ARCADE_LEVER,0)) {
 				if (checkFlag(FLAG_ARCADE_ROUND1,0)) {
 					if (TransitionSpeed > 0) {
@@ -198,6 +193,16 @@ void earlyFrame(void) {
 				}
 			}
 		}
+	} else if (CurrentMap == 0x9A) {
+		if ((CutsceneActive == 1) && ((CutsceneStateBitfield & 4) == 0)) {
+			if ((CutsceneIndex == 8) || (CutsceneIndex == 2) || (CutsceneIndex == 16) || (CutsceneIndex == 18) || (CutsceneIndex == 17)) {
+				// Falling off Mad Jack
+				if (Player) {
+					Player->control_state = 0xC;
+					Player->hSpeed = 0;
+				}
+			}
+		}
 	}
 	// Cutscene DK Code
 	if ((CurrentMap == 0x28) || (CurrentMap == 0x4C)) {
@@ -205,12 +210,14 @@ void earlyFrame(void) {
 	} else {
 		*(int*)(0x8074C3B0) = (int)&cutsceneDKCode;
 	}
+	fastWarpShockwaveFix();
 	catchWarpHandle();
 	write_kutoutorder();
 	remove_blockers();
 	determine_krool_order();
 	disable_krool_health_refills();
 	pre_turn_keys();
+	CBDing();
 	if (Rando.auto_keys) {
 		auto_turn_keys();
 	}
@@ -224,7 +231,7 @@ void earlyFrame(void) {
 			preventSongPlaying = 0;
 		}
 		int loaded = *(char*)(0x807F01A6);
-		if ((loaded) || (FrameLag > 800)) {
+		if ((loaded) || (ObjectModel2Timer > 800)) {
 			if (has_loaded == 0) {
 				initiateTransitionFade(0x50, 0, 5);
 				has_loaded = 1;

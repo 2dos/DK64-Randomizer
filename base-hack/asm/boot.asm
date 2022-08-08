@@ -193,6 +193,12 @@ TextHandlerHook:
 GuardDeathHandleHook:
 	J 	GuardDeathHandle
 	NOP
+ShopImageHandlerHook:
+	J 	ShopImageHandler
+	NOP
+FixPufftossInvalidWallCollisionHook:
+	J 	FixPufftossInvalidWallCollision
+	NOP
 
 loadExtraHooks:
 	LUI t3, hi(InstanceScriptHook)
@@ -200,6 +206,18 @@ loadExtraHooks:
 	LUI t4, 0x8064
 	SW t3, 0xEE08 (t4) // Store Hook
 	SW r0, 0xEE0C (t4) // Store NOP
+
+	LUI t3, hi(ShopImageHandlerHook)
+	LW t3, lo(ShopImageHandlerHook) (t3)
+	LUI t4, 0x8065
+	SW t3, 0x8364 (t4) // Store Hook
+	SW r0, 0x8368 (t4) // Store NOP
+
+	LUI t3, hi(FixPufftossInvalidWallCollisionHook)
+	LW t3, lo(FixPufftossInvalidWallCollisionHook) (t3)
+	LUI t4, 0x8067
+	SW t3, 0x7C14 (t4) // Store Hook
+	SW r0, 0x7C18 (t4) // Store NOP
 
 	LUI t3, hi(SaveToFileFixesHook)
 	LW t3, lo(SaveToFileFixesHook) (t3)
@@ -432,8 +450,8 @@ loadExtraHooks:
 	LUI t3, hi(GuardDeathHandleHook)
 	LW t3, lo(GuardDeathHandleHook) (t3)
 	LUI t4, 0x806B
-	SW t3, 0xFA44 (t4) // Store Hook
-	SW r0, 0xFA48 (t4) // Store NOP
+	SW t3, 0xF70C (t4) // Store Hook
+	SW r0, 0xF710 (t4) // Store NOP
 
 	LUI t3, hi(QoLOn)
 	LBU t3, lo(QoLOn) (t3)

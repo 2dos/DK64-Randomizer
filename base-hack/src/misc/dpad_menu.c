@@ -6,7 +6,7 @@
 int* drawDPad(int* dl) {
     if (Gamemode == 6) {
         dl = drawImage(dl, IMAGE_DPAD, RGBA16, 32, 32, 1100, 200, DPAD_SCALE, DPAD_SCALE, 0xC0);
-        if (Rando.tag_anywhere) {
+        if ((Rando.tag_anywhere) && (Character < 5)) {
             // Tag Anywhere Faces
             int kong_left = getTagAnywhereKong(-1);
             int kong_right = getTagAnywhereKong(1);

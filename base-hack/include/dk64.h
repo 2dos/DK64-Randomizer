@@ -147,6 +147,26 @@ extern void spawnPianoKremling(int kremling_index, int unk0);
 extern void setAcceptablePianoKey(int id, int key, int unk0);
 extern int checkContactSublocation(void* behaviour_pointer, int id, int key, int unk0);
 extern void PlayCutsceneFromModelTwoScript(void* behavior_pointer, int cutscene, int unk0, int unk1);
+extern void handleGuardDetection(float offset, float radius);
+extern int guardShouldMove(void);
+extern void guardUnkFunction(int unk0);
+extern void generalActorHandle(int control_state, int x, int z, int unk0, float unk1);
+extern void handleGuardDefaultAnimation(void);
+extern void setActorSpeed(void* actor, int speed);
+extern void playActorAnimation(void* actor, int animation);
+extern void actorUnkFunction(void);
+extern int getRNGLower31(void);
+extern void setActorAnimation(int animation);
+extern void actorUnkFunction_0(int control_state, int unk0);
+extern void spawnSparkles(float x, float y, float z, int size);
+extern void spawnEnemyDrops(void* actor);
+extern void* isActorLoaded(int actor_type);
+extern void beaverControlSwitchCase(int unk0, int unk1, int unk2);
+
+extern float getXRatioMovement(int dk64u_angle);
+extern float getZRatioMovement(int dk64u_angle);
+extern void updateActorProjectileInfo(void* actor, int unk0);
+extern void spawnProjectile(short object, short subtype, int speed, float x, float y, float z, float unk0, void* actor);
 
 //vanilla data
 extern float TransitionSpeed;
@@ -315,6 +335,13 @@ extern short MusicTrackChannels[12];
 extern float BoatSpeeds[2];
 extern short textParameter;
 
+extern unsigned char collisionType;
+extern unsigned char collisionActive;
+extern actorData* PlayerPointer_0;
+extern SpawnerInfo* currentCharSpawner;
+extern short EnemiesKilledCounter;
+extern model2_collision_info ModelTwoCollisionArray[42];
+
 //hack data
 extern int TestVariable;
 extern char LoadedHooks;
@@ -332,9 +359,9 @@ extern unsigned int BalancedIGT;
 extern short style128Mtx[0x10];
 extern short style6Mtx[0x10];
 extern short style2Mtx[0x10];
-extern purchase_struct CrankyMoves_New[5][7];
-extern purchase_struct CandyMoves_New[5][7];
-extern purchase_struct FunkyMoves_New[5][7];
+extern purchase_struct CrankyMoves_New[5][8];
+extern purchase_struct CandyMoves_New[5][8];
+extern purchase_struct FunkyMoves_New[5][8];
 extern settingsData StoredSettings;
 extern char WarpToIslesEnabled;
 extern char SkipDance;
@@ -346,3 +373,5 @@ extern char QoLOn;
 extern unsigned char PauseText;
 extern unsigned char ShorterBosses;
 extern char ForceStandardAmmo;
+extern char KKOPhaseRandoOn;
+extern char KKOPhaseOrder[3];

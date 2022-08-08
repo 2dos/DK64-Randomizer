@@ -3,7 +3,7 @@ import random
 from array import array
 from randomizer.Enums.Items import Items
 from randomizer.Enums.Kongs import Kongs
-from randomizer.Lists.Exceptions import BossOutOfLocationsException, FillException
+from randomizer.Lists.Exceptions import BossOutOfLocationsException, FillException, ItemPlacementException
 from randomizer.Lists.MapsAndExits import Maps
 
 BossMapList = [Maps.JapesBoss, Maps.AztecBoss, Maps.FactoryBoss, Maps.GalleonBoss, Maps.FungiBoss, Maps.CavesBoss, Maps.CastleBoss]
@@ -33,7 +33,7 @@ def ShuffleBossKongs(settings):
     for level in range(7):
         boss_map = settings.boss_maps[level]
         if settings.boss_kong_rando:
-            kong = SelectRandomKongForBoss(boss_map, settings.hard_mad_jack)
+            kong = SelectRandomKongForBoss(boss_map, settings.hard_bosses)
         else:
             kong = vanillaBossKongs[boss_map]
         boss_kongs.append(kong)
@@ -41,7 +41,7 @@ def ShuffleBossKongs(settings):
     return boss_kongs
 
 
-def SelectRandomKongForBoss(boss_map: Maps, hard_mad_jack: bool):
+def SelectRandomKongForBoss(boss_map: Maps, hard_bosses: bool):
     """Randomly choses from the allowed list for the boss."""
     possibleKongs = []
     if boss_map == Maps.JapesBoss:
@@ -49,7 +49,7 @@ def SelectRandomKongForBoss(boss_map: Maps, hard_mad_jack: bool):
     elif boss_map == Maps.AztecBoss:
         possibleKongs = [Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky]
     elif boss_map == Maps.FactoryBoss:
-        if hard_mad_jack:
+        if hard_bosses:
             possibleKongs = [Kongs.donkey, Kongs.tiny, Kongs.chunky]
         else:
             possibleKongs = [Kongs.tiny]
@@ -58,7 +58,7 @@ def SelectRandomKongForBoss(boss_map: Maps, hard_mad_jack: bool):
     elif boss_map == Maps.FungiBoss:
         possibleKongs = [Kongs.chunky]
     elif boss_map == Maps.CavesBoss:
-        possibleKongs = [Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.chunky]
+        possibleKongs = [Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky]
     elif boss_map == Maps.CastleBoss:
         possibleKongs = [Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky]
     return random.choice(possibleKongs)
@@ -82,6 +82,16 @@ def ShuffleKutoutKongs(boss_maps: array, boss_kongs: array, boss_kong_rando: boo
     return kutout_kongs
 
 
+def ShuffleKKOPhaseOrder(settings):
+    """Shuffle the phase order in King Kut Out."""
+    kko_phases = [0, 1, 2, 3]
+    random.shuffle(kko_phases)
+    kko_phase_subset = []
+    for phase_slot in range(3):
+        kko_phase_subset.append(kko_phases[phase_slot])
+    return kko_phase_subset.copy()
+
+
 def ShuffleBossesBasedOnOwnedItems(settings, ownedKongs: dict, ownedMoves: dict):
     """Perform Boss Location & Boss Kong rando, ensuring each first boss can be beaten with an unlocked kong and owned moves."""
     try:
@@ -89,12 +99,14 @@ def ShuffleBossesBasedOnOwnedItems(settings, ownedKongs: dict, ownedMoves: dict)
         # First place dogadon 2 (most restrictive)
         bossTryingToBePlaced = "Dogadon 2"
         forestBossOptions = [x for x in bossLevelOptions if Kongs.chunky in ownedKongs[x] and Items.HunkyChunky in ownedMoves[x]]
+        if not settings.kong_rando and not settings.boss_location_rando and 4 not in forestBossOptions:
+            raise ItemPlacementException("Items not placed to allow vanilla Dogadon 2.")
         forestBossIndex = random.choice(forestBossOptions)
         forestBossKong = Kongs.chunky
         bossLevelOptions.remove(forestBossIndex)
         # Then place Mad jack (next most restrictive)
         bossTryingToBePlaced = "Mad Jack"
-        if settings.hard_mad_jack:
+        if settings.hard_bosses:
             factoryBossOptions = [
                 x for x in bossLevelOptions if Kongs.donkey in ownedKongs[x] or Kongs.chunky in ownedKongs[x] or (Kongs.tiny in ownedKongs[x] and Items.PonyTailTwirl in ownedMoves[x])
             ]
@@ -108,24 +120,14 @@ def ShuffleBossesBasedOnOwnedItems(settings, ownedKongs: dict, ownedMoves: dict)
             factoryBossIndex = random.choice(factoryBossOptions)
             factoryBossKong = Kongs.tiny
         bossLevelOptions.remove(factoryBossIndex)
-        # Then place Pufftoss (next most restrictive)
-        bossTryingToBePlaced = "Pufftoss"
-        galleonBossOptions = [x for x in bossLevelOptions if Kongs.diddy in ownedKongs[x] or Kongs.lanky in ownedKongs[x] or Kongs.tiny in ownedKongs[x] or Kongs.chunky in ownedKongs[x]]
-        galleonBossIndex = random.choice(galleonBossOptions)
-        galleonBossKongOptions = set(ownedKongs[galleonBossIndex]).intersection({Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky})
-        galleonBossKong = random.choice(list(galleonBossKongOptions))
-        bossLevelOptions.remove(galleonBossIndex)
-        # Then place Armydillo 2
-        bossTryingToBePlaced = "Armydillo 2"
-        cavesBossOptions = [x for x in bossLevelOptions if Kongs.donkey in ownedKongs[x] or Kongs.diddy in ownedKongs[x] or Kongs.lanky in ownedKongs[x] or Kongs.chunky in ownedKongs[x]]
-        cavesBossIndex = random.choice(cavesBossOptions)
-        cavesBossKongOptions = set(ownedKongs[cavesBossIndex]).intersection({Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.chunky})
-        cavesBossKong = random.choice(list(cavesBossKongOptions))
-        bossLevelOptions.remove(cavesBossIndex)
         # Place the rest randomly
         bossTryingToBePlaced = "the easy bosses to place (if this breaks here something REALLY strange happened)"
         remainingBosses = list(bossLevelOptions)
         random.shuffle(remainingBosses)
+        galleonBossIndex = remainingBosses.pop()
+        galleonBossKong = random.choice(ownedKongs[galleonBossIndex])
+        cavesBossIndex = remainingBosses.pop()
+        cavesBossKong = random.choice(ownedKongs[cavesBossIndex])
         japesBossIndex = remainingBosses.pop()
         japesBossKong = random.choice(ownedKongs[japesBossIndex])
         aztecBossIndex = remainingBosses.pop()
@@ -165,6 +167,18 @@ def ShuffleBossesBasedOnOwnedItems(settings, ownedKongs: dict, ownedMoves: dict)
             raise BossOutOfLocationsException("No valid locations to place " + bossTryingToBePlaced)
         raise FillException(ex)
 
-    settings.boss_maps = newBossMaps
-    settings.boss_kongs = newBossKongs
-    settings.kutout_kongs = ShuffleKutoutKongs(settings.boss_maps, settings.boss_kongs, True)
+    # Only apply this shuffle if the settings permit it
+    # If kongs are random we have to shuffle bosses and locations or else we might break logic
+    if settings.kong_rando or settings.boss_location_rando:
+        settings.boss_maps = newBossMaps
+    else:
+        settings.boss_maps = BossMapList.copy()
+    if settings.kong_rando or settings.boss_kong_rando:
+        # If we shuffle kongs but not locations, we must forcibly sort the array with the known valid kongs
+        if not settings.boss_location_rando:
+            settings.boss_kongs = [japesBossKong, aztecBossKong, factoryBossKong, galleonBossKong, forestBossKong, cavesBossKong, castleBossKong]
+        else:
+            settings.boss_kongs = newBossKongs
+    else:
+        settings.boss_kongs = ShuffleBossKongs(settings)
+    settings.kutout_kongs = ShuffleKutoutKongs(settings.boss_maps, settings.boss_kongs, settings.boss_kong_rando)

@@ -68,6 +68,8 @@ def modify(file_name, map_index):
         model2_index = 0x220
         added_factory_barracade = False
         added_caves_tns = False
+        added_helm_faces = False
+        added_5di_strongkong = False
         for x in range(model2_count):
             byte_stream = byte_read[read_location : read_location + 0x30]
             _type = int.from_bytes(byte_read[read_location + 0x28 : read_location + 0x2A], "big")
@@ -202,6 +204,15 @@ def modify(file_name, map_index):
                     for x in range(0x30 - 0xC):
                         repl_byte += byte_stream[x + 0xC].to_bytes(1, "big")
                     byte_stream = repl_byte
+            if map_index == 0x7 and _id == 0xC9:
+                repl_byte = b""
+                new_y = int(float_to_hex(400), 16)
+                for x in range(0x4):
+                    repl_byte += byte_stream[x].to_bytes(1, "big")
+                repl_byte += new_y.to_bytes(4, "big")
+                for x in range(0x30 - 0x8):
+                    repl_byte += byte_stream[x + 0x8].to_bytes(1, "big")
+                byte_stream = repl_byte
             data = {
                 "stream": byte_stream,
                 "type": _type,
@@ -258,6 +269,73 @@ def modify(file_name, map_index):
                 new_z = 512.886
                 writedatatoarr(byte_stream, int(float_to_hex(new_x), 16), 4, 0x0)
                 writedatatoarr(byte_stream, int(float_to_hex(new_z), 16), 4, 0x8)
+            elif map_index == 0x22 and obj_id == 4:
+                # Isles Vines
+                added_actor.append(
+                    {
+                        "base_byte_stream": byte_stream,
+                        "x": int(float_to_hex(3178.968), 16),
+                        "y": int(float_to_hex(992.493), 16),
+                        "z": int(float_to_hex(1152.631), 16),
+                        "id": 0xFF,
+                        "use_byte_stream": True,
+                    }
+                )
+            elif map_index == 0x7 and obj_id == 26:
+                # Japes Vines
+                added_actor.append(
+                    {
+                        "base_byte_stream": byte_stream,
+                        "x": int(float_to_hex(802.113), 16),
+                        "y": int(float_to_hex(632.5), 16),
+                        "z": int(float_to_hex(2258.593), 16),
+                        "id": 0xFF,
+                        "use_byte_stream": True,
+                    }
+                )
+            elif map_index == 0x11 and not added_helm_faces:
+                face_z = 5423.538
+                face_hi = 160
+                face_lo = 104.5
+                face_coords = [
+                    [575.763, face_hi],
+                    [494.518, face_hi],
+                    [606.161, face_lo],
+                    [534.567, face_lo],
+                    [463.642, face_lo],
+                ]
+                for face_index, face in enumerate(face_coords):
+                    added_actor.append(
+                        {
+                            "base_byte_stream": byte_stream,
+                            "x": int(float_to_hex(face[0]), 16),
+                            "y": int(float_to_hex(face[1]), 16),
+                            "z": int(float_to_hex(face_z), 16),
+                            "id": 0x100 + face_index,
+                            "type": 70 - 16,
+                            "rx": 0,
+                            "ry": 0,
+                            "rz": 0,
+                            "scale": int(float_to_hex(0.35), 16),
+                        }
+                    )
+                added_helm_faces = True
+            elif map_index == 0x56 and not added_5di_strongkong:
+                added_actor.append(
+                    {
+                        "base_byte_stream": byte_stream,
+                        "x": int(float_to_hex(118.011), 16),
+                        "y": int(float_to_hex(20), 16),
+                        "z": int(float_to_hex(462.749), 16),
+                        "id": 0x20,
+                        "type": 0x39 - 16,
+                        "rx": 0,
+                        "ry": 1024,
+                        "rz": 0,
+                        "scale": int(float_to_hex(1), 16),
+                    }
+                )
+                added_5di_strongkong = True
             data = {"stream": byte_stream}
             actor.append(data)
             read_location += 0x38
