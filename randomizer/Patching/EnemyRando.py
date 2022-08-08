@@ -58,7 +58,7 @@ def getBalancedCrownEnemyRando(crown_setting):
                 enemy_swaps_library[map_id].append(random.choice(disruptive_0)) 
                 enemy_swaps_library[map_id].append(random.choice(disruptive_at_most_kasplat))
                 enemy_swaps_library[map_id].append(random.choice(disruptive_at_most_kasplat))
-                if(map_id == Maps.GalleonCrown or map_id == Maps.HelmCrown):
+                if(map_id == Maps.GalleonCrown or map_id == Maps.LobbyCrown or map_id == Maps.HelmCrown):
                      enemy_swaps_library[map_id].append(random.choice(disruptive_0)) 
         elif crown_setting == "medium":
             count_disruptive = 0
@@ -66,7 +66,7 @@ def getBalancedCrownEnemyRando(crown_setting):
             new_enemy = 0
             for map_id in enemy_swaps_library:
                 number_of_enemies = 3
-                if(map_id == Maps.GalleonCrown or map_id == Maps.HelmCrown):
+                if(map_id == Maps.GalleonCrown or map_id == Maps.LobbyCrown or map_id == Maps.HelmCrown):
                     number_of_enemies = 4
                 for count in range(number_of_enemies):
                     if count_disruptive == 0:
@@ -93,7 +93,7 @@ def getBalancedCrownEnemyRando(crown_setting):
         elif crown_setting == "hard":
             for map_id in enemy_swaps_library:
                 number_of_enemies = 3
-                if(map_id == Maps.GalleonCrown or map_id == Maps.HelmCrown):
+                if(map_id == Maps.GalleonCrown or map_id == Maps.LobbyCrown or map_id == Maps.HelmCrown):
                     number_of_enemies = 4
                 for count in range(number_of_enemies):
                     enemy_swaps_library[map_id].append(random.choie(legeacy_hard_mode))
@@ -455,7 +455,7 @@ def randomize_enemies(spoiler: Spoiler):
                 for spawner in vanilla_spawners:
                     if spawner["enemy_id"] in crown_enemies:
                         if len(crown_enemies_library[cont_map_id]) == 0:
-                            print("There are more spawners in {cont_map_id} than originally thought.")
+                            print("There are more spawners in ", cont_map_id," than originally thought.")
                         new_enemy_id = crown_enemies_library[cont_map_id].pop()
                         ROM().seek(cont_map_spawner_address + spawner["offset"])
                         ROM().writeMultipleBytes(new_enemy_id, 1)
