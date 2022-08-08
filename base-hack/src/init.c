@@ -289,6 +289,8 @@ void initHack(int source) {
 			*(int*)(0x8074C3F0) = (int)&goldBeaverCode;
 			// Spider Projectile
 			//*(int*)(0x806ADDC0) = 0x0C000000 | (((int)&handleSpiderTrapCode & 0xFFFFFF) >> 2); // Remove buff until we think of something better
+			// Slow Turn Fix
+			*(int*)(0x806D2FC0) = 0x0C000000 | (((int)&fixRBSlowTurn & 0xFFFFFF) >> 2);
 			// Tag Anywhere collectable Fixes
 			// CB Bunch
 			int non_chunky_bunch_indexes[] = {10,11,13,14};

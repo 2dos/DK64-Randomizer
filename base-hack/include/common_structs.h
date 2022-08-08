@@ -188,7 +188,9 @@ typedef struct playerData {
 	/* 0x18A */ short moving_angle;
 	/* 0x18C */ char unk_18C[0x1B8-0x18C];
 	/* 0x1B8 */ float velocity_cap;
-	/* 0x1BC */ char unk_1BC[0x1D0-0x1BC];
+	/* 0x1BC */ char unk_1BC[0x1C8-0x1BC];
+	/* 0x1C8 */ short turn_speed;
+	/* 0x1CA */ char unk_1CA[0x1D0-0x1CA];
 	/* 0x1D0 */ short ostand_value;
 	/* 0x1D2 */ char unk_1D2[0x208-0x1D2];
 	/* 0x208 */ void* vehicle_actor_pointer;
