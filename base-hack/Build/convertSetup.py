@@ -4,6 +4,7 @@ import shutil
 import struct
 
 from getMoveSignLocations import getMoveSignData
+from place_vines import generateVineSeries
 
 
 def convertSetup(file_name):
@@ -220,6 +221,7 @@ def modify(file_name, map_index):
             model2.append(data)
             read_location += 0x30
         shop_signs = getMoveSignData(map_index, base_stream)
+        vine_data = generateVineSeries(map_index)
         # if len(shop_signs) != 0:
         #     print(shop_signs)
         for sign in shop_signs:
@@ -249,50 +251,6 @@ def modify(file_name, map_index):
                 writedatatoarr(byte_stream, int(float_to_hex(new_x), 16), 4, 0x0)
                 writedatatoarr(byte_stream, int(float_to_hex(new_y), 16), 4, 0x4)
                 writedatatoarr(byte_stream, int(float_to_hex(new_z), 16), 4, 0x8)
-            elif map_index == 0x40 and obj_id == 4:
-                # GMush Vines
-                added_actor.append(
-                    {
-                        "base_byte_stream": byte_stream,
-                        "x": int(float_to_hex(517.993), 16),
-                        "y": int(float_to_hex(1070.614), 16),
-                        "z": int(float_to_hex(510.374), 16),
-                        "id": 0xFF,
-                        "use_byte_stream": True,
-                    }
-                )
-                temp = []
-                for y in range(0x38):
-                    temp.append(byte_stream[y])
-                byte_stream = temp.copy()
-                new_x = 410.614
-                new_z = 512.886
-                writedatatoarr(byte_stream, int(float_to_hex(new_x), 16), 4, 0x0)
-                writedatatoarr(byte_stream, int(float_to_hex(new_z), 16), 4, 0x8)
-            elif map_index == 0x22 and obj_id == 4:
-                # Isles Vines
-                added_actor.append(
-                    {
-                        "base_byte_stream": byte_stream,
-                        "x": int(float_to_hex(3178.968), 16),
-                        "y": int(float_to_hex(992.493), 16),
-                        "z": int(float_to_hex(1152.631), 16),
-                        "id": 0xFF,
-                        "use_byte_stream": True,
-                    }
-                )
-            elif map_index == 0x7 and obj_id == 26:
-                # Japes Vines
-                added_actor.append(
-                    {
-                        "base_byte_stream": byte_stream,
-                        "x": int(float_to_hex(802.113), 16),
-                        "y": int(float_to_hex(632.5), 16),
-                        "z": int(float_to_hex(2258.593), 16),
-                        "id": 0xFF,
-                        "use_byte_stream": True,
-                    }
-                )
             elif map_index == 0x11 and not added_helm_faces:
                 face_z = 5423.538
                 face_hi = 160
@@ -336,6 +294,30 @@ def modify(file_name, map_index):
                     }
                 )
                 added_5di_strongkong = True
+            # Vine Memes
+            if len(vine_data["add"]) > 0:
+                for vine_add in vine_data["add"]:
+                    if obj_id == vine_add["id_base"]:
+                        added_actor.append(
+                            {
+                                "base_byte_stream": byte_stream,
+                                "x": int(float_to_hex(vine_add["x"]), 16),
+                                "y": int(float_to_hex(vine_add["y"]), 16),
+                                "z": int(float_to_hex(vine_add["z"]), 16),
+                                "id": vine_add["id"],
+                                "use_byte_stream": True,
+                            }
+                        )
+            if len(vine_data["change"]) > 0:
+                for vine_change in vine_data["change"]:
+                    if obj_id == vine_change["id"]:
+                        temp = []
+                        for y in range(0x38):
+                            temp.append(byte_stream[y])
+                        byte_stream = temp.copy()
+                        writedatatoarr(byte_stream, int(float_to_hex(vine_change["x"]), 16), 4, 0x0)
+                        writedatatoarr(byte_stream, int(float_to_hex(vine_change["y"]), 16), 4, 0x4)
+                        writedatatoarr(byte_stream, int(float_to_hex(vine_change["z"]), 16), 4, 0x8)
             data = {"stream": byte_stream}
             actor.append(data)
             read_location += 0x38

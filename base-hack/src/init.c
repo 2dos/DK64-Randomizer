@@ -184,12 +184,12 @@ void initHack(int source) {
 				*(short*)(0x806992B6) = picture_timer; // No wait for camera film development
 				*(short*)(0x8069932A) = picture_timer;
 				// Vines
-				*(short*)(0x806DCFB2) = 0x432F; // Increase search radius to 175.0u
-				int new_vine_exit_speed = 200;
-				*(short*)(0x8075037C) = new_vine_exit_speed;
-				*(short*)(0x80750380) = new_vine_exit_speed;
-				*(short*)(0x80698EEE) = 0x4348; // 200.0f
-				*(short*)(0x806DCD3E) = 0x4348; // 200.0f
+				// *(short*)(0x806DCFB2) = 0x432F; // Increase search radius to 175.0u
+				// int new_vine_exit_speed = 200;
+				// *(short*)(0x8075037C) = new_vine_exit_speed;
+				// *(short*)(0x80750380) = new_vine_exit_speed;
+				// *(short*)(0x80698EEE) = 0x4348; // 200.0f
+				// *(short*)(0x806DCD3E) = 0x4348; // 200.0f
 				// Lower Aztec Lobby Bonus
 				*(short*)(0x80680D56) = 0x7C; // 0x89 if this needs to be unreachable without PTT
 				// Fast Vulture
