@@ -15,7 +15,7 @@ def getBalancedCrownEnemyRando(crown_setting, damage_ohko_setting):
     enemy_swaps_library = {}
 
     if crown_setting != "off":
-        
+
         # library of every crown map. will have a list of all enemies to put in those maps.
         enemy_swaps_library = {
             Maps.JapesCrown: [],
@@ -95,7 +95,7 @@ def getBalancedCrownEnemyRando(crown_setting, damage_ohko_setting):
                     elif count_kasplats > 3 or (count_kasplats > 2 and count_disruptive > 1) or (count_kasplats == 2 and count_disruptive == 2):
                         print("This is a mistake in the crown enemy algorithm. Report this to the devs.")
                         new_enemy = Enemies.BeaverGold
-                    # Add in a chance for Get Out to appear in crown battles. 
+                    # Add in a chance for Get Out to appear in crown battles.
                     if damage_ohko_setting is False and count_disruptive < 2 and get_out_spawned_this_map is False and random.randint(0, 1000) > 994:
                         new_enemy = Enemies.GetOut
                         get_out_spawned_this_map = True
