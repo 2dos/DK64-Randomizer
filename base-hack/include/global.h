@@ -118,4 +118,5 @@ extern int getLocationStatus(location_list location_index);
 extern void fixTBarrelsAndBFI(int init);
 extern void purchaseMove(shop_paad* paad);
 extern void getNextMoveText(void);
+extern void displayBFIMoveText(void);
 //extern void getRandoNextMovePurchase(shop_paad* shop_info, KongBase* moves);

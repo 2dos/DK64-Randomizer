@@ -371,9 +371,9 @@ move_names = [
 move_names_arr = []
 for move in move_names:
     init_len = len(move_names_arr)
-    move_names_arr.append([move["name"]])
+    move_names_arr.append([move["name"].upper()])
     if "latin" in move:
-        move_names_arr.append([move["latin"]])
+        move_names_arr.append([f"({move['latin'].upper()})"])
     if "print" in move:
         if move["print"]:
             print(f"{move['name']}: {init_len}")

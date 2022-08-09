@@ -526,100 +526,160 @@ void fixTBarrelsAndBFI(int init) {
 		}
 	}
 }
+typedef struct mtx_item {
+	/* 0x000 */ char unk_0[0x40];
+} mtx_item;
 
 typedef struct move_overlay_paad {
-	/* 0x000 */ void* unk_00;
-	/* 0x004 */ char unk_04[0x8-0x4];
+	/* 0x000 */ void* upper_text;
+	/* 0x004 */ void* lower_text;
 	/* 0x008 */ unsigned char opacity;
 	/* 0x009 */ char unk_09[0x10-0x9];
-	/* 0x010 */ void* unk_10;
-	/* 0x014 */ char unk_14[0x50-0x14];
-	/* 0x050 */ char unk_50;
-	/* 0x051 */ char unk_51[0x90-0x51];
+	/* 0x010 */ mtx_item unk_10;
+	/* 0x050 */ mtx_item unk_50;
 	/* 0x090 */ int timer;
 	/* 0x094 */ actorData* shop_owner;
 } move_overlay_paad;
 
-typedef struct mtx_item {
-	/* 0x000 */ char unk_00[0x40];
-} mtx_item;
+unsigned int* displayMoveText(unsigned int* dl, actorData* actor) {
+	move_overlay_paad* paad = actor->paad;
+	*(unsigned int*)(dl++) = 0xDE000000;
+	*(unsigned int*)(dl++) = 0x01000118;
+	*(unsigned int*)(dl++) = 0xDA380002;
+	*(unsigned int*)(dl++) = 0x02000180;
+	*(unsigned int*)(dl++) = 0xE7000000;
+	*(unsigned int*)(dl++) = 0x00000000;
+	*(unsigned int*)(dl++) = 0xFCFF97FF;
+	*(unsigned int*)(dl++) = 0xFF2CFE7F;
+	*(unsigned int*)(dl++) = 0xFA000000;
+	*(unsigned int*)(dl++) = 0xFFFFFF00 | paad->opacity;
+	if (paad->upper_text) {
+		*(unsigned int*)(dl++) = 0xDA380002;
+		*(unsigned int*)(dl++) = (int)&paad->unk_10;
+		dl = (unsigned int*)displayText((int*)dl,1,*(int*)(0x807FF700),*(int*)(0x807FF704),paad->upper_text,0x80);
+		*(unsigned int*)(dl++) = 0xD8380002;
+		*(unsigned int*)(dl++) = 0x00000040;
+	}
+	if (paad->lower_text) {
+		*(unsigned int*)(dl++) = 0xDA380002;
+		*(unsigned int*)(dl++) = (int)&paad->unk_50;
+		dl = (unsigned int*)displayText((int*)dl,6,*(int*)(0x807FF708),*(int*)(0x807FF70C),paad->lower_text,0x80);
+		*(unsigned int*)(dl++) = 0xD8380002;
+		*(unsigned int*)(dl++) = 0x00000040;
+	}
+	return dl;
+}
 
 void getNextMoveText(void) {
 	move_overlay_paad* paad = CurrentActorPointer_0->paad;
 	int start_hiding = 0;
 	actorData* shop_owner = paad->shop_owner;
 	shop_paad* shop_data = 0;
-	if (shop_owner == 0) {
+	if ((shop_owner == 0) && ((CurrentMap == CRANKY) || (CurrentMap == FUNKY) || (CurrentMap == CANDY))) {
 		shop_owner = getSpawnerTiedActor(1,0);
 		paad->shop_owner = shop_owner;
 	}
-	if (paad->shop_owner) {
+	if ((paad->shop_owner) && ((CurrentMap == CRANKY) || (CurrentMap == FUNKY) || (CurrentMap == CANDY))) {
 		shop_data = shop_owner->paad2;
 	}
+	int p_value = 0;
+	int p_type = 0;
+	int p_kong = 0;
+	int p_flag = 0;
+	int has_data = 0;
 	if (shop_data) {
+		has_data = 1;
+		p_value = shop_data->purchase_value;
+		p_type = shop_data->purchase_type;
+		p_kong = shop_data->kong;
+		p_flag = shop_data->flag;
+	} else if (CurrentMap == 0xBD) {
+		has_data = 1;
+		p_type = BFIMove_New.purchase_type;
+		p_value = BFIMove_New.purchase_value;
+		p_kong = BFIMove_New.move_kong;
+		p_flag = p_value;
+	} else {
+		unsigned char tbarrel_maps[] = {0xB1,0xB4,0xB5,0xB6};
+		for (int i = 0; i < sizeof(tbarrel_maps); i++) {
+			if ((CurrentMap == tbarrel_maps[i]) && (!has_data)) {
+				has_data = 1;
+				p_type = TrainingMoves_New[i].purchase_type;
+				p_value = TrainingMoves_New[i].purchase_value;
+				p_kong = TrainingMoves_New[i].move_kong;
+				p_flag = p_value;
+			}
+		}
+	}
+	if (has_data) {
 		if ((CurrentActorPointer_0->obj_props_bitfield & 0x10) == 0) {
 			int top_item = -1;
 			int bottom_item = -1;
 			mtx_item mtx0;
 			mtx_item mtx1;
-			guScaleF(&mtx0, 0x3F19999A, 0x3F19999A, 0x3F800000);
-			guTranslateF(&mtx1, 0x44200000, 0x44480000, 0x0);
-			guMtxCatF(&mtx0, &mtx1, &mtx0);
-			guMtxF2L(&mtx0, &paad->unk_10);
-			int bottom_height = getTextStyleHeight(6);
-			guTranslateF(&mtx1, 0, 0x42400000, 0);
-			guMtxCatF(&mtx0, &mtx1, &mtx0);
-			guMtxF2L(&mtx0, &paad->unk_50);
-			int p_type = shop_data->purchase_type;
+			_guScaleF(&mtx0, 0x3F19999A, 0x3F19999A, 0x3F800000);
+			_guTranslateF(&mtx1, 0x44200000, 0x44480000, 0x0);
+			_guMtxCatF(&mtx0, &mtx1, &mtx0);
+			_guMtxF2L(&mtx0, &paad->unk_10);
+			//int bottom_height = getTextStyleHeight(6);
+			_guTranslateF(&mtx1, 0, 0x42400000, 0);
+			_guMtxCatF(&mtx0, &mtx1, &mtx0);
+			_guMtxF2L(&mtx0, &paad->unk_50);
+			paad->timer = 0x82;
 			switch(p_type) {
 				case PURCHASE_MOVES:
-					int move_index = (shop_data->kong * 4) + shop_data->purchase_value;
-					top_item = SpecialMovesNames[move_index].name;
-					bottom_item = SpecialMovesNames[move_index].latin;
+					{
+						int move_index = (p_kong * 4) + p_value;
+						top_item = SpecialMovesNames[move_index].name;
+						bottom_item = SpecialMovesNames[move_index].latin;
+					}
 					break;
 				case PURCHASE_SLAM:
-					top_item = SpecialMovesNames[(int)shop_data->purchase_value].name;
-					bottom_item = SpecialMovesNames[(int)shop_data->purchase_value].latin;
+					top_item = SimianSlamNames[(int)p_value].name;
+					bottom_item = SimianSlamNames[(int)p_value].latin;
 					break;
 				case PURCHASE_GUN:
-					paad->timer = 0x82;
-					if (shop_data->purchase_value < 2) {
-						top_item = GunNames[shop_data->kong];
+					if (p_value < 2) {
+						top_item = GunNames[p_kong];
 					} else {
-						top_item = GunUpgNames[shop_data->purchase_value];
+						top_item = GunUpgNames[p_value];
 					}
 					break;
 				case PURCHASE_AMMOBELT:
-					paad->timer = 0x82;
-					top_item = AmmoBeltNames[shop_data->purchase_value];
+					top_item = AmmoBeltNames[p_value];
 					break;
 				case PURCHASE_INSTRUMENT:
-					paad->timer = 0x82;
-					if (shop_data->purchase_value == 1) {
-						top_item = InstrumentNames[shop_data->kong];
+					if (p_value == 1) {
+						top_item = InstrumentNames[p_kong];
 					} else {
-						top_item = InstrumentUpgNames[shop_data->purchase_value];
+						top_item = InstrumentUpgNames[p_value];
 					}
 					break;
 				case PURCHASE_GB:
 				case PURCHASE_FLAG:
-					int tied_flags[] = {FLAG_TBARREL_DIVE,FLAG_TBARREL_ORANGE,FLAG_TBARREL_BARREL,FLAG_TBARREL_VINE,FLAG_ABILITY_CAMERA,FLAG_ABILITY_SHOCKWAVE};
-					for (int i = 0; i < sizeof(tied_flags) / 4; i++) {
-						if (tied_flags[i] == shop_data->flag) {
-							top_item = 53 + i;
+					{
+						if (p_flag == -2) {
+							top_item = 59;
+						} else {
+							int tied_flags[] = {FLAG_TBARREL_DIVE,FLAG_TBARREL_ORANGE,FLAG_TBARREL_BARREL,FLAG_TBARREL_VINE,FLAG_ABILITY_CAMERA,FLAG_ABILITY_SHOCKWAVE};
+							for (int i = 0; i < sizeof(tied_flags) / 4; i++) {
+								if (tied_flags[i] == p_flag) {
+									top_item = 53 + i;
+								}
+							}
 						}
 					}
 				break;
 			}
 			if (top_item < 0) {
-				paad->unk_00 = (void*)0;
+				paad->upper_text = (void*)0;
 			} else {
-				paad->unk_00 = getTextPointer(0x27,top_item,0);
+				paad->upper_text = getTextPointer(0x27,top_item,0);
 			}
 			if (bottom_item < 0) {
-				paad->unk_10 = (void*)0;
+				paad->lower_text = (void*)0;
 			} else {
-				paad->unk_10 = getTextPointer(0x27,bottom_item,0);
+				paad->lower_text = getTextPointer(0x27,bottom_item,0);
 			}
 		}
 		int timer = paad->timer;
@@ -650,7 +710,7 @@ void getNextMoveText(void) {
 		}
 		if (start_hiding == 0) {
 			if (CurrentActorPointer_0->control_state != 0) {
-				// AddActorToOverlayArray(displayMoveText, CurrentActorPointer_0, 3); // TODO: Add this
+				addDLToOverlay((int)&displayMoveText, CurrentActorPointer_0, 3);
 			}
 			if (CurrentActorPointer_0->actorType == 0x140) {
 				renderActor(CurrentActorPointer_0,0);
@@ -659,7 +719,15 @@ void getNextMoveText(void) {
 			deleteActorContainer(CurrentActorPointer_0);
 		}
 	}
+}
 
+void displayBFIMoveText(void) {
+	if ((BFIMove_New.purchase_type == PURCHASE_FLAG) && ((BFIMove_New.purchase_value == -2) || (BFIMove_New.purchase_value == FLAG_ABILITY_CAMERA))) {
+		DisplayItemOnHUD(6,0,0);
+	}
+	if (BFIMove_New.purchase_type != PURCHASE_NOTHING) {
+		spawnActor(0x144,0);
+	}
 }
 
 // SetFlag Functions

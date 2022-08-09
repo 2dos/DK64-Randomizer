@@ -177,11 +177,13 @@ extern void changeCollectableCount(int item, int player_index, int change);
 extern void save(void);
 extern void* getSpawnerTiedActor(short target_trigger, short props_change);
 
-extern void guScaleF(void* mtx, int x, int y, int z);
-extern void guTranslateF(void* mtx, int x, int y, int z);
-extern void guMtxCatF(void* mtx, void* unk0, void* unk1);
-extern void guMtxF2L(void* mtx, void* unk0);
+extern void _guScaleF(void* mtx, int x, int y, int z);
+extern void _guTranslateF(void* mtx, int x, int y, int z);
+extern void _guMtxCatF(void* mtx, void* unk0, void* unk1);
+extern void _guMtxF2L(void* mtx, void* unk0);
 extern void* getTextPointer(int file, int text_index, int unk0);
+extern void addDLToOverlay(int code, void* actor, int delay);
+extern void DisplayItemOnHUD(int item, int unk0, int unk1);
 
 //vanilla data
 extern float TransitionSpeed;
