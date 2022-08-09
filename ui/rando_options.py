@@ -136,6 +136,7 @@ def set_preset_options():
     js.jq("#presets").val("-- Select a Preset --")
     toggle_counts_boxes(None)
     toggle_b_locker_boxes(None)
+    toggle_extreme_prices_option(None)
     js.load_cookies()
 
 
@@ -446,3 +447,17 @@ def disable_rw(evt):
             medal.removeAttribute("disabled")
         except Exception:
             pass
+
+
+@bind("change", "unlock_fairy_shockwave")
+def toggle_extreme_prices_option(event):
+    """Determine the visibility of the extreme prices option."""
+    unlocked_shockwave = document.getElementById("unlock_fairy_shockwave").checked
+    option = document.getElementById("extreme_price_option")
+    if unlocked_shockwave:
+        option.removeAttribute("disabled")
+    else:
+        option.setAttribute("disabled", "disabled")
+        price_option = document.getElementById("random_prices")
+        if price_option.value == "extreme":
+            price_option.value = "high"

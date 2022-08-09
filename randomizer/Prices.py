@@ -57,6 +57,7 @@ def RandomizePrices(weight):
     # Low: 1-4 coins most of the time
     # Medium: 1-8 coins most of the time
     # High: 1-12 coins (cannot be greater than 12)
+    # Extreme: Average of 11, can be up to 15, requires starting with Shockwave
     # Free: All moves are zero coins
     avg = 4.5
     stddev = 2
@@ -69,6 +70,10 @@ def RandomizePrices(weight):
         avg = 2.5
         stddev = 1
         upperLimit = 6
+    elif weight == "extreme":
+        avg = 11
+        stddev = 2
+        upperLimit = 15
     # Generate random prices using normal distribution with avg and std. deviation
     # Round each price to nearest int
     for item in prices.keys():

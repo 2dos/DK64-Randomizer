@@ -154,6 +154,7 @@
 .definelabel beaverControlSwitchCase, 0x806AD260
 .definelabel spawnProjectile, 0x80690A28
 .definelabel updateActorProjectileInfo, 0x80690814
+.definelabel controlStateControl, 0x806DF6D4
 
 //vanilla data
 .definelabel TransitionSpeed, 0x807FD88C

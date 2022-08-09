@@ -36,9 +36,10 @@ def ShuffleWarps(bananaport_replacements, human_ports):
         pad_list = []
         pad_temp_list = [[], [], [], [], []]
         for warp in BananaportVanilla.values():
-            if warp.map_id == warp_map and not warp.locked:
-                pad_temp_list[warp.new_warp].append(warp.obj_id_vanilla)
+            if warp.map_id == warp_map:
                 human_ports[warp.name] = "Warp " + str(warp.new_warp + 1)
+                if not warp.locked:
+                    pad_temp_list[warp.new_warp].append(warp.obj_id_vanilla)
         for warp_index in range(len(pad_temp_list)):
             if len(pad_temp_list[warp_index]) > 0:
                 pad_list.append({"warp_index": warp_index, "warp_ids": pad_temp_list[warp_index].copy()})
