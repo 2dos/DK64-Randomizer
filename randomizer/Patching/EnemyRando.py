@@ -16,6 +16,7 @@ def getBalancedCrownEnemyRando(crown_setting):
 
     
     if crown_setting != "off":
+        #library of every crown map. will have a list of all enemies to put in those maps. 
         enemy_swaps_library = {
             Maps.JapesCrown: [],
             Maps.AztecCrown: [],
@@ -28,12 +29,14 @@ def getBalancedCrownEnemyRando(crown_setting):
             Maps.SnidesCrown: [],
             Maps.LobbyCrown: [],
         }
-        every_enemy = []
-        disruptive_max_1 = []
-        disruptive_at_most_kasplat = []
-        disruptive_0 = []
-        legeacy_hard_mode = []
+        #make 5 lists of enemies, per catefory.
+        every_enemy = [] #every enemy (that can appear in crown battles)
+        disruptive_max_1 = [] #anything that isn't... "2" disruptive (because disruptive is 1, at most)
+        disruptive_at_most_kasplat = [] #anything that isn't marked as "disruptive"
+        disruptive_0 = [] #the easiest enemies
+        legeacy_hard_mode = [] #legacy map with the exact same balance as the old "Hard" mode
 
+        #fill in the lists with the possibilities that belong in them. 
         for enemy in EnemyMetaData:
             if EnemyMetaData[enemy].crown_enabled:
                 every_enemy.append(enemy)
@@ -41,31 +44,31 @@ def getBalancedCrownEnemyRando(crown_setting):
                     disruptive_max_1.append(enemy)
                 if EnemyMetaData[enemy].kasplat == True:
                     disruptive_at_most_kasplat.append(enemy)
-                if EnemyMetaData[enemy].disruptive == 0:
+                elif EnemyMetaData[enemy].disruptive == 0:
                     disruptive_at_most_kasplat.append(enemy)
                     disruptive_0.append(enemy)
-            
-            bias = 2
-            for enemy in EnemyMetaData.keys():
-                if EnemyMetaData[enemy].crown_enabled:
-                    base_weight = EnemyMetaData[enemy].crown_weight
-                    weight_diff = abs(base_weight - bias)
-                    new_weight = abs(10 - weight_diff)
-                    for count in range(new_weight):
-                        legeacy_hard_mode.append(enemy)
-
+        #the legacy_hard_mode list is trickier to fill, but here goes:    
+        bias = 2
+        for enemy in EnemyMetaData.keys():
+            if EnemyMetaData[enemy].crown_enabled:
+                base_weight = EnemyMetaData[enemy].crown_weight
+                weight_diff = abs(base_weight - bias)
+                new_weight = abs(10 - weight_diff)
+                for count in range(new_weight):
+                    legeacy_hard_mode.append(enemy)
+        #picking enemies to put in the crown battles
         if crown_setting == "easy":
             for map_id in enemy_swaps_library:
-                enemy_swaps_library[map_id].append(random.choice(disruptive_0)) 
-                enemy_swaps_library[map_id].append(random.choice(disruptive_at_most_kasplat))
-                enemy_swaps_library[map_id].append(random.choice(disruptive_at_most_kasplat))
+                enemy_swaps_library[map_id].append(random.choice(disruptive_max_1)) 
+                enemy_swaps_library[map_id].append(random.choice(disruptive_0))
+                enemy_swaps_library[map_id].append(random.choice(disruptive_0))
                 if(map_id == Maps.GalleonCrown or map_id == Maps.LobbyCrown or map_id == Maps.HelmCrown):
                      enemy_swaps_library[map_id].append(random.choice(disruptive_0)) 
         elif crown_setting == "medium":
-            count_disruptive = 0
-            count_kasplats = 0
             new_enemy = 0
             for map_id in enemy_swaps_library:
+                count_disruptive = 0
+                count_kasplats = 0
                 number_of_enemies = 3
                 if(map_id == Maps.GalleonCrown or map_id == Maps.LobbyCrown or map_id == Maps.HelmCrown):
                     number_of_enemies = 4
@@ -88,8 +91,12 @@ def getBalancedCrownEnemyRando(crown_setting):
                         elif count_kasplats == 1:
                             new_enemy = random.choice(disruptive_0)
                     elif count_kasplats > 3 or (count_kasplats > 2 and count_disruptive > 1) or (count_kasplats == 2 and count_disruptive == 2):
-                        print("This is a mistake in the algorithm")
+                        print("This is a mistake in the crown enemy algorithm. Report this to the devs.")
                         new_enemy = Enemies.BeaverGold
+                    #We picked a new enemy, let's update our information and add it to the list
+                    if EnemyMetaData[new_enemy].kasplat == True:
+                        count_kasplats = count_kasplats + 1
+                    count_disruptive = EnemyMetaData[new_enemy].disruptive + count_disruptive
                     enemy_swaps_library[map_id].append(new_enemy)
         elif crown_setting == "hard":
             for map_id in enemy_swaps_library:
@@ -98,7 +105,10 @@ def getBalancedCrownEnemyRando(crown_setting):
                     number_of_enemies = 4
                 for count in range(number_of_enemies):
                     enemy_swaps_library[map_id].append(random.choie(legeacy_hard_mode))
-
+        #one last shuffle, to make sure any enemy can spawn in any spot
+        for map_id in enemy_swaps_library:
+            if len(enemy_swaps_library[map_id] > 0):
+                random.shuffle(enemy_swaps_library[map_id])
     return enemy_swaps_library
 
 
