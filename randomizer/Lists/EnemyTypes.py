@@ -180,7 +180,7 @@ EnemyMetaData = {
     Enemies.Ghost: EnemyData(crown_weight=10, simple=True),  #
     Enemies.Pufftup: EnemyData(crown_enabled=False, size_cap=40, minigame_enabled=False),  #
     Enemies.Kosha: EnemyData(crown_weight=1, killable=False, disruptive=2),  #
-    Enemies.GetOut: EnemyData(aggro=6, crown_enabled=False, minigame_enabled=False),
+    Enemies.GetOut: EnemyData(aggro=6, crown_weight=1, minigame_enabled=False, disruptive=1),
     Enemies.Guard: EnemyData(aggro=1, crown_enabled=False, minigame_enabled=False),
     # Enemies.Bug: EnemyData(aggro=0x40,crown_enabled=False),
 }
