@@ -40,7 +40,7 @@ def getBalancedCrownEnemyRando(crown_setting):
         for enemy in EnemyMetaData:
             if EnemyMetaData[enemy].crown_enabled:
                 every_enemy.append(enemy)
-                if EnemyMetaData[enemy].disruptive == 1:
+                if EnemyMetaData[enemy].disruptive <= 1:
                     disruptive_max_1.append(enemy)
                 if EnemyMetaData[enemy].kasplat == True:
                     disruptive_at_most_kasplat.append(enemy)
