@@ -263,6 +263,7 @@ void getNextMovePurchase(shop_paad* paad, KongBase* movedata) {
 	int world = getWorld(CurrentMap,0);
 	paad->level = world;
 	int shop_owner = CurrentActorPointer_0->actorType;
+	int p_index = 0;
 	if (has_entered_level) {
 		purchase_struct* selected = 0;
 		if (shop_owner == 0xBD) { // Cranky
@@ -305,9 +306,9 @@ void getNextMovePurchase(shop_paad* paad, KongBase* movedata) {
 					case PURCHASE_GB:
 					case PURCHASE_FLAG:
 						if (p_value == -2) {
-							has_purchase = checkFlag(FLAG_ABILITY_CAMERA,0) & checkFlag(FLAG_ABILITY_SHOCKWAVE,0);
+							has_purchase = 1 ^ (checkFlag(FLAG_ABILITY_CAMERA,0) & checkFlag(FLAG_ABILITY_SHOCKWAVE,0));
 						} else {
-							has_purchase = checkFlag(p_value,0);
+							has_purchase = 1 ^ checkFlag(p_value,0);
 						}
 					break;
 				}
@@ -316,7 +317,12 @@ void getNextMovePurchase(shop_paad* paad, KongBase* movedata) {
 					int p_price = selected->price;
 					textParameter = p_price;
 					paad->price = p_price;
-					paad->purchase_value = p_value;
+					if ((p_type == PURCHASE_GB) || (p_type == PURCHASE_FLAG)) {
+						paad->flag = p_value;
+						paad->purchase_value = p_index;
+					} else {
+						paad->purchase_value = p_value;
+					}
 					paad->kong = p_kong;
 				}
 			}
@@ -357,7 +363,7 @@ void purchaseMove(shop_paad* paad) {
 		case PURCHASE_GB:
 			MovesBase[(int)paad->kong].gb_count[getWorld(CurrentMap,1)] += 1;
 		case PURCHASE_FLAG:
-			setPermFlag(paad->purchase_value);
+			setPermFlag(paad->flag);
 		break;
 	}
 	if (p_type == PURCHASE_INSTRUMENT) {
@@ -519,6 +525,141 @@ void fixTBarrelsAndBFI(int init) {
 			*(int*)(0x80027E20) = 0x0C000000 | (((int)&getLocationStatus & 0xFFFFFF) >> 2); // Get BFI Move
 		}
 	}
+}
+
+typedef struct move_overlay_paad {
+	/* 0x000 */ void* unk_00;
+	/* 0x004 */ char unk_04[0x8-0x4];
+	/* 0x008 */ unsigned char opacity;
+	/* 0x009 */ char unk_09[0x10-0x9];
+	/* 0x010 */ void* unk_10;
+	/* 0x014 */ char unk_14[0x50-0x14];
+	/* 0x050 */ char unk_50;
+	/* 0x051 */ char unk_51[0x90-0x51];
+	/* 0x090 */ int timer;
+	/* 0x094 */ actorData* shop_owner;
+} move_overlay_paad;
+
+typedef struct mtx_item {
+	/* 0x000 */ char unk_00[0x40];
+} mtx_item;
+
+void getNextMoveText(void) {
+	move_overlay_paad* paad = CurrentActorPointer_0->paad;
+	int start_hiding = 0;
+	actorData* shop_owner = paad->shop_owner;
+	shop_paad* shop_data = 0;
+	if (shop_owner == 0) {
+		shop_owner = getSpawnerTiedActor(1,0);
+		paad->shop_owner = shop_owner;
+	}
+	if (paad->shop_owner) {
+		shop_data = shop_owner->paad2;
+	}
+	if (shop_data) {
+		if ((CurrentActorPointer_0->obj_props_bitfield & 0x10) == 0) {
+			int top_item = -1;
+			int bottom_item = -1;
+			mtx_item mtx0;
+			mtx_item mtx1;
+			guScaleF(&mtx0, 0x3F19999A, 0x3F19999A, 0x3F800000);
+			guTranslateF(&mtx1, 0x44200000, 0x44480000, 0x0);
+			guMtxCatF(&mtx0, &mtx1, &mtx0);
+			guMtxF2L(&mtx0, &paad->unk_10);
+			int bottom_height = getTextStyleHeight(6);
+			guTranslateF(&mtx1, 0, 0x42400000, 0);
+			guMtxCatF(&mtx0, &mtx1, &mtx0);
+			guMtxF2L(&mtx0, &paad->unk_50);
+			int p_type = shop_data->purchase_type;
+			switch(p_type) {
+				case PURCHASE_MOVES:
+					int move_index = (shop_data->kong * 4) + shop_data->purchase_value;
+					top_item = SpecialMovesNames[move_index].name;
+					bottom_item = SpecialMovesNames[move_index].latin;
+					break;
+				case PURCHASE_SLAM:
+					top_item = SpecialMovesNames[(int)shop_data->purchase_value].name;
+					bottom_item = SpecialMovesNames[(int)shop_data->purchase_value].latin;
+					break;
+				case PURCHASE_GUN:
+					paad->timer = 0x82;
+					if (shop_data->purchase_value < 2) {
+						top_item = GunNames[shop_data->kong];
+					} else {
+						top_item = GunUpgNames[shop_data->purchase_value];
+					}
+					break;
+				case PURCHASE_AMMOBELT:
+					paad->timer = 0x82;
+					top_item = AmmoBeltNames[shop_data->purchase_value];
+					break;
+				case PURCHASE_INSTRUMENT:
+					paad->timer = 0x82;
+					if (shop_data->purchase_value == 1) {
+						top_item = InstrumentNames[shop_data->kong];
+					} else {
+						top_item = InstrumentUpgNames[shop_data->purchase_value];
+					}
+					break;
+				case PURCHASE_GB:
+				case PURCHASE_FLAG:
+					int tied_flags[] = {FLAG_TBARREL_DIVE,FLAG_TBARREL_ORANGE,FLAG_TBARREL_BARREL,FLAG_TBARREL_VINE,FLAG_ABILITY_CAMERA,FLAG_ABILITY_SHOCKWAVE};
+					for (int i = 0; i < sizeof(tied_flags) / 4; i++) {
+						if (tied_flags[i] == shop_data->flag) {
+							top_item = 53 + i;
+						}
+					}
+				break;
+			}
+			if (top_item < 0) {
+				paad->unk_00 = (void*)0;
+			} else {
+				paad->unk_00 = getTextPointer(0x27,top_item,0);
+			}
+			if (bottom_item < 0) {
+				paad->unk_10 = (void*)0;
+			} else {
+				paad->unk_10 = getTextPointer(0x27,bottom_item,0);
+			}
+		}
+		int timer = paad->timer;
+		paad->timer = timer - 1;
+		if ((timer > 0) && (paad->timer == 0)) {
+			start_hiding = 1;
+		}
+		timer = paad->timer;
+		if (timer == 0x1E) {
+			CurrentActorPointer_0->control_state = 2;
+		} else if (timer == 0x78) {
+			CurrentActorPointer_0->control_state = 1;
+		}
+		if (CurrentActorPointer_0->control_state == 1) {
+			int opacity_diff = 0xFF - paad->opacity;
+			int trunc_diff = opacity_diff;
+			if (opacity_diff > 0x10) {
+				trunc_diff = 0x10;
+			}
+			paad->opacity += trunc_diff;
+		} else if (CurrentActorPointer_0->control_state == 2) {
+			int opacity_0 = paad->opacity;
+			int trunc_opacity = opacity_0;
+			if (opacity_0 > 0x10) {
+				trunc_opacity = 0x10;
+			}
+			paad->opacity = opacity_0 - trunc_opacity;
+		}
+		if (start_hiding == 0) {
+			if (CurrentActorPointer_0->control_state != 0) {
+				// AddActorToOverlayArray(displayMoveText, CurrentActorPointer_0, 3); // TODO: Add this
+			}
+			if (CurrentActorPointer_0->actorType == 0x140) {
+				renderActor(CurrentActorPointer_0,0);
+			}
+		} else {
+			deleteActorContainer(CurrentActorPointer_0);
+		}
+	}
+
 }
 
 // SetFlag Functions

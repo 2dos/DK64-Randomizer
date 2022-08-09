@@ -175,6 +175,13 @@ extern void setMoveBitfield(shop_paad* paad, int kong);
 extern void refillHealth(int player_index);
 extern void changeCollectableCount(int item, int player_index, int change);
 extern void save(void);
+extern void* getSpawnerTiedActor(short target_trigger, short props_change);
+
+extern void guScaleF(void* mtx, int x, int y, int z);
+extern void guTranslateF(void* mtx, int x, int y, int z);
+extern void guMtxCatF(void* mtx, void* unk0, void* unk1);
+extern void guMtxF2L(void* mtx, void* unk0);
+extern void* getTextPointer(int file, int text_index, int unk0);
 
 //vanilla data
 extern float TransitionSpeed;

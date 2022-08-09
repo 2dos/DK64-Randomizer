@@ -721,7 +721,8 @@ typedef struct GBDictItem {
 } GBDictItem;
 
 typedef struct shop_paad {
-	/* 0x000 */ char unk_00[4];
+	/* 0x000 */ char unk_00[2];
+	/* 0x002 */ short flag;
 	/* 0x004 */ unsigned char kong;
 	/* 0x005 */ unsigned char price;
 	/* 0x006 */ char unk_06[0xB-0x6];

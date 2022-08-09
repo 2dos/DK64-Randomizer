@@ -6,9 +6,9 @@ set_variables = {
     "blocker_normal_count": [2, 3, 4, 5, 6, 7, 8, 9],
     "key_flags": [0x4A, 0x8A, 0xA8, 0xEC, 0x124, 0x13D, 0x1A],
     "unlock_kongs": 0x1F,
-    "unlock_moves": 1,
+    "unlock_moves": 0,
     "fast_start_beginning": 1,
-    "camera_unlocked": 1,
+    "camera_unlocked": 0,
     "tag_anywhere": 1,
     "fast_start_helm": 0,
     "crown_door_open": 0,
@@ -167,3 +167,13 @@ with open("include/variable_space_structs.h", "r") as varspace:
                             writeToROM(y[0] + (z * y[1]), set_variables[x][z], y[1], x)
                     # print(type(set_variables[x]))
     # print(struct_data2)
+
+# Editor: https://docs.google.com/spreadsheets/d/1UokoarKY6C56otoHMRUDCCMveaGUm8bGTOnaxjxDPR0/edit#gid=0
+move_csv = "move_placement.csv"
+with open(move_csv, "r") as csv:
+    csv_lines = csv.readlines()
+    with open("rom/dk64-randomizer-base-dev.z64", "r+b") as rom:
+        rom.seek(0x1FEF000)
+        for x in csv_lines:
+            val = int(x.replace("\n", ""))
+            rom.write(val.to_bytes(4, "big"))

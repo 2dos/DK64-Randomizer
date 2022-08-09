@@ -161,6 +161,13 @@
 .definelabel refillHealth, 0x80709464
 .definelabel changeCollectableCount, 0x806F91B4
 .definelabel save, 0x8060DEC8
+.definelabel getSpawnerTiedActor, 0x807270C0
+
+.definelabel guScaleF, 0x80008580
+.definelabel guTranslateF, 0x80005D80
+.definelabel guMtxCatF, 0x800088B0
+.definelabel guMtxF2L, 0x8000A6C0
+.definelabel getTextPointer, 0x8070E750
 
 //vanilla data
 .definelabel TransitionSpeed, 0x807FD88C

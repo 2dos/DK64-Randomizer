@@ -303,7 +303,6 @@ for move in move_hints:
         hint_post = move[shop]
         hint_text.append([f"{hint_pre}{hint_post}"])
 
-
 writeText(
     "dolby_text.bin",
     [
@@ -323,3 +322,165 @@ writeText(
         ["OKAY!", "DONKEY IS FREE NOW. THANK YOU, MY FRIEND.", "DONKEY CAN COLLECT YELLOW BANANAS.", "DONKEY WILL BE INSIDE THE TAG BARREL UNTIL YOU NEED MY HELP."],
     ],
 )
+
+move_names = [
+    {"name": "Simian Slam", "latin": "Buttus Bashium", "move_type": "slam"},
+    {"name": "Super Simian Slam", "latin": "Big Buttus Bashium", "move_type": "slam"},
+    {"name": "Super Duper Simian Slam", "latin": "Bigga Buttus Bashium", "move_type": "slam"},
+    {"name": "Baboon Blast", "latin": "Barrelum Perilous", "move_type": "special"},
+    {"name": "Strong Kong", "latin": "Strongum Kongus", "move_type": "special"},
+    {"name": "Gorilla Grab", "latin": "Simium Strainus", "move_type": "special"},
+    {"name": "Chimpy Charge", "latin": "Hurtus Cranium", "move_type": "special"},
+    {"name": "Rocketbarrel Boost", "latin": "Boostum Highus", "move_type": "special"},
+    {"name": "Simian Spring", "latin": "Leapus Largium", "move_type": "special"},
+    {"name": "Orangstand", "latin": "Palmus Walkum", "move_type": "special"},
+    {"name": "Baboon Balloon", "latin": "Baboonus Balloonus", "move_type": "special"},
+    {"name": "Orangstand Sprint", "latin": "Palmus Dashium", "move_type": "special"},
+    {"name": "Mini Monkey", "latin": "Kongum Smallus", "move_type": "special"},
+    {"name": "Pony Tail Twirl", "latin": "Roundum Roundus", "move_type": "special"},
+    {"name": "Monkeyport", "latin": "Warpum Craftious", "move_type": "special"},
+    {"name": "Hunky Chunky", "latin": "Kremlinous Crushum", "move_type": "special"},
+    {"name": "Primate Punch", "latin": "Sandwichium Knucklus", "move_type": "special"},
+    {"name": "Gorilla Gone", "latin": "Wheresim Gonium", "move_type": "special"},
+    {"name": "Coconut Shooter", "move_type": "gun"},
+    {"name": "Peanut Popguns", "move_type": "gun"},
+    {"name": "Grape Shooter", "move_type": "gun"},
+    {"name": "Feather Bos", "move_type": "gun"},
+    {"name": "Pineapple Launcher", "move_type": "gun"},
+    {"name": "Bongo Blast", "move_type": "instrument"},
+    {"name": "Guitar Gazump", "move_type": "instrument"},
+    {"name": "Trombone Tremor", "move_type": "instrument"},
+    {"name": "Saxophone Slam", "move_type": "instrument"},
+    {"name": "Triangle Trample", "move_type": "instrument"},
+    {"name": "All Kongs - Homing Ammo", "move_type": "gun_upg"},
+    {"name": "All Kongs - Sniper", "move_type": "gun_upg"},
+    {"name": "All Kongs - Ammo Belt 1", "move_type": "ammo_belt"},
+    {"name": "All Kongs - Ammo Belt 2", "move_type": "ammo_belt"},
+    {"name": "3rd Melon", "move_type": "ins_upg"},
+    {"name": "All Kongs - Upgrade 1", "move_type": "ins_upg"},
+    {"name": "All Kongs - Upgrade 2", "move_type": "ins_upg"},
+    {"name": "Diving", "move_type": "tbarrel_bfi"},
+    {"name": "Orange Throwing", "move_type": "tbarrel_bfi"},
+    {"name": "Barrel Throwing", "move_type": "tbarrel_bfi"},
+    {"name": "Vine Swinging", "move_type": "tbarrel_bfi"},
+    {"name": "Fairy Camera", "move_type": "tbarrel_bfi"},
+    {"name": "Shockwave", "move_type": "tbarrel_bfi"},
+    {"name": "Fairy Camera and Shockwave", "move_type": "tbarrel_bfi"},
+]
+
+move_names_arr = []
+for move in move_names:
+    init_len = len(move_names_arr)
+    move_names_arr.append([move["name"]])
+    if "latin" in move:
+        move_names_arr.append([move["latin"]])
+    if "print" in move:
+        if move["print"]:
+            print(f"{move['name']}: {init_len}")
+index_data = {
+    "slam": {
+        "indexes": [],
+        "arr_name": "SimianSlamNames",
+        "has_latin": True,
+    },
+    "special": {
+        "indexes": [],
+        "arr_name": "SpecialMovesNames",
+        "has_latin": True,
+    },
+    "gun": {
+        "indexes": [],
+        "arr_name": "GunNames",
+        "has_latin": False,
+    },
+    "gun_upg": {
+        "indexes": [],
+        "arr_name": "GunUpgNames",
+        "has_latin": False,
+    },
+    "ammo_belt": {
+        "indexes": [],
+        "arr_name": "AmmoBeltNames",
+        "has_latin": False,
+    },
+    "instrument": {
+        "indexes": [],
+        "arr_name": "InstrumentNames",
+        "has_latin": False,
+    },
+    "ins_upg": {
+        "indexes": [],
+        "arr_name": "InstrumentUpgNames",
+        "has_latin": False,
+    },
+}
+for kong_index in range(5):
+    # Special Moves
+    for move_index in range(4):
+        for latin_index in range(2):
+            if move_index == 0:
+                index_data["special"]["indexes"].append(0)
+            else:
+                index_data["special"]["indexes"].append(6 + latin_index + (2 * (move_index - 1)) + (6 * kong_index))
+    # Guns
+    index_data["gun"]["indexes"].append(0x24 + kong_index)
+    # Instruments
+    index_data["instrument"]["indexes"].append(0x29 + kong_index)
+# Slam
+for move_index in range(4):
+    for latin_index in range(2):
+        if move_index == 0:
+            index_data["slam"]["indexes"].append(0)
+        else:
+            index_data["slam"]["indexes"].append(latin_index + (2 * (move_index - 1)))
+# Gun Upg
+for move_index in range(4):
+    if move_index < 2:
+        index_data["gun_upg"]["indexes"].append(0)
+    else:
+        index_data["gun_upg"]["indexes"].append((move_index - 2) + 0x2E)
+# Ammo Belt
+for move_index in range(3):
+    if move_index == 0:
+        index_data["ammo_belt"]["indexes"].append(0)
+    else:
+        index_data["ammo_belt"]["indexes"].append((move_index - 1) + 0x30)
+# Instrument Upgrades
+index_data["ins_upg"]["indexes"] = [0x0, 0x0, 0x33, 0x32, 0x34]
+with open("src/randomizers/move_text.c", "w") as fh:
+    with open("include/text_items.h","w") as fg:
+        fh.write('#include "../../include/common.h"\n\n')
+        fg.write('#include "common.h"\n\n')
+        disclaimer = [
+            "/*\n",
+            "\tFile is automatically generated from build/patch_text.py\n",
+            "\tIf you wish to modify this file, please modify the code there\n",
+            "*/\n\n",
+        ]
+        for line in disclaimer:
+            fh.write(line)
+            fg.write(line)
+
+        fg.write("typedef struct name_latin_struct {\n")
+        fg.write("\t/* 0x000 */ unsigned char name;\n")
+        fg.write("\t/* 0x001 */ unsigned char latin;\n")
+        fg.write("} name_latin_struct;\n\n")
+        for move_type in index_data:
+            arr_item_type = "unsigned char"
+            divisor = 1
+            if index_data[move_type]["has_latin"]:
+                arr_item_type = "name_latin_struct"
+                divisor = 2
+            fh.write(f"const {arr_item_type} {index_data[move_type]['arr_name']}[] = {{\n")
+            fg.write(f"extern const {arr_item_type} {index_data[move_type]['arr_name']}[{int(len(index_data[move_type]['indexes']) / divisor)}];\n")
+            for item_index in range(int(len(index_data[move_type]["indexes"]) / divisor)):
+                if index_data[move_type]["has_latin"]:
+                    fh.write("\t{\n")
+                    fh.write(f"\t\t.name = {index_data[move_type]['indexes'][divisor * item_index]},\n")
+                    fh.write(f"\t\t.latin = {index_data[move_type]['indexes'][(divisor * item_index) + 1]},\n")
+                    fh.write("\t},\n")
+                else:
+                    fh.write(f"\t{index_data[move_type]['indexes'][divisor * item_index]},\n")
+            fh.write("};\n\n")
+
+writeText("move_names.bin", move_names_arr)
