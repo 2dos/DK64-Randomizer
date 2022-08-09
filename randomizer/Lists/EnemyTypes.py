@@ -110,7 +110,23 @@ class Enemies(IntEnum):
 class EnemyData:
     """Information about the enemy."""
 
-    def __init__(self, *, aggro=1, min_speed=15, max_speed=150, crown_enabled=True, air=False, size_cap=0, crown_weight=0, simple=False, minigame_enabled=True, killable=True, beaver=False, kasplat=False, disruptive = 0):
+    def __init__(
+        self,
+        *,
+        aggro=1,
+        min_speed=15,
+        max_speed=150,
+        crown_enabled=True,
+        air=False,
+        size_cap=0,
+        crown_weight=0,
+        simple=False,
+        minigame_enabled=True,
+        killable=True,
+        beaver=False,
+        kasplat=False,
+        disruptive=0
+    ):
         """Initialize with given parameters."""
         self.aggro = aggro
         self.min_speed = min_speed
@@ -158,7 +174,7 @@ EnemyMetaData = {
     Enemies.SirDomino: EnemyData(crown_weight=10, simple=True),  #
     Enemies.MrDice1: EnemyData(crown_weight=10, simple=True),  #
     Enemies.FireballGlasses: EnemyData(aggro=35, min_speed=100, max_speed=255, crown_weight=10, killable=False),  # 29 for if you want them to respond to the rabbit
-    Enemies.SpiderSmall: EnemyData(crown_weight=7, disruptive=1),  #with projectiles, disruptive will need to be set to 2
+    Enemies.SpiderSmall: EnemyData(crown_weight=7, disruptive=1),  # with projectiles, disruptive will need to be set to 2
     Enemies.Bat: EnemyData(air=True, crown_weight=5, minigame_enabled=False, disruptive=1),  #
     Enemies.EvilTomato: EnemyData(aggro=4, crown_enabled=False, minigame_enabled=False),
     Enemies.Ghost: EnemyData(crown_weight=10, simple=True),  #
