@@ -107,7 +107,7 @@ def getBalancedCrownEnemyRando(crown_setting):
                     enemy_swaps_library[map_id].append(random.choie(legeacy_hard_mode))
         #one last shuffle, to make sure any enemy can spawn in any spot
         for map_id in enemy_swaps_library:
-            if len(enemy_swaps_library[map_id] > 0):
+            if len(enemy_swaps_library[map_id]) > 0:
                 random.shuffle(enemy_swaps_library[map_id])
     return enemy_swaps_library
 
