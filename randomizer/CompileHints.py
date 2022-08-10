@@ -821,10 +821,6 @@ def compileHints(spoiler: Spoiler):
                             hint_distro[subtype] = 1
                         error_hint_count += 1
                 slot = vacant_slots
-    print(
-        f"Hint Distribution | Important: {important_hint_count}, Unimportant: {unimportant_hint_count}, Jokes: {joke_hint_count}, Errors: {error_hint_count}, Total Good: {important_hint_count + unimportant_hint_count + joke_hint_count}"
-    )
-    print(f"Hint JSON: {hint_distro}")
     UpdateSpoilerHintList(spoiler)
     return True
 
