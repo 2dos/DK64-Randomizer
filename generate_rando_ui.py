@@ -38,6 +38,9 @@ async def initialize():
     for file in json.loads(ajax_call(f"static/presets/preset_files.json?currtime={milliseconds}")).get("progression"):
         js.progression_presets.append(json.loads(ajax_call("static/presets/" + file)))
 
+    # Load our pointer info from the JSON database
+    js.pointer_addresses = json.loads(js.getFile("./static/patches/pointer_addresses.json"))
+
     templateEnv = Environment(loader=FunctionLoader(loader_func), enable_async=True)
     template = templateEnv.get_template("base.html.jinja2")
     rendered = await template.render()
@@ -63,9 +66,6 @@ async def initialize():
                     pass
     except Exception:
         pass
-
-    # Load our pointer info from the JSON database
-    js.pointer_addresses = json.loads(js.getFile("./static/patches/pointer_addresses.json"))
 
 
 # Run the script (This will be run as async later on)

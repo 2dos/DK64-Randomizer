@@ -58,7 +58,7 @@ def max_randomized_troff(event):
 
 
 @bind("focusout", "medal_requirement")
-def max_randomized_blocker(event):
+def max_randomized_medals(event):
     """Validate medal input on loss of focus."""
     medal_requirement = js.document.getElementById("medal_requirement")
     if not medal_requirement.value:
@@ -353,7 +353,7 @@ def disable_barrel_rando(evt):
         pass
 
 
-@bind("change", "presets")
+@bind("click", "apply_preset")
 def preset_select_changed(event):
     """Trigger a change of the form via the JSON templates."""
     element = document.getElementById("presets")
