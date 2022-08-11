@@ -453,11 +453,17 @@ def disable_rw(evt):
 def toggle_extreme_prices_option(event):
     """Determine the visibility of the extreme prices option."""
     unlocked_shockwave = document.getElementById("unlock_fairy_shockwave").checked
+    no_logic = document.getElementById("no_logic").checked
     option = document.getElementById("extreme_price_option")
-    if unlocked_shockwave:
+    if unlocked_shockwave or no_logic:
         option.removeAttribute("disabled")
     else:
         option.setAttribute("disabled", "disabled")
         price_option = document.getElementById("random_prices")
         if price_option.value == "extreme":
             price_option.value = "high"
+
+@bind("change", "no_logic")
+def toggle_no_logic(event):
+    """Toggle settings based on the presence of logic."""
+    toggle_extreme_prices_option(event)
