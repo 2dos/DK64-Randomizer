@@ -463,6 +463,7 @@ def toggle_extreme_prices_option(event):
         if price_option.value == "extreme":
             price_option.value = "high"
 
+
 @bind("change", "no_logic")
 def toggle_no_logic(event):
     """Toggle settings based on the presence of logic."""
