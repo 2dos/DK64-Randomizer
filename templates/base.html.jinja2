@@ -22,6 +22,7 @@
     <link href="static/styles/styles.css" rel="stylesheet" />
     <link href="./static/styles/gui.css" rel="stylesheet" type="text/css" />
     <link href="./static/styles/izoColorPicker.css" rel="stylesheet" type="text/css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 </head>
 <body>
     <nav class="navbar navbar-expand-lg navbar-dark navbar-custom fixed-top">
@@ -89,8 +90,8 @@
          class="center_image"
          style="cursor: pointer; margin-top: 70px"
          onClick="render_page('./index.html')"/>
-    <div style="width: 80%; min-width: 400px;" class="center">
-        <div class="card bg-dark">
+    <div style="width: 80%; min-width: 400px; max-width: 1500px" class="center">
+        <div class="card bg-dark" style="max-width: 1500px">
             <form id="form" action="/" method="POST">
                 <!--Create navbar-->
                 <div class="container">
