@@ -22,9 +22,10 @@ a:hover {
   color: #035e30;
 }
 
-.fa-external-link{
-  width: 14px;
+.icon {
+  width: 11px;
   cursor: pointer;
+  margin: 0px 0px 9px 3px;
 }
 
 .form-switch {
@@ -345,7 +346,7 @@ i {
   text-align: left;
   margin: 10px 25px 10px 80px;
   flex: 1 0 30%;
-  min-width: 200px;
+  min-width: 225px;
 }
 
 .item-select {
