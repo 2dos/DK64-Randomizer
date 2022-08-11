@@ -30,7 +30,9 @@ function save_text_as_file(text, file) {
 window.onerror = function (error) {
   banned_errors_text = [
     "\"undefined\" is not valid JSON", // Loading up the site without any cookies
-    "Unexpected non-whitespace character after JSON at position" // Loading up the site when your cookies reflect a prior version
+    "Unexpected non-whitespace character after JSON at position", // Loading up the site when your cookies reflect a prior version
+    "Unexpected non-whitespace character after JSON data at line", // Same as above
+    "Unexpected token ; in JSON" // Token Error
   ]
   is_banned = false
   banned_errors_text.forEach(item => {
