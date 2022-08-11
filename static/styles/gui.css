@@ -65,6 +65,14 @@ input[type="number"]::-webkit-inner-spin-button{background-color:#252525;color:#
   text-align: center;
 }
 
+.settings_button {
+  width: 20%;
+  min-width: 125px;
+  height: 40px;
+  margin: 40px 0px 30px 0px;
+  text-align: center;
+}
+
 @font-face {
   font-family: "Jumpman";
   src: url('/ui/Fonts/Jumpman.ttf');
@@ -156,6 +164,10 @@ body {
   display: flex;
   flex-direction: column;
   min-height: 100vh;
+}
+
+.card {
+  max-width: 1500px;
 }
 
 footer {
@@ -313,10 +325,6 @@ i {
   text-align: right;
   vertical-align: top;
   font-size: 10px;
-}
-
-.btn-primary {
-  margin: 10px 0px;
 }
 
 .label {
