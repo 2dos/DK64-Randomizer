@@ -93,6 +93,7 @@ body {
   margin-right: auto;
   margin-bottom: 20px;
   margin-top: 20px;
+  max-width: 1500px;
 }
 
 .form-check-input {
