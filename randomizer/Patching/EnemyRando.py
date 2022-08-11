@@ -99,7 +99,7 @@ def randomize_enemies(spoiler: Spoiler):
         Maps.ForestRafters,
         Maps.ForestMillAttic,
         Maps.ForestThornvineBarn,
-        Maps.ForestSpider,
+        # Maps.ForestSpider, # Causes a lot of enemies to fall into the pit of their own volition
         Maps.ForestMillFront,
         Maps.ForestMillBack,
         Maps.ForestLankyMushroomsRoom,
