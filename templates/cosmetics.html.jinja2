@@ -1,129 +1,139 @@
 <div class="container" style="margin-top: 20px;">
     <div class="row">
-        <div class="col border">
-            <h3>Music Rando</h3>
-            <div class="form-check form-switch w-75" style="margin-left: 30%;">
-                <input class="form-check-input"
-                                       type="checkbox"
-                                       name="random_music"
-                                       id="random_music"
-                                       value="True"/>
-                    Randomize All Music
+        <div class="col border panel">
+            <h2 class="title">MUSIC RANDO</h2>
+            <div class="flex-container">
+                <div class="form-check form-switch item-switch center-flex">
+                    <label data-toggle="tooltip" title="Randomizes all Music Selections.">
+                        <input class="form-check-input"
+                                type="checkbox"
+                                name="random_music"
+                                id="random_music"
+                                value="True"/>
+                        Randomize All Music
+                    </label>
+                </div>
             </div>
-            <div>
-                Background Music
-                <select name="music_bgm"
-                        id="music_bgm"
-                        style="width: 60%;"
-                        class="form-select center-div"
-                        aria-label="Background Music">
-                    <option selected value="default">
-                        Default Music
-                    </option>
-                    <option value="randomized">
-                        Randomized
-                    </option>
-                    <option value="chaos">
-                        Chaos
-                    </option>
-                    <option value="uploaded">
-                        Upload your own
-                    </option>
-                </select>
-            </div>
-            <div>
-                Fanfares
-                <select name="music_fanfares"
-                        id="music_fanfares"
-                        style="width: 60%;"
-                        class="form-select center-div"
-                        aria-label="Fanfares">
-                    <option selected value="default">
-                        Default Fanfares
-                    </option>
-                    <option value="randomized">
-                        Randomized
-                    </option>
-                    <option value="uploaded">
-                        Upload your own
-                    </option>
-                </select>
-            </div>
-            <div>
-                Events
-                <select name="music_events"
-                        id="music_events"
-                        style="width: 60%;"
-                        class="form-select center-div"
-                        aria-label="Events">
-                    <option selected value="default">
-                        Default Events
-                    </option>
-                    <option value="randomized">
-                        Randomized
-                    </option>
-                    <option value="uploaded">
-                        Upload your own
-                    </option>
-                </select>
-                <hr />
-                <h3>Custom Music</h3>
-                Cosmetics ZIP (Check wiki for format)
-                <input accept=".zip"
-                    class="form-control"
-                    type="file"
-                    id="music_file"
-                    name="music_file"/>
-            </div>
-            <div class="row">
-                <hr />
-                <h3>Miscellaneous</h3>
-                <div class="color-selector">
-                    Klaptrap
-                    <select name="klaptrap_model"
-                            id="klaptrap_model"
-                            style="width: 60%;"
-                            class="form-select center-div"
-                            aria-label="Klaptrap"
-                            multiple
-                            size="5">
-                        <option selected value="green">
-                            Green
+            <div class="flex-container">
+                <div class="item-select">
+                    <p class="select-title">Background Music</p>
+                    <select name="music_bgm"
+                            id="music_bgm"
+                            class="form-select"
+                            aria-label="Background Music">
+                        <option selected value="default">
+                            Default Music
                         </option>
-                        <option value="purple">
-                            Purple
+                        <option value="randomized">
+                            Randomized
                         </option>
-                        <option value="red">
-                            Red
+                        <option value="chaos">
+                            Chaos
                         </option>
-                        <option value="random_klap">
-                            Random Klaptrap Variant
-                        </option>
-                        <option value="random_model">
-                            Random Model
+                        <option value="uploaded">
+                            Upload your own
                         </option>
                     </select>
                 </div>
+                <div class="item-select">
+                    <p class="select-title">Fanfares</p>
+                    <select name="music_fanfares"
+                            id="music_fanfares"
+                            class="form-select"
+                            aria-label="Fanfares">
+                        <option selected value="default">
+                            Default Fanfares
+                        </option>
+                        <option value="randomized">
+                            Randomized
+                        </option>
+                        <option value="uploaded">
+                            Upload your own
+                        </option>
+                    </select>
+                </div>
+                <div class="item-select">
+                    <p class="select-title">Events</p>
+                    <select name="music_events"
+                            id="music_events"
+                            class="form-select"
+                            aria-label="Events">
+                        <option selected value="default">
+                            Default Events
+                        </option>
+                        <option value="randomized">
+                            Randomized
+                        </option>
+                        <option value="uploaded">
+                            Upload your own
+                        </option>
+                    </select>
+                </div>
+                <div class="spacer"></div>
+            </div>
+            <hr />
+            <h2 class="title">CUSTOM MUSIC</h2>
+            <p class="select-title">Cosmetics ZIP (Check wiki for format)</p>
+            <input accept=".zip"
+                class="form-control"
+                type="file"
+                id="music_file"
+                name="music_file"/>
+            <div class="row">
+                <hr />
+                <h2 class="title">MISCELLANEOUS</h2>
+                <div class="flex-container">
+                    <div class="item-multiselect">
+                        <div class="color-selector">
+                            <p class="select-title">Beaver Bother Klaptrap</p>
+                            <select name="klaptrap_model"
+                                    id="klaptrap_model"
+                                    class="form-select multi-select"
+                                    aria-label="Klaptrap"
+                                    multiple
+                                    size="5">
+                                <option selected value="green">
+                                    Green
+                                </option>
+                                <option value="purple">
+                                    Purple
+                                </option>
+                                <option value="red">
+                                    Red
+                                </option>
+                                <option value="random_klap" data-toggle="tooltip" title="Selects a random Klaptrap color (Green, Purple, or Red).">
+                                    Random Klaptrap Variant
+                                </option>
+                                <option value="random_model" data-toggle="tooltip" title="Selects a random model from the game from a pre-determined list.">
+                                    Random Model
+                                </option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
-        
-        <div class="col border">
-            <h3>Kong Colors</h3>
-            <div class="form-check form-switch w-75" style="margin-left: 30%;">
-                <input class="form-check-input"
-                        type="checkbox"
-                        name="random_colors"
-                        id="random_colors"
-                        value="True"/>
-                    Randomize All Colors
+        <div class="col border panel">
+            <h2 class="title">COLORS</h2>
+            <div class="flex-container">
+                <div class="form-check form-switch item-switch center-flex">
+                    <label data-toggle="tooltip" title="Randomizes all Kong and Transformation Colors.">
+                        <input class="form-check-input"
+                                type="checkbox"
+                                name="random_colors"
+                                id="random_colors"
+                                value="True"/>
+                            Randomize All Colors
+                    </label>
+                </div>
             </div>
-            <div class="row">
-                <div class="col-md-5">
+            <div class="flex-container">
+                <div class="item-color-select">
                     <div class="color-selector">
-                        DK
+                        <p class="select-title">DK</p>
                         <select name="dk_colors"
                                 id="dk_colors"
-                                class="form-select"
+                                class="form-select multi-select"
                                 aria-label="DK"
                                 multiple>
                             <option selected value="vanilla">
@@ -144,12 +154,12 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-md-5 offset-md-2">
+                <div class="item-color-select">
                     <div class="color-selector">
-                        Diddy
+                        <p class="select-title">Diddy</p>
                         <select name="diddy_colors"
                                 id="diddy_colors"
-                                class="form-select"
+                                class="form-select multi-select"
                                 aria-label="Diddy"
                                 multiple>
                             <option selected value="vanilla">
@@ -170,14 +180,12 @@
                         </div>
                     </div>
                 </div>
-            </div>
-            <div class="row">
-                <div class="col-md-5">
+                <div class="item-color-select">
                     <div class="color-selector">
-                        Lanky
+                        <p class="select-title">Lanky</p>
                         <select name="lanky_colors"
                                 id="lanky_colors"
-                                class="form-select"
+                                class="form-select multi-select"
                                 aria-label="Lanky"
                                 multiple>
                             <option selected value="vanilla">
@@ -198,12 +206,12 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-md-5 offset-md-2">
+                <div class="item-color-select">
                     <div class="color-selector">
-                        Tiny
+                        <p class="select-title">Tiny</p>
                         <select name="tiny_colors"
                                 id="tiny_colors"
-                                class="form-select"
+                                class="form-select multi-select"
                                 aria-label="Tiny"
                                 multiple>
                             <option selected value="vanilla">
@@ -224,14 +232,12 @@
                         </div>
                     </div>
                 </div>
-            </div>
-            <div class="row">
-                <div class="col-md-5 mx-auto">
+                <div class="item-color-select">
                     <div class="color-selector">
-                        Chunky
+                        <p class="select-title">Chunky</p>
                         <select name="chunky_colors"
                                 id="chunky_colors"
-                                class="form-select"
+                                class="form-select multi-select"
                                 aria-label="Chunky"
                                 multiple>
                             <option selected value="vanilla">
@@ -252,16 +258,12 @@
                         </div>
                     </div>
                 </div>
-            </div>
-            <div class="row">
-                <hr />
-                <h3>Transformation Colors</h3>
-                <div class="col-md-5">
+                <div class="item-color-select">
                     <div class="color-selector">
-                        Rambi
+                        <p class="select-title">Rambi</p>
                         <select name="rambi_colors"
                                 id="rambi_colors"
-                                class="form-select"
+                                class="form-select multi-select"
                                 aria-label="Rambi"
                                 multiple>
                             <option selected value="vanilla">
@@ -282,12 +284,12 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-md-5 offset-md-2">
+                <div class="item-color-select">
                     <div class="color-selector">
-                        Enguarde
+                        <p class="select-title">Enguarde</p>
                         <select name="enguarde_colors"
                                 id="enguarde_colors"
-                                class="form-select"
+                                class="form-select multi-select"
                                 aria-label="Enguarde"
                                 multiple>
                             <option selected value="vanilla">
@@ -313,49 +315,49 @@
     </div>
 </div>
 <script>
-   $(function(){
-            $('.dkColorPicker').izoColorPicker({
-                myColors: '',
-                onApply: (color)=>{
-                    $('#dk_custom_color').trigger("change")
-                }
-            })
-            $('.diddyColorPicker').izoColorPicker({
-                myColors: '',
-                onApply: (color)=>{
-                    $('#diddy_custom_color').trigger("change")
-                }
-            })
-            $('.lankyColorPicker').izoColorPicker({
-                myColors: '',
-                onApply: (color)=>{
-                    $('#lanky_custom_color').trigger("change")
-                }
-            })
-            $('.tinyColorPicker').izoColorPicker({
-                myColors: '',
-                onApply: (color)=>{
-                    $('#tiny_custom_color').trigger("change")
-                }
-            })
-            $('.chunkyColorPicker').izoColorPicker({
-                myColors: '',
-                onApply: (color)=>{
-                    $('#chunky_custom_color').trigger("change")
-                }
-            }) 
-            $('.rambiColorPicker').izoColorPicker({
-                myColors: '',
-                onApply: (color)=>{
-                    $('#rambi_custom_color').trigger("change")
-                }
-            }) 
-            $('.enguardeColorPicker').izoColorPicker({
-                myColors: '',
-                onApply: (color)=>{
-                    $('#enguarde_custom_color').trigger("change")
-                }
-            }) 
+    $(function(){
+        $('.dkColorPicker').izoColorPicker({
+            myColors: '',
+            onApply: (color)=>{
+                $('#dk_custom_color').trigger("change")
+            }
+        })
+        $('.diddyColorPicker').izoColorPicker({
+            myColors: '',
+            onApply: (color)=>{
+                $('#diddy_custom_color').trigger("change")
+            }
+        })
+        $('.lankyColorPicker').izoColorPicker({
+            myColors: '',
+            onApply: (color)=>{
+                $('#lanky_custom_color').trigger("change")
+            }
+        })
+        $('.tinyColorPicker').izoColorPicker({
+            myColors: '',
+            onApply: (color)=>{
+                $('#tiny_custom_color').trigger("change")
+            }
+        })
+        $('.chunkyColorPicker').izoColorPicker({
+            myColors: '',
+            onApply: (color)=>{
+                $('#chunky_custom_color').trigger("change")
+            }
+        }) 
+        $('.rambiColorPicker').izoColorPicker({
+            myColors: '',
+            onApply: (color)=>{
+                $('#rambi_custom_color').trigger("change")
+            }
+        }) 
+        $('.enguardeColorPicker').izoColorPicker({
+            myColors: '',
+            onApply: (color)=>{
+                $('#enguarde_custom_color').trigger("change")
+            }
+        }) 
     })
 
     $('.nav-tabs').click(function(){

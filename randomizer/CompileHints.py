@@ -674,7 +674,7 @@ def compileHints(spoiler: Spoiler):
             shuffled_level = lobby_exit_order[spoiler.shuffled_exit_data[transition].reverse]
             level_positions[shuffled_level] = vanilla_level
             level_order[vanilla_level] = shuffled_level
-    if spoiler.settings.randomize_blocker_required_amounts is True:
+    if spoiler.settings.randomize_blocker_required_amounts is True and spoiler.settings.shuffle_loading_zones == "levels":
         for i in list(level_order.values()):
             shuffled_level_list.append(i.name)
         for x in range(8):
@@ -821,10 +821,6 @@ def compileHints(spoiler: Spoiler):
                             hint_distro[subtype] = 1
                         error_hint_count += 1
                 slot = vacant_slots
-    print(
-        f"Hint Distribution | Important: {important_hint_count}, Unimportant: {unimportant_hint_count}, Jokes: {joke_hint_count}, Errors: {error_hint_count}, Total Good: {important_hint_count + unimportant_hint_count + joke_hint_count}"
-    )
-    print(f"Hint JSON: {hint_distro}")
     UpdateSpoilerHintList(spoiler)
     return True
 

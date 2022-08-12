@@ -7,6 +7,14 @@ if (window.location.protocol != "https:") {
     location.href = location.href.replace("http://", "https://");
   }
 }
+if (location.hostname == "dev.dk64randomizer.com") {
+  var _LTracker = _LTracker || [];
+  _LTracker.push({
+    logglyKey: "5d3aa1b3-6ef7-4bc3-80ae-778d48a571b0",
+    sendConsoleErrors: true,
+    tag: "loggly-jslogger",
+  });
+}
 run_python_file("ui/__init__.py");
 // Sleep function to run functions after X seconds
 async function sleep(seconds, func, args) {
@@ -20,9 +28,26 @@ function save_text_as_file(text, file) {
 }
 
 window.onerror = function (error) {
-  toast_alert(error.toString());
+  banned_errors_text = [
+    "\"undefined\" is not valid JSON", // Loading up the site without any cookies
+    "Unexpected non-whitespace character after JSON at position", // Loading up the site when your cookies reflect a prior version
+    "Unexpected non-whitespace character after JSON data at line", // Same as above
+    "Unexpected token ; in JSON" // Token Error
+  ]
+  is_banned = false
+  banned_errors_text.forEach(item => {
+    if (error.toString().toLowerCase().indexOf(item.toLowerCase()) > -1) {
+      is_banned = true
+    }
+  })
+  if (!is_banned) {
+    toast_alert(error.toString());
+  }
 };
 function toast_alert(text) {
+  try {
+    _LTracker.push(text);
+  } catch {}
   Toastify({
     text: text,
     duration: 15000,
@@ -38,9 +63,9 @@ function toast_alert(text) {
 }
 function getFile(file) {
   return $.ajax({
-      type: "GET",
-      url: file,
-      async: false
+    type: "GET",
+    url: file,
+    async: false,
   }).responseText;
 }
 var cosmetics;
@@ -142,7 +167,7 @@ function load_cookies() {
         try {
           element.value = json[key];
           if (element.hasAttribute("data-slider-value")) {
-            element.setAttribute("data-slider-value",json[key]);
+            element.setAttribute("data-slider-value", json[key]);
           }
         } catch {}
       }

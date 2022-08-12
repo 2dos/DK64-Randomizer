@@ -799,6 +799,14 @@ with open(newROMName, "r+b") as fh:
         fh.seek(0x1FED020 + 0x16C + piano_index)
         fh.write(piano_key.to_bytes(1, "big"))
 
+    dk_face_puzzle_vanilla = [0, 3, 2, 0, 1, 2, 3, 2, 1]
+    chunky_face_puzzle_vanilla = [0, 1, 3, 1, 2, 1, 3, 0, 1]
+    for face_index in range(9):
+        fh.seek(0x1FED020 + 0x17E + face_index)
+        fh.write(dk_face_puzzle_vanilla[face_index].to_bytes(1, "big"))
+        fh.seek(0x1FED020 + 0x187 + face_index)
+        fh.write(chunky_face_puzzle_vanilla[face_index].to_bytes(1, "big"))
+
     with open("assets/Non-Code/credits/squish.bin", "rb") as squish:
         fh.seek(0x1FFF800)
         fh.write(squish.read())

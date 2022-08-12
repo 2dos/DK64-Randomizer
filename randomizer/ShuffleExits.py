@@ -139,6 +139,12 @@ def ShuffleExitsInPool(settings, frontpool, backpool):
             origins = [x for x in origins if ShufflableExits[ShufflableExits[x].back.reverse].category is not None]
             # Also validate the entry & region kongs overlap in reverse direction
             origins = [x for x in origins if ShufflableExits[backExit.back.reverse].entryKongs.issuperset(ShufflableExits[ShufflableExits[x].back.reverse].regionKongs)]
+        elif settings.decoupled_loading_zones and backExit.back.regionId in [Regions.JapesMinecarts, Regions.ForestMinecarts]:
+            # In decoupled, we still have to prevent one-way minecart exits from leading to the minecarts themselves
+            if Transitions.JapesCartsToMain in origins:
+                origins.remove(Transitions.JapesCartsToMain)
+            if Transitions.ForestCartsToMain in origins:
+                origins.remove(Transitions.ForestCartsToMain)
         if len(origins) == 0:
             print("Failed to connect to " + backExit.name + ", found no suitable origins!")
             raise Ex.EntranceOutOfDestinations
@@ -410,28 +416,27 @@ def ShuffleLevelOrderForMultipleStartingKongs(settings: Settings):
             if kongsAssumed < 5 and level > kongsAssumed + 1:
                 break
             if kongsOwned == settings.starting_kongs_count:
-                # If reached aztec without freeing anyone yet, diddy and/or chunky are needed
-                if newLevelOrder[level] == Levels.AngryAztec:
-                    # If a kong is in Tiny Temple, either Diddy or Chunky can make progress
-                    if Locations.TinyKong in settings.kong_locations:
+                # If reached Aztec without freeing anyone yet, specific combinations of kongs are needed to open those cages (if they have any occupants)
+                if newLevelOrder[level] == Levels.AngryAztec and (Locations.TinyKong in settings.kong_locations or Locations.LankyKong in settings.kong_locations):
+                    # Assume we can free any locked kongs here
+                    tinyAccessible = Locations.TinyKong in settings.kong_locations
+                    lankyAccessible = Locations.LankyKong in settings.kong_locations
+                    # If a kong is in Tiny Temple, either Diddy or Chunky can free them
+                    if tinyAccessible:
                         if Kongs.diddy not in settings.starting_kong_list and Kongs.chunky not in settings.starting_kong_list:
-                            break
-                    # If no kong in Tiny Temple but a kong is in Llama temple, need Diddy to open guitar door
-                    # You also need one of Donkey, Lanky, or Tiny to open the Llama temple
-                    elif Locations.LankyKong in settings.kong_locations:
-                        if Kongs.diddy not in settings.starting_kong_list or (
+                            tinyAccessible = False
+                    # If a kong is in Llama temple, need to be able to get past the guitar door and one of Donkey, Lanky, or Tiny to open the Llama temple
+                    if lankyAccessible:
+                        guitarDoorAccess = (
+                            Kongs.diddy in settings.starting_kong_list or settings.open_levels or (Kongs.donkey in settings.starting_kong_list and settings.activate_all_bananaports == "all")
+                        )
+                        if not guitarDoorAccess or (
                             Kongs.donkey not in settings.starting_kong_list and Kongs.lanky not in settings.starting_kong_list and Kongs.tiny not in settings.starting_kong_list
                         ):
-                            break
-                # If reached Japes without freeing anyone yet, Only Donkey, Diddy, and Chunky logically have access to T&S portal in Japes
-                elif (
-                    newLevelOrder[level] == Levels.JungleJapes
-                    and kongsInLevels[Levels.JungleJapes] == 0  # This restriction only matters if there's no one to free in Japes
-                    and Kongs.donkey not in settings.starting_kong_list
-                    and Kongs.diddy not in settings.starting_kong_list
-                    and Kongs.chunky not in settings.starting_kong_list
-                ):
-                    break
+                            lankyAccessible = False
+                    # If we can unlock one kong then we can unlock both, so if we can't reach either then we can't assume we can unlock any kong from here
+                    if not tinyAccessible and not lankyAccessible:
+                        break
             levelsReachable.append(level)
             # Check if a level has been assigned here
             if newLevelOrder[level] is not None:

@@ -2,17 +2,18 @@
 <head>
     <meta charset="utf-8" />
     <meta content="width=device-width, initial-scale=1" name="viewport" />
-    <meta Http-Equiv="Cache-Control" Content="no-cache">
-    <meta Http-Equiv="Pragma" Content="no-cache">
-    <meta Http-Equiv="Expires" Content="0">
-    <meta Http-Equiv="Pragma-directive: no-cache">
-    <meta Http-Equiv="Cache-directive: no-cache">
+    <meta Http-Equiv="Cache-Control" Content="no-cache" />
+    <meta Http-Equiv="Pragma" Content="no-cache" />
+    <meta Http-Equiv="Expires" Content="0" />
+    <meta Http-Equiv="Pragma-directive: no-cache" />
+    <meta Http-Equiv="Cache-directive: no-cache" />
     <link href="./static/img/dk.png" rel="icon" />
     <title>DK64 Randomizer</title>
     <script type="text/javascript" src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.7.1/jszip.min.js"></script>
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-slider/11.0.2/bootstrap-slider.min.js"></script>
     <script type="text/javascript" src="static/js/izoColorPicker.js"></script>
+    <script type="text/javascript" src="static/js/loggly.tracker-2.2.4.min.js"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-slider/11.0.2/css/bootstrap-slider.min.css"
           rel="stylesheet"/>
     <link rel="stylesheet"
@@ -77,7 +78,7 @@
                         </div>
                         <small id="progress-text"
                                style="color:black"
-                               class="justify-content-center d-flex position-absolute w-100">Initalizing</small>
+                               class="justify-content-center d-flex position-absolute w-100">Initializing</small>
                     </div>
                 </div>
             </div>
@@ -86,10 +87,10 @@
     <img src="./static/img/logo.png"
          alt="DK64 Randomizer"
          class="center_image"
-         style="cursor: pointer; margin-top: 80px"
+         style="cursor: pointer; margin-top: 70px"
          onClick="render_page('./index.html')"/>
-    <div style="width: 50%; min-width: 400px;" class="center">
-        <div class="card bg-dark">
+    <div style="width: 80%; min-width: 400px; max-width: 1500px" class="center">
+        <div class="card bg-dark" style="max-width: 1500px">
             <form id="form" action="/" method="POST">
                 <!--Create navbar-->
                 <div class="container">
@@ -99,22 +100,28 @@
                     <!--Populate tabs-->
                     <div class="tab-content" id="nav-tabContent">
                         <div class="tab-pane fade show active"
+                             id="nav-started"
+                             role="tabpanel"
+                             aria-labelledby="nav-started-tab">
+                            {% include 'getting_started.html.jinja2' %}
+                        </div>
+                        <div class="tab-pane fade"
                              id="nav-random"
                              role="tabpanel"
                              aria-labelledby="nav-random-tab">
                             {% include 'rando_options.html.jinja2' %}
                         </div>
                         <div class="tab-pane fade"
-                             id="nav-difficulty"
-                             role="tabpanel"
-                             aria-labelledby="nav-difficulty-tab">
-                            {% include 'difficulty.html.jinja2' %}
-                        </div>
-                        <div class="tab-pane fade"
                              id="nav-overworld"
                              role="tabpanel"
                              aria-labelledby="nav-overworld-tab">
                             {% include 'overworld.html.jinja2' %}
+                        </div>
+                        <div class="tab-pane fade"
+                             id="nav-difficulty"
+                             role="tabpanel"
+                             aria-labelledby="nav-difficulty-tab">
+                            {% include 'difficulty.html.jinja2' %}
                         </div>
                         <div class="tab-pane fade"
                              id="nav-qol"
@@ -172,63 +179,61 @@
                                 <div class="form-group" style="margin-bottom: 10px; text-align: center;">
                                     <div class="row" style="margin-top: 10px">
                                         <!--Randomize Seed-->
-                                        <table>
-                                            <tr>
-                                                <td>
-                                                    <div class="form-group row">
-                                                        <label for="seed" class="col-sm-4 col-form-label">Seed:</label>
-                                                        <div class="col-sm-5">
-                                                            <input name="seed"
-                                                                   id="seed"
-                                                                   style="height: 37px"
-                                                                   placeholder="Auto fills when empty"/>
-                                                        </div>
-                                                    </div>
-                                                </td>
-                                                <td>
-                                                    <div class="form-group row">
-                                                        <label for="presets" class="col-sm-3 col-form-label">Presets:</label>
-                                                        <div class="col-sm-8">
-                                                            <select class="form-select" id="presets" style="height: 37px">
-                                                            </div>
-                                                        </div>
-                                                    </td>
-                                                </tr>
-                                            </table>
+                                        <div class="flex-container" style="justify-content: center;">
+                                            <div class="form-group row item-select">
+                                                <label for="seed" class="select-title">Seed</label>
+                                                    <input name="seed"
+                                                        id="seed"
+                                                        placeholder="Auto fills when empty"/>
+                                            </div>
+                                        </div>
+                                        <div class="flex-container" style="justify-content: center;">
+                                            <div class="form-group item-select" style="min-width:300px;">
+                                                <label for="settings_string" class="select-title">Settings String (Coming Soon)</label>
+                                                    <input name="settings_string"
+                                                        id="settings_string"
+                                                        placeholder="Coming Soon"
+                                                        disabled/>
+                                            </div>
+                                            <div>
+                                                <input id="import_settings"
+                                                    class="btn btn-primary settings_button"
+                                                    type="button"
+                                                    value="Import"/>
+                                                <input id="export_settings"
+                                                    class="btn btn-primary settings_button"
+                                                    type="button"
+                                                    value="Export"/>
+                                            </div>
+                                        </div>
                                         </div>
                                         <div class="row">
-                                            <table>
-                                                <tr>
-                                                    <td>
-                                                        <div class="form-check form-switch w-75" id="downloadsettings">
-                                                            <label data-toggle="tooltip" title="Used for Races to download generated ROM as patch file." style="font-size: 13px">
-                                                                <input class="form-check-input"
-                                                                       type="checkbox"
-                                                                       id="download_patch_file"
-                                                                       name="download_patch_file"
-                                                                       value="True"/>
-                                                                Generate Patch File
-                                                            </label>
-                                                        </div>
-                                                    </td>
-                                                    <td>
-                                                        <div class="form-check form-switch w-75">
-                                                            <label data-toggle="tooltip" title="This option enables spoiler log files to be created on randomizer generation." style="font-size: 13px">
-                                                                <input class="form-check-input"
-                                                                       type="checkbox"
-                                                                       id="generate_spoilerlog"
-                                                                       name="generate_spoilerlog"
-                                                                       value="True"
-                                                                       checked/>
-                                                                Generate Spoiler Log
-                                                            </label>
-                                                        </div>
-                                                    </td>
-                                                </tr>
-                                            </table>
+                                            <div class="flex-container" style="justify-content: center;">
+                                                <div class="form-check form-switch item-switch" style="text-align: center;">
+                                                    <label data-toggle="tooltip" title="Used for Races to download generated ROM as patch file.">
+                                                        <input class="form-check-input"
+                                                            type="checkbox"
+                                                            id="download_patch_file"
+                                                            name="download_patch_file"
+                                                            value="True"/>
+                                                        Generate Patch File
+                                                    </label>
+                                                </div>
+                                                <div class="form-check form-switch item-switch" style="text-align: center;">
+                                                    <label data-toggle="tooltip" title="This option enables spoiler log files to be created on randomizer generation.">
+                                                        <input class="form-check-input"
+                                                            type="checkbox"
+                                                            id="generate_spoilerlog"
+                                                            name="generate_spoilerlog"
+                                                            value="True"
+                                                            checked/>
+                                                        Generate Spoiler Log
+                                                    </label>
+                                                </div>
+                                            </div>
                                         </div>
                                         <div class="row">
-                                            <label for="input-file-rom_1" id="romlabel" class="form-label mt-4">ROM File</label>
+                                            <label for="input-file-rom_1" class="select-title">ROM File</label>
                                             <input accept=".z64,.n64,.v64"
                                                    class="form-control"
                                                    type="file"
@@ -257,7 +262,7 @@
                                  aria-labelledby="nav-patch-tab">
                                 <div style="width: 80%;" class="center">
                                     <div class="form-group" style="margin-bottom: 10px; text-align: center;">
-                                        <label for="patchfileloader" id="patchlabel" class="form-label mt-4">Patch File</label>
+                                        <label for="patchfileloader" class="select-title">Patch File</label>
                                         <input id="patchfileloader"
                                                class="form-control"
                                                type="file"
@@ -266,7 +271,7 @@
                                                       width: 50%;
                                                       height: 100%;
                                                       margin: 0 auto;"/>
-                                        <label for="input-file-rom_2" id="romlabel" class="form-label mt-4">ROM File</label>
+                                        <label for="input-file-rom_2" class="select-title">ROM File</label>
                                         <input accept=".z64,.n64,.v64"
                                                class="form-control"
                                                type="file"

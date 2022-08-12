@@ -61,50 +61,52 @@ class Spoiler:
 
         # Settings data
         settings = OrderedDict()
-        settings["seed"] = self.settings.seed_id
+        settings["Seed"] = self.settings.seed_id
         # settings["algorithm"] = self.settings.algorithm # Don't need this for now, probably
-        settings["no_logic"] = self.settings.no_logic
-        settings["move_rando"] = self.settings.move_rando
-        settings["shuffle_loading_zones"] = self.settings.shuffle_loading_zones
-        settings["decoupled_loading_zones"] = self.settings.decoupled_loading_zones
-        settings["starting_kongs_count"] = self.settings.starting_kongs_count
+        settings["No Logic"] = self.settings.no_logic
+        settings["Shuffle Enemies"] = self.settings.enemy_rando
+        settings["Move Randomization type"] = self.settings.move_rando
+        settings["Loading Zones Shuffled"] = self.settings.shuffle_loading_zones
+        settings["Decoupled Loading Zones"] = self.settings.decoupled_loading_zones
         startKongList = []
         for x in self.settings.starting_kong_list:
             startKongList.append(x.name.capitalize())
-        settings["starting_kong_list"] = startKongList
-        settings["colors"] = self.settings.colors
-        settings["diddy_freeing_kong"] = ItemList[ItemFromKong(self.settings.diddy_freeing_kong)].name
-        settings["tiny_freeing_kong"] = ItemList[ItemFromKong(self.settings.tiny_freeing_kong)].name
-        settings["lanky_freeing_kong"] = ItemList[ItemFromKong(self.settings.lanky_freeing_kong)].name
-        settings["chunky_freeing_kong"] = ItemList[ItemFromKong(self.settings.chunky_freeing_kong)].name
-        settings["open_lobbies"] = self.settings.open_lobbies
-        settings["open_levels"] = self.settings.open_levels
-        settings["randomize_pickups"] = self.settings.randomize_pickups
-        settings["random_patches"] = self.settings.random_patches
-        settings["puzzle_rando"] = self.settings.puzzle_rando
-        settings["crown_door_open"] = self.settings.crown_door_open
-        settings["coin_door_open"] = self.settings.coin_door_open
-        settings["unlock_fairy_shockwave"] = self.settings.unlock_fairy_shockwave
-        settings["random_medal_requirement"] = self.settings.random_medal_requirement
+        settings["Starting Kong List"] = startKongList
+        settings["Colors"] = self.settings.colors
+        settings["B Locker GBs"] = self.settings.EntryGBs
+        if self.settings.randomize_blocker_required_amounts:
+            settings["Maximum B Locker"] = self.settings.blocker_text
+        if self.settings.randomize_cb_required_amounts:
+            settings["Maximum Troff N Scoff"] = self.settings.troff_text
+        settings["Troff N Scoff Bananas"] = self.settings.BossBananas
+        settings["Diddy Freeing Kong"] = ItemList[ItemFromKong(self.settings.diddy_freeing_kong)].name
+        settings["Tiny Freeing Kong"] = ItemList[ItemFromKong(self.settings.tiny_freeing_kong)].name
+        settings["Lanky Freeing Kong"] = ItemList[ItemFromKong(self.settings.lanky_freeing_kong)].name
+        settings["Chunky Freeing Kong"] = ItemList[ItemFromKong(self.settings.chunky_freeing_kong)].name
+        settings["Open Lobbies"] = self.settings.open_lobbies
+        settings["Open Levels"] = self.settings.open_levels
+        settings["Randomize Pickups"] = self.settings.randomize_pickups
+        settings["Randomize Patches"] = self.settings.random_patches
+        settings["Puzzle Randomization"] = self.settings.puzzle_rando
+        settings["Crown Door Open"] = self.settings.crown_door_open
+        settings["Coin Door Open"] = self.settings.coin_door_open
+        settings["Unlock Fairy Shockwave"] = self.settings.unlock_fairy_shockwave
+        settings["Random Medal Requirement"] = self.settings.random_medal_requirement
         if self.settings.coin_door_open in ["need_both", "need_rw"]:
-            settings["medal_requirement"] = self.settings.medal_requirement
-        settings["random_prices"] = self.settings.random_prices
-        settings["bananaport_rando"] = self.settings.bananaport_rando
-        settings["shuffle_shop_locations"] = self.settings.shuffle_shops
-        settings["krool_phases"] = self.settings.krool_order
-        settings["krool_access"] = self.settings.krool_access
-        settings["krool_keys_required"] = self.GetKroolKeysRequired(self.settings.krool_keys_required)
-        settings["music_bgm"] = self.settings.music_bgm
-        settings["music_fanfares"] = self.settings.music_fanfares
-        settings["music_events"] = self.settings.music_events
-        settings["fast_start_beginning_of_game"] = self.settings.fast_start_beginning_of_game
-        settings["helm_setting"] = self.settings.helm_setting
-        settings["quality_of_life"] = self.settings.quality_of_life
-        settings["enable_tag_anywhere"] = self.settings.enable_tag_anywhere
-        settings["fast_gbs"] = self.settings.fast_gbs
-        settings["high_req"] = self.settings.high_req
-        settings["blocker_golden_bananas"] = self.settings.EntryGBs
-        settings["troff_n_scoff_bananas"] = self.settings.BossBananas
+            settings["Medal Requirement"] = self.settings.medal_requirement
+        settings["Random Shop Prices"] = self.settings.random_prices
+        settings["Banana Port Randomization"] = self.settings.bananaport_rando
+        settings["Shuffle Shop Locations"] = self.settings.shuffle_shops
+        settings["Shuffle Kasplats"] = self.settings.kasplat_rando_setting
+        settings["K Rool Phases"] = self.settings.krool_order
+        settings["Key 8 Required"] = self.settings.krool_access
+        settings["Keys Required for K Rool"] = self.GetKroolKeysRequired(self.settings.krool_keys_required)
+        settings["Fast Start"] = self.settings.fast_start_beginning_of_game
+        settings["Helm Setting"] = self.settings.helm_setting
+        settings["Quality of Life"] = self.settings.quality_of_life
+        settings["Tag Anywhere"] = self.settings.enable_tag_anywhere
+        settings["Fast GBs"] = self.settings.fast_gbs
+        settings["High Requirements"] = self.settings.high_req
         humanspoiler["Settings"] = settings
 
         if self.settings.shuffle_items != "none":
@@ -213,8 +215,8 @@ class Spoiler:
             humanspoiler["Shuffled Kasplats"] = self.human_kasplats
         if self.settings.random_patches:
             humanspoiler["Shuffled Dirt Patches"] = self.human_patches
-        # if self.settings.bananaport_rando:
-        #     humanspoiler["Bananaports"] = self.human_warp_locations
+        if self.settings.bananaport_rando:
+            humanspoiler["Shuffled Bananaports"] = self.human_warp_locations
         if len(self.hint_list) > 0:
             humanspoiler["Wrinkly Hints"] = self.hint_list
         if self.settings.shuffle_shops:

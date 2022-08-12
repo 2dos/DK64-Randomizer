@@ -184,12 +184,12 @@ void initHack(int source) {
 				*(short*)(0x806992B6) = picture_timer; // No wait for camera film development
 				*(short*)(0x8069932A) = picture_timer;
 				// Vines
-				*(short*)(0x806DCFB2) = 0x432F; // Increase search radius to 175.0u
-				int new_vine_exit_speed = 200;
-				*(short*)(0x8075037C) = new_vine_exit_speed;
-				*(short*)(0x80750380) = new_vine_exit_speed;
-				*(short*)(0x80698EEE) = 0x4348; // 200.0f
-				*(short*)(0x806DCD3E) = 0x4348; // 200.0f
+				// *(short*)(0x806DCFB2) = 0x432F; // Increase search radius to 175.0u
+				// int new_vine_exit_speed = 200;
+				// *(short*)(0x8075037C) = new_vine_exit_speed;
+				// *(short*)(0x80750380) = new_vine_exit_speed;
+				// *(short*)(0x80698EEE) = 0x4348; // 200.0f
+				// *(short*)(0x806DCD3E) = 0x4348; // 200.0f
 				// Lower Aztec Lobby Bonus
 				*(short*)(0x80680D56) = 0x7C; // 0x89 if this needs to be unreachable without PTT
 				// Fast Vulture
@@ -288,7 +288,9 @@ void initHack(int source) {
 			// Gold Beaver Code
 			*(int*)(0x8074C3F0) = (int)&goldBeaverCode;
 			// Spider Projectile
-			*(int*)(0x806ADDC0) = 0x0C000000 | (((int)&handleSpiderTrapCode & 0xFFFFFF) >> 2);
+			//*(int*)(0x806ADDC0) = 0x0C000000 | (((int)&handleSpiderTrapCode & 0xFFFFFF) >> 2); // Remove buff until we think of something better
+			// Slow Turn Fix
+			*(int*)(0x806D2FC0) = 0x0C000000 | (((int)&fixRBSlowTurn & 0xFFFFFF) >> 2);
 			// Tag Anywhere collectable Fixes
 			// CB Bunch
 			int non_chunky_bunch_indexes[] = {10,11,13,14};
@@ -305,6 +307,28 @@ void initHack(int source) {
 			}
 			*(int*)(0x806A64B0) = 0x240A0004; // Always ensure lanky coin sprite
 			initItemDropTable();
+			// DK Face Puzzle
+			int dk_reg_vals[] = {0x80,0x95,0x83,0x82}; // 0 = r0, 1 = s5, 2 = v1, 3 = v0
+			*(unsigned char*)(0x8064AD01) = dk_reg_vals[(int)Rando.dk_face_puzzle_init[2]];
+			*(unsigned char*)(0x8064AD05) = dk_reg_vals[(int)Rando.dk_face_puzzle_init[5]];
+			*(unsigned char*)(0x8064AD09) = dk_reg_vals[(int)Rando.dk_face_puzzle_init[7]];
+			*(unsigned char*)(0x8064AD11) = dk_reg_vals[(int)Rando.dk_face_puzzle_init[0]];
+			*(unsigned char*)(0x8064AD15) = dk_reg_vals[(int)Rando.dk_face_puzzle_init[1]];
+			*(unsigned char*)(0x8064AD19) = dk_reg_vals[(int)Rando.dk_face_puzzle_init[3]];
+			*(unsigned char*)(0x8064AD1D) = dk_reg_vals[(int)Rando.dk_face_puzzle_init[4]];
+			*(unsigned char*)(0x8064AD21) = dk_reg_vals[(int)Rando.dk_face_puzzle_init[6]];
+			*(unsigned char*)(0x8064AD29) = dk_reg_vals[(int)Rando.dk_face_puzzle_init[8]];
+			// Chunky Face Puzzle
+			int chunky_reg_vals[] = {0x40,0x54,0x48,0x44}; // 0 = r0, 1 = s4, 2 = t0, 3 = a0
+			*(unsigned char*)(0x8064A2D5) = chunky_reg_vals[(int)Rando.chunky_face_puzzle_init[2]];
+			*(unsigned char*)(0x8064A2DD) = chunky_reg_vals[(int)Rando.chunky_face_puzzle_init[6]];
+			*(unsigned char*)(0x8064A2ED) = chunky_reg_vals[(int)Rando.chunky_face_puzzle_init[0]];
+			*(unsigned char*)(0x8064A2F1) = chunky_reg_vals[(int)Rando.chunky_face_puzzle_init[1]];
+			*(unsigned char*)(0x8064A2F5) = chunky_reg_vals[(int)Rando.chunky_face_puzzle_init[3]];
+			*(unsigned char*)(0x8064A2F9) = chunky_reg_vals[(int)Rando.chunky_face_puzzle_init[4]];
+			*(unsigned char*)(0x8064A2FD) = chunky_reg_vals[(int)Rando.chunky_face_puzzle_init[5]];
+			*(unsigned char*)(0x8064A301) = chunky_reg_vals[(int)Rando.chunky_face_puzzle_init[7]];
+			*(unsigned char*)(0x8064A305) = chunky_reg_vals[(int)Rando.chunky_face_puzzle_init[8]];
 			LoadedHooks = 1;
 		}
 

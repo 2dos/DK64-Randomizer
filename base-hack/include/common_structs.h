@@ -188,7 +188,9 @@ typedef struct playerData {
 	/* 0x18A */ short moving_angle;
 	/* 0x18C */ char unk_18C[0x1B8-0x18C];
 	/* 0x1B8 */ float velocity_cap;
-	/* 0x1BC */ char unk_1BC[0x1D0-0x1BC];
+	/* 0x1BC */ char unk_1BC[0x1C8-0x1BC];
+	/* 0x1C8 */ short turn_speed;
+	/* 0x1CA */ char unk_1CA[0x1D0-0x1CA];
 	/* 0x1D0 */ short ostand_value;
 	/* 0x1D2 */ char unk_1D2[0x208-0x1D2];
 	/* 0x208 */ void* vehicle_actor_pointer;
@@ -196,7 +198,9 @@ typedef struct playerData {
 	/* 0x20D */ char unk_20D[0x23C - 0x20D];
 	/* 0x23C */ short unk_rocketbarrel_value1;
 	/* 0x23E */ short unk_rocketbarrel_value2;
-	/* 0x240 */ char unk_240[0x284 - 0x240];
+	/* 0x240 */ char unk_240[0x248 - 0x240];
+	/* 0x248 */ short shockwave_timer;
+	/* 0x24A */ char unk_24A[0x284 - 0x24A];
 	/* 0x284 */ cameraData* camera_pointer;
 	/* 0x288 */ char unk_288[0x2BC - 0x288];
 	/* 0x2BC */ floatPos grabPos;
