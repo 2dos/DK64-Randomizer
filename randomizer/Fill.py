@@ -35,6 +35,7 @@ from randomizer.ShuffleWarps import ShuffleWarps
 from randomizer.ShuffleBosses import ShuffleBossesBasedOnOwnedItems
 from randomizer.ShufflePatches import ShufflePatches
 from randomizer.ShuffleShopLocations import ShuffleShopLocations
+from randomizer.ShuffleCBs import ShuffleCBs
 
 
 def GetExitLevelExit(region):
@@ -1362,6 +1363,8 @@ def ShuffleMisc(spoiler):
     if spoiler.settings.bonus_barrels in ("random", "all_beaver_bother"):
         BarrelShuffle(spoiler.settings)
         spoiler.UpdateBarrels()
+    # CB Shuffle
+    ShuffleCBs(spoiler)
     # Handle Bananaports
     if spoiler.settings.bananaport_rando:
         replacements = []
