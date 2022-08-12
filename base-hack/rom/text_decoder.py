@@ -1,6 +1,29 @@
 """Decode text file into arrays of text items."""
+import zlib
+import os
 
-with open("1114DD6_ZLib.bin", "rb") as fh:
+temp_file = "temp.bin"
+pointer_table_offset = 0x101C50
+text_table_index = 12
+file = 3
+
+with open("dk64.z64","rb") as fh:
+    fh.seek(pointer_table_offset + (text_table_index * 4))
+    text_table = pointer_table_offset + (int.from_bytes(fh.read(4),"big") & 0x7FFFFFFF)
+    fh.seek(text_table + (file * 4))
+    text_start = pointer_table_offset + (int.from_bytes(fh.read(4),"big") & 0x7FFFFFFF)
+    text_end = pointer_table_offset + (int.from_bytes(fh.read(4),"big") & 0x7FFFFFFF)
+    text_size = text_end
+    fh.seek(text_start)
+    indic = int.from_bytes(fh.read(2),"big")
+    fh.seek(text_start)
+    with open(temp_file,"wb") as fg:
+        if indic == 0x1F8B:
+            fg.write(zlib.decompress(fh.read(text_size),(15+32)))
+        else:
+            fg.write(fh.read(text_size))
+
+with open(temp_file, "rb") as fh:
     fh.seek(0)
     count = int.from_bytes(fh.read(1), "big")
     print(count)
@@ -88,7 +111,8 @@ with open("1114DD6_ZLib.bin", "rb") as fh:
                     # print(fh.read(item3["size"]))
             text_block.append(temp)
         text.append(text_block)
-    text_idx = 0
-    for t in text:
-        print(f"[{text_idx}] - {t}")
-        text_idx += 1
+    for t_i, t in enumerate(text):
+        print(f"[{t_i}] - {t}")
+    # for x_i, x in enumerate(text_data):
+    #     for y in x["text"]:
+    #         print(y)

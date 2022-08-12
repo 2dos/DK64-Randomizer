@@ -301,14 +301,14 @@ for move in move_hints:
     for shop in shop_owners:
         hint_pre = pre_amble[shop]
         hint_post = move[shop]
-        hint_text.append([f"{hint_pre}{hint_post}"])
+        hint_text.append([{"text": [f"{hint_pre}{hint_post}"]}])
 
 writeText(
     "dolby_text.bin",
     [
-        ["DONKEY KONG 64 RANDOMIZER"],
-        ["DEVELOPERS - 2DOS, BALLAAM, BISMUTH, CFOX, KILLKLLI, SHADOWSHINE, ZNERNICUS"],
-        ["DK64RANDOMIZER.COM"],
+        [{"text": ["DONKEY KONG 64 RANDOMIZER"]}],
+        [{"text": ["BY THE DK64 RANDOMIZER DEVELOPER TEAM"]}],
+        [{"text": ["DK64RANDOMIZER.COM"]}],
     ],
 )
 
@@ -317,9 +317,9 @@ writeText("custom_text.bin", hint_text)
 writeText(
     "dk_text.bin",
     [
-        ["WHAT DID CRANKY MEAN ABOUT TRAINING? DONKEY ALL CONFUSED..."],
-        ["AW NO! SO THAT WHAT CRANKY MEAN ABOUT REPTILE...", "DONKEY NOT BELIEVE IT. KING K.ROOL? WE FINISHED K. ROOL OFF IN LAST GAME!"],
-        ["OKAY!", "DONKEY IS FREE NOW. THANK YOU, MY FRIEND.", "DONKEY CAN COLLECT YELLOW BANANAS.", "DONKEY WILL BE INSIDE THE TAG BARREL UNTIL YOU NEED MY HELP."],
+        [{"text": ["WHAT DID CRANKY MEAN ABOUT TRAINING? DONKEY ALL CONFUSED..."]}],
+        [{"text": ["AW NO! SO THAT WHAT CRANKY MEAN ABOUT REPTILE...", "DONKEY NOT BELIEVE IT. KING K.ROOL? WE FINISHED K. ROOL OFF IN LAST GAME!"]}],
+        [{"text": ["OKAY!", "DONKEY IS FREE NOW. THANK YOU, MY FRIEND.", "DONKEY CAN COLLECT YELLOW BANANAS.", "DONKEY WILL BE INSIDE THE TAG BARREL UNTIL YOU NEED MY HELP."]}],
     ],
 )
 

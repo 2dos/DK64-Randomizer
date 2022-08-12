@@ -212,7 +212,7 @@ void initHack(int source) {
 				*(short*)(0x806EE692) = 0x54;
 				*(int*)(0x806DC2AC) = 0x0C000000 | (((int)&fastWarp & 0xFFFFFF) >> 2); // Modify Function Call
 			}
-			if (Rando.version > 0) {
+			if (Rando.version == 0) {
 				// Disable Graphical Debugger
 				*(int*)(0x8060EEE0) = 0x240E0000; // ADDIU $t6, $r0, 0
 			}
