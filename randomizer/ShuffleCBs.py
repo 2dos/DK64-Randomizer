@@ -1,5 +1,4 @@
 """Select CB Location selection."""
-from select import select
 import randomizer.Lists.CBLocations.JungleJapesCBLocations
 import randomizer.Lists.CBLocations.AngryAztecCBLocations
 import randomizer.Lists.CBLocations.FranticFactoryCBLocations
@@ -54,7 +53,7 @@ def ShuffleCBs(spoiler: Spoiler):
     total_balloons = 0
     total_singles = 0
     total_bunches = 0
-    cb_data = {}
+    cb_data = []
     for level_index, level in enumerate(level_data):
         level_placement = []
         global_divisor = 6 - level_index
@@ -92,7 +91,8 @@ def ShuffleCBs(spoiler: Spoiler):
                         "name": balloon.name,
                         "kong": selected_kong,
                         "level": level,
-                        "type": "balloon"
+                        "type": "balloons",
+                        "map": balloon.map
                     })
                     placed_balloons += 1
         # Model Two CBs
@@ -121,27 +121,33 @@ def ShuffleCBs(spoiler: Spoiler):
                 group_weight += loc[0]
                 bunches_in_group += int(loc[0] == 5)
                 singles_in_group += int(loc[0] == 1)
-            for kong in kong_specific_left:
-                if kong in cb_kongs:
-                    if kong_specific_left[kong] < group_weight or (kong_specific_left[kong] <= 10 and ((kong_specific_left[kong] - group_weight) % 5) != 0):
-                        cb_kongs.remove(kong)
-            if len(cb_kongs) > 0 and selected_single_count >= placed_singles + singles_in_group:
-                selected_kong = random.choice(cb_kongs)
-                kong_specific_left[selected_kong] -= group_weight # Remove CBs for kong
-                level_placement.append({
-                    "name": item.name,
-                    "kong": selected_kong,
-                    "level": level,
-                    "type": "modeltwo"
-                })
-                placed_bunches += bunches_in_group
-                placed_singles += singles_in_group
+            if group_weight % 5 == 0: # TODO: Remove this, this is only to make sure 100-CB groups generate
+                for kong in kong_specific_left:
+                    if kong in cb_kongs:
+                        if kong_specific_left[kong] < group_weight or (kong_specific_left[kong] <= 10 and (kong_specific_left[kong] - group_weight) > 0):
+                            cb_kongs.remove(kong)
+                if len(cb_kongs) > 0 and selected_single_count >= placed_singles + singles_in_group:
+                    selected_kong = random.choice(cb_kongs)
+                    kong_specific_left[selected_kong] -= group_weight # Remove CBs for kong
+                    level_placement.append({
+                        "name": item.name,
+                        "kong": selected_kong,
+                        "level": level,
+                        "type": "cb",
+                        "map": item.map
+                    })
+                    placed_bunches += bunches_in_group
+                    placed_singles += singles_in_group
 
         # Placement is valid
         total_balloons += placed_balloons
         total_bunches += selected_bunch_count # Using the projected count rather than placed to see whether problems are caused
         total_singles += placed_singles
-        cb_data[level] = level_placement.copy()
-        print(kong_specific_left)
+        cb_data.extend(level_placement.copy())
+        for x in kong_specific_left:
+            if kong_specific_left[x] > 0:
+                print(f"WARNING: {kong_specific_left[x]} bananas unassigned for {x.name} in {level.name}")
+            elif kong_specific_left[x] < 0:
+                print(f"WARNING: {-kong_specific_left[x]} too many bananas assigned for {x.name} in {level.name}")
 
     spoiler.cb_placements = cb_data

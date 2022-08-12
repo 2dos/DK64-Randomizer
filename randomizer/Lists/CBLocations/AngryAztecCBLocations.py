@@ -1554,7 +1554,7 @@ BalloonList = [
         map_id=Maps.AztecTinyTemple,
         name="Mini Monkey alcove",
         speed=5,
-        konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
+        konglist=[Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.TinyTemple,
         points=[
             [1822, 460, 1056],
