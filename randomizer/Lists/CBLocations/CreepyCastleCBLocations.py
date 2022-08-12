@@ -43,7 +43,7 @@ class Balloon:
         self.spawnPoint = self.setSpawnPoint(points)
 
     def setSpawnPoint(self, points=[]):
-        """Set the spawn point of a balloon based on its path"""
+        """Set the spawn point of a balloon based on its path."""
         spawnX = 0
         spawnY = 0
         spawnZ = 0
@@ -58,7 +58,7 @@ class Balloon:
         return [int(spawnX), int(spawnY), int(spawnZ)]
 
 
-ColoredBananaGroupList = {
+ColoredBananaGroupList = [
     ColoredBananaGroup(
         group=1,
         map_id=Maps.CreepyCastle,
@@ -1721,9 +1721,9 @@ ColoredBananaGroupList = {
             [5, 1.0, 386, 318, 1513],
         ],
     ),
-}
+]
 
-BalloonList = {
+BalloonList = [
     Balloon(
         id=1,
         map_id=Maps.CreepyCastle,
@@ -2200,4 +2200,4 @@ BalloonList = {
             [842, 500, 830],
         ],
     ),
-}
+]
