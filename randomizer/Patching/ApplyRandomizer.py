@@ -28,7 +28,7 @@ from randomizer.Patching.PuzzleRando import randomize_puzzles
 from randomizer.Patching.UpdateHints import PushHints, wipeHints
 from randomizer.Patching.MiscSetupChanges import randomize_setup
 from randomizer.Patching.ShopRandomizer import ApplyShopRandomizer
-from GenTracker import generateTracker
+from ui.GenTracker import generateTracker
 
 # from randomizer.Spoiler import Spoiler
 from randomizer.Settings import Settings

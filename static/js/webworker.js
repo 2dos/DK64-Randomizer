@@ -15,6 +15,8 @@ onmessage = async function (e) {
       `
       import micropip
       await micropip.install("` + this.location.origin + `/static/py_libraries/pyodide_importer-0.0.2-py2.py3-none-any.whl")
+      if "` + this.location.origin + `" in ["dev.dk64randomizer.com", "dk64randomizer.com"]:
+        await micropip.install("` + this.location.origin + `/static/py_libraries/dk64rando-web-py3-none-any.whl")
       from pyodide_importer import register_hook
       register_hook('` +
         this.location.origin +
