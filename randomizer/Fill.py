@@ -1364,7 +1364,8 @@ def ShuffleMisc(spoiler):
         BarrelShuffle(spoiler.settings)
         spoiler.UpdateBarrels()
     # CB Shuffle
-    ShuffleCBs(spoiler)
+    if spoiler.settings.cb_rando:
+        ShuffleCBs(spoiler)
     # Handle Bananaports
     if spoiler.settings.bananaport_rando:
         replacements = []
