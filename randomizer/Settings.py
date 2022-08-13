@@ -84,7 +84,7 @@ class Settings:
         self.troff_weight_4 = 0.8
         self.troff_weight_5 = 0.9
         self.troff_weight_6 = 1.0
-        if self.level_randomization in ("loadingzone", "loadingzonesdecoupled"):
+        if self.level_randomization in ("loadingzone", "loadingzonesdecoupled") or self.hard_level_progression:
             self.troff_weight_0 = 1
             self.troff_weight_1 = 1
             self.troff_weight_2 = 1
@@ -108,10 +108,11 @@ class Settings:
         if self.randomize_blocker_required_amounts:
             randomlist = random.sample(range(1, self.blocker_max), 7)
             b_lockers = randomlist
-            b_lockers.append(1)
-            if self.shuffle_loading_zones == "all":
+            if self.shuffle_loading_zones == "all" or self.hard_level_progression:
+                b_lockers.append(random.randint(1, self.blocker_max))
                 random.shuffle(b_lockers)
             else:
+                b_lockers.append(1)
                 b_lockers.sort()
             self.blocker_0 = b_lockers[0]
             self.blocker_1 = b_lockers[1]
@@ -285,6 +286,7 @@ class Settings:
         self.enemy_speed_rando = False
         self.override_cosmetics = False
         self.random_colors = False
+        self.hard_level_progression = False
 
     def shuffle_prices(self):
         """Price randomization. Reuseable if we need to reshuffle prices."""
