@@ -61,7 +61,7 @@ def short_to_ushort(short):
 
 def randomize_cbs(spoiler: Spoiler):
     """Place Colored Bananas into ROM."""
-    if spoiler.setttings.cb_rando:
+    if spoiler.settings.cb_rando:
         for cont_map_id in range(216):
             # Wipe setup and paths of CB information
             # SETUP
