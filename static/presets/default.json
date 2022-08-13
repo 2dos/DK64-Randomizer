@@ -94,6 +94,7 @@
   "hard_bosses": false,
   "perma_death": false,
   "disable_tag_barrels": false,
+  "hard_level_progression":false,
   "disable_shop_hints": false,
   "fps_display": false,
   "random_music": false,

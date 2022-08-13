@@ -29,6 +29,7 @@
     "hard_bosses":true,
     "perma_death":false,
     "disable_tag_barrels":true,
+    "hard_level_progression":false,
     "unlock_fairy_shockwave":false,
     "bonus_barrel_rando":false,
     "gnawty_barrels":true,

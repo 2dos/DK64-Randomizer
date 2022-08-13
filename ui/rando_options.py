@@ -195,6 +195,7 @@ def update_boss_required(evt):
     boss_kong = document.getElementById("boss_kong_rando")
     kong_rando = document.getElementById("kong_rando")
     moves = document.getElementById("move_off")
+    hard_level_progression = document.getElementById("hard_level_progression")
     if level.value == "level_order":
         boss_location.setAttribute("disabled", "disabled")
         boss_location.checked = True
@@ -205,6 +206,7 @@ def update_boss_required(evt):
         if moves.selected is True:
             document.getElementById("move_on").selected = True
         moves.setAttribute("disabled", "disabled")
+        hard_level_progression.removeAttribute("disabled")
     elif level.value == "vanilla" and kong_rando.checked:
         boss_location.setAttribute("disabled", "disabled")
         boss_location.checked = True
@@ -212,12 +214,16 @@ def update_boss_required(evt):
         boss_kong.checked = True
         kong_rando.removeAttribute("disabled")
         moves.removeAttribute("disabled")
+        hard_level_progression.setAttribute("disabled", "disabled")
+        hard_level_progression.checked = False
     else:
         try:
             boss_kong.removeAttribute("disabled")
             boss_location.removeAttribute("disabled")
             kong_rando.removeAttribute("disabled")
             moves.removeAttribute("disabled")
+            hard_level_progression.setAttribute("disabled", "disabled")
+            hard_level_progression.checked = False
         except Exception:
             pass
 
