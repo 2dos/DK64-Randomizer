@@ -319,7 +319,7 @@ for x in range(221):
         }
     )
 for x in range(221):
-    if x != 2: # DK Arcade path file is massive
+    if x != 2:  # DK Arcade path file is massive
         file_dict.append(
             {
                 "name": "Paths for map " + str(x),
@@ -606,7 +606,7 @@ with open(ROMName, "rb") as fh:
 
                 with open(x["source_file"], "wb") as fg:
                     fh.seek(x["start"])
-                    if int.from_bytes(fh.read(2),"big") == 0x1F8B:
+                    if int.from_bytes(fh.read(2), "big") == 0x1F8B:
                         dec = zlib.decompress(byte_read, 15 + 32)
                     else:
                         dec = byte_read

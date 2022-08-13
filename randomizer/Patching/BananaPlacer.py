@@ -44,11 +44,13 @@ level_data = {
     },
 }
 
+
 def float_to_hex(f):
     """Convert float to hex."""
     if f == 0:
         return "0x00000000"
     return hex(struct.unpack("<I", struct.pack("<f", f))[0])
+
 
 def short_to_ushort(short):
     """Convert short to unsigned short format."""
@@ -56,12 +58,14 @@ def short_to_ushort(short):
         return short + 65536
     return short
 
+
 def randomize_cbs(spoiler: Spoiler):
+    """Place Colored Bananas into ROM."""
     for cont_map_id in range(216):
         # Wipe setup and paths of CB information
         # SETUP
-        modeltwo_cbs = [0xA,0xD,0x16,0x1E,0x1F,0x2B,0x205,0x206,0x207,0x208]
-        actor_cbs = [91,111,112,113,114]
+        modeltwo_cbs = [0xA, 0xD, 0x16, 0x1E, 0x1F, 0x2B, 0x205, 0x206, 0x207, 0x208]
+        actor_cbs = [91, 111, 112, 113, 114]
         setup_table = js.pointer_addresses[9]["entries"][cont_map_id]["pointing_to"]
         ROM().seek(setup_table)
         model2_count = int.from_bytes(ROM().readBytes(4), "big")
@@ -72,13 +76,13 @@ def randomize_cbs(spoiler: Spoiler):
             item_start = setup_table + 4 + (item * 0x30)
             ROM().seek(item_start + 0x28)
             item_type = int.from_bytes(ROM().readBytes(2), "big")
-            if item_type not in modeltwo_cbs: # Not CB
+            if item_type not in modeltwo_cbs:  # Not CB
                 ROM().seek(item_start + 0x2A)
-                used_m2_ids.append(int.from_bytes(ROM().readBytes(2),"big"))
+                used_m2_ids.append(int.from_bytes(ROM().readBytes(2), "big"))
                 ROM().seek(item_start)
                 item_data = []
-                for x in range(int(0x30/4)):
-                    item_data.append(int.from_bytes(ROM().readBytes(4),"big"))
+                for x in range(int(0x30 / 4)):
+                    item_data.append(int.from_bytes(ROM().readBytes(4), "big"))
                 persisted_m2_data.append(item_data)
         ROM().seek(setup_table + 4 + (0x30 * model2_count))
         mystery_count = int.from_bytes(ROM().readBytes(4), "big")
@@ -88,7 +92,7 @@ def randomize_cbs(spoiler: Spoiler):
             ROM().seek(setup_table + 4 + (model2_count * 0x30) + 4 + (item * 0x24))
             item_data = []
             for x in range(int(0x24 / 4)):
-                item_data.append(int.from_bytes(ROM().readBytes(4),"big"))
+                item_data.append(int.from_bytes(ROM().readBytes(4), "big"))
             persisted_mys_data.append(item_data)
         actor_block = setup_table + 4 + (0x30 * model2_count) + 4 + (0x24 * mystery_count)
         ROM().seek(actor_block)
@@ -107,7 +111,7 @@ def randomize_cbs(spoiler: Spoiler):
                 ROM().seek(actor_start)
                 item_data = []
                 for x in range(int(0x38 / 4)):
-                    item_data.append(int.from_bytes(ROM().readBytes(4),"big"))
+                    item_data.append(int.from_bytes(ROM().readBytes(4), "big"))
                 persisted_act_data.append(item_data)
             else:
                 ROM().seek(actor_start + 0x12)
@@ -130,10 +134,10 @@ def randomize_cbs(spoiler: Spoiler):
                 item_data = []
                 ROM().seek(path_table + path_offset)
                 for x in range(int(path_size / 2)):
-                    item_data.append(int.from_bytes(ROM().readBytes(2),"big"))
+                    item_data.append(int.from_bytes(ROM().readBytes(2), "big"))
                 persisted_paths.append(item_data)
                 used_path_ids.append(path_id)
-            path_offset += (6 + (10 * point_count))
+            path_offset += 6 + (10 * point_count)
         # Place all new colored bananas
         new_id = 0
         act_id = 0
@@ -147,16 +151,18 @@ def randomize_cbs(spoiler: Spoiler):
                         # Found item
                         if cb_type == "cb":
                             # Model Two CBs
-                            singles = [0xD,0xA,0x1E,0x16,0x1F]
-                            bunches = [0x2B,0x208,0x205,0x207,0x206]
+                            singles = [0xD, 0xA, 0x1E, 0x16, 0x1F]
+                            bunches = [0x2B, 0x208, 0x205, 0x207, 0x206]
                             for loc in list_item.locations:
                                 item_data = []
-                                item_data.extend([
-                                    int(float_to_hex(loc[2]),16),
-                                    int(float_to_hex(loc[3]),16),
-                                    int(float_to_hex(loc[4]),16),
-                                    int(float_to_hex(loc[1]),16),
-                                ])
+                                item_data.extend(
+                                    [
+                                        int(float_to_hex(loc[2]), 16),
+                                        int(float_to_hex(loc[3]), 16),
+                                        int(float_to_hex(loc[4]), 16),
+                                        int(float_to_hex(loc[1]), 16),
+                                    ]
+                                )
                                 item_data.append(2)
                                 item_data.append(0x01C7FFFF)
                                 for x in range(int((0x24 - 0x18) / 4)):
@@ -181,11 +187,11 @@ def randomize_cbs(spoiler: Spoiler):
                         elif cb_type == "balloons":
                             # Balloons
                             # Setup
-                            balloons = [114,91,113,112,111]
+                            balloons = [114, 91, 113, 112, 111]
                             item_data = []
                             for coord in list_item.setSpawnPoint(list_item.points):
-                                item_data.append(int(float_to_hex(coord),16)) # x y z
-                            item_data.append(int(float_to_hex(1),16)) # Scale
+                                item_data.append(int(float_to_hex(coord), 16))  # x y z
+                            item_data.append(int(float_to_hex(1), 16))  # Scale
                             found_vacant_path = False
                             found_path_id = 0
                             found_vacant_actor = False
@@ -204,14 +210,16 @@ def randomize_cbs(spoiler: Spoiler):
                                 act_id += 1
                             item_data.append(found_path_id)
                             item_data.append(list_item.speed)
-                            for x in range(int((0x30-0x18) / 4)):
+                            for x in range(int((0x30 - 0x18) / 4)):
                                 item_data.append(0)
                             item_data.append(balloons[new_cb["kong"]] - 16)
                             item_data.append((found_actor_id << 16) + 0x6E08)
                             persisted_act_data.append(item_data)
                             # Path
                             item_data = []
-                            item_data.append(path_id)
+                            item_data.append(found_path_id)
+                            if cont_map_id == 7:
+                                print(found_path_id)
                             item_data.append(len(list_item.points))
                             item_data.append(0)
                             for pt in list_item.points:
@@ -222,30 +230,31 @@ def randomize_cbs(spoiler: Spoiler):
                                 item_data.append((1 << 8) + 0)
                             new_paths = []
                             for path in persisted_paths:
-                                if path[0] < path_id:
+                                if path[0] < found_path_id:
                                     new_paths.append(path)
                             new_paths.append(item_data)
                             for path in persisted_paths:
-                                if path[0] > path_id:
+                                if path[0] > found_path_id:
                                     new_paths.append(path)
                             persisted_paths = new_paths.copy()
         # Recompile Tables
         # SETUP
         ROM().seek(setup_table)
-        ROM().writeMultipleBytes(len(persisted_m2_data),4)
+        ROM().writeMultipleBytes(len(persisted_m2_data), 4)
         for x in persisted_m2_data:
             for y in x:
-                ROM().writeMultipleBytes(y,4)
-        ROM().writeMultipleBytes(len(persisted_mys_data),4)
+                ROM().writeMultipleBytes(y, 4)
+        ROM().writeMultipleBytes(len(persisted_mys_data), 4)
         for x in persisted_mys_data:
             for y in x:
-                ROM().writeMultipleBytes(y,4)
-        ROM().writeMultipleBytes(len(persisted_act_data),4)
+                ROM().writeMultipleBytes(y, 4)
+        ROM().writeMultipleBytes(len(persisted_act_data), 4)
         for x in persisted_act_data:
             for y in x:
-                ROM().writeMultipleBytes(y,4)
+                ROM().writeMultipleBytes(y, 4)
+        print(f"{hex(cont_map_id)}: {hex(path_table)}")
         ROM().seek(path_table)
-        ROM().writeMultipleBytes(len(persisted_paths),2)
+        ROM().writeMultipleBytes(len(persisted_paths), 2)
         for x in persisted_paths:
             for y in x:
-                ROM().writeMultipleBytes(y,2)
+                ROM().writeMultipleBytes(y, 2)

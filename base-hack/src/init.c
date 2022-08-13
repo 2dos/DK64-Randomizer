@@ -283,6 +283,14 @@ void initHack(int source) {
 			*(float*)(0x807533A8) = 240.0f; // Tiny Ground
 			*(float*)(0x807533DC) = 260.0f; // Lanky Air
 			*(float*)(0x807533E0) = 260.0f; // Tiny Air
+			// Bump Model Two Allowance
+			int allowance = 550;
+			*(short*)(0x80632026) = allowance; // Japes
+			*(short*)(0x80632006) = allowance; // Aztec
+			*(short*)(0x80631FF6) = allowance; // Factory
+			*(short*)(0x80632016) = allowance; // Galleon
+			*(short*)(0x80631FE6) = allowance; // Fungi
+			*(short*)(0x80632036) = allowance; // Others
 			// New Guard Code
 			*(short*)(0x806AF75C) = 0x1000;
 			// Gold Beaver Code
