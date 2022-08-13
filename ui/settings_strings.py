@@ -15,7 +15,31 @@ def encrypt_settings_string(dict_data: dict):
     Returns:
         str: Returns an encrypted string.
     """
-    for pop in ["download_patch_file", "seed", "settings_string"]:
+    for pop in [
+        "download_patch_file",
+        "seed",
+        "settings_string",
+        "chunky_colors",
+        "chunky_custom_color",
+        "diddy_colors",
+        "diddy_custom_color",
+        "dk_colors",
+        "dk_custom_color",
+        "enguarde_colors",
+        "enguarde_custom_color",
+        "klaptrap_model",
+        "lanky_colors",
+        "lanky_custom_color",
+        "rambi_colors",
+        "rambi_custom_color",
+        "random_colors",
+        "random_music",
+        "music_bgm",
+        "music_events",
+        "music_fanfares",
+        "tiny_colors",
+        "tiny_custom_color",
+    ]:
         dict_data.pop(pop)
     ordered_dict = collections.OrderedDict(sorted(dict_data.items()))
     original_dict = collections.OrderedDict(sorted(default_dict.items()))
@@ -40,7 +64,7 @@ def encrypt_settings_string(dict_data: dict):
 
     new_string = ""
     for item in encode_list(split_strings):
-        new_string += ";" + str(item[0]) + ":" + item[1]
+        new_string += "|" + str(item[0]) + ":" + item[1]
     return new_string
 
 
@@ -54,7 +78,7 @@ def decrypt_setting_string(encrypted_string: str):
         dict: Returns the decrypted set of data.
     """
     expanded = ""
-    for item in encrypted_string.split(";"):
+    for item in encrypted_string.split("|"):
         if item:
             if ":" in item:
                 count, key = item.split(":")
