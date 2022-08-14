@@ -64,6 +64,9 @@ def GetExitLevelExit(region):
 
 def GetAccessibleLocations(settings, ownedItems, searchType=SearchMode.GetReachable, purchaseList=None, targetItemId=None):
     """Search to find all reachable locations given owned items."""
+    # No logic? Calls to this method that are checking things just return True
+    if settings.no_logic and searchType in [SearchMode.CheckAllReachable, SearchMode.CheckBeatable, SearchMode.CheckSpecificItemReachable]:
+        return True
     if purchaseList is None:
         purchaseList = []
     accessible = []
