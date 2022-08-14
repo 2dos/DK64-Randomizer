@@ -91,6 +91,51 @@ def convertColors(color_palettes):
                 for i in range(3):
                     ext = convertRGBAToBytearray([0, 0, 0, 0])
                     bytes_array.extend(ext)
+            elif zone["fill_type"] == "patch":
+                for size_mult in range(3):
+                    patch_start_x = int(6 / math.pow(2, size_mult))
+                    patch_start_y = int(8 / math.pow(2, size_mult))
+                    # print(f"{patch_start_x} | {patch_start_y}")
+                    patch_size = 3 - size_mult
+                    if patch_size == 3:
+                        patch_size = 5
+                    dim_s = int(32 / math.pow(2, size_mult))
+                    for y in range(dim_s):
+                        for x in range(dim_s):
+                            is_block = True  # Set to false to generate patch
+                            if x < patch_start_x:
+                                is_block = True
+                            elif x >= patch_start_x + (4 * patch_size):
+                                is_block = True
+                            elif y < patch_start_y:
+                                is_block = True
+                            elif y >= patch_start_y + (3 * patch_size):
+                                is_block = True
+                            if is_block:
+                                ext = convertRGBAToBytearray(rgba_list[0])
+                            else:
+                                delta_x = x - patch_start_x
+                                delta_y = y - patch_start_y
+                                color_polarity_x = int(delta_x / patch_size) % 2
+                                color_polarity_y = int(delta_y / patch_size) % 2
+                                color_polarity = (color_polarity_x + color_polarity_y) % 2
+                                patch_rgba = [31, 31, 31, 1]
+                                if color_polarity == 1:
+                                    patch_rgba = [31, 0, 0, 1]
+                                ext = convertRGBAToBytearray(patch_rgba)
+                            bytes_array.extend(ext)
+                for i in range(18):
+                    ext = convertRGBAToBytearray(rgba_list[0])
+                    bytes_array.extend(ext)
+                for i in range(4):
+                    ext = convertRGBAToBytearray([0, 0, 0, 0])
+                    bytes_array.extend(ext)
+                for i in range(3):
+                    ext = convertRGBAToBytearray(rgba_list[0])
+                    bytes_array.extend(ext)
+                for i in range(3):
+                    ext = convertRGBAToBytearray([0, 0, 0, 0])
+                    bytes_array.extend(ext)
 
             write_point = js.pointer_addresses[25]["entries"][zone["image"]]["pointing_to"]
             ROM().seek(write_point)
