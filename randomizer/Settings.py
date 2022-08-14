@@ -224,9 +224,10 @@ class Settings:
         self.decoupled_loading_zones = False
 
         #  Music
-        self.music_bgm = None
-        self.music_fanfares = None
-        self.music_events = None
+        self.music_bgm = "default"
+        self.music_fanfares = "default"
+        self.music_events = "default"
+        self.random_music = False
 
         #  Color
         self.colors = {}

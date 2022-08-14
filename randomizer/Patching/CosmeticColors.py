@@ -14,7 +14,6 @@ def apply_cosmetic_colors(spoiler: Spoiler):
         model_setting = js.document.getElementById("klaptrap_model").value
     else:
         model_setting = spoiler.settings.klaptrap_model
-    print(model_setting)
     if model_setting == "green":
         model_index = 0x21
     elif model_setting == "purple":
@@ -73,38 +72,21 @@ def apply_cosmetic_colors(spoiler: Spoiler):
 
     if js.document.getElementById("override_cosmetics").checked:
         if js.document.getElementById("random_colors").checked:
-            js.document.getElementById("dk_colors").value = "randomized"
-            js.document.getElementById("diddy_colors").value = "randomized"
-            js.document.getElementById("lanky_colors").value = "randomized"
-            js.document.getElementById("tiny_colors").value = "randomized"
-            js.document.getElementById("chunky_colors").value = "randomized"
-            js.document.getElementById("rambi_colors").value = "randomized"
-            js.document.getElementById("enguarde_colors").value = "randomized"
-
-        for kong in kong_settings:
-            base_obj = {"kong": kong["kong"], "zones": []}
-            for palette in kong["palettes"]:
-                arr = ["#000000"]
-                if palette["fill_type"] == "checkered":
-                    arr = ["#000000", "#000000"]
-                base_obj["zones"].append({"zone": palette["name"], "image": palette["image"], "fill_type": palette["fill_type"], "colors": arr})
-            if js.document.getElementById(kong["base_setting"]).value != "vanilla":
-                if js.document.getElementById(kong["base_setting"]).value == "randomized":
-                    color = f"#{format(randint(0, 0xFFFFFF), '06x')}"
-                else:
-                    color = js.document.getElementById(kong["custom_setting"]).value
-                    if not color:
-                        color = "#000000"
-                base_obj["zones"][0]["colors"][0] = color
-                if kong["kong_index"] == 4:
-                    base_obj["zones"][1]["colors"][0] = color
-                    red = int(f"0x{color[1:3]}", 16)
-                    green = int(f"0x{color[3:5]}", 16)
-                    blue = int(f"0x{color[5:7]}", 16)
-                    opp_color = f"#{format(255-red,'02x')}{format(255-green,'02x')}{format(255-blue,'02x')}"
-                    base_obj["zones"][0]["colors"][1] = opp_color
-                color_palettes.append(base_obj)
-                color_obj[f"{kong['kong']}"] = color
+            spoiler.settings.dk_colors = "randomized"
+            spoiler.settings.diddy_colors = "randomized"
+            spoiler.settings.lanky_colors = "randomized"
+            spoiler.settings.tiny_colors = "randomized"
+            spoiler.settings.chunky_colors = "randomized"
+            spoiler.settings.rambi_colors = "randomized"
+            spoiler.settings.enguarde_colors = "randomized"
+        else:
+            spoiler.settings.dk_colors = js.document.getElementById("dk_colors").value
+            spoiler.settings.diddy_colors = js.document.getElementById("diddy_colors").value
+            spoiler.settings.lanky_colors = js.document.getElementById("lanky_colors").value
+            spoiler.settings.tiny_colors = js.document.getElementById("tiny_colors").value
+            spoiler.settings.chunky_colors = js.document.getElementById("chunky_colors").value
+            spoiler.settings.rambi_colors = js.document.getElementById("rambi_colors").value
+            spoiler.settings.enguarde_colors = js.document.getElementById("enguarde_colors").value
     else:
         if spoiler.settings.random_colors:
             spoiler.settings.dk_colors = "randomized"
@@ -115,46 +97,46 @@ def apply_cosmetic_colors(spoiler: Spoiler):
             spoiler.settings.rambi_colors = "randomized"
             spoiler.settings.enguarde_colors = "randomized"
 
-        colors_dict = {
-            "dk_colors": spoiler.settings.dk_colors,
-            "dk_custom_color" : spoiler.settings.dk_custom_color,
-            "diddy_colors": spoiler.settings.diddy_colors,
-            "diddy_custom_color" : spoiler.settings.diddy_custom_color,
-            "lanky_colors": spoiler.settings.lanky_colors,
-            "lanky_custom_color" : spoiler.settings.lanky_custom_color,
-            "tiny_colors": spoiler.settings.tiny_colors,
-            "tiny_custom_color" : spoiler.settings.tiny_custom_color,
-            "chunky_colors": spoiler.settings.chunky_colors,
-            "chunky_custom_color" : spoiler.settings.chunky_custom_color,
-            "rambi_colors": spoiler.settings.rambi_colors,
-            "rambi_custom_color" : spoiler.settings.rambi_custom_color,
-            "enguarde_colors": spoiler.settings.enguarde_colors,
-            "enguarde_custom_color" : spoiler.settings.enguarde_custom_color
-        }
-        for kong in kong_settings:
-            base_obj = {"kong": kong["kong"], "zones": []}
-            for palette in kong["palettes"]:
-                arr = ["#000000"]
-                if palette["fill_type"] == "checkered":
-                    arr = ["#000000", "#000000"]
-                base_obj["zones"].append({"zone": palette["name"], "image": palette["image"], "fill_type": palette["fill_type"], "colors": arr})
-            if colors_dict[kong["base_setting"]] != "vanilla":
-                if colors_dict[kong["base_setting"]] == "randomized":
-                    color = f"#{format(randint(0, 0xFFFFFF), '06x')}"
-                else:
-                    color = colors_dict[kong["custom_setting"]]
-                    if not color:
-                        color = "#000000"
-                base_obj["zones"][0]["colors"][0] = color
-                if kong["kong_index"] == 4:
-                    base_obj["zones"][1]["colors"][0] = color
-                    red = int(f"0x{color[1:3]}", 16)
-                    green = int(f"0x{color[3:5]}", 16)
-                    blue = int(f"0x{color[5:7]}", 16)
-                    opp_color = f"#{format(255-red,'02x')}{format(255-green,'02x')}{format(255-blue,'02x')}"
-                    base_obj["zones"][0]["colors"][1] = opp_color
-                color_palettes.append(base_obj)
-                color_obj[f"{kong['kong']}"] = color
+    colors_dict = {
+        "dk_colors": spoiler.settings.dk_colors,
+        "dk_custom_color": spoiler.settings.dk_custom_color,
+        "diddy_colors": spoiler.settings.diddy_colors,
+        "diddy_custom_color": spoiler.settings.diddy_custom_color,
+        "lanky_colors": spoiler.settings.lanky_colors,
+        "lanky_custom_color": spoiler.settings.lanky_custom_color,
+        "tiny_colors": spoiler.settings.tiny_colors,
+        "tiny_custom_color": spoiler.settings.tiny_custom_color,
+        "chunky_colors": spoiler.settings.chunky_colors,
+        "chunky_custom_color": spoiler.settings.chunky_custom_color,
+        "rambi_colors": spoiler.settings.rambi_colors,
+        "rambi_custom_color": spoiler.settings.rambi_custom_color,
+        "enguarde_colors": spoiler.settings.enguarde_colors,
+        "enguarde_custom_color": spoiler.settings.enguarde_custom_color,
+    }
+    for kong in kong_settings:
+        base_obj = {"kong": kong["kong"], "zones": []}
+        for palette in kong["palettes"]:
+            arr = ["#000000"]
+            if palette["fill_type"] == "checkered":
+                arr = ["#000000", "#000000"]
+            base_obj["zones"].append({"zone": palette["name"], "image": palette["image"], "fill_type": palette["fill_type"], "colors": arr})
+        if colors_dict[kong["base_setting"]] != "vanilla":
+            if colors_dict[kong["base_setting"]] == "randomized":
+                color = f"#{format(randint(0, 0xFFFFFF), '06x')}"
+            else:
+                color = colors_dict[kong["custom_setting"]]
+                if not color:
+                    color = "#000000"
+            base_obj["zones"][0]["colors"][0] = color
+            if kong["kong_index"] == 4:
+                base_obj["zones"][1]["colors"][0] = color
+                red = int(f"0x{color[1:3]}", 16)
+                green = int(f"0x{color[3:5]}", 16)
+                blue = int(f"0x{color[5:7]}", 16)
+                opp_color = f"#{format(255-red,'02x')}{format(255-green,'02x')}{format(255-blue,'02x')}"
+                base_obj["zones"][0]["colors"][1] = opp_color
+            color_palettes.append(base_obj)
+            color_obj[f"{kong['kong']}"] = color
     spoiler.settings.colors = color_obj
     if len(color_palettes) > 0:
         convertColors(color_palettes)
