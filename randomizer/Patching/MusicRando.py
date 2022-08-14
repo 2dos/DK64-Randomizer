@@ -20,18 +20,28 @@ def randomize_music(spoiler: Spoiler):
         settings (Settings): Settings object from the windows form.
     """
     settings: Settings = spoiler.settings
-    if js.document.getElementById("random_music").checked:
-        js.document.getElementById("music_bgm").value = "randomized"
-        js.document.getElementById("music_fanfares").value = "randomized"
-        js.document.getElementById("music_events").value = "randomized"
-    if js.document.getElementById("music_bgm").value != "default" or js.document.getElementById("music_events").value != "default" or js.document.getElementById("music_fanfares").value != "default":
+    if js.document.getElementById("override_cosmetics").checked:
+        if js.document.getElementById("random_music").checked:
+            spoiler.settings.music_bgm = "randomized"
+            spoiler.settings.music_fanfares = "randomized"
+            spoiler.settings.music_events = "randomized"
+        else:
+            spoiler.settings.music_bgm = js.document.getElementById("music_bgm").value
+            spoiler.settings.music_fanfares = js.document.getElementById("music_fanfares").value
+            spoiler.settings.music_events = js.document.getElementById("music_events").value
+    else:
+        if spoiler.settings.random_music:
+            spoiler.settings.music_bgm = "randomized"
+            spoiler.settings.music_fanfares = "randomized"
+            spoiler.settings.music_events = "randomized"
+    if spoiler.settings.music_bgm != "default" or spoiler.settings.music_events != "default" or spoiler.settings.music_fanfares != "default":
         sav = spoiler.settings.rom_data
         ROM().seek(sav + 0x12E)
         ROM().write(1)
     # Check if we have anything beyond default set for BGM
-    if js.document.getElementById("music_bgm").value != "default":
+    if spoiler.settings.music_bgm != "default":
         # If the user selected standard rando
-        if js.document.getElementById("music_bgm").value == "randomized":
+        if spoiler.settings.music_bgm == "randomized":
 
             # These lines exist for testing only
             # file = open('static/patches/pointer_addresses.json')
@@ -52,7 +62,7 @@ def randomize_music(spoiler: Spoiler):
                 random.shuffle(shuffled_music)
                 shuffle_music(spoiler, song_list[channel_index].copy(), shuffled_music)
         # If the user was a poor sap and selected chaos put DK rap for everything
-        elif js.document.getElementById("music_bgm").value == "chaos":
+        elif spoiler.settings.music_bgm == "chaos":
             # Find the DK rap in the list
             rap = js.pointer_addresses[0]["entries"][song_data.index(next((x for x in song_data if x.name == "DK Rap"), None))]
             # Find all BGM songs
@@ -108,9 +118,9 @@ def randomize_music(spoiler: Spoiler):
             random.shuffle(duped_song_list)
             shuffle_music(spoiler, song_list.copy(), duped_song_list)
     # If the user wants to randomize fanfares
-    if js.document.getElementById("music_fanfares").value != "default":
+    if spoiler.settings.music_fanfares != "default":
         # Check if our setting is just rando
-        if js.document.getElementById("music_fanfares").value == "randomized":
+        if spoiler.settings.music_fanfares == "randomized":
             # Load the list of fanfares
             fanfare_list = []
             for song in song_data:
@@ -153,9 +163,9 @@ def randomize_music(spoiler: Spoiler):
             shuffle_music(spoiler, song_list.copy(), duped_song_list)
 
     # If the user wants to randomize events
-    if js.document.getElementById("music_events").value != "default":
+    if spoiler.settings.music_events != "default":
         # Check if our setting is just rando
-        if js.document.getElementById("music_events").value == "randomized":
+        if spoiler.settings.music_events == "randomized":
             # Load the list of events
             event_list = []
             for song in song_data:

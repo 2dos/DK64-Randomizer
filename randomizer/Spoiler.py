@@ -101,6 +101,7 @@ class Spoiler:
         settings["K Rool Phases"] = self.settings.krool_order
         settings["Key 8 Required"] = self.settings.krool_access
         settings["Keys Required for K Rool"] = self.GetKroolKeysRequired(self.settings.krool_keys_required)
+        settings["Number of Keys Required"] = self.settings.krool_key_count
         settings["Fast Start"] = self.settings.fast_start_beginning_of_game
         settings["Helm Setting"] = self.settings.helm_setting
         settings["Quality of Life"] = self.settings.quality_of_life
