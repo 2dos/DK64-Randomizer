@@ -887,7 +887,7 @@ KasplatLocationList = {
             name="Forest Kasplat: On a low platform on the exterior of Giant Mushroom",
             map_id=Maps.FungiForest,
             kong_lst=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
-            coords=[1290, 389, 678],
+            coords=[1209, 389, 678],
             region=Regions.MushroomLowerExterior,
             vanilla=True,
         ),
