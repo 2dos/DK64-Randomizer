@@ -226,10 +226,3 @@ def writeText(file_name, text):
                 if not is_icon:
                     for string in block["text"]:
                         fh.write(string.encode("ascii"))
-
-writeText("diddy_comp_text.bin", [
-    [{"text": ["YIPEE! WAY TO GO, DK!", "NOW THAT I'M FREE, I CAN HELP YOU BY COLLECTING RED BANANAS."]},{"text": ["diddy_coloured_banana"]},{"text": ["I'LL JUST GO AND WAIT IN THE TAG BARREL UNTIL YOU NEED ME."]}],
-    [{"text": ["HEY, DK! HELLLLP!"], "unk0": 1.0}],
-    [{"text": ["YOU MIGHT NEED FUNKY'S HELP TO GET ME OUT OF HERE..."]}],
-    [{"text": ["HEY! I'M NOT IN HERE THROUGH CHOICE, YOU KNOW!"], "unk0": 1.0}]
-])

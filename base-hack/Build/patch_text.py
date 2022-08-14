@@ -1,6 +1,7 @@
 """Patch some common text."""
 
 from text_encoder import writeText
+from text_decoder import grabText
 import shutil
 
 move_hints = [
@@ -319,7 +320,7 @@ writeText(
     [
         [{"text": ["WHAT DID CRANKY MEAN ABOUT TRAINING? DONKEY ALL CONFUSED..."]}],
         [{"text": ["AW NO! SO THAT WHAT CRANKY MEAN ABOUT REPTILE...", "DONKEY NOT BELIEVE IT. KING K.ROOL? WE FINISHED K. ROOL OFF IN LAST GAME!"]}],
-        [{"text": ["OKAY!", "DONKEY IS FREE NOW. THANK YOU, MY FRIEND.", "DONKEY CAN COLLECT YELLOW BANANAS.", "DONKEY WILL BE INSIDE THE TAG BARREL UNTIL YOU NEED MY HELP."]}],
+        [{"text": ["OKAY!", "DONKEY IS FREE NOW. THANK YOU, MY FRIEND.", "DONKEY CAN COLLECT YELLOW BANANAS."]},{"text": ["dk_coloured_banana"]}, {"text": ["DONKEY WILL BE INSIDE THE TAG BARREL UNTIL YOU NEED MY HELP."]}],
     ],
 )
 
@@ -371,9 +372,9 @@ move_names = [
 move_names_arr = []
 for move in move_names:
     init_len = len(move_names_arr)
-    move_names_arr.append([move["name"].upper()])
+    move_names_arr.append([{"text":[move["name"].upper()]}])
     if "latin" in move:
-        move_names_arr.append([f"({move['latin'].upper()})"])
+        move_names_arr.append([{"text": [f"({move['latin'].upper()})"]}])
     if "print" in move:
         if move["print"]:
             print(f"{move['name']}: {init_len}")
@@ -484,3 +485,39 @@ with open("src/randomizers/move_text.c", "w") as fh:
             fh.write("};\n\n")
 
 writeText("move_names.bin", move_names_arr)
+
+move_explanations = [
+    {
+        "move": "dive_barrel",
+        "explanation": [{"text": ["PAY ATTENTION, ~. YOU AND ALL THE OTHER KONGS CAN NOW DIVE UNDERWATER. PRESS"]},{"text": ["z_button"]},{"text": ["TO SUBMERGE YOURSELF."]}]
+    },
+    {
+        "move": "orange_barrel",
+        "explanation": [{"text": ["PAY ATTENTION, ~. YOU AND ALL THE OTHER KONGS CAN NOW THROW ORANGE GRENADES. PRESS"]},{"text": ["z_button"]},{"text": ["THEN"]},{"text": ["c_left_button"]},{"text": ["TO FIRE AN EXPLOSIVE FRUIT."]}]
+    },
+    {
+        "move": "barrel_barrel",
+        "explanation": [{"text": ["PAY ATTENTION, ~. YOU AND ALL THE OTHER KONGS CAN NOW PICK UP OBJECTS. PRESS"]},{"text": ["b_button"]},{"text": ["TO GRAB AN OBJECT WITH RELATIVE EASE."]}]
+    },
+    {
+        "move": "vine_barrel",
+        "explanation": [{"text": ["PAY ATTENTION, ~. YOU AND ALL THE OTHER KONGS CAN NOW SWING ON VINES. JUMP TO GRAB ONTO THE VINE AND PRESS "]},{"text": ["a_button"]},{"text": ["TO LAUNCH YOURSELF FROM IT."]}]
+    },
+    {
+        "move": "camera_solo",
+        "explanation": [{"text": ["PAY ATTENTION, ~. YOU AND ALL THE OTHER KONGS CAN NOW USE A CAMERA TO SNAP BANANA FAIRIES. PRESS"]},{"text": ["z_button"]},{"text": ["THEN"]},{"text": ["c_down_button"]},{"text": ["TO PULL OUT THE CAMERA. PRESS"]},{"text": ["b_button"]},{"text": ["TO TAKE A PICTURE."]}]
+    },
+    {
+        "move": "shockwave_solo",
+        "explanation": [{"text": ["PAY ATTENTION, ~. YOU AND ALL THE OTHER KONGS CAN NOW RELEASE A SHOCKWAVE CHARGE. PRESS AND HOLD"]},{"text": ["b_button"]},{"text": ["CHARGE THE SHOCKWAVE."]}]
+    },
+    {
+        "move": "camera_shockwave_combo",
+        "explanation": [{"text": ["PAY ATTENTION, ~. YOU AND ALL THE OTHER KONGS CAN NOW RELEASE A SHOCKWAVE CHARGE AND USE A CAMERA TO SNAP BANANA FAIRIES. PRESS AND HOLD"]},{"text": ["b_button"]},{"text": ["CHARGE THE SHOCKWAVE. PRESS "]},{"text": ["z_button"]},{"text": ["THEN"]},{"text": ["c_down_button"]},{"text": ["TO PULL OUT THE CAMERA."]}]
+    }
+]
+
+cranky_text = grabText(8)
+for move in move_explanations:
+    cranky_text.append(move["explanation"])
+writeText("cranky_text.bin",cranky_text)
