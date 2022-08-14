@@ -261,7 +261,7 @@
                                  role="tabpanel"
                                  aria-labelledby="nav-patch-tab">
                                 <div style="width: 80%;" class="center">
-                                    <div class="form-group" style="margin-bottom: 10px; text-align: center;">
+                                    <div class="form-group" style="margin-bottom: 25px; text-align: center;">
                                         <label for="patchfileloader" class="select-title">Patch File</label>
                                         <input id="patchfileloader"
                                                class="form-control"
@@ -283,6 +283,16 @@
                                                       margin: 0 auto;"
                                                required/>
                                     </div>
+                                    <div class="form-check form-switch" style="text-align: center; margin-top: 10px;">
+                                        <label data-toggle="tooltip" title="Use Cosmetics set on UI instead of from the patch file.">
+                                            <input class="form-check-input"
+                                                type="checkbox"
+                                                id="override_cosmetics"
+                                                name="override_cosmetics"
+                                                value="False"/>
+                                            Override Patch File Cosmetics
+                                        </label>
+                                    <div>
                                     <br id="formbreak" />
                                     <input id="generate_lanky_seed"
                                            class="btn btn-primary"

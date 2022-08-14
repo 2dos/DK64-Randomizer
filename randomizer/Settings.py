@@ -230,7 +230,22 @@ class Settings:
 
         #  Color
         self.colors = {}
+        self.color_palettes = {}
         self.klaptrap_model = "green"
+        self.dk_colors = "vanilla"
+        self.dk_custom_color = "#000000"
+        self.diddy_colors = "vanilla"
+        self.diddy_custom_color = "#000000"
+        self.lanky_colors = "vanilla"
+        self.lanky_custom_color = "#000000"
+        self.tiny_colors = "vanilla"
+        self.tiny_custom_color = "#000000"
+        self.chunky_colors = "vanilla"
+        self.chunky_custom_color = "#000000"
+        self.rambi_colors = "vanilla"
+        self.rambi_custom_color = "#000000"
+        self.enguarde_colors = "vanilla"
+        self.enguarde_custom_color = "#000000"
 
         #  Misc
         self.generate_spoilerlog = None
@@ -267,6 +282,8 @@ class Settings:
         self.enemy_rando = False
         self.crown_enemy_rando = "off"
         self.enemy_speed_rando = False
+        self.override_cosmetics = False
+        self.random_colors = False
 
     def shuffle_prices(self):
         """Price randomization. Reuseable if we need to reshuffle prices."""
