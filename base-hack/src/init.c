@@ -286,7 +286,8 @@ void initHack(int source) {
 			// New Guard Code
 			*(short*)(0x806AF75C) = 0x1000;
 			// Gold Beaver Code
-			*(int*)(0x8074C3F0) = (int)&goldBeaverCode;
+			*(int*)(0x8074C3F0) = 0x806AD54C; // Set as Blue Beaver Code
+			*(int*)(0x806AD750) = 0x0C000000 | (((int)&beaverExtraHitHandle & 0xFFFFFF) >> 2); // Remove buff until we think of something better
 			// Spider Projectile
 			//*(int*)(0x806ADDC0) = 0x0C000000 | (((int)&handleSpiderTrapCode & 0xFFFFFF) >> 2); // Remove buff until we think of something better
 			// Slow Turn Fix
