@@ -57,7 +57,13 @@ def apply_cosmetic_colors(spoiler: Spoiler):
     kong_settings = [
         {"kong": "dk", "palettes": [{"name": "base", "image": 3724, "fill_type": "block"}], "base_setting": "dk_colors", "custom_setting": "dk_custom_color", "kong_index": 0},
         {"kong": "diddy", "palettes": [{"name": "cap_shirt", "image": 3686, "fill_type": "block"}], "base_setting": "diddy_colors", "custom_setting": "diddy_custom_color", "kong_index": 1},
-        {"kong": "lanky", "palettes": [{"name": "overalls", "image": 3689, "fill_type": "block"}], "base_setting": "lanky_colors", "custom_setting": "lanky_custom_color", "kong_index": 2},
+        {
+            "kong": "lanky",
+            "palettes": [{"name": "overalls", "image": 3689, "fill_type": "block"}, {"name": "patch", "image": 3734, "fill_type": "patch"}],
+            "base_setting": "lanky_colors",
+            "custom_setting": "lanky_custom_color",
+            "kong_index": 2,
+        },
         {"kong": "tiny", "palettes": [{"name": "overalls", "image": 6014, "fill_type": "block"}], "base_setting": "tiny_colors", "custom_setting": "tiny_custom_color", "kong_index": 3},
         {
             "kong": "chunky",
@@ -128,13 +134,14 @@ def apply_cosmetic_colors(spoiler: Spoiler):
                 if not color:
                     color = "#000000"
             base_obj["zones"][0]["colors"][0] = color
-            if kong["kong_index"] == 4:
+            if kong["kong_index"] in (2, 4):
                 base_obj["zones"][1]["colors"][0] = color
-                red = int(f"0x{color[1:3]}", 16)
-                green = int(f"0x{color[3:5]}", 16)
-                blue = int(f"0x{color[5:7]}", 16)
-                opp_color = f"#{format(255-red,'02x')}{format(255-green,'02x')}{format(255-blue,'02x')}"
-                base_obj["zones"][0]["colors"][1] = opp_color
+                if kong["kong_index"] == 4:
+                    red = int(f"0x{color[1:3]}", 16)
+                    green = int(f"0x{color[3:5]}", 16)
+                    blue = int(f"0x{color[5:7]}", 16)
+                    opp_color = f"#{format(255-red,'02x')}{format(255-green,'02x')}{format(255-blue,'02x')}"
+                    base_obj["zones"][0]["colors"][1] = opp_color
             color_palettes.append(base_obj)
             color_obj[f"{kong['kong']}"] = color
     spoiler.settings.colors = color_obj
