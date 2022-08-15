@@ -468,3 +468,20 @@ def toggle_extreme_prices_option(event):
 def toggle_no_logic(event):
     """Toggle settings based on the presence of logic."""
     toggle_extreme_prices_option(event)
+
+
+@bind("click", "nav-patch-tab")
+def toggle_patch_ui(event):
+    """Disable non-cosmetic tabs and show override option if using patch file."""
+    for tab in ["nav-started-tab", "nav-random-tab", "nav-overworld-tab", "nav-difficulty-tab", "nav-qol-tab"]:
+        document.getElementById(tab).setAttribute("disabled", "disabled")
+    document.getElementById("override_div").removeAttribute("hidden")
+    document.getElementById("nav-cosmetics-tab").click()
+
+
+@bind("click", "nav-seed-gen-tab")
+def toggle_patch_ui(event):
+    """Re-enable non-cosmetic tabs and hide override option if generating a new seed."""
+    for tab in ["nav-started-tab", "nav-random-tab", "nav-overworld-tab", "nav-difficulty-tab", "nav-qol-tab"]:
+        document.getElementById(tab).removeAttribute("disabled")
+    document.getElementById("override_div").setAttribute("hidden", "hidden")
