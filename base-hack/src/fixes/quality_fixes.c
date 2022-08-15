@@ -61,3 +61,9 @@ void fixRBSlowTurn(void) {
 		Player->turn_speed = 0x190;
 	}
 }
+
+void postKRoolSaveCheck(void) {
+	if ((CurrentMap != 0x22) || (!CutsceneFadeActive) || (CutsceneFadeIndex != 29)) {
+		save();
+	}
+}
