@@ -2,9 +2,12 @@
 import js
 
 stable_version = "1.0"
-dev_version = "1.0"
+dev_version = "1.1"
 
-url = js.location.href.lower().replace("/", "").replace("http:", "").replace("https:", "")
+try:
+    url = js.location.href.lower().replace("/", "").replace("http:", "").replace("https:", "")
+except Exception:
+    url = "localhost"
 
 only_version = "0.0"
 current_version = "DK64R 0.0"

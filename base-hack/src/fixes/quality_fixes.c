@@ -54,3 +54,16 @@ void CBDing(void) {
 		previous_total_cbs = total_cbs;
 	}
 }
+
+void fixRBSlowTurn(void) {
+	controlStateControl(0x1B);
+	if (Player) {
+		Player->turn_speed = 0x190;
+	}
+}
+
+void postKRoolSaveCheck(void) {
+	if ((CurrentMap != 0x22) || (!CutsceneFadeActive) || (CutsceneFadeIndex != 29)) {
+		save();
+	}
+}

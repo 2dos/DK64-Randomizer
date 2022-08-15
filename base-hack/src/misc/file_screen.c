@@ -3,7 +3,6 @@
 static char file_percentage[5] = "";
 static char golden_count[4] = "";
 static char balanced_igt[20] = "";
-static char balanced_igt_seconds[10] = "";
 static char blueprints_count[5] = "";
 static char move_count_str[10] = "";
 
@@ -99,19 +98,13 @@ int* display_text(int* dl) {
 	dl = displayText(dl,1,0x280,y,(char*)blueprints_count,0x81);
 	// Balanced IGT
 	y += LINE_GAP;
-	int secs = BalancedIGT % 3600;
+	int secs = IGT % 60;
 	float secsf = secs;
 	secsf /= 60;
-	int hm = BalancedIGT / 3600;
+	int hm = IGT / 60;
 	int minutes = hm % 60;
 	int hours = hm / 60;
-	if (secs < 300) {
-		dk_strFormat((char*)balanced_igt_seconds,"0%f",secsf);
-	} else {
-		dk_strFormat((char*)balanced_igt_seconds,"%f",secsf);
-	}
-	balanced_igt_seconds[4] = 0;
-	dk_strFormat((char*)balanced_igt, "%03d:%02d:%s",hours,minutes,(char*)balanced_igt_seconds);
+	dk_strFormat((char*)balanced_igt, "%03d:%02d:%02d",hours,minutes,secs);
 	dl = displayText(dl,1,0x280,y,(char*)balanced_igt,0x81);
 	dl = display_images(dl);
 	return dl;

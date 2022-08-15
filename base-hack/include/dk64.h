@@ -167,6 +167,8 @@ extern float getXRatioMovement(int dk64u_angle);
 extern float getZRatioMovement(int dk64u_angle);
 extern void updateActorProjectileInfo(void* actor, int unk0);
 extern void spawnProjectile(short object, short subtype, int speed, float x, float y, float z, float unk0, void* actor);
+extern void controlStateControl(int unk0);
+extern void save(void);
 
 extern int crystalsUnlocked(int kong);
 extern void setMovesForAllKongs(shop_paad* paad, int is_bitfield);
@@ -359,6 +361,7 @@ extern SpawnerInfo* currentCharSpawner;
 extern short EnemiesKilledCounter;
 extern model2_collision_info ModelTwoCollisionArray[42];
 extern unsigned char MelonArray[6];
+extern int IGT;
 
 //hack data
 extern int TestVariable;
@@ -373,7 +376,6 @@ extern char* PauseSlot3TextPointer;
 extern char ExpandPauseMenu;
 extern unsigned short InitialPauseHeight;
 extern short InstanceScriptParams[4];
-extern unsigned int BalancedIGT;
 extern short style128Mtx[0x10];
 extern short style6Mtx[0x10];
 extern short style2Mtx[0x10];

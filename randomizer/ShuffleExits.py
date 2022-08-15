@@ -139,6 +139,12 @@ def ShuffleExitsInPool(settings, frontpool, backpool):
             origins = [x for x in origins if ShufflableExits[ShufflableExits[x].back.reverse].category is not None]
             # Also validate the entry & region kongs overlap in reverse direction
             origins = [x for x in origins if ShufflableExits[backExit.back.reverse].entryKongs.issuperset(ShufflableExits[ShufflableExits[x].back.reverse].regionKongs)]
+        elif settings.decoupled_loading_zones and backExit.back.regionId in [Regions.JapesMinecarts, Regions.ForestMinecarts]:
+            # In decoupled, we still have to prevent one-way minecart exits from leading to the minecarts themselves
+            if Transitions.JapesCartsToMain in origins:
+                origins.remove(Transitions.JapesCartsToMain)
+            if Transitions.ForestCartsToMain in origins:
+                origins.remove(Transitions.ForestCartsToMain)
         if len(origins) == 0:
             print("Failed to connect to " + backExit.name + ", found no suitable origins!")
             raise Ex.EntranceOutOfDestinations

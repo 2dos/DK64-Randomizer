@@ -811,6 +811,13 @@ def compileHints(spoiler: Spoiler):
             if usage_slot >= len(joke_hints):
                 usage_slot = 0
             if tries == 0:
+                hints_to_replace = []
+                for hint in hint_list:
+                    if not hint.joke:
+                        hints_to_replace.append(hint.hint)
+                for hint in hints:
+                    if hint.hint == "":
+                        hint.hint = random.choice(hints_to_replace)
                 for hint in hints:
                     if hint.hint == "":
                         hint.hint = "I have so little to tell you that this hint got placed here. If you see this, please report with your spoiler log in the bug reports channel in the DK64 Randomizer discord."
@@ -821,10 +828,6 @@ def compileHints(spoiler: Spoiler):
                             hint_distro[subtype] = 1
                         error_hint_count += 1
                 slot = vacant_slots
-    print(
-        f"Hint Distribution | Important: {important_hint_count}, Unimportant: {unimportant_hint_count}, Jokes: {joke_hint_count}, Errors: {error_hint_count}, Total Good: {important_hint_count + unimportant_hint_count + joke_hint_count}"
-    )
-    print(f"Hint JSON: {hint_distro}")
     UpdateSpoilerHintList(spoiler)
     return True
 

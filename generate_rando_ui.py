@@ -14,6 +14,8 @@ async def initialize():
     # await micropip.install("pyodide-importer")
     url = js.window.location.origin
     await micropip.install(f"{url}/static/py_libraries/pyodide_importer-0.0.2-py2.py3-none-any.whl")
+    if js.location.hostname in ["dev.dk64randomizer.com", "dk64randomizer.com"]:
+        await micropip.install(f"{url}/static/py_libraries/dk64rando-web-py3-none-any.whl")
     await micropip.install("pillow")
     # Against normal logic we have to import the hook register because we install it as we load the page
     from pyodide_importer import register_hook  # type: ignore  # noqa
@@ -37,6 +39,9 @@ async def initialize():
     milliseconds = int(round(time.time() * 1000))
     for file in json.loads(ajax_call(f"static/presets/preset_files.json?currtime={milliseconds}")).get("progression"):
         js.progression_presets.append(json.loads(ajax_call("static/presets/" + file)))
+
+    # Load our pointer info from the JSON database
+    js.pointer_addresses = json.loads(js.getFile("./static/patches/pointer_addresses.json"))
 
     templateEnv = Environment(loader=FunctionLoader(loader_func), enable_async=True)
     template = templateEnv.get_template("base.html.jinja2")
@@ -63,9 +68,6 @@ async def initialize():
                     pass
     except Exception:
         pass
-
-    # Load our pointer info from the JSON database
-    js.pointer_addresses = json.loads(js.getFile("./static/patches/pointer_addresses.json"))
 
 
 # Run the script (This will be run as async later on)

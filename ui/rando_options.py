@@ -58,7 +58,7 @@ def max_randomized_troff(event):
 
 
 @bind("focusout", "medal_requirement")
-def max_randomized_blocker(event):
+def max_randomized_medals(event):
     """Validate medal input on loss of focus."""
     medal_requirement = js.document.getElementById("medal_requirement")
     if not medal_requirement.value:
@@ -353,7 +353,7 @@ def disable_barrel_rando(evt):
         pass
 
 
-@bind("change", "presets")
+@bind("click", "apply_preset")
 def preset_select_changed(event):
     """Trigger a change of the form via the JSON templates."""
     element = document.getElementById("presets")
@@ -453,11 +453,35 @@ def disable_rw(evt):
 def toggle_extreme_prices_option(event):
     """Determine the visibility of the extreme prices option."""
     unlocked_shockwave = document.getElementById("unlock_fairy_shockwave").checked
+    no_logic = document.getElementById("no_logic").checked
     option = document.getElementById("extreme_price_option")
-    if unlocked_shockwave:
+    if unlocked_shockwave or no_logic:
         option.removeAttribute("disabled")
     else:
         option.setAttribute("disabled", "disabled")
         price_option = document.getElementById("random_prices")
         if price_option.value == "extreme":
             price_option.value = "high"
+
+
+@bind("change", "no_logic")
+def toggle_no_logic(event):
+    """Toggle settings based on the presence of logic."""
+    toggle_extreme_prices_option(event)
+
+
+@bind("click", "nav-patch-tab")
+def toggle_patch_ui(event):
+    """Disable non-cosmetic tabs and show override option if using patch file."""
+    for tab in ["nav-started-tab", "nav-random-tab", "nav-overworld-tab", "nav-difficulty-tab", "nav-qol-tab"]:
+        document.getElementById(tab).setAttribute("disabled", "disabled")
+    document.getElementById("override_div").removeAttribute("hidden")
+    document.getElementById("nav-cosmetics-tab").click()
+
+
+@bind("click", "nav-seed-gen-tab")
+def toggle_patch_ui(event):
+    """Re-enable non-cosmetic tabs and hide override option if generating a new seed."""
+    for tab in ["nav-started-tab", "nav-random-tab", "nav-overworld-tab", "nav-difficulty-tab", "nav-qol-tab"]:
+        document.getElementById(tab).removeAttribute("disabled")
+    document.getElementById("override_div").setAttribute("hidden", "hidden")

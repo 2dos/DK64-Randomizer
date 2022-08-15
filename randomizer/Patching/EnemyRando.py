@@ -9,33 +9,113 @@ from randomizer.Patching.Patcher import ROM
 from randomizer.Spoiler import Spoiler
 
 
-def getBalancedCrownEnemyRando(crown_setting):
+def getBalancedCrownEnemyRando(crown_setting, damage_ohko_setting):
     """Get array of weighted enemies."""
-    temp = []
+    # this library will contain a list for every enemy it needs to generate
+    enemy_swaps_library = {}
+
     if crown_setting != "off":
-        bias = 10
-        ban_getout = False
-        no_bias = False
-        if crown_setting == "easy":
-            bias = 10
-            ban_getout = True
-        elif crown_setting == "medium":
-            bias = 6
-        elif crown_setting == "hard":
-            bias = 2
+
+        # library of every crown map. will have a list of all enemies to put in those maps.
+        enemy_swaps_library = {
+            Maps.JapesCrown: [],
+            Maps.AztecCrown: [],
+            Maps.FactoryCrown: [],
+            Maps.GalleonCrown: [],
+            Maps.ForestCrown: [],
+            Maps.CavesCrown: [],
+            Maps.CastleCrown: [],
+            Maps.HelmCrown: [],
+            Maps.SnidesCrown: [],
+            Maps.LobbyCrown: [],
+        }
+        # make 5 lists of enemies, per category.
+        every_enemy = []  # every enemy (that can appear in crown battles)
+        disruptive_max_1 = []  # anything that isn't... "2" disruptive (because disruptive is 1, at most)
+        disruptive_at_most_kasplat = []  # anything that isn't marked as "disruptive"
+        disruptive_0 = []  # the easiest enemies
+        legacy_hard_mode = []  # legacy map with the exact same balance as the old "Hard" mode
+
+        # fill in the lists with the possibilities that belong in them.
+        for enemy in EnemyMetaData:
+            if EnemyMetaData[enemy].crown_enabled and enemy is not Enemies.GetOut:
+                every_enemy.append(enemy)
+                if EnemyMetaData[enemy].disruptive <= 1:
+                    disruptive_max_1.append(enemy)
+                if EnemyMetaData[enemy].kasplat is True:
+                    disruptive_at_most_kasplat.append(enemy)
+                elif EnemyMetaData[enemy].disruptive == 0:
+                    disruptive_at_most_kasplat.append(enemy)
+                    disruptive_0.append(enemy)
+        # the legacy_hard_mode list is trickier to fill, but here goes:
+        bias = 2
         for enemy in EnemyMetaData.keys():
             if EnemyMetaData[enemy].crown_enabled:
-                if not ban_getout or enemy != Enemies.GetOut:
-                    base_weight = EnemyMetaData[enemy].crown_weight
-                    weight_diff = abs(base_weight - bias)
-                    new_weight = abs(10 - weight_diff)
-                    if no_bias:
-                        new_weight = 10
-                    if enemy == Enemies.GetOut:
-                        new_weight = 1
-                    for x in range(new_weight):
-                        temp.append(enemy)
-    return temp
+                base_weight = EnemyMetaData[enemy].crown_weight
+                weight_diff = abs(base_weight - bias)
+                new_weight = abs(10 - weight_diff)
+                if damage_ohko_setting is False or enemy is not Enemies.GetOut:
+                    for count in range(new_weight):
+                        legacy_hard_mode.append(enemy)
+        # picking enemies to put in the crown battles
+        if crown_setting == "easy":
+            for map_id in enemy_swaps_library:
+                enemy_swaps_library[map_id].append(random.choice(disruptive_max_1))
+                enemy_swaps_library[map_id].append(random.choice(disruptive_0))
+                enemy_swaps_library[map_id].append(random.choice(disruptive_0))
+                if map_id == Maps.GalleonCrown or map_id == Maps.LobbyCrown or map_id == Maps.HelmCrown:
+                    enemy_swaps_library[map_id].append(random.choice(disruptive_0))
+        elif crown_setting == "medium":
+            new_enemy = 0
+            for map_id in enemy_swaps_library:
+                count_disruptive = 0
+                count_kasplats = 0
+                number_of_enemies = 3
+                get_out_spawned_this_map = False
+                if map_id == Maps.GalleonCrown or map_id == Maps.LobbyCrown or map_id == Maps.HelmCrown:
+                    number_of_enemies = 4
+                for count in range(number_of_enemies):
+                    if count_disruptive == 0:
+                        if count_kasplats < 2:
+                            new_enemy = random.choice(every_enemy)
+                        elif count_kasplats == 2:
+                            new_enemy = random.choice(disruptive_max_1)
+                        elif count_kasplats == 3:
+                            new_enemy = random.choice(disruptive_0)
+                    elif count_disruptive == 1:
+                        if count_kasplats < 2:
+                            new_enemy = random.choice(disruptive_max_1)
+                        elif count_kasplats == 2:
+                            new_enemy = random.choice(disruptive_0)
+                    elif count_disruptive == 2:
+                        if count_kasplats == 0:
+                            new_enemy = random.choice(disruptive_at_most_kasplat)
+                        elif count_kasplats == 1:
+                            new_enemy = random.choice(disruptive_0)
+                    elif count_kasplats > 3 or (count_kasplats > 2 and count_disruptive > 1) or (count_kasplats == 2 and count_disruptive == 2):
+                        print("This is a mistake in the crown enemy algorithm. Report this to the devs.")
+                        new_enemy = Enemies.BeaverGold
+                    # Add in a chance for Get Out to appear in crown battles.
+                    if damage_ohko_setting is False and count_disruptive < 2 and get_out_spawned_this_map is False and random.randint(0, 1000) > 994:
+                        new_enemy = Enemies.GetOut
+                        get_out_spawned_this_map = True
+                    # We picked a new enemy, let's update our information and add it to the list
+                    if EnemyMetaData[new_enemy].kasplat is True:
+                        count_kasplats = count_kasplats + 1
+                    count_disruptive = EnemyMetaData[new_enemy].disruptive + count_disruptive
+                    enemy_swaps_library[map_id].append(new_enemy)
+        elif crown_setting == "hard":
+            for map_id in enemy_swaps_library:
+                number_of_enemies = 3
+                if map_id == Maps.GalleonCrown or map_id == Maps.LobbyCrown or map_id == Maps.HelmCrown:
+                    number_of_enemies = 4
+                for count in range(number_of_enemies):
+                    enemy_swaps_library[map_id].append(random.choice(legacy_hard_mode))
+        # one last shuffle, to make sure any enemy can spawn in any spot
+        for map_id in enemy_swaps_library:
+            if len(enemy_swaps_library[map_id]) > 0:
+                random.shuffle(enemy_swaps_library[map_id])
+    return enemy_swaps_library
 
 
 def randomize_enemies(spoiler: Spoiler):
@@ -99,7 +179,7 @@ def randomize_enemies(spoiler: Spoiler):
         Maps.ForestRafters,
         Maps.ForestMillAttic,
         Maps.ForestThornvineBarn,
-        Maps.ForestSpider,
+        # Maps.ForestSpider, # Causes a lot of enemies to fall into the pit of their own volition
         Maps.ForestMillFront,
         Maps.ForestMillBack,
         Maps.ForestLankyMushroomsRoom,
@@ -183,10 +263,9 @@ def randomize_enemies(spoiler: Spoiler):
         Maps.StashSnatchInsane,
     ]
     minigame_maps_beavers = [
-        # Currently crashes upon completion (Malloc issue)
-        # Maps.BeaverBotherEasy,
-        # Maps.BeaverBotherNormal,
-        # Maps.BeaverBotherHard,
+        Maps.BeaverBotherEasy,
+        Maps.BeaverBotherNormal,
+        Maps.BeaverBotherHard,
     ]
     minigame_maps_total = minigame_maps_easy.copy()
     minigame_maps_total.extend(minigame_maps_beatable)
@@ -233,9 +312,14 @@ def randomize_enemies(spoiler: Spoiler):
             Enemies.Pufftup,
         ],
     }
+    crown_enemies_library = {}
     crown_enemies = []
+    for enemy in EnemyMetaData:
+        if EnemyMetaData[enemy].crown_enabled is True:
+            crown_enemies.append(enemy)
     if spoiler.settings.enemy_rando or spoiler.settings.kasplat_rando or spoiler.settings.crown_enemy_rando != "off":  # TODO: Add option for crown enemy rando
-        crown_enemies = getBalancedCrownEnemyRando(spoiler.settings.crown_enemy_rando)
+        boolean_damage_is_ohko = spoiler.settings.damage_amount == "ohko"
+        crown_enemies_library = getBalancedCrownEnemyRando(spoiler.settings.crown_enemy_rando, boolean_damage_is_ohko)
         minigame_enemies_simple = []
         minigame_enemies_beatable = []
         minigame_enemies_nolimit = []
@@ -272,10 +356,6 @@ def randomize_enemies(spoiler: Spoiler):
                 for x in range(spawner_count):
                     arr.append(random.choice(enemy_classes[enemy_class]))
                 enemy_swaps[enemy_class] = arr
-            if spoiler.settings.crown_enemy_rando != "off":
-                crown_swaps = []
-                for x in range(spawner_count):
-                    crown_swaps.append(random.choice(crown_enemies))
             offset += 2
             for x in range(spawner_count):
                 ROM().seek(cont_map_spawner_address + offset)
@@ -389,13 +469,21 @@ def randomize_enemies(spoiler: Spoiler):
                                     ROM().seek(cont_map_spawner_address + spawner["offset"] + speed_offset)
                                     ROM().writeMultipleBytes(new_speed, 1)
             if spoiler.settings.crown_enemy_rando != "off" and cont_map_id in crown_maps:
-                crown_index = 0
+                # Determine Crown Timer
+                low_limit = 5
+                if spoiler.settings.crown_enemy_rando == "easy":
+                    low_limit = 5
+                elif spoiler.settings.crown_enemy_rando == "medium":
+                    low_limit = 15
+                elif spoiler.settings.crown_enemy_rando == "hard":
+                    low_limit = 30
+                crown_timer = random.randint(low_limit, 60)
+                # Place Enemies
                 for spawner in vanilla_spawners:
                     if spawner["enemy_id"] in crown_enemies:
-                        new_enemy_id = crown_swaps[crown_index]
+                        new_enemy_id = crown_enemies_library[cont_map_id].pop()
                         ROM().seek(cont_map_spawner_address + spawner["offset"])
                         ROM().writeMultipleBytes(new_enemy_id, 1)
-                        crown_index += 1
                         if new_enemy_id in EnemyMetaData.keys():
                             ROM().seek(cont_map_spawner_address + spawner["offset"] + 0x10)
                             ROM().writeMultipleBytes(EnemyMetaData[new_enemy_id].aggro, 1)
@@ -405,6 +493,20 @@ def randomize_enemies(spoiler: Spoiler):
                             if EnemyMetaData[new_enemy_id].air:
                                 ROM().seek(cont_map_spawner_address + spawner["offset"] + 0x6)
                                 ROM().writeMultipleBytes(300, 2)
+                            if new_enemy_id == Enemies.GetOut:
+                                ROM().seek(cont_map_spawner_address + spawner["offset"] + 0xA)
+                                get_out_timer = 0
+                                if crown_timer > 20:
+                                    damage_mult = 1
+                                    damage_amts = {
+                                        "double": 2,
+                                        "quad": 4,
+                                        "ohko": 12,
+                                    }
+                                    if spoiler.settings.damage_amount in damage_amts:
+                                        damage_mult = damage_amts[spoiler.settings.damage_amount]
+                                    get_out_timer = random.randint(int(crown_timer / (12 / damage_mult)) + 1, crown_timer - 1)
+                                ROM().writeMultipleBytes(get_out_timer, 1)
                             ROM().seek(cont_map_spawner_address + spawner["offset"] + 0xF)
                             default_scale = int.from_bytes(ROM().readBytes(1), "big")
                             if EnemyMetaData[new_enemy_id].size_cap > 0:
@@ -422,11 +524,4 @@ def randomize_enemies(spoiler: Spoiler):
                                     ROM().writeMultipleBytes(random.randint(min_speed, agg_speed), 1)
                     elif spawner["enemy_id"] == Enemies.BattleCrownController:
                         ROM().seek(cont_map_spawner_address + spawner["offset"] + 0xB)
-                        low_limit = 5
-                        if spoiler.settings.crown_enemy_rando == "easy":
-                            low_limit = 5
-                        elif spoiler.settings.crown_enemy_rando == "medium":
-                            low_limit = 15
-                        elif spoiler.settings.crown_enemy_rando == "hard":
-                            low_limit = 30
-                        ROM().writeMultipleBytes(random.randint(low_limit, 60), 1)  # Determine Crown length. DK64 caps at 255 seconds
+                        ROM().writeMultipleBytes(crown_timer, 1)  # Determine Crown length. DK64 caps at 255 seconds

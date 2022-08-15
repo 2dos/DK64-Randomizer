@@ -28,7 +28,21 @@ function save_text_as_file(text, file) {
 }
 
 window.onerror = function (error) {
-  toast_alert(error.toString());
+  banned_errors_text = [
+    '"undefined" is not valid JSON', // Loading up the site without any cookies
+    "Unexpected non-whitespace character after JSON at position", // Loading up the site when your cookies reflect a prior version
+    "Unexpected non-whitespace character after JSON data at line", // Same as above
+    "Unexpected token ; in JSON", // Token Error
+  ];
+  is_banned = false;
+  banned_errors_text.forEach((item) => {
+    if (error.toString().toLowerCase().indexOf(item.toLowerCase()) > -1) {
+      is_banned = true;
+    }
+  });
+  if (!is_banned) {
+    toast_alert(error.toString());
+  }
 };
 function toast_alert(text) {
   try {
@@ -141,21 +155,23 @@ function eraseCookie(name) {
 
 function load_cookies() {
   try {
-    json = JSON.parse(getCookie("saved_settings"));
-    if (json !== null) {
-      for (var key in json) {
-        element = document.getElementsByName(key)[0];
-        if (json[key] == "True") {
-          element.checked = true;
-        } else if (json[key] == "False") {
-          element.checked = false;
-        }
-        try {
-          element.value = json[key];
-          if (element.hasAttribute("data-slider-value")) {
-            element.setAttribute("data-slider-value", json[key]);
+    if (getCookie("saved_settings") != null) {
+      json = JSON.parse(getCookie("saved_settings"));
+      if (json !== null) {
+        for (var key in json) {
+          element = document.getElementsByName(key)[0];
+          if (json[key] == "True") {
+            element.checked = true;
+          } else if (json[key] == "False") {
+            element.checked = false;
           }
-        } catch {}
+          try {
+            element.value = json[key];
+            if (element.hasAttribute("data-slider-value")) {
+              element.setAttribute("data-slider-value", json[key]);
+            }
+          } catch {}
+        }
       }
     } else {
       load_presets();

@@ -108,6 +108,7 @@ extern void toggleStandardAmmo(void);
 extern void initItemDropTable(void);
 extern void newGuardCode(void);
 extern void goldBeaverCode(void);
+extern void beaverExtraHitHandle(void);
 extern void CBDing(void);
 extern void handleSpiderTrapCode(void);
 extern void fastWarpShockwaveFix(void);
@@ -119,4 +120,7 @@ extern void fixTBarrelsAndBFI(int init);
 extern void purchaseMove(shop_paad* paad);
 extern void getNextMoveText(void);
 extern void displayBFIMoveText(void);
+extern void fixRBSlowTurn(void);
+extern void postKRoolSaveCheck(void);
+
 //extern void getRandoNextMovePurchase(shop_paad* shop_info, KongBase* moves);

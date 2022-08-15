@@ -13,7 +13,7 @@ def generateTracker(spoilerJson):
     start = tracker.index(header) + len(header)
 
     generated = "\n"
-    generated += "<h4>Seed: " + spoiler["Settings"]["seed"] + "</h4>\n"
+    generated += "<h4>Seed: " + spoiler["Settings"]["Seed"] + "</h4>\n"
 
     if "Locations" in spoiler:
         generated += "<h3>Locations</h3>\n"
