@@ -944,6 +944,9 @@ def PlaceKongs(spoiler, kongItems, kongLocations):
     # Vanilla levels can be treated as if the level shuffler randomly placed all the levels in the same order
     elif spoiler.settings.shuffle_loading_zones in ("levels", "none"):
         latestLogicallyAllowedLevel = len(ownedKongs) + 1
+        # Logically we can always enter any level on hard level progression
+        if spoiler.settings.hard_level_progression:
+            latestLogicallyAllowedLevel = 7
         logicallyAccessibleKongLocations = GetLogicallyAccessibleKongLocations(spoiler, kongLocations, ownedKongs, latestLogicallyAllowedLevel)
         while len(ownedKongs) != 5:
             # If there aren't any accessible Kong locations, then the level order shuffler has a bug (this shouldn't happen)
@@ -969,8 +972,9 @@ def PlaceKongs(spoiler, kongItems, kongLocations):
             kongLocations.remove(progressionLocation)
             # Pick a Kong to unlock from the locked Kongs
             kongToBeFreed = random.choice(kongItems)
-            # With this kong, we can progress one level further
-            latestLogicallyAllowedLevel += 1
+            # With this kong, we can progress one level further (if we care about this logic)
+            if not spoiler.settings.hard_level_progression:
+                latestLogicallyAllowedLevel += 1
             # If this Kong must unlock more locked Kong locations, we have to be more careful
             # The second condition here because we don't need to worry about the last placed Kong
             if len(logicallyAccessibleKongLocations) == 0 and len(kongItems) > 1:
@@ -1042,12 +1046,18 @@ def FillKongsAndMoves(spoiler):
             locationsLockingKongs = [location for location in kongLocations]
             ownedKongs = [kong for kong in spoiler.settings.starting_kong_list]
             latestLogicallyAllowedLevel = spoiler.settings.starting_kongs_count + 1
+            # Logically we can always enter any level on hard level progression
+            if spoiler.settings.hard_level_progression:
+                latestLogicallyAllowedLevel = 100
             levelIndex = 1
             checkedAllLogicallyAvailableLevels = False
             # Loop until we've logically unlocked all the kongs
             # It may take multiple loops through available levels before we unlock all kongs
             while len(ownedKongs) != 5:
                 latestLogicallyAllowedLevel = len(ownedKongs) + 1
+                # Logically we can always enter any level on hard level progression
+                if spoiler.settings.hard_level_progression:
+                    latestLogicallyAllowedLevel = 100
                 priorityItemsDict = {}
                 kongToBeGained = None
                 # For each level that has a locked kong, identify the items needed to unlock them
@@ -1137,7 +1147,11 @@ def FillKongsAndMoves(spoiler):
                     elif levelIndex == latestLogicallyAllowedLevel:
                         checkedAllLogicallyAvailableLevels = True
                     # Wrap back to level 1 if we hit the end - it's logically possible we've now unlocked a kong that frees an earlier kong
-                    levelIndex = (levelIndex % latestLogicallyAllowedLevel) + 1
+                    if spoiler.settings.hard_level_progression:
+                        levelIndex = (levelIndex % 7) + 1
+                        checkedAllLogicallyAvailableLevels = levelIndex == 1
+                    else:
+                        levelIndex = (levelIndex % latestLogicallyAllowedLevel) + 1
                 # Undo any level blocking that may have been performed
                 BlockAccessToLevel(spoiler.settings, 100)
 
@@ -1185,7 +1199,10 @@ def FillKongsAndMovesForLevelOrder(spoiler):
             # Fill the kongs and the moves
             FillKongsAndMoves(spoiler)
             # Update progression requirements based on what is now accessible after all shuffles are done
-            SetNewProgressionRequirements(spoiler.settings)
+            if spoiler.settings.hard_level_progression:
+                SetNewProgressionRequirementsUnordered(spoiler.settings)
+            else:
+                SetNewProgressionRequirements(spoiler.settings)
             # Once progression requirements updated, no longer assume we need kongs freed for level progression
             spoiler.settings.kongs_for_progression = False
             # Check if game is beatable
@@ -1271,9 +1288,12 @@ def SetNewProgressionRequirements(settings: Settings):
         else:
             accessibleMoves = [LocationList[x].item for x in accessible if LocationList[x].type == Types.Shop and LocationList[x].item != Items.NoItem and LocationList[x].item is not None]
             ownedMoves[previousLevel] = accessibleMoves
-    # Cap the B. Locker and T&S amounts based on a random fraction of accessible bananas & GBs
+    # Cap the B. Locker amounts based on a random fraction of accessible bananas & GBs
     BLOCKER_MIN = 0.4
     BLOCKER_MAX = 0.7
+    if settings.hard_blockers:
+        BLOCKER_MIN = 0.6
+        BLOCKER_MAX = 0.95
     settings.EntryGBs = [
         min(settings.blocker_0, 1),  # First B. Locker shouldn't be more than 1 GB
         min(settings.blocker_1, max(1, round(random.uniform(BLOCKER_MIN, BLOCKER_MAX) * goldenBananaTotals[0]))),
@@ -1298,6 +1318,213 @@ def SetNewProgressionRequirements(settings: Settings):
     ShuffleBossesBasedOnOwnedItems(settings, ownedKongs, ownedMoves)
 
 
+def SetNewProgressionRequirementsUnordered(settings: Settings):
+    """Set level progression requirements based on a random path of accessible levels."""
+    ownedKongs = {}
+    ownedMoves = {}
+    allMoves = ItemPool.DonkeyMoves.copy()
+    allMoves.extend(ItemPool.DiddyMoves)
+    allMoves.extend(ItemPool.LankyMoves)
+    allMoves.extend(ItemPool.TinyMoves)
+    allMoves.extend(ItemPool.ChunkyMoves)
+    allMoves.extend(ItemPool.ImportantSharedMoves)
+    KeyEvents = [
+        Events.JapesKeyTurnedIn,
+        Events.AztecKeyTurnedIn,
+        Events.FactoryKeyTurnedIn,
+        Events.GalleonKeyTurnedIn,
+        Events.ForestKeyTurnedIn,
+        Events.CavesKeyTurnedIn,
+        Events.CastleKeyTurnedIn,
+        Events.HelmKeyTurnedIn,
+    ]
+
+    # Before doing anything else, determine how many GBs we can access without entering any levels
+    # This is very likely to be 1, but depending on the settings there are decent odds more are available
+    BlockAccessToLevel(settings, 0)
+    Reset()
+    accessible = GetAccessibleLocations(settings, [])
+    runningGBTotal = LogicVariables.GoldenBananas
+    minimumBLockerGBs = 1
+
+    # Reset B. Lockers and T&S to initial values
+    settings.EntryGBs = [
+        settings.blocker_0,
+        settings.blocker_1,
+        settings.blocker_2,
+        settings.blocker_3,
+        settings.blocker_4,
+        settings.blocker_5,
+        settings.blocker_6,
+        settings.blocker_7,
+    ]
+    settings.BossBananas = [
+        settings.troff_0,
+        settings.troff_1,
+        settings.troff_2,
+        settings.troff_3,
+        settings.troff_4,
+        settings.troff_5,
+        settings.troff_6,
+    ]
+    # We also need to remember T&S values in an array as we'll overwrite the settings value in the process of determining location availability
+    initialTNS = [
+        settings.troff_0,
+        settings.troff_1,
+        settings.troff_2,
+        settings.troff_3,
+        settings.troff_4,
+        settings.troff_5,
+        settings.troff_6,
+    ]
+
+    # Cap the B. Locker amounts based on a random fraction of accessible GBs
+    BLOCKER_MIN = 0.4
+    BLOCKER_MAX = 0.7
+    if settings.hard_blockers:
+        BLOCKER_MIN = 0.6
+        BLOCKER_MAX = 0.95
+
+    levelsProgressed = []
+    # Keep track of what lobbies are accessible, starting with an array of indexes
+    openLobbyIndexes = [1, 2, 3, 4, 5, 6, 7]
+    if not settings.open_lobbies:
+        for key in settings.krool_keys_required:
+            if key == Events.JapesKeyTurnedIn:
+                openLobbyIndexes.remove(2)
+            elif key == Events.AztecKeyTurnedIn:
+                openLobbyIndexes.remove(3)
+                openLobbyIndexes.remove(4)
+            elif key == Events.GalleonKeyTurnedIn:
+                openLobbyIndexes.remove(5)
+            elif key == Events.ForestKeyTurnedIn:
+                openLobbyIndexes.remove(6)
+                openLobbyIndexes.remove(7)
+    # We need a kong who can enter the Caves Lobby logically
+    kongLockedCavesLobby = False
+    if 6 in openLobbyIndexes and Kongs.donkey not in settings.starting_kong_list and Kongs.chunky not in settings.starting_kong_list:
+        openLobbyIndexes.remove(6)
+        kongLockedCavesLobby = True  # If we don't have one yet, keep track of that as we progress
+    # Convert indexes to the shuffled levels
+    openLevels = [settings.level_order[index] for index in openLobbyIndexes]
+    foundProgressionKeyEvents = []
+
+    # Until we've completed every level...
+    while len(levelsProgressed) < 7:
+        # Pick a random accessible B. Locker
+        accessibleIncompleteLevels = [level for level in openLevels if level not in levelsProgressed and settings.EntryGBs[level] <= runningGBTotal]
+        # If we have no levels accessible, we need to lower a B. Locker count to make one accessible
+        if len(accessibleIncompleteLevels) == 0:
+            openUnprogressedLevels = [level for level in openLevels if level not in levelsProgressed]
+            if len(openUnprogressedLevels) == 0:
+                raise Ex.FillException("Hard level order shuffler failed to progress through levels somehow - SEND THIS TO THE DEVS!")
+            # Next level chosen randomly (possible room for improvement here?) from accessible levels
+            nextLevelToBeat = random.choice(openUnprogressedLevels)
+            # If we are allowed to randomize B. Lockers as we please, try to swap a lower random B. Locker value with this level's
+            if settings.randomize_blocker_required_amounts:
+                # Find the lowest GB B. Locker
+                incompleteLevelWithLowestBLocker = nextLevelToBeat
+                for level in range(0, len(settings.EntryGBs)):
+                    if level not in levelsProgressed and settings.EntryGBs[level] < settings.EntryGBs[incompleteLevelWithLowestBLocker]:
+                        incompleteLevelWithLowestBLocker = level
+                # Swap B. Locker values with the randomly chosen accessible level
+                temp = settings.EntryGBs[incompleteLevelWithLowestBLocker]
+                settings.EntryGBs[incompleteLevelWithLowestBLocker] = settings.EntryGBs[nextLevelToBeat]
+                settings.EntryGBs[nextLevelToBeat] = temp
+            # If the level still isn't accessible, we have to truncate the required amount
+            if settings.EntryGBs[nextLevelToBeat] > runningGBTotal:
+                # Each B. Locker must be greater than the previous one and at least a specified percentage of availalbe GBs
+                settings.EntryGBs[nextLevelToBeat] = random.randint(max(minimumBLockerGBs, round(runningGBTotal * BLOCKER_MIN)), round(runningGBTotal * BLOCKER_MAX))
+            accessibleIncompleteLevels = [nextLevelToBeat]
+        else:
+            nextLevelToBeat = random.choice(accessibleIncompleteLevels)
+            # Our last few lobbies could have very low B. Lockers, this condition makes sure B. Lockers always increase in value
+            if settings.randomize_blocker_required_amounts and runningGBTotal > settings.blocker_max and settings.EntryGBs[nextLevelToBeat] < minimumBLockerGBs:
+                settings.EntryGBs[nextLevelToBeat] = random.randint(minimumBLockerGBs, settings.blocker_max)
+        minimumBLockerGBs = settings.EntryGBs[nextLevelToBeat]  # This B. Locker is now the minimum for the next one
+        levelsProgressed.append(nextLevelToBeat)
+
+        # Determine if we found a level progression key
+        if not settings.open_lobbies:
+            lobbyIndex = -1
+            for key in settings.level_order.keys():
+                if settings.level_order[key] == nextLevelToBeat:
+                    lobbyIndex = key - 1
+                    break
+            foundKeyEvent = KeyEvents[lobbyIndex]
+            # If we need this key to open new lobbies, it's a progression key
+            if foundKeyEvent in settings.krool_keys_required and foundKeyEvent not in [Events.FactoryKeyTurnedIn, Events.CavesKeyTurnedIn, Events.CastleKeyTurnedIn]:
+                foundProgressionKeyEvents.append(foundKeyEvent)
+
+        # Determine the Kong, GB, and Move accessibility from this level
+        # Block the ability to complete the boss of every level we could complete but haven't yet (including this one)
+        # This allows logic to get moves from any other accessible level to beat this one
+        BlockCompletionOfLevelSet(settings, accessibleIncompleteLevels)
+        Reset()
+        accessible = GetAccessibleLocations(settings, [])
+        runningGBTotal = LogicVariables.GoldenBananas
+
+        # If we've progressed through all open levels, then we need to pick a progression key we've found to acquire and set that level's Troff n Scoff
+        if len(openLevels) == len(levelsProgressed) and any(foundProgressionKeyEvents):
+            chosenKeyEvent = random.choice(foundProgressionKeyEvents)
+            foundProgressionKeyEvents.remove(chosenKeyEvent)
+            # Determine what level needs to be completed
+            if chosenKeyEvent == Events.JapesKeyTurnedIn:
+                openLevels.append(settings.level_order[2])
+                bossCompletedLevel = settings.level_order[1]
+            elif chosenKeyEvent == Events.AztecKeyTurnedIn:
+                openLevels.append(settings.level_order[3])
+                openLevels.append(settings.level_order[4])
+                bossCompletedLevel = settings.level_order[2]
+            elif chosenKeyEvent == Events.GalleonKeyTurnedIn:
+                openLevels.append(settings.level_order[5])
+                bossCompletedLevel = settings.level_order[4]
+            elif chosenKeyEvent == Events.ForestKeyTurnedIn:
+                kongLockedCavesLobby = True
+                openLevels.append(settings.level_order[7])
+                bossCompletedLevel = settings.level_order[5]
+            availableCBs = sum(LogicVariables.ColoredBananas[bossCompletedLevel])
+            # If we don't have enough CBs to beat the boss per the settings-determined value
+            if availableCBs < initialTNS[bossCompletedLevel]:
+                # Reduce the requirement to an amount guaranteed to be available, based on the ratio of the initial T&S roll
+                randomlyRolledRatio = initialTNS[bossCompletedLevel] / settings.troff_max
+                settings.BossBananas[bossCompletedLevel] = round(availableCBs * randomlyRolledRatio)
+            else:
+                settings.BossBananas[bossCompletedLevel] = initialTNS[bossCompletedLevel]
+            ownedKongs[bossCompletedLevel] = LogicVariables.GetKongs()
+            if settings.unlock_all_moves:
+                ownedMoves[bossCompletedLevel] = allMoves
+            else:
+                accessibleMoves = [LocationList[x].item for x in accessible if LocationList[x].type == Types.Shop and LocationList[x].item != Items.NoItem and LocationList[x].item is not None]
+                ownedMoves[bossCompletedLevel] = accessibleMoves
+
+        # Check Caves Lobby entrance accessibility. This is independent all other checks because it's not the key that unlocks the kongs, it's the level itself.
+        if kongLockedCavesLobby:
+            ownedKongsByThisLevel = LogicVariables.GetKongs()
+            if (
+                Kongs.donkey in ownedKongsByThisLevel
+                or Kongs.chunky in ownedKongsByThisLevel
+                or (Kongs.tiny in ownedKongsByThisLevel and Items.PonyTailTwirl in [LocationList[x].item for x in accessible if LocationList[x].type == Types.Shop])
+            ):
+                kongLockedCavesLobby = False
+                openLevels.append(settings.level_order[6])
+
+    # We still need to set T&S for some levels, but we'll have access to every level by this point
+    for level in range(len(settings.BossBananas)):
+        # This means that the level hasn't been unset from completion blocking
+        if settings.BossBananas[level] > 500:
+            # We should have access to everything by this point
+            ownedKongs[level] = LogicVariables.GetKongs()
+            ownedMoves[level] = allMoves
+            settings.BossBananas[level] = initialTNS[level]
+    # Because we might not have sorted the B. Lockers when they're randomly generated, Helm might be a surprisingly low number if it's not maximized
+    if settings.randomize_blocker_required_amounts and not settings.maximize_helm_blocker and settings.EntryGBs[7] < minimumBLockerGBs:
+        # Ensure that Helm is the most expensive B. Locker
+        settings.EntryGBs[7] = random.randint(minimumBLockerGBs, settings.blocker_max)
+    # Place boss locations based on kongs and moves found for each level
+    ShuffleBossesBasedOnOwnedItems(settings, ownedKongs, ownedMoves)
+
+
 def BlockAccessToLevel(settings: Settings, level):
     """Assume the level index passed in is the furthest level you have access to in the level order."""
     for i in range(0, 7):
@@ -1311,6 +1538,14 @@ def BlockAccessToLevel(settings: Settings, level):
             settings.BossBananas[i] = 0
     # Update values based on actual level progression
     ShuffleExits.UpdateLevelProgression(settings)
+
+
+def BlockCompletionOfLevelSet(settings: Settings, lockedLevels):
+    """Prevent acquiring the keys of the levels provided."""
+    for i in range(0, 7):
+        if i in lockedLevels:
+            # This level is incompletable
+            settings.BossBananas[i] = 1000
 
 
 def Generate_Spoiler(spoiler):

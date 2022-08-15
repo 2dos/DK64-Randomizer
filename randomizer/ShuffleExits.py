@@ -286,7 +286,9 @@ def ShuffleLevelExits(newLevelOrder: dict = None):
 
 def ShuffleLevelOrderWithRestrictions(settings: Settings):
     """Determine level order given starting kong and the need to find more kongs along the way."""
-    if settings.starting_kongs_count == 1:
+    if settings.hard_level_progression:
+        newLevelOrder = ShuffleLevelOrderUnrestricted(settings)
+    elif settings.starting_kongs_count == 1:
         newLevelOrder = ShuffleLevelOrderForOneStartingKong(settings)
     else:
         newLevelOrder = ShuffleLevelOrderForMultipleStartingKongs(settings)
@@ -294,6 +296,24 @@ def ShuffleLevelOrderWithRestrictions(settings: Settings):
         raise Ex.EntrancePlacementException("Invalid level order with fewer than the 7 required main levels.")
     settings.level_order = newLevelOrder
     ShuffleLevelExits(newLevelOrder)
+
+
+def ShuffleLevelOrderUnrestricted(settings):
+    """Shuffle the level order without Kong placement restrictions."""
+    newLevelOrder = {
+        1: None,
+        2: None,
+        3: None,
+        4: None,
+        5: None,
+        6: None,
+        7: None,
+    }
+    allLevels = [Levels.JungleJapes, Levels.AngryAztec, Levels.FranticFactory, Levels.GloomyGalleon, Levels.FungiForest, Levels.CrystalCaves, Levels.CreepyCastle]
+    random.shuffle(allLevels)
+    for i in range(len(allLevels)):
+        newLevelOrder[i + 1] = allLevels[i]
+    return newLevelOrder
 
 
 def ShuffleLevelOrderForOneStartingKong(settings):
