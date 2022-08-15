@@ -729,30 +729,3 @@ void displayBFIMoveText(void) {
 		spawnActor(0x144,0);
 	}
 }
-
-// SetFlag Functions
-	// Training Barrels
-		// DBarrel Flag: 0x800295F4
-		// OBarrel Flag: 0x80029604
-		// VBarrel Flag: 0x800295FC
-		// BBarrel Flag: 0x800295D8
-		// TBarrel SetFlag: 0x80029610
-		// BFI Camera/Shockwave: 0x80027F28
-
-// CheckFlag Functions
-	// Training Barrels
-		// DBarrel Flag: 0x80681CE0
-		// OBarrel Flag: 0x80681CF8
-		// BBarrel Flag: 0x80681D04
-		// VBarrel Flag: 0x80681D10
-		// TBarrel CheckFlag: 0x80681D38
-		// All TBarrels Complete call: 0x80681C98
-		// Camera:
-			// Usage: 0x806E9814
-			// Isles Fairies Display: 0x806AB0F8
-			// Other Fairies Display: 0x806AAFB8
-			// Film Display: 0x806AA764
-			// Film Refill: 0x8060D988
-
-// Other
-	// Simian Slam: 0x80027318
