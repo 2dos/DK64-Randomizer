@@ -1288,9 +1288,12 @@ def SetNewProgressionRequirements(settings: Settings):
         else:
             accessibleMoves = [LocationList[x].item for x in accessible if LocationList[x].type == Types.Shop and LocationList[x].item != Items.NoItem and LocationList[x].item is not None]
             ownedMoves[previousLevel] = accessibleMoves
-    # Cap the B. Locker and T&S amounts based on a random fraction of accessible bananas & GBs
+    # Cap the B. Locker amounts based on a random fraction of accessible bananas & GBs
     BLOCKER_MIN = 0.4
     BLOCKER_MAX = 0.7
+    if settings.hard_blockers:
+        BLOCKER_MIN = 0.6
+        BLOCKER_MAX = 0.95
     settings.EntryGBs = [
         min(settings.blocker_0, 1),  # First B. Locker shouldn't be more than 1 GB
         min(settings.blocker_1, max(1, round(random.uniform(BLOCKER_MIN, BLOCKER_MAX) * goldenBananaTotals[0]))),
@@ -1375,6 +1378,13 @@ def SetNewProgressionRequirementsUnordered(settings: Settings):
         settings.troff_6,
     ]
 
+    # Cap the B. Locker amounts based on a random fraction of accessible GBs
+    BLOCKER_MIN = 0.4
+    BLOCKER_MAX = 0.7
+    if settings.hard_blockers:
+        BLOCKER_MIN = 0.6
+        BLOCKER_MAX = 0.95
+
     levelsProgressed = []
     # Keep track of what lobbies are accessible, starting with an array of indexes
     openLobbyIndexes = [1, 2, 3, 4, 5, 6, 7]
@@ -1392,8 +1402,8 @@ def SetNewProgressionRequirementsUnordered(settings: Settings):
                 openLobbyIndexes.remove(7)
     # We need a kong who can enter the Caves Lobby logically
     kongLockedCavesLobby = False
-    if 5 in openLobbyIndexes and Kongs.donkey not in settings.starting_kong_list and Kongs.chunky not in settings.starting_kong_list:
-        openLobbyIndexes.remove(5)
+    if 6 in openLobbyIndexes and Kongs.donkey not in settings.starting_kong_list and Kongs.chunky not in settings.starting_kong_list:
+        openLobbyIndexes.remove(6)
         kongLockedCavesLobby = True  # If we don't have one yet, keep track of that as we progress
     # Convert indexes to the shuffled levels
     openLevels = [settings.level_order[index] for index in openLobbyIndexes]
@@ -1405,16 +1415,16 @@ def SetNewProgressionRequirementsUnordered(settings: Settings):
         accessibleIncompleteLevels = [level for level in openLevels if level not in levelsProgressed and settings.EntryGBs[level] <= runningGBTotal]
         # If we have no levels accessible, we need to lower a B. Locker count to make one accessible
         if len(accessibleIncompleteLevels) == 0:
-            asdf = [level for level in openLevels if level not in levelsProgressed]
-            if len(asdf) == 0:
-                print("wtf")
+            openUnprogressedLevels = [level for level in openLevels if level not in levelsProgressed]
+            if len(openUnprogressedLevels) == 0:
+                raise Ex.FillException("Hard level order shuffler failed to progress through levels somehow - SEND THIS TO THE DEVS!")
             # Next level chosen randomly (possible room for improvement here?) from accessible levels
-            nextLevelToBeat = random.choice([level for level in openLevels if level not in levelsProgressed])
+            nextLevelToBeat = random.choice(openUnprogressedLevels)
             # If we are allowed to randomize B. Lockers as we please, try to swap a lower random B. Locker value with this level's
             if settings.randomize_blocker_required_amounts:
                 # Find the lowest GB B. Locker
-                incompleteLevelWithLowestBLocker = 0
-                for level in range(1, len(settings.EntryGBs)):
+                incompleteLevelWithLowestBLocker = nextLevelToBeat
+                for level in range(0, len(settings.EntryGBs)):
                     if level not in levelsProgressed and settings.EntryGBs[level] < settings.EntryGBs[incompleteLevelWithLowestBLocker]:
                         incompleteLevelWithLowestBLocker = level
                 # Swap B. Locker values with the randomly chosen accessible level
@@ -1423,11 +1433,14 @@ def SetNewProgressionRequirementsUnordered(settings: Settings):
                 settings.EntryGBs[nextLevelToBeat] = temp
             # If the level still isn't accessible, we have to truncate the required amount
             if settings.EntryGBs[nextLevelToBeat] > runningGBTotal:
-                # Each B. Locker must be greater than the previous one and at least half of the available GBs
-                settings.EntryGBs[nextLevelToBeat] = random.randint(max(minimumBLockerGBs, round(runningGBTotal * 0.5)), runningGBTotal)
+                # Each B. Locker must be greater than the previous one and at least a specified percentage of availalbe GBs
+                settings.EntryGBs[nextLevelToBeat] = random.randint(max(minimumBLockerGBs, round(runningGBTotal * BLOCKER_MIN)), round(runningGBTotal * BLOCKER_MAX))
             accessibleIncompleteLevels = [nextLevelToBeat]
         else:
             nextLevelToBeat = random.choice(accessibleIncompleteLevels)
+            # Our last few lobbies could have very low B. Lockers, this condition makes sure B. Lockers always increase in value
+            if settings.randomize_blocker_required_amounts and runningGBTotal > settings.blocker_max and settings.EntryGBs[nextLevelToBeat] < minimumBLockerGBs:
+                settings.EntryGBs[nextLevelToBeat] = random.randint(minimumBLockerGBs, settings.blocker_max)
         minimumBLockerGBs = settings.EntryGBs[nextLevelToBeat]  # This B. Locker is now the minimum for the next one
         levelsProgressed.append(nextLevelToBeat)
 
@@ -1473,9 +1486,9 @@ def SetNewProgressionRequirementsUnordered(settings: Settings):
             availableCBs = sum(LogicVariables.ColoredBananas[bossCompletedLevel])
             # If we don't have enough CBs to beat the boss per the settings-determined value
             if availableCBs < initialTNS[bossCompletedLevel]:
-                # Reduce the requirement to an amount guaranteed to be available, currently somewhere between half and all of accessible CBs
-                reducedColoredBananaRequirement = random.randint(round(availableCBs * 0.5), availableCBs)
-                settings.BossBananas[bossCompletedLevel] = reducedColoredBananaRequirement
+                # Reduce the requirement to an amount guaranteed to be available, based on the ratio of the initial T&S roll
+                randomlyRolledRatio = initialTNS[bossCompletedLevel] / settings.troff_max
+                settings.BossBananas[bossCompletedLevel] = round(availableCBs * randomlyRolledRatio)
             else:
                 settings.BossBananas[bossCompletedLevel] = initialTNS[bossCompletedLevel]
             ownedKongs[bossCompletedLevel] = LogicVariables.GetKongs()
@@ -1485,9 +1498,7 @@ def SetNewProgressionRequirementsUnordered(settings: Settings):
                 accessibleMoves = [LocationList[x].item for x in accessible if LocationList[x].type == Types.Shop and LocationList[x].item != Items.NoItem and LocationList[x].item is not None]
                 ownedMoves[bossCompletedLevel] = accessibleMoves
 
-        # Check Caves Lobby entrance accessibility. This is independent of both:
-        # 1. The open levels setting
-        # 2. Whether or not the key opens more lobbies (because it's not the key that unlocks the kongs, it's the level itself)
+        # Check Caves Lobby entrance accessibility. This is independent all other checks because it's not the key that unlocks the kongs, it's the level itself.
         if kongLockedCavesLobby:
             ownedKongsByThisLevel = LogicVariables.GetKongs()
             if (
@@ -1501,11 +1512,15 @@ def SetNewProgressionRequirementsUnordered(settings: Settings):
     # We still need to set T&S for some levels, but we'll have access to every level by this point
     for level in range(len(settings.BossBananas)):
         # This means that the level hasn't been unset from completion blocking
-        if settings.BossBananas[level] == 1000:
+        if settings.BossBananas[level] > 500:
             # We should have access to everything by this point
             ownedKongs[level] = LogicVariables.GetKongs()
             ownedMoves[level] = allMoves
             settings.BossBananas[level] = initialTNS[level]
+    # Because we might not have sorted the B. Lockers when they're randomly generated, Helm might be a surprisingly low number if it's not maximized
+    if settings.randomize_blocker_required_amounts and not settings.maximize_helm_blocker and settings.EntryGBs[7] < minimumBLockerGBs:
+        # Ensure that Helm is the most expensive B. Locker
+        settings.EntryGBs[7] = random.randint(minimumBLockerGBs, settings.blocker_max)
     # Place boss locations based on kongs and moves found for each level
     ShuffleBossesBasedOnOwnedItems(settings, ownedKongs, ownedMoves)
 

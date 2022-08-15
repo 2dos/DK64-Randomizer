@@ -37,6 +37,8 @@
     "perma_death":false,
     "disable_tag_barrels":false,
     "hard_level_progression":false,
+    "hard_blockers":false,
+    "hard_troff_n_scoff":false,
     "unlock_fairy_shockwave":false,
     "bonus_barrel_rando":true,
     "gnawty_barrels":false,

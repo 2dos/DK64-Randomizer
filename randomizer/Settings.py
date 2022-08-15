@@ -49,6 +49,8 @@ class Settings:
         self.blocker_max = self.blocker_text if self.blocker_text else 50
         self.troff_max = self.troff_text if self.troff_text else 270
         self.troff_min = [0.25, 0.3, 0.35, 0.4, 0.45, 0.5, 0.55]  # Weights for the minimum value of troff
+        if self.hard_troff_n_scoff:
+            self.troff_min = [0.45, 0.5, 0.55, 0.6, 0.65, 0.7, 0.75]  # Add 20% to the minimum for hard T&S
         # Always start with training barrels currently
         # training_barrels: str
         # normal
@@ -77,6 +79,7 @@ class Settings:
     def update_progression_totals(self):
         """Update the troff and blocker totals if we're randomly setting them."""
         # Assign weights to Troff n Scoff based on level order if not shuffling loading zones
+        # Hard level shuffling makes these weights meaningless, as you'll be going into levels in a random order
         self.troff_weight_0 = 0.5
         self.troff_weight_1 = 0.55
         self.troff_weight_2 = 0.6
@@ -95,8 +98,8 @@ class Settings:
 
         if self.randomize_cb_required_amounts:
             randomlist = []
-            for i in self.troff_min:
-                randomlist.append(random.randint(round(self.troff_max * i), self.troff_max))
+            for min_percentage in self.troff_min:
+                randomlist.append(random.randint(round(self.troff_max * min_percentage), self.troff_max))
             cbs = randomlist
             self.troff_0 = round(min(cbs[0] * self.troff_weight_0, 500))
             self.troff_1 = round(min(cbs[1] * self.troff_weight_1, 500))
@@ -287,6 +290,8 @@ class Settings:
         self.override_cosmetics = False
         self.random_colors = False
         self.hard_level_progression = False
+        self.hard_blockers = False
+        self.hard_troff_n_scoff = False
 
     def shuffle_prices(self):
         """Price randomization. Reuseable if we need to reshuffle prices."""

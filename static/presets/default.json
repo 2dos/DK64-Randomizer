@@ -33,7 +33,7 @@
     "gnawty_barrels": false,
     "hard_blockers": false,
     "hard_bosses": false,
-    "hard_level_progression":false,
+    "hard_level_progression": false,
     "hard_shooting": false,
     "hard_troff_n_scoff": false,
     "helm_setting": "skip_start",
