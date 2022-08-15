@@ -1,4 +1,4 @@
-"""Apply barrel changes."""
+"""Apply misc setup changes."""
 import js
 import random
 import struct
@@ -14,6 +14,41 @@ def float_to_hex(f):
     if f == 0:
         return "0x00000000"
     return hex(struct.unpack("<I", struct.pack("<f", f))[0])
+
+
+def pickRandomPositionCircle(center_x, center_z, min_radius, max_radius):
+    """Pick a random position within a torus where the center and radius boundaries are specified."""
+    radius = min_radius + (math.sqrt(random.random()) * (max_radius - min_radius))
+    angle = random.uniform(0, math.pi * 2)
+    if angle == math.pi * 2:
+        angle = 0
+    item_dx = radius * math.sin(angle)
+    item_dz = radius * math.cos(angle)
+    item_x = center_x + item_dx
+    item_z = center_z + item_dz
+    return [item_x, item_z]
+
+
+def pickRandomPositionsMult(center_x, center_z, min_radius, max_radius, count, min_dist):
+    """Pick multiple points within a torus where the center and radius boundaries are defined. There is a failsafe to make sure 2 points aren't within a certain specified distance away from eachother."""
+    picked = []
+    for item in range(count):
+        good_place = False
+        while not good_place:
+            selected = pickRandomPositionCircle(center_x, center_z, min_radius, max_radius)
+            if len(picked) == 0:
+                good_place = True
+            else:
+                good_place = True
+                for picked_item in picked:
+                    dx = picked_item[0] - selected[0]
+                    dz = picked_item[1] - selected[1]
+                    delta = math.sqrt((dx * dx) + (dz * dz))
+                    if delta < min_dist:
+                        good_place = False
+            if good_place:
+                picked.append(selected)
+    return {"picked": picked.copy(), "index": 0}
 
 
 def randomize_setup(spoiler: Spoiler):
@@ -85,6 +120,9 @@ def randomize_setup(spoiler: Spoiler):
     swap_list = [
         {"map": Maps.AztecLlamaTemple, "item_list": [0xBC, 0x22B, 0x229, 0x22A]},
         {"map": Maps.CastleMuseum, "item_list": [0x17]},
+        {"map": Maps.AztecTinyTemple, "item_list": [0xA7, 0xA6, 0xA5, 0xA4]},
+        {"map": Maps.FranticFactory, "item_list": [0x14D, 0x14C, 0x14B, 0x14A]},
+        {"map": Maps.CastleCrypt, "item_list": [0x247, 0x248, 0x249, 0x24A]},
     ]
     number_gb_data = [
         {
@@ -119,8 +157,23 @@ def randomize_setup(spoiler: Spoiler):
             ],
         },
     ]
+    vase_puzzle_positions = [
+        [365.533, 138.167, 717.282],
+        [212.543, 120.5, 963.536],
+        [100.017, 120.5, 569.51],
+        [497.464, 120.5, 458.709],
+        [401.557, 138.167, 754.136],
+        [318.119, 138.167, 752.011],
+        [311.555, 138.167, 666.162],
+        [398.472, 138.167, 668.426],
+    ]
 
     if enabled:
+        diddy_5di_pads = pickRandomPositionsMult(287.94, 312.119, 0, 140, 6, 40)
+        lanky_fungi_mush = pickRandomPositionsMult(274.9, 316.505, 40, 160, 6, 40)
+        chunky_5dc_pads = pickRandomPositionsMult(294.594, 337.22, 70, 180, 3, 70)
+        random.shuffle(vase_puzzle_positions)
+        vase_puzzle_rando_progress = 0
         for cont_map_id in range(216):
             cont_map_setup_address = js.pointer_addresses[9]["entries"][cont_map_id]["pointing_to"]
             ROM().seek(cont_map_setup_address)
@@ -166,7 +219,9 @@ def randomize_setup(spoiler: Spoiler):
                         x = int.from_bytes(ROM().readBytes(4), "big")
                         y = int.from_bytes(ROM().readBytes(4), "big")
                         z = int.from_bytes(ROM().readBytes(4), "big")
-                        positions.append([x, y, z])
+                        ROM().seek(item_start + 0x1C)
+                        ry = int.from_bytes(ROM().readBytes(4), "big")
+                        positions.append([x, y, z, ry])
                 elif item_type == 0x235 and ((cont_map_id == Maps.GalleonBoss and spoiler.settings.hard_bosses) or (cont_map_id == Maps.HideoutHelm and spoiler.settings.puzzle_rando)):
                     if cont_map_id == Maps.HideoutHelm:
                         star_donut_center = [1055.704, 3446.966]
@@ -176,17 +231,12 @@ def randomize_setup(spoiler: Spoiler):
                         star_donut_center = [1216, 1478]
                         star_donut_boundaries = [200, 460]
                         star_height_boundaries = []
-                    radius = star_donut_boundaries[0] + (math.sqrt(random.random()) * (star_donut_boundaries[1] - star_donut_boundaries[0]))
-                    angle = random.uniform(0, math.pi * 2)
+                    star_pos = pickRandomPositionCircle(star_donut_center[0], star_donut_center[1], star_donut_boundaries[0], star_donut_boundaries[1])
                     star_a = random.uniform(0, 360)
-                    if angle == math.pi * 2:
-                        angle = 0
                     if star_a == 360:
                         star_a = 0
-                    star_dx = radius * math.sin(angle)
-                    star_dz = radius * math.cos(angle)
-                    star_x = star_donut_center[0] + star_dx
-                    star_z = star_donut_center[1] + star_dz
+                    star_x = star_pos[0]
+                    star_z = star_pos[1]
                     ROM().seek(item_start)
                     ROM().writeMultipleBytes(int(float_to_hex(star_x), 16), 4)
                     ROM().seek(item_start + 8)
@@ -213,6 +263,33 @@ def randomize_setup(spoiler: Spoiler):
                                 z = int.from_bytes(ROM().readBytes(4), "big")
                                 number_replacement_data[subtype_name]["offsets"].append({"offset": item_start, "rotation": num_item["rot"], "number": item_type - 0xF3})
                                 number_replacement_data[subtype_name]["positions"].append({"coords": [x, y, z], "rotation": num_item["rot"]})
+                elif cont_map_id == Maps.ForestLankyMushroomsRoom and spoiler.settings.puzzle_rando:
+                    if item_type >= 0x1BA and item_type <= 0x1BE:  # Mushrooms
+                        spawner_pos = lanky_fungi_mush["picked"][lanky_fungi_mush["index"]]
+                        ROM().seek(item_start)
+                        ROM().writeMultipleBytes(int(float_to_hex(spawner_pos[0]), 16), 4)
+                        ROM().seek(item_start + 8)
+                        ROM().writeMultipleBytes(int(float_to_hex(spawner_pos[1]), 16), 4)
+                        lanky_fungi_mush["index"] += 1
+                    elif item_type == 0x205:  # Lanky Bunch
+                        spawner_pos = lanky_fungi_mush["picked"][0]
+                        ROM().seek(item_start)
+                        ROM().writeMultipleBytes(int(float_to_hex(spawner_pos[0]), 16), 4)
+                        ROM().seek(item_start + 8)
+                        ROM().writeMultipleBytes(int(float_to_hex(spawner_pos[1]), 16), 4)
+                elif cont_map_id == Maps.AngryAztec and spoiler.settings.puzzle_rando and (item_type == 0x121 or (item_type >= 0x226 and item_type <= 0x228)):
+                    # Is Vase Pad
+                    ROM().seek(item_start)
+                    for coord in range(3):
+                        ROM().writeMultipleBytes(int(float_to_hex(vase_puzzle_positions[vase_puzzle_rando_progress][coord]), 16), 4)
+                    vase_puzzle_rando_progress += 1
+                elif cont_map_id == Maps.CavesChunkyCabin and spoiler.settings.puzzle_rando and item_type == 0x203:
+                    spawner_pos = chunky_5dc_pads["picked"][chunky_5dc_pads["index"]]
+                    ROM().seek(item_start)
+                    ROM().writeMultipleBytes(int(float_to_hex(spawner_pos[0]), 16), 4)
+                    ROM().seek(item_start + 8)
+                    ROM().writeMultipleBytes(int(float_to_hex(spawner_pos[1]), 16), 4)
+                    chunky_5dc_pads["index"] += 1
 
             if spoiler.settings.puzzle_rando:
                 if len(positions) > 0 and len(offsets) > 0:
@@ -221,6 +298,8 @@ def randomize_setup(spoiler: Spoiler):
                         ROM().seek(offset)
                         for coord in range(3):
                             ROM().writeMultipleBytes(positions[index][coord], 4)
+                        ROM().seek(offset + 0x1C)
+                        ROM().writeMultipleBytes(positions[index][3], 4)
                 if cont_map_id == Maps.FranticFactory:
                     rotation_hexes = [
                         "0x00000000",  # 0
@@ -295,3 +374,24 @@ def randomize_setup(spoiler: Spoiler):
                     for actor in actor_bytes:
                         for byte_list in actor:
                             ROM().writeMultipleBytes(byte_list, 4)
+            # Re-run through actor stuff for changes
+            ROM().seek(cont_map_setup_address + 4 + (model2_count * 0x30) + 4 + (mystery_count * 0x24))
+            actor_count = int.from_bytes(ROM().readBytes(4), "big")
+            diddy_5di_pos = []
+            for actor_item in range(actor_count):
+                actor_start = actor_block_start + 4 + (actor_item * 0x38)
+                ROM().seek(actor_start + 0x32)
+                actor_type = int.from_bytes(ROM().readBytes(2), "big") + 0x10
+                if actor_type >= 100 and actor_type <= 105 and spoiler.settings.puzzle_rando and cont_map_id == Maps.CavesDiddyIgloo:  # 5DI Spawner
+                    spawner_pos = diddy_5di_pads["picked"][diddy_5di_pads["index"]]
+                    ROM().seek(actor_start)
+                    ROM().writeMultipleBytes(int(float_to_hex(spawner_pos[0]), 16), 4)
+                    ROM().seek(actor_start + 8)
+                    ROM().writeMultipleBytes(int(float_to_hex(spawner_pos[1]), 16), 4)
+                    diddy_5di_pads["index"] += 1
+                elif actor_type >= 63 and actor_type <= 66 and spoiler.settings.puzzle_rando and cont_map_id == Maps.AngryAztec:
+                    # Vase
+                    ROM().seek(actor_start)
+                    for coord in range(3):
+                        ROM().writeMultipleBytes(int(float_to_hex(vase_puzzle_positions[vase_puzzle_rando_progress][coord]), 16), 4)
+                    vase_puzzle_rando_progress += 1

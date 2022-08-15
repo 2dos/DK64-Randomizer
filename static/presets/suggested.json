@@ -59,5 +59,6 @@
     "portal_numbers":true,
     "shop_indicator":true,
     "fast_warps":true,
-    "dpad_display":true
+    "dpad_display":true,
+    "auto_keys":true
   } 

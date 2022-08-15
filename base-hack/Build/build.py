@@ -319,6 +319,19 @@ for x in range(221):
         }
     )
 for x in range(221):
+    if x != 2:  # DK Arcade path file is massive
+        file_dict.append(
+            {
+                "name": "Paths for map " + str(x),
+                "pointer_table_index": 15,
+                "file_index": x,
+                "source_file": "paths" + str(x) + ".bin",
+                "target_uncompressed_size": 0x600,
+                "target_compressed_size": 0x600,
+                "do_not_recompress": True,
+            }
+        )
+for x in range(221):
     file_dict.append(
         {
             "name": "Character Spawners for map " + str(x),
@@ -592,7 +605,11 @@ with open(ROMName, "rb") as fh:
                     os.remove(x["source_file"])
 
                 with open(x["source_file"], "wb") as fg:
-                    dec = zlib.decompress(byte_read, 15 + 32)
+                    fh.seek(x["start"])
+                    if int.from_bytes(fh.read(2), "big") == 0x1F8B:
+                        dec = zlib.decompress(byte_read, 15 + 32)
+                    else:
+                        dec = byte_read
                     fg.write(dec)
 
 print("[3 / 7] - Patching Extracted Files")
@@ -798,6 +815,14 @@ with open(newROMName, "r+b") as fh:
     for piano_index, piano_key in enumerate(piano_vanilla):
         fh.seek(0x1FED020 + 0x16C + piano_index)
         fh.write(piano_key.to_bytes(1, "big"))
+
+    dk_face_puzzle_vanilla = [0, 3, 2, 0, 1, 2, 3, 2, 1]
+    chunky_face_puzzle_vanilla = [0, 1, 3, 1, 2, 1, 3, 0, 1]
+    for face_index in range(9):
+        fh.seek(0x1FED020 + 0x17E + face_index)
+        fh.write(dk_face_puzzle_vanilla[face_index].to_bytes(1, "big"))
+        fh.seek(0x1FED020 + 0x187 + face_index)
+        fh.write(chunky_face_puzzle_vanilla[face_index].to_bytes(1, "big"))
 
     with open("assets/Non-Code/credits/squish.bin", "rb") as squish:
         fh.seek(0x1FFF800)

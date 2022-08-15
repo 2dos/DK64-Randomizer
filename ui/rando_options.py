@@ -58,7 +58,7 @@ def max_randomized_troff(event):
 
 
 @bind("focusout", "medal_requirement")
-def max_randomized_blocker(event):
+def max_randomized_medals(event):
     """Validate medal input on loss of focus."""
     medal_requirement = js.document.getElementById("medal_requirement")
     if not medal_requirement.value:
@@ -136,6 +136,7 @@ def set_preset_options():
     js.jq("#presets").val("-- Select a Preset --")
     toggle_counts_boxes(None)
     toggle_b_locker_boxes(None)
+    toggle_extreme_prices_option(None)
     js.load_cookies()
 
 
@@ -352,7 +353,7 @@ def disable_barrel_rando(evt):
         pass
 
 
-@bind("change", "presets")
+@bind("click", "apply_preset")
 def preset_select_changed(event):
     """Trigger a change of the form via the JSON templates."""
     element = document.getElementById("presets")
@@ -446,3 +447,24 @@ def disable_rw(evt):
             medal.removeAttribute("disabled")
         except Exception:
             pass
+
+
+@bind("change", "unlock_fairy_shockwave")
+def toggle_extreme_prices_option(event):
+    """Determine the visibility of the extreme prices option."""
+    unlocked_shockwave = document.getElementById("unlock_fairy_shockwave").checked
+    no_logic = document.getElementById("no_logic").checked
+    option = document.getElementById("extreme_price_option")
+    if unlocked_shockwave or no_logic:
+        option.removeAttribute("disabled")
+    else:
+        option.setAttribute("disabled", "disabled")
+        price_option = document.getElementById("random_prices")
+        if price_option.value == "extreme":
+            price_option.value = "high"
+
+
+@bind("change", "no_logic")
+def toggle_no_logic(event):
+    """Toggle settings based on the presence of logic."""
+    toggle_extreme_prices_option(event)

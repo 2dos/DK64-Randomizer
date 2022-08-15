@@ -58,7 +58,7 @@ class Balloon:
         return [int(spawnX), int(spawnY), int(spawnZ)]
 
 
-ColoredBananaGroupList = {
+ColoredBananaGroupList = [
     ColoredBananaGroup(
         group=1,
         map_id=Maps.GloomyGalleon,
@@ -1437,9 +1437,9 @@ ColoredBananaGroupList = {
             [1, 2.5, 2180, 325, 1220],
         ],
     ),
-}
+]
 
-BalloonList = {
+BalloonList = [
     Balloon(
         id=1,
         map_id=Maps.GloomyGalleon,
@@ -1578,4 +1578,4 @@ BalloonList = {
             [534, 806, 315],
         ],
     ),
-}
+]

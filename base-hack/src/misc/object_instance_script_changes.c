@@ -133,6 +133,7 @@
 #define FISH_SHIELD3 0x5
 
 #define CHEST_PEARL_0 0x0
+#define MILLREAR_CHUNKYCHECK_RATE 0xF
 
 #define FACTORY_PIANO 0x14
 #define FACTORY_DARTBOARD 0x7F
@@ -692,6 +693,8 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 					behaviour_pointer->current_state = 3;
 					behaviour_pointer->next_state = 3;
 				}
+			} else if (param2 == MILLREAR_CHUNKYCHECK_RATE) {
+				return Player->characterID == 6 || Rando.quality_of_life;
 			}
 			break;
 		case FUNGI_GMUSH:

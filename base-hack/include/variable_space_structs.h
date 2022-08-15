@@ -111,4 +111,6 @@ typedef struct varspace {
 	/* 0x179 */ char remove_high_requirements; // 0 = Off, 1 = On. Removes high requirements that lock certain areas.
 	/* 0x17A */ char fast_gbs; //0 = Off, 1 = On. Makes normally slow Golden Bananas faster.
 	/* 0x17B */ char kut_out_phases[3]; // 0 = Phase 1, 1 = Phase 2, 2 = Phase 3, 3 = Phase 4 (Unused)
+	/* 0x17E */ char dk_face_puzzle_init[9];
+	/* 0x187 */ char chunky_face_puzzle_init[9];
 } varspace;

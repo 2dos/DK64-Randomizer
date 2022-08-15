@@ -2,7 +2,7 @@
 import js
 
 stable_version = "1.0"
-dev_version = "1.0"
+dev_version = "1.1"
 
 url = js.location.href.lower().replace("/", "").replace("http:", "").replace("https:", "")
 

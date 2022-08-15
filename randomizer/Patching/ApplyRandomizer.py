@@ -2,6 +2,7 @@
 import asyncio
 import codecs
 import json
+import math
 import pickle
 import random
 
@@ -26,6 +27,7 @@ from randomizer.Patching.PriceRando import randomize_prices
 from randomizer.Patching.PuzzleRando import randomize_puzzles
 from randomizer.Patching.UpdateHints import PushHints, wipeHints
 from randomizer.Patching.MiscSetupChanges import randomize_setup
+from randomizer.Patching.BananaPlacer import randomize_cbs
 from randomizer.Patching.ShopRandomizer import ApplyShopRandomizer
 from GenTracker import generateTracker
 
@@ -347,6 +349,7 @@ def patching_response(responded_data):
     apply_kongrando_cosmetic(spoiler)
     randomize_setup(spoiler)
     randomize_puzzles(spoiler)
+    randomize_cbs(spoiler)
     ApplyShopRandomizer(spoiler)
 
     random.seed(spoiler.settings.seed)
@@ -381,32 +384,49 @@ def patching_response(responded_data):
 
     js.document.getElementById("generated_seed_id").innerHTML = spoiler.settings.seed_id
     loaded_settings = json.loads(spoiler.toJson())["Settings"]
-    js.document.getElementById("settings_table").innerHTML = ""
-    table = js.document.getElementById("settings_table")
+    tables = {}
+    t = 0
+    for i in range(0, 3):
+        js.document.getElementById(f"settings_table_{i}").innerHTML = ""
+        tables[i] = js.document.getElementById(f"settings_table_{i}")
     for setting, value in loaded_settings.items():
         hidden_settings = [
-            "seed",
+            "Seed",
             "algorithm",
             "starting_kong",
-            "starting_kong_list",
-            "diddy_freeing_kong",
-            "tiny_freeing_kong",
-            "lanky_freeing_kong",
-            "chunky_freeing_kong",
-            "medal_requirement",
-            "krool_phases",
-            "krool_keys_required",
-            "blocker_golden_bananas",
-            "troff_n_scoff_bananas",
-            "colors",
+            "Starting Kong List",
+            "Diddy Freeing Kong",
+            "Tiny Freeing Kong",
+            "Lanky Freeing Kong",
+            "Chunky Freeing Kong",
+            "Medal Requirement",
+            "K Rool Phases",
+            "Keys Required for K Rool",
+            "B Locker GBs",
+            "Troff N Scoff Bananas",
+            "Colors",
         ]
         if setting not in hidden_settings:
-            row = table.insertRow(-1)
+            if tables[t].rows.length > math.ceil((len(loaded_settings.items()) - len(hidden_settings)) / len(tables)):
+                t += 1
+            row = tables[t].insertRow(-1)
             name = row.insertCell(0)
             description = row.insertCell(1)
             name.innerHTML = setting
-            description.innerHTML = value
+            description.innerHTML = FormatSpoiler(value)
     ROM().fixSecurityValue()
     ROM().save(f"dk64-{spoiler.settings.seed_id}.z64")
     loop.run_until_complete(ProgressBar().reset())
     js.jq("#nav-settings-tab").tab("show")
+
+
+def FormatSpoiler(value):
+    """Format the values passed to the settings table into a more readable format.
+
+    Args:
+        value (str) or (bool)
+    """
+    string = str(value)
+    formatted = string.replace("_", " ")
+    result = formatted.title()
+    return result

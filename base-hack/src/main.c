@@ -138,10 +138,19 @@ void cFuncLoop(void) {
 	current_avg_lag = lag_sum;
 	current_avg_lag /= LAG_CAP;
 	if ((Gamemode == ADVENTURE_MODE) || (Gamemode == SNIDES_BONUS_GAMES)) {
-		if (CutsceneActive == 1) {
-			BalancedIGT += 2;
-		} else {
-			BalancedIGT += StoredLag;
+		int ban_igt_update = 0;
+		if ((CurrentMap == 0xCF) && (CutsceneActive) && ((CutsceneIndex == 22) || ((CutsceneIndex >= 26) && (CutsceneIndex <= 28)))) {
+			ban_igt_update = 1;
+		}
+		if ((CurrentMap == 0x22) && (CutsceneActive) && (CutsceneIndex == 29)) {
+			ban_igt_update = 1;
+		}
+		if (!ban_igt_update) {
+			if (CutsceneActive == 1) {
+				BalancedIGT += 2;
+			} else {
+				BalancedIGT += StoredLag;
+			}
 		}
 	}
 };
@@ -210,6 +219,7 @@ void earlyFrame(void) {
 	} else {
 		*(int*)(0x8074C3B0) = (int)&cutsceneDKCode;
 	}
+	fastWarpShockwaveFix();
 	catchWarpHandle();
 	write_kutoutorder();
 	remove_blockers();
