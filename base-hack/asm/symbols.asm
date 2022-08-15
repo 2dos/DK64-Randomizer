@@ -155,6 +155,7 @@
 .definelabel spawnProjectile, 0x80690A28
 .definelabel updateActorProjectileInfo, 0x80690814
 .definelabel controlStateControl, 0x806DF6D4
+.definelabel save, 0x8060DEC8
 
 //vanilla data
 .definelabel TransitionSpeed, 0x807FD88C
@@ -329,6 +330,7 @@
 .definelabel getXRatioMovement, 0x80612794
 .definelabel getZRatioMovement, 0x80612790
 .definelabel ModelTwoCollisionArray, 0x80753EF0
+.definelabel IGT, 0x80750AB0
 
 //hack data
 .definelabel TestVariable, 0x807FFFFC
@@ -345,7 +347,6 @@
 .definelabel QoLOn, 0x807FFFE8 // u8
 .definelabel LobbiesOpen, 0x807FFFE7 // u8
 .definelabel Rando, 0x807FF800 // 0x200
-.definelabel BalancedIGT, 0x807FFFB0 // u32
 .definelabel InstanceScriptParams, 0x807FFFB4 // 0x8
 .definelabel PauseSlot3TextPointer, 0x807FFFBC // ptr
 .definelabel ReplacementLobbiesArray, 0x807FFFC0 // 0x12

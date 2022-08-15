@@ -158,7 +158,7 @@ def randomize_setup(spoiler: Spoiler):
         },
     ]
     vase_puzzle_positions = [
-        [365.533, 138.167, 717.282],
+        # [365.533, 138.167, 717.282], # Exclude center to force it to be a vase
         [212.543, 120.5, 963.536],
         [100.017, 120.5, 569.51],
         [497.464, 120.5, 458.709],
@@ -389,7 +389,7 @@ def randomize_setup(spoiler: Spoiler):
                     ROM().seek(actor_start + 8)
                     ROM().writeMultipleBytes(int(float_to_hex(spawner_pos[1]), 16), 4)
                     diddy_5di_pads["index"] += 1
-                elif actor_type >= 63 and actor_type <= 66 and spoiler.settings.puzzle_rando and cont_map_id == Maps.AngryAztec:
+                elif actor_type >= 64 and actor_type <= 66 and spoiler.settings.puzzle_rando and cont_map_id == Maps.AngryAztec:  # Exclude O Vase to force it to be vanilla
                     # Vase
                     ROM().seek(actor_start)
                     for coord in range(3):

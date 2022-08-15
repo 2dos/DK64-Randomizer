@@ -308,6 +308,8 @@ void initHack(int source) {
 			}
 			*(int*)(0x806A64B0) = 0x240A0004; // Always ensure lanky coin sprite
 			initItemDropTable();
+			// LZ Save
+			*(int*)(0x80712EC4) = 0x0C000000 | (((int)&postKRoolSaveCheck & 0xFFFFFF) >> 2);
 			// DK Face Puzzle
 			int dk_reg_vals[] = {0x80,0x95,0x83,0x82}; // 0 = r0, 1 = s5, 2 = v1, 3 = v0
 			*(unsigned char*)(0x8064AD01) = dk_reg_vals[(int)Rando.dk_face_puzzle_init[2]];

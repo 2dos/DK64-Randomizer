@@ -441,24 +441,6 @@ START_HOOK:
 			J 		0x806A880C
 			ADDIU 	at, r0, 2
 
-	IGTLoadFromFile:
-		SLL 	at, v0, 2
-		SUBU 	at, at, v0
-		SLL 	v0, at, 1
-		LUI 	at, hi(BalancedIGT)
-		J 		0x8060DD3C
-		SW 		v0, lo(BalancedIGT) (at)
-
-	IGTSaveToFile:
-		ADDIU 	at, r0, 6
-		LUI	 	s0, hi(BalancedIGT)
-		LWU 	s0, lo(BalancedIGT) (s0)
-		DIVU 	s0, at
-		MFLO 	s0
-		LUI 	at, 0x40
-		J 		0x8060DF4C
-		SLTU 	at, s0, at
-
 	FileScreenDLCode_Jump:
 		J 		FileScreenDLCode
 		NOP
