@@ -1,4 +1,5 @@
 #include "vars.h"
+#include "text_items.h"
 
 extern void playSFX(short sfxIndex);
 extern void setPermFlag(short flagIndex);
@@ -111,6 +112,15 @@ extern void beaverExtraHitHandle(void);
 extern void CBDing(void);
 extern void handleSpiderTrapCode(void);
 extern void fastWarpShockwaveFix(void);
+
+extern move_block* getMoveBlock(void);
+extern void setLocationStatus(location_list location_index);
+extern int getLocationStatus(location_list location_index);
+extern void fixTBarrelsAndBFI(int init);
+extern void purchaseMove(shop_paad* paad);
+extern void getNextMoveText(void);
+extern void displayBFIMoveText(void);
 extern void fixRBSlowTurn(void);
 extern void postKRoolSaveCheck(void);
+
 //extern void getRandoNextMovePurchase(shop_paad* shop_info, KongBase* moves);

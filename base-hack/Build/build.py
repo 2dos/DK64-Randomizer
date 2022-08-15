@@ -20,7 +20,6 @@ from map_names import maps
 from populateSongData import writeVanillaSongData
 from recompute_overlays import isROMAddressOverlay, readOverlayOriginalData, replaceOverlayData, writeModifiedOverlaysToROM
 from recompute_pointer_table import dumpPointerTableDetails, getFileInfo, make_safe_filename, parsePointerTables, pointer_tables, replaceROMFile, writeModifiedPointerTablesToROM
-from replace_simslam_text import replaceSimSlam
 from staticcode import patchStaticCode
 from vanilla_move_data import writeVanillaMoveData
 from image_converter import convertToRGBA32
@@ -344,17 +343,18 @@ for x in range(43):
     if x != 13:
         if x != 32:
             if x != 0x18:
-                file_dict.append(
-                    {
-                        "name": "Text " + str(x),
-                        "pointer_table_index": 12,
-                        "file_index": x,
-                        "source_file": "text" + str(x) + ".bin",
-                        "target_compressed_size": 0x2000,
-                        "target_uncompressed_size": 0x2000,
-                        "do_not_recompress": True,
-                    }
-                )
+                if x != 0x27:
+                    file_dict.append(
+                        {
+                            "name": "Text " + str(x),
+                            "pointer_table_index": 12,
+                            "file_index": x,
+                            "source_file": "text" + str(x) + ".bin",
+                            "target_compressed_size": 0x2000,
+                            "target_uncompressed_size": 0x2000,
+                            "do_not_recompress": True,
+                        }
+                    )
 for x in range(10):
     file_dict.append(
         {
@@ -475,6 +475,16 @@ file_dict.append(
         "pointer_table_index": 12,
         "file_index": 0x18,
         "source_file": "dk_text.bin",
+        "do_not_compress": True,
+        "do_not_delete_source": True,
+    }
+)
+file_dict.append(
+    {
+        "name": "Move Names Text",
+        "pointer_table_index": 12,
+        "file_index": 0x27,
+        "source_file": "move_names.bin",
         "do_not_compress": True,
         "do_not_delete_source": True,
     }
@@ -763,7 +773,6 @@ with open(newROMName, "r+b") as fh:
     fh.write(bytearray(arr))
     writeVanillaMoveData(fh)
     adjustExits(fh)
-    replaceSimSlam(fh)
     writeVanillaSongData(fh)
     for x in portal_images:
         for y in x:
