@@ -761,16 +761,6 @@ START_HOOK:
 			J 		0x806324CC
 			ADDIU 	a0, r0, 385
 
-	TagAnywhereHandle:
-		JAL 		0x807314F4
-		OR 			a1, t7, r0
-		ADDIU	 	a0, r0, 0
-		LH			a1, 0x2 (s0)
-		JAL 		0x806F54E0
-		LW 			a2, 0x1A (sp)
-		J 			0x806F6CBC
-		NOP
-
 	Jump_KRoolLankyPhaseFix:
 		J 			KRoolLankyPhaseFix
 		NOP

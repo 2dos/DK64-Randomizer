@@ -193,9 +193,6 @@ ShopImageHandlerHook:
 FixPufftossInvalidWallCollisionHook:
 	J 	FixPufftossInvalidWallCollision
 	NOP
-TagAnywhereHandleHook:
-	J 	TagAnywhereHandle
-	NOP
 
 loadExtraHooks:
 	LUI t3, hi(InstanceScriptHook)
@@ -461,17 +458,6 @@ loadExtraHooks:
 	LUI t4, 0x806B
 	SW t3, 0xE55C (t4) // Store Hook
 	SW r0, 0xE560 (t4) // Store NOP
-
-	LUI t3, hi(TagAnywhereOn)
-	LBU t3, lo(TagAnywhereOn) (t3)
-	BEQZ t3, loadExtraHooks_4
-	NOP
-
-	LUI t3, hi(TagAnywhereHandleHook)
-	LW t3, lo(TagAnywhereHandleHook) (t3)
-	LUI t4, 0x806F
-	SW t3, 0x6CB4 (t4) // Store Hook
-	SW r0, 0x6CB8 (t4) // Store NOP
 
 	loadExtraHooks_4:
 	JR ra

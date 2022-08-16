@@ -70,7 +70,6 @@ void initHack(int source) {
 			QoLOn = Rando.quality_of_life;
 			LobbiesOpen = Rando.lobbies_open_bitfield;
 			ShorterBosses = Rando.short_bosses;
-			TagAnywhereOn = Rando.tag_anywhere;
 			changeCharSpawnerFlag(0x14, 2, 93); // Tie llama spawn to lanky help me cutscene flag
 			changeCharSpawnerFlag(0x7, 1, kong_flags[(int)Rando.free_target_japes]);
 			changeCharSpawnerFlag(0x10, 0x13, kong_flags[(int)Rando.free_target_ttemple]);
@@ -317,6 +316,9 @@ void initHack(int source) {
 				*(int*)(0x806F6D94) = 0; // Prevent delayed collection
 				*(short*)(0x806F5B68) = 0x1000; // Standard Ammo Fix
 				*(short*)(0x806F59A8) = 0x1000; // Bunches pick up all 5 at once, rather than sending out 5 small bananas
+				*(int*)(0x806F6CAC) = 0x9204001A;
+				*(int*)(0x806F6CB0) = 0x86060000;
+				*(int*)(0x806F6CB4) = 0x0C000000 | (((int)&tagAnywhereInit & 0xFFFFFF) >> 2);
 			}
 			// Fix Tag Barrel Background Kong memes
 			*(int*)(0x806839F0) = 0x0C000000 | (((int)&tagBarrelBackgroundKong & 0xFFFFFF) >> 2);

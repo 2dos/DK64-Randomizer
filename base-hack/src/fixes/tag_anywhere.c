@@ -376,3 +376,8 @@ void tagAnywhere(int prev_crystals) {
 		}
 	}
 }
+
+void tagAnywhereInit(int is_homing, int model2_id, int obj) {
+    assessFlagMapping(CurrentMap, model2_id);
+    coinCBCollectHandle(0, obj, is_homing);
+}
