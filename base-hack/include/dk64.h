@@ -169,7 +169,6 @@ extern void updateActorProjectileInfo(void* actor, int unk0);
 extern void spawnProjectile(short object, short subtype, int speed, float x, float y, float z, float unk0, void* actor);
 extern void controlStateControl(int unk0);
 extern void save(void);
-extern void displayItemOnHUD(int item, int unk0, int unk1);
 
 //vanilla data
 extern float TransitionSpeed;
@@ -378,4 +377,3 @@ extern unsigned char ShorterBosses;
 extern char ForceStandardAmmo;
 extern char KKOPhaseRandoOn;
 extern char KKOPhaseOrder[3];
-extern char TagAnywhereOn;
