@@ -113,4 +113,5 @@ extern void handleSpiderTrapCode(void);
 extern void fastWarpShockwaveFix(void);
 extern void fixRBSlowTurn(void);
 extern void postKRoolSaveCheck(void);
+extern void tagBarrelBackgroundKong(int kong_actor);
 //extern void getRandoNextMovePurchase(shop_paad* shop_info, KongBase* moves);

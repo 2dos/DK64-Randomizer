@@ -318,6 +318,8 @@ void initHack(int source) {
 				*(short*)(0x806F5B68) = 0x1000; // Standard Ammo Fix
 				*(short*)(0x806F59A8) = 0x1000; // Bunches pick up all 5 at once, rather than sending out 5 small bananas
 			}
+			// Fix Tag Barrel Background Kong memes
+			*(int*)(0x806839F0) = 0x0C000000 | (((int)&tagBarrelBackgroundKong & 0xFFFFFF) >> 2);
 			// DK Face Puzzle
 			int dk_reg_vals[] = {0x80,0x95,0x83,0x82}; // 0 = r0, 1 = s5, 2 = v1, 3 = v0
 			*(unsigned char*)(0x8064AD01) = dk_reg_vals[(int)Rando.dk_face_puzzle_init[2]];
