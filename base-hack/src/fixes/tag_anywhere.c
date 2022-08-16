@@ -346,6 +346,7 @@ void tagAnywhere(int prev_crystals) {
                                 Player->hand_state = 3;
                             }
                         };
+                        // Fix HUD memes
                         if (CurrentMap == 0x2A) {
                             if (!hasTurnedInEnoughCBs()) {
                                 tag_countdown = 3;
