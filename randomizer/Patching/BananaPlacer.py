@@ -148,7 +148,7 @@ def randomize_cbs(spoiler: Spoiler):
                     cb_type = new_cb["type"]
                     associated_list = level_data[new_cb["level"]][cb_type]
                     for list_item in associated_list:
-                        if list_item.name == new_cb["name"]:
+                        if (cb_type == "cb" and list_item.group == new_cb["group"]) or (cb_type == "balloons" and list_item.id == new_cb["id"]):
                             # Found item
                             if cb_type == "cb":
                                 # Model Two CBs
