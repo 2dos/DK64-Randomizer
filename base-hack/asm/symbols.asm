@@ -156,6 +156,7 @@
 .definelabel updateActorProjectileInfo, 0x80690814
 .definelabel controlStateControl, 0x806DF6D4
 .definelabel save, 0x8060DEC8
+.definelabel displayItemOnHUD, 0x806F8BC4
 
 //vanilla data
 .definelabel TransitionSpeed, 0x807FD88C
@@ -361,6 +362,7 @@
 .definelabel ForceStandardAmmo, 0x807FFFE4
 .definelabel KKOPhaseRandoOn, 0x807FFFE0
 .definelabel KKOPhaseOrder, 0x807FFFE1
+.definelabel TagAnywhereOn, 0x807FFFDF
 
 .definelabel CrankyMoves_New, 0x807FF400
 .definelabel CandyMoves_New, 0x807FF4F0
