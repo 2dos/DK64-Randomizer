@@ -286,7 +286,8 @@ void initHack(int source) {
 			// New Guard Code
 			*(short*)(0x806AF75C) = 0x1000;
 			// Gold Beaver Code
-			*(int*)(0x8074C3F0) = (int)&goldBeaverCode;
+			*(int*)(0x8074C3F0) = 0x806AD54C; // Set as Blue Beaver Code
+			*(int*)(0x806AD750) = 0x0C000000 | (((int)&beaverExtraHitHandle & 0xFFFFFF) >> 2); // Remove buff until we think of something better
 			// Spider Projectile
 			//*(int*)(0x806ADDC0) = 0x0C000000 | (((int)&handleSpiderTrapCode & 0xFFFFFF) >> 2); // Remove buff until we think of something better
 			// Slow Turn Fix
@@ -307,6 +308,21 @@ void initHack(int source) {
 			}
 			*(int*)(0x806A64B0) = 0x240A0004; // Always ensure lanky coin sprite
 			initItemDropTable();
+			// LZ Save
+			*(int*)(0x80712EC4) = 0x0C000000 | (((int)&postKRoolSaveCheck & 0xFFFFFF) >> 2);
+			// Reduce TA Cooldown
+			if (Rando.tag_anywhere) {
+				// *(int*)(0x806F6D88) = 0; // Makes collectables not produce a flying model which delays collection. Instant change
+				*(int*)(0x806F6D94) = 0; // Prevent delayed collection
+				*(short*)(0x806F5B68) = 0x1000; // Standard Ammo Fix
+				*(short*)(0x806F59A8) = 0x1000; // Bunches pick up all 5 at once, rather than sending out 5 small bananas
+				*(int*)(0x806F6CAC) = 0x9204001A; // LBU $a0, 0x1A ($s0)
+				*(int*)(0x806F6CB0) = 0x86060002; // LH $a2, 0x2 ($s0)
+				*(int*)(0x806F6CB4) = 0x0C000000 | (((int)&tagAnywhereInit & 0xFFFFFF) >> 2);
+				*(int*)(0x806F53AC) = 0; // Prevent LZ case
+			}
+			// Fix Tag Barrel Background Kong memes
+			*(int*)(0x806839F0) = 0x0C000000 | (((int)&tagBarrelBackgroundKong & 0xFFFFFF) >> 2);
 			// DK Face Puzzle
 			int dk_reg_vals[] = {0x80,0x95,0x83,0x82}; // 0 = r0, 1 = s5, 2 = v1, 3 = v0
 			*(unsigned char*)(0x8064AD01) = dk_reg_vals[(int)Rando.dk_face_puzzle_init[2]];

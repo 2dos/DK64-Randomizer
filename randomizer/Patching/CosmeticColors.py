@@ -87,12 +87,19 @@ def apply_cosmetic_colors(spoiler: Spoiler):
             spoiler.settings.enguarde_colors = "randomized"
         else:
             spoiler.settings.dk_colors = js.document.getElementById("dk_colors").value
+            spoiler.settings.dk_custom_color = js.document.getElementById("dk_custom_color").value
             spoiler.settings.diddy_colors = js.document.getElementById("diddy_colors").value
+            spoiler.settings.diddy_custom_color = js.document.getElementById("diddy_custom_color").value
             spoiler.settings.lanky_colors = js.document.getElementById("lanky_colors").value
+            spoiler.settings.lanky_custom_color = js.document.getElementById("lanky_custom_color").value
             spoiler.settings.tiny_colors = js.document.getElementById("tiny_colors").value
+            spoiler.settings.tiny_custom_color = js.document.getElementById("tiny_custom_color").value
             spoiler.settings.chunky_colors = js.document.getElementById("chunky_colors").value
+            spoiler.settings.chunky_custom_color = js.document.getElementById("chunky_custom_color").value
             spoiler.settings.rambi_colors = js.document.getElementById("rambi_colors").value
+            spoiler.settings.rambi_custom_color = js.document.getElementById("rambi_custom_color").value
             spoiler.settings.enguarde_colors = js.document.getElementById("enguarde_colors").value
+            spoiler.settings.enguarde_custom_color = js.document.getElementById("enguarde_custom_color").value
     else:
         if spoiler.settings.random_colors:
             spoiler.settings.dk_colors = "randomized"

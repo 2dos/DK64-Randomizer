@@ -9,6 +9,11 @@ button,
   cursor: pointer;
 }
 
+button:disabled {
+  opacity: 50%;
+  cursor: default;
+}
+
 a:link {
   color: #e3e3e3;
   text-decoration: none;

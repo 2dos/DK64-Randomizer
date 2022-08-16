@@ -263,10 +263,9 @@ def randomize_enemies(spoiler: Spoiler):
         Maps.StashSnatchInsane,
     ]
     minigame_maps_beavers = [
-        # Currently crashes upon completion (Malloc issue)
-        # Maps.BeaverBotherEasy,
-        # Maps.BeaverBotherNormal,
-        # Maps.BeaverBotherHard,
+        Maps.BeaverBotherEasy,
+        Maps.BeaverBotherNormal,
+        Maps.BeaverBotherHard,
     ]
     minigame_maps_total = minigame_maps_easy.copy()
     minigame_maps_total.extend(minigame_maps_beatable)
@@ -470,6 +469,16 @@ def randomize_enemies(spoiler: Spoiler):
                                     ROM().seek(cont_map_spawner_address + spawner["offset"] + speed_offset)
                                     ROM().writeMultipleBytes(new_speed, 1)
             if spoiler.settings.crown_enemy_rando != "off" and cont_map_id in crown_maps:
+                # Determine Crown Timer
+                low_limit = 5
+                if spoiler.settings.crown_enemy_rando == "easy":
+                    low_limit = 5
+                elif spoiler.settings.crown_enemy_rando == "medium":
+                    low_limit = 15
+                elif spoiler.settings.crown_enemy_rando == "hard":
+                    low_limit = 30
+                crown_timer = random.randint(low_limit, 60)
+                # Place Enemies
                 for spawner in vanilla_spawners:
                     if spawner["enemy_id"] in crown_enemies:
                         new_enemy_id = crown_enemies_library[cont_map_id].pop()
@@ -484,6 +493,20 @@ def randomize_enemies(spoiler: Spoiler):
                             if EnemyMetaData[new_enemy_id].air:
                                 ROM().seek(cont_map_spawner_address + spawner["offset"] + 0x6)
                                 ROM().writeMultipleBytes(300, 2)
+                            if new_enemy_id == Enemies.GetOut:
+                                ROM().seek(cont_map_spawner_address + spawner["offset"] + 0xA)
+                                get_out_timer = 0
+                                if crown_timer > 20:
+                                    damage_mult = 1
+                                    damage_amts = {
+                                        "double": 2,
+                                        "quad": 4,
+                                        "ohko": 12,
+                                    }
+                                    if spoiler.settings.damage_amount in damage_amts:
+                                        damage_mult = damage_amts[spoiler.settings.damage_amount]
+                                    get_out_timer = random.randint(int(crown_timer / (12 / damage_mult)) + 1, crown_timer - 1)
+                                ROM().writeMultipleBytes(get_out_timer, 1)
                             ROM().seek(cont_map_spawner_address + spawner["offset"] + 0xF)
                             default_scale = int.from_bytes(ROM().readBytes(1), "big")
                             if EnemyMetaData[new_enemy_id].size_cap > 0:
@@ -501,11 +524,4 @@ def randomize_enemies(spoiler: Spoiler):
                                     ROM().writeMultipleBytes(random.randint(min_speed, agg_speed), 1)
                     elif spawner["enemy_id"] == Enemies.BattleCrownController:
                         ROM().seek(cont_map_spawner_address + spawner["offset"] + 0xB)
-                        low_limit = 5
-                        if spoiler.settings.crown_enemy_rando == "easy":
-                            low_limit = 5
-                        elif spoiler.settings.crown_enemy_rando == "medium":
-                            low_limit = 15
-                        elif spoiler.settings.crown_enemy_rando == "hard":
-                            low_limit = 30
-                        ROM().writeMultipleBytes(random.randint(low_limit, 60), 1)  # Determine Crown length. DK64 caps at 255 seconds
+                        ROM().writeMultipleBytes(crown_timer, 1)  # Determine Crown length. DK64 caps at 255 seconds

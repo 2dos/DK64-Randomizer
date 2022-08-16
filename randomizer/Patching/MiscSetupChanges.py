@@ -158,7 +158,7 @@ def randomize_setup(spoiler: Spoiler):
         },
     ]
     vase_puzzle_positions = [
-        [365.533, 138.167, 717.282],
+        # [365.533, 138.167, 717.282], # Exclude center to force it to be a vase
         [212.543, 120.5, 963.536],
         [100.017, 120.5, 569.51],
         [497.464, 120.5, 458.709],
@@ -171,7 +171,7 @@ def randomize_setup(spoiler: Spoiler):
     if enabled:
         diddy_5di_pads = pickRandomPositionsMult(287.94, 312.119, 0, 140, 6, 40)
         lanky_fungi_mush = pickRandomPositionsMult(274.9, 316.505, 40, 160, 6, 40)
-        chunky_5dc_pads = pickRandomPositionsMult(294.594, 337.22, 70, 180, 3, 70)
+        # chunky_5dc_pads = pickRandomPositionsMult(294.594, 337.22, 70, 180, 3, 70)
         random.shuffle(vase_puzzle_positions)
         vase_puzzle_rando_progress = 0
         for cont_map_id in range(216):
@@ -283,13 +283,13 @@ def randomize_setup(spoiler: Spoiler):
                     for coord in range(3):
                         ROM().writeMultipleBytes(int(float_to_hex(vase_puzzle_positions[vase_puzzle_rando_progress][coord]), 16), 4)
                     vase_puzzle_rando_progress += 1
-                elif cont_map_id == Maps.CavesChunkyCabin and spoiler.settings.puzzle_rando and item_type == 0x203:
-                    spawner_pos = chunky_5dc_pads["picked"][chunky_5dc_pads["index"]]
-                    ROM().seek(item_start)
-                    ROM().writeMultipleBytes(int(float_to_hex(spawner_pos[0]), 16), 4)
-                    ROM().seek(item_start + 8)
-                    ROM().writeMultipleBytes(int(float_to_hex(spawner_pos[1]), 16), 4)
-                    chunky_5dc_pads["index"] += 1
+                # elif cont_map_id == Maps.CavesChunkyCabin and spoiler.settings.puzzle_rando and item_type == 0x203:
+                #     spawner_pos = chunky_5dc_pads["picked"][chunky_5dc_pads["index"]]
+                #     ROM().seek(item_start)
+                #     ROM().writeMultipleBytes(int(float_to_hex(spawner_pos[0]), 16), 4)
+                #     ROM().seek(item_start + 8)
+                #     ROM().writeMultipleBytes(int(float_to_hex(spawner_pos[1]), 16), 4)
+                #     chunky_5dc_pads["index"] += 1
 
             if spoiler.settings.puzzle_rando:
                 if len(positions) > 0 and len(offsets) > 0:
@@ -389,7 +389,7 @@ def randomize_setup(spoiler: Spoiler):
                     ROM().seek(actor_start + 8)
                     ROM().writeMultipleBytes(int(float_to_hex(spawner_pos[1]), 16), 4)
                     diddy_5di_pads["index"] += 1
-                elif actor_type >= 63 and actor_type <= 66 and spoiler.settings.puzzle_rando and cont_map_id == Maps.AngryAztec:
+                elif actor_type >= 64 and actor_type <= 66 and spoiler.settings.puzzle_rando and cont_map_id == Maps.AngryAztec:  # Exclude O Vase to force it to be vanilla
                     # Vase
                     ROM().seek(actor_start)
                     for coord in range(3):
