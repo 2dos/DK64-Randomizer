@@ -316,9 +316,10 @@ void initHack(int source) {
 				*(int*)(0x806F6D94) = 0; // Prevent delayed collection
 				*(short*)(0x806F5B68) = 0x1000; // Standard Ammo Fix
 				*(short*)(0x806F59A8) = 0x1000; // Bunches pick up all 5 at once, rather than sending out 5 small bananas
-				*(int*)(0x806F6CAC) = 0x9204001A;
-				*(int*)(0x806F6CB0) = 0x86060000;
+				*(int*)(0x806F6CAC) = 0x9204001A; // LBU $a0, 0x1A ($s0)
+				*(int*)(0x806F6CB0) = 0x86060002; // LH $a2, 0x2 ($s0)
 				*(int*)(0x806F6CB4) = 0x0C000000 | (((int)&tagAnywhereInit & 0xFFFFFF) >> 2);
+				*(int*)(0x806F53AC) = 0; // Prevent LZ case
 			}
 			// Fix Tag Barrel Background Kong memes
 			*(int*)(0x806839F0) = 0x0C000000 | (((int)&tagBarrelBackgroundKong & 0xFFFFFF) >> 2);
