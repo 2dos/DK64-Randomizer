@@ -161,6 +161,17 @@ static unsigned char tag_countdown = 0;
 static char can_tag_anywhere = 0;
 
 int canTagAnywhere(int prev_crystals) {
+    if (CurrentMap != 0x2A) {
+        char hud_items[] = {0,1,5,8,10,12,13,14};
+        tag_countdown = 0;
+        if (HUD) {
+            for (int i = 0; i < sizeof(hud_items); i++) {
+                if (HUD->item[(int)hud_items[i]].hud_state) {
+                    return 0;
+                }
+            }
+        }
+    }
     if (Player->strong_kong_ostand_bitfield & 0x100) {
         // Seasick
         return 0;
@@ -180,9 +191,6 @@ int canTagAnywhere(int prev_crystals) {
     if (CutsceneActive) {
         return 0;
     }
-    if (ModelTwoTouchCount > 0) {
-        return 0;
-    }
     if (CurrentMap == 0x2A) {
         if (MapState & 0x10) {
             return 0;
@@ -190,22 +198,6 @@ int canTagAnywhere(int prev_crystals) {
         if (hasTurnedInEnoughCBs()) {
             if (Player->zPos < 560.0f) {
                 // Too close to boss door
-                return 0;
-            }
-        }
-    }
-    for (int i = 0; i < LoadedActorCount; i++) {
-        if (LoadedActorArray[i].actor) {
-            int tested_type = LoadedActorArray[i].actor->actorType;
-            if (tested_type == 48) { // Coconut
-                return 0;
-            } else if (tested_type == 36) { // Peanut
-                return 0;
-            } else if (tested_type == 42) { // Grape
-                return 0;
-            } else if (tested_type == 43) { // Feather
-                return 0;
-            } else if (tested_type == 38) { // Pineapple
                 return 0;
             }
         }
@@ -273,16 +265,13 @@ int getTagAnywhereKong(int direction) {
     }
 }
 
-static const unsigned char important_huds[] = {0,1};
-static unsigned char important_huds_changed[] = {0,0};
-
 void tagAnywhere(int prev_crystals) {
 	if (Rando.tag_anywhere) {
 		if (Player) {
-            if (tag_countdown > 0) {
-                tag_countdown -= 1;
-            }
             if (CurrentMap == 0x2A) {
+                if (tag_countdown > 0) {
+                    tag_countdown -= 1;
+                }
                 if (tag_countdown == 2) {
                     HUD->item[0].hud_state = 1;
                     if (Player->control_state == 108) {
@@ -296,20 +285,6 @@ void tagAnywhere(int prev_crystals) {
                         int world = getWorld(CurrentMap,0);
                         if (MovesBase[(int)Character].cb_count[world] > 0) {
                             HUD->item[0].hud_state = 1;
-                        }
-                    }
-                }
-            } else {
-                if (tag_countdown == 2) {
-                    for (int i = 0; i < sizeof(important_huds); i++) {
-                        if (important_huds_changed[i]) {
-                            HUD->item[(int)important_huds[i]].hud_state = 0;
-                        }
-                    }
-                } else if (tag_countdown == 1) {
-                    for (int i = 0; i < sizeof(important_huds); i++) {
-                        if (important_huds_changed[i]) {
-                            HUD->item[(int)important_huds[i]].hud_state = 1;
                         }
                     }
                 }
@@ -346,25 +321,11 @@ void tagAnywhere(int prev_crystals) {
                                 Player->hand_state = 3;
                             }
                         };
-                        // Fix HUD memes
                         if (CurrentMap == 0x2A) {
                             if (!hasTurnedInEnoughCBs()) {
                                 tag_countdown = 3;
                                 HUD->item[0].hud_state_timer = 0x100;
                                 HUD->item[0].hud_state = 0;
-                            }
-                        } else {
-                            for (int i = 0; i < sizeof(important_huds); i++) {
-                                important_huds_changed[i] = 0;
-                                if (HUD) {
-                                    int hud_st = HUD->item[(int)important_huds[i]].hud_state;
-                                    if ((hud_st == 1) || (hud_st == 2)) {
-                                        tag_countdown = 3;
-                                        HUD->item[(int)important_huds[i]].hud_state_timer = 0;
-                                        HUD->item[(int)important_huds[i]].hud_state = 0;
-                                        important_huds_changed[i] = 1;
-                                    }
-                                }
                             }
                         }
                         tagKong(next_character + 2);
