@@ -51,6 +51,9 @@ class Settings:
         self.troff_min = [0.25, 0.3, 0.35, 0.4, 0.45, 0.5, 0.55]  # Weights for the minimum value of troff
         if self.hard_troff_n_scoff:
             self.troff_min = [0.45, 0.5, 0.55, 0.6, 0.65, 0.7, 0.75]  # Add 20% to the minimum for hard T&S
+        # In hard level progression we go through levels in a random order, so we set every level's troff min weight to the largest weight
+        if self.hard_level_progression:
+            self.troff_min = [self.troff_min[-1] for x in self.troff_min]
         # Always start with training barrels currently
         # training_barrels: str
         # normal
