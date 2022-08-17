@@ -170,6 +170,9 @@ extern void spawnProjectile(short object, short subtype, int speed, float x, flo
 extern void controlStateControl(int unk0);
 extern void save(void);
 
+extern void assessFlagMapping(int map, int id);
+extern void coinCBCollectHandle(int player, int obj, int is_homing);
+
 //vanilla data
 extern float TransitionSpeed;
 extern char CutsceneWillPlay;

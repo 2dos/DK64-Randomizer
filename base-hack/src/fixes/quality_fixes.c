@@ -67,3 +67,8 @@ void postKRoolSaveCheck(void) {
 		save();
 	}
 }
+
+void tagBarrelBackgroundKong(int kong_actor) {
+	tagKong(kong_actor);
+	Player->new_kong = kong_actor;
+}
