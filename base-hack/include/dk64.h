@@ -169,7 +169,6 @@ extern void updateActorProjectileInfo(void* actor, int unk0);
 extern void spawnProjectile(short object, short subtype, int speed, float x, float y, float z, float unk0, void* actor);
 extern void controlStateControl(int unk0);
 extern void save(void);
-extern void displayItemOnHUD(int item, int unk0, int unk1);
 
 extern void assessFlagMapping(int map, int id);
 extern void coinCBCollectHandle(int player, int obj, int is_homing);
