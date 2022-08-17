@@ -205,6 +205,14 @@ void initHack(int source) {
 				*(short*)(0x8067EAC6) = 1; // HC Dogadon 2
 				*(short*)(0x8067EACA) = 1; // Others
 				*(short*)(0x8067EA92) = 1; // Others 2
+				// Transformations can pick up other's collectables
+				*(int*)(0x806F7488) = 0x964F036E;
+				*(int*)(0x806F6330) = 0x96AC036E; // Collection
+				*(int*)(0x806F68A0) = 0x95B8036E; // DK Opacity
+				*(int*)(0x806F68DC) = 0x952C036E; // Diddy Opacity
+				*(int*)(0x806F6914) = 0x95F9036E; // Tiny Opacity
+				*(int*)(0x806F694C) = 0x95AE036E; // Lanky Opacity
+				*(int*)(0x806F6984) = 0x952B036E; // Chunky Opacity
 			}
 			if (Rando.fast_warp) {
 				// Replace vanilla warp animation (0x52) with monkeyport animation (0x53)
