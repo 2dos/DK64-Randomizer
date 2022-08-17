@@ -211,7 +211,7 @@ void initHack(int source) {
 				*(short*)(0x806EE692) = 0x54;
 				*(int*)(0x806DC2AC) = 0x0C000000 | (((int)&fastWarp & 0xFFFFFF) >> 2); // Modify Function Call
 			}
-			if (Rando.version > 0) {
+			if (Rando.version == 0) {
 				// Disable Graphical Debugger
 				*(int*)(0x8060EEE0) = 0x240E0000; // ADDIU $t6, $r0, 0
 			}
@@ -314,8 +314,13 @@ void initHack(int source) {
 			if (Rando.tag_anywhere) {
 				// *(int*)(0x806F6D88) = 0; // Makes collectables not produce a flying model which delays collection. Instant change
 				*(int*)(0x806F6D94) = 0; // Prevent delayed collection
-				*(short*)(0x806F5B68) = 0x1000; // Standard Ammo Fix
-				*(short*)(0x806F59A8) = 0x1000; // Bunches pick up all 5 at once, rather than sending out 5 small bananas
+				// Standard Ammo
+				*(short*)(0x806F5B68) = 0x1000;
+				*(int*)(0x806F5BE8) = 0x0C000000 | (((int)&tagAnywhereAmmo & 0xFFFFFF) >> 2);
+				// Bunch
+				*(short*)(0x806F59A8) = 0x1000;
+				*(int*)(0x806F5A08) = 0x0C000000 | (((int)&tagAnywhereBunch & 0xFFFFFF) >> 2);
+
 				*(int*)(0x806F6CAC) = 0x9204001A; // LBU $a0, 0x1A ($s0)
 				*(int*)(0x806F6CB0) = 0x86060002; // LH $a2, 0x2 ($s0)
 				*(int*)(0x806F6CB4) = 0x0C000000 | (((int)&tagAnywhereInit & 0xFFFFFF) >> 2);

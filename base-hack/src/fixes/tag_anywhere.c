@@ -381,3 +381,15 @@ void tagAnywhereInit(int is_homing, int model2_id, int obj) {
     assessFlagMapping(CurrentMap, model2_id);
     coinCBCollectHandle(0, obj, is_homing);
 }
+
+void tagAnywhereAmmo(int player, int obj, int is_homing) {
+    coinCBCollectHandle(player, obj, is_homing);
+    if (player_count == 1) {
+        displayItemOnHUD(2 + is_homing,0,0);
+    }
+}
+
+void tagAnywhereBunch(int player, int obj, int is_homing) {
+    coinCBCollectHandle(player, obj, is_homing);
+    playSFX(Banana);
+}
