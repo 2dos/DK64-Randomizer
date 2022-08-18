@@ -30,6 +30,7 @@ class Settings:
         self.generate_progression()
         self.generate_misc()
         self.rom_data = 0x1FED020
+        self.move_location_data = 0x1FEF000
 
         for k, v in form_data.items():
             setattr(self, k, v)

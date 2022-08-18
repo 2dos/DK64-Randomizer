@@ -170,6 +170,22 @@ extern void spawnProjectile(short object, short subtype, int speed, float x, flo
 extern void controlStateControl(int unk0);
 extern void save(void);
 
+extern int crystalsUnlocked(int kong);
+extern void setMovesForAllKongs(shop_paad* paad, int is_bitfield);
+extern void setMoveProgressive(shop_paad* paad, int kong);
+extern void setMoveBitfield(shop_paad* paad, int kong);
+extern void refillHealth(int player_index);
+extern void changeCollectableCount(int item, int player_index, int change);
+extern void save(void);
+extern void* getSpawnerTiedActor(short target_trigger, short props_change);
+
+extern void _guScaleF(void* mtx, int x, int y, int z);
+extern void _guTranslateF(void* mtx, int x, int y, int z);
+extern void _guMtxCatF(void* mtx, void* unk0, void* unk1);
+extern void _guMtxF2L(void* mtx, void* unk0);
+extern void* getTextPointer(int file, int text_index, int unk0);
+extern void addDLToOverlay(int code, void* actor, int delay);
+
 extern void assessFlagMapping(int map, int id);
 extern void coinCBCollectHandle(int player, int obj, int is_homing);
 extern void displayItemOnHUD(int item, int unk0, int unk1);
@@ -347,6 +363,7 @@ extern actorData* PlayerPointer_0;
 extern SpawnerInfo* currentCharSpawner;
 extern short EnemiesKilledCounter;
 extern model2_collision_info ModelTwoCollisionArray[42];
+extern unsigned char MelonArray[6];
 extern int IGT;
 
 //hack data
@@ -368,6 +385,8 @@ extern short style2Mtx[0x10];
 extern purchase_struct CrankyMoves_New[5][8];
 extern purchase_struct CandyMoves_New[5][8];
 extern purchase_struct FunkyMoves_New[5][8];
+extern purchase_struct TrainingMoves_New[4];
+extern purchase_struct BFIMove_New;
 extern settingsData StoredSettings;
 extern char WarpToIslesEnabled;
 extern char SkipDance;
