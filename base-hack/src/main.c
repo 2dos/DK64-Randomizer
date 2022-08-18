@@ -13,6 +13,7 @@ static char lag_counter = 0;
 static float current_avg_lag = 0;
 static short past_crystals = 0;
 static char has_loaded = 0;
+static char good_eeprom = 0;
 
 void giveCollectables(void) {
 	int mult = 1;
@@ -43,6 +44,9 @@ void cFuncLoop(void) {
 	if (ObjectModel2Timer <= 2) {
 		shiftBrokenJapesPortal();
 		openCoinDoor();
+		if (CurrentMap == 0x50) {
+			good_eeprom = checkFlag(0x3F,1);
+		}
 	}
 	displayNumberOnTns();
 	if (Rando.music_rando_on) {
@@ -227,7 +231,18 @@ void earlyFrame(void) {
 		if ((loaded) || (ObjectModel2Timer > 800)) {
 			if (has_loaded == 0) {
 				initiateTransitionFade(0x50, 0, 5);
+				// Set flags to test EEPROM
+				setFlag(0x3F,1,1);
+				SaveToGlobal();
 				has_loaded = 1;
+			}
+		}
+	} else if (CurrentMap == 0x4C) {
+		if (!Rando.quality_of_life) {
+			if (ObjectModel2Timer == 5) {
+				// Set flags to test EEPROM
+				setFlag(0x3F,1,1);
+				SaveToGlobal();
 			}
 		}
 	}
@@ -291,6 +306,13 @@ int* displayListModifiers(int* dl) {
 			dl = drawScreenRect(dl, left, 475, right, 485, *(unsigned char*)(address + 0), *(unsigned char*)(address + 1), *(unsigned char*)(address + 2), *(unsigned char*)(address + 3));
 			dl = drawPixelTextContainer(dl, wait_x_offsets[(int)wait_progress_master], 130, (char*)wait_texts[(int)wait_progress_master], 0xFF, 0xFF, 0xFF, 0xFF, 1);
 			dl = drawPixelTextContainer(dl, 110, 150, "PLEASE WAIT", 0xFF, 0xFF, 0xFF, 0xFF, 1);
+		} else if (CurrentMap == MAIN_MENU) {
+			if (!good_eeprom) {
+				dl = drawPixelTextContainer(dl, 0x52, 0x66, "BAD EEPROM SETTINGS.", 0xFF, 0xFF, 0xFF, 0xFF, 1);
+				dl = drawPixelTextContainer(dl, 0x3E, 0x6F, "YOUR GAME WILL NOT SAVE.", 0xFF, 0, 0, 0xFF, 1);
+				dl = drawPixelTextContainer(dl, 0x3E, 0x87, "CHECK THE SETUP GUIDE IN", 0xFF, 0xFF, 0xFF, 0xFF, 1);
+				dl = drawPixelTextContainer(dl, 0x34, 0x92, "THE WIKI TO FIX THIS ERROR.", 0xFF, 0xFF, 0xFF, 0xFF, 1);
+			}
 		} else {
 			if (Rando.fps_on) {
 				float fps = HERTZ;
