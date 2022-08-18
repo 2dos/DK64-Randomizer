@@ -210,6 +210,55 @@ move_hints = [
         "candy": "I HAVE AN INSTRUMENT UPGRADE AVAILABLE FOR YOU.",
     },
     {
+        "move": "Dive Barrel",
+        "kong": "~",
+        "cranky": "DIVE BARREL CRANKY",
+        "funky": "DIVE BARREL FUNKY",
+        "candy": "DIVE BARREL CANDY",
+    },
+    {
+        "move": "Orange Barrel",
+        "kong": "~",
+        "cranky": "ORANGE BARREL CRANKY",
+        "funky": "ORANGE BARREL FUNKY",
+        "candy": "ORANGE BARREL CANDY",
+    },
+    {
+        "move": "Barrel Barrel",
+        "kong": "~",
+        "cranky": "BARREL BARREL CRANKY",
+        "funky": "BARREL BARREL FUNKY",
+        "candy": "BARREL BARREL CANDY",
+    },
+    {
+        "move": "Vine Barrel",
+        "kong": "~",
+        "cranky": "VINE BARREL CRANKY",
+        "funky": "VINE BARREL FUNKY",
+        "candy": "VINE BARREL CANDY",
+    },
+    {
+        "move": "Camera Solo",
+        "kong": "~",
+        "cranky": "CAMERA SOLO CRANKY",
+        "funky": "CAMERA SOLO FUNKY",
+        "candy": "CAMERA SOLO CANDY",
+    },
+    {
+        "move": "Shockwave Solo",
+        "kong": "~",
+        "cranky": "SHOCKWAVE SOLO CRANKY",
+        "funky": "SHOCKWAVE SOLO FUNKY",
+        "candy": "SHOCKWAVE SOLO CANDY",
+    },
+    {
+        "move": "Shockwave Camera Combo",
+        "kong": "~",
+        "cranky": "SHOCKWAVE CAMERA COMBO CRANKY",
+        "funky": "SHOCKWAVE CAMERA COMBO FUNKY",
+        "candy": "SHOCKWAVE CAMERA COMBO CANDY",
+    },
+    {
         "move": "Not enough coins - Special Move",
         "kong": "~",
         "cranky": "YOU'RE UNLUCKY TO BE SO POOR YOU CAN'T AFFORD MY SPECIAL MOVE.",
@@ -243,6 +292,20 @@ move_hints = [
         "cranky": "YOU'RE UNLUCKY TO BE SO POOR YOU CAN'T AFFORD TO UPGRADE YOUR INSTRUMENT.",
         "funky": "'FRAID I CAN'T JUST GIVE IT TO YA, THOUGH. MUSICAL ENERGY DOESN'T GROW ON TREES!",
         "candy": "BUT YOU'LL NEED TO SCRAPE TOGETHER SOME MORE COINS TO UPGRADE YOUR INSTRUMENT.",
+    },
+    {
+        "move": "Not enough coins - Training Barrels",
+        "kong": "~",
+        "cranky": "YOU'RE UNLUCKY TO BE SO POOR YOU CAN'T AFFORD THIS BASIC MOVE.",
+        "funky": "'FRAID I CAN'T JUST GIVE IT TO YA, THOUGH. BASIC MOVES DON'T GROW ON TREES!",
+        "candy": "BUT YOU'LL NEED TO SCRAPE TOGETHER SOME MORE COINS TO GET THIS BASIC MOVE.",
+    },
+    {
+        "move": "Not enough coins - Fairy Moves",
+        "kong": "~",
+        "cranky": "YOU'RE UNLUCKY TO BE SO POOR YOU CAN'T AFFORD THIS FAIRY MOVE.",
+        "funky": "'FRAID I CAN'T JUST GIVE IT TO YA, THOUGH. FAIRY MOVES DON'T GROW ON TREES!",
+        "candy": "BUT YOU'LL NEED TO SCRAPE TOGETHER SOME MORE COINS TO GET THIS FAIRY MOVE.",
     },
 ]
 
@@ -283,11 +346,20 @@ moves = [
     "Saxophone Slam",
     "Triangle Trample",
     "Instrument Upgrade",
+    "Dive Barrel",
+    "Orange Barrel",
+    "Barrel Barrel",
+    "Vine Barrel",
+    "Camera Solo",
+    "Shockwave Solo",
+    "Shockwave Camera Combo",
     "Not enough coins - Special Move",
     "Not enough coins - Slam",
     "Not enough coins - Gun",
     "Not enough coins - Ammo Belt",
     "Not enough coins - Instrument",
+    "Not enough coins - Training Barrels",
+    "Not enough coins - Fairy Moves",
 ]
 
 shop_owners = [
@@ -320,7 +392,11 @@ writeText(
     [
         [{"text": ["WHAT DID CRANKY MEAN ABOUT TRAINING? DONKEY ALL CONFUSED..."]}],
         [{"text": ["AW NO! SO THAT WHAT CRANKY MEAN ABOUT REPTILE...", "DONKEY NOT BELIEVE IT. KING K.ROOL? WE FINISHED K. ROOL OFF IN LAST GAME!"]}],
-        [{"text": ["OKAY!", "DONKEY IS FREE NOW. THANK YOU, MY FRIEND.", "DONKEY CAN COLLECT YELLOW BANANAS."]},{"text": ["dk_coloured_banana"]}, {"text": ["DONKEY WILL BE INSIDE THE TAG BARREL UNTIL YOU NEED MY HELP."]}],
+        [
+            {"text": ["OKAY!", "DONKEY IS FREE NOW. THANK YOU, MY FRIEND.", "DONKEY CAN COLLECT YELLOW BANANAS."]},
+            {"text": ["dk_coloured_banana"]},
+            {"text": ["DONKEY WILL BE INSIDE THE TAG BARREL UNTIL YOU NEED MY HELP."]},
+        ],
     ],
 )
 
@@ -372,7 +448,7 @@ move_names = [
 move_names_arr = []
 for move in move_names:
     init_len = len(move_names_arr)
-    move_names_arr.append([{"text":[move["name"].upper()]}])
+    move_names_arr.append([{"text": [move["name"].upper()]}])
     if "latin" in move:
         move_names_arr.append([{"text": [f"({move['latin'].upper()})"]}])
     if "print" in move:
@@ -449,7 +525,7 @@ for move_index in range(3):
 # Instrument Upgrades
 index_data["ins_upg"]["indexes"] = [0x0, 0x0, 0x33, 0x32, 0x34]
 with open("src/randomizers/move_text.c", "w") as fh:
-    with open("include/text_items.h","w") as fg:
+    with open("include/text_items.h", "w") as fg:
         fh.write('#include "../../include/common.h"\n\n')
         fg.write('#include "common.h"\n\n')
         disclaimer = [
@@ -488,36 +564,62 @@ writeText("move_names.bin", move_names_arr)
 
 move_explanations = [
     {
-        "move": "dive_barrel",
-        "explanation": [{"text": ["PAY ATTENTION, ~. YOU AND ALL THE OTHER KONGS CAN NOW DIVE UNDERWATER. PRESS"]},{"text": ["z_button"]},{"text": ["TO SUBMERGE YOURSELF."]}]
+        "move": "dive_barrel",  # 0x24
+        "explanation": [{"text": ["PAY ATTENTION, ~. YOU AND ALL THE OTHER KONGS CAN NOW DIVE UNDERWATER. PRESS"]}, {"text": ["z_button"]}, {"text": ["TO SUBMERGE YOURSELF."]}],
     },
     {
-        "move": "orange_barrel",
-        "explanation": [{"text": ["PAY ATTENTION, ~. YOU AND ALL THE OTHER KONGS CAN NOW THROW ORANGE GRENADES. PRESS"]},{"text": ["z_button"]},{"text": ["THEN"]},{"text": ["c_left_button"]},{"text": ["TO FIRE AN EXPLOSIVE FRUIT."]}]
+        "move": "orange_barrel",  # 0x25
+        "explanation": [
+            {"text": ["PAY ATTENTION, ~. YOU AND ALL THE OTHER KONGS CAN NOW THROW ORANGE GRENADES. PRESS"]},
+            {"text": ["z_button"]},
+            {"text": ["THEN"]},
+            {"text": ["c_left_button"]},
+            {"text": ["TO FIRE AN EXPLOSIVE FRUIT."]},
+        ],
     },
     {
-        "move": "barrel_barrel",
-        "explanation": [{"text": ["PAY ATTENTION, ~. YOU AND ALL THE OTHER KONGS CAN NOW PICK UP OBJECTS. PRESS"]},{"text": ["b_button"]},{"text": ["TO GRAB AN OBJECT WITH RELATIVE EASE."]}]
+        "move": "barrel_barrel",  # 0x26
+        "explanation": [{"text": ["PAY ATTENTION, ~. YOU AND ALL THE OTHER KONGS CAN NOW PICK UP OBJECTS. PRESS"]}, {"text": ["b_button"]}, {"text": ["TO GRAB AN OBJECT WITH RELATIVE EASE."]}],
     },
     {
-        "move": "vine_barrel",
-        "explanation": [{"text": ["PAY ATTENTION, ~. YOU AND ALL THE OTHER KONGS CAN NOW SWING ON VINES. JUMP TO GRAB ONTO THE VINE AND PRESS "]},{"text": ["a_button"]},{"text": ["TO LAUNCH YOURSELF FROM IT."]}]
+        "move": "vine_barrel",  # 0x27
+        "explanation": [
+            {"text": ["PAY ATTENTION, ~. YOU AND ALL THE OTHER KONGS CAN NOW SWING ON VINES. JUMP TO GRAB ONTO THE VINE AND PRESS "]},
+            {"text": ["a_button"]},
+            {"text": ["TO LAUNCH YOURSELF FROM IT."]},
+        ],
     },
     {
-        "move": "camera_solo",
-        "explanation": [{"text": ["PAY ATTENTION, ~. YOU AND ALL THE OTHER KONGS CAN NOW USE A CAMERA TO SNAP BANANA FAIRIES. PRESS"]},{"text": ["z_button"]},{"text": ["THEN"]},{"text": ["c_down_button"]},{"text": ["TO PULL OUT THE CAMERA. PRESS"]},{"text": ["b_button"]},{"text": ["TO TAKE A PICTURE."]}]
+        "move": "camera_solo",  # 0x28
+        "explanation": [
+            {"text": ["PAY ATTENTION, ~. YOU AND ALL THE OTHER KONGS CAN NOW USE A CAMERA TO SNAP BANANA FAIRIES. PRESS"]},
+            {"text": ["z_button"]},
+            {"text": ["THEN"]},
+            {"text": ["c_down_button"]},
+            {"text": ["TO PULL OUT THE CAMERA. PRESS"]},
+            {"text": ["b_button"]},
+            {"text": ["TO TAKE A PICTURE."]},
+        ],
     },
     {
-        "move": "shockwave_solo",
-        "explanation": [{"text": ["PAY ATTENTION, ~. YOU AND ALL THE OTHER KONGS CAN NOW RELEASE A SHOCKWAVE CHARGE. PRESS AND HOLD"]},{"text": ["b_button"]},{"text": ["CHARGE THE SHOCKWAVE."]}]
+        "move": "shockwave_solo",  # 0x29
+        "explanation": [{"text": ["PAY ATTENTION, ~. YOU AND ALL THE OTHER KONGS CAN NOW RELEASE A SHOCKWAVE CHARGE. PRESS AND HOLD"]}, {"text": ["b_button"]}, {"text": ["TO CHARGE THE SHOCKWAVE."]}],
     },
     {
-        "move": "camera_shockwave_combo",
-        "explanation": [{"text": ["PAY ATTENTION, ~. YOU AND ALL THE OTHER KONGS CAN NOW RELEASE A SHOCKWAVE CHARGE AND USE A CAMERA TO SNAP BANANA FAIRIES. PRESS AND HOLD"]},{"text": ["b_button"]},{"text": ["CHARGE THE SHOCKWAVE. PRESS "]},{"text": ["z_button"]},{"text": ["THEN"]},{"text": ["c_down_button"]},{"text": ["TO PULL OUT THE CAMERA."]}]
-    }
+        "move": "camera_shockwave_combo",  # 0x2A
+        "explanation": [
+            {"text": ["PAY ATTENTION, ~. YOU AND ALL THE OTHER KONGS CAN NOW RELEASE A SHOCKWAVE CHARGE AND USE A CAMERA TO SNAP BANANA FAIRIES. PRESS AND HOLD"]},
+            {"text": ["b_button"]},
+            {"text": ["TO CHARGE THE SHOCKWAVE. PRESS "]},
+            {"text": ["z_button"]},
+            {"text": ["THEN"]},
+            {"text": ["c_down_button"]},
+            {"text": ["TO PULL OUT THE CAMERA."]},
+        ],
+    },
 ]
 
 cranky_text = grabText(8)
 for move in move_explanations:
     cranky_text.append(move["explanation"])
-writeText("cranky_text.bin",cranky_text)
+writeText("cranky_text.bin", cranky_text)

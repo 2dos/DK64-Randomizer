@@ -453,86 +453,87 @@ def compileHints(spoiler: Spoiler):
             ],
             ["The shop owner who is flirtatious", "The shop owner who is not present in Fungi Forest", "The shop owner who is not present in Jungle Japes", "The shop owner with blonde hair"],
         ]
-        for move in moves_of_importance:
-            move["key"] = ((move["move_type"] & 7) << 5) + (((move["move_index"] - 1) & 3) << 3) + (move["kong"] & 7)
-            move["purchase_kong"] = -1
-            move["level"] = -1
-            move["shop"] = -1
-        shop_contains = {}
-        for shop in range(3):
-            for kong in range(5):
-                for level in range(8):
-                    for move in moves_of_importance:
-                        if spoiler.move_data[shop][kong][level] == move["key"]:
-                            move["level"] = level
-                            move["shop"] = shop
-                            move["purchase_kong"] = kong
-                            if spoiler.settings.wrinkly_hints == "cryptic":
-                                shop_level_name = f"{shop_owners[shop]}'s in {level}"
-                            else:
-                                shop_level_name = f"{level_list_isles[level]} {shop_owners[shop]}"
-                            is_shared = False
-                            if "shared" in move:
-                                is_shared = move["shared"]
-                            if shop_level_name in shop_contains:
-                                if not is_shared:
-                                    shop_contains[shop_level_name]["moves"].append(move["name"])
-                                    shop_contains[shop_level_name]["kongs"].append(kong)
-                            else:
-                                kong_lst = [kong]
-                                if is_shared:
-                                    kong_lst = [Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky]
-                                shop_contains[shop_level_name] = {"moves": [move["name"]], "kongs": kong_lst.copy()}
+        # TODO: Unhide
+        # for move in moves_of_importance:
+        #     move["key"] = ((move["move_type"] & 7) << 5) + (((move["move_index"] - 1) & 3) << 3) + (move["kong"] & 7)
+        #     move["purchase_kong"] = -1
+        #     move["level"] = -1
+        #     move["shop"] = -1
+        # shop_contains = {}
+        # for shop in range(3):
+        #     for kong in range(5):
+        #         for level in range(8):
+        #             for move in moves_of_importance:
+        #                 if spoiler.move_data[0][shop][kong][level] == move["key"]:
+        #                     move["level"] = level
+        #                     move["shop"] = shop
+        #                     move["purchase_kong"] = kong
+        #                     if spoiler.settings.wrinkly_hints == "cryptic":
+        #                         shop_level_name = f"{shop_owners[shop]}'s in {level}"
+        #                     else:
+        #                         shop_level_name = f"{level_list_isles[level]} {shop_owners[shop]}"
+        #                     is_shared = False
+        #                     if "shared" in move:
+        #                         is_shared = move["shared"]
+        #                     if shop_level_name in shop_contains:
+        #                         if not is_shared:
+        #                             shop_contains[shop_level_name]["moves"].append(move["name"])
+        #                             shop_contains[shop_level_name]["kongs"].append(kong)
+        #                     else:
+        #                         kong_lst = [kong]
+        #                         if is_shared:
+        #                             kong_lst = [Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky]
+        #                         shop_contains[shop_level_name] = {"moves": [move["name"]], "kongs": kong_lst.copy()}
         # All moves in a shop
-        shop_contain_keys = list(shop_contains.keys())
-        random.shuffle(shop_contain_keys)
-        priority_barriers = [3, 6, 10]
-        shop_priority = 1
-        shop_importance = True
-        for shop_index, shop in enumerate(shop_contain_keys):
-            shop_name = shop
-            if "'s in " in shop_name:
-                level_index = int(shop_name.split("'s in ")[1].strip())
-                shop_name = random.choice(level_cryptic_isles[level_index])
-            if len(shop_contains[shop]["moves"]) > 2:
-                item_names = ", ".join(shop_contains[shop]["moves"][:-1])
-                item_names = f"{item_names} and {shop_contains[shop]['moves'][-1]}"
-            elif len(shop_contains[shop]["moves"]) == 2:
-                item_names = " and ".join(shop_contains[shop]["moves"])
-            else:
-                item_names = shop_contains[shop]["moves"][0]
-            hint_list.append(
-                Hint(
-                    hint=f"{shop_name} contains {item_names}",
-                    priority=shop_priority,
-                    important=shop_importance,
-                    kongs=shop_contains[shop]["kongs"],
-                    keywords=shop_contains[shop]["moves"],
-                    subtype="shop_dump",
-                )
-            )
-            if shop_importance:
-                hint_list.append(Hint(hint=f"{shop_name} contains {item_names}", important=False, kongs=shop_contains[shop]["kongs"], keywords=shop_contains[shop]["moves"], subtype="shop_dump"))
-            if shop_priority <= len(priority_barriers):
-                if (shop_index + 1) >= priority_barriers[shop_priority - 1]:
-                    if shop_priority == len(priority_barriers):
-                        shop_importance = False
-                    else:
-                        shop_priority += 1
+        # shop_contain_keys = list(shop_contains.keys())
+        # random.shuffle(shop_contain_keys)
+        # priority_barriers = [3, 6, 10]
+        # shop_priority = 1
+        # shop_importance = True
+        # for shop_index, shop in enumerate(shop_contain_keys):
+        #     shop_name = shop
+        #     if "'s in " in shop_name:
+        #         level_index = int(shop_name.split("'s in ")[1].strip())
+        #         shop_name = random.choice(level_cryptic_isles[level_index])
+        #     if len(shop_contains[shop]["moves"]) > 2:
+        #         item_names = ", ".join(shop_contains[shop]["moves"][:-1])
+        #         item_names = f"{item_names} and {shop_contains[shop]['moves'][-1]}"
+        #     elif len(shop_contains[shop]["moves"]) == 2:
+        #         item_names = " and ".join(shop_contains[shop]["moves"])
+        #     else:
+        #         item_names = shop_contains[shop]["moves"][0]
+        #     hint_list.append(
+        #         Hint(
+        #             hint=f"{shop_name} contains {item_names}",
+        #             priority=shop_priority,
+        #             important=shop_importance,
+        #             kongs=shop_contains[shop]["kongs"],
+        #             keywords=shop_contains[shop]["moves"],
+        #             subtype="shop_dump",
+        #         )
+        #     )
+        #     if shop_importance:
+        #         hint_list.append(Hint(hint=f"{shop_name} contains {item_names}", important=False, kongs=shop_contains[shop]["kongs"], keywords=shop_contains[shop]["moves"], subtype="shop_dump"))
+        #     if shop_priority <= len(priority_barriers):
+        #         if (shop_index + 1) >= priority_barriers[shop_priority - 1]:
+        #             if shop_priority == len(priority_barriers):
+        #                 shop_importance = False
+        #             else:
+        #                 shop_priority += 1
+        #
+        # for move in moves_of_importance:
+        #     if move["level"] > -1 and move["shop"] > -1 and move["purchase_kong"] > -1:
+        #         if spoiler.settings.wrinkly_hints == "cryptic":
+        #             kong_name = random.choice(kong_cryptic[move["purchase_kong"]])
+        #             level_name = random.choice(level_cryptic[move["level"]])
+        #         else:
+        #             kong_name = kong_list[move["purchase_kong"]]
+        #             level_name = level_list[move["level"]]
+        #         move_name = move["name"]
 
-        for move in moves_of_importance:
-            if move["level"] > -1 and move["shop"] > -1 and move["purchase_kong"] > -1:
-                if spoiler.settings.wrinkly_hints == "cryptic":
-                    kong_name = random.choice(kong_cryptic[move["purchase_kong"]])
-                    level_name = random.choice(level_cryptic[move["level"]])
-                else:
-                    kong_name = kong_list[move["purchase_kong"]]
-                    level_name = level_list[move["level"]]
-                move_name = move["name"]
-
-                shop_name = shop_owners[move["shop"]]
-                text = f"{move_name} can be purchased from {shop_name} in {level_name}."
-                hint_list.append(Hint(hint=text, priority=2, kongs=[move["purchase_kong"]], important=move["important"], keywords=[move["name"]], subtype="move_location"))
+        #         shop_name = shop_owners[move["shop"]]
+        #         text = f"{move_name} can be purchased from {shop_name} in {level_name}."
+        #         hint_list.append(Hint(hint=text, priority=2, kongs=[move["purchase_kong"]], important=move["important"], keywords=[move["name"]], subtype="move_location"))
     if spoiler.settings.kong_rando:
         kong_json = spoiler.shuffled_kong_placement
         placement_levels = [

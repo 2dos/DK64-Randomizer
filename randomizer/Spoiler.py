@@ -39,35 +39,27 @@ class Spoiler:
 
         self.move_data = []
         # 0: Cranky, 1: Funky, 2: Candy
-        for i in range(3):
+        for move_master_type in range(3):
             master_moves = []
-            if i == 0:
+            if move_master_type == 0:
                 # Shop
-                for j in range(3):
+                for shop_index in range(3):
                     moves = []
                     # One for each kong
-                    for k in range(5):
+                    for kong_index in range(5):
                         kongmoves = []
                         # One for each level
-                        for l in range(8):
-                            kongmoves.append({
-                                "move_type": None
-                            })
+                        for level_index in range(8):
+                            kongmoves.append({"move_type": None})
                         moves.append(kongmoves)
                     master_moves.append(moves)
-            elif i == 1:
+            elif move_master_type == 1:
                 # Training Barrels
-                for j in ["dive","orange","barrel","vine"]:
-                    master_moves.append({
-                        "move_type": "flag",
-                        "flag": j
-                    })
-            elif i == 2:
+                for tbarrel_type in ["dive", "orange", "barrel", "vine"]:
+                    master_moves.append({"move_type": "flag", "flag": tbarrel_type})
+            elif move_master_type == 2:
                 # BFI
-                master_moves.append({
-                    "move_type": "flag",
-                    "flag": "camera_shockwave"
-                })
+                master_moves.append({"move_type": "flag", "flag": "camera_shockwave"})
             self.move_data.append(master_moves)
 
         self.hint_list = {}
@@ -367,9 +359,9 @@ class Spoiler:
                             move_kong = kong_index
                         data = (move_type << 5) | (move_level << 3) | move_kong
                         self.move_data[0][shop_index][kong_index][level_index] = {
-                            "move_type": ["special","slam","gun","ammo_belt","instrument"][move_type],
-                            "move_lvl": move_level
-                            "move_kong": move_kong
+                            "move_type": ["special", "slam", "gun", "ammo_belt", "instrument"][move_type],
+                            "move_lvl": move_level,
+                            "move_kong": move_kong,
                         }
                 elif location.type == Types.Kong:
                     self.WriteKongPlacement(id, location.item)

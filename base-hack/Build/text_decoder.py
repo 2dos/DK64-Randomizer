@@ -8,24 +8,24 @@ text_table_index = 12
 
 icon_db = {
     0x0: "waterfall_tall",
-    0x1: "waterfall_short",       
+    0x1: "waterfall_short",
     0x2: "water",
     0x3: "lava",
     0x4: "sparkles",
     0x5: "pop_explosion",
-    0x6: "lava_explosion",        
+    0x6: "lava_explosion",
     0x7: "green_leaf?",
-    0x8: "brown_smoke_explosion", 
-    0x9: "small_explosion",       
+    0x8: "brown_smoke_explosion",
+    0x9: "small_explosion",
     0xA: "solar_flare?",
     0xB: "splash",
     0xC: "bubble",
-    0xD: "purple_sparkle",        
-    0xE: "yellow_sparkle",        
+    0xD: "purple_sparkle",
+    0xE: "yellow_sparkle",
     0xF: "green_sparkle",
-    0x10: "purple_sparkle",       
-    0x11: "yellow_sparkle",       
-    0x12: "green_sparkle",        
+    0x10: "purple_sparkle",
+    0x11: "yellow_sparkle",
+    0x12: "green_sparkle",
     0x13: "large_smoke_explosion",
     0x14: "pink_implosion",
     0x15: "brown_horizontal_spinning_plank",
@@ -185,20 +185,22 @@ icon_db = {
     0xAF: "wrinkly",
 }
 
+
 def grabText(file_index: int) -> list:
-    with open("rom/dk64.z64","rb") as fh:
+    """Pull text from ROM with a particular file index."""
+    with open("rom/dk64.z64", "rb") as fh:
         fh.seek(pointer_table_offset + (text_table_index * 4))
-        text_table = pointer_table_offset + (int.from_bytes(fh.read(4),"big") & 0x7FFFFFFF)
+        text_table = pointer_table_offset + (int.from_bytes(fh.read(4), "big") & 0x7FFFFFFF)
         fh.seek(text_table + (file_index * 4))
-        text_start = pointer_table_offset + (int.from_bytes(fh.read(4),"big") & 0x7FFFFFFF)
-        text_end = pointer_table_offset + (int.from_bytes(fh.read(4),"big") & 0x7FFFFFFF)
+        text_start = pointer_table_offset + (int.from_bytes(fh.read(4), "big") & 0x7FFFFFFF)
+        text_end = pointer_table_offset + (int.from_bytes(fh.read(4), "big") & 0x7FFFFFFF)
         text_size = text_end
         fh.seek(text_start)
-        indic = int.from_bytes(fh.read(2),"big")
+        indic = int.from_bytes(fh.read(2), "big")
         fh.seek(text_start)
-        with open(temp_file,"wb") as fg:
+        with open(temp_file, "wb") as fg:
             if indic == 0x1F8B:
-                fg.write(zlib.decompress(fh.read(text_size),(15+32)))
+                fg.write(zlib.decompress(fh.read(text_size), (15 + 32)))
             else:
                 fg.write(fh.read(text_size))
 
@@ -239,14 +241,7 @@ def grabText(file_index: int) -> list:
                             _pos = int.from_bytes(fh.read(2), "big")
                             fh.seek(data_start + _block)
                             _dat = int.from_bytes(fh.read(4), "big")
-                            text_blocks.append(
-                                {
-                                    "type": "sprite",
-                                    "position": _pos,
-                                    "data": hex(_dat),
-                                    "sprite": icon_db[(_dat>>8)&0xFF]
-                                }
-                            )
+                            text_blocks.append({"type": "sprite", "position": _pos, "data": hex(_dat), "sprite": icon_db[(_dat >> 8) & 0xFF]})
                         added = block_start + 2 + offset + (4 * sec3ct) + 4
                 else:
                     fh.seek(data_start + block_start + offset + 1)

@@ -42,31 +42,24 @@ def writeMoveDataToROM(arr: list):
     """Write move data to ROM."""
     for x in arr:
         if x["move_type"] == "flag":
-            flag_dict = {
-                "dive": 0x182,
-                "orange": 0x184,
-                "barrel": 0x185,
-                "vine": 0x183,
-                "camera": 0x2FD,
-                "shockwave": 0x179,
-                "camera_shockwave": 0xFFFE
-            }
+            flag_dict = {"dive": 0x182, "orange": 0x184, "barrel": 0x185, "vine": 0x183, "camera": 0x2FD, "shockwave": 0x179, "camera_shockwave": 0xFFFE}
             flag_index = 0xFFFF
             if x["flag"] in flag_dict:
                 flag_index = flag_dict[x["flag"]]
-            ROM().writeMultipleBytes(5,1)
-            ROM().writeMultipleBytes(0,1)
-            ROM().writeMultipleBytes(flag_index,2)
+            ROM().writeMultipleBytes(5, 1)
+            ROM().writeMultipleBytes(0, 1)
+            ROM().writeMultipleBytes(flag_index, 2)
         elif x["move_type"] is None:
-            ROM().writeMultipleBytes(7 << 5,1)
-            ROM().writeMultipleBytes(0,1)
-            ROM().writeMultipleBytes(0xFFFF,2)
+            ROM().writeMultipleBytes(7 << 5, 1)
+            ROM().writeMultipleBytes(0, 1)
+            ROM().writeMultipleBytes(0xFFFF, 2)
         else:
-            move_types = ["special","slam","gun","ammo_belt","instrument"]
+            move_types = ["special", "slam", "gun", "ammo_belt", "instrument"]
             data = move_types.index(x["move_type"]) << 5 | (x["move_lvl"] << 3) | x["move_kong"]
-            ROM().writeMultipleBytes(data,1)
-            ROM().writeMultipleBytes(0,1)
-            ROM().writeMultipleBytes(0xFFFF,2)
+            ROM().writeMultipleBytes(data, 1)
+            ROM().writeMultipleBytes(0, 1)
+            ROM().writeMultipleBytes(0xFFFF, 2)
+
 
 def randomize_moves(spoiler: Spoiler):
     """Randomize Move locations based on move_data from spoiler."""

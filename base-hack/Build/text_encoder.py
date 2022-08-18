@@ -3,24 +3,24 @@ import struct
 
 icon_db = {
     0x0: "waterfall_tall",
-    0x1: "waterfall_short",       
+    0x1: "waterfall_short",
     0x2: "water",
     0x3: "lava",
     0x4: "sparkles",
     0x5: "pop_explosion",
-    0x6: "lava_explosion",        
+    0x6: "lava_explosion",
     0x7: "green_leaf?",
-    0x8: "brown_smoke_explosion", 
-    0x9: "small_explosion",       
+    0x8: "brown_smoke_explosion",
+    0x9: "small_explosion",
     0xA: "solar_flare?",
     0xB: "splash",
     0xC: "bubble",
-    0xD: "purple_sparkle",        
-    0xE: "yellow_sparkle",        
+    0xD: "purple_sparkle",
+    0xE: "yellow_sparkle",
     0xF: "green_sparkle",
-    0x10: "purple_sparkle",       
-    0x11: "yellow_sparkle",       
-    0x12: "green_sparkle",        
+    0x10: "purple_sparkle",
+    0x11: "yellow_sparkle",
+    0x12: "green_sparkle",
     0x13: "large_smoke_explosion",
     0x14: "pink_implosion",
     0x15: "brown_horizontal_spinning_plank",
@@ -180,11 +180,13 @@ icon_db = {
     0xAF: "wrinkly",
 }
 
+
 def float_to_hex(f):
     """Convert float to hex."""
     if f == 0:
         return "0x00000000"
     return hex(struct.unpack("<I", struct.pack("<f", f))[0])
+
 
 def writeText(file_name, text):
     """Write the text to ROM."""
@@ -192,7 +194,7 @@ def writeText(file_name, text):
         fh.write(bytearray([len(text)]))
         position = 0
         for textbox in text:
-            fh.write(len(textbox).to_bytes(1,"big"))
+            fh.write(len(textbox).to_bytes(1, "big"))
             for block in textbox:
                 # Get Icon State
                 icon_id = -1
@@ -202,8 +204,8 @@ def writeText(file_name, text):
                             if icon_db[icon] == string:
                                 icon_id = icon
                 if icon_id > -1:
-                    fh.write(bytearray([2,1]))
-                    fh.write(icon_id.to_bytes(2,"big"))
+                    fh.write(bytearray([2, 1]))
+                    fh.write(icon_id.to_bytes(2, "big"))
                     fh.write(bytearray([0, 0]))
                 else:
                     fh.write(bytearray([1, len(block["text"])]))
@@ -215,7 +217,7 @@ def writeText(file_name, text):
                 unk0 = 0
                 if "unk0" in block:
                     unk0 = block["unk0"]
-                fh.write(int(float_to_hex(unk0),16).to_bytes(4,"big"))
+                fh.write(int(float_to_hex(unk0), 16).to_bytes(4, "big"))
         fh.write(bytearray(position.to_bytes(2, "big")))
         for textbox in text:
             for block in textbox:

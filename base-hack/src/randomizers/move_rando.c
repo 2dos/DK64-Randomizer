@@ -4,15 +4,6 @@
 #define CRANKY 5
 #define CANDY 0x19
 
-#define PURCHASE_MOVES 0
-#define PURCHASE_SLAM 1
-#define PURCHASE_GUN 2
-#define PURCHASE_AMMOBELT 3
-#define PURCHASE_INSTRUMENT 4
-#define PURCHASE_FLAG 5
-#define PURCHASE_GB 6
-#define PURCHASE_NOTHING -1
-
 int getMoveType(int value) {
 	int ret = (value >> 5) & 7;
 	if (ret == 7) {
@@ -621,7 +612,6 @@ void getNextMoveText(void) {
 			_guTranslateF(&mtx1, 0x44200000, 0x44480000, 0x0);
 			_guMtxCatF(&mtx0, &mtx1, &mtx0);
 			_guMtxF2L(&mtx0, &paad->unk_10);
-			//int bottom_height = getTextStyleHeight(6);
 			_guTranslateF(&mtx1, 0, 0x42400000, 0);
 			_guMtxCatF(&mtx0, &mtx1, &mtx0);
 			_guMtxF2L(&mtx0, &paad->unk_50);
@@ -723,9 +713,101 @@ void getNextMoveText(void) {
 
 void displayBFIMoveText(void) {
 	if ((BFIMove_New.purchase_type == PURCHASE_FLAG) && ((BFIMove_New.purchase_value == -2) || (BFIMove_New.purchase_value == FLAG_ABILITY_CAMERA))) {
-		DisplayItemOnHUD(6,0,0);
+		displayItemOnHUD(6,0,0);
 	}
 	if (BFIMove_New.purchase_type != PURCHASE_NOTHING) {
 		spawnActor(0x144,0);
+	}
+}
+
+static const unsigned char Explanation_Special[] = {
+	0x00, 0x0B, 0x0F, 0x14, // DK
+	0x00, 0x0C, 0x10, 0x15, // Diddy
+	0x00, 0x0E, 0x13, 0x16, // Lanky
+	0x00, 0x0D, 0x11, 0x17, // Tiny
+	0x00, 0x0D, 0x12, 0x18, // Chunky - Is Item 2 a bug?
+};
+
+static const unsigned char Explanation_Slam[] = {0x0, 0x19, 0x1A};
+static const unsigned char Explanation_Gun[] = {0x0, 0x12, 0x13, 0x14};
+
+void showPostMoveText(shop_paad* paad, KongBase* kong_base, int intro_flag) {
+	int substate = paad->unk_0E;
+	if (substate == 0) {
+		if (groundContactCheck()) {
+			LevelStateBitfield |= 0x10030;
+			int text_item_0 = -1;
+			int text_item_1 = -1;
+			int text_file = 0;
+			if (Player) {
+				Player->obj_props_bitfield &= 0xBFFFFFFF;
+			}
+			groundContactSet();
+			int p_type = paad->purchase_type;
+			switch (p_type) {
+				case PURCHASE_MOVES:
+					text_item_1 = Explanation_Special[(int)((paad->kong * 4) + paad->purchase_value)];
+				case PURCHASE_SLAM:
+					if (text_item_1 == -1) {
+						text_item_1 = Explanation_Slam[(int)paad->purchase_value];
+					}
+					text_file = 8;
+					break;
+				case PURCHASE_GUN:
+					text_item_1 = Explanation_Gun[(int)paad->purchase_value];
+				case PURCHASE_AMMOBELT:
+					if (text_item_1 == -1) {
+						textParameter = getRefillCount(2,0);
+						text_item_1 = 0x15;
+					}
+					text_file = 7;
+					break;
+				case PURCHASE_INSTRUMENT:
+					if (paad->purchase_value == 1) {
+						text_item_1 = 0x12;
+						if (!doAllKongsHaveMove(paad,1)) {
+							text_item_0 = 0x15;
+						}
+						text_file = 9;
+					} else {
+						text_item_1 = 0x13;
+						text_file = 9;
+						if ((paad->melons + 1) == CollectableBase.Melons) {
+							text_item_1 = 0x14;
+						} else {
+							text_file = 9;
+						}
+					}
+				case PURCHASE_FLAG:
+				case PURCHASE_GB:
+					{
+						int move_flags[] = {FLAG_TBARREL_DIVE, FLAG_TBARREL_ORANGE, FLAG_TBARREL_BARREL, FLAG_TBARREL_VINE, FLAG_ABILITY_CAMERA, FLAG_ABILITY_SHOCKWAVE, -2};
+						text_item_1 = 0x0;
+						text_file = 8;
+						for (int i = 0; i < sizeof(move_flags)/4; i++) {
+							if (move_flags[i] == paad->flag) {
+								text_item_1 = 0x24 + i;
+							}
+						}
+					}
+				break;
+			}
+			if (text_item_1 == -1) {
+				text_item_1 = 0;
+			}
+			getTextPointer_0(CurrentActorPointer_0, text_file, text_item_1);
+			if (text_item_0 > -1) {
+				getTextPointer_0(CurrentActorPointer_0, text_file, text_item_0);
+			}
+			paad->unk_0E += 1;
+		}
+	} else if (substate == 1) {
+		if ((CurrentActorPointer_0->obj_props_bitfield << 6) > -1) {
+			setPermFlag(intro_flag);
+			cancelPausedCutscene();
+			paad->unk_0E += 1;
+		}
+	} else if ((substate == 2) && (groundContactCheck())) {
+		getSequentialPurchase(paad, kong_base);
 	}
 }

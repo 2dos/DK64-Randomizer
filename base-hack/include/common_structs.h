@@ -731,7 +731,8 @@ typedef struct shop_paad {
 	/* 0x00B */ char purchase_type;
 	/* 0x00C */ char level;
 	/* 0x00D */ unsigned char state;
-	/* 0x00E */ char unk_0E[0x10-0x0E];
+	/* 0x00E */ unsigned char unk_0E;
+	/* 0x00F */ char unk_0F;
 	/* 0x010 */ unsigned char melons;
 	/* 0x011 */ unsigned char purchase_value;
 } shop_paad;

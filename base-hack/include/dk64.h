@@ -185,6 +185,11 @@ extern void _guMtxCatF(void* mtx, void* unk0, void* unk1);
 extern void _guMtxF2L(void* mtx, void* unk0);
 extern void* getTextPointer(int file, int text_index, int unk0);
 extern void addDLToOverlay(int code, void* actor, int delay);
+extern int groundContactCheck(void);
+extern void groundContactSet(void);
+extern int getRefillCount(int item, int player);
+extern int doAllKongsHaveMove(shop_paad* paad, int unk0);
+extern void getSequentialPurchase(shop_paad* paad, KongBase* movedata);
 
 extern void assessFlagMapping(int map, int id);
 extern void coinCBCollectHandle(int player, int obj, int is_homing);
@@ -365,6 +370,7 @@ extern short EnemiesKilledCounter;
 extern model2_collision_info ModelTwoCollisionArray[42];
 extern unsigned char MelonArray[6];
 extern int IGT;
+extern unsigned int LevelStateBitfield;
 
 //hack data
 extern int TestVariable;

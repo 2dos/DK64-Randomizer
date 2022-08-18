@@ -340,21 +340,18 @@ for x in range(8):
         }
     )
 for x in range(43):
-    if x != 13:
-        if x != 32:
-            if x != 0x18:
-                if x != 0x27:
-                    file_dict.append(
-                        {
-                            "name": "Text " + str(x),
-                            "pointer_table_index": 12,
-                            "file_index": x,
-                            "source_file": "text" + str(x) + ".bin",
-                            "target_compressed_size": 0x2000,
-                            "target_uncompressed_size": 0x2000,
-                            "do_not_recompress": True,
-                        }
-                    )
+    if x not in (13, 32, 0x18, 0x27, 8):
+        file_dict.append(
+            {
+                "name": "Text " + str(x),
+                "pointer_table_index": 12,
+                "file_index": x,
+                "source_file": "text" + str(x) + ".bin",
+                "target_compressed_size": 0x2000,
+                "target_uncompressed_size": 0x2000,
+                "do_not_recompress": True,
+            }
+        )
 for x in range(10):
     file_dict.append(
         {
@@ -485,6 +482,16 @@ file_dict.append(
         "pointer_table_index": 12,
         "file_index": 0x27,
         "source_file": "move_names.bin",
+        "do_not_compress": True,
+        "do_not_delete_source": True,
+    }
+)
+file_dict.append(
+    {
+        "name": "Cranky Text",
+        "pointer_table_index": 12,
+        "file_index": 8,
+        "source_file": "cranky_text.bin",
         "do_not_compress": True,
         "do_not_delete_source": True,
     }

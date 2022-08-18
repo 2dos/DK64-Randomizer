@@ -169,8 +169,13 @@
 .definelabel _guMtxF2L, 0x8000A6C0
 .definelabel getTextPointer, 0x8070E750
 .definelabel addDLToOverlay, 0x8068C350
-.definelabel DisplayItemOnHUD, 0x806F8BC4
+.definelabel displayItemOnHUD, 0x806F8BC4
 .definelabel controlStateControl, 0x806DF6D4
+.definelabel groundContactCheck, 0x80629148
+.definelabel groundContactSet, 0x80629174
+.definelabel getRefillCount, 0x806F8EDC
+.definelabel doAllKongsHaveMove, 0x80025AF0
+.definelabel getSequentialPurchase, 0x80026804
 
 .definelabel assessFlagMapping, 0x807314F4
 .definelabel coinCBCollectHandle, 0x806F54E0
@@ -350,6 +355,7 @@
 .definelabel ModelTwoCollisionArray, 0x80753EF0
 .definelabel MelonArray, 0x800334DC
 .definelabel IGT, 0x80750AB0
+.definelabel LevelStateBitfield, 0x807FBB60
 
 //hack data
 .definelabel TestVariable, 0x807FFFFC

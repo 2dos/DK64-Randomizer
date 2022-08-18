@@ -41,6 +41,25 @@ void alter_price(int purchase_type, int purchase_value, int kong, int level, int
 				} else {
 					write = Rando.instrument_upgrade_prices[purchase_value - 2];
 				}
+				break;
+			case PURCHASE_FLAG:
+				{
+					int tbarrel_flags[] = {FLAG_TBARREL_DIVE,FLAG_TBARREL_ORANGE,FLAG_TBARREL_BARREL,FLAG_TBARREL_VINE};
+					for (int i = 0; i < sizeof(tbarrel_flags)/4; i++) {
+						if (purchase_value == tbarrel_flags[i]) {
+							write = Rando.tbarrel_prices[i];
+						}
+					}
+					if (write == -1) {
+						if (purchase_value == FLAG_ABILITY_CAMERA) {
+							write = Rando.fairy_prices[0];
+						} else if (purchase_value == FLAG_ABILITY_SHOCKWAVE) {
+							write = Rando.fairy_prices[1];
+						} else if (purchase_value == -2) {
+							write = Rando.fairy_prices[0] + Rando.fairy_prices[1]; // Shockwave Camera Combo
+						}
+					}
+				}
 			break;
 		}
 		if (write > -1) {

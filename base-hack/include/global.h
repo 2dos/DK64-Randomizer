@@ -120,6 +120,7 @@ extern void fixTBarrelsAndBFI(int init);
 extern void purchaseMove(shop_paad* paad);
 extern void getNextMoveText(void);
 extern void displayBFIMoveText(void);
+extern void showPostMoveText(shop_paad* paad, KongBase* kong_base, int intro_flag);
 extern void fixRBSlowTurn(void);
 extern void postKRoolSaveCheck(void);
 
