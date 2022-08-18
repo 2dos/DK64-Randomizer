@@ -107,9 +107,6 @@ def ShuffleKasplatsAndLocations(spoiler, LogicVariables):
     # Fill kasplats level by level
     for level in KasplatLocationList:
         kasplats = KasplatLocationList[level]
-        # Reset this level's kasplats
-        for kasplat in kasplats:
-            kasplat.setKasplat(state=False)
         # Fill kasplats kong by kong
         kongs = GetKongs()
         random.shuffle(kongs)
@@ -138,6 +135,19 @@ def ShuffleKasplatsAndLocations(spoiler, LogicVariables):
                     LogicVariables.kasplat_map[location_id] = kong
                     spoiler.shuffled_kasplat_map[kasplat.name] = int(kong)
                     break
+
+
+def ResetShuffledKasplatLocations():
+    """Reset all placed kasplat locations."""
+    for level in KasplatLocationList:
+        for kasplat in KasplatLocationList[level]:
+            # If this kasplat was selected, we need to remove random kasplat locations from the kasplat's logic region
+            # This may hit multiple kasplats in the same region at the same time, but that's okay
+            if kasplat.selected:
+                # Also reset the state of the kasplat, by the end of the loop we'll have no kasplats selected in preparation for the next fill attempt
+                kasplat.setKasplat(state=False)
+                randomKasplatRegion = Logic.Regions[kasplat.region_id]
+                randomKasplatRegion.locations = [loc for loc in randomKasplatRegion.locations if loc.id < Locations.JapesDonkeyKasplatRando or loc.id > Locations.IslesChunkyKasplatRando]
 
 
 def ShuffleKasplats(LogicVariables):
@@ -201,6 +211,9 @@ def KasplatShuffle(spoiler, LogicVariables):
                     raise Ex.KasplatAttemptCountExceeded
                 retries += 1
                 js.postMessage("Kasplat placement failed. Retrying. Tries: " + str(retries))
+                # We've added logic in kasplat location rando, now we need to remove it
+                if LogicVariables.settings.kasplat_location_rando:
+                    ResetShuffledKasplatLocations()
 
 
 def InitKasplatMap(LogicVariables):

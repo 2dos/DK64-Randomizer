@@ -49,6 +49,7 @@ set_variables = {
     "open_level_sections": 1,
     "auto_keys": 0,
     "test_zone": [7,4],
+    "test_zone": [0x38, 0],
     "klaptrap_color_bbother": 0x96,
     "kut_out_phases": [3, 2, 0],
     "dpad_visual_enabled": 1,

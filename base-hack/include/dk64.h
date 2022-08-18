@@ -185,7 +185,10 @@ extern void _guMtxCatF(void* mtx, void* unk0, void* unk1);
 extern void _guMtxF2L(void* mtx, void* unk0);
 extern void* getTextPointer(int file, int text_index, int unk0);
 extern void addDLToOverlay(int code, void* actor, int delay);
-extern void DisplayItemOnHUD(int item, int unk0, int unk1);
+
+extern void assessFlagMapping(int map, int id);
+extern void coinCBCollectHandle(int player, int obj, int is_homing);
+extern void displayItemOnHUD(int item, int unk0, int unk1);
 
 //vanilla data
 extern float TransitionSpeed;

@@ -172,6 +172,9 @@
 .definelabel DisplayItemOnHUD, 0x806F8BC4
 .definelabel controlStateControl, 0x806DF6D4
 
+.definelabel assessFlagMapping, 0x807314F4
+.definelabel coinCBCollectHandle, 0x806F54E0
+
 //vanilla data
 .definelabel TransitionSpeed, 0x807FD88C
 .definelabel CutsceneWillPlay, 0x8075533B
