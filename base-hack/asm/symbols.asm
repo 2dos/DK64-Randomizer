@@ -176,6 +176,8 @@
 .definelabel getRefillCount, 0x806F8EDC
 .definelabel doAllKongsHaveMove, 0x80025AF0
 .definelabel getSequentialPurchase, 0x80026804
+.definelabel ReadFile, 0x8060C6B8
+.definelabel printText, 0x806ABB98
 
 .definelabel assessFlagMapping, 0x807314F4
 .definelabel coinCBCollectHandle, 0x806F54E0
@@ -356,6 +358,10 @@
 .definelabel MelonArray, 0x800334DC
 .definelabel IGT, 0x80750AB0
 .definelabel LevelStateBitfield, 0x807FBB60
+
+.definelabel menuHeadX, 0x80033F68
+.definelabel menuHeadY, 0x80033F80
+.definelabel menuHeadScale, 0x80033F98
 
 //hack data
 .definelabel TestVariable, 0x807FFFFC

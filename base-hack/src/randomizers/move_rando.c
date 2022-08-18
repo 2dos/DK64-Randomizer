@@ -616,6 +616,9 @@ void getNextMoveText(void) {
 			_guMtxCatF(&mtx0, &mtx1, &mtx0);
 			_guMtxF2L(&mtx0, &paad->unk_50);
 			paad->timer = 0x82;
+			if (CurrentMap == CRANKY) {
+				paad->timer = 300;
+			}
 			switch(p_type) {
 				case PURCHASE_MOVES:
 					{

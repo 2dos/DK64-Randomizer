@@ -190,6 +190,8 @@ extern void groundContactSet(void);
 extern int getRefillCount(int item, int player);
 extern int doAllKongsHaveMove(shop_paad* paad, int unk0);
 extern void getSequentialPurchase(shop_paad* paad, KongBase* movedata);
+extern int ReadFile(int data, int kong, int level, int file);
+extern int* printText(int* dl, short x, short y, float scale, char* str);
 
 extern void assessFlagMapping(int map, int id);
 extern void coinCBCollectHandle(int player, int obj, int is_homing);
@@ -371,6 +373,10 @@ extern model2_collision_info ModelTwoCollisionArray[42];
 extern unsigned char MelonArray[6];
 extern int IGT;
 extern unsigned int LevelStateBitfield;
+
+extern float menuHeadX[5];
+extern float menuHeadY[5];
+extern float menuHeadScale[5];
 
 //hack data
 extern int TestVariable;

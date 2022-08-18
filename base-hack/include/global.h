@@ -123,6 +123,7 @@ extern void displayBFIMoveText(void);
 extern void showPostMoveText(shop_paad* paad, KongBase* kong_base, int intro_flag);
 extern void fixRBSlowTurn(void);
 extern void postKRoolSaveCheck(void);
+extern int* displayHeadTexture(int* dl, int texture, float x, float y, float scale);
 
 extern void tagBarrelBackgroundKong(int kong_actor);
 extern void tagAnywhereInit(int is_homing, int model2_id, int obj);

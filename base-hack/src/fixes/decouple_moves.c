@@ -56,6 +56,12 @@ void decouple_moves_fixes(void) {
 		for (int i = 0; i < 8; i++) {
 			MainMenuMoves[i].moves = moves_values[i];
 		}
+		int func_call = 0x0C000000 | (((int)&displayHeadTexture & 0xFFFFFF) >> 2);
+		*(int*)(0x800292B8) = func_call;
+		*(int*)(0x800292D4) = func_call;
+		// Menu Stuff
+		// *(short*)(0x800281AA) = 3; // Set "adventure" destination to the file progress screen
+		//*(short*)(0x8002919E) = 1; // Set B button action in file screen menu to barrel screen
 	} else if (CurrentMap == SNIDE) {
 		*(int*)(0x8002402C) = 0x240E000C; // No extra contraption cutscenes
 		*(int*)(0x80024054) = 0x24080001; // 1 GB Turn in
