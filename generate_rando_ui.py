@@ -13,6 +13,11 @@ async def initialize():
     """Shifted code into an async function so we can properly lint await calls."""
     # await micropip.install("pyodide-importer")
     url = js.window.location.origin
+    await micropip.install(f"{url}/static/py_libraries/idna-3.3-py3-none-any.whl")
+    await micropip.install(f"{url}/static/py_libraries/certifi-2022.6.15-py3-none-any.whl")
+    await micropip.install(f"{url}/static/py_libraries/charset_normalizer-2.1.0-py3-none-any.whl")
+    await micropip.install(f"{url}/static/py_libraries/urllib3-1.26.11-py2.py3-none-any.whl")
+    await micropip.install(f"{url}/static/py_libraries/requests-2.28.1-py3-none-any.whl")
     await micropip.install(f"{url}/static/py_libraries/pyodide_importer-0.0.2-py2.py3-none-any.whl")
     if js.location.hostname in ["dev.dk64randomizer.com", "dk64randomizer.com"]:
         await micropip.install(f"{url}/static/py_libraries/dk64rando-web-py3-none-any.whl")
