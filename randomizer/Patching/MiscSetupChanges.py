@@ -50,25 +50,26 @@ def pickRandomPositionsMult(center_x, center_z, min_radius, max_radius, count, m
                 picked.append(selected)
     return {"picked": picked.copy(), "index": 0}
 
+
 def pickChunkyCabinPadPositions():
     """Pick 3 points within a torus in Chunky's 5-door cabin where the center and radius boundaries are defined. There are failsafes to make sure 2 points are far enough apart and all points are easy enough to reach for casual game play purposes."""
     picked_pads = []
-    #lamp_halfway_points are the center of the moving light circles when they are in their halfway points along their routes
+    # lamp_halfway_points are the center of the moving light circles when they are in their halfway points along their routes
     lamp_halfway_points = [[169.53, 205.91], [435.219, 483.118]]
     center_of_room = [294.594, 337.22]
-    lamp_radius = 70 #lamp radius is 65-70 but safe to use 70
-    for count in range(3): 
+    lamp_radius = 70  # lamp radius is 65-70 but safe to use 70
+    for count in range(3):
         good_pad = False
         while not good_pad:
             pad = pickRandomPositionCircle(center_of_room[0], center_of_room[1], 70, 180)
-            #check if pad is in a difficult spot to clear and if so, get the pad out of the difficult spot
+            # check if pad is in a difficult spot to clear and if so, get the pad out of the difficult spot
             for lamp in lamp_halfway_points:
-                #check if pad is in a lamp's radius when said lamp is on its halfway point
+                # check if pad is in a lamp's radius when said lamp is on its halfway point
                 dx = pad[0] - lamp[0]
                 dz = pad[1] - lamp[1]
                 delta = math.sqrt((dx * dx) + (dz * dz))
-                #pad is in the radius mentioned in the comment above. Move the pad out of this radius
-                if(delta < lamp_radius):
+                # pad is in the radius mentioned in the comment above. Move the pad out of this radius
+                if delta < lamp_radius:
                     suggested_x = pad[0]
                     if lamp[0] < center_of_room[0]:
                         suggested_x = suggested_x + 70
@@ -80,16 +81,16 @@ def pickChunkyCabinPadPositions():
                     else:
                         suggested_z = suggested_z - 70
                     pad = random.choice([[suggested_x, pad[1]], [pad[0], suggested_z]])
-            #check if the pad is far inside and near the lamp radius (not in it, as that's what we fixed above)
-            #top right has a Low X and Low Z coordinate, bottom left has a high X and High Z coordinate
+            # check if the pad is far inside and near the lamp radius (not in it, as that's what we fixed above)
+            # top right has a Low X and Low Z coordinate, bottom left has a high X and High Z coordinate
             is_far_inside_top_right = lamp_halfway_points[0][0] < pad[0] < center_of_room[0] and lamp_halfway_points[0][1] < pad[1] < center_of_room[1]
             is_far_inside_bottom_left = center_of_room[0] < pad[0] < lamp_halfway_points[1][0] and center_of_room[1] < pad[1] < lamp_halfway_points[1][1]
             if is_far_inside_top_right or is_far_inside_bottom_left:
-                #flip the coordinates horizontally, this effectively moves the pad one quadrant clockwise
+                # flip the coordinates horizontally, this effectively moves the pad one quadrant clockwise
                 mirror_line = 294.594
                 difference = pad[0] - mirror_line
                 pad[0] = mirror_line - difference
-            #check if any pads overlap
+            # check if any pads overlap
             if len(picked_pads) == 0:
                 good_pad = True
             else:
@@ -103,6 +104,7 @@ def pickChunkyCabinPadPositions():
             if good_pad:
                 picked_pads.append(pad)
     return {"picked": picked_pads.copy(), "index": 0}
+
 
 def randomize_setup(spoiler: Spoiler):
     """Randomize setup."""
