@@ -459,7 +459,6 @@ loadExtraHooks:
 	SW t3, 0xE55C (t4) // Store Hook
 	SW r0, 0xE560 (t4) // Store NOP
 
-	loadExtraHooks_4:
 	JR ra
 	NOP
 
