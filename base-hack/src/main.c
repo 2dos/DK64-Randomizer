@@ -165,6 +165,9 @@ void earlyFrame(void) {
 		} else if ((CurrentMap == 1) || (CurrentMap == 5) || (CurrentMap == 0x19)) {
 			PauseText = 1;
 		}
+		if (CurrentMap == 0x11) {
+			HelmInit(1);
+		}
 	}
 	if ((CurrentMap == 5) || (CurrentMap == 1) || (CurrentMap == 0x19)) {
 		if ((CutsceneActive) && (CutsceneIndex == 2)) {

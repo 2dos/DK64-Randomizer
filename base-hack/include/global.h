@@ -117,4 +117,6 @@ extern void tagBarrelBackgroundKong(int kong_actor);
 extern void tagAnywhereInit(int is_homing, int model2_id, int obj);
 extern void tagAnywhereAmmo(int player, int obj, int is_homing);
 extern void tagAnywhereBunch(int player, int obj, int is_homing);
+extern void modifyCutsceneItem(int bank, int cutscene, int point, int new_item);
+extern void HelmInit(int init_stage);
 //extern void getRandoNextMovePurchase(shop_paad* shop_info, KongBase* moves);

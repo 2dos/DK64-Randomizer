@@ -289,6 +289,7 @@ extern int mapFloorBlockCount;
 extern int displayListCount;
 extern char TransitionType;
 extern char DKTVKong;
+extern cutsceneType CutsceneBanks[2];
 
 extern short screenCenterX;
 extern short screenCenterY;
