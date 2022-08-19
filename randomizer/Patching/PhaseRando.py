@@ -35,3 +35,14 @@ def randomize_krool(spoiler: Spoiler):
                 ROM().seek(cont_map_lzs_address + start + 0x12)
                 map_bytes = intToArr(firstPhaseMap, 2)
                 ROM().writeBytes(bytearray(map_bytes))
+
+
+def randomize_helm(spoiler: Spoiler):
+    """Apply Helm Room order based on helm_order from spoiler."""
+    varspaceOffset = spoiler.settings.rom_data
+    helmOffset = 0x190
+    ROM().seek(varspaceOffset + helmOffset)
+    roomCount = len(spoiler.settings.helm_order)
+    ROM().writeBytes(bytearray(spoiler.settings.helm_order))
+    for i in range(5 - roomCount):
+        ROM().write(-1)
