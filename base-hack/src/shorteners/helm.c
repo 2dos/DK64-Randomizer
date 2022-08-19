@@ -51,3 +51,91 @@ void openCoinDoor(void) {
 		}
 	}
 }
+
+static const short minigame_0_flags[] = {0x3C,0x3F,0x3E,0x40,0x3D};
+static const short minigame_1_flags[] = {0x41,0x44,0x43,0x45,0x42};
+
+static const short item_setstate[] = {17,22,23,27,30};
+static const short item_medallook[] = {61,62,63,64,65};
+static const short item_laserlook[] = {16,19,20,26,29};
+static const short item_padset[] = {-1,33,34,35,36};
+static const short item_padlook[] = {-1,76,77,78,79};
+
+void HelmInit(int init_stage) {
+	if (init_stage == 0) {
+		// Set Flags
+		for (int i = 0; i < 5; i++) {
+			int in_helm = 0;
+			for (int j = 0; j < 5; j++) {
+				if (Rando.helm_order[j] == i) {
+					in_helm = 1;
+				}
+			}
+			if (!in_helm) {
+				setFlag(0x4B + i,1,2); // Section Complete
+				setFlag(minigame_0_flags[i],1,2);
+				setFlag(minigame_1_flags[i],1,2);
+			}
+		}
+	} else if (init_stage == 1) {
+		// Modify Cutscenes
+		int has_ended = 0;
+		for (int i = 0; i < 5; i++) {
+			if (!has_ended) {
+				int cutscene = 4 + i;
+				int current_slot = Rando.helm_order[i];
+				int next_slot = -1;
+				if (i < 4) {
+					next_slot = Rando.helm_order[i+1];
+				}
+				if (next_slot == -1) {
+					has_ended = 1;
+					cutscene = 8;
+				}
+				if (current_slot > -1) {
+					modifyCutsceneItem(0, cutscene, 0, item_setstate[current_slot]);
+					modifyCutsceneItem(0, cutscene, 1, item_medallook[current_slot]);
+					modifyCutsceneItem(0, cutscene, 2, item_laserlook[current_slot]);
+				}
+				if (next_slot > -1) {
+					modifyCutsceneItem(0, cutscene, 4, item_padset[next_slot]);
+					modifyCutsceneItem(0, cutscene, 5, item_padlook[next_slot]);
+				}
+			}
+		}
+
+		/*
+			CS 4:
+				Shutdown:
+					Points 0/1, Item 17/61 (Zoom on Medal)
+					Points 2, Item 16 (Laser)
+				Next Zone:
+					Points 4/5, Item 33/76
+			CS 5:
+				Shutdown:
+					Points 0/1, Item 22/62 (Zoom on Medal)
+					Points 2, Item 19 (Laser)
+				Next Zone:
+					Points 4/5, Item 34/77
+			CS 6:
+				Shutdown:
+					Points 0/1, Item 23/63 (Zoom on Medal)
+					Points 2, Item 20 (Laser)
+				Next Zone:
+					Points 4/5, Item 35/78
+			CS 7:
+				Shutdown:
+					Points 0/1, Item 27/64 (Zoom on Medal)
+					Points 2, Item 26 (Laser)
+				Next Zone:
+					Points 4/5, Item 36/79
+
+			CS 8:
+				Shutdown:
+					Points 0/1, Item 30/65
+					Points 2, Item 29 (Laser)
+				Helm Finish Stuff:
+					Points 3/5, Item 81/66
+		*/
+	}
+}
