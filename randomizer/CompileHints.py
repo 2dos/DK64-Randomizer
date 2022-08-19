@@ -332,10 +332,6 @@ def compileHints(spoiler: Spoiler):
                         move_series = f"{', '.join(level[:-1])} and {level[-1]}"
                     hint_start = f"{shop_name}'s in {level_name} contains {move_series}"
                     dump_hints.append({"hint": hint_start, "moves": level})
-        for x in dump_hints:
-            print(x)
-        for x in single_hints:
-            print(x)
         # Shuffle and add dump hints to list
         random.shuffle(dump_hints)
         priority_barriers = [3, 6, 10]
