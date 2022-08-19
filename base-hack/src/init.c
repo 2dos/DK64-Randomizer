@@ -205,21 +205,13 @@ void initHack(int source) {
 				*(short*)(0x8067EAC6) = 1; // HC Dogadon 2
 				*(short*)(0x8067EACA) = 1; // Others
 				*(short*)(0x8067EA92) = 1; // Others 2
-				// Transformations can pick up other's collectables
-				// *(int*)(0x806F7488) = 0x964F036E;
-				*(int*)(0x806F6330) = 0x96AC036E; // Collection
-				*(int*)(0x806F68A0) = 0x95B8036E; // DK Opacity
-				*(int*)(0x806F68DC) = 0x952C036E; // Diddy Opacity
-				*(int*)(0x806F6914) = 0x95F9036E; // Tiny Opacity
-				*(int*)(0x806F694C) = 0x95AE036E; // Lanky Opacity
-				*(int*)(0x806F6984) = 0x952B036E; // Chunky Opacity
 			}
 			if (Rando.fast_warp) {
 				// Replace vanilla warp animation (0x52) with monkeyport animation (0x53)
 				*(short*)(0x806EE692) = 0x54;
 				*(int*)(0x806DC2AC) = 0x0C000000 | (((int)&fastWarp & 0xFFFFFF) >> 2); // Modify Function Call
 			}
-			if (Rando.version == 0) {
+			if (Rando.version > 0) {
 				// Disable Graphical Debugger
 				*(int*)(0x8060EEE0) = 0x240E0000; // ADDIU $t6, $r0, 0
 			}
@@ -318,24 +310,6 @@ void initHack(int source) {
 			initItemDropTable();
 			// LZ Save
 			*(int*)(0x80712EC4) = 0x0C000000 | (((int)&postKRoolSaveCheck & 0xFFFFFF) >> 2);
-			// Reduce TA Cooldown
-			if (Rando.tag_anywhere) {
-				// *(int*)(0x806F6D88) = 0; // Makes collectables not produce a flying model which delays collection. Instant change
-				*(int*)(0x806F6D94) = 0; // Prevent delayed collection
-				// Standard Ammo
-				*(short*)(0x806F5B68) = 0x1000;
-				*(int*)(0x806F5BE8) = 0x0C000000 | (((int)&tagAnywhereAmmo & 0xFFFFFF) >> 2);
-				// Bunch
-				*(short*)(0x806F59A8) = 0x1000;
-				*(int*)(0x806F5A08) = 0x0C000000 | (((int)&tagAnywhereBunch & 0xFFFFFF) >> 2);
-
-				*(int*)(0x806F6CAC) = 0x9204001A; // LBU $a0, 0x1A ($s0)
-				*(int*)(0x806F6CB0) = 0x86060002; // LH $a2, 0x2 ($s0)
-				*(int*)(0x806F6CB4) = 0x0C000000 | (((int)&tagAnywhereInit & 0xFFFFFF) >> 2);
-				*(int*)(0x806F53AC) = 0; // Prevent LZ case
-			}
-			// Fix Tag Barrel Background Kong memes
-			*(int*)(0x806839F0) = 0x0C000000 | (((int)&tagBarrelBackgroundKong & 0xFFFFFF) >> 2);
 			// DK Face Puzzle
 			int dk_reg_vals[] = {0x80,0x95,0x83,0x82}; // 0 = r0, 1 = s5, 2 = v1, 3 = v0
 			*(unsigned char*)(0x8064AD01) = dk_reg_vals[(int)Rando.dk_face_puzzle_init[2]];

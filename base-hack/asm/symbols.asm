@@ -156,9 +156,6 @@
 .definelabel updateActorProjectileInfo, 0x80690814
 .definelabel controlStateControl, 0x806DF6D4
 .definelabel save, 0x8060DEC8
-.definelabel displayItemOnHUD, 0x806F8BC4
-.definelabel assessFlagMapping, 0x807314F4
-.definelabel coinCBCollectHandle, 0x806F54E0
 
 //vanilla data
 .definelabel TransitionSpeed, 0x807FD88C

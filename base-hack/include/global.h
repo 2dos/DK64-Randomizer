@@ -113,8 +113,4 @@ extern void handleSpiderTrapCode(void);
 extern void fastWarpShockwaveFix(void);
 extern void fixRBSlowTurn(void);
 extern void postKRoolSaveCheck(void);
-extern void tagBarrelBackgroundKong(int kong_actor);
-extern void tagAnywhereInit(int is_homing, int model2_id, int obj);
-extern void tagAnywhereAmmo(int player, int obj, int is_homing);
-extern void tagAnywhereBunch(int player, int obj, int is_homing);
 //extern void getRandoNextMovePurchase(shop_paad* shop_info, KongBase* moves);
