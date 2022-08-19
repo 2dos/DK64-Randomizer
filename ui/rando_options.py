@@ -322,6 +322,22 @@ def disable_krool_phases(evt):
         pass
 
 
+@bind("click", "helm_random")
+def disable_helm_phases(evt):
+    """Disable K Rool options when Randomize All is selected."""
+    disabled = False
+    helm = js.document.getElementById("helm_phase_count")
+    if js.document.getElementById("helm_random").checked:
+        disabled = True
+    try:
+        if disabled:
+            helm.setAttribute("disabled", "disabled")
+        else:
+            helm.removeAttribute("disabled")
+    except AttributeError:
+        pass
+
+
 @bind("change", "move_rando")
 def disable_prices(evt):
     """Disable prices if move rando is set to start with all moves."""

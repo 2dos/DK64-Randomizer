@@ -22,6 +22,7 @@
 #define GALLEON_FISH 0x33
 #define TREASURE_CHEST 0x2C
 #define CAVES_DK5DI 0x56
+#define HIDEOUT_HELM 0x11
 
 #define FUNGI_MINECART_GRATE 0x22
 #define SEASICK_SHIP 0x27
@@ -138,6 +139,12 @@
 #define FACTORY_PIANO 0x14
 #define FACTORY_DARTBOARD 0x7F
 #define ICE_MAZE 0x0
+
+#define HELM_PAD_BONGO 0x2C
+#define HELM_PAD_TRIANGLE 0x2D
+#define HELM_PAD_SAX 0x2E
+#define HELM_PAD_TROMBONE 0x2F
+#define HELM_PAD_GUITAR 0x30
 
 void hideObject(behaviour_data* behaviour_pointer) {
 	behaviour_pointer->unk_60 = 1;
@@ -830,6 +837,71 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 				}
 			} else if ((param2 == TTEMPLE_KONGLETTER0) || (param2 == TTEMPLE_KONGLETTER1) || (param2 == TTEMPLE_KONGLETTER2) || (param2 == TTEMPLE_KONGLETTER3)) {
 				return checkControlState(kong_press_states[(int)Rando.free_source_ttemple]);
+			}
+			break;
+		case HIDEOUT_HELM:
+			{
+				int slot = -1;
+				int next_slot = -1;
+				int previous_slot = -1;
+				int current_slot = -1;
+				switch(param2) {
+					case HELM_PAD_BONGO:
+						slot = 0;
+					case HELM_PAD_TRIANGLE:
+						if (slot == -1) {
+							slot = 1;
+						}
+					case HELM_PAD_SAX:
+						if (slot == -1) {
+							slot = 2;
+						}
+					case HELM_PAD_TROMBONE:
+						if (slot == -1) {
+							slot = 3;
+						}
+					case HELM_PAD_GUITAR:
+						if (slot == -1) {
+							slot = 4;
+						}
+						if (slot > -1) {
+							for (int i = 0; i < 5; i++) {
+								if (Rando.helm_order[i] == slot) {
+									current_slot = i;
+									if (i > 0) {
+										previous_slot = Rando.helm_order[i - 1];
+									}
+									if (i < 4) {
+										next_slot = Rando.helm_order[i + 1];
+									}
+								}
+							}
+							if (index == 0) {
+								// Barrels complete
+								if ((next_slot == -1) && (current_slot > -1)) {
+									// Helm Complete
+									PlayCutsceneFromModelTwoScript(behaviour_pointer, 8, 1, 0);
+									setFlag(FLAG_MODIFIER_HELMBOM, 1, 0);
+									setFlag(0x50,1,2);
+									*(int*)(0x807FF704) = param2;
+								} else if (next_slot > -1) {
+									// Move to next
+									PlayCutsceneFromModelTwoScript(behaviour_pointer, current_slot + 4, 1, 0);
+								}
+							} else if (index == 1) {
+								if (param2 == HELM_PAD_GUITAR) {
+									*(int*)(0x807FF700) = previous_slot;
+								}
+								if (previous_slot == -1) {
+									// First or not in sequence
+									return 1;
+								} else {
+									return checkFlag(previous_slot + 0x4B, 2);
+								}
+							}
+						}
+					break;
+				}
 			}
 		break;
 	}

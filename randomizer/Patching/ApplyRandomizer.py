@@ -19,7 +19,7 @@ from randomizer.Patching.EntranceRando import randomize_entrances
 from randomizer.Patching.Hash import get_hash_images
 from randomizer.Patching.KasplatLocationRando import randomize_kasplat_locations
 from randomizer.Patching.KongRando import apply_kongrando_cosmetic
-from randomizer.Patching.KRoolRando import randomize_krool
+from randomizer.Patching.PhaseRando import randomize_krool, randomize_helm
 from randomizer.Patching.MoveLocationRando import randomize_moves
 from randomizer.Patching.MusicRando import randomize_music
 from randomizer.Patching.Patcher import ROM
@@ -341,6 +341,7 @@ def patching_response(responded_data):
     randomize_prices(spoiler)
     randomize_bosses(spoiler)
     randomize_krool(spoiler)
+    randomize_helm(spoiler)
     randomize_barrels(spoiler)
     randomize_bananaport(spoiler)
     randomize_kasplat_locations(spoiler)

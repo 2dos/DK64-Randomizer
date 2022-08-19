@@ -136,6 +136,17 @@ def compileHints(spoiler: Spoiler):
             if x != 0:
                 associated_hint += f" then {NameFromKong(spoiler.settings.krool_order[x])}"
         hint_list.append(Hint(hint=associated_hint, repeats=2, kongs=spoiler.settings.krool_order.copy(), subtype="k_rool"))
+    # Helm Order
+    default_order = [Kongs.donkey, Kongs.chunky, Kongs.tiny, Kongs.lanky, Kongs.diddy]
+    new_order = []
+    if spoiler.settings.helm_phase_order_rando and len(spoiler.settings.helm_order) > 1:
+        for room in spoiler.settings.helm_order:
+            new_order.append(default_order[room])
+        associated_hint = f"Helm Room order is {NameFromKong(new_order[0])}"
+        for x in range(len(new_order)):
+            if x != 0:
+                associated_hint += f" then {NameFromKong(new_order[x])}"
+        hint_list.append(Hint(hint=associated_hint, repeats=3, kongs=new_order.copy(), subtype="k_rool"))
     # K. Rool Moves
     kong_list = ["Donkey", "Diddy", "Lanky", "Tiny", "Chunky"]
     kong_cryptic = [
