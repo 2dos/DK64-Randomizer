@@ -338,13 +338,13 @@ def randomize_setup(spoiler: Spoiler):
                     for coord in range(3):
                         ROM().writeMultipleBytes(int(float_to_hex(vase_puzzle_positions[vase_puzzle_rando_progress][coord]), 16), 4)
                     vase_puzzle_rando_progress += 1
-                # elif cont_map_id == Maps.CavesChunkyCabin and spoiler.settings.puzzle_rando and item_type == 0x203:
-                #     spawner_pos = chunky_5dc_pads["picked"][chunky_5dc_pads["index"]]
-                #     ROM().seek(item_start)
-                #     ROM().writeMultipleBytes(int(float_to_hex(spawner_pos[0]), 16), 4)
-                #     ROM().seek(item_start + 8)
-                #     ROM().writeMultipleBytes(int(float_to_hex(spawner_pos[1]), 16), 4)
-                #     chunky_5dc_pads["index"] += 1
+                elif cont_map_id == Maps.CavesChunkyCabin and spoiler.settings.puzzle_rando and item_type == 0x203:
+                    spawner_pos = chunky_5dc_pads["picked"][chunky_5dc_pads["index"]]
+                    ROM().seek(item_start)
+                    ROM().writeMultipleBytes(int(float_to_hex(spawner_pos[0]), 16), 4)
+                    ROM().seek(item_start + 8)
+                    ROM().writeMultipleBytes(int(float_to_hex(spawner_pos[1]), 16), 4)
+                    chunky_5dc_pads["index"] += 1
 
             if spoiler.settings.puzzle_rando:
                 if len(positions) > 0 and len(offsets) > 0:
