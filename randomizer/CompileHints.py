@@ -65,6 +65,24 @@ class Hint:
         self.important = False
 
 
+class MoveInfo:
+    """Move Info for Wrinkly hint text."""
+
+    def __init__(self, *, name="", kong="", move_type="", move_level=0, important=False):
+        """Create move info object."""
+        self.name = name
+        self.kong = kong
+        move_types = ["special", "slam", "gun", "ammobelt", "instrument"]
+        encoded_move_type = move_types.index(move_type)
+        self.move_type = encoded_move_type
+        self.move_level = move_level
+        self.important = important
+        ref_kong = kong
+        if ref_kong == Kongs.any:
+            ref_kong = Kongs.donkey
+        self.item_key = (encoded_move_type << 5) | ((move_level - 1) << 3) | ref_kong
+
+
 hint_list = [
     Hint(hint="Did you know - Donkey Kong officially features in Donkey Kong 64.", important=False, base=True),
     Hint(hint="Fungi Forest was originally intended to be in the other N64 Rareware title, Banjo Kazooie.", important=False, base=True),
@@ -206,247 +224,53 @@ def compileHints(spoiler: Spoiler):
         total_moves_for_krool = 0
         for x in spoiler.settings.krool_order:
             total_moves_for_krool += krool_move_requirements[x]
-        moves_of_importance = [
-            {
-                "name": "Monkeyport",
-                "name_cryptic": "Their third special move",
-                "key": 0x03,
-                "kong": 3,
-                "move_type": 0,
-                "move_index": 3,
-                "level": 0,
-                "shop": 0,
-                "important": True,
-            },
-            {"name": "Mini Monkey", "name_cryptic": "Their first special move", "key": 0x01, "kong": 3, "move_type": 0, "move_index": 1, "level": 0, "shop": 0, "important": True},
-            {
-                "name": "Coconut Gun",
-                "name_cryptic": "Their gun",
-                "key": 0x21,
-                "kong": 0,
-                "move_type": 2,
-                "move_index": 1,
-                "level": 0,
-                "shop": 0,
-                "important": True,
-            },
-            {"name": "Chimpy Charge", "name_cryptic": "Their first special move", "key": 0x01, "kong": 1, "move_type": 0, "move_index": 1, "level": 0, "shop": 0, "important": True},
-            {
-                "name": "Gorilla Gone",
-                "name_cryptic": "Their third special move",
-                "key": 0x03,
-                "kong": 4,
-                "move_type": 0,
-                "move_index": 3,
-                "level": 0,
-                "shop": 0,
-                "important": True,
-            },
-            {
-                "name": "Ponytail Twirl",
-                "key": 0x02,
-                "kong": 3,
-                "move_type": 0,
-                "move_index": 2,
-                "level": 0,
-                "shop": 0,
-                "important": False,
-            },
-            {
-                "name": "Baboon Blast",
-                "key": 0x01,
-                "kong": 0,
-                "move_type": 0,
-                "move_index": 1,
-                "level": 0,
-                "shop": 0,
-                "important": False,
-            },
-            {
-                "name": "Strong Kong",
-                "key": 0x02,
-                "kong": 0,
-                "move_type": 0,
-                "move_index": 2,
-                "level": 0,
-                "shop": 0,
-                "important": False,
-            },
-            {
-                "name": "Gorilla Grab",
-                "key": 0x03,
-                "kong": 0,
-                "move_type": 0,
-                "move_index": 3,
-                "level": 0,
-                "shop": 0,
-                "important": False,
-            },
-            {
-                "name": "Rocketbarrel Boost",
-                "key": 0x02,
-                "kong": 1,
-                "move_type": 0,
-                "move_index": 2,
-                "level": 0,
-                "shop": 0,
-                "important": False,
-            },
-            {
-                "name": "Simian Spring",
-                "key": 0x03,
-                "kong": 1,
-                "move_type": 0,
-                "move_index": 3,
-                "level": 0,
-                "shop": 0,
-                "important": False,
-            },
-            {
-                "name": "Orangstand",
-                "key": 0x01,
-                "kong": 2,
-                "move_type": 0,
-                "move_index": 1,
-                "level": 0,
-                "shop": 0,
-                "important": False,
-            },
-            {
-                "name": "Baboon Balloon",
-                "key": 0x02,
-                "kong": 2,
-                "move_type": 0,
-                "move_index": 2,
-                "level": 0,
-                "shop": 0,
-                "important": False,
-            },
-            {
-                "name": "Orangstand Sprint",
-                "key": 0x03,
-                "kong": 2,
-                "move_type": 0,
-                "move_index": 3,
-                "level": 0,
-                "shop": 0,
-                "important": False,
-            },
-            {
-                "name": "Hunky Chunky",
-                "key": 0x01,
-                "kong": 4,
-                "move_type": 0,
-                "move_index": 1,
-                "level": 0,
-                "shop": 0,
-                "important": False,
-            },
-            {
-                "name": "Primate Punch",
-                "key": 0x02,
-                "kong": 4,
-                "move_type": 0,
-                "move_index": 2,
-                "level": 0,
-                "shop": 0,
-                "important": False,
-            },
-            {
-                "name": "Peanut Popguns",
-                "key": 0x21,
-                "kong": 1,
-                "move_type": 2,
-                "move_index": 1,
-                "level": 0,
-                "shop": 0,
-                "important": False,
-            },
-            {
-                "name": "Grape Shooter",
-                "key": 0x21,
-                "kong": 2,
-                "move_type": 2,
-                "move_index": 1,
-                "level": 0,
-                "shop": 0,
-                "important": False,
-            },
-            {
-                "name": "Feather Bow",
-                "key": 0x21,
-                "kong": 3,
-                "move_type": 2,
-                "move_index": 1,
-                "level": 0,
-                "shop": 0,
-                "important": False,
-            },
-            {
-                "name": "Pineapple Launcher",
-                "key": 0x21,
-                "kong": 4,
-                "level": 0,
-                "move_type": 2,
-                "move_index": 1,
-                "shop": 0,
-                "important": False,
-            },
-            {
-                "name": "Bongo Blast",
-                "key": 0x41,
-                "kong": 0,
-                "move_type": 4,
-                "move_index": 1,
-                "level": 0,
-                "shop": 0,
-                "important": False,
-            },
-            {
-                "name": "Guitar Gazump",
-                "key": 0x41,
-                "kong": 1,
-                "move_type": 4,
-                "move_index": 1,
-                "level": 0,
-                "shop": 0,
-                "important": False,
-            },
-            {
-                "name": "Trombone Tremor",
-                "key": 0x41,
-                "kong": 2,
-                "move_type": 4,
-                "move_index": 1,
-                "level": 0,
-                "shop": 0,
-                "important": False,
-            },
-            {
-                "name": "Saxophone Slam",
-                "key": 0x41,
-                "kong": 3,
-                "move_type": 4,
-                "move_index": 1,
-                "level": 0,
-                "shop": 0,
-                "important": False,
-            },
-            {
-                "name": "Triangle Trample",
-                "key": 0x41,
-                "kong": 4,
-                "move_type": 4,
-                "move_index": 1,
-                "level": 0,
-                "shop": 0,
-                "important": False,
-            },
-            {"name": "Slam Upgrade", "key": 0x12, "kong": 0, "move_type": 1, "move_index": 2, "level": 0, "shop": 0, "important": False, "shared": True},
-            {"name": "Homing Ammo", "key": 0x22, "kong": 0, "move_type": 2, "move_index": 2, "level": 0, "shop": 0, "important": False, "shared": True},
-            {"name": "Sniper Scope", "key": 0x23, "kong": 0, "move_type": 2, "move_index": 3, "level": 0, "shop": 0, "important": False, "shared": True},
-            {"name": "Ammo Belt Upgrade", "key": 0x32, "kong": 0, "move_type": 3, "move_index": 2, "level": 0, "shop": 0, "important": False, "shared": True},
-            {"name": "Instrument Upgrade", "key": 0x42, "kong": 0, "move_type": 4, "move_index": 2, "level": 0, "shop": 0, "important": False, "shared": True},
+        moves_data = [
+            # Donkey
+            MoveInfo(name="Baboon Blast", move_level=1, move_type="special", kong=Kongs.donkey),
+            MoveInfo(name="Strong Kong", move_level=2, move_type="special", kong=Kongs.donkey),
+            MoveInfo(name="Gorilla Grab", move_level=3, move_type="special", kong=Kongs.donkey),
+            # Diddy
+            MoveInfo(name="Chimpy Charge", move_level=1, move_type="special", kong=Kongs.diddy),
+            MoveInfo(name="Rocketbarrel Boost", move_level=2, move_type="special", kong=Kongs.diddy, important=(spoiler.settings.krool_diddy or spoiler.settings.helm_diddy)),
+            MoveInfo(name="Simian Spring", move_level=3, move_type="special", kong=Kongs.diddy),
+            # Lanky
+            MoveInfo(name="Orangstand", move_level=1, move_type="special", kong=Kongs.lanky),
+            MoveInfo(name="Baboon Balloon", move_level=2, move_type="special", kong=Kongs.lanky),
+            MoveInfo(name="Orangstand Sprint", move_level=3, move_type="special", kong=Kongs.lanky),
+            # Tiny
+            MoveInfo(name="Mini Monkey", move_level=1, move_type="special", kong=Kongs.tiny, important=spoiler.settings.krool_tiny),
+            MoveInfo(name="Ponytail Twirl", move_level=2, move_type="special", kong=Kongs.tiny),
+            MoveInfo(name="Monkeyport", move_level=3, move_type="special", kong=Kongs.tiny, important=True),
+            # Chunky
+            MoveInfo(name="Hunky Chunky", move_level=1, move_type="special", kong=Kongs.chunky, important=spoiler.settings.krool_chunky),
+            MoveInfo(name="Primate Punch", move_level=2, move_type="special", kong=Kongs.chunky, important=spoiler.settings.krool_chunky),
+            MoveInfo(name="Gorilla Gone", move_level=3, move_type="special", kong=Kongs.chunky, important=spoiler.settings.krool_chunky),
+            # Slam
+            MoveInfo(name="Slam Upgrade", move_level=1, move_type="slam", kong=Kongs.any),
+            MoveInfo(name="Slam Upgrade", move_level=2, move_type="slam", kong=Kongs.any),
+            MoveInfo(name="Slam Upgrade", move_level=3, move_type="slam", kong=Kongs.any),
+            # Guns
+            MoveInfo(name="Coconut Shooter", move_level=1, move_type="gun", kong=Kongs.donkey, important=True),
+            MoveInfo(name="Peanut Popguns", move_level=1, move_type="gun", kong=Kongs.diddy, important=spoiler.settings.krool_diddy),
+            MoveInfo(name="Grape Shooter", move_level=1, move_type="gun", kong=Kongs.lanky),
+            MoveInfo(name="Feather Bow", move_level=1, move_type="gun", kong=Kongs.tiny, important=spoiler.settings.krool_tiny),
+            MoveInfo(name="Pineapple Launcher", move_level=1, move_type="gun", kong=Kongs.chunky),
+            # Gun Upgrades
+            MoveInfo(name="Homing Ammo", move_level=2, move_type="gun", kong=Kongs.any),
+            MoveInfo(name="Sniper Scope", move_level=3, move_type="gun", kong=Kongs.any),
+            # Ammo Belt
+            MoveInfo(name="Ammo Belt Upgrade", move_level=1, move_type="ammobelt", kong=Kongs.any),
+            MoveInfo(name="Ammo Belt Upgrade", move_level=2, move_type="ammobelt", kong=Kongs.any),
+            # Instruments
+            MoveInfo(name="Bongo Blast", move_level=1, move_type="instrument", kong=Kongs.donkey, important=spoiler.settings.helm_donkey),
+            MoveInfo(name="Guitar Gazump", move_level=1, move_type="instrument", kong=Kongs.diddy, important=spoiler.settings.helm_diddy),
+            MoveInfo(name="Trombone Tremor", move_level=1, move_type="instrument", kong=Kongs.lanky, important=(spoiler.settings.helm_lanky or spoiler.settings.krool_lanky)),
+            MoveInfo(name="Saxophone Slam", move_level=1, move_type="instrument", kong=Kongs.tiny, important=spoiler.settings.helm_tiny),
+            MoveInfo(name="Triangle Trample", move_level=1, move_type="instrument", kong=Kongs.chunky, important=spoiler.settings.helm_chunky),
+            # Instrument Upgrades
+            MoveInfo(name="Instrument Upgrade", move_level=2, move_type="instrument", kong=Kongs.any),
+            MoveInfo(name="Instrument Upgrade", move_level=3, move_type="instrument", kong=Kongs.any),
+            MoveInfo(name="Instrument Upgrade", move_level=4, move_type="instrument", kong=Kongs.any),
         ]
         shop_owners = ["Cranky", "Funky", "Candy"]
         shop_cryptic = [
@@ -464,86 +288,68 @@ def compileHints(spoiler: Spoiler):
             ],
             ["The shop owner who is flirtatious", "The shop owner who is not present in Fungi Forest", "The shop owner who is not present in Jungle Japes", "The shop owner with blonde hair"],
         ]
-        for move in moves_of_importance:
-            move["key"] = ((move["move_type"] & 7) << 5) + (((move["move_index"] - 1) & 3) << 3) + (move["kong"] & 7)
-            move["purchase_kong"] = -1
-            move["level"] = -1
-            move["shop"] = -1
-        shop_contains = {}
-        for shop in range(3):
-            for kong in range(5):
-                for level in range(8):
-                    for move in moves_of_importance:
-                        if spoiler.move_data[shop][kong][level] == move["key"]:
-                            move["level"] = level
-                            move["shop"] = shop
-                            move["purchase_kong"] = kong
-                            if spoiler.settings.wrinkly_hints == "cryptic":
-                                shop_level_name = f"{shop_owners[shop]}'s in {level}"
-                            else:
-                                shop_level_name = f"{level_list_isles[level]} {shop_owners[shop]}"
-                            is_shared = False
-                            if "shared" in move:
-                                is_shared = move["shared"]
-                            if shop_level_name in shop_contains:
-                                if not is_shared:
-                                    shop_contains[shop_level_name]["moves"].append(move["name"])
-                                    shop_contains[shop_level_name]["kongs"].append(kong)
-                            else:
-                                kong_lst = [kong]
-                                if is_shared:
-                                    kong_lst = [Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky]
-                                shop_contains[shop_level_name] = {"moves": [move["name"]], "kongs": kong_lst.copy()}
-        # All moves in a shop
-        shop_contain_keys = list(shop_contains.keys())
-        random.shuffle(shop_contain_keys)
+
+        # Collate nested lists for a list of shop moves
+        shop_data = []
+        for shop in range(3):  # Order: Cranky, Funky, Candy
+            shop_listing = []
+            for level in range(8):  # Order: Japes, Aztec, Factory, Galleon, Fungi, Caves, Castle, Isles
+                level_listing = []
+                for kong in range(5):
+                    # Get Moves in slot
+                    data_section = spoiler.move_data[shop][kong][level]
+                    for move in moves_data:
+                        if move.item_key == data_section:
+                            if move.name not in level_listing:
+                                level_listing.append(move.name)
+                shop_listing.append(level_listing)
+            shop_data.append(shop_listing)
+
+        # Compile all hints that could be generated from shops
+        dump_hints = []
+        single_hints = []
+        for shop_index, shop in enumerate(shop_data):
+            for level_index, level in enumerate(shop):
+                # Single Hints
+                for move in level:
+                    is_important = False
+                    for move_item in moves_data:
+                        if move_item.name == move and move_item.important:
+                            is_important = True
+                    shop_name = shop_owners[shop_index]
+                    level_name = level_list_isles[level_index]
+                    if spoiler.settings.wrinkly_hints == "cryptic":
+                        level_name = random.choice(level_cryptic_isles[level_index])
+                    single_hints.append({"hint": f"{move} can be purchased from {shop_name} in {level_name}", "important": is_important, "move": move})
+                # Dump Hints
+                if len(level) > 0:
+                    shop_name = shop_owners[shop_index]
+                    level_name = level_list_isles[level_index]
+                    if spoiler.settings.wrinkly_hints == "cryptic":
+                        level_name = random.choice(level_cryptic_isles[level_index])
+                    move_series = level[0]
+                    if len(level) > 1:
+                        move_series = f"{', '.join(level[:-1])} and {level[-1]}"
+                    hint_start = f"{shop_name}'s in {level_name} contains {move_series}"
+                    dump_hints.append({"hint": hint_start, "moves": level})
+        # Shuffle and add dump hints to list
+        random.shuffle(dump_hints)
         priority_barriers = [3, 6, 10]
         shop_priority = 1
         shop_importance = True
-        for shop_index, shop in enumerate(shop_contain_keys):
-            shop_name = shop
-            if "'s in " in shop_name:
-                level_index = int(shop_name.split("'s in ")[1].strip())
-                shop_name = random.choice(level_cryptic_isles[level_index])
-            if len(shop_contains[shop]["moves"]) > 2:
-                item_names = ", ".join(shop_contains[shop]["moves"][:-1])
-                item_names = f"{item_names} and {shop_contains[shop]['moves'][-1]}"
-            elif len(shop_contains[shop]["moves"]) == 2:
-                item_names = " and ".join(shop_contains[shop]["moves"])
-            else:
-                item_names = shop_contains[shop]["moves"][0]
-            hint_list.append(
-                Hint(
-                    hint=f"{shop_name} contains {item_names}",
-                    priority=shop_priority,
-                    important=shop_importance,
-                    kongs=shop_contains[shop]["kongs"],
-                    keywords=shop_contains[shop]["moves"],
-                    subtype="shop_dump",
-                )
-            )
+        for dump_hint in dump_hints:
             if shop_importance:
-                hint_list.append(Hint(hint=f"{shop_name} contains {item_names}", important=False, kongs=shop_contains[shop]["kongs"], keywords=shop_contains[shop]["moves"], subtype="shop_dump"))
+                hint_list.append(Hint(hint=dump_hint["hint"], important=False, keywords=dump_hint["moves"], subtype="shop_dump"))
             if shop_priority <= len(priority_barriers):
                 if (shop_index + 1) >= priority_barriers[shop_priority - 1]:
                     if shop_priority == len(priority_barriers):
                         shop_importance = False
                     else:
                         shop_priority += 1
-
-        for move in moves_of_importance:
-            if move["level"] > -1 and move["shop"] > -1 and move["purchase_kong"] > -1:
-                if spoiler.settings.wrinkly_hints == "cryptic":
-                    kong_name = random.choice(kong_cryptic[move["purchase_kong"]])
-                    level_name = random.choice(level_cryptic[move["level"]])
-                else:
-                    kong_name = kong_list[move["purchase_kong"]]
-                    level_name = level_list[move["level"]]
-                move_name = move["name"]
-
-                shop_name = shop_owners[move["shop"]]
-                text = f"{move_name} can be purchased from {shop_name} in {level_name}."
-                hint_list.append(Hint(hint=text, priority=2, kongs=[move["purchase_kong"]], important=move["important"], keywords=[move["name"]], subtype="move_location"))
+        # Shuffle and add single hints to list
+        random.shuffle(single_hints)
+        for single_hint in single_hints:
+            hint_list.append(Hint(hint=single_hint["hint"], priority=2, important=single_hint["important"], keywords=[single_hint["move"]], subtype="move_location"))
     if spoiler.settings.kong_rando:
         kong_json = spoiler.shuffled_kong_placement
         placement_levels = [
