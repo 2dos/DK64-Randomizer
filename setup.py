@@ -5,6 +5,8 @@ packages = find_packages(exclude=["tests", "base-hack", "build", "dist", "docs",
 
 setup(
     name="dk64rando",
-    version="web",
+    # Note if you're going to change this version also change the version in the generate_*ui.py files for loading it along with
+    # Copying the file in prepare_live.py
+    version="1.0.0",
     packages=packages,
 )
