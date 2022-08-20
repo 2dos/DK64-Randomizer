@@ -20,14 +20,13 @@ async def initialize():
             f"{url}/static/py_libraries/certifi-2022.6.15-py3-none-any.whl",
             f"{url}/static/py_libraries/idna-3.3-py3-none-any.whl",
             f"{url}/static/py_libraries/requests-2.28.1-py3-none-any.whl",
+            f"{url}/static/py_libraries/pyodide_importer-0.0.2-py2.py3-none-any.whl",
+            "pillow"
         ],
         deps=False
     )
-
-    await micropip.install(f"{url}/static/py_libraries/pyodide_importer-0.0.2-py2.py3-none-any.whl")
     if js.location.hostname in ["dev.dk64randomizer.com", "dk64randomizer.com"]:
         await micropip.install(f"{url}/static/py_libraries/dk64rando-web-py3-none-any.whl")
-    await micropip.install("pillow")
     print(micropip.list())
     # Against normal logic we have to import the hook register because we install it as we load the page
     from pyodide_importer import register_hook  # type: ignore  # noqa
