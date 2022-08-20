@@ -132,6 +132,34 @@
                     style="width: 80%">
             </div>
             <hr>
+            <h5 class="select-title">Helm Length</h5>
+            <div class="flex-container">
+                <div class="form-check form-switch item-switch center-flex">
+                    <label data-toggle="tooltip" title="Selects a random value from Slider to determine the number of rooms that need to be completed in Hideout Helm.">
+                        <input class="form-check-input"
+                                type="checkbox"
+                                name="helm_random"
+                                onchange="toggle_clicks()"
+                                id="helm_random"
+                                value="True"/>
+                        Random Selection
+                    </label>
+                </div>
+            </div>
+            <div>
+                <input type="text"
+                    name="helm_phase_count"
+                    id="helm_phase_count"
+                    data-provide="slider"
+                    data-slider-ticks="[1, 2, 3, 4, 5]"
+                    data-slider-ticks-labels='["1", "2", "3", "4", "5"]'
+                    data-slider-min="1"
+                    data-slider-max="5"
+                    data-slider-step="1"
+                    data-slider-value="5"
+                    style="width: 80%">
+            </div>
+            <hr>
             <div data-toggle="tooltip" title="Determines how many Keys are left to be collected to access K. Rool.&#10;i.e. Selecting '5' means 3 keys will be pre-turned in and you need 5 more.">
                 <h5 class="select-title">Keys required to beat K. Rool</h5>
             </div>
@@ -267,6 +295,12 @@
          }
          else {
             $("#krool_phase_count").slider("enable")
+         }
+         if (document.getElementById("helm_random").checked === true) {
+            $("#helm_phase_count").slider("disable")
+         }
+         else {
+            $("#helm_phase_count").slider("enable")
          }
          if (document.getElementById("keys_random").checked === true) {
             $("#krool_key_count").slider("disable")

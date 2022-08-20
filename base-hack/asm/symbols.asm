@@ -276,6 +276,7 @@
 .definelabel displayListCount, 0x8076A088
 .definelabel TransitionType, 0x8076AEE0
 .definelabel DKTVKong, 0x80755328
+.definelabel CutsceneBanks, 0x807F5B10
 
 .definelabel screenCenterX, 0x80744490
 .definelabel screenCenterY, 0x80744494
