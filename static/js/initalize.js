@@ -194,6 +194,7 @@ function filebox() {
   input.onchange = (e) => {
     var file = e.target.files[0];
     $("#rom").attr("placeholder", file.name);
+    $("#rom").val(file.name);
     $("#rom_2").attr("placeholder", file.name);
     // Get the original fiile
     var db = open.result;
@@ -242,6 +243,7 @@ function load_file_from_db() {
     try {
       romFile = new MarcFile(getROM.result.value, _parseROM);
       $("#rom").attr("placeholder", "Using cached ROM");
+      $("#rom").val("Using cached ROM");
       $("#rom_2").attr("placeholder", "Using cached ROM");
     } catch {}
   };

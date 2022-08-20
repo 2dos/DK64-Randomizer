@@ -1,4 +1,5 @@
 """Import functions within the UI folder to have them run on load of the UI."""
+from ui.generate_buttons import update_seed_text
 from ui.rando_options import (
     set_preset_options,
     toggle_b_locker_boxes,
@@ -17,6 +18,10 @@ from ui.rando_options import (
     disable_rw,
 )
 
+# Call the generate_buttons function just to force loading of the file
+update_seed_text(None)
+
+# Update Rando Options
 set_preset_options()
 toggle_counts_boxes(None)
 toggle_b_locker_boxes(None)
