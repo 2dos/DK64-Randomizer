@@ -7,7 +7,7 @@ async function timedCount() {
     .then((data) => {
       postMessage(md5(data));
     });
-  setTimeout("timedCount()", 60000);
+  setTimeout("timedCount()", 300000);
 }
 
 timedCount();
