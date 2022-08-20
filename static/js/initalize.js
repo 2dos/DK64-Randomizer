@@ -194,6 +194,7 @@ function filebox() {
   input.onchange = (e) => {
     var file = e.target.files[0];
     $("#rom").attr("placeholder", file.name);
+    $("#rom_2").attr("placeholder", file.name);
     // Get the original fiile
     var db = open.result;
     var tx = db.transaction("ROMStorage", "readwrite");
@@ -224,6 +225,10 @@ open.onupgradeneeded = function () {
   db.createObjectStore("ROMStorage", { keyPath: "ROM" });
 };
 
+open.onsuccess = function () {
+  load_file_from_db();
+};
+
 function load_file_from_db() {
   // If we actually have a file in the DB load it
   var db = open.result;
@@ -231,11 +236,13 @@ function load_file_from_db() {
   var store = tx.objectStore("ROMStorage");
 
   // Get our ROM file
-  var getROM = store.get("N642");
+  var getROM = store.get("N64");
   getROM.onsuccess = function () {
     // When we pull it from the DB load it in as a global var
     try {
       romFile = new MarcFile(getROM.result.value, _parseROM);
+      $("#rom").attr("placeholder", "Using cached ROM");
+      $("#rom_2").attr("placeholder", "Using cached ROM");
     } catch {}
   };
 }
