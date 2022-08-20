@@ -26,7 +26,7 @@ async def initialize():
         deps=False,
     )
     if js.location.hostname in ["dev.dk64randomizer.com", "dk64randomizer.com"]:
-        await micropip.install(f"{url}/static/py_libraries/dk64rando-web-py3-none-any.whl")
+        await micropip.install(f"{url}/static/py_libraries/dk64rando-1.0.0-py3-none-any.whl")
     # Against normal logic we have to import the hook register because we install it as we load the page
     from pyodide_importer import register_hook  # type: ignore  # noqa
 
