@@ -193,29 +193,15 @@ function filebox() {
 
   input.onchange = (e) => {
     var file = e.target.files[0];
-    const reader = new FileReader();
-
-    reader.onload = (event) => {
-      // Start a new transaction
-      var db = open.result;
-      var tx = db.transaction("ROMStorage", "readwrite");
-      var store = tx.objectStore("ROMStorage");
-
-      // Add some data
-      store.put({ ROM: "N64", value: event.target.result });
-
-      // Close the db when the transaction is done
-      tx.oncomplete = function () {
-        db.close();
-      };
-      var getJohn = store.get("N64");
-  
-      getJohn.onsuccess = function() {
-          console.log(getJohn.result);  // => "John"
-      };
-    };
-
-    reader.readAsBinaryString(file);
+    $("#rom").attr("placeholder", file.name);
+    // Get the original fiile
+    var db = open.result;
+    var tx = db.transaction("ROMStorage", "readwrite");
+    var store = tx.objectStore("ROMStorage");
+    // Store it in the database
+    store.put({ ROM: "N64", value: file });
+    // Make sure we load the file into the rompatcher
+    romFile = new MarcFile(file, _parseROM);
   };
 
   input.click();
@@ -237,3 +223,19 @@ open.onupgradeneeded = function () {
   var db = open.result;
   db.createObjectStore("ROMStorage", { keyPath: "ROM" });
 };
+
+function load_file_from_db() {
+  // If we actually have a file in the DB load it
+  var db = open.result;
+  var tx = db.transaction("ROMStorage", "readwrite");
+  var store = tx.objectStore("ROMStorage");
+
+  // Get our ROM file
+  var getROM = store.get("N642");
+  getROM.onsuccess = function () {
+    // When we pull it from the DB load it in as a global var
+    try {
+      romFile = new MarcFile(getROM.result.value, _parseROM);
+    } catch {}
+  };
+}
