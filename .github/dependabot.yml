@@ -7,17 +7,21 @@ version: 2
 updates:
   - package-ecosystem: "pip" # See documentation for possible values
     directory: "/" # Location of package manifests
+    target-branch: "develop"
     schedule:
       interval: "daily"
   - package-ecosystem: "npm" # See documentation for possible values
     directory: "/" # Location of package manifests
+    target-branch: "develop"
     schedule:
       interval: "daily"
   - package-ecosystem: "composer" # See documentation for possible values
     directory: "/" # Location of package manifests
+    target-branch: "develop"
     schedule:
       interval: "daily"
   - package-ecosystem: "github-actions" # See documentation for possible values
     directory: "/" # Location of package manifests
+    target-branch: "develop"
     schedule:
       interval: "daily"

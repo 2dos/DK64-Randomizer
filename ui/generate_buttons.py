@@ -20,11 +20,6 @@ from ui.rando_options import (
     max_randomized_blocker,
     max_randomized_troff,
     disable_barrel_rando,
-    disable_boss_rando,
-    hide_rgb,
-    toggle_medals_box,
-    max_randomized_medals,
-    disable_rw,
 )
 from pyodide import create_proxy
 
@@ -116,10 +111,10 @@ def lanky_file_changed(event):
 def generate_seed_from_patch(event):
     """Generate a seed from a patch file."""
     # Check if the rom filebox has a file loaded in it.
-    if len(str(js.document.getElementById("input-file-rom").value).strip()) == 0 or "is-valid" not in list(js.document.getElementById("input-file-rom").classList):
-        js.document.getElementById("input-file-rom").select()
-        if "is-invalid" not in list(js.document.getElementById("input-file-rom").classList):
-            js.document.getElementById("input-file-rom").classList.add("is-invalid")
+    if len(str(js.document.getElementById("rom").value).strip()) == 0 or "is-valid" not in list(js.document.getElementById("rom").classList):
+        js.document.getElementById("rom").select()
+        if "is-invalid" not in list(js.document.getElementById("rom").classList):
+            js.document.getElementById("rom").classList.add("is-invalid")
     elif len(str(js.document.getElementById("patchfileloader").value).strip()) == 0:
         js.document.getElementById("patchfileloader").select()
         if "is-invalid" not in list(js.document.getElementById("patchfileloader").classList):
@@ -185,10 +180,10 @@ def generate_seed(event):
         event (event): Javascript click event.
     """
     # Check if the rom filebox has a file loaded in it.
-    if len(str(js.document.getElementById("input-file-rom").value).strip()) == 0 or "is-valid" not in list(js.document.getElementById("input-file-rom").classList):
-        js.document.getElementById("input-file-rom").select()
-        if "is-invalid" not in list(js.document.getElementById("input-file-rom").classList):
-            js.document.getElementById("input-file-rom").classList.add("is-invalid")
+    if len(str(js.document.getElementById("rom").value).strip()) == 0 or "is-valid" not in list(js.document.getElementById("rom").classList):
+        js.document.getElementById("rom").select()
+        if "is-invalid" not in list(js.document.getElementById("rom").classList):
+            js.document.getElementById("rom").classList.add("is-invalid")
     else:
         # Start the progressbar
         loop = asyncio.get_event_loop()
@@ -213,42 +208,3 @@ def update_seed_text(event):
         js.document.getElementById("generate_seed").value = "Generate Patch File and Seed"
     else:
         js.document.getElementById("generate_seed").value = "Generate Seed"
-
-
-@bind("click", "nav-seed-gen-tab")
-@bind("click", "nav-patch-tab")
-def disable_input(event):
-    """Disable input for the ROM Boxes as we rotate through the navbar.
-
-    Args:
-        event (DOMEvent): DOM item that triggered the event.
-    """
-    # Try to determine of the patch tab was what triggered the event.
-    ev_type = False
-    try:
-        if "patch-tab" in event.target.id:
-            ev_type = True
-    except Exception:
-        pass
-    # As we rotate between the tabs, verify our disabled progression status
-    # and set our input file box as the correct name so we can use two fileboxes as the same name
-    if ev_type is False:
-        if not js.document.getElementById("input-file-rom_2"):
-            try:
-                js.document.getElementById("input-file-rom").id = "input-file-rom_2"
-            except Exception:
-                pass
-        try:
-            js.document.getElementById("input-file-rom_1").id = "input-file-rom"
-        except Exception:
-            pass
-    else:
-        if not js.document.getElementById("input-file-rom_1"):
-            try:
-                js.document.getElementById("input-file-rom").id = "input-file-rom_1"
-            except Exception:
-                pass
-        try:
-            js.document.getElementById("input-file-rom_2").id = "input-file-rom"
-        except Exception:
-            pass

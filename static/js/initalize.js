@@ -185,3 +185,66 @@ async function load_presets() {
   await pyodide.runPythonAsync(`from ui.rando_options import preset_select_changed
 preset_select_changed(None)`);
 }
+
+function filebox() {
+  var input = document.createElement("input");
+  input.type = "file";
+  input.accept = ".z64,.n64,.v64";
+
+  input.onchange = (e) => {
+    var file = e.target.files[0];
+    $("#rom").attr("placeholder", file.name);
+    $("#rom").val(file.name);
+    $("#rom_2").attr("placeholder", file.name);
+    // Get the original fiile
+    var db = open.result;
+    var tx = db.transaction("ROMStorage", "readwrite");
+    var store = tx.objectStore("ROMStorage");
+    // Store it in the database
+    store.put({ ROM: "N64", value: file });
+    // Make sure we load the file into the rompatcher
+    romFile = new MarcFile(file, _parseROM);
+  };
+
+  input.click();
+}
+
+// This works on all devices/browsers, and uses IndexedDBShim as a final fallback
+var indexedDB =
+  window.indexedDB ||
+  window.mozIndexedDB ||
+  window.webkitIndexedDB ||
+  window.msIndexedDB ||
+  window.shimIndexedDB;
+
+// Open (or create) the database
+var open = indexedDB.open("ROMStorage", 1);
+
+// Create the schema
+open.onupgradeneeded = function () {
+  var db = open.result;
+  db.createObjectStore("ROMStorage", { keyPath: "ROM" });
+};
+
+open.onsuccess = function () {
+  load_file_from_db();
+};
+
+function load_file_from_db() {
+  // If we actually have a file in the DB load it
+  var db = open.result;
+  var tx = db.transaction("ROMStorage", "readwrite");
+  var store = tx.objectStore("ROMStorage");
+
+  // Get our ROM file
+  var getROM = store.get("N64");
+  getROM.onsuccess = function () {
+    // When we pull it from the DB load it in as a global var
+    try {
+      romFile = new MarcFile(getROM.result.value, _parseROM);
+      $("#rom").attr("placeholder", "Using cached ROM");
+      $("#rom").val("Using cached ROM");
+      $("#rom_2").attr("placeholder", "Using cached ROM");
+    } catch {}
+  };
+}
