@@ -36,6 +36,16 @@ void checkNinWarp(void) {
 static unsigned short previous_total_cbs = 0xFFFF;
 static unsigned char previous_world = 0xFF;
 
+static const short tnsportal_flags[] = {
+	FLAG_PORTAL_JAPES,
+	FLAG_PORTAL_AZTEC,
+	FLAG_PORTAL_FACTORY,
+	FLAG_PORTAL_GALLEON,
+	FLAG_PORTAL_FUNGI,
+	FLAG_PORTAL_CAVES,
+	FLAG_PORTAL_CASTLE,
+};
+
 void CBDing(void) {
 	if (Rando.quality_of_life) {
 		int world = getWorld(CurrentMap, 1);
@@ -47,7 +57,9 @@ void CBDing(void) {
 			}
 			int req_cbs = TroffNScoffReqArray[world];
 			if ((previous_total_cbs < req_cbs) && (total_cbs >= req_cbs) && (previous_world == world) && (CurrentMap != 0x2A)) { // Ban in T&S because of delayed update to turn in array
-				playSFX(Bell);
+				if (!checkFlag(tnsportal_flags[world],0)) {
+					playSFX(Bell);
+				}
 			}
 		}
 		previous_world = world;
