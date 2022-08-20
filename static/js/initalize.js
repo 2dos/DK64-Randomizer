@@ -185,3 +185,55 @@ async function load_presets() {
   await pyodide.runPythonAsync(`from ui.rando_options import preset_select_changed
 preset_select_changed(None)`);
 }
+
+function filebox() {
+  var input = document.createElement("input");
+  input.type = "file";
+  input.accept = ".z64,.n64,.v64";
+
+  input.onchange = (e) => {
+    var file = e.target.files[0];
+    const reader = new FileReader();
+
+    reader.onload = (event) => {
+      // Start a new transaction
+      var db = open.result;
+      var tx = db.transaction("ROMStorage", "readwrite");
+      var store = tx.objectStore("ROMStorage");
+
+      // Add some data
+      store.put({ ROM: "N64", value: event.target.result });
+
+      // Close the db when the transaction is done
+      tx.oncomplete = function () {
+        db.close();
+      };
+      var getJohn = store.get("N64");
+  
+      getJohn.onsuccess = function() {
+          console.log(getJohn.result);  // => "John"
+      };
+    };
+
+    reader.readAsBinaryString(file);
+  };
+
+  input.click();
+}
+
+// This works on all devices/browsers, and uses IndexedDBShim as a final fallback
+var indexedDB =
+  window.indexedDB ||
+  window.mozIndexedDB ||
+  window.webkitIndexedDB ||
+  window.msIndexedDB ||
+  window.shimIndexedDB;
+
+// Open (or create) the database
+var open = indexedDB.open("ROMStorage", 1);
+
+// Create the schema
+open.onupgradeneeded = function () {
+  var db = open.result;
+  db.createObjectStore("ROMStorage", { keyPath: "ROM" });
+};

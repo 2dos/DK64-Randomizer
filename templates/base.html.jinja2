@@ -234,6 +234,24 @@
                                         </div>
                                         <div class="row">
                                             <label for="input-file-rom_1" class="select-title">ROM File</label>
+                                            <div class="input-group mb-3 file-select" style="width: 50%; margin: 0 auto;">
+                                                <div class="input-group-text" style="background-color: #6c757d;">
+                                                    <input
+                                                        class="btn btn-primary file-button"
+                                                        type="button"
+                                                        value="Choose File"
+                                                        onClick="filebox()"
+                                                        id="choose_rom"
+                                                        >
+                                                </div>
+                                                <input class="form-control"
+                                                    id="rom"
+                                                    type="text"
+                                                    readonly
+                                                    onClick="filebox()"
+                                                    placeholder="No File Chosen"/>
+                                            </div>
+                                            <label for="input-file-rom_1" class="select-title">ROM File</label>
                                             <input accept=".z64,.n64,.v64"
                                                    class="form-control"
                                                    type="file"

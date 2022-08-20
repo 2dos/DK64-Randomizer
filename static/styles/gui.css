@@ -310,6 +310,16 @@ select:disabled option:checked {
 .input-group-text {
   background-color: #171717;
   height: 38px;
+  width: 105px;
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+  padding: 0px;
+}
+input[type="text"]:read-only{background-color:#252525;}
+
+.file-button {
+  height: 36px;
+  width: 103px;
   border-top-right-radius: 0;
   border-bottom-right-radius: 0;
 }
