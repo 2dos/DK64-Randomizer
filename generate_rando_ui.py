@@ -21,9 +21,9 @@ async def initialize():
             f"{url}/static/py_libraries/idna-3.3-py3-none-any.whl",
             f"{url}/static/py_libraries/requests-2.28.1-py3-none-any.whl",
             f"{url}/static/py_libraries/pyodide_importer-0.0.2-py2.py3-none-any.whl",
-            "pillow"
+            "pillow",
         ],
-        deps=False
+        deps=False,
     )
     if js.location.hostname in ["dev.dk64randomizer.com", "dk64randomizer.com"]:
         await micropip.install(f"{url}/static/py_libraries/dk64rando-web-py3-none-any.whl")
