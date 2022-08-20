@@ -38,11 +38,11 @@ LogicRegions = {
         LocationLogic(Locations.HelmKey, lambda l: Events.HelmKeyAccess in l.Events),
     ], [
         Event(Events.HelmDoorsOpened, lambda l: l.grab and l.donkey and l.jetpack and l.diddy and l.punch and l.chunky),
-        Event(Events.HelmDonkeyDone, lambda l: (Events.HelmDoorsOpened in l.Events or l.settings.helm_setting != "default") and l.HelmDonkey1 and l.HelmDonkey2),
-        Event(Events.HelmChunkyDone, lambda l: (Events.HelmDonkeyDone in l.Events or l.settings.helm_setting != "default") and l.HelmChunky1 and l.HelmChunky2),
-        Event(Events.HelmTinyDone, lambda l: (Events.HelmChunkyDone in l.Events or l.settings.helm_setting != "default") and l.HelmTiny1 and l.HelmTiny2),
-        Event(Events.HelmLankyDone, lambda l: (Events.HelmTinyDone in l.Events or l.settings.helm_setting != "default") and l.HelmLanky1 and l.HelmLanky2),
-        Event(Events.HelmDiddyDone, lambda l: (Events.HelmLankyDone in l.Events or l.settings.helm_setting != "default") and l.HelmDiddy1 and l.HelmDiddy2),
+        Event(Events.HelmDonkeyDone, lambda l: ((Events.HelmDoorsOpened in l.Events or l.settings.helm_setting != "default") and l.HelmDonkey1 and l.HelmDonkey2) or not l.settings.helm_donkey),
+        Event(Events.HelmChunkyDone, lambda l: ((Events.HelmDonkeyDone in l.Events or l.settings.helm_setting != "default") and l.HelmChunky1 and l.HelmChunky2) or not l.settings.helm_chunky),
+        Event(Events.HelmTinyDone, lambda l: ((Events.HelmChunkyDone in l.Events or l.settings.helm_setting != "default") and l.HelmTiny1 and l.HelmTiny2) or not l.settings.helm_tiny),
+        Event(Events.HelmLankyDone, lambda l: ((Events.HelmTinyDone in l.Events or l.settings.helm_setting != "default") and l.HelmLanky1 and l.HelmLanky2) or not l.settings.helm_lanky),
+        Event(Events.HelmDiddyDone, lambda l: ((Events.HelmLankyDone in l.Events or l.settings.helm_setting != "default") and l.HelmDiddy1 and l.HelmDiddy2) or not l.settings.helm_diddy),
         Event(Events.HelmKeyAccess, lambda l: (l.settings.helm_setting == "skip_all" or (Events.HelmDonkeyDone in l.Events and Events.HelmChunkyDone in l.Events
               and Events.HelmTinyDone in l.Events and Events.HelmLankyDone in l.Events and Events.HelmDiddyDone in l.Events))
               and (l.settings.crown_door_open or l.BattleCrowns >= 4) and (l.settings.coin_door_open or l.nintendoCoin and l.rarewareCoin)),

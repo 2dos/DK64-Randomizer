@@ -28,7 +28,7 @@ extern void* dk_memcpy(void* _dest, void* _src, int size);
 extern void getTimestampDiffInTicks(unsigned int major, unsigned int minor);
 extern int timestampDiffToMilliseconds(unsigned int major, unsigned int minor);
 extern void timestampAdd(int* timestamp1, int* timestamp2);
-extern void SaveToGlobal();
+extern int SaveToGlobal();
 extern int DetectGameOver();
 extern int DetectAdventure();
 extern void displaySprite(void* control_pointer, void* sprite, int x, int y, int scale, int gif_updatefrequency, int movement_style);
@@ -289,6 +289,7 @@ extern int mapFloorBlockCount;
 extern int displayListCount;
 extern char TransitionType;
 extern char DKTVKong;
+extern cutsceneType CutsceneBanks[2];
 
 extern short screenCenterX;
 extern short screenCenterY;

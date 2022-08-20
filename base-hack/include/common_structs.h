@@ -335,6 +335,7 @@ typedef struct cutsceneInfo {
 typedef struct cutsceneType {
 	/* 0x000 */ char unk_00[0xD0];
 	/* 0x0D0 */ cutsceneInfo* cutscene_databank;
+	/* 0x0D4 */ char unk_D4[0xE0-0xD4];
 } cutsceneType;
 
 typedef struct submapInfo {

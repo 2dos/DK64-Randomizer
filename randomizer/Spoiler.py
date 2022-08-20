@@ -99,6 +99,7 @@ class Spoiler:
         settings["Shuffle Shop Locations"] = self.settings.shuffle_shops
         settings["Shuffle Kasplats"] = self.settings.kasplat_rando_setting
         settings["K Rool Phases"] = self.settings.krool_order
+
         settings["Key 8 Required"] = self.settings.krool_access
         settings["Keys Required for K Rool"] = self.GetKroolKeysRequired(self.settings.krool_keys_required)
         settings["Number of Keys Required"] = self.settings.krool_key_count
@@ -109,6 +110,12 @@ class Spoiler:
         settings["Fast GBs"] = self.settings.fast_gbs
         settings["High Requirements"] = self.settings.high_req
         humanspoiler["Settings"] = settings
+
+        helm_default_order = [Kongs.donkey, Kongs.chunky, Kongs.tiny, Kongs.lanky, Kongs.diddy]
+        helm_new_order = []
+        for room in self.settings.helm_order:
+            helm_new_order.append(helm_default_order[room].name)
+        humanspoiler["Helm Rooms"] = helm_new_order
 
         if self.settings.shuffle_items != "none":
             # Playthrough data
