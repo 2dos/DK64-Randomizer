@@ -263,8 +263,10 @@ function site_version_checker() {
       w = new Worker("./static/js/version_worker.js");
     }
     w.onmessage = function (event) {
-      if (CurrentRomHash != event.data) {
-        alert("The Site has been updated. Please refresh the page.");
+      if (CurrentRomHash != null && event.data != null) {
+        if (CurrentRomHash != event.data) {
+          alert("The Site has been updated. Please refresh the page.");
+        }
       }
     };
   } else {
