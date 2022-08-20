@@ -345,7 +345,7 @@ class Settings:
         self.helm_tiny = False
         self.helm_chunky = False
 
-        rooms = [x for x in kongs]
+        rooms = [Kongs.donkey, Kongs.chunky, Kongs.tiny, Kongs.lanky, Kongs.diddy]
         if self.helm_phase_order_rando:
             random.shuffle(rooms)
         if self.helm_random:
