@@ -250,21 +250,25 @@ function load_file_from_db() {
 }
 
 var w;
+var CurrentRomHash;
 
-function startWorker() {
-  if (typeof(Worker) !== "undefined") {
-    if (typeof(w) == "undefined") {
+function site_version_checker() {
+  fetch("./static/py_libraries/dk64rando-1.0.0-py3-none-any.whl")
+    .then((response) => response.text())
+    .then((data) => {
+      CurrentRomHash = md5(data);
+    });
+  if (typeof Worker !== "undefined") {
+    if (typeof w == "undefined") {
       w = new Worker("./static/js/version_worker.js");
     }
-    w.onmessage = function(event) {
-      console.log(event.data)
+    w.onmessage = function (event) {
+      if (CurrentRomHash != event.data) {
+        alert("The Site has been updated. Please refresh the page.");
+      }
     };
   } else {
-    console.log("Sorry! No Web Worker support.");
+    alert("Sorry! No Web Worker support. This site probably wont work.");
   }
 }
-
-function stopWorker() {
-  w.terminate();
-  w = undefined;
-}
+site_version_checker();
