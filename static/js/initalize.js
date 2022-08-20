@@ -248,3 +248,23 @@ function load_file_from_db() {
     } catch {}
   };
 }
+
+var w;
+
+function startWorker() {
+  if (typeof(Worker) !== "undefined") {
+    if (typeof(w) == "undefined") {
+      w = new Worker("./static/js/version_worker.js");
+    }
+    w.onmessage = function(event) {
+      console.log(event.data)
+    };
+  } else {
+    console.log("Sorry! No Web Worker support.");
+  }
+}
+
+function stopWorker() {
+  w.terminate();
+  w = undefined;
+}
