@@ -69,6 +69,7 @@ extern void __osEPiStartDMA(void* unk, void* iomessage, int os_state);
 extern void __osPiRawReadIo(int a0, void* a1);
 extern int __osDisableInt();
 extern void __osRestoreInt(int mask);
+extern int __osEepromProbe(void* unk0);
 extern void copyFunc(int rom_offset, int size, void* write_location);
 extern void* getMapData(data_indexes data_idx, int _index, char compressbyte0, char compressbyte1);
 extern void loadSetup(void* setup_file, int unk0, int unk1);
@@ -173,6 +174,11 @@ extern void save(void);
 extern void assessFlagMapping(int map, int id);
 extern void coinCBCollectHandle(int player, int obj, int is_homing);
 extern void displayItemOnHUD(int item, int unk0, int unk1);
+
+extern void unkSpriteRenderFunc(int unk0);
+extern void unkSpriteRenderFunc_0(void);
+extern void loadSpriteFunction(int func);
+extern void displaySpriteAtXYZ(void* sprite, int x, int y, int z);
 
 //vanilla data
 extern float TransitionSpeed;
@@ -290,6 +296,7 @@ extern int displayListCount;
 extern char TransitionType;
 extern char DKTVKong;
 extern cutsceneType CutsceneBanks[2];
+extern int EEPROMType;
 
 extern short screenCenterX;
 extern short screenCenterY;

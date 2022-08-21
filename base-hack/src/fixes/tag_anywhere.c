@@ -204,7 +204,9 @@ int canTagAnywhere(int prev_crystals) {
             } else if (tested_type == 42) { // Grape
                 return 0;
             } else if (tested_type == 43) { // Feather
-                return 0;
+                if (LoadedActorArray[i].actor->control_state == 0) {
+                    return 0;
+                }
             } else if (tested_type == 38) { // Pineapple
                 return 0;
             }

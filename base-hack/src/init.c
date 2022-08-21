@@ -213,6 +213,21 @@ void initHack(int source) {
 				*(int*)(0x806F6914) = 0x95F9036E; // Tiny Opacity
 				*(int*)(0x806F694C) = 0x95AE036E; // Lanky Opacity
 				*(int*)(0x806F6984) = 0x952B036E; // Chunky Opacity
+				*(int*)(0x806394FC) = 0x958B036E; // Rendering
+				*(int*)(0x80639540) = 0x9728036E; // Rendering
+				*(int*)(0x80639584) = 0x95AE036E; // Rendering
+				*(int*)(0x80639430) = 0x95CD036E; // Rendering
+				*(int*)(0x806393EC) = 0x9519036E; // Rendering
+				*(int*)(0x806395C8) = 0x952A036E; // Rendering
+				*(int*)(0x8063960C) = 0x95F8036E; // Rendering
+				*(int*)(0x80639474) = 0x9549036E; // Rendering
+				*(int*)(0x806393A8) = 0x956C036E; // Rendering
+				*(int*)(0x806394B8) = 0x970F036E; // Rendering
+				*(int*)(0x80639650) = 0x956C036E; // Rendering
+				*(int*)(0x80639710) = 0x9549036E; // Rendering
+				*(int*)(0x80639750) = 0x970F036E; // Rendering
+				*(int*)(0x806396D0) = 0x95CD036E; // Rendering
+				*(int*)(0x80639690) = 0x9519036E; // Rendering
 			}
 			if (Rando.fast_warp) {
 				// Replace vanilla warp animation (0x52) with monkeyport animation (0x53)
