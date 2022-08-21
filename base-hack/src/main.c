@@ -59,11 +59,6 @@ void cFuncLoop(void) {
 	if (CurrentMap == 0x50) {
 		colorMenuSky();
 	}
-	if (NewlyPressedControllerInput.Buttons & L_Button) {
-		for (int i = 0; i < 15; i++) {
-			displayItemOnHUD(i,0,0);
-		}
-	}
 	cancelMoveSoftlock();
 	fixDKFreeSoftlock();
 	callParentMapFilter();
