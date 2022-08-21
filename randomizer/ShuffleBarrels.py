@@ -53,7 +53,7 @@ def ShuffleBarrels(settings: Settings, barrelLocations, minigamePool):
                 if Fill.VerifyWorld(settings):
                     minigamePool.remove(minigame)
                     if MinigameRequirements[minigame].repeat:
-                        replacement_index = random.randint(int(len(minigamePool)/2), len(minigamePool))
+                        replacement_index = random.randint(int(len(minigamePool) / 2), len(minigamePool))
                         if replacement_index >= len(minigamePool):
                             minigamePool.append(minigame)
                         else:

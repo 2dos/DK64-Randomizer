@@ -36,7 +36,7 @@ async def initialize():
         pass
 
     # Module of Lists used for list_selector macro
-    import data_module
+    from randomizer.Lists.Minigame import MinigameSelector
 
     js.listeners = []
     js.progression_presets = []
@@ -59,7 +59,7 @@ async def initialize():
 
     templateEnv = Environment(loader=FunctionLoader(loader_func), enable_async=True)
     template = templateEnv.get_template("base.html.jinja2")
-    rendered = await template.render(data_module=data_module)
+    rendered = await template.render(minigames=MinigameSelector)
     js.document.documentElement.innerHTML = ""
     js.document.open()
     js.document.write(rendered)

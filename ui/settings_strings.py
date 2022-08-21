@@ -40,7 +40,7 @@ def encrypt_settings_string(dict_data: dict):
         "tiny_colors",
         "tiny_custom_color",
         "override_cosmetics",
-        "search"
+        "search",
     ]:
         dict_data.pop(pop)
     ordered_dict = collections.OrderedDict(sorted(dict_data.items()))
