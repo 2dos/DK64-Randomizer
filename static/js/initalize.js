@@ -119,6 +119,18 @@ $("#form input").on("input change", function (e) {
   const data = new FormData(document.querySelector("form"));
   disabled.attr("disabled", "disabled");
   const json = Object.fromEntries(data.entries());
+  for (element of document.getElementsByTagName("select")){
+    if (element.className.includes("selected")){
+      length = element.options.length
+      values = []
+      for (let i = 0; i < length; i++){
+        if (element.options.item(i).selected){
+          values.push(element.options.item(i).value)
+        }     
+      }
+    json[element.name] = values   
+    }       
+  }
   setCookie("saved_settings", JSON.stringify(json), 30);
 });
 $("#form select").on("change", function (e) {
@@ -127,6 +139,18 @@ $("#form select").on("change", function (e) {
   const data = new FormData(document.querySelector("form"));
   disabled.attr("disabled", "disabled");
   const json = Object.fromEntries(data.entries());
+  for (element of document.getElementsByTagName("select")){
+    if (element.className.includes("selected")){
+      length = element.options.length
+      values = []
+      for (let i = 0; i < length; i++){
+        if (element.options.item(i).selected){
+          values.push(element.options.item(i).value)
+        }     
+      }
+    json[element.name] = values   
+    }       
+  }
   setCookie("saved_settings", JSON.stringify(json), 30);
 });
 
@@ -169,6 +193,11 @@ function load_cookies() {
             element.value = json[key];
             if (element.hasAttribute("data-slider-value")) {
               element.setAttribute("data-slider-value", json[key]);
+            }
+            if (element.className.includes("selected")) {
+              for (var i = 0; i < element.options.length; i++) {
+                element.options[i].selected = json[key].indexOf(element.options[i].value) >= 0;
+              }
             }
           } catch {}
         }

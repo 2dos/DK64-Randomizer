@@ -203,7 +203,6 @@ class Settings:
         # random
         self.helm_barrels = "normal"
         self.bonus_barrel_auto_complete = False
-        self.gnawty_barrels = False
 
         # hard_shooting: bool
         self.hard_shooting = False
@@ -289,6 +288,7 @@ class Settings:
         self.enemy_speed_rando = False
         self.override_cosmetics = False
         self.random_colors = False
+        self.minigames_list_selected = []
 
     def shuffle_prices(self):
         """Price randomization. Reuseable if we need to reshuffle prices."""
@@ -413,10 +413,10 @@ class Settings:
         # Bonus Barrel Rando
         if self.bonus_barrel_auto_complete:
             self.bonus_barrels = "skip"
-        elif self.bonus_barrel_rando:
+        elif self.bonus_barrel_rando and not self.minigames_list_selected:
             self.bonus_barrels = "random"
-        elif self.gnawty_barrels:
-            self.bonus_barrels = "all_beaver_bother"
+        elif self.bonus_barrel_rando and self.minigames_list_selected:
+            self.bonus_barrels = "selected"
         # Helm Barrel Rando
         if self.helm_setting == "skip_all":
             self.helm_barrels = "skip"

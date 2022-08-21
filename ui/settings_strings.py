@@ -40,6 +40,7 @@ def encrypt_settings_string(dict_data: dict):
         "tiny_colors",
         "tiny_custom_color",
         "override_cosmetics",
+        "search",
     ]:
         dict_data.pop(pop)
     ordered_dict = collections.OrderedDict(sorted(dict_data.items()))
@@ -89,19 +90,36 @@ def decrypt_setting_string(encrypted_string: str):
 
     new_dict = {}
     index = 0
+    array = False
+    value = []
     original_dict = collections.OrderedDict(sorted(default_dict.items()))
     for item in base64.b64decode(expanded).decode("ascii").split(","):
-        if index < len(list(original_dict.items())):
-            if item == "x1":
-                new_item = True
-            elif item == "x0":
-                new_item = False
-            elif item == "":
-                new_item = list(original_dict.items())[index][1]
-            else:
-                new_item = item
-            new_dict[list(original_dict.items())[index][0]] = new_item
-        index += 1
+        if "[" in item:
+            array = True
+            str = item.replace("[", "").replace("'", "").replace(" ", "")
+            value.append(str)
+        elif "]" in item:
+            array = False
+            str = item.replace("]", "").replace("'", "").replace(" ", "")
+            value.append(str)
+            new_dict[list(original_dict.items())[index][0]] = value
+            index += 1
+            value = []
+        elif array:
+            str = item.replace("'", "").replace(" ", "")
+            value.append(str)
+        else:
+            if index < len(list(original_dict.items())):
+                if item == "x1":
+                    new_item = True
+                elif item == "x0":
+                    new_item = False
+                elif item == "":
+                    new_item = list(original_dict.items())[index][1]
+                else:
+                    new_item = item
+                new_dict[list(original_dict.items())[index][0]] = new_item
+            index += 1
     return new_dict
 
 
