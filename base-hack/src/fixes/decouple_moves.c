@@ -53,6 +53,8 @@ void decouple_moves_fixes(void) {
 	} else if (CurrentMap == SNIDE) {
 		*(int*)(0x8002402C) = 0x240E000C; // No extra contraption cutscenes
 		*(int*)(0x80024054) = 0x24080001; // 1 GB Turn in
+	} else if (CurrentMap == 0x11) {
+		HelmInit(0);
 	}
 	if (Rando.short_bosses) {
 		if ((CurrentMap == 8) || (DestMap == 8)) {

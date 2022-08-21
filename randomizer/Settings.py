@@ -189,6 +189,9 @@ class Settings:
         # krool_phase_count: int, [1-5]
         self.krool_phase_count = 5
         self.krool_random = False
+        # helm_phase_count: int, [1-5]
+        self.helm_phase_count = 3
+        self.helm_random = False
         # krool_key_count: int, [0-8]
         self.krool_key_count = 8
         self.keys_random = False
@@ -264,6 +267,7 @@ class Settings:
         self.enable_tag_anywhere = None
         self.krool_phase_order_rando = None
         self.krool_access = False
+        self.helm_phase_order_rando = None
         self.open_lobbies = None
         self.open_levels = None
         self.randomize_pickups = False
@@ -343,6 +347,42 @@ class Settings:
                 orderedPhases.append(Kongs.tiny)
         orderedPhases.append(Kongs.chunky)
         self.krool_order = orderedPhases
+
+        # Helm Order
+        self.helm_donkey = False
+        self.helm_diddy = False
+        self.helm_lanky = False
+        self.helm_tiny = False
+        self.helm_chunky = False
+
+        rooms = [Kongs.donkey, Kongs.chunky, Kongs.tiny, Kongs.lanky, Kongs.diddy]
+        if self.helm_phase_order_rando:
+            random.shuffle(rooms)
+        if self.helm_random:
+            self.helm_phase_count = randint(1, 5)
+        if isinstance(self.helm_phase_count, str) is True:
+            self.helm_phase_count = 5
+        if self.helm_phase_count < 5:
+            rooms = random.sample(rooms, self.helm_phase_count)
+        orderedRooms = []
+        if Kongs.donkey in rooms:
+            orderedRooms.append(0)
+            rooms.remove(Kongs.donkey)
+            self.helm_donkey = True
+        for kong in rooms:
+            if kong == Kongs.diddy:
+                self.helm_diddy = True
+                orderedRooms.append(4)
+            if kong == Kongs.lanky:
+                self.helm_lanky = True
+                orderedRooms.append(3)
+            if kong == Kongs.tiny:
+                self.helm_tiny = True
+                orderedRooms.append(2)
+            if kong == Kongs.chunky:
+                self.helm_chunky = True
+                orderedRooms.append(1)
+        self.helm_order = orderedRooms
 
         # Set keys required for KRool
         KeyEvents = [
