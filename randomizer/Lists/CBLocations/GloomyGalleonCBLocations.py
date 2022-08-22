@@ -174,6 +174,7 @@ ColoredBananaGroupList = [
         name="Inside middle chest with headphones",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.GloomyGalleonStart,
+        logic=lambda l: l.punch,
         locations=[
             [5, 1.0, 3668, 1675, 3808],
         ],
@@ -184,6 +185,7 @@ ColoredBananaGroupList = [
         name="Inside left chest with Fairy",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.GloomyGalleonStart,
+        logic=lambda l: l.punch,
         locations=[
             [5, 1.0, 3548, 1675, 3695],
         ],
@@ -240,6 +242,7 @@ ColoredBananaGroupList = [
         name="Around battle arena pad",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.GloomyGalleonStart,
+        logic=lambda l: l.punch,
         locations=[
             [1, 1.0, 3384, 1670, 2459],
             [1, 1.0, 3343, 1670, 2350],
@@ -364,6 +367,7 @@ ColoredBananaGroupList = [
         name="Cannon GB room boulder side",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.GalleonBeyondPineappleGate,
+        logic=lambda l: Events.WaterSwitch in l.Events,
         locations=[
             [5, 1.0, 1400, 1615, 2588],
             [5, 1.0, 1250, 1615, 2588],
@@ -375,6 +379,7 @@ ColoredBananaGroupList = [
         name="Cannon GB room cannon side",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.GalleonBeyondPineappleGate,
+        logic=lambda l: Events.WaterSwitch in l.Events,
         locations=[
             [5, 1.0, 1370, 1615, 3024],
             [5, 1.0, 1315, 1615, 3072],
@@ -420,6 +425,7 @@ ColoredBananaGroupList = [
         name="In chest by 5DS (Chunky OoB coins)",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.Shipyard,
+        logic=lambda l: Events.ShipyardEnguarde in l.Events,
         locations=[
             [5, 1.2, 2769, 643, 2282],
         ],
@@ -430,6 +436,7 @@ ColoredBananaGroupList = [
         name="In chest by 5DS (Lanky coins)",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.Shipyard,
+        logic=lambda l: Events.ShipyardEnguarde in l.Events,
         locations=[
             [5, 1.2, 3018, 584, 1582],
         ],
@@ -440,6 +447,7 @@ ColoredBananaGroupList = [
         name="Chest around 5DS (DK coins)",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.Shipyard,
+        logic=lambda l: Events.ShipyardEnguarde in l.Events,
         locations=[
             [5, 1.2, 2439, 622, 1596],
         ],
@@ -450,6 +458,7 @@ ColoredBananaGroupList = [
         name="Chest around 5DS (Tiny coins)",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.Shipyard,
+        logic=lambda l: Events.ShipyardEnguarde in l.Events,
         locations=[
             [5, 1.2, 1982, 662, 2247],
         ],
@@ -460,6 +469,7 @@ ColoredBananaGroupList = [
         name="Chest near mech fish (Diddy coins)",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.Shipyard,
+        logic=lambda l: Events.ShipyardEnguarde in l.Events,
         locations=[
             [5, 1.2, 3023, 116, 751],
         ],
@@ -551,17 +561,28 @@ ColoredBananaGroupList = [
         name="On Lanky Gold Tower (5 custom, 5 Lanky)",
         konglist=[Kongs.lanky],
         region=Regions.TreasureRoom,
+        logic=lambda l: l.balloon and Events.WaterSwitch in l.Events,
         locations=[
             [1, 1.0, 1620, 2000, 566],
             [1, 1.0, 1642, 1980, 529],
             [1, 1.0, 1616, 2040, 490],
             [1, 1.0, 1596, 2060, 529],
             [1, 1.0, 1688, 1755, 599],
-            [1, 1.0, 1756.18212890625, 1620.0, 635.8522338867188],
             [1, 1.0, 1714.4791259765625, 1735.0, 638.5502319335938],
             [1, 1.0, 1705.23828125, 1815.0, 561.5382690429688],
             [1, 1.0, 1665.20458984375, 1955.0, 562.423828125],
             [1, 1.0, 1662.1121826171875, 2045.0, 493.0118408203125],
+        ],
+    ),
+    ColoredBananaGroup(
+        group=37,
+        map_id=Maps.GloomyGalleon,
+        name="On Lanky Gold Tower (5 custom, 5 Lanky)",
+        konglist=[Kongs.lanky],
+        region=Regions.TreasureRoom,
+        logic=lambda l: Events.WaterSwitch in l.Events,
+        locations=[
+            [1, 1.0, 1756.18212890625, 1620.0, 635.8522338867188],
         ],
     ),
     ColoredBananaGroup(
@@ -581,9 +602,18 @@ ColoredBananaGroupList = [
         map_id=Maps.GloomyGalleon,
         name="W4",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
-        region=Regions.TreasureRoomDiddyGoldTower,  # One of them is in Shipyard
+        region=Regions.Shipyard,
         locations=[
             [5, 1.0, 2763, 1625, 1432],
+        ],
+    ),
+    ColoredBananaGroup(
+        group=39,
+        map_id=Maps.GloomyGalleon,
+        name="W4",
+        konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
+        region=Regions.TreasureRoomDiddyGoldTower,
+        locations=[
             [5, 1.0, 2168, 1895, 764],
         ],
     ),
@@ -814,6 +844,7 @@ ColoredBananaGroupList = [
         name="Alcove behind Enguarde plank",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.LighthouseArea,
+        logic=lambda l: Events.LighthouseEnguarde in l.Events,
         locations=[
             [5, 1.2, 881, 1465, 4900],
             [5, 1.2, 777, 1465, 4966],
@@ -1001,10 +1032,20 @@ ColoredBananaGroupList = [
         map_id=Maps.GloomyGalleon,
         name="W1",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
-        region=Regions.LighthouseArea,  # One of them is in GloomyGalleonStart
+        region=Regions.LighthouseArea,
+        logic=lambda l: Events.WaterSwitch in l.Events,
+        locations=[
+            [5, 1.0, 1519, 1615, 4221],
+        ],
+    ),
+    ColoredBananaGroup(
+        group=72,
+        map_id=Maps.GloomyGalleon,
+        name="W1",
+        konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
+        region=Regions.GloomyGalleonStart,
         locations=[
             [5, 1.0, 2844, 1692, 3236],
-            [5, 1.0, 1519, 1615, 4221],
         ],
     ),
     ColoredBananaGroup(
@@ -1012,9 +1053,19 @@ ColoredBananaGroupList = [
         map_id=Maps.GloomyGalleon,
         name="W5",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
-        region=Regions.LighthouseArea,  # One of them is in Shipyard
+        region=Regions.LighthouseArea,
+        logic=lambda l: Events.WaterSwitch in l.Events,
         locations=[
             [5, 1.0, 1395, 1630, 3970],
+        ],
+    ),
+    ColoredBananaGroup(
+        group=73,
+        map_id=Maps.GloomyGalleon,
+        name="W5",
+        konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
+        region=Regions.Shipyard,
+        locations=[
             [5, 1.0, 3175, 1625, 1846],
         ],
     ),
@@ -1024,6 +1075,7 @@ ColoredBananaGroupList = [
         name="Lighthouse switch",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.LighthouseArea,
+        logic=lambda l: Events.WaterSwitch in l.Events,
         locations=[
             [5, 1.0, 1520, 1620, 3890],
         ],
@@ -1034,6 +1086,7 @@ ColoredBananaGroupList = [
         name="Baboon Blast pad",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.LighthouseArea,
+        logic=lambda l: Events.WaterSwitch in l.Events,
         locations=[
             [5, 1.0, 1697, 1670, 4048],
         ],
@@ -1044,6 +1097,7 @@ ColoredBananaGroupList = [
         name="Around lighthouse",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.LighthouseArea,
+        logic=lambda l: Events.WaterSwitch in l.Events,
         locations=[
             [1, 1.0, 1464, 1610, 4209],
             [1, 1.0, 1416, 1610, 4185],
@@ -1073,6 +1127,7 @@ ColoredBananaGroupList = [
         name="On seal cage",
         konglist=[Kongs.diddy],
         region=Regions.LighthouseArea,
+        logic=lambda l: l.jetpack and Events.WaterSwitch in l.Events,
         locations=[
             [5, 1.0, 2212, 1842, 4055],
             [5, 1.0, 2192, 1842, 4122],
@@ -1084,6 +1139,7 @@ ColoredBananaGroupList = [
         name="Guitar pad on top of lighthouse",
         konglist=[Kongs.diddy],
         region=Regions.LighthouseArea,
+        logic=lambda l: l.jetpack and Events.WaterSwitch in l.Events,
         locations=[
             [5, 1.0, 1520, 2260, 4059],
         ],
@@ -1094,6 +1150,7 @@ ColoredBananaGroupList = [
         name="Up the ladder into the lighthouse",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.LighthouseArea,
+        logic=lambda l: Events.WaterSwitch in l.Events,
         locations=[
             [1, 1.0, 1524, 1625, 3940],
             [1, 1.0, 1524, 1655, 3946],
@@ -1494,6 +1551,7 @@ ColoredBananaGroupList = [
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.LighthouseArea,
         vanilla=True,
+        logic=lambda l: Events.LighthouseEnguarde in l.Events,
         locations=[
             [1, 1.0, 945.9843139648438, 1429.8197021484375, 4678.3828125],
             [1, 1.0, 895.1714477539062, 1457.6646728515625, 4727.05419921875],
@@ -1527,6 +1585,7 @@ ColoredBananaGroupList = [
         konglist=[Kongs.diddy],
         region=Regions.LighthouseArea,
         vanilla=True,
+        logic=lambda l: l.jetpack,
         locations=[
             [5, 1.0, 1475.5653076171875, 2120.25927734375, 4034.429443359375],
             [5, 1.0, 1563.48046875, 2121.21728515625, 4082.459228515625],
@@ -1557,7 +1616,7 @@ ColoredBananaGroupList = [
         map_id=Maps.GloomyGalleon,
         name="In cannon path to Cranky (Diddy)",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
-        region=Regions.GloomyGalleonLobby,
+        region=Regions.GloomyGalleonStart,
         vanilla=True,
         locations=[
             [5, 1.0, 3333.526123046875, 1788.10888671875, 2680.950927734375],
@@ -1622,6 +1681,7 @@ ColoredBananaGroupList = [
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.LighthouseArea,
         vanilla=True,
+        logic=lambda l: Events.LighthouseEnguarde in l.Events,
         locations=[
             [5, 1.0799999237060547, 2084.046875, 987.3544921875, 4043.450439453125],
         ],
@@ -1633,6 +1693,7 @@ ColoredBananaGroupList = [
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.LighthouseArea,
         vanilla=True,
+        logic=lambda l: Events.LighthouseEnguarde in l.Events,
         locations=[
             [5, 1.0999999046325684, 1521.998046875, 957.9177856445312, 3546.240478515625],
         ],
@@ -1644,6 +1705,7 @@ ColoredBananaGroupList = [
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.LighthouseArea,
         vanilla=True,
+        logic=lambda l: Events.LighthouseEnguarde in l.Events,
         locations=[
             [5, 1.119999885559082, 1164.2645263671875, 645.4811401367188, 3786.085693359375],
         ],
@@ -1655,6 +1717,7 @@ ColoredBananaGroupList = [
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.LighthouseArea,
         vanilla=True,
+        logic=lambda l: Events.LighthouseEnguarde in l.Events,
         locations=[
             [5, 1.119999885559082, 1740.2940673828125, 604.6221313476562, 4295.24609375],
         ],
@@ -1664,10 +1727,20 @@ ColoredBananaGroupList = [
         map_id=Maps.GloomyGalleon,
         name="W3 (Tiny)",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
-        region=Regions.LighthouseArea,  # one is in GloomyGalleonStart
+        region=Regions.GloomyGalleonStart,
         vanilla=True,
         locations=[
             [5, 1.0, 3067.403076171875, 1912.0, 2924.8515625],
+        ],
+    ),
+    ColoredBananaGroup(
+        group=124,
+        map_id=Maps.GloomyGalleon,
+        name="W3 (Tiny)",
+        konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
+        region=Regions.LighthouseArea,
+        vanilla=True,
+        locations=[
             [5, 1.0, 1983.5390625, 1625.0, 4779.45654296875],
         ],
     ),
@@ -1689,6 +1762,7 @@ ColoredBananaGroupList = [
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.GalleonBeyondPineappleGate,
         vanilla=True,
+        logic=lambda l: Events.WaterSwitch in l.Events,
         locations=[
             [5, 1.0, 1312.0430908203125, 1615.0, 2905.87890625],
             [5, 1.0, 1314.042724609375, 1648.0, 2806.0751953125],
@@ -1720,11 +1794,22 @@ ColoredBananaGroupList = [
         map_id=Maps.GloomyGalleon,
         name="W2 (Chunky)",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
-        region=Regions.Shipyard,  # One is in GloomyGalleonStart
+        region=Regions.Shipyard,
+        vanilla=True,
+        logic=lambda l: Events.WaterSwitch in l.Events,
+        locations=[
+            [5, 1.0, 1554.5889892578125, 1665.417724609375, 2014.8204345703125],
+        ],
+    ),
+    ColoredBananaGroup(
+        group=128,
+        map_id=Maps.GloomyGalleon,
+        name="W2 (Chunky)",
+        konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
+        region=Regions.GloomyGalleonStart,
         vanilla=True,
         locations=[
             [5, 1.0, 2905.437255859375, 1710.0, 3365.6474609375],
-            [5, 1.0, 1554.5889892578125, 1665.417724609375, 2014.8204345703125],
         ],
     ),
     ColoredBananaGroup(
@@ -1761,6 +1846,7 @@ ColoredBananaGroupList = [
         konglist=[Kongs.chunky],
         region=Regions.SickBay,
         vanilla=True,
+        logic=lambda l: l.punch,
         locations=[
             [5, 1.0, 330.61083984375, 25.0, 919.9414672851562],
         ],
@@ -1947,6 +2033,7 @@ BalloonList = [
         speed=4,
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.GalleonBeyondPineappleGate,
+        logic=lambda l: Events.WaterSwitch in l.Events,
         points=[
             [1206, 1680, 2714],
             [1187, 1685, 3072],
@@ -2001,6 +2088,7 @@ BalloonList = [
         speed=6,
         konglist=[Kongs.diddy],
         region=Regions.LighthouseArea,
+        logic=lambda l: l.jetpack,
         points=[
             [1515, 2315, 4222],
             [1362, 2310, 4099],
@@ -2113,6 +2201,7 @@ BalloonList = [
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.GloomyGalleonStart,
         vanilla=True,
+        logic=lambda l: l.punch,
         points=[
             [3278, 1706, 2500],
             [3252, 1704, 2418],
@@ -2126,6 +2215,7 @@ BalloonList = [
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.GloomyGalleonStart,
         vanilla=True,
+        logic=lambda l: l.punch,
         points=[
             [3245, 1720, 2405],
             [3304, 1718, 2382],
@@ -2155,6 +2245,7 @@ BalloonList = [
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.LighthouseArea,
         vanilla=True,
+        logic=lambda l: Events.WaterSwitch in l.Events,
         points=[
             [2085, 1908, 3972],
             [2025, 1914, 4129],
@@ -2168,6 +2259,7 @@ BalloonList = [
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.LighthouseArea,
         vanilla=True,
+        logic=lambda l: Events.WaterSwitch in l.Events,
         points=[
             [1606, 1802, 3925],
             [1671, 1796, 4025],
@@ -2214,6 +2306,7 @@ BalloonList = [
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.GalleonBeyondPineappleGate,
         vanilla=True,
+        logic=lambda l: Events.WaterSwitch in l.Events,
         points=[
             [1421, 1597, 3255],
             [1257, 1624, 3198],
@@ -2253,6 +2346,7 @@ BalloonList = [
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.LighthouseArea,
         vanilla=True,
+        logic=lambda l: Events.WaterSwitch in l.Events,
         points=[
             [2070, 1678, 4623],
             [1979, 1672, 4713],

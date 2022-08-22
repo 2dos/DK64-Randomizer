@@ -75,7 +75,7 @@ ColoredBananaGroupList = [
     ColoredBananaGroup(
         group=2,
         map_id=Maps.AngryAztec,
-        name="First tunnel grouped with Chunky's singles",
+        name="First tunnel (5 custom, 5 Chunky)",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.AngryAztecStart,
         locations=[
@@ -84,14 +84,20 @@ ColoredBananaGroupList = [
             [1, 1.0, 846, 120, 1118],
             [1, 1.0, 966, 120, 1199],
             [1, 1.0, 1173, 155, 1204],
+            [1, 1.0, 820.9889526367188, 120.0, 1033.1551513671875],
+            [1, 1.0, 899.3162231445312, 120.0, 1168.6141357421875],
+            [1, 1.0, 809.063720703125, 120.0, 849.666748046875],
+            [1, 1.0, 1054.1512451171875, 120.0, 1204.6153564453125],
+            [1, 1.0, 799.9443359375, 120.0, 688.669921875],
         ],
     ),
     ColoredBananaGroup(
         group=3,
         map_id=Maps.AngryAztec,
         name="On DK BP archway",
-        konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
+        konglist=[Kongs.donkey],
         region=Regions.AngryAztecStart,
+        logic=lambda l: l.coconut and l.strongKong,
         locations=[
             [1, 1.0, 1527, 120, 738],
             [1, 1.0, 1487, 726, 740],
@@ -159,6 +165,7 @@ ColoredBananaGroupList = [
         name="Singles on vines and bunch on guitar pad",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.AngryAztecStart,
+        logic=lambda l: l.vines,
         locations=[
             [1, 1.0, 2429, 321, 1164],
             [1, 1.0, 2340, 329, 1294],
@@ -257,6 +264,7 @@ ColoredBananaGroupList = [
         name="Singles around Diddy BP",
         konglist=[Kongs.diddy],
         region=Regions.AngryAztecStart,
+        logic=lambda l: l.jetpack,
         locations=[
             [1, 1.0, 3168, 446, 661],
             [1, 1.0, 3146, 446, 637],
@@ -276,6 +284,7 @@ ColoredBananaGroupList = [
         name="4 corners of top of Tiny Temple",
         konglist=[Kongs.diddy],
         region=Regions.AngryAztecStart,
+        logic=lambda l: l.jetpack,
         locations=[
             [5, 1.0, 3186, 357, 487],
             [5, 1.0, 3007, 357, 625],
@@ -372,9 +381,18 @@ ColoredBananaGroupList = [
         map_id=Maps.AngryAztec,
         name="W2 bunches (1 custom, 1 Diddy)",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
-        region=Regions.AngryAztecMain,  # Vanilla W2 bunch is in AngryAztecStart
+        region=Regions.AngryAztecMain,
         locations=[
             [5, 1.0, 3502, 134, 3071],
+        ],
+    ),
+    ColoredBananaGroup(
+        group=19,
+        map_id=Maps.AngryAztec,
+        name="W2 bunches (1 custom, 1 Diddy)",
+        konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
+        region=Regions.AngryAztecStart,
+        locations=[
             [5, 1.0, 2883.7001953125, 178.3626251220703, 862.9205932617188],
         ],
     ),
@@ -384,7 +402,10 @@ ColoredBananaGroupList = [
         name="Bunches on W3",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.AngryAztecMain,
-        locations=[[5, 1.0, 2802, 134, 2523], [5, 1.0, 3501, 135, 3397]],
+        locations=[
+            [5, 1.0, 2802, 134, 2523],
+            [5, 1.0, 3501, 135, 3397],
+        ],
     ),
     ColoredBananaGroup(
         group=21,
@@ -444,6 +465,7 @@ ColoredBananaGroupList = [
         name="Flying bunches around totem (scale up a bit)",
         konglist=[Kongs.diddy],
         region=Regions.AngryAztecMain,
+        logic=lambda l: l.jetpack,
         locations=[
             [5, 1.2, 3498, 310, 3920],
             [5, 1.2, 3390, 310, 3538],
@@ -488,33 +510,6 @@ ColoredBananaGroupList = [
             [1, 1.0, 3519.805419921875, 80.0, 3976.166015625],
             [1, 1.0, 3397.266845703125, 80.0, 4053.25390625],
         ],
-    ),
-    ColoredBananaGroup(
-        group=83,
-        map_id=Maps.AngryAztec,
-        name="",
-        konglist=[Kongs.chunky],
-        region="",
-        vanilla=True,
-        locations=[],
-    ),
-    ColoredBananaGroup(
-        group=84,
-        map_id=Maps.AngryAztec,
-        name="",
-        konglist=[Kongs.chunky],
-        region="",
-        vanilla=True,
-        locations=[],
-    ),
-    ColoredBananaGroup(
-        group=85,
-        map_id=Maps.AngryAztec,
-        name="",
-        konglist=[Kongs.chunky],
-        region="",
-        vanilla=True,
-        locations=[],
     ),
     ColoredBananaGroup(
         group=27,
@@ -597,11 +592,11 @@ ColoredBananaGroupList = [
             [1, 1.0, 4187, 80, 3101],
             [1, 1.0, 4232, 80, 3021],
             [1, 1.0, 4277, 80, 2942],
-            [1, 1.0, 4320, 80, 2924],
-            [1, 1.0, 4322, 80, 2968],
-            [1, 1.0, 4325, 80, 3012],
-            [1, 1.0, 4327, 80, 3056],
-            [1, 1.0, 4329, 80, 3100],
+            [1, 1.0, 4340, 80, 2924],
+            [1, 1.0, 4412, 80, 2968],
+            [1, 1.0, 4485, 80, 3012],
+            [1, 1.0, 4557, 80, 3056],
+            [1, 1.0, 4630, 80, 3100],
             [1, 1.0, 4648, 80, 3146],
             [1, 1.0, 4602, 80, 3225],
             [1, 1.0, 4557, 80, 3304],
@@ -655,9 +650,18 @@ ColoredBananaGroupList = [
         map_id=Maps.AngryAztec,
         name="W5 bunches (1 custom, 1 Tiny bunch)",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
-        region=Regions.AztecDonkeyQuicksandCave,  # Tiny Bunch is in AngryAztecMain
+        region=Regions.AztecDonkeyQuicksandCave,
         locations=[
             [5, 1.0, 2778, 135, 4752],
+        ],
+    ),
+    ColoredBananaGroup(
+        group=36,
+        map_id=Maps.AngryAztec,
+        name="W5 bunches (1 custom, 1 Tiny bunch)",
+        konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
+        region=Regions.AngryAztecMain,
+        locations=[
             [5, 1.0, 3480.918212890625, 140.0, 4486.7548828125],
         ],
     ),
@@ -716,6 +720,7 @@ ColoredBananaGroupList = [
         name="On top of Diddy's Feed me totem switch on 5DT",
         konglist=[Kongs.diddy],
         region=Regions.AngryAztecMain,
+        logic=lambda l: l.jetpack,
         locations=[
             [5, 1.0, 2074, 435, 3610],
         ],
@@ -804,6 +809,7 @@ ColoredBananaGroupList = [
         name="On slippery slope around llama temple (accessible from group 44 or backflip from quicksand)",
         konglist=[Kongs.lanky],
         region=Regions.AngryAztecMain,
+        logic=lambda l: l.handstand,
         locations=[
             [1, 1.0, 3260, 263, 3055],
             [1, 1.0, 3240, 260, 2975],
@@ -820,7 +826,7 @@ ColoredBananaGroupList = [
     ColoredBananaGroup(
         group=46,
         map_id=Maps.AngryAztec,
-        name="On flatter side behind Llama temple (accessible via kick jump aerial PTT backflip from quicksand rocketbarrel etc.)",
+        name="On flatter side behind Llama temple",  # This might need tweaks to ensure it's accessible damageless for all kongs it's made available to
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.AngryAztecMain,
         locations=[
@@ -890,6 +896,7 @@ ColoredBananaGroupList = [
         name="Inside giant boulder",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.AngryAztecMain,
+        logic=lambda l: l.chunky and l.hunkyChunky and l.barrels,
         locations=[
             [5, 1.0, 3585, 118, 2406],
         ],
@@ -963,6 +970,7 @@ ColoredBananaGroupList = [
         name="First dead end",
         konglist=[Kongs.donkey],
         region=Regions.DonkeyTemple,
+        logic=lambda l: l.coconut,
         locations=[
             [5, 1.0, 140, 25, 500],
             [5, 1.0, 64, 25, 500],
@@ -974,6 +982,7 @@ ColoredBananaGroupList = [
         name="Second dead end",
         konglist=[Kongs.donkey],
         region=Regions.DonkeyTemple,
+        logic=lambda l: l.coconut,
         locations=[
             [5, 1.0, 1046, 62, 1082],
         ],
@@ -984,11 +993,8 @@ ColoredBananaGroupList = [
         name="Path to GB",
         konglist=[Kongs.donkey],
         region=Regions.DonkeyTemple,
+        logic=lambda l: l.coconut,
         locations=[
-            [1, 1.0, 420, 20, 100],
-            [1, 1.0, 420, 20, 166],
-            [1, 1.0, 420, 20, 233],
-            [1, 1.0, 420, 20, 300],
             [1, 1.0, 520, 20, 300],
             [1, 1.0, 620, 20, 300],
             [1, 1.0, 720, 20, 300],
@@ -1008,16 +1014,26 @@ ColoredBananaGroupList = [
         ],
     ),
     ColoredBananaGroup(
+        group=57,
+        map_id=Maps.AztecDonkey5DTemple,
+        name="Path to GB",
+        konglist=[Kongs.donkey],
+        region=Regions.DonkeyTemple,
+        locations=[
+            [1, 1.0, 420, 20, 100],
+            [1, 1.0, 420, 20, 166],
+            [1, 1.0, 420, 20, 233],
+            [1, 1.0, 420, 20, 300],
+        ],
+    ),
+    ColoredBananaGroup(
         group=58,
         map_id=Maps.AztecDiddy5DTemple,
         name="Path to GB",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.DiddyTemple,
+        logic=lambda l: l.peanut,
         locations=[
-            [1, 1.0, 740, 20, 100],
-            [1, 1.0, 740, 20, 166],
-            [1, 1.0, 740, 20, 233],
-            [1, 1.0, 740, 20, 300],
             [1, 1.0, 640, 20, 300],
             [1, 1.0, 540, 20, 300],
             [1, 1.0, 440, 20, 300],
@@ -1037,11 +1053,25 @@ ColoredBananaGroupList = [
         ],
     ),
     ColoredBananaGroup(
+        group=58,
+        map_id=Maps.AztecDiddy5DTemple,
+        name="Path to GB",
+        konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
+        region=Regions.DiddyTemple,
+        locations=[
+            [1, 1.0, 740, 20, 100],
+            [1, 1.0, 740, 20, 166],
+            [1, 1.0, 740, 20, 233],
+            [1, 1.0, 740, 20, 300],
+        ],
+    ),
+    ColoredBananaGroup(
         group=59,
         map_id=Maps.AztecDiddy5DTemple,
         name="Second dead end",
         konglist=[Kongs.diddy],
         region=Regions.DiddyTemple,
+        logic=lambda l: l.peanut,
         locations=[
             [5, 1.0, 155, 62, 1013],
             [5, 1.0, 73, 62, 1013],
@@ -1053,6 +1083,7 @@ ColoredBananaGroupList = [
         name="First dead end",
         konglist=[Kongs.diddy],
         region=Regions.DiddyTemple,
+        logic=lambda l: l.peanut,
         locations=[
             [5, 1.0, 1015, 25, 500],
             [5, 1.0, 1097, 25, 500],
@@ -1064,11 +1095,8 @@ ColoredBananaGroupList = [
         name="Path to GB",
         konglist=[Kongs.lanky],
         region=Regions.LankyTemple,
+        logic=lambda l: l.grape,
         locations=[
-            [1, 1.0, 460, 20, 100],
-            [1, 1.0, 460, 20, 173],
-            [1, 1.0, 460, 20, 246],
-            [1, 1.0, 460, 20, 320],
             [1, 1.0, 370, 20, 320],
             [1, 1.0, 280, 20, 320],
             [1, 1.0, 190, 20, 320],
@@ -1093,11 +1121,25 @@ ColoredBananaGroupList = [
         ],
     ),
     ColoredBananaGroup(
+        group=61,
+        map_id=Maps.AztecLanky5DTemple,
+        name="Path to GB",
+        konglist=[Kongs.lanky],
+        region=Regions.LankyTemple,
+        locations=[
+            [1, 1.0, 460, 20, 100],
+            [1, 1.0, 460, 20, 173],
+            [1, 1.0, 460, 20, 246],
+            [1, 1.0, 460, 20, 320],
+        ],
+    ),
+    ColoredBananaGroup(
         group=62,
         map_id=Maps.AztecLanky5DTemple,
         name="Dead end",
         konglist=[Kongs.lanky],
         region=Regions.LankyTemple,
+        logic=lambda l: l.grape,
         locations=[
             [5, 1.0, 768, 128, 925],
         ],
@@ -1108,11 +1150,8 @@ ColoredBananaGroupList = [
         name="Path to GB",
         konglist=[Kongs.tiny],
         region=Regions.TinyTemple,
+        logic=lambda l: l.feather,
         locations=[
-            [1, 1.0, 640, 20, 100],
-            [1, 1.0, 640, 20, 166],
-            [1, 1.0, 640, 20, 233],
-            [1, 1.0, 640, 20, 300],
             [1, 1.0, 726, 20, 300],
             [1, 1.0, 813, 20, 300],
             [1, 1.0, 900, 20, 300],
@@ -1137,11 +1176,25 @@ ColoredBananaGroupList = [
         ],
     ),
     ColoredBananaGroup(
+        group=63,
+        map_id=Maps.AztecTiny5DTemple,
+        name="Path to GB",
+        konglist=[Kongs.tiny],
+        region=Regions.TinyTemple,
+        locations=[
+            [1, 1.0, 640, 20, 100],
+            [1, 1.0, 640, 20, 166],
+            [1, 1.0, 640, 20, 233],
+            [1, 1.0, 640, 20, 300],
+        ],
+    ),
+    ColoredBananaGroup(
         group=64,
         map_id=Maps.AztecTiny5DTemple,
         name="Dead end",
         konglist=[Kongs.tiny],
         region=Regions.TinyTemple,
+        logic=lambda l: l.feather,
         locations=[
             [5, 1.0, 330, 128, 1400],
         ],
@@ -1152,11 +1205,8 @@ ColoredBananaGroupList = [
         name="Path to GB",
         konglist=[Kongs.chunky],
         region=Regions.ChunkyTemple,
+        logic=lambda l: l.pineapple,
         locations=[
-            [1, 1.0, 640, 20, 100],
-            [1, 1.0, 640, 20, 166],
-            [1, 1.0, 640, 20, 233],
-            [1, 1.0, 640, 20, 300],
             [1, 1.0, 726, 20, 300],
             [1, 1.0, 813, 20, 300],
             [1, 1.0, 900, 20, 300],
@@ -1183,6 +1233,19 @@ ColoredBananaGroupList = [
             [1, 1.0, 340, 123, 1870],
             [1, 1.0, 340, 123, 2100],
             [1, 1.0, 240, 123, 2100],
+        ],
+    ),
+    ColoredBananaGroup(
+        group=65,
+        map_id=Maps.AztecChunky5DTemple,
+        name="Path to GB",
+        konglist=[Kongs.chunky],
+        region=Regions.ChunkyTemple,
+        locations=[
+            [1, 1.0, 640, 20, 100],
+            [1, 1.0, 640, 20, 166],
+            [1, 1.0, 640, 20, 233],
+            [1, 1.0, 640, 20, 300],
         ],
     ),
     ColoredBananaGroup(
@@ -1251,10 +1314,19 @@ ColoredBananaGroupList = [
         map_id=Maps.AztecLlamaTemple,
         name="W2",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
-        region=Regions.LlamaTempleBack,  # One bunch is in LlamaTemple
+        region=Regions.LlamaTempleBack,
+        locations=[
+            [5, 1.0, 2638, 385, 2632],
+        ],
+    ),
+    ColoredBananaGroup(
+        group=69,
+        map_id=Maps.AztecLlamaTemple,
+        name="W2",
+        konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
+        region=Regions.LlamaTemple,
         locations=[
             [5, 1.0, 1409, 434, 3754],
-            [5, 1.0, 2638, 385, 2632],
         ],
     ),
     ColoredBananaGroup(
@@ -1340,6 +1412,7 @@ ColoredBananaGroupList = [
         name="Monkey tongues (2 custom, 3 Diddy)",
         konglist=[Kongs.diddy],
         region=Regions.TempleStart,
+        logic=lambda l: l.Slam,
         locations=[
             [1, 1.0, 1350, 490, 1110],
             [1, 1.0, 1390, 490, 1110],
@@ -1387,6 +1460,7 @@ ColoredBananaGroupList = [
         name="Right side Mini Monkey room (scale 0.6)",
         konglist=[Kongs.tiny],
         region=Regions.TempleUnderwater,
+        logic=lambda l: l.mini,
         locations=[
             [1, 0.6, 195, 48, 600],
             [1, 0.6, 145, 48, 600],
@@ -1429,6 +1503,7 @@ ColoredBananaGroupList = [
         konglist=[Kongs.diddy],
         region=Regions.TempleStart,
         vanilla=True,
+        logic=lambda l: l.Slam and l.peanut,
         locations=[
             [5, 1.0, 1346.4971923828125, 482.0, 895.43505859375],
             [5, 1.0, 1351.4986572265625, 487.0, 705.5042114257812],
@@ -1442,6 +1517,7 @@ ColoredBananaGroupList = [
         konglist=[Kongs.tiny],
         region=Regions.TempleUnderwater,
         vanilla=True,
+        logic=lambda l: l.mini,
         locations=[
             [1, 1.0, 1579.29052734375, 155.3333282470703, 845.8433227539062],
             [1, 1.0, 1598.7659912109375, 155.3333282470703, 844.5404663085938],
@@ -1495,13 +1571,23 @@ ColoredBananaGroupList = [
         map_id=Maps.AztecLlamaTemple,
         name="To lava room (Tiny)",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
+        region=Regions.LlamaTemple,
+        vanilla=True,
+        locations=[
+            [1, 1.0, 1716.2806396484375, 454.1103515625, 2904.645263671875],
+            [1, 1.0, 1656.4158935546875, 433.5, 3024.917724609375],
+            [1, 1.0, 1606.3065185546875, 433.5, 3125.729736328125],
+        ],
+    ),
+    ColoredBananaGroup(
+        group=85,
+        map_id=Maps.AztecLlamaTemple,
+        name="To lava room (Tiny)",
+        konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.LlamaTempleBack,
         vanilla=True,
         locations=[
             [1, 1.0, 1405.3702392578125, 420.6820068359375, 3478.0986328125],
-            [1, 1.0, 1716.2806396484375, 454.1103515625, 2904.645263671875],
-            [1, 1.0, 1656.4158935546875, 433.5, 3024.917724609375],
-            [1, 1.0, 1606.3065185546875, 433.5, 3125.729736328125],
             [1, 1.0, 1499.125, 427.9440002441406, 3322.441162109375],
         ],
     ),
@@ -1512,6 +1598,7 @@ ColoredBananaGroupList = [
         konglist=[Kongs.tiny],
         region=Regions.LlamaTempleBack,
         vanilla=True,
+        logic=lambda l: l.Slam,
         locations=[
             [5, 1.0, 870.1953125, 475.3333435058594, 3735.6279296875],
             [5, 1.0, 1458.1766357421875, 475.3333435058594, 4069.542236328125],
@@ -1524,6 +1611,7 @@ ColoredBananaGroupList = [
         konglist=[Kongs.lanky],
         region=Regions.LlamaTemple,
         vanilla=True,
+        logic=lambda l: l.grape and l.vines,
         locations=[
             [5, 1.0, 792.3839721679688, 686.5, 2613.002685546875],
         ],
@@ -1555,25 +1643,11 @@ ColoredBananaGroupList = [
     ColoredBananaGroup(
         group=90,
         map_id=Maps.AngryAztec,
-        name="First tunnel (Chunky)",
-        konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
-        region=Regions.AngryAztecStart,
-        vanilla=True,
-        locations=[
-            [1, 1.0, 820.9889526367188, 120.0, 1033.1551513671875],
-            [1, 1.0, 899.3162231445312, 120.0, 1168.6141357421875],
-            [1, 1.0, 809.063720703125, 120.0, 849.666748046875],
-            [1, 1.0, 1054.1512451171875, 120.0, 1204.6153564453125],
-            [1, 1.0, 799.9443359375, 120.0, 688.669921875],
-        ],
-    ),
-    ColoredBananaGroup(
-        group=91,
-        map_id=Maps.AngryAztec,
         name="DK Quicksand cave (Donkey)",
         konglist=[Kongs.donkey],
         region=Regions.AztecDonkeyQuicksandCave,
         vanilla=True,
+        logic=lambda l: Events.AztecDonkeySwitch in l.Events and l.strongKong,
         locations=[
             [5, 1.0, 3171.275390625, 121.44964599609375, 4672.31787109375],
             [5, 1.0, 3067.819091796875, 120.3871841430664, 4749.61474609375],
@@ -1582,45 +1656,48 @@ ColoredBananaGroupList = [
         ],
     ),
     ColoredBananaGroup(
-        group=92,
+        group=91,
         map_id=Maps.AngryAztec,
         name="DK Blueprint cave (Donkey)",
         konglist=[Kongs.donkey],
         region=Regions.AngryAztecStart,
         vanilla=True,
+        logic=lambda l: l.coconut and l.strongKong,
         locations=[
             [5, 1.0, 1464.7799072265625, 132.91937255859375, 610.3526000976562],
             [5, 1.0, 1294.2562255859375, 132.93927001953125, 609.1015014648438],
         ],
     ),
     ColoredBananaGroup(
-        group=93,
+        group=92,
         map_id=Maps.AngryAztec,
         name="On Melon crate on Llama Temple roof (Diddy)",
         konglist=[Kongs.diddy],
         region=Regions.AngryAztecMain,
         vanilla=True,
+        logic=lambda l: l.jetpack,
         locations=[
             [5, 1.0, 2893.345458984375, 477.5, 2948.93359375],
         ],
     ),
     ColoredBananaGroup(
-        group=94,
+        group=93,
         map_id=Maps.AngryAztec,
         name="In sun (Diddy)",
         konglist=[Kongs.diddy],
         region=Regions.AngryAztecMain,
         vanilla=True,
+        logic=lambda l: l.jetpack,
         locations=[
             [5, 1.0, 3275.230224609375, 474.3407287597656, 3839.829833984375],
         ],
     ),
     ColoredBananaGroup(
-        group=95,
+        group=94,
         map_id=Maps.AngryAztec,
         name="On trees around Beetle race tower (Diddy)",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
-        region="",
+        region=Regions.AngryAztecMain,
         vanilla=True,
         locations=[
             [5, 1.0, 4201.38134765625, 305.0, 3067.024169921875],
@@ -1629,7 +1706,7 @@ ColoredBananaGroupList = [
         ],
     ),
     ColoredBananaGroup(
-        group=96,
+        group=95,
         map_id=Maps.AngryAztec,
         name="Path to 5DT (Tiny)",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
@@ -1644,7 +1721,7 @@ ColoredBananaGroupList = [
         ],
     ),
     ColoredBananaGroup(
-        group=97,
+        group=96,
         map_id=Maps.AngryAztec,
         name="Trees around back of 5DT (Tiny)",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
@@ -1656,7 +1733,7 @@ ColoredBananaGroupList = [
         ],
     ),
     ColoredBananaGroup(
-        group=98,
+        group=97,
         map_id=Maps.AngryAztec,
         name="Trees around front of 5DT (Tiny)",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
@@ -1669,7 +1746,7 @@ ColoredBananaGroupList = [
         ],
     ),
     ColoredBananaGroup(
-        group=99,
+        group=98,
         map_id=Maps.AngryAztec,
         name="Trees between Llama Temple and 5DT (Lanky)",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
@@ -1682,12 +1759,13 @@ ColoredBananaGroupList = [
         ],
     ),
     ColoredBananaGroup(
-        group=100,
+        group=99,
         map_id=Maps.AngryAztec,
         name="Vase room (Chunky)",
-        konglist=[Kongs.chunky],
+        konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.AngryAztecStart,
         vanilla=True,
+        logic=lambda l: l.pineapple,
         locations=[
             [5, 1.0, 232.0945587158203, 128.694091796875, 852.361083984375],
             [5, 1.0, 188.08251953125, 126.59268188476562, 574.8196411132812],
@@ -1705,6 +1783,7 @@ BalloonList = [
         speed=4,
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.AngryAztecStart,
+        logic=lambda l: l.pineapple,
         points=[
             [98, 195, 644],
             [38, 195, 592],
@@ -1719,6 +1798,7 @@ BalloonList = [
         speed=4,
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.AngryAztecStart,
+        logic=lambda l: l.pineapple,
         points=[
             [558, 195, 455],
             [527, 195, 587],
@@ -1732,6 +1812,7 @@ BalloonList = [
         speed=6,
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.AngryAztecStart,
+        logic=lambda l: l.coconut,
         points=[
             [1380, 190, 735],
             [1380, 160, 800],
@@ -1967,6 +2048,7 @@ BalloonList = [
         speed=5,
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.TinyTemple,
+        logic=lambda l: l.mini,
         points=[
             [1822, 460, 1056],
             [1756, 465, 1119],
@@ -2073,6 +2155,7 @@ BalloonList = [
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.LlamaTemple,
         vanilla=True,
+        logic=lambda l: Events.AztecLlamaSpit in l.Events,
         points=[
             [2308, 337, 1930],
             [2141, 330, 1906],
@@ -2086,6 +2169,7 @@ BalloonList = [
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.LlamaTemple,
         vanilla=True,
+        logic=lambda l: Events.AztecLlamaSpit in l.Events,
         points=[
             [2281, 347, 1826],
             [2298, 328, 1928],
