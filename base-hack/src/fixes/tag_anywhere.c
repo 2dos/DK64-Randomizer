@@ -221,67 +221,144 @@ static const map_bitfield banned_map_btf = {
     .k_rools_arena = 1, // Reason: Cutscene Map
 };
 
-static const unsigned char bad_movement_states[] = {
-	//0x02, // First Person Camera
-	//0x03, // First Person Camera (Water)
-	0x04, // Fairy Camera
-	0x05, // Fairy Camera (Water)
-	0x06, // Locked (Bonus Barrel)
-	0x15, // Slipping
-	0x16, // Slipping
-	0x18, // Baboon Blast Pad
-	0x1B, // Simian Spring
-	//0x1C, // Simian Slam // Note: As far as I know this doesn't break anything, so we'll save the CPU cycles
-	0x20, // Falling/Splat, // Note: Prevents quick recovery from fall damage, and I guess maybe switching to avoid fall damage?
-	0x2D, // Shockwave
-	0x2E, // Chimpy Charge
-	0x31, // Damaged
-	0x32, // Stunlocked
-	0x33, // Damaged
-	0x35, // Damaged
-	0x36, // Death
-	0x37, // Damaged (Underwater)
-	0x38, // Damaged
-	0x39, // Shrinking
-	0x42, // Barrel
-	0x43, // Barrel (Underwater)
-	0x44, // Baboon Blast Shot
-	0x45, // Cannon Shot
-	0x52, // Bananaporter
-	0x53, // Monkeyport
-	0x54, // Bananaporter (Multiplayer)
-	0x56, // Locked
-	0x57, // Swinging on Vine
-	0x58, // Leaving Vine
-	0x59, // Climbing Tree
-	0x5A, // Leaving Tree
-	0x5B, // Grabbed Ledge
-	0x5C, // Pulling up on Ledge
-	0x63, // Rocketbarrel // Note: Covered by crystal HUD check except for Helm & K. Rool
-	0x64, // Taking Photo
-	0x65, // Taking Photo
-	0x67, // Instrument
-	0x69, // Car
-	0x6A, // Learning Gun // Note: Handled by map check
-	0x6B, // Locked
-	0x6C, // Feeding T&S // Note: Handled by map check
-	0x6D, // Boat
-	0x6E, // Baboon Balloon
-	0x6F, // Updraft
-	0x70, // GB Dance
-	0x71, // Key Dance
-	0x72, // Crown Dance
-	0x73, // Loss Dance
-	0x74, // Victory Dance
-	0x78, // Gorilla Grab
-	0x79, // Learning Move // Note: Handled by map check
-	0x7A, // Locked
-	0x7B, // Locked
-	0x7C, // Trapped (spider miniBoss)
-	0x7D, // Klaptrap Kong (beaver bother) // Note: Handled by map check
-	0x83, // Fairy Refill
-	0x87, // Entering Portal
-	0x88, // Exiting Portal
+static const movement_bitfield banned_movement_btf = {
+    .null_state = 0,
+    .idle_enemy = 0,
+    .first_person_camera = 0,
+    .first_person_camera_water = 0,
+    .fairy_camera = 1, // Reason: HUD
+    .fairy_camera_water = 1, // Reason: HUD
+    .locked_bonus_barrel_0x6 = 1, // Reason: Locked Movement
+    .minecart_idle = 0,
+    .minecart_crouch = 0,
+    .minecart_jump = 0,
+    .minecart_left = 0,
+    .minecart_right = 0,
+    .idle = 0,
+    .walking = 0,
+    .skidding = 0,
+    .sliding_beetle_race = 0,
+    .sliding_beetle_race_left = 0,
+    .sliding_beetle_race_right = 0,
+    .sliding_beetle_race_forward = 0,
+    .sliding_beetle_race_back = 0,
+    .jumping_beetle_race = 0,
+    .slipping = 1, // Reason: Visual
+    .slipping_helm_slope = 1, // Reason: Visual
+    .jumping = 0,
+    .baboon_blast_pad = 1, // Reason: Visual
+    .bouncing_mushroom = 0,
+    .double_jump = 0,
+    .simian_spring = 1, // Reason: Visual
+    .simian_slam = 0,
+    .long_jumping = 0,
+    .falling = 0,
+    .falling_gun = 0,
+    .falling_or_splat = 1, // Reason: Cheese
+    .falling_beetle_race = 0,
+    .pony_tail_twirl = 0,
+    .attacking_enemy = 0,
+    .primate_punch = 0,
+    .attacking_enemy_0x25 = 0,
+    .ground_attack = 0,
+    .attacking_enemy_0x27 = 0,
+    .ground_attack_final = 0,
+    .moving_ground_attack = 0,
+    .aerial_attack = 0,
+    .rolling = 0,
+    .throwing_orange = 0,
+    .shockwave = 1, // Reason: Crash
+    .chimpy_charge = 1, // Reason: Visual
+    .charging_rambi = 0,
+    .bouncing = 0,
+    .damaged = 1, // Reason: Glitch
+    .stunlocked_kasplat = 1, // Reason: Crash
+    .damaged_mad_jack = 1, // Reason: Crash
+    .unknown_0x34 = 0,
+    .damaged_klump_knockback = 1, // Reason: Glitch
+    .death = 1, // Reason: Glitch
+    .damaged_underwater = 1, // Reason: Glitch
+    .damaged_vehicle = 1, // Reason: Glitch
+    .shrinking = 1, // Reason: Glitch
+    .unknown_0x3a = 0,
+    .death_dogadon = 0,
+    .crouching = 0,
+    .uncrouching = 0,
+    .backflip = 0,
+    .entering_orangstand = 0,
+    .orangstand = 0,
+    .jumping_orangstand = 0,
+    .barrel_tag_barrel = 1, // Reason: Locked Movement
+    .barrel_underwater = 1, // Reason: Locked Movement
+    .baboon_blast_shot = 1, // Reason: Locked Movement
+    .cannon_shot = 1, // Reason: Locked Movement
+    .pushing_object = 0,
+    .picking_up_object = 0,
+    .idle_carrying_object = 0,
+    .walking_carrying_object = 0,
+    .dropping_object = 0,
+    .throwing_object = 0,
+    .jumping_carrying_object = 0,
+    .throwing_object_air = 0,
+    .surface_swimming = 0,
+    .underwater = 0,
+    .leaving_water = 0,
+    .jumping_water = 0,
+    .bananaporter = 1, // Reason: Locked Movement
+    .monkeyport = 1, // Reason: Locked Movement
+    .bananaport_multiplayer = 1, // Reason: Glitch
+    .unknown_0x55 = 0,
+    .locked_funky_and_candy = 1, // Reason: Locked Movement
+    .swinging_on_vine = 1, // Reason: Crash
+    .leaving_vine = 1, // Reason: Crash
+    .climbing_tree = 1, // Reason: Crash
+    .leaving_tree = 1, // Reason: Crash
+    .grabbed_ledge = 1, // Reason: Crash
+    .pulling_up_on_ledge = 1, // Reason: Crash
+    .idle_gun = 0,
+    .walking_gun = 0,
+    .putting_away_gun = 0,
+    .pulling_out_gun = 0,
+    .jumping_gun = 0,
+    .aiming_gun = 0,
+    .rocketbarrel = 1, // Reason: Glitch
+    .taking_photo = 1, // Reason: Glitch
+    .taking_photo_underwater = 1, // Reason: Glitch
+    .damaged_tnt_barrels = 0,
+    .instrument = 1, // Reason: Glitch
+    .unknown_0x68 = 0,
+    .car_race = 1, // Reason: Locked Movement
+    .learning_gun = 1, // Reason: Locked Movement
+    .locked_bonus_barrel_0x6b = 1, // Reason: Locked Movement
+    .feeding_tns = 1, // Reason: Locked Movement
+    .boat = 1, // Reason: Locked Movement
+    .baboon_balloon = 1, // Reason: Visual
+    .updraft = 1, // Reason: Visual
+    .gb_dance = 1, // Reason: Locked Movement
+    .key_dance = 1, // Reason: Locked Movement
+    .crown_dance = 1, // Reason: Locked Movement
+    .loss_dance = 1, // Reason: Locked Movement
+    .victory_dance = 1, // Reason: Locked Movement
+    .vehicle_castle_car_race = 0,
+    .entering_battle_crown = 0,
+    .locked_cutscenes = 0,
+    .gorilla_grab = 1, // Reason: Locked Movement
+    .learning_move = 1, // Reason: Locked Movement
+    .locked_car_race_loss = 1, // Reason: Locked Movement
+    .locked_beetle_race_loss = 1, // Reason: Locked Movement
+    .trapped = 1, // Reason: Locked Movement
+    .klaptrap_kong = 1, // Reason: Glitch
+    .surface_swimming_enguarde = 0,
+    .underwater_enguarde = 0,
+    .attacking_enguarde_surface = 0,
+    .attacking_enguarde = 0,
+    .leaving_water_enguarde = 0,
+    .fairy_refill = 1, // Reason: Locked Movement
+    .unknown_0x84 = 0,
+    .main_menu = 0,
+    .entering_main_menu = 0,
+    .entering_portal = 1, // Reason: Locked Movement
+    .exiting_portal = 1, // Reason: Locked Movement
 };
 
 static const short kong_flags[] = {0x181,0x6,0x46,0x42,0x75};
@@ -346,10 +423,9 @@ int canTagAnywhere(int prev_crystals) {
         return 0;
     }
     int control_state = Player->control_state;
-    for (int i = 0; i < sizeof(bad_movement_states); i++) {
-        if (bad_movement_states[i] == control_state) {
-            return 0;
-        }
+    is_banned = *(unsigned char*)(&banned_movement_btf + (control_state >> 3)) & (0x80 >> (control_state % 8));
+    if (is_banned) {
+        return 0;
     }
     return 1;
 }
