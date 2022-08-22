@@ -418,12 +418,17 @@ int canTagAnywhere(int prev_crystals) {
     if (tag_countdown != 0) {
         return 0;
     }
-    int is_banned = *(unsigned char*)(&banned_map_btf + (CurrentMap >> 3)) & (0x80 >> (CurrentMap % 8));
+    int offset = CurrentMap >> 3;
+    int check = CurrentMap % 8;
+    int is_banned = *(unsigned char*)((unsigned char*)(&banned_map_btf) + offset) & (0x80 >> check);
     if (is_banned) {
         return 0;
     }
     int control_state = Player->control_state;
-    is_banned = *(unsigned char*)(&banned_movement_btf + (control_state >> 3)) & (0x80 >> (control_state % 8));
+    offset = control_state >> 3;
+    check = control_state % 8;
+    is_banned = *(unsigned char*)((unsigned char*)(&banned_movement_btf) + offset) & (0x80 >> check);
+
     if (is_banned) {
         return 0;
     }

@@ -58,7 +58,7 @@ typedef struct actorData {
 	/* 0x13C */ char unk_13C[0x144-0x13C];
 	/* 0x144 */ char noclip_byte;
 	/* 0x145 */ char unk_145[0x154-0x145];
-	/* 0x154 */ char control_state;
+	/* 0x154 */ unsigned char control_state;
 	/* 0x155 */ char control_state_progress;
 	/* 0x156 */ char unk_156[0x15E - 0x156];
 	/* 0x15E */ unsigned char height_offset;
@@ -180,7 +180,7 @@ typedef struct playerData {
 	/* 0x145 */ char unk_145[0x147 - 0x145];
 	/* 0x147 */ char hand_state;
 	/* 0x148 */ char unk_148[0x154 - 0x148];
-	/* 0x154 */ char control_state;
+	/* 0x154 */ unsigned char control_state;
 	/* 0x155 */ char control_state_progress;
 	/* 0x156 */ char unk_156[0x16A-0x156];
 	/* 0x16A */ unsigned char rgb_components[3];
