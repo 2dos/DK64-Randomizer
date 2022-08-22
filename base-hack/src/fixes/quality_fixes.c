@@ -112,14 +112,14 @@ void handleTick(sprite_info* sprite, char* unk0) {
 
 void playCBDing(void) {
 	playSFX(Bell);
-	unkSpriteRenderFunc(200);
-	unkSpriteRenderFunc_0();
-	loadSpriteFunction((int)&handleTroffFace);
-	displaySpriteAtXYZ(sprite_table[0xA7], 0x3F800000, 0x41F00000, 0x42700000);
-	unkSpriteRenderFunc(200);
-	unkSpriteRenderFunc_0();
-	loadSpriteFunction((int)&handleTick);
-	displaySpriteAtXYZ(sprite_table[0xAE], 0x3F800000, 0x42700000, 0x425C0000);
+	// unkSpriteRenderFunc(200);
+	// unkSpriteRenderFunc_0();
+	// loadSpriteFunction((int)&handleTroffFace);
+	// displaySpriteAtXYZ(sprite_table[0xA7], 0x3F800000, 0x41F00000, 0x42700000);
+	// unkSpriteRenderFunc(200);
+	// unkSpriteRenderFunc_0();
+	// loadSpriteFunction((int)&handleTick);
+	// displaySpriteAtXYZ(sprite_table[0xAE], 0x3F800000, 0x42700000, 0x425C0000);
 }
 
 void CBDing(void) {
