@@ -3,94 +3,94 @@
 #define TAG_ANYWHERE_KONG_LIMIT 5
 
 static const unsigned char banned_maps[] = {
-	1, // Funky's Store
-    2, // DK Arcade
-    3, // K. Rool Barrel: Lanky's Maze
-    5, // Cranky's Lab
-    6, // Jungle Japes: Minecart
-    8, // Jungle Japes: Army Dillo
-    9, // Jetpac
-    10, // Kremling Kosh! (very easy)
-    14, // Angry Aztec: Beetle Race // Note: Softlock at the end if enabled?
-    15, // Snide's H.Q.
-    18, // Teetering Turtle Trouble! (very easy)
-    25, // Candy's Music Shop
-    27, // Frantic Factory: Car Race
-    32, // Batty Barrel Bandit! (easy)
-    35, // K. Rool Barrel: DK's Target Game
-    37, // Jungle Japes: Barrel Blast // Note: The barrels don't work as other kongs so not much point enabling it on this map
-    41, // Angry Aztec: Barrel Blast
-    50, // K. Rool Barrel: Tiny's Mushroom Game
-    54, // Gloomy Galleon: Barrel Blast
-    55, // Fungi Forest: Minecart
-    76, // DK Rap
-    77, // Minecart Mayhem! (easy)
-    78, // Busy Barrel Barrage! (easy)
-    79, // Busy Barrel Barrage! (normal)
-    80, // Main Menu
-    82, // Crystal Caves: Beetle Race
-    83, // Fungi Forest: Dogadon
-    101, // Krazy Kong Klamour! (easy) // Note: Broken with switch kong
-    102, // Big Bug Bash! (very easy) // Note: Broken with switch kong
-    103, // Searchlight Seek! (very easy) // Note: Broken with switch kong
-    104, // Beaver Bother! (easy) // Note: Broken with switch kong
-    106, // Creepy Castle: Minecart
-    110, // Frantic Factory: Barrel Blast
-    111, // Gloomy Galleon: Pufftoss
-    115, // Kremling Kosh! (easy)
-    116, // Kremling Kosh! (normal)
-    117, // Kremling Kosh! (hard)
-    118, // Teetering Turtle Trouble! (easy)
-    119, // Teetering Turtle Trouble! (normal)
-    120, // Teetering Turtle Trouble! (hard)
-    121, // Batty Barrel Bandit! (easy)
-    122, // Batty Barrel Bandit! (normal)
-    123, // Batty Barrel Bandit! (hard)
-    131, // Busy Barrel Barrage! (hard)
-    136, // Beaver Bother! (normal)
-    137, // Beaver Bother! (hard)
-    138, // Searchlight Seek! (easy)
-    139, // Searchlight Seek! (normal)
-    140, // Searchlight Seek! (hard)
-    141, // Krazy Kong Klamour! (normal)
-    142, // Krazy Kong Klamour! (hard)
-    143, // Krazy Kong Klamour! (insane)
-    144, // Peril Path Panic! (very easy) // Note: Broken with switch kong
-    145, // Peril Path Panic! (easy)
-    146, // Peril Path Panic! (normal)
-    147, // Peril Path Panic! (hard)
-    148, // Big Bug Bash! (easy)
-    149, // Big Bug Bash! (normal)
-    150, // Big Bug Bash! (hard)
-    154, // Frantic Factory: Mad Jack
-    165, // K. Rool Barrel: Diddy's Kremling Game
-    185, // Enguarde Arena // Note: Handled by character check
-    186, // Creepy Castle: Car Race
-    187, // Crystal Caves: Barrel Blast
-    188, // Creepy Castle: Barrel Blast
-    189, // Fungi Forest: Barrel Blast
-    190, // Kong Battle: Arena 2 // TODO: Would be really cool to get multiplayer working, currently just voids you out when activated
-    191, // Rambi Arena // Note: Handled by character check
-    192, // Kong Battle: Arena 3 // TODO: Would be really cool to get multiplayer working, currently just voids you out when activated
-    196, // Crystal Caves: Army Dillo
-    197, // Angry Aztec: Dogadon
-    198, // Training Grounds (End Sequence) // Note: Handled by cutscene check
-    199, // Creepy Castle: King Kut Out // Note: Doesn't break the kong order but since this fight is explicitly about tagging we might as well disable
-    201, // K. Rool Barrel: Diddy's Rocketbarrel Game
-    202, // K. Rool Barrel: Lanky's Shooting Game
-    203, // K. Rool Fight: DK Phase // Note: Enabling here breaks the fight and may cause softlocks
-    204, // K. Rool Fight: Diddy Phase // Note: Enabling here breaks the fight and may cause softlocks
-    205, // K. Rool Fight: Lanky Phase // Note: Enabling here breaks the fight and may cause softlocks
-    206, // K. Rool Fight: Tiny Phase // Note: Enabling here breaks the fight and may cause softlocks
-    207, // K. Rool Fight: Chunky Phase // Note: Enabling here breaks the fight and may cause softlocks
-    208, // Bloopers Ending // Note: Handled by cutscene check
-    209, // K. Rool Barrel: Chunky's Hidden Kremling Game
-    210, // K. Rool Barrel: Tiny's Pony Tail Twirl Game
-    211, // K. Rool Barrel: Chunky's Shooting Game
-    212, // K. Rool Barrel: DK's Rambi Game
-    213, // K. Lumsy Ending // Note: Handled by cutscene check
-    214, // K. Rool's Shoe
-    215, // K. Rool's Arena // Note: Handled by cutscene check?
+    1, // Funky's Store | Reason: Shop
+    2, // DK Arcade | Reason: Locked Movement
+    5, // Cranky's Lab | Reason: Shop
+    6, // Jungle Japes: Minecart | Reason: Locked Movement
+    8, // Jungle Japes: Army Dillo | Reason: Boss Map
+    9, // Jetpac | Reason: Locked Movement
+    10, // Kremling Kosh! (very easy) | Reason: Locked Movement
+    14, // Angry Aztec: Beetle Race | Reason: Locked Movement
+    15, // Snide's H.Q. | Reason: Shop
+    18, // Teetering Turtle Trouble! (very easy) | Reason: Locked Movement
+    25, // Candy's Music Shop | Reason: Shop
+    27, // Frantic Factory: Car Race | Reason: Locked Movement
+    28, // Hideout Helm (Level Intros, Game Over) | Reason: Cutscene Map
+    32, // Batty Barrel Bandit! (easy) | Reason: Locked Movement
+    37, // Jungle Japes: Barrel Blast | Reason: BBlast Course
+    39, // Gloomy Galleon: Seal Race | Reason: Locked Movement
+    40, // Nintendo Logo | Reason: Cutscene Map
+    41, // Angry Aztec: Barrel Blast | Reason: BBlast Course
+    54, // Gloomy Galleon: Barrel Blast | Reason: BBlast Course
+    55, // Fungi Forest: Minecart | Reason: Locked Movement
+    76, // DK Rap | Reason: Cutscene Map
+    77, // Minecart Mayhem! (easy) | Reason: Locked Movement
+    78, // Busy Barrel Barrage! (easy) | Reason: Locked Movement
+    79, // Busy Barrel Barrage! (normal) | Reason: Locked Movement
+    80, // Main Menu | Reason: Locked Movement
+    81, // Title Screen (Not For Resale Version) | Reason: Cutscene Map
+    82, // Crystal Caves: Beetle Race | Reason: Locked Movement
+    83, // Fungi Forest: Dogadon | Reason: Boss Map
+    101, // Krazy Kong Klamour! (easy) | Reason: Locked Movement
+    102, // Big Bug Bash! (very easy) | Reason: Locked Movement
+    103, // Searchlight Seek! (very easy) | Reason: Locked Movement
+    104, // Beaver Bother! (easy) | Reason: Locked Movement
+    107, // Kong Battle: Battle Arena | Reason: Multiplayer Map
+    109, // Kong Battle: Arena 1 | Reason: Multiplayer Map
+    110, // Frantic Factory: Barrel Blast | Reason: BBlast Course
+    111, // Gloomy Galleon: Pufftoss | Reason: Boss Map
+    115, // Kremling Kosh! (easy) | Reason: Locked Movement
+    116, // Kremling Kosh! (normal) | Reason: Locked Movement
+    117, // Kremling Kosh! (hard) | Reason: Locked Movement
+    118, // Teetering Turtle Trouble! (easy) | Reason: Locked Movement
+    119, // Teetering Turtle Trouble! (normal) | Reason: Locked Movement
+    120, // Teetering Turtle Trouble! (hard) | Reason: Locked Movement
+    121, // Batty Barrel Bandit! (easy) | Reason: Locked Movement
+    122, // Batty Barrel Bandit! (normal) | Reason: Locked Movement
+    123, // Batty Barrel Bandit! (hard) | Reason: Locked Movement
+    129, // Minecart Mayhem! (normal) | Reason: Locked Movement
+    130, // Minecart Mayhem! (hard) | Reason: Locked Movement
+    131, // Busy Barrel Barrage! (hard) | Reason: Locked Movement
+    136, // Beaver Bother! (normal) | Reason: Locked Movement
+    137, // Beaver Bother! (hard) | Reason: Locked Movement
+    138, // Searchlight Seek! (easy) | Reason: Locked Movement
+    139, // Searchlight Seek! (normal) | Reason: Locked Movement
+    140, // Searchlight Seek! (hard) | Reason: Locked Movement
+    141, // Krazy Kong Klamour! (normal) | Reason: Locked Movement
+    142, // Krazy Kong Klamour! (hard) | Reason: Locked Movement
+    143, // Krazy Kong Klamour! (insane) | Reason: Locked Movement
+    144, // Peril Path Panic! (very easy) | Reason: Locked Movement
+    145, // Peril Path Panic! (easy) | Reason: Locked Movement
+    146, // Peril Path Panic! (normal) | Reason: Locked Movement
+    147, // Peril Path Panic! (hard) | Reason: Locked Movement
+    148, // Big Bug Bash! (easy) | Reason: Locked Movement
+    149, // Big Bug Bash! (normal) | Reason: Locked Movement
+    150, // Big Bug Bash! (hard) | Reason: Locked Movement
+    152, // Hideout Helm (Intro Story) | Reason: Cutscene Map
+    153, // DK Isles (DK Theatre) | Reason: Cutscene Map
+    154, // Frantic Factory: Mad Jack | Reason: Boss Map
+    172, // Rock (Intro Story) | Reason: Cutscene Map
+    184, // Enguarde Arena | Reason: Enguarde-Only Room
+    186, // Crystal Caves: Barrel Blast | Reason: BBlast Course
+    187, // Creepy Castle: Barrel Blast | Reason: BBlast Course
+    188, // Fungi Forest: Barrel Blast | Reason: BBlast Course
+    190, // Kong Battle: Arena 2 | Reason: Multiplayer Map
+    191, // Rambi Arena | Reason: Rambi-Only Room
+    192, // Kong Battle: Arena 3 | Reason: Multiplayer Map
+    196, // Crystal Caves: Army Dillo | Reason: Boss Map
+    197, // Angry Aztec: Dogadon | Reason: Boss Map
+    198, // Training Grounds (End Sequence) | Reason: Cutscene Map
+    199, // Creepy Castle: King Kut Out | Reason: Boss Map
+    203, // K. Rool Fight: DK Phase | Reason: Boss Map
+    204, // K. Rool Fight: Diddy Phase | Reason: Boss Map
+    205, // K. Rool Fight: Lanky Phase | Reason: Boss Map
+    206, // K. Rool Fight: Tiny Phase | Reason: Boss Map
+    207, // K. Rool Fight: Chunky Phase | Reason: Boss Map
+    208, // Bloopers Ending | Reason: Cutscene Map
+    212, // K. Rool Barrel: DK's Rambi Game | Reason: Rambi-Only Room
+    213, // K. Lumsy Ending | Reason: Cutscene Map
+    214, // K. Rool's Shoe | Reason: Boss Map
+    215, // K. Rool's Arena | Reason: Cutscene Map
 };
 
 static const unsigned char bad_movement_states[] = {
