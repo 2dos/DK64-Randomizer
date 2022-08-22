@@ -2,95 +2,223 @@
 
 #define TAG_ANYWHERE_KONG_LIMIT 5
 
-static const unsigned char banned_maps[] = {
-    1, // Funky's Store | Reason: Shop
-    2, // DK Arcade | Reason: Locked Movement
-    5, // Cranky's Lab | Reason: Shop
-    6, // Jungle Japes: Minecart | Reason: Locked Movement
-    8, // Jungle Japes: Army Dillo | Reason: Boss Map
-    9, // Jetpac | Reason: Locked Movement
-    10, // Kremling Kosh! (very easy) | Reason: Locked Movement
-    14, // Angry Aztec: Beetle Race | Reason: Locked Movement
-    15, // Snide's H.Q. | Reason: Shop
-    18, // Teetering Turtle Trouble! (very easy) | Reason: Locked Movement
-    25, // Candy's Music Shop | Reason: Shop
-    27, // Frantic Factory: Car Race | Reason: Locked Movement
-    28, // Hideout Helm (Level Intros, Game Over) | Reason: Cutscene Map
-    32, // Batty Barrel Bandit! (easy) | Reason: Locked Movement
-    37, // Jungle Japes: Barrel Blast | Reason: BBlast Course
-    39, // Gloomy Galleon: Seal Race | Reason: Locked Movement
-    40, // Nintendo Logo | Reason: Cutscene Map
-    41, // Angry Aztec: Barrel Blast | Reason: BBlast Course
-    54, // Gloomy Galleon: Barrel Blast | Reason: BBlast Course
-    55, // Fungi Forest: Minecart | Reason: Locked Movement
-    76, // DK Rap | Reason: Cutscene Map
-    77, // Minecart Mayhem! (easy) | Reason: Locked Movement
-    78, // Busy Barrel Barrage! (easy) | Reason: Locked Movement
-    79, // Busy Barrel Barrage! (normal) | Reason: Locked Movement
-    80, // Main Menu | Reason: Locked Movement
-    81, // Title Screen (Not For Resale Version) | Reason: Cutscene Map
-    82, // Crystal Caves: Beetle Race | Reason: Locked Movement
-    83, // Fungi Forest: Dogadon | Reason: Boss Map
-    101, // Krazy Kong Klamour! (easy) | Reason: Locked Movement
-    102, // Big Bug Bash! (very easy) | Reason: Locked Movement
-    103, // Searchlight Seek! (very easy) | Reason: Locked Movement
-    104, // Beaver Bother! (easy) | Reason: Locked Movement
-    107, // Kong Battle: Battle Arena | Reason: Multiplayer Map
-    109, // Kong Battle: Arena 1 | Reason: Multiplayer Map
-    110, // Frantic Factory: Barrel Blast | Reason: BBlast Course
-    111, // Gloomy Galleon: Pufftoss | Reason: Boss Map
-    115, // Kremling Kosh! (easy) | Reason: Locked Movement
-    116, // Kremling Kosh! (normal) | Reason: Locked Movement
-    117, // Kremling Kosh! (hard) | Reason: Locked Movement
-    118, // Teetering Turtle Trouble! (easy) | Reason: Locked Movement
-    119, // Teetering Turtle Trouble! (normal) | Reason: Locked Movement
-    120, // Teetering Turtle Trouble! (hard) | Reason: Locked Movement
-    121, // Batty Barrel Bandit! (easy) | Reason: Locked Movement
-    122, // Batty Barrel Bandit! (normal) | Reason: Locked Movement
-    123, // Batty Barrel Bandit! (hard) | Reason: Locked Movement
-    129, // Minecart Mayhem! (normal) | Reason: Locked Movement
-    130, // Minecart Mayhem! (hard) | Reason: Locked Movement
-    131, // Busy Barrel Barrage! (hard) | Reason: Locked Movement
-    136, // Beaver Bother! (normal) | Reason: Locked Movement
-    137, // Beaver Bother! (hard) | Reason: Locked Movement
-    138, // Searchlight Seek! (easy) | Reason: Locked Movement
-    139, // Searchlight Seek! (normal) | Reason: Locked Movement
-    140, // Searchlight Seek! (hard) | Reason: Locked Movement
-    141, // Krazy Kong Klamour! (normal) | Reason: Locked Movement
-    142, // Krazy Kong Klamour! (hard) | Reason: Locked Movement
-    143, // Krazy Kong Klamour! (insane) | Reason: Locked Movement
-    144, // Peril Path Panic! (very easy) | Reason: Locked Movement
-    145, // Peril Path Panic! (easy) | Reason: Locked Movement
-    146, // Peril Path Panic! (normal) | Reason: Locked Movement
-    147, // Peril Path Panic! (hard) | Reason: Locked Movement
-    148, // Big Bug Bash! (easy) | Reason: Locked Movement
-    149, // Big Bug Bash! (normal) | Reason: Locked Movement
-    150, // Big Bug Bash! (hard) | Reason: Locked Movement
-    152, // Hideout Helm (Intro Story) | Reason: Cutscene Map
-    153, // DK Isles (DK Theatre) | Reason: Cutscene Map
-    154, // Frantic Factory: Mad Jack | Reason: Boss Map
-    172, // Rock (Intro Story) | Reason: Cutscene Map
-    184, // Enguarde Arena | Reason: Enguarde-Only Room
-    186, // Crystal Caves: Barrel Blast | Reason: BBlast Course
-    187, // Creepy Castle: Barrel Blast | Reason: BBlast Course
-    188, // Fungi Forest: Barrel Blast | Reason: BBlast Course
-    190, // Kong Battle: Arena 2 | Reason: Multiplayer Map
-    191, // Rambi Arena | Reason: Rambi-Only Room
-    192, // Kong Battle: Arena 3 | Reason: Multiplayer Map
-    196, // Crystal Caves: Army Dillo | Reason: Boss Map
-    197, // Angry Aztec: Dogadon | Reason: Boss Map
-    198, // Training Grounds (End Sequence) | Reason: Cutscene Map
-    199, // Creepy Castle: King Kut Out | Reason: Boss Map
-    203, // K. Rool Fight: DK Phase | Reason: Boss Map
-    204, // K. Rool Fight: Diddy Phase | Reason: Boss Map
-    205, // K. Rool Fight: Lanky Phase | Reason: Boss Map
-    206, // K. Rool Fight: Tiny Phase | Reason: Boss Map
-    207, // K. Rool Fight: Chunky Phase | Reason: Boss Map
-    208, // Bloopers Ending | Reason: Cutscene Map
-    212, // K. Rool Barrel: DK's Rambi Game | Reason: Rambi-Only Room
-    213, // K. Lumsy Ending | Reason: Cutscene Map
-    214, // K. Rool's Shoe | Reason: Boss Map
-    215, // K. Rool's Arena | Reason: Cutscene Map
+static const map_bitfield banned_map_btf = {
+    .test_map = 0,
+    .funkys_store = 1, // Reason: Shop
+    .dk_arcade = 1, // Reason: Locked Movement
+    .k_rool_barrel_lankys_maze = 0,
+    .jungle_japes_mountain = 0,
+    .crankys_lab = 1, // Reason: Shop
+    .jungle_japes_minecart = 1, // Reason: Locked Movement
+    .jungle_japes = 0,
+    .jungle_japes_army_dillo = 1, // Reason: Boss Map
+    .jetpac = 1, // Reason: Locked Movement
+    .kremling_kosh_very_easy = 1, // Reason: Locked Movement
+    .stealthy_snoop_normal_no_logo = 0,
+    .jungle_japes_shell = 0,
+    .jungle_japes_lankys_cave = 0,
+    .angry_aztec_beetle_race = 1, // Reason: Locked Movement
+    .snides_hq = 1, // Reason: Shop
+    .angry_aztec_tinys_temple = 0,
+    .hideout_helm = 0,
+    .teetering_turtle_trouble_very_easy = 1, // Reason: Locked Movement
+    .angry_aztec_five_door_temple_dk = 0,
+    .angry_aztec_llama_temple = 0,
+    .angry_aztec_five_door_temple_diddy = 0,
+    .angry_aztec_five_door_temple_tiny = 0,
+    .angry_aztec_five_door_temple_lanky = 0,
+    .angry_aztec_five_door_temple_chunky = 0,
+    .candys_music_shop = 1, // Reason: Shop
+    .frantic_factory = 0,
+    .frantic_factory_car_race = 1, // Reason: Locked Movement
+    .hideout_helm_level_intros_game_over = 1, // Reason: Cutscene Map
+    .frantic_factory_power_shed = 0,
+    .gloomy_galleon = 0,
+    .gloomy_galleon_k_rools_ship = 0,
+    .batty_barrel_bandit_very_easy = 1, // Reason: Locked Movement
+    .jungle_japes_chunkys_cave = 0,
+    .dk_isles_overworld = 0,
+    .k_rool_barrel_dks_target_game = 0,
+    .frantic_factory_crusher_room = 0,
+    .jungle_japes_barrel_blast = 1, // Reason: BBlast Course
+    .angry_aztec = 0,
+    .gloomy_galleon_seal_race = 1, // Reason: Locked Movement
+    .nintendo_logo = 1, // Reason: Cutscene Map
+    .angry_aztec_barrel_blast = 1, // Reason: BBlast Course
+    .troff_n_scoff = 0,
+    .gloomy_galleon_shipwreck_diddy_lanky_chunky = 0,
+    .gloomy_galleon_treasure_chest = 0,
+    .gloomy_galleon_mermaid = 0,
+    .gloomy_galleon_shipwreck_dk_tiny = 0,
+    .gloomy_galleon_shipwreck_lanky_tiny = 0,
+    .fungi_forest = 0,
+    .gloomy_galleon_lighthouse = 0,
+    .k_rool_barrel_tinys_mushroom_game = 0,
+    .gloomy_galleon_mechanical_fish = 0,
+    .fungi_forest_ant_hill = 0,
+    .battle_arena_beaver_brawl = 0,
+    .gloomy_galleon_barrel_blast = 1, // Reason: BBlast Course
+    .fungi_forest_minecart = 1, // Reason: Locked Movement
+    .fungi_forest_diddys_barn = 0,
+    .fungi_forest_diddys_attic = 0,
+    .fungi_forest_lankys_attic = 0,
+    .fungi_forest_dks_barn = 0,
+    .fungi_forest_spider = 0,
+    .fungi_forest_front_part_of_mill = 0,
+    .fungi_forest_rear_part_of_mill = 0,
+    .fungi_forest_mushroom_puzzle = 0,
+    .fungi_forest_giant_mushroom = 0,
+    .stealthy_snoop_normal = 0,
+    .mad_maze_maul_hard = 0,
+    .stash_snatch_normal = 0,
+    .mad_maze_maul_easy = 0,
+    .mad_maze_maul_normal = 0,
+    .fungi_forest_mushroom_leap = 0,
+    .fungi_forest_shooting_game = 0,
+    .crystal_caves = 0,
+    .battle_arena_kritter_karnage = 0,
+    .stash_snatch_easy = 0,
+    .stash_snatch_hard = 0,
+    .dk_rap = 1, // Reason: Cutscene Map
+    .minecart_mayhem_easy = 1, // Reason: Locked Movement
+    .busy_barrel_barrage_easy = 1, // Reason: Locked Movement
+    .busy_barrel_barrage_normal = 1, // Reason: Locked Movement
+    .main_menu = 1, // Reason: Locked Movement
+    .title_screen_not_for_resale_version = 1, // Reason: Cutscene Map
+    .crystal_caves_beetle_race = 1, // Reason: Locked Movement
+    .fungi_forest_dogadon = 1, // Reason: Boss Map
+    .crystal_caves_igloo_tiny = 0,
+    .crystal_caves_igloo_lanky = 0,
+    .crystal_caves_igloo_dk = 0,
+    .creepy_castle = 0,
+    .creepy_castle_ballroom = 0,
+    .crystal_caves_rotating_room = 0,
+    .crystal_caves_shack_chunky = 0,
+    .crystal_caves_shack_dk = 0,
+    .crystal_caves_shack_diddy_middle_part = 0,
+    .crystal_caves_shack_tiny = 0,
+    .crystal_caves_lankys_hut = 0,
+    .crystal_caves_igloo_chunky = 0,
+    .splish_splash_salvage_normal = 0,
+    .k_lumsy = 0,
+    .crystal_caves_ice_castle = 0,
+    .speedy_swing_sortie_easy = 0,
+    .crystal_caves_igloo_diddy = 0,
+    .krazy_kong_klamour_easy = 1, // Reason: Locked Movement
+    .big_bug_bash_very_easy = 1, // Reason: Locked Movement
+    .searchlight_seek_very_easy = 1, // Reason: Locked Movement
+    .beaver_bother_easy = 1, // Reason: Locked Movement
+    .creepy_castle_tower = 0,
+    .creepy_castle_minecart = 0,
+    .kong_battle_battle_arena = 1, // Reason: Multiplayer Map
+    .creepy_castle_crypt_lanky_tiny = 0,
+    .kong_battle_arena_1 = 1, // Reason: Multiplayer Map
+    .frantic_factory_barrel_blast = 1, // Reason: BBlast Course
+    .gloomy_galleon_pufftoss = 1, // Reason: Boss Map
+    .creepy_castle_crypt_dk_diddy_chunky = 0,
+    .creepy_castle_museum = 0,
+    .creepy_castle_library = 0,
+    .kremling_kosh_easy = 1, // Reason: Locked Movement
+    .kremling_kosh_normal = 1, // Reason: Locked Movement
+    .kremling_kosh_hard = 1, // Reason: Locked Movement
+    .teetering_turtle_trouble_easy = 1, // Reason: Locked Movement
+    .teetering_turtle_trouble_normal = 1, // Reason: Locked Movement
+    .teetering_turtle_trouble_hard = 1, // Reason: Locked Movement
+    .batty_barrel_bandit_easy = 1, // Reason: Locked Movement
+    .batty_barrel_bandit_normal = 1, // Reason: Locked Movement
+    .batty_barrel_bandit_hard = 1, // Reason: Locked Movement
+    .mad_maze_maul_insane = 0,
+    .stash_snatch_insane = 0,
+    .stealthy_snoop_very_easy = 0,
+    .stealthy_snoop_easy = 0,
+    .stealthy_snoop_hard = 0,
+    .minecart_mayhem_normal = 1, // Reason: Locked Movement
+    .minecart_mayhem_hard = 1, // Reason: Locked Movement
+    .busy_barrel_barrage_hard = 1, // Reason: Locked Movement
+    .splish_splash_salvage_hard = 0,
+    .splish_splash_salvage_easy = 0,
+    .speedy_swing_sortie_normal = 0,
+    .speedy_swing_sortie_hard = 0,
+    .beaver_bother_normal = 1, // Reason: Locked Movement
+    .beaver_bother_hard = 1, // Reason: Locked Movement
+    .searchlight_seek_easy = 1, // Reason: Locked Movement
+    .searchlight_seek_normal = 1, // Reason: Locked Movement
+    .searchlight_seek_hard = 1, // Reason: Locked Movement
+    .krazy_kong_klamour_normal = 1, // Reason: Locked Movement
+    .krazy_kong_klamour_hard = 1, // Reason: Locked Movement
+    .krazy_kong_klamour_insane = 1, // Reason: Locked Movement
+    .peril_path_panic_very_easy = 1, // Reason: Locked Movement
+    .peril_path_panic_easy = 1, // Reason: Locked Movement
+    .peril_path_panic_normal = 1, // Reason: Locked Movement
+    .peril_path_panic_hard = 1, // Reason: Locked Movement
+    .big_bug_bash_easy = 1, // Reason: Locked Movement
+    .big_bug_bash_normal = 1, // Reason: Locked Movement
+    .big_bug_bash_hard = 1, // Reason: Locked Movement
+    .creepy_castle_dungeon = 0,
+    .hideout_helm_intro_story = 1, // Reason: Cutscene Map
+    .dk_isles_dk_theatre = 1, // Reason: Cutscene Map
+    .frantic_factory_mad_jack = 1, // Reason: Boss Map
+    .battle_arena_arena_ambush = 0,
+    .battle_arena_more_kritter_karnage = 0,
+    .battle_arena_forest_fracas = 0,
+    .battle_arena_bish_bash_brawl = 0,
+    .battle_arena_kamikaze_kremlings = 0,
+    .battle_arena_plinth_panic = 0,
+    .battle_arena_pinnacle_palaver = 0,
+    .battle_arena_shockwave_showdown = 0,
+    .creepy_castle_basement = 0,
+    .creepy_castle_tree = 0,
+    .k_rool_barrel_diddys_kremling_game = 0,
+    .creepy_castle_chunkys_toolshed = 0,
+    .creepy_castle_trash_can = 0,
+    .creepy_castle_greenhouse = 0,
+    .jungle_japes_lobby = 0,
+    .hideout_helm_lobby = 0,
+    .dks_house = 0,
+    .rock_intro_story = 1, // Reason: Cutscene Map
+    .angry_aztec_lobby = 0,
+    .gloomy_galleon_lobby = 0,
+    .frantic_factory_lobby = 0,
+    .training_grounds = 0,
+    .dive_barrel = 0,
+    .fungi_forest_lobby = 0,
+    .gloomy_galleon_submarine = 0,
+    .orange_barrel = 0,
+    .barrel_barrel = 0,
+    .vine_barrel = 0,
+    .creepy_castle_crypt = 0,
+    .enguarde_arena = 1, // Reason: Enguarde-Only Room
+    .creepy_castle_car_race = 0,
+    .crystal_caves_barrel_blast = 1, // Reason: BBlast Course
+    .creepy_castle_barrel_blast = 1, // Reason: BBlast Course
+    .fungi_forest_barrel_blast = 1, // Reason: BBlast Course
+    .fairy_island = 0,
+    .kong_battle_arena_2 = 1, // Reason: Multiplayer Map
+    .rambi_arena = 1, // Reason: Rambi-Only Room
+    .kong_battle_arena_3 = 1, // Reason: Multiplayer Map
+    .creepy_castle_lobby = 0,
+    .crystal_caves_lobby = 0,
+    .dk_isles_snides_room = 0,
+    .crystal_caves_army_dillo = 1, // Reason: Boss Map
+    .angry_aztec_dogadon = 1, // Reason: Boss Map
+    .training_grounds_end_sequence = 1, // Reason: Cutscene Map
+    .creepy_castle_king_kut_out = 1, // Reason: Boss Map
+    .crystal_caves_shack_diddy_upper_part = 0,
+    .k_rool_barrel_diddys_rocketbarrel_game = 0,
+    .k_rool_barrel_lankys_shooting_game = 0,
+    .k_rool_fight_dk_phase = 1, // Reason: Boss Map
+    .k_rool_fight_diddy_phase = 1, // Reason: Boss Map
+    .k_rool_fight_lanky_phase = 1, // Reason: Boss Map
+    .k_rool_fight_tiny_phase = 1, // Reason: Boss Map
+    .k_rool_fight_chunky_phase = 1, // Reason: Boss Map
+    .bloopers_ending = 1, // Reason: Cutscene Map
+    .k_rool_barrel_chunkys_hidden_kremling_game = 0,
+    .k_rool_barrel_tinys_pony_tail_twirl_game = 0,
+    .k_rool_barrel_chunkys_shooting_game = 0,
+    .k_rool_barrel_dks_rambi_game = 1, // Reason: Rambi-Only Room
+    .k_lumsy_ending = 1, // Reason: Cutscene Map
+    .k_rools_shoe = 1, // Reason: Boss Map
+    .k_rools_arena = 1, // Reason: Cutscene Map
 };
 
 static const unsigned char bad_movement_states[] = {
@@ -168,12 +296,7 @@ int canTagAnywhere(int prev_crystals) {
     if (Player->collision_queue_pointer) {
         return 0;
     }
-    int control_state = Player->control_state;
-    for (int i = 0; i < sizeof(bad_movement_states); i++) {
-        if (bad_movement_states[i] == control_state) {
-            return 0;
-        }
-    }
+    
     if ((prev_crystals - 1) == CollectableBase.Crystals) {
         return 0;
     }
@@ -218,8 +341,13 @@ int canTagAnywhere(int prev_crystals) {
     if (tag_countdown != 0) {
         return 0;
     }
-    for (int i = 0; i < sizeof(banned_maps); i++) {
-        if (banned_maps[i] == CurrentMap) {
+    int is_banned = *(unsigned char*)(&banned_map_btf + (CurrentMap >> 3)) & (0x80 >> (CurrentMap % 8));
+    if (is_banned) {
+        return 0;
+    }
+    int control_state = Player->control_state;
+    for (int i = 0; i < sizeof(bad_movement_states); i++) {
+        if (bad_movement_states[i] == control_state) {
             return 0;
         }
     }
