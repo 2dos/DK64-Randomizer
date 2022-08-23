@@ -322,6 +322,22 @@ def disable_krool_phases(evt):
         pass
 
 
+@bind("click", "helm_random")
+def disable_helm_phases(evt):
+    """Disable K Rool options when Randomize All is selected."""
+    disabled = False
+    helm = js.document.getElementById("helm_phase_count")
+    if js.document.getElementById("helm_random").checked:
+        disabled = True
+    try:
+        if disabled:
+            helm.setAttribute("disabled", "disabled")
+        else:
+            helm.removeAttribute("disabled")
+    except AttributeError:
+        pass
+
+
 @bind("change", "move_rando")
 def disable_prices(evt):
     """Disable prices if move rando is set to start with all moves."""
@@ -336,19 +352,18 @@ def disable_prices(evt):
         pass
 
 
-@bind("click", "gnawty_barrels")
-def disable_barrel_rando(evt):
-    """Disable Bonus Barrel Rando when Oops All Beaver Bother is selected."""
-    disabled = False
-    barrel = js.document.getElementById("bonus_barrel_rando")
-    if js.document.getElementById("gnawty_barrels").checked:
-        disabled = True
+@bind("click", "bonus_barrel_rando")
+def disable_barrel_modal(evt):
+    """Disable Minigame Selector when Shuffle Bonus Barrels is off."""
+    hidden = True
+    selector = js.document.getElementById("minigames_list_modal")
+    if js.document.getElementById("bonus_barrel_rando").checked:
+        hidden = False
     try:
-        if disabled:
-            barrel.setAttribute("disabled", "disabled")
-            barrel.checked = False
+        if hidden:
+            selector.setAttribute("hidden", "hidden")
         else:
-            barrel.removeAttribute("disabled")
+            selector.removeAttribute("hidden")
     except AttributeError:
         pass
 
@@ -371,6 +386,10 @@ def preset_select_changed(event):
                     js.jq(f"#{key}").checked = True
                     js.document.getElementsByName(key)[0].checked = True
                 js.jq(f"#{key}").removeAttr("disabled")
+            elif type(presets[key]) is list:
+                selector = js.document.getElementById(key)
+                for i in range(0, selector.options.length):
+                    selector.item(i).selected = selector.item(i).value in presets[key]
             else:
                 if js.document.getElementsByName(key)[0].hasAttribute("data-slider-value"):
                     js.jq(f"#{key}").slider("setValue", presets[key])
@@ -389,7 +408,6 @@ def preset_select_changed(event):
     disable_prices(None)
     max_randomized_blocker(None)
     max_randomized_troff(None)
-    disable_barrel_rando(None)
 
 
 @bind("change", "dk_colors")
@@ -468,3 +486,20 @@ def toggle_extreme_prices_option(event):
 def toggle_no_logic(event):
     """Toggle settings based on the presence of logic."""
     toggle_extreme_prices_option(event)
+
+
+@bind("click", "nav-patch-tab")
+def toggle_patch_ui(event):
+    """Disable non-cosmetic tabs and show override option if using patch file."""
+    for tab in ["nav-started-tab", "nav-random-tab", "nav-overworld-tab", "nav-difficulty-tab", "nav-qol-tab"]:
+        document.getElementById(tab).setAttribute("disabled", "disabled")
+    document.getElementById("override_div").removeAttribute("hidden")
+    document.getElementById("nav-cosmetics-tab").click()
+
+
+@bind("click", "nav-seed-gen-tab")
+def toggle_patch_ui(event):
+    """Re-enable non-cosmetic tabs and hide override option if generating a new seed."""
+    for tab in ["nav-started-tab", "nav-random-tab", "nav-overworld-tab", "nav-difficulty-tab", "nav-qol-tab"]:
+        document.getElementById(tab).removeAttribute("disabled")
+    document.getElementById("override_div").setAttribute("hidden", "hidden")

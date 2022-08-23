@@ -13,6 +13,7 @@
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.7.1/jszip.min.js"></script>
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-slider/11.0.2/bootstrap-slider.min.js"></script>
     <script type="text/javascript" src="static/js/izoColorPicker.js"></script>
+    <script type="text/javascript" src="static/js/md5.min.js"></script>
     <script type="text/javascript" src="static/js/loggly.tracker-2.2.4.min.js"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-slider/11.0.2/css/bootstrap-slider.min.css"
           rel="stylesheet"/>
@@ -189,11 +190,11 @@
                                         </div>
                                         <div class="flex-container" style="justify-content: center;">
                                             <div class="form-group item-select" style="min-width:300px;">
-                                                <label for="settings_string" class="select-title">Settings String (Coming Soon)</label>
+                                                <label for="settings_string" class="select-title">Settings String</label>
                                                     <input name="settings_string"
                                                         id="settings_string"
-                                                        placeholder="Coming Soon"
-                                                        disabled/>
+                                                        placeholder="Click Export or Copy Settings to fill"
+                                                        />
                                             </div>
                                             <div>
                                                 <input id="import_settings"
@@ -234,16 +235,23 @@
                                         </div>
                                         <div class="row">
                                             <label for="input-file-rom_1" class="select-title">ROM File</label>
-                                            <input accept=".z64,.n64,.v64"
-                                                   class="form-control"
-                                                   type="file"
-                                                   id="input-file-rom_1"
-                                                   name="rom_file"
-                                                   style="margin-right: 5px;
-                                                          width: 50%;
-                                                          height: 100%;
-                                                          margin: 0 auto;"
-                                                   required/>
+                                            <div class="input-group mb-3 file-select" style="width: 50%; margin: 0 auto;">
+                                                <div class="input-group-text choose-file" style="background-color: #6c757d;">
+                                                    <input
+                                                        class="btn btn-primary file-button"
+                                                        type="button"
+                                                        value="Choose File"
+                                                        onClick="filebox()"
+                                                        id="choose_rom"
+                                                        >
+                                                </div>
+                                                <input class="form-control"
+                                                    id="rom"
+                                                    type="text"
+                                                    readonly
+                                                    onClick="filebox()"
+                                                    placeholder="No File Chosen"/>
+                                            </div>
                                         </div>
                                         <br id="formbreak" />
                                         <input id="generate_seed"
@@ -261,7 +269,7 @@
                                  role="tabpanel"
                                  aria-labelledby="nav-patch-tab">
                                 <div style="width: 80%;" class="center">
-                                    <div class="form-group" style="margin-bottom: 10px; text-align: center;">
+                                    <div class="form-group" style="margin-bottom: 25px; text-align: center;">
                                         <label for="patchfileloader" class="select-title">Patch File</label>
                                         <input id="patchfileloader"
                                                class="form-control"
@@ -271,17 +279,26 @@
                                                       width: 50%;
                                                       height: 100%;
                                                       margin: 0 auto;"/>
-                                        <label for="input-file-rom_2" class="select-title">ROM File</label>
-                                        <input accept=".z64,.n64,.v64"
-                                               class="form-control"
-                                               type="file"
-                                               id="input-file-rom_2"
-                                               name="rom_file"
-                                               style="margin-right: 5px;
-                                                      width: 50%;
-                                                      height: 100%;
-                                                      margin: 0 auto;"
-                                               required/>
+                                                      <div class="row">
+                                                        <label for="input-file-rom_1" class="select-title">ROM File</label>
+                                                        <div class="input-group mb-3 file-select" style="width: 50%; margin: 0 auto;">
+                                                            <div class="input-group-text choose-file" style="background-color: #6c757d;">
+                                                                <input
+                                                                    class="btn btn-primary file-button"
+                                                                    type="button"
+                                                                    value="Choose File"
+                                                                    onClick="filebox()"
+                                                                    id="choose_rom_2"
+                                                                    >
+                                                            </div>
+                                                            <input class="form-control"
+                                                                id="rom_2"
+                                                                type="text"
+                                                                readonly
+                                                                onClick="filebox()"
+                                                                placeholder="No File Chosen"/>
+                                                        </div>
+                                                    </div>
                                     </div>
                                     <br id="formbreak" />
                                     <input id="generate_lanky_seed"

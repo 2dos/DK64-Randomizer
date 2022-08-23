@@ -187,3 +187,4 @@ base-hack/assets/Non-Code/instance_scripts/dump
 tests/test_spoiler.py
 coloredbananas.txt
 balloons.txt
+static/py_libraries/dk64rando*.whl

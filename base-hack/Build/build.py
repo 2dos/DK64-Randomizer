@@ -405,10 +405,10 @@ for x in range(5):
             }
         )
 
-kong_palettes = [0xE8C, 0xE66, 0xE69, 0xEB9, 0xE67, 3826, 3847]
+kong_palettes = [0xE8C, 0xE66, 0xE69, 0xEB9, 0xE67, 3826, 3847, 3734]
 for x in kong_palettes:
     x_s = 32 * 32 * 2
-    if x == 0xEB9:  # Chunky Shirt Back
+    if x == 0xEB9 or x == 3734:  # Chunky Shirt Back or Lanky Patch
         x_s = 43 * 32 * 2
     file_dict.append({"name": f"Palette Expansion ({hex(x)})", "pointer_table_index": 25, "file_index": x, "source_file": f"palette_{x}.bin", "target_compressed_size": x_s})
 
@@ -841,6 +841,10 @@ with open(newROMName, "r+b") as fh:
     for coinreq in vanilla_coin_reqs:
         fh.seek(0x1FED020 + coinreq["offset"])
         fh.write(coinreq["coins"].to_bytes(1, "big"))
+    for x in range(5):
+        # Write default Helm Order
+        fh.seek(0x1FED020 + x)
+        fh.write(x.to_bytes(1, "big"))
     for x in hash_icons:
         pth = f"assets/Non-Code/hash/{x}"
         if os.path.exists(pth):
