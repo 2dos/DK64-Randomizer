@@ -593,14 +593,73 @@ void tagAnywhereInit(int is_homing, int model2_id, int obj) {
     coinCBCollectHandle(0, obj, is_homing);
 }
 
-void tagAnywhereAmmo(int player, int obj, int is_homing) {
-    coinCBCollectHandle(player, obj, is_homing);
-    if (player_count == 1) {
-        displayItemOnHUD(2 + is_homing,0,0);
+typedef struct sfx_cache_item {
+    /* 0x000 */ unsigned short sfx;
+    /* 0x002 */ unsigned char noise_buffer;
+    /* 0x003 */ unsigned char sfx_count;
+    /* 0x004 */ unsigned int last_played_f;
+    /* 0x008 */ unsigned char sfx_delay;
+    /* 0x009 */ unsigned char used;
+    /* 0x00A */ unsigned short id;
+    /* 0x00C */ unsigned char map_initiated;
+} sfx_cache_item;
+
+#define SFX_CACHE_SIZE 16
+static sfx_cache_item sfx_cache_array[SFX_CACHE_SIZE];
+
+void populateSFXCache(int sfx, int noise_buffer, int sfx_count, int sfx_delay, int id, int init_delay) {
+    int has_pushed = 0;
+    for (int i = 0; i < SFX_CACHE_SIZE; i++) {
+        if (!has_pushed) {
+            if (!sfx_cache_array[i].used) {
+                sfx_cache_array[i].sfx = sfx;
+                sfx_cache_array[i].noise_buffer = noise_buffer;
+                sfx_cache_array[i].sfx_count = sfx_count - (init_delay == 0);
+                sfx_cache_array[i].sfx_delay = sfx_delay;
+                sfx_cache_array[i].last_played_f = ObjectModel2Timer;
+                sfx_cache_array[i].map_initiated = CurrentMap;
+                sfx_cache_array[i].used = sfx_count > (init_delay == 0);
+                has_pushed = 1;
+            }
+        }
+    }
+    if (init_delay == 0) {
+        playSFXFromObject(id,sfx,-1,127,0,noise_buffer,0.3f);
     }
 }
 
-void tagAnywhereBunch(int player, int obj, int is_homing) {
+void handleSFXCache(void) {
+    for (int i = 0; i < SFX_CACHE_SIZE; i++) {
+        if (sfx_cache_array[i].sfx_count == 0) {
+            sfx_cache_array[i].used = 0;
+        }
+        if (sfx_cache_array[i].map_initiated != CurrentMap) {
+            sfx_cache_array[i].used = 0;
+        }
+        if ((sfx_cache_array[i].used) && (ObjectModel2Timer >= (sfx_cache_array[i].last_played_f + sfx_cache_array[i].sfx_delay))) {
+            playSFXFromObject(sfx_cache_array[i].id,sfx_cache_array[i].sfx,-1,127,0,sfx_cache_array[i].noise_buffer,0.3f);
+            sfx_cache_array[i].sfx_count -= 1;
+            sfx_cache_array[i].last_played_f = ObjectModel2Timer;
+        }
+    }
+}
+
+void tagAnywhereAmmo(int player, int obj, int index) {
+    int model_index = convertIDToIndex(index);
+    int is_homing = 0;
+    if (model_index > -1) {
+        int* m2location = ObjectModel2Pointer;
+		ModelTwoData* _object = getObjectArrayAddr(m2location,0x90,model_index);
+        is_homing = _object->object_type == 0x11;
+    }
     coinCBCollectHandle(player, obj, is_homing);
-    playSFX(Banana);
+    if (player_count == 1) {
+        displayItemOnHUD(2 + is_homing,0,0);
+        populateSFXCache(0x331,64,5,4,index,6);
+    }
+}
+
+void tagAnywhereBunch(int player, int obj, int index) {
+    coinCBCollectHandle(player, obj, 0);
+    populateSFXCache(Banana,64,5,3,index,0);
 }

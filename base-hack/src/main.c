@@ -83,6 +83,7 @@ void cFuncLoop(void) {
 		}
 	}
 	changeHelmLZ();
+	handleSFXCache();
 	if (Rando.fast_start_helm == 2) {
 		if (TransitionSpeed > 0) {
 			if ((DestMap == 0x11) && (CurrentMap == 0xAA)) {
