@@ -1195,7 +1195,7 @@ ColoredBananaGroupList = [
             [1, 1.2, 957, 505, 1253],
             [1, 1.2, 1009, 505, 1126],
             [1, 1.2, 1048, 503, 1031],
-            [1, 1.2, 1086, 487, 738],
+            [1, 1.2, 1086, 487, 938],
             [1, 1.2, 1124, 452, 845],
         ],
     ),
@@ -1594,17 +1594,18 @@ ColoredBananaGroupList = [
             [5, 1.0, 3340.275634765625, 296.6666564941406, 570.8076782226562],
         ],
     ),
-    ColoredBananaGroup(
-        group=112,
-        map_id=Maps.CrystalCaves,
-        name="W4 (Diddy)",
-        konglist=[Kongs.diddy, Kongs.tiny],
-        region=Regions.CavesBananaportSpire,
-        vanilla=True,
-        locations=[
-            [5, 1.0, 1197.610107421875, 142.5, 1924.6083984375],
-        ],
-    ),
+    # Removed for now as it was crashing on seed gen
+    # ColoredBananaGroup(
+    #    group=112,
+    #    map_id=Maps.CrystalCaves,
+    #    name="W4 (Diddy)",
+    #    konglist=[Kongs.diddy, Kongs.tiny],
+    #    region=Regions.CavesBananaportSpire,
+    #    vanilla=True,
+    #    locations=[
+    #        [5, 1.0, 1197.610107421875, 142.5, 1924.6083984375],
+    #    ],
+    # ),
     ColoredBananaGroup(
         group=113,
         map_id=Maps.CrystalCaves,
@@ -1697,7 +1698,7 @@ ColoredBananaGroupList = [
     ColoredBananaGroup(
         group=119,
         map_id=Maps.CrystalCaves,
-        name="W3 (Tiny)",
+        name="W3 (Tiny)",  # This needs to be moved to account for different W3 placement in rando
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.IglooArea,
         vanilla=True,

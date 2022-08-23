@@ -1670,7 +1670,7 @@ ColoredBananaGroupList = [
         region=Regions.BeyondRambiGate,
         vanilla=True,
         locations=[
-            [823, 290, 3637],
+            [5, 1.0, 823, 290, 3637],
         ],
     ),
 ]

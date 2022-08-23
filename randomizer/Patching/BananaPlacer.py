@@ -147,97 +147,95 @@ def randomize_cbs(spoiler: Spoiler):
                 if new_cb["map"] == cont_map_id:
                     cb_type = new_cb["type"]
                     associated_list = level_data[new_cb["level"]][cb_type]
-                    for list_item in associated_list:
-                        if (cb_type == "cb" and list_item.group == new_cb["group"]) or (cb_type == "balloons" and list_item.id == new_cb["id"]):
-                            # Found item
-                            if cb_type == "cb":
-                                # Model Two CBs
-                                singles = [0xD, 0xA, 0x1E, 0x16, 0x1F]
-                                bunches = [0x2B, 0x208, 0x205, 0x207, 0x206]
-                                for loc in list_item.locations:
-                                    item_data = []
-                                    item_data.extend(
-                                        [
-                                            int(float_to_hex(loc[2]), 16),
-                                            int(float_to_hex(loc[3]), 16),
-                                            int(float_to_hex(loc[4]), 16),
-                                            int(float_to_hex(loc[1]), 16),
-                                        ]
-                                    )
-                                    item_data.append(2)
-                                    item_data.append(0x01C7FFFF)
-                                    for x in range(int((0x24 - 0x18) / 4)):
-                                        item_data.append(0)
-                                    item_data.append(0x40400000)
-                                    cb_item_type = 0
-                                    if loc[0] == 5:
-                                        cb_item_type = bunches[new_cb["kong"]]
-                                    else:
-                                        cb_item_type = singles[new_cb["kong"]]
-                                    found_vacant = False
-                                    found_id = 0
-                                    while not found_vacant:
-                                        if new_id not in used_m2_ids:
-                                            used_m2_ids.append(new_id)
-                                            found_id = new_id
-                                            found_vacant = True
-                                        new_id += 1
-                                    item_data.append((cb_item_type << 16) + found_id)
-                                    item_data.append((2 << 16) + 1)
-                                    persisted_m2_data.append(item_data)
-                            elif cb_type == "balloons":
-                                # Balloons
-                                # Setup
-                                balloons = [114, 91, 113, 112, 111]
-                                item_data = []
-                                for coord in list_item.setSpawnPoint(list_item.points):
-                                    item_data.append(int(float_to_hex(coord), 16))  # x y z
-                                item_data.append(int(float_to_hex(1), 16))  # Scale
-                                found_vacant_path = False
-                                found_path_id = 0
-                                found_vacant_actor = False
-                                found_actor_id = 0
-                                while not found_vacant_path:
-                                    if npath_id not in used_path_ids:
-                                        used_path_ids.append(npath_id)
-                                        found_path_id = npath_id
-                                        found_vacant_path = True
-                                    npath_id += 1
-                                while not found_vacant_actor:
-                                    if act_id not in used_actor_ids:
-                                        used_actor_ids.append(act_id)
-                                        found_actor_id = act_id
-                                        found_vacant_actor = True
-                                    act_id += 1
-                                item_data.append(found_path_id)
-                                item_data.append(list_item.speed)
-                                for x in range(int((0x30 - 0x18) / 4)):
-                                    item_data.append(0)
-                                item_data.append(balloons[new_cb["kong"]] - 16)
-                                item_data.append((found_actor_id << 16) + 0x6E08)
-                                persisted_act_data.append(item_data)
-                                # Path
-                                item_data = []
-                                item_data.append(found_path_id)
-                                if cont_map_id == 7:
-                                    print(found_path_id)
-                                item_data.append(len(list_item.points))
+                    if cb_type == "cb":
+                        # Model Two CBs
+                        singles = [0xD, 0xA, 0x1E, 0x16, 0x1F]
+                        bunches = [0x2B, 0x208, 0x205, 0x207, 0x206]
+                        for loc in new_cb["locations"]:
+                            item_data = []
+                            item_data.extend(
+                                [
+                                    int(float_to_hex(loc[2]), 16),
+                                    int(float_to_hex(loc[3]), 16),
+                                    int(float_to_hex(loc[4]), 16),
+                                    int(float_to_hex(loc[1]), 16),
+                                ]
+                            )
+                            item_data.append(2)
+                            item_data.append(0x01C7FFFF)
+                            for x in range(int((0x24 - 0x18) / 4)):
                                 item_data.append(0)
-                                for pt in list_item.points:
-                                    item_data.append(20)
-                                    item_data.append(short_to_ushort(pt[0]))
-                                    item_data.append(short_to_ushort(pt[1]))
-                                    item_data.append(short_to_ushort(pt[2]))
-                                    item_data.append((1 << 8) + 0)
-                                new_paths = []
-                                for path in persisted_paths:
-                                    if path[0] < found_path_id:
-                                        new_paths.append(path)
-                                new_paths.append(item_data)
-                                for path in persisted_paths:
-                                    if path[0] > found_path_id:
-                                        new_paths.append(path)
-                                persisted_paths = new_paths.copy()
+                            item_data.append(0x40400000)
+                            cb_item_type = 0
+                            if loc[0] == 5:
+                                cb_item_type = bunches[new_cb["kong"]]
+                            else:
+                                cb_item_type = singles[new_cb["kong"]]
+                            found_vacant = False
+                            found_id = 0
+                            while not found_vacant:
+                                if new_id not in used_m2_ids:
+                                    used_m2_ids.append(new_id)
+                                    found_id = new_id
+                                    found_vacant = True
+                                new_id += 1
+                            item_data.append((cb_item_type << 16) + found_id)
+                            item_data.append((2 << 16) + 1)
+                            persisted_m2_data.append(item_data)
+                    for list_item in associated_list:
+                        if cb_type == "balloons" and list_item.id == new_cb["id"]:
+                            # Found balloon
+                            # Setup
+                            balloons = [114, 91, 113, 112, 111]
+                            item_data = []
+                            for coord in list_item.setSpawnPoint(list_item.points):
+                                item_data.append(int(float_to_hex(coord), 16))  # x y z
+                            item_data.append(int(float_to_hex(1), 16))  # Scale
+                            found_vacant_path = False
+                            found_path_id = 0
+                            found_vacant_actor = False
+                            found_actor_id = 0
+                            while not found_vacant_path:
+                                if npath_id not in used_path_ids:
+                                    used_path_ids.append(npath_id)
+                                    found_path_id = npath_id
+                                    found_vacant_path = True
+                                npath_id += 1
+                            while not found_vacant_actor:
+                                if act_id not in used_actor_ids:
+                                    used_actor_ids.append(act_id)
+                                    found_actor_id = act_id
+                                    found_vacant_actor = True
+                                act_id += 1
+                            item_data.append(found_path_id)
+                            item_data.append(list_item.speed)
+                            for x in range(int((0x30 - 0x18) / 4)):
+                                item_data.append(0)
+                            item_data.append(balloons[new_cb["kong"]] - 16)
+                            item_data.append((found_actor_id << 16) + 0x6E08)
+                            persisted_act_data.append(item_data)
+                            # Path
+                            item_data = []
+                            item_data.append(found_path_id)
+                            if cont_map_id == 7:
+                                print(found_path_id)
+                            item_data.append(len(list_item.points))
+                            item_data.append(0)
+                            for pt in list_item.points:
+                                item_data.append(20)
+                                item_data.append(short_to_ushort(pt[0]))
+                                item_data.append(short_to_ushort(pt[1]))
+                                item_data.append(short_to_ushort(pt[2]))
+                                item_data.append((1 << 8) + 0)
+                            new_paths = []
+                            for path in persisted_paths:
+                                if path[0] < found_path_id:
+                                    new_paths.append(path)
+                            new_paths.append(item_data)
+                            for path in persisted_paths:
+                                if path[0] > found_path_id:
+                                    new_paths.append(path)
+                            persisted_paths = new_paths.copy()
             # Recompile Tables
             # SETUP
             ROM().seek(setup_table)
