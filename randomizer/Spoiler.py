@@ -87,6 +87,7 @@ class Spoiler:
         settings["Open Levels"] = self.settings.open_levels
         settings["Randomize Pickups"] = self.settings.randomize_pickups
         settings["Randomize Patches"] = self.settings.random_patches
+        settings["Randomize CB Locations"] = self.settings.cb_rando
         settings["Puzzle Randomization"] = self.settings.puzzle_rando
         settings["Crown Door Open"] = self.settings.crown_door_open
         settings["Coin Door Open"] = self.settings.coin_door_open
