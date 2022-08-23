@@ -1285,13 +1285,13 @@ def SetNewProgressionRequirements(settings: Settings):
         settings.blocker_7,  # Last B. Locker shouldn't be affected
     ]
     settings.BossBananas = [
-        min(settings.troff_0, round(settings.troff_0 / (settings.troff_max * settings.troff_weight_0) * sum(coloredBananaCounts[0]))),
-        min(settings.troff_1, round(settings.troff_1 / (settings.troff_max * settings.troff_weight_1) * sum(coloredBananaCounts[1]))),
-        min(settings.troff_2, round(settings.troff_2 / (settings.troff_max * settings.troff_weight_2) * sum(coloredBananaCounts[2]))),
-        min(settings.troff_3, round(settings.troff_3 / (settings.troff_max * settings.troff_weight_3) * sum(coloredBananaCounts[3]))),
-        min(settings.troff_4, round(settings.troff_4 / (settings.troff_max * settings.troff_weight_4) * sum(coloredBananaCounts[4]))),
-        min(settings.troff_5, round(settings.troff_5 / (settings.troff_max * settings.troff_weight_5) * sum(coloredBananaCounts[5]))),
-        min(settings.troff_6, round(settings.troff_6 / (settings.troff_max * settings.troff_weight_6) * sum(coloredBananaCounts[6]))),
+        min(settings.troff_0, sum(coloredBananaCounts[0]), round(settings.troff_0 / (settings.troff_max * settings.troff_weight_0) * sum(coloredBananaCounts[0]))),
+        min(settings.troff_1, sum(coloredBananaCounts[1]), round(settings.troff_1 / (settings.troff_max * settings.troff_weight_1) * sum(coloredBananaCounts[1]))),
+        min(settings.troff_2, sum(coloredBananaCounts[2]), round(settings.troff_2 / (settings.troff_max * settings.troff_weight_2) * sum(coloredBananaCounts[2]))),
+        min(settings.troff_3, sum(coloredBananaCounts[3]), round(settings.troff_3 / (settings.troff_max * settings.troff_weight_3) * sum(coloredBananaCounts[3]))),
+        min(settings.troff_4, sum(coloredBananaCounts[4]), round(settings.troff_4 / (settings.troff_max * settings.troff_weight_4) * sum(coloredBananaCounts[4]))),
+        min(settings.troff_5, sum(coloredBananaCounts[5]), round(settings.troff_5 / (settings.troff_max * settings.troff_weight_5) * sum(coloredBananaCounts[5]))),
+        min(settings.troff_6, sum(coloredBananaCounts[6]), round(settings.troff_6 / (settings.troff_max * settings.troff_weight_6) * sum(coloredBananaCounts[6]))),
     ]
     # Update values based on actual level progression
     ShuffleExits.UpdateLevelProgression(settings)
