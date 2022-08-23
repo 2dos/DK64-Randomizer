@@ -217,8 +217,6 @@ def randomize_cbs(spoiler: Spoiler):
                             # Path
                             item_data = []
                             item_data.append(found_path_id)
-                            if cont_map_id == 7:
-                                print(found_path_id)
                             item_data.append(len(list_item.points))
                             item_data.append(0)
                             for pt in list_item.points:
@@ -251,7 +249,7 @@ def randomize_cbs(spoiler: Spoiler):
             for x in persisted_act_data:
                 for y in x:
                     ROM().writeMultipleBytes(y, 4)
-            print(f"{hex(cont_map_id)}: {hex(path_table)}")
+            # print(f"{hex(cont_map_id)}: {hex(path_table)}")
             ROM().seek(path_table)
             ROM().writeMultipleBytes(len(persisted_paths), 2)
             for x in persisted_paths:
