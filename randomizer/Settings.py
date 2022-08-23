@@ -286,6 +286,7 @@ class Settings:
         self.enemy_rando = False
         self.crown_enemy_rando = "off"
         self.enemy_speed_rando = False
+        self.cb_rando = False
         self.override_cosmetics = False
         self.random_colors = False
         self.minigames_list_selected = []

@@ -1,4 +1,4 @@
-"""Apply barrel changes."""
+"""Apply misc setup changes."""
 import js
 import random
 import struct
