@@ -1594,18 +1594,17 @@ ColoredBananaGroupList = [
             [5, 1.0, 3340.275634765625, 296.6666564941406, 570.8076782226562],
         ],
     ),
-    # Removed for now as it was crashing on seed gen
-    # ColoredBananaGroup(
-    #    group=112,
-    #    map_id=Maps.CrystalCaves,
-    #    name="W4 (Diddy)",
-    #    konglist=[Kongs.diddy, Kongs.tiny],
-    #    region=Regions.CavesBananaportSpire,
-    #    vanilla=True,
-    #    locations=[
-    #        [5, 1.0, 1197.610107421875, 142.5, 1924.6083984375],
-    #    ],
-    # ),
+    ColoredBananaGroup(
+        group=112,
+        map_id=Maps.CrystalCaves,
+        name="W4 (Diddy)",
+        konglist=[Kongs.diddy, Kongs.tiny],
+        region=Regions.CavesBananaportSpire,
+        vanilla=True,
+        locations=[
+            [5, 1.0, 1197.610107421875, 142.5, 1924.6083984375],
+        ],
+    ),
     ColoredBananaGroup(
         group=113,
         map_id=Maps.CrystalCaves,

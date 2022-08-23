@@ -58,6 +58,8 @@ LogicRegions = {
     Regions.CavesBlueprintPillar: [
         Collectible(Collectibles.bunch, Kongs.lanky, lambda l: True, None, 4),  # Warp 5 platform
     ],
+    Regions.CavesBananaportSpire: [
+    ],
     Regions.CavesBaboonBlast: [
         Collectible(Collectibles.bunch, Kongs.donkey, lambda l: True, None, 4),
 
