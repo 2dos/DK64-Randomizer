@@ -28,7 +28,7 @@ extern void* dk_memcpy(void* _dest, void* _src, int size);
 extern void getTimestampDiffInTicks(unsigned int major, unsigned int minor);
 extern int timestampDiffToMilliseconds(unsigned int major, unsigned int minor);
 extern void timestampAdd(int* timestamp1, int* timestamp2);
-extern void SaveToGlobal();
+extern int SaveToGlobal();
 extern int DetectGameOver();
 extern int DetectAdventure();
 extern void displaySprite(void* control_pointer, void* sprite, int x, int y, int scale, int gif_updatefrequency, int movement_style);
@@ -69,6 +69,7 @@ extern void __osEPiStartDMA(void* unk, void* iomessage, int os_state);
 extern void __osPiRawReadIo(int a0, void* a1);
 extern int __osDisableInt();
 extern void __osRestoreInt(int mask);
+extern int __osEepromProbe(void* unk0);
 extern void copyFunc(int rom_offset, int size, void* write_location);
 extern void* getMapData(data_indexes data_idx, int _index, char compressbyte0, char compressbyte1);
 extern void loadSetup(void* setup_file, int unk0, int unk1);
@@ -168,6 +169,16 @@ extern float getZRatioMovement(int dk64u_angle);
 extern void updateActorProjectileInfo(void* actor, int unk0);
 extern void spawnProjectile(short object, short subtype, int speed, float x, float y, float z, float unk0, void* actor);
 extern void controlStateControl(int unk0);
+extern void save(void);
+
+extern void assessFlagMapping(int map, int id);
+extern void coinCBCollectHandle(int player, int obj, int is_homing);
+extern void displayItemOnHUD(int item, int unk0, int unk1);
+
+extern void unkSpriteRenderFunc(int unk0);
+extern void unkSpriteRenderFunc_0(void);
+extern void loadSpriteFunction(int func);
+extern void displaySpriteAtXYZ(void* sprite, int x, int y, int z);
 
 //vanilla data
 extern float TransitionSpeed;
@@ -284,6 +295,8 @@ extern int mapFloorBlockCount;
 extern int displayListCount;
 extern char TransitionType;
 extern char DKTVKong;
+extern cutsceneType CutsceneBanks[2];
+extern int EEPROMType;
 
 extern short screenCenterX;
 extern short screenCenterY;
@@ -342,6 +355,7 @@ extern actorData* PlayerPointer_0;
 extern SpawnerInfo* currentCharSpawner;
 extern short EnemiesKilledCounter;
 extern model2_collision_info ModelTwoCollisionArray[42];
+extern int IGT;
 
 //hack data
 extern int TestVariable;
@@ -356,7 +370,6 @@ extern char* PauseSlot3TextPointer;
 extern char ExpandPauseMenu;
 extern unsigned short InitialPauseHeight;
 extern short InstanceScriptParams[4];
-extern unsigned int BalancedIGT;
 extern short style128Mtx[0x10];
 extern short style6Mtx[0x10];
 extern short style2Mtx[0x10];

@@ -150,3 +150,19 @@ void cancelCutscene(int enable_movement) {
 		}
 	}
 }
+
+typedef struct cutscene_item_data {
+	/* 0x000 */ short num_points;
+	/* 0x002 */ short unk_02;
+	/* 0x004 */ void* point_array;
+	/* 0x008 */ void* length_array;
+} cutscene_item_data;
+
+void modifyCutsceneItem(int bank, int cutscene, int point, int new_item) {
+	if (CutsceneBanks[bank].cutscene_databank) {
+		void* databank = CutsceneBanks[bank].cutscene_databank;
+		cutscene_item_data* data = (cutscene_item_data*)getObjectArrayAddr(databank,0xC,cutscene);
+		short* write_spot = (short*)getObjectArrayAddr(data->point_array,2,point);
+		*(short*)write_spot = new_item;
+	}
+}

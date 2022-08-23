@@ -182,6 +182,9 @@ class Settings:
         # krool_phase_count: int, [1-5]
         self.krool_phase_count = 5
         self.krool_random = False
+        # helm_phase_count: int, [1-5]
+        self.helm_phase_count = 3
+        self.helm_random = False
         # krool_key_count: int, [0-8]
         self.krool_key_count = 8
         self.keys_random = False
@@ -200,7 +203,6 @@ class Settings:
         # random
         self.helm_barrels = "normal"
         self.bonus_barrel_auto_complete = False
-        self.gnawty_barrels = False
 
         # hard_shooting: bool
         self.hard_shooting = False
@@ -224,13 +226,29 @@ class Settings:
         self.decoupled_loading_zones = False
 
         #  Music
-        self.music_bgm = None
-        self.music_fanfares = None
-        self.music_events = None
+        self.music_bgm = "default"
+        self.music_fanfares = "default"
+        self.music_events = "default"
+        self.random_music = False
 
         #  Color
         self.colors = {}
+        self.color_palettes = {}
         self.klaptrap_model = "green"
+        self.dk_colors = "vanilla"
+        self.dk_custom_color = "#000000"
+        self.diddy_colors = "vanilla"
+        self.diddy_custom_color = "#000000"
+        self.lanky_colors = "vanilla"
+        self.lanky_custom_color = "#000000"
+        self.tiny_colors = "vanilla"
+        self.tiny_custom_color = "#000000"
+        self.chunky_colors = "vanilla"
+        self.chunky_custom_color = "#000000"
+        self.rambi_colors = "vanilla"
+        self.rambi_custom_color = "#000000"
+        self.enguarde_colors = "vanilla"
+        self.enguarde_custom_color = "#000000"
 
         #  Misc
         self.generate_spoilerlog = None
@@ -241,6 +259,7 @@ class Settings:
         self.enable_tag_anywhere = None
         self.krool_phase_order_rando = None
         self.krool_access = False
+        self.helm_phase_order_rando = None
         self.open_lobbies = None
         self.open_levels = None
         self.randomize_pickups = False
@@ -268,6 +287,9 @@ class Settings:
         self.crown_enemy_rando = "off"
         self.enemy_speed_rando = False
         self.cb_rando = False
+        self.override_cosmetics = False
+        self.random_colors = False
+        self.minigames_list_selected = []
 
     def shuffle_prices(self):
         """Price randomization. Reuseable if we need to reshuffle prices."""
@@ -317,6 +339,42 @@ class Settings:
         orderedPhases.append(Kongs.chunky)
         self.krool_order = orderedPhases
 
+        # Helm Order
+        self.helm_donkey = False
+        self.helm_diddy = False
+        self.helm_lanky = False
+        self.helm_tiny = False
+        self.helm_chunky = False
+
+        rooms = [Kongs.donkey, Kongs.chunky, Kongs.tiny, Kongs.lanky, Kongs.diddy]
+        if self.helm_phase_order_rando:
+            random.shuffle(rooms)
+        if self.helm_random:
+            self.helm_phase_count = randint(1, 5)
+        if isinstance(self.helm_phase_count, str) is True:
+            self.helm_phase_count = 5
+        if self.helm_phase_count < 5:
+            rooms = random.sample(rooms, self.helm_phase_count)
+        orderedRooms = []
+        if Kongs.donkey in rooms:
+            orderedRooms.append(0)
+            rooms.remove(Kongs.donkey)
+            self.helm_donkey = True
+        for kong in rooms:
+            if kong == Kongs.diddy:
+                self.helm_diddy = True
+                orderedRooms.append(4)
+            if kong == Kongs.lanky:
+                self.helm_lanky = True
+                orderedRooms.append(3)
+            if kong == Kongs.tiny:
+                self.helm_tiny = True
+                orderedRooms.append(2)
+            if kong == Kongs.chunky:
+                self.helm_chunky = True
+                orderedRooms.append(1)
+        self.helm_order = orderedRooms
+
         # Set keys required for KRool
         KeyEvents = [
             Events.JapesKeyTurnedIn,
@@ -356,10 +414,10 @@ class Settings:
         # Bonus Barrel Rando
         if self.bonus_barrel_auto_complete:
             self.bonus_barrels = "skip"
-        elif self.bonus_barrel_rando:
+        elif self.bonus_barrel_rando and not self.minigames_list_selected:
             self.bonus_barrels = "random"
-        elif self.gnawty_barrels:
-            self.bonus_barrels = "all_beaver_bother"
+        elif self.bonus_barrel_rando and self.minigames_list_selected:
+            self.bonus_barrels = "selected"
         # Helm Barrel Rando
         if self.helm_setting == "skip_all":
             self.helm_barrels = "skip"

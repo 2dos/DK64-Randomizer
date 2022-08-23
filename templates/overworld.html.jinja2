@@ -1,3 +1,5 @@
+{% from 'macros.html' import list_selector %}
+
 <div class="container" style="margin-top: 20px;">
     <div class="row">
         <div class="col border panel">
@@ -22,17 +24,8 @@
                                 value="True"/>
                         Shuffle Bonus Barrels
                     </label>
-                </div>
-                <div class="form-check form-switch item-switch">
-                    <label data-toggle="tooltip" title="All Bonus Barrels are super fun easy minigames. :)">
-                        <input class="form-check-input"
-                                type="checkbox"
-                                name="gnawty_barrels"
-                                id="gnawty_barrels"
-                                value="True"/>
-                        Oops All Beaver Bother
-                    </label>
-                </div>
+                    {{ list_selector(minigames, "minigames_list", "MINIGAME SELECTOR", "This will open a popup that will let you customize what Bonus Games are in the pool.&#10;This defaults to All minigames.") }}
+                {# Remove end </div> as it's included in the macro for formatting #}
                 <div class="form-check form-switch item-switch">
                     <label data-toggle="tooltip" title="Bonus Barrels outside of Helm auto complete.">
                         <input class="form-check-input"
@@ -100,6 +93,7 @@
                         Randomize Medal Requirement
                     </label>
                 </div>
+                <div class="spacer"></div>
             </div>
         </div>
         <div class="col border panel">
@@ -122,6 +116,34 @@
                 <input type="text"
                     name="krool_phase_count"
                     id="krool_phase_count"
+                    data-provide="slider"
+                    data-slider-ticks="[1, 2, 3, 4, 5]"
+                    data-slider-ticks-labels='["1", "2", "3", "4", "5"]'
+                    data-slider-min="1"
+                    data-slider-max="5"
+                    data-slider-step="1"
+                    data-slider-value="5"
+                    style="width: 80%">
+            </div>
+            <hr>
+            <h5 class="select-title">Helm Length</h5>
+            <div class="flex-container">
+                <div class="form-check form-switch item-switch center-flex">
+                    <label data-toggle="tooltip" title="Selects a random value from Slider to determine the number of rooms that need to be completed in Hideout Helm.">
+                        <input class="form-check-input"
+                                type="checkbox"
+                                name="helm_random"
+                                onchange="toggle_clicks()"
+                                id="helm_random"
+                                value="True"/>
+                        Random Selection
+                    </label>
+                </div>
+            </div>
+            <div>
+                <input type="text"
+                    name="helm_phase_count"
+                    id="helm_phase_count"
                     data-provide="slider"
                     data-slider-ticks="[1, 2, 3, 4, 5]"
                     data-slider-ticks-labels='["1", "2", "3", "4", "5"]'
@@ -258,6 +280,7 @@
              $('#krool_phase_count').slider("relayout");
              $('#krool_key_count').slider("relayout");
              $('#starting_kongs_count').slider("relayout");
+             $('#helm_phase_count').slider("relayout");
              toggle_clicks()
            }, 200);
        })
@@ -267,6 +290,12 @@
          }
          else {
             $("#krool_phase_count").slider("enable")
+         }
+         if (document.getElementById("helm_random").checked === true) {
+            $("#helm_phase_count").slider("disable")
+         }
+         else {
+            $("#helm_phase_count").slider("enable")
          }
          if (document.getElementById("keys_random").checked === true) {
             $("#krool_key_count").slider("disable")

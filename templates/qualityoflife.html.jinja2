@@ -1,3 +1,4 @@
+{% from 'macros.html' import list_selector %}
 <div class="container" style="margin-top: 20px;">
     <div class="row">
         <div class="col border panel">
@@ -20,6 +21,7 @@
                                 checked/>
                         Misc Changes
                     </label><a href="https://github.com/2dos/DK64-Randomizer/wiki/Feature-Explanations#misc-changes-1" target="_blank"><img class="icon" src="./static/img/external_link.png"></a>
+                    {# {{ list_selector(data_module.misc_changes, data_module.listType.qol, "MISC CHANGES", "This will open a popup that will let you customize what Quality of Life Options are active.&#10;This defaults to All options.") }} #}
                 </div>
                 <div class="form-check form-switch item-switch">
                     <label data-toggle="tooltip" title="This option shortens all of the longer boss fights in the game.&#10;">
