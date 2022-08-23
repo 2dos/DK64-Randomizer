@@ -163,7 +163,7 @@ def ShuffleCBs(spoiler: Spoiler):
                             level_data[level]["logic"][group.region].append(Collectible(Collectibles.bunch, selected_kong, group.logic, None, bunches_in_lesser_group))
                         if singles_in_lesser_group > 0:
                             level_data[level]["logic"][group.region].append(Collectible(Collectibles.banana, selected_kong, group.logic, None, singles_in_lesser_group))
-                        level_placement.append({"group": group.group, "name": group.name, "kong": selected_kong, "level": level, "type": "cb", "map": group.map})
+                        level_placement.append({"group": group.group, "name": group.name, "kong": selected_kong, "level": level, "type": "cb", "map": group.map, "locations": group.locations})
                     placed_bunches += bunches_in_group
                     placed_singles += singles_in_group
             # If all kongs have 0 unplaced, we're done here
