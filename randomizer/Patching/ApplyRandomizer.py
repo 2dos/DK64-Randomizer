@@ -7,7 +7,6 @@ import pickle
 import random
 
 import js
-from randomizer.CompileHints import compileHints
 from randomizer.Enums.Transitions import Transitions
 from randomizer.Patching.BananaPortRando import randomize_bananaport
 from randomizer.Patching.BarrelRando import randomize_barrels
@@ -358,8 +357,7 @@ def patching_response(responded_data):
 
     if spoiler.settings.wrinkly_hints in ["standard", "cryptic"]:
         wipeHints()
-        compileHints(spoiler)
-        PushHints()
+        PushHints(spoiler)
 
     # Apply Hash
     order = 0

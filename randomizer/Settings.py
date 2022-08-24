@@ -72,6 +72,11 @@ class Settings:
 
         self.prices = VanillaPrices.copy()
         self.level_order = {1: Levels.JungleJapes, 2: Levels.AngryAztec, 3: Levels.FranticFactory, 4: Levels.GloomyGalleon, 5: Levels.FungiForest, 6: Levels.CrystalCaves, 7: Levels.CreepyCastle}
+
+        # Used by hints in level order rando
+        self.owned_kongs_by_level = None
+        self.owned_moves_by_level = None
+
         self.resolve_settings()
 
     def update_progression_totals(self):

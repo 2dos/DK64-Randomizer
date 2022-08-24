@@ -20,6 +20,7 @@ class HintLocation:
         self.kong = kong
         self.location = location
         self.hint = hint
+        self.hint_type = -1
         self.banned_keywords = banned_keywords.copy()
         self.level = level
 
