@@ -3,6 +3,7 @@ import json
 import random
 
 import js
+from randomizer.CompileHints import compileHints
 from randomizer.Enums.MinigameType import MinigameType
 from randomizer.Enums.Warps import Warps
 import randomizer.ItemPool as ItemPool
@@ -1296,6 +1297,8 @@ def SetNewProgressionRequirements(settings: Settings):
     # Update values based on actual level progression
     ShuffleExits.UpdateLevelProgression(settings)
     ShuffleBossesBasedOnOwnedItems(settings, ownedKongs, ownedMoves)
+    settings.owned_kongs_by_level = ownedKongs
+    settings.owned_moves_by_level = ownedMoves
 
 
 def BlockAccessToLevel(settings: Settings, level):
@@ -1350,6 +1353,8 @@ def Generate_Spoiler(spoiler):
             if not GetAccessibleLocations(spoiler.settings, [], SearchMode.CheckBeatable):
                 raise Ex.VanillaItemsGameNotBeatableException("Game unbeatable.")
     GeneratePlaythrough(spoiler)
+    if spoiler.settings.wrinkly_hints in ["standard", "cryptic"]:
+        compileHints(spoiler)
     Reset()
     ShuffleExits.Reset()
     return spoiler

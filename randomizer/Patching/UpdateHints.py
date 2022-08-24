@@ -83,15 +83,15 @@ def updateRandomHint(message: str, kongs_req=[], keywords=[], levels=[]):
     return False
 
 
-def PushHints():
+def PushHints(spoiler):
     """Update the ROM with all hints."""
     hint_arr = []
-    for wrinkly_hint in hints:
-        replacement_hint = wrinkly_hint.hint
+    for replacement_hint in spoiler.hint_list.values():
         if replacement_hint == "":
             replacement_hint = "PLACEHOLDER HINT"
         hint_arr.append([replacement_hint.upper()])
     writeWrinklyHints(js.pointer_addresses[12]["entries"][41]["pointing_to"], hint_arr)
+    spoiler.hint_list.pop("First Time Talk")  # The FTT needs to be written to the ROM but should not be found in the spoiler log
 
 
 def wipeHints():
