@@ -165,6 +165,7 @@
 .definelabel unkSpriteRenderFunc_0, 0x8071495C
 .definelabel loadSpriteFunction, 0x8071498C
 .definelabel displaySpriteAtXYZ, 0x80714CC0
+.definelabel getHUDSprite, 0x806FACE8
 
 //vanilla data
 .definelabel TransitionSpeed, 0x807FD88C
@@ -372,6 +373,7 @@
 .definelabel ForceStandardAmmo, 0x807FFFE4
 .definelabel KKOPhaseRandoOn, 0x807FFFE0
 .definelabel KKOPhaseOrder, 0x807FFFE1
+.definelabel MultiBunchCount, 0x807FFFDE
 
 .definelabel CrankyMoves_New, 0x807FF400
 .definelabel CandyMoves_New, 0x807FF4F0

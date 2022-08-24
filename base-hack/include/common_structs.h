@@ -543,7 +543,10 @@ typedef struct parentMaps {
 } parentMaps;
 
 typedef struct placementData {
-	/* 0x000 */ char unk_00[0x10];
+	/* 0x000 */ char unk_00[0x4];
+	/* 0x004 */ float x_direction;
+	/* 0x008 */ float y_direction;
+	/* 0x00C */ int unk_0C;
 	/* 0x010 */ short popout_timer;
 	/* 0x012 */ char unk_12[0x20-0x12];
 } placementData;

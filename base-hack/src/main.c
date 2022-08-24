@@ -91,14 +91,8 @@ void cFuncLoop(void) {
 			}
 		}
 	}
-	// if (NewlyPressedControllerInput.Buttons & L_Button) {
-	// 	displayItemOnHUD(0xD,0,0);
-	// }
 	if (Rando.quality_of_life) {
-		if (NewlyPressedControllerInput.Buttons & D_Up) {
-			displayItemOnHUD(0xC,0,0);
-		}
-		toggleStandardAmmo();
+		handleDPadFunctionality();
 		if (Gamemode == 3) {
 			if (TransitionSpeed < 0) {
 				TransitionType = 1;
@@ -210,6 +204,11 @@ void earlyFrame(void) {
 	} else {
 		*(int*)(0x8074C3B0) = (int)&cutsceneDKCode;
 	}
+	// if (NewlyPressedControllerInput.Buttons & L_Button) {
+	// 	for (int i = 0; i < 0xF; i++) {
+	// 		displayItemOnHUD(i,0,0);
+	// 	}
+	// }
 	fastWarpShockwaveFix();
 	catchWarpHandle();
 	write_kutoutorder();

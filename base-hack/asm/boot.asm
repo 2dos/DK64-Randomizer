@@ -193,6 +193,9 @@ ShopImageHandlerHook:
 FixPufftossInvalidWallCollisionHook:
 	J 	FixPufftossInvalidWallCollision
 	NOP
+GiveItemPointerToMultiHook:
+	J 	GiveItemPointerToMulti
+	NOP
 
 loadExtraHooks:
 	LUI t3, hi(InstanceScriptHook)
@@ -254,6 +257,12 @@ loadExtraHooks:
 	LUI t4, 0x8071
 	SW t3, 0x417C (t4) // Store Hook
 	SW r0, 0x4180 (t4) // Store NOP
+
+	LUI t3, hi(GiveItemPointerToMultiHook)
+	LW t3, lo(GiveItemPointerToMultiHook) (t3)
+	LUI t4, 0x8070
+	SW t3, 0x8610 (t4) // Store Hook
+	SW r0, 0x8614 (t4) // Store NOP
 
 	LUI t3, hi(LobbyExitHook)
 	LW t3, lo(LobbyExitHook) (t3)

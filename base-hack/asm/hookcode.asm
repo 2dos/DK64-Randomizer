@@ -1209,5 +1209,12 @@ START_HOOK:
 		FixPufftossInvalidWallCollision_Invalid:
 			J 	0x80677C78
 			NOP
+
+	GiveItemPointerToMulti:
+		LUI 	t8, hi(MultiBunchCount)
+		ADDIU 	t8, t8, lo(MultiBunchCount)
+		SW 		t8, 0x0 (s0)
+		J 		0x806F8618
+		SW 		t6, 0xC (s0)
 .align 0x10
 END_HOOK:

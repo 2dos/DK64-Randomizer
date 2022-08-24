@@ -387,19 +387,38 @@ void initHack(int source) {
 				Item: Instrument | Coords: 0x122, 0xAE | X: 0x806F893A | Y: 0x806F893E
 				Item: GB Character | Coords: 0x1E, 0x48 | X: 0x806F857E | Y: 0x806F858E
 				Item: GB | Coords: 0x7A, 0xD0 | X: 0x806F8642 | Y: 0x806F8646
-				Item: Medal | Coords: 0x52, 0xD0 | X: 0x806F8606 | Y: 0x806F860A
+				Item: Medal (Multi CB) | Coords: 0x52, 0xD0 | X: 0x806F8606 | Y: 0x806F860A
 				Item: Race Coin | Coords: 0x122, 0x26 | X: 0x806F8852 | Y: 0x806F8856
 				Item: Blueprint | Coords: 0xC2, 0xD0 | X: 0x806F85CA | Y: 0x806F85CE
-				Item: CB_0 | Coords: 0x122, 0x26 | X: 0x806F8536 | Y: 0x806F853A
+				Item: CB T&S | Coords: 0x122, 0x26 | X: 0x806F8536 | Y: 0x806F853A
 				Item: Unk | Coords: 0x1E, 0x26 | X: 0x806F897A | Y: 0x806F897E
 			*/
-			int y_spacing = 24;
+			int y_spacing = 22;
 			int y_bottom = 0xD0;
 			*(short*)(0x806F893E) = y_bottom - (1 * y_spacing); // Instrument
 			*(short*)(0x806F8692) = y_bottom - (2 * y_spacing); // Crystals
 			*(short*)(0x806F87AA) = y_bottom - (3 * y_spacing); // Oranges
 			*(short*)(0x806F86CA) = y_bottom - (4 * y_spacing); // Ammo
 			*(short*)(0x806F873E) = y_bottom - (4 * y_spacing); // Homing Ammo
+			*(short*)(0x806F88CE) = y_bottom - (6 * y_spacing); // Coins
+			// Multibunch HUD
+			if (Rando.quality_of_life) {
+				*(short*)(0x806F860A) = y_bottom - (5 * y_spacing); // Multi CB
+				*(int*)(0x806F97D8) = 0x0C000000 | (((int)&getHUDSprite_HUD & 0xFFFFFF) >> 2); // Change Sprite
+				*(int*)(0x806F6BF0) = 0x0C000000 | (((int)&preventMedalHUD & 0xFFFFFF) >> 2); // Prevent Model Two Medals showing HUD
+				*(short*)(0x806F8606) = 0x122; // Position X
+				*(int*)(0x806F862C) = 0x4600F306; // MOV.S $f12, $f30
+				*(int*)(0x806F8634) = 0x4600A386; // MOV.S $f14, $f20
+				*(int*)(0x806F98E4) = 0x0C000000 | (((int)&initHUDDirection & 0xFFFFFF) >> 2); // HUD Direction
+				*(int*)(0x806F9A00) = 0x0C000000 | (((int)&initHUDDirection & 0xFFFFFF) >> 2); // HUD Direction
+				*(int*)(0x806F9A78) = 0x0C000000 | (((int)&initHUDDirection & 0xFFFFFF) >> 2); // HUD Direction
+				*(int*)(0x806F9BC0) = 0x0C000000 | (((int)&initHUDDirection & 0xFFFFFF) >> 2); // HUD Direction
+				*(int*)(0x806F9D14) = 0x0C000000 | (((int)&initHUDDirection & 0xFFFFFF) >> 2); // HUD Direction
+				*(int*)(0x806FA62C) = 0; // NOP: Enable Number Rendering
+				*(int*)(0x806FA56C) = 0; // NOP: Prevent opacity check
+			}
+			// GetOut Timer
+			*(unsigned short*)(0x806B7ECA) = 125; // 0x8078 for center-bottom ms timer
 			LoadedHooks = 1;
 		}
 
