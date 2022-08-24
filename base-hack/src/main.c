@@ -91,14 +91,13 @@ void cFuncLoop(void) {
 			}
 		}
 	}
+	// if (NewlyPressedControllerInput.Buttons & L_Button) {
+	// 	displayItemOnHUD(0xD,0,0);
+	// }
 	if (Rando.quality_of_life) {
-		// DKTVKong = 0;
-		// if (CurrentMap == NINTENDO_LOGO) {
-		// 	if (TransitionSpeed > 0) {
-		// 		CutsceneFadeActive = 0;
-		// 		DestExit = 16;
-		// 	}
-		// }
+		if (NewlyPressedControllerInput.Buttons & D_Up) {
+			displayItemOnHUD(0xC,0,0);
+		}
 		toggleStandardAmmo();
 		if (Gamemode == 3) {
 			if (TransitionSpeed < 0) {

@@ -375,6 +375,31 @@ void initHack(int source) {
 			*(unsigned char*)(0x8064A2FD) = chunky_reg_vals[(int)Rando.chunky_face_puzzle_init[5]];
 			*(unsigned char*)(0x8064A301) = chunky_reg_vals[(int)Rando.chunky_face_puzzle_init[7]];
 			*(unsigned char*)(0x8064A305) = chunky_reg_vals[(int)Rando.chunky_face_puzzle_init[8]];
+			// Realign HUD
+			/*
+				Item: CB | Coords: 0x1E, 0x26 | X: 0x806F84EE | Y: 0x806F84FE
+				Item: Coins | Coords: 0x122, 0x26 | X: 0x806F88CA | Y: 0x806F88CE
+				Item: Ammo | Coords: 0x122, 0x48 | X: 0x806F86C6 | Y: 0x806F86CA
+				Item: Homing Ammo | Coords: 0x122, 0x48 | X: 0x806F873A | Y: 0x806F873E
+				Item: Oranges | Coords: 0x122, 0x6A | X: 0x806F87A6 | Y: 0x806F87AA
+				Item: Crystals | Coords: 0x122, 0x8C | X: 0x806F868E | Y: 0x806F8692
+				Item: Film | Coords: 0x122, 0xD0 | X: 0x806F8812 | Y: 0x806F8816
+				Item: Instrument | Coords: 0x122, 0xAE | X: 0x806F893A | Y: 0x806F893E
+				Item: GB Character | Coords: 0x1E, 0x48 | X: 0x806F857E | Y: 0x806F858E
+				Item: GB | Coords: 0x7A, 0xD0 | X: 0x806F8642 | Y: 0x806F8646
+				Item: Medal | Coords: 0x52, 0xD0 | X: 0x806F8606 | Y: 0x806F860A
+				Item: Race Coin | Coords: 0x122, 0x26 | X: 0x806F8852 | Y: 0x806F8856
+				Item: Blueprint | Coords: 0xC2, 0xD0 | X: 0x806F85CA | Y: 0x806F85CE
+				Item: CB_0 | Coords: 0x122, 0x26 | X: 0x806F8536 | Y: 0x806F853A
+				Item: Unk | Coords: 0x1E, 0x26 | X: 0x806F897A | Y: 0x806F897E
+			*/
+			int y_spacing = 24;
+			int y_bottom = 0xD0;
+			*(short*)(0x806F893E) = y_bottom - (1 * y_spacing); // Instrument
+			*(short*)(0x806F8692) = y_bottom - (2 * y_spacing); // Crystals
+			*(short*)(0x806F87AA) = y_bottom - (3 * y_spacing); // Oranges
+			*(short*)(0x806F86CA) = y_bottom - (4 * y_spacing); // Ammo
+			*(short*)(0x806F873E) = y_bottom - (4 * y_spacing); // Homing Ammo
 			LoadedHooks = 1;
 		}
 
