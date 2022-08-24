@@ -96,18 +96,18 @@ def decrypt_setting_string(encrypted_string: str):
     for item in base64.b64decode(expanded).decode("ascii").split(","):
         if "[" in item:
             array = True
-            str = item.replace("[", "").replace("'", "").replace(" ", "")
-            value.append(str)
+            new_str = item.replace("[", "").replace("'", "").replace(" ", "")
+            value.append(new_str)
         elif "]" in item:
             array = False
-            str = item.replace("]", "").replace("'", "").replace(" ", "")
-            value.append(str)
+            new_str = item.replace("]", "").replace("'", "").replace(" ", "")
+            value.append(new_str)
             new_dict[list(original_dict.items())[index][0]] = value
             index += 1
             value = []
         elif array:
-            str = item.replace("'", "").replace(" ", "")
-            value.append(str)
+            new_str = item.replace("'", "").replace(" ", "")
+            value.append(new_str)
         else:
             if index < len(list(original_dict.items())):
                 if item == "x1":
@@ -118,6 +118,8 @@ def decrypt_setting_string(encrypted_string: str):
                     new_item = list(original_dict.items())[index][1]
                 else:
                     new_item = item
+                if isinstance(new_item, str) and new_item.isnumeric():
+                    new_item = int(new_item)
                 new_dict[list(original_dict.items())[index][0]] = new_item
             index += 1
     return new_dict

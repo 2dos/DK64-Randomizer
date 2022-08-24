@@ -9,7 +9,7 @@ from randomizer.Patching.ApplyRandomizer import patching_response
 from randomizer.Worker import background
 from ui.bindings import bind
 from ui.progress_bar import ProgressBar
-from ui.settings_strings import encrypt_settings_string, decrypt_setting_string
+from randomizer.SettingStrings import encrypt_settings_string, decrypt_setting_string
 from ui.rando_options import (
     toggle_counts_boxes,
     toggle_b_locker_boxes,
