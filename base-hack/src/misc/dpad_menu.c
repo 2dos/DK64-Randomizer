@@ -26,6 +26,9 @@ int canUseDPad(void) {
     if (TBVoidByte & 2) {
         return 0; // Pausing/Paused
     }
+    if ((CurrentMap == 1) || (CurrentMap == 5) || (CurrentMap == 0x19)) {
+        return 0; // In Shop
+    }
     if (
         (CurrentMap == 0x06) || // Japes Minecart
         (CurrentMap == 0x37) || // Fungi Minecart

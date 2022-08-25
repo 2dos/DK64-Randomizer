@@ -398,7 +398,6 @@ void initHack(int source) {
 			*(short*)(0x806F87AA) = y_bottom - (3 * y_spacing); // Oranges
 			*(short*)(0x806F86CA) = y_bottom - (4 * y_spacing); // Ammo
 			*(short*)(0x806F873E) = y_bottom - (4 * y_spacing); // Homing Ammo
-			*(short*)(0x806F88CE) = y_bottom - (6 * y_spacing); // Coins
 			// Multibunch HUD
 			if (Rando.quality_of_life) {
 				*(short*)(0x806F860A) = y_bottom - (5 * y_spacing); // Multi CB

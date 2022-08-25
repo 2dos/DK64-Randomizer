@@ -1216,5 +1216,26 @@ START_HOOK:
 		SW 		t8, 0x0 (s0)
 		J 		0x806F8618
 		SW 		t6, 0xC (s0)
+
+	CoinHUDReposition:
+		ADDIU	t8, r0, 0x26
+		LUI 	t7, hi(CurrentMap)
+		LW 		t7, lo(CurrentMap) (t7)
+		ADDIU 	a2, r0, 1
+		BEQ 	t7, a2, CoinHUDReposition_Finish
+		NOP
+		ADDIU 	a2, r0, 5
+		BEQ 	t7, a2, CoinHUDReposition_Finish
+		NOP
+		ADDIU 	a2, r0, 0x19
+		BEQ 	t7, a2, CoinHUDReposition_Finish
+		NOP
+
+		CoinHUDReposition_Lower:
+			ADDIU 	t8, r0, 0x4C
+
+		CoinHUDReposition_Finish:
+			J 	0x806F88D0
+			ADDIU 	t7, r0, 0x122
 .align 0x10
 END_HOOK:
