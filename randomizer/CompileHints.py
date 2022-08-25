@@ -399,7 +399,8 @@ def compileHints(spoiler: Spoiler):
         if level_order_matters and kong_index not in hinted_kongs:
             level_restriction = [level for level in all_levels if spoiler.settings.EntryGBs[level] <= spoiler.settings.EntryGBs[kong_map["level"]]]
         # This list of free kongs is sometimes only a subset of the correct list. A more precise list could be calculated but it would be slow.
-        free_kongs = spoiler.settings.starting_kong_list.append(free_kong)
+        free_kongs = spoiler.settings.starting_kong_list.copy()
+        free_kongs.append(free_kong)
         hint_location = getRandomHintLocation(kongs=free_kongs, levels=level_restriction)
         # If this fails, it's extremely likely there's already a very useful hint in the very few spot(s) this could be
         if hint_location is None:
