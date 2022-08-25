@@ -444,7 +444,11 @@ def compileHints(spoiler: Spoiler):
         while len(hintable_levels) == 0:
             hint_location = getRandomHintLocation(location_list=location_restriction)
             # Only hint levels more expensive than the current one AND we care about level order AND this hint's lobby doesn't already hint this level
-            hintable_levels = [level for level in all_levels if (not level_order_matters or spoiler.settings.EntryGBs[level] > spoiler.settings.EntryGBs[hint_location.level]) and (hint_location.level, level) not in hinted_blocker_combos]
+            hintable_levels = [
+                level
+                for level in all_levels
+                if (not level_order_matters or spoiler.settings.EntryGBs[level] > spoiler.settings.EntryGBs[hint_location.level]) and (hint_location.level, level) not in hinted_blocker_combos
+            ]
             # If Helm is random, always place at least one Helm hint - this helps non-maximized Helm seeds and slightly nerfs this category of hints otherwise.
             if not spoiler.settings.maximize_helm_blocker:
                 if i == 0:
