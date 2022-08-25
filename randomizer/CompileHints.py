@@ -297,7 +297,7 @@ def compileHints(spoiler: Spoiler):
         valid_types.append(HintType.KRoolOrder)
     if spoiler.settings.helm_setting != "skip_all" and spoiler.settings.helm_phase_count < 5:
         valid_types.append(HintType.HelmOrder)
-    if not spoiler.settings.unlock_all_moves:
+    if not spoiler.settings.unlock_all_moves and spoiler.settings.move_rando != "off":
         valid_types.append(HintType.FullShop)
         valid_types.append(HintType.MoveLocation)
     if spoiler.settings.random_patches:
@@ -336,7 +336,7 @@ def compileHints(spoiler: Spoiler):
             hint_distribution[removed_type] -= 1
             hint_count -= 1
     # In level order (or vanilla) progression, there are hints that we want to be in the player's path
-    level_order_matters = spoiler.settings.shuffle_loading_zones != "all"
+    level_order_matters = not spoiler.settings.no_logic and spoiler.settings.shuffle_loading_zones != "all"
     progression_hint_locations = None
     if level_order_matters:
         # These hint locations are *much* more likely to be seen, as they'll be available as players pass through lobbies on their first visit
