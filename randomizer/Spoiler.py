@@ -71,18 +71,10 @@ class Spoiler:
         startKongList = []
         for x in self.settings.starting_kong_list:
             startKongList.append(x.name.capitalize())
-        settings["Starting Kong List"] = startKongList
-        settings["Colors"] = self.settings.colors
-        settings["B Locker GBs"] = self.settings.EntryGBs
         if self.settings.randomize_blocker_required_amounts:
             settings["Maximum B Locker"] = self.settings.blocker_text
         if self.settings.randomize_cb_required_amounts:
             settings["Maximum Troff N Scoff"] = self.settings.troff_text
-        settings["Troff N Scoff Bananas"] = self.settings.BossBananas
-        settings["Diddy Freeing Kong"] = ItemList[ItemFromKong(self.settings.diddy_freeing_kong)].name
-        settings["Tiny Freeing Kong"] = ItemList[ItemFromKong(self.settings.tiny_freeing_kong)].name
-        settings["Lanky Freeing Kong"] = ItemList[ItemFromKong(self.settings.lanky_freeing_kong)].name
-        settings["Chunky Freeing Kong"] = ItemList[ItemFromKong(self.settings.chunky_freeing_kong)].name
         settings["Open Lobbies"] = self.settings.open_lobbies
         settings["Open Levels"] = self.settings.open_levels
         settings["Randomize Pickups"] = self.settings.randomize_pickups
@@ -92,16 +84,12 @@ class Spoiler:
         settings["Coin Door Open"] = self.settings.coin_door_open
         settings["Unlock Fairy Shockwave"] = self.settings.unlock_fairy_shockwave
         settings["Random Medal Requirement"] = self.settings.random_medal_requirement
-        if self.settings.coin_door_open in ["need_both", "need_rw"]:
-            settings["Medal Requirement"] = self.settings.medal_requirement
         settings["Random Shop Prices"] = self.settings.random_prices
         settings["Banana Port Randomization"] = self.settings.bananaport_rando
         settings["Shuffle Shop Locations"] = self.settings.shuffle_shops
         settings["Shuffle Kasplats"] = self.settings.kasplat_rando_setting
-        settings["K Rool Phases"] = self.settings.krool_order
 
         settings["Key 8 Required"] = self.settings.krool_access
-        settings["Keys Required for K Rool"] = self.GetKroolKeysRequired(self.settings.krool_keys_required)
         settings["Number of Keys Required"] = self.settings.krool_key_count
         settings["Fast Start"] = self.settings.fast_start_beginning_of_game
         settings["Helm Setting"] = self.settings.helm_setting
@@ -110,43 +98,68 @@ class Spoiler:
         settings["Fast GBs"] = self.settings.fast_gbs
         settings["High Requirements"] = self.settings.high_req
         humanspoiler["Settings"] = settings
+        humanspoiler["Cosmetics"] = {}
+        for color_item in self.settings.colors:
+            if color_item == "dk":
+                humanspoiler["Cosmetics"]["DK Color"] = self.settings.colors[color_item]
+            else:
+                humanspoiler["Cosmetics"][f"{color_item.capitalize()} Color"] = self.settings.colors[color_item]
+        humanspoiler["Requirements"] = {}
+        humanspoiler["Requirements"]["B Locker GBs"] = self.settings.EntryGBs
+        humanspoiler["Requirements"]["Troff N Scoff Bananas"] = self.settings.BossBananas
+        humanspoiler["Kongs"] = {}
+        humanspoiler["Kongs"]["Starting Kong List"] = startKongList
+        humanspoiler["Kongs"]["Japes Kong Puzzle Solver"] = ItemList[ItemFromKong(self.settings.diddy_freeing_kong)].name
+        humanspoiler["Kongs"]["Tiny Temple Puzzle Solver"] = ItemList[ItemFromKong(self.settings.tiny_freeing_kong)].name
+        humanspoiler["Kongs"]["Llama Temple Puzzle Solver"] = ItemList[ItemFromKong(self.settings.lanky_freeing_kong)].name
+        humanspoiler["Kongs"]["Factory Kong Puzzle Solver"] = ItemList[ItemFromKong(self.settings.chunky_freeing_kong)].name
+        if self.settings.coin_door_open in ["need_both", "need_rw"]:
+            humanspoiler["Misc"] = {}
+            humanspoiler["Misc"]["Medal Requirement"] = self.settings.medal_requirement
+        humanspoiler["End Game"] = {}
+        humanspoiler["End Game"]["Keys Required for K Rool"] = self.GetKroolKeysRequired(self.settings.krool_keys_required)
+        krool_order = []
+        for phase in self.settings.krool_order:
+            krool_order.append(ItemList[ItemFromKong(phase)].name.capitalize())
+        humanspoiler["End Game"]["K Rool Phases"] = krool_order
 
         helm_default_order = [Kongs.donkey, Kongs.chunky, Kongs.tiny, Kongs.lanky, Kongs.diddy]
         helm_new_order = []
         for room in self.settings.helm_order:
-            helm_new_order.append(helm_default_order[room].name)
-        humanspoiler["Helm Rooms"] = helm_new_order
+            helm_new_order.append(helm_default_order[room].name.capitalize())
+        humanspoiler["End Game"]["Helm Rooms"] = helm_new_order
+        humanspoiler["Items"] = {}
 
         if self.settings.shuffle_items != "none":
             # Playthrough data
             humanspoiler["Playthrough"] = self.playthrough
 
             # Woth data
-            humanspoiler["Way_of_the_Hoard"] = self.woth
+            humanspoiler["Way of the Hoard"] = self.woth
 
             # Item location data
             locations = OrderedDict()
             for location, item in self.location_data.items():
                 if not LocationList[location].constant:
                     locations[LocationList[location].name] = ItemList[item].name
-            humanspoiler["Locations"] = locations
+            humanspoiler["Items"].update(locations)
 
         if self.settings.random_prices != "vanilla":
             prices = OrderedDict()
             for item, price in self.settings.prices.items():
                 if item == Items.ProgressiveSlam:
-                    prices["Super Simian Slam"] = price[0]
-                    prices["Super Duper Simian Slam"] = price[1]
+                    prices["Super Simian Slam Cost"] = price[0]
+                    prices["Super Duper Simian Slam Cost"] = price[1]
                 elif item == Items.ProgressiveAmmoBelt:
-                    prices["Ammo Belt 1"] = price[0]
-                    prices["Ammo Belt 2"] = price[1]
+                    prices["Ammo Belt 1 Cost"] = price[0]
+                    prices["Ammo Belt 2 Cost"] = price[1]
                 elif item == Items.ProgressiveInstrumentUpgrade:
-                    prices["Music Upgrade 1"] = price[0]
-                    prices["Third Melon"] = price[1]
-                    prices["Music Upgrade 2"] = price[2]
+                    prices["Music Upgrade 1 Cost"] = price[0]
+                    prices["Third Melon Cost"] = price[1]
+                    prices["Music Upgrade 2 Cost"] = price[2]
                 else:
-                    prices[ItemList[item].name] = price
-            humanspoiler["Prices"] = prices
+                    prices[f"{ItemList[item].name} Cost"] = price
+            humanspoiler["Items"].update(prices)
 
         if self.settings.shuffle_loading_zones == "levels":
             # Just show level order
@@ -180,27 +193,28 @@ class Spoiler:
                 shuffled_exits[ShufflableExits[exit].name] = dest.spoilerName
             humanspoiler["Shuffled Exits"] = shuffled_exits
 
+        humanspoiler["Bosses"] = {}
         if self.settings.boss_location_rando:
             shuffled_bosses = OrderedDict()
             for i in range(7):
                 shuffled_bosses[Levels(i).name] = Maps(self.settings.boss_maps[i]).name
-            humanspoiler["Shuffled Boss Order"] = shuffled_bosses
+            humanspoiler["Bosses"]["Shuffled Boss Order"] = shuffled_bosses
 
         if self.settings.boss_kong_rando:
             shuffled_boss_kongs = OrderedDict()
             for i in range(7):
                 shuffled_boss_kongs[Levels(i).name] = Kongs(self.settings.boss_kongs[i]).name
-            humanspoiler["Shuffled Boss Kongs"] = shuffled_boss_kongs
+            humanspoiler["Bosses"]["Shuffled Boss Kongs"] = shuffled_boss_kongs
             kutout_order = ""
             for kong in self.settings.kutout_kongs:
                 kutout_order = kutout_order + Kongs(kong).name + ", "
-            humanspoiler["Shuffled Kutout Kong Order"] = kutout_order.removesuffix(", ")
+            humanspoiler["Bosses"]["Shuffled Kutout Kong Order"] = kutout_order.removesuffix(", ")
 
         if self.settings.hard_bosses:
             phase_names = []
             for phase in self.settings.kko_phase_order:
                 phase_names.append(f"Phase {phase+1}")
-            humanspoiler["Shuffled Kutout Phases"] = ", ".join(phase_names)
+            humanspoiler["Bosses"]["Shuffled Kutout Phases"] = ", ".join(phase_names)
 
         if self.settings.bonus_barrels in ("random", "selected"):
             shuffled_barrels = OrderedDict()
@@ -214,11 +228,11 @@ class Spoiler:
                 humanspoiler["Shuffled Bonus Barrels"] = shuffled_barrels
 
         if self.settings.music_bgm == "randomized":
-            humanspoiler["Shuffled Music (BGM)"] = self.music_bgm_data
+            humanspoiler["Cosmetics"].update(self.music_bgm_data)
         if self.settings.music_fanfares == "randomized":
-            humanspoiler["Shuffled Music Fanfares"] = self.music_fanfare_data
+            humanspoiler["Cosmetics"].update(self.music_fanfare_data)
         if self.settings.music_events == "randomized":
-            humanspoiler["Shuffled Music Events"] = self.music_event_data
+            humanspoiler["Cosmetics"].update(self.music_event_data)
         if self.settings.kasplat_rando:
             humanspoiler["Shuffled Kasplats"] = self.human_kasplats
         if self.settings.random_patches:

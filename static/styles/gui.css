@@ -438,11 +438,13 @@ i {
   min-height: 450px;
 }
 
+.settings-table:not(.ignore-width) {
+  max-width: 450px;
+  height: 300px;
+}
 .settings-table {
   flex: 1 0 50%;
   min-width: 437px;
-  max-width: 450px;
-  height: 300px;
   margin-left: auto;
   margin-right: auto;
 }
@@ -499,4 +501,46 @@ i {
 .customize {
   font-size: 10px;
   margin: 0px;
+}
+
+.spoiler-head {
+  padding: 1em 1.5em 1em 3em;
+  border: 2px solid white;
+  border-radius: 5px;
+  text-align: left;
+  cursor: pointer;
+}
+
+.playthrough-head {
+  padding: 0.5em;
+  border: 1px solid grey;
+  text-align: left;
+  padding-left: 1.5em;
+  cursor: pointer;
+}
+
+.spoiler-head.active, .playthrough-head.active {
+  background-image: linear-gradient(to bottom, rgba(0,0,0,0.5), rgba(0,0,0,0));
+}
+
+.spoiler-head .caret-up, .playthrough-head .caret-up {
+  display:block;
+}
+.spoiler-head .caret-down, .playthrough-head .caret-down {
+  display:none;
+}
+.spoiler-head.active .caret-up, .playthrough-head.active .caret-up {
+  display:none;
+}
+.spoiler-head.active .caret-down, .playthrough-head.active .caret-down {
+  display:block;
+}
+.spoiler-head-container, .playthrough-head-container {
+  display: flex;
+}
+.spoiler-head-name, .spoiler-head-caret, .playthrough-head-name, .playthrough-head-caret {
+  flex: 1;
+}
+.spoiler-head-caret, .playthrough-head-caret {
+  text-align: right;
 }
