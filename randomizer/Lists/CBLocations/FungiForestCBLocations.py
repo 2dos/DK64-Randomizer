@@ -455,7 +455,7 @@ ColoredBananaGroupList = [
         group=32,
         map_id=Maps.FungiForest,
         name="Leading to Diddy barn (2 custom, 3 Diddy)",
-        konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
+        konglist=[Kongs.diddy, Kongs.tiny, Kongs.chunky],
         region=Regions.MillArea,
         locations=[
             [1, 1.0, 3447, 362, 4514],
@@ -1123,7 +1123,7 @@ ColoredBananaGroupList = [
         region=Regions.ForestBaboonBlast,
         locations=[
             [5, 1.0, 2550, 885, 2186],
-            [5, 1.0, 1757, 1107, 1814],
+            [5, 1.0, 2636, 762, 1200],
         ],
     ),
     ColoredBananaGroup(
@@ -1415,7 +1415,7 @@ ColoredBananaGroupList = [
             [1, 2.0, 809, 173, 624],
             [1, 2.0, 730, 173, 748],
             [1, 2.0, 613, 173, 790],
-            [1, 2.0, 791, 173, 777],
+            [1, 2.0, 491, 173, 777],
         ],
     ),
     ColoredBananaGroup(
@@ -2345,7 +2345,7 @@ BalloonList = [
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.ThornvineArea,
         points=[
-            [3684, 260, 3684],
+            [3684, 260, 2300],
             [3563, 265, 2229],
             [3497, 260, 2073],
             [3627, 255, 2141],
@@ -2423,9 +2423,9 @@ BalloonList = [
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.MushroomUpperExterior,
         points=[
-            [1331, 1200, 1256],
-            [1185, 1200, 1242],
-            [1218, 1200, 1393],
+            [1331, 1180, 1256],
+            [1185, 1180, 1242],
+            [1218, 1180, 1393],
         ],
     ),
     Balloon(

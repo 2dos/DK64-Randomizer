@@ -938,8 +938,8 @@ ColoredBananaGroupList = [
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.AngryAztecMain,
         locations=[
-            [1, 1.0, 3488, 120, 3264],
-            [1, 1.0, 3462, 120, 3370],
+            [1, 1.0, 3488, 128, 3264],
+            [1, 1.0, 3462, 126, 3370],
             [1, 1.0, 3375, 120, 3437],
             [1, 1.0, 3275, 120, 3417],
             [1, 1.0, 3190, 120, 3402],
@@ -2046,9 +2046,8 @@ BalloonList = [
         map_id=Maps.AztecTinyTemple,
         name="Mini Monkey alcove",
         speed=5,
-        konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
+        konglist=[Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.TinyTemple,
-        logic=lambda l: l.mini,
         points=[
             [1822, 460, 1056],
             [1756, 465, 1119],
