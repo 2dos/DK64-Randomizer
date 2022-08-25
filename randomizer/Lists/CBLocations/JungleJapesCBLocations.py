@@ -179,8 +179,8 @@ ColoredBananaGroupList = [
             [1, 1.0, 2046, 287, 1591],
             [1, 1.0, 2129, 286, 1571],
             [1, 1.0, 2220, 280, 1593],
-            [1, 1.0, 2298, 280, 1695],
-            [1, 1.0, 2366, 280, 1776],
+            [1, 1.0, 2264, 280, 1652],
+            [1, 1.0, 2340, 280, 1744],
         ],
     ),
     ColoredBananaGroup(
@@ -281,7 +281,7 @@ ColoredBananaGroupList = [
         group=17,
         map_id=Maps.JungleJapes,
         name="Leading up to and on BBlast pad",
-        konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
+        konglist=[Kongs.donkey, Kongs.diddy, Kongs.chunky],
         region=Regions.JungleJapesMain,
         logic=lambda l: l.vines,
         locations=[
@@ -342,7 +342,7 @@ ColoredBananaGroupList = [
         name="Bunches on torches by DK and Tiny BPs",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.JapesBeyondCoconutGate1,
-        locations=[[5, 1.0, 2754, 378, 2172], [5, 1.0, 3262, 497, 2401]],
+        locations=[[5, 1.0, 2754, 378, 2172], [5, 1.0, 3262, 497, 2401],],
     ),
     ColoredBananaGroup(
         group=21,
@@ -754,7 +754,7 @@ ColoredBananaGroupList = [
         region=Regions.Mine,
         locations=[
             [5, 1.0, 915, 105, 919],
-            [5, 1.0, 705, 707, 821],
+            [5, 1.0, 705, 107, 821],
         ],
     ),
     ColoredBananaGroup(
@@ -975,16 +975,16 @@ ColoredBananaGroupList = [
         konglist=[Kongs.donkey],
         region=Regions.JapesBaboonBlast,
         locations=[
-            [1, 1.2, 1929, 880, 1191],
-            [1, 1.2, 1888, 880, 1135],
-            [1, 1.2, 1837, 880, 1067],
-            [1, 1.2, 1767, 875, 971],
-            [1, 1.2, 1237, 866, 771],
-            [1, 1.2, 1155, 866, 798],
-            [1, 1.2, 1041, 866, 836],
-            [1, 1.2, 1426, 784, 1600],
-            [1, 1.2, 1494, 784, 1589],
-            [1, 1.2, 1596, 784, 1574],
+            [1, 1.3, 1929, 878, 1191],
+            [1, 1.3, 1888, 878, 1135],
+            [1, 1.3, 1837, 878, 1067],
+            [1, 1.3, 1767, 874, 971],
+            [1, 1.3, 1237, 866, 771],
+            [1, 1.3, 1155, 866, 798],
+            [1, 1.3, 1041, 866, 836],
+            [1, 1.3, 1426, 780, 1600],
+            [1, 1.3, 1494, 780, 1589],
+            [1, 1.3, 1596, 780, 1574],
         ],
     ),
     ColoredBananaGroup(
@@ -1123,7 +1123,7 @@ ColoredBananaGroupList = [
         logic=lambda l: Events.JapesTinySwitch in l.Events and l.Slam,
         locations=[
             [5, 1.0, 1335, 285, 1974],
-            [5, 1.0, 1300, 285, 1976],
+            [5, 1.0, 1300, 285, 1946],
         ],
     ),
     ColoredBananaGroup(
@@ -1420,7 +1420,7 @@ ColoredBananaGroupList = [
         group=90,
         map_id=Maps.JungleJapes,
         name="Inside cage with Rambi Box (Donkey)",
-        konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
+        konglist=[Kongs.donkey],
         region=Regions.JapesBeyondCoconutGate2,
         vanilla=True,
         logic=lambda l: l.coconut,

@@ -1697,12 +1697,12 @@ ColoredBananaGroupList = [
     ColoredBananaGroup(
         group=119,
         map_id=Maps.CrystalCaves,
-        name="W3 (Tiny)",  # This needs to be moved to account for different W3 placement in rando
+        name="W3 (Tiny)",  # Slightly moved to match new position of the warp
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.IglooArea,
         vanilla=True,
         locations=[
-            [5, 1.0, 165.8050079345703, 80.16667175292969, 1136.7252197265625],
+            [5, 1.0, 177, 70, 1089],
         ],
     ),
     ColoredBananaGroup(
