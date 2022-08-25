@@ -28,6 +28,7 @@ from randomizer.Patching.UpdateHints import PushHints, wipeHints
 from randomizer.Patching.MiscSetupChanges import randomize_setup
 from randomizer.Patching.ShopRandomizer import ApplyShopRandomizer
 from ui.GenTracker import generateTracker
+from ui.GenSpoiler import GenerateSpoiler
 
 # from randomizer.Spoiler import Spoiler
 from randomizer.Settings import Settings
@@ -372,7 +373,7 @@ def patching_response(responded_data):
     js.document.getElementById("nav-settings-tab").style.display = ""
     if spoiler.settings.generate_spoilerlog is True:
         js.document.getElementById("spoiler_log_block").style.display = ""
-        js.document.getElementById("spoiler_log_text").value = spoiler.toJson()
+        loop.run_until_complete(GenerateSpoiler(spoiler.toJson()))
         js.document.getElementById("tracker_text").value = generateTracker(spoiler.toJson())
     else:
         js.document.getElementById("spoiler_log_text").value = ""
