@@ -5,6 +5,7 @@ def postMessage(message):
     """Fake function for printing messages with JS."""
     print(message)
 
+
 def getFile(filename):
-    with open(filename, 'r') as file:
+    with open(filename, "r") as file:
         return file.read()
