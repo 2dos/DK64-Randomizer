@@ -31,4 +31,5 @@ async def GenerateSpoiler(spoiler):
     # print(modified_spoiler)
 
     rendered = await template.render(spoiler=formatted_spoiler)
+    js.document.getElementById("spoiler_log_text").value = spoiler
     js.document.getElementById("spoiler_log_text").innerHTML = rendered

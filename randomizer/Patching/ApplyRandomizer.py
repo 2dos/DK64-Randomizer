@@ -377,6 +377,7 @@ def patching_response(responded_data):
         js.document.getElementById("tracker_text").value = generateTracker(spoiler.toJson())
     else:
         js.document.getElementById("spoiler_log_text").innerHTML = ""
+        js.document.getElementById("spoiler_log_text").value = ""
         js.document.getElementById("tracker_text").value = ""
         js.document.getElementById("spoiler_log_block").style.display = "none"
 
