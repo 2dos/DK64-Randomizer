@@ -512,11 +512,15 @@ i {
 }
 
 .playthrough-head {
-  padding: 0.5em;
+  padding: 0.5em 1.5em;
   border: 1px solid grey;
   text-align: left;
-  padding-left: 1.5em;
+  padding-left: 4em;
   cursor: pointer;
+}
+
+td.directional_divider {
+  width: 20%;
 }
 
 .spoiler-head.active, .playthrough-head.active {

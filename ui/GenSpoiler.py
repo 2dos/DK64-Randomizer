@@ -30,6 +30,13 @@ async def GenerateSpoiler(spoiler):
     # modified_spoiler.update(formatted_spoiler)
     # print(modified_spoiler)
 
-    rendered = await template.render(spoiler=formatted_spoiler)
+    lzr_type = "none"
+    if formatted_spoiler["Settings"]["Loading Zones Shuffled"] == "all":
+        if formatted_spoiler["Settings"]["Decoupled Loading Zones"] is False:
+            lzr_type = "coupled"
+        else:
+            lzr_type = "decoupled"
+
+    rendered = await template.render(spoiler=formatted_spoiler, lzr_type=lzr_type)
     js.document.getElementById("spoiler_log_text").value = spoiler
     js.document.getElementById("spoiler_log_text").innerHTML = rendered

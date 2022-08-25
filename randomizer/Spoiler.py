@@ -99,14 +99,25 @@ class Spoiler:
         settings["High Requirements"] = self.settings.high_req
         humanspoiler["Settings"] = settings
         humanspoiler["Cosmetics"] = {}
-        for color_item in self.settings.colors:
-            if color_item == "dk":
-                humanspoiler["Cosmetics"]["DK Color"] = self.settings.colors[color_item]
-            else:
-                humanspoiler["Cosmetics"][f"{color_item.capitalize()} Color"] = self.settings.colors[color_item]
+        if self.settings.colors != {}:
+            humanspoiler["Cosmetics"]["Colors"] = {}
+            for color_item in self.settings.colors:
+                if color_item == "dk":
+                    humanspoiler["Cosmetics"]["Colors"]["DK Color"] = self.settings.colors[color_item]
+                else:
+                    humanspoiler["Cosmetics"]["Colors"][f"{color_item.capitalize()} Color"] = self.settings.colors[color_item]
         humanspoiler["Requirements"] = {}
-        humanspoiler["Requirements"]["B Locker GBs"] = self.settings.EntryGBs
-        humanspoiler["Requirements"]["Troff N Scoff Bananas"] = self.settings.BossBananas
+        # GB Counts
+        gb_counts = {}
+        level_list = ["Jungle Japes", "Angry Aztec", "Frantic Factory", "Gloomy Galleon", "Fungi Forest", "Crystal Caves", "Creepy Castle", "Hideout Helm"]
+        for level_index, amount in enumerate(self.settings.EntryGBs):
+            gb_counts[level_list[level_index]] = amount
+        humanspoiler["Requirements"]["B Locker GBs"] = gb_counts
+        # CB Counts
+        cb_counts = {}
+        for level_index, amount in enumerate(self.settings.BossBananas):
+            cb_counts[level_list[level_index]] = amount
+        humanspoiler["Requirements"]["Troff N Scoff Bananas"] = cb_counts
         humanspoiler["Kongs"] = {}
         humanspoiler["Kongs"]["Starting Kong List"] = startKongList
         humanspoiler["Kongs"]["Japes Kong Puzzle Solver"] = ItemList[ItemFromKong(self.settings.diddy_freeing_kong)].name
@@ -128,7 +139,23 @@ class Spoiler:
         for room in self.settings.helm_order:
             helm_new_order.append(helm_default_order[room].name.capitalize())
         humanspoiler["End Game"]["Helm Rooms"] = helm_new_order
-        humanspoiler["Items"] = {}
+        humanspoiler["Items"] = {
+            "Kongs": {},
+            "Shops": {},
+            "Others": {},
+        }
+
+        prices = OrderedDict()
+        if self.settings.random_prices != "vanilla":
+            for item, price in self.settings.prices.items():
+                if item == Items.ProgressiveSlam:
+                    prices["Progressive Slam"] = f"{price[0]}→{price[1]}"
+                elif item == Items.ProgressiveAmmoBelt:
+                    prices["Progressive Ammo Belt"] = f"{price[0]}→{price[1]}"
+                elif item == Items.ProgressiveInstrumentUpgrade:
+                    prices["Progressive Instrument Upgrade"] = f"{price[0]}→{price[1]}→{price[2]}"
+                else:
+                    prices[f"{ItemList[item].name}"] = price
 
         if self.settings.shuffle_items != "none":
             # Playthrough data
@@ -139,27 +166,25 @@ class Spoiler:
 
             # Item location data
             locations = OrderedDict()
+
             for location, item in self.location_data.items():
                 if not LocationList[location].constant:
-                    locations[LocationList[location].name] = ItemList[item].name
-            humanspoiler["Items"].update(locations)
-
-        if self.settings.random_prices != "vanilla":
-            prices = OrderedDict()
-            for item, price in self.settings.prices.items():
-                if item == Items.ProgressiveSlam:
-                    prices["Super Simian Slam Cost"] = price[0]
-                    prices["Super Duper Simian Slam Cost"] = price[1]
-                elif item == Items.ProgressiveAmmoBelt:
-                    prices["Ammo Belt 1 Cost"] = price[0]
-                    prices["Ammo Belt 2 Cost"] = price[1]
-                elif item == Items.ProgressiveInstrumentUpgrade:
-                    prices["Music Upgrade 1 Cost"] = price[0]
-                    prices["Third Melon Cost"] = price[1]
-                    prices["Music Upgrade 2 Cost"] = price[2]
-                else:
-                    prices[f"{ItemList[item].name} Cost"] = price
-            humanspoiler["Items"].update(prices)
+                    item_name = ItemList[item].name
+                    location_name = LocationList[location].name
+                    item_group = "Others"
+                    if location_name in ("Diddy Kong", "Lanky Kong", "Tiny Kong", "Chunky Kong"):
+                        item_group = "Kongs"
+                    elif "Cranky" in location_name or "Funky" in location_name or "Candy" in location_name:
+                        item_group = "Shops"
+                    if self.settings.random_prices != "vanilla":
+                        if item_name in prices:
+                            item_name = f"{item_name} ({prices[item_name]})"
+                    humanspoiler["Items"][item_group][location_name] = item_name
+        if len(humanspoiler["Items"]["Shops"].keys()) == 0:
+            price_data = {}
+            for price in prices:
+                price_data[f"{price} Cost"] = prices[price]
+            humanspoiler["Items"]["Shops"] = price_data
 
         if self.settings.shuffle_loading_zones == "levels":
             # Just show level order
@@ -189,32 +214,67 @@ class Spoiler:
         elif self.settings.shuffle_loading_zones != "none":
             # Show full shuffled_exits data if more than just levels are shuffled
             shuffled_exits = OrderedDict()
+            level_starts = {
+                "DK Isles": [
+                    "DK Isles",
+                    "Japes Lobby",
+                    "Aztec Lobby",
+                    "Factory Lobby",
+                    "Galleon Lobby",
+                    "Fungi Lobby",
+                    "Caves Lobby",
+                    "Castle Lobby",
+                    "Snide's Room",
+                    "Training Grounds",
+                    "Banana Fairy Isle",
+                    "DK's Treehouse",
+                ],
+                "Jungle Japes": ["Jungle Japes"],
+                "Angry Aztec": ["Angry Aztec"],
+                "Frantic Factory": ["Frantic Factory"],
+                "Gloomy Galleon": ["Gloomy Galleon"],
+                "Fungi Forest": ["Fungi Forest"],
+                "Crystal Caves": ["Crystal Caves"],
+                "Creepy Castle": ["Creepy Castle"],
+            }
+            level_data = {"Other": {}}
+            for level in level_starts:
+                level_data[level] = {}
             for exit, dest in self.shuffled_exit_data.items():
+                level_name = "Other"
+                for level in level_starts:
+                    for search_name in level_starts[level]:
+                        if dest.spoilerName.find(search_name) == 0:
+                            level_name = level
                 shuffled_exits[ShufflableExits[exit].name] = dest.spoilerName
+                level_data[level_name][ShufflableExits[exit].name] = dest.spoilerName
             humanspoiler["Shuffled Exits"] = shuffled_exits
+            humanspoiler["Shuffled Exits (Sorted by destination)"] = level_data
 
         humanspoiler["Bosses"] = {}
         if self.settings.boss_location_rando:
             shuffled_bosses = OrderedDict()
             for i in range(7):
-                shuffled_bosses[Levels(i).name] = Maps(self.settings.boss_maps[i]).name
+                shuffled_bosses["".join(map(lambda x: x if x.islower() else " " + x, Levels(i).name))] = "".join(map(lambda x: x if x.islower() else " " + x, Maps(self.settings.boss_maps[i]).name))
             humanspoiler["Bosses"]["Shuffled Boss Order"] = shuffled_bosses
 
         if self.settings.boss_kong_rando:
             shuffled_boss_kongs = OrderedDict()
             for i in range(7):
-                shuffled_boss_kongs[Levels(i).name] = Kongs(self.settings.boss_kongs[i]).name
+                shuffled_boss_kongs["".join(map(lambda x: x if x.islower() else " " + x, Levels(i).name))] = Kongs(self.settings.boss_kongs[i]).name.capitalize()
             humanspoiler["Bosses"]["Shuffled Boss Kongs"] = shuffled_boss_kongs
             kutout_order = ""
             for kong in self.settings.kutout_kongs:
-                kutout_order = kutout_order + Kongs(kong).name + ", "
-            humanspoiler["Bosses"]["Shuffled Kutout Kong Order"] = kutout_order.removesuffix(", ")
+                kutout_order = kutout_order + Kongs(kong).name.capitalize() + ", "
+            humanspoiler["Bosses"]["Shuffled Kutout Kong Order"] = {}
+            humanspoiler["Bosses"]["Shuffled Kutout Kong Order"]["Order"] = kutout_order.removesuffix(", ")
 
         if self.settings.hard_bosses:
             phase_names = []
             for phase in self.settings.kko_phase_order:
                 phase_names.append(f"Phase {phase+1}")
-            humanspoiler["Bosses"]["Shuffled Kutout Phases"] = ", ".join(phase_names)
+            humanspoiler["Bosses"]["Shuffled Kutout Phases"] = {}
+            humanspoiler["Bosses"]["Shuffled Kutout Phases"]["Order"] = ", ".join(phase_names)
 
         if self.settings.bonus_barrels in ("random", "selected"):
             shuffled_barrels = OrderedDict()
@@ -228,11 +288,11 @@ class Spoiler:
                 humanspoiler["Shuffled Bonus Barrels"] = shuffled_barrels
 
         if self.settings.music_bgm == "randomized":
-            humanspoiler["Cosmetics"].update(self.music_bgm_data)
+            humanspoiler["Cosmetics"]["Background Music"] = self.music_bgm_data
         if self.settings.music_fanfares == "randomized":
-            humanspoiler["Cosmetics"].update(self.music_fanfare_data)
+            humanspoiler["Cosmetics"]["Fanfares"] = self.music_fanfare_data
         if self.settings.music_events == "randomized":
-            humanspoiler["Cosmetics"].update(self.music_event_data)
+            humanspoiler["Cosmetics"]["Event Themes"] = self.music_event_data
         if self.settings.kasplat_rando:
             humanspoiler["Shuffled Kasplats"] = self.human_kasplats
         if self.settings.random_patches:
