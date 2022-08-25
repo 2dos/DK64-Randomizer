@@ -343,6 +343,7 @@
 .definelabel getZRatioMovement, 0x80612790
 .definelabel ModelTwoCollisionArray, 0x80753EF0
 .definelabel IGT, 0x80750AB0
+.definelabel LatestCollectedObject, 0x807FD734
 
 //hack data
 .definelabel TestVariable, 0x807FFFFC

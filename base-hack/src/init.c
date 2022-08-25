@@ -340,11 +340,9 @@ void initHack(int source) {
 				// Standard Ammo
 				*(short*)(0x806F5B68) = 0x1000;
 				*(int*)(0x806F5BE8) = 0x0C000000 | (((int)&tagAnywhereAmmo & 0xFFFFFF) >> 2);
-				*(int*)(0x806F5BEC) = 0x00103403; // SRA $a2, $s0, 0x10
 				// Bunch
 				*(short*)(0x806F59A8) = 0x1000;
 				*(int*)(0x806F5A08) = 0x0C000000 | (((int)&tagAnywhereBunch & 0xFFFFFF) >> 2);
-				*(int*)(0x806F5A0C) = 0x00103403; // SRA $a2, $s0, 0x10
 
 				*(int*)(0x806F6CAC) = 0x9204001A; // LBU $a0, 0x1A ($s0)
 				*(int*)(0x806F6CB0) = 0x86060002; // LH $a2, 0x2 ($s0)

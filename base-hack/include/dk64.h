@@ -357,6 +357,7 @@ extern SpawnerInfo* currentCharSpawner;
 extern short EnemiesKilledCounter;
 extern model2_collision_info ModelTwoCollisionArray[42];
 extern int IGT;
+extern collected_item_struct* LatestCollectedObject;
 
 //hack data
 extern int TestVariable;

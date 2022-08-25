@@ -1115,3 +1115,12 @@ typedef struct movement_bitfield {
 	unsigned char entering_portal : 1;
 	unsigned char exiting_portal : 1;
 } movement_bitfield;
+
+typedef struct collected_item_struct {
+	/* 0x000 */ short id;
+	/* 0x002 */ short obj_type;
+	/* 0x004 */ char unk_04[0x1A - 0x4];
+	/* 0x01A */ unsigned char is_homing;
+	/* 0x01B */ char unk_1B;
+	/* 0x01C */ void* next_item;
+} collected_item_struct;
