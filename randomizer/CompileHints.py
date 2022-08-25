@@ -280,9 +280,9 @@ hint_distribution = {
     HintType.FullShop: 8,
     HintType.MoveLocation: 8,  # must be placed before you can buy the move
     HintType.DirtPatch: 0,
-    HintType.BLocker: 4,  # must be placed on the path and before the level they hint
+    HintType.BLocker: 3,  # must be placed on the path and before the level they hint
     HintType.TroffNScoff: 0,
-    HintType.KongLocation: 2,  # must be placed before you find them and placed in a door of the freeing kong
+    HintType.KongLocation: 2,  # must be placed before you find them and placed in a door of a free kong
     HintType.MedalsRequired: 1,
     HintType.Entrance: 8,
 }
@@ -295,7 +295,7 @@ def compileHints(spoiler: Spoiler):
     valid_types = [HintType.Joke]
     if spoiler.settings.krool_phase_count < 5:
         valid_types.append(HintType.KRoolOrder)
-    if spoiler.settings.helm_phase_count < 5:
+    if spoiler.settings.helm_setting != "skip_all" and spoiler.settings.helm_phase_count < 5:
         valid_types.append(HintType.HelmOrder)
     if not spoiler.settings.unlock_all_moves:
         valid_types.append(HintType.FullShop)
@@ -385,7 +385,7 @@ def compileHints(spoiler: Spoiler):
                 progression_hint_locations.append(hint_for_location)
 
     # Now place hints by type from most-restrictive to least restrictive. Usually anything we want on the player's path should get placed first
-    # Kongs should be hinted before they're available and should only be hinted to the freeing Kong, making them very restrictive
+    # Kongs should be hinted before they're available and should only be hinted to free Kongs, making them very restrictive
     hinted_kongs = []
     for i in range(hint_distribution[HintType.KongLocation]):
         kong_map = random.choice(kong_placement_levels)
@@ -398,12 +398,14 @@ def compileHints(spoiler: Spoiler):
         # This only matters if level order matters
         if level_order_matters and kong_index not in hinted_kongs:
             level_restriction = [level for level in all_levels if spoiler.settings.EntryGBs[level] <= spoiler.settings.EntryGBs[kong_map["level"]]]
-        hint_location = getRandomHintLocation(kongs=[free_kong], levels=level_restriction)
+        # This list of free kongs is sometimes only a subset of the correct list. A more precise list could be calculated but it would be slow.
+        free_kongs = spoiler.settings.starting_kong_list.append(free_kong)
+        hint_location = getRandomHintLocation(kongs=free_kongs, levels=level_restriction)
         # If this fails, it's extremely likely there's already a very useful hint in the very few spot(s) this could be
         if hint_location is None:
             if level_restriction is not None:
-                # Can't make it too easy on em - put this hint in any hint door for this kong
-                hint_location = getRandomHintLocation(kongs=[free_kong])
+                # Can't make it too easy on em - put this hint in any hint door for these kongs
+                hint_location = getRandomHintLocation(kongs=free_kongs)
             else:
                 # In the unfathomably rare world where our freeing kong is out of hint doors, replace this hint with a joke hint
                 # When I say unfathomably, I'm talking "you start with all moves and free B. Lockers but only 4 Kongs"
@@ -431,21 +433,30 @@ def compileHints(spoiler: Spoiler):
         UpdateHint(hint_location, message)
 
     # B. Locker hints need to be on the player's path to be useful
+    hinted_blocker_combos = []
     for i in range(hint_distribution[HintType.BLocker]):
         # If there's a specific level order to the seed, place the hints on the player's path so these hints aren't useless
         location_restriction = None
         if level_order_matters:
             location_restriction = progression_hint_locations
-        hint_location = getRandomHintLocation(location_list=location_restriction)
-
-        # Only hint levels more expensive than the current one AND we care about level order
-        hintable_levels = [level for level in all_levels if not level_order_matters or spoiler.settings.EntryGBs[level] > spoiler.settings.EntryGBs[hint_location.level]]
-        # Always place at least one Helm hint - this helps non-maximized Helm seeds and slightly nerfs this category of hints otherwise.
-        if i == 0:
-            hintable_levels = [Levels.HideoutHelm]
-        else:
-            hintable_levels.append(Levels.HideoutHelm)
+        # Pick random hint locations until we get one that can hint a future level
+        hintable_levels = []
+        while len(hintable_levels) == 0:
+            hint_location = getRandomHintLocation(location_list=location_restriction)
+            # Only hint levels more expensive than the current one AND we care about level order AND this hint's lobby doesn't already hint this level
+            hintable_levels = [
+                level
+                for level in all_levels
+                if (not level_order_matters or spoiler.settings.EntryGBs[level] > spoiler.settings.EntryGBs[hint_location.level]) and (hint_location.level, level) not in hinted_blocker_combos
+            ]
+            # If Helm is random, always place at least one Helm hint - this helps non-maximized Helm seeds and slightly nerfs this category of hints otherwise.
+            if not spoiler.settings.maximize_helm_blocker:
+                if i == 0:
+                    hintable_levels = [Levels.HideoutHelm]
+                else:
+                    hintable_levels.append(Levels.HideoutHelm)
         hinted_level = random.choice(hintable_levels)
+        hinted_blocker_combos.append((hint_location.level, hinted_level))
         level_name = level_list[hinted_level]
         if spoiler.settings.wrinkly_hints == "cryptic":
             level_name = random.choice(level_cryptic[hinted_level])
@@ -535,7 +546,7 @@ def compileHints(spoiler: Spoiler):
         if spoiler.settings.wrinkly_hints == "cryptic":
             shop_level = random.choice(level_cryptic_isles[index_of_level_with_location])
         shop_name = [name for name in shop_owners if name in woth_item_location][0]  # Should only match one
-        message = f"{woth_item.name} can be purchased from {shop_name} in {shop_level} and is on the Way of the Hoard."
+        message = f"On the Way of the Hoard, {woth_item.name} is bought from {shop_name} in {shop_level}."
         moves_hinted_and_lobby[woth_item] = shop_level
         hint_location.hint_type = HintType.MoveLocation
         UpdateHint(hint_location, message)

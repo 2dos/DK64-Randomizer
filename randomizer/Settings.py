@@ -74,8 +74,25 @@ class Settings:
         self.level_order = {1: Levels.JungleJapes, 2: Levels.AngryAztec, 3: Levels.FranticFactory, 4: Levels.GloomyGalleon, 5: Levels.FungiForest, 6: Levels.CrystalCaves, 7: Levels.CreepyCastle}
 
         # Used by hints in level order rando
-        self.owned_kongs_by_level = None
-        self.owned_moves_by_level = None
+        # By default (and in LZR) assume you have access to nothing everywhere so everything can be hinted
+        self.owned_kongs_by_level = {
+            Levels.JungleJapes: [],
+            Levels.AngryAztec: [],
+            Levels.FranticFactory: [],
+            Levels.GloomyGalleon: [],
+            Levels.FungiForest: [],
+            Levels.CrystalCaves: [],
+            Levels.CreepyCastle: [],
+        }
+        self.owned_moves_by_level = {
+            Levels.JungleJapes: [],
+            Levels.AngryAztec: [],
+            Levels.FranticFactory: [],
+            Levels.GloomyGalleon: [],
+            Levels.FungiForest: [],
+            Levels.CrystalCaves: [],
+            Levels.CreepyCastle: [],
+        }
 
         self.resolve_settings()
 
