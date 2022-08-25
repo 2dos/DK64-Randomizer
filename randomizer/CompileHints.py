@@ -295,7 +295,7 @@ def compileHints(spoiler: Spoiler):
     valid_types = [HintType.Joke]
     if spoiler.settings.krool_phase_count < 5:
         valid_types.append(HintType.KRoolOrder)
-    if spoiler.helm_setting != "skip_all" and spoiler.settings.helm_phase_count < 5:
+    if spoiler.settings.helm_setting != "skip_all" and spoiler.settings.helm_phase_count < 5:
         valid_types.append(HintType.HelmOrder)
     if not spoiler.settings.unlock_all_moves:
         valid_types.append(HintType.FullShop)
