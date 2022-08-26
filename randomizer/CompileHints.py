@@ -1,21 +1,20 @@
 """Compile a list of hints based on the settings."""
 import random
 from re import U
+
+from randomizer.Enums.Events import Events
 from randomizer.Enums.HintType import HintType
 from randomizer.Enums.Items import Items
 from randomizer.Enums.Kongs import Kongs
+from randomizer.Enums.Levels import Levels
 from randomizer.Enums.Regions import Regions
-from randomizer.Enums.Events import Events
-
+from randomizer.Enums.Transitions import Transitions
 from randomizer.Lists.Item import ItemList, NameFromKong
 from randomizer.Lists.MapsAndExits import GetMapId
 from randomizer.Lists.ShufflableExit import ShufflableExits
-from randomizer.Lists.WrinklyHints import hints
-from randomizer.Spoiler import Spoiler
-from randomizer.Patching.UpdateHints import UpdateHint, updateRandomHint
 from randomizer.Lists.WrinklyHints import HintLocation, hints
-from randomizer.Enums.Levels import Levels
-from randomizer.Enums.Transitions import Transitions
+from randomizer.Patching.UpdateHints import UpdateHint, updateRandomHint
+from randomizer.Spoiler import Spoiler
 
 
 class Hint:

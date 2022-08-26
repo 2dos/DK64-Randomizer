@@ -1,7 +1,7 @@
 """Make Instance Scripts."""
+import json
 import os
 import zlib
-import json
 
 base_rom = "./rom/dk64.z64"
 instance_dir = "./assets/Non-Code/instance_scripts"

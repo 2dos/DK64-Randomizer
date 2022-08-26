@@ -1,12 +1,12 @@
 """Grab object scripts."""
-import os
-import zlib
-import shutil
 import gzip
-from typing import BinaryIO
 import math
+import os
+import shutil
 import tkinter as tk
+import zlib
 from tkinter import filedialog
+from typing import BinaryIO
 
 root = tk.Tk()
 root.withdraw()

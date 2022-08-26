@@ -1,12 +1,13 @@
 """Apply barrel changes."""
-import js
+import math
 import random
 import struct
-import math
+
+import js
+from randomizer.Lists.MapsAndExits import Maps
+from randomizer.Lists.Patches import DirtPatchLocations
 from randomizer.Patching.Patcher import ROM
 from randomizer.Spoiler import Spoiler
-from randomizer.Lists.Patches import DirtPatchLocations
-from randomizer.Lists.MapsAndExits import Maps
 
 
 def float_to_hex(f):

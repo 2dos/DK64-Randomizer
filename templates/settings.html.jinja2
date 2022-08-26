@@ -52,8 +52,11 @@
 <div style="margin-top: 15px;">
     <h2 class="title">SETTINGS</h2>
     <div class="flex-container">
-        {% for i in range(0, 3) %} {# ApplyRandomizer.py ~Line 386 #}
-        <table id="settings_table_{{ i }}" class="table table-striped table-dark settings-table"></table>
+        {% for i in range(0, 3) %}
+            {# ApplyRandomizer.py ~Line 386 #}
+            <table id="settings_table_{{ i }}"
+                   class="table table-striped table-dark settings-table">
+            </table>
         {% endfor %}
     </div>
 </div>

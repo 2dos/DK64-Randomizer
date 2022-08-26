@@ -1,7 +1,8 @@
 """Patch some common text."""
 
-from text_encoder import writeText
 import shutil
+
+from text_encoder import writeText
 
 move_hints = [
     {
