@@ -1,7 +1,7 @@
 """Hint location data for Wrinkly hints."""
-from randomizer.Enums.WrinklyKong import WrinklyLocation
 from randomizer.Enums.Kongs import Kongs
 from randomizer.Enums.Levels import Levels
+from randomizer.Enums.WrinklyKong import WrinklyLocation
 
 
 class HintLocation:

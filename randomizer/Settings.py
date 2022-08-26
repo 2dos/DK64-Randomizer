@@ -4,14 +4,14 @@ import inspect
 import json
 import random
 import sys
-
-from randomizer.ShuffleBosses import ShuffleBosses, ShuffleBossKongs, ShuffleKutoutKongs, ShuffleKKOPhaseOrder
-from randomizer.Enums.Events import Events
-from randomizer.Enums.Kongs import Kongs, GetKongs
-from randomizer.Enums.Locations import Locations
-from randomizer.Enums.Levels import Levels
-from randomizer.Prices import RandomizePrices, VanillaPrices
 from random import randint
+
+from randomizer.Enums.Events import Events
+from randomizer.Enums.Kongs import GetKongs, Kongs
+from randomizer.Enums.Levels import Levels
+from randomizer.Enums.Locations import Locations
+from randomizer.Prices import RandomizePrices, VanillaPrices
+from randomizer.ShuffleBosses import ShuffleBosses, ShuffleBossKongs, ShuffleKKOPhaseOrder, ShuffleKutoutKongs
 
 
 class Settings:

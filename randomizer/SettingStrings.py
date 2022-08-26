@@ -1,8 +1,9 @@
 """Encryption and Decryption of settings strings."""
-import json
-import collections
 import base64
+import collections
+import json
 from itertools import groupby
+
 import js
 
 

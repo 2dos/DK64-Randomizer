@@ -1,11 +1,12 @@
 """Shuffles the locations of shops."""
 import random
+
+import randomizer.Logic as Logic
+from randomizer.Enums.Levels import Levels
+from randomizer.Enums.Regions import Regions
+from randomizer.Lists.MapsAndExits import Maps
 from randomizer.LogicClasses import TransitionFront
 from randomizer.Spoiler import Spoiler
-from randomizer.Enums.Levels import Levels
-from randomizer.Lists.MapsAndExits import Maps
-from randomizer.Enums.Regions import Regions
-import randomizer.Logic as Logic
 
 
 class ShopLocation:

@@ -1,9 +1,9 @@
 """Temp file used for testing new logic system."""
+import json
 import random
 from copy import deepcopy
 
 import pytest
-import json
 
 from randomizer.Fill import Generate_Spoiler
 from randomizer.Lists import Exceptions

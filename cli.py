@@ -1,17 +1,19 @@
-from operator import setitem
-from randomizer.Fill import Generate_Spoiler
-from randomizer.Settings import Settings
-from randomizer.Spoiler import Spoiler
-import random
+"""CLI script for running seed generation."""
+import argparse
 import codecs
 import json
-import sys
 import pickle
-import argparse
+import random
+import sys
+
+from randomizer.Fill import Generate_Spoiler
+from randomizer.Settings import Settings
 from randomizer.SettingStrings import decrypt_setting_string
+from randomizer.Spoiler import Spoiler
 
 
 def generate(generate_settings, file_name):
+    """Gen a seed and write the file to an output file."""
     settings = Settings(generate_settings)
     spoiler = Spoiler(settings)
     Generate_Spoiler(spoiler)
@@ -21,6 +23,7 @@ def generate(generate_settings, file_name):
 
 
 def main():
+    """CLI Entrypoint for generating seeds."""
     parser = argparse.ArgumentParser()
     parser.add_argument("--settings_string", help="The settings string to use to generate a seed", required=False)
     parser.add_argument("--preset", help="Preset to use", required=False)

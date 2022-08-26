@@ -1,5 +1,6 @@
 """Randomize puzzles."""
 import random
+
 from randomizer.Patching.Patcher import ROM
 from randomizer.Spoiler import Spoiler
 

@@ -1,10 +1,10 @@
 """Stores the data for each potential kasplat location."""
 
 from randomizer.Enums.Events import Events
+from randomizer.Enums.Kongs import Kongs
 from randomizer.Enums.Levels import Levels
 from randomizer.Enums.Regions import Regions
 from randomizer.Lists.MapsAndExits import Maps
-from randomizer.Enums.Kongs import Kongs
 
 
 class KasplatLocation:

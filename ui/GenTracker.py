@@ -1,6 +1,7 @@
 """File which generates a basic HTML tracker table for your seed."""
-import js
 import json
+
+import js
 
 
 def generateTracker(spoilerJson):

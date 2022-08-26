@@ -4,10 +4,10 @@ import random
 import js
 import randomizer.Fill as Fill
 import randomizer.Lists.Exceptions as Ex
-from randomizer.Settings import Settings
 from randomizer.Enums.Minigames import Minigames
-from randomizer.Lists.Minigame import BarrelMetaData, MinigameRequirements
 from randomizer.Lists.MapsAndExits import Maps
+from randomizer.Lists.Minigame import BarrelMetaData, MinigameRequirements
+from randomizer.Settings import Settings
 
 
 def Reset(barrelLocations):
