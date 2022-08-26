@@ -432,7 +432,7 @@ def replaceROMFile(
     # Update the entry in the pointer table to point to the new data
     if file_index >= len(pointer_tables[pointer_table_index]["entries"]):
         diff = file_index - len(pointer_tables[pointer_table_index]["entries"]) + 1
-        print(f"Appending {diff} extra entries to {pointer_tables[pointer_table_index]['name']} ({(file_index+1)-diff}->{file_index+1})")
+        print(f" - Appending {diff} extra entries to {pointer_tables[pointer_table_index]['name']} ({(file_index+1)-diff}->{file_index+1})")
         for d in range(diff):
             pointer_tables[pointer_table_index]["entries"].append(
                 {
@@ -453,7 +453,7 @@ def replaceROMFile(
         uncompressed_finish = main_pointer_table_offset + int.from_bytes(rom.read(4), "big")
         uncompressed_table_size = uncompressed_finish - uncompressed_start
         if uncompressed_table_size > 0:
-            print(f"Expanding pointer table {pointer_table_index} from {uncompressed_table_size} bytes to {4 * (file_index + 1)} bytes")
+            print(f" - Expanding pointer table {pointer_table_index} from {uncompressed_table_size} bytes to {4 * (file_index + 1)} bytes")
             rom.seek(uncompressed_start)
             new_uncompressed_data = bytearray(rom.read(uncompressed_table_size))
             for d in range((4 * (file_index + 1)) - uncompressed_table_size):
