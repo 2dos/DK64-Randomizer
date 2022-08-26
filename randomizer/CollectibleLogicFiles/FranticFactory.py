@@ -98,19 +98,23 @@ LogicRegions = {
 
         Collectible(Collectibles.coin, Kongs.lanky, lambda l: True, None, 3),
     ],
-    Regions.MainCore: [
-        Collectible(Collectibles.bunch, Kongs.diddy, lambda l: True, None, 3),  # On cylinders and Simian Spring pad
+    Regions.MiddleCore: [
         Collectible(Collectibles.bunch, Kongs.lanky, lambda l: True, None, 3),  # On steps on middle level
+        Collectible(Collectibles.balloon, Kongs.tiny, lambda l: l.feather, None, 1),  # On middle level
+        Collectible(Collectibles.bunch, Kongs.chunky, lambda l: True, None, 4),  # on rotating arms but reachable without machine on
+
+        Collectible(Collectibles.coin, Kongs.lanky, lambda l: True, None, 2),  # First two coins on elevators by W4
+        Collectible(Collectibles.coin, Kongs.tiny, lambda l: True, None, 5),  # W4
+        Collectible(Collectibles.coin, Kongs.chunky, lambda l: True, None, 4),  # On middle level
+    ],
+    Regions.UpperCore: [
+        Collectible(Collectibles.bunch, Kongs.diddy, lambda l: True, None, 3),  # On cylinders and Simian Spring pad
         Collectible(Collectibles.bunch, Kongs.lanky, lambda l: l.handstand, None, 5),  # On pipe to production room GB
         Collectible(Collectibles.balloon, Kongs.lanky, lambda l: l.grape, None, 1),  # By T&S portal
         Collectible(Collectibles.bunch, Kongs.tiny, lambda l: True, None, 4),  # On conveyors to Bonus Barrel
         Collectible(Collectibles.bunch, Kongs.tiny, lambda l: l.twirl, None, 1),  # On platform past Bonus Barrel
-        Collectible(Collectibles.balloon, Kongs.tiny, lambda l: l.feather, None, 1),  # On middle level
-        Collectible(Collectibles.bunch, Kongs.chunky, lambda l: True, None, 4),  # on rotating arms
 
-        Collectible(Collectibles.coin, Kongs.lanky, lambda l: True, None, 3),  # On elevators by W4
-        Collectible(Collectibles.coin, Kongs.tiny, lambda l: True, None, 5),  # W4
+        Collectible(Collectibles.coin, Kongs.lanky, lambda l: True, None, 1),  # High coin on elevators by W4
         Collectible(Collectibles.coin, Kongs.tiny, lambda l: l.twirl, None, 3),  # Past Tiny Bonus Barrel
-        Collectible(Collectibles.coin, Kongs.chunky, lambda l: True, None, 4),  # On middle level
     ],
 }
