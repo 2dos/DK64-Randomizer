@@ -307,6 +307,9 @@ function load_old_seeds() {
           if (sorted_array[i].date == undefined) {
             seed_store.delete(sorted_array[i].id)
           }
+          if (i > 10){
+            seed_store.delete(sorted_array[i].id)
+          }
           console.log(sorted_array[i]);
           // TODO: Generate UI with this data
         }
