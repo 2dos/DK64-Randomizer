@@ -285,42 +285,39 @@
         </div>
     </div>
     <script>
-    $('.nav-tabs').click(function(){
-        setTimeout(() => {
-             $('#krool_phase_count').slider("relayout");
-             $('#krool_key_count').slider("relayout");
-             $('#starting_kongs_count').slider("relayout");
-             $('#helm_phase_count').slider("relayout");
-             toggle_clicks()
-           }, 200);
-       })
-    function toggle_clicks(){
-        if (document.getElementById("krool_random").checked === true) {
-            $("#krool_phase_count").slider("disable")
-         }
-         else {
-            $("#krool_phase_count").slider("enable")
-         }
-         if (document.getElementById("helm_random").checked === true) {
-            $("#helm_phase_count").slider("disable")
-         }
-         else {
-            $("#helm_phase_count").slider("enable")
-         }
-         if (document.getElementById("keys_random").checked === true) {
-            $("#krool_key_count").slider("disable")
-         }
-         else {
-            $("#krool_key_count").slider("enable")
-         }
-         if (document.getElementById("starting_random").checked === true) {
-            $("#starting_kongs_count").slider("disable")
-         }
-         else {
-            $("#starting_kongs_count").slider("enable")
-         }
-    }
-    $(function () {
-        $('[data-toggle="tooltip"]').tooltip()
-    })
+        $('.nav-tabs').click(function() {
+            setTimeout(() => {
+                $('#krool_phase_count').slider("relayout");
+                $('#krool_key_count').slider("relayout");
+                $('#starting_kongs_count').slider("relayout");
+                $('#helm_phase_count').slider("relayout");
+                toggle_clicks()
+            }, 200);
+        })
+        
+        function toggle_clicks() {
+            if (document.getElementById("krool_random").checked === true) {
+                $("#krool_phase_count").slider("disable")
+            } else {
+                $("#krool_phase_count").slider("enable")
+            }
+            if (document.getElementById("helm_random").checked === true) {
+                $("#helm_phase_count").slider("disable")
+            } else {
+                $("#helm_phase_count").slider("enable")
+            }
+            if (document.getElementById("keys_random").checked === true) {
+                $("#krool_key_count").slider("disable")
+            } else {
+                $("#krool_key_count").slider("enable")
+            }
+            if (document.getElementById("starting_random").checked === true) {
+                $("#starting_kongs_count").slider("disable")
+            } else {
+                $("#starting_kongs_count").slider("enable")
+            }
+        }
+        $(function() {
+            $('[data-toggle="tooltip"]').tooltip()
+        })
     </script>

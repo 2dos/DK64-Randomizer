@@ -30,7 +30,7 @@
     {
       "label": "Validate Jinja2",
       "type": "shell",
-      "command": "${command:python.interpreterPath} -m djlint ./templates/* --profile=jinja --reformat",
+      "command": "${command:python.interpreterPath} -m djlint ./templates/* --profile=jinja --reformat --format-css --format-js",
       "problemMatcher": []
     },
     {

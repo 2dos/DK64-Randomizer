@@ -211,26 +211,27 @@
 </footer>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
 <script>
-            function render_page(page){                    
-                xmlhttp = new XMLHttpRequest();
-                xmlhttp.open("GET", page, false);
-                xmlhttp.send();
-                var data = xmlhttp.responseText;
-                document.documentElement.innerHTML = "";
-                document.open();
-                document.write(data);
-                document.close();
-                history.pushState({}, "page 1", "randomizer.html");
-            }
-            if(window.location.protocol != 'https:') {
-                if (location.hostname != "localhost" && location.hostname != "127.0.0.1") {
-                    location.href = location.href.replace("http://", "https://");
-                }
-            }
-            $(function () {
-                $('[data-toggle="tooltip"]').tooltip({
-                    trigger: 'hover'})
-            })
+    function render_page(page) {
+        xmlhttp = new XMLHttpRequest();
+        xmlhttp.open("GET", page, false);
+        xmlhttp.send();
+        var data = xmlhttp.responseText;
+        document.documentElement.innerHTML = "";
+        document.open();
+        document.write(data);
+        document.close();
+        history.pushState({}, "page 1", "randomizer.html");
+    }
+    if (window.location.protocol != 'https:') {
+        if (location.hostname != "localhost" && location.hostname != "127.0.0.1") {
+            location.href = location.href.replace("http://", "https://");
+        }
+    }
+    $(function() {
+        $('[data-toggle="tooltip"]').tooltip({
+            trigger: 'hover'
+        })
+    })
 </script>
 </body>
 </html>
