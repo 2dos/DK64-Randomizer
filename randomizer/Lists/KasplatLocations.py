@@ -476,15 +476,14 @@ KasplatLocationList = {
             xmax=730,
             zmin=1645,
             zmax=1705,
-            region=Regions.MainCore,
+            region=Regions.MiddleCore,
         ),
         KasplatLocation(
             name="Factory Kasplat: Near the slippery pipe in Production Room",
             map_id=Maps.FranticFactory,
             kong_lst=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
             coords=[782, 557, 1686],
-            region=Regions.MainCore,
-            additional_logic=lambda l: Events.MainCoreActivated in l.Events,
+            region=Regions.UpperCore,
             vanilla=True,
         ),
         KasplatLocation(
@@ -529,7 +528,7 @@ KasplatLocationList = {
         #     xmax=650,
         #     zmin=1310,
         #     zmax=1360,
-        #     region=Regions.MainCore,
+        #     region=Regions.MiddleCore,
         #     additional_logic=lambda l: Events.MainCoreActivated in l.Events,
         # ),
         KasplatLocation(
@@ -589,7 +588,7 @@ KasplatLocationList = {
             xmax=387,
             zmin=1589,
             zmax=1610,
-            region=Regions.MainCore,
+            region=Regions.UpperCore,
             additional_logic=lambda l: l.twirl,
         ),
         KasplatLocation(
