@@ -9,12 +9,12 @@ import zlib
 
 import create_helm_geo
 import generate_watch_file
+import shop_instance_script  # HAS TO BE BEFORE `instance_script_maker`
 import instance_script_maker
 import model_fix
 
 # Patcher functions for the extracted files
 import patch_text
-import shop_instance_script
 from adjust_exits import adjustExits
 from convertPortalImage import convertPortalImage
 from convertSetup import convertSetup
