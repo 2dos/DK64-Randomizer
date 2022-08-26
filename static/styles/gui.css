@@ -452,6 +452,7 @@ i {
 #spoiler_log_block {
   flex: 1 1 auto;
   min-width: 500px;
+  width: 500px;
 }
 
 .search {
@@ -523,8 +524,8 @@ td.directional_divider {
   width: 20%;
 }
 
-.spoiler-head.active, .playthrough-head.active {
-  background-image: linear-gradient(to bottom, rgba(0,0,0,0.5), rgba(0,0,0,0));
+.spoiler-head:not(.collapsed), .playthrough-head:not(.collapsed) {
+  background-image: linear-gradient(to bottom, rgba(0,0,0,0.9), rgba(0,0,0,0.2));
 }
 
 .spoiler-head .caret-up, .playthrough-head .caret-up {
@@ -533,10 +534,10 @@ td.directional_divider {
 .spoiler-head .caret-down, .playthrough-head .caret-down {
   display:none;
 }
-.spoiler-head.active .caret-up, .playthrough-head.active .caret-up {
+.spoiler-head:not(.collapsed) .caret-up, .playthrough-head:not(.collapsed) .caret-up {
   display:none;
 }
-.spoiler-head.active .caret-down, .playthrough-head.active .caret-down {
+.spoiler-head:not(.collapsed) .caret-down, .playthrough-head:not(.collapsed) .caret-down {
   display:block;
 }
 .spoiler-head-container, .playthrough-head-container {

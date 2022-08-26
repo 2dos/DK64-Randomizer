@@ -1,5 +1,6 @@
 """Spoiler class and functions."""
 
+from email.policy import default
 import json
 from typing import OrderedDict
 
@@ -99,13 +100,43 @@ class Spoiler:
         settings["High Requirements"] = self.settings.high_req
         humanspoiler["Settings"] = settings
         humanspoiler["Cosmetics"] = {}
-        if self.settings.colors != {}:
-            humanspoiler["Cosmetics"]["Colors"] = {}
+        if self.settings.colors != {} or self.settings.klaptrap_model_index:
+            humanspoiler["Cosmetics"]["Colors and Models"] = {}
             for color_item in self.settings.colors:
                 if color_item == "dk":
-                    humanspoiler["Cosmetics"]["Colors"]["DK Color"] = self.settings.colors[color_item]
+                    humanspoiler["Cosmetics"]["Colors and Models"]["DK Color"] = self.settings.colors[color_item]
                 else:
-                    humanspoiler["Cosmetics"]["Colors"][f"{color_item.capitalize()} Color"] = self.settings.colors[color_item]
+                    humanspoiler["Cosmetics"]["Colors and Models"][f"{color_item.capitalize()} Color"] = self.settings.colors[color_item]
+            klap_models = {
+                0x19: "Beaver",
+                0x1E: "Klobber",
+                0x20: "Kaboom",
+                0x21: "Green Klaptrap",
+                0x22: "Purple Klaptrap",
+                0x23: "Red Klaptrap",
+                0x24: "Klaptrap Teeth",
+                0x26: "Krash",
+                0x27: "Troff",
+                0x30: "N64 Logo",
+                0x34: "Mech Fish",
+                0x42: "Krossbones",
+                0x47: "Rabbit",
+                0x4B: "Minecart Skeleton Head",
+                0x51: "Tomato",
+                0x62: "Ice Tomato",
+                0x69: "Golden Banana",
+                0x70: "Microbuffer",
+                0x72: "Bell",
+                0x96: "Missile (Car Race)",
+                0xB0: "Red Buoy",
+                0xB1: "Green Buoy",
+                0xBD: "Rareware Logo",
+            }
+            if self.settings.klaptrap_model_index in klap_models:
+                humanspoiler["Cosmetics"]["Colors and Models"]["Klatrap Model"] = klap_models[self.settings.klaptrap_model_index]
+            else:
+                humanspoiler["Cosmetics"]["Colors and Models"]["Klatrap Model"] = f"Unknown Model {hex(self.settings.klaptrap_model_index)}"
+
         humanspoiler["Requirements"] = {}
         # GB Counts
         gb_counts = {}
@@ -118,6 +149,7 @@ class Spoiler:
         for level_index, amount in enumerate(self.settings.BossBananas):
             cb_counts[level_list[level_index]] = amount
         humanspoiler["Requirements"]["Troff N Scoff Bananas"] = cb_counts
+        humanspoiler["Requirements"]["Miscellaneous"] = {}
         humanspoiler["Kongs"] = {}
         humanspoiler["Kongs"]["Starting Kong List"] = startKongList
         humanspoiler["Kongs"]["Japes Kong Puzzle Solver"] = ItemList[ItemFromKong(self.settings.diddy_freeing_kong)].name
@@ -125,8 +157,7 @@ class Spoiler:
         humanspoiler["Kongs"]["Llama Temple Puzzle Solver"] = ItemList[ItemFromKong(self.settings.lanky_freeing_kong)].name
         humanspoiler["Kongs"]["Factory Kong Puzzle Solver"] = ItemList[ItemFromKong(self.settings.chunky_freeing_kong)].name
         if self.settings.coin_door_open in ["need_both", "need_rw"]:
-            humanspoiler["Misc"] = {}
-            humanspoiler["Misc"]["Medal Requirement"] = self.settings.medal_requirement
+            humanspoiler["Requirements"]["Miscellaneous"]["Medal Requirement"] = self.settings.medal_requirement
         humanspoiler["End Game"] = {}
         humanspoiler["End Game"]["Keys Required for K Rool"] = self.GetKroolKeysRequired(self.settings.krool_keys_required)
         krool_order = []
@@ -254,10 +285,20 @@ class Spoiler:
         humanspoiler["Bosses"] = {}
         if self.settings.boss_location_rando:
             shuffled_bosses = OrderedDict()
+            boss_names = {
+                "JapesBoss": "Army Dillo 1",
+                "AztecBoss": "Dogadon 1",
+                "FactoryBoss": "Mad Jack",
+                "GalleonBoss": "Pufftoss",
+                "FungiBoss": "Dogadon 2",
+                "CavesBoss": "Army Dillo 2",
+                "CastleBoss": "King Kut Out",
+            }
             for i in range(7):
-                shuffled_bosses["".join(map(lambda x: x if x.islower() else " " + x, Levels(i).name))] = "".join(map(lambda x: x if x.islower() else " " + x, Maps(self.settings.boss_maps[i]).name))
+                shuffled_bosses["".join(map(lambda x: x if x.islower() else " " + x, Levels(i).name))] = boss_names[Maps(self.settings.boss_maps[i]).name]
             humanspoiler["Bosses"]["Shuffled Boss Order"] = shuffled_bosses
 
+        humanspoiler["Bosses"]["King Kut Out Properties"] = {}
         if self.settings.boss_kong_rando:
             shuffled_boss_kongs = OrderedDict()
             for i in range(7):
@@ -266,15 +307,13 @@ class Spoiler:
             kutout_order = ""
             for kong in self.settings.kutout_kongs:
                 kutout_order = kutout_order + Kongs(kong).name.capitalize() + ", "
-            humanspoiler["Bosses"]["Shuffled Kutout Kong Order"] = {}
-            humanspoiler["Bosses"]["Shuffled Kutout Kong Order"]["Order"] = kutout_order.removesuffix(", ")
+            humanspoiler["Bosses"]["King Kut Out Properties"]["Shuffled Kutout Kong Order"] = kutout_order.removesuffix(", ")
 
         if self.settings.hard_bosses:
             phase_names = []
             for phase in self.settings.kko_phase_order:
                 phase_names.append(f"Phase {phase+1}")
-            humanspoiler["Bosses"]["Shuffled Kutout Phases"] = {}
-            humanspoiler["Bosses"]["Shuffled Kutout Phases"]["Order"] = ", ".join(phase_names)
+            humanspoiler["Bosses"]["King Kut Out Properties"]["Shuffled Kutout Phases"] = ", ".join(phase_names)
 
         if self.settings.bonus_barrels in ("random", "selected"):
             shuffled_barrels = OrderedDict()
@@ -329,6 +368,12 @@ class Spoiler:
                         shop_name = shop_dict[new_shop]
                     shop_location_dict[f"{level_name} - {location_name}"] = shop_name
             humanspoiler["Shop Locations"] = shop_location_dict
+        for spoiler_dict in ("Items", "Bosses"):
+            is_empty = True
+            for y in humanspoiler[spoiler_dict]:
+                if humanspoiler[spoiler_dict][y] != {}:
+                    is_empty = False
+            del humanspoiler[spoiler_dict]
 
         return json.dumps(humanspoiler, indent=4)
 

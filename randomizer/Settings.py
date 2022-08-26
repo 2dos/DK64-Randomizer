@@ -257,6 +257,7 @@ class Settings:
         self.colors = {}
         self.color_palettes = {}
         self.klaptrap_model = "green"
+        self.klaptrap_model_index = 0x21
         self.dk_colors = "vanilla"
         self.dk_custom_color = "#000000"
         self.diddy_colors = "vanilla"
