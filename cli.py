@@ -51,7 +51,7 @@ def main():
                     setting_data.pop("name")
                     setting_data.pop("description")
                     found = True
-        if found == False:
+        if found is False:
             sys.exit(2)
     if args.seed is not None:
         setting_data["seed"] = args.seed
