@@ -260,7 +260,6 @@ romdatabase.onupgradeneeded = function () {
 };
 
 seeddatabase.onupgradeneeded = function () {
-  console.log("UPGRADING")
   try {
     var seed_db = seeddatabase.result;
     seed_db.createObjectStore("SeedStorage", {
