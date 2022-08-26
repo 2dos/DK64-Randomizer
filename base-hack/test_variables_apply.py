@@ -2,7 +2,7 @@
 set_variables = {
     "level_order_rando_on": 0,
     "level_order": [1, 5, 4, 0, 6, 2, 3],
-    "troff_scoff_count": [25, 200, 300, 400, 410, 420, 430],
+    "troff_scoff_count": [25, 200, 300, 400, 410, 420, 8],
     "blocker_normal_count": [2, 3, 4, 5, 6, 7, 8, 9],
     "key_flags": [0x4A, 0x8A, 0xA8, 0xEC, 0x124, 0x13D, 0x1A],
     "unlock_kongs": 0x1F,
@@ -48,7 +48,7 @@ set_variables = {
     "remove_high_requirements": 1,
     "open_level_sections": 1,
     "auto_keys": 0,
-    "test_zone": [0xAA, 1],
+    "test_zone": [0xAA, 0],
     "klaptrap_color_bbother": 0x96,
     "kut_out_phases": [3, 2, 0],
     "dpad_visual_enabled": 1,

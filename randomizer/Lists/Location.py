@@ -368,7 +368,7 @@ LocationList = {
     Locations.HelmKey: Location("Helm Key", Items.HideoutHelmKey, Types.Key),
 
     # Normal shop locations
-    Locations.SimianSlam: Location("Isles Cranky Shared", Items.NoItem, Types.Shop, [Levels.DKIsles, Kongs.any, MoveTypes.Slam, 1]),
+    Locations.SimianSlam: Location("DK Isles Cranky Shared", Items.NoItem, Types.Shop, [Levels.DKIsles, Kongs.any, MoveTypes.Slam, 1]),
     Locations.BaboonBlast: Location("Japes Cranky Donkey", Items.BaboonBlast, Types.Shop, [Levels.JungleJapes, Kongs.donkey, MoveTypes.Moves, 1]),
     Locations.ChimpyCharge: Location("Japes Cranky Diddy", Items.ChimpyCharge, Types.Shop, [Levels.JungleJapes, Kongs.diddy, MoveTypes.Moves, 1]),
     Locations.Orangstand: Location("Japes Cranky Lanky", Items.Orangstand, Types.Shop, [Levels.JungleJapes, Kongs.lanky, MoveTypes.Moves, 1]),
@@ -493,11 +493,11 @@ LocationList = {
     Locations.TinyCastleInstrument: Location("Castle Candy Tiny", Items.NoItem, Types.Shop, [Levels.CreepyCastle, Kongs.tiny, MoveTypes.Instruments, 0]),
     Locations.ChunkyCastleInstrument: Location("Castle Candy Chunky", Items.NoItem, Types.Shop, [Levels.CreepyCastle, Kongs.chunky, MoveTypes.Instruments, 0]),
     # Isles
-    Locations.DonkeyIslesPotion: Location("Isles Cranky Donkey", Items.NoItem, Types.Shop, [Levels.DKIsles, Kongs.donkey, MoveTypes.Moves, 0]),
-    Locations.DiddyIslesPotion: Location("Isles Cranky Diddy", Items.NoItem, Types.Shop, [Levels.DKIsles, Kongs.diddy, MoveTypes.Moves, 0]),
-    Locations.LankyIslesPotion: Location("Isles Cranky Lanky", Items.NoItem, Types.Shop, [Levels.DKIsles, Kongs.lanky, MoveTypes.Moves, 0]),
-    Locations.TinyIslesPotion: Location("Isles Cranky Tiny", Items.NoItem, Types.Shop, [Levels.DKIsles, Kongs.tiny, MoveTypes.Moves, 0]),
-    Locations.ChunkyIslesPotion: Location("Isles Cranky Chunky", Items.NoItem, Types.Shop, [Levels.DKIsles, Kongs.chunky, MoveTypes.Moves, 0]),
+    Locations.DonkeyIslesPotion: Location("DK Isles Cranky Donkey", Items.NoItem, Types.Shop, [Levels.DKIsles, Kongs.donkey, MoveTypes.Moves, 0]),
+    Locations.DiddyIslesPotion: Location("DK Isles Cranky Diddy", Items.NoItem, Types.Shop, [Levels.DKIsles, Kongs.diddy, MoveTypes.Moves, 0]),
+    Locations.LankyIslesPotion: Location("DK Isles Cranky Lanky", Items.NoItem, Types.Shop, [Levels.DKIsles, Kongs.lanky, MoveTypes.Moves, 0]),
+    Locations.TinyIslesPotion: Location("DK Isles Cranky Tiny", Items.NoItem, Types.Shop, [Levels.DKIsles, Kongs.tiny, MoveTypes.Moves, 0]),
+    Locations.ChunkyIslesPotion: Location("DK Isles Cranky Chunky", Items.NoItem, Types.Shop, [Levels.DKIsles, Kongs.chunky, MoveTypes.Moves, 0]),
 
     # Blueprints
     Locations.TurnInDKIslesDonkeyBlueprint: Location("Turn In DK Isles Donkey Blueprint", Items.GoldenBanana, Types.Banana),

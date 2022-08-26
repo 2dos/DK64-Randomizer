@@ -54,6 +54,7 @@
 .definelabel __osPiRawReadIo, 0x800045D0
 .definelabel __osDisableInt, 0x80009020
 .definelabel __osRestoreInt, 0x80009040
+.definelabel __osEepromProbe, 0x80007D20
 .definelabel copyFunc, 0x805FB750
 .definelabel getMapData, 0x8066B0F8
 .definelabel loadSetup, 0x806886E0
@@ -159,6 +160,12 @@
 .definelabel displayItemOnHUD, 0x806F8BC4
 .definelabel assessFlagMapping, 0x807314F4
 .definelabel coinCBCollectHandle, 0x806F54E0
+
+.definelabel unkSpriteRenderFunc, 0x807149FC
+.definelabel unkSpriteRenderFunc_0, 0x8071495C
+.definelabel loadSpriteFunction, 0x8071498C
+.definelabel displaySpriteAtXYZ, 0x80714CC0
+.definelabel getHUDSprite, 0x806FACE8
 
 //vanilla data
 .definelabel TransitionSpeed, 0x807FD88C
@@ -277,6 +284,7 @@
 .definelabel TransitionType, 0x8076AEE0
 .definelabel DKTVKong, 0x80755328
 .definelabel CutsceneBanks, 0x807F5B10
+.definelabel EEPROMType, 0x807EDEAC
 
 .definelabel screenCenterX, 0x80744490
 .definelabel screenCenterY, 0x80744494
@@ -335,6 +343,7 @@
 .definelabel getZRatioMovement, 0x80612790
 .definelabel ModelTwoCollisionArray, 0x80753EF0
 .definelabel IGT, 0x80750AB0
+.definelabel LatestCollectedObject, 0x807FD734
 
 //hack data
 .definelabel TestVariable, 0x807FFFFC
@@ -365,6 +374,7 @@
 .definelabel ForceStandardAmmo, 0x807FFFE4
 .definelabel KKOPhaseRandoOn, 0x807FFFE0
 .definelabel KKOPhaseOrder, 0x807FFFE1
+.definelabel MultiBunchCount, 0x807FFFDE
 
 .definelabel CrankyMoves_New, 0x807FF400
 .definelabel CandyMoves_New, 0x807FF4F0

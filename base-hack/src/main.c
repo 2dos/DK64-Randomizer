@@ -14,7 +14,6 @@ static float current_avg_lag = 0;
 static short past_crystals = 0;
 static char has_loaded = 0;
 static char good_eeprom = 0;
-static char perform_eeprom_check = 0;
 
 void giveCollectables(void) {
 	int mult = 1;
@@ -45,9 +44,8 @@ void cFuncLoop(void) {
 	if (ObjectModel2Timer <= 2) {
 		shiftBrokenJapesPortal();
 		openCoinDoor();
-		if ((CurrentMap == 0x50) && (perform_eeprom_check)) {
-			good_eeprom = checkFlag(0x3F,1);
-			perform_eeprom_check = 0;
+		if (CurrentMap == 0x50) {
+			good_eeprom = EEPROMType == 2;
 		}
 	}
 	displayNumberOnTns();
@@ -85,6 +83,7 @@ void cFuncLoop(void) {
 		}
 	}
 	changeHelmLZ();
+	handleSFXCache();
 	if (Rando.fast_start_helm == 2) {
 		if (TransitionSpeed > 0) {
 			if ((DestMap == 0x11) && (CurrentMap == 0xAA)) {
@@ -93,14 +92,7 @@ void cFuncLoop(void) {
 		}
 	}
 	if (Rando.quality_of_life) {
-		// DKTVKong = 0;
-		// if (CurrentMap == NINTENDO_LOGO) {
-		// 	if (TransitionSpeed > 0) {
-		// 		CutsceneFadeActive = 0;
-		// 		DestExit = 16;
-		// 	}
-		// }
-		toggleStandardAmmo();
+		handleDPadFunctionality();
 		if (Gamemode == 3) {
 			if (TransitionSpeed < 0) {
 				TransitionType = 1;
@@ -212,6 +204,11 @@ void earlyFrame(void) {
 	} else {
 		*(int*)(0x8074C3B0) = (int)&cutsceneDKCode;
 	}
+	// if (NewlyPressedControllerInput.Buttons & L_Button) {
+	// 	for (int i = 0; i < 0xF; i++) {
+	// 		displayItemOnHUD(i,0,0);
+	// 	}
+	// }
 	fastWarpShockwaveFix();
 	catchWarpHandle();
 	write_kutoutorder();
@@ -236,20 +233,7 @@ void earlyFrame(void) {
 		if ((loaded) || (ObjectModel2Timer > 800)) {
 			if (has_loaded == 0) {
 				initiateTransitionFade(0x50, 0, 5);
-				// Set flags to test EEPROM
-				setFlag(0x3F,1,1);
-				SaveToGlobal();
-				perform_eeprom_check = 1;
 				has_loaded = 1;
-			}
-		}
-	} else if (CurrentMap == 0x4C) {
-		if (!Rando.quality_of_life) {
-			if (ObjectModel2Timer == 5) {
-				// Set flags to test EEPROM
-				setFlag(0x3F,1,1);
-				SaveToGlobal();
-				perform_eeprom_check = 1;
 			}
 		}
 	}

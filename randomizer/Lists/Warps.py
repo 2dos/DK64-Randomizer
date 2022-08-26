@@ -57,7 +57,7 @@ BananaportVanilla = {
     Warps.FactoryLobbyFar: BananaportData(name="Frantic Factory: Lobby Far", map_id=Maps.FranticFactory, region_id=Regions.FranticFactoryStart, obj_id_vanilla=0xD9, vanilla_warp=2),
     Warps.FactorySnides: BananaportData(name="Frantic Factory: Outside Snide's", map_id=Maps.FranticFactory, region_id=Regions.Testing, obj_id_vanilla=0x143, vanilla_warp=2),
     Warps.FactoryProdBottom: BananaportData(name="Frantic Factory: Production Room (Bottom)", map_id=Maps.FranticFactory, region_id=Regions.BeyondHatch, obj_id_vanilla=0x105, vanilla_warp=3),
-    Warps.FactoryProdTop: BananaportData(name="Frantic Factory: Production Room (Top)", map_id=Maps.FranticFactory, region_id=Regions.MainCore, obj_id_vanilla=0x10C, vanilla_warp=3),
+    Warps.FactoryProdTop: BananaportData(name="Frantic Factory: Production Room (Top)", map_id=Maps.FranticFactory, region_id=Regions.MiddleCore, obj_id_vanilla=0x10C, vanilla_warp=3),
     Warps.FactoryArcade: BananaportData(name="Frantic Factory: Arcade Room", map_id=Maps.FranticFactory, region_id=Regions.BeyondHatch, obj_id_vanilla=0x10B, vanilla_warp=4),
     Warps.FactoryFunky: BananaportData(name="Frantic Factory: Outside Funky's", map_id=Maps.FranticFactory, region_id=Regions.Testing, obj_id_vanilla=0xEE, vanilla_warp=4),
     Warps.GalleonNearTunnelIntersection: BananaportData(

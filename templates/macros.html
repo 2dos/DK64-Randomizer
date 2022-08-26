@@ -1,0 +1,102 @@
+{% macro list_selector(list, name, title, tooltip) %}
+    <!-- Icon triggers modal -->
+    <input class="btn btn-primary customize"
+           type="button"
+           value="Customize"
+           href="#"
+           id="{{ name }}_modal"
+           data-bs-toggle="modal"
+           data-bs-target="#{{ name }}_Modal"
+           data-toggle="tooltip"
+           title="{{ tooltip }}"/>
+</div>
+<!-- Modal -->
+<div class="modal fade"
+     id="{{ name }}_Modal"
+     tabindex="-1"
+     aria-labelledby="{{ name }}_ModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title title" id="{{ name }}_ModalLabel">{{ title }}</h3>
+                <button type="button"
+                        class="btn-close"
+                        data-bs-dismiss="modal"
+                        aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="item-multiselect" style="margin-left: 105px;">
+                    <div class="color-selector">
+                        <div class="input-group mb-3">
+                            <div class="input-group-prepend">
+                                <div class="input-group-text search">
+                                    <input type="text"
+                                           class="form-control"
+                                           id="{{ name }}_search_box"
+                                           name="search"
+                                           placeholder="Search"/>
+                                </div>
+                            </div>
+                            <select name="{{ name }}_selected"
+                                    id="{{ name }}_selected"
+                                    class="form-select multi-select selected"
+                                    aria-label="List_Selector"
+                                    multiple
+                                    size="16">
+                                {% for item in list %}
+                                    <option value="{{ item.value }}">
+                                        {{ item.name }}
+                                    </option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" id="{{ name }}_select_all">Select All</button>
+                <button type="button" class="btn btn-primary" id="{{ name }}_reset">Reset</button>
+                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    $('#{{ name }}_selected option').mousedown(function(e) {
+        var el = e.target
+    
+        $(this).prop('selected', !$(this).prop('selected'));
+        $(this).trigger('change');
+    
+        // fixes erratic scroll behavior in Chrome
+        var scrollTop = el.parentNode.scrollTop;
+        setTimeout(() => el.parentNode.scrollTo(0, scrollTop), 0);
+    
+        return false;
+    });
+    
+    $('#{{ name }}_select_all').click(function() {
+        $('#{{ name }}_selected option').prop('selected', true);
+        $('#{{ name }}_selected').trigger('change');
+    });
+    
+    $('#{{ name }}_reset').click(function() {
+        $('#{{ name }}_selected option:selected').prop('selected', false);
+        $('#{{ name }}_selected').trigger('change');
+    });
+    
+    $('#{{ name }}_search_box').keyup(function() {
+        var keyword = document.getElementById("{{ name }}_search_box").value;
+        var select = document.getElementById("{{ name }}_selected");
+        for (var i = 0; i < select.length; i++) {
+            var txt = select.options[i].text;
+            if (txt.substring(0, keyword.length).toLowerCase() !== keyword.toLowerCase() && keyword.trim() !== "") {
+                select.options[i].style.display = 'none';
+            } else {
+                select.options[i].style.display = 'list-item';
+            }
+        }
+    });
+</script>
+{% endmacro %}

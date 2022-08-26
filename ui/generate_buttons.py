@@ -3,25 +3,26 @@ import asyncio
 import json
 import random
 
+from pyodide import create_proxy
+
 import js
 from randomizer.BackgroundRandomizer import generate_playthrough
 from randomizer.Patching.ApplyRandomizer import patching_response
+from randomizer.SettingStrings import decrypt_setting_string, encrypt_settings_string
 from randomizer.Worker import background
 from ui.bindings import bind
 from ui.progress_bar import ProgressBar
-from ui.settings_strings import encrypt_settings_string, decrypt_setting_string
 from ui.rando_options import (
-    toggle_counts_boxes,
-    toggle_b_locker_boxes,
-    update_boss_required,
+    disable_barrel_modal,
     disable_colors,
     disable_music,
     disable_prices,
     max_randomized_blocker,
     max_randomized_troff,
-    disable_barrel_rando,
+    toggle_b_locker_boxes,
+    toggle_counts_boxes,
+    update_boss_required,
 )
-from pyodide import create_proxy
 
 
 @bind("click", "export_settings")
@@ -56,6 +57,10 @@ def import_settings_string(event):
                         js.jq(f"#{key}").checked = True
                         js.document.getElementsByName(key)[0].checked = True
                     js.jq(f"#{key}").removeAttr("disabled")
+                elif type(settings[key]) is list:
+                    selector = js.document.getElementById(key)
+                    for i in range(0, selector.options.length):
+                        selector.item(i).selected = selector.item(i).value in settings[key]
                 else:
                     if js.document.getElementsByName(key)[0].hasAttribute("data-slider-value"):
                         js.jq(f"#{key}").slider("setValue", settings[key])
@@ -74,7 +79,7 @@ def import_settings_string(event):
         disable_prices(None)
         max_randomized_blocker(None)
         max_randomized_troff(None)
-        disable_barrel_rando(None)
+        disable_barrel_modal(None)
     except Exception:
         pass
 
@@ -169,6 +174,14 @@ def serialize_settings():
     # Re disable all previously disabled options
     for element in disabled_options:
         element.setAttribute("disabled", "disabled")
+    for element in js.document.getElementsByTagName("select"):
+        if "selected" in element.className:
+            length = element.options.length
+            values = []
+            for i in range(0, length):
+                if element.options.item(i).selected:
+                    values.append(element.options.item(i).value)
+            form_data[element.getAttribute("name")] = values
     return form_data
 
 

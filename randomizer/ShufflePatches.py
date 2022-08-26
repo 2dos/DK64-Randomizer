@@ -1,4 +1,6 @@
 """Shuffle Dirt Patch Locations."""
+import random
+
 import randomizer.CollectibleLogicFiles.AngryAztec
 import randomizer.CollectibleLogicFiles.CreepyCastle
 import randomizer.CollectibleLogicFiles.CrystalCaves
@@ -7,13 +9,11 @@ import randomizer.CollectibleLogicFiles.FranticFactory
 import randomizer.CollectibleLogicFiles.FungiForest
 import randomizer.CollectibleLogicFiles.GloomyGalleon
 import randomizer.CollectibleLogicFiles.JungleJapes
-
 from randomizer.Enums.Collectibles import Collectibles
-from randomizer.Enums.Levels import Levels
-from randomizer.LogicClasses import Collectible
 from randomizer.Enums.Kongs import Kongs
+from randomizer.Enums.Levels import Levels
 from randomizer.Lists.Patches import DirtPatchLocations
-import random
+from randomizer.LogicClasses import Collectible
 from randomizer.Spoiler import Spoiler
 
 

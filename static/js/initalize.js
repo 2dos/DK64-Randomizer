@@ -47,7 +47,7 @@ window.onerror = function (error) {
 function toast_alert(text) {
   try {
     _LTracker.push(text);
-  } catch {}
+  } catch { }
   Toastify({
     text: text,
     duration: 15000,
@@ -58,7 +58,7 @@ function toast_alert(text) {
     style: {
       background: "#800000",
     },
-    onClick: function () {},
+    onClick: function () { },
   }).showToast();
 }
 function getFile(file) {
@@ -119,6 +119,18 @@ $("#form input").on("input change", function (e) {
   const data = new FormData(document.querySelector("form"));
   disabled.attr("disabled", "disabled");
   const json = Object.fromEntries(data.entries());
+  for (element of document.getElementsByTagName("select")) {
+    if (element.className.includes("selected")) {
+      length = element.options.length
+      values = []
+      for (let i = 0; i < length; i++) {
+        if (element.options.item(i).selected) {
+          values.push(element.options.item(i).value)
+        }
+      }
+      json[element.name] = values
+    }
+  }
   setCookie("saved_settings", JSON.stringify(json), 30);
 });
 $("#form select").on("change", function (e) {
@@ -127,6 +139,18 @@ $("#form select").on("change", function (e) {
   const data = new FormData(document.querySelector("form"));
   disabled.attr("disabled", "disabled");
   const json = Object.fromEntries(data.entries());
+  for (element of document.getElementsByTagName("select")) {
+    if (element.className.includes("selected")) {
+      length = element.options.length
+      values = []
+      for (let i = 0; i < length; i++) {
+        if (element.options.item(i).selected) {
+          values.push(element.options.item(i).value)
+        }
+      }
+      json[element.name] = values
+    }
+  }
   setCookie("saved_settings", JSON.stringify(json), 30);
 });
 
@@ -170,7 +194,12 @@ function load_cookies() {
             if (element.hasAttribute("data-slider-value")) {
               element.setAttribute("data-slider-value", json[key]);
             }
-          } catch {}
+            if (element.className.includes("selected")) {
+              for (var i = 0; i < element.options.length; i++) {
+                element.options[i].selected = json[key].indexOf(element.options[i].value) >= 0;
+              }
+            }
+          } catch { }
         }
       }
     } else {
@@ -222,8 +251,11 @@ var open = indexedDB.open("ROMStorage", 1);
 
 // Create the schema
 open.onupgradeneeded = function () {
-  var db = open.result;
-  db.createObjectStore("ROMStorage", { keyPath: "ROM" });
+  try {
+    var db = open.result;
+    db.createObjectStore("ROMStorage", { keyPath: "ROM" });
+  }
+  catch { }
 };
 
 open.onsuccess = function () {
@@ -231,22 +263,25 @@ open.onsuccess = function () {
 };
 
 function load_file_from_db() {
-  // If we actually have a file in the DB load it
-  var db = open.result;
-  var tx = db.transaction("ROMStorage", "readwrite");
-  var store = tx.objectStore("ROMStorage");
+  try {
+    // If we actually have a file in the DB load it
+    var db = open.result;
+    var tx = db.transaction("ROMStorage", "readwrite");
+    var store = tx.objectStore("ROMStorage");
 
-  // Get our ROM file
-  var getROM = store.get("N64");
-  getROM.onsuccess = function () {
-    // When we pull it from the DB load it in as a global var
-    try {
-      romFile = new MarcFile(getROM.result.value, _parseROM);
-      $("#rom").attr("placeholder", "Using cached ROM");
-      $("#rom").val("Using cached ROM");
-      $("#rom_2").attr("placeholder", "Using cached ROM");
-    } catch {}
-  };
+    // Get our ROM file
+    var getROM = store.get("N64");
+    getROM.onsuccess = function () {
+      // When we pull it from the DB load it in as a global var
+      try {
+        romFile = new MarcFile(getROM.result.value, _parseROM);
+        $("#rom").attr("placeholder", "Using cached ROM");
+        $("#rom").val("Using cached ROM");
+        $("#rom_2").attr("placeholder", "Using cached ROM");
+      } catch { }
+    };
+  }
+  catch { }
 }
 
 var w;

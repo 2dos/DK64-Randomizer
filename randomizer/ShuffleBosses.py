@@ -1,6 +1,7 @@
 """Randomize Boss Locations."""
 import random
 from array import array
+
 from randomizer.Enums.Items import Items
 from randomizer.Enums.Kongs import Kongs
 from randomizer.Lists.Exceptions import BossOutOfLocationsException, FillException, ItemPlacementException
