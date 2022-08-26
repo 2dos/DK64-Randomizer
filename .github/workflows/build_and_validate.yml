@@ -30,8 +30,6 @@ jobs:
         - name: Run pydocstyle
           run: pydocstyle .
 
-        - name: Run djlint
-          run: djlint ./templates/* --profile=jinja --check
 
   analyze:
     name: Analyze
