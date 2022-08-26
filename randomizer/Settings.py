@@ -10,6 +10,7 @@ from randomizer.Enums.Events import Events
 from randomizer.Enums.Kongs import GetKongs, Kongs
 from randomizer.Enums.Levels import Levels
 from randomizer.Enums.Locations import Locations
+import randomizer.ItemPool as ItemPool
 from randomizer.Prices import RandomizePrices, VanillaPrices
 from randomizer.ShuffleBosses import ShuffleBosses, ShuffleBossKongs, ShuffleKKOPhaseOrder, ShuffleKutoutKongs
 
@@ -74,24 +75,24 @@ class Settings:
         self.level_order = {1: Levels.JungleJapes, 2: Levels.AngryAztec, 3: Levels.FranticFactory, 4: Levels.GloomyGalleon, 5: Levels.FungiForest, 6: Levels.CrystalCaves, 7: Levels.CreepyCastle}
 
         # Used by hints in level order rando
-        # By default (and in LZR) assume you have access to nothing everywhere so everything can be hinted
+        # By default (and in LZR) assume you have access to everything everywhere so hints are unrestricted
         self.owned_kongs_by_level = {
-            Levels.JungleJapes: [],
-            Levels.AngryAztec: [],
-            Levels.FranticFactory: [],
-            Levels.GloomyGalleon: [],
-            Levels.FungiForest: [],
-            Levels.CrystalCaves: [],
-            Levels.CreepyCastle: [],
+            Levels.JungleJapes: GetKongs().copy(),
+            Levels.AngryAztec: GetKongs().copy(),
+            Levels.FranticFactory: GetKongs().copy(),
+            Levels.GloomyGalleon: GetKongs().copy(),
+            Levels.FungiForest: GetKongs().copy(),
+            Levels.CrystalCaves: GetKongs().copy(),
+            Levels.CreepyCastle: GetKongs().copy(),
         }
         self.owned_moves_by_level = {
-            Levels.JungleJapes: [],
-            Levels.AngryAztec: [],
-            Levels.FranticFactory: [],
-            Levels.GloomyGalleon: [],
-            Levels.FungiForest: [],
-            Levels.CrystalCaves: [],
-            Levels.CreepyCastle: [],
+            Levels.JungleJapes: ItemPool.AllKongMoves().copy(),
+            Levels.AngryAztec: ItemPool.AllKongMoves().copy(),
+            Levels.FranticFactory: ItemPool.AllKongMoves().copy(),
+            Levels.GloomyGalleon: ItemPool.AllKongMoves().copy(),
+            Levels.FungiForest: ItemPool.AllKongMoves().copy(),
+            Levels.CrystalCaves: ItemPool.AllKongMoves().copy(),
+            Levels.CreepyCastle: ItemPool.AllKongMoves().copy(),
         }
 
         self.resolve_settings()
