@@ -26,6 +26,8 @@ from randomizer.Patching.PhaseRando import randomize_helm, randomize_krool
 from randomizer.Patching.PriceRando import randomize_prices
 from randomizer.Patching.PuzzleRando import randomize_puzzles
 from randomizer.Patching.ShopRandomizer import ApplyShopRandomizer
+from ui.GenTracker import generateTracker
+from ui.GenSpoiler import GenerateSpoiler
 from randomizer.Patching.UpdateHints import PushHints, wipeHints
 
 # from randomizer.Spoiler import Spoiler
@@ -372,9 +374,10 @@ def patching_response(responded_data):
     js.document.getElementById("nav-settings-tab").style.display = ""
     if spoiler.settings.generate_spoilerlog is True:
         js.document.getElementById("spoiler_log_block").style.display = ""
-        js.document.getElementById("spoiler_log_text").value = spoiler.toJson()
+        loop.run_until_complete(GenerateSpoiler(spoiler.toJson()))
         js.document.getElementById("tracker_text").value = generateTracker(spoiler.toJson())
     else:
+        js.document.getElementById("spoiler_log_text").innerHTML = ""
         js.document.getElementById("spoiler_log_text").value = ""
         js.document.getElementById("tracker_text").value = ""
         js.document.getElementById("spoiler_log_block").style.display = "none"
@@ -390,18 +393,6 @@ def patching_response(responded_data):
         hidden_settings = [
             "Seed",
             "algorithm",
-            "starting_kong",
-            "Starting Kong List",
-            "Diddy Freeing Kong",
-            "Tiny Freeing Kong",
-            "Lanky Freeing Kong",
-            "Chunky Freeing Kong",
-            "Medal Requirement",
-            "K Rool Phases",
-            "Keys Required for K Rool",
-            "B Locker GBs",
-            "Troff N Scoff Bananas",
-            "Colors",
         ]
         if setting not in hidden_settings:
             if tables[t].rows.length > math.ceil((len(loaded_settings.items()) - len(hidden_settings)) / len(tables)):

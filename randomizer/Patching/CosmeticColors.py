@@ -50,6 +50,7 @@ def apply_cosmetic_colors(spoiler: Spoiler):
             0xBD,  # Rareware Logo
         ]
         model_index = random.choice(permitted_models)
+    spoiler.settings.klaptrap_model_index = model_index
     ROM().seek(spoiler.settings.rom_data + 0x136)
     ROM().writeMultipleBytes(model_index, 1)
     color_palettes = []
