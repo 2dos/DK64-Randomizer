@@ -226,7 +226,7 @@ function filebox() {
     $("#rom").val(file.name);
     $("#rom_2").attr("placeholder", file.name);
     // Get the original fiile
-    var db = open.result;
+    var db = romdatabase.result;
     var tx = db.transaction("ROMStorage", "readwrite");
     var store = tx.objectStore("ROMStorage");
     // Store it in the database
@@ -247,25 +247,83 @@ var indexedDB =
   window.shimIndexedDB;
 
 // Open (or create) the database
-var open = indexedDB.open("ROMStorage", 1);
+var romdatabase = indexedDB.open("ROMStorage", 1);
+var seeddatabase = indexedDB.open("SeedStorage", 1);
 
 // Create the schema
-open.onupgradeneeded = function () {
+romdatabase.onupgradeneeded = function () {
   try {
-    var db = open.result;
+    var db = romdatabase.result;
     db.createObjectStore("ROMStorage", { keyPath: "ROM" });
   }
   catch { }
 };
 
-open.onsuccess = function () {
+seeddatabase.onupgradeneeded = function () {
+  console.log("UPGRADING")
+  try {
+    var seed_db = seeddatabase.result;
+    seed_db.createObjectStore("SeedStorage", {
+      keyPath: "id"
+    });
+  }
+  catch { }
+};
+
+seeddatabase.onsuccess = function () {
+  load_old_seeds();
+};
+
+romdatabase.onsuccess = function () {
   load_file_from_db();
 };
+
+function write_seed_history(seed_id, seed_data, seed_hash) {
+  // Get the original fiile
+  var seed_db = seeddatabase.result;
+  var seed_tx = seed_db.transaction("SeedStorage", "readwrite");
+  var seed_store = seed_tx.objectStore("SeedStorage");
+  // Store it in the database
+  const now = new Date()
+  seed_store.put({ "id": Math.random(), "value": seed_data, "hash": seed_hash, "seed_id": seed_id, "date": now });
+}
+
+function load_old_seeds() {
+  try {
+    // If we actually have a file in the DB load it
+    var seed_db = seeddatabase.result;
+    var seed_tx = seed_db.transaction("SeedStorage", "readwrite");
+    var seed_store = seed_tx.objectStore("SeedStorage");
+
+    var all_seeds = seed_store.getAll()
+    all_seeds.onsuccess = function () {
+      try {
+        var arrayLength = all_seeds.result.length;
+        var sorted_array = all_seeds.result
+        sorted_array.sort(function (a, b) {
+          return new Date(b.date) - new Date(a.date);
+        });
+        for (var i = 0; i < arrayLength; i++) {
+
+          if (sorted_array[i].date == undefined) {
+            seed_store.delete(sorted_array[i].id)
+          }
+          console.log(sorted_array[i]);
+          // TODO: Generate UI with this data
+        }
+      }
+      catch { }
+
+    };
+  }
+  catch { }
+
+}
 
 function load_file_from_db() {
   try {
     // If we actually have a file in the DB load it
-    var db = open.result;
+    var db = romdatabase.result;
     var tx = db.transaction("ROMStorage", "readwrite");
     var store = tx.objectStore("ROMStorage");
 
