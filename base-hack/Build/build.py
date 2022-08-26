@@ -1,19 +1,26 @@
 """Build the ROM."""
 import gzip
+import json
 import os
 import shutil
 import subprocess
 import sys
 import zlib
-import json
 
+import create_helm_geo
 import generate_watch_file
+import instance_script_maker
+import model_fix
 
 # Patcher functions for the extracted files
 import patch_text
+import shop_instance_script
 from adjust_exits import adjustExits
 from convertPortalImage import convertPortalImage
 from convertSetup import convertSetup
+from end_seq_writer import createSquishFile, createTextFile
+from generate_yellow_wrinkly import generateYellowWrinkly
+from image_converter import convertToRGBA32
 
 # Infrastructure for recomputing DK64 global pointer tables
 from map_names import maps
@@ -23,14 +30,6 @@ from recompute_pointer_table import dumpPointerTableDetails, getFileInfo, make_s
 from replace_simslam_text import replaceSimSlam
 from staticcode import patchStaticCode
 from vanilla_move_data import writeVanillaMoveData
-from image_converter import convertToRGBA32
-from end_seq_writer import createTextFile, createSquishFile
-from generate_yellow_wrinkly import generateYellowWrinkly
-import model_fix
-import shop_instance_script
-import instance_script_maker
-import create_helm_geo
-
 
 ROMName = "rom/dk64.z64"
 newROMName = "rom/dk64-randomizer-base.z64"

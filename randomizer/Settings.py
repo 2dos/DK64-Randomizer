@@ -4,14 +4,14 @@ import inspect
 import json
 import random
 import sys
-
-from randomizer.ShuffleBosses import ShuffleBosses, ShuffleBossKongs, ShuffleKutoutKongs, ShuffleKKOPhaseOrder
-from randomizer.Enums.Events import Events
-from randomizer.Enums.Kongs import Kongs, GetKongs
-from randomizer.Enums.Locations import Locations
-from randomizer.Enums.Levels import Levels
-from randomizer.Prices import RandomizePrices, VanillaPrices
 from random import randint
+
+from randomizer.Enums.Events import Events
+from randomizer.Enums.Kongs import GetKongs, Kongs
+from randomizer.Enums.Levels import Levels
+from randomizer.Enums.Locations import Locations
+from randomizer.Prices import RandomizePrices, VanillaPrices
+from randomizer.ShuffleBosses import ShuffleBosses, ShuffleBossKongs, ShuffleKKOPhaseOrder, ShuffleKutoutKongs
 
 
 class Settings:
@@ -46,8 +46,8 @@ class Settings:
         # Medium: 50 GB
         # Long: 65 GB
         # Longer: 80 GB\
-        self.blocker_max = self.blocker_text if self.blocker_text else 50
-        self.troff_max = self.troff_text if self.troff_text else 270
+        self.blocker_max = int(self.blocker_text) if self.blocker_text else 50
+        self.troff_max = int(self.troff_text) if self.troff_text else 270
         self.troff_min = [0.25, 0.3, 0.35, 0.4, 0.45, 0.5, 0.55]  # Weights for the minimum value of troff
         # Always start with training barrels currently
         # training_barrels: str

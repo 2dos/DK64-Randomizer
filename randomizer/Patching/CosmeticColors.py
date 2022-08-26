@@ -1,10 +1,11 @@
 """Apply cosmetic skins to kongs."""
+import random
+from random import randint
+
+import js
+from randomizer.Patching.generate_kong_color_images import convertColors
 from randomizer.Patching.Patcher import ROM
 from randomizer.Spoiler import Spoiler
-from randomizer.Patching.generate_kong_color_images import convertColors
-from random import randint
-import random
-import js
 
 
 def apply_cosmetic_colors(spoiler: Spoiler):

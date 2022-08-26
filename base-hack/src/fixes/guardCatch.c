@@ -69,6 +69,7 @@ void catchWarpHandle(void) {
             } else {
                 voidWarp();
             }
+            setFlag(0x50,0,2); // Prevent Helm Door hardlock
         }
         warp_timer -= 1;
     }

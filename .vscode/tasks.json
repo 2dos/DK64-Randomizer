@@ -28,8 +28,14 @@
       "problemMatcher": []
     },
     {
+      "label": "Validate Jinja2",
+      "type": "shell",
+      "command": "${command:python.interpreterPath} -m djlint ./templates/* --profile=jinja --reformat --format-css --format-js",
+      "problemMatcher": []
+    },
+    {
       "label": "Lint Repo",
-      "dependsOn": ["Format Repo", "Validate Styles", "Validate Docstrings"],
+      "dependsOn": ["Format Repo", "Validate Styles", "Validate Docstrings", "Validate Jinja2"],
       "problemMatcher": [],
     },
     {

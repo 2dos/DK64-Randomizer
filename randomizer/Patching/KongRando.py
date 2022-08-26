@@ -1,12 +1,12 @@
 """Apply cosmetic elements of Kong Rando."""
-from imp import source_from_cache
 import random
+from imp import source_from_cache
 
 import js
 from randomizer.Enums.Kongs import Kongs
+from randomizer.Lists.EnemyTypes import Enemies
 from randomizer.Patching.Patcher import ROM
 from randomizer.Spoiler import Spoiler
-from randomizer.Lists.EnemyTypes import Enemies
 
 
 def apply_kongrando_cosmetic(spoiler: Spoiler):

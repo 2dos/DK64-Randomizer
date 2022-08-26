@@ -9,13 +9,13 @@ from randomizer.Enums.Kongs import Kongs
 from randomizer.Enums.Levels import Levels
 from randomizer.Enums.Locations import Locations
 from randomizer.Enums.MoveTypes import MoveTypes
-from randomizer.Enums.Transitions import Transitions
 from randomizer.Enums.Regions import Regions
+from randomizer.Enums.Transitions import Transitions
 from randomizer.Enums.Types import Types
-from randomizer.Lists.Item import ItemFromKong, NameFromKong, KongFromItem, ItemList
+from randomizer.Lists.Item import ItemFromKong, ItemList, KongFromItem, NameFromKong
 from randomizer.Lists.Location import LocationList
-from randomizer.Lists.Minigame import BarrelMetaData, HelmMinigameLocations, MinigameRequirements
 from randomizer.Lists.MapsAndExits import GetExitId, GetMapId, Maps
+from randomizer.Lists.Minigame import BarrelMetaData, HelmMinigameLocations, MinigameRequirements
 from randomizer.Settings import Settings
 from randomizer.ShuffleExits import ShufflableExits
 

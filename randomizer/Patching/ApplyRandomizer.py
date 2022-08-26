@@ -18,20 +18,21 @@ from randomizer.Patching.EntranceRando import randomize_entrances
 from randomizer.Patching.Hash import get_hash_images
 from randomizer.Patching.KasplatLocationRando import randomize_kasplat_locations
 from randomizer.Patching.KongRando import apply_kongrando_cosmetic
-from randomizer.Patching.PhaseRando import randomize_krool, randomize_helm
+from randomizer.Patching.MiscSetupChanges import randomize_setup
 from randomizer.Patching.MoveLocationRando import randomize_moves
 from randomizer.Patching.MusicRando import randomize_music
 from randomizer.Patching.Patcher import ROM
+from randomizer.Patching.PhaseRando import randomize_helm, randomize_krool
 from randomizer.Patching.PriceRando import randomize_prices
 from randomizer.Patching.PuzzleRando import randomize_puzzles
-from randomizer.Patching.UpdateHints import PushHints, wipeHints
-from randomizer.Patching.MiscSetupChanges import randomize_setup
 from randomizer.Patching.ShopRandomizer import ApplyShopRandomizer
 from ui.GenTracker import generateTracker
 from ui.GenSpoiler import GenerateSpoiler
+from randomizer.Patching.UpdateHints import PushHints, wipeHints
 
 # from randomizer.Spoiler import Spoiler
 from randomizer.Settings import Settings
+from ui.GenTracker import generateTracker
 from ui.progress_bar import ProgressBar
 
 

@@ -92,14 +92,7 @@ void cFuncLoop(void) {
 		}
 	}
 	if (Rando.quality_of_life) {
-		// DKTVKong = 0;
-		// if (CurrentMap == NINTENDO_LOGO) {
-		// 	if (TransitionSpeed > 0) {
-		// 		CutsceneFadeActive = 0;
-		// 		DestExit = 16;
-		// 	}
-		// }
-		toggleStandardAmmo();
+		handleDPadFunctionality();
 		if (Gamemode == 3) {
 			if (TransitionSpeed < 0) {
 				TransitionType = 1;
@@ -211,6 +204,11 @@ void earlyFrame(void) {
 	} else {
 		*(int*)(0x8074C3B0) = (int)&cutsceneDKCode;
 	}
+	// if (NewlyPressedControllerInput.Buttons & L_Button) {
+	// 	for (int i = 0; i < 0xF; i++) {
+	// 		displayItemOnHUD(i,0,0);
+	// 	}
+	// }
 	fastWarpShockwaveFix();
 	catchWarpHandle();
 	write_kutoutorder();

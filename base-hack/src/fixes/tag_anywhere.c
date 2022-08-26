@@ -624,7 +624,7 @@ void populateSFXCache(int sfx, int noise_buffer, int sfx_count, int sfx_delay, i
         }
     }
     if (init_delay == 0) {
-        playSFXFromObject(id,sfx,-1,127,0,noise_buffer,0.3f);
+        playSFXFromObject(0,sfx,-1,127,0,noise_buffer,0.3f);
     }
 }
 
@@ -644,22 +644,23 @@ void handleSFXCache(void) {
     }
 }
 
-void tagAnywhereAmmo(int player, int obj, int index) {
-    int model_index = convertIDToIndex(index);
-    int is_homing = 0;
-    if (model_index > -1) {
-        int* m2location = ObjectModel2Pointer;
-		ModelTwoData* _object = getObjectArrayAddr(m2location,0x90,model_index);
-        is_homing = _object->object_type == 0x11;
-    }
+void tagAnywhereAmmo(int player, int obj, int is_homing) {
     coinCBCollectHandle(player, obj, is_homing);
+    int id = 0;
+    if (LatestCollectedObject) {
+        id = LatestCollectedObject->id;
+    }
     if (player_count == 1) {
         displayItemOnHUD(2 + is_homing,0,0);
-        populateSFXCache(0x331,64,5,4,index,6);
+        populateSFXCache(0x331,64,5,4,id,6);
     }
 }
 
-void tagAnywhereBunch(int player, int obj, int index) {
-    coinCBCollectHandle(player, obj, 0);
-    populateSFXCache(Banana,64,5,3,index,0);
+void tagAnywhereBunch(int player, int obj, int player_index) {
+    coinCBCollectHandle(player, obj, player_index);
+    int id = 0;
+    if (LatestCollectedObject) {
+        id = LatestCollectedObject->id;
+    }
+    populateSFXCache(Banana,64,5,3,id,0);
 }

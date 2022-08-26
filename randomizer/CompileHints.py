@@ -1,21 +1,20 @@
 """Compile a list of hints based on the settings."""
 import random
 from re import U
+
+from randomizer.Enums.Events import Events
 from randomizer.Enums.HintType import HintType
 from randomizer.Enums.Items import Items
 from randomizer.Enums.Kongs import Kongs
+from randomizer.Enums.Levels import Levels
 from randomizer.Enums.Regions import Regions
-from randomizer.Enums.Events import Events
-
+from randomizer.Enums.Transitions import Transitions
 from randomizer.Lists.Item import ItemList, NameFromKong
 from randomizer.Lists.MapsAndExits import GetMapId
 from randomizer.Lists.ShufflableExit import ShufflableExits
-from randomizer.Lists.WrinklyHints import hints
-from randomizer.Spoiler import Spoiler
-from randomizer.Patching.UpdateHints import UpdateHint, updateRandomHint
 from randomizer.Lists.WrinklyHints import HintLocation, hints
-from randomizer.Enums.Levels import Levels
-from randomizer.Enums.Transitions import Transitions
+from randomizer.Patching.UpdateHints import UpdateHint, updateRandomHint
+from randomizer.Spoiler import Spoiler
 
 
 class Hint:
@@ -297,7 +296,7 @@ def compileHints(spoiler: Spoiler):
         valid_types.append(HintType.KRoolOrder)
     if spoiler.settings.helm_setting != "skip_all" and spoiler.settings.helm_phase_count < 5:
         valid_types.append(HintType.HelmOrder)
-    if not spoiler.settings.unlock_all_moves:
+    if not spoiler.settings.unlock_all_moves and spoiler.settings.move_rando != "off":
         valid_types.append(HintType.FullShop)
         valid_types.append(HintType.MoveLocation)
     if spoiler.settings.random_patches:
@@ -336,7 +335,7 @@ def compileHints(spoiler: Spoiler):
             hint_distribution[removed_type] -= 1
             hint_count -= 1
     # In level order (or vanilla) progression, there are hints that we want to be in the player's path
-    level_order_matters = spoiler.settings.shuffle_loading_zones != "all"
+    level_order_matters = not spoiler.settings.no_logic and spoiler.settings.shuffle_loading_zones != "all"
     progression_hint_locations = None
     if level_order_matters:
         # These hint locations are *much* more likely to be seen, as they'll be available as players pass through lobbies on their first visit

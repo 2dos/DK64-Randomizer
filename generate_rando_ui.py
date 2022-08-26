@@ -1,9 +1,9 @@
 """Generate UI elements via jinja2 to display on page load."""
 import json
+import time
 
 import micropip
 from jinja2 import Environment, FunctionLoader
-import time
 
 import js
 from js import document

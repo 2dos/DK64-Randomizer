@@ -1,7 +1,7 @@
 """Find a file with a matching set of bytes within decompressed ROM."""
 
-from tkinter.filedialog import askdirectory
 import os
+from tkinter.filedialog import askdirectory
 
 search_data = [0xF8, 0x01, 0xF8, 0x01, 0xF8, 0x01, 0xF8, 0x01]
 f_path = askdirectory()

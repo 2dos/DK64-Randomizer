@@ -3,39 +3,39 @@ import json
 import random
 
 import js
-from randomizer.CompileHints import compileHints
-from randomizer.Enums.MinigameType import MinigameType
-from randomizer.Enums.Warps import Warps
 import randomizer.ItemPool as ItemPool
 import randomizer.Lists.Exceptions as Ex
-from randomizer.Lists.ShufflableExit import GetLevelShuffledToIndex, GetShuffledLevelIndex
-from randomizer.Lists.Warps import BananaportVanilla
 import randomizer.Logic as Logic
-from randomizer.Settings import Settings
 import randomizer.ShuffleExits as ShuffleExits
+from randomizer.CompileHints import compileHints
 from randomizer.Enums.Events import Events
 from randomizer.Enums.Items import Items
-from randomizer.Enums.Kongs import Kongs, GetKongs
+from randomizer.Enums.Kongs import GetKongs, Kongs
 from randomizer.Enums.Levels import Levels
 from randomizer.Enums.Locations import Locations
+from randomizer.Enums.MinigameType import MinigameType
 from randomizer.Enums.Regions import Regions
 from randomizer.Enums.SearchMode import SearchMode
 from randomizer.Enums.Time import Time
 from randomizer.Enums.Transitions import Transitions
 from randomizer.Enums.Types import Types
+from randomizer.Enums.Warps import Warps
 from randomizer.Lists.Item import ItemList, KongFromItem
 from randomizer.Lists.Location import LocationList
 from randomizer.Lists.MapsAndExits import Maps
 from randomizer.Lists.Minigame import BarrelMetaData, MinigameRequirements
-from randomizer.Logic import LogicVarHolder, LogicVariables, STARTING_SLAM
+from randomizer.Lists.ShufflableExit import GetLevelShuffledToIndex, GetShuffledLevelIndex
+from randomizer.Lists.Warps import BananaportVanilla
+from randomizer.Logic import STARTING_SLAM, LogicVarHolder, LogicVariables
 from randomizer.LogicClasses import Sphere, TransitionFront
 from randomizer.Prices import GetMaxForKong, GetPriceOfMoveItem
+from randomizer.Settings import Settings
 from randomizer.ShuffleBarrels import BarrelShuffle
-from randomizer.ShuffleKasplats import InitKasplatMap, KasplatShuffle
-from randomizer.ShuffleWarps import ShuffleWarps
 from randomizer.ShuffleBosses import ShuffleBossesBasedOnOwnedItems
+from randomizer.ShuffleKasplats import InitKasplatMap, KasplatShuffle
 from randomizer.ShufflePatches import ShufflePatches
 from randomizer.ShuffleShopLocations import ShuffleShopLocations
+from randomizer.ShuffleWarps import ShuffleWarps
 
 
 def GetExitLevelExit(region):
@@ -410,7 +410,7 @@ def PareWoth(settings, PlaythroughLocations):
         for loc in [x for x in sphere.locations if not LocationList[x].constant]:
             WothLocations.append(loc)
     # Check every item location to see if removing it by itself makes the game unbeatable
-    for i in range(len(WothLocations) - 2, -1, -1):
+    for i in range(len(WothLocations) - 1, -1, -1):
         locationId = WothLocations[i]
         location = LocationList[locationId]
         item = location.item

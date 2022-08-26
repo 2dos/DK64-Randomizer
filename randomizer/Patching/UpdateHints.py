@@ -3,9 +3,9 @@ import random
 from io import BytesIO
 
 import js
+from randomizer.Enums.Kongs import Kongs
 from randomizer.Lists.WrinklyHints import HintLocation, hints
 from randomizer.Patching.Patcher import ROM
-from randomizer.Enums.Kongs import Kongs
 
 
 def writeWrinklyHints(file_start_offset, text):
