@@ -296,7 +296,7 @@ def compileHints(spoiler: Spoiler):
         valid_types.append(HintType.KRoolOrder)
     if spoiler.settings.helm_setting != "skip_all" and spoiler.settings.helm_phase_count < 5:
         valid_types.append(HintType.HelmOrder)
-    if not spoiler.settings.unlock_all_moves:
+    if not spoiler.settings.unlock_all_moves and spoiler.settings.move_rando != "off":
         valid_types.append(HintType.FullShop)
         valid_types.append(HintType.MoveLocation)
     if spoiler.settings.random_patches:
@@ -335,7 +335,7 @@ def compileHints(spoiler: Spoiler):
             hint_distribution[removed_type] -= 1
             hint_count -= 1
     # In level order (or vanilla) progression, there are hints that we want to be in the player's path
-    level_order_matters = spoiler.settings.shuffle_loading_zones != "all"
+    level_order_matters = not spoiler.settings.no_logic and spoiler.settings.shuffle_loading_zones != "all"
     progression_hint_locations = None
     if level_order_matters:
         # These hint locations are *much* more likely to be seen, as they'll be available as players pass through lobbies on their first visit
@@ -398,7 +398,8 @@ def compileHints(spoiler: Spoiler):
         if level_order_matters and kong_index not in hinted_kongs:
             level_restriction = [level for level in all_levels if spoiler.settings.EntryGBs[level] <= spoiler.settings.EntryGBs[kong_map["level"]]]
         # This list of free kongs is sometimes only a subset of the correct list. A more precise list could be calculated but it would be slow.
-        free_kongs = spoiler.settings.starting_kong_list.append(free_kong)
+        free_kongs = spoiler.settings.starting_kong_list.copy()
+        free_kongs.append(free_kong)
         hint_location = getRandomHintLocation(kongs=free_kongs, levels=level_restriction)
         # If this fails, it's extremely likely there's already a very useful hint in the very few spot(s) this could be
         if hint_location is None:

@@ -410,7 +410,7 @@ def PareWoth(settings, PlaythroughLocations):
         for loc in [x for x in sphere.locations if not LocationList[x].constant]:
             WothLocations.append(loc)
     # Check every item location to see if removing it by itself makes the game unbeatable
-    for i in range(len(WothLocations) - 2, -1, -1):
+    for i in range(len(WothLocations) - 1, -1, -1):
         locationId = WothLocations[i]
         location = LocationList[locationId]
         item = location.item
