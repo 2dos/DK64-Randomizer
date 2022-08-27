@@ -1526,6 +1526,8 @@ def SetNewProgressionRequirementsUnordered(settings: Settings):
         settings.EntryGBs[7] = random.randint(minimumBLockerGBs, settings.blocker_max)
     # Place boss locations based on kongs and moves found for each level
     ShuffleBossesBasedOnOwnedItems(settings, ownedKongs, ownedMoves)
+    settings.owned_kongs_by_level = ownedKongs
+    settings.owned_moves_by_level = ownedMoves
 
 
 def BlockAccessToLevel(settings: Settings, level):
