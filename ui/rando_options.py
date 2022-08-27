@@ -322,6 +322,22 @@ def disable_krool_phases(evt):
         pass
 
 
+@bind("click", "helm_random")
+def disable_helm_phases(evt):
+    """Disable K Rool options when Randomize All is selected."""
+    disabled = False
+    helm = js.document.getElementById("helm_phase_count")
+    if js.document.getElementById("helm_random").checked:
+        disabled = True
+    try:
+        if disabled:
+            helm.setAttribute("disabled", "disabled")
+        else:
+            helm.removeAttribute("disabled")
+    except AttributeError:
+        pass
+
+
 @bind("change", "move_rando")
 def disable_prices(evt):
     """Disable prices if move rando is set to start with all moves."""
@@ -336,19 +352,18 @@ def disable_prices(evt):
         pass
 
 
-@bind("click", "gnawty_barrels")
-def disable_barrel_rando(evt):
-    """Disable Bonus Barrel Rando when Oops All Beaver Bother is selected."""
-    disabled = False
-    barrel = js.document.getElementById("bonus_barrel_rando")
-    if js.document.getElementById("gnawty_barrels").checked:
-        disabled = True
+@bind("click", "bonus_barrel_rando")
+def disable_barrel_modal(evt):
+    """Disable Minigame Selector when Shuffle Bonus Barrels is off."""
+    disabled = True
+    selector = js.document.getElementById("minigames_list_modal")
+    if js.document.getElementById("bonus_barrel_rando").checked:
+        disabled = False
     try:
         if disabled:
-            barrel.setAttribute("disabled", "disabled")
-            barrel.checked = False
+            selector.setAttribute("disabled", "disabled")
         else:
-            barrel.removeAttribute("disabled")
+            selector.removeAttribute("disabled")
     except AttributeError:
         pass
 
@@ -371,6 +386,10 @@ def preset_select_changed(event):
                     js.jq(f"#{key}").checked = True
                     js.document.getElementsByName(key)[0].checked = True
                 js.jq(f"#{key}").removeAttr("disabled")
+            elif type(presets[key]) is list:
+                selector = js.document.getElementById(key)
+                for i in range(0, selector.options.length):
+                    selector.item(i).selected = selector.item(i).value in presets[key]
             else:
                 if js.document.getElementsByName(key)[0].hasAttribute("data-slider-value"):
                     js.jq(f"#{key}").slider("setValue", presets[key])
@@ -389,7 +408,7 @@ def preset_select_changed(event):
     disable_prices(None)
     max_randomized_blocker(None)
     max_randomized_troff(None)
-    disable_barrel_rando(None)
+    disable_barrel_modal(None)
 
 
 @bind("change", "dk_colors")

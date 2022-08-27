@@ -8,7 +8,7 @@ from randomizer.Spoiler import Spoiler
 def randomize_barrels(spoiler: Spoiler):
     """Randomize barrel locations."""
     barrels = [12, 91]
-    if spoiler.settings.bonus_barrel_rando or spoiler.settings.gnawty_barrels:
+    if spoiler.settings.bonus_barrel_rando or spoiler.settings.minigames_list_selected:
         barrel_replacements = []
         for location, minigame in spoiler.shuffled_barrel_data.items():
             container_map = int(BarrelMetaData[location].map)

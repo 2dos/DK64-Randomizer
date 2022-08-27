@@ -1,0 +1,20 @@
+{% from 'macros.html' import list_selector %}
+<div class="container" style="margin-top: 20px;">
+    <div class="row">
+        <div class="col border panel">
+            <h2 class="title">MINIGAME POOL</h2>
+            {{ list_selector(data_module.minigames, data_module.listType.minigame, "MINIGAME SELECTOR") }}
+        </div>
+        <div class="col border panel">
+            <h2 class="title">ENEMY POOL</h2>
+            <div class="flex-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+    $(function() {
+        $('[data-toggle="tooltip"]').tooltip({
+            trigger: 'hover'
+        })
+    })
+</script>

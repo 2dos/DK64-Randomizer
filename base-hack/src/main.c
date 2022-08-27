@@ -13,6 +13,7 @@ static char lag_counter = 0;
 static float current_avg_lag = 0;
 static short past_crystals = 0;
 static char has_loaded = 0;
+static char good_eeprom = 0;
 
 void giveCollectables(void) {
 	int mult = 1;
@@ -43,6 +44,9 @@ void cFuncLoop(void) {
 	if (ObjectModel2Timer <= 2) {
 		shiftBrokenJapesPortal();
 		openCoinDoor();
+		if (CurrentMap == 0x50) {
+			good_eeprom = EEPROMType == 2;
+		}
 	}
 	displayNumberOnTns();
 	if (Rando.music_rando_on) {
@@ -79,6 +83,7 @@ void cFuncLoop(void) {
 		}
 	}
 	changeHelmLZ();
+	handleSFXCache();
 	if (Rando.fast_start_helm == 2) {
 		if (TransitionSpeed > 0) {
 			if ((DestMap == 0x11) && (CurrentMap == 0xAA)) {
@@ -87,14 +92,7 @@ void cFuncLoop(void) {
 		}
 	}
 	if (Rando.quality_of_life) {
-		// DKTVKong = 0;
-		// if (CurrentMap == NINTENDO_LOGO) {
-		// 	if (TransitionSpeed > 0) {
-		// 		CutsceneFadeActive = 0;
-		// 		DestExit = 16;
-		// 	}
-		// }
-		toggleStandardAmmo();
+		handleDPadFunctionality();
 		if (Gamemode == 3) {
 			if (TransitionSpeed < 0) {
 				TransitionType = 1;
@@ -161,6 +159,9 @@ void earlyFrame(void) {
 		} else if ((CurrentMap == 1) || (CurrentMap == 5) || (CurrentMap == 0x19)) {
 			PauseText = 1;
 		}
+		if (CurrentMap == 0x11) {
+			HelmInit(1);
+		}
 	}
 	if ((CurrentMap == 5) || (CurrentMap == 1) || (CurrentMap == 0x19)) {
 		if ((CutsceneActive) && (CutsceneIndex == 2)) {
@@ -203,6 +204,11 @@ void earlyFrame(void) {
 	} else {
 		*(int*)(0x8074C3B0) = (int)&cutsceneDKCode;
 	}
+	// if (NewlyPressedControllerInput.Buttons & L_Button) {
+	// 	for (int i = 0; i < 0xF; i++) {
+	// 		displayItemOnHUD(i,0,0);
+	// 	}
+	// }
 	fastWarpShockwaveFix();
 	catchWarpHandle();
 	write_kutoutorder();
@@ -291,6 +297,13 @@ int* displayListModifiers(int* dl) {
 			dl = drawScreenRect(dl, left, 475, right, 485, *(unsigned char*)(address + 0), *(unsigned char*)(address + 1), *(unsigned char*)(address + 2), *(unsigned char*)(address + 3));
 			dl = drawPixelTextContainer(dl, wait_x_offsets[(int)wait_progress_master], 130, (char*)wait_texts[(int)wait_progress_master], 0xFF, 0xFF, 0xFF, 0xFF, 1);
 			dl = drawPixelTextContainer(dl, 110, 150, "PLEASE WAIT", 0xFF, 0xFF, 0xFF, 0xFF, 1);
+		} else if (CurrentMap == MAIN_MENU) {
+			if (!good_eeprom) {
+				dl = drawPixelTextContainer(dl, 0x52, 0x66, "BAD EEPROM SETTINGS.", 0xFF, 0xFF, 0xFF, 0xFF, 1);
+				dl = drawPixelTextContainer(dl, 0x3E, 0x6F, "YOUR GAME WILL NOT SAVE.", 0xFF, 0, 0, 0xFF, 1);
+				dl = drawPixelTextContainer(dl, 0x3E, 0x87, "CHECK THE SETUP GUIDE IN", 0xFF, 0xFF, 0xFF, 0xFF, 1);
+				dl = drawPixelTextContainer(dl, 0x34, 0x92, "THE WIKI TO FIX THIS ERROR.", 0xFF, 0xFF, 0xFF, 0xFF, 1);
+			}
 		} else {
 			if (Rando.fps_on) {
 				float fps = HERTZ;

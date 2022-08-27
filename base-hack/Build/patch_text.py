@@ -4,6 +4,8 @@ from text_encoder import writeText
 from text_decoder import grabText
 import shutil
 
+from text_encoder import writeText
+
 move_hints = [
     {
         "move": "Baboon Blast",
@@ -379,9 +381,9 @@ for move in move_hints:
 writeText(
     "dolby_text.bin",
     [
-        [{"text": ["DONKEY KONG 64 RANDOMIZER"]}],
-        [{"text": ["BY THE DK64 RANDOMIZER DEVELOPER TEAM"]}],
-        [{"text": ["DK64RANDOMIZER.COM"]}],
+        ["DONKEY KONG 64 RANDOMIZER"],
+        ["DEVELOPERS - 2DOS, BALLAAM, BISMUTH, CFOX, KILLKLLI, LRAUQ, SHADOWSHINE, ZNERNICUS"],
+        ["DK64RANDOMIZER.COM"],
     ],
 )
 

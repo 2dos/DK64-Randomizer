@@ -3,38 +3,39 @@ import json
 import random
 
 import js
-from randomizer.Enums.MinigameType import MinigameType
-from randomizer.Enums.Warps import Warps
 import randomizer.ItemPool as ItemPool
 import randomizer.Lists.Exceptions as Ex
-from randomizer.Lists.ShufflableExit import GetLevelShuffledToIndex, GetShuffledLevelIndex
-from randomizer.Lists.Warps import BananaportVanilla
 import randomizer.Logic as Logic
-from randomizer.Settings import Settings
 import randomizer.ShuffleExits as ShuffleExits
+from randomizer.CompileHints import compileHints
 from randomizer.Enums.Events import Events
 from randomizer.Enums.Items import Items
-from randomizer.Enums.Kongs import Kongs, GetKongs
+from randomizer.Enums.Kongs import GetKongs, Kongs
 from randomizer.Enums.Levels import Levels
 from randomizer.Enums.Locations import Locations
+from randomizer.Enums.MinigameType import MinigameType
 from randomizer.Enums.Regions import Regions
 from randomizer.Enums.SearchMode import SearchMode
 from randomizer.Enums.Time import Time
 from randomizer.Enums.Transitions import Transitions
 from randomizer.Enums.Types import Types
+from randomizer.Enums.Warps import Warps
 from randomizer.Lists.Item import ItemList, KongFromItem
 from randomizer.Lists.Location import LocationList
 from randomizer.Lists.MapsAndExits import Maps
 from randomizer.Lists.Minigame import BarrelMetaData, MinigameRequirements
-from randomizer.Logic import LogicVarHolder, LogicVariables, STARTING_SLAM
+from randomizer.Lists.ShufflableExit import GetLevelShuffledToIndex, GetShuffledLevelIndex
+from randomizer.Lists.Warps import BananaportVanilla
+from randomizer.Logic import STARTING_SLAM, LogicVarHolder, LogicVariables
 from randomizer.LogicClasses import Sphere, TransitionFront
 from randomizer.Prices import GetMaxForKong, GetPriceOfMoveItem
+from randomizer.Settings import Settings
 from randomizer.ShuffleBarrels import BarrelShuffle
-from randomizer.ShuffleKasplats import InitKasplatMap, KasplatShuffle
-from randomizer.ShuffleWarps import ShuffleWarps
 from randomizer.ShuffleBosses import ShuffleBossesBasedOnOwnedItems
+from randomizer.ShuffleKasplats import InitKasplatMap, KasplatShuffle
 from randomizer.ShufflePatches import ShufflePatches
 from randomizer.ShuffleShopLocations import ShuffleShopLocations
+from randomizer.ShuffleWarps import ShuffleWarps
 
 
 def GetExitLevelExit(region):
@@ -409,7 +410,7 @@ def PareWoth(settings, PlaythroughLocations):
         for loc in [x for x in sphere.locations if not LocationList[x].constant]:
             WothLocations.append(loc)
     # Check every item location to see if removing it by itself makes the game unbeatable
-    for i in range(len(WothLocations) - 2, -1, -1):
+    for i in range(len(WothLocations) - 1, -1, -1):
         locationId = WothLocations[i]
         location = LocationList[locationId]
         item = location.item
@@ -1285,17 +1286,19 @@ def SetNewProgressionRequirements(settings: Settings):
         settings.blocker_7,  # Last B. Locker shouldn't be affected
     ]
     settings.BossBananas = [
-        min(settings.troff_0, round(settings.troff_0 / (settings.troff_max * settings.troff_weight_0) * sum(coloredBananaCounts[0]))),
-        min(settings.troff_1, round(settings.troff_1 / (settings.troff_max * settings.troff_weight_1) * sum(coloredBananaCounts[1]))),
-        min(settings.troff_2, round(settings.troff_2 / (settings.troff_max * settings.troff_weight_2) * sum(coloredBananaCounts[2]))),
-        min(settings.troff_3, round(settings.troff_3 / (settings.troff_max * settings.troff_weight_3) * sum(coloredBananaCounts[3]))),
-        min(settings.troff_4, round(settings.troff_4 / (settings.troff_max * settings.troff_weight_4) * sum(coloredBananaCounts[4]))),
-        min(settings.troff_5, round(settings.troff_5 / (settings.troff_max * settings.troff_weight_5) * sum(coloredBananaCounts[5]))),
-        min(settings.troff_6, round(settings.troff_6 / (settings.troff_max * settings.troff_weight_6) * sum(coloredBananaCounts[6]))),
+        min(settings.troff_0, sum(coloredBananaCounts[0]), round(settings.troff_0 / (settings.troff_max * settings.troff_weight_0) * sum(coloredBananaCounts[0]))),
+        min(settings.troff_1, sum(coloredBananaCounts[1]), round(settings.troff_1 / (settings.troff_max * settings.troff_weight_1) * sum(coloredBananaCounts[1]))),
+        min(settings.troff_2, sum(coloredBananaCounts[2]), round(settings.troff_2 / (settings.troff_max * settings.troff_weight_2) * sum(coloredBananaCounts[2]))),
+        min(settings.troff_3, sum(coloredBananaCounts[3]), round(settings.troff_3 / (settings.troff_max * settings.troff_weight_3) * sum(coloredBananaCounts[3]))),
+        min(settings.troff_4, sum(coloredBananaCounts[4]), round(settings.troff_4 / (settings.troff_max * settings.troff_weight_4) * sum(coloredBananaCounts[4]))),
+        min(settings.troff_5, sum(coloredBananaCounts[5]), round(settings.troff_5 / (settings.troff_max * settings.troff_weight_5) * sum(coloredBananaCounts[5]))),
+        min(settings.troff_6, sum(coloredBananaCounts[6]), round(settings.troff_6 / (settings.troff_max * settings.troff_weight_6) * sum(coloredBananaCounts[6]))),
     ]
     # Update values based on actual level progression
     ShuffleExits.UpdateLevelProgression(settings)
     ShuffleBossesBasedOnOwnedItems(settings, ownedKongs, ownedMoves)
+    settings.owned_kongs_by_level = ownedKongs
+    settings.owned_moves_by_level = ownedMoves
 
 
 def BlockAccessToLevel(settings: Settings, level):
@@ -1350,6 +1353,8 @@ def Generate_Spoiler(spoiler):
             if not GetAccessibleLocations(spoiler.settings, [], SearchMode.CheckBeatable):
                 raise Ex.VanillaItemsGameNotBeatableException("Game unbeatable.")
     GeneratePlaythrough(spoiler)
+    if spoiler.settings.wrinkly_hints in ["standard", "cryptic"]:
+        compileHints(spoiler)
     Reset()
     ShuffleExits.Reset()
     return spoiler
@@ -1362,7 +1367,7 @@ def ShuffleMisc(spoiler):
     spoiler.human_kasplats = {}
     spoiler.UpdateKasplats(LogicVariables.kasplat_map)
     # Handle bonus barrels
-    if spoiler.settings.bonus_barrels in ("random", "all_beaver_bother"):
+    if spoiler.settings.bonus_barrels in ("random", "selected"):
         BarrelShuffle(spoiler.settings)
         spoiler.UpdateBarrels()
     # Handle Bananaports

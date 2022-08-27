@@ -28,7 +28,7 @@ extern void* dk_memcpy(void* _dest, void* _src, int size);
 extern void getTimestampDiffInTicks(unsigned int major, unsigned int minor);
 extern int timestampDiffToMilliseconds(unsigned int major, unsigned int minor);
 extern void timestampAdd(int* timestamp1, int* timestamp2);
-extern void SaveToGlobal();
+extern int SaveToGlobal();
 extern int DetectGameOver();
 extern int DetectAdventure();
 extern void displaySprite(void* control_pointer, void* sprite, int x, int y, int scale, int gif_updatefrequency, int movement_style);
@@ -69,6 +69,7 @@ extern void __osEPiStartDMA(void* unk, void* iomessage, int os_state);
 extern void __osPiRawReadIo(int a0, void* a1);
 extern int __osDisableInt();
 extern void __osRestoreInt(int mask);
+extern int __osEepromProbe(void* unk0);
 extern void copyFunc(int rom_offset, int size, void* write_location);
 extern void* getMapData(data_indexes data_idx, int _index, char compressbyte0, char compressbyte1);
 extern void loadSetup(void* setup_file, int unk0, int unk1);
@@ -117,7 +118,7 @@ extern void pauseCutscene(void);
 extern void getTextPointer_0(void* actor, int text_file, int text_index);
 
 extern int hasTurnedInEnoughCBs(void);
-extern int getWorld(int map, int unk2);
+extern int getWorld(int map, int lobby_is_isles);
 extern void displayImageOnObject(int obj_id, int position, int image_index, int unk4);
 extern void drawNumberObject(int model, int unk2, int image_index, int unk4);
 extern int isLobby(int map);
@@ -196,6 +197,12 @@ extern int* printText(int* dl, short x, short y, float scale, char* str);
 extern void assessFlagMapping(int map, int id);
 extern void coinCBCollectHandle(int player, int obj, int is_homing);
 extern void displayItemOnHUD(int item, int unk0, int unk1);
+
+extern void unkSpriteRenderFunc(int unk0);
+extern void unkSpriteRenderFunc_0(void);
+extern void loadSpriteFunction(int func);
+extern void displaySpriteAtXYZ(void* sprite, int x, int y, int z);
+extern void* getHUDSprite(int item);
 
 //vanilla data
 extern float TransitionSpeed;
@@ -312,6 +319,8 @@ extern int mapFloorBlockCount;
 extern int displayListCount;
 extern char TransitionType;
 extern char DKTVKong;
+extern cutsceneType CutsceneBanks[2];
+extern int EEPROMType;
 
 extern short screenCenterX;
 extern short screenCenterY;
@@ -377,6 +386,7 @@ extern unsigned int LevelStateBitfield;
 extern float menuHeadX[5];
 extern float menuHeadY[5];
 extern float menuHeadScale[5];
+extern collected_item_struct* LatestCollectedObject;
 
 //hack data
 extern int TestVariable;
@@ -412,3 +422,4 @@ extern unsigned char ShorterBosses;
 extern char ForceStandardAmmo;
 extern char KKOPhaseRandoOn;
 extern char KKOPhaseOrder[3];
+extern unsigned short MultiBunchCount;

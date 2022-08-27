@@ -1,8 +1,9 @@
 """Convert RGB colors into a kong color palette."""
 import gzip
 import math
-from randomizer.Patching.Patcher import ROM
+
 import js
+from randomizer.Patching.Patcher import ROM
 
 
 def convertRGBAToBytearray(rgba_lst):

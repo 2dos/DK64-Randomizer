@@ -1,11 +1,12 @@
 """Shuffles the locations of shops."""
 import random
+
+import randomizer.Logic as Logic
+from randomizer.Enums.Levels import Levels
+from randomizer.Enums.Regions import Regions
+from randomizer.Lists.MapsAndExits import Maps
 from randomizer.LogicClasses import TransitionFront
 from randomizer.Spoiler import Spoiler
-from randomizer.Enums.Levels import Levels
-from randomizer.Lists.MapsAndExits import Maps
-from randomizer.Enums.Regions import Regions
-import randomizer.Logic as Logic
 
 
 class ShopLocation:
@@ -33,9 +34,9 @@ available_shops = {
         ShopLocation(Regions.Snide, Maps.IslesSnideRoom, Regions.IslesSnideRoom, Regions.Snide),
     ],
     Levels.JungleJapes: [
-        ShopLocation(Regions.CrankyGeneric, Maps.JungleJapes, Regions.JungleJapesMain, Regions.CrankyJapes),
+        ShopLocation(Regions.CrankyGeneric, Maps.JungleJapes, Regions.JapesBeyondCoconutGate2, Regions.CrankyJapes),
         ShopLocation(Regions.Snide, Maps.JungleJapes, Regions.JungleJapesMain, Regions.Snide),
-        ShopLocation(Regions.FunkyGeneric, Maps.JungleJapes, Regions.JapesBeyondCoconutGate2, Regions.FunkyJapes),
+        ShopLocation(Regions.FunkyGeneric, Maps.JungleJapes, Regions.JungleJapesMain, Regions.FunkyJapes),
     ],
     Levels.AngryAztec: [
         ShopLocation(Regions.CrankyGeneric, Maps.AngryAztec, Regions.AngryAztecMain, Regions.CrankyAztec),

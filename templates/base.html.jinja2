@@ -13,6 +13,7 @@
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.7.1/jszip.min.js"></script>
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-slider/11.0.2/bootstrap-slider.min.js"></script>
     <script type="text/javascript" src="static/js/izoColorPicker.js"></script>
+    <script type="text/javascript" src="static/js/md5.min.js"></script>
     <script type="text/javascript" src="static/js/loggly.tracker-2.2.4.min.js"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-slider/11.0.2/css/bootstrap-slider.min.css"
           rel="stylesheet"/>
@@ -21,7 +22,9 @@
           href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
     <link href="static/styles/styles.css" rel="stylesheet" />
     <link href="./static/styles/gui.css" rel="stylesheet" type="text/css" />
-    <link href="./static/styles/izoColorPicker.css" rel="stylesheet" type="text/css"/>
+    <link href="./static/styles/izoColorPicker.css"
+          rel="stylesheet"
+          type="text/css"/>
 </head>
 <body>
     <nav class="navbar navbar-expand-lg navbar-dark navbar-custom fixed-top">
@@ -89,7 +92,8 @@
          class="center_image"
          style="cursor: pointer; margin-top: 70px"
          onClick="render_page('./index.html')"/>
-    <div style="width: 80%; min-width: 400px; max-width: 1500px" class="center">
+    <div style="width: 80%; min-width: 400px; max-width: 1500px"
+         class="center">
         <div class="card bg-dark" style="max-width: 1500px">
             <form id="form" action="/" method="POST">
                 <!--Create navbar-->
@@ -182,162 +186,189 @@
                                         <div class="flex-container" style="justify-content: center;">
                                             <div class="form-group row item-select">
                                                 <label for="seed" class="select-title">Seed</label>
-                                                    <input name="seed"
-                                                        id="seed"
-                                                        placeholder="Auto fills when empty"/>
+                                                <input name="seed" id="seed" placeholder="Auto fills when empty"/>
                                             </div>
                                         </div>
                                         <div class="flex-container" style="justify-content: center;">
                                             <div class="form-group item-select" style="min-width:300px;">
-                                                <label for="settings_string" class="select-title">Settings String</label>
-                                                    <input name="settings_string"
-                                                        id="settings_string"
-                                                        placeholder="Click Export or Copy Settings to fill"
-                                                        />
+                                                <label for="settings_string" class="select-title">
+                                                    Settings String
+                                                </label>
+                                                <input name="settings_string"
+                                                       id="settings_string"
+                                                       placeholder="Click Export or Copy Settings to fill"/>
                                             </div>
                                             <div>
                                                 <input id="import_settings"
-                                                    class="btn btn-primary settings_button"
-                                                    type="button"
-                                                    value="Import"/>
+                                                       class="btn btn-primary settings_button"
+                                                       type="button"
+                                                       value="Import"/>
                                                 <input id="export_settings"
-                                                    class="btn btn-primary settings_button"
-                                                    type="button"
-                                                    value="Export"/>
+                                                       class="btn btn-primary settings_button"
+                                                       type="button"
+                                                       value="Export"/>
                                             </div>
                                         </div>
-                                        </div>
-                                        <div class="row">
-                                            <div class="flex-container" style="justify-content: center;">
-                                                <div class="form-check form-switch item-switch" style="text-align: center;">
-                                                    <label data-toggle="tooltip" title="Used for Races to download generated ROM as patch file.">
-                                                        <input class="form-check-input"
-                                                            type="checkbox"
-                                                            id="download_patch_file"
-                                                            name="download_patch_file"
-                                                            value="True"/>
-                                                        Generate Patch File
-                                                    </label>
-                                                </div>
-                                                <div class="form-check form-switch item-switch" style="text-align: center;">
-                                                    <label data-toggle="tooltip" title="This option enables spoiler log files to be created on randomizer generation.">
-                                                        <input class="form-check-input"
-                                                            type="checkbox"
-                                                            id="generate_spoilerlog"
-                                                            name="generate_spoilerlog"
-                                                            value="True"
-                                                            checked/>
-                                                        Generate Spoiler Log
-                                                    </label>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="row">
-                                            <label for="input-file-rom_1" class="select-title">ROM File</label>
-                                            <input accept=".z64,.n64,.v64"
-                                                   class="form-control"
-                                                   type="file"
-                                                   id="input-file-rom_1"
-                                                   name="rom_file"
-                                                   style="margin-right: 5px;
-                                                          width: 50%;
-                                                          height: 100%;
-                                                          margin: 0 auto;"
-                                                   required/>
-                                        </div>
-                                        <br id="formbreak" />
-                                        <input id="generate_seed"
-                                               class="btn btn-primary"
-                                               style="width: 60%;
-                                                      height: 50px;
-                                                      text-align: center;"
-                                               type="button"
-                                               value="Generate Seed"/>
                                     </div>
-                                </div>
-                            </div>
-                            <div class="tab-pane fade"
-                                 id="nav-patch-data"
-                                 role="tabpanel"
-                                 aria-labelledby="nav-patch-tab">
-                                <div style="width: 80%;" class="center">
-                                    <div class="form-group" style="margin-bottom: 25px; text-align: center;">
-                                        <label for="patchfileloader" class="select-title">Patch File</label>
-                                        <input id="patchfileloader"
-                                               class="form-control"
-                                               type="file"
-                                               accept=".lanky"
-                                               style="margin-right: 5px;
-                                                      width: 50%;
-                                                      height: 100%;
-                                                      margin: 0 auto;"/>
-                                        <label for="input-file-rom_2" class="select-title">ROM File</label>
-                                        <input accept=".z64,.n64,.v64"
-                                               class="form-control"
-                                               type="file"
-                                               id="input-file-rom_2"
-                                               name="rom_file"
-                                               style="margin-right: 5px;
-                                                      width: 50%;
-                                                      height: 100%;
-                                                      margin: 0 auto;"
-                                               required/>
+                                    <div class="row">
+                                        <div class="flex-container" style="justify-content: center;">
+                                            <div class="form-check form-switch item-switch"
+                                                 style="text-align: center;">
+                                                <label data-toggle="tooltip"
+                                                       title="Used for Races to download generated ROM as patch file.">
+                                                    <input class="form-check-input"
+                                                           type="checkbox"
+                                                           id="download_patch_file"
+                                                           name="download_patch_file"
+                                                           value="True"/>
+                                                    Generate Patch File
+                                                </label>
+                                            </div>
+                                            <div class="form-check form-switch item-switch"
+                                                 style="text-align: center;">
+                                                <label data-toggle="tooltip"
+                                                       title="This option enables spoiler log files to be created on randomizer generation.">
+                                                    <input class="form-check-input"
+                                                           type="checkbox"
+                                                           id="generate_spoilerlog"
+                                                           name="generate_spoilerlog"
+                                                           value="True"
+                                                           checked/>
+                                                    Generate Spoiler Log
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <label for="input-file-rom_1" class="select-title">
+                                            ROM File
+                                        </label>
+                                        <div class="input-group mb-3 file-select"
+                                             style="width: 50%;
+                                                    margin: 0 auto;">
+                                            <div class="input-group-text choose-file"
+                                                 style="background-color: #6c757d;">
+                                                <input class="btn btn-primary file-button"
+                                                       type="button"
+                                                       value="Choose File"
+                                                       onClick="filebox()"
+                                                       id="choose_rom">
+                                            </div>
+                                            <input class="form-control"
+                                                   id="rom"
+                                                   type="text"
+                                                   readonly
+                                                   onClick="filebox()"
+                                                   placeholder="No File Chosen"/>
+                                        </div>
                                     </div>
                                     <br id="formbreak" />
-                                    <input id="generate_lanky_seed"
+                                    <input id="generate_seed"
                                            class="btn btn-primary"
                                            style="width: 60%;
                                                   height: 50px;
                                                   text-align: center;"
                                            type="button"
-                                           value="Generate Seed from Patch"/>
+                                           value="Generate Seed"/>
                                 </div>
                             </div>
                         </div>
+                        <div class="tab-pane fade"
+                             id="nav-patch-data"
+                             role="tabpanel"
+                             aria-labelledby="nav-patch-tab">
+                            <div style="width: 80%;" class="center">
+                                <div class="form-group" style="margin-bottom: 25px; text-align: center;">
+                                    <label for="patchfileloader" class="select-title">
+                                        Patch File
+                                    </label>
+                                    <input id="patchfileloader"
+                                           class="form-control"
+                                           type="file"
+                                           accept=".lanky"
+                                           style="margin-right: 5px;
+                                                  width: 50%;
+                                                  height: 100%;
+                                                  margin: 0 auto;"/>
+                                    <div class="row">
+                                        <label for="input-file-rom_1" class="select-title">
+                                            ROM File
+                                        </label>
+                                        <div class="input-group mb-3 file-select"
+                                             style="width: 50%;
+                                                    margin: 0 auto;">
+                                            <div class="input-group-text choose-file"
+                                                 style="background-color: #6c757d;">
+                                                <input class="btn btn-primary file-button"
+                                                       type="button"
+                                                       value="Choose File"
+                                                       onClick="filebox()"
+                                                       id="choose_rom_2">
+                                            </div>
+                                            <input class="form-control"
+                                                   id="rom_2"
+                                                   type="text"
+                                                   readonly
+                                                   onClick="filebox()"
+                                                   placeholder="No File Chosen"/>
+                                        </div>
+                                    </div>
+                                </div>
+                                <br id="formbreak" />
+                                <input id="generate_lanky_seed"
+                                       class="btn btn-primary"
+                                       style="width: 60%;
+                                              height: 50px;
+                                              text-align: center;"
+                                       type="button"
+                                       value="Generate Seed from Patch"/>
+                            </div>
+                        </div>
                     </div>
-                </form>
-            </div>
+                </div>
+            </form>
         </div>
-    </body>
-    <footer id="footer">
-        <div class="center">
-            <a href="https://github.com/2dos/DK64-Randomizer"
-               target="_blank"
-               style="text-decoration: none;">
-                <img src="./static/img/github.png" alt="GitHub" />
-            </a>
-            <a href="https://github.com/2dos/DK64-Randomizer/wiki"
-               target="_blank"
-               style="text-decoration: none;">
-                <img src="./static/img/wiki.png" alt="Wiki" />
-            </a>
-            <a href="https://discord.dk64randomizer.com"
-               target="_blank"
-               style="text-decoration: none;">
-                <img src="./static/img/discord.png" alt="Discord" />
-            </a>
-        </div>
-        <div class="center" style="font-size: small; color:#e3e3e3;">
-            <a id="live-version">DK64 Randomizer |</a>
-            <a href="https://dev.dk64randomizer.com">Dev Branch</a>
-            <br />
-            Randomizer by 2dos and Ballaam | Web Generator by Killklli
-            <br />
-            In-game characters, images and logos copyright © 1999-2021 Nintendo or Rareware respectively.
-            <br />
-            DK64Randomizer.com does not distribute copyright material.
-        </div>
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js"></script>
-        <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js@1.11.2/src/toastify.js"></script>
-        <script type="text/javascript" src="./static/js/webworker_main.js" defer></script>
-        <script type="text/javascript" src="./static/js/rompatcher/crc.js" defer></script>
-        <script type="text/javascript" src="./static/js/rompatcher/formats/bps.js" defer></script>
-        <script type="text/javascript" src="./static/js/rompatcher/MarcFile.js" defer></script>
-        <script type="text/javascript" src="./static/js/rompatcher/RomPatcher.js" defer></script>
-        <script type="text/javascript" src="./static/js/rompatcher/filesaver.js" defer></script>
-        <script type="text/javascript" src="./static/js/initalize.js"></script>
-        <script>
-        function render_page(page){                    
+    </div>
+</body>
+<footer id="footer">
+    <div class="center">
+        <a href="https://github.com/2dos/DK64-Randomizer"
+           target="_blank"
+           style="text-decoration: none;">
+            <img src="./static/img/github.png" alt="GitHub" />
+        </a>
+        <a href="https://github.com/2dos/DK64-Randomizer/wiki"
+           target="_blank"
+           style="text-decoration: none;">
+            <img src="./static/img/wiki.png" alt="Wiki" />
+        </a>
+        <a href="https://discord.dk64randomizer.com"
+           target="_blank"
+           style="text-decoration: none;">
+            <img src="./static/img/discord.png" alt="Discord" />
+        </a>
+    </div>
+    <div class="center" style="font-size: small; color:#e3e3e3;">
+        <a id="live-version">DK64 Randomizer |</a>
+        <a href="https://dev.dk64randomizer.com">Dev Branch</a>
+        <br />
+        Randomizer by 2dos and Ballaam | Web Generator by Killklli
+        <br />
+        In-game characters, images and logos copyright © 1999-2021 Nintendo or Rareware respectively.
+        <br />
+        DK64Randomizer.com does not distribute copyright material.
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js@1.11.2/src/toastify.js"></script>
+    <script type="text/javascript" src="./static/js/webworker_main.js" defer></script>
+    <script type="text/javascript" src="./static/js/rompatcher/crc.js" defer></script>
+    <script type="text/javascript" src="./static/js/rompatcher/formats/bps.js" defer></script>
+    <script type="text/javascript" src="./static/js/rompatcher/MarcFile.js" defer></script>
+    <script type="text/javascript" src="./static/js/rompatcher/RomPatcher.js" defer></script>
+    <script type="text/javascript" src="./static/js/rompatcher/filesaver.js" defer></script>
+    <script type="text/javascript" src="./static/js/initalize.js"></script>
+    <script>
+        function render_page(page) {
             xmlhttp = new XMLHttpRequest();
             xmlhttp.open("GET", page, false);
             xmlhttp.send();
@@ -348,11 +379,12 @@
             document.close();
             history.pushState({}, "page 1", "index.html");
         }
-        </script>
-        <script>
-            $(function () {
-                $('[data-toggle="tooltip"]').tooltip({
-                    trigger: 'hover'})
+    </script>
+    <script>
+        $(function() {
+            $('[data-toggle="tooltip"]').tooltip({
+                trigger: 'hover'
             })
-        </script>
-    </footer>
+        })
+    </script>
+</footer>

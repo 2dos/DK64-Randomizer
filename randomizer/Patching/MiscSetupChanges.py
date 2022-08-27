@@ -1,12 +1,13 @@
 """Apply barrel changes."""
-import js
+import math
 import random
 import struct
-import math
+
+import js
+from randomizer.Lists.MapsAndExits import Maps
+from randomizer.Lists.Patches import DirtPatchLocations
 from randomizer.Patching.Patcher import ROM
 from randomizer.Spoiler import Spoiler
-from randomizer.Lists.Patches import DirtPatchLocations
-from randomizer.Lists.MapsAndExits import Maps
 
 
 def float_to_hex(f):
@@ -30,7 +31,7 @@ def pickRandomPositionCircle(center_x, center_z, min_radius, max_radius):
 
 
 def pickRandomPositionsMult(center_x, center_z, min_radius, max_radius, count, min_dist):
-    """Pick multiple points within a torus where the center and radius boundaries are defined. There is a failsafe to make sure 2 points aren't within a certain specified distance away from eachother."""
+    """Pick multiple points within a torus where the center and radius boundaries are defined. There is a failsafe to make sure 2 points aren't within a certain specified distance away from each other."""
     picked = []
     for item in range(count):
         good_place = False
@@ -49,6 +50,61 @@ def pickRandomPositionsMult(center_x, center_z, min_radius, max_radius, count, m
             if good_place:
                 picked.append(selected)
     return {"picked": picked.copy(), "index": 0}
+
+
+def pickChunkyCabinPadPositions():
+    """Pick 3 points within a torus in Chunky's 5-door cabin where the center and radius boundaries are defined. There are failsafes to make sure 2 points are far enough apart and all points are easy enough to reach for casual game play purposes."""
+    picked_pads = []
+    # lamp_halfway_points are the center of the moving light circles when they are in their halfway points along their routes
+    lamp_halfway_points = [[169.53, 205.91], [435.219, 483.118]]
+    center_of_room = [294.594, 337.22]
+    lamp_radius = 70  # lamp radius is 65-70 but safe to use 70
+    for count in range(3):
+        good_pad = False
+        while not good_pad:
+            pad = pickRandomPositionCircle(center_of_room[0], center_of_room[1], 70, 180)
+            # check if pad is in a difficult spot to clear and if so, get the pad out of the difficult spot
+            for lamp in lamp_halfway_points:
+                # check if pad is in a lamp's radius when said lamp is on its halfway point
+                dx = pad[0] - lamp[0]
+                dz = pad[1] - lamp[1]
+                delta = math.sqrt((dx * dx) + (dz * dz))
+                # pad is in the radius mentioned in the comment above. Move the pad out of this radius
+                if delta < lamp_radius:
+                    suggested_x = pad[0]
+                    if lamp[0] < center_of_room[0]:
+                        suggested_x = suggested_x + 70
+                    else:
+                        suggested_x = suggested_x - 70
+                    suggested_z = pad[1]
+                    if lamp[1] < center_of_room[1]:
+                        suggested_z = suggested_z + 70
+                    else:
+                        suggested_z = suggested_z - 70
+                    pad = random.choice([[suggested_x, pad[1]], [pad[0], suggested_z]])
+            # check if the pad is far inside and near the lamp radius (not in it, as that's what we fixed above)
+            # top right has a Low X and Low Z coordinate, bottom left has a high X and High Z coordinate
+            is_far_inside_top_right = lamp_halfway_points[0][0] < pad[0] < center_of_room[0] and lamp_halfway_points[0][1] < pad[1] < center_of_room[1]
+            is_far_inside_bottom_left = center_of_room[0] < pad[0] < lamp_halfway_points[1][0] and center_of_room[1] < pad[1] < lamp_halfway_points[1][1]
+            if is_far_inside_top_right or is_far_inside_bottom_left:
+                # flip the coordinates horizontally, this effectively moves the pad one quadrant clockwise
+                mirror_line = 294.594
+                difference = pad[0] - mirror_line
+                pad[0] = mirror_line - difference
+            # check if any pads overlap
+            if len(picked_pads) == 0:
+                good_pad = True
+            else:
+                good_pad = True
+                for previously_picked_item in picked_pads:
+                    dx = previously_picked_item[0] - pad[0]
+                    dz = previously_picked_item[1] - pad[1]
+                    delta = math.sqrt((dx * dx) + (dz * dz))
+                    if delta < 70:
+                        good_pad = False
+            if good_pad:
+                picked_pads.append(pad)
+    return {"picked": picked_pads.copy(), "index": 0}
 
 
 def randomize_setup(spoiler: Spoiler):
@@ -171,7 +227,7 @@ def randomize_setup(spoiler: Spoiler):
     if enabled:
         diddy_5di_pads = pickRandomPositionsMult(287.94, 312.119, 0, 140, 6, 40)
         lanky_fungi_mush = pickRandomPositionsMult(274.9, 316.505, 40, 160, 6, 40)
-        # chunky_5dc_pads = pickRandomPositionsMult(294.594, 337.22, 70, 180, 3, 70)
+        chunky_5dc_pads = pickChunkyCabinPadPositions()
         random.shuffle(vase_puzzle_positions)
         vase_puzzle_rando_progress = 0
         for cont_map_id in range(216):
@@ -283,13 +339,13 @@ def randomize_setup(spoiler: Spoiler):
                     for coord in range(3):
                         ROM().writeMultipleBytes(int(float_to_hex(vase_puzzle_positions[vase_puzzle_rando_progress][coord]), 16), 4)
                     vase_puzzle_rando_progress += 1
-                # elif cont_map_id == Maps.CavesChunkyCabin and spoiler.settings.puzzle_rando and item_type == 0x203:
-                #     spawner_pos = chunky_5dc_pads["picked"][chunky_5dc_pads["index"]]
-                #     ROM().seek(item_start)
-                #     ROM().writeMultipleBytes(int(float_to_hex(spawner_pos[0]), 16), 4)
-                #     ROM().seek(item_start + 8)
-                #     ROM().writeMultipleBytes(int(float_to_hex(spawner_pos[1]), 16), 4)
-                #     chunky_5dc_pads["index"] += 1
+                elif cont_map_id == Maps.CavesChunkyCabin and spoiler.settings.puzzle_rando and item_type == 0x203:
+                    spawner_pos = chunky_5dc_pads["picked"][chunky_5dc_pads["index"]]
+                    ROM().seek(item_start)
+                    ROM().writeMultipleBytes(int(float_to_hex(spawner_pos[0]), 16), 4)
+                    ROM().seek(item_start + 8)
+                    ROM().writeMultipleBytes(int(float_to_hex(spawner_pos[1]), 16), 4)
+                    chunky_5dc_pads["index"] += 1
 
             if spoiler.settings.puzzle_rando:
                 if len(positions) > 0 and len(offsets) > 0:

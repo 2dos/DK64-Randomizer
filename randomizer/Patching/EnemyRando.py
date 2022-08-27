@@ -1,6 +1,6 @@
 """Apply Boss Locations."""
-from email.policy import default
 import random
+from email.policy import default
 
 import js
 from randomizer.Lists.EnemyTypes import Enemies, EnemyMetaData

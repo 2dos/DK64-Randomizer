@@ -47,7 +47,7 @@ window.onerror = function (error) {
 function toast_alert(text) {
   try {
     _LTracker.push(text);
-  } catch {}
+  } catch { }
   Toastify({
     text: text,
     duration: 15000,
@@ -58,7 +58,7 @@ function toast_alert(text) {
     style: {
       background: "#800000",
     },
-    onClick: function () {},
+    onClick: function () { },
   }).showToast();
 }
 function getFile(file) {
@@ -119,6 +119,18 @@ $("#form input").on("input change", function (e) {
   const data = new FormData(document.querySelector("form"));
   disabled.attr("disabled", "disabled");
   const json = Object.fromEntries(data.entries());
+  for (element of document.getElementsByTagName("select")) {
+    if (element.className.includes("selected")) {
+      length = element.options.length
+      values = []
+      for (let i = 0; i < length; i++) {
+        if (element.options.item(i).selected) {
+          values.push(element.options.item(i).value)
+        }
+      }
+      json[element.name] = values
+    }
+  }
   setCookie("saved_settings", JSON.stringify(json), 30);
 });
 $("#form select").on("change", function (e) {
@@ -127,6 +139,18 @@ $("#form select").on("change", function (e) {
   const data = new FormData(document.querySelector("form"));
   disabled.attr("disabled", "disabled");
   const json = Object.fromEntries(data.entries());
+  for (element of document.getElementsByTagName("select")) {
+    if (element.className.includes("selected")) {
+      length = element.options.length
+      values = []
+      for (let i = 0; i < length; i++) {
+        if (element.options.item(i).selected) {
+          values.push(element.options.item(i).value)
+        }
+      }
+      json[element.name] = values
+    }
+  }
   setCookie("saved_settings", JSON.stringify(json), 30);
 });
 
@@ -170,7 +194,12 @@ function load_cookies() {
             if (element.hasAttribute("data-slider-value")) {
               element.setAttribute("data-slider-value", json[key]);
             }
-          } catch {}
+            if (element.className.includes("selected")) {
+              for (var i = 0; i < element.options.length; i++) {
+                element.options[i].selected = json[key].indexOf(element.options[i].value) >= 0;
+              }
+            }
+          } catch { }
         }
       }
     } else {
@@ -185,3 +214,98 @@ async function load_presets() {
   await pyodide.runPythonAsync(`from ui.rando_options import preset_select_changed
 preset_select_changed(None)`);
 }
+
+function filebox() {
+  var input = document.createElement("input");
+  input.type = "file";
+  input.accept = ".z64,.n64,.v64";
+
+  input.onchange = (e) => {
+    var file = e.target.files[0];
+    $("#rom").attr("placeholder", file.name);
+    $("#rom").val(file.name);
+    $("#rom_2").attr("placeholder", file.name);
+    // Get the original fiile
+    var db = open.result;
+    var tx = db.transaction("ROMStorage", "readwrite");
+    var store = tx.objectStore("ROMStorage");
+    // Store it in the database
+    store.put({ ROM: "N64", value: file });
+    // Make sure we load the file into the rompatcher
+    romFile = new MarcFile(file, _parseROM);
+  };
+
+  input.click();
+}
+
+// This works on all devices/browsers, and uses IndexedDBShim as a final fallback
+var indexedDB =
+  window.indexedDB ||
+  window.mozIndexedDB ||
+  window.webkitIndexedDB ||
+  window.msIndexedDB ||
+  window.shimIndexedDB;
+
+// Open (or create) the database
+var open = indexedDB.open("ROMStorage", 1);
+
+// Create the schema
+open.onupgradeneeded = function () {
+  try {
+    var db = open.result;
+    db.createObjectStore("ROMStorage", { keyPath: "ROM" });
+  }
+  catch { }
+};
+
+open.onsuccess = function () {
+  load_file_from_db();
+};
+
+function load_file_from_db() {
+  try {
+    // If we actually have a file in the DB load it
+    var db = open.result;
+    var tx = db.transaction("ROMStorage", "readwrite");
+    var store = tx.objectStore("ROMStorage");
+
+    // Get our ROM file
+    var getROM = store.get("N64");
+    getROM.onsuccess = function () {
+      // When we pull it from the DB load it in as a global var
+      try {
+        romFile = new MarcFile(getROM.result.value, _parseROM);
+        $("#rom").attr("placeholder", "Using cached ROM");
+        $("#rom").val("Using cached ROM");
+        $("#rom_2").attr("placeholder", "Using cached ROM");
+      } catch { }
+    };
+  }
+  catch { }
+}
+
+var w;
+var CurrentRomHash;
+
+function site_version_checker() {
+  fetch("./static/py_libraries/dk64rando-1.0.0-py3-none-any.whl")
+    .then((response) => response.text())
+    .then((data) => {
+      CurrentRomHash = md5(data);
+    });
+  if (typeof Worker !== "undefined") {
+    if (typeof w == "undefined") {
+      w = new Worker("./static/js/version_worker.js");
+    }
+    w.onmessage = function (event) {
+      if (CurrentRomHash != null && event.data != null) {
+        if (CurrentRomHash != event.data) {
+          alert("The Site has been updated. Please refresh the page.");
+        }
+      }
+    };
+  } else {
+    alert("Sorry! No Web Worker support. This site probably wont work.");
+  }
+}
+site_version_checker();

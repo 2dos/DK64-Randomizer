@@ -3,30 +3,26 @@ import asyncio
 import json
 import random
 
+from pyodide import create_proxy
+
 import js
 from randomizer.BackgroundRandomizer import generate_playthrough
 from randomizer.Patching.ApplyRandomizer import patching_response
+from randomizer.SettingStrings import decrypt_setting_string, encrypt_settings_string
 from randomizer.Worker import background
 from ui.bindings import bind
 from ui.progress_bar import ProgressBar
-from ui.settings_strings import encrypt_settings_string, decrypt_setting_string
 from ui.rando_options import (
-    toggle_counts_boxes,
-    toggle_b_locker_boxes,
-    update_boss_required,
+    disable_barrel_modal,
     disable_colors,
     disable_music,
     disable_prices,
     max_randomized_blocker,
     max_randomized_troff,
-    disable_barrel_rando,
-    disable_boss_rando,
-    hide_rgb,
-    toggle_medals_box,
-    max_randomized_medals,
-    disable_rw,
+    toggle_b_locker_boxes,
+    toggle_counts_boxes,
+    update_boss_required,
 )
-from pyodide import create_proxy
 
 
 @bind("click", "export_settings")
@@ -61,6 +57,10 @@ def import_settings_string(event):
                         js.jq(f"#{key}").checked = True
                         js.document.getElementsByName(key)[0].checked = True
                     js.jq(f"#{key}").removeAttr("disabled")
+                elif type(settings[key]) is list:
+                    selector = js.document.getElementById(key)
+                    for i in range(0, selector.options.length):
+                        selector.item(i).selected = selector.item(i).value in settings[key]
                 else:
                     if js.document.getElementsByName(key)[0].hasAttribute("data-slider-value"):
                         js.jq(f"#{key}").slider("setValue", settings[key])
@@ -79,7 +79,7 @@ def import_settings_string(event):
         disable_prices(None)
         max_randomized_blocker(None)
         max_randomized_troff(None)
-        disable_barrel_rando(None)
+        disable_barrel_modal(None)
     except Exception:
         pass
 
@@ -116,10 +116,10 @@ def lanky_file_changed(event):
 def generate_seed_from_patch(event):
     """Generate a seed from a patch file."""
     # Check if the rom filebox has a file loaded in it.
-    if len(str(js.document.getElementById("input-file-rom").value).strip()) == 0 or "is-valid" not in list(js.document.getElementById("input-file-rom").classList):
-        js.document.getElementById("input-file-rom").select()
-        if "is-invalid" not in list(js.document.getElementById("input-file-rom").classList):
-            js.document.getElementById("input-file-rom").classList.add("is-invalid")
+    if len(str(js.document.getElementById("rom").value).strip()) == 0 or "is-valid" not in list(js.document.getElementById("rom").classList):
+        js.document.getElementById("rom").select()
+        if "is-invalid" not in list(js.document.getElementById("rom").classList):
+            js.document.getElementById("rom").classList.add("is-invalid")
     elif len(str(js.document.getElementById("patchfileloader").value).strip()) == 0:
         js.document.getElementById("patchfileloader").select()
         if "is-invalid" not in list(js.document.getElementById("patchfileloader").classList):
@@ -174,6 +174,14 @@ def serialize_settings():
     # Re disable all previously disabled options
     for element in disabled_options:
         element.setAttribute("disabled", "disabled")
+    for element in js.document.getElementsByTagName("select"):
+        if "selected" in element.className:
+            length = element.options.length
+            values = []
+            for i in range(0, length):
+                if element.options.item(i).selected:
+                    values.append(element.options.item(i).value)
+            form_data[element.getAttribute("name")] = values
     return form_data
 
 
@@ -185,10 +193,10 @@ def generate_seed(event):
         event (event): Javascript click event.
     """
     # Check if the rom filebox has a file loaded in it.
-    if len(str(js.document.getElementById("input-file-rom").value).strip()) == 0 or "is-valid" not in list(js.document.getElementById("input-file-rom").classList):
-        js.document.getElementById("input-file-rom").select()
-        if "is-invalid" not in list(js.document.getElementById("input-file-rom").classList):
-            js.document.getElementById("input-file-rom").classList.add("is-invalid")
+    if len(str(js.document.getElementById("rom").value).strip()) == 0 or "is-valid" not in list(js.document.getElementById("rom").classList):
+        js.document.getElementById("rom").select()
+        if "is-invalid" not in list(js.document.getElementById("rom").classList):
+            js.document.getElementById("rom").classList.add("is-invalid")
     else:
         # Start the progressbar
         loop = asyncio.get_event_loop()
@@ -213,42 +221,3 @@ def update_seed_text(event):
         js.document.getElementById("generate_seed").value = "Generate Patch File and Seed"
     else:
         js.document.getElementById("generate_seed").value = "Generate Seed"
-
-
-@bind("click", "nav-seed-gen-tab")
-@bind("click", "nav-patch-tab")
-def disable_input(event):
-    """Disable input for the ROM Boxes as we rotate through the navbar.
-
-    Args:
-        event (DOMEvent): DOM item that triggered the event.
-    """
-    # Try to determine of the patch tab was what triggered the event.
-    ev_type = False
-    try:
-        if "patch-tab" in event.target.id:
-            ev_type = True
-    except Exception:
-        pass
-    # As we rotate between the tabs, verify our disabled progression status
-    # and set our input file box as the correct name so we can use two fileboxes as the same name
-    if ev_type is False:
-        if not js.document.getElementById("input-file-rom_2"):
-            try:
-                js.document.getElementById("input-file-rom").id = "input-file-rom_2"
-            except Exception:
-                pass
-        try:
-            js.document.getElementById("input-file-rom_1").id = "input-file-rom"
-        except Exception:
-            pass
-    else:
-        if not js.document.getElementById("input-file-rom_1"):
-            try:
-                js.document.getElementById("input-file-rom").id = "input-file-rom_1"
-            except Exception:
-                pass
-        try:
-            js.document.getElementById("input-file-rom_2").id = "input-file-rom"
-        except Exception:
-            pass

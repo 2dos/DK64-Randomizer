@@ -19,7 +19,7 @@ jobs:
               architecture: x64
 
         - name: Install linters
-          run: pip install black pycodestyle pydocstyle
+          run: pip install black pycodestyle pydocstyle djlint
 
         - name: Run black
           run: black . --check -l 200
@@ -29,6 +29,7 @@ jobs:
 
         - name: Run pydocstyle
           run: pydocstyle .
+
 
   analyze:
     name: Analyze

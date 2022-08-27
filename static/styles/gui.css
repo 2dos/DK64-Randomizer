@@ -314,6 +314,19 @@ select:disabled option:checked {
   border-bottom-right-radius: 0;
 }
 
+.choose-file {
+  width: 105px;
+  padding: 0px;
+}
+input[type="text"]:read-only{background-color:#252525;}
+
+.file-button {
+  height: 36px;
+  width: 103px;
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+}
+
 #leveltable{
   margin-bottom: 20px;
 }
@@ -425,11 +438,13 @@ i {
   min-height: 450px;
 }
 
+.settings-table:not(.ignore-width) {
+  max-width: 450px;
+  height: 300px;
+}
 .settings-table {
   flex: 1 0 50%;
   min-width: 437px;
-  max-width: 450px;
-  height: 300px;
   margin-left: auto;
   margin-right: auto;
 }
@@ -437,4 +452,100 @@ i {
 #spoiler_log_block {
   flex: 1 1 auto;
   min-width: 500px;
+  width: 500px;
+}
+
+.search {
+  border-radius: 0.25rem;
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+  padding: 0px;
+  width: 250px;
+}
+
+#search_box {
+  border: none;
+  width: 250px;
+}
+
+.selected {
+  border-top-right-radius: 0;
+  border-bottom-left-radius: 0.25rem !important;
+  border-top: none;
+  margin-left: 0px !important;
+  min-width: 250px !important;
+}
+
+.modal-body {
+  background-color: #252525;
+}
+
+.modal-header {
+  background-color: #171717;
+  height: 60px;
+}
+
+.modal-footer {
+  background-color: #171717;
+}
+
+.modal-content {
+  top: 50%;
+  transform: translateY(25%);
+  border: none;
+}
+
+.btn-close {
+  background-color: grey;
+}
+
+.customize {
+  font-size: 10px;
+  margin: 0px;
+}
+
+.spoiler-head {
+  padding: 1em 1.5em 1em 3em;
+  border: 2px solid white;
+  border-radius: 5px;
+  text-align: left;
+  cursor: pointer;
+}
+
+.playthrough-head {
+  padding: 0.5em 1.5em;
+  border: 1px solid grey;
+  text-align: left;
+  padding-left: 4em;
+  cursor: pointer;
+}
+
+td.directional_divider {
+  width: 20%;
+}
+
+.spoiler-head:not(.collapsed), .playthrough-head:not(.collapsed) {
+  background-image: linear-gradient(to bottom, rgba(0,0,0,0.9), rgba(0,0,0,0.2));
+}
+
+.spoiler-head .caret-up, .playthrough-head .caret-up {
+  display:block;
+}
+.spoiler-head .caret-down, .playthrough-head .caret-down {
+  display:none;
+}
+.spoiler-head:not(.collapsed) .caret-up, .playthrough-head:not(.collapsed) .caret-up {
+  display:none;
+}
+.spoiler-head:not(.collapsed) .caret-down, .playthrough-head:not(.collapsed) .caret-down {
+  display:block;
+}
+.spoiler-head-container, .playthrough-head-container {
+  display: flex;
+}
+.spoiler-head-name, .spoiler-head-caret, .playthrough-head-name, .playthrough-head-caret {
+  flex: 1;
+}
+.spoiler-head-caret, .playthrough-head-caret {
+  text-align: right;
 }
