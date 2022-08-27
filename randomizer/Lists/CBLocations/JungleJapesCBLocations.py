@@ -342,7 +342,10 @@ ColoredBananaGroupList = [
         name="Bunches on torches by DK and Tiny BPs",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.JapesBeyondCoconutGate1,
-        locations=[[5, 1.0, 2754, 378, 2172], [5, 1.0, 3262, 497, 2401],],
+        locations=[
+            [5, 1.0, 2754, 378, 2172],
+            [5, 1.0, 3262, 497, 2401],
+        ],
     ),
     ColoredBananaGroup(
         group=21,

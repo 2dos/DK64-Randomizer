@@ -2043,8 +2043,8 @@ BalloonList = [
         region=Regions.BeyondHatch,
         logic=lambda l: l.punch,
         points=[
-            [1837, 150, 510],
             [2078, 150, 510],
+            [2078, 150, 810],
         ],
     ),
     Balloon(
