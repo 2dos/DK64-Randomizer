@@ -832,7 +832,6 @@ def compileHintsOld(spoiler: Spoiler):
         total_moves_for_krool = 0
         for x in spoiler.settings.krool_order:
             total_moves_for_krool += krool_move_requirements[x]
-
         # Collate nested lists for a list of shop moves
         shop_data = []
         for shop in range(3):  # Order: Cranky, Funky, Candy

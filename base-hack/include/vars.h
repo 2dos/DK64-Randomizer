@@ -86,8 +86,18 @@
 #define GALLEON_5DSOPEN_LANKY 0x2FA
 #define GALLEON_5DSOPEN_TINY 0x2FB
 #define GALLEON_5DSOPEN_CHUNKY 0x2FC
+#define FLAG_ABILITY_CAMERA 0x2FD // Decoupled from shockwave which uses regular flag
 
 #define IMAGE_DPAD 187
 #define IMAGE_AMMO_START 188
 #define IMAGE_KONG_START 190
 #define LEVEL_COUNT 8
+
+#define PURCHASE_MOVES 0
+#define PURCHASE_SLAM 1
+#define PURCHASE_GUN 2
+#define PURCHASE_AMMOBELT 3
+#define PURCHASE_INSTRUMENT 4
+#define PURCHASE_FLAG 5
+#define PURCHASE_GB 6
+#define PURCHASE_NOTHING -1

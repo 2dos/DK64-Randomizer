@@ -112,6 +112,7 @@ void initHack(int source) {
 			loadExtraHooks();
 			no_enemy_drops();
 			// Moves & Prices
+			fixTBarrelsAndBFI(1);
 			replace_moves();
 			price_rando();
 			if (!Rando.move_rando_on) {
@@ -309,8 +310,12 @@ void initHack(int source) {
 			// New Guard Code
 			*(short*)(0x806AF75C) = 0x1000;
 			// Gold Beaver Code
-			*(int*)(0x8074C3F0) = 0x806AD54C; // Set as Blue Beaver Code
+      		*(int*)(0x8074C3F0) = 0x806AD54C; // Set as Blue Beaver Code
 			*(int*)(0x806AD750) = 0x0C000000 | (((int)&beaverExtraHitHandle & 0xFFFFFF) >> 2); // Remove buff until we think of something better
+			// Move Text Code
+			*(int*)(0x8074C5B0) = (int)&getNextMoveText;
+			*(int*)(0x8074C5A0) = (int)&getNextMoveText;
+			
 			// Spider Projectile
 			//*(int*)(0x806ADDC0) = 0x0C000000 | (((int)&handleSpiderTrapCode & 0xFFFFFF) >> 2); // Remove buff until we think of something better
 			// Slow Turn Fix
@@ -330,6 +335,12 @@ void initHack(int source) {
 				ModelTwoCollisionArray[index].actor_equivalent = 0;
 			}
 			*(int*)(0x806A64B0) = 0x240A0004; // Always ensure lanky coin sprite
+			// Decouple Camera from Shockwave
+			*(short*)(0x806E9812) = FLAG_ABILITY_CAMERA; // Usage
+			*(short*)(0x806AB0F6) = FLAG_ABILITY_CAMERA; // Isles Fairies Display
+			*(short*)(0x806AAFB6) = FLAG_ABILITY_CAMERA; // Other Fairies Display
+			*(short*)(0x806AA762) = FLAG_ABILITY_CAMERA; // Film Display
+			*(short*)(0x8060D986) = FLAG_ABILITY_CAMERA; // Film Refill
 			initItemDropTable();
 			// LZ Save
 			*(int*)(0x80712EC4) = 0x0C000000 | (((int)&postKRoolSaveCheck & 0xFFFFFF) >> 2);

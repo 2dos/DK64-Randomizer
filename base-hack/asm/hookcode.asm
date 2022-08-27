@@ -458,6 +458,9 @@ START_HOOK:
 		SW t3, 0x937C (t4) // Store Hook
 		SW r0, 0x9380 (t4) // Store NOP
 
+		LUI t3, 0x8003
+		SW r0, 0x9874 (t3) // Prevent GB sprite rendering
+
 		LUI t3, hi(Jump_MenuUnlock)
 		LW t3, lo(Jump_MenuUnlock) (t3)
 		LUI t4, 0x8003

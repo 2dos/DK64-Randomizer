@@ -155,9 +155,31 @@
 .definelabel beaverControlSwitchCase, 0x806AD260
 .definelabel spawnProjectile, 0x80690A28
 .definelabel updateActorProjectileInfo, 0x80690814
-.definelabel controlStateControl, 0x806DF6D4
+.definelabel crystalsUnlocked, 0x806F6E58
+.definelabel setMovesForAllKongs, 0x80025D8C
+.definelabel setMoveProgressive, 0x80025D14
+.definelabel setMoveBitfield, 0x80025D44
+.definelabel refillHealth, 0x80709464
+.definelabel changeCollectableCount, 0x806F91B4
 .definelabel save, 0x8060DEC8
+.definelabel getSpawnerTiedActor, 0x807270C0
+
+.definelabel _guScaleF, 0x80008580
+.definelabel _guTranslateF, 0x80005D80
+.definelabel _guMtxCatF, 0x800088B0
+.definelabel _guMtxF2L, 0x8000A6C0
+.definelabel getTextPointer, 0x8070E750
+.definelabel addDLToOverlay, 0x8068C350
 .definelabel displayItemOnHUD, 0x806F8BC4
+.definelabel controlStateControl, 0x806DF6D4
+.definelabel groundContactCheck, 0x80629148
+.definelabel groundContactSet, 0x80629174
+.definelabel getRefillCount, 0x806F8EDC
+.definelabel doAllKongsHaveMove, 0x80025AF0
+.definelabel getSequentialPurchase, 0x80026804
+.definelabel ReadFile, 0x8060C6B8
+.definelabel printText, 0x806ABB98
+
 .definelabel assessFlagMapping, 0x807314F4
 .definelabel coinCBCollectHandle, 0x806F54E0
 
@@ -342,7 +364,13 @@
 .definelabel getXRatioMovement, 0x80612794
 .definelabel getZRatioMovement, 0x80612790
 .definelabel ModelTwoCollisionArray, 0x80753EF0
+.definelabel MelonArray, 0x800334DC
 .definelabel IGT, 0x80750AB0
+.definelabel LevelStateBitfield, 0x807FBB60
+
+.definelabel menuHeadX, 0x80033F68
+.definelabel menuHeadY, 0x80033F80
+.definelabel menuHeadScale, 0x80033F98
 .definelabel LatestCollectedObject, 0x807FD734
 
 //hack data
@@ -379,3 +407,5 @@
 .definelabel CrankyMoves_New, 0x807FF400
 .definelabel CandyMoves_New, 0x807FF4F0
 .definelabel FunkyMoves_New, 0x807FF5E0
+.definelabel TrainingMoves_New, 0x807FF6D0
+.definelabel BFIMove_New, 0x807FF6E8

@@ -35,21 +35,33 @@ void decouple_moves_fixes(void) {
 		PatchCrankyCode();
 		*(int*)(0x80025E9C) = 0x0C009751; // Change writing of move to "write bitfield move" function call
 		writeJetpacMedalReq(); // Adjust medal requirement for Jetpac
+		int func_call = 0;
 		if (Rando.shop_hints) {
-			int func_call = 0x0C000000 | (((int)&getMoveHint & 0xFFFFFF) >> 2);
+			func_call = 0x0C000000 | (((int)&getMoveHint & 0xFFFFFF) >> 2);
 			*(int*)(0x8002661C) = func_call;
 			*(int*)(0x800265F0) = func_call;
 		}
-		int func_call = 0x0C000000 | (((int)&getNextMovePurchase & 0xFFFFFF) >> 2);
+		func_call = 0x0C000000 | (((int)&getNextMovePurchase & 0xFFFFFF) >> 2);
 		*(int*)(0x80026720) = func_call;
 		*(int*)(0x8002683C) = func_call;
 		crossKongInit();
+		// Write Modified purchase move stuff
+		func_call = 0x0C000000 | (((int)&purchaseMove & 0xFFFFFF) >> 2);
+		*(int*)(0x80027324) = func_call;
+		*(int*)(0x8002691C) = func_call;
+		*(int*)(0x800270B8) = 0x0C000000 | (((int)&showPostMoveText & 0xFFFFFF) >> 2);
 	} else if (CurrentMap == MAIN_MENU) {
 		*(short*)(0x8002E266) = 7; // Enguarde Arena Movement Write
 		*(short*)(0x8002F01E) = 7; // Rambi Arena Movement Write
 		for (int i = 0; i < 8; i++) {
 			MainMenuMoves[i].moves = moves_values[i];
 		}
+		int func_call = 0x0C000000 | (((int)&displayHeadTexture & 0xFFFFFF) >> 2);
+		*(int*)(0x800292B8) = func_call;
+		*(int*)(0x800292D4) = func_call;
+		// Menu Stuff
+		// *(short*)(0x800281AA) = 3; // Set "adventure" destination to the file progress screen
+		//*(short*)(0x8002919E) = 1; // Set B button action in file screen menu to barrel screen
 	} else if (CurrentMap == SNIDE) {
 		*(int*)(0x8002402C) = 0x240E000C; // No extra contraption cutscenes
 		*(int*)(0x80024054) = 0x24080001; // 1 GB Turn in
@@ -64,12 +76,16 @@ void decouple_moves_fixes(void) {
 		}
 	}
 	writeCoinRequirements(1);
+	fixTBarrelsAndBFI(0);
 	if ((*(int*)(0x807FBB64) << 1) & 0x80000000) {
 		// Menu Overlay - Candy's Shop Glitch
 		*(short*)(0x80027678) = 0x1000;
 		*(short*)(0x8002769C) = 0x1000;
 	} else if (*(int*)(0x807FBB64) & 0x104000) {
 		*(short*)(0x80024266) = 1; // Set Minigame oranges as infinite
+	}
+	if (CurrentMap == 0xBD) {
+		*(int*)(0x80028080) = 0x0C000000 | (((int)&displayBFIMoveText & 0xFFFFFF) >> 2); // BFI Text Display
 	}
 	int in_boss = 0;
 	for (int i = 0; i < sizeof(boss_maps); i++) {

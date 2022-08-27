@@ -1,4 +1,5 @@
 #include "vars.h"
+#include "text_items.h"
 
 extern void playSFX(short sfxIndex);
 extern void setPermFlag(short flagIndex);
@@ -111,8 +112,19 @@ extern void beaverExtraHitHandle(void);
 extern void CBDing(void);
 extern void handleSpiderTrapCode(void);
 extern void fastWarpShockwaveFix(void);
+
+extern move_block* getMoveBlock(void);
+extern void setLocationStatus(location_list location_index);
+extern int getLocationStatus(location_list location_index);
+extern void fixTBarrelsAndBFI(int init);
+extern void purchaseMove(shop_paad* paad);
+extern void getNextMoveText(void);
+extern void displayBFIMoveText(void);
+extern void showPostMoveText(shop_paad* paad, KongBase* kong_base, int intro_flag);
 extern void fixRBSlowTurn(void);
 extern void postKRoolSaveCheck(void);
+extern int* displayHeadTexture(int* dl, int texture, float x, float y, float scale);
+
 extern void tagBarrelBackgroundKong(int kong_actor);
 extern void tagAnywhereInit(int is_homing, int model2_id, int obj);
 extern void tagAnywhereAmmo(int player, int obj, int is_homing);
