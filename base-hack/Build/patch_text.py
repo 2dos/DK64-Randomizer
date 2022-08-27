@@ -381,9 +381,9 @@ for move in move_hints:
 writeText(
     "dolby_text.bin",
     [
-        ["DONKEY KONG 64 RANDOMIZER"],
-        ["DEVELOPERS - 2DOS, BALLAAM, BISMUTH, CFOX, KILLKLLI, LRAUQ, SHADOWSHINE, ZNERNICUS"],
-        ["DK64RANDOMIZER.COM"],
+        [{"text": ["DONKEY KONG 64 RANDOMIZER"]}],
+        [{"text": ["DEVELOPERS - 2DOS, BALLAAM, BISMUTH, CFOX, KILLKLLI, LRAUQ, SHADOWSHINE, ZNERNICUS"]}],
+        [{"text": ["DK64RANDOMIZER.COM"]}],
     ],
 )
 

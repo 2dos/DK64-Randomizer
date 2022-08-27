@@ -1,10 +1,10 @@
 #include "../../include/common.h"
 
 static char file_percentage[5] = "";
-static char golden_count[4] = "";
+// static char golden_count[4] = "";
 static char balanced_igt[20] = "";
-static char blueprints_count[5] = "";
-static char move_count_str[10] = "";
+// static char blueprints_count[5] = "";
+// static char move_count_str[10] = "";
 
 #define LINE_GAP 0x8C
 

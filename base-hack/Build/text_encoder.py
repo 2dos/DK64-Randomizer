@@ -190,6 +190,7 @@ def float_to_hex(f):
 
 def writeText(file_name, text):
     """Write the text to ROM."""
+    print(f"Writing Text File: {file_name}")
     with open(file_name, "wb") as fh:
         fh.write(bytearray([len(text)]))
         position = 0
