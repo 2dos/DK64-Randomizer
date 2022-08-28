@@ -335,6 +335,29 @@ void initHack(int source) {
 				ModelTwoCollisionArray[index].actor_equivalent = 0;
 			}
 			*(int*)(0x806A64B0) = 0x240A0004; // Always ensure lanky coin sprite
+			// 1-File Fixes
+			*(int*)(0x8060CF34) = 0x240E0001; // Slot 1
+			*(int*)(0x8060CF38) = 0x240F0002; // Slot 2
+			*(int*)(0x8060CF3C) = 0x24180003; // Slot 3
+			*(int*)(0x8060CF40) = 0x240D0000; // Slot 0
+			*(int*)(0x8060D3AC) = 0; // Prevent EEPROM Shuffle
+			*(int*)(0x8060DCE8) = 0; // Prevent EEPROM Shuffle
+			*(int*)(0x8060C760) = 0x24900000; // Always load file 0
+			*(short*)(0x8060CC22) = 1; // File Loop Cancel 1
+			*(short*)(0x8060CD1A) = 1; // File Loop Cancel 2
+			*(short*)(0x8060CE7E) = 1; // File Loop Cancel 3
+			*(short*)(0x8060CE5A) = 1; // File Loop Cancel 4
+			*(short*)(0x8060CF0E) = 1; // File Loop Cancel 5
+			*(short*)(0x8060CF26) = 1; // File Loop Cancel 6
+			*(int*)(0x8060CD08) = 0x26670000; // Save to File - File Index
+			*(int*)(0x8060CE48) = 0x26670000; // Save to File - File Index
+			*(int*)(0x8060CF04) = 0x26270000; // Save to File - File Index
+			*(int*)(0x8060BFA4) = 0x252A0000; // Global Block after 1 file entry
+			*(int*)(0x8060E378) = 0x258D0000; // Global Block after 1 file entry
+			*(int*)(0x8060D33C) = 0x254B0000; // Global Block after 1 file entry
+			*(int*)(0x8060D470) = 0x256C0000; // Global Block after 1 file entry
+			*(int*)(0x8060D4B0) = 0x252A0000; // Global Block after 1 file entry
+			*(int*)(0x8060D558) = 0x258D0000; // Global Block after 1 file entry
 			// Decouple Camera from Shockwave
 			*(short*)(0x806E9812) = FLAG_ABILITY_CAMERA; // Usage
 			*(short*)(0x806AB0F6) = FLAG_ABILITY_CAMERA; // Isles Fairies Display
