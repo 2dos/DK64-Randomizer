@@ -358,6 +358,9 @@ void initHack(int source) {
 			*(int*)(0x8060D470) = 0x256C0000; // Global Block after 1 file entry
 			*(int*)(0x8060D4B0) = 0x252A0000; // Global Block after 1 file entry
 			*(int*)(0x8060D558) = 0x258D0000; // Global Block after 1 file entry
+			*(int*)(0x8060CF74) = 0x25090000; // Global Block after 1 file entry
+			*(int*)(0x8060CFCC) = 0x25AE0000; // Global Block after 1 file entry
+			*(int*)(0x8060D24C) = 0x25AE0000; // Global Block after 1 file entry
 			// Decouple Camera from Shockwave
 			*(short*)(0x806E9812) = FLAG_ABILITY_CAMERA; // Usage
 			*(short*)(0x806AB0F6) = FLAG_ABILITY_CAMERA; // Isles Fairies Display
