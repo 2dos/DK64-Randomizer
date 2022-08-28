@@ -361,15 +361,15 @@ def disable_prices(evt):
 @bind("click", "bonus_barrel_rando")
 def disable_barrel_modal(evt):
     """Disable Minigame Selector when Shuffle Bonus Barrels is off."""
-    hidden = True
+    disabled = True
     selector = js.document.getElementById("minigames_list_modal")
     if js.document.getElementById("bonus_barrel_rando").checked:
-        hidden = False
+        disabled = False
     try:
-        if hidden:
-            selector.setAttribute("hidden", "hidden")
+        if disabled:
+            selector.setAttribute("disabled", "disabled")
         else:
-            selector.removeAttribute("hidden")
+            selector.removeAttribute("disabled")
     except AttributeError:
         pass
 
@@ -414,6 +414,7 @@ def preset_select_changed(event):
     disable_prices(None)
     max_randomized_blocker(None)
     max_randomized_troff(None)
+    disable_barrel_modal(None)
 
 
 @bind("change", "dk_colors")
