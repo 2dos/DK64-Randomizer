@@ -517,7 +517,8 @@ def compileHints(spoiler: Spoiler):
         # Determine what levels are before this level
         hintable_levels = all_levels.copy()
         # Only if we care about the level order do we restrict these hints' locations
-        if level_order_matters:
+        # We lack the tools (or creativity) to figure out proper locations for hints in hard level progression (for now?)
+        if level_order_matters and not spoiler.settings.hard_level_progression:
             # Determine a sorted order of levels by B. Lockers - this may not be the actual "progression" but it'll do for now
             levels_in_order = all_levels.copy()
             levels_in_order.sort(key=lambda l: spoiler.settings.EntryGBs[l])
@@ -536,8 +537,8 @@ def compileHints(spoiler: Spoiler):
                         candidate for candidate in all_levels if spoiler.settings.EntryGBs[candidate] == spoiler.settings.EntryGBs[level] and candidate not in hintable_levels
                     ]
                     # If there's only one candidate then this is the level that gives logical access to the move, so we're done
-                    # If it's an Isles shop we're hinting or hard level progression we don't need to pare down the lobby options, so we're done
-                    if len(cheapest_levels_candidates) == 1 or index_of_level_with_location >= 7:  # or hard level progression (TBD)
+                    # If it's an Isles shop we're hinting we don't need to pare down the lobby options, so we're done
+                    if len(cheapest_levels_candidates) == 1 or index_of_level_with_location >= 7:
                         cheapest_levels_with_item = cheapest_levels_candidates
                     # In normal level progression, we need to remove levels that are beyond the shop's level
                     else:

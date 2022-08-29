@@ -488,7 +488,7 @@ class LogicVarHolder:
 
     def HasEnoughKongs(self, level, forPreviousLevel=False):
         """Check if kongs are required for progression, do we have enough to reach the given level."""
-        if self.settings.kongs_for_progression and level != Levels.HideoutHelm:
+        if self.settings.kongs_for_progression and level != Levels.HideoutHelm and not self.settings.hard_level_progression:
             # Figure out where this level fits in the progression
             levelIndex = GetShuffledLevelIndex(level)
             if forPreviousLevel:
