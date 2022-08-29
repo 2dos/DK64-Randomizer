@@ -349,6 +349,9 @@ void initHack(int source) {
 			*(short*)(0x8060CE5A) = 1; // File Loop Cancel 4
 			*(short*)(0x8060CF0E) = 1; // File Loop Cancel 5
 			*(short*)(0x8060CF26) = 1; // File Loop Cancel 6
+			*(short*)(0x8060D0DE) = 1; // File Loop Cancel 7
+			*(short*)(0x8060D106) = 1; // File Loop Cancel 8
+			*(short*)(0x8060D43E) = 1; // File Loop Cancel 8
 			*(int*)(0x8060CD08) = 0x26670000; // Save to File - File Index
 			*(int*)(0x8060CE48) = 0x26670000; // Save to File - File Index
 			*(int*)(0x8060CF04) = 0x26270000; // Save to File - File Index
@@ -361,6 +364,11 @@ void initHack(int source) {
 			*(int*)(0x8060CF74) = 0x25090000; // Global Block after 1 file entry
 			*(int*)(0x8060CFCC) = 0x25AE0000; // Global Block after 1 file entry
 			*(int*)(0x8060D24C) = 0x25AE0000; // Global Block after 1 file entry
+			*(int*)(0x8060C84C) = 0xA02067C8; // Force file 0
+			*(int*)(0x8060C654) = 0x24040000; // Force file 0 - Save
+			*(int*)(0x8060C664) = 0xAFA00034; // Force file 0 - Save
+			*(int*)(0x8060C6C4) = 0x24040000; // Force file 0 - Read
+			*(int*)(0x8060C6D4) = 0xAFA00034; // Force file 0 - Read
 			// Decouple Camera from Shockwave
 			*(short*)(0x806E9812) = FLAG_ABILITY_CAMERA; // Usage
 			*(short*)(0x806AB0F6) = FLAG_ABILITY_CAMERA; // Isles Fairies Display

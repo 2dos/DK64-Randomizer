@@ -60,8 +60,14 @@ void decouple_moves_fixes(void) {
 		*(int*)(0x800292B8) = func_call;
 		*(int*)(0x800292D4) = func_call;
 		// Menu Stuff
-		// *(short*)(0x800281AA) = 3; // Set "adventure" destination to the file progress screen
-		//*(short*)(0x8002919E) = 1; // Set B button action in file screen menu to barrel screen
+		*(short*)(0x800281AA) = 3; // Set "adventure" destination to the file progress screen
+		*(short*)(0x8002A05A) = 3; // Set B button action in delete confirm to file progress
+		*(short*)(0x8002A05A) = 3; // Set B button action in delete confirm to file progress
+		*(short*)(0x8002A02A) = 3; // Set B button action in delete confirm to file progress
+		*(short*)(0x80029fea) = 3; // Set A button action in delete confirm to file progress
+		*(int*)(0x80030604) = 0x0C000000 | (((int)&file_progress_screen_code & 0xFFFFFF) >> 2); // New file progress code
+		*(int*)(0x80029760) = 0x0C000000 | (((int)&displayTopText & 0xFFFFFF) >> 2); // New file progress top text code
+		*(int*)(0x80030614) = 0x0C000000 | (((int)&FileProgressInit & 0xFFFFFF) >> 2); // New file progress init code
 	} else if (CurrentMap == SNIDE) {
 		*(int*)(0x8002402C) = 0x240E000C; // No extra contraption cutscenes
 		*(int*)(0x80024054) = 0x24080001; // 1 GB Turn in

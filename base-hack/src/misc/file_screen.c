@@ -1,12 +1,28 @@
 #include "../../include/common.h"
 
 static char file_percentage[5] = "";
-// static char golden_count[4] = "";
+static char golden_count[4] = "";
 static char balanced_igt[20] = "";
-// static char blueprints_count[5] = "";
-// static char move_count_str[10] = "";
+static char bp_count_str[5] = "";
+static char move_count_str[10] = "";
+static short igt_h = 0;
+static short igt_m = 0;
+static short igt_s = 0;
+static unsigned char move_count;
+static unsigned char bp_count;
 
 #define LINE_GAP 0x8C
+
+typedef struct menu_controller_paad {
+	/* 0x000 */ float screen_transition_progress;
+	/* 0x004 */ float unk_4;
+	/* 0x008 */ char unk_8[0x12-0x8];
+	/* 0x012 */ unsigned char current_screen;
+	/* 0x013 */ unsigned char next_screen;
+	/* 0x014 */ char unk_14[0x16-0x14];
+	/* 0x016 */ char prevent_action;
+	/* 0x017 */ char selected_action;
+} menu_controller_paad;
 
 typedef enum file_screen_modes {
 	/* 0x000 */ FILEMODE_NEW,
@@ -89,8 +105,10 @@ int getTextIndexFromMove(purchase_struct* info) {
 }
 
 int* display_text(int* dl) {
+	// Display Background
+	LevelStateBitfield &= 0xFFFFFFEF;
 	// File Percentage
-	int y = FileScreenDLOffset - 320;
+	// int y = FileScreenDLOffset - 320;
 	if (CutsceneActive != 6) {
 		if (ReadFile(0xD,0,0,FileIndex)) {
 			file_mode = FILEMODE_USED;
@@ -99,19 +117,35 @@ int* display_text(int* dl) {
 		}
 	}
 	if (file_mode == FILEMODE_USED) {
+		int y_gap = 110;
+		int y_start = (FileScreenDLOffset - 320) - y_gap - 144;
+		int y_offset = y_start;
+		// Move Count
+		y_offset += y_gap;
+		dk_strFormat((char*)move_count_str, "%02dl35", move_count);
+		dl = printText(dl, 325, y_offset, 0.6f, (char*)move_count_str);
 		// File Percentage
+		y_offset += y_gap;
 		dk_strFormat((char*)file_percentage, "%d%%", FilePercentage);
-		dl = displayText(dl,1,0x280,y,(char*)file_percentage,0x81);
+		int perc_x = 276;
+		if (FilePercentage > 99) {
+			perc_x = 310;
+		} else if (FilePercentage > 9) {
+			perc_x = 300;
+		}
+		dl = printText(dl, perc_x, y_offset, 0.6f, (char*)file_percentage);
+		// GB Count
+		y_offset += y_gap;
+		dk_strFormat((char*)golden_count, "%03dl201",FileGBCount);
+		dl = printText(dl, 375, y_offset, 0.6f, (char*)golden_count);
+		// BP Count
+		y_offset += y_gap;
+		dk_strFormat((char*)bp_count_str, "%02dl40", bp_count);
+		dl = printText(dl, 325, y_offset, 0.6f, (char*)bp_count_str);
 		// Balanced IGT
-		y += LINE_GAP;
-		int secs = IGT % 60;
-		float secsf = secs;
-		secsf /= 60;
-		int hm = IGT / 60;
-		int minutes = hm % 60;
-		int hours = hm / 60;
-		dk_strFormat((char*)balanced_igt, "%03d:%02d:%02d",hours,minutes,secs);
-		dl = displayText(dl,1,0x280,y,(char*)balanced_igt,0x81);
+		y_offset += y_gap;
+		dk_strFormat((char*)balanced_igt, "%03d:%02d:%02d",igt_h,igt_m,igt_s);
+		dl = printText(dl, 390, y_offset, 0.6f, (char*)balanced_igt);
 	} else { // New File
 		// Move List
 		char* move_names[7] = {0,0,0,0,0,0,0};
@@ -240,29 +274,181 @@ int* displayHeadTexture(int* dl, int texture, float x, float y, float scale) {
 }
 
 static const short kong_flags[] = {FLAG_KONG_DK,FLAG_KONG_DIDDY,FLAG_KONG_LANKY,FLAG_KONG_TINY,FLAG_KONG_CHUNKY};
-void correctKongFaces(void) {
-	if (Rando.unlock_kongs) {
-		for (int i = 0; i < 5; i++) {
-			int flag = checkFlag(kong_flags[i],0);
-			KongUnlockedMenuArray[i] = flag;
-			if (!flag) {
-				KongUnlockedMenuArray[i] = (Rando.unlock_kongs & (1 << i)) != 0;
+
+void giveCollectables(void) {
+	int mult = 1;
+	if (MovesBase[0].ammo_belt > 0) {
+		mult = 2 * MovesBase[0].ammo_belt;
+	}
+	CollectableBase.StandardAmmo = 25 * mult;
+	CollectableBase.Oranges = 10;
+	CollectableBase.Crystals = 1500;
+	CollectableBase.Film = 5;
+}
+
+void file_progress_screen_code(actorData* actor, int buttons) {
+	/*
+		Buttons:
+			0001 0000 0000 - Z Button
+			0000 1000 0000 - C Down
+			0000 0100 0000 - C Up
+			0000 0010 0000 - Default
+			0000 0001 0000 - Down
+			0000 0000 1000 - Right
+			0000 0000 0100 - Default
+			0000 0000 0010 - B Button
+			0000 0000 0001 - A Button
+	*/
+	menu_controller_paad* paad = actor->paad;
+	if (paad->screen_transition_progress == 0.0f) {
+		if (paad->unk_4 == 0.0f) {
+			if (buttons & 1) { // A
+				lockInput(1);
+				int file_empty = isFileEmpty(0);
+				fileStart(0);
+				if (file_empty) {
+					// New File
+					unlockMoves();
+					applyFastStart();
+					openCrownDoor();
+					giveCollectables();
+					activateBananaports();
+					if(Rando.fast_gbs) {
+						setPermFlag(FLAG_RABBIT_ROUND1); //Start race at round 2
+					}
+					setPermFlag(FLAG_ESCAPE);
+					Character = Rando.starting_kong;
+					StoredSettings.file_extra[(int)FileIndex].location_sss_purchased = 0;
+					StoredSettings.file_extra[(int)FileIndex].location_ab1_purchased = 0;
+					StoredSettings.file_extra[(int)FileIndex].location_ug1_purchased = 0;
+					StoredSettings.file_extra[(int)FileIndex].location_mln_purchased = 0;
+					SaveToGlobal();
+				} else {
+					// Dirty File
+					Character = Rando.starting_kong;
+					determineStartKong_PermaLossMode();
+					giveCollectables();
+				}
+				ForceStandardAmmo = 0;
+			} else if (buttons & 2) { // B
+				playSFX(0x2C9);
+				paad->prevent_action = 0;
+				paad->next_screen = 1;
+			} else if (buttons & 0x100) { // Z
+				if (!isFileEmpty(0)) {
+					playSFX(0x2C9);
+					paad->prevent_action = 0;
+					paad->next_screen = 5;
+				} else {
+					playSFX(Wrong);
+				}
 			}
 		}
-		if (!checkFlag(FLAG_KONG_DK,0)) {
-			if ((Rando.unlock_kongs & 1) == 0) {
-				KongUnlockedMenuArray[0] = 0;
-			}
-		}
+		initMenuBackground(paad,4);
+	}
+	updateMenuController(actor,paad,1);
+}
+
+static char top_text[10] = "EMPTY";
+
+int* displayTopText(int* dl, short x, short y, float scale) {
+	if (isFileEmpty(0)) {
+		// Display Empty Text
+		dk_strFormat((char*)top_text,"%s","EMPTY");
 	} else {
-		for (int i = 0; i < 5; i++) {
-			KongUnlockedMenuArray[i] = checkFlag(kong_flags[i],0);
-		}
-		KongUnlockedMenuArray[(int)Rando.starting_kong] = 1;
-		if (Rando.starting_kong != 0) {
-			if (!checkFlag(FLAG_KONG_DK,0)) {
-				KongUnlockedMenuArray[0] = 0;
-			}
+		// Display "Game %d" Text
+		dk_strFormat((char*)top_text,"%s %d","GAME",*(char*)(0x80033F48)+1);
+	}
+	return printText(dl, x, y, scale, (char*)top_text);
+}
+
+void FileProgressInit(actorData* menu_controller) {
+	menu_controller_paad* paad = menu_controller->paad;
+	loadFile(0,0);
+	if (isFileEmpty(0)) {
+		// Empty
+	} else {
+		// Not Empty
+		displayMenuSprite(paad, sprite_table[59], 35, 125, 0.6f, 2, 0); // GB
+		// displayMenuSprite(paad, sprite_table[0x70], 0xA2, 0xD6, 0.75f, 2, 5); // Z - Delete
+		// displayMenuSprite(paad, sprite_table[0x94], 35, 65, 0.6f, 2, 5); // Cranky Face - Moves
+		int blueprint_sprite_indexes[] = {0x5C,0x5A,0x4A,0x5D,0x5B};
+		// displayMenuSprite(paad, sprite_table[blueprint_sprite_indexes[0]], 35, 155, 0.75, 2, 5); // Blueprint
+	}
+	displayMenuSprite(paad, sprite_table[0x6F], 0x23, 0xD2, 0.75f, 2, 0); // B
+	displayMenuSprite(paad, sprite_table[0x6E], 0x122, 0xD2, 0.75f, 2, 0); // A
+	*(float*)(0x80033F4C) = 1600.0f;
+	for (int i = 0; i < 5; i++) {
+		if (Rando.unlock_kongs & (1 << i)) {
+			KongUnlockedMenuArray[i] = 1;
+		} else {
+			KongUnlockedMenuArray[i] = 0;
 		}
 	}
+	KongUnlockedMenuArray[(int)Rando.starting_kong] = 1;
+	for (int i = 0; i < 5; i++) {
+		if (checkFlag(kong_flags[i],0)) {
+			KongUnlockedMenuArray[i] = 1;
+		}
+	}
+	for (int i = 0; i < 5; i++) {
+		void* sprite = sprite_table[0x92];
+		if (KongUnlockedMenuArray[i]) {
+			sprite = sprite_table[0xA9 + i];
+		}
+		displayMenuSprite(paad, sprite, i, i, 0.8f, 2, 0xF);
+	}
+	int gb_count = 0;
+	for (int kong = 0; kong < 5; kong++) {
+		for (int level = 0; level < 8; level++) {
+			gb_count += MovesBase[kong].gb_count[level];
+		}
+	}
+	int bp_count_local = 0;
+	for (int i = 0; i < 40; i++) {
+		bp_count_local += checkFlag(469+i,0);
+	}
+	int move_count_local = 0;
+	if (Rando.unlock_moves) {
+		move_count_local = 39; // 38 if we discount 3rd melon
+	} else {
+		move_count_local += MovesBase[0].simian_slam;
+		move_count_local += MovesBase[0].ammo_belt;
+		for (int kong = 0; kong < 5; kong++) {
+			for (int level = 0; level < 3; level++) {
+				if (MovesBase[kong].special_moves & (1 << level)) {
+					move_count_local += 1;
+				}
+			}
+			move_count_local += (MovesBase[kong].weapon_bitfield & 1);
+			move_count_local += (MovesBase[kong].instrument_bitfield & 1);
+		}
+		for (int level = 0; level < 3; level++) {
+			if (level < 2) {
+				if (MovesBase[0].weapon_bitfield & (1 << level)) {
+					move_count_local += 1;
+				}
+			}
+			if (MovesBase[0].instrument_bitfield & (1 << level)) {
+				move_count_local += 1; // Discount level == 1 if discounting 3rd melon
+			}
+		}
+		move_count_local += checkFlag(FLAG_TBARREL_DIVE,0);
+		move_count_local += checkFlag(FLAG_TBARREL_ORANGE,0);
+		move_count_local += checkFlag(FLAG_TBARREL_BARREL,0);
+		move_count_local += checkFlag(FLAG_TBARREL_VINE,0);
+	}
+	if (Rando.camera_unlocked) {
+		move_count_local += 2;
+	} else {
+		move_count_local += checkFlag(FLAG_ABILITY_CAMERA,0);
+		move_count_local += checkFlag(FLAG_ABILITY_SHOCKWAVE,0);
+	}
+	FileGBCount = gb_count;
+	igt_h = (IGT / 60) / 60;
+	igt_m = (IGT / 60) % 60;
+	igt_s = IGT - (3600 * igt_h) - (60 * igt_m);
+	FilePercentage = calculateFilePercentage();
+	bp_count = bp_count_local;
+	move_count = move_count_local;
 }

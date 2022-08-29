@@ -203,6 +203,14 @@ extern void unkSpriteRenderFunc_0(void);
 extern void loadSpriteFunction(int func);
 extern void displaySpriteAtXYZ(void* sprite, int x, int y, int z);
 extern void* getHUDSprite(int item);
+extern void updateMenuController(void* actor, void* paad, int unk0);
+extern void lockInput(int unk0);
+extern void fileStart(int file);
+extern int isFileEmpty(int file);
+extern void initMenuBackground(void* paad, int unk0);
+extern int calculateFilePercentage(void);
+extern void displayMenuSprite(void* paad, void* sprite_address, int x, int y, float scale, int unk0, int unk1);
+extern void loadFile(int file, int restock_inventory);
 
 //vanilla data
 extern float TransitionSpeed;
@@ -359,7 +367,7 @@ extern short BossMapArray[8];
 extern char BossKongArray[16];
 
 extern char KongUnlockedMenuArray[5];
-extern unsigned char FilePercentage;
+extern char FilePercentage; // Unsigned is technically correct, but -124% is more fun
 extern int FileGBCount;
 extern float FileScreenDLOffset;
 extern short CBTurnedInArray[8];

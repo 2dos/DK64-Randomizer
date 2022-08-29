@@ -188,6 +188,14 @@
 .definelabel loadSpriteFunction, 0x8071498C
 .definelabel displaySpriteAtXYZ, 0x80714CC0
 .definelabel getHUDSprite, 0x806FACE8
+.definelabel updateMenuController, 0x8002FC1C
+.definelabel lockInput, 0x8060AA58
+.definelabel fileStart, 0x807144B8
+.definelabel isFileEmpty, 0x800322D0
+.definelabel initMenuBackground, 0x8002FE08
+.definelabel calculateFilePercentage, 0x80032304
+.definelabel displayMenuSprite, 0x80030894
+.definelabel loadFile, 0x8060DC3C
 
 //vanilla data
 .definelabel TransitionSpeed, 0x807FD88C
