@@ -1305,6 +1305,15 @@ def SetNewProgressionRequirements(settings: Settings):
         min(settings.blocker_6, max(1, round(random.uniform(BLOCKER_MIN, BLOCKER_MAX) * goldenBananaTotals[5]))),
         settings.blocker_7,  # Last B. Locker shouldn't be affected
     ]
+    # Prevent scenario where B. Lockers randomize to not-always-increasing values
+    if settings.randomize_blocker_required_amounts:
+        for i in range(1, 7):
+            # If this level is more expensive than the next level, swap the B. Lockers
+            # This will never break logic - if you could get into a more expensive level 3, you could get into an equally expensive level 4
+            if settings.EntryGBs[i] > settings.EntryGBs[i + 1]:
+                temp = settings.EntryGBs[i]
+                settings.EntryGBs[i] = settings.EntryGBs[i + 1]
+                settings.EntryGBs[i + 1] = temp
     settings.BossBananas = [
         min(settings.troff_0, sum(coloredBananaCounts[0]), round(settings.troff_0 / (settings.troff_max * settings.troff_weight_0) * sum(coloredBananaCounts[0]))),
         min(settings.troff_1, sum(coloredBananaCounts[1]), round(settings.troff_1 / (settings.troff_max * settings.troff_weight_1) * sum(coloredBananaCounts[1]))),

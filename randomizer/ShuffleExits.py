@@ -197,7 +197,7 @@ def ShuffleExits(settings: Settings):
         if settings.kongs_for_progression:
             ShuffleLevelOrderWithRestrictions(settings)
         else:
-            ShuffleLevelExits()
+            ShuffleLevelExits(settings)
     elif settings.shuffle_loading_zones == "all":
         frontpool = []
         backpool = []
@@ -255,7 +255,7 @@ def UpdateLevelProgression(settings: Settings):
     settings.BossBananas = newBossBananas
 
 
-def ShuffleLevelExits(newLevelOrder: dict = None):
+def ShuffleLevelExits(settings: Settings, newLevelOrder: dict = None):
     """Shuffle level exits according to new level order if provided, otherwise shuffle randomly."""
     frontpool = LobbyEntrancePool.copy()
     backpool = LobbyEntrancePool.copy()
@@ -265,6 +265,26 @@ def ShuffleLevelExits(newLevelOrder: dict = None):
             backpool[index - 1] = LobbyEntrancePool[level]
     else:
         random.shuffle(frontpool)
+
+    # Initialize reference variables
+    lobby_entrance_map = {
+        Transitions.IslesMainToJapesLobby: Levels.JungleJapes,
+        Transitions.IslesMainToAztecLobby: Levels.AngryAztec,
+        Transitions.IslesMainToFactoryLobby: Levels.FranticFactory,
+        Transitions.IslesMainToGalleonLobby: Levels.GloomyGalleon,
+        Transitions.IslesMainToForestLobby: Levels.FungiForest,
+        Transitions.IslesMainToCavesLobby: Levels.CrystalCaves,
+        Transitions.IslesMainToCastleLobby: Levels.CreepyCastle,
+    }
+    shuffledLevelOrder = {
+        1: None,
+        2: None,
+        3: None,
+        4: None,
+        5: None,
+        6: None,
+        7: None,
+    }
 
     # For each back exit, select a random valid front entrance to attach to it
     # Assuming there are no inherently invalid level orders, but if there are, validation will check after this
@@ -282,7 +302,9 @@ def ShuffleLevelExits(newLevelOrder: dict = None):
         backReverse = ShufflableExits[backExit.back.reverse]
         backReverse.shuffled = True
         backReverse.shuffledId = frontExit.back.reverse
-        # print("Assigned " + ShufflableExits[backExit.back.reverse].name + " --> " + ShufflableExits[frontExit.back.reverse].name)
+
+        shuffledLevelOrder[lobby_entrance_map[frontId] + 1] = lobby_entrance_map[backId]
+    settings.level_order = shuffledLevelOrder
 
 
 def ShuffleLevelOrderWithRestrictions(settings: Settings):
@@ -295,8 +317,7 @@ def ShuffleLevelOrderWithRestrictions(settings: Settings):
         newLevelOrder = ShuffleLevelOrderForMultipleStartingKongs(settings)
     if None in newLevelOrder.values():
         raise Ex.EntrancePlacementException("Invalid level order with fewer than the 7 required main levels.")
-    settings.level_order = newLevelOrder
-    ShuffleLevelExits(newLevelOrder)
+    ShuffleLevelExits(settings, newLevelOrder)
 
 
 def ShuffleLevelOrderUnrestricted(settings):
