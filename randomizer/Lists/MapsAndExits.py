@@ -278,7 +278,8 @@ RegionMapList = {
     Regions.PowerHut: Maps.FactoryPowerHut,
     Regions.BeyondHatch: Maps.FranticFactory,
     Regions.InsideCore: Maps.FactoryCrusher,
-    Regions.MainCore: Maps.FranticFactory,
+    Regions.MiddleCore: Maps.FranticFactory,
+    Regions.UpperCore: Maps.FranticFactory,
     Regions.FactoryBaboonBlast: Maps.FactoryBaboonBlast,
     # Galleon
     Regions.GloomyGalleonStart: Maps.GloomyGalleon,

@@ -1,18 +1,20 @@
 """Compile a list of hints based on the settings."""
 import random
 from re import U
-from randomizer.Enums.Kongs import Kongs
-from randomizer.Enums.Regions import Regions
 
-from randomizer.Lists.Item import NameFromKong
+from randomizer.Enums.Events import Events
+from randomizer.Enums.HintType import HintType
+from randomizer.Enums.Items import Items
+from randomizer.Enums.Kongs import Kongs
+from randomizer.Enums.Levels import Levels
+from randomizer.Enums.Regions import Regions
+from randomizer.Enums.Transitions import Transitions
+from randomizer.Lists.Item import ItemList, NameFromKong
 from randomizer.Lists.MapsAndExits import GetMapId
 from randomizer.Lists.ShufflableExit import ShufflableExits
-from randomizer.Lists.WrinklyHints import hints
-from randomizer.Spoiler import Spoiler
-from randomizer.Patching.UpdateHints import updateRandomHint
 from randomizer.Lists.WrinklyHints import HintLocation, hints
-from randomizer.Enums.Levels import Levels
-from randomizer.Enums.Transitions import Transitions
+from randomizer.Patching.UpdateHints import UpdateHint, updateRandomHint
+from randomizer.Spoiler import Spoiler
 
 
 class Hint:
@@ -125,6 +127,711 @@ hint_list = [
     Hint(hint="What you gonna do, SpikeVegeta?", important=False, base=True),
 ]
 
+kong_list = ["Donkey", "Diddy", "Lanky", "Tiny", "Chunky"]
+
+kong_cryptic = [
+    [
+        "The kong who is bigger, faster and potentially stronger too",
+        "The kong who fires in spurts",
+        "The kong with a tie",
+        "The kong who slaps their instrument to the jungle beat",
+    ],
+    [
+        "The kong who can fly real high",
+        "The kong who features in the first two Donkey Kong Country games",
+        "The kong who wants to see red",
+        "The kong who frees the only female playable kong",
+    ],
+    [
+        "The kong who inflates like a balloon, just like a balloon",
+        "The kong who waddles in his overalls",
+        "The kong who has a cold race with an insect",
+        "The kong who lacks style, grace but not a funny face",
+    ],
+    ["The kong who likes jazz", "The kong who shoots K. Rool's tiny toes", "The kong who has ammo that is light as a feather", "The kong who can shrink in size"],
+    [
+        "The kong who is one hell of a guy",
+        "The kong who can pick up boulders",
+        "The kong who fights a blocky boss",
+        "The kong who bows down to a dragonfly",
+    ],
+]
+
+all_levels = [Levels.JungleJapes, Levels.AngryAztec, Levels.FranticFactory, Levels.GloomyGalleon, Levels.FungiForest, Levels.CrystalCaves, Levels.CreepyCastle]
+level_list = ["Jungle Japes", "Angry Aztec", "Frantic Factory", "Gloomy Galleon", "Fungi Forest", "Crystal Caves", "Creepy Castle", "Hideout Helm"]
+level_list_isles = ["Jungle Japes", "Angry Aztec", "Frantic Factory", "Gloomy Galleon", "Fungi Forest", "Crystal Caves", "Creepy Castle", "DK Isles"]
+
+level_cryptic = [
+    [
+        "The level with a localized storm",
+        "The level with a dirt mountain",
+        "The level which has two retailers and no race",
+    ],
+    ["The level with four vases", "The level with two kongs cages", "The level with a spinning totem"],
+    ["The level with a toy production facility", "The level with a tower of blocks", "The level with a game from 1981", "The level where you need two quarters to play"],
+    ["The level with the most water", "The level where you free a water dweller", "The level with stacks of gold"],
+    ["The level with only two retailers and two races", "The level where night can be acquired at will", "The level with a nocturnal tree dweller"],
+    [
+        "The level with two inches of water",
+        "The level with two ice shields",
+        "The level with an Ice Tomato",
+    ],
+    ["The level with battlements", "The level with a dungeon, ballroom and a library", "The level with drawbridge and a moat"],
+    ["The timed level", "The level with no boss", "The level with no small bananas"],
+]
+level_cryptic_isles = level_cryptic.copy()
+level_cryptic_isles.remove(level_cryptic_isles[-1])
+level_cryptic_isles.append(["The hub world", "The world with DK's ugly mug on it", "The world with only a Cranky's Lab and Snide's HQ in it"])
+
+shop_owners = ["Cranky", "Funky", "Candy"]
+shop_cryptic = [
+    [
+        "The shop owner with a walking stick",
+        "The shop owner who is old",
+        "The shop owner who is persistently grumpy",
+        "The shop owner who resides near your Treehouse",
+    ],
+    [
+        "The shop owner who has an armory",
+        "The shop owner who has a banana on his shop",
+        "The shop owner with sunglasses",
+        "The shop owner who calls everyone Dude",
+    ],
+    ["The shop owner who is flirtatious", "The shop owner who is not present in Fungi Forest", "The shop owner who is not present in Jungle Japes", "The shop owner with blonde hair"],
+]
+
+moves_data = [
+    # Commented out logic sections are saved if we need to revert to the old hint system
+    # Donkey
+    MoveInfo(name="Baboon Blast", move_level=1, move_type="special", kong=Kongs.donkey),
+    MoveInfo(name="Strong Kong", move_level=2, move_type="special", kong=Kongs.donkey),
+    MoveInfo(name="Gorilla Grab", move_level=3, move_type="special", kong=Kongs.donkey),
+    # Diddy
+    MoveInfo(name="Chimpy Charge", move_level=1, move_type="special", kong=Kongs.diddy),
+    MoveInfo(name="Rocketbarrel Boost", move_level=2, move_type="special", kong=Kongs.diddy, important=True),  # (spoiler.settings.krool_diddy or spoiler.settings.helm_diddy)),
+    MoveInfo(name="Simian Spring", move_level=3, move_type="special", kong=Kongs.diddy),
+    # Lanky
+    MoveInfo(name="Orangstand", move_level=1, move_type="special", kong=Kongs.lanky),
+    MoveInfo(name="Baboon Balloon", move_level=2, move_type="special", kong=Kongs.lanky),
+    MoveInfo(name="Orangstand Sprint", move_level=3, move_type="special", kong=Kongs.lanky),
+    # Tiny
+    MoveInfo(name="Mini Monkey", move_level=1, move_type="special", kong=Kongs.tiny, important=True),  # spoiler.settings.krool_tiny),
+    MoveInfo(name="Ponytail Twirl", move_level=2, move_type="special", kong=Kongs.tiny),
+    MoveInfo(name="Monkeyport", move_level=3, move_type="special", kong=Kongs.tiny, important=True),
+    # Chunky
+    MoveInfo(name="Hunky Chunky", move_level=1, move_type="special", kong=Kongs.chunky, important=True),  # spoiler.settings.krool_chunky),
+    MoveInfo(name="Primate Punch", move_level=2, move_type="special", kong=Kongs.chunky, important=True),  # spoiler.settings.krool_chunky),
+    MoveInfo(name="Gorilla Gone", move_level=3, move_type="special", kong=Kongs.chunky, important=True),  # spoiler.settings.krool_chunky),
+    # Slam
+    MoveInfo(name="Slam Upgrade", move_level=1, move_type="slam", kong=Kongs.any),
+    MoveInfo(name="Slam Upgrade", move_level=2, move_type="slam", kong=Kongs.any),
+    MoveInfo(name="Slam Upgrade", move_level=3, move_type="slam", kong=Kongs.any),
+    # Guns
+    MoveInfo(name="Coconut Shooter", move_level=1, move_type="gun", kong=Kongs.donkey, important=True),
+    MoveInfo(name="Peanut Popguns", move_level=1, move_type="gun", kong=Kongs.diddy, important=True),  # spoiler.settings.krool_diddy),
+    MoveInfo(name="Grape Shooter", move_level=1, move_type="gun", kong=Kongs.lanky),
+    MoveInfo(name="Feather Bow", move_level=1, move_type="gun", kong=Kongs.tiny, important=True),  # spoiler.settings.krool_tiny),
+    MoveInfo(name="Pineapple Launcher", move_level=1, move_type="gun", kong=Kongs.chunky),
+    # Gun Upgrades
+    MoveInfo(name="Homing Ammo", move_level=2, move_type="gun", kong=Kongs.any),
+    MoveInfo(name="Sniper Scope", move_level=3, move_type="gun", kong=Kongs.any),
+    # Ammo Belt
+    MoveInfo(name="Ammo Belt Upgrade", move_level=1, move_type="ammobelt", kong=Kongs.any),
+    MoveInfo(name="Ammo Belt Upgrade", move_level=2, move_type="ammobelt", kong=Kongs.any),
+    # Instruments
+    MoveInfo(name="Bongo Blast", move_level=1, move_type="instrument", kong=Kongs.donkey, important=True),  # spoiler.settings.helm_donkey),
+    MoveInfo(name="Guitar Gazump", move_level=1, move_type="instrument", kong=Kongs.diddy, important=True),  # spoiler.settings.helm_diddy),
+    MoveInfo(name="Trombone Tremor", move_level=1, move_type="instrument", kong=Kongs.lanky, important=True),  # (spoiler.settings.helm_lanky or spoiler.settings.krool_lanky)),
+    MoveInfo(name="Saxophone Slam", move_level=1, move_type="instrument", kong=Kongs.tiny, important=True),  # spoiler.settings.helm_tiny),
+    MoveInfo(name="Triangle Trample", move_level=1, move_type="instrument", kong=Kongs.chunky, important=True),  # spoiler.settings.helm_chunky),
+    # Instrument Upgrades
+    MoveInfo(name="Instrument Upgrade", move_level=2, move_type="instrument", kong=Kongs.any),
+    MoveInfo(name="Instrument Upgrade", move_level=3, move_type="instrument", kong=Kongs.any),
+    MoveInfo(name="Instrument Upgrade", move_level=4, move_type="instrument", kong=Kongs.any),
+]
+
+kong_placement_levels = [
+    {
+        "name": "Jungle Japes",
+        "level": 0,
+    },
+    {
+        "name": "Llama Temple",
+        "level": 1,
+    },
+    {
+        "name": "Tiny Temple",
+        "level": 1,
+    },
+    {
+        "name": "Frantic Factory",
+        "level": 2,
+    },
+]
+
+
+# Hint distribution that will be adjusted based on settings
+# These values are "if this is an option, then you must have at least X of this hint"
+hint_distribution = {
+    HintType.Joke: 1,
+    HintType.KRoolOrder: 2,
+    HintType.HelmOrder: 3,  # must have one on the path
+    HintType.FullShop: 8,
+    HintType.MoveLocation: 8,  # must be placed before you can buy the move
+    HintType.DirtPatch: 0,
+    HintType.BLocker: 3,  # must be placed on the path and before the level they hint
+    HintType.TroffNScoff: 0,
+    HintType.KongLocation: 2,  # must be placed before you find them and placed in a door of a free kong
+    HintType.MedalsRequired: 1,
+    HintType.Entrance: 8,
+}
+HINT_CAP = 35  # There are this many total slots for hints
+
+
+def compileHints(spoiler: Spoiler):
+    """Create a hint distribution, generate buff hints, and place them in locations."""
+    # Determine what hint types are valid for these settings
+    valid_types = [HintType.Joke]
+    if spoiler.settings.krool_phase_count < 5:
+        valid_types.append(HintType.KRoolOrder)
+    if spoiler.settings.helm_setting != "skip_all" and spoiler.settings.helm_phase_count < 5:
+        valid_types.append(HintType.HelmOrder)
+    if not spoiler.settings.unlock_all_moves and spoiler.settings.move_rando != "off":
+        valid_types.append(HintType.FullShop)
+        valid_types.append(HintType.MoveLocation)
+    if spoiler.settings.random_patches:
+        valid_types.append(HintType.DirtPatch)
+    if spoiler.settings.randomize_blocker_required_amounts:
+        valid_types.append(HintType.BLocker)
+    if spoiler.settings.randomize_cb_required_amounts:
+        valid_types.append(HintType.TroffNScoff)
+    if spoiler.settings.kong_rando:
+        valid_types.append(HintType.KongLocation)
+    if spoiler.settings.coin_door_open == "need_both" or spoiler.settings.coin_door_open == "need_rw":
+        valid_types.append(HintType.MedalsRequired)
+    if spoiler.settings.shuffle_loading_zones == "all":
+        # In entrance rando, we care more about T&S than B. Locker
+        temp = hint_distribution[HintType.BLocker]
+        hint_distribution[HintType.BLocker] = max(1, hint_distribution[HintType.TroffNScoff])  # Always want a helm hint in there
+        hint_distribution[HintType.TroffNScoff] = temp
+        valid_types.append(HintType.Entrance)
+
+    # Make sure we have exactly 35 hints placed
+    hint_count = 0
+    for type in hint_distribution:
+        if type in valid_types:
+            hint_count += hint_distribution[type]
+        else:
+            hint_distribution[type] = 0
+    # Fill extra hints if we need them
+    while hint_count < HINT_CAP:
+        filler_type = random.choice(valid_types)
+        hint_distribution[filler_type] += 1
+        hint_count += 1
+    # Remove random hints if we went over the cap
+    while hint_count > HINT_CAP:
+        removed_type = random.choice(valid_types)
+        if hint_distribution[removed_type] > 0:
+            hint_distribution[removed_type] -= 1
+            hint_count -= 1
+    # In level order (or vanilla) progression, there are hints that we want to be in the player's path
+    level_order_matters = not spoiler.settings.no_logic and spoiler.settings.shuffle_loading_zones != "all"
+    progression_hint_locations = None
+    if level_order_matters:
+        # These hint locations are *much* more likely to be seen, as they'll be available as players pass through lobbies on their first visit
+        progression_hint_locations = []
+        for level in all_levels:
+            for kong in spoiler.settings.owned_kongs_by_level[level]:
+                # If we don't have DK + Grab then these hints are skipped basically every time so they're not on the player's path
+                if (
+                    level == Levels.FranticFactory
+                    and kong not in [Kongs.donkey, Kongs.chunky]
+                    and (Kongs.donkey not in spoiler.settings.owned_kongs_by_level[level] or Items.GorillaGrab not in spoiler.settings.owned_moves_by_level[level])
+                ):
+                    continue
+                if (
+                    level == Levels.FungiForest
+                    and kong is not Kongs.chunky
+                    and (Kongs.donkey not in spoiler.settings.owned_kongs_by_level[level] or Items.GorillaGrab not in spoiler.settings.owned_moves_by_level[level])
+                ):
+                    continue
+                # Caves Diddy needs a whole suite of moves to see this hint
+                if (
+                    level == Levels.CrystalCaves
+                    and kong is Kongs.diddy
+                    and (
+                        Kongs.chunky not in spoiler.settings.owned_kongs_by_level[level]
+                        or Items.PrimatePunch not in spoiler.settings.owned_moves_by_level[level]
+                        or Items.RocketbarrelBoost not in spoiler.settings.owned_moves_by_level[level]
+                    )
+                ):
+                    continue
+                # Everyone else in Caves still needs Chunky + Punch
+                if level == Levels.CrystalCaves and (Kongs.chunky not in spoiler.settings.owned_kongs_by_level[level] or Items.PrimatePunch not in spoiler.settings.owned_moves_by_level[level]):
+                    continue
+                # Aztec Chunky also needs Tiny + Feather + Hunky Chunky
+                if (
+                    level == Levels.AngryAztec
+                    and kong is Kongs.chunky
+                    and (
+                        Kongs.tiny not in spoiler.settings.owned_kongs_by_level[level]
+                        or Items.Feather not in spoiler.settings.owned_moves_by_level[level]
+                        or Items.HunkyChunky not in spoiler.settings.owned_moves_by_level[level]
+                    )
+                ):
+                    continue
+                hint_for_location = [hint for hint in hints if hint.level == level and hint.kong == kong][0]  # Should only match one
+                progression_hint_locations.append(hint_for_location)
+
+    # Now place hints by type from most-restrictive to least restrictive. Usually anything we want on the player's path should get placed first
+    # Kongs should be hinted before they're available and should only be hinted to free Kongs, making them very restrictive
+    hinted_kongs = []
+    placed_kong_hints = 0
+    while placed_kong_hints < hint_distribution[HintType.KongLocation]:
+        kong_map = random.choice(kong_placement_levels)
+        kong_index = spoiler.shuffled_kong_placement[kong_map["name"]]["locked"]["kong"]
+        free_kong = spoiler.shuffled_kong_placement[kong_map["name"]]["puzzle"]["kong"]
+        level_index = kong_map["level"]
+
+        level_restriction = None
+        # If this is the first time we're hinting this kong, attempt to put it in an earlier level (regardless of whether or not you can read it)
+        # This only matters if level order matters
+        if level_order_matters and kong_index not in hinted_kongs:
+            level_restriction = [level for level in all_levels if spoiler.settings.EntryGBs[level] <= spoiler.settings.EntryGBs[kong_map["level"]]]
+        # This list of free kongs is sometimes only a subset of the correct list. A more precise list could be calculated but it would be slow.
+        free_kongs = spoiler.settings.starting_kong_list.copy()
+        free_kongs.append(free_kong)
+        hint_location = getRandomHintLocation(kongs=free_kongs, levels=level_restriction)
+        # If this fails, it's extremely likely there's already a very useful hint in the very few spot(s) this could be
+        if hint_location is None:
+            if level_restriction is not None:
+                # Can't make it too easy on em - put this hint in any hint door for these kongs
+                hint_location = getRandomHintLocation(kongs=free_kongs)
+            else:
+                # In the unfathomably rare world where our freeing kong is out of hint doors, replace this hint with a joke hint
+                # When I say unfathomably, I'm talking "you start with all moves and free B. Lockers but only 4 Kongs"
+                hint_distribution[HintType.Joke] += 1  # Adding meme hints to meme seeds is just thematic at this point
+                hint_distribution[HintType.KongLocation] -= 1
+                continue
+
+        freeing_kong_name = kong_list[free_kong]
+        if spoiler.settings.wrinkly_hints == "cryptic":
+            if not kong_index == Kongs.any:
+                kong_name = random.choice(kong_cryptic[kong_index])
+            level_name = random.choice(level_cryptic[level_index])
+        else:
+            if not kong_index == Kongs.any:
+                kong_name = kong_list[kong_index]
+            level_name = level_list[level_index]
+        unlock_verb = "frees"
+        if kong_index == Kongs.any:
+            unlock_verb = "accesses"
+            kong_name = "an empty cage"
+        message = f"{freeing_kong_name} {unlock_verb} {kong_name} in {level_name}."
+        hinted_kongs.append(kong_index)
+        hint_location.hint_type = HintType.KongLocation
+        UpdateHint(hint_location, message)
+        placed_kong_hints += 1
+
+    # B. Locker hints need to be on the player's path to be useful
+    hinted_blocker_combos = []
+    for i in range(hint_distribution[HintType.BLocker]):
+        # If there's a specific level order to the seed, place the hints on the player's path so these hints aren't useless
+        location_restriction = None
+        if level_order_matters:
+            location_restriction = progression_hint_locations
+        # Pick random hint locations until we get one that can hint a future level
+        hintable_levels = []
+        while len(hintable_levels) == 0:
+            hint_location = getRandomHintLocation(location_list=location_restriction)
+            # Only hint levels more expensive than the current one AND we care about level order AND this hint's lobby doesn't already hint this level
+            hintable_levels = [
+                level
+                for level in all_levels
+                if (not level_order_matters or spoiler.settings.EntryGBs[level] > spoiler.settings.EntryGBs[hint_location.level]) and (hint_location.level, level) not in hinted_blocker_combos
+            ]
+            # If Helm is random, always place at least one Helm hint - this helps non-maximized Helm seeds and slightly nerfs this category of hints otherwise.
+            if not spoiler.settings.maximize_helm_blocker:
+                if i == 0:
+                    hintable_levels = [Levels.HideoutHelm]
+                else:
+                    hintable_levels.append(Levels.HideoutHelm)
+        hinted_level = random.choice(hintable_levels)
+        hinted_blocker_combos.append((hint_location.level, hinted_level))
+        level_name = level_list[hinted_level]
+        if spoiler.settings.wrinkly_hints == "cryptic":
+            level_name = random.choice(level_cryptic[hinted_level])
+        message = f"The barrier to {level_name} can be cleared by obtaining {spoiler.settings.EntryGBs[hinted_level]} Golden Bananas."
+        hint_location.hint_type = HintType.BLocker
+        UpdateHint(hint_location, message)
+
+    # At least one Helm Order hint should be placed on the progression path
+    helm_hint_on_path = False
+    for i in range(hint_distribution[HintType.HelmOrder]):
+        location_restriction = None
+        # If we haven't randomly placed one on the path yet, force the last one to be on the player's path
+        if level_order_matters and not helm_hint_on_path and i == hint_distribution[HintType.HelmOrder] - 1:
+            location_restriction = progression_hint_locations
+        hint_location = getRandomHintLocation(location_list=location_restriction)
+        # If this one is on the player's path, then we've satisfied the restriction
+        if progression_hint_locations is None or hint_location in progression_hint_locations:
+            helm_hint_on_path = True
+
+        default_order = [Kongs.donkey, Kongs.chunky, Kongs.tiny, Kongs.lanky, Kongs.diddy]
+        helm_order = []
+        for room in spoiler.settings.helm_order:
+            helm_order.append(default_order[room])
+        associated_hint = f"Helm Room order is {NameFromKong(helm_order[0])}"
+        for x in range(len(helm_order)):
+            if x != 0:
+                associated_hint += f" then {NameFromKong(helm_order[x])}"
+        hint_location.hint_type = HintType.HelmOrder
+        UpdateHint(hint_location, associated_hint)
+
+    # Moves should be hinted before they're available
+    moves_hinted_and_lobbies = {}  # Avoid putting a hint for the same move in the same lobby twice
+    locationless_move_keys = []  # Keep track of moves we know have run out of locations to hint
+    placed_move_hints = 0
+    while placed_move_hints < hint_distribution[HintType.MoveLocation]:
+        # First pick a random item from the WOTH - valid items are moves (not kongs) and must not be one of our known impossible-to-place items
+        woth_item = None
+        valid_woth_item_locations = [loc for loc in spoiler.woth.keys() if loc not in locationless_move_keys and any(shopName in loc for shopName in shop_owners)]
+        if len(valid_woth_item_locations) == 0:
+            # In the OBSCENELY rare case that we can't hint any more moves, then we'll settle for joke hints
+            # This would only happen in the case where all moves are in early worlds, coins are plentiful, and the distribution here is insanely high
+            # Your punishment for these extreme settings is more joke hints
+            hint_diff = hint_distribution[HintType.MoveLocation] - placed_move_hints
+            hint_distribution[HintType.Joke] += hint_diff
+            hint_distribution[HintType.MoveLocation] -= hint_diff
+            break
+        woth_item_location = random.choice(valid_woth_item_locations)
+        # This gets the level of the location by matching names which is very bad but faster than the alternative of looping through every location for the item
+        # This matches "Caves", "Castl", "Isles", etc. and should only match one item
+        # This could be Isles, which has no hints, so we gotta be careful with this index
+        index_of_level_with_location = level_list_isles.index([name for name in level_list_isles if woth_item_location[:5] in name][0])
+        # Now we need to find the Item object associated with this name
+        for item_id in ItemList:
+            if ItemList[item_id].name == spoiler.woth[woth_item_location]:
+                woth_item = item_id
+                break
+        # Determine what levels are before this level
+        hintable_levels = all_levels.copy()
+        # Only if we care about the level order do we restrict these hints' locations
+        if level_order_matters:
+            # Determine a sorted order of levels by B. Lockers - this may not be the actual "progression" but it'll do for now
+            levels_in_order = all_levels.copy()
+            levels_in_order.sort(key=lambda l: spoiler.settings.EntryGBs[l])
+
+            hintable_levels = []
+            cheapest_levels_with_item = []
+            # Go through our levels in progression order
+            for level in levels_in_order:
+                # If the level doesn't have access to the move, we can hint it in the lobby
+                if woth_item not in spoiler.settings.owned_moves_by_level[level]:
+                    hintable_levels.append(level)
+                # We hit our first level that has logical access to the move, time to get to work
+                else:
+                    # Find all levels with B. Lockers of the same price as this one
+                    cheapest_levels_candidates = [
+                        candidate for candidate in all_levels if spoiler.settings.EntryGBs[candidate] == spoiler.settings.EntryGBs[level] and candidate not in hintable_levels
+                    ]
+                    # If there's only one candidate then this is the level that gives logical access to the move, so we're done
+                    # If it's an Isles shop we're hinting or hard level progression we don't need to pare down the lobby options, so we're done
+                    if len(cheapest_levels_candidates) == 1 or index_of_level_with_location >= 7:  # or hard level progression (TBD)
+                        cheapest_levels_with_item = cheapest_levels_candidates
+                    # In normal level progression, we need to remove levels that are beyond the shop's level
+                    else:
+                        # Determine the level order of the shop
+                        level_order_of_shop_location = -1
+                        for order in spoiler.settings.level_order:
+                            if index_of_level_with_location == spoiler.settings.level_order[order]:
+                                level_order_of_shop_location = order
+                                break
+                        # For each of our cheap levels
+                        for cheap_level in cheapest_levels_candidates:
+                            # Get the level order of this cheap level (will only match one)
+                            cheap_level_order = [o for o in spoiler.settings.level_order if cheap_level == spoiler.settings.level_order[o]][0]
+                            # If this level is before our shop's level in the order, it can have the hint
+                            if cheap_level_order <= level_order_of_shop_location:
+                                cheapest_levels_with_item.append(cheap_level)
+                    break
+            # We can also hint the cheapest levels that have access to this item
+            # This manifests in the form of finding a hint in Japes lobby for Pineapple in an earlier level if Chunky is unlocked in Japes
+            hintable_levels.extend(cheapest_levels_with_item)
+        # Don't place the same hint in the same lobby
+        if woth_item in moves_hinted_and_lobbies.keys():
+            for lobby_with_this_hint in moves_hinted_and_lobbies[woth_item]:
+                if lobby_with_this_hint in hintable_levels:
+                    hintable_levels.remove(lobby_with_this_hint)
+        else:
+            moves_hinted_and_lobbies[woth_item] = []
+
+        hint_location = getRandomHintLocation(levels=hintable_levels, move_name=spoiler.woth[woth_item_location])
+        # If we've been too restrictive and ran out of spots for this move to be hinted in, don't bother trying to fix it. Just pick another move
+        if hint_location is None:
+            locationless_move_keys.append(woth_item_location)
+            continue
+
+        shop_level = level_list_isles[index_of_level_with_location]
+        if spoiler.settings.wrinkly_hints == "cryptic":
+            shop_level = random.choice(level_cryptic_isles[index_of_level_with_location])
+        shop_name = [name for name in shop_owners if name in woth_item_location][0]  # Should only match one
+        message = f"On the Way of the Hoard, {ItemList[woth_item].name} is bought from {shop_name} in {shop_level}."
+        moves_hinted_and_lobbies[woth_item].append(hint_location.level)
+        hint_location.hint_type = HintType.MoveLocation
+        UpdateHint(hint_location, message)
+        placed_move_hints += 1
+
+    # We want to hint levels after the hint location and only levels that we don't start with keys for
+    for i in range(hint_distribution[HintType.TroffNScoff]):
+        levels_with_tns = []
+        for keyEvent in spoiler.settings.krool_keys_required:
+            if keyEvent == Events.JapesKeyTurnedIn:
+                levels_with_tns.append(Levels.JungleJapes)
+            if keyEvent == Events.AztecKeyTurnedIn:
+                levels_with_tns.append(Levels.AngryAztec)
+            if keyEvent == Events.FactoryKeyTurnedIn:
+                levels_with_tns.append(Levels.FranticFactory)
+            if keyEvent == Events.GalleonKeyTurnedIn:
+                levels_with_tns.append(Levels.GloomyGalleon)
+            if keyEvent == Events.ForestKeyTurnedIn:
+                levels_with_tns.append(Levels.FungiForest)
+            if keyEvent == Events.CavesKeyTurnedIn:
+                levels_with_tns.append(Levels.CrystalCaves)
+            if keyEvent == Events.CastleKeyTurnedIn:
+                levels_with_tns.append(Levels.CreepyCastle)
+        # Make sure the location we randomly pick either is a level or is before a level that has a T&S
+        future_tns_levels = []
+        while not any(future_tns_levels):
+            hint_location = getRandomHintLocation()
+            future_tns_levels = [
+                level for level in all_levels if level in levels_with_tns and (not level_order_matters or spoiler.settings.EntryGBs[level] >= spoiler.settings.EntryGBs[hint_location.level])
+            ]
+        hinted_level = random.choice(future_tns_levels)
+        level_name = level_list[hinted_level]
+        if spoiler.settings.wrinkly_hints == "cryptic":
+            level_name = random.choice(level_cryptic[hinted_level])
+        count = spoiler.settings.BossBananas[hinted_level]
+        cb_name = "Small Bananas"
+        if count == 1:
+            cb_name = "Small Banana"
+        message = f"The barrier to the boss in {level_name} can be cleared by obtaining {count} {cb_name}."
+        hint_location.hint_type = HintType.TroffNScoff
+        UpdateHint(hint_location, message)
+
+    # Entrance hints are tricky, there's some requirements we must hit:
+    # We must hint each of Japes, Aztec, and Factory at least once
+    # The rest of the hints are tied to a variety of important locations
+    if hint_distribution[HintType.Entrance] > 0:
+        criticalJapesRegions = [
+            Regions.JungleJapesMain,
+            Regions.JapesBeyondFeatherGate,
+            Regions.TinyHive,
+            Regions.JapesLankyCave,
+            Regions.Mine,
+        ]
+        criticalAztecRegions = [
+            Regions.AngryAztecStart,
+            Regions.AngryAztecMain,
+        ]
+        criticalFactoryRegions = [
+            Regions.FranticFactoryStart,
+            Regions.ChunkyRoomPlatform,
+            Regions.PowerHut,
+            Regions.BeyondHatch,
+            Regions.InsideCore,
+        ]
+        usefulRegions = [
+            criticalJapesRegions,
+            criticalAztecRegions,
+            criticalFactoryRegions,
+            [Regions.BananaFairyRoom],
+            [Regions.TrainingGrounds],
+            [
+                Regions.GloomyGalleonStart,
+                Regions.LighthouseArea,
+                Regions.Shipyard,
+            ],
+            [
+                Regions.FungiForestStart,
+                Regions.GiantMushroomArea,
+                Regions.MushroomLowerExterior,
+                Regions.MushroomNightExterior,
+                Regions.MushroomUpperExterior,
+                Regions.MillArea,
+            ],
+            [
+                Regions.CrystalCavesMain,
+                Regions.IglooArea,
+                Regions.CabinArea,
+            ],
+            [
+                Regions.CreepyCastleMain,
+                Regions.CastleWaterfall,
+            ],
+            [Regions.LowerCave],
+            [Regions.UpperCave],
+        ]
+        for i in range(hint_distribution[HintType.Entrance]):
+            message = ""
+            # Always put in at least one Japes hint
+            if i == 0:
+                japesHintEntrances = [entrance for entrance, back in spoiler.shuffled_exit_data.items() if back.regionId in criticalJapesRegions]
+                random.shuffle(japesHintEntrances)
+                japesHintPlaced = False
+                while len(japesHintEntrances) > 0:
+                    japesHinted = japesHintEntrances.pop()
+                    message = TryCreatingLoadingZoneHint(spoiler, japesHinted, criticalJapesRegions)
+                    if message != "":
+                        japesHintPlaced = True
+                        break
+                if not japesHintPlaced:
+                    print("Japes LZR hint unable to be placed!")
+            # Always put in at least one Aztec hint
+            elif i == 1:
+                aztecHintEntrances = [entrance for entrance, back in spoiler.shuffled_exit_data.items() if back.regionId in criticalAztecRegions]
+                random.shuffle(aztecHintEntrances)
+                aztecHintPlaced = False
+                while len(aztecHintEntrances) > 0:
+                    aztecHinted = aztecHintEntrances.pop()
+                    message = TryCreatingLoadingZoneHint(spoiler, aztecHinted, criticalAztecRegions)
+                    if message != "":
+                        aztecHintPlaced = True
+                        break
+                if not aztecHintPlaced:
+                    print("Aztec LZR hint unable to be placed!")
+            # Always put in at least one Factory hint
+            elif i == 2:
+                factoryHintEntrances = [entrance for entrance, back in spoiler.shuffled_exit_data.items() if back.regionId in criticalFactoryRegions]
+                random.shuffle(factoryHintEntrances)
+                factoryHintPlaced = False
+                while len(factoryHintEntrances) > 0:
+                    factoryHinted = factoryHintEntrances.pop()
+                    message = TryCreatingLoadingZoneHint(spoiler, factoryHinted, criticalFactoryRegions)
+                    if message != "":
+                        factoryHintPlaced = True
+                        break
+                if not factoryHintPlaced:
+                    print("Factory LZR hint unable to be placed!")
+            else:
+                region_to_hint = random.choice(usefulRegions)
+                usefulHintEntrances = [entrance for entrance, back in spoiler.shuffled_exit_data.items() if back.regionId in region_to_hint]
+                random.shuffle(usefulHintEntrances)
+                usefulHintPlaced = False
+                while len(usefulHintEntrances) > 0:
+                    usefulHinted = usefulHintEntrances.pop()
+                    message = TryCreatingLoadingZoneHint(spoiler, usefulHinted, region_to_hint)
+                    if message != "":
+                        usefulHintPlaced = True
+                        break
+                if not usefulHintPlaced:
+                    print(f"Useful LZR hint to {usefulHinted.name} unable to be placed!")
+            hint_location = getRandomHintLocation()
+            hint_location.hint_type = HintType.Entrance
+            UpdateHint(hint_location, message)
+
+    # Precalculations are needed for this hint type so don't bother if we don't have any
+    if hint_distribution[HintType.FullShop] > 0:
+        # Collate nested lists for a list of shop moves
+        shop_dump_hints = []
+        for shop in range(3):  # Order: Cranky, Funky, Candy
+            for level in range(8):  # Order: Japes, Aztec, Factory, Galleon, Fungi, Caves, Castle, Isles
+                level_listing = []
+                for kong in range(5):
+                    # Get Moves in slot
+                    data_section = spoiler.move_data[shop][kong][level]
+                    for move in moves_data:
+                        if move.item_key == data_section:
+                            if move.name not in level_listing:
+                                level_listing.append(move.name)
+                # If there are no moves in this shop, definitely don't hint it (it might not even exist)
+                if len(level_listing) == 0:
+                    continue
+                move_series = level_listing[0]
+                if len(level_listing) > 1:
+                    move_series = f"{', '.join(level_listing[:-1])} and {level_listing[-1]}"
+                shop_name = shop_owners[shop]
+                level_name = level_list_isles[level]
+                if spoiler.settings.wrinkly_hints == "cryptic":
+                    level_name = random.choice(level_cryptic_isles[level])
+                shop_dump_hint = f"{shop_name}'s in {level_name} contains {move_series}"
+                shop_dump_hints.append(shop_dump_hint)
+        random.shuffle(shop_dump_hints)
+        # Locations for these hints are random - you may get useful information about moves you've left behind
+        placed_full_shop_hints = 0
+        while placed_full_shop_hints < hint_distribution[HintType.FullShop]:
+            hint_location = getRandomHintLocation()
+            # In the other OBSCENELY rare case where we run out of shops to hint (usually requires over 15 shop hints), convert remaining hints to joke hints
+            if len(shop_dump_hints) == 0:
+                hint_diff = hint_distribution[HintType.FullShop] - placed_full_shop_hints
+                hint_distribution[HintType.Joke] += hint_diff
+                hint_distribution[HintType.FullShop] -= hint_diff
+                break
+            message = shop_dump_hints.pop()
+            hint_location.hint_type = HintType.FullShop
+            UpdateHint(hint_location, message)
+            placed_full_shop_hints += 1
+
+    # No need to do anything fancy here - there's already a K. Rool hint on the player's path (the wall in Helm)
+    for i in range(hint_distribution[HintType.KRoolOrder]):
+        hint_location = getRandomHintLocation()
+        associated_hint = f"K. Rool order is {NameFromKong(spoiler.settings.krool_order[0])}"
+        for x in range(len(spoiler.settings.krool_order)):
+            if x != 0:
+                associated_hint += f" then {NameFromKong(spoiler.settings.krool_order[x])}"
+        hint_location.hint_type = HintType.KRoolOrder
+        UpdateHint(hint_location, associated_hint)
+
+    # Dirt patch hints are already garbage anyway - no restrictions here
+    for i in range(hint_distribution[HintType.DirtPatch]):
+        dirt_patch_name = random.choice(spoiler.dirt_patch_placement)
+        hint_location = getRandomHintLocation()
+        message = f"There is a dirt patch located at {dirt_patch_name}"
+        hint_location.hint_type = HintType.DirtPatch
+        UpdateHint(hint_location, message)
+
+    # Very useless hint, can be found at Cranky's anyway
+    for i in range(hint_distribution[HintType.MedalsRequired]):
+        hint_location = getRandomHintLocation()
+        message = f"{spoiler.settings.medal_requirement} medals are required to access Jetpac."
+        hint_location.hint_type = HintType.MedalsRequired
+        UpdateHint(hint_location, message)
+
+    # Finally, place our joke hints
+    for i in range(hint_distribution[HintType.Joke]):
+        hint_location = getRandomHintLocation()
+        joke_hint_list = hint_list.copy()
+        random.shuffle(joke_hint_list)
+        message = joke_hint_list.pop().hint
+        hint_location.hint_type = HintType.Joke
+        UpdateHint(hint_location, message)
+
+    UpdateSpoilerHintList(spoiler)
+    spoiler.hint_distribution = hint_distribution
+    return True
+
+
+def getRandomHintLocation(location_list=None, kongs=None, levels=None, move_name=None):
+    """Return an unoccupied hint location. The parameters can be used to specify location requirements."""
+    valid_unoccupied_hint_locations = [
+        hint
+        for hint in hints
+        if hint.hint == ""
+        and (location_list is None or hint in location_list)
+        and (kongs is None or hint.kong in kongs)
+        and (levels is None or hint.level in levels)
+        and move_name not in hint.banned_keywords
+    ]
+    # If it's too specific, we may not be able to find any
+    if len(valid_unoccupied_hint_locations) == 0:
+        return None
+    hint_location = random.choice(valid_unoccupied_hint_locations)
+    # Update the reference so we're updating the main list instead of a copy of it
+    for hint in hints:
+        if hint.name == hint_location.name:
+            return hint
+    return None
+
 
 def pushHintToList(hint: Hint):
     """Push hint to hint list."""
@@ -143,10 +850,9 @@ def resetHintList():
             hint.priority = hint.original_priority
 
 
-def compileHints(spoiler: Spoiler):
-    """Push hints to hint list based on settings."""
+def compileHintsOld(spoiler: Spoiler):
+    """Push hints to hint list based on settings. Old method that is now unused."""
     resetHintList()
-    all_levels = [Levels.JungleJapes, Levels.AngryAztec, Levels.FranticFactory, Levels.GloomyGalleon, Levels.FungiForest, Levels.CrystalCaves, Levels.CreepyCastle]
     # K Rool Order
     if spoiler.settings.krool_phase_order_rando and len(spoiler.settings.krool_order) > 1:
         associated_hint = f"K. Rool order is {NameFromKong(spoiler.settings.krool_order[0])}"
@@ -166,128 +872,11 @@ def compileHints(spoiler: Spoiler):
                 associated_hint += f" then {NameFromKong(new_order[x])}"
         hint_list.append(Hint(hint=associated_hint, repeats=3, kongs=new_order.copy(), subtype="k_rool"))
     # K. Rool Moves
-    kong_list = ["Donkey", "Diddy", "Lanky", "Tiny", "Chunky"]
-    kong_cryptic = [
-        [
-            "The kong who is bigger, faster and potentially stronger too",
-            "The kong who fires in spurts",
-            "The kong with a tie",
-            "The kong who slaps their instrument to the jungle beat",
-        ],
-        [
-            "The kong who can fly real high",
-            "The kong who features in the first two Donkey Kong Country games",
-            "The kong who wants to see red",
-            "The kong who frees the only female playable kong",
-        ],
-        [
-            "The kong who inflates like a balloon, just like a balloon",
-            "The kong who waddles in his overalls",
-            "The kong who has a cold race with an insect",
-            "The kong who lacks style, grace but not a funny face",
-        ],
-        ["The kong who likes jazz", "The kong who shoots K. Rool's tiny toes", "The kong who has ammo that is light as a feather", "The kong who can shrink in size"],
-        [
-            "The kong who is one hell of a guy",
-            "The kong who can pick up boulders",
-            "The kong who fights a blocky boss",
-            "The kong who bows down to a dragonfly",
-        ],
-    ]
-    level_list = ["Jungle Japes", "Angry Aztec", "Frantic Factory", "Gloomy Galleon", "Fungi Forest", "Crystal Caves", "Creepy Castle", "Hideout Helm"]
-    level_list_isles = ["Jungle Japes", "Angry Aztec", "Frantic Factory", "Gloomy Galleon", "Fungi Forest", "Crystal Caves", "Creepy Castle", "DK Isles"]
-    level_cryptic = [
-        [
-            "The level with a localized storm",
-            "The level with a dirt mountain",
-            "The level which has two retailers and no race",
-        ],
-        ["The level with four vases", "The level with two kongs cages", "The level with a spinning totem"],
-        ["The level with a toy production facility", "The level with a tower of blocks", "The level with a game from 1981", "The level where you need two quarters to play"],
-        ["The level with the most water", "The level where you free a water dweller", "The level with stacks of gold"],
-        ["The level with only two retailers and two races", "The level where night can be acquired at will", "The level with a nocturnal tree dweller"],
-        [
-            "The level with two inches of water",
-            "The level with two ice shields",
-            "The level with an Ice Tomato",
-        ],
-        ["The level with battlements", "The level with a dungeon, ballroom and a library", "The level with drawbridge and a moat"],
-        ["The timed level", "The level with no boss", "The level with no small bananas"],
-    ]
-    # Make Isles Versions
-    level_cryptic_isles = level_cryptic.copy()
-    level_cryptic_isles.remove(level_cryptic_isles[-1])
-    level_cryptic_isles.append(["The hub world", "The world with DK's ugly mug on it", "The world with only a Cranky's Lab and Snide's HQ in it"])
-
     if spoiler.settings.shuffle_items == "moves" and spoiler.move_data is not None:
         krool_move_requirements = [0, 2, 1, 1, 4]
         total_moves_for_krool = 0
         for x in spoiler.settings.krool_order:
             total_moves_for_krool += krool_move_requirements[x]
-        moves_data = [
-            # Donkey
-            MoveInfo(name="Baboon Blast", move_level=1, move_type="special", kong=Kongs.donkey),
-            MoveInfo(name="Strong Kong", move_level=2, move_type="special", kong=Kongs.donkey),
-            MoveInfo(name="Gorilla Grab", move_level=3, move_type="special", kong=Kongs.donkey),
-            # Diddy
-            MoveInfo(name="Chimpy Charge", move_level=1, move_type="special", kong=Kongs.diddy),
-            MoveInfo(name="Rocketbarrel Boost", move_level=2, move_type="special", kong=Kongs.diddy, important=(spoiler.settings.krool_diddy or spoiler.settings.helm_diddy)),
-            MoveInfo(name="Simian Spring", move_level=3, move_type="special", kong=Kongs.diddy),
-            # Lanky
-            MoveInfo(name="Orangstand", move_level=1, move_type="special", kong=Kongs.lanky),
-            MoveInfo(name="Baboon Balloon", move_level=2, move_type="special", kong=Kongs.lanky),
-            MoveInfo(name="Orangstand Sprint", move_level=3, move_type="special", kong=Kongs.lanky),
-            # Tiny
-            MoveInfo(name="Mini Monkey", move_level=1, move_type="special", kong=Kongs.tiny, important=spoiler.settings.krool_tiny),
-            MoveInfo(name="Ponytail Twirl", move_level=2, move_type="special", kong=Kongs.tiny),
-            MoveInfo(name="Monkeyport", move_level=3, move_type="special", kong=Kongs.tiny, important=True),
-            # Chunky
-            MoveInfo(name="Hunky Chunky", move_level=1, move_type="special", kong=Kongs.chunky, important=spoiler.settings.krool_chunky),
-            MoveInfo(name="Primate Punch", move_level=2, move_type="special", kong=Kongs.chunky, important=spoiler.settings.krool_chunky),
-            MoveInfo(name="Gorilla Gone", move_level=3, move_type="special", kong=Kongs.chunky, important=spoiler.settings.krool_chunky),
-            # Slam
-            MoveInfo(name="Slam Upgrade", move_level=1, move_type="slam", kong=Kongs.any),
-            MoveInfo(name="Slam Upgrade", move_level=2, move_type="slam", kong=Kongs.any),
-            MoveInfo(name="Slam Upgrade", move_level=3, move_type="slam", kong=Kongs.any),
-            # Guns
-            MoveInfo(name="Coconut Shooter", move_level=1, move_type="gun", kong=Kongs.donkey, important=True),
-            MoveInfo(name="Peanut Popguns", move_level=1, move_type="gun", kong=Kongs.diddy, important=spoiler.settings.krool_diddy),
-            MoveInfo(name="Grape Shooter", move_level=1, move_type="gun", kong=Kongs.lanky),
-            MoveInfo(name="Feather Bow", move_level=1, move_type="gun", kong=Kongs.tiny, important=spoiler.settings.krool_tiny),
-            MoveInfo(name="Pineapple Launcher", move_level=1, move_type="gun", kong=Kongs.chunky),
-            # Gun Upgrades
-            MoveInfo(name="Homing Ammo", move_level=2, move_type="gun", kong=Kongs.any),
-            MoveInfo(name="Sniper Scope", move_level=3, move_type="gun", kong=Kongs.any),
-            # Ammo Belt
-            MoveInfo(name="Ammo Belt Upgrade", move_level=1, move_type="ammobelt", kong=Kongs.any),
-            MoveInfo(name="Ammo Belt Upgrade", move_level=2, move_type="ammobelt", kong=Kongs.any),
-            # Instruments
-            MoveInfo(name="Bongo Blast", move_level=1, move_type="instrument", kong=Kongs.donkey, important=spoiler.settings.helm_donkey),
-            MoveInfo(name="Guitar Gazump", move_level=1, move_type="instrument", kong=Kongs.diddy, important=spoiler.settings.helm_diddy),
-            MoveInfo(name="Trombone Tremor", move_level=1, move_type="instrument", kong=Kongs.lanky, important=(spoiler.settings.helm_lanky or spoiler.settings.krool_lanky)),
-            MoveInfo(name="Saxophone Slam", move_level=1, move_type="instrument", kong=Kongs.tiny, important=spoiler.settings.helm_tiny),
-            MoveInfo(name="Triangle Trample", move_level=1, move_type="instrument", kong=Kongs.chunky, important=spoiler.settings.helm_chunky),
-            # Instrument Upgrades
-            MoveInfo(name="Instrument Upgrade", move_level=2, move_type="instrument", kong=Kongs.any),
-            MoveInfo(name="Instrument Upgrade", move_level=3, move_type="instrument", kong=Kongs.any),
-            MoveInfo(name="Instrument Upgrade", move_level=4, move_type="instrument", kong=Kongs.any),
-        ]
-        shop_owners = ["Cranky", "Funky", "Candy"]
-        shop_cryptic = [
-            [
-                "The shop owner with a walking stick",
-                "The shop owner who is old",
-                "The shop owner who is persistently grumpy",
-                "The shop owner who resides near your Treehouse",
-            ],
-            [
-                "The shop owner who has an armory",
-                "The shop owner who has a banana on his shop",
-                "The shop owner with sunglasses",
-                "The shop owner who calls everyone Dude",
-            ],
-            ["The shop owner who is flirtatious", "The shop owner who is not present in Fungi Forest", "The shop owner who is not present in Jungle Japes", "The shop owner with blonde hair"],
-        ]
 
         # Collate nested lists for a list of shop moves
         shop_data = []
@@ -763,7 +1352,10 @@ def AddLoadingZoneHints(spoiler: Spoiler):
 
 
 def TryAddingLoadingZoneHint(spoiler: Spoiler, transition, useful_rating, disallowedRegions: list = None):
-    """Try to write a hint for the given transition. If this hint is determined to be bad, it will return false and not place the hint."""
+    """Try to write a hint for the given transition. If this hint is determined to be bad, it will return false and not place the hint.
+
+    NOTE: ONLY USED IN OLD HINT SYSTEM. Functionality was replicated for new hint system elsewhere.
+    """
     if disallowedRegions is None:
         disallowedRegions = []
     pathToHint = transition
@@ -796,8 +1388,40 @@ def TryAddingLoadingZoneHint(spoiler: Spoiler, transition, useful_rating, disall
     return True
 
 
+def TryCreatingLoadingZoneHint(spoiler: Spoiler, transition, disallowedRegions: list = None):
+    """Try to create a hint message for the given transition. If this hint is determined to be bad, it will return false and not place the hint."""
+    if disallowedRegions is None:
+        disallowedRegions = []
+    pathToHint = transition
+    # Don't hint entrances from dead-end rooms, follow the reverse pathway back until finding a place with multiple entrances
+    if spoiler.settings.decoupled_loading_zones:
+        while ShufflableExits[pathToHint].category is None:
+            originPaths = [x for x, back in spoiler.shuffled_exit_data.items() if back.reverse == pathToHint]
+            # In a few cases, there is no reverse loading zone. In this case we must keep the original path to hint
+            if len(originPaths) == 0:
+                break
+            pathToHint = originPaths[0]
+    # With coupled loading zones, never hint from a dead-end room, since it is forced to be coming from the same destination
+    elif ShufflableExits[pathToHint].category is None:
+        return ""
+    # Validate the region of the hinted entrance is not in disallowedRegions
+    if ShufflableExits[pathToHint].region in disallowedRegions:
+        return ""
+    # Validate the hinted destination is not the same as the hinted origin
+    entranceMap = GetMapId(ShufflableExits[pathToHint].region)
+    destinationMap = GetMapId(spoiler.shuffled_exit_data[transition].regionId)
+    if entranceMap == destinationMap:
+        return ""
+    entranceName = ShufflableExits[pathToHint].name
+    destinationName: str = spoiler.shuffled_exit_data[transition].spoilerName
+    fromExitName = destinationName.find(" from ")
+    if fromExitName != -1:
+        # Remove exit name from destination
+        destinationName = destinationName[:fromExitName]
+    return f"If you're looking for {destinationName}, follow the path from {entranceName}."
+
+
 def UpdateSpoilerHintList(spoiler: Spoiler):
     """Write hints to spoiler object."""
     for hint in hints:
-        if hint.kong != Kongs.any:
-            spoiler.hint_list[hint.name] = hint.hint
+        spoiler.hint_list[hint.name] = hint.hint

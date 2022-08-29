@@ -815,7 +815,7 @@ ColoredBananaGroupList = [
         map_id=Maps.FranticFactory,
         name="Prod room from elevator to center",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
-        region=Regions.MainCore,
+        region=Regions.UpperCore,
         locations=[
             [1, 1.0, 410, 137, 1642],
             [1, 1.0, 434, 147, 1664],
@@ -839,7 +839,7 @@ ColoredBananaGroupList = [
         map_id=Maps.FranticFactory,
         name="Prod room around center piece (lower floor)",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
-        region=Regions.MainCore,
+        region=Regions.MiddleCore,
         locations=[
             [1, 1.0, 738, 188, 1334],
             [1, 1.0, 738, 188, 1375],
@@ -863,7 +863,7 @@ ColoredBananaGroupList = [
         map_id=Maps.FranticFactory,
         name="Prod room around center piece (higher floor)",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
-        region=Regions.MainCore,
+        region=Regions.MiddleCore,
         locations=[
             [1, 1.0, 646, 309, 1397],
             [1, 1.0, 693, 309, 1377],
@@ -882,7 +882,7 @@ ColoredBananaGroupList = [
         map_id=Maps.FranticFactory,
         name="Prod room on spinning cylinder out from center piece",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
-        region=Regions.MainCore,
+        region=Regions.MiddleCore,
         locations=[
             [1, 1.0, 630, 309, 1209],
             [1, 1.0, 630, 309, 1155],
@@ -896,7 +896,7 @@ ColoredBananaGroupList = [
         map_id=Maps.FranticFactory,
         name="Bunches on W4",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
-        region=Regions.MainCore,
+        region=Regions.MiddleCore,
         locations=[
             [5, 1.0, 908, 436, 1534],
         ],
@@ -916,7 +916,7 @@ ColoredBananaGroupList = [
         map_id=Maps.FranticFactory,
         name="Prod room upper level from elevators to spinning cylinders",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
-        region=Regions.MainCore,
+        region=Regions.UpperCore,
         locations=[
             [1, 1.0, 960, 605, 1197],
             [1, 1.0, 914, 605, 1161],
@@ -940,7 +940,7 @@ ColoredBananaGroupList = [
         map_id=Maps.FranticFactory,
         name="Prod room below Tiny conveyors",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
-        region=Regions.MainCore,
+        region=Regions.UpperCore,
         locations=[
             [5, 1.0, 783, 683, 972],
             [5, 1.0, 472, 683, 972],
@@ -951,7 +951,7 @@ ColoredBananaGroupList = [
         map_id=Maps.FranticFactory,
         name="Prod room on box-shaped vents below the upper level",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
-        region=Regions.MainCore,
+        region=Regions.UpperCore,
         locations=[
             [5, 1.0, 274, 484, 1484],
             [5, 1.0, 274, 372, 1176],
@@ -1208,7 +1208,7 @@ ColoredBananaGroupList = [
         map_id=Maps.FranticFactory,
         name="Production room spinning arms, inside ring (Chunky)",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
-        region=Regions.MainCore,
+        region=Regions.MiddleCore,
         vanilla=True,
         locations=[
             [5, 1.0, 740.1113891601562, 428.0, 1333.6373291015625],
@@ -1220,7 +1220,7 @@ ColoredBananaGroupList = [
         map_id=Maps.FranticFactory,
         name="Production room spinning arms, outside ring (Chunky)",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
-        region=Regions.MainCore,
+        region=Regions.MiddleCore,
         vanilla=True,
         locations=[
             [5, 1.0, 889.6050415039062, 428.30029296875, 1334.5589599609375],
@@ -1310,7 +1310,7 @@ ColoredBananaGroupList = [
         map_id=Maps.FranticFactory,
         name="Prod room rotating cylinders (Diddy)",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
-        region=Regions.MainCore,
+        region=Regions.UpperCore,
         vanilla=True,
         locations=[
             [5, 1.0, 540.67431640625, 623.0, 1692.7386474609375],
@@ -1379,7 +1379,7 @@ ColoredBananaGroupList = [
         map_id=Maps.FranticFactory,
         name="Pipe at the top of Prod room (Lanky)",
         konglist=[Kongs.lanky],
-        region=Regions.MainCore,
+        region=Regions.UpperCore,
         vanilla=True,
         logic=lambda l: l.handstand,
         locations=[
@@ -1394,7 +1394,7 @@ ColoredBananaGroupList = [
         map_id=Maps.FranticFactory,
         name="Pipe at the top of Prod room (Lanky)",
         konglist=[Kongs.lanky],
-        region=Regions.MainCore,
+        region=Regions.UpperCore,
         vanilla=True,
         locations=[
             [5, 1.0, 657.2835083007812, 604.8435668945312, 1653.2054443359375],
@@ -1405,7 +1405,7 @@ ColoredBananaGroupList = [
         map_id=Maps.FranticFactory,
         name="Prod room on the middle steps between rotating cylinders and the spinning arms (Lanky)",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
-        region=Regions.MainCore,
+        region=Regions.MiddleCore,
         vanilla=True,
         locations=[
             [5, 1.0, 551.6519165039062, 317.6666564941406, 996.9663696289062],
@@ -1505,7 +1505,7 @@ ColoredBananaGroupList = [
         map_id=Maps.FranticFactory,
         name="Prod room on conveyors to bonus barrel (Tiny)",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
-        region=Regions.MainCore,
+        region=Regions.UpperCore,
         vanilla=True,
         locations=[
             [5, 1.0, 559.0079956054688, 805.0, 969.701171875],
@@ -1519,7 +1519,7 @@ ColoredBananaGroupList = [
         map_id=Maps.FranticFactory,
         name="Prod room on far platform past Bonus Barrel (Tiny)",
         konglist=[Kongs.tiny],
-        region=Regions.MainCore,
+        region=Regions.UpperCore,
         vanilla=True,
         logic=lambda l: l.twirl,
         locations=[
@@ -2068,7 +2068,7 @@ BalloonList = [
         name="Production room very top",
         speed=5,
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
-        region=Regions.MainCore,
+        region=Regions.UpperCore,
         points=[
             [500, 980, 1240],
             [640, 970, 1200],
@@ -2084,7 +2084,7 @@ BalloonList = [
         name="Production room near wall under Lanky pipe",
         speed=6,
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
-        region=Regions.MainCore,
+        region=Regions.UpperCore,
         points=[
             [838, 460, 1020],
             [942, 450, 1175],
@@ -2096,7 +2096,7 @@ BalloonList = [
         name="Production room in front of middle window",
         speed=6,
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
-        region=Regions.MainCore,
+        region=Regions.MiddleCore,
         points=[
             [598, 510, 1675],
             [704, 505, 1684],
@@ -2108,7 +2108,7 @@ BalloonList = [
         name="Production room in front of high window",
         speed=6,
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
-        region=Regions.MainCore,
+        region=Regions.UpperCore,
         points=[
             [598, 880, 1675],
             [704, 875, 1684],
@@ -2264,7 +2264,7 @@ BalloonList = [
         name="Prod room, by center (Tiny)",
         speed=4,
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
-        region=Regions.MainCore,
+        region=Regions.MiddleCore,
         vanilla=True,
         points=[
             [746, 254, 1411],
@@ -2291,7 +2291,7 @@ BalloonList = [
         name="Prod room, by highest tag barrel (Lanky)",
         speed=6,
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
-        region=Regions.MainCore,
+        region=Regions.UpperCore,
         vanilla=True,
         points=[
             [360, 685, 1099],

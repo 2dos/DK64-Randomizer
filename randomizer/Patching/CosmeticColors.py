@@ -1,10 +1,11 @@
 """Apply cosmetic skins to kongs."""
+import random
+from random import randint
+
+import js
+from randomizer.Patching.generate_kong_color_images import convertColors
 from randomizer.Patching.Patcher import ROM
 from randomizer.Spoiler import Spoiler
-from randomizer.Patching.generate_kong_color_images import convertColors
-from random import randint
-import random
-import js
 
 
 def apply_cosmetic_colors(spoiler: Spoiler):
@@ -49,6 +50,7 @@ def apply_cosmetic_colors(spoiler: Spoiler):
             0xBD,  # Rareware Logo
         ]
         model_index = random.choice(permitted_models)
+    spoiler.settings.klaptrap_model_index = model_index
     ROM().seek(spoiler.settings.rom_data + 0x136)
     ROM().writeMultipleBytes(model_index, 1)
     color_palettes = []

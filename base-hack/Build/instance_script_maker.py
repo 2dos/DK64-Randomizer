@@ -1,7 +1,7 @@
 """Make Instance Scripts."""
+import json
 import os
 import zlib
-import json
 
 base_rom = "./rom/dk64.z64"
 instance_dir = "./assets/Non-Code/instance_scripts"
@@ -141,10 +141,10 @@ with open(base_rom, "rb") as fh:
                                                 else:
                                                     val = int(val)
                                                 script_data[attr] = val
-                                pre_message = f"{bcolors.WARNING}Ignoring"
+                                pre_message = f"[x] - Ignoring"
                                 if script_data["ignore"] == 0:
-                                    pre_message = f"{bcolors.OKGREEN}Compiling"
-                                print(f"{pre_message} {file.replace('.script','')} ({hex(script_data['id'])}){bcolors.ENDC}")
+                                    pre_message = f"    - Compiling"
+                                print(f"{pre_message} {file.replace('.script','')} ({hex(script_data['id'])})")
                                 if contains_code and code_start > -1:
                                     resetCond(True)
                                     for code_line in script_info[code_start:]:

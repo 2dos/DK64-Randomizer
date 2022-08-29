@@ -542,6 +542,15 @@ typedef struct parentMaps {
 	/* 0x020 */ char unk_1C[0xC0-0x20];
 } parentMaps;
 
+typedef struct placementData {
+	/* 0x000 */ char unk_00[0x4];
+	/* 0x004 */ float x_direction;
+	/* 0x008 */ float y_direction;
+	/* 0x00C */ int unk_0C;
+	/* 0x010 */ short popout_timer;
+	/* 0x012 */ char unk_12[0x20-0x12];
+} placementData;
+
 typedef struct hud_element {
 	/* 0x000 */ void* item_count_pointer;
 	/* 0x004 */ short visual_item_count;
@@ -550,7 +559,9 @@ typedef struct hud_element {
 	/* 0x00C */ int y;
 	/* 0x010 */ float unk_10[4];
 	/* 0x020 */ int hud_state;
-	/* 0x024 */ char unk_24[0xC];
+	/* 0x024 */ char unk_24[0x28-0x24];
+	/* 0x028 */ placementData* placement_pointer;
+	/* 0x02C */ char unk_2C[0x30-0x2C];
 } hud_element;
 
 typedef struct hudData {
@@ -1104,3 +1115,12 @@ typedef struct movement_bitfield {
 	unsigned char entering_portal : 1;
 	unsigned char exiting_portal : 1;
 } movement_bitfield;
+
+typedef struct collected_item_struct {
+	/* 0x000 */ short id;
+	/* 0x002 */ short obj_type;
+	/* 0x004 */ char unk_04[0x1A - 0x4];
+	/* 0x01A */ unsigned char is_homing;
+	/* 0x01B */ char unk_1B;
+	/* 0x01C */ void* next_item;
+} collected_item_struct;

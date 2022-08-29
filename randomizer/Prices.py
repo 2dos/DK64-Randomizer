@@ -5,8 +5,19 @@ import random
 from randomizer.Enums.Items import Items
 from randomizer.Enums.Kongs import Kongs
 from randomizer.Enums.Locations import Locations
-from randomizer.ItemPool import ChunkyMoveLocations, DiddyMoveLocations, DonkeyMoveLocations, LankyMoveLocations, SharedMoveLocations, TinyMoveLocations
-from randomizer.ItemPool import DonkeyMoves, DiddyMoves, LankyMoves, TinyMoves, ChunkyMoves
+from randomizer.ItemPool import (
+    ChunkyMoveLocations,
+    ChunkyMoves,
+    DiddyMoveLocations,
+    DiddyMoves,
+    DonkeyMoveLocations,
+    DonkeyMoves,
+    LankyMoveLocations,
+    LankyMoves,
+    SharedMoveLocations,
+    TinyMoveLocations,
+    TinyMoves,
+)
 from randomizer.Lists.Location import LocationList
 
 VanillaPrices = {

@@ -3,25 +3,26 @@ import asyncio
 import json
 import random
 
+from pyodide import create_proxy
+
 import js
 from randomizer.BackgroundRandomizer import generate_playthrough
 from randomizer.Patching.ApplyRandomizer import patching_response
+from randomizer.SettingStrings import decrypt_setting_string, encrypt_settings_string
 from randomizer.Worker import background
 from ui.bindings import bind
 from ui.progress_bar import ProgressBar
-from ui.settings_strings import encrypt_settings_string, decrypt_setting_string
 from ui.rando_options import (
-    toggle_counts_boxes,
-    toggle_b_locker_boxes,
-    update_boss_required,
+    disable_barrel_modal,
     disable_colors,
     disable_music,
     disable_prices,
     max_randomized_blocker,
     max_randomized_troff,
-    disable_barrel_modal,
+    toggle_b_locker_boxes,
+    toggle_counts_boxes,
+    update_boss_required,
 )
-from pyodide import create_proxy
 
 
 @bind("click", "export_settings")
