@@ -312,6 +312,14 @@ function load_old_seeds() {
           }
           console.log(sorted_array[i]);
           // TODO: Generate UI with this data
+          document.getElementById("nav-pastgen-tab").style.display = "block";
+          const hook = document.getElementById("pastgenlist")
+          const option_el = document.createElement("option")
+          const option_dt = sorted_array[i].date.toLocaleDateString(undefined,{year:"numeric",month:"short",day:"2-digit",hour:"2-digit",minute:"2-digit",second:"2-digit"})
+          const option_str = option_dt + " (Seed: " + sorted_array[i].seed_id + ")"
+          const option_txt = document.createTextNode(option_str)
+          option_el.appendChild(option_txt)
+          hook.appendChild(option_el)
         }
       }
       catch { }
@@ -338,6 +346,8 @@ function load_file_from_db() {
         $("#rom").attr("placeholder", "Using cached ROM");
         $("#rom").val("Using cached ROM");
         $("#rom_2").attr("placeholder", "Using cached ROM");
+        $("#rom_3").attr("placeholder", "Using cached ROM");
+        $("#rom_3").val("Using cached ROM");
       } catch { }
     };
   }
