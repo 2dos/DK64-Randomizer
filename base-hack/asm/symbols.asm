@@ -196,6 +196,10 @@
 .definelabel ObjectModel2Timer, 0x8076A064
 .definelabel ObjectModel2Count, 0x807F6004
 .definelabel ObjectModel2Count_Dupe, 0x80747D70
+.definelabel MapVoid_MinX, 0x807F5FE4
+.definelabel MapVoid_MinZ, 0x807F5FE6
+.definelabel MapVoid_MaxX, 0x807F5FE8
+.definelabel MapVoid_MaxZ, 0x807F5FEA
 .definelabel CutsceneIndex, 0x807476F4
 .definelabel CutsceneActive, 0x807444EC
 .definelabel CutsceneTimer, 0x807476F0
