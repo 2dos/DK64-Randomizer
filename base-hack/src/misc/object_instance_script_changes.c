@@ -136,6 +136,7 @@
 #define CHEST_PEARL_0 0x0
 #define MILLREAR_CHUNKYCHECK_RATE 0xF
 
+#define FACTORY_LARGEMETALSECTION 0x0
 #define FACTORY_PIANO 0x14
 #define FACTORY_DARTBOARD 0x7F
 #define ICE_MAZE 0x0
@@ -667,6 +668,22 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 						}
 					}
 					return 0;
+				}
+			} else if (param2 == FACTORY_LARGEMETALSECTION) {
+				if (Rando.quality_of_life) {
+					behaviour_pointer->current_state = 10;
+					unsigned char crusher_compontents[] = {1,3,8,9,4,10,11,12,13,2,5,6,7};
+					int* m2location = ObjectModel2Pointer;
+					for (int component = 0; component < sizeof(crusher_compontents); component++) {
+						int index = convertIDToIndex(crusher_compontents[component]);
+						if (index > -1) {
+							ModelTwoData* _object = getObjectArrayAddr(m2location,0x90,index);
+							behaviour_data* behaviour = (behaviour_data*)_object->behaviour_pointer;
+							if (behaviour) {
+								behaviour->next_state = 10;
+							}
+						}
+					}
 				}
 			}
 			break;
