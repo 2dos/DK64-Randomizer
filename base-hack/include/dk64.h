@@ -299,6 +299,11 @@ extern char DKTVKong;
 extern cutsceneType CutsceneBanks[2];
 extern int EEPROMType;
 
+extern short MapVoid_MinX;
+extern short MapVoid_MinZ;
+extern short MapVoid_MaxX;
+extern short MapVoid_MaxZ;
+
 extern short screenCenterX;
 extern short screenCenterY;
 extern float collisionPos[3];
