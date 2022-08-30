@@ -1,8 +1,8 @@
 """Convert files to their minified types."""
 import glob
 import os
-import subprocess
 import shutil
+import subprocess
 from pathlib import Path
 from urllib.parse import urlparse
 

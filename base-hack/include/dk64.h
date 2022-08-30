@@ -118,7 +118,7 @@ extern void pauseCutscene(void);
 extern void getTextPointer_0(void* actor, int text_file, int text_index);
 
 extern int hasTurnedInEnoughCBs(void);
-extern int getWorld(int map, int unk2);
+extern int getWorld(int map, int lobby_is_isles);
 extern void displayImageOnObject(int obj_id, int position, int image_index, int unk4);
 extern void drawNumberObject(int model, int unk2, int image_index, int unk4);
 extern int isLobby(int map);
@@ -179,6 +179,7 @@ extern void unkSpriteRenderFunc(int unk0);
 extern void unkSpriteRenderFunc_0(void);
 extern void loadSpriteFunction(int func);
 extern void displaySpriteAtXYZ(void* sprite, int x, int y, int z);
+extern void* getHUDSprite(int item);
 
 //vanilla data
 extern float TransitionSpeed;
@@ -356,6 +357,7 @@ extern SpawnerInfo* currentCharSpawner;
 extern short EnemiesKilledCounter;
 extern model2_collision_info ModelTwoCollisionArray[42];
 extern int IGT;
+extern collected_item_struct* LatestCollectedObject;
 
 //hack data
 extern int TestVariable;
@@ -389,3 +391,4 @@ extern unsigned char ShorterBosses;
 extern char ForceStandardAmmo;
 extern char KKOPhaseRandoOn;
 extern char KKOPhaseOrder[3];
+extern unsigned short MultiBunchCount;

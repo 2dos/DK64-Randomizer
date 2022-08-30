@@ -195,6 +195,7 @@ def update_boss_required(evt):
     boss_kong = document.getElementById("boss_kong_rando")
     kong_rando = document.getElementById("kong_rando")
     moves = document.getElementById("move_off")
+    hard_level_progression = document.getElementById("hard_level_progression")
     if level.value == "level_order":
         boss_location.setAttribute("disabled", "disabled")
         boss_location.checked = True
@@ -205,6 +206,7 @@ def update_boss_required(evt):
         if moves.selected is True:
             document.getElementById("move_on").selected = True
         moves.setAttribute("disabled", "disabled")
+        hard_level_progression.removeAttribute("disabled")
     elif level.value == "vanilla" and kong_rando.checked:
         boss_location.setAttribute("disabled", "disabled")
         boss_location.checked = True
@@ -212,12 +214,16 @@ def update_boss_required(evt):
         boss_kong.checked = True
         kong_rando.removeAttribute("disabled")
         moves.removeAttribute("disabled")
+        hard_level_progression.setAttribute("disabled", "disabled")
+        hard_level_progression.checked = False
     else:
         try:
             boss_kong.removeAttribute("disabled")
             boss_location.removeAttribute("disabled")
             kong_rando.removeAttribute("disabled")
             moves.removeAttribute("disabled")
+            hard_level_progression.setAttribute("disabled", "disabled")
+            hard_level_progression.checked = False
         except Exception:
             pass
 
@@ -355,15 +361,15 @@ def disable_prices(evt):
 @bind("click", "bonus_barrel_rando")
 def disable_barrel_modal(evt):
     """Disable Minigame Selector when Shuffle Bonus Barrels is off."""
-    hidden = True
+    disabled = True
     selector = js.document.getElementById("minigames_list_modal")
     if js.document.getElementById("bonus_barrel_rando").checked:
-        hidden = False
+        disabled = False
     try:
-        if hidden:
-            selector.setAttribute("hidden", "hidden")
+        if disabled:
+            selector.setAttribute("disabled", "disabled")
         else:
-            selector.removeAttribute("hidden")
+            selector.removeAttribute("disabled")
     except AttributeError:
         pass
 
@@ -408,6 +414,7 @@ def preset_select_changed(event):
     disable_prices(None)
     max_randomized_blocker(None)
     max_randomized_troff(None)
+    disable_barrel_modal(None)
 
 
 @bind("change", "dk_colors")

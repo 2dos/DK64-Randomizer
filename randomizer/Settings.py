@@ -4,14 +4,15 @@ import inspect
 import json
 import random
 import sys
-
-from randomizer.ShuffleBosses import ShuffleBosses, ShuffleBossKongs, ShuffleKutoutKongs, ShuffleKKOPhaseOrder
-from randomizer.Enums.Events import Events
-from randomizer.Enums.Kongs import Kongs, GetKongs
-from randomizer.Enums.Locations import Locations
-from randomizer.Enums.Levels import Levels
-from randomizer.Prices import RandomizePrices, VanillaPrices
 from random import randint
+
+from randomizer.Enums.Events import Events
+from randomizer.Enums.Kongs import GetKongs, Kongs
+from randomizer.Enums.Levels import Levels
+from randomizer.Enums.Locations import Locations
+import randomizer.ItemPool as ItemPool
+from randomizer.Prices import RandomizePrices, VanillaPrices
+from randomizer.ShuffleBosses import ShuffleBosses, ShuffleBossKongs, ShuffleKKOPhaseOrder, ShuffleKutoutKongs
 
 
 class Settings:
@@ -46,9 +47,14 @@ class Settings:
         # Medium: 50 GB
         # Long: 65 GB
         # Longer: 80 GB\
-        self.blocker_max = self.blocker_text if self.blocker_text else 50
-        self.troff_max = self.troff_text if self.troff_text else 270
+        self.blocker_max = int(self.blocker_text) if self.blocker_text else 50
+        self.troff_max = int(self.troff_text) if self.troff_text else 270
         self.troff_min = [0.25, 0.3, 0.35, 0.4, 0.45, 0.5, 0.55]  # Weights for the minimum value of troff
+        if self.hard_troff_n_scoff:
+            self.troff_min = [0.45, 0.5, 0.55, 0.6, 0.65, 0.7, 0.75]  # Add 20% to the minimum for hard T&S
+        # In hard level progression we go through levels in a random order, so we set every level's troff min weight to the largest weight
+        if self.hard_level_progression:
+            self.troff_min = [self.troff_min[-1] for x in self.troff_min]
         # Always start with training barrels currently
         # training_barrels: str
         # normal
@@ -72,11 +78,34 @@ class Settings:
 
         self.prices = VanillaPrices.copy()
         self.level_order = {1: Levels.JungleJapes, 2: Levels.AngryAztec, 3: Levels.FranticFactory, 4: Levels.GloomyGalleon, 5: Levels.FungiForest, 6: Levels.CrystalCaves, 7: Levels.CreepyCastle}
+
+        # Used by hints in level order rando
+        # By default (and in LZR) assume you have access to everything everywhere so hints are unrestricted
+        self.owned_kongs_by_level = {
+            Levels.JungleJapes: GetKongs().copy(),
+            Levels.AngryAztec: GetKongs().copy(),
+            Levels.FranticFactory: GetKongs().copy(),
+            Levels.GloomyGalleon: GetKongs().copy(),
+            Levels.FungiForest: GetKongs().copy(),
+            Levels.CrystalCaves: GetKongs().copy(),
+            Levels.CreepyCastle: GetKongs().copy(),
+        }
+        self.owned_moves_by_level = {
+            Levels.JungleJapes: ItemPool.AllKongMoves().copy(),
+            Levels.AngryAztec: ItemPool.AllKongMoves().copy(),
+            Levels.FranticFactory: ItemPool.AllKongMoves().copy(),
+            Levels.GloomyGalleon: ItemPool.AllKongMoves().copy(),
+            Levels.FungiForest: ItemPool.AllKongMoves().copy(),
+            Levels.CrystalCaves: ItemPool.AllKongMoves().copy(),
+            Levels.CreepyCastle: ItemPool.AllKongMoves().copy(),
+        }
+
         self.resolve_settings()
 
     def update_progression_totals(self):
         """Update the troff and blocker totals if we're randomly setting them."""
         # Assign weights to Troff n Scoff based on level order if not shuffling loading zones
+        # Hard level shuffling makes these weights meaningless, as you'll be going into levels in a random order
         self.troff_weight_0 = 0.5
         self.troff_weight_1 = 0.55
         self.troff_weight_2 = 0.6
@@ -84,7 +113,7 @@ class Settings:
         self.troff_weight_4 = 0.8
         self.troff_weight_5 = 0.9
         self.troff_weight_6 = 1.0
-        if self.level_randomization in ("loadingzone", "loadingzonesdecoupled"):
+        if self.level_randomization in ("loadingzone", "loadingzonesdecoupled") or self.hard_level_progression:
             self.troff_weight_0 = 1
             self.troff_weight_1 = 1
             self.troff_weight_2 = 1
@@ -95,8 +124,8 @@ class Settings:
 
         if self.randomize_cb_required_amounts:
             randomlist = []
-            for i in self.troff_min:
-                randomlist.append(random.randint(round(self.troff_max * i), self.troff_max))
+            for min_percentage in self.troff_min:
+                randomlist.append(random.randint(round(self.troff_max * min_percentage), self.troff_max))
             cbs = randomlist
             self.troff_0 = round(min(cbs[0] * self.troff_weight_0, 500))
             self.troff_1 = round(min(cbs[1] * self.troff_weight_1, 500))
@@ -108,10 +137,11 @@ class Settings:
         if self.randomize_blocker_required_amounts:
             randomlist = random.sample(range(1, self.blocker_max), 7)
             b_lockers = randomlist
-            b_lockers.append(1)
-            if self.shuffle_loading_zones == "all":
+            if self.shuffle_loading_zones == "all" or self.hard_level_progression:
+                b_lockers.append(random.randint(1, self.blocker_max))
                 random.shuffle(b_lockers)
             else:
+                b_lockers.append(1)
                 b_lockers.sort()
             self.blocker_0 = b_lockers[0]
             self.blocker_1 = b_lockers[1]
@@ -235,6 +265,7 @@ class Settings:
         self.colors = {}
         self.color_palettes = {}
         self.klaptrap_model = "green"
+        self.klaptrap_model_index = 0x21
         self.dk_colors = "vanilla"
         self.dk_custom_color = "#000000"
         self.diddy_colors = "vanilla"
@@ -289,6 +320,9 @@ class Settings:
         self.cb_rando = False
         self.override_cosmetics = False
         self.random_colors = False
+        self.hard_level_progression = False
+        self.hard_blockers = False
+        self.hard_troff_n_scoff = False
         self.minigames_list_selected = []
 
     def shuffle_prices(self):

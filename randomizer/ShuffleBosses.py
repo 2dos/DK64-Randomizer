@@ -1,6 +1,7 @@
 """Randomize Boss Locations."""
 import random
 from array import array
+
 from randomizer.Enums.Items import Items
 from randomizer.Enums.Kongs import Kongs
 from randomizer.Lists.Exceptions import BossOutOfLocationsException, FillException, ItemPlacementException
@@ -163,7 +164,7 @@ def ShuffleBossesBasedOnOwnedItems(settings, ownedKongs: dict, ownedMoves: dict)
         if len(newBossMaps) < 7:
             raise FillException("Invalid boss order with fewer than the 7 required main levels.")
     except Exception as ex:
-        if "index out of range" in ex.args[0]:
+        if isinstance(ex.args[0], str) and "index out of range" in ex.args[0]:
             raise BossOutOfLocationsException("No valid locations to place " + bossTryingToBePlaced)
         raise FillException(ex)
 

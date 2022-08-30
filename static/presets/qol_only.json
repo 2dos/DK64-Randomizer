@@ -64,6 +64,7 @@
     "starting_kongs_count":1,
     "crown_door_open":false,
     "coin_door_open":"need_both",
+    "minigames_list_selected":[],
     "quality_of_life":true,
     "shorten_boss":false,
     "enable_tag_anywhere":true,

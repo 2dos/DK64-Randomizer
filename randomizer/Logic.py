@@ -17,7 +17,6 @@ import randomizer.LogicFiles.GloomyGalleon
 import randomizer.LogicFiles.HideoutHelm
 import randomizer.LogicFiles.JungleJapes
 import randomizer.LogicFiles.Shops
-from randomizer.Lists.ShufflableExit import GetShuffledLevelIndex
 from randomizer.Enums.Collectibles import Collectibles
 from randomizer.Enums.Events import Events
 from randomizer.Enums.Items import Items
@@ -27,8 +26,8 @@ from randomizer.Enums.Locations import Locations
 from randomizer.Enums.Time import Time
 from randomizer.Lists.Location import Location, LocationList
 from randomizer.Lists.MapsAndExits import Maps
+from randomizer.Lists.ShufflableExit import GetShuffledLevelIndex
 from randomizer.Prices import CanBuy, GetPriceOfMoveItem
-
 
 STARTING_SLAM = 1  # Currently we're assuming you always start with 1 slam
 
@@ -489,7 +488,7 @@ class LogicVarHolder:
 
     def HasEnoughKongs(self, level, forPreviousLevel=False):
         """Check if kongs are required for progression, do we have enough to reach the given level."""
-        if self.settings.kongs_for_progression and level != Levels.HideoutHelm:
+        if self.settings.kongs_for_progression and level != Levels.HideoutHelm and not self.settings.hard_level_progression:
             # Figure out where this level fits in the progression
             levelIndex = GetShuffledLevelIndex(level)
             if forPreviousLevel:

@@ -129,6 +129,7 @@ end_sequence_cards = [
         "text": [
             "Obiyo",
             "Revven",
+            "Riley",
         ],
     },
     {
@@ -137,15 +138,8 @@ end_sequence_cards = [
             "duration": names_length,
             "cooldown": general_buffer,
         },
-        "text": ["Riley", "SirSmackStrikesBack"],
-    },
-    {
-        "squish": {
-            "from": "left",
-            "duration": names_length,
-            "cooldown": general_buffer,
-        },
         "text": [
+            "SirSmackStrikesBack",
             "UsedPizza",
             "VidyaJames",
         ],
@@ -156,7 +150,10 @@ end_sequence_cards = [
             "duration": names_length,
             "cooldown": end_buffer,
         },
-        "text": ["Wex", "Zorulda"],
+        "text": [
+            "Wex",
+            "Zorulda",
+        ],
     },
     {
         "squish": {
@@ -186,6 +183,17 @@ end_sequence_cards = [
             "cooldown": general_buffer,
         },
         "text": ["Crankys Lab Developer", "Isotarge"],
+    },
+    {
+        "squish": {
+            "from": "right",
+            "duration": names_length,
+            "cooldown": general_buffer,
+        },
+        "text": [
+            "SpikeVegeta",
+            "KeiperDontCare",
+        ],
     },
     {
         "squish": {

@@ -1,8 +1,9 @@
 """Create complex images from in-game assets."""
 
-from PIL import Image
-import PIL
 import os
+
+import PIL
+from PIL import Image
 
 pre = "../"
 cwd = os.getcwd()
