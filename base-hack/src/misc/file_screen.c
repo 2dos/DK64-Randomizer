@@ -50,10 +50,9 @@ int* display_images(int* dl, file_screen_modes mode) {
 		}
 		dl = drawImage(dl, 107 + i, RGBA16, 32, 32, 900 + (150 * (i % 2)), (520 + y_offset + (80 * (i / 2))),4.0f, 4.0f,opacity_i);
 	}
-	/*
-		dl = drawImage(dl, 115, RGBA16, 32, 32, 200, y_offset + 450,4.0f, 4.0f,0xFF); // Cranky Head
-		dl = drawImage(dl, 116, RGBA16, 32, 32, 500, y_offset + 720,3.0f, 3.0f,0xFF); // Blueprint
-	*/
+	if (mode == FILEMODE_USED) {
+		dl = drawImage(dl, 115, RGBA16, 32, 32, 150, y_offset + 275,4.0f, 4.0f,0xFF); // Cranky Head
+	}
 	return dl;
 }
 
@@ -122,7 +121,7 @@ int* display_text(int* dl) {
 		int y_offset = y_start;
 		// Move Count
 		y_offset += y_gap;
-		dk_strFormat((char*)move_count_str, "%02dl35", move_count);
+		dk_strFormat((char*)move_count_str, "%02dl41", move_count);
 		dl = printText(dl, 325, y_offset, 0.6f, (char*)move_count_str);
 		// File Percentage
 		y_offset += y_gap;
@@ -367,16 +366,16 @@ void FileProgressInit(actorData* menu_controller) {
 	loadFile(0,0);
 	if (isFileEmpty(0)) {
 		// Empty
+		displayMenuSprite(paad, sprite_table[0x6F], 0x23, 0xD2, 0.75f, 2, 0); // B
+		displayMenuSprite(paad, sprite_table[0x6E], 0x122, 0xD2, 0.75f, 2, 0); // A
 	} else {
 		// Not Empty
 		displayMenuSprite(paad, sprite_table[59], 35, 125, 0.6f, 2, 0); // GB
-		// displayMenuSprite(paad, sprite_table[0x70], 0xA2, 0xD6, 0.75f, 2, 5); // Z - Delete
+		displayMenuSprite(paad, sprite_table[0x70], 0xA2, 0xD6, 0.75f, 2, 0); // Z - Delete
 		// displayMenuSprite(paad, sprite_table[0x94], 35, 65, 0.6f, 2, 5); // Cranky Face - Moves
 		int blueprint_sprite_indexes[] = {0x5C,0x5A,0x4A,0x5D,0x5B};
-		// displayMenuSprite(paad, sprite_table[blueprint_sprite_indexes[0]], 35, 155, 0.75, 2, 5); // Blueprint
+		displayMenuSprite(paad, sprite_table[blueprint_sprite_indexes[(int)Rando.starting_kong]], 35, 155, 0.75, 2, 0); // Blueprint
 	}
-	displayMenuSprite(paad, sprite_table[0x6F], 0x23, 0xD2, 0.75f, 2, 0); // B
-	displayMenuSprite(paad, sprite_table[0x6E], 0x122, 0xD2, 0.75f, 2, 0); // A
 	*(float*)(0x80033F4C) = 1600.0f;
 	for (int i = 0; i < 5; i++) {
 		if (Rando.unlock_kongs & (1 << i)) {

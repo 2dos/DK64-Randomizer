@@ -77,8 +77,6 @@ int isGoodTextbox(int text_file, int text_index) {
 void getMoveHint(actorData* actor, int text_file, int text_index) {
 	int shop = actor->actorType - 189; // 0 = Cranky, 1 = Funky, 2 = Candy
 	if ((shop >= 0) && (shop <= 2)) {
-		// *(int*)(0x807FF700) = text_file;
-		// *(int*)(0x807FF704) = text_index;
 		shop_paad* shop_data = (shop_paad*)actor->paad2;
 		if (!isGoodTextbox(text_file,text_index)) {
 			getTextPointer_0(actor,text_file,text_index);

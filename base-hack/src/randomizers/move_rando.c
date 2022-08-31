@@ -547,14 +547,14 @@ unsigned int* displayMoveText(unsigned int* dl, actorData* actor) {
 	if (paad->upper_text) {
 		*(unsigned int*)(dl++) = 0xDA380002;
 		*(unsigned int*)(dl++) = (int)&paad->unk_10;
-		dl = (unsigned int*)displayText((int*)dl,1,*(int*)(0x807FF700),*(int*)(0x807FF704),paad->upper_text,0x80);
+		dl = (unsigned int*)displayText((int*)dl,1,0,0,paad->upper_text,0x80);
 		*(unsigned int*)(dl++) = 0xD8380002;
 		*(unsigned int*)(dl++) = 0x00000040;
 	}
 	if (paad->lower_text) {
 		*(unsigned int*)(dl++) = 0xDA380002;
 		*(unsigned int*)(dl++) = (int)&paad->unk_50;
-		dl = (unsigned int*)displayText((int*)dl,6,*(int*)(0x807FF708),*(int*)(0x807FF70C),paad->lower_text,0x80);
+		dl = (unsigned int*)displayText((int*)dl,6,0,0,paad->lower_text,0x80);
 		*(unsigned int*)(dl++) = 0xD8380002;
 		*(unsigned int*)(dl++) = 0x00000040;
 	}
