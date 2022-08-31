@@ -306,6 +306,10 @@ void initHack(int source) {
 			*(float*)(0x807533A8) = 240.0f; // Tiny Ground
 			*(float*)(0x807533DC) = 260.0f; // Lanky Air
 			*(float*)(0x807533E0) = 260.0f; // Tiny Air
+			// New Helm Barrel Code
+			*(int*)(0x8074C24C) = (int)&HelmBarrelCode;
+			// Deathwarp Handle
+			*(int*)(0x8071292C) = 0x0C000000 | (((int)&WarpHandle & 0xFFFFFF) >> 2); // Check if in Helm, in which case, apply transition
 			// New Guard Code
 			*(short*)(0x806AF75C) = 0x1000;
 			// Gold Beaver Code

@@ -113,6 +113,8 @@
 .definelabel pauseCutscene, 0x8061CAD8
 .definelabel hasTurnedInEnoughCBs, 0x805FF0C8
 .definelabel getTextPointer_0, 0x8070D8C0
+.definelabel BonusBarrelCode, 0x806809F0
+.definelabel DisplayExplosionSprite, 0x8067DCC0
 
 .definelabel setArcadeTextXY, 0x80024508
 .definelabel spawnArcadeText, 0x8002451C
@@ -280,6 +282,7 @@
 .definelabel SetupFilePointer, 0x807F6010
 .definelabel focusedParentDataSetup, 0x807F5A70
 .definelabel HUD, 0x80754280
+.definelabel HelmMinigameFlags, 0x8074E7E0
 .definelabel textData, 0x80754A34
 .definelabel LZFadeoutProgress, 0x807FD888
 .definelabel mapFloorPointer, 0x807F9514
