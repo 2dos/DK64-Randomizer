@@ -37,6 +37,8 @@ extern void priceTransplant(void);
 
 extern void changeCharSpawnerFlag(int map, int spawner_id, int new_flag);
 extern void changeHelmLZ(void);
+extern void HelmBarrelCode(void);
+extern void WarpHandle(void);
 
 extern void PatchCrankyCode(void);
 extern void PatchKRoolCode(void);

@@ -163,6 +163,8 @@ extern void spawnSparkles(float x, float y, float z, int size);
 extern void spawnEnemyDrops(void* actor);
 extern void* isActorLoaded(int actor_type);
 extern void beaverControlSwitchCase(int unk0, int unk1, int unk2);
+extern void BonusBarrelCode(void);
+extern void DisplayExplosionSprite(void);
 
 extern float getXRatioMovement(int dk64u_angle);
 extern float getZRatioMovement(int dk64u_angle);
@@ -262,6 +264,7 @@ extern unsigned int PauseTimestampMinor;
 extern unsigned int HelmStartTimestampMajor;
 extern unsigned int HelmStartTimestampMinor;
 extern int HelmStartTime;
+extern short HelmMinigameFlags[10];
 extern short p1PressedButtons;
 extern short p1HeldButtons;
 extern char player_count;
