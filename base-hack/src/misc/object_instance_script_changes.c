@@ -64,11 +64,16 @@
 #define GALLEON_SAX_PAD 0x13
 #define GALLEON_TROMBONE_PAD 0x12
 #define GALLEON_TRIANGLE_PAD 0x1B
+#define GALLEON_LANKY_SLAM 0x1D
+#define GALLEON_TINY_SLAM 0x1C
+
 #define GALLEON_DK_5DSDOOR 0x19
 #define GALLEON_DIDDY_5DSDOOR 0x1A
 #define GALLEON_LANKY_5DSDOOR 0x17
 #define GALLEON_TINY_5DSDOOR 0x18
 #define GALLEON_CHUNKY_5DSDOOR 0x20
+#define GALLEON_LANKY_2DSDOOR 0x1F
+#define GALLEON_TINY_2DSDOOR 0x1E
 
 #define TGROUNDS_BAMBOOGATE 0x49
 #define TGROUNDS_SWITCH 0x39
@@ -303,6 +308,8 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 					case GALLEON_TRIANGLE_PAD:
 					case GALLEON_SAX_PAD:
 					case GALLEON_TROMBONE_PAD:
+					case GALLEON_LANKY_SLAM:
+					case GALLEON_TINY_SLAM:
 						if (index == 0) { 
 							return !Rando.remove_high_requirements;
 						}
@@ -337,6 +344,16 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 						if (gate_index < 0) {
 							gate_index = 4;
 							gate_flag = GALLEON_5DSOPEN_CHUNKY;
+						}
+					case GALLEON_LANKY_2DSDOOR:
+						if (gate_index < 0) {
+							gate_index = 5;
+							gate_flag = GALLEON_2DSOPEN_LANKY;
+						}
+					case GALLEON_TINY_2DSDOOR:
+						if (gate_index < 0) {
+							gate_index = 6;
+							gate_flag = GALLEON_2DSOPEN_TINY;
 						}
 						if (index == 0) {
 							if (Rando.remove_high_requirements) {
