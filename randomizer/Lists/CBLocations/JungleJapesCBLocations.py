@@ -1185,8 +1185,8 @@ ColoredBananaGroupList = [
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.JungleJapesMain,
         locations=[
-            [5, 1.2, 1673, 569, 2095],
-            [5, 1.2, 1556, 569, 2092],
+            [5, 1.2, 1611, 565, 2099],
+            [5, 1.2, 1524, 565, 2099],
         ],
     ),
     ColoredBananaGroup(
@@ -1687,7 +1687,11 @@ BalloonList = [
         speed=4,
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.JungleJapesMain,
-        points=[[800, 330, 720], [973, 325, 580], [861, 340, 471]],
+        points=[
+            [800, 330, 720],
+            [973, 325, 580],
+            [861, 340, 471],
+        ],
     ),
     Balloon(
         id=2,
@@ -1696,7 +1700,11 @@ BalloonList = [
         speed=5,
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.JungleJapesMain,
-        points=[[1289, 360, 265], [1227, 350, 174], [1420, 360, 180]],
+        points=[
+            [1289, 360, 265],
+            [1227, 350, 174],
+            [1420, 360, 180],
+        ],
     ),
     Balloon(
         id=3,
@@ -1705,7 +1713,11 @@ BalloonList = [
         speed=5,
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.JungleJapesMain,
-        points=[[1057, 510, 769], [1049, 540, 972], [893, 520, 985]],
+        points=[
+            [1057, 510, 769],
+            [1049, 540, 972],
+            [893, 520, 985],
+        ],
     ),
     Balloon(
         id=4,
@@ -1714,7 +1726,10 @@ BalloonList = [
         speed=5,
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.JungleJapesMain,
-        points=[[1422, 550, 179], [1198, 520, 169]],
+        points=[
+            [1422, 550, 179],
+            [1198, 520, 169],
+        ],
     ),
     Balloon(
         id=5,
@@ -1723,7 +1738,12 @@ BalloonList = [
         speed=4,
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.JungleJapesMain,
-        points=[[1640, 345, 300], [1916, 340, 310], [1940, 350, 590], [1840, 320, 354]],
+        points=[
+            [1640, 345, 300],
+            [1916, 340, 310],
+            [1940, 350, 590],
+            [1840, 320, 354],
+        ],
     ),
     Balloon(
         id=6,
@@ -1732,7 +1752,12 @@ BalloonList = [
         speed=3,
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.JungleJapesMain,
-        points=[[1910, 345, 758], [1613, 340, 900], [1531, 350, 1158], [1613, 340, 900]],
+        points=[
+            [1910, 345, 758],
+            [1613, 340, 900],
+            [1531, 350, 1158],
+            [1613, 340, 900],
+        ],
     ),
     Balloon(
         id=7,
@@ -1741,7 +1766,10 @@ BalloonList = [
         speed=2,
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.JungleJapesMain,
-        points=[[1120, 305, 1956], [1109, 302, 1987]],
+        points=[
+            [1120, 305, 1956],
+            [1109, 302, 1987],
+        ],
     ),
     Balloon(
         id=8,
@@ -1750,7 +1778,10 @@ BalloonList = [
         speed=5,
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.JungleJapesMain,
-        points=[[575, 540, 1958], [560, 540, 1800]],
+        points=[
+            [575, 540, 1958],
+            [560, 540, 1800],
+        ],
     ),
     Balloon(
         id=9,
@@ -1759,7 +1790,10 @@ BalloonList = [
         speed=5,
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.JungleJapesMain,
-        points=[[1460, 470, 2120], [1475, 340, 2105]],
+        points=[
+            [1460, 470, 2120],
+            [1475, 340, 2105],
+        ],
     ),
     Balloon(
         id=10,
@@ -1768,7 +1802,10 @@ BalloonList = [
         speed=4,
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.JungleJapesMain,
-        points=[[781, 600, 2364], [725, 604, 2316]],
+        points=[
+            [781, 600, 2364],
+            [725, 604, 2316],
+        ],
     ),
     Balloon(
         id=11,
@@ -1777,7 +1814,15 @@ BalloonList = [
         speed=5,
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.JungleJapesMain,
-        points=[[1500, 900, 2555], [1652, 905, 2614], [1760, 895, 2516], [1780, 895, 2392], [1700, 890, 2293], [1557, 880, 2245], [1425, 890, 2407]],
+        points=[
+            [1500, 900, 2555],
+            [1652, 905, 2614],
+            [1760, 895, 2516],
+            [1780, 895, 2392],
+            [1700, 890, 2293],
+            [1557, 880, 2245],
+            [1425, 890, 2407],
+        ],
     ),
     Balloon(
         id=12,
@@ -1786,7 +1831,10 @@ BalloonList = [
         speed=4,
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.JungleJapesMain,
-        points=[[1187, 960, 2524], [989, 960, 2504]],
+        points=[
+            [1187, 960, 2524],
+            [989, 960, 2504],
+        ],
     ),
     Balloon(
         id=13,
@@ -1795,7 +1843,10 @@ BalloonList = [
         speed=4,
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.JungleJapesMain,
-        points=[[2105, 595, 2091], [1920, 600, 2168]],
+        points=[
+            [2105, 595, 2091],
+            [1920, 600, 2168],
+        ],
     ),
     Balloon(
         id=14,
@@ -1804,7 +1855,12 @@ BalloonList = [
         speed=4,
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.JungleJapesMain,
-        points=[[1368, 625, 2076], [1289, 630, 2250], [1138, 630, 2207], [1150, 625, 2060]],
+        points=[
+            [1368, 625, 2076],
+            [1289, 630, 2250],
+            [1138, 630, 2207],
+            [1150, 625, 2060],
+        ],
     ),
     Balloon(
         id=15,
@@ -1813,7 +1869,12 @@ BalloonList = [
         speed=4,
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.JapesBeyondCoconutGate1,
-        points=[[2918, 414, 2032], [2729, 399, 1989], [2571, 380, 1810], [2729, 399, 1989]],
+        points=[
+            [2918, 414, 2032],
+            [2729, 399, 1989],
+            [2571, 380, 1810],
+            [2729, 399, 1989],
+        ],
     ),
     Balloon(
         id=16,
@@ -1822,7 +1883,14 @@ BalloonList = [
         speed=4,
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.JapesBeyondCoconutGate1,
-        points=[[2882, 555, 2843], [3097, 530, 2683], [3144, 490, 2404], [3081, 460, 2182], [3144, 490, 2404], [3097, 530, 2683]],
+        points=[
+            [2882, 555, 2843],
+            [3097, 530, 2683],
+            [3144, 490, 2404],
+            [3081, 460, 2182],
+            [3144, 490, 2404],
+            [3097, 530, 2683],
+        ],
     ),
     Balloon(
         id=17,
@@ -1831,7 +1899,10 @@ BalloonList = [
         speed=3,
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.JungleJapesMain,
-        points=[[1350, 900, 1950], [1650, 900, 1900]],
+        points=[
+            [1350, 900, 1950],
+            [1650, 900, 1900],
+        ],
     ),
     Balloon(
         id=18,
@@ -1840,7 +1911,11 @@ BalloonList = [
         speed=4,
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.JungleJapesMain,
-        points=[[1190, 375, 1592], [1350, 385, 1745], [1505, 380, 1705]],
+        points=[
+            [1190, 375, 1592],
+            [1350, 385, 1745],
+            [1505, 380, 1705],
+        ],
     ),
     Balloon(
         id=19,
@@ -1849,7 +1924,11 @@ BalloonList = [
         speed=4,
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.JungleJapesMain,
-        points=[[2235, 355, 1825], [2089, 350, 1675], [1900, 360, 1720]],
+        points=[
+            [2235, 355, 1825],
+            [2089, 350, 1675],
+            [1900, 360, 1720],
+        ],
     ),
     Balloon(
         id=20,
@@ -1858,7 +1937,13 @@ BalloonList = [
         speed=4,
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.JapesBeyondFeatherGate,
-        points=[[2410, 620, 3275], [2200, 624, 3160], [2446, 630, 3134], [2295, 620, 3284], [2325, 624, 3040]],
+        points=[
+            [2410, 620, 3275],
+            [2200, 624, 3160],
+            [2446, 630, 3134],
+            [2295, 620, 3284],
+            [2325, 624, 3040],
+        ],
     ),
     Balloon(
         id=21,
@@ -1867,7 +1952,11 @@ BalloonList = [
         speed=4,
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.JapesBeyondFeatherGate,
-        points=[[1800, 730, 2936], [1947, 730, 2828], [1780, 750, 2815]],
+        points=[
+            [1800, 730, 2936],
+            [1947, 730, 2828],
+            [1780, 750, 2815],
+        ],
     ),
     Balloon(
         id=22,
@@ -1876,7 +1965,10 @@ BalloonList = [
         speed=6,
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.JapesBeyondFeatherGate,
-        points=[[2040, 650, 3576], [1977, 640, 3510]],
+        points=[
+            [2040, 650, 3576],
+            [1977, 640, 3510],
+        ],
     ),
     Balloon(
         id=23,
@@ -1886,7 +1978,10 @@ BalloonList = [
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.JungleJapesMain,
         logic=lambda l: l.vines,
-        points=[[2284, 660, 1197], [2224, 610, 1430]],
+        points=[
+            [2284, 660, 1197],
+            [2224, 610, 1430],
+        ],
     ),
     Balloon(
         id=24,
@@ -1895,7 +1990,14 @@ BalloonList = [
         speed=4,
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.JungleJapesMain,
-        points=[[1085, 375, 1672], [1071, 370, 1810], [834, 380, 1901], [909, 375, 2048], [990, 370, 1955], [954, 380, 1730]],
+        points=[
+            [1085, 375, 1672],
+            [1071, 370, 1810],
+            [834, 380, 1901],
+            [909, 375, 2048],
+            [990, 370, 1955],
+            [954, 380, 1730],
+        ],
     ),
     Balloon(
         id=25,
@@ -1904,7 +2006,12 @@ BalloonList = [
         speed=4,
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.JungleJapesMain,
-        points=[[2100, 360, 1505], [1909, 370, 1376], [1675, 375, 1440], [1909, 370, 1376]],
+        points=[
+            [2100, 360, 1505],
+            [1909, 370, 1376],
+            [1675, 375, 1440],
+            [1909, 370, 1376],
+        ],
     ),
     Balloon(
         id=26,
@@ -1913,7 +2020,10 @@ BalloonList = [
         speed=5,
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.JapesBeyondCoconutGate2,
-        points=[[1344, 340, 2653], [1022, 340, 2664]],
+        points=[
+            [1344, 340, 2653],
+            [1022, 340, 2664],
+        ],
     ),
     Balloon(
         id=27,
@@ -1922,7 +2032,10 @@ BalloonList = [
         speed=5,
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.JapesBeyondCoconutGate2,
-        points=[[1284, 340, 2544], [908, 340, 2550]],
+        points=[
+            [1284, 340, 2544],
+            [908, 340, 2550],
+        ],
     ),
     Balloon(
         id=28,
@@ -1931,7 +2044,12 @@ BalloonList = [
         speed=4,
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.JapesBeyondCoconutGate2,
-        points=[[1543, 270, 3066], [1430, 325, 3266], [1239, 330, 3298], [1430, 325, 3266]],
+        points=[
+            [1543, 270, 3066],
+            [1430, 325, 3266],
+            [1239, 330, 3298],
+            [1430, 325, 3266],
+        ],
     ),
     Balloon(
         id=29,
@@ -1940,7 +2058,10 @@ BalloonList = [
         speed=4,
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.JapesBeyondCoconutGate2,
-        points=[[1610, 350, 3458], [1750, 355, 3470]],
+        points=[
+            [1610, 350, 3458],
+            [1750, 355, 3470],
+        ],
     ),
     Balloon(
         id=30,
@@ -1950,7 +2071,14 @@ BalloonList = [
         konglist=[Kongs.tiny],
         region=Regions.TinyHive,
         logic=lambda l: l.Slam,
-        points=[[2037, 450, 1415], [2205, 455, 1200], [2394, 460, 1200], [2515, 460, 1378], [2402, 455, 1571], [2191, 450, 1583]],
+        points=[
+            [2037, 450, 1415],
+            [2205, 455, 1200],
+            [2394, 460, 1200],
+            [2515, 460, 1378],
+            [2402, 455, 1571],
+            [2191, 450, 1583],
+        ],
     ),
     Balloon(
         id=31,
@@ -1959,7 +2087,11 @@ BalloonList = [
         speed=3,
         konglist=[Kongs.diddy],
         region=Regions.Mine,
-        points=[[688, 140, 331], [776, 150, 565], [884, 155, 782]],
+        points=[
+            [688, 140, 331],
+            [776, 150, 565],
+            [884, 155, 782],
+        ],
     ),
     Balloon(
         id=32,
@@ -1968,7 +2100,11 @@ BalloonList = [
         speed=2,
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.JapesCatacomb,
-        points=[[970, 85, 545], [1078, 80, 981]],
+        points=[
+            [970, 85, 545],
+            [1078, 80, 981],
+            [809, 80, 722],
+        ],
     ),
     Balloon(
         id=33,
@@ -1977,7 +2113,11 @@ BalloonList = [
         speed=3,
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.JapesCatacomb,
-        points=[[478, 80, 627], [722, 80, 764], [715, 80, 600]],
+        points=[
+            [737, 80, 549],
+            [735, 80, 690],
+            [857, 60, 888],
+        ],
     ),
     Balloon(
         id=34,

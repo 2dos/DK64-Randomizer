@@ -112,12 +112,12 @@ ColoredBananaGroupList = [
     ColoredBananaGroup(
         group=6,
         map_id=Maps.FungiForest,
-        name="On vines between two shrooms",  # Needs fixing after vine change
+        name="On vines between two shrooms",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.FungiForestStart,
         locations=[
-            [5, 1.0, 2130, 450, 2589],
-            [5, 1.0, 2078, 455, 2434],
+            [5, 1.2, 2140, 430, 2619],
+            [5, 1.2, 2078, 445, 2434],
         ],
     ),
     ColoredBananaGroup(
@@ -127,11 +127,11 @@ ColoredBananaGroupList = [
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.FungiForestStart,
         locations=[
-            [1, 1.0, 2462, 448, 2836],
-            [1, 1.0, 2370, 455, 2930],
-            [1, 1.0, 2289, 455, 3024],
-            [1, 1.0, 2259, 430, 3058],
-            [1, 1.0, 2256, 325, 3094],
+            [1, 1.2, 2489, 428, 2813],
+            [1, 1.2, 2410, 415, 2895],
+            [1, 1.2, 2348, 410, 2962],
+            [1, 1.2, 2289, 405, 3024],
+            [1, 1.2, 2226, 405, 3088],
         ],
     ),
     ColoredBananaGroup(
@@ -233,9 +233,10 @@ ColoredBananaGroupList = [
     ColoredBananaGroup(
         group=16,
         map_id=Maps.FungiForest,
-        name="On pink tunnel lip (note: a bit tough for DK/Lanky)",
-        konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
+        name="On pink tunnel lip",
+        konglist=[Kongs.diddy, Kongs.tiny, Kongs.chunky],
         region=Regions.FungiForestStart,
+        logic=lambda l: (l.jetpack and l.isdiddy) or l.ischunky or (l.twirl and l.istiny),
         locations=[
             [1, 1.0, 1787, 302, 1933],
             [1, 1.0, 1776, 324, 1963],
@@ -247,10 +248,10 @@ ColoredBananaGroupList = [
     ColoredBananaGroup(
         group=17,
         map_id=Maps.FungiForest,
-        name="On top of blue tunnel lip",
+        name="On blue tunnel lip",
         konglist=[Kongs.diddy, Kongs.tiny, Kongs.chunky],
         region=Regions.FungiForestStart,
-        logic=lambda l: l.isdiddy or l.ischunky or (l.twirl and l.istiny),
+        logic=lambda l: (l.jetpack and l.isdiddy) or l.ischunky or (l.twirl and l.istiny),
         locations=[
             [1, 1.0, 3250, 287, 2555],
             [1, 1.0, 3252, 302, 2526],
@@ -1073,7 +1074,7 @@ ColoredBananaGroupList = [
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.HollowTreeArea,
         locations=[
-            [1, 1.0, 574, 189, 1793],
+            [1, 1.0, 574, 189, 3793],
             [1, 1.0, 517, 189, 3817],
             [1, 1.0, 445, 189, 3837],
             [1, 1.0, 358, 189, 3837],
@@ -1315,11 +1316,11 @@ ColoredBananaGroupList = [
         region=Regions.MushroomUpper,
         logic=lambda l: l.vines,
         locations=[
-            [1, 1.0, 168, 980, 530],
-            [1, 1.0, 225, 980, 525],
-            [1, 1.0, 368, 1040, 517],
-            [1, 1.0, 536, 1040, 510],
-            [1, 1.0, 679, 1035, 511],
+            [1, 1.2, 218, 980, 520],
+            [1, 1.2, 365, 1035, 517],
+            [1, 1.2, 475, 1030, 515],
+            [1, 1.2, 580, 1030, 513],
+            [1, 1.2, 675, 1035, 511],
         ],
     ),
     ColoredBananaGroup(
