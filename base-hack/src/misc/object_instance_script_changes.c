@@ -23,6 +23,10 @@
 #define TREASURE_CHEST 0x2C
 #define CAVES_DK5DI 0x56
 #define HIDEOUT_HELM 0x11
+#define CRYPT_LT 0x6C
+#define CRYPT_DDC 0x70
+#define CASTLE_DUNGEON 0xA3
+#define CASTLE_TREE 0xA4
 
 #define FUNGI_MINECART_GRATE 0x22
 #define SEASICK_SHIP 0x27
@@ -146,6 +150,30 @@
 #define HELM_PAD_SAX 0x2E
 #define HELM_PAD_TROMBONE 0x2F
 #define HELM_PAD_GUITAR 0x30
+
+#define JAPES_CAVE_GATE 0x2B
+#define JAPES_PEANUT_MOUNTAIN 0x58
+#define JAPES_COCONUT_RAMBI 0x123
+#define LLAMA_GRAPE_SWITCH 0x6B
+#define FACTORY_SNATCH_GRATE 0x15
+#define FACTORY_PAD_TRIANGLE 0x37
+#define FACTORY_PAD_GUITAR 0x38
+#define FACTORY_PAD_TROMBONE 0x3B
+#define ISLES_SWITCH_GRAPE 0x27
+#define ISLES_SWITCH_PINEAPPLE 0x28
+#define ISLES_SWITCH_FEATHER 0x29
+#define ISLES_SWITCH_PEANUT 0x2A
+#define ISLES_SWITCH_COCONUT 0x32
+#define AZTEC_CHUNKY_CAGE 0x24
+#define CRYPT_LT_GRAPE 0x0
+#define CRYPT_DDC_D 0xD
+#define CRYPT_DDC_E 0xE
+#define CRYPT_DDC_F 0xF
+#define DUNGEON_SLAM_DIDDY 0x4
+#define DUNGEON_SLAM_DK 0x5
+#define DUNGEON_SLAM_LANKY 0x6
+#define TREE_DOOR_DK 0x1
+#define TREE_DOOR_CHUNKY 0x9
 
 void hideObject(behaviour_data* behaviour_pointer) {
 	behaviour_pointer->unk_60 = 1;
@@ -349,6 +377,8 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 				if (!Rando.quality_of_life) {
 					PlayCutsceneFromModelTwoScript(behaviour_pointer,23,1,0);
 				}
+			} else if (param2 == AZTEC_CHUNKY_CAGE) {
+				return !Rando.tag_anywhere;
 			}
 			break;
 		case FUNGI_FOREST:
@@ -427,6 +457,8 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 					unkObjFunction2(id,2,1);
 					unkObjFunction2(id,3,1);
 				}
+			} else if ((param2 == ISLES_SWITCH_COCONUT) || (param2 == ISLES_SWITCH_PEANUT) || (param2 == ISLES_SWITCH_GRAPE) || (param2 == ISLES_SWITCH_FEATHER) || (param2 == ISLES_SWITCH_PINEAPPLE)) {
+				return !Rando.tag_anywhere;
 			} else {
 				// TestVariable = (int)behaviour_pointer;
 				// *(int*)(0x807FF700) = id;
@@ -456,6 +488,8 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 				} else if ((index >= 3) && (index <= 6)) {
 					return getPressedSwitch(behaviour_pointer,kong_pellets[(int)Rando.free_source_llama],id);
 				}
+			} else if (param2 == LLAMA_GRAPE_SWITCH) {
+				return !Rando.tag_anywhere;
 			} else {
 				int head_ids[] = {
 					LLAMA_MATCHING_HEAD_SOUND0_0,
@@ -560,6 +594,8 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 				} else if (index == 1) {
 					return !checkFlag(kong_flags[(int)Rando.free_target_japes],0);
 				}
+			} else if ((param2 == JAPES_CAVE_GATE) || (param2 == JAPES_PEANUT_MOUNTAIN) || (param2 == JAPES_COCONUT_RAMBI)) {
+				return !Rando.tag_anywhere;
 			}
 			break;
 		case JAPES_MOUNTAIN:
@@ -685,6 +721,8 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 						}
 					}
 				}
+			} else if ((param2 == FACTORY_SNATCH_GRATE) || (param2 == FACTORY_PAD_GUITAR) || (param2 == FACTORY_PAD_TRIANGLE) || (param2 == FACTORY_PAD_TROMBONE)) {
+				return !Rando.tag_anywhere;
 			}
 			break;
 		case MILL_FRONT:
@@ -854,6 +892,26 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 				}
 			} else if ((param2 == TTEMPLE_KONGLETTER0) || (param2 == TTEMPLE_KONGLETTER1) || (param2 == TTEMPLE_KONGLETTER2) || (param2 == TTEMPLE_KONGLETTER3)) {
 				return checkControlState(kong_press_states[(int)Rando.free_source_ttemple]);
+			}
+			break;
+		case CRYPT_LT:
+			if (param2 == CRYPT_LT_GRAPE) {
+				return !Rando.tag_anywhere;
+			}
+			break;
+		case CRYPT_DDC:
+			if ((param2 == CRYPT_DDC_D) || (param2 == CRYPT_DDC_E) || (param2 == CRYPT_DDC_F)) {
+				return !Rando.tag_anywhere;
+			}
+			break;
+		case CASTLE_DUNGEON:
+			if ((param2 == DUNGEON_SLAM_DK) || (param2 == DUNGEON_SLAM_DIDDY) || (param2 == DUNGEON_SLAM_LANKY)) {
+				return !Rando.tag_anywhere;
+			}
+			break;
+		case CASTLE_TREE:
+			if ((param2 == TREE_DOOR_DK) || (param2 == TREE_DOOR_CHUNKY)) {
+				return !Rando.tag_anywhere;
 			}
 			break;
 		case HIDEOUT_HELM:
