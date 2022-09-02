@@ -123,6 +123,19 @@ void earlyFrame(void) {
 		if (CurrentMap == 0x11) {
 			HelmInit(1);
 		}
+		if (CurrentMap == 0x40) {
+			// Adjust Giant Mushroom Void
+			MapVoid_MinX = -259;
+			MapVoid_MinZ = -227;
+			MapVoid_MaxX = 1210;
+			MapVoid_MaxZ = 1239;
+		} else if (CurrentMap == 13) {
+			// Adjust Painting Void
+			MapVoid_MinX = -284;
+			MapVoid_MinZ = -320;
+			MapVoid_MaxX = 703;
+			MapVoid_MaxZ = 757;
+		}
 	}
 	if ((CurrentMap == 5) || (CurrentMap == 1) || (CurrentMap == 0x19)) {
 		if ((CutsceneActive) && (CutsceneIndex == 2)) {

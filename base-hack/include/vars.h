@@ -87,6 +87,8 @@
 #define GALLEON_5DSOPEN_TINY 0x2FB
 #define GALLEON_5DSOPEN_CHUNKY 0x2FC
 #define FLAG_ABILITY_CAMERA 0x2FD // Decoupled from shockwave which uses regular flag
+#define GALLEON_2DSOPEN_LANKY 0x2FE
+#define GALLEON_2DSOPEN_TINY 0x2FF
 
 #define IMAGE_DPAD 187
 #define IMAGE_AMMO_START 188
