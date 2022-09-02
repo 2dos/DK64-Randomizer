@@ -116,35 +116,29 @@ int* display_text(int* dl) {
 		}
 	}
 	if (file_mode == FILEMODE_USED) {
-		int y_gap = 110;
+		int y_gap = 53;
 		int y_start = (FileScreenDLOffset - 320) - y_gap - 144;
 		int y_offset = y_start;
 		// Move Count
 		y_offset += y_gap;
 		dk_strFormat((char*)move_count_str, "%02dl41", move_count);
-		dl = printText(dl, 325, y_offset, 0.6f, (char*)move_count_str);
+		dl = drawText(dl, 1, 125, y_offset, (char*)move_count_str, 0xFF, 0xFF, 0xFF, 0xFF);
 		// File Percentage
 		y_offset += y_gap;
 		dk_strFormat((char*)file_percentage, "%d%%", FilePercentage);
-		int perc_x = 276;
-		if (FilePercentage > 99) {
-			perc_x = 310;
-		} else if (FilePercentage > 9) {
-			perc_x = 300;
-		}
-		dl = printText(dl, perc_x, y_offset, 0.6f, (char*)file_percentage);
+		dl = drawText(dl, 1, 125, y_offset, (char*)file_percentage, 0xFF, 0xFF, 0xFF, 0xFF);
 		// GB Count
 		y_offset += y_gap;
 		dk_strFormat((char*)golden_count, "%03dl201",FileGBCount);
-		dl = printText(dl, 375, y_offset, 0.6f, (char*)golden_count);
+		dl = drawText(dl, 1, 125, y_offset, (char*)golden_count, 0xFF, 0xFF, 0xFF, 0xFF);
 		// BP Count
 		y_offset += y_gap;
 		dk_strFormat((char*)bp_count_str, "%02dl40", bp_count);
-		dl = printText(dl, 325, y_offset, 0.6f, (char*)bp_count_str);
+		dl = drawText(dl, 1, 125, y_offset, (char*)bp_count_str, 0xFF, 0xFF, 0xFF, 0xFF);
 		// Balanced IGT
 		y_offset += y_gap;
 		dk_strFormat((char*)balanced_igt, "%03d:%02d:%02d",igt_h,igt_m,igt_s);
-		dl = printText(dl, 390, y_offset, 0.6f, (char*)balanced_igt);
+		dl = drawText(dl, 1, 125, y_offset, (char*)balanced_igt, 0xFF, 0xFF, 0xFF, 0xFF);
 	} else { // New File
 		// Move List
 		char* move_names[7] = {0,0,0,0,0,0,0};
@@ -185,64 +179,6 @@ int* display_text(int* dl) {
 			}
 		}
 	}
-	// // Move Count
-	// int move_count = 1;
-	// if (Rando.camera_unlocked) {
-	// 	move_count += 2;
-	// }
-	// if (Rando.unlock_moves) {
-	// 	move_count += 33; // All moves except camera and shockwave
-	// 	if (!Rando.camera_unlocked) {
-	// 		if (checkFlag(FLAG_ABILITY_CAMERA,0)) {
-	// 			move_count += 1;
-	// 		}
-	// 		if (checkFlag(FLAG_ABILITY_SHOCKWAVE,0)) {
-	// 			move_count += 1;
-	// 		}
-	// 	}
-	// } else {
-	// 	if ((!Rando.camera_unlocked)) {
-	// 		if (checkFlag(FLAG_ABILITY_CAMERA,0)) {
-	// 			move_count += 1;
-	// 		}
-	// 		if (checkFlag(FLAG_ABILITY_SHOCKWAVE,0)) {
-	// 			move_count += 1;
-	// 		}
-	// 	}
-	// 	if (MovesBase[0].simian_slam > 1) {
-	// 		move_count += (MovesBase[0].simian_slam - 1); // Simian Slam
-	// 	}
-	// 	move_count += MovesBase[0].ammo_belt;
-	// 	int btf_value = MovesBase[0].weapon_bitfield >> 1;
-	// 	for (int i = 0; i < 2; i++) {
-	// 		move_count += (btf_value & 1);
-	// 		btf_value >>= 1;
-	// 	}
-	// 	move_count += (MovesBase[0].instrument_bitfield >> 1) & 1;
-	// 	move_count += (MovesBase[0].instrument_bitfield >> 3) & 1;
-	// 	for (int i = 0; i < 5; i++) {
-	// 		move_count += (MovesBase[i].weapon_bitfield & 1); // Base Gun
-	// 		move_count += (MovesBase[i].instrument_bitfield & 1); // Base Instrument
-	// 		btf_value = MovesBase[i].special_moves;
-	// 		for (int j = 0; j < 3; j++) {
-	// 			move_count += btf_value & 1;
-	// 			btf_value >>= 1;
-	// 		}
-	// 	}
-	// }
-	// dk_strFormat((char*)move_count_str, "%02d", move_count);
-	// dl = displayText(dl,1,0x140,y,(char*)move_count_str,0x81);	
-	// // GB Count
-	// y += LINE_GAP;
-	// dk_strFormat((char*)golden_count, "%03d", FileGBCount);
-	// dl = displayText(dl,1,0x280,y,(char*)golden_count,0x81);
-	// // Blueprint Count
-	// y += LINE_GAP;
-	// int blueprints = countFlagArray(0x1D5,40,0);
-	// dk_strFormat((char*)blueprints_count, "%02d", blueprints);
-	// dl = displayText(dl,1,0x280,y,(char*)blueprints_count,0x81);
-
-	
 	// Image Render
 	dl = display_images(dl,file_mode);
 	return dl;
@@ -374,7 +310,7 @@ void FileProgressInit(actorData* menu_controller) {
 		displayMenuSprite(paad, sprite_table[0x70], 0xA2, 0xD6, 0.75f, 2, 0); // Z - Delete
 		// displayMenuSprite(paad, sprite_table[0x94], 35, 65, 0.6f, 2, 5); // Cranky Face - Moves
 		int blueprint_sprite_indexes[] = {0x5C,0x5A,0x4A,0x5D,0x5B};
-		displayMenuSprite(paad, sprite_table[blueprint_sprite_indexes[(int)Rando.starting_kong]], 35, 155, 0.75, 2, 0); // Blueprint
+		displayMenuSprite(paad, sprite_table[blueprint_sprite_indexes[getRNGLower31() % 5]], 35, 155, 0.75, 2, 0); // Blueprint
 	}
 	*(float*)(0x80033F4C) = 1600.0f;
 	for (int i = 0; i < 5; i++) {

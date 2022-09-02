@@ -62,6 +62,7 @@ set_variables = {
     "tbarrel_prices": [1, 2, 3, 4],
     "fairy_prices": [3, 6],
     "helm_order": [2, 3, 1, 0xFF, 0xFF],
+    "disco_chunky": 1,
 }
 
 

@@ -101,3 +101,9 @@
 #define PURCHASE_FLAG 5
 #define PURCHASE_GB 6
 #define PURCHASE_NOTHING -1
+
+#define KONG_DK 0
+#define KONG_DIDDY 1
+#define KONG_LANKY 2
+#define KONG_TINY 3
+#define KONG_CHUNKY 4

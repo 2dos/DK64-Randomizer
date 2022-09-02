@@ -274,6 +274,7 @@ class Settings:
         self.rambi_custom_color = "#000000"
         self.enguarde_colors = "vanilla"
         self.enguarde_custom_color = "#000000"
+        self.disco_chunky = False
 
         #  Misc
         self.generate_spoilerlog = None

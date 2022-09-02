@@ -207,7 +207,6 @@ def grabText(file_index: int) -> list:
     with open(temp_file, "rb") as fh:
         fh.seek(0)
         count = int.from_bytes(fh.read(1), "big")
-        print(count)
         text = []
         text_data = []
         text_start = (count * 0xF) + 3

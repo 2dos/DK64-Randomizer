@@ -46,7 +46,7 @@ def writeMoveDataToROM(arr: list):
             flag_index = 0xFFFF
             if x["flag"] in flag_dict:
                 flag_index = flag_dict[x["flag"]]
-            ROM().writeMultipleBytes(5, 1)
+            ROM().writeMultipleBytes(5 << 5, 1)
             ROM().writeMultipleBytes(0, 1)
             ROM().writeMultipleBytes(flag_index, 2)
         elif x["move_type"] is None:
@@ -56,6 +56,8 @@ def writeMoveDataToROM(arr: list):
         else:
             move_types = ["special", "slam", "gun", "ammo_belt", "instrument"]
             data = move_types.index(x["move_type"]) << 5 | (x["move_lvl"] << 3) | x["move_kong"]
+            if x["move_type"] == "special" and x["move_lvl"] == 1 and x["move_kong"] == 0:
+                print(hex(data))
             ROM().writeMultipleBytes(data, 1)
             ROM().writeMultipleBytes(0, 1)
             ROM().writeMultipleBytes(0xFFFF, 2)
@@ -63,10 +65,16 @@ def writeMoveDataToROM(arr: list):
 
 def randomize_moves(spoiler: Spoiler):
     """Randomize Move locations based on move_data from spoiler."""
-    varspaceOffset = spoiler.settings.move_location_data
+    varspaceOffset = spoiler.settings.rom_data
+    movespaceOffset = spoiler.settings.move_location_data
     if spoiler.settings.shuffle_items == "moves" and spoiler.move_data is not None:
         # Take a copy of move_data before modifying
         move_arrays = spoiler.move_data.copy()
+        shop_names = ["Cranky", "Funky", "Candy"]
+        kong_names = ["DK", "Diddy", "Lanky", "Tiny", "Chunky"]
+        for kong in range(5):
+            for shop in range(3):
+                print(f"{kong_names[kong]} {shop_names[shop]}: {move_arrays[0][shop][kong]}")
 
         dk_crankymoves = move_arrays[0][0][0]
         diddy_crankymoves = move_arrays[0][0][1]
@@ -89,6 +97,7 @@ def randomize_moves(spoiler: Spoiler):
 
         ROM().seek(varspaceOffset + moveRandoOffset)
         ROM().write(0x1)
+        ROM().seek(movespaceOffset)
         writeMoveDataToROM(dk_crankymoves)
         writeMoveDataToROM(diddy_crankymoves)
         writeMoveDataToROM(lanky_crankymoves)

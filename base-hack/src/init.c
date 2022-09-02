@@ -239,7 +239,14 @@ void initHack(int source) {
 				// Disable Graphical Debugger
 				*(int*)(0x8060EEE0) = 0x240E0000; // ADDIU $t6, $r0, 0
 			}
-
+			if (Rando.disco_chunky) {
+				*(char*)(0x8075C45B) = 0xE; // General Model
+				*(short*)(0x806F123A) = 0xE; // Instrument
+				*(int*)(0x806CF37C) = 0; // Fix object holding
+				*(short*)(0x8074E82C) = 0xE; // Tag Barrel Model
+				*(short*)(0x8075EDAA) = 0xE; // Cutscene Chunky Model
+				*(short*)(0x8075571E) = 0xE; // Generic Cutscene Model
+			}
 			if (Rando.fast_gbs) {
 				*(short*)(0x806BBB22) = 0x0005; // Chunky toy box speedup
 
