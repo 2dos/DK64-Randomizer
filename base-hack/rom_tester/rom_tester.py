@@ -103,13 +103,17 @@ def getMove(fh, offset, kong, shop, level):
     """Get the current move."""
     fh.seek(0x1FEF000 + (offset * 4))
     data = int.from_bytes(fh.read(4), "big")
-    val = data >> 24
-    move_type = (val >> 5) & 0x7
-    move_lvl = ((val >> 3) & 0x3) + 1
-    move_kong = val & 7
-    if move_type == 7:
-        return "No Upgrade"
-    return f"{move_types[move_type]} level {str(move_lvl)} (Kong {move_kong})"
+    flag = data & 0xFFFF
+    if flag == 0xFFFF:
+        val = data >> 24
+        move_type = (val >> 5) & 0x7
+        move_lvl = ((val >> 3) & 0x3) + 1
+        move_kong = val & 7
+        if move_type == 7:
+            return "No Upgrade"
+        return f"{move_types[move_type]} level {str(move_lvl)} (Kong {move_kong})"
+    else:
+        return f"Flag {hex(flag)}"
 
 
 output_file = "output.txt"
