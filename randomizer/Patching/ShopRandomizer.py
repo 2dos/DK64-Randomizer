@@ -75,12 +75,12 @@ def ApplyShopRandomizer(spoiler: Spoiler):
                             search_model = 0x73
                             search_lz = Maps.Cranky
                             search_rot = 180
-                            search_scale = 1
+                            search_scale = 0.95
                         else:
                             new_model = 0x73
                             new_lz = Maps.Cranky
                             new_rot = 180
-                            new_scale = 1
+                            new_scale = 0.95
                     elif x == Regions.CandyGeneric:
                         if x_i == 0:
                             search_model = 0x124
