@@ -112,6 +112,21 @@ def lanky_file_changed(event):
         reader.addEventListener("load", function)
 
 
+@bind("click", "generate_pastgen_seed")
+def generate_previous_seed(event):
+    """Generate a seed from a previous seed file."""
+    # Check if the rom filebox has a file loaded in it.
+    if len(str(js.document.getElementById("rom").value).strip()) == 0 or "is-valid" not in list(js.document.getElementById("rom").classList):
+        js.document.getElementById("rom").select()
+        if "is-invalid" not in list(js.document.getElementById("rom").classList):
+            js.document.getElementById("rom").classList.add("is-invalid")
+    else:
+        loop = asyncio.get_event_loop()
+        loop.run_until_complete(ProgressBar().update_progress(0, "Loading Previous seed and applying data."))
+        js.apply_bps_javascript()
+        patching_response(str(js.get_previous_seed_data()))
+
+
 @bind("click", "generate_lanky_seed")
 def generate_seed_from_patch(event):
     """Generate a seed from a patch file."""

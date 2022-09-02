@@ -67,6 +67,7 @@ def patching_response(responded_data):
         spoiler.settings.download_patch_file = False
 
         js.save_text_as_file(codecs.encode(pickle.dumps(spoiler), "base64").decode(), f"dk64-{spoiler.settings.seed_id}.lanky")
+    js.write_seed_history(spoiler.settings.seed_id, codecs.encode(pickle.dumps(spoiler), "base64").decode(), spoiler.settings.public_hash)
     # Starting index for our settings
     sav = spoiler.settings.rom_data
 
