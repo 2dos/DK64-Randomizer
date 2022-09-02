@@ -116,6 +116,9 @@ void decouple_moves_fixes(void) {
 		*(unsigned short*)(0x800295D2) = 138; // Start
 		*(unsigned short*)(0x800297D8) = 0x916B; // LB -> LBU
 		*(short*)(0x800297CE) = -69; // Flicker Threshold
+		if (Rando.disco_chunky) {
+			*(short*)(0x8002D8D0) = 0xE; // Change to disco chunky model
+		}
 	}
 	if (CurrentMap == 0x9A) {
 		// Change phase reset differential to 40.0f units

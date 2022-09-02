@@ -56,8 +56,6 @@ def writeMoveDataToROM(arr: list):
         else:
             move_types = ["special", "slam", "gun", "ammo_belt", "instrument"]
             data = move_types.index(x["move_type"]) << 5 | (x["move_lvl"] << 3) | x["move_kong"]
-            if x["move_type"] == "special" and x["move_lvl"] == 1 and x["move_kong"] == 0:
-                print(hex(data))
             ROM().writeMultipleBytes(data, 1)
             ROM().writeMultipleBytes(0, 1)
             ROM().writeMultipleBytes(0xFFFF, 2)
@@ -70,11 +68,6 @@ def randomize_moves(spoiler: Spoiler):
     if spoiler.settings.shuffle_items == "moves" and spoiler.move_data is not None:
         # Take a copy of move_data before modifying
         move_arrays = spoiler.move_data.copy()
-        shop_names = ["Cranky", "Funky", "Candy"]
-        kong_names = ["DK", "Diddy", "Lanky", "Tiny", "Chunky"]
-        for kong in range(5):
-            for shop in range(3):
-                print(f"{kong_names[kong]} {shop_names[shop]}: {move_arrays[0][shop][kong]}")
 
         dk_crankymoves = move_arrays[0][0][0]
         diddy_crankymoves = move_arrays[0][0][1]
