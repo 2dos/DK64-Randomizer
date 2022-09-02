@@ -981,9 +981,6 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 									PlayCutsceneFromModelTwoScript(behaviour_pointer, current_slot + 4, 1, 0);
 								}
 							} else if (index == 1) {
-								if (param2 == HELM_PAD_GUITAR) {
-									*(int*)(0x807FF700) = previous_slot;
-								}
 								if (previous_slot == -1) {
 									// First or not in sequence
 									return 1;

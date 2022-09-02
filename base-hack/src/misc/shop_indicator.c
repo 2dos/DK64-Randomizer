@@ -1,15 +1,8 @@
 #include "../../include/common.h"
 
-#define PURCHASE_MOVES 0
-#define PURCHASE_SLAM 1
-#define PURCHASE_GUN 2
-#define PURCHASE_AMMOBELT 3
-#define PURCHASE_INSTRUMENT 4
-#define PURCHASE_NOTHING -1
-
 int doesKongPossessMove(int purchase_type, int purchase_value, int kong) {
 	if (purchase_type != PURCHASE_NOTHING) {
-		if (purchase_value > 0) {
+		if (purchase_value != 0) {
 			if (purchase_type == PURCHASE_MOVES) {
 				if (MovesBase[kong].special_moves & (1 << (purchase_value - 1))) {
 					return 0;
@@ -46,6 +39,16 @@ int doesKongPossessMove(int purchase_type, int purchase_value, int kong) {
 						return 1;
 					} else {
 						return 5;
+					}
+				}
+			} else if ((purchase_type == PURCHASE_FLAG) || (purchase_type == PURCHASE_GB)) {
+				if (purchase_value == -2) { // Shockwave & Camera Combo
+					if ((!checkFlag(FLAG_ABILITY_CAMERA,0)) || (!checkFlag(FLAG_ABILITY_SHOCKWAVE,0))) {
+						return 6;
+					}
+				} else {
+					if (!checkFlag(purchase_value,0)) {
+						return 6;
 					}
 				}
 			}
