@@ -51,6 +51,11 @@ class Settings:
         self.blocker_max = int(self.blocker_text) if self.blocker_text else 50
         self.troff_max = int(self.troff_text) if self.troff_text else 270
         self.troff_min = [0.25, 0.3, 0.35, 0.4, 0.45, 0.5, 0.55]  # Weights for the minimum value of troff
+        if self.hard_troff_n_scoff:
+            self.troff_min = [0.45, 0.5, 0.55, 0.6, 0.65, 0.7, 0.75]  # Add 20% to the minimum for hard T&S
+        # In hard level progression we go through levels in a random order, so we set every level's troff min weight to the largest weight
+        if self.hard_level_progression:
+            self.troff_min = [self.troff_min[-1] for x in self.troff_min]
         # Always start with training barrels currently
         # training_barrels: str
         # normal
@@ -101,6 +106,7 @@ class Settings:
     def update_progression_totals(self):
         """Update the troff and blocker totals if we're randomly setting them."""
         # Assign weights to Troff n Scoff based on level order if not shuffling loading zones
+        # Hard level shuffling makes these weights meaningless, as you'll be going into levels in a random order
         self.troff_weight_0 = 0.5
         self.troff_weight_1 = 0.55
         self.troff_weight_2 = 0.6
@@ -108,7 +114,7 @@ class Settings:
         self.troff_weight_4 = 0.8
         self.troff_weight_5 = 0.9
         self.troff_weight_6 = 1.0
-        if self.level_randomization in ("loadingzone", "loadingzonesdecoupled"):
+        if self.level_randomization in ("loadingzone", "loadingzonesdecoupled") or self.hard_level_progression:
             self.troff_weight_0 = 1
             self.troff_weight_1 = 1
             self.troff_weight_2 = 1
@@ -119,8 +125,8 @@ class Settings:
 
         if self.randomize_cb_required_amounts:
             randomlist = []
-            for i in self.troff_min:
-                randomlist.append(random.randint(round(self.troff_max * i), self.troff_max))
+            for min_percentage in self.troff_min:
+                randomlist.append(random.randint(round(self.troff_max * min_percentage), self.troff_max))
             cbs = randomlist
             self.troff_0 = round(min(cbs[0] * self.troff_weight_0, 500))
             self.troff_1 = round(min(cbs[1] * self.troff_weight_1, 500))
@@ -132,10 +138,11 @@ class Settings:
         if self.randomize_blocker_required_amounts:
             randomlist = random.sample(range(1, self.blocker_max), 7)
             b_lockers = randomlist
-            b_lockers.append(1)
-            if self.shuffle_loading_zones == "all":
+            if self.shuffle_loading_zones == "all" or self.hard_level_progression:
+                b_lockers.append(random.randint(1, self.blocker_max))
                 random.shuffle(b_lockers)
             else:
+                b_lockers.append(1)
                 b_lockers.sort()
             self.blocker_0 = b_lockers[0]
             self.blocker_1 = b_lockers[1]
@@ -312,8 +319,12 @@ class Settings:
         self.enemy_rando = False
         self.crown_enemy_rando = "off"
         self.enemy_speed_rando = False
+        self.cb_rando = False
         self.override_cosmetics = False
         self.random_colors = False
+        self.hard_level_progression = False
+        self.hard_blockers = False
+        self.hard_troff_n_scoff = False
         self.minigames_list_selected = []
 
     def shuffle_prices(self):

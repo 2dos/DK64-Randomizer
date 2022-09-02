@@ -1,4 +1,4 @@
-"""Apply barrel changes."""
+"""Apply misc setup changes."""
 import math
 import random
 import struct

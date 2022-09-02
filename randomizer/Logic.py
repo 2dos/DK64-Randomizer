@@ -412,6 +412,7 @@ class LogicVarHolder:
     def AddCollectible(self, collectible, level):
         """Add a collectible."""
         if collectible.enabled:
+            added = False
             if collectible.type == Collectibles.coin:
                 # Rainbow coin, add 5 coins for each kong
                 if collectible.kong == Kongs.any:
@@ -428,8 +429,12 @@ class LogicVarHolder:
                 self.ColoredBananas[level][collectible.kong] += collectible.amount * 5
             # Add 10 bananas for a balloon
             elif collectible.type == Collectibles.balloon:
-                self.ColoredBananas[level][collectible.kong] += collectible.amount * 10
-            collectible.added = True
+                if self.HasGun(collectible.kong):
+                    self.ColoredBananas[level][collectible.kong] += collectible.amount * 10
+                    collectible.added = True
+                added = True
+            if not added:
+                collectible.added = True
 
     def PurchaseShopItem(self, location: Location):
         """Purchase items from shops and subtract price from logical coin counts."""
@@ -483,7 +488,7 @@ class LogicVarHolder:
 
     def HasEnoughKongs(self, level, forPreviousLevel=False):
         """Check if kongs are required for progression, do we have enough to reach the given level."""
-        if self.settings.kongs_for_progression and level != Levels.HideoutHelm:
+        if self.settings.kongs_for_progression and level != Levels.HideoutHelm and not self.settings.hard_level_progression:
             # Figure out where this level fits in the progression
             levelIndex = GetShuffledLevelIndex(level)
             if forPreviousLevel:

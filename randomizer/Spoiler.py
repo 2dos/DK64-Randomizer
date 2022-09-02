@@ -92,6 +92,7 @@ class Spoiler:
         settings["Open Levels"] = self.settings.open_levels
         settings["Randomize Pickups"] = self.settings.randomize_pickups
         settings["Randomize Patches"] = self.settings.random_patches
+        settings["Randomize CB Locations"] = self.settings.cb_rando
         settings["Puzzle Randomization"] = self.settings.puzzle_rando
         settings["Crown Door Open"] = self.settings.crown_door_open
         settings["Coin Door Open"] = self.settings.coin_door_open
@@ -352,21 +353,21 @@ class Spoiler:
             humanspoiler["Shuffled Bananaports"] = self.human_warp_locations
         if len(self.hint_list) > 0:
             humanspoiler["Wrinkly Hints"] = self.hint_list
+        level_dict = {
+            Levels.DKIsles: "DK Isles",
+            Levels.JungleJapes: "Jungle Japes",
+            Levels.AngryAztec: "Angry Aztec",
+            Levels.FranticFactory: "Frantic Factory",
+            Levels.GloomyGalleon: "Gloomy Galleon",
+            Levels.FungiForest: "Fungi Forest",
+            Levels.CrystalCaves: "Crystal Caves",
+            Levels.CreepyCastle: "Creepy Castle",
+        }
         if self.settings.shuffle_shops:
             shop_location_dict = {}
             for level in self.shuffled_shop_locations:
                 level_name = "Unknown Level"
 
-                level_dict = {
-                    Levels.DKIsles: "DK Isles",
-                    Levels.JungleJapes: "Jungle Japes",
-                    Levels.AngryAztec: "Angry Aztec",
-                    Levels.FranticFactory: "Frantic Factory",
-                    Levels.GloomyGalleon: "Gloomy Galleon",
-                    Levels.FungiForest: "Fungi Forest",
-                    Levels.CrystalCaves: "Crystal Caves",
-                    Levels.CreepyCastle: "Creepy Castle",
-                }
                 shop_dict = {Regions.CrankyGeneric: "Cranky", Regions.CandyGeneric: "Candy", Regions.FunkyGeneric: "Funky", Regions.Snide: "Snide"}
                 if level in level_dict:
                     level_name = level_dict[level]
@@ -387,6 +388,23 @@ class Spoiler:
                     is_empty = False
             if is_empty:
                 del humanspoiler[spoiler_dict]
+
+        if self.settings.cb_rando:
+            human_cb_type_map = {
+                "cb": " Bananas",
+                "balloons": " Balloons",
+            }
+            humanspoiler["Colored Banana Locations"] = {
+                "Jungle Japes": [],
+                "Angry Aztec": [],
+                "Frantic Factory": [],
+                "Gloomy Galleon": [],
+                "Fungi Forest": [],
+                "Crystal Caves": [],
+                "Creepy Castle": [],
+            }
+            for group in self.cb_placements:
+                humanspoiler["Colored Banana Locations"][level_dict[group["level"]]].append(NameFromKong(group["kong"]) + human_cb_type_map[group["type"]] + ": " + Maps(group["map"]).name + " - " + group["name"])
 
         return json.dumps(humanspoiler, indent=4)
 

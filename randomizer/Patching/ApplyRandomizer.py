@@ -25,6 +25,9 @@ from randomizer.Patching.Patcher import ROM
 from randomizer.Patching.PhaseRando import randomize_helm, randomize_krool
 from randomizer.Patching.PriceRando import randomize_prices
 from randomizer.Patching.PuzzleRando import randomize_puzzles
+from randomizer.Patching.UpdateHints import PushHints, wipeHints
+from randomizer.Patching.MiscSetupChanges import randomize_setup
+from randomizer.Patching.BananaPlacer import randomize_cbs
 from randomizer.Patching.ShopRandomizer import ApplyShopRandomizer
 from ui.GenTracker import generateTracker
 from ui.GenSpoiler import GenerateSpoiler
@@ -356,6 +359,7 @@ def patching_response(responded_data):
     apply_kongrando_cosmetic(spoiler)
     randomize_setup(spoiler)
     randomize_puzzles(spoiler)
+    randomize_cbs(spoiler)
     ApplyShopRandomizer(spoiler)
 
     random.seed(spoiler.settings.seed)
