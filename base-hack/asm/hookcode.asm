@@ -260,13 +260,6 @@ START_HOOK:
 			J 	0x8063EE1C
 			NOP
 
-	KongUnlockCorrectCode:
-		ADDIU 	s0, s0, 0x3805
-		JAL 	correctKongFaces
-		ADDIU 	s2, s2, 0x5B2
-		J 		0x800298DC
-		NOP
-
 	SaveToFileFixes:
 		BNEZ 	s0, SaveToFileFixes_Not0
 		ANDI 	a1, s3, 0xFF
@@ -447,9 +440,6 @@ START_HOOK:
 	FileSelectDLCode_Jump:
 		J 		FileSelectDLCode
 		NOP
-	Jump_MenuUnlock:
-		J 		KongUnlockCorrectCode
-		NOP
 
 	FileScreenDLCode_Write:
 		LUI t3, hi(FileScreenDLCode_Jump)
@@ -457,12 +447,6 @@ START_HOOK:
 		LUI t4, 0x8003
 		SW t3, 0x937C (t4) // Store Hook
 		SW r0, 0x9380 (t4) // Store NOP
-
-		LUI t3, hi(Jump_MenuUnlock)
-		LW t3, lo(Jump_MenuUnlock) (t3)
-		LUI t4, 0x8003
-		SW t3, 0x98B8 (t4) // Store Hook
-		SW r0, 0x98BC (t4) // Store NOP
 
 		LUI t3, hi(FileSelectDLCode_Jump)
 		LW t3, lo(FileSelectDLCode_Jump) (t3)

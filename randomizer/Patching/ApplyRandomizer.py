@@ -70,6 +70,7 @@ def patching_response(responded_data):
         spoiler.settings.download_patch_file = False
 
         js.save_text_as_file(codecs.encode(pickle.dumps(spoiler), "base64").decode(), f"dk64-{spoiler.settings.seed_id}.lanky")
+    js.write_seed_history(spoiler.settings.seed_id, codecs.encode(pickle.dumps(spoiler), "base64").decode(), spoiler.settings.public_hash)
     # Starting index for our settings
     sav = spoiler.settings.rom_data
 
@@ -322,6 +323,11 @@ def patching_response(responded_data):
         for phase_slot in range(3):
             ROM().seek(sav + 0x17B + phase_slot)
             ROM().write(spoiler.settings.kko_phase_order[phase_slot])
+
+    # Disco Chunky
+    if spoiler.settings.disco_chunky:
+        ROM().seek(sav + 0x12F)
+        ROM().write(1)
 
     keys_turned_in = [0, 1, 2, 3, 4, 5, 6, 7]
     if len(spoiler.settings.krool_keys_required) > 0:

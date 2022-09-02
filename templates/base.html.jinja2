@@ -171,10 +171,22 @@
                                     aria-selected="false">
                                 Generate from Patch File
                             </button>
+                            <button class="nav-link"
+                                    id="nav-pastgen-tab"
+                                    data-bs-toggle="tab"
+                                    data-bs-target="#nav-pastgen-data"
+                                    type="button"
+                                    role="tab"
+                                    aria-controls="nav-pastgen-data"
+                                    aria-selected="false"
+                                    style="display:none">
+                                Generate from Past Seed
+                            </button>
                         </div>
                     </nav>
                     <!--Populate tabs-->
                     <div class="tab-content" id="common_footer">
+                        {# Normal Generation #}
                         <div class="tab-pane fade show active"
                              id="nav-seed-gen"
                              role="tabpanel"
@@ -185,7 +197,9 @@
                                         <!--Randomize Seed-->
                                         <div class="flex-container" style="justify-content: center;">
                                             <div class="form-group row item-select">
-                                                <label for="seed" class="select-title">Seed</label>
+                                                <label for="seed" class="select-title">
+                                                    Seed
+                                                </label>
                                                 <input name="seed" id="seed" placeholder="Auto fills when empty"/>
                                             </div>
                                         </div>
@@ -273,6 +287,7 @@
                                 </div>
                             </div>
                         </div>
+                        {# Patch File #}
                         <div class="tab-pane fade"
                              id="nav-patch-data"
                              role="tabpanel"
@@ -322,6 +337,54 @@
                                               text-align: center;"
                                        type="button"
                                        value="Generate Seed from Patch"/>
+                            </div>
+                        </div>
+                        {# Past Generation #}
+                        <div class="tab-pane fade"
+                             id="nav-pastgen-data"
+                             role="tabpanel"
+                             aria-labelledby="nav-pastgen-tab">
+                            <div style="width: 80%;" class="center">
+                                <div class="form-group" style="margin-bottom: 25px; text-align: center;">
+                                    <div class="row">
+                                        <label for="pastgenlist" class="select-title">
+                                            Selected seed:
+                                        </label>
+                                        <select id="pastgenlist" class="form-select" style="width:50%;margin:0 auto;">
+                                        </select>
+                                    </div>
+                                    <div class="row">
+                                        <label for="input-file-rom_1" class="select-title">
+                                            ROM File
+                                        </label>
+                                        <div class="input-group mb-3 file-select"
+                                             style="width: 50%;
+                                                    margin: 0 auto;">
+                                            <div class="input-group-text choose-file"
+                                                 style="background-color: #6c757d;">
+                                                <input class="btn btn-primary file-button"
+                                                       type="button"
+                                                       value="Choose File"
+                                                       onClick="filebox()"
+                                                       id="choose_rom_3">
+                                            </div>
+                                            <input class="form-control"
+                                                   id="rom_3"
+                                                   type="text"
+                                                   readonly
+                                                   onClick="filebox()"
+                                                   placeholder="No File Chosen"/>
+                                        </div>
+                                    </div>
+                                </div>
+                                <br id="formbreak" />
+                                <input id="generate_pastgen_seed"
+                                       class="btn btn-primary"
+                                       style="width: 60%;
+                                              height: 50px;
+                                              text-align: center;"
+                                       type="button"
+                                       value="Generate Seed from history"/>
                             </div>
                         </div>
                     </div>

@@ -25,6 +25,9 @@ typedef struct renderingParamsData {
 	/* 0x03C */ float scale_z;
 } renderingParamsData;
 
+typedef struct actor_subdata {
+	/* 0x000 */ int data[4];
+} actor_subdata;
 typedef struct actorData {
 	/* 0x000 */ void* model;
 	/* 0x004 */ renderingParamsData* render;
@@ -48,7 +51,8 @@ typedef struct actorData {
 	/* 0x0E8 */ short rot_z;
 	/* 0x0EA */ char unk_EA[0x4];
 	/* 0x0EE */ short rot_y_copy;
-	/* 0x0F0 */ char unk_F0[0x128-0xF0];
+	/* 0x0F0 */ char unk_F0[0x124-0xF0];
+	/* 0x124 */ actor_subdata* data_pointer;
 	/* 0x128 */ short shadow_intensity;
 	/* 0x12A */ char unk_12A[0x132-0x12A];
 	/* 0x132 */ short subdata;
@@ -299,6 +303,8 @@ typedef struct SwapObjectData {
 	/* 0x290 */ short chunk;
 	/* 0x292 */ char unk_292[0x29C-0x292];
 	/* 0x29C */ short action_type;
+	/* 0x29E */ char unk_29E[0x2E2 - 0x29E];
+	/* 0x2E2 */ unsigned short unk_2e2;
 } SwapObjectData;
 
 typedef struct ModelTwoData {
@@ -733,14 +739,16 @@ typedef struct GBDictItem {
 } GBDictItem;
 
 typedef struct shop_paad {
-	/* 0x000 */ char unk_00[4];
+	/* 0x000 */ char unk_00[2];
+	/* 0x002 */ short flag;
 	/* 0x004 */ unsigned char kong;
 	/* 0x005 */ unsigned char price;
 	/* 0x006 */ char unk_06[0xB-0x6];
 	/* 0x00B */ char purchase_type;
 	/* 0x00C */ char level;
 	/* 0x00D */ unsigned char state;
-	/* 0x00E */ char unk_0E[0x10-0x0E];
+	/* 0x00E */ unsigned char unk_0E;
+	/* 0x00F */ char unk_0F;
 	/* 0x010 */ unsigned char melons;
 	/* 0x011 */ unsigned char purchase_value;
 } shop_paad;
@@ -756,6 +764,27 @@ typedef struct model2_collision_info {
 	/* 0x010 */ short unk10;
 	/* 0x012 */ short unk12;
 } model2_collision_info;
+
+typedef struct move_rom_item {
+	/* 0x000 */ unsigned char move_master_data; // tttl lkkk. t = Type (0 = Moves, 1 = Slam, 2 = Guns, 3 = Ammo Belt, 4 = Instrument, 5 = Flag, 6 = GB, 7 = Vacant), l = move level (reduced by 1), k = kong
+	/* 0x001 */ unsigned char text_item;
+	/* 0x002 */ short flag; // -1 = No Flag, -2 = Both Camera & Shockwave (Reserved)
+} move_rom_item;
+typedef struct move_block {
+	/* 0x000 */ move_rom_item cranky_moves[5][8];
+	/* 0x0A0 */ move_rom_item funky_moves[5][8];
+	/* 0x140 */ move_rom_item candy_moves[5][8];
+	/* 0x1E0 */ move_rom_item training_moves[4];
+	/* 0x1F0 */ move_rom_item bfi_move;
+} move_block;
+
+typedef enum location_list {
+	/* 0x000 */ LOCATION_DIVE,
+	/* 0x001 */ LOCATION_ORANGE,
+	/* 0x002 */ LOCATION_BARREL,
+	/* 0x003 */ LOCATION_VINE,
+	/* 0x004 */ LOCATION_BFI
+} location_list;
 
 typedef struct map_bitfield {
 	unsigned char test_map : 1;

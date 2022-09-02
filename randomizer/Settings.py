@@ -31,6 +31,7 @@ class Settings:
         self.generate_progression()
         self.generate_misc()
         self.rom_data = 0x1FED020
+        self.move_location_data = 0x1FEF000
 
         for k, v in form_data.items():
             setattr(self, k, v)
@@ -280,6 +281,7 @@ class Settings:
         self.rambi_custom_color = "#000000"
         self.enguarde_colors = "vanilla"
         self.enguarde_custom_color = "#000000"
+        self.disco_chunky = False
 
         #  Misc
         self.generate_spoilerlog = None

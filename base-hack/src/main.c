@@ -15,17 +15,6 @@ static short past_crystals = 0;
 static char has_loaded = 0;
 static char good_eeprom = 0;
 
-void giveCollectables(void) {
-	int mult = 1;
-	if (MovesBase[0].ammo_belt > 0) {
-		mult = 2 * MovesBase[0].ammo_belt;
-	}
-	CollectableBase.StandardAmmo = 25 * mult;
-	CollectableBase.Oranges = 10;
-	CollectableBase.Crystals = 1500;
-	CollectableBase.Film = 5;
-}
-
 void cFuncLoop(void) {
 	DataIsCompressed[18] = 0;
 	unlockKongs();
@@ -99,34 +88,6 @@ void cFuncLoop(void) {
 			}
 		}
 	}
-	if (CurrentMap == MAIN_MENU) {
-		if (CutsceneActive == 6) {
-			if (!checkFlag(FLAG_ESCAPE,0)) {
-				// New File
-				unlockMoves();
-				applyFastStart();
-				openCrownDoor();
-				giveCollectables();
-				activateBananaports();
-				if(Rando.fast_gbs) {
-					setPermFlag(FLAG_RABBIT_ROUND1); //Start race at round 2
-				}
-				setPermFlag(FLAG_ESCAPE);
-				Character = Rando.starting_kong;
-				StoredSettings.file_extra[(int)FileIndex].location_sss_purchased = 0;
-				StoredSettings.file_extra[(int)FileIndex].location_ab1_purchased = 0;
-				StoredSettings.file_extra[(int)FileIndex].location_ug1_purchased = 0;
-				StoredSettings.file_extra[(int)FileIndex].location_mln_purchased = 0;
-				SaveToGlobal();
-			} else {
-				// Used File
-				Character = Rando.starting_kong;
-				determineStartKong_PermaLossMode();
-				giveCollectables();
-			}
-			ForceStandardAmmo = 0;
-		}
-	}
 	past_lag[(int)(lag_counter % LAG_CAP)] = StoredLag;
 	lag_counter = (lag_counter + 1) % LAG_CAP;
 	int lag_sum = 0;
@@ -161,6 +122,19 @@ void earlyFrame(void) {
 		}
 		if (CurrentMap == 0x11) {
 			HelmInit(1);
+		}
+		if (CurrentMap == 0x40) {
+			// Adjust Giant Mushroom Void
+			MapVoid_MinX = -259;
+			MapVoid_MinZ = -227;
+			MapVoid_MaxX = 1210;
+			MapVoid_MaxZ = 1239;
+		} else if (CurrentMap == 13) {
+			// Adjust Painting Void
+			MapVoid_MinX = -284;
+			MapVoid_MinZ = -320;
+			MapVoid_MaxX = 703;
+			MapVoid_MaxZ = 757;
 		}
 	}
 	if ((CurrentMap == 5) || (CurrentMap == 1) || (CurrentMap == 0x19)) {

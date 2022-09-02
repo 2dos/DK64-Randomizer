@@ -23,6 +23,10 @@
 #define TREASURE_CHEST 0x2C
 #define CAVES_DK5DI 0x56
 #define HIDEOUT_HELM 0x11
+#define CRYPT_LT 0x6C
+#define CRYPT_DDC 0x70
+#define CASTLE_DUNGEON 0xA3
+#define CASTLE_TREE 0xA4
 
 #define FUNGI_MINECART_GRATE 0x22
 #define SEASICK_SHIP 0x27
@@ -60,11 +64,16 @@
 #define GALLEON_SAX_PAD 0x13
 #define GALLEON_TROMBONE_PAD 0x12
 #define GALLEON_TRIANGLE_PAD 0x1B
+#define GALLEON_LANKY_SLAM 0x1D
+#define GALLEON_TINY_SLAM 0x1C
+
 #define GALLEON_DK_5DSDOOR 0x19
 #define GALLEON_DIDDY_5DSDOOR 0x1A
 #define GALLEON_LANKY_5DSDOOR 0x17
 #define GALLEON_TINY_5DSDOOR 0x18
 #define GALLEON_CHUNKY_5DSDOOR 0x20
+#define GALLEON_LANKY_2DSDOOR 0x1F
+#define GALLEON_TINY_2DSDOOR 0x1E
 
 #define TGROUNDS_BAMBOOGATE 0x49
 #define TGROUNDS_SWITCH 0x39
@@ -136,6 +145,7 @@
 #define CHEST_PEARL_0 0x0
 #define MILLREAR_CHUNKYCHECK_RATE 0xF
 
+#define FACTORY_LARGEMETALSECTION 0x0
 #define FACTORY_PIANO 0x14
 #define FACTORY_DARTBOARD 0x7F
 #define ICE_MAZE 0x0
@@ -145,6 +155,30 @@
 #define HELM_PAD_SAX 0x2E
 #define HELM_PAD_TROMBONE 0x2F
 #define HELM_PAD_GUITAR 0x30
+
+#define JAPES_CAVE_GATE 0x2B
+#define JAPES_PEANUT_MOUNTAIN 0x58
+#define JAPES_COCONUT_RAMBI 0x123
+#define LLAMA_GRAPE_SWITCH 0x6B
+#define FACTORY_SNATCH_GRATE 0x15
+#define FACTORY_PAD_TRIANGLE 0x37
+#define FACTORY_PAD_GUITAR 0x38
+#define FACTORY_PAD_TROMBONE 0x3B
+#define ISLES_SWITCH_GRAPE 0x27
+#define ISLES_SWITCH_PINEAPPLE 0x28
+#define ISLES_SWITCH_FEATHER 0x29
+#define ISLES_SWITCH_PEANUT 0x2A
+#define ISLES_SWITCH_COCONUT 0x32
+#define AZTEC_CHUNKY_CAGE 0x24
+#define CRYPT_LT_GRAPE 0x0
+#define CRYPT_DDC_D 0xD
+#define CRYPT_DDC_E 0xE
+#define CRYPT_DDC_F 0xF
+#define DUNGEON_SLAM_DIDDY 0x4
+#define DUNGEON_SLAM_DK 0x5
+#define DUNGEON_SLAM_LANKY 0x6
+#define TREE_DOOR_DK 0x1
+#define TREE_DOOR_CHUNKY 0x9
 
 void hideObject(behaviour_data* behaviour_pointer) {
 	behaviour_pointer->unk_60 = 1;
@@ -274,6 +308,8 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 					case GALLEON_TRIANGLE_PAD:
 					case GALLEON_SAX_PAD:
 					case GALLEON_TROMBONE_PAD:
+					case GALLEON_LANKY_SLAM:
+					case GALLEON_TINY_SLAM:
 						if (index == 0) { 
 							return !Rando.remove_high_requirements;
 						}
@@ -308,6 +344,16 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 						if (gate_index < 0) {
 							gate_index = 4;
 							gate_flag = GALLEON_5DSOPEN_CHUNKY;
+						}
+					case GALLEON_LANKY_2DSDOOR:
+						if (gate_index < 0) {
+							gate_index = 5;
+							gate_flag = GALLEON_2DSOPEN_LANKY;
+						}
+					case GALLEON_TINY_2DSDOOR:
+						if (gate_index < 0) {
+							gate_index = 6;
+							gate_flag = GALLEON_2DSOPEN_TINY;
 						}
 						if (index == 0) {
 							if (Rando.remove_high_requirements) {
@@ -348,6 +394,8 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 				if (!Rando.quality_of_life) {
 					PlayCutsceneFromModelTwoScript(behaviour_pointer,23,1,0);
 				}
+			} else if (param2 == AZTEC_CHUNKY_CAGE) {
+				return !Rando.tag_anywhere;
 			}
 			break;
 		case FUNGI_FOREST:
@@ -426,6 +474,8 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 					unkObjFunction2(id,2,1);
 					unkObjFunction2(id,3,1);
 				}
+			} else if ((param2 == ISLES_SWITCH_COCONUT) || (param2 == ISLES_SWITCH_PEANUT) || (param2 == ISLES_SWITCH_GRAPE) || (param2 == ISLES_SWITCH_FEATHER) || (param2 == ISLES_SWITCH_PINEAPPLE)) {
+				return !Rando.tag_anywhere;
 			} else {
 				// TestVariable = (int)behaviour_pointer;
 				// *(int*)(0x807FF700) = id;
@@ -455,6 +505,8 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 				} else if ((index >= 3) && (index <= 6)) {
 					return getPressedSwitch(behaviour_pointer,kong_pellets[(int)Rando.free_source_llama],id);
 				}
+			} else if (param2 == LLAMA_GRAPE_SWITCH) {
+				return !Rando.tag_anywhere;
 			} else {
 				int head_ids[] = {
 					LLAMA_MATCHING_HEAD_SOUND0_0,
@@ -559,6 +611,8 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 				} else if (index == 1) {
 					return !checkFlag(kong_flags[(int)Rando.free_target_japes],0);
 				}
+			} else if ((param2 == JAPES_CAVE_GATE) || (param2 == JAPES_PEANUT_MOUNTAIN) || (param2 == JAPES_COCONUT_RAMBI)) {
+				return !Rando.tag_anywhere;
 			}
 			break;
 		case JAPES_MOUNTAIN:
@@ -668,6 +722,24 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 					}
 					return 0;
 				}
+			} else if (param2 == FACTORY_LARGEMETALSECTION) {
+				if (Rando.quality_of_life) {
+					behaviour_pointer->current_state = 10;
+					unsigned char crusher_compontents[] = {1,3,8,9,4,10,11,12,13,2,5,6,7};
+					int* m2location = ObjectModel2Pointer;
+					for (int component = 0; component < sizeof(crusher_compontents); component++) {
+						int index = convertIDToIndex(crusher_compontents[component]);
+						if (index > -1) {
+							ModelTwoData* _object = getObjectArrayAddr(m2location,0x90,index);
+							behaviour_data* behaviour = (behaviour_data*)_object->behaviour_pointer;
+							if (behaviour) {
+								behaviour->next_state = 10;
+							}
+						}
+					}
+				}
+			} else if ((param2 == FACTORY_SNATCH_GRATE) || (param2 == FACTORY_PAD_GUITAR) || (param2 == FACTORY_PAD_TRIANGLE) || (param2 == FACTORY_PAD_TROMBONE)) {
+				return !Rando.tag_anywhere;
 			}
 			break;
 		case MILL_FRONT:
@@ -839,6 +911,26 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 				return checkControlState(kong_press_states[(int)Rando.free_source_ttemple]);
 			}
 			break;
+		case CRYPT_LT:
+			if (param2 == CRYPT_LT_GRAPE) {
+				return !Rando.tag_anywhere;
+			}
+			break;
+		case CRYPT_DDC:
+			if ((param2 == CRYPT_DDC_D) || (param2 == CRYPT_DDC_E) || (param2 == CRYPT_DDC_F)) {
+				return !Rando.tag_anywhere;
+			}
+			break;
+		case CASTLE_DUNGEON:
+			if ((param2 == DUNGEON_SLAM_DK) || (param2 == DUNGEON_SLAM_DIDDY) || (param2 == DUNGEON_SLAM_LANKY)) {
+				return !Rando.tag_anywhere;
+			}
+			break;
+		case CASTLE_TREE:
+			if ((param2 == TREE_DOOR_DK) || (param2 == TREE_DOOR_CHUNKY)) {
+				return !Rando.tag_anywhere;
+			}
+			break;
 		case HIDEOUT_HELM:
 			{
 				int slot = -1;
@@ -889,9 +981,6 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 									PlayCutsceneFromModelTwoScript(behaviour_pointer, current_slot + 4, 1, 0);
 								}
 							} else if (index == 1) {
-								if (param2 == HELM_PAD_GUITAR) {
-									*(int*)(0x807FF700) = previous_slot;
-								}
 								if (previous_slot == -1) {
 									// First or not in sequence
 									return 1;

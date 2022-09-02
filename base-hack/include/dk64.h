@@ -163,6 +163,8 @@ extern void spawnSparkles(float x, float y, float z, int size);
 extern void spawnEnemyDrops(void* actor);
 extern void* isActorLoaded(int actor_type);
 extern void beaverControlSwitchCase(int unk0, int unk1, int unk2);
+extern void BonusBarrelCode(void);
+extern void DisplayExplosionSprite(void);
 
 extern float getXRatioMovement(int dk64u_angle);
 extern float getZRatioMovement(int dk64u_angle);
@@ -170,6 +172,29 @@ extern void updateActorProjectileInfo(void* actor, int unk0);
 extern void spawnProjectile(short object, short subtype, int speed, float x, float y, float z, float unk0, void* actor);
 extern void controlStateControl(int unk0);
 extern void save(void);
+
+extern int crystalsUnlocked(int kong);
+extern void setMovesForAllKongs(shop_paad* paad, int is_bitfield);
+extern void setMoveProgressive(shop_paad* paad, int kong);
+extern void setMoveBitfield(shop_paad* paad, int kong);
+extern void refillHealth(int player_index);
+extern void changeCollectableCount(int item, int player_index, int change);
+extern void save(void);
+extern void* getSpawnerTiedActor(short target_trigger, short props_change);
+
+extern void _guScaleF(void* mtx, int x, int y, int z);
+extern void _guTranslateF(void* mtx, int x, int y, int z);
+extern void _guMtxCatF(void* mtx, void* unk0, void* unk1);
+extern void _guMtxF2L(void* mtx, void* unk0);
+extern void* getTextPointer(int file, int text_index, int unk0);
+extern void addDLToOverlay(int code, void* actor, int delay);
+extern int groundContactCheck(void);
+extern void groundContactSet(void);
+extern int getRefillCount(int item, int player);
+extern int doAllKongsHaveMove(shop_paad* paad, int unk0);
+extern void getSequentialPurchase(shop_paad* paad, KongBase* movedata);
+extern int ReadFile(int data, int kong, int level, int file);
+extern int* printText(int* dl, short x, short y, float scale, char* str);
 
 extern void assessFlagMapping(int map, int id);
 extern void coinCBCollectHandle(int player, int obj, int is_homing);
@@ -180,6 +205,14 @@ extern void unkSpriteRenderFunc_0(void);
 extern void loadSpriteFunction(int func);
 extern void displaySpriteAtXYZ(void* sprite, int x, int y, int z);
 extern void* getHUDSprite(int item);
+extern void updateMenuController(void* actor, void* paad, int unk0);
+extern void lockInput(int unk0);
+extern void fileStart(int file);
+extern int isFileEmpty(int file);
+extern void initMenuBackground(void* paad, int unk0);
+extern int calculateFilePercentage(void);
+extern void displayMenuSprite(void* paad, void* sprite_address, int x, int y, float scale, int unk0, int unk1);
+extern void loadFile(int file, int restock_inventory);
 
 //vanilla data
 extern float TransitionSpeed;
@@ -262,6 +295,7 @@ extern unsigned int PauseTimestampMinor;
 extern unsigned int HelmStartTimestampMajor;
 extern unsigned int HelmStartTimestampMinor;
 extern int HelmStartTime;
+extern short HelmMinigameFlags[10];
 extern short p1PressedButtons;
 extern short p1HeldButtons;
 extern char player_count;
@@ -298,6 +332,11 @@ extern char TransitionType;
 extern char DKTVKong;
 extern cutsceneType CutsceneBanks[2];
 extern int EEPROMType;
+
+extern short MapVoid_MinX;
+extern short MapVoid_MinZ;
+extern short MapVoid_MaxX;
+extern short MapVoid_MaxZ;
 
 extern short screenCenterX;
 extern short screenCenterY;
@@ -336,7 +375,7 @@ extern short BossMapArray[8];
 extern char BossKongArray[16];
 
 extern char KongUnlockedMenuArray[5];
-extern unsigned char FilePercentage;
+extern char FilePercentage; // Unsigned is technically correct, but -124% is more fun
 extern int FileGBCount;
 extern float FileScreenDLOffset;
 extern short CBTurnedInArray[8];
@@ -356,7 +395,13 @@ extern actorData* PlayerPointer_0;
 extern SpawnerInfo* currentCharSpawner;
 extern short EnemiesKilledCounter;
 extern model2_collision_info ModelTwoCollisionArray[42];
+extern unsigned char MelonArray[6];
 extern int IGT;
+extern unsigned int LevelStateBitfield;
+
+extern float menuHeadX[5];
+extern float menuHeadY[5];
+extern float menuHeadScale[5];
 extern collected_item_struct* LatestCollectedObject;
 
 //hack data
@@ -378,6 +423,8 @@ extern short style2Mtx[0x10];
 extern purchase_struct CrankyMoves_New[5][8];
 extern purchase_struct CandyMoves_New[5][8];
 extern purchase_struct FunkyMoves_New[5][8];
+extern purchase_struct TrainingMoves_New[4];
+extern purchase_struct BFIMove_New;
 extern settingsData StoredSettings;
 extern char WarpToIslesEnabled;
 extern char SkipDance;

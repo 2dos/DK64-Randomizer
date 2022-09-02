@@ -112,6 +112,7 @@ void initHack(int source) {
 			loadExtraHooks();
 			no_enemy_drops();
 			// Moves & Prices
+			fixTBarrelsAndBFI(1);
 			replace_moves();
 			price_rando();
 			if (!Rando.move_rando_on) {
@@ -238,7 +239,14 @@ void initHack(int source) {
 				// Disable Graphical Debugger
 				*(int*)(0x8060EEE0) = 0x240E0000; // ADDIU $t6, $r0, 0
 			}
-
+			if (Rando.disco_chunky) {
+				*(char*)(0x8075C45B) = 0xE; // General Model
+				*(short*)(0x806F123A) = 0xE; // Instrument
+				*(int*)(0x806CF37C) = 0; // Fix object holding
+				*(short*)(0x8074E82C) = 0xE; // Tag Barrel Model
+				*(short*)(0x8075EDAA) = 0xE; // Cutscene Chunky Model
+				*(short*)(0x8075571E) = 0xE; // Generic Cutscene Model
+			}
 			if (Rando.fast_gbs) {
 				*(short*)(0x806BBB22) = 0x0005; // Chunky toy box speedup
 
@@ -314,11 +322,19 @@ void initHack(int source) {
 			*(short*)(0x80632016) = allowance; // Galleon
 			*(short*)(0x80631FE6) = allowance; // Fungi
 			*(short*)(0x80632036) = allowance; // Others
+			// New Helm Barrel Code
+			*(int*)(0x8074C24C) = (int)&HelmBarrelCode;
+			// Deathwarp Handle
+			*(int*)(0x8071292C) = 0x0C000000 | (((int)&WarpHandle & 0xFFFFFF) >> 2); // Check if in Helm, in which case, apply transition
 			// New Guard Code
 			*(short*)(0x806AF75C) = 0x1000;
 			// Gold Beaver Code
-			*(int*)(0x8074C3F0) = 0x806AD54C; // Set as Blue Beaver Code
+      		*(int*)(0x8074C3F0) = 0x806AD54C; // Set as Blue Beaver Code
 			*(int*)(0x806AD750) = 0x0C000000 | (((int)&beaverExtraHitHandle & 0xFFFFFF) >> 2); // Remove buff until we think of something better
+			// Move Text Code
+			*(int*)(0x8074C5B0) = (int)&getNextMoveText;
+			*(int*)(0x8074C5A0) = (int)&getNextMoveText;
+			
 			// Spider Projectile
 			//*(int*)(0x806ADDC0) = 0x0C000000 | (((int)&handleSpiderTrapCode & 0xFFFFFF) >> 2); // Remove buff until we think of something better
 			// Slow Turn Fix
@@ -338,6 +354,46 @@ void initHack(int source) {
 				ModelTwoCollisionArray[index].actor_equivalent = 0;
 			}
 			*(int*)(0x806A64B0) = 0x240A0004; // Always ensure lanky coin sprite
+			// 1-File Fixes
+			*(int*)(0x8060CF34) = 0x240E0001; // Slot 1
+			*(int*)(0x8060CF38) = 0x240F0002; // Slot 2
+			*(int*)(0x8060CF3C) = 0x24180003; // Slot 3
+			*(int*)(0x8060CF40) = 0x240D0000; // Slot 0
+			*(int*)(0x8060D3AC) = 0; // Prevent EEPROM Shuffle
+			*(int*)(0x8060DCE8) = 0; // Prevent EEPROM Shuffle
+			*(int*)(0x8060C760) = 0x24900000; // Always load file 0
+			*(short*)(0x8060CC22) = 1; // File Loop Cancel 1
+			*(short*)(0x8060CD1A) = 1; // File Loop Cancel 2
+			*(short*)(0x8060CE7E) = 1; // File Loop Cancel 3
+			*(short*)(0x8060CE5A) = 1; // File Loop Cancel 4
+			*(short*)(0x8060CF0E) = 1; // File Loop Cancel 5
+			*(short*)(0x8060CF26) = 1; // File Loop Cancel 6
+			*(short*)(0x8060D0DE) = 1; // File Loop Cancel 7
+			*(short*)(0x8060D106) = 1; // File Loop Cancel 8
+			*(short*)(0x8060D43E) = 1; // File Loop Cancel 8
+			*(int*)(0x8060CD08) = 0x26670000; // Save to File - File Index
+			*(int*)(0x8060CE48) = 0x26670000; // Save to File - File Index
+			*(int*)(0x8060CF04) = 0x26270000; // Save to File - File Index
+			*(int*)(0x8060BFA4) = 0x252A0000; // Global Block after 1 file entry
+			*(int*)(0x8060E378) = 0x258D0000; // Global Block after 1 file entry
+			*(int*)(0x8060D33C) = 0x254B0000; // Global Block after 1 file entry
+			*(int*)(0x8060D470) = 0x256C0000; // Global Block after 1 file entry
+			*(int*)(0x8060D4B0) = 0x252A0000; // Global Block after 1 file entry
+			*(int*)(0x8060D558) = 0x258D0000; // Global Block after 1 file entry
+			*(int*)(0x8060CF74) = 0x25090000; // Global Block after 1 file entry
+			*(int*)(0x8060CFCC) = 0x25AE0000; // Global Block after 1 file entry
+			*(int*)(0x8060D24C) = 0x25AE0000; // Global Block after 1 file entry
+			*(int*)(0x8060C84C) = 0xA02067C8; // Force file 0
+			*(int*)(0x8060C654) = 0x24040000; // Force file 0 - Save
+			*(int*)(0x8060C664) = 0xAFA00034; // Force file 0 - Save
+			*(int*)(0x8060C6C4) = 0x24040000; // Force file 0 - Read
+			*(int*)(0x8060C6D4) = 0xAFA00034; // Force file 0 - Read
+			// Decouple Camera from Shockwave
+			*(short*)(0x806E9812) = FLAG_ABILITY_CAMERA; // Usage
+			*(short*)(0x806AB0F6) = FLAG_ABILITY_CAMERA; // Isles Fairies Display
+			*(short*)(0x806AAFB6) = FLAG_ABILITY_CAMERA; // Other Fairies Display
+			*(short*)(0x806AA762) = FLAG_ABILITY_CAMERA; // Film Display
+			*(short*)(0x8060D986) = FLAG_ABILITY_CAMERA; // Film Refill
 			initItemDropTable();
 			// LZ Save
 			*(int*)(0x80712EC4) = 0x0C000000 | (((int)&postKRoolSaveCheck & 0xFFFFFF) >> 2);

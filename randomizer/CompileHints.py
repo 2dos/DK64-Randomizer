@@ -74,7 +74,7 @@ class MoveInfo:
         """Create move info object."""
         self.name = name
         self.kong = kong
-        move_types = ["special", "slam", "gun", "ammobelt", "instrument"]
+        move_types = ["special", "slam", "gun", "ammo_belt", "instrument"]
         encoded_move_type = move_types.index(move_type)
         self.move_type = encoded_move_type
         self.move_level = move_level
@@ -82,7 +82,7 @@ class MoveInfo:
         ref_kong = kong
         if ref_kong == Kongs.any:
             ref_kong = Kongs.donkey
-        self.item_key = (encoded_move_type << 5) | ((move_level - 1) << 3) | ref_kong
+        self.item_key = {"move_type": move_type, "move_lvl": move_level - 1, "move_kong": ref_kong}
 
 
 hint_list = [
@@ -236,8 +236,8 @@ moves_data = [
     MoveInfo(name="Homing Ammo", move_level=2, move_type="gun", kong=Kongs.any),
     MoveInfo(name="Sniper Scope", move_level=3, move_type="gun", kong=Kongs.any),
     # Ammo Belt
-    MoveInfo(name="Ammo Belt Upgrade", move_level=1, move_type="ammobelt", kong=Kongs.any),
-    MoveInfo(name="Ammo Belt Upgrade", move_level=2, move_type="ammobelt", kong=Kongs.any),
+    MoveInfo(name="Ammo Belt Upgrade", move_level=1, move_type="ammo_belt", kong=Kongs.any),
+    MoveInfo(name="Ammo Belt Upgrade", move_level=2, move_type="ammo_belt", kong=Kongs.any),
     # Instruments
     MoveInfo(name="Bongo Blast", move_level=1, move_type="instrument", kong=Kongs.donkey, important=True),  # spoiler.settings.helm_donkey),
     MoveInfo(name="Guitar Gazump", move_level=1, move_type="instrument", kong=Kongs.diddy, important=True),  # spoiler.settings.helm_diddy),
@@ -740,7 +740,7 @@ def compileHints(spoiler: Spoiler):
                 level_listing = []
                 for kong in range(5):
                     # Get Moves in slot
-                    data_section = spoiler.move_data[shop][kong][level]
+                    data_section = spoiler.move_data[0][shop][kong][level]
                     for move in moves_data:
                         if move.item_key == data_section:
                             if move.name not in level_listing:
@@ -878,7 +878,6 @@ def compileHintsOld(spoiler: Spoiler):
         total_moves_for_krool = 0
         for x in spoiler.settings.krool_order:
             total_moves_for_krool += krool_move_requirements[x]
-
         # Collate nested lists for a list of shop moves
         shop_data = []
         for shop in range(3):  # Order: Cranky, Funky, Candy
@@ -887,7 +886,7 @@ def compileHintsOld(spoiler: Spoiler):
                 level_listing = []
                 for kong in range(5):
                     # Get Moves in slot
-                    data_section = spoiler.move_data[shop][kong][level]
+                    data_section = spoiler.move_data[0][shop][kong][level]
                     for move in moves_data:
                         if move.item_key == data_section:
                             if move.name not in level_listing:

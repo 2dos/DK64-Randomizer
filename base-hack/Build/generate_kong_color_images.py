@@ -35,6 +35,13 @@ color_palettes = [
             {"zone": "shirt_front", "image": 3687, "colors": ["#000000"], "fill_type": "block"},
         ],
     },
+    {
+        "kong": "discochunky",
+        "zones": [
+            {"zone": "shirt", "image": 3777, "colors": ["#00237D"], "fill_type": "sparkle"},
+            {"zone": "gloves", "image": 3778, "colors": ["#FFFFFF"], "fill_type": "sparkle"},
+        ],
+    },
     {"kong": "rambi", "zones": [{"zone": "top", "image": 3826, "colors": ["#070657"], "fill_type": "block"}]},
     {"kong": "enguarde", "zones": [{"zone": "top", "image": 3847, "colors": ["FF0000"], "fill_type": "block"}]},
 ]
@@ -171,6 +178,47 @@ def convertColors():
                 for i in range(3):
                     ext = convertRGBAToBytearray([0, 0, 0, 0])
                     bytes_array.extend(ext)
+            elif zone["fill_type"] == "sparkle":
+                dim_rgba = []
+                for channel_index, channel in enumerate(rgba_list[0]):
+                    if channel_index == 3:
+                        dim_rgba.append(1)
+                    else:
+                        dim_channel = 0.8 * channel
+                        dim_rgba.append(int(dim_channel))
+                for y in range(32):
+                    for x in range(32):
+                        pix_rgba = []
+                        if x == 31:
+                            pix_rgba = rgba_list[0].copy()
+                        else:
+                            for channel_index in range(4):
+                                if channel_index == 3:
+                                    pix_channel = 1
+                                else:
+                                    diff = rgba_list[0][channel_index] - dim_rgba[channel_index]
+                                    applied_diff = int(diff * (x / 31))
+                                    pix_channel = dim_rgba[channel_index] + applied_diff
+                                    if pix_channel < 0:
+                                        pix_channel = 0
+                                    if pix_channel > 31:
+                                        pix_channel = 31
+                                pix_rgba.append(pix_channel)
+                        sparkle_px = [
+                            [28, 5],
+                            [27, 10],
+                            [21, 11],
+                            [25, 14],
+                            [23, 15],
+                            [23, 16],
+                            [26, 18],
+                            [20, 19],
+                            [25, 25],
+                        ]
+                        for px in sparkle_px:
+                            if px[0] == x and px[1] == y:
+                                pix_rgba = [0xFF, 0xFF, 0xFF, 1]
+                        bytes_array.extend(convertRGBAToBytearray(pix_rgba))
 
             with open(f"{palette['kong']}{zone['zone']}.bin", "wb") as fh:
                 fh.write(bytearray(bytes_array))

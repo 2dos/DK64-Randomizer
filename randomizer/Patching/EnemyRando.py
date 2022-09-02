@@ -1,6 +1,5 @@
 """Apply Boss Locations."""
 import random
-from email.policy import default
 
 import js
 from randomizer.Lists.EnemyTypes import Enemies, EnemyMetaData
@@ -242,9 +241,9 @@ def randomize_enemies(spoiler: Spoiler):
         Maps.LobbyCrown,
     ]
     minigame_maps_easy = [
-        # Maps.BusyBarrelBarrageEasy, # Requires enemies be of a certain size
-        # Maps.BusyBarrelBarrageHard, # ^
-        # Maps.BusyBarrelBarrageNormal, # ^
+        Maps.BusyBarrelBarrageEasy,
+        Maps.BusyBarrelBarrageHard,
+        Maps.BusyBarrelBarrageNormal,
         # Maps.HelmBarrelDiddyKremling, # Only kremlings activate the switch
         Maps.HelmBarrelChunkyHidden,
         Maps.HelmBarrelChunkyShooting,
@@ -419,6 +418,9 @@ def randomize_enemies(spoiler: Spoiler):
                 tied_enemy_list = []
                 if cont_map_id in minigame_maps_easy:
                     tied_enemy_list = minigame_enemies_simple.copy()
+                    if cont_map_id in (Maps.BusyBarrelBarrageEasy, Maps.BusyBarrelBarrageNormal, Maps.BusyBarrelBarrageHard):
+                        if Enemies.KlaptrapGreen in tied_enemy_list:
+                            tied_enemy_list.remove(Enemies.KlaptrapGreen)  # Remove Green Klaptrap out of BBBarrage pool
                 elif cont_map_id in minigame_maps_beatable:
                     tied_enemy_list = minigame_enemies_beatable.copy()
                 elif cont_map_id in minigame_maps_nolimit:
@@ -428,11 +430,15 @@ def randomize_enemies(spoiler: Spoiler):
                 for spawner in vanilla_spawners:
                     if spawner["enemy_id"] in tied_enemy_list:
                         new_enemy_id = random.choice(tied_enemy_list)
-                        # Balance beaver bother so it's a 3:1 ratio of blue to gold beavers
+                        # Balance beaver bother so it's a 2:1 ratio of blue to gold beavers
                         if cont_map_id in minigame_maps_beavers:
-                            comp_id = random.choice(tied_enemy_list)
-                            if new_enemy_id != Enemies.BeaverGold or comp_id != Enemies.BeaverGold:
-                                new_enemy_id = Enemies.BeaverBlue
+                            new_enemy_id = random.choice(
+                                [
+                                    Enemies.BeaverBlue,
+                                    Enemies.BeaverBlue,
+                                    Enemies.BeaverGold,
+                                ]
+                            )
                         ROM().seek(cont_map_spawner_address + spawner["offset"])
                         ROM().writeMultipleBytes(new_enemy_id, 1)
                         if new_enemy_id in EnemyMetaData.keys():
@@ -450,7 +456,16 @@ def randomize_enemies(spoiler: Spoiler):
                                 if default_scale > EnemyMetaData[new_enemy_id].size_cap:
                                     ROM().seek(cont_map_spawner_address + spawner["offset"] + 0xF)
                                     ROM().writeMultipleBytes(EnemyMetaData[new_enemy_id].size_cap, 1)
-                            if spoiler.settings.enemy_speed_rando and cont_map_id not in minigame_maps_beavers:
+                            ROM().seek(cont_map_spawner_address + spawner["offset"] + 0xF)
+                            pre_size = int.from_bytes(ROM().readBytes(1), "big")
+                            if pre_size < EnemyMetaData[new_enemy_id].bbbarrage_min_scale:
+                                ROM().seek(cont_map_spawner_address + spawner["offset"] + 0xF)
+                                ROM().writeMultipleBytes(EnemyMetaData[new_enemy_id].bbbarrage_min_scale, 1)
+                            if (
+                                spoiler.settings.enemy_speed_rando
+                                and cont_map_id not in minigame_maps_beavers
+                                and cont_map_id not in (Maps.BusyBarrelBarrageEasy, Maps.BusyBarrelBarrageNormal, Maps.BusyBarrelBarrageHard)
+                            ):
                                 min_speed = EnemyMetaData[new_enemy_id].min_speed
                                 max_speed = EnemyMetaData[new_enemy_id].max_speed
                                 if min_speed > 0 and max_speed > 0:
