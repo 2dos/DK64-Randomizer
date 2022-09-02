@@ -55,21 +55,25 @@ void guardCatch(void) {
     }
 }
 
+void WarpHandle(void) {
+    if (CurrentMap == 0x11) {
+        if (Rando.fast_start_helm == 2) { // Skip All
+            initiateTransition(0x11,4); // Crown Door
+        } else if (checkFlag(FLAG_HELM_ROMANDOORS_OPEN,2) || checkFlag(FLAG_MODIFIER_HELMBOM,0)) { // Roman Doors Open or BoM off
+            initiateTransition(0x11,3); // Lever
+        } else {
+            initiateTransition(0x11,0); // Start
+        }
+        setFlag(0x50,0,2); // Prevent Helm Door hardlock
+    } else {
+        voidWarp();
+    }
+}
+
 void catchWarpHandle(void) {
     if (warp_timer > 0) {
         if ((warp_timer == 1) && (TransitionSpeed == 0)) {
-            if ((CurrentMap == 0x11) && (Rando.fast_start_helm > 0)) {
-                if (Rando.fast_start_helm == 1) {
-                    initiateTransition(0x11,3);
-                } else if (Rando.fast_start_helm == 2) {
-                    initiateTransition(0x11,4);
-                } else {
-                    voidWarp();
-                }
-            } else {
-                voidWarp();
-            }
-            setFlag(0x50,0,2); // Prevent Helm Door hardlock
+            WarpHandle();
         }
         warp_timer -= 1;
     }

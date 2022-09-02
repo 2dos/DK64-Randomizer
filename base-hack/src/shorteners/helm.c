@@ -77,6 +77,8 @@ void HelmInit(int init_stage) {
 				setFlag(minigame_1_flags[i],1,2);
 			}
 		}
+		// Tag entrance W1
+		setPermFlag(FLAG_WARP_HELM_W1_NEAR);
 	} else if (init_stage == 1) {
 		// Modify Cutscenes
 		int has_ended = 0;
@@ -137,5 +139,47 @@ void HelmInit(int init_stage) {
 				Helm Finish Stuff:
 					Points 3/5, Item 81/66
 		*/
+	}
+}
+
+typedef struct bonus_paad {
+	/* 0x000 */ float oscillation_y;
+	/* 0x004 */ short unk4;
+	/* 0x006 */ short unk6;
+	/* 0x008 */ short unk8;
+	/* 0x00A */ short barrel_index;
+	/* 0x00C */ char other_timer;
+	/* 0x00D */ char destroy_timer;
+	/* 0x00E */ char raise_timer;
+} bonus_paad;
+
+void HelmBarrelCode(void) {
+	bonus_paad* paad = CurrentActorPointer_0->paad;
+	int deleted = 0;
+	if ((CurrentActorPointer_0->obj_props_bitfield & 0x10) == 0) {
+		// Init Code
+		int barrel_index = -1;
+		if (CurrentActorPointer_0->data_pointer) {
+			barrel_index = CurrentActorPointer_0->data_pointer->data[2];
+		}
+		if (checkFlag(FLAG_MODIFIER_HELMBOM,0)) {
+			deleteActorContainer(CurrentActorPointer_0);
+			deleted = 1;
+		} else if (barrel_index > -1) {
+			if (checkFlag(HelmMinigameFlags[barrel_index],2)) {
+				deleteActorContainer(CurrentActorPointer_0);
+				deleted = 1;
+			}
+		}
+	}
+	if (!deleted) {
+		BonusBarrelCode();
+		if (CurrentActorPointer_0->control_state == 0xC) {
+			if (paad->destroy_timer < 3) {
+				setFlag(HelmMinigameFlags[(int)paad->barrel_index],1,2);
+				DisplayExplosionSprite();
+				deleteActorContainer(CurrentActorPointer_0);
+			}
+		}
 	}
 }

@@ -373,7 +373,8 @@ class Spoiler:
             for y in humanspoiler[spoiler_dict]:
                 if humanspoiler[spoiler_dict][y] != {}:
                     is_empty = False
-            del humanspoiler[spoiler_dict]
+            if is_empty:
+                del humanspoiler[spoiler_dict]
 
         return json.dumps(humanspoiler, indent=4)
 

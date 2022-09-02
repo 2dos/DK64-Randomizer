@@ -25,6 +25,9 @@ typedef struct renderingParamsData {
 	/* 0x03C */ float scale_z;
 } renderingParamsData;
 
+typedef struct actor_subdata {
+	/* 0x000 */ int data[4];
+} actor_subdata;
 typedef struct actorData {
 	/* 0x000 */ void* model;
 	/* 0x004 */ renderingParamsData* render;
@@ -48,7 +51,8 @@ typedef struct actorData {
 	/* 0x0E8 */ short rot_z;
 	/* 0x0EA */ char unk_EA[0x4];
 	/* 0x0EE */ short rot_y_copy;
-	/* 0x0F0 */ char unk_F0[0x128-0xF0];
+	/* 0x0F0 */ char unk_F0[0x124-0xF0];
+	/* 0x124 */ actor_subdata* data_pointer;
 	/* 0x128 */ short shadow_intensity;
 	/* 0x12A */ char unk_12A[0x132-0x12A];
 	/* 0x132 */ short subdata;

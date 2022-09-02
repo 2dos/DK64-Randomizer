@@ -29,12 +29,16 @@ def ShuffleBarrels(settings: Settings, barrelLocations, minigamePool):
             continue
         # Check each remaining minigame to see if placing it will produce a valid world
         success = False
+        helm = False
+        for minigame in minigamePool:
+            # Check if any minigames can be placed in helm
+            if MinigameRequirements[minigame].helm_enabled:
+                helm = True
         for minigame in minigamePool:
             BarrelMetaData[location].minigame = minigame
-            # Check if banned in Helm and attempted to place in Helm
-            if settings.bonus_barrels != "selected":
-                if not MinigameRequirements[minigame].helm_enabled and BarrelMetaData[location].map == Maps.HideoutHelm:
-                    continue
+            # If there is a minigame that can be placed in Helm, skip banned minigames, otherwise continue as normal
+            if not MinigameRequirements[minigame].helm_enabled and BarrelMetaData[location].map == Maps.HideoutHelm and helm is True:
+                continue
             # If world is still valid, keep minigame associated there
             if settings.bonus_barrels != "selected":
                 if Fill.VerifyWorld(settings):

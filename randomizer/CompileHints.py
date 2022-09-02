@@ -386,7 +386,8 @@ def compileHints(spoiler: Spoiler):
     # Now place hints by type from most-restrictive to least restrictive. Usually anything we want on the player's path should get placed first
     # Kongs should be hinted before they're available and should only be hinted to free Kongs, making them very restrictive
     hinted_kongs = []
-    for i in range(hint_distribution[HintType.KongLocation]):
+    placed_kong_hints = 0
+    while placed_kong_hints < hint_distribution[HintType.KongLocation]:
         kong_map = random.choice(kong_placement_levels)
         kong_index = spoiler.shuffled_kong_placement[kong_map["name"]]["locked"]["kong"]
         free_kong = spoiler.shuffled_kong_placement[kong_map["name"]]["puzzle"]["kong"]
@@ -411,7 +412,6 @@ def compileHints(spoiler: Spoiler):
                 # When I say unfathomably, I'm talking "you start with all moves and free B. Lockers but only 4 Kongs"
                 hint_distribution[HintType.Joke] += 1  # Adding meme hints to meme seeds is just thematic at this point
                 hint_distribution[HintType.KongLocation] -= 1
-                i -= 1
                 continue
 
         freeing_kong_name = kong_list[free_kong]
@@ -431,6 +431,7 @@ def compileHints(spoiler: Spoiler):
         hinted_kongs.append(kong_index)
         hint_location.hint_type = HintType.KongLocation
         UpdateHint(hint_location, message)
+        placed_kong_hints += 1
 
     # B. Locker hints need to be on the player's path to be useful
     hinted_blocker_combos = []
@@ -488,17 +489,20 @@ def compileHints(spoiler: Spoiler):
         UpdateHint(hint_location, associated_hint)
 
     # Moves should be hinted before they're available
-    moves_hinted_and_lobby = {}  # Avoid putting a hint for the same move in the same lobby twice
+    moves_hinted_and_lobbies = {}  # Avoid putting a hint for the same move in the same lobby twice
     locationless_move_keys = []  # Keep track of moves we know have run out of locations to hint
-    for i in range(hint_distribution[HintType.MoveLocation]):
+    placed_move_hints = 0
+    while placed_move_hints < hint_distribution[HintType.MoveLocation]:
         # First pick a random item from the WOTH - valid items are moves (not kongs) and must not be one of our known impossible-to-place items
         woth_item = None
         valid_woth_item_locations = [loc for loc in spoiler.woth.keys() if loc not in locationless_move_keys and any(shopName in loc for shopName in shop_owners)]
         if len(valid_woth_item_locations) == 0:
             # In the OBSCENELY rare case that we can't hint any more moves, then we'll settle for joke hints
             # This would only happen in the case where all moves are in early worlds, coins are plentiful, and the distribution here is insanely high
-            hint_distribution[HintType.Joke] += hint_distribution[HintType.MoveLocation] - i
-            hint_distribution[HintType.MoveLocation] = hint_distribution[HintType.MoveLocation] - i
+            # Your punishment for these extreme settings is more joke hints
+            hint_diff = hint_distribution[HintType.MoveLocation] - placed_move_hints
+            hint_distribution[HintType.Joke] += hint_diff
+            hint_distribution[HintType.MoveLocation] -= hint_diff
             break
         woth_item_location = random.choice(valid_woth_item_locations)
         # This gets the level of the location by matching names which is very bad but faster than the alternative of looping through every location for the item
@@ -506,50 +510,77 @@ def compileHints(spoiler: Spoiler):
         # This could be Isles, which has no hints, so we gotta be careful with this index
         index_of_level_with_location = level_list_isles.index([name for name in level_list_isles if woth_item_location[:5] in name][0])
         # Now we need to find the Item object associated with this name
-        for item in ItemList.values():
-            if item.name == spoiler.woth[woth_item_location]:
-                woth_item = item
+        for item_id in ItemList:
+            if ItemList[item_id].name == spoiler.woth[woth_item_location]:
+                woth_item = item_id
                 break
         # Determine what levels are before this level
         hintable_levels = all_levels.copy()
-        # Only if we care about the level order do we restrict these hints
-        if spoiler.settings.owned_moves_by_level is not None:
-            # If the move is available in this level, don't bother hinting it
-            for level in spoiler.settings.owned_moves_by_level:
-                if woth_item in spoiler.settings.owned_moves_by_level[level]:
-                    hintable_levels.remove(level)
-            # If it's not found in isles, we can always hint the level it's in
-            if index_of_level_with_location < 7:
-                hintable_levels.append(all_levels[index_of_level_with_location])
-            # If it's in Isles, then it can only be hinted in a very early lobby
-            if hintable_levels == []:
-                # Find the levels with the lowest B. Locker requirements - can be multiple if there's a tie
-                first_levels = [Levels.JungleJapes]
-                for level in all_levels:
-                    if spoiler.settings.EntryGBs[level] < spoiler.settings.EntryGBs[first_levels[0]]:
-                        first_levels = [level]
-                    elif spoiler.settings.EntryGBs[level] == spoiler.settings.EntryGBs[first_levels[0]]:
-                        first_levels.append[level]
-                hintable_levels = first_levels
-        # Don't place the same hint in the same lobby
-        if woth_item in moves_hinted_and_lobby.keys() and moves_hinted_and_lobby[woth_item] in hintable_levels:
-            hintable_levels.remove(moves_hinted_and_lobby[woth_item])
+        # Only if we care about the level order do we restrict these hints' locations
+        if level_order_matters:
+            # Determine a sorted order of levels by B. Lockers - this may not be the actual "progression" but it'll do for now
+            levels_in_order = all_levels.copy()
+            levels_in_order.sort(key=lambda l: spoiler.settings.EntryGBs[l])
 
-        hint_location = getRandomHintLocation(levels=hintable_levels)
+            hintable_levels = []
+            cheapest_levels_with_item = []
+            # Go through our levels in progression order
+            for level in levels_in_order:
+                # If the level doesn't have access to the move, we can hint it in the lobby
+                if woth_item not in spoiler.settings.owned_moves_by_level[level]:
+                    hintable_levels.append(level)
+                # We hit our first level that has logical access to the move, time to get to work
+                else:
+                    # Find all levels with B. Lockers of the same price as this one
+                    cheapest_levels_candidates = [
+                        candidate for candidate in all_levels if spoiler.settings.EntryGBs[candidate] == spoiler.settings.EntryGBs[level] and candidate not in hintable_levels
+                    ]
+                    # If there's only one candidate then this is the level that gives logical access to the move, so we're done
+                    # If it's an Isles shop we're hinting or hard level progression we don't need to pare down the lobby options, so we're done
+                    if len(cheapest_levels_candidates) == 1 or index_of_level_with_location >= 7:  # or hard level progression (TBD)
+                        cheapest_levels_with_item = cheapest_levels_candidates
+                    # In normal level progression, we need to remove levels that are beyond the shop's level
+                    else:
+                        # Determine the level order of the shop
+                        level_order_of_shop_location = -1
+                        for order in spoiler.settings.level_order:
+                            if index_of_level_with_location == spoiler.settings.level_order[order]:
+                                level_order_of_shop_location = order
+                                break
+                        # For each of our cheap levels
+                        for cheap_level in cheapest_levels_candidates:
+                            # Get the level order of this cheap level (will only match one)
+                            cheap_level_order = [o for o in spoiler.settings.level_order if cheap_level == spoiler.settings.level_order[o]][0]
+                            # If this level is before our shop's level in the order, it can have the hint
+                            if cheap_level_order <= level_order_of_shop_location:
+                                cheapest_levels_with_item.append(cheap_level)
+                    break
+            # We can also hint the cheapest levels that have access to this item
+            # This manifests in the form of finding a hint in Japes lobby for Pineapple in an earlier level if Chunky is unlocked in Japes
+            hintable_levels.extend(cheapest_levels_with_item)
+        # Don't place the same hint in the same lobby
+        if woth_item in moves_hinted_and_lobbies.keys():
+            for lobby_with_this_hint in moves_hinted_and_lobbies[woth_item]:
+                if lobby_with_this_hint in hintable_levels:
+                    hintable_levels.remove(lobby_with_this_hint)
+        else:
+            moves_hinted_and_lobbies[woth_item] = []
+
+        hint_location = getRandomHintLocation(levels=hintable_levels, move_name=spoiler.woth[woth_item_location])
         # If we've been too restrictive and ran out of spots for this move to be hinted in, don't bother trying to fix it. Just pick another move
         if hint_location is None:
             locationless_move_keys.append(woth_item_location)
-            i -= 1
             continue
 
         shop_level = level_list_isles[index_of_level_with_location]
         if spoiler.settings.wrinkly_hints == "cryptic":
             shop_level = random.choice(level_cryptic_isles[index_of_level_with_location])
         shop_name = [name for name in shop_owners if name in woth_item_location][0]  # Should only match one
-        message = f"On the Way of the Hoard, {woth_item.name} is bought from {shop_name} in {shop_level}."
-        moves_hinted_and_lobby[woth_item] = shop_level
+        message = f"On the Way of the Hoard, {ItemList[woth_item].name} is bought from {shop_name} in {shop_level}."
+        moves_hinted_and_lobbies[woth_item].append(hint_location.level)
         hint_location.hint_type = HintType.MoveLocation
         UpdateHint(hint_location, message)
+        placed_move_hints += 1
 
     # We want to hint levels after the hint location and only levels that we don't start with keys for
     for i in range(hint_distribution[HintType.TroffNScoff]):
@@ -727,11 +758,19 @@ def compileHints(spoiler: Spoiler):
                 shop_dump_hints.append(shop_dump_hint)
         random.shuffle(shop_dump_hints)
         # Locations for these hints are random - you may get useful information about moves you've left behind
-        for i in range(hint_distribution[HintType.FullShop]):
+        placed_full_shop_hints = 0
+        while placed_full_shop_hints < hint_distribution[HintType.FullShop]:
             hint_location = getRandomHintLocation()
+            # In the other OBSCENELY rare case where we run out of shops to hint (usually requires over 15 shop hints), convert remaining hints to joke hints
+            if len(shop_dump_hints) == 0:
+                hint_diff = hint_distribution[HintType.FullShop] - placed_full_shop_hints
+                hint_distribution[HintType.Joke] += hint_diff
+                hint_distribution[HintType.FullShop] -= hint_diff
+                break
             message = shop_dump_hints.pop()
             hint_location.hint_type = HintType.FullShop
             UpdateHint(hint_location, message)
+            placed_full_shop_hints += 1
 
     # No need to do anything fancy here - there's already a K. Rool hint on the player's path (the wall in Helm)
     for i in range(hint_distribution[HintType.KRoolOrder]):
@@ -772,10 +811,16 @@ def compileHints(spoiler: Spoiler):
     return True
 
 
-def getRandomHintLocation(location_list=None, kongs=None, levels=None):
+def getRandomHintLocation(location_list=None, kongs=None, levels=None, move_name=None):
     """Return an unoccupied hint location. The parameters can be used to specify location requirements."""
     valid_unoccupied_hint_locations = [
-        hint for hint in hints if hint.hint == "" and (location_list is None or hint in location_list) and (kongs is None or hint.kong in kongs) and (levels is None or hint.level in levels)
+        hint
+        for hint in hints
+        if hint.hint == ""
+        and (location_list is None or hint in location_list)
+        and (kongs is None or hint.kong in kongs)
+        and (levels is None or hint.level in levels)
+        and move_name not in hint.banned_keywords
     ]
     # If it's too specific, we may not be able to find any
     if len(valid_unoccupied_hint_locations) == 0:
