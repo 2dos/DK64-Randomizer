@@ -47,7 +47,7 @@ window.onerror = function (error) {
 function toast_alert(text) {
   try {
     _LTracker.push(text);
-  } catch { }
+  } catch {}
   Toastify({
     text: text,
     duration: 15000,
@@ -58,7 +58,7 @@ function toast_alert(text) {
     style: {
       background: "#800000",
     },
-    onClick: function () { },
+    onClick: function () {},
   }).showToast();
 }
 function getFile(file) {
@@ -121,14 +121,14 @@ $("#form input").on("input change", function (e) {
   const json = Object.fromEntries(data.entries());
   for (element of document.getElementsByTagName("select")) {
     if (element.className.includes("selected")) {
-      length = element.options.length
-      values = []
+      length = element.options.length;
+      values = [];
       for (let i = 0; i < length; i++) {
         if (element.options.item(i).selected) {
-          values.push(element.options.item(i).value)
+          values.push(element.options.item(i).value);
         }
       }
-      json[element.name] = values
+      json[element.name] = values;
     }
   }
   setCookie("saved_settings", JSON.stringify(json), 30);
@@ -141,14 +141,14 @@ $("#form select").on("change", function (e) {
   const json = Object.fromEntries(data.entries());
   for (element of document.getElementsByTagName("select")) {
     if (element.className.includes("selected")) {
-      length = element.options.length
-      values = []
+      length = element.options.length;
+      values = [];
       for (let i = 0; i < length; i++) {
         if (element.options.item(i).selected) {
-          values.push(element.options.item(i).value)
+          values.push(element.options.item(i).value);
         }
       }
-      json[element.name] = values
+      json[element.name] = values;
     }
   }
   setCookie("saved_settings", JSON.stringify(json), 30);
@@ -196,10 +196,11 @@ function load_cookies() {
             }
             if (element.className.includes("selected")) {
               for (var i = 0; i < element.options.length; i++) {
-                element.options[i].selected = json[key].indexOf(element.options[i].value) >= 0;
+                element.options[i].selected =
+                  json[key].indexOf(element.options[i].value) >= 0;
               }
             }
-          } catch { }
+          } catch {}
         }
       }
     } else {
@@ -224,7 +225,10 @@ function filebox() {
     var file = e.target.files[0];
     $("#rom").attr("placeholder", file.name);
     $("#rom").val(file.name);
+    $("#rom_2").val(file.name);
     $("#rom_2").attr("placeholder", file.name);
+    $("#rom_3").val(file.name);
+    $("#rom_3").attr("placeholder", file.name);
     // Get the original fiile
     var db = romdatabase.result;
     var tx = db.transaction("ROMStorage", "readwrite");
@@ -255,18 +259,16 @@ romdatabase.onupgradeneeded = function () {
   try {
     var db = romdatabase.result;
     db.createObjectStore("ROMStorage", { keyPath: "ROM" });
-  }
-  catch { }
+  } catch {}
 };
 
 seeddatabase.onupgradeneeded = function () {
   try {
     var seed_db = seeddatabase.result;
     seed_db.createObjectStore("SeedStorage", {
-      keyPath: "id"
+      keyPath: "id",
     });
-  }
-  catch { }
+  } catch {}
 };
 
 seeddatabase.onsuccess = function () {
@@ -283,8 +285,14 @@ function write_seed_history(seed_id, seed_data, seed_hash) {
   var seed_tx = seed_db.transaction("SeedStorage", "readwrite");
   var seed_store = seed_tx.objectStore("SeedStorage");
   // Store it in the database
-  const now = new Date()
-  seed_store.put({ "id": Math.random(), "value": seed_data, "hash": seed_hash, "seed_id": seed_id, "date": now });
+  const now = new Date();
+  seed_store.put({
+    id: Math.random(),
+    value: seed_data,
+    hash: seed_hash,
+    seed_id: seed_id,
+    date: now,
+  });
 }
 
 function load_old_seeds() {
@@ -294,42 +302,49 @@ function load_old_seeds() {
     var seed_tx = seed_db.transaction("SeedStorage", "readwrite");
     var seed_store = seed_tx.objectStore("SeedStorage");
 
-    var all_seeds = seed_store.getAll()
+    var all_seeds = seed_store.getAll();
     all_seeds.onsuccess = function () {
       try {
         var arrayLength = all_seeds.result.length;
-        var sorted_array = all_seeds.result
+        var sorted_array = all_seeds.result;
         sorted_array.sort(function (a, b) {
           return new Date(b.date) - new Date(a.date);
         });
         for (var i = 0; i < arrayLength; i++) {
-
           if (sorted_array[i].date == undefined) {
-            seed_store.delete(sorted_array[i].id)
+            seed_store.delete(sorted_array[i].id);
           }
-          if (i > 10){
-            seed_store.delete(sorted_array[i].id)
+          if (i > 10) {
+            seed_store.delete(sorted_array[i].id);
           }
-          console.log(sorted_array[i]);
-          // TODO: Generate UI with this data
           document.getElementById("nav-pastgen-tab").style.display = "block";
-          const hook = document.getElementById("pastgenlist")
-          const option_el = document.createElement("option")
-          const option_dt = sorted_array[i].date.toLocaleDateString(undefined,{year:"numeric",month:"short",day:"2-digit",hour:"2-digit",minute:"2-digit",second:"2-digit"})
-          const option_str = option_dt + " (Seed: " + sorted_array[i].seed_id + ")"
-          const option_txt = document.createTextNode(option_str)
-          option_el.appendChild(option_txt)
-          hook.appendChild(option_el)
+          const hook = document.getElementById("pastgenlist");
+          const option_el = document.createElement("option");
+          const option_dt = sorted_array[i].date.toLocaleDateString(undefined, {
+            year: "numeric",
+            month: "short",
+            day: "2-digit",
+            hour: "2-digit",
+            minute: "2-digit",
+            second: "2-digit",
+          });
+          const option_str =
+            option_dt + " (Seed: " + sorted_array[i].seed_id + ")";
+          const option_txt = document.createTextNode(option_str);
+          option_el.appendChild(option_txt);
+          option_el.lanky_data = sorted_array[i].value;
+          hook.appendChild(option_el);
         }
-      }
-      catch { }
-
+      } catch {}
     };
-  }
-  catch { }
-
+  } catch {}
 }
 
+function get_previous_seed_data() {
+  var sel = document.getElementById("pastgenlist");
+  var text = sel.options[sel.selectedIndex].lanky_data;
+  return text;
+}
 function load_file_from_db() {
   try {
     // If we actually have a file in the DB load it
@@ -348,10 +363,9 @@ function load_file_from_db() {
         $("#rom_2").attr("placeholder", "Using cached ROM");
         $("#rom_3").attr("placeholder", "Using cached ROM");
         $("#rom_3").val("Using cached ROM");
-      } catch { }
+      } catch {}
     };
-  }
-  catch { }
+  } catch {}
 }
 
 var w;
