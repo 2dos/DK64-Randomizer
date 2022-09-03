@@ -63,7 +63,7 @@ set_variables = {
     "fairy_prices": [3, 6],
     "helm_order": [2, 3, 1, 0xFF, 0xFF],
     "disco_chunky": 1,
-    "helm_hurry_mode": 1,
+    "helm_hurry_mode": 0,
 }
 
 

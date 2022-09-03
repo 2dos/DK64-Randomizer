@@ -32,6 +32,34 @@ void writeEndSequence(void) {
 	copyFromROM(0x1FFF800,(int*)0x807506D0,&file_size,0,0,0,0);
 }
 
+void expandSaveFile(int static_expansion, int actor_count) {
+	int expansion = static_expansion + actor_count;
+	int model2_start = 800 + expansion;
+	int flag_block_size = 0x6B7 + expansion;
+	// Flag Block Size
+	*(short*)(0x8060E36A) = flag_block_size;
+	*(short*)(0x8060E31E) = flag_block_size;
+	*(short*)(0x8060E2C6) = flag_block_size;
+	*(short*)(0x8060D54A) = flag_block_size;
+	*(short*)(0x8060D4A2) = flag_block_size;
+	*(short*)(0x8060D45E) = flag_block_size;
+	*(short*)(0x8060D3C6) = flag_block_size;
+	*(short*)(0x8060D32E) = flag_block_size;
+	*(short*)(0x8060D23E) = flag_block_size;
+	*(short*)(0x8060CF62) = flag_block_size;
+	*(short*)(0x8060CC52) = flag_block_size;
+	*(short*)(0x8060C78A) = flag_block_size;
+	*(short*)(0x8060C352) = flag_block_size;
+	*(short*)(0x8060BEC6) = flag_block_size - 0x72; // (0x645, might need adjusting)
+	*(short*)(0x8060BF96) = flag_block_size;
+	*(short*)(0x8060BA7A) = flag_block_size;
+	// Model 2 Start
+	*(short*)(0x8060C2F2) = model2_start;
+	*(short*)(0x8060BCDE) = model2_start;
+	// Reallocate Balloons + Patches
+	*(short*)(0x80688BCE) = 800 + static_expansion; // Reallocated to just before model 2 block
+}
+
 static const short kong_flags[] = {385,6,70,66,117};
 void initHack(int source) {
 	if (LoadedHooks == 0) {
@@ -81,6 +109,9 @@ void initHack(int source) {
 			alterGBKong(0x10, 0x5B, Rando.free_source_ttemple); // In Tiny's Cage
 			alterGBKong(0x14, 0x6C, Rando.free_source_llama); // Free Lanky GB
 			alterGBKong(0x1A, 0x78, Rando.free_source_factory); // Free Chunky GB
+			// Savefile Expansion		
+			int balloon_patch_count = 300; // Normally 121
+			expandSaveFile(0x100,balloon_patch_count);
 			if (Rando.no_health_refill) {
 				*(int*)(0x80683A34) = 0; // Cancel Tag Health Refill
 				// *(int*)(0x8060DD10) = 0; // Load File
