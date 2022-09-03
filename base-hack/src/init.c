@@ -33,31 +33,50 @@ void writeEndSequence(void) {
 }
 
 void expandSaveFile(int static_expansion, int actor_count) {
+	/*
+		File cannot be bigger than 0x200 bytes
+
+		File Structure:
+			0x000->0x320 = Flags
+			0x320->c+0x320 = Model2
+			c+0x320->c+0x645 = Kong Vars
+			c+0x645->c+0x6B7 = File Global Vars
+
+		Generalized:
+			0 -> f = Flags
+			f -> f+c = Model 2
+			f+c -> f+c+5k = Kong Vars
+			f+c+5k -> f+c+5k+0x72 = File Global Vars
+	*/
+	// int expansion = static_expansion;
 	int expansion = static_expansion + actor_count;
-	int model2_start = 800 + expansion;
-	int flag_block_size = 0x6B7 + expansion;
+	int flag_block_size = 0x320 + expansion;
+	int kong_var_size = 0xA1;
+	int file_info_location = flag_block_size + (5 * kong_var_size);
+	int file_default_size = file_info_location + 0x72;
 	// Flag Block Size
-	*(short*)(0x8060E36A) = flag_block_size;
-	*(short*)(0x8060E31E) = flag_block_size;
-	*(short*)(0x8060E2C6) = flag_block_size;
-	*(short*)(0x8060D54A) = flag_block_size;
-	*(short*)(0x8060D4A2) = flag_block_size;
-	*(short*)(0x8060D45E) = flag_block_size;
-	*(short*)(0x8060D3C6) = flag_block_size;
-	*(short*)(0x8060D32E) = flag_block_size;
-	*(short*)(0x8060D23E) = flag_block_size;
-	*(short*)(0x8060CF62) = flag_block_size;
-	*(short*)(0x8060CC52) = flag_block_size;
-	*(short*)(0x8060C78A) = flag_block_size;
-	*(short*)(0x8060C352) = flag_block_size;
-	*(short*)(0x8060BEC6) = flag_block_size - 0x72; // (0x645, might need adjusting)
-	*(short*)(0x8060BF96) = flag_block_size;
-	*(short*)(0x8060BA7A) = flag_block_size;
+	*(short*)(0x8060E36A) = file_default_size;
+	*(short*)(0x8060E31E) = file_default_size;
+	*(short*)(0x8060E2C6) = file_default_size;
+	*(short*)(0x8060D54A) = file_default_size;
+	*(short*)(0x8060D4A2) = file_default_size;
+	*(short*)(0x8060D45E) = file_default_size;
+	*(short*)(0x8060D3C6) = file_default_size;
+	*(short*)(0x8060D32E) = file_default_size;
+	*(short*)(0x8060D23E) = file_default_size;
+	*(short*)(0x8060CF62) = file_default_size;
+	*(short*)(0x8060CC52) = file_default_size;
+	*(short*)(0x8060C78A) = file_default_size;
+	*(short*)(0x8060C352) = file_default_size;
+	*(short*)(0x8060BF96) = file_default_size;
+	*(short*)(0x8060BA7A) = file_default_size;
+
+	*(short*)(0x8060BEC6) = file_info_location;
 	// Model 2 Start
-	*(short*)(0x8060C2F2) = model2_start;
-	*(short*)(0x8060BCDE) = model2_start;
+	*(short*)(0x8060C2F2) = flag_block_size;
+	*(short*)(0x8060BCDE) = flag_block_size;
 	// Reallocate Balloons + Patches
-	*(short*)(0x80688BCE) = 800 + static_expansion; // Reallocated to just before model 2 block
+	*(short*)(0x80688BCE) = 0x320 + static_expansion; // Reallocated to just before model 2 block
 }
 
 static const short kong_flags[] = {385,6,70,66,117};
@@ -417,13 +436,18 @@ void initHack(int source) {
 			*(int*)(0x8060D4B0) = 0x252A0000; // Global Block after 1 file entry
 			*(int*)(0x8060D558) = 0x258D0000; // Global Block after 1 file entry
 			*(int*)(0x8060CF74) = 0x25090000; // Global Block after 1 file entry
-			*(int*)(0x8060CFCC) = 0x25AE0000; // Global Block after 1 file entry
+			// *(int*)(0x8060CFCC) = 0x25AE0000; // Global Block after 1 file entry
 			*(int*)(0x8060D24C) = 0x25AE0000; // Global Block after 1 file entry
 			*(int*)(0x8060C84C) = 0xA02067C8; // Force file 0
 			*(int*)(0x8060C654) = 0x24040000; // Force file 0 - Save
 			*(int*)(0x8060C664) = 0xAFA00034; // Force file 0 - Save
 			*(int*)(0x8060C6C4) = 0x24040000; // Force file 0 - Read
 			*(int*)(0x8060C6D4) = 0xAFA00034; // Force file 0 - Read
+
+			// for (int i = 0; i < 10; i++) {
+			// 	*(int*)(0x8060D6A0 + (4 * i)) = 0;
+			// }
+			// *(short*)(0x8060D6C8) = 0x5000;
 			// Decouple Camera from Shockwave
 			*(short*)(0x806E9812) = FLAG_ABILITY_CAMERA; // Usage
 			*(short*)(0x806AB0F6) = FLAG_ABILITY_CAMERA; // Isles Fairies Display
