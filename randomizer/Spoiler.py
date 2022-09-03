@@ -404,7 +404,9 @@ class Spoiler:
                 "Creepy Castle": [],
             }
             for group in self.cb_placements:
-                humanspoiler["Colored Banana Locations"][level_dict[group["level"]]].append(NameFromKong(group["kong"]) + human_cb_type_map[group["type"]] + ": " + Maps(group["map"]).name + " - " + group["name"])
+                humanspoiler["Colored Banana Locations"][level_dict[group["level"]]].append(
+                    NameFromKong(group["kong"]) + human_cb_type_map[group["type"]] + ": " + Maps(group["map"]).name + " - " + group["name"]
+                )
 
         return json.dumps(humanspoiler, indent=4)
 
