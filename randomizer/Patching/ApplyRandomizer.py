@@ -333,6 +333,11 @@ def patching_response(responded_data):
     if spoiler.settings.cb_rando:
         ROM().seek(sav + 0xAF)
         ROM().write(1)
+    
+    # Helm Hurry Mode
+    if spoiler.settings.helm_hurry:
+        ROM().seek(sav + 0xAE)
+        ROM().write(1)
 
     keys_turned_in = [0, 1, 2, 3, 4, 5, 6, 7]
     if len(spoiler.settings.krool_keys_required) > 0:

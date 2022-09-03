@@ -424,7 +424,7 @@ move_names = [
     {"name": "Coconut Shooter", "move_type": "gun"},
     {"name": "Peanut Popguns", "move_type": "gun"},
     {"name": "Grape Shooter", "move_type": "gun"},
-    {"name": "Feather Bos", "move_type": "gun"},
+    {"name": "Feather Bow", "move_type": "gun"},
     {"name": "Pineapple Launcher", "move_type": "gun"},
     {"name": "Bongo Blast", "move_type": "instrument"},
     {"name": "Guitar Gazump", "move_type": "instrument"},
