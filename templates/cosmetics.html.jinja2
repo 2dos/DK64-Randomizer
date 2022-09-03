@@ -408,7 +408,7 @@
     
     $('.nav-tabs').click(function() {
         var settings = (document.cookie).split('saved_settings=')
-        if (typeof settings[1] !== 'undefined'){
+        if (typeof settings[1] !== 'undefined') {
             var object = JSON.parse(settings[1])
             if (object.hasOwnProperty('dk_custom_color')) {
                 $('.dkColorPicker').attr('style', 'background-color:' + object.dk_custom_color + ';')
