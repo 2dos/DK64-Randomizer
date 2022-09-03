@@ -329,6 +329,11 @@ def patching_response(responded_data):
         ROM().seek(sav + 0x12F)
         ROM().write(1)
 
+    # Show CBs & Coins
+    if spoiler.settings.cb_rando:
+        ROM().seek(sav + 0xAF)
+        ROM().write(1)
+
     keys_turned_in = [0, 1, 2, 3, 4, 5, 6, 7]
     if len(spoiler.settings.krool_keys_required) > 0:
         for key in spoiler.settings.krool_keys_required:
