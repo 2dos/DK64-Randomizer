@@ -1425,7 +1425,7 @@ def SetNewProgressionRequirementsUnordered(settings: Settings):
     # Until we've completed every level...
     while len(levelsProgressed) < 7:
         # Pick a random accessible B. Locker
-        accessibleIncompleteLevels = [level for level in openLevels if level not in levelsProgressed and settings.EntryGBs[level] <= runningGBTotal]
+        accessibleIncompleteLevels = [level for level in openLevels if level not in levelsProgressed and settings.EntryGBs[level] <= round(runningGBTotal * BLOCKER_MAX)]
         # If we have no levels accessible, we need to lower a B. Locker count to make one accessible
         if len(accessibleIncompleteLevels) == 0:
             openUnprogressedLevels = [level for level in openLevels if level not in levelsProgressed]
@@ -1445,7 +1445,7 @@ def SetNewProgressionRequirementsUnordered(settings: Settings):
                 settings.EntryGBs[incompleteLevelWithLowestBLocker] = settings.EntryGBs[nextLevelToBeat]
                 settings.EntryGBs[nextLevelToBeat] = temp
             # If the level still isn't accessible, we have to truncate the required amount
-            if settings.EntryGBs[nextLevelToBeat] > runningGBTotal:
+            if settings.EntryGBs[nextLevelToBeat] > round(runningGBTotal * BLOCKER_MAX):
                 # Each B. Locker must be greater than the previous one and at least a specified percentage of availalbe GBs
                 settings.EntryGBs[nextLevelToBeat] = random.randint(max(minimumBLockerGBs, round(runningGBTotal * BLOCKER_MIN)), round(runningGBTotal * BLOCKER_MAX))
             accessibleIncompleteLevels = [nextLevelToBeat]
