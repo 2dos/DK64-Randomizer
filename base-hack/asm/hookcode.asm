@@ -1221,5 +1221,14 @@ START_HOOK:
 		CoinHUDReposition_Finish:
 			J 	0x806F88D0
 			ADDIU 	t7, r0, 0x122
+
+	SaveHelmHurryCheck:
+		SW 		s2, 0x28 (sp)
+		JAL		canSaveHelmHurry
+		SW 		s1, 0x24 (sp)
+		OR 		t6, v0, r0
+		J 		0x8060DEFC
+		ADDIU 	at, r0, 1
+		
 .align 0x10
 END_HOOK:

@@ -199,6 +199,9 @@ GiveItemPointerToMultiHook:
 CoinHUDRepositionHook:
 	J 	CoinHUDReposition
 	NOP
+SaveHelmHurryCheckHook:
+	J 	SaveHelmHurryCheck
+	NOP
 
 loadExtraHooks:
 	LUI t3, hi(InstanceScriptHook)
@@ -302,6 +305,12 @@ loadExtraHooks:
 	LUI t4, 0x806D
 	SW t3, 0x9A7C (t4) // Store Hook
 	SW r0, 0x9A80 (t4) // Store NOP
+	
+	LUI t3, hi(SaveHelmHurryCheckHook)
+	LW t3, lo(SaveHelmHurryCheckHook) (t3)
+	LUI t4, 0x8061
+	SW t3, 0xDEF4 (t4) // Store Hook
+	SW r0, 0xDEF8 (t4) // Store NOP
 
 	LUI t3, hi(WarpToIslesEnabled)
 	LBU t3, lo(WarpToIslesEnabled) (t3)

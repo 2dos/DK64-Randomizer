@@ -230,6 +230,11 @@ void initHack(int source) {
 				*(int*)(0x806396D0) = 0x95CD036E; // Rendering
 				*(int*)(0x80639690) = 0x9519036E; // Rendering
 			}
+			if (Rando.helm_hurry_mode) {
+				*(int*)(0x806F56F8) = 0x0C000000 | (((int)&blueprintCollect & 0xFFFFFF) >> 2); // Blueprint collection hook
+				*(int*)(0x80713CCC) = 0; // Prevent Helm Timer Disable
+				*(int*)(0x80713CD8) = 0; // Prevent Shutdown Song Playing
+			}
 			if (Rando.fast_warp) {
 				// Replace vanilla warp animation (0x52) with monkeyport animation (0x53)
 				*(short*)(0x806EE692) = 0x54;

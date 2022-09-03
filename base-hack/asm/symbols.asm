@@ -61,6 +61,8 @@
 .definelabel getParentDataIndex, 0x80688D64
 .definelabel getScreenPosition, 0x80626F8C
 .definelabel WarpToDKTV, 0x807131BC
+.definelabel initHelmTimer, 0x80712574
+.definelabel LoadGameOver, 0x807127B4
 .definelabel textDraw, 0x806FD490
 .definelabel wipeStoredSetup, 0x80611614
 .definelabel complex_free, 0x8061130C
@@ -418,6 +420,7 @@
 .definelabel KKOPhaseRandoOn, 0x807FFFE0
 .definelabel KKOPhaseOrder, 0x807FFFE1
 .definelabel MultiBunchCount, 0x807FFFDE
+.definelabel QueueHelmTimer, 0x807FFFDD
 
 .definelabel CrankyMoves_New, 0x807FF400
 .definelabel CandyMoves_New, 0x807FF4F0

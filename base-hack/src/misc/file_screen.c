@@ -251,6 +251,9 @@ void file_progress_screen_code(actorData* actor, int buttons) {
 					if(Rando.fast_gbs) {
 						setPermFlag(FLAG_RABBIT_ROUND1); //Start race at round 2
 					}
+					if (Rando.helm_hurry_mode) {
+						QueueHelmTimer = 1;
+					}
 					setPermFlag(FLAG_ESCAPE);
 					Character = Rando.starting_kong;
 					StoredSettings.file_extra[(int)FileIndex].location_sss_purchased = 0;
@@ -263,6 +266,9 @@ void file_progress_screen_code(actorData* actor, int buttons) {
 					Character = Rando.starting_kong;
 					determineStartKong_PermaLossMode();
 					giveCollectables();
+					if (Rando.helm_hurry_mode) {
+						setFlag(FLAG_LOADED_GAME_OVER,1,0);
+					}
 				}
 				ForceStandardAmmo = 0;
 			} else if (buttons & 2) { // B

@@ -46,7 +46,8 @@ typedef struct varspace {
 	/* 0x0A7 */ char move_rando_on; // O = No Move Randomization. 1 = On.
 	/* 0x0A8 */ unsigned char tbarrel_prices[4]; // Array of training barrel move prices. First is dive, then orange, then barrel, then vine
 	/* 0x0AC */ unsigned char fairy_prices[2]; // Array of fairy move prices. First is camera, second is shockwave. Shockwave/Camera combo price is calculated as the sum of the two
-	/* 0x0A8 */ char unk_AE[0x120 - 0xAE];
+	/* 0x0AE */ char helm_hurry_mode; // 0 = Off, 1 = On: Starting a new file summons the helm timer, each BP adds 2 minutes to the clock, timing out disables saving.
+	/* 0x0AF */ char unk_AE[0x120 - 0xAF];
 	/* 0x120 */ char kut_out_kong_order[5]; // Value of item: 0 = DK, 1 = Diddy, 2 = Lanky, 3 = Tiny, 4 = Chunky. Kongs can be repeated
 	/* 0x125 */ unsigned char remove_blockers; // Bitfield of B. Lockers to remove. 0 = Remove None. 0x7F = remove all except Helm Lobby. 0xFF = Remove all.
 	/* 0x126 */ char resolve_bonus; // Bitfield. 0000 0001 = auto-complete bonus barrels. 0000 0010 = auto-complete helm barrels. 0 = Off. 3 = Resolve Helm & Bonus Barrels

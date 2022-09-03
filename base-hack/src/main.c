@@ -136,6 +136,12 @@ void earlyFrame(void) {
 			MapVoid_MaxX = 703;
 			MapVoid_MaxZ = 757;
 		}
+		if ((Rando.helm_hurry_mode) && (QueueHelmTimer)) {
+			if (HelmTimerShown == 0) {
+				initHelmTimer();
+			}
+			QueueHelmTimer = 0;
+		}
 	}
 	if ((CurrentMap == 5) || (CurrentMap == 1) || (CurrentMap == 0x19)) {
 		if ((CutsceneActive) && (CutsceneIndex == 2)) {

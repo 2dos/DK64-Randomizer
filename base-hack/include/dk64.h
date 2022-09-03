@@ -75,6 +75,8 @@ extern void* getMapData(data_indexes data_idx, int _index, char compressbyte0, c
 extern void loadSetup(void* setup_file, int unk0, int unk1);
 extern int getParentDataIndex(int map);
 extern void WarpToDKTV(void);
+extern void initHelmTimer(void);
+extern void LoadGameOver(void);
 extern int getActorSpawnerIDFromTiedActor(void* actor);
 extern void deleteActorContainer(void* actor);
 extern void renderActor(void* actor, int unk0);
@@ -439,3 +441,4 @@ extern char ForceStandardAmmo;
 extern char KKOPhaseRandoOn;
 extern char KKOPhaseOrder[3];
 extern unsigned short MultiBunchCount;
+extern char QueueHelmTimer;
