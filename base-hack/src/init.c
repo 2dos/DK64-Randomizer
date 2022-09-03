@@ -129,8 +129,8 @@ void initHack(int source) {
 			alterGBKong(0x14, 0x6C, Rando.free_source_llama); // Free Lanky GB
 			alterGBKong(0x1A, 0x78, Rando.free_source_factory); // Free Chunky GB
 			// Savefile Expansion		
-			// int balloon_patch_count = 300; // Normally 121
-			// expandSaveFile(0x100,balloon_patch_count);
+			int balloon_patch_count = 300; // Normally 121
+			expandSaveFile(0x100,balloon_patch_count);
 			if (Rando.no_health_refill) {
 				*(int*)(0x80683A34) = 0; // Cancel Tag Health Refill
 				// *(int*)(0x8060DD10) = 0; // Load File
