@@ -75,6 +75,10 @@ void decouple_moves_fixes(void) {
 	} else if (CurrentMap == 0x11) {
 		HelmInit(0);
 	}
+	if ((CurrentMap >= 0xCB) && (CurrentMap <= 0xCF)) {
+		int phase = CurrentMap - 0xCB;
+		initKRool(phase);
+	}
 	if (Rando.short_bosses) {
 		if ((CurrentMap == 8) || (DestMap == 8)) {
 			*(short*)(0x8074D3A8) = 4; // Dillo Health - AD1

@@ -338,10 +338,20 @@ typedef struct cutsceneInfo {
 	/* 0x000 */ char csdata[0xC];
 } cutsceneInfo;
 
+typedef struct cutscene_item {
+	/* 0x000 */ char unk0;
+	/* 0x001 */ unsigned char command;
+	/* 0x002 */ char unk2[4];
+	/* 0x006 */ short params[3];
+	/* 0x00C */ char unkC[0x14-0xC];
+} cutscene_item;
+
 typedef struct cutsceneType {
 	/* 0x000 */ char unk_00[0xD0];
 	/* 0x0D0 */ cutsceneInfo* cutscene_databank;
-	/* 0x0D4 */ char unk_D4[0xE0-0xD4];
+	/* 0x0D4 */ char unk_D4[0xD8-0xD4];
+	/* 0x0D8 */ cutscene_item* cutscene_funcbank;
+	/* 0x0DC */ int unk_DE;
 } cutsceneType;
 
 typedef struct submapInfo {
@@ -618,6 +628,8 @@ typedef struct cannon {
 	/* 0x378 */ short destination_map;
 	/* 0x37A */ short destination_exit;
 } cannon;
+
+
 
 typedef struct blocker_cheat {
 	/* 0x000 */ unsigned char gb_count;

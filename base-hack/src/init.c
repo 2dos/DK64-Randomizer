@@ -304,6 +304,7 @@ void initHack(int source) {
 				*(short*)(0x8074E82C) = 0xE; // Tag Barrel Model
 				*(short*)(0x8075EDAA) = 0xE; // Cutscene Chunky Model
 				*(short*)(0x8075571E) = 0xE; // Generic Cutscene Model
+				*(int*)(0x806F1274) = 0; // Prevent model change for GGone
 			}
 			if (Rando.fast_gbs) {
 				*(short*)(0x806BBB22) = 0x0005; // Chunky toy box speedup
@@ -420,13 +421,13 @@ void initHack(int source) {
 			*(int*)(0x8060D3AC) = 0; // Prevent EEPROM Shuffle
 			*(int*)(0x8060DCE8) = 0; // Prevent EEPROM Shuffle
 			*(int*)(0x8060C760) = 0x24900000; // Always load file 0
-			*(short*)(0x8060CC22) = 1; // File Loop Cancel 1
+			// s*(short*)(0x8060CC22) = 1; // File Loop Cancel 1
 			*(short*)(0x8060CD1A) = 1; // File Loop Cancel 2
 			*(short*)(0x8060CE7E) = 1; // File Loop Cancel 3
 			*(short*)(0x8060CE5A) = 1; // File Loop Cancel 4
 			*(short*)(0x8060CF0E) = 1; // File Loop Cancel 5
 			*(short*)(0x8060CF26) = 1; // File Loop Cancel 6
-			*(short*)(0x8060D0DE) = 1; // File Loop Cancel 7
+			//*(short*)(0x8060D0DE) = 1; // File Loop Cancel 7
 			*(short*)(0x8060D106) = 1; // File Loop Cancel 8
 			*(short*)(0x8060D43E) = 1; // File Loop Cancel 8
 			*(int*)(0x8060CD08) = 0x26670000; // Save to File - File Index

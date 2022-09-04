@@ -158,11 +158,21 @@ typedef struct cutscene_item_data {
 	/* 0x008 */ void* length_array;
 } cutscene_item_data;
 
-void modifyCutsceneItem(int bank, int cutscene, int point, int new_item) {
+void modifyCutscenePoint(int bank, int cutscene, int point, int new_item) {
 	if (CutsceneBanks[bank].cutscene_databank) {
 		void* databank = CutsceneBanks[bank].cutscene_databank;
 		cutscene_item_data* data = (cutscene_item_data*)getObjectArrayAddr(databank,0xC,cutscene);
 		short* write_spot = (short*)getObjectArrayAddr(data->point_array,2,point);
 		*(short*)write_spot = new_item;
+	}
+}
+
+void modifyCutsceneItem(int bank, int item, int new_param1, int new_param2, int new_param3) {
+	if (CutsceneBanks[bank].cutscene_funcbank) {
+		void* funcbank = CutsceneBanks[bank].cutscene_funcbank;
+		cutscene_item* data = (cutscene_item*)getObjectArrayAddr(funcbank,0x14,item);
+		data->params[0] = new_param1;
+		data->params[1] = new_param2;
+		data->params[2] = new_param3;
 	}
 }
