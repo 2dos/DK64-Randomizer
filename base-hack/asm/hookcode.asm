@@ -704,8 +704,8 @@ START_HOOK:
 		LBU 		t2, lo(ForceStandardAmmo) (t2)
 		BEQZ 		t2, HomingDisable_Finish
 		NOP
-		LUI 		t2, hi(QoLOn)
-		LBU 		t2, lo(QoLOn) (t2)
+		LUI 		t2, hi(ToggleAmmoOn)
+		LBU 		t2, lo(ToggleAmmoOn) (t2)
 		BEQZ 		t2, HomingDisable_Finish
 		NOP
 		ANDI 		t1, t1, 0xFFFD

@@ -80,8 +80,8 @@ void cFuncLoop(void) {
 			}
 		}
 	}
-	if (Rando.quality_of_life) {
-		handleDPadFunctionality();
+	handleDPadFunctionality();
+	if (Rando.quality_of_life.fast_boot) {
 		if (Gamemode == 3) {
 			if (TransitionSpeed < 0) {
 				TransitionType = 1;

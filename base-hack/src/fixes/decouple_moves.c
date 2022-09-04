@@ -106,7 +106,7 @@ void decouple_moves_fixes(void) {
 	}
 	if (in_boss) {
 		PatchKRoolCode();
-		if (Rando.quality_of_life) {
+		if (Rando.quality_of_life.vanilla_fixes) {
 			*(short*)(0x800359A6) = 3;
 		}
 	}

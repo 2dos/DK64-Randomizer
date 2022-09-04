@@ -402,7 +402,7 @@
 .definelabel permaLossMode, 0x807FFFEC // u8
 .definelabel preventTagSpawn, 0x807FFFEA // u8
 .definelabel bonusAutocomplete, 0x807FFFE9 // u8
-.definelabel QoLOn, 0x807FFFE8 // u8
+.definelabel TextHoldOn, 0x807FFFE8 // u8
 .definelabel LobbiesOpen, 0x807FFFE7 // u8
 .definelabel Rando, 0x807FF800 // 0x200
 .definelabel InstanceScriptParams, 0x807FFFB4 // 0x8
@@ -421,6 +421,7 @@
 .definelabel KKOPhaseOrder, 0x807FFFE1
 .definelabel MultiBunchCount, 0x807FFFDE
 .definelabel QueueHelmTimer, 0x807FFFDD
+.definelabel ToggleAmmoOn, 0x807FFFDC
 
 .definelabel CrankyMoves_New, 0x807FF400
 .definelabel CandyMoves_New, 0x807FF4F0

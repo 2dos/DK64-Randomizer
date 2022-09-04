@@ -461,17 +461,17 @@ loadExtraHooks:
 	LUI t4, 0x806B
 	SW t3, 0xF70C (t4) // Store Hook
 	SW r0, 0xF710 (t4) // Store NOP
-
-	LUI t3, hi(QoLOn)
-	LBU t3, lo(QoLOn) (t3)
-	BEQZ t3, loadExtraHooks_3
-	NOP
-
+	
 	LUI t3, hi(NinWarpHook)
 	LW t3, lo(NinWarpHook) (t3)
 	LUI t4, 0x8071
 	SW t3, 0x32BC (t4) // Store Hook
 	SW r0, 0x32C0 (t4) // Store NOP
+
+	LUI t3, hi(TextHoldOn)
+	LBU t3, lo(TextHoldOn) (t3)
+	BEQZ t3, loadExtraHooks_3
+	NOP
 
 	LUI t3, hi(TextHandlerHook)
 	LW t3, lo(TextHandlerHook) (t3)

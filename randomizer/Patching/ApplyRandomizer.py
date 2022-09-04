@@ -212,8 +212,8 @@ def patching_response(responded_data):
 
     # Quality of Life
     if spoiler.settings.quality_of_life:
-        ROM().seek(sav + 0x034)
-        ROM().write(1)
+        ROM().seek(sav + 0x0B0)
+        ROM().writeMultipleBytes(0xFFFF,2)
 
     # Damage amount
     ROM().seek(sav + 0x0A5)

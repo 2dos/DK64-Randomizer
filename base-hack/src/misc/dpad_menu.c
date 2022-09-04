@@ -62,7 +62,7 @@ int* drawDPad(int* dl) {
         dl = drawImage(dl, IMAGE_KONG_START + kong_left, RGBA16, 32, 32, DPAD_X, DPAD_Y + 70, ICON_SCALE, ICON_SCALE, ta_opacity);
         dl = drawImage(dl, IMAGE_KONG_START + kong_right, RGBA16, 32, 32, DPAD_X + 140, DPAD_Y + 70, ICON_SCALE, ICON_SCALE, ta_opacity);
     }
-    if (Rando.quality_of_life) {
+    if (Rando.quality_of_life.ammo_swap) {
         // Homing Ammo Toggle
         if (MovesBase[(int)Character].weapon_bitfield & 2) {
             int render_homing = 1 ^ ForceStandardAmmo;
@@ -72,6 +72,8 @@ int* drawDPad(int* dl) {
             dl = drawImage(dl, IMAGE_AMMO_START + render_homing, RGBA16, 32, 32, DPAD_X + 75, DPAD_Y + 145, ICON_SCALE, ICON_SCALE, 0xFF);
 
         }
+    }
+    if (Rando.quality_of_life.hud_bp_multibunch) {
         // Blueprint Show
         dl = drawImage(dl, 116, RGBA16, 32, 32, DPAD_X + 75, DPAD_Y, ICON_SCALE, ICON_SCALE, 0xFF);
     }
@@ -80,14 +82,18 @@ int* drawDPad(int* dl) {
 
 void handleDPadFunctionality(void) {
     if (canUseDPad()) {
-        updateMultibunchCount();
-        if (NewlyPressedControllerInput.Buttons & D_Up) {
-            displayItemOnHUD(0xC,0,0);
-            int world = getWorld(CurrentMap,1);
-            if ((world < 7) && (CurrentMap != 0x2A)) {
-                displayItemOnHUD(0xA,0,0);
+        if (Rando.quality_of_life.hud_bp_multibunch) {
+            updateMultibunchCount();
+            if (NewlyPressedControllerInput.Buttons & D_Up) {
+                displayItemOnHUD(0xC,0,0);
+                int world = getWorld(CurrentMap,1);
+                if ((world < 7) && (CurrentMap != 0x2A)) {
+                    displayItemOnHUD(0xA,0,0);
+                }
             }
         }
-        toggleStandardAmmo();
+        if (Rando.quality_of_life.ammo_swap) {
+            toggleStandardAmmo();
+        }
     }
 }

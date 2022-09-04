@@ -297,7 +297,7 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 					case GALLEON_DKSTAR:
 						{
 							int progress = 1;
-							if (Rando.quality_of_life) {
+							if (Rando.quality_of_life.galleon_star) {
 								progress = 3;
 							}
 							behaviour_pointer->next_state = progress;
@@ -391,7 +391,7 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 					setNextTransitionType(0);
 				}
 			} else if (param2 == AZTEC_LLAMACOCONUT) {
-				if (!Rando.quality_of_life) {
+				if (!Rando.quality_of_life.remove_cutscenes) {
 					PlayCutsceneFromModelTwoScript(behaviour_pointer,23,1,0);
 				}
 			} else if (param2 == AZTEC_CHUNKY_CAGE) {
@@ -598,7 +598,7 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 				} else if ((index == 2) || (index == 3)) {
 					return getPressedSwitch(behaviour_pointer, kong_pellets[(int)Rando.free_source_japes], id);
 				} else if (index == 4) {
-					return !Rando.quality_of_life; // TODO: Retry this
+					return !Rando.quality_of_life.remove_cutscenes; // TODO: Retry this
 				}
 			} else if ((param2 == JAPES_GATE0) || (param2 == JAPES_GATE1) || (param2 == JAPES_GATE2)) {
 				if (Rando.open_level_sections) {
@@ -723,7 +723,7 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 					return 0;
 				}
 			} else if (param2 == FACTORY_LARGEMETALSECTION) {
-				if (Rando.quality_of_life) {
+				if (Rando.quality_of_life.vanilla_fixes) {
 					behaviour_pointer->current_state = 10;
 					unsigned char crusher_compontents[] = {1,3,8,9,4,10,11,12,13,2,5,6,7};
 					int* m2location = ObjectModel2Pointer;
@@ -773,7 +773,7 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 					behaviour_pointer->next_state = 3;
 				}
 			} else if (param2 == MILLREAR_CHUNKYCHECK_RATE) {
-				return Player->characterID == 6 || Rando.quality_of_life;
+				return Player->characterID == 6 || Rando.quality_of_life.vanilla_fixes;
 			}
 			break;
 		case FUNGI_GMUSH:

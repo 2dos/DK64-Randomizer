@@ -1165,3 +1165,21 @@ typedef struct collected_item_struct {
 	/* 0x01B */ char unk_1B;
 	/* 0x01C */ void* next_item;
 } collected_item_struct;
+
+typedef struct quality_options {
+	unsigned char reduce_lag : 1;
+	unsigned char remove_cutscenes : 1;
+	unsigned char fast_picture : 1;
+	unsigned char aztec_lobby_bonus : 1;
+	unsigned char dance_skip : 1;
+	unsigned char fast_boot : 1;
+	unsigned char fast_transform : 1;
+	unsigned char ammo_swap : 1;
+	unsigned char cb_indicator : 1;
+	unsigned char galleon_star : 1;
+	unsigned char vanilla_fixes : 1;
+	unsigned char textbox_hold : 1;
+	unsigned char caves_kosha_dead : 1;
+	unsigned char rambi_enguarde_pickup : 1;
+	unsigned char hud_bp_multibunch : 1;
+} quality_options;

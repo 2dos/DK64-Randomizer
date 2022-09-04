@@ -114,7 +114,8 @@ void initHack(int source) {
 			permaLossMode = Rando.perma_lose_kongs;
 			preventTagSpawn = Rando.prevent_tag_spawn;
 			bonusAutocomplete = Rando.resolve_bonus;
-			QoLOn = Rando.quality_of_life;
+			TextHoldOn = Rando.quality_of_life.textbox_hold;
+			ToggleAmmoOn = Rando.quality_of_life.ammo_swap;
 			LobbiesOpen = Rando.lobbies_open_bitfield;
 			ShorterBosses = Rando.short_bosses;
 			changeCharSpawnerFlag(0x14, 2, 93); // Tie llama spawn to lanky help me cutscene flag
@@ -219,45 +220,49 @@ void initHack(int source) {
 				*(int*)(0x806A9990) = 0x2A210270; // SLTI $at, $s1, 0x2A8
 				PauseSlot3TextPointer = (char*)&exittoisles;
 			}
-			if (Rando.quality_of_life) {
+			if (Rando.quality_of_life.reduce_lag) {
 				*(int*)(0x80748010) = 0x8064F2F0; // Cancel Sandstorm
+				// No Rain
+				*(float*)(0x8075E3E0) = 0.0f; // Set Isles Rain Radius to 0
+			}
+			if (Rando.quality_of_life.remove_cutscenes) {
+				// K. Lumsy
 				*(short*)(0x80750680) = 0x22;
 				*(short*)(0x80750682) = 0x1;
 				*(int*)(0x806BDC24) = 0x0C17FCDE; // Change takeoff warp func
-				// No Rain
-				*(float*)(0x8075E3E0) = 0.0f; // Set Isles Rain Radius to 0
-
 				*(short*)(0x806BDC8C) = 0x1000; // Apply no cutscene to all keys
 				*(short*)(0x806BDC3C) = 0x1000; // Apply shorter timer to all keys
+				// Fast Vulture
+				*(int*)(0x806C50BC) = 0x0C000000 | (((int)&clearVultureCutscene & 0xFFFFFF) >> 2); // Modify Function Call
+			}
+			if (Rando.quality_of_life.fast_picture) {
 				// Fast Camera Photo
 				*(short*)(0x80699454) = 0x5000; // Fast tick/no mega-slowdown on Biz
 				int picture_timer = 0x14;
 				*(short*)(0x806992B6) = picture_timer; // No wait for camera film development
 				*(short*)(0x8069932A) = picture_timer;
-				// Vines
-				// *(short*)(0x806DCFB2) = 0x432F; // Increase search radius to 175.0u
-				// int new_vine_exit_speed = 200;
-				// *(short*)(0x8075037C) = new_vine_exit_speed;
-				// *(short*)(0x80750380) = new_vine_exit_speed;
-				// *(short*)(0x80698EEE) = 0x4348; // 200.0f
-				// *(short*)(0x806DCD3E) = 0x4348; // 200.0f
+			}
+			if (Rando.quality_of_life.aztec_lobby_bonus) {
 				// Lower Aztec Lobby Bonus
 				*(short*)(0x80680D56) = 0x7C; // 0x89 if this needs to be unreachable without PTT
-				// Fast Vulture
-				*(int*)(0x806C50BC) = 0x0C000000 | (((int)&clearVultureCutscene & 0xFFFFFF) >> 2); // Modify Function Call
+			}
+			if (Rando.quality_of_life.fast_boot) {
 				// Remove DKTV - Game Over
 				*(short*)(0x8071319E) = 0x50;
 				*(short*)(0x807131AA) = 5;
 				// Remove DKTV - End Seq
 				*(short*)(0x8071401E) = 0x50;
 				*(short*)(0x8071404E) = 5;
+			}
+			if (Rando.quality_of_life.fast_transform) {
 				// Fast Barrel Animation
 				*(short*)(0x8067EAB2) = 1; // OSprint
 				*(short*)(0x8067EAC6) = 1; // HC Dogadon 2
 				*(short*)(0x8067EACA) = 1; // Others
 				*(short*)(0x8067EA92) = 1; // Others 2
+			}
+			if (Rando.quality_of_life.rambi_enguarde_pickup) {
 				// Transformations can pick up other's collectables
-				// *(int*)(0x806F7488) = 0x964F036E;
 				*(int*)(0x806F6330) = 0x96AC036E; // Collection
 				*(int*)(0x806F68A0) = 0x95B8036E; // DK Opacity
 				*(int*)(0x806F68DC) = 0x952C036E; // Diddy Opacity
@@ -527,7 +532,7 @@ void initHack(int source) {
 			*(short*)(0x806F86CA) = y_bottom - (4 * y_spacing); // Ammo
 			*(short*)(0x806F873E) = y_bottom - (4 * y_spacing); // Homing Ammo
 			// Multibunch HUD
-			if (Rando.quality_of_life) {
+			if (Rando.quality_of_life.hud_bp_multibunch) {
 				*(short*)(0x806F860A) = y_bottom - (5 * y_spacing); // Multi CB
 				*(int*)(0x806F97D8) = 0x0C000000 | (((int)&getHUDSprite_HUD & 0xFFFFFF) >> 2); // Change Sprite
 				*(int*)(0x806F6BF0) = 0x0C000000 | (((int)&preventMedalHUD & 0xFFFFFF) >> 2); // Prevent Model Two Medals showing HUD
@@ -546,12 +551,11 @@ void initHack(int source) {
 			*(unsigned short*)(0x806B7ECA) = 125; // 0x8078 for center-bottom ms timer
 			LoadedHooks = 1;
 		}
-
 	}
 }
 
 void quickInit(void) {
-	if (Rando.quality_of_life) {
+	if (Rando.quality_of_life.fast_boot) {
 		initHack(1);
 		initiateTransitionFade(0x51, 0, 5);
 		CutsceneWillPlay = 0;
