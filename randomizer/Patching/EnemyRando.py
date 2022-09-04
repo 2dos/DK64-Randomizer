@@ -1,5 +1,6 @@
 """Apply Boss Locations."""
 import random
+from webbrowser import get
 
 import js
 from randomizer.Lists.EnemyTypes import Enemies, EnemyMetaData
@@ -510,7 +511,7 @@ def randomize_enemies(spoiler: Spoiler):
                                 ROM().writeMultipleBytes(300, 2)
                             if new_enemy_id == Enemies.GetOut:
                                 ROM().seek(cont_map_spawner_address + spawner["offset"] + 0xA)
-                                get_out_timer = 0
+                                get_out_timer = 20
                                 if crown_timer > 20:
                                     damage_mult = 1
                                     damage_amts = {
@@ -521,6 +522,8 @@ def randomize_enemies(spoiler: Spoiler):
                                     if spoiler.settings.damage_amount in damage_amts:
                                         damage_mult = damage_amts[spoiler.settings.damage_amount]
                                     get_out_timer = random.randint(int(crown_timer / (12 / damage_mult)) + 1, crown_timer - 1)
+                                if get_out_timer == 0:
+                                    get_out_timer = 1
                                 ROM().writeMultipleBytes(get_out_timer, 1)
                             ROM().seek(cont_map_spawner_address + spawner["offset"] + 0xF)
                             default_scale = int.from_bytes(ROM().readBytes(1), "big")
