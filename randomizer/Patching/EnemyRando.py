@@ -1,6 +1,5 @@
 """Apply Boss Locations."""
 import random
-from webbrowser import get
 
 import js
 from randomizer.Lists.EnemyTypes import Enemies, EnemyMetaData
