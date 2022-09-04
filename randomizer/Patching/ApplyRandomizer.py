@@ -333,7 +333,7 @@ def patching_response(responded_data):
     if spoiler.settings.cb_rando:
         ROM().seek(sav + 0xAF)
         ROM().write(1)
-    
+
     # Helm Hurry Mode
     if spoiler.settings.helm_hurry:
         ROM().seek(sav + 0xAE)

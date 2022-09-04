@@ -71,5 +71,10 @@ void initKRool(int phase) {
 			modifyCutscenePoint(0, 22, 40, 7); // Overwrite playsong call with change of cutscene
 			modifyCutscenePoint(0, 12, 22, 8); // End of cutscene 12 should bring you to next phase
 		}
+	} else {
+		if (is_last) {
+			int phase_items[] = {134,102,111,174};
+			modifyCutsceneItem(0, phase_items[phase], 0x29, 0x22, 29);
+		}
 	}
 }
