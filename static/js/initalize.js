@@ -2,12 +2,13 @@
 async function run_python_file(file) {
   await pyodide.runPythonAsync(await (await fetch(file)).text());
 }
+let user_agent = navigator.userAgent;
 if (window.location.protocol != "https:") {
   if (location.hostname != "localhost" && location.hostname != "127.0.0.1") {
     location.href = location.href.replace("http://", "https://");
   }
 }
-if (location.hostname == "dev.dk64randomizer.com") {
+if (location.hostname == "dev.dk64randomizer.com" || location.hostname == "dk64randomizer.com") {
   var _LTracker = _LTracker || [];
   _LTracker.push({
     logglyKey: "5d3aa1b3-6ef7-4bc3-80ae-778d48a571b0",
@@ -46,7 +47,7 @@ window.onerror = function (error) {
 };
 function toast_alert(text) {
   try {
-    _LTracker.push(text);
+    _LTracker.push({"text": text, "agent": user_agent});
   } catch {}
   Toastify({
     text: text,
