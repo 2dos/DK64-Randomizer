@@ -53,6 +53,8 @@ def getBalancedCrownEnemyRando(crown_setting, damage_ohko_setting):
                 base_weight = EnemyMetaData[enemy].crown_weight
                 weight_diff = abs(base_weight - bias)
                 new_weight = abs(10 - weight_diff)
+                if enemy == Enemies.GetOut:
+                    new_weight = 1
                 if damage_ohko_setting is False or enemy is not Enemies.GetOut:
                     for count in range(new_weight):
                         legacy_hard_mode.append(enemy)
@@ -104,12 +106,17 @@ def getBalancedCrownEnemyRando(crown_setting, damage_ohko_setting):
                     count_disruptive = EnemyMetaData[new_enemy].disruptive + count_disruptive
                     enemy_swaps_library[map_id].append(new_enemy)
         elif crown_setting == "hard":
+            get_out_spawned_this_hard_map = False
             for map_id in enemy_swaps_library:
                 number_of_enemies = 3
                 if map_id == Maps.GalleonCrown or map_id == Maps.LobbyCrown or map_id == Maps.HelmCrown:
                     number_of_enemies = 4
                 for count in range(number_of_enemies):
-                    enemy_swaps_library[map_id].append(random.choice(legacy_hard_mode))
+                    if get_out_spawned_this_hard_map:
+                        enemy_to_place = random.choice([possible_enemy for possible_enemy in legacy_hard_mode if possible_enemy != Enemies.GetOut])
+                    else:
+                        enemy_to_place = random.choice(legacy_hard_mode)
+                    enemy_swaps_library[map_id].append(enemy_to_place)
         # one last shuffle, to make sure any enemy can spawn in any spot
         for map_id in enemy_swaps_library:
             if len(enemy_swaps_library[map_id]) > 0:
