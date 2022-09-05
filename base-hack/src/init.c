@@ -310,6 +310,7 @@ void initHack(int source) {
 				*(short*)(0x8075EDAA) = 0xE; // Cutscene Chunky Model
 				*(short*)(0x8075571E) = 0xE; // Generic Cutscene Model
 				*(int*)(0x806F1274) = 0; // Prevent model change for GGone
+				*(int*)(0x806CBB84) = 0; // Enable opacity filter
 			}
 			if (Rando.fast_gbs) {
 				*(short*)(0x806BBB22) = 0x0005; // Chunky toy box speedup
