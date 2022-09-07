@@ -30,6 +30,7 @@
 .importobj "obj/src_misc_warp_to_isles.o"
 .importobj "obj/src_randomizers_boss_rando.o"
 .importobj "obj/src_randomizers_every_lz_rando.o"
+.importobj "obj/src_randomizers_item_rando.o"
 .importobj "obj/src_randomizers_kut_out.o"
 .importobj "obj/src_randomizers_k_rool_order.o"
 .importobj "obj/src_randomizers_level_order.o"

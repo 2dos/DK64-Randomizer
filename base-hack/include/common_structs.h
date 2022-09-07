@@ -321,7 +321,8 @@ typedef struct ModelTwoData {
 	/* 0x086 */ char unk_86[0x2];
 	/* 0x088 */ short sub_id;
 	/* 0x08A */ short object_id;
-	/* 0x08C */ char unk_8C[0x4];
+	/* 0x08C */ unsigned char collectable_state;
+	/* 0x08D */ char unk_8D[0x3];
 } ModelTwoData;
 
 typedef struct WarpInfo {
@@ -710,7 +711,7 @@ typedef struct behaviour_data {
 	/* 0x060 */ char unk_60;
 	/* 0x061 */ char unk_61;
 	/* 0x062 */ unsigned short unk_62;
-	/* 0x064 */ char unk_64[0x66-0x64];
+	/* 0x064 */ short unk_64;
 	/* 0x066 */ unsigned char unk_66;
 	/* 0x067 */ char unk_67[0x70-0x67];
 	/* 0x070 */ char unk_70;
