@@ -86,6 +86,9 @@ void decouple_moves_fixes(void) {
 			*(short*)(0x8074D3A8) = 3; // Dillo Health - AD2
 		}
 	}
+	if (ObjectModel2Timer < 2) {
+		WarpData = 0;
+	}
 	writeCoinRequirements(1);
 	fixTBarrelsAndBFI(0);
 	if ((*(int*)(0x807FBB64) << 1) & 0x80000000) {

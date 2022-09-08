@@ -1,0 +1,5 @@
+.data
+id = 0x59
+.code
+EXEC 7 | 125 65535 89
+ENDBLOCK

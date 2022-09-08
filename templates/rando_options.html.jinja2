@@ -142,16 +142,6 @@
                 </div>
                 <div class="form-check form-switch item-switch">
                     <label data-toggle="tooltip"
-                           title="Random mappings of bananaport locations.">
-                        <input class="form-check-input"
-                               type="checkbox"
-                               name="bananaport_rando"
-                               value="True"/>
-                        Shuffle Bananaports
-                    </label>
-                </div>
-                <div class="form-check form-switch item-switch">
-                    <label data-toggle="tooltip"
                            title="Starting kong and kong locations have been randomized.">
                         <input class="form-check-input"
                                type="checkbox"
@@ -194,6 +184,7 @@
                         Shuffle Colored Banana Locations
                     </label>
                 </div>
+                <div class="spacer"></div>
             </div>
             <div class="flex-container">
                 <div class="item-select">
@@ -268,7 +259,28 @@
                         </option>
                     </select>
                 </div>
-                <div class="spacer"></div>
+                <div class="item-select">
+                    <p class="select-title">Shuffle Bananaports</p>
+                    <select name="bananaport_rando"
+                            id="bananaport_rando"
+                            class="form-select"
+                            aria-label="Randomization type"
+                            data-toggle="tooltip"
+                            title="Random mappings of bananaport locations.">
+                        <option id="off" selected value="off">
+                            Vanilla
+                        </option>
+                        <option id="in_level" value="in_level">
+                            In-Level
+                        </option>
+                        <option id="crossmap_coupled" value="crossmap_coupled">
+                            Cross-Map (Coupled)
+                        </option>
+                        <option id="crossmap_decoupled" value="crossmap_decoupled">
+                            Cross-Map (Decoupled)
+                        </option>
+                    </select>
+                </div>
             </div>
         </div>
     </div>

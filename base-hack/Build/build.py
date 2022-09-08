@@ -10,6 +10,7 @@ import zlib
 import create_helm_geo
 import generate_watch_file
 import shop_instance_script  # HAS TO BE BEFORE `instance_script_maker`
+from writeWarpData import generateDefaultPadPairing  # HAS TO BE BEFORE `instance_script_maker`
 import instance_script_maker
 import model_fix
 
@@ -509,6 +510,21 @@ file_dict.append(
     }
 )
 
+with open(ROMName, "rb") as fh:
+    adjustExits(fh)
+
+for x in range(216):
+    if os.path.exists(f"exit{x}.bin"):
+        file_dict.append(
+            {
+                "name": f"Map {x} Exits",
+                "pointer_table_index": 23,
+                "file_index": x,
+                "source_file": f"exit{x}.bin",
+                "do_not_compress": True,
+                "do_not_delete_source": True,
+            }
+        )
 
 print("\nDK64 Extractor\nBuilt by Isotarge")
 
@@ -796,6 +812,7 @@ with open(newROMName, "r+b") as fh:
     fh.write(bytearray(arr))
     writeVanillaMoveData(fh)
     adjustExits(fh)
+    generateDefaultPadPairing(fh)
     writeVanillaSongData(fh)
     for x in portal_images:
         for y in x:
@@ -939,6 +956,9 @@ with open(newROMName, "r+b") as fh:
         os.remove(new_coin_sfx)
     if os.path.exists("helm.bin"):
         os.remove("helm.bin")
+    for x in range(216):
+        if os.path.exists(f"exit{x}.bin"):
+            os.remove(f"exit{x}.bin")
     # pth = "assets/Non-Code/displays/soldout_bismuth.rgba32"
     # if os.path.exists(pth):
     #     os.remove(pth)

@@ -201,7 +201,7 @@ with open("include/variable_space_structs.h", "r") as varspace:
                     check = int(index % 8)
                     pre = readFromROM(0x1FED020 + 0xB0 + offset, 1)
                     pre_copy = pre
-                    pre |= (0x80 >> check)
+                    pre |= 0x80 >> check
                     print("")
                     print(f"{y} ({index}): {offset} {check} | {pre_copy} -> {pre}")
                     writeToROM(0xB0 + offset, pre, 1, y)

@@ -1,5 +1,6 @@
 .data
 id = 0x87
+ignore = 1
 .code
 COND 1 | 0 0 0
 COND 45 | 62 0 0

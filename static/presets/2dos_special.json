@@ -11,7 +11,7 @@
     "activate_all_bananaports":"off",
     "level_randomization":"loadingzone",
     "boss_location_rando":true,
-    "bananaport_rando":false,
+    "bananaport_rando":"off",
     "kasplat_rando_setting":"vanilla_locations",
     "kong_rando":true,
     "random_patches":false,

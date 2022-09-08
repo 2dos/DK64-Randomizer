@@ -167,6 +167,8 @@ extern void* isActorLoaded(int actor_type);
 extern void beaverControlSwitchCase(int unk0, int unk1, int unk2);
 extern void BonusBarrelCode(void);
 extern void DisplayExplosionSprite(void);
+extern void displayWarpSparkles(behaviour_data* behaviour, int index, int unk0, int unk1);
+extern void setObjectScriptState(int id, int state, int offset);
 
 extern float getXRatioMovement(int dk64u_angle);
 extern float getZRatioMovement(int dk64u_angle);
@@ -174,6 +176,7 @@ extern void updateActorProjectileInfo(void* actor, int unk0);
 extern void spawnProjectile(short object, short subtype, int speed, float x, float y, float z, float unk0, void* actor);
 extern void controlStateControl(int unk0);
 extern void save(void);
+extern void getObjectPosition(int index, int unk0, int unk1, void* x, void* y, void* z);
 
 extern int crystalsUnlocked(int kong);
 extern void setMovesForAllKongs(shop_paad* paad, int is_bitfield);
@@ -443,3 +446,4 @@ extern char KKOPhaseOrder[3];
 extern unsigned short MultiBunchCount;
 extern char QueueHelmTimer;
 extern char ToggleAmmoOn;
+extern void* WarpData;

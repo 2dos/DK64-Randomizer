@@ -298,7 +298,7 @@ class Settings:
         self.randomize_pickups = False
         self.random_medal_requirement = False
         self.medal_requirement = 0
-        self.bananaport_rando = False
+        self.bananaport_rando = "off"
         self.activate_all_bananaports = False
         self.shop_indicator = False
         self.randomize_cb_required_amounts = False

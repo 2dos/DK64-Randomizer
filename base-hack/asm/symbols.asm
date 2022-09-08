@@ -81,6 +81,8 @@
 .definelabel unkCutsceneKongFunction_1, 0x80724E48
 .definelabel getAnimationTimer, 0x80614A54
 .definelabel playSFXFromObject, 0x806085DC
+.definelabel displayWarpSparkles, 0x80647A14
+.definelabel getObjectPosition, 0x806335B0
 
 .definelabel unkObjFunction0, 0x80650BBC
 .definelabel unkObjFunction1, 0x80650A04
@@ -167,6 +169,7 @@
 .definelabel changeCollectableCount, 0x806F91B4
 .definelabel save, 0x8060DEC8
 .definelabel getSpawnerTiedActor, 0x807270C0
+.definelabel setObjectScriptState, 0x806418E8
 
 .definelabel _guScaleF, 0x80008580
 .definelabel _guTranslateF, 0x80005D80
@@ -422,6 +425,7 @@
 .definelabel MultiBunchCount, 0x807FFFDE
 .definelabel QueueHelmTimer, 0x807FFFDD
 .definelabel ToggleAmmoOn, 0x807FFFDC
+.definelabel WarpData, 0x807FFFD8
 
 .definelabel CrankyMoves_New, 0x807FF400
 .definelabel CandyMoves_New, 0x807FF4F0

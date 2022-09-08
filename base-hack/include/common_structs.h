@@ -691,7 +691,8 @@ typedef struct settingsData {
 } settingsData;
 
 typedef struct behaviour_data {
-	/* 0x000 */ char unk_00[0x38];
+	/* 0x000 */ void* extra_data;
+	/* 0x004 */ char unk_04[0x38-0x4];
 	/* 0x038 */ int unk_38;
 	/* 0x03C */ char unk_3C[0x44-0x3C];
 	/* 0x044 */ unsigned short timer;
@@ -700,7 +701,8 @@ typedef struct behaviour_data {
 	/* 0x049 */ char counter;
 	/* 0x04A */ char unk_4A[0x4B-0x4A];
 	/* 0x04B */ unsigned char next_state;
-	/* 0x04C */ char unk_4C[0x54-0x4C];
+	/* 0x04C */ char counter_next;
+	/* 0x04D */ char unk_4D[0x54-0x4D];
 	/* 0x054 */ char pause_state;
 	/* 0x055 */ char unk_55[0x58-0x55];
 	/* 0x058 */ int distance_cap;

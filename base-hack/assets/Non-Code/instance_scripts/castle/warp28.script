@@ -1,0 +1,5 @@
+.data
+id = 0x28
+.code
+EXEC 7 | 125 65535 40
+ENDBLOCK

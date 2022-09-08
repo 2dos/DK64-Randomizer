@@ -35,7 +35,7 @@ from randomizer.ShuffleBosses import ShuffleBossesBasedOnOwnedItems
 from randomizer.ShuffleKasplats import InitKasplatMap, KasplatShuffle
 from randomizer.ShufflePatches import ShufflePatches
 from randomizer.ShuffleShopLocations import ShuffleShopLocations
-from randomizer.ShuffleWarps import ShuffleWarps
+from randomizer.ShuffleWarps import ShuffleWarps, ShuffleWarpsCrossMap
 from randomizer.ShuffleCBs import ShuffleCBs
 
 
@@ -1621,29 +1621,37 @@ def ShuffleMisc(spoiler):
     if spoiler.settings.cb_rando:
         ShuffleCBs(spoiler)
     # Handle Bananaports
-    if spoiler.settings.bananaport_rando:
+    if spoiler.settings.bananaport_rando == "in_level":
         replacements = []
         human_replacements = {}
         ShuffleWarps(replacements, human_replacements)
         spoiler.bananaport_replacements = replacements.copy()
         spoiler.human_warp_locations = human_replacements
+    elif spoiler.settings.bananaport_rando in ("crossmap_coupled", "crossmap_decoupled"):
+        replacements = []
+        human_replacements = {}
+        ShuffleWarpsCrossMap(replacements, human_replacements, spoiler.settings.bananaport_rando == "crossmap_coupled")
+        spoiler.bananaport_replacements = replacements.copy()
+        spoiler.human_warp_locations = human_replacements
+    # Random Patches
     if spoiler.settings.random_patches:
         human_patches = []
         spoiler.human_patches = ShufflePatches(spoiler, human_patches).copy()
     if spoiler.settings.shuffle_shops:
         ShuffleShopLocations(spoiler)
     if spoiler.settings.activate_all_bananaports in ["all", "isles"]:
-        warpMapIds = set([BananaportVanilla[warp].map_id for warp in Warps])
-        for map_id in warpMapIds:
-            mapWarps = [BananaportVanilla[warp] for warp in Warps if BananaportVanilla[warp].map_id == map_id]
-            for warpData in mapWarps:
-                pairedWarpData = [
-                    BananaportVanilla[pair]
-                    for pair in Warps
-                    if BananaportVanilla[pair].map_id == map_id and BananaportVanilla[pair].new_warp == warpData.new_warp and BananaportVanilla[pair].name != warpData.name
-                ][0]
-                # Add an exit to each warp's region to the paired warp's region unless it's the same region
-                if warpData.region_id != pairedWarpData.region_id and (spoiler.settings.activate_all_bananaports == "all" or (warpData.map_id == Maps.Isles)):
-                    warpRegion = Logic.Regions[warpData.region_id]
-                    bananaportExit = TransitionFront(pairedWarpData.region_id, lambda l: True)
-                    warpRegion.exits.append(bananaportExit)
+        if spoiler.settings.bananaport_rando in ("in_level", "off"):
+            warpMapIds = set([BananaportVanilla[warp].map_id for warp in Warps])
+            for map_id in warpMapIds:
+                mapWarps = [BananaportVanilla[warp] for warp in Warps if BananaportVanilla[warp].map_id == map_id]
+                for warpData in mapWarps:
+                    pairedWarpData = [
+                        BananaportVanilla[pair]
+                        for pair in Warps
+                        if BananaportVanilla[pair].map_id == map_id and BananaportVanilla[pair].new_warp == warpData.new_warp and BananaportVanilla[pair].name != warpData.name
+                    ][0]
+                    # Add an exit to each warp's region to the paired warp's region unless it's the same region
+                    if warpData.region_id != pairedWarpData.region_id and (spoiler.settings.activate_all_bananaports == "all" or (warpData.map_id == Maps.Isles)):
+                        warpRegion = Logic.Regions[warpData.region_id]
+                        bananaportExit = TransitionFront(pairedWarpData.region_id, lambda l: True)
+                        warpRegion.exits.append(bananaportExit)
