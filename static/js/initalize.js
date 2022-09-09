@@ -34,6 +34,7 @@ window.onerror = function (error) {
     "Unexpected non-whitespace character after JSON at position", // Loading up the site when your cookies reflect a prior version
     "Unexpected non-whitespace character after JSON data at line", // Same as above
     "Unexpected token ; in JSON", // Token Error
+    "Uncaught Error: Invalid Rom", // Token Error
   ];
   is_banned = false;
   banned_errors_text.forEach((item) => {
