@@ -88,6 +88,9 @@ void cFuncLoop(void) {
 			}
 		}
 	}
+	if (Rando.helm_hurry_mode) {
+		checkTotalCache();
+	}
 	past_lag[(int)(lag_counter % LAG_CAP)] = StoredLag;
 	lag_counter = (lag_counter + 1) % LAG_CAP;
 	int lag_sum = 0;

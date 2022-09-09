@@ -289,6 +289,7 @@ void initHack(int source) {
 				*(int*)(0x806F56F8) = 0x0C000000 | (((int)&blueprintCollect & 0xFFFFFF) >> 2); // Blueprint collection hook
 				*(int*)(0x80713CCC) = 0; // Prevent Helm Timer Disable
 				*(int*)(0x80713CD8) = 0; // Prevent Shutdown Song Playing
+				*(short*)(0x8071256A) = 15; // Init Helm Timer = 15 minutes
 			}
 			if (Rando.always_show_coin_cbs) {
 				*(int*)(0x806324D4) = 0x24020001; // ADDIU $v0, $r0, 1 // Disable kong flag check
