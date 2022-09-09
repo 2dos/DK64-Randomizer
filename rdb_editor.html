@@ -1,0 +1,133 @@
+<html>
+    <head>
+        <title>DK64 Randomizer - RDB Editor</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="./static/styles/gui.css">
+        <link rel="stylesheet" href="./static/styles/styles.css">
+        <style>
+            .center_block {
+                text-align: center;
+                width: 480px;
+                margin-left: auto;
+                margin-right: auto;
+                color: white;
+                background-color: rgba(0,0,0,0.8);
+                padding: 20px;
+                position:absolute;
+                top:50%;
+                left:50%;
+                transform: translate(-50%,-50%);
+            }
+            .hide {
+                display: none;
+            }
+            .upload_box {
+                padding: 20px;
+            }
+            .error {
+                background-color: rgba(255, 97, 97, 0.8);
+                border: 2px solid rgba(255, 49, 49, 0.8);
+                border-radius: 5px;
+                padding: 10px;
+                text-align: left;
+            }
+            @media screen and (width <= 768px) {
+                .center_block {
+                    width:90%;
+                }
+            }
+            @media screen and (width >= 2560px) {
+                .center_block {
+                    width:960px;
+                    font-size: xx-large;
+                }
+                .center_block h1 {
+                    font-size: 1.5em;
+                }
+                input[type=file] {
+                    font-size: 0.75em;
+                }
+            }
+        </style>
+        <script>
+            window.onerror = function (error) {
+                console.log(error);
+                let targ = document.getElementById("error_box");
+                targ.classList.remove("hide");
+                targ.innerText = error.toString();    
+            };
+        </script>
+    </head>
+    <body>
+        <div class="center_block">
+            <h1>DK64 Randomizer RDB Editor</h1>
+            <p>This tool modifies your Project64.rdb file to add in the extra settings necessary for DK64 Hacks to run smoothly.</p>
+            <div class="upload_box vanilla_upload">
+                <label for="input-rdb_1" class="select-title">Project64 RDB File</label>
+                <input type="file" id="input-rdb" class="form-control" accept=".rdb"/>
+            </div>
+            <div class="error hide" id="error_box">
+                ERROR TEXT
+            </div>
+        </div>
+    </body>
+    <script>
+        var target_rom;
+        var extra_lines = [
+            "[DONKEY KONG 64-C:45]",
+            "Alt Identifier=69696969-69696969-C:45",
+            "RDRAM Size=8",
+            "",
+            "[69696969-69696969-C:45]",
+            "Internal Name=DONKEY KONG 64",
+            "Status=Compatible",
+            "Counter Factor=1",
+            "Culling=1",
+            "Emulate Clear=1",
+            "Primary Frame Buffer=1",
+            "Save Type=16kbit Eeprom",
+            "Linking=Off",
+        ]
+        document.getElementById("input-rdb").addEventListener("change", function() {
+			var fr = new FileReader();
+			fr.onload = function() {
+				var data = fr.result;
+                console.log(data)
+                var text = ""
+                extra_lines.forEach(line => {
+                    text += "\r\n" + line
+                })
+                var enc = new TextEncoder();
+                var arr = [...new Uint8Array(data), ...enc.encode(text)]
+                console.log(arr)
+                downloadBlob(new Uint8Array(arr),"Project64.rdb","application/octet-stream")
+			};
+			fr.readAsArrayBuffer(document.getElementById("input-rdb").files[0]);
+        })
+
+        // Download file
+        var downloadBlob, downloadURL;
+        downloadBlob = function(data, fileName, mimeType) {
+            var blob, url;
+            blob = new Blob([data], {
+                type: mimeType
+            });
+            url = window.URL.createObjectURL(blob);
+            downloadURL(url, fileName);
+            setTimeout(function() {
+                return window.URL.revokeObjectURL(url);
+            }, 1000);
+        };
+
+        downloadURL = function(data, fileName) {
+            var a;
+            a = document.createElement('a');
+            a.href = data;
+            a.download = fileName;
+            document.body.appendChild(a);
+            a.style = 'display: none';
+            a.click();
+            a.remove();
+        };
+    </script>
+</html>
