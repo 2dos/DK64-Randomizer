@@ -108,20 +108,13 @@ int* display_text(int* dl) {
 	LevelStateBitfield &= 0xFFFFFFEF;
 	// File Percentage
 	// int y = FileScreenDLOffset - 320;
-	if (CutsceneActive != 6) {
-		if (ReadFile(0xD,0,0,FileIndex)) {
-			file_mode = FILEMODE_USED;
-		} else {
-			file_mode = FILEMODE_NEW;
-		}
-	}
 	if (file_mode == FILEMODE_USED) {
 		int y_gap = 53;
 		int y_start = (FileScreenDLOffset - 320) - y_gap - 144;
 		int y_offset = y_start;
 		// Move Count
 		y_offset += y_gap;
-		dk_strFormat((char*)move_count_str, "%02dl41", move_count);
+		dk_strFormat((char*)move_count_str, "%02d", move_count);
 		dl = drawText(dl, 1, 125, y_offset, (char*)move_count_str, 0xFF, 0xFF, 0xFF, 0xFF);
 		// File Percentage
 		y_offset += y_gap;
@@ -129,11 +122,11 @@ int* display_text(int* dl) {
 		dl = drawText(dl, 1, 125, y_offset, (char*)file_percentage, 0xFF, 0xFF, 0xFF, 0xFF);
 		// GB Count
 		y_offset += y_gap;
-		dk_strFormat((char*)golden_count, "%03dl201",FileGBCount);
+		dk_strFormat((char*)golden_count, "%03d",FileGBCount);
 		dl = drawText(dl, 1, 125, y_offset, (char*)golden_count, 0xFF, 0xFF, 0xFF, 0xFF);
 		// BP Count
 		y_offset += y_gap;
-		dk_strFormat((char*)bp_count_str, "%02dl40", bp_count);
+		dk_strFormat((char*)bp_count_str, "%02d", bp_count);
 		dl = drawText(dl, 1, 125, y_offset, (char*)bp_count_str, 0xFF, 0xFF, 0xFF, 0xFF);
 		// Balanced IGT
 		y_offset += y_gap;
@@ -169,13 +162,13 @@ int* display_text(int* dl) {
 			}
 		}
 		int list_start = -144;
-		int y_offset = (FileScreenDLOffset - 320) - 65 + list_start;
-		int x_offset = 375;
-		dl = printText(dl, x_offset, y_offset, 0.6f, "STARTING MOVES:");
+		int y_offset = (FileScreenDLOffset - 320) - 32 + list_start;
+		int x_offset = 50;
+		dl = drawText(dl, 1, x_offset, y_offset, "STARTING MOVES:", 0xFF, 0xFF, 0xFF, 0xFF);
 		for (int i = 0; i < sizeof(move_names)/4; i++) {
 			if (move_names[i]) {
-				y_offset = (FileScreenDLOffset - 320) + (i * 65) + list_start;
-				dl = printText(dl, x_offset, y_offset, 0.6f, move_names[i]);
+				y_offset = (FileScreenDLOffset - 320) + (i * 32) + list_start;
+				dl = drawText(dl, 1, x_offset, y_offset, move_names[i], 0xFF, 0xFF, 0xFF, 0xFF);
 			}
 		}
 	}
@@ -306,6 +299,11 @@ int* displayTopText(int* dl, short x, short y, float scale) {
 void FileProgressInit(actorData* menu_controller) {
 	menu_controller_paad* paad = menu_controller->paad;
 	loadFile(0,0);
+	if (ReadFile(0xD,0,0,FileIndex)) {
+		file_mode = FILEMODE_USED;
+	} else {
+		file_mode = FILEMODE_NEW;
+	}
 	if (isFileEmpty(0)) {
 		// Empty
 		displayMenuSprite(paad, sprite_table[0x6F], 0x23, 0xD2, 0.75f, 2, 0); // B
@@ -317,8 +315,63 @@ void FileProgressInit(actorData* menu_controller) {
 		// displayMenuSprite(paad, sprite_table[0x94], 35, 65, 0.6f, 2, 5); // Cranky Face - Moves
 		int blueprint_sprite_indexes[] = {0x5C,0x5A,0x4A,0x5D,0x5B};
 		displayMenuSprite(paad, sprite_table[blueprint_sprite_indexes[getRNGLower31() % 5]], 35, 155, 0.75, 2, 0); // Blueprint
+		// Update counts
+		int gb_count = 0;
+		for (int kong = 0; kong < 5; kong++) {
+			for (int level = 0; level < 8; level++) {
+				gb_count += MovesBase[kong].gb_count[level];
+			}
+		}
+		int bp_count_local = 0;
+		for (int i = 0; i < 40; i++) {
+			bp_count_local += checkFlag(469+i,0);
+		}
+		int move_count_local = 0;
+		if (Rando.unlock_moves) {
+			move_count_local = 39; // 38 if we discount 3rd melon
+		} else {
+			move_count_local += MovesBase[0].simian_slam;
+			move_count_local += MovesBase[0].ammo_belt;
+			for (int kong = 0; kong < 5; kong++) {
+				for (int level = 0; level < 3; level++) {
+					if (MovesBase[kong].special_moves & (1 << level)) {
+						move_count_local += 1;
+					}
+				}
+				move_count_local += (MovesBase[kong].weapon_bitfield & 1);
+				move_count_local += (MovesBase[kong].instrument_bitfield & 1);
+			}
+			for (int level = 0; level < 3; level++) {
+				if (level < 2) {
+					if (MovesBase[0].weapon_bitfield & (1 << level)) {
+						move_count_local += 1;
+					}
+				}
+				if (MovesBase[0].instrument_bitfield & (1 << level)) {
+					move_count_local += 1; // Discount level == 1 if discounting 3rd melon
+				}
+			}
+			move_count_local += checkFlag(FLAG_TBARREL_DIVE,0);
+			move_count_local += checkFlag(FLAG_TBARREL_ORANGE,0);
+			move_count_local += checkFlag(FLAG_TBARREL_BARREL,0);
+			move_count_local += checkFlag(FLAG_TBARREL_VINE,0);
+		}
+		if (Rando.camera_unlocked) {
+			move_count_local += 2;
+		} else {
+			move_count_local += checkFlag(FLAG_ABILITY_CAMERA,0);
+			move_count_local += checkFlag(FLAG_ABILITY_SHOCKWAVE,0);
+		}
+		FileGBCount = gb_count;
+		igt_h = (IGT / 60) / 60;
+		igt_m = (IGT / 60) % 60;
+		igt_s = IGT - (3600 * igt_h) - (60 * igt_m);
+		FilePercentage = calculateFilePercentage();
+		bp_count = bp_count_local;
+		move_count = move_count_local;
 	}
 	*(float*)(0x80033F4C) = 1600.0f;
+	// Check Kong Unlocked
 	for (int i = 0; i < 5; i++) {
 		if (Rando.unlock_kongs & (1 << i)) {
 			KongUnlockedMenuArray[i] = 1;
@@ -338,58 +391,16 @@ void FileProgressInit(actorData* menu_controller) {
 			sprite = sprite_table[0xA9 + i];
 		}
 		displayMenuSprite(paad, sprite, i, i, 0.8f, 2, 0xF);
+		// int x = 0;
+		// int y = 0;
+		// if (i < 3) {
+		// 	x = 210 + (i * 35);
+		// 	y = 65;
+		// } else {
+		// 	x = 228 + ((i - 3) * 32);
+		// 	y = 90;
+		// }
+		// displayMenuSprite(paad, sprite, x, y, 0.5, 2, 0xF);
 	}
-	int gb_count = 0;
-	for (int kong = 0; kong < 5; kong++) {
-		for (int level = 0; level < 8; level++) {
-			gb_count += MovesBase[kong].gb_count[level];
-		}
-	}
-	int bp_count_local = 0;
-	for (int i = 0; i < 40; i++) {
-		bp_count_local += checkFlag(469+i,0);
-	}
-	int move_count_local = 0;
-	if (Rando.unlock_moves) {
-		move_count_local = 39; // 38 if we discount 3rd melon
-	} else {
-		move_count_local += MovesBase[0].simian_slam;
-		move_count_local += MovesBase[0].ammo_belt;
-		for (int kong = 0; kong < 5; kong++) {
-			for (int level = 0; level < 3; level++) {
-				if (MovesBase[kong].special_moves & (1 << level)) {
-					move_count_local += 1;
-				}
-			}
-			move_count_local += (MovesBase[kong].weapon_bitfield & 1);
-			move_count_local += (MovesBase[kong].instrument_bitfield & 1);
-		}
-		for (int level = 0; level < 3; level++) {
-			if (level < 2) {
-				if (MovesBase[0].weapon_bitfield & (1 << level)) {
-					move_count_local += 1;
-				}
-			}
-			if (MovesBase[0].instrument_bitfield & (1 << level)) {
-				move_count_local += 1; // Discount level == 1 if discounting 3rd melon
-			}
-		}
-		move_count_local += checkFlag(FLAG_TBARREL_DIVE,0);
-		move_count_local += checkFlag(FLAG_TBARREL_ORANGE,0);
-		move_count_local += checkFlag(FLAG_TBARREL_BARREL,0);
-		move_count_local += checkFlag(FLAG_TBARREL_VINE,0);
-	}
-	if (Rando.camera_unlocked) {
-		move_count_local += 2;
-	} else {
-		move_count_local += checkFlag(FLAG_ABILITY_CAMERA,0);
-		move_count_local += checkFlag(FLAG_ABILITY_SHOCKWAVE,0);
-	}
-	FileGBCount = gb_count;
-	igt_h = (IGT / 60) / 60;
-	igt_m = (IGT / 60) % 60;
-	igt_s = IGT - (3600 * igt_h) - (60 * igt_m);
-	FilePercentage = calculateFilePercentage();
-	bp_count = bp_count_local;
-	move_count = move_count_local;
+	
 }
