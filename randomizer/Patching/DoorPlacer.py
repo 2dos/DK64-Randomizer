@@ -83,7 +83,7 @@ def place_door_locations(spoiler: Spoiler):
                             item_data = []
                             for coord_index in range(3):
                                 item_data.append(int(float_to_hex(door.location[coord_index]), 16))  # x y z
-                            item_data.append(int(float_to_hex(1), 16))  # Scale
+                            item_data.append(int(float_to_hex(door.scale), 16))  # Scale
                             item_data.append(0x5F0)
                             item_data.append(0x80121B00)
                             item_data.append(0)  # rx
