@@ -32,6 +32,7 @@ from randomizer.Patching.ShopRandomizer import ApplyShopRandomizer
 from ui.GenTracker import generateTracker
 from ui.GenSpoiler import GenerateSpoiler
 from randomizer.Patching.UpdateHints import PushHints, wipeHints
+from randomizer.Patching.DoorPlacer import place_door_locations
 
 # from randomizer.Spoiler import Spoiler
 from randomizer.Settings import Settings
@@ -371,6 +372,7 @@ def patching_response(responded_data):
     randomize_puzzles(spoiler)
     randomize_cbs(spoiler)
     ApplyShopRandomizer(spoiler)
+    place_door_locations(spoiler)
 
     random.seed(spoiler.settings.seed)
     randomize_music(spoiler)
