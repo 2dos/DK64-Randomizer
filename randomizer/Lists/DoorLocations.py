@@ -37,6 +37,7 @@ door_locations = {
         DoorData(name="Aztec Lobby: Left of Portal", map=Maps.AngryAztecLobby, location=[628.762, 80, 713.93, 177]),  # Lanky Door
         DoorData(name="Aztec Lobby: Right of Portal", map=Maps.AngryAztecLobby, location=[377.124, 80, 712.484, 179]),  # Tiny Door
         DoorData(name="Aztec Lobby: Behind Feather Door", map=Maps.AngryAztecLobby, location=[1070.018, 0, 738.609, 190]),  # Custom Chunky Door
+        DoorData(name="Next to Candy - right", map=Maps.AngryAztec, location=[2468, 120, 473.5, 298.75]),
     ],
     Levels.FranticFactory: [
         DoorData(name="Factory Lobby: Low Left", map=Maps.FranticFactoryLobby, location=[544.362, 0, 660.802, 182]),  # DK Door
@@ -44,6 +45,7 @@ door_locations = {
         DoorData(name="Factory Lobby: Top Center", map=Maps.FranticFactoryLobby, location=[468.047, 85.833, 662.907, 180]),  # Lanky Door
         DoorData(name="Factory Lobby: Top Right", map=Maps.FranticFactoryLobby, location=[275.533, 133.5, 661.908, 180]),  # Tiny Door
         DoorData(name="Factory Lobby: Low Right", map=Maps.FranticFactoryLobby, location=[393.114, 0, 662.562, 182]),  # Chunky Door
+        DoorData(name="Crusher Room - start", map=Maps.FactoryCrusher, location=[475, 0, 539, 180]),
     ],
     Levels.GloomyGalleon: [
         DoorData(name="Galleon Lobby: Far Left", map=Maps.GloomyGalleonLobby, location=[1022.133, 139.667, 846.41, 276]),  # DK Door
@@ -51,6 +53,9 @@ door_locations = {
         DoorData(name="Galleon Lobby: Close Right", map=Maps.GloomyGalleonLobby, location=[464.68, 159.667, 1069.446, 161]),  # Lanky Door
         DoorData(name="Galleon Lobby: Near DK Portal", map=Maps.GloomyGalleonLobby, location=[582.36, 159.667, 1088.258, 180]),  # Tiny Door
         DoorData(name="Galleon Lobby: Close Left", map=Maps.GloomyGalleonLobby, location=[876.388, 178.667, 1063.828, 192]),  # Chunky Door
+        DoorData(name="Treasure Chest Exterior", map=Maps.GloomyGalleon, location=[1938, 1440, 524, 330]),
+        DoorData(name="Next to Warp 3 in Cranky's Area", map=Maps.GloomyGalleon, location=[3071, 1890, 2847, 0]),
+        DoorData(name="In Primate Punch Chest Room - right", map=Maps.GloomyGalleon, location=[3460, 1670, 4001, 180]),
     ],
     Levels.FungiForest: [
         DoorData(name="Fungi Lobby: On High Box", map=Maps.FungiForestLobby, location=[449.866, 45.922, 254.6, 270]),  # Custom Location (Removing Wheel)

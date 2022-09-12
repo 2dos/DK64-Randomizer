@@ -31,7 +31,7 @@ def place_door_locations(spoiler: Spoiler):
                 door.placed = False
         # Assign Wrinkly Doors
         for level in door_locations:
-            for new_door in range(5):  # NOTE: If testing all locations, replace "range(5) with range(len(door_locations[level]))"
+            for new_door in range(len(door_locations[level])):  # NOTE: If testing all locations, replace "range(5) with range(len(door_locations[level]))"
                 # Get all doors that can be placed
                 available_doors = []
                 for door_index, door in enumerate(door_locations[level]):
