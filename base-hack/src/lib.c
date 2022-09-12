@@ -176,3 +176,7 @@ void modifyCutsceneItem(int bank, int item, int new_param1, int new_param2, int 
 		data->params[2] = new_param3;
 	}
 }
+
+int getWrinklyLevelIndex(void) {
+	return getWorld(CurrentMap, 0);
+}

@@ -91,9 +91,15 @@
 .definelabel unkObjFunction4, 0x80723320
 .definelabel unkObjFunction5, 0x8072334C
 .definelabel unkObjFunction6, 0x80723284
+.definelabel unkObjFunction7, 0x80634EA4
+.definelabel unkObjFunction8, 0x80650D04
 .definelabel touchingModel2Object, 0x806F70A8
 .definelabel GetKongUnlockedFlag, 0x805FF018
 .definelabel setNextTransitionType, 0x805FF158
+.definelabel isPlayerInRangeOfObject, 0x80642204
+.definelabel getPlayerObjectDistance, 0x8064F210
+.definelabel spawnWrinkly, 0x8064F028
+.definelabel isWrinklySpawned, 0x8064F1C4
 
 .definelabel unkMultiplayerWarpFunction, 0x8061EB04
 .definelabel renderScreenTransition, 0x806291B4

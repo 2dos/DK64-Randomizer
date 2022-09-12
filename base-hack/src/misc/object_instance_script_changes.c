@@ -1184,6 +1184,67 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 			copyFromROM(0x1FF0000,WarpData,&file_size,0,0,0,0);
 		}
 		bananaportGenericCode(behaviour_pointer, id, param2);
+	} else if (index == -2) {
+		// Wrinkly Generic Code
+		short* cached_data = behaviour_pointer->extra_data;
+		int kong = 0;
+		if (!cached_data) {
+			cached_data = dk_malloc(2);
+			int wrinkly_index = convertIDToIndex(param2);
+			int* m2location = ObjectModel2Pointer;
+			int wrinkly_doors[] = {0xF0, 0xF2, 0xEF, 0x67, 0xF1};
+			if (wrinkly_index > -1) {
+				ModelTwoData* _object = getObjectArrayAddr(m2location,0x90,wrinkly_index);
+				for (int i = 0; i < 5; i++) {
+					if (_object->object_type == wrinkly_doors[i]) {
+						kong = i;
+					}
+				}
+			}
+			*cached_data = kong;
+			behaviour_pointer->extra_data = cached_data;
+		} else {
+			kong = *cached_data;
+		}
+		if (behaviour_pointer->current_state == 0) {
+			unkObjFunction7(id,1,0);
+			unkObjFunction7(id,2,0);
+			displayImageOnObject(id, 1, 1, 0);
+			displayImageOnObject(id, 2, 1, 0);
+			unkObjFunction0(id, 1, 1);
+			unkObjFunction1(id, 1, 10);
+			if (checkFlag(kong_flags[kong],0) == 0) {
+				behaviour_pointer->next_state = 20;
+			} else {
+				displayImageOnObject(id, 1, 0, 0);
+				displayImageOnObject(id, 2, 0, 0);
+				behaviour_pointer->next_state = 1;
+			}
+		} else if (behaviour_pointer->current_state == 1) {
+			if (isPlayerInRangeOfObject(40)) {
+				if (getPlayerObjectDistance()) {
+					unkObjFunction2(id, 1, 1);
+					spawnWrinkly(behaviour_pointer, id, kong, 0);
+					playSFXFromObject(id, 19, 255, 127, 20, 0, 0.3f);
+					behaviour_pointer->next_state = 2;
+				}
+			}
+		} else if (behaviour_pointer->current_state == 2) {
+			if (isWrinklySpawned()) {
+				unkObjFunction2(id, 1, 1);
+				playSFXFromObject(id, 19, 255, 127, 20, 0, 0.3f);
+				behaviour_pointer->next_state = 3;
+			}
+		} else if (behaviour_pointer->current_state == 3) {
+			if (unkObjFunction8(id, 1) == 0) {
+				playSFXFromObject(id, 50, 255, 127, 0, 60, 0.3f);
+				behaviour_pointer->next_state = 4;
+			}
+		} else if (behaviour_pointer->current_state == 4) {
+			if (isPlayerInRangeOfObject(60) == 0) {
+				behaviour_pointer->next_state = 1;
+			}
+		}
 	}
 	InstanceScriptParams[1] = id;
 	InstanceScriptParams[2] = index;

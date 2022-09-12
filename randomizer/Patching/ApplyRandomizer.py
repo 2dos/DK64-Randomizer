@@ -335,6 +335,11 @@ def patching_response(responded_data):
         ROM().seek(sav + 0xAF)
         ROM().write(1)
 
+    # Wrinkly Rando
+    if spoiler.settings.wrinkly_location_rando:
+        ROM().seek(sav + 0x11F)
+        ROM().write(1)
+
     # Helm Hurry Mode
     if spoiler.settings.helm_hurry:
         ROM().seek(sav + 0xAE)

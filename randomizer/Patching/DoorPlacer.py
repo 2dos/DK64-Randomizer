@@ -1,19 +1,13 @@
 """Apply Door Locations."""
 import random
-import struct
 
 import js
 from randomizer.Lists.MapsAndExits import Maps
 from randomizer.Lists.DoorLocations import door_locations
 from randomizer.Patching.Patcher import ROM
 from randomizer.Spoiler import Spoiler
-
-
-def float_to_hex(f):
-    """Convert float to hex."""
-    if f == 0:
-        return "0x00000000"
-    return hex(struct.unpack("<I", struct.pack("<f", f))[0])
+from randomizer.Patching.Lib import float_to_hex, getNextFreeID, addNewScript
+from randomizer.Enums.ScriptTypes import ScriptTypes
 
 
 def place_door_locations(spoiler: Spoiler):
@@ -75,6 +69,7 @@ def place_door_locations(spoiler: Spoiler):
             for x in range(int((act_end - mys_start) / 4)):
                 other_retained_data.append(int.from_bytes(ROM().readBytes(4), "big"))
             # Construct placed wrinkly doors
+            map_wrinkly_ids = []
             for level in door_locations:
                 for door in door_locations[level]:
                     if door.map == cont_map_id:
@@ -90,10 +85,13 @@ def place_door_locations(spoiler: Spoiler):
                             item_data.append(int(float_to_hex(door.location[3]), 16))  # ry
                             item_data.append(0)  # rz
                             item_data.append(0)
-                            id = 0x200
+                            id = getNextFreeID(cont_map_id, map_wrinkly_ids)
+                            map_wrinkly_ids.append(id)
                             item_data.append((wrinkly_doors[door.assigned_kong] << 16) | id)
                             item_data.append(1 << 16)
                             retained_model2.append(item_data)
+            if len(map_wrinkly_ids) > 0:
+                addNewScript(cont_map_id, map_wrinkly_ids, ScriptTypes.Wrinkly)
             # Reconstruct setup file
             ROM().seek(setup_table)
             ROM().writeMultipleBytes(len(retained_model2), 4)

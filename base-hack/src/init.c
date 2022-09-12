@@ -339,6 +339,10 @@ void initHack(int source) {
 			KKOPhaseRandoOn = kko_phase_rando;
 			*(short*)(0x806F0376) = Rando.klaptrap_color_bbother;
 			*(short*)(0x806C8B42) = Rando.klaptrap_color_bbother;
+			if (Rando.wrinkly_rando_on) {
+				*(int*)(0x8064F170) = 0; // Prevent edge cases for Aztec Chunky/Fungi Wheel
+				*(int*)(0x8069E154) = 0x0C000000 | (((int)&getWrinklyLevelIndex & 0xFFFFFF) >> 2); // Modify Function Call
+			}
 			// Expand Display List
 			*(short*)(0x805FE56A) = 8000;
 			*(short*)(0x805FE592) = 0x4100; // SLL 4 (Doubles display list size)

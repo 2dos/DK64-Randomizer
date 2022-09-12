@@ -49,7 +49,8 @@ typedef struct varspace {
 	/* 0x0AE */ char helm_hurry_mode; // 0 = Off, 1 = On: Starting a new file summons the helm timer, each BP adds 2 minutes to the clock, timing out disables saving.
 	/* 0x0AF */ char always_show_coin_cbs; // 0 = No (Vanilla), 1 = Yes
 	/* 0x0B0 */ quality_options quality_of_life; // Size: 2
-	/* 0x0B2 */ char unk_B0[0x120 - 0xB2];
+	/* 0x0B2 */ char unk_B0[0x11F - 0xB2];
+	/* 0x11F */ char wrinkly_rando_on;
 	/* 0x120 */ char kut_out_kong_order[5]; // Value of item: 0 = DK, 1 = Diddy, 2 = Lanky, 3 = Tiny, 4 = Chunky. Kongs can be repeated
 	/* 0x125 */ unsigned char remove_blockers; // Bitfield of B. Lockers to remove. 0 = Remove None. 0x7F = remove all except Helm Lobby. 0xFF = Remove all.
 	/* 0x126 */ char resolve_bonus; // Bitfield. 0000 0001 = auto-complete bonus barrels. 0000 0010 = auto-complete helm barrels. 0 = Off. 3 = Resolve Helm & Bonus Barrels
