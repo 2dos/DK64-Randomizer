@@ -275,9 +275,9 @@ kong_placement_levels = [
 hint_distribution = {
     HintType.Joke: 1,
     HintType.KRoolOrder: 2,
-    HintType.HelmOrder: 3,  # must have one on the path
+    HintType.HelmOrder: 2,  # must have one on the path
     HintType.FullShop: 8,
-    HintType.MoveLocation: 8,  # must be placed before you can buy the move
+    HintType.MoveLocation: 7,  # must be placed before you can buy the move
     HintType.DirtPatch: 0,
     HintType.BLocker: 3,  # must be placed on the path and before the level they hint
     HintType.TroffNScoff: 0,
