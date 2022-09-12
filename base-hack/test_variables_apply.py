@@ -54,7 +54,7 @@ set_variables = {
     "starting_kong": 0,
     "free_target_llama": 0,
     "free_source_llama": 3,
-    "keys_preturned": 0x01,
+    "keys_preturned": 0x00,
     "short_bosses": 1,
     "fast_warp": 1,
     "activate_all_bananaports": 1,

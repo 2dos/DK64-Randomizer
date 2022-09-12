@@ -37,7 +37,7 @@ void cFuncLoop(void) {
 			good_eeprom = EEPROMType == 2;
 		}
 	}
-	displayNumberOnTns();
+	// displayNumberOnTns();
 	if (Rando.music_rando_on) {
 		if (CurrentMap == 0x28) {
 			if (ObjectModel2Timer == 5) {

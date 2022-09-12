@@ -100,6 +100,11 @@
 .definelabel getPlayerObjectDistance, 0x8064F210
 .definelabel spawnWrinkly, 0x8064F028
 .definelabel isWrinklySpawned, 0x8064F1C4
+.definelabel setAction, 0x806EB0C0
+.definelabel exitPortalPath, 0x806496B0
+.definelabel getInteractionOfContactActor, 0x8067ACC0
+.definelabel enterPortal, 0x806CF398
+.definelabel drawBossDoorNumber, 0x8064954C
 
 .definelabel unkMultiplayerWarpFunction, 0x8061EB04
 .definelabel renderScreenTransition, 0x806291B4

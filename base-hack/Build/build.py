@@ -11,6 +11,7 @@ import create_helm_geo
 import generate_watch_file
 import shop_instance_script  # HAS TO BE BEFORE `instance_script_maker`
 from writeWarpData import generateDefaultPadPairing  # HAS TO BE BEFORE `instance_script_maker`
+import portal_instance_script  # HAS TO BE BEFORE `instance_script_maker`
 import instance_script_maker
 import model_fix
 
@@ -853,6 +854,8 @@ with open(newROMName, "r+b") as fh:
     adjustExits(fh)
     generateDefaultPadPairing(fh)
     writeVanillaSongData(fh)
+    fh.seek(0x1FED020 + 0x11E)
+    fh.write((1).to_bytes(1, "big"))
     for x in portal_images:
         for y in x:
             if os.path.exists(y):
