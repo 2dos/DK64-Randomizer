@@ -104,9 +104,15 @@ extern int unkObjFunction3(int unk0, int unk1, int unk2, int unk3, int unk4, int
 extern void unkObjFunction4(int behav_38, int unk0);
 extern void unkObjFunction5(int behav_38, int unk0);
 extern void unkObjFunction6(int behav_38, int unk0);
+extern void unkObjFunction7(int id, int unk0, int unk1);
+extern int unkObjFunction8(int id, int unk0);
 extern int touchingModel2Object(int id);
 extern int GetKongUnlockedFlag(int actor_type, int kong_index);
 extern void setNextTransitionType(int type);
+extern int isPlayerInRangeOfObject(int distance);
+extern int getPlayerObjectDistance(void);
+extern void spawnWrinkly(behaviour_data* behaviour, int index, int door_kong_index, int unk0);
+extern int isWrinklySpawned(void);
 
 extern int* initDisplayList(int* dl);
 extern int getTextStyleHeight(int style);

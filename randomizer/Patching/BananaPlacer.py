@@ -3,7 +3,7 @@ import js
 from randomizer.Patching.Patcher import ROM
 from randomizer.Enums.Levels import Levels
 from randomizer.Spoiler import Spoiler
-import struct
+from randomizer.Patching.Lib import float_to_hex, short_to_ushort
 
 import randomizer.Lists.CBLocations.JungleJapesCBLocations
 import randomizer.Lists.CBLocations.AngryAztecCBLocations
@@ -43,20 +43,6 @@ level_data = {
         "balloons": randomizer.Lists.CBLocations.CreepyCastleCBLocations.BalloonList,
     },
 }
-
-
-def float_to_hex(f):
-    """Convert float to hex."""
-    if f == 0:
-        return "0x00000000"
-    return hex(struct.unpack("<I", struct.pack("<f", f))[0])
-
-
-def short_to_ushort(short):
-    """Convert short to unsigned short format."""
-    if short < 0:
-        return short + 65536
-    return short
 
 
 def randomize_cbs(spoiler: Spoiler):

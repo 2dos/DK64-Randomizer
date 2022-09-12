@@ -61,7 +61,7 @@ door_locations = {
         DoorData(name="Fungi Lobby: On High Box", map=Maps.FungiForestLobby, location=[449.866, 45.922, 254.6, 270]),  # Custom Location (Removing Wheel)
         DoorData(name="Fungi Lobby: Near Gorilla Gone Door", map=Maps.FungiForestLobby, location=[136.842, 0, 669.81, 90]),  # Custom Location (Removing Wheel)
         DoorData(name="Fungi Lobby: Opposite Gorilla Gone Door", map=Maps.FungiForestLobby, location=[450.219, 0, 689.048, 270]),  # Custom Location (Removing Wheel)
-        DoorData(name="Fungi Lobby: Near B. Locker", map=Maps.FungiForestLobby, location=[291.829, 0, 178.878, 0]),  # Custom Location (Removing Wheel)
+        DoorData(name="Fungi Lobby: Near B. Locker", map=Maps.FungiForestLobby, location=[293, 0, 154.197, 0], scale=1.2),  # Custom Location (Removing Wheel)
         DoorData(name="Fungi Lobby: Near Entrance", map=Maps.FungiForestLobby, location=[450.862, 0, 565.029, 270]),  # Custom Location (Removing Wheel)
     ],
     Levels.CrystalCaves: [

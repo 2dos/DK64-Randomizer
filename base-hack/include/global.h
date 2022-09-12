@@ -13,6 +13,8 @@ extern void callParentMapFilter(void);
 extern void shiftBrokenJapesPortal(void);
 extern void quickInit(void);
 
+extern int getWrinklyLevelIndex(void);
+
 extern void level_order_rando_funcs(void);
 extern void unlockKongs(void);
 extern void unlockMoves(void);
