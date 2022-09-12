@@ -54,7 +54,7 @@ door_locations = {
         DoorData(name="Galleon Lobby: Near DK Portal", map=Maps.GloomyGalleonLobby, location=[582.36, 159.667, 1088.258, 180]),  # Tiny Door
         DoorData(name="Galleon Lobby: Close Left", map=Maps.GloomyGalleonLobby, location=[876.388, 178.667, 1063.828, 192]),  # Chunky Door
         DoorData(name="Treasure Chest Exterior", map=Maps.GloomyGalleon, location=[1938, 1440, 524, 330]),
-        DoorData(name="Next to Warp 3 in Cranky's Area", map=Maps.GloomyGalleon, location=[3071, 1890, 2847, 0]),
+        DoorData(name="Next to Warp 3 in Cranky's Area", map=Maps.GloomyGalleon, location=[3071, 1890, 2838, 0]),
         DoorData(name="In Primate Punch Chest Room - right", map=Maps.GloomyGalleon, location=[3460, 1670, 4001, 180]),
     ],
     Levels.FungiForest: [
