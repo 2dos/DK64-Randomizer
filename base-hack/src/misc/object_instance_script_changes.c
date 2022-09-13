@@ -192,8 +192,8 @@ typedef struct warp_info_data {
 	/* 0x000 */ unsigned char warp_map;
 	/* 0x001 */ unsigned char tied_warp_index;
 	/* 0x002 */ unsigned short id;
-	/* 0x004 */ unsigned short active_flag;
-	/* 0x006 */ unsigned short appear_flag;
+	/* 0x004 */ short active_flag;
+	/* 0x006 */ short appear_flag;
 	/* 0x008 */ unsigned char tied_exit;
 	/* 0x009 */ char unk9;
 } warp_info_data;

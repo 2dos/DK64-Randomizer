@@ -326,6 +326,7 @@ class Settings:
         self.hard_blockers = False
         self.hard_troff_n_scoff = False
         self.wrinkly_location_rando = False
+        self.tns_location_rando = False
         self.minigames_list_selected = []
         self.helm_hurry = False
 

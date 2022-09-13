@@ -701,7 +701,7 @@ typedef struct behaviour_data {
 	/* 0x046 */ char unk_46[0x48-0x46];
 	/* 0x048 */ unsigned char current_state;
 	/* 0x049 */ char counter;
-	/* 0x04A */ char unk_4A[0x4B-0x4A];
+	/* 0x04A */ char unk_4A;
 	/* 0x04B */ unsigned char next_state;
 	/* 0x04C */ char counter_next;
 	/* 0x04D */ char unk_4D[0x54-0x4D];
