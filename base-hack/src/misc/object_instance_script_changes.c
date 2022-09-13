@@ -503,7 +503,11 @@ void TNSIndicatorGenericCode(behaviour_data* behaviour, int index, int id) {
 			display_number = 0;
 		}
 		for (int i = 1; i < 4; i++) {
-			displayNumberOnObject(id,i,(((10-i) + display_number % 10) % 10) - 1, 0, 0);
+			int tex = (((10-i) + display_number % 10) % 10) - 1;
+			if (i == 1) {
+				tex = (((10-i) + display_number % 10) % 10);
+			}
+			displayNumberOnObject(id,i,tex, 0, 0);
 			display_number /= 10;
 		}
 		if (checkFlag(tnsportal_flags[world],0)) {
