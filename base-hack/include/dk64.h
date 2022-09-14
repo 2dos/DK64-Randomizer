@@ -398,6 +398,9 @@ extern short CBTurnedInArray[8];
 extern short songData[0xB0];
 extern unsigned int DKTVData[5];
 
+extern void* ExitPointer;
+extern unsigned char ExitCount;
+
 extern charspawner_flagstruct charspawnerflags[0x1F];
 extern GBDictItem GBDictionary[113];
 extern actorData* CurrentActorPointer_0;

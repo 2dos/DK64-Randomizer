@@ -430,7 +430,7 @@ void TNSPortalGenericCode(behaviour_data* behaviour, int index, int id) {
 			hideObject(behaviour);
 			behaviour->next_state = 20;
 		}
-		if ((behaviour->switch_pressed == 1) && ((getInteractionOfContactActor(behaviour->contact_actor_type) & 1) == 0) && (canHitSwitch())) {
+		if ((behaviour->switch_pressed == 1) && (getInteractionOfContactActor(behaviour->contact_actor_type) & 1) && (canHitSwitch())) {
 			setSomeTimer(0x2AC);
 			behaviour->timer = 5;
 			exitPortalPath(behaviour, index, 0, 0);
@@ -442,7 +442,7 @@ void TNSPortalGenericCode(behaviour_data* behaviour, int index, int id) {
 	} else if (behaviour->current_state == 4) {
 		if (behaviour->timer == 0) {
 			enterPortal(Player);
-			initiateTransition_0(0x2A, 0, 16, 2); // Param 3 is tied exit
+			initiateTransition_0(0x2A, 0, 0, 3); // Param 3 is tied exit
 			behaviour->next_state = 5;
 		}
 	} else if (behaviour->current_state == 40) {

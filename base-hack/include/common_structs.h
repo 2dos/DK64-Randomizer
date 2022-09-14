@@ -658,6 +658,13 @@ typedef struct race_exit_struct {
 	/* 0x008 */ int container_exit;
 } race_exit_struct;
 
+typedef struct exit_struct {
+	/* 0x000 */ short x;
+	/* 0x002 */ short y;
+	/* 0x004 */ short z;
+	/* 0x006 */ char unk_6[4];
+} exit_struct;
+
 typedef struct enemy_drop_struct {
 	/* 0x000 */ short source_object_type;
 	/* 0x002 */ short dropped_object_type;
@@ -693,8 +700,8 @@ typedef struct settingsData {
 typedef struct behaviour_data {
 	/* 0x000 */ void* extra_data;
 	/* 0x004 */ char unk_04[0x14-0x4];
-	/* 0x014 */ short unk_14;
-	/* 0x016 */ char unk_16[0x38-0x16];
+	/* 0x014 */ float unk_14;
+	/* 0x018 */ char unk_18[0x38-0x18];
 	/* 0x038 */ int unk_38;
 	/* 0x03C */ char unk_3C[0x44-0x3C];
 	/* 0x044 */ unsigned short timer;
