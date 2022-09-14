@@ -29,10 +29,11 @@ def place_door_locations(spoiler: Spoiler):
                 # Get all doors that can be placed
                 available_doors = []
                 for door_index, door in enumerate(door_locations[level]):
-                    if not door.placed:
+                    if door.enabled and not door.placed:
                         available_doors.append(door_index)
-                selected_door = random.choice(available_doors)
-                door_locations[level][selected_door].assignDoor(new_door % 5)  # Clamp to within [0,4], preventing list index errors
+                if len(available_doors) > 0: #TODO: remove this if when testing is done
+                    selected_door = random.choice(available_doors)
+                    door_locations[level][selected_door].assignDoor(new_door % 5)  # Clamp to within [0,4], preventing list index errors
         # Handle Setup
         for cont_map_id in range(216):
             setup_table = js.pointer_addresses[9]["entries"][cont_map_id]["pointing_to"]
