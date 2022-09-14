@@ -461,3 +461,4 @@ extern unsigned short MultiBunchCount;
 extern char QueueHelmTimer;
 extern char ToggleAmmoOn;
 extern void* WarpData;
+extern unsigned char InvertedControls;

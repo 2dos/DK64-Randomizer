@@ -343,6 +343,9 @@ void initHack(int source) {
 				*(int*)(0x8064F170) = 0; // Prevent edge cases for Aztec Chunky/Fungi Wheel
 				*(int*)(0x8069E154) = 0x0C000000 | (((int)&getWrinklyLevelIndex & 0xFFFFFF) >> 2); // Modify Function Call
 			}
+			*(short*)(0x8060D01A) = getHi(&InvertedControls); // Change language store to inverted controls store
+			*(short*)(0x8060D01E) = getLo(&InvertedControls); // Change language store to inverted controls store
+			*(short*)(0x8060D04C) = 0x1000; // Prevent inverted controls overwrite
 			// Expand Display List
 			*(short*)(0x805FE56A) = 8000;
 			*(short*)(0x805FE592) = 0x4100; // SLL 4 (Doubles display list size)

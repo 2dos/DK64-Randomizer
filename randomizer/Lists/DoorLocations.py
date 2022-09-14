@@ -24,6 +24,7 @@ class DoorData:
         self.assigned_kong = kong
 
     def assignPortal(self):
+        """Assign T&S Portal to slot."""
         self.placed = "tns"
 
 
@@ -44,11 +45,11 @@ door_locations = {
         DoorData(name="Aztec Lobby: Left of Portal", map=Maps.AngryAztecLobby, location=[628.762, 80, 713.93, 177], placed="wrinkly"),  # Lanky Door
         DoorData(name="Aztec Lobby: Right of Portal", map=Maps.AngryAztecLobby, location=[377.124, 80, 712.484, 179], placed="wrinkly"),  # Tiny Door
         DoorData(name="Aztec Lobby: Behind Feather Door", map=Maps.AngryAztecLobby, location=[1070.018, 0, 738.609, 190], placed="wrinkly"),  # Custom Chunky Door
-        DoorData(name="Aztec: Near Funky's", map=Maps.AngryAztec, location=[2801.765, 121.333, 4439.293, 66], placed="tns"), # T&S Portal by Funky
-        DoorData(name="Aztec: Near Cranky's", map=Maps.AngryAztec, location=[2787.908, 120, 2674.299, 198], placed="tns"), # T&S Portal by Cranky
-        DoorData(name="Aztec: Near Candy's", map=Maps.AngryAztec, location=[2268.343, 120, 448.669, 59], placed="tns"), # T&S Portal by Candy
-        DoorData(name="Aztec: Near Snide's", map=Maps.AngryAztec, location=[3573.712, 120, 4456.399, 285], placed="tns"), # T&S Portal by Snide
-        DoorData(name="Aztec: Behind 5DT", map=Maps.AngryAztec, location=[1968.329, 180, 3457.189, 244], placed="tns"), # T&S Portal behind 5DT
+        DoorData(name="Aztec: Near Funky's", map=Maps.AngryAztec, location=[2801.765, 121.333, 4439.293, 66], placed="tns"),  # T&S Portal by Funky
+        DoorData(name="Aztec: Near Cranky's", map=Maps.AngryAztec, location=[2787.908, 120, 2674.299, 198], placed="tns"),  # T&S Portal by Cranky
+        DoorData(name="Aztec: Near Candy's", map=Maps.AngryAztec, location=[2268.343, 120, 448.669, 59], placed="tns"),  # T&S Portal by Candy
+        DoorData(name="Aztec: Near Snide's", map=Maps.AngryAztec, location=[3573.712, 120, 4456.399, 285], placed="tns"),  # T&S Portal by Snide
+        DoorData(name="Aztec: Behind 5DT", map=Maps.AngryAztec, location=[1968.329, 180, 3457.189, 244], placed="tns"),  # T&S Portal behind 5DT
     ],
     Levels.FranticFactory: [
         DoorData(name="Factory Lobby: Low Left", map=Maps.FranticFactoryLobby, location=[544.362, 0, 660.802, 182], placed="wrinkly"),  # DK Door

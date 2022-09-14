@@ -14,6 +14,9 @@ extern void shiftBrokenJapesPortal(void);
 extern void quickInit(void);
 
 extern int getWrinklyLevelIndex(void);
+extern void initOptionScreen(void);
+extern int getLo(void* addr);
+extern int getHi(void* addr);
 
 extern void level_order_rando_funcs(void);
 extern void unlockKongs(void);

@@ -41,7 +41,7 @@ def place_door_locations(spoiler: Spoiler):
                     if len(available_doors) > 0:
                         selected_door = random.choice(available_doors)
                         door_locations[level][selected_door].assignDoor(new_door % 5)  # Clamp to within [0,4], preventing list index errors
-                limit = random.choice([3,4,5])
+                limit = random.choice([3, 4, 5])
                 for new_portal in range(limit):
                     # Get all doors that can be placed
                     available_portals = []
@@ -72,7 +72,7 @@ def place_door_locations(spoiler: Spoiler):
                         retain = False
                 if spoiler.settings.tns_location_rando:
                     if cont_map_id != 0x2A:
-                        if item_type in (0x2AB,0x2AC):
+                        if item_type in (0x2AB, 0x2AC):
                             retain = False
                 if retain:
                     ROM().seek(item_start)
@@ -127,7 +127,7 @@ def place_door_locations(spoiler: Spoiler):
                                         item_data.append(int(float_to_hex(door.location[coord_index] - 30), 16))  # y
                                     else:
                                         item_data.append(int(float_to_hex(door.location[coord_index]), 16))  # x y z
-                                item_data.append(int(float_to_hex([door.scale,0.35][k]), 16))  # Scale
+                                item_data.append(int(float_to_hex([door.scale, 0.35][k]), 16))  # Scale
                                 item_data.append(0xFFFEFEFF)
                                 item_data.append(0x001BFFE1)
                                 item_data.append(0)  # rx
@@ -141,7 +141,7 @@ def place_door_locations(spoiler: Spoiler):
                                     portal_ids.append(id)
                                 else:
                                     indicator_ids.append(id)
-                                item_data.append(([0x2AC,0x2AB][k] << 16) | id)
+                                item_data.append(([0x2AC, 0x2AB][k] << 16) | id)
                                 item_data.append(1 << 16)
                                 retained_model2.append(item_data)
             if len(map_wrinkly_ids) > 0:

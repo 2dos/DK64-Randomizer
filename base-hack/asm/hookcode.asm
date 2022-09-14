@@ -1229,6 +1229,19 @@ START_HOOK:
 		OR 		t6, v0, r0
 		J 		0x8060DEFC
 		ADDIU 	at, r0, 1
+
+	InvertCameraControls:
+		ADDU 	t7, t7, t6
+		LB 		t7, 0xD63F (t7)
+		LUI 	a0, hi(InvertedControls)
+		LBU 	a0, lo(InvertedControls) (a0)
+		BEQZ 	a0, InvertCameraControls_Finish
+		NOP
+		SUB 	t7, r0, t7
+
+		InvertCameraControls_Finish:
+			J 	0x806EA714
+			NOP
 		
 .align 0x10
 END_HOOK:

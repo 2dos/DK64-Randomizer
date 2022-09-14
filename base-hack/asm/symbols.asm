@@ -440,6 +440,7 @@
 .definelabel QueueHelmTimer, 0x807FFFDD
 .definelabel ToggleAmmoOn, 0x807FFFDC
 .definelabel WarpData, 0x807FFFD8
+.definelabel InvertedControls, 0x807FFFD7
 
 .definelabel CrankyMoves_New, 0x807FF400
 .definelabel CandyMoves_New, 0x807FF4F0

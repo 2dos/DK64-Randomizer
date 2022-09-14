@@ -393,7 +393,7 @@ for x in range(8):
         }
     )
 for x in range(43):
-    if x not in (13, 32, 0x18, 0x27, 8):
+    if x not in (13, 32, 0x18, 0x27, 8, 37):
         file_dict.append(
             {
                 "name": "Text " + str(x),
@@ -545,6 +545,16 @@ file_dict.append(
         "pointer_table_index": 12,
         "file_index": 8,
         "source_file": "cranky_text.bin",
+        "do_not_compress": True,
+        "do_not_delete_source": True,
+    }
+)
+file_dict.append(
+    {
+        "name": "Menu Text",
+        "pointer_table_index": 12,
+        "file_index": 37,
+        "source_file": "menu_text.bin",
         "do_not_compress": True,
         "do_not_delete_source": True,
     }
