@@ -408,7 +408,7 @@ def randomize_setup(spoiler: Spoiler):
                             dirt_bytes.append(int(float_to_hex(patch.x), 16))
                             dirt_bytes.append(int(float_to_hex(patch.y), 16))
                             dirt_bytes.append(int(float_to_hex(patch.z), 16))
-                            dirt_bytes.append(int(float_to_hex(1), 16))
+                            dirt_bytes.append(int(float_to_hex(patch.scale), 16))
                             for x in range(8):
                                 dirt_bytes.append(0)
                             rot_type_hex = hex(patch.rotation) + "007B"
