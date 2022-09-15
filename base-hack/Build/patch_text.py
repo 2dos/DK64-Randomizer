@@ -625,3 +625,7 @@ cranky_text = grabText(8)
 for move in move_explanations:
     cranky_text.append(move["explanation"])
 writeText("cranky_text.bin", cranky_text)
+
+menu_text = grabText(37)
+menu_text[46] = [{"text": ["FIRST PERSON CAMERA"]}]
+writeText("menu_text.bin", menu_text)

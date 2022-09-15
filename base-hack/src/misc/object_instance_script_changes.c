@@ -192,8 +192,8 @@ typedef struct warp_info_data {
 	/* 0x000 */ unsigned char warp_map;
 	/* 0x001 */ unsigned char tied_warp_index;
 	/* 0x002 */ unsigned short id;
-	/* 0x004 */ unsigned short active_flag;
-	/* 0x006 */ unsigned short appear_flag;
+	/* 0x004 */ short active_flag;
+	/* 0x006 */ short appear_flag;
 	/* 0x008 */ unsigned char tied_exit;
 	/* 0x009 */ char unk9;
 } warp_info_data;
@@ -365,6 +365,156 @@ void bananaportGenericCode(behaviour_data* behaviour, int index, int id) {
 			*(char*)(0x807F6902) = 0;
 			behaviour->counter_next = 2;
 		}
+	}
+}
+
+static const short tnsportal_flags[] = {
+	FLAG_PORTAL_JAPES,
+	FLAG_PORTAL_AZTEC,
+	FLAG_PORTAL_FACTORY,
+	FLAG_PORTAL_GALLEON,
+	FLAG_PORTAL_FUNGI,
+	FLAG_PORTAL_CAVES,
+	FLAG_PORTAL_CASTLE,
+};
+static const short normal_key_flags[] = {
+	FLAG_KEYHAVE_KEY1,
+	FLAG_KEYHAVE_KEY2,
+	FLAG_KEYHAVE_KEY3,
+	FLAG_KEYHAVE_KEY4,
+	FLAG_KEYHAVE_KEY5,
+	FLAG_KEYHAVE_KEY6,
+	FLAG_KEYHAVE_KEY7,
+	FLAG_KEYHAVE_KEY8
+};
+
+void TNSPortalGenericCode(behaviour_data* behaviour, int index, int id) {
+	int world = getWorld(CurrentMap, 0);
+	if (behaviour->current_state == 0) {
+		unkObjFunction0(index, 1, 0);
+		unkObjFunction1(index, 1, 160);
+		unkObjFunction0(index, 3, 0);
+		unkObjFunction1(index, 3, 115);
+		if (checkFlag(tnsportal_flags[world],0)) {
+			hideObject(behaviour);
+			behaviour->next_state = 20;
+		} else {
+			behaviour->timer = 45;
+			behaviour->next_state = 1;
+		}
+		if (!checkFlag(normal_key_flags[world],0)) {
+			unkObjFunction2(index, 1, -1);
+			unkObjFunction2(index, 3, -1);
+		}
+	} else if (behaviour->current_state == 1) {
+		if (isPlayerInRangeOfObject(60)) {
+			behaviour->timer = behaviour->unk_14;
+			exitPortalPath(behaviour, index, 1, 0);
+			*(char*)(0x807F693F) = 1;
+			PlayCutsceneFromModelTwoScript(behaviour, 29, 0, 15);
+			setAction(90,0,0);
+			behaviour->next_state = 100;
+		} else {
+			behaviour->next_state = 2;
+		}
+	} else if (behaviour->current_state == 2) {
+		if (behaviour->timer == 0) {
+			behaviour->unk_68 = 60;
+			behaviour->unk_6A = 60;
+			behaviour->unk_6C = 60;
+			behaviour->unk_67 = 3;
+			behaviour->next_state = 3;
+		}
+	} else if (behaviour->current_state == 3) {
+		if (checkFlag(tnsportal_flags[world],0)) {
+			hideObject(behaviour);
+			behaviour->next_state = 20;
+		}
+		if ((behaviour->switch_pressed == 1) && (getInteractionOfContactActor(behaviour->contact_actor_type) & 1) && (canHitSwitch())) {
+			setSomeTimer(0x2AC);
+			behaviour->timer = 5;
+			exitPortalPath(behaviour, index, 0, 0);
+			*(char*)(0x807F693F) = 1;
+			PlayCutsceneFromModelTwoScript(behaviour, 28, 0, 15);
+			setAction(89,0,0);
+			behaviour->next_state = 4;
+		}
+	} else if (behaviour->current_state == 4) {
+		if (behaviour->timer == 0) {
+			enterPortal(Player);
+			initiateTransition_0(0x2A, 0, 0, 3); // Param 3 is tied exit
+			behaviour->next_state = 5;
+		}
+	} else if (behaviour->current_state == 40) {
+		if (behaviour->timer == 0) {
+			behaviour->unk_60 = 1;
+			behaviour->unk_62 = 0;
+			behaviour->unk_66 = 4;
+			behaviour->unk_70 = 0;
+			playSFXFromObject(index, 994, 255, 127, 20, 10, 0.3f);
+			behaviour->next_state = 41;
+		}
+	} else if (behaviour->current_state == 41) {
+		if (unkObjFunction8(index, 2)) {
+			exitPortalPath(behaviour, index, 0, 2);
+		} else {
+			behaviour->next_state = 20;
+		}
+	} else if (behaviour->current_state == 100) {
+		if (behaviour->timer == 0) {
+			if (checkFlag(normal_key_flags[world],0)) {
+				behaviour->timer = 60;
+				setPermFlag(tnsportal_flags[world]);
+				behaviour->next_state = 40;
+			} else {
+				behaviour->next_state = 2;
+			}
+		}
+	}
+}
+
+void TNSIndicatorGenericCode(behaviour_data* behaviour, int index, int id) {
+	if (behaviour->current_state == 0) {
+		for (int i = 0; i < 3; i++) {
+			unkObjFunction7(index, 1, 0);
+		}
+		int world = getWorld(CurrentMap, 0);
+		if ((checkFlag(tnsportal_flags[world],0)) || (!Rando.tns_indicator)) {
+			behaviour->next_state = 2;
+		} else {
+			behaviour->next_state = 1;
+		}
+		if (CurrentMap == 7) {
+			if (id == 0x220) {
+				int* m2location = ObjectModel2Pointer;
+				int slot = convertIDToIndex(0x220);
+				ModelTwoData* _object = getObjectArrayAddr(m2location,0x90,slot);
+				model_struct* _model = _object->model_pointer;
+				if (_model) {
+					_model->x = 722.473f;
+					_model->z = 2386.608f;
+				}
+			}
+		}
+	} else if (behaviour->current_state == 1) {
+		int world = getWorld(CurrentMap, 0);
+		int display_number = TroffNScoffReqArray[world] - TroffNScoffTurnedArray[world];
+		if (display_number < 0) {
+			display_number = 0;
+		}
+		for (int i = 1; i < 4; i++) {
+			int tex = (((10-i) + display_number % 10) % 10) - 1;
+			if (i == 1) {
+				tex = (((10-i) + display_number % 10) % 10);
+			}
+			displayNumberOnObject(id,i,tex, 0, 0);
+			display_number /= 10;
+		}
+		if (checkFlag(tnsportal_flags[world],0)) {
+			behaviour->next_state = 2;
+		}
+	} else if (behaviour->current_state == 2) {
+		hideObject(behaviour);
 	}
 }
 
@@ -1245,6 +1395,10 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 				behaviour_pointer->next_state = 1;
 			}
 		}
+	} else if (index == -3) {
+		TNSPortalGenericCode(behaviour_pointer, id, param2);
+	} else if (index == -4) {
+		TNSIndicatorGenericCode(behaviour_pointer, id, param2);
 	}
 	InstanceScriptParams[1] = id;
 	InstanceScriptParams[2] = index;

@@ -100,6 +100,11 @@
 .definelabel getPlayerObjectDistance, 0x8064F210
 .definelabel spawnWrinkly, 0x8064F028
 .definelabel isWrinklySpawned, 0x8064F1C4
+.definelabel setAction, 0x806EB0C0
+.definelabel exitPortalPath, 0x806496B0
+.definelabel getInteractionOfContactActor, 0x8067ACC0
+.definelabel enterPortal, 0x806CF398
+.definelabel drawBossDoorNumber, 0x8064954C
 
 .definelabel unkMultiplayerWarpFunction, 0x8061EB04
 .definelabel renderScreenTransition, 0x806291B4
@@ -334,6 +339,9 @@
 .definelabel CutsceneBanks, 0x807F5B10
 .definelabel EEPROMType, 0x807EDEAC
 
+.definelabel ExitPointer, 0x807FC900
+.definelabel ExitCount, 0x807FC904
+
 .definelabel screenCenterX, 0x80744490
 .definelabel screenCenterY, 0x80744494
 .definelabel collisionPos, 0x807F621C
@@ -432,6 +440,7 @@
 .definelabel QueueHelmTimer, 0x807FFFDD
 .definelabel ToggleAmmoOn, 0x807FFFDC
 .definelabel WarpData, 0x807FFFD8
+.definelabel InvertedControls, 0x807FFFD7
 
 .definelabel CrankyMoves_New, 0x807FF400
 .definelabel CandyMoves_New, 0x807FF4F0

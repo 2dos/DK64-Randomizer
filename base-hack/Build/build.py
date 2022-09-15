@@ -11,6 +11,7 @@ import create_helm_geo
 import generate_watch_file
 import shop_instance_script  # HAS TO BE BEFORE `instance_script_maker`
 from writeWarpData import generateDefaultPadPairing  # HAS TO BE BEFORE `instance_script_maker`
+import portal_instance_script  # HAS TO BE BEFORE `instance_script_maker`
 import instance_script_maker
 import model_fix
 
@@ -392,7 +393,7 @@ for x in range(8):
         }
     )
 for x in range(43):
-    if x not in (13, 32, 0x18, 0x27, 8):
+    if x not in (13, 32, 0x18, 0x27, 8, 37):
         file_dict.append(
             {
                 "name": "Text " + str(x),
@@ -544,6 +545,16 @@ file_dict.append(
         "pointer_table_index": 12,
         "file_index": 8,
         "source_file": "cranky_text.bin",
+        "do_not_compress": True,
+        "do_not_delete_source": True,
+    }
+)
+file_dict.append(
+    {
+        "name": "Menu Text",
+        "pointer_table_index": 12,
+        "file_index": 37,
+        "source_file": "menu_text.bin",
         "do_not_compress": True,
         "do_not_delete_source": True,
     }
@@ -853,6 +864,8 @@ with open(newROMName, "r+b") as fh:
     adjustExits(fh)
     generateDefaultPadPairing(fh)
     writeVanillaSongData(fh)
+    fh.seek(0x1FED020 + 0x11E)
+    fh.write((1).to_bytes(1, "big"))
     for x in portal_images:
         for y in x:
             if os.path.exists(y):

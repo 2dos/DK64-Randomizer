@@ -401,6 +401,27 @@ void FileProgressInit(actorData* menu_controller) {
 		// 	y = 90;
 		// }
 		// displayMenuSprite(paad, sprite, x, y, 0.5, 2, 0xF);
-	}
-	
+	}	
+}
+
+static char* inverted_controls_str[] = {
+	"INVERTED",
+	"NON-INVERTED"
+};
+
+int* displayInverted(int* dl, int style, int x, int y, char* str, int unk0) {
+	return displayText(dl, style, x, y, inverted_controls_str[(int)InvertedControls], unk0);
+}
+
+void initOptionScreen(void) {
+	*(char*)(0x800338FC) = 5; // 5 Options
+	*(short*)(0x8002DA86) = 1; // Cap to 1
+	*(short*)(0x8002DA46) = getHi(&InvertedControls); // Up/Down Edit
+	*(short*)(0x8002DA4E) = getLo(&InvertedControls); // Up/Down Edit
+	*(short*)(0x8002DA1E) = getHi(&InvertedControls); // Up/Down Edit
+	*(short*)(0x8002DA22) = getLo(&InvertedControls); // Up/Down Edit
+	*(short*)(0x8002DADE) = getHi(&InvertedControls); // Save to global
+	*(short*)(0x8002DAE2) = getLo(&InvertedControls); // Save to global
+	*(short*)(0x8002DA88) = 0x1000; // Prevent Language Update
+	*(int*)(0x8002DEC4) = 0x0C000000 | (((int)&displayInverted & 0xFFFFFF) >> 2); // Modify Function Call
 }

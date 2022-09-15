@@ -113,6 +113,11 @@ extern int isPlayerInRangeOfObject(int distance);
 extern int getPlayerObjectDistance(void);
 extern void spawnWrinkly(behaviour_data* behaviour, int index, int door_kong_index, int unk0);
 extern int isWrinklySpawned(void);
+extern void setAction(int action, void* actor, int player_index);
+extern void exitPortalPath(behaviour_data* behaviour, int index, int unk0, int unk1);
+extern int getInteractionOfContactActor(int contact_actor);
+extern void enterPortal(void* player);
+extern void drawBossDoorNumber(behaviour_data* behaviour, int index, int unk0, int unk1);
 
 extern int* initDisplayList(int* dl);
 extern int getTextStyleHeight(int style);
@@ -393,6 +398,9 @@ extern short CBTurnedInArray[8];
 extern short songData[0xB0];
 extern unsigned int DKTVData[5];
 
+extern void* ExitPointer;
+extern unsigned char ExitCount;
+
 extern charspawner_flagstruct charspawnerflags[0x1F];
 extern GBDictItem GBDictionary[113];
 extern actorData* CurrentActorPointer_0;
@@ -453,3 +461,4 @@ extern unsigned short MultiBunchCount;
 extern char QueueHelmTimer;
 extern char ToggleAmmoOn;
 extern void* WarpData;
+extern unsigned char InvertedControls;

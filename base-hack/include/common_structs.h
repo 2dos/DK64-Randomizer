@@ -658,6 +658,13 @@ typedef struct race_exit_struct {
 	/* 0x008 */ int container_exit;
 } race_exit_struct;
 
+typedef struct exit_struct {
+	/* 0x000 */ short x;
+	/* 0x002 */ short y;
+	/* 0x004 */ short z;
+	/* 0x006 */ char unk_6[4];
+} exit_struct;
+
 typedef struct enemy_drop_struct {
 	/* 0x000 */ short source_object_type;
 	/* 0x002 */ short dropped_object_type;
@@ -692,14 +699,16 @@ typedef struct settingsData {
 
 typedef struct behaviour_data {
 	/* 0x000 */ void* extra_data;
-	/* 0x004 */ char unk_04[0x38-0x4];
+	/* 0x004 */ char unk_04[0x14-0x4];
+	/* 0x014 */ float unk_14;
+	/* 0x018 */ char unk_18[0x38-0x18];
 	/* 0x038 */ int unk_38;
 	/* 0x03C */ char unk_3C[0x44-0x3C];
 	/* 0x044 */ unsigned short timer;
 	/* 0x046 */ char unk_46[0x48-0x46];
 	/* 0x048 */ unsigned char current_state;
 	/* 0x049 */ char counter;
-	/* 0x04A */ char unk_4A[0x4B-0x4A];
+	/* 0x04A */ char unk_4A;
 	/* 0x04B */ unsigned char next_state;
 	/* 0x04C */ char counter_next;
 	/* 0x04D */ char unk_4D[0x54-0x4D];
@@ -714,7 +723,11 @@ typedef struct behaviour_data {
 	/* 0x062 */ unsigned short unk_62;
 	/* 0x064 */ char unk_64[0x66-0x64];
 	/* 0x066 */ unsigned char unk_66;
-	/* 0x067 */ char unk_67[0x70-0x67];
+	/* 0x067 */ char unk_67;
+	/* 0x068 */ unsigned short unk_68;
+	/* 0x06A */ unsigned short unk_6A;
+	/* 0x06C */ unsigned short unk_6C;
+	/* 0x06E */ char unk_6E[0x70-0x6E];
 	/* 0x070 */ char unk_70;
 	/* 0x071 */ char unk_71;
 	/* 0x072 */ char unk_72[0x94-0x72];

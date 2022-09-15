@@ -203,6 +203,9 @@ CoinHUDRepositionHook:
 SaveHelmHurryCheckHook:
 	J 	SaveHelmHurryCheck
 	NOP
+InvertCameraControlsHook:
+	J 	InvertCameraControls
+	NOP
 
 loadExtraHooks:
 	LUI t3, hi(InstanceScriptHook)
@@ -216,6 +219,12 @@ loadExtraHooks:
 	LUI t4, 0x8065
 	SW t3, 0x8364 (t4) // Store Hook
 	SW r0, 0x8368 (t4) // Store NOP
+	
+	LUI t3, hi(InvertCameraControlsHook)
+	LW t3, lo(InvertCameraControlsHook) (t3)
+	LUI t4, 0x806F
+	SW t3, 0xA70C (t4) // Store Hook
+	SW r0, 0xA710 (t4) // Store NOP
 
 	LUI t3, hi(FixPufftossInvalidWallCollisionHook)
 	LW t3, lo(FixPufftossInvalidWallCollisionHook) (t3)
