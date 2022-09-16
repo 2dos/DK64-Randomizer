@@ -16,6 +16,7 @@ int convertIDToIndex(short obj_index) {
 		ModelTwoData* _object = getObjectArrayAddr(m2location,0x90,i);
 		if (_object->object_id == obj_index) {
 			index = i;
+			return i;
 		}
 	}
 	return index;
@@ -29,6 +30,7 @@ int convertSubIDToIndex(short obj_index) {
 		ModelTwoData* _object = getObjectArrayAddr(m2location,0x90,i);
 		if (_object->sub_id == obj_index) {
 			index = i;
+			return i;
 		}
 	}
 	return index;
@@ -126,5 +128,41 @@ void alterGBKong(int map, int id, int new_kong) {
 				GBDictionary[i].intended_kong_actor = new_kong + 2;
 			}
 		}
+	}
+}
+
+void cancelCutscene(int enable_movement) {
+	if ((TBVoidByte & 2) == 0) {
+		if (CutsceneActive) {
+			if (CutsceneTypePointer) {
+				if (CutsceneTypePointer->cutscene_databank) {
+					int* databank = (int *)(CutsceneTypePointer->cutscene_databank);
+					short cam_state = *(short *)(getObjectArrayAddr(databank,0xC,CutsceneIndex));
+					// short cam_state = *( short*)(cs_databank + (0xC * CutsceneIndex));
+					CurrentCameraState = cam_state;
+					PreviousCameraState = cam_state;
+					CameraStateChangeTimer = 0;
+					if ((Player) && (enable_movement)) {
+						Player->control_state = 0xC;
+					}
+				}
+			}
+		}
+	}
+}
+
+typedef struct cutscene_item_data {
+	/* 0x000 */ short num_points;
+	/* 0x002 */ short unk_02;
+	/* 0x004 */ void* point_array;
+	/* 0x008 */ void* length_array;
+} cutscene_item_data;
+
+void modifyCutsceneItem(int bank, int cutscene, int point, int new_item) {
+	if (CutsceneBanks[bank].cutscene_databank) {
+		void* databank = CutsceneBanks[bank].cutscene_databank;
+		cutscene_item_data* data = (cutscene_item_data*)getObjectArrayAddr(databank,0xC,cutscene);
+		short* write_spot = (short*)getObjectArrayAddr(data->point_array,2,point);
+		*(short*)write_spot = new_item;
 	}
 }

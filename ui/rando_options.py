@@ -57,6 +57,18 @@ def max_randomized_troff(event):
         troff_text.value = 500
 
 
+@bind("focusout", "medal_requirement")
+def max_randomized_medals(event):
+    """Validate medal input on loss of focus."""
+    medal_requirement = js.document.getElementById("medal_requirement")
+    if not medal_requirement.value:
+        medal_requirement.value = 15
+    elif 0 > int(medal_requirement.value):
+        medal_requirement.value = 0
+    elif int(medal_requirement.value) > 40:
+        medal_requirement.value = 40
+
+
 def min_max(event, min, max):
     """Check if the data is within bounds of requirements.
 
@@ -124,6 +136,7 @@ def set_preset_options():
     js.jq("#presets").val("-- Select a Preset --")
     toggle_counts_boxes(None)
     toggle_b_locker_boxes(None)
+    toggle_extreme_prices_option(None)
     js.load_cookies()
 
 
@@ -134,10 +147,13 @@ def toggle_b_locker_boxes(event):
     if js.document.getElementById("randomize_blocker_required_amounts").checked:
         disabled = False
     blocker_text = js.document.getElementById("blocker_text")
+    maximize_helm_blocker = js.document.getElementById("maximize_helm_blocker")
     if disabled:
         blocker_text.setAttribute("disabled", "disabled")
+        maximize_helm_blocker.setAttribute("disabled", "disabled")
     else:
         blocker_text.removeAttribute("disabled")
+        maximize_helm_blocker.removeAttribute("disabled")
     for i in range(0, 10):
         blocker = js.document.getElementById(f"blocker_{i}")
         try:
@@ -178,8 +194,7 @@ def update_boss_required(evt):
     boss_location = document.getElementById("boss_location_rando")
     boss_kong = document.getElementById("boss_kong_rando")
     kong_rando = document.getElementById("kong_rando")
-    shop = document.getElementById("shop_location_rando")
-    unlock_moves = document.getElementById("unlock_all_moves")
+    moves = document.getElementById("move_off")
     if level.value == "level_order":
         boss_location.setAttribute("disabled", "disabled")
         boss_location.checked = True
@@ -187,27 +202,22 @@ def update_boss_required(evt):
         boss_kong.checked = True
         kong_rando.setAttribute("disabled", "disabled")
         kong_rando.checked = True
-        shop.setAttribute("disabled", "disabled")
-        shop.checked = True
+        if moves.selected is True:
+            document.getElementById("move_on").selected = True
+        moves.setAttribute("disabled", "disabled")
     elif level.value == "vanilla" and kong_rando.checked:
         boss_location.setAttribute("disabled", "disabled")
         boss_location.checked = True
         boss_kong.setAttribute("disabled", "disabled")
         boss_kong.checked = True
         kong_rando.removeAttribute("disabled")
-        shop.removeAttribute("disabled")
+        moves.removeAttribute("disabled")
     else:
         try:
             boss_kong.removeAttribute("disabled")
             boss_location.removeAttribute("disabled")
             kong_rando.removeAttribute("disabled")
-            shop.removeAttribute("disabled")
-        except Exception:
-            pass
-    if unlock_moves.checked:
-        try:
-            shop.setAttribute("disabled", "disabled")
-            shop.checked = False
+            moves.removeAttribute("disabled")
         except Exception:
             pass
 
@@ -219,13 +229,11 @@ def disable_boss_rando(evt):
     boss_location = document.getElementById("boss_location_rando")
     boss_kong = document.getElementById("boss_kong_rando")
     kong_rando = document.getElementById("kong_rando")
-    shop = document.getElementById("shop_location_rando")
-    if kong_rando.checked and level.value == "vanilla":
+    if kong_rando.checked and level.value == "vanilla" or level.value == "level_order":
         boss_location.setAttribute("disabled", "disabled")
         boss_location.checked = True
         boss_kong.setAttribute("disabled", "disabled")
         boss_kong.checked = True
-        shop.removeAttribute("disabled")
     else:
         boss_kong.removeAttribute("disabled")
         boss_location.removeAttribute("disabled")
@@ -238,7 +246,7 @@ def disable_colors(evt):
     disabled = False
     if js.document.getElementById("random_colors").checked:
         disabled = True
-    for i in ["dk", "diddy", "tiny", "lanky", "chunky"]:
+    for i in ["dk", "diddy", "tiny", "lanky", "chunky", "rambi", "enguarde"]:
         color = js.document.getElementById(f"{i}_colors")
         try:
             if disabled:
@@ -247,6 +255,7 @@ def disable_colors(evt):
                 color.removeAttribute("disabled")
         except AttributeError:
             pass
+    hide_rgb(None)
 
 
 @bind("click", "enable_tag_anywhere")
@@ -299,7 +308,7 @@ def enable_kong_rando(evt):
 
 @bind("click", "krool_random")
 def disable_krool_phases(evt):
-    """Disable music options when Randomize All is selected."""
+    """Disable K Rool options when Randomize All is selected."""
     disabled = False
     krool = js.document.getElementById("krool_phase_count")
     if js.document.getElementById("krool_random").checked:
@@ -313,48 +322,53 @@ def disable_krool_phases(evt):
         pass
 
 
-@bind("click", "unlock_all_moves")
-def disable_shuffle_shop(evt):
-    """Disable Shuffle Shop Move Location when All Moves are Unlocked."""
+@bind("click", "helm_random")
+def disable_helm_phases(evt):
+    """Disable K Rool options when Randomize All is selected."""
     disabled = False
-    shop = js.document.getElementById("shop_location_rando")
+    helm = js.document.getElementById("helm_phase_count")
+    if js.document.getElementById("helm_random").checked:
+        disabled = True
+    try:
+        if disabled:
+            helm.setAttribute("disabled", "disabled")
+        else:
+            helm.removeAttribute("disabled")
+    except AttributeError:
+        pass
+
+
+@bind("change", "move_rando")
+def disable_prices(evt):
+    """Disable prices if move rando is set to start with all moves."""
+    moves = js.document.getElementById("move_rando")
     prices = js.document.getElementById("random_prices")
-    moves = js.document.getElementById("unlock_all_moves")
-    if moves.checked:
-        disabled = True
     try:
-        if disabled:
-            shop.setAttribute("disabled", "disabled")
-            shop.checked = False
+        if moves.value == "start_with":
             prices.setAttribute("disabled", "disabled")
-        elif js.document.getElementById("level_randomization").value != "level_order":
-            shop.removeAttribute("disabled")
-            prices.removeAttribute("disabled")
         else:
             prices.removeAttribute("disabled")
-            shop.checked = True
     except AttributeError:
         pass
 
 
-@bind("click", "gnawty_barrels")
-def disable_barrel_rando(evt):
-    """Disable Bonus Barrel Rando when Oops All Beaver Bother is selected."""
-    disabled = False
-    barrel = js.document.getElementById("bonus_barrel_rando")
-    if js.document.getElementById("gnawty_barrels").checked:
-        disabled = True
+@bind("click", "bonus_barrel_rando")
+def disable_barrel_modal(evt):
+    """Disable Minigame Selector when Shuffle Bonus Barrels is off."""
+    disabled = True
+    selector = js.document.getElementById("minigames_list_modal")
+    if js.document.getElementById("bonus_barrel_rando").checked:
+        disabled = False
     try:
         if disabled:
-            barrel.setAttribute("disabled", "disabled")
-            barrel.checked = False
+            selector.setAttribute("disabled", "disabled")
         else:
-            barrel.removeAttribute("disabled")
+            selector.removeAttribute("disabled")
     except AttributeError:
         pass
 
 
-@bind("change", "presets")
+@bind("click", "apply_preset")
 def preset_select_changed(event):
     """Trigger a change of the form via the JSON templates."""
     element = document.getElementById("presets")
@@ -372,6 +386,10 @@ def preset_select_changed(event):
                     js.jq(f"#{key}").checked = True
                     js.document.getElementsByName(key)[0].checked = True
                 js.jq(f"#{key}").removeAttr("disabled")
+            elif type(presets[key]) is list:
+                selector = js.document.getElementById(key)
+                for i in range(0, selector.options.length):
+                    selector.item(i).selected = selector.item(i).value in presets[key]
             else:
                 if js.document.getElementsByName(key)[0].hasAttribute("data-slider-value"):
                     js.jq(f"#{key}").slider("setValue", presets[key])
@@ -387,7 +405,102 @@ def preset_select_changed(event):
     update_boss_required(None)
     disable_colors(None)
     disable_music(None)
-    disable_shuffle_shop(None)
+    disable_prices(None)
     max_randomized_blocker(None)
     max_randomized_troff(None)
-    disable_barrel_rando(None)
+    disable_barrel_modal(None)
+
+
+@bind("change", "dk_colors")
+@bind("change", "diddy_colors")
+@bind("change", "lanky_colors")
+@bind("change", "tiny_colors")
+@bind("change", "chunky_colors")
+@bind("change", "rambi_colors")
+@bind("change", "enguarde_colors")
+def hide_rgb(event):
+    """Show RGB Selector if Custom Color is selected."""
+    for i in ["dk", "diddy", "lanky", "tiny", "chunky", "rambi", "enguarde"]:
+        hidden = True
+        color = js.document.getElementById(f"{i}_custom")
+        if js.document.getElementById(f"{i}_colors").value == "custom":
+            hidden = False
+        try:
+            if hidden or js.document.getElementById("random_colors").checked:
+                color.style.display = "none"
+            else:
+                color.style = ""
+        except AttributeError:
+            pass
+
+
+@bind("click", "random_medal_requirement")
+def toggle_medals_box(event):
+    """Toggle the textbox for Banana Medals."""
+    disabled = False
+    if js.document.getElementById("random_medal_requirement").checked:
+        disabled = True
+    medal = js.document.getElementById("medal_requirement")
+    if disabled:
+        medal.setAttribute("disabled", "disabled")
+    else:
+        medal.removeAttribute("disabled")
+
+
+@bind("change", "coin_door_open")
+def disable_rw(evt):
+    """Disable Banana Medal values from being changed if RW coin not needed."""
+    door = document.getElementById("coin_door_open")
+    random = document.getElementById("random_medal_requirement")
+    medal = document.getElementById("medal_requirement")
+    if door.value == "need_zero" or door.value == "need_nin":
+        try:
+            random.setAttribute("disabled", "disabled")
+            random.checked = False
+            medal.setAttribute("disabled", "disabled")
+        except Exception:
+            pass
+    else:
+        try:
+            random.removeAttribute("disabled")
+            medal.removeAttribute("disabled")
+        except Exception:
+            pass
+
+
+@bind("change", "unlock_fairy_shockwave")
+def toggle_extreme_prices_option(event):
+    """Determine the visibility of the extreme prices option."""
+    unlocked_shockwave = document.getElementById("unlock_fairy_shockwave").checked
+    no_logic = document.getElementById("no_logic").checked
+    option = document.getElementById("extreme_price_option")
+    if unlocked_shockwave or no_logic:
+        option.removeAttribute("disabled")
+    else:
+        option.setAttribute("disabled", "disabled")
+        price_option = document.getElementById("random_prices")
+        if price_option.value == "extreme":
+            price_option.value = "high"
+
+
+@bind("change", "no_logic")
+def toggle_no_logic(event):
+    """Toggle settings based on the presence of logic."""
+    toggle_extreme_prices_option(event)
+
+
+@bind("click", "nav-patch-tab")
+def toggle_patch_ui(event):
+    """Disable non-cosmetic tabs and show override option if using patch file."""
+    for tab in ["nav-started-tab", "nav-random-tab", "nav-overworld-tab", "nav-difficulty-tab", "nav-qol-tab"]:
+        document.getElementById(tab).setAttribute("disabled", "disabled")
+    document.getElementById("override_div").removeAttribute("hidden")
+    document.getElementById("nav-cosmetics-tab").click()
+
+
+@bind("click", "nav-seed-gen-tab")
+def toggle_patch_ui(event):
+    """Re-enable non-cosmetic tabs and hide override option if generating a new seed."""
+    for tab in ["nav-started-tab", "nav-random-tab", "nav-overworld-tab", "nav-difficulty-tab", "nav-qol-tab"]:
+        document.getElementById(tab).removeAttribute("disabled")
+    document.getElementById("override_div").setAttribute("hidden", "hidden")

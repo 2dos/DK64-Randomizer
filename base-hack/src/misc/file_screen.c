@@ -3,7 +3,6 @@
 static char file_percentage[5] = "";
 static char golden_count[4] = "";
 static char balanced_igt[20] = "";
-static char balanced_igt_seconds[10] = "";
 static char blueprints_count[5] = "";
 static char move_count_str[10] = "";
 
@@ -12,7 +11,7 @@ static char move_count_str[10] = "";
 int* display_images(int* dl) {
 	int y_offset = FileScreenDLOffset - 720;
 	for (int i = 0; i < 8; i++) {
-		int key_there = checkFlag(444 + i,0);
+		int key_there = checkFlag(FLAG_KEYIN_KEY1 + i,0);
 		if (!key_there) {
 			if (Rando.keys_preturned & (1 << i)) {
 				key_there = 1;
@@ -50,7 +49,7 @@ int* display_text(int* dl) {
 		move_count += 32; // All moves except sniper and camera
 		move_count += (MovesBase[0].weapon_bitfield >> 2) & 1; // Sniper Scope
 	} else {
-		if ((!Rando.camera_unlocked) && (checkFlag(0x179,0))) {
+		if ((!Rando.camera_unlocked) && (checkFlag(FLAG_ABILITY_CAMERA,0))) {
 			move_count += 1; // Fairy Camera
 		}
 		if (MovesBase[0].simian_slam > 1) {
@@ -87,19 +86,13 @@ int* display_text(int* dl) {
 	dl = displayText(dl,1,0x280,y,(char*)blueprints_count,0x81);
 	// Balanced IGT
 	y += LINE_GAP;
-	int secs = BalancedIGT % 1800;
+	int secs = IGT % 60;
 	float secsf = secs;
-	secsf /= 30;
-	int hm = BalancedIGT / 1800;
+	secsf /= 60;
+	int hm = IGT / 60;
 	int minutes = hm % 60;
 	int hours = hm / 60;
-	if (secs < 300) {
-		dk_strFormat((char*)balanced_igt_seconds,"0%f",secsf);
-	} else {
-		dk_strFormat((char*)balanced_igt_seconds,"%f",secsf);
-	}
-	balanced_igt_seconds[4] = 0;
-	dk_strFormat((char*)balanced_igt, "%03d:%02d:%s",hours,minutes,(char*)balanced_igt_seconds);
+	dk_strFormat((char*)balanced_igt, "%03d:%02d:%02d",hours,minutes,secs);
 	dl = displayText(dl,1,0x280,y,(char*)balanced_igt,0x81);
 	dl = display_images(dl);
 	return dl;
@@ -114,7 +107,7 @@ int* displayHash(int* dl, int y_offset) {
 	return dl;
 }
 
-static const short kong_flags[] = {385,6,70,66,117};
+static const short kong_flags[] = {FLAG_KONG_DK,FLAG_KONG_DIDDY,FLAG_KONG_LANKY,FLAG_KONG_TINY,FLAG_KONG_CHUNKY};
 void correctKongFaces(void) {
 	if (Rando.unlock_kongs) {
 		for (int i = 0; i < 5; i++) {
@@ -124,7 +117,7 @@ void correctKongFaces(void) {
 				KongUnlockedMenuArray[i] = (Rando.unlock_kongs & (1 << i)) != 0;
 			}
 		}
-		if (!checkFlag(385,0)) {
+		if (!checkFlag(FLAG_KONG_DK,0)) {
 			if ((Rando.unlock_kongs & 1) == 0) {
 				KongUnlockedMenuArray[0] = 0;
 			}
@@ -135,7 +128,7 @@ void correctKongFaces(void) {
 		}
 		KongUnlockedMenuArray[(int)Rando.starting_kong] = 1;
 		if (Rando.starting_kong != 0) {
-			if (!checkFlag(385,0)) {
+			if (!checkFlag(FLAG_KONG_DK,0)) {
 				KongUnlockedMenuArray[0] = 0;
 			}
 		}

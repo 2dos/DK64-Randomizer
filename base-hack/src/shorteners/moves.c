@@ -21,10 +21,10 @@ void unlockMoves(void) {
 	}
 	if (Rando.fast_start_beginning) {
 		for (int i = 0; i < 4; i++) {
-			setPermFlag(i  + 0x182);
+			setPermFlag(i  + FLAG_TBARREL_DIVE);
 		}
 	}
 	if (Rando.camera_unlocked) {
-		setPermFlag(0x179);
+		setPermFlag(FLAG_ABILITY_CAMERA);
 	}
 }

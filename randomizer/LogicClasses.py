@@ -33,7 +33,7 @@ class Event:
 class Collectible:
     """Class used for colored bananas and banana coins."""
 
-    def __init__(self, type, kong, logic, coords, amount=1):
+    def __init__(self, type, kong, logic, coords, amount=1, enabled=True, vanilla=True):
         """Initialize with given parameters."""
         self.type = type
         self.kong = kong
@@ -41,6 +41,8 @@ class Collectible:
         self.amount = amount
         self.coords = coords  # Null for vanilla collectibles for now. For custom, use (x,y,z) format
         self.added = False
+        self.enabled = enabled
+        self.vanilla = vanilla
 
 
 class Region:
@@ -185,3 +187,19 @@ class TransitionFront:
         self.exitShuffleId = exitShuffleId  # Planning to remove this
         self.time = time
         self.assumed = assumed  # Indicates this is an assumed exit attached to the root
+
+
+class Sphere:
+    """A randomizer concept often used in spoiler logs.
+
+    A 'sphere' is a collection of locations and items that are accessible
+    or obtainable with only the items available from earlier, smaller spheres.
+    Sphere 0 items are what you start with in a seed, sphere 1 items can be
+    obtained with those items, sphere 2 items can be obtained with sphere 0
+    and sphere 1 items, and so on.
+    """
+
+    def __init__(self):
+        """Initialize with given parameters."""
+        self.availableGBs = 0
+        self.locations = []

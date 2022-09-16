@@ -17,7 +17,6 @@ import randomizer.LogicFiles.GloomyGalleon
 import randomizer.LogicFiles.HideoutHelm
 import randomizer.LogicFiles.JungleJapes
 import randomizer.LogicFiles.Shops
-from randomizer.Lists.ShufflableExit import GetShuffledLevelIndex
 from randomizer.Enums.Collectibles import Collectibles
 from randomizer.Enums.Events import Events
 from randomizer.Enums.Items import Items
@@ -27,8 +26,8 @@ from randomizer.Enums.Locations import Locations
 from randomizer.Enums.Time import Time
 from randomizer.Lists.Location import Location, LocationList
 from randomizer.Lists.MapsAndExits import Maps
+from randomizer.Lists.ShufflableExit import GetShuffledLevelIndex
 from randomizer.Prices import CanBuy, GetPriceOfMoveItem
-
 
 STARTING_SLAM = 1  # Currently we're assuming you always start with 1 slam
 
@@ -268,7 +267,7 @@ class LogicVarHolder:
         self.superSlam = self.Slam >= 2
         self.superDuperSlam = self.Slam >= 3
 
-        self.Blueprints = [x for x in ownedItems if x >= Items.DKIslesDonkeyBlueprint]
+        self.Blueprints = [x for x in ownedItems if x >= Items.JungleJapesDonkeyBlueprint]
 
     def AddEvent(self, event):
         """Add an event to events list so it can be checked for logically."""
@@ -412,24 +411,25 @@ class LogicVarHolder:
 
     def AddCollectible(self, collectible, level):
         """Add a collectible."""
-        if collectible.type == Collectibles.coin:
-            # Rainbow coin, add 5 coins for each kong
-            if collectible.kong == Kongs.any:
-                for i in range(5):
-                    self.Coins[i] += collectible.amount * 5
-            # Normal coins, add amount for the kong
-            else:
-                self.Coins[collectible.kong] += collectible.amount
-        # Add bananas for correct level for this kong
-        elif collectible.type == Collectibles.banana:
-            self.ColoredBananas[level][collectible.kong] += collectible.amount
-        # Add 5 times amount of banana bunches
-        elif collectible.type == Collectibles.bunch:
-            self.ColoredBananas[level][collectible.kong] += collectible.amount * 5
-        # Add 10 bananas for a balloon
-        elif collectible.type == Collectibles.balloon:
-            self.ColoredBananas[level][collectible.kong] += collectible.amount * 10
-        collectible.added = True
+        if collectible.enabled:
+            if collectible.type == Collectibles.coin:
+                # Rainbow coin, add 5 coins for each kong
+                if collectible.kong == Kongs.any:
+                    for i in range(5):
+                        self.Coins[i] += collectible.amount * 5
+                # Normal coins, add amount for the kong
+                else:
+                    self.Coins[collectible.kong] += collectible.amount
+            # Add bananas for correct level for this kong
+            elif collectible.type == Collectibles.banana:
+                self.ColoredBananas[level][collectible.kong] += collectible.amount
+            # Add 5 times amount of banana bunches
+            elif collectible.type == Collectibles.bunch:
+                self.ColoredBananas[level][collectible.kong] += collectible.amount * 5
+            # Add 10 bananas for a balloon
+            elif collectible.type == Collectibles.balloon:
+                self.ColoredBananas[level][collectible.kong] += collectible.amount * 10
+            collectible.added = True
 
     def PurchaseShopItem(self, location: Location):
         """Purchase items from shops and subtract price from logical coin counts."""
@@ -467,18 +467,11 @@ class LogicVarHolder:
     def KasplatAccess(self, location):
         """Use the kasplat map to check kasplat logic for blueprint locations."""
         kong = self.kasplat_map[location]
-        if location == Locations.GalleonKasplatGoldTower:
-            # Water level needs to be raised and you spring up as diddy to get killed by the kasplat
-            # Or, any kong having teleporter access works too
-            if kong == Kongs.diddy:
-                return Events.WaterSwitch in self.Events and self.IsKong(Kongs.diddy)
-            else:
-                return Events.TreasureRoomTeleporterUnlocked in self.Events and self.HasAccess(randomizer.Enums.Regions.Regions.Shipyard, kong)
         return self.IsKong(kong)
 
     def CanBuy(self, location):
         """Check if there are enough coins to purchase this location."""
-        return CanBuy(location, self.Coins, self.settings, self.Slam, self.AmmoBelts, self.InstUpgrades)
+        return CanBuy(location, self)
 
     def CanAccessKRool(self):
         """Make sure that each required key has been turned in."""
@@ -558,6 +551,7 @@ def ResetCollectibleRegions():
     for region in CollectibleRegions.values():
         for collectible in region:
             collectible.added = False
+            # collectible.enabled = collectible.vanilla
 
 
 def ClearAllLocations():

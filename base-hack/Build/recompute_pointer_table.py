@@ -259,7 +259,10 @@ def writeUncompressedSize(fh: BinaryIO, pointer_table_index: int, file_index: in
     if "dont_overwrite_uncompressed_sizes" in pointer_tables[pointer_table_index]:
         return 0
 
-    ROMAddress = pointer_tables[26]["entries"][pointer_table_index]["absolute_address"] + file_index * 4
+    fh.seek(main_pointer_table_offset + (26 * 4))
+    unc_table = main_pointer_table_offset + int.from_bytes(fh.read(4), "big")
+    fh.seek(unc_table + (pointer_table_index * 4))
+    ROMAddress = main_pointer_table_offset + int.from_bytes(fh.read(4), "big") + file_index * 4
 
     # Game seems to align these mod 2
     if uncompressed_size % 2 == 1:
@@ -399,6 +402,7 @@ def getFileInfo(pointer_table_index: int, file_index: int):
 
 
 def replaceROMFile(
+    rom: BinaryIO,
     pointer_table_index: int,
     file_index: int,
     data: bytes,
@@ -426,6 +430,36 @@ def replaceROMFile(
     }
 
     # Update the entry in the pointer table to point to the new data
+    if file_index >= len(pointer_tables[pointer_table_index]["entries"]):
+        diff = file_index - len(pointer_tables[pointer_table_index]["entries"]) + 1
+        print(f" - Appending {diff} extra entries to {pointer_tables[pointer_table_index]['name']} ({(file_index+1)-diff}->{file_index+1})")
+        for d in range(diff):
+            pointer_tables[pointer_table_index]["entries"].append(
+                {
+                    "index": file_index,
+                    "bit_set": False,
+                    "original_sha1": "",
+                }
+            )
+        rom.seek(main_pointer_table_offset + (4 * len(pointer_tables)) + (4 * pointer_table_index))
+        rom.write((file_index + 1).to_bytes(4, "big"))
+        pointer_tables[pointer_table_index]["num_entries"] = file_index + 1
+
+        # Update uncompressed pointer table entry
+        rom.seek(main_pointer_table_offset + (4 * 26))
+        uncompressed_table_location = main_pointer_table_offset + int.from_bytes(rom.read(4), "big")
+        rom.seek(uncompressed_table_location + (4 * pointer_table_index))
+        uncompressed_start = main_pointer_table_offset + int.from_bytes(rom.read(4), "big")
+        uncompressed_finish = main_pointer_table_offset + int.from_bytes(rom.read(4), "big")
+        uncompressed_table_size = uncompressed_finish - uncompressed_start
+        if uncompressed_table_size > 0:
+            print(f" - Expanding pointer table {pointer_table_index} from {uncompressed_table_size} bytes to {4 * (file_index + 1)} bytes")
+            rom.seek(uncompressed_start)
+            new_uncompressed_data = bytearray(rom.read(uncompressed_table_size))
+            for d in range((4 * (file_index + 1)) - uncompressed_table_size):
+                new_uncompressed_data.append(0)
+            replaceROMFile(rom, 26, pointer_table_index, bytes(new_uncompressed_data), 4 * (file_index + 1))
+
     pointer_tables[pointer_table_index]["entries"][file_index]["new_sha1"] = dataSHA1Hash
 
     if len(filename) > 0:
@@ -435,10 +469,8 @@ def replaceROMFile(
 def shouldWritePointerTable(index: int):
     """Write to the pointer table."""
     # Table 6 is nonsense.
-    # Table 26 is a special case, it should never be manually overwritten
-    # Instead, it should be recomputed based on the new uncompressed file sizes of the replaced files
     # This fixes heap corruption caused by a buffer overrun when decompressing a replaced file into a malloc'd buffer
-    if index in [6, 26]:
+    if index == 6:
         return False
 
     # No need to recompute pointer tables with no entries in them
@@ -502,7 +534,9 @@ def writeModifiedPointerTablesToROM(fh: BinaryIO):
             next_available_free_space += write_pointer - earliest_file_address  # For all of the files
 
     # Recompute the pointer tables using the new file addresses and write them in the reserved space
-    for x in pointer_tables:
+    for x in reversed(pointer_tables):
+        fh.seek(main_pointer_table_offset + (26 * 4))
+        print(f"Pointer Table {x['index']}. New Location: {hex(main_pointer_table_offset + int.from_bytes(fh.read(4),'big'))}. Write Location:")
         if not shouldWritePointerTable(x["index"]):
             continue
 

@@ -1,3 +1,6 @@
+.data
+id = 0xD
+.code
 COND 1 | 0 0 0
 EXEC 20 | 1 10 0
 EXEC 22 | 1 1 0
@@ -52,7 +55,7 @@ EXEC 1 | 1 0 0
 ENDBLOCK
 COND 1 | 10 0 0
 CONDINV 35 | 0 0 0
-EXEC 37 | 23 1 0
+EXEC 7 | 125 0 13
 EXEC 3 | 0 20 0
 EXEC 1 | 11 0 0
 ENDBLOCK

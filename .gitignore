@@ -155,6 +155,7 @@ settings*.json
 *.v64
 *.bin
 *.bin.gz
+*.raw
 codeOutput.txt
 lockfile
 temprom.rom
@@ -183,3 +184,5 @@ n64chain.zip
 base-hack/build/n64chain
 base-hack/rom_tester/output.txt
 base-hack/assets/Non-Code/instance_scripts/dump
+tests/test_spoiler.py
+static/py_libraries/dk64rando*.whl

@@ -15,7 +15,7 @@ end_sequence_cards = [
             "cooldown": general_buffer,
         },
         "text": [
-            "Developers",
+            "Randomizer Developers",
         ],
     },
     {
@@ -24,10 +24,7 @@ end_sequence_cards = [
             "duration": names_length,
             "cooldown": general_buffer,
         },
-        "text": [
-            "2dos",
-            "Ballaam",
-        ],
+        "text": ["2dos", "Ballaam", "Bismuth"],
     },
     {
         "squish": {
@@ -35,7 +32,7 @@ end_sequence_cards = [
             "duration": names_length,
             "cooldown": general_buffer,
         },
-        "text": ["Bismuth", "Cfox"],
+        "text": ["Cfox", "KillKlli", "Lrauq"],
     },
     {
         "squish": {
@@ -43,9 +40,16 @@ end_sequence_cards = [
             "duration": names_length,
             "cooldown": general_buffer,
         },
+        "text": ["Naramgamjan", "ShadowShine57", "Znernicus"],
+    },
+    {
+        "squish": {
+            "from": "top",
+            "duration": header_length,
+            "cooldown": general_buffer,
+        },
         "text": [
-            "GloriousLiar",
-            "KillKlli",
+            "Assistant Developers",
         ],
     },
     {
@@ -54,7 +58,7 @@ end_sequence_cards = [
             "duration": names_length,
             "cooldown": general_buffer,
         },
-        "text": ["Mittenz", "Naramgamjan"],
+        "text": ["AlmostSeagull", "GloriousLiar"],
     },
     {
         "squish": {
@@ -62,7 +66,7 @@ end_sequence_cards = [
             "duration": names_length,
             "cooldown": end_buffer,
         },
-        "text": ["Rain", "ShadowShine57", "Znernicus"],
+        "text": ["Mittenz", "OnlySpaghettiCode", "Rain"],
     },
     {
         "squish": {
@@ -125,6 +129,7 @@ end_sequence_cards = [
         "text": [
             "Obiyo",
             "Revven",
+            "Riley",
         ],
     },
     {
@@ -133,15 +138,8 @@ end_sequence_cards = [
             "duration": names_length,
             "cooldown": general_buffer,
         },
-        "text": ["Riley", "SirSmackStrikesBack"],
-    },
-    {
-        "squish": {
-            "from": "left",
-            "duration": names_length,
-            "cooldown": general_buffer,
-        },
         "text": [
+            "SirSmackStrikesBack",
             "UsedPizza",
             "VidyaJames",
         ],
@@ -152,7 +150,10 @@ end_sequence_cards = [
             "duration": names_length,
             "cooldown": end_buffer,
         },
-        "text": ["Wex", "Zorulda"],
+        "text": [
+            "Wex",
+            "Zorulda",
+        ],
     },
     {
         "squish": {
@@ -182,6 +183,17 @@ end_sequence_cards = [
             "cooldown": general_buffer,
         },
         "text": ["Crankys Lab Developer", "Isotarge"],
+    },
+    {
+        "squish": {
+            "from": "right",
+            "duration": names_length,
+            "cooldown": general_buffer,
+        },
+        "text": [
+            "SpikeVegeta",
+            "KeiperDontCare",
+        ],
     },
     {
         "squish": {

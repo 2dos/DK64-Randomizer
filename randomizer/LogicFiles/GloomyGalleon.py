@@ -19,7 +19,7 @@ LogicRegions = {
         LocationLogic(Locations.GalleonTinyMedal, lambda l: l.ColoredBananas[Levels.GloomyGalleon][Kongs.tiny] >= 75),
         LocationLogic(Locations.GalleonChunkyMedal, lambda l: l.ColoredBananas[Levels.GloomyGalleon][Kongs.chunky] >= 75),
         LocationLogic(Locations.GalleonChunkyChest, lambda l: l.punch and l.chunky),
-        LocationLogic(Locations.GalleonKasplatNearLab, lambda l: True),
+        LocationLogic(Locations.GalleonKasplatNearLab, lambda l: not l.settings.kasplat_location_rando),
         LocationLogic(Locations.GalleonBattleArena, lambda l: l.punch and l.chunky),
         LocationLogic(Locations.GalleonBananaFairybyCranky, lambda l: l.camera and l.punch and l.chunky),
     ], [
@@ -32,7 +32,7 @@ LogicRegions = {
     ], [
         TransitionFront(Regions.GloomyGalleonLobby, lambda l: True, Transitions.GalleonToIsles),
         TransitionFront(Regions.GalleonBeyondPineappleGate, lambda l: l.pineapple and l.chunky),
-        TransitionFront(Regions.LighthouseArea, lambda l: Events.LighthouseGateOpened in l.Events),
+        TransitionFront(Regions.LighthouseArea, lambda l: l.settings.open_levels or Events.LighthouseGateOpened in l.Events),
         TransitionFront(Regions.Shipyard, lambda l: Events.ShipyardGateOpened in l.Events),
         TransitionFront(Regions.CrankyGalleon, lambda l: True),
         TransitionFront(Regions.GalleonBossLobby, lambda l: True),
@@ -40,7 +40,7 @@ LogicRegions = {
 
     Regions.GalleonBeyondPineappleGate: Region("Galleon Beyond Pineapple Gate", Levels.GloomyGalleon, False, None, [
         LocationLogic(Locations.GalleonChunkyCannonGame, lambda l: Events.WaterSwitch in l.Events and l.ischunky),
-        LocationLogic(Locations.GalleonKasplatCannons, lambda l: Events.WaterSwitch in l.Events),
+        LocationLogic(Locations.GalleonKasplatCannons, lambda l: not l.settings.kasplat_location_rando and Events.WaterSwitch in l.Events),
     ], [], [
         TransitionFront(Regions.GloomyGalleonStart, lambda l: True),
     ]),
@@ -48,7 +48,7 @@ LogicRegions = {
     Regions.LighthouseArea: Region("Lighthouse Area", Levels.GloomyGalleon, True, -1, [
         LocationLogic(Locations.GalleonDiddyShipSwitch, lambda l: Events.ActivatedLighthouse in l.Events and l.jetpack and l.Slam and l.diddy),
         LocationLogic(Locations.GalleonLankyEnguardeChest, lambda l: Events.LighthouseEnguarde in l.Events and l.lanky),
-        LocationLogic(Locations.GalleonKasplatLighthouseArea, lambda l: True),
+        LocationLogic(Locations.GalleonKasplatLighthouseArea, lambda l: not l.settings.kasplat_location_rando),
     ], [
         Event(Events.WaterSwitch, lambda l: True),
         Event(Events.LighthouseEnguarde, lambda l: l.lanky),
@@ -56,7 +56,7 @@ LogicRegions = {
         Event(Events.GalleonChunkyPad, lambda l: l.triangle and l.chunky),
     ], [
         # Rare case of needing to open gate before being able to go through backwards
-        TransitionFront(Regions.GloomyGalleonStart, lambda l: Events.LighthouseGateOpened in l.Events),
+        TransitionFront(Regions.GloomyGalleonStart, lambda l: l.settings.open_levels or Events.LighthouseGateOpened in l.Events),
         TransitionFront(Regions.Lighthouse, lambda l: l.Slam and l.isdonkey, Transitions.GalleonLighthouseAreaToLighthouse),
         TransitionFront(Regions.MermaidRoom, lambda l: l.mini and l.istiny, Transitions.GalleonLighthousAreaToMermaid),
         TransitionFront(Regions.SickBay, lambda l: Events.ActivatedLighthouse in l.Events and l.Slam and l.ischunky, Transitions.GalleonLighthouseAreaToSickBay),
@@ -74,7 +74,7 @@ LogicRegions = {
     Regions.Lighthouse: Region("Lighthouse", Levels.GloomyGalleon, False, -1, [
         LocationLogic(Locations.GalleonDonkeyLighthouse, lambda l: Events.ActivatedLighthouse in l.Events)
     ], [
-        Event(Events.ActivatedLighthouse, lambda l: l.grab and l.isdonkey),
+        Event(Events.ActivatedLighthouse, lambda l: l.settings.high_req or (l.Slam and l.grab and l.isdonkey)),
     ], [
         TransitionFront(Regions.LighthouseArea, lambda l: True, Transitions.GalleonLighthouseToLighthouseArea),
     ]),
@@ -93,7 +93,7 @@ LogicRegions = {
 
     Regions.Shipyard: Region("Shipyard", Levels.GloomyGalleon, True, None, [
         LocationLogic(Locations.GalleonDonkeyFreetheSeal, lambda l: Events.SealReleased in l.Events and l.donkey),
-        LocationLogic(Locations.GalleonKasplatNearSub, lambda l: True),
+        LocationLogic(Locations.GalleonKasplatNearSub, lambda l: not l.settings.kasplat_location_rando),
     ], [
         Event(Events.ShipyardEnguarde, lambda l: l.lanky),
         Event(Events.ShipyardTreasureRoomOpened, lambda l: Events.ShipyardEnguarde in l.Events and Events.WaterSwitch in l.Events),
@@ -122,16 +122,21 @@ LogicRegions = {
     ], Transitions.GalleonShipyardToSeal
     ),
 
-    Regions.TreasureRoom: Region("Treasure Room", Levels.GloomyGalleon, True, TransitionFront(Regions.GloomyGalleonStart, lambda l: Events.TreasureRoomTeleporterUnlocked in l.Events and l.HasAccess(Regions.Shipyard, Kongs.any) or (Events.WaterSwitch in l.Events and l.spring and l.isdiddy)), [
-        LocationLogic(Locations.GalleonDiddyGoldTower, lambda l: l.spring and l.isdiddy, MinigameType.BonusBarrel),
+    Regions.TreasureRoom: Region("Treasure Room", Levels.GloomyGalleon, True, None, [
         LocationLogic(Locations.GalleonLankyGoldTower, lambda l: l.balloon and l.islanky, MinigameType.BonusBarrel),
-        # This Kasplat has special logic, handled in KasplatAccess()
-        LocationLogic(Locations.GalleonKasplatGoldTower, lambda l: True),
+    ], [], [
+        TransitionFront(Regions.Shipyard, lambda l: Events.ShipyardTreasureRoomOpened in l.Events),
+        TransitionFront(Regions.TinyChest, lambda l: l.mini and l.istiny, Transitions.GalleonTreasureToChest),
+        TransitionFront(Regions.TreasureRoomDiddyGoldTower, lambda l: Events.WaterSwitch in l.Events and l.spring and l.diddy)
+    ]),
+
+    Regions.TreasureRoomDiddyGoldTower: Region("Treasure Room Diddy Gold Tower", Levels.GloomyGalleon, False, -1, [  # Deathwarp is possible without the kasplat, but you can only take fall damage once
+        LocationLogic(Locations.GalleonDiddyGoldTower, lambda l: l.spring and l.isdiddy, MinigameType.BonusBarrel),
+        LocationLogic(Locations.GalleonKasplatGoldTower, lambda l: not l.settings.kasplat_location_rando),
     ], [
         Event(Events.TreasureRoomTeleporterUnlocked, lambda l: l.spring and l.diddy),
     ], [
-        TransitionFront(Regions.Shipyard, lambda l: Events.ShipyardTreasureRoomOpened in l.Events),
-        TransitionFront(Regions.TinyChest, lambda l: l.mini and l.istiny, Transitions.GalleonTreasureToChest),
+        TransitionFront(Regions.TreasureRoom, lambda l: True)
     ]),
 
     Regions.TinyChest: Region("Tiny Chest", Levels.GloomyGalleon, False, -1, [], [

@@ -17,26 +17,19 @@ LogicRegions = {
         Collectible(Collectibles.bunch, Kongs.diddy, lambda l: l.jetpack, None, 1),  # Near Bonus
         Collectible(Collectibles.bunch, Kongs.diddy, lambda l: l.jetpack, None, 1),  # Warp 4 pillar
         Collectible(Collectibles.balloon, Kongs.diddy, lambda l: l.peanut, None, 1),  # Near Warp 4 pillar
-        Collectible(Collectibles.bunch, Kongs.diddy, lambda l: l.mini and l.twirl and l.tiny and l.jetpack, None, 1),  # Warp 4 cave
-        Collectible(Collectibles.banana, Kongs.diddy, lambda l: l.mini and l.twirl and l.tiny and l.jetpack, None, 5),  # Warp 4 cave
 
         Collectible(Collectibles.banana, Kongs.lanky, lambda l: True, None, 5),  # Level Start
         Collectible(Collectibles.bunch, Kongs.lanky, lambda l: l.balloon and l.superSlam, None, 1),  # Beetle Race entry
-        Collectible(Collectibles.bunch, Kongs.lanky, lambda l: l.jetpack and l.diddy, None, 4),  # Warp 5 platform
         Collectible(Collectibles.bunch, Kongs.lanky, lambda l: l.balloon, None, 3),  # Near Cranky
 
         Collectible(Collectibles.banana, Kongs.tiny, lambda l: True, None, 10),  # River To Igloo
         Collectible(Collectibles.bunch, Kongs.tiny, lambda l: l.mini, None, 1),  # Warp 3 cave
-        Collectible(Collectibles.balloon, Kongs.tiny, lambda l: l.mini and l.twirl and l.feather, None, 1),  # Warp 4 cave
 
         Collectible(Collectibles.bunch, Kongs.chunky, lambda l: l.punch, None, 1),  # Gorilla Gone room
         Collectible(Collectibles.banana, Kongs.chunky, lambda l: l.punch, None, 3),  # Gorilla Gone room
         Collectible(Collectibles.bunch, Kongs.chunky, lambda l: True, None, 1),  # Warp 2
         Collectible(Collectibles.bunch, Kongs.chunky, lambda l: True, None, 2),  # Small Boulder and switch
         Collectible(Collectibles.banana, Kongs.chunky, lambda l: True, None, 3),  # Small Boulder and switch
-        Collectible(Collectibles.banana, Kongs.chunky, lambda l: l.punch, None, 3),  # Near Snide
-        Collectible(Collectibles.balloon, Kongs.chunky, lambda l: l.punch and l.pineapple, None, 1),  # Near Snide
-        Collectible(Collectibles.balloon, Kongs.chunky, lambda l: l.mini and l.tiny and l.pineapple, None, 1),  # Warp 3 cave
 
         Collectible(Collectibles.coin, Kongs.donkey, lambda l: l.punch and l.chunky, None, 3),  # Gorilla Gone room
         Collectible(Collectibles.coin, Kongs.diddy, lambda l: True, None, 4),  # On ice castle
@@ -44,8 +37,26 @@ LogicRegions = {
         Collectible(Collectibles.coin, Kongs.tiny, lambda l: l.twirl, None, 2),  # Pillar above warps
         Collectible(Collectibles.coin, Kongs.tiny, lambda l: True, None, 3),  # In front of tunnel to W4 cave
         Collectible(Collectibles.coin, Kongs.chunky, lambda l: True, None, 3),  # On slippery slope to Cranky
+    ],
+    Regions.CavesSnideArea: [
+        Collectible(Collectibles.banana, Kongs.chunky, lambda l: l.punch, None, 3),  # Near Snide
+        Collectible(Collectibles.balloon, Kongs.chunky, lambda l: l.punch and l.pineapple, None, 1),  # Near Snide
+
         Collectible(Collectibles.coin, Kongs.chunky, lambda l: l.punch, None, 3),  # Snide's room
-        Collectible(Collectibles.coin, Kongs.chunky, lambda l: l.mini and l.tiny, None, 3),  # Warp 3 cave
+    ],
+    Regions.CavesBlueprintCave: [
+        Collectible(Collectibles.bunch, Kongs.diddy, lambda l: True, None, 1),  # Warp 4 cave
+        Collectible(Collectibles.banana, Kongs.diddy, lambda l: True, None, 5),  # Warp 4 cave
+
+        Collectible(Collectibles.balloon, Kongs.tiny, lambda l: l.feather, None, 1),  # Warp 4 cave
+    ],
+    Regions.CavesBonusCave: [
+        Collectible(Collectibles.balloon, Kongs.chunky, lambda l: l.pineapple, None, 1),  # Warp 3 cave
+
+        Collectible(Collectibles.coin, Kongs.chunky, lambda l: True, None, 3),  # Warp 3 cave
+    ],
+    Regions.CavesBlueprintPillar: [
+        Collectible(Collectibles.bunch, Kongs.lanky, lambda l: True, None, 4),  # Warp 5 platform
     ],
     Regions.CavesBaboonBlast: [
         Collectible(Collectibles.bunch, Kongs.donkey, lambda l: True, None, 4),

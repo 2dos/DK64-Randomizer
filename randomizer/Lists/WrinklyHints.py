@@ -1,16 +1,18 @@
 """Hint location data for Wrinkly hints."""
-from randomizer.Enums.WrinklyKong import WrinklyKong, WrinklyLocation
+from randomizer.Enums.Kongs import Kongs
+from randomizer.Enums.Levels import Levels
+from randomizer.Enums.WrinklyKong import WrinklyLocation
 
 
-class Hint:
+class HintLocation:
     """Hint object for Wrinkly hint data locations."""
 
-    def __init__(self, name, kong: WrinklyKong, location: WrinklyLocation, hint):
+    def __init__(self, name, kong: Kongs, location: WrinklyLocation, hint, level: Levels, banned_keywords=[]):
         """Create wrinkly hint object.
 
         Args:
             name (str): Location/String name of wrinkly.
-            kong (WrinklyKong): What kong the hint is for.
+            kong (Kongs): What kong the hint is for.
             location (WrinklyLocation): What lobby the hint is in.
             hint (str): Hint to be written to ROM
         """
@@ -18,43 +20,48 @@ class Hint:
         self.kong = kong
         self.location = location
         self.hint = hint
+        self.hint_type = -1
+        self.banned_keywords = banned_keywords.copy()
+        self.level = level
 
 
 hints = [
-    Hint("First Time Talk", WrinklyKong.ftt, WrinklyLocation.ftt, "WELCOME TO THE DONKEY KONG 64 RANDOMIZER. MADE BY 2DOS, BALLAAM, KILLKLLI, SHADOWSHINE, CFOX, BISMUTH AND ZNERNICUS"),
-    Hint("Japes DK", WrinklyKong.dk, WrinklyLocation.japes, ""),
-    Hint("Japes Diddy", WrinklyKong.diddy, WrinklyLocation.japes, ""),
-    Hint("Japes Lanky", WrinklyKong.lanky, WrinklyLocation.japes, ""),
-    Hint("Japes Tiny", WrinklyKong.tiny, WrinklyLocation.japes, ""),
-    Hint("Japes Chunky", WrinklyKong.chunky, WrinklyLocation.japes, ""),
-    Hint("Aztec DK", WrinklyKong.dk, WrinklyLocation.aztec, ""),
-    Hint("Aztec Diddy", WrinklyKong.diddy, WrinklyLocation.aztec, ""),
-    Hint("Aztec Lanky", WrinklyKong.lanky, WrinklyLocation.aztec, ""),
-    Hint("Aztec Tiny", WrinklyKong.tiny, WrinklyLocation.aztec, ""),
-    Hint("Aztec Chunky", WrinklyKong.chunky, WrinklyLocation.aztec, ""),
-    Hint("Factory DK", WrinklyKong.dk, WrinklyLocation.factory, ""),
-    Hint("Factory Diddy", WrinklyKong.diddy, WrinklyLocation.factory, ""),
-    Hint("Factory Lanky", WrinklyKong.lanky, WrinklyLocation.factory, ""),
-    Hint("Factory Tiny", WrinklyKong.tiny, WrinklyLocation.factory, ""),
-    Hint("Factory Chunky", WrinklyKong.chunky, WrinklyLocation.factory, ""),
-    Hint("Galleon DK", WrinklyKong.dk, WrinklyLocation.galleon, ""),
-    Hint("Galleon Diddy", WrinklyKong.diddy, WrinklyLocation.galleon, ""),
-    Hint("Galleon Lanky", WrinklyKong.lanky, WrinklyLocation.galleon, ""),
-    Hint("Galleon Tiny", WrinklyKong.tiny, WrinklyLocation.galleon, ""),
-    Hint("Galleon Chunky", WrinklyKong.chunky, WrinklyLocation.galleon, ""),
-    Hint("Fungi DK", WrinklyKong.dk, WrinklyLocation.fungi, ""),
-    Hint("Fungi Diddy", WrinklyKong.diddy, WrinklyLocation.fungi, ""),
-    Hint("Fungi Lanky", WrinklyKong.lanky, WrinklyLocation.fungi, ""),
-    Hint("Fungi Tiny", WrinklyKong.tiny, WrinklyLocation.fungi, ""),
-    Hint("Fungi Chunky", WrinklyKong.chunky, WrinklyLocation.fungi, ""),
-    Hint("Caves DK", WrinklyKong.dk, WrinklyLocation.caves, ""),
-    Hint("Caves Diddy", WrinklyKong.diddy, WrinklyLocation.caves, ""),
-    Hint("Caves Lanky", WrinklyKong.lanky, WrinklyLocation.caves, ""),
-    Hint("Caves Tiny", WrinklyKong.tiny, WrinklyLocation.caves, ""),
-    Hint("Caves Chunky", WrinklyKong.chunky, WrinklyLocation.caves, ""),
-    Hint("Castle DK", WrinklyKong.dk, WrinklyLocation.castle, ""),
-    Hint("Castle Diddy", WrinklyKong.diddy, WrinklyLocation.castle, ""),
-    Hint("Castle Lanky", WrinklyKong.lanky, WrinklyLocation.castle, ""),
-    Hint("Castle Tiny", WrinklyKong.tiny, WrinklyLocation.castle, ""),
-    Hint("Castle Chunky", WrinklyKong.chunky, WrinklyLocation.castle, ""),
+    HintLocation(
+        "First Time Talk", Kongs.any, WrinklyLocation.ftt, "WELCOME TO THE DONKEY KONG 64 RANDOMIZER. MADE BY 2DOS, BALLAAM, KILLKLLI, SHADOWSHINE, CFOX, BISMUTH AND ZNERNICUS", Levels.DKIsles
+    ),
+    HintLocation("Japes DK", Kongs.donkey, WrinklyLocation.japes, "", Levels.JungleJapes),
+    HintLocation("Japes Diddy", Kongs.diddy, WrinklyLocation.japes, "", Levels.JungleJapes),
+    HintLocation("Japes Lanky", Kongs.lanky, WrinklyLocation.japes, "", Levels.JungleJapes),
+    HintLocation("Japes Tiny", Kongs.tiny, WrinklyLocation.japes, "", Levels.JungleJapes),
+    HintLocation("Japes Chunky", Kongs.chunky, WrinklyLocation.japes, "", Levels.JungleJapes),
+    HintLocation("Aztec DK", Kongs.donkey, WrinklyLocation.aztec, "", Levels.AngryAztec),
+    HintLocation("Aztec Diddy", Kongs.diddy, WrinklyLocation.aztec, "", Levels.AngryAztec),
+    HintLocation("Aztec Lanky", Kongs.lanky, WrinklyLocation.aztec, "", Levels.AngryAztec),
+    HintLocation("Aztec Tiny", Kongs.tiny, WrinklyLocation.aztec, "", Levels.AngryAztec),
+    HintLocation("Aztec Chunky", Kongs.chunky, WrinklyLocation.aztec, "", Levels.AngryAztec, banned_keywords=["Hunky Chunky", "Feather Bow"]),
+    HintLocation("Factory DK", Kongs.donkey, WrinklyLocation.factory, "", Levels.FranticFactory),
+    HintLocation("Factory Diddy", Kongs.diddy, WrinklyLocation.factory, "", Levels.FranticFactory, banned_keywords=["Gorilla Grab"]),
+    HintLocation("Factory Lanky", Kongs.lanky, WrinklyLocation.factory, "", Levels.FranticFactory, banned_keywords=["Gorilla Grab"]),
+    HintLocation("Factory Tiny", Kongs.tiny, WrinklyLocation.factory, "", Levels.FranticFactory, banned_keywords=["Gorilla Grab"]),
+    HintLocation("Factory Chunky", Kongs.chunky, WrinklyLocation.factory, "", Levels.FranticFactory),
+    HintLocation("Galleon DK", Kongs.donkey, WrinklyLocation.galleon, "", Levels.GloomyGalleon),
+    HintLocation("Galleon Diddy", Kongs.diddy, WrinklyLocation.galleon, "", Levels.GloomyGalleon),
+    HintLocation("Galleon Lanky", Kongs.lanky, WrinklyLocation.galleon, "", Levels.GloomyGalleon),
+    HintLocation("Galleon Tiny", Kongs.tiny, WrinklyLocation.galleon, "", Levels.GloomyGalleon),
+    HintLocation("Galleon Chunky", Kongs.chunky, WrinklyLocation.galleon, "", Levels.GloomyGalleon),
+    HintLocation("Fungi DK", Kongs.donkey, WrinklyLocation.fungi, "", Levels.FungiForest, banned_keywords=["Gorilla Grab"]),
+    HintLocation("Fungi Diddy", Kongs.diddy, WrinklyLocation.fungi, "", Levels.FungiForest, banned_keywords=["Gorilla Grab"]),
+    HintLocation("Fungi Lanky", Kongs.lanky, WrinklyLocation.fungi, "", Levels.FungiForest, banned_keywords=["Gorilla Grab"]),
+    HintLocation("Fungi Tiny", Kongs.tiny, WrinklyLocation.fungi, "", Levels.FungiForest, banned_keywords=["Gorilla Grab"]),
+    HintLocation("Fungi Chunky", Kongs.chunky, WrinklyLocation.fungi, "", Levels.FungiForest),
+    HintLocation("Caves DK", Kongs.donkey, WrinklyLocation.caves, "", Levels.CrystalCaves, banned_keywords=["Primate Punch"]),
+    HintLocation("Caves Diddy", Kongs.diddy, WrinklyLocation.caves, "", Levels.CrystalCaves, banned_keywords=["Primate Punch", "Rocketbarrel Boost"]),
+    HintLocation("Caves Lanky", Kongs.lanky, WrinklyLocation.caves, "", Levels.CrystalCaves, banned_keywords=["Primate Punch"]),
+    HintLocation("Caves Tiny", Kongs.tiny, WrinklyLocation.caves, "", Levels.CrystalCaves, banned_keywords=["Primate Punch"]),
+    HintLocation("Caves Chunky", Kongs.chunky, WrinklyLocation.caves, "", Levels.CrystalCaves, banned_keywords=["Primate Punch"]),
+    HintLocation("Castle DK", Kongs.donkey, WrinklyLocation.castle, "", Levels.CreepyCastle),
+    HintLocation("Castle Diddy", Kongs.diddy, WrinklyLocation.castle, "", Levels.CreepyCastle),
+    HintLocation("Castle Lanky", Kongs.lanky, WrinklyLocation.castle, "", Levels.CreepyCastle),
+    HintLocation("Castle Tiny", Kongs.tiny, WrinklyLocation.castle, "", Levels.CreepyCastle),
+    HintLocation("Castle Chunky", Kongs.chunky, WrinklyLocation.castle, "", Levels.CreepyCastle),
 ]

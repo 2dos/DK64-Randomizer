@@ -1,7 +1,7 @@
 #include "../../include/common.h"
 
 int curseRemoved(void) {
-	return checkFlag(770,0); // BoM turned off
+	return checkFlag(FLAG_MODIFIER_HELMBOM,0); // BoM turned off
 }
 
 int hasPermaLossGrace(void) {

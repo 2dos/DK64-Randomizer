@@ -1,18 +1,26 @@
 """Build the ROM."""
 import gzip
+import json
 import os
 import shutil
 import subprocess
 import sys
 import zlib
 
+import create_helm_geo
 import generate_watch_file
+import shop_instance_script  # HAS TO BE BEFORE `instance_script_maker`
+import instance_script_maker
+import model_fix
 
 # Patcher functions for the extracted files
 import patch_text
 from adjust_exits import adjustExits
 from convertPortalImage import convertPortalImage
 from convertSetup import convertSetup
+from end_seq_writer import createSquishFile, createTextFile
+from generate_yellow_wrinkly import generateYellowWrinkly
+from image_converter import convertToRGBA32
 
 # Infrastructure for recomputing DK64 global pointer tables
 from map_names import maps
@@ -22,10 +30,6 @@ from recompute_pointer_table import dumpPointerTableDetails, getFileInfo, make_s
 from replace_simslam_text import replaceSimSlam
 from staticcode import patchStaticCode
 from vanilla_move_data import writeVanillaMoveData
-from image_converter import convertToRGBA32
-from end_seq_writer import createTextFile, createSquishFile
-from instance_script_maps import instance_script_maps
-from generate_yellow_wrinkly import generateYellowWrinkly
 
 ROMName = "rom/dk64.z64"
 newROMName = "rom/dk64-randomizer-base.z64"
@@ -62,7 +66,7 @@ file_dict = [
         "name": "Thumb Image",
         "pointer_table_index": 14,
         "file_index": 94,
-        "source_file": "assets/Non-Code/Nintendo Logo/Nintendo.png",
+        "source_file": "assets/Non-Code/Nintendo Logo/Nintendo4.png",
         "texture_format": "rgba5551",
     },
     {
@@ -116,41 +120,6 @@ file_dict = [
         "texture_format": "rgba32",
     },
     {
-        "name": "DK Face",
-        "pointer_table_index": 14,
-        "file_index": 0x22,
-        "source_file": "assets/Non-Code/displays/dk_face.png",
-        "texture_format": "rgba32",
-    },
-    {
-        "name": "Diddy Face",
-        "pointer_table_index": 14,
-        "file_index": 0x23,
-        "source_file": "assets/Non-Code/displays/diddy_face.png",
-        "texture_format": "rgba32",
-    },
-    {
-        "name": "Lanky Face",
-        "pointer_table_index": 14,
-        "file_index": 0x24,
-        "source_file": "assets/Non-Code/displays/lanky_face.png",
-        "texture_format": "rgba32",
-    },
-    {
-        "name": "Tiny Face",
-        "pointer_table_index": 14,
-        "file_index": 0x25,
-        "source_file": "assets/Non-Code/displays/tiny_face.png",
-        "texture_format": "rgba32",
-    },
-    {
-        "name": "Chunky Face",
-        "pointer_table_index": 14,
-        "file_index": 0x26,
-        "source_file": "assets/Non-Code/displays/chunky_face.png",
-        "texture_format": "rgba32",
-    },
-    {
         "name": "Shared Face",
         "pointer_table_index": 14,
         "file_index": 0x27,
@@ -179,43 +148,127 @@ file_dict = [
         "do_not_delete_source": True,
     },
     {"name": "WXY_Slash", "pointer_table_index": 14, "file_index": 12, "source_file": "assets/Non-Code/displays/wxys.png", "texture_format": "rgba5551"},
+    {
+        "name": "DK Tie Palette",
+        "pointer_table_index": 25,
+        "file_index": 6013,
+        "source_file": "assets/Non-Code/hash/dk_tie_palette.png",
+        "do_not_extract": True,
+        "texture_format": "rgba5551",
+        "target_compressed_size": 32 * 32 * 2,
+    },
+    {
+        "name": "Tiny Overalls Palette",
+        "pointer_table_index": 25,
+        "file_index": 6014,
+        "source_file": "assets/Non-Code/hash/tiny_palette.png",
+        "do_not_extract": True,
+        "texture_format": "rgba5551",
+        "target_compressed_size": 32 * 32 * 2,
+    },
+    {
+        "name": "Tiny Overalls Palette",
+        "pointer_table_index": 25,
+        "file_index": 6014,
+        "source_file": "assets/Non-Code/hash/tiny_palette.png",
+        "do_not_extract": True,
+        "texture_format": "rgba5551",
+        "target_compressed_size": 32 * 32 * 2,
+    },
+    {
+        "name": "DPad Image",
+        "pointer_table_index": 14,
+        "file_index": 187,
+        "source_file": "assets/Non-Code/displays/dpad.png",
+        "texture_format": "rgba5551",
+    },
 ]
+
+number_game_changes = [
+    {"number": 6, "state": "unlit", "texture": 520},
+    {"number": 6, "state": "lit", "texture": 521},
+    {"number": 9, "state": "unlit", "texture": 526},
+    {"number": 9, "state": "lit", "texture": 527},
+]
+for num in number_game_changes:
+    file_dict.append(
+        {
+            "name": f"Number Game ({num['number']}, {num['state']})",
+            "pointer_table_index": 7,
+            "file_index": num["texture"],
+            "source_file": f"assets/Non-Code/displays/num_{num['number']}_{num['state']}.png",
+            "texture_format": "rgba5551",
+            "do_not_compress": True,
+        }
+    )
+
+kong_names = ["DK", "Diddy", "Lanky", "Tiny", "Chunky"]
+ammo_names = ["standard_crate", "homing_crate"]
+
+for ammo_index, ammo in enumerate(ammo_names):
+    file_dict.append(
+        {"name": f"{ammo.replace('_',' ')} Image", "pointer_table_index": 14, "file_index": 188 + ammo_index, "source_file": f"assets/Non-Code/displays/{ammo}.png", "texture_format": "rgba5551"}
+    )
+
+for kong_index, kong in enumerate(kong_names):
+    for x_i, x in enumerate(["rgba32", "rgba5551"]):
+        file_dict.append(
+            {
+                "name": f"{kong} Face ({x})",
+                "pointer_table_index": 14,
+                "file_index": [0x22 + kong_index, 190 + kong_index][x_i],
+                "source_file": f"assets/Non-Code/displays/{kong.lower()}_face.png",
+                "texture_format": x,
+            }
+        )
+
+base_coin_sfx = "assets/Non-Code/music/Win95_startup.dk64song"
+new_coin_sfx = "assets/Non-Code/music/coin_sfx.bin"
+if os.path.exists(new_coin_sfx):
+    os.remove(new_coin_sfx)
+shutil.copyfile(base_coin_sfx, new_coin_sfx)
 
 map_replacements = []
 song_replacements = [
-    {"name": "baboon_balloon", "index": 107},
-    {"name": "bonus_minigames", "index": 8},
-    {"name": "dk_rap", "index": 75},
-    {"name": "failure_races_try_again", "index": 87},
-    {"name": "move_get", "index": 114},
-    {"name": "nintendo_logo", "index": 174},
-    {"name": "success_races", "index": 86},
+    {"name": "baboon_balloon", "index": 107, "bps": True},
+    {"name": "bonus_minigames", "index": 8, "bps": True},
+    {"name": "dk_rap", "index": 75, "bps": True},
+    {"name": "failure_races_try_again", "index": 87, "bps": True},
+    {"name": "move_get", "index": 114, "bps": True},
+    {"name": "nintendo_logo", "index": 174, "bps": True},
+    {"name": "success_races", "index": 86, "bps": True},
+    {"name": "klumsy_celebration", "index": 125, "bps": True},
+    {"name": "coin_sfx", "index": 7, "bps": False},
 ]
 changed_song_indexes = []
 
-# for song in song_replacements:
-#     file_dict.append(
-#         {
-#             "name": song["name"].replace("_", " "),
-#             "pointer_table_index": 0,
-#             "file_index": song["index"],
-#             "source_file": f"assets/Non-Code/music/{song['name']}.bin",
-#             "bps_file": f"assets/Non-Code/music/{song['name']}.bps",
-#             "target_compressed_size": 0x2DDE,
-#             "is_diff_patch": True,
-#         }
-#     )
-#     changed_song_indexes.append(song["index"])
+for song in song_replacements:
+    item = {
+        "name": song["name"].replace("_", " "),
+        "pointer_table_index": 0,
+        "file_index": song["index"],
+        "source_file": f"assets/Non-Code/music/{song['name']}.bin",
+        "target_compressed_size": 0x2DDE,
+    }
+    if song["bps"]:
+        item["is_diff_patch"] = True
+        item["bps_file"] = f"assets/Non-Code/music/{song['name']}.bps"
+    else:
+        item["do_not_delete_source"] = True
+        item["do_not_extract"] = True
+    file_dict.append(item)
+    changed_song_indexes.append(song["index"])
 
+with open("./instance_scripts_data.json", "r") as json_f:
+    instance_script_maps = json.load(json_f)
 for x in instance_script_maps:
     file_dict.append(
         {
             "name": f"{x['name'].replace('_',' ')} Instance Scripts",
             "pointer_table_index": 10,
             "file_index": x["map"],
-            "source_file": f"assets/Non-Code/instance_scripts/{x['name']}.bin",
-            "bps_file": f"assets/Non-Code/instance_scripts/{x['name']}.bps",
-            "is_diff_patch": True,
+            "source_file": f"{x['name']}.raw",
+            "do_not_delete_source": True,
         }
     )
 
@@ -271,8 +324,8 @@ for x in range(221):
             "pointer_table_index": 16,
             "file_index": x,
             "source_file": "charspawners" + str(x) + ".bin",
-            "target_compressed_size": 0x1000,
-            "target_uncompressed_size": 0x1000,
+            "target_compressed_size": 0x1400,
+            "target_uncompressed_size": 0x1400,
             "do_not_recompress": True,
         }
     )
@@ -311,6 +364,19 @@ for x in range(10):
             "texture_format": "rgba5551",
         }
     )
+for x in range(4761, 4768):
+    sz = "44"
+    if x == 4761:
+        sz = "3264"
+    file_dict.append(
+        {
+            "name": f"Portal Ripple Texture ({x})",
+            "pointer_table_index": 25,
+            "file_index": x,
+            "source_file": f"assets/Non-Code/displays/empty{sz}.png",
+            "texture_format": "rgba5551",
+        }
+    )
 barrel_faces = ["Dk", "Diddy", "Lanky", "Tiny", "Chunky"]
 barrel_offsets = [4817, 4815, 4819, 4769, 4747]
 for x in range(5):
@@ -324,6 +390,34 @@ for x in range(5):
                 "texture_format": "rgba5551",
             }
         )
+
+kong_palettes = [0xE8C, 0xE66, 0xE69, 0xEB9, 0xE67, 3826, 3847, 3734]
+for x in kong_palettes:
+    x_s = 32 * 32 * 2
+    if x == 0xEB9 or x == 3734:  # Chunky Shirt Back or Lanky Patch
+        x_s = 43 * 32 * 2
+    file_dict.append({"name": f"Palette Expansion ({hex(x)})", "pointer_table_index": 25, "file_index": x, "source_file": f"palette_{x}.bin", "target_compressed_size": x_s})
+
+model_changes = [
+    {"model_index": 0, "model_file": "diddy_base.bin"},
+    {"model_index": 1, "model_file": "diddy_ins.bin"},
+    {"model_index": 5, "model_file": "lanky_base.bin"},
+    {"model_index": 6, "model_file": "lanky_ins.bin"},
+    {"model_index": 3, "model_file": "dk_base.bin"},
+    {"model_index": 8, "model_file": "tiny_base.bin"},
+    {"model_index": 9, "model_file": "tiny_ins.bin"},
+]
+for x in model_changes:
+    file_dict.append(
+        {
+            "name": f"Model {x['model_index']}",
+            "pointer_table_index": 5,
+            "file_index": x["model_index"],
+            "source_file": x["model_file"],
+            "do_not_delete_source": True,
+        }
+    )
+
 portal_image_order = [
     ["SE", "NE", "SW", "NW"],
     ["NW", "SW", "NE", "SE"],
@@ -386,7 +480,7 @@ file_dict.append(
 )
 
 
-print("DK64 Extractor")
+print("\nDK64 Extractor\nBuilt by Isotarge")
 
 with open(ROMName, "rb") as fh:
     print("[1 / 7] - Parsing pointer tables")
@@ -514,7 +608,18 @@ with open(newROMName, "r+b") as fh:
                 byte_read = fg.read()
                 uncompressed_size = len(byte_read)
             subprocess.Popen(["build\\flips.exe", "--apply", x["bps_file"], x["source_file"], x["source_file"]]).wait()
-            # shutil.copyfile(x["source_file"],x["source_file"].replace(".bin",".raw"))
+            # shutil.copyfile(x["source_file"], x["source_file"].replace(".bin", ".raw"))
+
+        if "texture_format" in x:
+            if x["texture_format"] in ["rgba5551", "i4", "ia4", "i8", "ia8"]:
+                result = subprocess.check_output(["./build/n64tex.exe", x["texture_format"], x["source_file"]])
+                if "target_compressed_size" in x:
+                    x["source_file"] = x["source_file"].replace(".png", f".{x['texture_format']}")
+            elif x["texture_format"] == "rgba32":
+                convertToRGBA32(x["source_file"])
+                x["source_file"] = x["source_file"].replace(".png", ".rgba32")
+            else:
+                print(" - ERROR: Unsupported texture format " + x["texture_format"])
 
         if "target_compressed_size" in x:
             x["do_not_compress"] = True
@@ -547,15 +652,6 @@ with open(newROMName, "r+b") as fh:
             with open(x["source_file"], "wb") as fg:
                 fg.write(compress)
             x["output_file"] = x["source_file"]
-
-        if "texture_format" in x:
-            if x["texture_format"] in ["rgba5551", "i4", "ia4", "i8", "ia8"]:
-                result = subprocess.check_output(["./build/n64tex.exe", x["texture_format"], x["source_file"]])
-            elif x["texture_format"] == "rgba32":
-                convertToRGBA32(x["source_file"])
-                x["source_file"] = x["source_file"].replace(".png", ".rgba32")
-            else:
-                print(" - ERROR: Unsupported texture format " + x["texture_format"])
 
         if "use_external_gzip" in x and x["use_external_gzip"]:
             if os.path.exists(x["source_file"]):
@@ -599,7 +695,7 @@ with open(newROMName, "r+b") as fh:
             print(" - Writing " + x["output_file"] + " (" + hex(len(compress)) + ") to ROM")
             if "pointer_table_index" in x and "file_index" in x:
                 # More complicated write, update the pointer tables to point to the new data
-                replaceROMFile(x["pointer_table_index"], x["file_index"], compress, uncompressed_size)
+                replaceROMFile(fh, x["pointer_table_index"], x["file_index"], compress, uncompressed_size)
             elif "start" in x:
                 if isROMAddressOverlay(x["start"]):
                     replaceOverlayData(x["start"], compress)
@@ -627,6 +723,21 @@ with open(newROMName, "r+b") as fh:
 
     print("[6 / 7] - Dumping details of all pointer tables to rom/build.log")
     dumpPointerTableDetails("rom/build.log", fh)
+
+    # Change Helm Geometry (Can't use main CL Build System because of forced duplication)
+    main_pointer_table_offset = 0x101C50
+    fh.seek(main_pointer_table_offset + 4)
+    geo_table = main_pointer_table_offset + int.from_bytes(fh.read(4), "big")
+    fh.seek(geo_table + (0x11 * 4))
+    helm_geo = main_pointer_table_offset + int.from_bytes(fh.read(4), "big")
+    helm_geo_end = main_pointer_table_offset + int.from_bytes(fh.read(4), "big")
+    helm_geo_size = helm_geo_end - helm_geo
+    fh.seek(helm_geo)
+    for by_i in range(helm_geo_size):
+        fh.write((0).to_bytes(1, "big"))
+    fh.seek(helm_geo)
+    with open("helm.bin", "rb") as helm_geo:
+        fh.write(gzip.compress(helm_geo.read(), compresslevel=9))
 
     # Replace Helm Text
     main_pointer_table_offset = 0x101C50
@@ -657,51 +768,91 @@ with open(newROMName, "r+b") as fh:
         for y in x:
             if os.path.exists(y):
                 os.remove(y)
-    fh.seek(0x1FED020 + 0x141)
+
+    # Kong Order
+    fh.seek(0x1FED020 + 0x151)
     fh.write((0).to_bytes(1, "big"))
-    fh.seek(0x1FED020 + 0x142)
+    fh.seek(0x1FED020 + 0x152)
     fh.write((1).to_bytes(1, "big"))
-    fh.seek(0x1FED020 + 0x143)
+    fh.seek(0x1FED020 + 0x153)
     fh.write((0).to_bytes(1, "big"))
-    fh.seek(0x1FED020 + 0x144)
+    fh.seek(0x1FED020 + 0x154)
     fh.write((2).to_bytes(1, "big"))
-    fh.seek(0x1FED020 + 0x145)
+    fh.seek(0x1FED020 + 0x155)
     fh.write((0).to_bytes(1, "big"))
-    fh.seek(0x1FED020 + 0x146)
+    fh.seek(0x1FED020 + 0x156)
     fh.write((3).to_bytes(1, "big"))
-    fh.seek(0x1FED020 + 0x147)
+    fh.seek(0x1FED020 + 0x157)
     fh.write((1).to_bytes(1, "big"))
-    fh.seek(0x1FED020 + 0x148)
+    fh.seek(0x1FED020 + 0x158)
     fh.write((4).to_bytes(1, "big"))
-    fh.seek(0x1FED020 + 0x149)
+    fh.seek(0x1FED020 + 0x159)
     fh.write((2).to_bytes(1, "big"))
 
-    fh.seek(0x1FED020 + 0x13B)
+    # Shop Hints
+    fh.seek(0x1FED020 + 0x14B)
     fh.write((1).to_bytes(1, "big"))
+
+    piano_vanilla = [2, 1, 2, 3, 4, 2, 0]
+    for piano_index, piano_key in enumerate(piano_vanilla):
+        fh.seek(0x1FED020 + 0x16C + piano_index)
+        fh.write(piano_key.to_bytes(1, "big"))
+
+    dk_face_puzzle_vanilla = [0, 3, 2, 0, 1, 2, 3, 2, 1]
+    chunky_face_puzzle_vanilla = [0, 1, 3, 1, 2, 1, 3, 0, 1]
+    for face_index in range(9):
+        fh.seek(0x1FED020 + 0x17E + face_index)
+        fh.write(dk_face_puzzle_vanilla[face_index].to_bytes(1, "big"))
+        fh.seek(0x1FED020 + 0x187 + face_index)
+        fh.write(chunky_face_puzzle_vanilla[face_index].to_bytes(1, "big"))
 
     with open("assets/Non-Code/credits/squish.bin", "rb") as squish:
         fh.seek(0x1FFF800)
         fh.write(squish.read())
 
     vanilla_coin_reqs = [
-        {"offset": 0x12C, "coins": 50},
-        {"offset": 0x12D, "coins": 50},
-        {"offset": 0x12E, "coins": 10},
-        {"offset": 0x12F, "coins": 10},
-        {"offset": 0x130, "coins": 10},
-        {"offset": 0x131, "coins": 50},
-        {"offset": 0x132, "coins": 50},
-        {"offset": 0x133, "coins": 25},
+        {"offset": 0x13C, "coins": 50},
+        {"offset": 0x13D, "coins": 50},
+        {"offset": 0x13E, "coins": 10},
+        {"offset": 0x13F, "coins": 10},
+        {"offset": 0x140, "coins": 10},
+        {"offset": 0x141, "coins": 50},
+        {"offset": 0x142, "coins": 50},
+        {"offset": 0x143, "coins": 25},
     ]
     for coinreq in vanilla_coin_reqs:
         fh.seek(0x1FED020 + coinreq["offset"])
         fh.write(coinreq["coins"].to_bytes(1, "big"))
+    for x in range(5):
+        # Write default Helm Order
+        fh.seek(0x1FED020 + x)
+        fh.write(x.to_bytes(1, "big"))
     for x in hash_icons:
         pth = f"assets/Non-Code/hash/{x}"
         if os.path.exists(pth):
             os.remove(pth)
     other_remove = []
-    displays = ["dk_face", "diddy_face", "lanky_face", "tiny_face", "chunky_face", "none", "shared", "soldout32", "wxys", "yellow_qmark_0", "yellow_qmark_1"]
+    displays = [
+        "dk_face",
+        "diddy_face",
+        "lanky_face",
+        "tiny_face",
+        "chunky_face",
+        "none",
+        "shared",
+        "soldout32",
+        "wxys",
+        "yellow_qmark_0",
+        "yellow_qmark_1",
+        "empty44",
+        "empty3264",
+        "homing_crate",
+        "num_6_lit",
+        "num_6_unlit",
+        "num_9_lit",
+        "num_9_unlit",
+        "standard_crate",
+    ]
     for disp in displays:
         for ext in [".png", ".rgba32"]:
             other_remove.append(f"displays/{disp}{ext}")
@@ -711,6 +862,36 @@ with open(newROMName, "r+b") as fh:
         pth = f"assets/Non-Code/{x}"
         if os.path.exists(pth):
             os.remove(pth)
+    hash_items = [
+        "dk_tie_palette",
+        "homing_crate_0",
+        "homing_crate_1",
+        "num_1_lit",
+        "num_1_unlit",
+        "num_6_lit",
+        "num_6_unlit",
+        "num_7_lit",
+        "num_7_unlit",
+        "num_9_lit",
+        "num_9_unlit",
+        "standard_crate_0",
+        "standard_crate_1",
+        "tiny_palette",
+    ]
+    script_files = [x[0] for x in os.walk("assets/Non-Code/instance_scripts/")]
+    shop_files = ["snide.script", "cranky.script", "funky.script", "candy.script"]
+    for folder in script_files:
+        for file in os.listdir(folder):
+            file = f"{folder}/{file}"
+            for shop in shop_files:
+                if shop in file:
+                    if os.path.exists(file):
+                        os.remove(file)
+    for hash_item in hash_items:
+        for f_t in ["rgba5551", "png"]:
+            pth = f"assets/Non-Code/hash/{hash_item}.{f_t}"
+            if os.path.exists(pth):
+                os.remove(pth)
     credits_bins = ["credits", "squish"]
     for x in credits_bins:
         pth = f"assets/Non-Code/credits/{x}.bin"
@@ -718,6 +899,13 @@ with open(newROMName, "r+b") as fh:
             os.remove(pth)
     if os.path.exists("assets/Non-Code/Gong/hint_door.bin"):
         os.remove("assets/Non-Code/Gong/hint_door.bin")
+    for x in model_changes:
+        if os.path.exists(x["model_file"]):
+            os.remove(x["model_file"])
+    if os.path.exists(new_coin_sfx):
+        os.remove(new_coin_sfx)
+    if os.path.exists("helm.bin"):
+        os.remove("helm.bin")
     # pth = "assets/Non-Code/displays/soldout_bismuth.rgba32"
     # if os.path.exists(pth):
     #     os.remove(pth)

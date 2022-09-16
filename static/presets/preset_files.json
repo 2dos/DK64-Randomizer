@@ -1,3 +1,3 @@
 {
-  "progression": ["blank.json", "suggested.json", "vanillaesque.json", "level_order_balanced.json", "coupled_lzr_balanced.json", "decoupled_lzr_balanced.json", "hell.json", "2dos_special.json", "go_bananas.json"]
+  "progression": ["blank.json", "suggested.json", "season1.json", "coupled_lzr_balanced.json", "decoupled_lzr_balanced.json", "hell.json", "2dos_special.json", "cfox_luck.json", "qol_only.json"]
 }

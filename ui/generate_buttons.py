@@ -3,13 +3,85 @@ import asyncio
 import json
 import random
 
+from pyodide import create_proxy
+
 import js
 from randomizer.BackgroundRandomizer import generate_playthrough
 from randomizer.Patching.ApplyRandomizer import patching_response
+from randomizer.SettingStrings import decrypt_setting_string, encrypt_settings_string
 from randomizer.Worker import background
 from ui.bindings import bind
 from ui.progress_bar import ProgressBar
-from pyodide import create_proxy
+from ui.rando_options import (
+    disable_barrel_modal,
+    disable_colors,
+    disable_music,
+    disable_prices,
+    max_randomized_blocker,
+    max_randomized_troff,
+    toggle_b_locker_boxes,
+    toggle_counts_boxes,
+    update_boss_required,
+)
+
+
+@bind("click", "export_settings")
+def export_settings_string(event):
+    """Click event for exporting settings to a string.
+
+    Args:
+        event (event): Javascript event object.
+    """
+    form_data = serialize_settings()
+    settings_string = encrypt_settings_string(form_data)
+    js.settings_string.value = settings_string
+
+
+@bind("click", "import_settings")
+def import_settings_string(event):
+    """Click event for importing settings from a string.
+
+    Args:
+        event (event): Javascript Event object.
+    """
+    settings_string = js.settings_string.value
+    try:
+        settings = decrypt_setting_string(settings_string)
+        for key in settings:
+            try:
+                if type(settings[key]) is bool:
+                    if settings[key] is False:
+                        js.jq(f"#{key}").checked = False
+                        js.document.getElementsByName(key)[0].checked = False
+                    else:
+                        js.jq(f"#{key}").checked = True
+                        js.document.getElementsByName(key)[0].checked = True
+                    js.jq(f"#{key}").removeAttr("disabled")
+                elif type(settings[key]) is list:
+                    selector = js.document.getElementById(key)
+                    for i in range(0, selector.options.length):
+                        selector.item(i).selected = selector.item(i).value in settings[key]
+                else:
+                    if js.document.getElementsByName(key)[0].hasAttribute("data-slider-value"):
+                        js.jq(f"#{key}").slider("setValue", settings[key])
+                        js.jq(f"#{key}").slider("enable")
+                        js.jq(f"#{key}").parent().find(".slider-disabled").removeClass("slider-disabled")
+                    else:
+                        js.jq(f"#{key}").val(settings[key])
+                    js.jq(f"#{key}").removeAttr("disabled")
+            except Exception as e:
+                pass
+        toggle_counts_boxes(None)
+        toggle_b_locker_boxes(None)
+        update_boss_required(None)
+        disable_colors(None)
+        disable_music(None)
+        disable_prices(None)
+        max_randomized_blocker(None)
+        max_randomized_troff(None)
+        disable_barrel_modal(None)
+    except Exception:
+        pass
 
 
 @bind("change", "patchfileloader")
@@ -40,14 +112,29 @@ def lanky_file_changed(event):
         reader.addEventListener("load", function)
 
 
+@bind("click", "generate_pastgen_seed")
+def generate_previous_seed(event):
+    """Generate a seed from a previous seed file."""
+    # Check if the rom filebox has a file loaded in it.
+    if len(str(js.document.getElementById("rom").value).strip()) == 0 or "is-valid" not in list(js.document.getElementById("rom").classList):
+        js.document.getElementById("rom").select()
+        if "is-invalid" not in list(js.document.getElementById("rom").classList):
+            js.document.getElementById("rom").classList.add("is-invalid")
+    else:
+        loop = asyncio.get_event_loop()
+        loop.run_until_complete(ProgressBar().update_progress(0, "Loading Previous seed and applying data."))
+        js.apply_bps_javascript()
+        patching_response(str(js.get_previous_seed_data()))
+
+
 @bind("click", "generate_lanky_seed")
 def generate_seed_from_patch(event):
     """Generate a seed from a patch file."""
     # Check if the rom filebox has a file loaded in it.
-    if len(str(js.document.getElementById("input-file-rom").value).strip()) == 0 or "is-valid" not in list(js.document.getElementById("input-file-rom").classList):
-        js.document.getElementById("input-file-rom").select()
-        if "is-invalid" not in list(js.document.getElementById("input-file-rom").classList):
-            js.document.getElementById("input-file-rom").classList.add("is-invalid")
+    if len(str(js.document.getElementById("rom").value).strip()) == 0 or "is-valid" not in list(js.document.getElementById("rom").classList):
+        js.document.getElementById("rom").select()
+        if "is-invalid" not in list(js.document.getElementById("rom").classList):
+            js.document.getElementById("rom").classList.add("is-invalid")
     elif len(str(js.document.getElementById("patchfileloader").value).strip()) == 0:
         js.document.getElementById("patchfileloader").select()
         if "is-invalid" not in list(js.document.getElementById("patchfileloader").classList):
@@ -55,6 +142,62 @@ def generate_seed_from_patch(event):
     else:
         js.apply_bps_javascript()
         patching_response(str(js.loaded_patch))
+
+
+def serialize_settings():
+    """Serialize form settings into a JSON string.
+
+    Returns:
+        dict: Dictionary of form settings.
+    """
+    # Remove all the disabled attributes and store them for later
+    disabled_options = []
+    for element in js.document.getElementsByTagName("input"):
+        if element.disabled:
+            disabled_options.append(element)
+            element.removeAttribute("disabled")
+    for element in js.document.getElementsByTagName("select"):
+        if element.disabled:
+            disabled_options.append(element)
+            element.removeAttribute("disabled")
+    # Serialize the form into json
+    form = js.jquery("#form").serializeArray()
+    form_data = {}
+
+    def is_number(s):
+        """Check if a string is a number or not."""
+        try:
+            int(s)
+            return True
+        except ValueError:
+            pass
+
+    for obj in form:
+        # Verify each object if its value is a string convert it to a bool
+        if obj.value.lower() in ["true", "false"]:
+            form_data[obj.name] = bool(obj.value)
+        else:
+            if is_number(obj.value):
+                form_data[obj.name] = int(obj.value)
+            else:
+                form_data[obj.name] = obj.value
+    # find all input boxes and verify their checked status
+    for element in js.document.getElementsByTagName("input"):
+        if element.type == "checkbox" and not element.checked:
+            if not form_data.get(element.name):
+                form_data[element.name] = False
+    # Re disable all previously disabled options
+    for element in disabled_options:
+        element.setAttribute("disabled", "disabled")
+    for element in js.document.getElementsByTagName("select"):
+        if "selected" in element.className:
+            length = element.options.length
+            values = []
+            for i in range(0, length):
+                if element.options.item(i).selected:
+                    values.append(element.options.item(i).value)
+            form_data[element.getAttribute("name")] = values
+    return form_data
 
 
 @bind("click", "generate_seed")
@@ -65,53 +208,15 @@ def generate_seed(event):
         event (event): Javascript click event.
     """
     # Check if the rom filebox has a file loaded in it.
-    if len(str(js.document.getElementById("input-file-rom").value).strip()) == 0 or "is-valid" not in list(js.document.getElementById("input-file-rom").classList):
-        js.document.getElementById("input-file-rom").select()
-        if "is-invalid" not in list(js.document.getElementById("input-file-rom").classList):
-            js.document.getElementById("input-file-rom").classList.add("is-invalid")
+    if len(str(js.document.getElementById("rom").value).strip()) == 0 or "is-valid" not in list(js.document.getElementById("rom").classList):
+        js.document.getElementById("rom").select()
+        if "is-invalid" not in list(js.document.getElementById("rom").classList):
+            js.document.getElementById("rom").classList.add("is-invalid")
     else:
         # Start the progressbar
         loop = asyncio.get_event_loop()
         loop.run_until_complete(ProgressBar().update_progress(0, "Initalizing"))
-        # Remove all the disabled attributes and store them for later
-        disabled_options = []
-        for element in js.document.getElementsByTagName("input"):
-            if element.disabled:
-                disabled_options.append(element)
-                element.removeAttribute("disabled")
-        for element in js.document.getElementsByTagName("select"):
-            if element.disabled:
-                disabled_options.append(element)
-                element.removeAttribute("disabled")
-        # Serialize the form into json
-        form = js.jquery("#form").serializeArray()
-        form_data = {}
-
-        def is_number(s):
-            """Check if a string is a number or not."""
-            try:
-                int(s)
-                return True
-            except ValueError:
-                pass
-
-        for obj in form:
-            # Verify each object if its value is a string convert it to a bool
-            if obj.value.lower() in ["true", "false"]:
-                form_data[obj.name] = bool(obj.value)
-            else:
-                if is_number(obj.value):
-                    form_data[obj.name] = int(obj.value)
-                else:
-                    form_data[obj.name] = obj.value
-        # find all input boxes and verify their checked status
-        for element in js.document.getElementsByTagName("input"):
-            if element.type == "checkbox" and not element.checked:
-                if not form_data.get(element.name):
-                    form_data[element.name] = False
-        # Re disable all previously disabled options
-        for element in disabled_options:
-            element.setAttribute("disabled", "disabled")
+        form_data = serialize_settings()
         if not form_data.get("seed"):
             form_data["seed"] = str(random.randint(100000, 999999))
         js.apply_bps_javascript()
@@ -131,42 +236,3 @@ def update_seed_text(event):
         js.document.getElementById("generate_seed").value = "Generate Patch File and Seed"
     else:
         js.document.getElementById("generate_seed").value = "Generate Seed"
-
-
-@bind("click", "nav-seed-gen-tab")
-@bind("click", "nav-patch-tab")
-def disable_input(event):
-    """Disable input for the ROM Boxes as we rotate through the navbar.
-
-    Args:
-        event (DOMEvent): DOM item that triggered the event.
-    """
-    # Try to determine of the patch tab was what triggered the event.
-    ev_type = False
-    try:
-        if "patch-tab" in event.target.id:
-            ev_type = True
-    except Exception:
-        pass
-    # As we rotate between the tabs, verify our disabled progression status
-    # and set our input file box as the correct name so we can use two fileboxes as the same name
-    if ev_type is False:
-        if not js.document.getElementById("input-file-rom_2"):
-            try:
-                js.document.getElementById("input-file-rom").id = "input-file-rom_2"
-            except Exception:
-                pass
-        try:
-            js.document.getElementById("input-file-rom_1").id = "input-file-rom"
-        except Exception:
-            pass
-    else:
-        if not js.document.getElementById("input-file-rom_1"):
-            try:
-                js.document.getElementById("input-file-rom").id = "input-file-rom_1"
-            except Exception:
-                pass
-        try:
-            js.document.getElementById("input-file-rom_2").id = "input-file-rom"
-        except Exception:
-            pass

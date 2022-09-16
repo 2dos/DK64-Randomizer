@@ -21,6 +21,7 @@ class Maps(IntEnum):
     HideoutHelmLobby = 170
     TrainingGrounds = 176
     Treehouse = 171
+    KLumsy = 97
 
     # Jungle Japes
     JungleJapes = 7
@@ -216,6 +217,12 @@ class Maps(IntEnum):
     SnidesCrown = 158
     LobbyCrown = 157
 
+    # Shops
+    Cranky = 5
+    Candy = 25
+    Funky = 1
+    Snide = 15
+
 
 RegionMapList = {
     # Isles
@@ -271,7 +278,8 @@ RegionMapList = {
     Regions.PowerHut: Maps.FactoryPowerHut,
     Regions.BeyondHatch: Maps.FranticFactory,
     Regions.InsideCore: Maps.FactoryCrusher,
-    Regions.MainCore: Maps.FranticFactory,
+    Regions.MiddleCore: Maps.FranticFactory,
+    Regions.UpperCore: Maps.FranticFactory,
     Regions.FactoryBaboonBlast: Maps.FactoryBaboonBlast,
     # Galleon
     Regions.GloomyGalleonStart: Maps.GloomyGalleon,

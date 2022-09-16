@@ -1,8 +1,9 @@
 """Create complex images from in-game assets."""
 
-from PIL import Image
-import PIL
 import os
+
+import PIL
+from PIL import Image
 
 pre = "../"
 cwd = os.getcwd()
@@ -98,7 +99,10 @@ im = im.resize(kong_res)
 im.save(f"{disp_dir}shared.png")
 im = Image.new(mode="RGBA", size=kong_res)
 im.save(f"{disp_dir}none.png")
-
+im = Image.new(mode="RGBA", size=(44, 44))
+im.save(f"{disp_dir}empty44.png")
+im = Image.new(mode="RGBA", size=(32, 64))
+im.save(f"{disp_dir}empty3264.png")
 #
 im = Image.open(f"{disp_dir}soldout_bismuth.png")
 im_height = 26
@@ -145,6 +149,59 @@ for idx in range(2):
             pix_new[x, y] = (r2, g2, b2, a)
     im_new.save(f"{disp_dir}yellow_qmark_{idx}.png")
 
+# Ammo Crates
+crate_names = ["standard_crate", "homing_crate"]
+for crate in crate_names:
+    base_dir = getDir("assets/Non-Code/displays/")
+    if not os.path.exists(base_dir):
+        os.mkdir(base_dir)
+    im = Image.new(mode="RGBA", size=(64, 64))
+    crate_r_offset = 0
+    for x in range(2):
+        im1 = Image.open(f"{hash_dir}{crate}_{x}.png")
+        x_p = 32 * x
+        y_p = 0
+        if x == 1:
+            y_p = crate_r_offset
+        Image.Image.paste(im, im1, (x_p, y_p))
+    im = im.resize(kong_res)
+    # im = im.resize((32,32))
+    im.save(f"{base_dir}{crate}.png")
+
+# Number Game Images
+# 6 (1 as template)
+lit = ["num_6_lit", "num_1_lit"]
+unlit = ["num_6_unlit", "num_1_unlit"]
+num_types = [lit, unlit]
+base_dir = getDir("assets/Non-Code/displays/")
+hash_dir = getDir("assets/Non-Code/hash/")
+for num_type in num_types:
+    number = num_type[0]
+    line_num = num_type[1]
+    if not os.path.exists(base_dir):
+        os.mkdir(base_dir)
+    line_im = Image.open(f"{hash_dir}{line_num}.png")
+    line = line_im.crop((13, 5, 16, 18))
+    line_90 = line.rotate(90, PIL.Image.Resampling.NEAREST, expand=1)
+    num_im = Image.open(f"{hash_dir}{number}.png")
+    line_y = 2
+    num_im.paste(line_90, (5, line_y), line_90)
+    num_im.paste(line_90, (12, line_y), line_90)
+    num_im.save(f"{base_dir}{number}.png")
+# 9 (7 as template)
+lit = ["num_9_lit", "num_7_lit"]
+unlit = ["num_9_unlit", "num_7_unlit"]
+num_types = [lit, unlit]
+for num_type in num_types:
+    number = num_type[0]
+    line_num = num_type[1]
+    line_im = Image.open(f"{hash_dir}{line_num}.png")
+    line = line_im.crop((10, 23, 22, 26))
+    num_im = Image.open(f"{hash_dir}{number}.png")
+    line_y = 1
+    num_im.paste(line, (7, line_y), line)
+    num_im.paste(line, (14, line_y), line)
+    num_im.save(f"{base_dir}{number}.png")
 
 rmve = ["01234.png", "56789.png", "boss_key.png", "WXYL.png", "specialchars.png", "red_qmark_0.png", "red_qmark_1.png"]
 for kong in kongs:

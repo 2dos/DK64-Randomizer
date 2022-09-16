@@ -19,18 +19,19 @@ LogicRegions = {
         LocationLogic(Locations.CavesTinyMedal, lambda l: l.ColoredBananas[Levels.CrystalCaves][Kongs.tiny] >= 75),
         LocationLogic(Locations.CavesChunkyMedal, lambda l: l.ColoredBananas[Levels.CrystalCaves][Kongs.chunky] >= 75),
         LocationLogic(Locations.CavesDiddyJetpackBarrel, lambda l: l.jetpack and l.isdiddy, MinigameType.BonusBarrel),
-        LocationLogic(Locations.CavesTinyCaveBarrel, lambda l: l.mini and l.istiny, MinigameType.BonusBarrel),
         LocationLogic(Locations.CavesTinyMonkeyportIgloo, lambda l: l.monkeyport and l.mini and l.twirl and l.tiny),
         LocationLogic(Locations.CavesChunkyGorillaGone, lambda l: l.punch and l.gorillaGone and l.chunky),
-        LocationLogic(Locations.CavesKasplatNearLab, lambda l: True),
-        LocationLogic(Locations.CavesKasplatNearFunky, lambda l: l.mini and l.twirl and l.tiny and l.jetpack),
-        LocationLogic(Locations.CavesKasplatPillar, lambda l: l.jetpack and l.diddy),
-        LocationLogic(Locations.CavesKasplatNearCandy, lambda l: True),
+        LocationLogic(Locations.CavesKasplatNearLab, lambda l: not l.settings.kasplat_location_rando),
+        LocationLogic(Locations.CavesKasplatNearCandy, lambda l: not l.settings.kasplat_location_rando),
     ], [
         Event(Events.CavesEntered, lambda l: True),
         Event(Events.CavesSmallBoulderButton, lambda l: l.chunky),
     ], [
         TransitionFront(Regions.CrystalCavesLobby, lambda l: True, Transitions.CavesToIsles),
+        TransitionFront(Regions.CavesBlueprintCave, lambda l: l.mini and l.twirl and l.tiny),
+        TransitionFront(Regions.CavesBonusCave, lambda l: l.mini and l.tiny),
+        TransitionFront(Regions.CavesBlueprintPillar, lambda l: l.jetpack and l.diddy),
+        TransitionFront(Regions.CavesBananaportSpire, lambda l: l.jetpack and l.diddy),
         TransitionFront(Regions.BoulderCave, lambda l: l.punch),
         TransitionFront(Regions.CavesLankyRace, lambda l: l.superSlam and l.balloon and l.islanky, Transitions.CavesMainToRace),
         TransitionFront(Regions.FrozenCastle, lambda l: l.superSlam and l.islanky, Transitions.CavesMainToCastle),
@@ -38,9 +39,36 @@ LogicRegions = {
         TransitionFront(Regions.CabinArea, lambda l: True),
         TransitionFront(Regions.FunkyCaves, lambda l: True),
         TransitionFront(Regions.CrankyCaves, lambda l: True),
-        TransitionFront(Regions.Snide, lambda l: l.punch),
+        TransitionFront(Regions.CavesSnideArea, lambda l: l.punch),
         TransitionFront(Regions.CavesBossLobby, lambda l: l.punch),
         TransitionFront(Regions.CavesBaboonBlast, lambda l: l.blast and l.isdonkey)  # , Transitions.CavesMainToBBlast)
+    ]),
+
+    Regions.CavesSnideArea: Region("Caves Snide Area", Levels.CrystalCaves, False, None, [], [], [
+        TransitionFront(Regions.Snide, lambda l: True),
+        TransitionFront(Regions.CavesBossLobby, lambda l: True),
+    ]),
+
+    Regions.CavesBlueprintCave: Region("Caves Blueprint Cave", Levels.CrystalCaves, False, None, [
+        LocationLogic(Locations.CavesKasplatNearFunky, lambda l: not l.settings.kasplat_location_rando),
+    ], [], [
+        TransitionFront(Regions.CrystalCavesMain, lambda l: l.mini and l.istiny)
+    ]),
+
+    Regions.CavesBonusCave: Region("Caves Bonus Cave", Levels.CrystalCaves, False, None, [
+        LocationLogic(Locations.CavesTinyCaveBarrel, lambda l: l.istiny, MinigameType.BonusBarrel),
+    ], [], [
+        TransitionFront(Regions.CrystalCavesMain, lambda l: l.mini and l.istiny)
+    ]),
+
+    Regions.CavesBlueprintPillar: Region("Caves Blueprint Pillar", Levels.CrystalCaves, False, None, [
+        LocationLogic(Locations.CavesKasplatPillar, lambda l: not l.settings.kasplat_location_rando),
+    ], [], [
+        TransitionFront(Regions.CrystalCavesMain, lambda l: True)
+    ]),
+
+    Regions.CavesBananaportSpire: Region("Caves Bananaport Spire", Levels.CrystalCaves, False, None, [], [], [
+        TransitionFront(Regions.CrystalCavesMain, lambda l: True)
     ]),
 
     Regions.CavesBaboonBlast: Region("Caves Baboon Blast", Levels.CrystalCaves, False, None, [
@@ -71,15 +99,16 @@ LogicRegions = {
 
     Regions.IglooArea: Region("Igloo Area", Levels.CrystalCaves, True, None, [
         LocationLogic(Locations.CavesChunkyTransparentIgloo, lambda l: Events.CavesLargeBoulderButton in l.Events and l.chunky),
-        LocationLogic(Locations.CavesKasplatOn5DI, lambda l: True),
+        LocationLogic(Locations.CavesKasplatOn5DI, lambda l: not l.settings.kasplat_location_rando),
     ], [], [
         TransitionFront(Regions.CrystalCavesMain, lambda l: True),
         TransitionFront(Regions.GiantKosha, lambda l: Events.CavesLargeBoulderButton in l.Events and l.monkeyport and l.istiny),
-        TransitionFront(Regions.DonkeyIgloo, lambda l: l.jetpack and l.bongos and l.isdonkey, Transitions.CavesIglooToDonkey),
-        TransitionFront(Regions.DiddyIgloo, lambda l: l.jetpack and l.guitar and l.isdiddy, Transitions.CavesIglooToDiddy),
-        TransitionFront(Regions.LankyIgloo, lambda l: l.jetpack and l.trombone and l.islanky, Transitions.CavesIglooToLanky),
-        TransitionFront(Regions.TinyIgloo, lambda l: l.jetpack and l.saxophone and l.istiny, Transitions.CavesIglooToTiny),
-        TransitionFront(Regions.ChunkyIgloo, lambda l: l.jetpack and l.triangle and l.ischunky, Transitions.CavesIglooToChunky),
+        TransitionFront(Regions.DonkeyIgloo, lambda l: (l.settings.high_req or l.jetpack) and l.bongos and l.isdonkey, Transitions.CavesIglooToDonkey),
+        TransitionFront(Regions.DiddyIgloo, lambda l: (l.settings.high_req or l.jetpack) and l.guitar and l.isdiddy, Transitions.CavesIglooToDiddy),
+        TransitionFront(Regions.LankyIgloo, lambda l: (l.settings.high_req or l.jetpack) and l.trombone and l.islanky, Transitions.CavesIglooToLanky),
+        TransitionFront(Regions.TinyIgloo, lambda l: (l.settings.high_req or l.jetpack) and l.saxophone and l.istiny, Transitions.CavesIglooToTiny),
+        TransitionFront(Regions.ChunkyIgloo, lambda l: (l.settings.high_req or l.jetpack) and l.triangle and l.ischunky, Transitions.CavesIglooToChunky),
+        TransitionFront(Regions.CavesBossLobby, lambda l: True),
     ]),
 
     Regions.GiantKosha: Region("Giant Kosha", Levels.CrystalCaves, False, -1, [], [

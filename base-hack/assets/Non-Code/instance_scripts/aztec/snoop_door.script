@@ -1,3 +1,6 @@
+.data
+id = 0xA1
+.code
 COND 1 | 0 0 0
 COND 45 | 62 0 0
 EXEC 1 | 40 0 0

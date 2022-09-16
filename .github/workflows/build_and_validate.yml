@@ -2,9 +2,9 @@
 name: Build and Scan
 on:
   push:
-    branches: [ main, master, dev ]
+    branches: [ main, master, dev, v*.* ]
   pull_request:
-    branches: [ main, master, dev ]
+    branches: [ main, master, dev, v*.* ]
 
 jobs:
   lint:
@@ -13,13 +13,13 @@ jobs:
         - uses: actions/checkout@v3
 
         - name: Setup python
-          uses: actions/setup-python@v3
+          uses: actions/setup-python@v4.1.0
           with:
               python-version: 3.6
               architecture: x64
 
         - name: Install linters
-          run: pip install black pycodestyle pydocstyle
+          run: pip install black pycodestyle pydocstyle djlint
 
         - name: Run black
           run: black . --check -l 200
@@ -29,6 +29,7 @@ jobs:
 
         - name: Run pydocstyle
           run: pydocstyle .
+
 
   analyze:
     name: Analyze
@@ -64,7 +65,7 @@ jobs:
         - uses: actions/checkout@v3
 
         - name: Setup python
-          uses: actions/setup-python@v3
+          uses: actions/setup-python@v4.1.0
           with:
               python-version: 3.6
               architecture: x64
@@ -89,17 +90,17 @@ jobs:
             python3 ./tools/prepare_offline.py
             npm run distall
 
-        - uses: actions/upload-artifact@v2
+        - uses: actions/upload-artifact@v3
           with:
             name: dk64randomizer-setup.exe
             path: "${{ github.workspace }}/dist/dk64randomizer.exe"
 
-        - uses: actions/upload-artifact@v2
+        - uses: actions/upload-artifact@v3
           with:
             name: dk64randomizer.dmg
             path: "${{ github.workspace }}/dist/dk64randomizer.dmg"
 
-        - uses: actions/upload-artifact@v2
+        - uses: actions/upload-artifact@v3
           with:
             name: dk64randomizer.deb
             path: "${{ github.workspace }}/dist/dk64randomizer.deb"

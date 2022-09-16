@@ -1,3 +1,6 @@
+.data
+id = 0x3
+.code
 COND 1 | 0 0 0
 COND 45 | 132 0 0
 COND 45 | 379 0 0

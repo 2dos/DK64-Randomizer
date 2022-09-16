@@ -45,20 +45,20 @@ static const unsigned char tns_count[] = {
 	5,
 	5,
 	5,
-	4,
+	5,
 	3,
 	1,
 	1,
 };
 
 static const short tns_flags[] = {
-	46, // Japes
-	108, // Aztec
-	152, // Factory
-	203, // Galleon
-	258, // Fungi
-	302, // Caves
-	352, // Castle
+	FLAG_PORTAL_JAPES,
+	FLAG_PORTAL_AZTEC,
+	FLAG_PORTAL_FACTORY,
+	FLAG_PORTAL_GALLEON,
+	FLAG_PORTAL_FUNGI,
+	FLAG_PORTAL_CAVES,
+	FLAG_PORTAL_CASTLE,
 };
 
 void displayNumberOnTns(void) {

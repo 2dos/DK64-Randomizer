@@ -65,7 +65,7 @@ def randomize_entrances(spoiler: Spoiler):
                                 ROM().writeBytes(bytearray(exit_bytes))
 
         # /* 0x05D */ char randomize_more_loading_zones; // 0 = Not randomizing loading zones inside levels. 1 = On
-        varspaceOffset = 0x1FED020  # TODO: Define this as constant in a more global place
+        varspaceOffset = spoiler.settings.rom_data
         moreLoadingZonesOffset = 0x05D
         ROM().seek(varspaceOffset + moreLoadingZonesOffset)
         ROM().write(1)
@@ -182,7 +182,7 @@ def randomize_entrances(spoiler: Spoiler):
         ROM().write(GetExitId(shuffledBack))
         # /* 0x120 */ unsigned short ballroom_to_museum; // Same as "aztec_beetle_enter" but for the loading zone dictated by the name
         shuffledBack = spoiler.shuffled_exit_data[Transitions.CastleBallroomToMuseum]
-        ROM().seek(varspaceOffset + 0x120)
+        ROM().seek(varspaceOffset + 0x130)
         ROM().write(GetMapId(shuffledBack.regionId))
         ROM().write(GetExitId(shuffledBack))
         # /* 0x122 */ unsigned short museum_to_ballroom; // Same as "aztec_beetle_enter" but for the loading zone dictated by the name

@@ -127,12 +127,6 @@ PauseExtraSlotClamp1Hook:
 PauseExtraSlotCustomHook:
 	J 	PauseExtraSlotCustomCode
 	NOP
-IGTFileReadHook:
-	J 	IGTLoadFromFile
-	NOP
-IGTSaveToFileHook:
-	J 	IGTSaveToFile
-	NOP
 AutowalkFixHook:
 	J 	AutowalkFix
 	NOP
@@ -175,11 +169,35 @@ HUDDisplayHook:
 HomingDisableHook:
 	J 	HomingDisable
 	NOP
+HomingHUDHandleHook:
+	J 	HomingHUDHandle
+	NOP
 DKCollectableFixHook:
 	J 	DKCollectableFix
 	NOP
 CannonForceHook:
 	J 	CannonForceCode
+	NOP
+GuardAutoclearHook:
+	J 	GuardAutoclear
+	NOP
+TextHandlerHook:
+	J 	TextHandler
+	NOP
+GuardDeathHandleHook:
+	J 	GuardDeathHandle
+	NOP
+ShopImageHandlerHook:
+	J 	ShopImageHandler
+	NOP
+FixPufftossInvalidWallCollisionHook:
+	J 	FixPufftossInvalidWallCollision
+	NOP
+GiveItemPointerToMultiHook:
+	J 	GiveItemPointerToMulti
+	NOP
+CoinHUDRepositionHook:
+	J 	CoinHUDReposition
 	NOP
 
 loadExtraHooks:
@@ -188,6 +206,18 @@ loadExtraHooks:
 	LUI t4, 0x8064
 	SW t3, 0xEE08 (t4) // Store Hook
 	SW r0, 0xEE0C (t4) // Store NOP
+
+	LUI t3, hi(ShopImageHandlerHook)
+	LW t3, lo(ShopImageHandlerHook) (t3)
+	LUI t4, 0x8065
+	SW t3, 0x8364 (t4) // Store Hook
+	SW r0, 0x8368 (t4) // Store NOP
+
+	LUI t3, hi(FixPufftossInvalidWallCollisionHook)
+	LW t3, lo(FixPufftossInvalidWallCollisionHook) (t3)
+	LUI t4, 0x8067
+	SW t3, 0x7C14 (t4) // Store Hook
+	SW r0, 0x7C18 (t4) // Store NOP
 
 	LUI t3, hi(SaveToFileFixesHook)
 	LW t3, lo(SaveToFileFixesHook) (t3)
@@ -230,6 +260,18 @@ loadExtraHooks:
 	LUI t4, 0x8071
 	SW t3, 0x417C (t4) // Store Hook
 	SW r0, 0x4180 (t4) // Store NOP
+
+	LUI t3, hi(GiveItemPointerToMultiHook)
+	LW t3, lo(GiveItemPointerToMultiHook) (t3)
+	LUI t4, 0x8070
+	SW t3, 0x8610 (t4) // Store Hook
+	SW r0, 0x8614 (t4) // Store NOP
+	
+	LUI t3, hi(CoinHUDRepositionHook)
+	LW t3, lo(CoinHUDRepositionHook) (t3)
+	LUI t4, 0x8070
+	SW t3, 0x88C8 (t4) // Store Hook
+	SW r0, 0x88CC (t4) // Store NOP
 
 	LUI t3, hi(LobbyExitHook)
 	LW t3, lo(LobbyExitHook) (t3)
@@ -297,18 +339,6 @@ loadExtraHooks:
 	SW r0, 0x8808 (t4) // Store NOP
 
 	loadExtraHooks_0:
-	LUI t3, hi(IGTFileReadHook)
-	LW t3, lo(IGTFileReadHook) (t3)
-	LUI t4, 0x8061
-	SW t3, 0xDD34 (t4) // Store Hook
-	SW r0, 0xDD38 (t4) // Store NOP
-
-	LUI t3, hi(IGTSaveToFileHook)
-	LW t3, lo(IGTSaveToFileHook) (t3)
-	LUI t4, 0x8061
-	SW t3, 0xDF44 (t4) // Store Hook
-	SW r0, 0xDF48 (t4) // Store NOP
-
 	LUI t3, hi(AutowalkFixHook)
 	LW t3, lo(AutowalkFixHook) (t3)
 	LUI t4, 0x806F
@@ -405,11 +435,23 @@ loadExtraHooks:
 	SW t3, 0x22B0 (t4) // Store Hook
 	SW r0, 0x22B4 (t4) // Store NOP
 
+	LUI t3, hi(HomingHUDHandleHook)
+	LW t3, lo(HomingHUDHandleHook) (t3)
+	LUI t4, 0x806F
+	SW t3, 0xB574 (t4) // Store Hook
+	SW r0, 0xB578 (t4) // Store NOP
+
 	LUI t3, hi(DKCollectableFixHook)
 	LW t3, lo(DKCollectableFixHook) (t3)
 	LUI t4, 0x8063
 	SW t3, 0x24C4 (t4) // Store Hook
 	SW r0, 0x24C8 (t4) // Store NOP
+
+	LUI t3, hi(GuardDeathHandleHook)
+	LW t3, lo(GuardDeathHandleHook) (t3)
+	LUI t4, 0x806B
+	SW t3, 0xF70C (t4) // Store Hook
+	SW r0, 0xF710 (t4) // Store NOP
 
 	LUI t3, hi(QoLOn)
 	LBU t3, lo(QoLOn) (t3)
@@ -422,7 +464,18 @@ loadExtraHooks:
 	SW t3, 0x32BC (t4) // Store Hook
 	SW r0, 0x32C0 (t4) // Store NOP
 
+	LUI t3, hi(TextHandlerHook)
+	LW t3, lo(TextHandlerHook) (t3)
+	LUI t4, 0x8071
+	SW t3, 0xE83C (t4) // Store Hook
+	SW r0, 0xE840 (t4) // Store NOP
+
 	loadExtraHooks_3:
+	LUI t3, hi(GuardAutoclearHook)
+	LW t3, lo(GuardAutoclearHook) (t3)
+	LUI t4, 0x806B
+	SW t3, 0xE55C (t4) // Store Hook
+	SW r0, 0xE560 (t4) // Store NOP
 
 	JR ra
 	NOP

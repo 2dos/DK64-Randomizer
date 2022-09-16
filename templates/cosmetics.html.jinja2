@@ -1,230 +1,436 @@
 <div class="container" style="margin-top: 20px;">
+    <div id="override_div"
+         class="form-check form-switch item-switch center-flex"
+         hidden>
+        <label data-toggle="tooltip"
+               title="Use Cosmetics set on UI instead of from the patch file.">
+            <input class="form-check-input"
+                   type="checkbox"
+                   name="override_cosmetics"
+                   id="override_cosmetics"
+                   value="False"/>
+            Override Patch File Cosmetics
+        </label>
+    </div>
     <div class="row">
-        <div class="col border">
-            <h3>Music Rando</h3>
-            <div class="form-check form-switch w-75" style="margin-left: 30%;">
-                <input class="form-check-input"
-                                       type="checkbox"
-                                       name="random_music"
-                                       id="random_music"
-                                       value="True"/>
-                    Randomize All
+        <div class="col border panel">
+            <h2 class="title">MUSIC RANDO</h2>
+            <div class="flex-container">
+                <div class="form-check form-switch item-switch center-flex">
+                    <label data-toggle="tooltip" title="Randomizes all Music Selections.">
+                        <input class="form-check-input"
+                               type="checkbox"
+                               name="random_music"
+                               id="random_music"
+                               value="True"/>
+                        Randomize All Music
+                    </label>
+                </div>
             </div>
-            <div>
-                Background Music
-                <select name="music_bgm"
-                        id="music_bgm"
-                        style="width: 60%;"
-                        class="form-select center-div"
-                        aria-label="Background Music">
-                    <option selected value="default">
-                        Default Music
-                    </option>
-                    <option value="randomized">
-                        Randomized
-                    </option>
-                    <option value="chaos">
-                        Chaos
-                    </option>
-                    <option value="uploaded">
-                        Upload your own
-                    </option>
-                </select>
+            <div class="flex-container">
+                <div class="item-select">
+                    <p class="select-title">Background Music</p>
+                    <select name="music_bgm"
+                            id="music_bgm"
+                            class="form-select"
+                            aria-label="Background Music">
+                        <option selected value="default">
+                            Default Music
+                        </option>
+                        <option value="randomized">
+                            Randomized
+                        </option>
+                        <option value="chaos">
+                            Chaos
+                        </option>
+                        <option value="uploaded">
+                            Upload your own
+                        </option>
+                    </select>
+                </div>
+                <div class="item-select">
+                    <p class="select-title">Fanfares</p>
+                    <select name="music_fanfares"
+                            id="music_fanfares"
+                            class="form-select"
+                            aria-label="Fanfares">
+                        <option selected value="default">
+                            Default Fanfares
+                        </option>
+                        <option value="randomized">
+                            Randomized
+                        </option>
+                        <option value="uploaded">
+                            Upload your own
+                        </option>
+                    </select>
+                </div>
+                <div class="item-select">
+                    <p class="select-title">Events</p>
+                    <select name="music_events"
+                            id="music_events"
+                            class="form-select"
+                            aria-label="Events">
+                        <option selected value="default">
+                            Default Events
+                        </option>
+                        <option value="randomized">
+                            Randomized
+                        </option>
+                        <option value="uploaded">
+                            Upload your own
+                        </option>
+                    </select>
+                </div>
+                <div class="spacer"></div>
             </div>
-            <div>
-                Fanfares
-                <select name="music_fanfares"
-                        id="music_fanfares"
-                        style="width: 60%;"
-                        class="form-select center-div"
-                        aria-label="Fanfares">
-                    <option selected value="default">
-                        Default Fanfares
-                    </option>
-                    <option value="randomized">
-                        Randomized
-                    </option>
-                    <option value="uploaded">
-                        Upload your own
-                    </option>
-                </select>
-            </div>
-            <div>
-                Events
-                <select name="music_events"
-                        id="music_events"
-                        style="width: 60%;"
-                        class="form-select center-div"
-                        aria-label="Events">
-                    <option selected value="default">
-                        Default Events
-                    </option>
-                    <option value="randomized">
-                        Randomized
-                    </option>
-                    <option value="uploaded">
-                        Upload your own
-                    </option>
-                </select>
-            </div>
-        </div>
-        <div class="col border">
-            <h3>Cosmetics Data</h3>
-            Cosmetics ZIP (Check wiki for format)
+            <hr />
+            <h2 class="title">CUSTOM MUSIC</h2>
+            <p class="select-title">Cosmetics ZIP (Check wiki for format)</p>
             <input accept=".zip"
                    class="form-control"
                    type="file"
                    id="music_file"
                    name="music_file"/>
-            <hr />
-            <h3>Colors</h3>
-            <div class="form-check form-switch w-75" style="margin-left: 30%;">
-                <input class="form-check-input"
-                        type="checkbox"
-                        name="random_colors"
-                        id="random_colors"
-                        value="True"/>
-                    Randomize All
+            <div class="row">
+                <hr />
+                <h2 class="title">MISCELLANEOUS</h2>
+                <div class="flex-container">
+                    <div class="item-multiselect">
+                        <div class="color-selector">
+                            <p class="select-title">Beaver Bother Klaptrap</p>
+                            <select name="klaptrap_model"
+                                    id="klaptrap_model"
+                                    class="form-select multi-select"
+                                    aria-label="Klaptrap"
+                                    multiple
+                                    size="5">
+                                <option selected value="green">
+                                    Green
+                                </option>
+                                <option value="purple">
+                                    Purple
+                                </option>
+                                <option value="red">
+                                    Red
+                                </option>
+                                <option value="random_klap"
+                                        data-toggle="tooltip"
+                                        title="Selects a random Klaptrap color (Green, Purple, or Red).">
+                                    Random Klaptrap Variant
+                                </option>
+                                <option value="random_model"
+                                        data-toggle="tooltip"
+                                        title="Selects a random model from the game from a pre-determined list.">
+                                    Random Model
+                                </option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <table>
-                <tr>
-                    <td>
-                        <div>
-                            DK
-                            <select name="dk_colors"
-                                    id="dk_colors"
-                                    style="width: 80%;"
-                                    class="form-select center-div"
-                                    aria-label="DK">
-                                <option selected value="vanilla">
-                                    Vanilla
-                                </option>
-                                <option value="randomized">
-                                    Randomized
-                                </option>
-                                <option value="blue">
-                                    Blue
-                                </option>
-                                <option value="green">
-                                    Green
-                                </option>
-                                <option value="purple">
-                                    Purple
-                                </option>
-                            </select>
+        </div>
+        <div class="col border panel">
+            <h2 class="title">COLORS</h2>
+            <div class="flex-container">
+                <div class="form-check form-switch item-switch center-flex">
+                    <label data-toggle="tooltip"
+                           title="Randomizes all Kong and Transformation Colors.">
+                        <input class="form-check-input"
+                               type="checkbox"
+                               name="random_colors"
+                               id="random_colors"
+                               value="True"/>
+                        Randomize All Colors
+                    </label>
+                </div>
+            </div>
+            <div class="flex-container">
+                <div class="item-color-select">
+                    <div class="color-selector">
+                        <p class="select-title">DK</p>
+                        <select name="dk_colors"
+                                id="dk_colors"
+                                class="form-select multi-select"
+                                aria-label="DK"
+                                multiple>
+                            <option selected value="vanilla">
+                                Vanilla
+                            </option>
+                            <option value="randomized">
+                                Randomized
+                            </option>
+                            <option value="custom">
+                                Custom
+                            </option>
+                        </select>
+                        <div id="dk_custom">
+                            <div class="input-group mb-3 dkColorPicker">
+                                <input type="text"
+                                       class="form-control"
+                                       name="dk_custom_color"
+                                       id="dk_custom_color"
+                                       default="#000000">
+                                <button class="btn btn-default rgb-btn" type="button">&nbsp;</button>
+                            </div>
                         </div>
-                    </td>
-                    <td>
-                        <div>
-                            Diddy
-                            <select name="diddy_colors"
-                                    id="diddy_colors"
-                                    style="width: 80%;"
-                                    class="form-select center-div"
-                                    aria-label="Diddy">
-                                <option selected value="vanilla">
-                                    Vanilla
-                                </option>
-                                <option value="randomized">
-                                    Randomized
-                                </option>
-                                <option value="dark_blue">
-                                    Dark Blue
-                                </option>
-                                <option value="yellow">
-                                    Yellow
-                                </option>
-                                <option value="light_blue">
-                                    Light Blue
-                                </option>
-                            </select>
+                    </div>
+                </div>
+                <div class="item-color-select">
+                    <div class="color-selector">
+                        <p class="select-title">Diddy</p>
+                        <select name="diddy_colors"
+                                id="diddy_colors"
+                                class="form-select multi-select"
+                                aria-label="Diddy"
+                                multiple>
+                            <option selected value="vanilla">
+                                Vanilla
+                            </option>
+                            <option value="randomized">
+                                Randomized
+                            </option>
+                            <option value="custom">
+                                Custom
+                            </option>
+                        </select>
+                        <div id="diddy_custom">
+                            <div class="input-group mb-3 diddyColorPicker">
+                                <input type="text"
+                                       class="form-control"
+                                       name="diddy_custom_color"
+                                       id="diddy_custom_color"
+                                       default="#000000">
+                                <button class="btn btn-default rgb-btn" type="button">&nbsp;</button>
+                            </div>
                         </div>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <div>
-                            Lanky
-                            <select name="lanky_colors"
-                                    id="lanky_colors"
-                                    style="width: 80%;"
-                                    class="form-select center-div"
-                                    aria-label="Lanky">
-                                <option selected value="vanilla">
-                                    Vanilla
-                                </option>
-                                <option value="randomized">
-                                    Randomized
-                                </option>
-                                <option value="green">
-                                    Green
-                                </option>
-                                <option value="purple">
-                                    Purple
-                                </option>
-                                <option value="red">
-                                    Red
-                                </option>
-                            </select>
+                    </div>
+                </div>
+                <div class="item-color-select">
+                    <div class="color-selector">
+                        <p class="select-title">Lanky</p>
+                        <select name="lanky_colors"
+                                id="lanky_colors"
+                                class="form-select multi-select"
+                                aria-label="Lanky"
+                                multiple>
+                            <option selected value="vanilla">
+                                Vanilla
+                            </option>
+                            <option value="randomized">
+                                Randomized
+                            </option>
+                            <option value="custom">
+                                Custom
+                            </option>
+                        </select>
+                        <div id="lanky_custom">
+                            <div class="input-group mb-3 lankyColorPicker">
+                                <input type="text"
+                                       class="form-control"
+                                       name="lanky_custom_color"
+                                       id="lanky_custom_color"
+                                       default="#000000">
+                                <button class="btn btn-default rgb-btn" type="button">&nbsp;</button>
+                            </div>
                         </div>
-                    </td>
-                    <td>
-                        <div>
-                            Tiny
-                            <select name="tiny_colors"
-                                    id="tiny_colors"
-                                    style="width: 80%;"
-                                    class="form-select center-div"
-                                    aria-label="Tiny">
-                                <option selected value="vanilla">
-                                    Vanilla
-                                </option>
-                                <option value="randomized">
-                                    Randomized
-                                </option>
-                                <option value="green">
-                                    Green
-                                </option>
-                                <option value="purple">
-                                    Purple
-                                </option>
-                                {#  Temporary until Tiny Crash fix #}
-                                {# <option value="red">
-                                    Red
-                                </option> #}
-                            </select>
+                    </div>
+                </div>
+                <div class="item-color-select">
+                    <div class="color-selector">
+                        <p class="select-title">Tiny</p>
+                        <select name="tiny_colors"
+                                id="tiny_colors"
+                                class="form-select multi-select"
+                                aria-label="Tiny"
+                                multiple>
+                            <option selected value="vanilla">
+                                Vanilla
+                            </option>
+                            <option value="randomized">
+                                Randomized
+                            </option>
+                            <option value="custom">
+                                Custom
+                            </option>
+                        </select>
+                        <div id="tiny_custom">
+                            <div class="input-group mb-3 tinyColorPicker">
+                                <input type="text"
+                                       class="form-control"
+                                       name="tiny_custom_color"
+                                       id="tiny_custom_color"
+                                       default="#000000">
+                                <button class="btn btn-default rgb-btn" type="button">&nbsp;</button>
+                            </div>
                         </div>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <div>
-                            Chunky
-                            <select name="chunky_colors"
-                                    id="chunky_colors"
-                                    style="width: 80%;"
-                                    class="form-select center-div"
-                                    aria-label="Chunky">
-                                <option selected value="vanilla">
-                                    Vanilla
-                                </option>
-                                <option value="randomized">
-                                    Randomized
-                                </option>
-                                <option value="red">
-                                    Red
-                                </option>
-                                <option value="purple">
-                                    Purple
-                                </option>
-                                <option value="green">
-                                    Green
-                                </option>
-                            </select>
+                    </div>
+                </div>
+                <div class="item-color-select">
+                    <div class="color-selector">
+                        <p class="select-title">Chunky</p>
+                        <select name="chunky_colors"
+                                id="chunky_colors"
+                                class="form-select multi-select"
+                                aria-label="Chunky"
+                                multiple>
+                            <option selected value="vanilla">
+                                Vanilla
+                            </option>
+                            <option value="randomized">
+                                Randomized
+                            </option>
+                            <option value="custom">
+                                Custom
+                            </option>
+                        </select>
+                        <div id="chunky_custom">
+                            <div class="input-group mb-3 chunkyColorPicker">
+                                <input type="text"
+                                       class="form-control"
+                                       name="chunky_custom_color"
+                                       id="chunky_custom_color"
+                                       default="#000000">
+                                <button class="btn btn-default rgb-btn" type="button">&nbsp;</button>
+                            </div>
                         </div>
-                    </td>
-                </tr>
-            </table>
+                    </div>
+                </div>
+                <div class="item-color-select">
+                    <div class="color-selector">
+                        <p class="select-title">Rambi</p>
+                        <select name="rambi_colors"
+                                id="rambi_colors"
+                                class="form-select multi-select"
+                                aria-label="Rambi"
+                                multiple>
+                            <option selected value="vanilla">
+                                Vanilla
+                            </option>
+                            <option value="randomized">
+                                Randomized
+                            </option>
+                            <option value="custom">
+                                Custom
+                            </option>
+                        </select>
+                        <div id="rambi_custom">
+                            <div class="input-group mb-3 rambiColorPicker">
+                                <input type="text"
+                                       class="form-control"
+                                       name="rambi_custom_color"
+                                       id="rambi_custom_color"
+                                       default="#000000">
+                                <button class="btn btn-default rgb-btn" type="button">&nbsp;</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="item-color-select">
+                    <div class="color-selector">
+                        <p class="select-title">Enguarde</p>
+                        <select name="enguarde_colors"
+                                id="enguarde_colors"
+                                class="form-select multi-select"
+                                aria-label="Enguarde"
+                                multiple>
+                            <option selected value="vanilla">
+                                Vanilla
+                            </option>
+                            <option value="randomized">
+                                Randomized
+                            </option>
+                            <option value="custom">
+                                Custom
+                            </option>
+                        </select>
+                        <div id="enguarde_custom">
+                            <div class="input-group mb-3 enguardeColorPicker">
+                                <input type="text"
+                                       class="form-control"
+                                       name="enguarde_custom_color"
+                                       id="enguarde_custom_color"
+                                       default="#000000">
+                                <button class="btn btn-default rgb-btn" type="button">&nbsp;</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </div>
+<script>
+    $(function() {
+        $('.dkColorPicker').izoColorPicker({
+            myColors: '',
+            onApply: (color) => {
+                $('#dk_custom_color').trigger("change")
+            }
+        })
+        $('.diddyColorPicker').izoColorPicker({
+            myColors: '',
+            onApply: (color) => {
+                $('#diddy_custom_color').trigger("change")
+            }
+        })
+        $('.lankyColorPicker').izoColorPicker({
+            myColors: '',
+            onApply: (color) => {
+                $('#lanky_custom_color').trigger("change")
+            }
+        })
+        $('.tinyColorPicker').izoColorPicker({
+            myColors: '',
+            onApply: (color) => {
+                $('#tiny_custom_color').trigger("change")
+            }
+        })
+        $('.chunkyColorPicker').izoColorPicker({
+            myColors: '',
+            onApply: (color) => {
+                $('#chunky_custom_color').trigger("change")
+            }
+        })
+        $('.rambiColorPicker').izoColorPicker({
+            myColors: '',
+            onApply: (color) => {
+                $('#rambi_custom_color').trigger("change")
+            }
+        })
+        $('.enguardeColorPicker').izoColorPicker({
+            myColors: '',
+            onApply: (color) => {
+                $('#enguarde_custom_color').trigger("change")
+            }
+        })
+    })
+    
+    $('.nav-tabs').click(function() {
+        var settings = (document.cookie).split('saved_settings=')
+        if (typeof settings[1] !== 'undefined') {
+            var object = JSON.parse(settings[1])
+            if (object.hasOwnProperty('dk_custom_color')) {
+                $('.dkColorPicker').attr('style', 'background-color:' + object.dk_custom_color + ';')
+            }
+            if (object.hasOwnProperty('diddy_custom_color')) {
+                $('.diddyColorPicker').attr('style', 'background-color:' + object.diddy_custom_color + ';')
+            }
+            if (object.hasOwnProperty('lanky_custom_color')) {
+                $('.lankyColorPicker').attr('style', 'background-color:' + object.lanky_custom_color + ';')
+            }
+            if (object.hasOwnProperty('tiny_custom_color')) {
+                $('.tinyColorPicker').attr('style', 'background-color:' + object.tiny_custom_color + ';')
+            }
+            if (object.hasOwnProperty('chunky_custom_color')) {
+                $('.chunkyColorPicker').attr('style', 'background-color:' + object.chunky_custom_color + ';')
+            }
+            if (object.hasOwnProperty('rambi_custom_color')) {
+                $('.rambiColorPicker').attr('style', 'background-color:' + object.rambi_custom_color + ';')
+            }
+            if (object.hasOwnProperty('enguarde_custom_color')) {
+                $('.enguardeColorPicker').attr('style', 'background-color:' + object.enguarde_custom_color + ';')
+            }
+        }
+    })
+</script>

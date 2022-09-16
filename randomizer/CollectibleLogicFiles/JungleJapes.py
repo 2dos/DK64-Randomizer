@@ -23,7 +23,6 @@ LogicRegions = {
         Collectible(Collectibles.bunch, Kongs.diddy, lambda l: True, None, 2),  # Treetops, TB side
         Collectible(Collectibles.bunch, Kongs.diddy, lambda l: True, None, 2),  # Treetops, Painting room side
         Collectible(Collectibles.bunch, Kongs.diddy, lambda l: True, None, 2),  # Underwater
-        Collectible(Collectibles.balloon, Kongs.diddy, lambda l: l.peanut, None, 1),  # Above mountain
         Collectible(Collectibles.banana, Kongs.lanky, lambda l: True, None, 5),  # In river
         Collectible(Collectibles.banana, Kongs.lanky, lambda l: l.handstand, None, 3),  # To painting room
         Collectible(Collectibles.bunch, Kongs.lanky, lambda l: True, None, 1),  # Treetop by Snide's
@@ -83,7 +82,7 @@ LogicRegions = {
         Collectible(Collectibles.bunch, Kongs.tiny, lambda l: l.mini, None, 3),  # In hollow trunk to the left
         Collectible(Collectibles.bunch, Kongs.tiny, lambda l: l.mini, None, 3),  # In hollow trunk to the right
         Collectible(Collectibles.bunch, Kongs.tiny, lambda l: True, None, 1),  # By beehive
-        Collectible(Collectibles.bunch, Kongs.chunky, lambda l: True, None, 4),
+        Collectible(Collectibles.bunch, Kongs.chunky, lambda l: l.hunkyChunky, None, 4),
 
         Collectible(Collectibles.coin, Kongs.tiny, lambda l: Events.JapesSpawnW5 in l.Events, None, 5),  # Around other W5, but need access from this region
         Collectible(Collectibles.coin, Kongs.chunky, lambda l: True, None, 3),  # Behind stump
@@ -107,6 +106,9 @@ LogicRegions = {
         Collectible(Collectibles.coin, Kongs.diddy, lambda l: True, None, 1),  # On coal pile
         Collectible(Collectibles.coin, Kongs.diddy, lambda l: l.charge, None, 1),  # Next to conveyor control
         Collectible(Collectibles.coin, Kongs.diddy, lambda l: l.Slam, None, 1),  # Under conveyors
+    ],
+    Regions.JapesTopOfMountain: [
+        Collectible(Collectibles.balloon, Kongs.diddy, lambda l: l.peanut, None, 1),  # Above mountain
     ],
     Regions.JapesLankyCave: [
         Collectible(Collectibles.bunch, Kongs.lanky, lambda l: True, None, 2),  # On steps

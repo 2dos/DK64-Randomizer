@@ -4,10 +4,10 @@ import random
 import js
 import randomizer.Fill as Fill
 import randomizer.Lists.Exceptions as Ex
-from randomizer.Settings import Settings
 from randomizer.Enums.Minigames import Minigames
-from randomizer.Lists.Minigame import BarrelMetaData, MinigameRequirements
 from randomizer.Lists.MapsAndExits import Maps
+from randomizer.Lists.Minigame import BarrelMetaData, MinigameRequirements
+from randomizer.Settings import Settings
 
 
 def Reset(barrelLocations):
@@ -29,14 +29,18 @@ def ShuffleBarrels(settings: Settings, barrelLocations, minigamePool):
             continue
         # Check each remaining minigame to see if placing it will produce a valid world
         success = False
+        helm = False
+        for minigame in minigamePool:
+            # Check if any minigames can be placed in helm
+            if MinigameRequirements[minigame].helm_enabled:
+                helm = True
         for minigame in minigamePool:
             BarrelMetaData[location].minigame = minigame
-            # Check if banned in Helm and attempted to place in Helm
-            if settings.bonus_barrels != "all_beaver_bother":
-                if not MinigameRequirements[minigame].helm_enabled and BarrelMetaData[location].map == Maps.HideoutHelm:
-                    continue
+            # If there is a minigame that can be placed in Helm, skip banned minigames, otherwise continue as normal
+            if not MinigameRequirements[minigame].helm_enabled and BarrelMetaData[location].map == Maps.HideoutHelm and helm is True:
+                continue
             # If world is still valid, keep minigame associated there
-            if settings.bonus_barrels != "all_beaver_bother":
+            if settings.bonus_barrels != "selected":
                 if Fill.VerifyWorld(settings):
                     minigamePool.remove(minigame)
                     if MinigameRequirements[minigame].repeat:
@@ -50,9 +54,18 @@ def ShuffleBarrels(settings: Settings, barrelLocations, minigamePool):
                 else:
                     BarrelMetaData[location].minigame = Minigames.NoGame
             else:
-                random.shuffle(minigamePool)
-                success = True
-                break
+                if Fill.VerifyWorld(settings):
+                    minigamePool.remove(minigame)
+                    if MinigameRequirements[minigame].repeat:
+                        replacement_index = random.randint(int(len(minigamePool) / 2), len(minigamePool))
+                        if replacement_index >= len(minigamePool):
+                            minigamePool.append(minigame)
+                        else:
+                            minigamePool.insert(replacement_index, minigame)
+                    success = True
+                    break
+                else:
+                    BarrelMetaData[location].minigame = Minigames.NoGame
         if not success:
             raise Ex.BarrelOutOfMinigames
 
@@ -61,9 +74,43 @@ def BarrelShuffle(settings: Settings):
     """Facilitate shuffling of barrels."""
     # First make master copies of locations and minigames
     barrelLocations = list(BarrelMetaData.keys())
-    minigamePool = [x for x in MinigameRequirements.keys() if x != Minigames.NoGame]
-    if settings.bonus_barrels == "all_beaver_bother":
-        minigamePool = [x for x in MinigameRequirements.keys() if x in (Minigames.BeaverBotherEasy, Minigames.BeaverBotherNormal, Minigames.BeaverBotherHard)]
+    if settings.bonus_barrels == "selected":
+        minigame_dict = {
+            "batty_barrel_bandit": [Minigames.BattyBarrelBanditVEasy, Minigames.BattyBarrelBanditEasy, Minigames.BattyBarrelBanditNormal, Minigames.BattyBarrelBanditHard],
+            "big_bug_bash": [Minigames.BigBugBashVEasy, Minigames.BigBugBashEasy, Minigames.BigBugBashNormal, Minigames.BigBugBashHard],
+            "busy_barrel_barrage": [Minigames.BusyBarrelBarrageEasy, Minigames.BusyBarrelBarrageNormal, Minigames.BusyBarrelBarrageHard],
+            "mad_maze_maul": [Minigames.MadMazeMaulEasy, Minigames.MadMazeMaulNormal, Minigames.MadMazeMaulHard, Minigames.MadMazeMaulInsane],
+            "minecart_mayhem": [Minigames.MinecartMayhemEasy, Minigames.MinecartMayhemNormal, Minigames.MinecartMayhemHard],
+            "beaver_bother": [Minigames.BeaverBotherEasy, Minigames.BeaverBotherNormal, Minigames.BeaverBotherHard],
+            "teetering_turtle_trouble": [Minigames.TeeteringTurtleTroubleVEasy, Minigames.TeeteringTurtleTroubleEasy, Minigames.TeeteringTurtleTroubleNormal, Minigames.TeeteringTurtleTroubleHard],
+            "stealthy_snoop": [Minigames.StealthySnoopVEasy, Minigames.StealthySnoopEasy, Minigames.StealthySnoopNormal, Minigames.StealthySnoopHard],
+            "stash_snatch": [Minigames.StashSnatchEasy, Minigames.StashSnatchNormal, Minigames.StashSnatchHard, Minigames.StashSnatchInsane],
+            "splish_splash_salvage": [Minigames.SplishSplashSalvageEasy, Minigames.SplishSplashSalvageNormal, Minigames.SplishSplashSalvageHard],
+            "speedy_swing_sortie": [Minigames.SpeedySwingSortieEasy, Minigames.SpeedySwingSortieNormal, Minigames.SpeedySwingSortieHard],
+            "krazy_kong_klamour": [Minigames.KrazyKongKlamourEasy, Minigames.KrazyKongKlamourNormal, Minigames.KrazyKongKlamourHard, Minigames.KrazyKongKlamourInsane],
+            "searchlight_seek": [Minigames.SearchlightSeekVEasy, Minigames.SearchlightSeekEasy, Minigames.SearchlightSeekNormal, Minigames.SearchlightSeekHard],
+            "kremling_kosh": [Minigames.KremlingKoshVEasy, Minigames.KremlingKoshEasy, Minigames.KremlingKoshNormal, Minigames.KremlingKoshHard],
+            "peril_path_panic": [Minigames.PerilPathPanicVEasy, Minigames.PerilPathPanicEasy, Minigames.PerilPathPanicNormal, Minigames.PerilPathPanicHard],
+            "helm_minigames": [
+                Minigames.DonkeyRambi,
+                Minigames.DonkeyTarget,
+                Minigames.DiddyKremling,
+                Minigames.DiddyRocketbarrel,
+                Minigames.LankyMaze,
+                Minigames.LankyShooting,
+                Minigames.TinyMushroom,
+                Minigames.TinyPonyTailTwirl,
+                Minigames.ChunkyHiddenKremling,
+                Minigames.ChunkyShooting,
+            ],
+        }
+        minigamePool = []
+    else:
+        minigamePool = [x for x in MinigameRequirements.keys() if x != Minigames.NoGame]
+    if settings.bonus_barrels == "selected":
+        for name, value in minigame_dict.items():
+            if name in settings.minigames_list_selected:
+                minigamePool.extend([x for x in MinigameRequirements.keys() if x in value])
     retries = 0
     while True:
         try:

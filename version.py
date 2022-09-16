@@ -1,10 +1,13 @@
 """Holds the version for DK64 Rando."""
 import js
 
-stable_version = "1.0"
-dev_version = "1.0"
+stable_version = "1.5"
+dev_version = "1.5"
 
-url = js.location.href.lower().replace("/", "").replace("http:", "").replace("https:", "")
+try:
+    url = js.location.href.lower().replace("/", "").replace("http:", "").replace("https:", "")
+except Exception:
+    url = "localhost"
 
 only_version = "0.0"
 current_version = "DK64R 0.0"

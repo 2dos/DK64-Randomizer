@@ -2,6 +2,7 @@
 """Logic file for Frantic Factory."""
 
 from re import L
+
 from randomizer.Enums.Events import Events
 from randomizer.Enums.Kongs import Kongs
 from randomizer.Enums.Levels import Levels
@@ -24,7 +25,7 @@ LogicRegions = {
         Event(Events.HatchOpened, lambda l: l.Slam),
     ], [
         TransitionFront(Regions.FranticFactoryLobby, lambda l: True, Transitions.FactoryToIsles),
-        TransitionFront(Regions.Testing, lambda l: Events.TestingGateOpened in l.Events),
+        TransitionFront(Regions.Testing, lambda l: l.settings.open_levels or Events.TestingGateOpened in l.Events),
         # Hatch opened already in rando if loading zones randomized
         TransitionFront(Regions.BeyondHatch, lambda l: l.settings.shuffle_loading_zones == "all" or Events.HatchOpened in l.Events),
     ]),
@@ -34,7 +35,7 @@ LogicRegions = {
         LocationLogic(Locations.FactoryDiddyBlockTower, lambda l: l.spring and l.isdiddy, MinigameType.BonusBarrel),
         LocationLogic(Locations.FactoryLankyTestingRoomBarrel, lambda l: l.balloon and l.islanky, MinigameType.BonusBarrel),
         LocationLogic(Locations.FactoryTinyDartboard, lambda l: Events.DartsPlayed in l.Events and l.tiny),
-        LocationLogic(Locations.FactoryKasplatBlocks, lambda l: True),
+        LocationLogic(Locations.FactoryKasplatBlocks, lambda l: not l.settings.kasplat_location_rando),
         LocationLogic(Locations.FactoryBananaFairybyCounting, lambda l: l.camera),
         LocationLogic(Locations.FactoryBananaFairybyFunky, lambda l: l.camera and Events.DartsPlayed in l.Events),
     ], [
@@ -51,7 +52,7 @@ LogicRegions = {
         LocationLogic(Locations.FactoryDiddyRandD, lambda l: l.guitar and l.charge and l.diddy),
         LocationLogic(Locations.FactoryLankyRandD, lambda l: l.trombone and l.Slam and l.lanky),
         LocationLogic(Locations.FactoryChunkyRandD, lambda l: l.triangle and l.punch and l.hunkyChunky and l.chunky),
-        LocationLogic(Locations.FactoryKasplatRandD, lambda l: True),
+        LocationLogic(Locations.FactoryKasplatRandD, lambda l: not l.settings.kasplat_location_rando),
         LocationLogic(Locations.FactoryBattleArena, lambda l: l.grab and l.donkey),
     ], [], [
         TransitionFront(Regions.Testing, lambda l: True),
@@ -84,7 +85,7 @@ LogicRegions = {
     Regions.PowerHut: Region("Power Hut", Levels.FranticFactory, False, None, [
         LocationLogic(Locations.FactoryDonkeyPowerHut, lambda l: Events.MainCoreActivated in l.Events and l.isdonkey),
     ], [
-        Event(Events.MainCoreActivated, lambda l: l.coconut and l.grab and l.isdonkey),
+        Event(Events.MainCoreActivated, lambda l: l.settings.high_req or (l.coconut and l.grab and l.isdonkey)),
     ], [
         TransitionFront(Regions.ChunkyRoomPlatform, lambda l: True, Transitions.FactoryPowerToChunkyRoom),
     ]),
@@ -97,8 +98,8 @@ LogicRegions = {
         LocationLogic(Locations.FactoryTinybyArcade, lambda l: l.mini and l.tiny),
         LocationLogic(Locations.FactoryChunkyDarkRoom, lambda l: l.punch and l.Slam and l.chunky),
         LocationLogic(Locations.FactoryChunkybyArcade, lambda l: l.punch and l.ischunky, MinigameType.BonusBarrel),
-        LocationLogic(Locations.FactoryKasplatProductionBottom, lambda l: True),
-        LocationLogic(Locations.FactoryKasplatStorage, lambda l: True),
+        LocationLogic(Locations.FactoryKasplatProductionBottom, lambda l: not l.settings.kasplat_location_rando),
+        LocationLogic(Locations.FactoryKasplatStorage, lambda l: not l.settings.kasplat_location_rando),
     ], [
         Event(Events.TestingGateOpened, lambda l: l.Slam),
         Event(Events.DiddyCoreSwitch, lambda l: l.Slam and l.diddy),
@@ -108,7 +109,7 @@ LogicRegions = {
     ], [
         TransitionFront(Regions.FranticFactoryStart, lambda l: l.settings.shuffle_loading_zones == "all" or Events.HatchOpened in l.Events),
         TransitionFront(Regions.InsideCore, lambda l: Events.MainCoreActivated in l.Events, Transitions.FactoryBeyondHatchToInsideCore),
-        TransitionFront(Regions.MainCore, lambda l: Events.MainCoreActivated in l.Events),
+        TransitionFront(Regions.MiddleCore, lambda l: Events.MainCoreActivated in l.Events),
         TransitionFront(Regions.CrankyFactory, lambda l: True),
         TransitionFront(Regions.CandyFactory, lambda l: True),
         TransitionFront(Regions.FactoryBossLobby, lambda l: True),
@@ -127,14 +128,21 @@ LogicRegions = {
         TransitionFront(Regions.BeyondHatch, lambda l: True, Transitions.FactoryInsideCoreToBeyondHatch),
     ]),
 
-    Regions.MainCore: Region("Main Core", Levels.FranticFactory, True, -1, [
-        LocationLogic(Locations.FactoryDiddyProductionRoom, lambda l: Events.DiddyCoreSwitch in l.Events and l.spring and l.diddy),
-        LocationLogic(Locations.FactoryLankyProductionRoom, lambda l: Events.LankyCoreSwitch in l.Events and l.handstand and l.lanky),
-        LocationLogic(Locations.FactoryTinyProductionRoom, lambda l: Events.TinyCoreSwitch in l.Events and l.twirl and l.istiny, MinigameType.BonusBarrel),
-        LocationLogic(Locations.FactoryChunkyProductionRoom, lambda l: Events.ChunkyCoreSwitch in l.Events and l.chunky),
-        LocationLogic(Locations.FactoryKasplatProductionTop, lambda l: True)
+    Regions.MiddleCore: Region("Middle Core", Levels.FranticFactory, True, -1, [
+        LocationLogic(Locations.FactoryChunkyProductionRoom, lambda l: Events.ChunkyCoreSwitch in l.Events and Events.MainCoreActivated in l.Events and l.chunky),
     ], [], [
         TransitionFront(Regions.BeyondHatch, lambda l: True),
+        TransitionFront(Regions.UpperCore, lambda l: Events.MainCoreActivated in l.Events),
+    ]),
+
+    Regions.UpperCore: Region("Upper Core", Levels.FranticFactory, False, -1, [
+        LocationLogic(Locations.FactoryDiddyProductionRoom, lambda l: Events.DiddyCoreSwitch in l.Events and Events.MainCoreActivated in l.Events and l.spring and l.diddy),
+        LocationLogic(Locations.FactoryLankyProductionRoom, lambda l: Events.LankyCoreSwitch in l.Events and Events.MainCoreActivated in l.Events and l.handstand and l.lanky),
+        LocationLogic(Locations.FactoryTinyProductionRoom, lambda l: Events.TinyCoreSwitch in l.Events and Events.MainCoreActivated in l.Events and l.twirl and l.istiny, MinigameType.BonusBarrel),
+        LocationLogic(Locations.FactoryKasplatProductionTop, lambda l: not l.settings.kasplat_location_rando)
+    ], [], [
+        TransitionFront(Regions.BeyondHatch, lambda l: True),
+        TransitionFront(Regions.MiddleCore, lambda l: True),
     ]),
 
     Regions.FactoryBossLobby: Region("Factory Boss Lobby", Levels.FranticFactory, False, None, [], [], [

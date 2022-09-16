@@ -16,7 +16,7 @@ try {
     romFile._u8array = event.data.u8array;
     romFile._dataView = new DataView(event.data.u8array.buffer);
     apply_bps_javascript();
-    boxes = ["input-file-rom", "input-file-rom_1", "input-file-rom_2"];
+    boxes = ["input-file-rom", "input-file-rom_1", "input-file-rom_2", "rom", "rom_2", "rom_3"];
     for (var input_box in boxes) {
       try {
         document.getElementById(boxes[input_box]).classList.remove("is-valid");

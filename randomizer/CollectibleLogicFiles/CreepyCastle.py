@@ -116,7 +116,7 @@ LogicRegions = {
         Collectible(Collectibles.coin, Kongs.chunky, lambda l: True, None, 3),  # By Candy's
     ],
     Regions.Dungeon: [
-        Collectible(Collectibles.bunch, Kongs.donkey, lambda l: True, None, 1),  # On face puzzle
+        Collectible(Collectibles.bunch, Kongs.donkey, lambda l: l.superDuperSlam, None, 1),  # On face puzzle
         Collectible(Collectibles.bunch, Kongs.diddy, lambda l: l.punch, None, 2),  # In cells by DK's door
         Collectible(Collectibles.bunch, Kongs.diddy, lambda l: l.punch, None, 2),  # In cells by Lanky's door
         Collectible(Collectibles.balloon, Kongs.diddy, lambda l: l.superDuperSlam and l.peanut, None, 1),  # In Diddy's room

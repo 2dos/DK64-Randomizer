@@ -23,28 +23,34 @@ LogicRegions = {
         LocationLogic(Locations.JapesDonkeyFreeDiddy, lambda l: l.CanFreeDiddy()),
         LocationLogic(Locations.JapesDonkeyCagedBanana, lambda l: Events.JapesDonkeySwitch in l.Events and l.donkey),
         LocationLogic(Locations.JapesDiddyCagedBanana, lambda l: Events.JapesDiddySwitch1 in l.Events and l.diddy),
-        LocationLogic(Locations.JapesDiddyMountain, lambda l: Events.JapesDiddySwitch2 in l.Events and l.diddy),
         LocationLogic(Locations.JapesLankyCagedBanana, lambda l: Events.JapesLankySwitch in l.Events and l.lanky),
         LocationLogic(Locations.JapesTinyCagedBanana, lambda l: Events.JapesTinySwitch in l.Events and l.tiny),
         LocationLogic(Locations.JapesChunkyBoulder, lambda l: l.chunky),
-        LocationLogic(Locations.JapesChunkyCagedBanana, lambda l: Events.JapesChunkySwitch and l.chunky),
+        LocationLogic(Locations.JapesChunkyCagedBanana, lambda l: Events.JapesChunkySwitch in l.Events and l.chunky),
         LocationLogic(Locations.JapesBattleArena, lambda l: True),
     ], [
         Event(Events.JapesEntered, lambda l: True),
-        Event(Events.JapesSpawnW5, lambda l: Events.JapesDiddySwitch2 in l.Events),
+        Event(Events.JapesSpawnW5, lambda l: Events.JapesDiddySwitch2 in l.Events or l.settings.activate_all_bananaports),
         Event(Events.JapesFreeKongOpenGates, lambda l: l.CanFreeDiddy()),
     ], [
         TransitionFront(Regions.JungleJapesLobby, lambda l: True, Transitions.JapesToIsles),
         TransitionFront(Regions.JapesBeyondPeanutGate, lambda l: l.peanut and l.diddy),
-        TransitionFront(Regions.JapesBeyondCoconutGate1, lambda l: Events.JapesFreeKongOpenGates in l.Events),
-        TransitionFront(Regions.JapesBeyondCoconutGate2, lambda l: Events.JapesFreeKongOpenGates in l.Events),
+        TransitionFront(Regions.JapesBeyondCoconutGate1, lambda l: l.settings.open_levels or Events.JapesFreeKongOpenGates in l.Events),
+        TransitionFront(Regions.JapesBeyondCoconutGate2, lambda l: l.settings.open_levels or Events.JapesFreeKongOpenGates in l.Events),
         TransitionFront(Regions.Mine, lambda l: l.peanut and l.isdiddy, Transitions.JapesMainToMine),
+        TransitionFront(Regions.JapesTopOfMountain, lambda l: l.peanut and l.isdiddy),
         TransitionFront(Regions.JapesLankyCave, lambda l: l.peanut and l.diddy and l.handstand and l.islanky, Transitions.JapesMainToLankyCave),
         TransitionFront(Regions.JapesCatacomb, lambda l: l.Slam and l.chunkyAccess, Transitions.JapesMainToCatacomb),
         TransitionFront(Regions.FunkyJapes, lambda l: True),
         TransitionFront(Regions.Snide, lambda l: True),
-        TransitionFront(Regions.JapesBossLobby, lambda l: l.vines and (l.donkey or l.diddy or l.chunky)),  # Lanky and Tiny have a rough time with the vines and falling from top is not intuitive
+        TransitionFront(Regions.JapesBossLobby, lambda l: l.vines),  # Falling from top is not intuitive
         TransitionFront(Regions.JapesBaboonBlast, lambda l: l.blast and l.isdonkey)  # , Transitions.JapesMainToBBlast)
+    ]),
+
+    Regions.JapesTopOfMountain: Region("Japes Top of Mountain", Levels.JungleJapes, False, None, [
+        LocationLogic(Locations.JapesDiddyMountain, lambda l: Events.JapesDiddySwitch2 in l.Events and l.diddy),
+    ], [], [
+        TransitionFront(Regions.JungleJapesMain, lambda l: True),
     ]),
 
     Regions.JapesBaboonBlast: Region("Japes Baboon Blast", Levels.JungleJapes, False, None, [
@@ -63,11 +69,11 @@ LogicRegions = {
     ]),
 
     Regions.JapesBeyondCoconutGate1: Region("Japes Beyond Coconut Gate 1", Levels.JungleJapes, False, None, [
-        LocationLogic(Locations.JapesKasplatLeftTunnelNear, lambda l: True),
-        LocationLogic(Locations.JapesKasplatLeftTunnelFar, lambda l: True),
+        LocationLogic(Locations.JapesKasplatLeftTunnelNear, lambda l: not l.settings.kasplat_location_rando),
+        LocationLogic(Locations.JapesKasplatLeftTunnelFar, lambda l: not l.settings.kasplat_location_rando),
     ], [], [
         TransitionFront(Regions.JungleJapesMain, lambda l: True),
-        TransitionFront(Regions.JapesBeyondFeatherGate, lambda l: l.feather and l.tinyAccess),
+        TransitionFront(Regions.JapesBeyondFeatherGate, lambda l: l.settings.open_levels or (l.feather and l.tinyAccess)),
     ]),
 
     Regions.JapesBeyondFeatherGate: Region("Japes Beyond Feather Gate", Levels.JungleJapes, True, -1, [
@@ -76,6 +82,7 @@ LogicRegions = {
     ], [], [
         TransitionFront(Regions.JapesBeyondCoconutGate1, lambda l: True),
         TransitionFront(Regions.TinyHive, lambda l: l.mini and l.istiny, Transitions.JapesMainToTinyHive),
+        TransitionFront(Regions.JapesTopOfMountain, lambda l: Events.JapesDiddySwitch2 in l.Events)
     ]),
 
     Regions.TinyHive: Region("Tiny Hive", Levels.JungleJapes, False, -1, [
@@ -86,8 +93,8 @@ LogicRegions = {
 
     Regions.JapesBeyondCoconutGate2: Region("Japes Beyond Coconut Gate 2", Levels.JungleJapes, True, None, [
         LocationLogic(Locations.JapesLankySlope, lambda l: l.handstand and l.islanky, MinigameType.BonusBarrel),
-        LocationLogic(Locations.JapesKasplatNearPaintingRoom, lambda l: True),
-        LocationLogic(Locations.JapesKasplatNearLab, lambda l: True),
+        LocationLogic(Locations.JapesKasplatNearPaintingRoom, lambda l: not l.settings.kasplat_location_rando),
+        LocationLogic(Locations.JapesKasplatNearLab, lambda l: not l.settings.kasplat_location_rando),
     ], [
         Event(Events.Rambi, lambda l: l.coconut),
         Event(Events.JapesDonkeySwitch, lambda l: Events.Rambi in l.Events and l.Slam and l.donkey),
@@ -136,7 +143,7 @@ LogicRegions = {
     # Catacomb deaths lead back to itself
     Regions.JapesCatacomb: Region("Japes Catacomb", Levels.JungleJapes, False, None, [
         LocationLogic(Locations.JapesChunkyUnderground, lambda l: l.pineapple and l.ischunky),
-        LocationLogic(Locations.JapesKasplatUnderground, lambda l: l.pineapple),
+        LocationLogic(Locations.JapesKasplatUnderground, lambda l: not l.settings.kasplat_location_rando and l.pineapple),
     ], [], [
         TransitionFront(Regions.JungleJapesMain, lambda l: True, Transitions.JapesCatacombToMain),
     ]),

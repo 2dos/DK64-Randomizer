@@ -1,12 +1,12 @@
 """Apply cosmetic elements of Kong Rando."""
-from imp import source_from_cache
 import random
+from imp import source_from_cache
 
 import js
 from randomizer.Enums.Kongs import Kongs
+from randomizer.Lists.EnemyTypes import Enemies
 from randomizer.Patching.Patcher import ROM
 from randomizer.Spoiler import Spoiler
-from randomizer.Lists.EnemyTypes import Enemies
 
 
 def apply_kongrando_cosmetic(spoiler: Spoiler):
@@ -113,7 +113,7 @@ def apply_kongrando_cosmetic(spoiler: Spoiler):
 
         for kong_map in spoiler.shuffled_kong_placement.keys():
             for link_type in spoiler.shuffled_kong_placement[kong_map].keys():
-                ROM().seek(0x1FED020 + spoiler.shuffled_kong_placement[kong_map][link_type]["write"])
+                ROM().seek(spoiler.settings.rom_data + spoiler.shuffled_kong_placement[kong_map][link_type]["write"])
                 ROM().writeMultipleBytes(spoiler.shuffled_kong_placement[kong_map][link_type]["kong"], 1)
 
         for cont_map in kongrando_changes:

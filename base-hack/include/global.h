@@ -7,9 +7,10 @@ extern void* findActorWithType(int search_actor_type);
 extern int isRDRAM(void* address);
 extern void customHideHUD(void);
 extern void setWarpPosition(float x, float y, float z);
-extern void initHack(void);
+extern void initHack(int source);
 extern void callParentMapFilter(void);
 extern void shiftBrokenJapesPortal(void);
+extern void quickInit(void);
 
 extern void level_order_rando_funcs(void);
 extern void unlockKongs(void);
@@ -36,6 +37,8 @@ extern void priceTransplant(void);
 
 extern void changeCharSpawnerFlag(int map, int spawner_id, int new_flag);
 extern void changeHelmLZ(void);
+extern void HelmBarrelCode(void);
+extern void WarpHandle(void);
 
 extern void PatchCrankyCode(void);
 extern void PatchKRoolCode(void);
@@ -45,6 +48,7 @@ extern void write_kutoutorder(void);
 extern void remove_blockers(void);
 extern void disable_krool_health_refills(void);
 extern void pre_turn_keys(void);
+extern void auto_turn_keys(void);
 extern void handle_WTI(void);
 extern void no_enemy_drops(void);
 extern void cancelMoveSoftlock(void);
@@ -55,6 +59,7 @@ extern int change_object_scripts(behaviour_data* behaviour_pointer, int id, int 
 extern void setCrusher(void);
 extern void createCollisionObjInstance(collision_types subtype, int map, int exit);
 extern int spawnCannonWrapper(void);
+extern void disableDiddyRDDoors(void);
 extern void fixkey8(void);
 extern void alterGBKong(int map, int id, int new_kong);
 extern void fixDKFreeSoftlock(void);
@@ -77,6 +82,8 @@ extern int* drawPixelTextContainer(int* dl, int x, int y, char* str, int red, in
 extern int* drawScreenRect(int* dl, int x1, int y1, int x2, int y2, int red, int green, int blue, int alpha);
 extern int* drawTextContainer(int* dl, int style, float x, float y, char* str, int red, int green, int blue, int opacity, int background);
 extern int* drawText(int* dl, int style, float x, float y, char* str, int red, int green, int blue, int opacity);
+extern int* drawDPad(int* dl);
+extern int* drawImageWithFilter(int* dl, int text_index, codecs codec_index, int img_width, int img_height, int x, int y, float xScale, float yScale, int red, int green, int blue, int opacity);
 extern void correctKongFaces(void);
 
 extern void displayNumberOnObject(int id, int param2, int imageindex, int param4, int subtype);
@@ -86,4 +93,38 @@ extern void writeCoinRequirements(int source);
 extern void colorMenuSky(void);
 extern void getMoveHint(actorData* actor, int text_file, int text_index);
 extern void cutsceneDKCode(void);
+extern void getNextMovePurchase(shop_paad* paad, KongBase* movedata);
+
+extern void guardCatch(void);
+extern void catchWarpHandle(void);
+extern void handleFootProgress(actorData* actor);
+extern void cancelCutscene(int enable_movement);
+extern void clearVultureCutscene(void);
+extern void fastWarp(void* actor, int player_index);
+extern void activateBananaports(void);
+
+extern int getTagAnywhereKong(int direction);
+extern int getTAState(void);
+extern void toggleStandardAmmo(void);
+extern void initItemDropTable(void);
+extern void newGuardCode(void);
+extern void goldBeaverCode(void);
+extern void beaverExtraHitHandle(void);
+extern void CBDing(void);
+extern void handleSpiderTrapCode(void);
+extern void fastWarpShockwaveFix(void);
+extern void fixRBSlowTurn(void);
+extern void postKRoolSaveCheck(void);
+extern void tagBarrelBackgroundKong(int kong_actor);
+extern void tagAnywhereInit(int is_homing, int model2_id, int obj);
+extern void tagAnywhereAmmo(int player, int obj, int is_homing);
+extern void tagAnywhereBunch(int player, int obj, int player_index);
+extern void modifyCutsceneItem(int bank, int cutscene, int point, int new_item);
+extern void HelmInit(int init_stage);
+extern void handleSFXCache(void);
+extern void preventMedalHUD(int item, int unk0, int unk1);
+extern void initHUDDirection(placementData* hud_data, int item);
+extern void* getHUDSprite_HUD(int item);
+extern void updateMultibunchCount(void);
+extern void handleDPadFunctionality(void);
 //extern void getRandoNextMovePurchase(shop_paad* shop_info, KongBase* moves);

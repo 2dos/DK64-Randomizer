@@ -13,7 +13,7 @@ def randomize_bananaport(spoiler: Spoiler):
 
     if spoiler.settings.bananaport_rando:
         for cont_map in spoiler.bananaport_replacements:
-            pad_vanilla = []
+            pad_vanilla = {}
             cont_map_id = int(cont_map["containing_map"])
             cont_map_setup_address = js.pointer_addresses[9]["entries"][cont_map_id]["pointing_to"]
             # Pointer Table 9, use "containing_map" as a map index to grab setup start address
@@ -41,56 +41,42 @@ def randomize_bananaport(spoiler: Spoiler):
                     obj_roty = int.from_bytes(ROM().readBytes(4), "big")
                     ROM().seek(start + 0x20)
                     obj_rotz = int.from_bytes(ROM().readBytes(4), "big")
-                    obj_index = x
                     banned = False
                     for warp in BananaportVanilla.values():
                         if warp.map_id == cont_map_id and warp.obj_id_vanilla == obj_id and warp.locked:
                             banned = True
                     if not banned:
-                        pad_vanilla.append(
-                            {
-                                "pad_index": pad_index,
-                                "_id": obj_id,
-                                "x": obj_x,
-                                "y": obj_y,
-                                "z": obj_z,
-                                "scale": obj_scale,
-                                "rx": obj_rotx,
-                                "ry": obj_roty,
-                                "rz": obj_rotz,
-                                "idx": obj_index,
-                            }
-                        )
+                        pad_vanilla[obj_id] = {"x": obj_x, "y": obj_y, "z": obj_z, "scale": obj_scale, "rx": obj_rotx, "ry": obj_roty, "rz": obj_rotz, "idx": x}
             for y in cont_map["pads"]:
                 warp_idx = y["warp_index"]
-                repl_ids = y["warp_ids"]
-                source_counter = 0
-                for repl in repl_ids:
-                    for vanilla_pad in pad_vanilla:
-                        if vanilla_pad["_id"] == repl:
-                            vanilla_idx = vanilla_pad["idx"]
+                for assortment_index, warp_id in enumerate(y["warp_ids"]):
+                    # For each warp in pair, look up id it's using. Take the vanilla warps for that index, transplant the loc/rot/scale data to that id
+                    # Search for the relevant vanilla ID for the selected warp index
+                    pair_index = 0
+                    pair_locked = []
+                    vanilla_id = -1
+                    for pad in BananaportVanilla.values():
+                        if pad.map_id == cont_map_id and pad.vanilla_warp == warp_idx and vanilla_id == -1:
+                            pair_locked.append(pad.locked)
+                            if (assortment_index == pair_index and not pad.locked) or (
+                                assortment_index == 0 and pair_index == 1 and pair_locked[0] and not pad.locked
+                            ):  # Second condition checks if 1st warp in pair is locked, but second isn't
+                                vanilla_id = pad.obj_id_vanilla
+                            pair_index += 1
+                    if vanilla_id != -1:  # Found associated Warp
+                        if vanilla_id in pad_vanilla and warp_id in pad_vanilla:  # Search and reference warp in location dump
+                            vanilla_idx = pad_vanilla[vanilla_id]["idx"]
                             start = cont_map_setup_address + (0x30 * vanilla_idx) + 4
-                            ref_pad = {}
-                            counter = 0
-                            for vanilla_pad0 in pad_vanilla:
-                                if vanilla_pad0["pad_index"] == warp_idx:
-                                    if counter == source_counter:
-                                        ref_pad = vanilla_pad0
-                                    counter += 1
-                            ROM().seek(start + 0x28)
-                            ROM().writeMultipleBytes(pad_types[vanilla_pad["pad_index"]], 2)
-                            ROM().seek(start + 0)
-                            ROM().writeMultipleBytes(ref_pad["x"], 4)
-                            ROM().seek(start + 4)
-                            ROM().writeMultipleBytes(ref_pad["y"], 4)
-                            ROM().seek(start + 8)
-                            ROM().writeMultipleBytes(ref_pad["z"], 4)
-                            ROM().seek(start + 12)
-                            ROM().writeMultipleBytes(ref_pad["scale"], 4)
+                            ROM().seek(start)
+                            ROM().writeMultipleBytes(pad_vanilla[warp_id]["x"], 4)
+                            ROM().writeMultipleBytes(pad_vanilla[warp_id]["y"], 4)
+                            ROM().writeMultipleBytes(pad_vanilla[warp_id]["z"], 4)
+                            ROM().writeMultipleBytes(pad_vanilla[warp_id]["scale"], 4)
                             ROM().seek(start + 0x18)
-                            ROM().writeMultipleBytes(ref_pad["rx"], 4)
-                            ROM().seek(start + 0x1C)
-                            ROM().writeMultipleBytes(ref_pad["ry"], 4)
-                            ROM().seek(start + 0x20)
-                            ROM().writeMultipleBytes(ref_pad["rz"], 4)
-                    source_counter += 1
+                            ROM().writeMultipleBytes(pad_vanilla[warp_id]["rx"], 4)
+                            ROM().writeMultipleBytes(pad_vanilla[warp_id]["ry"], 4)
+                            ROM().writeMultipleBytes(pad_vanilla[warp_id]["rz"], 4)
+                        else:
+                            print("ERROR: ID not found in pad location dump")
+                    else:
+                        print("ERROR: Vanilla ID not found")

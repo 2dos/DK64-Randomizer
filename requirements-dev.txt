@@ -10,3 +10,6 @@ python-minifier
 requests
 bs4
 beautifulsoup4
+wheel
+setuptools
+djlint
