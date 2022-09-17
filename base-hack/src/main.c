@@ -127,6 +127,19 @@ void cFuncLoop(void) {
 			ForceStandardAmmo = 0;
 		}
 	}
+	if (CurrentMap == 0x11) {
+		if ((CutsceneActive == 1) && ((CutsceneStateBitfield & 4) != 0)) {
+			if ((CutsceneIndex == 0) || (CutsceneIndex == 4) || (CutsceneIndex == 7) || (CutsceneIndex == 8) || (CutsceneIndex == 9)) {
+				if (checkFlag(FLAG_MODIFIER_HELMBOM,0)) {
+					setFlag(0x50,0,2); // Prevent Helm Door hardlock
+				}
+			}
+		}
+	} else if ((CurrentMap == 0xAA) && (ObjectModel2Timer < 5)) {
+		if (checkFlag(FLAG_MODIFIER_HELMBOM,0)) {
+			setFlag(0x50,0,2); // Prevent Helm Door hardlock
+		}
+	}
 	past_lag[(int)(lag_counter % LAG_CAP)] = StoredLag;
 	lag_counter = (lag_counter + 1) % LAG_CAP;
 	int lag_sum = 0;
