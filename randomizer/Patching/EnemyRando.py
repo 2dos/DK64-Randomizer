@@ -277,6 +277,7 @@ def randomize_enemies(spoiler: Spoiler):
     minigame_maps_total.extend(minigame_maps_beatable)
     minigame_maps_total.extend(minigame_maps_nolimit)
     minigame_maps_total.extend(minigame_maps_beavers)
+    bbbarrage_maps = (Maps.BusyBarrelBarrageEasy, Maps.BusyBarrelBarrageNormal, Maps.BusyBarrelBarrageHard)
     enemy_classes = {
         "ground_simple": [
             Enemies.BeaverBlue,
@@ -425,7 +426,7 @@ def randomize_enemies(spoiler: Spoiler):
                 tied_enemy_list = []
                 if cont_map_id in minigame_maps_easy:
                     tied_enemy_list = minigame_enemies_simple.copy()
-                    if cont_map_id in (Maps.BusyBarrelBarrageEasy, Maps.BusyBarrelBarrageNormal, Maps.BusyBarrelBarrageHard):
+                    if cont_map_id in bbbarrage_maps:
                         if Enemies.KlaptrapGreen in tied_enemy_list:
                             tied_enemy_list.remove(Enemies.KlaptrapGreen)  # Remove Green Klaptrap out of BBBarrage pool
                 elif cont_map_id in minigame_maps_beatable:
@@ -465,13 +466,13 @@ def randomize_enemies(spoiler: Spoiler):
                                     ROM().writeMultipleBytes(EnemyMetaData[new_enemy_id].size_cap, 1)
                             ROM().seek(cont_map_spawner_address + spawner["offset"] + 0xF)
                             pre_size = int.from_bytes(ROM().readBytes(1), "big")
-                            if pre_size < EnemyMetaData[new_enemy_id].bbbarrage_min_scale:
+                            if pre_size < EnemyMetaData[new_enemy_id].bbbarrage_min_scale and cont_map_id in bbbarrage_maps:
                                 ROM().seek(cont_map_spawner_address + spawner["offset"] + 0xF)
                                 ROM().writeMultipleBytes(EnemyMetaData[new_enemy_id].bbbarrage_min_scale, 1)
                             if (
                                 spoiler.settings.enemy_speed_rando
                                 and cont_map_id not in minigame_maps_beavers
-                                and cont_map_id not in (Maps.BusyBarrelBarrageEasy, Maps.BusyBarrelBarrageNormal, Maps.BusyBarrelBarrageHard)
+                                and cont_map_id not in bbbarrage_maps
                             ):
                                 min_speed = EnemyMetaData[new_enemy_id].min_speed
                                 max_speed = EnemyMetaData[new_enemy_id].max_speed
