@@ -264,11 +264,19 @@ void initHack(int source) {
 			if (Rando.quality_of_life.rambi_enguarde_pickup) {
 				// Transformations can pick up other's collectables
 				*(int*)(0x806F6330) = 0x96AC036E; // Collection
-				*(int*)(0x806F68A0) = 0x95B8036E; // DK Opacity
-				*(int*)(0x806F68DC) = 0x952C036E; // Diddy Opacity
-				*(int*)(0x806F6914) = 0x95F9036E; // Tiny Opacity
-				*(int*)(0x806F694C) = 0x95AE036E; // Lanky Opacity
-				*(int*)(0x806F6984) = 0x952B036E; // Chunky Opacity
+				// Collection
+				*(int*)(0x806F68A0) = 0x95B8036E; // DK Collection
+				*(int*)(0x806F68DC) = 0x952C036E; // Diddy Collection
+				*(int*)(0x806F6914) = 0x95F9036E; // Tiny Collection
+				*(int*)(0x806F694C) = 0x95AE036E; // Lanky Collection
+				*(int*)(0x806F6984) = 0x952B036E; // Chunky Collection
+				// Opacity
+				*(int*)(0x80637998) = 0x95B9036E; // DK Opacity
+				*(int*)(0x806379E8) = 0x95CF036E; // Diddy Opacity
+				*(int*)(0x80637A28) = 0x9589036E; // Tiny Opacity
+				*(int*)(0x80637A68) = 0x954B036E; // Chunky Opacity
+				*(int*)(0x80637AA8) = 0x9708036E; // Lanky Opacity
+				// CB/Coin rendering
 				*(int*)(0x806394FC) = 0x958B036E; // Rendering
 				*(int*)(0x80639540) = 0x9728036E; // Rendering
 				*(int*)(0x80639584) = 0x95AE036E; // Rendering

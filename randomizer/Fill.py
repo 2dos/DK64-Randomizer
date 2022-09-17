@@ -364,11 +364,9 @@ def ParePlaythrough(settings, PlaythroughLocations):
     # Check every location in the list of spheres.
     for i in range(len(PlaythroughLocations) - 2, -1, -1):
         sphere = PlaythroughLocations[i]
-        # If there are more available GBs than the most expensive B. Locker needs, none of them are logically required
-        # If there are fewer available GBs than the most expensive B. Locker requires, all of them are logically required
-        if sphere.availableGBs > mostExpensiveBLocker:
+        # We want to track specific GBs in each sphere of the spoiler log up to and including the sphere where the last B. Locker becomes openable
+        if i > 0 and PlaythroughLocations[i - 1].availableGBs > mostExpensiveBLocker:
             sphere.locations = [locationId for locationId in sphere.locations if LocationList[locationId].item != Items.GoldenBanana]
-            continue
         for locationId in sphere.locations.copy():
             location = LocationList[locationId]
             # All GBs that make it here are logically required
