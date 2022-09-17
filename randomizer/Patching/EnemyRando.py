@@ -469,11 +469,7 @@ def randomize_enemies(spoiler: Spoiler):
                             if pre_size < EnemyMetaData[new_enemy_id].bbbarrage_min_scale and cont_map_id in bbbarrage_maps:
                                 ROM().seek(cont_map_spawner_address + spawner["offset"] + 0xF)
                                 ROM().writeMultipleBytes(EnemyMetaData[new_enemy_id].bbbarrage_min_scale, 1)
-                            if (
-                                spoiler.settings.enemy_speed_rando
-                                and cont_map_id not in minigame_maps_beavers
-                                and cont_map_id not in bbbarrage_maps
-                            ):
+                            if spoiler.settings.enemy_speed_rando and cont_map_id not in minigame_maps_beavers and cont_map_id not in bbbarrage_maps:
                                 min_speed = EnemyMetaData[new_enemy_id].min_speed
                                 max_speed = EnemyMetaData[new_enemy_id].max_speed
                                 if min_speed > 0 and max_speed > 0:
