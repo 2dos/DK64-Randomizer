@@ -7,12 +7,14 @@ from randomizer.Enums.Kongs import Kongs
 class DoorData:
     """Stores information about a door location."""
 
-    def __init__(self, *, name="", map=0, location=[0, 0, 0, 0], kong_lst=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky], 
+    def __init__(self, *, name="", map=0, location=[0, 0, 0, 0], rx = 0, rz = 0, kong_lst=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky], 
                 tough_spot = False, enabled=False, scale=1):
         """Initialize with provided data."""
         self.name = name
         self.map = map
         self.location = location
+        self.rx = rx
+        self.rz = rz
         self.kongs = kong_lst
         self.scale = scale
         self.placed = False
@@ -72,6 +74,7 @@ door_locations = {
         DoorData(name="Next to Coconut switch", map=Maps.GloomyGalleon, location=[2065.75, 1628, 3418.75, 28]),
         DoorData(name="Entrance Tunnel - near entrance", map=Maps.GloomyGalleon, location=[2112, 1628, 3223, 135]),
         DoorData(name="Next to Peanut switch", map=Maps.GloomyGalleon, location=[2462, 1619, 2688, 270]),
+        DoorData(name="2Dship's secret 3rd door", map=Maps.GloomyGalleon, location=[1109, 1191, 1978, 95.15], rx=2.5, rz=-44.5, enabled=True),
         DoorData(name="On top of Seal cage", map=Maps.GloomyGalleon, location=[2238, 1837, 4099, 251.7], kong_lst=[Kongs.diddy], tough_spot=True),
     ],
     Levels.FungiForest: [

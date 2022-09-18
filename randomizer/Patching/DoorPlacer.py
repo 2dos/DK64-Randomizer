@@ -82,9 +82,9 @@ def place_door_locations(spoiler: Spoiler):
                             item_data.append(int(float_to_hex(door.scale), 16))  # Scale
                             item_data.append(0x5F0)
                             item_data.append(0x80121B00)
-                            item_data.append(0)  # rx
+                            item_data.append(int(float_to_hex(door.rx), 16))  # rx
                             item_data.append(int(float_to_hex(door.location[3]), 16))  # ry
-                            item_data.append(0)  # rz
+                            item_data.append(int(float_to_hex(door.rz), 16))  # rz
                             item_data.append(0)
                             id = getNextFreeID(cont_map_id, map_wrinkly_ids)
                             map_wrinkly_ids.append(id)
