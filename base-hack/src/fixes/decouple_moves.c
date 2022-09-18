@@ -86,14 +86,14 @@ void decouple_moves_fixes(void) {
 	if ((CurrentMap == 0x65) || ((CurrentMap >= 0x8D) && (CurrentMap <= 0x8F))) {
 		PatchBonusCode();
 		// Adjust Krazy KK Flicker Speeds
-		// Defaults: 48/30. Start: 60. Flicker Thresh: -30. Scaling: 2.3
-		*(unsigned short*)(0x800293E6) = 110; // V Easy
-		*(unsigned short*)(0x800293FA) = 110; // Easy
-		*(unsigned short*)(0x8002940E) = 69; // Medium
-		*(unsigned short*)(0x80029422) = 69; // Hard
-		*(unsigned short*)(0x800295D2) = 138; // Start
+		// Defaults: 48/30. Start: 60. Flicker Thresh: -30. Scaling: 2.7
+		*(unsigned short*)(0x800293E6) = 130; // V Easy
+		*(unsigned short*)(0x800293FA) = 130; // Easy
+		*(unsigned short*)(0x8002940E) = 81; // Medium
+		*(unsigned short*)(0x80029422) = 81; // Hard
+		*(unsigned short*)(0x800295D2) = 162; // Start
 		*(unsigned short*)(0x800297D8) = 0x916B; // LB -> LBU
-		*(short*)(0x800297CE) = -69; // Flicker Threshold
+		*(short*)(0x800297CE) = -81; // Flicker Threshold
 	}
 	if (CurrentMap == 0x9A) {
 		// Change phase reset differential to 40.0f units
