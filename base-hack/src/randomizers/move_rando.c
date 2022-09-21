@@ -54,7 +54,7 @@ void checkProgressive(
 			pass = 1;
 		}
 	}
-	if (pass) {
+	if (pass && (CurrentMap != 0x50)) {
 		// Just purchased Move
 		int purchased = 0;
 		if (level >= 0 && level < LEVEL_COUNT) {
