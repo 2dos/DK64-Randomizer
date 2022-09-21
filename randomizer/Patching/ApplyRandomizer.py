@@ -345,6 +345,13 @@ def patching_response(responded_data):
         ROM().seek(sav + 0xAE)
         ROM().write(1)
 
+    # Win Condition
+    conditions = ["beat_krool", "get_key8", "all_fairies", "all_blueprints", "all_medals", "poke_snap"]
+    if spoiler.settings.win_condition in conditions:
+        condition_index = conditions.index(spoiler.settings.win_condition)
+        ROM().seek(sav + 0x11D)
+        ROM().write(condition_index)
+
     keys_turned_in = [0, 1, 2, 3, 4, 5, 6, 7]
     if len(spoiler.settings.krool_keys_required) > 0:
         for key in spoiler.settings.krool_keys_required:

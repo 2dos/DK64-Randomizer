@@ -125,6 +125,8 @@ extern int* displayText(int* dl, int style, int x, int y, void* text_pointer, ch
 extern int* displayImage(int* dl, int texture_index, int unk3, codecs codec_index, int width, int height, int x, int y, float xScale, float yScale, int unk11, float unk12);
 extern void getScreenPosition(float x, float y, float z, float* x_store, float* y_store, int unk8, float scale, char player_index);
 extern int* textDraw(int* dl, int style, int x, int y, char* str);
+extern void* getPtr14Texture(int texture);
+extern void renderImage_Internal(void* dl, void* texture, int unk0, int width, int height, int unk1, int unk1_copy, int unk2, int unk2_copy, float width_f, float height_f, float x_center, float y_center, int unk3);
 
 extern void cancelPausedCutscene(void);
 extern void pauseCutscene(void);
@@ -229,6 +231,8 @@ extern void initMenuBackground(void* paad, int unk0);
 extern int calculateFilePercentage(void);
 extern void displayMenuSprite(void* paad, void* sprite_address, int x, int y, float scale, int unk0, int unk1);
 extern void loadFile(int file, int restock_inventory);
+extern void loadEndSeq(int mode);
+extern void checkGlobalProgress(int flag);
 
 //vanilla data
 extern float TransitionSpeed;
@@ -422,6 +426,7 @@ extern float menuHeadX[5];
 extern float menuHeadY[5];
 extern float menuHeadScale[5];
 extern collected_item_struct* LatestCollectedObject;
+extern image_cache_struct ImageCache[32];
 
 //hack data
 extern int TestVariable;
@@ -462,3 +467,4 @@ extern char QueueHelmTimer;
 extern char ToggleAmmoOn;
 extern void* WarpData;
 extern unsigned char InvertedControls;
+extern unsigned char WinCondition;

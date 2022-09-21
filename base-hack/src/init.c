@@ -118,6 +118,7 @@ void initHack(int source) {
 			ToggleAmmoOn = Rando.quality_of_life.ammo_swap;
 			LobbiesOpen = Rando.lobbies_open_bitfield;
 			ShorterBosses = Rando.short_bosses;
+			WinCondition = Rando.win_condition;
 			changeCharSpawnerFlag(0x14, 2, 93); // Tie llama spawn to lanky help me cutscene flag
 			changeCharSpawnerFlag(0x7, 1, kong_flags[(int)Rando.free_target_japes]);
 			changeCharSpawnerFlag(0x10, 0x13, kong_flags[(int)Rando.free_target_ttemple]);
@@ -293,6 +294,7 @@ void initHack(int source) {
 				*(int*)(0x806396D0) = 0x95CD036E; // Rendering
 				*(int*)(0x80639690) = 0x9519036E; // Rendering
 			}
+			*(int*)(0x807313A4) = 0x0C000000 | (((int)&checkVictory_flaghook & 0xFFFFFF) >> 2); // perm flag set hook
 			if (Rando.helm_hurry_mode) {
 				*(int*)(0x806F56F8) = 0x0C000000 | (((int)&blueprintCollect & 0xFFFFFF) >> 2); // Blueprint collection hook
 				*(int*)(0x80713CCC) = 0; // Prevent Helm Timer Disable

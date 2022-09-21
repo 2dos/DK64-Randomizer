@@ -80,6 +80,7 @@ set_variables = {
     "helm_order": [2, 3, 1, 0xFF, 0xFF],
     "disco_chunky": 1,
     "helm_hurry_mode": 0,
+    "win_condition": 1,
 }
 
 

@@ -152,4 +152,6 @@ extern void file_progress_screen_code(actorData* actor, int buttons);
 extern int* displayTopText(int* dl, short x, short y, float scale);
 extern void FileProgressInit(actorData* menu_controller);
 extern void checkTotalCache(void);
+extern void checkSeedVictory(void);
+extern void checkVictory_flaghook(int flag);
 //extern void getRandoNextMovePurchase(shop_paad* shop_info, KongBase* moves);

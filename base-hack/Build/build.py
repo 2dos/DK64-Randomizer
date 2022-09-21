@@ -183,6 +183,13 @@ file_dict = [
         "source_file": "assets/Non-Code/displays/dpad.png",
         "texture_format": "rgba5551",
     },
+    {
+        "name": "Tracker Image",
+        "pointer_table_index": 14,
+        "file_index": 0xA1,
+        "source_file": "assets/Non-Code/file_screen/tracker.png",
+        "texture_format": "rgba5551",
+    },
 ]
 
 number_game_changes = [
@@ -960,6 +967,7 @@ with open(newROMName, "r+b") as fh:
             other_remove.append(f"displays/{disp}{ext}")
     for x in range(8):
         other_remove.append(f"file_screen/key{x+1}.png")
+    other_remove.append("file_screen/tracker.png")
     for x in other_remove:
         pth = f"assets/Non-Code/{x}"
         if os.path.exists(pth):
@@ -979,6 +987,13 @@ with open(newROMName, "r+b") as fh:
         "standard_crate_0",
         "standard_crate_1",
         "tiny_palette",
+        "coconut",
+        "feather",
+        "grape",
+        "peanut",
+        "pineapple",
+        "triangle",
+        "trombone",
     ]
     script_files = [x[0] for x in os.walk("assets/Non-Code/instance_scripts/")]
     shop_files = ["snide.script", "cranky.script", "funky.script", "candy.script"]

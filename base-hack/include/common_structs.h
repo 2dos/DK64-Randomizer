@@ -1198,3 +1198,10 @@ typedef struct quality_options {
 	unsigned char rambi_enguarde_pickup : 1;
 	unsigned char hud_bp_multibunch : 1;
 } quality_options;
+
+typedef struct image_cache_struct {
+	/* 0x000 */ void* image_pointer;
+	/* 0x004 */ short image_index;
+	/* 0x006 */ unsigned char image_state;
+	/* 0x007 */ char unk7;
+} image_cache_struct;

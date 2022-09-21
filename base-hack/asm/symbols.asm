@@ -114,6 +114,8 @@
 .definelabel displayText, 0x806FC530
 .definelabel displayImage, 0x8068C5A8
 .definelabel determineXRatioMovement, 0x80612794
+.definelabel getPtr14Texture, 0x8068C12C
+.definelabel renderImage_Internal, 0x80702464
 
 .definelabel getWorld, 0x805FF030
 .definelabel displayImageOnObject, 0x80635018
@@ -214,6 +216,8 @@
 .definelabel calculateFilePercentage, 0x80032304
 .definelabel displayMenuSprite, 0x80030894
 .definelabel loadFile, 0x8060DC3C
+.definelabel loadEndSeq, 0x807127F4
+.definelabel checkGlobalProgress, 0x807311C4
 
 //vanilla data
 .definelabel TransitionSpeed, 0x807FD88C
@@ -406,6 +410,7 @@
 .definelabel menuHeadY, 0x80033F80
 .definelabel menuHeadScale, 0x80033F98
 .definelabel LatestCollectedObject, 0x807FD734
+.definelabel ImageCache, 0x807FC690
 
 //hack data
 .definelabel TestVariable, 0x807FFFFC
@@ -441,6 +446,7 @@
 .definelabel ToggleAmmoOn, 0x807FFFDC
 .definelabel WarpData, 0x807FFFD8
 .definelabel InvertedControls, 0x807FFFD7
+.definelabel WinCondition, 0x807FFFD6
 
 .definelabel CrankyMoves_New, 0x807FF400
 .definelabel CandyMoves_New, 0x807FF4F0
