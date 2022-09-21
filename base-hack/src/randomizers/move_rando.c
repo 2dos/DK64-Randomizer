@@ -54,7 +54,7 @@ void checkProgressive(
 			pass = 1;
 		}
 	}
-	if (pass) {
+	if (pass && ((CurrentMap != 0x22) && (CurrentMap != 0x50))) {
 		// Just purchased Move
 		int purchased = 0;
 		if (level >= 0 && level < LEVEL_COUNT) {
@@ -87,29 +87,35 @@ void checkProgressive(
 		for (int i = 0; i < LEVEL_COUNT; i++) {
 			for (int j = 0; j < 5; j++) {
 				if (CrankyMoves_New[j][i].purchase_type == purchase_type) {
-					if ((purchased) && (shop == 0) && (level == i)) {
-						CrankyMoves_New[j][i].purchase_type = PURCHASE_NOTHING;
-					} else {
-						if (CrankyMoves_New[j][i].purchase_value > progressive_floor) {
-							CrankyMoves_New[j][i].purchase_value = purchase_level;
+					if ((purchase_type != PURCHASE_INSTRUMENT) || (CrankyMoves_New[j][i].purchase_value != 1)) {
+						if ((purchased) && (shop == 0) && (level == i)) {
+							CrankyMoves_New[j][i].purchase_type = PURCHASE_NOTHING;
+						} else {
+							if (CrankyMoves_New[j][i].purchase_value > progressive_floor) {
+								CrankyMoves_New[j][i].purchase_value = purchase_level;
+							}
 						}
 					}
 				}
 				if (CandyMoves_New[j][i].purchase_type == purchase_type) {
-					if ((purchased) && (shop == 2) && (level == i)) {
-						CandyMoves_New[j][i].purchase_type = PURCHASE_NOTHING;
-					} else {
-						if (CandyMoves_New[j][i].purchase_value > progressive_floor) {
-							CandyMoves_New[j][i].purchase_value = purchase_level;
+					if ((purchase_type != PURCHASE_INSTRUMENT) || (CandyMoves_New[j][i].purchase_value != 1)) {
+						if ((purchased) && (shop == 2) && (level == i)) {
+							CandyMoves_New[j][i].purchase_type = PURCHASE_NOTHING;
+						} else {
+							if (CandyMoves_New[j][i].purchase_value > progressive_floor) {
+								CandyMoves_New[j][i].purchase_value = purchase_level;
+							}
 						}
 					}
 				}
 				if (FunkyMoves_New[j][i].purchase_type == purchase_type) {
-					if ((purchased) && (shop == 1) && (level == i)) {
-						FunkyMoves_New[j][i].purchase_type = PURCHASE_NOTHING;
-					} else {
-						if (FunkyMoves_New[j][i].purchase_value > progressive_floor) {
-							FunkyMoves_New[j][i].purchase_value = purchase_level;
+					if ((purchase_type != PURCHASE_INSTRUMENT) || (FunkyMoves_New[j][i].purchase_value != 1)) {
+						if ((purchased) && (shop == 1) && (level == i)) {
+							FunkyMoves_New[j][i].purchase_type = PURCHASE_NOTHING;
+						} else {
+							if (FunkyMoves_New[j][i].purchase_value > progressive_floor) {
+								FunkyMoves_New[j][i].purchase_value = purchase_level;
+							}
 						}
 					}
 				}
