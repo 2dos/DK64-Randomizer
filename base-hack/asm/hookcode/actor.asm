@@ -259,3 +259,17 @@ KeyCompressionCode:
     SB 			t5, 0x154 (t4)
     J 			0x806BD330
     SH 			t5, 0x146 (t4)
+
+VineCode:
+    ADDIU       at, r0, 70
+    SH          at, 0x128 (s0) // Make transparent
+    ADDIU       at, r0, 0xFF
+    SB          at, 0x16A (s0) // R
+    SB          r0, 0x16B (s0) // G
+    SB          r0, 0x16C (s0) // B
+    LUI         at, 0x80
+    OR          t7, v0, at // Enable RGB Mask
+    LUI         at, 0xFFFF
+    ORI         at, at, 0x7FFF
+    J           0x80698414
+    AND         t7, t7, at // Enable Opacity filter

@@ -206,6 +206,9 @@ SaveHelmHurryCheckHook:
 InvertCameraControlsHook:
 	J 	InvertCameraControls
 	NOP
+VineCodeHook:
+	J 	VineCode
+	NOP
 
 loadExtraHooks:
 	LUI t3, hi(InstanceScriptHook)
@@ -213,6 +216,12 @@ loadExtraHooks:
 	LUI t4, 0x8064
 	SW t3, 0xEE08 (t4) // Store Hook
 	SW r0, 0xEE0C (t4) // Store NOP
+	
+	LUI t3, hi(VineCodeHook)
+	LW t3, lo(VineCodeHook) (t3)
+	LUI t4, 0x806A
+	SW t3, 0x840C (t4) // Store Hook
+	SW r0, 0x8410 (t4) // Store NOP
 
 	LUI t3, hi(ShopImageHandlerHook)
 	LW t3, lo(ShopImageHandlerHook) (t3)
