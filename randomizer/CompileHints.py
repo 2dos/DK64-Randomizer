@@ -367,11 +367,16 @@ def compileHints(spoiler: Spoiler):
                         Kongs.chunky not in spoiler.settings.owned_kongs_by_level[level]
                         or Items.PrimatePunch not in spoiler.settings.owned_moves_by_level[level]
                         or Items.RocketbarrelBoost not in spoiler.settings.owned_moves_by_level[level]
+                        or Items.Barrels not in spoiler.settings.owned_moves_by_level[level]
                     )
                 ):
                     continue
-                # Everyone else in Caves still needs Chunky + Punch
-                if level == Levels.CrystalCaves and (Kongs.chunky not in spoiler.settings.owned_kongs_by_level[level] or Items.PrimatePunch not in spoiler.settings.owned_moves_by_level[level]):
+                # Everyone else in Caves still needs Chunky + Punch + Barrels
+                if level == Levels.CrystalCaves and (
+                    Kongs.chunky not in spoiler.settings.owned_kongs_by_level[level]
+                    or Items.PrimatePunch not in spoiler.settings.owned_moves_by_level[level]
+                    or Items.Barrels not in spoiler.settings.owned_moves_by_level[level]
+                ):
                     continue
                 # Aztec Chunky also needs Tiny + Feather + Hunky Chunky
                 if (
@@ -637,6 +642,7 @@ def compileHints(spoiler: Spoiler):
         ]
         criticalAztecRegions = [
             Regions.AngryAztecStart,
+            Regions.AngryAztecOasis,
             Regions.AngryAztecMain,
         ]
         criticalFactoryRegions = [
@@ -654,7 +660,8 @@ def compileHints(spoiler: Spoiler):
             [Regions.TrainingGrounds],
             [
                 Regions.GloomyGalleonStart,
-                Regions.LighthouseArea,
+                Regions.LighthousePlatform,
+                Regions.LighthouseUnderwater,
                 Regions.Shipyard,
             ],
             [
@@ -1254,6 +1261,7 @@ def AddLoadingZoneHints(spoiler: Spoiler):
     ]
     criticalAztecRegions = [
         Regions.AngryAztecStart,
+        Regions.AngryAztecOasis,
         Regions.AngryAztecMain,
     ]
     criticalFactoryRegions = [
@@ -1301,7 +1309,8 @@ def AddLoadingZoneHints(spoiler: Spoiler):
         [Regions.BananaFairyRoom],
         [
             Regions.GloomyGalleonStart,
-            Regions.LighthouseArea,
+            Regions.LighthousePlatform,
+            Regions.LighthouseUnderwater,
             Regions.Shipyard,
         ],
         [
