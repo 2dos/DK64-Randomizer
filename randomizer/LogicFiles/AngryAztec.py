@@ -12,13 +12,13 @@ from randomizer.LogicClasses import (Event, LocationLogic, Region,
                                      TransitionFront)
 
 LogicRegions = {
-    Regions.AngryAztecStart: Region("Angry Aztec Start", Levels.AngryAztec, True, None, [], [
+    Regions.AngryAztecStart: Region("Angry Aztec Start", Levels.AngryAztec, False, None, [], [
         Event(Events.AztecEntered, lambda l: True),
     ], [
         TransitionFront(Regions.AngryAztecLobby, lambda l: True, Transitions.AztecToIsles),
         TransitionFront(Regions.BetweenVinesByPortal, lambda l: l.vines or (l.istiny and l.twirl)),
     ]),
-    Regions.BetweenVinesByPortal: Region("Angry Aztec Between Vines By Portal", Levels.AngryAztec, True, None, [
+    Regions.BetweenVinesByPortal: Region("Angry Aztec Between Vines By Portal", Levels.AngryAztec, False, None, [
         LocationLogic(Locations.AztecChunkyVases, lambda l: l.pineapple and l.chunky and l.barrels),
     ], [], [
         TransitionFront(Regions.AngryAztecStart, lambda l: l.vines or (l.istiny and l.twirl)),
