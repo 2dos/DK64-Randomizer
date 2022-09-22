@@ -135,6 +135,61 @@ void wipeTrackerCache(void) {
 	}
 }
 
+static const int tracker_move_0[] = {TRACKER_TYPE_BLAST, TRACKER_TYPE_CHARGE, TRACKER_TYPE_OSTAND, TRACKER_TYPE_MINI, TRACKER_TYPE_HUNKY};
+static const int tracker_move_1[] = {TRACKER_TYPE_STRONG, TRACKER_TYPE_ROCKET, TRACKER_TYPE_BALLOON, TRACKER_TYPE_PTT, TRACKER_TYPE_PUNCH};
+static const int tracker_move_2[] = {TRACKER_TYPE_GRAB, TRACKER_TYPE_SPRING, TRACKER_TYPE_OSPRINT, TRACKER_TYPE_MONKEYPORT, TRACKER_TYPE_GONE};
+static const int tracker_instrument[] = {TRACKER_TYPE_BONGOS, TRACKER_TYPE_GUITAR, TRACKER_TYPE_TROMBONE, TRACKER_TYPE_SAX, TRACKER_TYPE_TRIANGLE};
+static const int tracker_gun[] = {TRACKER_TYPE_COCONUT, TRACKER_TYPE_PEANUT, TRACKER_TYPE_GRAPE, TRACKER_TYPE_FEATHER, TRACKER_TYPE_PINEAPPLE};
+
+int getInitFileMove(int index) {
+	int found = 0;
+	for (int i = 0; i < 4; i++) {
+		int move_type = TrainingMoves_New[i].purchase_type;
+		int move_value = TrainingMoves_New[i].purchase_value;
+		int move_kong = TrainingMoves_New[i].move_kong;
+		switch(move_type) {
+			case PURCHASE_MOVES:
+				if (move_value == 1) {
+					found |= tracker_move_0[move_kong] == index;
+				} else if (move_value == 2) {
+					found |= tracker_move_1[move_kong] == index;
+				} else if (move_value == 3) {
+					found |= tracker_move_2[move_kong] == index;
+				}
+				break;
+			case PURCHASE_GUN:
+				if (move_value == 1) {
+					found |= tracker_gun[move_kong] == index;
+				}
+				break;
+			case PURCHASE_INSTRUMENT:
+				if (move_value == 1) {
+					found |= tracker_instrument[move_kong] == index;
+				}
+				break;
+			case PURCHASE_FLAG:
+				if (move_value == FLAG_TBARREL_DIVE) {
+					found |= index == TRACKER_TYPE_DIVE;
+				} else if (move_value == FLAG_TBARREL_BARREL) {
+					found |= index == TRACKER_TYPE_BARREL;
+				} else if (move_value == FLAG_TBARREL_ORANGE) {
+					found |= index == TRACKER_TYPE_ORANGE;
+				} else if (move_value == FLAG_TBARREL_VINE) {
+					found |= index == TRACKER_TYPE_VINE;
+				} else if (move_value == FLAG_ABILITY_CAMERA) {
+					found |= index == TRACKER_TYPE_CAMERA;
+				} else if (move_value == FLAG_ABILITY_SHOCKWAVE) {
+					found |= index == TRACKER_TYPE_SHOCKWAVE;
+				} else if (move_value == -2) {
+					found |= (index == TRACKER_TYPE_CAMERA);
+					found |= (index == TRACKER_TYPE_SHOCKWAVE);
+				}
+				break;
+		}
+	}
+	return found;
+}
+
 int getEnabledState(int index) {
 	/*
 		0-24:
@@ -156,6 +211,10 @@ int getEnabledState(int index) {
 		34: Camera
 		35: Shockwave
 	*/
+	int is_pre_given = getInitFileMove(index);
+	if (is_pre_given) {
+		return 1;
+	}
 	if (index < 25) {
 		int kong = index / 5;
 		int submove = index % 5;
