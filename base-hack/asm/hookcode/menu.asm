@@ -4,6 +4,9 @@ FileScreenDLCode_Jump:
 FileSelectDLCode_Jump:
     J 		FileSelectDLCode
     NOP
+Jump_MenuUnlock:
+    J 		KongUnlockCorrectCode
+    NOP
 
 FileScreenDLCode_Write:
     LUI t3, hi(FileScreenDLCode_Jump)
@@ -18,6 +21,13 @@ FileScreenDLCode_Write:
     SW t3, 0x8E90 (t4) // Store Hook
     SW r0, 0x8E94 (t4) // Store NOP
 
+    LUI t3, hi(Jump_MenuUnlock)
+    LW t3, lo(Jump_MenuUnlock) (t3)
+    LUI t4, 0x8003
+    SW t3, 0x98B8 (t4) // Store Hook
+    SW r0, 0x98BC (t4) // Store NOP
+
+    // Fix DK ? RGBA
     LUI t3, 0x8003
     ADDIU t3, t3, 0x37DC
     ADDIU t4, r0, 0xFF
@@ -26,6 +36,7 @@ FileScreenDLCode_Write:
     ADDIU t4, r0, 0xD7
     SB 	t4, 0x1 (t3)
     SB 	r0, 0x2 (t3)
+    
     JR 	ra
     NOP
 
@@ -48,4 +59,11 @@ FileSelectDLCode:
     JAL 		displayHash
     MFC1 		a1, f6
     J 			0x80028E98
+    NOP
+
+KongUnlockCorrectCode:
+    ADDIU 	s0, s0, 0x3805
+    JAL 	correctKongFaces
+    ADDIU 	s2, s2, 0x5B2
+    J 		0x800298DC
     NOP

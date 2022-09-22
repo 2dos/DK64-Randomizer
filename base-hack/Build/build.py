@@ -14,6 +14,7 @@ from writeWarpData import generateDefaultPadPairing  # HAS TO BE BEFORE `instanc
 import portal_instance_script  # HAS TO BE BEFORE `instance_script_maker`
 import instance_script_maker
 import model_fix
+import generate_disco_models
 
 # Patcher functions for the extracted files
 import patch_text
@@ -464,17 +465,19 @@ model_changes = [
     {"model_index": 3, "model_file": "dk_base.bin"},
     {"model_index": 8, "model_file": "tiny_base.bin"},
     {"model_index": 9, "model_file": "tiny_ins.bin"},
+    {"model_index": 0xEC, "model_file": "disco_instrument.bin"},
 ]
 for x in model_changes:
-    file_dict.append(
-        {
-            "name": f"Model {x['model_index']}",
-            "pointer_table_index": 5,
-            "file_index": x["model_index"],
-            "source_file": x["model_file"],
-            "do_not_delete_source": True,
-        }
-    )
+    data = {
+        "name": f"Model {x['model_index']}",
+        "pointer_table_index": 5,
+        "file_index": x["model_index"],
+        "source_file": x["model_file"],
+        "do_not_delete_source": True,
+    }
+    if x["model_index"] > 0xEB:
+        data["do_not_extract"] = True
+    file_dict.append(data)
 
 portal_image_order = [
     ["SE", "NE", "SW", "NW"],

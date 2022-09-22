@@ -208,6 +208,7 @@ tracker_im = Image.new(mode="RGBA", size=(254, 128))
 instruments = ("bongos", "guitar", "trombone", "sax", "triangle")
 pellets = ("coconut", "peanut", "grape", "feather", "pineapple")
 extra_moves = ("shockwave", "slam", "sniper")  # Add "camera"
+training_moves = ("swim", "orange", "barrel", "vine")
 kong_submoves = ("_move", "pad", "barrel")
 dim = 20
 gap = int(dim * 1.1)
@@ -231,10 +232,16 @@ for kong_index, kong in enumerate(kongs):
         move_im = move_im.resize((dim, dim))
         tracker_im.paste(move_im, ((gap * kong_index), ((sub_index + 2) * gap)), move_im)
 for move_index, move in enumerate(extra_moves):
-    print(move)
     move_im = Image.open(f"{getDir('assets/Non-Code/file_screen/')}tracker_images/{move}.png")
     move_im = move_im.resize((dim, dim))
     tracker_im.paste(move_im, ((6 * gap), (move_index * gap)), move_im)
+for move_index, move in enumerate(training_moves):
+    if move in ("orange"):
+        move_im = Image.open(f"{hash_dir}{move}.png")
+    else:
+        move_im = Image.open(f"{getDir('assets/Non-Code/file_screen/')}tracker_images/{move}.png")
+    move_im = move_im.resize((dim, dim))
+    tracker_im.paste(move_im, ((move_index * gap), 128 - dim), move_im)
 for key_index in range(8):
     key_im = Image.open(f"{hash_dir}boss_key.png")
     key_im = key_im.resize((dim, dim))

@@ -4,15 +4,369 @@ static char file_percentage[5] = "";
 static char golden_count[4] = "";
 static char balanced_igt[20] = "";
 static char bp_count_str[5] = "";
-static char move_count_str[10] = "";
 static short igt_h = 0;
 static short igt_m = 0;
 static short igt_s = 0;
-static unsigned char move_count;
-static unsigned char bp_count;
+static char updated_tracker = 0;
 
 #define LINE_GAP 0x8C
 
+typedef struct tracker_struct {
+	/* 0x000 */ short min_x;
+	/* 0x002 */ short max_x;
+	/* 0x004 */ short min_y;
+	/* 0x006 */ short max_y;
+	/* 0x008 */ unsigned char enabled;
+	/* 0x009 */ unsigned char type;
+} tracker_struct;
+
+#define TRACKER_TYPE_COCONUT 0
+#define TRACKER_TYPE_BONGOS 1
+#define TRACKER_TYPE_GRAB 2
+#define TRACKER_TYPE_STRONG 3
+#define TRACKER_TYPE_BLAST 4
+
+#define TRACKER_TYPE_PEANUT 5
+#define TRACKER_TYPE_GUITAR 6
+#define TRACKER_TYPE_CHARGE 7
+#define TRACKER_TYPE_ROCKET 8
+#define TRACKER_TYPE_SPRING 9
+
+#define TRACKER_TYPE_GRAPE 10
+#define TRACKER_TYPE_TROMBONE 11
+#define TRACKER_TYPE_OSTAND 12
+#define TRACKER_TYPE_OSPRINT 13
+#define TRACKER_TYPE_BALLOON 14
+
+#define TRACKER_TYPE_FEATHER 15
+#define TRACKER_TYPE_SAX 16
+#define TRACKER_TYPE_PTT 17
+#define TRACKER_TYPE_MINI 18
+#define TRACKER_TYPE_MONKEYPORT 19
+
+#define TRACKER_TYPE_PINEAPPLE 20
+#define TRACKER_TYPE_TRIANGLE 21
+#define TRACKER_TYPE_PUNCH 22
+#define TRACKER_TYPE_HUNKY 23
+#define TRACKER_TYPE_GONE 24
+
+#define TRACKER_TYPE_SLAM 25
+#define TRACKER_TYPE_HOMING 26
+#define TRACKER_TYPE_SNIPER 27
+#define TRACKER_TYPE_AMMOBELT 28
+#define TRACKER_TYPE_INSTRUMENT_UPG 29
+
+#define TRACKER_TYPE_DIVE 30
+#define TRACKER_TYPE_ORANGE 31
+#define TRACKER_TYPE_BARREL 32
+#define TRACKER_TYPE_VINE 33
+
+#define TRACKER_TYPE_CAMERA 34
+#define TRACKER_TYPE_SHOCKWAVE 35
+
+#define TRACKER_TYPE_KEY1 36
+#define TRACKER_TYPE_KEY2 37
+#define TRACKER_TYPE_KEY3 38
+#define TRACKER_TYPE_KEY4 39
+#define TRACKER_TYPE_KEY5 40
+#define TRACKER_TYPE_KEY6 41
+#define TRACKER_TYPE_KEY7 42
+#define TRACKER_TYPE_KEY8 43
+
+#define TRACKER_ENABLED_DEFAULT 1
+
+static tracker_struct tracker_info[] = {
+	{.min_x = 0, .max_x = 20, .min_y = 0, .max_y = 22, .enabled = TRACKER_ENABLED_DEFAULT, .type = TRACKER_TYPE_COCONUT}, // Coconut
+	{.min_x = 0, .max_x = 20, .min_y = 22, .max_y = 42, .enabled = TRACKER_ENABLED_DEFAULT, .type = TRACKER_TYPE_BONGOS}, // Bongos
+	{.min_x = 0, .max_x = 20, .min_y = 44, .max_y = 64, .enabled = TRACKER_ENABLED_DEFAULT, .type = TRACKER_TYPE_GRAB}, // Grab
+	{.min_x = 0, .max_x = 20, .min_y = 66, .max_y = 86, .enabled = TRACKER_ENABLED_DEFAULT, .type = TRACKER_TYPE_BLAST}, // Blast
+	{.min_x = 0, .max_x = 20, .min_y = 88, .max_y = 108, .enabled = TRACKER_ENABLED_DEFAULT, .type = TRACKER_TYPE_STRONG}, // Strong
+	{.min_x = 22, .max_x = 42, .min_y = 0, .max_y = 22, .enabled = TRACKER_ENABLED_DEFAULT, .type = TRACKER_TYPE_PEANUT}, // Peanut
+	{.min_x = 22, .max_x = 42, .min_y = 22, .max_y = 42, .enabled = TRACKER_ENABLED_DEFAULT, .type = TRACKER_TYPE_GUITAR}, // Guitar
+	{.min_x = 22, .max_x = 42, .min_y = 44, .max_y = 64, .enabled = TRACKER_ENABLED_DEFAULT, .type = TRACKER_TYPE_CHARGE}, // Charge
+	{.min_x = 22, .max_x = 42, .min_y = 66, .max_y = 86, .enabled = TRACKER_ENABLED_DEFAULT, .type = TRACKER_TYPE_SPRING}, // Spring
+	{.min_x = 22, .max_x = 42, .min_y = 88, .max_y = 108, .enabled = TRACKER_ENABLED_DEFAULT, .type = TRACKER_TYPE_ROCKET}, // Rocket
+	{.min_x = 44, .max_x = 64, .min_y = 0, .max_y = 22, .enabled = TRACKER_ENABLED_DEFAULT, .type = TRACKER_TYPE_GRAPE}, // Grape
+	{.min_x = 44, .max_x = 64, .min_y = 22, .max_y = 42, .enabled = TRACKER_ENABLED_DEFAULT, .type = TRACKER_TYPE_TROMBONE}, // Trombone
+	{.min_x = 44, .max_x = 64, .min_y = 44, .max_y = 64, .enabled = TRACKER_ENABLED_DEFAULT, .type = TRACKER_TYPE_OSTAND}, // OStand
+	{.min_x = 44, .max_x = 64, .min_y = 66, .max_y = 86, .enabled = TRACKER_ENABLED_DEFAULT, .type = TRACKER_TYPE_BALLOON}, // Balloon
+	{.min_x = 44, .max_x = 64, .min_y = 88, .max_y = 108, .enabled = TRACKER_ENABLED_DEFAULT, .type = TRACKER_TYPE_OSPRINT}, // OSprint
+	{.min_x = 66, .max_x = 86, .min_y = 0, .max_y = 22, .enabled = TRACKER_ENABLED_DEFAULT, .type = TRACKER_TYPE_FEATHER}, // Feather
+	{.min_x = 66, .max_x = 86, .min_y = 22, .max_y = 42, .enabled = TRACKER_ENABLED_DEFAULT, .type = TRACKER_TYPE_SAX}, // Sax
+	{.min_x = 66, .max_x = 86, .min_y = 44, .max_y = 64, .enabled = TRACKER_ENABLED_DEFAULT, .type = TRACKER_TYPE_PTT}, // PTT
+	{.min_x = 66, .max_x = 86, .min_y = 66, .max_y = 86, .enabled = TRACKER_ENABLED_DEFAULT, .type = TRACKER_TYPE_MONKEYPORT}, // Monkeyport
+	{.min_x = 66, .max_x = 86, .min_y = 88, .max_y = 108, .enabled = TRACKER_ENABLED_DEFAULT, .type = TRACKER_TYPE_MINI}, // Mini
+	{.min_x = 88, .max_x = 108, .min_y = 0, .max_y = 22, .enabled = TRACKER_ENABLED_DEFAULT, .type = TRACKER_TYPE_PINEAPPLE}, // Pineapple
+	{.min_x = 88, .max_x = 108, .min_y = 22, .max_y = 42, .enabled = TRACKER_ENABLED_DEFAULT, .type = TRACKER_TYPE_TRIANGLE}, // Triangle
+	{.min_x = 88, .max_x = 108, .min_y = 44, .max_y = 64, .enabled = TRACKER_ENABLED_DEFAULT, .type = TRACKER_TYPE_PUNCH}, // Punch
+	{.min_x = 88, .max_x = 108, .min_y = 66, .max_y = 86, .enabled = TRACKER_ENABLED_DEFAULT, .type = TRACKER_TYPE_GONE}, // Gone
+	{.min_x = 88, .max_x = 108, .min_y = 88, .max_y = 108, .enabled = TRACKER_ENABLED_DEFAULT, .type = TRACKER_TYPE_HUNKY}, // Hunky
+	{.min_x = 130, .max_x = 142, .min_y = 108, .max_y = 128, .enabled = TRACKER_ENABLED_DEFAULT, .type = TRACKER_TYPE_KEY1}, // Key1
+	{.min_x = 146, .max_x = 158, .min_y = 108, .max_y = 128, .enabled = TRACKER_ENABLED_DEFAULT, .type = TRACKER_TYPE_KEY2}, // Key2
+	{.min_x = 162, .max_x = 174, .min_y = 108, .max_y = 128, .enabled = TRACKER_ENABLED_DEFAULT, .type = TRACKER_TYPE_KEY3}, // Key3
+	{.min_x = 178, .max_x = 190, .min_y = 108, .max_y = 128, .enabled = TRACKER_ENABLED_DEFAULT, .type = TRACKER_TYPE_KEY4}, // Key4
+	{.min_x = 194, .max_x = 206, .min_y = 108, .max_y = 128, .enabled = TRACKER_ENABLED_DEFAULT, .type = TRACKER_TYPE_KEY5}, // Key5
+	{.min_x = 210, .max_x = 222, .min_y = 108, .max_y = 128, .enabled = TRACKER_ENABLED_DEFAULT, .type = TRACKER_TYPE_KEY6}, // Key6
+	{.min_x = 226, .max_x = 238, .min_y = 108, .max_y = 128, .enabled = TRACKER_ENABLED_DEFAULT, .type = TRACKER_TYPE_KEY7}, // Key7
+	{.min_x = 242, .max_x = 254, .min_y = 108, .max_y = 128, .enabled = TRACKER_ENABLED_DEFAULT, .type = TRACKER_TYPE_KEY8}, // Key8
+	{.min_x = 130, .max_x = 152, .min_y = 0, .max_y = 20, .enabled = TRACKER_ENABLED_DEFAULT, .type = TRACKER_TYPE_SHOCKWAVE}, // Shockwave
+	{.min_x = 132, .max_x = 138, .min_y = 32, .max_y = 42, .enabled = TRACKER_ENABLED_DEFAULT, .type = TRACKER_TYPE_SLAM}, // Slam
+	{.min_x = 138, .max_x = 141, .min_y = 30, .max_y = 33, .enabled = TRACKER_ENABLED_DEFAULT, .type = TRACKER_TYPE_SLAM}, // Slam
+	{.min_x = 138, .max_x = 146, .min_y = 38, .max_y = 41, .enabled = TRACKER_ENABLED_DEFAULT, .type = TRACKER_TYPE_SLAM}, // Slam
+	{.min_x = 146, .max_x = 152, .min_y = 32, .max_y = 41, .enabled = TRACKER_ENABLED_DEFAULT, .type = TRACKER_TYPE_SLAM}, // Slam
+	{.min_x = 144, .max_x = 146, .min_y = 30, .max_y = 33, .enabled = TRACKER_ENABLED_DEFAULT, .type = TRACKER_TYPE_SLAM}, // Slam
+	{.min_x = 132, .max_x = 152, .min_y = 48, .max_y = 60, .enabled = TRACKER_ENABLED_DEFAULT, .type = TRACKER_TYPE_SNIPER}, // Sniper
+	{.min_x = 0, .max_x = 20, .min_y = 108, .max_y = 128, .enabled = TRACKER_ENABLED_DEFAULT, .type = TRACKER_TYPE_DIVE}, // Dive
+	{.min_x = 22, .max_x = 42, .min_y = 108, .max_y = 128, .enabled = TRACKER_ENABLED_DEFAULT, .type = TRACKER_TYPE_ORANGE}, // Orange
+	{.min_x = 44, .max_x = 64, .min_y = 108, .max_y = 128, .enabled = TRACKER_ENABLED_DEFAULT, .type = TRACKER_TYPE_BARREL}, // Barrel
+	{.min_x = 66, .max_x = 86, .min_y = 108, .max_y = 128, .enabled = TRACKER_ENABLED_DEFAULT, .type = TRACKER_TYPE_VINE}, // Vine
+};
+
+void wipeTrackerCache(void) {
+	// Wipe image cache for image
+	for (int i = 0; i < 32; i++) {
+		if ((ImageCache[i].image_index == IMAGE_TRACKER) && (ImageCache[i].image_state != 0)) {
+			ImageCache[i].image_state = 0;
+			if (ImageCache[i].image_pointer) {
+				complex_free(ImageCache[i].image_pointer);
+			}
+			return;
+		}
+	}
+}
+
+int getEnabledState(int index) {
+	/*
+		0-24:
+			0: Gun
+			1: Instrument
+			2: Move
+			3: Barrel
+			4: Pad
+			Repeat for all 5 kongs
+		25: Slam
+		26: Homing
+		27: Sniper
+		28: Ammo Belt
+		29: Instrument Upg
+		30: Dive
+		31: Orange
+		32: Barrel
+		33: Vine
+		34: Camera
+		35: Shockwave
+	*/
+	if (index < 25) {
+		int kong = index / 5;
+		int submove = index % 5;
+		if (Rando.unlock_moves) {
+			return 1;
+		}
+		if (submove == 0) {
+			// Gun
+			return MovesBase[kong].weapon_bitfield & 1;
+		} else if (submove == 1) {
+			// Instrument
+			return MovesBase[kong].instrument_bitfield & 1;
+		} else if (submove == 2) {
+			// Move
+			int move_placement = 2;
+			if (kong == 2) {
+				move_placement = 0;
+			} else if (kong > 2) {
+				move_placement = 1;
+			}
+			return (MovesBase[kong].special_moves & (1 << move_placement)) != 0;
+		} else if (submove == 3) {
+			// Barrel
+			int barrel_placement = 0;
+			if (kong < 2) {
+				barrel_placement = 1;
+			} else if (kong == 2) {
+				barrel_placement = 2;
+			}
+			return (MovesBase[kong].special_moves & (1 << barrel_placement)) != 0;
+		} else if (submove == 4) {
+			// Pad
+			int pad_placement = 2;
+			if (kong == 0) {
+				pad_placement = 0;
+			} else if (kong == 2) {
+				pad_placement = 1;
+			}
+			return (MovesBase[kong].special_moves & (1 << pad_placement)) != 0;
+		}
+	} else {
+		if (index < 34) {
+			if (Rando.unlock_moves) {
+				if (index == TRACKER_TYPE_SLAM) {
+					return 3;
+				}
+				if ((index == TRACKER_TYPE_AMMOBELT) || (index == TRACKER_TYPE_INSTRUMENT_UPG)) {
+					return 2;
+				}
+				return 1;
+			}
+		} else if (index < 36) {
+			if (Rando.camera_unlocked) {
+				return 1;
+			}
+		}
+		switch(index) {
+			case TRACKER_TYPE_SLAM:
+				{
+					// Slam
+					int slam_val = MovesBase[0].simian_slam;
+					if (slam_val < 1) {
+						return 1;
+					} else if (slam_val > 3) {
+						return 3;
+					}
+					return slam_val;
+				}
+			case TRACKER_TYPE_HOMING:
+				// Homing
+				return (MovesBase[0].weapon_bitfield & 2) != 0;
+			case TRACKER_TYPE_SNIPER:
+				// Sniper
+				return (MovesBase[0].weapon_bitfield & 4) != 0;
+			case TRACKER_TYPE_AMMOBELT:
+				// Ammo Belt
+				return MovesBase[0].ammo_belt;
+			case TRACKER_TYPE_INSTRUMENT_UPG:
+				// Instrument Upgrade
+				if (MovesBase[0].instrument_bitfield & 8) {
+					return 2;
+				} else if (MovesBase[0].instrument_bitfield & 2) {
+					return 1;
+				}
+				return 0;
+			case TRACKER_TYPE_DIVE:
+				// Dive
+				return checkFlag(FLAG_TBARREL_DIVE,0);
+			case TRACKER_TYPE_ORANGE:
+				// Orange
+				return checkFlag(FLAG_TBARREL_ORANGE,0);
+			case TRACKER_TYPE_BARREL:
+				// Barrel
+				return checkFlag(FLAG_TBARREL_BARREL,0);
+			case TRACKER_TYPE_VINE:
+				// Vine
+				return checkFlag(FLAG_TBARREL_VINE,0);
+			case TRACKER_TYPE_CAMERA:
+				// Camera
+				return checkFlag(FLAG_ABILITY_CAMERA,0);
+			case TRACKER_TYPE_SHOCKWAVE:
+				// Shockwave
+				return checkFlag(FLAG_ABILITY_SHOCKWAVE,0);
+			case TRACKER_TYPE_KEY1:
+			case TRACKER_TYPE_KEY2:
+			case TRACKER_TYPE_KEY3:
+			case TRACKER_TYPE_KEY4:
+			case TRACKER_TYPE_KEY5:
+			case TRACKER_TYPE_KEY6:
+			case TRACKER_TYPE_KEY7:
+			case TRACKER_TYPE_KEY8:
+				{
+					// Keys in
+					int key_index = index - TRACKER_TYPE_KEY1;
+					int key_there = checkFlag(FLAG_KEYIN_KEY1 + key_index, 0);
+					if (!key_there) {
+						if (Rando.keys_preturned & (1 << key_index)) {
+							key_there = 1;
+						}
+					}
+					*(char*)(0x807FF700 + key_index) = key_there;
+					return key_there;
+				}
+		}
+	}
+	return 0;
+}
+
+void updateEnabledStates(void) {
+	for (int i = 0; i < (int)(sizeof(tracker_info) / sizeof(tracker_struct)); i++) {
+		tracker_info[i].enabled = getEnabledState(tracker_info[i].type);
+	}
+}
+
+#define TRACKER_DELAY 3
+#define TRACKER_WIDTH 254
+#define TRACKER_HEIGHT 128
+
+void modifyTrackerImage(void) {
+	// Check if tracker needs updating
+	if (updated_tracker == TRACKER_DELAY) {
+		return;
+	}
+	updated_tracker += 1;
+	if (updated_tracker == TRACKER_DELAY) {
+		// Load Tracker Image into cache
+		short* image = getPtr14Texture(IMAGE_TRACKER);
+		// Manipulate cached image
+		int width = TRACKER_WIDTH;
+		for (int i = 0; i < (int)(sizeof(tracker_info) / sizeof(tracker_struct)); i++) {
+			int enabled = tracker_info[i].enabled;
+			for (int x = tracker_info[i].min_x; x < tracker_info[i].max_x; x++) {
+				for (int y = tracker_info[i].min_y; y < tracker_info[i].max_y; y++) {
+					unsigned short init_rgba = *(short*)(image + (y * width) + x);
+					if (init_rgba & 1) {
+						// Has Alpha
+						unsigned short new_rgba = 1;
+						int update = 0;
+						if (tracker_info[i].type == TRACKER_TYPE_SLAM) {
+							if (!enabled) {
+								new_rgba = 0;
+								update = 1;
+							} else {
+								int subdue[] = {0,0,0};
+								if (enabled == 1) {
+									subdue[0] = 1;
+									subdue[1] = 2;
+									subdue[2] = 1;
+									update = 1;
+								} else if (enabled == 2) {
+									subdue[0] = 2;
+									subdue[1] = 2;
+									subdue[2] = 0;
+									update = 1;
+								} else if (enabled == 3) {
+									subdue[0] = 0;
+									subdue[1] = 0;
+									subdue[2] = 2;
+									update = 1;
+								}
+								for (int c = 0; c < 3; c++) {
+									int shift = (5 * c) + 1;
+									float channel = (init_rgba >> shift) & 31;
+									if (subdue[c] == 0) {
+										channel = 0;
+									} else if (subdue[c] == 1) {
+										channel *= 0.19f;
+									}
+									new_rgba |= (((int)(channel) & 31) << shift);
+								}
+							}
+						} else {
+							if (!enabled) {
+								for (int c = 0; c < 3; c++) {
+									int shift = (5 * c) + 1;
+									float channel = (init_rgba >> shift) & 31;
+									channel *= 0.3f; // Depreciation
+									new_rgba |= (((int)(channel) & 31) << shift);
+								}
+								update = 1;
+							}
+						}
+						if (update) {
+							*(short*)(image + (y * width) + x) = new_rgba;
+						}
+					}
+				}
+			}
+		}
+	}
+}
 typedef struct menu_controller_paad {
 	/* 0x000 */ float screen_transition_progress;
 	/* 0x004 */ float unk_4;
@@ -31,28 +385,27 @@ typedef enum file_screen_modes {
 
 int* display_images(int* dl, file_screen_modes mode) {
 	int y_offset = FileScreenDLOffset - 720;
-	for (int i = 0; i < 8; i++) {
-		int key_there = checkFlag(FLAG_KEYIN_KEY1 + i,0);
-		if (!key_there) {
-			if (Rando.keys_preturned & (1 << i)) {
-				key_there = 1;
-			}
-		}
-		float divisor = (key_there ^ 1) + 1;
-		if (divisor == 0) {
-			divisor = 1;
-		}
-		float opacity_mult = 1.0f / divisor;
-		float opacity_f = 255 * opacity_mult;
-		int opacity_i = opacity_f;
-		if (opacity_i > 255) {
-			opacity_i = 255;
-		}
-		dl = drawImage(dl, 107 + i, RGBA16, 32, 32, 900 + (150 * (i % 2)), (520 + y_offset + (80 * (i / 2))),4.0f, 4.0f,opacity_i);
-	}
-	if (mode == FILEMODE_USED) {
-		dl = drawImage(dl, 115, RGBA16, 32, 32, 150, y_offset + 275,4.0f, 4.0f,0xFF); // Cranky Head
-	}
+	dl = drawImage(dl, IMAGE_TRACKER, RGBA16, TRACKER_WIDTH, TRACKER_HEIGHT, 160, y_offset + 125,1.0f, 1.0f,0xFF);
+	modifyTrackerImage();
+	// for (int i = 0; i < 8; i++) {
+	// 	int key_there = checkFlag(FLAG_KEYIN_KEY1 + i,0);
+	// 	if (!key_there) {
+	// 		if (Rando.keys_preturned & (1 << i)) {
+	// 			key_there = 1;
+	// 		}
+	// 	}
+	// 	float divisor = (key_there ^ 1) + 1;
+	// 	if (divisor == 0) {
+	// 		divisor = 1;
+	// 	}
+	// 	float opacity_mult = 1.0f / divisor;
+	// 	float opacity_f = 255 * opacity_mult;
+	// 	int opacity_i = opacity_f;
+	// 	if (opacity_i > 255) {
+	// 		opacity_i = 255;
+	// 	}
+	// 	dl = drawImage(dl, 107 + i, RGBA16, 32, 32, 900 + (150 * (i % 2)), (520 + y_offset + (80 * (i / 2))),4.0f, 4.0f,opacity_i);
+	// }
 	return dl;
 }
 
@@ -111,66 +464,19 @@ int* display_text(int* dl) {
 	if (file_mode == FILEMODE_USED) {
 		int y_gap = 53;
 		int y_start = (FileScreenDLOffset - 320) - y_gap - 144;
-		int y_offset = y_start;
 		// Move Count
-		y_offset += y_gap;
-		dk_strFormat((char*)move_count_str, "%02d", move_count);
-		dl = drawText(dl, 1, 125, y_offset, (char*)move_count_str, 0xFF, 0xFF, 0xFF, 0xFF);
 		// File Percentage
-		y_offset += y_gap;
 		dk_strFormat((char*)file_percentage, "%d%%", FilePercentage);
-		dl = drawText(dl, 1, 125, y_offset, (char*)file_percentage, 0xFF, 0xFF, 0xFF, 0xFF);
+		dl = drawText(dl, 1, 150, y_start + 340, (char*)file_percentage, 0xFF, 0xFF, 0xFF, 0xFF);
 		// GB Count
-		y_offset += y_gap;
 		dk_strFormat((char*)golden_count, "%03d",FileGBCount);
-		dl = drawText(dl, 1, 125, y_offset, (char*)golden_count, 0xFF, 0xFF, 0xFF, 0xFF);
+		dl = drawText(dl, 1, 140, y_start + 310, (char*)golden_count, 0xFF, 0xFF, 0xFF, 0xFF);
 		// BP Count
-		y_offset += y_gap;
-		dk_strFormat((char*)bp_count_str, "%02d", bp_count);
-		dl = drawText(dl, 1, 125, y_offset, (char*)bp_count_str, 0xFF, 0xFF, 0xFF, 0xFF);
+		dk_strFormat((char*)bp_count_str, "%02d", countFlagArray(0x1D5,40,0));
+		dl = drawText(dl, 1, 460, y_start + 310, (char*)bp_count_str, 0xFF, 0xFF, 0xFF, 0xFF);
 		// Balanced IGT
-		y_offset += y_gap;
 		dk_strFormat((char*)balanced_igt, "%03d:%02d:%02d",igt_h,igt_m,igt_s);
-		dl = drawText(dl, 1, 125, y_offset, (char*)balanced_igt, 0xFF, 0xFF, 0xFF, 0xFF);
-	} else { // New File
-		// Move List
-		char* move_names[7] = {0,0,0,0,0,0,0};
-		if (Rando.unlock_moves) {
-			move_names[0] = "EVERYTHING";
-		} else {
-			move_names[0] = getTextPointer(39,SimianSlamNames[1].name,1); // Slam
-			int position_index = 1;
-			if (Rando.fast_start_beginning) {
-				for (int i = 0; i < 4; i++) {
-					if (TrainingMoves_New[i].purchase_value == -2) {
-						move_names[position_index] = getTextPointer(39,57,1);
-						move_names[position_index+1] = getTextPointer(39,58,1);
-						position_index += 2;
-					} else {
-						int move_index = getTextIndexFromMove(&TrainingMoves_New[i]);
-						if (move_index > -1) {
-							move_names[position_index] = getTextPointer(39,move_index,1); // Training Moves
-							position_index += 1;
-						}
-					}
-				}
-			}
-			if (Rando.camera_unlocked) {
-				move_names[position_index] = getTextPointer(39,57,1);
-				move_names[position_index+1] = getTextPointer(39,58,1);
-				position_index += 1;
-			}
-		}
-		int list_start = -144;
-		int y_offset = (FileScreenDLOffset - 320) - 32 + list_start;
-		int x_offset = 50;
-		dl = drawText(dl, 1, x_offset, y_offset, "STARTING MOVES:", 0xFF, 0xFF, 0xFF, 0xFF);
-		for (int i = 0; i < sizeof(move_names)/4; i++) {
-			if (move_names[i]) {
-				y_offset = (FileScreenDLOffset - 320) + (i * 32) + list_start;
-				dl = drawText(dl, 1, x_offset, y_offset, move_names[i], 0xFF, 0xFF, 0xFF, 0xFF);
-			}
-		}
+		dl = drawText(dl, 1, 415, y_start + 340, (char*)balanced_igt, 0xFF, 0xFF, 0xFF, 0xFF);
 	}
 	// Image Render
 	dl = display_images(dl,file_mode);
@@ -188,16 +494,9 @@ int* displayHash(int* dl, int y_offset) {
 
 int* displayHeadTexture(int* dl, int texture, float x, float y, float scale) {
 	int kong_index = texture & 0x7F;
-	int draw_scale = 1;
-	int x_offset = 60;
-	if (kong_index < 3) {
-		menuHeadX[kong_index] = (x * 3) + 550 + x_offset;
-		menuHeadY[kong_index] = (y * 3) + 0;
-	} else {
-		menuHeadX[kong_index] = (x * 2.75f) + 204 + x_offset;
-		menuHeadY[kong_index] = (y * 2.75f) + 130;
-	}
-	menuHeadScale[kong_index] = scale * draw_scale;
+	menuHeadX[kong_index] = 105 + x + (kong_index * 34);
+	menuHeadY[kong_index] = 110 + y;
+	menuHeadScale[kong_index] = 1.3f;
 	return dl;
 }
 
@@ -296,112 +595,111 @@ int* displayTopText(int* dl, short x, short y, float scale) {
 	return printText(dl, x, y, scale, (char*)top_text);
 }
 
-void FileProgressInit(actorData* menu_controller) {
-	menu_controller_paad* paad = menu_controller->paad;
-	loadFile(0,0);
-	if (ReadFile(0xD,0,0,FileIndex)) {
+// void FileProgressInit(actorData* menu_controller) {
+// 	menu_controller_paad* paad = menu_controller->paad;
+// 	loadFile(0,0);
+// 	updated_tracker = 0;
+// 	wipeTrackerCache();
+// 	updateEnabledStates();
+// 	if (ReadFile(0xD,0,0,FileIndex)) {
+// 		file_mode = FILEMODE_USED;
+// 	} else {
+// 		file_mode = FILEMODE_NEW;
+// 	}
+// 	if (isFileEmpty(0)) {
+// 		// Empty
+// 		displayMenuSprite(paad, sprite_table[0x6F], 0x23, 0xD2, 0.75f, 2, 0); // B
+// 		displayMenuSprite(paad, sprite_table[0x6E], 0x122, 0xD2, 0.75f, 2, 0); // A
+// 	} else {
+// 		// Not Empty
+// 		displayMenuSprite(paad, sprite_table[59], 62, 202, 0.4f, 2, 0); // GB
+// 		displayMenuSprite(paad, sprite_table[0x70], 0xA2, 0xD6, 0.75f, 2, 0); // Z - Delete
+// 		int blueprint_sprite_indexes[] = {0x5C,0x5A,0x4A,0x5D,0x5B};
+// 		displayMenuSprite(paad, sprite_table[blueprint_sprite_indexes[getRNGLower31() % 5]], 220, 202, 0.4f, 2, 0); // Blueprint
+// 		// Update counts
+// 		int gb_count = 0;
+// 		for (int kong = 0; kong < 5; kong++) {
+// 			for (int level = 0; level < 8; level++) {
+// 				gb_count += MovesBase[kong].gb_count[level];
+// 			}
+// 		}
+// 		FileGBCount = gb_count;
+// 		igt_h = (IGT / 60) / 60;
+// 		igt_m = (IGT / 60) % 60;
+// 		igt_s = IGT - (3600 * igt_h) - (60 * igt_m);
+// 		FilePercentage = calculateFilePercentage();
+// 	}
+// 	*(float*)(0x80033F4C) = 1600.0f;
+// 	// Check Kong Unlocked
+// 	for (int i = 0; i < 5; i++) {
+// 		if (Rando.unlock_kongs & (1 << i)) {
+// 			KongUnlockedMenuArray[i] = 1;
+// 		} else {
+// 			KongUnlockedMenuArray[i] = 0;
+// 		}
+// 	}
+// 	KongUnlockedMenuArray[(int)Rando.starting_kong] = 1;
+// 	for (int i = 0; i < 5; i++) {
+// 		if (checkFlag(kong_flags[i],0)) {
+// 			KongUnlockedMenuArray[i] = 1;
+// 		}
+// 	}
+// 	for (int i = 0; i < 5; i++) {
+// 		void* sprite = sprite_table[0x92];
+// 		if (KongUnlockedMenuArray[i]) {
+// 			sprite = sprite_table[0xA9 + i];
+// 		}
+// 		displayMenuSprite(paad, sprite, i, i, 0.8f, 2, 0xF);
+// 		// int x = 0;
+// 		// int y = 0;
+// 		// if (i < 3) {
+// 		// 	x = 210 + (i * 35);
+// 		// 	y = 65;
+// 		// } else {
+// 		// 	x = 228 + ((i - 3) * 32);
+// 		// 	y = 90;
+// 		// }
+// 		// displayMenuSprite(paad, sprite, x, y, 0.5, 2, 0xF);
+// 	}
+// }
+
+void correctKongFaces(void) {
+	if (Rando.unlock_kongs) {
+		for (int i = 0; i < 5; i++) {
+			int flag = checkFlag(kong_flags[i],0);
+			KongUnlockedMenuArray[i] = flag;
+			if (!flag) {
+				KongUnlockedMenuArray[i] = (Rando.unlock_kongs & (1 << i)) != 0;
+			}
+		}
+		if (!checkFlag(FLAG_KONG_DK,0)) {
+			if ((Rando.unlock_kongs & 1) == 0) {
+				KongUnlockedMenuArray[0] = 0;
+			}
+		}
+	} else {
+		for (int i = 0; i < 5; i++) {
+			KongUnlockedMenuArray[i] = checkFlag(kong_flags[i],0);
+		}
+		KongUnlockedMenuArray[(int)Rando.starting_kong] = 1;
+		if (Rando.starting_kong != 0) {
+			if (!checkFlag(FLAG_KONG_DK,0)) {
+				KongUnlockedMenuArray[0] = 0;
+			}
+		}
+	}
+}
+
+void FileProgressInitSub(int file, int shuffle) {
+	loadFile(file,shuffle);
+	if (checkFlag(FLAG_WATERFALL,0)) {
 		file_mode = FILEMODE_USED;
 	} else {
 		file_mode = FILEMODE_NEW;
 	}
-	if (isFileEmpty(0)) {
-		// Empty
-		displayMenuSprite(paad, sprite_table[0x6F], 0x23, 0xD2, 0.75f, 2, 0); // B
-		displayMenuSprite(paad, sprite_table[0x6E], 0x122, 0xD2, 0.75f, 2, 0); // A
-	} else {
-		// Not Empty
-		displayMenuSprite(paad, sprite_table[59], 35, 125, 0.6f, 2, 0); // GB
-		displayMenuSprite(paad, sprite_table[0x70], 0xA2, 0xD6, 0.75f, 2, 0); // Z - Delete
-		// displayMenuSprite(paad, sprite_table[0x94], 35, 65, 0.6f, 2, 5); // Cranky Face - Moves
-		int blueprint_sprite_indexes[] = {0x5C,0x5A,0x4A,0x5D,0x5B};
-		displayMenuSprite(paad, sprite_table[blueprint_sprite_indexes[getRNGLower31() % 5]], 35, 155, 0.75, 2, 0); // Blueprint
-		// Update counts
-		int gb_count = 0;
-		for (int kong = 0; kong < 5; kong++) {
-			for (int level = 0; level < 8; level++) {
-				gb_count += MovesBase[kong].gb_count[level];
-			}
-		}
-		int bp_count_local = 0;
-		for (int i = 0; i < 40; i++) {
-			bp_count_local += checkFlag(469+i,0);
-		}
-		int move_count_local = 0;
-		if (Rando.unlock_moves) {
-			move_count_local = 39; // 38 if we discount 3rd melon
-		} else {
-			move_count_local += MovesBase[0].simian_slam;
-			move_count_local += MovesBase[0].ammo_belt;
-			for (int kong = 0; kong < 5; kong++) {
-				for (int level = 0; level < 3; level++) {
-					if (MovesBase[kong].special_moves & (1 << level)) {
-						move_count_local += 1;
-					}
-				}
-				move_count_local += (MovesBase[kong].weapon_bitfield & 1);
-				move_count_local += (MovesBase[kong].instrument_bitfield & 1);
-			}
-			for (int level = 0; level < 3; level++) {
-				if (level < 2) {
-					if (MovesBase[0].weapon_bitfield & (1 << level)) {
-						move_count_local += 1;
-					}
-				}
-				if (MovesBase[0].instrument_bitfield & (1 << level)) {
-					move_count_local += 1; // Discount level == 1 if discounting 3rd melon
-				}
-			}
-			move_count_local += checkFlag(FLAG_TBARREL_DIVE,0);
-			move_count_local += checkFlag(FLAG_TBARREL_ORANGE,0);
-			move_count_local += checkFlag(FLAG_TBARREL_BARREL,0);
-			move_count_local += checkFlag(FLAG_TBARREL_VINE,0);
-		}
-		if (Rando.camera_unlocked) {
-			move_count_local += 2;
-		} else {
-			move_count_local += checkFlag(FLAG_ABILITY_CAMERA,0);
-			move_count_local += checkFlag(FLAG_ABILITY_SHOCKWAVE,0);
-		}
-		FileGBCount = gb_count;
-		igt_h = (IGT / 60) / 60;
-		igt_m = (IGT / 60) % 60;
-		igt_s = IGT - (3600 * igt_h) - (60 * igt_m);
-		FilePercentage = calculateFilePercentage();
-		bp_count = bp_count_local;
-		move_count = move_count_local;
-	}
-	*(float*)(0x80033F4C) = 1600.0f;
-	// Check Kong Unlocked
-	for (int i = 0; i < 5; i++) {
-		if (Rando.unlock_kongs & (1 << i)) {
-			KongUnlockedMenuArray[i] = 1;
-		} else {
-			KongUnlockedMenuArray[i] = 0;
-		}
-	}
-	KongUnlockedMenuArray[(int)Rando.starting_kong] = 1;
-	for (int i = 0; i < 5; i++) {
-		if (checkFlag(kong_flags[i],0)) {
-			KongUnlockedMenuArray[i] = 1;
-		}
-	}
-	for (int i = 0; i < 5; i++) {
-		void* sprite = sprite_table[0x92];
-		if (KongUnlockedMenuArray[i]) {
-			sprite = sprite_table[0xA9 + i];
-		}
-		displayMenuSprite(paad, sprite, i, i, 0.8f, 2, 0xF);
-		// int x = 0;
-		// int y = 0;
-		// if (i < 3) {
-		// 	x = 210 + (i * 35);
-		// 	y = 65;
-		// } else {
-		// 	x = 228 + ((i - 3) * 32);
-		// 	y = 90;
-		// }
-		// displayMenuSprite(paad, sprite, x, y, 0.5, 2, 0xF);
-	}	
+	updated_tracker = 0;
+	wipeTrackerCache();
+	updateEnabledStates();
 }
 
 static char* inverted_controls_str[] = {

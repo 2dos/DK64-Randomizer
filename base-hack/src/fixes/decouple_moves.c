@@ -67,8 +67,10 @@ void decouple_moves_fixes(void) {
 		*(short*)(0x80029fea) = 3; // Set A button action in delete confirm to file progress
 		*(int*)(0x80030604) = 0x0C000000 | (((int)&file_progress_screen_code & 0xFFFFFF) >> 2); // New file progress code
 		*(int*)(0x80029760) = 0x0C000000 | (((int)&displayTopText & 0xFFFFFF) >> 2); // New file progress top text code
-		*(int*)(0x80030614) = 0x0C000000 | (((int)&FileProgressInit & 0xFFFFFF) >> 2); // New file progress init code
+		// *(int*)(0x80030614) = 0x0C000000 | (((int)&FileProgressInit & 0xFFFFFF) >> 2); // New file progress init code
+		*(int*)(0x80029894) = 0x0C000000 | (((int)&FileProgressInitSub & 0xFFFFFF) >> 2); // New file progress init code
 		*(int*)(0x8002999C) = 0;
+		*(int*)(0x80029874) = 0; // Hide GB
 		initOptionScreen();
 	} else if (CurrentMap == SNIDE) {
 		*(int*)(0x8002402C) = 0x240E000C; // No extra contraption cutscenes

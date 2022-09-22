@@ -315,13 +315,15 @@ void initHack(int source) {
 			}
 			if (Rando.disco_chunky) {
 				*(char*)(0x8075C45B) = 0xE; // General Model
-				*(short*)(0x806F123A) = 0xE; // Instrument
+				*(short*)(0x806F123A) = 0xED; // Instrument
 				*(int*)(0x806CF37C) = 0; // Fix object holding
 				*(short*)(0x8074E82C) = 0xE; // Tag Barrel Model
 				*(short*)(0x8075EDAA) = 0xE; // Cutscene Chunky Model
 				*(short*)(0x8075571E) = 0xE; // Generic Cutscene Model
 				*(int*)(0x806F1274) = 0; // Prevent model change for GGone
 				*(int*)(0x806CBB84) = 0; // Enable opacity filter
+				*(short*)(0x8075BF3E) = 0x2F5C; // Make CS Model Behave normally
+				*(short*)(0x8075013E) = 0xE; // Low Poly Model
 			}
 			if (Rando.fast_gbs) {
 				*(short*)(0x806BBB22) = 0x0005; // Chunky toy box speedup
