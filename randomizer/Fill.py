@@ -1286,7 +1286,9 @@ def SetNewProgressionRequirements(settings: Settings):
         if settings.unlock_all_moves:
             ownedMoves[previousLevel] = allMoves
         else:
-            accessibleMoves = [LocationList[x].item for x in accessible if LocationList[x].type == Types.Shop and LocationList[x].item != Items.NoItem and LocationList[x].item is not None]
+            accessibleMoves = [
+                LocationList[x].item for x in accessible if LocationList[x].type in (Types.TrainingBarrel, Types.Shop) and LocationList[x].item != Items.NoItem and LocationList[x].item is not None
+            ]
             ownedMoves[previousLevel] = accessibleMoves
     # Cap the B. Locker amounts based on a random fraction of accessible bananas & GBs
     BLOCKER_MIN = 0.4
@@ -1339,6 +1341,7 @@ def SetNewProgressionRequirementsUnordered(settings: Settings):
     allMoves.extend(ItemPool.TinyMoves)
     allMoves.extend(ItemPool.ChunkyMoves)
     allMoves.extend(ItemPool.ImportantSharedMoves)
+    allMoves.extend(ItemPool.TrainingBarrelAbilities())
     KeyEvents = [
         Events.JapesKeyTurnedIn,
         Events.AztecKeyTurnedIn,
@@ -1506,7 +1509,9 @@ def SetNewProgressionRequirementsUnordered(settings: Settings):
             if settings.unlock_all_moves:
                 ownedMoves[bossCompletedLevel] = allMoves
             else:
-                accessibleMoves = [LocationList[x].item for x in accessible if LocationList[x].type == Types.Shop and LocationList[x].item != Items.NoItem and LocationList[x].item is not None]
+                accessibleMoves = [
+                    LocationList[x].item for x in accessible if LocationList[x].type in (Types.TrainingBarrel, Types.Shop) and LocationList[x].item != Items.NoItem and LocationList[x].item is not None
+                ]
                 ownedMoves[bossCompletedLevel] = accessibleMoves
 
         # Check Caves Lobby entrance accessibility. This is independent all other checks because it's not the key that unlocks the kongs, it's the level itself.
@@ -1525,8 +1530,8 @@ def SetNewProgressionRequirementsUnordered(settings: Settings):
         # This means that the level hasn't been unset from completion blocking
         if settings.BossBananas[level] > 500:
             # We should have access to everything by this point
-            ownedKongs[level] = LogicVariables.GetKongs()
-            ownedMoves[level] = allMoves
+            ownedKongs[Levels(level)] = LogicVariables.GetKongs()
+            ownedMoves[Levels(level)] = allMoves
             settings.BossBananas[level] = initialTNS[level]
     # Because we might not have sorted the B. Lockers when they're randomly generated, Helm might be a surprisingly low number if it's not maximized
     if settings.randomize_blocker_required_amounts and not settings.maximize_helm_blocker and settings.EntryGBs[7] < minimumBLockerGBs:

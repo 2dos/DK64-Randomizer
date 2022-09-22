@@ -626,7 +626,7 @@ DirtPatchLocations = [
         rotation=2618,
         vanilla=True,
         group=1,
-        logicregion=Regions.AngryAztecStart,
+        logicregion=Regions.AngryAztecOasis,
         logic=lambda l: l.shockwave,
     ),
     DirtPatchData(
@@ -663,7 +663,7 @@ DirtPatchLocations = [
         z=1125.0,
         rotation=4084,
         group=6,
-        logicregion=Regions.AngryAztecStart,
+        logicregion=Regions.AngryAztecOasis,
         logic=lambda l: l.shockwave,
     ),
     DirtPatchData(
@@ -675,7 +675,7 @@ DirtPatchLocations = [
         z=343.0,
         rotation=4009,
         group=1,
-        logicregion=Regions.AngryAztecStart,
+        logicregion=Regions.AngryAztecOasis,
         logic=lambda l: l.shockwave,
     ),
     DirtPatchData(
@@ -687,7 +687,7 @@ DirtPatchLocations = [
         z=702.0,
         rotation=3001,
         group=1,
-        logicregion=Regions.AngryAztecStart,
+        logicregion=Regions.AngryAztecOasis,
         logic=lambda l: l.shockwave,
     ),
     DirtPatchData(
@@ -699,7 +699,7 @@ DirtPatchLocations = [
         z=1706.0,
         rotation=3424,
         group=1,
-        logicregion=Regions.AngryAztecStart,
+        logicregion=Regions.AngryAztecOasis,
         logic=lambda l: l.shockwave,
     ),
     DirtPatchData(
@@ -735,7 +735,7 @@ DirtPatchLocations = [
         z=489.0,
         rotation=3492,
         group=1,
-        logicregion=Regions.AngryAztecStart,
+        logicregion=Regions.AngryAztecOasis,
         logic=lambda l: l.shockwave,
     ),
     DirtPatchData(
@@ -1062,7 +1062,7 @@ DirtPatchLocations = [
         z=3933.0,
         rotation=3652,
         group=1,
-        logicregion=Regions.LighthouseArea,
+        logicregion=Regions.LighthousePlatform,
         logic=lambda l: l.shockwave,
     ),
     DirtPatchData(
@@ -1075,7 +1075,7 @@ DirtPatchLocations = [
         scale=0.68,
         rotation=910,
         group=1,
-        logicregion=Regions.LighthouseArea,
+        logicregion=Regions.LighthousePlatform,
         logic=lambda l: l.shockwave,
     ),
     DirtPatchData(

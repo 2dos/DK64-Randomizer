@@ -54,16 +54,11 @@ def PlaceConstants(settings):
         # All locations NOT shuffled will place their default item here
         for location in locations:
             LocationList[location].PlaceDefaultItem()
-    if settings.training_barrels == "normal":
+    if settings.training_barrels == "normal" or settings.training_barrels == "startwith":
         LocationList[Locations.IslesVinesTrainingBarrel].PlaceConstantItem(Items.Vines)
         LocationList[Locations.IslesSwimTrainingBarrel].PlaceConstantItem(Items.Swim)
         LocationList[Locations.IslesOrangesTrainingBarrel].PlaceConstantItem(Items.Oranges)
         LocationList[Locations.IslesBarrelsTrainingBarrel].PlaceConstantItem(Items.Barrels)
-    elif settings.training_barrels == "startwith":
-        LocationList[Locations.IslesVinesTrainingBarrel].PlaceConstantItem(Items.NoItem)
-        LocationList[Locations.IslesSwimTrainingBarrel].PlaceConstantItem(Items.NoItem)
-        LocationList[Locations.IslesOrangesTrainingBarrel].PlaceConstantItem(Items.NoItem)
-        LocationList[Locations.IslesBarrelsTrainingBarrel].PlaceConstantItem(Items.NoItem)
     if settings.starting_kongs_count == 5:
         LocationList[Locations.DiddyKong].PlaceConstantItem(Items.NoItem)
         LocationList[Locations.LankyKong].PlaceConstantItem(Items.NoItem)

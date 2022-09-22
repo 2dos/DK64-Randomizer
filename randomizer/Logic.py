@@ -377,7 +377,7 @@ class LogicVarHolder:
 
     def CanFreeLanky(self):
         """Check if kong at Lanky location can be freed, requires freeing kong to have its gun and instrument."""
-        return self.HasGun(self.settings.lanky_freeing_kong) and self.HasInstrument(self.settings.lanky_freeing_kong)
+        return self.swim and self.HasGun(self.settings.lanky_freeing_kong) and self.HasInstrument(self.settings.lanky_freeing_kong)
 
     def CanFreeChunky(self):
         """Check if kong at Chunky location can be freed."""
@@ -510,7 +510,9 @@ class LogicVarHolder:
         if bossFight == Maps.FactoryBoss and requiredKong == Kongs.tiny:
             hasRequiredMoves = self.twirl
         elif bossFight == Maps.FungiBoss:
-            hasRequiredMoves = self.hunkyChunky
+            hasRequiredMoves = self.hunkyChunky and self.barrels
+        elif bossFight == Maps.JapesBoss or bossFight == Maps.AztecBoss or bossFight == Maps.CavesBoss:
+            hasRequiredMoves = self.barrels
         return self.IsKong(requiredKong) and hasRequiredMoves
 
     def IsLevelEnterable(self, level):
