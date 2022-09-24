@@ -255,7 +255,10 @@ void bananaportGenericCode(behaviour_data* behaviour, int index, int id) {
 				}
 			}
 			if (checkFlag(selected_warp->active_flag,0) == 0) {
-				hideObject(behaviour);
+				behaviour->unk_71 = 0;
+				behaviour->unk_60 = 1;
+				behaviour->unk_62 = 0;
+				behaviour->unk_66 = 255;
 				behaviour->next_state = 50;
 			}
 			if (checkFlag(selected_warp->active_flag,0) || checkFlag(selected_warp->appear_flag,0)) {

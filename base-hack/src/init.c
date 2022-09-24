@@ -235,6 +235,13 @@ void initHack(int source) {
 				*(short*)(0x806BDC3C) = 0x1000; // Apply shorter timer to all keys
 				// Fast Vulture
 				*(int*)(0x806C50BC) = 0x0C000000 | (((int)&clearVultureCutscene & 0xFFFFFF) >> 2); // Modify Function Call
+				// General
+				// *(int*)(0x8061D920) = 0xA4205CEC; // Set cutscene state change to 0
+				// *(int*)(0x8061D91C) = 0x0C000000 | (((int)&checkSkippableCutscene & 0xFFFFFF) >> 2); // Modify Function Call
+			} else {
+				for (int i = 0; i < 432; i++) {
+					cs_skip_db[i] = 0;
+				}
 			}
 			if (Rando.quality_of_life.fast_picture) {
 				// Fast Camera Photo
@@ -294,6 +301,7 @@ void initHack(int source) {
 				*(int*)(0x806396D0) = 0x95CD036E; // Rendering
 				*(int*)(0x80639690) = 0x9519036E; // Rendering
 			}
+			*(int*)(0x805FEBC0) = 0x0C000000 | (((int)&parseCutsceneData & 0xFFFFFF) >> 2); // modifyCutsceneHook
 			*(int*)(0x807313A4) = 0x0C000000 | (((int)&checkVictory_flaghook & 0xFFFFFF) >> 2); // perm flag set hook
 			if (Rando.helm_hurry_mode) {
 				*(int*)(0x806F56F8) = 0x0C000000 | (((int)&blueprintCollect & 0xFFFFFF) >> 2); // Blueprint collection hook

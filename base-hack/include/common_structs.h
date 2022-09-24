@@ -346,6 +346,13 @@ typedef struct cutscene_item {
 	/* 0x00C */ char unkC[0x14-0xC];
 } cutscene_item;
 
+typedef struct cutscene_item_data {
+	/* 0x000 */ short num_points;
+	/* 0x002 */ short unk_02;
+	/* 0x004 */ void* point_array;
+	/* 0x008 */ void* length_array;
+} cutscene_item_data;
+
 typedef struct cutsceneType {
 	/* 0x000 */ char unk_00[0xD0];
 	/* 0x0D0 */ cutsceneInfo* cutscene_databank;

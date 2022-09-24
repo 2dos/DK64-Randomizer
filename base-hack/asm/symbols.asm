@@ -218,6 +218,8 @@
 .definelabel loadFile, 0x8060DC3C
 .definelabel loadEndSeq, 0x807127F4
 .definelabel checkGlobalProgress, 0x807311C4
+.definelabel updateCutscene, 0x806F3DB0
+.definelabel loadDKTVData, 0x80712B80
 
 //vanilla data
 .definelabel TransitionSpeed, 0x807FD88C

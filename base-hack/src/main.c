@@ -378,3 +378,47 @@ void toggleStandardAmmo(void) {
 		}
 	}
 }
+
+void updateSkippableCutscenes(void) {
+	if (CurrentMap < 216) {
+		if (CutsceneBanks[0].cutscene_databank) {
+			for (int i = 0; i < 64; i++) {
+				int offset = 1;
+				int shift = i - 32;
+				if (i < 32) {
+					offset = 0;
+					shift = i;
+				}
+				if (cs_skip_db[(2 * CurrentMap) + offset] & (1 << shift)) {
+					void* databank = CutsceneBanks[0].cutscene_databank;
+					cutscene_item_data* data = (cutscene_item_data*)getObjectArrayAddr(databank,0xC,i);
+					if (data) {
+						for (int j = 0; j < data->num_points; j++) {
+							short* write_spot = (short*)getObjectArrayAddr(data->length_array,2,j);
+							if (write_spot) {
+								*(short*)write_spot = 0;
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+}
+
+void checkSkippableCutscene(void) {
+	if (CutsceneActive == 1) {
+		if ((CutsceneIndex < 64) && (CurrentMap < 216)) {
+			int offset = 1;
+			int shift = CutsceneIndex - 32;
+			if (CutsceneIndex < 32) {
+				offset = 0;
+				shift = CutsceneIndex;
+			}
+			if ((cs_skip_db[(2 * CurrentMap) + offset] & (1 << shift)) && ((CutsceneStateBitfield & 4) == 0)) {
+				CameraStateChangeTimer = 0;
+			}
+		}
+	}
+	updateCutscene();
+}

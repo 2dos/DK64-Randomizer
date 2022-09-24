@@ -89,3 +89,61 @@ HomingHUDHandle:
         OR 			a0, a3, r0
         J 			0x806EB57C
         OR 			a1, r0, r0
+
+SkipCutscenePans:
+    LUI         t1, hi(CutsceneActive)
+    ADDIU       v0, r0, 1
+    LBU         t1, lo(CutsceneActive) (t1)
+    BNE         t1, v0, SkipCutscenePans_Persist
+    NOP
+    LUI         t1, hi(CutsceneIndex)
+    LHU         t1, lo(CutsceneIndex) (t1)
+    SLTIU       v0, t1, 64
+    BEQZ        v0, SkipCutscenePans_Persist
+    NOP
+    LUI         t1, hi(CurrentMap)
+    LW          t1, lo(CurrentMap) (t1)
+    SLTIU       v0, t1, 216
+    BEQZ        v0, SkipCutscenePans_Persist
+    NOP
+    LUI         t1, hi(CutsceneIndex)
+    LHU         t1, lo(CutsceneIndex) (t1)
+    ADDIU       t6, r0, 32
+    SUBU        v0, t1, t6
+    SLTIU       t1, t1, 32
+    BEQZ        t1, SkipCutscenePans_PostShiftDetect
+    ADDIU       t1, r0, 1
+    LUI         t1, hi(CutsceneIndex)
+    LHU         v0, lo(CutsceneIndex) (t1)
+    ADDIU       t1, r0, 0
+
+    SkipCutscenePans_PostShiftDetect:
+        // t1 = offset, v0 = shift
+        LUI         t6, hi(CurrentMap)
+        LW          t6, lo(CurrentMap) (t6)
+        SLL         t6, t6, 1
+        ADDU        t6, t6, t1
+        SLL         t6, t6, 2
+        LUI         t1, hi(cs_skip_db)
+        ADDIU       t1, t1, lo(cs_skip_db)
+        ADDU        t6, t6, t1
+        LW          t6, 0x0 (t6)
+        ADDIU       t1, r0, 1
+        SLLV        t1, t1, v0
+        AND         t6, t6, t1
+        BEQZ        t6, SkipCutscenePans_Persist
+        NOP
+        LUI         t6, hi(CutsceneStateBitfield)
+        LHU         t6, lo(CutsceneStateBitfield) (t6)
+        ANDI        t6, t6, 4
+        BEQZ        t6, SkipCutscenePans_Skip
+        NOP
+
+    SkipCutscenePans_Persist:
+        LW          t1, 0x0 (s1)
+        J           0x8061E68C
+        LUI         v0, 0x807F
+
+    SkipCutscenePans_Skip:
+        J           0x8061E8A4
+        NOP

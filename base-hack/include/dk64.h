@@ -233,6 +233,8 @@ extern void displayMenuSprite(void* paad, void* sprite_address, int x, int y, fl
 extern void loadFile(int file, int restock_inventory);
 extern void loadEndSeq(int mode);
 extern void checkGlobalProgress(int flag);
+extern void updateCutscene(void);
+extern void loadDKTVData(void);
 
 //vanilla data
 extern float TransitionSpeed;

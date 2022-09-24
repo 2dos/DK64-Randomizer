@@ -155,4 +155,9 @@ extern void checkTotalCache(void);
 extern void checkSeedVictory(void);
 extern void checkVictory_flaghook(int flag);
 extern void FileProgressInitSub(int file, int shuffle);
+extern void checkSkippableCutscene(void);
+extern void updateSkippableCutscenes(void);
+extern void parseCutsceneData(void);
 //extern void getRandoNextMovePurchase(shop_paad* shop_info, KongBase* moves);
+
+extern unsigned int cs_skip_db[432];

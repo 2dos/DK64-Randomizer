@@ -151,13 +151,6 @@ void cancelCutscene(int enable_movement) {
 	}
 }
 
-typedef struct cutscene_item_data {
-	/* 0x000 */ short num_points;
-	/* 0x002 */ short unk_02;
-	/* 0x004 */ void* point_array;
-	/* 0x008 */ void* length_array;
-} cutscene_item_data;
-
 void modifyCutscenePoint(int bank, int cutscene, int point, int new_item) {
 	if (CutsceneBanks[bank].cutscene_databank) {
 		void* databank = CutsceneBanks[bank].cutscene_databank;

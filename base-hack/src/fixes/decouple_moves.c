@@ -78,10 +78,6 @@ void decouple_moves_fixes(void) {
 	} else if (CurrentMap == 0x11) {
 		HelmInit(0);
 	}
-	if ((CurrentMap >= 0xCB) && (CurrentMap <= 0xCF)) {
-		int phase = CurrentMap - 0xCB;
-		initKRool(phase);
-	}
 	if (Rando.short_bosses) {
 		if ((CurrentMap == 8) || (DestMap == 8)) {
 			*(short*)(0x8074D3A8) = 4; // Dillo Health - AD1
@@ -157,4 +153,15 @@ void decouple_moves_fixes(void) {
 			*(short*)(0x8002D0E2) = 0x0001; //1 Lap
 		}
 	}
+}
+
+void parseCutsceneData(void) {
+	if ((CurrentMap >= 0xCB) && (CurrentMap <= 0xCF)) {
+		int phase = CurrentMap - 0xCB;
+		initKRool(phase);
+	}
+	if (Rando.quality_of_life.remove_cutscenes) {
+		updateSkippableCutscenes();
+	}
+	loadDKTVData(); // Has to be last
 }
