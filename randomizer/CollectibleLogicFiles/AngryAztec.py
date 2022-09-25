@@ -129,7 +129,7 @@ LogicRegions = {
         Collectible(Collectibles.banana, Kongs.lanky, lambda l: True, None, 6),
         Collectible(Collectibles.bunch, Kongs.lanky, lambda l: lambda l: True, None, 1),  # Warp 1
         Collectible(Collectibles.balloon, Kongs.lanky, lambda l: lambda l: Events.AztecLlamaSpit in l.Events and l.grape and l.swim, None, 2),
-        Collectible(Collectibles.bunch, Kongs.lanky, lambda l: lambda l: l.grape, None, 1),  # Matching game
+        Collectible(Collectibles.bunch, Kongs.lanky, lambda l: lambda l: l.grape and l.vines, None, 1),  # Matching game
 
         Collectible(Collectibles.balloon, Kongs.tiny, lambda l: l.feather, None, 1),
         Collectible(Collectibles.banana, Kongs.tiny, lambda l: True, None, 3),

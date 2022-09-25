@@ -37,6 +37,10 @@ def PlaceConstants(settings):
             shuffledLocations.extend(TinyMoveLocations)
             shuffledLocations.extend(ChunkyMoveLocations)
             shuffledLocations.extend(SharedMoveLocations)
+            if settings.training_barrels == "shuffled":
+                shuffledLocations.extend(TrainingBarrelLocations)
+            if settings.shockwave_status != "vanilla":
+                shuffledLocations.append(Locations.CameraAndShockwave)
         if settings.kong_rando:
             shuffledLocations.append(Locations.DiddyKong)
             shuffledLocations.append(Locations.LankyKong)
@@ -54,7 +58,7 @@ def PlaceConstants(settings):
         # All locations NOT shuffled will place their default item here
         for location in locations:
             LocationList[location].PlaceDefaultItem()
-    if settings.training_barrels == "normal" or settings.training_barrels == "startwith":
+    if settings.training_barrels == "normal":
         LocationList[Locations.IslesVinesTrainingBarrel].PlaceConstantItem(Items.Vines)
         LocationList[Locations.IslesSwimTrainingBarrel].PlaceConstantItem(Items.Swim)
         LocationList[Locations.IslesOrangesTrainingBarrel].PlaceConstantItem(Items.Oranges)
@@ -100,7 +104,7 @@ def PlaceConstants(settings):
         LocationList[Locations.MusicUpgrade1].PlaceConstantItem(Items.NoItem)
         LocationList[Locations.ThirdMelon].PlaceConstantItem(Items.NoItem)
         LocationList[Locations.MusicUpgrade2].PlaceConstantItem(Items.NoItem)
-    if settings.unlock_fairy_shockwave:
+    if settings.unlock_fairy_shockwave and settings.shockwave_status == "vanilla":
         LocationList[Locations.CameraAndShockwave].PlaceConstantItem(Items.NoItem)
 
 
@@ -119,6 +123,13 @@ def AllItems(settings):
         allItems.extend(TinyMoves)
         allItems.extend(ChunkyMoves)
         allItems.extend(ImportantSharedMoves)
+        if settings.training_barrels == "shuffled":
+            allItems.extend(TrainingBarrelAbilities().copy())
+        if settings.shockwave_status == "shuffled":
+            allItems.append(Items.CameraAndShockwave)
+        elif settings.shockwave_status == "shuffled_decoupled":
+            allItems.append(Items.Camera)
+            allItems.append(Items.Shockwave)
     if settings.kong_rando:
         allItems.extend(Kongs(settings))
     return allItems
@@ -291,7 +302,11 @@ def Upgrades(settings):
                 ]
             )
     if not settings.unlock_fairy_shockwave:
-        upgrades.append(Items.CameraAndShockwave)
+        if settings.shockwave_status == "vanilla" or settings.shockwave_status == "shuffled":
+            upgrades.append(Items.CameraAndShockwave)
+        else:
+            upgrades.append(Items.Camera)
+            upgrades.append(Items.Shockwave)
 
     return upgrades
 
@@ -557,6 +572,12 @@ def GetKongMoveOccupiedShops():
     return list(set(occupiedShops))
 
 
+TrainingBarrelLocations = {
+    Locations.IslesSwimTrainingBarrel,
+    Locations.IslesVinesTrainingBarrel,
+    Locations.IslesBarrelsTrainingBarrel,
+    Locations.IslesOrangesTrainingBarrel,
+}
 DonkeyMoveLocations = {
     Locations.BaboonBlast,
     Locations.StrongKong,
@@ -644,6 +665,7 @@ TinyMoveLocations = {
     Locations.TinyCavesInstrument,
     Locations.TinyCastleInstrument,
     Locations.TinyIslesPotion,
+    Locations.CameraAndShockwave,
 }
 ChunkyMoveLocations = {
     Locations.HunkyChunky,
@@ -688,6 +710,11 @@ SharedMoveLocations = {
     Locations.SharedGalleonPotion,
     Locations.SharedGalleonGun,
     Locations.SharedCavesPotion,
+    Locations.IslesSwimTrainingBarrel,
+    Locations.IslesVinesTrainingBarrel,
+    Locations.IslesBarrelsTrainingBarrel,
+    Locations.IslesOrangesTrainingBarrel,
+    Locations.CameraAndShockwave,
 }
 DonkeyMoves = [Items.Coconut, Items.Bongos, Items.BaboonBlast, Items.StrongKong, Items.GorillaGrab]
 DiddyMoves = [Items.Peanut, Items.Guitar, Items.ChimpyCharge, Items.RocketbarrelBoost, Items.SimianSpring]
