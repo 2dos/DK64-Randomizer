@@ -25,7 +25,7 @@ with open(csv_file, "r") as csv:
         cs_lo = 0
         cs_hi = 0
         for cs_index, cs in enumerate(cutscenes_skipped):
-            if cs == True:
+            if cs:
                 if cs_index < 32:
                     cs_lo |= 1 << cs_index
                 else:
