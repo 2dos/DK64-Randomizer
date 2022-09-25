@@ -1038,7 +1038,7 @@ def FillKongsAndMoves(spoiler):
     itemsToPlace = []
     validLocations = {}
     preplacedPriorityMoves = []
-    trainingMoveBlockedLocations = {}
+    trainingMoveBlockedLocations = set({})
 
     # Handle kong rando
     if spoiler.settings.kong_rando:

@@ -104,7 +104,7 @@ def PlaceConstants(settings):
         LocationList[Locations.MusicUpgrade1].PlaceConstantItem(Items.NoItem)
         LocationList[Locations.ThirdMelon].PlaceConstantItem(Items.NoItem)
         LocationList[Locations.MusicUpgrade2].PlaceConstantItem(Items.NoItem)
-    if settings.unlock_fairy_shockwave and settings.shockwave_status == "vanilla":
+    if settings.unlock_fairy_shockwave:
         LocationList[Locations.CameraAndShockwave].PlaceConstantItem(Items.NoItem)
 
 
@@ -125,11 +125,11 @@ def AllItems(settings):
         allItems.extend(ImportantSharedMoves)
         if settings.training_barrels == "shuffled":
             allItems.extend(TrainingBarrelAbilities().copy())
-        if settings.shockwave_status == "shuffled":
-            allItems.append(Items.CameraAndShockwave)
-        elif settings.shockwave_status == "shuffled_decoupled":
+        if settings.shockwave_status == "shuffled_decoupled":
             allItems.append(Items.Camera)
             allItems.append(Items.Shockwave)
+        else:
+            allItems.append(Items.CameraAndShockwave)
     if settings.kong_rando:
         allItems.extend(Kongs(settings))
     return allItems
