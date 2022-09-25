@@ -20,6 +20,9 @@ class Item:
             self.kong = data[0]
             self.movetype = data[1]
             self.index = data[2]
+        if type in (Types.TrainingBarrel, Types.Shockwave):
+            self.movetype = data[0]
+            self.flag = data[1]
 
 
 def ItemFromKong(kong):
@@ -77,10 +80,10 @@ ItemList = {
     Items.Lanky: Item("Lanky", True, Types.Kong),
     Items.Tiny: Item("Tiny", True, Types.Kong),
     Items.Chunky: Item("Chunky", True, Types.Kong),
-    Items.Vines: Item("Vines", True, Types.TrainingBarrel),
-    Items.Swim: Item("Swim", True, Types.TrainingBarrel),
-    Items.Oranges: Item("Oranges", True, Types.TrainingBarrel),
-    Items.Barrels: Item("Barrels", True, Types.TrainingBarrel),
+    Items.Vines: Item("Vines", True, Types.TrainingBarrel, [MoveTypes.Flag, "vine"]),
+    Items.Swim: Item("Swim", True, Types.TrainingBarrel, [MoveTypes.Flag, "dive"]),
+    Items.Oranges: Item("Oranges", True, Types.TrainingBarrel, [MoveTypes.Flag, "orange"]),
+    Items.Barrels: Item("Barrels", True, Types.TrainingBarrel, [MoveTypes.Flag, "barrel"]),
     Items.ProgressiveSlam: Item("Progressive Slam", True, Types.Shop, [Kongs.any, MoveTypes.Slam, 2]),
     Items.ProgressiveDonkeyPotion: Item("Progressive Donkey Potion", True, Types.Shop, [Kongs.donkey, MoveTypes.Moves, 1]),
     Items.BaboonBlast: Item("Baboon Blast", True, Types.Shop, [Kongs.donkey, MoveTypes.Moves, 1]),
@@ -118,7 +121,9 @@ ItemList = {
     Items.ProgressiveInstrumentUpgrade: Item("Progressive Instrument Upgrade", False, Types.Shop, [Kongs.any, MoveTypes.Instruments, 2]),
     Items.NintendoCoin: Item("Nintendo Coin", True, Types.Coin),
     Items.RarewareCoin: Item("Rareware Coin", True, Types.Coin),
-    Items.CameraAndShockwave: Item("Camera and Shockwave", True, Types.Shockwave),
+    Items.Camera: Item("Fairy Camera", True, Types.Shockwave, [MoveTypes.Flag, "camera"]),
+    Items.Shockwave: Item("Shockwave", True, Types.Shockwave, [MoveTypes.Flag, "shockwave"]),
+    Items.CameraAndShockwave: Item("Camera and Shockwave", True, Types.Shockwave, [MoveTypes.Flag, "camera_shockwave"]),
     Items.JungleJapesKey: Item("Jungle Japes Key", True, Types.Key),
     Items.AngryAztecKey: Item("Angry Aztec Key", True, Types.Key),
     Items.FranticFactoryKey: Item("Frantic Factory Key", True, Types.Key),
