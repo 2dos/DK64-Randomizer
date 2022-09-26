@@ -288,6 +288,7 @@ class Settings:
         self.enguarde_colors = "vanilla"
         self.enguarde_custom_color = "#000000"
         self.disco_chunky = False
+        self.krusha_slot = "no_slot"
 
         #  Misc
         self.generate_spoilerlog = None

@@ -405,20 +405,3 @@ void updateSkippableCutscenes(void) {
 		}
 	}
 }
-
-void checkSkippableCutscene(void) {
-	if (CutsceneActive == 1) {
-		if ((CutsceneIndex < 64) && (CurrentMap < 216)) {
-			int offset = 1;
-			int shift = CutsceneIndex - 32;
-			if (CutsceneIndex < 32) {
-				offset = 0;
-				shift = CutsceneIndex;
-			}
-			if ((cs_skip_db[(2 * CurrentMap) + offset] & (1 << shift)) && ((CutsceneStateBitfield & 4) == 0)) {
-				CameraStateChangeTimer = 0;
-			}
-		}
-	}
-	updateCutscene();
-}

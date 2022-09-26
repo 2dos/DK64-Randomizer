@@ -235,6 +235,8 @@ extern void loadEndSeq(int mode);
 extern void checkGlobalProgress(int flag);
 extern void updateCutscene(void);
 extern void loadDKTVData(void);
+extern void clearActorList(void);
+extern void updateModelScales(void* actor, int size);
 
 //vanilla data
 extern float TransitionSpeed;
@@ -430,6 +432,20 @@ extern float menuHeadScale[5];
 extern collected_item_struct* LatestCollectedObject;
 extern image_cache_struct ImageCache[32];
 
+extern short* AnimationTable1;
+extern short* AnimationTable2;
+extern short* AnimationTable3;
+extern SpawnerInfo* TiedCharacterSpawner;
+extern kong_model_struct KongModelData[8];
+extern tag_model_struct TagModelData[5];
+extern short RollingSpeeds[7];
+extern int KongTagNames[9];
+extern short KrazyKKModels[6];
+extern short ChargeVelocities_0[7];
+extern short ChargeVelocities_1[7];
+extern short ChargeDeceleration[7];
+extern char* KongTextNames[8];
+
 //hack data
 extern int TestVariable;
 extern char LoadedHooks;
@@ -470,3 +486,4 @@ extern char ToggleAmmoOn;
 extern void* WarpData;
 extern unsigned char InvertedControls;
 extern unsigned char WinCondition;
+extern unsigned char ChunkyModel;

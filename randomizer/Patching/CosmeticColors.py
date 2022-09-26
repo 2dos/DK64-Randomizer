@@ -138,16 +138,31 @@ def apply_cosmetic_colors(spoiler: Spoiler):
     for kong in kong_settings:
         process = True
         if kong["kong_index"] == 4:  # Chunky
-            if spoiler.settings.disco_chunky and kong["kong"] == "chunky":
+            is_disco = spoiler.settings.disco_chunky
+            if spoiler.settings.krusha_slot == "chunky":
+                is_disco = False
+            if is_disco and kong["kong"] == "chunky":
                 process = False
-            elif not spoiler.settings.disco_chunky and kong["kong"] == "disco_chunky":
+            elif not is_disco and kong["kong"] == "disco_chunky":
                 process = False
+        kong_names = ["dk", "diddy", "lanky", "tiny", "chunky"]
+        is_krusha = False
+        if spoiler.settings.krusha_slot in kong_names:
+            if kong_names.index(spoiler.settings.krusha_slot) == kong["kong_index"]:
+                is_krusha = True
+                kong["palettes"] = [
+                    {"name": "krusha_skin", "image": 4971, "fill_type": "block"},
+                    {"name": "krusha_indicator", "image": 4966, "fill_type": "kong"},
+                ]
         if process:
             base_obj = {"kong": kong["kong"], "zones": []}
             for palette in kong["palettes"]:
                 arr = ["#000000"]
                 if palette["fill_type"] == "checkered":
                     arr = ["#000000", "#000000"]
+                elif palette["fill_type"] == "kong":
+                    kong_colors = ["#ffd700", "#ff0000", "#1699ff", "#B045ff", "#41ff25"]
+                    arr = [kong_colors[kong["kong_index"]]]
                 base_obj["zones"].append({"zone": palette["name"], "image": palette["image"], "fill_type": palette["fill_type"], "colors": arr})
             if colors_dict[kong["base_setting"]] != "vanilla":
                 if colors_dict[kong["base_setting"]] == "randomized":
@@ -157,7 +172,7 @@ def apply_cosmetic_colors(spoiler: Spoiler):
                     if not color:
                         color = "#000000"
                 base_obj["zones"][0]["colors"][0] = color
-                if kong["kong_index"] in (2, 4):
+                if kong["kong_index"] in (2, 4) and not is_krusha:
                     base_obj["zones"][1]["colors"][0] = color
                     if kong["kong_index"] == 4:
                         red = int(f"0x{color[1:3]}", 16)
@@ -172,4 +187,5 @@ def apply_cosmetic_colors(spoiler: Spoiler):
                 color_obj[f"{kong['kong']}"] = color
     spoiler.settings.colors = color_obj
     if len(color_palettes) > 0:
+        print(color_palettes)
         convertColors(color_palettes)

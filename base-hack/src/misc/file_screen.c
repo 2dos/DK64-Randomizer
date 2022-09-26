@@ -1,12 +1,12 @@
 #include "../../include/common.h"
 
-static char file_percentage[5] = "";
-static char golden_count[4] = "";
-static char balanced_igt[20] = "";
-static char bp_count_str[5] = "";
-static short igt_h = 0;
-static short igt_m = 0;
-static short igt_s = 0;
+// static char file_percentage[5] = "";
+// static char golden_count[4] = "";
+// static char balanced_igt[20] = "";
+// static char bp_count_str[5] = "";
+// static short igt_h = 0;
+// static short igt_m = 0;
+// static short igt_s = 0;
 static char updated_tracker = 0;
 
 #define LINE_GAP 0x8C
@@ -444,27 +444,8 @@ typedef enum file_screen_modes {
 
 int* display_images(int* dl, file_screen_modes mode) {
 	int y_offset = FileScreenDLOffset - 720;
-	dl = drawImage(dl, IMAGE_TRACKER, RGBA16, TRACKER_WIDTH, TRACKER_HEIGHT, 160, y_offset + 125,1.0f, 1.0f,0xFF);
+	dl = drawImage(dl, IMAGE_TRACKER, RGBA16, TRACKER_WIDTH, TRACKER_HEIGHT, 160, y_offset + 150,1.0f, 1.0f,0xFF);
 	modifyTrackerImage();
-	// for (int i = 0; i < 8; i++) {
-	// 	int key_there = checkFlag(FLAG_KEYIN_KEY1 + i,0);
-	// 	if (!key_there) {
-	// 		if (Rando.keys_preturned & (1 << i)) {
-	// 			key_there = 1;
-	// 		}
-	// 	}
-	// 	float divisor = (key_there ^ 1) + 1;
-	// 	if (divisor == 0) {
-	// 		divisor = 1;
-	// 	}
-	// 	float opacity_mult = 1.0f / divisor;
-	// 	float opacity_f = 255 * opacity_mult;
-	// 	int opacity_i = opacity_f;
-	// 	if (opacity_i > 255) {
-	// 		opacity_i = 255;
-	// 	}
-	// 	dl = drawImage(dl, 107 + i, RGBA16, 32, 32, 900 + (150 * (i % 2)), (520 + y_offset + (80 * (i / 2))),4.0f, 4.0f,opacity_i);
-	// }
 	return dl;
 }
 
@@ -520,23 +501,23 @@ int* display_text(int* dl) {
 	LevelStateBitfield &= 0xFFFFFFEF;
 	// File Percentage
 	// int y = FileScreenDLOffset - 320;
-	if (file_mode == FILEMODE_USED) {
-		int y_gap = 53;
-		int y_start = (FileScreenDLOffset - 320) - y_gap - 144;
-		// Move Count
-		// File Percentage
-		dk_strFormat((char*)file_percentage, "%d%%", FilePercentage);
-		dl = drawText(dl, 1, 150, y_start + 340, (char*)file_percentage, 0xFF, 0xFF, 0xFF, 0xFF);
-		// GB Count
-		dk_strFormat((char*)golden_count, "%03d",FileGBCount);
-		dl = drawText(dl, 1, 140, y_start + 310, (char*)golden_count, 0xFF, 0xFF, 0xFF, 0xFF);
-		// BP Count
-		dk_strFormat((char*)bp_count_str, "%02d", countFlagArray(0x1D5,40,0));
-		dl = drawText(dl, 1, 460, y_start + 310, (char*)bp_count_str, 0xFF, 0xFF, 0xFF, 0xFF);
-		// Balanced IGT
-		dk_strFormat((char*)balanced_igt, "%03d:%02d:%02d",igt_h,igt_m,igt_s);
-		dl = drawText(dl, 1, 415, y_start + 340, (char*)balanced_igt, 0xFF, 0xFF, 0xFF, 0xFF);
-	}
+	// if (file_mode == FILEMODE_USED) {
+	// 	int y_gap = 53;
+	// 	int y_start = (FileScreenDLOffset - 320) - y_gap - 144;
+	// 	// Move Count
+	// 	// File Percentage
+	// 	dk_strFormat((char*)file_percentage, "%d%%", FilePercentage);
+	// 	dl = drawText(dl, 1, 150, y_start + 340, (char*)file_percentage, 0xFF, 0xFF, 0xFF, 0xFF);
+	// 	// GB Count
+	// 	dk_strFormat((char*)golden_count, "%03d",FileGBCount);
+	// 	dl = drawText(dl, 1, 140, y_start + 310, (char*)golden_count, 0xFF, 0xFF, 0xFF, 0xFF);
+	// 	// BP Count
+	// 	dk_strFormat((char*)bp_count_str, "%02d", countFlagArray(0x1D5,40,0));
+	// 	dl = drawText(dl, 1, 460, y_start + 310, (char*)bp_count_str, 0xFF, 0xFF, 0xFF, 0xFF);
+	// 	// Balanced IGT
+	// 	dk_strFormat((char*)balanced_igt, "%03d:%02d:%02d",igt_h,igt_m,igt_s);
+	// 	dl = drawText(dl, 1, 415, y_start + 340, (char*)balanced_igt, 0xFF, 0xFF, 0xFF, 0xFF);
+	// }
 	// Image Render
 	dl = display_images(dl,file_mode);
 	return dl;

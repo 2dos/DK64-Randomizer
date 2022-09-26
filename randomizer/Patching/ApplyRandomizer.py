@@ -330,6 +330,14 @@ def patching_response(responded_data):
         ROM().seek(sav + 0x12F)
         ROM().write(1)
 
+    # Krusha Slot
+    kong_names = ["dk", "diddy", "lanky", "tiny", "chunky"]
+    ROM().seek(sav + 0x11C)
+    if spoiler.settings.krusha_slot == "no_slot":
+        ROM().write(255)
+    elif spoiler.settings.krusha_slot in kong_names:
+        ROM().write(kong_names.index(spoiler.settings.krusha_slot))
+
     # Show CBs & Coins
     if spoiler.settings.cb_rando:
         ROM().seek(sav + 0xAF)

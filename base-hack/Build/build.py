@@ -401,7 +401,7 @@ for x in range(8):
         }
     )
 for x in range(43):
-    if x not in (13, 32, 0x18, 0x27, 8, 37):
+    if x not in (13, 32, 0x18, 0x27, 8, 37, 2):
         file_dict.append(
             {
                 "name": "Text " + str(x),
@@ -450,10 +450,10 @@ for x in range(5):
             }
         )
 
-kong_palettes = [0xE8C, 0xE66, 0xE69, 0xEB9, 0xE67, 3826, 3847, 3734, 3777, 3778]
+kong_palettes = [0xE8C, 0xE66, 0xE69, 0xEB9, 0xE67, 3826, 3847, 3734, 3777, 3778, 4971, 4966]
 for x in kong_palettes:
     x_s = 32 * 32 * 2
-    if x == 0xEB9 or x == 3734:  # Chunky Shirt Back or Lanky Patch
+    if x in (0xEB9, 3734):  # Chunky Shirt Back, Lanky Patch
         x_s = 43 * 32 * 2
     file_dict.append({"name": f"Palette Expansion ({hex(x)})", "pointer_table_index": 25, "file_index": x, "source_file": f"palette_{x}.bin", "target_compressed_size": x_s})
 
@@ -466,6 +466,7 @@ model_changes = [
     {"model_index": 8, "model_file": "tiny_base.bin"},
     {"model_index": 9, "model_file": "tiny_ins.bin"},
     {"model_index": 0xEC, "model_file": "disco_instrument.bin"},
+    {"model_index": 0xDA, "model_file": "krusha_base.bin"},
 ]
 for x in model_changes:
     data = {
@@ -565,6 +566,16 @@ file_dict.append(
         "pointer_table_index": 12,
         "file_index": 37,
         "source_file": "menu_text.bin",
+        "do_not_compress": True,
+        "do_not_delete_source": True,
+    }
+)
+file_dict.append(
+    {
+        "name": "Kong Name Text",
+        "pointer_table_index": 12,
+        "file_index": 2,
+        "source_file": "kongname_text.bin",
         "do_not_compress": True,
         "do_not_delete_source": True,
     }
@@ -876,6 +887,8 @@ with open(newROMName, "r+b") as fh:
     writeVanillaSongData(fh)
     fh.seek(0x1FED020 + 0x11E)
     fh.write((1).to_bytes(1, "big"))
+    fh.seek(0x1FED020 + 0x11C)
+    fh.write((0xFF).to_bytes(1, "big"))
     for x in portal_images:
         for y in x:
             if os.path.exists(y):

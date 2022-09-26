@@ -46,7 +46,9 @@ typedef struct actorData {
 	/* 0x0BC */ char unk_BC[0xC0-0xBC];
 	/* 0x0C0 */ float yVelocity;
 	/* 0x0C4 */ float yAccel;
-	/* 0x0C8 */ char unk_C8[0xE6-0xC8];
+	/* 0x0C8 */ char unk_C8[0xCC-0xC8];
+	/* 0x0CC */ char unk_CC;
+	/* 0x0CD */ char unk_CD[0xE6-0xCD];
 	/* 0x0E6 */ short rot_y;
 	/* 0x0E8 */ short rot_z;
 	/* 0x0EA */ char unk_EA[0x4];
@@ -190,13 +192,17 @@ typedef struct playerData {
 	/* 0x16A */ unsigned char rgb_components[3];
 	/* 0x16D */ char unk_16D[0x18A-0x16D];
 	/* 0x18A */ short moving_angle;
-	/* 0x18C */ char unk_18C[0x1B8-0x18C];
+	/* 0x18C */ char unk_18C[0x1B0-0x18C];
+	/* 0x1B0 */ float unk_1B0;
+	/* 0x1B4 */ char unk_1B4[0x1B8-0x1B4];
 	/* 0x1B8 */ float velocity_cap;
 	/* 0x1BC */ char unk_1BC[0x1C8-0x1BC];
 	/* 0x1C8 */ short turn_speed;
 	/* 0x1CA */ char unk_1CA[0x1D0-0x1CA];
 	/* 0x1D0 */ short ostand_value;
-	/* 0x1D2 */ char unk_1D2[0x208-0x1D2];
+	/* 0x1D2 */ char unk_1D2[0x1E8-0x1D2];
+	/* 0x1E8 */ float unk_1E8;
+	/* 0x1EC */ char unk_1EC[0x208-0x1EC];
 	/* 0x208 */ void* vehicle_actor_pointer;
 	/* 0x20C */ char was_gun_out;
 	/* 0x20D */ char unk_20D[0x23C - 0x20D];
@@ -1212,3 +1218,17 @@ typedef struct image_cache_struct {
 	/* 0x006 */ unsigned char image_state;
 	/* 0x007 */ char unk7;
 } image_cache_struct;
+
+typedef struct kong_model_struct {
+	/* 0x000 */ int actor;
+	/* 0x004 */ int kong_index;
+	/* 0x008 */ int model;
+	/* 0x00C */ int unk0;
+} kong_model_struct;
+
+typedef struct tag_model_struct {
+	/* 0x000 */ short model;
+	/* 0x002 */ short actor;
+	/* 0x004 */ char unk0;
+	/* 0x005 */ char unk1;
+} tag_model_struct;

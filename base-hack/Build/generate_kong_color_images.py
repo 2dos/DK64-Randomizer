@@ -42,6 +42,13 @@ color_palettes = [
             {"zone": "gloves", "image": 3778, "colors": ["#FFFFFF"], "fill_type": "sparkle"},
         ],
     },
+    {
+        "kong": "krusha",
+        "zones": [
+            {"zone": "skin", "image": 4971, "colors": ["#003631"], "fill_type": "block"},
+            {"zone": "belt", "image": 4966, "colors": ["#FFD700"], "fill_type": "block"},
+        ],
+    },
     {"kong": "rambi", "zones": [{"zone": "top", "image": 3826, "colors": ["#070657"], "fill_type": "block"}]},
     {"kong": "enguarde", "zones": [{"zone": "top", "image": 3847, "colors": ["FF0000"], "fill_type": "block"}]},
 ]
@@ -80,7 +87,7 @@ def convertColors():
                     rgba[i] = val
                 rgba_list.append(rgba)
             bytes_array = []
-            if zone["fill_type"] == "block":
+            if zone["fill_type"] in ("block", "kong"):
                 ext = convertRGBAToBytearray(rgba_list[0])
                 for x in range(32 * 32):
                     bytes_array.extend(ext)
