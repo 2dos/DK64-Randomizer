@@ -237,6 +237,8 @@ extern void updateCutscene(void);
 extern void loadDKTVData(void);
 extern void clearActorList(void);
 extern void updateModelScales(void* actor, int size);
+extern void WipeFile(int file, int will_save);
+extern void WipeImageCache(void);
 
 //vanilla data
 extern float TransitionSpeed;

@@ -163,5 +163,7 @@ extern void adjustAnimationTables(void);
 extern void adaptKrushaZBAnimation_PunchOStand(int action, void* player, int player_index);
 extern void adaptKrushaZBAnimation_Charge(actorData* actor, int anim);
 extern void updateCutsceneModels(actorData* actor, int size);
+extern void initTracker(void);
+extern void wipeFileMod(int file, int will_save);
 
 extern unsigned int cs_skip_db[432];

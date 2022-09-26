@@ -222,6 +222,8 @@
 .definelabel loadDKTVData, 0x80712B80
 .definelabel clearActorList, 0x8067AE58
 .definelabel updateModelScales, 0x807248B0
+.definelabel WipeFile, 0x8060C830
+.definelabel WipeImageCache, 0x8068C080
 
 //vanilla data
 .definelabel TransitionSpeed, 0x807FD88C

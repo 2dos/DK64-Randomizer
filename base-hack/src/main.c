@@ -220,6 +220,7 @@ void earlyFrame(void) {
 	adjust_galleon_water();
 	if ((CurrentMap == MAIN_MENU) && (ObjectModel2Timer < 5)) {
 		FileScreenDLCode_Write();
+		initTracker();
 	}
 	if (CurrentMap == NFR_SCREEN) {
 		if (ObjectModel2Timer == 5) {

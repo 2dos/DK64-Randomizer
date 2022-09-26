@@ -1,20 +1,22 @@
 #include "../../include/common.h"
 
-// static char balanced_igt[20] = "";
+/*
+    This is a temporary file storing all of the code related to
+    an updated file screen. Currently investigating why
+    the file screen we've made is causing graphical issues
+    (and might be crashing)
+*/
 
-#define LINE_GAP 0x8C
+// static char file_percentage[5] = "";
+// static char golden_count[4] = "";
+// static char balanced_igt[20] = "";
+// static char bp_count_str[5] = "";
+// static short igt_h = 0;
+// static short igt_m = 0;
+// static short igt_s = 0;
 static char updated_tracker = 0;
 
-typedef struct menu_controller_paad {
-	/* 0x000 */ float screen_transition_progress;
-	/* 0x004 */ float unk_4;
-	/* 0x008 */ char unk_8[0x12-0x8];
-	/* 0x012 */ unsigned char current_screen;
-	/* 0x013 */ unsigned char next_screen;
-	/* 0x014 */ char unk_14[0x16-0x14];
-	/* 0x016 */ char prevent_action;
-	/* 0x017 */ char selected_action;
-} menu_controller_paad;
+#define LINE_GAP 0x8C
 
 typedef struct tracker_struct {
 	/* 0x000 */ short min_x;
@@ -354,25 +356,17 @@ void updateEnabledStates(void) {
 	}
 }
 
-#define TRACKER_INIT 2
+#define TRACKER_DELAY 3
 #define TRACKER_WIDTH 254
 #define TRACKER_HEIGHT 128
 
-void initTracker(void) {
-	updated_tracker = 0;
-}
-
-void modifyTrackerImage(int dl_offset) {
+void modifyTrackerImage(void) {
 	// Check if tracker needs updating
-	if (updated_tracker == (TRACKER_INIT + 3)) {
+	if (updated_tracker == TRACKER_DELAY) {
 		return;
 	}
 	updated_tracker += 1;
-	if (updated_tracker == TRACKER_INIT) {
-		// wipeTrackerCache();
-		updateEnabledStates();
-	}
-	if (updated_tracker == (TRACKER_INIT + 3)) {
+	if (updated_tracker == TRACKER_DELAY) {
 		// Load Tracker Image into cache
 		short* image = getPtr14Texture(IMAGE_TRACKER);
 		// Manipulate cached image
@@ -439,27 +433,100 @@ void modifyTrackerImage(int dl_offset) {
 		}
 	}
 }
+typedef struct menu_controller_paad {
+	/* 0x000 */ float screen_transition_progress;
+	/* 0x004 */ float unk_4;
+	/* 0x008 */ char unk_8[0x12-0x8];
+	/* 0x012 */ unsigned char current_screen;
+	/* 0x013 */ unsigned char next_screen;
+	/* 0x014 */ char unk_14[0x16-0x14];
+	/* 0x016 */ char prevent_action;
+	/* 0x017 */ char selected_action;
+} menu_controller_paad;
 
-int* display_images(int* dl) {
+typedef enum file_screen_modes {
+	/* 0x000 */ FILEMODE_NEW,
+	/* 0x001 */ FILEMODE_USED,
+} file_screen_modes;
+
+int* display_images(int* dl, file_screen_modes mode) {
 	int y_offset = FileScreenDLOffset - 720;
 	dl = drawImage(dl, IMAGE_TRACKER, RGBA16, TRACKER_WIDTH, TRACKER_HEIGHT, 160, y_offset + 150,1.0f, 1.0f,0xFF);
-	modifyTrackerImage(y_offset);
+	modifyTrackerImage();
 	return dl;
 }
 
+static file_screen_modes file_mode = FILEMODE_NEW;
+
+int getTextIndexFromMove(purchase_struct* info) {
+	if (info->purchase_type != -1) {
+		switch (info->purchase_type) {
+			case PURCHASE_MOVES:
+				return SpecialMovesNames[(int)((info->move_kong * 4) + info->purchase_value)].name;
+				break;
+			case PURCHASE_SLAM:
+				return SimianSlamNames[(int)info->purchase_value].name;
+				break;
+			case PURCHASE_GUN:
+				if (info->purchase_value == 1) {
+					return GunNames[(int)info->move_kong];
+				} else {
+					return GunUpgNames[(int)info->purchase_value];
+				}
+				break;
+			case PURCHASE_AMMOBELT:
+				return AmmoBeltNames[(int)info->purchase_value];
+				break;
+			case PURCHASE_INSTRUMENT:
+				if (info->purchase_value == 1) {
+					return InstrumentNames[(int)info->move_kong];
+				} else {
+					return InstrumentUpgNames[(int)info->purchase_value];
+				}
+				break;
+			case PURCHASE_FLAG:
+				{
+					if (info->purchase_value == -2) {
+						return 59;
+					} else {
+						int tied_flags[] = {FLAG_TBARREL_DIVE,FLAG_TBARREL_ORANGE,FLAG_TBARREL_BARREL,FLAG_TBARREL_VINE,FLAG_ABILITY_CAMERA,FLAG_ABILITY_SHOCKWAVE};
+						for (int i = 0; i < sizeof(tied_flags) / 4; i++) {
+							if (tied_flags[i] == info->purchase_value) {
+								return 53 + i;
+							}
+						}
+					}
+				}
+			break;
+		}
+	}
+	return -1;
+}
+
 int* display_text(int* dl) {
+	// Display Background
+	LevelStateBitfield &= 0xFFFFFFEF;
+	// File Percentage
 	// int y = FileScreenDLOffset - 320;
-	// Balanced IGT
-	// y += LINE_GAP;
-	// int secs = IGT % 60;
-	// float secsf = secs;
-	// secsf /= 60;
-	// int hm = IGT / 60;
-	// int minutes = hm % 60;
-	// int hours = hm / 60;
-	// dk_strFormat((char*)balanced_igt, "%03d:%02d:%02d",hours,minutes,secs);
-	// dl = displayText(dl,1,0x280,y,(char*)balanced_igt,0x81);
-	dl = display_images(dl);
+	// if (file_mode == FILEMODE_USED) {
+	// 	int y_gap = 53;
+	// 	int y_start = (FileScreenDLOffset - 320) - y_gap - 144;
+	// 	// Move Count
+	// 	// File Percentage
+	// 	dk_strFormat((char*)file_percentage, "%d%%", FilePercentage);
+	// 	dl = drawText(dl, 1, 150, y_start + 340, (char*)file_percentage, 0xFF, 0xFF, 0xFF, 0xFF);
+	// 	// GB Count
+	// 	dk_strFormat((char*)golden_count, "%03d",FileGBCount);
+	// 	dl = drawText(dl, 1, 140, y_start + 310, (char*)golden_count, 0xFF, 0xFF, 0xFF, 0xFF);
+	// 	// BP Count
+	// 	dk_strFormat((char*)bp_count_str, "%02d", countFlagArray(0x1D5,40,0));
+	// 	dl = drawText(dl, 1, 460, y_start + 310, (char*)bp_count_str, 0xFF, 0xFF, 0xFF, 0xFF);
+	// 	// Balanced IGT
+	// 	dk_strFormat((char*)balanced_igt, "%03d:%02d:%02d",igt_h,igt_m,igt_s);
+	// 	dl = drawText(dl, 1, 415, y_start + 340, (char*)balanced_igt, 0xFF, 0xFF, 0xFF, 0xFF);
+	// }
+	// Image Render
+	dl = display_images(dl,file_mode);
 	return dl;
 }
 
@@ -472,39 +539,15 @@ int* displayHash(int* dl, int y_offset) {
 	return dl;
 }
 
-static const short kong_flags[] = {FLAG_KONG_DK,FLAG_KONG_DIDDY,FLAG_KONG_LANKY,FLAG_KONG_TINY,FLAG_KONG_CHUNKY};
-void correctKongFaces(void) {
-	if (Rando.unlock_kongs) {
-		for (int i = 0; i < 5; i++) {
-			int flag = checkFlag(kong_flags[i],0);
-			KongUnlockedMenuArray[i] = flag;
-			if (!flag) {
-				KongUnlockedMenuArray[i] = (Rando.unlock_kongs & (1 << i)) != 0;
-			}
-		}
-		if (!checkFlag(FLAG_KONG_DK,0)) {
-			if ((Rando.unlock_kongs & 1) == 0) {
-				KongUnlockedMenuArray[0] = 0;
-			}
-		}
-	} else {
-		for (int i = 0; i < 5; i++) {
-			KongUnlockedMenuArray[i] = checkFlag(kong_flags[i],0);
-		}
-		KongUnlockedMenuArray[(int)Rando.starting_kong] = 1;
-		if (Rando.starting_kong != 0) {
-			if (!checkFlag(FLAG_KONG_DK,0)) {
-				KongUnlockedMenuArray[0] = 0;
-			}
-		}
-	}
+int* displayHeadTexture(int* dl, int texture, float x, float y, float scale) {
+	int kong_index = texture & 0x7F;
+	menuHeadX[kong_index] = 105 + x + (kong_index * 34);
+	menuHeadY[kong_index] = 110 + y;
+	menuHeadScale[kong_index] = 1.3f;
+	return dl;
 }
 
-void wipeFileMod(int file, int will_save) {
-	updated_tracker = 0;
-	WipeFile(file, will_save);
-	WipeImageCache();
-}
+static const short kong_flags[] = {FLAG_KONG_DK,FLAG_KONG_DIDDY,FLAG_KONG_LANKY,FLAG_KONG_TINY,FLAG_KONG_CHUNKY};
 
 void giveCollectables(void) {
 	int mult = 1;
@@ -584,6 +627,126 @@ void file_progress_screen_code(actorData* actor, int buttons) {
 		initMenuBackground(paad,4);
 	}
 	updateMenuController(actor,paad,1);
+}
+
+static char top_text[10] = "EMPTY";
+
+int* displayTopText(int* dl, short x, short y, float scale) {
+	if (isFileEmpty(0)) {
+		// Display Empty Text
+		dk_strFormat((char*)top_text,"%s","EMPTY");
+	} else {
+		// Display "Game %d" Text
+		dk_strFormat((char*)top_text,"%s %d","GAME",*(char*)(0x80033F48)+1);
+	}
+	return printText(dl, x, y, scale, (char*)top_text);
+}
+
+// void FileProgressInit(actorData* menu_controller) {
+// 	menu_controller_paad* paad = menu_controller->paad;
+// 	loadFile(0,0);
+// 	updated_tracker = 0;
+// 	wipeTrackerCache();
+// 	updateEnabledStates();
+// 	if (ReadFile(0xD,0,0,FileIndex)) {
+// 		file_mode = FILEMODE_USED;
+// 	} else {
+// 		file_mode = FILEMODE_NEW;
+// 	}
+// 	if (isFileEmpty(0)) {
+// 		// Empty
+// 		displayMenuSprite(paad, sprite_table[0x6F], 0x23, 0xD2, 0.75f, 2, 0); // B
+// 		displayMenuSprite(paad, sprite_table[0x6E], 0x122, 0xD2, 0.75f, 2, 0); // A
+// 	} else {
+// 		// Not Empty
+// 		displayMenuSprite(paad, sprite_table[59], 62, 202, 0.4f, 2, 0); // GB
+// 		displayMenuSprite(paad, sprite_table[0x70], 0xA2, 0xD6, 0.75f, 2, 0); // Z - Delete
+// 		int blueprint_sprite_indexes[] = {0x5C,0x5A,0x4A,0x5D,0x5B};
+// 		displayMenuSprite(paad, sprite_table[blueprint_sprite_indexes[getRNGLower31() % 5]], 220, 202, 0.4f, 2, 0); // Blueprint
+// 		// Update counts
+// 		int gb_count = 0;
+// 		for (int kong = 0; kong < 5; kong++) {
+// 			for (int level = 0; level < 8; level++) {
+// 				gb_count += MovesBase[kong].gb_count[level];
+// 			}
+// 		}
+// 		FileGBCount = gb_count;
+// 		igt_h = (IGT / 60) / 60;
+// 		igt_m = (IGT / 60) % 60;
+// 		igt_s = IGT - (3600 * igt_h) - (60 * igt_m);
+// 		FilePercentage = calculateFilePercentage();
+// 	}
+// 	*(float*)(0x80033F4C) = 1600.0f;
+// 	// Check Kong Unlocked
+// 	for (int i = 0; i < 5; i++) {
+// 		if (Rando.unlock_kongs & (1 << i)) {
+// 			KongUnlockedMenuArray[i] = 1;
+// 		} else {
+// 			KongUnlockedMenuArray[i] = 0;
+// 		}
+// 	}
+// 	KongUnlockedMenuArray[(int)Rando.starting_kong] = 1;
+// 	for (int i = 0; i < 5; i++) {
+// 		if (checkFlag(kong_flags[i],0)) {
+// 			KongUnlockedMenuArray[i] = 1;
+// 		}
+// 	}
+// 	for (int i = 0; i < 5; i++) {
+// 		void* sprite = sprite_table[0x92];
+// 		if (KongUnlockedMenuArray[i]) {
+// 			sprite = sprite_table[0xA9 + i];
+// 		}
+// 		displayMenuSprite(paad, sprite, i, i, 0.8f, 2, 0xF);
+// 		// int x = 0;
+// 		// int y = 0;
+// 		// if (i < 3) {
+// 		// 	x = 210 + (i * 35);
+// 		// 	y = 65;
+// 		// } else {
+// 		// 	x = 228 + ((i - 3) * 32);
+// 		// 	y = 90;
+// 		// }
+// 		// displayMenuSprite(paad, sprite, x, y, 0.5, 2, 0xF);
+// 	}
+// }
+
+void correctKongFaces(void) {
+	if (Rando.unlock_kongs) {
+		for (int i = 0; i < 5; i++) {
+			int flag = checkFlag(kong_flags[i],0);
+			KongUnlockedMenuArray[i] = flag;
+			if (!flag) {
+				KongUnlockedMenuArray[i] = (Rando.unlock_kongs & (1 << i)) != 0;
+			}
+		}
+		if (!checkFlag(FLAG_KONG_DK,0)) {
+			if ((Rando.unlock_kongs & 1) == 0) {
+				KongUnlockedMenuArray[0] = 0;
+			}
+		}
+	} else {
+		for (int i = 0; i < 5; i++) {
+			KongUnlockedMenuArray[i] = checkFlag(kong_flags[i],0);
+		}
+		KongUnlockedMenuArray[(int)Rando.starting_kong] = 1;
+		if (Rando.starting_kong != 0) {
+			if (!checkFlag(FLAG_KONG_DK,0)) {
+				KongUnlockedMenuArray[0] = 0;
+			}
+		}
+	}
+}
+
+void FileProgressInitSub(int file, int shuffle) {
+	loadFile(file,shuffle);
+	if (checkFlag(FLAG_WATERFALL,0)) {
+		file_mode = FILEMODE_USED;
+	} else {
+		file_mode = FILEMODE_NEW;
+	}
+	updated_tracker = 0;
+	wipeTrackerCache();
+	updateEnabledStates();
 }
 
 static char* inverted_controls_str[] = {
