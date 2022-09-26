@@ -49,7 +49,9 @@ typedef struct varspace {
 	/* 0x0AE */ char helm_hurry_mode; // 0 = Off, 1 = On: Starting a new file summons the helm timer, each BP adds 2 minutes to the clock, timing out disables saving.
 	/* 0x0AF */ char always_show_coin_cbs; // 0 = No (Vanilla), 1 = Yes
 	/* 0x0B0 */ quality_options quality_of_life; // Size: 2
-	/* 0x0B2 */ char unk_B0[0x11E - 0xB2];
+	/* 0x0B2 */ char unk_B0[0x11C - 0xB2];
+	/* 0x11C */ char krusha_slot; // -1 = Not replacing a kong. 0-4 = Replaces kong of relevant index. Takes priority over disco chunky
+	/* 0x11D */ unsigned char win_condition; // See vars.h for enum
 	/* 0x11E */ char tns_indicator;
 	/* 0x11F */ char wrinkly_rando_on;
 	/* 0x120 */ char kut_out_kong_order[5]; // Value of item: 0 = DK, 1 = Diddy, 2 = Lanky, 3 = Tiny, 4 = Chunky. Kongs can be repeated
@@ -59,7 +61,7 @@ typedef struct varspace {
 	/* 0x128 */ char disable_drops; // 0 = Off. 1 = No Klump/Melon/Ammo Crate Drops
 	/* 0x129 */ char hash[5];
 	/* 0x12E */ char music_rando_on; // 0 = Off, 1 = Music Rando on, apply extra data shuffle
-	/* 0x12F */ char disco_chunky; // 0 = Off, 1 = On
+	/* 0x12F */ char disco_chunky; // 0 = Normal, 1 = Disco. Overriden by Krusha if Krusha replaces Chunky
 	/* 0x130 */ unsigned short ballroom_to_museum; // Same as "aztec_beetle_enter" but for the loading zone dictated by the name
 	/* 0x132 */ unsigned short museum_to_ballroom; // Same as "aztec_beetle_enter" but for the loading zone dictated by the nametc
 	/* 0x134 */ char shop_indicator_on; // 0 = Off, 1 = Render amount of moves that can be purchased from that shop

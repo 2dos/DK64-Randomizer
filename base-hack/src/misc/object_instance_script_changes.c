@@ -237,7 +237,7 @@ void bananaportGenericCode(behaviour_data* behaviour, int index, int id) {
 		if (float_id > -1) {
 			float_index = convertIDToIndex(float_id);
 			if (float_index > -1) {
-				getObjectPosition(float_index, 1, 1, (void*)0x807F621C, (void*)0x807F6220, (void*)0x807F6224);
+				getObjectPosition(float_index, 1, 1, &collisionPos[0], &collisionPos[1], &collisionPos[2]);
 			}
 		}
 	}
@@ -255,7 +255,10 @@ void bananaportGenericCode(behaviour_data* behaviour, int index, int id) {
 				}
 			}
 			if (checkFlag(selected_warp->active_flag,0) == 0) {
-				hideObject(behaviour);
+				behaviour->unk_71 = 0;
+				behaviour->unk_60 = 1;
+				behaviour->unk_62 = 0;
+				behaviour->unk_66 = 255;
 				behaviour->next_state = 50;
 			}
 			if (checkFlag(selected_warp->active_flag,0) || checkFlag(selected_warp->appear_flag,0)) {
@@ -270,7 +273,11 @@ void bananaportGenericCode(behaviour_data* behaviour, int index, int id) {
 				behaviour->unk_62 = 70;
 				behaviour->unk_66 = 255;
 			}
-			setScriptRunState(behaviour,3,300);
+			int distance = 300;
+			if (float_index > -1) {
+				distance = 600;
+			}
+			setScriptRunState(behaviour,3,distance);
 			behaviour->next_state = 1;
 		}
 	} else if (behaviour->current_state == 1) {
@@ -292,8 +299,10 @@ void bananaportGenericCode(behaviour_data* behaviour, int index, int id) {
 								if (checkFlag(FLAG_FTT_BANANAPORT,0) == 0) {
 									*(char*)(0x807F693F) = 1;
 									PlayCutsceneFromModelTwoScript(behaviour,16,1,0);
-									*(char*)(0x807F6902) = 1;
-									behaviour->counter_next = 1;
+									if (float_index == -1) {
+										*(char*)(0x807F6902) = 1;
+										behaviour->counter_next = 1;
+									}
 									setPermFlag(FLAG_FTT_BANANAPORT);
 								}
 							}
@@ -360,7 +369,7 @@ void bananaportGenericCode(behaviour_data* behaviour, int index, int id) {
 			setPermFlag(selected_warp->active_flag);
 		}
 	}
-	if (behaviour->counter == 1) {
+	if ((behaviour->counter == 1) && (float_index == -1)) {
 		if (CutsceneActive != 1) {
 			*(char*)(0x807F6902) = 0;
 			behaviour->counter_next = 2;

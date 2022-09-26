@@ -56,29 +56,30 @@ void decouple_moves_fixes(void) {
 		for (int i = 0; i < 8; i++) {
 			MainMenuMoves[i].moves = moves_values[i];
 		}
-		int func_call = 0x0C000000 | (((int)&displayHeadTexture & 0xFFFFFF) >> 2);
-		*(int*)(0x800292B8) = func_call;
-		*(int*)(0x800292D4) = func_call;
+		// int func_call = 0x0C000000 | (((int)&displayHeadTexture & 0xFFFFFF) >> 2);
+		// *(int*)(0x800292B8) = func_call;
+		// *(int*)(0x800292D4) = func_call;
 		// Menu Stuff
-		*(short*)(0x800281AA) = 3; // Set "adventure" destination to the file progress screen
-		*(short*)(0x8002A05A) = 3; // Set B button action in delete confirm to file progress
-		*(short*)(0x8002A05A) = 3; // Set B button action in delete confirm to file progress
-		*(short*)(0x8002A02A) = 3; // Set B button action in delete confirm to file progress
-		*(short*)(0x80029fea) = 3; // Set A button action in delete confirm to file progress
+		// *(short*)(0x800281AA) = 3; // Set "adventure" destination to the file progress screen
+		// *(short*)(0x8002A05A) = 3; // Set B button action in delete confirm to file progress
+		// *(short*)(0x8002A05A) = 3; // Set B button action in delete confirm to file progress
+		// *(short*)(0x8002A02A) = 3; // Set B button action in delete confirm to file progress
+		// *(short*)(0x80029fea) = 3; // Set A button action in delete confirm to file progress
 		*(int*)(0x80030604) = 0x0C000000 | (((int)&file_progress_screen_code & 0xFFFFFF) >> 2); // New file progress code
-		*(int*)(0x80029760) = 0x0C000000 | (((int)&displayTopText & 0xFFFFFF) >> 2); // New file progress top text code
-		*(int*)(0x80030614) = 0x0C000000 | (((int)&FileProgressInit & 0xFFFFFF) >> 2); // New file progress init code
-		*(int*)(0x8002999C) = 0;
+		*(int*)(0x80029FE0) = 0x0C000000 | (((int)&wipeFileMod & 0xFFFFFF) >> 2); // New file progress code
+		// *(int*)(0x80029760) = 0x0C000000 | (((int)&displayTopText & 0xFFFFFF) >> 2); // New file progress top text code
+		// // *(int*)(0x80030614) = 0x0C000000 | (((int)&FileProgressInit & 0xFFFFFF) >> 2); // New file progress init code
+		// *(int*)(0x80029894) = 0x0C000000 | (((int)&FileProgressInitSub & 0xFFFFFF) >> 2); // New file progress init code
+		// *(int*)(0x8002999C) = 0;
+		*(int*)(0x80029874) = 0; // Hide GB
+		*(int*)(0x80029818) = 0; // Hide A
+		*(int*)(0x80029840) = 0; // Hide B
 		initOptionScreen();
 	} else if (CurrentMap == SNIDE) {
 		*(int*)(0x8002402C) = 0x240E000C; // No extra contraption cutscenes
 		*(int*)(0x80024054) = 0x24080001; // 1 GB Turn in
 	} else if (CurrentMap == 0x11) {
 		HelmInit(0);
-	}
-	if ((CurrentMap >= 0xCB) && (CurrentMap <= 0xCF)) {
-		int phase = CurrentMap - 0xCB;
-		initKRool(phase);
 	}
 	if (Rando.short_bosses) {
 		if ((CurrentMap == 8) || (DestMap == 8)) {
@@ -126,7 +127,10 @@ void decouple_moves_fixes(void) {
 		*(unsigned short*)(0x800297D8) = 0x916B; // LB -> LBU
 		*(short*)(0x800297CE) = -69; // Flicker Threshold
 		if (Rando.disco_chunky) {
-			*(short*)(0x8002D8D0) = 0xE; // Change to disco chunky model
+			KrazyKKModels[4] = 0xE; // Change to disco chunky model
+		}
+		if (Rando.krusha_slot != -1) {
+			KrazyKKModels[(int)Rando.krusha_slot] = 0xDB; // Change to krusha model
 		}
 	}
 	if (CurrentMap == 0x9A) {
@@ -155,4 +159,15 @@ void decouple_moves_fixes(void) {
 			*(short*)(0x8002D0E2) = 0x0001; //1 Lap
 		}
 	}
+}
+
+void parseCutsceneData(void) {
+	if ((CurrentMap >= 0xCB) && (CurrentMap <= 0xCF)) {
+		int phase = CurrentMap - 0xCB;
+		initKRool(phase);
+	}
+	if (Rando.quality_of_life.remove_cutscenes) {
+		updateSkippableCutscenes();
+	}
+	loadDKTVData(); // Has to be last
 }

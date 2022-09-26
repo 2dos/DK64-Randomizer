@@ -56,12 +56,6 @@ class Settings:
         # In hard level progression we go through levels in a random order, so we set every level's troff min weight to the largest weight
         if self.hard_level_progression:
             self.troff_min = [self.troff_min[-1] for x in self.troff_min]
-        # Always start with training barrels currently
-        # training_barrels: str
-        # normal
-        # shuffled
-        # startwith
-        self.training_barrels = "startwith"
 
         # currently just set to moves by move_rando
         # shuffle_items: str
@@ -256,6 +250,18 @@ class Settings:
         # decoupled_loading_zones: bool
         self.decoupled_loading_zones = False
 
+        # Always start with training barrels currently
+        # training_barrels: str
+        # normal
+        # shuffled
+        self.training_barrels = "normal"
+
+        # The status of camera & shockwave: str
+        # vanilla - both located at Banana Fairy Isle
+        # shuffled - located in a random valid location
+        # shuffled_decoupled - camera and shockwave are separate upgrades and can be anywhere
+        self.shockwave_status = "vanilla"
+
         #  Music
         self.music_bgm = "default"
         self.music_fanfares = "default"
@@ -282,6 +288,7 @@ class Settings:
         self.enguarde_colors = "vanilla"
         self.enguarde_custom_color = "#000000"
         self.disco_chunky = False
+        self.krusha_slot = "no_slot"
 
         #  Misc
         self.generate_spoilerlog = None
@@ -329,6 +336,7 @@ class Settings:
         self.tns_location_rando = False
         self.minigames_list_selected = []
         self.helm_hurry = False
+        self.win_condition = "beat_krool"
 
     def shuffle_prices(self):
         """Price randomization. Reuseable if we need to reshuffle prices."""

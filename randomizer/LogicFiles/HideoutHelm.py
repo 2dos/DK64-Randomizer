@@ -13,7 +13,7 @@ from randomizer.LogicClasses import (Event, LocationLogic, Region,
 LogicRegions = {
     Regions.HideoutHelmStart: Region("Hideout Helm Start", Levels.HideoutHelm, True, None, [], [], [
         TransitionFront(Regions.HideoutHelmLobby, lambda l: True),
-        TransitionFront(Regions.HideoutHelmMain, lambda l: l.settings.helm_setting != "default" or (l.handstand and l.lanky and l.pineapple and l.chunky and l.mini and l.tiny)),
+        TransitionFront(Regions.HideoutHelmMain, lambda l: l.settings.helm_setting != "default" or (l.handstand and l.lanky and l.pineapple and l.chunky and l.vines and l.mini and l.tiny)),
     ]),
 
     Regions.HideoutHelmMain: Region("Hideout Helm Main", Levels.HideoutHelm, True, -1, [

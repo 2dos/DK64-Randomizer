@@ -77,7 +77,7 @@ LogicRegions = {
         Collectible(Collectibles.coin, Kongs.chunky, lambda l: True, None, 4),
     ],
     Regions.Museum: [
-        Collectible(Collectibles.bunch, Kongs.chunky, lambda l: True, None, 1),  # In boulder
+        Collectible(Collectibles.bunch, Kongs.chunky, lambda l: l.punch and l.barrels, None, 1),  # In boulder
         Collectible(Collectibles.balloon, Kongs.chunky, lambda l: l.pineapple, None, 1),
 
         Collectible(Collectibles.coin, Kongs.chunky, lambda l: True, None, 3),

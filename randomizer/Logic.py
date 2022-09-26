@@ -55,10 +55,10 @@ class LogicVarHolder:
         self.chunky = Kongs.chunky in self.settings.starting_kong_list
 
         # Right now assuming start with training barrels
-        self.vines = True  # self.settings.training_barrels == "startwith"
-        self.swim = True  # self.settings.training_barrels == "startwith"
-        self.oranges = True  # self.settings.training_barrels == "startwith"
-        self.barrels = True  # self.settings.training_barrels == "startwith"
+        self.vines = self.settings.training_barrels == "normal"
+        self.swim = self.settings.training_barrels == "normal"
+        self.oranges = self.settings.training_barrels == "normal"
+        self.barrels = self.settings.training_barrels == "normal"
 
         self.progDonkey = 3 if self.settings.unlock_all_moves else 0
         self.blast = self.settings.unlock_all_moves
@@ -258,8 +258,8 @@ class LogicVarHolder:
         self.BananaMedals = sum(1 for x in ownedItems if x == Items.BananaMedal)
         self.BattleCrowns = sum(1 for x in ownedItems if x == Items.BattleCrown)
 
-        self.camera = self.camera or Items.CameraAndShockwave in ownedItems
-        self.shockwave = self.shockwave or Items.CameraAndShockwave in ownedItems
+        self.camera = self.camera or Items.CameraAndShockwave in ownedItems or Items.Camera in ownedItems
+        self.shockwave = self.shockwave or Items.CameraAndShockwave in ownedItems or Items.Shockwave in ownedItems
 
         self.scope = self.scope or Items.SniperSight in ownedItems
         self.homing = self.homing or Items.HomingAmmo in ownedItems
@@ -377,7 +377,7 @@ class LogicVarHolder:
 
     def CanFreeLanky(self):
         """Check if kong at Lanky location can be freed, requires freeing kong to have its gun and instrument."""
-        return self.HasGun(self.settings.lanky_freeing_kong) and self.HasInstrument(self.settings.lanky_freeing_kong)
+        return self.swim and self.HasGun(self.settings.lanky_freeing_kong) and self.HasInstrument(self.settings.lanky_freeing_kong)
 
     def CanFreeChunky(self):
         """Check if kong at Chunky location can be freed."""
@@ -510,7 +510,9 @@ class LogicVarHolder:
         if bossFight == Maps.FactoryBoss and requiredKong == Kongs.tiny:
             hasRequiredMoves = self.twirl
         elif bossFight == Maps.FungiBoss:
-            hasRequiredMoves = self.hunkyChunky
+            hasRequiredMoves = self.hunkyChunky and self.barrels
+        elif bossFight == Maps.JapesBoss or bossFight == Maps.AztecBoss or bossFight == Maps.CavesBoss:
+            hasRequiredMoves = self.barrels
         return self.IsKong(requiredKong) and hasRequiredMoves
 
     def IsLevelEnterable(self, level):

@@ -6,7 +6,7 @@ set_variables = {
     "blocker_normal_count": [2, 3, 4, 5, 6, 7, 8, 9],
     "key_flags": [0x4A, 0x8A, 0xA8, 0xEC, 0x124, 0x13D, 0x1A],
     "unlock_kongs": 0x1F,
-    "unlock_moves": 0,
+    "unlock_moves": 1,
     "fast_start_beginning": 1,
     "camera_unlocked": 1,
     "tag_anywhere": 1,
@@ -79,7 +79,10 @@ set_variables = {
     "fairy_prices": [3, 6],
     "helm_order": [2, 3, 1, 0xFF, 0xFF],
     "disco_chunky": 1,
+    "krusha_slot": 0,
     "helm_hurry_mode": 0,
+    "win_condition": 1,
+    "version": 2,
 }
 
 

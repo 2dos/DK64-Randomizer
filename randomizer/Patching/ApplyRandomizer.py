@@ -330,6 +330,14 @@ def patching_response(responded_data):
         ROM().seek(sav + 0x12F)
         ROM().write(1)
 
+    # Krusha Slot
+    kong_names = ["dk", "diddy", "lanky", "tiny", "chunky"]
+    ROM().seek(sav + 0x11C)
+    if spoiler.settings.krusha_slot == "no_slot":
+        ROM().write(255)
+    elif spoiler.settings.krusha_slot in kong_names:
+        ROM().write(kong_names.index(spoiler.settings.krusha_slot))
+
     # Show CBs & Coins
     if spoiler.settings.cb_rando:
         ROM().seek(sav + 0xAF)
@@ -344,6 +352,13 @@ def patching_response(responded_data):
     if spoiler.settings.helm_hurry:
         ROM().seek(sav + 0xAE)
         ROM().write(1)
+
+    # Win Condition
+    conditions = ["beat_krool", "get_key8", "all_fairies", "all_blueprints", "all_medals", "poke_snap"]
+    if spoiler.settings.win_condition in conditions:
+        condition_index = conditions.index(spoiler.settings.win_condition)
+        ROM().seek(sav + 0x11D)
+        ROM().write(condition_index)
 
     keys_turned_in = [0, 1, 2, 3, 4, 5, 6, 7]
     if len(spoiler.settings.krool_keys_required) > 0:

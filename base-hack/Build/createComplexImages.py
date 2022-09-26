@@ -203,6 +203,51 @@ for num_type in num_types:
     num_im.paste(line, (14, line_y), line)
     num_im.save(f"{base_dir}{number}.png")
 
+# Tracker Image
+tracker_im = Image.new(mode="RGBA", size=(254, 128))
+instruments = ("bongos", "guitar", "trombone", "sax", "triangle")
+pellets = ("coconut", "peanut", "grape", "feather", "pineapple")
+extra_moves = ("shockwave", "slam", "sniper")  # Add "camera"
+training_moves = ("swim", "orange", "barrel", "vine")
+kong_submoves = ("_move", "pad", "barrel")
+dim = 20
+gap = int(dim * 1.1)
+small_gap = int(dim * 0.8)
+for ins_index, instrument in enumerate(instruments):
+    ins_im = Image.open(f"{hash_dir}{instrument}.png")
+    ins_im = ins_im.resize((dim, dim))
+    tracker_im.paste(ins_im, (gap * ins_index, gap), ins_im)
+for pel_index, pellet in enumerate(pellets):
+    pel_im = Image.open(f"{hash_dir}{pellet}.png")
+    if pellet == "pineapple":
+        pel_im = pel_im.resize((dim, int(dim * 1.5)))
+    elif pellet == "coconut":
+        pel_im = pel_im.resize((dim, int(dim * 1.275)))
+    else:
+        pel_im = pel_im.resize((dim, dim))
+    tracker_im.paste(pel_im, (gap * pel_index, 0), pel_im)
+for kong_index, kong in enumerate(kongs):
+    for sub_index, sub in enumerate(kong_submoves):
+        move_im = Image.open(f"{getDir('assets/Non-Code/file_screen/')}tracker_images/{kong}{sub}.png")
+        move_im = move_im.resize((dim, dim))
+        tracker_im.paste(move_im, ((gap * kong_index), ((sub_index + 2) * gap)), move_im)
+for move_index, move in enumerate(extra_moves):
+    move_im = Image.open(f"{getDir('assets/Non-Code/file_screen/')}tracker_images/{move}.png")
+    move_im = move_im.resize((dim, dim))
+    tracker_im.paste(move_im, ((6 * gap), (move_index * gap)), move_im)
+for move_index, move in enumerate(training_moves):
+    if move in ("orange"):
+        move_im = Image.open(f"{hash_dir}{move}.png")
+    else:
+        move_im = Image.open(f"{getDir('assets/Non-Code/file_screen/')}tracker_images/{move}.png")
+    move_im = move_im.resize((dim, dim))
+    tracker_im.paste(move_im, ((move_index * gap), 128 - dim), move_im)
+for key_index in range(8):
+    key_im = Image.open(f"{hash_dir}boss_key.png")
+    key_im = key_im.resize((dim, dim))
+    tracker_im.paste(key_im, (254 - (small_gap * (key_index + 1)), 128 - dim), key_im)
+tracker_im.save(f"{getDir('assets/Non-Code/file_screen/')}tracker.png")
+
 rmve = ["01234.png", "56789.png", "boss_key.png", "WXYL.png", "specialchars.png", "red_qmark_0.png", "red_qmark_1.png"]
 for kong in kongs:
     for x in range(2):

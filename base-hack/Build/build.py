@@ -14,6 +14,7 @@ from writeWarpData import generateDefaultPadPairing  # HAS TO BE BEFORE `instanc
 import portal_instance_script  # HAS TO BE BEFORE `instance_script_maker`
 import instance_script_maker
 import model_fix
+import generate_disco_models
 
 # Patcher functions for the extracted files
 import patch_text
@@ -181,6 +182,13 @@ file_dict = [
         "pointer_table_index": 14,
         "file_index": 187,
         "source_file": "assets/Non-Code/displays/dpad.png",
+        "texture_format": "rgba5551",
+    },
+    {
+        "name": "Tracker Image",
+        "pointer_table_index": 14,
+        "file_index": 0xA1,
+        "source_file": "assets/Non-Code/file_screen/tracker.png",
         "texture_format": "rgba5551",
     },
 ]
@@ -393,7 +401,7 @@ for x in range(8):
         }
     )
 for x in range(43):
-    if x not in (13, 32, 0x18, 0x27, 8, 37):
+    if x not in (13, 32, 0x18, 0x27, 8, 37, 2):
         file_dict.append(
             {
                 "name": "Text " + str(x),
@@ -442,10 +450,10 @@ for x in range(5):
             }
         )
 
-kong_palettes = [0xE8C, 0xE66, 0xE69, 0xEB9, 0xE67, 3826, 3847, 3734, 3777, 3778]
+kong_palettes = [0xE8C, 0xE66, 0xE69, 0xEB9, 0xE67, 3826, 3847, 3734, 3777, 3778, 4971, 4966]
 for x in kong_palettes:
     x_s = 32 * 32 * 2
-    if x == 0xEB9 or x == 3734:  # Chunky Shirt Back or Lanky Patch
+    if x in (0xEB9, 3734):  # Chunky Shirt Back, Lanky Patch
         x_s = 43 * 32 * 2
     file_dict.append({"name": f"Palette Expansion ({hex(x)})", "pointer_table_index": 25, "file_index": x, "source_file": f"palette_{x}.bin", "target_compressed_size": x_s})
 
@@ -457,17 +465,20 @@ model_changes = [
     {"model_index": 3, "model_file": "dk_base.bin"},
     {"model_index": 8, "model_file": "tiny_base.bin"},
     {"model_index": 9, "model_file": "tiny_ins.bin"},
+    {"model_index": 0xEC, "model_file": "disco_instrument.bin"},
+    {"model_index": 0xDA, "model_file": "krusha_base.bin"},
 ]
 for x in model_changes:
-    file_dict.append(
-        {
-            "name": f"Model {x['model_index']}",
-            "pointer_table_index": 5,
-            "file_index": x["model_index"],
-            "source_file": x["model_file"],
-            "do_not_delete_source": True,
-        }
-    )
+    data = {
+        "name": f"Model {x['model_index']}",
+        "pointer_table_index": 5,
+        "file_index": x["model_index"],
+        "source_file": x["model_file"],
+        "do_not_delete_source": True,
+    }
+    if x["model_index"] > 0xEB:
+        data["do_not_extract"] = True
+    file_dict.append(data)
 
 portal_image_order = [
     ["SE", "NE", "SW", "NW"],
@@ -555,6 +566,16 @@ file_dict.append(
         "pointer_table_index": 12,
         "file_index": 37,
         "source_file": "menu_text.bin",
+        "do_not_compress": True,
+        "do_not_delete_source": True,
+    }
+)
+file_dict.append(
+    {
+        "name": "Kong Name Text",
+        "pointer_table_index": 12,
+        "file_index": 2,
+        "source_file": "kongname_text.bin",
         "do_not_compress": True,
         "do_not_delete_source": True,
     }
@@ -866,6 +887,8 @@ with open(newROMName, "r+b") as fh:
     writeVanillaSongData(fh)
     fh.seek(0x1FED020 + 0x11E)
     fh.write((1).to_bytes(1, "big"))
+    fh.seek(0x1FED020 + 0x11C)
+    fh.write((0xFF).to_bytes(1, "big"))
     for x in portal_images:
         for y in x:
             if os.path.exists(y):
@@ -960,6 +983,7 @@ with open(newROMName, "r+b") as fh:
             other_remove.append(f"displays/{disp}{ext}")
     for x in range(8):
         other_remove.append(f"file_screen/key{x+1}.png")
+    other_remove.append("file_screen/tracker.png")
     for x in other_remove:
         pth = f"assets/Non-Code/{x}"
         if os.path.exists(pth):
@@ -979,6 +1003,13 @@ with open(newROMName, "r+b") as fh:
         "standard_crate_0",
         "standard_crate_1",
         "tiny_palette",
+        "coconut",
+        "feather",
+        "grape",
+        "peanut",
+        "pineapple",
+        "triangle",
+        "trombone",
     ]
     script_files = [x[0] for x in os.walk("assets/Non-Code/instance_scripts/")]
     shop_files = ["snide.script", "cranky.script", "funky.script", "candy.script"]

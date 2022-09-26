@@ -629,3 +629,7 @@ writeText("cranky_text.bin", cranky_text)
 menu_text = grabText(37)
 menu_text[46] = [{"text": ["FIRST PERSON CAMERA"]}]
 writeText("menu_text.bin", menu_text)
+
+kongname_text = grabText(2)
+kongname_text.append([{"text": ["KRUSHA"]}])
+writeText("kongname_text.bin", kongname_text)

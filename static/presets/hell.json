@@ -66,5 +66,6 @@
     "shop_indicator":true,
     "fast_warps":true,
     "dpad_display":true,
-    "auto_keys":false
+    "auto_keys":false,
+    "win_condition": "beat_krool"
  }

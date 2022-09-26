@@ -64,6 +64,8 @@ class Items(IntEnum):
     NintendoCoin = auto()
     RarewareCoin = auto()
 
+    Camera = auto()
+    Shockwave = auto()
     CameraAndShockwave = auto()
 
     JungleJapesKey = auto()

@@ -93,6 +93,7 @@
 #define IMAGE_DPAD 187
 #define IMAGE_AMMO_START 188
 #define IMAGE_KONG_START 190
+#define IMAGE_TRACKER 0xA1
 #define LEVEL_COUNT 8
 
 #define PURCHASE_MOVES 0
@@ -109,3 +110,10 @@
 #define KONG_LANKY 2
 #define KONG_TINY 3
 #define KONG_CHUNKY 4
+
+#define GOAL_KROOL 0
+#define GOAL_KEY8 1
+#define GOAL_ALLFAIRIES 2
+#define GOAL_ALLBLUEPRINTS 3
+#define GOAL_ALLMEDALS 4
+#define GOAL_POKESNAP 5

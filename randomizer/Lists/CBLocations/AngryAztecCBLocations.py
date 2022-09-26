@@ -64,6 +64,7 @@ ColoredBananaGroupList = [
         name="At DK Portal before W1",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.AngryAztecStart,
+        logic=lambda l: l.vines,
         locations=[
             [1, 1.0, 792, 120, 223],
             [1, 1.0, 794, 120, 318],
@@ -77,7 +78,7 @@ ColoredBananaGroupList = [
         map_id=Maps.AngryAztec,
         name="First tunnel (5 custom, 5 Chunky)",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
-        region=Regions.AngryAztecStart,
+        region=Regions.BetweenVinesByPortal,
         locations=[
             [1, 1.0, 803, 120, 759],
             [1, 1.0, 812, 120, 948],
@@ -96,7 +97,7 @@ ColoredBananaGroupList = [
         map_id=Maps.AngryAztec,
         name="On DK BP archway",
         konglist=[Kongs.donkey],
-        region=Regions.AngryAztecStart,
+        region=Regions.AngryAztecOasis,
         logic=lambda l: l.coconut and l.strongKong,
         locations=[
             [1, 1.0, 1527, 120, 738],
@@ -116,7 +117,7 @@ ColoredBananaGroupList = [
         map_id=Maps.AngryAztec,
         name="First tunnel (5 custom, 5 Lanky)",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
-        region=Regions.AngryAztecStart,
+        region=Regions.AngryAztecOasis,
         locations=[
             [1, 1.0, 1413, 120, 1183],
             [1, 1.0, 1613, 120, 1153],
@@ -135,7 +136,7 @@ ColoredBananaGroupList = [
         map_id=Maps.AngryAztec,
         name="Singles all around oasis (17 custom, 3 Donkey)",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
-        region=Regions.AngryAztecStart,
+        region=Regions.AngryAztecOasis,
         locations=[
             [1, 1.0, 2358, 139, 1373],
             [1, 1.0, 2400, 120, 1305],
@@ -164,7 +165,7 @@ ColoredBananaGroupList = [
         map_id=Maps.AngryAztec,
         name="Singles on vines and bunch on guitar pad",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
-        region=Regions.AngryAztecStart,
+        region=Regions.AngryAztecOasis,
         logic=lambda l: l.vines,
         locations=[
             [1, 1.2, 2450, 310, 1126],
@@ -180,7 +181,7 @@ ColoredBananaGroupList = [
         map_id=Maps.AngryAztec,
         name="Around llama cage (upper)",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
-        region=Regions.AngryAztecStart,
+        region=Regions.AngryAztecOasis,
         locations=[
             [1, 1.0, 2205, 217, 1535],
             [1, 1.0, 2175, 217, 1501],
@@ -199,7 +200,7 @@ ColoredBananaGroupList = [
         map_id=Maps.AngryAztec,
         name="Around llama cage (lower)",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
-        region=Regions.AngryAztecStart,
+        region=Regions.AngryAztecOasis,
         locations=[
             [1, 1.0, 2151, 154, 1336],
             [1, 1.0, 2101, 154, 1382],
@@ -223,7 +224,7 @@ ColoredBananaGroupList = [
         map_id=Maps.AngryAztec,
         name="Bunches on each side of the Tiny Temple door",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
-        region=Regions.AngryAztecStart,
+        region=Regions.AngryAztecOasis,
         locations=[
             [5, 1.0, 3110, 220, 783],
             [5, 1.0, 3027, 220, 672],
@@ -234,7 +235,7 @@ ColoredBananaGroupList = [
         map_id=Maps.AngryAztec,
         name="Around Tiny Temple (on temple)",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
-        region=Regions.AngryAztecStart,
+        region=Regions.AngryAztecOasis,
         locations=[
             [1, 1.0, 3139, 215, 873],
             [1, 1.0, 3188, 215, 837],
@@ -263,7 +264,7 @@ ColoredBananaGroupList = [
         map_id=Maps.AngryAztec,
         name="Singles around Diddy BP",
         konglist=[Kongs.diddy],
-        region=Regions.AngryAztecStart,
+        region=Regions.AngryAztecOasis,
         logic=lambda l: l.jetpack,
         locations=[
             [1, 1.0, 3168, 446, 661],
@@ -283,7 +284,7 @@ ColoredBananaGroupList = [
         map_id=Maps.AngryAztec,
         name="4 corners of top of Tiny Temple",
         konglist=[Kongs.diddy],
-        region=Regions.AngryAztecStart,
+        region=Regions.AngryAztecOasis,
         logic=lambda l: l.jetpack,
         locations=[
             [5, 1.0, 3186, 357, 487],
@@ -297,7 +298,7 @@ ColoredBananaGroupList = [
         map_id=Maps.AngryAztec,
         name="In front of Candy's",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
-        region=Regions.AngryAztecStart,
+        region=Regions.AngryAztecOasis,
         locations=[
             [1, 1.0, 2254, 120, 523],
             [1, 1.0, 2308, 120, 553],
@@ -311,9 +312,18 @@ ColoredBananaGroupList = [
         map_id=Maps.AngryAztec,
         name="Bunches on W1",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
-        region=Regions.AngryAztecStart,
+        region=Regions.BetweenVinesByPortal,
         locations=[
             [5, 1.0, 805, 134, 786],
+        ],
+    ),
+    ColoredBananaGroup(
+        group=14,
+        map_id=Maps.AngryAztec,
+        name="Bunches on W1",
+        konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
+        region=Regions.AngryAztecOasis,
+        locations=[
             [5, 1.0, 2366, 134, 754],
         ],
     ),
@@ -391,7 +401,7 @@ ColoredBananaGroupList = [
         map_id=Maps.AngryAztec,
         name="W2 bunches (1 custom, 1 Diddy)",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
-        region=Regions.AngryAztecStart,
+        region=Regions.AngryAztecOasis,
         locations=[
             [5, 1.0, 2883.7001953125, 178.3626251220703, 862.9205932617188],
         ],
@@ -1593,7 +1603,7 @@ ColoredBananaGroupList = [
         map_id=Maps.AngryAztec,
         name="On oasis treetops (Donkey)",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
-        region=Regions.AngryAztecStart,
+        region=Regions.AngryAztecOasis,
         vanilla=True,
         locations=[
             [5, 1.0, 2526.212890625, 295.5, 1032.5323486328125],
@@ -1621,7 +1631,7 @@ ColoredBananaGroupList = [
         map_id=Maps.AngryAztec,
         name="DK Blueprint cave (Donkey)",
         konglist=[Kongs.donkey],
-        region=Regions.AngryAztecStart,
+        region=Regions.AngryAztecOasis,
         vanilla=True,
         logic=lambda l: l.coconut and l.strongKong,
         locations=[
@@ -1724,7 +1734,7 @@ ColoredBananaGroupList = [
         map_id=Maps.AngryAztec,
         name="Vase room (Chunky)",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
-        region=Regions.AngryAztecStart,
+        region=Regions.BetweenVinesByPortal,
         vanilla=True,
         logic=lambda l: l.pineapple,
         locations=[
@@ -1743,7 +1753,7 @@ BalloonList = [
         name="Chunky vase room back wall",
         speed=4,
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
-        region=Regions.AngryAztecStart,
+        region=Regions.BetweenVinesByPortal,
         logic=lambda l: l.pineapple,
         points=[
             [98, 195, 644],
@@ -1758,7 +1768,7 @@ BalloonList = [
         name="Chunky vase room right wall",
         speed=4,
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
-        region=Regions.AngryAztecStart,
+        region=Regions.BetweenVinesByPortal,
         logic=lambda l: l.pineapple,
         points=[
             [558, 195, 455],
@@ -1772,7 +1782,7 @@ BalloonList = [
         name="DK BP room over/under bridge",
         speed=6,
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
-        region=Regions.AngryAztecStart,
+        region=Regions.AngryAztecOasis,
         logic=lambda l: l.coconut,
         points=[
             [1380, 190, 735],
@@ -1787,7 +1797,7 @@ BalloonList = [
         name="Oasis",
         speed=4,
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
-        region=Regions.AngryAztecStart,
+        region=Regions.AngryAztecOasis,
         points=[
             [2382, 240, 908],
             [2413, 240, 1055],
@@ -1800,7 +1810,7 @@ BalloonList = [
         name="In front of Candy",
         speed=4,
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
-        region=Regions.AngryAztecStart,
+        region=Regions.AngryAztecOasis,
         points=[
             [2313, 220, 514],
             [2430, 220, 509],
@@ -1812,7 +1822,7 @@ BalloonList = [
         name="Behind Tiny Temple",
         speed=4,
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
-        region=Regions.AngryAztecStart,
+        region=Regions.AngryAztecOasis,
         points=[
             [3216, 300, 461],
             [3361, 300, 646],
@@ -1824,7 +1834,7 @@ BalloonList = [
         name="Behind Llama cage high up",
         speed=5,
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
-        region=Regions.AngryAztecStart,
+        region=Regions.AngryAztecOasis,
         points=[
             [2103, 450, 1736],
             [1959, 450, 1565],
@@ -1836,7 +1846,7 @@ BalloonList = [
         name="Rising from quicksand near oasis",
         speed=5,
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
-        region=Regions.AngryAztecStart,
+        region=Regions.AngryAztecOasis,
         points=[
             [2218, 50, 1087],
             [2225, 80, 1080],
@@ -2223,7 +2233,7 @@ BalloonList = [
         name="In front of Tiny Temple (Diddy)",
         speed=6,
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
-        region=Regions.AngryAztecStart,
+        region=Regions.AngryAztecOasis,
         vanilla=True,
         points=[
             [2900, 279, 732],
