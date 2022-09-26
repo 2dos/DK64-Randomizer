@@ -75,6 +75,8 @@ extern void* getMapData(data_indexes data_idx, int _index, char compressbyte0, c
 extern void loadSetup(void* setup_file, int unk0, int unk1);
 extern int getParentDataIndex(int map);
 extern void WarpToDKTV(void);
+extern void initHelmTimer(void);
+extern void LoadGameOver(void);
 extern int getActorSpawnerIDFromTiedActor(void* actor);
 extern void deleteActorContainer(void* actor);
 extern void renderActor(void* actor, int unk0);
@@ -102,9 +104,20 @@ extern int unkObjFunction3(int unk0, int unk1, int unk2, int unk3, int unk4, int
 extern void unkObjFunction4(int behav_38, int unk0);
 extern void unkObjFunction5(int behav_38, int unk0);
 extern void unkObjFunction6(int behav_38, int unk0);
+extern void unkObjFunction7(int id, int unk0, int unk1);
+extern int unkObjFunction8(int id, int unk0);
 extern int touchingModel2Object(int id);
 extern int GetKongUnlockedFlag(int actor_type, int kong_index);
 extern void setNextTransitionType(int type);
+extern int isPlayerInRangeOfObject(int distance);
+extern int getPlayerObjectDistance(void);
+extern void spawnWrinkly(behaviour_data* behaviour, int index, int door_kong_index, int unk0);
+extern int isWrinklySpawned(void);
+extern void setAction(int action, void* actor, int player_index);
+extern void exitPortalPath(behaviour_data* behaviour, int index, int unk0, int unk1);
+extern int getInteractionOfContactActor(int contact_actor);
+extern void enterPortal(void* player);
+extern void drawBossDoorNumber(behaviour_data* behaviour, int index, int unk0, int unk1);
 
 extern int* initDisplayList(int* dl);
 extern int getTextStyleHeight(int style);
@@ -112,6 +125,8 @@ extern int* displayText(int* dl, int style, int x, int y, void* text_pointer, ch
 extern int* displayImage(int* dl, int texture_index, int unk3, codecs codec_index, int width, int height, int x, int y, float xScale, float yScale, int unk11, float unk12);
 extern void getScreenPosition(float x, float y, float z, float* x_store, float* y_store, int unk8, float scale, char player_index);
 extern int* textDraw(int* dl, int style, int x, int y, char* str);
+extern void* getPtr14Texture(int texture);
+extern void renderImage_Internal(void* dl, void* texture, int unk0, int width, int height, int unk1, int unk1_copy, int unk2, int unk2_copy, float width_f, float height_f, float x_center, float y_center, int unk3);
 
 extern void cancelPausedCutscene(void);
 extern void pauseCutscene(void);
@@ -165,6 +180,8 @@ extern void* isActorLoaded(int actor_type);
 extern void beaverControlSwitchCase(int unk0, int unk1, int unk2);
 extern void BonusBarrelCode(void);
 extern void DisplayExplosionSprite(void);
+extern void displayWarpSparkles(behaviour_data* behaviour, int index, int unk0, int unk1);
+extern void setObjectScriptState(int id, int state, int offset);
 
 extern float getXRatioMovement(int dk64u_angle);
 extern float getZRatioMovement(int dk64u_angle);
@@ -172,6 +189,30 @@ extern void updateActorProjectileInfo(void* actor, int unk0);
 extern void spawnProjectile(short object, short subtype, int speed, float x, float y, float z, float unk0, void* actor);
 extern void controlStateControl(int unk0);
 extern void save(void);
+extern void getObjectPosition(int index, int unk0, int unk1, void* x, void* y, void* z);
+
+extern int crystalsUnlocked(int kong);
+extern void setMovesForAllKongs(shop_paad* paad, int is_bitfield);
+extern void setMoveProgressive(shop_paad* paad, int kong);
+extern void setMoveBitfield(shop_paad* paad, int kong);
+extern void refillHealth(int player_index);
+extern void changeCollectableCount(int item, int player_index, int change);
+extern void save(void);
+extern void* getSpawnerTiedActor(short target_trigger, short props_change);
+
+extern void _guScaleF(void* mtx, int x, int y, int z);
+extern void _guTranslateF(void* mtx, int x, int y, int z);
+extern void _guMtxCatF(void* mtx, void* unk0, void* unk1);
+extern void _guMtxF2L(void* mtx, void* unk0);
+extern void* getTextPointer(int file, int text_index, int unk0);
+extern void addDLToOverlay(int code, void* actor, int delay);
+extern int groundContactCheck(void);
+extern void groundContactSet(void);
+extern int getRefillCount(int item, int player);
+extern int doAllKongsHaveMove(shop_paad* paad, int unk0);
+extern void getSequentialPurchase(shop_paad* paad, KongBase* movedata);
+extern int ReadFile(int data, int kong, int level, int file);
+extern int* printText(int* dl, short x, short y, float scale, char* str);
 
 extern void assessFlagMapping(int map, int id);
 extern void coinCBCollectHandle(int player, int obj, int is_homing);
@@ -182,6 +223,22 @@ extern void unkSpriteRenderFunc_0(void);
 extern void loadSpriteFunction(int func);
 extern void displaySpriteAtXYZ(void* sprite, int x, int y, int z);
 extern void* getHUDSprite(int item);
+extern void updateMenuController(void* actor, void* paad, int unk0);
+extern void lockInput(int unk0);
+extern void fileStart(int file);
+extern int isFileEmpty(int file);
+extern void initMenuBackground(void* paad, int unk0);
+extern int calculateFilePercentage(void);
+extern void displayMenuSprite(void* paad, void* sprite_address, int x, int y, float scale, int unk0, int unk1);
+extern void loadFile(int file, int restock_inventory);
+extern void loadEndSeq(int mode);
+extern void checkGlobalProgress(int flag);
+extern void updateCutscene(void);
+extern void loadDKTVData(void);
+extern void clearActorList(void);
+extern void updateModelScales(void* actor, int size);
+extern void WipeFile(int file, int will_save);
+extern void WipeImageCache(void);
 
 //vanilla data
 extern float TransitionSpeed;
@@ -344,12 +401,15 @@ extern short BossMapArray[8];
 extern char BossKongArray[16];
 
 extern char KongUnlockedMenuArray[5];
-extern unsigned char FilePercentage;
+extern char FilePercentage; // Unsigned is technically correct, but -124% is more fun
 extern int FileGBCount;
 extern float FileScreenDLOffset;
 extern short CBTurnedInArray[8];
 extern short songData[0xB0];
 extern unsigned int DKTVData[5];
+
+extern void* ExitPointer;
+extern unsigned char ExitCount;
 
 extern charspawner_flagstruct charspawnerflags[0x1F];
 extern GBDictItem GBDictionary[113];
@@ -364,8 +424,29 @@ extern actorData* PlayerPointer_0;
 extern SpawnerInfo* currentCharSpawner;
 extern short EnemiesKilledCounter;
 extern model2_collision_info ModelTwoCollisionArray[42];
+extern unsigned char MelonArray[6];
 extern int IGT;
+extern unsigned int LevelStateBitfield;
+
+extern float menuHeadX[5];
+extern float menuHeadY[5];
+extern float menuHeadScale[5];
 extern collected_item_struct* LatestCollectedObject;
+extern image_cache_struct ImageCache[32];
+
+extern short* AnimationTable1;
+extern short* AnimationTable2;
+extern short* AnimationTable3;
+extern SpawnerInfo* TiedCharacterSpawner;
+extern kong_model_struct KongModelData[8];
+extern tag_model_struct TagModelData[5];
+extern short RollingSpeeds[7];
+extern int KongTagNames[9];
+extern short KrazyKKModels[6];
+extern short ChargeVelocities_0[7];
+extern short ChargeVelocities_1[7];
+extern short ChargeDeceleration[7];
+extern char* KongTextNames[8];
 
 //hack data
 extern int TestVariable;
@@ -386,6 +467,8 @@ extern short style2Mtx[0x10];
 extern purchase_struct CrankyMoves_New[5][8];
 extern purchase_struct CandyMoves_New[5][8];
 extern purchase_struct FunkyMoves_New[5][8];
+extern purchase_struct TrainingMoves_New[4];
+extern purchase_struct BFIMove_New;
 extern settingsData StoredSettings;
 extern char WarpToIslesEnabled;
 extern char SkipDance;
@@ -393,10 +476,16 @@ extern char permaLossMode;
 extern char preventTagSpawn;
 extern char bonusAutocomplete;
 extern void* StoredCounterTextures[7];
-extern char QoLOn;
+extern char TextHoldOn;
 extern unsigned char PauseText;
 extern unsigned char ShorterBosses;
 extern char ForceStandardAmmo;
 extern char KKOPhaseRandoOn;
 extern char KKOPhaseOrder[3];
 extern unsigned short MultiBunchCount;
+extern char QueueHelmTimer;
+extern char ToggleAmmoOn;
+extern void* WarpData;
+extern unsigned char InvertedControls;
+extern unsigned char WinCondition;
+extern unsigned char ChunkyModel;

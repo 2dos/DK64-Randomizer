@@ -10,8 +10,11 @@ import zlib
 import create_helm_geo
 import generate_watch_file
 import shop_instance_script  # HAS TO BE BEFORE `instance_script_maker`
+from writeWarpData import generateDefaultPadPairing  # HAS TO BE BEFORE `instance_script_maker`
+import portal_instance_script  # HAS TO BE BEFORE `instance_script_maker`
 import instance_script_maker
 import model_fix
+import generate_disco_models
 
 # Patcher functions for the extracted files
 import patch_text
@@ -27,7 +30,6 @@ from map_names import maps
 from populateSongData import writeVanillaSongData
 from recompute_overlays import isROMAddressOverlay, readOverlayOriginalData, replaceOverlayData, writeModifiedOverlaysToROM
 from recompute_pointer_table import dumpPointerTableDetails, getFileInfo, make_safe_filename, parsePointerTables, pointer_tables, replaceROMFile, writeModifiedPointerTablesToROM
-from replace_simslam_text import replaceSimSlam
 from staticcode import patchStaticCode
 from vanilla_move_data import writeVanillaMoveData
 
@@ -182,6 +184,13 @@ file_dict = [
         "source_file": "assets/Non-Code/displays/dpad.png",
         "texture_format": "rgba5551",
     },
+    {
+        "name": "Tracker Image",
+        "pointer_table_index": 14,
+        "file_index": 0xA1,
+        "source_file": "assets/Non-Code/file_screen/tracker.png",
+        "texture_format": "rgba5551",
+    },
 ]
 
 number_game_changes = [
@@ -259,18 +268,57 @@ for song in song_replacements:
     file_dict.append(item)
     changed_song_indexes.append(song["index"])
 
+# Instance Scripts
 with open("./instance_scripts_data.json", "r") as json_f:
     instance_script_maps = json.load(json_f)
+maps_to_expand = list(range(0, 216))
+script_expansion_size = 0x200
 for x in instance_script_maps:
+    maps_to_expand.remove(x["map"])
+    script_file_name = f"{x['name']}.raw"
+    expand_size = 0x2000
+    with open(script_file_name, "rb") as script_f:
+        data = script_f.read()
+        compress = gzip.compress(data, compresslevel=9)
+        expand_size = len(data) + script_expansion_size
     file_dict.append(
         {
             "name": f"{x['name'].replace('_',' ')} Instance Scripts",
             "pointer_table_index": 10,
             "file_index": x["map"],
-            "source_file": f"{x['name']}.raw",
+            "source_file": script_file_name,
+            "target_compressed_size": expand_size,
+            "target_uncompressed_size": expand_size,
+            "do_not_recompress": True,
             "do_not_delete_source": True,
         }
     )
+for x in maps_to_expand:
+    with open(ROMName, "rb") as fh:
+        fh.seek(0x101C50 + (10 * 4))
+        script_table = 0x101C50 + int.from_bytes(fh.read(4), "big")
+        fh.seek(script_table + (x * 4))
+        item_start = 0x101C50 + (int.from_bytes(fh.read(4), "big") & 0x7FFFFFFF)
+        item_end = 0x101C50 + (int.from_bytes(fh.read(4), "big") & 0x7FFFFFFF)
+        fh.seek(item_start)
+        is_compressed = int.from_bytes(fh.read(2), "big") == 0x1F8B
+        item_size = item_end - item_start
+        if is_compressed:
+            fh.seek(item_start)
+            data = fh.read(item_size)
+            data = zlib.decompress(data, (15 + 32))
+            item_size = len(data)
+        file_dict.append(
+            {
+                "name": f"Script {x}",
+                "pointer_table_index": 10,
+                "file_index": x,
+                "source_file": f"script{x}.bin",
+                "target_compressed_size": item_size + script_expansion_size,
+                "target_uncompressed_size": item_size + script_expansion_size,
+                "do_not_recompress": True,
+            }
+        )
 
 for x in range(175):
     if x > 0:
@@ -318,6 +366,19 @@ for x in range(221):
         }
     )
 for x in range(221):
+    if x != 2:  # DK Arcade path file is massive
+        file_dict.append(
+            {
+                "name": "Paths for map " + str(x),
+                "pointer_table_index": 15,
+                "file_index": x,
+                "source_file": "paths" + str(x) + ".bin",
+                "target_uncompressed_size": 0x600,
+                "target_compressed_size": 0x600,
+                "do_not_recompress": True,
+            }
+        )
+for x in range(221):
     file_dict.append(
         {
             "name": "Character Spawners for map " + str(x),
@@ -340,20 +401,18 @@ for x in range(8):
         }
     )
 for x in range(43):
-    if x != 13:
-        if x != 32:
-            if x != 0x18:
-                file_dict.append(
-                    {
-                        "name": "Text " + str(x),
-                        "pointer_table_index": 12,
-                        "file_index": x,
-                        "source_file": "text" + str(x) + ".bin",
-                        "target_compressed_size": 0x2000,
-                        "target_uncompressed_size": 0x2000,
-                        "do_not_recompress": True,
-                    }
-                )
+    if x not in (13, 32, 0x18, 0x27, 8, 37, 2):
+        file_dict.append(
+            {
+                "name": "Text " + str(x),
+                "pointer_table_index": 12,
+                "file_index": x,
+                "source_file": "text" + str(x) + ".bin",
+                "target_compressed_size": 0x2000,
+                "target_uncompressed_size": 0x2000,
+                "do_not_recompress": True,
+            }
+        )
 for x in range(10):
     file_dict.append(
         {
@@ -391,10 +450,10 @@ for x in range(5):
             }
         )
 
-kong_palettes = [0xE8C, 0xE66, 0xE69, 0xEB9, 0xE67, 3826, 3847, 3734]
+kong_palettes = [0xE8C, 0xE66, 0xE69, 0xEB9, 0xE67, 3826, 3847, 3734, 3777, 3778, 4971, 4966]
 for x in kong_palettes:
     x_s = 32 * 32 * 2
-    if x == 0xEB9 or x == 3734:  # Chunky Shirt Back or Lanky Patch
+    if x in (0xEB9, 3734):  # Chunky Shirt Back, Lanky Patch
         x_s = 43 * 32 * 2
     file_dict.append({"name": f"Palette Expansion ({hex(x)})", "pointer_table_index": 25, "file_index": x, "source_file": f"palette_{x}.bin", "target_compressed_size": x_s})
 
@@ -406,17 +465,20 @@ model_changes = [
     {"model_index": 3, "model_file": "dk_base.bin"},
     {"model_index": 8, "model_file": "tiny_base.bin"},
     {"model_index": 9, "model_file": "tiny_ins.bin"},
+    {"model_index": 0xEC, "model_file": "disco_instrument.bin"},
+    {"model_index": 0xDA, "model_file": "krusha_base.bin"},
 ]
 for x in model_changes:
-    file_dict.append(
-        {
-            "name": f"Model {x['model_index']}",
-            "pointer_table_index": 5,
-            "file_index": x["model_index"],
-            "source_file": x["model_file"],
-            "do_not_delete_source": True,
-        }
-    )
+    data = {
+        "name": f"Model {x['model_index']}",
+        "pointer_table_index": 5,
+        "file_index": x["model_index"],
+        "source_file": x["model_file"],
+        "do_not_delete_source": True,
+    }
+    if x["model_index"] > 0xEB:
+        data["do_not_extract"] = True
+    file_dict.append(data)
 
 portal_image_order = [
     ["SE", "NE", "SW", "NW"],
@@ -478,7 +540,62 @@ file_dict.append(
         "do_not_delete_source": True,
     }
 )
+file_dict.append(
+    {
+        "name": "Move Names Text",
+        "pointer_table_index": 12,
+        "file_index": 0x27,
+        "source_file": "move_names.bin",
+        "do_not_compress": True,
+        "do_not_delete_source": True,
+    }
+)
+file_dict.append(
+    {
+        "name": "Cranky Text",
+        "pointer_table_index": 12,
+        "file_index": 8,
+        "source_file": "cranky_text.bin",
+        "do_not_compress": True,
+        "do_not_delete_source": True,
+    }
+)
+file_dict.append(
+    {
+        "name": "Menu Text",
+        "pointer_table_index": 12,
+        "file_index": 37,
+        "source_file": "menu_text.bin",
+        "do_not_compress": True,
+        "do_not_delete_source": True,
+    }
+)
+file_dict.append(
+    {
+        "name": "Kong Name Text",
+        "pointer_table_index": 12,
+        "file_index": 2,
+        "source_file": "kongname_text.bin",
+        "do_not_compress": True,
+        "do_not_delete_source": True,
+    }
+)
 
+with open(ROMName, "rb") as fh:
+    adjustExits(fh)
+
+for x in range(216):
+    if os.path.exists(f"exit{x}.bin"):
+        file_dict.append(
+            {
+                "name": f"Map {x} Exits",
+                "pointer_table_index": 23,
+                "file_index": x,
+                "source_file": f"exit{x}.bin",
+                "do_not_compress": True,
+                "do_not_delete_source": True,
+            }
+        )
 
 print("\nDK64 Extractor\nBuilt by Isotarge")
 
@@ -591,7 +708,11 @@ with open(ROMName, "rb") as fh:
                     os.remove(x["source_file"])
 
                 with open(x["source_file"], "wb") as fg:
-                    dec = zlib.decompress(byte_read, 15 + 32)
+                    fh.seek(x["start"])
+                    if int.from_bytes(fh.read(2), "big") == 0x1F8B:
+                        dec = zlib.decompress(byte_read, 15 + 32)
+                    else:
+                        dec = byte_read
                     fg.write(dec)
 
 print("[3 / 7] - Patching Extracted Files")
@@ -762,8 +883,12 @@ with open(newROMName, "r+b") as fh:
     fh.write(bytearray(arr))
     writeVanillaMoveData(fh)
     adjustExits(fh)
-    replaceSimSlam(fh)
+    generateDefaultPadPairing(fh)
     writeVanillaSongData(fh)
+    fh.seek(0x1FED020 + 0x11E)
+    fh.write((1).to_bytes(1, "big"))
+    fh.seek(0x1FED020 + 0x11C)
+    fh.write((0xFF).to_bytes(1, "big"))
     for x in portal_images:
         for y in x:
             if os.path.exists(y):
@@ -858,6 +983,7 @@ with open(newROMName, "r+b") as fh:
             other_remove.append(f"displays/{disp}{ext}")
     for x in range(8):
         other_remove.append(f"file_screen/key{x+1}.png")
+    other_remove.append("file_screen/tracker.png")
     for x in other_remove:
         pth = f"assets/Non-Code/{x}"
         if os.path.exists(pth):
@@ -877,6 +1003,13 @@ with open(newROMName, "r+b") as fh:
         "standard_crate_0",
         "standard_crate_1",
         "tiny_palette",
+        "coconut",
+        "feather",
+        "grape",
+        "peanut",
+        "pineapple",
+        "triangle",
+        "trombone",
     ]
     script_files = [x[0] for x in os.walk("assets/Non-Code/instance_scripts/")]
     shop_files = ["snide.script", "cranky.script", "funky.script", "candy.script"]
@@ -906,6 +1039,9 @@ with open(newROMName, "r+b") as fh:
         os.remove(new_coin_sfx)
     if os.path.exists("helm.bin"):
         os.remove("helm.bin")
+    for x in range(216):
+        if os.path.exists(f"exit{x}.bin"):
+            os.remove(f"exit{x}.bin")
     # pth = "assets/Non-Code/displays/soldout_bismuth.rgba32"
     # if os.path.exists(pth):
     #     os.remove(pth)

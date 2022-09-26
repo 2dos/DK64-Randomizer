@@ -1,10 +1,22 @@
 """Adjust exits to prevent logical problems with LZR."""
 from typing import BinaryIO
+import zlib
+import struct
+import os
 
 pointer_table_address = 0x101C50
+setup_index = 9
 pointer_table_index = 23
 
 new_caves_portal_coords = [120.997, 50, 1182.974]
+
+
+def int_to_float(val):
+    """Convert a hex int to a float."""
+    if val == 0:
+        return 0
+    return struct.unpack("!f", bytes.fromhex(hex(val).split("0x")[1]))[0]
+
 
 exit_adjustments = [
     {
@@ -128,24 +140,89 @@ exit_adjustments = [
     },
 ]
 
+exit_additions = []
+
+temp_file = "temp.bin"
+
+
+def shortToUshort(short):
+    """Convert Short to Unsigned Short."""
+    if short < 0:
+        return short + 65536
+    return short
+
 
 def adjustExits(fh):
     """Write new exits."""
     print("Adjusting Exits")
+    # Get Setups
+    fh.seek(pointer_table_address + (4 * setup_index))
+    setup_table = pointer_table_address + int.from_bytes(fh.read(4), "big")
+    for map_index in range(216):
+        exit_coords = []
+        if map_index not in (0x61, 0xAA, 0x11):  # Prevent K. Lumsy exit being generated with fake warp
+            fh.seek(setup_table + (4 * map_index))
+            setup_start = pointer_table_address + int.from_bytes(fh.read(4), "big")
+            setup_end = pointer_table_address + int.from_bytes(fh.read(4), "big")
+            setup_size = setup_end - setup_start
+            fh.seek(setup_start)
+            indicator = int.from_bytes(fh.read(2), "big")
+            is_compressed = False
+            if indicator == 0x1F8B:
+                is_compressed = True
+            fh.seek(setup_start)
+            data = fh.read(setup_size)
+            if is_compressed:
+                data = zlib.decompress(data, (15 + 32))
+            with open(temp_file, "wb") as fg:
+                fg.write(data)
+            with open(temp_file, "rb") as fg:
+                model2_count = int.from_bytes(fg.read(4), "big")
+                for model2_item in range(model2_count):
+                    item_start = 4 + (model2_item * 0x30)
+                    fg.seek(item_start + 0x28)
+                    item_type = int.from_bytes(fg.read(2), "big")
+                    item_id = int.from_bytes(fg.read(2), "big")
+                    if item_type >= 0x210 and item_type <= 0x214:
+                        if item_id == 0x57 and map_index == 0x48:
+                            fg.seek(item_start + 4)
+                            coords = [int(176.505), int(int_to_float(int.from_bytes(fg.read(4), "big"))) + 5, int(1089.408)]
+                        else:
+                            fg.seek(item_start)
+                            coords = []
+                            for coord_index in range(3):
+                                coords.append(int(int_to_float(int.from_bytes(fg.read(4), "big"))))
+                            coords[1] += 5
+                        exit_coords.append(coords.copy())
+            if os.path.exists(temp_file):
+                os.remove(temp_file)
+        exit_additions.append(exit_coords.copy())
+    # Exits
     fh.seek(pointer_table_address + (4 * pointer_table_index))
     ptr_table = pointer_table_address + int.from_bytes(fh.read(4), "big")
-    for x in exit_adjustments:
-        _map = x["containing_map"]
-        fh.seek(ptr_table + (4 * _map))
-        start = int.from_bytes(fh.read(4), "big") + pointer_table_address
-        for exit in x["exits"]:
-            fh.seek(start + (exit["exit_index"] * 0xA) + 0)
-            fh.write(exit["x"].to_bytes(2, "big"))
-            fh.seek(start + (exit["exit_index"] * 0xA) + 2)
-            fh.write(exit["y"].to_bytes(2, "big"))
-            fh.seek(start + (exit["exit_index"] * 0xA) + 4)
-            fh.write(exit["z"].to_bytes(2, "big"))
-
-
-# with open("../rom/dk64-randomizer-base-dev.z64","r+b") as fh:
-# 	adjustExits(fh)
+    for map_index in range(216):
+        fh.seek(ptr_table + (4 * map_index))
+        exit_start = pointer_table_address + int.from_bytes(fh.read(4), "big")
+        exit_end = pointer_table_address + int.from_bytes(fh.read(4), "big")
+        exit_size = exit_end - exit_start
+        fh.seek(exit_start)
+        data = fh.read(exit_size)
+        file_name = f"exit{map_index}.bin"
+        with open(file_name, "wb") as fg:
+            fg.write(data)
+            for exit_set in exit_additions[map_index]:
+                for coord in exit_set:
+                    fg.write(shortToUshort(coord).to_bytes(2, "big"))
+                fg.write((0).to_bytes(4, "big"))
+        with open(file_name, "r+b") as fg:
+            for x in exit_adjustments:
+                if map_index == x["containing_map"]:
+                    for exit in x["exits"]:
+                        exit_start = exit["exit_index"] * 0xA
+                        fg.seek(exit_start)
+                        fg.write(shortToUshort(exit["x"]).to_bytes(2, "big"))
+                        fg.write(shortToUshort(exit["y"]).to_bytes(2, "big"))
+                        fg.write(shortToUshort(exit["z"]).to_bytes(2, "big"))
+        if os.path.exists(file_name):
+            if os.path.getsize(file_name) == 0:
+                os.remove(file_name)

@@ -12,7 +12,7 @@ typedef struct varspace {
 	/* 0x031 */ char fast_start_helm; // 0 = "Fast Start for Helm" setting not applied. 1 = Applied
 	/* 0x032 */ char crown_door_open; // 0 = Crown Door not opened by default. 1 = Opened by default
 	/* 0x033 */ char coin_door_open; // 0 = Coin Door not opened by default. 1 = Opened by default. 2 = Only requires RW Coin. 3 = Only requires Nin Coin.
-	/* 0x034 */ char quality_of_life; // 0 = Quality of life features not applied. 1 = Applied
+	/* 0x034 */ char unk34;
 	/* 0x035 */ char price_rando_on; // 0 = Price Randomizer off, 1 = On
 	/* 0x036 */ unsigned char special_move_prices[5][3]; // Array of an array of prices [[1,2,3],[1,2,3],[1,2,3],[1,2,3],[1,2,3]]. Each item of the parent array is for a kong, each item of the sub arrays is the price of the moves in order of their vanilla purchase (eg. DK: Baboon Blast > Strong Kong > Gorilla Grab)
 	/* 0x045 */ unsigned char slam_prices[2]; // Array of simian slam upgrade prices: [1,2]. First item is super simian slam (blue), 2nd is super duper simian slam (red)
@@ -44,21 +44,16 @@ typedef struct varspace {
 	/* 0x0A5 */ char damage_multiplier; // 1 = Normal. 2 = Double. Any value greater than 11 will be 1 hit KO
 	/* 0x0A6 */ char no_health_refill; // 0 = Vanilla. 1 =  No health refill for Tag Barrels, "Voiding", Bonus Barrels, Fairies, K. Rool Health Refills
 	/* 0x0A7 */ char move_rando_on; // O = No Move Randomization. 1 = On.
-	/* 0x0A8 */ unsigned char dk_crankymoves[8]; // tttl lkkk. t = Type (0 = Moves, 1 = Slam, 2 = Guns, 3 = Ammo Belt, 4 = Instrument, 5 = No Move), l = move level, k = kong
-	/* 0x0B0 */ unsigned char diddy_crankymoves[8]; // See "dk_crankymoves"
-	/* 0x0B8 */ unsigned char lanky_crankymoves[8]; // See "dk_crankymoves"
-	/* 0x0C0 */ unsigned char tiny_crankymoves[8]; // See "dk_crankymoves"
-	/* 0x0C8 */ unsigned char chunky_crankymoves[8]; // See "dk_crankymoves"
-	/* 0x0D0 */ unsigned char dk_funkymoves[8]; // See "dk_crankymoves"
-	/* 0x0D8 */ unsigned char diddy_funkymoves[8]; // See "dk_crankymoves"
-	/* 0x0E0 */ unsigned char lanky_funkymoves[8]; // See "dk_crankymoves"
-	/* 0x0E8 */ unsigned char tiny_funkymoves[8]; // See "dk_crankymoves"
-	/* 0x0F0 */ unsigned char chunky_funkymoves[8]; // See "dk_crankymoves"
-	/* 0x0F8 */ unsigned char dk_candymoves[8]; // See "dk_crankymoves". Note: Do not assign anything to item 0 or 4 as there's no Candy's in Japes or Fungi
-	/* 0x100 */ unsigned char diddy_candymoves[8]; // See "dk_crankymoves". Note: Do not assign anything to item 0 or 4 as there's no Candy's in Japes or Fungi
-	/* 0x108 */ unsigned char lanky_candymoves[8]; // See "dk_crankymoves". Note: Do not assign anything to item 0 or 4 as there's no Candy's in Japes or Fungi
-	/* 0x110 */ unsigned char tiny_candymoves[8]; // See "dk_crankymoves". Note: Do not assign anything to item 0 or 4 as there's no Candy's in Japes or Fungi
-	/* 0x118 */ unsigned char chunky_candymoves[8]; // See "dk_crankymoves". Note: Do not assign anything to item 0 or 4 as there's no Candy's in Japes or Fungi
+	/* 0x0A8 */ unsigned char tbarrel_prices[4]; // Array of training barrel move prices. First is dive, then orange, then barrel, then vine
+	/* 0x0AC */ unsigned char fairy_prices[2]; // Array of fairy move prices. First is camera, second is shockwave. Shockwave/Camera combo price is calculated as the sum of the two
+	/* 0x0AE */ char helm_hurry_mode; // 0 = Off, 1 = On: Starting a new file summons the helm timer, each BP adds 2 minutes to the clock, timing out disables saving.
+	/* 0x0AF */ char always_show_coin_cbs; // 0 = No (Vanilla), 1 = Yes
+	/* 0x0B0 */ quality_options quality_of_life; // Size: 2
+	/* 0x0B2 */ char unk_B0[0x11C - 0xB2];
+	/* 0x11C */ char krusha_slot; // -1 = Not replacing a kong. 0-4 = Replaces kong of relevant index. Takes priority over disco chunky
+	/* 0x11D */ unsigned char win_condition; // See vars.h for enum
+	/* 0x11E */ char tns_indicator;
+	/* 0x11F */ char wrinkly_rando_on;
 	/* 0x120 */ char kut_out_kong_order[5]; // Value of item: 0 = DK, 1 = Diddy, 2 = Lanky, 3 = Tiny, 4 = Chunky. Kongs can be repeated
 	/* 0x125 */ unsigned char remove_blockers; // Bitfield of B. Lockers to remove. 0 = Remove None. 0x7F = remove all except Helm Lobby. 0xFF = Remove all.
 	/* 0x126 */ char resolve_bonus; // Bitfield. 0000 0001 = auto-complete bonus barrels. 0000 0010 = auto-complete helm barrels. 0 = Off. 3 = Resolve Helm & Bonus Barrels
@@ -66,7 +61,7 @@ typedef struct varspace {
 	/* 0x128 */ char disable_drops; // 0 = Off. 1 = No Klump/Melon/Ammo Crate Drops
 	/* 0x129 */ char hash[5];
 	/* 0x12E */ char music_rando_on; // 0 = Off, 1 = Music Rando on, apply extra data shuffle
-	/* 0x12F */ char unk_12F;
+	/* 0x12F */ char disco_chunky; // 0 = Normal, 1 = Disco. Overriden by Krusha if Krusha replaces Chunky
 	/* 0x130 */ unsigned short ballroom_to_museum; // Same as "aztec_beetle_enter" but for the loading zone dictated by the name
 	/* 0x132 */ unsigned short museum_to_ballroom; // Same as "aztec_beetle_enter" but for the loading zone dictated by the nametc
 	/* 0x134 */ char shop_indicator_on; // 0 = Off, 1 = Render amount of moves that can be purchased from that shop

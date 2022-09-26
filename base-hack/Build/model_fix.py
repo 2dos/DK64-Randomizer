@@ -1,6 +1,7 @@
 """Generate corrected Diddy and Lanky models."""
 
 import zlib
+import os
 
 rom_file = "rom/dk64.z64"
 pointer_offset = 0x101C50
@@ -78,6 +79,14 @@ tiny_adjustment = """
     17 7E
 """
 
+krusha_adjustment_0 = """
+    13 6B
+"""
+
+krusha_adjustment_1 = """
+    13 66
+"""
+
 modifications = [
     {"model_index": 0, "model_file": "diddy_base.bin", "wipe": [[0x47D0, 0x4878]], "add": [diddy_fix]},
     {"model_index": 1, "model_file": "diddy_ins.bin", "wipe": [[0x4598, 0x4620]], "add": [diddy_fix]},
@@ -91,6 +100,12 @@ modifications = [
     {"model_index": 3, "model_file": "dk_base.bin", "wipe": [[0x61A2, 0x61A4]], "add": [dk_adjustment]},
     {"model_index": 8, "model_file": "tiny_base.bin", "wipe": [[0x63D4, 0x63D6]], "add": [tiny_adjustment]},
     {"model_index": 9, "model_file": "tiny_ins.bin", "wipe": [[0x679C, 0x679E]], "add": [tiny_adjustment]},
+    {
+        "model_index": 0xDA,
+        "model_file": "krusha_base.bin",
+        "wipe": [[0x2E96, 0x2E98], [0x3A5E, 0x3A60], [0x3126, 0x3128], [0x354E, 0x3550], [0x37FE, 0x3800], [0x41E6, 0x41E8]],
+        "add": [krusha_adjustment_0, krusha_adjustment_0, krusha_adjustment_1, krusha_adjustment_1, krusha_adjustment_1, krusha_adjustment_1],
+    },
 ]
 
 with open(rom_file, "rb") as rom:

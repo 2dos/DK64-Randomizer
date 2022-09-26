@@ -24,6 +24,7 @@ START:
 		// Write LZ Update
 		LUI t3, 0x8075
 		SB r0, 0x8E21 (t3) // Setup
+		SB r0, 0x8E22 (t3) // M2 Scripts
 		SB r0, 0x8E24 (t3) // Text
 		SB r0, 0x8E2A (t3) // Loading Zones
 		SB r0, 0x8E28 (t3) // Character Spawners
@@ -199,6 +200,18 @@ GiveItemPointerToMultiHook:
 CoinHUDRepositionHook:
 	J 	CoinHUDReposition
 	NOP
+SaveHelmHurryCheckHook:
+	J 	SaveHelmHurryCheck
+	NOP
+InvertCameraControlsHook:
+	J 	InvertCameraControls
+	NOP
+VineCodeHook:
+	J 	VineCode
+	NOP
+SkipCutscenePansHook:
+	J 	SkipCutscenePans
+	NOP
 
 loadExtraHooks:
 	LUI t3, hi(InstanceScriptHook)
@@ -206,12 +219,30 @@ loadExtraHooks:
 	LUI t4, 0x8064
 	SW t3, 0xEE08 (t4) // Store Hook
 	SW r0, 0xEE0C (t4) // Store NOP
+	
+	LUI t3, hi(VineCodeHook)
+	LW t3, lo(VineCodeHook) (t3)
+	LUI t4, 0x806A
+	SW t3, 0x840C (t4) // Store Hook
+	SW r0, 0x8410 (t4) // Store NOP
+	
+	LUI t3, hi(SkipCutscenePansHook)
+	LW t3, lo(SkipCutscenePansHook) (t3)
+	LUI t4, 0x8062
+	SW t3, 0xE684 (t4) // Store Hook
+	SW r0, 0xE688 (t4) // Store NOP
 
 	LUI t3, hi(ShopImageHandlerHook)
 	LW t3, lo(ShopImageHandlerHook) (t3)
 	LUI t4, 0x8065
 	SW t3, 0x8364 (t4) // Store Hook
 	SW r0, 0x8368 (t4) // Store NOP
+	
+	LUI t3, hi(InvertCameraControlsHook)
+	LW t3, lo(InvertCameraControlsHook) (t3)
+	LUI t4, 0x806F
+	SW t3, 0xA70C (t4) // Store Hook
+	SW r0, 0xA710 (t4) // Store NOP
 
 	LUI t3, hi(FixPufftossInvalidWallCollisionHook)
 	LW t3, lo(FixPufftossInvalidWallCollisionHook) (t3)
@@ -302,6 +333,12 @@ loadExtraHooks:
 	LUI t4, 0x806D
 	SW t3, 0x9A7C (t4) // Store Hook
 	SW r0, 0x9A80 (t4) // Store NOP
+	
+	LUI t3, hi(SaveHelmHurryCheckHook)
+	LW t3, lo(SaveHelmHurryCheckHook) (t3)
+	LUI t4, 0x8061
+	SW t3, 0xDEF4 (t4) // Store Hook
+	SW r0, 0xDEF8 (t4) // Store NOP
 
 	LUI t3, hi(WarpToIslesEnabled)
 	LBU t3, lo(WarpToIslesEnabled) (t3)
@@ -452,17 +489,17 @@ loadExtraHooks:
 	LUI t4, 0x806B
 	SW t3, 0xF70C (t4) // Store Hook
 	SW r0, 0xF710 (t4) // Store NOP
-
-	LUI t3, hi(QoLOn)
-	LBU t3, lo(QoLOn) (t3)
-	BEQZ t3, loadExtraHooks_3
-	NOP
-
+	
 	LUI t3, hi(NinWarpHook)
 	LW t3, lo(NinWarpHook) (t3)
 	LUI t4, 0x8071
 	SW t3, 0x32BC (t4) // Store Hook
 	SW r0, 0x32C0 (t4) // Store NOP
+
+	LUI t3, hi(TextHoldOn)
+	LBU t3, lo(TextHoldOn) (t3)
+	BEQZ t3, loadExtraHooks_3
+	NOP
 
 	LUI t3, hi(TextHandlerHook)
 	LW t3, lo(TextHandlerHook) (t3)

@@ -61,6 +61,8 @@
 .definelabel getParentDataIndex, 0x80688D64
 .definelabel getScreenPosition, 0x80626F8C
 .definelabel WarpToDKTV, 0x807131BC
+.definelabel initHelmTimer, 0x80712574
+.definelabel LoadGameOver, 0x807127B4
 .definelabel textDraw, 0x806FD490
 .definelabel wipeStoredSetup, 0x80611614
 .definelabel complex_free, 0x8061130C
@@ -79,6 +81,8 @@
 .definelabel unkCutsceneKongFunction_1, 0x80724E48
 .definelabel getAnimationTimer, 0x80614A54
 .definelabel playSFXFromObject, 0x806085DC
+.definelabel displayWarpSparkles, 0x80647A14
+.definelabel getObjectPosition, 0x806335B0
 
 .definelabel unkObjFunction0, 0x80650BBC
 .definelabel unkObjFunction1, 0x80650A04
@@ -87,9 +91,20 @@
 .definelabel unkObjFunction4, 0x80723320
 .definelabel unkObjFunction5, 0x8072334C
 .definelabel unkObjFunction6, 0x80723284
+.definelabel unkObjFunction7, 0x80634EA4
+.definelabel unkObjFunction8, 0x80650D04
 .definelabel touchingModel2Object, 0x806F70A8
 .definelabel GetKongUnlockedFlag, 0x805FF018
 .definelabel setNextTransitionType, 0x805FF158
+.definelabel isPlayerInRangeOfObject, 0x80642204
+.definelabel getPlayerObjectDistance, 0x8064F210
+.definelabel spawnWrinkly, 0x8064F028
+.definelabel isWrinklySpawned, 0x8064F1C4
+.definelabel setAction, 0x806EB0C0
+.definelabel exitPortalPath, 0x806496B0
+.definelabel getInteractionOfContactActor, 0x8067ACC0
+.definelabel enterPortal, 0x806CF398
+.definelabel drawBossDoorNumber, 0x8064954C
 
 .definelabel unkMultiplayerWarpFunction, 0x8061EB04
 .definelabel renderScreenTransition, 0x806291B4
@@ -99,6 +114,8 @@
 .definelabel displayText, 0x806FC530
 .definelabel displayImage, 0x8068C5A8
 .definelabel determineXRatioMovement, 0x80612794
+.definelabel getPtr14Texture, 0x8068C12C
+.definelabel renderImage_Internal, 0x80702464
 
 .definelabel getWorld, 0x805FF030
 .definelabel displayImageOnObject, 0x80635018
@@ -157,9 +174,32 @@
 .definelabel beaverControlSwitchCase, 0x806AD260
 .definelabel spawnProjectile, 0x80690A28
 .definelabel updateActorProjectileInfo, 0x80690814
-.definelabel controlStateControl, 0x806DF6D4
+.definelabel crystalsUnlocked, 0x806F6E58
+.definelabel setMovesForAllKongs, 0x80025D8C
+.definelabel setMoveProgressive, 0x80025D14
+.definelabel setMoveBitfield, 0x80025D44
+.definelabel refillHealth, 0x80709464
+.definelabel changeCollectableCount, 0x806F91B4
 .definelabel save, 0x8060DEC8
+.definelabel getSpawnerTiedActor, 0x807270C0
+.definelabel setObjectScriptState, 0x806418E8
+
+.definelabel _guScaleF, 0x80008580
+.definelabel _guTranslateF, 0x80005D80
+.definelabel _guMtxCatF, 0x800088B0
+.definelabel _guMtxF2L, 0x8000A6C0
+.definelabel getTextPointer, 0x8070E750
+.definelabel addDLToOverlay, 0x8068C350
 .definelabel displayItemOnHUD, 0x806F8BC4
+.definelabel controlStateControl, 0x806DF6D4
+.definelabel groundContactCheck, 0x80629148
+.definelabel groundContactSet, 0x80629174
+.definelabel getRefillCount, 0x806F8EDC
+.definelabel doAllKongsHaveMove, 0x80025AF0
+.definelabel getSequentialPurchase, 0x80026804
+.definelabel ReadFile, 0x8060C6B8
+.definelabel printText, 0x806ABB98
+
 .definelabel assessFlagMapping, 0x807314F4
 .definelabel coinCBCollectHandle, 0x806F54E0
 
@@ -168,6 +208,22 @@
 .definelabel loadSpriteFunction, 0x8071498C
 .definelabel displaySpriteAtXYZ, 0x80714CC0
 .definelabel getHUDSprite, 0x806FACE8
+.definelabel updateMenuController, 0x8002FC1C
+.definelabel lockInput, 0x8060AA58
+.definelabel fileStart, 0x807144B8
+.definelabel isFileEmpty, 0x800322D0
+.definelabel initMenuBackground, 0x8002FE08
+.definelabel calculateFilePercentage, 0x80032304
+.definelabel displayMenuSprite, 0x80030894
+.definelabel loadFile, 0x8060DC3C
+.definelabel loadEndSeq, 0x807127F4
+.definelabel checkGlobalProgress, 0x807311C4
+.definelabel updateCutscene, 0x806F3DB0
+.definelabel loadDKTVData, 0x80712B80
+.definelabel clearActorList, 0x8067AE58
+.definelabel updateModelScales, 0x807248B0
+.definelabel WipeFile, 0x8060C830
+.definelabel WipeImageCache, 0x8068C080
 
 //vanilla data
 .definelabel TransitionSpeed, 0x807FD88C
@@ -293,6 +349,9 @@
 .definelabel CutsceneBanks, 0x807F5B10
 .definelabel EEPROMType, 0x807EDEAC
 
+.definelabel ExitPointer, 0x807FC900
+.definelabel ExitCount, 0x807FC904
+
 .definelabel screenCenterX, 0x80744490
 .definelabel screenCenterY, 0x80744494
 .definelabel collisionPos, 0x807F621C
@@ -332,6 +391,15 @@
 .definelabel FileScreenDLOffset, 0x80033F4C
 .definelabel GBDictionary, 0x80755A20
 .definelabel DKTVData, 0x8075E5C0
+.definelabel KongModelData, 0x8075C410
+.definelabel TagModelData, 0x8074E814
+.definelabel RollingSpeeds, 0x80753568
+.definelabel KongTagNames, 0x8074E85C
+.definelabel KrazyKKModels, 0x8002D8C8
+.definelabel ChargeVelocities_0, 0x8075380C
+.definelabel ChargeVelocities_1, 0x8075381C
+.definelabel ChargeDeceleration, 0x8075382C
+.definelabel KongTextNames, 0x8074E780
 
 .definelabel CBTurnedInArray, 0x807FC930
 .definelabel charspawnerflags, 0x80755DA8
@@ -343,14 +411,26 @@
 .definelabel collisionType, 0x807FBD70
 .definelabel collisionActive, 0x807FBB85
 .definelabel PlayerPointer_0, 0x807FDC94
+.definelabel TiedCharacterSpawner, 0x807FDC98
 .definelabel currentCharSpawner, 0x807FDC9C
 .definelabel EnemiesKilledCounter, 0x80744508
 
 .definelabel getXRatioMovement, 0x80612794
 .definelabel getZRatioMovement, 0x80612790
 .definelabel ModelTwoCollisionArray, 0x80753EF0
+.definelabel MelonArray, 0x800334DC
 .definelabel IGT, 0x80750AB0
+.definelabel LevelStateBitfield, 0x807FBB60
+
+.definelabel menuHeadX, 0x80033F68
+.definelabel menuHeadY, 0x80033F80
+.definelabel menuHeadScale, 0x80033F98
 .definelabel LatestCollectedObject, 0x807FD734
+.definelabel ImageCache, 0x807FC690
+
+.definelabel AnimationTable1, 0x807FBB54
+.definelabel AnimationTable2, 0x807FBB58
+.definelabel AnimationTable3, 0x807FBB5C
 
 //hack data
 .definelabel TestVariable, 0x807FFFFC
@@ -364,7 +444,7 @@
 .definelabel permaLossMode, 0x807FFFEC // u8
 .definelabel preventTagSpawn, 0x807FFFEA // u8
 .definelabel bonusAutocomplete, 0x807FFFE9 // u8
-.definelabel QoLOn, 0x807FFFE8 // u8
+.definelabel TextHoldOn, 0x807FFFE8 // u8
 .definelabel LobbiesOpen, 0x807FFFE7 // u8
 .definelabel Rando, 0x807FF800 // 0x200
 .definelabel InstanceScriptParams, 0x807FFFB4 // 0x8
@@ -382,7 +462,15 @@
 .definelabel KKOPhaseRandoOn, 0x807FFFE0
 .definelabel KKOPhaseOrder, 0x807FFFE1
 .definelabel MultiBunchCount, 0x807FFFDE
+.definelabel QueueHelmTimer, 0x807FFFDD
+.definelabel ToggleAmmoOn, 0x807FFFDC
+.definelabel WarpData, 0x807FFFD8
+.definelabel InvertedControls, 0x807FFFD7
+.definelabel WinCondition, 0x807FFFD6
+.definelabel ChunkyModel, 0x807FFFD5
 
 .definelabel CrankyMoves_New, 0x807FF400
 .definelabel CandyMoves_New, 0x807FF4F0
 .definelabel FunkyMoves_New, 0x807FF5E0
+.definelabel TrainingMoves_New, 0x807FF6D0
+.definelabel BFIMove_New, 0x807FF6E8

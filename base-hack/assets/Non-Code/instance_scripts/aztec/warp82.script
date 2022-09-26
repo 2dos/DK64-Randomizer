@@ -1,0 +1,5 @@
+.data
+id = 0x82
+.code
+EXEC 7 | 125 65535 130
+ENDBLOCK

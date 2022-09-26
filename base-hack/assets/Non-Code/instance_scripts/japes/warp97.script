@@ -1,0 +1,5 @@
+.data
+id = 0x97
+.code
+EXEC 7 | 125 65535 151
+ENDBLOCK

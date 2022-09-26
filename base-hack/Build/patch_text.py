@@ -1,5 +1,7 @@
 """Patch some common text."""
 
+from text_encoder import writeText
+from text_decoder import grabText
 import shutil
 
 from text_encoder import writeText
@@ -210,6 +212,55 @@ move_hints = [
         "candy": "I HAVE AN INSTRUMENT UPGRADE AVAILABLE FOR YOU.",
     },
     {
+        "move": "Dive Barrel",
+        "kong": "~",
+        "cranky": "DIVE BARREL CRANKY",
+        "funky": "DIVE BARREL FUNKY",
+        "candy": "DIVE BARREL CANDY",
+    },
+    {
+        "move": "Orange Barrel",
+        "kong": "~",
+        "cranky": "ORANGE BARREL CRANKY",
+        "funky": "ORANGE BARREL FUNKY",
+        "candy": "ORANGE BARREL CANDY",
+    },
+    {
+        "move": "Barrel Barrel",
+        "kong": "~",
+        "cranky": "BARREL BARREL CRANKY",
+        "funky": "BARREL BARREL FUNKY",
+        "candy": "BARREL BARREL CANDY",
+    },
+    {
+        "move": "Vine Barrel",
+        "kong": "~",
+        "cranky": "VINE BARREL CRANKY",
+        "funky": "VINE BARREL FUNKY",
+        "candy": "VINE BARREL CANDY",
+    },
+    {
+        "move": "Camera Solo",
+        "kong": "~",
+        "cranky": "CAMERA SOLO CRANKY",
+        "funky": "CAMERA SOLO FUNKY",
+        "candy": "CAMERA SOLO CANDY",
+    },
+    {
+        "move": "Shockwave Solo",
+        "kong": "~",
+        "cranky": "SHOCKWAVE SOLO CRANKY",
+        "funky": "SHOCKWAVE SOLO FUNKY",
+        "candy": "SHOCKWAVE SOLO CANDY",
+    },
+    {
+        "move": "Shockwave Camera Combo",
+        "kong": "~",
+        "cranky": "SHOCKWAVE CAMERA COMBO CRANKY",
+        "funky": "SHOCKWAVE CAMERA COMBO FUNKY",
+        "candy": "SHOCKWAVE CAMERA COMBO CANDY",
+    },
+    {
         "move": "Not enough coins - Special Move",
         "kong": "~",
         "cranky": "YOU'RE UNLUCKY TO BE SO POOR YOU CAN'T AFFORD MY SPECIAL MOVE.",
@@ -243,6 +294,20 @@ move_hints = [
         "cranky": "YOU'RE UNLUCKY TO BE SO POOR YOU CAN'T AFFORD TO UPGRADE YOUR INSTRUMENT.",
         "funky": "'FRAID I CAN'T JUST GIVE IT TO YA, THOUGH. MUSICAL ENERGY DOESN'T GROW ON TREES!",
         "candy": "BUT YOU'LL NEED TO SCRAPE TOGETHER SOME MORE COINS TO UPGRADE YOUR INSTRUMENT.",
+    },
+    {
+        "move": "Not enough coins - Training Barrels",
+        "kong": "~",
+        "cranky": "YOU'RE UNLUCKY TO BE SO POOR YOU CAN'T AFFORD THIS BASIC MOVE.",
+        "funky": "'FRAID I CAN'T JUST GIVE IT TO YA, THOUGH. BASIC MOVES DON'T GROW ON TREES!",
+        "candy": "BUT YOU'LL NEED TO SCRAPE TOGETHER SOME MORE COINS TO GET THIS BASIC MOVE.",
+    },
+    {
+        "move": "Not enough coins - Fairy Moves",
+        "kong": "~",
+        "cranky": "YOU'RE UNLUCKY TO BE SO POOR YOU CAN'T AFFORD THIS FAIRY MOVE.",
+        "funky": "'FRAID I CAN'T JUST GIVE IT TO YA, THOUGH. FAIRY MOVES DON'T GROW ON TREES!",
+        "candy": "BUT YOU'LL NEED TO SCRAPE TOGETHER SOME MORE COINS TO GET THIS FAIRY MOVE.",
     },
 ]
 
@@ -283,11 +348,20 @@ moves = [
     "Saxophone Slam",
     "Triangle Trample",
     "Instrument Upgrade",
+    "Dive Barrel",
+    "Orange Barrel",
+    "Barrel Barrel",
+    "Vine Barrel",
+    "Camera Solo",
+    "Shockwave Solo",
+    "Shockwave Camera Combo",
     "Not enough coins - Special Move",
     "Not enough coins - Slam",
     "Not enough coins - Gun",
     "Not enough coins - Ammo Belt",
     "Not enough coins - Instrument",
+    "Not enough coins - Training Barrels",
+    "Not enough coins - Fairy Moves",
 ]
 
 shop_owners = [
@@ -302,15 +376,14 @@ for move in move_hints:
     for shop in shop_owners:
         hint_pre = pre_amble[shop]
         hint_post = move[shop]
-        hint_text.append([f"{hint_pre}{hint_post}"])
-
+        hint_text.append([{"text": [f"{hint_pre}{hint_post}"]}])
 
 writeText(
     "dolby_text.bin",
     [
-        ["DONKEY KONG 64 RANDOMIZER"],
-        ["DEVELOPERS - 2DOS, BALLAAM, BISMUTH, CFOX, KILLKLLI, LRAUQ, SHADOWSHINE, ZNERNICUS"],
-        ["DK64RANDOMIZER.COM"],
+        [{"text": ["DONKEY KONG 64 RANDOMIZER"]}],
+        [{"text": ["DEVELOPERS - 2DOS, BALLAAM, BISMUTH, CFOX, KILLKLLI, LRAUQ, SHADOWSHINE, ZNERNICUS"]}],
+        [{"text": ["DK64RANDOMIZER.COM"]}],
     ],
 )
 
@@ -319,8 +392,244 @@ writeText("custom_text.bin", hint_text)
 writeText(
     "dk_text.bin",
     [
-        ["WHAT DID CRANKY MEAN ABOUT TRAINING? DONKEY ALL CONFUSED..."],
-        ["AW NO! SO THAT WHAT CRANKY MEAN ABOUT REPTILE...", "DONKEY NOT BELIEVE IT. KING K.ROOL? WE FINISHED K. ROOL OFF IN LAST GAME!"],
-        ["OKAY!", "DONKEY IS FREE NOW. THANK YOU, MY FRIEND.", "DONKEY CAN COLLECT YELLOW BANANAS.", "DONKEY WILL BE INSIDE THE TAG BARREL UNTIL YOU NEED MY HELP."],
+        [{"text": ["WHAT DID CRANKY MEAN ABOUT TRAINING? DONKEY ALL CONFUSED..."]}],
+        [{"text": ["AW NO! SO THAT WHAT CRANKY MEAN ABOUT REPTILE...", "DONKEY NOT BELIEVE IT. KING K.ROOL? WE FINISHED K. ROOL OFF IN LAST GAME!"]}],
+        [
+            {"text": ["OKAY!", "DONKEY IS FREE NOW. THANK YOU, MY FRIEND.", "DONKEY CAN COLLECT YELLOW BANANAS."]},
+            {"text": ["dk_coloured_banana"]},
+            {"text": ["DONKEY WILL BE INSIDE THE TAG BARREL UNTIL YOU NEED MY HELP."]},
+        ],
     ],
 )
+
+move_names = [
+    {"name": "Simian Slam", "latin": "Buttus Bashium", "move_type": "slam"},
+    {"name": "Super Simian Slam", "latin": "Big Buttus Bashium", "move_type": "slam"},
+    {"name": "Super Duper Simian Slam", "latin": "Bigga Buttus Bashium", "move_type": "slam"},
+    {"name": "Baboon Blast", "latin": "Barrelum Perilous", "move_type": "special"},
+    {"name": "Strong Kong", "latin": "Strongum Kongus", "move_type": "special"},
+    {"name": "Gorilla Grab", "latin": "Simium Strainus", "move_type": "special"},
+    {"name": "Chimpy Charge", "latin": "Hurtus Cranium", "move_type": "special"},
+    {"name": "Rocketbarrel Boost", "latin": "Boostum Highus", "move_type": "special"},
+    {"name": "Simian Spring", "latin": "Leapus Largium", "move_type": "special"},
+    {"name": "Orangstand", "latin": "Palmus Walkum", "move_type": "special"},
+    {"name": "Baboon Balloon", "latin": "Baboonus Balloonus", "move_type": "special"},
+    {"name": "Orangstand Sprint", "latin": "Palmus Dashium", "move_type": "special"},
+    {"name": "Mini Monkey", "latin": "Kongum Smallus", "move_type": "special"},
+    {"name": "Pony Tail Twirl", "latin": "Roundum Roundus", "move_type": "special"},
+    {"name": "Monkeyport", "latin": "Warpum Craftious", "move_type": "special"},
+    {"name": "Hunky Chunky", "latin": "Kremlinous Crushum", "move_type": "special"},
+    {"name": "Primate Punch", "latin": "Sandwichium Knucklus", "move_type": "special"},
+    {"name": "Gorilla Gone", "latin": "Wheresim Gonium", "move_type": "special"},
+    {"name": "Coconut Shooter", "move_type": "gun"},
+    {"name": "Peanut Popguns", "move_type": "gun"},
+    {"name": "Grape Shooter", "move_type": "gun"},
+    {"name": "Feather Bow", "move_type": "gun"},
+    {"name": "Pineapple Launcher", "move_type": "gun"},
+    {"name": "Bongo Blast", "move_type": "instrument"},
+    {"name": "Guitar Gazump", "move_type": "instrument"},
+    {"name": "Trombone Tremor", "move_type": "instrument"},
+    {"name": "Saxophone Slam", "move_type": "instrument"},
+    {"name": "Triangle Trample", "move_type": "instrument"},
+    {"name": "All Kongs - Homing Ammo", "move_type": "gun_upg"},
+    {"name": "All Kongs - Sniper", "move_type": "gun_upg"},
+    {"name": "All Kongs - Ammo Belt 1", "move_type": "ammo_belt"},
+    {"name": "All Kongs - Ammo Belt 2", "move_type": "ammo_belt"},
+    {"name": "3rd Melon", "move_type": "ins_upg"},
+    {"name": "All Kongs - Upgrade 1", "move_type": "ins_upg"},
+    {"name": "All Kongs - Upgrade 2", "move_type": "ins_upg"},
+    {"name": "Diving", "move_type": "tbarrel_bfi"},
+    {"name": "Orange Throwing", "move_type": "tbarrel_bfi"},
+    {"name": "Barrel Throwing", "move_type": "tbarrel_bfi"},
+    {"name": "Vine Swinging", "move_type": "tbarrel_bfi"},
+    {"name": "Fairy Camera", "move_type": "tbarrel_bfi"},
+    {"name": "Shockwave", "move_type": "tbarrel_bfi"},
+    {"name": "Fairy Camera and Shockwave", "move_type": "tbarrel_bfi"},
+]
+
+move_names_arr = []
+for move in move_names:
+    init_len = len(move_names_arr)
+    move_names_arr.append([{"text": [move["name"].upper()]}])
+    if "latin" in move:
+        move_names_arr.append([{"text": [f"({move['latin'].upper()})"]}])
+    if "print" in move:
+        if move["print"]:
+            print(f"{move['name']}: {init_len}")
+index_data = {
+    "slam": {
+        "indexes": [],
+        "arr_name": "SimianSlamNames",
+        "has_latin": True,
+    },
+    "special": {
+        "indexes": [],
+        "arr_name": "SpecialMovesNames",
+        "has_latin": True,
+    },
+    "gun": {
+        "indexes": [],
+        "arr_name": "GunNames",
+        "has_latin": False,
+    },
+    "gun_upg": {
+        "indexes": [],
+        "arr_name": "GunUpgNames",
+        "has_latin": False,
+    },
+    "ammo_belt": {
+        "indexes": [],
+        "arr_name": "AmmoBeltNames",
+        "has_latin": False,
+    },
+    "instrument": {
+        "indexes": [],
+        "arr_name": "InstrumentNames",
+        "has_latin": False,
+    },
+    "ins_upg": {
+        "indexes": [],
+        "arr_name": "InstrumentUpgNames",
+        "has_latin": False,
+    },
+}
+for kong_index in range(5):
+    # Special Moves
+    for move_index in range(4):
+        for latin_index in range(2):
+            if move_index == 0:
+                index_data["special"]["indexes"].append(0)
+            else:
+                index_data["special"]["indexes"].append(6 + latin_index + (2 * (move_index - 1)) + (6 * kong_index))
+    # Guns
+    index_data["gun"]["indexes"].append(0x24 + kong_index)
+    # Instruments
+    index_data["instrument"]["indexes"].append(0x29 + kong_index)
+# Slam
+for move_index in range(4):
+    for latin_index in range(2):
+        if move_index == 0:
+            index_data["slam"]["indexes"].append(0)
+        else:
+            index_data["slam"]["indexes"].append(latin_index + (2 * (move_index - 1)))
+# Gun Upg
+for move_index in range(4):
+    if move_index < 2:
+        index_data["gun_upg"]["indexes"].append(0)
+    else:
+        index_data["gun_upg"]["indexes"].append((move_index - 2) + 0x2E)
+# Ammo Belt
+for move_index in range(3):
+    if move_index == 0:
+        index_data["ammo_belt"]["indexes"].append(0)
+    else:
+        index_data["ammo_belt"]["indexes"].append((move_index - 1) + 0x30)
+# Instrument Upgrades
+index_data["ins_upg"]["indexes"] = [0x0, 0x0, 0x33, 0x32, 0x34]
+with open("src/randomizers/move_text.c", "w") as fh:
+    with open("include/text_items.h", "w") as fg:
+        fh.write('#include "../../include/common.h"\n\n')
+        fg.write('#include "common.h"\n\n')
+        disclaimer = [
+            "/*\n",
+            "\tFile is automatically generated from build/patch_text.py\n",
+            "\tIf you wish to modify this file, please modify the code there\n",
+            "*/\n\n",
+        ]
+        for line in disclaimer:
+            fh.write(line)
+            fg.write(line)
+
+        fg.write("typedef struct name_latin_struct {\n")
+        fg.write("\t/* 0x000 */ unsigned char name;\n")
+        fg.write("\t/* 0x001 */ unsigned char latin;\n")
+        fg.write("} name_latin_struct;\n\n")
+        for move_type in index_data:
+            arr_item_type = "unsigned char"
+            divisor = 1
+            if index_data[move_type]["has_latin"]:
+                arr_item_type = "name_latin_struct"
+                divisor = 2
+            fh.write(f"const {arr_item_type} {index_data[move_type]['arr_name']}[] = {{\n")
+            fg.write(f"extern const {arr_item_type} {index_data[move_type]['arr_name']}[{int(len(index_data[move_type]['indexes']) / divisor)}];\n")
+            for item_index in range(int(len(index_data[move_type]["indexes"]) / divisor)):
+                if index_data[move_type]["has_latin"]:
+                    fh.write("\t{\n")
+                    fh.write(f"\t\t.name = {index_data[move_type]['indexes'][divisor * item_index]},\n")
+                    fh.write(f"\t\t.latin = {index_data[move_type]['indexes'][(divisor * item_index) + 1]},\n")
+                    fh.write("\t},\n")
+                else:
+                    fh.write(f"\t{index_data[move_type]['indexes'][divisor * item_index]},\n")
+            fh.write("};\n\n")
+
+writeText("move_names.bin", move_names_arr)
+
+move_explanations = [
+    {
+        "move": "dive_barrel",  # 0x24
+        "explanation": [{"text": ["PAY ATTENTION, ~. YOU AND ALL THE OTHER KONGS CAN NOW DIVE UNDERWATER. PRESS"]}, {"text": ["z_button"]}, {"text": ["TO SUBMERGE YOURSELF."]}],
+    },
+    {
+        "move": "orange_barrel",  # 0x25
+        "explanation": [
+            {"text": ["PAY ATTENTION, ~. YOU AND ALL THE OTHER KONGS CAN NOW THROW ORANGE GRENADES. PRESS"]},
+            {"text": ["z_button"]},
+            {"text": ["THEN"]},
+            {"text": ["c_left_button"]},
+            {"text": ["TO FIRE AN EXPLOSIVE FRUIT."]},
+        ],
+    },
+    {
+        "move": "barrel_barrel",  # 0x26
+        "explanation": [{"text": ["PAY ATTENTION, ~. YOU AND ALL THE OTHER KONGS CAN NOW PICK UP OBJECTS. PRESS"]}, {"text": ["b_button"]}, {"text": ["TO GRAB AN OBJECT WITH RELATIVE EASE."]}],
+    },
+    {
+        "move": "vine_barrel",  # 0x27
+        "explanation": [
+            {"text": ["PAY ATTENTION, ~. YOU AND ALL THE OTHER KONGS CAN NOW SWING ON VINES. JUMP TO GRAB ONTO THE VINE AND PRESS "]},
+            {"text": ["a_button"]},
+            {"text": ["TO LAUNCH YOURSELF FROM IT."]},
+        ],
+    },
+    {
+        "move": "camera_solo",  # 0x28
+        "explanation": [
+            {"text": ["PAY ATTENTION, ~. YOU AND ALL THE OTHER KONGS CAN NOW USE A CAMERA TO SNAP BANANA FAIRIES. PRESS"]},
+            {"text": ["z_button"]},
+            {"text": ["THEN"]},
+            {"text": ["c_down_button"]},
+            {"text": ["TO PULL OUT THE CAMERA. PRESS"]},
+            {"text": ["b_button"]},
+            {"text": ["TO TAKE A PICTURE."]},
+        ],
+    },
+    {
+        "move": "shockwave_solo",  # 0x29
+        "explanation": [{"text": ["PAY ATTENTION, ~. YOU AND ALL THE OTHER KONGS CAN NOW RELEASE A SHOCKWAVE CHARGE. PRESS AND HOLD"]}, {"text": ["b_button"]}, {"text": ["TO CHARGE THE SHOCKWAVE."]}],
+    },
+    {
+        "move": "camera_shockwave_combo",  # 0x2A
+        "explanation": [
+            {"text": ["PAY ATTENTION, ~. YOU AND ALL THE OTHER KONGS CAN NOW RELEASE A SHOCKWAVE CHARGE AND USE A CAMERA TO SNAP BANANA FAIRIES. PRESS AND HOLD"]},
+            {"text": ["b_button"]},
+            {"text": ["TO CHARGE THE SHOCKWAVE. PRESS "]},
+            {"text": ["z_button"]},
+            {"text": ["THEN"]},
+            {"text": ["c_down_button"]},
+            {"text": ["TO PULL OUT THE CAMERA."]},
+        ],
+    },
+]
+
+cranky_text = grabText(8)
+for move in move_explanations:
+    cranky_text.append(move["explanation"])
+writeText("cranky_text.bin", cranky_text)
+
+menu_text = grabText(37)
+menu_text[46] = [{"text": ["FIRST PERSON CAMERA"]}]
+writeText("menu_text.bin", menu_text)
+
+kongname_text = grabText(2)
+kongname_text.append([{"text": ["KRUSHA"]}])
+writeText("kongname_text.bin", kongname_text)

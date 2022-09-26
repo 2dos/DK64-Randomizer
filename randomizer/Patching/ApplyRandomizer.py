@@ -25,10 +25,14 @@ from randomizer.Patching.Patcher import ROM
 from randomizer.Patching.PhaseRando import randomize_helm, randomize_krool
 from randomizer.Patching.PriceRando import randomize_prices
 from randomizer.Patching.PuzzleRando import randomize_puzzles
+from randomizer.Patching.UpdateHints import PushHints, wipeHints
+from randomizer.Patching.MiscSetupChanges import randomize_setup
+from randomizer.Patching.BananaPlacer import randomize_cbs
 from randomizer.Patching.ShopRandomizer import ApplyShopRandomizer
 from ui.GenTracker import generateTracker
 from ui.GenSpoiler import GenerateSpoiler
 from randomizer.Patching.UpdateHints import PushHints, wipeHints
+from randomizer.Patching.DoorPlacer import place_door_locations
 
 # from randomizer.Spoiler import Spoiler
 from randomizer.Settings import Settings
@@ -209,8 +213,8 @@ def patching_response(responded_data):
 
     # Quality of Life
     if spoiler.settings.quality_of_life:
-        ROM().seek(sav + 0x034)
-        ROM().write(1)
+        ROM().seek(sav + 0x0B0)
+        ROM().writeMultipleBytes(0xFFFF, 2)
 
     # Damage amount
     ROM().seek(sav + 0x0A5)
@@ -321,6 +325,41 @@ def patching_response(responded_data):
             ROM().seek(sav + 0x17B + phase_slot)
             ROM().write(spoiler.settings.kko_phase_order[phase_slot])
 
+    # Disco Chunky
+    if spoiler.settings.disco_chunky:
+        ROM().seek(sav + 0x12F)
+        ROM().write(1)
+
+    # Krusha Slot
+    kong_names = ["dk", "diddy", "lanky", "tiny", "chunky"]
+    ROM().seek(sav + 0x11C)
+    if spoiler.settings.krusha_slot == "no_slot":
+        ROM().write(255)
+    elif spoiler.settings.krusha_slot in kong_names:
+        ROM().write(kong_names.index(spoiler.settings.krusha_slot))
+
+    # Show CBs & Coins
+    if spoiler.settings.cb_rando:
+        ROM().seek(sav + 0xAF)
+        ROM().write(1)
+
+    # Wrinkly Rando
+    if spoiler.settings.wrinkly_location_rando:
+        ROM().seek(sav + 0x11F)
+        ROM().write(1)
+
+    # Helm Hurry Mode
+    if spoiler.settings.helm_hurry:
+        ROM().seek(sav + 0xAE)
+        ROM().write(1)
+
+    # Win Condition
+    conditions = ["beat_krool", "get_key8", "all_fairies", "all_blueprints", "all_medals", "poke_snap"]
+    if spoiler.settings.win_condition in conditions:
+        condition_index = conditions.index(spoiler.settings.win_condition)
+        ROM().seek(sav + 0x11D)
+        ROM().write(condition_index)
+
     keys_turned_in = [0, 1, 2, 3, 4, 5, 6, 7]
     if len(spoiler.settings.krool_keys_required) > 0:
         for key in spoiler.settings.krool_keys_required:
@@ -351,7 +390,9 @@ def patching_response(responded_data):
     apply_kongrando_cosmetic(spoiler)
     randomize_setup(spoiler)
     randomize_puzzles(spoiler)
+    randomize_cbs(spoiler)
     ApplyShopRandomizer(spoiler)
+    place_door_locations(spoiler)
 
     random.seed(spoiler.settings.seed)
     randomize_music(spoiler)

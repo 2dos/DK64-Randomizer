@@ -15,17 +15,6 @@ static short past_crystals = 0;
 static char has_loaded = 0;
 static char good_eeprom = 0;
 
-void giveCollectables(void) {
-	int mult = 1;
-	if (MovesBase[0].ammo_belt > 0) {
-		mult = 2 * MovesBase[0].ammo_belt;
-	}
-	CollectableBase.StandardAmmo = 25 * mult;
-	CollectableBase.Oranges = 10;
-	CollectableBase.Crystals = 1500;
-	CollectableBase.Film = 5;
-}
-
 void cFuncLoop(void) {
 	DataIsCompressed[18] = 0;
 	unlockKongs();
@@ -48,7 +37,7 @@ void cFuncLoop(void) {
 			good_eeprom = EEPROMType == 2;
 		}
 	}
-	displayNumberOnTns();
+	// displayNumberOnTns();
 	if (Rando.music_rando_on) {
 		if (CurrentMap == 0x28) {
 			if (ObjectModel2Timer == 5) {
@@ -91,41 +80,16 @@ void cFuncLoop(void) {
 			}
 		}
 	}
-	if (Rando.quality_of_life) {
-		handleDPadFunctionality();
+	handleDPadFunctionality();
+	if (Rando.quality_of_life.fast_boot) {
 		if (Gamemode == 3) {
 			if (TransitionSpeed < 0) {
 				TransitionType = 1;
 			}
 		}
 	}
-	if (CurrentMap == MAIN_MENU) {
-		if (CutsceneActive == 6) {
-			if (!checkFlag(FLAG_ESCAPE,0)) {
-				// New File
-				unlockMoves();
-				applyFastStart();
-				openCrownDoor();
-				giveCollectables();
-				activateBananaports();
-				if(Rando.fast_gbs) {
-					setPermFlag(FLAG_RABBIT_ROUND1); //Start race at round 2
-				}
-				setPermFlag(FLAG_ESCAPE);
-				Character = Rando.starting_kong;
-				StoredSettings.file_extra[(int)FileIndex].location_sss_purchased = 0;
-				StoredSettings.file_extra[(int)FileIndex].location_ab1_purchased = 0;
-				StoredSettings.file_extra[(int)FileIndex].location_ug1_purchased = 0;
-				StoredSettings.file_extra[(int)FileIndex].location_mln_purchased = 0;
-				SaveToGlobal();
-			} else {
-				// Used File
-				Character = Rando.starting_kong;
-				determineStartKong_PermaLossMode();
-				giveCollectables();
-			}
-			ForceStandardAmmo = 0;
-		}
+	if (Rando.helm_hurry_mode) {
+		checkTotalCache();
 	}
 	if (CurrentMap == 0x11) {
 		if ((CutsceneActive == 1) && ((CutsceneStateBitfield & 4) != 0)) {
@@ -187,6 +151,12 @@ void earlyFrame(void) {
 			MapVoid_MinZ = -320;
 			MapVoid_MaxX = 703;
 			MapVoid_MaxZ = 757;
+		}
+		if ((Rando.helm_hurry_mode) && (QueueHelmTimer)) {
+			if (HelmTimerShown == 0) {
+				initHelmTimer();
+			}
+			QueueHelmTimer = 0;
 		}
 	}
 	if ((CurrentMap == 5) || (CurrentMap == 1) || (CurrentMap == 0x19)) {
@@ -250,6 +220,7 @@ void earlyFrame(void) {
 	adjust_galleon_water();
 	if ((CurrentMap == MAIN_MENU) && (ObjectModel2Timer < 5)) {
 		FileScreenDLCode_Write();
+		initTracker();
 	}
 	if (CurrentMap == NFR_SCREEN) {
 		if (ObjectModel2Timer == 5) {
@@ -405,6 +376,33 @@ void toggleStandardAmmo(void) {
 					}
 				}
             }
+		}
+	}
+}
+
+void updateSkippableCutscenes(void) {
+	if (CurrentMap < 216) {
+		if (CutsceneBanks[0].cutscene_databank) {
+			for (int i = 0; i < 64; i++) {
+				int offset = 1;
+				int shift = i - 32;
+				if (i < 32) {
+					offset = 0;
+					shift = i;
+				}
+				if (cs_skip_db[(2 * CurrentMap) + offset] & (1 << shift)) {
+					void* databank = CutsceneBanks[0].cutscene_databank;
+					cutscene_item_data* data = (cutscene_item_data*)getObjectArrayAddr(databank,0xC,i);
+					if (data) {
+						for (int j = 0; j < data->num_points; j++) {
+							short* write_spot = (short*)getObjectArrayAddr(data->length_array,2,j);
+							if (write_spot) {
+								*(short*)write_spot = 0;
+							}
+						}
+					}
+				}
+			}
 		}
 	}
 }

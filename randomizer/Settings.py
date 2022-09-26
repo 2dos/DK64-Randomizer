@@ -31,6 +31,7 @@ class Settings:
         self.generate_progression()
         self.generate_misc()
         self.rom_data = 0x1FED020
+        self.move_location_data = 0x1FEF000
 
         for k, v in form_data.items():
             setattr(self, k, v)
@@ -50,12 +51,11 @@ class Settings:
         self.blocker_max = int(self.blocker_text) if self.blocker_text else 50
         self.troff_max = int(self.troff_text) if self.troff_text else 270
         self.troff_min = [0.25, 0.3, 0.35, 0.4, 0.45, 0.5, 0.55]  # Weights for the minimum value of troff
-        # Always start with training barrels currently
-        # training_barrels: str
-        # normal
-        # shuffled
-        # startwith
-        self.training_barrels = "startwith"
+        if self.hard_troff_n_scoff:
+            self.troff_min = [0.45, 0.5, 0.55, 0.6, 0.65, 0.7, 0.75]  # Add 20% to the minimum for hard T&S
+        # In hard level progression we go through levels in a random order, so we set every level's troff min weight to the largest weight
+        if self.hard_level_progression:
+            self.troff_min = [self.troff_min[-1] for x in self.troff_min]
 
         # currently just set to moves by move_rando
         # shuffle_items: str
@@ -100,6 +100,7 @@ class Settings:
     def update_progression_totals(self):
         """Update the troff and blocker totals if we're randomly setting them."""
         # Assign weights to Troff n Scoff based on level order if not shuffling loading zones
+        # Hard level shuffling makes these weights meaningless, as you'll be going into levels in a random order
         self.troff_weight_0 = 0.5
         self.troff_weight_1 = 0.55
         self.troff_weight_2 = 0.6
@@ -107,7 +108,7 @@ class Settings:
         self.troff_weight_4 = 0.8
         self.troff_weight_5 = 0.9
         self.troff_weight_6 = 1.0
-        if self.level_randomization in ("loadingzone", "loadingzonesdecoupled"):
+        if self.level_randomization in ("loadingzone", "loadingzonesdecoupled") or self.hard_level_progression:
             self.troff_weight_0 = 1
             self.troff_weight_1 = 1
             self.troff_weight_2 = 1
@@ -118,8 +119,8 @@ class Settings:
 
         if self.randomize_cb_required_amounts:
             randomlist = []
-            for i in self.troff_min:
-                randomlist.append(random.randint(round(self.troff_max * i), self.troff_max))
+            for min_percentage in self.troff_min:
+                randomlist.append(random.randint(round(self.troff_max * min_percentage), self.troff_max))
             cbs = randomlist
             self.troff_0 = round(min(cbs[0] * self.troff_weight_0, 500))
             self.troff_1 = round(min(cbs[1] * self.troff_weight_1, 500))
@@ -131,10 +132,11 @@ class Settings:
         if self.randomize_blocker_required_amounts:
             randomlist = random.sample(range(1, self.blocker_max), 7)
             b_lockers = randomlist
-            b_lockers.append(1)
-            if self.shuffle_loading_zones == "all":
+            if self.shuffle_loading_zones == "all" or self.hard_level_progression:
+                b_lockers.append(random.randint(1, self.blocker_max))
                 random.shuffle(b_lockers)
             else:
+                b_lockers.append(1)
                 b_lockers.sort()
             self.blocker_0 = b_lockers[0]
             self.blocker_1 = b_lockers[1]
@@ -248,6 +250,18 @@ class Settings:
         # decoupled_loading_zones: bool
         self.decoupled_loading_zones = False
 
+        # Always start with training barrels currently
+        # training_barrels: str
+        # normal
+        # shuffled
+        self.training_barrels = "normal"
+
+        # The status of camera & shockwave: str
+        # vanilla - both located at Banana Fairy Isle
+        # shuffled - located in a random valid location
+        # shuffled_decoupled - camera and shockwave are separate upgrades and can be anywhere
+        self.shockwave_status = "vanilla"
+
         #  Music
         self.music_bgm = "default"
         self.music_fanfares = "default"
@@ -273,6 +287,8 @@ class Settings:
         self.rambi_custom_color = "#000000"
         self.enguarde_colors = "vanilla"
         self.enguarde_custom_color = "#000000"
+        self.disco_chunky = False
+        self.krusha_slot = "no_slot"
 
         #  Misc
         self.generate_spoilerlog = None
@@ -289,7 +305,7 @@ class Settings:
         self.randomize_pickups = False
         self.random_medal_requirement = False
         self.medal_requirement = 0
-        self.bananaport_rando = False
+        self.bananaport_rando = "off"
         self.activate_all_bananaports = False
         self.shop_indicator = False
         self.randomize_cb_required_amounts = False
@@ -310,9 +326,17 @@ class Settings:
         self.enemy_rando = False
         self.crown_enemy_rando = "off"
         self.enemy_speed_rando = False
+        self.cb_rando = False
         self.override_cosmetics = False
         self.random_colors = False
+        self.hard_level_progression = False
+        self.hard_blockers = False
+        self.hard_troff_n_scoff = False
+        self.wrinkly_location_rando = False
+        self.tns_location_rando = False
         self.minigames_list_selected = []
+        self.helm_hurry = False
+        self.win_condition = "beat_krool"
 
     def shuffle_prices(self):
         """Price randomization. Reuseable if we need to reshuffle prices."""
@@ -334,9 +358,9 @@ class Settings:
         self.krool_diddy = False
         self.krool_lanky = False
         self.krool_tiny = False
-        self.krool_chunky = True
+        self.krool_chunky = False
 
-        phases = [x for x in kongs if x != Kongs.chunky]
+        phases = kongs.copy()
         if self.krool_phase_order_rando:
             random.shuffle(phases)
         if self.krool_random:
@@ -344,7 +368,7 @@ class Settings:
         if isinstance(self.krool_phase_count, str) is True:
             self.krool_phase_count = 5
         if self.krool_phase_count < 5:
-            phases = random.sample(phases, self.krool_phase_count - 1)
+            phases = random.sample(phases, self.krool_phase_count)
         orderedPhases = []
         for kong in phases:
             if kong == Kongs.donkey:
@@ -359,7 +383,9 @@ class Settings:
             if kong == Kongs.tiny:
                 self.krool_tiny = True
                 orderedPhases.append(Kongs.tiny)
-        orderedPhases.append(Kongs.chunky)
+            if kong == Kongs.chunky:
+                self.krool_chunky = True
+                orderedPhases.append(Kongs.chunky)
         self.krool_order = orderedPhases
 
         # Helm Order

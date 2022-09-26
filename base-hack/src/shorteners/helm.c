@@ -95,13 +95,13 @@ void HelmInit(int init_stage) {
 					cutscene = 8;
 				}
 				if (current_slot > -1) {
-					modifyCutsceneItem(0, cutscene, 0, item_setstate[current_slot]);
-					modifyCutsceneItem(0, cutscene, 1, item_medallook[current_slot]);
-					modifyCutsceneItem(0, cutscene, 2, item_laserlook[current_slot]);
+					modifyCutscenePoint(0, cutscene, 0, item_setstate[current_slot]);
+					modifyCutscenePoint(0, cutscene, 1, item_medallook[current_slot]);
+					modifyCutscenePoint(0, cutscene, 2, item_laserlook[current_slot]);
 				}
 				if (next_slot > -1) {
-					modifyCutsceneItem(0, cutscene, 4, item_padset[next_slot]);
-					modifyCutsceneItem(0, cutscene, 5, item_padlook[next_slot]);
+					modifyCutscenePoint(0, cutscene, 4, item_padset[next_slot]);
+					modifyCutscenePoint(0, cutscene, 5, item_padlook[next_slot]);
 				}
 			}
 		}

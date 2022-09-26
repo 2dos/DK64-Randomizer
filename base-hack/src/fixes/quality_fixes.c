@@ -4,10 +4,12 @@
 #define MODE_DKTV 3
 
 void qualityOfLife_fixes(void) {
-	if (Rando.quality_of_life) {
+	if (Rando.quality_of_life.remove_cutscenes) {
 		if (Gamemode == 0) {
 			StorySkip = 1;
 		}
+	}
+	if (Rando.quality_of_life.vanilla_fixes) {
 		setPermFlag(FLAG_FTT_CRANKY); // Cranky FTT
 		setPermFlag(FLAG_TBARREL_SPAWNED); // Training Barrels Spawned
 		setPermFlag(FLAG_MODIFIER_KOSHADEAD); // Giant Kosha Dead
@@ -25,7 +27,7 @@ void qualityOfLife_fixes(void) {
 }
 
 void checkNinWarp(void) {
-	if (Rando.quality_of_life) {
+	if (Rando.quality_of_life.fast_boot) {
 		WarpToDKTV();
 		TransitionType = 0;
 	} else {
@@ -123,7 +125,7 @@ void playCBDing(void) {
 }
 
 void CBDing(void) {
-	if (Rando.quality_of_life) {
+	if (Rando.quality_of_life.cb_indicator) {
 		int world = getWorld(CurrentMap, 1);
 		int total_cbs = 0;
 		if (world < 7) {

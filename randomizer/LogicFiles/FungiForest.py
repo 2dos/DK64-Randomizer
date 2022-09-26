@@ -85,7 +85,7 @@ LogicRegions = {
         TransitionFront(Regions.MushroomLower, lambda l: True),
         TransitionFront(Regions.MushroomLowerExterior, lambda l: True, Transitions.ForestUpperMushroomToLowerExterior),
         TransitionFront(Regions.MushroomUpperExterior, lambda l: True, Transitions.ForestUpperMushroomToUpperExterior),
-        TransitionFront(Regions.MushroomNightDoor, lambda l: True),
+        TransitionFront(Regions.MushroomNightDoor, lambda l: l.vines),
     ]),
 
     # This region basically just exists to facilitate the two entrances into upper mushroom
@@ -188,7 +188,7 @@ LogicRegions = {
     ]),
 
     Regions.GrinderRoom: Region("Grinder Room", Levels.FungiForest, True, -1, [
-        LocationLogic(Locations.ForestChunkyKegs, lambda l: Events.GrinderActivated in l.Events and Events.ConveyorActivated in l.Events and l.chunky),
+        LocationLogic(Locations.ForestChunkyKegs, lambda l: Events.GrinderActivated in l.Events and Events.ConveyorActivated in l.Events and l.chunky and l.barrels),
     ], [
         Event(Events.ConveyorActivated, lambda l: l.superSlam and l.grab and l.donkey),
     ], [
@@ -225,7 +225,7 @@ LogicRegions = {
     ]),
 
     Regions.ThornvineBarn: Region("Thornvine Barn", Levels.FungiForest, False, -1, [
-        LocationLogic(Locations.ForestDonkeyBarn, lambda l: l.Slam and l.isdonkey, MinigameType.BonusBarrel),
+        LocationLogic(Locations.ForestDonkeyBarn, lambda l: l.Slam and l.isdonkey and l.vines, MinigameType.BonusBarrel),
         LocationLogic(Locations.ForestBananaFairyThornvines, lambda l: l.camera),
     ], [], [
         TransitionFront(Regions.ThornvineArea, lambda l: True, Transitions.ForestBarnToMain),
@@ -233,7 +233,7 @@ LogicRegions = {
 
     Regions.WormArea: Region("Worm Area", Levels.FungiForest, True, -1, [
         LocationLogic(Locations.ForestTinyBeanstalk, lambda l: Events.Bean in l.Events and l.saxophone and l.mini and l.tiny),
-        LocationLogic(Locations.ForestChunkyApple, lambda l: Events.WormGatesOpened in l.Events and l.hunkyChunky and l.chunky),
+        LocationLogic(Locations.ForestChunkyApple, lambda l: Events.WormGatesOpened in l.Events and l.hunkyChunky and l.chunky and l.barrels),
     ], [], [
         TransitionFront(Regions.FungiForestStart, lambda l: Events.WormGatesOpened in l.Events),
         TransitionFront(Regions.FunkyForest, lambda l: True),

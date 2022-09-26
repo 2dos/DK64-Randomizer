@@ -25,7 +25,7 @@ LogicRegions = {
         LocationLogic(Locations.JapesDiddyCagedBanana, lambda l: Events.JapesDiddySwitch1 in l.Events and l.diddy),
         LocationLogic(Locations.JapesLankyCagedBanana, lambda l: Events.JapesLankySwitch in l.Events and l.lanky),
         LocationLogic(Locations.JapesTinyCagedBanana, lambda l: Events.JapesTinySwitch in l.Events and l.tiny),
-        LocationLogic(Locations.JapesChunkyBoulder, lambda l: l.chunky),
+        LocationLogic(Locations.JapesChunkyBoulder, lambda l: l.chunky and l.barrels),
         LocationLogic(Locations.JapesChunkyCagedBanana, lambda l: Events.JapesChunkySwitch in l.Events and l.chunky),
         LocationLogic(Locations.JapesBattleArena, lambda l: True),
     ], [
@@ -39,12 +39,12 @@ LogicRegions = {
         TransitionFront(Regions.JapesBeyondCoconutGate2, lambda l: l.settings.open_levels or Events.JapesFreeKongOpenGates in l.Events),
         TransitionFront(Regions.Mine, lambda l: l.peanut and l.isdiddy, Transitions.JapesMainToMine),
         TransitionFront(Regions.JapesTopOfMountain, lambda l: l.peanut and l.isdiddy),
-        TransitionFront(Regions.JapesLankyCave, lambda l: l.peanut and l.diddy and l.handstand and l.islanky, Transitions.JapesMainToLankyCave),
-        TransitionFront(Regions.JapesCatacomb, lambda l: l.Slam and l.chunkyAccess, Transitions.JapesMainToCatacomb),
+        TransitionFront(Regions.JapesLankyCave, lambda l: l.peanut and l.diddy and ((l.handstand and l.islanky) or (l.twirl and l.istiny)), Transitions.JapesMainToLankyCave),
+        TransitionFront(Regions.JapesCatacomb, lambda l: l.Slam and l.chunkyAccess and l.barrels, Transitions.JapesMainToCatacomb),
         TransitionFront(Regions.FunkyJapes, lambda l: True),
         TransitionFront(Regions.Snide, lambda l: True),
         TransitionFront(Regions.JapesBossLobby, lambda l: l.vines),  # Falling from top is not intuitive
-        TransitionFront(Regions.JapesBaboonBlast, lambda l: l.blast and l.isdonkey)  # , Transitions.JapesMainToBBlast)
+        TransitionFront(Regions.JapesBaboonBlast, lambda l: l.vines and l.blast and l.isdonkey)  # , Transitions.JapesMainToBBlast)
     ]),
 
     Regions.JapesTopOfMountain: Region("Japes Top of Mountain", Levels.JungleJapes, False, None, [

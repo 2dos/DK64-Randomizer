@@ -1,4 +1,5 @@
 #include "vars.h"
+#include "text_items.h"
 
 extern void playSFX(short sfxIndex);
 extern void setPermFlag(short flagIndex);
@@ -11,6 +12,11 @@ extern void initHack(int source);
 extern void callParentMapFilter(void);
 extern void shiftBrokenJapesPortal(void);
 extern void quickInit(void);
+
+extern int getWrinklyLevelIndex(void);
+extern void initOptionScreen(void);
+extern int getLo(void* addr);
+extern int getHi(void* addr);
 
 extern void level_order_rando_funcs(void);
 extern void unlockKongs(void);
@@ -74,6 +80,8 @@ extern int hasPermaLossGrace(void);
 extern void writeJetpacMedalReq(void);
 extern void resetMapContainer(void);
 extern void correctDKPortal(void);
+extern int canSaveHelmHurry(void);
+extern void blueprintCollect(int flag_index, int destination, int flag_type);
 
 extern int* drawTri(int* dl, short x1, short y1, short x2, short y2, short x3, short y3, int red, int green, int blue, int alpha);
 extern int* drawImage(int* dl, int text_index, codecs codec_index, int img_width, int img_height, int x, int y, float xScale, float yScale, int opacity);
@@ -113,18 +121,49 @@ extern void beaverExtraHitHandle(void);
 extern void CBDing(void);
 extern void handleSpiderTrapCode(void);
 extern void fastWarpShockwaveFix(void);
+
+extern move_block* getMoveBlock(void);
+extern void setLocationStatus(location_list location_index);
+extern int getLocationStatus(location_list location_index);
+extern void fixTBarrelsAndBFI(int init);
+extern void purchaseMove(shop_paad* paad);
+extern void getNextMoveText(void);
+extern void displayBFIMoveText(void);
+extern void showPostMoveText(shop_paad* paad, KongBase* kong_base, int intro_flag);
 extern void fixRBSlowTurn(void);
 extern void postKRoolSaveCheck(void);
+extern int* displayHeadTexture(int* dl, int texture, float x, float y, float scale);
+
 extern void tagBarrelBackgroundKong(int kong_actor);
 extern void tagAnywhereInit(int is_homing, int model2_id, int obj);
 extern void tagAnywhereAmmo(int player, int obj, int is_homing);
 extern void tagAnywhereBunch(int player, int obj, int player_index);
-extern void modifyCutsceneItem(int bank, int cutscene, int point, int new_item);
+extern void modifyCutscenePoint(int bank, int cutscene, int point, int new_item);
+extern void modifyCutsceneItem(int bank, int item, int new_param1, int new_param2, int new_param3);
 extern void HelmInit(int init_stage);
+extern void initKRool(int phase);
 extern void handleSFXCache(void);
 extern void preventMedalHUD(int item, int unk0, int unk1);
 extern void initHUDDirection(placementData* hud_data, int item);
 extern void* getHUDSprite_HUD(int item);
 extern void updateMultibunchCount(void);
 extern void handleDPadFunctionality(void);
+extern void file_progress_screen_code(actorData* actor, int buttons);
+extern int* displayTopText(int* dl, short x, short y, float scale);
+extern void FileProgressInit(actorData* menu_controller);
+extern void checkTotalCache(void);
+extern void checkSeedVictory(void);
+extern void checkVictory_flaghook(int flag);
+extern void FileProgressInitSub(int file, int shuffle);
+extern void checkSkippableCutscene(void);
+extern void updateSkippableCutscenes(void);
+extern void parseCutsceneData(void);
 //extern void getRandoNextMovePurchase(shop_paad* shop_info, KongBase* moves);
+extern void adjustAnimationTables(void);
+extern void adaptKrushaZBAnimation_PunchOStand(int action, void* player, int player_index);
+extern void adaptKrushaZBAnimation_Charge(actorData* actor, int anim);
+extern void updateCutsceneModels(actorData* actor, int size);
+extern void initTracker(void);
+extern void wipeFileMod(int file, int will_save);
+
+extern unsigned int cs_skip_db[432];

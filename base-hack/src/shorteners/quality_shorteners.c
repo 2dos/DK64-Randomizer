@@ -80,11 +80,16 @@ static const short highreq_flags[] = {
 };
 
 void qualityOfLife_shorteners(void) {
-	if (Rando.quality_of_life) {
+	if (Rando.quality_of_life.remove_cutscenes) {
 		// No FTTs
 		for (int i = 0; i < sizeof(ftt_flags) / 2; i++) {
 			setPermFlag(ftt_flags[i]);
 		}
+        // Shorter Boss Cutscenes
+		TempFlagBlock[0xC] |= 0x80;
+		TempFlagBlock[0xD] |= 0x3F;
+    }
+    if (Rando.quality_of_life.dance_skip) {
 		// No Dance
 		if (
 			(CurrentMap == 14) ||
@@ -97,9 +102,8 @@ void qualityOfLife_shorteners(void) {
 		} else {
 			SkipDance = 1;
 		}
-		// Shorter Boss Cutscenes
-		TempFlagBlock[0xC] |= 0x80;
-		TempFlagBlock[0xD] |= 0x3F;
+    }
+	if (Rando.quality_of_life.reduce_lag) {
         if (CurrentMap == 0x57) {
             if (ObjectModel2Timer <= 5) {
                 actorData* lzcontroller = (actorData*)findActorWithType(0xC);

@@ -74,7 +74,7 @@ class MoveInfo:
         """Create move info object."""
         self.name = name
         self.kong = kong
-        move_types = ["special", "slam", "gun", "ammobelt", "instrument"]
+        move_types = ["special", "slam", "gun", "ammo_belt", "instrument"]
         encoded_move_type = move_types.index(move_type)
         self.move_type = encoded_move_type
         self.move_level = move_level
@@ -82,7 +82,7 @@ class MoveInfo:
         ref_kong = kong
         if ref_kong == Kongs.any:
             ref_kong = Kongs.donkey
-        self.item_key = (encoded_move_type << 5) | ((move_level - 1) << 3) | ref_kong
+        self.item_key = {"move_type": move_type, "move_lvl": move_level - 1, "move_kong": ref_kong}
 
 
 hint_list = [
@@ -240,8 +240,8 @@ moves_data = [
     MoveInfo(name="Homing Ammo", move_level=2, move_type="gun", kong=Kongs.any),
     MoveInfo(name="Sniper Scope", move_level=3, move_type="gun", kong=Kongs.any),
     # Ammo Belt
-    MoveInfo(name="Ammo Belt Upgrade", move_level=1, move_type="ammobelt", kong=Kongs.any),
-    MoveInfo(name="Ammo Belt Upgrade", move_level=2, move_type="ammobelt", kong=Kongs.any),
+    MoveInfo(name="Ammo Belt Upgrade", move_level=1, move_type="ammo_belt", kong=Kongs.any),
+    MoveInfo(name="Ammo Belt Upgrade", move_level=2, move_type="ammo_belt", kong=Kongs.any),
     # Instruments
     MoveInfo(name="Bongo Blast", move_level=1, move_type="instrument", kong=Kongs.donkey, important=True),  # spoiler.settings.helm_donkey),
     MoveInfo(name="Guitar Gazump", move_level=1, move_type="instrument", kong=Kongs.diddy, important=True),  # spoiler.settings.helm_diddy),
@@ -367,11 +367,16 @@ def compileHints(spoiler: Spoiler):
                         Kongs.chunky not in spoiler.settings.owned_kongs_by_level[level]
                         or Items.PrimatePunch not in spoiler.settings.owned_moves_by_level[level]
                         or Items.RocketbarrelBoost not in spoiler.settings.owned_moves_by_level[level]
+                        or Items.Barrels not in spoiler.settings.owned_moves_by_level[level]
                     )
                 ):
                     continue
-                # Everyone else in Caves still needs Chunky + Punch
-                if level == Levels.CrystalCaves and (Kongs.chunky not in spoiler.settings.owned_kongs_by_level[level] or Items.PrimatePunch not in spoiler.settings.owned_moves_by_level[level]):
+                # Everyone else in Caves still needs Chunky + Punch + Barrels
+                if level == Levels.CrystalCaves and (
+                    Kongs.chunky not in spoiler.settings.owned_kongs_by_level[level]
+                    or Items.PrimatePunch not in spoiler.settings.owned_moves_by_level[level]
+                    or Items.Barrels not in spoiler.settings.owned_moves_by_level[level]
+                ):
                     continue
                 # Aztec Chunky also needs Tiny + Feather + Hunky Chunky
                 if (
@@ -521,7 +526,8 @@ def compileHints(spoiler: Spoiler):
         # Determine what levels are before this level
         hintable_levels = all_levels.copy()
         # Only if we care about the level order do we restrict these hints' locations
-        if level_order_matters:
+        # We lack the tools (or creativity) to figure out proper locations for hints in hard level progression (for now?)
+        if level_order_matters and not spoiler.settings.hard_level_progression:
             # Determine a sorted order of levels by B. Lockers - this may not be the actual "progression" but it'll do for now
             levels_in_order = all_levels.copy()
             levels_in_order.sort(key=lambda l: spoiler.settings.EntryGBs[l])
@@ -540,8 +546,8 @@ def compileHints(spoiler: Spoiler):
                         candidate for candidate in all_levels if spoiler.settings.EntryGBs[candidate] == spoiler.settings.EntryGBs[level] and candidate not in hintable_levels
                     ]
                     # If there's only one candidate then this is the level that gives logical access to the move, so we're done
-                    # If it's an Isles shop we're hinting or hard level progression we don't need to pare down the lobby options, so we're done
-                    if len(cheapest_levels_candidates) == 1 or index_of_level_with_location >= 7:  # or hard level progression (TBD)
+                    # If it's an Isles shop we're hinting we don't need to pare down the lobby options, so we're done
+                    if len(cheapest_levels_candidates) == 1 or index_of_level_with_location >= 7:
                         cheapest_levels_with_item = cheapest_levels_candidates
                     # In normal level progression, we need to remove levels that are beyond the shop's level
                     else:
@@ -636,6 +642,7 @@ def compileHints(spoiler: Spoiler):
         ]
         criticalAztecRegions = [
             Regions.AngryAztecStart,
+            Regions.AngryAztecOasis,
             Regions.AngryAztecMain,
         ]
         criticalFactoryRegions = [
@@ -653,7 +660,8 @@ def compileHints(spoiler: Spoiler):
             [Regions.TrainingGrounds],
             [
                 Regions.GloomyGalleonStart,
-                Regions.LighthouseArea,
+                Regions.LighthousePlatform,
+                Regions.LighthouseUnderwater,
                 Regions.Shipyard,
             ],
             [
@@ -743,7 +751,7 @@ def compileHints(spoiler: Spoiler):
                 level_listing = []
                 for kong in range(5):
                     # Get Moves in slot
-                    data_section = spoiler.move_data[shop][kong][level]
+                    data_section = spoiler.move_data[0][shop][kong][level]
                     for move in moves_data:
                         if move.item_key == data_section:
                             if move.name not in level_listing:
@@ -881,7 +889,6 @@ def compileHintsOld(spoiler: Spoiler):
         total_moves_for_krool = 0
         for x in spoiler.settings.krool_order:
             total_moves_for_krool += krool_move_requirements[x]
-
         # Collate nested lists for a list of shop moves
         shop_data = []
         for shop in range(3):  # Order: Cranky, Funky, Candy
@@ -890,7 +897,7 @@ def compileHintsOld(spoiler: Spoiler):
                 level_listing = []
                 for kong in range(5):
                     # Get Moves in slot
-                    data_section = spoiler.move_data[shop][kong][level]
+                    data_section = spoiler.move_data[0][shop][kong][level]
                     for move in moves_data:
                         if move.item_key == data_section:
                             if move.name not in level_listing:
@@ -1254,6 +1261,7 @@ def AddLoadingZoneHints(spoiler: Spoiler):
     ]
     criticalAztecRegions = [
         Regions.AngryAztecStart,
+        Regions.AngryAztecOasis,
         Regions.AngryAztecMain,
     ]
     criticalFactoryRegions = [
@@ -1301,7 +1309,8 @@ def AddLoadingZoneHints(spoiler: Spoiler):
         [Regions.BananaFairyRoom],
         [
             Regions.GloomyGalleonStart,
-            Regions.LighthouseArea,
+            Regions.LighthousePlatform,
+            Regions.LighthouseUnderwater,
             Regions.Shipyard,
         ],
         [

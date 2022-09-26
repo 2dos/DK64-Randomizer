@@ -4,6 +4,7 @@ from email.policy import default
 import json
 from typing import OrderedDict
 
+import randomizer.ItemPool as ItemPool
 from randomizer.Enums.Events import Events
 from randomizer.Enums.Items import Items
 from randomizer.Enums.Kongs import Kongs
@@ -40,16 +41,32 @@ class Spoiler:
 
         self.move_data = []
         # 0: Cranky, 1: Funky, 2: Candy
-        for i in range(3):
-            moves = []
-            # One for each kong
-            for j in range(5):
-                kongmoves = []
-                # One for each level
-                for k in range(8):
-                    kongmoves.append(-1)
-                moves.append(kongmoves)
-            self.move_data.append(moves)
+        for move_master_type in range(3):
+            master_moves = []
+            if move_master_type == 0:
+                # Shop
+                for shop_index in range(3):
+                    moves = []
+                    # One for each kong
+                    for kong_index in range(5):
+                        kongmoves = []
+                        # One for each level
+                        for level_index in range(8):
+                            kongmoves.append({"move_type": None})
+                        moves.append(kongmoves)
+                    master_moves.append(moves)
+            elif move_master_type == 1:
+                # Training Barrels
+                if self.settings.training_barrels == "normal":
+                    for tbarrel_type in ["dive", "orange", "barrel", "vine"]:
+                        master_moves.append({"move_type": "flag", "flag": tbarrel_type})
+            elif move_master_type == 2:
+                # BFI
+                if self.settings.shockwave_status == "vanilla":
+                    master_moves.append({"move_type": "flag", "flag": "camera_shockwave"})
+                else:
+                    master_moves.append({"move_type": None})
+            self.move_data.append(master_moves)
 
         self.hint_list = {}
 
@@ -80,6 +97,7 @@ class Spoiler:
         settings["Open Levels"] = self.settings.open_levels
         settings["Randomize Pickups"] = self.settings.randomize_pickups
         settings["Randomize Patches"] = self.settings.random_patches
+        settings["Randomize CB Locations"] = self.settings.cb_rando
         settings["Puzzle Randomization"] = self.settings.puzzle_rando
         settings["Crown Door Open"] = self.settings.crown_door_open
         settings["Coin Door Open"] = self.settings.coin_door_open
@@ -207,7 +225,7 @@ class Spoiler:
                         item_group = "Kongs"
                     elif "Cranky" in location_name or "Funky" in location_name or "Candy" in location_name:
                         item_group = "Shops"
-                    if self.settings.random_prices != "vanilla":
+                    if self.settings.random_prices != "vanilla" and item_group != "Others":
                         if item_name in prices:
                             item_name = f"{item_name} ({prices[item_name]})"
                     humanspoiler["Items"][item_group][location_name] = item_name
@@ -336,25 +354,25 @@ class Spoiler:
             humanspoiler["Shuffled Kasplats"] = self.human_kasplats
         if self.settings.random_patches:
             humanspoiler["Shuffled Dirt Patches"] = self.human_patches
-        if self.settings.bananaport_rando:
+        if self.settings.bananaport_rando != "off":
             humanspoiler["Shuffled Bananaports"] = self.human_warp_locations
         if len(self.hint_list) > 0:
             humanspoiler["Wrinkly Hints"] = self.hint_list
+        level_dict = {
+            Levels.DKIsles: "DK Isles",
+            Levels.JungleJapes: "Jungle Japes",
+            Levels.AngryAztec: "Angry Aztec",
+            Levels.FranticFactory: "Frantic Factory",
+            Levels.GloomyGalleon: "Gloomy Galleon",
+            Levels.FungiForest: "Fungi Forest",
+            Levels.CrystalCaves: "Crystal Caves",
+            Levels.CreepyCastle: "Creepy Castle",
+        }
         if self.settings.shuffle_shops:
             shop_location_dict = {}
             for level in self.shuffled_shop_locations:
                 level_name = "Unknown Level"
 
-                level_dict = {
-                    Levels.DKIsles: "DK Isles",
-                    Levels.JungleJapes: "Jungle Japes",
-                    Levels.AngryAztec: "Angry Aztec",
-                    Levels.FranticFactory: "Frantic Factory",
-                    Levels.GloomyGalleon: "Gloomy Galleon",
-                    Levels.FungiForest: "Fungi Forest",
-                    Levels.CrystalCaves: "Crystal Caves",
-                    Levels.CreepyCastle: "Creepy Castle",
-                }
                 shop_dict = {Regions.CrankyGeneric: "Cranky", Regions.CandyGeneric: "Candy", Regions.FunkyGeneric: "Funky", Regions.Snide: "Snide"}
                 if level in level_dict:
                     level_name = level_dict[level]
@@ -375,6 +393,25 @@ class Spoiler:
                     is_empty = False
             if is_empty:
                 del humanspoiler[spoiler_dict]
+
+        if self.settings.cb_rando:
+            human_cb_type_map = {
+                "cb": " Bananas",
+                "balloons": " Balloons",
+            }
+            humanspoiler["Colored Banana Locations"] = {
+                "Jungle Japes": [],
+                "Angry Aztec": [],
+                "Frantic Factory": [],
+                "Gloomy Galleon": [],
+                "Fungi Forest": [],
+                "Crystal Caves": [],
+                "Creepy Castle": [],
+            }
+            for group in self.cb_placements:
+                humanspoiler["Colored Banana Locations"][level_dict[group["level"]]].append(
+                    NameFromKong(group["kong"]) + human_cb_type_map[group["type"]] + ": " + Maps(group["map"]).name + " - " + group["name"]
+                )
 
         return json.dumps(humanspoiler, indent=4)
 
@@ -465,17 +502,68 @@ class Spoiler:
                     if level_index == 8:
                         level_index = 7
                     # Use the item to find the data to write
-                    move_type = ItemList[location.item].movetype
-                    move_level = ItemList[location.item].index - 1
-                    move_kong = ItemList[location.item].kong
-                    for kong_index in kong_indices:
-                        # print(f"Shop {shop_index}, Kong {kong_index}, Level {level_index} | Move: {move_type} lvl {move_level} for kong {move_kong}")
-                        if move_type == 1 or move_type == 3 or (move_type == 2 and move_level > 0) or (move_type == 4 and move_level > 0):
-                            move_kong = kong_index
-                        data = (move_type << 5) | (move_level << 3) | move_kong
-                        self.move_data[shop_index][kong_index][level_index] = data
+                    updated_item = ItemList[location.item]
+                    move_type = updated_item.movetype
+                    # Moves that are set with a single flag (e.g. training barrels, shockwave) are handled differently
+                    if move_type == MoveTypes.Flag:
+                        for kong_index in kong_indices:
+                            self.move_data[0][shop_index][kong_index][level_index] = {"move_type": "flag", "flag": updated_item.flag}
+                    # This is for every other move typically purchased in a shop
+                    else:
+                        move_level = updated_item.index - 1
+                        move_kong = updated_item.kong
+                        for kong_index in kong_indices:
+                            # print(f"Shop {shop_index}, Kong {kong_index}, Level {level_index} | Move: {move_type} lvl {move_level} for kong {move_kong}")
+                            if (
+                                move_type == MoveTypes.Slam
+                                or move_type == MoveTypes.AmmoBelt
+                                or (move_type == MoveTypes.Guns and move_level > 0)
+                                or (move_type == MoveTypes.Instruments and move_level > 0)
+                            ):
+                                move_kong = kong_index
+                            self.move_data[0][shop_index][kong_index][level_index] = {
+                                "move_type": ["special", "slam", "gun", "ammo_belt", "instrument"][move_type],
+                                "move_lvl": move_level,
+                                "move_kong": move_kong,
+                            }
                 elif location.type == Types.Kong:
                     self.WriteKongPlacement(id, location.item)
+                elif location.type == Types.TrainingBarrel and self.settings.training_barrels != "normal":
+                    # Use the item to find the data to write
+                    updated_item = ItemList[location.item]
+                    move_type = updated_item.movetype
+                    # Moves that are set with a single flag (e.g. training barrels, shockwave) are handled differently
+                    if move_type == MoveTypes.Flag:
+                        self.move_data[1].append({"move_type": "flag", "flag": updated_item.flag})
+                    # This is for every other move typically purchased in a shop
+                    else:
+                        move_level = updated_item.index - 1
+                        move_kong = updated_item.kong
+                        self.move_data[1].append(
+                            {
+                                "move_type": ["special", "slam", "gun", "ammo_belt", "instrument"][move_type],
+                                "move_lvl": move_level,
+                                "move_kong": move_kong % 5,  # Shared moves are 5 but should be 0
+                            }
+                        )
+                elif location.type == Types.Shockwave and self.settings.shockwave_status != "vanilla":
+                    # Use the item to find the data to write
+                    updated_item = ItemList[location.item]
+                    move_type = updated_item.movetype
+                    # Moves that are set with a single flag (e.g. training barrels, shockwave) are handled differently
+                    if move_type == MoveTypes.Flag:
+                        self.move_data[2].append({"move_type": "flag", "flag": updated_item.flag})
+                    # This is for every other move typically purchased in a shop
+                    else:
+                        move_level = updated_item.index - 1
+                        move_kong = updated_item.kong
+                        self.move_data[2] = [
+                            {
+                                "move_type": ["special", "slam", "gun", "ammo_belt", "instrument"][move_type],
+                                "move_lvl": move_level,
+                                "move_kong": move_kong % 5,  # Shared moves are 5 but should be 0
+                            }
+                        ]
             # Uncomment for more verbose spoiler with all locations
             # else:
             #     self.location_data[id] = Items.NoItem

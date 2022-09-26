@@ -11,7 +11,7 @@
     "activate_all_bananaports":"isles",
     "level_randomization":"level_order",
     "boss_location_rando":true,
-    "bananaport_rando":false,
+    "bananaport_rando":"off",
     "kasplat_rando_setting":"vanilla_locations",
     "kong_rando":true,
     "random_patches":false,
@@ -30,6 +30,9 @@
     "hard_bosses":false,
     "perma_death":false,
     "disable_tag_barrels":false,
+    "hard_level_progression":false,
+    "hard_blockers":false,
+    "hard_troff_n_scoff":false,
     "unlock_fairy_shockwave":false,
     "bonus_barrel_rando":true,
     "bonus_barrel_auto_complete":false,
@@ -79,5 +82,6 @@
     "shop_indicator":true,
     "fast_warps":true,
     "dpad_display":true,
-    "auto_keys":true
+    "auto_keys":true,
+    "win_condition": "beat_krool"
 }

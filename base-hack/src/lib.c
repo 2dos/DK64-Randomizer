@@ -151,18 +151,39 @@ void cancelCutscene(int enable_movement) {
 	}
 }
 
-typedef struct cutscene_item_data {
-	/* 0x000 */ short num_points;
-	/* 0x002 */ short unk_02;
-	/* 0x004 */ void* point_array;
-	/* 0x008 */ void* length_array;
-} cutscene_item_data;
-
-void modifyCutsceneItem(int bank, int cutscene, int point, int new_item) {
+void modifyCutscenePoint(int bank, int cutscene, int point, int new_item) {
 	if (CutsceneBanks[bank].cutscene_databank) {
 		void* databank = CutsceneBanks[bank].cutscene_databank;
 		cutscene_item_data* data = (cutscene_item_data*)getObjectArrayAddr(databank,0xC,cutscene);
 		short* write_spot = (short*)getObjectArrayAddr(data->point_array,2,point);
 		*(short*)write_spot = new_item;
 	}
+}
+
+void modifyCutsceneItem(int bank, int item, int new_param1, int new_param2, int new_param3) {
+	if (CutsceneBanks[bank].cutscene_funcbank) {
+		void* funcbank = CutsceneBanks[bank].cutscene_funcbank;
+		cutscene_item* data = (cutscene_item*)getObjectArrayAddr(funcbank,0x14,item);
+		data->params[0] = new_param1;
+		data->params[1] = new_param2;
+		data->params[2] = new_param3;
+	}
+}
+
+int getWrinklyLevelIndex(void) {
+	return getWorld(CurrentMap, 0);
+}
+
+int getLo(void* addr) {
+    return ((int)addr) & 0xFFFF;
+}
+
+int getHi(void* addr) {
+    int addr_0 = (int)addr;
+    int hi = (addr_0 >> 16) & 0xFFFF;
+    int lo = getLo(addr);
+    if (lo & 0x8000) {
+        hi += 1;
+    }
+    return hi;
 }

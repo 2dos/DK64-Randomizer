@@ -1,0 +1,5 @@
+.data
+id = 0x105
+.code
+EXEC 7 | 125 65535 261
+ENDBLOCK
