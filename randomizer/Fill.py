@@ -413,6 +413,9 @@ def PareWoth(settings, PlaythroughLocations):
         locationId = WothLocations[i]
         location = LocationList[locationId]
         item = location.item
+        # ParePlaythrough already removes unnecessary slams. Any slams that get here are required.
+        if item == Items.ProgressiveSlam:
+            continue
         location.item = None
         # Check if game is still beatable
         Reset()
