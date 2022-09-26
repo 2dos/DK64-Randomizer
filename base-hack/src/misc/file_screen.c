@@ -362,6 +362,11 @@ void initTracker(void) {
 	updated_tracker = 0;
 }
 
+void resetTracker(void) {
+	updated_tracker = 0;
+	WipeImageCache();
+}
+
 void modifyTrackerImage(int dl_offset) {
 	// Check if tracker needs updating
 	if (updated_tracker == (TRACKER_INIT + 3)) {
@@ -501,9 +506,13 @@ void correctKongFaces(void) {
 }
 
 void wipeFileMod(int file, int will_save) {
-	updated_tracker = 0;
+	resetTracker();
 	WipeFile(file, will_save);
-	WipeImageCache();
+}
+
+void enterFileProgress(int sfx) {
+	resetTracker();
+	playSFX(sfx);
 }
 
 void giveCollectables(void) {

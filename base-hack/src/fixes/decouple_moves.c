@@ -66,7 +66,8 @@ void decouple_moves_fixes(void) {
 		// *(short*)(0x8002A02A) = 3; // Set B button action in delete confirm to file progress
 		// *(short*)(0x80029fea) = 3; // Set A button action in delete confirm to file progress
 		*(int*)(0x80030604) = 0x0C000000 | (((int)&file_progress_screen_code & 0xFFFFFF) >> 2); // New file progress code
-		*(int*)(0x80029FE0) = 0x0C000000 | (((int)&wipeFileMod & 0xFFFFFF) >> 2); // New file progress code
+		*(int*)(0x80029FE0) = 0x0C000000 | (((int)&wipeFileMod & 0xFFFFFF) >> 2); // Wipe File Hook
+		*(int*)(0x80028C88) = 0x0C000000 | (((int)&enterFileProgress & 0xFFFFFF) >> 2); // Enter File Progress Screen Hook
 		// *(int*)(0x80029760) = 0x0C000000 | (((int)&displayTopText & 0xFFFFFF) >> 2); // New file progress top text code
 		// // *(int*)(0x80030614) = 0x0C000000 | (((int)&FileProgressInit & 0xFFFFFF) >> 2); // New file progress init code
 		// *(int*)(0x80029894) = 0x0C000000 | (((int)&FileProgressInitSub & 0xFFFFFF) >> 2); // New file progress init code

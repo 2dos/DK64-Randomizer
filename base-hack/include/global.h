@@ -165,5 +165,6 @@ extern void adaptKrushaZBAnimation_Charge(actorData* actor, int anim);
 extern void updateCutsceneModels(actorData* actor, int size);
 extern void initTracker(void);
 extern void wipeFileMod(int file, int will_save);
+extern void enterFileProgress(int sfx);
 
 extern unsigned int cs_skip_db[432];
