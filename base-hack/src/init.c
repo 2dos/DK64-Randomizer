@@ -588,6 +588,7 @@ void initHack(int source) {
 			*(short*)(0x806AAFB6) = FLAG_ABILITY_CAMERA; // Other Fairies Display
 			*(short*)(0x806AA762) = FLAG_ABILITY_CAMERA; // Film Display
 			*(short*)(0x8060D986) = FLAG_ABILITY_CAMERA; // Film Refill
+			*(short*)(0x806F6F76) = FLAG_ABILITY_CAMERA; // Film Refill
 			initItemDropTable();
 			// LZ Save
 			*(int*)(0x80712EC4) = 0x0C000000 | (((int)&postKRoolSaveCheck & 0xFFFFFF) >> 2);
