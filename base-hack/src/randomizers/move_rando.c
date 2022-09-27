@@ -398,16 +398,41 @@ void setLocation(purchase_struct* purchase_data) {
 					MovesBase[p_kong].special_moves |= (1 << bitfield_index);
 					break;
 				case PURCHASE_SLAM:
-					MovesBase[p_kong].simian_slam = purchase_data->purchase_value;
+					for (int kong = 0; kong < 5; kong++) {
+						if (MovesBase[kong].simian_slam < purchase_data->purchase_value) {
+							MovesBase[kong].simian_slam = purchase_data->purchase_value;
+						}
+					}
 					break;
 				case PURCHASE_GUN:
-					MovesBase[p_kong].weapon_bitfield |= (1 << bitfield_index);
+					if (bitfield_index > 0) {
+						for (int kong = 0; kong < 5; kong++) {
+							MovesBase[kong].weapon_bitfield |= (1 << bitfield_index);
+						}
+					} else {
+						MovesBase[p_kong].weapon_bitfield |= (1 << bitfield_index);
+					}
 					break;
 				case PURCHASE_AMMOBELT:
-					MovesBase[p_kong].ammo_belt = purchase_data->purchase_value;
+					for (int kong = 0; kong < 5; kong++) {
+						if (MovesBase[kong].ammo_belt < purchase_data->purchase_value) {
+							MovesBase[kong].ammo_belt = purchase_data->purchase_value;
+						}
+					}
 					break;
 				case PURCHASE_INSTRUMENT:
-					MovesBase[p_kong].instrument_bitfield |= (1 << bitfield_index);
+					if (bitfield_index > 0) {
+						for (int kong = 0; kong < 5; kong++) {
+							MovesBase[kong].instrument_bitfield |= (1 << bitfield_index);
+						}
+					} else {
+						MovesBase[p_kong].instrument_bitfield |= (1 << bitfield_index);
+					}
+					if (CollectableBase.Melons < 2) {
+						CollectableBase.Melons = 2;
+					} else if ((CollectableBase.Melons < 3) && (bitfield_index > 1)) {
+						CollectableBase.Melons = 3;
+					}
 				break;
 			}
 		} else if ((p_type == PURCHASE_FLAG) && (purchase_data->purchase_value == -2)) {

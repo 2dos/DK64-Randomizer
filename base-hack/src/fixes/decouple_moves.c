@@ -75,6 +75,7 @@ void decouple_moves_fixes(void) {
 		*(int*)(0x80029874) = 0; // Hide GB
 		*(int*)(0x80029818) = 0; // Hide A
 		*(int*)(0x80029840) = 0; // Hide B
+		// Options
 		initOptionScreen();
 	} else if (CurrentMap == SNIDE) {
 		*(int*)(0x8002402C) = 0x240E000C; // No extra contraption cutscenes
