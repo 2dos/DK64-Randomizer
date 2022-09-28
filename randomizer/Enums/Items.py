@@ -61,12 +61,12 @@ class Items(IntEnum):
     Triangle = auto()
     ProgressiveInstrumentUpgrade = auto()
 
-    NintendoCoin = auto()
-    RarewareCoin = auto()
-
     Camera = auto()
     Shockwave = auto()
     CameraAndShockwave = auto()
+
+    NintendoCoin = auto()
+    RarewareCoin = auto()
 
     JungleJapesKey = auto()
     AngryAztecKey = auto()

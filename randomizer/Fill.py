@@ -93,27 +93,26 @@ def GetAccessibleLocations(settings, ownedItems, searchType=SearchMode.GetReacha
                 # If we want to generate the playthrough and the item is a playthrough item, add it to the sphere
                 if searchType == SearchMode.GeneratePlaythrough and ItemList[location.item].playthrough:
                     # Banana hoard in a sphere by itself
-                    if location.item == Items.BananaHoard:
+                    if settings.win_condition == "beat_krool" and location.item == Items.BananaHoard:
                         sphere.locations = [locationId]
                         break
                     if location.item == Items.GoldenBanana:
                         sphere.availableGBs += 1
                     sphere.locations.append(locationId)
-                # If we're checking beatability, just want to know if we have access to the banana hoard
-                if searchType == SearchMode.CheckBeatable and location.item == Items.BananaHoard:
-                    return True
-                # Checking beatability is essentially just checking that the Banana Hoard item is reachable
+                # If we're looking for one item and we find it, we're done
                 if searchType == SearchMode.CheckSpecificItemReachable and location.item == targetItemId:
                     return True
         if len(sphere.locations) > 0:
             playthroughLocations.append(sphere)
-            if LocationList[sphere.locations[0]].item == Items.BananaHoard:
-                break
         eventAdded = False
         # Reset new lists
         newLocations = []
         # Update based on new items
         LogicVariables.Update(ownedItems)
+
+        # If we're checking beatability, check the win condition after updating the last set of locations
+        if searchType == SearchMode.CheckBeatable and LogicVariables.WinConditionMet():
+            return True
 
         # Do a search for each owned kong
         for kong in LogicVariables.GetKongs():
@@ -288,8 +287,8 @@ def VerifyWorldWithWorstCoinUsage(settings):
             # print("Seed is valid, found enough coins with worst purchase order: " + str([LocationList[x].name + ": " + LocationList[x].item.name + ", " for x in locationsToPurchase]))
             Reset()
             return True
-        # If we found the BananaHoard, world is valid!
-        if len([x for x in reachable if LocationList[x].item == Items.BananaHoard]) > 0:
+        # If we meet the win condition, world is valid!
+        if LogicVariables.WinConditionMet():
             # print("Seed is valid, found banana hoard with worst purchase order: " + str([LocationList[x].name + ": " + LocationList[x].item.name + ", " for x in locationsToPurchase]))
             Reset()
             return True
@@ -362,7 +361,7 @@ def ParePlaythrough(settings, PlaythroughLocations):
     locationsToAddBack = []
     mostExpensiveBLocker = max([settings.blocker_0, settings.blocker_1, settings.blocker_2, settings.blocker_3, settings.blocker_4, settings.blocker_5, settings.blocker_6, settings.blocker_7])
     # Check every location in the list of spheres.
-    for i in range(len(PlaythroughLocations) - 2, -1, -1):
+    for i in range(len(PlaythroughLocations) - 1, -1, -1):
         sphere = PlaythroughLocations[i]
         # We want to track specific GBs in each sphere of the spoiler log up to and including the sphere where the last B. Locker becomes openable
         if i > 0 and PlaythroughLocations[i - 1].availableGBs > mostExpensiveBLocker:
@@ -378,8 +377,13 @@ def ParePlaythrough(settings, PlaythroughLocations):
             # Check if the game is still beatable
             Reset()
             if GetAccessibleLocations(settings, [], SearchMode.CheckBeatable):
-                # If the game is still beatable, this is an unnecessary location, remove it.
-                sphere.locations.remove(locationId)
+                # If the game is still beatable and this item isn't related to the win condition, this is an unnecessary location, so remove it.
+                if (
+                    not (settings.win_condition == "all_fairies" and location.item == Items.BananaFairy)
+                    and not (settings.win_condition == "all_medals" and location.item == Items.BananaMedal)
+                    and not (settings.win_condition == "all_blueprints" and location.item is not None and ItemList[location.item].type == Types.Blueprint)
+                ):
+                    sphere.locations.remove(locationId)
                 # We delay the item to ensure future locations which may rely on this one
                 # do not give a false positive for beatability.
                 location.SetDelayedItem(item)
@@ -389,7 +393,7 @@ def ParePlaythrough(settings, PlaythroughLocations):
                 location.PlaceItem(item)
 
     # Check if there are any empty spheres, if so remove them
-    for i in range(len(PlaythroughLocations) - 2, -1, -1):
+    for i in range(len(PlaythroughLocations) - 1, -1, -1):
         sphere = PlaythroughLocations[i]
         if len(sphere.locations) == 0:
             PlaythroughLocations.remove(sphere)
@@ -722,7 +726,7 @@ def GetItemPrerequisites(spoiler, targetItemId, ownedKongs=[]):
     return requiredMoves
 
 
-def GetValidLocationsForMove(spoiler, move, blockedLocations={}):
+def GetValidLocationsForMove(spoiler, move, blockedLocations=set({})):
     """Return the valid locations for the given move. Currently only returns shop locations for moves."""
     validLocations = set({})
     if spoiler.settings.move_rando == "cross_purchase" or move in ItemPool.DonkeyMoves:
@@ -899,6 +903,7 @@ def FillKongsAndMovesGeneric(spoiler):
 
 def GeneratePlaythrough(spoiler):
     """Generate playthrough and way of the hoard and update spoiler."""
+    js.postMessage("Seed generated! Finalizing spoiler...")
     # Generate and display the playthrough
     Reset()
     PlaythroughLocations = GetAccessibleLocations(spoiler.settings, [], SearchMode.GeneratePlaythrough)
@@ -1250,6 +1255,12 @@ def FillKongsAndMoves(spoiler):
     itemsToPlace = [item for item in itemsToPlace if item not in preplacedPriorityMoves]
     unplaced = PlaceItems(spoiler.settings, "assumed", itemsToPlace, [], validLocations=validLocations)
     if unplaced > 0:
+        # debug code - outputs all preplaced and shared items in an attempt to find where things are going wrong
+        # movesAndLocations = {}
+        # for location in LocationList:
+        #     itemIndex = LocationList[location].item
+        #     if itemIndex is not None and itemIndex != Items.NoItem and itemIndex <= Items.CameraAndShockwave:
+        #         movesAndLocations[itemIndex] = location
         raise Ex.ItemPlacementException(str(unplaced) + " unplaced items.")
 
     # Final touches to item placement, some locations need special treatment
@@ -1554,6 +1565,7 @@ def SetNewProgressionRequirementsUnordered(settings: Settings):
         # Galleon lobby requires swim
         if 4 in openLobbyIndexes and Items.Swim not in startingItems:
             openLobbyIndexes.remove(4)
+            moveLockedGalleonLobby = True
     # Convert indexes to the shuffled levels
     openLevels = [settings.level_order[index] for index in openLobbyIndexes]
     foundProgressionKeyEvents = []

@@ -174,6 +174,8 @@ class LogicVarHolder:
 
         self.kong = self.startkong
 
+        self.bananaHoard = False
+
         self.UpdateKongs()
 
     def Update(self, ownedItems):
@@ -268,6 +270,8 @@ class LogicVarHolder:
         self.superDuperSlam = self.Slam >= 3
 
         self.Blueprints = [x for x in ownedItems if x >= Items.JungleJapesDonkeyBlueprint]
+
+        self.bananaHoard = self.bananaHoard or Items.BananaHoard in ownedItems
 
     def AddEvent(self, event):
         """Add an event to events list so it can be checked for logically."""
@@ -518,6 +522,21 @@ class LogicVarHolder:
     def IsLevelEnterable(self, level):
         """Check if level entry requirement is met."""
         return self.HasEnoughKongs(level, forPreviousLevel=True) and self.GoldenBananas >= self.settings.EntryGBs[level]
+
+    def WinConditionMet(self):
+        """Check if the current game state has met the win condition."""
+        if self.settings.win_condition == "beat_krool":
+            return self.bananaHoard
+        elif self.settings.win_condition == "get_key8":
+            return self.HelmKey
+        elif self.settings.win_condition == "all_fairies":
+            return self.BananaFairies >= 20
+        elif self.settings.win_condition == "all_blueprints":
+            return len(self.Blueprints) >= 40
+        elif self.settings.win_condition == "all_medals":
+            return self.BananaMedals >= 40
+        else:
+            return False
 
 
 LogicVariables = LogicVarHolder()
