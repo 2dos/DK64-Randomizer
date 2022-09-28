@@ -313,14 +313,14 @@ class Spoiler:
                 "CastleBoss": "King Kut Out",
             }
             for i in range(7):
-                shuffled_bosses["".join(map(lambda x: x if x.islower() else " " + x, Levels(i).name))] = boss_names[Maps(self.settings.boss_maps[i]).name]
+                shuffled_bosses["".join(map(lambda x: x if x.islower() else " " + x, Levels(i).name)).strip()] = boss_names[Maps(self.settings.boss_maps[i]).name]
             humanspoiler["Bosses"]["Shuffled Boss Order"] = shuffled_bosses
 
         humanspoiler["Bosses"]["King Kut Out Properties"] = {}
         if self.settings.boss_kong_rando:
             shuffled_boss_kongs = OrderedDict()
             for i in range(7):
-                shuffled_boss_kongs["".join(map(lambda x: x if x.islower() else " " + x, Levels(i).name))] = Kongs(self.settings.boss_kongs[i]).name.capitalize()
+                shuffled_boss_kongs["".join(map(lambda x: x if x.islower() else " " + x, Levels(i).name)).strip()] = Kongs(self.settings.boss_kongs[i]).name.capitalize()
             humanspoiler["Bosses"]["Shuffled Boss Kongs"] = shuffled_boss_kongs
             kutout_order = ""
             for kong in self.settings.kutout_kongs:
@@ -604,7 +604,7 @@ class Spoiler:
             newSphere = {}
             newSphere["Available GBs"] = sphere.availableGBs
             sphereLocations = list(map(lambda l: locations[l], sphere.locations))
-            sphereLocations.sort(key=lambda l: l.type == Types.Banana)
+            sphereLocations.sort(key=self.ScoreLocations)
             for location in sphereLocations:
                 newSphere[location.name] = ItemList[location.item].name
             self.playthrough[i] = newSphere
@@ -616,6 +616,30 @@ class Spoiler:
         for locationId in wothLocations:
             location = locations[locationId]
             self.woth[location.name] = ItemList[location.item].name
+
+    def ScoreLocations(self, location):
+        """Score a location with the given settings for sorting the Playthrough."""
+        # The Banana Hoard is likely in its own sphere but if it's not put it last
+        if location == Locations.BananaHoard:
+            return 250
+        # GBs go last, there's a lot of them but they arent important
+        if location.type == Types.Banana:
+            return 100
+        # Win condition items are more important than GBs but less than moves
+        elif self.settings.win_condition == "all_fairies" and location.type == Types.Fairy:
+            return 10
+        elif self.settings.win_condition == "all_blueprints" and location.type == Types.Blueprint:
+            return 10
+        elif self.settings.win_condition == "all_medals" and location.type == Types.Medal:
+            return 10
+        # Kongs are most the single most important thing and should be at the top of spheres
+        elif location.type == Types.Kong:
+            return 0
+        # Constants at this point should only be Keys and are best put after moves
+        elif location.type == Types.Constant:
+            return 2
+        # Everything else is a Move (or move-adjacent) and is pretty important
+        return 1
 
     @staticmethod
     def GetKroolKeysRequired(keyEvents):
