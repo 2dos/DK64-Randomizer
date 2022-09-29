@@ -2,12 +2,13 @@
 async function run_python_file(file) {
   await pyodide.runPythonAsync(await (await fetch(file)).text());
 }
+let user_agent = navigator.userAgent;
 if (window.location.protocol != "https:") {
   if (location.hostname != "localhost" && location.hostname != "127.0.0.1") {
     location.href = location.href.replace("http://", "https://");
   }
 }
-if (location.hostname == "dev.dk64randomizer.com") {
+if (location.hostname == "dev.dk64randomizer.com" || location.hostname == "dk64randomizer.com") {
   var _LTracker = _LTracker || [];
   _LTracker.push({
     logglyKey: "5d3aa1b3-6ef7-4bc3-80ae-778d48a571b0",
@@ -33,6 +34,7 @@ window.onerror = function (error) {
     "Unexpected non-whitespace character after JSON at position", // Loading up the site when your cookies reflect a prior version
     "Unexpected non-whitespace character after JSON data at line", // Same as above
     "Unexpected token ; in JSON", // Token Error
+    "Uncaught Error: Invalid Rom", // Token Error
   ];
   is_banned = false;
   banned_errors_text.forEach((item) => {
@@ -46,7 +48,7 @@ window.onerror = function (error) {
 };
 function toast_alert(text) {
   try {
-    _LTracker.push(text);
+    _LTracker.push({"text": text, "agent": user_agent});
   } catch {}
   Toastify({
     text: text,
@@ -161,7 +163,7 @@ function setCookie(name, value, days) {
     date.setTime(date.getTime() + days * 24 * 60 * 60 * 1000);
     expires = "; expires=" + date.toUTCString();
   }
-  document.cookie = name + "=" + (value || "") + expires + "; path=/; secure";
+  document.cookie = name + "=" + (value || "") + expires + "; path=/;";
 }
 function getCookie(name) {
   var nameEQ = name + "=";

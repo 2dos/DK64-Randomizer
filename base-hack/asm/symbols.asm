@@ -100,6 +100,11 @@
 .definelabel getPlayerObjectDistance, 0x8064F210
 .definelabel spawnWrinkly, 0x8064F028
 .definelabel isWrinklySpawned, 0x8064F1C4
+.definelabel setAction, 0x806EB0C0
+.definelabel exitPortalPath, 0x806496B0
+.definelabel getInteractionOfContactActor, 0x8067ACC0
+.definelabel enterPortal, 0x806CF398
+.definelabel drawBossDoorNumber, 0x8064954C
 
 .definelabel unkMultiplayerWarpFunction, 0x8061EB04
 .definelabel renderScreenTransition, 0x806291B4
@@ -109,6 +114,8 @@
 .definelabel displayText, 0x806FC530
 .definelabel displayImage, 0x8068C5A8
 .definelabel determineXRatioMovement, 0x80612794
+.definelabel getPtr14Texture, 0x8068C12C
+.definelabel renderImage_Internal, 0x80702464
 
 .definelabel getWorld, 0x805FF030
 .definelabel displayImageOnObject, 0x80635018
@@ -209,6 +216,15 @@
 .definelabel calculateFilePercentage, 0x80032304
 .definelabel displayMenuSprite, 0x80030894
 .definelabel loadFile, 0x8060DC3C
+.definelabel loadEndSeq, 0x807127F4
+.definelabel checkGlobalProgress, 0x807311C4
+.definelabel updateCutscene, 0x806F3DB0
+.definelabel loadDKTVData, 0x80712B80
+.definelabel clearActorList, 0x8067AE58
+.definelabel updateModelScales, 0x807248B0
+.definelabel WipeFile, 0x8060C830
+.definelabel WipeImageCache, 0x8068C080
+.definelabel calculateScreenPosition, 0x80626F8C
 
 //vanilla data
 .definelabel TransitionSpeed, 0x807FD88C
@@ -334,6 +350,9 @@
 .definelabel CutsceneBanks, 0x807F5B10
 .definelabel EEPROMType, 0x807EDEAC
 
+.definelabel ExitPointer, 0x807FC900
+.definelabel ExitCount, 0x807FC904
+
 .definelabel screenCenterX, 0x80744490
 .definelabel screenCenterY, 0x80744494
 .definelabel collisionPos, 0x807F621C
@@ -373,6 +392,15 @@
 .definelabel FileScreenDLOffset, 0x80033F4C
 .definelabel GBDictionary, 0x80755A20
 .definelabel DKTVData, 0x8075E5C0
+.definelabel KongModelData, 0x8075C410
+.definelabel TagModelData, 0x8074E814
+.definelabel RollingSpeeds, 0x80753568
+.definelabel KongTagNames, 0x8074E85C
+.definelabel KrazyKKModels, 0x8002D8C8
+.definelabel ChargeVelocities_0, 0x8075380C
+.definelabel ChargeVelocities_1, 0x8075381C
+.definelabel ChargeDeceleration, 0x8075382C
+.definelabel KongTextNames, 0x8074E780
 
 .definelabel CBTurnedInArray, 0x807FC930
 .definelabel charspawnerflags, 0x80755DA8
@@ -384,6 +412,7 @@
 .definelabel collisionType, 0x807FBD70
 .definelabel collisionActive, 0x807FBB85
 .definelabel PlayerPointer_0, 0x807FDC94
+.definelabel TiedCharacterSpawner, 0x807FDC98
 .definelabel currentCharSpawner, 0x807FDC9C
 .definelabel EnemiesKilledCounter, 0x80744508
 
@@ -398,6 +427,11 @@
 .definelabel menuHeadY, 0x80033F80
 .definelabel menuHeadScale, 0x80033F98
 .definelabel LatestCollectedObject, 0x807FD734
+.definelabel ImageCache, 0x807FC690
+
+.definelabel AnimationTable1, 0x807FBB54
+.definelabel AnimationTable2, 0x807FBB58
+.definelabel AnimationTable3, 0x807FBB5C
 
 //hack data
 .definelabel TestVariable, 0x807FFFFC
@@ -432,6 +466,10 @@
 .definelabel QueueHelmTimer, 0x807FFFDD
 .definelabel ToggleAmmoOn, 0x807FFFDC
 .definelabel WarpData, 0x807FFFD8
+.definelabel InvertedControls, 0x807FFFD7
+.definelabel WinCondition, 0x807FFFD6
+.definelabel ChunkyModel, 0x807FFFD5
+.definelabel EnemyInView, 0x807FFFD4
 
 .definelabel CrankyMoves_New, 0x807FF400
 .definelabel CandyMoves_New, 0x807FF4F0
