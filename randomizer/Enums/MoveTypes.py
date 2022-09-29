@@ -10,4 +10,3 @@ class MoveTypes(IntEnum):
     Guns = auto()
     AmmoBelt = auto()
     Instruments = auto()
-    Flag = auto()

@@ -117,7 +117,9 @@ void newGuardCode(void) {
                     if (CurrentActorPointer_0->control_state_progress < 0xC) {
                         CurrentActorPointer_0->control_state_progress += 1;
                     } else {
-                        setActorAnimation(0x2C1);
+                        CurrentActorPointer_0->control_state = 0x1;
+                        CurrentActorPointer_0->control_state_progress = 0;
+                        playActorAnimation(CurrentActorPointer_0,0x2C1);
                     }
                     break;
                 case 0x42:

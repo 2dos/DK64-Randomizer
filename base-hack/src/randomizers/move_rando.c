@@ -51,7 +51,7 @@ void checkProgressive(
 			pass = 1;
 		}
 	}
-	if (pass && ((CurrentMap != 0x22) && (CurrentMap != 0x50))) {
+	if (pass) {
 		// Just purchased Move
 		int purchased = 0;
 		if (level >= 0 && level < LEVEL_COUNT) {
@@ -84,35 +84,29 @@ void checkProgressive(
 		for (int i = 0; i < LEVEL_COUNT; i++) {
 			for (int j = 0; j < 5; j++) {
 				if (CrankyMoves_New[j][i].purchase_type == purchase_type) {
-					if ((purchase_type != PURCHASE_INSTRUMENT) || (CrankyMoves_New[j][i].purchase_value != 1)) {
-						if ((purchased) && (shop == 0) && (level == i)) {
-							CrankyMoves_New[j][i].purchase_type = PURCHASE_NOTHING;
-						} else {
-							if (CrankyMoves_New[j][i].purchase_value > progressive_floor) {
-								CrankyMoves_New[j][i].purchase_value = purchase_level;
-							}
+					if ((purchased) && (shop == 0) && (level == i)) {
+						CrankyMoves_New[j][i].purchase_type = PURCHASE_NOTHING;
+					} else {
+						if (CrankyMoves_New[j][i].purchase_value > progressive_floor) {
+							CrankyMoves_New[j][i].purchase_value = purchase_level;
 						}
 					}
 				}
 				if (CandyMoves_New[j][i].purchase_type == purchase_type) {
-					if ((purchase_type != PURCHASE_INSTRUMENT) || (CandyMoves_New[j][i].purchase_value != 1)) {
-						if ((purchased) && (shop == 2) && (level == i)) {
-							CandyMoves_New[j][i].purchase_type = PURCHASE_NOTHING;
-						} else {
-							if (CandyMoves_New[j][i].purchase_value > progressive_floor) {
-								CandyMoves_New[j][i].purchase_value = purchase_level;
-							}
+					if ((purchased) && (shop == 2) && (level == i)) {
+						CandyMoves_New[j][i].purchase_type = PURCHASE_NOTHING;
+					} else {
+						if (CandyMoves_New[j][i].purchase_value > progressive_floor) {
+							CandyMoves_New[j][i].purchase_value = purchase_level;
 						}
 					}
 				}
 				if (FunkyMoves_New[j][i].purchase_type == purchase_type) {
-					if ((purchase_type != PURCHASE_INSTRUMENT) || (FunkyMoves_New[j][i].purchase_value != 1)) {
-						if ((purchased) && (shop == 1) && (level == i)) {
-							FunkyMoves_New[j][i].purchase_type = PURCHASE_NOTHING;
-						} else {
-							if (FunkyMoves_New[j][i].purchase_value > progressive_floor) {
-								FunkyMoves_New[j][i].purchase_value = purchase_level;
-							}
+					if ((purchased) && (shop == 1) && (level == i)) {
+						FunkyMoves_New[j][i].purchase_type = PURCHASE_NOTHING;
+					} else {
+						if (FunkyMoves_New[j][i].purchase_value > progressive_floor) {
+							FunkyMoves_New[j][i].purchase_value = purchase_level;
 						}
 					}
 				}
@@ -398,41 +392,16 @@ void setLocation(purchase_struct* purchase_data) {
 					MovesBase[p_kong].special_moves |= (1 << bitfield_index);
 					break;
 				case PURCHASE_SLAM:
-					for (int kong = 0; kong < 5; kong++) {
-						if (MovesBase[kong].simian_slam < purchase_data->purchase_value) {
-							MovesBase[kong].simian_slam = purchase_data->purchase_value;
-						}
-					}
+					MovesBase[p_kong].simian_slam = purchase_data->purchase_value;
 					break;
 				case PURCHASE_GUN:
-					if (bitfield_index > 0) {
-						for (int kong = 0; kong < 5; kong++) {
-							MovesBase[kong].weapon_bitfield |= (1 << bitfield_index);
-						}
-					} else {
-						MovesBase[p_kong].weapon_bitfield |= (1 << bitfield_index);
-					}
+					MovesBase[p_kong].weapon_bitfield |= (1 << bitfield_index);
 					break;
 				case PURCHASE_AMMOBELT:
-					for (int kong = 0; kong < 5; kong++) {
-						if (MovesBase[kong].ammo_belt < purchase_data->purchase_value) {
-							MovesBase[kong].ammo_belt = purchase_data->purchase_value;
-						}
-					}
+					MovesBase[p_kong].ammo_belt = purchase_data->purchase_value;
 					break;
 				case PURCHASE_INSTRUMENT:
-					if (bitfield_index > 0) {
-						for (int kong = 0; kong < 5; kong++) {
-							MovesBase[kong].instrument_bitfield |= (1 << bitfield_index);
-						}
-					} else {
-						MovesBase[p_kong].instrument_bitfield |= (1 << bitfield_index);
-					}
-					if (CollectableBase.Melons < 2) {
-						CollectableBase.Melons = 2;
-					} else if ((CollectableBase.Melons < 3) && (bitfield_index > 1)) {
-						CollectableBase.Melons = 3;
-					}
+					MovesBase[p_kong].instrument_bitfield |= (1 << bitfield_index);
 				break;
 			}
 		} else if ((p_type == PURCHASE_FLAG) && (purchase_data->purchase_value == -2)) {

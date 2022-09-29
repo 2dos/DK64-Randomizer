@@ -37,10 +37,6 @@ def PlaceConstants(settings):
             shuffledLocations.extend(TinyMoveLocations)
             shuffledLocations.extend(ChunkyMoveLocations)
             shuffledLocations.extend(SharedMoveLocations)
-            if settings.training_barrels == "shuffled":
-                shuffledLocations.extend(TrainingBarrelLocations)
-            if settings.shockwave_status != "vanilla":
-                shuffledLocations.append(Locations.CameraAndShockwave)
         if settings.kong_rando:
             shuffledLocations.append(Locations.DiddyKong)
             shuffledLocations.append(Locations.LankyKong)
@@ -63,6 +59,11 @@ def PlaceConstants(settings):
         LocationList[Locations.IslesSwimTrainingBarrel].PlaceConstantItem(Items.Swim)
         LocationList[Locations.IslesOrangesTrainingBarrel].PlaceConstantItem(Items.Oranges)
         LocationList[Locations.IslesBarrelsTrainingBarrel].PlaceConstantItem(Items.Barrels)
+    elif settings.training_barrels == "startwith":
+        LocationList[Locations.IslesVinesTrainingBarrel].PlaceConstantItem(Items.NoItem)
+        LocationList[Locations.IslesSwimTrainingBarrel].PlaceConstantItem(Items.NoItem)
+        LocationList[Locations.IslesOrangesTrainingBarrel].PlaceConstantItem(Items.NoItem)
+        LocationList[Locations.IslesBarrelsTrainingBarrel].PlaceConstantItem(Items.NoItem)
     if settings.starting_kongs_count == 5:
         LocationList[Locations.DiddyKong].PlaceConstantItem(Items.NoItem)
         LocationList[Locations.LankyKong].PlaceConstantItem(Items.NoItem)
@@ -123,13 +124,6 @@ def AllItems(settings):
         allItems.extend(TinyMoves)
         allItems.extend(ChunkyMoves)
         allItems.extend(ImportantSharedMoves)
-        if settings.training_barrels == "shuffled":
-            allItems.extend(TrainingBarrelAbilities().copy())
-        if settings.shockwave_status == "shuffled_decoupled":
-            allItems.append(Items.Camera)
-            allItems.append(Items.Shockwave)
-        else:
-            allItems.append(Items.CameraAndShockwave)
     if settings.kong_rando:
         allItems.extend(Kongs(settings))
     return allItems
@@ -302,11 +296,7 @@ def Upgrades(settings):
                 ]
             )
     if not settings.unlock_fairy_shockwave:
-        if settings.shockwave_status == "vanilla" or settings.shockwave_status == "shuffled":
-            upgrades.append(Items.CameraAndShockwave)
-        else:
-            upgrades.append(Items.Camera)
-            upgrades.append(Items.Shockwave)
+        upgrades.append(Items.CameraAndShockwave)
 
     return upgrades
 
@@ -572,12 +562,6 @@ def GetKongMoveOccupiedShops():
     return list(set(occupiedShops))
 
 
-TrainingBarrelLocations = {
-    Locations.IslesSwimTrainingBarrel,
-    Locations.IslesVinesTrainingBarrel,
-    Locations.IslesBarrelsTrainingBarrel,
-    Locations.IslesOrangesTrainingBarrel,
-}
 DonkeyMoveLocations = {
     Locations.BaboonBlast,
     Locations.StrongKong,
@@ -665,7 +649,6 @@ TinyMoveLocations = {
     Locations.TinyCavesInstrument,
     Locations.TinyCastleInstrument,
     Locations.TinyIslesPotion,
-    Locations.CameraAndShockwave,
 }
 ChunkyMoveLocations = {
     Locations.HunkyChunky,
@@ -710,11 +693,6 @@ SharedMoveLocations = {
     Locations.SharedGalleonPotion,
     Locations.SharedGalleonGun,
     Locations.SharedCavesPotion,
-    Locations.IslesSwimTrainingBarrel,
-    Locations.IslesVinesTrainingBarrel,
-    Locations.IslesBarrelsTrainingBarrel,
-    Locations.IslesOrangesTrainingBarrel,
-    Locations.CameraAndShockwave,
 }
 DonkeyMoves = [Items.Coconut, Items.Bongos, Items.BaboonBlast, Items.StrongKong, Items.GorillaGrab]
 DiddyMoves = [Items.Peanut, Items.Guitar, Items.ChimpyCharge, Items.RocketbarrelBoost, Items.SimianSpring]

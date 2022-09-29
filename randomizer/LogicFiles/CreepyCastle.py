@@ -63,8 +63,7 @@ LogicRegions = {
         LocationLogic(Locations.CastleBananaFairyTree, lambda l: l.camera and l.coconut and l.isdonkey),
     ], [], [
         TransitionFront(Regions.CreepyCastleMain, lambda l: True, Transitions.CastleTreeToMain),
-        # This doesn't always require swim, but if you ever get the GB it does
-        TransitionFront(Regions.CreepyCastleMain, lambda l: l.coconut and l.isdonkey and l.swim, Transitions.CastleTreeDrainToMain),
+        TransitionFront(Regions.CreepyCastleMain, lambda l: l.coconut and l.isdonkey, Transitions.CastleTreeDrainToMain),
     ]),
 
     Regions.Library: Region("Library", Levels.CreepyCastle, False, -1, [
@@ -124,7 +123,7 @@ LogicRegions = {
     ]),
 
     Regions.Museum: Region("Museum", Levels.CreepyCastle, False, -1, [
-        LocationLogic(Locations.CastleChunkyMuseum, lambda l: l.punch and l.ischunky and l.barrels),
+        LocationLogic(Locations.CastleChunkyMuseum, lambda l: l.punch and l.ischunky),
     ], [], [
         TransitionFront(Regions.CreepyCastleMain, lambda l: True, Transitions.CastleMuseumToMain),
     ]),
@@ -174,7 +173,7 @@ LogicRegions = {
 
     Regions.Dungeon: Region("Dungeon", Levels.CreepyCastle, True, None, [
         LocationLogic(Locations.CastleDonkeyDungeon, lambda l: l.superDuperSlam and l.donkey),
-        LocationLogic(Locations.CastleDiddyDungeon, lambda l: l.superDuperSlam and l.scope and l.peanut and l.diddy and l.vines),
+        LocationLogic(Locations.CastleDiddyDungeon, lambda l: l.superDuperSlam and l.scope and l.peanut and l.diddy),
         LocationLogic(Locations.CastleLankyDungeon, lambda l: l.superDuperSlam and l.trombone and l.balloon and l.islanky, MinigameType.BonusBarrel),
     ], [], [
         TransitionFront(Regions.UpperCave, lambda l: True, Transitions.CastleDungeonToUpper),

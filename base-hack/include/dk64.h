@@ -113,11 +113,6 @@ extern int isPlayerInRangeOfObject(int distance);
 extern int getPlayerObjectDistance(void);
 extern void spawnWrinkly(behaviour_data* behaviour, int index, int door_kong_index, int unk0);
 extern int isWrinklySpawned(void);
-extern void setAction(int action, void* actor, int player_index);
-extern void exitPortalPath(behaviour_data* behaviour, int index, int unk0, int unk1);
-extern int getInteractionOfContactActor(int contact_actor);
-extern void enterPortal(void* player);
-extern void drawBossDoorNumber(behaviour_data* behaviour, int index, int unk0, int unk1);
 
 extern int* initDisplayList(int* dl);
 extern int getTextStyleHeight(int style);
@@ -125,8 +120,6 @@ extern int* displayText(int* dl, int style, int x, int y, void* text_pointer, ch
 extern int* displayImage(int* dl, int texture_index, int unk3, codecs codec_index, int width, int height, int x, int y, float xScale, float yScale, int unk11, float unk12);
 extern void getScreenPosition(float x, float y, float z, float* x_store, float* y_store, int unk8, float scale, char player_index);
 extern int* textDraw(int* dl, int style, int x, int y, char* str);
-extern void* getPtr14Texture(int texture);
-extern void renderImage_Internal(void* dl, void* texture, int unk0, int width, int height, int unk1, int unk1_copy, int unk2, int unk2_copy, float width_f, float height_f, float x_center, float y_center, int unk3);
 
 extern void cancelPausedCutscene(void);
 extern void pauseCutscene(void);
@@ -231,15 +224,6 @@ extern void initMenuBackground(void* paad, int unk0);
 extern int calculateFilePercentage(void);
 extern void displayMenuSprite(void* paad, void* sprite_address, int x, int y, float scale, int unk0, int unk1);
 extern void loadFile(int file, int restock_inventory);
-extern void loadEndSeq(int mode);
-extern void checkGlobalProgress(int flag);
-extern void updateCutscene(void);
-extern void loadDKTVData(void);
-extern void clearActorList(void);
-extern void updateModelScales(void* actor, int size);
-extern void WipeFile(int file, int will_save);
-extern void WipeImageCache(void);
-extern void calculateScreenPosition(float x, float y, float z, float* x_store, float* y_store, int unk0, float unk1, int unk2);
 
 //vanilla data
 extern float TransitionSpeed;
@@ -409,9 +393,6 @@ extern short CBTurnedInArray[8];
 extern short songData[0xB0];
 extern unsigned int DKTVData[5];
 
-extern void* ExitPointer;
-extern unsigned char ExitCount;
-
 extern charspawner_flagstruct charspawnerflags[0x1F];
 extern GBDictItem GBDictionary[113];
 extern actorData* CurrentActorPointer_0;
@@ -433,21 +414,6 @@ extern float menuHeadX[5];
 extern float menuHeadY[5];
 extern float menuHeadScale[5];
 extern collected_item_struct* LatestCollectedObject;
-extern image_cache_struct ImageCache[32];
-
-extern short* AnimationTable1;
-extern short* AnimationTable2;
-extern short* AnimationTable3;
-extern SpawnerInfo* TiedCharacterSpawner;
-extern kong_model_struct KongModelData[8];
-extern tag_model_struct TagModelData[5];
-extern short RollingSpeeds[7];
-extern int KongTagNames[9];
-extern short KrazyKKModels[6];
-extern short ChargeVelocities_0[7];
-extern short ChargeVelocities_1[7];
-extern short ChargeDeceleration[7];
-extern char* KongTextNames[8];
 
 //hack data
 extern int TestVariable;
@@ -487,7 +453,3 @@ extern unsigned short MultiBunchCount;
 extern char QueueHelmTimer;
 extern char ToggleAmmoOn;
 extern void* WarpData;
-extern unsigned char InvertedControls;
-extern unsigned char WinCondition;
-extern unsigned char ChunkyModel;
-extern unsigned char EnemyInView;

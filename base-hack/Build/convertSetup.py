@@ -251,18 +251,6 @@ def modify(file_name, map_index):
                 writedatatoarr(byte_stream, int(float_to_hex(new_x), 16), 4, 0x0)
                 writedatatoarr(byte_stream, int(float_to_hex(new_y), 16), 4, 0x4)
                 writedatatoarr(byte_stream, int(float_to_hex(new_z), 16), 4, 0x8)
-            elif map_index == 0x1E and obj_id in (23, 25):
-                temp = []
-                for y in range(0x38):
-                    temp.append(byte_stream[y])
-                byte_stream = temp.copy()
-                new_x = 1296
-                new_y = 1600
-                new_z = 2028
-                if obj_id == 23:
-                    writedatatoarr(byte_stream, int(float_to_hex(new_x), 16), 4, 0x0)
-                    writedatatoarr(byte_stream, int(float_to_hex(new_z), 16), 4, 0x8)
-                writedatatoarr(byte_stream, int(float_to_hex(new_y), 16), 4, 0x4)
             elif map_index == 0x11 and not added_helm_faces:
                 face_z = 5423.538
                 face_hi = 160

@@ -1,7 +1,7 @@
 """Holds the version for DK64 Rando."""
 import js
 
-stable_version = "1.5"
+stable_version = "1.0"
 dev_version = "1.5"
 
 try:

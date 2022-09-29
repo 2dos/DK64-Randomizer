@@ -44,8 +44,6 @@ class Regions(IntEnum):
 
     # Angry Aztec Regions
     AngryAztecStart = auto()
-    BetweenVinesByPortal = auto()
-    AngryAztecOasis = auto()
     TempleStart = auto()
     TempleUnderwater = auto()
     AngryAztecMain = auto()
@@ -80,17 +78,12 @@ class Regions(IntEnum):
 
     # Gloomy Galleon Regions
     GloomyGalleonStart = auto()
-    GalleonPastVines = auto()
     GalleonBeyondPineappleGate = auto()
-    LighthouseSurface = auto()
-    LighthousePlatform = auto()
-    LighthouseUnderwater = auto()
-    LighthouseSnideAlcove = auto()
+    LighthouseArea = auto()
     Lighthouse = auto()
     MermaidRoom = auto()
     SickBay = auto()
     Shipyard = auto()
-    ShipyardUnderwater = auto()
     SealRace = auto()
     TreasureRoom = auto()
     TreasureRoomDiddyGoldTower = auto()

@@ -96,7 +96,6 @@ def ShuffleCBs(spoiler: Spoiler):
             balloon_upper = min(int(balloons_left / (7 - level_index)) + 3, int(balloons_left / global_divisor))
         balloon_lst = level_data[level]["balloons"].copy()
         selected_balloon_count = min(random.randint(min(balloon_lower, balloon_upper), max(balloon_lower, balloon_upper)), len(balloon_lst))
-        # selected_balloon_count = 22 # Test all balloon locations
         random.shuffle(balloon_lst)  # TODO: Maybe make this more advanced?
         # selects all balloons
         placed_balloons = 0

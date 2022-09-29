@@ -9,18 +9,14 @@ from randomizer.LogicClasses import Collectible
 
 LogicRegions = {
     Regions.AngryAztecStart: [
-    ],
-    Regions.BetweenVinesByPortal: [
-        Collectible(Collectibles.banana, Kongs.chunky, lambda l: True, None, 5),
-        Collectible(Collectibles.bunch, Kongs.chunky, lambda l: l.pineapple, None, 4),
-    ],
-    Regions.AngryAztecOasis: [
         Collectible(Collectibles.bunch, Kongs.donkey, lambda l: l.coconut and l.strongKong, None, 2),
         Collectible(Collectibles.bunch, Kongs.donkey, lambda l: True, None, 3),
         Collectible(Collectibles.banana, Kongs.donkey, lambda l: True, None, 3),
         Collectible(Collectibles.balloon, Kongs.diddy, lambda l: l.peanut, None, 1),
         Collectible(Collectibles.bunch, Kongs.diddy, lambda l: True, None, 1),
         Collectible(Collectibles.banana, Kongs.lanky, lambda l: True, None, 5),
+        Collectible(Collectibles.bunch, Kongs.chunky, lambda l: l.pineapple, None, 4),
+        Collectible(Collectibles.banana, Kongs.chunky, lambda l: True, None, 5),
 
         Collectible(Collectibles.coin, Kongs.donkey, lambda l: True, None, 2),  # Llama cage
         Collectible(Collectibles.coin, Kongs.donkey, lambda l: l.coconut and l.strongKong, None, 3),  # DK BP room
@@ -30,7 +26,7 @@ LogicRegions = {
         Collectible(Collectibles.coin, Kongs.chunky, lambda l: True, None, 4),  # Outside Tiny Temple
     ],
     Regions.TempleStart: [
-        Collectible(Collectibles.bunch, Kongs.diddy, lambda l: l.Slam and l.peanut, None, 3),
+        Collectible(Collectibles.bunch, Kongs.diddy, lambda l: l.Slam, None, 3),
         Collectible(Collectibles.banana, Kongs.diddy, lambda l: l.Slam, None, 3),
         Collectible(Collectibles.bunch, Kongs.chunky, lambda l: True, None, 5),
         Collectible(Collectibles.banana, Kongs.chunky, lambda l: True, None, 4),
@@ -128,8 +124,8 @@ LogicRegions = {
         Collectible(Collectibles.banana, Kongs.donkey, lambda l: True, None, 15),
         Collectible(Collectibles.banana, Kongs.lanky, lambda l: True, None, 6),
         Collectible(Collectibles.bunch, Kongs.lanky, lambda l: lambda l: True, None, 1),  # Warp 1
-        Collectible(Collectibles.balloon, Kongs.lanky, lambda l: lambda l: Events.AztecLlamaSpit in l.Events and l.grape and l.swim, None, 2),
-        Collectible(Collectibles.bunch, Kongs.lanky, lambda l: lambda l: l.grape and l.vines, None, 1),  # Matching game
+        Collectible(Collectibles.balloon, Kongs.lanky, lambda l: lambda l: Events.AztecLlamaSpit in l.Events and l.grape, None, 2),
+        Collectible(Collectibles.bunch, Kongs.lanky, lambda l: lambda l: l.grape, None, 1),  # Matching game
 
         Collectible(Collectibles.balloon, Kongs.tiny, lambda l: l.feather, None, 1),
         Collectible(Collectibles.banana, Kongs.tiny, lambda l: True, None, 3),

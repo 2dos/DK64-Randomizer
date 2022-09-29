@@ -9,8 +9,6 @@ def randomize_prices(spoiler: Spoiler):
     if spoiler.settings.random_prices != "vanilla" or spoiler.settings.shuffle_items != "none":
         varspaceOffset = spoiler.settings.rom_data
         pricesOffset = 0x035
-        tbarrelPricesOffset = 0x0A8
-        fairyPricesOffset = 0x0AC
         ROM().seek(varspaceOffset + pricesOffset)
         # /* 0x035 */ char price_rando_on; // 0 = Price Randomizer off, 1 = On
         if spoiler.settings.random_prices != "vanilla":
@@ -58,18 +56,3 @@ def randomize_prices(spoiler: Spoiler):
         ROM().write(spoiler.settings.prices[Items.ProgressiveInstrumentUpgrade][0])
         ROM().write(spoiler.settings.prices[Items.ProgressiveInstrumentUpgrade][1])
         ROM().write(spoiler.settings.prices[Items.ProgressiveInstrumentUpgrade][2])
-
-        # /* 0x0A8 */ unsigned char tbarrel_prices[4]; // Array of training barrel move prices in this order: Swim, Oranges, Barrels, Vines
-        ROM().seek(varspaceOffset + tbarrelPricesOffset)
-        ROM().write(spoiler.settings.prices[Items.Swim])
-        ROM().write(spoiler.settings.prices[Items.Oranges])
-        ROM().write(spoiler.settings.prices[Items.Barrels])
-        ROM().write(spoiler.settings.prices[Items.Vines])
-
-        # /* 0x0A8 */ unsigned char fairy_prices[2]; // Array of training barrel move prices in this order: Swim, Oranges, Barrels, Vines
-        ROM().seek(varspaceOffset + fairyPricesOffset)
-        if spoiler.settings.shockwave_status == "shuffled_decoupled":
-            ROM().write(spoiler.settings.prices[Items.Camera])
-            ROM().write(spoiler.settings.prices[Items.Shockwave])
-        else:
-            ROM().write(spoiler.settings.prices[Items.CameraAndShockwave])
