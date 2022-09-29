@@ -46,7 +46,9 @@ typedef struct actorData {
 	/* 0x0BC */ char unk_BC[0xC0-0xBC];
 	/* 0x0C0 */ float yVelocity;
 	/* 0x0C4 */ float yAccel;
-	/* 0x0C8 */ char unk_C8[0xE6-0xC8];
+	/* 0x0C8 */ char unk_C8[0xCC-0xC8];
+	/* 0x0CC */ char unk_CC;
+	/* 0x0CD */ char unk_CD[0xE6-0xCD];
 	/* 0x0E6 */ short rot_y;
 	/* 0x0E8 */ short rot_z;
 	/* 0x0EA */ char unk_EA[0x4];
@@ -190,13 +192,17 @@ typedef struct playerData {
 	/* 0x16A */ unsigned char rgb_components[3];
 	/* 0x16D */ char unk_16D[0x18A-0x16D];
 	/* 0x18A */ short moving_angle;
-	/* 0x18C */ char unk_18C[0x1B8-0x18C];
+	/* 0x18C */ char unk_18C[0x1B0-0x18C];
+	/* 0x1B0 */ float unk_1B0;
+	/* 0x1B4 */ char unk_1B4[0x1B8-0x1B4];
 	/* 0x1B8 */ float velocity_cap;
 	/* 0x1BC */ char unk_1BC[0x1C8-0x1BC];
 	/* 0x1C8 */ short turn_speed;
 	/* 0x1CA */ char unk_1CA[0x1D0-0x1CA];
 	/* 0x1D0 */ short ostand_value;
-	/* 0x1D2 */ char unk_1D2[0x208-0x1D2];
+	/* 0x1D2 */ char unk_1D2[0x1E8-0x1D2];
+	/* 0x1E8 */ float unk_1E8;
+	/* 0x1EC */ char unk_1EC[0x208-0x1EC];
 	/* 0x208 */ void* vehicle_actor_pointer;
 	/* 0x20C */ char was_gun_out;
 	/* 0x20D */ char unk_20D[0x23C - 0x20D];
@@ -345,6 +351,13 @@ typedef struct cutscene_item {
 	/* 0x006 */ short params[3];
 	/* 0x00C */ char unkC[0x14-0xC];
 } cutscene_item;
+
+typedef struct cutscene_item_data {
+	/* 0x000 */ short num_points;
+	/* 0x002 */ short unk_02;
+	/* 0x004 */ void* point_array;
+	/* 0x008 */ void* length_array;
+} cutscene_item_data;
 
 typedef struct cutsceneType {
 	/* 0x000 */ char unk_00[0xD0];
@@ -658,6 +671,13 @@ typedef struct race_exit_struct {
 	/* 0x008 */ int container_exit;
 } race_exit_struct;
 
+typedef struct exit_struct {
+	/* 0x000 */ short x;
+	/* 0x002 */ short y;
+	/* 0x004 */ short z;
+	/* 0x006 */ char unk_6[4];
+} exit_struct;
+
 typedef struct enemy_drop_struct {
 	/* 0x000 */ short source_object_type;
 	/* 0x002 */ short dropped_object_type;
@@ -692,14 +712,16 @@ typedef struct settingsData {
 
 typedef struct behaviour_data {
 	/* 0x000 */ void* extra_data;
-	/* 0x004 */ char unk_04[0x38-0x4];
+	/* 0x004 */ char unk_04[0x14-0x4];
+	/* 0x014 */ float unk_14;
+	/* 0x018 */ char unk_18[0x38-0x18];
 	/* 0x038 */ int unk_38;
 	/* 0x03C */ char unk_3C[0x44-0x3C];
 	/* 0x044 */ unsigned short timer;
 	/* 0x046 */ char unk_46[0x48-0x46];
 	/* 0x048 */ unsigned char current_state;
 	/* 0x049 */ char counter;
-	/* 0x04A */ char unk_4A[0x4B-0x4A];
+	/* 0x04A */ char unk_4A;
 	/* 0x04B */ unsigned char next_state;
 	/* 0x04C */ char counter_next;
 	/* 0x04D */ char unk_4D[0x54-0x4D];
@@ -714,7 +736,11 @@ typedef struct behaviour_data {
 	/* 0x062 */ unsigned short unk_62;
 	/* 0x064 */ char unk_64[0x66-0x64];
 	/* 0x066 */ unsigned char unk_66;
-	/* 0x067 */ char unk_67[0x70-0x67];
+	/* 0x067 */ char unk_67;
+	/* 0x068 */ unsigned short unk_68;
+	/* 0x06A */ unsigned short unk_6A;
+	/* 0x06C */ unsigned short unk_6C;
+	/* 0x06E */ char unk_6E[0x70-0x6E];
 	/* 0x070 */ char unk_70;
 	/* 0x071 */ char unk_71;
 	/* 0x072 */ char unk_72[0x94-0x72];
@@ -1185,3 +1211,24 @@ typedef struct quality_options {
 	unsigned char rambi_enguarde_pickup : 1;
 	unsigned char hud_bp_multibunch : 1;
 } quality_options;
+
+typedef struct image_cache_struct {
+	/* 0x000 */ void* image_pointer;
+	/* 0x004 */ short image_index;
+	/* 0x006 */ unsigned char image_state;
+	/* 0x007 */ char unk7;
+} image_cache_struct;
+
+typedef struct kong_model_struct {
+	/* 0x000 */ int actor;
+	/* 0x004 */ int kong_index;
+	/* 0x008 */ int model;
+	/* 0x00C */ int unk0;
+} kong_model_struct;
+
+typedef struct tag_model_struct {
+	/* 0x000 */ short model;
+	/* 0x002 */ short actor;
+	/* 0x004 */ char unk0;
+	/* 0x005 */ char unk1;
+} tag_model_struct;

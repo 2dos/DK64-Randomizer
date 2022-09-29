@@ -127,6 +127,36 @@
                             </select>
                         </div>
                     </div>
+                    <div class="item-multiselect">
+                        <div class="color-selector">
+                            <p class="select-title">Krusha Slot</p>
+                            <select name="krusha_slot"
+                                    id="krusha_slot"
+                                    class="form-select multi-select"
+                                    aria-label="Krusha"
+                                    multiple
+                                    size="5">
+                                <option selected value="no_slot">
+                                    No Slot
+                                </option>
+                                <option value="dk">
+                                    DK
+                                </option>
+                                <option value="diddy">
+                                    Diddy
+                                </option>
+                                <option value="lanky">
+                                    Lanky
+                                </option>
+                                <option value="tiny">
+                                    Tiny
+                                </option>
+                                <option value="chunky">
+                                    Chunky
+                                </option>
+                            </select>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -420,27 +450,29 @@
     
     $('.nav-tabs').click(function() {
         var settings = (document.cookie).split('saved_settings=')
-        var object = JSON.parse(settings[1])
-        if (object.hasOwnProperty('dk_custom_color')) {
-            $('.dkColorPicker').attr('style', 'background-color:' + object.dk_custom_color + ';')
-        }
-        if (object.hasOwnProperty('diddy_custom_color')) {
-            $('.diddyColorPicker').attr('style', 'background-color:' + object.diddy_custom_color + ';')
-        }
-        if (object.hasOwnProperty('lanky_custom_color')) {
-            $('.lankyColorPicker').attr('style', 'background-color:' + object.lanky_custom_color + ';')
-        }
-        if (object.hasOwnProperty('tiny_custom_color')) {
-            $('.tinyColorPicker').attr('style', 'background-color:' + object.tiny_custom_color + ';')
-        }
-        if (object.hasOwnProperty('chunky_custom_color')) {
-            $('.chunkyColorPicker').attr('style', 'background-color:' + object.chunky_custom_color + ';')
-        }
-        if (object.hasOwnProperty('rambi_custom_color')) {
-            $('.rambiColorPicker').attr('style', 'background-color:' + object.rambi_custom_color + ';')
-        }
-        if (object.hasOwnProperty('enguarde_custom_color')) {
-            $('.enguardeColorPicker').attr('style', 'background-color:' + object.enguarde_custom_color + ';')
+        if (typeof settings[1] !== 'undefined') {
+            var object = JSON.parse(settings[1])
+            if (object.hasOwnProperty('dk_custom_color')) {
+                $('.dkColorPicker').attr('style', 'background-color:' + object.dk_custom_color + ';')
+            }
+            if (object.hasOwnProperty('diddy_custom_color')) {
+                $('.diddyColorPicker').attr('style', 'background-color:' + object.diddy_custom_color + ';')
+            }
+            if (object.hasOwnProperty('lanky_custom_color')) {
+                $('.lankyColorPicker').attr('style', 'background-color:' + object.lanky_custom_color + ';')
+            }
+            if (object.hasOwnProperty('tiny_custom_color')) {
+                $('.tinyColorPicker').attr('style', 'background-color:' + object.tiny_custom_color + ';')
+            }
+            if (object.hasOwnProperty('chunky_custom_color')) {
+                $('.chunkyColorPicker').attr('style', 'background-color:' + object.chunky_custom_color + ';')
+            }
+            if (object.hasOwnProperty('rambi_custom_color')) {
+                $('.rambiColorPicker').attr('style', 'background-color:' + object.rambi_custom_color + ';')
+            }
+            if (object.hasOwnProperty('enguarde_custom_color')) {
+                $('.enguardeColorPicker').attr('style', 'background-color:' + object.enguarde_custom_color + ';')
+            }
         }
     })
 </script>

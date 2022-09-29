@@ -89,10 +89,12 @@
 #define FLAG_ABILITY_CAMERA 0x2FD // Decoupled from shockwave which uses regular flag
 #define GALLEON_2DSOPEN_LANKY 0x2FE
 #define GALLEON_2DSOPEN_TINY 0x2FF
+#define FLAG_PKMNSNAP_PICTURES 0x26B // 0x26B -> 0x28D (inc.) (35 flags)
 
 #define IMAGE_DPAD 187
 #define IMAGE_AMMO_START 188
 #define IMAGE_KONG_START 190
+#define IMAGE_TRACKER 0xA1
 #define LEVEL_COUNT 8
 
 #define PURCHASE_MOVES 0
@@ -109,3 +111,10 @@
 #define KONG_LANKY 2
 #define KONG_TINY 3
 #define KONG_CHUNKY 4
+
+#define GOAL_KROOL 0
+#define GOAL_KEY8 1
+#define GOAL_ALLFAIRIES 2
+#define GOAL_ALLBLUEPRINTS 3
+#define GOAL_ALLMEDALS 4
+#define GOAL_POKESNAP 5
