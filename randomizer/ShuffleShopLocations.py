@@ -40,7 +40,7 @@ available_shops = {
     ],
     Levels.AngryAztec: [
         ShopLocation(Regions.CrankyGeneric, Maps.AngryAztec, Regions.AngryAztecMain, Regions.CrankyAztec),
-        ShopLocation(Regions.CandyGeneric, Maps.AngryAztec, Regions.AngryAztecStart, Regions.CandyAztec),
+        ShopLocation(Regions.CandyGeneric, Maps.AngryAztec, Regions.AngryAztecOasis, Regions.CandyAztec),
         ShopLocation(Regions.FunkyGeneric, Maps.AngryAztec, Regions.AngryAztecMain, Regions.FunkyAztec),
         ShopLocation(Regions.Snide, Maps.AngryAztec, Regions.AngryAztecMain, Regions.Snide),
     ],
@@ -54,7 +54,7 @@ available_shops = {
         ShopLocation(Regions.CrankyGeneric, Maps.GloomyGalleon, Regions.GloomyGalleonStart, Regions.CrankyGalleon),
         ShopLocation(Regions.CandyGeneric, Maps.GloomyGalleon, Regions.Shipyard, Regions.CandyGalleon, locked=True),  # Locked because on water
         ShopLocation(Regions.FunkyGeneric, Maps.GloomyGalleon, Regions.Shipyard, Regions.FunkyGalleon, locked=True),  # Locked because on water
-        ShopLocation(Regions.Snide, Maps.GloomyGalleon, Regions.LighthouseArea, Regions.Snide),
+        ShopLocation(Regions.Snide, Maps.GloomyGalleon, Regions.LighthouseSnideAlcove, Regions.Snide),
     ],
     Levels.FungiForest: [
         ShopLocation(Regions.CrankyGeneric, Maps.FungiForest, Regions.GiantMushroomArea, Regions.CrankyForest),

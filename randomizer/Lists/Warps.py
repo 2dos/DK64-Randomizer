@@ -59,9 +59,9 @@ BananaportVanilla = {
         name="Jungle Japes: On top of the Mountain", map_id=Maps.JungleJapes, region_id=Regions.JapesTopOfMountain, obj_id_vanilla=0x12B, vanilla_warp=4, swap_index=19, restricted=True
     ),
     # Aztec
-    Warps.AztecNearPortal: BananaportData(name="Angry Aztec: Near Portal", map_id=Maps.AngryAztec, region_id=Regions.AngryAztecStart, obj_id_vanilla=0x6, vanilla_warp=0, swap_index=20),
-    Warps.AztecNearCandy: BananaportData(name="Angry Aztec: Near Candy", map_id=Maps.AngryAztec, region_id=Regions.AngryAztecStart, obj_id_vanilla=0x7, vanilla_warp=0, swap_index=21),
-    Warps.AztecNearTinyTemple: BananaportData(name="Angry Aztec: Outside Tiny Temple", map_id=Maps.AngryAztec, region_id=Regions.AngryAztecStart, obj_id_vanilla=0x80, vanilla_warp=1, swap_index=22),
+    Warps.AztecNearPortal: BananaportData(name="Angry Aztec: Near Portal", map_id=Maps.AngryAztec, region_id=Regions.BetweenVinesByPortal, obj_id_vanilla=0x6, vanilla_warp=0, swap_index=20),
+    Warps.AztecNearCandy: BananaportData(name="Angry Aztec: Near Candy", map_id=Maps.AngryAztec, region_id=Regions.AngryAztecOasis, obj_id_vanilla=0x7, vanilla_warp=0, swap_index=21),
+    Warps.AztecNearTinyTemple: BananaportData(name="Angry Aztec: Outside Tiny Temple", map_id=Maps.AngryAztec, region_id=Regions.AngryAztecOasis, obj_id_vanilla=0x80, vanilla_warp=1, swap_index=22),
     Warps.AztecEndOfTunnel: BananaportData(name="Angry Aztec: End of the Tunnel", map_id=Maps.AngryAztec, region_id=Regions.AngryAztecMain, obj_id_vanilla=0x7F, vanilla_warp=1, swap_index=23),
     Warps.AztecTotemNearLeft: BananaportData(name="Angry Aztec: Near Totem Rocketbarrel", map_id=Maps.AngryAztec, region_id=Regions.AngryAztecMain, obj_id_vanilla=0x98, vanilla_warp=2, swap_index=24),
     Warps.AztecCranky: BananaportData(name="Angry Aztec: Outside Cranky's", map_id=Maps.AngryAztec, region_id=Regions.AngryAztecMain, obj_id_vanilla=0x95, vanilla_warp=2, swap_index=25),
@@ -102,7 +102,7 @@ BananaportVanilla = {
         name="Gloomy Galleon: Near Tunnel Intersection", map_id=Maps.GloomyGalleon, region_id=Regions.GloomyGalleonStart, obj_id_vanilla=0x1F7, vanilla_warp=0, swap_index=45
     ),
     Warps.GalleonLighthouseRear: BananaportData(
-        name="Gloomy Galleon: Lighthouse Rear", map_id=Maps.GloomyGalleon, region_id=Regions.LighthouseArea, obj_id_vanilla=0x1F6, vanilla_warp=0, swap_index=44
+        name="Gloomy Galleon: Lighthouse Rear", map_id=Maps.GloomyGalleon, region_id=Regions.LighthousePlatform, obj_id_vanilla=0x1F6, vanilla_warp=0, swap_index=44
     ),
     Warps.GalleonNearChestGB: BananaportData(
         name="Gloomy Galleon: Near Chest Room", map_id=Maps.GloomyGalleon, region_id=Regions.GloomyGalleonStart, obj_id_vanilla=0x5F, vanilla_warp=1, swap_index=46
@@ -110,8 +110,8 @@ BananaportVanilla = {
     Warps.GalleonNear2DS: BananaportData(
         name="Gloomy Galleon: Near 2-Door Ship", map_id=Maps.GloomyGalleon, region_id=Regions.Shipyard, obj_id_vanilla=0x6C, locked=True, vanilla_warp=1, swap_index=47
     ),
-    Warps.GalleonNearCranky: BananaportData(name="Gloomy Galleon: Near Cranky's", map_id=Maps.GloomyGalleon, region_id=Regions.GloomyGalleonStart, obj_id_vanilla=0x60, vanilla_warp=2, swap_index=48),
-    Warps.GalleonSnides: BananaportData(name="Gloomy Galleon: Outside Snide's", map_id=Maps.GloomyGalleon, region_id=Regions.LighthouseArea, obj_id_vanilla=0x66, vanilla_warp=2, swap_index=49),
+    Warps.GalleonNearCranky: BananaportData(name="Gloomy Galleon: Near Cranky's", map_id=Maps.GloomyGalleon, region_id=Regions.GalleonPastVines, obj_id_vanilla=0x60, vanilla_warp=2, swap_index=48),
+    Warps.GalleonSnides: BananaportData(name="Gloomy Galleon: Outside Snide's", map_id=Maps.GloomyGalleon, region_id=Regions.LighthouseSnideAlcove, obj_id_vanilla=0x66, vanilla_warp=2, swap_index=49),
     Warps.GalleonGoldTower: BananaportData(
         name="Gloomy Galleon: On a Gold Tower", map_id=Maps.GloomyGalleon, region_id=Regions.TreasureRoomDiddyGoldTower, obj_id_vanilla=0x55, vanilla_warp=3, swap_index=50, restricted=True
     ),
@@ -119,7 +119,7 @@ BananaportVanilla = {
         name="Gloomy Galleon: Near Seal Race", map_id=Maps.GloomyGalleon, region_id=Regions.Shipyard, obj_id_vanilla=0x56, locked=True, vanilla_warp=3, swap_index=51
     ),
     Warps.GalleonNearRocketbarrel: BananaportData(
-        name="Gloomy Galleon: Near Lighthouse Rocketbarrel", map_id=Maps.GloomyGalleon, region_id=Regions.LighthouseArea, obj_id_vanilla=0x16, vanilla_warp=4, swap_index=53
+        name="Gloomy Galleon: Near Lighthouse Rocketbarrel", map_id=Maps.GloomyGalleon, region_id=Regions.LighthousePlatform, obj_id_vanilla=0x16, vanilla_warp=4, swap_index=53
     ),
     Warps.GalleonNearFunky: BananaportData(name="Gloomy Galleon: Near Funky's", map_id=Maps.GloomyGalleon, region_id=Regions.Shipyard, obj_id_vanilla=0x15, locked=True, vanilla_warp=4, swap_index=52),
     # Fungi

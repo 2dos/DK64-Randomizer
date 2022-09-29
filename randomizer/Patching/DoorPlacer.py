@@ -130,9 +130,9 @@ def place_door_locations(spoiler: Spoiler):
                                 item_data.append(int(float_to_hex([door.scale, 0.35][k]), 16))  # Scale
                                 item_data.append(0xFFFEFEFF)
                                 item_data.append(0x001BFFE1)
-                                item_data.append(int(float_to_hex(door.rx), 16))  # rx
+                                item_data.append(0)  # rx
                                 item_data.append(int(float_to_hex(door.location[3]), 16))  # ry
-                                item_data.append(int(float_to_hex(door.rz), 16))  # rz
+                                item_data.append(0)  # rz
                                 item_data.append(0)
                                 id = getNextFreeID(cont_map_id, door_ids)
                                 portal_indicator_ids.append(id)
