@@ -224,6 +224,7 @@
 .definelabel updateModelScales, 0x807248B0
 .definelabel WipeFile, 0x8060C830
 .definelabel WipeImageCache, 0x8068C080
+.definelabel calculateScreenPosition, 0x80626F8C
 
 //vanilla data
 .definelabel TransitionSpeed, 0x807FD88C
@@ -468,6 +469,7 @@
 .definelabel InvertedControls, 0x807FFFD7
 .definelabel WinCondition, 0x807FFFD6
 .definelabel ChunkyModel, 0x807FFFD5
+.definelabel EnemyInView, 0x807FFFD4
 
 .definelabel CrankyMoves_New, 0x807FF400
 .definelabel CandyMoves_New, 0x807FF4F0

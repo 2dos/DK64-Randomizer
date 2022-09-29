@@ -14,6 +14,7 @@ static float current_avg_lag = 0;
 static short past_crystals = 0;
 static char has_loaded = 0;
 static char good_eeprom = 0;
+static char new_picture = 0;
 
 void cFuncLoop(void) {
 	DataIsCompressed[18] = 0;
@@ -54,6 +55,23 @@ void cFuncLoop(void) {
 	recolorKongControl();
 	spawnCannonWrapper();
 	setCrusher();
+	if (Rando.win_condition == GOAL_POKESNAP) {
+		int picture_bitfield = 0;
+		if (Player) {
+			int control_state = Player->control_state;
+			EnemyInView = 0;
+			if ((control_state == 4) || (control_state == 5)) {
+				EnemyInView = isSnapEnemyInRange();
+			}
+			if (Player->strong_kong_ostand_bitfield & 0x8000) {
+				picture_bitfield = 1;
+				if (!new_picture) {
+					pokemonSnapMode();
+				}
+			}
+		}
+		new_picture = picture_bitfield;
+	}
 	if (Rando.perma_lose_kongs) {
 		preventBossCheese();
 		kong_has_died();
@@ -240,6 +258,7 @@ static char fpsStr[15] = "";
 static char bp_numerator = 0;
 static char bp_denominator = 0;
 static char bpStr[10] = "";
+static char pkmnStr[10] = "";
 static char hud_timer = 0;
 static char wait_progress_master = 0;
 static char wait_progress_timer = 0;
@@ -358,6 +377,29 @@ int* displayListModifiers(int* dl) {
 					dl = drawText(dl, 1, 355.0f, 480.f + ((12 - hud_timer) * 4), bpStr, 0xFF, 0xFF, 0xFF, opacity);
 				} else {
 					hud_timer = 0;
+				}
+			}
+			if (Rando.win_condition == GOAL_POKESNAP) {
+				int pkmn_f = 0;
+				int pkmn_n = 0;
+				int pkmn_d = 0;
+				if (getPkmnSnapData(&pkmn_f, &pkmn_n, &pkmn_d)) {
+					dk_strFormat((char *)pkmnStr, "%dl%d", pkmn_n, pkmn_d);
+					float opacity = 255.0f;
+					if (pkmn_f < 12) {
+						opacity = pkmn_f * 255;
+						opacity /= 12;
+					} else if (pkmn_f > 38) {
+						int diff = 12 - (pkmn_f - 38);
+						opacity = diff * 255;
+						opacity /= 12;
+					}
+					if (opacity > 255) {
+						opacity = 255;
+					} else if (opacity < 0) {
+						opacity = 0;
+					}
+					dl = drawText(dl, 1, 290, 370, pkmnStr, 0xFF, 0xFF, 0xFF, opacity);
 				}
 			}
 		}

@@ -89,6 +89,7 @@
 #define FLAG_ABILITY_CAMERA 0x2FD // Decoupled from shockwave which uses regular flag
 #define GALLEON_2DSOPEN_LANKY 0x2FE
 #define GALLEON_2DSOPEN_TINY 0x2FF
+#define FLAG_PKMNSNAP_PICTURES 0x26B // 0x26B -> 0x28D (inc.) (35 flags)
 
 #define IMAGE_DPAD 187
 #define IMAGE_AMMO_START 188

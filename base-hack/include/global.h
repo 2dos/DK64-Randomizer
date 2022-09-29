@@ -166,5 +166,8 @@ extern void updateCutsceneModels(actorData* actor, int size);
 extern void initTracker(void);
 extern void wipeFileMod(int file, int will_save);
 extern void enterFileProgress(int sfx);
+extern void pokemonSnapMode(void);
+extern int isSnapEnemyInRange(void);
+extern int getPkmnSnapData(int* frames, int* current, int* total);
 
 extern unsigned int cs_skip_db[432];

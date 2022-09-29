@@ -239,6 +239,7 @@ extern void clearActorList(void);
 extern void updateModelScales(void* actor, int size);
 extern void WipeFile(int file, int will_save);
 extern void WipeImageCache(void);
+extern void calculateScreenPosition(float x, float y, float z, float* x_store, float* y_store, int unk0, float unk1, int unk2);
 
 //vanilla data
 extern float TransitionSpeed;
@@ -489,3 +490,4 @@ extern void* WarpData;
 extern unsigned char InvertedControls;
 extern unsigned char WinCondition;
 extern unsigned char ChunkyModel;
+extern unsigned char EnemyInView;

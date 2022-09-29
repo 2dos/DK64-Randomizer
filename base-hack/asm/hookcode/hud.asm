@@ -147,3 +147,16 @@ SkipCutscenePans:
     SkipCutscenePans_Skip:
         J           0x8061E8A4
         NOP
+
+ModifyCameraColor:
+    LUI         t0, hi(EnemyInView)
+    LBU         t0, lo(EnemyInView) (t0)
+    BEQZ        t0, ModifyCameraColor_Finish
+    LI          t0, -1
+    LUI         t0, 0xFF
+    ADDIU       t0, t0, 0xFF
+
+    ModifyCameraColor_Finish:
+        J           0x806FF38C
+        LUI         at, 0x3F00
+    

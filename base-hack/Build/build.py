@@ -457,6 +457,23 @@ for x in kong_palettes:
         x_s = 43 * 32 * 2
     file_dict.append({"name": f"Palette Expansion ({hex(x)})", "pointer_table_index": 25, "file_index": x, "source_file": f"palette_{x}.bin", "target_compressed_size": x_s})
 
+colorblind_changes = [
+    [4120, 4124, 32, 44],
+    [5819, 5858, 32, 64],
+]
+for change in colorblind_changes:
+    for file_index in range(change[0], change[1] + 1):
+        file_dict.append(
+            {
+                "name": f"Colorblind Expansion {file_index}",
+                "pointer_table_index": 25,
+                "file_index": file_index,
+                "source_file": f"colorblind_exp_{file_index}.bin",
+                "target_compressed_size": 2 * change[2] * change[3],
+            }
+        )
+
+
 model_changes = [
     {"model_index": 0, "model_file": "diddy_base.bin"},
     {"model_index": 1, "model_file": "diddy_ins.bin"},
@@ -913,6 +930,11 @@ with open(newROMName, "r+b") as fh:
     fh.write((4).to_bytes(1, "big"))
     fh.seek(0x1FED020 + 0x159)
     fh.write((2).to_bytes(1, "big"))
+
+    # Pkmn Snap Default Enemies
+    fh.seek(0x1FED020 + 0x117)
+    for x in range(5):
+        fh.write((0xFF).to_bytes(1, "big"))
 
     # Shop Hints
     fh.seek(0x1FED020 + 0x14B)

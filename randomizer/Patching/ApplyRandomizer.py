@@ -11,7 +11,7 @@ from randomizer.Enums.Transitions import Transitions
 from randomizer.Patching.BananaPortRando import randomize_bananaport
 from randomizer.Patching.BarrelRando import randomize_barrels
 from randomizer.Patching.BossRando import randomize_bosses
-from randomizer.Patching.CosmeticColors import apply_cosmetic_colors
+from randomizer.Patching.CosmeticColors import apply_cosmetic_colors, overwrite_object_colors
 from randomizer.Patching.DKTV import randomize_dktv
 from randomizer.Patching.EnemyRando import randomize_enemies
 from randomizer.Patching.EntranceRando import randomize_entrances
@@ -397,6 +397,7 @@ def patching_response(responded_data):
     random.seed(spoiler.settings.seed)
     randomize_music(spoiler)
     apply_cosmetic_colors(spoiler)
+    # overwrite_object_colors() # Causes crashes?
     random.seed(spoiler.settings.seed)
 
     if spoiler.settings.wrinkly_hints in ["standard", "cryptic"]:

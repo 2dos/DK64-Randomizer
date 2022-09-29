@@ -212,6 +212,9 @@ VineCodeHook:
 SkipCutscenePansHook:
 	J 	SkipCutscenePans
 	NOP
+ModifyCameraColorHook:
+	J 	ModifyCameraColor
+	NOP
 
 loadExtraHooks:
 	LUI t3, hi(InstanceScriptHook)
@@ -225,6 +228,12 @@ loadExtraHooks:
 	LUI t4, 0x806A
 	SW t3, 0x840C (t4) // Store Hook
 	SW r0, 0x8410 (t4) // Store NOP
+	
+	LUI t3, hi(ModifyCameraColorHook)
+	LW t3, lo(ModifyCameraColorHook) (t3)
+	LUI t4, 0x8070
+	SW t3, 0xF384 (t4) // Store Hook
+	SW r0, 0xF388 (t4) // Store NOP
 	
 	LUI t3, hi(SkipCutscenePansHook)
 	LW t3, lo(SkipCutscenePansHook) (t3)
