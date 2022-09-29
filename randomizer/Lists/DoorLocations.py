@@ -80,7 +80,9 @@ door_locations = {
         DoorData(name="Treasure Chest Exterior", map=Maps.GloomyGalleon, logicregion=Regions.TreasureRoom, location=[1938, 1440, 524, 330]),
         DoorData(name="Next to Warp 3 in Cranky's Area", map=Maps.GloomyGalleon, logicregion=Regions.GloomyGalleonStart, location=[3071, 1890, 2838, 0]),
         DoorData(name="In Primate Punch Chest Room - right", map=Maps.GloomyGalleon, logicregion=Regions.GloomyGalleonStart, location=[3460, 1670, 4001, 180]),
-        DoorData(name="Next to Cannonball game", map=Maps.GloomyGalleon, logicregion=Regions.GalleonBeyondPineappleGate, location=[1334, 1610, 2523, 0], logic=lambda l: Events.WaterSwitch in l.Events),
+        DoorData(
+            name="Next to Cannonball game", map=Maps.GloomyGalleon, logicregion=Regions.GalleonBeyondPineappleGate, location=[1334, 1610, 2523, 0], logic=lambda l: Events.WaterSwitch in l.Events
+        ),
         DoorData(name="Music Cactus - bottom front left", map=Maps.GloomyGalleon, logicregion=Regions.Shipyard, location=[4239, 1289, 880, 38.31]),
         DoorData(name="Music Cactus - bottom back left", map=Maps.GloomyGalleon, logicregion=Regions.Shipyard, location=[4444, 1290, 803, 307.7]),
         DoorData(name="Music Cactus - bottom front right", map=Maps.GloomyGalleon, logicregion=Regions.Shipyard, location=[4524, 1290, 1145, 218.31]),
@@ -111,18 +113,38 @@ door_locations = {
         DoorData(name="Near Mermaid's Palace - right", map=Maps.GloomyGalleon, logicregion=Regions.LighthouseArea, location=[1445, 141, 4859, 180]),
         DoorData(name="Near Mermaid's Palace - left", map=Maps.GloomyGalleon, logicregion=Regions.LighthouseArea, location=[1400, 112.8, 4215, 346.5], rz=3),
         DoorData(name="Near Mermaid's Palace - Under Tag Barrel", map=Maps.GloomyGalleon, logicregion=Regions.LighthouseArea, location=[915, 164, 3967, 30], rx=7, rz=3, enabled=True),
-        DoorData(name="On top of Seal cage", map=Maps.GloomyGalleon, logicregion=Regions.LighthouseArea, location=[2238, 1837, 4099, 251.7], kong_lst=[Kongs.diddy], logic=lambda l: l.jetpack, tough_spot=True),
+        DoorData(
+            name="On top of Seal cage",
+            map=Maps.GloomyGalleon,
+            logicregion=Regions.LighthouseArea,
+            location=[2238, 1837, 4099, 251.7],
+            kong_lst=[Kongs.diddy],
+            logic=lambda l: l.jetpack,
+            tough_spot=True,
+        ),
     ],
     Levels.FungiForest: [
-        DoorData(name="Fungi Lobby: On High Box", map=Maps.FungiForestLobby, logicregion=Regions.FungiForestLobby, location=[449.866, 45.922, 254.6, 270], enabled=True),  # Custom Location (Removing Wheel)
-        DoorData(name="Fungi Lobby: Near Gorilla Gone Door", map=Maps.FungiForestLobby, logicregion=Regions.FungiForestLobby, location=[136.842, 0, 669.81, 90], enabled=True),  # Custom Location (Removing Wheel)
-        DoorData(name="Fungi Lobby: Opposite Gorilla Gone Door", map=Maps.FungiForestLobby, logicregion=Regions.FungiForestLobby, location=[450.219, 0, 689.048, 270], enabled=True),  # Custom Location (Removing Wheel)
-        DoorData(name="Fungi Lobby: Near B. Locker", map=Maps.FungiForestLobby, logicregion=Regions.FungiForestLobby, location=[293, 0, 154.197, 0], enabled=True, scale=1.2),  # Custom Location (Removing Wheel)
-        DoorData(name="Fungi Lobby: Near Entrance", map=Maps.FungiForestLobby, logicregion=Regions.FungiForestLobby, location=[450.862, 0, 565.029, 270], enabled=True),  # Custom Location (Removing Wheel)
+        DoorData(
+            name="Fungi Lobby: On High Box", map=Maps.FungiForestLobby, logicregion=Regions.FungiForestLobby, location=[449.866, 45.922, 254.6, 270], enabled=True
+        ),  # Custom Location (Removing Wheel)
+        DoorData(
+            name="Fungi Lobby: Near Gorilla Gone Door", map=Maps.FungiForestLobby, logicregion=Regions.FungiForestLobby, location=[136.842, 0, 669.81, 90], enabled=True
+        ),  # Custom Location (Removing Wheel)
+        DoorData(
+            name="Fungi Lobby: Opposite Gorilla Gone Door", map=Maps.FungiForestLobby, logicregion=Regions.FungiForestLobby, location=[450.219, 0, 689.048, 270], enabled=True
+        ),  # Custom Location (Removing Wheel)
+        DoorData(
+            name="Fungi Lobby: Near B. Locker", map=Maps.FungiForestLobby, logicregion=Regions.FungiForestLobby, location=[293, 0, 154.197, 0], enabled=True, scale=1.2
+        ),  # Custom Location (Removing Wheel)
+        DoorData(
+            name="Fungi Lobby: Near Entrance", map=Maps.FungiForestLobby, logicregion=Regions.FungiForestLobby, location=[450.862, 0, 565.029, 270], enabled=True
+        ),  # Custom Location (Removing Wheel)
     ],
     Levels.CrystalCaves: [
         DoorData(name="Caves Lobby: Far Left", map=Maps.CrystalCavesLobby, logicregion=Regions.CrystalCavesLobby, location=[1103.665, 146.5, 823.872, 194], enabled=True),  # DK Door
-        DoorData(name="Caves Lobby: Top Ledge", map=Maps.CrystalCavesLobby, logicregion=Regions.CrystalCavesLobby, location=[731.84, 280.5, 704.935, 120], enabled=True, kong_lst=[Kongs.diddy]),  # Diddy Door
+        DoorData(
+            name="Caves Lobby: Top Ledge", map=Maps.CrystalCavesLobby, logicregion=Regions.CrystalCavesLobby, location=[731.84, 280.5, 704.935, 120], enabled=True, kong_lst=[Kongs.diddy]
+        ),  # Diddy Door
         DoorData(name="Caves Lobby: Near Left", map=Maps.CrystalCavesLobby, logicregion=Regions.CrystalCavesLobby, location=[1046.523, 13.5, 476.611, 189], enabled=True),  # Lanky Door
         DoorData(name="Caves Lobby: Far Right", map=Maps.CrystalCavesLobby, logicregion=Regions.CrystalCavesLobby, location=[955.407, 146.664, 843.472, 187], enabled=True),  # Tiny Door
         DoorData(name="Caves Lobby: Near Right", map=Maps.CrystalCavesLobby, logicregion=Regions.CrystalCavesLobby, location=[881.545, 13.466, 508.666, 193], enabled=True),  # Chunky Door

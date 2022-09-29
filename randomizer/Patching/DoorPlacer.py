@@ -31,7 +31,7 @@ def place_door_locations(spoiler: Spoiler):
                 for door_index, door in enumerate(door_locations[level]):
                     if door.enabled and not door.placed:
                         available_doors.append(door_index)
-                if len(available_doors) > 0: #TODO: remove this if when testing is done
+                if len(available_doors) > 0:  # TODO: remove this if when testing is done
                     selected_door = random.choice(available_doors)
                     door_locations[level][selected_door].assignDoor(new_door % 5)  # Clamp to within [0,4], preventing list index errors
         # Handle Setup
