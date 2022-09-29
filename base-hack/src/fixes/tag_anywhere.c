@@ -546,18 +546,14 @@ void tagAnywhere(int prev_crystals) {
                             Player->hand_state = 1;
                             Player->was_gun_out = 0;
                             // Without this, tags to and from Diddy mess up
-                            if ((Rando.krusha_slot == next_character) && (Rando.krusha_slot != -1)) {
-                                Player->hand_state = 2;
-                            } else if (next_character == 1) {
+                            if (next_character == 1) {
                                 Player->hand_state = 0;
                             }
                         } else {
                             Player->hand_state = 2;
                             Player->was_gun_out = 1;
                             // Without this, tags to and from Diddy mess up
-                            if ((Rando.krusha_slot == next_character) && (Rando.krusha_slot != -1)) {
-                                Player->hand_state = 1;
-                            } else if (next_character == 1) {
+                            if (next_character == 1) {
                                 Player->hand_state = 3;
                             }
                         };

@@ -30,10 +30,6 @@ echo Pulling Images from ROM [32mDONE[0m
 %python_ver% build\createComplexImages.py >> rom/build.log
 echo Modifying images from ROM [32mDONE[0m
 
-<nul set /p=Building Cutscene Database!CR!
-%python_ver% build\build_cutscene_dict.py >> rom/build.log
-echo Building Cutscene Database [32mDONE[0m
-
 <nul set /p=Compile C Code!CR!
 %python_ver% build\compile.py >> rom/build.log
 echo Compile C Code [32mDONE[0m

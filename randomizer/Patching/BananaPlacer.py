@@ -193,10 +193,7 @@ def randomize_cbs(spoiler: Spoiler):
                                     found_actor_id = act_id
                                     found_vacant_actor = True
                                 act_id += 1
-                            if found_path_id < 26:
-                                item_data.append(found_path_id)
-                            else:
-                                item_data.append(0xFFFF)  # Fixes a crash from too many balloons - might have some side-effects
+                            item_data.append(found_path_id)
                             item_data.append(list_item.speed)
                             for x in range(int((0x30 - 0x18) / 4)):
                                 item_data.append(0)
@@ -204,26 +201,25 @@ def randomize_cbs(spoiler: Spoiler):
                             item_data.append((found_actor_id << 16) + 0x6E08)
                             persisted_act_data.append(item_data)
                             # Path
-                            if found_path_id < 26:  # Crashing issues with more than 26 paths
-                                item_data = []
-                                item_data.append(found_path_id)
-                                item_data.append(len(list_item.points))
-                                item_data.append(0)
-                                for pt in list_item.points:
-                                    item_data.append(20)
-                                    item_data.append(short_to_ushort(pt[0]))
-                                    item_data.append(short_to_ushort(pt[1]))
-                                    item_data.append(short_to_ushort(pt[2]))
-                                    item_data.append((1 << 8) + 0)
-                                new_paths = []
-                                for path in persisted_paths:
-                                    if path[0] < found_path_id:
-                                        new_paths.append(path)
-                                new_paths.append(item_data)
-                                for path in persisted_paths:
-                                    if path[0] > found_path_id:
-                                        new_paths.append(path)
-                                persisted_paths = new_paths.copy()
+                            item_data = []
+                            item_data.append(found_path_id)
+                            item_data.append(len(list_item.points))
+                            item_data.append(0)
+                            for pt in list_item.points:
+                                item_data.append(20)
+                                item_data.append(short_to_ushort(pt[0]))
+                                item_data.append(short_to_ushort(pt[1]))
+                                item_data.append(short_to_ushort(pt[2]))
+                                item_data.append((1 << 8) + 0)
+                            new_paths = []
+                            for path in persisted_paths:
+                                if path[0] < found_path_id:
+                                    new_paths.append(path)
+                            new_paths.append(item_data)
+                            for path in persisted_paths:
+                                if path[0] > found_path_id:
+                                    new_paths.append(path)
+                            persisted_paths = new_paths.copy()
             # Recompile Tables
             # SETUP
             ROM().seek(setup_table)

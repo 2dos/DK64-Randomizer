@@ -22,8 +22,8 @@ LogicRegions = {
         Collectible(Collectibles.banana, Kongs.diddy, lambda l: True, None, 7),  # Around mountain
         Collectible(Collectibles.bunch, Kongs.diddy, lambda l: True, None, 2),  # Treetops, TB side
         Collectible(Collectibles.bunch, Kongs.diddy, lambda l: True, None, 2),  # Treetops, Painting room side
-        Collectible(Collectibles.bunch, Kongs.diddy, lambda l: l.swim, None, 2),  # Underwater
-        Collectible(Collectibles.banana, Kongs.lanky, lambda l: l.swim, None, 5),  # In river
+        Collectible(Collectibles.bunch, Kongs.diddy, lambda l: True, None, 2),  # Underwater
+        Collectible(Collectibles.banana, Kongs.lanky, lambda l: True, None, 5),  # In river
         Collectible(Collectibles.banana, Kongs.lanky, lambda l: l.handstand, None, 3),  # To painting room
         Collectible(Collectibles.bunch, Kongs.lanky, lambda l: True, None, 1),  # Treetop by Snide's
         Collectible(Collectibles.bunch, Kongs.lanky, lambda l: True, None, 1),  # Next to Snide's
@@ -33,12 +33,12 @@ LogicRegions = {
 
         Collectible(Collectibles.coin, Kongs.donkey, lambda l: True, None, 3),  # In first tunnel
         Collectible(Collectibles.coin, Kongs.donkey, lambda l: l.vines, None, 3),  # Around BBlast pad
-        Collectible(Collectibles.coin, Kongs.diddy, lambda l: l.swim, None, 3),  # In river
+        Collectible(Collectibles.coin, Kongs.diddy, lambda l: True, None, 3),  # In river
         Collectible(Collectibles.coin, Kongs.diddy, lambda l: True, None, 2),  # Cannon to Diddy's cage
-        Collectible(Collectibles.coin, Kongs.lanky, lambda l: l.swim, None, 2),  # In river
+        Collectible(Collectibles.coin, Kongs.lanky, lambda l: True, None, 2),  # In river
         Collectible(Collectibles.coin, Kongs.lanky, lambda l: True, None, 5),  # By Snide's
         Collectible(Collectibles.coin, Kongs.chunky, lambda l: True, None, 3),  # By DK Portal
-        Collectible(Collectibles.coin, Kongs.chunky, lambda l: l.swim, None, 3),  # In river
+        Collectible(Collectibles.coin, Kongs.chunky, lambda l: True, None, 3),  # In river
         Collectible(Collectibles.coin, Kongs.any, lambda l: l.shockwave and ((l.handstand and l.lanky) or (l.twirl and l.tiny)), None, 1),  # Rainbow coin
     ],
     Regions.JapesBaboonBlast: [
@@ -121,10 +121,10 @@ LogicRegions = {
         Collectible(Collectibles.banana, Kongs.lanky, lambda l: True, None, 5),
         Collectible(Collectibles.banana, Kongs.tiny, lambda l: True, None, 7),
         Collectible(Collectibles.balloon, Kongs.tiny, lambda l: l.feather, None, 1),
-        Collectible(Collectibles.bunch, Kongs.chunky, lambda l: l.barrels, None, 1),
+        Collectible(Collectibles.bunch, Kongs.chunky, lambda l: True, None, 1),
         Collectible(Collectibles.balloon, Kongs.chunky, lambda l: l.pineapple, None, 3),
 
-        Collectible(Collectibles.coin, Kongs.tiny, lambda l: l.swim, None, 5),  # In water by fairy
+        Collectible(Collectibles.coin, Kongs.tiny, lambda l: True, None, 5),  # In water by fairy
     ],
     Regions.TinyHive: [
         Collectible(Collectibles.banana, Kongs.tiny, lambda l: True, None, 8),

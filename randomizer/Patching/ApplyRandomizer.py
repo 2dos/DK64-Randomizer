@@ -11,7 +11,7 @@ from randomizer.Enums.Transitions import Transitions
 from randomizer.Patching.BananaPortRando import randomize_bananaport
 from randomizer.Patching.BarrelRando import randomize_barrels
 from randomizer.Patching.BossRando import randomize_bosses
-from randomizer.Patching.CosmeticColors import apply_cosmetic_colors, overwrite_object_colors
+from randomizer.Patching.CosmeticColors import apply_cosmetic_colors
 from randomizer.Patching.DKTV import randomize_dktv
 from randomizer.Patching.EnemyRando import randomize_enemies
 from randomizer.Patching.EntranceRando import randomize_entrances
@@ -330,14 +330,6 @@ def patching_response(responded_data):
         ROM().seek(sav + 0x12F)
         ROM().write(1)
 
-    # Krusha Slot
-    kong_names = ["dk", "diddy", "lanky", "tiny", "chunky"]
-    ROM().seek(sav + 0x11C)
-    if spoiler.settings.krusha_slot == "no_slot":
-        ROM().write(255)
-    elif spoiler.settings.krusha_slot in kong_names:
-        ROM().write(kong_names.index(spoiler.settings.krusha_slot))
-
     # Show CBs & Coins
     if spoiler.settings.cb_rando:
         ROM().seek(sav + 0xAF)
@@ -352,13 +344,6 @@ def patching_response(responded_data):
     if spoiler.settings.helm_hurry:
         ROM().seek(sav + 0xAE)
         ROM().write(1)
-
-    # Win Condition
-    conditions = ["beat_krool", "get_key8", "all_fairies", "all_blueprints", "all_medals", "poke_snap"]
-    if spoiler.settings.win_condition in conditions:
-        condition_index = conditions.index(spoiler.settings.win_condition)
-        ROM().seek(sav + 0x11D)
-        ROM().write(condition_index)
 
     keys_turned_in = [0, 1, 2, 3, 4, 5, 6, 7]
     if len(spoiler.settings.krool_keys_required) > 0:
@@ -397,7 +382,6 @@ def patching_response(responded_data):
     random.seed(spoiler.settings.seed)
     randomize_music(spoiler)
     apply_cosmetic_colors(spoiler)
-    # overwrite_object_colors() # Causes crashes?
     random.seed(spoiler.settings.seed)
 
     if spoiler.settings.wrinkly_hints in ["standard", "cryptic"]:
