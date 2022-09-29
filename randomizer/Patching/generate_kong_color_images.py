@@ -39,7 +39,7 @@ def convertColors(color_palettes):
                     rgba[i] = val
                 rgba_list.append(rgba)
             bytes_array = []
-            if zone["fill_type"] == "block":
+            if zone["fill_type"] in ("block", "kong"):
                 ext = convertRGBAToBytearray(rgba_list[0])
                 for x in range(32 * 32):
                     bytes_array.extend(ext)

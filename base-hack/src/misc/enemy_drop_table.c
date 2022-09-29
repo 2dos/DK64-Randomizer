@@ -57,20 +57,6 @@ void buildItemDrops(void) {
     drop_total = addItemDrop(0,0,0,0,drop_total);
 }
 
-int getLo(void* addr) {
-    return ((int)addr) & 0xFFFF;
-}
-
-int getHi(void* addr) {
-    int addr_0 = (int)addr;
-    int hi = (addr_0 >> 16) & 0xFFFF;
-    int lo = getLo(addr);
-    if (lo & 0x8000) {
-        hi += 1;
-    }
-    return hi;
-}
-
 void initItemDropTable(void) {
     buildItemDrops();
     *(short*)(0x806A5CA6) = getHi(&drops[0].source_object);
