@@ -256,8 +256,6 @@ RegionMapList = {
     Regions.JapesBaboonBlast: Maps.JapesBaboonBlast,
     # Aztec
     Regions.AngryAztecStart: Maps.AngryAztec,
-    Regions.BetweenVinesByPortal: Maps.AngryAztec,
-    Regions.AngryAztecOasis: Maps.AngryAztec,
     Regions.TempleStart: Maps.AztecTinyTemple,
     Regions.TempleUnderwater: Maps.AztecTinyTemple,
     Regions.AngryAztecMain: Maps.AngryAztec,
@@ -285,12 +283,8 @@ RegionMapList = {
     Regions.FactoryBaboonBlast: Maps.FactoryBaboonBlast,
     # Galleon
     Regions.GloomyGalleonStart: Maps.GloomyGalleon,
-    Regions.GalleonPastVines: Maps.GloomyGalleon,
     Regions.GalleonBeyondPineappleGate: Maps.GloomyGalleon,
-    Regions.LighthouseSurface: Maps.GloomyGalleon,
-    Regions.LighthousePlatform: Maps.GloomyGalleon,
-    Regions.LighthouseUnderwater: Maps.GloomyGalleon,
-    Regions.LighthouseSnideAlcove: Maps.GloomyGalleon,
+    Regions.LighthouseArea: Maps.GloomyGalleon,
     Regions.Lighthouse: Maps.GalleonLighthouse,
     Regions.MermaidRoom: Maps.GalleonMermaidRoom,
     Regions.SickBay: Maps.GalleonSickBay,

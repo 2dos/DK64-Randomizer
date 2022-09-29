@@ -125,10 +125,6 @@ hint_list = [
     Hint(hint="Why do they call it oven when you of in the cold food of out hot eat the food?", important=False, base=True),
     Hint(hint="Wanna become famous? Buy followers, coconuts and donks at DK64Randomizer (DK64Randomizer . com)!", important=False, base=True),
     Hint(hint="What you gonna do, SpikeVegeta?", important=False, base=True),
-    Hint(hint="You don't care? Just give it to me? Okay, here it is.", important=False, base=True),
-    Hint(hint="Rumor has it this game was developed in a cave with only a box of scraps!", important=False, base=True),
-    Hint(hint="If you backflip right before Chunky punches K. Rool, you must go into first person camera to face him before the punch.", important=False, base=True),
-    Hint(hint="The barrier to Hideout Helm can be cleared by obtaining 801 Golden Bananas. It can also be cleared with fewer than that.", important=False, base=True),
 ]
 
 kong_list = ["Donkey", "Diddy", "Lanky", "Tiny", "Chunky"]
@@ -279,9 +275,9 @@ kong_placement_levels = [
 hint_distribution = {
     HintType.Joke: 1,
     HintType.KRoolOrder: 2,
-    HintType.HelmOrder: 2,  # must have one on the path
+    HintType.HelmOrder: 3,  # must have one on the path
     HintType.FullShop: 8,
-    HintType.MoveLocation: 7,  # must be placed before you can buy the move
+    HintType.MoveLocation: 8,  # must be placed before you can buy the move
     HintType.DirtPatch: 0,
     HintType.BLocker: 3,  # must be placed on the path and before the level they hint
     HintType.TroffNScoff: 0,
@@ -367,16 +363,11 @@ def compileHints(spoiler: Spoiler):
                         Kongs.chunky not in spoiler.settings.owned_kongs_by_level[level]
                         or Items.PrimatePunch not in spoiler.settings.owned_moves_by_level[level]
                         or Items.RocketbarrelBoost not in spoiler.settings.owned_moves_by_level[level]
-                        or Items.Barrels not in spoiler.settings.owned_moves_by_level[level]
                     )
                 ):
                     continue
-                # Everyone else in Caves still needs Chunky + Punch + Barrels
-                if level == Levels.CrystalCaves and (
-                    Kongs.chunky not in spoiler.settings.owned_kongs_by_level[level]
-                    or Items.PrimatePunch not in spoiler.settings.owned_moves_by_level[level]
-                    or Items.Barrels not in spoiler.settings.owned_moves_by_level[level]
-                ):
+                # Everyone else in Caves still needs Chunky + Punch
+                if level == Levels.CrystalCaves and (Kongs.chunky not in spoiler.settings.owned_kongs_by_level[level] or Items.PrimatePunch not in spoiler.settings.owned_moves_by_level[level]):
                     continue
                 # Aztec Chunky also needs Tiny + Feather + Hunky Chunky
                 if (
@@ -642,7 +633,6 @@ def compileHints(spoiler: Spoiler):
         ]
         criticalAztecRegions = [
             Regions.AngryAztecStart,
-            Regions.AngryAztecOasis,
             Regions.AngryAztecMain,
         ]
         criticalFactoryRegions = [
@@ -660,8 +650,7 @@ def compileHints(spoiler: Spoiler):
             [Regions.TrainingGrounds],
             [
                 Regions.GloomyGalleonStart,
-                Regions.LighthousePlatform,
-                Regions.LighthouseUnderwater,
+                Regions.LighthouseArea,
                 Regions.Shipyard,
             ],
             [
@@ -1261,7 +1250,6 @@ def AddLoadingZoneHints(spoiler: Spoiler):
     ]
     criticalAztecRegions = [
         Regions.AngryAztecStart,
-        Regions.AngryAztecOasis,
         Regions.AngryAztecMain,
     ]
     criticalFactoryRegions = [
@@ -1309,8 +1297,7 @@ def AddLoadingZoneHints(spoiler: Spoiler):
         [Regions.BananaFairyRoom],
         [
             Regions.GloomyGalleonStart,
-            Regions.LighthousePlatform,
-            Regions.LighthouseUnderwater,
+            Regions.LighthouseArea,
             Regions.Shipyard,
         ],
         [

@@ -1,6 +1,5 @@
 """Functions and data for setting and calculating prices."""
 
-from math import ceil
 import random
 
 from randomizer.Enums.Items import Items
@@ -18,19 +17,10 @@ from randomizer.ItemPool import (
     SharedMoveLocations,
     TinyMoveLocations,
     TinyMoves,
-    TrainingBarrelAbilities,
-    TrainingBarrelLocations,
 )
 from randomizer.Lists.Location import LocationList
 
 VanillaPrices = {
-    Items.Vines: 0,
-    Items.Swim: 0,
-    Items.Barrels: 0,
-    Items.Oranges: 0,
-    Items.Camera: 0,
-    Items.Shockwave: 0,
-    Items.CameraAndShockwave: 0,
     Items.BaboonBlast: 3,
     Items.StrongKong: 5,
     Items.GorillaGrab: 7,
@@ -105,9 +95,6 @@ def RandomizePrices(weight):
                 prices[item].append(GenerateRandomPrice(weight, avg, stddev, upperLimit))
         else:
             prices[item] = GenerateRandomPrice(weight, avg, stddev, upperLimit)
-            # Make training barrel moves cheaper because they'll be early and are super important
-            if item in TrainingBarrelAbilities():
-                prices[item] = ceil(prices[item] * 0.5)
     return prices
 
 
@@ -275,9 +262,6 @@ def EveryKongCanBuy(location, logic):
 
 def CanBuy(location, logic):
     """Check if an appropriate kong can logically purchase this location."""
-    # If it's in a location that doesn't care about prices, it's free!
-    if location in TrainingBarrelLocations or location == Locations.CameraAndShockwave:
-        return True
     # Either have the setting that any kong can buy any move or it's a shared location so any kong can anyway
     if location in SharedMoveLocations:
         return AnyKongCanBuy(location, logic)

@@ -55,10 +55,10 @@ class LogicVarHolder:
         self.chunky = Kongs.chunky in self.settings.starting_kong_list
 
         # Right now assuming start with training barrels
-        self.vines = self.settings.training_barrels == "normal"
-        self.swim = self.settings.training_barrels == "normal"
-        self.oranges = self.settings.training_barrels == "normal"
-        self.barrels = self.settings.training_barrels == "normal"
+        self.vines = True  # self.settings.training_barrels == "startwith"
+        self.swim = True  # self.settings.training_barrels == "startwith"
+        self.oranges = True  # self.settings.training_barrels == "startwith"
+        self.barrels = True  # self.settings.training_barrels == "startwith"
 
         self.progDonkey = 3 if self.settings.unlock_all_moves else 0
         self.blast = self.settings.unlock_all_moves
@@ -174,8 +174,6 @@ class LogicVarHolder:
 
         self.kong = self.startkong
 
-        self.bananaHoard = False
-
         self.UpdateKongs()
 
     def Update(self, ownedItems):
@@ -260,8 +258,8 @@ class LogicVarHolder:
         self.BananaMedals = sum(1 for x in ownedItems if x == Items.BananaMedal)
         self.BattleCrowns = sum(1 for x in ownedItems if x == Items.BattleCrown)
 
-        self.camera = self.camera or Items.CameraAndShockwave in ownedItems or Items.Camera in ownedItems
-        self.shockwave = self.shockwave or Items.CameraAndShockwave in ownedItems or Items.Shockwave in ownedItems
+        self.camera = self.camera or Items.CameraAndShockwave in ownedItems
+        self.shockwave = self.shockwave or Items.CameraAndShockwave in ownedItems
 
         self.scope = self.scope or Items.SniperSight in ownedItems
         self.homing = self.homing or Items.HomingAmmo in ownedItems
@@ -270,8 +268,6 @@ class LogicVarHolder:
         self.superDuperSlam = self.Slam >= 3
 
         self.Blueprints = [x for x in ownedItems if x >= Items.JungleJapesDonkeyBlueprint]
-
-        self.bananaHoard = self.bananaHoard or Items.BananaHoard in ownedItems
 
     def AddEvent(self, event):
         """Add an event to events list so it can be checked for logically."""
@@ -381,7 +377,7 @@ class LogicVarHolder:
 
     def CanFreeLanky(self):
         """Check if kong at Lanky location can be freed, requires freeing kong to have its gun and instrument."""
-        return self.swim and self.HasGun(self.settings.lanky_freeing_kong) and self.HasInstrument(self.settings.lanky_freeing_kong)
+        return self.HasGun(self.settings.lanky_freeing_kong) and self.HasInstrument(self.settings.lanky_freeing_kong)
 
     def CanFreeChunky(self):
         """Check if kong at Chunky location can be freed."""
@@ -514,29 +510,12 @@ class LogicVarHolder:
         if bossFight == Maps.FactoryBoss and requiredKong == Kongs.tiny:
             hasRequiredMoves = self.twirl
         elif bossFight == Maps.FungiBoss:
-            hasRequiredMoves = self.hunkyChunky and self.barrels
-        elif bossFight == Maps.JapesBoss or bossFight == Maps.AztecBoss or bossFight == Maps.CavesBoss:
-            hasRequiredMoves = self.barrels
+            hasRequiredMoves = self.hunkyChunky
         return self.IsKong(requiredKong) and hasRequiredMoves
 
     def IsLevelEnterable(self, level):
         """Check if level entry requirement is met."""
         return self.HasEnoughKongs(level, forPreviousLevel=True) and self.GoldenBananas >= self.settings.EntryGBs[level]
-
-    def WinConditionMet(self):
-        """Check if the current game state has met the win condition."""
-        if self.settings.win_condition == "beat_krool":
-            return self.bananaHoard
-        elif self.settings.win_condition == "get_key8":
-            return self.HelmKey
-        elif self.settings.win_condition == "all_fairies":
-            return self.BananaFairies >= 20
-        elif self.settings.win_condition == "all_blueprints":
-            return len(self.Blueprints) >= 40
-        elif self.settings.win_condition == "all_medals":
-            return self.BananaMedals >= 40
-        else:
-            return False
 
 
 LogicVariables = LogicVarHolder()

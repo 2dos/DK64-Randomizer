@@ -6,9 +6,6 @@ import js
 from randomizer.Patching.generate_kong_color_images import convertColors
 from randomizer.Patching.Patcher import ROM
 from randomizer.Spoiler import Spoiler
-from PIL import Image, ImageEnhance
-import zlib
-import gzip
 
 
 def apply_cosmetic_colors(spoiler: Spoiler):
@@ -141,31 +138,16 @@ def apply_cosmetic_colors(spoiler: Spoiler):
     for kong in kong_settings:
         process = True
         if kong["kong_index"] == 4:  # Chunky
-            is_disco = spoiler.settings.disco_chunky
-            if spoiler.settings.krusha_slot == "chunky":
-                is_disco = False
-            if is_disco and kong["kong"] == "chunky":
+            if spoiler.settings.disco_chunky and kong["kong"] == "chunky":
                 process = False
-            elif not is_disco and kong["kong"] == "disco_chunky":
+            elif not spoiler.settings.disco_chunky and kong["kong"] == "disco_chunky":
                 process = False
-        kong_names = ["dk", "diddy", "lanky", "tiny", "chunky"]
-        is_krusha = False
-        if spoiler.settings.krusha_slot in kong_names:
-            if kong_names.index(spoiler.settings.krusha_slot) == kong["kong_index"]:
-                is_krusha = True
-                kong["palettes"] = [
-                    {"name": "krusha_skin", "image": 4971, "fill_type": "block"},
-                    {"name": "krusha_indicator", "image": 4966, "fill_type": "kong"},
-                ]
         if process:
             base_obj = {"kong": kong["kong"], "zones": []}
             for palette in kong["palettes"]:
                 arr = ["#000000"]
                 if palette["fill_type"] == "checkered":
                     arr = ["#000000", "#000000"]
-                elif palette["fill_type"] == "kong":
-                    kong_colors = ["#ffd700", "#ff0000", "#1699ff", "#B045ff", "#41ff25"]
-                    arr = [kong_colors[kong["kong_index"]]]
                 base_obj["zones"].append({"zone": palette["name"], "image": palette["image"], "fill_type": palette["fill_type"], "colors": arr})
             if colors_dict[kong["base_setting"]] != "vanilla":
                 if colors_dict[kong["base_setting"]] == "randomized":
@@ -175,7 +157,7 @@ def apply_cosmetic_colors(spoiler: Spoiler):
                     if not color:
                         color = "#000000"
                 base_obj["zones"][0]["colors"][0] = color
-                if kong["kong_index"] in (2, 4) and not is_krusha:
+                if kong["kong_index"] in (2, 4):
                     base_obj["zones"][1]["colors"][0] = color
                     if kong["kong_index"] == 4:
                         red = int(f"0x{color[1:3]}", 16)
@@ -190,142 +172,4 @@ def apply_cosmetic_colors(spoiler: Spoiler):
                 color_obj[f"{kong['kong']}"] = color
     spoiler.settings.colors = color_obj
     if len(color_palettes) > 0:
-        print(color_palettes)
         convertColors(color_palettes)
-
-
-color_bases = [
-    "#1D439E",
-    "#FF0000",
-    "#66C7FF",
-    "#FFC302",
-    "#000000",
-]
-balloon_single_frames = [
-    (4, 38),
-    (5, 38),
-    (5, 38),
-    (5, 38),
-    (5, 38),
-    (5, 38),
-    (4, 38),
-    (4, 38),
-]
-
-
-def getFile(table_index: int, file_index: int, compressed: bool, width: int, height: int):
-    """Grab image from file."""
-    file_start = js.pointer_addresses[table_index]["entries"][file_index]["pointing_to"]
-    file_end = js.pointer_addresses[table_index]["entries"][file_index + 1]["pointing_to"]
-    file_size = file_end - file_start
-    ROM().seek(file_start)
-    data = ROM().readBytes(file_size)
-    if compressed:
-        data = zlib.decompress(data, (15 + 32))
-    im_f = Image.new(mode="RGBA", size=(width, height))
-    pix = im_f.load()
-    for y in range(height):
-        for x in range(width):
-            offset = ((y * width) + x) * 2
-            pix_data = int.from_bytes(data[offset : offset + 2], "big")
-            red = ((pix_data >> 11) & 31) << 3
-            green = ((pix_data >> 6) & 31) << 3
-            blue = ((pix_data >> 1) & 31) << 3
-            alpha = (pix_data & 1) * 255
-            pix[x, y] = (red, green, blue, alpha)
-    return im_f
-
-
-def getRGBFromHash(hash: str):
-    """Convert hash RGB code to rgb array."""
-    red = int(hash[1:3], 16)
-    green = int(hash[3:5], 16)
-    blue = int(hash[5:7], 16)
-    return [red, green, blue]
-
-
-def maskImage(im_f, base_index, min_y):
-    """Apply RGB mask to image."""
-    w, h = im_f.size
-    converter = ImageEnhance.Color(im_f)
-    im_f = converter.enhance(0)
-    im_dupe = im_f.crop((0, min_y, w, h))
-    brightener = ImageEnhance.Brightness(im_dupe)
-    im_dupe = brightener.enhance(2)
-    im_f.paste(im_dupe, (0, min_y), im_dupe)
-    pix = im_f.load()
-    mask = getRGBFromHash(color_bases[base_index])
-    w, h = im_f.size
-    for x in range(w):
-        for y in range(min_y, h):
-            base = list(pix[x, y])
-            for channel in range(3):
-                base[channel] = int(mask[channel] * (base[channel] / 255))
-            pix[x, y] = (base[0], base[1], base[2], base[3])
-    return im_f
-
-
-def writeColorImageToROM(im_f, table_index, file_index, width, height):
-    """Write texture to ROM."""
-    file_start = js.pointer_addresses[table_index]["entries"][file_index]["pointing_to"]
-    file_end = js.pointer_addresses[table_index]["entries"][file_index + 1]["pointing_to"]
-    file_size = file_end - file_start
-    ROM().seek(file_start)
-    pix = im_f.load()
-    width, height = im_f.size
-    bytes_array = []
-    for y in range(height):
-        for x in range(width):
-            pix_data = list(pix[x, y])
-            red = int((pix_data[0] >> 3) << 11)
-            green = int((pix_data[1] >> 3) << 6)
-            blue = int((pix_data[2] >> 3) << 1)
-            alpha = int(pix_data[3] != 0)
-            value = red | green | blue | alpha
-            bytes_array.extend([(value >> 8) & 0xFF, value & 0xFF])
-    data = bytearray(bytes_array)
-    if len(data) > (2 * width * height):
-        print(f"Image too big error: {table_index} > {file_index}")
-    if table_index == 25:
-        data = gzip.compress(data, compresslevel=9)
-    if len(data) > file_size:
-        print(f"File too big error: {table_index} > {file_index}")
-    ROM().writeBytes(data)
-
-
-def overwrite_object_colors():
-    """Overwrite object colors."""
-    file = 175
-    dk_single = getFile(7, file, False, 44, 44)
-    dk_single = dk_single.resize((21, 21))
-    for kong_index in range(5):
-        file = 4120
-        # Kasplat Hair
-        hair_im = getFile(25, file, True, 32, 44)
-        hair_im = maskImage(hair_im, kong_index, 0)
-        writeColorImageToROM(hair_im, 25, [4124, 4122, 4123, 4120, 4121][kong_index], 32, 44)
-        for file in range(152, 160):
-            # Single
-            single_im = getFile(7, file, False, 44, 44)
-            single_im = maskImage(single_im, kong_index, 0)
-            single_start = [168, 152, 232, 208, 240]
-            writeColorImageToROM(single_im, 7, single_start[kong_index] + (file - 152), 44, 44)
-        for file in range(216, 224):
-            # Coin
-            coin_im = getFile(7, file, False, 48, 42)
-            coin_im = maskImage(coin_im, kong_index, 0)
-            coin_start = [224, 256, 248, 216, 264]
-            writeColorImageToROM(coin_im, 7, coin_start[kong_index] + (file - 216), 48, 42)
-        for file in range(274, 286):
-            # Bunch
-            bunch_im = getFile(7, file, False, 44, 44)
-            bunch_im = maskImage(bunch_im, kong_index, 0)
-            bunch_start = [274, 854, 818, 842, 830]
-            writeColorImageToROM(bunch_im, 7, bunch_start[kong_index] + (file - 274), 44, 44)
-        for file in range(5819, 5827):
-            # Balloon
-            balloon_im = getFile(25, file, True, 32, 64)
-            balloon_im = maskImage(balloon_im, kong_index, 33)
-            balloon_im.paste(dk_single, balloon_single_frames[file - 5819], dk_single)
-            balloon_start = [5835, 5827, 5843, 5851, 5819]
-            writeColorImageToROM(balloon_im, 25, balloon_start[kong_index] + (file - 5819), 32, 64)

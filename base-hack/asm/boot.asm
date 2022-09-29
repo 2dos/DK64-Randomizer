@@ -203,18 +203,6 @@ CoinHUDRepositionHook:
 SaveHelmHurryCheckHook:
 	J 	SaveHelmHurryCheck
 	NOP
-InvertCameraControlsHook:
-	J 	InvertCameraControls
-	NOP
-VineCodeHook:
-	J 	VineCode
-	NOP
-SkipCutscenePansHook:
-	J 	SkipCutscenePans
-	NOP
-ModifyCameraColorHook:
-	J 	ModifyCameraColor
-	NOP
 
 loadExtraHooks:
 	LUI t3, hi(InstanceScriptHook)
@@ -222,36 +210,12 @@ loadExtraHooks:
 	LUI t4, 0x8064
 	SW t3, 0xEE08 (t4) // Store Hook
 	SW r0, 0xEE0C (t4) // Store NOP
-	
-	LUI t3, hi(VineCodeHook)
-	LW t3, lo(VineCodeHook) (t3)
-	LUI t4, 0x806A
-	SW t3, 0x840C (t4) // Store Hook
-	SW r0, 0x8410 (t4) // Store NOP
-	
-	LUI t3, hi(ModifyCameraColorHook)
-	LW t3, lo(ModifyCameraColorHook) (t3)
-	LUI t4, 0x8070
-	SW t3, 0xF384 (t4) // Store Hook
-	SW r0, 0xF388 (t4) // Store NOP
-	
-	LUI t3, hi(SkipCutscenePansHook)
-	LW t3, lo(SkipCutscenePansHook) (t3)
-	LUI t4, 0x8062
-	SW t3, 0xE684 (t4) // Store Hook
-	SW r0, 0xE688 (t4) // Store NOP
 
 	LUI t3, hi(ShopImageHandlerHook)
 	LW t3, lo(ShopImageHandlerHook) (t3)
 	LUI t4, 0x8065
 	SW t3, 0x8364 (t4) // Store Hook
 	SW r0, 0x8368 (t4) // Store NOP
-	
-	LUI t3, hi(InvertCameraControlsHook)
-	LW t3, lo(InvertCameraControlsHook) (t3)
-	LUI t4, 0x806F
-	SW t3, 0xA70C (t4) // Store Hook
-	SW r0, 0xA710 (t4) // Store NOP
 
 	LUI t3, hi(FixPufftossInvalidWallCollisionHook)
 	LW t3, lo(FixPufftossInvalidWallCollisionHook) (t3)

@@ -25,7 +25,7 @@ LogicRegions = {
         LocationLogic(Locations.CavesKasplatNearCandy, lambda l: not l.settings.kasplat_location_rando),
     ], [
         Event(Events.CavesEntered, lambda l: True),
-        Event(Events.CavesSmallBoulderButton, lambda l: l.chunky and l.barrels),
+        Event(Events.CavesSmallBoulderButton, lambda l: l.chunky),
     ], [
         TransitionFront(Regions.CrystalCavesLobby, lambda l: True, Transitions.CavesToIsles),
         TransitionFront(Regions.CavesBlueprintCave, lambda l: l.mini and l.twirl and l.tiny),
@@ -78,7 +78,7 @@ LogicRegions = {
     ]),
 
     Regions.BoulderCave: Region("Boulder Cave", Levels.CrystalCaves, True, None, [], [
-        Event(Events.CavesLargeBoulderButton, lambda l: Events.CavesSmallBoulderButton in l.Events and l.hunkyChunky and l.chunky and l.barrels),
+        Event(Events.CavesLargeBoulderButton, lambda l: Events.CavesSmallBoulderButton in l.Events and l.hunkyChunky and l.chunky),
     ], [
         TransitionFront(Regions.CrystalCavesMain, lambda l: True),
         TransitionFront(Regions.CavesBossLobby, lambda l: True),
@@ -123,7 +123,7 @@ LogicRegions = {
     ]),
 
     Regions.DiddyIgloo: Region("Diddy Igloo", Levels.CrystalCaves, False, None, [
-        LocationLogic(Locations.CavesDiddy5DoorIgloo, lambda l: l.isdiddy and l.barrels),
+        LocationLogic(Locations.CavesDiddy5DoorIgloo, lambda l: l.isdiddy),
     ], [], [
         TransitionFront(Regions.IglooArea, lambda l: True, Transitions.CavesDiddyToIgloo),
     ]),
