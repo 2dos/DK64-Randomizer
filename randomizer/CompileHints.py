@@ -586,42 +586,44 @@ def compileHints(spoiler: Spoiler):
         UpdateHint(hint_location, message)
         placed_move_hints += 1
 
-    # We want to hint levels after the hint location and only levels that we don't start with keys for
-    for i in range(hint_distribution[HintType.TroffNScoff]):
+    # For T&S hints, we want to hint levels after the hint location and only levels that we don't start with keys for
+    if hint_distribution[HintType.TroffNScoff] > 0:
+        # Determine what levels have incomplete T&S
         levels_with_tns = []
         for keyEvent in spoiler.settings.krool_keys_required:
             if keyEvent == Events.JapesKeyTurnedIn:
-                levels_with_tns.append(Levels.JungleJapes)
+                levels_with_tns.append(spoiler.settings.level_order[1])
             if keyEvent == Events.AztecKeyTurnedIn:
-                levels_with_tns.append(Levels.AngryAztec)
+                levels_with_tns.append(spoiler.settings.level_order[2])
             if keyEvent == Events.FactoryKeyTurnedIn:
-                levels_with_tns.append(Levels.FranticFactory)
+                levels_with_tns.append(spoiler.settings.level_order[3])
             if keyEvent == Events.GalleonKeyTurnedIn:
-                levels_with_tns.append(Levels.GloomyGalleon)
+                levels_with_tns.append(spoiler.settings.level_order[4])
             if keyEvent == Events.ForestKeyTurnedIn:
-                levels_with_tns.append(Levels.FungiForest)
+                levels_with_tns.append(spoiler.settings.level_order[5])
             if keyEvent == Events.CavesKeyTurnedIn:
-                levels_with_tns.append(Levels.CrystalCaves)
+                levels_with_tns.append(spoiler.settings.level_order[6])
             if keyEvent == Events.CastleKeyTurnedIn:
-                levels_with_tns.append(Levels.CreepyCastle)
-        # Make sure the location we randomly pick either is a level or is before a level that has a T&S
-        future_tns_levels = []
-        while not any(future_tns_levels):
-            hint_location = getRandomHintLocation()
-            future_tns_levels = [
-                level for level in all_levels if level in levels_with_tns and (not level_order_matters or spoiler.settings.EntryGBs[level] >= spoiler.settings.EntryGBs[hint_location.level])
-            ]
-        hinted_level = random.choice(future_tns_levels)
-        level_name = level_list[hinted_level]
-        if spoiler.settings.wrinkly_hints == "cryptic":
-            level_name = random.choice(level_cryptic[hinted_level])
-        count = spoiler.settings.BossBananas[hinted_level]
-        cb_name = "Small Bananas"
-        if count == 1:
-            cb_name = "Small Banana"
-        message = f"The barrier to the boss in {level_name} can be cleared by obtaining {count} {cb_name}."
-        hint_location.hint_type = HintType.TroffNScoff
-        UpdateHint(hint_location, message)
+                levels_with_tns.append(spoiler.settings.level_order[7])
+        for i in range(hint_distribution[HintType.TroffNScoff]):
+            # Make sure the location we randomly pick either is a level or is before a level that has a T&S
+            future_tns_levels = []
+            while not any(future_tns_levels):
+                hint_location = getRandomHintLocation()
+                future_tns_levels = [
+                    level for level in all_levels if level in levels_with_tns and (not level_order_matters or spoiler.settings.EntryGBs[level] >= spoiler.settings.EntryGBs[hint_location.level])
+                ]
+            hinted_level = random.choice(future_tns_levels)
+            level_name = level_list[hinted_level]
+            if spoiler.settings.wrinkly_hints == "cryptic":
+                level_name = random.choice(level_cryptic[hinted_level])
+            count = spoiler.settings.BossBananas[hinted_level]
+            cb_name = "Small Bananas"
+            if count == 1:
+                cb_name = "Small Banana"
+            message = f"The barrier to the boss in {level_name} can be cleared by obtaining {count} {cb_name}."
+            hint_location.hint_type = HintType.TroffNScoff
+            UpdateHint(hint_location, message)
 
     # Entrance hints are tricky, there's some requirements we must hit:
     # We must hint each of Japes, Aztec, and Factory at least once
