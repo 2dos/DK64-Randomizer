@@ -333,6 +333,36 @@ images = [
         "resize": False,
         "flip": False,
     },
+    {
+        "name": "film",
+        "format": "rgba16",
+        "table": 7,
+        "index": 439,
+        "w": 48,
+        "h": 42,
+        "resize": False,
+        "flip": True,
+    },
+    {
+        "name": "melon",
+        "format": "rgba16",
+        "table": 7,
+        "index": 544,
+        "w": 48,
+        "h": 42,
+        "resize": False,
+        "flip": True,
+    },
+    {
+        "name": "headphones",
+        "format": "rgba16",
+        "table": 7,
+        "index": 979,
+        "w": 40,
+        "h": 40,
+        "resize": False,
+        "flip": True,
+    },
 ]
 
 kong_tex = ["chunky", "tiny", "lanky", "diddy", "dk"]
