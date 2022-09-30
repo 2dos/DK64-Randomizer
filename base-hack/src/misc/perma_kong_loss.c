@@ -73,6 +73,7 @@ void kong_has_died(void) {
 										if (counter >= 5) {
 											setFlag(KONG_LOCKED_START + init_kong,0,0);
 											pass = 0;
+											resetMap(); // Resets parent chain to prevent SirSmack causing memes
 											Gamemode = 7; // Loading Game Over
 											Mode = 7;
 											return;

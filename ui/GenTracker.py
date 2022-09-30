@@ -29,9 +29,9 @@ def generateTracker(spoilerJson):
         i = 0
         for location, item in locations.items():
             generated += "<tr>\n"
-            generated += '<td id="loc_' + str(i) + '">' + location + "</td>\n"
+            generated += '<td id="loc_' + str(i) + '">' + str(location) + "</td>\n"
             generated += '<td class="check-cell"><input id="itemCheck_' + str(i) + '" type="checkbox" onclick="showRow(\'item\', ' + str(i) + ')"/></td>\n'
-            generated += '<td id="item_' + str(i) + '" class="spoiler">' + item + "</td>\n"
+            generated += '<td id="item_' + str(i) + '" class="spoiler">' + str(item) + "</td>\n"
             generated += "</tr>\n"
             i += 1
         generated += "</table>\n"
@@ -50,9 +50,9 @@ def generateTracker(spoilerJson):
         i = 0
         for front, back in exits.items():
             generated += "<tr>\n"
-            generated += '<td id="front_' + str(i) + '">' + front + "</td>\n"
+            generated += '<td id="front_' + str(i) + '">' + str(front) + "</td>\n"
             generated += '<td class="check-cell"><input id="backCheck_' + str(i) + '" type="checkbox" onclick="showRow(\'back\', ' + str(i) + ')"/></td>\n'
-            generated += '<td id="back_' + str(i) + '" class="spoiler">' + back + "</td>\n"
+            generated += '<td id="back_' + str(i) + '" class="spoiler">' + str(back) + "</td>\n"
             generated += "</tr>\n"
             i += 1
         generated += "</table>\n"
