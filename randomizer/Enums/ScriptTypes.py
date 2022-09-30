@@ -9,3 +9,5 @@ class ScriptTypes(IntEnum):
     Wrinkly = auto()
     TnsPortal = auto()
     TnsIndicator = auto()
+    CrownMain = auto()
+    CrownIsles2 = auto()

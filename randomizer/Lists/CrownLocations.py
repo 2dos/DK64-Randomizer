@@ -2258,6 +2258,7 @@ CrownLocations = {
             scale=0.43,
             region=0,
             is_vanilla=True,
+            default_index=1,
         ),
         CrownLocation(
             map=Maps.FungiForestLobby,
@@ -2268,7 +2269,6 @@ CrownLocations = {
             scale=0.35,
             region=0,
             is_vanilla=True,
-            default_index=1,
         ),
         CrownLocation(
             map=Maps.Isles,

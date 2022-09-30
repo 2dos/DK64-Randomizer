@@ -95,6 +95,10 @@ def addNewScript(cont_map_id: int, item_ids: list, type: ScriptTypes):
         subscript_type = -3
     elif type == ScriptTypes.TnsIndicator:
         subscript_type = -4
+    elif type == ScriptTypes.CrownMain:
+        subscript_type = -5
+    elif type == ScriptTypes.CrownIsles2:
+        subscript_type = -6
     for item_id in item_ids:
         script_arr = [
             item_id,

@@ -1,10 +1,10 @@
 """Crown Randomizer Placement Code."""
 import js
 from randomizer.Patching.Patcher import ROM
-from randomizer.Enums.Levels import Levels
 from randomizer.Lists.MapsAndExits import Maps
 from randomizer.Spoiler import Spoiler
-from randomizer.Patching.Lib import float_to_hex, getNextFreeID
+from randomizer.Patching.Lib import float_to_hex, getNextFreeID, addNewScript
+from randomizer.Enums.ScriptTypes import ScriptTypes
 
 from randomizer.Lists.CrownLocations import CrownLocations
 
@@ -88,6 +88,10 @@ def randomize_crown_pads(spoiler: Spoiler):
                                 1 << 16,
                             ]
                         )
+                        if crown.default == 0:
+                            addNewScript(cont_map_id, [selected_id], ScriptTypes.CrownMain)
+                        elif crown.default == 1:
+                            addNewScript(cont_map_id, [selected_id], ScriptTypes.CrownIsles2)
                 ROM().seek(setup_table + 4 + (model2_count * 0x30))
                 mystery_count = int.from_bytes(ROM().readBytes(4), "big")
                 extra_data = [mystery_count]
