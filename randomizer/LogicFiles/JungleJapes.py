@@ -86,7 +86,7 @@ LogicRegions = {
     ]),
 
     Regions.TinyHive: Region("Tiny Hive", Levels.JungleJapes, False, -1, [
-        LocationLogic(Locations.JapesTinyBeehive, lambda l: l.Slam and l.istiny),
+        LocationLogic(Locations.JapesTinyBeehive, lambda l: l.Slam and l.istiny and l.oranges),
     ], [], [
         TransitionFront(Regions.JapesBeyondFeatherGate, lambda l: True, Transitions.JapesTinyHiveToMain),
     ]),
