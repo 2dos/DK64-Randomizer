@@ -78,6 +78,13 @@ typedef struct tracker_struct {
 #define TRACKER_TYPE_KEY7 42
 #define TRACKER_TYPE_KEY8 43
 
+#define TRACKER_TYPE_MELON_2 44
+#define TRACKER_TYPE_MELON_3 45
+#define TRACKER_TYPE_INSUPG_1 46
+#define TRACKER_TYPE_INSUPG_2 47
+#define TRACKER_TYPE_BELT_1 48
+#define TRACKER_TYPE_BELT_2 49
+
 #define TRACKER_ENABLED_DEFAULT 1
 
 static tracker_struct tracker_info[] = {
@@ -106,25 +113,33 @@ static tracker_struct tracker_info[] = {
 	{.min_x = 88, .max_x = 108, .min_y = 44, .max_y = 64, .enabled = TRACKER_ENABLED_DEFAULT, .type = TRACKER_TYPE_PUNCH}, // Punch
 	{.min_x = 88, .max_x = 108, .min_y = 66, .max_y = 86, .enabled = TRACKER_ENABLED_DEFAULT, .type = TRACKER_TYPE_GONE}, // Gone
 	{.min_x = 88, .max_x = 108, .min_y = 88, .max_y = 108, .enabled = TRACKER_ENABLED_DEFAULT, .type = TRACKER_TYPE_HUNKY}, // Hunky
-	{.min_x = 130, .max_x = 142, .min_y = 108, .max_y = 128, .enabled = TRACKER_ENABLED_DEFAULT, .type = TRACKER_TYPE_KEY1}, // Key1
-	{.min_x = 146, .max_x = 158, .min_y = 108, .max_y = 128, .enabled = TRACKER_ENABLED_DEFAULT, .type = TRACKER_TYPE_KEY2}, // Key2
-	{.min_x = 162, .max_x = 174, .min_y = 108, .max_y = 128, .enabled = TRACKER_ENABLED_DEFAULT, .type = TRACKER_TYPE_KEY3}, // Key3
-	{.min_x = 178, .max_x = 190, .min_y = 108, .max_y = 128, .enabled = TRACKER_ENABLED_DEFAULT, .type = TRACKER_TYPE_KEY4}, // Key4
-	{.min_x = 194, .max_x = 206, .min_y = 108, .max_y = 128, .enabled = TRACKER_ENABLED_DEFAULT, .type = TRACKER_TYPE_KEY5}, // Key5
-	{.min_x = 210, .max_x = 222, .min_y = 108, .max_y = 128, .enabled = TRACKER_ENABLED_DEFAULT, .type = TRACKER_TYPE_KEY6}, // Key6
-	{.min_x = 226, .max_x = 238, .min_y = 108, .max_y = 128, .enabled = TRACKER_ENABLED_DEFAULT, .type = TRACKER_TYPE_KEY7}, // Key7
-	{.min_x = 242, .max_x = 254, .min_y = 108, .max_y = 128, .enabled = TRACKER_ENABLED_DEFAULT, .type = TRACKER_TYPE_KEY8}, // Key8
-	{.min_x = 130, .max_x = 152, .min_y = 0, .max_y = 20, .enabled = TRACKER_ENABLED_DEFAULT, .type = TRACKER_TYPE_SHOCKWAVE}, // Shockwave
-	{.min_x = 132, .max_x = 138, .min_y = 32, .max_y = 42, .enabled = TRACKER_ENABLED_DEFAULT, .type = TRACKER_TYPE_SLAM}, // Slam
-	{.min_x = 138, .max_x = 141, .min_y = 30, .max_y = 33, .enabled = TRACKER_ENABLED_DEFAULT, .type = TRACKER_TYPE_SLAM}, // Slam
-	{.min_x = 138, .max_x = 146, .min_y = 38, .max_y = 41, .enabled = TRACKER_ENABLED_DEFAULT, .type = TRACKER_TYPE_SLAM}, // Slam
-	{.min_x = 146, .max_x = 152, .min_y = 32, .max_y = 41, .enabled = TRACKER_ENABLED_DEFAULT, .type = TRACKER_TYPE_SLAM}, // Slam
-	{.min_x = 144, .max_x = 146, .min_y = 30, .max_y = 33, .enabled = TRACKER_ENABLED_DEFAULT, .type = TRACKER_TYPE_SLAM}, // Slam
-	{.min_x = 132, .max_x = 152, .min_y = 48, .max_y = 60, .enabled = TRACKER_ENABLED_DEFAULT, .type = TRACKER_TYPE_SNIPER}, // Sniper
+	{.min_x = 125, .max_x = 138, .min_y = 108, .max_y = 128, .enabled = TRACKER_ENABLED_DEFAULT, .type = TRACKER_TYPE_KEY1}, // Key1
+	{.min_x = 141, .max_x = 157, .min_y = 108, .max_y = 128, .enabled = TRACKER_ENABLED_DEFAULT, .type = TRACKER_TYPE_KEY2}, // Key2
+	{.min_x = 156, .max_x = 171, .min_y = 108, .max_y = 128, .enabled = TRACKER_ENABLED_DEFAULT, .type = TRACKER_TYPE_KEY3}, // Key3
+	{.min_x = 173, .max_x = 189, .min_y = 108, .max_y = 128, .enabled = TRACKER_ENABLED_DEFAULT, .type = TRACKER_TYPE_KEY4}, // Key4
+	{.min_x = 189, .max_x = 204, .min_y = 108, .max_y = 128, .enabled = TRACKER_ENABLED_DEFAULT, .type = TRACKER_TYPE_KEY5}, // Key5
+	{.min_x = 205, .max_x = 220, .min_y = 108, .max_y = 128, .enabled = TRACKER_ENABLED_DEFAULT, .type = TRACKER_TYPE_KEY6}, // Key6
+	{.min_x = 221, .max_x = 236, .min_y = 108, .max_y = 128, .enabled = TRACKER_ENABLED_DEFAULT, .type = TRACKER_TYPE_KEY7}, // Key7
+	{.min_x = 237, .max_x = 252, .min_y = 108, .max_y = 128, .enabled = TRACKER_ENABLED_DEFAULT, .type = TRACKER_TYPE_KEY8}, // Key8
+	{.min_x = 136, .max_x = 150, .min_y = 0, .max_y = 20, .enabled = TRACKER_ENABLED_DEFAULT, .type = TRACKER_TYPE_CAMERA}, // Camera
+	{.min_x = 130, .max_x = 152, .min_y = 22, .max_y = 42, .enabled = TRACKER_ENABLED_DEFAULT, .type = TRACKER_TYPE_SHOCKWAVE}, // Shockwave
+	{.min_x = 132, .max_x = 138, .min_y = 54, .max_y = 64, .enabled = TRACKER_ENABLED_DEFAULT, .type = TRACKER_TYPE_SLAM}, // Slam
+	{.min_x = 138, .max_x = 141, .min_y = 52, .max_y = 55, .enabled = TRACKER_ENABLED_DEFAULT, .type = TRACKER_TYPE_SLAM}, // Slam
+	{.min_x = 138, .max_x = 146, .min_y = 60, .max_y = 63, .enabled = TRACKER_ENABLED_DEFAULT, .type = TRACKER_TYPE_SLAM}, // Slam
+	{.min_x = 146, .max_x = 152, .min_y = 54, .max_y = 63, .enabled = TRACKER_ENABLED_DEFAULT, .type = TRACKER_TYPE_SLAM}, // Slam
+	{.min_x = 144, .max_x = 146, .min_y = 52, .max_y = 55, .enabled = TRACKER_ENABLED_DEFAULT, .type = TRACKER_TYPE_SLAM}, // Slam
+	{.min_x = 134, .max_x = 149, .min_y = 66, .max_y = 79, .enabled = TRACKER_ENABLED_DEFAULT, .type = TRACKER_TYPE_HOMING}, // Homing
+	{.min_x = 132, .max_x = 152, .min_y = 92, .max_y = 104, .enabled = TRACKER_ENABLED_DEFAULT, .type = TRACKER_TYPE_SNIPER}, // Sniper
 	{.min_x = 0, .max_x = 20, .min_y = 108, .max_y = 128, .enabled = TRACKER_ENABLED_DEFAULT, .type = TRACKER_TYPE_DIVE}, // Dive
 	{.min_x = 22, .max_x = 42, .min_y = 108, .max_y = 128, .enabled = TRACKER_ENABLED_DEFAULT, .type = TRACKER_TYPE_ORANGE}, // Orange
 	{.min_x = 44, .max_x = 64, .min_y = 108, .max_y = 128, .enabled = TRACKER_ENABLED_DEFAULT, .type = TRACKER_TYPE_BARREL}, // Barrel
 	{.min_x = 66, .max_x = 86, .min_y = 108, .max_y = 128, .enabled = TRACKER_ENABLED_DEFAULT, .type = TRACKER_TYPE_VINE}, // Vine
+	{.min_x = 186, .max_x = 202, .min_y = 0, .max_y = 18, .enabled = TRACKER_ENABLED_DEFAULT, .type = TRACKER_TYPE_MELON_2}, // Melon_2
+	{.min_x = 200, .max_x = 219, .min_y = 0, .max_y = 18, .enabled = TRACKER_ENABLED_DEFAULT, .type = TRACKER_TYPE_MELON_3}, // Melon_3
+	{.min_x = 168, .max_x = 188, .min_y = 22, .max_y = 40, .enabled = TRACKER_ENABLED_DEFAULT, .type = TRACKER_TYPE_INSUPG_1}, // InsUpg_1
+	{.min_x = 191, .max_x = 199, .min_y = 25, .max_y = 39, .enabled = TRACKER_ENABLED_DEFAULT, .type = TRACKER_TYPE_INSUPG_2}, // InsUpg_2
+	{.min_x = 170, .max_x = 185, .min_y = 44, .max_y = 57, .enabled = TRACKER_ENABLED_DEFAULT, .type = TRACKER_TYPE_BELT_1}, // Belt_1
+	{.min_x = 186, .max_x = 194, .min_y = 44, .max_y = 58, .enabled = TRACKER_ENABLED_DEFAULT, .type = TRACKER_TYPE_BELT_2}, // Belt_2
 };
 
 void wipeTrackerCache(void) {
@@ -167,10 +182,24 @@ int getInitFileMove(int index) {
 					found |= tracker_gun[move_kong] == index;
 				}
 				break;
+			case PURCHASE_AMMOBELT:
+				if (move_value == 1) {
+					found |= index == TRACKER_TYPE_BELT_1;
+				} else if (move_value == 2) {
+					found |= index == TRACKER_TYPE_BELT_2;
+				}
+				break;
 			case PURCHASE_INSTRUMENT:
 				if (move_value == 1) {
 					found |= tracker_instrument[move_kong] == index;
+				} else if (move_value == 2) {
+					found |= index == TRACKER_TYPE_INSUPG_1;
+				} else if (move_value == 4) {
+					found |= index == TRACKER_TYPE_INSUPG_2;
+				} else if (move_value == 3) {
+					found |= index == TRACKER_TYPE_MELON_3;
 				}
+				found |= index == TRACKER_TYPE_MELON_2;
 				break;
 			case PURCHASE_FLAG:
 				if (move_value == FLAG_TBARREL_DIVE) {
@@ -340,9 +369,38 @@ int getEnabledState(int index) {
 							key_there = 1;
 						}
 					}
-					*(char*)(0x807FF700 + key_index) = key_there;
 					return key_there;
 				}
+			case TRACKER_TYPE_MELON_2:
+				if (Rando.unlock_moves) {
+					return 1;
+				}
+				return CollectableBase.Melons >= 2;
+			case TRACKER_TYPE_MELON_3:
+				if (Rando.unlock_moves) {
+					return 1;
+				}
+				return CollectableBase.Melons >= 3;
+			case TRACKER_TYPE_INSUPG_1:
+				if (Rando.unlock_moves) {
+					return 1;
+				}
+				return (MovesBase[0].instrument_bitfield & 2) != 0;
+			case TRACKER_TYPE_INSUPG_2:
+				if (Rando.unlock_moves) {
+					return 1;
+				}
+				return (MovesBase[0].instrument_bitfield & 8) != 0;
+			case TRACKER_TYPE_BELT_1:
+				if (Rando.unlock_moves) {
+					return 1;
+				}
+				return MovesBase[0].ammo_belt >= 1;
+			case TRACKER_TYPE_BELT_2:
+				if (Rando.unlock_moves) {
+					return 1;
+				}
+				return MovesBase[0].ammo_belt >= 2;
 		}
 	}
 	return 0;
@@ -423,6 +481,11 @@ void modifyTrackerImage(int dl_offset) {
 									}
 									new_rgba |= (((int)(channel) & 31) << shift);
 								}
+							}
+						} else if ((tracker_info[i].type == TRACKER_TYPE_INSUPG_2) || (tracker_info[i].type == TRACKER_TYPE_BELT_2)) {
+							if (!enabled) {
+								update = 1;
+								new_rgba = 0;
 							}
 						} else {
 							if (!enabled) {
