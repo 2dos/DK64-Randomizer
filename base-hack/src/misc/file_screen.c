@@ -1,6 +1,7 @@
 #include "../../include/common.h"
 
-// static char balanced_igt[20] = "";
+static char balanced_igt[20] = "";
+static char perc_str[7] = "";
 
 #define LINE_GAP 0x8C
 static char updated_tracker = 0;
@@ -135,11 +136,11 @@ static tracker_struct tracker_info[] = {
 	{.min_x = 44, .max_x = 64, .min_y = 108, .max_y = 128, .enabled = TRACKER_ENABLED_DEFAULT, .type = TRACKER_TYPE_BARREL}, // Barrel
 	{.min_x = 66, .max_x = 86, .min_y = 108, .max_y = 128, .enabled = TRACKER_ENABLED_DEFAULT, .type = TRACKER_TYPE_VINE}, // Vine
 	{.min_x = 186, .max_x = 202, .min_y = 0, .max_y = 18, .enabled = TRACKER_ENABLED_DEFAULT, .type = TRACKER_TYPE_MELON_2}, // Melon_2
-	{.min_x = 200, .max_x = 219, .min_y = 0, .max_y = 18, .enabled = TRACKER_ENABLED_DEFAULT, .type = TRACKER_TYPE_MELON_3}, // Melon_3
-	{.min_x = 168, .max_x = 188, .min_y = 22, .max_y = 40, .enabled = TRACKER_ENABLED_DEFAULT, .type = TRACKER_TYPE_INSUPG_1}, // InsUpg_1
-	{.min_x = 191, .max_x = 199, .min_y = 25, .max_y = 39, .enabled = TRACKER_ENABLED_DEFAULT, .type = TRACKER_TYPE_INSUPG_2}, // InsUpg_2
-	{.min_x = 170, .max_x = 185, .min_y = 44, .max_y = 57, .enabled = TRACKER_ENABLED_DEFAULT, .type = TRACKER_TYPE_BELT_1}, // Belt_1
-	{.min_x = 186, .max_x = 194, .min_y = 44, .max_y = 58, .enabled = TRACKER_ENABLED_DEFAULT, .type = TRACKER_TYPE_BELT_2}, // Belt_2
+	{.min_x = 202, .max_x = 219, .min_y = 0, .max_y = 18, .enabled = TRACKER_ENABLED_DEFAULT, .type = TRACKER_TYPE_MELON_3}, // Melon_3
+	{.min_x = 218, .max_x = 238, .min_y = 22, .max_y = 40, .enabled = TRACKER_ENABLED_DEFAULT, .type = TRACKER_TYPE_INSUPG_1}, // InsUpg_1
+	{.min_x = 239, .max_x = 249, .min_y = 25, .max_y = 39, .enabled = TRACKER_ENABLED_DEFAULT, .type = TRACKER_TYPE_INSUPG_2}, // InsUpg_2
+	{.min_x = 220, .max_x = 235, .min_y = 44, .max_y = 57, .enabled = TRACKER_ENABLED_DEFAULT, .type = TRACKER_TYPE_BELT_1}, // Belt_1
+	{.min_x = 236, .max_x = 244, .min_y = 44, .max_y = 58, .enabled = TRACKER_ENABLED_DEFAULT, .type = TRACKER_TYPE_BELT_2}, // Belt_2
 };
 
 void wipeTrackerCache(void) {
@@ -516,17 +517,20 @@ int* display_images(int* dl) {
 }
 
 int* display_text(int* dl) {
-	// int y = FileScreenDLOffset - 320;
+	int y = FileScreenDLOffset - 320;
 	// Balanced IGT
 	// y += LINE_GAP;
-	// int secs = IGT % 60;
-	// float secsf = secs;
-	// secsf /= 60;
-	// int hm = IGT / 60;
-	// int minutes = hm % 60;
-	// int hours = hm / 60;
-	// dk_strFormat((char*)balanced_igt, "%03d:%02d:%02d",hours,minutes,secs);
-	// dl = displayText(dl,1,0x280,y,(char*)balanced_igt,0x81);
+	int secs = IGT % 60;
+	float secsf = secs;
+	secsf /= 60;
+	int hm = IGT / 60;
+	int minutes = hm % 60;
+	int hours = hm / 60;
+	dk_strFormat((char*)balanced_igt, "%03d:%02d:%02d",hours,minutes,secs);
+	dl = drawText(dl, 1, 410, y + 80, (char*)balanced_igt, 0xFF, 0xFF, 0xFF, 0xFF);
+	// Percentage Counter
+	dk_strFormat((char*)perc_str, "%d%%", FilePercentage);
+	dl = drawText(dl, 1, 410, y + 50, (char*)perc_str, 0xFF, 0xFF, 0xFF, 0xFF);
 	dl = display_images(dl);
 	return dl;
 }

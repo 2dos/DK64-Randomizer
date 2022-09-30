@@ -253,10 +253,11 @@ for melon in range(3):
     melon_im = Image.open(f"{hash_dir}melon.png")
     melon_im = melon_im.resize((dim, dim))
     tracker_im.paste(melon_im, (200 - (small_gap * melon), 0), melon_im)
+prog_offset = 218
 for p_i, progressive in enumerate([f"{hash_dir}headphones.png", f"{disp_dir}standard_crate.png"]):
     prog_im = Image.open(progressive)
     prog_im = prog_im.resize((dim, dim))
-    tracker_im.paste(prog_im, (168, gap + (p_i * gap)), prog_im)
+    tracker_im.paste(prog_im, (prog_offset, gap + (p_i * gap)), prog_im)
     num_im = Image.open(f"{hash_dir}01234.png")
     num_im = num_im.crop((30, 0, 45, 24))
     num_w, num_h = num_im.size
@@ -264,7 +265,7 @@ for p_i, progressive in enumerate([f"{hash_dir}headphones.png", f"{disp_dir}stan
     num_scale = num_size / num_h
     new_w = int(num_w * num_scale)
     num_im = num_im.resize((new_w, num_size))
-    tracker_im.paste(num_im, ([190, 185][p_i], int(gap + 3 + (p_i * small_gap * 1.2))), num_im)
+    tracker_im.paste(num_im, (prog_offset + [22, 17][p_i], int(gap + 3 + (p_i * small_gap * 1.2))), num_im)
 
 tracker_im.save(f"{getDir('assets/Non-Code/file_screen/')}tracker.png")
 
