@@ -134,7 +134,7 @@ door_locations = {
         DoorData(name="In Mermaid's Palace", map=Maps.GalleonMermaidRoom, logicregion=Regions.MermaidRoom, location=[274, 0, 481, 150], kong_lst=[Kongs.tiny]),
         DoorData(name="Near Mermaid's Palace - right", map=Maps.GloomyGalleon, logicregion=Regions.LighthouseUnderwater, location=[1445, 141, 4859, 180]),
         DoorData(name="Near Mermaid's Palace - left", map=Maps.GloomyGalleon, logicregion=Regions.LighthouseUnderwater, location=[1400, 112.8, 4215, 346.5], rz=3),
-        # DoorData(name="Near Mermaid's Palace - Under Tag Barrel", map=Maps.GloomyGalleon, logicregion=Regions.LighthouseUnderwater, location=[915, 164, 3967, 30], rx=7, rz=3), # Too easy to accidentally activate
+        DoorData(name="Near Mermaid's Palace - Under Tag Barrel", map=Maps.GloomyGalleon, logicregion=Regions.LighthouseUnderwater, location=[915, 164, 3967, 30], rx=7, rz=3),
         DoorData(
             name="On top of Seal cage",
             map=Maps.GloomyGalleon,
