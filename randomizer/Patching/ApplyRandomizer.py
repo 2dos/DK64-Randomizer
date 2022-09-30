@@ -29,6 +29,7 @@ from randomizer.Patching.UpdateHints import PushHints, wipeHints
 from randomizer.Patching.MiscSetupChanges import randomize_setup
 from randomizer.Patching.BananaPlacer import randomize_cbs
 from randomizer.Patching.ShopRandomizer import ApplyShopRandomizer
+from randomizer.Patching.CrownPlacer import randomize_crown_pads
 from ui.GenTracker import generateTracker
 from ui.GenSpoiler import GenerateSpoiler
 from randomizer.Patching.UpdateHints import PushHints, wipeHints
@@ -393,6 +394,7 @@ def patching_response(responded_data):
     randomize_cbs(spoiler)
     ApplyShopRandomizer(spoiler)
     place_door_locations(spoiler)
+    randomize_crown_pads(spoiler)
 
     random.seed(spoiler.settings.seed)
     randomize_music(spoiler)

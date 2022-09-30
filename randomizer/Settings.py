@@ -330,6 +330,7 @@ class Settings:
         self.crown_enemy_rando = "off"
         self.enemy_speed_rando = False
         self.cb_rando = False
+        self.crown_placement_rando = False
         self.override_cosmetics = False
         self.random_colors = False
         self.hard_level_progression = False

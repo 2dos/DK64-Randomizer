@@ -358,6 +358,8 @@ class Spoiler:
             humanspoiler["Shuffled Bananaports"] = self.human_warp_locations
         if len(self.hint_list) > 0:
             humanspoiler["Wrinkly Hints"] = self.hint_list
+        if self.settings.crown_placement_rando:
+            humanspoiler["Shuffled Crowns"] = self.human_crowns
         level_dict = {
             Levels.DKIsles: "DK Isles",
             Levels.JungleJapes: "Jungle Japes",
