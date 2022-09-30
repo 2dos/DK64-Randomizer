@@ -21,7 +21,7 @@ class DoorData:
         rz=0,
         kong_lst=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         wrinkly_only=False,
-        placed=None,
+        placed="none",
         scale=1,
         logic=0
     ):
@@ -191,11 +191,11 @@ door_locations = {
         DoorData(name="Outside Diddy's Upper Cabin", map=Maps.CrystalCaves, logicregion=Regions.CrystalCavesMain, location=[3666.7, 343, 1762, 273.8]),
         DoorData(name="Under the Waterfall (Cabin Area)", map=Maps.CrystalCaves, logicregion=Regions.CrystalCavesMain, location=[2230, 0, 2178, 100]),
         DoorData(name="Across from the 5Door Cabin", map=Maps.CrystalCaves, logicregion=Regions.CrystalCavesMain, location=[2970, 128, 1499, 68.5], rx=9, rz=11),
-        DoorData(name="5Door Igloo - DK's instrument pad", map=Maps.CrystalCaves, logicregion=Regions.CrystalCavesMain, location=[481, 0, 1444, 328]),
-        DoorData(name="5Door Igloo - Diddy's instrument pad", map=Maps.CrystalCaves, logicregion=Regions.CrystalCavesMain, location=[698.5, 0, 1424.5, 40.5]),
-        DoorData(name="5Door Igloo - Tiny's instrument pad", map=Maps.CrystalCaves, logicregion=Regions.CrystalCavesMain, location=[747, 0, 1212.5, 111.8]),
-        DoorData(name="5Door Igloo - Chunky's instrument pad", map=Maps.CrystalCaves, logicregion=Regions.CrystalCavesMain, location=[561, 0, 1101, 184]),
-        DoorData(name="5Door Igloo - Lanky's instrument pad", map=Maps.CrystalCaves, logicregion=Regions.CrystalCavesMain, location=[396, 0, 1244, 256]),
+        #DoorData(name="5Door Igloo - DK's instrument pad", map=Maps.CrystalCaves, logicregion=Regions.CrystalCavesMain, location=[481, 0, 1444, 328]), # Too easy to accidentally activate
+        #DoorData(name="5Door Igloo - Diddy's instrument pad", map=Maps.CrystalCaves, logicregion=Regions.CrystalCavesMain, location=[698.5, 0, 1424.5, 40.5]), # Too easy to accidentally activate
+        #DoorData(name="5Door Igloo - Tiny's instrument pad", map=Maps.CrystalCaves, logicregion=Regions.CrystalCavesMain, location=[747, 0, 1212.5, 111.8]), # Too easy to accidentally activate
+        #DoorData(name="5Door Igloo - Chunky's instrument pad", map=Maps.CrystalCaves, logicregion=Regions.CrystalCavesMain, location=[561, 0, 1101, 184]), # Too easy to accidentally activate
+        #DoorData(name="5Door Igloo - Lanky's instrument pad", map=Maps.CrystalCaves, logicregion=Regions.CrystalCavesMain, location=[396, 0, 1244, 256]), # Too easy to accidentally activate
         DoorData(name="Ice Castle Area - Near Rock Switch", map=Maps.CrystalCaves, logicregion=Regions.CrystalCavesMain, location=[1349.6, 330, 1079, 86.7], rx=4),
         DoorData(name="In Chunky's 5Door Cabin on a Book Shelf", map=Maps.CavesChunkyCabin, logicregion=Regions.ChunkyCabin, location=[403.5, 44, 579, 180], kong_lst=[Kongs.chunky]),
         DoorData(name="Between Funky and Ice Castle - on land", map=Maps.CrystalCaves, logicregion=Regions.CrystalCavesMain, location=[2240.65, 65.8, 1185, 89.25]),
@@ -209,8 +209,8 @@ door_locations = {
         DoorData(name="Slope to Cranky with Mini Monkey Hole", map=Maps.CrystalCaves, logicregion=Regions.CrystalCavesMain, location=[1047, 190, 2426, 175], rz=5.5),
         DoorData(name="Level Entrance - right", map=Maps.CrystalCaves, logicregion=Regions.CrystalCavesMain, location=[1827, -29, 342, 225]),
         DoorData(name="Level Entrance - left", map=Maps.CrystalCaves, logicregion=Regions.CrystalCavesMain, location=[1828, -29, 91, 315.5]),
-        DoorData(name="Ice Castle - left", map=Maps.CrystalCaves, logicregion=Regions.CrystalCavesMain, location=[2190.5, 343, 986.5, 314.2], scale=0.67),
-        DoorData(name="Ice Castle - right", map=Maps.CrystalCaves, logicregion=Regions.CrystalCavesMain, location=[2221, 343, 957, 134.2], scale=0.67),
+        #DoorData(name="Ice Castle - left", map=Maps.CrystalCaves, logicregion=Regions.CrystalCavesMain, location=[2190.5, 343, 986.5, 314.2], scale=0.67), # Too easy to accidentally activate
+        #DoorData(name="Ice Castle - right", map=Maps.CrystalCaves, logicregion=Regions.CrystalCavesMain, location=[2221, 343, 957, 134.2], scale=0.67), # Too easy to accidentally activate
         DoorData(name="Igloo Area - left of entrance", map=Maps.CrystalCaves, logicregion=Regions.CrystalCavesMain, location=[637, 0, 1605, 174.75], rx=-4),
         DoorData(name="Igloo Area - Behind Tag Barrel Island", map=Maps.CrystalCaves, logicregion=Regions.CrystalCavesMain, location=[157, 0, 1575, 122]),
         DoorData(name="Igloo Area - Behind Warp 1", map=Maps.CrystalCaves, logicregion=Regions.CrystalCavesMain, location=[282.5, 0, 892, 58]),
