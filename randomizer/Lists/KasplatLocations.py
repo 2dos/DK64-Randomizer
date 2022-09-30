@@ -142,7 +142,7 @@ KasplatLocationList = {
             zmin=1650,
             zmax=1800,
             region=Regions.JungleJapesMain,
-            additional_logic=lambda l: l.swim,
+            additional_logic=lambda l: l.swim and (l.oranges or l.HasGun(Kongs.any)),
         ),
         KasplatLocation(
             name="Japes Kasplat: In the water near Rambi Wall",
@@ -154,7 +154,7 @@ KasplatLocationList = {
             zmin=2700,
             zmax=2900,
             region=Regions.BeyondRambiGate,
-            additional_logic=lambda l: l.swim,
+            additional_logic=lambda l: l.swim and (l.oranges or l.HasGun(Kongs.any)),
         ),
         KasplatLocation(
             name="Japes Kasplat: Near Cranky's",
@@ -932,7 +932,7 @@ KasplatLocationList = {
             zmin=540,
             zmax=630,
             region=Regions.GiantMushroomArea,
-            additional_logic=lambda l: l.swim,
+            additional_logic=lambda l: l.swim and (l.oranges or l.HasGun(Kongs.any)),
         ),
         KasplatLocation(
             name="Forest Kasplat: At the very top of the Giant Mushroom",
@@ -1314,7 +1314,7 @@ KasplatLocationList = {
             zmin=150,
             zmax=300,
             region=Regions.CreepyCastleMain,
-            additional_logic=lambda l: l.swim,
+            additional_logic=lambda l: l.swim and (l.oranges or l.HasGun(Kongs.any)),
         ),
         KasplatLocation(
             name="Castle Kasplat: Near Cranky's Hut",
@@ -1622,7 +1622,7 @@ KasplatLocationList = {
             zmin=1091,
             zmax=1137,
             region=Regions.IslesMain,
-            additional_logic=lambda l: l.swim,
+            additional_logic=lambda l: l.swim and (l.oranges or l.HasGun(Kongs.any)),
         ),
     ],
 }

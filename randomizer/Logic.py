@@ -339,16 +339,17 @@ class LogicVarHolder:
         """Check if logic currently is currently the specified kong and owns a gun for them."""
         if kong == Kongs.donkey:
             return self.coconut and self.isdonkey
-        if kong == Kongs.diddy:
+        elif kong == Kongs.diddy:
             return self.peanut and self.isdiddy
-        if kong == Kongs.lanky:
+        elif kong == Kongs.lanky:
             return self.grape and self.islanky
-        if kong == Kongs.tiny:
+        elif kong == Kongs.tiny:
             return self.feather and self.istiny
-        if kong == Kongs.chunky:
+        elif kong == Kongs.chunky:
             return self.pineapple and self.ischunky
-        if kong == Kongs.any:
+        elif kong == Kongs.any:
             return (self.coconut and self.isdonkey) or (self.peanut and self.isdiddy) or (self.grape and self.islanky) or (self.feather and self.istiny) or (self.pineapple and self.ischunky)
+        return False
 
     def HasInstrument(self, kong):
         """Check if logic currently is currently the specified kong and owns an instrument for them."""

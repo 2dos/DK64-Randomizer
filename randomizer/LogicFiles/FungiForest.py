@@ -142,9 +142,9 @@ LogicRegions = {
     ]),
 
     Regions.Anthill: Region("Anthill", Levels.FungiForest, False, -1, [
-        LocationLogic(Locations.ForestTinyAnthill, lambda l: l.istiny),
+        LocationLogic(Locations.ForestTinyAnthill, lambda l: l.istiny and l.oranges),
     ], [
-        Event(Events.Bean, lambda l: l.istiny),
+        Event(Events.Bean, lambda l: l.istiny and l.oranges),
     ], [
         TransitionFront(Regions.HollowTreeArea, lambda l: True, Transitions.ForestAnthillToTree),
     ]),
