@@ -37,6 +37,7 @@ from randomizer.ShufflePatches import ShufflePatches
 from randomizer.ShuffleShopLocations import ShuffleShopLocations
 from randomizer.ShuffleWarps import ShuffleWarps, ShuffleWarpsCrossMap
 from randomizer.ShuffleCBs import ShuffleCBs
+from randomizer.ShuffleCrowns import ShuffleCrowns
 
 
 def GetExitLevelExit(region):
@@ -1812,6 +1813,13 @@ def ShuffleMisc(spoiler):
         ShuffleWarpsCrossMap(replacements, human_replacements, spoiler.settings.bananaport_rando == "crossmap_coupled")
         spoiler.bananaport_replacements = replacements.copy()
         spoiler.human_warp_locations = human_replacements
+    # Handle Crown Placement
+    if spoiler.settings.crown_placement_rando:
+        crown_replacements = {}
+        crown_human_replacements = {}
+        ShuffleCrowns(crown_replacements, crown_human_replacements)
+        spoiler.crown_locations = crown_replacements
+        spoiler.human_crowns = crown_human_replacements
     # Random Patches
     if spoiler.settings.random_patches:
         human_patches = []
