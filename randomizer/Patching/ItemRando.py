@@ -6,6 +6,7 @@ from randomizer.Lists.MapsAndExits import Maps
 from randomizer.Patching.Patcher import ROM
 from randomizer.Spoiler import Spoiler
 
+
 class ItemData:
     """Stores information about an item placement in ROM."""
 
@@ -22,20 +23,22 @@ class ItemData:
     def place(self):
         self.count -= 1
 
+
 item_distribution = [
-    ItemData("golden_banana",160,0x74), # Minus Rareware GB & the 40 Snide GBs
-    ItemData("medal",40,0x90),
-    ItemData("bp_dk",8,0xDE),
-    ItemData("bp_diddy",8,0xE0),
-    ItemData("bp_lanky",8,0xE1),
-    ItemData("bp_tiny",8,0xDD),
-    ItemData("bp_chunky",8,0xDF),
-    ItemData("crown",10,0x18D),
-    ItemData("key",8,0x13C),
-    ItemData("nintendo_coin",1,0x48),
-    ItemData("rareware_coin",1,0x28F),
-    ItemData("rareware_gb",1,0x288),
+    ItemData("golden_banana", 160, 0x74),  # Minus Rareware GB & the 40 Snide GBs
+    ItemData("medal", 40, 0x90),
+    ItemData("bp_dk", 8, 0xDE),
+    ItemData("bp_diddy", 8, 0xE0),
+    ItemData("bp_lanky", 8, 0xE1),
+    ItemData("bp_tiny", 8, 0xDD),
+    ItemData("bp_chunky", 8, 0xDF),
+    ItemData("crown", 10, 0x18D),
+    ItemData("key", 8, 0x13C),
+    ItemData("nintendo_coin", 1, 0x48),
+    ItemData("rareware_coin", 1, 0x28F),
+    ItemData("rareware_gb", 1, 0x288),
 ]
+
 
 def place_randomized_items(spoiler: Spoiler):
     if spoiler.settings.item_rando:
@@ -66,6 +69,6 @@ def place_randomized_items(spoiler: Spoiler):
                             selected_item_model = item.model
                     if selected_item_model > -1:
                         ROM().seek(item_start + 0x28)
-                        ROM().writeMultipleBytes(selected_item_model,2)
+                        ROM().writeMultipleBytes(selected_item_model, 2)
                         item_id = int.from_bytes(ROM().readBytes(2), "big")
                         print(f"Placed {selected_item} at ID {hex(item_id)} in map {hex(cont_map_id)}")

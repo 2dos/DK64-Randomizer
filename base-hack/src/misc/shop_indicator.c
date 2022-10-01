@@ -55,7 +55,7 @@ int doesKongPossessMove(int purchase_type, int purchase_value, int kong) {
 		}
 	}
 	return 0;
-};
+}
 
 #define MOVEBTF_DK 1
 #define MOVEBTF_DIDDY 2
