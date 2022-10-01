@@ -21,6 +21,7 @@ from randomizer.Patching.KongRando import apply_kongrando_cosmetic
 from randomizer.Patching.MiscSetupChanges import randomize_setup
 from randomizer.Patching.MoveLocationRando import randomize_moves
 from randomizer.Patching.MusicRando import randomize_music
+from randomizer.Patching.ItemRando import place_randomized_items
 from randomizer.Patching.Patcher import ROM
 from randomizer.Patching.PhaseRando import randomize_helm, randomize_krool
 from randomizer.Patching.PriceRando import randomize_prices
@@ -393,6 +394,7 @@ def patching_response(responded_data):
     randomize_puzzles(spoiler)
     randomize_cbs(spoiler)
     ApplyShopRandomizer(spoiler)
+    place_randomized_items(spoiler)
     place_door_locations(spoiler)
     randomize_crown_pads(spoiler)
 

@@ -340,6 +340,7 @@ class Settings:
         self.tns_location_rando = False
         self.minigames_list_selected = []
         self.helm_hurry = False
+        self.item_rando = True
         self.win_condition = "beat_krool"
 
     def shuffle_prices(self):

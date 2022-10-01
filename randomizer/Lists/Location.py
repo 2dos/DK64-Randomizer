@@ -9,7 +9,13 @@ from randomizer.Enums.MoveTypes import MoveTypes
 from randomizer.Enums.Types import Types
 from randomizer.Lists.MapsAndExits import Maps
 
-
+class MapIDCombo:
+    """A combination of a map and an associated item ID."""
+    def __init__(self, map=None, id=None, flag=None):
+        """Initialize with given parameters."""
+        self.map = map
+        self.id = id
+        self.flag = flag
 class Location:
     """A shufflable location at which a random item can be placed."""
 
@@ -31,6 +37,11 @@ class Location:
         elif type == Types.Blueprint:
             self.map = data[0]
             self.kong = data[1]
+        elif type in (Types.Banana,Types.Key,Types.Coin,Types.Crown,Types.Medal):
+            if data is None:
+                self.map_id_list = []
+            else:
+                self.map_id_list = data
 
     def PlaceItem(self, item):
         """Place item at this location."""
@@ -62,33 +73,33 @@ LocationList = {
     Locations.IslesSwimTrainingBarrel: Location("Isles Swim Training Barrel", Items.Swim, Types.TrainingBarrel),
     Locations.IslesOrangesTrainingBarrel: Location("Isles Oranges Training Barrel", Items.Oranges, Types.TrainingBarrel),
     Locations.IslesBarrelsTrainingBarrel: Location("Isles Barrels Training Barrel", Items.Barrels, Types.TrainingBarrel),
-    Locations.IslesDonkeyJapesRock: Location("Isles Donkey Japes Rock", Items.GoldenBanana, Types.Banana),
-    Locations.IslesTinyCagedBanana: Location("Isles Tiny Caged Banana", Items.GoldenBanana, Types.Banana),
+    Locations.IslesDonkeyJapesRock: Location("Isles Donkey Japes Rock", Items.GoldenBanana, Types.Banana, [MapIDCombo(Maps.Isles,0x4,381)]),
+    Locations.IslesTinyCagedBanana: Location("Isles Tiny Caged Banana", Items.GoldenBanana, Types.Banana, [MapIDCombo(Maps.Isles,0x2B,420)]),
     Locations.IslesTinyInstrumentPad: Location("Isles Tiny Instrument Pad", Items.GoldenBanana, Types.Banana),
-    Locations.IslesLankyCagedBanana: Location("Isles Lanky Caged Banana", Items.GoldenBanana, Types.Banana),
-    Locations.IslesChunkyCagedBanana: Location("Isles Chunky Caged Banana", Items.GoldenBanana, Types.Banana),
+    Locations.IslesLankyCagedBanana: Location("Isles Lanky Caged Banana", Items.GoldenBanana, Types.Banana, [MapIDCombo(Maps.Isles,0x2F,421)]),
+    Locations.IslesChunkyCagedBanana: Location("Isles Chunky Caged Banana", Items.GoldenBanana, Types.Banana, [MapIDCombo(Maps.Isles,0x2D,422)]),
     Locations.IslesChunkyInstrumentPad: Location("Isles Chunky Instrument Pad", Items.GoldenBanana, Types.Banana),
-    Locations.IslesChunkyPoundtheX: Location("Isles Chunky Pound the X", Items.GoldenBanana, Types.Banana),
+    Locations.IslesChunkyPoundtheX: Location("Isles Chunky Pound the X", Items.GoldenBanana, Types.Banana, [MapIDCombo(Maps.Isles,0x56,431)]),
     Locations.IslesBananaFairyIsland: Location("Isles Banana Fairy Island", Items.BananaFairy, Types.Fairy),
     Locations.IslesBananaFairyCrocodisleIsle: Location("Isles Banana Fairy Crocodisle Isle", Items.BananaFairy, Types.Fairy),
-    Locations.IslesLankyPrisonOrangsprint: Location("Isles Lanky Prison Orangsprint", Items.GoldenBanana, Types.Banana),
+    Locations.IslesLankyPrisonOrangsprint: Location("Isles Lanky Prison Orangsprint", Items.GoldenBanana, Types.Banana, [MapIDCombo(Maps.KLumsy,0x3,429)]),
     Locations.CameraAndShockwave: Location("Camera and Shockwave", Items.CameraAndShockwave, Types.Shockwave),
-    Locations.RarewareBanana: Location("Rareware Banana", Items.GoldenBanana, Types.Banana),
+    Locations.RarewareBanana: Location("Rareware Banana", Items.GoldenBanana, Types.Banana, [MapIDCombo(Maps.BananaFairyRoom,0x1E,301)]),
     Locations.IslesLankyInstrumentPad: Location("Isles Lanky Instrument Pad", Items.GoldenBanana, Types.Banana),
     Locations.IslesTinyAztecLobby: Location("Isles Tiny Aztec Lobby", Items.GoldenBanana, Types.Banana),
-    Locations.IslesDonkeyCagedBanana: Location("Isles Donkey Caged Banana", Items.GoldenBanana, Types.Banana),
+    Locations.IslesDonkeyCagedBanana: Location("Isles Donkey Caged Banana", Items.GoldenBanana, Types.Banana, [MapIDCombo(Maps.Isles,0x4D,419)]),
     Locations.IslesDiddySnidesLobby: Location("Isles Diddy Snides Lobby", Items.GoldenBanana, Types.Banana),
     Locations.IslesBattleArena1: Location("Isles Battle Arena 1", Items.BattleCrown, Types.Crown),
     Locations.IslesDonkeyInstrumentPad: Location("Isles Donkey Instrument Pad", Items.GoldenBanana, Types.Banana),
     Locations.IslesKasplatFactoryLobby: Location("Isles Kasplat Frantic Factory Lobby", Items.DKIslesTinyBlueprint, Types.Blueprint, [Maps.FranticFactoryLobby, Kongs.tiny]),
     Locations.IslesBananaFairyFactoryLobby: Location("Isles Banana Fairy Factory Lobby", Items.BananaFairy, Types.Fairy),
-    Locations.IslesTinyGalleonLobby: Location("Isles Tiny Galleon Lobby", Items.GoldenBanana, Types.Banana),
+    Locations.IslesTinyGalleonLobby: Location("Isles Tiny Galleon Lobby", Items.GoldenBanana, Types.Banana, [MapIDCombo(Maps.GloomyGalleonLobby,0x9,403)]),
     Locations.IslesKasplatGalleonLobby: Location("Isles Kasplat Gloomy Galleon Lobby", Items.DKIslesChunkyBlueprint, Types.Blueprint, [Maps.GloomyGalleonLobby, Kongs.chunky]),
-    Locations.IslesDiddyCagedBanana: Location("Isles Diddy Caged Banana", Items.GoldenBanana, Types.Banana),
+    Locations.IslesDiddyCagedBanana: Location("Isles Diddy Caged Banana", Items.GoldenBanana, Types.Banana, [MapIDCombo(Maps.Isles,0x2E,423)]),
     Locations.IslesDiddySummit: Location("Isles Diddy Summit", Items.GoldenBanana, Types.Banana),
     Locations.IslesBattleArena2: Location("Isles Battle Arena 2", Items.BattleCrown, Types.Crown),
     Locations.IslesBananaFairyForestLobby: Location("Isles Banana Fairy Forest Lobby", Items.BananaFairy, Types.Fairy),
-    Locations.IslesDonkeyLavaBanana: Location("Isles Donkey Lava Banana", Items.GoldenBanana, Types.Banana),
+    Locations.IslesDonkeyLavaBanana: Location("Isles Donkey Lava Banana", Items.GoldenBanana, Types.Banana, [MapIDCombo(Maps.CrystalCavesLobby,0x5,411)]),
     Locations.IslesDiddyInstrumentPad: Location("Isles Diddy Instrument Pad", Items.GoldenBanana, Types.Banana),
     Locations.IslesKasplatCavesLobby: Location("Isles Kasplat Crystal Caves Lobby", Items.DKIslesLankyBlueprint, Types.Blueprint, [Maps.CrystalCavesLobby, Kongs.lanky]),
     Locations.IslesLankyCastleLobby: Location("Isles Lanky Castle Lobby", Items.GoldenBanana, Types.Banana),
