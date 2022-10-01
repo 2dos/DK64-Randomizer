@@ -70,6 +70,36 @@
                     </div>
                     <div class="form-check form-switch item-switch">
                         <label data-toggle="tooltip"
+                               title="[IN PROGRESS] Wrinkly Door Locations are randomized">
+                            <input class="form-check-input"
+                                   type="checkbox"
+                                   name="wrinkly_location_rando"
+                                   value="True"/>
+                            Randomize Wrinkly Door Locations
+                        </label>
+                    </div>
+                    <div class="form-check form-switch item-switch">
+                        <label data-toggle="tooltip"
+                               title="[IN PROGRESS] T&S Portal Locations are randomized">
+                            <input class="form-check-input"
+                                   type="checkbox"
+                                   name="tns_location_rando"
+                                   value="True"/>
+                            Randomize Troff 'n' Scoff Portal Locations
+                        </label>
+                    </div>
+                    <div class="form-check form-switch item-switch">
+                        <label data-toggle="tooltip"
+                               title="[IN PROGRESS] Crown Locations are randomized">
+                            <input class="form-check-input"
+                                   type="checkbox"
+                                   name="crown_placement_rando"
+                                   value="True"/>
+                            Randomize Battle Crown Locations
+                        </label>
+                    </div>
+                    <div class="form-check form-switch item-switch">
+                        <label data-toggle="tooltip"
                                title="Speeds up areas locked behind slow/high requirements:&#10;- Aztec: 5 Door Temple Switches Spawned&#10;- Factory: Prod Room On&#10;- Galleon: K Rool Ship Spawned&#10;- Galleon: Instruments open 5 Door Ship Permanently&#10;- Caves: 5 Door Igloo Pads Spawned">
                             <input class="form-check-input" type="checkbox" name="high_req" value="True"/>
                             Remove High Requirements
@@ -99,13 +129,44 @@
                     </div>
                     <div class="form-check form-switch item-switch">
                         <label data-toggle="tooltip"
-                               title="Donkey Kong 64 with a few twists:&#10;- Hideout Helm timer starts as soon as you load up a file.&#10;- Picking up a blueprint gives you 2 extra minutes on the clock.&#10;- As soon as the time runs out, saving is disabled on your file.&#10;Aim is to get the highest percentage you can before the clock runs out.">
+                               title="Donkey Kong 64 with a few twists:&#10;- Hideout Helm timer starts as soon as you load up a file.&#10;- Picking up a blueprint gives you 2 extra minutes on the clock. Each kong freed gives you 5 minutes. Every Golden Banana collected gives you 30 seconds.&#10;- As soon as the time runs out, saving is disabled on your file.&#10;Aim is to get the highest percentage you can before the clock runs out.">
                             <input class="form-check-input"
                                    type="checkbox"
                                    name="helm_hurry"
                                    value="True"/>
                             Helm Hurry Mode
                         </label>
+                    </div>
+                    <div class="spacer"></div>
+                </div>
+                <div class="flex-container">
+                    <div class="item-select">
+                        <p class="select-title">Win Condition</p>
+                        <select name="win_condition"
+                                id="win_condition"
+                                class="form-select center-div"
+                                aria-label="Win Condition"
+                                data-toggle="tooltip"
+                                title="Alter the condition required to show the credits.">
+                            <option selected id="beat_krool" value="beat_krool" title="">
+                                Beat K. Rool
+                            </option>
+                            <option id="get_key8" value="get_key8">
+                                Acquire Key 8
+                            </option>
+                            <option id="all_fairies" value="all_fairies">
+                                All Fairies
+                            </option>
+                            <option id="all_blueprints" value="all_blueprints">
+                                All Blueprints
+                            </option>
+                            <option id="all_medals" value="all_medals">
+                                All Medals
+                            </option>
+                            <option id="poke_snap" value="poke_snap">
+                                Pokemon Snap Mode
+                            </option>
+                        </select>
                     </div>
                 </div>
             </div>

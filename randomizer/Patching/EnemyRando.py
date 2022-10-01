@@ -53,6 +53,8 @@ def getBalancedCrownEnemyRando(crown_setting, damage_ohko_setting):
                 base_weight = EnemyMetaData[enemy].crown_weight
                 weight_diff = abs(base_weight - bias)
                 new_weight = abs(10 - weight_diff)
+                if enemy == Enemies.GetOut:
+                    new_weight = 1
                 if damage_ohko_setting is False or enemy is not Enemies.GetOut:
                     for count in range(new_weight):
                         legacy_hard_mode.append(enemy)
@@ -104,12 +106,17 @@ def getBalancedCrownEnemyRando(crown_setting, damage_ohko_setting):
                     count_disruptive = EnemyMetaData[new_enemy].disruptive + count_disruptive
                     enemy_swaps_library[map_id].append(new_enemy)
         elif crown_setting == "hard":
+            get_out_spawned_this_hard_map = False
             for map_id in enemy_swaps_library:
                 number_of_enemies = 3
                 if map_id == Maps.GalleonCrown or map_id == Maps.LobbyCrown or map_id == Maps.HelmCrown:
                     number_of_enemies = 4
                 for count in range(number_of_enemies):
-                    enemy_swaps_library[map_id].append(random.choice(legacy_hard_mode))
+                    if get_out_spawned_this_hard_map:
+                        enemy_to_place = random.choice([possible_enemy for possible_enemy in legacy_hard_mode if possible_enemy != Enemies.GetOut])
+                    else:
+                        enemy_to_place = random.choice(legacy_hard_mode)
+                    enemy_swaps_library[map_id].append(enemy_to_place)
         # one last shuffle, to make sure any enemy can spawn in any spot
         for map_id in enemy_swaps_library:
             if len(enemy_swaps_library[map_id]) > 0:
@@ -270,6 +277,7 @@ def randomize_enemies(spoiler: Spoiler):
     minigame_maps_total.extend(minigame_maps_beatable)
     minigame_maps_total.extend(minigame_maps_nolimit)
     minigame_maps_total.extend(minigame_maps_beavers)
+    bbbarrage_maps = (Maps.BusyBarrelBarrageEasy, Maps.BusyBarrelBarrageNormal, Maps.BusyBarrelBarrageHard)
     enemy_classes = {
         "ground_simple": [
             Enemies.BeaverBlue,
@@ -418,7 +426,7 @@ def randomize_enemies(spoiler: Spoiler):
                 tied_enemy_list = []
                 if cont_map_id in minigame_maps_easy:
                     tied_enemy_list = minigame_enemies_simple.copy()
-                    if cont_map_id in (Maps.BusyBarrelBarrageEasy, Maps.BusyBarrelBarrageNormal, Maps.BusyBarrelBarrageHard):
+                    if cont_map_id in bbbarrage_maps:
                         if Enemies.KlaptrapGreen in tied_enemy_list:
                             tied_enemy_list.remove(Enemies.KlaptrapGreen)  # Remove Green Klaptrap out of BBBarrage pool
                 elif cont_map_id in minigame_maps_beatable:
@@ -458,14 +466,10 @@ def randomize_enemies(spoiler: Spoiler):
                                     ROM().writeMultipleBytes(EnemyMetaData[new_enemy_id].size_cap, 1)
                             ROM().seek(cont_map_spawner_address + spawner["offset"] + 0xF)
                             pre_size = int.from_bytes(ROM().readBytes(1), "big")
-                            if pre_size < EnemyMetaData[new_enemy_id].bbbarrage_min_scale:
+                            if pre_size < EnemyMetaData[new_enemy_id].bbbarrage_min_scale and cont_map_id in bbbarrage_maps:
                                 ROM().seek(cont_map_spawner_address + spawner["offset"] + 0xF)
                                 ROM().writeMultipleBytes(EnemyMetaData[new_enemy_id].bbbarrage_min_scale, 1)
-                            if (
-                                spoiler.settings.enemy_speed_rando
-                                and cont_map_id not in minigame_maps_beavers
-                                and cont_map_id not in (Maps.BusyBarrelBarrageEasy, Maps.BusyBarrelBarrageNormal, Maps.BusyBarrelBarrageHard)
-                            ):
+                            if spoiler.settings.enemy_speed_rando and cont_map_id not in minigame_maps_beavers and cont_map_id not in bbbarrage_maps:
                                 min_speed = EnemyMetaData[new_enemy_id].min_speed
                                 max_speed = EnemyMetaData[new_enemy_id].max_speed
                                 if min_speed > 0 and max_speed > 0:
@@ -510,7 +514,7 @@ def randomize_enemies(spoiler: Spoiler):
                                 ROM().writeMultipleBytes(300, 2)
                             if new_enemy_id == Enemies.GetOut:
                                 ROM().seek(cont_map_spawner_address + spawner["offset"] + 0xA)
-                                get_out_timer = 0
+                                get_out_timer = 20
                                 if crown_timer > 20:
                                     damage_mult = 1
                                     damage_amts = {
@@ -521,6 +525,8 @@ def randomize_enemies(spoiler: Spoiler):
                                     if spoiler.settings.damage_amount in damage_amts:
                                         damage_mult = damage_amts[spoiler.settings.damage_amount]
                                     get_out_timer = random.randint(int(crown_timer / (12 / damage_mult)) + 1, crown_timer - 1)
+                                if get_out_timer == 0:
+                                    get_out_timer = 1
                                 ROM().writeMultipleBytes(get_out_timer, 1)
                             ROM().seek(cont_map_spawner_address + spawner["offset"] + 0xF)
                             default_scale = int.from_bytes(ROM().readBytes(1), "big")

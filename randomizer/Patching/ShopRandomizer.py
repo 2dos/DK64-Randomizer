@@ -1,7 +1,6 @@
 """Place Shuffled Shops."""
 
 import math
-import struct
 
 import js
 from randomizer.Enums.Regions import Regions
@@ -9,28 +8,7 @@ from randomizer.Lists.MapsAndExits import Maps
 from randomizer.Patching.Patcher import ROM
 from randomizer.ShuffleShopLocations import available_shops
 from randomizer.Spoiler import Spoiler
-
-
-def intf_to_float(intf):
-    """Convert float as int format to float."""
-    if intf == 0:
-        return 0
-    else:
-        return struct.unpack("!f", bytes.fromhex(hex(intf)[2:]))[0]
-
-
-def float_to_hex(f):
-    """Convert float to hex."""
-    if f == 0:
-        return "0x00000000"
-    return hex(struct.unpack("<I", struct.pack("<f", f))[0])
-
-
-def ushort_to_short(ushort):
-    """Convert unsigned short to signed short."""
-    if ushort > 32767:
-        return ushort - 65536
-    return ushort
+from randomizer.Patching.Lib import float_to_hex, intf_to_float
 
 
 def ApplyShopRandomizer(spoiler: Spoiler):
@@ -75,34 +53,34 @@ def ApplyShopRandomizer(spoiler: Spoiler):
                             search_model = 0x73
                             search_lz = Maps.Cranky
                             search_rot = 180
-                            search_scale = 1
+                            search_scale = 0.95
                         else:
                             new_model = 0x73
                             new_lz = Maps.Cranky
                             new_rot = 180
-                            new_scale = 1
+                            new_scale = 0.95
                     elif x == Regions.CandyGeneric:
                         if x_i == 0:
                             search_model = 0x124
                             search_lz = Maps.Candy
                             search_rot = 0
-                            search_scale = 1
+                            search_scale = 0.95
                         else:
                             new_model = 0x124
                             new_lz = Maps.Candy
                             new_rot = 0
-                            new_scale = 1
+                            new_scale = 0.95
                     elif x == Regions.FunkyGeneric:
                         if x_i == 0:
                             search_model = 0x7A
                             search_lz = Maps.Funky
                             search_rot = 90
-                            search_scale = 1.1
+                            search_scale = 1.045
                         else:
                             new_model = 0x7A
                             new_lz = Maps.Funky
                             new_rot = 90
-                            new_scale = 1.1
+                            new_scale = 1.045
                     elif x == Regions.Snide:
                         if x_i == 0:
                             search_model = 0x79

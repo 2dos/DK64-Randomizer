@@ -1,0 +1,5 @@
+.data
+id = 0x4A
+.code
+EXEC 7 | 125 65535 74
+ENDBLOCK

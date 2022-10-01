@@ -188,6 +188,401 @@ void hideObject(behaviour_data* behaviour_pointer) {
 	behaviour_pointer->unk_71 = 0;
 	setScriptRunState(behaviour_pointer,2,0);
 }
+typedef struct warp_info_data {
+	/* 0x000 */ unsigned char warp_map;
+	/* 0x001 */ unsigned char tied_warp_index;
+	/* 0x002 */ unsigned short id;
+	/* 0x004 */ short active_flag;
+	/* 0x006 */ short appear_flag;
+	/* 0x008 */ unsigned char tied_exit;
+	/* 0x009 */ char unk9;
+} warp_info_data;
+
+typedef struct warp_extra_info {
+	/* 0x000 */ unsigned short current_index;
+	/* 0x002 */ unsigned short tied_index;
+} warp_extra_info;
+
+void bananaportGenericCode(behaviour_data* behaviour, int index, int id) {
+	int current_index = 0;
+	int tied_index = 0;
+	int* warploc = WarpData;
+	int* m2location = ObjectModel2Pointer;
+	warp_extra_info* cached_data = (warp_extra_info*)behaviour->extra_data;
+	if (!cached_data) {
+		cached_data = dk_malloc(4);
+		for (int i = 0; i < 90; i++) {
+			warp_info_data* warp_info = getObjectArrayAddr(warploc,0xA,i);
+			if ((warp_info->id == id) && (warp_info->warp_map == CurrentMap)) {
+				cached_data->current_index = i;
+				cached_data->tied_index = warp_info->tied_warp_index;
+			}
+		}
+		behaviour->extra_data = cached_data;
+	}
+	current_index = cached_data->current_index;
+	tied_index = cached_data->tied_index;
+	warp_info_data* selected_warp = getObjectArrayAddr(warploc,0xA,current_index);
+	warp_info_data* tied_warp = getObjectArrayAddr(warploc,0xA,tied_index);
+	int float_index = -1;
+	if (CurrentMap == 0x1E) {
+		int float_id = -1;
+		if (selected_warp->id == 0x6C) {
+			float_id = 100;
+		} else if (selected_warp->id == 0x56) {
+			float_id = 98;
+		} else if (selected_warp->id == 0x15) {
+			float_id = 99;
+		}
+		if (float_id > -1) {
+			float_index = convertIDToIndex(float_id);
+			if (float_index > -1) {
+				getObjectPosition(float_index, 1, 1, &collisionPos[0], &collisionPos[1], &collisionPos[2]);
+			}
+		}
+	}
+	if (behaviour->current_state == 0) {
+		if ((selected_warp->appear_flag > -1) && (Rando.activate_all_bananaports != 1)) {
+			// Has an appear flag
+			if (checkFlag(selected_warp->appear_flag,0)) {
+				setPermFlag(selected_warp->active_flag);
+			}
+			if (checkFlag(selected_warp->appear_flag,0)) {
+				if (!checkFlag(selected_warp->active_flag,0)) {
+					behaviour->unk_60 = 1;
+					behaviour->unk_62 = 70;
+					behaviour->unk_66 = 255;
+				}
+			}
+			if (checkFlag(selected_warp->active_flag,0) == 0) {
+				behaviour->unk_71 = 0;
+				behaviour->unk_60 = 1;
+				behaviour->unk_62 = 0;
+				behaviour->unk_66 = 255;
+				behaviour->next_state = 50;
+			}
+			if (checkFlag(selected_warp->active_flag,0) || checkFlag(selected_warp->appear_flag,0)) {
+				setScriptRunState(behaviour,3,300);
+				behaviour->next_state = 1;
+			}
+
+		} else {
+			// Always shown
+			if (checkFlag(selected_warp->active_flag,0) == 0) {
+				behaviour->unk_60 = 1;
+				behaviour->unk_62 = 70;
+				behaviour->unk_66 = 255;
+			}
+			int distance = 300;
+			if (float_index > -1) {
+				distance = 600;
+			}
+			setScriptRunState(behaviour,3,distance);
+			behaviour->next_state = 1;
+		}
+	} else if (behaviour->current_state == 1) {
+		if (Player) {
+			if (Player->touching_object == 1) {
+				if (Player->standing_on_index == index) {
+					if (Player->standing_on_subposition == 2) {
+						if (checkFlag(selected_warp->active_flag,0) == 0) {
+							// Play Warp Tagging Effect
+							if (Character < 5) {
+								// Sparkles
+								playSFXFromObject(index, 612, 255, 127, 0, 40, 0.3f);
+								behaviour->unk_60 = 0;
+								behaviour->unk_62 = 0;
+								behaviour->unk_66 = 5;
+								setPermFlag(selected_warp->active_flag);
+								displayWarpSparkles(behaviour, index, 0, 0);
+								// Cutscene
+								if (checkFlag(FLAG_FTT_BANANAPORT,0) == 0) {
+									*(char*)(0x807F693F) = 1;
+									PlayCutsceneFromModelTwoScript(behaviour,16,1,0);
+									if (float_index == -1) {
+										*(char*)(0x807F6902) = 1;
+										behaviour->counter_next = 1;
+									}
+									setPermFlag(FLAG_FTT_BANANAPORT);
+								}
+							}
+						} else {
+							if (checkFlag(tied_warp->active_flag,0)) {
+								// Execute Warp
+								if (Character < 5) {
+									if (selected_warp->warp_map == tied_warp->warp_map) {
+										setObjectScriptState(tied_warp->id, 20, 0);
+										int tied_index = convertIDToIndex(tied_warp->id);
+										if (tied_index > -1) {
+											ModelTwoData* tied_object = getObjectArrayAddr(m2location,0x90,tied_index);
+											behaviour_data* tied_behaviour = (behaviour_data*)tied_object->behaviour_pointer;
+											if (tied_behaviour) {
+												setScriptRunState(tied_behaviour,1,0);
+											}
+										}
+									} else {
+										createCollision(0,Player,COLLISION_MAPWARP,tied_warp->warp_map,tied_warp->tied_exit,0,0,0);
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+		if (*(unsigned char*)(0x807F6903)) {
+			behaviour->next_state = 2;
+		}
+	} else if (behaviour->current_state == 2) {
+		if (*(unsigned char*)(0x807F6903) == 0) {
+			behaviour->next_state = 1;
+		}
+	} else if (behaviour->current_state == 20) {
+		if (float_index > -1) {
+			ModelTwoData* float_object = getObjectArrayAddr(m2location,0x90,float_index);
+			if (float_object->behaviour_pointer) {
+				setScriptRunState(float_object->behaviour_pointer,1,0);
+			}
+		}
+		createCollision(0,Player,COLLISION_BANANAPORT,0,0,*(int*)(0x807F621C),*(int*)(0x807F6220),*(int*)(0x807F6224));
+		behaviour->next_state = 0;
+	} else if (behaviour->current_state == 50) {
+		if ((selected_warp->appear_flag > -1) && (Rando.activate_all_bananaports != 1)) {
+			if (checkFlag(selected_warp->appear_flag,0)) {
+				behaviour->timer = 30;
+				behaviour->next_state = 51;
+			}
+		}
+	} else if (behaviour->current_state == 51) {
+		if (behaviour->timer == 0) {
+			behaviour->timer = 100;
+			behaviour->next_state = 52;
+		}
+	} else if (behaviour->current_state == 52) {
+		if (behaviour->timer == 90) {
+			playSFXFromObject(index, 747, 255, 127, 0, 0, 0.3f);
+			behaviour->unk_71 = 1;
+			behaviour->unk_60 = 0;
+			behaviour->unk_62 = 0;
+			behaviour->unk_66 = 5;
+			behaviour->next_state = 0;
+			setPermFlag(selected_warp->active_flag);
+		}
+	}
+	if ((behaviour->counter == 1) && (float_index == -1)) {
+		if (CutsceneActive != 1) {
+			*(char*)(0x807F6902) = 0;
+			behaviour->counter_next = 2;
+		}
+	}
+}
+
+static const short tnsportal_flags[] = {
+	FLAG_PORTAL_JAPES,
+	FLAG_PORTAL_AZTEC,
+	FLAG_PORTAL_FACTORY,
+	FLAG_PORTAL_GALLEON,
+	FLAG_PORTAL_FUNGI,
+	FLAG_PORTAL_CAVES,
+	FLAG_PORTAL_CASTLE,
+};
+static const short normal_key_flags[] = {
+	FLAG_KEYHAVE_KEY1,
+	FLAG_KEYHAVE_KEY2,
+	FLAG_KEYHAVE_KEY3,
+	FLAG_KEYHAVE_KEY4,
+	FLAG_KEYHAVE_KEY5,
+	FLAG_KEYHAVE_KEY6,
+	FLAG_KEYHAVE_KEY7,
+	FLAG_KEYHAVE_KEY8
+};
+
+void TNSPortalGenericCode(behaviour_data* behaviour, int index, int id) {
+	int world = getWorld(CurrentMap, 0);
+	if (behaviour->current_state == 0) {
+		unkObjFunction0(index, 1, 0);
+		unkObjFunction1(index, 1, 160);
+		unkObjFunction0(index, 3, 0);
+		unkObjFunction1(index, 3, 115);
+		if (checkFlag(tnsportal_flags[world],0)) {
+			hideObject(behaviour);
+			behaviour->next_state = 20;
+		} else {
+			behaviour->timer = 45;
+			behaviour->next_state = 1;
+		}
+		if (!checkFlag(normal_key_flags[world],0)) {
+			unkObjFunction2(index, 1, -1);
+			unkObjFunction2(index, 3, -1);
+		}
+	} else if (behaviour->current_state == 1) {
+		if (isPlayerInRangeOfObject(60)) {
+			behaviour->timer = behaviour->unk_14;
+			exitPortalPath(behaviour, index, 1, 0);
+			*(char*)(0x807F693F) = 1;
+			PlayCutsceneFromModelTwoScript(behaviour, 29, 0, 15);
+			setAction(90,0,0);
+			behaviour->next_state = 100;
+		} else {
+			behaviour->next_state = 2;
+		}
+	} else if (behaviour->current_state == 2) {
+		if (behaviour->timer == 0) {
+			behaviour->unk_68 = 60;
+			behaviour->unk_6A = 60;
+			behaviour->unk_6C = 60;
+			behaviour->unk_67 = 3;
+			behaviour->next_state = 3;
+		}
+	} else if (behaviour->current_state == 3) {
+		if (checkFlag(tnsportal_flags[world],0)) {
+			hideObject(behaviour);
+			behaviour->next_state = 20;
+		}
+		if ((behaviour->switch_pressed == 1) && (getInteractionOfContactActor(behaviour->contact_actor_type) & 1) && (canHitSwitch())) {
+			setSomeTimer(0x2AC);
+			behaviour->timer = 5;
+			exitPortalPath(behaviour, index, 0, 0);
+			*(char*)(0x807F693F) = 1;
+			PlayCutsceneFromModelTwoScript(behaviour, 28, 0, 15);
+			setAction(89,0,0);
+			behaviour->next_state = 4;
+		}
+	} else if (behaviour->current_state == 4) {
+		if (behaviour->timer == 0) {
+			enterPortal(Player);
+			initiateTransition_0(0x2A, 0, 0, 3); // Param 3 is tied exit
+			behaviour->next_state = 5;
+		}
+	} else if (behaviour->current_state == 40) {
+		if (behaviour->timer == 0) {
+			behaviour->unk_60 = 1;
+			behaviour->unk_62 = 0;
+			behaviour->unk_66 = 4;
+			behaviour->unk_70 = 0;
+			playSFXFromObject(index, 994, 255, 127, 20, 10, 0.3f);
+			behaviour->next_state = 41;
+		}
+	} else if (behaviour->current_state == 41) {
+		if (unkObjFunction8(index, 2)) {
+			exitPortalPath(behaviour, index, 0, 2);
+		} else {
+			behaviour->next_state = 20;
+		}
+	} else if (behaviour->current_state == 100) {
+		if (behaviour->timer == 0) {
+			if (checkFlag(normal_key_flags[world],0)) {
+				behaviour->timer = 60;
+				setPermFlag(tnsportal_flags[world]);
+				behaviour->next_state = 40;
+			} else {
+				behaviour->next_state = 2;
+			}
+		}
+	}
+}
+
+void TNSIndicatorGenericCode(behaviour_data* behaviour, int index, int id) {
+	if (behaviour->current_state == 0) {
+		for (int i = 0; i < 3; i++) {
+			unkObjFunction7(index, 1, 0);
+		}
+		int world = getWorld(CurrentMap, 0);
+		if ((checkFlag(tnsportal_flags[world],0)) || (!Rando.tns_indicator)) {
+			behaviour->next_state = 2;
+		} else {
+			behaviour->next_state = 1;
+		}
+		if (CurrentMap == 7) {
+			if (id == 0x220) {
+				int* m2location = ObjectModel2Pointer;
+				int slot = convertIDToIndex(0x220);
+				ModelTwoData* _object = getObjectArrayAddr(m2location,0x90,slot);
+				model_struct* _model = _object->model_pointer;
+				if (_model) {
+					_model->x = 722.473f;
+					_model->z = 2386.608f;
+				}
+			}
+		}
+	} else if (behaviour->current_state == 1) {
+		int world = getWorld(CurrentMap, 0);
+		int display_number = TroffNScoffReqArray[world] - TroffNScoffTurnedArray[world];
+		if (display_number < 0) {
+			display_number = 0;
+		}
+		for (int i = 1; i < 4; i++) {
+			int tex = (((10-i) + display_number % 10) % 10) - 1;
+			if (i == 1) {
+				tex = (((10-i) + display_number % 10) % 10);
+			}
+			displayNumberOnObject(id,i,tex, 0, 0);
+			display_number /= 10;
+		}
+		if (checkFlag(tnsportal_flags[world],0)) {
+			behaviour->next_state = 2;
+		}
+	} else if (behaviour->current_state == 2) {
+		hideObject(behaviour);
+	}
+}
+
+static const int crown_maps[] = {
+	0x35, // Japes
+	0x49, // Aztec
+	0x9B, // Factory
+	0x9C, // Galleon
+	0x9F, // Fungi
+	0x9D, // Fungi Lobby
+	0x9E, // Snide's
+	0xA0, // Caves
+	0xA1, // Castle
+	0xA2, // Helm
+};
+
+void CrownPadGenericCode(behaviour_data* behaviour, int index, int id, int crown_level_index) {
+	if (behaviour->current_state == 0) {
+		setScriptRunState(behaviour, 3, 300);
+		behaviour->next_state = 1;
+	}
+	int world = getWorld(CurrentMap, 1);
+	int crown_offset = world;
+	if (world > 4) {
+		if (world < 7) {
+			crown_offset = world + 2;
+		} else {
+			crown_offset = 5 + crown_level_index;
+		}
+	}
+	if (checkFlag(FLAG_CROWN_JAPES + crown_offset,0)) {
+		behaviour->unk_71 = 0;
+		behaviour->unk_60 = 1;
+		behaviour->unk_62 = 0;
+		behaviour->unk_66 = 255;
+		setScriptRunState(behaviour, 2, 0);
+	}
+	if (Player) {
+		if ((Player->obj_props_bitfield & 0x2000) == 0) {
+			if ((Player->characterID >= 2) && (Player->characterID <= 6)) {
+				if (Player->touching_object == 1) {
+					if (index == Player->standing_on_index) {
+						if (!checkFlag(FLAG_FTT_CROWNPAD,0)) {
+							setPermFlag(FLAG_FTT_CROWNPAD);
+							*(char*)(0x807F693F) = 1;
+							PlayCutsceneFromModelTwoScript(behaviour, 24, 1, 0);
+							behaviour->next_state = 2;
+						}
+						if (Player->standing_on_subposition == 2) {
+							if (behaviour->current_state >= 0) {
+								createCollision(0, Player, COLLISION_BATTLE_CROWN, crown_maps[crown_offset], 2, collisionPos[0], collisionPos[1], collisionPos[2]);
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+}
 
 int isBonus(int map) {
 	int level = levelIndexMapping[map];
@@ -281,436 +676,602 @@ void playSFXContainer(int id, int vanilla_sfx, int new_sfx) {
 }
 
 int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, int param2) {
-	switch(CurrentMap) {
-		case GLOOMY_GALLEON:
-			{
-				int gate_index = -1;
-				int gate_flag = -1;
-				switch (param2) {
-					case SEASICK_SHIP:
-						if (Rando.randomize_more_loading_zones) {
-							initiateTransition_0((Rando.seasick_ship_enter >> 8) & 0xFF, Rando.seasick_ship_enter & 0xFF, 0, 0);
-						} else {
-							initiateTransition_0(31, 0, 0, 0);
-						}
-						break;
-					case GALLEON_DKSTAR:
-						{
-							int progress = 1;
-							if (Rando.quality_of_life.galleon_star) {
-								progress = 3;
+	if (index >= 0) {
+		switch(CurrentMap) {
+			case GLOOMY_GALLEON:
+				{
+					int gate_index = -1;
+					int gate_flag = -1;
+					switch (param2) {
+						case SEASICK_SHIP:
+							if (Rando.randomize_more_loading_zones) {
+								initiateTransition_0((Rando.seasick_ship_enter >> 8) & 0xFF, Rando.seasick_ship_enter & 0xFF, 0, 0);
+							} else {
+								initiateTransition_0(31, 0, 0, 0);
 							}
-							behaviour_pointer->next_state = progress;
-						}
-						break;
-					case GALLEON_BONGO_PAD:
-					case GALLEON_GUITAR_CACTUS_PAD:
-					case GALLEON_TRIANGLE_PAD:
-					case GALLEON_SAX_PAD:
-					case GALLEON_TROMBONE_PAD:
-					case GALLEON_LANKY_SLAM:
-					case GALLEON_TINY_SLAM:
-						if (index == 0) { 
-							return !Rando.remove_high_requirements;
-						}
-						else{
-							if (Rando.remove_high_requirements) {
-								behaviour_pointer->next_state = 6;
+							break;
+						case GALLEON_DKSTAR:
+							{
+								int progress = 1;
+								if (Rando.quality_of_life.galleon_star) {
+									progress = 3;
+								}
+								behaviour_pointer->next_state = progress;
 							}
-							else {
-								behaviour_pointer->next_state = 5;
+							break;
+						case GALLEON_BONGO_PAD:
+						case GALLEON_GUITAR_CACTUS_PAD:
+						case GALLEON_TRIANGLE_PAD:
+						case GALLEON_SAX_PAD:
+						case GALLEON_TROMBONE_PAD:
+						case GALLEON_LANKY_SLAM:
+						case GALLEON_TINY_SLAM:
+							if (index == 0) { 
+								return !Rando.remove_high_requirements;
 							}
-						}
-						break;
-					case GALLEON_DK_5DSDOOR:
-						gate_index = 0;
-						gate_flag = GALLEON_5DSOPEN_DK;
-					case GALLEON_DIDDY_5DSDOOR:
-						if (gate_index < 0) {
-							gate_index = 1;
-							gate_flag = GALLEON_5DSOPEN_DIDDY;
-						}
-					case GALLEON_LANKY_5DSDOOR:
-						if (gate_index < 0) {
-							gate_index = 2;
-							gate_flag = GALLEON_5DSOPEN_LANKY;
-						}
-					case GALLEON_TINY_5DSDOOR:
-						if (gate_index < 0) {
-							gate_index = 3;
-							gate_flag = GALLEON_5DSOPEN_TINY;
-						}
-					case GALLEON_CHUNKY_5DSDOOR:
-						if (gate_index < 0) {
-							gate_index = 4;
-							gate_flag = GALLEON_5DSOPEN_CHUNKY;
-						}
-					case GALLEON_LANKY_2DSDOOR:
-						if (gate_index < 0) {
-							gate_index = 5;
-							gate_flag = GALLEON_2DSOPEN_LANKY;
-						}
-					case GALLEON_TINY_2DSDOOR:
-						if (gate_index < 0) {
-							gate_index = 6;
-							gate_flag = GALLEON_2DSOPEN_TINY;
-						}
-						if (index == 0) {
-							if (Rando.remove_high_requirements) {
-								if (checkFlag(gate_flag,0)) {
-									behaviour_pointer->current_state = 10;
-									behaviour_pointer->next_state = 10;
+							else{
+								if (Rando.remove_high_requirements) {
+									behaviour_pointer->next_state = 6;
+								}
+								else {
+									behaviour_pointer->next_state = 5;
 								}
 							}
-						} else {
-							if (Rando.remove_high_requirements) {
-								setPermFlag(gate_flag);
+							break;
+						case GALLEON_DK_5DSDOOR:
+							gate_index = 0;
+							gate_flag = GALLEON_5DSOPEN_DK;
+						case GALLEON_DIDDY_5DSDOOR:
+							if (gate_index < 0) {
+								gate_index = 1;
+								gate_flag = GALLEON_5DSOPEN_DIDDY;
 							}
+						case GALLEON_LANKY_5DSDOOR:
+							if (gate_index < 0) {
+								gate_index = 2;
+								gate_flag = GALLEON_5DSOPEN_LANKY;
+							}
+						case GALLEON_TINY_5DSDOOR:
+							if (gate_index < 0) {
+								gate_index = 3;
+								gate_flag = GALLEON_5DSOPEN_TINY;
+							}
+						case GALLEON_CHUNKY_5DSDOOR:
+							if (gate_index < 0) {
+								gate_index = 4;
+								gate_flag = GALLEON_5DSOPEN_CHUNKY;
+							}
+						case GALLEON_LANKY_2DSDOOR:
+							if (gate_index < 0) {
+								gate_index = 5;
+								gate_flag = GALLEON_2DSOPEN_LANKY;
+							}
+						case GALLEON_TINY_2DSDOOR:
+							if (gate_index < 0) {
+								gate_index = 6;
+								gate_flag = GALLEON_2DSOPEN_TINY;
+							}
+							if (index == 0) {
+								if (Rando.remove_high_requirements) {
+									if (checkFlag(gate_flag,0)) {
+										behaviour_pointer->current_state = 10;
+										behaviour_pointer->next_state = 10;
+									}
+								}
+							} else {
+								if (Rando.remove_high_requirements) {
+									setPermFlag(gate_flag);
+								}
+							}
+						break;
+					}
+				}
+				break;
+			case ANGRY_AZTEC:
+				if (param2 == AZTEC_BEETLE_GRATE) {
+					if (Rando.randomize_more_loading_zones) {
+						initiateTransition_0((Rando.aztec_beetle_enter >> 8) & 0xFF, Rando.aztec_beetle_enter & 0xFF, 0, 0);
+					} else {
+						initiateTransition_0(14, 0, 0, 0);
+					}
+				} else if (param2 == AZTEC_SNOOPDOOR) {
+					if (index == 0) {
+						// Flag Check
+						if (checkFlag(SNOOPDOOR_OPEN,0)) {
+							behaviour_pointer->next_state = 40;
+							behaviour_pointer->current_state = 40;
 						}
-					break;
-				}
-			}
-			break;
-		case ANGRY_AZTEC:
-			if (param2 == AZTEC_BEETLE_GRATE) {
-				if (Rando.randomize_more_loading_zones) {
-					initiateTransition_0((Rando.aztec_beetle_enter >> 8) & 0xFF, Rando.aztec_beetle_enter & 0xFF, 0, 0);
-				} else {
-					initiateTransition_0(14, 0, 0, 0);
-				}
-			} else if (param2 == AZTEC_SNOOPDOOR) {
-				if (index == 0) {
-					// Flag Check
-					if (checkFlag(SNOOPDOOR_OPEN,0)) {
-						behaviour_pointer->next_state = 40;
-						behaviour_pointer->current_state = 40;
+					} else if (index == 1) {
+						// Flag Set
+						setPermFlag(SNOOPDOOR_OPEN);
+						setNextTransitionType(0);
 					}
-				} else if (index == 1) {
-					// Flag Set
-					setPermFlag(SNOOPDOOR_OPEN);
-					setNextTransitionType(0);
+				} else if (param2 == AZTEC_LLAMACOCONUT) {
+					if (!Rando.quality_of_life.remove_cutscenes) {
+						PlayCutsceneFromModelTwoScript(behaviour_pointer,23,1,0);
+					}
+				} else if (param2 == AZTEC_CHUNKY_CAGE) {
+					return !Rando.tag_anywhere;
 				}
-			} else if (param2 == AZTEC_LLAMACOCONUT) {
-				if (!Rando.quality_of_life.remove_cutscenes) {
-					PlayCutsceneFromModelTwoScript(behaviour_pointer,23,1,0);
-				}
-			} else if (param2 == AZTEC_CHUNKY_CAGE) {
-				return !Rando.tag_anywhere;
-			}
-			break;
-		case FUNGI_FOREST:
-			if (param2 == FUNGI_MINECART_GRATE) {
-				if (Rando.randomize_more_loading_zones) {
-					initiateTransition_0((Rando.fungi_minecart_enter >> 8) & 0xFF, Rando.fungi_minecart_enter & 0xFF, 0, 0);
-				} else {
-					initiateTransition_0(55, 0, 0, 0);
-				}
-			}
-			break;
-		case CASTLE_BALLROOM:
-			if (param2 == BALLROOM_MONKEYPORT) {
-				if (Rando.randomize_more_loading_zones) {
-					createCollisionObjInstance(COLLISION_MAPWARP,(Rando.ballroom_to_museum >> 8 & 0xFF), Rando.ballroom_to_museum & 0xFF);
-				} else {
-					createCollisionObjInstance(COLLISION_MAPWARP,113,2);
-				}
-			}
-			break;
-		case CASTLE_MUSEUM:
-			if (param2 == MUSEUM_WARP_MONKEYPORT) {
-				if (Rando.randomize_more_loading_zones) {
-					createCollisionObjInstance(COLLISION_MAPWARP,(Rando.museum_to_ballroom >> 8 & 0xFF), Rando.museum_to_ballroom & 0xFF);
-				} else {
-					createCollisionObjInstance(COLLISION_MAPWARP,88,1);
-				}
-			}
-			break;
-		case DK_ISLES:
-			if (param2 == ISLES_JAPESBOULDER) {
-				if (Rando.lobbies_open_bitfield & 1) {
-					hideObject(behaviour_pointer);
-				}
-			} else if (param2 == ISLES_AZTECDOOR) {
-				if (Rando.lobbies_open_bitfield & 2) {
-					hideObject(behaviour_pointer);
-				}
-			} else if (param2 == ISLES_FACTORYPLATFORM) {
-				if (Rando.lobbies_open_bitfield & 4) {
-					behaviour_pointer->next_state = 5;
-					unkObjFunction0(id,1,0);
-					unkObjFunction1(id,1,5);
-					unkObjFunction2(id,1,1);
-				}
-			} else if (param2 == ISLES_FACTORYDOOR) {
-				if (Rando.lobbies_open_bitfield & 4) {
-					hideObject(behaviour_pointer);
-				}
-			} else if (param2 == ISLES_FACTORYDOORCOLLISION) {
-				if ((Rando.lobbies_open_bitfield & 4) || (checkFlag(FLAG_KEYIN_KEY2,0) || ((CutsceneIndex == 7) && (CutsceneActive == 1) && ((CutsceneStateBitfield & 4) == 0)))) {
-					hideObject(behaviour_pointer);
-					behaviour_pointer->next_state = 1;
-				}
-			} else if (param2 == ISLES_GALLEONBARS) {
-				if (Rando.lobbies_open_bitfield & 8) {
-					hideObject(behaviour_pointer);
-				}
-			} else if (param2 == ISLES_FUNGIBOULDER) {
-				if (Rando.lobbies_open_bitfield & 0x10) {
-					hideObject(behaviour_pointer);
-				}
-			} else if (param2 == ISLES_CAVESBOULDER) {
-				if (Rando.lobbies_open_bitfield & 0x20) {
-					hideObject(behaviour_pointer);
-				}
-			} else if (param2 == ISLES_CASTLEROCK) {
-				if (Rando.lobbies_open_bitfield & 0x40) {
-					hideObject(behaviour_pointer);
-				}
-			} else if (param2 == ISLES_HELMJAW) {
-				if (Rando.lobbies_open_bitfield & 0x80) {
-					behaviour_pointer->current_state = 100;
-					behaviour_pointer->next_state = 100;
-					unkObjFunction1(id,2,25);
-					unkObjFunction2(id,2,1);
-					unkObjFunction2(id,3,1);
-				}
-			} else if ((param2 == ISLES_SWITCH_COCONUT) || (param2 == ISLES_SWITCH_PEANUT) || (param2 == ISLES_SWITCH_GRAPE) || (param2 == ISLES_SWITCH_FEATHER) || (param2 == ISLES_SWITCH_PINEAPPLE)) {
-				return !Rando.tag_anywhere;
-			} else {
-				// TestVariable = (int)behaviour_pointer;
-				// *(int*)(0x807FF700) = id;
-			}
-			break;
-		case LLAMA_TEMPLE:
-			if (param2 == LLAMA_SNOOPPAD) {
-				if (checkFlag(SNOOPDOOR_OPEN,0)) {
-					behaviour_pointer->current_state = 20;
-					behaviour_pointer->next_state = 20;
-				}
-			} else if (param2 == LLAMA_BONGOPAD) {
-				return Character == Rando.free_source_llama;
-			} else if (param2 == LLAMA_BAMBOOGATE) {
-				if (index == 0) {
-					return checkFlag(kong_flags[(int)Rando.free_target_llama],0);
-				} else if (index == 1) {
-					return !checkFlag(kong_flags[(int)Rando.free_target_llama],0);
-				}
-			} else if (param2 == LLAMA_GUNSWITCH) {
-				if (index == 0) {
-					return checkFlag(kong_flags[(int)Rando.free_target_llama],0);
-				} else if (index == 1) {
-					return !checkFlag(kong_flags[(int)Rando.free_target_llama],0);
-				} else if (index == 2) {
-					setPermFlag(kong_flags[(int)Rando.free_target_llama]);
-				} else if ((index >= 3) && (index <= 6)) {
-					return getPressedSwitch(behaviour_pointer,kong_pellets[(int)Rando.free_source_llama],id);
-				}
-			} else if (param2 == LLAMA_GRAPE_SWITCH) {
-				return !Rando.tag_anywhere;
-			} else {
-				int head_ids[] = {
-					LLAMA_MATCHING_HEAD_SOUND0_0,
-					LLAMA_MATCHING_HEAD_SOUND0_1,
-					LLAMA_MATCHING_HEAD_SOUND1_0,
-					LLAMA_MATCHING_HEAD_SOUND1_1,
-					LLAMA_MATCHING_HEAD_SOUND2_0,
-					LLAMA_MATCHING_HEAD_SOUND2_1,
-					LLAMA_MATCHING_HEAD_SOUND3_0,
-					LLAMA_MATCHING_HEAD_SOUND3_1,
-					LLAMA_MATCHING_HEAD_SOUND4_0,
-					LLAMA_MATCHING_HEAD_SOUND4_1,
-					LLAMA_MATCHING_HEAD_SOUND5_0,
-					LLAMA_MATCHING_HEAD_SOUND5_1,
-					LLAMA_MATCHING_HEAD_SOUND6_0,
-					LLAMA_MATCHING_HEAD_SOUND6_1,
-					LLAMA_MATCHING_HEAD_SOUND7_0,
-					LLAMA_MATCHING_HEAD_SOUND7_1,
-				};
-				int head_sounds[] = {173,171,169,174,172,175,168,170};
-				int selection = -1;
-				for (int k = 0; k < sizeof(head_ids)/4; k++) {
-					if (param2 == head_ids[k]) {
-						selection = k / 2;
+				break;
+			case FUNGI_FOREST:
+				if (param2 == FUNGI_MINECART_GRATE) {
+					if (Rando.randomize_more_loading_zones) {
+						initiateTransition_0((Rando.fungi_minecart_enter >> 8) & 0xFF, Rando.fungi_minecart_enter & 0xFF, 0, 0);
+					} else {
+						initiateTransition_0(55, 0, 0, 0);
 					}
 				}
-				if (selection > -1) {
-					playSFXContainer(param2,head_sounds[selection],Rando.matching_game_sounds[selection]);
+				break;
+			case CASTLE_BALLROOM:
+				if (param2 == BALLROOM_MONKEYPORT) {
+					if (Rando.randomize_more_loading_zones) {
+						createCollisionObjInstance(COLLISION_MAPWARP,(Rando.ballroom_to_museum >> 8 & 0xFF), Rando.ballroom_to_museum & 0xFF);
+					} else {
+						createCollisionObjInstance(COLLISION_MAPWARP,113,2);
+					}
 				}
-				
-			}
-			break;
-		case CAVES_CHUNKY_5DC:
-			if ((param2 == CHUNKY5DC_GGONE) || (param2 == CHUNKY5DC_TARGET0) || (param2 == CHUNKY5DC_TARGET1) || (param2 == CHUNKY5DC_TARGET2)) {
-				if (index == 0) {
-					return isBonus(PreviousMap);
-				} else if (index == 1) {
-					return !isBonus(PreviousMap);
+				break;
+			case CASTLE_MUSEUM:
+				if (param2 == MUSEUM_WARP_MONKEYPORT) {
+					if (Rando.randomize_more_loading_zones) {
+						createCollisionObjInstance(COLLISION_MAPWARP,(Rando.museum_to_ballroom >> 8 & 0xFF), Rando.museum_to_ballroom & 0xFF);
+					} else {
+						createCollisionObjInstance(COLLISION_MAPWARP,88,1);
+					}
 				}
-			}
-			break;
-		case HELM_LOBBY:
-			if (param2 == HELMLOBBY_GGONE) {
-				return isBonus(PreviousMap);
-			}
-			break;
-		case JUNGLE_JAPES:
-			if (param2 == JAPES_DKCAGEGB) {
-				if (index == 0) {
-					if (checkFlag(DKJAPESCAGEGB_OPEN,0)) {
-						behaviour_pointer->current_state = 5;
+				break;
+			case DK_ISLES:
+				if (param2 == ISLES_JAPESBOULDER) {
+					if (Rando.lobbies_open_bitfield & 1) {
+						hideObject(behaviour_pointer);
+					}
+				} else if (param2 == ISLES_AZTECDOOR) {
+					if (Rando.lobbies_open_bitfield & 2) {
+						hideObject(behaviour_pointer);
+					}
+				} else if (param2 == ISLES_FACTORYPLATFORM) {
+					if (Rando.lobbies_open_bitfield & 4) {
 						behaviour_pointer->next_state = 5;
+						unkObjFunction0(id,1,0);
+						unkObjFunction1(id,1,5);
+						unkObjFunction2(id,1,1);
 					}
-				} else if (index == 1) {
-					setPermFlag(DKJAPESCAGEGB_OPEN);
-				} else if (index == 2) {
+				} else if (param2 == ISLES_FACTORYDOOR) {
+					if (Rando.lobbies_open_bitfield & 4) {
+						hideObject(behaviour_pointer);
+					}
+				} else if (param2 == ISLES_FACTORYDOORCOLLISION) {
+					if ((Rando.lobbies_open_bitfield & 4) || (checkFlag(FLAG_KEYIN_KEY2,0) || ((CutsceneIndex == 7) && (CutsceneActive == 1) && ((CutsceneStateBitfield & 4) == 0)))) {
+						hideObject(behaviour_pointer);
+						behaviour_pointer->next_state = 1;
+					}
+				} else if (param2 == ISLES_GALLEONBARS) {
+					if (Rando.lobbies_open_bitfield & 8) {
+						hideObject(behaviour_pointer);
+					}
+				} else if (param2 == ISLES_FUNGIBOULDER) {
+					if (Rando.lobbies_open_bitfield & 0x10) {
+						hideObject(behaviour_pointer);
+					}
+				} else if (param2 == ISLES_CAVESBOULDER) {
+					if (Rando.lobbies_open_bitfield & 0x20) {
+						hideObject(behaviour_pointer);
+					}
+				} else if (param2 == ISLES_CASTLEROCK) {
+					if (Rando.lobbies_open_bitfield & 0x40) {
+						hideObject(behaviour_pointer);
+					}
+				} else if (param2 == ISLES_HELMJAW) {
+					if (Rando.lobbies_open_bitfield & 0x80) {
+						behaviour_pointer->current_state = 100;
+						behaviour_pointer->next_state = 100;
+						unkObjFunction1(id,2,25);
+						unkObjFunction2(id,2,1);
+						unkObjFunction2(id,3,1);
+					}
+				} else if ((param2 == ISLES_SWITCH_COCONUT) || (param2 == ISLES_SWITCH_PEANUT) || (param2 == ISLES_SWITCH_GRAPE) || (param2 == ISLES_SWITCH_FEATHER) || (param2 == ISLES_SWITCH_PINEAPPLE)) {
+					return !Rando.tag_anywhere;
+				} else {
+					// TestVariable = (int)behaviour_pointer;
+					// *(int*)(0x807FF700) = id;
+				}
+				break;
+			case LLAMA_TEMPLE:
+				if (param2 == LLAMA_SNOOPPAD) {
+					if (checkFlag(SNOOPDOOR_OPEN,0)) {
+						behaviour_pointer->current_state = 20;
+						behaviour_pointer->next_state = 20;
+					}
+				} else if (param2 == LLAMA_BONGOPAD) {
+					return Character == Rando.free_source_llama;
+				} else if (param2 == LLAMA_BAMBOOGATE) {
+					if (index == 0) {
+						return checkFlag(kong_flags[(int)Rando.free_target_llama],0);
+					} else if (index == 1) {
+						return !checkFlag(kong_flags[(int)Rando.free_target_llama],0);
+					}
+				} else if (param2 == LLAMA_GUNSWITCH) {
+					if (index == 0) {
+						return checkFlag(kong_flags[(int)Rando.free_target_llama],0);
+					} else if (index == 1) {
+						return !checkFlag(kong_flags[(int)Rando.free_target_llama],0);
+					} else if (index == 2) {
+						setPermFlag(kong_flags[(int)Rando.free_target_llama]);
+					} else if ((index >= 3) && (index <= 6)) {
+						return getPressedSwitch(behaviour_pointer,kong_pellets[(int)Rando.free_source_llama],id);
+					}
+				} else if (param2 == LLAMA_GRAPE_SWITCH) {
+					return !Rando.tag_anywhere;
+				} else {
+					int head_ids[] = {
+						LLAMA_MATCHING_HEAD_SOUND0_0,
+						LLAMA_MATCHING_HEAD_SOUND0_1,
+						LLAMA_MATCHING_HEAD_SOUND1_0,
+						LLAMA_MATCHING_HEAD_SOUND1_1,
+						LLAMA_MATCHING_HEAD_SOUND2_0,
+						LLAMA_MATCHING_HEAD_SOUND2_1,
+						LLAMA_MATCHING_HEAD_SOUND3_0,
+						LLAMA_MATCHING_HEAD_SOUND3_1,
+						LLAMA_MATCHING_HEAD_SOUND4_0,
+						LLAMA_MATCHING_HEAD_SOUND4_1,
+						LLAMA_MATCHING_HEAD_SOUND5_0,
+						LLAMA_MATCHING_HEAD_SOUND5_1,
+						LLAMA_MATCHING_HEAD_SOUND6_0,
+						LLAMA_MATCHING_HEAD_SOUND6_1,
+						LLAMA_MATCHING_HEAD_SOUND7_0,
+						LLAMA_MATCHING_HEAD_SOUND7_1,
+					};
+					int head_sounds[] = {173,171,169,174,172,175,168,170};
+					int selection = -1;
+					for (int k = 0; k < sizeof(head_ids)/4; k++) {
+						if (param2 == head_ids[k]) {
+							selection = k / 2;
+						}
+					}
+					if (selection > -1) {
+						playSFXContainer(param2,head_sounds[selection],Rando.matching_game_sounds[selection]);
+					}
+					
+				}
+				break;
+			case CAVES_CHUNKY_5DC:
+				if ((param2 == CHUNKY5DC_GGONE) || (param2 == CHUNKY5DC_TARGET0) || (param2 == CHUNKY5DC_TARGET1) || (param2 == CHUNKY5DC_TARGET2)) {
+					if (index == 0) {
+						return isBonus(PreviousMap);
+					} else if (index == 1) {
+						return !isBonus(PreviousMap);
+					}
+				}
+				break;
+			case HELM_LOBBY:
+				if (param2 == HELMLOBBY_GGONE) {
+					return isBonus(PreviousMap);
+				}
+				break;
+			case JUNGLE_JAPES:
+				if (param2 == JAPES_DKCAGEGB) {
+					if (index == 0) {
+						if (checkFlag(DKJAPESCAGEGB_OPEN,0)) {
+							behaviour_pointer->current_state = 5;
+							behaviour_pointer->next_state = 5;
+						}
+					} else if (index == 1) {
+						setPermFlag(DKJAPESCAGEGB_OPEN);
+					} else if (index == 2) {
+						if (checkFlag(DKJAPESCAGEGB_OPEN,0)) {
+							behaviour_pointer->current_state = 6;
+							behaviour_pointer->next_state = 6;
+						}
+					}
+				} else if (param2 == JAPES_DKCAGESWITCH) {
 					if (checkFlag(DKJAPESCAGEGB_OPEN,0)) {
-						behaviour_pointer->current_state = 6;
-						behaviour_pointer->next_state = 6;
+						behaviour_pointer->current_state = 20;
+						behaviour_pointer->next_state = 20;
 					}
+				} else if (param2 == JAPES_MOUNTAINGB) {
+					if (index == 0) {
+						if (checkFlag(JAPESMOUNTAINSPAWNED,0)) {
+							behaviour_pointer->current_state = 20;
+							behaviour_pointer->next_state = 20;
+						}
+					} else if (index == 1) {
+						setPermFlag(JAPESMOUNTAINSPAWNED);
+					}
+				} else if (param2 == JAPES_DIDDYBAMBOOGATE) {
+					if (index == 0) {
+						return checkFlag(kong_flags[(int)Rando.free_target_japes],0);
+					} else if (index == 1) {
+						return !checkFlag(kong_flags[(int)Rando.free_target_japes],0);
+					} else if (index == 2) {
+						setPermFlag(kong_flags[(int)Rando.free_target_japes]);
+					}
+				} else if ((param2 == JAPES_GUNSWITCH0) || (param2 == JAPES_GUNSWITCH1) || (param2 == JAPES_GUNSWITCH2)) {
+					if (index == 0) {
+						return checkFlag(kong_flags[(int)Rando.free_target_japes],0);
+					} else if (index == 1) {
+						return !checkFlag(kong_flags[(int)Rando.free_target_japes],0);
+					} else if ((index == 2) || (index == 3)) {
+						return getPressedSwitch(behaviour_pointer, kong_pellets[(int)Rando.free_source_japes], id);
+					} else if (index == 4) {
+						return !Rando.quality_of_life.remove_cutscenes; // TODO: Retry this
+					}
+				} else if ((param2 == JAPES_GATE0) || (param2 == JAPES_GATE1) || (param2 == JAPES_GATE2)) {
+					if (Rando.open_level_sections) {
+						behaviour_pointer->current_state = 20;
+						behaviour_pointer->next_state = 20;
+					}
+				} else if (param2 == JAPES_DIDDYFREEGB) {
+					if (index == 0) {
+						return checkFlag(kong_flags[(int)Rando.free_target_japes],0);
+					} else if (index == 1) {
+						return !checkFlag(kong_flags[(int)Rando.free_target_japes],0);
+					}
+				} else if ((param2 == JAPES_CAVE_GATE) || (param2 == JAPES_PEANUT_MOUNTAIN) || (param2 == JAPES_COCONUT_RAMBI)) {
+					return !Rando.tag_anywhere;
 				}
-			} else if (param2 == JAPES_DKCAGESWITCH) {
-				if (checkFlag(DKJAPESCAGEGB_OPEN,0)) {
-					behaviour_pointer->current_state = 20;
-					behaviour_pointer->next_state = 20;
-				}
-			} else if (param2 == JAPES_MOUNTAINGB) {
-				if (index == 0) {
+				break;
+			case JAPES_MOUNTAIN:
+				if (param2 == JAPES_MOUNTAINGBSWITCH) {
 					if (checkFlag(JAPESMOUNTAINSPAWNED,0)) {
 						behaviour_pointer->current_state = 20;
 						behaviour_pointer->next_state = 20;
 					}
-				} else if (index == 1) {
-					setPermFlag(JAPESMOUNTAINSPAWNED);
 				}
-			} else if (param2 == JAPES_DIDDYBAMBOOGATE) {
-				if (index == 0) {
-					return checkFlag(kong_flags[(int)Rando.free_target_japes],0);
-				} else if (index == 1) {
-					return !checkFlag(kong_flags[(int)Rando.free_target_japes],0);
-				} else if (index == 2) {
-					setPermFlag(kong_flags[(int)Rando.free_target_japes]);
-				}
-			} else if ((param2 == JAPES_GUNSWITCH0) || (param2 == JAPES_GUNSWITCH1) || (param2 == JAPES_GUNSWITCH2)) {
-				if (index == 0) {
-					return checkFlag(kong_flags[(int)Rando.free_target_japes],0);
-				} else if (index == 1) {
-					return !checkFlag(kong_flags[(int)Rando.free_target_japes],0);
-				} else if ((index == 2) || (index == 3)) {
-					return getPressedSwitch(behaviour_pointer, kong_pellets[(int)Rando.free_source_japes], id);
-				} else if (index == 4) {
-					return !Rando.quality_of_life.remove_cutscenes; // TODO: Retry this
-				}
-			} else if ((param2 == JAPES_GATE0) || (param2 == JAPES_GATE1) || (param2 == JAPES_GATE2)) {
-				if (Rando.open_level_sections) {
-					behaviour_pointer->current_state = 20;
-					behaviour_pointer->next_state = 20;
-				}
-			} else if (param2 == JAPES_DIDDYFREEGB) {
-				if (index == 0) {
-					return checkFlag(kong_flags[(int)Rando.free_target_japes],0);
-				} else if (index == 1) {
-					return !checkFlag(kong_flags[(int)Rando.free_target_japes],0);
-				}
-			} else if ((param2 == JAPES_CAVE_GATE) || (param2 == JAPES_PEANUT_MOUNTAIN) || (param2 == JAPES_COCONUT_RAMBI)) {
-				return !Rando.tag_anywhere;
-			}
-			break;
-		case JAPES_MOUNTAIN:
-			if (param2 == JAPES_MOUNTAINGBSWITCH) {
-				if (checkFlag(JAPESMOUNTAINSPAWNED,0)) {
-					behaviour_pointer->current_state = 20;
-					behaviour_pointer->next_state = 20;
-				}
-			}
-			break;
-		case FRANTIC_FACTORY:
-			if (param2 == FACTORY_DIDDYPRODGB) {
-				if (index == 0) {
+				break;
+			case FRANTIC_FACTORY:
+				if (param2 == FACTORY_DIDDYPRODGB) {
+					if (index == 0) {
+						if (checkFlag(FACTORYDIDDYPRODSPAWNED,0)) {
+							behaviour_pointer->current_state = 11;
+							behaviour_pointer->next_state = 11;
+						}
+					} else if (index == 1) {
+						setPermFlag(FACTORYDIDDYPRODSPAWNED);
+					}
+				} else if (param2 == FACTORY_DIDDYPRODSWITCH) {
 					if (checkFlag(FACTORYDIDDYPRODSPAWNED,0)) {
-						behaviour_pointer->current_state = 11;
-						behaviour_pointer->next_state = 11;
+						behaviour_pointer->current_state = 20;
+						behaviour_pointer->next_state = 20;
 					}
-				} else if (index == 1) {
-					setPermFlag(FACTORYDIDDYPRODSPAWNED);
-				}
-			} else if (param2 == FACTORY_DIDDYPRODSWITCH) {
-				if (checkFlag(FACTORYDIDDYPRODSPAWNED,0)) {
-					behaviour_pointer->current_state = 20;
-					behaviour_pointer->next_state = 20;
-				}
-			} else if (param2 == FACTORY_FREESWITCH) {
-				if (index == 0) {
-					return checkFlag(kong_flags[(int)Rando.free_target_factory],0);
-				} else if (index == 1) {
-					return !checkFlag(kong_flags[(int)Rando.free_target_factory],0);
-				} else if (index == 2) {
-					return Character == Rando.free_source_factory;
-				} else if (index == 3) {
-					setPermFlag(kong_flags[(int)Rando.free_target_factory]);
-				}
-			} else if (param2 == FACTORY_CAGE) {
-				if (index == 0) {
-					return checkFlag(kong_flags[(int)Rando.free_target_factory],0);
-				} else if (index == 1) {
-					return !checkFlag(kong_flags[(int)Rando.free_target_factory],0);
-				}
-			} else if (param2 == FACTORY_FREEGB) {
-				if (index == 0) {
-					return checkFlag(kong_flags[(int)Rando.free_target_factory],0);
-				} else if (index == 1) {
-					return !checkFlag(kong_flags[(int)Rando.free_target_factory],0);
-				}
-			} else if (param2 == FACTORY_PIANO) {
-				if (index < 7) {
-					// Kremling appears
-					spawnPianoKremling(Rando.piano_game_order[index] + 5,0);
-				} else if (index < 14) {
-					setAcceptablePianoKey(id, Rando.piano_game_order[index - 7] + 1,2);
-				} else if (index < 21) {
-					return checkSlamLocation(2, Rando.piano_game_order[index - 14] + 1, id);
-				} else if (index < 28) {
-					return checkContactSublocation(behaviour_pointer,id,Rando.piano_game_order[index - 21] + 1, 0);
-				} else if (index == 28) {
-					if (Rando.fast_gbs) {
-						behaviour_pointer->next_state = 26;
-					} else {
-						behaviour_pointer->next_state = 17;
+				} else if (param2 == FACTORY_FREESWITCH) {
+					if (index == 0) {
+						return checkFlag(kong_flags[(int)Rando.free_target_factory],0);
+					} else if (index == 1) {
+						return !checkFlag(kong_flags[(int)Rando.free_target_factory],0);
+					} else if (index == 2) {
+						return Character == Rando.free_source_factory;
+					} else if (index == 3) {
+						setPermFlag(kong_flags[(int)Rando.free_target_factory]);
 					}
-				} else if (index == 29) {
-					if (Rando.fast_gbs) {
-						behaviour_pointer->next_state = 50;
-					} else {
-						behaviour_pointer->next_state = 37;
+				} else if (param2 == FACTORY_CAGE) {
+					if (index == 0) {
+						return checkFlag(kong_flags[(int)Rando.free_target_factory],0);
+					} else if (index == 1) {
+						return !checkFlag(kong_flags[(int)Rando.free_target_factory],0);
 					}
-				}
-			} else if (param2 == FACTORY_3124_SWITCH || param2 == FACTORY_4231_SWITCH || param2 == FACTORY_1342_SWITCH) {
-				if (index == 0) {
-					return Rando.fast_gbs;
-				} else if (index == 1) {
-					// Check if GB is in a state >= 3, this means it was spawned.
-					int index = convertIDToIndex(96);
-					int* m2location = ObjectModel2Pointer;
-					if (index > -1) {
-						ModelTwoData* _object = getObjectArrayAddr(m2location,0x90,index);
-						behaviour_data* behaviour = (behaviour_data*)_object->behaviour_pointer;
-						if (_object && behaviour) {
-							if(behaviour->current_state <= 3) {
-								behaviour_pointer->current_state = 5;
+				} else if (param2 == FACTORY_FREEGB) {
+					if (index == 0) {
+						return checkFlag(kong_flags[(int)Rando.free_target_factory],0);
+					} else if (index == 1) {
+						return !checkFlag(kong_flags[(int)Rando.free_target_factory],0);
+					}
+				} else if (param2 == FACTORY_PIANO) {
+					if (index < 7) {
+						// Kremling appears
+						spawnPianoKremling(Rando.piano_game_order[index] + 5,0);
+					} else if (index < 14) {
+						setAcceptablePianoKey(id, Rando.piano_game_order[index - 7] + 1,2);
+					} else if (index < 21) {
+						return checkSlamLocation(2, Rando.piano_game_order[index - 14] + 1, id);
+					} else if (index < 28) {
+						return checkContactSublocation(behaviour_pointer,id,Rando.piano_game_order[index - 21] + 1, 0);
+					} else if (index == 28) {
+						if (Rando.fast_gbs) {
+							behaviour_pointer->next_state = 26;
+						} else {
+							behaviour_pointer->next_state = 17;
+						}
+					} else if (index == 29) {
+						if (Rando.fast_gbs) {
+							behaviour_pointer->next_state = 50;
+						} else {
+							behaviour_pointer->next_state = 37;
+						}
+					}
+				} else if (param2 == FACTORY_3124_SWITCH || param2 == FACTORY_4231_SWITCH || param2 == FACTORY_1342_SWITCH) {
+					if (index == 0) {
+						return Rando.fast_gbs;
+					} else if (index == 1) {
+						// Check if GB is in a state >= 3, this means it was spawned.
+						int index = convertIDToIndex(96);
+						int* m2location = ObjectModel2Pointer;
+						if (index > -1) {
+							ModelTwoData* _object = getObjectArrayAddr(m2location,0x90,index);
+							behaviour_data* behaviour = (behaviour_data*)_object->behaviour_pointer;
+							if (_object && behaviour) {
+								if(behaviour->current_state <= 3) {
+									behaviour_pointer->current_state = 5;
+								}
+							}
+						}
+					} else if (index == 2) {
+						if (Rando.fast_gbs) {
+							disableDiddyRDDoors();
+						}
+						else {
+							setScriptRunState(behaviour_pointer, 2, 0);
+						}
+					}
+				} else if (param2 == FACTORY_DARTBOARD) {
+					if (index < 6) {
+						if (behaviour_pointer->switch_pressed == (Rando.dartboard_order[index] + 1)) {
+							if (behaviour_pointer->contact_actor_type == 43) {
+								if (canHitSwitch()) {
+									int index = convertSubIDToIndex(id);
+									int* m2location = ObjectModel2Pointer;
+									ModelTwoData* _object = getObjectArrayAddr(m2location,0x90,index);
+									setSomeTimer(_object->object_type);
+									return 1;
+								}
+							}
+						}
+						return 0;
+					}
+				} else if (param2 == FACTORY_LARGEMETALSECTION) {
+					if (Rando.quality_of_life.vanilla_fixes) {
+						behaviour_pointer->current_state = 10;
+						unsigned char crusher_compontents[] = {1,3,8,9,4,10,11,12,13,2,5,6,7};
+						int* m2location = ObjectModel2Pointer;
+						for (int component = 0; component < sizeof(crusher_compontents); component++) {
+							int index = convertIDToIndex(crusher_compontents[component]);
+							if (index > -1) {
+								ModelTwoData* _object = getObjectArrayAddr(m2location,0x90,index);
+								behaviour_data* behaviour = (behaviour_data*)_object->behaviour_pointer;
+								if (behaviour) {
+									behaviour->next_state = 10;
+								}
 							}
 						}
 					}
-				} else if (index == 2) {
+				} else if ((param2 == FACTORY_SNATCH_GRATE) || (param2 == FACTORY_PAD_GUITAR) || (param2 == FACTORY_PAD_TRIANGLE) || (param2 == FACTORY_PAD_TROMBONE)) {
+					return !Rando.tag_anywhere;
+				}
+				break;
+			case MILL_FRONT:
+				if (param2 == MILL_WARNINGLIGHTS) {
+					if (checkFlag(FUNGICRUSHERON,0)) {
+						behaviour_pointer->current_state = MILL_CRUSHER_PROGRESS * 2;
+						behaviour_pointer->next_state = MILL_CRUSHER_PROGRESS * 2;
+					}
+				} else if (param2 == MILL_CRUSHER) {
+					if (index == 0) {
+						if (checkFlag(FUNGICRUSHERON,0)) {
+							if (!checkFlag(FLAG_COLLECTABLE_FUNGI_CHUNKY_KEGGB,0)) { // If GB not acquired
+								if (behaviour_pointer->counter == 0) {
+									behaviour_pointer->current_state = 12;
+									behaviour_pointer->next_state = 12;
+									unkObjFunction1(id,1,8);
+									unkObjFunction2(id,1,65535);
+								}
+							}
+						}
+					} else if (index == 1) {
+						setPermFlag(FUNGICRUSHERON);
+						behaviour_pointer->counter = MILL_CRUSHER_PROGRESS;
+					}
+				}
+				break;
+			case MILL_REAR:
+				if (param2 == MILL_TRIANGLEPAD) {
+					if (checkFlag(FUNGICRUSHERON,0)) {
+						behaviour_pointer->current_state = 3;
+						behaviour_pointer->next_state = 3;
+					}
+				} else if (param2 == MILLREAR_CHUNKYCHECK_RATE) {
+					return Player->characterID == 6 || Rando.quality_of_life.vanilla_fixes;
+				}
+				break;
+			case FUNGI_GMUSH:
+				if (param2 == GMUSH_BOARD) {
+					int switch_count = 0;
+					for (int i = 0; i < 5; i++) {
+						if (checkFlag(FLAG_MUSHSWITCH_0 + i,0)) {
+							switch_count += 1;
+						}
+					}
+					if (switch_count == 5) {
+						behaviour_pointer->current_state = 6;
+						behaviour_pointer->next_state = 6;
+						behaviour_pointer->timer = 465;
+					}
+				}
+				break;
+			case CRYSTAL_CAVES:
+				if (param2 == CAVES_GBDOME) {
+					if (index == 0) {
+						if (checkFlag(CAVESGBDOME_DESTROYED,0)) {
+							hideObject(behaviour_pointer);
+							behaviour_pointer->current_state = 11;
+							behaviour_pointer->next_state = 11;
+						}
+					} else if (index == 1) {
+						setPermFlag(CAVESGBDOME_DESTROYED);
+					}
+				} else if (param2 == CAVES_SMALLBOULDERPAD) {
+					if (checkFlag(CAVESBOULDERDOME_DESTROYED,0)) {
+						behaviour_pointer->current_state = 20;
+						behaviour_pointer->next_state = 20;
+					}
+				} else if (param2 == CAVES_BOULDERDOME) {
+					if (index == 0) {
+						if (checkFlag(CAVESBOULDERDOME_DESTROYED,0)) {
+							hideObject(behaviour_pointer);
+							behaviour_pointer->current_state = 11;
+							behaviour_pointer->next_state = 11;
+						}
+					} else if (index == 1) {
+						setPermFlag(CAVESBOULDERDOME_DESTROYED);
+					}
+				} else if (param2 == CAVES_BIGBOULDERPAD) {
+					if (checkFlag(CAVESBOULDERDOME_DESTROYED,0)) {
+						if (checkFlag(CAVESGBDOME_DESTROYED,0)) {
+							hideObject(behaviour_pointer);
+							behaviour_pointer->current_state = 20;
+							behaviour_pointer->next_state = 20;
+						} else {
+							behaviour_pointer->current_state = 10;
+							behaviour_pointer->next_state = 10;
+						}
+					}
+				}
+				break;
+			case TRAINING_GROUNDS:
+				if (param2 == TGROUNDS_SWITCH) {
+					if (index == 0) {
+						return checkFlag(kong_flags[(int)Rando.starting_kong],0);
+					} else if (index == 1) {
+						return !checkFlag(kong_flags[(int)Rando.starting_kong],0);
+					} else if (index == 2) {
+						setPermFlag(kong_flags[(int)Rando.starting_kong]);
+					}
+				} else if (param2 == TGROUNDS_BAMBOOGATE) {
+					if (index == 0) {
+						return checkFlag(kong_flags[(int)Rando.starting_kong],0);
+					} else if (index == 1) {
+						return !checkFlag(kong_flags[(int)Rando.starting_kong],0);
+					}
+				}
+				break;
+			case GALLEON_FISH:
+				if ((param2 == FISH_SHIELD1) || (param2 == FISH_SHIELD2) || (param2 == FISH_SHIELD3)) {
+					int fish_state = 1;
 					if (Rando.fast_gbs) {
-						disableDiddyRDDoors();
+						fish_state = 5;
 					}
-					else {
-						setScriptRunState(behaviour_pointer, 2, 0);
+					behaviour_pointer->next_state = fish_state;
+				}
+				break;
+			case TREASURE_CHEST:
+				if (param2 == CHEST_PEARL_0) {
+					if (Rando.fast_gbs) {
+						int pearls_collected = 0;
+						for (int i = 0; i < 5; i++) {
+							pearls_collected += checkFlag(FLAG_PEARL_0_COLLECTED + i,0);
+						}
+						if (pearls_collected >= 1) {
+							for (int i = 0; i < 5; i++) {
+								setPermFlag(FLAG_PEARL_0_COLLECTED + i);
+							}
+							behaviour_pointer->next_state = 2;
+						}
 					}
-        		}
-			} else if (param2 == FACTORY_DARTBOARD) {
-				if (index < 6) {
-					if (behaviour_pointer->switch_pressed == (Rando.dartboard_order[index] + 1)) {
-						if (behaviour_pointer->contact_actor_type == 43) {
+				}
+				break;
+			case CAVES_DK5DI:
+				if (param2 == ICE_MAZE) {
+					if (behaviour_pointer->switch_pressed == index) {
+						if ((behaviour_pointer->contact_actor_type >= 2) && (behaviour_pointer->contact_actor_type <= 6)) { // isKong
 							if (canHitSwitch()) {
 								int index = convertSubIDToIndex(id);
 								int* m2location = ObjectModel2Pointer;
@@ -722,277 +1283,192 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 					}
 					return 0;
 				}
-			} else if (param2 == FACTORY_LARGEMETALSECTION) {
-				if (Rando.quality_of_life.vanilla_fixes) {
-					behaviour_pointer->current_state = 10;
-					unsigned char crusher_compontents[] = {1,3,8,9,4,10,11,12,13,2,5,6,7};
-					int* m2location = ObjectModel2Pointer;
-					for (int component = 0; component < sizeof(crusher_compontents); component++) {
-						int index = convertIDToIndex(crusher_compontents[component]);
-						if (index > -1) {
-							ModelTwoData* _object = getObjectArrayAddr(m2location,0x90,index);
-							behaviour_data* behaviour = (behaviour_data*)_object->behaviour_pointer;
-							if (behaviour) {
-								behaviour->next_state = 10;
-							}
-						}
+				break;
+			case TINY_TEMPLE:
+				if (param2 == TTEMPLE_SWITCH) {
+					return Character == 1;
+				} else if (param2 == TTEMPLE_GUITARPAD) {
+					return Character == 1;
+				} else if (param2 == TTEMPLE_BAMBOOGATE) {
+					if (index == 0) {
+						return checkFlag(kong_flags[(int)Rando.free_target_ttemple],0);
+					} else if (index == 1) {
+						setPermFlag(kong_flags[(int)Rando.free_target_ttemple]);
 					}
-				}
-			} else if ((param2 == FACTORY_SNATCH_GRATE) || (param2 == FACTORY_PAD_GUITAR) || (param2 == FACTORY_PAD_TRIANGLE) || (param2 == FACTORY_PAD_TROMBONE)) {
-				return !Rando.tag_anywhere;
-			}
-			break;
-		case MILL_FRONT:
-			if (param2 == MILL_WARNINGLIGHTS) {
-				if (checkFlag(FUNGICRUSHERON,0)) {
-					behaviour_pointer->current_state = MILL_CRUSHER_PROGRESS * 2;
-					behaviour_pointer->next_state = MILL_CRUSHER_PROGRESS * 2;
-				}
-			} else if (param2 == MILL_CRUSHER) {
-				if (index == 0) {
-					if (checkFlag(FUNGICRUSHERON,0)) {
-						if (!checkFlag(FLAG_COLLECTABLE_FUNGI_CHUNKY_KEGGB,0)) { // If GB not acquired
-							if (behaviour_pointer->counter == 0) {
-								behaviour_pointer->current_state = 12;
-								behaviour_pointer->next_state = 12;
-								unkObjFunction1(id,1,8);
-								unkObjFunction2(id,1,65535);
-							}
-						}
+				} else if (param2 == TTEMPLE_CHARGESWITCH) {
+					if (index == 0) {
+						return checkFlag(kong_flags[(int)Rando.free_target_ttemple],0);
+					} else if (index == 1) {
+						return !checkFlag(kong_flags[(int)Rando.free_target_ttemple],0);
+					} else if (index == 2) {
+						return checkControlState(kong_press_states[(int)Rando.free_source_ttemple]);
 					}
-				} else if (index == 1) {
-					setPermFlag(FUNGICRUSHERON);
-					behaviour_pointer->counter = MILL_CRUSHER_PROGRESS;
-				}
-			}
-			break;
-		case MILL_REAR:
-			if (param2 == MILL_TRIANGLEPAD) {
-				if (checkFlag(FUNGICRUSHERON,0)) {
-					behaviour_pointer->current_state = 3;
-					behaviour_pointer->next_state = 3;
-				}
-			} else if (param2 == MILLREAR_CHUNKYCHECK_RATE) {
-				return Player->characterID == 6 || Rando.quality_of_life.vanilla_fixes;
-			}
-			break;
-		case FUNGI_GMUSH:
-			if (param2 == GMUSH_BOARD) {
-				int switch_count = 0;
-				for (int i = 0; i < 5; i++) {
-					if (checkFlag(FLAG_MUSHSWITCH_0 + i,0)) {
-						switch_count += 1;
-					}
-				}
-				if (switch_count == 5) {
-					behaviour_pointer->current_state = 6;
-					behaviour_pointer->next_state = 6;
-					behaviour_pointer->timer = 465;
-				}
-			}
-			break;
-		case CRYSTAL_CAVES:
-			if (param2 == CAVES_GBDOME) {
-				if (index == 0) {
-					if (checkFlag(CAVESGBDOME_DESTROYED,0)) {
-						hideObject(behaviour_pointer);
-						behaviour_pointer->current_state = 11;
-						behaviour_pointer->next_state = 11;
-					}
-				} else if (index == 1) {
-					setPermFlag(CAVESGBDOME_DESTROYED);
-				}
-			} else if (param2 == CAVES_SMALLBOULDERPAD) {
-				if (checkFlag(CAVESBOULDERDOME_DESTROYED,0)) {
-					behaviour_pointer->current_state = 20;
-					behaviour_pointer->next_state = 20;
-				}
-			} else if (param2 == CAVES_BOULDERDOME) {
-				if (index == 0) {
-					if (checkFlag(CAVESBOULDERDOME_DESTROYED,0)) {
-						hideObject(behaviour_pointer);
-						behaviour_pointer->current_state = 11;
-						behaviour_pointer->next_state = 11;
-					}
-				} else if (index == 1) {
-					setPermFlag(CAVESBOULDERDOME_DESTROYED);
-				}
-			} else if (param2 == CAVES_BIGBOULDERPAD) {
-				if (checkFlag(CAVESBOULDERDOME_DESTROYED,0)) {
-					if (checkFlag(CAVESGBDOME_DESTROYED,0)) {
-						hideObject(behaviour_pointer);
-						behaviour_pointer->current_state = 20;
-						behaviour_pointer->next_state = 20;
-					} else {
-						behaviour_pointer->current_state = 10;
-						behaviour_pointer->next_state = 10;
-					}
-				}
-			}
-			break;
-		case TRAINING_GROUNDS:
-			if (param2 == TGROUNDS_SWITCH) {
-				if (index == 0) {
-					return checkFlag(kong_flags[(int)Rando.starting_kong],0);
-				} else if (index == 1) {
-					return !checkFlag(kong_flags[(int)Rando.starting_kong],0);
-				} else if (index == 2) {
-					setPermFlag(kong_flags[(int)Rando.starting_kong]);
-				}
-			} else if (param2 == TGROUNDS_BAMBOOGATE) {
-				if (index == 0) {
-					return checkFlag(kong_flags[(int)Rando.starting_kong],0);
-				} else if (index == 1) {
-					return !checkFlag(kong_flags[(int)Rando.starting_kong],0);
-				}
-			}
-			break;
-		case GALLEON_FISH:
-			if ((param2 == FISH_SHIELD1) || (param2 == FISH_SHIELD2) || (param2 == FISH_SHIELD3)) {
-				int fish_state = 1;
-				if (Rando.fast_gbs) {
-					fish_state = 5;
-				}
-				behaviour_pointer->next_state = fish_state;
-			}
-			break;
-		case TREASURE_CHEST:
-			if (param2 == CHEST_PEARL_0) {
-				if (Rando.fast_gbs) {
-					int pearls_collected = 0;
-					for (int i = 0; i < 5; i++) {
-						pearls_collected += checkFlag(FLAG_PEARL_0_COLLECTED + i,0);
-					}
-					if (pearls_collected >= 1) {
-						for (int i = 0; i < 5; i++) {
-							setPermFlag(FLAG_PEARL_0_COLLECTED + i);
-						}
-						behaviour_pointer->next_state = 2;
-					}
-				}
-			}
-			break;
-		case CAVES_DK5DI:
-			if (param2 == ICE_MAZE) {
-				if (behaviour_pointer->switch_pressed == index) {
-					if ((behaviour_pointer->contact_actor_type >= 2) && (behaviour_pointer->contact_actor_type <= 6)) { // isKong
-						if (canHitSwitch()) {
-							int index = convertSubIDToIndex(id);
-							int* m2location = ObjectModel2Pointer;
-							ModelTwoData* _object = getObjectArrayAddr(m2location,0x90,index);
-							setSomeTimer(_object->object_type);
-							return 1;
-						}
-					}
-				}
-				return 0;
-			}
-			break;
-		case TINY_TEMPLE:
-			if (param2 == TTEMPLE_SWITCH) {
-				return Character == 1;
-			} else if (param2 == TTEMPLE_GUITARPAD) {
-				return Character == 1;
-			} else if (param2 == TTEMPLE_BAMBOOGATE) {
-				if (index == 0) {
-					return checkFlag(kong_flags[(int)Rando.free_target_ttemple],0);
-				} else if (index == 1) {
-					setPermFlag(kong_flags[(int)Rando.free_target_ttemple]);
-				}
-			} else if (param2 == TTEMPLE_CHARGESWITCH) {
-				if (index == 0) {
-					return checkFlag(kong_flags[(int)Rando.free_target_ttemple],0);
-				} else if (index == 1) {
-					return !checkFlag(kong_flags[(int)Rando.free_target_ttemple],0);
-				} else if (index == 2) {
+				} else if ((param2 == TTEMPLE_KONGLETTER0) || (param2 == TTEMPLE_KONGLETTER1) || (param2 == TTEMPLE_KONGLETTER2) || (param2 == TTEMPLE_KONGLETTER3)) {
 					return checkControlState(kong_press_states[(int)Rando.free_source_ttemple]);
 				}
-			} else if ((param2 == TTEMPLE_KONGLETTER0) || (param2 == TTEMPLE_KONGLETTER1) || (param2 == TTEMPLE_KONGLETTER2) || (param2 == TTEMPLE_KONGLETTER3)) {
-				return checkControlState(kong_press_states[(int)Rando.free_source_ttemple]);
-			}
-			break;
-		case CRYPT_LT:
-			if (param2 == CRYPT_LT_GRAPE) {
-				return !Rando.tag_anywhere;
-			}
-			break;
-		case CRYPT_DDC:
-			if ((param2 == CRYPT_DDC_D) || (param2 == CRYPT_DDC_E) || (param2 == CRYPT_DDC_F)) {
-				return !Rando.tag_anywhere;
-			}
-			break;
-		case CASTLE_DUNGEON:
-			if ((param2 == DUNGEON_SLAM_DK) || (param2 == DUNGEON_SLAM_DIDDY) || (param2 == DUNGEON_SLAM_LANKY)) {
-				return !Rando.tag_anywhere;
-			}
-			break;
-		case CASTLE_TREE:
-			if ((param2 == TREE_DOOR_DK) || (param2 == TREE_DOOR_CHUNKY)) {
-				return !Rando.tag_anywhere;
-			}
-			break;
-		case HIDEOUT_HELM:
-			{
-				int slot = -1;
-				int next_slot = -1;
-				int previous_slot = -1;
-				int current_slot = -1;
-				switch(param2) {
-					case HELM_PAD_BONGO:
-						slot = 0;
-					case HELM_PAD_TRIANGLE:
-						if (slot == -1) {
-							slot = 1;
-						}
-					case HELM_PAD_SAX:
-						if (slot == -1) {
-							slot = 2;
-						}
-					case HELM_PAD_TROMBONE:
-						if (slot == -1) {
-							slot = 3;
-						}
-					case HELM_PAD_GUITAR:
-						if (slot == -1) {
-							slot = 4;
-						}
-						if (slot > -1) {
-							for (int i = 0; i < 5; i++) {
-								if (Rando.helm_order[i] == slot) {
-									current_slot = i;
-									if (i > 0) {
-										previous_slot = Rando.helm_order[i - 1];
+				break;
+			case CRYPT_LT:
+				if (param2 == CRYPT_LT_GRAPE) {
+					return !Rando.tag_anywhere;
+				}
+				break;
+			case CRYPT_DDC:
+				if ((param2 == CRYPT_DDC_D) || (param2 == CRYPT_DDC_E) || (param2 == CRYPT_DDC_F)) {
+					return !Rando.tag_anywhere;
+				}
+				break;
+			case CASTLE_DUNGEON:
+				if ((param2 == DUNGEON_SLAM_DK) || (param2 == DUNGEON_SLAM_DIDDY) || (param2 == DUNGEON_SLAM_LANKY)) {
+					return !Rando.tag_anywhere;
+				}
+				break;
+			case CASTLE_TREE:
+				if ((param2 == TREE_DOOR_DK) || (param2 == TREE_DOOR_CHUNKY)) {
+					return !Rando.tag_anywhere;
+				}
+				break;
+			case HIDEOUT_HELM:
+				{
+					int slot = -1;
+					int next_slot = -1;
+					int previous_slot = -1;
+					int current_slot = -1;
+					switch(param2) {
+						case HELM_PAD_BONGO:
+							slot = 0;
+						case HELM_PAD_TRIANGLE:
+							if (slot == -1) {
+								slot = 1;
+							}
+						case HELM_PAD_SAX:
+							if (slot == -1) {
+								slot = 2;
+							}
+						case HELM_PAD_TROMBONE:
+							if (slot == -1) {
+								slot = 3;
+							}
+						case HELM_PAD_GUITAR:
+							if (slot == -1) {
+								slot = 4;
+							}
+							if (slot > -1) {
+								for (int i = 0; i < 5; i++) {
+									if (Rando.helm_order[i] == slot) {
+										current_slot = i;
+										if (i > 0) {
+											previous_slot = Rando.helm_order[i - 1];
+										}
+										if (i < 4) {
+											next_slot = Rando.helm_order[i + 1];
+										}
 									}
-									if (i < 4) {
-										next_slot = Rando.helm_order[i + 1];
+								}
+								if (index == 0) {
+									// Barrels complete
+									if ((next_slot == -1) && (current_slot > -1)) {
+										// Helm Complete
+										PlayCutsceneFromModelTwoScript(behaviour_pointer, 8, 1, 0);
+										setFlag(FLAG_MODIFIER_HELMBOM, 1, 0);
+										setFlag(0x50,1,2);
+										*(int*)(0x807FF704) = param2;
+									} else if (next_slot > -1) {
+										// Move to next
+										PlayCutsceneFromModelTwoScript(behaviour_pointer, current_slot + 4, 1, 0);
+									}
+								} else if (index == 1) {
+									if (previous_slot == -1) {
+										// First or not in sequence
+										return 1;
+									} else {
+										return checkFlag(previous_slot + 0x4B, 2);
 									}
 								}
 							}
-							if (index == 0) {
-								// Barrels complete
-								if ((next_slot == -1) && (current_slot > -1)) {
-									// Helm Complete
-									PlayCutsceneFromModelTwoScript(behaviour_pointer, 8, 1, 0);
-									setFlag(FLAG_MODIFIER_HELMBOM, 1, 0);
-									setFlag(0x50,1,2);
-									*(int*)(0x807FF704) = param2;
-								} else if (next_slot > -1) {
-									// Move to next
-									PlayCutsceneFromModelTwoScript(behaviour_pointer, current_slot + 4, 1, 0);
-								}
-							} else if (index == 1) {
-								if (previous_slot == -1) {
-									// First or not in sequence
-									return 1;
-								} else {
-									return checkFlag(previous_slot + 0x4B, 2);
-								}
-							}
-						}
-					break;
+						break;
+					}
+				}
+			break;
+		}
+	} else if (index == -1) {
+		// Bananaport generic code
+		if (!WarpData) {
+			int size = 90 * 10; // 90 Warps, 10 bytes per warp
+			WarpData = dk_malloc(size);
+			int* file_size;
+			*(int*)(&file_size) = size;
+			copyFromROM(0x1FF0000,WarpData,&file_size,0,0,0,0);
+		}
+		bananaportGenericCode(behaviour_pointer, id, param2);
+	} else if (index == -2) {
+		// Wrinkly Generic Code
+		short* cached_data = behaviour_pointer->extra_data;
+		int kong = 0;
+		if (!cached_data) {
+			cached_data = dk_malloc(2);
+			int wrinkly_index = convertIDToIndex(param2);
+			int* m2location = ObjectModel2Pointer;
+			int wrinkly_doors[] = {0xF0, 0xF2, 0xEF, 0x67, 0xF1};
+			if (wrinkly_index > -1) {
+				ModelTwoData* _object = getObjectArrayAddr(m2location,0x90,wrinkly_index);
+				for (int i = 0; i < 5; i++) {
+					if (_object->object_type == wrinkly_doors[i]) {
+						kong = i;
+					}
 				}
 			}
-		break;
+			*cached_data = kong;
+			behaviour_pointer->extra_data = cached_data;
+		} else {
+			kong = *cached_data;
+		}
+		if (behaviour_pointer->current_state == 0) {
+			unkObjFunction7(id,1,0);
+			unkObjFunction7(id,2,0);
+			displayImageOnObject(id, 1, 1, 0);
+			displayImageOnObject(id, 2, 1, 0);
+			unkObjFunction0(id, 1, 1);
+			unkObjFunction1(id, 1, 10);
+			if (checkFlag(kong_flags[kong],0) == 0) {
+				behaviour_pointer->next_state = 20;
+			} else {
+				displayImageOnObject(id, 1, 0, 0);
+				displayImageOnObject(id, 2, 0, 0);
+				behaviour_pointer->next_state = 1;
+			}
+		} else if (behaviour_pointer->current_state == 1) {
+			if (isPlayerInRangeOfObject(40)) {
+				if (getPlayerObjectDistance()) {
+					unkObjFunction2(id, 1, 1);
+					spawnWrinkly(behaviour_pointer, id, kong, 0);
+					playSFXFromObject(id, 19, 255, 127, 20, 0, 0.3f);
+					behaviour_pointer->next_state = 2;
+				}
+			}
+		} else if (behaviour_pointer->current_state == 2) {
+			if (isWrinklySpawned()) {
+				unkObjFunction2(id, 1, 1);
+				playSFXFromObject(id, 19, 255, 127, 20, 0, 0.3f);
+				behaviour_pointer->next_state = 3;
+			}
+		} else if (behaviour_pointer->current_state == 3) {
+			if (unkObjFunction8(id, 1) == 0) {
+				playSFXFromObject(id, 50, 255, 127, 0, 60, 0.3f);
+				behaviour_pointer->next_state = 4;
+			}
+		} else if (behaviour_pointer->current_state == 4) {
+			if (isPlayerInRangeOfObject(60) == 0) {
+				behaviour_pointer->next_state = 1;
+			}
+		}
+	} else if (index == -3) {
+		TNSPortalGenericCode(behaviour_pointer, id, param2);
+	} else if (index == -4) {
+		TNSIndicatorGenericCode(behaviour_pointer, id, param2);
+	} else if (index == -5) {
+		CrownPadGenericCode(behaviour_pointer, id, param2, 0);
+	} else if (index == -6) {
+		CrownPadGenericCode(behaviour_pointer, id, param2, 1);
 	}
 	InstanceScriptParams[1] = id;
 	InstanceScriptParams[2] = index;

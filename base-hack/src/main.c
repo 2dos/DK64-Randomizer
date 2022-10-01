@@ -14,6 +14,7 @@ static float current_avg_lag = 0;
 static short past_crystals = 0;
 static char has_loaded = 0;
 static char good_eeprom = 0;
+static char new_picture = 0;
 
 void cFuncLoop(void) {
 	DataIsCompressed[18] = 0;
@@ -37,7 +38,7 @@ void cFuncLoop(void) {
 			good_eeprom = EEPROMType == 2;
 		}
 	}
-	displayNumberOnTns();
+	// displayNumberOnTns();
 	if (Rando.music_rando_on) {
 		if (CurrentMap == 0x28) {
 			if (ObjectModel2Timer == 5) {
@@ -54,6 +55,23 @@ void cFuncLoop(void) {
 	recolorKongControl();
 	spawnCannonWrapper();
 	setCrusher();
+	if (Rando.win_condition == GOAL_POKESNAP) {
+		int picture_bitfield = 0;
+		if (Player) {
+			int control_state = Player->control_state;
+			EnemyInView = 0;
+			if ((control_state == 4) || (control_state == 5)) {
+				EnemyInView = isSnapEnemyInRange();
+			}
+			if (Player->strong_kong_ostand_bitfield & 0x8000) {
+				picture_bitfield = 1;
+				if (!new_picture) {
+					pokemonSnapMode();
+				}
+			}
+		}
+		new_picture = picture_bitfield;
+	}
 	if (Rando.perma_lose_kongs) {
 		preventBossCheese();
 		kong_has_died();
@@ -86,6 +104,22 @@ void cFuncLoop(void) {
 			if (TransitionSpeed < 0) {
 				TransitionType = 1;
 			}
+		}
+	}
+	if (Rando.helm_hurry_mode) {
+		checkTotalCache();
+	}
+	if (CurrentMap == 0x11) {
+		if ((CutsceneActive == 1) && ((CutsceneStateBitfield & 4) != 0)) {
+			if ((CutsceneIndex == 0) || (CutsceneIndex == 4) || (CutsceneIndex == 7) || (CutsceneIndex == 8) || (CutsceneIndex == 9)) {
+				if (checkFlag(FLAG_MODIFIER_HELMBOM,0)) {
+					setFlag(0x50,0,2); // Prevent Helm Door hardlock
+				}
+			}
+		}
+	} else if ((CurrentMap == 0xAA) && (ObjectModel2Timer < 5)) {
+		if (checkFlag(FLAG_MODIFIER_HELMBOM,0)) {
+			setFlag(0x50,0,2); // Prevent Helm Door hardlock
 		}
 	}
 	past_lag[(int)(lag_counter % LAG_CAP)] = StoredLag;
@@ -204,6 +238,7 @@ void earlyFrame(void) {
 	adjust_galleon_water();
 	if ((CurrentMap == MAIN_MENU) && (ObjectModel2Timer < 5)) {
 		FileScreenDLCode_Write();
+		initTracker();
 	}
 	if (CurrentMap == NFR_SCREEN) {
 		if (ObjectModel2Timer == 5) {
@@ -223,6 +258,7 @@ static char fpsStr[15] = "";
 static char bp_numerator = 0;
 static char bp_denominator = 0;
 static char bpStr[10] = "";
+static char pkmnStr[10] = "";
 static char hud_timer = 0;
 static char wait_progress_master = 0;
 static char wait_progress_timer = 0;
@@ -343,6 +379,29 @@ int* displayListModifiers(int* dl) {
 					hud_timer = 0;
 				}
 			}
+			if (Rando.win_condition == GOAL_POKESNAP) {
+				int pkmn_f = 0;
+				int pkmn_n = 0;
+				int pkmn_d = 0;
+				if (getPkmnSnapData(&pkmn_f, &pkmn_n, &pkmn_d)) {
+					dk_strFormat((char *)pkmnStr, "%dl%d", pkmn_n, pkmn_d);
+					float opacity = 255.0f;
+					if (pkmn_f < 12) {
+						opacity = pkmn_f * 255;
+						opacity /= 12;
+					} else if (pkmn_f > 38) {
+						int diff = 12 - (pkmn_f - 38);
+						opacity = diff * 255;
+						opacity /= 12;
+					}
+					if (opacity > 255) {
+						opacity = 255;
+					} else if (opacity < 0) {
+						opacity = 0;
+					}
+					dl = drawText(dl, 1, 290, 370, pkmnStr, 0xFF, 0xFF, 0xFF, opacity);
+				}
+			}
 		}
 	}
 	return dl;
@@ -359,6 +418,33 @@ void toggleStandardAmmo(void) {
 					}
 				}
             }
+		}
+	}
+}
+
+void updateSkippableCutscenes(void) {
+	if (CurrentMap < 216) {
+		if (CutsceneBanks[0].cutscene_databank) {
+			for (int i = 0; i < 64; i++) {
+				int offset = 1;
+				int shift = i - 32;
+				if (i < 32) {
+					offset = 0;
+					shift = i;
+				}
+				if (cs_skip_db[(2 * CurrentMap) + offset] & (1 << shift)) {
+					void* databank = CutsceneBanks[0].cutscene_databank;
+					cutscene_item_data* data = (cutscene_item_data*)getObjectArrayAddr(databank,0xC,i);
+					if (data) {
+						for (int j = 0; j < data->num_points; j++) {
+							short* write_spot = (short*)getObjectArrayAddr(data->length_array,2,j);
+							if (write_spot) {
+								*(short*)write_spot = 0;
+							}
+						}
+					}
+				}
+			}
 		}
 	}
 }

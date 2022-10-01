@@ -44,3 +44,62 @@ def ShuffleWarps(bananaport_replacements, human_ports):
             if len(pad_temp_list[warp_index]) > 0:
                 pad_list.append({"warp_index": warp_index, "warp_ids": pad_temp_list[warp_index].copy()})
         bananaport_replacements.append({"containing_map": warp_map, "pads": pad_list.copy()})
+
+
+def getNameFromSwapIndex(index):
+    """Acquire warp name from index."""
+    for warp_name in BananaportVanilla.values():
+        if warp_name.swap_index == index:
+            return warp_name.name
+
+
+def ShuffleWarpsCrossMap(bananaport_replacements, human_ports, is_coupled):
+    """Shuffles warps with the cross-map setting."""
+    for warp in BananaportVanilla.values():
+        warp.cross_map_placed = False
+        bananaport_replacements.append(0)
+    selected_warp_list = []
+    for idx, warp in enumerate(BananaportVanilla.values()):
+        if not warp.cross_map_placed or not is_coupled:
+            available_warps = []
+            full_warps = []
+            for warp_check in BananaportVanilla.values():
+                is_enabled = True
+                if warp_check.swap_index == warp.swap_index:
+                    is_enabled = False
+                if warp_check.cross_map_placed:
+                    is_enabled = False
+                else:
+                    full_warps.append(warp_check.swap_index)
+                if warp.restricted and warp_check.restricted:
+                    is_enabled = False
+                if is_enabled:
+                    available_warps.append(warp_check.swap_index)
+            print(f"{idx} ({len(available_warps)} | {len(full_warps)})")
+            selected_index = random.choice(available_warps)
+            warp_type_index = random.randint(0, 4)
+            # Place Warp
+            warp.tied_index = selected_index
+            for warp_check in BananaportVanilla.values():
+                if warp_check.swap_index == selected_index:
+                    warp_check.cross_map_placed = True
+            warp.new_warp = warp_type_index
+            human_ports[warp.name] = getNameFromSwapIndex(selected_index)
+            bananaport_replacements[warp.swap_index] = [selected_index, warp_type_index]
+            selected_lst = [selected_index]
+            if selected_index in selected_warp_list:
+                print(f"Selected {selected_index} which is a duplicate")
+            selected_warp_list.append(selected_index)
+            if is_coupled:
+                warp.cross_map_placed = True
+                for warp_check in BananaportVanilla.values():
+                    if warp_check.swap_index == selected_index:
+                        warp_check.tied_index = warp.swap_index
+                        selected_lst.append(warp.swap_index)
+                        warp_check.new_warp = warp_type_index
+                        human_ports[warp_check.name] = getNameFromSwapIndex(warp.swap_index)
+                        bananaport_replacements[warp_check.swap_index] = [warp.swap_index, warp_type_index]
+                        if warp.swap_index in selected_warp_list:
+                            print(f"Selected {warp.swap_index} which is a duplicate")
+                        selected_warp_list.append(warp.swap_index)
+            print(f"Selected {selected_lst}")

@@ -1,5 +1,6 @@
 .data
 id = 0x87
+ignore = 1
 .code
 COND 1 | 0 0 0
 COND 45 | 62 0 0
@@ -10,6 +11,10 @@ CONDINV 45 | 757 0 0
 EXEC 71 | 0 0 0
 EXEC 69 | 1 0 255
 EXEC 1 | 50 0 0
+ENDBLOCK
+COND 1 | 0 0 0
+COND 45 | 62 0 0
+EXEC 71 | 1 0 0
 ENDBLOCK
 COND 1 | 0 0 0
 COND 45 | 62 0 0

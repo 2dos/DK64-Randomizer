@@ -1,20 +1,13 @@
 """Apply misc setup changes."""
 import math
 import random
-import struct
 
 import js
 from randomizer.Lists.MapsAndExits import Maps
 from randomizer.Lists.Patches import DirtPatchLocations
 from randomizer.Patching.Patcher import ROM
 from randomizer.Spoiler import Spoiler
-
-
-def float_to_hex(f):
-    """Convert float to hex."""
-    if f == 0:
-        return "0x00000000"
-    return hex(struct.unpack("<I", struct.pack("<f", f))[0])
+from randomizer.Patching.Lib import float_to_hex
 
 
 def pickRandomPositionCircle(center_x, center_z, min_radius, max_radius):
@@ -415,7 +408,7 @@ def randomize_setup(spoiler: Spoiler):
                             dirt_bytes.append(int(float_to_hex(patch.x), 16))
                             dirt_bytes.append(int(float_to_hex(patch.y), 16))
                             dirt_bytes.append(int(float_to_hex(patch.z), 16))
-                            dirt_bytes.append(int(float_to_hex(1), 16))
+                            dirt_bytes.append(int(float_to_hex(patch.scale), 16))
                             for x in range(8):
                                 dirt_bytes.append(0)
                             rot_type_hex = hex(patch.rotation) + "007B"

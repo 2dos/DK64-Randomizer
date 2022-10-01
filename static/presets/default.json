@@ -1,7 +1,7 @@
 {
     "activate_all_bananaports": "isles",
     "auto_keys": true,
-    "bananaport_rando": true,
+    "bananaport_rando": "in_level",
     "blocker_0": 1,
     "blocker_1": 2,
     "blocker_2": 3,
@@ -83,5 +83,6 @@
     "troff_text": 300,
     "unlock_fairy_shockwave": false,
     "warp_to_isles": true,
+    "win_condition": "beat_krool",
     "wrinkly_hints": "standard"
 }

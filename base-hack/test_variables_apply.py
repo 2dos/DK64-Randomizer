@@ -54,7 +54,7 @@ set_variables = {
     "starting_kong": 0,
     "free_target_llama": 0,
     "free_source_llama": 3,
-    "keys_preturned": 0x01,
+    "keys_preturned": 0x00,
     "short_bosses": 1,
     "fast_warp": 1,
     "activate_all_bananaports": 1,
@@ -79,7 +79,10 @@ set_variables = {
     "fairy_prices": [3, 6],
     "helm_order": [2, 3, 1, 0xFF, 0xFF],
     "disco_chunky": 1,
+    "krusha_slot": 2,
     "helm_hurry_mode": 0,
+    "win_condition": 5,
+    "version": 2,
 }
 
 
@@ -201,7 +204,7 @@ with open("include/variable_space_structs.h", "r") as varspace:
                     check = int(index % 8)
                     pre = readFromROM(0x1FED020 + 0xB0 + offset, 1)
                     pre_copy = pre
-                    pre |= (0x80 >> check)
+                    pre |= 0x80 >> check
                     print("")
                     print(f"{y} ({index}): {offset} {check} | {pre_copy} -> {pre}")
                     writeToROM(0xB0 + offset, pre, 1, y)

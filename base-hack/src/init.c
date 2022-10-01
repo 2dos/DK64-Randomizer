@@ -118,6 +118,12 @@ void initHack(int source) {
 			ToggleAmmoOn = Rando.quality_of_life.ammo_swap;
 			LobbiesOpen = Rando.lobbies_open_bitfield;
 			ShorterBosses = Rando.short_bosses;
+			WinCondition = Rando.win_condition;
+			if (Rando.krusha_slot == 4) {
+				Rando.disco_chunky = 0;
+			} else if (Rando.krusha_slot > 4) {
+				Rando.krusha_slot = -1;
+			}
 			changeCharSpawnerFlag(0x14, 2, 93); // Tie llama spawn to lanky help me cutscene flag
 			changeCharSpawnerFlag(0x7, 1, kong_flags[(int)Rando.free_target_japes]);
 			changeCharSpawnerFlag(0x10, 0x13, kong_flags[(int)Rando.free_target_ttemple]);
@@ -130,8 +136,8 @@ void initHack(int source) {
 			alterGBKong(0x14, 0x6C, Rando.free_source_llama); // Free Lanky GB
 			alterGBKong(0x1A, 0x78, Rando.free_source_factory); // Free Chunky GB
 			// Savefile Expansion		
-			// int balloon_patch_count = 300; // Normally 121
-			// expandSaveFile(0x100,balloon_patch_count);
+			int balloon_patch_count = 300; // Normally 121
+			expandSaveFile(0x100,balloon_patch_count);
 			if (Rando.no_health_refill) {
 				*(int*)(0x80683A34) = 0; // Cancel Tag Health Refill
 				// *(int*)(0x8060DD10) = 0; // Load File
@@ -235,6 +241,13 @@ void initHack(int source) {
 				*(short*)(0x806BDC3C) = 0x1000; // Apply shorter timer to all keys
 				// Fast Vulture
 				*(int*)(0x806C50BC) = 0x0C000000 | (((int)&clearVultureCutscene & 0xFFFFFF) >> 2); // Modify Function Call
+				// General
+				// *(int*)(0x8061D920) = 0xA4205CEC; // Set cutscene state change to 0
+				// *(int*)(0x8061D91C) = 0x0C000000 | (((int)&checkSkippableCutscene & 0xFFFFFF) >> 2); // Modify Function Call
+			} else {
+				for (int i = 0; i < 432; i++) {
+					cs_skip_db[i] = 0;
+				}
 			}
 			if (Rando.quality_of_life.fast_picture) {
 				// Fast Camera Photo
@@ -265,11 +278,19 @@ void initHack(int source) {
 			if (Rando.quality_of_life.rambi_enguarde_pickup) {
 				// Transformations can pick up other's collectables
 				*(int*)(0x806F6330) = 0x96AC036E; // Collection
-				*(int*)(0x806F68A0) = 0x95B8036E; // DK Opacity
-				*(int*)(0x806F68DC) = 0x952C036E; // Diddy Opacity
-				*(int*)(0x806F6914) = 0x95F9036E; // Tiny Opacity
-				*(int*)(0x806F694C) = 0x95AE036E; // Lanky Opacity
-				*(int*)(0x806F6984) = 0x952B036E; // Chunky Opacity
+				// Collection
+				*(int*)(0x806F68A0) = 0x95B8036E; // DK Collection
+				*(int*)(0x806F68DC) = 0x952C036E; // Diddy Collection
+				*(int*)(0x806F6914) = 0x95F9036E; // Tiny Collection
+				*(int*)(0x806F694C) = 0x95AE036E; // Lanky Collection
+				*(int*)(0x806F6984) = 0x952B036E; // Chunky Collection
+				// Opacity
+				*(int*)(0x80637998) = 0x95B9036E; // DK Opacity
+				*(int*)(0x806379E8) = 0x95CF036E; // Diddy Opacity
+				*(int*)(0x80637A28) = 0x9589036E; // Tiny Opacity
+				*(int*)(0x80637A68) = 0x954B036E; // Chunky Opacity
+				*(int*)(0x80637AA8) = 0x9708036E; // Lanky Opacity
+				// CB/Coin rendering
 				*(int*)(0x806394FC) = 0x958B036E; // Rendering
 				*(int*)(0x80639540) = 0x9728036E; // Rendering
 				*(int*)(0x80639584) = 0x95AE036E; // Rendering
@@ -286,10 +307,13 @@ void initHack(int source) {
 				*(int*)(0x806396D0) = 0x95CD036E; // Rendering
 				*(int*)(0x80639690) = 0x9519036E; // Rendering
 			}
+			*(int*)(0x805FEBC0) = 0x0C000000 | (((int)&parseCutsceneData & 0xFFFFFF) >> 2); // modifyCutsceneHook
+			*(int*)(0x807313A4) = 0x0C000000 | (((int)&checkVictory_flaghook & 0xFFFFFF) >> 2); // perm flag set hook
 			if (Rando.helm_hurry_mode) {
 				*(int*)(0x806F56F8) = 0x0C000000 | (((int)&blueprintCollect & 0xFFFFFF) >> 2); // Blueprint collection hook
 				*(int*)(0x80713CCC) = 0; // Prevent Helm Timer Disable
 				*(int*)(0x80713CD8) = 0; // Prevent Shutdown Song Playing
+				*(short*)(0x8071256A) = 15; // Init Helm Timer = 15 minutes
 			}
 			if (Rando.always_show_coin_cbs) {
 				*(int*)(0x806324D4) = 0x24020001; // ADDIU $v0, $r0, 1 // Disable kong flag check
@@ -304,14 +328,107 @@ void initHack(int source) {
 				*(int*)(0x8060EEE0) = 0x240E0000; // ADDIU $t6, $r0, 0
 			}
 			if (Rando.disco_chunky) {
+				// Disco
 				*(char*)(0x8075C45B) = 0xE; // General Model
-				*(short*)(0x806F123A) = 0xE; // Instrument
+				*(short*)(0x806F123A) = 0xED; // Instrument
 				*(int*)(0x806CF37C) = 0; // Fix object holding
 				*(short*)(0x8074E82C) = 0xE; // Tag Barrel Model
 				*(short*)(0x8075EDAA) = 0xE; // Cutscene Chunky Model
 				*(short*)(0x8075571E) = 0xE; // Generic Cutscene Model
+				*(short*)(0x80755738) = 0xE; // Generic Cutscene Model
 				*(int*)(0x806F1274) = 0; // Prevent model change for GGone
-				*(int*)(0x806CBB84) = 0; // Enable opacity filter
+				*(int*)(0x806CBB84) = 0; // Enable opacity filter GGone
+				*(short*)(0x8075BF3E) = 0x2F5C; // Make CS Model Behave normally
+				*(short*)(0x8075013E) = 0xE; // Low Poly Model
+			}
+			if (Rando.krusha_slot != -1) {
+				// Krusha
+				int slot = Rando.krusha_slot;
+				KongModelData[slot].model = 0xDB; // General Model
+				TagModelData[slot].model = 0xDB; // Tag Barrel Model
+				*(int*)(0x80677E94) = 0x0C000000 | (((int)&adjustAnimationTables & 0xFFFFFF) >> 2); // Give Krusha animations to slot
+				*(int*)(0x806C32B8) = 0x0C000000 | (((int)&updateCutsceneModels & 0xFFFFFF) >> 2); // Fix cutscene models
+				RollingSpeeds[slot] = 175; // Increase Krusha slide speed to 175
+				KongTagNames[slot] = 6; // Change kong name in Tag Barrel
+				KongTextNames[slot] = KongTextNames[5];
+				switch (slot) {
+					case 0:
+						// DK
+						// *(int*)(0x806F1154) = 0x02002025; // Instrument - Param1
+						// *(int*)(0x806F1158) = 0x0C184C65; // Instrument - Func Call
+						// *(short*)(0x806F115E) = 0xDB; // Instrument - Param2
+						// *(int*)(0x806F1194) = 0; // Instrument - NOP Other stuff
+						// *(int*)(0x806F11B0) = 0; // Instrument - NOP Other stuff
+						// *(int*)(0x806F11BC) = 0; // Instrument - NOP Other stuff
+						// *(int*)(0x806F11D0) = 0; // Instrument - NOP Other stuff
+						*(short*)(0x8075ED4A) = 0xDB; // Cutscene DK Model
+						*(short*)(0x8075573E) = 0xDB; // Generic Cutscene Model
+						*(int*)(0x8074C0A8) = 0x806C9F44; // Replace DK Code w/ Krusha Code
+						*(short*)(0x806F0AFE) = 0; // Remove gun from hands in Tag Barrel
+						*(int*)(0x806F0AF0) = 0x24050001; // Fix Hand State
+						break;
+					case 1:
+						// Diddy
+						*(short*)(0x806F11E6) = 0xDB; // Instrument
+						*(short*)(0x8075ED62) = 0xDB; // Cutscene Diddy Model
+						*(short*)(0x80755736) = 0xDB; // Generic Cutscene Model
+						*(int*)(0x8074C0AC) = 0x806C9F44; // Replace Diddy Code w/ Krusha Code
+						*(int*)(0x806F0A6C) = 0x0C1A29D9; // Replace hand state call
+						*(int*)(0x806F0A78) = 0; // Replace hand state call
+						*(int*)(0x806E4938) = 0; // Always run adapt code
+						*(int*)(0x806E4940) = 0; // NOP Animation calls
+						*(int*)(0x806E4950) = 0; // NOP Animation calls
+						*(int*)(0x806E4958) = 0; // NOP Animation calls
+						*(int*)(0x806E495C) = 0x0C000000 | (((int)&adaptKrushaZBAnimation_Charge & 0xFFFFFF) >> 2); // Allow Krusha to use slide move if fast enough (Charge)
+						*(int*)(0x806E499C) = 0; // NOP Animation calls
+						*(int*)(0x806E49C8) = 0; // NOP Animation calls
+						*(int*)(0x806E49F0) = 0; // NOP Animation calls
+						*(short*)(0x806CF5F0) = 0x5000; // Prevent blink special cases
+						*(int*)(0x806CF76C) = 0; // Prevent blink special cases
+						*(unsigned char*)(0x8075D19F) = 0xA0; // Fix Gun Firing
+						break;
+					case 2:
+						// Lanky
+						/*
+							Issues:
+								Lanky Phase arm extension has a poly tri not correctly aligned
+						*/
+						*(short*)(0x806F1202) = 0xDB; // Instrument
+						*(short*)(0x8075ED7A) = 0xDB; // Cutscene Lanky Model
+						*(short*)(0x8075573A) = 0xDB; // Generic Cutscene Model
+						*(int*)(0x8074C0B0) = 0x806C9F44; // Replace Lanky Code w/ Krusha Code
+						*(short*)(0x806F0ABE) = 0; // Remove gun from hands in Tag Barrel
+						*(int*)(0x806E48BC) = 0x0C000000 | (((int)&adaptKrushaZBAnimation_PunchOStand & 0xFFFFFF) >> 2); // Allow Krusha to use slide move if fast enough (OStand)
+						*(int*)(0x806E48B4) = 0; // Always run `adaptKrushaZBAnimation`
+						*(int*)(0x806F0AB0) = 0x24050001; // Fix Hand State
+						break;
+					case 3:
+						// Tiny
+						*(short*)(0x806F121E) = 0xDB; // Instrument
+						*(short*)(0x8075ED92) = 0xDB; // Cutscene Tiny Model
+						*(short*)(0x8075573C) = 0xDB; // Generic Cutscene Model
+						*(int*)(0x8074C0B4) = 0x806C9F44; // Replace Tiny Code w/ Krusha Code
+						*(short*)(0x806F0ADE) = 0; // Remove gun from hands in Tag Barrel
+						*(int*)(0x806E47F8) = 0; // Prevent slide bounce
+						*(short*)(0x806CF784) = 0x5000; // Prevent blink special cases
+						*(int*)(0x806F0AD0) = 0x24050001; // Fix Hand State
+						break;
+					case 4:
+						// Chunky
+						*(short*)(0x806F123A) = 0xDB; // Instrument
+						*(int*)(0x806CF37C) = 0; // Fix object holding
+						*(short*)(0x8075EDAA) = 0xDB; // Cutscene Chunky Model
+						*(short*)(0x8075571E) = 0xDB; // Generic Cutscene Model
+						*(short*)(0x80755738) = 0xDB; // Generic Cutscene Model
+						*(int*)(0x806F1274) = 0; // Prevent model change for GGone
+						*(int*)(0x806CBB84) = 0; // Enable opacity filter GGone
+						*(int*)(0x8074C0B8) = 0x806C9F44; // Replace Chunky Code w/ Krusha Code
+						*(int*)(0x806E4900) = 0x0C000000 | (((int)&adaptKrushaZBAnimation_PunchOStand & 0xFFFFFF) >> 2); // Allow Krusha to use slide move if fast enough (PPunch)
+						*(int*)(0x806E48F8) = 0; // Always run `adaptKrushaZBAnimation`
+						*(short*)(0x806F0A9E) = 0; // Remove gun from hands in Tag Barrel
+						*(int*)(0x806F0A90) = 0x24050001; // Fix Hand State
+					break;
+				}
 			}
 			if (Rando.fast_gbs) {
 				*(short*)(0x806BBB22) = 0x0005; // Chunky toy box speedup
@@ -339,6 +456,13 @@ void initHack(int source) {
 			KKOPhaseRandoOn = kko_phase_rando;
 			*(short*)(0x806F0376) = Rando.klaptrap_color_bbother;
 			*(short*)(0x806C8B42) = Rando.klaptrap_color_bbother;
+			if (Rando.wrinkly_rando_on) {
+				*(int*)(0x8064F170) = 0; // Prevent edge cases for Aztec Chunky/Fungi Wheel
+				*(int*)(0x8069E154) = 0x0C000000 | (((int)&getWrinklyLevelIndex & 0xFFFFFF) >> 2); // Modify Function Call
+			}
+			*(short*)(0x8060D01A) = getHi(&InvertedControls); // Change language store to inverted controls store
+			*(short*)(0x8060D01E) = getLo(&InvertedControls); // Change language store to inverted controls store
+			*(short*)(0x8060D04C) = 0x1000; // Prevent inverted controls overwrite
 			// Expand Display List
 			*(short*)(0x805FE56A) = 8000;
 			*(short*)(0x805FE592) = 0x4100; // SLL 4 (Doubles display list size)
@@ -465,6 +589,7 @@ void initHack(int source) {
 			*(short*)(0x806AAFB6) = FLAG_ABILITY_CAMERA; // Other Fairies Display
 			*(short*)(0x806AA762) = FLAG_ABILITY_CAMERA; // Film Display
 			*(short*)(0x8060D986) = FLAG_ABILITY_CAMERA; // Film Refill
+			*(short*)(0x806F6F76) = FLAG_ABILITY_CAMERA; // Film Refill
 			initItemDropTable();
 			initCollectableCollision();
 			// LZ Save

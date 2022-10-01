@@ -11,7 +11,7 @@
     "activate_all_bananaports":"isles",
     "level_randomization":"level_order",
     "boss_location_rando": true,
-    "bananaport_rando":true,
+    "bananaport_rando":"in_level",
     "kasplat_rando_setting":"vanilla_locations",
     "kong_rando":true,
     "random_patches":true,
@@ -66,5 +66,6 @@
     "shop_indicator":true,
     "fast_warps":true,
     "dpad_display":true,
-    "auto_keys":true
+    "auto_keys":true,
+    "win_condition": "beat_krool"
   } 

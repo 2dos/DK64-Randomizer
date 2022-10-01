@@ -13,6 +13,11 @@ extern void callParentMapFilter(void);
 extern void shiftBrokenJapesPortal(void);
 extern void quickInit(void);
 
+extern int getWrinklyLevelIndex(void);
+extern void initOptionScreen(void);
+extern int getLo(void* addr);
+extern int getHi(void* addr);
+
 extern void level_order_rando_funcs(void);
 extern void unlockKongs(void);
 extern void unlockMoves(void);
@@ -151,4 +156,23 @@ extern void handleDPadFunctionality(void);
 extern void file_progress_screen_code(actorData* actor, int buttons);
 extern int* displayTopText(int* dl, short x, short y, float scale);
 extern void FileProgressInit(actorData* menu_controller);
+extern void checkTotalCache(void);
+extern void checkSeedVictory(void);
+extern void checkVictory_flaghook(int flag);
+extern void FileProgressInitSub(int file, int shuffle);
+extern void checkSkippableCutscene(void);
+extern void updateSkippableCutscenes(void);
+extern void parseCutsceneData(void);
 //extern void getRandoNextMovePurchase(shop_paad* shop_info, KongBase* moves);
+extern void adjustAnimationTables(void);
+extern void adaptKrushaZBAnimation_PunchOStand(int action, void* player, int player_index);
+extern void adaptKrushaZBAnimation_Charge(actorData* actor, int anim);
+extern void updateCutsceneModels(actorData* actor, int size);
+extern void initTracker(void);
+extern void wipeFileMod(int file, int will_save);
+extern void enterFileProgress(int sfx);
+extern void pokemonSnapMode(void);
+extern int isSnapEnemyInRange(void);
+extern int getPkmnSnapData(int* frames, int* current, int* total);
+
+extern unsigned int cs_skip_db[432];
