@@ -37,7 +37,7 @@
     "hard_troff_n_scoff": false,
     "helm_setting": "skip_start",
     "high_req": true,
-    "kasplat_rando_setting": "vanilla_locations",
+    "kasplat_rando_setting": 1,
     "keys_random": false,
     "kong_rando": true,
     "krool_access": true,

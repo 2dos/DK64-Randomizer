@@ -12,7 +12,7 @@
     "level_randomization":"loadingzonesdecoupled",
     "boss_location_rando":true,
     "bananaport_rando":"crossmap_decoupled",
-    "kasplat_rando_setting":"location_shuffle",
+    "kasplat_rando_setting":2,
     "kong_rando":true,
     "random_patches":true,
     "shuffle_shops":true,

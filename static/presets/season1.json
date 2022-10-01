@@ -12,7 +12,7 @@
     "level_randomization":"level_order",
     "boss_location_rando":true,
     "bananaport_rando":"off",
-    "kasplat_rando_setting":"vanilla_locations",
+    "kasplat_rando_setting":1,
     "kong_rando":true,
     "random_patches":false,
     "shuffle_shops":false,

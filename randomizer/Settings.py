@@ -11,6 +11,7 @@ from randomizer.Enums.Items import Items
 from randomizer.Enums.Kongs import GetKongs, Kongs
 from randomizer.Enums.Levels import Levels
 from randomizer.Enums.Locations import Locations
+from randomizer.Enums.SettingsEnums import KasplatShuffleType
 from randomizer.Enums.Types import Types
 import randomizer.ItemPool as ItemPool
 from randomizer.Lists.Item import ItemList
@@ -538,9 +539,9 @@ class Settings:
         # Kasplat Rando
         self.kasplat_rando = False
         self.kasplat_location_rando = False
-        if self.kasplat_rando_setting == "vanilla_locations":
+        if self.kasplat_rando_setting == KasplatShuffleType.VanillaLocations:
             self.kasplat_rando = True
-        if self.kasplat_rando_setting == "location_shuffle":
+        if self.kasplat_rando_setting == KasplatShuffleType.LocationShuffle:
             self.kasplat_rando = True
             self.kasplat_location_rando = True
 

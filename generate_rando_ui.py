@@ -59,7 +59,11 @@ async def initialize():
 
     templateEnv = Environment(loader=FunctionLoader(loader_func), enable_async=True)
     template = templateEnv.get_template("base.html.jinja2")
-    rendered = await template.render(minigames=MinigameSelector)
+
+    # Import settings enums and inform the template of their existence
+    from randomizer.Enums.SettingsEnums import KasplatShuffleType
+
+    rendered = await template.render(minigames=MinigameSelector, KasplatShuffleType=KasplatShuffleType)
     js.document.documentElement.innerHTML = ""
     js.document.open()
     js.document.write(rendered)

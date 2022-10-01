@@ -4,6 +4,7 @@ import random
 import js
 from js import document
 from ui.bindings import bind
+from randomizer.Enums.SettingsEnums import settings_enum_dict
 
 
 def randomseed(evt):
@@ -396,11 +397,13 @@ def preset_select_changed(event):
                 selector = js.document.getElementById(key)
                 for i in range(0, selector.options.length):
                     selector.item(i).selected = selector.item(i).value in presets[key]
-            else:
+            else:  # It's an int
                 if js.document.getElementsByName(key)[0].hasAttribute("data-slider-value"):
                     js.jq(f"#{key}").slider("setValue", presets[key])
                     js.jq(f"#{key}").slider("enable")
                     js.jq(f"#{key}").parent().find(".slider-disabled").removeClass("slider-disabled")
+                elif key in settings_enum_dict:
+                    js.jq(f"#{key}").val(settings_enum_dict[key](presets[key]))
                 else:
                     js.jq(f"#{key}").val(presets[key])
                 js.jq(f"#{key}").removeAttr("disabled")

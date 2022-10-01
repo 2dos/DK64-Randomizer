@@ -12,6 +12,7 @@ from randomizer.Enums.Levels import Levels
 from randomizer.Enums.Locations import Locations
 from randomizer.Enums.MoveTypes import MoveTypes
 from randomizer.Enums.Regions import Regions
+from randomizer.Enums.SettingsEnums import KasplatShuffleType
 from randomizer.Enums.Transitions import Transitions
 from randomizer.Enums.Types import Types
 from randomizer.Lists.Item import ItemFromKong, ItemList, KongFromItem, NameFromKong
@@ -106,7 +107,7 @@ class Spoiler:
         settings["Random Shop Prices"] = self.settings.random_prices
         settings["Banana Port Randomization"] = self.settings.bananaport_rando
         settings["Shuffle Shop Locations"] = self.settings.shuffle_shops
-        settings["Shuffle Kasplats"] = self.settings.kasplat_rando_setting
+        settings["Shuffle Kasplats"] = KasplatShuffleType.SpoilerName(self.settings.kasplat_rando_setting)
 
         settings["Key 8 Required"] = self.settings.krool_access
         settings["Number of Keys Required"] = self.settings.krool_key_count
