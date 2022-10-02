@@ -7,6 +7,7 @@ import randomizer.ItemPool as ItemPool
 import randomizer.Lists.Exceptions as Ex
 import randomizer.Logic as Logic
 import randomizer.ShuffleExits as ShuffleExits
+import randomizer.LogicFiles.DKIsles as IslesLogic
 from randomizer.CompileHints import compileHints
 from randomizer.Enums.Events import Events
 from randomizer.Enums.Items import Items
@@ -1827,6 +1828,7 @@ def ShuffleMisc(spoiler):
     if spoiler.settings.shuffle_shops:
         ShuffleShopLocations(spoiler)
     if spoiler.settings.activate_all_bananaports in ["all", "isles"]:
+        # In simpler bananaport shuffling, we can rely on the map id and warp number to find pairs
         if spoiler.settings.bananaport_rando in ("in_level", "off"):
             warpMapIds = set([BananaportVanilla[warp].map_id for warp in Warps])
             for map_id in warpMapIds:
@@ -1842,3 +1844,10 @@ def ShuffleMisc(spoiler):
                         warpRegion = Logic.Regions[warpData.region_id]
                         bananaportExit = TransitionFront(pairedWarpData.region_id, lambda l: True)
                         warpRegion.exits.append(bananaportExit)
+        # In complex cross-map shuffling, we have to rely on saved destination regions to generate transitions
+        else:
+            for warp in BananaportVanilla.values():
+                warpRegion = Logic.Regions[warp.region_id]
+                if spoiler.settings.activate_all_bananaports != "isles" or (warp.region_id in IslesLogic.LogicRegions.keys() and warp.destination_region_id in IslesLogic.LogicRegions.keys()):
+                    bananaportExit = TransitionFront(warp.destination_region_id, lambda l: True)
+                    warpRegion.exits.append(bananaportExit)
