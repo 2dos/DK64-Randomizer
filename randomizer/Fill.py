@@ -1105,8 +1105,6 @@ def FillKongsAndMoves(spoiler):
             # In a standard level order seed, we need swim to access level 4 (whatever it is)
             needSwimByThisLevel = 4
             BlockAccessToLevel(spoiler.settings, needSwimByThisLevel)
-        else:
-            BlockAccessToLevel(spoiler.settings, 100)
         Reset()
         unplacedSwim = PlaceItems(spoiler.settings, "assumed", [Items.Swim], ownedItems=ItemPool.AllKongMoves().copy(), validLocations=ItemPool.SharedMoveLocations.copy(), isPriorityMove=True)
         if unplacedSwim > 0:
