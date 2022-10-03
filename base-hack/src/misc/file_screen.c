@@ -178,6 +178,13 @@ int getInitFileMove(int index) {
 					found |= tracker_move_2[move_kong] == index;
 				}
 				break;
+			case PURCHASE_SLAM:
+				if (index == TRACKER_TYPE_SLAM) {
+					if (move_value >= 2) {
+						return move_value;
+					}
+				}
+				break;
 			case PURCHASE_GUN:
 				if (move_value == 1) {
 					found |= tracker_gun[move_kong] == index;
@@ -247,8 +254,14 @@ int getEnabledState(int index) {
 		35: Shockwave
 	*/
 	int is_pre_given = getInitFileMove(index);
-	if (is_pre_given) {
-		return 1;
+	if (index == TRACKER_TYPE_SLAM) {
+		if (is_pre_given >= 2) {
+			return is_pre_given;
+		}
+	} else {
+		if (is_pre_given) {
+			return 1;
+		}
 	}
 	if (index < 25) {
 		int kong = index / 5;

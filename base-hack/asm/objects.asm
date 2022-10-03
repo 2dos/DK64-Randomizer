@@ -15,6 +15,7 @@
 .importobj "obj/src_misc_aesthetic.o"
 .importobj "obj/src_misc_beaver.o"
 .importobj "obj/src_misc_cutscene_database.o"
+.importobj "obj/src_misc_cutscene_remove.o"
 .importobj "obj/src_misc_dpad_menu.o"
 .importobj "obj/src_misc_enemy_drop_table.o"
 .importobj "obj/src_misc_file_screen.o"

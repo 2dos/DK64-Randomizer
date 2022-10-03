@@ -216,6 +216,10 @@ ModifyCameraColorHook:
 	J 	ModifyCameraColor
 	NOP
 
+PlayCutsceneVelocityHook:
+	J 	PlayCutsceneVelocity
+	NOP
+
 loadExtraHooks:
 	LUI t3, hi(InstanceScriptHook)
 	LW t3, lo(InstanceScriptHook) (t3)
@@ -252,6 +256,12 @@ loadExtraHooks:
 	LUI t4, 0x806F
 	SW t3, 0xA70C (t4) // Store Hook
 	SW r0, 0xA710 (t4) // Store NOP
+	
+	LUI t3, hi(PlayCutsceneVelocityHook)
+	LW t3, lo(PlayCutsceneVelocityHook) (t3)
+	LUI t4, 0x8062
+	SW t3, 0xCE38 (t4) // Store Hook
+	SW r0, 0xCE3C (t4) // Store NOP
 
 	LUI t3, hi(FixPufftossInvalidWallCollisionHook)
 	LW t3, lo(FixPufftossInvalidWallCollisionHook) (t3)

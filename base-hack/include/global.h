@@ -169,5 +169,7 @@ extern void enterFileProgress(int sfx);
 extern void pokemonSnapMode(void);
 extern int isSnapEnemyInRange(void);
 extern int getPkmnSnapData(int* frames, int* current, int* total);
+extern void updateSkippableCutscenes(void);
+extern void renderScreenTransitionCheck(int applied_transition);
 
 extern unsigned int cs_skip_db[432];

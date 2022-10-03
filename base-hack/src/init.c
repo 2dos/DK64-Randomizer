@@ -241,6 +241,7 @@ void initHack(int source) {
 				// Fast Vulture
 				*(int*)(0x806C50BC) = 0x0C000000 | (((int)&clearVultureCutscene & 0xFFFFFF) >> 2); // Modify Function Call
 				// General
+				*(int*)(0x80628508) = 0x0C000000 | (((int)&renderScreenTransitionCheck & 0xFFFFFF) >> 2); // Modify Function Call
 				// *(int*)(0x8061D920) = 0xA4205CEC; // Set cutscene state change to 0
 				// *(int*)(0x8061D91C) = 0x0C000000 | (((int)&checkSkippableCutscene & 0xFFFFFF) >> 2); // Modify Function Call
 			} else {
