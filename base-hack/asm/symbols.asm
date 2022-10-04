@@ -33,6 +33,7 @@
 .definelabel playSong, 0x80602A94
 .definelabel playCutscene, 0x8061CC40
 .definelabel setHUDItemAsInfinite, 0x806FB370
+.definelabel resetCoconutHUD, 0x806C4E8C
 .definelabel osWritebackDCacheAll, 0x800052E0
 .definelabel copyFromROM, 0x8060B140
 .definelabel getActorSpawnerIDFromTiedActor, 0x80688E68

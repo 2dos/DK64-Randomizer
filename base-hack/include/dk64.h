@@ -42,6 +42,7 @@ extern void playSong(int songIndex, int volume);
 extern void loadExtraHooks();
 extern void playCutscene(void* actor, int cutscene_index, int cutscene_type);
 extern void setHUDItemAsInfinite(int item_index, int player_index, char isInfinite);
+extern void resetCoconutHUD(void);
 extern void osWritebackDCacheAll();
 extern void copyFromROM(int rom_start, void* write_location, void* file_size_location, int unk1, int unk2, int unk3, int unk4);
 extern int getActorSpawnerID(void* actor);

@@ -253,6 +253,9 @@ void initHack(int source) {
 					cs_skip_db[i] = 0;
 				}
 			}
+			if (Rando.quality_of_life.vanilla_fixes) {
+				*(int*)(0x806BE8D8) = 0x0C000000 | (((int)&RabbitRaceInfiniteCode & 0xFFFFFF) >> 2); // Modify Function Call
+			}
 			if (Rando.quality_of_life.fast_picture) {
 				// Fast Camera Photo
 				*(short*)(0x80699454) = 0x5000; // Fast tick/no mega-slowdown on Biz
