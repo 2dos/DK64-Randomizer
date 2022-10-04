@@ -171,5 +171,7 @@ extern int isSnapEnemyInRange(void);
 extern int getPkmnSnapData(int* frames, int* current, int* total);
 extern void updateSkippableCutscenes(void);
 extern void renderScreenTransitionCheck(int applied_transition);
+extern int updateLevelIGT(void);
+extern int* printLevelIGT(int* dl, int x, int y, float scale, char* str);
 
 extern unsigned int cs_skip_db[432];

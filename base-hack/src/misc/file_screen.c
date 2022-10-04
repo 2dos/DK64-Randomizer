@@ -255,7 +255,7 @@ int getEnabledState(int index) {
 	*/
 	int is_pre_given = getInitFileMove(index);
 	if (index == TRACKER_TYPE_SLAM) {
-		if (is_pre_given >= 2) {
+		if ((is_pre_given >= 2) && (MovesBase[0].simian_slam < 2)) {
 			return is_pre_given;
 		}
 	} else {
@@ -641,10 +641,13 @@ void file_progress_screen_code(actorData* actor, int buttons) {
 					}
 					setPermFlag(FLAG_ESCAPE);
 					Character = Rando.starting_kong;
-					StoredSettings.file_extra[(int)FileIndex].location_sss_purchased = 0;
-					StoredSettings.file_extra[(int)FileIndex].location_ab1_purchased = 0;
-					StoredSettings.file_extra[(int)FileIndex].location_ug1_purchased = 0;
-					StoredSettings.file_extra[(int)FileIndex].location_mln_purchased = 0;
+					StoredSettings.file_extra.location_sss_purchased = 0;
+					StoredSettings.file_extra.location_ab1_purchased = 0;
+					StoredSettings.file_extra.location_ug1_purchased = 0;
+					StoredSettings.file_extra.location_mln_purchased = 0;
+					for (int i = 0; i < 9; i++) {
+						StoredSettings.file_extra.level_igt[i] = 0;
+					}
 					SaveToGlobal();
 				} else {
 					// Dirty File
@@ -695,4 +698,21 @@ void initOptionScreen(void) {
 	*(short*)(0x8002DAE2) = getLo(&InvertedControls); // Save to global
 	*(short*)(0x8002DA88) = 0x1000; // Prevent Language Update
 	*(int*)(0x8002DEC4) = 0x0C000000 | (((int)&displayInverted & 0xFFFFFF) >> 2); // Modify Function Call
+}
+
+static unsigned char previous_map_save = 0x22;
+
+int updateLevelIGT(void) {
+	int new_igt = getNewSaveTime();
+	int sum = 0;
+	for (int i = 0; i < 9; i++) {
+		sum += StoredSettings.file_extra.level_igt[i];
+	}
+	int diff = new_igt - sum;
+	int world = getWorld(previous_map_save, 1);
+	if (world < 9) {
+		StoredSettings.file_extra.level_igt[world] += diff;
+	}
+	previous_map_save = CurrentMap;
+	return new_igt;
 }

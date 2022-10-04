@@ -225,6 +225,7 @@
 .definelabel WipeFile, 0x8060C830
 .definelabel WipeImageCache, 0x8068C080
 .definelabel calculateScreenPosition, 0x80626F8C
+.definelabel getNewSaveTime, 0x805FC98C
 
 //vanilla data
 .definelabel TransitionSpeed, 0x807FD88C
@@ -243,6 +244,8 @@
 .definelabel TempFlagBlock, 0x807FDD90
 .definelabel SubmapData, 0x8076A160
 .definelabel HelmTimerPaused, 0x80713C9B // u8
+.definelabel PauseTextPointer, 0x807FC7E0
+.definelabel LevelNamesPointer, 0x807FC7E8
 .definelabel LagBoost, 0x80744478 // u32
 .definelabel FrameLag, 0x8076AF10
 .definelabel FrameReal, 0x80767CC4

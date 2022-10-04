@@ -240,6 +240,7 @@ extern void updateModelScales(void* actor, int size);
 extern void WipeFile(int file, int will_save);
 extern void WipeImageCache(void);
 extern void calculateScreenPosition(float x, float y, float z, float* x_store, float* y_store, int unk0, float unk1, int unk2);
+extern int getNewSaveTime(void);
 
 //vanilla data
 extern float TransitionSpeed;
@@ -247,6 +248,8 @@ extern char CutsceneWillPlay;
 extern char KRoolRound;
 extern KongBase MovesBase[6];
 extern int PlayerOneColor;
+extern char** PauseTextPointer;
+extern char** LevelNamesPointer;
 extern char Mode;
 extern char TBVoidByte;
 extern int CurrentMap;

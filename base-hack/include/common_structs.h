@@ -704,10 +704,11 @@ typedef struct fileExtraStorage {
 	/* 0x001 */ unsigned char location_ab1_purchased;
 	/* 0x002 */ unsigned char location_ug1_purchased;
 	/* 0x003 */ unsigned char location_mln_purchased;
+	/* 0x004 */ unsigned int level_igt[9];
 } fileExtraStorage;
 
 typedef struct settingsData {
-	/* 0x000 */ fileExtraStorage file_extra[3];
+	/* 0x000 */ fileExtraStorage file_extra;
 } settingsData;
 
 typedef struct behaviour_data {
