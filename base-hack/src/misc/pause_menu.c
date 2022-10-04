@@ -1,6 +1,6 @@
 #include "../../include/common.h"
 
-static char igt_text[15] = "IGT: 000:00:00";
+static char igt_text[20] = "IGT: 0000:00:00";
 
 int* printLevelIGT(int* dl, int x, int y, float scale, char* str) {
     dl = printText(dl, x, y, scale, str);
@@ -17,7 +17,11 @@ int* printLevelIGT(int* dl, int x, int y, float scale, char* str) {
     int igt_h = igt_data / 3600;
     int igt_m = (igt_data / 60) % 60;
     int igt_s = igt_data % 60;
-    dk_strFormat(igt_text, "IGT: %03d:%02d:%02d", igt_h, igt_m, igt_s);
+    if (igt_data < 3600) {
+        dk_strFormat(igt_text, "TIME: %02d:%02d", igt_m, igt_s);
+    } else {
+        dk_strFormat(igt_text, "TIME: %d:%02d:%02d", igt_h, igt_m, igt_s);
+    }
     dl = printText(dl, x, y + 106, 0.5f, (char*)igt_text);
     return dl;
 }

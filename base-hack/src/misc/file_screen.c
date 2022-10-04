@@ -712,6 +712,7 @@ int updateLevelIGT(void) {
 	int world = getWorld(previous_map_save, 1);
 	if (world < 9) {
 		StoredSettings.file_extra.level_igt[world] += diff;
+		SaveToGlobal();
 	}
 	previous_map_save = CurrentMap;
 	return new_igt;
