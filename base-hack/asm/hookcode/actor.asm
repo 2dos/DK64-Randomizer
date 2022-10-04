@@ -261,6 +261,8 @@ KeyCompressionCode:
     SH 			t5, 0x146 (t4)
 
 VineCode:
+    // | 0x00800000
+    // & 0xFBFF7FFF
     ADDIU       at, r0, 70
     SH          at, 0x128 (s0) // Make transparent
     ADDIU       at, r0, 0xFF
@@ -269,7 +271,18 @@ VineCode:
     SB          r0, 0x16C (s0) // B
     LUI         at, 0x80
     OR          t7, v0, at // Enable RGB Mask
-    LUI         at, 0xFFFF
+    LUI         at, 0xFBFF
     ORI         at, at, 0x7FFF
     J           0x80698414
     AND         t7, t7, at // Enable Opacity filter
+
+VineShowCode:
+    // | 0x04008004
+    // & 0xFF7FFFFF
+    LUI         at, 0x400
+    ORI         at, at, 0x8004
+    OR          v0, v0, at
+    LUI         at, 0xFF7F
+    ORI         at, at, 0xFFFF
+    J           0x80698428
+    AND         t8, v0, at

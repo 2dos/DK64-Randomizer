@@ -209,6 +209,9 @@ InvertCameraControlsHook:
 VineCodeHook:
 	J 	VineCode
 	NOP
+VineShowHook:
+	J 	VineShowCode
+	NOP
 SkipCutscenePansHook:
 	J 	SkipCutscenePans
 	NOP
@@ -232,6 +235,12 @@ loadExtraHooks:
 	LUI t4, 0x806A
 	SW t3, 0x840C (t4) // Store Hook
 	SW r0, 0x8410 (t4) // Store NOP
+	
+	LUI t3, hi(VineShowHook)
+	LW t3, lo(VineShowHook) (t3)
+	LUI t4, 0x806A
+	SW t3, 0x8420 (t4) // Store Hook
+	SW r0, 0x8424 (t4) // Store NOP
 	
 	LUI t3, hi(ModifyCameraColorHook)
 	LW t3, lo(ModifyCameraColorHook) (t3)

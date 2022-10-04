@@ -23,6 +23,7 @@
 .definelabel prepKongColoring, 0x8068A508
 .definelabel dk_memcpy, 0x80003000
 .definelabel SaveToGlobal, 0x8060DEA8
+.definelabel SaveToUnk, 0x8060CB9C
 .definelabel DetectGameOver, 0x80714394
 .definelabel DetectAdventure, 0x8071432C
 .definelabel displaySprite, 0x806AB4EC

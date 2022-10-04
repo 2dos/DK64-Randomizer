@@ -22,6 +22,6 @@ int* printLevelIGT(int* dl, int x, int y, float scale, char* str) {
     } else {
         dk_strFormat(igt_text, "TIME: %d:%02d:%02d", igt_h, igt_m, igt_s);
     }
-    dl = printText(dl, x, y + 106, 0.5f, (char*)igt_text);
+    dl = printText(dl, x, y + 0x38, 0.5f, (char*)igt_text);
     return dl;
 }
