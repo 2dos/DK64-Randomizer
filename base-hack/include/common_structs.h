@@ -352,6 +352,25 @@ typedef struct cutscene_item {
 	/* 0x00C */ char unkC[0x14-0xC];
 } cutscene_item;
 
+typedef struct pan_data {
+	/* 0x000 */ short x;
+	/* 0x002 */ short y;
+	/* 0x004 */ short z;
+	/* 0x006 */ short rot_data[3];
+	/* 0x00C */ unsigned char zoom;
+	/* 0x00D */ unsigned char roll;
+} pan_data;
+
+typedef struct cutscene_pan_item {
+	/* 0x000 */ char unk0;
+	/* 0x001 */ unsigned char command;
+	/* 0x002 */ char unk2[2];
+	/* 0x004 */ short point_count;
+	/* 0x006 */ char unk6[2];
+	/* 0x008 */ pan_data* pan_content;
+	/* 0x00C */ char unkC[0x14-0xC];
+} cutscene_pan_item;
+
 typedef struct cutscene_item_data {
 	/* 0x000 */ short num_points;
 	/* 0x002 */ short unk_02;

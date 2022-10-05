@@ -170,6 +170,22 @@ void modifyCutsceneItem(int bank, int item, int new_param1, int new_param2, int 
 	}
 }
 
+void modifyCutscenePanPoint(int bank, int item, int point_index, int x, int y, int z, int rot0, int rot1, int rot2, int zoom, int roll) {
+	if (CutsceneBanks[bank].cutscene_funcbank) {
+		cutscene_pan_item* funcbank = (cutscene_pan_item*)CutsceneBanks[bank].cutscene_funcbank;
+		cutscene_pan_item* cs_item = (cutscene_pan_item*)&funcbank[item];
+		pan_data* data = (pan_data*)&cs_item->pan_content[point_index];
+		data->x = x;
+		data->y = y;
+		data->z = z;
+		data->rot_data[0] = rot0;
+		data->rot_data[1] = rot1;
+		data->rot_data[2] = rot2;
+		data->zoom = zoom;
+		data->roll = roll;
+	}
+}
+
 int getWrinklyLevelIndex(void) {
 	return getWorld(CurrentMap, 0);
 }
