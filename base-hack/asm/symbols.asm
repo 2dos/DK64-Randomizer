@@ -228,6 +228,7 @@
 .definelabel WipeImageCache, 0x8068C080
 .definelabel calculateScreenPosition, 0x80626F8C
 .definelabel getNewSaveTime, 0x805FC98C
+.definelabel unkBonusFunction, 0x8067ACB4
 
 //vanilla data
 .definelabel TransitionSpeed, 0x807FD88C

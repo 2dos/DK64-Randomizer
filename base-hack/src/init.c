@@ -164,6 +164,10 @@ void initHack(int source) {
 				*(short*)(0x80681898) = 0x1000;
 				*(int*)(0x8068191C) = 0; // Remove Oh Banana
 			}
+			if (Rando.resolve_bonus) {
+				*(int*)(0x80681158) = 0x0C000000 | (((int)&completeBonus & 0xFFFFFF) >> 2); // Modify Function Call
+				*(short*)(0x80681962) = 1; // Make bonus noclip	
+			}
 			replace_zones(1);
 			randomize_bosses();
 			loadExtraHooks();

@@ -243,6 +243,7 @@ extern void WipeFile(int file, int will_save);
 extern void WipeImageCache(void);
 extern void calculateScreenPosition(float x, float y, float z, float* x_store, float* y_store, int unk0, float unk1, int unk2);
 extern int getNewSaveTime(void);
+extern void unkBonusFunction(actorData* actor);
 
 //vanilla data
 extern float TransitionSpeed;

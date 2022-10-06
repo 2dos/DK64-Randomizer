@@ -175,5 +175,6 @@ extern void renderScreenTransitionCheck(int applied_transition);
 extern int updateLevelIGT(void);
 extern int* printLevelIGT(int* dl, int x, int y, float scale, char* str);
 extern void RabbitRaceInfiniteCode(void);
+extern void completeBonus(actorData* actor);
 
 extern unsigned int cs_skip_db[432];

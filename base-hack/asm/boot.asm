@@ -469,11 +469,11 @@ loadExtraHooks:
 	BEQZ t3, loadExtraHooks_2
 	NOP
 
-	LUI t3, hi(BonusAutocompleteHook)
-	LW t3, lo(BonusAutocompleteHook) (t3)
-	LUI t4, 0x8068
-	SW t3, 0x0D10 (t4) // Store Hook
-	SW r0, 0x0D14 (t4) // Store NOP
+	//LUI t3, hi(BonusAutocompleteHook)
+	//LW t3, lo(BonusAutocompleteHook) (t3)
+	//LUI t4, 0x8068
+	//SW t3, 0x0D10 (t4) // Store Hook
+	//SW r0, 0x0D14 (t4) // Store NOP
 
 	loadExtraHooks_2:
 	LUI t3, hi(KeyCompressionHook)

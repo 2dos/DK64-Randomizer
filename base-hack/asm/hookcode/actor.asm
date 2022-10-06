@@ -120,6 +120,48 @@ destroyAllBarrelsCode:
     J 			0x80680D18
     NOP
 
+destroyAllBarrelsCodeNew:
+    LUI         a3, hi(CurrentActorPointer_0)
+    LW          a3, lo(CurrentActorPointer_0) (a3)
+    LUI         v0, hi(Gamemode)
+    LBU         v0, lo(Gamemode) (v0)
+    ADDIU       a2, r0, 3
+    BEQ         v0, a2, destroyAllBarrelsCodeNew_Finish
+    NOP
+    LUI         v0, hi(bonusAutocomplete)
+    LBU         v0, lo(bonusAutocomplete) (v0)
+    ANDI        a2, v0, 1
+    BEQZ        a2, destroyAllBarrelsCode_Helm
+    NOP
+    LW          a2, 0x58 (a3)
+    ADDIU       a1, r0, 0x1C
+    BNE         a1, a2, destroyAllBarrelsCodeNew_Helm
+    NOP
+    ADDIU       a1, r0, 0xC
+    SB          a1, 0x154 (a3)
+    SB          r0, 0x155 (a3)
+    ADDIU       a1, r0, 3
+    SB          a1, 0x185 (a3)
+
+    destroyAllBarrelsCodeNew_Helm:
+        ANDI    a2, v0, 2
+        BEQZ    a2, destroyAllBarrelsCodeNew_Finish
+        NOP
+        LW      a2, 0x58 (a3)
+        ADDIU   a1, r0, 0x6B
+        BNE     a1, a2, destroyAllBarrelsCodeNew_Finish
+        NOP
+        ADDIU       a1, r0, 0xC
+        SB          a1, 0x154 (a3)
+        SB          r0, 0x155 (a3)
+        ADDIU       a1, r0, 3
+        SB          a1, 0x185 (a3)
+
+    destroyAllBarrelsCodeNew_Finish:
+        LUI     v0, 0x8080
+        J       0x80681228
+        ADDIU   v0, v0, 0xBB70
+
 GuardAutoclear:
     // Check Overlay
     LUI 		a1, 0x8080
