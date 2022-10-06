@@ -19,26 +19,30 @@ class DoorData:
         location=[0, 0, 0, 0],
         rx=0,
         rz=0,
-        kong_lst=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
-        wrinkly_only=False,
-        placed="none",
         scale=1,
-        logic=0
+        kong_lst=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
+        group = 0,
+        logic=lambda l: True, 
+        placed="none",
+        door_type="both",
+        enabled=False #TODO: test argument that I should remove before every PR
     ):
         """Initialize with provided data."""
         self.name = name
         self.map = map
-        self.location = location
         self.logicregion = logicregion
+        self.location = location
         self.rx = rx
         self.rz = rz
-        self.kongs = kong_lst
         self.scale = scale
+        self.kongs = kong_lst
+        self.group = group
         self.logic = logic
         self.placed = placed
         self.default_placed = placed
+        self.door_type = door_type  # denotes whether it can be tns, wrinkly or both
         self.assigned_kong = None
-        self.wrinkly_only = wrinkly_only  # not a suitable T&S portal location, because of higher requirements, or because it's not very easy to find
+        self.enabled=enabled
 
     def assignDoor(self, kong):
         """Assign door to kong."""
@@ -73,6 +77,12 @@ door_locations = {
         DoorData(name="Aztec: Near Snide's", map=Maps.AngryAztec, location=[3573.712, 120, 4456.399, 285], placed="tns"),  # T&S Portal by Snide
         DoorData(name="Aztec: Behind 5DT", map=Maps.AngryAztec, location=[1968.329, 180, 3457.189, 244], placed="tns"),  # T&S Portal behind 5DT
         DoorData(name="Next to Candy - right", map=Maps.AngryAztec, logicregion=Regions.AngryAztecStart, location=[2468, 120, 473.5, 298.75]),
+        DoorData(name="Under Diddy's Tiny Temple Switch", map=Maps.AngryAztec, logicregion=Regions.AngryAztecStart, location=[3048, 214, 598, 220, 40], enabled=True),
+        DoorData(name="Under Chunky's Tiny Temple Switch", map=Maps.AngryAztec, logicregion=Regions.AngryAztecStart, location=[3150, 212, 522, 220, 40], enabled=True),
+        DoorData(name="Under Tiny's Tiny Temple Switch", map=Maps.AngryAztec, logicregion=Regions.AngryAztecStart, location=[3188, 213, 779, 38, 218], enabled=True),
+        DoorData(name="Under Lanky's Tiny Temple Switch", map=Maps.AngryAztec, logicregion=Regions.AngryAztecStart, location=[3314, 213, 743, 40, 220], enabled=True),
+        DoorData(name="Next to Tiny Temple Entrance - left", map=Maps.AngryAztec, logicregion=Regions.AngryAztecStart, location=[3032, 214, 668, 302, 122], enabled=True),
+        DoorData(name="Next to Tiny Temple Entrance - right", map=Maps.AngryAztec, logicregion=Regions.AngryAztecStart, location=[3117, 214, 780, 310, 130], enabled=True),
         DoorData(name="5Door Temple's 6th Door", map=Maps.AngryAztec, logicregion=Regions.AngryAztecMain, location=[2212, 180, 3687.3, 62.9], scale=1.47),
     ],
     Levels.FranticFactory: [
@@ -142,7 +152,7 @@ door_locations = {
             location=[2238, 1837, 4099, 251.7],
             kong_lst=[Kongs.diddy],
             logic=lambda l: l.jetpack,
-            wrinkly_only=True,
+            door_type=True,
         ),
     ],
     Levels.FungiForest: [
@@ -191,6 +201,11 @@ door_locations = {
         DoorData(name="Outside Diddy's Upper Cabin", map=Maps.CrystalCaves, logicregion=Regions.CrystalCavesMain, location=[3666.7, 343, 1762, 273.8]),
         DoorData(name="Under the Waterfall (Cabin Area)", map=Maps.CrystalCaves, logicregion=Regions.CrystalCavesMain, location=[2230, 0, 2178, 100]),
         DoorData(name="Across from the 5Door Cabin", map=Maps.CrystalCaves, logicregion=Regions.CrystalCavesMain, location=[2970, 128, 1499, 68.5], rx=9, rz=11),
+        #DoorData(name="5Door Igloo - DK's right", map=Maps.CrystalCaves, logicregion=Regions.CrystalCavesMain, location=[585, 48, 1396, 5], scale=0.95), # Too easy to accidentally activate
+        #DoorData(name="5Door Igloo - Diddy's right", map=Maps.CrystalCaves, logicregion=Regions.CrystalCavesMain, location=[684.9, 48, 1312, 75], scale=0.95), # Too easy to accidentally activate
+        #DoorData(name="5Door Igloo - Tiny's right", map=Maps.CrystalCaves, logicregion=Regions.CrystalCavesMain, location=[635, 48, 1190, 148], scale=0.95), # Too easy to accidentally activate
+        #DoorData(name="5Door Igloo - Chunky's right", map=Maps.CrystalCaves, logicregion=Regions.CrystalCavesMain, location=[504.5, 48, 1200, 220.3], scale=0.95), # Too easy to accidentally activate
+        #DoorData(name="5Door Igloo - Lanky's right", map=Maps.CrystalCaves, logicregion=Regions.CrystalCavesMain, location=[473.1, 48, 1327, 292.7], scale=0.95), # Too easy to accidentally activate
         #DoorData(name="5Door Igloo - DK's instrument pad", map=Maps.CrystalCaves, logicregion=Regions.CrystalCavesMain, location=[481, 0, 1444, 328]), # Too easy to accidentally activate
         #DoorData(name="5Door Igloo - Diddy's instrument pad", map=Maps.CrystalCaves, logicregion=Regions.CrystalCavesMain, location=[698.5, 0, 1424.5, 40.5]), # Too easy to accidentally activate
         #DoorData(name="5Door Igloo - Tiny's instrument pad", map=Maps.CrystalCaves, logicregion=Regions.CrystalCavesMain, location=[747, 0, 1212.5, 111.8]), # Too easy to accidentally activate
