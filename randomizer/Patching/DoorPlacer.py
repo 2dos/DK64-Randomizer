@@ -3,7 +3,7 @@ import random
 
 import js
 from randomizer.Lists.MapsAndExits import Maps
-from randomizer.Lists.DoorLocations import door_locations
+from randomizer.Lists.DoorLocations import door_locations # this don't remember what we did earlier
 from randomizer.Patching.Patcher import ROM
 from randomizer.Spoiler import Spoiler
 from randomizer.Patching.Lib import float_to_hex, getNextFreeID, addNewScript
@@ -19,38 +19,6 @@ def place_door_locations(spoiler: Spoiler):
         #   0x18: Metal Pad (Az Lobby)
         #   0x23D: Wrinkly Wheel (Fungi Lobby)
         #   0x28: Lever (Fungi Lobby)
-        # Reset Doors
-        for level in door_locations:
-            for door in door_locations[level]:
-                door.placed = door.default_placed
-                if spoiler.settings.wrinkly_location_rando:
-                    if door.placed == "wrinkly":
-                        door.placed = "none"
-                if spoiler.settings.tns_location_rando:
-                    if door.placed == "tns":
-                        door.placed = "none"
-        # Assign Wrinkly Doors & T&S Portals
-        for level in door_locations:
-            if spoiler.settings.wrinkly_location_rando:
-                for new_door in range(5):  # NOTE: If testing all locations, replace "range(5) with range(len(door_locations[level]))"
-                    # Get all doors that can be placed
-                    available_doors = []
-                    for door_index, door in enumerate(door_locations[level]):
-                        if door.placed == "none":
-                            available_doors.append(door_index)
-                    if len(available_doors) > 0:
-                        selected_door = random.choice(available_doors)
-                        door_locations[level][selected_door].assignDoor(new_door % 5)  # Clamp to within [0,4], preventing list index errors
-                limit = random.choice([3, 4, 5])
-                for new_portal in range(limit):
-                    # Get all doors that can be placed
-                    available_portals = []
-                    for door_index, door in enumerate(door_locations[level]):
-                        if door.placed == "none":
-                            available_portals.append(door_index)
-                    if len(available_portals) > 0:
-                        selected_portal = random.choice(available_portals)
-                        door_locations[level][selected_portal].assignPortal()
         # Handle Setup
         for cont_map_id in range(216):
             setup_table = js.pointer_addresses[9]["entries"][cont_map_id]["pointing_to"]
@@ -97,11 +65,13 @@ def place_door_locations(spoiler: Spoiler):
             portal_indicator_ids = []
             portal_ids = []
             indicator_ids = []
-            for level in door_locations:
-                for door in door_locations[level]:
+            for level in spoiler.shuffled_door_data:
+                for data in spoiler.shuffled_door_data[level]:
+                    door = door_locations[level][data[0]]
+                    door_type = data[1]
                     if door.map == cont_map_id:
-                        if door.placed == "wrinkly" and spoiler.settings.wrinkly_location_rando:
-                            print(f"Wrinkly: {door.name}: Kong {door.assigned_kong}")
+                        if door_type == "wrinkly" and spoiler.settings.wrinkly_location_rando:
+                            kong = data[2]
                             item_data = []
                             for coord_index in range(3):
                                 item_data.append(int(float_to_hex(door.location[coord_index]), 16))  # x y z
@@ -115,11 +85,10 @@ def place_door_locations(spoiler: Spoiler):
                             id = getNextFreeID(cont_map_id, door_ids)
                             map_wrinkly_ids.append(id)
                             door_ids.append(id)
-                            item_data.append((wrinkly_doors[door.assigned_kong] << 16) | id)
+                            item_data.append((wrinkly_doors[kong] << 16) | id)
                             item_data.append(1 << 16)
                             retained_model2.append(item_data)
-                        elif door.placed == "tns" and spoiler.settings.tns_location_rando:
-                            print(f"T&S: {door.name}")
+                        elif door_type == "tns" and spoiler.settings.tns_location_rando:
                             for k in range(2):
                                 item_data = []
                                 for coord_index in range(3):

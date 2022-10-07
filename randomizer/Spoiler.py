@@ -358,6 +358,10 @@ class Spoiler:
             humanspoiler["Shuffled Bananaports"] = self.human_warp_locations
         if len(self.hint_list) > 0:
             humanspoiler["Wrinkly Hints"] = self.hint_list
+        if self.settings.wrinkly_location_rando:
+            humanspoiler["Wrinkly Door Locations"] = self.human_hint_doors
+        if self.settings.tns_location_rando:
+            humanspoiler["T&S Portal Locations"] = self.human_portal_doors
         if self.settings.crown_placement_rando:
             humanspoiler["Shuffled Crowns"] = self.human_crowns
         level_dict = {
