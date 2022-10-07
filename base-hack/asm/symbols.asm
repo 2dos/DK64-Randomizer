@@ -23,6 +23,7 @@
 .definelabel prepKongColoring, 0x8068A508
 .definelabel dk_memcpy, 0x80003000
 .definelabel SaveToGlobal, 0x8060DEA8
+.definelabel SaveToUnk, 0x8060CB9C
 .definelabel DetectGameOver, 0x80714394
 .definelabel DetectAdventure, 0x8071432C
 .definelabel displaySprite, 0x806AB4EC
@@ -32,6 +33,7 @@
 .definelabel playSong, 0x80602A94
 .definelabel playCutscene, 0x8061CC40
 .definelabel setHUDItemAsInfinite, 0x806FB370
+.definelabel resetCoconutHUD, 0x806C4E8C
 .definelabel osWritebackDCacheAll, 0x800052E0
 .definelabel copyFromROM, 0x8060B140
 .definelabel getActorSpawnerIDFromTiedActor, 0x80688E68
@@ -225,6 +227,8 @@
 .definelabel WipeFile, 0x8060C830
 .definelabel WipeImageCache, 0x8068C080
 .definelabel calculateScreenPosition, 0x80626F8C
+.definelabel getNewSaveTime, 0x805FC98C
+.definelabel unkBonusFunction, 0x8067ACB4
 
 //vanilla data
 .definelabel TransitionSpeed, 0x807FD88C
@@ -243,6 +247,8 @@
 .definelabel TempFlagBlock, 0x807FDD90
 .definelabel SubmapData, 0x8076A160
 .definelabel HelmTimerPaused, 0x80713C9B // u8
+.definelabel PauseTextPointer, 0x807FC7E0
+.definelabel LevelNamesPointer, 0x807FC7E8
 .definelabel LagBoost, 0x80744478 // u32
 .definelabel FrameLag, 0x8076AF10
 .definelabel FrameReal, 0x80767CC4

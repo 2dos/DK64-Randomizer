@@ -128,7 +128,7 @@ void updateProgressive(void) {
 		checkProgressive(
 			&stored_slam_level,
 			&MovesBase[0].simian_slam,
-			&StoredSettings.file_extra[(int)FileIndex].location_sss_purchased,
+			&StoredSettings.file_extra.location_sss_purchased,
 			1,
 			2,
 			level,
@@ -140,7 +140,7 @@ void updateProgressive(void) {
 		checkProgressive(
 			&stored_belt_level,
 			&MovesBase[0].ammo_belt,
-			&StoredSettings.file_extra[(int)FileIndex].location_ab1_purchased,
+			&StoredSettings.file_extra.location_ab1_purchased,
 			0,
 			1,
 			level,
@@ -152,7 +152,7 @@ void updateProgressive(void) {
 		checkProgressive(
 			&stored_instrument_level,
 			&MovesBase[0].instrument_bitfield,
-			&StoredSettings.file_extra[(int)FileIndex].location_ug1_purchased,
+			&StoredSettings.file_extra.location_ug1_purchased,
 			1,
 			1,
 			level,
@@ -164,7 +164,7 @@ void updateProgressive(void) {
 		checkProgressive(
 			&stored_melons,
 			&CollectableBase.Melons,
-			&StoredSettings.file_extra[(int)FileIndex].location_mln_purchased,
+			&StoredSettings.file_extra.location_mln_purchased,
 			2,
 			3,
 			level,

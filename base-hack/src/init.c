@@ -164,6 +164,10 @@ void initHack(int source) {
 				*(short*)(0x80681898) = 0x1000;
 				*(int*)(0x8068191C) = 0; // Remove Oh Banana
 			}
+			if (Rando.resolve_bonus) {
+				*(int*)(0x80681158) = 0x0C000000 | (((int)&completeBonus & 0xFFFFFF) >> 2); // Modify Function Call
+				*(short*)(0x80681962) = 1; // Make bonus noclip	
+			}
 			replace_zones(1);
 			randomize_bosses();
 			loadExtraHooks();
@@ -183,6 +187,10 @@ void initHack(int source) {
 			}
 			*(int*)(0x8074C1B8) = (int)&newCounterCode;
 			fixMusicRando();
+			// In-Level IGT
+			// *(int*)(0x8060DF28) = 0x0C000000 | (((int)&updateLevelIGT & 0xFFFFFF) >> 2); // Modify Function Call
+			*(int*)(0x806ABB0C) = 0x0C000000 | (((int)&printLevelIGT & 0xFFFFFF) >> 2); // Modify Function Call
+			*(short*)(0x806ABB32) = 106; // Adjust kong name height
 			// Disable Sniper Scope Overlay
 			int asm_code = 0x00801025; // OR $v0, $a0, $r0
 			*(int*)(0x806FF80C) = asm_code;
@@ -241,12 +249,16 @@ void initHack(int source) {
 				// Fast Vulture
 				*(int*)(0x806C50BC) = 0x0C000000 | (((int)&clearVultureCutscene & 0xFFFFFF) >> 2); // Modify Function Call
 				// General
+				*(int*)(0x80628508) = 0x0C000000 | (((int)&renderScreenTransitionCheck & 0xFFFFFF) >> 2); // Modify Function Call
 				// *(int*)(0x8061D920) = 0xA4205CEC; // Set cutscene state change to 0
 				// *(int*)(0x8061D91C) = 0x0C000000 | (((int)&checkSkippableCutscene & 0xFFFFFF) >> 2); // Modify Function Call
 			} else {
 				for (int i = 0; i < 432; i++) {
 					cs_skip_db[i] = 0;
 				}
+			}
+			if (Rando.quality_of_life.vanilla_fixes) {
+				*(int*)(0x806BE8D8) = 0x0C000000 | (((int)&RabbitRaceInfiniteCode & 0xFFFFFF) >> 2); // Modify Function Call
 			}
 			if (Rando.quality_of_life.fast_picture) {
 				// Fast Camera Photo

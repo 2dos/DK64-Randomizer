@@ -527,6 +527,63 @@ void TNSIndicatorGenericCode(behaviour_data* behaviour, int index, int id) {
 	}
 }
 
+static const int crown_maps[] = {
+	0x35, // Japes
+	0x49, // Aztec
+	0x9B, // Factory
+	0x9C, // Galleon
+	0x9F, // Fungi
+	0x9D, // Fungi Lobby
+	0x9E, // Snide's
+	0xA0, // Caves
+	0xA1, // Castle
+	0xA2, // Helm
+};
+
+void CrownPadGenericCode(behaviour_data* behaviour, int index, int id, int crown_level_index) {
+	if (behaviour->current_state == 0) {
+		setScriptRunState(behaviour, 3, 300);
+		behaviour->next_state = 1;
+	}
+	int world = getWorld(CurrentMap, 1);
+	int crown_offset = world;
+	if (world > 4) {
+		if (world < 7) {
+			crown_offset = world + 2;
+		} else {
+			crown_offset = 5 + crown_level_index;
+		}
+	}
+	if (checkFlag(FLAG_CROWN_JAPES + crown_offset,0)) {
+		behaviour->unk_71 = 0;
+		behaviour->unk_60 = 1;
+		behaviour->unk_62 = 0;
+		behaviour->unk_66 = 255;
+		setScriptRunState(behaviour, 2, 0);
+	}
+	if (Player) {
+		if ((Player->obj_props_bitfield & 0x2000) == 0) {
+			if ((Player->characterID >= 2) && (Player->characterID <= 6)) {
+				if (Player->touching_object == 1) {
+					if (index == Player->standing_on_index) {
+						if (!checkFlag(FLAG_FTT_CROWNPAD,0)) {
+							setPermFlag(FLAG_FTT_CROWNPAD);
+							*(char*)(0x807F693F) = 1;
+							PlayCutsceneFromModelTwoScript(behaviour, 24, 1, 0);
+							behaviour->next_state = 2;
+						}
+						if (Player->standing_on_subposition == 2) {
+							if (behaviour->current_state >= 0) {
+								createCollision(0, Player, COLLISION_BATTLE_CROWN, crown_maps[crown_offset], 2, collisionPos[0], collisionPos[1], collisionPos[2]);
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+}
+
 int isBonus(int map) {
 	int level = levelIndexMapping[map];
 	return (level == 9) || (level == 0xD);
@@ -1408,6 +1465,10 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 		TNSPortalGenericCode(behaviour_pointer, id, param2);
 	} else if (index == -4) {
 		TNSIndicatorGenericCode(behaviour_pointer, id, param2);
+	} else if (index == -5) {
+		CrownPadGenericCode(behaviour_pointer, id, param2, 0);
+	} else if (index == -6) {
+		CrownPadGenericCode(behaviour_pointer, id, param2, 1);
 	}
 	InstanceScriptParams[1] = id;
 	InstanceScriptParams[2] = index;

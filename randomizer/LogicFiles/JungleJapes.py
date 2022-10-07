@@ -43,7 +43,7 @@ LogicRegions = {
         TransitionFront(Regions.JapesCatacomb, lambda l: l.Slam and l.chunkyAccess and l.barrels, Transitions.JapesMainToCatacomb),
         TransitionFront(Regions.FunkyJapes, lambda l: True),
         TransitionFront(Regions.Snide, lambda l: True),
-        TransitionFront(Regions.JapesBossLobby, lambda l: l.vines),  # Falling from top is not intuitive
+        TransitionFront(Regions.JapesBossLobby, lambda l: not l.settings.tns_location_rando),  # Falling from top is not super intuitive but extremely convenient for T&S door rando
         TransitionFront(Regions.JapesBaboonBlast, lambda l: l.vines and l.blast and l.isdonkey)  # , Transitions.JapesMainToBBlast)
     ]),
 
@@ -65,7 +65,7 @@ LogicRegions = {
         LocationLogic(Locations.JapesTinyFeatherGateBarrel, lambda l: l.feather and l.istiny, MinigameType.BonusBarrel),
     ], [], [
         TransitionFront(Regions.JungleJapesMain, lambda l: True),
-        TransitionFront(Regions.JapesBossLobby, lambda l: True),
+        TransitionFront(Regions.JapesBossLobby, lambda l: not l.settings.tns_location_rando),
     ]),
 
     Regions.JapesBeyondCoconutGate1: Region("Japes Beyond Coconut Gate 1", Levels.JungleJapes, False, None, [
@@ -86,7 +86,7 @@ LogicRegions = {
     ]),
 
     Regions.TinyHive: Region("Tiny Hive", Levels.JungleJapes, False, -1, [
-        LocationLogic(Locations.JapesTinyBeehive, lambda l: l.Slam and l.istiny),
+        LocationLogic(Locations.JapesTinyBeehive, lambda l: l.Slam and l.istiny and l.oranges),
     ], [], [
         TransitionFront(Regions.JapesBeyondFeatherGate, lambda l: True, Transitions.JapesTinyHiveToMain),
     ]),
@@ -113,7 +113,7 @@ LogicRegions = {
         Event(Events.JapesChunkySwitch, lambda l: l.Slam and l.ischunky),
     ], [
         TransitionFront(Regions.JapesBeyondCoconutGate2, lambda l: True),
-        TransitionFront(Regions.JapesBossLobby, lambda l: True),
+        TransitionFront(Regions.JapesBossLobby, lambda l: not l.settings.tns_location_rando),
     ]),
 
     # Lanky Cave deathwarp: Requires you to be lanky and have simian slam so you can slam the pegs and summon zingers to kill you

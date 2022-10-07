@@ -142,7 +142,7 @@ KasplatLocationList = {
             zmin=1650,
             zmax=1800,
             region=Regions.JungleJapesMain,
-            additional_logic=lambda l: l.swim,
+            additional_logic=lambda l: l.swim and (l.oranges or l.HasGun(Kongs.any)),
         ),
         KasplatLocation(
             name="Japes Kasplat: In the water near Rambi Wall",
@@ -154,7 +154,7 @@ KasplatLocationList = {
             zmin=2700,
             zmax=2900,
             region=Regions.BeyondRambiGate,
-            additional_logic=lambda l: l.swim,
+            additional_logic=lambda l: l.swim and (l.oranges or l.HasGun(Kongs.any)),
         ),
         KasplatLocation(
             name="Japes Kasplat: Near Cranky's",
@@ -388,18 +388,19 @@ KasplatLocationList = {
             region=Regions.LlamaTemple,
             additional_logic=lambda l: l.grape,
         ),
-        KasplatLocation(
-            name="Aztec Kasplat: Guarding Lanky's Cage",
-            map_id=Maps.AztecLlamaTemple,
-            kong_lst=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
-            coords=[2207, 303, 1692],
-            xmin=2135,
-            xmax=2260,
-            zmin=1664,
-            zmax=1743,
-            region=Regions.LlamaTemple,
-            additional_logic=lambda l: l.HasInstrument(l.settings.lanky_freeing_kong),
-        ),
+        # Problematic - too easy to miss if you play the instrument, race to the cage, and free the kong before the respawn
+        # KasplatLocation(
+        #     name="Aztec Kasplat: Guarding Lanky's Cage",
+        #     map_id=Maps.AztecLlamaTemple,
+        #     kong_lst=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
+        #     coords=[2207, 303, 1692],
+        #     xmin=2135,
+        #     xmax=2260,
+        #     zmin=1664,
+        #     zmax=1743,
+        #     region=Regions.LlamaTemple,
+        #     additional_logic=lambda l: l.HasInstrument(l.settings.lanky_freeing_kong),
+        # ),
         KasplatLocation(
             name="Aztec Kasplat: Inside Tiny Temple by Mini Monkey Barrel",
             map_id=Maps.AztecTinyTemple,
@@ -932,7 +933,7 @@ KasplatLocationList = {
             zmin=540,
             zmax=630,
             region=Regions.GiantMushroomArea,
-            additional_logic=lambda l: l.swim,
+            additional_logic=lambda l: l.swim and (l.oranges or l.HasGun(Kongs.any)),
         ),
         KasplatLocation(
             name="Forest Kasplat: At the very top of the Giant Mushroom",
@@ -1314,7 +1315,7 @@ KasplatLocationList = {
             zmin=150,
             zmax=300,
             region=Regions.CreepyCastleMain,
-            additional_logic=lambda l: l.swim,
+            additional_logic=lambda l: l.swim and (l.oranges or l.HasGun(Kongs.any)),
         ),
         KasplatLocation(
             name="Castle Kasplat: Near Cranky's Hut",
@@ -1622,7 +1623,7 @@ KasplatLocationList = {
             zmin=1091,
             zmax=1137,
             region=Regions.IslesMain,
-            additional_logic=lambda l: l.swim,
+            additional_logic=lambda l: l.swim and (l.oranges or l.HasGun(Kongs.any)),
         ),
     ],
 }

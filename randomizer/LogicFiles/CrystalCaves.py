@@ -40,13 +40,13 @@ LogicRegions = {
         TransitionFront(Regions.FunkyCaves, lambda l: True),
         TransitionFront(Regions.CrankyCaves, lambda l: True),
         TransitionFront(Regions.CavesSnideArea, lambda l: l.punch),
-        TransitionFront(Regions.CavesBossLobby, lambda l: l.punch),
+        TransitionFront(Regions.CavesBossLobby, lambda l: not l.settings.tns_location_rando and l.punch),
         TransitionFront(Regions.CavesBaboonBlast, lambda l: l.blast and l.isdonkey)  # , Transitions.CavesMainToBBlast)
     ]),
 
     Regions.CavesSnideArea: Region("Caves Snide Area", Levels.CrystalCaves, False, None, [], [], [
         TransitionFront(Regions.Snide, lambda l: True),
-        TransitionFront(Regions.CavesBossLobby, lambda l: True),
+        TransitionFront(Regions.CavesBossLobby, lambda l: not l.settings.tns_location_rando),
     ]),
 
     Regions.CavesBlueprintCave: Region("Caves Blueprint Cave", Levels.CrystalCaves, False, None, [
@@ -81,7 +81,7 @@ LogicRegions = {
         Event(Events.CavesLargeBoulderButton, lambda l: Events.CavesSmallBoulderButton in l.Events and l.hunkyChunky and l.chunky and l.barrels),
     ], [
         TransitionFront(Regions.CrystalCavesMain, lambda l: True),
-        TransitionFront(Regions.CavesBossLobby, lambda l: True),
+        TransitionFront(Regions.CavesBossLobby, lambda l: not l.settings.tns_location_rando),
     ]),
 
     Regions.CavesLankyRace: Region("Caves Lanky Race", Levels.CrystalCaves, False, None, [
@@ -108,7 +108,7 @@ LogicRegions = {
         TransitionFront(Regions.LankyIgloo, lambda l: (l.settings.high_req or l.jetpack) and l.trombone and l.islanky, Transitions.CavesIglooToLanky),
         TransitionFront(Regions.TinyIgloo, lambda l: (l.settings.high_req or l.jetpack) and l.saxophone and l.istiny, Transitions.CavesIglooToTiny),
         TransitionFront(Regions.ChunkyIgloo, lambda l: (l.settings.high_req or l.jetpack) and l.triangle and l.ischunky, Transitions.CavesIglooToChunky),
-        TransitionFront(Regions.CavesBossLobby, lambda l: True),
+        TransitionFront(Regions.CavesBossLobby, lambda l: not l.settings.tns_location_rando),
     ]),
 
     Regions.GiantKosha: Region("Giant Kosha", Levels.CrystalCaves, False, -1, [], [
@@ -157,7 +157,7 @@ LogicRegions = {
         TransitionFront(Regions.TinyCabin, lambda l: l.saxophone and l.istiny, Transitions.CavesCabinToTiny),
         TransitionFront(Regions.ChunkyCabin, lambda l: l.triangle and l.ischunky, Transitions.CavesCabinToChunky),
         TransitionFront(Regions.CandyCaves, lambda l: True),
-        TransitionFront(Regions.CavesBossLobby, lambda l: l.jetpack or l.balloon),
+        TransitionFront(Regions.CavesBossLobby, lambda l: not l.settings.tns_location_rando and (l.jetpack or l.balloon)),
     ]),
 
     Regions.RotatingCabin: Region("Rotating Cabin", Levels.CrystalCaves, False, None, [
@@ -177,14 +177,14 @@ LogicRegions = {
     Regions.DiddyLowerCabin: Region("Diddy Lower Cabin", Levels.CrystalCaves, False, -1, [
         # You're supposed to use the jetpack to get up the platforms,
         # but you can just backflip onto them
-        LocationLogic(Locations.CavesDiddy5DoorCabinLower, lambda l: l.isdiddy),
+        LocationLogic(Locations.CavesDiddy5DoorCabinLower, lambda l: l.isdiddy and l.oranges),
     ], [], [
         TransitionFront(Regions.CabinArea, lambda l: True, Transitions.CavesDiddyLowerToCabin),
     ]),
 
     Regions.DiddyUpperCabin: Region("Diddy Upper Cabin", Levels.CrystalCaves, False, -1, [
-        LocationLogic(Locations.CavesDiddy5DoorCabinUpper, lambda l: (l.guitar or l.shockwave) and l.spring and l.jetpack and l.isdiddy),
-        LocationLogic(Locations.CavesBananaFairyCabin, lambda l: l.camera and (l.guitar or l.shockwave) and l.spring and l.jetpack and l.isdiddy),
+        LocationLogic(Locations.CavesDiddy5DoorCabinUpper, lambda l: (l.guitar or l.shockwave) and l.spring and l.jetpack and l.isdiddy and l.oranges),
+        LocationLogic(Locations.CavesBananaFairyCabin, lambda l: l.camera and (l.guitar or l.shockwave) and l.spring and l.jetpack and l.isdiddy and l.oranges),
     ], [], [
         TransitionFront(Regions.CabinArea, lambda l: True, Transitions.CavesDiddyUpperToCabin),
     ]),
@@ -196,7 +196,7 @@ LogicRegions = {
     ]),
 
     Regions.TinyCabin: Region("Tiny Cabin", Levels.CrystalCaves, False, None, [
-        LocationLogic(Locations.CavesTiny5DoorCabin, lambda l: l.istiny),
+        LocationLogic(Locations.CavesTiny5DoorCabin, lambda l: l.istiny and l.oranges),
     ], [], [
         TransitionFront(Regions.CabinArea, lambda l: True, Transitions.CavesTinyToCabin),
     ]),

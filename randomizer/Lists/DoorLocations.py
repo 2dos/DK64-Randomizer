@@ -60,6 +60,7 @@ class DoorData:
 
 
 def GetBossLobbyRegionIdForRegion(region_id, region):
+    """Return the region id of the boss lobby the given region id and Region object should take you to."""
     if region_id == Regions.JungleJapesLobby or region.level == Levels.JungleJapes:
         return Regions.JapesBossLobby
     elif region_id == Regions.AngryAztecLobby or region.level == Levels.AngryAztec:
@@ -134,7 +135,7 @@ door_locations = {
         DoorData(name="Galleon: Behind Enguarde Door", map=Maps.GloomyGalleon, location=[645.832, 1460, 4960.476, 133], placed="tns"),  # T&S Door behind Enguarde Door
         DoorData(name="Galleon: Cactus", map=Maps.GloomyGalleon, location=[4517.923, 1290, 894.527, 308], placed="tns"),  # T&S Door near Cactus
         DoorData(name="Treasure Chest Exterior", map=Maps.GloomyGalleon, logicregion=Regions.TreasureRoom, location=[1938, 1440, 524, 330]),
-        DoorData(name="Next to Warp 3 in Cranky's Area", map=Maps.GloomyGalleon, logicregion=Regions.GloomyGalleonStart, location=[3071, 1890, 2838, 0]),
+        DoorData(name="Next to Warp 3 in Cranky's Area", map=Maps.GloomyGalleon, logicregion=Regions.GalleonPastVines, location=[3071, 1890, 2838, 0]),
         DoorData(name="In Primate Punch Chest Room - right", map=Maps.GloomyGalleon, logicregion=Regions.GloomyGalleonStart, location=[3460, 1670, 4001, 180]),
         DoorData(
             name="Next to Cannonball game", map=Maps.GloomyGalleon, logicregion=Regions.GalleonBeyondPineappleGate, location=[1334, 1610, 2523, 0], logic=lambda l: Events.WaterSwitch in l.Events
@@ -153,18 +154,25 @@ door_locations = {
         DoorData(name="Next to Peanut switch", map=Maps.GloomyGalleon, logicregion=Regions.GloomyGalleonStart, location=[2462, 1619, 2688, 270]),
         DoorData(name="Tiny's 5D ship", map=Maps.Galleon5DShipDKTiny, logicregion=Regions.SaxophoneShip, location=[735, 0, 1336, 270], kong_lst=[Kongs.tiny]),
         DoorData(name="Lanky's 5D ship", map=Maps.Galleon5DShipDiddyLankyChunky, logicregion=Regions.TromboneShip, location=[1099, 0, 1051, 270], kong_lst=[Kongs.lanky]),
-        DoorData(name="Behind Chunky punch gate in Cranky Area", map=Maps.GloomyGalleon, location=[3275, 1670, 2353.65, 13.65], kong_lst=[Kongs.chunky], logic=lambda l: l.punch),
+        DoorData(
+            name="Behind Chunky punch gate in Cranky Area",
+            map=Maps.GloomyGalleon,
+            logicregion=Regions.GloomyGalleonStart,
+            location=[3275, 1670, 2353.65, 13.65],
+            kong_lst=[Kongs.chunky],
+            logic=lambda l: l.punch,
+        ),
         DoorData(name="Lighthouse Interior", map=Maps.GalleonLighthouse, logicregion=Regions.Lighthouse, location=[508, 200, 409, 135.2], kong_lst=[Kongs.donkey]),
         DoorData(name="Low water alcove in lighthouse area", map=Maps.GloomyGalleon, logicregion=Regions.LighthouseSurface, location=[540.3, 1564, 4094, 110]),
         DoorData(name="Behind boxes in Cranky Area", map=Maps.GloomyGalleon, logicregion=Regions.GloomyGalleonStart, location=[2891.5, 1688, 3493, 124]),
         DoorData(name="Lanky's 2D ship", map=Maps.Galleon2DShip, logicregion=Regions.LankyShip, location=[1616, 0, 939, 179.5], kong_lst=[Kongs.lanky]),
-        DoorData(name="Mech Fish Gate - far left", map=Maps.GloomyGalleon, logicregion=Regions.Shipyard, location=[2651, 140.5, 503, 92]),
-        DoorData(name="Mech Fish Gate - left", map=Maps.GloomyGalleon, logicregion=Regions.Shipyard, location=[2792, 175, 299.3, 15.9], rz=7.3),
-        DoorData(name="Mech Fish Gate - middle", map=Maps.GloomyGalleon, logicregion=Regions.Shipyard, location=[3225, 205, 303, 329], rz=-4.7),
-        DoorData(name="Mech Fish Gate - right", map=Maps.GloomyGalleon, logicregion=Regions.Shipyard, location=[3406, 166, 531, 260], rx=290, rz=-290),
-        DoorData(name="Mech Fish Gate - far right", map=Maps.GloomyGalleon, logicregion=Regions.Shipyard, location=[3310, 147, 828, 216.5], rx=16, rz=-16),
+        DoorData(name="Mech Fish Gate - far left", map=Maps.GloomyGalleon, logicregion=Regions.ShipyardUnderwater, location=[2651, 140.5, 503, 92]),
+        DoorData(name="Mech Fish Gate - left", map=Maps.GloomyGalleon, logicregion=Regions.ShipyardUnderwater, location=[2792, 175, 299.3, 15.9], rz=7.3),
+        DoorData(name="Mech Fish Gate - middle", map=Maps.GloomyGalleon, logicregion=Regions.ShipyardUnderwater, location=[3225, 205, 303, 329], rz=-4.7),
+        DoorData(name="Mech Fish Gate - right", map=Maps.GloomyGalleon, logicregion=Regions.ShipyardUnderwater, location=[3406, 166, 531, 260], rx=290, rz=-290),
+        DoorData(name="Mech Fish Gate - far right", map=Maps.GloomyGalleon, logicregion=Regions.ShipyardUnderwater, location=[3310, 147, 828, 216.5], rx=16, rz=-16),
         DoorData(name="Cannonball Area Exit", map=Maps.GloomyGalleon, logicregion=Regions.GalleonBeyondPineappleGate, location=[1524.1, 1461, 2898, 278]),
-        DoorData(name="2Dship's secret 3rd door", map=Maps.GloomyGalleon, logicregion=Regions.Shipyard, location=[1109, 1189.9, 1978, 95], rz=-47),
+        DoorData(name="2Dship's secret 3rd door", map=Maps.GloomyGalleon, logicregion=Regions.ShipyardUnderwater, location=[1109, 1189.9, 1978, 95], rz=-47),
         DoorData(name="In Mermaid's Palace", map=Maps.GalleonMermaidRoom, logicregion=Regions.MermaidRoom, location=[274, 0, 481, 150], kong_lst=[Kongs.tiny]),
         DoorData(name="Near Mermaid's Palace - right", map=Maps.GloomyGalleon, logicregion=Regions.LighthouseUnderwater, location=[1445, 141, 4859, 180]),
         DoorData(name="Near Mermaid's Palace - left", map=Maps.GloomyGalleon, logicregion=Regions.LighthouseUnderwater, location=[1400, 112.8, 4215, 346.5], rz=3),
@@ -195,11 +203,15 @@ door_locations = {
         DoorData(
             name="Fungi Lobby - Near Entrance", map=Maps.FungiForestLobby, logicregion=Regions.FungiForestLobby, location=[450.862, 0, 565.029, 270], placed="wrinkly"
         ),  # Custom Location (Removing Wheel)
-        DoorData(name="Fungi: Behind DK Barn", map=Maps.FungiForest, location=[3515.885, 115.009, 1248.55, 31], placed="tns"),  # T&S Portal behind DK Barn
-        DoorData(name="Fungi: Beanstalk Area", map=Maps.FungiForest, location=[3665.871, 186.833, 945.745, 252], placed="tns"),  # T&S Portal in Beanstalk Area
-        DoorData(name="Fungi: Near Snide's", map=Maps.FungiForest, location=[3240.033, 268.5, 3718.017, 178], placed="tns"),  # T&S Portal near Snide's
-        DoorData(name="Fungi: Top of Giant Mushroom", map=Maps.FungiForest, location=[1171.791, 1250, 1236.572, 52], placed="tns"),  # T&S Portal at Top of GMush
-        DoorData(name="Fungi: Owl Area", map=Maps.FungiForest, location=[203.663, 199.333, 3844.253, 92], placed="tns"),  # T&S Portal near Owl Race
+        DoorData(name="Fungi: Behind DK Barn", map=Maps.FungiForest, logicregion=Regions.ThornvineArea, location=[3515.885, 115.009, 1248.55, 31], placed="tns"),  # T&S Portal behind DK Barn
+        DoorData(
+            name="Fungi: Beanstalk Area", map=Maps.FungiForest, logicregion=Regions.WormArea, location=[3665.871, 186.833, 945.745, 252], placed="tns", logic=lambda l: Events.Night in l.Events
+        ),  # T&S Portal in Beanstalk Area
+        DoorData(name="Fungi: Near Snide's", map=Maps.FungiForest, logicregion=Regions.MillArea, location=[3240.033, 268.5, 3718.017, 178], placed="tns"),  # T&S Portal near Snide's
+        DoorData(
+            name="Fungi: Top of Giant Mushroom", map=Maps.FungiForest, logicregion=Regions.MushroomUpperExterior, location=[1171.791, 1250, 1236.572, 52], placed="tns"
+        ),  # T&S Portal at Top of GMush
+        DoorData(name="Fungi: Owl Area", map=Maps.FungiForest, logicregion=Regions.HollowTreeArea, location=[203.663, 199.333, 3844.253, 92], placed="tns"),  # T&S Portal near Owl Race
     ],
     Levels.CrystalCaves: [
         DoorData(name="Caves Lobby - Far Left", map=Maps.CrystalCavesLobby, logicregion=Regions.CrystalCavesLobby, location=[1103.665, 146.5, 823.872, 194], placed="wrinkly"),  # DK Door
@@ -210,6 +222,7 @@ door_locations = {
             location=[731.84, 280.5, 704.935, 120],
             placed="wrinkly",
             kong_lst=[Kongs.diddy],
+            logic=lambda l: l.isdiddy and l.jetpack,
         ),  # Diddy Door
         DoorData(name="Caves Lobby - Near Left", map=Maps.CrystalCavesLobby, logicregion=Regions.CrystalCavesLobby, location=[1046.523, 13.5, 476.611, 189], placed="wrinkly"),  # Lanky Door
         DoorData(name="Caves Lobby - Far Right", map=Maps.CrystalCavesLobby, logicregion=Regions.CrystalCavesLobby, location=[955.407, 146.664, 843.472, 187], placed="wrinkly"),  # Tiny Door

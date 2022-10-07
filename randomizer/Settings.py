@@ -330,6 +330,7 @@ class Settings:
         self.crown_enemy_rando = "off"
         self.enemy_speed_rando = False
         self.cb_rando = False
+        self.crown_placement_rando = False
         self.override_cosmetics = False
         self.random_colors = False
         self.hard_level_progression = False
@@ -408,21 +409,20 @@ class Settings:
         if self.helm_phase_count < 5:
             rooms = random.sample(rooms, self.helm_phase_count)
         orderedRooms = []
-        if Kongs.donkey in rooms:
-            orderedRooms.append(0)
-            rooms.remove(Kongs.donkey)
-            self.helm_donkey = True
         for kong in rooms:
-            if kong == Kongs.diddy:
+            if kong == Kongs.donkey:
+                orderedRooms.append(0)
+                self.helm_donkey = True
+            elif kong == Kongs.diddy:
                 self.helm_diddy = True
                 orderedRooms.append(4)
-            if kong == Kongs.lanky:
+            elif kong == Kongs.lanky:
                 self.helm_lanky = True
                 orderedRooms.append(3)
-            if kong == Kongs.tiny:
+            elif kong == Kongs.tiny:
                 self.helm_tiny = True
                 orderedRooms.append(2)
-            if kong == Kongs.chunky:
+            elif kong == Kongs.chunky:
                 self.helm_chunky = True
                 orderedRooms.append(1)
         self.helm_order = orderedRooms

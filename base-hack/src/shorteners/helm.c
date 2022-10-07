@@ -58,8 +58,8 @@ static const short minigame_1_flags[] = {0x41,0x44,0x43,0x45,0x42};
 static const short item_setstate[] = {17,22,23,27,30};
 static const short item_medallook[] = {61,62,63,64,65};
 static const short item_laserlook[] = {16,19,20,26,29};
-static const short item_padset[] = {-1,33,34,35,36};
-static const short item_padlook[] = {-1,76,77,78,79};
+static const short item_padset[] = {42,33,34,35,36};
+static const short item_padlook[] = {1,76,77,78,79};
 
 void HelmInit(int init_stage) {
 	if (init_stage == 0) {
@@ -82,6 +82,10 @@ void HelmInit(int init_stage) {
 	} else if (init_stage == 1) {
 		// Modify Cutscenes
 		int has_ended = 0;
+		modifyCutscenePanPoint(0, 1, 0, 1150, -20, 3500, 0xEA48, 0xF000, 0x27F5, 45, 0);
+		modifyCutscenePanPoint(0, 1, 1, 777, -76, 3656, 0xEA48, 0, 0x27F5, 45, 0);
+		modifyCutscenePanPoint(0, 1, 2, 651, -68, 3775, 0xEA48, 0xC000, 0x27F5, 45, 0);
+		modifyCutsceneItem(0, 42, 0x15, 0x2C, 10);
 		for (int i = 0; i < 5; i++) {
 			if (!has_ended) {
 				int cutscene = 4 + i;
@@ -105,6 +109,7 @@ void HelmInit(int init_stage) {
 				}
 			}
 		}
+		
 
 		/*
 			CS 4:

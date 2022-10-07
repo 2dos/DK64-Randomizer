@@ -6,7 +6,9 @@ import js
 import randomizer.ItemPool as ItemPool
 import randomizer.Lists.Exceptions as Ex
 import randomizer.Logic as Logic
+from randomizer.ShuffleDoors import ShuffleDoors
 import randomizer.ShuffleExits as ShuffleExits
+import randomizer.LogicFiles.DKIsles as IslesLogic
 from randomizer.CompileHints import compileHints
 from randomizer.Enums.Events import Events
 from randomizer.Enums.Items import Items
@@ -37,6 +39,7 @@ from randomizer.ShufflePatches import ShufflePatches
 from randomizer.ShuffleShopLocations import ShuffleShopLocations
 from randomizer.ShuffleWarps import ShuffleWarps, ShuffleWarpsCrossMap
 from randomizer.ShuffleCBs import ShuffleCBs
+from randomizer.ShuffleCrowns import ShuffleCrowns
 
 
 def GetExitLevelExit(region):
@@ -1095,7 +1098,9 @@ def FillKongsAndMoves(spoiler):
                 needVinesByThisLevel = min(2, needVinesByThisLevel)
             BlockAccessToLevel(spoiler.settings, needVinesByThisLevel)
         Reset()
-        unplacedVines = PlaceItems(spoiler.settings, "assumed", [Items.Vines], ownedItems=ItemPool.AllKongMoves().copy(), validLocations=ItemPool.SharedMoveLocations.copy(), isPriorityMove=True)
+        itemsForPlacingVines = ItemPool.AllKongMoves().copy()
+        itemsForPlacingVines.append(Items.Swim)  # You could have a swim-locked vine purchase (looking at you, Galleon)
+        unplacedVines = PlaceItems(spoiler.settings, "assumed", [Items.Vines], ownedItems=itemsForPlacingVines, validLocations=ItemPool.SharedMoveLocations.copy(), isPriorityMove=True)
         if unplacedVines > 0:
             raise Ex.ItemPlacementException("Failed to place vine training somehow.")
         # Next place swim - needed to get into level 4
@@ -1103,8 +1108,6 @@ def FillKongsAndMoves(spoiler):
             # In a standard level order seed, we need swim to access level 4 (whatever it is)
             needSwimByThisLevel = 4
             BlockAccessToLevel(spoiler.settings, needSwimByThisLevel)
-        else:
-            BlockAccessToLevel(spoiler.settings, 100)
         Reset()
         unplacedSwim = PlaceItems(spoiler.settings, "assumed", [Items.Swim], ownedItems=ItemPool.AllKongMoves().copy(), validLocations=ItemPool.SharedMoveLocations.copy(), isPriorityMove=True)
         if unplacedSwim > 0:
@@ -1788,6 +1791,9 @@ def Generate_Spoiler(spoiler):
 
 def ShuffleMisc(spoiler):
     """Shuffle miscellaneous objects outside of main fill algorithm, including Kasplats, Bonus barrels, and bananaport warps."""
+    # T&S and Wrinkly Door Shuffle
+    if spoiler.settings.wrinkly_location_rando or spoiler.settings.tns_location_rando:
+        ShuffleDoors(spoiler)
     # Handle kasplats
     KasplatShuffle(spoiler, LogicVariables)
     spoiler.human_kasplats = {}
@@ -1812,6 +1818,13 @@ def ShuffleMisc(spoiler):
         ShuffleWarpsCrossMap(replacements, human_replacements, spoiler.settings.bananaport_rando == "crossmap_coupled")
         spoiler.bananaport_replacements = replacements.copy()
         spoiler.human_warp_locations = human_replacements
+    # Handle Crown Placement
+    if spoiler.settings.crown_placement_rando:
+        crown_replacements = {}
+        crown_human_replacements = {}
+        ShuffleCrowns(crown_replacements, crown_human_replacements)
+        spoiler.crown_locations = crown_replacements
+        spoiler.human_crowns = crown_human_replacements
     # Random Patches
     if spoiler.settings.random_patches:
         human_patches = []
@@ -1819,6 +1832,7 @@ def ShuffleMisc(spoiler):
     if spoiler.settings.shuffle_shops:
         ShuffleShopLocations(spoiler)
     if spoiler.settings.activate_all_bananaports in ["all", "isles"]:
+        # In simpler bananaport shuffling, we can rely on the map id and warp number to find pairs
         if spoiler.settings.bananaport_rando in ("in_level", "off"):
             warpMapIds = set([BananaportVanilla[warp].map_id for warp in Warps])
             for map_id in warpMapIds:
@@ -1834,3 +1848,10 @@ def ShuffleMisc(spoiler):
                         warpRegion = Logic.Regions[warpData.region_id]
                         bananaportExit = TransitionFront(pairedWarpData.region_id, lambda l: True)
                         warpRegion.exits.append(bananaportExit)
+        # In complex cross-map shuffling, we have to rely on saved destination regions to generate transitions
+        else:
+            for warp in BananaportVanilla.values():
+                warpRegion = Logic.Regions[warp.region_id]
+                if spoiler.settings.activate_all_bananaports != "isles" or (warp.region_id in IslesLogic.LogicRegions.keys() and warp.destination_region_id in IslesLogic.LogicRegions.keys()):
+                    bananaportExit = TransitionFront(warp.destination_region_id, lambda l: True)
+                    warpRegion.exits.append(bananaportExit)
