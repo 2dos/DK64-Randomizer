@@ -45,7 +45,7 @@ LogicRegions = {
         TransitionFront(Regions.RandD, lambda l: True),
         TransitionFront(Regions.Snide, lambda l: True),
         TransitionFront(Regions.FunkyFactory, lambda l: True),
-        TransitionFront(Regions.FactoryBossLobby, lambda l: True),
+        TransitionFront(Regions.FactoryBossLobby, lambda l: not l.settings.tns_location_rando),
     ]),
 
     Regions.RandD: Region("R&D", Levels.FranticFactory, True, -1, [
@@ -58,7 +58,7 @@ LogicRegions = {
         TransitionFront(Regions.Testing, lambda l: True),
         TransitionFront(Regions.FactoryTinyRaceLobby, lambda l: l.mini and l.istiny),
         TransitionFront(Regions.ChunkyRoomPlatform, lambda l: True),
-        TransitionFront(Regions.FactoryBossLobby, lambda l: True),
+        TransitionFront(Regions.FactoryBossLobby, lambda l: not l.settings.tns_location_rando),
     ]),
 
     Regions.FactoryTinyRaceLobby: Region("Factory Tiny Race Lobby", Levels.FranticFactory, False, None, [
@@ -112,7 +112,7 @@ LogicRegions = {
         TransitionFront(Regions.MiddleCore, lambda l: Events.MainCoreActivated in l.Events),
         TransitionFront(Regions.CrankyFactory, lambda l: True),
         TransitionFront(Regions.CandyFactory, lambda l: True),
-        TransitionFront(Regions.FactoryBossLobby, lambda l: True),
+        TransitionFront(Regions.FactoryBossLobby, lambda l: not l.settings.tns_location_rando),
         TransitionFront(Regions.FactoryBaboonBlast, lambda l: l.blast and l.isdonkey)  # , Transitions.FactoryMainToBBlast)
     ]),
 
@@ -143,6 +143,7 @@ LogicRegions = {
     ], [], [
         TransitionFront(Regions.BeyondHatch, lambda l: True),
         TransitionFront(Regions.MiddleCore, lambda l: True),
+        TransitionFront(Regions.FactoryBossLobby, lambda l: not l.settings.tns_location_rando),
     ]),
 
     Regions.FactoryBossLobby: Region("Factory Boss Lobby", Levels.FranticFactory, False, None, [], [], [

@@ -346,49 +346,53 @@ def compileHints(spoiler: Spoiler):
         progression_hint_locations = []
         for level in all_levels:
             for kong in spoiler.settings.owned_kongs_by_level[level]:
-                # If we don't have DK + Grab then these hints are skipped basically every time so they're not on the player's path
-                if (
-                    level == Levels.FranticFactory
-                    and kong not in [Kongs.donkey, Kongs.chunky]
-                    and (Kongs.donkey not in spoiler.settings.owned_kongs_by_level[level] or Items.GorillaGrab not in spoiler.settings.owned_moves_by_level[level])
-                ):
-                    continue
-                if (
-                    level == Levels.FungiForest
-                    and kong is not Kongs.chunky
-                    and (Kongs.donkey not in spoiler.settings.owned_kongs_by_level[level] or Items.GorillaGrab not in spoiler.settings.owned_moves_by_level[level])
-                ):
-                    continue
-                # Caves Diddy needs a whole suite of moves to see this hint
-                if (
-                    level == Levels.CrystalCaves
-                    and kong is Kongs.diddy
-                    and (
+                # In hint door location rando, it's too complicated to determine if the door will be accessible on the first trip
+                # Assume they'll see the hint doors for the kongs they have available
+                # NOTE: this is a quick and dirty solution that can bury critical hints - better solution would be to set up accessible_hints_by_level array like moves/kongs
+                if not spoiler.settings.wrinkly_location_rando:
+                    # If we don't have DK + Grab then these hints are skipped basically every time so they're not on the player's path
+                    if (
+                        level == Levels.FranticFactory
+                        and kong not in [Kongs.donkey, Kongs.chunky]
+                        and (Kongs.donkey not in spoiler.settings.owned_kongs_by_level[level] or Items.GorillaGrab not in spoiler.settings.owned_moves_by_level[level])
+                    ):
+                        continue
+                    if (
+                        level == Levels.FungiForest
+                        and kong is not Kongs.chunky
+                        and (Kongs.donkey not in spoiler.settings.owned_kongs_by_level[level] or Items.GorillaGrab not in spoiler.settings.owned_moves_by_level[level])
+                    ):
+                        continue
+                    # Caves Diddy needs a whole suite of moves to see this hint
+                    if (
+                        level == Levels.CrystalCaves
+                        and kong is Kongs.diddy
+                        and (
+                            Kongs.chunky not in spoiler.settings.owned_kongs_by_level[level]
+                            or Items.PrimatePunch not in spoiler.settings.owned_moves_by_level[level]
+                            or Items.RocketbarrelBoost not in spoiler.settings.owned_moves_by_level[level]
+                            or Items.Barrels not in spoiler.settings.owned_moves_by_level[level]
+                        )
+                    ):
+                        continue
+                    # Everyone else in Caves still needs Chunky + Punch + Barrels
+                    if level == Levels.CrystalCaves and (
                         Kongs.chunky not in spoiler.settings.owned_kongs_by_level[level]
                         or Items.PrimatePunch not in spoiler.settings.owned_moves_by_level[level]
-                        or Items.RocketbarrelBoost not in spoiler.settings.owned_moves_by_level[level]
                         or Items.Barrels not in spoiler.settings.owned_moves_by_level[level]
-                    )
-                ):
-                    continue
-                # Everyone else in Caves still needs Chunky + Punch + Barrels
-                if level == Levels.CrystalCaves and (
-                    Kongs.chunky not in spoiler.settings.owned_kongs_by_level[level]
-                    or Items.PrimatePunch not in spoiler.settings.owned_moves_by_level[level]
-                    or Items.Barrels not in spoiler.settings.owned_moves_by_level[level]
-                ):
-                    continue
-                # Aztec Chunky also needs Tiny + Feather + Hunky Chunky
-                if (
-                    level == Levels.AngryAztec
-                    and kong is Kongs.chunky
-                    and (
-                        Kongs.tiny not in spoiler.settings.owned_kongs_by_level[level]
-                        or Items.Feather not in spoiler.settings.owned_moves_by_level[level]
-                        or Items.HunkyChunky not in spoiler.settings.owned_moves_by_level[level]
-                    )
-                ):
-                    continue
+                    ):
+                        continue
+                    # Aztec Chunky also needs Tiny + Feather + Hunky Chunky
+                    if (
+                        level == Levels.AngryAztec
+                        and kong is Kongs.chunky
+                        and (
+                            Kongs.tiny not in spoiler.settings.owned_kongs_by_level[level]
+                            or Items.Feather not in spoiler.settings.owned_moves_by_level[level]
+                            or Items.HunkyChunky not in spoiler.settings.owned_moves_by_level[level]
+                        )
+                    ):
+                        continue
                 hint_for_location = [hint for hint in hints if hint.level == level and hint.kong == kong][0]  # Should only match one
                 progression_hint_locations.append(hint_for_location)
 

@@ -6,6 +6,7 @@ import js
 import randomizer.ItemPool as ItemPool
 import randomizer.Lists.Exceptions as Ex
 import randomizer.Logic as Logic
+from randomizer.ShuffleDoors import ShuffleDoors
 import randomizer.ShuffleExits as ShuffleExits
 import randomizer.LogicFiles.DKIsles as IslesLogic
 from randomizer.CompileHints import compileHints
@@ -1097,7 +1098,9 @@ def FillKongsAndMoves(spoiler):
                 needVinesByThisLevel = min(2, needVinesByThisLevel)
             BlockAccessToLevel(spoiler.settings, needVinesByThisLevel)
         Reset()
-        unplacedVines = PlaceItems(spoiler.settings, "assumed", [Items.Vines], ownedItems=ItemPool.AllKongMoves().copy(), validLocations=ItemPool.SharedMoveLocations.copy(), isPriorityMove=True)
+        itemsForPlacingVines = ItemPool.AllKongMoves().copy()
+        itemsForPlacingVines.append(Items.Swim)  # You could have a swim-locked vine purchase (looking at you, Galleon)
+        unplacedVines = PlaceItems(spoiler.settings, "assumed", [Items.Vines], ownedItems=itemsForPlacingVines, validLocations=ItemPool.SharedMoveLocations.copy(), isPriorityMove=True)
         if unplacedVines > 0:
             raise Ex.ItemPlacementException("Failed to place vine training somehow.")
         # Next place swim - needed to get into level 4
@@ -1788,6 +1791,9 @@ def Generate_Spoiler(spoiler):
 
 def ShuffleMisc(spoiler):
     """Shuffle miscellaneous objects outside of main fill algorithm, including Kasplats, Bonus barrels, and bananaport warps."""
+    # T&S and Wrinkly Door Shuffle
+    if spoiler.settings.wrinkly_location_rando or spoiler.settings.tns_location_rando:
+        ShuffleDoors(spoiler)
     # Handle kasplats
     KasplatShuffle(spoiler, LogicVariables)
     spoiler.human_kasplats = {}
