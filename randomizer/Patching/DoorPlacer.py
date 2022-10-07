@@ -3,7 +3,7 @@ import random
 
 import js
 from randomizer.Lists.MapsAndExits import Maps
-from randomizer.Lists.DoorLocations import door_locations # this don't remember what we did earlier
+from randomizer.Lists.DoorLocations import door_locations
 from randomizer.Patching.Patcher import ROM
 from randomizer.Spoiler import Spoiler
 from randomizer.Patching.Lib import float_to_hex, getNextFreeID, addNewScript

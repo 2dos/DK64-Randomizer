@@ -6,7 +6,16 @@ from randomizer.Enums.Regions import Regions
 from randomizer.Lists.DoorLocations import door_locations
 
 level_list = ["Jungle Japes", "Angry Aztec", "Frantic Factory", "Gloomy Galleon", "Fungi Forest", "Crystal Caves", "Creepy Castle", "Hideout Helm"]
-lobby_region_list = (Regions.JungleJapesLobby, Regions.AngryAztecLobby, Regions.FranticFactoryLobby, Regions.GloomyGalleonLobby, Regions.FungiForestLobby, Regions.CrystalCavesLobby, Regions.CreepyCastleLobby)
+lobby_region_list = (
+    Regions.JungleJapesLobby,
+    Regions.AngryAztecLobby,
+    Regions.FranticFactoryLobby,
+    Regions.GloomyGalleonLobby,
+    Regions.FungiForestLobby,
+    Regions.CrystalCavesLobby,
+    Regions.CreepyCastleLobby,
+)
+
 
 def ShuffleDoors(spoiler):
     """Shuffle Wrinkly and T&S Doors based on settings."""
@@ -55,7 +64,7 @@ def ShuffleDoors(spoiler):
                     selected_portal.assignPortal()
                     human_portal_doors[level_list[level] + " T&S #" + str(new_portal + 1)] = selected_portal.name
                     shuffled_door_data[level].append((selected_door_index, "tns"))
-                    
+
     # Track all touched doors in a variable and put it in the spoiler because changes to the static list do not save
     spoiler.shuffled_door_data = shuffled_door_data
     # Give human text to spoiler log
