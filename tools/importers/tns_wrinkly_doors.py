@@ -47,7 +47,7 @@ with open("doors.csv", newline="") as csvfile:
             rx_text = ", rx="+x["rx"]+""
         if x["rz"]:
             rz_text = ", rz="+x["rz"]+""
-        name = f"{x['levelname']} - {x['name']}"
+        name = f"{x['levelname']}:  {x['name']}"
         kongs_text=""
         if x["kongs"]:
             kongs_text = x["kongs"].replace(" or ", ", Kongs.")
