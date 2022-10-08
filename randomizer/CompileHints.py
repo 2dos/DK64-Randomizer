@@ -307,7 +307,7 @@ def compileHints(spoiler: Spoiler):
         valid_types.append(HintType.DirtPatch)
     if spoiler.settings.randomize_blocker_required_amounts:
         valid_types.append(HintType.BLocker)
-    if spoiler.settings.randomize_cb_required_amounts:
+    if spoiler.settings.randomize_cb_required_amounts and len(spoiler.settings.krool_keys_required) > 0 and spoiler.settings.krool_keys_required != [Events.HelmKeyTurnedIn]:
         valid_types.append(HintType.TroffNScoff)
     if spoiler.settings.kong_rando:
         valid_types.append(HintType.KongLocation)
@@ -596,8 +596,9 @@ def compileHints(spoiler: Spoiler):
         UpdateHint(hint_location, message)
         placed_move_hints += 1
 
-    # We want to hint levels after the hint location and only levels that we don't start with keys for
-    for i in range(hint_distribution[HintType.TroffNScoff]):
+    # For T&S hints, we want to hint levels after the hint location and only levels that we don't start with keys for
+    if hint_distribution[HintType.TroffNScoff] > 0:
+        # Determine what levels have incomplete T&S - there must be at least one to get here
         levels_with_tns = []
         for keyEvent in spoiler.settings.krool_keys_required:
             if keyEvent == Events.JapesKeyTurnedIn:
@@ -614,24 +615,39 @@ def compileHints(spoiler: Spoiler):
                 levels_with_tns.append(Levels.CrystalCaves)
             if keyEvent == Events.CastleKeyTurnedIn:
                 levels_with_tns.append(Levels.CreepyCastle)
-        # Make sure the location we randomly pick either is a level or is before a level that has a T&S
-        future_tns_levels = []
-        while not any(future_tns_levels):
-            hint_location = getRandomHintLocation()
-            future_tns_levels = [
-                level for level in all_levels if level in levels_with_tns and (not level_order_matters or spoiler.settings.EntryGBs[level] >= spoiler.settings.EntryGBs[hint_location.level])
-            ]
-        hinted_level = random.choice(future_tns_levels)
-        level_name = level_list[hinted_level]
-        if spoiler.settings.wrinkly_hints == "cryptic":
-            level_name = random.choice(level_cryptic[hinted_level])
-        count = spoiler.settings.BossBananas[hinted_level]
-        cb_name = "Small Bananas"
-        if count == 1:
-            cb_name = "Small Banana"
-        message = f"The barrier to the boss in {level_name} can be cleared by obtaining {count} {cb_name}."
-        hint_location.hint_type = HintType.TroffNScoff
-        UpdateHint(hint_location, message)
+        placed_tns_hints = 0
+        while placed_tns_hints < hint_distribution[HintType.TroffNScoff]:
+            attempts = 0
+            # Make sure the location we randomly pick either is a level or is before a level that has a T&S
+            future_tns_levels = []
+            while not any(future_tns_levels):
+                # If you can't find a location that can fit a T&S hint in 15 tries, it's either impossible or very likely redundant
+                attempts += 1
+                if attempts > 15:
+                    break
+                hint_location = getRandomHintLocation()
+                future_tns_levels = [
+                    level for level in all_levels if level in levels_with_tns and (not level_order_matters or spoiler.settings.EntryGBs[level] >= spoiler.settings.EntryGBs[hint_location.level])
+                ]
+            # If we failed to find it in 15 attempts, convert remaining T&S hints to joke hints
+            # This is a disgustingly rare scenario, likely involving very few and early keys required
+            if attempts > 15:
+                hint_diff = hint_distribution[HintType.TroffNScoff] - placed_tns_hints
+                hint_distribution[HintType.Joke] += hint_diff
+                hint_distribution[HintType.TroffNScoff] -= hint_diff
+                break
+            hinted_level = random.choice(future_tns_levels)
+            level_name = level_list[hinted_level]
+            if spoiler.settings.wrinkly_hints == "cryptic":
+                level_name = random.choice(level_cryptic[hinted_level])
+            count = spoiler.settings.BossBananas[hinted_level]
+            cb_name = "Small Bananas"
+            if count == 1:
+                cb_name = "Small Banana"
+            message = f"The barrier to the boss in {level_name} can be cleared by obtaining {count} {cb_name}."
+            hint_location.hint_type = HintType.TroffNScoff
+            UpdateHint(hint_location, message)
+            placed_tns_hints += 1
 
     # Entrance hints are tricky, there's some requirements we must hit:
     # We must hint each of Japes, Aztec, and Factory at least once
