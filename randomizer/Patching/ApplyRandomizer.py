@@ -411,7 +411,7 @@ def patching_response(responded_data):
     random.seed(spoiler.settings.seed)
     randomize_music(spoiler)
     apply_cosmetic_colors(spoiler)
-    # overwrite_object_colors() # Causes crashes?
+    overwrite_object_colors(spoiler)
     random.seed(spoiler.settings.seed)
 
     if spoiler.settings.wrinkly_hints in ["standard", "cryptic"]:
