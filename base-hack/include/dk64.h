@@ -223,7 +223,7 @@ extern void displayItemOnHUD(int item, int unk0, int unk1);
 extern void unkSpriteRenderFunc(int unk0);
 extern void unkSpriteRenderFunc_0(void);
 extern void loadSpriteFunction(int func);
-extern void displaySpriteAtXYZ(void* sprite, int x, int y, int z);
+extern void displaySpriteAtXYZ(void* sprite, int scale, float x, float y, float z);
 extern void* getHUDSprite(int item);
 extern void updateMenuController(void* actor, void* paad, int unk0);
 extern void lockInput(int unk0);
@@ -244,6 +244,7 @@ extern void WipeImageCache(void);
 extern void calculateScreenPosition(float x, float y, float z, float* x_store, float* y_store, int unk0, float unk1, int unk2);
 extern int getNewSaveTime(void);
 extern void unkBonusFunction(actorData* actor);
+extern void internalKasplatCode(int has_bp);
 
 //vanilla data
 extern float TransitionSpeed;

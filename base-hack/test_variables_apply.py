@@ -83,6 +83,7 @@ set_variables = {
     "helm_hurry_mode": 0,
     "win_condition": 5,
     "version": 2,
+    "colorblind_mode": 1,
 }
 
 

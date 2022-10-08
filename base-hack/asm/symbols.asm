@@ -229,6 +229,7 @@
 .definelabel calculateScreenPosition, 0x80626F8C
 .definelabel getNewSaveTime, 0x805FC98C
 .definelabel unkBonusFunction, 0x8067ACB4
+.definelabel internalKasplatCode, 0x806B13B4
 
 //vanilla data
 .definelabel TransitionSpeed, 0x807FD88C

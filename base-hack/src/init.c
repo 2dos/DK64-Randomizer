@@ -168,6 +168,19 @@ void initHack(int source) {
 				*(int*)(0x80681158) = 0x0C000000 | (((int)&completeBonus & 0xFFFFFF) >> 2); // Modify Function Call
 				*(short*)(0x80681962) = 1; // Make bonus noclip	
 			}
+			if (Rando.colorblind_mode) {
+				*(int*)(0x806B1E90) = 0x0C000000 | (((int)&KasplatIndicator & 0xFFFFFF) >> 2); // Modify Function Call
+				int opacity = 50; // Normally 100
+				// CBs etc
+				*(short*)(0x806398CA) = opacity;
+				*(short*)(0x806398CE) = opacity + 1;
+				// Various Items
+				*(short*)(0x8063798A) = opacity;
+				*(short*)(0x806379DA) = opacity;
+				*(short*)(0x80637A1A) = opacity;
+				*(short*)(0x80637A5A) = opacity;
+				*(short*)(0x80637A9A) = opacity;
+			}
 			replace_zones(1);
 			randomize_bosses();
 			loadExtraHooks();
