@@ -236,6 +236,7 @@ void initHack(int source) {
 			style128Mtx[0xF] = 100;
 			writeCoinRequirements(0);
 			writeEndSequence();
+			*(int*)(0x806F6350) = 0x0C000000 | (((int)&getObjectCollectability & 0xFFFFFF) >> 2); // Modify Function Call
 			if (Rando.warp_to_isles_enabled) {
 				// Pause Menu Exit To Isles Slot
 				*(short*)(0x806A85EE) = 4; // Yes/No Prompt
@@ -548,6 +549,14 @@ void initHack(int source) {
 			// Move Text Code
 			*(int*)(0x8074C5B0) = (int)&getNextMoveText;
 			*(int*)(0x8074C5A0) = (int)&getNextMoveText;
+
+			if (Rando.item_rando) {
+
+			} else {
+				for (int i = 0; i < 54; i++) {
+					BonusBarrelData[i].spawn_actor = 45; // Spawn GB
+				}
+			}
 			
 			// Spider Projectile
 			//*(int*)(0x806ADDC0) = 0x0C000000 | (((int)&handleSpiderTrapCode & 0xFFFFFF) >> 2); // Remove buff until we think of something better
@@ -615,6 +624,7 @@ void initHack(int source) {
 			*(short*)(0x8060D986) = FLAG_ABILITY_CAMERA; // Film Refill
 			*(short*)(0x806F6F76) = FLAG_ABILITY_CAMERA; // Film Refill
 			initItemDropTable();
+			initCollectableCollision();
 			// LZ Save
 			*(int*)(0x80712EC4) = 0x0C000000 | (((int)&postKRoolSaveCheck & 0xFFFFFF) >> 2);
 			// Reduce TA Cooldown

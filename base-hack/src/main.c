@@ -130,7 +130,7 @@ void cFuncLoop(void) {
 	}
 	current_avg_lag = lag_sum;
 	current_avg_lag /= LAG_CAP;
-};
+}
 
 void earlyFrame(void) {
 	if (ObjectModel2Timer == 2) {
@@ -405,7 +405,7 @@ int* displayListModifiers(int* dl) {
 		}
 	}
 	return dl;
-};
+}
 
 void toggleStandardAmmo(void) {
 	if (Gamemode == 6) {

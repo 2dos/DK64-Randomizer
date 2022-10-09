@@ -708,12 +708,10 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 						case GALLEON_TINY_SLAM:
 							if (index == 0) { 
 								return !Rando.remove_high_requirements;
-							}
-							else{
+							} else {
 								if (Rando.remove_high_requirements) {
 									behaviour_pointer->next_state = 6;
-								}
-								else {
+								} else {
 									behaviour_pointer->next_state = 5;
 								}
 							}
@@ -994,7 +992,7 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 					} else if ((index == 2) || (index == 3)) {
 						return getPressedSwitch(behaviour_pointer, kong_pellets[(int)Rando.free_source_japes], id);
 					} else if (index == 4) {
-						return !Rando.quality_of_life.remove_cutscenes; // TODO: Retry this
+						return !Rando.quality_of_life.remove_cutscenes; // TODO(theballaam96): Retry this
 					}
 				} else if ((param2 == JAPES_GATE0) || (param2 == JAPES_GATE1) || (param2 == JAPES_GATE2)) {
 					if (Rando.open_level_sections) {
@@ -1098,8 +1096,7 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 					} else if (index == 2) {
 						if (Rando.fast_gbs) {
 							disableDiddyRDDoors();
-						}
-						else {
+						} else {
 							setScriptRunState(behaviour_pointer, 2, 0);
 						}
 					}

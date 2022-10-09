@@ -94,6 +94,9 @@ extern int* drawDPad(int* dl);
 extern int* drawImageWithFilter(int* dl, int text_index, codecs codec_index, int img_width, int img_height, int x, int y, float xScale, float yScale, int red, int green, int blue, int opacity);
 extern void correctKongFaces(void);
 
+extern int getLo(void* addr);
+extern int getHi(void* addr);
+
 extern void displayNumberOnObject(int id, int param2, int imageindex, int param4, int subtype);
 extern void recolorKongControl(void);
 extern void newCounterCode(void);
@@ -115,6 +118,7 @@ extern int getTagAnywhereKong(int direction);
 extern int getTAState(void);
 extern void toggleStandardAmmo(void);
 extern void initItemDropTable(void);
+extern void initCollectableCollision(void);
 extern void newGuardCode(void);
 extern void goldBeaverCode(void);
 extern void beaverExtraHitHandle(void);
@@ -146,6 +150,7 @@ extern void initKRool(int phase);
 extern void handleSFXCache(void);
 extern void preventMedalHUD(int item, int unk0, int unk1);
 extern void initHUDDirection(placementData* hud_data, int item);
+extern int getObjectCollectability(int id, int unk1, int model2_type);
 extern void* getHUDSprite_HUD(int item);
 extern void updateMultibunchCount(void);
 extern void handleDPadFunctionality(void);
