@@ -41,7 +41,7 @@ LogicRegions = {
         LocationLogic(Locations.GalleonKasplatNearLab, lambda l: not l.settings.kasplat_location_rando),
     ], [], [
         TransitionFront(Regions.GloomyGalleonStart, lambda l: True),
-        TransitionFront(Regions.GalleonBossLobby, lambda l: True),
+        TransitionFront(Regions.GalleonBossLobby, lambda l: not l.settings.tns_location_rando),
     ]),
 
     Regions.GalleonBeyondPineappleGate: Region("Galleon Beyond Pineapple Gate", Levels.GloomyGalleon, False, None, [
@@ -82,7 +82,7 @@ LogicRegions = {
     ], [
         TransitionFront(Regions.LighthouseSurface, lambda l: True),
         TransitionFront(Regions.MermaidRoom, lambda l: l.mini and l.istiny, Transitions.GalleonLighthousAreaToMermaid),
-        TransitionFront(Regions.GalleonBossLobby, lambda l: Events.LighthouseEnguarde in l.Events),
+        TransitionFront(Regions.GalleonBossLobby, lambda l: not l.settings.tns_location_rando),  # T&S past Enguarde is redundant with meme hole
     ]),
 
     Regions.LighthouseSnideAlcove: Region("Lighthouse Snide Alcove", Levels.GloomyGalleon, True, None, [], [], [
@@ -142,7 +142,7 @@ LogicRegions = {
         TransitionFront(Regions.TromboneShip, lambda l: l.trombone and l.islanky, Transitions.GalleonShipyardToTrombone),
         TransitionFront(Regions.SaxophoneShip, lambda l: l.saxophone and l.istiny, Transitions.GalleonShipyardToSaxophone),
         TransitionFront(Regions.TriangleShip, lambda l: Events.GalleonChunkyPad in l.Events and l.ischunky, Transitions.GalleonShipyardToTriangle),
-        TransitionFront(Regions.GalleonBossLobby, lambda l: True),
+        TransitionFront(Regions.GalleonBossLobby, lambda l: not l.settings.tns_location_rando),
     ]),
 
     Regions.SealRace: Region("Seal Race", Levels.GloomyGalleon, False, None, [

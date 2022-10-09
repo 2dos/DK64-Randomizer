@@ -49,7 +49,8 @@ typedef struct varspace {
 	/* 0x0AE */ char helm_hurry_mode; // 0 = Off, 1 = On: Starting a new file summons the helm timer, each BP adds 2 minutes to the clock, timing out disables saving.
 	/* 0x0AF */ char always_show_coin_cbs; // 0 = No (Vanilla), 1 = Yes
 	/* 0x0B0 */ quality_options quality_of_life; // Size: 2
-	/* 0x0B2 */ char unk_B0[0x117 - 0xB2];
+	/* 0x0B2 */ char unk_B0[0x116 - 0xB2];
+	/* 0x116 */ char colorblind_mode; // 0 = Off, 1 = On
 	/* 0x117 */ unsigned char enabled_pkmnsnap_enemies[5]; // Bitfield
 	/* 0x11C */ char krusha_slot; // -1 = Not replacing a kong. 0-4 = Replaces kong of relevant index. Takes priority over disco chunky
 	/* 0x11D */ unsigned char win_condition; // See vars.h for enum

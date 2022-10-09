@@ -307,7 +307,7 @@ def compileHints(spoiler: Spoiler):
         valid_types.append(HintType.DirtPatch)
     if spoiler.settings.randomize_blocker_required_amounts:
         valid_types.append(HintType.BLocker)
-    if spoiler.settings.randomize_cb_required_amounts:
+    if spoiler.settings.randomize_cb_required_amounts and len(spoiler.settings.krool_keys_required) > 0 and spoiler.settings.krool_keys_required != [Events.HelmKeyTurnedIn]:
         valid_types.append(HintType.TroffNScoff)
     if spoiler.settings.kong_rando:
         valid_types.append(HintType.KongLocation)
@@ -346,49 +346,53 @@ def compileHints(spoiler: Spoiler):
         progression_hint_locations = []
         for level in all_levels:
             for kong in spoiler.settings.owned_kongs_by_level[level]:
-                # If we don't have DK + Grab then these hints are skipped basically every time so they're not on the player's path
-                if (
-                    level == Levels.FranticFactory
-                    and kong not in [Kongs.donkey, Kongs.chunky]
-                    and (Kongs.donkey not in spoiler.settings.owned_kongs_by_level[level] or Items.GorillaGrab not in spoiler.settings.owned_moves_by_level[level])
-                ):
-                    continue
-                if (
-                    level == Levels.FungiForest
-                    and kong is not Kongs.chunky
-                    and (Kongs.donkey not in spoiler.settings.owned_kongs_by_level[level] or Items.GorillaGrab not in spoiler.settings.owned_moves_by_level[level])
-                ):
-                    continue
-                # Caves Diddy needs a whole suite of moves to see this hint
-                if (
-                    level == Levels.CrystalCaves
-                    and kong is Kongs.diddy
-                    and (
+                # In hint door location rando, it's too complicated to determine if the door will be accessible on the first trip
+                # Assume they'll see the hint doors for the kongs they have available
+                # NOTE: this is a quick and dirty solution that can bury critical hints - better solution would be to set up accessible_hints_by_level array like moves/kongs
+                if not spoiler.settings.wrinkly_location_rando:
+                    # If we don't have DK + Grab then these hints are skipped basically every time so they're not on the player's path
+                    if (
+                        level == Levels.FranticFactory
+                        and kong not in [Kongs.donkey, Kongs.chunky]
+                        and (Kongs.donkey not in spoiler.settings.owned_kongs_by_level[level] or Items.GorillaGrab not in spoiler.settings.owned_moves_by_level[level])
+                    ):
+                        continue
+                    if (
+                        level == Levels.FungiForest
+                        and kong is not Kongs.chunky
+                        and (Kongs.donkey not in spoiler.settings.owned_kongs_by_level[level] or Items.GorillaGrab not in spoiler.settings.owned_moves_by_level[level])
+                    ):
+                        continue
+                    # Caves Diddy needs a whole suite of moves to see this hint
+                    if (
+                        level == Levels.CrystalCaves
+                        and kong is Kongs.diddy
+                        and (
+                            Kongs.chunky not in spoiler.settings.owned_kongs_by_level[level]
+                            or Items.PrimatePunch not in spoiler.settings.owned_moves_by_level[level]
+                            or Items.RocketbarrelBoost not in spoiler.settings.owned_moves_by_level[level]
+                            or Items.Barrels not in spoiler.settings.owned_moves_by_level[level]
+                        )
+                    ):
+                        continue
+                    # Everyone else in Caves still needs Chunky + Punch + Barrels
+                    if level == Levels.CrystalCaves and (
                         Kongs.chunky not in spoiler.settings.owned_kongs_by_level[level]
                         or Items.PrimatePunch not in spoiler.settings.owned_moves_by_level[level]
-                        or Items.RocketbarrelBoost not in spoiler.settings.owned_moves_by_level[level]
                         or Items.Barrels not in spoiler.settings.owned_moves_by_level[level]
-                    )
-                ):
-                    continue
-                # Everyone else in Caves still needs Chunky + Punch + Barrels
-                if level == Levels.CrystalCaves and (
-                    Kongs.chunky not in spoiler.settings.owned_kongs_by_level[level]
-                    or Items.PrimatePunch not in spoiler.settings.owned_moves_by_level[level]
-                    or Items.Barrels not in spoiler.settings.owned_moves_by_level[level]
-                ):
-                    continue
-                # Aztec Chunky also needs Tiny + Feather + Hunky Chunky
-                if (
-                    level == Levels.AngryAztec
-                    and kong is Kongs.chunky
-                    and (
-                        Kongs.tiny not in spoiler.settings.owned_kongs_by_level[level]
-                        or Items.Feather not in spoiler.settings.owned_moves_by_level[level]
-                        or Items.HunkyChunky not in spoiler.settings.owned_moves_by_level[level]
-                    )
-                ):
-                    continue
+                    ):
+                        continue
+                    # Aztec Chunky also needs Tiny + Feather + Hunky Chunky
+                    if (
+                        level == Levels.AngryAztec
+                        and kong is Kongs.chunky
+                        and (
+                            Kongs.tiny not in spoiler.settings.owned_kongs_by_level[level]
+                            or Items.Feather not in spoiler.settings.owned_moves_by_level[level]
+                            or Items.HunkyChunky not in spoiler.settings.owned_moves_by_level[level]
+                        )
+                    ):
+                        continue
                 hint_for_location = [hint for hint in hints if hint.level == level and hint.kong == kong][0]  # Should only match one
                 progression_hint_locations.append(hint_for_location)
 
@@ -592,8 +596,9 @@ def compileHints(spoiler: Spoiler):
         UpdateHint(hint_location, message)
         placed_move_hints += 1
 
-    # We want to hint levels after the hint location and only levels that we don't start with keys for
-    for i in range(hint_distribution[HintType.TroffNScoff]):
+    # For T&S hints, we want to hint levels after the hint location and only levels that we don't start with keys for
+    if hint_distribution[HintType.TroffNScoff] > 0:
+        # Determine what levels have incomplete T&S - there must be at least one to get here
         levels_with_tns = []
         for keyEvent in spoiler.settings.krool_keys_required:
             if keyEvent == Events.JapesKeyTurnedIn:
@@ -610,24 +615,39 @@ def compileHints(spoiler: Spoiler):
                 levels_with_tns.append(Levels.CrystalCaves)
             if keyEvent == Events.CastleKeyTurnedIn:
                 levels_with_tns.append(Levels.CreepyCastle)
-        # Make sure the location we randomly pick either is a level or is before a level that has a T&S
-        future_tns_levels = []
-        while not any(future_tns_levels):
-            hint_location = getRandomHintLocation()
-            future_tns_levels = [
-                level for level in all_levels if level in levels_with_tns and (not level_order_matters or spoiler.settings.EntryGBs[level] >= spoiler.settings.EntryGBs[hint_location.level])
-            ]
-        hinted_level = random.choice(future_tns_levels)
-        level_name = level_list[hinted_level]
-        if spoiler.settings.wrinkly_hints == "cryptic":
-            level_name = random.choice(level_cryptic[hinted_level])
-        count = spoiler.settings.BossBananas[hinted_level]
-        cb_name = "Small Bananas"
-        if count == 1:
-            cb_name = "Small Banana"
-        message = f"The barrier to the boss in {level_name} can be cleared by obtaining {count} {cb_name}."
-        hint_location.hint_type = HintType.TroffNScoff
-        UpdateHint(hint_location, message)
+        placed_tns_hints = 0
+        while placed_tns_hints < hint_distribution[HintType.TroffNScoff]:
+            attempts = 0
+            # Make sure the location we randomly pick either is a level or is before a level that has a T&S
+            future_tns_levels = []
+            while not any(future_tns_levels):
+                # If you can't find a location that can fit a T&S hint in 15 tries, it's either impossible or very likely redundant
+                attempts += 1
+                if attempts > 15:
+                    break
+                hint_location = getRandomHintLocation()
+                future_tns_levels = [
+                    level for level in all_levels if level in levels_with_tns and (not level_order_matters or spoiler.settings.EntryGBs[level] >= spoiler.settings.EntryGBs[hint_location.level])
+                ]
+            # If we failed to find it in 15 attempts, convert remaining T&S hints to joke hints
+            # This is a disgustingly rare scenario, likely involving very few and early keys required
+            if attempts > 15:
+                hint_diff = hint_distribution[HintType.TroffNScoff] - placed_tns_hints
+                hint_distribution[HintType.Joke] += hint_diff
+                hint_distribution[HintType.TroffNScoff] -= hint_diff
+                break
+            hinted_level = random.choice(future_tns_levels)
+            level_name = level_list[hinted_level]
+            if spoiler.settings.wrinkly_hints == "cryptic":
+                level_name = random.choice(level_cryptic[hinted_level])
+            count = spoiler.settings.BossBananas[hinted_level]
+            cb_name = "Small Bananas"
+            if count == 1:
+                cb_name = "Small Banana"
+            message = f"The barrier to the boss in {level_name} can be cleared by obtaining {count} {cb_name}."
+            hint_location.hint_type = HintType.TroffNScoff
+            UpdateHint(hint_location, message)
+            placed_tns_hints += 1
 
     # Entrance hints are tricky, there's some requirements we must hit:
     # We must hint each of Japes, Aztec, and Factory at least once

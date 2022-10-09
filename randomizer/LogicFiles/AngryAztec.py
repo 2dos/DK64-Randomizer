@@ -42,7 +42,7 @@ LogicRegions = {
                         or (l.feather and l.istiny) or (l.pineapple and l.ischunky)),
         TransitionFront(Regions.AngryAztecMain, lambda l: l.settings.open_levels or (l.guitar and l.diddy)),
         TransitionFront(Regions.CandyAztec, lambda l: True),
-        TransitionFront(Regions.AztecBossLobby, lambda l: True),
+        TransitionFront(Regions.AztecBossLobby, lambda l: not l.settings.tns_location_rando),
     ]),
 
     Regions.TempleStart: Region("Temple Start", Levels.AngryAztec, False, -1, [
@@ -82,7 +82,8 @@ LogicRegions = {
         TransitionFront(Regions.CrankyAztec, lambda l: True),
         TransitionFront(Regions.Snide, lambda l: True),
         TransitionFront(Regions.FunkyAztec, lambda l: True),
-        TransitionFront(Regions.AztecDonkeyQuicksandCave, lambda l: Events.AztecDonkeySwitch in l.Events and l.strongKong and l.donkey)
+        TransitionFront(Regions.AztecDonkeyQuicksandCave, lambda l: Events.AztecDonkeySwitch in l.Events and l.strongKong and l.donkey),
+        TransitionFront(Regions.AztecBossLobby, lambda l: not l.settings.tns_location_rando),
     ]),
 
     Regions.AztecDonkeyQuicksandCave: Region("Aztec Donkey Sand Tunnel", Levels.AngryAztec, False, -1, [

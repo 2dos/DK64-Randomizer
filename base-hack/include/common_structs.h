@@ -353,16 +353,35 @@ typedef struct cutscene_item {
 	/* 0x00C */ char unkC[0x14-0xC];
 } cutscene_item;
 
+typedef struct pan_data {
+	/* 0x000 */ short x;
+	/* 0x002 */ short y;
+	/* 0x004 */ short z;
+	/* 0x006 */ short rot_data[3];
+	/* 0x00C */ unsigned char zoom;
+	/* 0x00D */ unsigned char roll;
+} pan_data;
+
+typedef struct cutscene_pan_item {
+	/* 0x000 */ char unk0;
+	/* 0x001 */ unsigned char command;
+	/* 0x002 */ char unk2[2];
+	/* 0x004 */ short point_count;
+	/* 0x006 */ char unk6[2];
+	/* 0x008 */ pan_data* pan_content;
+	/* 0x00C */ char unkC[0x14-0xC];
+} cutscene_pan_item;
+
 typedef struct cutscene_item_data {
 	/* 0x000 */ short num_points;
 	/* 0x002 */ short unk_02;
-	/* 0x004 */ void* point_array;
-	/* 0x008 */ void* length_array;
+	/* 0x004 */ short* point_array;
+	/* 0x008 */ short* length_array;
 } cutscene_item_data;
 
 typedef struct cutsceneType {
 	/* 0x000 */ char unk_00[0xD0];
-	/* 0x0D0 */ cutsceneInfo* cutscene_databank;
+	/* 0x0D0 */ cutscene_item_data* cutscene_databank;
 	/* 0x0D4 */ char unk_D4[0xD8-0xD4];
 	/* 0x0D8 */ cutscene_item* cutscene_funcbank;
 	/* 0x0DC */ int unk_DE;
@@ -705,10 +724,11 @@ typedef struct fileExtraStorage {
 	/* 0x001 */ unsigned char location_ab1_purchased;
 	/* 0x002 */ unsigned char location_ug1_purchased;
 	/* 0x003 */ unsigned char location_mln_purchased;
+	/* 0x004 */ unsigned int level_igt[9];
 } fileExtraStorage;
 
 typedef struct settingsData {
-	/* 0x000 */ fileExtraStorage file_extra[3];
+	/* 0x000 */ fileExtraStorage file_extra;
 } settingsData;
 
 typedef struct behaviour_data {

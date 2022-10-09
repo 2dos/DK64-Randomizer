@@ -110,7 +110,7 @@ LogicRegions = {
         TransitionFront(Regions.MushroomChunkyRoom, lambda l: l.superSlam and l.ischunky, Transitions.ForestExteriorToChunky),
         TransitionFront(Regions.MushroomLankyZingersRoom, lambda l: l.handstand and l.superSlam and l.islanky, Transitions.ForestExteriorToZingers),
         TransitionFront(Regions.MushroomLankyMushroomsRoom, lambda l: l.handstand and l.superSlam and l.islanky, Transitions.ForestExteriorToMushrooms),
-        TransitionFront(Regions.ForestBossLobby, lambda l: True),
+        TransitionFront(Regions.ForestBossLobby, lambda l: not l.settings.tns_location_rando),
     ]),
 
     Regions.MushroomChunkyRoom: Region("Mushroom Chunky Room", Levels.FungiForest, False, -1, [
@@ -138,7 +138,7 @@ LogicRegions = {
     ], [], [
         TransitionFront(Regions.GiantMushroomArea, lambda l: l.settings.open_levels or Events.HollowTreeGateOpened in l.Events),
         TransitionFront(Regions.Anthill, lambda l: l.mini and l.saxophone, Transitions.ForestTreeToAnthill),
-        TransitionFront(Regions.ForestBossLobby, lambda l: True),
+        TransitionFront(Regions.ForestBossLobby, lambda l: not l.settings.tns_location_rando),
     ]),
 
     Regions.Anthill: Region("Anthill", Levels.FungiForest, False, -1, [
@@ -162,7 +162,7 @@ LogicRegions = {
         TransitionFront(Regions.MillAttic, lambda l: True, Transitions.ForestMainToAttic, time=Time.Night),
         TransitionFront(Regions.ThornvineArea, lambda l: True, time=Time.Night),
         TransitionFront(Regions.Snide, lambda l: True, time=Time.Day),
-        TransitionFront(Regions.ForestBossLobby, lambda l: True, time=Time.Day),
+        TransitionFront(Regions.ForestBossLobby, lambda l: not l.settings.tns_location_rando, time=Time.Day),
     ]),
 
     # Physically chunky and tiny share an area but they're split for logical convenience
@@ -221,7 +221,7 @@ LogicRegions = {
         TransitionFront(Regions.MillArea, lambda l: True, time=Time.Night),
         # You're supposed to use strong kong to hit the switch in the thorns, but can brute force it, unless on higher damage values
         TransitionFront(Regions.ThornvineBarn, lambda l: l.superSlam and l.isdonkey and (l.strongKong or l.settings.damage_amount == "default"), Transitions.ForestMainToBarn),
-        TransitionFront(Regions.ForestBossLobby, lambda l: True),
+        TransitionFront(Regions.ForestBossLobby, lambda l: not l.settings.tns_location_rando),
     ]),
 
     Regions.ThornvineBarn: Region("Thornvine Barn", Levels.FungiForest, False, -1, [
@@ -237,7 +237,7 @@ LogicRegions = {
     ], [], [
         TransitionFront(Regions.FungiForestStart, lambda l: Events.WormGatesOpened in l.Events),
         TransitionFront(Regions.FunkyForest, lambda l: True),
-        TransitionFront(Regions.ForestBossLobby, lambda l: True, time=Time.Night),
+        TransitionFront(Regions.ForestBossLobby, lambda l: not l.settings.tns_location_rando, time=Time.Night),
     ]),
 
     Regions.ForestBossLobby: Region("Forest Boss Lobby", Levels.FungiForest, True, None, [], [], [

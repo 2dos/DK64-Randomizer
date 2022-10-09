@@ -52,6 +52,7 @@
     "maximize_helm_blocker": true,
     "medal_requirement": 15,
     "minigames_list_selected": [],
+    "misc_changes_selected": [],
     "move_rando": "on",
     "no_healing": false,
     "no_logic": false,

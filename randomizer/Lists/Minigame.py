@@ -196,7 +196,7 @@ result = []
 for minigame in MinigameRequirements.values():
     name = minigame.group
     if name not in result and name != "No Group":
-        MinigameSelector.append({"name": name, "value": name.lower().replace(" ", "_")})
+        MinigameSelector.append({"name": name, "value": name.lower().replace(" ", "_"), "tooltip": ""})
         result.append(name)
 
 

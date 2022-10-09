@@ -209,11 +209,18 @@ InvertCameraControlsHook:
 VineCodeHook:
 	J 	VineCode
 	NOP
+VineShowHook:
+	J 	VineShowCode
+	NOP
 SkipCutscenePansHook:
 	J 	SkipCutscenePans
 	NOP
 ModifyCameraColorHook:
 	J 	ModifyCameraColor
+	NOP
+
+PlayCutsceneVelocityHook:
+	J 	PlayCutsceneVelocity
 	NOP
 
 loadExtraHooks:
@@ -228,6 +235,12 @@ loadExtraHooks:
 	LUI t4, 0x806A
 	SW t3, 0x840C (t4) // Store Hook
 	SW r0, 0x8410 (t4) // Store NOP
+	
+	LUI t3, hi(VineShowHook)
+	LW t3, lo(VineShowHook) (t3)
+	LUI t4, 0x806A
+	SW t3, 0x8420 (t4) // Store Hook
+	SW r0, 0x8424 (t4) // Store NOP
 	
 	LUI t3, hi(ModifyCameraColorHook)
 	LW t3, lo(ModifyCameraColorHook) (t3)
@@ -252,6 +265,12 @@ loadExtraHooks:
 	LUI t4, 0x806F
 	SW t3, 0xA70C (t4) // Store Hook
 	SW r0, 0xA710 (t4) // Store NOP
+	
+	LUI t3, hi(PlayCutsceneVelocityHook)
+	LW t3, lo(PlayCutsceneVelocityHook) (t3)
+	LUI t4, 0x8062
+	SW t3, 0xCE38 (t4) // Store Hook
+	SW r0, 0xCE3C (t4) // Store NOP
 
 	LUI t3, hi(FixPufftossInvalidWallCollisionHook)
 	LW t3, lo(FixPufftossInvalidWallCollisionHook) (t3)
@@ -450,11 +469,11 @@ loadExtraHooks:
 	BEQZ t3, loadExtraHooks_2
 	NOP
 
-	LUI t3, hi(BonusAutocompleteHook)
-	LW t3, lo(BonusAutocompleteHook) (t3)
-	LUI t4, 0x8068
-	SW t3, 0x0D10 (t4) // Store Hook
-	SW r0, 0x0D14 (t4) // Store NOP
+	//LUI t3, hi(BonusAutocompleteHook)
+	//LW t3, lo(BonusAutocompleteHook) (t3)
+	//LUI t4, 0x8068
+	//SW t3, 0x0D10 (t4) // Store Hook
+	//SW r0, 0x0D14 (t4) // Store NOP
 
 	loadExtraHooks_2:
 	LUI t3, hi(KeyCompressionHook)

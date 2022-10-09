@@ -70,6 +70,7 @@
         "peril_path_panic",
         "helm_minigames"
     ],
+    "misc_changes_selected": [],
     "quality_of_life":true,
     "shorten_boss":true,
     "enable_tag_anywhere":true,

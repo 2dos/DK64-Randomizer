@@ -35,6 +35,7 @@ from ui.GenTracker import generateTracker
 from ui.GenSpoiler import GenerateSpoiler
 from randomizer.Patching.UpdateHints import PushHints, wipeHints
 from randomizer.Patching.DoorPlacer import place_door_locations
+from randomizer.Lists.QoL import QoLSelector
 
 # from randomizer.Spoiler import Spoiler
 from randomizer.Settings import Settings
@@ -215,8 +216,19 @@ def patching_response(responded_data):
 
     # Quality of Life
     if spoiler.settings.quality_of_life:
+        enabled_qol = spoiler.settings.misc_changes_selected.copy()
+        if len(enabled_qol) == 0:
+            for item in QoLSelector:
+                enabled_qol.append(item["value"])
+        write_data = [0, 0]
+        for item in QoLSelector:
+            if item["value"] in enabled_qol:
+                offset = int(item["shift"] >> 3)
+                check = int(item["shift"] % 8)
+                write_data[offset] |= 0x80 >> check
         ROM().seek(sav + 0x0B0)
-        ROM().writeMultipleBytes(0xFFFF, 2)
+        for byte_data in write_data:
+            ROM().writeMultipleBytes(byte_data, 1)
 
     # Damage amount
     ROM().seek(sav + 0x0A5)
@@ -401,7 +413,7 @@ def patching_response(responded_data):
     random.seed(spoiler.settings.seed)
     randomize_music(spoiler)
     apply_cosmetic_colors(spoiler)
-    # overwrite_object_colors() # Causes crashes?
+    overwrite_object_colors(spoiler)
     random.seed(spoiler.settings.seed)
 
     if spoiler.settings.wrinkly_hints in ["standard", "cryptic"]:

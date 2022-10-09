@@ -46,11 +46,11 @@ def ShuffleWarps(bananaport_replacements, human_ports):
         bananaport_replacements.append({"containing_map": warp_map, "pads": pad_list.copy()})
 
 
-def getNameFromSwapIndex(index):
+def getWarpFromSwapIndex(index):
     """Acquire warp name from index."""
-    for warp_name in BananaportVanilla.values():
-        if warp_name.swap_index == index:
-            return warp_name.name
+    for warp in BananaportVanilla.values():
+        if warp.swap_index == index:
+            return warp
 
 
 def ShuffleWarpsCrossMap(bananaport_replacements, human_ports, is_coupled):
@@ -84,8 +84,10 @@ def ShuffleWarpsCrossMap(bananaport_replacements, human_ports, is_coupled):
                 if warp_check.swap_index == selected_index:
                     warp_check.cross_map_placed = True
             warp.new_warp = warp_type_index
-            human_ports[warp.name] = getNameFromSwapIndex(selected_index)
+            destination_warp = getWarpFromSwapIndex(selected_index)
+            human_ports[warp.name] = destination_warp.name
             bananaport_replacements[warp.swap_index] = [selected_index, warp_type_index]
+            warp.destination_region_id = destination_warp.region_id
             selected_lst = [selected_index]
             if selected_index in selected_warp_list:
                 print(f"Selected {selected_index} which is a duplicate")
@@ -97,8 +99,10 @@ def ShuffleWarpsCrossMap(bananaport_replacements, human_ports, is_coupled):
                         warp_check.tied_index = warp.swap_index
                         selected_lst.append(warp.swap_index)
                         warp_check.new_warp = warp_type_index
-                        human_ports[warp_check.name] = getNameFromSwapIndex(warp.swap_index)
+                        destination_warp = getWarpFromSwapIndex(warp.swap_index)
+                        human_ports[warp_check.name] = destination_warp.name
                         bananaport_replacements[warp_check.swap_index] = [warp.swap_index, warp_type_index]
+                        warp.destination_region_id = destination_warp.region_id
                         if warp.swap_index in selected_warp_list:
                             print(f"Selected {warp.swap_index} which is a duplicate")
                         selected_warp_list.append(warp.swap_index)
