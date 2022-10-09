@@ -55,7 +55,7 @@ class Location:
                 level = 0
             elif level in (Levels.DKIsles, Levels.HideoutHelm):
                 level = 7
-            self.map_id_list = [MapIDCombo(0, -1, 469 + data[1] + (5 * level))]
+            self.map_id_list = [MapIDCombo(0, -1, 549 + data[1] + (5 * level))]
         elif type in (Types.Banana, Types.Key, Types.Coin, Types.Crown, Types.Medal):
             if data is None:
                 self.map_id_list = []
