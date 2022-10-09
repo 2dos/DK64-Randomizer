@@ -524,6 +524,14 @@ void initHack(int source) {
 			// Move Text Code
 			*(int*)(0x8074C5B0) = (int)&getNextMoveText;
 			*(int*)(0x8074C5A0) = (int)&getNextMoveText;
+
+			if (Rando.item_rando) {
+
+			} else {
+				for (int i = 0; i < 54; i++) {
+					BonusBarrelData[i].spawn_actor = 45; // Spawn GB
+				}
+			}
 			
 			// Spider Projectile
 			//*(int*)(0x806ADDC0) = 0x0C000000 | (((int)&handleSpiderTrapCode & 0xFFFFFF) >> 2); // Remove buff until we think of something better

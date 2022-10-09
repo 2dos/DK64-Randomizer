@@ -176,6 +176,7 @@ extern void setActorAnimation(int animation);
 extern void actorUnkFunction_0(int control_state, int unk0);
 extern void spawnSparkles(float x, float y, float z, int size);
 extern void spawnEnemyDrops(void* actor);
+extern void spawnActorWithFlag(int object, int x_f, int y_f, int z_f, int unk0, int cutscene, int flag, int unk1);
 extern void* isActorLoaded(int actor_type);
 extern void beaverControlSwitchCase(int unk0, int unk1, int unk2);
 extern void BonusBarrelCode(void);
@@ -364,6 +365,8 @@ extern short MapVoid_MinX;
 extern short MapVoid_MinZ;
 extern short MapVoid_MaxX;
 extern short MapVoid_MaxZ;
+
+extern bonus_barrel_info BonusBarrelData[54];
 
 extern short screenCenterX;
 extern short screenCenterY;

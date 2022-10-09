@@ -170,6 +170,7 @@
 .definelabel actorUnkFunction_0, 0x8072D13C
 .definelabel spawnSparkles, 0x80686E40
 .definelabel spawnEnemyDrops, 0x806A5C60
+.definelabel spawnActorWithFlag, 0x806A5DF0
 .definelabel isActorLoaded, 0x8067ADB4
 .definelabel beaverControlSwitchCase, 0x806AD260
 .definelabel spawnProjectile, 0x80690A28
@@ -385,6 +386,7 @@
 .definelabel scriptLoadedArray, 0x807F60B0
 .definelabel scriptsLoaded, 0x807F60A8
 .definelabel scriptLoadsAttempted, 0x807F7140
+.definelabel BonusBarrelData, 0x80755F4C
 
 .definelabel KongUnlockedMenuArray, 0x80033804
 .definelabel FilePercentage, 0x80033F51

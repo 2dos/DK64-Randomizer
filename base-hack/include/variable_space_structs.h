@@ -12,7 +12,7 @@ typedef struct varspace {
 	/* 0x031 */ char fast_start_helm; // 0 = "Fast Start for Helm" setting not applied. 1 = Applied
 	/* 0x032 */ char crown_door_open; // 0 = Crown Door not opened by default. 1 = Opened by default
 	/* 0x033 */ char coin_door_open; // 0 = Coin Door not opened by default. 1 = Opened by default. 2 = Only requires RW Coin. 3 = Only requires Nin Coin.
-	/* 0x034 */ char unk34;
+	/* 0x034 */ char item_rando; // 0 = Off, 1 = On
 	/* 0x035 */ char price_rando_on; // 0 = Price Randomizer off, 1 = On
 	/* 0x036 */ unsigned char special_move_prices[5][3]; // Array of an array of prices [[1,2,3],[1,2,3],[1,2,3],[1,2,3],[1,2,3]]. Each item of the parent array is for a kong, each item of the sub arrays is the price of the moves in order of their vanilla purchase (eg. DK: Baboon Blast > Strong Kong > Gorilla Grab)
 	/* 0x045 */ unsigned char slam_prices[2]; // Array of simian slam upgrade prices: [1,2]. First item is super simian slam (blue), 2nd is super duper simian slam (red)

@@ -1227,6 +1227,12 @@ typedef struct kong_model_struct {
 	/* 0x00C */ int unk0;
 } kong_model_struct;
 
+typedef struct bonus_barrel_info {
+	/* 0x000 */ short flag;
+	/* 0x002 */ unsigned char kong_actor;
+	/* 0x003 */ unsigned char spawn_actor;
+} bonus_barrel_info;
+
 typedef struct tag_model_struct {
 	/* 0x000 */ short model;
 	/* 0x002 */ short actor;

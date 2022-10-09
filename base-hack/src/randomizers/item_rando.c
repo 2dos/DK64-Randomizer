@@ -161,3 +161,7 @@ void initCollectableCollision(void) {
     *(unsigned short*)(0x806F7996) = getHi(&object_collisions[index].type);
     *(unsigned short*)(0x806F799A) = getLo(&object_collisions[index].type);
 }
+
+void spawnBonusReward(int object, int x_f, int y_f, int z_f, int unk0, int cutscene, int flag, int unk1) {
+    spawnActorWithFlag(object, x_f, y_f, z_f, unk0, cutscene, flag, unk1);
+}
