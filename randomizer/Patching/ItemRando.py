@@ -18,9 +18,11 @@ class ItemData:
         self.init_count = count
 
     def reset(self):
+        """Reset item to default state."""
         self.count = self.init_count
 
     def place(self):
+        """Place method for an item."""
         self.count -= 1
 
 
@@ -41,6 +43,7 @@ item_distribution = [
 
 
 def place_randomized_items(spoiler: Spoiler):
+    """Place randomized items into ROM."""
     if spoiler.settings.item_rando:
         model_list = []
         for item in item_distribution:
