@@ -13,12 +13,11 @@ from randomizer.Lists.MapsAndExits import Maps, getLevelFromMap
 class MapIDCombo:
     """A combination of a map and an associated item ID. If id == -1 and map == 0, has no model 2 item, ignore those."""
 
-    def __init__(self, map=None, id=None, flag=None, obj_type="modeltwo", kong=Kongs.any):
+    def __init__(self, map=None, id=None, flag=None, kong=Kongs.any):
         """Initialize with given parameters."""
         self.map = map
         self.id = id
         self.flag = flag
-        self.obj_type = obj_type
         self.kong = kong
 
 
@@ -36,6 +35,13 @@ class Location:
         self.delayedItem = None
         self.constant = False
         self.map_id_list = None
+        helmmedal_locations = (
+            "Helm Donkey Medal",
+            "Helm Diddy Medal",
+            "Helm Lanky Medal",
+            "Helm Tiny Medal",
+            "Helm Chunky Medal",
+        )
         if type == Types.Shop:
             self.level = data[0]
             self.kong = data[1]
@@ -50,7 +56,7 @@ class Location:
             elif level in (Levels.DKIsles, Levels.HideoutHelm):
                 level = 7
             self.map_id_list = [MapIDCombo(0, -1, 469 + data[1] + (5 * level), data[1])]
-        elif type == Types.Medal:
+        elif type == Types.Medal and name not in helmmedal_locations:
             level = data[0]
             if level is None:
                 level = 0
@@ -58,10 +64,11 @@ class Location:
                 level = 7
             self.map_id_list = [MapIDCombo(0, -1, 549 + data[1] + (5 * level), data[1])]
         elif type in (Types.Banana, Types.Key, Types.Coin, Types.Crown, Types.Medal):
-            if data is None:
-                self.map_id_list = []
-            else:
-                self.map_id_list = data
+            if "Turn In " not in name:
+                if data is None:
+                    self.map_id_list = []
+                else:
+                    self.map_id_list = data
         self.default_mapid_data = self.map_id_list
 
     def PlaceItem(self, item):
@@ -221,7 +228,7 @@ LocationList = {
     Locations.FactoryBattleArena: Location("Factory Battle Arena", Items.BattleCrown, Types.Crown, [MapIDCombo(Maps.FactoryCrown, -1, 611)]),
     Locations.FactoryTinyCarRace: Location("Factory Tiny Car Race", Items.GoldenBanana, Types.Banana, [MapIDCombo(Maps.FactoryTinyRace, 0x62, 139, Kongs.tiny)]),
     Locations.FactoryDiddyChunkyRoomBarrel: Location("Factory Diddy Chunky Room Barrel", Items.GoldenBanana, Types.Banana, [MapIDCombo(0, -1, 134, Kongs.diddy)]),
-    Locations.FactoryDonkeyPowerHut: Location("Factory Donkey Power Hut", Items.GoldenBanana, Types.Banana, [Maps.FactoryPowerHut, 0x2, 112]),
+    Locations.FactoryDonkeyPowerHut: Location("Factory Donkey Power Hut", Items.GoldenBanana, Types.Banana, [MapIDCombo(Maps.FactoryPowerHut, 0x2, 112, Kongs.donkey)]),
     Locations.ChunkyKong: Location("Chunky Kong", Items.Chunky, Types.Kong),
     Locations.NintendoCoin: Location("Nintendo Coin", Items.NintendoCoin, Types.Coin, [MapIDCombo(Maps.FranticFactory, 0x13E, 132)]),
     Locations.FactoryDonkeyDKArcade: Location("Factory Donkey DK Arcade", Items.GoldenBanana, Types.Banana, [MapIDCombo(Maps.FranticFactory, 0x108, 130, Kongs.donkey), MapIDCombo(Maps.FactoryBaboonBlast, 0, 130, Kongs.donkey)]),
@@ -282,7 +289,7 @@ LocationList = {
     Locations.ForestChunkyMinecarts: Location("Forest Chunky Minecarts", Items.GoldenBanana, Types.Banana, [MapIDCombo(0, -1, 215, Kongs.chunky)]),
     Locations.ForestDiddyTopofMushroom: Location("Forest Diddy Top of Mushroom", Items.GoldenBanana, Types.Banana, [MapIDCombo(0, -1, 211, Kongs.diddy)]),
     Locations.ForestTinyMushroomBarrel: Location("Forest Tiny Mushroom Barrel", Items.GoldenBanana, Types.Banana, [MapIDCombo(0, -1, 227, Kongs.tiny)]),
-    Locations.ForestDonkeyBaboonBlast: Location("Forest Donkey Baboon Blast", Items.GoldenBanana, Types.Banana, [Maps.FungiForest, 0x39, 254]),
+    Locations.ForestDonkeyBaboonBlast: Location("Forest Donkey Baboon Blast", Items.GoldenBanana, Types.Banana, [MapIDCombo(Maps.FungiForest, 0x39, 254, Kongs.donkey)]),
     Locations.ForestKasplatLowerMushroomExterior: Location("Forest Kasplat Lower Giant Mushroom Exterior", Items.FungiForestTinyBlueprint, Types.Blueprint, [Maps.FungiForest, Kongs.tiny]),
     Locations.ForestDonkeyMushroomCannons: Location("Forest Donkey Mushroom Cannons", Items.GoldenBanana, Types.Banana, [MapIDCombo(Maps.ForestGiantMushroom, 0x3, 228, Kongs.donkey)]),
     Locations.ForestKasplatInsideMushroom: Location("Forest Kasplat Inside Giant Mushroom", Items.FungiForestDiddyBlueprint, Types.Blueprint, [Maps.ForestGiantMushroom, Kongs.diddy]),
@@ -390,11 +397,11 @@ LocationList = {
     Locations.HelmChunky1: Location("Helm Chunky Barrel 1", Items.HelmChunky1, Types.Constant),
     Locations.HelmChunky2: Location("Helm Chunky Barrel 2", Items.HelmChunky2, Types.Constant),
     Locations.HelmBattleArena: Location("Helm Battle Arena", Items.BattleCrown, Types.Crown, [MapIDCombo(Maps.HelmCrown, -1, 618)]),
-    Locations.HelmDonkeyMedal: Location("Helm Donkey Medal", Items.BananaMedal, Types.Medal, [Levels.JungleJapes, Kongs.donkey]),
-    Locations.HelmDiddyMedal: Location("Helm Diddy Medal", Items.BananaMedal, Types.Medal, [Levels.JungleJapes, Kongs.diddy]),
-    Locations.HelmLankyMedal: Location("Helm Lanky Medal", Items.BananaMedal, Types.Medal, [Levels.JungleJapes, Kongs.lanky]),
-    Locations.HelmTinyMedal: Location("Helm Tiny Medal", Items.BananaMedal, Types.Medal, [Levels.JungleJapes, Kongs.tiny]),
-    Locations.HelmChunkyMedal: Location("Helm Chunky Medal", Items.BananaMedal, Types.Medal, [Levels.JungleJapes, Kongs.chunky]),
+    Locations.HelmDonkeyMedal: Location("Helm Donkey Medal", Items.BananaMedal, Types.Medal, [MapIDCombo(Maps.HideoutHelm, 0x5D, 584, Kongs.donkey)]),
+    Locations.HelmDiddyMedal: Location("Helm Diddy Medal", Items.BananaMedal, Types.Medal, [MapIDCombo(Maps.HideoutHelm, 0x61, 585, Kongs.diddy)]),
+    Locations.HelmLankyMedal: Location("Helm Lanky Medal", Items.BananaMedal, Types.Medal, [MapIDCombo(Maps.HideoutHelm, 0x5F, 586, Kongs.lanky)]),
+    Locations.HelmTinyMedal: Location("Helm Tiny Medal", Items.BananaMedal, Types.Medal, [MapIDCombo(Maps.HideoutHelm, 0x60, 587, Kongs.tiny)]),
+    Locations.HelmChunkyMedal: Location("Helm Chunky Medal", Items.BananaMedal, Types.Medal, [MapIDCombo(Maps.HideoutHelm, 0x5E, 588, Kongs.chunky)]),
     Locations.HelmBananaFairy1: Location("Helm Banana Fairy 1", Items.BananaFairy, Types.Fairy),
     Locations.HelmBananaFairy2: Location("Helm Banana Fairy 2", Items.BananaFairy, Types.Fairy),
     Locations.HelmKey: Location("Helm Key", Items.HideoutHelmKey, Types.Key, [MapIDCombo(Maps.HideoutHelm, 0x5A, 380)]),
