@@ -1,77 +1,74 @@
 """Apply item rando changes."""
-import random
-
 import js
 from randomizer.Lists.MapsAndExits import Maps
 from randomizer.Patching.Patcher import ROM
 from randomizer.Spoiler import Spoiler
+from randomizer.Enums.Types import Types
 
-
-class ItemData:
-    """Stores information about an item placement in ROM."""
-
-    def __init__(self, type, count, model):
-        """Initialize with given parameters."""
-        self.type = type
-        self.count = count
-        self.model = model
-        self.init_count = count
-
-    def reset(self):
-        """Reset item to default state."""
-        self.count = self.init_count
-
-    def place(self):
-        """Place method for an item."""
-        self.count -= 1
-
-
-item_distribution = [
-    ItemData("golden_banana", 160, 0x74),  # Minus Rareware GB & the 40 Snide GBs
-    ItemData("medal", 40, 0x90),
-    ItemData("bp_dk", 8, 0xDE),
-    ItemData("bp_diddy", 8, 0xE0),
-    ItemData("bp_lanky", 8, 0xE1),
-    ItemData("bp_tiny", 8, 0xDD),
-    ItemData("bp_chunky", 8, 0xDF),
-    ItemData("crown", 10, 0x18D),
-    ItemData("key", 8, 0x13C),
-    ItemData("nintendo_coin", 1, 0x48),
-    ItemData("rareware_coin", 1, 0x28F),
-    ItemData("rareware_gb", 1, 0x288),
-]
+model_two_indexes = {
+    Types.Banana: 0x74,
+    Types.Blueprint: [0xDE, 0xE0, 0xE1, 0xDD, 0xDF],
+    Types.Coin: [0x48, 0x28F],  # Nintendo, Rareware
+    Types.Key: 0x13C,
+    Types.Crown: 0x18D,
+    Types.Medal: 0x90,
+}
 
 
 def place_randomized_items(spoiler: Spoiler):
     """Place randomized items into ROM."""
     if spoiler.settings.item_rando:
-        model_list = []
-        for item in item_distribution:
-            item.reset()
-            if item.model not in model_list:
-                model_list.append(item.model)
-        for cont_map_id in range(216):
-            cont_map_setup_address = js.pointer_addresses[9]["entries"][cont_map_id]["pointing_to"]
+        item_data = spoiler.item_assignment
+        model_two_items = [
+            0x74,
+            0xDE,
+            0xE0,
+            0xE1,
+            0xDD,
+            0xDF,
+            0x48,
+            0x28F,
+            0x13C,
+            0x18D,
+            0x90,
+            0x288,
+        ]
+        map_items = {}
+        for item in item_data:
+            if not item.reward_spot:
+                for map_id in item.placement_data:
+                    if map_id not in map_items:
+                        map_items[map_id] = []
+                    map_items[map_id].append(
+                        {
+                            "id": item.placement_data[map_id],
+                            "obj": item.new_item,
+                            "kong": item.new_kong,
+                            "flag": item.new_flag,
+                        }
+                    )
+        # Setup Changes
+        for map_id in map_items:
+            cont_map_setup_address = js.pointer_addresses[9]["entries"][map_id]["pointing_to"]
             ROM().seek(cont_map_setup_address)
             model2_count = int.from_bytes(ROM().readBytes(4), "big")
-            for model2_item in range(model2_count):
-                item_start = cont_map_setup_address + 4 + (model2_item * 0x30)
-                ROM().seek(item_start + 0x28)
-                item_type = int.from_bytes(ROM().readBytes(2), "big")
-                if item_type in model_list:
-                    # Select Item
-                    selection = []
-                    for item in item_distribution:
-                        for count in range(item.count):
-                            selection.append(item.type)
-                    selected_item = random.choice(selection)
-                    selected_item_model = -1
-                    for item in item_distribution:
-                        if item.type == selected_item:
-                            item.place()
-                            selected_item_model = item.model
-                    if selected_item_model > -1:
-                        ROM().seek(item_start + 0x28)
-                        ROM().writeMultipleBytes(selected_item_model, 2)
-                        item_id = int.from_bytes(ROM().readBytes(2), "big")
-                        print(f"Placed {selected_item} at ID {hex(item_id)} in map {hex(cont_map_id)}")
+            for item in range(model2_count):
+                start = cont_map_setup_address + 4 + (item * 0x30)
+                ROM().seek(start + 0x2A)
+                item_id = int.from_bytes(ROM().readBytes(2), "big")
+                for item_slot in map_items[map_id]:
+                    if item_slot["id"] == item_id:
+                        ROM().seek(start + 0x28)
+                        old_item = int.from_bytes(ROM().readBytes(2), "big")
+                        if old_item in model_two_items:
+                            ROM().seek(start + 0x28)
+                            item_obj_index = 0
+                            if item_slot["obj"] == Types.Blueprint:
+                                item_obj_index = model_two_indexes[Types.Blueprint][item_slot["kong"]]
+                            elif item_slot["obj"] == Types.Coin:
+                                item_obj_index = model_two_indexes[Types.Coin][0]
+                                if item_slot["flag"] == 379:
+                                    item_obj_index = model_two_indexes[Types.Coin][1]
+                            else:
+                                item_obj_index = model_two_indexes[item_slot["obj"]]
+                            ROM().writeMultipleBytes(item_obj_index, 2)

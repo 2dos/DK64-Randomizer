@@ -40,6 +40,7 @@ from randomizer.ShuffleShopLocations import ShuffleShopLocations
 from randomizer.ShuffleWarps import ShuffleWarps, ShuffleWarpsCrossMap
 from randomizer.ShuffleCBs import ShuffleCBs
 from randomizer.ShuffleCrowns import ShuffleCrowns
+from randomizer.ShuffleItems import ShuffleItems
 
 
 def GetExitLevelExit(region):
@@ -1831,6 +1832,10 @@ def ShuffleMisc(spoiler):
         spoiler.human_patches = ShufflePatches(spoiler, human_patches).copy()
     if spoiler.settings.shuffle_shops:
         ShuffleShopLocations(spoiler)
+    # Item Rando
+    spoiler.human_item_assignment = {}
+    if spoiler.settings.item_rando:
+        ShuffleItems(spoiler)
     if spoiler.settings.activate_all_bananaports in ["all", "isles"]:
         # In simpler bananaport shuffling, we can rely on the map id and warp number to find pairs
         if spoiler.settings.bananaport_rando in ("in_level", "off"):
