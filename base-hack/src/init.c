@@ -51,7 +51,9 @@ void expandSaveFile(int static_expansion, int actor_count) {
 	// int expansion = static_expansion;
 	int expansion = static_expansion + actor_count;
 	int flag_block_size = 0x320 + expansion;
-	int kong_var_size = 0xA1;
+	int targ_gb_bits = 7; // Max 127
+	int added_bits = (targ_gb_bits - 3) * 8;
+	int kong_var_size = 0xA1 + added_bits;
 	int file_info_location = flag_block_size + (5 * kong_var_size);
 	int file_default_size = file_info_location + 0x72;
 	// Flag Block Size
@@ -70,8 +72,15 @@ void expandSaveFile(int static_expansion, int actor_count) {
 	*(short*)(0x8060C352) = file_default_size;
 	*(short*)(0x8060BF96) = file_default_size;
 	*(short*)(0x8060BA7A) = file_default_size;
-
 	*(short*)(0x8060BEC6) = file_info_location;
+	// Increase GB Storage Size
+	*(short*)(0x8060BE12) = targ_gb_bits; // Bit Size
+	*(short*)(0x8060BE06) = targ_gb_bits << 3; // Allocation for all levels
+	*(short*)(0x8060BE26) = 0x40C0; // Shift left by 3 instead of 2 ((i << 3) - i == 7i)
+	*(int*)(0x8060BCC0) = 0x24090000 | kong_var_size; // ADDIU $t1, $r0, kong_var_size
+	*(int*)(0x8060BCC4) = 0x01C90019; // MULTU $t1, $t6
+	*(int*)(0x8060BCC8) = 0x00004812; // MFLO $t1
+	*(int*)(0x8060BCCC) = 0; // NOP
 	// Model 2 Start
 	*(short*)(0x8060C2F2) = flag_block_size;
 	*(short*)(0x8060BCDE) = flag_block_size;
@@ -582,6 +591,7 @@ void initHack(int source) {
 				- Add kasplat reward table
 				- Fix edge cases with check/set flag in instance scripts (eg. coin door)
 				- Create lookup table function
+				- Banana Medal acquisition (Japes->Castle) overwrite if GB (to increment GB counter by 1)
 			*/
 
 			// Spider Projectile
