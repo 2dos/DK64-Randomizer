@@ -86,7 +86,7 @@ def ShuffleItems(spoiler: Spoiler):
     blueprint_count = [8, 8, 8, 8, 8, 0]  # 5 sets of 8, 0 at end for Kongs.any
     # First, place items for slots which are reward points, and thus have a restricted placement item list
     for location in location_data:
-        if not location.placed and location.reward_spot:
+        if not location.placed and location.reward_spot and location.old_item != Types.Medal:  # Disregard Medals since they don't spawn an object
             found_item = False
             shuffled_items_index = 0
             while not found_item and shuffled_items_index < len(shuffled_items):

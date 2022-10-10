@@ -4,6 +4,7 @@ from randomizer.Lists.MapsAndExits import Maps
 from randomizer.Patching.Patcher import ROM
 from randomizer.Spoiler import Spoiler
 from randomizer.Enums.Types import Types
+from randomizer.Enums.Locations import Locations
 
 model_two_indexes = {
     Types.Banana: 0x74,
@@ -14,26 +15,38 @@ model_two_indexes = {
     Types.Medal: 0x90,
 }
 
+actor_indexes = {
+    Types.Banana: 45,
+    Types.Blueprint: [78, 75, 77, 79, 76],
+    Types.Key: 72,
+    Types.Crown: 86,
+}
+
 
 def place_randomized_items(spoiler: Spoiler):
     """Place randomized items into ROM."""
     if spoiler.settings.item_rando:
+        sav = spoiler.settings.rom_data
+        ROM().seek(sav + 0x034)
+        ROM().write(1)  # Item Rando Enabled
         item_data = spoiler.item_assignment
         model_two_items = [
-            0x74,
-            0xDE,
-            0xE0,
-            0xE1,
-            0xDD,
-            0xDF,
-            0x48,
-            0x28F,
-            0x13C,
-            0x18D,
-            0x90,
-            0x288,
+            0x74,  # GB
+            0xDE,  # BP - DK
+            0xE0,  # BP - Diddy
+            0xE1,  # BP - Lanky
+            0xDD,  # BP - Tiny
+            0xDF,  # BP - Chunky
+            0x48,  # Nintendo Coin
+            0x28F,  # Rareware Coin
+            0x13C,  # Key
+            0x18D,  # Crown
+            0x90,  # Medal
+            0x288,  # Rareware GB
         ]
         map_items = {}
+        bonus_table_offset = 0
+        flut_offset = 0  # Flag Look Up Table. Maximum of 399 items (Currently ~261)
         for item in item_data:
             if not item.reward_spot:
                 for map_id in item.placement_data:
@@ -47,6 +60,54 @@ def place_randomized_items(spoiler: Spoiler):
                             "flag": item.new_flag,
                         }
                     )
+            else:
+                if item.old_item != Types.Medal:
+                    if item.new_item == Types.Blueprint:
+                        actor_index = actor_indexes[Types.Blueprint][item.new_kong]
+                    else:
+                        actor_index = actor_indexes[item.new_item]
+                if item.old_item == Types.Blueprint:
+                    # Write to BP Table
+                    # Just needs to store an array of actors spawned
+                    offset = item.old_flag - 469
+                    ROM().seek(0x1FF1000 + offset)
+                    ROM().write(actor_index)
+                elif item.old_item == Types.Medal:
+                    # Write to Medal Table
+                    # Just need offset of subtype:
+                    # 0 = Banana
+                    # 1 = BP
+                    # 2 = Key
+                    # 3 = Crown
+                    # 4 = Special Coin
+                    # 5 = Medal
+                    slots = [Types.Banana, Types.Blueprint, Types.Key, Types.Crown, Types.Coin, Types.Medal]
+                    offset = item.old_flag - 549
+                    ROM().seek(0x1FF1080 + offset)
+                    ROM().write(slots.index(item.new_item))
+                elif item.location == Locations.JapesChunkyBoulder:
+                    # Write to Boulder Spawn Location
+                    ROM().seek(sav + 0x114)
+                    ROM().write(actor_index)
+                elif item.location == Locations.AztecLankyVulture:
+                    # Write to Vulture Spawn Location
+                    ROM().seek(sav + 0x115)
+                    ROM().write(actor_index)
+                elif item.old_item == Types.Banana:
+                    # Bonus GB Table
+                    ROM().seek(0x1FF1200 + (4 * bonus_table_offset))
+                    ROM().writeMultipleBytes(item.old_flag, 2)
+                    ROM().writeMultipleBytes(actor_index, 1)
+                    bonus_table_offset += 1
+            # Write flag lookup table
+            ROM().seek(0x1FF2000 + (4 * flut_offset))
+            ROM().writeMultipleBytes(item.old_flag, 2)
+            ROM().writeMultipleBytes(item.new_flag, 2)
+            flut_offset += 1
+        # Terminate FLUT
+        ROM().seek(0x1FF2000 + (4 * flut_offset))
+        ROM().writeMultipleBytes(0xFFFF, 2)
+        ROM().writeMultipleBytes(0xFFFF, 2)
         # Setup Changes
         for map_id in map_items:
             cont_map_setup_address = js.pointer_addresses[9]["entries"][map_id]["pointing_to"]
