@@ -98,7 +98,7 @@ LocationList = {
     Locations.IslesTinyCagedBanana: Location("Isles Tiny Caged Banana", Items.GoldenBanana, Types.Banana, [MapIDCombo(Maps.Isles, 0x2B, 420, Kongs.tiny)]),
     Locations.IslesTinyInstrumentPad: Location("Isles Tiny Instrument Pad", Items.GoldenBanana, Types.Banana, [MapIDCombo(0, -1, 425, Kongs.tiny)]),
     Locations.IslesLankyCagedBanana: Location("Isles Lanky Caged Banana", Items.GoldenBanana, Types.Banana, [MapIDCombo(Maps.Isles, 0x2F, 421, Kongs.lanky)]),
-    Locations.IslesChunkyCagedBanana: Location("Isles Chunky Caged Banana", Items.GoldenBanana, Types.Banana, [MapIDCombo(Maps.Isles, 0x2D, 422, Kongs.Chunky)]),
+    Locations.IslesChunkyCagedBanana: Location("Isles Chunky Caged Banana", Items.GoldenBanana, Types.Banana, [MapIDCombo(Maps.Isles, 0x2D, 422, Kongs.chunky)]),
     Locations.IslesChunkyInstrumentPad: Location("Isles Chunky Instrument Pad", Items.GoldenBanana, Types.Banana, [MapIDCombo(0, -1, 424, Kongs.chunky)]),
     Locations.IslesChunkyPoundtheX: Location("Isles Chunky Pound the X", Items.GoldenBanana, Types.Banana, [MapIDCombo(Maps.Isles, 0x56, 431, Kongs.chunky)]),
     Locations.IslesBananaFairyIsland: Location("Isles Banana Fairy Island", Items.BananaFairy, Types.Fairy),
