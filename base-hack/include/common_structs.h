@@ -53,7 +53,8 @@ typedef struct actorData {
 	/* 0x0E8 */ short rot_z;
 	/* 0x0EA */ char unk_EA[0x4];
 	/* 0x0EE */ short rot_y_copy;
-	/* 0x0F0 */ char unk_F0[0x124-0xF0];
+	/* 0x0F0 */ short reward_index;
+	/* 0x0F2 */ char unk_F2[0x124-0xF2];
 	/* 0x124 */ actor_subdata* data_pointer;
 	/* 0x128 */ short shadow_intensity;
 	/* 0x12A */ char unk_12A[0x132-0x12A];
@@ -1252,6 +1253,17 @@ typedef struct bonus_barrel_info {
 	/* 0x002 */ unsigned char kong_actor;
 	/* 0x003 */ unsigned char spawn_actor;
 } bonus_barrel_info;
+
+typedef struct bonus_paad {
+	/* 0x000 */ float oscillation_y;
+	/* 0x004 */ short unk4;
+	/* 0x006 */ short unk6;
+	/* 0x008 */ short unk8;
+	/* 0x00A */ short barrel_index;
+	/* 0x00C */ char other_timer;
+	/* 0x00D */ char destroy_timer;
+	/* 0x00E */ char raise_timer;
+} bonus_paad;
 
 typedef struct tag_model_struct {
 	/* 0x000 */ short model;

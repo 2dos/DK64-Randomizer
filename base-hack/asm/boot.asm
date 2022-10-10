@@ -222,6 +222,12 @@ ModifyCameraColorHook:
 PlayCutsceneVelocityHook:
 	J 	PlayCutsceneVelocity
 	NOP
+ItemRandoFlagCheckHook:
+	J 	checkFlag_ItemRando
+	NOP
+ItemRandoFlagSetHook:
+	J 	setFlag_ItemRando
+	NOP
 
 loadExtraHooks:
 	LUI t3, hi(InstanceScriptHook)
@@ -229,6 +235,18 @@ loadExtraHooks:
 	LUI t4, 0x8064
 	SW t3, 0xEE08 (t4) // Store Hook
 	SW r0, 0xEE0C (t4) // Store NOP
+	
+	LUI t3, hi(ItemRandoFlagCheckHook)
+	LW t3, lo(ItemRandoFlagCheckHook) (t3)
+	LUI t4, 0x8073
+	SW t3, 0x1168 (t4) // Store Hook
+	SW r0, 0x116C (t4) // Store NOP
+	
+	LUI t3, hi(ItemRandoFlagSetHook)
+	LW t3, lo(ItemRandoFlagSetHook) (t3)
+	LUI t4, 0x8073
+	SW t3, 0x12F8 (t4) // Store Hook
+	SW r0, 0x12FC (t4) // Store NOP
 	
 	LUI t3, hi(VineCodeHook)
 	LW t3, lo(VineCodeHook) (t3)

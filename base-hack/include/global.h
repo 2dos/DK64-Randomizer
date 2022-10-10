@@ -182,5 +182,10 @@ extern int* printLevelIGT(int* dl, int x, int y, float scale, char* str);
 extern void RabbitRaceInfiniteCode(void);
 extern void completeBonus(actorData* actor);
 extern void KasplatIndicator(int has_bp);
+extern void spawnBonusReward(int object, int x_f, int y_f, int z_f, int unk0, int cutscene, int flag, int unk1);
+extern void spawnRewardAtActor(int object, int flag);
+extern int checkFlagDuplicate(short flag, int type);
+extern void updateFlag(int type, short* flag);
+extern void spawnEnemyDrops(actorData* actor);
 
 extern unsigned int cs_skip_db[432];

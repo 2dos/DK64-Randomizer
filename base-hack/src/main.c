@@ -355,8 +355,8 @@ int* displayListModifiers(int* dl) {
 						bp_numerator = 0;
 						bp_denominator = 0;
 						for (int i = 0; i < 8; i++) {
-							int bp_has = checkFlag(FLAG_BP_JAPES_DK_HAS + (i * 5) + Character,0);
-							int bp_turn = checkFlag(FLAG_BP_JAPES_DK_TURN + (i * 5) + Character,0);
+							int bp_has = checkFlagDuplicate(FLAG_BP_JAPES_DK_HAS + (i * 5) + Character,0);
+							int bp_turn = checkFlagDuplicate(FLAG_BP_JAPES_DK_TURN + (i * 5) + Character,0);
 							if ((bp_has) && (!bp_turn)) {
 								bp_numerator += 1;
 							}

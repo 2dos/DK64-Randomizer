@@ -171,8 +171,9 @@
 .definelabel setActorAnimation, 0x8072DE44
 .definelabel actorUnkFunction_0, 0x8072D13C
 .definelabel spawnSparkles, 0x80686E40
-.definelabel spawnEnemyDrops, 0x806A5C60
+.definelabel spawnEnemyDrops_Vanilla, 0x806A5C60
 .definelabel spawnActorWithFlag, 0x806A5DF0
+.definelabel spawnObjectAtActor, 0x8069E490
 .definelabel isActorLoaded, 0x8067ADB4
 .definelabel beaverControlSwitchCase, 0x806AD260
 .definelabel spawnProjectile, 0x80690A28

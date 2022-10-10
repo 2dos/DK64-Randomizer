@@ -163,5 +163,40 @@ void initCollectableCollision(void) {
 }
 
 void spawnBonusReward(int object, int x_f, int y_f, int z_f, int unk0, int cutscene, int flag, int unk1) {
+    bonus_paad* paad = CurrentActorPointer_0->paad;
+    int index = paad->barrel_index;
+    if ((index > 0) && (index < 54)) {
+        object = BonusBarrelData[index].spawn_actor;
+    }
     spawnActorWithFlag(object, x_f, y_f, z_f, unk0, cutscene, flag, unk1);
+}
+
+void spawnRewardAtActor(int object, int flag) {
+    int index = CurrentActorPointer_0->reward_index;
+    if ((index > 0) && (index < 54)) {
+        object = BonusBarrelData[index].spawn_actor;
+    }
+    spawnObjectAtActor(object, flag);
+}
+
+int checkFlagDuplicate(short flag, int type) {
+    // Duplicate of the check flag function, for the purpose of checking a flag without referencing the lookup table
+    if (flag == -1) {
+        return 0;
+    }
+    unsigned char* fba = 0;
+    if ((type == 0) || (type == 2)) {
+        fba = (unsigned char*)getFlagBlockAddress(type);
+    } else {
+        fba = (unsigned char*)&TempFlagBlock[0];
+    }
+    int offset = flag >> 3;
+    int shift = flag & 7;
+    return (fba[offset] >> shift) & 1;
+}
+
+void updateFlag(int type, short* flag) {
+    if ((Rando.item_rando) && (type == 0)) {
+        int vanilla_flag = *flag;
+    }
 }

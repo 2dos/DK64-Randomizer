@@ -50,7 +50,7 @@ void checkSeedVictory(void) {
     if (!checkFlag(FLAG_GAME_BEATEN,0)) {
         switch(Rando.win_condition) {
             case GOAL_KEY8:
-                if (checkFlag(FLAG_KEYHAVE_KEY8,0)) {
+                if (checkFlagDuplicate(FLAG_KEYHAVE_KEY8,0)) {
                     beatGame();
                 }
                 break;
@@ -64,7 +64,7 @@ void checkSeedVictory(void) {
                 break;
             case GOAL_ALLBLUEPRINTS:
                 for (int i = 0; i < 40; i++) {
-                    if (!checkFlag(FLAG_BP_JAPES_DK_HAS + i,0)) {
+                    if (!checkFlagDuplicate(FLAG_BP_JAPES_DK_HAS + i,0)) {
                         return;
                     }
                 }
@@ -72,7 +72,7 @@ void checkSeedVictory(void) {
                 break;
             case GOAL_ALLMEDALS:
                 for (int i = 0; i < 40; i++) {
-                    if (!checkFlag(FLAG_MEDAL_JAPES_DK + i,0)) {
+                    if (!checkFlagDuplicate(FLAG_MEDAL_JAPES_DK + i,0)) {
                         return;
                     }
                 }

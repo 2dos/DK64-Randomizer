@@ -84,6 +84,9 @@ set_variables = {
     "win_condition": 5,
     "version": 2,
     "colorblind_mode": 1,
+    "item_rando": 1,
+    "vulture_item": 72,
+    "japes_rock_item": 76,
 }
 
 

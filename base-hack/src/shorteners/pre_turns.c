@@ -74,15 +74,15 @@ void auto_turn_keys(void) {
 		for (int i = 0; i < 8; i++) {
 			if (Rando.level_order_rando_on) {
 				if (i < 7) {
-					if (checkFlag(Rando.key_flags[i],0)) {
+					if (checkFlagDuplicate(Rando.key_flags[i],0)) {
 						writeKeyFlags(i);
 					}
 				}
-				if (checkFlag(normal_key_flags[7],0)) {
+				if (checkFlagDuplicate(normal_key_flags[7],0)) {
 					writeKeyFlags(7);
 				}
 			} else {
-				if (checkFlag(normal_key_flags[i],0)) {
+				if (checkFlagDuplicate(normal_key_flags[i],0)) {
 					writeKeyFlags(i);
 				}
 			}
