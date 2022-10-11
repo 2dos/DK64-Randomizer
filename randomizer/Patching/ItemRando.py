@@ -72,6 +72,15 @@ def place_randomized_items(spoiler: Spoiler):
                     offset = item.old_flag - 469
                     ROM().seek(0x1FF1000 + offset)
                     ROM().write(actor_index)
+                elif item.old_item == Types.Crown:
+                    # Write to Crown Table
+                    crown_flags = [0x261,0x262,0x263,0x264,0x265,0x268,0x269,0x266,0x26A,0x267]
+                    ROM().seek(0x1FF10C0 + crown_flags.index(item.old_flag))
+                    ROM().write(actor_index)
+                elif item.old_item == Types.Key:
+                    key_flags = [26,74,138,168,236,292,317,380]
+                    ROM().seek(0x1FF10D0 + key_flags.index(item.old_flag))
+                    ROM().write(actor_index)
                 elif item.old_item == Types.Medal:
                     # Write to Medal Table
                     # Just need offset of subtype:

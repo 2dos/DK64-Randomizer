@@ -96,6 +96,9 @@ void expandSaveFile(int static_expansion, int actor_count) {
 
 static unsigned char bp_item_table[40] = {};
 static unsigned char medal_item_table[40] = {};
+static unsigned char crown_item_table[10] = {};
+static unsigned char key_item_table[8] = {};
+bonus_barrel_info bonus_data[94] = {};
 
 int getBPItem(int index) {
 	return bp_item_table[index];
@@ -103,6 +106,26 @@ int getBPItem(int index) {
 
 int getMedalItem(int index) {
 	return medal_item_table[index];
+}
+
+int getCrownItem(int map) {
+	int map_list[] = {0x35,0x49,0x9B,0x9C,0x9F,0xA0,0xA1,0x9D,0xA2,0x9E};
+	for (int i = 0; i < 10; i++) {
+		if (map == map_list[i]) {
+			return crown_item_table[i];
+		}
+	}
+	return 0;
+}
+
+int getKeyItem(int old_flag) {
+	int flag_list[] = {26,74,138,168,236,292,317,380};
+	for (int i = 0; i < 10; i++) {
+		if (old_flag == flag_list[i]) {
+			return key_item_table[i];
+		}
+	}
+	return 0;
 }
 
 static const short kong_flags[] = {385,6,70,66,117};
@@ -578,6 +601,9 @@ void initHack(int source) {
 			// Item Rando
 			for (int i = 0; i < 54; i++) {
 				BonusBarrelData[i].spawn_actor = 45; // Spawn GB - Have as default
+				bonus_data[i].flag = BonusBarrelData[i].flag;
+				bonus_data[i].spawn_actor = BonusBarrelData[i].spawn_actor;
+				bonus_data[i].kong_actor = BonusBarrelData[i].kong_actor;
 			}
 			if (Rando.item_rando) {
 				*(short*)(0x806B4E1A) = Rando.vulture_item;
@@ -599,6 +625,7 @@ void initHack(int source) {
 				*(int*)(0x80731AE8) = 0x0C000000 | (((int)&checkFlagDuplicate & 0xFFFFFF) >> 2); // Count flag array
 				*(int*)(0x806B1E48) = 0x0C000000 | (((int)&countFlagsForKongFLUT & 0xFFFFFF) >> 2); // Kasplat Check Flag
 				*(int*)(0x806F56F8) = 0; // Disable Flag Set for blueprints
+				*(int*)(0x806F78B8) = 0x0C000000 | (((int)&getKongFromBonusFlag & 0xFFFFFF) >> 2); // Reward Table Kong Check
 				// BP Table
 				int bp_size = 0x28;
 				unsigned char* bp_write = dk_malloc(bp_size);
@@ -608,7 +635,6 @@ void initHack(int source) {
 				for (int i = 0; i < bp_size; i++) {
 					bp_item_table[i] = bp_write[i];
 				}
-				// complex_free(bp_write);
 				// Medal Table
 				int medal_size = 0x28;
 				unsigned char* medal_write = dk_malloc(medal_size);
@@ -618,8 +644,30 @@ void initHack(int source) {
 				for (int i = 0; i < medal_size; i++) {
 					medal_item_table[i] = medal_write[i];
 				}
-				// complex_free(medal_write);
+				// Crown Table
+				int crown_size = 0xA;
+				unsigned char* crown_write = dk_malloc(crown_size);
+				int* crown_file_size;
+				*(int*)(&crown_file_size) = crown_size;
+				copyFromROM(0x1FF10C0,crown_write,&crown_file_size,0,0,0,0);
+				for (int i = 0; i < crown_size; i++) {
+					crown_item_table[i] = crown_write[i];
+				}
+				// Key Table
+				int key_size = 0x8;
+				unsigned char* key_write = dk_malloc(key_size);
+				int* key_file_size;
+				*(int*)(&key_file_size) = key_size;
+				copyFromROM(0x1FF10D0,key_write,&key_file_size,0,0,0,0);
+				for (int i = 0; i < key_size; i++) {
+					key_item_table[i] = key_write[i];
+				}
 				// Reward Table
+				for (int i = 0; i < 40; i++) {
+					bonus_data[54 + i].flag = 469 + i;
+					bonus_data[54 + i].kong_actor = (i % 5) + 2;
+					bonus_data[54 + i].spawn_actor = bp_item_table[i];
+				}
 				int reward_size = 0x100;
 				reward_rom_struct* reward_write = dk_malloc(medal_size);
 				int* reward_file_size;
@@ -629,25 +677,21 @@ void initHack(int source) {
 					if (reward_write[i].flag > -1) {
 						for (int j = 0; j < 54; j++) {
 							if (BonusBarrelData[j].flag == reward_write[i].flag) {
-								BonusBarrelData[j].spawn_actor = reward_write[j].actor;
+								BonusBarrelData[j].spawn_actor = reward_write[i].actor;
 							}
 						}
 					}
 				}
-				// complex_free(reward_write);
 			}
 			*(int*)(0x80681910) = 0x0C000000 | (((int)&spawnBonusReward & 0xFFFFFF) >> 2); // Spawn Bonus Reward
 			*(int*)(0x806C63BC) = 0x0C000000 | (((int)&spawnRewardAtActor & 0xFFFFFF) >> 2); // Spawn Squawks Reward
 			/*
 				TODO:
-				- Crown spawnActorWithFlag(0x8002501C)
-				- Bosses spawnActorWithFlag(0x80028650)
 				- Prevent blueprints setting an additional flag - Note, helm hurry has a hook on the flag set
 				- Fix edge cases with check/set flag in instance scripts (eg. coin door)
 				- Banana Medal acquisition (Japes->Castle) overwrite if GB (to increment GB counter by 1)
-				- Kasplats can spawn blueprints for wrong kong
-				- Kasplat GBs are not assigned to a specific kong, add to bonus table?
-				- FLUT is laggy
+				- Blueprints can be spawned for the wrong kong
+				- Bosses/Crowns don't warp you out upon collecting item that doesn't make you dance
 			*/
 
 			// Spider Projectile
