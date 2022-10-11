@@ -218,26 +218,77 @@ void cacheFlag(int input, int output) {
     cache_spot = (cache_spot + 1) % 20;
 }
 
+int clampFlag(int flag) {
+    /*
+        Clamp flag for GBs, Medals, Crowns, BPs, Nin/RW Coin, Boss Key
+    */
+    if ((flag >= 0x1D5) && (flag <= 0x1FC)) {
+        return 1; // Blueprints
+    }
+    if ((flag >= 0x225) && (flag <= 0x24C)) {
+        return 1; // Medal
+    }
+    if ((flag >= 0x261) && (flag <= 0x26A)) {
+        return 1; // Crown
+    }
+    if (flag == 0x17B) {
+        return 1; // RW Coin
+    }
+    if ((flag >= 0x1) && (flag <= 0x1F)) {
+        return 1; // Japes GBs + Key 1
+    }
+    if ((flag >= 0x31) && (flag <= 0x4D)) {
+        return 1; // Aztec GBs + Key 2
+    }
+    if ((flag >= 0x70) && (flag <= 0x8B)) {
+        return 1; // Factory GBs + Key 3 + Nintendo Coin
+    }
+    if ((flag >= 0x9A) && (flag <= 0xA8)) {
+        return 1; // Galleon GBs (Group 1) + Key 4
+    }
+    if ((flag >= 0xB6) && (flag <= 0xEC)) {
+        return 1; // Galleon GBs (Group 2) + Fungi GBs (Group 1) + Key 5
+    }
+    if ((flag >= 0xF7) && (flag <= 0x119)) {
+        return 1; // Fungi GBs (Group 2) + Caves GBs (Group 1)
+    }
+    if ((flag >= 0x124) && (flag <= 0x146)) {
+        return 1; // Caves GBs (Group 2) + Key 6 + Castle GBs (Group 1) + Key 7 + Rareware GB
+    }
+    if ((flag >= 0x15E) && (flag <= 0x161)) {
+        return 1; // Castle GBs (Group 2)
+    }
+    if ((flag == 0x17C) || (flag == 0x17D)) {
+        return 1; // Key 8 + First GB
+    }
+    if ((flag >= 0x18E) && (flag <= 0x1AF)) {
+        return 1; // Isles GBs
+    }
+    return 0;
+}
+
 void* updateFlag(int type, short* flag, void* fba) {
     if ((Rando.item_rando) && (type == 0) && (*flag != 0)) {
         int vanilla_flag = *flag;
-        for (int i = 0; i < 20; i++) {
-            if (flut_cache[(2 * i)] == vanilla_flag) {
-                if (flut_cache[(2 * i) + 1] > -1) {
-                    *flag = flut_cache[(2 * i) + 1];
+        if (clampFlag(vanilla_flag)) {
+            for (int i = 0; i < 20; i++) {
+                if (flut_cache[(2 * i)] == vanilla_flag) {
+                    if (flut_cache[(2 * i) + 1] > -1) {
+                        *flag = flut_cache[(2 * i) + 1];
+                    }
+                    return fba;
                 }
-                return fba;
             }
-        }
-        for (int i = 0; i < 400; i++) {
-            int lookup = ItemRando_FLUT[(2 * i)];
-            if (vanilla_flag == lookup) {
-                *flag = ItemRando_FLUT[(2 * i) + 1];
-                cacheFlag(vanilla_flag, *flag);
-                return fba;
-            } else if (lookup == -1) {
-                cacheFlag(vanilla_flag, -1);
-                return fba;
+            for (int i = 0; i < 400; i++) {
+                int lookup = ItemRando_FLUT[(2 * i)];
+                if (vanilla_flag == lookup) {
+                    *flag = ItemRando_FLUT[(2 * i) + 1];
+                    cacheFlag(vanilla_flag, *flag);
+                    return fba;
+                } else if (lookup == -1) {
+                    cacheFlag(vanilla_flag, -1);
+                    return fba;
+                }
             }
         }
     }
