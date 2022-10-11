@@ -626,6 +626,8 @@ void initHack(int source) {
 				*(int*)(0x806B1E48) = 0x0C000000 | (((int)&countFlagsForKongFLUT & 0xFFFFFF) >> 2); // Kasplat Check Flag
 				*(int*)(0x806F56F8) = 0; // Disable Flag Set for blueprints
 				*(int*)(0x806F78B8) = 0x0C000000 | (((int)&getKongFromBonusFlag & 0xFFFFFF) >> 2); // Reward Table Kong Check
+				*(int*)(0x806F938C) = 0x0C000000 | (((int)&banana_medal_acquisition & 0xFFFFFF) >> 2); // Medal Give
+				*(int*)(0x806F9394) = 0;
 				// BP Table
 				int bp_size = 0x28;
 				unsigned char* bp_write = dk_malloc(bp_size);

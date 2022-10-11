@@ -211,6 +211,25 @@ int checkFlagDuplicate(short flag, int type) {
     return (fba[offset] >> shift) & 1;
 }
 
+void setFlagDuplicate(short flag, int set, int type) {
+    if (flag != -1) {
+        unsigned char* fba = 0;
+        if ((type == 0) || (type == 2)) {
+            fba = (unsigned char*)getFlagBlockAddress(type);
+        } else {
+            fba = (unsigned char*)&TempFlagBlock[0];
+        }
+        int offset = flag >> 3;
+        int shift = flag & 7;
+        if (!set) {
+            fba[offset] &= ~(1 << shift);
+        } else {
+            fba[offset] |= (1 << shift);
+        }
+        checkVictory_flaghook(flag);
+    }
+}
+
 int countFlagsForKongFLUT(int startFlag, int start, int cap, int kong) {
     int count = 0;
     if (kong < 5) {
@@ -318,4 +337,51 @@ int getKongFromBonusFlag(int flag) {
         }
     }
     return 0;
+}
+
+void banana_medal_acquisition(int flag) {
+    /* 
+        0 - GB,
+        1 - BP,
+        2 - Key,
+        3 - Crown,
+        4 - SpecialCoin,
+        5 - Medal,
+    */
+    setFlag(flag, 1, 0);
+    int item_type = getMedalItem(flag);
+    if (item_type == 0) {
+        MovesBase[(int)Character].gb_count[getWorld(CurrentMap,1)] += 1;
+    }
+    playSFX(0xF2);
+    int used_song = 0x97;
+    int songs[] = {18,69,18,0x97,22,0x97};
+    if (item_type < 6) {
+        used_song = songs[item_type];
+    }
+    playSong(used_song, 0x3F800000);
+    unkSpriteRenderFunc(200);
+    unkSpriteRenderFunc_0();
+    loadSpriteFunction(0x8071EFDC);
+    int bp_sprites[] = {0x5C,0x5A,0x4A,0x5D,0x5B};
+    int sprite_indexes[] = {0x3B,0,0x8A,0x8B,0,0x3B};
+    int used_sprite = 0x3B;
+    if (item_type == 1) {
+        int character_val = Character;
+        if (character_val > 4) {
+            character_val = 0;
+        }
+        used_sprite = bp_sprites[character_val];
+    } else if (item_type == 4) {
+        if (flag == 132) {
+            // Nintendo Coin
+            used_sprite = 0x8C;
+        } else {
+            // Rareware Coin
+            used_sprite = 0x8D;
+        }
+    } else if (item_type < 6) {
+        used_sprite = sprite_indexes[item_type];
+    }
+    displaySpriteAtXYZ(sprite_table[used_sprite], 0x3F800000, 160.0f, 120.0f, -10.0f);
 }

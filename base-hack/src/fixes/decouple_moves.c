@@ -117,7 +117,9 @@ void decouple_moves_fixes(void) {
 		}
 	}
 	if (in_boss) {
-		*(int*)(0x80028650) = 0x0C000000 | (((int)&spawnBossReward & 0xFFFFFF) >> 2); // Key Spawn
+		if (Rando.item_rando) {
+			*(int*)(0x80028650) = 0x0C000000 | (((int)&spawnBossReward & 0xFFFFFF) >> 2); // Key Spawn
+		}
 		PatchKRoolCode();
 		if (Rando.quality_of_life.vanilla_fixes) {
 			*(short*)(0x800359A6) = 3;
