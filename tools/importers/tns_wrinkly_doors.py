@@ -19,11 +19,12 @@ with open("doors.csv", newline="") as csvfile:
                     "scale": float(row[12]),
                     "door_type": row[13],
                     "group": row[15], #argument prevents tns portals from being too close to each other
-                    "logic": row[16],
-                    "kongs": row[17],
-                    "placed": row[18], #vanilla door types
-                    "commented": row[19],
-                    "post_comment": row[20],
+                    "moveless": row[16],
+                    "logic": row[17],
+                    "kongs": row[18],
+                    "placed": row[19], #vanilla door types
+                    "commented": row[20],
+                    "post_comment": row[21],
                 }
             )
     print(f"{len(door_data_json)} doors found")
@@ -48,17 +49,20 @@ with open("doors.csv", newline="") as csvfile:
         if x["rz"]:
             rz_text = ", rz="+x["rz"]+""
         name = f"{x['levelname']}:  {x['name']}"
-        kongs_text=""
-        if x["kongs"]:
-            kongs_text = x["kongs"].replace(" or ", ", Kongs.")
-            kongs_text = ", kong_lst=[Kongs."+kongs_text+"]"
+        moveless_text = ", moveless=False"
+        if x["moveless"].strip() == "":
+            moveless_text = ""
         if x["logic"].strip() == "":
             x["logic"] = "True"
         x["logic"] = x["logic"].replace("|", ",")
         logic = f"lambda l: {x['logic']}"
+        kongs_text=""
+        if x["kongs"]:
+            kongs_text = x["kongs"].replace(" or ", ", Kongs.")
+            kongs_text = ", kong_lst=[Kongs."+kongs_text+"]"
         if x["placed"] == "":
             x["placed"] == "none"
         print(
-            f"\t"+precomment+f"DoorData(name=\"{name}\", map=Maps.{x['map']}, logicregion=Regions.{x['logicregion']}, location=[{x['coords'][0]}, {x['coords'][1]}, {x['coords'][2]}, {x['coords'][3]}]{rx_text}{rz_text}, scale={x['scale']}{kongs_text}, group={x['group']}, logic={logic}, placed=\"{x['placed']}\", door_type=\"{x['door_type']}\"),{x['post_comment']}"
+            f"\t"+precomment+f"DoorData(name=\"{name}\", map=Maps.{x['map']}, logicregion=Regions.{x['logicregion']}, location=[{x['coords'][0]}, {x['coords'][1]}, {x['coords'][2]}, {x['coords'][3]}]{rx_text}{rz_text}, scale={x['scale']}{kongs_text}, group={x['group']}{moveless_text}, logic={logic}, placed=\"{x['placed']}\", door_type=\"{x['door_type']}\"),{x['post_comment']}"
         )
     print("],")

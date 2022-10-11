@@ -24,6 +24,7 @@ class DoorData:
         scale=1,
         kong_lst=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         group = 0,
+        moveless = True,
         logic=lambda l: True, 
         placed="none",
         door_type="both",
@@ -39,6 +40,7 @@ class DoorData:
         self.scale = scale
         self.kongs = kong_lst
         self.group = group
+        self.moveless = moveless
         self.logic = logic
         self.placed = placed
         self.default_placed = placed
