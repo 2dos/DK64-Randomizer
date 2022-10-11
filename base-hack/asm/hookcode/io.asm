@@ -107,8 +107,9 @@ checkFlag_ItemRando:
     JAL     getFlagBlockAddress
     SH      a2, 0x22 (sp)
     LW      a0, 0x24 (sp)
-    JAL     updateFlag
     ADDIU   a1, sp, 0x22
+    JAL     updateFlag
+    OR      a2, v0, r0
     J       0x80731170
     NOP
 
@@ -116,7 +117,8 @@ setFlag_ItemRando:
     JAL     getFlagBlockAddress
     SH      a3, 0x32 (sp)
     LW      a0, 0x38 (sp)
-    JAL     updateFlag
     ADDIU   a1, sp, 0x32
+    JAL     updateFlag
+    OR      a2, v0, r0
     J       0x80731300
     NOP

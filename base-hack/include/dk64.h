@@ -1,6 +1,7 @@
 //functions
 extern void setFlag(int flagIndex, int value, char flagType);
 extern int checkFlag(int flagIndex, char flagType);
+extern int getFlagIndex(int startFlag, int level, int kong);
 extern void* dk_malloc(int size);
 extern void dk_free(void* mallocPtr);
 extern void playSound(short soundIndex, int unk0, int unk1, int unk2, int unk3, int unk4);
@@ -502,3 +503,4 @@ extern unsigned char InvertedControls;
 extern unsigned char WinCondition;
 extern unsigned char ChunkyModel;
 extern unsigned char EnemyInView;
+extern short ItemRando_FLUT[0x320];

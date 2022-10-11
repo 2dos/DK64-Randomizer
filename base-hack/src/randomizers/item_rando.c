@@ -195,8 +195,51 @@ int checkFlagDuplicate(short flag, int type) {
     return (fba[offset] >> shift) & 1;
 }
 
-void updateFlag(int type, short* flag) {
-    if ((Rando.item_rando) && (type == 0)) {
-        int vanilla_flag = *flag;
+int countFlagsForKongFLUT(int startFlag, int start, int cap, int kong) {
+    int count = 0;
+    if (kong < 5) {
+        for (int i = start; i <= cap; i++) {
+            int check = getFlagIndex(startFlag, i, kong);
+            if (check > -1) {
+                count += checkFlag(check, 0);
+            }
+        }
     }
+    return count;
+}
+
+static short flut_cache[40] = {};
+static unsigned char cache_spot = 0;
+
+void cacheFlag(int input, int output) {
+    int slot = cache_spot;
+    flut_cache[(2 * slot)] = input;
+    flut_cache[(2 * slot) + 1] = output;
+    cache_spot = (cache_spot + 1) % 20;
+}
+
+void* updateFlag(int type, short* flag, void* fba) {
+    if ((Rando.item_rando) && (type == 0) && (*flag != 0)) {
+        int vanilla_flag = *flag;
+        for (int i = 0; i < 20; i++) {
+            if (flut_cache[(2 * i)] == vanilla_flag) {
+                if (flut_cache[(2 * i) + 1] > -1) {
+                    *flag = flut_cache[(2 * i) + 1];
+                }
+                return fba;
+            }
+        }
+        for (int i = 0; i < 400; i++) {
+            int lookup = ItemRando_FLUT[(2 * i)];
+            if (vanilla_flag == lookup) {
+                *flag = ItemRando_FLUT[(2 * i) + 1];
+                cacheFlag(vanilla_flag, *flag);
+                return fba;
+            } else if (lookup == -1) {
+                cacheFlag(vanilla_flag, -1);
+                return fba;
+            }
+        }
+    }
+    return fba;
 }

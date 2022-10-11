@@ -32,6 +32,12 @@ void writeEndSequence(void) {
 	copyFromROM(0x1FFF800,(int*)0x807506D0,&file_size,0,0,0,0);
 }
 
+typedef struct reward_rom_struct {
+	/* 0x000 */ short flag;
+	/* 0x002 */ unsigned char actor;
+	/* 0x003 */ unsigned char unused;
+} reward_rom_struct;
+
 void expandSaveFile(int static_expansion, int actor_count) {
 	/*
 		File cannot be bigger than 0x200 bytes
@@ -86,6 +92,17 @@ void expandSaveFile(int static_expansion, int actor_count) {
 	*(short*)(0x8060BCDE) = flag_block_size;
 	// Reallocate Balloons + Patches
 	*(short*)(0x80688BCE) = 0x320 + static_expansion; // Reallocated to just before model 2 block
+}
+
+static unsigned char bp_item_table[40] = {};
+static unsigned char medal_item_table[40] = {};
+
+int getBPItem(int index) {
+	return bp_item_table[index];
+}
+
+int getMedalItem(int index) {
+	return medal_item_table[index];
 }
 
 static const short kong_flags[] = {385,6,70,66,117};
@@ -580,6 +597,44 @@ void initHack(int source) {
 				*(int*)(0x806BD304) = 0x0C000000 | (((int)&checkFlagDuplicate & 0xFFFFFF) >> 2); // Key flag check: K. Lumsy
 				*(int*)(0x80731A6C) = 0x0C000000 | (((int)&checkFlagDuplicate & 0xFFFFFF) >> 2); // Count flag-kong array
 				*(int*)(0x80731AE8) = 0x0C000000 | (((int)&checkFlagDuplicate & 0xFFFFFF) >> 2); // Count flag array
+				*(int*)(0x806B1E48) = 0x0C000000 | (((int)&countFlagsForKongFLUT & 0xFFFFFF) >> 2); // Kasplat Check Flag
+				*(int*)(0x806F56F8) = 0; // Disable Flag Set for blueprints
+				// BP Table
+				int bp_size = 0x28;
+				unsigned char* bp_write = dk_malloc(bp_size);
+				int* bp_file_size;
+				*(int*)(&bp_file_size) = bp_size;
+				copyFromROM(0x1FF1000,bp_write,&bp_file_size,0,0,0,0);
+				for (int i = 0; i < bp_size; i++) {
+					bp_item_table[i] = bp_write[i];
+				}
+				// complex_free(bp_write);
+				// Medal Table
+				int medal_size = 0x28;
+				unsigned char* medal_write = dk_malloc(medal_size);
+				int* medal_file_size;
+				*(int*)(&medal_file_size) = medal_size;
+				copyFromROM(0x1FF1080,medal_write,&medal_file_size,0,0,0,0);
+				for (int i = 0; i < medal_size; i++) {
+					medal_item_table[i] = medal_write[i];
+				}
+				// complex_free(medal_write);
+				// Reward Table
+				int reward_size = 0x100;
+				reward_rom_struct* reward_write = dk_malloc(medal_size);
+				int* reward_file_size;
+				*(int*)(&reward_file_size) = reward_size;
+				copyFromROM(0x1FF1200,reward_write,&reward_file_size,0,0,0,0);
+				for (int i = 0; i < 0x40; i++) {
+					if (reward_write[i].flag > -1) {
+						for (int j = 0; j < 54; j++) {
+							if (BonusBarrelData[j].flag == reward_write[i].flag) {
+								BonusBarrelData[j].spawn_actor = reward_write[j].actor;
+							}
+						}
+					}
+				}
+				// complex_free(reward_write);
 			}
 			*(int*)(0x80681910) = 0x0C000000 | (((int)&spawnBonusReward & 0xFFFFFF) >> 2); // Spawn Bonus Reward
 			*(int*)(0x806C63BC) = 0x0C000000 | (((int)&spawnRewardAtActor & 0xFFFFFF) >> 2); // Spawn Squawks Reward
@@ -588,10 +643,11 @@ void initHack(int source) {
 				- Crown spawnActorWithFlag(0x8002501C)
 				- Bosses spawnActorWithFlag(0x80028650)
 				- Prevent blueprints setting an additional flag - Note, helm hurry has a hook on the flag set
-				- Add kasplat reward table
 				- Fix edge cases with check/set flag in instance scripts (eg. coin door)
-				- Create lookup table function
 				- Banana Medal acquisition (Japes->Castle) overwrite if GB (to increment GB counter by 1)
+				- Kasplats can spawn blueprints for wrong kong
+				- Kasplat GBs are not assigned to a specific kong, add to bonus table?
+				- FLUT is laggy
 			*/
 
 			// Spider Projectile

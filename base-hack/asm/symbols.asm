@@ -1,6 +1,7 @@
 //functions
 .definelabel setFlag, 0x8073129C
 .definelabel checkFlag, 0x8073110C
+.definelabel getFlagIndex, 0x807319D8
 .definelabel dk_malloc, 0x80610FE8
 .definelabel dk_free, 0x80611408
 .definelabel playSound, 0x80609140
@@ -480,6 +481,7 @@
 .definelabel WinCondition, 0x807FFFD6
 .definelabel ChunkyModel, 0x807FFFD5
 .definelabel EnemyInView, 0x807FFFD4
+.definelabel ItemRando_FLUT, 0x805FAE00-0x640
 
 .definelabel CrankyMoves_New, 0x807FF400
 .definelabel CandyMoves_New, 0x807FF4F0

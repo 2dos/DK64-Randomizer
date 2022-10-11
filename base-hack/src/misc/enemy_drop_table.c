@@ -80,6 +80,10 @@ void spawnEnemyDrops(actorData* actor) {
                 if ((actor_index >= 241) && (actor_index <= 245)) {
                     int world = getWorld(CurrentMap, 1);
                     flag = 469 + (5 * world) + (actor_index - 241);
+                    if (Rando.item_rando) {
+                        drop_type = getBPItem(flag - 469);
+                        drop_count = 1;
+                    }
                 }
                 for (int i = 0; i < drop_count; i++) {
                     float drop_rotation_divisor = 0xFFF;
