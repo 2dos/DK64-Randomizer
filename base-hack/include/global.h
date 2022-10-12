@@ -198,6 +198,8 @@ extern int getBPItem(int index);
 extern int getMedalItem(int index);
 extern int getCrownItem(int map);
 extern int getKeyItem(int old_flag);
+extern void initKeyText(int ki);
+extern int* controlKeyText(int* dl);
 
 extern unsigned int cs_skip_db[432];
 extern bonus_barrel_info bonus_data[94];

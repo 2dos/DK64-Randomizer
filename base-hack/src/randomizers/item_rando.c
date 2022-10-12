@@ -388,3 +388,29 @@ void banana_medal_acquisition(int flag) {
         displaySpriteAtXYZ(sprite_table[used_sprite], 0x3F800000, 160.0f, 120.0f, -10.0f);
     }
 }
+
+static unsigned char key_timer = 50;
+static unsigned char key_index = 0;
+static char key_text[] = "KEY 0";
+
+int* controlKeyText(int* dl) {
+    if (key_timer > 0) {
+        int key_opacity = 255;
+        if (key_timer < 10) {
+            key_opacity = 25 * key_timer;
+        } else if (key_timer > 40) {
+            key_opacity = 25 * (50 - key_timer);
+        }
+        *(unsigned int*)(dl++) = 0xFA000000;
+	    *(unsigned int*)(dl++) = 0xFFFFFF00 | key_opacity;
+        dk_strFormat(key_text, "KEY %d", key_index + 1);
+        dl = displayText(dl,1,640,750,key_text,0x80);
+        key_timer -= 1;
+    }
+    return dl;
+}
+
+void initKeyText(int ki) {
+    key_index = ki;
+    key_timer = 50;
+}

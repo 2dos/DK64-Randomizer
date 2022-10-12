@@ -692,18 +692,14 @@ void initHack(int source) {
 				TODO:
 				- Prevent blueprints setting an additional flag - Note, helm hurry has a hook on the flag set
 				- Fix edge cases with check/set flag in instance scripts (eg. coin door)
-				- Blueprints can be spawned for the wrong kong
 				- Bosses/Crowns don't warp you out upon collecting item that doesn't make you dance
-				- Everything are badly scaled
 				- Key SFX is eternal
 				- Blueprints shouldn't be tied to reward keys
 					- Logic
-				- Somehow got bricked from seed
-					- Key 7 was final key, but couldn't obtain it
-					- T&S Portal was cleared
 				- Collecting special coin no sound/anim
+				- Special coins don't face the player
 				- No indication of what key you got
-				- Key 1 is given automatically???????
+					- Game shows key text for keys you obtain upon new file
 				- Implement Killi's optimized algorithm
 			*/
 

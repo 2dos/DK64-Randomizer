@@ -321,6 +321,9 @@ int* displayListModifiers(int* dl) {
 				dl = drawPixelTextContainer(dl, 0x34, 0x92, "THE WIKI TO FIX THIS ERROR.", 0xFF, 0xFF, 0xFF, 0xFF, 1);
 			}
 		} else {
+			// if (Rando.item_rando) {
+			// 	dl = controlKeyText(dl);
+			// }
 			if (Rando.fps_on) {
 				float fps = HERTZ;
 				if (current_avg_lag != 0) {

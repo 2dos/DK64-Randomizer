@@ -5,6 +5,7 @@ from randomizer.Patching.Patcher import ROM
 from randomizer.Spoiler import Spoiler
 from randomizer.Enums.Types import Types
 from randomizer.Enums.Locations import Locations
+from randomizer.Patching.Lib import intf_to_float, float_to_hex
 
 model_two_indexes = {
     Types.Banana: 0x74,
@@ -13,6 +14,15 @@ model_two_indexes = {
     Types.Key: 0x13C,
     Types.Crown: 0x18D,
     Types.Medal: 0x90,
+}
+
+model_two_scales = {
+    Types.Banana: 0.25,
+    Types.Blueprint: 2,
+    Types.Coin: 2,
+    Types.Key: 0.17,
+    Types.Crown: 0.25,
+    Types.Medal: 0.22,
 }
 
 actor_indexes = {
@@ -52,12 +62,16 @@ def place_randomized_items(spoiler: Spoiler):
                 for map_id in item.placement_data:
                     if map_id not in map_items:
                         map_items[map_id] = []
+                    numerator = model_two_scales[item.new_item]
+                    denominator = model_two_scales[item.old_item]
+                    upscale = numerator / denominator
                     map_items[map_id].append(
                         {
                             "id": item.placement_data[map_id],
                             "obj": item.new_item,
                             "kong": item.new_kong,
                             "flag": item.new_flag,
+                            "upscale": upscale,
                         }
                     )
             else:
@@ -142,3 +156,16 @@ def place_randomized_items(spoiler: Spoiler):
                             else:
                                 item_obj_index = model_two_indexes[item_slot["obj"]]
                             ROM().writeMultipleBytes(item_obj_index, 2)
+                            # Scaling fix
+                            ROM().seek(start + 0xC)
+                            old_scale = intf_to_float(int.from_bytes(ROM().readBytes(4), "big"))
+                            new_scale = old_scale * item_slot["upscale"]
+                            ROM().seek(start + 0xC)
+                            ROM().writeMultipleBytes(int(float_to_hex(new_scale),16),4)
+                            # Y Offset Fix
+                            if item_slot["obj"] == Types.Blueprint:
+                                ROM().seek(start + 0x4)
+                                old_y = intf_to_float(int.from_bytes(ROM().readBytes(4), "big"))
+                                new_y = old_y + (item_slot["upscale"] * 1.25)
+                                ROM().seek(start + 0x4)
+                                ROM().writeMultipleBytes(int(float_to_hex(new_y),16),4)

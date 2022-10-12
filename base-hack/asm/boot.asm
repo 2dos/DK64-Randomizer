@@ -242,6 +242,12 @@ ItemRandoFlagSetHook:
 ObjectRotateHook:
 	J 	ObjectRotate
 	NOP
+NintendoCoinEffectHook:
+	J 	NintendoCoinEffect
+	NOP
+RarewareCoinEffectHook:
+	J 	RarewareCoinEffect
+	NOP
 
 loadExtraHooks:
 	LUI t3, hi(InstanceScriptHook)
@@ -584,6 +590,18 @@ loadExtraHooks:
 	LUI t4, 0x8063
 	SW t3, 0x7148 (t4) // Store Hook
 	SW r0, 0x714C (t4) // Store NOP
+	
+	LUI t3, hi(NintendoCoinEffectHook)
+	LW t3, lo(NintendoCoinEffectHook) (t3)
+	LUI t4, 0x806F
+	SW t3, 0x7B10 (t4) // Store Hook
+	SW r0, 0x7B14 (t4) // Store NOP
+	
+	LUI t3, hi(RarewareCoinEffectHook)
+	LW t3, lo(RarewareCoinEffectHook) (t3)
+	LUI t4, 0x806F
+	SW t3, 0x7A24 (t4) // Store Hook
+	SW r0, 0x7A28 (t4) // Store NOP
 
 	loadExtraHooks_4:
 

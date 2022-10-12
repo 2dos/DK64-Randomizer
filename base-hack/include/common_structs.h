@@ -1271,3 +1271,7 @@ typedef struct tag_model_struct {
 	/* 0x004 */ char unk0;
 	/* 0x005 */ char unk1;
 } tag_model_struct;
+
+typedef struct mtx_item {
+	/* 0x000 */ char unk_0[0x40];
+} mtx_item;
