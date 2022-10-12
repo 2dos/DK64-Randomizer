@@ -168,6 +168,7 @@ void initHack(int source) {
 			LobbiesOpen = Rando.lobbies_open_bitfield;
 			ShorterBosses = Rando.short_bosses;
 			WinCondition = Rando.win_condition;
+			ItemRandoOn = Rando.item_rando;
 			if (Rando.krusha_slot == 4) {
 				Rando.disco_chunky = 0;
 			} else if (Rando.krusha_slot > 4) {
@@ -691,9 +692,19 @@ void initHack(int source) {
 				TODO:
 				- Prevent blueprints setting an additional flag - Note, helm hurry has a hook on the flag set
 				- Fix edge cases with check/set flag in instance scripts (eg. coin door)
-				- Banana Medal acquisition (Japes->Castle) overwrite if GB (to increment GB counter by 1)
 				- Blueprints can be spawned for the wrong kong
 				- Bosses/Crowns don't warp you out upon collecting item that doesn't make you dance
+				- Everything are badly scaled
+				- Key SFX is eternal
+				- Blueprints shouldn't be tied to reward keys
+					- Logic
+				- Somehow got bricked from seed
+					- Key 7 was final key, but couldn't obtain it
+					- T&S Portal was cleared
+				- Collecting special coin no sound/anim
+				- No indication of what key you got
+				- Key 1 is given automatically???????
+				- Implement Killi's optimized algorithm
 			*/
 
 			// Spider Projectile

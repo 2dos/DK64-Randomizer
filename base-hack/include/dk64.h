@@ -503,4 +503,5 @@ extern unsigned char InvertedControls;
 extern unsigned char WinCondition;
 extern unsigned char ChunkyModel;
 extern unsigned char EnemyInView;
+extern unsigned char ItemRandoOn;
 extern short ItemRando_FLUT[0x320];

@@ -239,6 +239,9 @@ ItemRandoFlagCheckHook:
 ItemRandoFlagSetHook:
 	J 	setFlag_ItemRando
 	NOP
+ObjectRotateHook:
+	J 	ObjectRotate
+	NOP
 
 loadExtraHooks:
 	LUI t3, hi(InstanceScriptHook)
@@ -570,6 +573,19 @@ loadExtraHooks:
 	LUI t4, 0x806B
 	SW t3, 0xE55C (t4) // Store Hook
 	SW r0, 0xE560 (t4) // Store NOP
+
+	LUI t3, hi(ItemRandoOn)
+	LBU t3, lo(ItemRandoOn) (t3)
+	BEQZ t3, loadExtraHooks_4
+	NOP
+
+	LUI t3, hi(ObjectRotateHook)
+	LW t3, lo(ObjectRotateHook) (t3)
+	LUI t4, 0x8063
+	SW t3, 0x7148 (t4) // Store Hook
+	SW r0, 0x714C (t4) // Store NOP
+
+	loadExtraHooks_4:
 
 	JR ra
 	NOP

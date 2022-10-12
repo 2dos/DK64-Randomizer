@@ -77,19 +77,23 @@ void spawnEnemyDrops(actorData* actor) {
             int drop_type = drops[entry_index].dropped_object;
             if (drop_count > 0) {
                 int flag = -1;
+                int drop_arg = 1;
                 if ((actor_index >= 241) && (actor_index <= 245)) {
                     int world = getWorld(CurrentMap, 1);
                     flag = 469 + (5 * world) + (actor_index - 241);
                     if (Rando.item_rando) {
                         drop_type = getBPItem(flag - 469);
                         drop_count = 1;
+                        if ((drop_type == 45) || (drop_type == 72) || (drop_type == 86)) {
+                            drop_arg = 2;
+                        }
                     }
                 }
                 for (int i = 0; i < drop_count; i++) {
                     float drop_rotation_divisor = 0xFFF;
                     drop_rotation_divisor /= drop_count;
                     int drop_rotation = i * drop_rotation_divisor;
-                    spawnActorWithFlag(drop_type, *(int*)(&actor->xPos), *(int*)(&actor->yPos), *(int*)(&actor->zPos), drop_rotation, 1, flag, 0);
+                    spawnActorWithFlag(drop_type, *(int*)(&actor->xPos), *(int*)(&actor->yPos), *(int*)(&actor->zPos), drop_rotation, drop_arg, flag, 0);
                 }
             }
         }

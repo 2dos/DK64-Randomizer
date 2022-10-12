@@ -83,7 +83,6 @@ def ShuffleItems(spoiler: Spoiler):
     )
     shuffled_items = copy.deepcopy(location_data)
     random.shuffle(shuffled_items)
-    blueprint_count = [8, 8, 8, 8, 8, 0]  # 5 sets of 8, 0 at end for Kongs.any
     # First, place items for slots which are reward points, and thus have a restricted placement item list
     for location in location_data:
         if not location.placed and location.reward_spot and location.old_item != Types.Medal:  # Disregard Medals since they don't spawn an object
@@ -93,8 +92,7 @@ def ShuffleItems(spoiler: Spoiler):
                 relevant_slot = shuffled_items[shuffled_items_index]
                 if not relevant_slot.placed and relevant_slot.old_item in reward_items:  # Ensure item is a reward item
                     if relevant_slot.old_item == Types.Blueprint:
-                        if location.old_kong != Kongs.any and blueprint_count[location.old_kong] > 0:  # If Blueprint, ensure that there's enough for kong
-                            blueprint_count[location.old_kong] -= 1
+                        if location.old_kong == relevant_slot.old_kong:
                             location.place(relevant_slot.old_item, relevant_slot.old_flag, relevant_slot.old_kong)
                             shuffled_items.remove(relevant_slot)
                             found_item = True
@@ -118,16 +116,7 @@ def ShuffleItems(spoiler: Spoiler):
                 if not relevant_slot.placed and relevant_slot.old_item != Types.Banana:
                     if relevant_slot.old_item == Types.Blueprint:
                         if location.location not in bad_bp_locations:  # Ensure location isn't bad bp location
-                            kong = location.old_kong
-                            if location.location == Locations.HelmKey:
-                                valid_kongs = []
-                                for bp_i, bp in enumerate(blueprint_count):
-                                    if bp > 0:
-                                        valid_kongs.append(bp_i)
-                                if len(valid_kongs) > 0:
-                                    kong = random.choice(valid_kongs)
-                            if (location.old_kong != Kongs.any or location.location == Locations.HelmKey) and blueprint_count[kong] > 0:  # If Blueprint, ensure that there's enough for kong
-                                blueprint_count[kong] -= 1
+                            if location.old_kong == relevant_slot.old_kong:
                                 location.place(relevant_slot.old_item, relevant_slot.old_flag, relevant_slot.old_kong)
                                 shuffled_items.remove(relevant_slot)
                                 found_item = True
@@ -153,16 +142,7 @@ def ShuffleItems(spoiler: Spoiler):
                 if not relevant_slot.placed:
                     if relevant_slot.old_item == Types.Blueprint:
                         if location.location not in bad_bp_locations:  # Ensure location isn't bad bp location
-                            kong = location.old_kong
-                            if location.location == Locations.HelmKey:
-                                valid_kongs = []
-                                for bp_i, bp in enumerate(blueprint_count):
-                                    if bp > 0:
-                                        valid_kongs.append(bp_i)
-                                if len(valid_kongs) > 0:
-                                    kong = random.choice(valid_kongs)
-                            if (location.old_kong != Kongs.any or location.location == Locations.HelmKey) and blueprint_count[kong] > 0:  # If Blueprint, ensure that there's enough for kong
-                                blueprint_count[kong] -= 1
+                            if location.old_kong == relevant_slot.old_kong:
                                 location.place(relevant_slot.old_item, relevant_slot.old_flag, relevant_slot.old_kong)
                                 shuffled_items.remove(relevant_slot)
                                 found_item = True
