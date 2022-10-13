@@ -9,23 +9,23 @@ with open("doors.csv", newline="") as csvfile:
         if idx > 0:
             door_data_json.append(
                 {
-                    "levelname": row[1],
-                    "map": row[2],
-                    "logicregion": row[3],
-                    "name": row[4],
-                    "coords": [float(row[5]), float(row[6]), float(row[7]), float(row[8])],
-                    "rx": float(row[10]),
-                    "rz": float(row[11]),
-                    "scale": float(row[12]),
-                    "door_type": row[13],
-                    "group": row[15], #argument prevents tns portals from being too close to each other
-                    "moveless": row[16],
-                    "logic": row[17],
-                    "kongs": row[18],
-                    "placed": row[19], #vanilla door types
-                    "commented": row[20],
-                    "post_comment": row[21],
-                    "test_round": row[22],
+                    "levelname": row[0],
+                    "map": row[1],
+                    "logicregion": row[2],
+                    "name": row[3],
+                    "coords": [float(row[4]), float(row[5]), float(row[6]), float(row[7])],
+                    "rx": row[9],
+                    "rz": row[10],
+                    "scale": row[11],
+                    "door_type": row[12],
+                    "group": row[14], #argument prevents tns portals from being too close to each other
+                    "moveless": row[15],
+                    "logic": row[16],
+                    "kongs": row[17],
+                    "placed": row[18], #vanilla door types
+                    "commented": row[19],
+                    "post_comment": row[20],
+                    "test_round": row[21],
                 }
             )
     print(f"{len(door_data_json)} doors found")
@@ -34,12 +34,12 @@ with open("doors.csv", newline="") as csvfile:
     previous_levelname = "JungleJapes"
     for x in door_data_json:
         precomment = ""
-        if x["post_comment"] is not "":
+        if x["post_comment"] != "":
             x["post_comment"] = "  # "+x["post_comment"]
-        if x["commented"] is not "":
+        if x["commented"] != "":
             precomment = "# "
         level_name = x["levelname"].replace(" ", "")
-        if level_name is not previous_levelname:
+        if level_name != previous_levelname:
             previous_levelname = level_name
             print("],")
             print("Levels."+level_name+": [")
