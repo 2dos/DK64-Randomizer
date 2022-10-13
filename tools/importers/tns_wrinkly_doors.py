@@ -52,7 +52,7 @@ with open("doors.csv", newline="") as csvfile:
             rz_text = ", rz="+x["rz"]+""
         if x["scale"]:
             scale_text = ", scale="+x["scale"]+""
-        name = f"{x['levelname']}:  {x['name']}"
+        name = f"{x['levelname']}: {x['name']}"
         moveless_text = ", moveless=False"
         if x["moveless"].strip() == "":
             moveless_text = ""
