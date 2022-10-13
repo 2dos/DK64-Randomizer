@@ -25,6 +25,7 @@ with open("doors.csv", newline="") as csvfile:
                     "placed": row[19], #vanilla door types
                     "commented": row[20],
                     "post_comment": row[21],
+                    "test_round": row[22],
                 }
             )
     print(f"{len(door_data_json)} doors found")
@@ -63,6 +64,6 @@ with open("doors.csv", newline="") as csvfile:
         if x["placed"] == "":
             x["placed"] == "none"
         print(
-            f"\t"+precomment+f"DoorData(name=\"{name}\", map=Maps.{x['map']}, logicregion=Regions.{x['logicregion']}, location=[{x['coords'][0]}, {x['coords'][1]}, {x['coords'][2]}, {x['coords'][3]}]{rx_text}{rz_text}, scale={x['scale']}{kongs_text}, group={x['group']}{moveless_text}, logic={logic}, placed=\"{x['placed']}\", door_type=\"{x['door_type']}\"),{x['post_comment']}"
+            f"\t"+precomment+f"DoorData(name=\"{name}\", map=Maps.{x['map']}, logicregion=Regions.{x['logicregion']}, location=[{x['coords'][0]}, {x['coords'][1]}, {x['coords'][2]}, {x['coords'][3]}]{rx_text}{rz_text}, scale={x['scale']}{kongs_text}, group={x['group']}{moveless_text}, logic={logic}, placed=\"{x['placed']}\", door_type=\"{x['door_type']}\", test_round={x['test_round']}),{x['post_comment']}"
         )
     print("],")
