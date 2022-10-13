@@ -269,6 +269,23 @@ for p_i, progressive in enumerate([f"{hash_dir}headphones.png", f"{disp_dir}stan
 
 tracker_im.save(f"{getDir('assets/Non-Code/file_screen/')}tracker.png")
 
+# Nin/RW Coin Objects
+for coin in ("nin_coin", "rw_coin"):
+    loc = f"{hash_dir}{coin}.png"
+    coin_im = Image.open(loc)
+    coin_im = coin_im.crop((2, 0, 28, 31))
+    coin_im = coin_im.transpose(Image.Transpose.FLIP_TOP_BOTTOM)
+    coin_im = coin_im.resize((64, 64))
+    coin_im_0 = coin_im.crop((0, 0, 32, 64))
+    coin_im_1 = coin_im.crop((32, 0, 64, 64))
+    coin_im_0.save(f"{hash_dir}{coin}_0.png")
+    coin_im_1.save(f"{hash_dir}{coin}_1.png")
+side_im = Image.open(f"{hash_dir}special_coin_side.png")
+side_im = side_im.crop((17, 3, 25, 19))
+side_im = side_im.resize((32, 16))
+side_im = side_im.rotate(90, PIL.Image.Resampling.NEAREST, expand=1)
+side_im.save(f"{hash_dir}modified_coin_side.png")
+
 rmve = ["01234.png", "56789.png", "boss_key.png", "WXYL.png", "specialchars.png", "red_qmark_0.png", "red_qmark_1.png", "headphones.png", "film.png", "melon.png"]
 for kong in kongs:
     for x in range(2):

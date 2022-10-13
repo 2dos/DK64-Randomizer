@@ -218,11 +218,6 @@ void earlyFrame(void) {
 	} else {
 		*(int*)(0x8074C3B0) = (int)&cutsceneDKCode;
 	}
-	// if (NewlyPressedControllerInput.Buttons & L_Button) {
-	// 	for (int i = 0; i < 0xF; i++) {
-	// 		displayItemOnHUD(i,0,0);
-	// 	}
-	// }
 	fastWarpShockwaveFix();
 	catchWarpHandle();
 	write_kutoutorder();

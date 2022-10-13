@@ -19,7 +19,7 @@ model_two_indexes = {
 model_two_scales = {
     Types.Banana: 0.25,
     Types.Blueprint: 2,
-    Types.Coin: 2,
+    Types.Coin: 0.4,
     Types.Key: 0.17,
     Types.Crown: 0.25,
     Types.Medal: 0.22,
@@ -88,11 +88,11 @@ def place_randomized_items(spoiler: Spoiler):
                     ROM().write(actor_index)
                 elif item.old_item == Types.Crown:
                     # Write to Crown Table
-                    crown_flags = [0x261,0x262,0x263,0x264,0x265,0x268,0x269,0x266,0x26A,0x267]
+                    crown_flags = [0x261, 0x262, 0x263, 0x264, 0x265, 0x268, 0x269, 0x266, 0x26A, 0x267]
                     ROM().seek(0x1FF10C0 + crown_flags.index(item.old_flag))
                     ROM().write(actor_index)
                 elif item.old_item == Types.Key:
-                    key_flags = [26,74,138,168,236,292,317,380]
+                    key_flags = [26, 74, 138, 168, 236, 292, 317, 380]
                     ROM().seek(0x1FF10D0 + key_flags.index(item.old_flag))
                     ROM().write(actor_index)
                 elif item.old_item == Types.Medal:
@@ -161,11 +161,11 @@ def place_randomized_items(spoiler: Spoiler):
                             old_scale = intf_to_float(int.from_bytes(ROM().readBytes(4), "big"))
                             new_scale = old_scale * item_slot["upscale"]
                             ROM().seek(start + 0xC)
-                            ROM().writeMultipleBytes(int(float_to_hex(new_scale),16),4)
+                            ROM().writeMultipleBytes(int(float_to_hex(new_scale), 16), 4)
                             # Y Offset Fix
                             if item_slot["obj"] == Types.Blueprint:
                                 ROM().seek(start + 0x4)
                                 old_y = intf_to_float(int.from_bytes(ROM().readBytes(4), "big"))
                                 new_y = old_y + (item_slot["upscale"] * 1.25)
                                 ROM().seek(start + 0x4)
-                                ROM().writeMultipleBytes(int(float_to_hex(new_y),16),4)
+                                ROM().writeMultipleBytes(int(float_to_hex(new_y), 16), 4)
