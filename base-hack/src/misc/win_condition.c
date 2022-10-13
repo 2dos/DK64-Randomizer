@@ -117,6 +117,7 @@ void checkVictory_flaghook(int flag) {
             }
         }
     }
+    blueprintCollect(flag);
 }
 
 

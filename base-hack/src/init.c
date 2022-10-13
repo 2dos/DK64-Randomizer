@@ -385,7 +385,6 @@ void initHack(int source) {
 			*(int*)(0x805FEBC0) = 0x0C000000 | (((int)&parseCutsceneData & 0xFFFFFF) >> 2); // modifyCutsceneHook
 			*(int*)(0x807313A4) = 0x0C000000 | (((int)&checkVictory_flaghook & 0xFFFFFF) >> 2); // perm flag set hook
 			if (Rando.helm_hurry_mode) {
-				*(int*)(0x806F56F8) = 0x0C000000 | (((int)&blueprintCollect & 0xFFFFFF) >> 2); // Blueprint collection hook
 				*(int*)(0x80713CCC) = 0; // Prevent Helm Timer Disable
 				*(int*)(0x80713CD8) = 0; // Prevent Shutdown Song Playing
 				*(short*)(0x8071256A) = 15; // Init Helm Timer = 15 minutes
@@ -690,7 +689,6 @@ void initHack(int source) {
 			*(int*)(0x806C63BC) = 0x0C000000 | (((int)&spawnRewardAtActor & 0xFFFFFF) >> 2); // Spawn Squawks Reward
 			/*
 				TODO:
-				- Prevent blueprints setting an additional flag - Note, helm hurry has a hook on the flag set
 				- Fix edge cases with check/set flag in instance scripts (eg. coin door)
 				- Bosses/Crowns don't warp you out upon collecting item that doesn't make you dance
 				- Key SFX is eternal
