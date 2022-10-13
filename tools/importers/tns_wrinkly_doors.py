@@ -45,10 +45,13 @@ with open("doors.csv", newline="") as csvfile:
             print("Levels."+level_name+": [")
         rx_text = ""
         rz_text = ""
+        scale_text=""
         if x["rx"]:
             rx_text = ", rx="+x["rx"]+""
         if x["rz"]:
             rz_text = ", rz="+x["rz"]+""
+        if x["scale"]:
+            scale_text = ", scale="+x["scale"]+""
         name = f"{x['levelname']}:  {x['name']}"
         moveless_text = ", moveless=False"
         if x["moveless"].strip() == "":
@@ -64,6 +67,6 @@ with open("doors.csv", newline="") as csvfile:
         if x["placed"] == "":
             x["placed"] == "none"
         print(
-            f"\t"+precomment+f"DoorData(name=\"{name}\", map=Maps.{x['map']}, logicregion=Regions.{x['logicregion']}, location=[{x['coords'][0]}, {x['coords'][1]}, {x['coords'][2]}, {x['coords'][3]}]{rx_text}{rz_text}, scale={x['scale']}{kongs_text}, group={x['group']}{moveless_text}, logic={logic}, placed=\"{x['placed']}\", door_type=\"{x['door_type']}\", test_round={x['test_round']}),{x['post_comment']}"
+            f"\t"+precomment+f"DoorData(name=\"{name}\", map=Maps.{x['map']}, logicregion=Regions.{x['logicregion']}, location=[{x['coords'][0]}, {x['coords'][1]}, {x['coords'][2]}, {x['coords'][3]}]{rx_text}{rz_text}{scale_text}{kongs_text}, group={x['group']}{moveless_text}, logic={logic}, placed=\"{x['placed']}\", door_type=\"{x['door_type']}\", test_round={x['test_round']}),{x['post_comment']}"
         )
     print("],")
