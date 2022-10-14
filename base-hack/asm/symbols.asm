@@ -7,6 +7,8 @@
 .definelabel playSound, 0x80609140
 .definelabel initiateTransition, 0x805FF378
 .definelabel initiateTransition_0, 0x805FF9AC
+.definelabel WarpToParent, 0x805FF8F8
+.definelabel ExitFromBonus, 0x805FF898
 .definelabel getFlagBlockAddress, 0x8060E25C
 .definelabel isAddressActor, 0x8067AF44
 .definelabel getTimestamp, 0x800060B0

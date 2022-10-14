@@ -227,7 +227,8 @@ typedef struct playerData {
 	/* 0x370 */ int strong_kong_ostand_bitfield;
 	/* 0x374 */ char unk_374[0x37D-0x374];
 	/* 0x37D */ unsigned char rambi_enabled;
-	/* 0x37E */ char unk_37E[0x3BE - 0x37E];
+	/* 0x37E */ char unk_37E[0x3BC - 0x37E];
+	/* 0x3BC */ unsigned short try_again_timer;
 	/* 0x3BE */ unsigned char detransform_timer;
 } playerData; //size 0x630
 

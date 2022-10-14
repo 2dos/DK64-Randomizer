@@ -7,6 +7,8 @@ extern void dk_free(void* mallocPtr);
 extern void playSound(short soundIndex, int unk0, int unk1, int unk2, int unk3, int unk4);
 extern void initiateTransition(int map, int exit);
 extern void initiateTransition_0(int map, int exit, int unk0, int unk1);
+extern void WarpToParent(void);
+extern void ExitFromBonus(void);
 extern int* getFlagBlockAddress(char flagType);
 extern int isAddressActor(void* address);
 extern int getTimestamp();

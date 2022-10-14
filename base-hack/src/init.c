@@ -709,9 +709,21 @@ void initHack(int source) {
 			/*
 				TODO:
 				- Fix edge cases with check/set flag in instance scripts (eg. coin door)
-				- Bosses/Crowns don't warp you out upon collecting item that doesn't make you dance
 				- Key SFX is eternal
+				- Change bonus aesthetic based on reward
 				- Implement Killi's optimized algorithm
+
+				MOVES IN POOL NOTES:
+				- Variable Moves have flags with the uppermost bit set
+					- eg. Sax: 0xB401
+						- 0xBYYY -> Is variable move, for Tiny (Kong 3). 1011
+						- 0xY400 -> Move Offset 4 (Instrument)
+						- 0xYY01 -> Instrument Level 1
+				- Modify flag sets and checks so that if it detects the uppermost bit is set, check variable moves instead of flag db
+					- For bitfield moves, this can be baked into the original FBA system, not for non-bitfield moves (Slams, Ammo Belts)
+					- Can't do progressive (no great way to alter flags during live play)
+				- Use potion model for actors (might have to shift it to be centered around 0? I think it's offcentered)
+				- Convert potion model to M2
 			*/
 
 			// Spider Projectile

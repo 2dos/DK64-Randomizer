@@ -456,12 +456,39 @@ void keyGrabHook(int song, int vol) {
     old_keys = val;
 }
 
+static const short boss_maps[] = {0x8,0xC5,0x9A,0x6F,0x53,0xC4,0xC7};
+static const short acceptable_items[] = {0x74,0xDE,0xE0,0xE1,0xDD,0xDF,0x48,0x28F,0x13C,0x18D,0x90};
+
 int itemGrabHook(int collectable_type, int obj_type, int is_homing) {
-    if (obj_type == 0x13C) {
-        for (int i = 0; i < 8; i++) {
-            if (checkFlagDuplicate(getKeyFlag(i), 0)) {
-                if ((old_keys & (1 << i)) == 0) {
-                    initKeyText(i);
+    if (Rando.item_rando) {
+        if (obj_type == 0x13C) {
+            for (int i = 0; i < 8; i++) {
+                if (checkFlagDuplicate(getKeyFlag(i), 0)) {
+                    if ((old_keys & (1 << i)) == 0) {
+                        initKeyText(i);
+                    }
+                }
+            }
+        } else {
+            for (int i = 0; i < 7; i++) {
+                if (CurrentMap == boss_maps[i]) {
+                    for (int j = 0; j < (sizeof(acceptable_items) / 2); j++) {
+                        if (obj_type == acceptable_items[j]) {
+                            Player->control_state = 0x71;
+                            Player->control_state_progress = 1;
+                            Player->try_again_timer = 1;
+                        }
+                    }
+                }
+            }
+        }
+        if (obj_type != 0x18D) {
+            if ((CurrentMap == 0x35) || (CurrentMap == 0x49) || ((CurrentMap >= 0x9B) && (CurrentMap <= 0xA2))) {
+                for (int j = 0; j < (sizeof(acceptable_items) / 2); j++) {
+                    if (obj_type == acceptable_items[j]) {
+                        Player->control_state = 0x72;
+                        Player->control_state_progress = 255;
+                    }
                 }
             }
         }
