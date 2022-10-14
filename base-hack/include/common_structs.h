@@ -1275,3 +1275,12 @@ typedef struct tag_model_struct {
 typedef struct mtx_item {
 	/* 0x000 */ char unk_0[0x40];
 } mtx_item;
+
+typedef struct actor_behaviour_def {
+    /* 0x000 */ short actor_type;
+    /* 0x002 */ short model;
+    /* 0x004 */ char unk4[8];
+    /* 0x00C */ void* code;
+    /* 0x010 */ void* unk10;
+    /* 0x014 */ char str[0x1C];
+} actor_behaviour_def;

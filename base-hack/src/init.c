@@ -598,6 +598,13 @@ void initHack(int source) {
 			// Move Text Code
 			*(int*)(0x8074C5B0) = (int)&getNextMoveText;
 			*(int*)(0x8074C5A0) = (int)&getNextMoveText;
+			// New Actors
+			*(int*)(0x8074C2FC) = (int)&ninCoinCode; // Actor 151
+			*(char*)(0x8074D96B) = 4; // Is Sprite
+			*(char*)(0x8074DDD1) = 0x11; // Increase PAAD
+			*(int*)(0x8074C300) = (int)&rwCoinCode; // Actor 152
+			*(char*)(0x8074D96C) = 4; // Is Sprite
+			*(char*)(0x8074DDD5) = 0x11; // Increase PAAD
 			// Item Rando
 			for (int i = 0; i < 54; i++) {
 				BonusBarrelData[i].spawn_actor = 45; // Spawn GB - Have as default
@@ -692,7 +699,6 @@ void initHack(int source) {
 				- Fix edge cases with check/set flag in instance scripts (eg. coin door)
 				- Bosses/Crowns don't warp you out upon collecting item that doesn't make you dance
 				- Key SFX is eternal
-				- Collecting special coin no sound/anim
 				- No indication of what key you got
 					- Game shows key text for keys you obtain upon new file
 				- Implement Killi's optimized algorithm
@@ -765,6 +771,7 @@ void initHack(int source) {
 			*(short*)(0x806F6F76) = FLAG_ABILITY_CAMERA; // Film Refill
 			initItemDropTable();
 			initCollectableCollision();
+			initActorDefs();
 			// LZ Save
 			*(int*)(0x80712EC4) = 0x0C000000 | (((int)&postKRoolSaveCheck & 0xFFFFFF) >> 2);
 			// Reduce TA Cooldown

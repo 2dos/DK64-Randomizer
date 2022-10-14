@@ -59,7 +59,9 @@ typedef struct collision_info {
 } collision_info;
 
 #define COLLISION_LIMIT 45
+#define DEFS_LIMIT 130
 static collision_info object_collisions[COLLISION_LIMIT] = {};
+static actor_behaviour_def actor_defs[DEFS_LIMIT] = {};
 
 int addCollisionInfo(int index, int type, int collectable, int kong, int actor_equivalent, int hitbox_y, int hitbox_scale) {
     object_collisions[index].type = type;
@@ -138,8 +140,8 @@ void initCollectableCollision(void) {
     index = addCollisionInfo(index, 0x013C, COLLECTABLE_NONE, KONG_NONE, 0x48, 0, 0); // Boss Key
     index = addCollisionInfo(index, 0x018D, COLLECTABLE_NONE, KONG_NONE, 0x56, 0, 0); // Battle Crown
     index = addCollisionInfo(index, 0x0288, COLLECTABLE_GB, KONG_NONE, 0x7A, 8, 4); // Rareware GB
-    index = addCollisionInfo(index, 0x0048, COLLECTABLE_NONE, KONG_NONE, 0, 0, 0); // Nintendo Coin
-    index = addCollisionInfo(index, 0x028F, COLLECTABLE_NONE, KONG_NONE, 0, 0, 0); // Rareware Coin
+    index = addCollisionInfo(index, 0x0048, COLLECTABLE_NONE, KONG_NONE, 151, 0, 0); // Nintendo Coin
+    index = addCollisionInfo(index, 0x028F, COLLECTABLE_NONE, KONG_NONE, 152, 0, 0); // Rareware Coin
     // Write new table to ROM
     int hi = getHi(&object_collisions[0].type);
     int lo = getLo(&object_collisions[0].type);
@@ -160,6 +162,30 @@ void initCollectableCollision(void) {
     *(unsigned short*)(0x806F744A) = lo;
     *(unsigned short*)(0x806F7996) = getHi(&object_collisions[index].type);
     *(unsigned short*)(0x806F799A) = getLo(&object_collisions[index].type);
+}
+
+int addActorDef(int index, int actor, int model, unsigned int func_0, unsigned int func_1) {
+    actor_defs[index].actor_type = actor;
+    actor_defs[index].model = model;
+    actor_defs[index].unk4[4] = 0x02;
+    actor_defs[index].unk4[5] = 0x26;
+    actor_defs[index].code = (void*)func_0;
+    actor_defs[index].unk10 = (void*)func_1;
+    return index + 1;
+}
+
+void initActorDefs(void) {
+    dk_memcpy(&actor_defs[0], &ActorBehaviourTable[0], 128*sizeof(actor_behaviour_def));
+    int index = addActorDef(128, 151, 0, 0x80689F80, 0x8068A10C);
+    index = addActorDef(index, 152, 0, 0x80689F80, 0x8068A10C);
+    *(unsigned short*)(0x8068926A) = getHi(&actor_defs[0].actor_type);
+    *(unsigned short*)(0x8068927A) = getLo(&actor_defs[0].actor_type);
+    *(unsigned short*)(0x806892D2) = getHi(&actor_defs[0].actor_type);
+    *(unsigned short*)(0x806892D6) = getLo(&actor_defs[0].actor_type);
+    *(unsigned short*)(0x8068945A) = getHi(&actor_defs[0].actor_type);
+    *(unsigned short*)(0x80689466) = getLo(&actor_defs[0].actor_type);
+    *(unsigned short*)(0x8068928A) = DEFS_LIMIT;
+    *(unsigned short*)(0x80689452) = DEFS_LIMIT;
 }
 
 void spawnBonusReward(int object, int x_f, int y_f, int z_f, int unk0, int cutscene, int flag, int unk1) {
@@ -413,4 +439,24 @@ int* controlKeyText(int* dl) {
 void initKeyText(int ki) {
     key_index = ki;
     key_timer = 50;
+}
+
+void spriteCode(int sprite_index) {
+    void* paad = CurrentActorPointer_0->paad;
+    spriteActorGenericCode(4.5f);
+    if ((CurrentActorPointer_0->obj_props_bitfield & 0x10) == 0) {
+        assignGIFToActor(paad, sprite_table[sprite_index], 0x3F800000);
+        if (CurrentActorPointer_0->control_state == 99) {
+            CurrentActorPointer_0->control_state = 1;
+            CurrentActorPointer_0->sub_state = 2;
+        }
+    }
+}
+
+void ninCoinCode(void) {
+    spriteCode(0x8D);
+}
+
+void rwCoinCode(void) {
+    spriteCode(0x8C);
 }

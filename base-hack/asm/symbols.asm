@@ -234,6 +234,9 @@
 .definelabel unkBonusFunction, 0x8067ACB4
 .definelabel internalKasplatCode, 0x806B13B4
 
+.definelabel spriteActorGenericCode, 0x806A664C
+.definelabel assignGIFToActor, 0x806A5EAC
+
 //vanilla data
 .definelabel TransitionSpeed, 0x807FD88C
 .definelabel CutsceneWillPlay, 0x8075533B
@@ -443,6 +446,8 @@
 .definelabel AnimationTable1, 0x807FBB54
 .definelabel AnimationTable2, 0x807FBB58
 .definelabel AnimationTable3, 0x807FBB5C
+
+.definelabel ActorBehaviourTable, 0x8074E8B0
 
 //hack data
 .definelabel TestVariable, 0x807FFFFC

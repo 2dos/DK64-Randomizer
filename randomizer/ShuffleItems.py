@@ -76,6 +76,7 @@ def ShuffleItems(spoiler: Spoiler):
             Types.Blueprint,  # HAS to correspond to intended actor for item, actors 75-79 (Diddy, Chunky, Lanky, DK, Tiny)
             Types.Key,  # Actor 72
             Types.Crown,  # Actor 86
+            Types.Coin,  # Actors 151, 152 (Nin, RW)
         )
         bad_bp_locations = (
             Locations.IslesDonkeyJapesRock,

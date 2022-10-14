@@ -30,6 +30,7 @@ actor_indexes = {
     Types.Blueprint: [78, 75, 77, 79, 76],
     Types.Key: 72,
     Types.Crown: 86,
+    Types.Coin: [151, 152],
 }
 
 
@@ -78,6 +79,10 @@ def place_randomized_items(spoiler: Spoiler):
                 if item.old_item != Types.Medal:
                     if item.new_item == Types.Blueprint:
                         actor_index = actor_indexes[Types.Blueprint][item.new_kong]
+                    elif item.new_item == Types.Coin:
+                        actor_index = actor_indexes[Types.Coin][0]
+                        if item.new_flag == 379:  # Is RW Coin
+                            actor_index = actor_indexes[Types.Coin][1]
                     else:
                         actor_index = actor_indexes[item.new_item]
                 if item.old_item == Types.Blueprint:

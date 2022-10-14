@@ -249,6 +249,9 @@ extern int getNewSaveTime(void);
 extern void unkBonusFunction(actorData* actor);
 extern void internalKasplatCode(int has_bp);
 
+extern void spriteActorGenericCode(float unk0);
+extern void assignGIFToActor(void* paad, void* sprite, int scale_f);
+
 //vanilla data
 extern float TransitionSpeed;
 extern char CutsceneWillPlay;
@@ -460,6 +463,8 @@ extern short ChargeVelocities_0[7];
 extern short ChargeVelocities_1[7];
 extern short ChargeDeceleration[7];
 extern char* KongTextNames[8];
+
+extern actor_behaviour_def ActorBehaviourTable[128];
 
 //hack data
 extern int TestVariable;

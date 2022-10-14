@@ -31,28 +31,29 @@ ObjectRotate:
         NOP
         
 NintendoCoinEffect:
-    BEQ     a0, at, NintendoCoinEffect_Melon
-    LUI     t1, 0x8074
+    BEQ     a0, at, NintendoCoinEffect_Orange
+    ADDIU   a1, r0, 0x7FFF
     ADDIU   at, r0, 0x48
     BEQ     a0, at, NintendoCoinEffect_Coin
     NOP
-    J       0x806F7B18
+    J       0x806F7B38
     NOP
 
     NintendoCoinEffect_Coin:
+        LUI     t1, 0x8074
         LBU     t1, 0x5838 (t1)
         J       0x806F7BC8
         ADDIU   a0, r0, 22
 
-    NintendoCoinEffect_Melon:
-        J       0x806F7BC0
+    NintendoCoinEffect_Orange:
+        J       0x806F7C20
         NOP
 
 RarewareCoinEffect:
     BEQ     t7, at, RarewareCoinEffect_RaceCoin
-    ADDIU   at, 0x28F
+    ADDIU   at, r0, 0x28F
     BEQ     t7, at, RarewareCoinEffect_Coin
-    ADDIU   at, 0x288
+    ADDIU   at, r0, 0x288
     J       0x806F7A2C
     NOP
 
