@@ -155,6 +155,7 @@
 #define HELM_PAD_SAX 0x2E
 #define HELM_PAD_TROMBONE 0x2F
 #define HELM_PAD_GUITAR 0x30
+#define HELM_COIN_DOOR 0x3
 
 #define JAPES_CAVE_GATE 0x2B
 #define JAPES_PEANUT_MOUNTAIN 0x58
@@ -1331,6 +1332,13 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 					int previous_slot = -1;
 					int current_slot = -1;
 					switch(param2) {
+						case HELM_COIN_DOOR:
+							if (index == 0) {
+								return checkFlagDuplicate(FLAG_COLLECTABLE_NINTENDOCOIN,0);
+							} else if (index == 1) {
+								return checkFlagDuplicate(FLAG_COLLECTABLE_RAREWARECOIN,0);
+							}
+							break;
 						case HELM_PAD_BONGO:
 							slot = 0;
 						case HELM_PAD_TRIANGLE:
