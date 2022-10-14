@@ -9,6 +9,14 @@ ptr_offset = 0x101C50
 m2_table = 4
 ac_table = 5
 
+# Conversions:
+# Load vertices Seg Start:
+# - Actor: 0x3
+# - M2: 0x8
+# G_MTX:
+# - Actor: 0x4
+# - M2: 0x9
+
 
 def portalModel_M2(vtx_file, dl_file, overlay_dl_file, model_name, base):
     """Convert model two model file from various source files."""
@@ -40,10 +48,14 @@ def portalModel_M2(vtx_file, dl_file, overlay_dl_file, model_name, base):
                 dl_data_length = len(dl_data)
                 fg.write(dl_data)
             dl_addon_length = 0
-            with open(overlay_dl_file, "rb") as dl:
-                dl_addon = dl.read()
-                dl_addon_length = len(dl_addon)
-                fg.write(dl_addon)
+            if overlay_dl_file != 0:
+                with open(overlay_dl_file, "rb") as dl:
+                    dl_addon = dl.read()
+                    dl_addon_length = len(dl_addon)
+                    fg.write(dl_addon)
+            else:
+                dl_addon_length = 8
+                fg.write((0xDF << 56).to_bytes(8, "big"))
             vtx_data_length = 0
             with open(vtx_file, "rb") as vtx:
                 vtx_data = vtx.read()
@@ -124,4 +136,5 @@ def portalModel_Actor(vtx_file, dl_file, model_name, base):
 model_dir = "assets/Non-Code/models/"
 portalModel_M2(f"{model_dir}coin.vtx", f"{model_dir}nin_coin.dl", f"{model_dir}coin_overlay.dl", "nintendo_coin", 0x90)
 portalModel_M2(f"{model_dir}coin.vtx", f"{model_dir}rw_coin.dl", f"{model_dir}coin_overlay.dl", "rareware_coin", 0x90)
+portalModel_M2(f"{model_dir}potion.vtx", f"{model_dir}potion.dl", 0, "potion", 0x90)
 # portalModel_Actor(f"{model_dir}coin.vtx", f"{model_dir}nin_coin.dl", "nintendo_coin", 0x66)
