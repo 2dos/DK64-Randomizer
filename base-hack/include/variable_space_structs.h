@@ -49,7 +49,8 @@ typedef struct varspace {
 	/* 0x0AE */ char helm_hurry_mode; // 0 = Off, 1 = On: Starting a new file summons the helm timer, each BP adds 2 minutes to the clock, timing out disables saving.
 	/* 0x0AF */ char always_show_coin_cbs; // 0 = No (Vanilla), 1 = Yes
 	/* 0x0B0 */ quality_options quality_of_life; // Size: 2
-	/* 0x0B2 */ char unk_B0[0x114 - 0xB2];
+	/* 0x0B2 */ char unk_B0[0x113 - 0xB2];
+	/* 0x113 */ unsigned char any_kong_items; // Bitfield 0000 00ba. a = All items except blueprints disabling kong check. b = Blueprints disable kong check.
 	/* 0x114 */ unsigned char japes_rock_item; // Actor ID of item that spawns from destroying the rock covering Japes Underground
 	/* 0x115 */ unsigned char vulture_item; // Actor ID of item that the vulture in Tiny Temple has
 	/* 0x116 */ char colorblind_mode; // 0 = Off, 1 = On

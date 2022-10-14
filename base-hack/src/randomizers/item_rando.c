@@ -63,18 +63,6 @@ typedef struct collision_info {
 static collision_info object_collisions[COLLISION_LIMIT] = {};
 static actor_behaviour_def actor_defs[DEFS_LIMIT] = {};
 
-int addCollisionInfo(int index, int type, int collectable, int kong, int actor_equivalent, int hitbox_y, int hitbox_scale) {
-    object_collisions[index].type = type;
-    object_collisions[index].collectable_type = collectable;
-    object_collisions[index].unk4 = 0.08f;
-    object_collisions[index].unk8 = 0.95f;
-    object_collisions[index].intended_actor = kong + 2;
-    object_collisions[index].actor_equivalent = actor_equivalent;
-    object_collisions[index].hitbox_y_center = hitbox_y;
-    object_collisions[index].hitbox_scale = hitbox_scale;
-    return index + 1;
-}
-
 #define COLLECTABLE_AMMOBOX -2
 #define COLLECTABLE_NONE -1
 #define COLLECTABLE_CB 0
@@ -89,6 +77,22 @@ int addCollisionInfo(int index, int type, int collectable, int kong, int actor_e
 #define COLLECTABLE_BP 12
 
 #define KONG_NONE -2
+
+int addCollisionInfo(int index, int type, int collectable, int kong, int actor_equivalent, int hitbox_y, int hitbox_scale) {
+    object_collisions[index].type = type;
+    object_collisions[index].collectable_type = collectable;
+    object_collisions[index].unk4 = 0.08f;
+    object_collisions[index].unk8 = 0.95f;
+    object_collisions[index].intended_actor = kong + 2;
+    if ((Rando.any_kong_items & 2) && (collectable == COLLECTABLE_BP)) {
+        // Blueprints
+        object_collisions[index].intended_actor = 0;
+    }
+    object_collisions[index].actor_equivalent = actor_equivalent;
+    object_collisions[index].hitbox_y_center = hitbox_y;
+    object_collisions[index].hitbox_scale = hitbox_scale;
+    return index + 1;
+}
 
 void initCollectableCollision(void) {
     // Single
@@ -139,7 +143,7 @@ void initCollectableCollision(void) {
     index = addCollisionInfo(index, 0x00EC, COLLECTABLE_RACECOIN, KONG_NONE, 0x36, 0, 0); // Race Coin
     index = addCollisionInfo(index, 0x013C, COLLECTABLE_NONE, KONG_NONE, 0x48, 0, 0); // Boss Key
     index = addCollisionInfo(index, 0x018D, COLLECTABLE_NONE, KONG_NONE, 0x56, 0, 0); // Battle Crown
-    index = addCollisionInfo(index, 0x0288, COLLECTABLE_GB, KONG_NONE, 0x7A, 8, 4); // Rareware GB
+    index = addCollisionInfo(index, 0x0288, COLLECTABLE_GB, KONG_NONE, 0x2D, 8, 4); // Rareware GB
     index = addCollisionInfo(index, 0x0048, COLLECTABLE_NONE, KONG_NONE, 151, 0, 0); // Nintendo Coin
     index = addCollisionInfo(index, 0x028F, COLLECTABLE_NONE, KONG_NONE, 152, 0, 0); // Rareware Coin
     // Write new table to ROM
@@ -357,9 +361,11 @@ void* updateFlag(int type, short* flag, void* fba) {
 }
 
 int getKongFromBonusFlag(int flag) {
-    for (int i = 0; i < 94; i++) {
-        if (bonus_data[i].flag == flag) {
-            return bonus_data[i].kong_actor;
+    if ((Rando.any_kong_items & 1) == 0) {
+        for (int i = 0; i < 94; i++) {
+            if (bonus_data[i].flag == flag) {
+                return bonus_data[i].kong_actor;
+            }
         }
     }
     return 0;

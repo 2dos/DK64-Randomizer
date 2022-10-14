@@ -605,6 +605,16 @@ void initHack(int source) {
 			*(int*)(0x8074C300) = (int)&rwCoinCode; // Actor 152
 			*(char*)(0x8074D96C) = 4; // Is Sprite
 			*(char*)(0x8074DDD5) = 0x11; // Increase PAAD
+			// Any Kong Items
+			if (Rando.any_kong_items & 1) {
+				// All excl. Blueprints
+				*(int*)(0x807319C0) = 0x00001025; // OR $v0, $r0, $r0 - Make all reward spots think no kong
+				*(int*)(0x80632E94) = 0x00001025; // OR $v0, $r0, $r0 - Make flag mapping think no kong
+			}
+			if (Rando.any_kong_items & 2) {
+				*(int*)(0x806F56F8) = 0; // Disable Flag Set for blueprints
+				*(int*)(0x806A606C) = 0; // Disable translucency for blueprints
+			}
 			// Item Rando
 			for (int i = 0; i < 54; i++) {
 				BonusBarrelData[i].spawn_actor = 45; // Spawn GB - Have as default
