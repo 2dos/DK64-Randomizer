@@ -94,33 +94,11 @@ void checkSeedVictory(void) {
     }
 }
 
-static const short normal_key_flags[] = {
-	FLAG_KEYHAVE_KEY1,
-	FLAG_KEYHAVE_KEY2,
-	FLAG_KEYHAVE_KEY3,
-	FLAG_KEYHAVE_KEY4,
-	FLAG_KEYHAVE_KEY5,
-	FLAG_KEYHAVE_KEY6,
-	FLAG_KEYHAVE_KEY7,
-	FLAG_KEYHAVE_KEY8
-};
-
 void checkVictory_flaghook(int flag) {
     checkGlobalProgress(flag);
     checkSeedVictory();
-    if ((Rando.item_rando) && (CurrentMap != 0x50) && (CutsceneActive != 6) && (ObjectModel2Timer > 2)) {
-        for (int i = 0; i < 8; i++) {
-            if (flag == normal_key_flags[i]) {
-                if (!checkFlagDuplicate(flag, 0)) {
-                    initKeyText(i);
-                }
-            }
-        }
-    }
     blueprintCollect(flag);
 }
-
-
 
 int isSnapEnemyInRange(void) {
     for (int i = 0; i < LoadedActorCount; i++) {

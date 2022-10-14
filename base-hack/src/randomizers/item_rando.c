@@ -421,20 +421,67 @@ void banana_medal_acquisition(int flag) {
     }
 }
 
-static unsigned char key_timer = 50;
+static unsigned char key_timer = 0;
 static unsigned char key_index = 0;
 static char key_text[] = "KEY 0";
+static unsigned char old_keys = 0;
+
+static const short normal_key_flags[] = {
+	FLAG_KEYHAVE_KEY1,
+	FLAG_KEYHAVE_KEY2,
+	FLAG_KEYHAVE_KEY3,
+	FLAG_KEYHAVE_KEY4,
+	FLAG_KEYHAVE_KEY5,
+	FLAG_KEYHAVE_KEY6,
+	FLAG_KEYHAVE_KEY7,
+	FLAG_KEYHAVE_KEY8
+};
+
+int getKeyFlag(int index) {
+    if ((Rando.level_order_rando_on) && (index < 7)) {
+        return Rando.key_flags[index];
+    } else {
+        return normal_key_flags[index];
+    }
+}
+
+void keyGrabHook(int song, int vol) {
+    playSong(song, vol);
+    int val = 0;
+    for (int i = 0; i < 8; i++) {
+        if (checkFlagDuplicate(getKeyFlag(i), 0)) {
+            val |= (1 << i);
+        }
+    }
+    old_keys = val;
+}
+
+int itemGrabHook(int collectable_type, int obj_type, int is_homing) {
+    if (obj_type == 0x13C) {
+        for (int i = 0; i < 8; i++) {
+            if (checkFlagDuplicate(getKeyFlag(i), 0)) {
+                if ((old_keys & (1 << i)) == 0) {
+                    initKeyText(i);
+                }
+            }
+        }
+    }
+    return getCollectableOffset(collectable_type, obj_type, is_homing);
+}
 
 int* controlKeyText(int* dl) {
     if (key_timer > 0) {
         int key_opacity = 255;
         if (key_timer < 10) {
             key_opacity = 25 * key_timer;
-        } else if (key_timer > 40) {
-            key_opacity = 25 * (50 - key_timer);
+        } else if (key_timer > 90) {
+            key_opacity = 25 * (100 - key_timer);
         }
+        dl = initDisplayList(dl);
+        *(unsigned int*)(dl++) = 0xFCFF97FF;
+	    *(unsigned int*)(dl++) = 0xFF2CFE7F;
         *(unsigned int*)(dl++) = 0xFA000000;
-	    *(unsigned int*)(dl++) = 0xFFFFFF00 | key_opacity;
+        *(unsigned int*)(dl++) = 0xFFFFFF00 | key_opacity;
         dk_strFormat(key_text, "KEY %d", key_index + 1);
         dl = displayText(dl,1,640,750,key_text,0x80);
         key_timer -= 1;
@@ -444,7 +491,7 @@ int* controlKeyText(int* dl) {
 
 void initKeyText(int ki) {
     key_index = ki;
-    key_timer = 50;
+    key_timer = 100;
 }
 
 void spriteCode(int sprite_index) {

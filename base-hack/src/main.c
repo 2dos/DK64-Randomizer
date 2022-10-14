@@ -109,6 +109,9 @@ void cFuncLoop(void) {
 	if (Rando.helm_hurry_mode) {
 		checkTotalCache();
 	}
+	// if (Rando.item_rando) {
+	// 	controlKeyText();
+	// }
 	if (CurrentMap == 0x11) {
 		if ((CutsceneActive == 1) && ((CutsceneStateBitfield & 4) != 0)) {
 			if ((CutsceneIndex == 0) || (CutsceneIndex == 4) || (CutsceneIndex == 7) || (CutsceneIndex == 8) || (CutsceneIndex == 9)) {
@@ -316,9 +319,9 @@ int* displayListModifiers(int* dl) {
 				dl = drawPixelTextContainer(dl, 0x34, 0x92, "THE WIKI TO FIX THIS ERROR.", 0xFF, 0xFF, 0xFF, 0xFF, 1);
 			}
 		} else {
-			// if (Rando.item_rando) {
-			// 	dl = controlKeyText(dl);
-			// }
+			if (Rando.item_rando) {
+				dl = controlKeyText(dl);
+			}
 			if (Rando.fps_on) {
 				float fps = HERTZ;
 				if (current_avg_lag != 0) {

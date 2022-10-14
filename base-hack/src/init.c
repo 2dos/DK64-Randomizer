@@ -645,6 +645,8 @@ void initHack(int source) {
 				*(int*)(0x806F78B8) = 0x0C000000 | (((int)&getKongFromBonusFlag & 0xFFFFFF) >> 2); // Reward Table Kong Check
 				*(int*)(0x806F938C) = 0x0C000000 | (((int)&banana_medal_acquisition & 0xFFFFFF) >> 2); // Medal Give
 				*(int*)(0x806F9394) = 0;
+				*(int*)(0x806F7F28) = 0x0C000000 | (((int)&keyGrabHook & 0xFFFFFF) >> 2); // Key Get Hook - Pre Flag
+				*(int*)(0x806F5564) = 0x0C000000 | (((int)&itemGrabHook & 0xFFFFFF) >> 2); // Item Get Hook - Post Flag
 				// BP Table
 				int bp_size = 0x28;
 				unsigned char* bp_write = dk_malloc(bp_size);
@@ -709,8 +711,6 @@ void initHack(int source) {
 				- Fix edge cases with check/set flag in instance scripts (eg. coin door)
 				- Bosses/Crowns don't warp you out upon collecting item that doesn't make you dance
 				- Key SFX is eternal
-				- No indication of what key you got
-					- Game shows key text for keys you obtain upon new file
 				- Implement Killi's optimized algorithm
 			*/
 

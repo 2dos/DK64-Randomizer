@@ -207,6 +207,7 @@
 
 .definelabel assessFlagMapping, 0x807314F4
 .definelabel coinCBCollectHandle, 0x806F54E0
+.definelabel getCollectableOffset, 0x806F544C
 
 .definelabel unkSpriteRenderFunc, 0x807149FC
 .definelabel unkSpriteRenderFunc_0, 0x8071495C
