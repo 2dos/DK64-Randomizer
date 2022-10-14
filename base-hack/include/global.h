@@ -103,6 +103,8 @@ extern void getMoveHint(actorData* actor, int text_file, int text_index);
 extern void cutsceneDKCode(void);
 extern void getNextMovePurchase(shop_paad* paad, KongBase* movedata);
 
+extern void fastWarp_playMusic(void* actor);
+
 extern void guardCatch(void);
 extern void catchWarpHandle(void);
 extern void handleFootProgress(actorData* actor);

@@ -28,7 +28,7 @@ void updateSkippableCutscenes(void) {
 }
 
 void renderScreenTransitionCheck(int applied_transition) {
-    if (CurrentMap < 216) {
+    if ((CurrentMap < 216) && ((CutsceneStateBitfield & 4) == 0)) {
         int offset = 1;
         int shift = CutsceneIndex - 32;
         if (CutsceneIndex < 32) {
