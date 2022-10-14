@@ -708,7 +708,6 @@ void initHack(int source) {
 			*(int*)(0x806C63BC) = 0x0C000000 | (((int)&spawnRewardAtActor & 0xFFFFFF) >> 2); // Spawn Squawks Reward
 			/*
 				TODO:
-				- Fix edge cases with check/set flag in instance scripts (eg. coin door)
 				- Key SFX is eternal
 				- Change bonus aesthetic based on reward
 				- Implement Killi's optimized algorithm
