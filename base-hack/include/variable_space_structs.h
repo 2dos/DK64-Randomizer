@@ -114,4 +114,5 @@ typedef struct varspace {
 	/* 0x17E */ char dk_face_puzzle_init[9];
 	/* 0x187 */ char chunky_face_puzzle_init[9];
 	/* 0x190 */ char helm_order[5]; // Each item is a place in the order. -1 for an empty slot. For each item, 0 = DK, 1 = Chunky, 2 = Tiny, 3 = Lanky, 4 = Diddy. DK has to either be first or not present.
+	/* 0x195 */ char disable_rotating_crown; // 0 = Checks flag, 1 = Disabled
 } varspace;

@@ -34,6 +34,7 @@
 .definelabel unkSizeFunction, 0x806CFF9C
 .definelabel spawnRocketbarrel, 0x806C7BAC
 .definelabel playSong, 0x80602A94
+.definelabel playLevelMusic, 0x80602498
 .definelabel playCutscene, 0x8061CC40
 .definelabel setHUDItemAsInfinite, 0x806FB370
 .definelabel resetCoconutHUD, 0x806C4E8C

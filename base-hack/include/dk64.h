@@ -42,6 +42,7 @@ extern void unkSizeFunction(void* object);
 extern void spawnRocketbarrel(void* object, int unk);
 extern void* getObjectArrayAddr(void* init_address, int common_object_size, int index);
 extern void playSong(int songIndex, int volume);
+extern void playLevelMusic(void);
 extern void loadExtraHooks();
 extern void playCutscene(void* actor, int cutscene_index, int cutscene_type);
 extern void setHUDItemAsInfinite(int item_index, int player_index, char isInfinite);

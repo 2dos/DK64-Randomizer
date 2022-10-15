@@ -396,6 +396,7 @@ void initHack(int source) {
 				// Replace vanilla warp animation (0x52) with monkeyport animation (0x53)
 				*(short*)(0x806EE692) = 0x54;
 				*(int*)(0x806DC2AC) = 0x0C000000 | (((int)&fastWarp & 0xFFFFFF) >> 2); // Modify Function Call
+				*(int*)(0x806DC318) = 0x0C000000 | (((int)&fastWarp_playMusic & 0xFFFFFF) >> 2); // Modify Function Call
 			}
 			if (Rando.version == 0) {
 				// Disable Graphical Debugger

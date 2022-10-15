@@ -27,6 +27,7 @@
 #define CRYPT_DDC 0x70
 #define CASTLE_DUNGEON 0xA3
 #define CASTLE_TREE 0xA4
+#define CAVES_ROTATING 0x59
 
 #define FUNGI_MINECART_GRATE 0x22
 #define SEASICK_SHIP 0x27
@@ -144,6 +145,7 @@
 
 #define CHEST_PEARL_0 0x0
 #define MILLREAR_CHUNKYCHECK_RATE 0xF
+#define ROTATING_ROOM_OBJ 0x0
 
 #define FACTORY_LARGEMETALSECTION 0x0
 #define FACTORY_PIANO 0x14
@@ -1239,6 +1241,14 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 					} else if (index == 1) {
 						return !checkFlag(kong_flags[(int)Rando.starting_kong],0);
 					}
+				}
+				break;
+			case CAVES_ROTATING:
+				if (param2 == ROTATING_ROOM_OBJ) {
+					if (!Rando.disable_rotating_crown) {
+						return checkFlag(FLAG_CROWN_CAVES,0);
+					}
+					return 1;
 				}
 				break;
 			case GALLEON_FISH:
