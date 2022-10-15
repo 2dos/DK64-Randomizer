@@ -905,6 +905,8 @@ def GeneratePlaythrough(spoiler):
     WothLocations = PareWoth(spoiler.settings, PlaythroughLocations)
     # Write data to spoiler and return
     spoiler.UpdateLocations(LocationList)
+    if spoiler.settings.shuffle_items != "none":
+        ShuffleItems(spoiler)
     spoiler.UpdatePlaythrough(LocationList, PlaythroughLocations)
     spoiler.UpdateWoth(LocationList, WothLocations)
 
@@ -1851,8 +1853,6 @@ def ShuffleMisc(spoiler):
         ShuffleShopLocations(spoiler)
     # Item Rando
     spoiler.human_item_assignment = {}
-    if spoiler.settings.item_rando:
-        ShuffleItems(spoiler)
     if spoiler.settings.activate_all_bananaports in ["all", "isles"]:
         # In simpler bananaport shuffling, we can rely on the map id and warp number to find pairs
         if spoiler.settings.bananaport_rando in ("in_level", "off"):

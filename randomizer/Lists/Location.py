@@ -10,6 +10,7 @@ from randomizer.Enums.Types import Types
 from randomizer.Lists.MapsAndExits import Maps, getLevelFromMap
 from randomizer.Enums.VendorType import VendorType
 
+
 class MapIDCombo:
     """A combination of a map and an associated item ID. If id == -1 and map == 0, has no model 2 item, ignore those."""
 

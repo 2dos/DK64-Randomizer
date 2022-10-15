@@ -36,7 +36,7 @@ actor_indexes = {
 
 def place_randomized_items(spoiler: Spoiler):
     """Place randomized items into ROM."""
-    if spoiler.settings.item_rando:
+    if spoiler.settings.shuffle_items != "none":
         sav = spoiler.settings.rom_data
         ROM().seek(sav + 0x034)
         ROM().write(1)  # Item Rando Enabled
