@@ -1811,7 +1811,7 @@ CrownLocations = {
             z=193,
             scale=0.35,
             region=Regions.RotatingCabin,
-            logic=lambda l: l.Slam,
+            logic=lambda l: l.Slam and l.isdonkey,
             is_vanilla=True,
             is_rotating_room=True,
         ),
