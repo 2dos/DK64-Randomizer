@@ -84,7 +84,6 @@ LogicRegions = {
         Collectible(Collectibles.bunch, Kongs.tiny, lambda l: True, None, 1),  # By beehive
         Collectible(Collectibles.bunch, Kongs.chunky, lambda l: l.hunkyChunky, None, 4),
 
-        Collectible(Collectibles.coin, Kongs.tiny, lambda l: Events.JapesSpawnW5 in l.Events, None, 5),  # Around other W5, but need access from this region
         Collectible(Collectibles.coin, Kongs.chunky, lambda l: True, None, 3),  # Behind stump
     ],
     Regions.JapesBeyondPeanutGate: [
@@ -109,6 +108,7 @@ LogicRegions = {
     ],
     Regions.JapesTopOfMountain: [
         Collectible(Collectibles.balloon, Kongs.diddy, lambda l: l.peanut, None, 1),  # Above mountain
+        Collectible(Collectibles.coin, Kongs.tiny, lambda l: True, None, 5),  # Around W5
     ],
     Regions.JapesLankyCave: [
         Collectible(Collectibles.bunch, Kongs.lanky, lambda l: True, None, 2),  # On steps

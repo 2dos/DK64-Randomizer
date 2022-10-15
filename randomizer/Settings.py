@@ -173,6 +173,13 @@ class Settings:
         # phase1
         self.shuffle_items = "none"
 
+        # In item rando, can any Kong collect any item?
+        # free_trade_setting: str
+        # none
+        # not_blueprints - this excludes blueprints and lesser collectibles like cbs and coins
+        # major_collectibles - includes blueprints, does not include lesser collectibles like cbs and coins
+        self.free_trade_setting = "none"
+
     def set_seed(self):
         """Forcibly re-set the random seed to the seed set in the config."""
         random.seed(self.seed)
@@ -559,6 +566,9 @@ class Settings:
                     ItemList[item_index].playthrough = True
         if self.win_condition == "all_medals":
             ItemList[Items.BananaMedal].playthrough = True
+
+        self.free_trade_items = self.free_trade_setting != "none"
+        self.free_trade_blueprints = self.free_trade_setting == "major_collectibles"
 
     def update_valid_locations(self):
         """Calculate (or recalculate) valid locations for items by type."""

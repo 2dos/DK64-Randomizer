@@ -28,6 +28,7 @@ class Events(IntEnum):
     JapesChunkySwitch = auto()
     JapesDiddySwitch2 = auto()
     JapesSpawnW5 = auto()
+    JapesMountainTopGB = auto()
 
     # Angry Aztec events
     FedTotem = auto()

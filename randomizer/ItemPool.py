@@ -376,7 +376,7 @@ def ExcessItems(settings):
         itemPool.extend(itertools.repeat(Items.ProgressiveInstrumentUpgrade, 3))
 
     # Collectables
-    itemPool.extend(itertools.repeat(Items.GoldenBanana, 101))
+    itemPool.extend(itertools.repeat(Items.GoldenBanana, 61))  # Blueprint GBs are already placed
     itemPool.extend(itertools.repeat(Items.BananaMedal, 25))
     itemPool.extend(itertools.repeat(Items.BattleCrown, 6))
     if settings.crown_door_open:

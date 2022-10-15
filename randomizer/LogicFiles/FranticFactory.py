@@ -31,7 +31,7 @@ LogicRegions = {
     ]),
 
     Regions.Testing: Region("Testing", Levels.FranticFactory, True, None, [
-        LocationLogic(Locations.FactoryDonkeyNumberGame, lambda l: l.Slam and l.donkey),
+        LocationLogic(Locations.FactoryDonkeyNumberGame, lambda l: l.Slam and l.isdonkey),
         LocationLogic(Locations.FactoryDiddyBlockTower, lambda l: l.spring and l.isdiddy, MinigameType.BonusBarrel),
         LocationLogic(Locations.FactoryLankyTestingRoomBarrel, lambda l: l.balloon and l.islanky, MinigameType.BonusBarrel),
         LocationLogic(Locations.FactoryTinyDartboard, lambda l: Events.DartsPlayed in l.Events and l.tiny),
@@ -39,7 +39,7 @@ LogicRegions = {
         LocationLogic(Locations.FactoryBananaFairybyCounting, lambda l: l.camera),
         LocationLogic(Locations.FactoryBananaFairybyFunky, lambda l: l.camera and Events.DartsPlayed in l.Events),
     ], [
-        Event(Events.DartsPlayed, lambda l: l.Slam and l.mini and l.feather and l.tiny),
+        Event(Events.DartsPlayed, lambda l: l.Slam and l.mini and l.feather and l.istiny),
     ], [
         TransitionFront(Regions.FranticFactoryStart, lambda l: Events.TestingGateOpened in l.Events),
         TransitionFront(Regions.RandD, lambda l: True),
@@ -49,9 +49,9 @@ LogicRegions = {
     ]),
 
     Regions.RandD: Region("R&D", Levels.FranticFactory, True, -1, [
-        LocationLogic(Locations.FactoryDiddyRandD, lambda l: l.guitar and l.charge and l.diddy),
-        LocationLogic(Locations.FactoryLankyRandD, lambda l: l.trombone and l.Slam and l.lanky),
-        LocationLogic(Locations.FactoryChunkyRandD, lambda l: l.triangle and l.punch and l.hunkyChunky and l.chunky),
+        LocationLogic(Locations.FactoryDiddyRandD, lambda l: l.guitar and l.charge and l.isdiddy),
+        LocationLogic(Locations.FactoryLankyRandD, lambda l: l.trombone and l.Slam and l.islanky),
+        LocationLogic(Locations.FactoryChunkyRandD, lambda l: l.triangle and l.punch and l.hunkyChunky and l.ischunky),
         LocationLogic(Locations.FactoryKasplatRandD, lambda l: not l.settings.kasplat_location_rando),
         LocationLogic(Locations.FactoryBattleArena, lambda l: l.grab and l.donkey),
     ], [], [
@@ -61,15 +61,13 @@ LogicRegions = {
         TransitionFront(Regions.FactoryBossLobby, lambda l: not l.settings.tns_location_rando),
     ]),
 
-    Regions.FactoryTinyRaceLobby: Region("Factory Tiny Race Lobby", Levels.FranticFactory, False, None, [
-        LocationLogic(Locations.FactoryTinyCarRace, lambda l: l.istiny),
-    ], [], [
+    Regions.FactoryTinyRaceLobby: Region("Factory Tiny Race Lobby", Levels.FranticFactory, False, None, [], [], [
         TransitionFront(Regions.RandD, lambda l: l.mini and l.istiny),
         TransitionFront(Regions.FactoryTinyRace, lambda l: l.mini and l.istiny, Transitions.FactoryRandDToRace)
     ]),
 
     Regions.FactoryTinyRace: Region("Factory Tiny Race", Levels.FranticFactory, False, None, [
-        LocationLogic(Locations.FactoryTinyCarRace, lambda l: l.istiny),
+        LocationLogic(Locations.FactoryTinyCarRace, lambda l: l.istiny or l.settings.free_trade_items),
     ], [], [
         TransitionFront(Regions.FactoryTinyRaceLobby, lambda l: True, Transitions.FactoryRaceToRandD),
     ], Transitions.FactoryRandDToRace
@@ -83,7 +81,7 @@ LogicRegions = {
     ]),
 
     Regions.PowerHut: Region("Power Hut", Levels.FranticFactory, False, None, [
-        LocationLogic(Locations.FactoryDonkeyPowerHut, lambda l: Events.MainCoreActivated in l.Events and l.isdonkey),
+        LocationLogic(Locations.FactoryDonkeyPowerHut, lambda l: Events.MainCoreActivated in l.Events and (l.isdonkey or l.settings.free_trade_items)),
     ], [
         Event(Events.MainCoreActivated, lambda l: l.settings.high_req or (l.coconut and l.grab and l.isdonkey)),
     ], [
@@ -92,12 +90,12 @@ LogicRegions = {
 
     Regions.BeyondHatch: Region("Beyond Hatch", Levels.FranticFactory, True, None, [
         LocationLogic(Locations.ChunkyKong, lambda l: l.CanFreeChunky()),
-        LocationLogic(Locations.NintendoCoin, lambda l: Events.ArcadeLeverSpawned in l.Events and l.grab and l.donkey),
-        LocationLogic(Locations.FactoryDonkeyDKArcade, lambda l: Events.ArcadeLeverSpawned in l.Events and l.grab and l.donkey),
+        LocationLogic(Locations.NintendoCoin, lambda l: Events.ArcadeLeverSpawned in l.Events and l.grab and l.isdonkey),
+        LocationLogic(Locations.FactoryDonkeyDKArcade, lambda l: Events.ArcadeLeverSpawned in l.Events and l.grab and l.isdonkey),
         LocationLogic(Locations.FactoryLankyFreeChunky, lambda l: l.Slam and l.HasKong(l.settings.chunky_freeing_kong)),
         LocationLogic(Locations.FactoryTinybyArcade, lambda l: l.mini and l.tiny),
-        LocationLogic(Locations.FactoryChunkyDarkRoom, lambda l: l.punch and l.Slam and l.chunky),
-        LocationLogic(Locations.FactoryChunkybyArcade, lambda l: l.punch and l.ischunky, MinigameType.BonusBarrel),
+        LocationLogic(Locations.FactoryChunkyDarkRoom, lambda l: l.punch and l.Slam and l.ischunky),
+        LocationLogic(Locations.FactoryChunkybyArcade, lambda l: l.punch and l.chunky, MinigameType.BonusBarrel),
         LocationLogic(Locations.FactoryKasplatProductionBottom, lambda l: not l.settings.kasplat_location_rando),
         LocationLogic(Locations.FactoryKasplatStorage, lambda l: not l.settings.kasplat_location_rando),
     ], [

@@ -164,9 +164,9 @@ def GetAccessibleLocations(settings, ownedItems, searchType=SearchMode.GetReacha
                             minigame = BarrelMetaData[location.id].minigame
                             if not MinigameRequirements[minigame].logic(LogicVariables):
                                 continue
-                        # If this location is a blueprint, then make sure this is the correct kong
-                        elif LocationList[location.id].type == Types.Blueprint:
-                            if not LogicVariables.KasplatAccess(location.id):
+                        # If this location has a blueprint, then make sure this is the correct kong
+                        elif LocationList[location.id].item is not None and ItemList[LocationList[location.id].item].type == Types.Blueprint:
+                            if not LogicVariables.BlueprintAccess(ItemList[LocationList[location.id].item]):
                                 continue
                         # Every shop item has a price
                         elif LocationList[location.id].type == Types.Shop:
@@ -468,8 +468,9 @@ def ForwardFill(settings, itemsToPlace, ownedItems=None, inOrder=False):
     # While there are items to place
     while len(itemsToPlace) > 0:
         # Get a random item
-        item = itemsToPlace.pop()
+        item = itemsToPlace.pop(0)
         # Find a random empty location which is reachable with current items
+        Reset()
         reachable = GetAccessibleLocations(settings, ownedItems.copy())
         validLocations = settings.GetValidLocationsForItem(item)
         reachable = [x for x in reachable if LocationList[x].item is None and x in validLocations]
@@ -808,8 +809,9 @@ def Fill(spoiler):
                 raise Ex.GameNotBeatableException("Game unbeatable after placing all items.")
             return
         except Ex.FillException as ex:
-            if retries == 4:
-                js.postMessage("Fill failed, out of retries.")
+            # Defer the retries to the outer try-catch loop so-as to properly reset
+            if retries == 0:
+                # js.postMessage("Fill failed, out of retries.")
                 raise ex
             retries += 1
             js.postMessage("Retrying fill. Tries: " + str(retries))
@@ -1349,7 +1351,7 @@ def FillKongsAndMovesForLevelOrder(spoiler):
             spoiler.settings.kongs_for_progression = False
             # Check if game is beatable
             if not VerifyWorldWithWorstCoinUsage(spoiler.settings):
-                raise Ex.GameNotBeatableException("Game unbeatable after placing all items.")
+                raise Ex.GameNotBeatableException("Game potentially unbeatable after placing all items.")
             return
         except Ex.FillException as ex:
             Reset()
