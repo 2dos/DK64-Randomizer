@@ -1,6 +1,8 @@
 """Crown Location List."""
 from randomizer.Lists.MapsAndExits import Maps
 from randomizer.Enums.Levels import Levels
+from randomizer.Enums.Regions import Regions
+from randomizer.Enums.Events import Events
 
 
 class CrownLocation:
@@ -32,7 +34,7 @@ CrownLocations = {
             y=520,
             z=2086.71,
             scale=0.45,
-            region=0,
+            region=Regions.JungleJapesMain,
             is_vanilla=True,
         ),
         CrownLocation(
@@ -42,7 +44,7 @@ CrownLocations = {
             y=478,
             z=266,
             scale=0.25,
-            region=0,
+            region=Regions.JungleJapesMain,
         ),
         CrownLocation(
             map=Maps.JungleJapes,
@@ -51,7 +53,7 @@ CrownLocations = {
             y=280,
             z=392,
             scale=0.35,
-            region=0,
+            region=Regions.JapesBeyondPeanutGate,
         ),
         CrownLocation(
             map=Maps.JungleJapes,
@@ -60,7 +62,8 @@ CrownLocations = {
             y=370,
             z=1804,
             scale=0.35,
-            region=0,
+            region=Regions.JungleJapesMain,
+            logic=lambda l: l.handstand and l.lanky,
         ),
         CrownLocation(
             map=Maps.JungleJapes,
@@ -69,7 +72,7 @@ CrownLocations = {
             y=551,
             z=3156,
             scale=0.6,
-            region=0,
+            region=Regions.JapesBeyondFeatherGate,
         ),
         CrownLocation(
             map=Maps.JungleJapes,
@@ -78,7 +81,7 @@ CrownLocations = {
             y=539,
             z=3289,
             scale=0.45,
-            region=0,
+            region=Regions.JapesBeyondFeatherGate,
         ),
         CrownLocation(
             map=Maps.JungleJapes,
@@ -87,7 +90,7 @@ CrownLocations = {
             y=539,
             z=2834,
             scale=0.45,
-            region=0,
+            region=Regions.JapesBeyondFeatherGate,
         ),
         CrownLocation(
             map=Maps.JungleJapes,
@@ -96,7 +99,7 @@ CrownLocations = {
             y=230,
             z=2613,
             scale=0.45,
-            region=0,
+            region=Regions.JapesBeyondCoconutGate2,
         ),
         CrownLocation(
             map=Maps.JungleJapes,
@@ -105,7 +108,8 @@ CrownLocations = {
             y=339,
             z=3205,
             scale=0.4,
-            region=0,
+            region=Regions.JapesBeyondCoconutGate2,
+            logic=lambda l: l.handstand and l.lanky,
         ),
         CrownLocation(
             map=Maps.JungleJapes,
@@ -114,7 +118,7 @@ CrownLocations = {
             y=240,
             z=3123,
             scale=0.4,
-            region=0,
+            region=Regions.BeyondRambiGate,
         ),
         CrownLocation(
             map=Maps.JungleJapes,
@@ -123,7 +127,7 @@ CrownLocations = {
             y=280,
             z=4350,
             scale=0.35,
-            region=0,
+            region=Regions.JapesBeyondCoconutGate2,
         ),
         CrownLocation(
             map=Maps.JungleJapes,
@@ -132,7 +136,7 @@ CrownLocations = {
             y=280,
             z=4327,
             scale=0.35,
-            region=0,
+            region=Regions.JapesBeyondCoconutGate2,
         ),
         # CrownLocation(map=Maps.JungleJapes, name="Jungle Japes: On Cranky's Lab", x=1696, y=360, z=4002, scale=0.25, region=0,), # Doesn't work with shop rando
         CrownLocation(
@@ -142,7 +146,7 @@ CrownLocations = {
             y=280,
             z=4233,
             scale=0.45,
-            region=0,
+            region=Regions.JapesBeyondCoconutGate2,
         ),
         CrownLocation(
             map=Maps.JungleJapes,
@@ -151,7 +155,7 @@ CrownLocations = {
             y=288,
             z=1967,
             scale=0.3,
-            region=0,
+            region=Regions.JungleJapesMain,
         ),
         CrownLocation(
             map=Maps.JungleJapes,
@@ -160,7 +164,7 @@ CrownLocations = {
             y=680,
             z=2522,
             scale=0.35,
-            region=0,
+            region=Regions.JungleJapesMain,
         ),
         CrownLocation(
             map=Maps.JungleJapes,
@@ -169,7 +173,7 @@ CrownLocations = {
             y=989,
             z=2439,
             scale=0.5,
-            region=0,
+            region=Regions.JapesTopOfMountain,
         ),
         CrownLocation(
             map=Maps.JungleJapes,
@@ -178,7 +182,7 @@ CrownLocations = {
             y=852,
             z=2384,
             scale=0.35,
-            region=0,
+            region=Regions.JungleJapesMain,
         ),
         CrownLocation(
             map=Maps.JungleJapes,
@@ -187,7 +191,7 @@ CrownLocations = {
             y=520,
             z=2262,
             scale=0.35,
-            region=0,
+            region=Regions.JungleJapesMain,
         ),
         CrownLocation(
             map=Maps.JungleJapes,
@@ -196,7 +200,7 @@ CrownLocations = {
             y=538,
             z=2332,
             scale=0.35,
-            region=0,
+            region=Regions.JungleJapesMain,
         ),
         CrownLocation(
             map=Maps.JungleJapes,
@@ -205,7 +209,7 @@ CrownLocations = {
             y=280,
             z=1143,
             scale=0.4,
-            region=0,
+            region=Regions.JungleJapesMain,
         ),
         CrownLocation(
             map=Maps.JungleJapes,
@@ -214,7 +218,7 @@ CrownLocations = {
             y=280,
             z=1685,
             scale=0.45,
-            region=0,
+            region=Regions.JungleJapesMain,
         ),
         CrownLocation(
             map=Maps.JungleJapes,
@@ -223,7 +227,7 @@ CrownLocations = {
             y=286,
             z=825,
             scale=0.35,
-            region=0,
+            region=Regions.JungleJapesMain,
         ),
         CrownLocation(
             map=Maps.JapesUnderGround,
@@ -232,7 +236,7 @@ CrownLocations = {
             y=20,
             z=104,
             scale=0.25,
-            region=0,
+            region=Regions.JapesCatacomb,
         ),
         CrownLocation(
             map=Maps.JapesUnderGround,
@@ -241,7 +245,7 @@ CrownLocations = {
             y=20,
             z=814,
             scale=0.35,
-            region=0,
+            region=Regions.JapesCatacomb,
         ),
         CrownLocation(
             map=Maps.JapesLankyCave,
@@ -250,7 +254,7 @@ CrownLocations = {
             y=80,
             z=346,
             scale=0.3,
-            region=0,
+            region=Regions.JapesLankyCave,
         ),
         CrownLocation(
             map=Maps.JapesMountain,
@@ -259,7 +263,7 @@ CrownLocations = {
             y=40,
             z=471,
             scale=0.3,
-            region=0,
+            region=Regions.Mine,
         ),
         CrownLocation(
             map=Maps.JapesMountain,
@@ -268,7 +272,7 @@ CrownLocations = {
             y=140,
             z=512,
             scale=0.35,
-            region=0,
+            region=Regions.Mine,
         ),
         CrownLocation(
             map=Maps.JapesMountain,
@@ -277,7 +281,7 @@ CrownLocations = {
             y=135,
             z=757,
             scale=0.4,
-            region=0,
+            region=Regions.Mine,
         ),
         CrownLocation(
             map=Maps.JapesMountain,
@@ -286,7 +290,8 @@ CrownLocations = {
             y=133,
             z=1510,
             scale=0.2,
-            region=0,
+            region=Regions.Mine,
+            logic=lambda l: l.charge and l.diddy,
         ),
         CrownLocation(
             map=Maps.JapesMountain,
@@ -295,7 +300,8 @@ CrownLocations = {
             y=220,
             z=1056,
             scale=0.3,
-            region=0,
+            region=Regions.Mine,
+            logic=lambda l: l.Slam and l.diddy,
         ),
         CrownLocation(
             map=Maps.JapesTinyHive,
@@ -304,7 +310,7 @@ CrownLocations = {
             y=212,
             z=1381,
             scale=0.7,
-            region=0,
+            region=Regions.TinyHive,
         ),
         CrownLocation(
             map=Maps.JapesTinyHive,
@@ -313,7 +319,7 @@ CrownLocations = {
             y=130,
             z=1279,
             scale=0.6,
-            region=0,
+            region=Regions.TinyHive,
         ),
         CrownLocation(
             map=Maps.JapesTinyHive,
@@ -322,7 +328,8 @@ CrownLocations = {
             y=254,
             z=1354,
             scale=0.6,
-            region=0,
+            region=Regions.TinyHive,
+            logic=lambda l: l.Slam and l.tiny,
         ),
     ],
     Levels.AngryAztec: [
@@ -333,8 +340,9 @@ CrownLocations = {
             y=305.33,
             z=2340.39,
             scale=0.41,
-            region=0,
+            region=Regions.TempleUnderwater,
             is_vanilla=True,
+            logic=lambda l: l.Slam and l.grape and l.islanky,
         ),
         CrownLocation(
             map=Maps.AztecTinyTemple,
@@ -343,7 +351,7 @@ CrownLocations = {
             y=283,
             z=611,
             scale=0.5,
-            region=0,
+            region=Regions.TempleStart,
         ),
         CrownLocation(
             map=Maps.AztecTinyTemple,
@@ -352,7 +360,8 @@ CrownLocations = {
             y=490,
             z=1126,
             scale=0.3,
-            region=0,
+            region=Regions.TempleStart,
+            logic=lambda l: l.Slam and l.diddy,
         ),
         CrownLocation(
             map=Maps.AztecTinyTemple,
@@ -361,7 +370,7 @@ CrownLocations = {
             y=344,
             z=1468,
             scale=0.5,
-            region=0,
+            region=Regions.TempleUnderwater,
         ),
         CrownLocation(
             map=Maps.AngryAztec,
@@ -370,7 +379,8 @@ CrownLocations = {
             y=120,
             z=740,
             scale=0.25,
-            region=0,
+            region=Regions.AngryAztecOasis,
+            logic=lambda l: l.coconut and ((l.strongKong and l.isdonkey) or l.settings.damage_amount == "default"),
         ),
         CrownLocation(
             map=Maps.AngryAztec,
@@ -379,7 +389,7 @@ CrownLocations = {
             y=120,
             z=983,
             scale=0.35,
-            region=0,
+            region=Regions.AngryAztecOasis,
         ),
         CrownLocation(
             map=Maps.AngryAztec,
@@ -388,7 +398,7 @@ CrownLocations = {
             y=153,
             z=507,
             scale=0.3,
-            region=0,
+            region=Regions.AngryAztecOasis,
         ),
         CrownLocation(
             map=Maps.AngryAztec,
@@ -397,7 +407,8 @@ CrownLocations = {
             y=352,
             z=500,
             scale=0.3,
-            region=0,
+            region=Regions.AngryAztecOasis,
+            logic=lambda l: l.jetpack and l.diddy,
         ),
         CrownLocation(
             map=Maps.AngryAztec,
@@ -406,7 +417,7 @@ CrownLocations = {
             y=120,
             z=509,
             scale=0.35,
-            region=0,
+            region=Regions.CandyAztec,
         ),
         CrownLocation(
             map=Maps.AngryAztec,
@@ -415,7 +426,7 @@ CrownLocations = {
             y=120,
             z=1490,
             scale=0.35,
-            region=0,
+            region=Regions.AngryAztecMain,
         ),
         CrownLocation(
             map=Maps.AngryAztec,
@@ -424,7 +435,7 @@ CrownLocations = {
             y=120,
             z=2400,
             scale=0.4,
-            region=0,
+            region=Regions.AngryAztecMain,
         ),
         CrownLocation(
             map=Maps.AngryAztec,
@@ -433,7 +444,7 @@ CrownLocations = {
             y=160,
             z=3264,
             scale=0.35,
-            region=0,
+            region=Regions.AngryAztecMain,
         ),
         CrownLocation(
             map=Maps.AngryAztec,
@@ -442,7 +453,7 @@ CrownLocations = {
             y=160,
             z=3172,
             scale=0.35,
-            region=0,
+            region=Regions.AngryAztecMain,
         ),
         CrownLocation(
             map=Maps.AngryAztec,
@@ -451,7 +462,8 @@ CrownLocations = {
             y=437,
             z=2903,
             scale=0.4,
-            region=0,
+            region=Regions.AngryAztecMain,
+            logic=lambda l: l.jetpack and l.diddy,
         ),
         CrownLocation(
             map=Maps.AngryAztec,
@@ -460,7 +472,7 @@ CrownLocations = {
             y=120,
             z=4532,
             scale=0.35,
-            region=0,
+            region=Regions.AngryAztecMain,
         ),
         CrownLocation(
             map=Maps.AngryAztec,
@@ -469,7 +481,8 @@ CrownLocations = {
             y=420,
             z=3648,
             scale=0.3,
-            region=0,
+            region=Regions.AngryAztecMain,
+            logic=lambda l: l.jetpack and l.diddy,
         ),
         CrownLocation(
             map=Maps.AngryAztec,
@@ -478,7 +491,7 @@ CrownLocations = {
             y=120,
             z=4514,
             scale=0.35,
-            region=0,
+            region=Regions.AngryAztecMain,
         ),
         CrownLocation(
             map=Maps.AngryAztec,
@@ -487,7 +500,8 @@ CrownLocations = {
             y=226,
             z=4589,
             scale=0.18,
-            region=0,
+            region=Regions.AngryAztecMain,
+            logic=lambda l: l.vines,
         ),
         CrownLocation(
             map=Maps.AngryAztec,
@@ -496,7 +510,7 @@ CrownLocations = {
             y=120,
             z=4548,
             scale=0.4,
-            region=0,
+            region=Regions.AngryAztecMain,
         ),
         CrownLocation(
             map=Maps.AngryAztec,
@@ -505,7 +519,7 @@ CrownLocations = {
             y=80,
             z=2959,
             scale=0.4,
-            region=0,
+            region=Regions.AngryAztecMain,
         ),
         CrownLocation(
             map=Maps.AngryAztec,
@@ -514,7 +528,7 @@ CrownLocations = {
             y=120,
             z=4817,
             scale=0.35,
-            region=0,
+            region=Regions.AztecDonkeyQuicksandCave,
         ),
         CrownLocation(
             map=Maps.AztecDonkey5DTemple,
@@ -523,7 +537,8 @@ CrownLocations = {
             y=20,
             z=464,
             scale=0.4,
-            region=0,
+            region=Regions.DonkeyTemple,
+            logic=lambda l: l.coconut and l.diddy,
         ),
         CrownLocation(
             map=Maps.AztecDiddy5DTemple,
@@ -532,7 +547,8 @@ CrownLocations = {
             y=20,
             z=493,
             scale=0.4,
-            region=0,
+            region=Regions.DiddyTemple,
+            logic=lambda l: l.peanut and l.diddy,
         ),
         CrownLocation(
             map=Maps.AztecLanky5DTemple,
@@ -541,7 +557,8 @@ CrownLocations = {
             y=122,
             z=916,
             scale=0.3,
-            region=0,
+            region=Regions.LankyTemple,
+            logic=lambda l: l.grape and l.lanky,
         ),
         CrownLocation(
             map=Maps.AztecLanky5DTemple,
@@ -550,7 +567,8 @@ CrownLocations = {
             y=47,
             z=658,
             scale=0.45,
-            region=0,
+            region=Regions.LankyTemple,
+            logic=lambda l: l.grape and l.lanky,
         ),
         CrownLocation(
             map=Maps.AztecTiny5DTemple,
@@ -559,7 +577,8 @@ CrownLocations = {
             y=123,
             z=1420,
             scale=0.3,
-            region=0,
+            region=Regions.TinyTemple,
+            logic=lambda l: l.feather and l.tiny,
         ),
         CrownLocation(
             map=Maps.AztecChunky5DTemple,
@@ -568,7 +587,8 @@ CrownLocations = {
             y=20,
             z=321,
             scale=0.45,
-            region=0,
+            region=Regions.ChunkyTemple,
+            logic=lambda l: l.pineapple and l.chunky,
         ),
         CrownLocation(
             map=Maps.AztecChunky5DTemple,
@@ -577,7 +597,8 @@ CrownLocations = {
             y=47,
             z=678,
             scale=0.45,
-            region=0,
+            region=Regions.ChunkyTemple,
+            logic=lambda l: l.pineapple and l.chunky,
         ),
         CrownLocation(
             map=Maps.AztecLlamaTemple,
@@ -586,7 +607,7 @@ CrownLocations = {
             y=472,
             z=2548,
             scale=0.45,
-            region=0,
+            region=Regions.LlamaTemple,
         ),
         CrownLocation(
             map=Maps.AztecLlamaTemple,
@@ -595,7 +616,7 @@ CrownLocations = {
             y=472,
             z=2200,
             scale=0.45,
-            region=0,
+            region=Regions.LlamaTemple,
         ),
         CrownLocation(
             map=Maps.AztecLlamaTemple,
@@ -604,7 +625,8 @@ CrownLocations = {
             y=641,
             z=2186,
             scale=0.45,
-            region=0,
+            region=Regions.LlamaTemple,
+            logic=lambda l: l.grape and l.lanky,
         ),
         CrownLocation(
             map=Maps.AztecLlamaTemple,
@@ -613,7 +635,7 @@ CrownLocations = {
             y=433,
             z=1704,
             scale=0.3,
-            region=0,
+            region=Regions.LlamaTemple,
         ),
         CrownLocation(
             map=Maps.AztecLlamaTemple,
@@ -622,7 +644,7 @@ CrownLocations = {
             y=420,
             z=3572,
             scale=0.35,
-            region=0,
+            region=Regions.LlamaTempleBack,
         ),
     ],
     Levels.FranticFactory: [
@@ -633,7 +655,8 @@ CrownLocations = {
             y=1313,
             z=1165.81,
             scale=0.51,
-            region=0,
+            region=Regions.RandD,
+            logic=lambda l: l.grab and l.donkey,
             is_vanilla=True,
         ),
         CrownLocation(
@@ -643,7 +666,7 @@ CrownLocations = {
             y=830,
             z=2504,
             scale=0.6,
-            region=0,
+            region=Regions.FranticFactoryStart,
         ),
         CrownLocation(
             map=Maps.FranticFactory,
@@ -652,7 +675,7 @@ CrownLocations = {
             y=842,
             z=2106,
             scale=0.4,
-            region=0,
+            region=Regions.FranticFactoryStart,
         ),
         CrownLocation(
             map=Maps.FranticFactory,
@@ -661,7 +684,7 @@ CrownLocations = {
             y=804,
             z=1958,
             scale=0.35,
-            region=0,
+            region=Regions.FranticFactoryStart,
         ),
         CrownLocation(
             map=Maps.FranticFactory,
@@ -670,7 +693,7 @@ CrownLocations = {
             y=459,
             z=1778,
             scale=0.45,
-            region=0,
+            region=Regions.BeyondHatch,
         ),
         CrownLocation(
             map=Maps.FranticFactory,
@@ -679,7 +702,7 @@ CrownLocations = {
             y=167,
             z=1988,
             scale=0.4,
-            region=0,
+            region=Regions.BeyondHatch,
         ),
         CrownLocation(
             map=Maps.FranticFactory,
@@ -688,7 +711,7 @@ CrownLocations = {
             y=188,
             z=1331,
             scale=0.3,
-            region=0,
+            region=Regions.BeyondHatch,
         ),
         CrownLocation(
             map=Maps.FranticFactory,
@@ -697,7 +720,7 @@ CrownLocations = {
             y=677,
             z=970,
             scale=0.25,
-            region=0,
+            region=Regions.UpperCore,
         ),
         CrownLocation(
             map=Maps.FranticFactory,
@@ -706,7 +729,8 @@ CrownLocations = {
             y=858.5,
             z=1615,
             scale=0.2,
-            region=0,
+            region=Regions.UpperCore,
+            logic=lambda l: l.twirl and l.tiny,
         ),
         CrownLocation(
             map=Maps.FranticFactory,
@@ -715,7 +739,7 @@ CrownLocations = {
             y=322,
             z=1175,
             scale=0.25,
-            region=0,
+            region=Regions.UpperCore,
         ),
         CrownLocation(
             map=Maps.FranticFactory,
@@ -724,7 +748,7 @@ CrownLocations = {
             y=66.5,
             z=908,
             scale=0.2,
-            region=0,
+            region=Regions.BeyondHatch,
         ),
         CrownLocation(
             map=Maps.FranticFactory,
@@ -733,7 +757,7 @@ CrownLocations = {
             y=165,
             z=805,
             scale=0.4,
-            region=0,
+            region=Regions.BeyondHatch,
         ),
         CrownLocation(
             map=Maps.FranticFactory,
@@ -742,7 +766,8 @@ CrownLocations = {
             y=6,
             z=525,
             scale=0.45,
-            region=0,
+            region=Regions.BeyondHatch,
+            logic=lambda l: l.punch and l.chunky,
         ),
         CrownLocation(
             map=Maps.FranticFactory,
@@ -751,7 +776,7 @@ CrownLocations = {
             y=1143,
             z=1515,
             scale=0.25,
-            region=0,
+            region=Regions.BeyondHatch,
         ),
         CrownLocation(
             map=Maps.FranticFactory,
@@ -760,7 +785,7 @@ CrownLocations = {
             y=810,
             z=2240,
             scale=0.3,
-            region=0,
+            region=Regions.Testing,
         ),
         CrownLocation(
             map=Maps.FranticFactory,
@@ -769,7 +794,7 @@ CrownLocations = {
             y=837,
             z=2328,
             scale=0.3,
-            region=0,
+            region=Regions.Testing,
         ),
         CrownLocation(
             map=Maps.FranticFactory,
@@ -778,7 +803,7 @@ CrownLocations = {
             y=1002,
             z=1952,
             scale=0.3,
-            region=0,
+            region=Regions.Testing,
         ),
         CrownLocation(
             map=Maps.FranticFactory,
@@ -787,7 +812,7 @@ CrownLocations = {
             y=1027,
             z=1348,
             scale=0.45,
-            region=0,
+            region=Regions.Testing,
         ),
         CrownLocation(
             map=Maps.FranticFactory,
@@ -796,7 +821,7 @@ CrownLocations = {
             y=1026,
             z=1101,
             scale=0.5,
-            region=0,
+            region=Regions.Testing,
         ),
         CrownLocation(
             map=Maps.FranticFactory,
@@ -805,7 +830,7 @@ CrownLocations = {
             y=1113,
             z=760,
             scale=0.4,
-            region=0,
+            region=Regions.Testing,
         ),
         CrownLocation(
             map=Maps.FranticFactory,
@@ -814,7 +839,7 @@ CrownLocations = {
             y=1131,
             z=551,
             scale=0.3,
-            region=0,
+            region=Regions.Testing,
         ),
         CrownLocation(
             map=Maps.FranticFactory,
@@ -823,7 +848,8 @@ CrownLocations = {
             y=1264,
             z=641,
             scale=0.35,
-            region=0,
+            region=Regions.RandD,
+            logic=lambda l: l.trombone and l.lanky,
         ),
         CrownLocation(
             map=Maps.FranticFactory,
@@ -832,7 +858,8 @@ CrownLocations = {
             y=1336,
             z=735,
             scale=0.45,
-            region=0,
+            region=Regions.RandD,
+            logic=lambda l: l.guitar and l.diddy,
         ),
         CrownLocation(
             map=Maps.FranticFactory,
@@ -841,7 +868,8 @@ CrownLocations = {
             y=1336,
             z=1350,
             scale=0.4,
-            region=0,
+            region=Regions.RandD,
+            logic=lambda l: l.triangle and l.chunky and l.punch,
         ),
         CrownLocation(
             map=Maps.FranticFactory,
@@ -850,7 +878,8 @@ CrownLocations = {
             y=1264,
             z=1383,
             scale=0.3,
-            region=0,
+            region=Regions.RandD,
+            logic=lambda l: l.mini and l.istiny,
         ),
         CrownLocation(
             map=Maps.FranticFactory,
@@ -859,7 +888,8 @@ CrownLocations = {
             y=1313,
             z=776,
             scale=0.5,
-            region=0,
+            region=Regions.RandD,
+            logic=lambda l: l.grab and l.donkey,
         ),
         CrownLocation(
             map=Maps.FactoryCrusher,
@@ -868,7 +898,8 @@ CrownLocations = {
             y=0.5,
             z=468,
             scale=0.45,
-            region=0,
+            region=Regions.InsideCore,
+            logic=lambda l: l.strongKong and l.isdonkey,
         ),
         CrownLocation(
             map=Maps.FactoryPowerHut,
@@ -877,7 +908,7 @@ CrownLocations = {
             y=0,
             z=64,
             scale=0.3,
-            region=0,
+            region=Regions.PowerHut,
         ),
     ],
     Levels.GloomyGalleon: [
@@ -888,7 +919,8 @@ CrownLocations = {
             y=1670,
             z=2450.29,
             scale=0.53,
-            region=0,
+            region=Regions.GloomyGalleonStart,
+            logic=lambda l: l.punch and l.chunky,
             is_vanilla=True,
         ),
         CrownLocation(
@@ -898,7 +930,7 @@ CrownLocations = {
             y=1790,
             z=3501,
             scale=0.3,
-            region=0,
+            region=Regions.GloomyGalleonStart,
         ),
         CrownLocation(
             map=Maps.GloomyGalleon,
@@ -907,7 +939,7 @@ CrownLocations = {
             y=1790,
             z=3360,
             scale=0.45,
-            region=0,
+            region=Regions.GloomyGalleonStart,
         ),
         CrownLocation(
             map=Maps.GloomyGalleon,
@@ -916,7 +948,7 @@ CrownLocations = {
             y=1670,
             z=3832,
             scale=0.4,
-            region=0,
+            region=Regions.GloomyGalleonStart,
         ),
         CrownLocation(
             map=Maps.GloomyGalleon,
@@ -925,7 +957,7 @@ CrownLocations = {
             y=1670,
             z=3802,
             scale=0.55,
-            region=0,
+            region=Regions.GloomyGalleonStart,
         ),
         CrownLocation(
             map=Maps.GloomyGalleon,
@@ -934,7 +966,7 @@ CrownLocations = {
             y=1670,
             z=2527,
             scale=0.35,
-            region=0,
+            region=Regions.GloomyGalleonStart,
         ),
         CrownLocation(
             map=Maps.GloomyGalleon,
@@ -943,7 +975,7 @@ CrownLocations = {
             y=1790,
             z=2474,
             scale=0.4,
-            region=0,
+            region=Regions.GloomyGalleonStart,
         ),
         # CrownLocation(map=Maps.GloomyGalleon, name="Gloomy Galleon: On Cranky", x=3290, y=1870, z=2372, scale=0.2, region=0,),
         CrownLocation(
@@ -953,7 +985,8 @@ CrownLocations = {
             y=1890,
             z=2896,
             scale=0.25,
-            region=0,
+            region=Regions.GloomyGalleonStart,
+            logic=lambda l: l.vines,
         ),
         CrownLocation(
             map=Maps.GloomyGalleon,
@@ -962,7 +995,7 @@ CrownLocations = {
             y=1610,
             z=4150,
             scale=0.35,
-            region=0,
+            region=Regions.LighthousePlatform,
         ),
         CrownLocation(
             map=Maps.GloomyGalleon,
@@ -971,7 +1004,7 @@ CrownLocations = {
             y=1610,
             z=4175,
             scale=0.35,
-            region=0,
+            region=Regions.LighthousePlatform,
         ),
         CrownLocation(
             map=Maps.GloomyGalleon,
@@ -980,7 +1013,7 @@ CrownLocations = {
             y=1660,
             z=4071,
             scale=0.2,
-            region=0,
+            region=Regions.LighthousePlatform,
         ),
         CrownLocation(
             map=Maps.GloomyGalleon,
@@ -989,7 +1022,7 @@ CrownLocations = {
             y=1564,
             z=3940,
             scale=0.55,
-            region=0,
+            region=Regions.LighthouseSurface,
         ),
         CrownLocation(
             map=Maps.GloomyGalleon,
@@ -998,7 +1031,7 @@ CrownLocations = {
             y=1610,
             z=4823,
             scale=0.3,
-            region=0,
+            region=Regions.LighthouseSnideAlcove,
         ),
         CrownLocation(
             map=Maps.GloomyGalleon,
@@ -1007,7 +1040,7 @@ CrownLocations = {
             y=2040,
             z=487,
             scale=0.25,
-            region=0,
+            region=Regions.TreasureRoomDiddyGoldTower,
         ),
         CrownLocation(
             map=Maps.GalleonSickBay,
@@ -1016,7 +1049,7 @@ CrownLocations = {
             y=20,
             z=129,
             scale=0.35,
-            region=0,
+            region=Regions.SickBay,
         ),
         CrownLocation(
             map=Maps.GalleonSickBay,
@@ -1025,7 +1058,7 @@ CrownLocations = {
             y=20,
             z=129,
             scale=0.35,
-            region=0,
+            region=Regions.SickBay,
         ),
         CrownLocation(
             map=Maps.GalleonSickBay,
@@ -1034,7 +1067,7 @@ CrownLocations = {
             y=20,
             z=911,
             scale=0.4,
-            region=0,
+            region=Regions.SickBay,
         ),
         CrownLocation(
             map=Maps.GalleonSickBay,
@@ -1043,7 +1076,8 @@ CrownLocations = {
             y=20,
             z=851,
             scale=0.4,
-            region=0,
+            region=Regions.SickBay,
+            logic=lambda l: l.punch and l.ischunky,
         ),
         CrownLocation(
             map=Maps.GalleonLighthouse,
@@ -1052,7 +1086,7 @@ CrownLocations = {
             y=0,
             z=469,
             scale=0.5,
-            region=0,
+            region=Regions.Lighthouse,
         ),
         CrownLocation(
             map=Maps.GalleonLighthouse,
@@ -1061,7 +1095,7 @@ CrownLocations = {
             y=0,
             z=670,
             scale=0.5,
-            region=0,
+            region=Regions.Lighthouse,
         ),
     ],
     Levels.FungiForest: [
@@ -1072,7 +1106,7 @@ CrownLocations = {
             y=1079.33,
             z=1307.16,
             scale=0.49,
-            region=0,
+            region=Regions.MushroomUpperExterior,
             is_vanilla=True,
         ),
         CrownLocation(
@@ -1082,7 +1116,7 @@ CrownLocations = {
             y=110,
             z=3186,
             scale=0.6,
-            region=0,
+            region=Regions.FungiForestStart,
         ),
         CrownLocation(
             map=Maps.FungiForest,
@@ -1091,7 +1125,7 @@ CrownLocations = {
             y=603,
             z=2322,
             scale=0.35,
-            region=0,
+            region=Regions.FungiForestStart,
         ),
         CrownLocation(
             map=Maps.FungiForest,
@@ -1100,7 +1134,7 @@ CrownLocations = {
             y=603,
             z=2237,
             scale=0.4,
-            region=0,
+            region=Regions.FungiForestStart,
         ),
         CrownLocation(
             map=Maps.FungiForest,
@@ -1109,7 +1143,7 @@ CrownLocations = {
             y=167,
             z=2613,
             scale=0.35,
-            region=0,
+            region=Regions.FungiForestStart,
         ),
         CrownLocation(
             map=Maps.FungiForest,
@@ -1118,7 +1152,7 @@ CrownLocations = {
             y=268,
             z=3682,
             scale=0.35,
-            region=0,
+            region=Regions.Snide,
         ),
         CrownLocation(
             map=Maps.FungiForest,
@@ -1127,7 +1161,7 @@ CrownLocations = {
             y=272,
             z=4343,
             scale=0.4,
-            region=0,
+            region=Regions.MillArea,
         ),
         CrownLocation(
             map=Maps.FungiForest,
@@ -1136,7 +1170,7 @@ CrownLocations = {
             y=272,
             z=4652,
             scale=0.4,
-            region=0,
+            region=Regions.MillArea,
         ),
         CrownLocation(
             map=Maps.FungiForest,
@@ -1145,7 +1179,7 @@ CrownLocations = {
             y=139,
             z=4373,
             scale=0.4,
-            region=0,
+            region=Regions.MillArea,
         ),
         CrownLocation(
             map=Maps.FungiForest,
@@ -1154,7 +1188,7 @@ CrownLocations = {
             y=207,
             z=3556,
             scale=0.45,
-            region=0,
+            region=Regions.MillArea,
         ),
         CrownLocation(
             map=Maps.FungiForest,
@@ -1163,7 +1197,7 @@ CrownLocations = {
             y=162,
             z=3372,
             scale=0.45,
-            region=0,
+            region=Regions.MillArea,
         ),
         CrownLocation(
             map=Maps.FungiForest,
@@ -1172,7 +1206,7 @@ CrownLocations = {
             y=162,
             z=3853,
             scale=0.45,
-            region=0,
+            region=Regions.MillArea,
         ),
         CrownLocation(
             map=Maps.FungiForest,
@@ -1181,7 +1215,7 @@ CrownLocations = {
             y=206,
             z=2844,
             scale=0.4,
-            region=0,
+            region=Regions.ThornvineArea,
         ),
         CrownLocation(
             map=Maps.FungiForest,
@@ -1190,7 +1224,7 @@ CrownLocations = {
             y=116,
             z=1959,
             scale=0.5,
-            region=0,
+            region=Regions.ThornvineArea,
         ),
         CrownLocation(
             map=Maps.FungiForest,
@@ -1199,7 +1233,7 @@ CrownLocations = {
             y=115,
             z=1496,
             scale=0.4,
-            region=0,
+            region=Regions.ThornvineArea,
         ),
         CrownLocation(
             map=Maps.FungiForest,
@@ -1208,7 +1242,7 @@ CrownLocations = {
             y=115,
             z=1427,
             scale=0.35,
-            region=0,
+            region=Regions.ThornvineArea,
         ),
         CrownLocation(
             map=Maps.FungiForest,
@@ -1217,7 +1251,7 @@ CrownLocations = {
             y=115,
             z=2035,
             scale=0.5,
-            region=0,
+            region=Regions.ThornvineArea,
         ),
         CrownLocation(
             map=Maps.FungiForest,
@@ -1226,7 +1260,7 @@ CrownLocations = {
             y=115,
             z=1784,
             scale=0.4,
-            region=0,
+            region=Regions.ThornvineArea,
         ),
         # CrownLocation(map=Maps.FungiForest, name="Fungi Forest: Behind Beanstalk Night Gate", x=3621, y=186, z=936, scale=0.3, region=0,),
         CrownLocation(
@@ -1236,7 +1270,7 @@ CrownLocations = {
             y=174,
             z=189,
             scale=0.4,
-            region=0,
+            region=Regions.WormArea,
         ),
         CrownLocation(
             map=Maps.FungiForest,
@@ -1245,7 +1279,7 @@ CrownLocations = {
             y=200,
             z=982,
             scale=0.4,
-            region=0,
+            region=Regions.WormArea,
         ),
         CrownLocation(
             map=Maps.FungiForest,
@@ -1254,7 +1288,7 @@ CrownLocations = {
             y=231,
             z=829,
             scale=0.45,
-            region=0,
+            region=Regions.WormArea,
         ),
         CrownLocation(
             map=Maps.FungiForest,
@@ -1263,7 +1297,7 @@ CrownLocations = {
             y=227,
             z=369,
             scale=0.45,
-            region=0,
+            region=Regions.WormArea,
         ),
         CrownLocation(
             map=Maps.FungiForest,
@@ -1272,7 +1306,7 @@ CrownLocations = {
             y=234,
             z=867,
             scale=0.4,
-            region=0,
+            region=Regions.GiantMushroomArea,
         ),
         CrownLocation(
             map=Maps.FungiForest,
@@ -1281,7 +1315,7 @@ CrownLocations = {
             y=179,
             z=1307,
             scale=0.6,
-            region=0,
+            region=Regions.GiantMushroomArea,
         ),
         CrownLocation(
             map=Maps.FungiForest,
@@ -1290,7 +1324,7 @@ CrownLocations = {
             y=182,
             z=272,
             scale=0.45,
-            region=0,
+            region=Regions.GiantMushroomArea,
         ),
         CrownLocation(
             map=Maps.FungiForest,
@@ -1299,7 +1333,7 @@ CrownLocations = {
             y=389,
             z=731,
             scale=0.4,
-            region=0,
+            region=Regions.MushroomLowerExterior,
         ),
         CrownLocation(
             map=Maps.FungiForest,
@@ -1308,7 +1342,7 @@ CrownLocations = {
             y=589,
             z=1297,
             scale=0.4,
-            region=0,
+            region=Regions.MushroomLowerExterior,
         ),
         CrownLocation(
             map=Maps.FungiForest,
@@ -1317,7 +1351,7 @@ CrownLocations = {
             y=779,
             z=1320,
             scale=0.35,
-            region=0,
+            region=Regions.MushroomLowerExterior,
         ),
         CrownLocation(
             map=Maps.FungiForest,
@@ -1326,7 +1360,7 @@ CrownLocations = {
             y=1250,
             z=1315,
             scale=0.4,
-            region=0,
+            region=Regions.MushroomUpperExterior,
         ),
         CrownLocation(
             map=Maps.FungiForest,
@@ -1335,7 +1369,7 @@ CrownLocations = {
             y=142,
             z=3705,
             scale=0.5,
-            region=0,
+            region=Regions.HollowTreeArea,
         ),
         CrownLocation(
             map=Maps.FungiForest,
@@ -1344,7 +1378,7 @@ CrownLocations = {
             y=249,
             z=3750,
             scale=0.45,
-            region=0,
+            region=Regions.HollowTreeArea,
         ),
         CrownLocation(
             map=Maps.FungiForest,
@@ -1353,7 +1387,7 @@ CrownLocations = {
             y=189,
             z=3948,
             scale=0.45,
-            region=0,
+            region=Regions.HollowTreeArea,
         ),
         CrownLocation(
             map=Maps.FungiForest,
@@ -1362,7 +1396,7 @@ CrownLocations = {
             y=190,
             z=3707,
             scale=0.6,
-            region=0,
+            region=Regions.HollowTreeArea,
         ),
         CrownLocation(
             map=Maps.FungiForest,
@@ -1371,7 +1405,7 @@ CrownLocations = {
             y=376,
             z=3526,
             scale=0.4,
-            region=0,
+            region=Regions.MillArea,
         ),
         CrownLocation(
             map=Maps.ForestAnthill,
@@ -1380,7 +1414,7 @@ CrownLocations = {
             y=205,
             z=421,
             scale=0.35,
-            region=0,
+            region=Regions.Anthill,
         ),
         CrownLocation(
             map=Maps.ForestWinchRoom,
@@ -1389,7 +1423,7 @@ CrownLocations = {
             y=0,
             z=342,
             scale=0.4,
-            region=0,
+            region=Regions.WinchRoom,
         ),
         CrownLocation(
             map=Maps.ForestThornvineBarn,
@@ -1398,7 +1432,7 @@ CrownLocations = {
             y=4,
             z=143,
             scale=0.45,
-            region=0,
+            region=Regions.ThornvineBarn,
         ),
         CrownLocation(
             map=Maps.ForestThornvineBarn,
@@ -1407,7 +1441,7 @@ CrownLocations = {
             y=4,
             z=590,
             scale=0.4,
-            region=0,
+            region=Regions.ThornvineBarn,
         ),
         CrownLocation(
             map=Maps.ForestMillFront,
@@ -1416,7 +1450,7 @@ CrownLocations = {
             y=0,
             z=400,
             scale=0.3,
-            region=0,
+            region=Regions.MillChunkyArea,
         ),
         CrownLocation(
             map=Maps.ForestMillFront,
@@ -1425,7 +1459,7 @@ CrownLocations = {
             y=0,
             z=196,
             scale=0.5,
-            region=0,
+            region=Regions.MillChunkyArea,
         ),
         CrownLocation(
             map=Maps.ForestGiantMushroom,
@@ -1434,7 +1468,7 @@ CrownLocations = {
             y=409,
             z=200,
             scale=0.45,
-            region=0,
+            region=Regions.MushroomLower,
         ),
         CrownLocation(
             map=Maps.ForestGiantMushroom,
@@ -1443,7 +1477,7 @@ CrownLocations = {
             y=82,
             z=195,
             scale=0.4,
-            region=0,
+            region=Regions.MushroomLower,
         ),
         CrownLocation(
             map=Maps.ForestGiantMushroom,
@@ -1452,7 +1486,7 @@ CrownLocations = {
             y=0,
             z=680,
             scale=0.45,
-            region=0,
+            region=Regions.MushroomLower,
         ),
         CrownLocation(
             map=Maps.ForestGiantMushroom,
@@ -1461,7 +1495,7 @@ CrownLocations = {
             y=979,
             z=529,
             scale=0.4,
-            region=0,
+            region=Regions.MushroomUpper,
         ),
         CrownLocation(
             map=Maps.ForestGiantMushroom,
@@ -1470,7 +1504,7 @@ CrownLocations = {
             y=1169,
             z=700,
             scale=0.5,
-            region=0,
+            region=Regions.MushroomUpper,
         ),
         CrownLocation(
             map=Maps.ForestMillAttic,
@@ -1479,7 +1513,7 @@ CrownLocations = {
             y=0,
             z=310,
             scale=0.4,
-            region=0,
+            region=Regions.MillAttic,
         ),
         CrownLocation(
             map=Maps.ForestLankyZingersRoom,
@@ -1488,7 +1522,7 @@ CrownLocations = {
             y=0,
             z=282,
             scale=0.4,
-            region=0,
+            region=Regions.MushroomLankyZingersRoom,
         ),
         CrownLocation(
             map=Maps.ForestLankyMushroomsRoom,
@@ -1497,7 +1531,7 @@ CrownLocations = {
             y=0,
             z=309,
             scale=0.4,
-            region=0,
+            region=Regions.MushroomLankyMushroomsRoom,
         ),
         CrownLocation(
             map=Maps.ForestChunkyFaceRoom,
@@ -1506,7 +1540,7 @@ CrownLocations = {
             y=0,
             z=441,
             scale=0.4,
-            region=0,
+            region=Regions.MushroomChunkyRoom,
         ),
         CrownLocation(
             map=Maps.ForestMillBack,
@@ -1515,7 +1549,7 @@ CrownLocations = {
             y=0,
             z=610,
             scale=0.5,
-            region=0,
+            region=Regions.MillTinyArea,
         ),
         CrownLocation(
             map=Maps.ForestSpider,
@@ -1524,7 +1558,7 @@ CrownLocations = {
             y=172,
             z=599,
             scale=0.45,
-            region=0,
+            region=Regions.SpiderRoom,
         ),
     ],
     Levels.CrystalCaves: [
@@ -1535,7 +1569,8 @@ CrownLocations = {
             y=48,
             z=1719,
             scale=0.2,
-            region=0,
+            region=Regions.CrystalCavesMain,
+            logic=lambda l: l.monkeyport and l.mini and l.twirl and l.tiny,
         ),
         CrownLocation(
             map=Maps.CrystalCaves,
@@ -1544,7 +1579,8 @@ CrownLocations = {
             y=48,
             z=818,
             scale=0.2,
-            region=0,
+            region=Regions.IglooArea,
+            logic=lambda l: Events.CavesLargeBoulderButton in l.Events,
         ),
         CrownLocation(
             map=Maps.CrystalCaves,
@@ -1553,7 +1589,8 @@ CrownLocations = {
             y=132.5,
             z=1522,
             scale=0.15,
-            region=0,
+            region=Regions.IglooArea,
+            logic=lambda l: (l.jetpack and l.isdiddy) or (l.twirl and l.istiny),
         ),
         CrownLocation(
             map=Maps.CrystalCaves,
@@ -1562,7 +1599,7 @@ CrownLocations = {
             y=180,
             z=2571,
             scale=0.4,
-            region=0,
+            region=Regions.CavesBonusCave,
         ),
         CrownLocation(
             map=Maps.CrystalCaves,
@@ -1571,7 +1608,7 @@ CrownLocations = {
             y=280,
             z=2338,
             scale=0.5,
-            region=0,
+            region=Regions.BoulderCave,
         ),
         CrownLocation(
             map=Maps.CrystalCaves,
@@ -1580,7 +1617,7 @@ CrownLocations = {
             y=281,
             z=1649,
             scale=0.25,
-            region=0,
+            region=Regions.CrystalCavesMain,
         ),
         CrownLocation(
             map=Maps.CrystalCaves,
@@ -1589,7 +1626,7 @@ CrownLocations = {
             y=151,
             z=1145,
             scale=0.25,
-            region=0,
+            region=Regions.CrystalCavesMain,
         ),
         CrownLocation(
             map=Maps.CrystalCaves,
@@ -1598,7 +1635,7 @@ CrownLocations = {
             y=172,
             z=1181,
             scale=0.25,
-            region=0,
+            region=Regions.CrystalCavesMain,
         ),
         CrownLocation(
             map=Maps.CrystalCaves,
@@ -1607,7 +1644,7 @@ CrownLocations = {
             y=280,
             z=1304,
             scale=0.3,
-            region=0,
+            region=Regions.CrystalCavesMain,
         ),
         CrownLocation(
             map=Maps.CrystalCaves,
@@ -1616,7 +1653,8 @@ CrownLocations = {
             y=343.5,
             z=1002,
             scale=0.2,
-            region=0,
+            region=Regions.CrystalCavesMain,
+            logic=lambda l: l.balloon and l.islanky,
         ),
         CrownLocation(
             map=Maps.CrystalCaves,
@@ -1625,7 +1663,7 @@ CrownLocations = {
             y=276,
             z=970,
             scale=0.35,
-            region=0,
+            region=Regions.CrystalCavesMain,
         ),
         CrownLocation(
             map=Maps.CrystalCaves,
@@ -1634,7 +1672,7 @@ CrownLocations = {
             y=64,
             z=587,
             scale=0.4,
-            region=0,
+            region=Regions.CavesSnideArea,
         ),
         CrownLocation(
             map=Maps.CrystalCaves,
@@ -1643,7 +1681,7 @@ CrownLocations = {
             y=90,
             z=1013,
             scale=0.4,
-            region=0,
+            region=Regions.CrystalCavesMain,
         ),
         # CrownLocation(map=Maps.CrystalCaves, name="Crystal Caves: Near Entrance (OoB)", x=1718, y=-29, z=30, scale=0.4, region=0,),
         CrownLocation(
@@ -1653,7 +1691,7 @@ CrownLocations = {
             y=13,
             z=152,
             scale=0.4,
-            region=0,
+            region=Regions.CrystalCavesMain,
         ),
         CrownLocation(
             map=Maps.CrystalCaves,
@@ -1662,7 +1700,8 @@ CrownLocations = {
             y=13,
             z=469,
             scale=0.4,
-            region=0,
+            region=Regions.CrystalCavesMain,
+            logic=lambda l: l.punch and l.chunky,
         ),
         CrownLocation(
             map=Maps.CrystalCaves,
@@ -1671,7 +1710,7 @@ CrownLocations = {
             y=152,
             z=772,
             scale=0.4,
-            region=0,
+            region=Regions.CrystalCavesMain,
         ),
         CrownLocation(
             map=Maps.CrystalCaves,
@@ -1680,7 +1719,7 @@ CrownLocations = {
             y=172,
             z=1173,
             scale=0.25,
-            region=0,
+            region=Regions.CrystalCavesMain,
         ),
         CrownLocation(
             map=Maps.CrystalCaves,
@@ -1689,7 +1728,7 @@ CrownLocations = {
             y=286,
             z=619,
             scale=0.4,
-            region=0,
+            region=Regions.CavesBlueprintCave,
         ),
         CrownLocation(
             map=Maps.CrystalCaves,
@@ -1698,7 +1737,7 @@ CrownLocations = {
             y=118,
             z=1615,
             scale=0.4,
-            region=0,
+            region=Regions.CabinArea,
         ),
         # CrownLocation(map=Maps.CrystalCaves, name="Crystal Caves: Near Ice Tag (Mid-Air)", x=2238, y=394, z=1169, scale=0.25, region=0,),
         CrownLocation(
@@ -1708,7 +1747,7 @@ CrownLocations = {
             y=277,
             z=1960,
             scale=0.4,
-            region=0,
+            region=Regions.CabinArea,
         ),
         CrownLocation(
             map=Maps.CrystalCaves,
@@ -1717,7 +1756,7 @@ CrownLocations = {
             y=281,
             z=2354,
             scale=0.35,
-            region=0,
+            region=Regions.CabinArea,
         ),
         CrownLocation(
             map=Maps.CrystalCaves,
@@ -1726,7 +1765,7 @@ CrownLocations = {
             y=281,
             z=2500,
             scale=0.35,
-            region=0,
+            region=Regions.CabinArea,
         ),
         CrownLocation(
             map=Maps.CrystalCaves,
@@ -1735,7 +1774,7 @@ CrownLocations = {
             y=373,
             z=1848,
             scale=0.4,
-            region=0,
+            region=Regions.CabinArea,
         ),
         CrownLocation(
             map=Maps.CrystalCaves,
@@ -1744,7 +1783,7 @@ CrownLocations = {
             y=206.8,
             z=2530,
             scale=0.25,
-            region=0,
+            region=Regions.CabinArea,
         ),
         CrownLocation(
             map=Maps.CrystalCaves,
@@ -1753,7 +1792,7 @@ CrownLocations = {
             y=260,
             z=1900,
             scale=0.3,
-            region=0,
+            region=Regions.CabinArea,
         ),
         CrownLocation(
             map=Maps.CrystalCaves,
@@ -1762,7 +1801,7 @@ CrownLocations = {
             y=343,
             z=1886,
             scale=0.25,
-            region=0,
+            region=Regions.CabinArea,
         ),
         CrownLocation(
             map=Maps.CavesRotatingCabin,
@@ -1771,7 +1810,8 @@ CrownLocations = {
             y=0,
             z=193,
             scale=0.35,
-            region=0,
+            region=Regions.RotatingCabin,
+            logic=lambda l: l.Slam,
             is_vanilla=True,
             is_rotating_room=True,
         ),
@@ -1782,7 +1822,7 @@ CrownLocations = {
             y=0,
             z=295,
             scale=0.4,
-            region=0,
+            region=Regions.DiddyIgloo,
         ),
         CrownLocation(
             map=Maps.CavesDonkeyIgloo,
@@ -1791,7 +1831,7 @@ CrownLocations = {
             y=0,
             z=177,
             scale=0.5,
-            region=0,
+            region=Regions.DonkeyIgloo,
         ),
         CrownLocation(
             map=Maps.CavesLankyIgloo,
@@ -1800,7 +1840,8 @@ CrownLocations = {
             y=123.3,
             z=245,
             scale=0.25,
-            region=0,
+            region=Regions.LankyIgloo,
+            logic=lambda l: l.balloon and l.islanky,
         ),
         CrownLocation(
             map=Maps.CavesTinyIgloo,
@@ -1809,7 +1850,7 @@ CrownLocations = {
             y=0,
             z=200,
             scale=0.4,
-            region=0,
+            region=Regions.TinyIgloo,
         ),
         CrownLocation(
             map=Maps.CavesLankyCabin,
@@ -1818,7 +1859,7 @@ CrownLocations = {
             y=0,
             z=332,
             scale=0.45,
-            region=0,
+            region=Regions.LankyCabin,
         ),
         CrownLocation(
             map=Maps.CavesChunkyCabin,
@@ -1827,7 +1868,7 @@ CrownLocations = {
             y=0,
             z=536,
             scale=0.35,
-            region=0,
+            region=Regions.ChunkyCabin,
         ),
         CrownLocation(
             map=Maps.CavesDiddyUpperCabin,
@@ -1836,7 +1877,7 @@ CrownLocations = {
             y=0,
             z=353,
             scale=0.45,
-            region=0,
+            region=Regions.DiddyUpperCabin,
         ),
         CrownLocation(
             map=Maps.CavesDonkeyCabin,
@@ -1845,16 +1886,16 @@ CrownLocations = {
             y=0,
             z=463,
             scale=0.35,
-            region=0,
+            region=Regions.DonkeyCabin,
         ),
         CrownLocation(
             map=Maps.CavesTinyCabin,
-            name="Crystal Caves - Top Platform",
+            name="Crystal Caves - Tiny Cabin: Interior",
             x=179,
             y=0,
             z=255,
             scale=0.35,
-            region=0,
+            region=Regions.TinyCabin,
         ),
     ],
     Levels.CreepyCastle: [
@@ -1865,7 +1906,7 @@ CrownLocations = {
             y=0,
             z=581.451,
             scale=0.33,
-            region=0,
+            region=Regions.Greenhouse,
             is_vanilla=True,
         ),
         CrownLocation(
@@ -1875,7 +1916,7 @@ CrownLocations = {
             y=0,
             z=494,
             scale=0.2,
-            region=0,
+            region=Regions.Greenhouse,
         ),
         CrownLocation(
             map=Maps.CastleGreenhouse,
@@ -1884,7 +1925,7 @@ CrownLocations = {
             y=0,
             z=522,
             scale=0.2,
-            region=0,
+            region=Regions.Greenhouse,
         ),
         CrownLocation(
             map=Maps.CastleGreenhouse,
@@ -1893,7 +1934,7 @@ CrownLocations = {
             y=0,
             z=302,
             scale=0.35,
-            region=0,
+            region=Regions.Greenhouse,
         ),
         CrownLocation(
             map=Maps.CastleGreenhouse,
@@ -1902,7 +1943,7 @@ CrownLocations = {
             y=0,
             z=125,
             scale=0.2,
-            region=0,
+            region=Regions.Greenhouse,
         ),
         CrownLocation(
             map=Maps.CreepyCastle,
@@ -1911,7 +1952,7 @@ CrownLocations = {
             y=471.5,
             z=105,
             scale=0.5,
-            region=0,
+            region=Regions.CreepyCastleMain,
         ),
         CrownLocation(
             map=Maps.CreepyCastle,
@@ -1920,7 +1961,7 @@ CrownLocations = {
             y=366,
             z=2108,
             scale=0.4,
-            region=0,
+            region=Regions.CreepyCastleMain,
         ),
         CrownLocation(
             map=Maps.CreepyCastle,
@@ -1929,7 +1970,7 @@ CrownLocations = {
             y=366,
             z=1934,
             scale=0.4,
-            region=0,
+            region=Regions.CreepyCastleMain,
         ),
         CrownLocation(
             map=Maps.CreepyCastle,
@@ -1938,7 +1979,7 @@ CrownLocations = {
             y=523,
             z=1660,
             scale=0.4,
-            region=0,
+            region=Regions.CreepyCastleMain,
         ),
         CrownLocation(
             map=Maps.CreepyCastle,
@@ -1947,7 +1988,7 @@ CrownLocations = {
             y=523,
             z=1777,
             scale=0.4,
-            region=0,
+            region=Regions.CreepyCastleMain,
         ),
         CrownLocation(
             map=Maps.CreepyCastle,
@@ -1956,7 +1997,7 @@ CrownLocations = {
             y=648,
             z=1620,
             scale=0.4,
-            region=0,
+            region=Regions.CreepyCastleMain,
         ),
         CrownLocation(
             map=Maps.CreepyCastle,
@@ -1965,7 +2006,7 @@ CrownLocations = {
             y=628,
             z=1433,
             scale=0.45,
-            region=0,
+            region=Regions.CreepyCastleMain,
         ),
         CrownLocation(
             map=Maps.CreepyCastle,
@@ -1974,7 +2015,7 @@ CrownLocations = {
             y=548.8,
             z=532,
             scale=0.5,
-            region=0,
+            region=Regions.CreepyCastleMain,
         ),
         CrownLocation(
             map=Maps.CreepyCastle,
@@ -1983,7 +2024,7 @@ CrownLocations = {
             y=622,
             z=578,
             scale=0.35,
-            region=0,
+            region=Regions.CreepyCastleMain,
         ),
         CrownLocation(
             map=Maps.CreepyCastle,
@@ -1992,7 +2033,7 @@ CrownLocations = {
             y=673,
             z=655,
             scale=0.35,
-            region=0,
+            region=Regions.CreepyCastleMain,
         ),
         CrownLocation(
             map=Maps.CreepyCastle,
@@ -2001,7 +2042,7 @@ CrownLocations = {
             y=676,
             z=921,
             scale=0.3,
-            region=0,
+            region=Regions.CreepyCastleMain,
         ),
         CrownLocation(
             map=Maps.CreepyCastle,
@@ -2010,7 +2051,7 @@ CrownLocations = {
             y=673,
             z=1016,
             scale=0.4,
-            region=0,
+            region=Regions.CreepyCastleMain,
         ),
         CrownLocation(
             map=Maps.CreepyCastle,
@@ -2019,7 +2060,7 @@ CrownLocations = {
             y=1135,
             z=1379,
             scale=0.4,
-            region=0,
+            region=Regions.CreepyCastleMain,
         ),
         CrownLocation(
             map=Maps.CreepyCastle,
@@ -2028,7 +2069,7 @@ CrownLocations = {
             y=1391,
             z=1802,
             scale=0.35,
-            region=0,
+            region=Regions.CreepyCastleMain,
         ),
         CrownLocation(
             map=Maps.CreepyCastle,
@@ -2037,7 +2078,7 @@ CrownLocations = {
             y=1731,
             z=1255,
             scale=0.4,
-            region=0,
+            region=Regions.CreepyCastleMain,
         ),
         CrownLocation(
             map=Maps.CreepyCastle,
@@ -2046,7 +2087,7 @@ CrownLocations = {
             y=1731,
             z=1375,
             scale=0.4,
-            region=0,
+            region=Regions.CreepyCastleMain,
         ),
         CrownLocation(
             map=Maps.CreepyCastle,
@@ -2055,7 +2096,7 @@ CrownLocations = {
             y=1794,
             z=1243,
             scale=0.4,
-            region=0,
+            region=Regions.CreepyCastleMain,
         ),
         CrownLocation(
             map=Maps.CreepyCastle,
@@ -2064,7 +2105,8 @@ CrownLocations = {
             y=2023,
             z=1322,
             scale=0.5,
-            region=0,
+            region=Regions.CreepyCastleMain,
+            logic=lambda l: l.jetpack and l.isdiddy,
         ),
         CrownLocation(
             map=Maps.CastleBallroom,
@@ -2073,7 +2115,7 @@ CrownLocations = {
             y=40,
             z=221,
             scale=0.55,
-            region=0,
+            region=Regions.Ballroom,
         ),
         CrownLocation(
             map=Maps.CastleBallroom,
@@ -2082,7 +2124,7 @@ CrownLocations = {
             y=40,
             z=454,
             scale=0.55,
-            region=0,
+            region=Regions.Ballroom,
         ),
         # CrownLocation(map=Maps.CastleDungeon, name="Creepy Castle - Dungeon: Diddy Room (OoB)", x=403, y=90, z=3307, scale=0.45, region=0,),
         CrownLocation(
@@ -2092,7 +2134,7 @@ CrownLocations = {
             y=115,
             z=2595,
             scale=0.4,
-            region=0,
+            region=Regions.Dungeon,
         ),
         CrownLocation(
             map=Maps.CastleDungeon,
@@ -2101,7 +2143,8 @@ CrownLocations = {
             y=170,
             z=2000,
             scale=0.5,
-            region=0,
+            region=Regions.Dungeon,
+            logic=lambda l: l.superDuperSlam and l.donkey,
         ),
         CrownLocation(
             map=Maps.CastleShed,
@@ -2110,7 +2153,7 @@ CrownLocations = {
             y=0,
             z=219,
             scale=0.4,
-            region=0,
+            region=Regions.Shed,
         ),
         CrownLocation(
             map=Maps.CastleLowerCave,
@@ -2119,7 +2162,7 @@ CrownLocations = {
             y=90,
             z=1153,
             scale=0.4,
-            region=0,
+            region=Regions.LowerCave,
         ),
         CrownLocation(
             map=Maps.CastleLowerCave,
@@ -2128,7 +2171,7 @@ CrownLocations = {
             y=320,
             z=1186,
             scale=0.4,
-            region=0,
+            region=Regions.LowerCave,
         ),
         CrownLocation(
             map=Maps.CastleLowerCave,
@@ -2137,7 +2180,7 @@ CrownLocations = {
             y=200,
             z=433,
             scale=0.4,
-            region=0,
+            region=Regions.LowerCave,
         ),
         CrownLocation(
             map=Maps.CastleCrypt,
@@ -2146,7 +2189,8 @@ CrownLocations = {
             y=160,
             z=2867,
             scale=0.45,
-            region=0,
+            region=Regions.Crypt,
+            logic=lambda l: l.pineapple and l.ischunky,
         ),
         CrownLocation(
             map=Maps.CastleCrypt,
@@ -2155,7 +2199,8 @@ CrownLocations = {
             y=0,
             z=593,
             scale=0.45,
-            region=0,
+            region=Regions.Crypt,
+            logic=lambda l: l.peanut and l.isdiddy,
         ),
         CrownLocation(
             map=Maps.CastleMausoleum,
@@ -2164,7 +2209,7 @@ CrownLocations = {
             y=160,
             z=130,
             scale=0.4,
-            region=0,
+            region=Regions.Mausoleum,
         ),
         CrownLocation(
             map=Maps.CastleUpperCave,
@@ -2173,7 +2218,7 @@ CrownLocations = {
             y=200,
             z=852,
             scale=0.4,
-            region=0,
+            region=Regions.Mausoleum,
         ),
         CrownLocation(
             map=Maps.CastleUpperCave,
@@ -2182,7 +2227,7 @@ CrownLocations = {
             y=300,
             z=2241,
             scale=0.4,
-            region=0,
+            region=Regions.UpperCave,
         ),
         CrownLocation(
             map=Maps.CastleLibrary,
@@ -2191,7 +2236,7 @@ CrownLocations = {
             y=190,
             z=530,
             scale=0.5,
-            region=0,
+            region=Regions.Library,
         ),
         CrownLocation(
             map=Maps.CastleLibrary,
@@ -2200,7 +2245,8 @@ CrownLocations = {
             y=180,
             z=500,
             scale=0.4,
-            region=0,
+            region=Regions.Library,
+            logic=lambda l: l.superDuperSlam and l.isdonkey and (l.strongKong or l.settings.damage_amount == "default"),
         ),
         CrownLocation(
             map=Maps.CastleMuseum,
@@ -2209,7 +2255,7 @@ CrownLocations = {
             y=200,
             z=1784,
             scale=0.4,
-            region=0,
+            region=Regions.MuseumBehindGlass,
         ),
         CrownLocation(
             map=Maps.CastleMuseum,
@@ -2218,7 +2264,8 @@ CrownLocations = {
             y=200,
             z=1525,
             scale=0.4,
-            region=0,
+            region=Regions.MuseumBehindGlass,
+            logic=lambda l: l.monkeyport,
         ),
         CrownLocation(
             map=Maps.CastleMuseum,
@@ -2227,7 +2274,7 @@ CrownLocations = {
             y=100,
             z=440,
             scale=0.6,
-            region=0,
+            region=Regions.Museum,
         ),
         CrownLocation(
             map=Maps.CastleTrashCan,
@@ -2236,7 +2283,7 @@ CrownLocations = {
             y=15,
             z=510,
             scale=0.6,
-            region=0,
+            region=Regions.TrashCan,
         ),
         CrownLocation(
             map=Maps.CastleTree,
@@ -2245,7 +2292,7 @@ CrownLocations = {
             y=400,
             z=884,
             scale=0.4,
-            region=0,
+            region=Regions.CastleTree,
         ),
     ],
     Levels.DKIsles: [
@@ -2256,7 +2303,7 @@ CrownLocations = {
             y=0,
             z=280.06,
             scale=0.43,
-            region=0,
+            region=Regions.IslesSnideRoom,
             is_vanilla=True,
             default_index=1,
         ),
@@ -2267,7 +2314,8 @@ CrownLocations = {
             y=20,
             z=637.07,
             scale=0.35,
-            region=0,
+            region=Regions.FungiForestLobby,
+            logic=lambda l: l.coconut and l.peanut and l.grape and l.feather and l.pineapple and l.donkey and l.diddy and l.lanky and l.tiny and l.chunky and l.gorillaGone,
             is_vanilla=True,
         ),
         CrownLocation(
@@ -2277,7 +2325,7 @@ CrownLocations = {
             y=1498,
             z=818,
             scale=0.4,
-            region=0,
+            region=Regions.CabinIsle,
         ),
         CrownLocation(
             map=Maps.Isles,
@@ -2286,7 +2334,8 @@ CrownLocations = {
             y=1490,
             z=1234,
             scale=0.4,
-            region=0,
+            region=Regions.CabinIsle,
+            logic=lambda l: Events.IslesDiddyBarrelSpawn in l.Events and l.jetpack and l.peanut and l.isdiddy,
         ),
         CrownLocation(
             map=Maps.Isles,
@@ -2295,7 +2344,7 @@ CrownLocations = {
             y=507,
             z=1903,
             scale=0.4,
-            region=0,
+            region=Regions.IslesMain,
         ),
         CrownLocation(
             map=Maps.Isles,
@@ -2304,7 +2353,7 @@ CrownLocations = {
             y=500,
             z=855,
             scale=0.5,
-            region=0,
+            region=Regions.IslesMain,
         ),
         CrownLocation(
             map=Maps.Isles,
@@ -2313,7 +2362,7 @@ CrownLocations = {
             y=495,
             z=1222,
             scale=0.4,
-            region=0,
+            region=Regions.IslesMain,
         ),
         CrownLocation(
             map=Maps.Isles,
@@ -2322,7 +2371,7 @@ CrownLocations = {
             y=600,
             z=1822,
             scale=0.4,
-            region=0,
+            region=Regions.IslesMain,
         ),
         CrownLocation(
             map=Maps.Isles,
@@ -2331,7 +2380,7 @@ CrownLocations = {
             y=1020,
             z=1776,
             scale=0.4,
-            region=0,
+            region=Regions.IslesMainUpper,
         ),
         CrownLocation(
             map=Maps.Isles,
@@ -2340,7 +2389,7 @@ CrownLocations = {
             y=1000,
             z=1613,
             scale=0.35,
-            region=0,
+            region=Regions.IslesMainUpper,
         ),
         CrownLocation(
             map=Maps.Isles,
@@ -2349,7 +2398,7 @@ CrownLocations = {
             y=520,
             z=3500,
             scale=0.3,
-            region=0,
+            region=Regions.IslesMain,
         ),
         CrownLocation(
             map=Maps.Isles,
@@ -2358,7 +2407,7 @@ CrownLocations = {
             y=550,
             z=4152,
             scale=0.5,
-            region=0,
+            region=Regions.IslesMain,
         ),
         CrownLocation(
             map=Maps.Isles,
@@ -2367,7 +2416,7 @@ CrownLocations = {
             y=600,
             z=3920,
             scale=0.5,
-            region=0,
+            region=Regions.IslesMain,
         ),
         CrownLocation(
             map=Maps.Isles,
@@ -2376,7 +2425,7 @@ CrownLocations = {
             y=550,
             z=3325,
             scale=0.5,
-            region=0,
+            region=Regions.CrocodileIsleBeyondLift,
         ),
         CrownLocation(
             map=Maps.Isles,
@@ -2385,7 +2434,7 @@ CrownLocations = {
             y=1200,
             z=3899,
             scale=0.4,
-            region=0,
+            region=Regions.CrocodileIsleBeyondLift,
         ),
         CrownLocation(
             map=Maps.Isles,
@@ -2394,7 +2443,7 @@ CrownLocations = {
             y=1200,
             z=3518,
             scale=0.4,
-            region=0,
+            region=Regions.CrocodileIsleBeyondLift,
         ),
         CrownLocation(
             map=Maps.Isles,
@@ -2403,7 +2452,8 @@ CrownLocations = {
             y=1720,
             z=3809,
             scale=0.25,
-            region=0,
+            region=Regions.IslesMain,
+            logic=lambda l: l.monkeyport and l.istiny,
         ),
         CrownLocation(
             map=Maps.Isles,
@@ -2412,7 +2462,8 @@ CrownLocations = {
             y=1620,
             z=3488,
             scale=0.5,
-            region=0,
+            region=Regions.IslesMain,
+            logic=lambda l: l.monkeyport and l.istiny,
         ),
         CrownLocation(
             map=Maps.Isles,
@@ -2421,7 +2472,8 @@ CrownLocations = {
             y=1620,
             z=3315,
             scale=0.5,
-            region=0,
+            region=Regions.IslesMain,
+            logic=lambda l: l.monkeyport and l.istiny,
         ),
         CrownLocation(
             map=Maps.Isles,
@@ -2430,7 +2482,7 @@ CrownLocations = {
             y=500,
             z=2307,
             scale=0.4,
-            region=0,
+            region=Regions.IslesMain,
         ),
         CrownLocation(
             map=Maps.Isles,
@@ -2439,7 +2491,7 @@ CrownLocations = {
             y=500,
             z=1410,
             scale=0.5,
-            region=0,
+            region=Regions.IslesMain,
         ),
         CrownLocation(
             map=Maps.JungleJapesLobby,
@@ -2448,7 +2500,7 @@ CrownLocations = {
             y=0,
             z=632,
             scale=0.4,
-            region=0,
+            region=Regions.JungleJapesLobby,
         ),
         CrownLocation(
             map=Maps.AngryAztecLobby,
@@ -2457,7 +2509,7 @@ CrownLocations = {
             y=0,
             z=439,
             scale=0.4,
-            region=0,
+            region=Regions.AngryAztecLobby,
         ),
         CrownLocation(
             map=Maps.AngryAztecLobby,
@@ -2466,7 +2518,8 @@ CrownLocations = {
             y=0,
             z=637,
             scale=0.4,
-            region=0,
+            region=Regions.AngryAztecLobby,
+            logic=lambda l: l.feather and l.tiny,
         ),
         CrownLocation(
             map=Maps.FranticFactoryLobby,
@@ -2475,7 +2528,7 @@ CrownLocations = {
             y=0,
             z=292,
             scale=0.4,
-            region=0,
+            region=Regions.FranticFactoryLobby,
         ),
         CrownLocation(
             map=Maps.FranticFactoryLobby,
@@ -2484,7 +2537,8 @@ CrownLocations = {
             y=134,
             z=367,
             scale=0.4,
-            region=0,
+            region=Regions.FranticFactoryLobby,
+            logic=lambda l: l.grab and l.donkey,
         ),
         CrownLocation(
             map=Maps.GloomyGalleonLobby,
@@ -2493,7 +2547,7 @@ CrownLocations = {
             y=139.6,
             z=942,
             scale=0.4,
-            region=0,
+            region=Regions.GloomyGalleonLobby,
         ),
         CrownLocation(
             map=Maps.GloomyGalleonLobby,
@@ -2502,7 +2556,7 @@ CrownLocations = {
             y=119.6,
             z=886,
             scale=0.35,
-            region=0,
+            region=Regions.GloomyGalleonLobby,
         ),
         CrownLocation(
             map=Maps.CrystalCavesLobby,
@@ -2511,7 +2565,7 @@ CrownLocations = {
             y=118,
             z=541,
             scale=0.4,
-            region=0,
+            region=Regions.CrystalCavesLobby,
         ),
         CrownLocation(
             map=Maps.CrystalCavesLobby,
@@ -2520,7 +2574,8 @@ CrownLocations = {
             y=280.4,
             z=739,
             scale=0.35,
-            region=0,
+            region=Regions.CrystalCavesLobby,
+            logic=lambda l: l.jetpack and l.isdiddy,
         ),
         CrownLocation(
             map=Maps.CrystalCavesLobby,
@@ -2529,7 +2584,8 @@ CrownLocations = {
             y=13.5,
             z=532,
             scale=0.4,
-            region=0,
+            region=Regions.CrystalCavesLobby,
+            logic=lambda l: l.punch and l.chunky,
         ),
         CrownLocation(
             map=Maps.CreepyCastleLobby,
@@ -2538,7 +2594,7 @@ CrownLocations = {
             y=60,
             z=269,
             scale=0.4,
-            region=0,
+            region=Regions.CreepyCastleLobby,
         ),
         CrownLocation(
             map=Maps.CreepyCastleLobby,
@@ -2547,7 +2603,7 @@ CrownLocations = {
             y=60,
             z=1066,
             scale=0.4,
-            region=0,
+            region=Regions.CreepyCastleLobby,
         ),
         CrownLocation(
             map=Maps.HideoutHelmLobby,
@@ -2556,7 +2612,8 @@ CrownLocations = {
             y=196.4,
             z=638,
             scale=0.3,
-            region=0,
+            region=Regions.HideoutHelmLobby,
+            logic=lambda l: l.vines and l.gorillaGone and l.ischunky,
         ),
         CrownLocation(
             map=Maps.TrainingGrounds,
@@ -2565,7 +2622,8 @@ CrownLocations = {
             y=252,
             z=1822,
             scale=0.45,
-            region=0,
+            region=Regions.TrainingGrounds,
+            logic=lambda l: l.twirl and l.istiny,
         ),
         CrownLocation(
             map=Maps.TrainingGrounds,
@@ -2574,7 +2632,8 @@ CrownLocations = {
             y=225,
             z=734,
             scale=0.45,
-            region=0,
+            region=Regions.TrainingGrounds,
+            logic=lambda l: l.twirl and l.istiny,
         ),
         CrownLocation(
             map=Maps.TrainingGrounds,
@@ -2583,7 +2642,7 @@ CrownLocations = {
             y=36.4,
             z=2119,
             scale=0.35,
-            region=0,
+            region=Regions.TrainingGrounds,
         ),
         CrownLocation(
             map=Maps.TrainingGrounds,
@@ -2592,7 +2651,8 @@ CrownLocations = {
             y=211,
             z=920,
             scale=0.35,
-            region=0,
+            region=Regions.TrainingGrounds,
+            logic=lambda l: l.vines,
         ),
         CrownLocation(
             map=Maps.TrainingGrounds,
@@ -2601,7 +2661,7 @@ CrownLocations = {
             y=36,
             z=1585,
             scale=0.45,
-            region=0,
+            region=Regions.TrainingGrounds,
         ),
         CrownLocation(
             map=Maps.BananaFairyRoom,
@@ -2610,7 +2670,7 @@ CrownLocations = {
             y=37.5,
             z=133,
             scale=0.5,
-            region=0,
+            region=Regions.BananaFairyRoom,
         ),
         CrownLocation(
             map=Maps.BananaFairyRoom,
@@ -2619,7 +2679,7 @@ CrownLocations = {
             y=37.5,
             z=508,
             scale=0.5,
-            region=0,
+            region=Regions.BananaFairyRoom,
         ),
         CrownLocation(
             map=Maps.BananaFairyRoom,
@@ -2628,7 +2688,8 @@ CrownLocations = {
             y=37.5,
             z=1227,
             scale=0.6,
-            region=0,
+            region=Regions.BananaFairyRoom,
+            logic=lambda l: l.BananaFairies >= 20 and l.istiny,
         ),
         CrownLocation(
             map=Maps.KLumsy,
@@ -2637,7 +2698,7 @@ CrownLocations = {
             y=95,
             z=868,
             scale=0.5,
-            region=0,
+            region=Regions.Prison,
         ),
         CrownLocation(
             map=Maps.KLumsy,
@@ -2646,7 +2707,7 @@ CrownLocations = {
             y=95,
             z=1340,
             scale=0.5,
-            region=0,
+            region=Regions.Prison,
         ),
     ],
 }
