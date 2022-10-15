@@ -81,7 +81,7 @@ extern void writeJetpacMedalReq(void);
 extern void resetMapContainer(void);
 extern void correctDKPortal(void);
 extern int canSaveHelmHurry(void);
-extern void blueprintCollect(int flag_index, int destination, int flag_type);
+extern void blueprintCollect(int flag_index);
 
 extern int* drawTri(int* dl, short x1, short y1, short x2, short y2, short x3, short y3, int red, int green, int blue, int alpha);
 extern int* drawImage(int* dl, int text_index, codecs codec_index, int img_width, int img_height, int x, int y, float xScale, float yScale, int opacity);
@@ -93,6 +93,9 @@ extern int* drawText(int* dl, int style, float x, float y, char* str, int red, i
 extern int* drawDPad(int* dl);
 extern int* drawImageWithFilter(int* dl, int text_index, codecs codec_index, int img_width, int img_height, int x, int y, float xScale, float yScale, int red, int green, int blue, int opacity);
 extern void correctKongFaces(void);
+
+extern int getLo(void* addr);
+extern int getHi(void* addr);
 
 extern void displayNumberOnObject(int id, int param2, int imageindex, int param4, int subtype);
 extern void recolorKongControl(void);
@@ -117,8 +120,12 @@ extern int getTagAnywhereKong(int direction);
 extern int getTAState(void);
 extern void toggleStandardAmmo(void);
 extern void initItemDropTable(void);
+extern void initCollectableCollision(void);
+extern void initActorDefs(void);
 extern void newGuardCode(void);
 extern void goldBeaverCode(void);
+extern void ninCoinCode(void);
+extern void rwCoinCode(void);
 extern void beaverExtraHitHandle(void);
 extern void CBDing(void);
 extern void handleSpiderTrapCode(void);
@@ -148,6 +155,7 @@ extern void initKRool(int phase);
 extern void handleSFXCache(void);
 extern void preventMedalHUD(int item, int unk0, int unk1);
 extern void initHUDDirection(placementData* hud_data, int item);
+extern int getObjectCollectability(int id, int unk1, int model2_type);
 extern void* getHUDSprite_HUD(int item);
 extern void updateMultibunchCount(void);
 extern void handleDPadFunctionality(void);
@@ -179,5 +187,26 @@ extern int* printLevelIGT(int* dl, int x, int y, float scale, char* str);
 extern void RabbitRaceInfiniteCode(void);
 extern void completeBonus(actorData* actor);
 extern void KasplatIndicator(int has_bp);
+extern void spawnBonusReward(int object, int x_f, int y_f, int z_f, int unk0, int cutscene, int flag, int unk1);
+extern void spawnCrownReward(int object, int x_f, int y_f, int z_f, int unk0, int cutscene, int flag, int unk1);
+extern void spawnBossReward(int object, int x_f, int y_f, int z_f, int unk0, int cutscene, int flag, int unk1);
+extern void spawnRewardAtActor(int object, int flag);
+extern int checkFlagDuplicate(short flag, int type);
+extern void setFlagDuplicate(short flag, int set, int type);
+extern void* updateFlag(int type, short* flag, void* fba);
+extern void spawnEnemyDrops(actorData* actor);
+extern int countFlagsForKongFLUT(int startFlag, int start, int cap, int kong);
+extern int getKongFromBonusFlag(int flag);
+extern void banana_medal_acquisition(int flag);
+
+extern int getBPItem(int index);
+extern int getMedalItem(int index);
+extern int getCrownItem(int map);
+extern int getKeyItem(int old_flag);
+extern void initKeyText(int ki);
+extern int* controlKeyText(int* dl);
+extern void keyGrabHook(int song, int vol);
+extern int itemGrabHook(int collectable_type, int obj_type, int is_homing);
 
 extern unsigned int cs_skip_db[432];
+extern bonus_barrel_info bonus_data[94];

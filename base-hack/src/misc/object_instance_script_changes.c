@@ -157,6 +157,7 @@
 #define HELM_PAD_SAX 0x2E
 #define HELM_PAD_TROMBONE 0x2F
 #define HELM_PAD_GUITAR 0x30
+#define HELM_COIN_DOOR 0x3
 
 #define JAPES_CAVE_GATE 0x2B
 #define JAPES_PEANUT_MOUNTAIN 0x58
@@ -710,12 +711,10 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 						case GALLEON_TINY_SLAM:
 							if (index == 0) { 
 								return !Rando.remove_high_requirements;
-							}
-							else{
+							} else {
 								if (Rando.remove_high_requirements) {
 									behaviour_pointer->next_state = 6;
-								}
-								else {
+								} else {
 									behaviour_pointer->next_state = 5;
 								}
 							}
@@ -996,7 +995,7 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 					} else if ((index == 2) || (index == 3)) {
 						return getPressedSwitch(behaviour_pointer, kong_pellets[(int)Rando.free_source_japes], id);
 					} else if (index == 4) {
-						return !Rando.quality_of_life.remove_cutscenes; // TODO: Retry this
+						return !Rando.quality_of_life.remove_cutscenes; // TODO(theballaam96): Retry this
 					}
 				} else if ((param2 == JAPES_GATE0) || (param2 == JAPES_GATE1) || (param2 == JAPES_GATE2)) {
 					if (Rando.open_level_sections) {
@@ -1100,8 +1099,7 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 					} else if (index == 2) {
 						if (Rando.fast_gbs) {
 							disableDiddyRDDoors();
-						}
-						else {
+						} else {
 							setScriptRunState(behaviour_pointer, 2, 0);
 						}
 					}
@@ -1344,6 +1342,13 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 					int previous_slot = -1;
 					int current_slot = -1;
 					switch(param2) {
+						case HELM_COIN_DOOR:
+							if (index == 0) {
+								return checkFlagDuplicate(FLAG_COLLECTABLE_NINTENDOCOIN,0);
+							} else if (index == 1) {
+								return checkFlagDuplicate(FLAG_COLLECTABLE_RAREWARECOIN,0);
+							}
+							break;
 						case HELM_PAD_BONGO:
 							slot = 0;
 						case HELM_PAD_TRIANGLE:

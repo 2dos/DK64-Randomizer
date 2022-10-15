@@ -4,15 +4,14 @@ static unsigned short gb_total = 0;
 static unsigned char kong_bitfield = 0;
 static const unsigned short kong_flags[] = {FLAG_KONG_DK, FLAG_KONG_DIDDY, FLAG_KONG_LANKY, FLAG_KONG_TINY, FLAG_KONG_CHUNKY};
 
-void blueprintCollect(int flag_index, int destination, int flag_type) {
+void blueprintCollect(int flag_index) {
     if (Rando.helm_hurry_mode) {
         if (Gamemode == 6) { // Only enable BP Checks in Adv Mode
-            if (checkFlag(flag_index,flag_type) == 0) { // Only increment timer if blueprint hasn't been collected (prevents cheese with double kasplat spawn)
+            if ((flag_index >= 469) && (flag_index < 509)) {
                 HelmStartTime += 120; // Add 120 seconds
             }
         }
     }
-    setFlag(flag_index,destination,flag_type);
 }
 
 int canSaveHelmHurry(void) {

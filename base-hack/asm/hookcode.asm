@@ -6,6 +6,7 @@ START_HOOK:
 .include "asm/hookcode/io.asm"
 .include "asm/hookcode/irondonk.asm"
 .include "asm/hookcode/menu.asm"
+.include "asm/hookcode/modeltwo.asm"
 .include "asm/hookcode/move.asm"
 .include "asm/hookcode/pause.asm"
 .include "asm/hookcode/shop.asm"

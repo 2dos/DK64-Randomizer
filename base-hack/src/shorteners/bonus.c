@@ -2,17 +2,12 @@
 
 #define DISREGARD_TANGIBILITY 0
 
-typedef struct bonus_paad {
-    /* 0x000 */ char unk0[0xD];
-    /* 0x00D */ unsigned char timer;
-} bonus_paad;
-
 void destroyBonus(actorData* bonus) {
     bonus->control_state = 0xC;
     bonus->control_state_progress = 0;
     bonus->noclip_byte = 1;
     bonus_paad* paad = (bonus_paad*)(bonus->paad);
-    paad->timer = 3;
+    paad->destroy_timer = 3;
 }
 
 void completeBonus(actorData* actor) {

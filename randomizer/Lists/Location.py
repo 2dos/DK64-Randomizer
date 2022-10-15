@@ -7,8 +7,18 @@ from randomizer.Enums.Levels import Levels
 from randomizer.Enums.Locations import Locations
 from randomizer.Enums.MoveTypes import MoveTypes
 from randomizer.Enums.Types import Types
+from randomizer.Lists.MapsAndExits import Maps, getLevelFromMap
 from randomizer.Enums.VendorType import VendorType
-from randomizer.Lists.MapsAndExits import Maps
+
+class MapIDCombo:
+    """A combination of a map and an associated item ID. If id == -1 and map == 0, has no model 2 item, ignore those."""
+
+    def __init__(self, map=None, id=None, flag=None, kong=Kongs.any):
+        """Initialize with given parameters."""
+        self.map = map
+        self.id = id
+        self.flag = flag
+        self.kong = kong
 
 
 class Location:
@@ -24,6 +34,14 @@ class Location:
         self.item = None
         self.delayedItem = None
         self.constant = False
+        self.map_id_list = None
+        helmmedal_locations = (
+            "Helm Donkey Medal",
+            "Helm Diddy Medal",
+            "Helm Lanky Medal",
+            "Helm Tiny Medal",
+            "Helm Chunky Medal",
+        )
         self.kong = kong
         if type == Types.Shop:
             self.level = data[0]
@@ -32,6 +50,27 @@ class Location:
             self.vendor = data[3]
         elif type == Types.Blueprint:
             self.map = data[0]
+            self.kong = data[1]
+            level = getLevelFromMap(data[0])
+            if level is None:
+                level = 0
+            elif level in (Levels.DKIsles, Levels.HideoutHelm):
+                level = 7
+            self.map_id_list = [MapIDCombo(0, -1, 469 + data[1] + (5 * level), data[1])]
+        elif type == Types.Medal and name not in helmmedal_locations:
+            level = data[0]
+            if level is None:
+                level = 0
+            elif level in (Levels.DKIsles, Levels.HideoutHelm):
+                level = 7
+            self.map_id_list = [MapIDCombo(0, -1, 549 + data[1] + (5 * level), data[1])]
+        elif type in (Types.Banana, Types.Key, Types.Coin, Types.Crown, Types.Medal):
+            if "Turn In " not in name:
+                if data is None:
+                    self.map_id_list = []
+                else:
+                    self.map_id_list = data
+        self.default_mapid_data = self.map_id_list
 
     def PlaceItem(self, item):
         """Place item at this location."""

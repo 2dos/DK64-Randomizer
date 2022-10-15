@@ -192,6 +192,7 @@ class Spoiler:
             "Kongs": {},
             "Shops": {},
             "Others": {},
+            "Item Placement": self.human_item_assignment,
         }
 
         prices = OrderedDict()

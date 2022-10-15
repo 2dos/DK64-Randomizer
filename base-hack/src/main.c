@@ -109,6 +109,9 @@ void cFuncLoop(void) {
 	if (Rando.helm_hurry_mode) {
 		checkTotalCache();
 	}
+	// if (Rando.item_rando) {
+	// 	controlKeyText();
+	// }
 	if (CurrentMap == 0x11) {
 		if ((CutsceneActive == 1) && ((CutsceneStateBitfield & 4) != 0)) {
 			if ((CutsceneIndex == 0) || (CutsceneIndex == 4) || (CutsceneIndex == 7) || (CutsceneIndex == 8) || (CutsceneIndex == 9)) {
@@ -130,7 +133,7 @@ void cFuncLoop(void) {
 	}
 	current_avg_lag = lag_sum;
 	current_avg_lag /= LAG_CAP;
-};
+}
 
 void earlyFrame(void) {
 	if (ObjectModel2Timer == 2) {
@@ -218,11 +221,6 @@ void earlyFrame(void) {
 	} else {
 		*(int*)(0x8074C3B0) = (int)&cutsceneDKCode;
 	}
-	// if (NewlyPressedControllerInput.Buttons & L_Button) {
-	// 	for (int i = 0; i < 0xF; i++) {
-	// 		displayItemOnHUD(i,0,0);
-	// 	}
-	// }
 	fastWarpShockwaveFix();
 	catchWarpHandle();
 	write_kutoutorder();
@@ -321,6 +319,9 @@ int* displayListModifiers(int* dl) {
 				dl = drawPixelTextContainer(dl, 0x34, 0x92, "THE WIKI TO FIX THIS ERROR.", 0xFF, 0xFF, 0xFF, 0xFF, 1);
 			}
 		} else {
+			if (Rando.item_rando) {
+				dl = controlKeyText(dl);
+			}
 			if (Rando.fps_on) {
 				float fps = HERTZ;
 				if (current_avg_lag != 0) {
@@ -355,8 +356,8 @@ int* displayListModifiers(int* dl) {
 						bp_numerator = 0;
 						bp_denominator = 0;
 						for (int i = 0; i < 8; i++) {
-							int bp_has = checkFlag(FLAG_BP_JAPES_DK_HAS + (i * 5) + Character,0);
-							int bp_turn = checkFlag(FLAG_BP_JAPES_DK_TURN + (i * 5) + Character,0);
+							int bp_has = checkFlagDuplicate(FLAG_BP_JAPES_DK_HAS + (i * 5) + Character,0);
+							int bp_turn = checkFlagDuplicate(FLAG_BP_JAPES_DK_TURN + (i * 5) + Character,0);
 							if ((bp_has) && (!bp_turn)) {
 								bp_numerator += 1;
 							}
@@ -405,7 +406,7 @@ int* displayListModifiers(int* dl) {
 		}
 	}
 	return dl;
-};
+}
 
 void toggleStandardAmmo(void) {
 	if (Gamemode == 6) {

@@ -27,7 +27,7 @@ void apply_key(int index, int remove_troff, int set_key) {
 	if (index < 7) {
 		if (Rando.level_order_rando_on) {
 			if (set_key) {
-				setPermFlag(Rando.key_flags[index]);
+				setFlagDuplicate(Rando.key_flags[index],1,0);
 			}
 			if (remove_troff) {
 				for (int j = 0; j < 7; j++) {
@@ -38,7 +38,7 @@ void apply_key(int index, int remove_troff, int set_key) {
 			}
 		} else {
 			if (set_key) {
-				setPermFlag(normal_key_flags[index]);
+				setFlagDuplicate(normal_key_flags[index],1,0);
 			}
 			if (remove_troff) {
 				setPermFlag(tnsportal_flags[index]);
@@ -46,7 +46,7 @@ void apply_key(int index, int remove_troff, int set_key) {
 		}
 	} else {
 		if (set_key) {
-			setPermFlag(normal_key_flags[7]); // Set Key 8
+			setFlagDuplicate(normal_key_flags[7],1,0); // Set Key 8
 		}
 	}
 }
@@ -57,7 +57,7 @@ void pre_turn_keys(void) {
 		if (Rando.keys_preturned) {
 			for (int i = 0; i < 8; i++) {
 				if (Rando.keys_preturned & check) {
-					apply_key(i,1,1);
+					apply_key(i,!Rando.item_rando,1);
 				}
 				check <<= 1;
 			}
@@ -74,15 +74,15 @@ void auto_turn_keys(void) {
 		for (int i = 0; i < 8; i++) {
 			if (Rando.level_order_rando_on) {
 				if (i < 7) {
-					if (checkFlag(Rando.key_flags[i],0)) {
+					if (checkFlagDuplicate(Rando.key_flags[i],0)) {
 						writeKeyFlags(i);
 					}
 				}
-				if (checkFlag(normal_key_flags[7],0)) {
+				if (checkFlagDuplicate(normal_key_flags[7],0)) {
 					writeKeyFlags(7);
 				}
 			} else {
-				if (checkFlag(normal_key_flags[i],0)) {
+				if (checkFlagDuplicate(normal_key_flags[i],0)) {
 					writeKeyFlags(i);
 				}
 			}

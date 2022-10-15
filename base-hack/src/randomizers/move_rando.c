@@ -548,9 +548,6 @@ void fixTBarrelsAndBFI(int init) {
 		}
 	}
 }
-typedef struct mtx_item {
-	/* 0x000 */ char unk_0[0x40];
-} mtx_item;
 
 typedef struct move_overlay_paad {
 	/* 0x000 */ void* upper_text;

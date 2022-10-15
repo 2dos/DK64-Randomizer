@@ -1,11 +1,14 @@
 //functions
 .definelabel setFlag, 0x8073129C
 .definelabel checkFlag, 0x8073110C
+.definelabel getFlagIndex, 0x807319D8
 .definelabel dk_malloc, 0x80610FE8
 .definelabel dk_free, 0x80611408
 .definelabel playSound, 0x80609140
 .definelabel initiateTransition, 0x805FF378
 .definelabel initiateTransition_0, 0x805FF9AC
+.definelabel WarpToParent, 0x805FF8F8
+.definelabel ExitFromBonus, 0x805FF898
 .definelabel getFlagBlockAddress, 0x8060E25C
 .definelabel isAddressActor, 0x8067AF44
 .definelabel getTimestamp, 0x800060B0
@@ -172,7 +175,9 @@
 .definelabel setActorAnimation, 0x8072DE44
 .definelabel actorUnkFunction_0, 0x8072D13C
 .definelabel spawnSparkles, 0x80686E40
-.definelabel spawnEnemyDrops, 0x806A5C60
+.definelabel spawnEnemyDrops_Vanilla, 0x806A5C60
+.definelabel spawnActorWithFlag, 0x806A5DF0
+.definelabel spawnObjectAtActor, 0x8069E490
 .definelabel isActorLoaded, 0x8067ADB4
 .definelabel beaverControlSwitchCase, 0x806AD260
 .definelabel spawnProjectile, 0x80690A28
@@ -205,6 +210,7 @@
 
 .definelabel assessFlagMapping, 0x807314F4
 .definelabel coinCBCollectHandle, 0x806F54E0
+.definelabel getCollectableOffset, 0x806F544C
 
 .definelabel unkSpriteRenderFunc, 0x807149FC
 .definelabel unkSpriteRenderFunc_0, 0x8071495C
@@ -231,6 +237,9 @@
 .definelabel getNewSaveTime, 0x805FC98C
 .definelabel unkBonusFunction, 0x8067ACB4
 .definelabel internalKasplatCode, 0x806B13B4
+
+.definelabel spriteActorGenericCode, 0x806A664C
+.definelabel assignGIFToActor, 0x806A5EAC
 
 //vanilla data
 .definelabel TransitionSpeed, 0x807FD88C
@@ -393,6 +402,7 @@
 .definelabel scriptLoadedArray, 0x807F60B0
 .definelabel scriptsLoaded, 0x807F60A8
 .definelabel scriptLoadsAttempted, 0x807F7140
+.definelabel BonusBarrelData, 0x80755F4C
 
 .definelabel KongUnlockedMenuArray, 0x80033804
 .definelabel FilePercentage, 0x80033F51
@@ -441,6 +451,8 @@
 .definelabel AnimationTable2, 0x807FBB58
 .definelabel AnimationTable3, 0x807FBB5C
 
+.definelabel ActorBehaviourTable, 0x8074E8B0
+
 //hack data
 .definelabel TestVariable, 0x807FFFFC
 .definelabel StoredLag, 0x807FFFFA // 0x2
@@ -478,6 +490,8 @@
 .definelabel WinCondition, 0x807FFFD6
 .definelabel ChunkyModel, 0x807FFFD5
 .definelabel EnemyInView, 0x807FFFD4
+.definelabel ItemRandoOn, 0x807FFFD3
+.definelabel ItemRando_FLUT, 0x805FAE00-0x640
 
 .definelabel CrankyMoves_New, 0x807FF400
 .definelabel CandyMoves_New, 0x807FF4F0

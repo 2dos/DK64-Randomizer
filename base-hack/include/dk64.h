@@ -1,11 +1,14 @@
 //functions
 extern void setFlag(int flagIndex, int value, char flagType);
 extern int checkFlag(int flagIndex, char flagType);
+extern int getFlagIndex(int startFlag, int level, int kong);
 extern void* dk_malloc(int size);
 extern void dk_free(void* mallocPtr);
 extern void playSound(short soundIndex, int unk0, int unk1, int unk2, int unk3, int unk4);
 extern void initiateTransition(int map, int exit);
 extern void initiateTransition_0(int map, int exit, int unk0, int unk1);
+extern void WarpToParent(void);
+extern void ExitFromBonus(void);
 extern int* getFlagBlockAddress(char flagType);
 extern int isAddressActor(void* address);
 extern int getTimestamp();
@@ -178,7 +181,9 @@ extern int getRNGLower31(void);
 extern void setActorAnimation(int animation);
 extern void actorUnkFunction_0(int control_state, int unk0);
 extern void spawnSparkles(float x, float y, float z, int size);
-extern void spawnEnemyDrops(void* actor);
+extern void spawnEnemyDrops_Vanilla(void* actor);
+extern void spawnActorWithFlag(int object, int x_f, int y_f, int z_f, int unk0, int cutscene, int flag, int unk1);
+extern void spawnObjectAtActor(int object, int flag);
 extern void* isActorLoaded(int actor_type);
 extern void beaverControlSwitchCase(int unk0, int unk1, int unk2);
 extern void BonusBarrelCode(void);
@@ -220,6 +225,7 @@ extern int* printText(int* dl, short x, short y, float scale, char* str);
 extern void assessFlagMapping(int map, int id);
 extern void coinCBCollectHandle(int player, int obj, int is_homing);
 extern void displayItemOnHUD(int item, int unk0, int unk1);
+extern int getCollectableOffset(int item, int obj, int homing);
 
 extern void unkSpriteRenderFunc(int unk0);
 extern void unkSpriteRenderFunc_0(void);
@@ -246,6 +252,9 @@ extern void calculateScreenPosition(float x, float y, float z, float* x_store, f
 extern int getNewSaveTime(void);
 extern void unkBonusFunction(actorData* actor);
 extern void internalKasplatCode(int has_bp);
+
+extern void spriteActorGenericCode(float unk0);
+extern void assignGIFToActor(void* paad, void* sprite, int scale_f);
 
 //vanilla data
 extern float TransitionSpeed;
@@ -373,6 +382,8 @@ extern short MapVoid_MinZ;
 extern short MapVoid_MaxX;
 extern short MapVoid_MaxZ;
 
+extern bonus_barrel_info BonusBarrelData[54];
+
 extern short screenCenterX;
 extern short screenCenterY;
 extern float collisionPos[3];
@@ -457,6 +468,8 @@ extern short ChargeVelocities_1[7];
 extern short ChargeDeceleration[7];
 extern char* KongTextNames[8];
 
+extern actor_behaviour_def ActorBehaviourTable[128];
+
 //hack data
 extern int TestVariable;
 extern char LoadedHooks;
@@ -499,3 +512,5 @@ extern unsigned char InvertedControls;
 extern unsigned char WinCondition;
 extern unsigned char ChunkyModel;
 extern unsigned char EnemyInView;
+extern unsigned char ItemRandoOn;
+extern short ItemRando_FLUT[0x320];
