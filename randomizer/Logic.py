@@ -445,6 +445,8 @@ class LogicVarHolder:
         """Purchase items from shops and subtract price from logical coin counts."""
         if location.item is not None and location.item is not Items.NoItem:
             price = GetPriceOfMoveItem(location.item, self.settings, self.Slam, self.AmmoBelts, self.InstUpgrades)
+            if price is None:  # This probably shouldn't happen?
+                return
             # print("BuyShopItem for location: " + location.name)
             # print("Item: " + ItemList[location.item].name + " has Price: " + str(price))
             # If shared move, take the price from all kongs EVEN IF THEY AREN'T FREED YET
