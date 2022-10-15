@@ -904,7 +904,7 @@ def compileHintsOld(spoiler: Spoiler):
                 associated_hint += f" then {NameFromKong(new_order[x])}"
         hint_list.append(Hint(hint=associated_hint, repeats=3, kongs=new_order.copy(), subtype="k_rool"))
     # K. Rool Moves
-    if spoiler.settings.shuffle_items == "moves" and spoiler.move_data is not None:
+    if spoiler.settings.move_rando != "off" and spoiler.move_data is not None:
         krool_move_requirements = [0, 2, 1, 1, 4]
         total_moves_for_krool = 0
         for x in spoiler.settings.krool_order:

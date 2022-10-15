@@ -206,29 +206,31 @@ class Spoiler:
                 else:
                     prices[f"{ItemList[item].name}"] = price
 
-        if self.settings.shuffle_items != "none":
-            # Playthrough data
-            humanspoiler["Playthrough"] = self.playthrough
+        # Playthrough data
+        humanspoiler["Playthrough"] = self.playthrough
 
-            # Woth data
-            humanspoiler["Way of the Hoard"] = self.woth
+        # Woth data
+        humanspoiler["Way of the Hoard"] = self.woth
 
-            # Item location data
-            locations = OrderedDict()
+        # Item location data
+        for location, item in self.location_data.items():
+            if not LocationList[location].constant:
+                item_name = ItemList[item].name
+                location_name = LocationList[location].name
+                item_group = "Others"
+                if location_name in ("Diddy Kong", "Lanky Kong", "Tiny Kong", "Chunky Kong"):
+                    if not self.settings.kong_rando:
+                        continue
+                    item_group = "Kongs"
+                elif "Cranky" in location_name or "Funky" in location_name or "Candy" in location_name:
+                    if self.settings.move_rando == "off":
+                        continue
+                    item_group = "Shops"
+                if self.settings.random_prices != "vanilla" and item_group != "Others":
+                    if item_name in prices:
+                        item_name = f"{item_name} ({prices[item_name]})"
+                humanspoiler["Items"][item_group][location_name] = item_name
 
-            for location, item in self.location_data.items():
-                if not LocationList[location].constant:
-                    item_name = ItemList[item].name
-                    location_name = LocationList[location].name
-                    item_group = "Others"
-                    if location_name in ("Diddy Kong", "Lanky Kong", "Tiny Kong", "Chunky Kong"):
-                        item_group = "Kongs"
-                    elif "Cranky" in location_name or "Funky" in location_name or "Candy" in location_name:
-                        item_group = "Shops"
-                    if self.settings.random_prices != "vanilla" and item_group != "Others":
-                        if item_name in prices:
-                            item_name = f"{item_name} ({prices[item_name]})"
-                    humanspoiler["Items"][item_group][location_name] = item_name
         if len(humanspoiler["Items"]["Shops"].keys()) == 0:
             price_data = {}
             for price in prices:
