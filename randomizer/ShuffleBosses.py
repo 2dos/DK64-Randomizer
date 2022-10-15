@@ -135,8 +135,8 @@ def ShuffleBossesBasedOnOwnedItems(settings, ownedKongs: dict, ownedMoves: dict)
             bossTryingToBePlaced = "Dogadon 2"
             forestBossIndex = random.choice(forestBossOptions)
             forestBossKong = Kongs.chunky
-            
-        bossLevelOptions.remove(forestBossIndex)    
+
+        bossLevelOptions.remove(forestBossIndex)
         bossLevelOptions.remove(factoryBossIndex)
         # Place the rest randomly
         bossTryingToBePlaced = "the easy bosses to place (if this breaks here something REALLY strange happened)"
