@@ -59,6 +59,7 @@ def ShuffleItems(spoiler: Spoiler):
                     placement_info[location.map] = location.id
                     if location.id == -1:
                         is_reward = True
+                print(item_location.name)
                 location_data.append(
                     LocationSelection(
                         vanilla_item=item_location.type,
