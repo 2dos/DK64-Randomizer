@@ -37,14 +37,6 @@ class LocationSelection:
 
 def ShuffleItems(spoiler: Spoiler):
     """Shuffle items into assortment."""
-    spoiler.shuffled_item_types = (
-        Types.Banana,
-        Types.Blueprint,
-        Types.Coin,
-        Types.Key,
-        Types.Crown,
-        Types.Medal,
-    )
     successful_gen = False
     gen_counter = 5
     while not successful_gen and gen_counter > 0:
@@ -52,7 +44,7 @@ def ShuffleItems(spoiler: Spoiler):
         location_data = []
         for location_enum in LocationList:
             item_location = LocationList[location_enum]
-            if item_location.default_mapid_data is not None and item_location.type in spoiler.shuffled_item_types:
+            if item_location.default_mapid_data is not None and item_location.type in spoiler.settings.shuffled_location_types:
                 # Can be shuffled
                 placement_info = {}
                 is_reward = False

@@ -32,7 +32,7 @@ LogicRegions = {
     ]),
 
     Regions.ForestMinecarts: Region("Forest Minecarts", Levels.FungiForest, False, None, [
-        LocationLogic(Locations.ForestChunkyMinecarts, lambda l: l.ischunky or l.free_trade_items),
+        LocationLogic(Locations.ForestChunkyMinecarts, lambda l: l.ischunky or l.settings.free_trade_items),
     ], [], [
         TransitionFront(Regions.FungiForestStart, lambda l: True),
     ], Transitions.ForestMainToCarts

@@ -84,7 +84,7 @@ LogicRegions = {
 
     Regions.BananaFairyRoom: Region("Banana Fairy Room", Levels.DKIsles, False, None, [
         LocationLogic(Locations.CameraAndShockwave, lambda l: True),
-        LocationLogic(Locations.RarewareBanana, lambda l: l.BananaFairies >= 20 and (l.istiny or l.free_trade_items)),
+        LocationLogic(Locations.RarewareBanana, lambda l: l.BananaFairies >= 20 and (l.istiny or l.settings.free_trade_items)),
     ], [], [
         TransitionFront(Regions.IslesMain, lambda l: True, Transitions.IslesFairyToMain),
     ]),
