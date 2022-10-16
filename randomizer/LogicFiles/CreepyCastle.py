@@ -90,7 +90,7 @@ LogicRegions = {
     ]),
 
     Regions.CastleTinyRace: Region("Castle Tiny Race", Levels.CreepyCastle, False, None, [
-        LocationLogic(Locations.CastleTinyCarRace, lambda l: l.istiny),
+        LocationLogic(Locations.CastleTinyCarRace, lambda l: l.istiny or l.settings.free_trade_items),
     ], [], [
         TransitionFront(Regions.MuseumBehindGlass, lambda l: True, Transitions.CastleRaceToMuseum)
     ], Transitions.CastleMuseumToCarRace
@@ -104,15 +104,15 @@ LogicRegions = {
 
     Regions.Greenhouse: Region("Greenhouse", Levels.CreepyCastle, False, -1, [
         # Sprint is not actually required
-        LocationLogic(Locations.CastleLankyGreenhouse, lambda l: l.islanky),
-        LocationLogic(Locations.CastleBattleArena, lambda l: l.islanky),
+        LocationLogic(Locations.CastleLankyGreenhouse, lambda l: l.islanky or l.settings.free_trade_items),
+        LocationLogic(Locations.CastleBattleArena, lambda l: l.islanky or l.settings.free_trade_items),
     ], [], [
         TransitionFront(Regions.CreepyCastleMain, lambda l: True, Transitions.CastleGreenhouseStartToMain),
-        TransitionFront(Regions.CreepyCastleMain, lambda l: l.islanky, Transitions.CastleGreenhouseEndToMain),
+        TransitionFront(Regions.CreepyCastleMain, lambda l: l.islanky or l.settings.free_trade_items, Transitions.CastleGreenhouseEndToMain),
     ]),
 
     Regions.TrashCan: Region("Trash Can", Levels.CreepyCastle, False, -1, [
-        LocationLogic(Locations.CastleTinyTrashCan, lambda l: (l.saxophone or (l.feather and (l.homing or l.settings.hard_shooting))) and l.istiny),
+        LocationLogic(Locations.CastleTinyTrashCan, lambda l: (l.istiny and (l.saxophone or (l.feather and (l.homing or l.settings.hard_shooting)))) or (l.settings.free_trade_items and (l.HasInstrument(Kongs.any) or (l.HasGun(Kongs.any) and (l.homing or l.settings.hard_shooting))))),
     ], [], [
         TransitionFront(Regions.CreepyCastleMain, lambda l: True, Transitions.CastleTrashToMain),
     ]),
@@ -148,7 +148,7 @@ LogicRegions = {
     ]),
 
     Regions.CastleMinecarts: Region("Castle Minecarts", Levels.CreepyCastle, False, None, [
-        LocationLogic(Locations.CastleDonkeyMinecarts, lambda l: l.isdonkey),
+        LocationLogic(Locations.CastleDonkeyMinecarts, lambda l: l.isdonkey or l.settings.free_trade_items),
     ], [], [
         TransitionFront(Regions.Crypt, lambda l: True, Transitions.CastleCartsToCrypt),
     ], Transitions.CastleCryptToCarts

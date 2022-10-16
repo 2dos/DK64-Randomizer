@@ -6,6 +6,7 @@ class Types(IntEnum):
     """Location/item type enum."""
 
     Banana = auto()
+    BlueprintBanana = auto()
     Shop = auto()
     Blueprint = auto()
     Fairy = auto()
