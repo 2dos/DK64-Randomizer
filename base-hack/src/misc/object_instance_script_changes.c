@@ -28,6 +28,7 @@
 #define CASTLE_DUNGEON 0xA3
 #define CASTLE_TREE 0xA4
 #define CAVES_ROTATING 0x59
+#define FUNGI_ANTHILL 0x34
 
 #define FUNGI_MINECART_GRATE 0x22
 #define SEASICK_SHIP 0x27
@@ -146,6 +147,8 @@
 #define CHEST_PEARL_0 0x0
 #define MILLREAR_CHUNKYCHECK_RATE 0xF
 #define ROTATING_ROOM_OBJ 0x0
+#define FUNGI_BEAN 0x5
+#define FUNGI_BEANCONTROLLER 0x4D
 
 #define FACTORY_LARGEMETALSECTION 0x0
 #define FACTORY_PIANO 0x14
@@ -802,6 +805,8 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 					} else {
 						initiateTransition_0(55, 0, 0, 0);
 					}
+				} else if (param2 == FUNGI_BEANCONTROLLER) {
+					return checkFlag(FLAG_COLLECTABLE_BEAN, 0);
 				}
 				break;
 			case CASTLE_BALLROOM:
@@ -1017,6 +1022,15 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 					if (checkFlag(JAPESMOUNTAINSPAWNED,0)) {
 						behaviour_pointer->current_state = 20;
 						behaviour_pointer->next_state = 20;
+					}
+				}
+				break;
+			case FUNGI_ANTHILL:
+				if (param2 == FUNGI_BEAN) {
+					if (index == 0) {
+						return checkFlag(FLAG_COLLECTABLE_BEAN, 0);
+					} else if (index == 1) {
+						setFlag(FLAG_COLLECTABLE_BEAN, 1, 0);
 					}
 				}
 				break;
