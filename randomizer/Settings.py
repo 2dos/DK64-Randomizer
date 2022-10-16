@@ -348,6 +348,7 @@ class Settings:
         self.tns_location_rando = False
         self.minigames_list_selected = []
         self.misc_changes_selected = []
+        self.enemies_selected = []
         self.helm_hurry = False
         self.colorblind_mode = "off"
         self.win_condition = "beat_krool"

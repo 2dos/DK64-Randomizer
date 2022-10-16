@@ -36,6 +36,7 @@ from ui.GenSpoiler import GenerateSpoiler
 from randomizer.Patching.UpdateHints import PushHints, wipeHints
 from randomizer.Patching.DoorPlacer import place_door_locations
 from randomizer.Lists.QoL import QoLSelector
+from randomizer.Lists.EnemyTypes import EnemySelector
 
 # from randomizer.Spoiler import Spoiler
 from randomizer.Settings import Settings
@@ -389,6 +390,13 @@ def patching_response(responded_data):
     if spoiler.settings.coin_door_open in ["need_both", "need_rw"]:
         ROM().seek(sav + 0x150)
         ROM().write(spoiler.settings.medal_requirement)
+
+    print(spoiler.settings.enemies_selected)
+    if len(spoiler.settings.enemies_selected) == 0 and (spoiler.settings.enemy_rando or spoiler.settings.crown_enemy_rando != "off"):
+        lst = []
+        for enemy in EnemySelector:
+            lst.append(enemy["value"])
+        spoiler.settings.enemies_selected = lst
 
     # randomize_dktv()
     randomize_entrances(spoiler)

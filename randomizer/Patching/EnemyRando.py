@@ -2,13 +2,14 @@
 import random
 
 import js
-from randomizer.Lists.EnemyTypes import Enemies, EnemyMetaData
+from randomizer.Lists.EnemyTypes import Enemies, EnemyMetaData, convertEnemyName
+from randomizer.Enums.EnemySubtypes import EnemySubtype
 from randomizer.Lists.MapsAndExits import Maps
 from randomizer.Patching.Patcher import ROM
 from randomizer.Spoiler import Spoiler
 
 
-def getBalancedCrownEnemyRando(crown_setting, damage_ohko_setting):
+def getBalancedCrownEnemyRando(spoiler: Spoiler, crown_setting, damage_ohko_setting):
     """Get array of weighted enemies."""
     # this library will contain a list for every enemy it needs to generate
     enemy_swaps_library = {}
@@ -38,26 +39,28 @@ def getBalancedCrownEnemyRando(crown_setting, damage_ohko_setting):
         # fill in the lists with the possibilities that belong in them.
         for enemy in EnemyMetaData:
             if EnemyMetaData[enemy].crown_enabled and enemy is not Enemies.GetOut:
-                every_enemy.append(enemy)
-                if EnemyMetaData[enemy].disruptive <= 1:
-                    disruptive_max_1.append(enemy)
-                if EnemyMetaData[enemy].kasplat is True:
-                    disruptive_at_most_kasplat.append(enemy)
-                elif EnemyMetaData[enemy].disruptive == 0:
-                    disruptive_at_most_kasplat.append(enemy)
-                    disruptive_0.append(enemy)
+                if convertEnemyName(EnemyMetaData[enemy].name) in spoiler.settings.enemies_selected:
+                    every_enemy.append(enemy)
+                    if EnemyMetaData[enemy].disruptive <= 1:
+                        disruptive_max_1.append(enemy)
+                    if EnemyMetaData[enemy].kasplat is True:
+                        disruptive_at_most_kasplat.append(enemy)
+                    elif EnemyMetaData[enemy].disruptive == 0:
+                        disruptive_at_most_kasplat.append(enemy)
+                        disruptive_0.append(enemy)
         # the legacy_hard_mode list is trickier to fill, but here goes:
         bias = 2
         for enemy in EnemyMetaData.keys():
             if EnemyMetaData[enemy].crown_enabled:
-                base_weight = EnemyMetaData[enemy].crown_weight
-                weight_diff = abs(base_weight - bias)
-                new_weight = abs(10 - weight_diff)
-                if enemy == Enemies.GetOut:
-                    new_weight = 1
-                if damage_ohko_setting is False or enemy is not Enemies.GetOut:
-                    for count in range(new_weight):
-                        legacy_hard_mode.append(enemy)
+                if convertEnemyName(EnemyMetaData[enemy].name) in spoiler.settings.enemies_selected:
+                    base_weight = EnemyMetaData[enemy].crown_weight
+                    weight_diff = abs(base_weight - bias)
+                    new_weight = abs(10 - weight_diff)
+                    if enemy == Enemies.GetOut:
+                        new_weight = 1
+                    if damage_ohko_setting is False or enemy is not Enemies.GetOut:
+                        for count in range(new_weight):
+                            legacy_hard_mode.append(enemy)
         # picking enemies to put in the crown battles
         if crown_setting == "easy":
             for map_id in enemy_swaps_library:
@@ -278,8 +281,9 @@ def randomize_enemies(spoiler: Spoiler):
     minigame_maps_total.extend(minigame_maps_nolimit)
     minigame_maps_total.extend(minigame_maps_beavers)
     bbbarrage_maps = (Maps.BusyBarrelBarrageEasy, Maps.BusyBarrelBarrageNormal, Maps.BusyBarrelBarrageHard)
+    # Define Enemy Classes, Used for detection of if an enemy will be replaced
     enemy_classes = {
-        "ground_simple": [
+        EnemySubtype.GroundSimple: [
             Enemies.BeaverBlue,
             Enemies.KlaptrapGreen,
             Enemies.BeaverGold,
@@ -294,7 +298,7 @@ def randomize_enemies(spoiler: Spoiler):
             Enemies.SpiderSmall,
             Enemies.Ghost,
         ],
-        "air": [
+        EnemySubtype.Air: [
             Enemies.ZingerCharger,
             Enemies.ZingerLime,
             Enemies.ZingerRobo,
@@ -302,7 +306,7 @@ def randomize_enemies(spoiler: Spoiler):
             # Enemies.Bug, # Crashes on N64
             # Enemies.Book, # Causes way too many problems
         ],
-        "ground_beefyboys": [
+        EnemySubtype.GroundBeefy: [
             Enemies.Klump,
             Enemies.RoboKremling,
             # Enemies.EvilTomato, # Causes way too many problems
@@ -313,20 +317,49 @@ def randomize_enemies(spoiler: Spoiler):
             Enemies.KlaptrapRed,
             Enemies.Guard,
         ],
-        "water": [
+        EnemySubtype.Water: [
             Enemies.Shuri,
             Enemies.Gimpfish,
             Enemies.Pufftup,
         ],
     }
+    replacement_priority = {
+        EnemySubtype.GroundSimple: [EnemySubtype.GroundBeefy, EnemySubtype.Water, EnemySubtype.Air],
+        EnemySubtype.GroundBeefy: [EnemySubtype.GroundSimple, EnemySubtype.Water, EnemySubtype.Air],
+        EnemySubtype.Water: [EnemySubtype.Air, EnemySubtype.GroundSimple, EnemySubtype.GroundBeefy],
+        EnemySubtype.Air: [EnemySubtype.GroundSimple, EnemySubtype.GroundBeefy, EnemySubtype.Water],
+    }
+    # Define Enemies that can be placed in those classes
+    enemy_placement_classes = {}
+    banned_classes = []
+    for enemy_class in enemy_classes:
+        class_list = []
+        for enemy in enemy_classes[enemy_class]:
+            if convertEnemyName(EnemyMetaData[enemy].name) in spoiler.settings.enemies_selected:
+                class_list.append(enemy)
+        if len(class_list) == 0:
+            # Nothing present, use backup
+            for repl_type in replacement_priority[enemy_class]:
+                if len(class_list) == 0:
+                    for enemy in enemy_classes[repl_type]:
+                        if convertEnemyName(EnemyMetaData[enemy].name) in spoiler.settings.enemies_selected:
+                            class_list.append(enemy)
+        if len(class_list) > 0:
+            enemy_placement_classes[enemy_class] = class_list.copy()
+        else:
+            # Replace Nothing
+            banned_classes.append(enemy_class)
+    for enemy_class in banned_classes:
+        del enemy_classes[enemy_class]
+    # Crown Enemy Stuff
     crown_enemies_library = {}
     crown_enemies = []
     for enemy in EnemyMetaData:
         if EnemyMetaData[enemy].crown_enabled is True:
             crown_enemies.append(enemy)
-    if spoiler.settings.enemy_rando or spoiler.settings.kasplat_rando or spoiler.settings.crown_enemy_rando != "off":  # TODO: Add option for crown enemy rando
+    if spoiler.settings.enemy_rando or spoiler.settings.kasplat_rando or spoiler.settings.crown_enemy_rando != "off":
         boolean_damage_is_ohko = spoiler.settings.damage_amount == "ohko"
-        crown_enemies_library = getBalancedCrownEnemyRando(spoiler.settings.crown_enemy_rando, boolean_damage_is_ohko)
+        crown_enemies_library = getBalancedCrownEnemyRando(spoiler, spoiler.settings.crown_enemy_rando, boolean_damage_is_ohko)
         minigame_enemies_simple = []
         minigame_enemies_beatable = []
         minigame_enemies_nolimit = []
@@ -361,7 +394,7 @@ def randomize_enemies(spoiler: Spoiler):
             for enemy_class in enemy_classes:
                 arr = []
                 for x in range(spawner_count):
-                    arr.append(random.choice(enemy_classes[enemy_class]))
+                    arr.append(random.choice(enemy_placement_classes[enemy_class]))
                 enemy_swaps[enemy_class] = arr
             offset += 2
             for x in range(spawner_count):

@@ -54,6 +54,7 @@
     "coin_door_open":"need_both",
     "minigames_list_selected":["stealthy_snoop", "beaver_bother"],
     "misc_changes_selected":[],
+    "enemies_selected":[],
     "medal_requirement":15,
     "quality_of_life":true,
     "shorten_boss":true,
