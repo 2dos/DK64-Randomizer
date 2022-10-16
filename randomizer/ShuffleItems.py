@@ -7,6 +7,7 @@ from randomizer.Enums.Locations import Locations
 from randomizer.Enums.Types import Types
 from randomizer.Spoiler import Spoiler
 from randomizer.Enums.Kongs import Kongs
+from randomizer.Lists.Item import NameFromKong
 
 
 class LocationSelection:
@@ -170,5 +171,8 @@ def ShuffleItems(spoiler: Spoiler):
         name = "Nothing"
         if loc.new_item is not None:
             name = loc.new_item.name
-        human_item_data[loc.name] = name
+        location_name = loc.name
+        if "Kasplat" in location_name:
+            location_name = f"{location_name.split('Kasplat')[0]} {NameFromKong(loc.old_kong)} Kasplat"
+        human_item_data[location_name] = name
     spoiler.human_item_assignment = human_item_data

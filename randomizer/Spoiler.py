@@ -408,19 +408,28 @@ class Spoiler:
                 "cb": " Bananas",
                 "balloons": " Balloons",
             }
-            humanspoiler["Colored Banana Locations"] = {
-                "Jungle Japes": [],
-                "Angry Aztec": [],
-                "Frantic Factory": [],
-                "Gloomy Galleon": [],
-                "Fungi Forest": [],
-                "Crystal Caves": [],
-                "Creepy Castle": [],
-            }
+            humanspoiler["Colored Banana Locations"] = {}
+            cb_levels = ["Japes", "Aztec", "Factory", "Galleon", "Fungi", "Caves", "Castle"]
+            cb_kongs = ["Donkey", "Diddy", "Lanky", "Tiny", "Chunky"]
+            for lvl in cb_levels:
+                for kng in cb_kongs:
+                    humanspoiler["Colored Banana Locations"][f"{lvl} {kng}"] = {
+                        "Balloons": "",
+                        "Bananas": "",
+                    }
             for group in self.cb_placements:
-                humanspoiler["Colored Banana Locations"][level_dict[group["level"]]].append(
-                    NameFromKong(group["kong"]) + human_cb_type_map[group["type"]] + ": " + Maps(group["map"]).name + " - " + group["name"]
-                )
+                lvl_name = level_dict[group["level"]]
+                idx = 1
+                if group["level"] == Levels.FungiForest:
+                    idx = 0
+                map_name = "".join(map(lambda x: x if x.islower() else " " + x, Maps(group["map"]).name)).strip()
+                join_combos = ["2 D Ship", "5 D Ship", "5 D Temple"]
+                for combo in join_combos:
+                    if combo in map_name:
+                        map_name = map_name.replace(combo, combo.replace(" ", ""))
+                humanspoiler["Colored Banana Locations"][f"{lvl_name.split(' ')[idx]} {NameFromKong(group['kong'])}"][
+                    human_cb_type_map[group["type"]].strip()
+                ] += f"{map_name.strip()}: {group['name']}<br>"
 
         return json.dumps(humanspoiler, indent=4)
 
