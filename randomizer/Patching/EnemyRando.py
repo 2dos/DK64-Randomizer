@@ -9,6 +9,80 @@ from randomizer.Patching.Patcher import ROM
 from randomizer.Spoiler import Spoiler
 
 
+class PkmnSnapEnemy:
+    """Class which determines if an enemy is available for the pkmn snap goal."""
+
+    def __init__(self, enemy):
+        """Initialize with given parameters."""
+        self.enemy = enemy
+        if enemy in (Enemies.KasplatDK, Enemies.KasplatDiddy, Enemies.KasplatLanky, Enemies.KasplatTiny, Enemies.KasplatChunky, Enemies.Book, Enemies.EvilTomato):
+            # Always spawned, not in pool
+            self.spawned = True
+        else:
+            self.spawned = False
+        self.default = self.spawned
+
+    def addEnemy(self):
+        """Add enemy as spawned."""
+        self.spawned = True
+
+    def reset(self):
+        """Reset enemy to default state."""
+        self.spawned = self.default
+
+
+pkmn_snap_enemies = [
+    PkmnSnapEnemy(Enemies.Kaboom),
+    PkmnSnapEnemy(Enemies.BeaverBlue),
+    PkmnSnapEnemy(Enemies.Book),
+    PkmnSnapEnemy(Enemies.Klobber),
+    PkmnSnapEnemy(Enemies.ZingerCharger),
+    PkmnSnapEnemy(Enemies.Klump),
+    PkmnSnapEnemy(Enemies.KlaptrapGreen),
+    PkmnSnapEnemy(Enemies.ZingerLime),
+    PkmnSnapEnemy(Enemies.KlaptrapPurple),
+    PkmnSnapEnemy(Enemies.KlaptrapRed),
+    PkmnSnapEnemy(Enemies.BeaverGold),
+    PkmnSnapEnemy(Enemies.MushroomMan),
+    PkmnSnapEnemy(Enemies.Ruler),
+    PkmnSnapEnemy(Enemies.RoboKremling),
+    PkmnSnapEnemy(Enemies.Kremling),
+    PkmnSnapEnemy(Enemies.KasplatDK),
+    PkmnSnapEnemy(Enemies.KasplatDiddy),
+    PkmnSnapEnemy(Enemies.KasplatLanky),
+    PkmnSnapEnemy(Enemies.KasplatTiny),
+    PkmnSnapEnemy(Enemies.KasplatChunky),
+    PkmnSnapEnemy(Enemies.Guard),
+    PkmnSnapEnemy(Enemies.ZingerRobo),
+    PkmnSnapEnemy(Enemies.Krossbones),
+    PkmnSnapEnemy(Enemies.Shuri),
+    PkmnSnapEnemy(Enemies.Gimpfish),
+    PkmnSnapEnemy(Enemies.MrDice0),
+    PkmnSnapEnemy(Enemies.SirDomino),
+    PkmnSnapEnemy(Enemies.MrDice1),
+    PkmnSnapEnemy(Enemies.FireballGlasses),
+    PkmnSnapEnemy(Enemies.SpiderSmall),
+    PkmnSnapEnemy(Enemies.Bat),
+    PkmnSnapEnemy(Enemies.EvilTomato),
+    PkmnSnapEnemy(Enemies.Ghost),
+    PkmnSnapEnemy(Enemies.Pufftup),
+    PkmnSnapEnemy(Enemies.Kosha),
+]
+
+
+def resetPkmnSnap():
+    """Reset Pokemon Snap Listing."""
+    for enemy in pkmn_snap_enemies:
+        enemy.reset()
+
+
+def setPkmnSnapEnemy(focused_enemy):
+    """Set enemy to being spawned."""
+    for enemy in pkmn_snap_enemies:
+        if enemy.enemy == focused_enemy:
+            enemy.addEnemy()
+
+
 def getBalancedCrownEnemyRando(spoiler: Spoiler, crown_setting, damage_ohko_setting):
     """Get array of weighted enemies."""
     # this library will contain a list for every enemy it needs to generate
@@ -149,6 +223,7 @@ def randomize_enemies(spoiler: Spoiler):
             ],
         }
     ]
+    resetPkmnSnap()
     valid_maps = [
         Maps.JapesMountain,
         Maps.JungleJapes,
@@ -579,3 +654,22 @@ def randomize_enemies(spoiler: Spoiler):
                     elif spawner["enemy_id"] == Enemies.BattleCrownController:
                         ROM().seek(cont_map_spawner_address + spawner["offset"] + 0xB)
                         ROM().writeMultipleBytes(crown_timer, 1)  # Determine Crown length. DK64 caps at 255 seconds
+            if cont_map_id in valid_maps and cont_map_id != Maps.CastleBoss:
+                # Check Pokemon Snap
+                for spawner in vanilla_spawners:
+                    check = True
+                    if cont_map_id == Maps.CrystalCaves and spawner["index"] < 10:
+                        # Prevent Unused Enemies in Caves
+                        check = False
+                    if check:
+                        ROM().seek(cont_map_spawner_address + spawner["offset"])
+                        setPkmnSnapEnemy(int.from_bytes(ROM().readBytes(1), "big"))
+            values = [0, 0, 0, 0, 0]
+            for enemy_index, enemy in enumerate(pkmn_snap_enemies):
+                if enemy.spawned:
+                    offset = enemy_index >> 3
+                    shift = enemy_index & 7
+                    values[offset] |= 1 << shift
+            ROM().seek(spoiler.settings.rom_data + 0x117)
+            for value in values:
+                ROM().writeMultipleBytes(value, 1)

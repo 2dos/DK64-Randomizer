@@ -968,9 +968,52 @@ with open(newROMName, "r+b") as fh:
     fh.write((2).to_bytes(1, "big"))
 
     # Pkmn Snap Default Enemies
+    pkmn_snap_enemies = [
+        True,  # Kaboom
+        True,  # Blue Beaver
+        True,  # Book
+        True,  # Klobber
+        True,  # Zinger (Charger)
+        True,  # Klump
+        True,  # Klaptrap (Green)
+        True,  # Zinger (Bomber)
+        True,  # Klaptrap (Purple)
+        False,  # Klaptrap (Red)
+        False,  # Gold Beaver
+        True,  # Mushroom Man
+        True,  # Ruler
+        True,  # Robo-Kremling
+        True,  # Kremling
+        True,  # Kasplat (DK)
+        True,  # Kasplat (Diddy)
+        True,  # Kasplat (Lanky)
+        True,  # Kasplat (Tiny)
+        True,  # Kasplat (Chunky)
+        False,  # Kop
+        True,  # Robo-Zinger
+        True,  # Krossbones
+        True,  # Shuri
+        True,  # Gimpfish
+        True,  # Mr. Dice (Green)
+        True,  # Sir Domino
+        True,  # Mr. Dice (Red)
+        True,  # Fireball w/ Glasses
+        True,  # Small Spider
+        True,  # Bat
+        True,  # Tomato
+        True,  # Ghost
+        True,  # Pufftup
+        True,  # Kosha
+    ]
+    values = [0, 0, 0, 0, 0]
+    for pi, p in enumerate(pkmn_snap_enemies):
+        if p is True:
+            offset = pi >> 3
+            shift = pi & 7
+            values[offset] |= 1 << shift
     fh.seek(0x1FED020 + 0x117)
     for x in range(5):
-        fh.write((0xFF).to_bytes(1, "big"))
+        fh.write(values[x].to_bytes(1, "big"))
 
     # Shop Hints
     fh.seek(0x1FED020 + 0x14B)
