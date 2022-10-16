@@ -17,7 +17,7 @@ from randomizer.Lists.ShufflableExit import ShufflableExits
 def PlaceConstants(settings):
     """Place items which are to be put in a hard-coded location."""
     # Handle key placements
-    if settings.shuffle_loading_zones == "levels" and settings.shuffle_items == "none":
+    if settings.shuffle_loading_zones == "levels" and Types.Key not in settings.shuffled_location_types:
         # Place keys in the lobbies they normally belong in
         # Ex. Whatever level is in the Japes lobby entrance will always have the Japes key
         for level in LevelInfoList.values():
@@ -42,8 +42,7 @@ def PlaceConstants(settings):
         typesOfItemsShuffled.append(Types.Shockwave)
     if settings.shuffle_loading_zones == "levels":
         typesOfItemsShuffled.append(Types.Key)
-    if settings.shuffle_items == "phase1":
-        typesOfItemsShuffled.extend([Types.Banana, Types.Crown, Types.Blueprint, Types.Key, Types.Medal, Types.Coin])
+    typesOfItemsShuffled.extend(settings.shuffled_location_types)
     # Invert this list because I think it'll be faster
     typesOfItemsNotShuffled = [typ for typ in Types if typ not in typesOfItemsShuffled]
     # Place the default item at every location of a type we're not shuffling
@@ -100,13 +99,19 @@ def PlaceConstants(settings):
 def AllItems(settings):
     """Return all shuffled items."""
     allItems = []
-    if settings.shuffle_items != "none":
+    if Types.Blueprint in settings.shuffled_location_types:
         allItems.extend(Blueprints(settings))
-        allItems.extend(HighPriorityItems(settings))
-        allItems.extend(LowPriorityItems(settings))
-        allItems.extend(ExcessItems(settings))
+    if Types.Banana in settings.shuffled_location_types:
+        allItems.extend(GoldenBananaItems())
+    if Types.Coin in settings.shuffled_location_types:
+        allItems.extend(CompanyCoinItems())
+    if Types.Crown in settings.shuffled_location_types:
+        allItems.extend(BattleCrownItems())
+    if Types.Key in settings.shuffled_location_types:
         allItems.extend(Keys(settings))
-    elif settings.move_rando != "off":
+    if Types.Medal in settings.shuffled_location_types:
+        allItems.extend(BananaMedalItems())
+    if settings.move_rando != "off" or Types.Shop in settings.shuffled_location_types:
         allItems.extend(DonkeyMoves)
         allItems.extend(DiddyMoves)
         allItems.extend(LankyMoves)
@@ -204,12 +209,27 @@ def Blueprints(settings):
 
 def BlueprintAssumedItems(settings):
     """Items which are assumed to be owned while placing blueprints."""
-    return Keys(settings) + LowPriorityItems(settings) + ExcessItems(settings)
+    return Keys(settings) + KeyAssumedItems()
 
 
-def KeyAssumedItems(settings):
+def KeyAssumedItems():
     """Items which are assumed to be owned while placing keys."""
-    return LowPriorityItems(settings) + ExcessItems(settings)
+    return CompanyCoinItems() + CoinAssumedItems()
+
+
+def CoinAssumedItems():
+    """Items which are assumed to be owned while placing keys."""
+    return BattleCrownItems() + CrownAssumedItems()
+
+
+def CrownAssumedItems():
+    """Items which are assumed to be owned while placing keys."""
+    return BananaMedalItems() + MedalAssumedItems()
+
+
+def MedalAssumedItems():
+    """Items which are assumed to be owned while placing keys."""
+    return GoldenBananaItems()
 
 
 def Keys(settings):
@@ -316,6 +336,10 @@ def Upgrades(settings):
                     Items.GorillaGone,
                 ]
             )
+        upgrades.append(Items.HomingAmmo)
+        upgrades.append(Items.SniperSight)
+        upgrades.extend(itertools.repeat(Items.ProgressiveAmmoBelt, 2))
+        upgrades.extend(itertools.repeat(Items.ProgressiveInstrumentUpgrade, 3))
     if not settings.unlock_fairy_shockwave:
         if settings.shockwave_status == "vanilla" or settings.shockwave_status == "shuffled":
             upgrades.append(Items.CameraAndShockwave)
@@ -327,10 +351,7 @@ def Upgrades(settings):
 
 
 def HighPriorityItems(settings):
-    """Get all items which are of high importance logically.
-
-    Placing these first prevents fill failures.
-    """
+    """Get all items which are of high importance logically."""
     itemPool = []
     itemPool.extend(Kongs(settings))
     itemPool.extend(Guns(settings))
@@ -339,52 +360,32 @@ def HighPriorityItems(settings):
     return itemPool
 
 
-def HighPriorityAssumedItems(settings):
-    """Items which are assumed to be owned while placing high priority items."""
-    return Blueprints(settings) + Keys(settings) + LowPriorityItems(settings) + ExcessItems(settings)
-
-
-def LowPriorityItems(settings):
-    """While most of these items still have logical value they are not as important."""
+def CompanyCoinItems():
+    """Return the Company Coin items to be placed."""
     itemPool = []
-
-    itemPool.extend(itertools.repeat(Items.GoldenBanana, 100))
-    itemPool.extend(itertools.repeat(Items.BananaMedal, 15))
-    if not settings.crown_door_open:
-        itemPool.extend(itertools.repeat(Items.BattleCrown, 4))
-    if not settings.coin_door_open:
-        itemPool.append(Items.NintendoCoin)
-        itemPool.append(Items.RarewareCoin)
-    if not settings.unlock_all_moves:
-        itemPool.append(Items.SniperSight)
-        if not settings.hard_shooting:
-            itemPool.append(Items.HomingAmmo)
+    itemPool.append(Items.NintendoCoin)
+    itemPool.append(Items.RarewareCoin)
     return itemPool
 
 
-def ExcessItems(settings):
-    """Items which either have no logical value or are excess copies of those that do."""
+def GoldenBananaItems():
+    """Return a list of GBs to be placed."""
     itemPool = []
+    itemPool.extend(itertools.repeat(Items.GoldenBanana, 161))  # 40 Blueprint GBs are always already placed (see Types.BlueprintBanana)
+    return itemPool
 
-    if not settings.unlock_all_moves:
-        # Weapon upgrades
-        if settings.hard_shooting:
-            itemPool.append(Items.HomingAmmo)
-        itemPool.extend(itertools.repeat(Items.ProgressiveAmmoBelt, 2))
 
-        # Instrument upgrades
-        itemPool.extend(itertools.repeat(Items.ProgressiveInstrumentUpgrade, 3))
+def BananaMedalItems():
+    """Return a list of Banana Medals to be placed."""
+    itemPool = []
+    itemPool.extend(itertools.repeat(Items.BananaMedal, 40))
+    return itemPool
 
-    # Collectables
-    itemPool.extend(itertools.repeat(Items.GoldenBanana, 61))  # Blueprint GBs are already placed
-    itemPool.extend(itertools.repeat(Items.BananaMedal, 25))
-    itemPool.extend(itertools.repeat(Items.BattleCrown, 6))
-    if settings.crown_door_open:
-        itemPool.extend(itertools.repeat(Items.BattleCrown, 4))
-    if settings.coin_door_open:
-        itemPool.append(Items.NintendoCoin)
-        itemPool.append(Items.RarewareCoin)
 
+def BattleCrownItems():
+    """Return a list of Crowns to be placed."""
+    itemPool = []
+    itemPool.extend(itertools.repeat(Items.BattleCrown, 10))
     return itemPool
 
 

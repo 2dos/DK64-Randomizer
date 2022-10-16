@@ -356,8 +356,8 @@ class Settings:
     def shuffle_prices(self):
         """Price randomization. Reuseable if we need to reshuffle prices."""
         # Price Rando
-        if self.shuffle_items == "phase2":
-            # We don't know what's going to be in the shops in full item rando, so we generate prices as we place items
+        if Types.Shop in self.shuffled_location_types:
+            # We don't know what's going to be in the shops if they're shuffled into the main pool, so we generate prices as we place items
             self.prices = {}
         elif self.random_prices != "vanilla":
             self.prices = RandomizePrices(self.random_prices)
@@ -365,6 +365,10 @@ class Settings:
     def resolve_settings(self):
         """Resolve settings which are not directly set through the UI."""
         kongs = GetKongs()
+
+        self.shuffled_location_types = []
+        if self.shuffle_items == "phase1":
+            self.shuffled_location_types = [Types.Banana, Types.Crown, Types.Blueprint, Types.Key, Types.Medal, Types.Coin]
 
         self.shuffle_prices()
 
@@ -575,8 +579,8 @@ class Settings:
         """Calculate (or recalculate) valid locations for items by type."""
         self.valid_locations = {}
         self.valid_locations[Types.Kong] = [Locations.DiddyKong, Locations.LankyKong, Locations.TinyKong, Locations.ChunkyKong]
-        # With no item shuffle or in phase 1, shuffle moves within shops
-        if self.shuffle_items in ("none", "phase1"):
+        # If shops are not shuffled into the larger pool, calculate shop locations for shop-bound moves
+        if self.move_rando != "off" and Types.Shop not in self.shuffled_location_types:
             self.valid_locations[Types.Shop] = {}
             if self.move_rando == "on":
                 self.valid_locations[Types.Shop][Kongs.donkey] = DonkeyMoveLocations.copy()
@@ -586,15 +590,15 @@ class Settings:
                 if self.shockwave_status == "vanilla":
                     self.valid_locations[Types.Shop][Kongs.tiny].remove(Locations.CameraAndShockwave)
                 self.valid_locations[Types.Shop][Kongs.chunky] = ChunkyMoveLocations.copy()
-            else:
+            elif self.move_rando == "cross_purchase":
                 allKongMoveLocations = DonkeyMoveLocations.copy()
                 allKongMoveLocations.update(DiddyMoveLocations.copy())
                 allKongMoveLocations.update(TinyMoveLocations.copy())
                 allKongMoveLocations.update(ChunkyMoveLocations.copy())
                 allKongMoveLocations.update(LankyMoveLocations.copy())
-                if self.training_barrels == "shuffled":
+                if self.training_barrels == "shuffled" and Types.TrainingBarrel not in self.shuffled_location_types:
                     allKongMoveLocations.update(TrainingBarrelLocations.copy())
-                if self.shockwave_status == "vanilla":
+                if self.shockwave_status == "vanilla" and Types.Shockwave not in self.shuffled_location_types:
                     allKongMoveLocations.remove(Locations.CameraAndShockwave)
                 self.valid_locations[Types.Shop][Kongs.donkey] = allKongMoveLocations
                 self.valid_locations[Types.Shop][Kongs.diddy] = allKongMoveLocations
@@ -602,30 +606,35 @@ class Settings:
                 self.valid_locations[Types.Shop][Kongs.tiny] = allKongMoveLocations
                 self.valid_locations[Types.Shop][Kongs.chunky] = allKongMoveLocations
             self.valid_locations[Types.Shop][Kongs.any] = SharedShopLocations
-            if self.shockwave_status != "vanilla":
+            if self.shockwave_status != "vanilla" and Types.Shockwave not in self.shuffled_location_types:
                 self.valid_locations[Types.Shop][Kongs.any].add(Locations.CameraAndShockwave)
-            if self.training_barrels == "shuffled":
+            if self.training_barrels == "shuffled" and Types.TrainingBarrel not in self.shuffled_location_types:
                 self.valid_locations[Types.Shop][Kongs.any].update(TrainingBarrelLocations.copy())
             self.valid_locations[Types.Shockwave] = self.valid_locations[Types.Shop][Kongs.any]
             self.valid_locations[Types.TrainingBarrel] = self.valid_locations[Types.Shop][Kongs.any]
-        # Phase 1:
-        # - Moves are in shops
-        # - Shuffled item and location pool consists of (GBs, Crowns, Blueprints, Medals, Keys, special Coins)
-        if self.shuffle_items == "phase1":  # No shops shuffled in (name tbd)
-            # Don't put BPs at Key or Crown locations
-            blueprintLocations = [location for location in LocationList if LocationList[location].type in (Types.Banana, Types.Blueprint, Types.Medal, Types.Coin)]
-            self.valid_locations[Types.Blueprint] = {}
-            self.valid_locations[Types.Blueprint][Kongs.donkey] = [location for location in blueprintLocations if LocationList[location].kong in (Kongs.donkey, Kongs.any)]
-            self.valid_locations[Types.Blueprint][Kongs.diddy] = [location for location in blueprintLocations if LocationList[location].kong in (Kongs.diddy, Kongs.any)]
-            self.valid_locations[Types.Blueprint][Kongs.lanky] = [location for location in blueprintLocations if LocationList[location].kong in (Kongs.lanky, Kongs.any)]
-            self.valid_locations[Types.Blueprint][Kongs.tiny] = [location for location in blueprintLocations if LocationList[location].kong in (Kongs.tiny, Kongs.any)]
-            self.valid_locations[Types.Blueprint][Kongs.chunky] = [location for location in blueprintLocations if LocationList[location].kong in (Kongs.chunky, Kongs.any)]
-            shuffledLocations = [location for location in LocationList if LocationList[location].type in (Types.Banana, Types.Crown, Types.Blueprint, Types.Key, Types.Medal, Types.Coin)]
-            self.valid_locations[Types.Banana] = shuffledLocations
-            self.valid_locations[Types.Crown] = shuffledLocations
-            self.valid_locations[Types.Key] = shuffledLocations
-            self.valid_locations[Types.Medal] = shuffledLocations
-            self.valid_locations[Types.Coin] = shuffledLocations
+
+        if any(self.shuffled_location_types):
+            shuffledLocations = [location for location in LocationList if LocationList[location].type in self.shuffled_location_types]
+            if Types.Blueprint in self.shuffled_location_types:
+                # Blueprints are banned from Key or Crown locations
+                blueprintValidTypes = [typ for typ in self.shuffled_location_types if typ not in (Types.Crown, Types.Key)]
+                blueprintLocations = [location for location in LocationList if LocationList[location].type in blueprintValidTypes]
+                self.valid_locations[Types.Blueprint] = {}
+                self.valid_locations[Types.Blueprint][Kongs.donkey] = [location for location in blueprintLocations if LocationList[location].kong in (Kongs.donkey, Kongs.any)]
+                self.valid_locations[Types.Blueprint][Kongs.diddy] = [location for location in blueprintLocations if LocationList[location].kong in (Kongs.diddy, Kongs.any)]
+                self.valid_locations[Types.Blueprint][Kongs.lanky] = [location for location in blueprintLocations if LocationList[location].kong in (Kongs.lanky, Kongs.any)]
+                self.valid_locations[Types.Blueprint][Kongs.tiny] = [location for location in blueprintLocations if LocationList[location].kong in (Kongs.tiny, Kongs.any)]
+                self.valid_locations[Types.Blueprint][Kongs.chunky] = [location for location in blueprintLocations if LocationList[location].kong in (Kongs.chunky, Kongs.any)]
+            if Types.Banana in self.shuffled_location_types:
+                self.valid_locations[Types.Banana] = shuffledLocations
+            if Types.Crown in self.shuffled_location_types:
+                self.valid_locations[Types.Crown] = shuffledLocations
+            if Types.Key in self.shuffled_location_types:
+                self.valid_locations[Types.Key] = shuffledLocations
+            if Types.Medal in self.shuffled_location_types:
+                self.valid_locations[Types.Medal] = shuffledLocations
+            if Types.Coin in self.shuffled_location_types:
+                self.valid_locations[Types.Coin] = shuffledLocations
 
     def GetValidLocationsForItem(self, item_id):
         """Return the valid locations the input item id can be placed in."""

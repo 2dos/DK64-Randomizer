@@ -191,17 +191,17 @@ def ShuffleKasplats(LogicVariables):
 
 def KasplatShuffle(spoiler, LogicVariables):
     """Facilitate the shuffling of kasplat types."""
-    if LogicVariables.settings.kasplat_rando:
+    if spoiler.settings.kasplat_rando:
         retries = 0
         while True:
             try:
                 # Shuffle kasplats
-                if LogicVariables.settings.kasplat_location_rando:
+                if spoiler.settings.kasplat_location_rando:
                     ShuffleKasplatsAndLocations(spoiler, LogicVariables)
                 else:
                     ShuffleKasplats(LogicVariables)
                 # Verify world by assuring all locations are still reachable
-                if not Fill.VerifyWorld(LogicVariables.settings):
+                if not Fill.VerifyWorld(spoiler.settings):
                     raise Ex.KasplatPlacementException
                 return
             except Ex.KasplatPlacementException:
@@ -211,7 +211,7 @@ def KasplatShuffle(spoiler, LogicVariables):
                 retries += 1
                 js.postMessage("Kasplat placement failed. Retrying. Tries: " + str(retries))
                 # We've added logic in kasplat location rando, now we need to remove it
-                if LogicVariables.settings.kasplat_location_rando:
+                if spoiler.settings.kasplat_location_rando:
                     ResetShuffledKasplatLocations()
 
 

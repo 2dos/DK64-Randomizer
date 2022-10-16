@@ -661,8 +661,8 @@ def GetItemPrerequisites(spoiler, targetItemId, ownedKongs=[]):
         return []
     # Settings-required moves are always owned in order to complete this method based on the settings
     settingsRequiredMoves = []
-    if spoiler.settings.shuffle_items == "phase1":  # If keys are to be shuffled, they won't be shuffled yet
-        settingsRequiredMoves = ItemPool.Keys(spoiler.settings).copy()
+    if Types.Key in spoiler.settings.shuffled_location_types:  # If keys are to be shuffled, they won't be shuffled yet
+        settingsRequiredMoves = ItemPool.BlueprintAssumedItems(spoiler.settings).copy()  # We want KeysCompany Coins/Crowns here and this is a convenient collection
     requiredMoves = []
     if ownedKongs == []:
         ownedKongs = GetKongs()
@@ -750,73 +750,53 @@ def PlaceItems(settings, algorithm, itemsToPlace, ownedItems=None, inOrder=False
 
 
 def Fill(spoiler):
-    """Fully randomizes and places all items. Currently theoretical."""
-    retries = 0
-    while True:
-        try:
-            spoiler.settings.debug_fill = {}
-            # First place constant items
-            ItemPool.PlaceConstants(spoiler.settings)
-            # Then place priority (logically very important) items
-            # Phase 1 already shuffled all of these items (probably should do better than this)
-            if spoiler.settings.shuffle_items != "phase1":
-                highPriorityUnplaced = PlaceItems(
-                    spoiler.settings, spoiler.settings.algorithm, ItemPool.HighPriorityItems(spoiler.settings).copy(), ItemPool.HighPriorityAssumedItems(spoiler.settings)
-                )
-                if highPriorityUnplaced > 0:
-                    raise Ex.ItemPlacementException(str(highPriorityUnplaced) + " unplaced high priority items.")
-            # Then place blueprints
-            Reset()
-            blueprintsUnplaced = PlaceItems(spoiler.settings, spoiler.settings.algorithm, ItemPool.Blueprints(spoiler.settings).copy(), ItemPool.BlueprintAssumedItems(spoiler.settings))
-            if blueprintsUnplaced > 0:
-                raise Ex.ItemPlacementException(str(blueprintsUnplaced) + " unplaced blueprints.")
-            Reset()
-            # Then place keys
-            keysUnplaced = PlaceItems(spoiler.settings, spoiler.settings.algorithm, ItemPool.Keys(spoiler.settings).copy(), ItemPool.KeyAssumedItems(spoiler.settings), inOrder=True)
-            if keysUnplaced > 0:
-                raise Ex.ItemPlacementException(str(keysUnplaced) + " unplaced keys.")
-            # Then place the rest of items
-            Reset()
-            lowPrioItems = ItemPool.LowPriorityItems(spoiler.settings).copy()
-            # Remove already placed items in phase 1 shuffle (probably should do better than this)
-            if spoiler.settings.shuffle_items == "phase1":
-                if Items.SniperSight in lowPrioItems:
-                    lowPrioItems.remove(Items.SniperSight)
-                if Items.HomingAmmo in lowPrioItems:
-                    lowPrioItems.remove(Items.HomingAmmo)
-            lowPriorityUnplaced = PlaceItems(spoiler.settings, spoiler.settings.algorithm, lowPrioItems, ItemPool.ExcessItems(spoiler.settings))
-            if lowPriorityUnplaced > 0:
-                raise Ex.ItemPlacementException(str(lowPriorityUnplaced) + " unplaced low priority items.")
-            # Finally place excess items fully randomly
-            excessItems = ItemPool.ExcessItems(spoiler.settings).copy()
-            # Remove already placed items in phase 1 shuffle (probably should do better than this)
-            if spoiler.settings.shuffle_items == "phase1":
-                if Items.HomingAmmo in excessItems:
-                    excessItems.remove(Items.HomingAmmo)
-                if Items.ProgressiveAmmoBelt in excessItems:
-                    excessItems.remove(Items.ProgressiveAmmoBelt)
-                    excessItems.remove(Items.ProgressiveAmmoBelt)
-                if Items.ProgressiveInstrumentUpgrade in excessItems:
-                    excessItems.remove(Items.ProgressiveInstrumentUpgrade)
-                    excessItems.remove(Items.ProgressiveInstrumentUpgrade)
-                    excessItems.remove(Items.ProgressiveInstrumentUpgrade)
-            excessUnplaced = PlaceItems(spoiler.settings, "random", excessItems)
-            if excessUnplaced > 0:
-                raise Ex.ItemPlacementException(str(excessUnplaced) + " unplaced excess items.")
-            # Check if game is beatable
-            Reset()
-            if not GetAccessibleLocations(spoiler.settings, [], SearchMode.CheckBeatable):
-                raise Ex.GameNotBeatableException("Game unbeatable after placing all items.")
-            return
-        except Ex.FillException as ex:
-            # Defer the retries to the outer try-catch loop so-as to properly reset
-            if retries == 0:
-                # js.postMessage("Fill failed, out of retries.")
-                raise ex
-            retries += 1
-            js.postMessage("Retrying fill. Tries: " + str(retries))
-            Reset()
-            Logic.ClearAllLocations()
+    """Fully randomizes and places all items."""
+    spoiler.settings.debug_fill = {}
+    # First place constant items
+    ItemPool.PlaceConstants(spoiler.settings)
+    # Then fill Kongs and Moves
+    FillKongsAndMoves(spoiler)
+    # Then place Blueprints
+    if Types.Blueprint in spoiler.settings.shuffled_location_types:
+        Reset()
+        blueprintsUnplaced = PlaceItems(spoiler.settings, spoiler.settings.algorithm, ItemPool.Blueprints(spoiler.settings).copy(), ItemPool.BlueprintAssumedItems(spoiler.settings))
+        if blueprintsUnplaced > 0:
+            raise Ex.ItemPlacementException(str(blueprintsUnplaced) + " unplaced blueprints.")
+    # Then place keys
+    if Types.Key in spoiler.settings.shuffled_location_types:
+        Reset()
+        keysUnplaced = PlaceItems(spoiler.settings, spoiler.settings.algorithm, ItemPool.Keys(spoiler.settings).copy(), ItemPool.KeyAssumedItems(), inOrder=True)
+        if keysUnplaced > 0:
+            raise Ex.ItemPlacementException(str(keysUnplaced) + " unplaced keys.")
+    # Then place Nintendo & Rareware Coins
+    if Types.Coin in spoiler.settings.shuffled_location_types:
+        Reset()
+        coinsUnplaced = PlaceItems(spoiler.settings, spoiler.settings.algorithm, ItemPool.CompanyCoinItems(), ItemPool.CoinAssumedItems())
+        if coinsUnplaced > 0:
+            raise Ex.ItemPlacementException(str(coinsUnplaced) + " unplaced company coins.")
+    # Then place Battle Crowns
+    if Types.Crown in spoiler.settings.shuffled_location_types:
+        Reset()
+        crownsUnplaced = PlaceItems(spoiler.settings, spoiler.settings.algorithm, ItemPool.BattleCrownItems(), ItemPool.CrownAssumedItems())
+        if crownsUnplaced > 0:
+            raise Ex.ItemPlacementException(str(crownsUnplaced) + " unplaced crowns.")
+    # Then place Banana Medals
+    if Types.Medal in spoiler.settings.shuffled_location_types:
+        Reset()
+        medalsUnplaced = PlaceItems(spoiler.settings, spoiler.settings.algorithm, ItemPool.BananaMedalItems(), ItemPool.MedalAssumedItems())
+        if medalsUnplaced > 0:
+            raise Ex.ItemPlacementException(str(medalsUnplaced) + " unplaced medals.")
+    # Then fill remaining locations with GBs
+    if Types.Banana in spoiler.settings.shuffled_location_types:
+        Reset()
+        gbsUnplaced = PlaceItems(spoiler.settings, "random", ItemPool.GoldenBananaItems(), [])
+        if gbsUnplaced > 0:
+            raise Ex.ItemPlacementException(str(gbsUnplaced) + " unplaced GBs.")
+    # Finally, check if game is beatable
+    Reset()
+    if not GetAccessibleLocations(spoiler.settings, [], SearchMode.CheckBeatable):
+        raise Ex.GameNotBeatableException("Game unbeatable after placing all items.")
+    return
 
 
 def ShuffleSharedMoves(spoiler, placedMoves):
@@ -845,28 +825,24 @@ def ShuffleSharedMoves(spoiler, placedMoves):
         trainingMovesUnplaced = PlaceItems(spoiler.settings, "assumed", [Items.Oranges], [x for x in ItemPool.AllItems(spoiler.settings) if x != Items.Oranges])
         if trainingMovesUnplaced > 0:
             raise Ex.ItemPlacementException("Failed to place Orange training barrel move.")
+    importantSharedToPlace = ItemPool.ImportantSharedMoves.copy()
     # Next place any fairy moves that need placing, settings dependent
     if spoiler.settings.shockwave_status == "shuffled" and Items.CameraAndShockwave not in placedMoves:
-        shockwaveCameraUnplaced = PlaceItems(spoiler.settings, "assumed", [Items.CameraAndShockwave], [x for x in ItemPool.AllItems(spoiler.settings) if x != Items.CameraAndShockwave])
-        if shockwaveCameraUnplaced > 0:
-            raise Ex.ItemPlacementException("Failed to place Camera and Shockwave combo.")
+        importantSharedToPlace.append(Items.CameraAndShockwave)
     elif spoiler.settings.shockwave_status == "shuffled_decoupled" and (Items.Camera not in placedMoves or Items.Shockwave not in placedMoves):
-        fairyMovesToPlace = [move for move in [Items.Camera, Items.Shockwave] if move not in placedMoves]
-        shockwaveCameraUnplaced = PlaceItems(spoiler.settings, "assumed", fairyMovesToPlace, [x for x in ItemPool.AllItems(spoiler.settings) if x not in (Items.Camera, Items.Shockwave)])
-        if shockwaveCameraUnplaced > 0:
-            raise Ex.ItemPlacementException("Failed to place " + str(trainingMovesUnplaced) + " of Camera and Shockwave.")
-    importantSharedToPlace = ItemPool.ImportantSharedMoves.copy()
+        importantSharedToPlace.append(Items.Camera)
+        importantSharedToPlace.append(Items.Shockwave)
     for item in placedMoves:
         if item in importantSharedToPlace:
             importantSharedToPlace.remove(item)
-    importantSharedUnplaced = PlaceItems(spoiler.settings, "assumed", importantSharedToPlace, [x for x in ItemPool.AllItems(spoiler.settings) if x not in ItemPool.ImportantSharedMoves])
+    importantSharedUnplaced = PlaceItems(spoiler.settings, "assumed", importantSharedToPlace, [x for x in ItemPool.AllItems(spoiler.settings) if x not in importantSharedToPlace])
     if importantSharedUnplaced > 0:
         raise Ex.ItemPlacementException(str(importantSharedUnplaced) + " unplaced shared important items.")
     junkSharedToPlace = ItemPool.JunkSharedMoves.copy()
     for item in placedMoves:
         if item in junkSharedToPlace:
             junkSharedToPlace.remove(item)
-    junkSharedUnplaced = PlaceItems(spoiler.settings, "random", junkSharedToPlace, [x for x in ItemPool.AllItems(spoiler.settings) if x not in ItemPool.JunkSharedMoves])
+    junkSharedUnplaced = PlaceItems(spoiler.settings, "random", junkSharedToPlace, [x for x in ItemPool.AllItems(spoiler.settings) if x not in junkSharedToPlace])
     if junkSharedUnplaced > 0:
         raise Ex.ItemPlacementException(str(junkSharedUnplaced) + " unplaced shared junk items.")
 
@@ -876,9 +852,7 @@ def FillKongsAndMovesGeneric(spoiler):
     retries = 0
     while True:
         try:
-            FillKongsAndMoves(spoiler)
-            if spoiler.settings.shuffle_items == "phase1":
-                Fill(spoiler)
+            Fill(spoiler)
             # Check if game is beatable
             Reset()
             if not VerifyWorldWithWorstCoinUsage(spoiler.settings):
@@ -907,7 +881,7 @@ def GeneratePlaythrough(spoiler):
     WothLocations = PareWoth(spoiler.settings, PlaythroughLocations)
     # Write data to spoiler and return
     spoiler.UpdateLocations(LocationList)
-    if spoiler.settings.shuffle_items != "none":
+    if any(spoiler.settings.shuffled_location_types):
         ShuffleItems(spoiler)
     spoiler.UpdatePlaythrough(LocationList, PlaythroughLocations)
     spoiler.UpdateWoth(LocationList, WothLocations)
@@ -1191,8 +1165,8 @@ def FillKongsAndMoves(spoiler):
                     Reset()
                     # Assume we have all other moves as we place items. This increases the potential number of locations items can be shuffled into
                     allOtherItems = ItemPool.AllMovesForOwnedKongs(ownedKongs).copy()
-                    if spoiler.settings.shuffle_items == "phase1":  # If keys are to be shuffled, they won't be shuffled yet
-                        allOtherItems.extend(ItemPool.Keys(spoiler.settings).copy())
+                    if Types.Key in spoiler.settings.shuffled_location_types:  # If keys are to be shuffled, they won't be shuffled yet
+                        allOtherItems.extend(ItemPool.BlueprintAssumedItems(spoiler.settings).copy())  # We want Keys/Company Coins/Crowns here and this is a convenient collection
                     # Two exceptions: we don't assume we have the items to be placed, as then they could lock themselves
                     for item in priorityItemsToPlace:
                         allOtherItems.remove(item)
@@ -1207,14 +1181,6 @@ def FillKongsAndMoves(spoiler):
                     # After placing these priority items, the new locations may require some of those items we assumed we had
                     priorityItemDependencies = []
                     for item in priorityItemsToPlace:
-                        # DEBUG CODE - This helps find where items are being placed
-                        # location = None
-                        # for possibleLocationThisItemGotPlaced in priorityItemsDict[item]:
-                        #     if LocationList[possibleLocationThisItemGotPlaced].item == item:
-                        #         location = possibleLocationThisItemGotPlaced
-                        #         break
-                        # debuginfo[item] = location
-
                         # Find what items are needed to get this item
                         dependencyPriorityMoves = GetItemPrerequisites(spoiler, item, ownedKongs)
                         # If there are any...
@@ -1259,8 +1225,8 @@ def FillKongsAndMoves(spoiler):
     Reset()
     itemsToPlace = [item for item in itemsToPlace if item not in preplacedPriorityMoves]
     settingsRequiredMoves = []
-    if spoiler.settings.shuffle_items == "phase1":  # If keys are to be shuffled, they won't be shuffled yet
-        settingsRequiredMoves = ItemPool.Keys(spoiler.settings).copy()
+    if Types.Key in spoiler.settings.shuffled_location_types:  # If keys are to be shuffled, they won't be shuffled yet
+        settingsRequiredMoves = ItemPool.BlueprintAssumedItems(spoiler.settings).copy()  # We want Keys/Company Coins/Crowns here and this is a convenient collection
     unplaced = PlaceItems(spoiler.settings, "assumed", itemsToPlace, settingsRequiredMoves)
     if unplaced > 0:
         # debug code - outputs all preplaced and shared items in an attempt to find where things are going wrong
@@ -1335,13 +1301,8 @@ def FillKongsAndMovesForLevelOrder(spoiler):
             # Assume we can progress through the levels so long as we have enough kongs
             WipeProgressionRequirements(spoiler.settings)
             spoiler.settings.kongs_for_progression = True
-            # Fill the kongs and the moves
-            if spoiler.settings.shuffle_items == "phase2":  # only when shops are in the pool (PHASE 2 IS UNIMPLEMENTED)
-                Fill(spoiler)
-            else:
-                FillKongsAndMoves(spoiler)
-                if spoiler.settings.shuffle_items == "phase1":
-                    Fill(spoiler)
+            # Fill locations
+            Fill(spoiler)
             # Update progression requirements based on what is now accessible after all shuffles are done
             if spoiler.settings.hard_level_progression:
                 SetNewProgressionRequirementsUnordered(spoiler.settings)
@@ -1794,9 +1755,7 @@ def Generate_Spoiler(spoiler):
             ShuffleExits.ExitShuffle(spoiler.settings)
             spoiler.UpdateExits()
         # Handle Item Fill
-        if spoiler.settings.shuffle_items == "phase2":  # only when shops are in the pool (PHASE 2 IS UNIMPLEMENTED)
-            Fill(spoiler)
-        elif spoiler.settings.move_rando != "off" or spoiler.settings.kong_rando:
+        if spoiler.settings.move_rando != "off" or spoiler.settings.kong_rando or any(spoiler.settings.shuffled_location_types):
             FillKongsAndMovesGeneric(spoiler)
         else:
             # Just check if normal item locations are beatable with given settings

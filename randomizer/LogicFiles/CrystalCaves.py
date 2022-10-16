@@ -92,7 +92,7 @@ LogicRegions = {
     ),
 
     Regions.FrozenCastle: Region("Frozen Castle", Levels.CrystalCaves, False, None, [
-        LocationLogic(Locations.CavesLankyCastle, lambda l: l.Slam and (l.islanky or l.free_trade_items)),
+        LocationLogic(Locations.CavesLankyCastle, lambda l: l.Slam and (l.islanky or l.settings.free_trade_items)),
     ], [], [
         TransitionFront(Regions.CrystalCavesMain, lambda l: True, Transitions.CavesCastleToMain),
     ]),
