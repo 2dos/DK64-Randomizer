@@ -191,6 +191,7 @@
 .definelabel save, 0x8060DEC8
 .definelabel getSpawnerTiedActor, 0x807270C0
 .definelabel setObjectScriptState, 0x806418E8
+.definelabel getPadGravity, 0x80672BD4
 
 .definelabel _guScaleF, 0x80008580
 .definelabel _guTranslateF, 0x80005D80

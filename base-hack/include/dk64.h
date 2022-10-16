@@ -97,6 +97,7 @@ extern void unkCutsceneKongFunction_0(int unk0, int unk1);
 extern void changeActorColor(int red, int green, int blue, int alpha);
 extern void unkCutsceneKongFunction_1(int unk0);
 extern float getAnimationTimer(void* actor);
+extern int getPadGravity(void* actor);
 
 extern void wipeStoredSetup(void* setup);
 extern void complex_free(void* ptr);
