@@ -14,7 +14,21 @@ from randomizer.Enums.Items import Items
 class LocationSelection:
     """Class which contains information pertaining to assortment."""
 
-    def __init__(self, *, vanilla_item=None, placement_data=None, is_reward_point=False, flag=None, kong=Kongs.any, location=None, name="", is_shop=False, placement_index=0, can_have_item=True, can_place_item=True):
+    def __init__(
+        self,
+        *,
+        vanilla_item=None,
+        placement_data=None,
+        is_reward_point=False,
+        flag=None,
+        kong=Kongs.any,
+        location=None,
+        name="",
+        is_shop=False,
+        placement_index=0,
+        can_have_item=True,
+        can_place_item=True,
+    ):
         """Initialize with given data."""
         self.name = name
         self.old_item = vanilla_item
@@ -39,6 +53,7 @@ class LocationSelection:
         self.new_kong = kong
         self.placed = True
 
+
 class MoveData:
     """Class which contains information pertaining to a move's attributes."""
 
@@ -48,6 +63,7 @@ class MoveData:
         self.kong = kong
         self.index = index
         self.count = count
+
 
 move_list = {
     Items.BaboonBlast: MoveData(0, Kongs.donkey, 1),
@@ -87,6 +103,7 @@ def ShuffleItems(spoiler: Spoiler):
     """Shuffle items into assortment."""
     successful_gen = False
     gen_counter = 5
+    tbarrel_names = ("Diving", "Vine Swinging", "Orange Throwing", "Barrel Throwing")
     while not successful_gen and gen_counter > 0:
         successful_gen = True
         location_data = []
@@ -118,14 +135,14 @@ def ShuffleItems(spoiler: Spoiler):
             if move_list[item].count == 1:
                 item_list.append(item)
         banned_shops = [
-            [1,0],
-            [1,4],
-            [1,7],
-            [2,7],
+            [1, 0],
+            [1, 4],
+            [1, 7],
+            [2, 7],
         ]
-        for shop_index, shop in enumerate(["Cranky","Candy","Funky"]):
-            for level_index, level in enumerate(["Japes","Aztec","Factory","Galleon","Fungi","Caves","Castle","Isles"]):
-                for kong_index, kong in enumerate(["DK","Diddy","Lanky","Tiny","Chunky"]):
+        for shop_index, shop in enumerate(["Cranky", "Candy", "Funky"]):
+            for level_index, level in enumerate(["Japes", "Aztec", "Factory", "Galleon", "Fungi", "Caves", "Castle", "Isles"]):
+                for kong_index, kong in enumerate(["DK", "Diddy", "Lanky", "Tiny", "Chunky"]):
                     if [shop_index, level_index] not in banned_shops:
                         item_place = True
                         if item_index < len(item_list):
@@ -137,19 +154,18 @@ def ShuffleItems(spoiler: Spoiler):
                         location_data.append(
                             LocationSelection(
                                 vanilla_item=Types.Shop,
-                                flag=0x8000 | (data.kong << 24) | (data.subtype << 16) | data.index,
+                                flag=0x8000 | (data.kong << 12) | (data.subtype << 8) | data.index,
                                 placement_data={},
                                 is_reward_point=True,
                                 kong=data.kong,
                                 name=f"{level} {kong} {shop}",
                                 is_shop=True,
-                                placement_index=(shop_index*40)+(kong_index*8)+level_index,
-                                can_place_item=item_place
+                                placement_index=(shop_index * 40) + (kong_index * 8) + level_index,
+                                can_place_item=item_place,
                             )
                         )
         # Training Barrels - TODO: Check if  training barrel is in shuffled list
         for flag in range(0x182, 0x186):
-            tbarrel_names = ("Diving", "Vine Swinging", "Orange Throwing", "Barrel Throwing")
             location_data.append(
                 LocationSelection(
                     vanilla_item=Types.TrainingBarrel,
@@ -159,7 +175,7 @@ def ShuffleItems(spoiler: Spoiler):
                     kong=Kongs.any,
                     name=tbarrel_names[flag - 0x182],
                     is_shop=True,
-                    placement_index=40+flag-0x182
+                    placement_index=40 + flag - 0x182,
                 )
             )
         # Fairy Items - TODO: Check if shockwave is in shuffled list
@@ -171,9 +187,9 @@ def ShuffleItems(spoiler: Spoiler):
                     placement_data={},
                     is_reward_point=True,
                     kong=Kongs.any,
-                    name=["Fairy Island","Null Spot"][item],
+                    name=["Fairy Island", "Null Spot"][item],
                     is_shop=True,
-                    placement_index=[44,None][item],
+                    placement_index=[44, None][item],
                     can_have_item=[True, False][item],
                 )
             )
@@ -195,7 +211,7 @@ def ShuffleItems(spoiler: Spoiler):
         )
         shuffled_items = copy.deepcopy(location_data)
         for item in shuffled_items:
-            if item.can_place_item is False or item.old_flag == (0x8000 | (7 << 16)):
+            if item.can_place_item is False or item.old_flag == (0x8000 | (7 << 8)):
                 shuffled_items.remove(item)
         random.shuffle(shuffled_items)
         random.shuffle(location_data)
@@ -285,16 +301,17 @@ def ShuffleItems(spoiler: Spoiler):
         if loc.new_item is not None:
             name = loc.new_item.name
         if loc.new_item == Types.Shop:
-            item_kong = (loc.new_flag >> 24) & 7
-            item_subtype = (loc.new_flag >> 16) & 0xF
+            item_kong = (loc.new_flag >> 12) & 7
+            item_subtype = (loc.new_flag >> 8) & 0xF
             item_subindex = loc.new_flag & 0xFF
-            for item in move_list:
-                if move_list[item].kong == item_kong and move_list[item].index == item_subindex and move_list[item].subtype == item_subtype:
-                    name = item.name
-            if name == "Shop":
-                print(f"{item_kong} | {item_subtype} | {item_subindex} | {hex(loc.new_flag)}")
+            if loc.new_flag == 0x8700:
+                name = "Nothing (Shop)"
+            else:
+                for item in move_list:
+                    if move_list[item].kong == item_kong and move_list[item].index == item_subindex and move_list[item].subtype == item_subtype:
+                        name = "".join(map(lambda x: x if x.islower() else " " + x, item.name)).strip()
         elif loc.new_item == Types.TrainingBarrel:
-            name = loc.name
+            name = tbarrel_names[loc.new_flag - 0x182]
         location_name = loc.name
         if "Kasplat" in location_name:
             location_name = f"{location_name.split('Kasplat')[0]} {NameFromKong(loc.old_kong)} Kasplat"
