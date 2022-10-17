@@ -197,13 +197,13 @@ file_dict = [
         "source_file": "rareware_coin_om2.bin",
         "do_not_delete_source": True,
     },
-    # {
-    #     "name": "Potion Model",
-    #     "pointer_table_index": 4,
-    #     "file_index": 0x210,
-    #     "source_file": "potion_om2.bin",
-    #     "do_not_delete_source": True,
-    # },
+    {
+        "name": "Potion Model",
+        "pointer_table_index": 4,
+        "file_index": 0x2B7,
+        "source_file": "potion_om2.bin",
+        "do_not_delete_source": True,
+    },
 ]
 
 number_game_changes = [

@@ -14,6 +14,9 @@ model_two_indexes = {
     Types.Key: 0x13C,
     Types.Crown: 0x18D,
     Types.Medal: 0x90,
+    Types.Shop: 0x2B7,
+    Types.TrainingBarrel: 0x2B7,
+    Types.Shockwave: 0x2B7,
 }
 
 model_two_scales = {
