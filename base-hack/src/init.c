@@ -137,6 +137,13 @@ void initHack(int source) {
 			*(int*)(0x8060E04C) = 0; // Prevent moves overwrite
 			*(short*)(0x8060DDAA) = 0; // Writes readfile data to moves
 			*(short*)(0x806C9CDE) = 7; // GiveEverything, write to bitfield. Seems to be unused but might as well
+			
+			// Prevent GBs being required to view extra screens
+			*(int*)(0x806A8624) = 0; // GBs doesn't lock other pause screens
+			*(int*)(0x806AB318) = 0x24060001; // ADDIU $a2, $r0, 1
+			*(int*)(0x806AB31C) = 0xA466C83C; // SH $a2, 0xC83C ($v1) | Overwrite trap func, Replace with overwrite of wheel segments
+			*(short*)(0x8075056C) = 201; // Change GB Item cap to 201
+
 			// Strong Kong
 			*(int*)(0x8067ECFC) = 0x30810002; // ANDI $at $a0 2
 			*(int*)(0x8067ED00) = 0x50200003; // BEQL $at $r0 3
@@ -886,8 +893,8 @@ void initHack(int source) {
 }
 
 void quickInit(void) {
+	initHack(1);
 	if (Rando.quality_of_life.fast_boot) {
-		initHack(1);
 		initiateTransitionFade(0x51, 0, 5);
 		CutsceneWillPlay = 0;
 		Gamemode = 5;
