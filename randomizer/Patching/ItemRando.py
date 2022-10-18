@@ -175,14 +175,25 @@ def place_randomized_items(spoiler: Spoiler):
                         # 3 = Crown
                         # 4 = Special Coin
                         # 5 = Medal
-                        # 6 = Shop Item
-                        # 7 = Training Barrel
-                        # 8 = Shockwave
-                        # 9 = Nothing
-                        slots = [Types.Banana, Types.Blueprint, Types.Key, Types.Crown, Types.Coin, Types.Medal, Types.Shop, Types.TrainingBarrel, Types.Shockwave, None]
+                        # 6 = Cranky Item
+                        # 7 = Funky Item
+                        # 8 = Candy Item
+                        # 9 = Training Barrel
+                        # 10 = Shockwave
+                        # 11 = Nothing
+                        slots = [Types.Banana, Types.Blueprint, Types.Key, Types.Crown, Types.Coin, Types.Medal, Types.Shop, Types.Shop, Types.Shop, Types.TrainingBarrel, Types.Shockwave, None]
                         offset = item.old_flag - 549
                         ROM().seek(0x1FF1080 + offset)
-                        ROM().write(slots.index(item.new_item))
+                        if item.new_item == Types.Shop:
+                            subtype = (item.new_flag >> 8) & 0xF
+                            medal_index = 6
+                            if subtype == 4:
+                                medal_index = 8
+                            elif (subtype == 2) or (subtype == 3) :
+                                medal_index = 7
+                            ROM().write(medal_index)
+                        else:
+                            ROM().write(slots.index(item.new_item))
                     elif item.location == Locations.JapesChunkyBoulder:
                         # Write to Boulder Spawn Location
                         ROM().seek(sav + 0x114)

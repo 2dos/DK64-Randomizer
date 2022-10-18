@@ -425,45 +425,53 @@ void banana_medal_acquisition(int flag) {
         3 - Crown,
         4 - SpecialCoin,
         5 - Medal,
+        6 - Cranky,
+        7 - Funky,
+        8 - Candy,
+        9 - Training Barrel,
+        10 - Shockwave,
+        11 - Nothing,
     */
     if (!checkFlag(flag, 0)) {
         // Display and play effects if you don't have item
-        setFlag(flag, 1, 0);
         int item_type = getMedalItem(flag - 549);
-        if (item_type == 0) {
-            MovesBase[(int)Character].gb_count[getWorld(CurrentMap,1)] += 1;
-        }
-        playSFX(0xF2);
-        int used_song = 0x97;
-        int songs[] = {18,69,18,0x97,22,0x97};
-        if (item_type < 6) {
-            used_song = songs[item_type];
-        }
-        playSong(used_song, 0x3F800000);
-        unkSpriteRenderFunc(200);
-        unkSpriteRenderFunc_0();
-        loadSpriteFunction(0x8071EFDC);
-        int bp_sprites[] = {0x5C,0x5A,0x4A,0x5D,0x5B};
-        int sprite_indexes[] = {0x3B,0,0x8A,0x8B,0,0x3B};
-        int used_sprite = 0x3B;
-        if (item_type == 1) {
-            int character_val = Character;
-            if (character_val > 4) {
-                character_val = 0;
+        if (item_type < 11) {
+            setFlag(flag, 1, 0);
+            if (item_type == 0) {
+                MovesBase[(int)Character].gb_count[getWorld(CurrentMap,1)] += 1;
             }
-            used_sprite = bp_sprites[character_val];
-        } else if (item_type == 4) {
-            if (flag == 132) {
-                // Nintendo Coin
-                used_sprite = 0x8C;
+            playSFX(0xF2);
+            int used_song = 0x97;
+            int songs[] = {18,69,18,0x97,22,0x97};
+            if (item_type < 6) {
+                used_song = songs[item_type];
+            }
+            playSong(used_song, 0x3F800000);
+            unkSpriteRenderFunc(200);
+            unkSpriteRenderFunc_0();
+            loadSpriteFunction(0x8071EFDC);
+            int bp_sprites[] = {0x5C,0x5A,0x4A,0x5D,0x5B};
+            int sprite_indexes[] = {0x3B, 0, 0x8A, 0x8B, 0, 0x3B, 0x94, 0x96, 0x93, 0x94, 0x3A};
+            int used_sprite = 0x3B;
+            if (item_type == 1) {
+                int character_val = Character;
+                if (character_val > 4) {
+                    character_val = 0;
+                }
+                used_sprite = bp_sprites[character_val];
+            } else if (item_type == 4) {
+                if (flag == 132) {
+                    // Nintendo Coin
+                    used_sprite = 0x8C;
+                } else {
+                    // Rareware Coin
+                    used_sprite = 0x8D;
+                }
             } else {
-                // Rareware Coin
-                used_sprite = 0x8D;
+                used_sprite = sprite_indexes[item_type];
             }
-        } else if (item_type < 6) {
-            used_sprite = sprite_indexes[item_type];
+            displaySpriteAtXYZ(sprite_table[used_sprite], 0x3F800000, 160.0f, 120.0f, -10.0f);
         }
-        displaySpriteAtXYZ(sprite_table[used_sprite], 0x3F800000, 160.0f, 120.0f, -10.0f);
     }
 }
 
