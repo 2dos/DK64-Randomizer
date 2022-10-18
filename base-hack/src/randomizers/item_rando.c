@@ -58,8 +58,8 @@ typedef struct collision_info {
     /* 0x012 */ short hitbox_scale;
 } collision_info;
 
-#define COLLISION_LIMIT 46
-#define DEFS_LIMIT 130
+#define COLLISION_LIMIT 50
+#define DEFS_LIMIT 136
 static collision_info object_collisions[COLLISION_LIMIT] = {};
 static actor_behaviour_def actor_defs[DEFS_LIMIT] = {};
 
@@ -146,7 +146,12 @@ void initCollectableCollision(void) {
     index = addCollisionInfo(index, 0x0288, COLLECTABLE_GB, KONG_NONE, 0x2D, 8, 4); // Rareware GB
     index = addCollisionInfo(index, 0x0048, COLLECTABLE_NONE, KONG_NONE, 151, 0, 0); // Nintendo Coin
     index = addCollisionInfo(index, 0x028F, COLLECTABLE_NONE, KONG_NONE, 152, 0, 0); // Rareware Coin
-    index = addCollisionInfo(index, 0x005b, COLLECTABLE_NONE, KONG_NONE, 153, 0, 0); // Potion
+    index = addCollisionInfo(index, 0x005B, COLLECTABLE_NONE, KONG_NONE, 157, 0, 0); // Potion DK
+    index = addCollisionInfo(index, 0x01F2, COLLECTABLE_NONE, KONG_NONE, 158, 0, 0); // Potion Diddy
+    index = addCollisionInfo(index, 0x0059, COLLECTABLE_NONE, KONG_NONE, 159, 0, 0); // Potion Lanky
+    index = addCollisionInfo(index, 0x01F3, COLLECTABLE_NONE, KONG_NONE, 160, 0, 0); // Potion Tiny
+    index = addCollisionInfo(index, 0x01F5, COLLECTABLE_NONE, KONG_NONE, 161, 0, 0); // Potion Chunky
+    index = addCollisionInfo(index, 0x01F6, COLLECTABLE_NONE, KONG_NONE, 162, 0, 0); // Potion Any
     // Write new table to ROM
     int hi = getHi(&object_collisions[0].type);
     int lo = getLo(&object_collisions[0].type);
@@ -183,6 +188,12 @@ void initActorDefs(void) {
     dk_memcpy(&actor_defs[0], &ActorBehaviourTable[0], 128*sizeof(actor_behaviour_def));
     int index = addActorDef(128, 151, 0, 0x80689F80, 0x8068A10C);
     index = addActorDef(index, 152, 0, 0x80689F80, 0x8068A10C);
+    index = addActorDef(index, 157, 0xEE, 0x80689F80, 0x80689FEC);
+    index = addActorDef(index, 158, 0xEF, 0x80689F80, 0x80689FEC);
+    index = addActorDef(index, 159, 0xF0, 0x80689F80, 0x80689FEC);
+    index = addActorDef(index, 160, 0xF1, 0x80689F80, 0x80689FEC);
+    index = addActorDef(index, 161, 0xF2, 0x80689F80, 0x80689FEC);
+    index = addActorDef(index, 162, 0xF3, 0x80689F80, 0x80689FEC);
     *(unsigned short*)(0x8068926A) = getHi(&actor_defs[0].actor_type);
     *(unsigned short*)(0x8068927A) = getLo(&actor_defs[0].actor_type);
     *(unsigned short*)(0x806892D2) = getHi(&actor_defs[0].actor_type);

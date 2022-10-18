@@ -555,6 +555,12 @@ model_changes = [
     {"model_index": 9, "model_file": "tiny_ins.bin"},
     {"model_index": 0xEC, "model_file": "disco_instrument.bin"},
     {"model_index": 0xDA, "model_file": "krusha_base.bin"},
+    {"model_index": 0xED, "model_file": "potion_dk_om1.bin"},
+    {"model_index": 0xEE, "model_file": "potion_diddy_om1.bin"},
+    {"model_index": 0xEF, "model_file": "potion_lanky_om1.bin"},
+    {"model_index": 0xF0, "model_file": "potion_tiny_om1.bin"},
+    {"model_index": 0xF1, "model_file": "potion_chunky_om1.bin"},
+    {"model_index": 0xF2, "model_file": "potion_any_om1.bin"},
 ]
 for x in model_changes:
     data = {

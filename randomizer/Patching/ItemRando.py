@@ -39,9 +39,9 @@ actor_indexes = {
     Types.Key: 72,
     Types.Crown: 86,
     Types.Coin: [151, 152],
-    Types.Shop: 153,
-    Types.TrainingBarrel: 153,
-    Types.Shockwave: 153,
+    Types.Shop: [157, 158, 159, 160, 161, 162],
+    Types.TrainingBarrel: 162,
+    Types.Shockwave: 162,
 }
 
 
@@ -143,6 +143,11 @@ def place_randomized_items(spoiler: Spoiler):
                             actor_index = actor_indexes[Types.Coin][0]
                             if item.new_flag == 379:  # Is RW Coin
                                 actor_index = actor_indexes[Types.Coin][1]
+                        elif item.new_item == Types.Shop:
+                            slot = (item.new_flag >> 12) & 7
+                            if item.shared or slot > 5:
+                                slot = 5
+                            actor_index = actor_indexes[Types.Shop][slot]
                         else:
                             actor_index = actor_indexes[item.new_item]
                     if item.old_item == Types.Blueprint:

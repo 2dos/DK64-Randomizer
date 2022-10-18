@@ -233,6 +233,9 @@ def ShuffleItems(spoiler: Spoiler):
             Types.Key,  # Actor 72
             Types.Crown,  # Actor 86
             Types.Coin,  # Actors 151, 152 (Nin, RW)
+            Types.Shop, # Actors 157-162
+            Types.Shockwave, # Actor 162
+            Types.TrainingBarrel, # Actor 162
         )
         bad_bp_locations = (
             Locations.IslesDonkeyJapesRock,

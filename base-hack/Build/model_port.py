@@ -102,44 +102,74 @@ def portalModel_Actor(vtx_file, dl_file, model_name, base):
         with open(temp_file, "wb") as fh:
             fh.write(data)
     with open(temp_file, "rb") as fh:
-        with open(f"{model_name}_om1.bin", "wb") as fg:
-            fg.write(fh.read(0x28))  # Head
-            vtx_len = 0
-            with open(vtx_file, "rb") as vtx:
-                vtx_data = vtx.read()
-                vtx_len = len(vtx_data)
-                fg.write(vtx_data)
-            dl_len = 0
-            with open(dl_file, "rb") as dl:
-                dl_data = dl.read()[0x30:]
-                dl_len = len(dl_data)
-                fg.write(dl_data)
-            fh.seek(0)
-            init_ptr = int.from_bytes(fh.read(4), "big")
-            init_dl_end_ptr = int.from_bytes(fh.read(4), "big")
-            dl_end = fg.tell()
-            fg.seek(4)
-            dl_end_ptr = dl_end + init_ptr - 0x28
-            fg.write(dl_end_ptr.to_bytes(4, "big"))
-            diff = dl_end_ptr - init_dl_end_ptr
-            for i in range(3):
-                old = int.from_bytes(fh.read(4), "big")
-                fg.write((old + diff).to_bytes(4, "big"))
-            fg.seek(dl_end)
-            fg.write((init_ptr + vtx_len).to_bytes(4, "big"))
-            fh.seek(init_dl_end_ptr + 0x2C - init_ptr)
-            fg.write(fh.read())
+        with open(f"{model_name}_om1.bin", "w+b") as fg:
+            if dl_file is None:
+                fg.write(fh.read())
+                fg.seek(0x28)
+                upscale = 10
+                with open(vtx_file, "rb") as vtx:
+                    vtx_data = vtx.read()
+                    vtx_len = int(len(vtx_data) / 0x10)
+                    fg.write(vtx_data)
+                    vtx_end = fg.tell()
+                    for vtx_item in range(vtx_len):
+                        for c in range(3):
+                            fg.seek((vtx_item * 0x10) + 0x28 + (2 * c))
+                            c_v = int.from_bytes(fg.read(2), "big")
+                            if c_v > 32767:
+                                c_v -= 65536
+                            c_v *= upscale
+                            fg.seek((vtx_item * 0x10) + 0x28 + (2 * c))
+                            if c_v < 0:
+                                c_v += 65536
+                            fg.write(c_v.to_bytes(2, "big"))
+            else:
+                fh.seek(0)
+                init_ptr = int.from_bytes(fh.read(4), "big")
+                init_dl_end_ptr = int.from_bytes(fh.read(4), "big")
+                fg.write(fh.read(0x28))  # Head
+                vtx_len = 0
+                with open(vtx_file, "rb") as vtx:
+                    vtx_data = vtx.read()
+                    vtx_len = len(vtx_data)
+                    fg.write(vtx_data)
+                dl_len = 0
+                with open(dl_file, "rb") as dl:
+                    dl_data = dl.read()[0x30:]
+                    dl_len = len(dl_data)
+                    fg.write(dl_data)
+                dl_end = fg.tell()
+                fg.seek(4)
+                dl_end_ptr = dl_end + init_ptr - 0x28
+                fg.write(dl_end_ptr.to_bytes(4, "big"))
+                diff = dl_end_ptr - init_dl_end_ptr
+                for i in range(3):
+                    old = int.from_bytes(fh.read(4), "big")
+                    fg.write((old + diff).to_bytes(4, "big"))
+                fg.seek(dl_end)
+                fg.write((init_ptr + vtx_len).to_bytes(4, "big"))
+                fh.seek(init_dl_end_ptr + 0x2C - init_ptr)
+                fg.write(fh.read())
     if os.path.exists(temp_file):
         os.remove(temp_file)
 
 
 model_dir = "assets/Non-Code/models/"
+# Coins
 portalModel_M2(f"{model_dir}coin.vtx", f"{model_dir}nin_coin.dl", f"{model_dir}coin_overlay.dl", "nintendo_coin", 0x90)
 portalModel_M2(f"{model_dir}coin.vtx", f"{model_dir}rw_coin.dl", f"{model_dir}coin_overlay.dl", "rareware_coin", 0x90)
+# Potions - Model 2
 portalModel_M2(f"{model_dir}potion_dk.vtx", f"{model_dir}potion.dl", 0, "potion_dk", 0x90)
 portalModel_M2(f"{model_dir}potion_diddy.vtx", f"{model_dir}potion.dl", 0, "potion_diddy", 0x90)
 portalModel_M2(f"{model_dir}potion_lanky.vtx", f"{model_dir}potion.dl", 0, "potion_lanky", 0x90)
 portalModel_M2(f"{model_dir}potion_tiny.vtx", f"{model_dir}potion.dl", 0, "potion_tiny", 0x90)
 portalModel_M2(f"{model_dir}potion_chunky.vtx", f"{model_dir}potion.dl", 0, "potion_chunky", 0x90)
 portalModel_M2(f"{model_dir}potion_any.vtx", f"{model_dir}potion.dl", 0, "potion_any", 0x90)
+# Potions - Actors (Ignore Chunky Model)
+portalModel_Actor(f"{model_dir}potion_dk.vtx", None, "potion_dk", 0xB8)
+portalModel_Actor(f"{model_dir}potion_diddy.vtx", None, "potion_diddy", 0xB8)
+portalModel_Actor(f"{model_dir}potion_lanky.vtx", None, "potion_lanky", 0xB8)
+portalModel_Actor(f"{model_dir}potion_tiny.vtx", None, "potion_tiny", 0xB8)
+portalModel_Actor(f"{model_dir}potion_chunky.vtx", None, "potion_chunky", 0xB8)
+portalModel_Actor(f"{model_dir}potion_any.vtx", None, "potion_any", 0xB8)
 # portalModel_Actor(f"{model_dir}coin.vtx", f"{model_dir}nin_coin.dl", "nintendo_coin", 0x66)
