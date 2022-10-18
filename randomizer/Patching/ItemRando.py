@@ -17,7 +17,7 @@ model_two_indexes = {
     Types.Shop: 0x5B,
     Types.TrainingBarrel: 0x5B,
     Types.Shockwave: 0x5B,
-    Types.NoItem: 0, # No Item
+    Types.NoItem: 0,  # No Item
 }
 
 model_two_scales = {
@@ -30,7 +30,7 @@ model_two_scales = {
     Types.Shop: 0.8,
     Types.TrainingBarrel: 0.8,
     Types.Shockwave: 0.8,
-    Types.NoItem: 0.25, # No Item
+    Types.NoItem: 0.25,  # No Item
 }
 
 actor_indexes = {
@@ -80,9 +80,9 @@ def place_randomized_items(spoiler: Spoiler):
                     if item.new_item is None:
                         # Is Nothing
                         ROM().seek(write_space)
-                        ROM().writeMultipleBytes(7 << 5,1)
-                        ROM().writeMultipleBytes(0,1)
-                        ROM().writeMultipleBytes(0xFFFF,2)
+                        ROM().writeMultipleBytes(7 << 5, 1)
+                        ROM().writeMultipleBytes(0, 1)
+                        ROM().writeMultipleBytes(0xFFFF, 2)
                     elif item.new_flag & 0x8000:
                         # Is Move
                         item_kong = (item.new_flag >> 12) & 7
@@ -92,9 +92,9 @@ def place_randomized_items(spoiler: Spoiler):
                         else:
                             item_subindex = (item.new_flag & 0xFF) - 1
                         ROM().seek(write_space)
-                        ROM().writeMultipleBytes(item_subtype << 5 | (item_subindex << 3) | item_kong,1)
-                        ROM().writeMultipleBytes(0,1)
-                        ROM().writeMultipleBytes(0xFFFF,2)
+                        ROM().writeMultipleBytes(item_subtype << 5 | (item_subindex << 3) | item_kong, 1)
+                        ROM().writeMultipleBytes(0, 1)
+                        ROM().writeMultipleBytes(0xFFFF, 2)
                     else:
                         # Is Flagged Item
                         subtype = 5
@@ -171,7 +171,7 @@ def place_randomized_items(spoiler: Spoiler):
                         # 7 = Training Barrel
                         # 8 = Shockwave
                         # 9 = Nothing
-                        slots = [Types.Banana, Types.Blueprint, Types.Key, Types.Crown, Types.Coin, Types.Medal, Types.Shop, Types.TrainingBarrel, Types.Shockwave,None]
+                        slots = [Types.Banana, Types.Blueprint, Types.Key, Types.Crown, Types.Coin, Types.Medal, Types.Shop, Types.TrainingBarrel, Types.Shockwave, None]
                         offset = item.old_flag - 549
                         ROM().seek(0x1FF1080 + offset)
                         ROM().write(slots.index(item.new_item))
@@ -198,7 +198,7 @@ def place_randomized_items(spoiler: Spoiler):
                 else:
                     ROM().writeMultipleBytes(item.new_flag, 2)
                 flut_offset += 1
-                    
+
         # Terminate FLUT
         ROM().seek(0x1FF2000 + (4 * flut_offset))
         ROM().writeMultipleBytes(0xFFFF, 2)

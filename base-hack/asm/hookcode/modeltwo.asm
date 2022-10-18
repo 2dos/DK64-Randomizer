@@ -68,3 +68,21 @@ RarewareCoinEffect:
     RarewareCoinEffect_RaceCoin:
         J       0x806F7EC4
         NOP
+
+PotionEffect:
+    BEQ     a0, at, PotionEffect_Melon
+    LUI     t0, 0x8074
+    ADDIU   at, r0, 0x5B
+    BEQ     a0, at, PotionEffect_Potion
+    NOP
+    J       0x806F7AFC
+    NOP
+
+    PotionEffect_Potion:
+        LBU     t0, 0x5838 (t0)
+        J       0x806F7B68
+        ADDIU   a0, r0, 115
+
+    PotionEffect_Melon:
+        J       0x806F7B60
+        NOP

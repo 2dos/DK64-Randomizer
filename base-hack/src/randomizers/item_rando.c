@@ -352,6 +352,14 @@ void* checkMove(short* flag, void* fba, int source) {
             } else {
                 *flag = item_index - 1;
             }
+            int init_val = *(char*)(temp_fba + item_type);
+            if (((init_val & (1 << *flag)) == 0) && (source == 1)) {
+                // Move given
+                spawnActor(324,0);
+                TextOverlayData[0] = item_type;
+                TextOverlayData[1] = item_index;
+                TextOverlayData[2] = item_kong;
+            }
             return temp_fba + item_type;
         }
     }
@@ -364,7 +372,7 @@ void* updateFlag(int type, short* flag, void* fba, int source) {
         if (clampFlag(vanilla_flag)) {
             for (int i = 0; i < 20; i++) {
                 if (flut_cache[(2 * i)] == vanilla_flag) {
-                    if (flut_cache[(2 * i) + 1] > -1) {
+                    if (flut_cache[(2 * i) + 1] != -1) {
                         *flag = flut_cache[(2 * i) + 1];
                     }
                     return checkMove(flag, fba, source);

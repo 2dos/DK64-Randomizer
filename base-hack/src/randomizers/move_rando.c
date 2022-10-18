@@ -629,6 +629,13 @@ void getNextMoveText(void) {
 				p_flag = p_value;
 			}
 		}
+		if (!has_data) {
+			has_data = 1;
+			p_type = TextOverlayData[0];
+			p_value = TextOverlayData[1];
+			p_kong = TextOverlayData[2];
+			p_flag = p_value;
+		}
 	}
 	if (has_data) {
 		if ((CurrentActorPointer_0->obj_props_bitfield & 0x10) == 0) {
