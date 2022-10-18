@@ -14,9 +14,9 @@ model_two_indexes = {
     Types.Key: 0x13C,
     Types.Crown: 0x18D,
     Types.Medal: 0x90,
-    Types.Shop: 0x5B,
-    Types.TrainingBarrel: 0x5B,
-    Types.Shockwave: 0x5B,
+    Types.Shop: [0x5B,0x1F2,0x59,0x1F3,0x1F5,0x1F6],
+    Types.TrainingBarrel: 0x1F6,
+    Types.Shockwave: 0x1F6,
     Types.NoItem: 0,  # No Item
 }
 
@@ -116,6 +116,7 @@ def place_randomized_items(spoiler: Spoiler):
                                     "kong": 0,
                                     "flag": 0,
                                     "upscale": 1,
+                                    "shared": False,
                                 }
                             )
                         else:
@@ -129,6 +130,7 @@ def place_randomized_items(spoiler: Spoiler):
                                     "kong": item.new_kong,
                                     "flag": item.new_flag,
                                     "upscale": upscale,
+                                    "shared": item.shared,
                                 }
                             )
                 else:
@@ -225,6 +227,11 @@ def place_randomized_items(spoiler: Spoiler):
                                 item_obj_index = model_two_indexes[Types.Coin][0]
                                 if item_slot["flag"] == 379:
                                     item_obj_index = model_two_indexes[Types.Coin][1]
+                            elif item_slot["obj"] == Types.Shop:
+                                slot = (item_slot["flag"] >> 12) & 7
+                                if item_slot["shared"] or slot > 5:
+                                    slot = 5
+                                item_obj_index = model_two_indexes[Types.Shop][slot]
                             else:
                                 item_obj_index = model_two_indexes[item_slot["obj"]]
                             ROM().writeMultipleBytes(item_obj_index, 2)
