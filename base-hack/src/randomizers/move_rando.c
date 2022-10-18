@@ -444,8 +444,10 @@ void setLocation(purchase_struct* purchase_data) {
 			setFlagDuplicate(purchase_data->purchase_value,1,0);
 		} else if (p_type == PURCHASE_GB) {
 			// IsFlag + GB Update
-			setFlagDuplicate(purchase_data->purchase_value,1,0);
-			MovesBase[p_kong].gb_count[getWorld(CurrentMap,1)] += 1;
+			if (!checkFlagDuplicate(purchase_data->purchase_value,0)) {
+				setFlagDuplicate(purchase_data->purchase_value,1,0);
+				MovesBase[p_kong].gb_count[getWorld(CurrentMap,1)] += 1;
+			}
 		}
 	}
 }

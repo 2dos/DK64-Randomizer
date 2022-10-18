@@ -28,6 +28,10 @@ class LocationSelection:
         placement_index=0,
         can_have_item=True,
         can_place_item=True,
+        shop_locked=False,
+        shared=False,
+        order=0,
+        move_name="",
     ):
         """Initialize with given data."""
         self.name = name
@@ -41,6 +45,10 @@ class LocationSelection:
         self.placement_index = placement_index
         self.can_have_item = can_have_item
         self.can_place_item = can_place_item
+        self.shop_locked = shop_locked
+        self.shared = shared
+        self.order = order
+        self.move_name = ""
         self.new_item = None
         self.new_flag = None
         self.new_kong = None
@@ -57,11 +65,12 @@ class LocationSelection:
 class MoveData:
     """Class which contains information pertaining to a move's attributes."""
 
-    def __init__(self, subtype, kong, index, count=1):
+    def __init__(self, subtype, kong, index, shared=False, count=1):
         """Initialize with given data."""
         self.subtype = subtype
         self.kong = kong
         self.index = index
+        self.shared = shared
         self.count = count
 
 
@@ -88,14 +97,14 @@ move_list = {
     Items.BaboonBalloon: MoveData(0, Kongs.lanky, 2),
     Items.PonyTailTwirl: MoveData(0, Kongs.tiny, 2),
     Items.PrimatePunch: MoveData(0, Kongs.chunky, 2),
-    Items.ProgressiveAmmoBelt: MoveData(3, Kongs.any, 1, 2),
-    Items.ProgressiveInstrumentUpgrade: MoveData(4, Kongs.any, 2, 3),
-    Items.ProgressiveSlam: MoveData(1, Kongs.any, 2, 2),
-    Items.HomingAmmo: MoveData(1, Kongs.any, 2),
+    Items.ProgressiveAmmoBelt: MoveData(3, Kongs.any, 1, True, 2),
+    Items.ProgressiveInstrumentUpgrade: MoveData(4, Kongs.any, 2, True, 3),
+    Items.ProgressiveSlam: MoveData(1, Kongs.any, 2, True, 2),
+    Items.HomingAmmo: MoveData(2, Kongs.any, 2, True, 1),
     Items.OrangstandSprint: MoveData(0, Kongs.lanky, 3),
     Items.Monkeyport: MoveData(0, Kongs.tiny, 3),
     Items.GorillaGone: MoveData(0, Kongs.chunky, 3),
-    Items.SniperSight: MoveData(2, Kongs.any, 3),
+    Items.SniperSight: MoveData(2, Kongs.any, 3, True, 1),
 }
 
 
@@ -110,6 +119,7 @@ def ShuffleItems(spoiler: Spoiler):
     while not successful_gen and gen_counter > 0:
         successful_gen = True
         location_data = []
+        order = 0
         for location_enum in LocationList:
             item_location = LocationList[location_enum]
             if item_location.default_mapid_data is not None and item_location.type in spoiler.settings.shuffled_location_types:
@@ -129,13 +139,16 @@ def ShuffleItems(spoiler: Spoiler):
                         kong=item_location.default_mapid_data[0].kong,
                         location=location_enum,
                         name=item_location.name,
+                        order=order,
                     )
                 )
+                order += 1
         # Shops - TODO: Check if shop in shuffled list
         item_index = 0
         item_list = []
         for item in move_list:
-            if move_list[item].count == 1:
+            for x in range(move_list[item].count):
+                print(item.name)
                 item_list.append(item)
         banned_shops = [
             [1, 0],
@@ -148,12 +161,13 @@ def ShuffleItems(spoiler: Spoiler):
                 for kong_index, kong in enumerate(["DK", "Diddy", "Lanky", "Tiny", "Chunky"]):
                     if [shop_index, level_index] not in banned_shops:
                         item_place = True
+                        move_name = "No Item"
                         if item_index < len(item_list):
                             data = move_list[item_list[item_index]]
+                            move_name = item_list[item_index].name
                         else:
                             data = MoveData(7, Kongs.donkey, 0)
                             item_place = False
-                        item_index += 1
                         location_data.append(
                             LocationSelection(
                                 vanilla_item=Types.Shop,
@@ -165,8 +179,14 @@ def ShuffleItems(spoiler: Spoiler):
                                 is_shop=True,
                                 placement_index=(shop_index * 40) + (kong_index * 8) + level_index,
                                 can_place_item=item_place,
+                                shop_locked=data.shared, # Should be data.count>1, but would have to reimplement searching algorithm if homing/sniper gets placed in a shop outside of initial phase
+                                shared=data.shared,
+                                order=order,
+                                move_name=move_name,
                             )
                         )
+                        item_index += 1
+                        order += 1
         # Training Barrels - TODO: Check if  training barrel is in shuffled list
         for flag in range(0x182, 0x186):
             location_data.append(
@@ -178,9 +198,14 @@ def ShuffleItems(spoiler: Spoiler):
                     kong=Kongs.any,
                     name=tbarrel_names[flag - 0x182],
                     is_shop=True,
-                    placement_index=40 + flag - 0x182,
+                    placement_index=120 + (flag - 0x182),
+                    shop_locked=True, # Should be false, but temporarily making true to prevent having to place a copy of the shop generation algo check
+                    shared=True,
+                    order=order,
+                    move_name=tbarrel_names[flag - 0x182],
                 )
             )
+            order += 1
         # Fairy Items - TODO: Check if shockwave is in shuffled list
         for item in range(2):
             location_data.append(
@@ -192,10 +217,15 @@ def ShuffleItems(spoiler: Spoiler):
                     kong=Kongs.any,
                     name=["Fairy Island", "Null Spot"][item],
                     is_shop=True,
-                    placement_index=[44, None][item],
+                    placement_index=[124, None][item],
                     can_have_item=[True, False][item],
+                    shop_locked=True, # Should be false, but temporarily making true to prevent having to place a copy of the shop generation algo check
+                    shared=True,
+                    order=order,
+                    move_name=["Fairy Island", "Null Spot"][item],
                 )
             )
+            order += 1
         reward_items = (
             # Items which can be spawned as an actor
             Types.Banana,  # Actor 45
@@ -213,12 +243,73 @@ def ShuffleItems(spoiler: Spoiler):
             Locations.FactoryLankyFreeChunky,
         )
         shuffled_items = copy.deepcopy(location_data)
+        print(hex(0x8000 | (7 << 8)))
         for item in shuffled_items:
             if item.can_place_item is False or item.old_flag == (0x8000 | (7 << 8)):
-                shuffled_items.remove(item)
+                item.placed = True
         random.shuffle(shuffled_items)
         random.shuffle(location_data)
-        # First, place items for slots which are reward points, and thus have a restricted placement item list
+        # Fill shop-locked items
+        for item in shuffled_items:
+            if not item.placed and item.shop_locked:
+                found_location = False
+                for shop_index in range(29):
+                    if not found_location:
+                        vacant_bitfield = 0
+                        selected_slot = 0
+                        vacant_count = 0
+                        shared_limit = 5
+                        if shop_index < 24:
+                            acceptable_values = []
+                            for kong_index in range(5):
+                                acceptable_values.append((shop_index & 7) + (kong_index * 8) + (40 * int(shop_index / 8)))
+                            for location in location_data:
+                                if not location.placed and location.placement_index in acceptable_values and location.is_shop:
+                                    vacant_bitfield |= (1 << acceptable_values.index(location.placement_index))
+                            for kong_index in range(5):
+                                selection_list = []
+                                if vacant_bitfield & (1 << kong_index):
+                                    selection_list.append(kong_index)
+                                    vacant_count += 1
+                                if vacant_count > 0:
+                                    selected_slot = random.choice(selection_list)
+                        else:
+                            for location in location_data:
+                                if not location.placed and location.placement_index == (shop_index + 96) and location.is_shop:
+                                    vacant_count += 1
+                            shared_limit = 1
+                        if item.shared:
+                            if vacant_count == shared_limit:
+                                print(f"{vacant_count} | {shared_limit} | {item.old_flag}")
+                                found_location = True
+                                if shop_index < 24:
+                                    acceptable_values = []
+                                    for kong_index in range(5):
+                                        acceptable_values.append((shop_index & 7) + (kong_index * 8) + (40 * int(shop_index / 8)))
+                                    for location in location_data:
+                                        if not location.placed and location.placement_index in acceptable_values and location.is_shop:
+                                            location.place(item.old_item, item.old_flag, item.old_kong)
+                                else:
+                                    for location in location_data:
+                                        if not location.placed and location.placement_index == (shop_index + 96) and location.is_shop:
+                                            location.place(item.old_item, item.old_flag, item.old_kong)
+                                item.placed = True
+                        else:
+                            found_location = True
+                            if shop_index < 24:
+                                acceptable_value = (shop_index & 7) + (selected_slot * 8) + (40 * int(shop_index / 8))
+                                for location in location_data:
+                                        if not location.placed and location.placement_index == acceptable_value and location.is_shop:
+                                            location.place(item.old_item, item.old_flag, item.old_kong)
+                            else:
+                                for location in location_data:
+                                    if not location.placed and location.placement_index == (shop_index + 96) and location.is_shop:
+                                        location.place(item.old_item, item.old_flag, item.old_kong)
+                            item.placed = True
+        for item in shuffled_items:
+            if item.placed:
+                shuffled_items.remove(item)
+        # Place items for slots which are reward points, and thus have a restricted placement item list
         for location in location_data:
             if not location.placed and location.reward_spot and location.old_item != Types.Medal and location.is_shop is False:  # Disregard Medals since they don't spawn an object
                 found_item = False
@@ -241,7 +332,7 @@ def ShuffleItems(spoiler: Spoiler):
                         shuffled_items_index += 1
                 if not found_item:
                     successful_gen = False
-        # Secondly, fill special coin locations
+        # Fill special coin locations
         for location in location_data:
             if not location.placed and location.old_item == Types.Coin:
                 found_item = False
@@ -264,7 +355,7 @@ def ShuffleItems(spoiler: Spoiler):
                         shuffled_items_index += 1
                 if not found_item:
                     successful_gen = False
-        # Finally, fill remaining locations
+        # Fill remaining locations
         for location in location_data:
             if not location.placed and location.can_have_item is True:
                 found_item = False
@@ -297,26 +388,32 @@ def ShuffleItems(spoiler: Spoiler):
             gen_counter -= 1
             if gen_counter == 0:
                 print("ERROR: COULDN'T GEN ASSORTMENT")
+    location_data = sorted(location_data, key=lambda x: x.order)
     spoiler.item_assignment = location_data.copy()
     human_item_data = {}
     for loc in location_data:
-        name = "Nothing"
-        if loc.new_item is not None:
-            name = loc.new_item.name
-        if loc.new_item == Types.Shop:
-            item_kong = (loc.new_flag >> 12) & 7
-            item_subtype = (loc.new_flag >> 8) & 0xF
-            item_subindex = loc.new_flag & 0xFF
-            if loc.new_flag == 0x8700:
-                name = "Nothing (Shop)"
-            else:
-                for item in move_list:
-                    if move_list[item].kong == item_kong and move_list[item].index == item_subindex and move_list[item].subtype == item_subtype:
-                        name = "".join(map(lambda x: x if x.islower() else " " + x, item.name)).strip()
-        elif loc.new_item == Types.TrainingBarrel:
-            name = tbarrel_names[loc.new_flag - 0x182]
-        location_name = loc.name
-        if "Kasplat" in location_name:
-            location_name = f"{location_name.split('Kasplat')[0]} {NameFromKong(loc.old_kong)} Kasplat"
-        human_item_data[location_name] = name
+        if loc.can_have_item:
+            name = "Nothing"
+            if loc.new_item is not None:
+                name = loc.new_item.name
+            if loc.new_item == Types.Shop:
+                item_kong = (loc.new_flag >> 12) & 7
+                item_subtype = (loc.new_flag >> 8) & 0xF
+                item_subindex = loc.new_flag & 0xFF
+                if loc.new_flag == 0x8700:
+                    name = "Nothing (Shop)"
+                else:
+                    for item in move_list:
+                        if move_list[item].kong == item_kong and move_list[item].index == item_subindex and move_list[item].subtype == item_subtype:
+                            name = "".join(map(lambda x: x if x.islower() else " " + x, item.name)).strip()
+            elif loc.new_item == Types.TrainingBarrel:
+                name = tbarrel_names[loc.new_flag - 0x182]
+            elif loc.new_item == Types.Shockwave:
+                name = "Shockwave"
+                if loc.new_flag == 0x2FD:
+                    name = "Camera"
+            location_name = loc.name
+            if "Kasplat" in location_name:
+                location_name = f"{location_name.split('Kasplat')[0]} {NameFromKong(loc.old_kong)} Kasplat"
+            human_item_data[location_name] = name
     spoiler.human_item_assignment = human_item_data
