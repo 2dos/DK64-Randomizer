@@ -437,14 +437,14 @@ void setLocation(purchase_struct* purchase_data) {
 			}
 		} else if ((p_type == PURCHASE_FLAG) && (purchase_data->purchase_value == -2)) {
 			// BFI Coupled Moves
-			setPermFlag(FLAG_ABILITY_SHOCKWAVE);
-			setPermFlag(FLAG_ABILITY_CAMERA);
+			setFlagDuplicate(FLAG_ABILITY_SHOCKWAVE,1,0);
+			setFlagDuplicate(FLAG_ABILITY_CAMERA,1,0);
 		} else if (p_type == PURCHASE_FLAG) {
 			// IsFlag
-			setPermFlag(purchase_data->purchase_value);
+			setFlagDuplicate(purchase_data->purchase_value,1,0);
 		} else if (p_type == PURCHASE_GB) {
 			// IsFlag + GB Update
-			setPermFlag(purchase_data->purchase_value);
+			setFlagDuplicate(purchase_data->purchase_value,1,0);
 			MovesBase[p_kong].gb_count[getWorld(CurrentMap,1)] += 1;
 		}
 	}
@@ -475,10 +475,10 @@ int getLocation(purchase_struct* purchase_data) {
 			}
 		} else if ((p_type == PURCHASE_FLAG) && (purchase_data->purchase_value == -2)) {
 			// BFI Coupled Moves
-			return checkFlag(FLAG_ABILITY_CAMERA,0) & checkFlag(FLAG_ABILITY_SHOCKWAVE,0);
+			return checkFlagDuplicate(FLAG_ABILITY_CAMERA,0) & checkFlagDuplicate(FLAG_ABILITY_SHOCKWAVE,0);
 		} else if ((p_type == PURCHASE_FLAG) || (p_type == PURCHASE_GB)) {
 			// IsFlag
-			return checkFlag(purchase_data->purchase_value,0);
+			return checkFlagDuplicate(purchase_data->purchase_value,0);
 		}
 	}
 	return 0;

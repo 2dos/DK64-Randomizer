@@ -22,6 +22,8 @@ ObjectRotate:
     BEQ     v0, at, ObjectRotate_ApplyRotate
     ADDIU   at, r0, 0x28F
     BEQ     v0, at, ObjectRotate_ApplyRotate
+    ADDIU   at, r0, 0x5B
+    BEQ     v0, at, ObjectRotate_ApplyRotate
     NOP
     J       0x80637150
     NOP

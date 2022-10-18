@@ -200,7 +200,8 @@ file_dict = [
     {
         "name": "Potion Model",
         "pointer_table_index": 4,
-        "file_index": 0x2B7,
+        "file_index": 0x5B,
+        # "do_not_extract": True,
         "source_file": "potion_om2.bin",
         "do_not_delete_source": True,
     },

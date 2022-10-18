@@ -58,7 +58,7 @@ typedef struct collision_info {
     /* 0x012 */ short hitbox_scale;
 } collision_info;
 
-#define COLLISION_LIMIT 45
+#define COLLISION_LIMIT 46
 #define DEFS_LIMIT 130
 static collision_info object_collisions[COLLISION_LIMIT] = {};
 static actor_behaviour_def actor_defs[DEFS_LIMIT] = {};
@@ -146,6 +146,7 @@ void initCollectableCollision(void) {
     index = addCollisionInfo(index, 0x0288, COLLECTABLE_GB, KONG_NONE, 0x2D, 8, 4); // Rareware GB
     index = addCollisionInfo(index, 0x0048, COLLECTABLE_NONE, KONG_NONE, 151, 0, 0); // Nintendo Coin
     index = addCollisionInfo(index, 0x028F, COLLECTABLE_NONE, KONG_NONE, 152, 0, 0); // Rareware Coin
+    index = addCollisionInfo(index, 0x005b, COLLECTABLE_NONE, KONG_NONE, 153, 0, 0); // Potion
     // Write new table to ROM
     int hi = getHi(&object_collisions[0].type);
     int lo = getLo(&object_collisions[0].type);
@@ -332,7 +333,32 @@ int clampFlag(int flag) {
     return 0;
 }
 
-void* updateFlag(int type, short* flag, void* fba) {
+void* checkMove(short* flag, void* fba, int source) {
+    if (*flag & 0x8000) {
+        // Is Move
+        int item_kong = (*flag >> 12) & 7;
+        if (item_kong > 4) {
+            item_kong = 0;
+        }
+        int item_type = (*flag >> 8) & 15;
+        int item_index = *flag & 0xFF;
+        if (item_type == 7) {
+            *flag = 0;
+            return fba;
+        } else {
+            char* temp_fba = (char*)&MovesBase[item_kong];
+            if (item_index == 0) {
+                *flag = 0;
+            } else {
+                *flag = item_index - 1;
+            }
+            return temp_fba + item_type;
+        }
+    }
+    return fba;
+}
+
+void* updateFlag(int type, short* flag, void* fba, int source) {
     if ((Rando.item_rando) && (type == 0) && (*flag != 0)) {
         int vanilla_flag = *flag;
         if (clampFlag(vanilla_flag)) {
@@ -341,7 +367,7 @@ void* updateFlag(int type, short* flag, void* fba) {
                     if (flut_cache[(2 * i) + 1] > -1) {
                         *flag = flut_cache[(2 * i) + 1];
                     }
-                    return fba;
+                    return checkMove(flag, fba, source);
                 }
             }
             for (int i = 0; i < 400; i++) {
@@ -349,7 +375,7 @@ void* updateFlag(int type, short* flag, void* fba) {
                 if (vanilla_flag == lookup) {
                     *flag = ItemRando_FLUT[(2 * i) + 1];
                     cacheFlag(vanilla_flag, *flag);
-                    return fba;
+                    return checkMove(flag, fba, source);
                 } else if (lookup == -1) {
                     cacheFlag(vanilla_flag, -1);
                     return fba;

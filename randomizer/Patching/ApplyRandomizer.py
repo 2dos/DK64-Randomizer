@@ -390,8 +390,7 @@ def patching_response(responded_data):
     if spoiler.settings.coin_door_open in ["need_both", "need_rw"]:
         ROM().seek(sav + 0x150)
         ROM().write(spoiler.settings.medal_requirement)
-
-    print(spoiler.settings.enemies_selected)
+        
     if len(spoiler.settings.enemies_selected) == 0 and (spoiler.settings.enemy_rando or spoiler.settings.crown_enemy_rando != "off"):
         lst = []
         for enemy in EnemySelector:
@@ -414,7 +413,7 @@ def patching_response(responded_data):
     randomize_puzzles(spoiler)
     randomize_cbs(spoiler)
     ApplyShopRandomizer(spoiler)
-    # place_randomized_items(spoiler)
+    place_randomized_items(spoiler)
     place_door_locations(spoiler)
     randomize_crown_pads(spoiler)
 

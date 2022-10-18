@@ -101,6 +101,9 @@ move_list = {
 
 def ShuffleItems(spoiler: Spoiler):
     """Shuffle items into assortment."""
+    # TODO: Moves in item spots means there is going to have to be a TONNE of checks to make sure that
+    # it doesn't place an item in a place which needs that item to access.
+    # Totally random with no checks would create a lot of bad assortments
     successful_gen = False
     gen_counter = 5
     tbarrel_names = ("Diving", "Vine Swinging", "Orange Throwing", "Barrel Throwing")

@@ -14,9 +14,10 @@ model_two_indexes = {
     Types.Key: 0x13C,
     Types.Crown: 0x18D,
     Types.Medal: 0x90,
-    Types.Shop: 0x2B7,
-    Types.TrainingBarrel: 0x2B7,
-    Types.Shockwave: 0x2B7,
+    Types.Shop: 0x5B,
+    Types.TrainingBarrel: 0x5B,
+    Types.Shockwave: 0x5B,
+    Types.NoItem: 0, # No Item
 }
 
 model_two_scales = {
@@ -26,6 +27,10 @@ model_two_scales = {
     Types.Key: 0.17,
     Types.Crown: 0.25,
     Types.Medal: 0.22,
+    Types.Shop: 0.8,
+    Types.TrainingBarrel: 0.8,
+    Types.Shockwave: 0.8,
+    Types.NoItem: 0.25, # No Item
 }
 
 actor_indexes = {
@@ -34,6 +39,9 @@ actor_indexes = {
     Types.Key: 72,
     Types.Crown: 86,
     Types.Coin: [151, 152],
+    Types.Shop: 153,
+    Types.TrainingBarrel: 153,
+    Types.Shockwave: 153,
 }
 
 
@@ -62,79 +70,135 @@ def place_randomized_items(spoiler: Spoiler):
         bonus_table_offset = 0
         flut_offset = 0  # Flag Look Up Table. Maximum of 399 items (Currently ~261)
         for item in item_data:
-            if not item.reward_spot:
-                for map_id in item.placement_data:
-                    if map_id not in map_items:
-                        map_items[map_id] = []
-                    numerator = model_two_scales[item.new_item]
-                    denominator = model_two_scales[item.old_item]
-                    upscale = numerator / denominator
-                    map_items[map_id].append(
-                        {
-                            "id": item.placement_data[map_id],
-                            "obj": item.new_item,
-                            "kong": item.new_kong,
-                            "flag": item.new_flag,
-                            "upscale": upscale,
-                        }
-                    )
-            else:
-                if item.old_item != Types.Medal:
-                    if item.new_item == Types.Blueprint:
-                        actor_index = actor_indexes[Types.Blueprint][item.new_kong]
-                    elif item.new_item == Types.Coin:
-                        actor_index = actor_indexes[Types.Coin][0]
-                        if item.new_flag == 379:  # Is RW Coin
-                            actor_index = actor_indexes[Types.Coin][1]
+            if item.can_have_item:
+                if item.is_shop:
+                    # Write in placement index
+                    ROM().seek(sav + 0xA7)
+                    ROM().write(1)
+                    movespaceOffset = spoiler.settings.move_location_data
+                    write_space = movespaceOffset + (4 * item.placement_index)
+                    if item.new_item is None:
+                        # Is Nothing
+                        ROM().seek(write_space)
+                        ROM().writeMultipleBytes(7 << 5,1)
+                        ROM().writeMultipleBytes(0,1)
+                        ROM().writeMultipleBytes(0xFFFF,2)
+                    elif item.new_flag & 0x8000:
+                        # Is Move
+                        item_kong = (item.new_flag >> 12) & 7
+                        item_subtype = (item.new_flag >> 8) & 0xF
+                        if item_subtype == 7:
+                            item_subindex = 0
+                        else:
+                            item_subindex = (item.new_flag & 0xFF) - 1
+                        ROM().seek(write_space)
+                        ROM().writeMultipleBytes(item_subtype << 5 | (item_subindex << 3) | item_kong,1)
+                        ROM().writeMultipleBytes(0,1)
+                        ROM().writeMultipleBytes(0xFFFF,2)
                     else:
-                        actor_index = actor_indexes[item.new_item]
-                if item.old_item == Types.Blueprint:
-                    # Write to BP Table
-                    # Just needs to store an array of actors spawned
-                    offset = item.old_flag - 469
-                    ROM().seek(0x1FF1000 + offset)
-                    ROM().write(actor_index)
-                elif item.old_item == Types.Crown:
-                    # Write to Crown Table
-                    crown_flags = [0x261, 0x262, 0x263, 0x264, 0x265, 0x268, 0x269, 0x266, 0x26A, 0x267]
-                    ROM().seek(0x1FF10C0 + crown_flags.index(item.old_flag))
-                    ROM().write(actor_index)
-                elif item.old_item == Types.Key:
-                    key_flags = [26, 74, 138, 168, 236, 292, 317, 380]
-                    ROM().seek(0x1FF10D0 + key_flags.index(item.old_flag))
-                    ROM().write(actor_index)
-                elif item.old_item == Types.Medal:
-                    # Write to Medal Table
-                    # Just need offset of subtype:
-                    # 0 = Banana
-                    # 1 = BP
-                    # 2 = Key
-                    # 3 = Crown
-                    # 4 = Special Coin
-                    # 5 = Medal
-                    slots = [Types.Banana, Types.Blueprint, Types.Key, Types.Crown, Types.Coin, Types.Medal]
-                    offset = item.old_flag - 549
-                    ROM().seek(0x1FF1080 + offset)
-                    ROM().write(slots.index(item.new_item))
-                elif item.location == Locations.JapesChunkyBoulder:
-                    # Write to Boulder Spawn Location
-                    ROM().seek(sav + 0x114)
-                    ROM().write(actor_index)
-                elif item.location == Locations.AztecLankyVulture:
-                    # Write to Vulture Spawn Location
-                    ROM().seek(sav + 0x115)
-                    ROM().write(actor_index)
-                elif item.old_item == Types.Banana:
-                    # Bonus GB Table
-                    ROM().seek(0x1FF1200 + (4 * bonus_table_offset))
-                    ROM().writeMultipleBytes(item.old_flag, 2)
-                    ROM().writeMultipleBytes(actor_index, 1)
-                    bonus_table_offset += 1
-            # Write flag lookup table
-            ROM().seek(0x1FF2000 + (4 * flut_offset))
-            ROM().writeMultipleBytes(item.old_flag, 2)
-            ROM().writeMultipleBytes(item.new_flag, 2)
-            flut_offset += 1
+                        # Is Flagged Item
+                        subtype = 5
+                        if item.new_item == Types.Banana:
+                            subtype = 6
+                        ROM().seek(write_space)
+                        ROM().writeMultipleBytes(subtype << 5, 1)
+                        ROM().writeMultipleBytes(0, 1)
+                        ROM().writeMultipleBytes(item.new_flag, 2)
+                elif not item.reward_spot:
+                    for map_id in item.placement_data:
+                        if map_id not in map_items:
+                            map_items[map_id] = []
+                        if item.new_item is None:
+                            map_items[map_id].append(
+                                {
+                                    "id": item.placement_data[map_id],
+                                    "obj": Types.NoItem,
+                                    "kong": 0,
+                                    "flag": 0,
+                                    "upscale": 1,
+                                }
+                            )
+                        else:
+                            numerator = model_two_scales[item.new_item]
+                            denominator = model_two_scales[item.old_item]
+                            upscale = numerator / denominator
+                            map_items[map_id].append(
+                                {
+                                    "id": item.placement_data[map_id],
+                                    "obj": item.new_item,
+                                    "kong": item.new_kong,
+                                    "flag": item.new_flag,
+                                    "upscale": upscale,
+                                }
+                            )
+                else:
+                    if item.old_item != Types.Medal:
+                        if item.new_item is None:
+                            actor_index = 0
+                        elif item.new_item == Types.Blueprint:
+                            actor_index = actor_indexes[Types.Blueprint][item.new_kong]
+                        elif item.new_item == Types.Coin:
+                            actor_index = actor_indexes[Types.Coin][0]
+                            if item.new_flag == 379:  # Is RW Coin
+                                actor_index = actor_indexes[Types.Coin][1]
+                        else:
+                            actor_index = actor_indexes[item.new_item]
+                    if item.old_item == Types.Blueprint:
+                        # Write to BP Table
+                        # Just needs to store an array of actors spawned
+                        offset = item.old_flag - 469
+                        ROM().seek(0x1FF1000 + offset)
+                        ROM().write(actor_index)
+                    elif item.old_item == Types.Crown:
+                        # Write to Crown Table
+                        crown_flags = [0x261, 0x262, 0x263, 0x264, 0x265, 0x268, 0x269, 0x266, 0x26A, 0x267]
+                        ROM().seek(0x1FF10C0 + crown_flags.index(item.old_flag))
+                        ROM().write(actor_index)
+                    elif item.old_item == Types.Key:
+                        key_flags = [26, 74, 138, 168, 236, 292, 317, 380]
+                        ROM().seek(0x1FF10D0 + key_flags.index(item.old_flag))
+                        ROM().write(actor_index)
+                    elif item.old_item == Types.Medal:
+                        # Write to Medal Table
+                        # Just need offset of subtype:
+                        # 0 = Banana
+                        # 1 = BP
+                        # 2 = Key
+                        # 3 = Crown
+                        # 4 = Special Coin
+                        # 5 = Medal
+                        # 6 = Shop Item
+                        # 7 = Training Barrel
+                        # 8 = Shockwave
+                        # 9 = Nothing
+                        slots = [Types.Banana, Types.Blueprint, Types.Key, Types.Crown, Types.Coin, Types.Medal, Types.Shop, Types.TrainingBarrel, Types.Shockwave,None]
+                        offset = item.old_flag - 549
+                        ROM().seek(0x1FF1080 + offset)
+                        ROM().write(slots.index(item.new_item))
+                    elif item.location == Locations.JapesChunkyBoulder:
+                        # Write to Boulder Spawn Location
+                        ROM().seek(sav + 0x114)
+                        ROM().write(actor_index)
+                    elif item.location == Locations.AztecLankyVulture:
+                        # Write to Vulture Spawn Location
+                        ROM().seek(sav + 0x115)
+                        ROM().write(actor_index)
+                    elif item.old_item == Types.Banana:
+                        # Bonus GB Table
+                        ROM().seek(0x1FF1200 + (4 * bonus_table_offset))
+                        ROM().writeMultipleBytes(item.old_flag, 2)
+                        ROM().writeMultipleBytes(actor_index, 1)
+                        bonus_table_offset += 1
+            if not item.is_shop and item.can_have_item:
+                # Write flag lookup table
+                ROM().seek(0x1FF2000 + (4 * flut_offset))
+                ROM().writeMultipleBytes(item.old_flag, 2)
+                if item.new_item is None:
+                    ROM().writeMultipleBytes(0, 2)
+                else:
+                    ROM().writeMultipleBytes(item.new_flag, 2)
+                flut_offset += 1
+                    
         # Terminate FLUT
         ROM().seek(0x1FF2000 + (4 * flut_offset))
         ROM().writeMultipleBytes(0xFFFF, 2)
