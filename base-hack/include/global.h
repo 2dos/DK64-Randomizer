@@ -126,6 +126,7 @@ extern void newGuardCode(void);
 extern void goldBeaverCode(void);
 extern void ninCoinCode(void);
 extern void rwCoinCode(void);
+extern void NothingCode(void);
 extern void beaverExtraHitHandle(void);
 extern void CBDing(void);
 extern void handleSpiderTrapCode(void);

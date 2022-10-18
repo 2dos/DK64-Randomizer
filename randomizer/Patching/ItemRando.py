@@ -42,6 +42,7 @@ actor_indexes = {
     Types.Shop: [157, 158, 159, 160, 161, 162],
     Types.TrainingBarrel: 162,
     Types.Shockwave: 162,
+    Types.NoItem: 153,
 }
 
 
@@ -136,7 +137,7 @@ def place_randomized_items(spoiler: Spoiler):
                 else:
                     if item.old_item != Types.Medal:
                         if item.new_item is None:
-                            actor_index = 0
+                            actor_index = 153
                         elif item.new_item == Types.Blueprint:
                             actor_index = actor_indexes[Types.Blueprint][item.new_kong]
                         elif item.new_item == Types.Coin:

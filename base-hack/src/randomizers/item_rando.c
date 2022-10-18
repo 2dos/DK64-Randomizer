@@ -59,7 +59,7 @@ typedef struct collision_info {
 } collision_info;
 
 #define COLLISION_LIMIT 50
-#define DEFS_LIMIT 136
+#define DEFS_LIMIT 137
 static collision_info object_collisions[COLLISION_LIMIT] = {};
 static actor_behaviour_def actor_defs[DEFS_LIMIT] = {};
 
@@ -194,6 +194,7 @@ void initActorDefs(void) {
     index = addActorDef(index, 160, 0xF1, 0x80689F80, 0x80689FEC);
     index = addActorDef(index, 161, 0xF2, 0x80689F80, 0x80689FEC);
     index = addActorDef(index, 162, 0xF3, 0x80689F80, 0x80689FEC);
+    index = addActorDef(index, 153, 0, 0x80689F80, 0x8068A10C);
     *(unsigned short*)(0x8068926A) = getHi(&actor_defs[0].actor_type);
     *(unsigned short*)(0x8068927A) = getLo(&actor_defs[0].actor_type);
     *(unsigned short*)(0x806892D2) = getHi(&actor_defs[0].actor_type);
@@ -584,4 +585,8 @@ void ninCoinCode(void) {
 
 void rwCoinCode(void) {
     spriteCode(0x8C);
+}
+
+void NothingCode(void) {
+    deleteActorContainer(CurrentActorPointer_0);
 }
