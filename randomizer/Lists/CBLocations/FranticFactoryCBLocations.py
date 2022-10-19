@@ -1138,13 +1138,13 @@ ColoredBananaGroupList = [
     ColoredBananaGroup(
         group=78,
         map_id=Maps.FranticFactory,
-        name="On Funky's store",
+        name="Around Funky platform",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.Testing,
         locations=[
-            [5, 1.0, 1428, 1210, 517],
-            [5, 1.0, 1472, 1210, 469],
-            [5, 1.0, 1427, 1246, 468],
+            [5, 1.0, 1580, 1120, 611],
+            [5, 1.0, 1472, 1120, 666],
+            [5, 1.0, 1622, 1120, 492],
         ],
     ),
     ColoredBananaGroup(

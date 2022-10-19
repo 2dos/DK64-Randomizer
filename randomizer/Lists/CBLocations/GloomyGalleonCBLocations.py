@@ -229,11 +229,12 @@ ColoredBananaGroupList = [
     ColoredBananaGroup(
         group=12,
         map_id=Maps.GloomyGalleon,
-        name="On Cranky's Lab",
-        konglist=[Kongs.diddy],
-        region=Regions.GloomyGalleonStart,
+        name="On wooden box (5DS side)",
+        konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
+        region=Regions.Shipyard,
         locations=[
-            [5, 1.0, 3289, 1875, 2374],
+            [5, 1.0, 2348, 1640, 2473],
+            [5, 1.0, 2426, 1640, 2473],
         ],
     ),
     ColoredBananaGroup(
@@ -270,7 +271,7 @@ ColoredBananaGroupList = [
             [1, 1.0, 3464, 1689, 2783],
             [1, 1.0, 3482, 1686, 2718],
             [1, 1.0, 3495, 1670, 2633],
-            [1, 1.0, 3797, 1670, 2553],
+            [1, 1.0, 3497, 1670, 2553],
             [1, 1.0, 3500, 1670, 2478],
             [1, 1.0, 3448, 1670, 2418],
         ],
@@ -539,7 +540,7 @@ ColoredBananaGroupList = [
         region=Regions.TreasureRoom,
         locations=[
             [5, 1.2, 1568, 1460, 649],
-            [5, 1.2, 1696, 1462, 490],
+            [5, 1.2, 1696, 1462, 460],
         ],
     ),
     ColoredBananaGroup(
@@ -620,11 +621,12 @@ ColoredBananaGroupList = [
     ColoredBananaGroup(
         group=40,
         map_id=Maps.GloomyGalleon,
-        name="On Candy's Store",
-        konglist=[Kongs.diddy],
-        region=Regions.Shipyard,
+        name="On wooden box (lighthouse side)",
+        konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
+        region=Regions.LighthouseSurface,
         locations=[
-            [5, 1.0, 2819, 1735, 553],
+            [5, 1.0, 1929, 1640, 3566],
+            [5, 1.0, 1998, 1640, 3628],
         ],
     ),
     ColoredBananaGroup(
@@ -716,11 +718,11 @@ ColoredBananaGroupList = [
     ColoredBananaGroup(
         group=48,
         map_id=Maps.GloomyGalleon,
-        name="On Funky's store",
+        name="On stalactite between 5DS and mech fish",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.Shipyard,
         locations=[
-            [5, 1.0, 3676, 1765, 1237],
+            [5, 1.2, 2808, 845, 1470],
         ],
     ),
     ColoredBananaGroup(
@@ -808,9 +810,9 @@ ColoredBananaGroupList = [
             [1, 1.2, 4474, 1295, 865],
             [1, 1.2, 4436, 1295, 822],
             [1, 1.2, 4398, 1295, 778],
-            [1, 1.2, 4453, 1295, 731],
-            [1, 1.2, 4508, 1295, 684],
-            [1, 1.2, 4563, 1295, 636],
+            [1, 1.2, 4346, 1295, 821],
+            [1, 1.2, 4294, 1295, 863],
+            [1, 1.2, 4243, 1295, 906],
             [1, 1.2, 4181, 1295, 948],
         ],
     ),
@@ -1360,8 +1362,8 @@ ColoredBananaGroupList = [
         group=96,
         map_id=Maps.Galleon5DShipDiddyLankyChunky,
         name="On a barrel",
-        konglist=[Kongs.chunky],
-        region=Regions.TriangleShip,
+        konglist=[Kongs.lanky],
+        region=Regions.TromboneShip,
         locations=[
             [5, 1.2, 1077, 55, 1164],
         ],
@@ -1370,8 +1372,8 @@ ColoredBananaGroupList = [
         group=97,
         map_id=Maps.Galleon5DShipDiddyLankyChunky,
         name="On a box in the corner",
-        konglist=[Kongs.chunky],
-        region=Regions.TriangleShip,
+        konglist=[Kongs.lanky],
+        region=Regions.TromboneShip,
         locations=[
             [5, 1.2, 621, 50, 678],
         ],
@@ -2124,7 +2126,7 @@ BalloonList = [
         name="High in gold tower room",
         speed=5,
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
-        region=Regions.TreasureRoomDiddyGoldTower,
+        region=Regions.TreasureRoom,
         points=[
             [1984, 1840, 962],
             [1620, 1850, 770],
