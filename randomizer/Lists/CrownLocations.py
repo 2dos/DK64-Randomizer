@@ -2709,6 +2709,8 @@ CrownLocations = {
             scale=0.5,
             region=Regions.Prison,
         ),
+    ],
+    Levels.HideoutHelm: [
         CrownLocation(
             map=Maps.HideoutHelm,
             name="Hideout Helm - Metal grate by Mini Monkey barrel",
@@ -2753,6 +2755,7 @@ CrownLocations = {
             z=3391.4,
             scale=0.25,
             region=Regions.HideoutHelmMain,
+            logic=lambda l: l.jetpack and l.isdiddy,
         ),
         CrownLocation(
             map=Maps.HideoutHelm,
@@ -2762,6 +2765,7 @@ CrownLocations = {
             z=3841,
             scale=0.5,
             region=Regions.HideoutHelmMain,
+            logic=lambda l: l.HelmDoorsOpened in l.Events and l.punch and l.bongos and l.isdonkey,
         ),
         CrownLocation(
             map=Maps.HideoutHelm,
@@ -2771,6 +2775,7 @@ CrownLocations = {
             z=2761,
             scale=0.5,
             region=Regions.HideoutHelmMain,
+            logic=lambda l: l.HelmDoorsOpened in l.Events and l.punch and l.triangle and l.ischunky,
         ),
         CrownLocation(
             map=Maps.HideoutHelm,
@@ -2780,6 +2785,7 @@ CrownLocations = {
             z=3281,
             scale=0.5,
             region=Regions.HideoutHelmMain,
+            logic=lambda l: l.HelmDoorsOpened in l.Events and l.punch and l.saxophone and l.istiny,
         ),
         CrownLocation(
             map=Maps.HideoutHelm,
@@ -2789,6 +2795,7 @@ CrownLocations = {
             z=3272,
             scale=0.5,
             region=Regions.HideoutHelmMain,
+            logic=lambda l: l.HelmDoorsOpened in l.Events and l.punch and l.trombone and l.islanky,
         ),
         CrownLocation(
             map=Maps.HideoutHelm,
@@ -2798,6 +2805,7 @@ CrownLocations = {
             z=2741,
             scale=0.5,
             region=Regions.HideoutHelmMain,
+            logic=lambda l: l.HelmDoorsOpened in l.Events and l.punch and l.jetpack and l.guitar and l.isdiddy,
         ),
         CrownLocation(
             map=Maps.HideoutHelm,
@@ -2807,6 +2815,16 @@ CrownLocations = {
             z=3266,
             scale=0.4,
             region=Regions.HideoutHelmMain,
+            logic=lambda l: (
+                l.settings.helm_setting == "skip_all"
+                or (
+                    Events.HelmDonkeyDone in l.Events
+                    and Events.HelmChunkyDone in l.Events
+                    and Events.HelmTinyDone in l.Events
+                    and Events.HelmLankyDone in l.Events
+                    and Events.HelmDiddyDone in l.Events
+                )
+            ),
         ),
         CrownLocation(
             map=Maps.HideoutHelm,
@@ -2816,6 +2834,16 @@ CrownLocations = {
             z=3518,
             scale=0.4,
             region=Regions.HideoutHelmMain,
+            logic=lambda l: (
+                l.settings.helm_setting == "skip_all"
+                or (
+                    Events.HelmDonkeyDone in l.Events
+                    and Events.HelmChunkyDone in l.Events
+                    and Events.HelmTinyDone in l.Events
+                    and Events.HelmLankyDone in l.Events
+                    and Events.HelmDiddyDone in l.Events
+                )
+            ),
         ),
         CrownLocation(
             map=Maps.HideoutHelm,
@@ -2825,6 +2853,16 @@ CrownLocations = {
             z=3721,
             scale=0.4,
             region=Regions.HideoutHelmMain,
+            logic=lambda l: (
+                l.settings.helm_setting == "skip_all"
+                or (
+                    Events.HelmDonkeyDone in l.Events
+                    and Events.HelmChunkyDone in l.Events
+                    and Events.HelmTinyDone in l.Events
+                    and Events.HelmLankyDone in l.Events
+                    and Events.HelmDiddyDone in l.Events
+                )
+            ),
         ),
         CrownLocation(
             map=Maps.HideoutHelm,
@@ -2834,6 +2872,16 @@ CrownLocations = {
             z=4467,
             scale=0.75,
             region=Regions.HideoutHelmMain,
+            logic=lambda l: (
+                l.settings.helm_setting == "skip_all"
+                or (
+                    Events.HelmDonkeyDone in l.Events
+                    and Events.HelmChunkyDone in l.Events
+                    and Events.HelmTinyDone in l.Events
+                    and Events.HelmLankyDone in l.Events
+                    and Events.HelmDiddyDone in l.Events
+                )
+            ),
         ),
         CrownLocation(
             map=Maps.HideoutHelm,
@@ -2843,6 +2891,16 @@ CrownLocations = {
             z=4349,
             scale=0.5,
             region=Regions.HideoutHelmMain,
+            logic=lambda l: (
+                l.settings.helm_setting == "skip_all"
+                or (
+                    Events.HelmDonkeyDone in l.Events
+                    and Events.HelmChunkyDone in l.Events
+                    and Events.HelmTinyDone in l.Events
+                    and Events.HelmLankyDone in l.Events
+                    and Events.HelmDiddyDone in l.Events
+                )
+            ),
         ),
         CrownLocation(
             map=Maps.HideoutHelm,
@@ -2852,6 +2910,16 @@ CrownLocations = {
             z=4593,
             scale=0.5,
             region=Regions.HideoutHelmMain,
+            logic=lambda l: (
+                l.settings.helm_setting == "skip_all"
+                or (
+                    Events.HelmDonkeyDone in l.Events
+                    and Events.HelmChunkyDone in l.Events
+                    and Events.HelmTinyDone in l.Events
+                    and Events.HelmLankyDone in l.Events
+                    and Events.HelmDiddyDone in l.Events
+                )
+            ),
         ),
         CrownLocation(
             map=Maps.HideoutHelm,
@@ -2861,6 +2929,16 @@ CrownLocations = {
             z=5341,
             scale=0.6,
             region=Regions.HideoutHelmMain,
+            logic=lambda l: (
+                l.settings.helm_setting == "skip_all"
+                or (
+                    Events.HelmDonkeyDone in l.Events
+                    and Events.HelmChunkyDone in l.Events
+                    and Events.HelmTinyDone in l.Events
+                    and Events.HelmLankyDone in l.Events
+                    and Events.HelmDiddyDone in l.Events
+                )
+            ),
         ),
         CrownLocation(
             map=Maps.HideoutHelm,
@@ -2870,6 +2948,16 @@ CrownLocations = {
             z=5036,
             scale=0.6,
             region=Regions.HideoutHelmMain,
+            logic=lambda l: (
+                l.settings.helm_setting == "skip_all"
+                or (
+                    Events.HelmDonkeyDone in l.Events
+                    and Events.HelmChunkyDone in l.Events
+                    and Events.HelmTinyDone in l.Events
+                    and Events.HelmLankyDone in l.Events
+                    and Events.HelmDiddyDone in l.Events
+                )
+            ),
         ),
     ],
 }
