@@ -77,12 +77,16 @@ set_variables = {
     ],
     "tbarrel_prices": [1, 2, 3, 4],
     "fairy_prices": [3, 6],
-    "helm_order": [2, 3, 1, 0xFF, 0xFF],
+    "helm_order": [2, 0, 0xFF, 0xFF, 0xFF],
     "disco_chunky": 1,
-    "krusha_slot": 0,
+    "krusha_slot": 0xFF,
     "helm_hurry_mode": 0,
-    "win_condition": 1,
+    "win_condition": 5,
     "version": 2,
+    "colorblind_mode": 1,
+    "item_rando": 1,
+    "vulture_item": 72,
+    "japes_rock_item": 76,
 }
 
 

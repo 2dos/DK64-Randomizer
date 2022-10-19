@@ -2125,7 +2125,7 @@ BalloonList = [
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.LlamaTemple,
         vanilla=True,
-        logic=lambda l: Events.AztecLlamaSpit in l.Events,
+        logic=lambda l: Events.AztecLlamaSpit in l.Events and l.swim,
         points=[
             [2308, 337, 1930],
             [2141, 330, 1906],
@@ -2139,7 +2139,7 @@ BalloonList = [
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.LlamaTemple,
         vanilla=True,
-        logic=lambda l: Events.AztecLlamaSpit in l.Events,
+        logic=lambda l: Events.AztecLlamaSpit in l.Events and l.swim,
         points=[
             [2281, 347, 1826],
             [2298, 328, 1928],

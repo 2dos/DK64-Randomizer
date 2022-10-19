@@ -90,6 +90,16 @@
                     </div>
                     <div class="form-check form-switch item-switch">
                         <label data-toggle="tooltip"
+                               title="[IN PROGRESS] Crown Locations are randomized">
+                            <input class="form-check-input"
+                                   type="checkbox"
+                                   name="crown_placement_rando"
+                                   value="True"/>
+                            Randomize Battle Crown Locations
+                        </label>
+                    </div>
+                    <div class="form-check form-switch item-switch">
+                        <label data-toggle="tooltip"
                                title="Speeds up areas locked behind slow/high requirements:&#10;- Aztec: 5 Door Temple Switches Spawned&#10;- Factory: Prod Room On&#10;- Galleon: K Rool Ship Spawned&#10;- Galleon: Instruments open 5 Door Ship Permanently&#10;- Caves: 5 Door Igloo Pads Spawned">
                             <input class="form-check-input" type="checkbox" name="high_req" value="True"/>
                             Remove High Requirements
@@ -127,6 +137,7 @@
                             Helm Hurry Mode
                         </label>
                     </div>
+                    <div class="spacer"></div>
                 </div>
                 <div class="flex-container">
                     <div class="item-select">
@@ -152,9 +163,28 @@
                             <option id="all_medals" value="all_medals">
                                 All Medals
                             </option>
-                            {# <option id="poke_snap" value="poke_snap">
+                            <option id="poke_snap" value="poke_snap">
                                 Pokemon Snap Mode
-                            </option> #}
+                            </option>
+                        </select>
+                    </div>
+                    <div class="item-select">
+                        <p class="select-title">Free Trade Agreement</p>
+                        <select name="free_trade_setting"
+                                id="free_trade_setting"
+                                class="form-select"
+                                aria-label="Randomization type"
+                                data-toggle="tooltip"
+                                title="Allow Kongs to pick up items assigned to other kongs.&#10;-None: Kongs must pick up items assigned to them.&#10;-Major Collectibles except Blueprints: Keys, Crowns, and GBs can be picked up by any Kong.&#10;-Major Collectibles: Same as above plus Blueprints.">
+                            <option id="none" selected value="none">
+                                None
+                            </option>
+                            <option id="not_blueprints" value="not_blueprints">
+                                Major Collectibles except Blueprints
+                            </option>
+                            <option id="major_collectibles" value="major_collectibles">
+                                Major Collectibles
+                            </option>
                         </select>
                     </div>
                 </div>

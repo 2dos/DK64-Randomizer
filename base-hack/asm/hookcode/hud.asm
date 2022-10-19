@@ -147,3 +147,62 @@ SkipCutscenePans:
     SkipCutscenePans_Skip:
         J           0x8061E8A4
         NOP
+
+PlayCutsceneVelocity:
+    LUI     t9, hi(CutsceneStateBitfield)
+    LHU     t9, lo(CutsceneStateBitfield) (t9)
+    ANDI    t9, t9, 4
+    BNEZ    t9, PlayCutsceneVelocity_Finish
+    NOP
+    LUI     t9, hi(CutsceneIndex)
+    LHU     t9, lo(CutsceneIndex) (t9)
+    SLTIU   at, t9, 64
+    BEQZ    at, PlayCutsceneVelocity_Finish
+    NOP
+    ADDIU   t4, r0, 32
+    SUBU    t4, t9, t4
+    SLTIU   at, t9, 32
+    BEQZ    at, PlayCutsceneVelocity_CheckSlot
+    ADDIU   t3, r0, 1
+    ADDIU   t3, r0, 0
+    OR      t4, t9, r0
+
+    PlayCutsceneVelocity_CheckSlot:
+        // t3 = offset, t4 = shift
+        LUI     v0, hi(CurrentMap)
+        LW      v0, lo(CurrentMap) (v0)
+        SLTIU   at, v0, 216
+        BEQZ    at, PlayCutsceneVelocity_Finish
+        NOP
+        LUI     t1, hi(cs_skip_db)
+        ADDIU   t1, t1, lo(cs_skip_db)
+        SLL     v0, v0, 1
+        ADDU    v0, v0, t3
+        SLL     v0, v0, 2
+        ADDU    t1, t1, v0
+        LW      t1, 0x0 (t1)
+        ADDIU   v0, r0, 1
+        SLLV    v0, v0, t4
+        AND     t1, t1, v0
+        BEQZ    t1, PlayCutsceneVelocity_Finish
+        NOP
+        J       0x8061CE5C
+        LW      v0, 0x0 (a1)
+
+    PlayCutsceneVelocity_Finish:
+        LUI     t9, 0x8075
+        J       0x8061CE40
+        SWC1    f0, 0xB8 (t8)
+
+ModifyCameraColor:
+    LUI         t0, hi(EnemyInView)
+    LBU         t0, lo(EnemyInView) (t0)
+    BEQZ        t0, ModifyCameraColor_Finish
+    LI          t0, -1
+    LUI         t0, 0xFF
+    ADDIU       t0, t0, 0xFF
+
+    ModifyCameraColor_Finish:
+        J           0x806FF38C
+        LUI         at, 0x3F00
+    

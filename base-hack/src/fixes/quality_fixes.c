@@ -213,3 +213,26 @@ void updateMultibunchCount(void) {
 		HUD->item[0xA].visual_item_count = count;
 	}
 }
+
+void RabbitRaceInfiniteCode(void) {
+	initCharSpawnerActor();
+	if (checkFlag(FLAG_RABBIT_ROUND1,0)) {
+		if (CurrentActorPointer_0->control_state_progress == 0) {
+			int control_state = CurrentActorPointer_0->control_state;
+			if (control_state == 2) {
+				// Start
+				setHUDItemAsInfinite(5,0,1);
+			} else if ((control_state == 0x28) || (control_state == 0x1E)) {
+				// End
+				resetCoconutHUD();
+			}
+		}
+	}
+}
+
+int fixDilloTNTPads(void* actor) {
+	if ((CurrentMap == 8) || (CurrentMap == 0xC4)) {
+		return 0;
+	}
+	return getPadGravity(actor);
+}

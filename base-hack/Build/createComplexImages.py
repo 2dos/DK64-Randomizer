@@ -48,25 +48,6 @@ kongs = ["dk", "diddy", "lanky", "tiny", "chunky"]
 hash_dir = getDir("assets/Non-Code/hash/")
 if not os.path.exists(hash_dir):
     os.mkdir(hash_dir)
-
-for file_info in number_crop:
-    for num_info in file_info["image_list"]:
-        key_num = num_info["num"]
-        if key_num >= 1 and key_num <= 8:
-            base_dir = getDir("assets/Non-Code/hash/")
-            if not os.path.exists(base_dir):
-                os.mkdir(base_dir)
-            file_dir = f"{base_dir}{file_info['image']}"
-            key_dir = f"{base_dir}boss_key.png"
-            num_im = Image.open(file_dir)
-            key_im = Image.open(key_dir)
-            key_im = key_im.rotate(45, PIL.Image.Resampling.NEAREST, expand=1)
-            num_im = num_im.crop(num_info["crop"])
-            Image.Image.paste(key_im, num_im, (40, 10))
-            bbox = key_im.getbbox()
-            key_im = key_im.crop(bbox)
-            key_im = key_im.resize((32, 32))
-            key_im.save(f"{getDir('assets/Non-Code/file_screen/key')}{key_num}.png")
 kong_res = (32, 32)
 for kong in kongs:
     base_dir = getDir("assets/Non-Code/displays/")
@@ -207,7 +188,7 @@ for num_type in num_types:
 tracker_im = Image.new(mode="RGBA", size=(254, 128))
 instruments = ("bongos", "guitar", "trombone", "sax", "triangle")
 pellets = ("coconut", "peanut", "grape", "feather", "pineapple")
-extra_moves = ("shockwave", "slam", "sniper")  # Add "camera"
+extra_moves = ("film", "shockwave", "slam", "homing_crate", "sniper")
 training_moves = ("swim", "orange", "barrel", "vine")
 kong_submoves = ("_move", "pad", "barrel")
 dim = 20
@@ -232,7 +213,12 @@ for kong_index, kong in enumerate(kongs):
         move_im = move_im.resize((dim, dim))
         tracker_im.paste(move_im, ((gap * kong_index), ((sub_index + 2) * gap)), move_im)
 for move_index, move in enumerate(extra_moves):
-    move_im = Image.open(f"{getDir('assets/Non-Code/file_screen/')}tracker_images/{move}.png")
+    if move in ("homing_crate"):
+        move_im = Image.open(f"{base_dir}{move}.png")
+    elif move in ("film"):
+        move_im = Image.open(f"{hash_dir}{move}.png")
+    else:
+        move_im = Image.open(f"{getDir('assets/Non-Code/file_screen/')}tracker_images/{move}.png")
     move_im = move_im.resize((dim, dim))
     tracker_im.paste(move_im, ((6 * gap), (move_index * gap)), move_im)
 for move_index, move in enumerate(training_moves):
@@ -242,13 +228,65 @@ for move_index, move in enumerate(training_moves):
         move_im = Image.open(f"{getDir('assets/Non-Code/file_screen/')}tracker_images/{move}.png")
     move_im = move_im.resize((dim, dim))
     tracker_im.paste(move_im, ((move_index * gap), 128 - dim), move_im)
-for key_index in range(8):
-    key_im = Image.open(f"{hash_dir}boss_key.png")
-    key_im = key_im.resize((dim, dim))
-    tracker_im.paste(key_im, (254 - (small_gap * (key_index + 1)), 128 - dim), key_im)
+for file_info in number_crop:
+    for num_info in file_info["image_list"]:
+        key_num = num_info["num"]
+        if key_num >= 1 and key_num <= 8:
+            base_dir = getDir("assets/Non-Code/hash/")
+            if not os.path.exists(base_dir):
+                os.mkdir(base_dir)
+            file_dir = f"{base_dir}{file_info['image']}"
+            key_dir = f"{base_dir}boss_key.png"
+            num_im = Image.open(file_dir)
+            key_im = Image.open(key_dir)
+            num_im = num_im.crop(num_info["crop"])
+            num_w, num_h = num_im.size
+            targ_h = 36
+            num_im_scale = targ_h / num_h
+            new_w = int(num_w * num_im_scale)
+            num_im = num_im.resize((new_w, targ_h))
+            key_im.paste(num_im, (targ_h - num_w - [5, 0, 2, -2, 0, -1, 0, -1][key_num - 1], 2), num_im)
+            key_im = key_im.resize((20, 20))
+            key_im.save(f"{getDir('assets/Non-Code/file_screen/key')}{key_num}.png")
+            tracker_im.paste(key_im, (249 - (small_gap * (9 - key_num)), 128 - dim), key_im)
+for melon in range(3):
+    melon_im = Image.open(f"{hash_dir}melon.png")
+    melon_im = melon_im.resize((dim, dim))
+    tracker_im.paste(melon_im, (200 - (small_gap * melon), 0), melon_im)
+prog_offset = 218
+for p_i, progressive in enumerate([f"{hash_dir}headphones.png", f"{disp_dir}standard_crate.png"]):
+    prog_im = Image.open(progressive)
+    prog_im = prog_im.resize((dim, dim))
+    tracker_im.paste(prog_im, (prog_offset, gap + (p_i * gap)), prog_im)
+    num_im = Image.open(f"{hash_dir}01234.png")
+    num_im = num_im.crop((30, 0, 45, 24))
+    num_w, num_h = num_im.size
+    num_size = 15
+    num_scale = num_size / num_h
+    new_w = int(num_w * num_scale)
+    num_im = num_im.resize((new_w, num_size))
+    tracker_im.paste(num_im, (prog_offset + [22, 17][p_i], int(gap + 3 + (p_i * small_gap * 1.2))), num_im)
+
 tracker_im.save(f"{getDir('assets/Non-Code/file_screen/')}tracker.png")
 
-rmve = ["01234.png", "56789.png", "boss_key.png", "WXYL.png", "specialchars.png", "red_qmark_0.png", "red_qmark_1.png"]
+# Nin/RW Coin Objects
+for coin in ("nin_coin", "rw_coin"):
+    loc = f"{hash_dir}{coin}.png"
+    coin_im = Image.open(loc)
+    coin_im = coin_im.crop((2, 0, 28, 31))
+    coin_im = coin_im.transpose(Image.Transpose.FLIP_TOP_BOTTOM)
+    coin_im = coin_im.resize((64, 64))
+    coin_im_0 = coin_im.crop((0, 0, 32, 64))
+    coin_im_1 = coin_im.crop((32, 0, 64, 64))
+    coin_im_0.save(f"{hash_dir}{coin}_0.png")
+    coin_im_1.save(f"{hash_dir}{coin}_1.png")
+side_im = Image.open(f"{hash_dir}special_coin_side.png")
+side_im = side_im.crop((17, 3, 25, 19))
+side_im = side_im.resize((32, 16))
+side_im = side_im.rotate(90, PIL.Image.Resampling.NEAREST, expand=1)
+side_im.save(f"{hash_dir}modified_coin_side.png")
+
+rmve = ["01234.png", "56789.png", "boss_key.png", "WXYL.png", "specialchars.png", "red_qmark_0.png", "red_qmark_1.png", "headphones.png", "film.png", "melon.png"]
 for kong in kongs:
     for x in range(2):
         rmve.append(f"{kong}_face_{x}.png")

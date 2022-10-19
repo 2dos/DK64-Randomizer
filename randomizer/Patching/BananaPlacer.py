@@ -193,7 +193,10 @@ def randomize_cbs(spoiler: Spoiler):
                                     found_actor_id = act_id
                                     found_vacant_actor = True
                                 act_id += 1
-                            item_data.append(found_path_id)
+                            if found_path_id < 26:
+                                item_data.append(found_path_id)
+                            else:
+                                item_data.append(0xFFFF)  # Fixes a crash from too many balloons - might have some side-effects
                             item_data.append(list_item.speed)
                             for x in range(int((0x30 - 0x18) / 4)):
                                 item_data.append(0)

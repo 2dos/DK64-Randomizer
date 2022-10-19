@@ -5,9 +5,9 @@
                 <div class="spoiler-head collapsed"
                      id="spoilerhead-{{ item.lower().replace(' ','_').replace('(','').replace(')','') }}"
                      data-bs-toggle="collapse"
-                     data-bs-target="#spoileritem-{{ item.lower().replace(' ','_').replace('(','').replace(')','') }}"
+                     data-bs-target="#spoileritem-{{ item.lower().replace(' ','_').replace('(','').replace(')','').replace('&', '') }}"
                      aria-expanded="false"
-                     aria-controls="spoileritem-{{ item.lower().replace(' ','_').replace('(','').replace(')','') }}">
+                     aria-controls="spoileritem-{{ item.lower().replace(' ','_').replace('(','').replace(')','').replace('&', '') }}">
                     {# Collapsable Header #}
                     <div class="spoiler-head-container">
                         <div class="spoiler-head-name">{{ item }}</div>
@@ -18,7 +18,7 @@
                     </div>
                 </div>
                 <div class="spoiler-item collapse"
-                     id="spoileritem-{{ item.lower().replace(' ','_').replace('(','').replace(')','') }}">
+                     id="spoileritem-{{ item.lower().replace(' ','_').replace('(','').replace(')','').replace('&', '') }}">
                     {% if spoiler[item] is mapping %}
                         {% if item == "Playthrough" %}
                             {% for sphere_index in spoiler[item] %}
@@ -62,7 +62,7 @@
                                     </table>
                                 </div>
                             {% endfor %}
-                        {% elif item in ("Cosmetics","Requirements","Bosses","Items","Shuffled Exits (Sorted by destination)") %}
+                        {% elif item in ("Cosmetics","Requirements","Bosses","Items","Shuffled Exits (Sorted by destination)","Colored Banana Locations") %}
                             {# Attributes with sub-dicts #}
                             {% for sub_group in spoiler[item] %}
                                 {% if spoiler[item][sub_group] != {} %}

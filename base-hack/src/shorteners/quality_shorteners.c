@@ -131,7 +131,12 @@ void qualityOfLife_shorteners(void) {
 
 void fastWarp(void* actor, int player_index) {
     unkMultiplayerWarpFunction(actor,player_index);
-    renderScreenTransition(6);
+    renderScreenTransition(3);
+}
+
+void fastWarp_playMusic(void* actor) {
+    clearTagSlide(actor);
+    playLevelMusic();
 }
 
 void fastWarpShockwaveFix(void) {

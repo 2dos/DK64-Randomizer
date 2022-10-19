@@ -54,6 +54,8 @@
     "crown_door_open":true,
     "coin_door_open":"need_zero",
     "minigames_list_selected":["big_bug_bash", "splish_splash_salvage", "speedy_swing_sortie", "searchlight_seek", "kremling_kosh", "helm_minigames"],
+    "misc_changes_selected":[],
+    "enemies_selected":[],
     "quality_of_life":true,
     "shorten_boss":true,
     "enable_tag_anywhere":true,

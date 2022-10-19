@@ -3,7 +3,6 @@ from randomizer.Enums.Kongs import Kongs
 from randomizer.Enums.Levels import Levels
 from randomizer.Enums.Regions import Regions
 from randomizer.Enums.Time import Time
-from randomizer.Enums.Transitions import Transitions
 
 
 class LocationLogic:

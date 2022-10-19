@@ -7,7 +7,8 @@ typedef struct drop_item {
     /* 0x005 */ unsigned char drop_count;
 } drop_item;
 
-static drop_item drops[29] = {};
+#define DROP_COUNT 29
+static drop_item drops[DROP_COUNT] = {};
 
 int addItemDrop(int source_object, int drop_object, int drop_music, int drop_count, int drop_total) {
     if (Rando.disable_drops) {
@@ -57,6 +58,48 @@ void buildItemDrops(void) {
     drop_total = addItemDrop(0,0,0,0,drop_total);
 }
 
+void spawnEnemyDrops(actorData* actor) {
+    int level_data = *(int*)(0x807FBB64);
+    if ((player_count < 2) && ((level_data & 0x4000) == 0)) {
+        int entry_index = -1;
+        int actor_index = actor->actorType;
+        for (int i = 0; i < DROP_COUNT; i++) {
+            if (actor_index == drops[i].source_object) {
+                entry_index = i;
+            }
+        }
+        if (entry_index > -1) {
+            int song = drops[entry_index].drop_music;
+            if (song > 0) {
+                playSong(song, 0x3F800000);
+            }
+            int drop_count = drops[entry_index].drop_count;
+            int drop_type = drops[entry_index].dropped_object;
+            if (drop_count > 0) {
+                int flag = -1;
+                int drop_arg = 1;
+                if ((actor_index >= 241) && (actor_index <= 245)) {
+                    int world = getWorld(CurrentMap, 1);
+                    flag = 469 + (5 * world) + (actor_index - 241);
+                    if (Rando.item_rando) {
+                        drop_type = getBPItem(flag - 469);
+                        drop_count = 1;
+                        if ((drop_type == 45) || (drop_type == 72) || (drop_type == 86)) {
+                            drop_arg = 2;
+                        }
+                    }
+                }
+                for (int i = 0; i < drop_count; i++) {
+                    float drop_rotation_divisor = 0xFFF;
+                    drop_rotation_divisor /= drop_count;
+                    int drop_rotation = i * drop_rotation_divisor;
+                    spawnActorWithFlag(drop_type, *(int*)(&actor->xPos), *(int*)(&actor->yPos), *(int*)(&actor->zPos), drop_rotation, drop_arg, flag, 0);
+                }
+            }
+        }
+    }
+}
+
 void initItemDropTable(void) {
     buildItemDrops();
     *(short*)(0x806A5CA6) = getHi(&drops[0].source_object);
@@ -67,4 +110,17 @@ void initItemDropTable(void) {
 
     *(short*)(0x806A5CD2) = getHi(&drops[0].source_object);
     *(short*)(0x806A5CD6) = getLo(&drops[0].source_object);
+    // Spawn Enemy Drops function
+    *(int*)(0x806AD40C) = 0x0C000000 | (((int)&spawnEnemyDrops & 0xFFFFFF) >> 2);
+    *(int*)(0x806AED14) = 0x0C000000 | (((int)&spawnEnemyDrops & 0xFFFFFF) >> 2);
+    *(int*)(0x806AF5A4) = 0x0C000000 | (((int)&spawnEnemyDrops & 0xFFFFFF) >> 2);
+    *(int*)(0x806B0218) = 0x0C000000 | (((int)&spawnEnemyDrops & 0xFFFFFF) >> 2);
+    *(int*)(0x806B0704) = 0x0C000000 | (((int)&spawnEnemyDrops & 0xFFFFFF) >> 2);
+    *(int*)(0x806B0C8C) = 0x0C000000 | (((int)&spawnEnemyDrops & 0xFFFFFF) >> 2);
+    *(int*)(0x806B1C88) = 0x0C000000 | (((int)&spawnEnemyDrops & 0xFFFFFF) >> 2);
+    *(int*)(0x806B4744) = 0x0C000000 | (((int)&spawnEnemyDrops & 0xFFFFFF) >> 2);
+    *(int*)(0x806B5B90) = 0x0C000000 | (((int)&spawnEnemyDrops & 0xFFFFFF) >> 2);
+    *(int*)(0x806B61E0) = 0x0C000000 | (((int)&spawnEnemyDrops & 0xFFFFFF) >> 2);
+    *(int*)(0x806B744C) = 0x0C000000 | (((int)&spawnEnemyDrops & 0xFFFFFF) >> 2);
+    *(int*)(0x806B9AB4) = 0x0C000000 | (((int)&spawnEnemyDrops & 0xFFFFFF) >> 2);
 }

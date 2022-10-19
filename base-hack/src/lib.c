@@ -131,6 +131,20 @@ void alterGBKong(int map, int id, int new_kong) {
 	}
 }
 
+int getLo(void* addr) {
+    return ((int)addr) & 0xFFFF;
+}
+
+int getHi(void* addr) {
+    int addr_0 = (int)addr;
+    int hi = (addr_0 >> 16) & 0xFFFF;
+    int lo = getLo(addr);
+    if (lo & 0x8000) {
+        hi += 1;
+    }
+    return hi;
+}
+
 void cancelCutscene(int enable_movement) {
 	if ((TBVoidByte & 2) == 0) {
 		if (CutsceneActive) {
@@ -170,20 +184,22 @@ void modifyCutsceneItem(int bank, int item, int new_param1, int new_param2, int 
 	}
 }
 
+void modifyCutscenePanPoint(int bank, int item, int point_index, int x, int y, int z, int rot0, int rot1, int rot2, int zoom, int roll) {
+	if (CutsceneBanks[bank].cutscene_funcbank) {
+		cutscene_pan_item* funcbank = (cutscene_pan_item*)CutsceneBanks[bank].cutscene_funcbank;
+		cutscene_pan_item* cs_item = (cutscene_pan_item*)&funcbank[item];
+		pan_data* data = (pan_data*)&cs_item->pan_content[point_index];
+		data->x = x;
+		data->y = y;
+		data->z = z;
+		data->rot_data[0] = rot0;
+		data->rot_data[1] = rot1;
+		data->rot_data[2] = rot2;
+		data->zoom = zoom;
+		data->roll = roll;
+	}
+}
+
 int getWrinklyLevelIndex(void) {
 	return getWorld(CurrentMap, 0);
-}
-
-int getLo(void* addr) {
-    return ((int)addr) & 0xFFFF;
-}
-
-int getHi(void* addr) {
-    int addr_0 = (int)addr;
-    int hi = (addr_0 >> 16) & 0xFFFF;
-    int lo = getLo(addr);
-    if (lo & 0x8000) {
-        hi += 1;
-    }
-    return hi;
 }

@@ -192,6 +192,7 @@ class Spoiler:
             "Kongs": {},
             "Shops": {},
             "Others": {},
+            "Item Placement": self.human_item_assignment,
         }
 
         prices = OrderedDict()
@@ -206,29 +207,31 @@ class Spoiler:
                 else:
                     prices[f"{ItemList[item].name}"] = price
 
-        if self.settings.shuffle_items != "none":
-            # Playthrough data
-            humanspoiler["Playthrough"] = self.playthrough
+        # Playthrough data
+        humanspoiler["Playthrough"] = self.playthrough
 
-            # Woth data
-            humanspoiler["Way of the Hoard"] = self.woth
+        # Woth data
+        humanspoiler["Way of the Hoard"] = self.woth
 
-            # Item location data
-            locations = OrderedDict()
+        # Item location data
+        for location, item in self.location_data.items():
+            if not LocationList[location].constant:
+                item_name = ItemList[item].name
+                location_name = LocationList[location].name
+                item_group = "Others"
+                if location_name in ("Diddy Kong", "Lanky Kong", "Tiny Kong", "Chunky Kong"):
+                    if not self.settings.kong_rando:
+                        continue
+                    item_group = "Kongs"
+                elif "Cranky" in location_name or "Funky" in location_name or "Candy" in location_name:
+                    if self.settings.move_rando == "off":
+                        continue
+                    item_group = "Shops"
+                if self.settings.random_prices != "vanilla" and item_group != "Others":
+                    if item_name in prices:
+                        item_name = f"{item_name} ({prices[item_name]})"
+                humanspoiler["Items"][item_group][location_name] = item_name
 
-            for location, item in self.location_data.items():
-                if not LocationList[location].constant:
-                    item_name = ItemList[item].name
-                    location_name = LocationList[location].name
-                    item_group = "Others"
-                    if location_name in ("Diddy Kong", "Lanky Kong", "Tiny Kong", "Chunky Kong"):
-                        item_group = "Kongs"
-                    elif "Cranky" in location_name or "Funky" in location_name or "Candy" in location_name:
-                        item_group = "Shops"
-                    if self.settings.random_prices != "vanilla" and item_group != "Others":
-                        if item_name in prices:
-                            item_name = f"{item_name} ({prices[item_name]})"
-                    humanspoiler["Items"][item_group][location_name] = item_name
         if len(humanspoiler["Items"]["Shops"].keys()) == 0:
             price_data = {}
             for price in prices:
@@ -313,14 +316,14 @@ class Spoiler:
                 "CastleBoss": "King Kut Out",
             }
             for i in range(7):
-                shuffled_bosses["".join(map(lambda x: x if x.islower() else " " + x, Levels(i).name))] = boss_names[Maps(self.settings.boss_maps[i]).name]
+                shuffled_bosses["".join(map(lambda x: x if x.islower() else " " + x, Levels(i).name)).strip()] = boss_names[Maps(self.settings.boss_maps[i]).name]
             humanspoiler["Bosses"]["Shuffled Boss Order"] = shuffled_bosses
 
         humanspoiler["Bosses"]["King Kut Out Properties"] = {}
         if self.settings.boss_kong_rando:
             shuffled_boss_kongs = OrderedDict()
             for i in range(7):
-                shuffled_boss_kongs["".join(map(lambda x: x if x.islower() else " " + x, Levels(i).name))] = Kongs(self.settings.boss_kongs[i]).name.capitalize()
+                shuffled_boss_kongs["".join(map(lambda x: x if x.islower() else " " + x, Levels(i).name)).strip()] = Kongs(self.settings.boss_kongs[i]).name.capitalize()
             humanspoiler["Bosses"]["Shuffled Boss Kongs"] = shuffled_boss_kongs
             kutout_order = ""
             for kong in self.settings.kutout_kongs:
@@ -358,6 +361,12 @@ class Spoiler:
             humanspoiler["Shuffled Bananaports"] = self.human_warp_locations
         if len(self.hint_list) > 0:
             humanspoiler["Wrinkly Hints"] = self.hint_list
+        if self.settings.wrinkly_location_rando:
+            humanspoiler["Wrinkly Door Locations"] = self.human_hint_doors
+        if self.settings.tns_location_rando:
+            humanspoiler["T&S Portal Locations"] = self.human_portal_doors
+        if self.settings.crown_placement_rando:
+            humanspoiler["Shuffled Crowns"] = self.human_crowns
         level_dict = {
             Levels.DKIsles: "DK Isles",
             Levels.JungleJapes: "Jungle Japes",
@@ -399,19 +408,28 @@ class Spoiler:
                 "cb": " Bananas",
                 "balloons": " Balloons",
             }
-            humanspoiler["Colored Banana Locations"] = {
-                "Jungle Japes": [],
-                "Angry Aztec": [],
-                "Frantic Factory": [],
-                "Gloomy Galleon": [],
-                "Fungi Forest": [],
-                "Crystal Caves": [],
-                "Creepy Castle": [],
-            }
+            humanspoiler["Colored Banana Locations"] = {}
+            cb_levels = ["Japes", "Aztec", "Factory", "Galleon", "Fungi", "Caves", "Castle"]
+            cb_kongs = ["Donkey", "Diddy", "Lanky", "Tiny", "Chunky"]
+            for lvl in cb_levels:
+                for kng in cb_kongs:
+                    humanspoiler["Colored Banana Locations"][f"{lvl} {kng}"] = {
+                        "Balloons": "",
+                        "Bananas": "",
+                    }
             for group in self.cb_placements:
-                humanspoiler["Colored Banana Locations"][level_dict[group["level"]]].append(
-                    NameFromKong(group["kong"]) + human_cb_type_map[group["type"]] + ": " + Maps(group["map"]).name + " - " + group["name"]
-                )
+                lvl_name = level_dict[group["level"]]
+                idx = 1
+                if group["level"] == Levels.FungiForest:
+                    idx = 0
+                map_name = "".join(map(lambda x: x if x.islower() else " " + x, Maps(group["map"]).name)).strip()
+                join_combos = ["2 D Ship", "5 D Ship", "5 D Temple"]
+                for combo in join_combos:
+                    if combo in map_name:
+                        map_name = map_name.replace(combo, combo.replace(" ", ""))
+                humanspoiler["Colored Banana Locations"][f"{lvl_name.split(' ')[idx]} {NameFromKong(group['kong'])}"][
+                    human_cb_type_map[group["type"]].strip()
+                ] += f"{map_name.strip()}: {group['name']}<br>"
 
         return json.dumps(humanspoiler, indent=4)
 
@@ -604,7 +622,7 @@ class Spoiler:
             newSphere = {}
             newSphere["Available GBs"] = sphere.availableGBs
             sphereLocations = list(map(lambda l: locations[l], sphere.locations))
-            sphereLocations.sort(key=lambda l: l.type == Types.Banana)
+            sphereLocations.sort(key=self.ScoreLocations)
             for location in sphereLocations:
                 newSphere[location.name] = ItemList[location.item].name
             self.playthrough[i] = newSphere
@@ -616,6 +634,30 @@ class Spoiler:
         for locationId in wothLocations:
             location = locations[locationId]
             self.woth[location.name] = ItemList[location.item].name
+
+    def ScoreLocations(self, location):
+        """Score a location with the given settings for sorting the Playthrough."""
+        # The Banana Hoard is likely in its own sphere but if it's not put it last
+        if location == Locations.BananaHoard:
+            return 250
+        # GBs go last, there's a lot of them but they arent important
+        if location.type == Types.Banana:
+            return 100
+        # Win condition items are more important than GBs but less than moves
+        elif self.settings.win_condition == "all_fairies" and location.type == Types.Fairy:
+            return 10
+        elif self.settings.win_condition == "all_blueprints" and location.type == Types.Blueprint:
+            return 10
+        elif self.settings.win_condition == "all_medals" and location.type == Types.Medal:
+            return 10
+        # Kongs are most the single most important thing and should be at the top of spheres
+        elif location.type == Types.Kong:
+            return 0
+        # Constants at this point should only be Keys and are best put after moves
+        elif location.type == Types.Constant:
+            return 2
+        # Everything else is a Move (or move-adjacent) and is pretty important
+        return 1
 
     @staticmethod
     def GetKroolKeysRequired(keyEvents):

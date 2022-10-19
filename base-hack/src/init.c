@@ -32,6 +32,12 @@ void writeEndSequence(void) {
 	copyFromROM(0x1FFF800,(int*)0x807506D0,&file_size,0,0,0,0);
 }
 
+typedef struct reward_rom_struct {
+	/* 0x000 */ short flag;
+	/* 0x002 */ unsigned char actor;
+	/* 0x003 */ unsigned char unused;
+} reward_rom_struct;
+
 void expandSaveFile(int static_expansion, int actor_count) {
 	/*
 		File cannot be bigger than 0x200 bytes
@@ -51,7 +57,9 @@ void expandSaveFile(int static_expansion, int actor_count) {
 	// int expansion = static_expansion;
 	int expansion = static_expansion + actor_count;
 	int flag_block_size = 0x320 + expansion;
-	int kong_var_size = 0xA1;
+	int targ_gb_bits = 5; // Max 127
+	int added_bits = (targ_gb_bits - 3) * 8;
+	int kong_var_size = 0xA1 + added_bits;
 	int file_info_location = flag_block_size + (5 * kong_var_size);
 	int file_default_size = file_info_location + 0x72;
 	// Flag Block Size
@@ -70,13 +78,54 @@ void expandSaveFile(int static_expansion, int actor_count) {
 	*(short*)(0x8060C352) = file_default_size;
 	*(short*)(0x8060BF96) = file_default_size;
 	*(short*)(0x8060BA7A) = file_default_size;
-
 	*(short*)(0x8060BEC6) = file_info_location;
+	// Increase GB Storage Size
+	*(short*)(0x8060BE12) = targ_gb_bits; // Bit Size
+	*(short*)(0x8060BE06) = targ_gb_bits << 3; // Allocation for all levels
+	*(short*)(0x8060BE2A) = 0x4021; // SUBU -> ADDU
+	*(int*)(0x8060BCC0) = 0x24090000 | kong_var_size; // ADDIU $t1, $r0, kong_var_size
+	*(int*)(0x8060BCC4) = 0x01C90019; // MULTU $t1, $t6
+	*(int*)(0x8060BCC8) = 0x00004812; // MFLO $t1
+	*(int*)(0x8060BCCC) = 0; // NOP
 	// Model 2 Start
 	*(short*)(0x8060C2F2) = flag_block_size;
 	*(short*)(0x8060BCDE) = flag_block_size;
 	// Reallocate Balloons + Patches
 	*(short*)(0x80688BCE) = 0x320 + static_expansion; // Reallocated to just before model 2 block
+}
+
+static unsigned char bp_item_table[40] = {};
+static unsigned char medal_item_table[40] = {};
+static unsigned char crown_item_table[10] = {};
+static unsigned char key_item_table[8] = {};
+bonus_barrel_info bonus_data[94] = {};
+
+int getBPItem(int index) {
+	return bp_item_table[index];
+}
+
+int getMedalItem(int index) {
+	return medal_item_table[index];
+}
+
+int getCrownItem(int map) {
+	int map_list[] = {0x35,0x49,0x9B,0x9C,0x9F,0xA0,0xA1,0x9D,0xA2,0x9E};
+	for (int i = 0; i < 10; i++) {
+		if (map == map_list[i]) {
+			return crown_item_table[i];
+		}
+	}
+	return 0;
+}
+
+int getKeyItem(int old_flag) {
+	int flag_list[] = {26,74,138,168,236,292,317,380};
+	for (int i = 0; i < 10; i++) {
+		if (old_flag == flag_list[i]) {
+			return key_item_table[i];
+		}
+	}
+	return 0;
 }
 
 static const short kong_flags[] = {385,6,70,66,117};
@@ -88,6 +137,13 @@ void initHack(int source) {
 			*(int*)(0x8060E04C) = 0; // Prevent moves overwrite
 			*(short*)(0x8060DDAA) = 0; // Writes readfile data to moves
 			*(short*)(0x806C9CDE) = 7; // GiveEverything, write to bitfield. Seems to be unused but might as well
+			
+			// Prevent GBs being required to view extra screens
+			*(int*)(0x806A8624) = 0; // GBs doesn't lock other pause screens
+			*(int*)(0x806AB318) = 0x24060001; // ADDIU $a2, $r0, 1
+			*(int*)(0x806AB31C) = 0xA466C83C; // SH $a2, 0xC83C ($v1) | Overwrite trap func, Replace with overwrite of wheel segments
+			*(short*)(0x8075056C) = 201; // Change GB Item cap to 201
+
 			// Strong Kong
 			*(int*)(0x8067ECFC) = 0x30810002; // ANDI $at $a0 2
 			*(int*)(0x8067ED00) = 0x50200003; // BEQL $at $r0 3
@@ -119,6 +175,7 @@ void initHack(int source) {
 			LobbiesOpen = Rando.lobbies_open_bitfield;
 			ShorterBosses = Rando.short_bosses;
 			WinCondition = Rando.win_condition;
+			ItemRandoOn = Rando.item_rando;
 			if (Rando.krusha_slot == 4) {
 				Rando.disco_chunky = 0;
 			} else if (Rando.krusha_slot > 4) {
@@ -136,8 +193,8 @@ void initHack(int source) {
 			alterGBKong(0x14, 0x6C, Rando.free_source_llama); // Free Lanky GB
 			alterGBKong(0x1A, 0x78, Rando.free_source_factory); // Free Chunky GB
 			// Savefile Expansion		
-			// int balloon_patch_count = 300; // Normally 121
-			// expandSaveFile(0x100,balloon_patch_count);
+			int balloon_patch_count = 300; // Normally 121
+			expandSaveFile(0x100,balloon_patch_count);
 			if (Rando.no_health_refill) {
 				*(int*)(0x80683A34) = 0; // Cancel Tag Health Refill
 				// *(int*)(0x8060DD10) = 0; // Load File
@@ -164,6 +221,23 @@ void initHack(int source) {
 				*(short*)(0x80681898) = 0x1000;
 				*(int*)(0x8068191C) = 0; // Remove Oh Banana
 			}
+			if (Rando.resolve_bonus) {
+				*(int*)(0x80681158) = 0x0C000000 | (((int)&completeBonus & 0xFFFFFF) >> 2); // Modify Function Call
+				*(short*)(0x80681962) = 1; // Make bonus noclip	
+			}
+			if (Rando.colorblind_mode) {
+				*(int*)(0x806B1E90) = 0x0C000000 | (((int)&KasplatIndicator & 0xFFFFFF) >> 2); // Modify Function Call
+				int opacity = 50; // Normally 100
+				// CBs etc
+				*(short*)(0x806398CA) = opacity;
+				*(short*)(0x806398CE) = opacity + 1;
+				// Various Items
+				*(short*)(0x8063798A) = opacity;
+				*(short*)(0x806379DA) = opacity;
+				*(short*)(0x80637A1A) = opacity;
+				*(short*)(0x80637A5A) = opacity;
+				*(short*)(0x80637A9A) = opacity;
+			}
 			replace_zones(1);
 			randomize_bosses();
 			loadExtraHooks();
@@ -183,6 +257,10 @@ void initHack(int source) {
 			}
 			*(int*)(0x8074C1B8) = (int)&newCounterCode;
 			fixMusicRando();
+			// In-Level IGT
+			// *(int*)(0x8060DF28) = 0x0C000000 | (((int)&updateLevelIGT & 0xFFFFFF) >> 2); // Modify Function Call
+			*(int*)(0x806ABB0C) = 0x0C000000 | (((int)&printLevelIGT & 0xFFFFFF) >> 2); // Modify Function Call
+			*(short*)(0x806ABB32) = 106; // Adjust kong name height
 			// Disable Sniper Scope Overlay
 			int asm_code = 0x00801025; // OR $v0, $a0, $r0
 			*(int*)(0x806FF80C) = asm_code;
@@ -215,6 +293,7 @@ void initHack(int source) {
 			style128Mtx[0xF] = 100;
 			writeCoinRequirements(0);
 			writeEndSequence();
+			*(int*)(0x806F6350) = 0x0C000000 | (((int)&getObjectCollectability & 0xFFFFFF) >> 2); // Modify Function Call
 			if (Rando.warp_to_isles_enabled) {
 				// Pause Menu Exit To Isles Slot
 				*(short*)(0x806A85EE) = 4; // Yes/No Prompt
@@ -241,12 +320,17 @@ void initHack(int source) {
 				// Fast Vulture
 				*(int*)(0x806C50BC) = 0x0C000000 | (((int)&clearVultureCutscene & 0xFFFFFF) >> 2); // Modify Function Call
 				// General
+				*(int*)(0x80628508) = 0x0C000000 | (((int)&renderScreenTransitionCheck & 0xFFFFFF) >> 2); // Modify Function Call
 				// *(int*)(0x8061D920) = 0xA4205CEC; // Set cutscene state change to 0
 				// *(int*)(0x8061D91C) = 0x0C000000 | (((int)&checkSkippableCutscene & 0xFFFFFF) >> 2); // Modify Function Call
 			} else {
 				for (int i = 0; i < 432; i++) {
 					cs_skip_db[i] = 0;
 				}
+			}
+			if (Rando.quality_of_life.vanilla_fixes) {
+				*(int*)(0x806BE8D8) = 0x0C000000 | (((int)&RabbitRaceInfiniteCode & 0xFFFFFF) >> 2); // Modify Function Call
+				*(int*)(0x8067C168) = 0x0C000000 | (((int)&fixDilloTNTPads & 0xFFFFFF) >> 2); // Modify Function Call
 			}
 			if (Rando.quality_of_life.fast_picture) {
 				// Fast Camera Photo
@@ -309,7 +393,6 @@ void initHack(int source) {
 			*(int*)(0x805FEBC0) = 0x0C000000 | (((int)&parseCutsceneData & 0xFFFFFF) >> 2); // modifyCutsceneHook
 			*(int*)(0x807313A4) = 0x0C000000 | (((int)&checkVictory_flaghook & 0xFFFFFF) >> 2); // perm flag set hook
 			if (Rando.helm_hurry_mode) {
-				*(int*)(0x806F56F8) = 0x0C000000 | (((int)&blueprintCollect & 0xFFFFFF) >> 2); // Blueprint collection hook
 				*(int*)(0x80713CCC) = 0; // Prevent Helm Timer Disable
 				*(int*)(0x80713CD8) = 0; // Prevent Shutdown Song Playing
 				*(short*)(0x8071256A) = 15; // Init Helm Timer = 15 minutes
@@ -321,6 +404,7 @@ void initHack(int source) {
 				// Replace vanilla warp animation (0x52) with monkeyport animation (0x53)
 				*(short*)(0x806EE692) = 0x54;
 				*(int*)(0x806DC2AC) = 0x0C000000 | (((int)&fastWarp & 0xFFFFFF) >> 2); // Modify Function Call
+				*(int*)(0x806DC318) = 0x0C000000 | (((int)&fastWarp_playMusic & 0xFFFFFF) >> 2); // Modify Function Call
 			}
 			if (Rando.version == 0) {
 				// Disable Graphical Debugger
@@ -523,7 +607,133 @@ void initHack(int source) {
 			// Move Text Code
 			*(int*)(0x8074C5B0) = (int)&getNextMoveText;
 			*(int*)(0x8074C5A0) = (int)&getNextMoveText;
-			
+			// New Actors
+			*(int*)(0x8074C2FC) = (int)&ninCoinCode; // Actor 151
+			*(char*)(0x8074D96B) = 4; // Is Sprite
+			*(char*)(0x8074DDD1) = 0x11; // Increase PAAD
+			*(int*)(0x8074C300) = (int)&rwCoinCode; // Actor 152
+			*(char*)(0x8074D96C) = 4; // Is Sprite
+			*(char*)(0x8074DDD5) = 0x11; // Increase PAAD
+			// Any Kong Items
+			if (Rando.any_kong_items & 1) {
+				// All excl. Blueprints
+				*(int*)(0x807319C0) = 0x00001025; // OR $v0, $r0, $r0 - Make all reward spots think no kong
+				*(int*)(0x80632E94) = 0x00001025; // OR $v0, $r0, $r0 - Make flag mapping think no kong
+			}
+			if (Rando.any_kong_items & 2) {
+				*(int*)(0x806F56F8) = 0; // Disable Flag Set for blueprints
+				*(int*)(0x806A606C) = 0; // Disable translucency for blueprints
+			}
+			// Item Rando
+			for (int i = 0; i < 54; i++) {
+				BonusBarrelData[i].spawn_actor = 45; // Spawn GB - Have as default
+				bonus_data[i].flag = BonusBarrelData[i].flag;
+				bonus_data[i].spawn_actor = BonusBarrelData[i].spawn_actor;
+				bonus_data[i].kong_actor = BonusBarrelData[i].kong_actor;
+			}
+			if (Rando.item_rando) {
+				*(short*)(0x806B4E1A) = Rando.vulture_item;
+				*(short*)(0x8069C266) = Rando.japes_rock_item;
+				*(int*)(0x806A78A8) = 0x0C000000 | (((int)&checkFlagDuplicate & 0xFFFFFF) >> 2); // Balloon: Kong Check
+				*(int*)(0x806AAB3C) = 0x0C000000 | (((int)&checkFlagDuplicate & 0xFFFFFF) >> 2); // Pause: BP Get
+				*(int*)(0x806AAB9C) = 0x0C000000 | (((int)&checkFlagDuplicate & 0xFFFFFF) >> 2); // Pause: BP In
+				*(int*)(0x806AAD70) = 0x0C000000 | (((int)&checkFlagDuplicate & 0xFFFFFF) >> 2); // Pause: Fairies
+				*(int*)(0x806AAF70) = 0x0C000000 | (((int)&checkFlagDuplicate & 0xFFFFFF) >> 2); // Pause: Crowns
+				*(int*)(0x806AB064) = 0x0C000000 | (((int)&checkFlagDuplicate & 0xFFFFFF) >> 2); // Pause: Isle Crown 1
+				*(int*)(0x806AB0B4) = 0x0C000000 | (((int)&checkFlagDuplicate & 0xFFFFFF) >> 2); // Pause: Isle Crown 2
+				*(int*)(0x806ABF00) = 0x0C000000 | (((int)&checkFlagDuplicate & 0xFFFFFF) >> 2); // File Percentage: Keys
+				*(int*)(0x806ABF78) = 0x0C000000 | (((int)&checkFlagDuplicate & 0xFFFFFF) >> 2); // File Percentage: Crowns
+				*(int*)(0x806ABFA8) = 0x0C000000 | (((int)&checkFlagDuplicate & 0xFFFFFF) >> 2); // File Percentage: NCoin
+				*(int*)(0x806ABFBC) = 0x0C000000 | (((int)&checkFlagDuplicate & 0xFFFFFF) >> 2); // File Percentage: RCoin
+				*(int*)(0x806AC00C) = 0x0C000000 | (((int)&checkFlagDuplicate & 0xFFFFFF) >> 2); // File Percentage: Kongs
+				*(int*)(0x806BD304) = 0x0C000000 | (((int)&checkFlagDuplicate & 0xFFFFFF) >> 2); // Key flag check: K. Lumsy
+				*(int*)(0x80731A6C) = 0x0C000000 | (((int)&checkFlagDuplicate & 0xFFFFFF) >> 2); // Count flag-kong array
+				*(int*)(0x80731AE8) = 0x0C000000 | (((int)&checkFlagDuplicate & 0xFFFFFF) >> 2); // Count flag array
+				*(int*)(0x806B1E48) = 0x0C000000 | (((int)&countFlagsForKongFLUT & 0xFFFFFF) >> 2); // Kasplat Check Flag
+				*(int*)(0x806F56F8) = 0; // Disable Flag Set for blueprints
+				*(int*)(0x806F78B8) = 0x0C000000 | (((int)&getKongFromBonusFlag & 0xFFFFFF) >> 2); // Reward Table Kong Check
+				*(int*)(0x806F938C) = 0x0C000000 | (((int)&banana_medal_acquisition & 0xFFFFFF) >> 2); // Medal Give
+				*(int*)(0x806F9394) = 0;
+				*(int*)(0x806F7F28) = 0x0C000000 | (((int)&keyGrabHook & 0xFFFFFF) >> 2); // Key Get Hook - Pre Flag
+				*(int*)(0x806F5564) = 0x0C000000 | (((int)&itemGrabHook & 0xFFFFFF) >> 2); // Item Get Hook - Post Flag
+				// BP Table
+				int bp_size = 0x28;
+				unsigned char* bp_write = dk_malloc(bp_size);
+				int* bp_file_size;
+				*(int*)(&bp_file_size) = bp_size;
+				copyFromROM(0x1FF1000,bp_write,&bp_file_size,0,0,0,0);
+				for (int i = 0; i < bp_size; i++) {
+					bp_item_table[i] = bp_write[i];
+				}
+				// Medal Table
+				int medal_size = 0x28;
+				unsigned char* medal_write = dk_malloc(medal_size);
+				int* medal_file_size;
+				*(int*)(&medal_file_size) = medal_size;
+				copyFromROM(0x1FF1080,medal_write,&medal_file_size,0,0,0,0);
+				for (int i = 0; i < medal_size; i++) {
+					medal_item_table[i] = medal_write[i];
+				}
+				// Crown Table
+				int crown_size = 0xA;
+				unsigned char* crown_write = dk_malloc(crown_size);
+				int* crown_file_size;
+				*(int*)(&crown_file_size) = crown_size;
+				copyFromROM(0x1FF10C0,crown_write,&crown_file_size,0,0,0,0);
+				for (int i = 0; i < crown_size; i++) {
+					crown_item_table[i] = crown_write[i];
+				}
+				// Key Table
+				int key_size = 0x8;
+				unsigned char* key_write = dk_malloc(key_size);
+				int* key_file_size;
+				*(int*)(&key_file_size) = key_size;
+				copyFromROM(0x1FF10D0,key_write,&key_file_size,0,0,0,0);
+				for (int i = 0; i < key_size; i++) {
+					key_item_table[i] = key_write[i];
+				}
+				// Reward Table
+				for (int i = 0; i < 40; i++) {
+					bonus_data[54 + i].flag = 469 + i;
+					bonus_data[54 + i].kong_actor = (i % 5) + 2;
+					bonus_data[54 + i].spawn_actor = bp_item_table[i];
+				}
+				int reward_size = 0x100;
+				reward_rom_struct* reward_write = dk_malloc(medal_size);
+				int* reward_file_size;
+				*(int*)(&reward_file_size) = reward_size;
+				copyFromROM(0x1FF1200,reward_write,&reward_file_size,0,0,0,0);
+				for (int i = 0; i < 0x40; i++) {
+					if (reward_write[i].flag > -1) {
+						for (int j = 0; j < 54; j++) {
+							if (BonusBarrelData[j].flag == reward_write[i].flag) {
+								BonusBarrelData[j].spawn_actor = reward_write[i].actor;
+							}
+						}
+					}
+				}
+			}
+			*(int*)(0x80681910) = 0x0C000000 | (((int)&spawnBonusReward & 0xFFFFFF) >> 2); // Spawn Bonus Reward
+			*(int*)(0x806C63BC) = 0x0C000000 | (((int)&spawnRewardAtActor & 0xFFFFFF) >> 2); // Spawn Squawks Reward
+			/*
+				TODO:
+				- Key SFX is eternal
+				- Change bonus aesthetic based on reward
+				- Implement Killi's optimized algorithm
+
+				MOVES IN POOL NOTES:
+				- Variable Moves have flags with the uppermost bit set
+					- eg. Sax: 0xB401
+						- 0xBYYY -> Is variable move, for Tiny (Kong 3). 1011
+						- 0xY400 -> Move Offset 4 (Instrument)
+						- 0xYY01 -> Instrument Level 1
+				- Modify flag sets and checks so that if it detects the uppermost bit is set, check variable moves instead of flag db
+					- For bitfield moves, this can be baked into the original FBA system, not for non-bitfield moves (Slams, Ammo Belts)
+					- Can't do progressive (no great way to alter flags during live play)
+				- Use potion model for actors (might have to shift it to be centered around 0? I think it's offcentered)
+				- Convert potion model to M2
+			*/
+
 			// Spider Projectile
 			//*(int*)(0x806ADDC0) = 0x0C000000 | (((int)&handleSpiderTrapCode & 0xFFFFFF) >> 2); // Remove buff until we think of something better
 			// Slow Turn Fix
@@ -588,7 +798,10 @@ void initHack(int source) {
 			*(short*)(0x806AAFB6) = FLAG_ABILITY_CAMERA; // Other Fairies Display
 			*(short*)(0x806AA762) = FLAG_ABILITY_CAMERA; // Film Display
 			*(short*)(0x8060D986) = FLAG_ABILITY_CAMERA; // Film Refill
+			*(short*)(0x806F6F76) = FLAG_ABILITY_CAMERA; // Film Refill
 			initItemDropTable();
+			initCollectableCollision();
+			initActorDefs();
 			// LZ Save
 			*(int*)(0x80712EC4) = 0x0C000000 | (((int)&postKRoolSaveCheck & 0xFFFFFF) >> 2);
 			// Reduce TA Cooldown
@@ -680,8 +893,8 @@ void initHack(int source) {
 }
 
 void quickInit(void) {
+	initHack(1);
 	if (Rando.quality_of_life.fast_boot) {
-		initHack(1);
 		initiateTransitionFade(0x51, 0, 5);
 		CutsceneWillPlay = 0;
 		Gamemode = 5;

@@ -11,7 +11,7 @@ from randomizer.Enums.Transitions import Transitions
 from randomizer.Patching.BananaPortRando import randomize_bananaport
 from randomizer.Patching.BarrelRando import randomize_barrels
 from randomizer.Patching.BossRando import randomize_bosses
-from randomizer.Patching.CosmeticColors import apply_cosmetic_colors
+from randomizer.Patching.CosmeticColors import apply_cosmetic_colors, overwrite_object_colors
 from randomizer.Patching.DKTV import randomize_dktv
 from randomizer.Patching.EnemyRando import randomize_enemies
 from randomizer.Patching.EntranceRando import randomize_entrances
@@ -21,6 +21,7 @@ from randomizer.Patching.KongRando import apply_kongrando_cosmetic
 from randomizer.Patching.MiscSetupChanges import randomize_setup
 from randomizer.Patching.MoveLocationRando import randomize_moves
 from randomizer.Patching.MusicRando import randomize_music
+from randomizer.Patching.ItemRando import place_randomized_items
 from randomizer.Patching.Patcher import ROM
 from randomizer.Patching.PhaseRando import randomize_helm, randomize_krool
 from randomizer.Patching.PriceRando import randomize_prices
@@ -29,10 +30,13 @@ from randomizer.Patching.UpdateHints import PushHints, wipeHints
 from randomizer.Patching.MiscSetupChanges import randomize_setup
 from randomizer.Patching.BananaPlacer import randomize_cbs
 from randomizer.Patching.ShopRandomizer import ApplyShopRandomizer
+from randomizer.Patching.CrownPlacer import randomize_crown_pads
 from ui.GenTracker import generateTracker
 from ui.GenSpoiler import GenerateSpoiler
 from randomizer.Patching.UpdateHints import PushHints, wipeHints
 from randomizer.Patching.DoorPlacer import place_door_locations
+from randomizer.Lists.QoL import QoLSelector
+from randomizer.Lists.EnemyTypes import EnemySelector
 
 # from randomizer.Spoiler import Spoiler
 from randomizer.Settings import Settings
@@ -213,8 +217,19 @@ def patching_response(responded_data):
 
     # Quality of Life
     if spoiler.settings.quality_of_life:
+        enabled_qol = spoiler.settings.misc_changes_selected.copy()
+        if len(enabled_qol) == 0:
+            for item in QoLSelector:
+                enabled_qol.append(item["value"])
+        write_data = [0, 0]
+        for item in QoLSelector:
+            if item["value"] in enabled_qol:
+                offset = int(item["shift"] >> 3)
+                check = int(item["shift"] % 8)
+                write_data[offset] |= 0x80 >> check
         ROM().seek(sav + 0x0B0)
-        ROM().writeMultipleBytes(0xFFFF, 2)
+        for byte_data in write_data:
+            ROM().writeMultipleBytes(byte_data, 1)
 
     # Damage amount
     ROM().seek(sav + 0x0A5)
@@ -376,6 +391,13 @@ def patching_response(responded_data):
         ROM().seek(sav + 0x150)
         ROM().write(spoiler.settings.medal_requirement)
 
+    print(spoiler.settings.enemies_selected)
+    if len(spoiler.settings.enemies_selected) == 0 and (spoiler.settings.enemy_rando or spoiler.settings.crown_enemy_rando != "off"):
+        lst = []
+        for enemy in EnemySelector:
+            lst.append(enemy["value"])
+        spoiler.settings.enemies_selected = lst
+
     # randomize_dktv()
     randomize_entrances(spoiler)
     randomize_moves(spoiler)
@@ -392,11 +414,14 @@ def patching_response(responded_data):
     randomize_puzzles(spoiler)
     randomize_cbs(spoiler)
     ApplyShopRandomizer(spoiler)
+    place_randomized_items(spoiler)
     place_door_locations(spoiler)
+    randomize_crown_pads(spoiler)
 
     random.seed(spoiler.settings.seed)
     randomize_music(spoiler)
     apply_cosmetic_colors(spoiler)
+    overwrite_object_colors(spoiler)
     random.seed(spoiler.settings.seed)
 
     if spoiler.settings.wrinkly_hints in ["standard", "cryptic"]:

@@ -12,7 +12,7 @@ typedef struct varspace {
 	/* 0x031 */ char fast_start_helm; // 0 = "Fast Start for Helm" setting not applied. 1 = Applied
 	/* 0x032 */ char crown_door_open; // 0 = Crown Door not opened by default. 1 = Opened by default
 	/* 0x033 */ char coin_door_open; // 0 = Coin Door not opened by default. 1 = Opened by default. 2 = Only requires RW Coin. 3 = Only requires Nin Coin.
-	/* 0x034 */ char unk34;
+	/* 0x034 */ char item_rando; // 0 = Off, 1 = On
 	/* 0x035 */ char price_rando_on; // 0 = Price Randomizer off, 1 = On
 	/* 0x036 */ unsigned char special_move_prices[5][3]; // Array of an array of prices [[1,2,3],[1,2,3],[1,2,3],[1,2,3],[1,2,3]]. Each item of the parent array is for a kong, each item of the sub arrays is the price of the moves in order of their vanilla purchase (eg. DK: Baboon Blast > Strong Kong > Gorilla Grab)
 	/* 0x045 */ unsigned char slam_prices[2]; // Array of simian slam upgrade prices: [1,2]. First item is super simian slam (blue), 2nd is super duper simian slam (red)
@@ -49,7 +49,12 @@ typedef struct varspace {
 	/* 0x0AE */ char helm_hurry_mode; // 0 = Off, 1 = On: Starting a new file summons the helm timer, each BP adds 2 minutes to the clock, timing out disables saving.
 	/* 0x0AF */ char always_show_coin_cbs; // 0 = No (Vanilla), 1 = Yes
 	/* 0x0B0 */ quality_options quality_of_life; // Size: 2
-	/* 0x0B2 */ char unk_B0[0x11C - 0xB2];
+	/* 0x0B2 */ char unk_B0[0x113 - 0xB2];
+	/* 0x113 */ unsigned char any_kong_items; // Bitfield 0000 00ba. a = All items except blueprints disabling kong check. b = Blueprints disable kong check.
+	/* 0x114 */ unsigned char japes_rock_item; // Actor ID of item that spawns from destroying the rock covering Japes Underground
+	/* 0x115 */ unsigned char vulture_item; // Actor ID of item that the vulture in Tiny Temple has
+	/* 0x116 */ char colorblind_mode; // 0 = Off, 1 = On
+	/* 0x117 */ unsigned char enabled_pkmnsnap_enemies[5]; // Bitfield
 	/* 0x11C */ char krusha_slot; // -1 = Not replacing a kong. 0-4 = Replaces kong of relevant index. Takes priority over disco chunky
 	/* 0x11D */ unsigned char win_condition; // See vars.h for enum
 	/* 0x11E */ char tns_indicator;
@@ -109,4 +114,5 @@ typedef struct varspace {
 	/* 0x17E */ char dk_face_puzzle_init[9];
 	/* 0x187 */ char chunky_face_puzzle_init[9];
 	/* 0x190 */ char helm_order[5]; // Each item is a place in the order. -1 for an empty slot. For each item, 0 = DK, 1 = Chunky, 2 = Tiny, 3 = Lanky, 4 = Diddy. DK has to either be first or not present.
+	/* 0x195 */ char disable_rotating_crown; // 0 = Checks flag, 1 = Disabled
 } varspace;

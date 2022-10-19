@@ -27,6 +27,8 @@
 #define CRYPT_DDC 0x70
 #define CASTLE_DUNGEON 0xA3
 #define CASTLE_TREE 0xA4
+#define CAVES_ROTATING 0x59
+#define FUNGI_ANTHILL 0x34
 
 #define FUNGI_MINECART_GRATE 0x22
 #define SEASICK_SHIP 0x27
@@ -144,6 +146,9 @@
 
 #define CHEST_PEARL_0 0x0
 #define MILLREAR_CHUNKYCHECK_RATE 0xF
+#define ROTATING_ROOM_OBJ 0x0
+#define FUNGI_BEAN 0x5
+#define FUNGI_BEANCONTROLLER 0x4D
 
 #define FACTORY_LARGEMETALSECTION 0x0
 #define FACTORY_PIANO 0x14
@@ -155,6 +160,7 @@
 #define HELM_PAD_SAX 0x2E
 #define HELM_PAD_TROMBONE 0x2F
 #define HELM_PAD_GUITAR 0x30
+#define HELM_COIN_DOOR 0x3
 
 #define JAPES_CAVE_GATE 0x2B
 #define JAPES_PEANUT_MOUNTAIN 0x58
@@ -527,6 +533,63 @@ void TNSIndicatorGenericCode(behaviour_data* behaviour, int index, int id) {
 	}
 }
 
+static const int crown_maps[] = {
+	0x35, // Japes
+	0x49, // Aztec
+	0x9B, // Factory
+	0x9C, // Galleon
+	0x9F, // Fungi
+	0x9D, // Fungi Lobby
+	0x9E, // Snide's
+	0xA0, // Caves
+	0xA1, // Castle
+	0xA2, // Helm
+};
+
+void CrownPadGenericCode(behaviour_data* behaviour, int index, int id, int crown_level_index) {
+	if (behaviour->current_state == 0) {
+		setScriptRunState(behaviour, 3, 300);
+		behaviour->next_state = 1;
+	}
+	int world = getWorld(CurrentMap, 1);
+	int crown_offset = world;
+	if (world > 4) {
+		if (world < 7) {
+			crown_offset = world + 2;
+		} else {
+			crown_offset = 5 + crown_level_index;
+		}
+	}
+	if (checkFlag(FLAG_CROWN_JAPES + crown_offset,0)) {
+		behaviour->unk_71 = 0;
+		behaviour->unk_60 = 1;
+		behaviour->unk_62 = 0;
+		behaviour->unk_66 = 255;
+		setScriptRunState(behaviour, 2, 0);
+	}
+	if (Player) {
+		if ((Player->obj_props_bitfield & 0x2000) == 0) {
+			if ((Player->characterID >= 2) && (Player->characterID <= 6)) {
+				if (Player->touching_object == 1) {
+					if (index == Player->standing_on_index) {
+						if (!checkFlag(FLAG_FTT_CROWNPAD,0)) {
+							setPermFlag(FLAG_FTT_CROWNPAD);
+							*(char*)(0x807F693F) = 1;
+							PlayCutsceneFromModelTwoScript(behaviour, 24, 1, 0);
+							behaviour->next_state = 2;
+						}
+						if (Player->standing_on_subposition == 2) {
+							if (behaviour->current_state >= 0) {
+								createCollision(0, Player, COLLISION_BATTLE_CROWN, crown_maps[crown_offset], 2, collisionPos[0], collisionPos[1], collisionPos[2]);
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+}
+
 int isBonus(int map) {
 	int level = levelIndexMapping[map];
 	return (level == 9) || (level == 0xD);
@@ -651,12 +714,10 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 						case GALLEON_TINY_SLAM:
 							if (index == 0) { 
 								return !Rando.remove_high_requirements;
-							}
-							else{
+							} else {
 								if (Rando.remove_high_requirements) {
 									behaviour_pointer->next_state = 6;
-								}
-								else {
+								} else {
 									behaviour_pointer->next_state = 5;
 								}
 							}
@@ -744,6 +805,8 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 					} else {
 						initiateTransition_0(55, 0, 0, 0);
 					}
+				} else if (param2 == FUNGI_BEANCONTROLLER) {
+					return checkFlag(FLAG_COLLECTABLE_BEAN, 0);
 				}
 				break;
 			case CASTLE_BALLROOM:
@@ -937,7 +1000,7 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 					} else if ((index == 2) || (index == 3)) {
 						return getPressedSwitch(behaviour_pointer, kong_pellets[(int)Rando.free_source_japes], id);
 					} else if (index == 4) {
-						return !Rando.quality_of_life.remove_cutscenes; // TODO: Retry this
+						return !Rando.quality_of_life.remove_cutscenes; // TODO(theballaam96): Retry this
 					}
 				} else if ((param2 == JAPES_GATE0) || (param2 == JAPES_GATE1) || (param2 == JAPES_GATE2)) {
 					if (Rando.open_level_sections) {
@@ -959,6 +1022,15 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 					if (checkFlag(JAPESMOUNTAINSPAWNED,0)) {
 						behaviour_pointer->current_state = 20;
 						behaviour_pointer->next_state = 20;
+					}
+				}
+				break;
+			case FUNGI_ANTHILL:
+				if (param2 == FUNGI_BEAN) {
+					if (index == 0) {
+						return checkFlag(FLAG_COLLECTABLE_BEAN, 0);
+					} else if (index == 1) {
+						setFlag(FLAG_COLLECTABLE_BEAN, 1, 0);
 					}
 				}
 				break;
@@ -1041,8 +1113,7 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 					} else if (index == 2) {
 						if (Rando.fast_gbs) {
 							disableDiddyRDDoors();
-						}
-						else {
+						} else {
 							setScriptRunState(behaviour_pointer, 2, 0);
 						}
 					}
@@ -1186,6 +1257,14 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 					}
 				}
 				break;
+			case CAVES_ROTATING:
+				if (param2 == ROTATING_ROOM_OBJ) {
+					if (!Rando.disable_rotating_crown) {
+						return checkFlag(FLAG_CROWN_CAVES,0);
+					}
+					return 1;
+				}
+				break;
 			case GALLEON_FISH:
 				if ((param2 == FISH_SHIELD1) || (param2 == FISH_SHIELD2) || (param2 == FISH_SHIELD3)) {
 					int fish_state = 1;
@@ -1277,6 +1356,13 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 					int previous_slot = -1;
 					int current_slot = -1;
 					switch(param2) {
+						case HELM_COIN_DOOR:
+							if (index == 0) {
+								return checkFlagDuplicate(FLAG_COLLECTABLE_NINTENDOCOIN,0);
+							} else if (index == 1) {
+								return checkFlagDuplicate(FLAG_COLLECTABLE_RAREWARECOIN,0);
+							}
+							break;
 						case HELM_PAD_BONGO:
 							slot = 0;
 						case HELM_PAD_TRIANGLE:
@@ -1408,6 +1494,10 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 		TNSPortalGenericCode(behaviour_pointer, id, param2);
 	} else if (index == -4) {
 		TNSIndicatorGenericCode(behaviour_pointer, id, param2);
+	} else if (index == -5) {
+		CrownPadGenericCode(behaviour_pointer, id, param2, 0);
+	} else if (index == -6) {
+		CrownPadGenericCode(behaviour_pointer, id, param2, 1);
 	}
 	InstanceScriptParams[1] = id;
 	InstanceScriptParams[2] = index;

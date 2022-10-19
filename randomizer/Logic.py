@@ -7,6 +7,7 @@ import randomizer.CollectibleLogicFiles.FranticFactory
 import randomizer.CollectibleLogicFiles.FungiForest
 import randomizer.CollectibleLogicFiles.GloomyGalleon
 import randomizer.CollectibleLogicFiles.JungleJapes
+from randomizer.Enums.Types import Types
 import randomizer.LogicFiles.AngryAztec
 import randomizer.LogicFiles.CreepyCastle
 import randomizer.LogicFiles.CrystalCaves
@@ -174,6 +175,8 @@ class LogicVarHolder:
 
         self.kong = self.startkong
 
+        self.bananaHoard = False
+
         self.UpdateKongs()
 
     def Update(self, ownedItems):
@@ -269,6 +272,8 @@ class LogicVarHolder:
 
         self.Blueprints = [x for x in ownedItems if x >= Items.JungleJapesDonkeyBlueprint]
 
+        self.bananaHoard = self.bananaHoard or Items.BananaHoard in ownedItems
+
     def AddEvent(self, event):
         """Add an event to events list so it can be checked for logically."""
         self.Events.append(event)
@@ -335,16 +340,17 @@ class LogicVarHolder:
         """Check if logic currently is currently the specified kong and owns a gun for them."""
         if kong == Kongs.donkey:
             return self.coconut and self.isdonkey
-        if kong == Kongs.diddy:
+        elif kong == Kongs.diddy:
             return self.peanut and self.isdiddy
-        if kong == Kongs.lanky:
+        elif kong == Kongs.lanky:
             return self.grape and self.islanky
-        if kong == Kongs.tiny:
+        elif kong == Kongs.tiny:
             return self.feather and self.istiny
-        if kong == Kongs.chunky:
+        elif kong == Kongs.chunky:
             return self.pineapple and self.ischunky
-        if kong == Kongs.any:
+        elif kong == Kongs.any:
             return (self.coconut and self.isdonkey) or (self.peanut and self.isdiddy) or (self.grape and self.islanky) or (self.feather and self.istiny) or (self.pineapple and self.ischunky)
+        return False
 
     def HasInstrument(self, kong):
         """Check if logic currently is currently the specified kong and owns an instrument for them."""
@@ -374,6 +380,10 @@ class LogicVarHolder:
         # Used only as placeholder during fill when kong puzzles are not yet assigned
         elif self.settings.tiny_freeing_kong == Kongs.any:
             return True
+
+    def CanLlamaSpit(self):
+        """Check if the Llama spit can be triggered."""
+        return self.HasInstrument(self.settings.lanky_freeing_kong)
 
     def CanFreeLanky(self):
         """Check if kong at Lanky location can be freed, requires freeing kong to have its gun and instrument."""
@@ -440,6 +450,8 @@ class LogicVarHolder:
         """Purchase items from shops and subtract price from logical coin counts."""
         if location.item is not None and location.item is not Items.NoItem:
             price = GetPriceOfMoveItem(location.item, self.settings, self.Slam, self.AmmoBelts, self.InstUpgrades)
+            if price is None:  # This probably shouldn't happen but I think it's harmless
+                return  # TODO: solve this
             # print("BuyShopItem for location: " + location.name)
             # print("Item: " + ItemList[location.item].name + " has Price: " + str(price))
             # If shared move, take the price from all kongs EVEN IF THEY AREN'T FREED YET
@@ -469,10 +481,11 @@ class LogicVarHolder:
         else:  # if time == Time.Both
             return Regions[region].dayAccess or Regions[region].nightAccess
 
-    def KasplatAccess(self, location):
-        """Use the kasplat map to check kasplat logic for blueprint locations."""
-        kong = self.kasplat_map[location]
-        return self.IsKong(kong)
+    def BlueprintAccess(self, item):
+        """Check if we are the correct kong for this blueprint item."""
+        if item is None or item.type != Types.Blueprint:
+            return False
+        return self.settings.free_trade_blueprints or self.IsKong(item.kong)
 
     def CanBuy(self, location):
         """Check if there are enough coins to purchase this location."""
@@ -518,6 +531,21 @@ class LogicVarHolder:
     def IsLevelEnterable(self, level):
         """Check if level entry requirement is met."""
         return self.HasEnoughKongs(level, forPreviousLevel=True) and self.GoldenBananas >= self.settings.EntryGBs[level]
+
+    def WinConditionMet(self):
+        """Check if the current game state has met the win condition."""
+        if self.settings.win_condition == "beat_krool":
+            return self.bananaHoard
+        elif self.settings.win_condition == "get_key8":
+            return self.HelmKey
+        elif self.settings.win_condition == "all_fairies":
+            return self.BananaFairies >= 20
+        elif self.settings.win_condition == "all_blueprints":
+            return len(self.Blueprints) >= 40
+        elif self.settings.win_condition == "all_medals":
+            return self.BananaMedals >= 40
+        else:
+            return False
 
 
 LogicVariables = LogicVarHolder()

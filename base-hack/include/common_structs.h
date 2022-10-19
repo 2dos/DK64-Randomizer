@@ -53,7 +53,8 @@ typedef struct actorData {
 	/* 0x0E8 */ short rot_z;
 	/* 0x0EA */ char unk_EA[0x4];
 	/* 0x0EE */ short rot_y_copy;
-	/* 0x0F0 */ char unk_F0[0x124-0xF0];
+	/* 0x0F0 */ short reward_index;
+	/* 0x0F2 */ char unk_F2[0x124-0xF2];
 	/* 0x124 */ actor_subdata* data_pointer;
 	/* 0x128 */ short shadow_intensity;
 	/* 0x12A */ char unk_12A[0x132-0x12A];
@@ -226,7 +227,8 @@ typedef struct playerData {
 	/* 0x370 */ int strong_kong_ostand_bitfield;
 	/* 0x374 */ char unk_374[0x37D-0x374];
 	/* 0x37D */ unsigned char rambi_enabled;
-	/* 0x37E */ char unk_37E[0x3BE - 0x37E];
+	/* 0x37E */ char unk_37E[0x3BC - 0x37E];
+	/* 0x3BC */ unsigned short try_again_timer;
 	/* 0x3BE */ unsigned char detransform_timer;
 } playerData; //size 0x630
 
@@ -327,7 +329,8 @@ typedef struct ModelTwoData {
 	/* 0x086 */ char unk_86[0x2];
 	/* 0x088 */ short sub_id;
 	/* 0x08A */ short object_id;
-	/* 0x08C */ char unk_8C[0x4];
+	/* 0x08C */ unsigned char collectable_state;
+	/* 0x08D */ char unk_8D[0x3];
 } ModelTwoData;
 
 typedef struct WarpInfo {
@@ -352,16 +355,35 @@ typedef struct cutscene_item {
 	/* 0x00C */ char unkC[0x14-0xC];
 } cutscene_item;
 
+typedef struct pan_data {
+	/* 0x000 */ short x;
+	/* 0x002 */ short y;
+	/* 0x004 */ short z;
+	/* 0x006 */ short rot_data[3];
+	/* 0x00C */ unsigned char zoom;
+	/* 0x00D */ unsigned char roll;
+} pan_data;
+
+typedef struct cutscene_pan_item {
+	/* 0x000 */ char unk0;
+	/* 0x001 */ unsigned char command;
+	/* 0x002 */ char unk2[2];
+	/* 0x004 */ short point_count;
+	/* 0x006 */ char unk6[2];
+	/* 0x008 */ pan_data* pan_content;
+	/* 0x00C */ char unkC[0x14-0xC];
+} cutscene_pan_item;
+
 typedef struct cutscene_item_data {
 	/* 0x000 */ short num_points;
 	/* 0x002 */ short unk_02;
-	/* 0x004 */ void* point_array;
-	/* 0x008 */ void* length_array;
+	/* 0x004 */ short* point_array;
+	/* 0x008 */ short* length_array;
 } cutscene_item_data;
 
 typedef struct cutsceneType {
 	/* 0x000 */ char unk_00[0xD0];
-	/* 0x0D0 */ cutsceneInfo* cutscene_databank;
+	/* 0x0D0 */ cutscene_item_data* cutscene_databank;
 	/* 0x0D4 */ char unk_D4[0xD8-0xD4];
 	/* 0x0D8 */ cutscene_item* cutscene_funcbank;
 	/* 0x0DC */ int unk_DE;
@@ -704,10 +726,11 @@ typedef struct fileExtraStorage {
 	/* 0x001 */ unsigned char location_ab1_purchased;
 	/* 0x002 */ unsigned char location_ug1_purchased;
 	/* 0x003 */ unsigned char location_mln_purchased;
+	/* 0x004 */ unsigned int level_igt[9];
 } fileExtraStorage;
 
 typedef struct settingsData {
-	/* 0x000 */ fileExtraStorage file_extra[3];
+	/* 0x000 */ fileExtraStorage file_extra;
 } settingsData;
 
 typedef struct behaviour_data {
@@ -734,7 +757,7 @@ typedef struct behaviour_data {
 	/* 0x060 */ char unk_60;
 	/* 0x061 */ char unk_61;
 	/* 0x062 */ unsigned short unk_62;
-	/* 0x064 */ char unk_64[0x66-0x64];
+	/* 0x064 */ short unk_64;
 	/* 0x066 */ unsigned char unk_66;
 	/* 0x067 */ char unk_67;
 	/* 0x068 */ unsigned short unk_68;
@@ -1226,9 +1249,39 @@ typedef struct kong_model_struct {
 	/* 0x00C */ int unk0;
 } kong_model_struct;
 
+typedef struct bonus_barrel_info {
+	/* 0x000 */ short flag;
+	/* 0x002 */ unsigned char kong_actor;
+	/* 0x003 */ unsigned char spawn_actor;
+} bonus_barrel_info;
+
+typedef struct bonus_paad {
+	/* 0x000 */ float oscillation_y;
+	/* 0x004 */ short unk4;
+	/* 0x006 */ short unk6;
+	/* 0x008 */ short unk8;
+	/* 0x00A */ short barrel_index;
+	/* 0x00C */ char other_timer;
+	/* 0x00D */ char destroy_timer;
+	/* 0x00E */ char raise_timer;
+} bonus_paad;
+
 typedef struct tag_model_struct {
 	/* 0x000 */ short model;
 	/* 0x002 */ short actor;
 	/* 0x004 */ char unk0;
 	/* 0x005 */ char unk1;
 } tag_model_struct;
+
+typedef struct mtx_item {
+	/* 0x000 */ char unk_0[0x40];
+} mtx_item;
+
+typedef struct actor_behaviour_def {
+    /* 0x000 */ short actor_type;
+    /* 0x002 */ short model;
+    /* 0x004 */ char unk4[8];
+    /* 0x00C */ void* code;
+    /* 0x010 */ void* unk10;
+    /* 0x014 */ char str[0x1C];
+} actor_behaviour_def;

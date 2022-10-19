@@ -158,6 +158,26 @@
                         </div>
                     </div>
                 </div>
+                <div class="flex-container">
+                    <div class="item-select">
+                        <p class="select-title">Colorblind Mode</p>
+                        <select name="colorblind_mode"
+                                id="colorblind_mode"
+                                class="form-select"
+                                aria-label="Colorblind Mode">
+                            <option selected value="off">
+                                Off
+                            </option>
+                            <option selected value="prot-deut">
+                                Red-Green
+                            </option>
+                            <option selected value="trit">
+                                Blue-Yellow
+                            </option>
+                        </select>
+                    </div>
+                    <div class="spacer"></div>
+                </div>
             </div>
         </div>
         <div class="col border panel">
@@ -393,7 +413,9 @@
                                        name="enguarde_custom_color"
                                        id="enguarde_custom_color"
                                        default="#000000">
-                                <button class="btn btn-default rgb-btn" type="button">&nbsp;</button>
+                                <button class="btn btn-default rgb-btn" type="button">
+                                    &nbsp;
+                                </button>
                             </div>
                         </div>
                     </div>

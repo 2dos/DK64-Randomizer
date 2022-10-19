@@ -32,17 +32,17 @@ LogicRegions = {
         LocationLogic(Locations.AztecLankyMedal, lambda l: l.ColoredBananas[Levels.AngryAztec][Kongs.lanky] >= 75),
         LocationLogic(Locations.AztecTinyMedal, lambda l: l.ColoredBananas[Levels.AngryAztec][Kongs.tiny] >= 75),
         LocationLogic(Locations.AztecChunkyMedal, lambda l: l.ColoredBananas[Levels.AngryAztec][Kongs.chunky] >= 75),
-        LocationLogic(Locations.AztecDonkeyFreeLlama, lambda l: Events.LlamaFreed in l.Events and l.donkey),
+        LocationLogic(Locations.AztecDonkeyFreeLlama, lambda l: Events.LlamaFreed in l.Events),
         # If default damage can just walk to the bridge and take damage with any kong, otherwise need strong kong and to be donkey
         LocationLogic(Locations.AztecKasplatSandyBridge, lambda l: not l.settings.kasplat_location_rando and l.coconut and ((l.strongKong and l.isdonkey) or l.settings.damage_amount == "default")),
-        LocationLogic(Locations.AztecKasplatOnTinyTemple, lambda l: not l.settings.kasplat_location_rando and l.jetpack),
+        LocationLogic(Locations.AztecKasplatOnTinyTemple, lambda l: not l.settings.kasplat_location_rando and l.jetpack and l.isdiddy),
     ], [], [
         TransitionFront(Regions.BetweenVinesByPortal, lambda l: l.vines or (l.istiny and l.twirl)),
         TransitionFront(Regions.TempleStart, lambda l: (l.peanut and l.isdiddy) or (l.grape and l.islanky)
                         or (l.feather and l.istiny) or (l.pineapple and l.ischunky)),
         TransitionFront(Regions.AngryAztecMain, lambda l: l.settings.open_levels or (l.guitar and l.diddy)),
         TransitionFront(Regions.CandyAztec, lambda l: True),
-        TransitionFront(Regions.AztecBossLobby, lambda l: True),
+        TransitionFront(Regions.AztecBossLobby, lambda l: not l.settings.tns_location_rando),
     ]),
 
     Regions.TempleStart: Region("Temple Start", Levels.AngryAztec, False, -1, [
@@ -82,11 +82,12 @@ LogicRegions = {
         TransitionFront(Regions.CrankyAztec, lambda l: True),
         TransitionFront(Regions.Snide, lambda l: True),
         TransitionFront(Regions.FunkyAztec, lambda l: True),
-        TransitionFront(Regions.AztecDonkeyQuicksandCave, lambda l: Events.AztecDonkeySwitch in l.Events and l.strongKong and l.donkey)
+        TransitionFront(Regions.AztecDonkeyQuicksandCave, lambda l: Events.AztecDonkeySwitch in l.Events and l.strongKong and l.isdonkey),
+        TransitionFront(Regions.AztecBossLobby, lambda l: not l.settings.tns_location_rando),
     ]),
 
     Regions.AztecDonkeyQuicksandCave: Region("Aztec Donkey Sand Tunnel", Levels.AngryAztec, False, -1, [
-        LocationLogic(Locations.AztecDonkeyQuicksandCave, lambda l: l.isdonkey, MinigameType.BonusBarrel),
+        LocationLogic(Locations.AztecDonkeyQuicksandCave, lambda l: l.isdonkey or l.settings.free_trade_items, MinigameType.BonusBarrel),
     ], [], [
         TransitionFront(Regions.AngryAztecMain, lambda l: l.isdonkey and l.strongKong)
     ]),
@@ -131,7 +132,7 @@ LogicRegions = {
     ]),
 
     Regions.AztecTinyRace: Region("Aztec Tiny Race", Levels.AngryAztec, False, None, [
-        LocationLogic(Locations.AztecTinyBeetleRace, lambda l: l.istiny),
+        LocationLogic(Locations.AztecTinyBeetleRace, lambda l: l.istiny or l.settings.free_trade_items),
     ], [], [
         TransitionFront(Regions.AngryAztecMain, lambda l: True, Transitions.AztecRaceToMain),
     ], Transitions.AztecMainToRace
@@ -145,14 +146,14 @@ LogicRegions = {
         LocationLogic(Locations.AztecBananaFairyLlamaTemple, lambda l: l.camera),
     ], [
         Event(Events.AztecDonkeySwitch, lambda l: l.Slam and l.donkey),
-        Event(Events.AztecLlamaSpit, lambda l: l.bongos and l.donkey),
+        Event(Events.AztecLlamaSpit, lambda l: l.CanLlamaSpit()),
     ], [
         TransitionFront(Regions.AngryAztecMain, lambda l: True),
         TransitionFront(Regions.LlamaTempleBack, lambda l: l.mini and l.tiny),
     ]),
 
     Regions.LlamaTempleBack: Region("Llama Temple Back", Levels.AngryAztec, False, -1, [
-        LocationLogic(Locations.AztecTinyLlamaTemple, lambda l: l.Slam and l.twirl and l.istiny),
+        LocationLogic(Locations.AztecTinyLlamaTemple, lambda l: l.Slam and l.istiny),
         LocationLogic(Locations.AztecKasplatLlamaTemple, lambda l: not l.settings.kasplat_location_rando),
     ], [], [
         TransitionFront(Regions.LlamaTemple, lambda l: True),
