@@ -310,6 +310,7 @@ extern loadedActorArr LoadedActorArray[64];
 extern SpawnerMasterInfo SpawnerMasterData;
 extern unsigned char MenuSkyTopRGB[3];
 extern unsigned char MenuSkyRGB[3];
+extern skybox_blend_struct SkyboxBlends[8];
 extern int* ActorArray[];
 extern short ActorCount;
 extern short ButtonsEnabledBitfield;

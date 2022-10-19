@@ -1285,3 +1285,15 @@ typedef struct actor_behaviour_def {
     /* 0x010 */ void* unk10;
     /* 0x014 */ char str[0x1C];
 } actor_behaviour_def;
+
+typedef struct rgb {
+	/* 0x000 */ unsigned char red;
+	/* 0x001 */ unsigned char green;
+	/* 0x002 */ unsigned char blue;
+} rgb;
+
+typedef struct skybox_blend_struct {
+	/* 0x000 */ rgb top;
+	/* 0x003 */ rgb bottom;
+	/* 0x006 */ rgb unk[2];
+} skybox_blend_struct;

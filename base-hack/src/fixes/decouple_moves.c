@@ -125,6 +125,16 @@ void decouple_moves_fixes(void) {
 			*(short*)(0x800359A6) = 3;
 		}
 	}
+	if (Rando.misc_cosmetic_on) {
+		if ((CurrentMap >= 0x90) && (CurrentMap <= 0x93)) {
+			// PPPanic
+			*(short*)(0x8002A55E) = 0x21 + Rando.pppanic_klaptrap_color;
+		}
+		if ((CurrentMap == 0x67) || ((CurrentMap >= 0x8A) && (CurrentMap <= 0x8C))) {
+			// SSeek
+			*(short*)(0x8002C22E) = 0x21 + Rando.sseek_klaptrap_color;
+		}
+	}
 	if ((CurrentMap == 0x65) || ((CurrentMap >= 0x8D) && (CurrentMap <= 0x8F))) {
 		PatchBonusCode();
 		// Adjust Krazy KK Flicker Speeds

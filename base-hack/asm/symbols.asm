@@ -300,6 +300,7 @@
 .definelabel SpawnerMasterData, 0x807FDC88
 .definelabel MenuSkyTopRGB, 0x80754F4C
 .definelabel MenuSkyRGB, 0x80754F4F
+.definelabel SkyboxBlends, 0x80754EF8
 .definelabel ActorArray, 0x807FBFF0
 .definelabel ActorCount, 0x807FC3F0
 .definelabel ButtonsEnabledBitfield, 0x80755308
