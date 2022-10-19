@@ -229,11 +229,12 @@ ColoredBananaGroupList = [
     ColoredBananaGroup(
         group=12,
         map_id=Maps.GloomyGalleon,
-        name="On Cranky's Lab",
-        konglist=[Kongs.diddy],
-        region=Regions.GloomyGalleonStart,
+        name="On wooden box (5DS side)",
+        konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
+        region=Regions.Shipyard,
         locations=[
-            [5, 1.0, 3289, 1875, 2374],
+            [5, 1.0, 2348, 1640, 2473],
+            [5, 1.0, 2426, 1640, 2473],
         ],
     ),
     ColoredBananaGroup(
@@ -620,11 +621,12 @@ ColoredBananaGroupList = [
     ColoredBananaGroup(
         group=40,
         map_id=Maps.GloomyGalleon,
-        name="On Candy's Store",
-        konglist=[Kongs.diddy],
-        region=Regions.Shipyard,
+        name="On wooden box (lighthouse side)",
+        konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
+        region=Regions.LighthouseSurface,
         locations=[
-            [5, 1.0, 2819, 1735, 553],
+            [5, 1.0, 1929, 1640, 3566],
+            [5, 1.0, 1998, 1640, 3628],
         ],
     ),
     ColoredBananaGroup(
@@ -716,11 +718,11 @@ ColoredBananaGroupList = [
     ColoredBananaGroup(
         group=48,
         map_id=Maps.GloomyGalleon,
-        name="On Funky's store",
+        name="On stalactite between 5DS and mech fish",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.Shipyard,
         locations=[
-            [5, 1.0, 3676, 1765, 1237],
+            [5, 1.2, 2808, 845, 1470],
         ],
     ),
     ColoredBananaGroup(

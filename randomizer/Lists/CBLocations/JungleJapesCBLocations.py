@@ -1343,8 +1343,8 @@ ColoredBananaGroupList = [
         region=Regions.JungleJapesMain,
         vanilla=True,
         locations=[
-            [5, 1.0, 2025.6510009765625, 590.0, 2223.663818359375],
-            [5, 1.0, 2083.292236328125, 590.0, 2194.638916015625],
+            [5, 1.0, 2025.6510009765625, 610.0, 2223.663818359375],
+            [5, 1.0, 2083.292236328125, 610.0, 2194.638916015625],
         ],
     ),
     ColoredBananaGroup(
@@ -1603,7 +1603,7 @@ ColoredBananaGroupList = [
         region=Regions.JapesBeyondCoconutGate2,
         vanilla=True,
         locations=[
-            [5, 1.0, 1692.72265625, 365.0, 3996.624267578125],
+            [5, 1.0, 1692.72265625, 400.0, 3996.624267578125],
         ],
     ),
     ColoredBananaGroup(

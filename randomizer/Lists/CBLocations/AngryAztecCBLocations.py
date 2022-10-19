@@ -253,10 +253,10 @@ ColoredBananaGroupList = [
             [1, 1.0, 3046, 214, 544],
             [1, 1.0, 2996, 215, 581],
             [1, 1.0, 2946, 215, 618],
-            [1, 1.0, 3187, 215, 521],
-            [1, 1.0, 3175, 215, 609],
-            [1, 1.0, 3163, 215, 697],
-            [1, 1.0, 3151, 215, 785],
+            [1, 1.0, 2985, 215, 669],
+            [1, 1.0, 3023, 215, 720],
+            [1, 1.0, 3062, 215, 771],
+            [1, 1.0, 3100, 215, 822],
         ],
     ),
     ColoredBananaGroup(
@@ -524,11 +524,12 @@ ColoredBananaGroupList = [
     ColoredBananaGroup(
         group=27,
         map_id=Maps.AngryAztec,
-        name="Bunch on Snide's HQ",
-        konglist=[Kongs.donkey, Kongs.diddy, Kongs.tiny, Kongs.chunky],
+        name="Top of ramps by tower",
+        konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.AngryAztecMain,
         locations=[
-            [5, 1.0, 4238, 260, 4471],
+            [5, 1.0, 4321, 160, 3377],
+            [5, 1.0, 4245, 160, 3333],
         ],
     ),
     ColoredBananaGroup(
