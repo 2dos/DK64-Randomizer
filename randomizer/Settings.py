@@ -563,7 +563,7 @@ class Settings:
             self.kasplat_rando = True
             self.kasplat_location_rando = True
 
-        # Some win conditions require modification of items in order to better generate the spoiler log
+        # Some settings (mostly win conditions) require modification of items in order to better generate the spoiler log
         if self.win_condition == "all_fairies":
             ItemList[Items.BananaFairy].playthrough = True
         if self.win_condition == "all_blueprints":
@@ -572,6 +572,8 @@ class Settings:
                     ItemList[item_index].playthrough = True
         if self.win_condition == "all_medals":
             ItemList[Items.BananaMedal].playthrough = True
+        if not self.crown_door_open:
+            ItemList[Items.BattleCrown].playthrough = True
 
         self.free_trade_items = self.free_trade_setting != "none"
         self.free_trade_blueprints = self.free_trade_setting == "major_collectibles"

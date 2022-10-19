@@ -114,7 +114,7 @@ LogicRegions = {
 
     Regions.IslesSnideRoom: Region("Isles Snide Room", Levels.DKIsles, True, None, [
         LocationLogic(Locations.IslesDiddySnidesLobby, lambda l: l.spring and l.isdiddy, MinigameType.BonusBarrel),
-        LocationLogic(Locations.IslesBattleArena1, lambda l: l.chunky and l.barrels),
+        LocationLogic(Locations.IslesBattleArena1, lambda l: not l.settings.crown_placement_rando and l.chunky and l.barrels),
     ], [], [
         TransitionFront(Regions.CrocodileIsleBeyondLift, lambda l: True, Transitions.IslesSnideRoomToMain),
         TransitionFront(Regions.Snide, lambda l: True),
@@ -146,7 +146,7 @@ LogicRegions = {
     ]),
 
     Regions.FungiForestLobby: Region("Fungi Forest Lobby", Levels.DKIsles, True, None, [
-        LocationLogic(Locations.IslesBattleArena2, lambda l: (l.coconut and l.donkey) and (l.peanut and l.diddy)
+        LocationLogic(Locations.IslesBattleArena2, lambda l: not l.settings.crown_placement_rando and (l.coconut and l.donkey) and (l.peanut and l.diddy)
                       and (l.grape and l.lanky) and (l.feather and l.tiny) and (l.pineapple and l.chunky) and l.gorillaGone and l.ischunky),
         LocationLogic(Locations.IslesBananaFairyForestLobby, lambda l: l.camera and l.feather and l.tiny),
     ], [], [

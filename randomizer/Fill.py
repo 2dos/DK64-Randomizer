@@ -1775,7 +1775,14 @@ def ShuffleMisc(spoiler):
     # T&S and Wrinkly Door Shuffle
     if spoiler.settings.wrinkly_location_rando or spoiler.settings.tns_location_rando:
         ShuffleDoors(spoiler)
-    # Handle kasplats
+    # Handle Crown Placement
+    if spoiler.settings.crown_placement_rando:
+        crown_replacements = {}
+        crown_human_replacements = {}
+        ShuffleCrowns(crown_replacements, crown_human_replacements)
+        spoiler.crown_locations = crown_replacements
+        spoiler.human_crowns = crown_human_replacements
+    # Handle kasplats - this is the first VerifyWorld check, all shuffles affecting Locations must be before this one
     KasplatShuffle(spoiler, LogicVariables)
     spoiler.human_kasplats = {}
     spoiler.UpdateKasplats(LogicVariables.kasplat_map)
@@ -1799,13 +1806,6 @@ def ShuffleMisc(spoiler):
         ShuffleWarpsCrossMap(replacements, human_replacements, spoiler.settings.bananaport_rando == "crossmap_coupled")
         spoiler.bananaport_replacements = replacements.copy()
         spoiler.human_warp_locations = human_replacements
-    # Handle Crown Placement
-    if spoiler.settings.crown_placement_rando:
-        crown_replacements = {}
-        crown_human_replacements = {}
-        ShuffleCrowns(crown_replacements, crown_human_replacements)
-        spoiler.crown_locations = crown_replacements
-        spoiler.human_crowns = crown_human_replacements
     # Random Patches
     if spoiler.settings.random_patches:
         human_patches = []
