@@ -151,12 +151,12 @@ def ShuffleItems(spoiler: Spoiler):
                 print(item.name)
                 item_list.append(item)
         banned_shops = [
-            [1, 0],
-            [1, 4],
+            [2, 0],
+            [2, 4],
             [1, 7],
             [2, 7],
         ]
-        for shop_index, shop in enumerate(["Cranky", "Candy", "Funky"]):
+        for shop_index, shop in enumerate(["Cranky", "Funky", "Candy"]):
             for level_index, level in enumerate(["Japes", "Aztec", "Factory", "Galleon", "Fungi", "Caves", "Castle", "Isles"]):
                 for kong_index, kong in enumerate(["DK", "Diddy", "Lanky", "Tiny", "Chunky"]):
                     if [shop_index, level_index] not in banned_shops:

@@ -1285,3 +1285,9 @@ typedef struct actor_behaviour_def {
     /* 0x010 */ void* unk10;
     /* 0x014 */ char str[0x1C];
 } actor_behaviour_def;
+
+typedef struct arbitrary_overlay {
+	/* 0x000 */ unsigned char type;
+	/* 0x001 */ unsigned char kong;
+	/* 0x002 */ short flag;
+} arbitrary_overlay;

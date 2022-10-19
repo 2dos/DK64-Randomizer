@@ -368,9 +368,9 @@ void* checkMove(short* flag, void* fba, int source) {
             if (((init_val & (1 << *flag)) == 0) && (source == 1)) {
                 // Move given
                 spawnActor(324,0);
-                TextOverlayData[0] = item_type;
-                TextOverlayData[1] = item_index;
-                TextOverlayData[2] = item_kong;
+                TextOverlayData.type = item_type;
+                TextOverlayData.flag = item_index;
+                TextOverlayData.kong = item_kong;
             }
             return temp_fba + item_type;
         }
@@ -480,25 +480,6 @@ static unsigned char key_index = 0;
 static char key_text[] = "KEY 0";
 static unsigned char old_keys = 0;
 
-static const short normal_key_flags[] = {
-	FLAG_KEYHAVE_KEY1,
-	FLAG_KEYHAVE_KEY2,
-	FLAG_KEYHAVE_KEY3,
-	FLAG_KEYHAVE_KEY4,
-	FLAG_KEYHAVE_KEY5,
-	FLAG_KEYHAVE_KEY6,
-	FLAG_KEYHAVE_KEY7,
-	FLAG_KEYHAVE_KEY8
-};
-
-int getKeyFlag(int index) {
-    if ((Rando.level_order_rando_on) && (index < 7)) {
-        return Rando.key_flags[index];
-    } else {
-        return normal_key_flags[index];
-    }
-}
-
 void keyGrabHook(int song, int vol) {
     playSong(song, vol);
     int val = 0;
@@ -519,7 +500,10 @@ int itemGrabHook(int collectable_type, int obj_type, int is_homing) {
             for (int i = 0; i < 8; i++) {
                 if (checkFlagDuplicate(getKeyFlag(i), 0)) {
                     if ((old_keys & (1 << i)) == 0) {
-                        initKeyText(i);
+                        spawnActor(324,0);
+                        TextOverlayData.type = 5;
+                        TextOverlayData.flag = getKeyFlag(i);
+                        TextOverlayData.kong = 0;
                     }
                 }
             }

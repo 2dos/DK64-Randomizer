@@ -637,9 +637,9 @@ void getNextMoveText(void) {
 		}
 		if (!has_data) {
 			has_data = 1;
-			p_type = TextOverlayData[0];
-			p_value = TextOverlayData[1];
-			p_kong = TextOverlayData[2];
+			p_type = TextOverlayData.type;
+			p_value = TextOverlayData.flag;
+			p_kong = TextOverlayData.kong;
 			p_flag = p_value;
 		}
 	}
@@ -699,6 +699,38 @@ void getNextMoveText(void) {
 							for (int i = 0; i < sizeof(tied_flags) / 4; i++) {
 								if (tied_flags[i] == p_flag) {
 									top_item = 53 + i;
+								}
+							}
+						}
+						if (top_item == -1) {
+							if ((p_flag >= FLAG_BP_JAPES_DK_HAS) && (p_flag < (FLAG_BP_JAPES_DK_HAS + 40))) {
+								// Blueprint
+								top_item = 62;
+							} else if ((p_flag >= FLAG_MEDAL_JAPES_DK) && (p_flag < (FLAG_MEDAL_JAPES_DK + 40))) {
+								// Medal
+								top_item = 61;
+							} else if (p_flag == FLAG_COLLECTABLE_NINTENDOCOIN) {
+								// Nintendo Coin
+								top_item = 63;
+							} else if (p_flag == FLAG_COLLECTABLE_RAREWARECOIN) {
+								// Rareware Coin
+								top_item = 64;
+							} else if ((p_flag >= FLAG_CROWN_JAPES) && (p_flag < (FLAG_CROWN_JAPES + 10))) {
+								// Crown
+								top_item = 66;
+							} else if (p_flag == FLAG_COLLECTABLE_BEAN) {
+								// Fungi Bean
+								top_item = 67;
+							} else {
+								// Key Number
+								for (int i = 0; i < 8; i++) {
+									if (p_flag == getKeyFlag(i)) {
+										top_item = 68 + i;
+									}
+								}
+								if (top_item == -1) {
+									// Default to GB
+									top_item = 60;
 								}
 							}
 						}
