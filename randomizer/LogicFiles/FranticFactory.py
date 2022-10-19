@@ -53,7 +53,7 @@ LogicRegions = {
         LocationLogic(Locations.FactoryLankyRandD, lambda l: l.trombone and l.Slam and l.islanky),
         LocationLogic(Locations.FactoryChunkyRandD, lambda l: l.triangle and l.punch and l.hunkyChunky and l.ischunky),
         LocationLogic(Locations.FactoryKasplatRandD, lambda l: not l.settings.kasplat_location_rando),
-        LocationLogic(Locations.FactoryBattleArena, lambda l: l.grab and l.donkey),
+        LocationLogic(Locations.FactoryBattleArena, lambda l: not l.settings.crown_placement_rando and l.grab and l.donkey),
     ], [], [
         TransitionFront(Regions.Testing, lambda l: True),
         TransitionFront(Regions.FactoryTinyRaceLobby, lambda l: l.mini and l.istiny),

@@ -19,7 +19,7 @@ LogicRegions = {
         LocationLogic(Locations.GalleonTinyMedal, lambda l: l.ColoredBananas[Levels.GloomyGalleon][Kongs.tiny] >= 75),
         LocationLogic(Locations.GalleonChunkyMedal, lambda l: l.ColoredBananas[Levels.GloomyGalleon][Kongs.chunky] >= 75),
         LocationLogic(Locations.GalleonChunkyChest, lambda l: l.punch and l.chunky),
-        LocationLogic(Locations.GalleonBattleArena, lambda l: l.punch and l.chunky),
+        LocationLogic(Locations.GalleonBattleArena, lambda l: not l.settings.crown_placement_rando and l.punch and l.chunky),
         LocationLogic(Locations.GalleonBananaFairybyCranky, lambda l: l.camera and l.punch and l.chunky),
     ], [
         Event(Events.GalleonEntered, lambda l: True),

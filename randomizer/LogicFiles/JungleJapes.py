@@ -27,7 +27,7 @@ LogicRegions = {
         LocationLogic(Locations.JapesTinyCagedBanana, lambda l: Events.JapesTinySwitch in l.Events and l.tiny),
         LocationLogic(Locations.JapesChunkyBoulder, lambda l: l.chunky and l.barrels),
         LocationLogic(Locations.JapesChunkyCagedBanana, lambda l: Events.JapesChunkySwitch in l.Events and l.chunky),
-        LocationLogic(Locations.JapesBattleArena, lambda l: True),
+        LocationLogic(Locations.JapesBattleArena, lambda l: not l.settings.crown_placement_rando),
     ], [
         Event(Events.JapesEntered, lambda l: True),
         Event(Events.JapesSpawnW5, lambda l: Events.JapesMountainTopGB in l.Events or l.settings.activate_all_bananaports),

@@ -105,7 +105,7 @@ LogicRegions = {
     Regions.Greenhouse: Region("Greenhouse", Levels.CreepyCastle, False, -1, [
         # Sprint is not actually required
         LocationLogic(Locations.CastleLankyGreenhouse, lambda l: l.islanky or l.settings.free_trade_items),
-        LocationLogic(Locations.CastleBattleArena, lambda l: l.islanky or l.settings.free_trade_items),
+        LocationLogic(Locations.CastleBattleArena, lambda l: not l.settings.crown_placement_rando and (l.islanky or l.settings.free_trade_items)),
     ], [], [
         TransitionFront(Regions.CreepyCastleMain, lambda l: True, Transitions.CastleGreenhouseStartToMain),
         TransitionFront(Regions.CreepyCastleMain, lambda l: l.islanky or l.settings.free_trade_items, Transitions.CastleGreenhouseEndToMain),

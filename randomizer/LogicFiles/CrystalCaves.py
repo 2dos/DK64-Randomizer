@@ -162,7 +162,7 @@ LogicRegions = {
 
     Regions.RotatingCabin: Region("Rotating Cabin", Levels.CrystalCaves, False, None, [
         LocationLogic(Locations.CavesDonkeyRotatingCabin, lambda l: l.Slam and (l.isdonkey or l.settings.free_trade_items)),
-        LocationLogic(Locations.CavesBattleArena, lambda l: l.Slam),
+        LocationLogic(Locations.CavesBattleArena, lambda l: not l.settings.crown_placement_rando and l.Slam),
     ], [], [
         TransitionFront(Regions.CabinArea, lambda l: True, Transitions.CavesRotatingToCabin),
     ]),
