@@ -373,7 +373,10 @@ int canTagAnywhere(int prev_crystals) {
     if (Player->collision_queue_pointer) {
         return 0;
     }
-    
+    if (LZFadeoutProgress > 15.0f) {
+        // Can cause inconsistent graphical crashes
+        return 0;
+    }
     if ((prev_crystals - 1) == CollectableBase.Crystals) {
         return 0;
     }
