@@ -35,6 +35,7 @@ def randomize_crown_pads(spoiler: Spoiler):
             Maps.CastleGreenhouse,
             Maps.IslesSnideRoom,
             Maps.FungiForestLobby,
+            Maps.HideoutHelm,
         ]
         new_vanilla_crowns = []
         action_maps = vanilla_crown_maps.copy()

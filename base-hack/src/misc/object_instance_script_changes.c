@@ -556,8 +556,10 @@ void CrownPadGenericCode(behaviour_data* behaviour, int index, int id, int crown
 	if (world > 4) {
 		if (world < 7) {
 			crown_offset = world + 2;
-		} else {
+		} else if (world == 7) {
 			crown_offset = 5 + crown_level_index;
+		} else {
+			crown_offset = 9;
 		}
 	}
 	if (checkFlag(FLAG_CROWN_JAPES + crown_offset,0)) {
