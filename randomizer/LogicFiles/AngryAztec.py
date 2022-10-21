@@ -57,7 +57,7 @@ LogicRegions = {
         LocationLogic(Locations.TinyKong, lambda l: l.CanFreeTiny()),
         LocationLogic(Locations.AztecDiddyFreeTiny, lambda l: l.CanFreeTiny()),
         LocationLogic(Locations.AztecLankyVulture, lambda l: l.Slam and l.grape and l.islanky),
-        LocationLogic(Locations.AztecBattleArena, lambda l: l.Slam and l.grape and l.islanky),
+        LocationLogic(Locations.AztecBattleArena, lambda l: not l.settings.crown_placement_rando and l.Slam and l.grape and l.lanky),
     ], [], [
         TransitionFront(Regions.TempleStart, lambda l: True),
     ]),

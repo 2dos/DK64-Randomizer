@@ -901,6 +901,36 @@ void initHack(int source) {
 			}
 			// GetOut Timer
 			*(unsigned short*)(0x806B7ECA) = 125; // 0x8078 for center-bottom ms timer
+			if (Rando.misc_cosmetic_on) {
+				for (int i = 0; i < 8; i++) {
+					SkyboxBlends[i].top.red = Rando.skybox_colors[i].red;
+					SkyboxBlends[i].top.green = Rando.skybox_colors[i].green;
+					SkyboxBlends[i].top.blue = Rando.skybox_colors[i].blue;
+					float rgb[3] = {0,0,0};
+					float rgb_backup[3] = {0,0,0};
+					rgb[0] = Rando.skybox_colors[i].red;
+					rgb[1] = Rando.skybox_colors[i].green;
+					rgb[2] = Rando.skybox_colors[i].blue;
+					for (int j = 0; j < 3; j++) {
+						rgb_backup[j] = rgb[j];
+						rgb[j] *= 1.2f;
+					}
+					int exceeded = 0;
+					for (int j = 0; j < 3; j++) {
+						if (rgb[j] > 255.0f) {
+							exceeded = 1;
+						}
+					}
+					if (exceeded) {
+						for (int j = 0; j < 3; j++) {
+							rgb[j] = rgb_backup[j] * 0.8f;
+						}
+					}
+					SkyboxBlends[i].bottom.red = rgb[0];
+					SkyboxBlends[i].bottom.green = rgb[1];
+					SkyboxBlends[i].bottom.blue = rgb[2];
+				}
+			}
 			LoadedHooks = 1;
 		}
 	}

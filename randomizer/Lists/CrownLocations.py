@@ -2710,4 +2710,254 @@ CrownLocations = {
             region=Regions.Prison,
         ),
     ],
+    Levels.HideoutHelm: [
+        CrownLocation(
+            map=Maps.HideoutHelm,
+            name="Hideout Helm - Metal grate by Mini Monkey barrel",
+            x=841,
+            y=-136,
+            z=2545,
+            scale=0.5,
+            region=Regions.HideoutHelmStart,
+        ),
+        CrownLocation(
+            map=Maps.HideoutHelm,
+            name="Hideout Helm - Mini Monkey room right side",
+            x=1010,
+            y=-132,
+            z=2243,
+            scale=0.5,
+            region=Regions.HideoutHelmStart,
+        ),
+        CrownLocation(
+            map=Maps.HideoutHelm,
+            name="Hideout Helm - Pineapple switch room in ammo alcove",
+            x=1077,
+            y=-164,
+            z=1261,
+            scale=0.5,
+            region=Regions.HideoutHelmStart,
+        ),
+        CrownLocation(
+            map=Maps.HideoutHelm,
+            name="Hideout Helm - First room left of Tag barrel",
+            x=2065,
+            y=-461,
+            z=480,
+            scale=0.5,
+            region=Regions.HideoutHelmStart,
+        ),
+        CrownLocation(
+            map=Maps.HideoutHelm,
+            name="Hideout Helm - Top of Blast-o-Matic",
+            x=1047.6,
+            y=448.1,
+            z=3391.4,
+            scale=0.25,
+            region=Regions.HideoutHelmMain,
+            logic=lambda l: l.jetpack and l.isdiddy,
+        ),
+        CrownLocation(
+            map=Maps.HideoutHelm,
+            name="Hideout Helm - DK's room",
+            x=396,
+            y=-132,
+            z=3841,
+            scale=0.5,
+            region=Regions.HideoutHelmMain,
+            logic=lambda l: Events.HelmDoorsOpened in l.Events and l.punch and l.bongos and l.isdonkey,
+        ),
+        CrownLocation(
+            map=Maps.HideoutHelm,
+            name="Hideout Helm - Chunky's room",
+            x=1518,
+            y=-72,
+            z=2761,
+            scale=0.5,
+            region=Regions.HideoutHelmMain,
+            logic=lambda l: Events.HelmDoorsOpened in l.Events and l.punch and l.triangle and l.ischunky,
+        ),
+        CrownLocation(
+            map=Maps.HideoutHelm,
+            name="Hideout Helm - Tiny's room",
+            x=281,
+            y=-32,
+            z=3281,
+            scale=0.5,
+            region=Regions.HideoutHelmMain,
+            logic=lambda l: Events.HelmDoorsOpened in l.Events and l.punch and l.saxophone and l.istiny,
+        ),
+        CrownLocation(
+            map=Maps.HideoutHelm,
+            name="Hideout Helm - Lanky's room",
+            x=1824,
+            y=48,
+            z=3272,
+            scale=0.5,
+            region=Regions.HideoutHelmMain,
+            logic=lambda l: Events.HelmDoorsOpened in l.Events and l.punch and l.trombone and l.islanky,
+        ),
+        CrownLocation(
+            map=Maps.HideoutHelm,
+            name="Hideout Helm - Diddy's room",
+            x=583,
+            y=208,
+            z=2741,
+            scale=0.5,
+            region=Regions.HideoutHelmMain,
+            logic=lambda l: Events.HelmDoorsOpened in l.Events and l.punch and l.jetpack and l.guitar and l.isdiddy,
+        ),
+        CrownLocation(
+            map=Maps.HideoutHelm,
+            name="Hideout Helm - Blast-o-Matic platform left side",
+            x=1048,
+            y=-2,
+            z=3266,
+            scale=0.4,
+            region=Regions.HideoutHelmMain,
+            logic=lambda l: (
+                l.settings.helm_setting == "skip_all"
+                or (
+                    Events.HelmDonkeyDone in l.Events
+                    and Events.HelmChunkyDone in l.Events
+                    and Events.HelmTinyDone in l.Events
+                    and Events.HelmLankyDone in l.Events
+                    and Events.HelmDiddyDone in l.Events
+                )
+            ),
+        ),
+        CrownLocation(
+            map=Maps.HideoutHelm,
+            name="Hideout Helm - Blast-o-Matic platform right side",
+            x=1051,
+            y=-2,
+            z=3518,
+            scale=0.4,
+            region=Regions.HideoutHelmMain,
+            logic=lambda l: (
+                l.settings.helm_setting == "skip_all"
+                or (
+                    Events.HelmDonkeyDone in l.Events
+                    and Events.HelmChunkyDone in l.Events
+                    and Events.HelmTinyDone in l.Events
+                    and Events.HelmLankyDone in l.Events
+                    and Events.HelmDiddyDone in l.Events
+                )
+            ),
+        ),
+        CrownLocation(
+            map=Maps.HideoutHelm,
+            name="Hideout Helm - Under K. Rool door",
+            x=1054,
+            y=-132,
+            z=3721,
+            scale=0.4,
+            region=Regions.HideoutHelmMain,
+            logic=lambda l: (
+                l.settings.helm_setting == "skip_all"
+                or (
+                    Events.HelmDonkeyDone in l.Events
+                    and Events.HelmChunkyDone in l.Events
+                    and Events.HelmTinyDone in l.Events
+                    and Events.HelmLankyDone in l.Events
+                    and Events.HelmDiddyDone in l.Events
+                )
+            ),
+        ),
+        CrownLocation(
+            map=Maps.HideoutHelm,
+            name="Hideout Helm - Navigation room near terminals",
+            x=1262,
+            y=10,
+            z=4467,
+            scale=0.75,
+            region=Regions.HideoutHelmMain,
+            logic=lambda l: (
+                l.settings.helm_setting == "skip_all"
+                or (
+                    Events.HelmDonkeyDone in l.Events
+                    and Events.HelmChunkyDone in l.Events
+                    and Events.HelmTinyDone in l.Events
+                    and Events.HelmLankyDone in l.Events
+                    and Events.HelmDiddyDone in l.Events
+                )
+            ),
+        ),
+        CrownLocation(
+            map=Maps.HideoutHelm,
+            name="Hideout Helm - Navigation room near left window",
+            x=1584,
+            y=10,
+            z=4349,
+            scale=0.5,
+            region=Regions.HideoutHelmMain,
+            logic=lambda l: (
+                l.settings.helm_setting == "skip_all"
+                or (
+                    Events.HelmDonkeyDone in l.Events
+                    and Events.HelmChunkyDone in l.Events
+                    and Events.HelmTinyDone in l.Events
+                    and Events.HelmLankyDone in l.Events
+                    and Events.HelmDiddyDone in l.Events
+                )
+            ),
+        ),
+        CrownLocation(
+            map=Maps.HideoutHelm,
+            name="Hideout Helm - Navigation room near right window",
+            x=1577,
+            y=10,
+            z=4593,
+            scale=0.5,
+            region=Regions.HideoutHelmMain,
+            logic=lambda l: (
+                l.settings.helm_setting == "skip_all"
+                or (
+                    Events.HelmDonkeyDone in l.Events
+                    and Events.HelmChunkyDone in l.Events
+                    and Events.HelmTinyDone in l.Events
+                    and Events.HelmLankyDone in l.Events
+                    and Events.HelmDiddyDone in l.Events
+                )
+            ),
+        ),
+        CrownLocation(
+            map=Maps.HideoutHelm,
+            name="Hideout Helm - K. Rool room near kong faces",
+            x=523,
+            y=74,
+            z=5341,
+            scale=0.6,
+            region=Regions.HideoutHelmMain,
+            logic=lambda l: (
+                l.settings.helm_setting == "skip_all"
+                or (
+                    Events.HelmDonkeyDone in l.Events
+                    and Events.HelmChunkyDone in l.Events
+                    and Events.HelmTinyDone in l.Events
+                    and Events.HelmLankyDone in l.Events
+                    and Events.HelmDiddyDone in l.Events
+                )
+            ),
+        ),
+        CrownLocation(
+            map=Maps.HideoutHelm,
+            name="Hideout Helm - K. Rool room in front of chair",
+            x=548,
+            y=74,
+            z=5036,
+            scale=0.6,
+            region=Regions.HideoutHelmMain,
+            logic=lambda l: (
+                l.settings.helm_setting == "skip_all"
+                or (
+                    Events.HelmDonkeyDone in l.Events
+                    and Events.HelmChunkyDone in l.Events
+                    and Events.HelmTinyDone in l.Events
+                    and Events.HelmLankyDone in l.Events
+                    and Events.HelmDiddyDone in l.Events
+                )
+            ),
+        ),
+    ],
 }

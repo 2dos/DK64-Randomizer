@@ -102,7 +102,7 @@ LogicRegions = {
     ]),
 
     Regions.MushroomUpperExterior: Region("Mushroom Upper Exterior", Levels.FungiForest, True, -1, [
-        LocationLogic(Locations.ForestBattleArena, lambda l: True),
+        LocationLogic(Locations.ForestBattleArena, lambda l: not l.settings.crown_placement_rando),
     ], [], [
         TransitionFront(Regions.MushroomUpper, lambda l: True, Transitions.ForestUpperExteriorToUpperMushroom),
         TransitionFront(Regions.MushroomNightExterior, lambda l: True),

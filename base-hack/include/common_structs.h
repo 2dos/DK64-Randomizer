@@ -1291,3 +1291,15 @@ typedef struct arbitrary_overlay {
 	/* 0x001 */ unsigned char kong;
 	/* 0x002 */ short flag;
 } arbitrary_overlay;
+
+typedef struct rgb {
+	/* 0x000 */ unsigned char red;
+	/* 0x001 */ unsigned char green;
+	/* 0x002 */ unsigned char blue;
+} rgb;
+
+typedef struct skybox_blend_struct {
+	/* 0x000 */ rgb top;
+	/* 0x003 */ rgb bottom;
+	/* 0x006 */ rgb unk[2];
+} skybox_blend_struct;

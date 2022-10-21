@@ -32,6 +32,7 @@ void cFuncLoop(void) {
 	replace_zones(0);
 	alter_boss_key_flags();
 	if (ObjectModel2Timer <= 2) {
+		KasplatSpawnBitfield = 0;
 		shiftBrokenJapesPortal();
 		openCoinDoor();
 		if (CurrentMap == 0x50) {

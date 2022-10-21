@@ -14,6 +14,7 @@ import gzip
 def apply_cosmetic_colors(spoiler: Spoiler):
     """Apply cosmetic skins to kongs."""
     model_index = 0
+    sav = spoiler.settings.rom_data
     if js.document.getElementById("override_cosmetics").checked:
         model_setting = js.document.getElementById("klaptrap_model").value
     else:
@@ -54,7 +55,16 @@ def apply_cosmetic_colors(spoiler: Spoiler):
         ]
         model_index = random.choice(permitted_models)
     spoiler.settings.klaptrap_model_index = model_index
-    ROM().seek(spoiler.settings.rom_data + 0x136)
+    if spoiler.settings.misc_cosmetics:
+        ROM().seek(sav + 0x196)
+        ROM().write(1)
+        ROM().seek(sav + 0x197)
+        for channel in range(24):
+            ROM().writeMultipleBytes(random.randint(0, 255), 1)
+        ROM().seek(sav + 0x1AF)
+        for klaptrap in range(2):
+            ROM().writeMultipleBytes(random.randint(0, 2), 1)
+    ROM().seek(sav + 0x136)
     ROM().writeMultipleBytes(model_index, 1)
     color_palettes = []
     color_obj = {}
