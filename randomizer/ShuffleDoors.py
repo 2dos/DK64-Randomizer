@@ -37,9 +37,9 @@ def ShuffleDoors(spoiler):
             for kong in range(5):  # NOTE: If testing all locations, replace "range(5) with range(len(door_locations[level]))"
                 assignee = Kongs(kong % 5)
                 if len(available_doors) > 0:  # Should only fail if we don't have enough door locations
-                    selected_door_index = available_doors.pop(0) # Popping from the top of the list makes it possible to append the selected door back into the list, if it's a bad pick
+                    selected_door_index = available_doors.pop(0)  # Popping from the top of the list makes it possible to append the selected door back into the list, if it's a bad pick
                     # Make sure that the kong is eligible to be assigned to the selected door, and that the door location is suitable to be a hint door
-                    while((assignee not in door_locations[level][selected_door_index].kongs) or (door_locations[level][selected_door_index].door_type == "tns")):
+                    while (assignee not in door_locations[level][selected_door_index].kongs) or (door_locations[level][selected_door_index].door_type == "tns"):
                         available_doors.append(selected_door_index)
                         selected_door_index = available_doors.pop(0)
                     selected_door = door_locations[level][selected_door_index]
@@ -55,19 +55,19 @@ def ShuffleDoors(spoiler):
                 number_of_portals_in_level -= 1  # One portal is forced in Japes
             for new_portal in range(number_of_portals_in_level):
                 if len(available_doors) > 0:  # Should only fail if we don't have enough door locations
-                    if new_portal < (number_of_portals_in_level - 1) or moveless_portal_selected == True:
+                    if new_portal < (number_of_portals_in_level - 1) or moveless_portal_selected is True:
                         selected_door_index = available_doors.pop()
                         selected_portal = door_locations[level][selected_door_index]
-                        if selected_portal.moveless == True:
+                        if selected_portal.moveless is True:
                             moveless_portal_selected = True
                         # Only place one T&S portal per group so we don't stack portals too heavily
                         available_doors = [door for door in available_doors if door_locations[level][door].group != selected_portal.group]
                         selected_portal.assignPortal()
                         human_portal_doors[level_list[level] + " T&S #" + str(new_portal + 1)] = selected_portal.name
                         shuffled_door_data[level].append((selected_door_index, "tns"))
-                    else:          
+                    else:
                         # On the last iteration, make sure at least 1 TnS portal is accessible without any moves
-                        selected_door_index = random.choice([door for door in available_doors if door_locations[level][door].moveless == True])
+                        selected_door_index = random.choice([door for door in available_doors if door_locations[level][door].moveless is True])
                         selected_portal = door_locations[level][selected_door_index]
                         selected_portal.assignPortal()
                         human_portal_doors[level_list[level] + " T&S #" + str(new_portal + 1)] = selected_portal.name
