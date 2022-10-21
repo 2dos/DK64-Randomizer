@@ -18,3 +18,4 @@ class Types(IntEnum):
     Medal = auto()
     Shockwave = auto()
     Constant = auto()
+    NoItem = auto()

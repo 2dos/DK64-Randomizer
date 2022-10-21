@@ -203,3 +203,22 @@ void modifyCutscenePanPoint(int bank, int item, int point_index, int x, int y, i
 int getWrinklyLevelIndex(void) {
 	return getWorld(CurrentMap, 0);
 }
+
+static const short normal_key_flags[] = {
+	FLAG_KEYHAVE_KEY1,
+	FLAG_KEYHAVE_KEY2,
+	FLAG_KEYHAVE_KEY3,
+	FLAG_KEYHAVE_KEY4,
+	FLAG_KEYHAVE_KEY5,
+	FLAG_KEYHAVE_KEY6,
+	FLAG_KEYHAVE_KEY7,
+	FLAG_KEYHAVE_KEY8
+};
+
+int getKeyFlag(int index) {
+    if ((Rando.level_order_rando_on) && (index < 7)) {
+        return Rando.key_flags[index];
+    } else {
+        return normal_key_flags[index];
+    }
+}

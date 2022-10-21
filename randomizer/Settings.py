@@ -171,7 +171,7 @@ class Settings:
         # shuffle_items: str
         # none
         # phase1
-        self.shuffle_items = "none"
+        self.shuffle_items = "phase1"
 
         # In item rando, can any Kong collect any item?
         # free_trade_setting: str

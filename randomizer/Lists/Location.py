@@ -415,7 +415,7 @@ LocationList = {
     Locations.HelmDiddyMedal: Location("Helm Diddy Medal", Items.BananaMedal, Types.Medal, Kongs.diddy, [MapIDCombo(Maps.HideoutHelm, 0x61, 585, Kongs.diddy)]),
     Locations.HelmBananaFairy1: Location("Helm Banana Fairy 1", Items.BananaFairy, Types.Fairy),
     Locations.HelmBananaFairy2: Location("Helm Banana Fairy 2", Items.BananaFairy, Types.Fairy),
-    Locations.HelmKey: Location("Helm Key", Items.HideoutHelmKey, Types.Constant, Kongs.any, [MapIDCombo(Maps.HideoutHelm, 0x5A, 380)]),
+    Locations.HelmKey: Location("Helm Key", Items.HideoutHelmKey, Types.Key, Kongs.any, [MapIDCombo(Maps.HideoutHelm, 0x5A, 380)]),
 
     # Normal shop locations
     Locations.SimianSlam: Location("DK Isles Cranky Shared", Items.NoItem, Types.Shop, Kongs.any, [Levels.DKIsles, MoveTypes.Slam, 1, VendorType.Cranky]),

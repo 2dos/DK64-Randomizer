@@ -614,6 +614,20 @@ void initHack(int source) {
 			*(int*)(0x8074C300) = (int)&rwCoinCode; // Actor 152
 			*(char*)(0x8074D96C) = 4; // Is Sprite
 			*(char*)(0x8074DDD5) = 0x11; // Increase PAAD
+			*(int*)(0x8074C304) = (int)&NothingCode; // Nothing
+			*(char*)(0x8074D96D) = 0; // Is Sprite
+			*(int*)(0x8074C314) = 0x806A734C; // DK Potion
+			*(short*)(0x8074DDE8) = 0x11;
+			*(int*)(0x8074C318) = 0x806A734C; // Diddy Potion
+			*(short*)(0x8074DDEC) = 0x11;
+			*(int*)(0x8074C31C) = 0x806A734C; // Lanky Potion
+			*(short*)(0x8074DDF0) = 0x11;
+			*(int*)(0x8074C320) = 0x806A734C; // Tiny Potion
+			*(short*)(0x8074DDF4) = 0x11;
+			*(int*)(0x8074C324) = 0x806A734C; // Chunky Potion
+			*(short*)(0x8074DDF8) = 0x11;
+			*(int*)(0x8074C328) = 0x806A734C; // Any Potion
+			*(short*)(0x8074DDFC) = 0x11;
 			// Any Kong Items
 			if (Rando.any_kong_items & 1) {
 				// All excl. Blueprints

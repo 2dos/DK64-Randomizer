@@ -248,6 +248,9 @@ NintendoCoinEffectHook:
 RarewareCoinEffectHook:
 	J 	RarewareCoinEffect
 	NOP
+PotionEffectHook:
+	J 	PotionEffect
+	NOP
 
 loadExtraHooks:
 	LUI t3, hi(InstanceScriptHook)
@@ -602,6 +605,12 @@ loadExtraHooks:
 	LUI t4, 0x806F
 	SW t3, 0x7A24 (t4) // Store Hook
 	SW r0, 0x7A28 (t4) // Store NOP
+	
+	LUI t3, hi(PotionEffectHook)
+	LW t3, lo(PotionEffectHook) (t3)
+	LUI t4, 0x806F
+	SW t3, 0x7AF4 (t4) // Store Hook
+	SW r0, 0x7AF8 (t4) // Store NOP
 
 	loadExtraHooks_4:
 
