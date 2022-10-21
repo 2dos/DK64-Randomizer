@@ -680,7 +680,7 @@ ColoredBananaGroupList = [
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.JungleJapesMain,
         locations=[
-            [1, 1.2, 2773, 160, 1810],
+            [1, 1.2, 2173, 160, 1810],
             [1, 1.2, 1998, 160, 1738],
             [1, 1.2, 1783, 160, 1757],
             [1, 1.2, 1681, 160, 1744],
@@ -811,7 +811,7 @@ ColoredBananaGroupList = [
             [1, 1.0, 110, 346, 1138],
             [1, 1.0, 178, 346, 1180],
             [1, 1.0, 233, 346, 1211],
-            [1, 1.0, 379, 346, 1237],
+            [1, 1.0, 279, 346, 1237],
         ],
     ),
     ColoredBananaGroup(
@@ -1343,8 +1343,8 @@ ColoredBananaGroupList = [
         region=Regions.JungleJapesMain,
         vanilla=True,
         locations=[
-            [5, 1.0, 2025.6510009765625, 590.0, 2223.663818359375],
-            [5, 1.0, 2083.292236328125, 590.0, 2194.638916015625],
+            [5, 1.0, 2025.6510009765625, 610.0, 2223.663818359375],
+            [5, 1.0, 2083.292236328125, 610.0, 2194.638916015625],
         ],
     ),
     ColoredBananaGroup(
@@ -1603,7 +1603,7 @@ ColoredBananaGroupList = [
         region=Regions.JapesBeyondCoconutGate2,
         vanilla=True,
         locations=[
-            [5, 1.0, 1692.72265625, 365.0, 3996.624267578125],
+            [5, 1.0, 1692.72265625, 400.0, 3996.624267578125],
         ],
     ),
     ColoredBananaGroup(

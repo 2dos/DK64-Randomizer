@@ -44,7 +44,7 @@ def ShuffleDoors(spoiler):
                         selected_door_index = available_doors.pop(0)
                     selected_door = door_locations[level][selected_door_index]
                     selected_door.assignDoor(assignee)  # Clamp to within [0,4], preventing list index errors
-                    human_hint_doors[level_list[level] + " " + str(Kongs(kong)).capitalize()] = selected_door.name
+                    human_hint_doors[level_list[level] + " " + str(Kongs(kong % 5)).capitalize()] = selected_door.name
                     shuffled_door_data[level].append((selected_door_index, "wrinkly", (kong % 5)))
         if spoiler.settings.tns_location_rando:
             number_of_portals_in_level = random.choice([3, 4, 5])

@@ -35,6 +35,7 @@ def randomize_crown_pads(spoiler: Spoiler):
             Maps.CastleGreenhouse,
             Maps.IslesSnideRoom,
             Maps.FungiForestLobby,
+            Maps.HideoutHelm,
         ]
         new_vanilla_crowns = []
         action_maps = vanilla_crown_maps.copy()
@@ -48,7 +49,13 @@ def randomize_crown_pads(spoiler: Spoiler):
                     if crown_data.map not in action_maps:
                         action_maps.append(crown_data.map)
         for cont_map_id in action_maps:
-            if cont_map_id != Maps.CavesRotatingCabin:
+            if cont_map_id == Maps.CavesRotatingCabin:
+                if cont_map_id not in new_vanilla_crowns:
+                    # Remove Caves Crown
+                    sav = spoiler.settings.rom_data
+                    ROM().seek(sav + 0x195)
+                    ROM().write(1)
+            else:
                 setup_table = js.pointer_addresses[9]["entries"][cont_map_id]["pointing_to"]
                 ROM().seek(setup_table)
                 model2_count = int.from_bytes(ROM().readBytes(4), "big")

@@ -15,6 +15,7 @@ import portal_instance_script  # HAS TO BE BEFORE `instance_script_maker`
 import instance_script_maker
 import model_fix
 import generate_disco_models
+import model_port
 
 # Patcher functions for the extracted files
 import patch_text
@@ -169,15 +170,6 @@ file_dict = [
         "target_compressed_size": 32 * 32 * 2,
     },
     {
-        "name": "Tiny Overalls Palette",
-        "pointer_table_index": 25,
-        "file_index": 6014,
-        "source_file": "assets/Non-Code/hash/tiny_palette.png",
-        "do_not_extract": True,
-        "texture_format": "rgba5551",
-        "target_compressed_size": 32 * 32 * 2,
-    },
-    {
         "name": "DPad Image",
         "pointer_table_index": 14,
         "file_index": 187,
@@ -191,6 +183,27 @@ file_dict = [
         "source_file": "assets/Non-Code/file_screen/tracker.png",
         "texture_format": "rgba5551",
     },
+    {
+        "name": "Nintendo Coin Model",
+        "pointer_table_index": 4,
+        "file_index": 0x48,
+        "source_file": "nintendo_coin_om2.bin",
+        "do_not_delete_source": True,
+    },
+    {
+        "name": "Rareware Coin Model",
+        "pointer_table_index": 4,
+        "file_index": 0x28F,
+        "source_file": "rareware_coin_om2.bin",
+        "do_not_delete_source": True,
+    },
+    # {
+    #     "name": "Potion Model",
+    #     "pointer_table_index": 4,
+    #     "file_index": 0x210,
+    #     "source_file": "potion_om2.bin",
+    #     "do_not_delete_source": True,
+    # },
 ]
 
 number_game_changes = [
@@ -210,6 +223,29 @@ for num in number_game_changes:
             "do_not_compress": True,
         }
     )
+
+for ci, coin in enumerate(["nin_coin", "rw_coin"]):
+    for item in range(2):
+        file_dict.append(
+            {
+                "name": f"{coin.replace('_',' ').capitalize()} ({item})",
+                "pointer_table_index": 25,
+                "file_index": 6015 + item + (2 * ci),
+                "source_file": f"assets/Non-Code/hash/{coin}_{item}.png",
+                "do_not_extract": True,
+                "texture_format": "rgba5551",
+            }
+        )
+file_dict.append(
+    {
+        "name": "Special Coin Side",
+        "pointer_table_index": 25,
+        "file_index": 6019,
+        "source_file": f"assets/Non-Code/hash/modified_coin_side.png",
+        "do_not_extract": True,
+        "texture_format": "rgba5551",
+    }
+)
 
 kong_names = ["DK", "Diddy", "Lanky", "Tiny", "Chunky"]
 ammo_names = ["standard_crate", "homing_crate"]
@@ -932,9 +968,52 @@ with open(newROMName, "r+b") as fh:
     fh.write((2).to_bytes(1, "big"))
 
     # Pkmn Snap Default Enemies
+    pkmn_snap_enemies = [
+        True,  # Kaboom
+        True,  # Blue Beaver
+        True,  # Book
+        True,  # Klobber
+        True,  # Zinger (Charger)
+        True,  # Klump
+        True,  # Klaptrap (Green)
+        True,  # Zinger (Bomber)
+        True,  # Klaptrap (Purple)
+        False,  # Klaptrap (Red)
+        False,  # Gold Beaver
+        True,  # Mushroom Man
+        True,  # Ruler
+        True,  # Robo-Kremling
+        True,  # Kremling
+        True,  # Kasplat (DK)
+        True,  # Kasplat (Diddy)
+        True,  # Kasplat (Lanky)
+        True,  # Kasplat (Tiny)
+        True,  # Kasplat (Chunky)
+        False,  # Kop
+        True,  # Robo-Zinger
+        True,  # Krossbones
+        True,  # Shuri
+        True,  # Gimpfish
+        True,  # Mr. Dice (Green)
+        True,  # Sir Domino
+        True,  # Mr. Dice (Red)
+        True,  # Fireball w/ Glasses
+        True,  # Small Spider
+        True,  # Bat
+        True,  # Tomato
+        True,  # Ghost
+        True,  # Pufftup
+        True,  # Kosha
+    ]
+    values = [0, 0, 0, 0, 0]
+    for pi, p in enumerate(pkmn_snap_enemies):
+        if p is True:
+            offset = pi >> 3
+            shift = pi & 7
+            values[offset] |= 1 << shift
     fh.seek(0x1FED020 + 0x117)
     for x in range(5):
-        fh.write((0xFF).to_bytes(1, "big"))
+        fh.write(values[x].to_bytes(1, "big"))
 
     # Shop Hints
     fh.seek(0x1FED020 + 0x14B)
@@ -1032,6 +1111,12 @@ with open(newROMName, "r+b") as fh:
         "pineapple",
         "triangle",
         "trombone",
+        "modified_coin_side",
+        "nin_coin_0",
+        "nin_coin_1",
+        "rw_coin_0",
+        "rw_coin_1",
+        "special_coin_side",
     ]
     script_files = [x[0] for x in os.walk("assets/Non-Code/instance_scripts/")]
     shop_files = ["snide.script", "cranky.script", "funky.script", "candy.script"]

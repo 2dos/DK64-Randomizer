@@ -83,6 +83,11 @@ void decouple_moves_fixes(void) {
 	} else if (CurrentMap == 0x11) {
 		HelmInit(0);
 	}
+	if ((CurrentMap == 0x35) || (CurrentMap == 0x49) || ((CurrentMap >= 0x9B) && (CurrentMap <= 0xA2))) {
+		if (Rando.item_rando) {
+			*(int*)(0x8002501C) = 0x0C000000 | (((int)&spawnCrownReward & 0xFFFFFF) >> 2); // Crown Spawn
+		}
+	}
 	if (Rando.short_bosses) {
 		if ((CurrentMap == 8) || (DestMap == 8)) {
 			*(short*)(0x8074D3A8) = 4; // Dillo Health - AD1
@@ -112,9 +117,22 @@ void decouple_moves_fixes(void) {
 		}
 	}
 	if (in_boss) {
+		if (Rando.item_rando) {
+			*(int*)(0x80028650) = 0x0C000000 | (((int)&spawnBossReward & 0xFFFFFF) >> 2); // Key Spawn
+		}
 		PatchKRoolCode();
 		if (Rando.quality_of_life.vanilla_fixes) {
 			*(short*)(0x800359A6) = 3;
+		}
+	}
+	if (Rando.misc_cosmetic_on) {
+		if ((CurrentMap >= 0x90) && (CurrentMap <= 0x93)) {
+			// PPPanic
+			*(short*)(0x8002A55E) = 0x21 + Rando.pppanic_klaptrap_color;
+		}
+		if ((CurrentMap == 0x67) || ((CurrentMap >= 0x8A) && (CurrentMap <= 0x8C))) {
+			// SSeek
+			*(short*)(0x8002C22E) = 0x21 + Rando.sseek_klaptrap_color;
 		}
 	}
 	if ((CurrentMap == 0x65) || ((CurrentMap >= 0x8D) && (CurrentMap <= 0x8F))) {

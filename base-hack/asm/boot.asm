@@ -1,6 +1,9 @@
 .definelabel dataStart, 0x01FED020
 .definelabel dataRDRAM, 0x807FF800
 .definelabel musicInfo, 0x01FFF000
+.definelabel itemROM, 0x01FF2000
+.definelabel codeEnd, 0x805FAE00
+.definelabel itemdatasize, 0x640
 
 START:
 	displacedBootCode:
@@ -12,6 +15,14 @@ START:
 		LUI a2, 0x807F
 		JAL dmaFileTransfer
 		ORI a2, a2, 0xF800 //RAM location to copy to
+		// Load item data
+		LUI a0, hi(itemROM)
+		LUI a1, hi(itemROM + itemdatasize)
+		ADDIU a1, a1, lo(itemROM + itemdatasize)
+		ADDIU a0, a0, lo(itemROM)
+		LUI a2, hi(codeEnd - itemdatasize)
+		JAL dmaFileTransfer
+		ADDIU a2, a2, lo(codeEnd - itemdatasize)
 		//
 		LUI v0, 0x8001
 		ADDIU v0, v0, 0xDCC4
@@ -222,6 +233,21 @@ ModifyCameraColorHook:
 PlayCutsceneVelocityHook:
 	J 	PlayCutsceneVelocity
 	NOP
+ItemRandoFlagCheckHook:
+	J 	checkFlag_ItemRando
+	NOP
+ItemRandoFlagSetHook:
+	J 	setFlag_ItemRando
+	NOP
+ObjectRotateHook:
+	J 	ObjectRotate
+	NOP
+NintendoCoinEffectHook:
+	J 	NintendoCoinEffect
+	NOP
+RarewareCoinEffectHook:
+	J 	RarewareCoinEffect
+	NOP
 
 loadExtraHooks:
 	LUI t3, hi(InstanceScriptHook)
@@ -229,6 +255,18 @@ loadExtraHooks:
 	LUI t4, 0x8064
 	SW t3, 0xEE08 (t4) // Store Hook
 	SW r0, 0xEE0C (t4) // Store NOP
+	
+	LUI t3, hi(ItemRandoFlagCheckHook)
+	LW t3, lo(ItemRandoFlagCheckHook) (t3)
+	LUI t4, 0x8073
+	SW t3, 0x1168 (t4) // Store Hook
+	SW r0, 0x116C (t4) // Store NOP
+	
+	LUI t3, hi(ItemRandoFlagSetHook)
+	LW t3, lo(ItemRandoFlagSetHook) (t3)
+	LUI t4, 0x8073
+	SW t3, 0x12F8 (t4) // Store Hook
+	SW r0, 0x12FC (t4) // Store NOP
 	
 	LUI t3, hi(VineCodeHook)
 	LW t3, lo(VineCodeHook) (t3)
@@ -541,6 +579,31 @@ loadExtraHooks:
 	LUI t4, 0x806B
 	SW t3, 0xE55C (t4) // Store Hook
 	SW r0, 0xE560 (t4) // Store NOP
+
+	LUI t3, hi(ItemRandoOn)
+	LBU t3, lo(ItemRandoOn) (t3)
+	BEQZ t3, loadExtraHooks_4
+	NOP
+
+	LUI t3, hi(ObjectRotateHook)
+	LW t3, lo(ObjectRotateHook) (t3)
+	LUI t4, 0x8063
+	SW t3, 0x7148 (t4) // Store Hook
+	SW r0, 0x714C (t4) // Store NOP
+	
+	LUI t3, hi(NintendoCoinEffectHook)
+	LW t3, lo(NintendoCoinEffectHook) (t3)
+	LUI t4, 0x806F
+	SW t3, 0x7B30 (t4) // Store Hook
+	SW r0, 0x7B34 (t4) // Store NOP
+	
+	LUI t3, hi(RarewareCoinEffectHook)
+	LW t3, lo(RarewareCoinEffectHook) (t3)
+	LUI t4, 0x806F
+	SW t3, 0x7A24 (t4) // Store Hook
+	SW r0, 0x7A28 (t4) // Store NOP
+
+	loadExtraHooks_4:
 
 	JR ra
 	NOP

@@ -229,3 +229,10 @@ void RabbitRaceInfiniteCode(void) {
 		}
 	}
 }
+
+int fixDilloTNTPads(void* actor) {
+	if ((CurrentMap == 8) || (CurrentMap == 0xC4)) {
+		return 0;
+	}
+	return getPadGravity(actor);
+}

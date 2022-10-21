@@ -62,7 +62,7 @@
                                     </table>
                                 </div>
                             {% endfor %}
-                        {% elif item in ("Cosmetics","Requirements","Bosses","Items","Shuffled Exits (Sorted by destination)") %}
+                        {% elif item in ("Cosmetics","Requirements","Bosses","Items","Shuffled Exits (Sorted by destination)","Colored Banana Locations") %}
                             {# Attributes with sub-dicts #}
                             {% for sub_group in spoiler[item] %}
                                 {% if spoiler[item][sub_group] != {} %}

@@ -7,6 +7,7 @@ import randomizer.CollectibleLogicFiles.FranticFactory
 import randomizer.CollectibleLogicFiles.FungiForest
 import randomizer.CollectibleLogicFiles.GloomyGalleon
 import randomizer.CollectibleLogicFiles.JungleJapes
+from randomizer.Enums.Types import Types
 import randomizer.LogicFiles.AngryAztec
 import randomizer.LogicFiles.CreepyCastle
 import randomizer.LogicFiles.CrystalCaves
@@ -380,6 +381,10 @@ class LogicVarHolder:
         elif self.settings.tiny_freeing_kong == Kongs.any:
             return True
 
+    def CanLlamaSpit(self):
+        """Check if the Llama spit can be triggered."""
+        return self.HasInstrument(self.settings.lanky_freeing_kong)
+
     def CanFreeLanky(self):
         """Check if kong at Lanky location can be freed, requires freeing kong to have its gun and instrument."""
         return self.swim and self.HasGun(self.settings.lanky_freeing_kong) and self.HasInstrument(self.settings.lanky_freeing_kong)
@@ -445,6 +450,8 @@ class LogicVarHolder:
         """Purchase items from shops and subtract price from logical coin counts."""
         if location.item is not None and location.item is not Items.NoItem:
             price = GetPriceOfMoveItem(location.item, self.settings, self.Slam, self.AmmoBelts, self.InstUpgrades)
+            if price is None:  # This probably shouldn't happen but I think it's harmless
+                return  # TODO: solve this
             # print("BuyShopItem for location: " + location.name)
             # print("Item: " + ItemList[location.item].name + " has Price: " + str(price))
             # If shared move, take the price from all kongs EVEN IF THEY AREN'T FREED YET
@@ -474,10 +481,11 @@ class LogicVarHolder:
         else:  # if time == Time.Both
             return Regions[region].dayAccess or Regions[region].nightAccess
 
-    def KasplatAccess(self, location):
-        """Use the kasplat map to check kasplat logic for blueprint locations."""
-        kong = self.kasplat_map[location]
-        return self.IsKong(kong)
+    def BlueprintAccess(self, item):
+        """Check if we are the correct kong for this blueprint item."""
+        if item is None or item.type != Types.Blueprint:
+            return False
+        return self.settings.free_trade_blueprints or self.IsKong(item.kong)
 
     def CanBuy(self, location):
         """Check if there are enough coins to purchase this location."""

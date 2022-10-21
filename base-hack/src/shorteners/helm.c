@@ -42,11 +42,11 @@ void openCoinDoor(void) {
 	if (Rando.coin_door_open == 1) { // Always Open
 		setPermFlag(FLAG_HELM_COINDOOR);
 	} else if (Rando.coin_door_open == 2) { // Only requires RW Coin
-		if (checkFlag(FLAG_COLLECTABLE_NINTENDOCOIN,0)) { // Has Nintendo Coin
+		if (checkFlagDuplicate(FLAG_COLLECTABLE_NINTENDOCOIN,0)) { // Has Nintendo Coin
 			setPermFlag(FLAG_HELM_COINDOOR);
 		}
 	} else if (Rando.coin_door_open == 3) { // Only requires Nin Coin
-		if (checkFlag(FLAG_COLLECTABLE_RAREWARECOIN,0)) { // Has Rareware Coin
+		if (checkFlagDuplicate(FLAG_COLLECTABLE_RAREWARECOIN,0)) { // Has Rareware Coin
 			setPermFlag(FLAG_HELM_COINDOOR);
 		}
 	}
@@ -146,17 +146,6 @@ void HelmInit(int init_stage) {
 		*/
 	}
 }
-
-typedef struct bonus_paad {
-	/* 0x000 */ float oscillation_y;
-	/* 0x004 */ short unk4;
-	/* 0x006 */ short unk6;
-	/* 0x008 */ short unk8;
-	/* 0x00A */ short barrel_index;
-	/* 0x00C */ char other_timer;
-	/* 0x00D */ char destroy_timer;
-	/* 0x00E */ char raise_timer;
-} bonus_paad;
 
 void HelmBarrelCode(void) {
 	bonus_paad* paad = CurrentActorPointer_0->paad;

@@ -363,6 +363,16 @@ images = [
         "resize": False,
         "flip": True,
     },
+    {
+        "name": "special_coin_side",
+        "format": "rgba16",
+        "table": 25,
+        "index": 0x170D,
+        "w": 44,
+        "h": 44,
+        "resize": False,
+        "flip": True,
+    },
 ]
 
 kong_tex = ["chunky", "tiny", "lanky", "diddy", "dk"]

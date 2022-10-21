@@ -90,7 +90,7 @@
                     </div>
                     <div class="form-check form-switch item-switch">
                         <label data-toggle="tooltip"
-                               title="[IN PROGRESS] Crown Locations are randomized">
+                               title="Crown Locations are randomized. There's 1 in each level, except Isles which has two.">
                             <input class="form-check-input"
                                    type="checkbox"
                                    name="crown_placement_rando"
@@ -165,6 +165,25 @@
                             </option>
                             <option id="poke_snap" value="poke_snap">
                                 Pokemon Snap Mode
+                            </option>
+                        </select>
+                    </div>
+                    <div class="item-select">
+                        <p class="select-title">Free Trade Agreement</p>
+                        <select name="free_trade_setting"
+                                id="free_trade_setting"
+                                class="form-select"
+                                aria-label="Randomization type"
+                                data-toggle="tooltip"
+                                title="Allow Kongs to pick up items assigned to other kongs.&#10;-None: Kongs must pick up items assigned to them.&#10;-Major Collectibles except Blueprints: Keys, Crowns, and GBs can be picked up by any Kong.&#10;-Major Collectibles: Same as above plus Blueprints.">
+                            <option id="none" selected value="none">
+                                None
+                            </option>
+                            <option id="not_blueprints" value="not_blueprints">
+                                Major Collectibles except Blueprints
+                            </option>
+                            <option id="major_collectibles" value="major_collectibles">
+                                Major Collectibles
                             </option>
                         </select>
                     </div>

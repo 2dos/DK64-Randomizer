@@ -134,6 +134,11 @@ void fastWarp(void* actor, int player_index) {
     renderScreenTransition(3);
 }
 
+void fastWarp_playMusic(void* actor) {
+    clearTagSlide(actor);
+    playLevelMusic();
+}
+
 void fastWarpShockwaveFix(void) {
     if (Rando.fast_warp) {
         if (Player) {
