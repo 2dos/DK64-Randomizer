@@ -151,9 +151,9 @@ class Spoiler:
                 0xBD: "Rareware Logo",
             }
             if self.settings.klaptrap_model_index in klap_models:
-                humanspoiler["Cosmetics"]["Colors and Models"]["Klatrap Model"] = klap_models[self.settings.klaptrap_model_index]
+                humanspoiler["Cosmetics"]["Colors and Models"]["Klaptrap Model"] = klap_models[self.settings.klaptrap_model_index]
             else:
-                humanspoiler["Cosmetics"]["Colors and Models"]["Klatrap Model"] = f"Unknown Model {hex(self.settings.klaptrap_model_index)}"
+                humanspoiler["Cosmetics"]["Colors and Models"]["Klaptrap Model"] = f"Unknown Model {hex(self.settings.klaptrap_model_index)}"
 
         humanspoiler["Requirements"] = {}
         # GB Counts
@@ -177,7 +177,7 @@ class Spoiler:
         if self.settings.coin_door_open in ["need_both", "need_rw"]:
             humanspoiler["Requirements"]["Miscellaneous"]["Medal Requirement"] = self.settings.medal_requirement
         humanspoiler["End Game"] = {}
-        humanspoiler["End Game"]["Keys Required for K Rool"] = self.GetKroolKeysRequired(self.settings.krool_keys_required)
+        humanspoiler["End Game"]["Keys Required for K Rool"] = "<br>".join(self.GetKroolKeysRequired(self.settings.krool_keys_required))
         krool_order = []
         for phase in self.settings.krool_order:
             krool_order.append(ItemList[ItemFromKong(phase)].name.capitalize())

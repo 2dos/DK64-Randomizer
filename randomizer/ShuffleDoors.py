@@ -12,6 +12,9 @@ def ShuffleDoors(spoiler):
     """Shuffle Wrinkly and T&S Doors based on settings."""
     human_hint_doors = {}
     human_portal_doors = {}
+    for level in level_list:
+        human_hint_doors[level] = {}
+        human_portal_doors[level] = {}
     shuffled_door_data = {}
     # Reset Doors
     for level in door_locations:
@@ -44,7 +47,7 @@ def ShuffleDoors(spoiler):
                         selected_door_index = available_doors.pop(0)
                     selected_door = door_locations[level][selected_door_index]
                     selected_door.assignDoor(assignee)  # Clamp to within [0,4], preventing list index errors
-                    human_hint_doors[level_list[level] + " " + str(Kongs(kong % 5)).capitalize()] = selected_door.name
+                    human_hint_doors[level_list[level]][str(Kongs(kong % 5).name).capitalize()] = selected_door.name
                     shuffled_door_data[level].append((selected_door_index, "wrinkly", (kong % 5)))
         if spoiler.settings.tns_location_rando:
             number_of_portals_in_level = random.choice([3, 4, 5])
@@ -63,14 +66,14 @@ def ShuffleDoors(spoiler):
                         # Only place one T&S portal per group so we don't stack portals too heavily
                         available_doors = [door for door in available_doors if door_locations[level][door].group != selected_portal.group]
                         selected_portal.assignPortal()
-                        human_portal_doors[level_list[level] + " T&S #" + str(new_portal + 1)] = selected_portal.name
+                        human_portal_doors[level_list[level]][" T&S #" + str(new_portal + 1)] = selected_portal.name
                         shuffled_door_data[level].append((selected_door_index, "tns"))
                     else:
                         # On the last iteration, make sure at least 1 TnS portal is accessible without any moves
                         selected_door_index = random.choice([door for door in available_doors if door_locations[level][door].moveless is True])
                         selected_portal = door_locations[level][selected_door_index]
                         selected_portal.assignPortal()
-                        human_portal_doors[level_list[level] + " T&S #" + str(new_portal + 1)] = selected_portal.name
+                        human_portal_doors[level_list[level]][" T&S #" + str(new_portal + 1)] = selected_portal.name
                         shuffled_door_data[level].append((selected_door_index, "tns"))
 
     # Track all touched doors in a variable and put it in the spoiler because changes to the static list do not save
