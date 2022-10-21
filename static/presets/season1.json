@@ -85,5 +85,14 @@
     "fast_warps":true,
     "dpad_display":true,
     "auto_keys":true,
-    "win_condition": "beat_krool"
+    "win_condition": "beat_krool",
+    "cb_rando":false,
+    "shuffle_items": "none",
+    "shockwave_status": "vanilla",
+    "training_barrels": "normal",
+    "free_trade_setting": "none",
+    "crown_placement_rando": false,
+    "wrinkly_location_rando": false,
+    "tns_location_rando": false,
+    "helm_hurry": false
 }
