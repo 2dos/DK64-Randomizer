@@ -38,6 +38,8 @@ class Spoiler:
         self.music_event_data = {}
         self.location_data = {}
         self.enemy_replacements = []
+        
+        self.debug_human_item_assignment = None  # Kill this as soon as the spoiler is better
 
         self.move_data = []
         # 0: Cranky, 1: Funky, 2: Candy
@@ -188,7 +190,9 @@ class Spoiler:
         for room in self.settings.helm_order:
             helm_new_order.append(helm_default_order[room].name.capitalize())
         humanspoiler["End Game"]["Helm Rooms"] = helm_new_order
-        humanspoiler["Items"] = {"Kongs": {}, "Shops": {}, "Others": {}, "Item Placement": self.debug_human_item_assignment}
+        humanspoiler["Items"] = {"Kongs": {}, "Shops": {}, "Others": {}}
+        if self.debug_human_item_assignment is not None:
+            humanspoiler["Items"]["Item Placement"] = self.debug_human_item_assignment
 
         prices = OrderedDict()
         if self.settings.random_prices != "vanilla":

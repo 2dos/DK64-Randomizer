@@ -371,10 +371,10 @@ class Settings:
             self.shuffled_location_types = [Types.Banana, Types.Crown, Types.Blueprint, Types.Key, Types.Medal, Types.Coin]
         if self.shuffle_items == "phase2":
             self.shuffled_location_types = [Types.Shop, Types.Banana, Types.Crown, Types.Blueprint, Types.Key, Types.Medal, Types.Coin]
-        if self.shockwave_status not in ("vanilla", "start_with"):
-            self.shuffled_location_types.append(Types.Shockwave)
-        if self.training_barrels != "normal":
-            self.shuffled_location_types.append(Types.TrainingBarrel)
+            if self.shockwave_status not in ("vanilla", "start_with"):
+                self.shuffled_location_types.append(Types.Shockwave)
+            if self.training_barrels != "normal":
+                self.shuffled_location_types.append(Types.TrainingBarrel)
         self.progressives_locked_in_shops = True  # Technical limitation: for now (hopefully) progressive moves must be found in shops
 
         self.shuffle_prices()
@@ -596,8 +596,6 @@ class Settings:
                 self.valid_locations[Types.Shop][Kongs.diddy] = DiddyMoveLocations.copy()
                 self.valid_locations[Types.Shop][Kongs.lanky] = LankyMoveLocations.copy()
                 self.valid_locations[Types.Shop][Kongs.tiny] = TinyMoveLocations.copy()
-                if self.shockwave_status in ("vanilla", "start_with"):
-                    self.valid_locations[Types.Shop][Kongs.tiny].remove(Locations.CameraAndShockwave)
                 self.valid_locations[Types.Shop][Kongs.chunky] = ChunkyMoveLocations.copy()
             elif self.move_rando == "cross_purchase":
                 allKongMoveLocations = DonkeyMoveLocations.copy()
@@ -617,8 +615,11 @@ class Settings:
             self.valid_locations[Types.Shop][Kongs.any] = SharedShopLocations
             if self.shockwave_status not in ("vanilla", "start_with") and Types.Shockwave not in self.shuffled_location_types:
                 self.valid_locations[Types.Shop][Kongs.any].add(Locations.CameraAndShockwave)
+            else:
+                self.valid_locations[Types.Shop][Kongs.tiny].remove(Locations.CameraAndShockwave)
             if self.training_barrels == "shuffled" and Types.TrainingBarrel not in self.shuffled_location_types:
-                self.valid_locations[Types.Shop][Kongs.any].update(TrainingBarrelLocations.copy())
+                for kong in Kongs:
+                    self.valid_locations[Types.Shop][kong].update(TrainingBarrelLocations.copy())
             self.valid_locations[Types.Shockwave] = self.valid_locations[Types.Shop][Kongs.any]
             self.valid_locations[Types.TrainingBarrel] = self.valid_locations[Types.Shop][Kongs.any]
 
