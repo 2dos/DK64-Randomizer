@@ -494,6 +494,7 @@
 .definelabel EnemyInView, 0x807FFFD4
 .definelabel ItemRandoOn, 0x807FFFD3
 .definelabel ItemRando_FLUT, 0x805FAE00-0x640
+.definelabel TextOverlayData, 0x807FFFA0
 
 .definelabel KasplatSpawnBitfield, 0x807FFF4B
 .definelabel CrankyMoves_New, 0x807FF400

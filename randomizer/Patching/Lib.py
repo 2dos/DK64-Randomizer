@@ -24,7 +24,7 @@ def intf_to_float(intf):
     if intf == 0:
         return 0
     else:
-        return struct.unpack("!f", bytes.fromhex(hex(intf)[2:]))[0]
+        return struct.unpack("!f", bytes.fromhex("{:08X}".format(intf)))[0]
 
 
 def ushort_to_short(ushort):

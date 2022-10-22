@@ -516,4 +516,5 @@ extern unsigned char ChunkyModel;
 extern unsigned char EnemyInView;
 extern unsigned char ItemRandoOn;
 extern short ItemRando_FLUT[0x320];
+extern arbitrary_overlay TextOverlayData;
 extern unsigned char KasplatSpawnBitfield;

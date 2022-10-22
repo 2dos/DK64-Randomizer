@@ -84,7 +84,7 @@ void spawnEnemyDrops(actorData* actor) {
                     if (Rando.item_rando) {
                         drop_type = getBPItem(flag - 469);
                         drop_count = 1;
-                        if ((drop_type == 45) || (drop_type == 72) || (drop_type == 86)) {
+                        if ((drop_type == 45) || (drop_type == 72) || (drop_type == 86) || ((drop_type >= 157) && (drop_type <= 162))) {
                             drop_arg = 2;
                         }
                         if (KasplatSpawnBitfield & (1 << (actor_index - 241))) {

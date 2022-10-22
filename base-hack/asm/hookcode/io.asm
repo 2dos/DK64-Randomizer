@@ -108,8 +108,9 @@ checkFlag_ItemRando:
     SH      a2, 0x22 (sp)
     LW      a0, 0x24 (sp)
     ADDIU   a1, sp, 0x22
-    JAL     updateFlag
     OR      a2, v0, r0
+    JAL     updateFlag
+    ADDIU   a3, r0, 0
     J       0x80731170
     NOP
 
@@ -118,7 +119,8 @@ setFlag_ItemRando:
     SH      a3, 0x32 (sp)
     LW      a0, 0x38 (sp)
     ADDIU   a1, sp, 0x32
-    JAL     updateFlag
     OR      a2, v0, r0
+    JAL     updateFlag
+    ADDIU   a3, r0, 1
     J       0x80731300
     NOP

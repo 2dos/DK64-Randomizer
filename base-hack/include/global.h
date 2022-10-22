@@ -126,6 +126,7 @@ extern void newGuardCode(void);
 extern void goldBeaverCode(void);
 extern void ninCoinCode(void);
 extern void rwCoinCode(void);
+extern void NothingCode(void);
 extern void beaverExtraHitHandle(void);
 extern void CBDing(void);
 extern void handleSpiderTrapCode(void);
@@ -194,7 +195,7 @@ extern void spawnBossReward(int object, int x_f, int y_f, int z_f, int unk0, int
 extern void spawnRewardAtActor(int object, int flag);
 extern int checkFlagDuplicate(short flag, int type);
 extern void setFlagDuplicate(short flag, int set, int type);
-extern void* updateFlag(int type, short* flag, void* fba);
+extern void* updateFlag(int type, short* flag, void* fba, int source);
 extern void spawnEnemyDrops(actorData* actor);
 extern int countFlagsForKongFLUT(int startFlag, int start, int cap, int kong);
 extern int getKongFromBonusFlag(int flag);
@@ -208,6 +209,7 @@ extern void initKeyText(int ki);
 extern int* controlKeyText(int* dl);
 extern void keyGrabHook(int song, int vol);
 extern int itemGrabHook(int collectable_type, int obj_type, int is_homing);
+extern int getKeyFlag(int index);
 extern void KLumsyText(void);
 
 extern unsigned int cs_skip_db[432];

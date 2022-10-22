@@ -197,13 +197,48 @@ file_dict = [
         "source_file": "rareware_coin_om2.bin",
         "do_not_delete_source": True,
     },
-    # {
-    #     "name": "Potion Model",
-    #     "pointer_table_index": 4,
-    #     "file_index": 0x210,
-    #     "source_file": "potion_om2.bin",
-    #     "do_not_delete_source": True,
-    # },
+    {
+        "name": "Potion (DK) Model",
+        "pointer_table_index": 4,
+        "file_index": 0x5B,
+        "source_file": "potion_dk_om2.bin",
+        "do_not_delete_source": True,
+    },
+    {
+        "name": "Potion (Diddy) Model",
+        "pointer_table_index": 4,
+        "file_index": 0x1F2,
+        "source_file": "potion_diddy_om2.bin",
+        "do_not_delete_source": True,
+    },
+    {
+        "name": "Potion (Lanky) Model",
+        "pointer_table_index": 4,
+        "file_index": 0x59,
+        "source_file": "potion_lanky_om2.bin",
+        "do_not_delete_source": True,
+    },
+    {
+        "name": "Potion (Tiny) Model",
+        "pointer_table_index": 4,
+        "file_index": 0x1F3,
+        "source_file": "potion_tiny_om2.bin",
+        "do_not_delete_source": True,
+    },
+    {
+        "name": "Potion (Chunky) Model",
+        "pointer_table_index": 4,
+        "file_index": 0x1F5,
+        "source_file": "potion_chunky_om2.bin",
+        "do_not_delete_source": True,
+    },
+    {
+        "name": "Potion (Any) Model",
+        "pointer_table_index": 4,
+        "file_index": 0x1F6,
+        "source_file": "potion_any_om2.bin",
+        "do_not_delete_source": True,
+    },
 ]
 
 number_game_changes = [
@@ -520,6 +555,12 @@ model_changes = [
     {"model_index": 9, "model_file": "tiny_ins.bin"},
     {"model_index": 0xEC, "model_file": "disco_instrument.bin"},
     {"model_index": 0xDA, "model_file": "krusha_base.bin"},
+    {"model_index": 0xED, "model_file": "potion_dk_om1.bin"},
+    {"model_index": 0xEE, "model_file": "potion_diddy_om1.bin"},
+    {"model_index": 0xEF, "model_file": "potion_lanky_om1.bin"},
+    {"model_index": 0xF0, "model_file": "potion_tiny_om1.bin"},
+    {"model_index": 0xF1, "model_file": "potion_chunky_om1.bin"},
+    {"model_index": 0xF2, "model_file": "potion_any_om1.bin"},
 ]
 for x in model_changes:
     data = {
