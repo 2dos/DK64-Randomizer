@@ -32,6 +32,7 @@ void cFuncLoop(void) {
 	replace_zones(0);
 	alter_boss_key_flags();
 	if (ObjectModel2Timer <= 2) {
+		setFlag(0x78, 0, 2); // Clear K. Lumsy temp flag
 		KasplatSpawnBitfield = 0;
 		shiftBrokenJapesPortal();
 		openCoinDoor();
