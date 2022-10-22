@@ -14,7 +14,7 @@ model_two_indexes = {
     Types.Key: 0x13C,
     Types.Crown: 0x18D,
     Types.Medal: 0x90,
-    Types.Shop: [0x5B,0x1F2,0x59,0x1F3,0x1F5,0x1F6],
+    Types.Shop: [0x5B, 0x1F2, 0x59, 0x1F3, 0x1F5, 0x1F6],
     Types.TrainingBarrel: 0x1F6,
     Types.Shockwave: 0x1F6,
     Types.NoItem: 0,  # No Item
@@ -144,7 +144,7 @@ def place_randomized_items(spoiler: Spoiler):
                             actor_index = actor_indexes[Types.Coin][0]
                             if item.new_flag == 379:  # Is RW Coin
                                 actor_index = actor_indexes[Types.Coin][1]
-                        elif item.new_item == Types.Shop:
+                        elif item.new_item in (Types.Shop, Types.Shockwave, Types.TrainingBarrel):
                             slot = (item.new_flag >> 12) & 7
                             if item.shared or slot > 5:
                                 slot = 5
@@ -189,7 +189,7 @@ def place_randomized_items(spoiler: Spoiler):
                             medal_index = 6
                             if subtype == 4:
                                 medal_index = 8
-                            elif (subtype == 2) or (subtype == 3) :
+                            elif (subtype == 2) or (subtype == 3):
                                 medal_index = 7
                             ROM().write(medal_index)
                         else:

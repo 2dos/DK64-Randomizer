@@ -110,7 +110,7 @@ def AllItems(settings):
     if Types.Crown in settings.shuffled_location_types:
         allItems.extend(BattleCrownItems())
     if Types.Key in settings.shuffled_location_types:
-        allItems.extend(Keys(settings))
+        allItems.extend(Keys())
     if Types.Medal in settings.shuffled_location_types:
         allItems.extend(BananaMedalItems())
     if settings.move_rando != "off" or Types.Shop in settings.shuffled_location_types:
@@ -209,9 +209,9 @@ def Blueprints(settings):
     return blueprints
 
 
-def BlueprintAssumedItems(settings):
+def BlueprintAssumedItems():
     """Items which are assumed to be owned while placing blueprints."""
-    return Keys(settings) + KeyAssumedItems()
+    return Keys() + KeyAssumedItems()
 
 
 def KeyAssumedItems():
@@ -234,7 +234,7 @@ def MedalAssumedItems():
     return GoldenBananaItems()
 
 
-def Keys(settings):
+def Keys():
     """Return all key items."""
     return [Items.JungleJapesKey, Items.AngryAztecKey, Items.FranticFactoryKey, Items.GloomyGalleonKey, Items.FungiForestKey, Items.CrystalCavesKey, Items.CreepyCastleKey, Items.HideoutHelmKey]
 
@@ -379,3 +379,4 @@ TinyMoves = [Items.Feather, Items.Saxophone, Items.MiniMonkey, Items.PonyTailTwi
 ChunkyMoves = [Items.Pineapple, Items.Triangle, Items.HunkyChunky, Items.PrimatePunch, Items.GorillaGone]
 ImportantSharedMoves = [Items.ProgressiveSlam, Items.ProgressiveSlam, Items.SniperSight, Items.HomingAmmo]
 JunkSharedMoves = [Items.ProgressiveAmmoBelt, Items.ProgressiveAmmoBelt, Items.ProgressiveInstrumentUpgrade, Items.ProgressiveInstrumentUpgrade, Items.ProgressiveInstrumentUpgrade]
+ProgressiveSharedMovesSet = {Items.ProgressiveAmmoBelt, Items.ProgressiveInstrumentUpgrade, Items.ProgressiveSlam}

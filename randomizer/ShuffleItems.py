@@ -7,7 +7,7 @@ from randomizer.Lists.Location import LocationList
 from randomizer.Enums.Types import Types
 from randomizer.Spoiler import Spoiler
 from randomizer.Enums.Kongs import Kongs
-from randomizer.Lists.Item import ItemList
+from randomizer.Lists.Item import ItemList, NameFromKong
 
 
 class LocationSelection:
@@ -103,6 +103,12 @@ move_list = {
     Items.SniperSight: MoveData(2, Kongs.any, 3, True, 1),
 }
 
+progressive_move_flag_dict = {
+    Items.ProgressiveSlam: [0x290, 0x291],
+    Items.ProgressiveAmmoBelt: [0x292, 0x293],
+    Items.ProgressiveInstrumentUpgrade: [0x294, 0x295, 0x296],
+}
+
 
 def ShuffleItems(spoiler: Spoiler):
     """Shuffle items into assortment."""
@@ -138,7 +144,10 @@ def ShuffleItems(spoiler: Spoiler):
                 location_selection.new_kong = new_item.kong
                 # If this item has a dedicated specific flag, then set it now (Keys and Coins right now)
                 if new_item.rando_flag is not None:
-                    location_selection.new_flag = new_item.rando_flag
+                    if new_item.rando_flag == -1:  # This means it's a progressive move and they need special flags
+                        location_selection.new_flag = progressive_move_flag_dict[item_location.item].pop()
+                    else:
+                        location_selection.new_flag = new_item.rando_flag
                     locations_not_needing_flags.append(location_selection)
                 # Otherwise we need to put it in the list of locations needing flags
                 else:
@@ -180,3 +189,14 @@ def ShuffleItems(spoiler: Spoiler):
         debug_flags = [data for data in locations_needing_flags if data.new_flag is None]
         raise Ex.FillException("ERROR: Failed to create a valid flag assignment for this fill!")
     spoiler.item_assignment = locations_needing_flags + locations_not_needing_flags
+    # Generate human-readable version for debugging purposes
+    human_item_data = {}
+    for loc in spoiler.item_assignment:
+        name = "Nothing"
+        if loc.new_item is not None:
+            name = ItemList[LocationList[loc.location].item].name
+        location_name = loc.name
+        if "Kasplat" in location_name:
+            location_name = f"{location_name.split('Kasplat')[0]} {NameFromKong(loc.old_kong)} Kasplat"
+        human_item_data[location_name] = name
+    spoiler.debug_human_item_assignment = human_item_data
