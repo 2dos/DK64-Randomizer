@@ -171,7 +171,7 @@ def patching_response(responded_data):
     ROM().write(1)
 
     # Unlock Shockwave
-    if spoiler.settings.unlock_fairy_shockwave:
+    if spoiler.settings.shockwave_status == "start_with":
         ROM().seek(sav + 0x02F)
         ROM().write(1)
 

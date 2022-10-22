@@ -167,7 +167,7 @@ class Settings:
         self.puzzle_rando = None
         self.shuffle_shops = None
 
-        # currently just set to moves by move_rando
+        # The major setting for item randomization
         # shuffle_items: str
         # none
         # phase1
@@ -213,8 +213,6 @@ class Settings:
         self.crown_door_open = None
         # coin_door_open: bool
         self.coin_door_open = None
-        # unlock_fairy_shockwave: bool
-        self.unlock_fairy_shockwave = None
         # krool_phase_count: int, [1-5]
         self.krool_phase_count = 5
         self.krool_random = False
@@ -271,6 +269,7 @@ class Settings:
         # vanilla - both located at Banana Fairy Isle
         # shuffled - located in a random valid location
         # shuffled_decoupled - camera and shockwave are separate upgrades and can be anywhere
+        # start_with - start with camera and shockwave
         self.shockwave_status = "vanilla"
 
         #  Music
@@ -590,7 +589,7 @@ class Settings:
                 self.valid_locations[Types.Shop][Kongs.diddy] = DiddyMoveLocations.copy()
                 self.valid_locations[Types.Shop][Kongs.lanky] = LankyMoveLocations.copy()
                 self.valid_locations[Types.Shop][Kongs.tiny] = TinyMoveLocations.copy()
-                if self.shockwave_status == "vanilla":
+                if self.shockwave_status in ("vanilla", "start_with"):
                     self.valid_locations[Types.Shop][Kongs.tiny].remove(Locations.CameraAndShockwave)
                 self.valid_locations[Types.Shop][Kongs.chunky] = ChunkyMoveLocations.copy()
             elif self.move_rando == "cross_purchase":
@@ -601,7 +600,7 @@ class Settings:
                 allKongMoveLocations.update(LankyMoveLocations.copy())
                 if self.training_barrels == "shuffled" and Types.TrainingBarrel not in self.shuffled_location_types:
                     allKongMoveLocations.update(TrainingBarrelLocations.copy())
-                if self.shockwave_status == "vanilla" and Types.Shockwave not in self.shuffled_location_types:
+                if self.shockwave_status in ("vanilla", "start_with") and Types.Shockwave not in self.shuffled_location_types:
                     allKongMoveLocations.remove(Locations.CameraAndShockwave)
                 self.valid_locations[Types.Shop][Kongs.donkey] = allKongMoveLocations
                 self.valid_locations[Types.Shop][Kongs.diddy] = allKongMoveLocations
@@ -609,7 +608,7 @@ class Settings:
                 self.valid_locations[Types.Shop][Kongs.tiny] = allKongMoveLocations
                 self.valid_locations[Types.Shop][Kongs.chunky] = allKongMoveLocations
             self.valid_locations[Types.Shop][Kongs.any] = SharedShopLocations
-            if self.shockwave_status != "vanilla" and Types.Shockwave not in self.shuffled_location_types:
+            if self.shockwave_status not in ("vanilla", "start_with") and Types.Shockwave not in self.shuffled_location_types:
                 self.valid_locations[Types.Shop][Kongs.any].add(Locations.CameraAndShockwave)
             if self.training_barrels == "shuffled" and Types.TrainingBarrel not in self.shuffled_location_types:
                 self.valid_locations[Types.Shop][Kongs.any].update(TrainingBarrelLocations.copy())

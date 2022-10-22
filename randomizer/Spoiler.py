@@ -101,7 +101,7 @@ class Spoiler:
         settings["Puzzle Randomization"] = self.settings.puzzle_rando
         settings["Crown Door Open"] = self.settings.crown_door_open
         settings["Coin Door Open"] = self.settings.coin_door_open
-        settings["Unlock Fairy Shockwave"] = self.settings.unlock_fairy_shockwave
+        settings["Shockwave Shuffle"] = self.settings.shockwave_status
         settings["Random Medal Requirement"] = self.settings.random_medal_requirement
         settings["Random Shop Prices"] = self.settings.random_prices
         settings["Banana Port Randomization"] = self.settings.bananaport_rando
