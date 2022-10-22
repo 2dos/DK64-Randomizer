@@ -36,12 +36,12 @@ def PlaceConstants(settings):
     typesOfItemsShuffled = []
     if settings.kong_rando:
         typesOfItemsShuffled.append(Types.Kong)
-    if settings.move_rando != "off":
+    if not settings.unlock_all_moves and settings.move_rando != "off":
         typesOfItemsShuffled.append(Types.Shop)
-    if settings.training_barrels == "shuffled":
-        typesOfItemsShuffled.append(Types.TrainingBarrel)
-    if settings.shockwave_status != "vanilla":
-        typesOfItemsShuffled.append(Types.Shockwave)
+        if settings.training_barrels == "shuffled":
+            typesOfItemsShuffled.append(Types.TrainingBarrel)
+        if settings.shockwave_status != "vanilla":
+            typesOfItemsShuffled.append(Types.Shockwave)
     if settings.shuffle_loading_zones == "levels":
         typesOfItemsShuffled.append(Types.Key)
     typesOfItemsShuffled.extend(settings.shuffled_location_types)
@@ -94,7 +94,7 @@ def PlaceConstants(settings):
         LocationList[Locations.MusicUpgrade1].PlaceConstantItem(Items.NoItem)
         LocationList[Locations.ThirdMelon].PlaceConstantItem(Items.NoItem)
         LocationList[Locations.MusicUpgrade2].PlaceConstantItem(Items.NoItem)
-    if settings.unlock_fairy_shockwave and settings.shockwave_status == "vanilla":
+        # Shockwave also granted when unlocking all moves
         LocationList[Locations.CameraAndShockwave].PlaceConstantItem(Items.NoItem)
 
 
@@ -323,7 +323,7 @@ def Upgrades(settings):
         upgrades.append(Items.SniperSight)
         upgrades.extend(itertools.repeat(Items.ProgressiveAmmoBelt, 2))
         upgrades.extend(itertools.repeat(Items.ProgressiveInstrumentUpgrade, 3))
-    if not settings.unlock_fairy_shockwave:
+    if settings.shockwave_status != "start_with":
         if settings.shockwave_status == "vanilla" or settings.shockwave_status == "shuffled":
             upgrades.append(Items.CameraAndShockwave)
         else:

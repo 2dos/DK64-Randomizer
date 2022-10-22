@@ -5,7 +5,7 @@ from ui.rando_options import (
     disable_boss_rando,
     disable_colors,
     disable_music,
-    disable_prices,
+    disable_move_shuffles,
     disable_rw,
     hide_rgb,
     max_randomized_blocker,
@@ -28,7 +28,7 @@ toggle_b_locker_boxes(None)
 update_boss_required(None)
 disable_colors(None)
 disable_music(None)
-disable_prices(None)
+disable_move_shuffles(None)
 max_randomized_blocker(None)
 max_randomized_troff(None)
 disable_barrel_modal(None)

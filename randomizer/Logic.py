@@ -101,8 +101,8 @@ class LogicVarHolder:
         self.nintendoCoin = False
         self.rarewareCoin = False
 
-        self.camera = self.settings.unlock_fairy_shockwave
-        self.shockwave = self.settings.unlock_fairy_shockwave
+        self.camera = self.settings.shockwave_status == "start_with"
+        self.shockwave = self.settings.shockwave_status == "start_with"
 
         self.scope = self.settings.unlock_all_moves
         self.homing = self.settings.unlock_all_moves
