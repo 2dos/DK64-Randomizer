@@ -54,8 +54,6 @@ def ShuffleDoors(spoiler):
             moveless_portal_selected = False
             # Make sure selected locations will be suitable to be a T&S portal
             available_doors = [door for door in available_doors if door_locations[level][door].door_type != "wrinkly"]
-            if level == Levels.JungleJapes:
-                number_of_portals_in_level -= 1  # One portal is forced in Japes
             for new_portal in range(number_of_portals_in_level):
                 if len(available_doors) > 0:  # Should only fail if we don't have enough door locations
                     if new_portal < (number_of_portals_in_level - 1) or moveless_portal_selected is True:
