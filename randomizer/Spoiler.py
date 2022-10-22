@@ -70,8 +70,8 @@ class Spoiler:
 
         self.hint_list = {}
 
-    def toJson(self):
-        """Convert spoiler to JSON."""
+    def createJson(self):
+        """Convert spoiler to JSON and save it."""
         # Verify we match our hash
         self.settings.verify_hash()
         # We want to convert raw spoiler data into the important bits and in human-readable formats.
@@ -192,7 +192,6 @@ class Spoiler:
             "Kongs": {},
             "Shops": {},
             "Others": {},
-            "Item Placement": self.human_item_assignment,
         }
 
         prices = OrderedDict()
@@ -431,7 +430,7 @@ class Spoiler:
                     human_cb_type_map[group["type"]].strip()
                 ] += f"{map_name.strip()}: {group['name']}<br>"
 
-        return json.dumps(humanspoiler, indent=4)
+        self.json = json.dumps(humanspoiler, indent=4)
 
     def UpdateKasplats(self, kasplat_map):
         """Update kasplat data."""

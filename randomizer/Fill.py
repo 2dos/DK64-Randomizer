@@ -1767,6 +1767,8 @@ def Generate_Spoiler(spoiler):
         compileHints(spoiler)
     Reset()
     ShuffleExits.Reset()
+    spoiler.createJson()
+    js.postMessage("Patching ROM...")
     return spoiler
 
 

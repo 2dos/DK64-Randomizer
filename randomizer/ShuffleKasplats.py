@@ -125,7 +125,7 @@ def ShuffleKasplatsAndLocations(spoiler, LogicVariables):
                     item_id = GetBlueprintItemForKongAndLevel(level, kong)
                     location_id = GetBlueprintLocationForKongAndLevel(level, kong)
                     # Assemble the Location object
-                    location = Location(kasplat.name, item_id, Types.Blueprint, kong, [kasplat.map, kong])
+                    location = Location(kasplat.name, item_id, Types.Blueprint, kong, [kasplat.map])
                     Logic.LocationList[location_id] = location
                     # Insert the Location into the Region
                     kasplatRegion = Logic.Regions[kasplat.region_id]
