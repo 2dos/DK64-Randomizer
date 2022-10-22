@@ -1303,3 +1303,14 @@ typedef struct skybox_blend_struct {
 	/* 0x003 */ rgb bottom;
 	/* 0x006 */ rgb unk[2];
 } skybox_blend_struct;
+
+typedef struct menu_controller_paad {
+	/* 0x000 */ float screen_transition_progress;
+	/* 0x004 */ float unk_4;
+	/* 0x008 */ char unk_8[0x12-0x8];
+	/* 0x012 */ unsigned char current_screen;
+	/* 0x013 */ unsigned char next_screen;
+	/* 0x014 */ char unk_14[0x16-0x14];
+	/* 0x016 */ char prevent_action;
+	/* 0x017 */ char selected_action;
+} menu_controller_paad;

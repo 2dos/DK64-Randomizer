@@ -168,6 +168,8 @@ extern void checkTotalCache(void);
 extern void checkSeedVictory(void);
 extern void checkVictory_flaghook(int flag);
 extern void FileProgressInitSub(int file, int shuffle);
+extern void changeFileSelectAction(menu_controller_paad* paad, int cap, int buttons);
+extern void changeFileSelectAction_0(menu_controller_paad* paad, int cap);
 extern void checkSkippableCutscene(void);
 extern void updateSkippableCutscenes(void);
 extern void parseCutsceneData(void);

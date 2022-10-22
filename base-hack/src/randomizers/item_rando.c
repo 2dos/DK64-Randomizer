@@ -371,8 +371,66 @@ void* checkMove(short* flag, void* fba, int source) {
                 TextOverlayData.type = item_type;
                 TextOverlayData.flag = item_index;
                 TextOverlayData.kong = item_kong;
+                if (item_type == 4) {
+                    if (CollectableBase.Melons < 2) {
+                        CollectableBase.Melons = 2;
+                    }
+                }
             }
             return temp_fba + item_type;
+        }
+    } else {
+        int flag_index = *flag;
+        int spawn_overlay = 0;
+        int item_type = 0;
+        int item_index = 0;
+        int item_kong = 0;
+        if ((source == 1) && (!checkFlagDuplicate(flag_index, 0)) && (Gamemode == 6)) {
+            if ((flag_index == 0x290) || (flag_index == 0x291)) {
+                // Slam
+                MovesBase[0].simian_slam += 1;
+                item_index = MovesBase[0].simian_slam;
+                for (int i = 1; i < 5; i++) {
+                    MovesBase[i].simian_slam = item_index;
+                }
+                spawn_overlay = 1;
+                item_type = 1;
+            } else if ((flag_index == 0x292) || (flag_index == 0x293)) {
+                // Belt
+                MovesBase[0].ammo_belt += 1;
+                item_index = MovesBase[0].ammo_belt;
+                for (int i = 1; i < 5; i++) {
+                    MovesBase[i].ammo_belt = item_index;
+                }
+                spawn_overlay = 1;
+                item_type = 3;
+            } else if ((flag_index >= 0x294) && (flag_index <= 0x296)) {
+                // Instrument Upgrade
+                item_index = 1;
+                for (int i = 1; i < 4; i++) {
+                    if (MovesBase[0].instrument_bitfield & (1 << i)) {
+                        item_index = i;
+                    }
+                }
+                item_index += 1;
+                for (int i = 0; i < 5; i++) {
+                    MovesBase[i].instrument_bitfield |= (1 << item_index);
+                }
+                spawn_overlay = 1;
+                item_type = 4;
+                if (item_index == 2) {
+                    // 3rd Melon
+                    if (CollectableBase.Melons < 3) {
+                        CollectableBase.Melons = 3;
+                    }
+                }
+            }
+            if (spawn_overlay) {
+                spawnActor(324, 0);
+                TextOverlayData.type = item_type;
+                TextOverlayData.flag = item_index;
+                TextOverlayData.kong = item_kong;
+            }
         }
     }
     return fba;
