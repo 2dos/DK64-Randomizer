@@ -621,7 +621,16 @@ class Settings:
             if Types.Blueprint in self.shuffled_location_types:
                 # Blueprints are banned from Key or Crown locations
                 blueprintValidTypes = [typ for typ in self.shuffled_location_types if typ not in (Types.Crown, Types.Key)]
-                blueprintLocations = [location for location in LocationList if LocationList[location].type in blueprintValidTypes]
+                # These locations do not have a set Kong assigned to them and can't have blueprints
+                badBPLocations = (
+                    Locations.IslesDonkeyJapesRock,
+                    Locations.JapesDonkeyFrontofCage,
+                    Locations.JapesDonkeyFreeDiddy,
+                    Locations.AztecDiddyFreeTiny,
+                    Locations.AztecDonkeyFreeLanky,
+                    Locations.FactoryLankyFreeChunky,
+                )
+                blueprintLocations = [location for location in LocationList if location not in badBPLocations and LocationList[location].type in blueprintValidTypes]
                 self.valid_locations[Types.Blueprint] = {}
                 self.valid_locations[Types.Blueprint][Kongs.donkey] = [location for location in blueprintLocations if LocationList[location].kong in (Kongs.donkey, Kongs.any)]
                 self.valid_locations[Types.Blueprint][Kongs.diddy] = [location for location in blueprintLocations if LocationList[location].kong in (Kongs.diddy, Kongs.any)]
@@ -635,7 +644,7 @@ class Settings:
             if Types.Key in self.shuffled_location_types:
                 self.valid_locations[Types.Key] = shuffledLocations
             if Types.Medal in self.shuffled_location_types:
-                self.valid_locations[Types.Medal] = shuffledLocations
+                self.valid_locations[Types.Medal] = [location for location in shuffledLocations if not LocationList[location].is_reward]
             if Types.Coin in self.shuffled_location_types:
                 self.valid_locations[Types.Coin] = shuffledLocations
 

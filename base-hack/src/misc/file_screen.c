@@ -188,6 +188,10 @@ int getInitFileMove(int index) {
 			case PURCHASE_GUN:
 				if (move_value == 1) {
 					found |= tracker_gun[move_kong] == index;
+				} else if (move_value == 2) {
+					found |= TRACKER_TYPE_HOMING == index;
+				} else if (move_value == 3) {
+					found |= TRACKER_TYPE_SNIPER == index;
 				}
 				break;
 			case PURCHASE_AMMOBELT:
@@ -470,19 +474,19 @@ void modifyTrackerImage(int dl_offset) {
 							} else {
 								int subdue[] = {0,0,0};
 								if (enabled == 1) {
-									subdue[0] = 1;
-									subdue[1] = 2;
-									subdue[2] = 1;
+									subdue[0] = 1; // B
+									subdue[1] = 3; // G
+									subdue[2] = 1; // R
 									update = 1;
 								} else if (enabled == 2) {
-									subdue[0] = 2;
-									subdue[1] = 2;
-									subdue[2] = 0;
+									subdue[0] = 3; // B
+									subdue[1] = 2; // G
+									subdue[2] = 0; // R
 									update = 1;
 								} else if (enabled == 3) {
-									subdue[0] = 0;
-									subdue[1] = 0;
-									subdue[2] = 2;
+									subdue[0] = 0; // B
+									subdue[1] = 0; // G
+									subdue[2] = 3; // R
 									update = 1;
 								}
 								for (int c = 0; c < 3; c++) {
@@ -492,6 +496,8 @@ void modifyTrackerImage(int dl_offset) {
 										channel = 0;
 									} else if (subdue[c] == 1) {
 										channel *= 0.19f;
+									} else if (subdue[c] == 2) {
+										channel *= 0.5f;
 									}
 									new_rgba |= (((int)(channel) & 31) << shift);
 								}

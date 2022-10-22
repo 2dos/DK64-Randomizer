@@ -219,7 +219,7 @@ def randomize_setup(spoiler: Spoiler):
 
     if enabled:
         diddy_5di_pads = pickRandomPositionsMult(287.94, 312.119, 0, 140, 6, 40)
-        lanky_fungi_mush = pickRandomPositionsMult(274.9, 316.505, 40, 160, 6, 40)
+        lanky_fungi_mush = pickRandomPositionsMult(274.9, 316.505, 40, 160, 5, 40)
         chunky_5dc_pads = pickChunkyCabinPadPositions()
         random.shuffle(vase_puzzle_positions)
         vase_puzzle_rando_progress = 0

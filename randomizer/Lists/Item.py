@@ -17,12 +17,15 @@ class Item:
         self.playthrough = playthrough
         self.type = type
         self.kong = kong
+        self.rando_flag = None
         if type == Types.Shop:
             self.movetype = data[0]
             self.index = data[1]
         if type in (Types.TrainingBarrel, Types.Shockwave):
             self.movetype = data[0]
             self.flag = data[1]
+        if type == Types.Key:
+            self.rando_flag = data[0]
 
 
 def ItemFromKong(kong):
@@ -122,16 +125,16 @@ ItemList = {
     Items.Camera: Item("Fairy Camera", True, Types.Shockwave, Kongs.any, [MoveTypes.Flag, "camera"]),
     Items.Shockwave: Item("Shockwave", True, Types.Shockwave, Kongs.any, [MoveTypes.Flag, "shockwave"]),
     Items.CameraAndShockwave: Item("Camera and Shockwave", True, Types.Shockwave, Kongs.any, [MoveTypes.Flag, "camera_shockwave"]),
-    Items.NintendoCoin: Item("Nintendo Coin", True, Types.Coin, Kongs.any),
-    Items.RarewareCoin: Item("Rareware Coin", True, Types.Coin, Kongs.any),
-    Items.JungleJapesKey: Item("Key 1", True, Types.Key, Kongs.any),
-    Items.AngryAztecKey: Item("Key 2", True, Types.Key, Kongs.any),
-    Items.FranticFactoryKey: Item("Key 3", True, Types.Key, Kongs.any),
-    Items.GloomyGalleonKey: Item("Key 4", True, Types.Key, Kongs.any),
-    Items.FungiForestKey: Item("Key 5", True, Types.Key, Kongs.any),
-    Items.CrystalCavesKey: Item("Key 6", True, Types.Key, Kongs.any),
-    Items.CreepyCastleKey: Item("Key 7", True, Types.Key, Kongs.any),
-    Items.HideoutHelmKey: Item("Key 8", True, Types.Key, Kongs.any),
+    Items.NintendoCoin: Item("Nintendo Coin", True, Types.Coin, Kongs.any, [132]),
+    Items.RarewareCoin: Item("Rareware Coin", True, Types.Coin, Kongs.any, [379]),
+    Items.JungleJapesKey: Item("Key 1", True, Types.Key, Kongs.any, [26]),
+    Items.AngryAztecKey: Item("Key 2", True, Types.Key, Kongs.any, [74]),
+    Items.FranticFactoryKey: Item("Key 3", True, Types.Key, Kongs.any, [138]),
+    Items.GloomyGalleonKey: Item("Key 4", True, Types.Key, Kongs.any, [168]),
+    Items.FungiForestKey: Item("Key 5", True, Types.Key, Kongs.any, [236]),
+    Items.CrystalCavesKey: Item("Key 6", True, Types.Key, Kongs.any, [292]),
+    Items.CreepyCastleKey: Item("Key 7", True, Types.Key, Kongs.any, [317]),
+    Items.HideoutHelmKey: Item("Key 8", True, Types.Key, Kongs.any, [380]),
     Items.HelmDonkey1: Item("Helm Donkey Barrel 1", False, Types.Constant, Kongs.donkey),
     Items.HelmDonkey2: Item("Helm Donkey Barrel 2", False, Types.Constant, Kongs.donkey),
     Items.HelmDiddy1: Item("Helm Diddy Barrel 1", False, Types.Constant, Kongs.diddy),

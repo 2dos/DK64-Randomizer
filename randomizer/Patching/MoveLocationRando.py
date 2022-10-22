@@ -65,7 +65,7 @@ def randomize_moves(spoiler: Spoiler):
     """Randomize Move locations based on move_data from spoiler."""
     varspaceOffset = spoiler.settings.rom_data
     movespaceOffset = spoiler.settings.move_location_data
-    if spoiler.settings.shuffle_items == "moves" and spoiler.move_data is not None:
+    if spoiler.settings.move_rando not in ("off", "starts_with") and spoiler.move_data is not None:
         # Take a copy of move_data before modifying
         move_arrays = spoiler.move_data.copy()
 

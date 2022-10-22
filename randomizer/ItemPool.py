@@ -29,6 +29,8 @@ def PlaceConstants(settings):
                 dest = ShufflableExits[level.TransitionTo].shuffledId
                 shuffledTo = [x for x in LevelInfoList.values() if x.TransitionTo == dest][0]
                 LocationList[shuffledTo.KeyLocation].PlaceConstantItem(level.KeyItem)
+        # The key in Helm is always Key 8 in these settings
+        LocationList[Locations.HelmKey].PlaceConstantItem(Items.HideoutHelmKey)
     # Settings-dependent locations
     # Determine what types of locations are being shuffled
     typesOfItemsShuffled = []
@@ -234,26 +236,7 @@ def MedalAssumedItems():
 
 def Keys(settings):
     """Return all key items."""
-    keys = []
-    for event in settings.krool_keys_required:
-        if event == Events.JapesKeyTurnedIn:
-            keys.append(Items.JungleJapesKey)
-        elif event == Events.AztecKeyTurnedIn:
-            keys.append(Items.AngryAztecKey)
-        elif event == Events.FactoryKeyTurnedIn:
-            keys.append(Items.FranticFactoryKey)
-        elif event == Events.GalleonKeyTurnedIn:
-            keys.append(Items.GloomyGalleonKey)
-        elif event == Events.ForestKeyTurnedIn:
-            keys.append(Items.FungiForestKey)
-        elif event == Events.CavesKeyTurnedIn:
-            keys.append(Items.CrystalCavesKey)
-        elif event == Events.CastleKeyTurnedIn:
-            keys.append(Items.CreepyCastleKey)
-        elif event == Events.HelmKeyTurnedIn:
-            keys.append(Items.HideoutHelmKey)
-    keys.sort()
-    return keys
+    return [Items.JungleJapesKey, Items.AngryAztecKey, Items.FranticFactoryKey, Items.GloomyGalleonKey, Items.FungiForestKey, Items.CrystalCavesKey, Items.CreepyCastleKey, Items.HideoutHelmKey]
 
 
 def Kongs(settings):
