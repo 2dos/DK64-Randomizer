@@ -38,6 +38,8 @@ class Spoiler:
         self.music_event_data = {}
         self.location_data = {}
         self.enemy_replacements = []
+        
+        self.debug_human_item_assignment = None  # Kill this as soon as the spoiler is better
 
         self.move_data = []
         # 0: Cranky, 1: Funky, 2: Candy
@@ -188,11 +190,9 @@ class Spoiler:
         for room in self.settings.helm_order:
             helm_new_order.append(helm_default_order[room].name.capitalize())
         humanspoiler["End Game"]["Helm Rooms"] = helm_new_order
-        humanspoiler["Items"] = {
-            "Kongs": {},
-            "Shops": {},
-            "Others": {},
-        }
+        humanspoiler["Items"] = {"Kongs": {}, "Shops": {}, "Others": {}}
+        if self.debug_human_item_assignment is not None:
+            humanspoiler["Items"]["Item Placement"] = self.debug_human_item_assignment
 
         prices = OrderedDict()
         if self.settings.random_prices != "vanilla":
@@ -502,7 +502,8 @@ class Spoiler:
 
         # Loop through locations and set necessary data
         for id, location in locations.items():
-            if location.item is not None and location.item is not Items.NoItem and not location.constant:
+            # (There must be an item here) AND (It must not be a constant item expected to be here) AND (It must be in a location not handled by the full item rando shuffler)
+            if location.item is not None and location.item is not Items.NoItem and not location.constant and location.type not in self.settings.shuffled_location_types:
                 self.location_data[id] = location.item
                 if location.type == Types.Shop:
                     # Get indices from the location

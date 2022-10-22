@@ -454,6 +454,9 @@ def RandomFill(settings, itemsToPlace, inOrder=False):
         random.shuffle(itemEmpty)
         locationId = itemEmpty.pop()
         LocationList[locationId].PlaceItem(item)
+        # If we don't have a price for this item and we need one, get the price of it - this also generates a price for the item if it doesn't exist
+        if item not in settings.prices.keys() and LocationList[locationId].type == Types.Shop:
+            GetPriceOfMoveItem(item, settings, 0, 0, 0)  # Other parameters don't matter - we don't actually care what the price is, it just needs to exist
         empty.remove(locationId)
     return 0
 
@@ -481,6 +484,9 @@ def ForwardFill(settings, itemsToPlace, ownedItems=None, inOrder=False):
         # Place the item
         ownedItems.append(item)
         LocationList[locationId].PlaceItem(item)
+        # If we don't have a price for this item and we need one, get the price of it - this also generates a price for the item if it doesn't exist
+        if item not in settings.prices.keys() and LocationList[locationId].type == Types.Shop:
+            GetPriceOfMoveItem(item, settings, 0, 0, 0)  # Other parameters don't matter - we don't actually care what the price is, it just needs to exist
         # Debug code utility for very important items
         if item in ItemPool.HighPriorityItems(settings):
             settings.debug_fill[locationId] = item
@@ -617,6 +623,9 @@ def AssumedFill(settings, itemsToPlace, ownedItems=None, inOrder=False):
             if item in ItemPool.HighPriorityItems(settings):
                 settings.debug_fill[locationId] = item
             itemShuffled = True
+            # If we don't have a price for this item and we need one, get the price of it - this also generates a price for the item if it doesn't exist
+            if item not in settings.prices.keys() and LocationList[locationId].type == Types.Shop:
+                GetPriceOfMoveItem(item, settings, 0, 0, 0)  # Other parameters don't matter - we don't actually care what the price is, it just needs to exist
             break
         if not itemShuffled:
             js.postMessage("Failed placing item " + ItemList[item].name + " in any of remaining " + str(ItemList[item].type) + " type possible locations")
@@ -662,7 +671,7 @@ def GetItemPrerequisites(spoiler, targetItemId, ownedKongs=[]):
     # Settings-required moves are always owned in order to complete this method based on the settings
     settingsRequiredMoves = []
     if Types.Key in spoiler.settings.shuffled_location_types:  # If keys are to be shuffled, they won't be shuffled yet
-        settingsRequiredMoves = ItemPool.BlueprintAssumedItems(spoiler.settings).copy()  # We want KeysCompany Coins/Crowns here and this is a convenient collection
+        settingsRequiredMoves = ItemPool.BlueprintAssumedItems().copy()  # We want KeysCompany Coins/Crowns here and this is a convenient collection
     requiredMoves = []
     if ownedKongs == []:
         ownedKongs = GetKongs()
@@ -690,7 +699,7 @@ def GetItemPrerequisites(spoiler, targetItemId, ownedKongs=[]):
         # DEBUG CODE - This helps find where items are being placed
         mysteryLocation = None
         itemobj = ItemList[targetItemId]
-        if spoiler.settings.valid_locations[itemobj.type] is dict:
+        if type(spoiler.settings.valid_locations[itemobj.type]) is dict:
             for possibleLocationThisItemGotPlaced in spoiler.settings.valid_locations[itemobj.type][itemobj.kong]:
                 if LocationList[possibleLocationThisItemGotPlaced].item == targetItemId:
                     mysteryLocation = LocationList[possibleLocationThisItemGotPlaced]
@@ -716,22 +725,22 @@ def GetItemPrerequisites(spoiler, targetItemId, ownedKongs=[]):
     return requiredMoves
 
 
-def GetValidLocationsForMove(spoiler, move, blockedLocations=set({})):
-    """Return the valid locations for the given move. Currently only returns shop locations for moves."""
-    validLocations = set({})
-    if spoiler.settings.move_rando == "cross_purchase" or move in ItemPool.DonkeyMoves:
-        validLocations.update(DonkeyMoveLocations.copy())
-    if spoiler.settings.move_rando == "cross_purchase" or move in ItemPool.DiddyMoves:
-        validLocations.update(DiddyMoveLocations.copy())
-    if spoiler.settings.move_rando == "cross_purchase" or move in ItemPool.TinyMoves:
-        validLocations.update(TinyMoveLocations.copy())
-    if spoiler.settings.move_rando == "cross_purchase" or move in ItemPool.ChunkyMoves:
-        validLocations.update(ChunkyMoveLocations.copy())
-    if spoiler.settings.move_rando == "cross_purchase" or move in ItemPool.LankyMoves:
-        validLocations.update(LankyMoveLocations.copy())
-    if spoiler.settings.training_barrels == "shuffled":
-        validLocations.update(TrainingBarrelLocations.copy())
-    return list(validLocations - blockedLocations)
+# def GetValidLocationsForMove(spoiler, move, blockedLocations=set({})):
+#     """Return the valid locations for the given move. Currently only returns shop locations for moves."""
+#     validLocations = set({})
+#     if spoiler.settings.move_rando == "cross_purchase" or move in ItemPool.DonkeyMoves:
+#         validLocations.update(DonkeyMoveLocations.copy())
+#     if spoiler.settings.move_rando == "cross_purchase" or move in ItemPool.DiddyMoves:
+#         validLocations.update(DiddyMoveLocations.copy())
+#     if spoiler.settings.move_rando == "cross_purchase" or move in ItemPool.TinyMoves:
+#         validLocations.update(TinyMoveLocations.copy())
+#     if spoiler.settings.move_rando == "cross_purchase" or move in ItemPool.ChunkyMoves:
+#         validLocations.update(ChunkyMoveLocations.copy())
+#     if spoiler.settings.move_rando == "cross_purchase" or move in ItemPool.LankyMoves:
+#         validLocations.update(LankyMoveLocations.copy())
+#     if spoiler.settings.training_barrels == "shuffled":
+#         validLocations.update(TrainingBarrelLocations.copy())
+#     return list(validLocations - blockedLocations)
 
 
 def PlaceItems(settings, algorithm, itemsToPlace, ownedItems=None, inOrder=False):
@@ -759,13 +768,13 @@ def Fill(spoiler):
     # Then place Blueprints
     if Types.Blueprint in spoiler.settings.shuffled_location_types:
         Reset()
-        blueprintsUnplaced = PlaceItems(spoiler.settings, spoiler.settings.algorithm, ItemPool.Blueprints(spoiler.settings).copy(), ItemPool.BlueprintAssumedItems(spoiler.settings))
+        blueprintsUnplaced = PlaceItems(spoiler.settings, spoiler.settings.algorithm, ItemPool.Blueprints(spoiler.settings).copy(), ItemPool.BlueprintAssumedItems())
         if blueprintsUnplaced > 0:
             raise Ex.ItemPlacementException(str(blueprintsUnplaced) + " unplaced blueprints.")
     # Then place keys
     if Types.Key in spoiler.settings.shuffled_location_types:
         Reset()
-        keysUnplaced = PlaceItems(spoiler.settings, spoiler.settings.algorithm, ItemPool.Keys(spoiler.settings).copy(), ItemPool.KeyAssumedItems(), inOrder=True)
+        keysUnplaced = PlaceItems(spoiler.settings, spoiler.settings.algorithm, ItemPool.Keys().copy(), ItemPool.KeyAssumedItems(), inOrder=True)
         if keysUnplaced > 0:
             raise Ex.ItemPlacementException(str(keysUnplaced) + " unplaced keys.")
     # Then place Nintendo & Rareware Coins
@@ -1166,7 +1175,7 @@ def FillKongsAndMoves(spoiler):
                     # Assume we have all other moves as we place items. This increases the potential number of locations items can be shuffled into
                     allOtherItems = ItemPool.AllMovesForOwnedKongs(ownedKongs).copy()
                     if Types.Key in spoiler.settings.shuffled_location_types:  # If keys are to be shuffled, they won't be shuffled yet
-                        allOtherItems.extend(ItemPool.BlueprintAssumedItems(spoiler.settings).copy())  # We want Keys/Company Coins/Crowns here and this is a convenient collection
+                        allOtherItems.extend(ItemPool.BlueprintAssumedItems().copy())  # We want Keys/Company Coins/Crowns here and this is a convenient collection
                     # Two exceptions: we don't assume we have the items to be placed, as then they could lock themselves
                     for item in priorityItemsToPlace:
                         allOtherItems.remove(item)
@@ -1226,7 +1235,7 @@ def FillKongsAndMoves(spoiler):
     itemsToPlace = [item for item in itemsToPlace if item not in preplacedPriorityMoves]
     settingsRequiredMoves = []
     if Types.Key in spoiler.settings.shuffled_location_types:  # If keys are to be shuffled, they won't be shuffled yet
-        settingsRequiredMoves = ItemPool.BlueprintAssumedItems(spoiler.settings).copy()  # We want Keys/Company Coins/Crowns here and this is a convenient collection
+        settingsRequiredMoves = ItemPool.BlueprintAssumedItems().copy()  # We want Keys/Company Coins/Crowns here and this is a convenient collection
     unplaced = PlaceItems(spoiler.settings, "assumed", itemsToPlace, settingsRequiredMoves)
     if unplaced > 0:
         # debug code - outputs all preplaced and shared items in an attempt to find where things are going wrong
@@ -1571,7 +1580,7 @@ def SetNewProgressionRequirementsUnordered(settings: Settings):
             # Galleon isn't beatable without vines or swim, but it could contain those moves so we can't block it from being chosen
             # Aztec is not progressible if we don't have vines yet
             if Levels.AngryAztec in openUnprogressedLevels:
-                if Items.Vines not in [LocationList[x].item for x in accessible if LocationList[x].type in (Types.TrainingBarrel, Types.Shop, Types.Shockwave)]:
+                if Items.Vines not in [LocationList[x].item for x in accessible]:
                     openUnprogressedLevels.remove(Levels.AngryAztec)
             if len(openUnprogressedLevels) == 0:
                 raise Ex.FillException("Hard level order shuffler failed to progress through levels.")
@@ -1657,7 +1666,7 @@ def SetNewProgressionRequirementsUnordered(settings: Settings):
                 accessibleMoves = [
                     LocationList[x].item
                     for x in accessible
-                    if LocationList[x].type in (Types.TrainingBarrel, Types.Shop, Types.Shockwave) and LocationList[x].item != Items.NoItem and LocationList[x].item is not None
+                    if LocationList[x].item != Items.NoItem and LocationList[x].item is not None and ItemList[LocationList[x].item].type in (Types.TrainingBarrel, Types.Shop, Types.Shockwave)
                 ]
                 ownedMoves[bossCompletedLevel] = accessibleMoves
 
@@ -1668,17 +1677,14 @@ def SetNewProgressionRequirementsUnordered(settings: Settings):
             if (
                 Kongs.donkey in ownedKongsByThisLevel
                 or Kongs.chunky in ownedKongsByThisLevel
-                or (
-                    Kongs.tiny in ownedKongsByThisLevel
-                    and Items.PonyTailTwirl in [LocationList[x].item for x in accessible if LocationList[x].type in (Types.TrainingBarrel, Types.Shop, Types.Shockwave)]
-                )
+                or (Kongs.tiny in ownedKongsByThisLevel and Items.PonyTailTwirl in [LocationList[x].item for x in accessible])
             ):
                 kongLockedCavesLobby = False
                 if not moveLockedCavesLobby:  # Might still be move locked
                     openLevels.append(settings.level_order[6])
         # See if we got vines or access to upper isles
         if moveLockedAztecLobby or moveLockedCavesLobby:
-            if settings.activate_all_bananaports != "off" or Items.Vines in [LocationList[x].item for x in accessible if LocationList[x].type in (Types.TrainingBarrel, Types.Shop, Types.Shockwave)]:
+            if settings.activate_all_bananaports != "off" or Items.Vines in [LocationList[x].item for x in accessible]:
                 if moveLockedAztecLobby:
                     moveLockedAztecLobby = False
                     openLevels.append(settings.level_order[2])
@@ -1688,7 +1694,7 @@ def SetNewProgressionRequirementsUnordered(settings: Settings):
                         openLevels.append(settings.level_order[6])
         # See if we got swim for Galleon Lobby entrance
         if moveLockedGalleonLobby:
-            if Items.Swim in [LocationList[x].item for x in accessible if LocationList[x].type in (Types.TrainingBarrel, Types.Shop, Types.Shockwave)]:
+            if Items.Swim in [LocationList[x].item for x in accessible]:
                 moveLockedGalleonLobby = False
                 openLevels.append(settings.level_order[4])
 
