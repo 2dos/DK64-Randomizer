@@ -345,15 +345,29 @@ def disable_helm_phases(evt):
 
 
 @bind("change", "move_rando")
-def disable_prices(evt):
-    """Disable prices if move rando is set to start with all moves."""
+def disable_move_shuffles(evt):
+    """Disable some settings based on the move rando setting."""
     moves = js.document.getElementById("move_rando")
     prices = js.document.getElementById("random_prices")
+    training_barrels = js.document.getElementById("training_barrels")
+    shockwave_status = js.document.getElementById("shockwave_status")
     try:
         if moves.value == "start_with":
             prices.setAttribute("disabled", "disabled")
+            training_barrels.value = "normal"
+            training_barrels.setAttribute("disabled", "disabled")
+            shockwave_status.value = "vanilla"
+            shockwave_status.setAttribute("disabled", "disabled")
+        elif moves.value == "off":
+            prices.removeAttribute("disabled")
+            training_barrels.value = "normal"
+            training_barrels.setAttribute("disabled", "disabled")
+            shockwave_status.value = "vanilla"
+            shockwave_status.setAttribute("disabled", "disabled")
         else:
             prices.removeAttribute("disabled")
+            training_barrels.removeAttribute("disabled")
+            shockwave_status.removeAttribute("disabled")
     except AttributeError:
         pass
 
@@ -411,7 +425,7 @@ def preset_select_changed(event):
     update_boss_required(None)
     disable_colors(None)
     disable_music(None)
-    disable_prices(None)
+    disable_move_shuffles(None)
     max_randomized_blocker(None)
     max_randomized_troff(None)
     disable_barrel_modal(None)
@@ -474,10 +488,10 @@ def disable_rw(evt):
             pass
 
 
-@bind("change", "unlock_fairy_shockwave")
+@bind("change", "shockwave_status")
 def toggle_extreme_prices_option(event):
     """Determine the visibility of the extreme prices option."""
-    unlocked_shockwave = document.getElementById("unlock_fairy_shockwave").checked
+    unlocked_shockwave = document.getElementById("shockwave_status").value == "start_with"
     no_logic = document.getElementById("no_logic").checked
     option = document.getElementById("extreme_price_option")
     if unlocked_shockwave or no_logic:

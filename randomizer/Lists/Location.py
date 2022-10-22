@@ -92,7 +92,7 @@ class Location:
 
     def PlaceConstantItem(self, item):
         """Place item at this location, and set constant so it's ignored in the spoiler."""
-        self.item = item
+        self.PlaceItem(item)
         self.constant = True
 
     def SetDelayedItem(self, item):
@@ -101,12 +101,12 @@ class Location:
 
     def PlaceDelayedItem(self):
         """Place the delayed item at this location."""
-        self.item = self.delayedItem
+        self.PlaceItem(self.delayedItem)
         self.delayedItem = None
 
     def PlaceDefaultItem(self):
         """Place whatever this location's default (vanilla) item is at it."""
-        self.item = self.default
+        self.PlaceItem(self.default)
         self.constant = True
 
 

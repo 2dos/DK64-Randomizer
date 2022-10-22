@@ -1047,7 +1047,7 @@ def FillKongsAndMoves(spoiler):
         FillKongs(spoiler)
 
     # Once Kongs are placed, the top priority is placing training barrel moves first. These (mostly) need to be very early because they block access to whole levels.
-    if spoiler.settings.move_rando != "off" and spoiler.settings.training_barrels == "shuffled":
+    if not spoiler.settings.unlock_all_moves and spoiler.settings.move_rando != "off" and spoiler.settings.training_barrels == "shuffled":
         # First place barrels - needed for most bosses
         if spoiler.settings.shuffle_loading_zones != "all" and not spoiler.settings.hard_level_progression:
             # In standard level order, place barrels very early to prevent same-y boss orders
@@ -1211,7 +1211,7 @@ def FillKongsAndMoves(spoiler):
                 BlockAccessToLevel(spoiler.settings, 100)
 
     # Handle shared moves before other moves in move rando
-    if spoiler.settings.move_rando != "off":
+    if not spoiler.settings.unlock_all_moves and spoiler.settings.move_rando != "off":
         # Shuffle the shared move locations since they must be done first
         ShuffleSharedMoves(spoiler, preplacedPriorityMoves.copy())
         # Set up remaining kong moves to be shuffled
@@ -1244,7 +1244,7 @@ def FillKongsAndMoves(spoiler):
         raise Ex.ItemPlacementException(str(unplaced) + " unplaced items.")
 
     # Final touches to item placement, some locations need special treatment
-    if spoiler.settings.move_rando != "off":
+    if not spoiler.settings.unlock_all_moves and spoiler.settings.move_rando != "off":
         # If we're shuffling training moves, always put a move in each training barrel
         if spoiler.settings.training_barrels == "shuffled":
             emptyTrainingBarrels = [loc for loc in TrainingBarrelLocations if LocationList[loc].item is None]
@@ -1252,19 +1252,24 @@ def FillKongsAndMoves(spoiler):
                 # Find the list of locations that have a kong move in them
                 kongMoveLocationsList = []
                 for location in DonkeyMoveLocations:
-                    if LocationList[location].item is not None:
+                    item_at_location = LocationList[location].item
+                    if item_at_location is not None and item_at_location != Items.NoItem:
                         kongMoveLocationsList.append(location)
                 for location in DiddyMoveLocations:
-                    if LocationList[location].item is not None:
+                    item_at_location = LocationList[location].item
+                    if item_at_location is not None and item_at_location != Items.NoItem:
                         kongMoveLocationsList.append(location)
                 for location in LankyMoveLocations:
-                    if LocationList[location].item is not None:
+                    item_at_location = LocationList[location].item
+                    if item_at_location is not None and item_at_location != Items.NoItem:
                         kongMoveLocationsList.append(location)
                 for location in TinyMoveLocations:
-                    if LocationList[location].item is not None:
+                    item_at_location = LocationList[location].item
+                    if item_at_location is not None and item_at_location != Items.NoItem:
                         kongMoveLocationsList.append(location)
                 for location in ChunkyMoveLocations:
-                    if LocationList[location].item is not None:
+                    item_at_location = LocationList[location].item
+                    if item_at_location is not None and item_at_location != Items.NoItem:
                         kongMoveLocationsList.append(location)
                 # Worth noting that moving a move to the training barrels will always make it more accessible, and thus doesn't need any additional logic
                 for emptyBarrel in emptyTrainingBarrels:
@@ -1755,7 +1760,7 @@ def Generate_Spoiler(spoiler):
             ShuffleExits.ExitShuffle(spoiler.settings)
             spoiler.UpdateExits()
         # Handle Item Fill
-        if spoiler.settings.move_rando != "off" or spoiler.settings.kong_rando or any(spoiler.settings.shuffled_location_types):
+        if (spoiler.settings.move_rando != "off" and not spoiler.settings.unlock_all_moves) or spoiler.settings.kong_rando or any(spoiler.settings.shuffled_location_types):
             FillKongsAndMovesGeneric(spoiler)
         else:
             # Just check if normal item locations are beatable with given settings

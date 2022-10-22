@@ -16,7 +16,7 @@ from ui.rando_options import (
     disable_barrel_modal,
     disable_colors,
     disable_music,
-    disable_prices,
+    disable_move_shuffles,
     max_randomized_blocker,
     max_randomized_troff,
     toggle_b_locker_boxes,
@@ -76,7 +76,7 @@ def import_settings_string(event):
         update_boss_required(None)
         disable_colors(None)
         disable_music(None)
-        disable_prices(None)
+        disable_move_shuffles(None)
         max_randomized_blocker(None)
         max_randomized_troff(None)
         disable_barrel_modal(None)
