@@ -159,6 +159,7 @@ def GetAccessibleLocations(settings, ownedItems, searchType=SearchMode.GetReacha
                 # Check accessibility for each location in this region
                 for location in region.locations:
                     if location.logic(LogicVariables) and location.id not in newLocations and location.id not in accessible:
+                        location_obj = LocationList[location.id]
                         # If this location is a bonus barrel, must make sure its logic is met as well
                         if (location.bonusBarrel is MinigameType.BonusBarrel and settings.bonus_barrels != "skip") or (
                             location.bonusBarrel is MinigameType.HelmBarrel and settings.helm_barrels != "skip"
@@ -167,11 +168,15 @@ def GetAccessibleLocations(settings, ownedItems, searchType=SearchMode.GetReacha
                             if not MinigameRequirements[minigame].logic(LogicVariables):
                                 continue
                         # If this location has a blueprint, then make sure this is the correct kong
-                        elif LocationList[location.id].item is not None and ItemList[LocationList[location.id].item].type == Types.Blueprint:
+                        elif location_obj.item is not None and ItemList[LocationList[location.id].item].type == Types.Blueprint:
                             if not LogicVariables.BlueprintAccess(ItemList[LocationList[location.id].item]):
                                 continue
+                        # If this location is a Kasplat but doesn't have a blueprint, still make sure this is the correct kong
+                        elif location_obj.type == Types.Blueprint:
+                            if location_obj.item is not None and (kong != location_obj.kong and not settings.free_trade_items):
+                                continue
                         # Every shop item has a price
-                        elif LocationList[location.id].type == Types.Shop:
+                        elif location_obj.type == Types.Shop:
                             # In search mode GetReachableWithControlledPurchases, only allowed to purchase what is passed in as "ownedItems"
                             if searchType != SearchMode.GetReachableWithControlledPurchases or location.id in purchaseList:
                                 LogicVariables.PurchaseShopItem(LocationList[location.id])
