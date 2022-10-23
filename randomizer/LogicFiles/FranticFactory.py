@@ -95,7 +95,7 @@ LogicRegions = {
         LocationLogic(Locations.FactoryLankyFreeChunky, lambda l: l.Slam and l.HasKong(l.settings.chunky_freeing_kong)),
         LocationLogic(Locations.FactoryTinybyArcade, lambda l: l.mini and l.tiny),
         LocationLogic(Locations.FactoryChunkyDarkRoom, lambda l: l.punch and l.Slam and l.ischunky),
-        LocationLogic(Locations.FactoryChunkybyArcade, lambda l: l.punch and l.chunky, MinigameType.BonusBarrel),
+        LocationLogic(Locations.FactoryChunkybyArcade, lambda l: l.punch and l.ischunky, MinigameType.BonusBarrel),
         LocationLogic(Locations.FactoryKasplatProductionBottom, lambda l: not l.settings.kasplat_location_rando),
         LocationLogic(Locations.FactoryKasplatStorage, lambda l: not l.settings.kasplat_location_rando),
     ], [

@@ -149,6 +149,7 @@ def GetMaxForKong(settings, kong):
         kongMoveLocations = LankyMoveLocations.copy()
     elif kong == Kongs.tiny:
         kongMoveLocations = TinyMoveLocations.copy()
+        kongMoveLocations.remove(Locations.CameraAndShockwave)
     elif kong == Kongs.chunky:
         kongMoveLocations = ChunkyMoveLocations.copy()
 

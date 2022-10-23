@@ -225,7 +225,7 @@ def place_randomized_items(spoiler: Spoiler):
                     data.append(item.new_flag)
                 flut_items.append(data)
         # Terminate FLUT
-        flut_items.append([0xFFFF,0xFFFF])
+        flut_items.append([0xFFFF, 0xFFFF])
         ROM().seek(0x1FF2000)
         for flut in sorted(flut_items, key=lambda x: x[0]):
             for flag in flut:

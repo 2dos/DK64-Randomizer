@@ -72,7 +72,7 @@ LogicRegions = {
         LocationLogic(Locations.CastleDonkeyLibrary, lambda l: l.superDuperSlam and l.isdonkey and (l.strongKong or l.settings.damage_amount == "default")),
     ], [], [
         TransitionFront(Regions.CreepyCastleMain, lambda l: True, Transitions.CastleLibraryStartToMain),
-        TransitionFront(Regions.CreepyCastleMain, lambda l: l.superDuperSlam and l.isdonkey, Transitions.CastleLibraryEndToMain),
+        TransitionFront(Regions.CreepyCastleMain, lambda l: l.superDuperSlam and l.isdonkey and (l.strongKong or l.settings.damage_amount == "default"), Transitions.CastleLibraryEndToMain),
     ]),
 
     Regions.Ballroom: Region("Ballroom", Levels.CreepyCastle, False, -1, [

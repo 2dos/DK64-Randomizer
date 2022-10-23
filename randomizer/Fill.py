@@ -106,13 +106,15 @@ def GetAccessibleLocations(settings, ownedItems, searchType=SearchMode.GetReacha
                 # If we're looking for one item and we find it, we're done
                 if searchType == SearchMode.CheckSpecificItemReachable and location.item == targetItemId:
                     return True
-        if len(sphere.locations) > 0:
-            playthroughLocations.append(sphere)
         eventAdded = False
         # Reset new lists
         newLocations = []
         # Update based on new items
         LogicVariables.Update(ownedItems)
+        if len(sphere.locations) > 0:
+            if searchType == SearchMode.GeneratePlaythrough:
+                sphere.seedBeaten = LogicVariables.WinConditionMet()
+            playthroughLocations.append(sphere)
 
         # If we're checking beatability, check the win condition after updating the last set of locations
         if searchType == SearchMode.CheckBeatable and LogicVariables.WinConditionMet():
@@ -366,6 +368,10 @@ def ParePlaythrough(settings, PlaythroughLocations):
     mostExpensiveBLocker = max([settings.blocker_0, settings.blocker_1, settings.blocker_2, settings.blocker_3, settings.blocker_4, settings.blocker_5, settings.blocker_6, settings.blocker_7])
     # Check every location in the list of spheres.
     for i in range(len(PlaythroughLocations) - 1, -1, -1):
+        # We can immediately ignore spheres past the first sphere that is beaten
+        if i > 0 and PlaythroughLocations[i - 1].seedBeaten:
+            PlaythroughLocations.remove(PlaythroughLocations[i])
+            continue
         sphere = PlaythroughLocations[i]
         # We want to track specific GBs in each sphere of the spoiler log up to and including the sphere where the last B. Locker becomes openable
         if i > 0 and PlaythroughLocations[i - 1].availableGBs > mostExpensiveBLocker:
@@ -375,19 +381,27 @@ def ParePlaythrough(settings, PlaythroughLocations):
             # All GBs that make it here are logically required
             if location.item == Items.GoldenBanana:
                 continue
+            # Items that are part of the win condition are always part of the Playthrough but are never part of it otherwise
+            if location.item == Items.BananaFairy:
+                if settings.win_condition != "all_fairies":
+                    sphere.locations.remove(locationId)
+                continue
+            if location.item == Items.BananaMedal:
+                if settings.win_condition != "all_medals":
+                    sphere.locations.remove(locationId)
+                continue
+            if location.item is not None and ItemList[location.item].type == Types.Blueprint:
+                if settings.win_condition != "all_blueprints":
+                    sphere.locations.remove(locationId)
+                continue
             # Copy out item from location
             item = location.item
             location.item = None
             # Check if the game is still beatable
             Reset()
             if GetAccessibleLocations(settings, [], SearchMode.CheckBeatable):
-                # If the game is still beatable and this item isn't related to the win condition, this is an unnecessary location, so remove it.
-                if (
-                    not (settings.win_condition == "all_fairies" and location.item == Items.BananaFairy)
-                    and not (settings.win_condition == "all_medals" and location.item == Items.BananaMedal)
-                    and not (settings.win_condition == "all_blueprints" and location.item is not None and ItemList[location.item].type == Types.Blueprint)
-                ):
-                    sphere.locations.remove(locationId)
+                # If the game is still beatable this is an unnecessary location, so remove it.
+                sphere.locations.remove(locationId)
                 # We delay the item to ensure future locations which may rely on this one
                 # do not give a false positive for beatability.
                 location.SetDelayedItem(item)
@@ -416,6 +430,8 @@ def PareWoth(settings, PlaythroughLocations):
         # Don't want constant locations in woth
         for loc in [x for x in sphere.locations if not LocationList[x].constant]:
             WothLocations.append(loc)
+    # Some items are required for the playthrough but not individually required - these checks are largely for performance, they'd (almost certainly) be removed anyway
+    WothLocations = [loc for loc in WothLocations if ItemList[LocationList[loc].item].type not in (Types.Banana, Types.BlueprintBanana, Types.Crown, Types.Medal, Types.Blueprint)]
     # Check every item location to see if removing it by itself makes the game unbeatable
     for i in range(len(WothLocations) - 1, -1, -1):
         locationId = WothLocations[i]
@@ -768,7 +784,8 @@ def Fill(spoiler):
     # Then place Blueprints
     if Types.Blueprint in spoiler.settings.shuffled_location_types:
         Reset()
-        blueprintsUnplaced = PlaceItems(spoiler.settings, spoiler.settings.algorithm, ItemPool.Blueprints(spoiler.settings).copy(), ItemPool.BlueprintAssumedItems())
+        # Blueprints can be placed randomly - there's no location that can cause blueprints to lock themselves
+        blueprintsUnplaced = PlaceItems(spoiler.settings, "random", ItemPool.Blueprints(spoiler.settings).copy(), ItemPool.BlueprintAssumedItems())
         if blueprintsUnplaced > 0:
             raise Ex.ItemPlacementException(str(blueprintsUnplaced) + " unplaced blueprints.")
     # Then place keys
@@ -786,13 +803,22 @@ def Fill(spoiler):
     # Then place Battle Crowns
     if Types.Crown in spoiler.settings.shuffled_location_types:
         Reset()
-        crownsUnplaced = PlaceItems(spoiler.settings, spoiler.settings.algorithm, ItemPool.BattleCrownItems(), ItemPool.CrownAssumedItems())
+        # Crowns can be placed randomly if the crown door is open
+        algo = "random"
+        if not spoiler.settings.crown_door_open:
+            algo = spoiler.settings.algorithm
+        crownsUnplaced = PlaceItems(spoiler.settings, algo, ItemPool.BattleCrownItems(), ItemPool.CrownAssumedItems())
         if crownsUnplaced > 0:
             raise Ex.ItemPlacementException(str(crownsUnplaced) + " unplaced crowns.")
     # Then place Banana Medals
     if Types.Medal in spoiler.settings.shuffled_location_types:
         Reset()
-        medalsUnplaced = PlaceItems(spoiler.settings, spoiler.settings.algorithm, ItemPool.BananaMedalItems(), ItemPool.MedalAssumedItems())
+        # Medals can also be placed randomly
+        algo = "random"
+        # UNLESS some sicko requires more than 38 then you have to carefully place them so you don't put one on Rareware Coin and Key 8
+        if spoiler.settings.medal_requirement > 38:
+            algo = spoiler.settings.algorithm  # They deserve the longer seed generation time for this
+        medalsUnplaced = PlaceItems(spoiler.settings, algo, ItemPool.BananaMedalItems(), ItemPool.MedalAssumedItems())
         if medalsUnplaced > 0:
             raise Ex.ItemPlacementException(str(medalsUnplaced) + " unplaced medals.")
     # Then fill remaining locations with GBs
@@ -884,7 +910,7 @@ def GeneratePlaythrough(spoiler):
     js.postMessage("Seed generated! Finalizing spoiler...")
     # Generate and display the playthrough
     Reset()
-    PlaythroughLocations = GetAccessibleLocations(spoiler.settings, [], SearchMode.GeneratePlaythrough)
+    PlaythroughLocations = GetAccessibleLocations(spoiler.settings, [], SearchMode.GeneratePlaythrough)  # identify in the spheres where the win condition is met
     ParePlaythrough(spoiler.settings, PlaythroughLocations)
     # Generate and display woth
     WothLocations = PareWoth(spoiler.settings, PlaythroughLocations)
