@@ -200,5 +200,6 @@ class Sphere:
 
     def __init__(self):
         """Initialize with given parameters."""
+        self.seedBeaten = False
         self.availableGBs = 0
         self.locations = []
