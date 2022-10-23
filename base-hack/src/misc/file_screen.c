@@ -6,17 +6,6 @@ static char perc_str[7] = "";
 #define LINE_GAP 0x8C
 static char updated_tracker = 0;
 
-typedef struct menu_controller_paad {
-	/* 0x000 */ float screen_transition_progress;
-	/* 0x004 */ float unk_4;
-	/* 0x008 */ char unk_8[0x12-0x8];
-	/* 0x012 */ unsigned char current_screen;
-	/* 0x013 */ unsigned char next_screen;
-	/* 0x014 */ char unk_14[0x16-0x14];
-	/* 0x016 */ char prevent_action;
-	/* 0x017 */ char selected_action;
-} menu_controller_paad;
-
 typedef struct tracker_struct {
 	/* 0x000 */ short min_x;
 	/* 0x002 */ short max_x;
@@ -668,7 +657,7 @@ void file_progress_screen_code(actorData* actor, int buttons) {
 			} else if (buttons & 2) { // B
 				playSFX(0x2C9);
 				paad->prevent_action = 0;
-				paad->next_screen = 1;
+				paad->next_screen = 2;
 			} else if (buttons & 0x100) { // Z
 				if (!isFileEmpty(0)) {
 					playSFX(0x2C9);
@@ -721,4 +710,47 @@ int updateLevelIGT(void) {
 	}
 	previous_map_save = CurrentMap;
 	return new_igt;
+}
+
+void changeFileSelectAction(menu_controller_paad* paad, int cap, int buttons) {
+	if ((buttons & 4) == 0) {
+		if (buttons & 8) {
+			playSFX(0x2C9);
+			*(float*)(0x80033F44) = *(float*)(0x80033D60) * 2;
+			*(char*)(0x800337F0) = 0;
+		}
+	} else {
+		playSFX(0x2C9);
+		*(float*)(0x80033F44) = *(float*)(0x80033D5C) * 2;
+		paad->selected_action -= 2;
+		paad->unk_4 = 2.0f;
+		if (paad->selected_action < 0) {
+			paad->selected_action += cap;
+		}
+		if ((paad->selected_action % 2) == 1) {
+			paad->selected_action -= 1;
+		}
+		*(char*)(0x800337F0) = 0;
+	}
+}
+
+void changeFileSelectAction_0(menu_controller_paad* paad, int cap) {
+	*(char*)(0x80033F48) = 0;
+	if (*(float*)(0x80033F44) > 0) {
+		paad->unk_4 += *(float*)(0x80033F44);
+		if (paad->unk_4 >= 2.0f) {
+			paad->unk_4 = 0;
+			paad->selected_action += 2;
+			if (paad->selected_action >= cap) {
+				paad->selected_action -= cap;
+			}
+			*(float*)(0x80033F44) = 0.0f;
+		}
+	} else if (*(float*)(0x80033F44) < 0) {
+		paad->unk_4 += *(float*)(0x80033F44);
+		if (paad->unk_4 <= 0.0f) {
+			*(float*)(0x80033F44) = 0;
+			paad->unk_4 = 0.0f;
+		}
+	}
 }

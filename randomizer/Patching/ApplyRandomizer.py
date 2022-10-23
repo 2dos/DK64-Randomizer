@@ -8,6 +8,7 @@ import random
 
 import js
 from randomizer.Enums.Transitions import Transitions
+from randomizer.Enums.Types import Types
 from randomizer.Patching.BananaPortRando import randomize_bananaport
 from randomizer.Patching.BarrelRando import randomize_barrels
 from randomizer.Patching.BossRando import randomize_bosses
@@ -130,11 +131,17 @@ def patching_response(responded_data):
             Transitions.IslesCastleLobbyToMain: 0x13D,
         }
         order = 0
-        for key, value in map_pointers.items():
-            new_world = spoiler.shuffled_exit_data.get(key).reverse
-            ROM().seek(sav + 0x01E + order)
-            ROM().writeMultipleBytes(key_mapping[int(new_world)], 2)
-            order += 2
+        if Types.Key not in spoiler.settings.shuffled_location_types:
+            for key, value in map_pointers.items():
+                new_world = spoiler.shuffled_exit_data.get(key).reverse
+                ROM().seek(sav + 0x01E + order)
+                ROM().writeMultipleBytes(key_mapping[int(new_world)], 2)
+                order += 2
+        else:
+            for key in key_mapping:
+                ROM().seek(sav + 0x1E + order)
+                ROM().writeMultipleBytes(key_mapping[key], 2)
+                order += 2
 
     # Color Banana Requirements
     order = 0
@@ -391,7 +398,6 @@ def patching_response(responded_data):
         ROM().seek(sav + 0x150)
         ROM().write(spoiler.settings.medal_requirement)
 
-    print(spoiler.settings.enemies_selected)
     if len(spoiler.settings.enemies_selected) == 0 and (spoiler.settings.enemy_rando or spoiler.settings.crown_enemy_rando != "off"):
         lst = []
         for enemy in EnemySelector:

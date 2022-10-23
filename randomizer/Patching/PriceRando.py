@@ -18,6 +18,59 @@ def randomize_prices(spoiler: Spoiler):
         else:
             ROM().write(0)
         # 0x036 */ unsigned char special_move_prices[5][3]; // Array of an array of prices [[1,2,3],[1,2,3],[1,2,3],[1,2,3],[1,2,3]]. Each item of the parent array is for a kong, each item of the sub arrays is the price of the moves in order of their vanilla purchase (eg. DK: Baboon Blast > Strong Kong > Gorilla Grab)
+
+        items_with_prices = [
+            Items.BaboonBlast,
+            Items.StrongKong,
+            Items.GorillaGrab,
+            Items.ChimpyCharge,
+            Items.RocketbarrelBoost,
+            Items.SimianSpring,
+            Items.Orangstand,
+            Items.BaboonBalloon,
+            Items.OrangstandSprint,
+            Items.MiniMonkey,
+            Items.PonyTailTwirl,
+            Items.Monkeyport,
+            Items.HunkyChunky,
+            Items.PrimatePunch,
+            Items.GorillaGone,
+            Items.Coconut,
+            Items.Peanut,
+            Items.Grape,
+            Items.Feather,
+            Items.Pineapple,
+            Items.Bongos,
+            Items.Guitar,
+            Items.Trombone,
+            Items.Saxophone,
+            Items.Triangle,
+            Items.HomingAmmo,
+            Items.SniperSight,
+            Items.Swim,
+            Items.Oranges,
+            Items.Barrels,
+            Items.Vines,
+            Items.Camera,
+            Items.Shockwave,
+            Items.CameraAndShockwave,
+        ]
+        for item in items_with_prices:
+            if item not in spoiler.settings.prices:
+                spoiler.settings.prices[item] = 0
+        progressive_items = {
+            Items.ProgressiveAmmoBelt: 2,
+            Items.ProgressiveInstrumentUpgrade: 3,
+            Items.ProgressiveSlam: 2,
+        }
+        for item in progressive_items:
+            if item not in spoiler.settings.prices:
+                spoiler.settings.prices[item] = []
+            length = progressive_items[item]
+            if len(spoiler.settings.prices[item]) < length:
+                diff = length - len(spoiler.settings.prices[item])
+                for d in range(diff):
+                    spoiler.settings.prices[item].append(0)
         ROM().write(spoiler.settings.prices[Items.BaboonBlast])
         ROM().write(spoiler.settings.prices[Items.StrongKong])
         ROM().write(spoiler.settings.prices[Items.GorillaGrab])

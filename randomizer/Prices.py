@@ -138,7 +138,6 @@ def GetMaxForKong(settings, kong):
             elif item_id == Items.ProgressiveAmmoBelt:
                 total_price += settings.prices[item_id][found_ammo_belts]
                 found_ammo_belts += 1
-
             else:
                 total_price += settings.prices[item_id]
 
@@ -150,6 +149,7 @@ def GetMaxForKong(settings, kong):
         kongMoveLocations = LankyMoveLocations.copy()
     elif kong == Kongs.tiny:
         kongMoveLocations = TinyMoveLocations.copy()
+        kongMoveLocations.remove(Locations.CameraAndShockwave)
     elif kong == Kongs.chunky:
         kongMoveLocations = ChunkyMoveLocations.copy()
 
@@ -166,6 +166,9 @@ def GetMaxForKong(settings, kong):
                 total_price += settings.prices[item_id][found_ammo_belts]
                 found_ammo_belts += 1
             else:
+                # I don't know how but sometimes moves don't have prices yet. Give it one here if it needs it.
+                if item_id not in settings.prices.keys():
+                    GetPriceOfMoveItem(item_id, settings, 0, 0, 0)
                 total_price += settings.prices[item_id]
     return total_price
 

@@ -18,6 +18,7 @@ from randomizer.Lists.Item import ItemFromKong, ItemList, KongFromItem, NameFrom
 from randomizer.Lists.Location import LocationList
 from randomizer.Lists.MapsAndExits import GetExitId, GetMapId, Maps
 from randomizer.Lists.Minigame import BarrelMetaData, HelmMinigameLocations, MinigameRequirements
+from randomizer.Prices import ProgressiveMoves
 from randomizer.Settings import Settings
 from randomizer.ShuffleExits import ShufflableExits
 
@@ -38,6 +39,8 @@ class Spoiler:
         self.music_event_data = {}
         self.location_data = {}
         self.enemy_replacements = []
+
+        self.debug_human_item_assignment = None  # Kill this as soon as the spoiler is better
 
         self.move_data = []
         # 0: Cranky, 1: Funky, 2: Candy
@@ -191,20 +194,17 @@ class Spoiler:
         humanspoiler["Items"] = {
             "Kongs": {},
             "Shops": {},
-            "Others": {},
+            "DK Isles": {},
+            "Jungle Japes": {},
+            "Angry Aztec": {},
+            "Frantic Factory": {},
+            "Gloomy Galleon": {},
+            "Fungi Forest": {},
+            "Crystal Caves": {},
+            "Creepy Castle": {},
+            "Hideout Helm": {},
+            "Special": {},
         }
-
-        prices = OrderedDict()
-        if self.settings.random_prices != "vanilla":
-            for item, price in self.settings.prices.items():
-                if item == Items.ProgressiveSlam:
-                    prices["Progressive Slam"] = f"{price[0]}→{price[1]}"
-                elif item == Items.ProgressiveAmmoBelt:
-                    prices["Progressive Ammo Belt"] = f"{price[0]}→{price[1]}"
-                elif item == Items.ProgressiveInstrumentUpgrade:
-                    prices["Progressive Instrument Upgrade"] = f"{price[0]}→{price[1]}→{price[2]}"
-                else:
-                    prices[f"{ItemList[item].name}"] = price
 
         # Playthrough data
         humanspoiler["Playthrough"] = self.playthrough
@@ -212,30 +212,57 @@ class Spoiler:
         # Woth data
         humanspoiler["Way of the Hoard"] = self.woth
 
-        # Item location data
-        for location, item in self.location_data.items():
-            if not LocationList[location].constant:
-                item_name = ItemList[item].name
-                location_name = LocationList[location].name
-                item_group = "Others"
-                if location_name in ("Diddy Kong", "Lanky Kong", "Tiny Kong", "Chunky Kong"):
-                    if not self.settings.kong_rando:
-                        continue
-                    item_group = "Kongs"
-                elif "Cranky" in location_name or "Funky" in location_name or "Candy" in location_name:
-                    if self.settings.move_rando == "off":
-                        continue
-                    item_group = "Shops"
-                if self.settings.random_prices != "vanilla" and item_group != "Others":
-                    if item_name in prices:
-                        item_name = f"{item_name} ({prices[item_name]})"
-                humanspoiler["Items"][item_group][location_name] = item_name
-
-        if len(humanspoiler["Items"]["Shops"].keys()) == 0:
-            price_data = {}
-            for price in prices:
-                price_data[f"{price} Cost"] = prices[price]
-            humanspoiler["Items"]["Shops"] = price_data
+        for location_id, location in LocationList.items():
+            # No need to spoiler constants
+            if location.type == Types.Constant:
+                continue
+            # Prevent weird null issues but get the item at the location
+            if location.item is None:
+                item = Items.NoItem
+            else:
+                item = ItemList[location.item]
+            # Separate Kong locations
+            if location.type == Types.Kong:
+                humanspoiler["Items"]["Kongs"][location.name] = item.name
+            # Separate Shop locations
+            elif location.type == Types.Shop:
+                # Ignore shop locations with no items
+                if location.item is None or location.item == Items.NoItem:
+                    continue
+                # Gotta dig up the price - progressive moves look a little weird in the spoiler
+                price = ""
+                if location.item in ProgressiveMoves.keys():
+                    if location.item == Items.ProgressiveSlam:
+                        price = f"{self.settings.prices[Items.ProgressiveSlam][0]}->{self.settings.prices[Items.ProgressiveSlam][1]}"
+                    elif location.item == Items.ProgressiveAmmoBelt:
+                        price = f"{self.settings.prices[Items.ProgressiveAmmoBelt][0]}->{self.settings.prices[Items.ProgressiveAmmoBelt][1]}"
+                    elif location.item == Items.ProgressiveInstrumentUpgrade:
+                        price = f"{self.settings.prices[Items.ProgressiveInstrumentUpgrade][0]}->{self.settings.prices[Items.ProgressiveInstrumentUpgrade][1]}->{self.settings.prices[Items.ProgressiveInstrumentUpgrade][2]}"
+                else:
+                    price = str(self.settings.prices[location.item])
+                humanspoiler["Items"]["Shops"][location.name] = item.name + f" ({price})"
+            # Filter everything else by level - each location conveniently contains a level-identifying bit in their name
+            else:
+                level = "Special"
+                if "Isles" in location.name:
+                    level = "DK Isles"
+                elif "Japes" in location.name:
+                    level = "Jungle Japes"
+                elif "Aztec" in location.name:
+                    level = "Angry Aztec"
+                elif "Factory" in location.name:
+                    level = "Frantic Factory"
+                elif "Galleon" in location.name:
+                    level = "Gloomy Galleon"
+                elif "Forest" in location.name:
+                    level = "Fungi Forest"
+                elif "Caves" in location.name:
+                    level = "Crystal Caves"
+                elif "Castle" in location.name:
+                    level = "Creepy Castle"
+                elif "Helm" in location.name:
+                    level = "Hideout Helm"
+                humanspoiler["Items"][level][location.name] = item.name
 
         if self.settings.shuffle_loading_zones == "levels":
             # Just show level order
@@ -502,7 +529,8 @@ class Spoiler:
 
         # Loop through locations and set necessary data
         for id, location in locations.items():
-            if location.item is not None and location.item is not Items.NoItem and not location.constant:
+            # (There must be an item here) AND (It must not be a constant item expected to be here) AND (It must be in a location not handled by the full item rando shuffler)
+            if location.item is not None and location.item is not Items.NoItem and not location.constant and location.type not in self.settings.shuffled_location_types:
                 self.location_data[id] = location.item
                 if location.type == Types.Shop:
                     # Get indices from the location

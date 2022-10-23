@@ -303,9 +303,9 @@ void getNextMovePurchase(shop_paad* paad, KongBase* movedata) {
 					case PURCHASE_GB:
 					case PURCHASE_FLAG:
 						if (p_value == -2) {
-							has_purchase = 1 ^ (checkFlag(FLAG_ABILITY_CAMERA,0) & checkFlag(FLAG_ABILITY_SHOCKWAVE,0));
+							has_purchase = 1 ^ (checkFlagDuplicate(FLAG_ABILITY_CAMERA,0) & checkFlagDuplicate(FLAG_ABILITY_SHOCKWAVE,0));
 						} else {
-							has_purchase = 1 ^ checkFlag(p_value,0);
+							has_purchase = 1 ^ checkFlagDuplicate(p_value,0);
 						}
 					break;
 				}
@@ -360,7 +360,7 @@ void purchaseMove(shop_paad* paad) {
 		case PURCHASE_GB:
 			MovesBase[(int)paad->kong].gb_count[getWorld(CurrentMap,1)] += 1;
 		case PURCHASE_FLAG:
-			setPermFlag(paad->flag);
+			setFlagDuplicate(paad->flag, 1, 0);
 		break;
 	}
 	if (p_type == PURCHASE_INSTRUMENT) {
@@ -437,15 +437,21 @@ void setLocation(purchase_struct* purchase_data) {
 			}
 		} else if ((p_type == PURCHASE_FLAG) && (purchase_data->purchase_value == -2)) {
 			// BFI Coupled Moves
-			setPermFlag(FLAG_ABILITY_SHOCKWAVE);
-			setPermFlag(FLAG_ABILITY_CAMERA);
+			setFlagDuplicate(FLAG_ABILITY_SHOCKWAVE,1,0);
+			setFlagDuplicate(FLAG_ABILITY_CAMERA,1,0);
 		} else if (p_type == PURCHASE_FLAG) {
 			// IsFlag
-			setPermFlag(purchase_data->purchase_value);
+			setFlagDuplicate(purchase_data->purchase_value,1,0);
 		} else if (p_type == PURCHASE_GB) {
 			// IsFlag + GB Update
-			setPermFlag(purchase_data->purchase_value);
-			MovesBase[p_kong].gb_count[getWorld(CurrentMap,1)] += 1;
+			if (!checkFlagDuplicate(purchase_data->purchase_value,0)) {
+				setFlagDuplicate(purchase_data->purchase_value,1,0);
+				int world = getWorld(CurrentMap,1);
+				if (world > 7) {
+					world = 7;
+				}
+				MovesBase[p_kong].gb_count[world] += 1;
+			}
 		}
 	}
 }
@@ -475,10 +481,10 @@ int getLocation(purchase_struct* purchase_data) {
 			}
 		} else if ((p_type == PURCHASE_FLAG) && (purchase_data->purchase_value == -2)) {
 			// BFI Coupled Moves
-			return checkFlag(FLAG_ABILITY_CAMERA,0) & checkFlag(FLAG_ABILITY_SHOCKWAVE,0);
+			return checkFlagDuplicate(FLAG_ABILITY_CAMERA,0) & checkFlagDuplicate(FLAG_ABILITY_SHOCKWAVE,0);
 		} else if ((p_type == PURCHASE_FLAG) || (p_type == PURCHASE_GB)) {
 			// IsFlag
-			return checkFlag(purchase_data->purchase_value,0);
+			return checkFlagDuplicate(purchase_data->purchase_value,0);
 		}
 	}
 	return 0;
@@ -629,6 +635,13 @@ void getNextMoveText(void) {
 				p_flag = p_value;
 			}
 		}
+		if (!has_data) {
+			has_data = 1;
+			p_type = TextOverlayData.type;
+			p_value = TextOverlayData.flag;
+			p_kong = TextOverlayData.kong;
+			p_flag = p_value;
+		}
 	}
 	if (has_data) {
 		if ((CurrentActorPointer_0->obj_props_bitfield & 0x10) == 0) {
@@ -686,6 +699,38 @@ void getNextMoveText(void) {
 							for (int i = 0; i < sizeof(tied_flags) / 4; i++) {
 								if (tied_flags[i] == p_flag) {
 									top_item = 53 + i;
+								}
+							}
+						}
+						if (top_item == -1) {
+							if ((p_flag >= FLAG_BP_JAPES_DK_HAS) && (p_flag < (FLAG_BP_JAPES_DK_HAS + 40))) {
+								// Blueprint
+								top_item = 62; // TODO: Make it so it differentiates between blueprints
+							} else if ((p_flag >= FLAG_MEDAL_JAPES_DK) && (p_flag < (FLAG_MEDAL_JAPES_DK + 40))) {
+								// Medal
+								top_item = 61;
+							} else if (p_flag == FLAG_COLLECTABLE_NINTENDOCOIN) {
+								// Nintendo Coin
+								top_item = 63;
+							} else if (p_flag == FLAG_COLLECTABLE_RAREWARECOIN) {
+								// Rareware Coin
+								top_item = 64;
+							} else if ((p_flag >= FLAG_CROWN_JAPES) && (p_flag < (FLAG_CROWN_JAPES + 10))) {
+								// Crown
+								top_item = 66;
+							} else if (p_flag == FLAG_COLLECTABLE_BEAN) {
+								// Fungi Bean
+								top_item = 67;
+							} else {
+								// Key Number
+								for (int i = 0; i < 8; i++) {
+									if (p_flag == getKeyFlag(i)) {
+										top_item = 68 + i;
+									}
+								}
+								if (top_item == -1) {
+									// Default to GB
+									top_item = 60;
 								}
 							}
 						}

@@ -171,7 +171,9 @@ class Settings:
         # shuffle_items: str
         # none
         # phase1
-        self.shuffle_items = "none"
+        # phase2
+        # phase2.1
+        self.shuffle_items = "phase2"
 
         # In item rando, can any Kong collect any item?
         # free_trade_setting: str
@@ -369,6 +371,19 @@ class Settings:
         self.shuffled_location_types = []
         if self.shuffle_items == "phase1":
             self.shuffled_location_types = [Types.Banana, Types.Crown, Types.Blueprint, Types.Key, Types.Medal, Types.Coin]
+        if self.shuffle_items == "phase2":
+            self.shuffled_location_types = [Types.Shop, Types.Banana, Types.Crown, Types.Blueprint, Types.Key, Types.Medal, Types.Coin]
+            if self.shockwave_status not in ("vanilla", "start_with"):
+                self.shuffled_location_types.append(Types.Shockwave)
+            if self.training_barrels != "normal":
+                self.shuffled_location_types.append(Types.TrainingBarrel)
+        if self.shuffle_items == "phase2.1":
+            self.shuffled_location_types = [Types.Shop, Types.Banana, Types.Blueprint, Types.Key]
+            if self.shockwave_status not in ("vanilla", "start_with"):
+                self.shuffled_location_types.append(Types.Shockwave)
+            if self.training_barrels != "normal":
+                self.shuffled_location_types.append(Types.TrainingBarrel)
+        self.progressives_locked_in_shops = False  # Technical limitation: for now (hopefully) progressive moves must be found in shops
 
         self.shuffle_prices()
 
@@ -589,8 +604,6 @@ class Settings:
                 self.valid_locations[Types.Shop][Kongs.diddy] = DiddyMoveLocations.copy()
                 self.valid_locations[Types.Shop][Kongs.lanky] = LankyMoveLocations.copy()
                 self.valid_locations[Types.Shop][Kongs.tiny] = TinyMoveLocations.copy()
-                if self.shockwave_status in ("vanilla", "start_with"):
-                    self.valid_locations[Types.Shop][Kongs.tiny].remove(Locations.CameraAndShockwave)
                 self.valid_locations[Types.Shop][Kongs.chunky] = ChunkyMoveLocations.copy()
             elif self.move_rando == "cross_purchase":
                 allKongMoveLocations = DonkeyMoveLocations.copy()
@@ -610,13 +623,40 @@ class Settings:
             self.valid_locations[Types.Shop][Kongs.any] = SharedShopLocations
             if self.shockwave_status not in ("vanilla", "start_with") and Types.Shockwave not in self.shuffled_location_types:
                 self.valid_locations[Types.Shop][Kongs.any].add(Locations.CameraAndShockwave)
+            else:
+                self.valid_locations[Types.Shop][Kongs.tiny].remove(Locations.CameraAndShockwave)
             if self.training_barrels == "shuffled" and Types.TrainingBarrel not in self.shuffled_location_types:
-                self.valid_locations[Types.Shop][Kongs.any].update(TrainingBarrelLocations.copy())
+                for kong in Kongs:
+                    self.valid_locations[Types.Shop][kong].update(TrainingBarrelLocations.copy())
             self.valid_locations[Types.Shockwave] = self.valid_locations[Types.Shop][Kongs.any]
             self.valid_locations[Types.TrainingBarrel] = self.valid_locations[Types.Shop][Kongs.any]
 
         if any(self.shuffled_location_types):
             shuffledLocations = [location for location in LocationList if LocationList[location].type in self.shuffled_location_types]
+            if Types.Shop in self.shuffled_location_types:
+                self.valid_locations[Types.Shop] = {}
+                # Cross-kong acquisition is assumed in full item rando, calculate the list of all Kong-specific shops
+                allKongMoveLocations = DonkeyMoveLocations.copy()
+                allKongMoveLocations.update(DiddyMoveLocations.copy())
+                allKongMoveLocations.update(TinyMoveLocations.copy())
+                allKongMoveLocations.update(ChunkyMoveLocations.copy())
+                allKongMoveLocations.update(LankyMoveLocations.copy())
+                # Generate a list of all valid locations EXCEPT the Kong-specific shops - these are valid locations for shared moves
+                locations_excluding_kong_shops = [location for location in shuffledLocations if location not in allKongMoveLocations]
+                self.valid_locations[Types.Shop][Kongs.any] = locations_excluding_kong_shops
+                # Shockwave and Training Barrels can only be shuffled if shops are shuffled and their valid locations are non-Kong-specific shops
+                if Types.Shockwave in self.shuffled_location_types:
+                    locations_excluding_kong_shops.append(Locations.CameraAndShockwave)
+                    self.valid_locations[Types.Shockwave] = locations_excluding_kong_shops
+                if Types.TrainingBarrel in self.shuffled_location_types:
+                    self.valid_locations[Types.TrainingBarrel] = locations_excluding_kong_shops
+                # Kong-specific moves can go in any non-shared shop location
+                locations_excluding_shared_shops = [location for location in shuffledLocations if location not in SharedShopLocations]
+                self.valid_locations[Types.Shop][Kongs.donkey] = locations_excluding_shared_shops
+                self.valid_locations[Types.Shop][Kongs.diddy] = locations_excluding_shared_shops
+                self.valid_locations[Types.Shop][Kongs.lanky] = locations_excluding_shared_shops
+                self.valid_locations[Types.Shop][Kongs.tiny] = locations_excluding_shared_shops
+                self.valid_locations[Types.Shop][Kongs.chunky] = locations_excluding_shared_shops
             if Types.Blueprint in self.shuffled_location_types:
                 # Blueprints are banned from Key or Crown locations
                 blueprintValidTypes = [typ for typ in self.shuffled_location_types if typ not in (Types.Crown, Types.Key)]
@@ -656,6 +696,8 @@ class Settings:
             valid_locations = self.valid_locations[item_obj.type][item_obj.kong]
         else:
             valid_locations = self.valid_locations[item_obj.type]
+        if self.progressives_locked_in_shops and item_obj in SharedShopLocations:
+            valid_locations = SharedShopLocations
         return valid_locations
 
     def SelectKongLocations(self):

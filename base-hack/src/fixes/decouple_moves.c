@@ -61,10 +61,7 @@ void decouple_moves_fixes(void) {
 		// *(int*)(0x800292D4) = func_call;
 		// Menu Stuff
 		// *(short*)(0x800281AA) = 3; // Set "adventure" destination to the file progress screen
-		// *(short*)(0x8002A05A) = 3; // Set B button action in delete confirm to file progress
-		// *(short*)(0x8002A05A) = 3; // Set B button action in delete confirm to file progress
-		// *(short*)(0x8002A02A) = 3; // Set B button action in delete confirm to file progress
-		// *(short*)(0x80029fea) = 3; // Set A button action in delete confirm to file progress
+		
 		*(int*)(0x80030604) = 0x0C000000 | (((int)&file_progress_screen_code & 0xFFFFFF) >> 2); // New file progress code
 		*(int*)(0x80029FE0) = 0x0C000000 | (((int)&wipeFileMod & 0xFFFFFF) >> 2); // Wipe File Hook
 		*(int*)(0x80028C88) = 0x0C000000 | (((int)&enterFileProgress & 0xFFFFFF) >> 2); // Enter File Progress Screen Hook
@@ -75,11 +72,32 @@ void decouple_moves_fixes(void) {
 		*(int*)(0x80029874) = 0; // Hide GB
 		*(int*)(0x80029818) = 0; // Hide A
 		*(int*)(0x80029840) = 0; // Hide B
+		// File Select
+		// *(short*)(0x80028D16) = 2; // Cap to 2 options
+		// *(short*)(0x80028D0A) = 2; // Cap to 2 options
+		// *(short*)(0x80028C96) = 1; // Target Delete Index
+		*(int*)(0x80028CB0) = 0xA0600000; // SB $r0, 0x0 (v0) - Always view file index 0
+		*(int*)(0x80028CC4) = 0; // Prevent file index overwrite
+		*(int*)(0x80028F88) = 0; // File 2 render
+		*(int*)(0x80028F60) = 0; // File 2 Opacity
+		*(int*)(0x80028FCC) = 0; // File 3 render
+		*(int*)(0x80028FA4) = 0; // File 3 Opacity
+		*(int*)(0x80028D04) = 0x0C000000 | (((int)&changeFileSelectAction & 0xFFFFFF) >> 2); // File select change action
+		*(int*)(0x80028D10) = 0x0C000000 | (((int)&changeFileSelectAction_0 & 0xFFFFFF) >> 2); // File select change action
+		*(int*)(0x80028DB8) = 0x1040000A; // BEQ $v0, $r0, 0xA - Change text signal
+		*(short*)(0x80028CA6) = 5; // Change selecting orange to delete confirm screen
+
 		// Options
 		initOptionScreen();
 	} else if (CurrentMap == SNIDE) {
 		*(int*)(0x8002402C) = 0x240E000C; // No extra contraption cutscenes
 		*(int*)(0x80024054) = 0x24080001; // 1 GB Turn in
+		if (Rando.item_rando) {		
+			*(int*)(0x80024CF0) = 0x0C000000 | (((int)&countFlagsDuplicate & 0xFFFFFF) >> 2); // File select change action
+			*(int*)(0x80024854) = 0x0C000000 | (((int)&checkFlagDuplicate & 0xFFFFFF) >> 2); // File select change action
+			*(int*)(0x80024880) = 0x0C000000 | (((int)&checkFlagDuplicate & 0xFFFFFF) >> 2); // File select change action
+			*(int*)(0x800248B0) = 0x0C000000 | (((int)&setFlagDuplicate & 0xFFFFFF) >> 2); // File select change action
+		}
 	} else if (CurrentMap == 0x11) {
 		HelmInit(0);
 	}
@@ -166,7 +184,6 @@ void decouple_moves_fixes(void) {
 	}
 
 	if (Rando.fast_gbs) {
-
 		if (CurrentMap == 0x1B) { // Factory Car Race
 			*(short*)(0x8002D03A) = 0x0001; //1 Lap
 		}

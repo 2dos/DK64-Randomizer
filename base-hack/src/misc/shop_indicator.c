@@ -43,12 +43,22 @@ int doesKongPossessMove(int purchase_type, int purchase_value, int kong) {
 				}
 			} else if ((purchase_type == PURCHASE_FLAG) || (purchase_type == PURCHASE_GB)) {
 				if (purchase_value == -2) { // Shockwave & Camera Combo
-					if ((!checkFlag(FLAG_ABILITY_CAMERA,0)) || (!checkFlag(FLAG_ABILITY_SHOCKWAVE,0))) {
+					if ((!checkFlagDuplicate(FLAG_ABILITY_CAMERA,0)) || (!checkFlagDuplicate(FLAG_ABILITY_SHOCKWAVE,0))) {
 						return 6;
 					}
 				} else {
-					if (!checkFlag(purchase_value,0)) {
-						return 6;
+					if (!checkFlagDuplicate(purchase_value,0)) {
+						int is_shared = 0;
+						int tied_flags[] = {FLAG_TBARREL_DIVE,FLAG_TBARREL_ORANGE,FLAG_TBARREL_BARREL,FLAG_TBARREL_VINE,FLAG_ABILITY_CAMERA,FLAG_ABILITY_SHOCKWAVE};
+						for (int i = 0; i < (sizeof(tied_flags) / 4); i++) {
+							if (purchase_value == tied_flags[i]) {
+								is_shared = 1;
+							}
+						}
+						if (is_shared) {
+							return 6;
+						}
+						return 1;
 					}
 				}
 			}
