@@ -92,6 +92,12 @@ void decouple_moves_fixes(void) {
 	} else if (CurrentMap == SNIDE) {
 		*(int*)(0x8002402C) = 0x240E000C; // No extra contraption cutscenes
 		*(int*)(0x80024054) = 0x24080001; // 1 GB Turn in
+		if (Rando.item_rando) {		
+			*(int*)(0x80024CF0) = 0x0C000000 | (((int)&countFlagsDuplicate & 0xFFFFFF) >> 2); // File select change action
+			*(int*)(0x80024854) = 0x0C000000 | (((int)&checkFlagDuplicate & 0xFFFFFF) >> 2); // File select change action
+			*(int*)(0x80024880) = 0x0C000000 | (((int)&checkFlagDuplicate & 0xFFFFFF) >> 2); // File select change action
+			*(int*)(0x800248B0) = 0x0C000000 | (((int)&setFlagDuplicate & 0xFFFFFF) >> 2); // File select change action
+		}
 	} else if (CurrentMap == 0x11) {
 		HelmInit(0);
 	}

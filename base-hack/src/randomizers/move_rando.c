@@ -705,7 +705,7 @@ void getNextMoveText(void) {
 						if (top_item == -1) {
 							if ((p_flag >= FLAG_BP_JAPES_DK_HAS) && (p_flag < (FLAG_BP_JAPES_DK_HAS + 40))) {
 								// Blueprint
-								top_item = 62;
+								top_item = 62; // TODO: Make it so it differentiates between blueprints
 							} else if ((p_flag >= FLAG_MEDAL_JAPES_DK) && (p_flag < (FLAG_MEDAL_JAPES_DK + 40))) {
 								// Medal
 								top_item = 61;

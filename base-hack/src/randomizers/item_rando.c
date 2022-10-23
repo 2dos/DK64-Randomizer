@@ -286,6 +286,15 @@ int countFlagsForKongFLUT(int startFlag, int start, int cap, int kong) {
     return count;
 }
 
+int countFlagsDuplicate(int start, int count, int type) {
+    int end = start + count;
+    int amt = 0;
+    for (int i = start; i < end; i++) {
+        amt += checkFlagDuplicate(i, type);
+    }
+    return amt;
+}
+
 static short flut_cache[40] = {};
 static unsigned char cache_spot = 0;
 static int flut_size = -1;
@@ -419,7 +428,7 @@ void* checkMove(short* flag, void* fba, int source) {
                 }
                 spawn_overlay = 1;
                 item_type = 4;
-                if (item_index == 2) {
+                if (item_index == 3) {
                     // 3rd Melon
                     if (CollectableBase.Melons < 3) {
                         CollectableBase.Melons = 3;

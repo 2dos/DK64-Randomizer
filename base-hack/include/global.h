@@ -200,6 +200,7 @@ extern void setFlagDuplicate(short flag, int set, int type);
 extern void* updateFlag(int type, short* flag, void* fba, int source);
 extern void spawnEnemyDrops(actorData* actor);
 extern int countFlagsForKongFLUT(int startFlag, int start, int cap, int kong);
+extern int countFlagsDuplicate(int start, int count, int type);
 extern int getKongFromBonusFlag(int flag);
 extern void banana_medal_acquisition(int flag);
 
