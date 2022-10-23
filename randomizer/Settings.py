@@ -171,7 +171,7 @@ class Settings:
         # shuffle_items: str
         # none
         # phase1
-        self.shuffle_items = "phase1"
+        self.shuffle_items = "phase2"
 
         # In item rando, can any Kong collect any item?
         # free_trade_setting: str
@@ -375,7 +375,7 @@ class Settings:
                 self.shuffled_location_types.append(Types.Shockwave)
             if self.training_barrels != "normal":
                 self.shuffled_location_types.append(Types.TrainingBarrel)
-        self.progressives_locked_in_shops = True  # Technical limitation: for now (hopefully) progressive moves must be found in shops
+        self.progressives_locked_in_shops = False  # Technical limitation: for now (hopefully) progressive moves must be found in shops
 
         self.shuffle_prices()
 

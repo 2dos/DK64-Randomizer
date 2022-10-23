@@ -245,9 +245,12 @@ def place_randomized_items(spoiler: Spoiler):
                                 if item_slot["flag"] == 379:
                                     item_obj_index = model_two_indexes[Types.Coin][1]
                             elif item_slot["obj"] == Types.Shop:
-                                slot = (item_slot["flag"] >> 12) & 7
-                                if item_slot["shared"] or slot > 5:
+                                if (item_slot["flag"] & 0x8000) == 0:
                                     slot = 5
+                                else:
+                                    slot = (item_slot["flag"] >> 12) & 7
+                                    if item_slot["shared"] or slot > 5:
+                                        slot = 5
                                 item_obj_index = model_two_indexes[Types.Shop][slot]
                             else:
                                 item_obj_index = model_two_indexes[item_slot["obj"]]
