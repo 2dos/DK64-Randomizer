@@ -1471,6 +1471,7 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 			if (isPlayerInRangeOfObject(40)) {
 				if (getPlayerObjectDistance()) {
 					unkObjFunction2(id, 1, 1);
+					PauseText = 1;
 					spawnWrinkly(behaviour_pointer, id, kong, 0);
 					playSFXFromObject(id, 19, 255, 127, 20, 0, 0.3f);
 					behaviour_pointer->next_state = 2;
@@ -1480,6 +1481,7 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 			if (isWrinklySpawned()) {
 				unkObjFunction2(id, 1, 1);
 				playSFXFromObject(id, 19, 255, 127, 20, 0, 0.3f);
+				PauseText = 0;
 				behaviour_pointer->next_state = 3;
 			}
 		} else if (behaviour_pointer->current_state == 3) {

@@ -154,9 +154,7 @@ void earlyFrame(void) {
 			BoatSpeeds[i] = boat_speed;
 		}
 		PauseText = 0;
-		if (isLobby(CurrentMap)) {
-			PauseText = 1;
-		} else if ((CurrentMap == 1) || (CurrentMap == 5) || (CurrentMap == 0x19)) {
+		if ((CurrentMap == 1) || (CurrentMap == 5) || (CurrentMap == 0x19)) {
 			PauseText = 1;
 		}
 		if (CurrentMap == 0x11) {
