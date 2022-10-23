@@ -5,6 +5,6 @@ from enum import IntEnum, auto
 class VendorType(IntEnum):
     """Vendor Type enum."""
 
-    Cranky = auto()
+    Cranky = 0
     Funky = auto()
     Candy = auto()

@@ -119,18 +119,31 @@ def ShuffleItems(spoiler: Spoiler):
     for location_enum in LocationList:
         item_location = LocationList[location_enum]
         # If location is a shuffled one...
-        if item_location.default_mapid_data is not None and item_location.type in spoiler.settings.shuffled_location_types:
+        if (
+            item_location.default_mapid_data is not None or item_location.type in (Types.Shop, Types.TrainingBarrel, Types.Shockwave)
+        ) and item_location.type in spoiler.settings.shuffled_location_types:
             # Create placement info for the patcher to use
             placement_info = {}
-            for location in item_location.default_mapid_data:
-                placement_info[location.map] = location.id
+            # Items that need specific placement in the world, either as a reward or something spawned in
+            if item_location.default_mapid_data:
+                for location in item_location.default_mapid_data:
+                    placement_info[location.map] = location.id
+                old_flag = item_location.default_mapid_data[0].flag
+                old_kong = item_location.default_mapid_data[0].kong
+                placement_index = -1  # Irrelevant for non-shop locations
+            # Shop locations: Cranky, Funky, Candy, Training Barrels, and BFI
+            else:
+                old_flag = -1  # Irrelevant for shop locations
+                old_kong = item_location.kong
+                placement_index = item_location.placement_index
             location_selection = LocationSelection(
                 vanilla_item=item_location.type,
-                flag=item_location.default_mapid_data[0].flag,
+                flag=old_flag,
                 placement_data=placement_info,
                 is_reward_point=item_location.is_reward,
                 is_shop=item_location.type in (Types.Shop, Types.TrainingBarrel, Types.Shockwave),
-                kong=item_location.default_mapid_data[0].kong,
+                placement_index=placement_index,
+                kong=old_kong,
                 location=location_enum,
                 name=item_location.name,
             )
@@ -173,9 +186,9 @@ def ShuffleItems(spoiler: Spoiler):
                     flag_dict[item_location.type] = []
             # Add this location's flag as a valid flag for this type of item/kong pairing
             if item_location.type == Types.Blueprint:
-                flag_dict[item_location.type][item_location.default_mapid_data[0].kong].append(item_location.default_mapid_data[0].flag)
+                flag_dict[item_location.type][old_kong].append(old_flag)
             else:
-                flag_dict[item_location.type].append(item_location.default_mapid_data[0].flag)
+                flag_dict[item_location.type].append(old_flag)
     # Shuffle the list of locations needing flags so the flags are assigned randomly across seeds
     random.shuffle(locations_needing_flags)
     for location in locations_needing_flags:
