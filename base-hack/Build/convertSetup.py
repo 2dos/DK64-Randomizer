@@ -262,7 +262,7 @@ def modify(file_name, map_index):
                 writedatatoarr(byte_stream, int(float_to_hex(new_y), 16), 4, 0x4)
                 writedatatoarr(byte_stream, int(float_to_hex(new_z), 16), 4, 0x8)
             elif map_index == 0x1E and obj_id == 36:
-                #tag barrel near mermaid in galleon
+                # tag barrel near mermaid in galleon
                 temp = []
                 for y in range(0x38):
                     temp.append(byte_stream[y])
