@@ -129,6 +129,7 @@ def ShuffleItems(spoiler: Spoiler):
                 flag=item_location.default_mapid_data[0].flag,
                 placement_data=placement_info,
                 is_reward_point=item_location.is_reward,
+                is_shop=item_location.type in (Types.Shop, Types.TrainingBarrel, Types.Shockwave),
                 kong=item_location.default_mapid_data[0].kong,
                 location=location_enum,
                 name=item_location.name,
