@@ -45,11 +45,15 @@ class Location:
             "Helm Chunky Medal",
         )
         self.kong = kong
+        self.placement_index = None
         if self.type == Types.Shop:
             self.level = data[0]
             self.movetype = data[1]
             self.index = data[2]
             self.vendor = data[3]
+            self.placement_index = (self.vendor * 40) + (self.kong * 8) + self.level
+        elif self.type in (Types.TrainingBarrel, Types.Shockwave):
+            self.placement_index = data[0]
         elif self.type == Types.Blueprint:
             self.map = data[0]
             level = getLevelFromMap(data[0])
@@ -112,10 +116,10 @@ class Location:
 
 LocationList = {
     # DK Isles locations
-    Locations.IslesVinesTrainingBarrel: Location("Isles Vines Training Barrel", Items.Vines, Types.TrainingBarrel),
-    Locations.IslesSwimTrainingBarrel: Location("Isles Swim Training Barrel", Items.Swim, Types.TrainingBarrel),
-    Locations.IslesOrangesTrainingBarrel: Location("Isles Oranges Training Barrel", Items.Oranges, Types.TrainingBarrel),
-    Locations.IslesBarrelsTrainingBarrel: Location("Isles Barrels Training Barrel", Items.Barrels, Types.TrainingBarrel),
+    Locations.IslesVinesTrainingBarrel: Location("Isles Vines Training Barrel", Items.Vines, Types.TrainingBarrel, Kongs.any, [123]),
+    Locations.IslesSwimTrainingBarrel: Location("Isles Swim Training Barrel", Items.Swim, Types.TrainingBarrel, Kongs.any, [120]),
+    Locations.IslesOrangesTrainingBarrel: Location("Isles Oranges Training Barrel", Items.Oranges, Types.TrainingBarrel, Kongs.any, [121]),
+    Locations.IslesBarrelsTrainingBarrel: Location("Isles Barrels Training Barrel", Items.Barrels, Types.TrainingBarrel, Kongs.any, [122]),
     Locations.IslesDonkeyJapesRock: Location("Isles Donkey Japes Rock", Items.GoldenBanana, Types.Banana, Kongs.any, [MapIDCombo(Maps.Isles, 0x4, 381, Kongs.donkey)]),  # Can be assigned to other kongs
     Locations.IslesTinyCagedBanana: Location("Isles Tiny Caged Banana", Items.GoldenBanana, Types.Banana, Kongs.tiny, [MapIDCombo(Maps.Isles, 0x2B, 420, Kongs.tiny)]),
     Locations.IslesTinyInstrumentPad: Location("Isles Tiny Instrument Pad", Items.GoldenBanana, Types.Banana, Kongs.tiny, [MapIDCombo(0, -1, 425, Kongs.tiny)]),
@@ -126,7 +130,7 @@ LocationList = {
     Locations.IslesBananaFairyIsland: Location("Isles Banana Fairy Island", Items.BananaFairy, Types.Fairy),
     Locations.IslesBananaFairyCrocodisleIsle: Location("Isles Banana Fairy Crocodisle Isle", Items.BananaFairy, Types.Fairy),
     Locations.IslesLankyPrisonOrangsprint: Location("Isles Lanky Prison Orangsprint", Items.GoldenBanana, Types.Banana, Kongs.lanky, [MapIDCombo(Maps.KLumsy, 0x3, 429, Kongs.lanky)]),
-    Locations.CameraAndShockwave: Location("Camera and Shockwave", Items.CameraAndShockwave, Types.Shockwave, Kongs.tiny),
+    Locations.CameraAndShockwave: Location("Camera and Shockwave", Items.CameraAndShockwave, Types.Shockwave, Kongs.tiny, [124]),
     Locations.RarewareBanana: Location("Rareware Banana", Items.GoldenBanana, Types.Banana, Kongs.tiny, [MapIDCombo(Maps.BananaFairyRoom, 0x1E, 301, Kongs.tiny)]),
     Locations.IslesLankyInstrumentPad: Location("Isles Lanky Instrument Pad", Items.GoldenBanana, Types.Banana, Kongs.lanky, [MapIDCombo(0, -1, 398, Kongs.lanky)]),
     Locations.IslesTinyAztecLobby: Location("Isles Tiny Aztec Lobby", Items.GoldenBanana, Types.Banana, Kongs.tiny, [MapIDCombo(0, -1, 402, Kongs.tiny)]),
