@@ -482,13 +482,10 @@ def compileHints(spoiler: Spoiler):
             helm_hint_on_path = True
 
         default_order = [Kongs.donkey, Kongs.chunky, Kongs.tiny, Kongs.lanky, Kongs.diddy]
-        helm_order = []
-        for room in spoiler.settings.helm_order:
-            helm_order.append(default_order[room])
-        associated_hint = f"Helm Room order is {NameFromKong(helm_order[0])}"
-        for x in range(len(helm_order)):
-            if x != 0:
-                associated_hint += f" then {NameFromKong(helm_order[x])}"
+        helm_order = [default_order[room] for room in spoiler.settings.helm_order]
+        kong_helm_order = [NameFromKong(x) for x in helm_order]
+        kong_helm_text = ', then '.join(kong_helm_order)
+        associated_hint = f"The Blast-O-Matic can be disabled by using {kong_helm_text}."
         hint_location.hint_type = HintType.HelmOrder
         UpdateHint(hint_location, associated_hint)
 
@@ -781,10 +778,9 @@ def compileHints(spoiler: Spoiler):
     # No need to do anything fancy here - there's already a K. Rool hint on the player's path (the wall in Helm)
     for i in range(hint_distribution[HintType.KRoolOrder]):
         hint_location = getRandomHintLocation()
-        associated_hint = f"K. Rool order is {NameFromKong(spoiler.settings.krool_order[0])}"
-        for x in range(len(spoiler.settings.krool_order)):
-            if x != 0:
-                associated_hint += f" then {NameFromKong(spoiler.settings.krool_order[x])}"
+        kong_krool_order = [NameFromKong(kong) for kong in spoiler.settings.krool_order]
+        kong_krool_text = ', then '.join(kong_krool_order)
+        associated_hint = f"King K. Rool will face off in the ring against {kong_krool_text}."
         hint_location.hint_type = HintType.KRoolOrder
         UpdateHint(hint_location, associated_hint)
 
