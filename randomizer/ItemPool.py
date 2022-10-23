@@ -29,17 +29,19 @@ def PlaceConstants(settings):
                 dest = ShufflableExits[level.TransitionTo].shuffledId
                 shuffledTo = [x for x in LevelInfoList.values() if x.TransitionTo == dest][0]
                 LocationList[shuffledTo.KeyLocation].PlaceConstantItem(level.KeyItem)
+        # The key in Helm is always Key 8 in these settings
+        LocationList[Locations.HelmKey].PlaceConstantItem(Items.HideoutHelmKey)
     # Settings-dependent locations
     # Determine what types of locations are being shuffled
     typesOfItemsShuffled = []
     if settings.kong_rando:
         typesOfItemsShuffled.append(Types.Kong)
-    if settings.move_rando != "off":
+    if not settings.unlock_all_moves and settings.move_rando != "off":
         typesOfItemsShuffled.append(Types.Shop)
-    if settings.training_barrels == "shuffled":
-        typesOfItemsShuffled.append(Types.TrainingBarrel)
-    if settings.shockwave_status != "vanilla":
-        typesOfItemsShuffled.append(Types.Shockwave)
+        if settings.training_barrels == "shuffled":
+            typesOfItemsShuffled.append(Types.TrainingBarrel)
+        if settings.shockwave_status != "vanilla":
+            typesOfItemsShuffled.append(Types.Shockwave)
     if settings.shuffle_loading_zones == "levels":
         typesOfItemsShuffled.append(Types.Key)
     typesOfItemsShuffled.extend(settings.shuffled_location_types)
@@ -92,7 +94,7 @@ def PlaceConstants(settings):
         LocationList[Locations.MusicUpgrade1].PlaceConstantItem(Items.NoItem)
         LocationList[Locations.ThirdMelon].PlaceConstantItem(Items.NoItem)
         LocationList[Locations.MusicUpgrade2].PlaceConstantItem(Items.NoItem)
-    if settings.unlock_fairy_shockwave and settings.shockwave_status == "vanilla":
+        # Shockwave also granted when unlocking all moves
         LocationList[Locations.CameraAndShockwave].PlaceConstantItem(Items.NoItem)
 
 
@@ -234,26 +236,7 @@ def MedalAssumedItems():
 
 def Keys(settings):
     """Return all key items."""
-    keys = []
-    for event in settings.krool_keys_required:
-        if event == Events.JapesKeyTurnedIn:
-            keys.append(Items.JungleJapesKey)
-        elif event == Events.AztecKeyTurnedIn:
-            keys.append(Items.AngryAztecKey)
-        elif event == Events.FactoryKeyTurnedIn:
-            keys.append(Items.FranticFactoryKey)
-        elif event == Events.GalleonKeyTurnedIn:
-            keys.append(Items.GloomyGalleonKey)
-        elif event == Events.ForestKeyTurnedIn:
-            keys.append(Items.FungiForestKey)
-        elif event == Events.CavesKeyTurnedIn:
-            keys.append(Items.CrystalCavesKey)
-        elif event == Events.CastleKeyTurnedIn:
-            keys.append(Items.CreepyCastleKey)
-        elif event == Events.HelmKeyTurnedIn:
-            keys.append(Items.HideoutHelmKey)
-    keys.sort()
-    return keys
+    return [Items.JungleJapesKey, Items.AngryAztecKey, Items.FranticFactoryKey, Items.GloomyGalleonKey, Items.FungiForestKey, Items.CrystalCavesKey, Items.CreepyCastleKey, Items.HideoutHelmKey]
 
 
 def Kongs(settings):
@@ -340,7 +323,7 @@ def Upgrades(settings):
         upgrades.append(Items.SniperSight)
         upgrades.extend(itertools.repeat(Items.ProgressiveAmmoBelt, 2))
         upgrades.extend(itertools.repeat(Items.ProgressiveInstrumentUpgrade, 3))
-    if not settings.unlock_fairy_shockwave:
+    if settings.shockwave_status != "start_with":
         if settings.shockwave_status == "vanilla" or settings.shockwave_status == "shuffled":
             upgrades.append(Items.CameraAndShockwave)
         else:

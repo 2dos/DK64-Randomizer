@@ -70,8 +70,8 @@ class Spoiler:
 
         self.hint_list = {}
 
-    def toJson(self):
-        """Convert spoiler to JSON."""
+    def createJson(self):
+        """Convert spoiler to JSON and save it."""
         # Verify we match our hash
         self.settings.verify_hash()
         # We want to convert raw spoiler data into the important bits and in human-readable formats.
@@ -101,7 +101,7 @@ class Spoiler:
         settings["Puzzle Randomization"] = self.settings.puzzle_rando
         settings["Crown Door Open"] = self.settings.crown_door_open
         settings["Coin Door Open"] = self.settings.coin_door_open
-        settings["Unlock Fairy Shockwave"] = self.settings.unlock_fairy_shockwave
+        settings["Shockwave Shuffle"] = self.settings.shockwave_status
         settings["Random Medal Requirement"] = self.settings.random_medal_requirement
         settings["Random Shop Prices"] = self.settings.random_prices
         settings["Banana Port Randomization"] = self.settings.bananaport_rando
@@ -151,9 +151,9 @@ class Spoiler:
                 0xBD: "Rareware Logo",
             }
             if self.settings.klaptrap_model_index in klap_models:
-                humanspoiler["Cosmetics"]["Colors and Models"]["Klatrap Model"] = klap_models[self.settings.klaptrap_model_index]
+                humanspoiler["Cosmetics"]["Colors and Models"]["Klaptrap Model"] = klap_models[self.settings.klaptrap_model_index]
             else:
-                humanspoiler["Cosmetics"]["Colors and Models"]["Klatrap Model"] = f"Unknown Model {hex(self.settings.klaptrap_model_index)}"
+                humanspoiler["Cosmetics"]["Colors and Models"]["Klaptrap Model"] = f"Unknown Model {hex(self.settings.klaptrap_model_index)}"
 
         humanspoiler["Requirements"] = {}
         # GB Counts
@@ -177,7 +177,7 @@ class Spoiler:
         if self.settings.coin_door_open in ["need_both", "need_rw"]:
             humanspoiler["Requirements"]["Miscellaneous"]["Medal Requirement"] = self.settings.medal_requirement
         humanspoiler["End Game"] = {}
-        humanspoiler["End Game"]["Keys Required for K Rool"] = self.GetKroolKeysRequired(self.settings.krool_keys_required)
+        humanspoiler["End Game"]["Keys Required for K Rool"] = "<br>".join(self.GetKroolKeysRequired(self.settings.krool_keys_required))
         krool_order = []
         for phase in self.settings.krool_order:
             krool_order.append(ItemList[ItemFromKong(phase)].name.capitalize())
@@ -192,7 +192,6 @@ class Spoiler:
             "Kongs": {},
             "Shops": {},
             "Others": {},
-            "Item Placement": self.human_item_assignment,
         }
 
         prices = OrderedDict()
@@ -431,7 +430,7 @@ class Spoiler:
                     human_cb_type_map[group["type"]].strip()
                 ] += f"{map_name.strip()}: {group['name']}<br>"
 
-        return json.dumps(humanspoiler, indent=4)
+        self.json = json.dumps(humanspoiler, indent=4)
 
     def UpdateKasplats(self, kasplat_map):
         """Update kasplat data."""

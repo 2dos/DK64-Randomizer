@@ -171,7 +171,7 @@ def patching_response(responded_data):
     ROM().write(1)
 
     # Unlock Shockwave
-    if spoiler.settings.unlock_fairy_shockwave:
+    if spoiler.settings.shockwave_status == "start_with":
         ROM().seek(sav + 0x02F)
         ROM().write(1)
 
@@ -441,8 +441,8 @@ def patching_response(responded_data):
     js.document.getElementById("nav-settings-tab").style.display = ""
     if spoiler.settings.generate_spoilerlog is True:
         js.document.getElementById("spoiler_log_block").style.display = ""
-        loop.run_until_complete(GenerateSpoiler(spoiler.toJson()))
-        js.document.getElementById("tracker_text").value = generateTracker(spoiler.toJson())
+        loop.run_until_complete(GenerateSpoiler(spoiler.json))
+        js.document.getElementById("tracker_text").value = generateTracker(spoiler.json)
     else:
         js.document.getElementById("spoiler_log_text").innerHTML = ""
         js.document.getElementById("spoiler_log_text").value = ""
@@ -450,7 +450,7 @@ def patching_response(responded_data):
         js.document.getElementById("spoiler_log_block").style.display = "none"
 
     js.document.getElementById("generated_seed_id").innerHTML = spoiler.settings.seed_id
-    loaded_settings = json.loads(spoiler.toJson())["Settings"]
+    loaded_settings = json.loads(spoiler.json)["Settings"]
     tables = {}
     t = 0
     for i in range(0, 3):

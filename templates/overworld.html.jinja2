@@ -6,13 +6,13 @@
             <div class="flex-container">
                 <div class="form-check form-switch item-switch">
                     <label data-toggle="tooltip"
-                           title="This option makes the fairy camera and shockwave attack available from the start.&#10;Normally obtainable by visiting the Banana Fairy Queen with Tiny as Mini Monkey.">
+                           title="Bonus Barrels outside of Helm auto complete.">
                         <input class="form-check-input"
                                type="checkbox"
-                               name="unlock_fairy_shockwave"
-                               id="unlock_fairy_shockwave"
+                               name="bonus_barrel_auto_complete"
+                               id="bonus_barrel_auto_complete"
                                value="True"/>
-                        Unlock Fairy Camera and Shockwave Attack
+                        Auto Complete Bonus Barrels
                     </label>
                 </div>
                 <div class="form-check form-switch item-switch">
@@ -27,17 +27,6 @@
                     </label>
                     {{ list_selector(minigames, "minigames_list", "MINIGAME SELECTOR", "This will open a popup that will let you customize what Bonus Games are in the pool.&#10;This defaults to All minigames.") }}
                     {# Remove end </div> as it's included in the macro for formatting #}
-                    <div class="form-check form-switch item-switch">
-                        <label data-toggle="tooltip"
-                               title="Bonus Barrels outside of Helm auto complete.">
-                            <input class="form-check-input"
-                                   type="checkbox"
-                                   name="bonus_barrel_auto_complete"
-                                   id="bonus_barrel_auto_complete"
-                                   value="True"/>
-                            Auto Complete Bonus Barrels
-                        </label>
-                    </div>
                     <div class="form-check form-switch item-switch">
                         <label data-toggle="tooltip"
                                title="All lobbies will be open as if the key to K. Lumsy was already turned in.&#10;This does not affect K. Rool's ship.">
@@ -69,8 +58,7 @@
                         </label>
                     </div>
                     <div class="form-check form-switch item-switch">
-                        <label data-toggle="tooltip"
-                               title="[IN PROGRESS] Wrinkly Door Locations are randomized">
+                        <label data-toggle="tooltip" title="Wrinkly Door Locations are randomized">
                             <input class="form-check-input"
                                    type="checkbox"
                                    name="wrinkly_location_rando"
@@ -79,8 +67,7 @@
                         </label>
                     </div>
                     <div class="form-check form-switch item-switch">
-                        <label data-toggle="tooltip"
-                               title="[IN PROGRESS] T&S Portal Locations are randomized">
+                        <label data-toggle="tooltip" title="T&S Portal Locations are randomized">
                             <input class="form-check-input"
                                    type="checkbox"
                                    name="tns_location_rando"

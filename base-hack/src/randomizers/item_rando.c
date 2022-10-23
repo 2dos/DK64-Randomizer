@@ -540,3 +540,21 @@ void ninCoinCode(void) {
 void rwCoinCode(void) {
     spriteCode(0x8C);
 }
+
+void KLumsyText(void) {
+    /*
+        NOTE: Re-add this once we get some text for this
+        float dist_to_klumsy = *(float*)(0x807FC8D4);
+        if (dist_to_klumsy < 160000.0f) {
+            if ((checkFlag(FLAG_KEYIN_JAPES, 0)) && (checkFlag(FLAG_KEYHAVE_KEY8, 0)) && (Rando.item_rando)) {
+                if ((!checkFlagDuplicate(FLAG_KEYHAVE_KEY8, 0)) || (1 == 1)) {
+                    if (!checkFlag(0x78, 2)) {
+                        getTextPointer_0(CurrentActorPointer_0, 41, 0);
+                        setFlag(0x78, 1, 2);
+                    }
+                }
+            }
+        }
+    */
+    renderActor(CurrentActorPointer_0, 0);
+}

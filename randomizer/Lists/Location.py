@@ -25,16 +25,17 @@ class MapIDCombo:
 class Location:
     """A shufflable location at which a random item can be placed."""
 
-    def __init__(self, name, default, type, kong=Kongs.any, data=None):
+    def __init__(self, name, default, location_type, kong=Kongs.any, data=None):
         """Initialize with given parameters."""
         if data is None:
             data = []
         self.name = name
         self.default = default
-        self.type = type
+        self.type = location_type
         self.item = None
         self.delayedItem = None
         self.constant = False
+        self.is_reward = False
         self.map_id_list = None
         helmmedal_locations = (
             "Helm Donkey Medal",
@@ -44,12 +45,12 @@ class Location:
             "Helm Chunky Medal",
         )
         self.kong = kong
-        if type == Types.Shop:
+        if self.type == Types.Shop:
             self.level = data[0]
             self.movetype = data[1]
             self.index = data[2]
             self.vendor = data[3]
-        elif type == Types.Blueprint:
+        elif self.type == Types.Blueprint:
             self.map = data[0]
             level = getLevelFromMap(data[0])
             if level is None:
@@ -57,20 +58,23 @@ class Location:
             elif level in (Levels.DKIsles, Levels.HideoutHelm):
                 level = 7
             self.map_id_list = [MapIDCombo(0, -1, 469 + self.kong + (5 * level), self.kong)]
-        elif type == Types.Medal and name not in helmmedal_locations:
+        elif self.type == Types.Medal and name not in helmmedal_locations:
             level = data[0]
             if level is None:
                 level = 0
             elif level in (Levels.DKIsles, Levels.HideoutHelm):
                 level = 7
             self.map_id_list = [MapIDCombo(0, -1, 549 + self.kong + (5 * level), self.kong)]
-        elif type in (Types.Banana, Types.Key, Types.Coin, Types.Crown, Types.Medal):
+        elif self.type in (Types.Banana, Types.Key, Types.Coin, Types.Crown, Types.Medal):
             if "Turn In " not in name:
                 if data is None:
                     self.map_id_list = []
                 else:
                     self.map_id_list = data
         self.default_mapid_data = self.map_id_list
+        # "Reward" locations are locations that require an actor to exist for the location's item - something not all items have
+        if self.default_mapid_data is not None and len(self.default_mapid_data) > 0 and type(self.default_mapid_data[0]) is MapIDCombo and self.default_mapid_data[0].id == -1:
+            self.is_reward = True
 
     def PlaceItem(self, item):
         """Place item at this location."""
@@ -88,7 +92,7 @@ class Location:
 
     def PlaceConstantItem(self, item):
         """Place item at this location, and set constant so it's ignored in the spoiler."""
-        self.item = item
+        self.PlaceItem(item)
         self.constant = True
 
     def SetDelayedItem(self, item):
@@ -97,12 +101,12 @@ class Location:
 
     def PlaceDelayedItem(self):
         """Place the delayed item at this location."""
-        self.item = self.delayedItem
+        self.PlaceItem(self.delayedItem)
         self.delayedItem = None
 
     def PlaceDefaultItem(self):
         """Place whatever this location's default (vanilla) item is at it."""
-        self.item = self.default
+        self.PlaceItem(self.default)
         self.constant = True
 
 
@@ -415,7 +419,7 @@ LocationList = {
     Locations.HelmDiddyMedal: Location("Helm Diddy Medal", Items.BananaMedal, Types.Medal, Kongs.diddy, [MapIDCombo(Maps.HideoutHelm, 0x61, 585, Kongs.diddy)]),
     Locations.HelmBananaFairy1: Location("Helm Banana Fairy 1", Items.BananaFairy, Types.Fairy),
     Locations.HelmBananaFairy2: Location("Helm Banana Fairy 2", Items.BananaFairy, Types.Fairy),
-    Locations.HelmKey: Location("Helm Key", Items.HideoutHelmKey, Types.Constant, Kongs.any, [MapIDCombo(Maps.HideoutHelm, 0x5A, 380)]),
+    Locations.HelmKey: Location("Helm Key", Items.HideoutHelmKey, Types.Key, Kongs.any, [MapIDCombo(Maps.HideoutHelm, 0x5A, 380)]),
 
     # Normal shop locations
     Locations.SimianSlam: Location("DK Isles Cranky Shared", Items.NoItem, Types.Shop, Kongs.any, [Levels.DKIsles, MoveTypes.Slam, 1, VendorType.Cranky]),

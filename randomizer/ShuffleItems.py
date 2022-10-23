@@ -1,13 +1,13 @@
 """Shuffles items for Item Rando."""
 
 import random
-import copy
+import randomizer.Lists.Exceptions as Ex
+from randomizer.Enums.Items import Items
 from randomizer.Lists.Location import LocationList
-from randomizer.Enums.Locations import Locations
 from randomizer.Enums.Types import Types
 from randomizer.Spoiler import Spoiler
 from randomizer.Enums.Kongs import Kongs
-from randomizer.Lists.Item import NameFromKong
+from randomizer.Lists.Item import ItemList
 
 
 class LocationSelection:
@@ -25,146 +25,86 @@ class LocationSelection:
         self.new_item = None
         self.new_flag = None
         self.new_kong = None
-        self.placed = False
 
-    def place(self, item, flag, kong):
+    def PlaceFlag(self, flag, kong):
         """Place item for assortment."""
-        self.new_item = item
         self.new_flag = flag
         self.new_kong = kong
-        self.placed = True
 
 
 def ShuffleItems(spoiler: Spoiler):
     """Shuffle items into assortment."""
-    successful_gen = False
-    gen_counter = 5
-    while not successful_gen and gen_counter > 0:
-        successful_gen = True
-        location_data = []
-        for location_enum in LocationList:
-            item_location = LocationList[location_enum]
-            if item_location.default_mapid_data is not None and item_location.type in spoiler.settings.shuffled_location_types:
-                # Can be shuffled
-                placement_info = {}
-                is_reward = False
-                for location in item_location.default_mapid_data:
-                    placement_info[location.map] = location.id
-                    if location.id == -1:
-                        is_reward = True
-                location_data.append(
-                    LocationSelection(
-                        vanilla_item=item_location.type,
-                        flag=item_location.default_mapid_data[0].flag,
-                        placement_data=placement_info,
-                        is_reward_point=is_reward,
-                        kong=item_location.default_mapid_data[0].kong,
-                        location=location_enum,
-                        name=item_location.name,
-                    )
-                )
-        reward_items = (
-            # Items which can be spawned as an actor
-            Types.Banana,  # Actor 45
-            Types.Blueprint,  # HAS to correspond to intended actor for item, actors 75-79 (Diddy, Chunky, Lanky, DK, Tiny)
-            Types.Key,  # Actor 72
-            Types.Crown,  # Actor 86
-            Types.Coin,  # Actors 151, 152 (Nin, RW)
-        )
-        bad_bp_locations = (
-            Locations.IslesDonkeyJapesRock,
-            Locations.JapesDonkeyFrontofCage,
-            Locations.JapesDonkeyFreeDiddy,
-            Locations.AztecDiddyFreeTiny,
-            Locations.AztecDonkeyFreeLanky,
-            Locations.FactoryLankyFreeChunky,
-        )
-        shuffled_items = copy.deepcopy(location_data)
-        random.shuffle(shuffled_items)
-        # First, place items for slots which are reward points, and thus have a restricted placement item list
-        for location in location_data:
-            if not location.placed and location.reward_spot and location.old_item != Types.Medal:  # Disregard Medals since they don't spawn an object
-                found_item = False
-                shuffled_items_index = 0
-                while not found_item and shuffled_items_index < len(shuffled_items):
-                    relevant_slot = shuffled_items[shuffled_items_index]
-                    if not relevant_slot.placed and relevant_slot.old_item in reward_items:  # Ensure item is a reward item
-                        if relevant_slot.old_item == Types.Blueprint:
-                            if location.old_kong == relevant_slot.old_kong:
-                                location.place(relevant_slot.old_item, relevant_slot.old_flag, relevant_slot.old_kong)
-                                shuffled_items.remove(relevant_slot)
-                                found_item = True
-                            else:
-                                shuffled_items_index += 1
-                        else:
-                            location.place(relevant_slot.old_item, relevant_slot.old_flag, relevant_slot.old_kong)
-                            shuffled_items.remove(relevant_slot)
-                            found_item = True
-                    else:
-                        shuffled_items_index += 1
-                if not found_item:
-                    successful_gen = False
-        # Secondly, fill special coin locations
-        for location in location_data:
-            if not location.placed and location.old_item == Types.Coin:
-                found_item = False
-                shuffled_items_index = 0
-                while not found_item and shuffled_items_index < len(shuffled_items):
-                    relevant_slot = shuffled_items[shuffled_items_index]
-                    if not relevant_slot.placed and relevant_slot.old_item != Types.Banana:
-                        if relevant_slot.old_item == Types.Blueprint:
-                            if location.old_kong == relevant_slot.old_kong:
-                                location.place(relevant_slot.old_item, relevant_slot.old_flag, relevant_slot.old_kong)
-                                shuffled_items.remove(relevant_slot)
-                                found_item = True
-                            else:
-                                shuffled_items_index += 1
-                        else:
-                            location.place(relevant_slot.old_item, relevant_slot.old_flag, relevant_slot.old_kong)
-                            shuffled_items.remove(relevant_slot)
-                            found_item = True
-                    else:
-                        shuffled_items_index += 1
-                if not found_item:
-                    successful_gen = False
-        # Finally, fill remaining locations
-        for location in location_data:
-            if not location.placed:
-                found_item = False
-                shuffled_items_index = 0
-                while not found_item and shuffled_items_index < len(shuffled_items):
-                    relevant_slot = shuffled_items[shuffled_items_index]
-                    if not relevant_slot.placed:
-                        if relevant_slot.old_item == Types.Blueprint:
-                            if location.location not in bad_bp_locations:  # Ensure location isn't bad bp location
-                                if location.old_kong == relevant_slot.old_kong:
-                                    location.place(relevant_slot.old_item, relevant_slot.old_flag, relevant_slot.old_kong)
-                                    shuffled_items.remove(relevant_slot)
-                                    found_item = True
-                                else:
-                                    shuffled_items_index += 1
-                            else:
-                                shuffled_items_index += 1
-                        else:
-                            location.place(relevant_slot.old_item, relevant_slot.old_flag, relevant_slot.old_kong)
-                            shuffled_items.remove(relevant_slot)
-                            found_item = True
-                    else:
-                        shuffled_items_index += 1
-                if not found_item:
-                    successful_gen = False
-        if not successful_gen:
-            gen_counter -= 1
-            if gen_counter == 0:
-                print("ERROR: COULDN'T GEN ASSORTMENT")
-    spoiler.item_assignment = location_data.copy()
-    human_item_data = {}
-    for loc in location_data:
-        name = "Nothing"
-        if loc.new_item is not None:
-            name = loc.new_item.name
-        location_name = loc.name
-        if "Kasplat" in location_name:
-            location_name = f"{location_name.split('Kasplat')[0]} {NameFromKong(loc.old_kong)} Kasplat"
-        human_item_data[location_name] = name
-    spoiler.human_item_assignment = human_item_data
+    flag_dict = {}
+    locations_not_needing_flags = []
+    locations_needing_flags = []
+
+    for location_enum in LocationList:
+        item_location = LocationList[location_enum]
+        # If location is a shuffled one...
+        if item_location.default_mapid_data is not None and item_location.type in spoiler.settings.shuffled_location_types:
+            # Create placement info for the patcher to use
+            placement_info = {}
+            for location in item_location.default_mapid_data:
+                placement_info[location.map] = location.id
+            location_selection = LocationSelection(
+                vanilla_item=item_location.type,
+                flag=item_location.default_mapid_data[0].flag,
+                placement_data=placement_info,
+                is_reward_point=item_location.is_reward,
+                kong=item_location.default_mapid_data[0].kong,
+                location=location_enum,
+                name=item_location.name,
+            )
+            # Get the item at this location
+            if item_location.item is None or item_location.item == Items.NoItem:
+                new_item = None
+            else:
+                new_item = ItemList[item_location.item]
+            # If this location isn't empty, set the new item and required kong
+            if new_item is not None:
+                location_selection.new_item = new_item.type
+                location_selection.new_kong = new_item.kong
+                # If this item has a dedicated specific flag, then set it now (Keys and Coins right now)
+                if new_item.rando_flag is not None:
+                    location_selection.new_flag = new_item.rando_flag
+                    locations_not_needing_flags.append(location_selection)
+                # Otherwise we need to put it in the list of locations needing flags
+                else:
+                    locations_needing_flags.append(location_selection)
+            # If this location is empty, it doesn't need a flag and we need to None out these fields
+            else:
+                location_selection.new_item = None
+                location_selection.new_kong = None
+                location_selection.new_flag = None
+                locations_not_needing_flags.append(location_selection)
+            # Add this location's flag to the lists of available flags by location
+            # Initialize relevant list if it doesn't exist
+            if item_location.type not in flag_dict.keys():
+                if item_location.type == Types.Blueprint:
+                    flag_dict[item_location.type] = {}
+                    flag_dict[item_location.type][Kongs.donkey] = []
+                    flag_dict[item_location.type][Kongs.diddy] = []
+                    flag_dict[item_location.type][Kongs.lanky] = []
+                    flag_dict[item_location.type][Kongs.tiny] = []
+                    flag_dict[item_location.type][Kongs.chunky] = []
+                else:
+                    flag_dict[item_location.type] = []
+            # Add this location's flag as a valid flag for this type of item/kong pairing
+            if item_location.type == Types.Blueprint:
+                flag_dict[item_location.type][item_location.default_mapid_data[0].kong].append(item_location.default_mapid_data[0].flag)
+            else:
+                flag_dict[item_location.type].append(item_location.default_mapid_data[0].flag)
+    # Shuffle the list of locations needing flags so the flags are assigned randomly across seeds
+    random.shuffle(locations_needing_flags)
+    for location in locations_needing_flags:
+        if location.new_flag is None:
+            if location.new_item == Types.Blueprint:
+                location.new_flag = flag_dict[location.new_item][location.new_kong].pop()
+            else:
+                location.new_flag = flag_dict[location.new_item].pop()
+
+    # If we failed to give any location a flag, something is very wrong
+    if any([data for data in locations_needing_flags if data.new_flag is None]):
+        debug_flags = [data for data in locations_needing_flags if data.new_flag is None]
+        raise Ex.FillException("ERROR: Failed to create a valid flag assignment for this fill!")
+    spoiler.item_assignment = locations_needing_flags + locations_not_needing_flags
