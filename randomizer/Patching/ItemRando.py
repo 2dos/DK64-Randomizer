@@ -71,41 +71,45 @@ def place_randomized_items(spoiler: Spoiler):
         bonus_table_offset = 0
         flut_offset = 0  # Flag Look Up Table. Maximum of 399 items (Currently ~261)
         for item in item_data:
-            print(item.old_item)
             if item.can_have_item:
                 if item.is_shop:
                     # Write in placement index
                     ROM().seek(sav + 0xA7)
                     ROM().write(1)
                     movespaceOffset = spoiler.settings.move_location_data
-                    write_space = movespaceOffset + (4 * item.placement_index)
-                    if item.new_item is None:
-                        # Is Nothing
-                        ROM().seek(write_space)
-                        ROM().writeMultipleBytes(7 << 5, 1)
-                        ROM().writeMultipleBytes(0, 1)
-                        ROM().writeMultipleBytes(0xFFFF, 2)
-                    elif item.new_flag & 0x8000:
-                        # Is Move
-                        item_kong = (item.new_flag >> 12) & 7
-                        item_subtype = (item.new_flag >> 8) & 0xF
-                        if item_subtype == 7:
-                            item_subindex = 0
+                    for placement in item.placement_index:
+                        write_space = movespaceOffset + (4 * placement)
+                        if item.new_item is None:
+                            # Is Nothing
+                            # First check if there is an item here
+                            ROM().seek(write_space)
+                            check = int.from_bytes(ROM().readBytes(4), "big")
+                            if check == 0xE000FFFF:  # No Item
+                                ROM().seek(write_space)
+                                ROM().writeMultipleBytes(7 << 5, 1)
+                                ROM().writeMultipleBytes(0, 1)
+                                ROM().writeMultipleBytes(0xFFFF, 2)
+                        elif item.new_flag & 0x8000:
+                            # Is Move
+                            item_kong = (item.new_flag >> 12) & 7
+                            item_subtype = (item.new_flag >> 8) & 0xF
+                            if item_subtype == 7:
+                                item_subindex = 0
+                            else:
+                                item_subindex = (item.new_flag & 0xFF) - 1
+                            ROM().seek(write_space)
+                            ROM().writeMultipleBytes(item_subtype << 5 | (item_subindex << 3) | item_kong, 1)
+                            ROM().writeMultipleBytes(0, 1)
+                            ROM().writeMultipleBytes(0xFFFF, 2)
                         else:
-                            item_subindex = (item.new_flag & 0xFF) - 1
-                        ROM().seek(write_space)
-                        ROM().writeMultipleBytes(item_subtype << 5 | (item_subindex << 3) | item_kong, 1)
-                        ROM().writeMultipleBytes(0, 1)
-                        ROM().writeMultipleBytes(0xFFFF, 2)
-                    else:
-                        # Is Flagged Item
-                        subtype = 5
-                        if item.new_item == Types.Banana:
-                            subtype = 6
-                        ROM().seek(write_space)
-                        ROM().writeMultipleBytes(subtype << 5, 1)
-                        ROM().writeMultipleBytes(0, 1)
-                        ROM().writeMultipleBytes(item.new_flag, 2)
+                            # Is Flagged Item
+                            subtype = 5
+                            if item.new_item == Types.Banana:
+                                subtype = 6
+                            ROM().seek(write_space)
+                            ROM().writeMultipleBytes(subtype << 5, 1)
+                            ROM().writeMultipleBytes(0, 1)
+                            ROM().writeMultipleBytes(item.new_flag, 2)
                 elif not item.reward_spot:
                     for map_id in item.placement_data:
                         if map_id not in map_items:
@@ -221,7 +225,6 @@ def place_randomized_items(spoiler: Spoiler):
                 else:
                     ROM().writeMultipleBytes(item.new_flag, 2)
                 flut_offset += 1
-
         # Terminate FLUT
         ROM().seek(0x1FF2000 + (4 * flut_offset))
         ROM().writeMultipleBytes(0xFFFF, 2)

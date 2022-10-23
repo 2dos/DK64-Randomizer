@@ -130,7 +130,7 @@ def ShuffleItems(spoiler: Spoiler):
                     placement_info[location.map] = location.id
                 old_flag = item_location.default_mapid_data[0].flag
                 old_kong = item_location.default_mapid_data[0].kong
-                placement_index = -1  # Irrelevant for non-shop locations
+                placement_index = [-1]  # Irrelevant for non-shop locations
             # Shop locations: Cranky, Funky, Candy, Training Barrels, and BFI
             else:
                 old_flag = -1  # Irrelevant for shop locations

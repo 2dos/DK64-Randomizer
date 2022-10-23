@@ -54,9 +54,15 @@ class Location:
             lvl_index = self.level
             if lvl_index == Levels.DKIsles:
                 lvl_index = 7
-            self.placement_index = (self.vendor * 40) + (self.kong * 8) + lvl_index
+            lst = []
+            if self.kong < 5:
+                lst.append((self.vendor * 40) + (self.kong * 8) + lvl_index)
+            else:
+                for kong_index in range(5):
+                    lst.append((self.vendor * 40) + (kong_index * 8) + lvl_index)
+            self.placement_index = lst
         elif self.type in (Types.TrainingBarrel, Types.Shockwave):
-            self.placement_index = data[0]
+            self.placement_index = [data[0]]
         elif self.type == Types.Blueprint:
             self.map = data[0]
             level = getLevelFromMap(data[0])
