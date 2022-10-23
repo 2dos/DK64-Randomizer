@@ -18,7 +18,7 @@ def randomize_prices(spoiler: Spoiler):
         else:
             ROM().write(0)
         # 0x036 */ unsigned char special_move_prices[5][3]; // Array of an array of prices [[1,2,3],[1,2,3],[1,2,3],[1,2,3],[1,2,3]]. Each item of the parent array is for a kong, each item of the sub arrays is the price of the moves in order of their vanilla purchase (eg. DK: Baboon Blast > Strong Kong > Gorilla Grab)
-        
+
         items_with_prices = [
             Items.BaboonBlast,
             Items.StrongKong,
