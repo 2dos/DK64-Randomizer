@@ -424,6 +424,14 @@ void* checkMove(short* flag, void* fba, int source) {
                         CollectableBase.Melons = 3;
                     }
                 }
+            } else if ((flag_index >= FLAG_TBARREL_DIVE) && (flag_index <= FLAG_TBARREL_BARREL)) {
+                spawn_overlay = 1;
+                item_type = 5;
+                item_index = flag_index;
+            } else if ((flag_index == FLAG_ABILITY_CAMERA) || (flag_index == FLAG_ABILITY_SHOCKWAVE)) {
+                spawn_overlay = 1;
+                item_type = 5;
+                item_index = flag_index;
             }
             if (spawn_overlay) {
                 spawnActor(324, 0);

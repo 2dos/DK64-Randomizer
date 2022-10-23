@@ -71,6 +71,7 @@ def place_randomized_items(spoiler: Spoiler):
         bonus_table_offset = 0
         flut_offset = 0  # Flag Look Up Table. Maximum of 399 items (Currently ~261)
         for item in item_data:
+            print(item.old_item)
             if item.can_have_item:
                 if item.is_shop:
                     # Write in placement index
@@ -145,9 +146,12 @@ def place_randomized_items(spoiler: Spoiler):
                             if item.new_flag == 379:  # Is RW Coin
                                 actor_index = actor_indexes[Types.Coin][1]
                         elif item.new_item in (Types.Shop, Types.Shockwave, Types.TrainingBarrel):
-                            slot = (item.new_flag >> 12) & 7
-                            if item.shared or slot > 5:
+                            if (item.new_flag & 0x8000) == 0:
                                 slot = 5
+                            else:
+                                slot = (item.new_flag >> 12) & 7
+                                if item.shared or slot > 5:
+                                    slot = 5
                             actor_index = actor_indexes[Types.Shop][slot]
                         else:
                             actor_index = actor_indexes[item.new_item]

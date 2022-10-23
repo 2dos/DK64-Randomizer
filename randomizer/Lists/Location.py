@@ -51,7 +51,10 @@ class Location:
             self.movetype = data[1]
             self.index = data[2]
             self.vendor = data[3]
-            self.placement_index = (self.vendor * 40) + (self.kong * 8) + self.level
+            lvl_index = self.level
+            if lvl_index == Levels.DKIsles:
+                lvl_index = 7
+            self.placement_index = (self.vendor * 40) + (self.kong * 8) + lvl_index
         elif self.type in (Types.TrainingBarrel, Types.Shockwave):
             self.placement_index = data[0]
         elif self.type == Types.Blueprint:
