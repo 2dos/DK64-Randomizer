@@ -171,6 +171,8 @@ class Settings:
         # shuffle_items: str
         # none
         # phase1
+        # phase2
+        # phase2.1
         self.shuffle_items = "phase2"
 
         # In item rando, can any Kong collect any item?
@@ -371,6 +373,12 @@ class Settings:
             self.shuffled_location_types = [Types.Banana, Types.Crown, Types.Blueprint, Types.Key, Types.Medal, Types.Coin]
         if self.shuffle_items == "phase2":
             self.shuffled_location_types = [Types.Shop, Types.Banana, Types.Crown, Types.Blueprint, Types.Key, Types.Medal, Types.Coin]
+            if self.shockwave_status not in ("vanilla", "start_with"):
+                self.shuffled_location_types.append(Types.Shockwave)
+            if self.training_barrels != "normal":
+                self.shuffled_location_types.append(Types.TrainingBarrel)
+        if self.shuffle_items == "phase2.1":
+            self.shuffled_location_types = [Types.Shop, Types.Banana, Types.Blueprint, Types.Key]
             if self.shockwave_status not in ("vanilla", "start_with"):
                 self.shuffled_location_types.append(Types.Shockwave)
             if self.training_barrels != "normal":
