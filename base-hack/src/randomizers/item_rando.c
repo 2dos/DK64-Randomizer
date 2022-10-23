@@ -288,6 +288,7 @@ int countFlagsForKongFLUT(int startFlag, int start, int cap, int kong) {
 
 static short flut_cache[40] = {};
 static unsigned char cache_spot = 0;
+static int flut_size = -1;
 
 void cacheFlag(int input, int output) {
     int slot = cache_spot;
@@ -444,27 +445,98 @@ void* checkMove(short* flag, void* fba, int source) {
     return fba;
 }
 
+void getFLUTSize(void) {
+    for (int i = 0; i < 400; i++) {
+        if (ItemRando_FLUT[2 * i] == -1) {
+            flut_size = i;
+            return;
+        }
+    }
+}
+
+int binarySearch(int search_item, int low, int high) {
+    int lim = high - low;
+    int old_dist = (high - low) + 1;
+    while (low != high) {
+        int mid = (low + high) / 2;
+        int loc = 2 * mid;
+        if (search_item == ItemRando_FLUT[loc]) {
+            return mid;
+        } else if (search_item > ItemRando_FLUT[loc]) {
+            low = mid + 1;
+        } else {
+            high = mid - 1;
+        }
+        lim -= 1;
+        if (lim == 0) {
+            return -1;
+        }
+        if ((high - low) > old_dist) {
+            // diverging
+            return -1;
+        }
+        old_dist = (high - low);
+    }
+    return -1;
+}
+
+void* searchFlag(int old_flag, short* flag_write, int source, void* fba) {
+    if (flut_size < 10) {
+        // Plain search
+        for (int i = 0; i < (flut_size * 2); i++) {
+            int lookup = ItemRando_FLUT[(2 * i)];
+            if (old_flag == lookup) {
+                *flag_write = ItemRando_FLUT[(2 * i) + 1];
+                cacheFlag(old_flag, *flag_write);
+                return checkMove(flag_write, fba, source);
+            } else if (lookup == -1) {
+                cacheFlag(old_flag, -1);
+                return fba;
+            }
+        }
+    } else {
+        // Search by halves
+        int index = binarySearch(old_flag, 0, flut_size - 1);
+        if (index >= -1) {
+            int lookup = ItemRando_FLUT[(2 * index)];
+            if (old_flag == lookup) {
+                *flag_write = ItemRando_FLUT[(2 * index) + 1];
+                cacheFlag(old_flag, *flag_write);
+                return checkMove(flag_write, fba, source);
+            }
+        }
+    }
+    cacheFlag(old_flag, -1);
+    return fba;
+}
+
 void* updateFlag(int type, short* flag, void* fba, int source) {
     if ((Rando.item_rando) && (type == 0) && (*flag != 0)) {
+        if (flut_size == -1) {
+            getFLUTSize();
+        }
         int vanilla_flag = *flag;
-        if (clampFlag(vanilla_flag)) {
-            for (int i = 0; i < 20; i++) {
-                if (flut_cache[(2 * i)] == vanilla_flag) {
-                    if (flut_cache[(2 * i) + 1] != -1) {
-                        *flag = flut_cache[(2 * i) + 1];
+        if (flut_size > 0) {
+            if (clampFlag(vanilla_flag)) {
+                for (int i = 0; i < 20; i++) {
+                    if (flut_cache[(2 * i)] == vanilla_flag) {
+                        if (flut_cache[(2 * i) + 1] != -1) {
+                            *flag = flut_cache[(2 * i) + 1];
+                        }
+                        return checkMove(flag, fba, source);
                     }
-                    return checkMove(flag, fba, source);
                 }
-            }
-            for (int i = 0; i < 400; i++) {
-                int lookup = ItemRando_FLUT[(2 * i)];
-                if (vanilla_flag == lookup) {
-                    *flag = ItemRando_FLUT[(2 * i) + 1];
-                    cacheFlag(vanilla_flag, *flag);
-                    return checkMove(flag, fba, source);
-                } else if (lookup == -1) {
-                    cacheFlag(vanilla_flag, -1);
-                    return fba;
+
+                for (int i = 0; i < flut_size; i++) {
+                    int lookup = ItemRando_FLUT[(2 * i)];
+                    if (vanilla_flag == lookup) {
+                        *flag = ItemRando_FLUT[(2 * i) + 1];
+                        cacheFlag(vanilla_flag, *flag);
+                        return checkMove(flag, fba, source);
+                    } else if (lookup == -1) {
+                        cacheFlag(vanilla_flag, -1);
+                        return fba;
+                    }
                 }
             }
         }

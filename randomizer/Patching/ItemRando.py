@@ -69,7 +69,7 @@ def place_randomized_items(spoiler: Spoiler):
         ]
         map_items = {}
         bonus_table_offset = 0
-        flut_offset = 0  # Flag Look Up Table. Maximum of 399 items (Currently ~261)
+        flut_items = []
         for item in item_data:
             if item.can_have_item:
                 if item.is_shop:
@@ -218,17 +218,18 @@ def place_randomized_items(spoiler: Spoiler):
                         bonus_table_offset += 1
             if not item.is_shop and item.can_have_item:
                 # Write flag lookup table
-                ROM().seek(0x1FF2000 + (4 * flut_offset))
-                ROM().writeMultipleBytes(item.old_flag, 2)
+                data = [item.old_flag]
                 if item.new_item is None:
-                    ROM().writeMultipleBytes(0, 2)
+                    data.append(0)
                 else:
-                    ROM().writeMultipleBytes(item.new_flag, 2)
-                flut_offset += 1
+                    data.append(item.new_flag)
+                flut_items.append(data)
         # Terminate FLUT
-        ROM().seek(0x1FF2000 + (4 * flut_offset))
-        ROM().writeMultipleBytes(0xFFFF, 2)
-        ROM().writeMultipleBytes(0xFFFF, 2)
+        flut_items.append([0xFFFF,0xFFFF])
+        ROM().seek(0x1FF2000)
+        for flut in sorted(flut_items, key=lambda x: x[0]):
+            for flag in flut:
+                ROM().writeMultipleBytes(flag, 2)
         # Setup Changes
         for map_id in map_items:
             cont_map_setup_address = js.pointer_addresses[9]["entries"][map_id]["pointing_to"]

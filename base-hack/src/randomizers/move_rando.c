@@ -303,9 +303,9 @@ void getNextMovePurchase(shop_paad* paad, KongBase* movedata) {
 					case PURCHASE_GB:
 					case PURCHASE_FLAG:
 						if (p_value == -2) {
-							has_purchase = 1 ^ (checkFlag(FLAG_ABILITY_CAMERA,0) & checkFlag(FLAG_ABILITY_SHOCKWAVE,0));
+							has_purchase = 1 ^ (checkFlagDuplicate(FLAG_ABILITY_CAMERA,0) & checkFlagDuplicate(FLAG_ABILITY_SHOCKWAVE,0));
 						} else {
-							has_purchase = 1 ^ checkFlag(p_value,0);
+							has_purchase = 1 ^ checkFlagDuplicate(p_value,0);
 						}
 					break;
 				}
@@ -360,7 +360,7 @@ void purchaseMove(shop_paad* paad) {
 		case PURCHASE_GB:
 			MovesBase[(int)paad->kong].gb_count[getWorld(CurrentMap,1)] += 1;
 		case PURCHASE_FLAG:
-			setPermFlag(paad->flag);
+			setFlagDuplicate(paad->flag, 1, 0);
 		break;
 	}
 	if (p_type == PURCHASE_INSTRUMENT) {
