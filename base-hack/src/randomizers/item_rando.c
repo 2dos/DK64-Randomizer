@@ -208,16 +208,16 @@ void initActorDefs(void) {
 void spawnBonusReward(int object, int x_f, int y_f, int z_f, int unk0, int cutscene, int flag, int unk1) {
     bonus_paad* paad = CurrentActorPointer_0->paad;
     int index = paad->barrel_index;
-    if ((index > 0) && (index < 54)) {
-        object = BonusBarrelData[index].spawn_actor;
+    if ((index > 0) && (index < 95)) {
+        object = bonus_data[index].spawn_actor;
     }
     spawnActorWithFlag(object, x_f, y_f, z_f, unk0, cutscene, flag, unk1);
 }
 
 void spawnRewardAtActor(int object, int flag) {
     int index = CurrentActorPointer_0->reward_index;
-    if ((index > 0) && (index < 54)) {
-        object = BonusBarrelData[index].spawn_actor;
+    if ((index > 0) && (index < 95)) {
+        object = bonus_data[index].spawn_actor;
     }
     spawnObjectAtActor(object, flag);
 }
@@ -555,7 +555,7 @@ void* updateFlag(int type, short* flag, void* fba, int source) {
 
 int getKongFromBonusFlag(int flag) {
     if ((Rando.any_kong_items & 1) == 0) {
-        for (int i = 0; i < 94; i++) {
+        for (int i = 0; i < 95; i++) {
             if (bonus_data[i].flag == flag) {
                 return bonus_data[i].kong_actor;
             }

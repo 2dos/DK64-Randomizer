@@ -216,4 +216,4 @@ extern int getKeyFlag(int index);
 extern void KLumsyText(void);
 
 extern unsigned int cs_skip_db[432];
-extern bonus_barrel_info bonus_data[94];
+extern bonus_barrel_info bonus_data[95];

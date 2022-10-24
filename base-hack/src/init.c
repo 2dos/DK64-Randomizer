@@ -98,7 +98,7 @@ static unsigned char bp_item_table[40] = {};
 static unsigned char medal_item_table[40] = {};
 static unsigned char crown_item_table[10] = {};
 static unsigned char key_item_table[8] = {};
-bonus_barrel_info bonus_data[94] = {};
+bonus_barrel_info bonus_data[95] = {};
 
 int getBPItem(int index) {
 	return bp_item_table[index];
@@ -645,6 +645,10 @@ void initHack(int source) {
 				bonus_data[i].spawn_actor = BonusBarrelData[i].spawn_actor;
 				bonus_data[i].kong_actor = BonusBarrelData[i].kong_actor;
 			}
+			// Add Chunky Minecart GB
+			bonus_data[94].flag = 215;
+			bonus_data[94].spawn_actor = 45;
+			bonus_data[94].kong_actor = 4;
 			if (Rando.item_rando) {
 				*(short*)(0x806B4E1A) = Rando.vulture_item;
 				*(short*)(0x8069C266) = Rando.japes_rock_item;
@@ -720,9 +724,9 @@ void initHack(int source) {
 				copyFromROM(0x1FF1200,reward_write,&reward_file_size,0,0,0,0);
 				for (int i = 0; i < 0x40; i++) {
 					if (reward_write[i].flag > -1) {
-						for (int j = 0; j < 54; j++) {
-							if (BonusBarrelData[j].flag == reward_write[i].flag) {
-								BonusBarrelData[j].spawn_actor = reward_write[i].actor;
+						for (int j = 0; j < 95; j++) {
+							if (bonus_data[j].flag == reward_write[i].flag) {
+								bonus_data[j].spawn_actor = reward_write[i].actor;
 							}
 						}
 					}

@@ -1056,6 +1056,24 @@ with open(newROMName, "r+b") as fh:
     for x in range(5):
         fh.write(values[x].to_bytes(1, "big"))
 
+    # Item Rando defaults
+    # Blueprints
+    fh.seek(0x1FF1000)
+    for level_index in range(8):
+        for bp_item in (78, 75, 77, 79, 76):
+            fh.write(bp_item.to_bytes(1, "big"))
+    # Medals
+    fh.seek(0x1FF1080)
+    for medal_item in range(40):
+        fh.write((5).to_bytes(1, "big"))
+    # Crown
+    fh.seek(0x1FF10C0)
+    for crown_item in range(10):
+        fh.write((86).to_bytes(1, "big"))
+    # Key
+    for crown_item in range(8):
+        fh.write((72).to_bytes(1, "big"))
+    fh.seek(0x1FF10D0)
     # Shop Hints
     fh.seek(0x1FED020 + 0x14B)
     fh.write((1).to_bytes(1, "big"))
