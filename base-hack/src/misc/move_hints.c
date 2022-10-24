@@ -27,12 +27,16 @@ int getHintTextIndex(int shop_owner, shop_paad* shop_data) {
 	int kong = shop_data->kong;
 	if (shop_data->price > MovesBase[(int)Character].coins) {
 		if (purchase_type < 5) {
-			base = 37 + purchase_type;
+			base = 45 + purchase_type;
 		} else {
 			if (isTBarrelFlag(shop_data->flag)) {
-				base = 42;
+				base = 50;
 			} else if (isFairyFlag(shop_data->flag)) {
-				base = 43;
+				base = 51;
+			} else if (purchase_type == PURCHASE_GB) {
+				base = 53;
+			} else {
+				base = 52;
 			}
 		}
 	} else {
@@ -52,12 +56,37 @@ int getHintTextIndex(int shop_owner, shop_paad* shop_data) {
 			base = 29;
 		} else if (purchase_type == 5) {
 			int move_flags[] = {FLAG_TBARREL_DIVE, FLAG_TBARREL_ORANGE, FLAG_TBARREL_BARREL, FLAG_TBARREL_VINE, FLAG_ABILITY_CAMERA, FLAG_ABILITY_SHOCKWAVE, -2};
-			base = 30;
+			base = 0;
 			for (int i = 0; i < sizeof(move_flags)/4; i++) {
 				if (shop_data->flag == move_flags[i]) {
 					base = 30 + i;
 				}
 			}
+			if (base == 0) {
+				int flag = shop_data->flag;
+				if ((flag >= FLAG_BP_JAPES_DK_HAS) && (flag < (FLAG_BP_JAPES_DK_HAS + 40))) {
+					base = 41;
+				} else if ((flag >= FLAG_MEDAL_JAPES_DK) && (flag < (FLAG_MEDAL_JAPES_DK + 40))) {
+					base = 39;
+				} else if (flag == FLAG_COLLECTABLE_NINTENDOCOIN) {
+					base = 42;
+				} else if (flag == FLAG_COLLECTABLE_RAREWARECOIN) {
+					base = 43;
+				} else if ((flag >= FLAG_CROWN_JAPES) && (flag < (FLAG_CROWN_JAPES + 10))) {
+					base = 38;
+				} else if (flag == FLAG_COLLECTABLE_BEAN) {
+					base = 44;
+				} else {
+					// Key
+					for (int i = 0; i < 8; i++) {
+						if (flag == getKeyFlag(i)) {
+							base = 40;
+						}
+					}
+				}
+			}
+		} else if (purchase_type == 6) {
+			base = 37;
 		}
 	}
 	return (base * 3) + shop_owner;
