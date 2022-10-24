@@ -111,6 +111,7 @@
 .definelabel getInteractionOfContactActor, 0x8067ACC0
 .definelabel enterPortal, 0x806CF398
 .definelabel drawBossDoorNumber, 0x8064954C
+.definelabel GoldenBananaCode, 0x806A734C
 
 .definelabel unkMultiplayerWarpFunction, 0x8061EB04
 .definelabel renderScreenTransition, 0x806291B4

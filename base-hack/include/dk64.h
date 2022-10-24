@@ -227,6 +227,7 @@ extern void assessFlagMapping(int map, int id);
 extern void coinCBCollectHandle(int player, int obj, int is_homing);
 extern void displayItemOnHUD(int item, int unk0, int unk1);
 extern int getCollectableOffset(int item, int obj, int homing);
+extern void GoldenBananaCode(void);
 
 extern void unkSpriteRenderFunc(int unk0);
 extern void unkSpriteRenderFunc_0(void);
@@ -349,7 +350,7 @@ extern int* sprite_table[0xAF];
 extern char sprite_translucency;
 extern int* bbbandit_array[4];
 extern char StoredDamage;
-extern void* ActorSpawnerPointer;
+extern actorSpawnerData* ActorSpawnerPointer;
 extern char DebugInfoOn;
 extern char CutsceneFadeActive;
 extern short CutsceneFadeIndex;

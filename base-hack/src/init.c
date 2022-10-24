@@ -616,17 +616,17 @@ void initHack(int source) {
 			*(char*)(0x8074DDD5) = 0x11; // Increase PAAD
 			*(int*)(0x8074C304) = (int)&NothingCode; // Nothing
 			*(char*)(0x8074D96D) = 0; // Is Sprite
-			*(int*)(0x8074C314) = 0x806A734C; // DK Potion
+			*(int*)(0x8074C314) = (int)&PotionCode; // DK Potion
 			*(short*)(0x8074DDE8) = 0x11;
-			*(int*)(0x8074C318) = 0x806A734C; // Diddy Potion
+			*(int*)(0x8074C318) = (int)&PotionCode; // Diddy Potion
 			*(short*)(0x8074DDEC) = 0x11;
-			*(int*)(0x8074C31C) = 0x806A734C; // Lanky Potion
+			*(int*)(0x8074C31C) = (int)&PotionCode; // Lanky Potion
 			*(short*)(0x8074DDF0) = 0x11;
-			*(int*)(0x8074C320) = 0x806A734C; // Tiny Potion
+			*(int*)(0x8074C320) = (int)&PotionCode; // Tiny Potion
 			*(short*)(0x8074DDF4) = 0x11;
-			*(int*)(0x8074C324) = 0x806A734C; // Chunky Potion
+			*(int*)(0x8074C324) = (int)&PotionCode; // Chunky Potion
 			*(short*)(0x8074DDF8) = 0x11;
-			*(int*)(0x8074C328) = 0x806A734C; // Any Potion
+			*(int*)(0x8074C328) = (int)&PotionCode; // Any Potion
 			*(short*)(0x8074DDFC) = 0x11;
 			// Any Kong Items
 			if (Rando.any_kong_items & 1) {

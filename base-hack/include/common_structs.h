@@ -465,7 +465,9 @@ typedef struct actorSpawnerData {
 	/* 0x010 */ char unk_10[0x40-0x10];
 	/* 0x040 */ float barrel_resolved;
 	/* 0x044 */ void* tied_actor;
-	/* 0x048 */ char unk_48[0x5A-0x48];
+	/* 0x048 */ char unk_48[0x54-0x48];
+	/* 0x054 */ float spawn_range;
+	/* 0x058 */ char unk_58[0x5A-0x58];
 	/* 0x05A */ short id;
 	/* 0x05C */ char unk_5C[0x64-0x5C];
 	/* 0x064 */ void* previous_spawner;

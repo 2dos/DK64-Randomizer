@@ -235,7 +235,23 @@ void spawnBossReward(int object, int x_f, int y_f, int z_f, int unk0, int cutsce
     if (new_obj != 0) {
         object = new_obj;
     }
+    unsigned char sprite_obj[] = {75,76,77,78,79,151,152};
+    int is_sprite = 0;
+    for (int i = 0; i < sizeof(sprite_obj); i++) {
+        if (sprite_obj[i] == object) {
+            is_sprite = 1;
+        }
+    }
+    if ((is_sprite) && ((flag == 0xEC) || (flag == 0x4A))) {
+        // Sprite & Dogadon Fight
+        cutscene = 1;
+        x_f = 0x43ED8000;
+        y_f = 0x43570000;
+        z_f = 0x443B8000;
+    }
     spawnActorWithFlag(object, x_f, y_f, z_f, unk0, cutscene, flag, unk1);
+    // Fix items which have short spawn ranges
+    ActorSpawnerPointer->spawn_range = 4000000.0f;
 }
 
 int checkFlagDuplicate(short flag, int type) {
@@ -748,6 +764,13 @@ void rwCoinCode(void) {
 
 void NothingCode(void) {
     deleteActorContainer(CurrentActorPointer_0);
+}
+
+void PotionCode(void) {
+    GoldenBananaCode();
+    if ((CurrentActorPointer_0->obj_props_bitfield & 0x10) == 0) {
+        CurrentActorPointer_0->obj_props_bitfield &= 0xFFFFEFFF; // Make color blends work
+    }
 }
 
 void KLumsyText(void) {
