@@ -487,7 +487,7 @@ int getLocation(purchase_struct* purchase_data) {
 			return checkFlagDuplicate(purchase_data->purchase_value,0);
 		}
 	}
-	return 0;
+	return 1;
 }
 
 void setLocationStatus(location_list location_index) {

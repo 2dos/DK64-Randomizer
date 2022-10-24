@@ -84,7 +84,7 @@ def place_randomized_items(spoiler: Spoiler):
                             # First check if there is an item here
                             ROM().seek(write_space)
                             check = int.from_bytes(ROM().readBytes(4), "big")
-                            if check == 0xE000FFFF:  # No Item
+                            if check == 0xE000FFFF or placement >= 120:  # No Item
                                 ROM().seek(write_space)
                                 ROM().writeMultipleBytes(7 << 5, 1)
                                 ROM().writeMultipleBytes(0, 1)
