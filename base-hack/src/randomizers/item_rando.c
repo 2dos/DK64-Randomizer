@@ -583,7 +583,30 @@ void banana_medal_acquisition(int flag) {
         // Display and play effects if you don't have item
         int item_type = getMedalItem(flag - 549);
         if (item_type < 11) {
-            setFlag(flag, 1, 0);
+            if (item_type == 2) {
+                // Display key text
+                int key_bitfield = 0;
+                for (int i = 0; i < 8; i++) {
+                    if (checkFlagDuplicate(getKeyFlag(i), 0)) {
+                        key_bitfield |= (1 << i);
+                    }
+                }
+                setFlag(flag, 1, 0);
+                int spawned = 0;
+                for (int i = 0; i < 8; i++) {
+                    if ((checkFlagDuplicate(getKeyFlag(i), 0)) && ((key_bitfield & (1 << i)) == 0)) {
+                        if (!spawned) {
+                            spawnActor(324, 0);
+                            TextOverlayData.type = 5;
+                            TextOverlayData.flag = getKeyFlag(i);
+                            TextOverlayData.kong = 0;
+                            spawned = 1;
+                        }
+                    }
+                }
+            } else {
+                setFlag(flag, 1, 0);
+            }
             if (item_type == 0) {
                 MovesBase[(int)Character].gb_count[getWorld(CurrentMap,1)] += 1;
             }
