@@ -368,9 +368,9 @@ move_hints = [
     {
         "move": "Not enough coins - Item",
         "kong": "~",
-        "cranky": "YOU'RE UNLUCKY TO BE SO POOR YOU CAN'T AFFORD THIS SPECIAL ITEM.",
-        "funky": "'FRAID I CAN'T JUST GIVE IT TO YA, THOUGH. SPECIAL ITEMS DON'T GROW ON TREES!",
-        "candy": "BUT YOU'LL NEED TO SCRAPE TOGETHER SOME MORE COINS TO GET THIS SPECIAL ITEM.",
+        "cranky": "YOU'RE UNLUCKY TO BE SO POOR YOU CAN'T AFFORD THIS MAJOR ITEM.",
+        "funky": "'FRAID I CAN'T JUST GIVE IT TO YA, THOUGH. MAJOR ITEMS DON'T GROW ON TREES!",
+        "candy": "BUT YOU'LL NEED TO SCRAPE TOGETHER SOME MORE COINS TO GET THIS MAJOR ITEM.",
     },
     {
         "move": "Not enough coins - GB",
