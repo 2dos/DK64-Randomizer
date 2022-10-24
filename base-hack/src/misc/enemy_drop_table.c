@@ -90,10 +90,10 @@ void spawnEnemyDrops(actorData* actor) {
                         if (KasplatSpawnBitfield & (1 << (actor_index - 241))) {
                             drop_count = 0;
                         }
-                        if (((drop_type < 75) || (drop_type > 79)) && (drop_type != 151) && (drop_type != 152)) {
-                            // Not drop that despawns
-                            KasplatSpawnBitfield |= (1 << (actor_index - 241));
-                        }
+                        // Not drop that despawns
+                        KasplatSpawnBitfield |= (1 << (actor_index - 241));
+                        // if (((drop_type < 75) || (drop_type > 79)) && (drop_type != 151) && (drop_type != 152)) {
+                        // }
                     }
                 }
                 for (int i = 0; i < drop_count; i++) {
