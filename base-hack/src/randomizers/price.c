@@ -15,19 +15,19 @@
 #define SHOP_FUNKY 1
 #define SHOP_CANDY 2
 
-void alter_price(int purchase_type, int purchase_value, int kong, int level, int shop_index) {
+void alter_price(int purchase_type, int purchase_value, int kong, int level, int shop_index, int move_kong) {
 	int write = -1;
 	if (purchase_type > PURCHASE_NOTHING) {
 		switch(purchase_type) {
 			case PURCHASE_MOVES:
-				write = Rando.special_move_prices[kong][purchase_value - 1];
+				write = Rando.special_move_prices[move_kong][purchase_value - 1];
 				break;
 			case PURCHASE_SLAM:
 				write = Rando.slam_prices[purchase_value - 2];
 				break;
 			case PURCHASE_GUN:
 				if (purchase_value == 1) {
-					write = Rando.gun_prices[kong];
+					write = Rando.gun_prices[move_kong];
 				} else {
 					write = Rando.gun_upgrade_prices[purchase_value - 2];
 				}
@@ -37,7 +37,7 @@ void alter_price(int purchase_type, int purchase_value, int kong, int level, int
 				break;
 			case PURCHASE_INSTRUMENT:
 				if (purchase_value == 1) {
-					write = Rando.instrument_prices[kong];
+					write = Rando.instrument_prices[move_kong];
 				} else {
 					write = Rando.instrument_upgrade_prices[purchase_value - 2];
 				}
@@ -81,9 +81,9 @@ void alter_price(int purchase_type, int purchase_value, int kong, int level, int
 void priceTransplant(void) {
 	for (int kong = 0; kong < 5; kong++) {
 		for (int level = 0; level < LEVEL_COUNT; level++) {
-			alter_price(CrankyMoves_New[kong][level].purchase_type,CrankyMoves_New[kong][level].purchase_value,kong,level,SHOP_CRANKY);
-			alter_price(CandyMoves_New[kong][level].purchase_type,CandyMoves_New[kong][level].purchase_value,kong,level,SHOP_CANDY);
-			alter_price(FunkyMoves_New[kong][level].purchase_type,FunkyMoves_New[kong][level].purchase_value,kong,level,SHOP_FUNKY);
+			alter_price(CrankyMoves_New[kong][level].purchase_type,CrankyMoves_New[kong][level].purchase_value,kong,level,SHOP_CRANKY, CrankyMoves_New[kong][level].move_kong);
+			alter_price(CandyMoves_New[kong][level].purchase_type,CandyMoves_New[kong][level].purchase_value,kong,level,SHOP_CANDY, CandyMoves_New[kong][level].move_kong);
+			alter_price(FunkyMoves_New[kong][level].purchase_type,FunkyMoves_New[kong][level].purchase_value,kong,level,SHOP_FUNKY, FunkyMoves_New[kong][level].move_kong);
 		}
 	}
 }
