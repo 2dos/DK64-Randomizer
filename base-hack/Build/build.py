@@ -1071,9 +1071,13 @@ with open(newROMName, "r+b") as fh:
     for crown_item in range(10):
         fh.write((86).to_bytes(1, "big"))
     # Key
+    fh.seek(0x1FF10D0)
     for crown_item in range(8):
         fh.write((72).to_bytes(1, "big"))
-    fh.seek(0x1FF10D0)
+    # Misc Drops
+    fh.seek(0x1FED020 + 0x114)
+    for x in range(2):
+        fh.write((45).to_bytes(1, "big"))
     # Shop Hints
     fh.seek(0x1FED020 + 0x14B)
     fh.write((1).to_bytes(1, "big"))

@@ -87,6 +87,7 @@ set_variables = {
     "item_rando": 1,
     "vulture_item": 72,
     "japes_rock_item": 76,
+    "medal_cb_req": 5,
 }
 
 

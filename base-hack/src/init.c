@@ -823,6 +823,11 @@ void initHack(int source) {
 			initActorDefs();
 			// LZ Save
 			*(int*)(0x80712EC4) = 0x0C000000 | (((int)&postKRoolSaveCheck & 0xFFFFFF) >> 2);
+			if (Rando.medal_cb_req > 0) {
+				// Change CB Req
+				*(short*)(0x806F934E) = Rando.medal_cb_req;
+				*(short*)(0x806F935A) = Rando.medal_cb_req;
+			}
 			// Reduce TA Cooldown
 			if (Rando.tag_anywhere) {
 				// *(int*)(0x806F6D88) = 0; // Makes collectables not produce a flying model which delays collection. Instant change

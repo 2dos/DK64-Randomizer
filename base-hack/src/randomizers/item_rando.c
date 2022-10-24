@@ -621,7 +621,7 @@ void banana_medal_acquisition(int flag) {
             unkSpriteRenderFunc_0();
             loadSpriteFunction(0x8071EFDC);
             int bp_sprites[] = {0x5C,0x5A,0x4A,0x5D,0x5B};
-            int sprite_indexes[] = {0x3B, 0, 0x8A, 0x8B, 0, 0x3B, 0x94, 0x96, 0x93, 0x94, 0x3A};
+            int sprite_indexes[] = {0x3B, 0, 0x8A, 0x8B, 0, 0x3C, 0x94, 0x96, 0x93, 0x94, 0x3A};
             int used_sprite = 0x3B;
             if (item_type == 1) {
                 int character_val = Character;
