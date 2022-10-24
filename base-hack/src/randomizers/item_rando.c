@@ -612,8 +612,8 @@ void banana_medal_acquisition(int flag) {
             }
             playSFX(0xF2);
             int used_song = 0x97;
-            int songs[] = {18,69,18,0x97,22,0x97};
-            if (item_type < 6) {
+            int songs[] = {18,69,18,0x97,22,115,115,115,115,115,0x97};
+            if (item_type < 11) {
                 used_song = songs[item_type];
             }
             playSong(used_song, 0x3F800000);
@@ -662,7 +662,7 @@ void keyGrabHook(int song, int vol) {
 }
 
 static const short boss_maps[] = {0x8,0xC5,0x9A,0x6F,0x53,0xC4,0xC7};
-static const short acceptable_items[] = {0x74,0xDE,0xE0,0xE1,0xDD,0xDF,0x48,0x28F,0x13C,0x18D,0x90};
+static const short acceptable_items[] = {0x74,0xDE,0xE0,0xE1,0xDD,0xDF,0x48,0x28F,0x13C,0x18D,0x90,0x5B,0x1F2,0x59,0x1F3,0x1F5,0x1F6};
 
 int itemGrabHook(int collectable_type, int obj_type, int is_homing) {
     if (Rando.item_rando) {
@@ -682,9 +682,7 @@ int itemGrabHook(int collectable_type, int obj_type, int is_homing) {
                 if (CurrentMap == boss_maps[i]) {
                     for (int j = 0; j < (sizeof(acceptable_items) / 2); j++) {
                         if (obj_type == acceptable_items[j]) {
-                            Player->control_state = 0x71;
-                            Player->control_state_progress = 1;
-                            Player->try_again_timer = 1;
+                            setAction(0x41, 0, 0);
                         }
                     }
                 }
@@ -694,8 +692,7 @@ int itemGrabHook(int collectable_type, int obj_type, int is_homing) {
             if ((CurrentMap == 0x35) || (CurrentMap == 0x49) || ((CurrentMap >= 0x9B) && (CurrentMap <= 0xA2))) {
                 for (int j = 0; j < (sizeof(acceptable_items) / 2); j++) {
                     if (obj_type == acceptable_items[j]) {
-                        Player->control_state = 0x72;
-                        Player->control_state_progress = 255;
+                        setAction(0x42, 0, 0);
                     }
                 }
             }
