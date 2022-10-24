@@ -242,6 +242,10 @@
 .definelabel spriteActorGenericCode, 0x806A664C
 .definelabel assignGIFToActor, 0x806A5EAC
 
+.definelabel unkLightFunc_0, 0x80604cbc
+.definelabel unkLightFunc_1, 0x8072a920
+.definelabel unkLightFunc_2, 0x806c6530
+
 //vanilla data
 .definelabel TransitionSpeed, 0x807FD88C
 .definelabel CutsceneWillPlay, 0x8075533B

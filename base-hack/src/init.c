@@ -331,6 +331,7 @@ void initHack(int source) {
 			if (Rando.quality_of_life.vanilla_fixes) {
 				*(int*)(0x806BE8D8) = 0x0C000000 | (((int)&RabbitRaceInfiniteCode & 0xFFFFFF) >> 2); // Modify Function Call
 				*(int*)(0x8067C168) = 0x0C000000 | (((int)&fixDilloTNTPads & 0xFFFFFF) >> 2); // Modify Function Call
+				*(int*)(0x8074C484) = (int)&squawks_with_spotlight_actor_code;
 			}
 			if (Rando.quality_of_life.fast_picture) {
 				// Fast Camera Photo

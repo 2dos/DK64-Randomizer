@@ -35,7 +35,8 @@ typedef struct actorData {
 	/* 0x058 */ int actorType;
 	/* 0x05C */ char unk_5C[0x60-0x5C];
 	/* 0x060 */ int obj_props_bitfield;
-	/* 0x064 */ char unk_64[0x6A-0x64];
+	/* 0x064 */ int unk_64;
+	/* 0x068 */ char unk_68[0x6A-0x68];
 	/* 0x06A */ short grounded;
 	/* 0x06C */ char unk_6C[0x7C-0x6C];
 	/* 0x07C */ float xPos;
