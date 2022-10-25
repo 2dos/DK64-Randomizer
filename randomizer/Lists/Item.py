@@ -28,6 +28,7 @@ class Item:
             self.rando_flag = data[2]
         if type == Types.Key:
             self.rando_flag = data[0]
+            self.index = data[1]  # Key 1 = 1, Key 2 = 2, etc
 
 
 def ItemFromKong(kong):
@@ -131,14 +132,14 @@ ItemList = {
     ),  # -2 means do not use this rando_flag outside of full item rando
     Items.NintendoCoin: Item("Nintendo Coin", True, Types.Coin, Kongs.any, [132]),
     Items.RarewareCoin: Item("Rareware Coin", True, Types.Coin, Kongs.any, [379]),
-    Items.JungleJapesKey: Item("Key 1", True, Types.Key, Kongs.any, [26]),
-    Items.AngryAztecKey: Item("Key 2", True, Types.Key, Kongs.any, [74]),
-    Items.FranticFactoryKey: Item("Key 3", True, Types.Key, Kongs.any, [138]),
-    Items.GloomyGalleonKey: Item("Key 4", True, Types.Key, Kongs.any, [168]),
-    Items.FungiForestKey: Item("Key 5", True, Types.Key, Kongs.any, [236]),
-    Items.CrystalCavesKey: Item("Key 6", True, Types.Key, Kongs.any, [292]),
-    Items.CreepyCastleKey: Item("Key 7", True, Types.Key, Kongs.any, [317]),
-    Items.HideoutHelmKey: Item("Key 8", True, Types.Key, Kongs.any, [380]),
+    Items.JungleJapesKey: Item("Key 1", True, Types.Key, Kongs.any, [26, 1]),
+    Items.AngryAztecKey: Item("Key 2", True, Types.Key, Kongs.any, [74, 2]),
+    Items.FranticFactoryKey: Item("Key 3", True, Types.Key, Kongs.any, [138, 3]),
+    Items.GloomyGalleonKey: Item("Key 4", True, Types.Key, Kongs.any, [168, 4]),
+    Items.FungiForestKey: Item("Key 5", True, Types.Key, Kongs.any, [236, 5]),
+    Items.CrystalCavesKey: Item("Key 6", True, Types.Key, Kongs.any, [292, 6]),
+    Items.CreepyCastleKey: Item("Key 7", True, Types.Key, Kongs.any, [317, 7]),
+    Items.HideoutHelmKey: Item("Key 8", True, Types.Key, Kongs.any, [380, 8]),
     Items.HelmDonkey1: Item("Helm Donkey Barrel 1", False, Types.Constant, Kongs.donkey),
     Items.HelmDonkey2: Item("Helm Donkey Barrel 2", False, Types.Constant, Kongs.donkey),
     Items.HelmDiddy1: Item("Helm Diddy Barrel 1", False, Types.Constant, Kongs.diddy),

@@ -9,7 +9,9 @@ from randomizer.Enums.Kongs import Kongs
 from randomizer.Enums.Levels import Levels
 from randomizer.Enums.Regions import Regions
 from randomizer.Enums.Transitions import Transitions
+from randomizer.Enums.Types import Types
 from randomizer.Lists.Item import ItemList, NameFromKong
+from randomizer.Lists.Location import LocationList
 from randomizer.Lists.MapsAndExits import GetMapId
 from randomizer.Lists.ShufflableExit import ShufflableExits
 from randomizer.Lists.WrinklyHints import HintLocation, hints
@@ -131,7 +133,7 @@ hint_list = [
     Hint(hint="The barrier to Hideout Helm can be cleared by obtaining 801 Golden Bananas. It can also be cleared with fewer than that.", important=False, base=True),
 ]
 
-kong_list = ["Donkey", "Diddy", "Lanky", "Tiny", "Chunky"]
+kong_list = ["Donkey", "Diddy", "Lanky", "Tiny", "Chunky", "Any kong"]
 
 kong_cryptic = [
     [
@@ -159,11 +161,13 @@ kong_cryptic = [
         "The kong who fights a blocky boss",
         "The kong who bows down to a dragonfly",
     ],
+    ["Members of the DK Crew", "A specific set of relatives", "A number of playable characters"]
 ]
 
 all_levels = [Levels.JungleJapes, Levels.AngryAztec, Levels.FranticFactory, Levels.GloomyGalleon, Levels.FungiForest, Levels.CrystalCaves, Levels.CreepyCastle]
 level_list = ["Jungle Japes", "Angry Aztec", "Frantic Factory", "Gloomy Galleon", "Fungi Forest", "Crystal Caves", "Creepy Castle", "Hideout Helm"]
 level_list_isles = ["Jungle Japes", "Angry Aztec", "Frantic Factory", "Gloomy Galleon", "Fungi Forest", "Crystal Caves", "Creepy Castle", "DK Isles"]
+level_list_helm_isles = ["Jungle Japes", "Angry Aztec", "Frantic Factory", "Gloomy Galleon", "Fungi Forest", "Crystal Caves", "Creepy Castle", "Hideout Helm", "DK Isles"]
 
 level_cryptic = [
     [
@@ -186,6 +190,9 @@ level_cryptic = [
 level_cryptic_isles = level_cryptic.copy()
 level_cryptic_isles.remove(level_cryptic_isles[-1])
 level_cryptic_isles.append(["The hub world", "The world with DK's ugly mug on it", "The world with only a Cranky's Lab and Snide's HQ in it"])
+
+level_cryptic_helm_isles = level_cryptic.copy()
+level_cryptic_helm_isles.append(level_cryptic_isles[-1])
 
 shop_owners = ["Cranky", "Funky", "Candy"]
 shop_cryptic = [
@@ -282,12 +289,13 @@ hint_distribution = {
     HintType.HelmOrder: 2,  # must have one on the path
     HintType.FullShop: 8,
     HintType.MoveLocation: 7,  # must be placed before you can buy the move
-    HintType.DirtPatch: 0,
+    # HintType.DirtPatch: 0,
     HintType.BLocker: 3,  # must be placed on the path and before the level they hint
     HintType.TroffNScoff: 0,
     HintType.KongLocation: 2,  # must be placed before you find them and placed in a door of a free kong
-    HintType.MedalsRequired: 1,
+    # HintType.MedalsRequired: 1,
     HintType.Entrance: 8,
+    HintType.KeyLocation: -1  # Fixed number equal to the number of keys to be obtained over the seed
 }
 HINT_CAP = 35  # There are this many total slots for hints
 
@@ -311,14 +319,17 @@ def compileHints(spoiler: Spoiler):
         valid_types.append(HintType.TroffNScoff)
     if spoiler.settings.kong_rando:
         valid_types.append(HintType.KongLocation)
-    if spoiler.settings.coin_door_open == "need_both" or spoiler.settings.coin_door_open == "need_rw":
-        valid_types.append(HintType.MedalsRequired)
+    # if spoiler.settings.coin_door_open == "need_both" or spoiler.settings.coin_door_open == "need_rw":
+    #     valid_types.append(HintType.MedalsRequired)
     if spoiler.settings.shuffle_loading_zones == "all":
         # In entrance rando, we care more about T&S than B. Locker
         temp = hint_distribution[HintType.BLocker]
         hint_distribution[HintType.BLocker] = max(1, hint_distribution[HintType.TroffNScoff])  # Always want a helm hint in there
         hint_distribution[HintType.TroffNScoff] = temp
         valid_types.append(HintType.Entrance)
+    if Types.Key in spoiler.settings.shuffled_location_types:
+        valid_types.append(HintType.KeyLocation)
+        hint_distribution[HintType.KeyLocation] = len(spoiler.settings.krool_keys_required)  # Always hint each key once
 
     # Make sure we have exactly 35 hints placed
     hint_count = 0
@@ -330,11 +341,15 @@ def compileHints(spoiler: Spoiler):
     # Fill extra hints if we need them
     while hint_count < HINT_CAP:
         filler_type = random.choice(valid_types)
+        if filler_type == HintType.KeyLocation:
+            continue  # Always have a fixed number of key location hints
         hint_distribution[filler_type] += 1
         hint_count += 1
     # Remove random hints if we went over the cap
     while hint_count > HINT_CAP:
         removed_type = random.choice(valid_types)
+        if removed_type == HintType.KeyLocation:
+            continue  # Always have a fixed number of key location hints
         if hint_distribution[removed_type] > 0:
             hint_distribution[removed_type] -= 1
             hint_count -= 1
@@ -396,7 +411,7 @@ def compileHints(spoiler: Spoiler):
                 hint_for_location = [hint for hint in hints if hint.level == level and hint.kong == kong][0]  # Should only match one
                 progression_hint_locations.append(hint_for_location)
 
-    # Now place hints by type from most-restrictive to least restrictive. Usually anything we want on the player's path should get placed first
+    # Now place hints by type from most-restrictive to least restrictive. Usually anything we want on the player's path should get placed first    
     # Kongs should be hinted before they're available and should only be hinted to free Kongs, making them very restrictive
     hinted_kongs = []
     placed_kong_hints = 0
@@ -497,6 +512,61 @@ def compileHints(spoiler: Spoiler):
         associated_hint = f"The Blast-O-Matic can be disabled by using {kong_helm_text}."
         hint_location.hint_type = HintType.HelmOrder
         UpdateHint(hint_location, associated_hint)
+
+    # Key location hints should be placed at or before the level they are for (e.g. Key 4 shows up in level 4 lobby or earlier)
+    if hint_distribution[HintType.KeyLocation] > 0:
+        keys_required = []
+        key_locations = {}
+        # Find the Key Items that are required in order of Key #
+        if Events.JapesKeyTurnedIn in spoiler.settings.krool_keys_required:
+            keys_required.append(Items.JungleJapesKey)
+        if Events.AztecKeyTurnedIn in spoiler.settings.krool_keys_required:
+            keys_required.append(Items.AngryAztecKey)
+        if Events.FactoryKeyTurnedIn in spoiler.settings.krool_keys_required:
+            keys_required.append(Items.FranticFactoryKey)
+        if Events.GalleonKeyTurnedIn in spoiler.settings.krool_keys_required:
+            keys_required.append(Items.GloomyGalleonKey)
+        if Events.ForestKeyTurnedIn in spoiler.settings.krool_keys_required:
+            keys_required.append(Items.FungiForestKey)
+        if Events.CavesKeyTurnedIn in spoiler.settings.krool_keys_required:
+            keys_required.append(Items.CrystalCavesKey)
+        if Events.CastleKeyTurnedIn in spoiler.settings.krool_keys_required:
+            keys_required.append(Items.CreepyCastleKey)
+        if Events.HelmKeyTurnedIn in spoiler.settings.krool_keys_required:
+            keys_required.append(Items.HideoutHelmKey)
+        # Find the locations of the Keys
+        for location_id, location in LocationList.items():
+            if location.item in keys_required:
+                key_locations[location.item] = location
+        # In Key order, place hints for each required key given their location
+        for key in keys_required:  # This should always match hint_distribution[HintType.KeyLocation]
+            location = key_locations[key]
+            key_item = ItemList[key]
+            kong_index = location.kong
+            # Boss locations actually have a specific kong, go look it up
+            if location.kong == Kongs.any and location.type == Types.Key:
+                    kong_index = spoiler.settings.boss_kongs[location.level]
+            if spoiler.settings.wrinkly_hints == "cryptic":
+                level_name = random.choice(level_cryptic_helm_isles[location.level])
+                kong_name = random.choice(kong_cryptic[kong_index])
+            else:
+                level_name = level_list_helm_isles[location.level]
+                kong_name = kong_list[kong_index]
+            # Find the levels are are before the level this key is for
+            hintable_levels = []
+            for order, level in spoiler.settings.level_order.items():  # We don't know what order the level order is stored in, unfortunately
+                if order <= key_item.index:
+                    hintable_levels.append(level)
+            # Pick a random hint location in any of the hintable levels
+            hint_location = getRandomHintLocation(levels=hintable_levels)
+            # If in the unfathomably rare situation all doors are unavailable, just pick a random door
+            # This might be something like Key 1 needing a hint and all level 1 hint doors are taken
+            #   This situation isn't that scary because Key 1 is likely in a very small set of locations
+            if hint_location is None:
+                hint_location = getRandomHintLocation()
+            message = f"{key_item.name} can be acquired with {kong_name} in {level_name}."
+            hint_location.hint_type = HintType.KeyLocation
+            UpdateHint(hint_location, message)
 
     # Moves should be hinted before they're available
     moves_hinted_and_lobbies = {}  # Avoid putting a hint for the same move in the same lobby twice
@@ -811,19 +881,19 @@ def compileHints(spoiler: Spoiler):
         UpdateHint(hint_location, associated_hint)
 
     # Dirt patch hints are already garbage anyway - no restrictions here
-    for i in range(hint_distribution[HintType.DirtPatch]):
-        dirt_patch_name = random.choice(spoiler.dirt_patch_placement)
-        hint_location = getRandomHintLocation()
-        message = f"There is a dirt patch located at {dirt_patch_name}"
-        hint_location.hint_type = HintType.DirtPatch
-        UpdateHint(hint_location, message)
+    # for i in range(hint_distribution[HintType.DirtPatch]):
+    #     dirt_patch_name = random.choice(spoiler.dirt_patch_placement)
+    #     hint_location = getRandomHintLocation()
+    #     message = f"There is a dirt patch located at {dirt_patch_name}"
+    #     hint_location.hint_type = HintType.DirtPatch
+    #     UpdateHint(hint_location, message)
 
     # Very useless hint, can be found at Cranky's anyway
-    for i in range(hint_distribution[HintType.MedalsRequired]):
-        hint_location = getRandomHintLocation()
-        message = f"{spoiler.settings.medal_requirement} medals are required to access Jetpac."
-        hint_location.hint_type = HintType.MedalsRequired
-        UpdateHint(hint_location, message)
+    # for i in range(hint_distribution[HintType.MedalsRequired]):
+    #     hint_location = getRandomHintLocation()
+    #     message = f"{spoiler.settings.medal_requirement} medals are required to access Jetpac."
+    #     hint_location.hint_type = HintType.MedalsRequired
+    #     UpdateHint(hint_location, message)
 
     # Finally, place our joke hints
     for i in range(hint_distribution[HintType.Joke]):
