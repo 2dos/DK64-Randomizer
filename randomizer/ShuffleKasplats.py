@@ -210,7 +210,7 @@ def ShuffleKasplats(LogicVariables):
         # Check each kong to see if placing it here produces a valid world
         success = False
         for kong in kongs:
-            LogicVariables.kasplat_map[location] = kong  # ANOTHER IDEA: take this location and set the kong to this kong too
+            LogicVariables.kasplat_map[location] = kong
             # Assuming Successful placement, remove kong
             level_kongs[level].remove(kong)
             success = True
