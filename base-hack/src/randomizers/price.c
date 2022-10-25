@@ -44,19 +44,37 @@ void alter_price(int purchase_type, int purchase_value, int kong, int level, int
 				break;
 			case PURCHASE_FLAG:
 				{
-					int tbarrel_flags[] = {FLAG_TBARREL_DIVE,FLAG_TBARREL_ORANGE,FLAG_TBARREL_BARREL,FLAG_TBARREL_VINE};
-					for (int i = 0; i < sizeof(tbarrel_flags)/4; i++) {
-						if (purchase_value == tbarrel_flags[i]) {
-							write = Rando.tbarrel_prices[i];
+					int subtype = getMoveProgressiveFlagType(purchase_value);
+					if (subtype == 0) {
+						// Slam
+						write = Rando.slam_prices[MovesBase[0].simian_slam - 2];
+					} else if (subtype == 1) {
+						// Belt
+						write = Rando.ammo_belt_prices[MovesBase[0].ammo_belt - 1];
+					} else if (subtype == 2) {
+						// Ins Upgrade
+						int level = 0;
+						if (MovesBase[0].instrument_bitfield & 4) {
+							level = 2;
+						} else if (MovesBase[0].instrument_bitfield & 2) {
+							level = 1;
 						}
-					}
-					if (write == -1) {
-						if (purchase_value == FLAG_ABILITY_CAMERA) {
-							write = Rando.fairy_prices[0];
-						} else if (purchase_value == FLAG_ABILITY_SHOCKWAVE) {
-							write = Rando.fairy_prices[1];
-						} else if (purchase_value == -2) {
-							write = Rando.fairy_prices[0] + Rando.fairy_prices[1]; // Shockwave Camera Combo
+						write = Rando.instrument_upgrade_prices[level];
+					} else {
+						int tbarrel_flags[] = {FLAG_TBARREL_DIVE,FLAG_TBARREL_ORANGE,FLAG_TBARREL_BARREL,FLAG_TBARREL_VINE};
+						for (int i = 0; i < sizeof(tbarrel_flags)/4; i++) {
+							if (purchase_value == tbarrel_flags[i]) {
+								write = Rando.tbarrel_prices[i];
+							}
+						}
+						if (write == -1) {
+							if (purchase_value == FLAG_ABILITY_CAMERA) {
+								write = Rando.fairy_prices[0];
+							} else if (purchase_value == FLAG_ABILITY_SHOCKWAVE) {
+								write = Rando.fairy_prices[1];
+							} else if (purchase_value == -2) {
+								write = Rando.fairy_prices[0] + Rando.fairy_prices[1]; // Shockwave Camera Combo
+							}
 						}
 					}
 				}

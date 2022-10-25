@@ -709,6 +709,7 @@ void getNextMoveText(void) {
 			} else {
 				paad->lower_text = getTextPointer(0x27,bottom_item,0);
 			}
+			priceTransplant();
 		}
 		int timer = paad->timer;
 		paad->timer = timer - 1;

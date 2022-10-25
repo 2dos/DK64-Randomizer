@@ -36,6 +36,7 @@ void cFuncLoop(void) {
 		KasplatSpawnBitfield = 0;
 		shiftBrokenJapesPortal();
 		openCoinDoor();
+		priceTransplant();
 		if (CurrentMap == 0x50) {
 			good_eeprom = EEPROMType == 2;
 		}
