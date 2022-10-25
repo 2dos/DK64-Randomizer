@@ -373,7 +373,7 @@ class Settings:
         self.shuffled_location_types = []
         if self.shuffle_items:
             if not self.item_rando_list_selected:
-                self.shuffled_location_types = [Types.Banana, Types.Crown, Types.Blueprint, Types.Key, Types.Medal, Types.Coin]
+                self.shuffled_location_types = [Types.Shop, Types.Banana, Types.Crown, Types.Blueprint, Types.Key, Types.Medal, Types.Coin]
             else:
                 for item in self.item_rando_list_selected:
                     for type in Types:
