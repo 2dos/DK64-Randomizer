@@ -253,7 +253,7 @@ void initHack(int source) {
 			*(int*)(0x8074C1B8) = (int)&newCounterCode;
 			fixMusicRando();
 			// In-Level IGT
-			// *(int*)(0x8060DF28) = 0x0C000000 | (((int)&updateLevelIGT & 0xFFFFFF) >> 2); // Modify Function Call
+			*(int*)(0x8060DF28) = 0x0C000000 | (((int)&updateLevelIGT & 0xFFFFFF) >> 2); // Modify Function Call
 			*(int*)(0x806ABB0C) = 0x0C000000 | (((int)&printLevelIGT & 0xFFFFFF) >> 2); // Modify Function Call
 			*(short*)(0x806ABB32) = 106; // Adjust kong name height
 			// Disable Sniper Scope Overlay

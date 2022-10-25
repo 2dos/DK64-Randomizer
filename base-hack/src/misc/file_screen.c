@@ -709,6 +709,7 @@ int updateLevelIGT(void) {
 		StoredSettings.file_extra.level_igt[world] += diff;
 	}
 	previous_map_save = CurrentMap;
+	SaveToGlobal();
 	return new_igt;
 }
 
