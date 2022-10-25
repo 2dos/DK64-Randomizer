@@ -675,6 +675,8 @@ void initHack(int source) {
 				*(int*)(0x806F7F28) = 0x0C000000 | (((int)&keyGrabHook & 0xFFFFFF) >> 2); // Key Get Hook - Pre Flag
 				*(int*)(0x806F5564) = 0x0C000000 | (((int)&itemGrabHook & 0xFFFFFF) >> 2); // Item Get Hook - Post Flag
 				*(int*)(0x806BD798) = 0x0C000000 | (((int)&KLumsyText & 0xFFFFFF) >> 2); // K. Lumsy code hook
+				*(int*)(0x806A6CC0) = 0; // Prevent BP Despawn
+				*(int*)(0x806A6CDC) = 0; // Prevent BP Despawn
 				// BP Table
 				int bp_size = 0x28;
 				unsigned char* bp_write = dk_malloc(bp_size);
