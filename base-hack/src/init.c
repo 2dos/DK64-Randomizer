@@ -244,14 +244,9 @@ void initHack(int source) {
 			no_enemy_drops();
 			// Moves & Prices
 			fixTBarrelsAndBFI(1);
-			replace_moves();
-			price_rando();
-			if (!Rando.move_rando_on) {
-				moveTransplant();
-				if (!Rando.price_rando_on) {
-					priceTransplant();
-				}
-			}
+			// Place Move Data
+			moveTransplant();
+			priceTransplant();
 			if (Rando.disable_boss_kong_check) {
 				*(int*)(0x8064EC00) = 0x24020001;
 			}

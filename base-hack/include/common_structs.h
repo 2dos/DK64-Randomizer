@@ -832,7 +832,7 @@ typedef struct model2_collision_info {
 
 typedef struct move_rom_item {
 	/* 0x000 */ unsigned char move_master_data; // tttl lkkk. t = Type (0 = Moves, 1 = Slam, 2 = Guns, 3 = Ammo Belt, 4 = Instrument, 5 = Flag, 6 = GB, 7 = Vacant), l = move level (reduced by 1), k = kong
-	/* 0x001 */ unsigned char text_item;
+	/* 0x001 */ unsigned char price;
 	/* 0x002 */ short flag; // -1 = No Flag, -2 = Both Camera & Shockwave (Reserved)
 } move_rom_item;
 typedef struct move_block {

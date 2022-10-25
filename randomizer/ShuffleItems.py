@@ -24,6 +24,7 @@ class LocationSelection:
         location=None,
         name="",
         is_shop=False,
+        price=0,
         placement_index=0,
         can_have_item=True,
         can_place_item=True,
@@ -41,6 +42,7 @@ class LocationSelection:
         self.reward_spot = is_reward_point
         self.location = location
         self.is_shop = is_shop
+        self.price = price
         self.placement_index = placement_index
         self.can_have_item = can_have_item
         self.can_place_item = can_place_item
@@ -136,12 +138,14 @@ def ShuffleItems(spoiler: Spoiler):
                 old_flag = -1  # Irrelevant for shop locations
                 old_kong = item_location.kong
                 placement_index = item_location.placement_index
+            price = 0
             location_selection = LocationSelection(
                 vanilla_item=item_location.type,
                 flag=old_flag,
                 placement_data=placement_info,
                 is_reward_point=item_location.is_reward,
                 is_shop=item_location.type in (Types.Shop, Types.TrainingBarrel, Types.Shockwave),
+                price=1,  # TODO: Hook this up to logic and determined prices
                 placement_index=placement_index,
                 kong=old_kong,
                 location=location_enum,

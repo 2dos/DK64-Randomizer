@@ -50,12 +50,6 @@ int getMoveKong(int value) {
 	return value & 7; 
 }
 
-void updateProgressive(void) {
-	if (Rando.move_rando_on) {
-
-	}
-}
-
 move_block* getMoveBlock(void) {
 	int size = 0x200;
 	move_block* write_space = dk_malloc(size);
@@ -76,14 +70,18 @@ void moveTransplant(void) {
 				CrankyMoves_New[j][i].purchase_type = getMoveType(move_data->cranky_moves[j][i].move_master_data);
 				CrankyMoves_New[j][i].move_kong = getMoveKong(move_data->cranky_moves[j][i].move_master_data);
 				CrankyMoves_New[j][i].purchase_value = getMoveIndex((move_rom_item *)&move_data->cranky_moves[j][i]);
+				CrankyMoves_New[j][i].price = move_data->cranky_moves[j][i].price;
+				CrankyMoves_New[j][i].price = move_data->cranky_moves[j][i].price;
 
 				CandyMoves_New[j][i].purchase_type = getMoveType(move_data->candy_moves[j][i].move_master_data);
 				CandyMoves_New[j][i].move_kong = getMoveKong(move_data->candy_moves[j][i].move_master_data);
 				CandyMoves_New[j][i].purchase_value = getMoveIndex((move_rom_item *)&move_data->candy_moves[j][i]);
+				CandyMoves_New[j][i].price = move_data->candy_moves[j][i].price;
 
 				FunkyMoves_New[j][i].purchase_type = getMoveType(move_data->funky_moves[j][i].move_master_data);
 				FunkyMoves_New[j][i].move_kong = getMoveKong(move_data->funky_moves[j][i].move_master_data);
 				FunkyMoves_New[j][i].purchase_value = getMoveIndex((move_rom_item *)&move_data->funky_moves[j][i]);
+				FunkyMoves_New[j][i].price = move_data->funky_moves[j][i].price;
 			}
 		}
 		for (int i = 0; i < 4; i++) {
@@ -96,19 +94,6 @@ void moveTransplant(void) {
 		BFIMove_New.purchase_value = getMoveIndex((move_rom_item *)&move_data->bfi_move);
 	}
 	complex_free(move_data);
-}
-
-void replace_moves(void) {
-	if (Rando.move_rando_on) {
-		moveTransplant();
-		updateProgressive();
-	}
-}
-
-void cancelMoveSoftlock(void) {
-	if (Rando.move_rando_on) {
-
-	}
 }
 
 void progressiveChange(int flag) {

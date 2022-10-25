@@ -168,12 +168,7 @@ class Settings:
         self.shuffle_shops = None
 
         # The major setting for item randomization
-        # shuffle_items: str
-        # none
-        # phase1
-        # phase2
-        # phase2.1
-        self.shuffle_items = "phase2"
+        self.shuffle_items = True
 
         # In item rando, can any Kong collect any item?
         # free_trade_setting: str

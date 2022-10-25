@@ -30,14 +30,11 @@ extern void openCoinDoor(void);
 extern void qualityOfLife_fixes(void);
 extern void qualityOfLife_shorteners(void);
 extern void decouple_moves_fixes(void);
-extern void price_rando(void);
 extern void determine_krool_order(void);
 extern void replace_zones(int init_flag);
 extern void randomize_bosses(void);
 extern void alter_boss_key_flags(void);
 extern void displayNumberOnTns(void);
-extern void replace_moves(void);
-extern void updateProgressive(void);
 extern void moveTransplant(void);
 extern void priceTransplant(void);
 
@@ -57,7 +54,6 @@ extern void pre_turn_keys(void);
 extern void auto_turn_keys(void);
 extern void handle_WTI(void);
 extern void no_enemy_drops(void);
-extern void cancelMoveSoftlock(void);
 extern void adjust_galleon_water(void);
 
 extern int convertSubIDToIndex(short obj_index);

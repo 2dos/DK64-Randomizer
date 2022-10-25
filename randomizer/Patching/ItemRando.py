@@ -99,7 +99,7 @@ def place_randomized_items(spoiler: Spoiler):
                                 item_subindex = (item.new_flag & 0xFF) - 1
                             ROM().seek(write_space)
                             ROM().writeMultipleBytes(item_subtype << 5 | (item_subindex << 3) | item_kong, 1)
-                            ROM().writeMultipleBytes(0, 1)
+                            ROM().writeMultipleBytes(item.price, 1)
                             ROM().writeMultipleBytes(0xFFFF, 2)
                         else:
                             # Is Flagged Item
@@ -108,7 +108,7 @@ def place_randomized_items(spoiler: Spoiler):
                                 subtype = 6
                             ROM().seek(write_space)
                             ROM().writeMultipleBytes(subtype << 5, 1)
-                            ROM().writeMultipleBytes(0, 1)
+                            ROM().writeMultipleBytes(item.price, 1)
                             ROM().writeMultipleBytes(item.new_flag, 2)
                 elif not item.reward_spot:
                     for map_id in item.placement_data:

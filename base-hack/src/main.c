@@ -52,7 +52,6 @@ void cFuncLoop(void) {
 	if (CurrentMap == 0x50) {
 		colorMenuSky();
 	}
-	cancelMoveSoftlock();
 	fixDKFreeSoftlock();
 	callParentMapFilter();
 	recolorKongControl();
@@ -140,8 +139,6 @@ void cFuncLoop(void) {
 
 void earlyFrame(void) {
 	if (ObjectModel2Timer == 2) {
-		updateProgressive();
-		price_rando();
 		setFlag(FLAG_KROOL_INTRO_DK,1,2); // DK Phase Intro
 		setFlag(FLAG_KROOL_INTRO_TINY,1,2); // Tiny Phase Intro
 		if (CurrentMap == 0x22) {
@@ -181,11 +178,6 @@ void earlyFrame(void) {
 				initHelmTimer();
 			}
 			QueueHelmTimer = 0;
-		}
-	}
-	if ((CurrentMap == 5) || (CurrentMap == 1) || (CurrentMap == 0x19)) {
-		if ((CutsceneActive) && (CutsceneIndex == 2)) {
-			updateProgressive();
 		}
 	}
 	if (CurrentMap == 0x6F) { // Pufftoss

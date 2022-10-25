@@ -47,7 +47,7 @@ def writeMoveDataToROM(arr: list):
             if x["flag"] in flag_dict:
                 flag_index = flag_dict[x["flag"]]
             ROM().writeMultipleBytes(5 << 5, 1)
-            ROM().writeMultipleBytes(0, 1)
+            ROM().writeMultipleBytes(x["price"], 1)
             ROM().writeMultipleBytes(flag_index, 2)
         elif x["move_type"] is None:
             ROM().writeMultipleBytes(7 << 5, 1)
@@ -57,7 +57,7 @@ def writeMoveDataToROM(arr: list):
             move_types = ["special", "slam", "gun", "ammo_belt", "instrument"]
             data = move_types.index(x["move_type"]) << 5 | (x["move_lvl"] << 3) | x["move_kong"]
             ROM().writeMultipleBytes(data, 1)
-            ROM().writeMultipleBytes(0, 1)
+            ROM().writeMultipleBytes(x["price"], 1)
             ROM().writeMultipleBytes(0xFFFF, 2)
 
 

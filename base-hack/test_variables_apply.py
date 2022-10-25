@@ -1,4 +1,6 @@
 """Set debugging vars to the build."""
+import os
+
 set_variables = {
     "level_order_rando_on": 0,
     "level_order": [1, 5, 4, 0, 6, 2, 3],
@@ -228,10 +230,12 @@ with open("include/variable_space_structs.h", "r") as varspace:
 
 # Editor: https://docs.google.com/spreadsheets/d/1UokoarKY6C56otoHMRUDCCMveaGUm8bGTOnaxjxDPR0/edit#gid=0
 move_csv = "move_placement.csv"
-with open(move_csv, "r") as csv:
-    csv_lines = csv.readlines()
-    with open("rom/dk64-randomizer-base-dev.z64", "r+b") as rom:
-        rom.seek(0x1FEF000)
-        for x in csv_lines:
-            val = int(x.replace("\n", ""))
-            rom.write(val.to_bytes(4, "big"))
+permit = True  # Whether move csv overwrites data
+if os.path.exists(move_csv) and permit:
+    with open(move_csv, "r") as csv:
+        csv_lines = csv.readlines()
+        with open("rom/dk64-randomizer-base-dev.z64", "r+b") as rom:
+            rom.seek(0x1FEF000)
+            for x in csv_lines:
+                val = int(x.replace("\n", ""))
+                rom.write(val.to_bytes(4, "big"))

@@ -62,11 +62,11 @@ class Spoiler:
                 # Training Barrels
                 if self.settings.training_barrels == "normal":
                     for tbarrel_type in ["dive", "orange", "barrel", "vine"]:
-                        master_moves.append({"move_type": "flag", "flag": tbarrel_type})
+                        master_moves.append({"move_type": "flag", "flag": tbarrel_type, "price": 0})
             elif move_master_type == 2:
                 # BFI
                 if self.settings.shockwave_status == "vanilla":
-                    master_moves.append({"move_type": "flag", "flag": "camera_shockwave"})
+                    master_moves.append({"move_type": "flag", "flag": "camera_shockwave", "price": 0})
                 else:
                     master_moves.append({"move_type": None})
             self.move_data.append(master_moves)
@@ -549,10 +549,14 @@ class Spoiler:
                     # Use the item to find the data to write
                     updated_item = ItemList[location.item]
                     move_type = updated_item.movetype
+                    # Determine Price
+                    price = 0
+                    if location.item in self.settings.prices:
+                        price = self.settings.prices[location.item]
                     # Moves that are set with a single flag (e.g. training barrels, shockwave) are handled differently
                     if move_type == MoveTypes.Flag:
                         for kong_index in kong_indices:
-                            self.move_data[0][shop_index][kong_index][level_index] = {"move_type": "flag", "flag": updated_item.flag}
+                            self.move_data[0][shop_index][kong_index][level_index] = {"move_type": "flag", "flag": updated_item.flag, "price": price}
                     # This is for every other move typically purchased in a shop
                     else:
                         move_level = updated_item.index - 1
@@ -570,6 +574,7 @@ class Spoiler:
                                 "move_type": ["special", "slam", "gun", "ammo_belt", "instrument"][move_type],
                                 "move_lvl": move_level,
                                 "move_kong": move_kong,
+                                "price": price,
                             }
                 elif location.type == Types.Kong:
                     self.WriteKongPlacement(id, location.item)
@@ -577,9 +582,13 @@ class Spoiler:
                     # Use the item to find the data to write
                     updated_item = ItemList[location.item]
                     move_type = updated_item.movetype
+                    # Determine Price
+                    price = 0
+                    if location.item in self.settings.prices:
+                        price = self.settings.prices[location.item]
                     # Moves that are set with a single flag (e.g. training barrels, shockwave) are handled differently
                     if move_type == MoveTypes.Flag:
-                        self.move_data[1].append({"move_type": "flag", "flag": updated_item.flag})
+                        self.move_data[1].append({"move_type": "flag", "flag": updated_item.flag, "price": price})
                     # This is for every other move typically purchased in a shop
                     else:
                         move_level = updated_item.index - 1
@@ -589,15 +598,20 @@ class Spoiler:
                                 "move_type": ["special", "slam", "gun", "ammo_belt", "instrument"][move_type],
                                 "move_lvl": move_level,
                                 "move_kong": move_kong % 5,  # Shared moves are 5 but should be 0
+                                "price": price,
                             }
                         )
                 elif location.type == Types.Shockwave and self.settings.shockwave_status != "vanilla":
                     # Use the item to find the data to write
                     updated_item = ItemList[location.item]
                     move_type = updated_item.movetype
+                    # Determine Price
+                    price = 0
+                    if location.item in self.settings.prices:
+                        price = self.settings.prices[location.item]
                     # Moves that are set with a single flag (e.g. training barrels, shockwave) are handled differently
                     if move_type == MoveTypes.Flag:
-                        self.move_data[2].append({"move_type": "flag", "flag": updated_item.flag})
+                        self.move_data[2].append({"move_type": "flag", "flag": updated_item.flag, "price": price})
                     # This is for every other move typically purchased in a shop
                     else:
                         move_level = updated_item.index - 1
@@ -607,6 +621,7 @@ class Spoiler:
                                 "move_type": ["special", "slam", "gun", "ammo_belt", "instrument"][move_type],
                                 "move_lvl": move_level,
                                 "move_kong": move_kong % 5,  # Shared moves are 5 but should be 0
+                                "price": price,
                             }
                         ]
             # Uncomment for more verbose spoiler with all locations
