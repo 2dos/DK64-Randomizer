@@ -398,6 +398,10 @@ def patching_response(responded_data):
         ROM().seek(sav + 0x150)
         ROM().write(spoiler.settings.medal_requirement)
 
+    if spoiler.settings.medal_cb_req != 75:
+        ROM().seek(sav + 0x112)
+        ROM().write(spoiler.settings.medal_cb_req)
+
     if len(spoiler.settings.enemies_selected) == 0 and (spoiler.settings.enemy_rando or spoiler.settings.crown_enemy_rando != "off"):
         lst = []
         for enemy in EnemySelector:

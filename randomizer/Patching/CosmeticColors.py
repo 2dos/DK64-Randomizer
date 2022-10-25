@@ -200,7 +200,6 @@ def apply_cosmetic_colors(spoiler: Spoiler):
                 color_obj[f"{kong['kong']}"] = color
     spoiler.settings.colors = color_obj
     if len(color_palettes) > 0:
-        print(color_palettes)
         convertColors(color_palettes)
 
 

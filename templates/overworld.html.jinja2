@@ -317,9 +317,6 @@
                             Open Crown Door
                         </label>
                     </div>
-                    <div class="spacer"></div>
-                </div>
-                <div class="flex-container">
                     <div class="item-select">
                         <p class="select-title">Key 8 Door Requirements</p>
                         <select name="coin_door_open"
@@ -342,6 +339,8 @@
                             </option>
                         </select>
                     </div>
+                </div>
+                <div class="flex-container">
                     <div class="item-select">
                         <p class="select-title">Medals for Rareware Coin</p>
                         <input min="0"
@@ -355,6 +354,20 @@
                                title="Amount of Banana Medals Required for Jetpac/Rareware Coin."
                                default="15"
                                placeholder="15"/>
+                    </div>
+                    <div class="item-select">
+                        <p class="select-title">Medal Color Banana Requirement</p>
+                        <input min="1"
+                               max="100"
+                               name="medal_cb_req"
+                               id="medal_cb_req"
+                               style="width: 15%;"
+                               class="form-control center-div"
+                               type="number"
+                               data-toggle="tooltip"
+                               title="Amount of Colored Bananas required for Banana Medals."
+                               default="75"
+                               placeholder="75"/>
                     </div>
                 </div>
             </div>

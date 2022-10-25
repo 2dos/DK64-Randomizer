@@ -2,6 +2,8 @@
 from ui.generate_buttons import update_seed_text
 from ui.rando_options import (
     disable_barrel_modal,
+    disable_enemy_modal,
+    disable_items_modal,
     disable_boss_rando,
     disable_colors,
     disable_music,
@@ -32,6 +34,8 @@ disable_move_shuffles(None)
 max_randomized_blocker(None)
 max_randomized_troff(None)
 disable_barrel_modal(None)
+disable_enemy_modal(None)
+disable_items_modal(None)
 disable_boss_rando(None)
 hide_rgb(None)
 toggle_medals_box(None)

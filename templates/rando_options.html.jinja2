@@ -21,6 +21,7 @@
                         <input class="form-check-input"
                                type="checkbox"
                                name="enemy_rando"
+                               id="enemy_rando"
                                value="True"/>
                         Shuffle Enemies
                     </label>
@@ -186,7 +187,18 @@
                             Shuffle Colored Banana Locations
                         </label>
                     </div>
-                    <div class="spacer"></div>
+                    <div class="form-check form-switch item-switch">
+                        <label data-toggle="tooltip"
+                               title="Items are shuffled amongst eachother.">
+                            <input class="form-check-input"
+                                   type="checkbox"
+                                   name="shuffle_items"
+                                   id="shuffle_items"
+                                   value="True"/>
+                            Item Randomizer
+                        </label>
+                    {{ list_selector(itemRando, "item_rando_list", "ITEM RANDO SELECTOR", "This will open a popup that will let you customize what items are shuffled in the pool.&#10;This defaults to All options.") }}
+                    {# Remove end </div> as it's included in the macro for formatting #}
                 </div>
                 <div class="flex-container">
                     <div class="item-select">
@@ -321,28 +333,7 @@
                             </option>
                         </select>
                     </div>
-                    <div class="item-select">
-                        <p class="select-title">Item Randomizer</p>
-                        <select name="shuffle_items"
-                                id="shuffle_items"
-                                class="form-select"
-                                aria-label="Item Randomizer"
-                                data-toggle="tooltip"
-                                title="Items are shuffled amongst eachother.&#10;- Off: No Item Randomization takes place.&#10;- Phase 1: Medals, Keys, Crowns, Company Coins, Golden Bananas and Blueprints are shuffled amongst each other.&#10;- Phase 2: Phase 1 plus Moves (aka 'moves on GBs')&#10;- Phase 2.1: A lighter shuffle with Shops, GBs, Blueprints, and Keys shuffled.">
-                            <option id="none" selected value="none">
-                                Off
-                            </option>
-                            <option id="phase1" value="phase1">
-                                On (Phase 1)
-                            </option>
-                            <option id="phase2" value="phase2">
-                                On (Phase 2)
-                            </option>
-                            <option id="phase2.1" value="phase2.1">
-                                On (Phase 2.1)
-                            </option>
-                        </select>
-                    </div>
+                    <div class="spacer"></div>
                 </div>
             </div>
         </div>

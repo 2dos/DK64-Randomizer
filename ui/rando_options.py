@@ -69,6 +69,18 @@ def max_randomized_medals(event):
         medal_requirement.value = 40
 
 
+@bind("focusout", "medal_cb_req")
+def max_randomized_medals(event):
+    """Validate cb medal input on loss of focus."""
+    medal_cb_req = js.document.getElementById("medal_cb_req")
+    if not medal_cb_req.value:
+        medal_cb_req.value = 75
+    elif 1 > int(medal_cb_req.value):
+        medal_cb_req.value = 1
+    elif int(medal_cb_req.value) > 100:
+        medal_cb_req.value = 100
+
+
 def min_max(event, min, max):
     """Check if the data is within bounds of requirements.
 
@@ -378,6 +390,38 @@ def disable_barrel_modal(evt):
     disabled = True
     selector = js.document.getElementById("minigames_list_modal")
     if js.document.getElementById("bonus_barrel_rando").checked:
+        disabled = False
+    try:
+        if disabled:
+            selector.setAttribute("disabled", "disabled")
+        else:
+            selector.removeAttribute("disabled")
+    except AttributeError:
+        pass
+
+
+@bind("click", "enemy_rando")
+def disable_enemy_modal(evt):
+    """Disable Enemy Selector when Enemy Rando is off."""
+    disabled = True
+    selector = js.document.getElementById("enemies_modal")
+    if js.document.getElementById("enemy_rando").checked:
+        disabled = False
+    try:
+        if disabled:
+            selector.setAttribute("disabled", "disabled")
+        else:
+            selector.removeAttribute("disabled")
+    except AttributeError:
+        pass
+
+
+@bind("click", "shuffle_items")
+def disable_items_modal(evt):
+    """Disable Item Rando Selector when Item Rando is off."""
+    disabled = True
+    selector = js.document.getElementById("item_rando_list_modal")
+    if js.document.getElementById("shuffle_items").checked:
         disabled = False
     try:
         if disabled:
