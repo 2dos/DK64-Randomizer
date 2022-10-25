@@ -328,3 +328,9 @@ VineShowCode:
     ORI         at, at, 0xFFFF
     J           0x80698428
     AND         t8, v0, at
+
+SpriteFix:
+    SB      r0, 0x0 (t0)
+    ADDIU   t9, r0, 1
+    J       0x806A6710
+    SB      t9, 0x1 (t0)

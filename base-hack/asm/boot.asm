@@ -251,6 +251,9 @@ RarewareCoinEffectHook:
 PotionEffectHook:
 	J 	PotionEffect
 	NOP
+SpriteFixHook:
+	J 	SpriteFix
+	NOP
 
 loadExtraHooks:
 	LUI t3, hi(InstanceScriptHook)
@@ -611,6 +614,12 @@ loadExtraHooks:
 	LUI t4, 0x806F
 	SW t3, 0x7AF4 (t4) // Store Hook
 	SW r0, 0x7AF8 (t4) // Store NOP
+	
+	LUI t3, hi(SpriteFixHook)
+	LW t3, lo(SpriteFixHook) (t3)
+	LUI t4, 0x806A
+	SW t3, 0x6708 (t4) // Store Hook
+	SW r0, 0x670C (t4) // Store NOP
 
 	loadExtraHooks_4:
 
