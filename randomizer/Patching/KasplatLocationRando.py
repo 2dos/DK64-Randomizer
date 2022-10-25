@@ -31,7 +31,7 @@ def randomize_kasplat_locations(spoiler: Spoiler):
         Maps.FranticFactoryLobby,
         Maps.GloomyGalleonLobby,
     ]
-    if spoiler.settings.kasplat_location_rando:
+    if spoiler.settings.kasplat_rando:
         selected_kasplat_names = [name for name in spoiler.shuffled_kasplat_map.keys()]
         for cont_map_id in range(216):
             cont_map_spawner_address = js.pointer_addresses[16]["entries"][cont_map_id]["pointing_to"]

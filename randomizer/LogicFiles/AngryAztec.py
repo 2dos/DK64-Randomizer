@@ -34,8 +34,8 @@ LogicRegions = {
         LocationLogic(Locations.AztecChunkyMedal, lambda l: l.ColoredBananas[Levels.AngryAztec][Kongs.chunky] >= l.settings.medal_cb_req),
         LocationLogic(Locations.AztecDonkeyFreeLlama, lambda l: Events.LlamaFreed in l.Events),
         # If default damage can just walk to the bridge and take damage with any kong, otherwise need strong kong and to be donkey
-        LocationLogic(Locations.AztecKasplatSandyBridge, lambda l: not l.settings.kasplat_location_rando and l.coconut and ((l.strongKong and l.isdonkey) or l.settings.damage_amount == "default")),
-        LocationLogic(Locations.AztecKasplatOnTinyTemple, lambda l: not l.settings.kasplat_location_rando and l.jetpack and l.isdiddy),
+        LocationLogic(Locations.AztecKasplatSandyBridge, lambda l: not l.settings.kasplat_rando and l.coconut and ((l.strongKong and l.isdonkey) or l.settings.damage_amount == "default")),
+        LocationLogic(Locations.AztecKasplatOnTinyTemple, lambda l: not l.settings.kasplat_rando and l.jetpack and l.isdiddy),
     ], [], [
         TransitionFront(Regions.BetweenVinesByPortal, lambda l: l.vines or (l.istiny and l.twirl)),
         TransitionFront(Regions.TempleStart, lambda l: (l.peanut and l.isdiddy) or (l.grape and l.islanky)
@@ -66,7 +66,7 @@ LogicRegions = {
         LocationLogic(Locations.AztecDiddyRamGongs, lambda l: l.charge and l.jetpack and l.diddy),
         LocationLogic(Locations.AztecDiddyVultureRace, lambda l: l.jetpack and l.diddy),
         LocationLogic(Locations.AztecChunkyCagedBarrel, lambda l: l.hunkyChunky and l.ischunky and l.barrels, MinigameType.BonusBarrel),
-        LocationLogic(Locations.AztecKasplatNearLab, lambda l: not l.settings.kasplat_location_rando),
+        LocationLogic(Locations.AztecKasplatNearLab, lambda l: not l.settings.kasplat_rando),
     ], [
         Event(Events.FedTotem, lambda l: l.settings.high_req or (l.jetpack and l.peanut and l.Slam and l.diddy)),
     ], [
@@ -126,7 +126,7 @@ LogicRegions = {
 
     Regions.ChunkyTemple: Region("Chunky Temple", Levels.AngryAztec, False, TransitionFront(Regions.AngryAztecStart, lambda l: l.pineapple and l.ischunky), [
         LocationLogic(Locations.AztecChunky5DoorTemple, lambda l: l.pineapple and l.ischunky, MinigameType.BonusBarrel),
-        LocationLogic(Locations.AztecKasplatChunky5DT, lambda l: not l.settings.kasplat_location_rando and l.pineapple and l.ischunky),
+        LocationLogic(Locations.AztecKasplatChunky5DT, lambda l: not l.settings.kasplat_rando and l.pineapple and l.ischunky),
     ], [], [
         TransitionFront(Regions.AngryAztecMain, lambda l: True, Transitions.AztecChunkyToMain),
     ]),
@@ -154,7 +154,7 @@ LogicRegions = {
 
     Regions.LlamaTempleBack: Region("Llama Temple Back", Levels.AngryAztec, False, -1, [
         LocationLogic(Locations.AztecTinyLlamaTemple, lambda l: l.Slam and l.istiny),
-        LocationLogic(Locations.AztecKasplatLlamaTemple, lambda l: not l.settings.kasplat_location_rando),
+        LocationLogic(Locations.AztecKasplatLlamaTemple, lambda l: not l.settings.kasplat_rando),
     ], [], [
         TransitionFront(Regions.LlamaTemple, lambda l: True),
     ]),

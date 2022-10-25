@@ -122,7 +122,7 @@ LogicRegions = {
 
     Regions.FranticFactoryLobby: Region("Frantic Factory Lobby", Levels.DKIsles, True, None, [
         LocationLogic(Locations.IslesDonkeyInstrumentPad, lambda l: l.grab and l.bongos and l.donkey),
-        LocationLogic(Locations.IslesKasplatFactoryLobby, lambda l: not l.settings.kasplat_location_rando and l.punch and l.chunky),
+        LocationLogic(Locations.IslesKasplatFactoryLobby, lambda l: not l.settings.kasplat_rando and l.punch and l.chunky),
         LocationLogic(Locations.IslesBananaFairyFactoryLobby, lambda l: l.camera and l.punch and l.chunky),
     ], [], [
         TransitionFront(Regions.CrocodileIsleBeyondLift, lambda l: True, Transitions.IslesFactoryLobbyToMain),
@@ -131,7 +131,7 @@ LogicRegions = {
 
     Regions.GloomyGalleonLobby: Region("Gloomy Galleon Lobby", Levels.DKIsles, True, None, [
         LocationLogic(Locations.IslesTinyGalleonLobby, lambda l: l.chunky and l.superSlam and l.mini and l.twirl and l.tiny),
-        LocationLogic(Locations.IslesKasplatGalleonLobby, lambda l: not l.settings.kasplat_location_rando),
+        LocationLogic(Locations.IslesKasplatGalleonLobby, lambda l: not l.settings.kasplat_rando),
     ], [], [
         TransitionFront(Regions.IslesMain, lambda l: l.swim, Transitions.IslesGalleonLobbyToMain),
         TransitionFront(Regions.GloomyGalleonStart, lambda l: l.IsLevelEnterable(Levels.GloomyGalleon), Transitions.IslesToGalleon),
@@ -157,7 +157,7 @@ LogicRegions = {
     Regions.CrystalCavesLobby: Region("Crystal Caves Lobby", Levels.DKIsles, True, None, [
         LocationLogic(Locations.IslesDonkeyLavaBanana, lambda l: l.punch and l.chunky and l.strongKong and l.donkey),
         LocationLogic(Locations.IslesDiddyInstrumentPad, lambda l: l.jetpack and l.guitar and l.diddy),
-        LocationLogic(Locations.IslesKasplatCavesLobby, lambda l: not l.settings.kasplat_location_rando and l.punch and l.chunky),
+        LocationLogic(Locations.IslesKasplatCavesLobby, lambda l: not l.settings.kasplat_rando and l.punch and l.chunky),
     ], [], [
         TransitionFront(Regions.IslesMainUpper, lambda l: True, Transitions.IslesCavesLobbyToMain),
         TransitionFront(Regions.CrystalCavesMain, lambda l: l.IsLevelEnterable(Levels.CrystalCaves), Transitions.IslesToCaves),
@@ -165,7 +165,7 @@ LogicRegions = {
 
     Regions.CreepyCastleLobby: Region("Creepy Castle Lobby", Levels.DKIsles, True, None, [
         LocationLogic(Locations.IslesLankyCastleLobby, lambda l: l.punch and l.chunky and l.balloon and l.islanky and l.barrels, MinigameType.BonusBarrel),
-        LocationLogic(Locations.IslesKasplatCastleLobby, lambda l: not l.settings.kasplat_location_rando and l.coconut and l.donkey),
+        LocationLogic(Locations.IslesKasplatCastleLobby, lambda l: not l.settings.kasplat_rando and l.coconut and l.donkey),
     ], [], [
         TransitionFront(Regions.IslesMain, lambda l: True, Transitions.IslesCastleLobbyToMain),
         TransitionFront(Regions.CreepyCastleMain, lambda l: l.IsLevelEnterable(Levels.CreepyCastle), Transitions.IslesToCastle),
@@ -173,7 +173,7 @@ LogicRegions = {
 
     Regions.HideoutHelmLobby: Region("Hideout Helm Lobby", Levels.DKIsles, True, None, [
         LocationLogic(Locations.IslesChunkyHelmLobby, lambda l: l.gorillaGone and l.ischunky, MinigameType.BonusBarrel),
-        LocationLogic(Locations.IslesKasplatHelmLobby, lambda l: not l.settings.kasplat_location_rando and l.scope and l.coconut and l.donkey),
+        LocationLogic(Locations.IslesKasplatHelmLobby, lambda l: not l.settings.kasplat_rando and l.scope and l.coconut and l.donkey),
     ], [], [
         TransitionFront(Regions.IslesMain, lambda l: True),
         TransitionFront(Regions.HideoutHelmStart, lambda l: l.gorillaGone and l.chunky and l.IsLevelEnterable(Levels.HideoutHelm)),
