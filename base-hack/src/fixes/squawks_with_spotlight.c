@@ -19,13 +19,11 @@ void shine_light_at_kong(short height_variance, short min_follow_distance, unsig
     
     initCharSpawnerActor();
     distance_x = (CurrentActorPointer_0->xPos) - (PlayerPointer_0->xPos);
-    *(float*)(0x807FF710) = distance_x;
     distance_z = (CurrentActorPointer_0->zPos) - (PlayerPointer_0->zPos);
     distance_x = dk_sqrt(distance_x * distance_x + distance_z * distance_z);
     distance = distance_x;
     
     //TODO: remove this line
-    *(float*)(0x807FF714) = distance_z;
 
     if (distance < 0) {
         distance = -1;
@@ -56,13 +54,11 @@ void shine_light_at_kong(short height_variance, short min_follow_distance, unsig
     if (distance < 0) {
         uVar2 = 0;
     }
-    *(float*)(0x807FF718) = distance;
-    *(int*)(0x807FF71C) = min_follow_distance;
     setActorSpeed(CurrentActorPointer_0,(uVar2 + uVar2));
                         /* 0 if spotlight fish, height_variance = 10 if squawks */
-    actor_height_variance = height_variance * 0.3;
+    actor_height_variance = height_variance * 0.03;
     unkLightFunc_1((PlayerPointer_0->zPos), 0x1e, *(float*)(0x8075c398), 0x42c80000, param_3 | 0x2000); //8072a920
-    int movement_cycle_height = determineXRatioMovement((ObjectModel2Timer * 0x280000) >> 0x10);
+    float movement_cycle_height = determineXRatioMovement((ObjectModel2Timer * 0x280000) >> 0x10);
     CurrentActorPointer_0->yPos = CurrentActorPointer_0->yPos + (actor_height_variance * movement_cycle_height);
     unkLightFunc_2(); //806c6530
     renderActor(CurrentActorPointer_0, 0);

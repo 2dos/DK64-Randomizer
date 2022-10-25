@@ -257,8 +257,8 @@ extern void internalKasplatCode(int has_bp);
 extern void spriteActorGenericCode(float unk0);
 extern void assignGIFToActor(void* paad, void* sprite, int scale_f);
 
-extern void unkLightFunc_0(void* actor, int unk0, char unk1, unsigned char unk2); //80604cbc
-extern void unkLightFunc_1(int unk0, unsigned char unk1, float unk2, unsigned int unk3, int unk4); //8072a920
+extern void unkLightFunc_0(actorData* actor, int unk0, char unk1, char unk2); //80604cbc
+extern void unkLightFunc_1(int unk0, char unk1, float unk2, unsigned int unk3, unsigned int unk4); //8072a920
 extern void unkLightFunc_2(void); //806c6530
 
 //vanilla data
