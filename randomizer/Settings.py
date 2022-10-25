@@ -581,6 +581,15 @@ class Settings:
                     ItemList[item_index].playthrough = True
         if self.win_condition == "all_medals":
             ItemList[Items.BananaMedal].playthrough = True
+        if self.win_condition == "all_keys":
+            ItemList[Items.JungleJapesKey].playthrough = True
+            ItemList[Items.AngryAztecKey].playthrough = True
+            ItemList[Items.FranticFactoryKey].playthrough = True
+            ItemList[Items.GloomyGalleonKey].playthrough = True
+            ItemList[Items.FungiForestKey].playthrough = True
+            ItemList[Items.CrystalCavesKey].playthrough = True
+            ItemList[Items.CreepyCastleKey].playthrough = True
+            ItemList[Items.HideoutHelmKey].playthrough = True
         if not self.crown_door_open:
             ItemList[Items.BattleCrown].playthrough = True
 

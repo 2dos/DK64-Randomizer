@@ -89,6 +89,14 @@ void checkSeedVictory(void) {
                     }
                 }
                 beatGame();
+                break;
+            case GOAL_ALLKEYS:
+                for (int i = 0; i < 8; i++) {
+                    if (!checkFlagDuplicate(getKeyFlag(i), 0)) {
+                        return;
+                    }
+                }
+                beatGame();
             break;
         }
     }

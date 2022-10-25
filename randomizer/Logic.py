@@ -544,6 +544,8 @@ class LogicVarHolder:
             return len(self.Blueprints) >= 40
         elif self.settings.win_condition == "all_medals":
             return self.BananaMedals >= 40
+        elif self.settings.win_condition == "all_keys":
+            return self.JapesKey and self.AztecKey and self.FactoryKey and self.GalleonKey and self.ForestKey and self.CavesKey and self.CastleKey and self.HelmKey
         else:
             return False
 

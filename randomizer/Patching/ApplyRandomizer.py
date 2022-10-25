@@ -376,7 +376,7 @@ def patching_response(responded_data):
         ROM().write(1)
 
     # Win Condition
-    conditions = ["beat_krool", "get_key8", "all_fairies", "all_blueprints", "all_medals", "poke_snap"]
+    conditions = ["beat_krool", "get_key8", "all_fairies", "all_blueprints", "all_medals", "poke_snap", "all_keys"]
     if spoiler.settings.win_condition in conditions:
         condition_index = conditions.index(spoiler.settings.win_condition)
         ROM().seek(sav + 0x11D)

@@ -395,6 +395,10 @@ def ParePlaythrough(settings, PlaythroughLocations):
                 if settings.win_condition != "all_medals":
                     sphere.locations.remove(locationId)
                 continue
+            if location.item in (Items.JungleJapesKey, Items.AngryAztecKey, Items.FranticFactoryKey, Items.GloomyGalleonKey, Items.FungiForestKey, Items.CrystalCavesKey, Items.CreepyCastleKey, Items.HideoutHelmKey):
+                if settings.win_condition != "all_keys":
+                    sphere.locations.remove(locationId)
+                continue
             if location.item is not None and ItemList[location.item].type == Types.Blueprint:
                 if settings.win_condition != "all_blueprints":
                     sphere.locations.remove(locationId)
