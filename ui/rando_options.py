@@ -432,6 +432,23 @@ def disable_items_modal(evt):
         pass
 
 
+@bind("click", "item_rando_list_selected")
+def disable_coupled_camera_shockwave(evt):
+    """Disable Item Rando Selector when Item Rando is off."""
+    disabled = False
+    selector = document.getElementById("item_rando_list_selected").options
+    shockwave = document.getElementById("shockwave_status_shuffled")
+    for option in selector:
+        if option.value == "shop" and option.selected:
+            if shockwave.selected is True:
+                document.getElementById("shockwave_status_shuffled_decoupled").selected = True
+            shockwave.setAttribute("disabled", "disabled")
+            disabled = True
+        else:
+            if not disabled:
+                shockwave.removeAttribute("disabled")
+
+
 @bind("click", "apply_preset")
 def preset_select_changed(event):
     """Trigger a change of the form via the JSON templates."""
