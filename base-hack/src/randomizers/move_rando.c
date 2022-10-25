@@ -4,11 +4,23 @@
 #define CRANKY 5
 #define CANDY 0x19
 
+static unsigned short slam_flag = FLAG_SHOPMOVE_SLAM_0;
+static unsigned short belt_flag = FLAG_SHOPMOVE_BELT_0;
+static unsigned short ins_flag = FLAG_SHOPMOVE_INS_0;
+
 int getMoveType(int value) {
 	int ret = (value >> 5) & 7;
 	if (ret == 7) {
 		return -1;
 	} else {
+		if (ret == PURCHASE_INSTRUMENT) {
+			int index = ((value >> 3) & 3) + 1;
+			if (index > 1) {
+				return 5;
+			}
+		} else if ((ret == PURCHASE_SLAM) || (ret == PURCHASE_AMMOBELT)) {
+			return 5;
+		}
 		return ret;
 	}
 }
@@ -18,161 +30,29 @@ int getMoveIndex(move_rom_item* item) {
 	if ((item_type == PURCHASE_FLAG) || (item_type == PURCHASE_GB)) {
 		return item->flag;
 	}
-	return ((item->move_master_data >> 3) & 3) + 1;
+	int index = ((item->move_master_data >> 3) & 3) + 1;
+	if (item_type == PURCHASE_SLAM) {
+		slam_flag += 1;
+		return slam_flag - 1;
+	} else if (item_type == PURCHASE_AMMOBELT) {
+		belt_flag += 1;
+		return belt_flag - 1;
+	} else if (item_type == PURCHASE_INSTRUMENT) {
+		if (index > 1) {
+			ins_flag += 1;
+			return ins_flag - 1;
+		}
+	}
+	return index;
 }
 
 int getMoveKong(int value) {
 	return value & 7; 
 }
 
-static char stored_slam_level = 0;
-static char stored_belt_level = 0;
-static char stored_instrument_level = 0;
-static char stored_melons = 0;
-
-void checkProgressive(
-		char* previous_storage,
-		char* current_storage,
-		unsigned char* eep_storage,
-		int lower_threshold,
-		int upper_threshold,
-		int level,
-		int purchase_type,
-		int purchase_level,
-		int is_bitfield,
-		int progressive_floor) {
-	int pass = 0;
-	if (is_bitfield) {
-		if ((!(*previous_storage & (1 << lower_threshold))) && (*current_storage & (1 << lower_threshold))) {
-			pass = 1;
-		}
-	} else {
-		if ((*previous_storage <= lower_threshold) && (*current_storage >= upper_threshold)) {
-			pass = 1;
-		}
-	}
-	if (pass && ((CurrentMap != 0x22) && (CurrentMap != 0x50))) {
-		// Just purchased Move
-		int purchased = 0;
-		if (level >= 0 && level < LEVEL_COUNT) {
-			purchased = 1;
-		}
-		int shop = 0;
-		if (CurrentMap == FUNKY) {
-			shop = 1;
-		} else if (CurrentMap == CANDY) {
-			shop = 2;
-		}
-		*eep_storage = (level << 4) | (purchased << 2) | shop;
-		SaveToGlobal();
-	}
-	pass = 0;
-	if (is_bitfield) {
-		if (*current_storage & (1 << lower_threshold)) {
-			pass = 1;
-		}
-	} else {
-		if (*current_storage > lower_threshold) {
-			pass = 1;
-		}
-	}
-	if (pass) {
-		int encoded_sss_location = *eep_storage;
-		int shop = encoded_sss_location & 3;
-		int purchased = (encoded_sss_location >> 2) & 1;
-		int level = (encoded_sss_location >> 4) & 7;
-		for (int i = 0; i < LEVEL_COUNT; i++) {
-			for (int j = 0; j < 5; j++) {
-				if (CrankyMoves_New[j][i].purchase_type == purchase_type) {
-					if ((purchase_type != PURCHASE_INSTRUMENT) || (CrankyMoves_New[j][i].purchase_value != 1)) {
-						if ((purchased) && (shop == 0) && (level == i)) {
-							CrankyMoves_New[j][i].purchase_type = PURCHASE_NOTHING;
-						} else {
-							if (CrankyMoves_New[j][i].purchase_value > progressive_floor) {
-								CrankyMoves_New[j][i].purchase_value = purchase_level;
-							}
-						}
-					}
-				}
-				if (CandyMoves_New[j][i].purchase_type == purchase_type) {
-					if ((purchase_type != PURCHASE_INSTRUMENT) || (CandyMoves_New[j][i].purchase_value != 1)) {
-						if ((purchased) && (shop == 2) && (level == i)) {
-							CandyMoves_New[j][i].purchase_type = PURCHASE_NOTHING;
-						} else {
-							if (CandyMoves_New[j][i].purchase_value > progressive_floor) {
-								CandyMoves_New[j][i].purchase_value = purchase_level;
-							}
-						}
-					}
-				}
-				if (FunkyMoves_New[j][i].purchase_type == purchase_type) {
-					if ((purchase_type != PURCHASE_INSTRUMENT) || (FunkyMoves_New[j][i].purchase_value != 1)) {
-						if ((purchased) && (shop == 1) && (level == i)) {
-							FunkyMoves_New[j][i].purchase_type = PURCHASE_NOTHING;
-						} else {
-							if (FunkyMoves_New[j][i].purchase_value > progressive_floor) {
-								FunkyMoves_New[j][i].purchase_value = purchase_level;
-							}
-						}
-					}
-				}
-			}
-		}
-	}
-	*previous_storage = *current_storage;
-}
-
 void updateProgressive(void) {
 	if (Rando.move_rando_on) {
-		int level = getWorld(CurrentMap,0);
-		checkProgressive(
-			&stored_slam_level,
-			&MovesBase[0].simian_slam,
-			&StoredSettings.file_extra.location_sss_purchased,
-			1,
-			2,
-			level,
-			PURCHASE_SLAM,
-			3,
-			0,
-			0
-		);
-		checkProgressive(
-			&stored_belt_level,
-			&MovesBase[0].ammo_belt,
-			&StoredSettings.file_extra.location_ab1_purchased,
-			0,
-			1,
-			level,
-			PURCHASE_AMMOBELT,
-			2,
-			0,
-			0
-		);
-		checkProgressive(
-			&stored_instrument_level,
-			&MovesBase[0].instrument_bitfield,
-			&StoredSettings.file_extra.location_ug1_purchased,
-			1,
-			1,
-			level,
-			PURCHASE_INSTRUMENT,
-			3,
-			1,
-			1
-		);
-		checkProgressive(
-			&stored_melons,
-			&CollectableBase.Melons,
-			&StoredSettings.file_extra.location_mln_purchased,
-			2,
-			3,
-			level,
-			PURCHASE_INSTRUMENT,
-			4,
-			0,
-			1
-		);
+
 	}
 }
 
@@ -186,6 +66,9 @@ move_block* getMoveBlock(void) {
 }
 
 void moveTransplant(void) {
+	slam_flag = FLAG_SHOPMOVE_SLAM_0;
+	belt_flag = FLAG_SHOPMOVE_BELT_0;
+	ins_flag = FLAG_SHOPMOVE_INS_0;
 	move_block* move_data = getMoveBlock();
 	if (move_data) {
 		for (int i = 0; i < LEVEL_COUNT; i++) {
@@ -224,26 +107,101 @@ void replace_moves(void) {
 
 void cancelMoveSoftlock(void) {
 	if (Rando.move_rando_on) {
-		if (CurrentMap == CRANKY) {
-			if ((TBVoidByte & 0x30) != 0) {
-				if ((CutsceneActive) && (CutsceneIndex == 2) && (CutsceneTimer == 80)) {
-					//cancelPausedCutscene();
+
+	}
+}
+
+void progressiveChange(int flag) {
+	if (!checkFlagDuplicate(flag, 0)) {
+		int subtype = getMoveProgressiveFlagType(flag);
+		if (subtype == 0) {
+			// Slam
+			int slam_level = MovesBase[0].simian_slam + 1;
+			for (int i = 0; i < 5; i++) {
+				MovesBase[i].simian_slam = slam_level;
+			}
+		} else if (subtype == 1) {
+			// Belt
+			int belt_level = MovesBase[0].ammo_belt + 1;
+			for (int i = 0; i < 5; i++) {
+				MovesBase[i].ammo_belt = belt_level;
+			}
+		} else if (subtype == 2) {
+			// Instrument upgrade
+			int ins_level = 0;
+			for (int i = 1; i < 4; i++) {
+				if (MovesBase[0].instrument_bitfield & (1 << i)) {
+					ins_level = i;
 				}
 			}
-		} else if ((CurrentMap == FUNKY) || (CurrentMap == CANDY)) {
-			// int* potion = findActorWithType(320);
-			// if (potion) {
-			// 	if ((TBVoidByte & 0x30) == 0) {
-			// 		if ((CutsceneActive) && (CutsceneIndex == 2) && (CutsceneTimer == 80)) {
-			// 			pauseCutscene();
-			// 		}
-			// 	} else {
-			// 		cancelPausedCutscene();
-			// 		TBVoidByte |= 0x30;
-			// 	}
-			// }
+			if (ins_level > 1) {
+				if (CollectableBase.Melons < 3) {
+					CollectableBase.Melons = 3;
+				}
+			} else {
+				if (CollectableBase.Melons < 2) {
+					CollectableBase.Melons = 2;
+				}
+			}
+			for (int i = 0; i < 5; i++) {
+				MovesBase[i].instrument_bitfield |= (1 << (ins_level + 1));
+			}
 		}
 	}
+}
+
+int getMoveProgressiveFlagType(int flag) {
+	int slams[] = {FLAG_SHOPMOVE_SLAM_0, FLAG_SHOPMOVE_SLAM_1, FLAG_ITEM_SLAM_0, FLAG_ITEM_SLAM_1};
+	int belts[] = {FLAG_SHOPMOVE_BELT_0, FLAG_SHOPMOVE_BELT_1, FLAG_ITEM_BELT_0, FLAG_ITEM_BELT_1};
+	int instruments[] = {
+		FLAG_SHOPMOVE_INS_0,
+		FLAG_SHOPMOVE_INS_1,
+		FLAG_SHOPMOVE_INS_2,
+		FLAG_ITEM_INS_0,
+		FLAG_ITEM_INS_1,
+		FLAG_ITEM_INS_2,
+	};
+	for (int i = 0; i < 4; i++) {
+		if (flag == slams[i]) {
+			return 0;
+		}
+	}
+	for (int i = 0; i < 4; i++) {
+		if (flag == belts[i]) {
+			return 1;
+		}
+	}
+	for (int i = 0; i < 6; i++) {
+		if (flag == instruments[i]) {
+			return 2;
+		}
+	}
+	return -1;
+}
+
+int writeProgressiveText(int flag, int* top_text, int* bottom_text) {
+	int subtype = getMoveProgressiveFlagType(flag);
+	if (subtype == 0) {
+		// Slam
+		*top_text = SimianSlamNames[(int)MovesBase[0].simian_slam].name;
+		*bottom_text = SimianSlamNames[(int)MovesBase[0].simian_slam].latin;
+		return 1;
+	} else if (subtype == 1) {
+		// Belt
+		*top_text = AmmoBeltNames[(int)MovesBase[0].ammo_belt];
+		return 1;
+	} else if (subtype == 2) {
+		// Instrument upgrade
+		int level = 2;
+		if (MovesBase[0].instrument_bitfield & 8) {
+			level = 4;
+		} else if (MovesBase[0].instrument_bitfield & 4) {
+			level = 3;
+		}
+		*top_text = InstrumentUpgNames[level];
+		return 1;
+	}
+	return 0;
 }
 
 void getNextMovePurchase(shop_paad* paad, KongBase* movedata) {
@@ -360,6 +318,7 @@ void purchaseMove(shop_paad* paad) {
 		case PURCHASE_GB:
 			MovesBase[(int)paad->kong].gb_count[getWorld(CurrentMap,1)] += 1;
 		case PURCHASE_FLAG:
+			progressiveChange(paad->flag);
 			setFlagDuplicate(paad->flag, 1, 0);
 		break;
 	}
@@ -441,6 +400,7 @@ void setLocation(purchase_struct* purchase_data) {
 			setFlagDuplicate(FLAG_ABILITY_CAMERA,1,0);
 		} else if (p_type == PURCHASE_FLAG) {
 			// IsFlag
+			progressiveChange(purchase_data->purchase_value);
 			setFlagDuplicate(purchase_data->purchase_value,1,0);
 		} else if (p_type == PURCHASE_GB) {
 			// IsFlag + GB Update
@@ -695,10 +655,12 @@ void getNextMoveText(void) {
 						if (p_flag == -2) {
 							top_item = 59;
 						} else {
-							int tied_flags[] = {FLAG_TBARREL_DIVE,FLAG_TBARREL_ORANGE,FLAG_TBARREL_BARREL,FLAG_TBARREL_VINE,FLAG_ABILITY_CAMERA,FLAG_ABILITY_SHOCKWAVE};
-							for (int i = 0; i < sizeof(tied_flags) / 4; i++) {
-								if (tied_flags[i] == p_flag) {
-									top_item = 53 + i;
+							if (!writeProgressiveText(p_flag, &top_item, &bottom_item)) {
+								int tied_flags[] = {FLAG_TBARREL_DIVE,FLAG_TBARREL_ORANGE,FLAG_TBARREL_BARREL,FLAG_TBARREL_VINE,FLAG_ABILITY_CAMERA,FLAG_ABILITY_SHOCKWAVE};
+								for (int i = 0; i < sizeof(tied_flags) / 4; i++) {
+									if (tied_flags[i] == p_flag) {
+										top_item = 53 + i;
+									}
 								}
 							}
 						}
@@ -863,6 +825,26 @@ void showPostMoveText(shop_paad* paad, KongBase* kong_base, int intro_flag) {
 						for (int i = 0; i < sizeof(move_flags)/4; i++) {
 							if (move_flags[i] == paad->flag) {
 								text_item_1 = 0x24 + i;
+							}
+						}
+						int subtype = getMoveProgressiveFlagType(paad->flag);
+						if (subtype == 0) {
+							// Slam
+							text_item_1 = Explanation_Slam[(int)MovesBase[0].simian_slam];
+							text_file = 8;
+						} else if (subtype == 1) {
+							// Belt
+							textParameter = getRefillCount(2,0);
+							text_item_1 = 0x15;
+							text_file = 7;
+						} else if (subtype == 2) {
+							// Shop upgrade
+							text_item_1 = 0x13;
+							text_file = 9;
+							if ((paad->melons + 1) == CollectableBase.Melons) {
+								text_item_1 = 0x14;
+							} else {
+								text_file = 9;
 							}
 						}
 					}

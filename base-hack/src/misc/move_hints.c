@@ -57,30 +57,39 @@ int getHintTextIndex(int shop_owner, shop_paad* shop_data) {
 		} else if (purchase_type == 5) {
 			int move_flags[] = {FLAG_TBARREL_DIVE, FLAG_TBARREL_ORANGE, FLAG_TBARREL_BARREL, FLAG_TBARREL_VINE, FLAG_ABILITY_CAMERA, FLAG_ABILITY_SHOCKWAVE, -2};
 			base = 0;
-			for (int i = 0; i < sizeof(move_flags)/4; i++) {
-				if (shop_data->flag == move_flags[i]) {
-					base = 30 + i;
+			int subtype = getMoveProgressiveFlagType(shop_data->flag);
+			if (subtype == 0) {
+				base = 15;
+			} else if (subtype == 1) {
+				base = 23;
+			} else if (subtype == 2) {
+				base = 29;
+			} else {
+				for (int i = 0; i < sizeof(move_flags)/4; i++) {
+					if (shop_data->flag == move_flags[i]) {
+						base = 30 + i;
+					}
 				}
-			}
-			if (base == 0) {
-				int flag = shop_data->flag;
-				if ((flag >= FLAG_BP_JAPES_DK_HAS) && (flag < (FLAG_BP_JAPES_DK_HAS + 40))) {
-					base = 41;
-				} else if ((flag >= FLAG_MEDAL_JAPES_DK) && (flag < (FLAG_MEDAL_JAPES_DK + 40))) {
-					base = 39;
-				} else if (flag == FLAG_COLLECTABLE_NINTENDOCOIN) {
-					base = 42;
-				} else if (flag == FLAG_COLLECTABLE_RAREWARECOIN) {
-					base = 43;
-				} else if ((flag >= FLAG_CROWN_JAPES) && (flag < (FLAG_CROWN_JAPES + 10))) {
-					base = 38;
-				} else if (flag == FLAG_COLLECTABLE_BEAN) {
-					base = 44;
-				} else {
-					// Key
-					for (int i = 0; i < 8; i++) {
-						if (flag == getKeyFlag(i)) {
-							base = 40;
+				if (base == 0) {
+					int flag = shop_data->flag;
+					if ((flag >= FLAG_BP_JAPES_DK_HAS) && (flag < (FLAG_BP_JAPES_DK_HAS + 40))) {
+						base = 41;
+					} else if ((flag >= FLAG_MEDAL_JAPES_DK) && (flag < (FLAG_MEDAL_JAPES_DK + 40))) {
+						base = 39;
+					} else if (flag == FLAG_COLLECTABLE_NINTENDOCOIN) {
+						base = 42;
+					} else if (flag == FLAG_COLLECTABLE_RAREWARECOIN) {
+						base = 43;
+					} else if ((flag >= FLAG_CROWN_JAPES) && (flag < (FLAG_CROWN_JAPES + 10))) {
+						base = 38;
+					} else if (flag == FLAG_COLLECTABLE_BEAN) {
+						base = 44;
+					} else {
+						// Key
+						for (int i = 0; i < 8; i++) {
+							if (flag == getKeyFlag(i)) {
+								base = 40;
+							}
 						}
 					}
 				}

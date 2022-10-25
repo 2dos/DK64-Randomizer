@@ -412,7 +412,7 @@ void* checkMove(short* flag, void* fba, int source) {
         int item_index = 0;
         int item_kong = 0;
         if ((source == 1) && (!checkFlagDuplicate(flag_index, 0)) && (Gamemode == 6)) {
-            if ((flag_index == 0x290) || (flag_index == 0x291)) {
+            if ((flag_index == FLAG_ITEM_SLAM_0) || (flag_index == FLAG_ITEM_SLAM_1)) {
                 // Slam
                 MovesBase[0].simian_slam += 1;
                 item_index = MovesBase[0].simian_slam;
@@ -421,7 +421,7 @@ void* checkMove(short* flag, void* fba, int source) {
                 }
                 spawn_overlay = 1;
                 item_type = 1;
-            } else if ((flag_index == 0x292) || (flag_index == 0x293)) {
+            } else if ((flag_index == FLAG_ITEM_BELT_0) || (flag_index == FLAG_ITEM_BELT_1)) {
                 // Belt
                 MovesBase[0].ammo_belt += 1;
                 item_index = MovesBase[0].ammo_belt;
@@ -430,9 +430,9 @@ void* checkMove(short* flag, void* fba, int source) {
                 }
                 spawn_overlay = 1;
                 item_type = 3;
-            } else if ((flag_index >= 0x294) && (flag_index <= 0x296)) {
+            } else if ((flag_index >= FLAG_ITEM_INS_0) && (flag_index <= FLAG_ITEM_INS_2)) {
                 // Instrument Upgrade
-                item_index = 1;
+                item_index = 0;
                 for (int i = 1; i < 4; i++) {
                     if (MovesBase[0].instrument_bitfield & (1 << i)) {
                         item_index = i;
@@ -449,7 +449,12 @@ void* checkMove(short* flag, void* fba, int source) {
                     if (CollectableBase.Melons < 3) {
                         CollectableBase.Melons = 3;
                     }
+                } else {
+                    if (CollectableBase.Melons < 2) {
+                        CollectableBase.Melons = 2;
+                    }
                 }
+                item_index += 1;
             } else if ((flag_index >= FLAG_TBARREL_DIVE) && (flag_index <= FLAG_TBARREL_BARREL)) {
                 spawn_overlay = 1;
                 item_type = 5;

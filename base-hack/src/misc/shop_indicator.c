@@ -55,6 +55,9 @@ int doesKongPossessMove(int purchase_type, int purchase_value, int kong) {
 								is_shared = 1;
 							}
 						}
+						if (getMoveProgressiveFlagType(purchase_value) > -1) {
+							is_shared = 1;
+						}
 						if (is_shared) {
 							return 6;
 						}
