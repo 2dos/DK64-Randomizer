@@ -16,3 +16,4 @@ class HintType(IntEnum):
     KongLocation = auto()
     MedalsRequired = auto()
     Entrance = auto()
+    KeyLocation = auto()
