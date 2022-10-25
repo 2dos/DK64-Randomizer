@@ -318,6 +318,7 @@ class Settings:
         self.randomize_pickups = False
         self.random_medal_requirement = False
         self.medal_requirement = 15
+        self.medal_cb_req = 75
         self.bananaport_rando = "off"
         self.activate_all_bananaports = False
         self.shop_indicator = False
@@ -349,6 +350,7 @@ class Settings:
         self.wrinkly_location_rando = False
         self.tns_location_rando = False
         self.minigames_list_selected = []
+        self.item_rando_list_selected = []
         self.misc_changes_selected = []
         self.enemies_selected = []
         self.helm_hurry = False
@@ -369,19 +371,17 @@ class Settings:
         kongs = GetKongs()
 
         self.shuffled_location_types = []
-        if self.shuffle_items == "phase1":
-            self.shuffled_location_types = [Types.Banana, Types.Crown, Types.Blueprint, Types.Key, Types.Medal, Types.Coin]
-        if self.shuffle_items == "phase2":
-            self.shuffled_location_types = [Types.Shop, Types.Banana, Types.Crown, Types.Blueprint, Types.Key, Types.Medal, Types.Coin]
-            if self.shockwave_status not in ("vanilla", "start_with"):
+        if self.shuffle_items:
+            if not self.item_rando_list_selected:
+                self.shuffled_location_types = [Types.Shop, Types.Banana, Types.Crown, Types.Blueprint, Types.Key, Types.Medal, Types.Coin]
+            else:
+                for item in self.item_rando_list_selected:
+                    for type in Types:
+                        if type.name == item.capitalize():
+                            self.shuffled_location_types.append(type)
+            if Types.Shop in self.shuffled_location_types and self.shockwave_status not in ("vanilla", "start_with"):
                 self.shuffled_location_types.append(Types.Shockwave)
-            if self.training_barrels != "normal":
-                self.shuffled_location_types.append(Types.TrainingBarrel)
-        if self.shuffle_items == "phase2.1":
-            self.shuffled_location_types = [Types.Shop, Types.Banana, Types.Blueprint, Types.Key]
-            if self.shockwave_status not in ("vanilla", "start_with"):
-                self.shuffled_location_types.append(Types.Shockwave)
-            if self.training_barrels != "normal":
+            if Types.Shop in self.shuffled_location_types and self.training_barrels != "normal":
                 self.shuffled_location_types.append(Types.TrainingBarrel)
         self.progressives_locked_in_shops = False  # Technical limitation: for now (hopefully) progressive moves must be found in shops
 

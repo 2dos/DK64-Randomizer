@@ -25,13 +25,13 @@ LogicRegions = {
         TransitionFront(Regions.AngryAztecOasis, lambda l: l.vines or (l.istiny and l.twirl)),
     ]),
     Regions.AngryAztecOasis: Region("Angry Aztec Oasis", Levels.AngryAztec, True, None, [
-        # Banana Medals are usually placed in the starting region of the level, but it's impossible to get 75 cbs for any kong before getting to the oasis
+        # Banana Medals are usually placed in the starting region of the level, but it might be impossible to get the cbs needed for any kong before getting to the oasis
         # and there are worlds where you have access to the oasis but don't have vines
-        LocationLogic(Locations.AztecDonkeyMedal, lambda l: l.ColoredBananas[Levels.AngryAztec][Kongs.donkey] >= 75),
-        LocationLogic(Locations.AztecDiddyMedal, lambda l: l.ColoredBananas[Levels.AngryAztec][Kongs.diddy] >= 75),
-        LocationLogic(Locations.AztecLankyMedal, lambda l: l.ColoredBananas[Levels.AngryAztec][Kongs.lanky] >= 75),
-        LocationLogic(Locations.AztecTinyMedal, lambda l: l.ColoredBananas[Levels.AngryAztec][Kongs.tiny] >= 75),
-        LocationLogic(Locations.AztecChunkyMedal, lambda l: l.ColoredBananas[Levels.AngryAztec][Kongs.chunky] >= 75),
+        LocationLogic(Locations.AztecDonkeyMedal, lambda l: l.ColoredBananas[Levels.AngryAztec][Kongs.donkey] >= l.settings.medal_cb_req),
+        LocationLogic(Locations.AztecDiddyMedal, lambda l: l.ColoredBananas[Levels.AngryAztec][Kongs.diddy] >= l.settings.medal_cb_req),
+        LocationLogic(Locations.AztecLankyMedal, lambda l: l.ColoredBananas[Levels.AngryAztec][Kongs.lanky] >= l.settings.medal_cb_req),
+        LocationLogic(Locations.AztecTinyMedal, lambda l: l.ColoredBananas[Levels.AngryAztec][Kongs.tiny] >= l.settings.medal_cb_req),
+        LocationLogic(Locations.AztecChunkyMedal, lambda l: l.ColoredBananas[Levels.AngryAztec][Kongs.chunky] >= l.settings.medal_cb_req),
         LocationLogic(Locations.AztecDonkeyFreeLlama, lambda l: Events.LlamaFreed in l.Events),
         # If default damage can just walk to the bridge and take damage with any kong, otherwise need strong kong and to be donkey
         LocationLogic(Locations.AztecKasplatSandyBridge, lambda l: not l.settings.kasplat_location_rando and l.coconut and ((l.strongKong and l.isdonkey) or l.settings.damage_amount == "default")),
