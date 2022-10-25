@@ -59,7 +59,7 @@ typedef struct collision_info {
 } collision_info;
 
 #define COLLISION_LIMIT 50
-#define DEFS_LIMIT 137
+#define DEFS_LIMIT 138
 static collision_info object_collisions[COLLISION_LIMIT] = {};
 static actor_behaviour_def actor_defs[DEFS_LIMIT] = {};
 
@@ -139,7 +139,7 @@ void initCollectableCollision(void) {
     index = addCollisionInfo(index, 0x008E, COLLECTABLE_CRYSTAL, KONG_NONE, 0x79, 0, 0); // Crystal
     index = addCollisionInfo(index, 0x0057, COLLECTABLE_NONE, KONG_NONE, 0x2F, 0, 0); // Watermelon
     index = addCollisionInfo(index, 0x0098, COLLECTABLE_FILM, KONG_NONE, 0, 0, 0); // Film
-    index = addCollisionInfo(index, 0x0090, COLLECTABLE_MEDAL, KONG_NONE, 0, 0, 0); // Medal
+    index = addCollisionInfo(index, 0x0090, COLLECTABLE_MEDAL, KONG_NONE, 154, 0, 0); // Medal
     index = addCollisionInfo(index, 0x00EC, COLLECTABLE_RACECOIN, KONG_NONE, 0x36, 0, 0); // Race Coin
     index = addCollisionInfo(index, 0x013C, COLLECTABLE_NONE, KONG_NONE, 0x48, 0, 0); // Boss Key
     index = addCollisionInfo(index, 0x018D, COLLECTABLE_NONE, KONG_NONE, 0x56, 0, 0); // Battle Crown
@@ -195,6 +195,7 @@ void initActorDefs(void) {
     index = addActorDef(index, 161, 0xF2, 0x80689F80, 0x80689FEC);
     index = addActorDef(index, 162, 0xF3, 0x80689F80, 0x80689FEC);
     index = addActorDef(index, 153, 0, 0x80689F80, 0x8068A10C);
+    index = addActorDef(index, 154, 0, 0x80689F80, 0x8068A10C);
     *(unsigned short*)(0x8068926A) = getHi(&actor_defs[0].actor_type);
     *(unsigned short*)(0x8068927A) = getLo(&actor_defs[0].actor_type);
     *(unsigned short*)(0x806892D2) = getHi(&actor_defs[0].actor_type);
@@ -235,7 +236,7 @@ void spawnBossReward(int object, int x_f, int y_f, int z_f, int unk0, int cutsce
     if (new_obj != 0) {
         object = new_obj;
     }
-    unsigned char sprite_obj[] = {75,76,77,78,79,151,152};
+    unsigned char sprite_obj[] = {75,76,77,78,79,151,152,154};
     int is_sprite = 0;
     for (int i = 0; i < sizeof(sprite_obj); i++) {
         if (sprite_obj[i] == object) {
@@ -765,6 +766,10 @@ void ninCoinCode(void) {
 
 void rwCoinCode(void) {
     spriteCode(0x8C);
+}
+
+void medalCode(void) {
+    spriteCode(0x3C);
 }
 
 void NothingCode(void) {

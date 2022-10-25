@@ -43,6 +43,7 @@ actor_indexes = {
     Types.TrainingBarrel: 162,
     Types.Shockwave: 162,
     Types.NoItem: 153,
+    Types.Medal: 154,
 }
 
 

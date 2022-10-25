@@ -17,6 +17,7 @@ names_length = 0xA0
 general_buffer = 0x9A
 end_buffer = 0xCC
 
+
 class CreditItem:
     """Credit Squish Item."""
 
@@ -30,6 +31,7 @@ class CreditItem:
         elif subtype == "longheader":
             self.duration = names_length * 2
         self.text = text
+
 
 main_devs = [
     CreditItem("top", "header", ["Randomizer Developers"]),
@@ -46,10 +48,10 @@ assistant_devs = [
 
 beta_testers = [
     CreditItem("top", "header", ["Beta Testers"]),
-    CreditItem("left", "normal", ["Adam Whitmore","Auphonium","CandyBoots","ChelseyXLynn","ChristianVega64"]),
-    CreditItem("right", "normal", ["Connor75","CornCobx0","Fuzzyness","KaptainKohl", "KiwiKiller67"]),
-    CreditItem("left", "normal", ["Nukkuler","Obiyo","Revven","Riley"]),
-    CreditItem("bottom", "normal", ["SirSmackStrikesBack","UsedPizza","VidyaJames","Wex","Zorulda"]),
+    CreditItem("left", "normal", ["Adam Whitmore", "Auphonium", "CandyBoots", "ChelseyXLynn", "ChristianVega64"]),
+    CreditItem("right", "normal", ["Connor75", "CornCobx0", "Fuzzyness", "KaptainKohl", "KiwiKiller67"]),
+    CreditItem("left", "normal", ["Nukkuler", "Obiyo", "Revven", "Riley"]),
+    CreditItem("bottom", "normal", ["SirSmackStrikesBack", "UsedPizza", "VidyaJames", "Wex", "Zorulda"]),
 ]
 
 bbb_contest = [
@@ -59,7 +61,7 @@ bbb_contest = [
 
 additional_thanks = [
     CreditItem("top", "header", ["Additional Thanks"]),
-    CreditItem("left", "normal", ["Game Developers"," ","Rareware Ltd","Nintendo"]),
+    CreditItem("left", "normal", ["Game Developers", " ", "Rareware Ltd", "Nintendo"]),
     CreditItem("bottom", "normal", ["Crankys Lab Developer", "Isotarge"]),
     CreditItem("right", "normal", ["SpikeVegeta", "KeiperDontCare"]),
 ]
@@ -79,6 +81,7 @@ if len(basher_names) > 0 and is_v2_release:
     end_sequence_cards.extend(bbb_contest)
 end_sequence_cards.extend(additional_thanks)
 end_sequence_cards.extend(links)
+
 
 def createTextFile(directory):
     """Create the text file associated with end sequence."""

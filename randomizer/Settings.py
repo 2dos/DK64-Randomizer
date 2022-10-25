@@ -678,7 +678,7 @@ class Settings:
             if Types.Key in self.shuffled_location_types:
                 self.valid_locations[Types.Key] = shuffledLocations
             if Types.Medal in self.shuffled_location_types:
-                self.valid_locations[Types.Medal] = [location for location in shuffledLocations if not LocationList[location].is_reward]
+                self.valid_locations[Types.Medal] = shuffledLocations
             if Types.Coin in self.shuffled_location_types:
                 self.valid_locations[Types.Coin] = shuffledLocations
 
