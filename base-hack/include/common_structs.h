@@ -1315,3 +1315,8 @@ typedef struct menu_controller_paad {
 	/* 0x016 */ char prevent_action;
 	/* 0x017 */ char selected_action;
 } menu_controller_paad;
+
+typedef struct spotlight_hold_paad {
+	/* 0x000 */ short unk0;
+	/* 0x002 */ char unk2;
+} spotlight_hold_paad;
