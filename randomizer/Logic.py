@@ -28,7 +28,7 @@ from randomizer.Enums.Time import Time
 from randomizer.Lists.Location import Location, LocationList
 from randomizer.Lists.MapsAndExits import Maps
 from randomizer.Lists.ShufflableExit import GetShuffledLevelIndex
-from randomizer.Prices import CanBuy, GetPriceOfMoveItem
+from randomizer.Prices import CanBuy, GetPriceAtLocation
 
 STARTING_SLAM = 1  # Currently we're assuming you always start with 1 slam
 
@@ -446,10 +446,11 @@ class LogicVarHolder:
             if not added:
                 collectible.added = True
 
-    def PurchaseShopItem(self, location: Location):
+    def PurchaseShopItem(self, location_id):
         """Purchase items from shops and subtract price from logical coin counts."""
+        location = LocationList[location_id]
         if location.item is not None and location.item is not Items.NoItem:
-            price = GetPriceOfMoveItem(location.item, self.settings, self.Slam, self.AmmoBelts, self.InstUpgrades)
+            price = GetPriceAtLocation(self.settings, location_id, location, self.Slam, self.AmmoBelts, self.InstUpgrades)
             if price is None:  # This probably shouldn't happen but I think it's harmless
                 return  # TODO: solve this
             # print("BuyShopItem for location: " + location.name)

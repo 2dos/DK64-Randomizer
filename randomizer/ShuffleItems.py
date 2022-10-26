@@ -139,13 +139,15 @@ def ShuffleItems(spoiler: Spoiler):
                 old_kong = item_location.kong
                 placement_index = item_location.placement_index
             price = 0
+            if item_location.type == Types.Shop:
+                price = spoiler.settings.prices[location_enum]
             location_selection = LocationSelection(
                 vanilla_item=item_location.type,
                 flag=old_flag,
                 placement_data=placement_info,
                 is_reward_point=item_location.is_reward,
                 is_shop=item_location.type in (Types.Shop, Types.TrainingBarrel, Types.Shockwave),
-                price=1,  # TODO: Hook this up to logic and determined prices
+                price=price,
                 placement_index=placement_index,
                 kong=old_kong,
                 location=location_enum,

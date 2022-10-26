@@ -239,7 +239,7 @@ class Spoiler:
                     elif location.item == Items.ProgressiveInstrumentUpgrade:
                         price = f"{self.settings.prices[Items.ProgressiveInstrumentUpgrade][0]}->{self.settings.prices[Items.ProgressiveInstrumentUpgrade][1]}->{self.settings.prices[Items.ProgressiveInstrumentUpgrade][2]}"
                 else:
-                    price = str(self.settings.prices[location.item])
+                    price = str(self.settings.prices[location_id])
                 humanspoiler["Items"]["Shops"][location.name] = item.name + f" ({price})"
             # Filter everything else by level - each location conveniently contains a level-identifying bit in their name
             else:
@@ -551,8 +551,8 @@ class Spoiler:
                     move_type = updated_item.movetype
                     # Determine Price
                     price = 0
-                    if location.item in self.settings.prices:
-                        price = self.settings.prices[location.item]
+                    if id in self.settings.prices:
+                        price = self.settings.prices[id]
                     # Moves that are set with a single flag (e.g. training barrels, shockwave) are handled differently
                     if move_type == MoveTypes.Flag:
                         for kong_index in kong_indices:
@@ -582,10 +582,8 @@ class Spoiler:
                     # Use the item to find the data to write
                     updated_item = ItemList[location.item]
                     move_type = updated_item.movetype
-                    # Determine Price
+                    # Determine Price to be zero because this is a training barrel
                     price = 0
-                    if location.item in self.settings.prices:
-                        price = self.settings.prices[location.item]
                     # Moves that are set with a single flag (e.g. training barrels, shockwave) are handled differently
                     if move_type == MoveTypes.Flag:
                         self.move_data[1].append({"move_type": "flag", "flag": updated_item.flag, "price": price})
@@ -605,10 +603,8 @@ class Spoiler:
                     # Use the item to find the data to write
                     updated_item = ItemList[location.item]
                     move_type = updated_item.movetype
-                    # Determine Price
+                    # Determine Price to be zero because BFI is free
                     price = 0
-                    if location.item in self.settings.prices:
-                        price = self.settings.prices[location.item]
                     # Moves that are set with a single flag (e.g. training barrels, shockwave) are handled differently
                     if move_type == MoveTypes.Flag:
                         self.move_data[2].append({"move_type": "flag", "flag": updated_item.flag, "price": price})

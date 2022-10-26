@@ -23,14 +23,24 @@ from randomizer.Enums.Transitions import Transitions
 from randomizer.Enums.Types import Types
 from randomizer.Enums.Warps import Warps
 from randomizer.Lists.Item import ItemList, KongFromItem
-from randomizer.Lists.Location import LocationList, TrainingBarrelLocations, DonkeyMoveLocations, DiddyMoveLocations, LankyMoveLocations, TinyMoveLocations, ChunkyMoveLocations, SharedMoveLocations
+from randomizer.Lists.Location import (
+    LocationList,
+    SharedShopLocations,
+    TrainingBarrelLocations,
+    DonkeyMoveLocations,
+    DiddyMoveLocations,
+    LankyMoveLocations,
+    TinyMoveLocations,
+    ChunkyMoveLocations,
+    SharedMoveLocations,
+)
 from randomizer.Lists.MapsAndExits import Maps
 from randomizer.Lists.Minigame import BarrelMetaData, MinigameRequirements
 from randomizer.Lists.ShufflableExit import GetLevelShuffledToIndex, GetShuffledLevelIndex
 from randomizer.Lists.Warps import BananaportVanilla
 from randomizer.Logic import STARTING_SLAM, LogicVarHolder, LogicVariables
 from randomizer.LogicClasses import Sphere, TransitionFront
-from randomizer.Prices import GetMaxForKong, GetPriceOfMoveItem
+from randomizer.Prices import GetMaxForKong
 from randomizer.Settings import Settings
 from randomizer.ShuffleBarrels import BarrelShuffle
 from randomizer.ShuffleBosses import ShuffleBossesBasedOnOwnedItems
@@ -77,6 +87,7 @@ def GetAccessibleLocations(settings, ownedItems, searchType=SearchMode.GetReacha
         purchaseList = []
     accessible = []
     newLocations = []
+    newItems = []  # debug code utility
     playthroughLocations = []
     eventAdded = True
     # Continue doing searches until nothing new is found
@@ -94,6 +105,7 @@ def GetAccessibleLocations(settings, ownedItems, searchType=SearchMode.GetReacha
                 if location.type == Types.Shop and searchType == SearchMode.GetReachableWithControlledPurchases and locationId not in purchaseList:
                     continue
                 ownedItems.append(location.item)
+                newItems.append(location.item)
                 # If we want to generate the playthrough and the item is a playthrough item, add it to the sphere
                 if searchType == SearchMode.GeneratePlaythrough and ItemList[location.item].playthrough:
                     # Banana hoard in a sphere by itself
@@ -111,6 +123,7 @@ def GetAccessibleLocations(settings, ownedItems, searchType=SearchMode.GetReacha
         newLocations = []
         # Update based on new items
         LogicVariables.Update(ownedItems)
+        newItems = []
         if len(sphere.locations) > 0:
             if searchType == SearchMode.GeneratePlaythrough:
                 sphere.seedBeaten = LogicVariables.WinConditionMet()
@@ -176,10 +189,10 @@ def GetAccessibleLocations(settings, ownedItems, searchType=SearchMode.GetReacha
                             if location_obj.item is not None and (kong != location_obj.kong and not settings.free_trade_items):
                                 continue
                         # Every shop item has a price
-                        elif location_obj.type == Types.Shop:
+                        elif location_obj.type == Types.Shop and location_obj.item is not None and location_obj.item != Items.NoItem:
                             # In search mode GetReachableWithControlledPurchases, only allowed to purchase what is passed in as "ownedItems"
                             if searchType != SearchMode.GetReachableWithControlledPurchases or location.id in purchaseList:
-                                LogicVariables.PurchaseShopItem(LocationList[location.id])
+                                LogicVariables.PurchaseShopItem(location.id)
                         elif location.id == Locations.NintendoCoin:
                             LogicVariables.Coins[Kongs.donkey] -= 2  # Subtract 2 coins for arcade lever
                         newLocations.append(location.id)
@@ -244,6 +257,7 @@ def GetAccessibleLocations(settings, ownedItems, searchType=SearchMode.GetReacha
         return accessible
     elif searchType == SearchMode.CheckBeatable or searchType == SearchMode.CheckSpecificItemReachable:
         # If the search has completed and the target item has not been found, then we failed to find it
+        settings.debug_accessible = accessible
         return False
     elif searchType == SearchMode.GeneratePlaythrough:
         return playthroughLocations
@@ -282,7 +296,7 @@ def VerifyWorldWithWorstCoinUsage(settings):
         reachable = GetAccessibleLocations(settings, [], SearchMode.GetReachableWithControlledPurchases, locationsToPurchase)
         # Subtract the price of the chosen location from maxCoinsNeeded
         itemsToPurchase = [LocationList[x].item for x in locationsToPurchase]
-        coinsSpent = GetMaxCoinsSpent(settings, itemsToPurchase)
+        coinsSpent = GetMaxCoinsSpent(settings, locationsToPurchase)
         coinsNeeded = [maxCoins[kong] - coinsSpent[kong] for kong in range(0, 5)]
         coinsBefore = LogicVariables.Coins.copy()
         # print("Coins owned during search: " + str(coinsBefore))
@@ -395,19 +409,6 @@ def ParePlaythrough(settings, PlaythroughLocations):
                 if settings.win_condition != "all_medals":
                     sphere.locations.remove(locationId)
                 continue
-            if location.item in (
-                Items.JungleJapesKey,
-                Items.AngryAztecKey,
-                Items.FranticFactoryKey,
-                Items.GloomyGalleonKey,
-                Items.FungiForestKey,
-                Items.CrystalCavesKey,
-                Items.CreepyCastleKey,
-                Items.HideoutHelmKey,
-            ):
-                if settings.win_condition != "all_keys":
-                    sphere.locations.remove(locationId)
-                continue
             if location.item is not None and ItemList[location.item].type == Types.Blueprint:
                 if settings.win_condition != "all_blueprints":
                     sphere.locations.remove(locationId)
@@ -488,9 +489,6 @@ def RandomFill(settings, itemsToPlace, inOrder=False):
         random.shuffle(itemEmpty)
         locationId = itemEmpty.pop()
         LocationList[locationId].PlaceItem(item)
-        # If we don't have a price for this item and we need one, get the price of it - this also generates a price for the item if it doesn't exist
-        if item not in settings.prices.keys() and LocationList[locationId].type == Types.Shop:
-            GetPriceOfMoveItem(item, settings, 0, 0, 0)  # Other parameters don't matter - we don't actually care what the price is, it just needs to exist
         empty.remove(locationId)
     return 0
 
@@ -518,11 +516,10 @@ def ForwardFill(settings, itemsToPlace, ownedItems=None, inOrder=False):
         # Place the item
         ownedItems.append(item)
         LocationList[locationId].PlaceItem(item)
-        # If we don't have a price for this item and we need one, get the price of it - this also generates a price for the item if it doesn't exist
-        if item not in settings.prices.keys() and LocationList[locationId].type == Types.Shop:
-            GetPriceOfMoveItem(item, settings, 0, 0, 0)  # Other parameters don't matter - we don't actually care what the price is, it just needs to exist
         # Debug code utility for very important items
         if item in ItemPool.HighPriorityItems(settings):
+            settings.debug_fill[locationId] = item
+        if item in ItemPool.Keys():
             settings.debug_fill[locationId] = item
     return 0
 
@@ -656,10 +653,9 @@ def AssumedFill(settings, itemsToPlace, ownedItems=None, inOrder=False):
             # Debug code utility for very important items
             if item in ItemPool.HighPriorityItems(settings):
                 settings.debug_fill[locationId] = item
+            if item in ItemPool.Keys():
+                settings.debug_fill[locationId] = item
             itemShuffled = True
-            # If we don't have a price for this item and we need one, get the price of it - this also generates a price for the item if it doesn't exist
-            if item not in settings.prices.keys() and LocationList[locationId].type == Types.Shop:
-                GetPriceOfMoveItem(item, settings, 0, 0, 0)  # Other parameters don't matter - we don't actually care what the price is, it just needs to exist
             break
         if not itemShuffled:
             js.postMessage("Failed placing item " + ItemList[item].name + " in any of remaining " + str(ItemList[item].type) + " type possible locations")
@@ -667,32 +663,31 @@ def AssumedFill(settings, itemsToPlace, ownedItems=None, inOrder=False):
     return 0
 
 
-def GetMaxCoinsSpent(settings, ownedItems):
+def GetMaxCoinsSpent(settings, purchasedShops):
     """Calculate the max number of coins each kong could have spent given the ownedItems and the price settings."""
-    MaxCoinsSpent = [0, 0, 0, 0, 0]
-    slamLevel = sum(1 for x in ownedItems if x == Items.ProgressiveSlam) + STARTING_SLAM
-    ammoBelts = sum(1 for x in ownedItems if x == Items.ProgressiveAmmoBelt)
-    instUpgrades = sum(1 for x in ownedItems if x == Items.ProgressiveInstrumentUpgrade)
-    for ownedItem in ownedItems:
-        if ItemList[ownedItem].type == Types.Shop:
-            moveKong = ItemList[ownedItem].kong
-            if ownedItem == Items.ProgressiveSlam:
-                slamLevel -= 1
-            elif ownedItem == Items.ProgressiveAmmoBelt:
-                ammoBelts -= 1
-            elif ownedItem == Items.ProgressiveInstrumentUpgrade:
-                instUpgrades -= 1
-            movePrice = GetPriceOfMoveItem(ownedItem, settings, slamLevel, ammoBelts, instUpgrades)
-            if movePrice is not None:
-                if moveKong == Kongs.any:
-                    # Shared moves could have been bought by any kong
-                    for anyKong in range(5):
-                        MaxCoinsSpent[anyKong] += movePrice
-                else:
-                    MaxCoinsSpent[moveKong] += movePrice
-            # print("Move Kong: " + moveKong.name)
-            # print("Move Price : " + str(movePrice))
-            # print("MaxCoinsSpent: " + str(MaxCoinsSpent))
+    MaxCoinsSpent = [0, 0, 0, 0, 0, 0]
+    slamLevel = 0
+    ammoBelts = 0
+    instUpgrades = 0
+    for location_id in purchasedShops:
+        location = LocationList[location_id]
+        if location.item == Items.ProgressiveSlam:
+            movePrice = settings.prices[location.item][slamLevel]
+            slamLevel += 1
+        elif location.item == Items.ProgressiveAmmoBelt:
+            movePrice = settings.prices[location.item][ammoBelts]
+            ammoBelts += 1
+        elif location.item == Items.ProgressiveInstrumentUpgrade:
+            movePrice = settings.prices[location.item][instUpgrades]
+            instUpgrades += 1
+        else:
+            movePrice = settings.prices[location_id]
+        if movePrice is not None:
+            MaxCoinsSpent[location.kong] += movePrice
+    # All shared moves add to the cost of each Kong
+    for kong_index in range(5):
+        MaxCoinsSpent[kong_index] += MaxCoinsSpent[int(Kongs.any)]
+    MaxCoinsSpent.pop()  # Remove the shared total, as it was just for numbers keeping
     return MaxCoinsSpent
 
 
@@ -1090,8 +1085,6 @@ def FillKongs(spoiler):
 
 def FillKongsAndMoves(spoiler):
     """Fill kongs, then progression moves, then shared moves, then rest of moves."""
-    spoiler.settings.debug_fill = {}  # This needs to happen before any items of importance are placed
-
     itemsToPlace = []
     preplacedPriorityMoves = []
 

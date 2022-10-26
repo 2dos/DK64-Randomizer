@@ -6,8 +6,20 @@ import random
 from randomizer.Enums.Items import Items
 from randomizer.Enums.Kongs import Kongs
 from randomizer.Enums.Locations import Locations
+from randomizer.Enums.Types import Types
 from randomizer.ItemPool import TrainingBarrelAbilities
-from randomizer.Lists.Location import ChunkyMoveLocations, DiddyMoveLocations, DonkeyMoveLocations, LankyMoveLocations, LocationList, SharedMoveLocations, TinyMoveLocations, TrainingBarrelLocations
+from randomizer.Lists.Item import ItemList
+from randomizer.Lists.Location import (
+    ChunkyMoveLocations,
+    DiddyMoveLocations,
+    DonkeyMoveLocations,
+    LankyMoveLocations,
+    LocationList,
+    SharedMoveLocations,
+    SharedShopLocations,
+    TinyMoveLocations,
+    TrainingBarrelLocations,
+)
 
 VanillaPrices = {
     Items.Vines: 0,
@@ -56,6 +68,13 @@ ProgressiveMoves = {
 }
 
 
+def CompleteVanillaPrices():
+    """Complete the list of Vanilla prices with non-move items needing to cost 0."""
+    for item_id, item in ItemList.items():
+        if item_id not in VanillaPrices.keys():
+            VanillaPrices[item_id] = 0
+
+
 def GetPriceWeights(weight):
     """Get the parameters for the price distribution."""
     # Each kong can buy up to 14 items
@@ -84,22 +103,17 @@ def GetPriceWeights(weight):
 
 
 def RandomizePrices(weight):
-    """Generate randomized prices based on given weight (free, low, medium, or high)."""
-    prices = VanillaPrices.copy()
+    """Generate randomized prices for each shop location."""
+    prices = {}
     parameters = GetPriceWeights(weight)
-    # Generate random prices using normal distribution with avg and std. deviation
-    # Round each price to nearest int
-    for item in prices.keys():
-        # Special Case for progressive moves, supply an array of prices, one for each time it appears
-        if item in ProgressiveMoves.keys():
-            prices[item] = []
-            for i in range(ProgressiveMoves[item]):
-                prices[item].append(GenerateRandomPrice(weight, parameters[0], parameters[1], parameters[2]))
-        else:
-            prices[item] = GenerateRandomPrice(weight, parameters[0], parameters[1], parameters[2])
-            # Make training barrel moves cheaper because they'll be early and are super important
-            if item in TrainingBarrelAbilities():
-                prices[item] = ceil(prices[item] * 0.5)
+    shopLocations = [location_id for location_id, location in LocationList.items() if location.type == Types.Shop]
+    for location in shopLocations:
+        prices[location] = GenerateRandomPrice(weight, parameters[0], parameters[1], parameters[2])
+    # Progressive items get their own price pool
+    for item in ProgressiveMoves.keys():
+        prices[item] = []
+        for i in range(ProgressiveMoves[item]):
+            prices[item].append(GenerateRandomPrice(weight, parameters[0], parameters[1], parameters[2]))
     return prices
 
 
@@ -139,7 +153,7 @@ def GetMaxForKong(settings, kong):
                 total_price += settings.prices[item_id][found_ammo_belts]
                 found_ammo_belts += 1
             else:
-                total_price += settings.prices[item_id]
+                total_price += settings.prices[location]
 
     kongMoveLocations = DiddyMoveLocations.copy()
     if kong == Kongs.donkey:
@@ -166,10 +180,7 @@ def GetMaxForKong(settings, kong):
                 total_price += settings.prices[item_id][found_ammo_belts]
                 found_ammo_belts += 1
             else:
-                # I don't know how but sometimes moves don't have prices yet. Give it one here if it needs it.
-                if item_id not in settings.prices.keys():
-                    GetPriceOfMoveItem(item_id, settings, 0, 0, 0)
-                total_price += settings.prices[item_id]
+                total_price += settings.prices[location]
     return total_price
 
 
@@ -249,59 +260,40 @@ meaning we just must consider the maximum price for every location.
 """
 
 
-def GetPriceOfMoveItem(item, settings, slamLevel, ammoBelts, instUpgrades):
-    """Get price of a move item. Needs to know current level of owned progressive moves to give correct price for progressive items."""
-    # We may not have a price for this item and need to generate one - this should only happen in full item rando
-    if item == Items.ProgressiveSlam:
-        if item not in settings.prices.keys():
-            parameters = GetPriceWeights(settings.random_prices)
-            settings.prices[item] = [
-                GenerateRandomPrice(settings.random_prices, parameters[0], parameters[1], parameters[2]),
-                GenerateRandomPrice(settings.random_prices, parameters[0], parameters[1], parameters[2]),
-            ]
+def GetPriceAtLocation(settings, location_id, location, slamLevel, ammoBelts, instUpgrades):
+    """Get the price at this location."""
+    item = location.item
+    if item is None or item == Items.NoItem:
+        return 0
+    elif item == Items.ProgressiveSlam:
         if slamLevel in [1, 2]:
             return settings.prices[item][slamLevel - 1]
         else:
             # If already have max slam, there's move to buy
-            return None
+            return 0
     elif item == Items.ProgressiveAmmoBelt:
-        if item not in settings.prices.keys():
-            parameters = GetPriceWeights(settings.random_prices)
-            settings.prices[item] = [
-                GenerateRandomPrice(settings.random_prices, parameters[0], parameters[1], parameters[2]),
-                GenerateRandomPrice(settings.random_prices, parameters[0], parameters[1], parameters[2]),
-            ]
         if ammoBelts in [0, 1]:
             return settings.prices[item][ammoBelts]
         else:
             # If already have max ammo belt, there's move to buy
-            return None
+            return 0
     elif item == Items.ProgressiveInstrumentUpgrade:
-        if item not in settings.prices.keys():
-            parameters = GetPriceWeights(settings.random_prices)
-            settings.prices[item] = [
-                GenerateRandomPrice(settings.random_prices, parameters[0], parameters[1], parameters[2]),
-                GenerateRandomPrice(settings.random_prices, parameters[0], parameters[1], parameters[2]),
-                GenerateRandomPrice(settings.random_prices, parameters[0], parameters[1], parameters[2]),
-            ]
         if instUpgrades in [0, 1, 2]:
             return settings.prices[item][instUpgrades]
         else:
             # If already have max instrument upgrade, there's move to buy
-            return None
+            return 0
     else:
-        if item not in settings.prices.keys():
-            parameters = GetPriceWeights(settings.random_prices)
-            settings.prices[item] = GenerateRandomPrice(settings.random_prices, parameters[0], parameters[1], parameters[2])
-        return settings.prices[item]
+        return settings.prices[location_id]
 
 
-def KongCanBuy(location, logic, kong):
+def KongCanBuy(location_id, logic, kong):
     """Check if given kong can logically purchase the specified location."""
+    location = LocationList[location_id]
     # If nothing is sold here, return true
-    if LocationList[location].item is None or LocationList[location].item == Items.NoItem:
+    if location.item is None or location.item == Items.NoItem:
         return True
-    price = GetPriceOfMoveItem(LocationList[location].item, logic.settings, logic.Slam, logic.AmmoBelts, logic.InstUpgrades)
+    price = GetPriceAtLocation(logic.settings, location_id, location, logic.Slam, logic.AmmoBelts, logic.InstUpgrades)
 
     # Simple price check - combination of purchases will be considered outside this method
     if price is not None:
