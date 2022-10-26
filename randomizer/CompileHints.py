@@ -161,7 +161,7 @@ kong_cryptic = [
         "The kong who fights a blocky boss",
         "The kong who bows down to a dragonfly",
     ],
-    ["Members of the DK Crew", "A specific set of relatives", "A number of playable characters"]
+    ["Members of the DK Crew", "A specific set of relatives", "A number of playable characters"],
 ]
 
 all_levels = [Levels.JungleJapes, Levels.AngryAztec, Levels.FranticFactory, Levels.GloomyGalleon, Levels.FungiForest, Levels.CrystalCaves, Levels.CreepyCastle]
@@ -295,7 +295,7 @@ hint_distribution = {
     HintType.KongLocation: 2,  # must be placed before you find them and placed in a door of a free kong
     # HintType.MedalsRequired: 1,
     HintType.Entrance: 8,
-    HintType.KeyLocation: -1  # Fixed number equal to the number of keys to be obtained over the seed
+    HintType.KeyLocation: -1,  # Fixed number equal to the number of keys to be obtained over the seed
 }
 HINT_CAP = 35  # There are this many total slots for hints
 
@@ -411,7 +411,7 @@ def compileHints(spoiler: Spoiler):
                 hint_for_location = [hint for hint in hints if hint.level == level and hint.kong == kong][0]  # Should only match one
                 progression_hint_locations.append(hint_for_location)
 
-    # Now place hints by type from most-restrictive to least restrictive. Usually anything we want on the player's path should get placed first    
+    # Now place hints by type from most-restrictive to least restrictive. Usually anything we want on the player's path should get placed first
     # Kongs should be hinted before they're available and should only be hinted to free Kongs, making them very restrictive
     hinted_kongs = []
     placed_kong_hints = 0
@@ -545,7 +545,7 @@ def compileHints(spoiler: Spoiler):
             kong_index = location.kong
             # Boss locations actually have a specific kong, go look it up
             if location.kong == Kongs.any and location.type == Types.Key:
-                    kong_index = spoiler.settings.boss_kongs[location.level]
+                kong_index = spoiler.settings.boss_kongs[location.level]
             if spoiler.settings.wrinkly_hints == "cryptic":
                 level_name = random.choice(level_cryptic_helm_isles[location.level])
                 kong_name = random.choice(kong_cryptic[kong_index])
