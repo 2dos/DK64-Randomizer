@@ -211,6 +211,7 @@ void spawnBonusReward(int object, int x_f, int y_f, int z_f, int unk0, int cutsc
     int index = paad->barrel_index;
     if ((index > 0) && (index < 95)) {
         object = bonus_data[index].spawn_actor;
+        TestVariable = (int)&bonus_data[index].spawn_actor;
     }
     spawnActorWithFlag(object, x_f, y_f, z_f, unk0, cutscene, flag, unk1);
 }

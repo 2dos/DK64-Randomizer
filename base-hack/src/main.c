@@ -250,6 +250,7 @@ void earlyFrame(void) {
 	}
 	handle_WTI();
 	adjust_galleon_water();
+	finalizeBeatGame();
 	if ((CurrentMap == MAIN_MENU) && (ObjectModel2Timer < 5)) {
 		FileScreenDLCode_Write();
 		initTracker();

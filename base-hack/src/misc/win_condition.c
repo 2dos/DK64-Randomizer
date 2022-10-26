@@ -1,9 +1,23 @@
 #include "../../include/common.h"
 
+static unsigned char game_beat_countdown = 0;
+
 void beatGame(void) {
     setPermFlag(FLAG_GAME_BEATEN);
-    save();
-    loadEndSeq(0);
+    if (game_beat_countdown == 0) {
+        game_beat_countdown = 6;
+    }
+}
+
+void finalizeBeatGame(void) {
+    // Dumb memes with crashes
+    if (game_beat_countdown > 0) {
+        if (game_beat_countdown == 1) {
+            save();
+            loadEndSeq(0);
+        }
+        game_beat_countdown -= 1;
+    }
 }
 
 // Pkmn Snap Spreadsheet: https://docs.google.com/spreadsheets/d/1nTZYi36dFaTB1XCgB7dJJffMsaKz-wOFmP5nDo8l3Uo/edit?usp=sharing

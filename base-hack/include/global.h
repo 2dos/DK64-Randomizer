@@ -200,6 +200,7 @@ extern int countFlagsForKongFLUT(int startFlag, int start, int cap, int kong);
 extern int countFlagsDuplicate(int start, int count, int type);
 extern int getKongFromBonusFlag(int flag);
 extern void banana_medal_acquisition(int flag);
+extern void finalizeBeatGame(void);
 
 extern int getBPItem(int index);
 extern int getMedalItem(int index);
