@@ -28,13 +28,14 @@ int getMoveType(int value) {
 int getMoveIndex(move_rom_item* item) {
 	int item_type = getMoveType(item->move_master_data);
 	int index = ((item->move_master_data >> 3) & 3) + 1;
-	if (item_type == PURCHASE_SLAM) {
+	int original_item_type = ((item->move_master_data) >> 5) & 7;
+	if (original_item_type == PURCHASE_SLAM) {
 		slam_flag += 1;
 		return slam_flag - 1;
-	} else if (item_type == PURCHASE_AMMOBELT) {
+	} else if (original_item_type == PURCHASE_AMMOBELT) {
 		belt_flag += 1;
 		return belt_flag - 1;
-	} else if (item_type == PURCHASE_INSTRUMENT) {
+	} else if (original_item_type == PURCHASE_INSTRUMENT) {
 		if (index > 1) {
 			ins_flag += 1;
 			return ins_flag - 1;
