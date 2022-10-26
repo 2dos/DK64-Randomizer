@@ -40,7 +40,7 @@ LogicRegions = {
         TransitionFront(Regions.BetweenVinesByPortal, lambda l: l.vines or (l.istiny and l.twirl)),
         TransitionFront(Regions.TempleStart, lambda l: (l.peanut and l.isdiddy) or (l.grape and l.islanky)
                         or (l.feather and l.istiny) or (l.pineapple and l.ischunky)),
-        TransitionFront(Regions.AngryAztecMain, lambda l: l.settings.open_levels or (l.guitar and l.diddy)),
+        TransitionFront(Regions.AngryAztecMain, lambda l: l.settings.open_levels or (l.vines and l.guitar and l.diddy)),
         TransitionFront(Regions.CandyAztec, lambda l: True),
         TransitionFront(Regions.AztecBossLobby, lambda l: not l.settings.tns_location_rando),
     ]),
@@ -141,7 +141,7 @@ LogicRegions = {
     Regions.LlamaTemple: Region("Llama Temple", Levels.AngryAztec, True, -1, [
         LocationLogic(Locations.LankyKong, lambda l: l.CanFreeLanky()),
         LocationLogic(Locations.AztecDonkeyFreeLanky, lambda l: l.CanFreeLanky()),
-        LocationLogic(Locations.AztecLankyLlamaTempleBarrel, lambda l: l.trombone and l.islanky, MinigameType.BonusBarrel),
+        LocationLogic(Locations.AztecLankyLlamaTempleBarrel, lambda l: l.trombone and l.handstand and l.islanky, MinigameType.BonusBarrel),
         LocationLogic(Locations.AztecLankyMatchingGame, lambda l: l.grape and l.Slam and l.lanky),
         LocationLogic(Locations.AztecBananaFairyLlamaTemple, lambda l: l.camera),
     ], [

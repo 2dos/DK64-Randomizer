@@ -311,8 +311,8 @@ def compileHints(spoiler: Spoiler):
     if not spoiler.settings.unlock_all_moves and spoiler.settings.move_rando != "off":
         valid_types.append(HintType.FullShop)
         valid_types.append(HintType.MoveLocation)
-    if spoiler.settings.random_patches:
-        valid_types.append(HintType.DirtPatch)
+    # if spoiler.settings.random_patches:
+    #     valid_types.append(HintType.DirtPatch)
     if spoiler.settings.randomize_blocker_required_amounts:
         valid_types.append(HintType.BLocker)
     if spoiler.settings.randomize_cb_required_amounts and len(spoiler.settings.krool_keys_required) > 0 and spoiler.settings.krool_keys_required != [Events.HelmKeyTurnedIn]:

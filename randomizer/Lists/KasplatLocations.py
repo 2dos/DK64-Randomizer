@@ -81,7 +81,15 @@ KasplatLocationList = {
             region=Regions.JapesBeyondCoconutGate1,
             vanilla=True,
         ),
-        KasplatLocation(name="Japes Kasplat: Underground", map_id=Maps.JapesUnderGround, kong_lst=[Kongs.chunky], coords=[427, 20, 456], region=Regions.JapesCatacomb, vanilla=True),
+        KasplatLocation(
+            name="Japes Kasplat: Underground",
+            map_id=Maps.JapesUnderGround,
+            kong_lst=[Kongs.chunky],
+            coords=[427, 20, 456],
+            region=Regions.JapesCatacomb,
+            additional_logic=lambda l: l.pineapple,
+            vanilla=True,
+        ),
         KasplatLocation(
             name="Japes Kasplat: Near Speedy Swing Sortie Bonus",
             map_id=Maps.JungleJapes,

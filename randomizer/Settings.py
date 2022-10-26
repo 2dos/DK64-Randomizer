@@ -15,7 +15,7 @@ from randomizer.Enums.Types import Types
 import randomizer.ItemPool as ItemPool
 from randomizer.Lists.Item import ItemList
 from randomizer.Lists.Location import ChunkyMoveLocations, DiddyMoveLocations, DonkeyMoveLocations, LankyMoveLocations, LocationList, SharedShopLocations, TinyMoveLocations, TrainingBarrelLocations
-from randomizer.Prices import RandomizePrices, VanillaPrices
+from randomizer.Prices import CompleteVanillaPrices, RandomizePrices, VanillaPrices
 from randomizer.ShuffleBosses import ShuffleBosses, ShuffleBossKongs, ShuffleKKOPhaseOrder, ShuffleKutoutKongs
 
 
@@ -68,6 +68,7 @@ class Settings:
         # progressive_upgrades: bool
         self.progressive_upgrades = False
 
+        CompleteVanillaPrices()
         self.prices = VanillaPrices.copy()
         self.level_order = {1: Levels.JungleJapes, 2: Levels.AngryAztec, 3: Levels.FranticFactory, 4: Levels.GloomyGalleon, 5: Levels.FungiForest, 6: Levels.CrystalCaves, 7: Levels.CreepyCastle}
 
@@ -355,10 +356,7 @@ class Settings:
     def shuffle_prices(self):
         """Price randomization. Reuseable if we need to reshuffle prices."""
         # Price Rando
-        if Types.Shop in self.shuffled_location_types:
-            # We don't know what's going to be in the shops if they're shuffled into the main pool, so we generate prices as we place items
-            self.prices = {}
-        elif self.random_prices != "vanilla":
+        if self.random_prices != "vanilla":
             self.prices = RandomizePrices(self.random_prices)
 
     def resolve_settings(self):
