@@ -16,10 +16,10 @@ int getMoveType(int value) {
 		if (ret == PURCHASE_INSTRUMENT) {
 			int index = ((value >> 3) & 3) + 1;
 			if (index > 1) {
-				return 5;
+				return PURCHASE_FLAG;
 			}
 		} else if ((ret == PURCHASE_SLAM) || (ret == PURCHASE_AMMOBELT)) {
-			return 5;
+			return PURCHASE_FLAG;
 		}
 		return ret;
 	}
@@ -27,9 +27,6 @@ int getMoveType(int value) {
 
 int getMoveIndex(move_rom_item* item) {
 	int item_type = getMoveType(item->move_master_data);
-	if ((item_type == PURCHASE_FLAG) || (item_type == PURCHASE_GB)) {
-		return item->flag;
-	}
 	int index = ((item->move_master_data >> 3) & 3) + 1;
 	if (item_type == PURCHASE_SLAM) {
 		slam_flag += 1;
@@ -42,6 +39,9 @@ int getMoveIndex(move_rom_item* item) {
 			ins_flag += 1;
 			return ins_flag - 1;
 		}
+	}
+	if ((item_type == PURCHASE_FLAG) || (item_type == PURCHASE_GB)) {
+		return item->flag;
 	}
 	return index;
 }
