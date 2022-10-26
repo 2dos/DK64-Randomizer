@@ -497,7 +497,7 @@
 .definelabel ItemRando_FLUT, 0x805FAE00-0x640
 .definelabel TextOverlayData, 0x807FFFA0
 
-.definelabel KasplatSpawnBitfield, 0x807FFF4B
+.definelabel KasplatSpawnBitfield, 0x807FFF2F
 .definelabel CrankyMoves_New, 0x807FF400
 .definelabel CandyMoves_New, 0x807FF4F0
 .definelabel FunkyMoves_New, 0x807FF5E0
