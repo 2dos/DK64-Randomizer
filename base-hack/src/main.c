@@ -227,6 +227,27 @@ void earlyFrame(void) {
 	if (Rando.auto_keys) {
 		auto_turn_keys();
 	}
+	if (Rando.item_rando) {
+		int has_sniper = 0;
+		int has_homing = 0;
+		for (int i = 0; i < 5; i++) {
+			int weap_val = MovesBase[i].weapon_bitfield;
+			if (weap_val & 2) {
+				has_homing = 1;
+			}
+			if (weap_val & 4) {
+				has_sniper = 1;
+			}
+		}
+		for (int i = 0; i < 5; i++) {
+			if (has_homing) {
+				MovesBase[i].weapon_bitfield |= 2;
+			}
+			if (has_sniper) {
+				MovesBase[i].weapon_bitfield |= 4;
+			}
+		}
+	}
 	handle_WTI();
 	adjust_galleon_water();
 	if ((CurrentMap == MAIN_MENU) && (ObjectModel2Timer < 5)) {

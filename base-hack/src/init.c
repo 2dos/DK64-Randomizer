@@ -646,7 +646,7 @@ void initHack(int source) {
 			// Add Chunky Minecart GB
 			bonus_data[94].flag = 215;
 			bonus_data[94].spawn_actor = 45;
-			bonus_data[94].kong_actor = 4;
+			bonus_data[94].kong_actor = 6;
 			if (Rando.item_rando) {
 				*(short*)(0x806B4E1A) = Rando.vulture_item;
 				*(short*)(0x8069C266) = Rando.japes_rock_item;
@@ -825,8 +825,9 @@ void initHack(int source) {
 			*(int*)(0x80712EC4) = 0x0C000000 | (((int)&postKRoolSaveCheck & 0xFFFFFF) >> 2);
 			if (Rando.medal_cb_req > 0) {
 				// Change CB Req
-				*(short*)(0x806F934E) = Rando.medal_cb_req;
-				*(short*)(0x806F935A) = Rando.medal_cb_req;
+				*(short*)(0x806F934E) = Rando.medal_cb_req; // Acquisition
+				*(short*)(0x806F935A) = Rando.medal_cb_req; // Acquisition
+				*(short*)(0x806AA942) = Rando.medal_cb_req; // Pause Menu Tick
 			}
 			// Reduce TA Cooldown
 			if (Rando.tag_anywhere) {
