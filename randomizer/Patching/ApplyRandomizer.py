@@ -222,6 +222,17 @@ def patching_response(responded_data):
         ROM().seek(sav + 0x033)
         ROM().write(3)
 
+    # Free Trade Agreement
+    if spoiler.settings.free_trade_items:
+        ROM().seek(sav + 0x113)
+        old = int.from_bytes(ROM().readBytes(1), "big")
+        ROM().seek(sav + 0x113)
+        ROM().write(old | 1)
+    if spoiler.settings.free_trade_blueprints:
+        ROM().seek(sav + 0x113)
+        old = int.from_bytes(ROM().readBytes(1), "big")
+        ROM().seek(sav + 0x113)
+        ROM().write(old | 2)
     # Quality of Life
     if spoiler.settings.quality_of_life:
         enabled_qol = spoiler.settings.misc_changes_selected.copy()
