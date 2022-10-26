@@ -192,6 +192,7 @@ extern void spawnBonusReward(int object, int x_f, int y_f, int z_f, int unk0, in
 extern void spawnCrownReward(int object, int x_f, int y_f, int z_f, int unk0, int cutscene, int flag, int unk1);
 extern void spawnBossReward(int object, int x_f, int y_f, int z_f, int unk0, int cutscene, int flag, int unk1);
 extern void spawnRewardAtActor(int object, int flag);
+extern void spawnMinecartReward(int object, int flag);
 extern int checkFlagDuplicate(short flag, int type);
 extern void setFlagDuplicate(short flag, int set, int type);
 extern void* updateFlag(int type, short* flag, void* fba, int source);

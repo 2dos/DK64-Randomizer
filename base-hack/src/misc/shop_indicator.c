@@ -81,6 +81,53 @@ int doesKongPossessMove(int purchase_type, int purchase_value, int kong) {
 #define SHOPINDEX_FUNKY 1
 #define SHOPINDEX_CANDY 2
 
+int isSharedMove(int shop_index, int level) {
+	if (shop_index == SHOPINDEX_CRANKY) {
+		purchase_struct* targ = (purchase_struct*)&CrankyMoves_New[0][level];
+		for (int i = 1; i < 5; i++) {
+			purchase_struct* src = (purchase_struct*)&CrankyMoves_New[i][level];
+			if (targ->move_kong != src->move_kong) {
+				return 0;
+			}
+			if (targ->purchase_type != src->purchase_type) {
+				return 0;
+			}
+			if (targ->purchase_value != src->purchase_value) {
+				return 0;
+			}
+		}
+	} else if (shop_index == SHOPINDEX_FUNKY) {
+		purchase_struct* targ = (purchase_struct*)&FunkyMoves_New[0][level];
+		for (int i = 1; i < 5; i++) {
+			purchase_struct* src = (purchase_struct*)&FunkyMoves_New[i][level];
+			if (targ->move_kong != src->move_kong) {
+				return 0;
+			}
+			if (targ->purchase_type != src->purchase_type) {
+				return 0;
+			}
+			if (targ->purchase_value != src->purchase_value) {
+				return 0;
+			}
+		}
+	} else if (shop_index == SHOPINDEX_CANDY) {
+		purchase_struct* targ = (purchase_struct*)&CandyMoves_New[0][level];
+		for (int i = 1; i < 5; i++) {
+			purchase_struct* src = (purchase_struct*)&CandyMoves_New[i][level];
+			if (targ->move_kong != src->move_kong) {
+				return 0;
+			}
+			if (targ->purchase_type != src->purchase_type) {
+				return 0;
+			}
+			if (targ->purchase_value != src->purchase_value) {
+				return 0;
+			}
+		}
+	}
+	return 1;
+}
+
 int getMoveCountInShop(int shop_index) {
 	int level = getWorld(CurrentMap,0);
 	int possess = 0;
@@ -94,6 +141,9 @@ int getMoveCountInShop(int shop_index) {
 				possess = doesKongPossessMove(FunkyMoves_New[i][level].purchase_type, FunkyMoves_New[i][level].purchase_value, FunkyMoves_New[i][level].move_kong);
 			} else if (shop_index == SHOPINDEX_CANDY) {
 				possess = doesKongPossessMove(CandyMoves_New[i][level].purchase_type, CandyMoves_New[i][level].purchase_value, CandyMoves_New[i][level].move_kong);
+			}
+			if ((possess == 1) && (isSharedMove(shop_index, level))) {
+				possess = 7;
 			}
 			if (possess == 1) {
 				btf |= (1 << i);

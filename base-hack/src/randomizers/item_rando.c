@@ -141,7 +141,7 @@ void initCollectableCollision(void) {
     index = addCollisionInfo(index, 0x0098, COLLECTABLE_FILM, KONG_NONE, 0, 0, 0); // Film
     index = addCollisionInfo(index, 0x0090, COLLECTABLE_MEDAL, KONG_NONE, 154, 0, 0); // Medal
     index = addCollisionInfo(index, 0x00EC, COLLECTABLE_RACECOIN, KONG_NONE, 0x36, 0, 0); // Race Coin
-    index = addCollisionInfo(index, 0x013C, COLLECTABLE_NONE, KONG_NONE, 0x48, 0, 0); // Boss Key
+    index = addCollisionInfo(index, 0x013C, COLLECTABLE_NONE, KONG_NONE, 0x48, 50, 50); // Boss Key
     index = addCollisionInfo(index, 0x018D, COLLECTABLE_NONE, KONG_NONE, 0x56, 0, 0); // Battle Crown
     index = addCollisionInfo(index, 0x0288, COLLECTABLE_GB, KONG_NONE, 0x2D, 8, 4); // Rareware GB
     index = addCollisionInfo(index, 0x0048, COLLECTABLE_NONE, KONG_NONE, 151, 0, 0); // Nintendo Coin
@@ -211,7 +211,6 @@ void spawnBonusReward(int object, int x_f, int y_f, int z_f, int unk0, int cutsc
     int index = paad->barrel_index;
     if ((index > 0) && (index < 95)) {
         object = bonus_data[index].spawn_actor;
-        TestVariable = (int)&bonus_data[index].spawn_actor;
     }
     spawnActorWithFlag(object, x_f, y_f, z_f, unk0, cutscene, flag, unk1);
 }
@@ -222,6 +221,15 @@ void spawnRewardAtActor(int object, int flag) {
         object = bonus_data[index].spawn_actor;
     }
     spawnObjectAtActor(object, flag);
+}
+
+void spawnMinecartReward(int object, int flag) {
+    for (int i = 0; i < 95; i++) {
+        if (bonus_data[i].flag == flag) {
+            spawnObjectAtActor(bonus_data[i].spawn_actor, flag);
+            return;
+        }
+    }
 }
 
 void spawnCrownReward(int object, int x_f, int y_f, int z_f, int unk0, int cutscene, int flag, int unk1) {
@@ -605,7 +613,7 @@ void banana_medal_acquisition(int flag) {
     if (!checkFlag(flag, 0)) {
         // Display and play effects if you don't have item
         int item_type = getMedalItem(flag - 549);
-        if (item_type < 11) {
+        if (item_type < 12) {
             if (item_type == 2) {
                 // Display key text
                 int key_bitfield = 0;
@@ -627,24 +635,26 @@ void banana_medal_acquisition(int flag) {
                         }
                     }
                 }
-            } else {
+            } else if (item_type < 11) {
                 setFlag(flag, 1, 0);
             }
             if (item_type == 0) {
                 MovesBase[(int)Character].gb_count[getWorld(CurrentMap,1)] += 1;
             }
-            playSFX(0xF2);
-            int used_song = 0x97;
-            int songs[] = {18,69,18,0x97,22,115,115,115,115,115,0x97};
             if (item_type < 11) {
-                used_song = songs[item_type];
+                playSFX(0xF2);
+                int used_song = 0x97;
+                int songs[] = {18,69,18,0x97,22,115,115,115,115,115,0x97};
+                if (item_type < 11) {
+                    used_song = songs[item_type];
+                }
+                playSong(used_song, 0x3F800000);
             }
-            playSong(used_song, 0x3F800000);
             unkSpriteRenderFunc(200);
             unkSpriteRenderFunc_0();
             loadSpriteFunction(0x8071EFDC);
             int bp_sprites[] = {0x5C,0x5A,0x4A,0x5D,0x5B};
-            int sprite_indexes[] = {0x3B, 0, 0x8A, 0x8B, 0, 0x3C, 0x94, 0x96, 0x93, 0x94, 0x3A};
+            int sprite_indexes[] = {0x3B, 0, 0x8A, 0x8B, 0, 0x3C, 0x94, 0x96, 0x93, 0x94, 0x3A, 0x8E};
             int used_sprite = 0x3B;
             if (item_type == 1) {
                 int character_val = Character;
