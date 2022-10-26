@@ -517,20 +517,24 @@ move_names = [
     {"name": "Fairy Camera and Shockwave", "move_type": "tbarrel_bfi"},
     {"name": "Golden Banana", "move_type": "item"},  # 60
     {"name": "Banana Medal", "move_type": "item"},  # 61
-    {"name": "Blueprint", "move_type": "item"},  # 62
-    {"name": "Nintendo Coin", "move_type": "item"},  # 63
-    {"name": "Rareware Coin", "move_type": "item"},  # 64
-    {"name": "Boss Key", "move_type": "item"},  # 65
-    {"name": "Battle Crown", "move_type": "item"},  # 66
-    {"name": "Bean", "move_type": "item"},  # 67
-    {"name": "Key 1", "move_type": "item"},  # 68
-    {"name": "Key 2", "move_type": "item"},  # 69
-    {"name": "Key 3", "move_type": "item"},  # 70
-    {"name": "Key 4", "move_type": "item"},  # 71
-    {"name": "Key 5", "move_type": "item"},  # 72
-    {"name": "Key 6", "move_type": "item"},  # 73
-    {"name": "Key 7", "move_type": "item"},  # 74
-    {"name": "Key 8", "move_type": "item"},  # 75
+    {"name": "Donkey Blueprint", "move_type": "item"},  # 62
+    {"name": "Diddy Blueprint", "move_type": "item"},  # 63
+    {"name": "Lanky Blueprint", "move_type": "item"},  # 64
+    {"name": "Tiny Blueprint", "move_type": "item"},  # 65
+    {"name": "Chunky Blueprint", "move_type": "item"},  # 66
+    {"name": "Nintendo Coin", "move_type": "item"},  # 67
+    {"name": "Rareware Coin", "move_type": "item"},  # 68
+    {"name": "Boss Key", "move_type": "item"},  # 69
+    {"name": "Battle Crown", "move_type": "item"},  # 70
+    {"name": "Bean", "move_type": "item"},  # 71
+    {"name": "Key 1", "move_type": "item"},  # 72
+    {"name": "Key 2", "move_type": "item"},  # 73
+    {"name": "Key 3", "move_type": "item"},  # 74
+    {"name": "Key 4", "move_type": "item"},  # 75
+    {"name": "Key 5", "move_type": "item"},  # 76
+    {"name": "Key 6", "move_type": "item"},  # 77
+    {"name": "Key 7", "move_type": "item"},  # 78
+    {"name": "Key 8", "move_type": "item"},  # 79
 ]
 
 move_names_arr = []

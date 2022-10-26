@@ -652,27 +652,28 @@ void getNextMoveText(void) {
 						if (top_item == -1) {
 							if ((p_flag >= FLAG_BP_JAPES_DK_HAS) && (p_flag < (FLAG_BP_JAPES_DK_HAS + 40))) {
 								// Blueprint
-								top_item = 62; // TODO: Make it so it differentiates between blueprints
+								int kong = (p_flag - FLAG_BP_JAPES_DK_HAS) % 5;
+								top_item = 62 + kong;
 							} else if ((p_flag >= FLAG_MEDAL_JAPES_DK) && (p_flag < (FLAG_MEDAL_JAPES_DK + 40))) {
 								// Medal
 								top_item = 61;
 							} else if (p_flag == FLAG_COLLECTABLE_NINTENDOCOIN) {
 								// Nintendo Coin
-								top_item = 63;
+								top_item = 67;
 							} else if (p_flag == FLAG_COLLECTABLE_RAREWARECOIN) {
 								// Rareware Coin
-								top_item = 64;
+								top_item = 68;
 							} else if ((p_flag >= FLAG_CROWN_JAPES) && (p_flag < (FLAG_CROWN_JAPES + 10))) {
 								// Crown
-								top_item = 66;
+								top_item = 70;
 							} else if (p_flag == FLAG_COLLECTABLE_BEAN) {
 								// Fungi Bean
-								top_item = 67;
+								top_item = 71;
 							} else {
 								// Key Number
 								for (int i = 0; i < 8; i++) {
 									if (p_flag == getKeyFlag(i)) {
-										top_item = 68 + i;
+										top_item = 72 + i;
 									}
 								}
 								if (top_item == -1) {
