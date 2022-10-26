@@ -140,6 +140,7 @@ void initHack(int source) {
 			
 			// Prevent GBs being required to view extra screens
 			*(int*)(0x806A8624) = 0; // GBs doesn't lock other pause screens
+			*(int*)(0x806AB468) = 0; // Show R/Z Icon
 			*(int*)(0x806AB318) = 0x24060001; // ADDIU $a2, $r0, 1
 			*(int*)(0x806AB31C) = 0xA466C83C; // SH $a2, 0xC83C ($v1) | Overwrite trap func, Replace with overwrite of wheel segments
 			*(short*)(0x8075056C) = 201; // Change GB Item cap to 201
@@ -224,19 +225,6 @@ void initHack(int source) {
 			if (Rando.resolve_bonus) {
 				*(int*)(0x80681158) = 0x0C000000 | (((int)&completeBonus & 0xFFFFFF) >> 2); // Modify Function Call
 				*(short*)(0x80681962) = 1; // Make bonus noclip	
-			}
-			if (Rando.colorblind_mode) {
-				*(int*)(0x806B1E90) = 0x0C000000 | (((int)&KasplatIndicator & 0xFFFFFF) >> 2); // Modify Function Call
-				int opacity = 50; // Normally 100
-				// CBs etc
-				*(short*)(0x806398CA) = opacity;
-				*(short*)(0x806398CE) = opacity + 1;
-				// Various Items
-				*(short*)(0x8063798A) = opacity;
-				*(short*)(0x806379DA) = opacity;
-				*(short*)(0x80637A1A) = opacity;
-				*(short*)(0x80637A5A) = opacity;
-				*(short*)(0x80637A9A) = opacity;
 			}
 			replace_zones(1);
 			randomize_bosses();
