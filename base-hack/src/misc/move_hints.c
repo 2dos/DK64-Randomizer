@@ -29,12 +29,23 @@ int getHintTextIndex(int shop_owner, shop_paad* shop_data) {
 		if (purchase_type < 5) {
 			base = 45 + purchase_type;
 		} else {
+			int subtype = getMoveProgressiveFlagType(shop_data->flag);
 			if (isTBarrelFlag(shop_data->flag)) {
 				base = 50;
 			} else if (isFairyFlag(shop_data->flag)) {
 				base = 51;
 			} else if (purchase_type == PURCHASE_GB) {
 				base = 53;
+			} else if ((shop_data->flag >= FLAG_BP_JAPES_DK_HAS) && (shop_data->flag < (FLAG_BP_JAPES_DK_HAS + 40))) {
+				base = 54;
+			} else if ((shop_data->flag >= FLAG_MEDAL_JAPES_DK) && (shop_data->flag < (FLAG_MEDAL_JAPES_DK + 40))) {
+				base = 55;
+			} else if (subtype == 0) {
+				base = 46;
+			} else if (subtype == 1) {
+				base = 48;
+			} else if (subtype == 2) {
+				base = 49;
 			} else {
 				base = 52;
 			}

@@ -379,6 +379,20 @@ move_hints = [
         "funky": "'FRAID I CAN'T JUST GIVE IT TO YA, THOUGH. GOLDEN BANANAS DON'T GROW ON TREES!",
         "candy": "BUT YOU'LL NEED TO SCRAPE TOGETHER SOME MORE COINS TO GET THIS GOLDEN BANANA.",
     },
+    {
+        "move": "Not enough coins - BP",
+        "kong": "~",
+        "cranky": "YOU'RE UNLUCKY TO BE SO POOR YOU CAN'T AFFORD THIS BLUEPRINT.",
+        "funky": "'FRAID I CAN'T JUST GIVE IT TO YA, THOUGH. BLUEPRINTS DON'T GROW ON TREES!",
+        "candy": "BUT YOU'LL NEED TO SCRAPE TOGETHER SOME MORE COINS TO GET THIS BLUEPRINT.",
+    },
+    {
+        "move": "Not enough coins - Medal",
+        "kong": "~",
+        "cranky": "YOU'RE UNLUCKY TO BE SO POOR YOU CAN'T AFFORD THIS BANANA MEDAL.",
+        "funky": "'FRAID I CAN'T JUST GIVE IT TO YA, THOUGH. BANANA MEDALS DON'T GROW ON TREES!",
+        "candy": "BUT YOU'LL NEED TO SCRAPE TOGETHER SOME MORE COINS TO GET THIS BANANA MEDAL.",
+    },
 ]
 
 pre_amble = {
