@@ -595,6 +595,7 @@ void giveCollectables(void) {
 	if (MovesBase[0].ammo_belt > 0) {
 		mult = 2 * MovesBase[0].ammo_belt;
 	}
+	CollectableBase.Health = CollectableBase.Melons * 4;
 	CollectableBase.StandardAmmo = 25 * mult;
 	CollectableBase.Oranges = 10;
 	CollectableBase.Crystals = 1500;
