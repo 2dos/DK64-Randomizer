@@ -552,10 +552,7 @@ class Spoiler:
                     # Determine Price
                     price = 0
                     if id in self.settings.prices:
-                        if location.item in ProgressiveMoves:
-                            price = self.settings.prices[location.item]
-                        else:
-                            price = self.settings.prices[id]
+                        price = self.settings.prices[id]
                     # Moves that are set with a single flag (e.g. training barrels, shockwave) are handled differently
                     if move_type == MoveTypes.Flag:
                         for kong_index in kong_indices:
