@@ -3,18 +3,20 @@ import os
 import sys
 import requests as rs
 
+is_v2_release = False
 csv_url = "https://docs.google.com/spreadsheets/d/e/2PACX-1vTjqxasaI40I2zf3RG9_7Vv-H1grc2JMhy_C08SZkW9MFApNaZ8ARnUDRfA0QrgCi874s9efWxhy6mW/pub?gid=1075755893&single=true&output=csv"
 basher_names = []
-try:
-    res = rs.get(url=csv_url)
-    txt = res.content.decode("ascii")
-    bigbugbashers = txt.split("\r\n")[1:]
-    basher_names = []
-    for b in bigbugbashers:
-        if len(b.split(",")[1]) > 0:
-            basher_names.append(b.split(",")[1])
-except rs.exceptions.HTTPError as err:
-    raise SystemExit(err)
+if is_v2_release:
+    try:
+        res = rs.get(url=csv_url)
+        txt = res.content.decode("ascii")
+        bigbugbashers = txt.split("\r\n")[1:]
+        basher_names = []
+        for b in bigbugbashers:
+            if len(b.split(",")[1]) > 0:
+                basher_names.append(b.split(",")[1])
+    except rs.exceptions.HTTPError as err:
+        raise SystemExit(err)
 
 
 header_length = 0x78
@@ -79,7 +81,7 @@ links = [
 end_sequence_cards = []
 end_sequence_cards.extend(main_devs)
 end_sequence_cards.extend(assistant_devs)
-is_v2_release = False
+
 if not is_v2_release:
     end_sequence_cards.extend(beta_testers)
 if len(basher_names) > 0 and is_v2_release:
