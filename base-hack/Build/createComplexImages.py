@@ -84,6 +84,8 @@ im = Image.new(mode="RGBA", size=(44, 44))
 im.save(f"{disp_dir}empty44.png")
 im = Image.new(mode="RGBA", size=(32, 64))
 im.save(f"{disp_dir}empty3264.png")
+im = Image.new(mode="RGBA", size=(1, 1))
+im.save(f"{disp_dir}empty11.png")
 #
 im = Image.open(f"{disp_dir}soldout_bismuth.png")
 im_height = 26

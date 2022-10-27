@@ -153,6 +153,7 @@ settings*.json
 *.z64
 *.n64
 *.v64
+*.dkp
 *.bin
 *.bin.gz
 *.raw
