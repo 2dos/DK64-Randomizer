@@ -591,12 +591,25 @@ void getNextMoveText(void) {
 	}
 	if (has_data) {
 		if ((CurrentActorPointer_0->obj_props_bitfield & 0x10) == 0) {
+			int overlay_count = 0;
+			for (int i = 0; i < LoadedActorCount; i++) {
+				actorData* actor = (actorData*)LoadedActorArray[i].actor;
+				if (actor) {
+					if ((actor->actorType == 0x140) || (actor->actorType == 0x144)) {
+						if (actor != CurrentActorPointer_0) {
+							overlay_count += 1;
+						}
+					}
+				}
+			}
 			int top_item = -1;
 			int bottom_item = -1;
 			mtx_item mtx0;
 			mtx_item mtx1;
 			_guScaleF(&mtx0, 0x3F19999A, 0x3F19999A, 0x3F800000);
-			_guTranslateF(&mtx1, 0x44200000, 0x44480000, 0x0);
+			float position = 800.0f - (overlay_count * 100.0f); // Gap of 100.0f
+			int pos_f = *(int*)&position;
+			_guTranslateF(&mtx1, 0x44200000, pos_f, 0x0);
 			_guMtxCatF(&mtx0, &mtx1, &mtx0);
 			_guMtxF2L(&mtx0, &paad->unk_10);
 			_guTranslateF(&mtx1, 0, 0x42400000, 0);
