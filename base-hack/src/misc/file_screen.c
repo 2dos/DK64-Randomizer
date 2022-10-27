@@ -270,9 +270,9 @@ int getEnabledState(int index) {
 			return MovesBase[kong].instrument_bitfield & 1;
 		} else if (submove == 2) {
 			// Move
-			int move_placement = 2;
-			if (kong == 2) {
-				move_placement = 0;
+			int move_placement = 0;
+			if (kong == 0) {
+				move_placement = 2;
 			} else if (kong > 2) {
 				move_placement = 1;
 			}

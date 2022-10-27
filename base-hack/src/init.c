@@ -120,7 +120,7 @@ int getCrownItem(int map) {
 
 int getKeyItem(int old_flag) {
 	int flag_list[] = {26,74,138,168,236,292,317,380};
-	for (int i = 0; i < 10; i++) {
+	for (int i = 0; i < 8; i++) {
 		if (old_flag == flag_list[i]) {
 			return key_item_table[i];
 		}
@@ -807,6 +807,7 @@ void initHack(int source) {
 			*(short*)(0x806AA762) = FLAG_ABILITY_CAMERA; // Film Display
 			*(short*)(0x8060D986) = FLAG_ABILITY_CAMERA; // Film Refill
 			*(short*)(0x806F6F76) = FLAG_ABILITY_CAMERA; // Film Refill
+			*(short*)(0x806F916A) = FLAG_ABILITY_CAMERA; // Film max
 			initItemDropTable();
 			initCollectableCollision();
 			initActorDefs();

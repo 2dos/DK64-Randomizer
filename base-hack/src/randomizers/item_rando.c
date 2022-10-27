@@ -141,7 +141,7 @@ void initCollectableCollision(void) {
     index = addCollisionInfo(index, 0x0098, COLLECTABLE_FILM, KONG_NONE, 0, 0, 0); // Film
     index = addCollisionInfo(index, 0x0090, COLLECTABLE_MEDAL, KONG_NONE, 154, 0, 0); // Medal
     index = addCollisionInfo(index, 0x00EC, COLLECTABLE_RACECOIN, KONG_NONE, 0x36, 0, 0); // Race Coin
-    index = addCollisionInfo(index, 0x013C, COLLECTABLE_NONE, KONG_NONE, 0x48, 50, 50); // Boss Key
+    index = addCollisionInfo(index, 0x013C, COLLECTABLE_NONE, KONG_NONE, 0x48, 20, 20); // Boss Key
     index = addCollisionInfo(index, 0x018D, COLLECTABLE_NONE, KONG_NONE, 0x56, 0, 0); // Battle Crown
     index = addCollisionInfo(index, 0x0288, COLLECTABLE_GB, KONG_NONE, 0x2D, 8, 4); // Rareware GB
     index = addCollisionInfo(index, 0x0048, COLLECTABLE_NONE, KONG_NONE, 151, 0, 0); // Nintendo Coin
@@ -258,6 +258,9 @@ void spawnBossReward(int object, int x_f, int y_f, int z_f, int unk0, int cutsce
         x_f = 0x43ED8000;
         y_f = 0x43570000;
         z_f = 0x443B8000;
+    } else if ((object != 72) && (flag == 0xA8)) {
+        // Pufftoss - Not a key
+        cutscene = 0;
     }
     spawnActorWithFlag(object, x_f, y_f, z_f, unk0, cutscene, flag, unk1);
     // Fix items which have short spawn ranges
@@ -454,7 +457,7 @@ void* checkMove(short* flag, void* fba, int source) {
                 }
                 spawn_overlay = 1;
                 item_type = 4;
-                if (item_index == 3) {
+                if (item_index >= 2) {
                     // 3rd Melon
                     if (CollectableBase.Melons < 3) {
                         CollectableBase.Melons = 3;
@@ -610,9 +613,9 @@ void banana_medal_acquisition(int flag) {
         10 - Shockwave,
         11 - Nothing,
     */
+    int item_type = getMedalItem(flag - 549);
     if (!checkFlag(flag, 0)) {
         // Display and play effects if you don't have item
-        int item_type = getMedalItem(flag - 549);
         if (item_type < 12) {
             if (item_type == 2) {
                 // Display key text
@@ -675,6 +678,11 @@ void banana_medal_acquisition(int flag) {
             }
             displaySpriteAtXYZ(sprite_table[used_sprite], 0x3F800000, 160.0f, 120.0f, -10.0f);
         }
+    } else if (item_type == 11) {
+        unkSpriteRenderFunc(200);
+        unkSpriteRenderFunc_0();
+        loadSpriteFunction(0x8071EFDC);
+        displaySpriteAtXYZ(sprite_table[0x8E], 0x3F800000, 160.0f, 120.0f, -10.0f);
     }
 }
 
