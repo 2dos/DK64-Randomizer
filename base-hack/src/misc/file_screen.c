@@ -591,6 +591,16 @@ void enterFileProgress(int sfx) {
 }
 
 void giveCollectables(void) {
+	int max = 10; //giving instrument power even if no instrument is unlocked
+	for (int i = 1; i < 4; i++) {
+		if (MovesBase[0].instrument_bitfield & (1 << i)) {
+			max += 5;
+		}
+	}
+	int energy = max/2;
+	for (int instrument_kong = 0; instrument_kong < 5; instrument_kong++) {
+		MovesBase[instrument_kong].instrument_energy = energy;
+	}
 	int mult = 1;
 	if (MovesBase[0].ammo_belt > 0) {
 		mult = 2 * MovesBase[0].ammo_belt;

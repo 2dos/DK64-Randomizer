@@ -465,6 +465,7 @@ def replaceROMFile(
     if len(filename) > 0:
         pointer_tables[pointer_table_index]["entries"][file_index]["filename"] = filename
 
+
 def clampCompressedTextures(rom: BinaryIO, cap: int):
     """Clamps the size of pointer table 25 to reduce it's size to save space."""
     original_length = len(pointer_tables[25]["entries"])
@@ -488,6 +489,7 @@ def clampCompressedTextures(rom: BinaryIO, cap: int):
             rom.seek(uncompressed_start)
             new_uncompressed_data = bytearray(rom.read(new_size))
             replaceROMFile(rom, 26, 25, bytes(new_uncompressed_data), new_size)
+
 
 def shouldWritePointerTable(index: int):
     """Write to the pointer table."""

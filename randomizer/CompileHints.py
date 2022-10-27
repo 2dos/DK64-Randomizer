@@ -211,11 +211,7 @@ shop_cryptic = [
     ["The shop owner who is flirtatious", "The shop owner who is not present in Fungi Forest", "The shop owner who is not present in Jungle Japes", "The shop owner with blonde hair"],
 ]
 
-crankys_cryptic = [
-    "a location out of this world",
-    "a location 5000 points deep",
-    "a mad scientist's laboratory"
-]
+crankys_cryptic = ["a location out of this world", "a location 5000 points deep", "a mad scientist's laboratory"]
 
 moves_data = [
     # Commented out logic sections are saved if we need to revert to the old hint system
@@ -904,7 +900,7 @@ def compileHints(spoiler: Spoiler):
             message = f"{hinted_loc.name} is on the Way of the Hoard."
             hint_location.hint_type = HintType.WothLocation
             UpdateHint(hint_location, message)
-            
+
     chosen_shops = []
     for i in range(hint_distribution[HintType.FullShopWithItems]):
         # Shared shop lists are a convenient list of all individual shops in the game, regardless of if something is there
@@ -914,7 +910,11 @@ def compileHints(spoiler: Spoiler):
         # Get the level and vendor type from that location
         shop_info = LocationList[shared_shop_location]
         # Find all locations for this shop
-        kongLocationsAtThisShop = [location for id, location in LocationList.items() if location.type == Types.Shop and location.level == shop_info.level and location.vendor == shop_info.vendor and location.kong != Kongs.any]
+        kongLocationsAtThisShop = [
+            location
+            for id, location in LocationList.items()
+            if location.type == Types.Shop and location.level == shop_info.level and location.vendor == shop_info.vendor and location.kong != Kongs.any
+        ]
         # If this is a shared shop dump...
         if shop_info.item is not None and shop_info.item != Items.NoItem:
             shop_vendor = shop_owners[shop_info.vendor]

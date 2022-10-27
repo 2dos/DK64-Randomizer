@@ -30,7 +30,16 @@ from image_converter import convertToRGBA32
 from map_names import maps
 from populateSongData import writeVanillaSongData
 from recompute_overlays import isROMAddressOverlay, readOverlayOriginalData, replaceOverlayData, writeModifiedOverlaysToROM
-from recompute_pointer_table import dumpPointerTableDetails, getFileInfo, make_safe_filename, parsePointerTables, pointer_tables, replaceROMFile, writeModifiedPointerTablesToROM, clampCompressedTextures
+from recompute_pointer_table import (
+    dumpPointerTableDetails,
+    getFileInfo,
+    make_safe_filename,
+    parsePointerTables,
+    pointer_tables,
+    replaceROMFile,
+    writeModifiedPointerTablesToROM,
+    clampCompressedTextures,
+)
 from staticcode import patchStaticCode
 from vanilla_move_data import writeVanillaMoveData
 
@@ -49,7 +58,7 @@ createTextFile("assets/Non-Code/credits")
 createSquishFile("assets/Non-Code/credits")
 generateYellowWrinkly()
 
-BLOCK_COLOR_SIZE = 64 # Bytes allocated to a block 32x32 image. Brute forcer says we can go as low as 0x25 bytes, but leaving some room for me to have left out something
+BLOCK_COLOR_SIZE = 64  # Bytes allocated to a block 32x32 image. Brute forcer says we can go as low as 0x25 bytes, but leaving some room for me to have left out something
 
 file_dict = [
     {
@@ -430,7 +439,7 @@ for x in range(221):
 setup_expansion_size = 0x12C0
 for x in range(221):
     local_expansion = setup_expansion_size
-    if x in (0,1,2,5,9,15,0x19):
+    if x in (0, 1, 2, 5, 9, 15, 0x19):
         local_expansion = 0
     with open(ROMName, "rb") as fh:
         setup_tbl_index = 9
@@ -561,20 +570,19 @@ for x in range(5):
         )
 
 
-
 kong_palettes = {
-    0xE8C: [(32,32), "block"], # DK Base
-    0xE66: [(32,32), "block"], # Diddy Cap/Shirt
-    0xE69: [(32,32), "block"], # Lanky Overalls
-    0xEB9: [(43,32), "checkered"], # Chunky Checkered Shirt
-    0xE67: [(32,32), "block"], # Chunky Shirt Front
-    3826: [(32,32), "block"], # Rambi
-    3847: [(32,32), "block"], # Enguarde
-    3734: [(43,32), "checkered"], # Lanky Patch
-    3777: [(32,32), "sparkle"], # Disco Shirt
-    3778: [(32,32), "sparkle"], # Disco Gloves
-    4971: [(32,32), "block"], # Krusha Skin
-    4966: [(32,32), "block"], # Krusha Belt
+    0xE8C: [(32, 32), "block"],  # DK Base
+    0xE66: [(32, 32), "block"],  # Diddy Cap/Shirt
+    0xE69: [(32, 32), "block"],  # Lanky Overalls
+    0xEB9: [(43, 32), "checkered"],  # Chunky Checkered Shirt
+    0xE67: [(32, 32), "block"],  # Chunky Shirt Front
+    3826: [(32, 32), "block"],  # Rambi
+    3847: [(32, 32), "block"],  # Enguarde
+    3734: [(43, 32), "checkered"],  # Lanky Patch
+    3777: [(32, 32), "sparkle"],  # Disco Shirt
+    3778: [(32, 32), "sparkle"],  # Disco Gloves
+    4971: [(32, 32), "block"],  # Krusha Skin
+    4966: [(32, 32), "block"],  # Krusha Belt
 }
 for x in kong_palettes:
     x_s = kong_palettes[x][0][0] * kong_palettes[x][0][1] * 2
