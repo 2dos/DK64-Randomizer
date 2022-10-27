@@ -113,7 +113,7 @@ def AllItems(settings):
         allItems.extend(Keys())
     if Types.Medal in settings.shuffled_location_types:
         allItems.extend(BananaMedalItems())
-    if settings.move_rando != "off" or Types.Shop in settings.shuffled_location_types:
+    if settings.move_rando != "off":
         allItems.extend(DonkeyMoves)
         allItems.extend(DiddyMoves)
         allItems.extend(LankyMoves)
