@@ -754,24 +754,6 @@ def GetItemPrerequisites(spoiler, targetItemId, ownedKongs=[]):
     return requiredMoves
 
 
-# def GetValidLocationsForMove(spoiler, move, blockedLocations=set({})):
-#     """Return the valid locations for the given move. Currently only returns shop locations for moves."""
-#     validLocations = set({})
-#     if spoiler.settings.move_rando == "cross_purchase" or move in ItemPool.DonkeyMoves:
-#         validLocations.update(DonkeyMoveLocations.copy())
-#     if spoiler.settings.move_rando == "cross_purchase" or move in ItemPool.DiddyMoves:
-#         validLocations.update(DiddyMoveLocations.copy())
-#     if spoiler.settings.move_rando == "cross_purchase" or move in ItemPool.TinyMoves:
-#         validLocations.update(TinyMoveLocations.copy())
-#     if spoiler.settings.move_rando == "cross_purchase" or move in ItemPool.ChunkyMoves:
-#         validLocations.update(ChunkyMoveLocations.copy())
-#     if spoiler.settings.move_rando == "cross_purchase" or move in ItemPool.LankyMoves:
-#         validLocations.update(LankyMoveLocations.copy())
-#     if spoiler.settings.training_barrels == "shuffled":
-#         validLocations.update(TrainingBarrelLocations.copy())
-#     return list(validLocations - blockedLocations)
-
-
 def PlaceItems(settings, algorithm, itemsToPlace, ownedItems=None, inOrder=False):
     """Places items using given algorithm."""
     if ownedItems is None:
@@ -841,6 +823,7 @@ def Fill(spoiler):
         if gbsUnplaced > 0:
             raise Ex.ItemPlacementException(str(gbsUnplaced) + " unplaced GBs.")
     # Finally, check if game is beatable
+    BlockAccessToLevel(spoiler.settings, 100)  # In case any blocks were still in place (lookin at you, no logic)
     Reset()
     if not GetAccessibleLocations(spoiler.settings, [], SearchMode.CheckBeatable):
         raise Ex.GameNotBeatableException("Game unbeatable after placing all items.")

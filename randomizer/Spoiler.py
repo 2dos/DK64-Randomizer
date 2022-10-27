@@ -31,6 +31,7 @@ class Spoiler:
         self.settings: Settings = settings
         self.playthrough = {}
         self.woth = {}
+        self.woth_locations = {}
         self.shuffled_barrel_data = {}
         self.shuffled_exit_data = {}
         self.shuffled_exit_instructions = []
@@ -669,6 +670,7 @@ class Spoiler:
     def UpdateWoth(self, locations, wothLocations):
         """Write woth locations as a dict of location/item pairs."""
         self.woth = {}
+        self.woth_locations = wothLocations
         for locationId in wothLocations:
             location = locations[locationId]
             self.woth[location.name] = ItemList[location.item].name

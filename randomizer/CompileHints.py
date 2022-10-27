@@ -11,7 +11,7 @@ from randomizer.Enums.Regions import Regions
 from randomizer.Enums.Transitions import Transitions
 from randomizer.Enums.Types import Types
 from randomizer.Lists.Item import ItemList, NameFromKong
-from randomizer.Lists.Location import LocationList
+from randomizer.Lists.Location import LocationList, SharedShopLocations
 from randomizer.Lists.MapsAndExits import GetMapId
 from randomizer.Lists.ShufflableExit import ShufflableExits
 from randomizer.Lists.WrinklyHints import HintLocation, hints
@@ -211,6 +211,12 @@ shop_cryptic = [
     ["The shop owner who is flirtatious", "The shop owner who is not present in Fungi Forest", "The shop owner who is not present in Jungle Japes", "The shop owner with blonde hair"],
 ]
 
+crankys_cryptic = [
+    "a location out of this world",
+    "a location 5000 points deep",
+    "a mad scientist's laboratory"
+]
+
 moves_data = [
     # Commented out logic sections are saved if we need to revert to the old hint system
     # Donkey
@@ -296,6 +302,8 @@ hint_distribution = {
     # HintType.MedalsRequired: 1,
     HintType.Entrance: 8,
     HintType.KeyLocation: -1,  # Fixed number equal to the number of keys to be obtained over the seed
+    HintType.WothLocation: 8,
+    HintType.FullShopWithItems: 7,
 }
 HINT_CAP = 35  # There are this many total slots for hints
 
@@ -308,9 +316,14 @@ def compileHints(spoiler: Spoiler):
         valid_types.append(HintType.KRoolOrder)
     if spoiler.settings.helm_setting != "skip_all" and spoiler.settings.helm_phase_count < 5:
         valid_types.append(HintType.HelmOrder)
-    if not spoiler.settings.unlock_all_moves and spoiler.settings.move_rando != "off":
+    if not spoiler.settings.unlock_all_moves and spoiler.settings.move_rando not in ("off", "item_shuffle"):
         valid_types.append(HintType.FullShop)
         valid_types.append(HintType.MoveLocation)
+    if spoiler.settings.shuffle_items and Types.Shop in spoiler.settings.shuffled_location_types:
+        valid_types.append(HintType.FullShopWithItems)
+        # With no logic WOTH hints aren't really built correctly
+        if not spoiler.settings.no_logic:
+            valid_types.append(HintType.WothLocation)
     # if spoiler.settings.random_patches:
     #     valid_types.append(HintType.DirtPatch)
     if spoiler.settings.randomize_blocker_required_amounts:
@@ -547,10 +560,16 @@ def compileHints(spoiler: Spoiler):
             if location.kong == Kongs.any and location.type == Types.Key:
                 kong_index = spoiler.settings.boss_kongs[location.level]
             if spoiler.settings.wrinkly_hints == "cryptic":
-                level_name = random.choice(level_cryptic_helm_isles[location.level])
+                if location.level == Levels.Shops:
+                    level_name = "Cranky's Lab"
+                else:
+                    level_name = random.choice(level_cryptic_helm_isles[location.level])
                 kong_name = random.choice(kong_cryptic[kong_index])
             else:
-                level_name = level_list_helm_isles[location.level]
+                if location.level == Levels.Shops:
+                    level_name = random.choice(crankys_cryptic)
+                else:
+                    level_name = level_list_helm_isles[location.level]
                 kong_name = kong_list[kong_index]
             # Find the levels are are before the level this key is for
             hintable_levels = []
@@ -870,6 +889,57 @@ def compileHints(spoiler: Spoiler):
             hint_location.hint_type = HintType.FullShop
             UpdateHint(hint_location, message)
             placed_full_shop_hints += 1
+
+    if hint_distribution[HintType.WothLocation] > 0:
+        hintable_locations = []
+        for location_id in spoiler.woth_locations:
+            location = LocationList[location_id]
+            # Only hint things that are in shuffled locations
+            if location.type in spoiler.settings.shuffled_location_types:
+                hintable_locations.append(location)
+        for i in range(hint_distribution[HintType.WothLocation]):
+            hint_location = getRandomHintLocation()
+            hinted_loc = random.choice(hintable_locations)
+            hint_location = getRandomHintLocation()
+            message = f"{hinted_loc.name} is on the Way of the Hoard."
+            hint_location.hint_type = HintType.WothLocation
+            UpdateHint(hint_location, message)
+            
+    chosen_shops = []
+    for i in range(hint_distribution[HintType.FullShopWithItems]):
+        # Shared shop lists are a convenient list of all individual shops in the game, regardless of if something is there
+        shared_shop_location = random.choice([shop for shop in SharedShopLocations if shop not in chosen_shops])
+        # Ensure we always hint unique shops
+        chosen_shops.append(shared_shop_location)
+        # Get the level and vendor type from that location
+        shop_info = LocationList[shared_shop_location]
+        # Find all locations for this shop
+        kongLocationsAtThisShop = [location for id, location in LocationList.items() if location.type == Types.Shop and location.level == shop_info.level and location.vendor == shop_info.vendor and location.kong != Kongs.any]
+        # If this is a shared shop dump...
+        if shop_info.item is not None and shop_info.item != Items.NoItem:
+            shop_vendor = shop_owners[shop_info.vendor]
+            level_name = level_list_helm_isles[shop_info.level]
+            if spoiler.settings.wrinkly_hints == "cryptic":
+                level_name = random.choice(level_cryptic_helm_isles[shop_info.level])
+            move_series = ItemList[shop_info.item].name
+        # Else this is a series of Kong-specific purchases
+        else:
+            random.shuffle(kongLocationsAtThisShop)  # Shuffle this list so you don't know who buys what
+            item_names = [ItemList[location.item].name for location in kongLocationsAtThisShop if location.item is not None and location.item != Items.NoItem]
+            if len(item_names) == 0:
+                move_series = "nothing"
+            else:
+                move_series = item_names[0]
+                if len(item_names) > 1:
+                    move_series = f"{', '.join(item_names[:-1])} and {item_names[-1]}"
+        shop_vendor = shop_owners[shop_info.vendor]
+        level_name = level_list_helm_isles[shop_info.level]
+        if spoiler.settings.wrinkly_hints == "cryptic":
+            level_name = random.choice(level_cryptic_helm_isles[shop_info.level])
+        hint_location = getRandomHintLocation()
+        message = f"{shop_vendor}'s in {level_name} contains {move_series}."
+        hint_location.hint_type = HintType.FullShopWithItems
+        UpdateHint(hint_location, message)
 
     # No need to do anything fancy here - there's already a K. Rool hint on the player's path (the wall in Helm)
     for i in range(hint_distribution[HintType.KRoolOrder]):

@@ -372,10 +372,13 @@ class Settings:
                     for type in Types:
                         if type.name == item.capitalize():
                             self.shuffled_location_types.append(type)
-            if Types.Shop in self.shuffled_location_types and self.shockwave_status not in ("vanilla", "start_with"):
-                self.shuffled_location_types.append(Types.Shockwave)
-            if Types.Shop in self.shuffled_location_types and self.training_barrels != "normal":
-                self.shuffled_location_types.append(Types.TrainingBarrel)
+            if Types.Shop in self.shuffled_location_types:
+                if self.move_rando != "start_with":
+                    self.move_rando = "item_shuffle"
+                if self.shockwave_status not in ("vanilla", "start_with"):
+                    self.shuffled_location_types.append(Types.Shockwave)
+                if self.training_barrels != "normal":
+                    self.shuffled_location_types.append(Types.TrainingBarrel)
         self.progressives_locked_in_shops = False  # Technical limitation: for now (hopefully) progressive moves must be found in shops
 
         self.shuffle_prices()
@@ -579,15 +582,6 @@ class Settings:
                     ItemList[item_index].playthrough = True
         if self.win_condition == "all_medals":
             ItemList[Items.BananaMedal].playthrough = True
-        if self.win_condition == "all_keys":
-            ItemList[Items.JungleJapesKey].playthrough = True
-            ItemList[Items.AngryAztecKey].playthrough = True
-            ItemList[Items.FranticFactoryKey].playthrough = True
-            ItemList[Items.GloomyGalleonKey].playthrough = True
-            ItemList[Items.FungiForestKey].playthrough = True
-            ItemList[Items.CrystalCavesKey].playthrough = True
-            ItemList[Items.CreepyCastleKey].playthrough = True
-            ItemList[Items.HideoutHelmKey].playthrough = True
         if not self.crown_door_open:
             ItemList[Items.BattleCrown].playthrough = True
 
@@ -599,7 +593,7 @@ class Settings:
         self.valid_locations = {}
         self.valid_locations[Types.Kong] = [Locations.DiddyKong, Locations.LankyKong, Locations.TinyKong, Locations.ChunkyKong]
         # If shops are not shuffled into the larger pool, calculate shop locations for shop-bound moves
-        if self.move_rando != "off" and Types.Shop not in self.shuffled_location_types:
+        if self.move_rando not in ("off", "item_shuffle"):
             self.valid_locations[Types.Shop] = {}
             if self.move_rando == "on":
                 self.valid_locations[Types.Shop][Kongs.donkey] = DonkeyMoveLocations.copy()

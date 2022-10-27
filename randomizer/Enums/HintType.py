@@ -17,3 +17,5 @@ class HintType(IntEnum):
     MedalsRequired = auto()
     Entrance = auto()
     KeyLocation = auto()
+    FullShopWithItems = auto()
+    WothLocation = auto()
