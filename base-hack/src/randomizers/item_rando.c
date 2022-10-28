@@ -681,7 +681,8 @@ void banana_medal_acquisition(int flag) {
             }
             displaySpriteAtXYZ(sprite_table[used_sprite], 0x3F800000, 160.0f, 120.0f, -10.0f);
         }
-    } else if (item_type == 11) {
+    } else {
+        // No item or pre-given item
         unkSpriteRenderFunc(200);
         unkSpriteRenderFunc_0();
         loadSpriteFunction(0x8071EFDC);

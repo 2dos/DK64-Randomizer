@@ -13,6 +13,7 @@ void finalizeBeatGame(void) {
     // Dumb memes with crashes
     if (game_beat_countdown > 0) {
         if (game_beat_countdown == 1) {
+            auto_turn_keys();
             save();
             resetMapContainer();
             loadEndSeq(0);

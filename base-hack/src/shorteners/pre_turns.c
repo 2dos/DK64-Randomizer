@@ -53,13 +53,18 @@ void apply_key(int index, int remove_troff, int set_key) {
 
 void pre_turn_keys(void) {
 	int check = 1;
-	if (ObjectModel2Timer < 5) {
-		if (Rando.keys_preturned) {
-			for (int i = 0; i < 8; i++) {
-				if (Rando.keys_preturned & check) {
-					apply_key(i,!Rando.item_rando,1);
-				}
-				check <<= 1;
+	if (Rando.keys_preturned) {
+		for (int i = 0; i < 8; i++) {
+			if (Rando.keys_preturned & check) {
+				apply_key(i,!Rando.item_rando,1);
+			}
+			check <<= 1;
+		}
+	}
+	if (Rando.item_rando) {
+		for (int i = 0; i < 7; i++) {
+			if (checkFlag(getKeyFlag(i), 0)) {
+				setFlagDuplicate(tnsportal_flags[i], 1, 0);
 			}
 		}
 	}

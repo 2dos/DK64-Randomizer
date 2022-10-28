@@ -634,6 +634,7 @@ void file_progress_screen_code(actorData* actor, int buttons) {
 				fileStart(0);
 				if (file_empty) {
 					// New File
+					setFlagDuplicate(0,1,0); // Set null flag as it ensures no=item stuff is actually no-item
 					unlockMoves();
 					applyFastStart();
 					openCrownDoor();
@@ -642,6 +643,7 @@ void file_progress_screen_code(actorData* actor, int buttons) {
 					if(Rando.fast_gbs) {
 						setPermFlag(FLAG_RABBIT_ROUND1); //Start race at round 2
 					}
+					pre_turn_keys();
 					if (Rando.helm_hurry_mode) {
 						QueueHelmTimer = 1;
 					}
