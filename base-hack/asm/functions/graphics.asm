@@ -1,0 +1,13 @@
+.definelabel _guScaleF, 0x80008580
+.definelabel _guTranslateF, 0x80005D80
+.definelabel _guMtxCatF, 0x800088B0
+.definelabel _guMtxF2L, 0x8000A6C0
+.definelabel initDisplayList, 0x807132DC
+.definelabel displayText, 0x806FC530
+.definelabel displayImage, 0x8068C5A8
+.definelabel getPtr14Texture, 0x8068C12C
+.definelabel renderImage_Internal, 0x80702464
+.definelabel printText, 0x806ABB98
+.definelabel addDLToOverlay, 0x8068C350
+.definelabel getTextStyleHeight, 0x806FD894
+.definelabel textDraw, 0x806FD490

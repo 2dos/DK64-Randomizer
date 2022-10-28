@@ -141,7 +141,7 @@ void initCollectableCollision(void) {
     index = addCollisionInfo(index, 0x0098, COLLECTABLE_FILM, KONG_NONE, 0, 0, 0); // Film
     index = addCollisionInfo(index, 0x0090, COLLECTABLE_MEDAL, KONG_NONE, 154, 8, 4); // Medal
     index = addCollisionInfo(index, 0x00EC, COLLECTABLE_RACECOIN, KONG_NONE, 0x36, 0, 0); // Race Coin
-    index = addCollisionInfo(index, 0x013C, COLLECTABLE_NONE, KONG_NONE, 0x48, 20, 20); // Boss Key
+    index = addCollisionInfo(index, 0x013C, COLLECTABLE_NONE, KONG_NONE, 0x48, 10, 10); // Boss Key
     index = addCollisionInfo(index, 0x018D, COLLECTABLE_NONE, KONG_NONE, 0x56, 8, 4); // Battle Crown
     index = addCollisionInfo(index, 0x0288, COLLECTABLE_GB, KONG_NONE, 0x2D, 8, 4); // Rareware GB
     index = addCollisionInfo(index, 0x0048, COLLECTABLE_NONE, KONG_NONE, 151, 8, 4); // Nintendo Coin
@@ -260,7 +260,7 @@ void spawnBossReward(int object, int x_f, int y_f, int z_f, int unk0, int cutsce
         z_f = 0x443B8000;
     } else if ((object != 72) && (flag == 0xA8)) {
         // Pufftoss - Not a key
-        cutscene = 0;
+        cutscene = 100;
     }
     spawnActorWithFlag(object, x_f, y_f, z_f, unk0, cutscene, flag, unk1);
     // Fix items which have short spawn ranges
@@ -413,6 +413,7 @@ void* checkMove(short* flag, void* fba, int source) {
                 if (item_type == 4) {
                     if (CollectableBase.Melons < 2) {
                         CollectableBase.Melons = 2;
+                        CollectableBase.Health = CollectableBase.Melons << 2;
                     }
                 }
             }
@@ -461,10 +462,12 @@ void* checkMove(short* flag, void* fba, int source) {
                     // 3rd Melon
                     if (CollectableBase.Melons < 3) {
                         CollectableBase.Melons = 3;
+                        CollectableBase.Health = CollectableBase.Melons << 2;
                     }
                 } else {
                     if (CollectableBase.Melons < 2) {
                         CollectableBase.Melons = 2;
+                        CollectableBase.Health = CollectableBase.Melons << 2;
                     }
                 }
                 item_index += 1;

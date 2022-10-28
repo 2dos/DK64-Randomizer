@@ -663,6 +663,7 @@ void initHack(int source) {
 				*(int*)(0x806BD798) = 0x0C000000 | (((int)&KLumsyText & 0xFFFFFF) >> 2); // K. Lumsy code hook
 				*(int*)(0x806A6CC0) = 0; // Prevent BP Despawn
 				*(int*)(0x806A6CDC) = 0; // Prevent BP Despawn
+				*(int*)(0x806A741C) = 0; // Prevent Key Twinkly Sound
 				// BP Table
 				int bp_size = 0x28;
 				unsigned char* bp_write = dk_malloc(bp_size);
@@ -717,6 +718,28 @@ void initHack(int source) {
 								bonus_data[j].spawn_actor = reward_write[i].actor;
 							}
 						}
+					}
+				}
+				if (Rando.quality_of_life.remove_cutscenes) {
+					int cs_unskip[] = {
+						0x1A, 2,
+						0x1A, 3,
+						0x1A, 4,
+						0x1A, 5,
+						0x26, 15,
+						0x40, 1,
+						0xA8, 0,
+					};
+					for (int i = 0; i < (sizeof(cs_unskip) / 8); i++) {
+						int cs_offset = 0;
+						int cs_val = cs_unskip[(2 * i) + 1];
+						int cs_map = cs_unskip[(2 * i)];
+						int shift = cs_val % 31;
+						if (cs_val > 31) {
+							cs_offset = 1;
+						}
+						int comp = 0xFFFFFFFF - (1 << shift);
+						cs_skip_db[(2 * cs_map) + cs_offset] &= comp;
 					}
 				}
 			}

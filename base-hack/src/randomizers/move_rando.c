@@ -123,10 +123,12 @@ void progressiveChange(int flag) {
 			if (ins_level > 1) {
 				if (CollectableBase.Melons < 3) {
 					CollectableBase.Melons = 3;
+					CollectableBase.Health = CollectableBase.Melons << 2;
 				}
 			} else {
 				if (CollectableBase.Melons < 2) {
 					CollectableBase.Melons = 2;
+					CollectableBase.Health = CollectableBase.Melons << 2;
 				}
 			}
 			for (int i = 0; i < 5; i++) {
@@ -375,8 +377,10 @@ void setLocation(purchase_struct* purchase_data) {
 					}
 					if (CollectableBase.Melons < 2) {
 						CollectableBase.Melons = 2;
+						CollectableBase.Health = CollectableBase.Melons << 2;
 					} else if ((CollectableBase.Melons < 3) && (bitfield_index > 1)) {
 						CollectableBase.Melons = 3;
+						CollectableBase.Health = CollectableBase.Melons << 2;
 					}
 				break;
 			}
@@ -847,6 +851,9 @@ void showPostMoveText(shop_paad* paad, KongBase* kong_base, int intro_flag) {
 							} else {
 								text_file = 9;
 							}
+						} else {
+							text_item_1 = 0x2B;
+							text_file = 8;
 						}
 					}
 				break;

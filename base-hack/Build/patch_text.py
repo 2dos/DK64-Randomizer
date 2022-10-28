@@ -723,6 +723,12 @@ move_explanations = [
             {"text": ["TO PULL OUT THE CAMERA."]},
         ],
     },
+    {
+        "move": "generic_item",  # 0x2B
+        "explanation": [
+            {"text": ["PAY ATTENTION, ~. THERE'S PLENTY MORE ITEMS TO GATHER IN THIS GAME. GET MOVING SO WE CAN DISPENSE OF K. ROOL"]},
+        ],
+    },
 ]
 
 cranky_text = grabText(8)
