@@ -14,6 +14,7 @@ void finalizeBeatGame(void) {
     if (game_beat_countdown > 0) {
         if (game_beat_countdown == 1) {
             save();
+            resetMapContainer();
             loadEndSeq(0);
         }
         game_beat_countdown -= 1;
