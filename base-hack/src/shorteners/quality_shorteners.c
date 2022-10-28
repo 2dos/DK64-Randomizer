@@ -89,20 +89,6 @@ void qualityOfLife_shorteners(void) {
 		TempFlagBlock[0xC] |= 0x80;
 		TempFlagBlock[0xD] |= 0x3F;
     }
-    if (Rando.quality_of_life.dance_skip) {
-		// No Dance
-		if (
-			(CurrentMap == 14) ||
-			(CurrentMap == 27) ||
-			(CurrentMap == 39) ||
-			(CurrentMap == 82) ||
-			(CurrentMap == 185)
-		) {
-			SkipDance = 0;
-		} else {
-			SkipDance = 1;
-		}
-    }
 	if (Rando.quality_of_life.reduce_lag) {
         if (CurrentMap == 0x57) {
             if (ObjectModel2Timer <= 5) {

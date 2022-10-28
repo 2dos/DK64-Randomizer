@@ -226,6 +226,18 @@ void initHack(int source) {
 				*(int*)(0x80681158) = 0x0C000000 | (((int)&completeBonus & 0xFFFFFF) >> 2); // Modify Function Call
 				*(short*)(0x80681962) = 1; // Make bonus noclip	
 			}
+			// Item Get
+			*(int*)(0x806F64C8) = 0x0C000000 | (((int)&getItem & 0xFFFFFF) >> 2); // Modify Function Call
+			*(int*)(0x806F6BA8) = 0x0C000000 | (((int)&getItem & 0xFFFFFF) >> 2); // Modify Function Call
+			*(int*)(0x806F7740) = 0x0C000000 | (((int)&getItem & 0xFFFFFF) >> 2); // Modify Function Call
+			*(int*)(0x806F7764) = 0x0C000000 | (((int)&getItem & 0xFFFFFF) >> 2); // Modify Function Call
+			*(int*)(0x806F7774) = 0x0C000000 | (((int)&getItem & 0xFFFFFF) >> 2); // Modify Function Call
+			*(int*)(0x806F7798) = 0x0C000000 | (((int)&getItem & 0xFFFFFF) >> 2); // Modify Function Call
+			*(int*)(0x806F77B0) = 0x0C000000 | (((int)&getItem & 0xFFFFFF) >> 2); // Modify Function Call
+			*(int*)(0x806F77C4) = 0x0C000000 | (((int)&getItem & 0xFFFFFF) >> 2); // Modify Function Call
+			*(int*)(0x806F7804) = 0x0C000000 | (((int)&getItem & 0xFFFFFF) >> 2); // Modify Function Call
+			*(int*)(0x806F781C) = 0x0C000000 | (((int)&getItem & 0xFFFFFF) >> 2); // Modify Function Call
+			
 			replace_zones(1);
 			randomize_bosses();
 			loadExtraHooks();

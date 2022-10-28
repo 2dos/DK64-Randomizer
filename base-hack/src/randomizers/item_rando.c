@@ -822,3 +822,171 @@ void KLumsyText(void) {
     */
     renderActor(CurrentActorPointer_0, 0);
 }
+
+static const unsigned char dance_skip_ban_maps[] = {
+    0x0E, // Aztec Beetle
+    0x1B, // Factory Car Race
+    0x27, // Galleon Seal Race
+    0x52, // Caves Beetle
+    0xB9, // Castle Car Race
+    0x08, // AD1
+    0xC5, // Dog1
+    0x9A, // MJ
+    0x6F, // Pufftoss
+    0x53, // Dog2
+    0xC4, // AD2
+    0xC7, // KKO
+    0x35, // Japes: Crown
+    0x49, // Aztec: Crown
+    0x9B, // Factory: Crown
+    0x9C, // Galleon: Crown
+    0x9F, // Fungi: Crown
+    0xA0, // Caves: Crown
+    0xA1, // Castle: Crown
+    0xA2, // Helm: Crown
+    0x9D, // Isles: Lobby Crown
+    0x9E, // Isles: Snide Crown
+};
+
+int canDanceSkip(void) {
+    if ((Player->yPos - Player->floor) >= 100.0f) {
+        return 1;
+    }
+    if (Player->control_state == 99) {
+        return 1;
+    }
+    if ((Player->grounded_bitfield & 4) && ((Player->water_floor - Player->floor) > 20.0f)) {
+        return 1;
+    }
+    if (Rando.quality_of_life.dance_skip) {
+        int is_banned_map = 0;
+        for (int i = 0; i < sizeof(dance_skip_ban_maps); i++) {
+            if (dance_skip_ban_maps[i] == CurrentMap) {
+                is_banned_map = 1;
+            }
+        }
+        if (!is_banned_map) {
+            return 1;
+        }
+    }
+    return 0;
+}
+
+void getItem(int object_type) {
+    float pickup_volume = 1-(0.3f * *(char*)(0x80745838));
+    switch(object_type) {
+        case 0x0A:
+        case 0x0D:
+        case 0x16:
+        case 0x1E:
+        case 0x1F:
+        case 0x1CF:
+        case 0x1D0:
+            // CB Single
+            playSound(0x2A0, 0x7FFF, 0x427C0000, 0x3F800000, 5, 0);
+            break;
+        case 0x11:
+            // Homing Ammo Crate
+            playSound(0x157, 0x7FFF, 0x427C0000, 0x3F800000, 5, 0);
+            break;
+        case 0x1C:
+        case 0x1D:
+        case 0x23:
+        case 0x24:
+        case 0x27:
+            // Banana Coin
+            playSong(23, *(int*)(&pickup_volume));
+            break;
+        case 0x48:
+        case 0x28F:
+            // Company Coin
+            if (Rando.item_rando) {
+                playSong(22, *(int*)(&pickup_volume));
+            }
+            break;
+        case 0x56:
+            // Orange
+            playSound(0x147, 0x7FFF, 0x427C0000, 0x3F800000, 5, 0);
+            break;
+        case 0x57:
+            // Melon Slice
+            playSong(0x2F, *(int*)(&pickup_volume));
+            break;
+        case 0x59:
+        case 0x5B:
+        case 0x1F2:
+        case 0x1F3:
+        case 0x1F5:
+        case 0x1F6:
+            // Potion
+            playSong(155, 0x3F800000);
+            if (!canDanceSkip()) {
+                setAction(0x29, 0, 0);
+            }
+            break;
+        case 0x74:
+        case 0x288:
+            // GB
+            playSong(0x12, 0x3F800000);
+            if (!canDanceSkip()) {
+                setAction(0x29, 0, 0);
+            }
+            break;
+        case 0x8E:
+            // Crystal
+            playSong(35, *(int*)(&pickup_volume));
+            break;
+        case 0x90:
+            // Medal
+            playSong(0x12, 0x3F800000);
+            BananaMedalGet();
+            if (!canDanceSkip()) {
+                setAction(0x29, 0, 0);
+            }
+            break;
+        case 0x98:
+            // Film
+            playSound(0x263, 0x7FFF, 0x427C0000, 0x3F800000, 5, 0);
+            break;
+        case 0xB7:
+            // Rainbow Coin
+            playSong(0x91, *(int*)(&pickup_volume));
+            break;
+        case 0xDD:
+        case 0xDE:
+        case 0xDF:
+        case 0xE0:
+        case 0xE1:
+            // Blueprint
+            playSong(69, *(int*)(&pickup_volume));
+            break;
+        case 0xEC:
+        case 0x1D2:
+            // Race Coin
+            playSong(32, *(int*)(&pickup_volume));
+            break;
+        case 0x13C:
+            // Key
+            playSong(0x12, 0x3F800000);
+            if (!canDanceSkip()) {
+                int action = 0x41; // Key Get
+                if (CurrentMap == 0x11) {
+                    action = 0x29; // GB Get
+                }
+                setAction(action, 0, 0);
+            }
+            break;
+        case 0x18D:
+            // Crown
+            playSong(0x12, 0x3F800000);
+            if (!canDanceSkip()) {
+                setAction(0x42, 0, 0);
+            }
+            CrownGet();
+            break;
+        case 0x1D1:
+            // Coin Powerup
+            playSound(0xAE, 0x7FFF, 0x427C0000, 0x3F800000, 5, 0);
+            break;
+    }
+}

@@ -86,7 +86,7 @@ void handleDPadFunctionality(void) {
             updateMultibunchCount();
             if (NewlyPressedControllerInput.Buttons & D_Up) {
                 displayItemOnHUD(0xC,0,0);
-                int world = getWorld(CurrentMap,1);
+                int world = getWorld(CurrentMap,0);
                 if ((world < 7) && (CurrentMap != 0x2A)) {
                     displayItemOnHUD(0xA,0,0);
                 }

@@ -145,15 +145,6 @@ AutowalkFixHook:
 LoadCodeReplacements:
 	J 	DynamicCodeFixes
 	NOP
-DanceSkipHook0:
-	J 	danceSkip0
-	NOP
-DanceSkipHook1:
-	J 	danceSkip1
-	NOP
-DanceSkipHook2:
-	J 	danceSkip2
-	NOP
 TagPermaLossCheckHook:
 	J 	permaLossTagCheck
 	NOP
@@ -242,17 +233,11 @@ ItemRandoFlagSetHook:
 ObjectRotateHook:
 	J 	ObjectRotate
 	NOP
-NintendoCoinEffectHook:
-	J 	NintendoCoinEffect
-	NOP
-RarewareCoinEffectHook:
-	J 	RarewareCoinEffect
-	NOP
-PotionEffectHook:
-	J 	PotionEffect
-	NOP
 SpriteFixHook:
 	J 	SpriteFix
+	NOP
+CorrectCBCounterHook:
+	J 	CorrectCBCounter
 	NOP
 
 loadExtraHooks:
@@ -261,6 +246,12 @@ loadExtraHooks:
 	LUI t4, 0x8064
 	SW t3, 0xEE08 (t4) // Store Hook
 	SW r0, 0xEE0C (t4) // Store NOP
+	
+	LUI t3, hi(CorrectCBCounterHook)
+	LW t3, lo(CorrectCBCounterHook) (t3)
+	LUI t4, 0x8070
+	SW t3, 0x84AC (t4) // Store Hook
+	SW r0, 0x84B0 (t4) // Store NOP
 	
 	LUI t3, hi(ItemRandoFlagCheckHook)
 	LW t3, lo(ItemRandoFlagCheckHook) (t3)
@@ -460,24 +451,6 @@ loadExtraHooks:
 	SW t3, 0x0948 (t4) // Store Hook
 	SW r0, 0x094C (t4) // Store NOP
 
-	LUI t3, hi(DanceSkipHook0)
-	LW t3, lo(DanceSkipHook0) (t3)
-	LUI t4, 0x806F
-	SW t3, 0xFB88 (t4) // Store Hook
-	SW r0, 0xFB8C (t4) // Store NOP
-
-	LUI t3, hi(DanceSkipHook1)
-	LW t3, lo(DanceSkipHook1) (t3)
-	LUI t4, 0x806F
-	SW t3, 0xFC08 (t4) // Store Hook
-	SW r0, 0xFC0C (t4) // Store NOP
-
-	LUI t3, hi(DanceSkipHook2)
-	LW t3, lo(DanceSkipHook2) (t3)
-	LUI t4, 0x806F
-	SW t3, 0xFC1C (t4) // Store Hook
-	SW r0, 0xFC20 (t4) // Store NOP
-
 	LUI t3, hi(permaLossMode)
 	LBU t3, lo(permaLossMode) (t3)
 	BEQZ t3, loadExtraHooks_1
@@ -596,24 +569,6 @@ loadExtraHooks:
 	LUI t4, 0x8063
 	SW t3, 0x7148 (t4) // Store Hook
 	SW r0, 0x714C (t4) // Store NOP
-	
-	LUI t3, hi(NintendoCoinEffectHook)
-	LW t3, lo(NintendoCoinEffectHook) (t3)
-	LUI t4, 0x806F
-	SW t3, 0x7B30 (t4) // Store Hook
-	SW r0, 0x7B34 (t4) // Store NOP
-	
-	LUI t3, hi(RarewareCoinEffectHook)
-	LW t3, lo(RarewareCoinEffectHook) (t3)
-	LUI t4, 0x806F
-	SW t3, 0x7A24 (t4) // Store Hook
-	SW r0, 0x7A28 (t4) // Store NOP
-	
-	LUI t3, hi(PotionEffectHook)
-	LW t3, lo(PotionEffectHook) (t3)
-	LUI t4, 0x806F
-	SW t3, 0x7AF4 (t4) // Store Hook
-	SW r0, 0x7AF8 (t4) // Store NOP
 	
 	LUI t3, hi(SpriteFixHook)
 	LW t3, lo(SpriteFixHook) (t3)

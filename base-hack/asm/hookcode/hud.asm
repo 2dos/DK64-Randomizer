@@ -206,3 +206,18 @@ ModifyCameraColor:
         J           0x806FF38C
         LUI         at, 0x3F00
     
+CorrectCBCounter:
+    LW          t1, 0x9C (sp)
+    BEQZ        t1, CorrectCBCounter_Check
+    ADDIU       a1, r0, 0
+    ADDIU       a1, r0, 1
+    
+    CorrectCBCounter_Check:    
+        LUI         a0, hi(CurrentMap)
+        JAL         getWorld
+        LW          a0, lo(CurrentMap) (a0)
+        SB          v0, 0x8F (sp)
+        JAL         0x807142D8
+        NOP
+        J           0x806F84B4
+        NOP

@@ -98,6 +98,8 @@ extern void changeActorColor(int red, int green, int blue, int alpha);
 extern void unkCutsceneKongFunction_1(int unk0);
 extern float getAnimationTimer(void* actor);
 extern int getPadGravity(void* actor);
+extern void BananaMedalGet(void);
+extern void CrownGet(void);
 
 extern void wipeStoredSetup(void* setup);
 extern void complex_free(void* ptr);
@@ -496,7 +498,6 @@ extern purchase_struct TrainingMoves_New[4];
 extern purchase_struct BFIMove_New;
 extern settingsData StoredSettings;
 extern char WarpToIslesEnabled;
-extern char SkipDance;
 extern char permaLossMode;
 extern char preventTagSpawn;
 extern char bonusAutocomplete;
