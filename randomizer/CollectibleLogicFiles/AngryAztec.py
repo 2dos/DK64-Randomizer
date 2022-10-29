@@ -60,8 +60,8 @@ LogicRegions = {
         Collectible(Collectibles.banana, Kongs.diddy, lambda l: True, None, 3),  # Near Rocketbarrel
         Collectible(Collectibles.banana, Kongs.diddy, lambda l: True, None, 3),  # Gongs steps
         Collectible(Collectibles.bunch, Kongs.diddy, lambda l: True, None, 3),  # Gongs Trees
-        Collectible(Collectibles.bunch, Kongs.diddy, lambda l: True, None, 1),  # Sun Ring
-        Collectible(Collectibles.bunch, Kongs.diddy, lambda l: True, None, 1),  # On top llama temple
+        Collectible(Collectibles.bunch, Kongs.diddy, lambda l: l.jetpack, None, 1),  # Sun Ring
+        Collectible(Collectibles.bunch, Kongs.diddy, lambda l: l.jetpack, None, 1),  # On top llama temple
         Collectible(Collectibles.banana, Kongs.diddy, lambda l: True, None, 4),  # 5DTemple Steps
 
         Collectible(Collectibles.banana, Kongs.lanky, lambda l: True, None, 5),  # Snake Road

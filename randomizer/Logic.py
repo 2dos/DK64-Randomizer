@@ -1,4 +1,5 @@
 """Contains the class which holds logic variables, and the master copy of regions."""
+from math import ceil
 import randomizer.CollectibleLogicFiles.AngryAztec
 import randomizer.CollectibleLogicFiles.CreepyCastle
 import randomizer.CollectibleLogicFiles.CrystalCaves
@@ -546,9 +547,25 @@ class LogicVarHolder:
         elif self.settings.win_condition == "all_medals":
             return self.BananaMedals >= 40
         elif self.settings.win_condition == "all_keys":
-            return self.JapesKey and self.AztecKey and self.FactoryKey and self.GalleonKey and self.ForestKey and self.CavesKey and self.CastleKey and self.HelmKey
+            return (
+                Events.JapesKeyTurnedIn in self.Events
+                and Events.AztecKeyTurnedIn in self.Events
+                and Events.FactoryKeyTurnedIn in self.Events
+                and Events.GalleonKeyTurnedIn in self.Events
+                and Events.ForestKeyTurnedIn in self.Events
+                and Events.CavesKeyTurnedIn in self.Events
+                and Events.CastleKeyTurnedIn in self.Events
+                and Events.HelmKeyTurnedIn in self.Events
+            )
         else:
             return False
+
+    def CanGetRarewareCoin(self):
+        """Check if you meet the logical requirements to obtain the Rareware Coin."""
+        have_enough_medals = self.BananaMedals >= self.settings.medal_requirement
+        # Make sure you have access to enough levels to fit the locations in. This isn't super precise and doesn't need to be.
+        required_level = min(ceil(self.settings.medal_requirement / 5), 6)
+        return have_enough_medals and self.IsLevelEnterable(required_level)
 
 
 LogicVariables = LogicVarHolder()

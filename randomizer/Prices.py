@@ -320,10 +320,10 @@ def CanBuy(location, logic):
     # If it's in a location that doesn't care about prices, it's free!
     if location in TrainingBarrelLocations or location == Locations.CameraAndShockwave:
         return True
-    # Either have the setting that any kong can buy any move or it's a shared location so any kong can anyway
+    # If this is a shared location, check if the current Kong can buy the location
     if location in SharedMoveLocations:
-        return AnyKongCanBuy(location, logic)
-    # Else a specific kong is required to buy it, so check that that's the current kong and they have enough coins
+        return KongCanBuy(location, logic, logic.kong)
+    # Else a specific kong is required to buy it, so check that kong has enough coins
     elif location in DonkeyMoveLocations:
         return KongCanBuy(location, logic, Kongs.donkey)
     elif location in DiddyMoveLocations:
