@@ -56,7 +56,7 @@ typedef struct varspace {
 	/* 0x113 */ unsigned char any_kong_items; // Bitfield 0000 00ba. a = All items except blueprints disabling kong check. b = Blueprints disable kong check.
 	/* 0x114 */ unsigned char japes_rock_item; // Actor ID of item that spawns from destroying the rock covering Japes Underground
 	/* 0x115 */ unsigned char vulture_item; // Actor ID of item that the vulture in Tiny Temple has
-	/* 0x116 */ char colorblind_mode; // 0 = Off, 1 = On
+	/* 0x116 */ char hard_enemies; // 0 = Off, 1 = On
 	/* 0x117 */ unsigned char enabled_pkmnsnap_enemies[5]; // Bitfield
 	/* 0x11C */ char krusha_slot; // -1 = Not replacing a kong. 0-4 = Replaces kong of relevant index. Takes priority over disco chunky
 	/* 0x11D */ unsigned char win_condition; // See vars.h for enum

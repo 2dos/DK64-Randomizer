@@ -760,25 +760,14 @@ void initHack(int source) {
 			*(int*)(0x806C4654) = 0x0C000000 | (((int)&spawnMinecartReward & 0xFFFFFF) >> 2); // Spawn Squawks Reward - Minecart
 			/*
 				TODO:
-				- Key SFX is eternal
 				- Change bonus aesthetic based on reward
-				- Implement Killi's optimized algorithm
-
-				MOVES IN POOL NOTES:
-				- Variable Moves have flags with the uppermost bit set
-					- eg. Sax: 0xB401
-						- 0xBYYY -> Is variable move, for Tiny (Kong 3). 1011
-						- 0xY400 -> Move Offset 4 (Instrument)
-						- 0xYY01 -> Instrument Level 1
-				- Modify flag sets and checks so that if it detects the uppermost bit is set, check variable moves instead of flag db
-					- For bitfield moves, this can be baked into the original FBA system, not for non-bitfield moves (Slams, Ammo Belts)
-					- Can't do progressive (no great way to alter flags during live play)
-				- Use potion model for actors (might have to shift it to be centered around 0? I think it's offcentered)
-				- Convert potion model to M2
 			*/
 
 			// Spider Projectile
-			//*(int*)(0x806ADDC0) = 0x0C000000 | (((int)&handleSpiderTrapCode & 0xFFFFFF) >> 2); // Remove buff until we think of something better
+			if (Rando.hard_enemies) {
+				*(int*)(0x806ADDC0) = 0x0C000000 | (((int)&handleSpiderTrapCode & 0xFFFFFF) >> 2);
+				*(int*)(0x806CBD78) = 0x18400005; // BLEZ $v0, 0x5 - Decrease in health occurs if trap bubble active
+			}
 			// Slow Turn Fix
 			*(int*)(0x806D2FC0) = 0x0C000000 | (((int)&fixRBSlowTurn & 0xFFFFFF) >> 2);
 			// Tag Anywhere collectable Fixes

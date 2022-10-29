@@ -85,11 +85,11 @@ set_variables = {
     "helm_hurry_mode": 0,
     "win_condition": 5,
     "version": 2,
-    "colorblind_mode": 1,
     "item_rando": 1,
     "vulture_item": 72,
     "japes_rock_item": 76,
     "medal_cb_req": 5,
+    "hard_enemies": 1,
 }
 
 

@@ -625,6 +625,7 @@ def randomize_enemies(spoiler: Spoiler):
                                 if get_out_timer == 0:
                                     get_out_timer = 1
                                 ROM().writeMultipleBytes(get_out_timer, 1)
+                                ROM().writeMultipleBytes(get_out_timer, 1)
                             ROM().seek(cont_map_spawner_address + spawner["offset"] + 0xF)
                             default_scale = int.from_bytes(ROM().readBytes(1), "big")
                             if EnemyMetaData[new_enemy_id].size_cap > 0:
