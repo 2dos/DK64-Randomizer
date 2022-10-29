@@ -475,7 +475,7 @@ door_locations = {
             name="Angry Aztec: Lobby - Pillar Wall",
             map=Maps.AngryAztecLobby,
             logicregion=Regions.AngryAztecLobby,
-            location=[499.179, 0.0, 499.179, 0.0],
+            location=[499.179, 0.0, 146.628, 0.0],
             group=1,
             logic=lambda l: True,
             placed="wrinkly",
@@ -2448,10 +2448,10 @@ door_locations = {
             name="Creepy Castle: Back of Castle", map=Maps.CreepyCastle, logicregion=Regions.CreepyCastleMain, location=[1704.55, 368.026, 1896.767, 4.0], group=4, logic=lambda l: True, placed="tns"
         ),  # T&S Portal around back
         DoorData(
-            name="Creepy Castle: Near Funky's", map=Maps.CreepyCastle, logicregion=Regions.LowerCave, location=[1619.429, 200.0, 313.484, 299.0], group=5, logic=lambda l: True, placed="tns"
+            name="Creepy Castle: Near Funky's", map=Maps.CastleLowerCave, logicregion=Regions.LowerCave, location=[1619.429, 200.0, 313.484, 299.0], group=5, logic=lambda l: True, placed="tns"
         ),  # T&S Portal in Crypt Hub
         DoorData(
-            name="Creepy Castle: Near Candy's", map=Maps.CreepyCastle, logicregion=Regions.UpperCave, location=[1025.262, 300.0, 1960.308, 359.0], group=6, logic=lambda l: True, placed="tns"
+            name="Creepy Castle: Near Candy's", map=Maps.CastleUpperCave, logicregion=Regions.UpperCave, location=[1025.262, 300.0, 1960.308, 359.0], group=6, logic=lambda l: True, placed="tns"
         ),  # T&S Portal in Dungeon Tunnel
         DoorData(
             name="Creepy Castle: Next to Small Pool outside of the Big Tree",
