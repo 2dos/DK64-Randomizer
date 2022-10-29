@@ -902,6 +902,7 @@ void getItem(int object_type) {
             playSound(0x2A0, 0x7FFF, 0x427C0000, 0x3F800000, 5, 0);
             break;
         case 0x11:
+        case 0x8F:
             // Homing Ammo Crate
             playSound(0x157, 0x7FFF, 0x427C0000, 0x3F800000, 5, 0);
             break;
@@ -983,7 +984,7 @@ void getItem(int object_type) {
             break;
         case 0x13C:
             // Key
-            playSong(0x12, 0x3F800000);
+            keyGrabHook(0x12, 0x3F800000);
             if (!canDanceSkip()) {
                 int action = 0x41; // Key Get
                 if (CurrentMap == 0x11) {

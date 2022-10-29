@@ -90,6 +90,7 @@ set_variables = {
     "japes_rock_item": 76,
     "medal_cb_req": 5,
     "hard_enemies": 1,
+    "remove_oscillation_effects": 1,
 }
 
 

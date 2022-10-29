@@ -670,7 +670,6 @@ void initHack(int source) {
 				*(int*)(0x806F78B8) = 0x0C000000 | (((int)&getKongFromBonusFlag & 0xFFFFFF) >> 2); // Reward Table Kong Check
 				*(int*)(0x806F938C) = 0x0C000000 | (((int)&banana_medal_acquisition & 0xFFFFFF) >> 2); // Medal Give
 				*(int*)(0x806F9394) = 0;
-				*(int*)(0x806F7F28) = 0x0C000000 | (((int)&keyGrabHook & 0xFFFFFF) >> 2); // Key Get Hook - Pre Flag
 				*(int*)(0x806F5564) = 0x0C000000 | (((int)&itemGrabHook & 0xFFFFFF) >> 2); // Item Get Hook - Post Flag
 				*(int*)(0x806BD798) = 0x0C000000 | (((int)&KLumsyText & 0xFFFFFF) >> 2); // K. Lumsy code hook
 				*(int*)(0x806A6CC0) = 0; // Prevent BP Despawn
@@ -767,6 +766,13 @@ void initHack(int source) {
 			if (Rando.hard_enemies) {
 				*(int*)(0x806ADDC0) = 0x0C000000 | (((int)&handleSpiderTrapCode & 0xFFFFFF) >> 2);
 				*(int*)(0x806CBD78) = 0x18400005; // BLEZ $v0, 0x5 - Decrease in health occurs if trap bubble active
+			}
+			// Oscillation Effects
+			if (Rando.remove_oscillation_effects) {
+				*(int*)(0x80661B54) = 0; // Remove Ripple Timer 0
+				*(int*)(0x80661B64) = 0; // Remove Ripple Timer 1
+				*(int*)(0x8068BDF4) = 0; // Disable rocking in Seasick Ship
+				*(short*)(0x8068BDFC) = 0x1000; // Disable rocking in Mech Fish
 			}
 			// Slow Turn Fix
 			*(int*)(0x806D2FC0) = 0x0C000000 | (((int)&fixRBSlowTurn & 0xFFFFFF) >> 2);
