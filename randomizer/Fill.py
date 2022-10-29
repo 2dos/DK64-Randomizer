@@ -184,13 +184,13 @@ def GetAccessibleLocations(settings, ownedItems, searchType=SearchMode.GetReacha
                         elif location_obj.item is not None and ItemList[LocationList[location.id].item].type == Types.Blueprint:
                             if not LogicVariables.BlueprintAccess(ItemList[LocationList[location.id].item]):
                                 continue
-                        # If this location is a Kasplat but doesn't have a blueprint, still make sure this is the correct kong
+                        # If this location is a Kasplat but doesn't have a blueprint, still make sure this is the correct kong to be accessible at all
                         elif location_obj.type == Types.Blueprint:
-                            if location_obj.item is not None and (kong != location_obj.kong and not settings.free_trade_items):
+                            if not LogicVariables.IsKong(location_obj.kong) and not settings.free_trade_items:
                                 continue
-                        # Every shop item has a price
+                        # Every shop has a price
                         elif location_obj.type == Types.Shop and location_obj.item is not None and location_obj.item != Items.NoItem:
-                            # In search mode GetReachableWithControlledPurchases, only allowed to purchase what is passed in as "ownedItems"
+                            # In search mode GetReachableWithControlledPurchases, only allowed to purchase at locations from what is passed in as "purchaseList"
                             if searchType != SearchMode.GetReachableWithControlledPurchases or location.id in purchaseList:
                                 LogicVariables.PurchaseShopItem(location.id)
                         elif location.id == Locations.NintendoCoin:
@@ -262,6 +262,18 @@ def GetAccessibleLocations(settings, ownedItems, searchType=SearchMode.GetReacha
     elif searchType == SearchMode.GeneratePlaythrough:
         return playthroughLocations
     elif searchType == SearchMode.CheckAllReachable:
+        # settings.debug_accessible = accessible
+        # settings.debug_accessible_2 = []
+        # if len(accessible) > 300:
+        #     settings.debug_accessible_2 = accessible[300:]
+        # settings.debug_accessible_not = [location for location in LocationList if location not in accessible]
+        # settings.debug_accessible_not_2 = []
+        # if len(settings.debug_accessible_not) > 300:
+        #     settings.debug_accessible_not_2 = settings.debug_accessible_not[300:]
+        # settings.debug_enormous_pain_1 = [LocationList[location] for location in settings.debug_accessible]
+        # settings.debug_enormous_pain_2 = [LocationList[location] for location in settings.debug_accessible_2]
+        # settings.debug_enormous_pain_3 = [LocationList[location] for location in settings.debug_accessible_not]
+        # settings.debug_enormous_pain_4 = [LocationList[location] for location in settings.debug_accessible_not_2]
         return len(accessible) == len(LocationList)
     elif searchType == SearchMode.GetUnreachable:
         return [x for x in LocationList if x not in accessible]
@@ -712,6 +724,9 @@ def GetItemPrerequisites(spoiler, targetItemId, ownedKongs=[]):
     #     In this example (with no other shuffles), there are two possible return values depending on the shuffle order.
     #     Either [Items.Guitar, Items.Coconut] OR [Items.Guitar, Items.Feather]
     moveList = [move for move in ItemPool.AllMovesForOwnedKongs(ownedKongs) if move != targetItemId]
+    # Sometimes a move requires shockwave as a prerequisite to beat a bonus barrel
+    if Types.Shockwave in spoiler.settings.shuffled_location_types:
+        moveList.append(Items.Shockwave)
     random.shuffle(moveList)
     lastRequiredMove = None
     for move in moveList:
@@ -751,6 +766,7 @@ def GetItemPrerequisites(spoiler, targetItemId, ownedKongs=[]):
             # If it's no longer accessible, then re-add it to the end of the list
             requiredMoves.append(possiblyUnnecessaryItem)
         # Repeat until we find the last required move
+    # spoiler.settings.debug_prerequisites[targetItemId] = requiredMoves
     return requiredMoves
 
 
@@ -772,6 +788,8 @@ def PlaceItems(settings, algorithm, itemsToPlace, ownedItems=None, inOrder=False
 def Fill(spoiler):
     """Fully randomizes and places all items."""
     spoiler.settings.debug_fill = {}
+    spoiler.settings.debug_prerequisites = {}
+    spoiler.settings.debug_fill_blueprints = {}
     # First place constant items
     ItemPool.PlaceConstants(spoiler.settings)
     # Then fill Kongs and Moves
@@ -810,9 +828,10 @@ def Fill(spoiler):
         Reset()
         # Medals can also be placed randomly
         algo = "random"
-        # UNLESS some sicko requires more than 38 then you have to carefully place them so you don't put one on Rareware Coin and Key 8
-        if spoiler.settings.medal_requirement > 38:
-            algo = spoiler.settings.algorithm  # They deserve the longer seed generation time for this
+        # Unless it could have put something important on the Rareware Coin
+        # If it did, placing them randomly could fail to fill (it's likely to fail to fill anyway)
+        if Types.Coin in spoiler.settings.shuffled_location_types or spoiler.settings.medal_requirement > 39:
+            algo = spoiler.settings.algorithm
         medalsUnplaced = PlaceItems(spoiler.settings, algo, ItemPool.BananaMedalItems(), ItemPool.MedalAssumedItems())
         if medalsUnplaced > 0:
             raise Ex.ItemPlacementException(str(medalsUnplaced) + " unplaced medals.")
@@ -823,10 +842,9 @@ def Fill(spoiler):
         if gbsUnplaced > 0:
             raise Ex.ItemPlacementException(str(gbsUnplaced) + " unplaced GBs.")
     # Finally, check if game is beatable
-    BlockAccessToLevel(spoiler.settings, 100)  # In case any blocks were still in place (lookin at you, no logic)
     Reset()
-    if not GetAccessibleLocations(spoiler.settings, [], SearchMode.CheckBeatable):
-        raise Ex.GameNotBeatableException("Game unbeatable after placing all items.")
+    if not GetAccessibleLocations(spoiler.settings, [], SearchMode.CheckAllReachable):
+        raise Ex.GameNotBeatableException("Game not able to complete 101% after placing all items.")
     return
 
 
@@ -1078,7 +1096,7 @@ def FillKongsAndMoves(spoiler):
     # Once Kongs are placed, the top priority is placing training barrel moves first. These (mostly) need to be very early because they block access to whole levels.
     if not spoiler.settings.unlock_all_moves and spoiler.settings.move_rando != "off" and spoiler.settings.training_barrels == "shuffled":
         # First place barrels - needed for most bosses
-        if spoiler.settings.shuffle_loading_zones != "all" and not spoiler.settings.hard_level_progression:
+        if not spoiler.settings.no_logic and spoiler.settings.shuffle_loading_zones != "all" and not spoiler.settings.hard_level_progression:
             # In standard level order, place barrels very early to prevent same-y boss orders
             needBarrelsByThisLevel = 2
             BlockAccessToLevel(spoiler.settings, needBarrelsByThisLevel)
@@ -1089,7 +1107,7 @@ def FillKongsAndMoves(spoiler):
         if unplacedBarrels > 0:
             raise Ex.ItemPlacementException("Failed to place barrel training somehow.")
         # Next place vines - needed to beat Aztec and maybe get to upper DK Isle
-        if spoiler.settings.shuffle_loading_zones != "all" and not spoiler.settings.hard_level_progression:
+        if not spoiler.settings.no_logic and spoiler.settings.shuffle_loading_zones != "all" and not spoiler.settings.hard_level_progression:
             needVinesByThisLevel = 2
             # In a standard level order seed, we need to place vines before Aztec (or else it isn't beatable)
             for i in range(1, 8):
@@ -1108,7 +1126,7 @@ def FillKongsAndMoves(spoiler):
         if unplacedVines > 0:
             raise Ex.ItemPlacementException("Failed to place vine training somehow.")
         # Next place swim - needed to get into level 4
-        if spoiler.settings.shuffle_loading_zones != "all" and not spoiler.settings.hard_level_progression:
+        if not spoiler.settings.no_logic and spoiler.settings.shuffle_loading_zones != "all" and not spoiler.settings.hard_level_progression:
             # In a standard level order seed, we need swim to access level 4 (whatever it is)
             needSwimByThisLevel = 4
             BlockAccessToLevel(spoiler.settings, needSwimByThisLevel)
@@ -1117,7 +1135,12 @@ def FillKongsAndMoves(spoiler):
         if unplacedSwim > 0:
             raise Ex.ItemPlacementException("Failed to place swimming training somehow.")
         # If we placed one of these training moves inside BFI, we need to priority place Mini Monkey as well
-        if spoiler.settings.shuffle_loading_zones != "all" and not spoiler.settings.hard_level_progression and LocationList[Locations.CameraAndShockwave].item in (Items.Vines, Items.Swim):
+        if (
+            not spoiler.settings.no_logic
+            and spoiler.settings.shuffle_loading_zones != "all"
+            and not spoiler.settings.hard_level_progression
+            and LocationList[Locations.CameraAndShockwave].item in (Items.Vines, Items.Swim)
+        ):
             # Unblock levels - having training moves placed effectively blocks all levels mini can't be placed in
             BlockAccessToLevel(spoiler.settings, 100)
             allItemsButMini = ItemPool.AllKongMoves().copy()
@@ -1196,6 +1219,8 @@ def FillKongsAndMoves(spoiler):
                     allOtherItems = ItemPool.AllMovesForOwnedKongs(ownedKongs).copy()
                     if Types.Key in spoiler.settings.shuffled_location_types:  # If keys are to be shuffled, they won't be shuffled yet
                         allOtherItems.extend(ItemPool.BlueprintAssumedItems().copy())  # We want Keys/Company Coins/Crowns here and this is a convenient collection
+                    if Types.Shockwave in spoiler.settings.shuffled_location_types:
+                        allOtherItems.append(Items.Shockwave)  # Shockwave is rarely needed
                     # Two exceptions: we don't assume we have the items to be placed, as then they could lock themselves
                     for item in priorityItemsToPlace:
                         allOtherItems.remove(item)
@@ -1278,7 +1303,7 @@ def FillKongsAndMoves(spoiler):
         if spoiler.settings.training_barrels == "shuffled":
             emptyTrainingBarrels = [loc for loc in TrainingBarrelLocations if LocationList[loc].item is None]
             if len(emptyTrainingBarrels) > 0:
-                # Find the list of locations that have a kong move in them
+                # Find the list of shops that have a kong move in them
                 kongMoveLocationsList = []
                 for location in DonkeyMoveLocations:
                     item_at_location = LocationList[location].item
@@ -1300,6 +1325,11 @@ def FillKongsAndMoves(spoiler):
                     item_at_location = LocationList[location].item
                     if item_at_location is not None and item_at_location != Items.NoItem:
                         kongMoveLocationsList.append(location)
+                # If no shops have a kong move (can happen in item rando), then we gotta dig deeper for moves - this can place some shared moves earlier but that's cool too
+                if len(kongMoveLocationsList) == 0:
+                    for location_id, location in LocationList.items():
+                        if location.item in ItemPool.AllKongMoves():
+                            kongMoveLocationsList.append(location_id)
                 # Worth noting that moving a move to the training barrels will always make it more accessible, and thus doesn't need any additional logic
                 for emptyBarrel in emptyTrainingBarrels:
                     # Pick a random Kong move to put in the training barrel. This should be both more interesting than a shared move and lead to fewer empty shops.
@@ -1308,6 +1338,8 @@ def FillKongsAndMoves(spoiler):
                     LocationList[emptyBarrel].PlaceItem(itemToBeMoved)
                     LocationList[locationToVacate].PlaceItem(Items.NoItem)
                     kongMoveLocationsList.remove(locationToVacate)
+                    del spoiler.settings.debug_fill[locationToVacate]
+                    spoiler.settings.debug_fill[emptyBarrel] = itemToBeMoved
 
 
 def FillKongsAndMovesForLevelOrder(spoiler):
@@ -1738,15 +1770,17 @@ def SetNewProgressionRequirementsUnordered(settings: Settings):
 
 def BlockAccessToLevel(settings: Settings, level):
     """Assume the level index passed in is the furthest level you have access to in the level order."""
-    for i in range(0, 7):
+    for i in range(0, 8):
         if i >= level:
             # This level and those after it are locked out
             settings.EntryGBs[i] = 1000
-            settings.BossBananas[i] = 1000
+            if i < 7:
+                settings.BossBananas[i] = 1000
         else:
             # Previous levels assumed accessible
             settings.EntryGBs[i] = 0
-            settings.BossBananas[i] = 0
+            if i < 7:
+                settings.BossBananas[i] = 0
     # Update values based on actual level progression
     ShuffleExits.UpdateLevelProgression(settings)
 

@@ -480,6 +480,22 @@ class Settings:
         random.shuffle(key_list)
         for x in range(required_key_count):
             self.krool_keys_required.append(key_list[x])
+        if Events.JapesKeyTurnedIn not in self.krool_keys_required:
+            ItemList[Items.JungleJapesKey].playthrough = False
+        if Events.AztecKeyTurnedIn not in self.krool_keys_required:
+            ItemList[Items.AngryAztecKey].playthrough = False
+        if Events.FactoryKeyTurnedIn not in self.krool_keys_required:
+            ItemList[Items.FranticFactoryKey].playthrough = False
+        if Events.GalleonKeyTurnedIn not in self.krool_keys_required:
+            ItemList[Items.GloomyGalleonKey].playthrough = False
+        if Events.ForestKeyTurnedIn not in self.krool_keys_required:
+            ItemList[Items.FungiForestKey].playthrough = False
+        if Events.CavesKeyTurnedIn not in self.krool_keys_required:
+            ItemList[Items.CrystalCavesKey].playthrough = False
+        if Events.CastleKeyTurnedIn not in self.krool_keys_required:
+            ItemList[Items.CreepyCastleKey].playthrough = False
+        if Events.HelmKeyTurnedIn not in self.krool_keys_required:
+            ItemList[Items.HideoutHelmKey].playthrough = False
 
         # Banana medals
         if self.random_medal_requirement:
@@ -667,11 +683,11 @@ class Settings:
                 )
                 blueprintLocations = [location for location in LocationList if location not in badBPLocations and LocationList[location].type in blueprintValidTypes]
                 self.valid_locations[Types.Blueprint] = {}
-                self.valid_locations[Types.Blueprint][Kongs.donkey] = [location for location in blueprintLocations if LocationList[location].kong in (Kongs.donkey, Kongs.any)]
-                self.valid_locations[Types.Blueprint][Kongs.diddy] = [location for location in blueprintLocations if LocationList[location].kong in (Kongs.diddy, Kongs.any)]
-                self.valid_locations[Types.Blueprint][Kongs.lanky] = [location for location in blueprintLocations if LocationList[location].kong in (Kongs.lanky, Kongs.any)]
-                self.valid_locations[Types.Blueprint][Kongs.tiny] = [location for location in blueprintLocations if LocationList[location].kong in (Kongs.tiny, Kongs.any)]
-                self.valid_locations[Types.Blueprint][Kongs.chunky] = [location for location in blueprintLocations if LocationList[location].kong in (Kongs.chunky, Kongs.any)]
+                self.valid_locations[Types.Blueprint][Kongs.donkey] = [location for location in blueprintLocations if LocationList[location].kong == Kongs.donkey]
+                self.valid_locations[Types.Blueprint][Kongs.diddy] = [location for location in blueprintLocations if LocationList[location].kong == Kongs.diddy]
+                self.valid_locations[Types.Blueprint][Kongs.lanky] = [location for location in blueprintLocations if LocationList[location].kong == Kongs.lanky]
+                self.valid_locations[Types.Blueprint][Kongs.tiny] = [location for location in blueprintLocations if LocationList[location].kong == Kongs.tiny]
+                self.valid_locations[Types.Blueprint][Kongs.chunky] = [location for location in blueprintLocations if LocationList[location].kong == Kongs.chunky]
             if Types.Banana in self.shuffled_location_types:
                 self.valid_locations[Types.Banana] = shuffledLocations
             if Types.Crown in self.shuffled_location_types:

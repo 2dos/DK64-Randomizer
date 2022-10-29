@@ -120,6 +120,7 @@ class Spoiler:
         settings["Tag Anywhere"] = self.settings.enable_tag_anywhere
         settings["Fast GBs"] = self.settings.fast_gbs
         settings["High Requirements"] = self.settings.high_req
+        settings["Win Condition"] = self.settings.win_condition
         humanspoiler["Settings"] = settings
         humanspoiler["Cosmetics"] = {}
         if self.settings.colors != {} or self.settings.klaptrap_model_index:
@@ -181,7 +182,7 @@ class Spoiler:
         if self.settings.coin_door_open in ["need_both", "need_rw"]:
             humanspoiler["Requirements"]["Miscellaneous"]["Medal Requirement"] = self.settings.medal_requirement
         humanspoiler["End Game"] = {}
-        humanspoiler["End Game"]["Keys Required for K Rool"] = "<br>".join(self.GetKroolKeysRequired(self.settings.krool_keys_required))
+        humanspoiler["End Game"]["Keys Required for K Rool"] = self.GetKroolKeysRequired(self.settings.krool_keys_required)
         krool_order = []
         for phase in self.settings.krool_order:
             krool_order.append(ItemList[ItemFromKong(phase)].name.capitalize())

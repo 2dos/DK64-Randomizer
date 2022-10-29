@@ -26,5 +26,5 @@ def ShuffleCrowns(crown_selection, human_crowns):
             human_crowns[crown_name] = level_lst[crown].name
             crown_obj = level_lst[crown]
             crownRegion = Logic.Regions[crown_obj.region]
-            crownRegion.locations.append(LocationLogic(location_id, crown_obj.logic))
+            crownRegion.locations.append(LocationLogic(Locations(location_id), crown_obj.logic))
             location_id += 1  # Iterate through crown locations *in order* - this aligns with the loop through levels
