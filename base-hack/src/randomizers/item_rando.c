@@ -572,11 +572,26 @@ void* updateFlag(int type, short* flag, void* fba, int source) {
                         return checkMove(flag, fba, source);
                     }
                 }
-
                 for (int i = 0; i < flut_size; i++) {
                     int lookup = ItemRando_FLUT[(2 * i)];
                     if (vanilla_flag == lookup) {
                         *flag = ItemRando_FLUT[(2 * i) + 1];
+                        if (source == 1) {
+                            int give_gb = 0;
+                            if ((vanilla_flag == FLAG_COLLECTABLE_NINTENDOCOIN) && (Rando.arcade_reward_is_gb)) {
+                                give_gb = 1;
+                            } else if ((vanilla_flag == FLAG_COLLECTABLE_RAREWARECOIN) && (Rando.jetpac_reward_is_gb)) {
+                                give_gb = 1;
+                            }
+                            if (give_gb) {
+                                if (!checkFlag(vanilla_flag, 0)) {
+                                    int world = getWorld(CurrentMap, 1);
+                                    if (world < 8) {
+                                        MovesBase[(int)Character].gb_count[world] += 1;
+                                    }
+                                }
+                            }
+                        }
                         cacheFlag(vanilla_flag, *flag);
                         return checkMove(flag, fba, source);
                     } else if (lookup == -1) {

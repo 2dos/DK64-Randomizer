@@ -140,6 +140,12 @@ def place_randomized_items(spoiler: Spoiler):
                                     "shared": item.shared,
                                 }
                             )
+                    if item.location == Locations.NintendoCoin and item.new_item == Types.Banana:
+                        ROM().seek(sav + 0x110)
+                        ROM().write(1)
+                    elif item.location == Locations.RarewareCoin and item.new_item == Types.Banana:
+                        ROM().seek(sav + 0x111)
+                        ROM().write(1)
                 else:
                     if item.old_item != Types.Medal:
                         if item.new_item is None:

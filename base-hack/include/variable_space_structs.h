@@ -49,7 +49,9 @@ typedef struct varspace {
 	/* 0x0AE */ char helm_hurry_mode; // 0 = Off, 1 = On: Starting a new file summons the helm timer, each BP adds 2 minutes to the clock, timing out disables saving.
 	/* 0x0AF */ char always_show_coin_cbs; // 0 = No (Vanilla), 1 = Yes
 	/* 0x0B0 */ quality_options quality_of_life; // Size: 2
-	/* 0x0B2 */ char unk_B0[0x112 - 0xB2];
+	/* 0x0B2 */ char unk_B0[0x110 - 0xB2];
+	/* 0x110 */ unsigned char arcade_reward_is_gb; // Is reward for R2 of arcade a GB
+	/* 0x111 */ unsigned char jetpac_reward_is_gb; // Is reward for 5000 pts in Jetpac a GB
 	/* 0x112 */ unsigned char medal_cb_req; // 0 = default (75). int (1-100)
 	/* 0x113 */ unsigned char any_kong_items; // Bitfield 0000 00ba. a = All items except blueprints disabling kong check. b = Blueprints disable kong check.
 	/* 0x114 */ unsigned char japes_rock_item; // Actor ID of item that spawns from destroying the rock covering Japes Underground
