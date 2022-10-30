@@ -292,6 +292,14 @@ VineShowCode:
 
 SpriteFix:
     SB      r0, 0x0 (t0)
+    LUI     t1, hi(CurrentActorPointer_0)
+    LW      t1, lo(CurrentActorPointer_0) (t1)
+    LW      t1, 0x58 (t1)
+    ADDIU   t3, r0, 0x36 // Race Coin
+    BEQ     t1, t3, SpriteFix_Finish
+    ADDIU   t9, r0, 0
     ADDIU   t9, r0, 1
-    J       0x806A6710
-    SB      t9, 0x1 (t0)
+
+    SpriteFix_Finish:
+        J       0x806A6710
+        SB      t9, 0x1 (t0)
