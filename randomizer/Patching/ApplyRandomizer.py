@@ -386,6 +386,16 @@ def patching_response(responded_data):
         ROM().seek(sav + 0xAE)
         ROM().write(1)
 
+    # Water Oscillation Accessibility:
+    if spoiler.settings.remove_water_oscillation:
+        ROM().seek(sav + 0x10F)
+        ROM().write(1)
+
+    # Hard Enemies
+    if spoiler.settings.hard_enemies:
+        ROM().seek(sav + 0x116)
+        ROM().write(1)
+
     # Win Condition
     conditions = ["beat_krool", "get_key8", "all_fairies", "all_blueprints", "all_medals", "poke_snap", "all_keys"]
     if spoiler.settings.win_condition in conditions:

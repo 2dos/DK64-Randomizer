@@ -298,6 +298,7 @@ class Settings:
         self.disco_chunky = False
         self.krusha_slot = "no_slot"
         self.misc_cosmetics = False
+        self.remove_water_oscillation = False
 
         #  Misc
         self.generate_spoilerlog = None
@@ -343,6 +344,7 @@ class Settings:
         self.hard_level_progression = False
         self.hard_blockers = False
         self.hard_troff_n_scoff = False
+        self.hard_enemies = False
         self.wrinkly_location_rando = False
         self.tns_location_rando = False
         self.minigames_list_selected = []

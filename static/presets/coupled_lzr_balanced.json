@@ -37,6 +37,7 @@
     "perma_death":false,
     "disable_tag_barrels":false,
     "hard_level_progression":false,
+    "hard_enemies":false,
     "hard_blockers":false,
     "hard_troff_n_scoff":false,
     "bonus_barrel_rando":true,
