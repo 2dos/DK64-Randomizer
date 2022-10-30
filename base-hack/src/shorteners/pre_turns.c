@@ -61,13 +61,25 @@ void pre_turn_keys(void) {
 			check <<= 1;
 		}
 	}
-	if (Rando.item_rando) {
-		for (int i = 0; i < 7; i++) {
-			if (checkFlag(getKeyFlag(i), 0)) {
-				setFlagDuplicate(tnsportal_flags[i], 1, 0);
-			}
-		}
-	}
+	/*
+		NOTE: This doesn't work for some reason?
+		Need to figure this out.
+	*/
+	// if (Rando.item_rando) {
+	// 	for (int i = 0; i < 7; i++) {
+	// 		if (checkFlag(getKeyFlag(i), 0)) {
+	// 			if (Rando.level_order_rando_on) {
+	// 				for (int j = 0; j < 7; j++) {
+	// 					if (Rando.level_order[j] == i) {
+	// 						setFlagDuplicate(tnsportal_flags[j], 1, 0);
+	// 					}
+	// 				}
+	// 			} else {
+	// 				setFlagDuplicate(tnsportal_flags[i], 1, 0);
+	// 			}
+	// 		}
+	// 	}
+	// }
 }
 
 void writeKeyFlags(int index) {

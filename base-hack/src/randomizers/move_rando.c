@@ -304,7 +304,7 @@ void purchaseMove(shop_paad* paad) {
 			}
 			break;
 		case PURCHASE_GB:
-			MovesBase[(int)paad->kong].gb_count[getWorld(CurrentMap,1)] += 1;
+			MovesBase[(int)Character].gb_count[getWorld(CurrentMap,1)] += 1;
 		case PURCHASE_FLAG:
 			progressiveChange(paad->flag);
 			setFlagDuplicate(paad->flag, 1, 0);

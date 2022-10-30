@@ -245,26 +245,33 @@ void spawnBossReward(int object, int x_f, int y_f, int z_f, int unk0, int cutsce
     if (new_obj != 0) {
         object = new_obj;
     }
-    unsigned char sprite_obj[] = {75,76,77,78,79,151,152,154};
-    int is_sprite = 0;
-    for (int i = 0; i < sizeof(sprite_obj); i++) {
-        if (sprite_obj[i] == object) {
-            is_sprite = 1;
+    if (object != 153) {
+        // Protect against null objects
+        unsigned char sprite_obj[] = {75,76,77,78,79,151,152,154};
+        int is_sprite = 0;
+        for (int i = 0; i < sizeof(sprite_obj); i++) {
+            if (sprite_obj[i] == object) {
+                is_sprite = 1;
+            }
         }
+        if ((is_sprite) && ((CurrentMap == 0x53) || (CurrentMap == 0xC5))) {
+            // Sprite & Dogadon Fight
+            cutscene = 1;
+            x_f = 0x43ED8000;
+            y_f = 0x43570000;
+            z_f = 0x443B8000;
+        } else if ((object != 72) && (CurrentMap == 0x6F)) {
+            // Pufftoss - Not a key
+            cutscene = 100;
+        }
+        if ((CurrentMap == 0x9A) || (CurrentMap == 0xC4)) {
+            // AD2/MJ
+            cutscene = 1;
+        }
+        spawnActorWithFlag(object, x_f, y_f, z_f, unk0, cutscene, flag, unk1);
+        // Fix items which have short spawn ranges
+        ActorSpawnerPointer->spawn_range = 4000000.0f;
     }
-    if ((is_sprite) && ((flag == 0xEC) || (flag == 0x4A))) {
-        // Sprite & Dogadon Fight
-        cutscene = 1;
-        x_f = 0x43ED8000;
-        y_f = 0x43570000;
-        z_f = 0x443B8000;
-    } else if ((object != 72) && (flag == 0xA8)) {
-        // Pufftoss - Not a key
-        cutscene = 100;
-    }
-    spawnActorWithFlag(object, x_f, y_f, z_f, unk0, cutscene, flag, unk1);
-    // Fix items which have short spawn ranges
-    ActorSpawnerPointer->spawn_range = 4000000.0f;
 }
 
 int checkFlagDuplicate(short flag, int type) {

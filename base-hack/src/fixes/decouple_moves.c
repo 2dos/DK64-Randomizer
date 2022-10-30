@@ -137,7 +137,6 @@ void decouple_moves_fixes(void) {
 	if (in_boss) {
 		if (Rando.item_rando) {
 			*(int*)(0x80028650) = 0x0C000000 | (((int)&spawnBossReward & 0xFFFFFF) >> 2); // Key Spawn
-			*(short*)(0x80025C4A) = 1; // Prevents some items floating in the air in AD2
 		}
 		PatchKRoolCode();
 		if (Rando.quality_of_life.vanilla_fixes) {
