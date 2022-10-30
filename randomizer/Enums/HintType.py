@@ -19,3 +19,4 @@ class HintType(IntEnum):
     KeyLocation = auto()
     FullShopWithItems = auto()
     WothLocation = auto()
+    FoolishMove = auto()
