@@ -1338,8 +1338,9 @@ def FillKongsAndMoves(spoiler):
                     LocationList[emptyBarrel].PlaceItem(itemToBeMoved)
                     LocationList[locationToVacate].PlaceItem(Items.NoItem)
                     kongMoveLocationsList.remove(locationToVacate)
-                    del spoiler.settings.debug_fill[locationToVacate]
-                    spoiler.settings.debug_fill[emptyBarrel] = itemToBeMoved
+                    if locationToVacate in spoiler.settings.debug_fill.keys():  # Should only fail in no logic
+                        del spoiler.settings.debug_fill[locationToVacate]
+                        spoiler.settings.debug_fill[emptyBarrel] = itemToBeMoved
 
 
 def FillKongsAndMovesForLevelOrder(spoiler):
