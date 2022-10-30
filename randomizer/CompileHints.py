@@ -10,6 +10,7 @@ from randomizer.Enums.Levels import Levels
 from randomizer.Enums.Regions import Regions
 from randomizer.Enums.Transitions import Transitions
 from randomizer.Enums.Types import Types
+from randomizer.ItemPool import AllKongMoves, ImportantSharedMoves
 from randomizer.Lists.Item import ItemList, NameFromKong
 from randomizer.Lists.Location import LocationList, SharedShopLocations
 from randomizer.Lists.MapsAndExits import GetMapId
@@ -299,7 +300,8 @@ hint_distribution = {
     HintType.Entrance: 8,
     HintType.KeyLocation: -1,  # Fixed number equal to the number of keys to be obtained over the seed
     HintType.WothLocation: 8,
-    HintType.FullShopWithItems: 7,
+    HintType.FullShopWithItems: 5,
+    HintType.FoolishMove: 4,
 }
 HINT_CAP = 35  # There are this many total slots for hints
 
@@ -317,8 +319,9 @@ def compileHints(spoiler: Spoiler):
         valid_types.append(HintType.MoveLocation)
     if spoiler.settings.shuffle_items and Types.Shop in spoiler.settings.shuffled_location_types:
         valid_types.append(HintType.FullShopWithItems)
-        # With no logic WOTH hints aren't really built correctly
+        # With no logic WOTH isn't built correctly so we can't make any hints with it
         if not spoiler.settings.no_logic:
+            valid_types.append(HintType.FoolishMove)
             valid_types.append(HintType.WothLocation)
     # if spoiler.settings.random_patches:
     #     valid_types.append(HintType.DirtPatch)
@@ -607,6 +610,9 @@ def compileHints(spoiler: Spoiler):
         # Now we need to find the Item object associated with this name
         for item_id in ItemList:
             if ItemList[item_id].name == spoiler.woth[woth_item_location]:
+                # Don't hint slams with these hints - it's slightly misleading and saves some headache to not do this
+                if item_id == Items.ProgressiveSlam:
+                    continue
                 woth_item = item_id
                 break
         # Determine what levels are before this level
@@ -886,6 +892,40 @@ def compileHints(spoiler: Spoiler):
             UpdateHint(hint_location, message)
             placed_full_shop_hints += 1
 
+    # Foolish Move hints state that a move is foolish. Most applicable in item rando.
+    if hint_distribution[HintType.FoolishMove] > 0:
+        foolish_moves = AllKongMoves()
+        foolish_moves.append(Items.Shockwave)
+        # Loop through woth locations, removing moves that are not foolish
+        for location_id in spoiler.woth_locations:
+            location = LocationList[location_id]
+            if location.item in foolish_moves:
+                foolish_moves.remove(location.item)
+        number_of_woth_slams = 2 - foolish_moves.count(Items.ProgressiveSlam)
+        random.shuffle(foolish_moves)
+        for i in range(hint_distribution[HintType.FoolishMove]):
+            # If you run out of foolish moves (maybe in an all medals run?)
+            if len(foolish_moves) == 0:
+                # Replace remaining move hints with WotH location hints, sounds like you'll need them
+                hint_distribution[HintType.FoolishMove] -= 1
+                hint_distribution[HintType.WothLocation] += 1
+            hinted_move_id = foolish_moves.pop()  # Don't hint the same move twice
+            # Gotta hand-pick the name for Slam hints
+            if hinted_move_id == Items.ProgressiveSlam:
+                # If we don't need either, we can say that Super is foolish
+                if number_of_woth_slams == 0:
+                    item_name = "Super Simian Slam"
+                # Otherwise exactly one is hinted, so we can say Super Duper is foolish
+                else:  # number_of_woth_slams == 1
+                    item_name = "Super Duper Simian Slam"
+            else:
+                item_name = ItemList[hinted_move_id].name
+            hint_location = getRandomHintLocation()
+            message = f"It would be foolish to seek out {item_name}."
+            hint_location.hint_type = HintType.FoolishMove
+            UpdateHint(hint_location, message)
+
+    # WotH Location hints list a location that is Way of the Hoard. Most applicable in item rando.
     if hint_distribution[HintType.WothLocation] > 0:
         hintable_locations = []
         for location_id in spoiler.woth_locations:
@@ -901,6 +941,7 @@ def compileHints(spoiler: Spoiler):
             hint_location.hint_type = HintType.WothLocation
             UpdateHint(hint_location, message)
 
+    # Full Shop With Items hints are essentially a rework of shop dump hints but with the ability to list any item instead of just moves.
     chosen_shops = []
     for i in range(hint_distribution[HintType.FullShopWithItems]):
         # Shared shop lists are a convenient list of all individual shops in the game, regardless of if something is there
