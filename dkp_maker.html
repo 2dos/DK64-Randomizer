@@ -172,6 +172,7 @@
 
         function buildDKP() {
             webWorkerCreate=new Worker("./static/js/rompatcher/worker_create.js");
+            target_rom_copy = new Uint8Array(target_rom._u8array)
             webWorkerCreate.postMessage(
                 {
                     sourceFileU8Array:patchedRom._u8array,
@@ -184,9 +185,20 @@
             );
             webWorkerCreate.onmessage = event => { // listen for events from the worker
                 var newPatchFile=new MarcFile(event.data.patchFileU8Array);
-                base_patch_size = patchFile._u8array.length;
+                patch_file_start = 0
+                base_patch_size = 0
+                console.log(target_rom_copy)
+                targ_data = target_rom_copy.slice(0x1FF4000,0x1FF4008)
+                for (let i = 0; i < 4; i++) {
+                    patch_file_start <<= 8;
+                    patch_file_start += targ_data[i];
+                    base_patch_size <<= 8;
+                    base_patch_size += targ_data[4 + i];
+                }
+                console.log(base_patch_size)
+                base_patch = new Uint8Array(target_rom_copy.slice(patch_file_start, patch_file_start + base_patch_size));
                 patch_data_bytes = intToByteArray(base_patch_size);
-                const dkp_data = [...patch_data_bytes, ...patchFile._u8array, ...newPatchFile._u8array];
+                const dkp_data = [...patch_data_bytes, ...base_patch, ...newPatchFile._u8array];
                 downloadBlob(new Uint8Array(dkp_data),"output.dkp","application/octet-stream")
             };
         }

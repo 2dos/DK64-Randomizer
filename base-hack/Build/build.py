@@ -1279,6 +1279,15 @@ with open(newROMName, "r+b") as fh:
     # if os.path.exists(pth):
     #     os.remove(pth)
 
+# Get BPS Data
+with open(newROMName, "r+b") as fh:
+    size = len(fh.read())
+    add = 0x10 - (size % 0x10)
+    if add != 0x10:
+        size += add
+    fh.seek(0x1FF4000)
+    fh.write(size.to_bytes(4, "big"))
+
 print("[7 / 7] - Generating BizHawk RAM watch")
 
 sys.exit()
