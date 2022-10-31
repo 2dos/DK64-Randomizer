@@ -690,17 +690,17 @@ def compileHints(spoiler: Spoiler):
         levels_with_tns = []
         for keyEvent in spoiler.settings.krool_keys_required:
             if keyEvent == Events.JapesKeyTurnedIn:
-                levels_with_tns.append(spoiler.settings.level_order[1])
+                levels_with_tns.append(Levels.JungleJapes)
             if keyEvent == Events.AztecKeyTurnedIn:
-                levels_with_tns.append(spoiler.settings.level_order[2])
+                levels_with_tns.append(Levels.AngryAztec)
             if keyEvent == Events.FactoryKeyTurnedIn:
-                levels_with_tns.append(spoiler.settings.level_order[3])
+                levels_with_tns.append(Levels.FranticFactory)
             if keyEvent == Events.GalleonKeyTurnedIn:
-                levels_with_tns.append(spoiler.settings.level_order[4])
+                levels_with_tns.append(Levels.GloomyGalleon)
             if keyEvent == Events.ForestKeyTurnedIn:
-                levels_with_tns.append(spoiler.settings.level_order[5])
+                levels_with_tns.append(Levels.FungiForest)
             if keyEvent == Events.CavesKeyTurnedIn:
-                levels_with_tns.append(spoiler.settings.level_order[6])
+                levels_with_tns.append(Levels.CrystalCaves)
             if keyEvent == Events.CastleKeyTurnedIn:
                 levels_with_tns.append(Levels.CreepyCastle)
         placed_tns_hints = 0
@@ -717,6 +717,13 @@ def compileHints(spoiler: Spoiler):
                 future_tns_levels = [
                     level for level in all_levels if level in levels_with_tns and (not level_order_matters or spoiler.settings.EntryGBs[level] >= spoiler.settings.EntryGBs[hint_location.level])
                 ]
+            # If we failed to find it in 15 attempts, convert remaining T&S hints to joke hints
+            # This is a disgustingly rare scenario, likely involving very few and early keys required
+            if attempts > 15:
+                hint_diff = hint_distribution[HintType.TroffNScoff] - placed_tns_hints
+                hint_distribution[HintType.Joke] += hint_diff
+                hint_distribution[HintType.TroffNScoff] -= hint_diff
+                break
             hinted_level = random.choice(future_tns_levels)
             level_name = level_list[hinted_level]
             if spoiler.settings.wrinkly_hints == "cryptic":
@@ -728,6 +735,7 @@ def compileHints(spoiler: Spoiler):
             message = f"The barrier to the boss in {level_name} can be cleared by obtaining {count} {cb_name}."
             hint_location.hint_type = HintType.TroffNScoff
             UpdateHint(hint_location, message)
+            placed_tns_hints += 1
 
     # Entrance hints are tricky, there's some requirements we must hit:
     # We must hint each of Japes, Aztec, and Factory at least once
