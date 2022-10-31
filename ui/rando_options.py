@@ -572,10 +572,9 @@ def toggle_no_logic(event):
 
 @bind("click", "nav-patch-tab")
 def toggle_patch_ui(event):
-    """Disable non-cosmetic tabs and show override option if using patch file."""
+    """Disable non-cosmetic tabs if using patch file."""
     for tab in ["nav-started-tab", "nav-random-tab", "nav-overworld-tab", "nav-difficulty-tab", "nav-qol-tab"]:
         document.getElementById(tab).setAttribute("disabled", "disabled")
-    document.getElementById("override_div").removeAttribute("hidden")
     document.getElementById("nav-cosmetics-tab").click()
 
 

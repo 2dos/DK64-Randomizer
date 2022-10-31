@@ -502,6 +502,7 @@ i {
 .customize {
   font-size: 10px;
   margin: 0px;
+  padding: 3px;
 }
 
 .spoiler-head {
