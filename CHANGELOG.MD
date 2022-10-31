@@ -25,7 +25,7 @@ This is the changelog for the initial push of 2.0 into dev:
 	- **All Fairies**: Capture them all and give the most useless item in the game some love.
 	- **All Blueprints**: Show exactly how OP Blueprints are by getting these as quickly as you can.
 	- **All Banana Medals**: For the small banana enthusiasts.
-	- **Pokemon Snap**: Take a picture of every enemy in the game. Wonderful!
+	- **Kreming Kapture**: Take a picture of every enemy in the game. Wonderful!
 - **Helm Hurry Mode**: Start with 15 minutes, get time added for collecting certain items. The official Twitter review is "Stressful".
 	- Golden Bananas add 30 seconds.
 	- Blueprints add 2 minutes.
@@ -51,6 +51,8 @@ This is the changelog for the initial push of 2.0 into dev:
 - **Skipping Dances**: The dance upon grabbing keys and crowns can be skipped like with golden bananas, should they be placed in locations other than bosses and crown maps.
 - **Medal Requirement**: You can now change the amount of colored bananas required to obtain a medal in a level. If you want a very easy time, you can set it to 1, or if you like pain, you can set it to 100.
 - **In-Level Ingame Time**: In-Game time will now be tracked inside levels. Now you can see a level-by-level breakdown of how much time you spent in that level in the pause menu.
+- **Random Miscellaneous Cosmetics Selector**: Randomizes the skybox color and the color of the klaptraps in Peril Path Panic and Searchlight Seek.
+- **Remove Water Oscillation**: Water oscillation effects can optionally be removed, along with the rocking effect in the Seasick Ship & the Mechanical fish. This has been introduced to help those who feel motion sick from these effects in-game.
 ### Bug Fixes
 - **Fast Warps**: Now change music as expected
 - **Fungi Bean**: In the vanilla game, this would only stay in your inventory as long until you exit your file. The bean will now permanently save to your file.
