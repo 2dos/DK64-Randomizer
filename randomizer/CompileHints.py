@@ -686,23 +686,23 @@ def compileHints(spoiler: Spoiler):
 
     # For T&S hints, we want to hint levels after the hint location and only levels that we don't start with keys for
     if hint_distribution[HintType.TroffNScoff] > 0:
-        # Determine what levels have incomplete T&S - there must be at least one to get here
+        # Determine what levels have incomplete T&S
         levels_with_tns = []
         for keyEvent in spoiler.settings.krool_keys_required:
             if keyEvent == Events.JapesKeyTurnedIn:
-                levels_with_tns.append(Levels.JungleJapes)
+                levels_with_tns.append(spoiler.settings.level_order[1])
             if keyEvent == Events.AztecKeyTurnedIn:
-                levels_with_tns.append(Levels.AngryAztec)
+                levels_with_tns.append(spoiler.settings.level_order[2])
             if keyEvent == Events.FactoryKeyTurnedIn:
-                levels_with_tns.append(Levels.FranticFactory)
+                levels_with_tns.append(spoiler.settings.level_order[3])
             if keyEvent == Events.GalleonKeyTurnedIn:
-                levels_with_tns.append(Levels.GloomyGalleon)
+                levels_with_tns.append(spoiler.settings.level_order[4])
             if keyEvent == Events.ForestKeyTurnedIn:
-                levels_with_tns.append(Levels.FungiForest)
+                levels_with_tns.append(spoiler.settings.level_order[5])
             if keyEvent == Events.CavesKeyTurnedIn:
-                levels_with_tns.append(Levels.CrystalCaves)
+                levels_with_tns.append(spoiler.settings.level_order[6])
             if keyEvent == Events.CastleKeyTurnedIn:
-                levels_with_tns.append(Levels.CreepyCastle)
+                levels_with_tns.append(spoiler.settings.level_order[7])
         placed_tns_hints = 0
         while placed_tns_hints < hint_distribution[HintType.TroffNScoff]:
             attempts = 0
