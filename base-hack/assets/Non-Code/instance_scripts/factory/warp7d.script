@@ -1,0 +1,5 @@
+.data
+id = 0x7D
+.code
+EXEC 7 | 125 65535 125
+ENDBLOCK

@@ -2,10 +2,12 @@
 from ui.generate_buttons import update_seed_text
 from ui.rando_options import (
     disable_barrel_modal,
+    disable_enemy_modal,
+    disable_items_modal,
     disable_boss_rando,
     disable_colors,
     disable_music,
-    disable_prices,
+    disable_move_shuffles,
     disable_rw,
     hide_rgb,
     max_randomized_blocker,
@@ -16,6 +18,7 @@ from ui.rando_options import (
     toggle_counts_boxes,
     toggle_medals_box,
     update_boss_required,
+    disable_coupled_camera_shockwave,
 )
 
 # Call the generate_buttons function just to force loading of the file
@@ -28,12 +31,15 @@ toggle_b_locker_boxes(None)
 update_boss_required(None)
 disable_colors(None)
 disable_music(None)
-disable_prices(None)
+disable_move_shuffles(None)
 max_randomized_blocker(None)
 max_randomized_troff(None)
 disable_barrel_modal(None)
+disable_enemy_modal(None)
+disable_items_modal(None)
 disable_boss_rando(None)
 hide_rgb(None)
 toggle_medals_box(None)
 max_randomized_medals(None)
 disable_rw(None)
+disable_coupled_camera_shockwave(None)

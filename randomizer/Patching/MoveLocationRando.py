@@ -38,49 +38,73 @@ tiny_candymoves = []
 chunky_candymoves = []
 
 
+def writeMoveDataToROM(arr: list):
+    """Write move data to ROM."""
+    for x in arr:
+        if x["move_type"] == "flag":
+            flag_dict = {"dive": 0x182, "orange": 0x184, "barrel": 0x185, "vine": 0x183, "camera": 0x2FD, "shockwave": 0x179, "camera_shockwave": 0xFFFE}
+            flag_index = 0xFFFF
+            if x["flag"] in flag_dict:
+                flag_index = flag_dict[x["flag"]]
+            ROM().writeMultipleBytes(5 << 5, 1)
+            ROM().writeMultipleBytes(x["price"], 1)
+            ROM().writeMultipleBytes(flag_index, 2)
+        elif x["move_type"] is None:
+            ROM().writeMultipleBytes(7 << 5, 1)
+            ROM().writeMultipleBytes(0, 1)
+            ROM().writeMultipleBytes(0xFFFF, 2)
+        else:
+            move_types = ["special", "slam", "gun", "ammo_belt", "instrument"]
+            data = move_types.index(x["move_type"]) << 5 | (x["move_lvl"] << 3) | x["move_kong"]
+            ROM().writeMultipleBytes(data, 1)
+            ROM().writeMultipleBytes(x["price"], 1)
+            ROM().writeMultipleBytes(0xFFFF, 2)
+
+
 def randomize_moves(spoiler: Spoiler):
     """Randomize Move locations based on move_data from spoiler."""
     varspaceOffset = spoiler.settings.rom_data
-    if spoiler.settings.shuffle_items == "moves" and spoiler.move_data is not None:
+    movespaceOffset = spoiler.settings.move_location_data
+    if spoiler.settings.move_rando not in ("off", "starts_with") and spoiler.move_data is not None:
         # Take a copy of move_data before modifying
         move_arrays = spoiler.move_data.copy()
-        for shop in range(3):
-            for kong in range(5):
-                for level in range(8):
-                    if move_arrays[shop][kong][level] == -1:
-                        no_move = 5
-                        move_arrays[shop][kong][level] = no_move << 5
 
-        dk_crankymoves = move_arrays[0][0]
-        diddy_crankymoves = move_arrays[0][1]
-        lanky_crankymoves = move_arrays[0][2]
-        tiny_crankymoves = move_arrays[0][3]
-        chunky_crankymoves = move_arrays[0][4]
-        dk_funkymoves = move_arrays[1][0]
-        diddy_funkymoves = move_arrays[1][1]
-        lanky_funkymoves = move_arrays[1][2]
-        tiny_funkymoves = move_arrays[1][3]
-        chunky_funkymoves = move_arrays[1][4]
-        dk_candymoves = move_arrays[2][0]
-        diddy_candymoves = move_arrays[2][1]
-        lanky_candymoves = move_arrays[2][2]
-        tiny_candymoves = move_arrays[2][3]
-        chunky_candymoves = move_arrays[2][4]
+        dk_crankymoves = move_arrays[0][0][0]
+        diddy_crankymoves = move_arrays[0][0][1]
+        lanky_crankymoves = move_arrays[0][0][2]
+        tiny_crankymoves = move_arrays[0][0][3]
+        chunky_crankymoves = move_arrays[0][0][4]
+        dk_funkymoves = move_arrays[0][1][0]
+        diddy_funkymoves = move_arrays[0][1][1]
+        lanky_funkymoves = move_arrays[0][1][2]
+        tiny_funkymoves = move_arrays[0][1][3]
+        chunky_funkymoves = move_arrays[0][1][4]
+        dk_candymoves = move_arrays[0][2][0]
+        diddy_candymoves = move_arrays[0][2][1]
+        lanky_candymoves = move_arrays[0][2][2]
+        tiny_candymoves = move_arrays[0][2][3]
+        chunky_candymoves = move_arrays[0][2][4]
+
+        training_moves = move_arrays[1]
+        bfi_move = move_arrays[2]
 
         ROM().seek(varspaceOffset + moveRandoOffset)
         ROM().write(0x1)
-        ROM().writeBytes(bytearray(dk_crankymoves))
-        ROM().writeBytes(bytearray(diddy_crankymoves))
-        ROM().writeBytes(bytearray(lanky_crankymoves))
-        ROM().writeBytes(bytearray(tiny_crankymoves))
-        ROM().writeBytes(bytearray(chunky_crankymoves))
-        ROM().writeBytes(bytearray(dk_funkymoves))
-        ROM().writeBytes(bytearray(diddy_funkymoves))
-        ROM().writeBytes(bytearray(lanky_funkymoves))
-        ROM().writeBytes(bytearray(tiny_funkymoves))
-        ROM().writeBytes(bytearray(chunky_funkymoves))
-        ROM().writeBytes(bytearray(dk_candymoves))
-        ROM().writeBytes(bytearray(diddy_candymoves))
-        ROM().writeBytes(bytearray(lanky_candymoves))
-        ROM().writeBytes(bytearray(tiny_candymoves))
-        ROM().writeBytes(bytearray(chunky_candymoves))
+        ROM().seek(movespaceOffset)
+        writeMoveDataToROM(dk_crankymoves)
+        writeMoveDataToROM(diddy_crankymoves)
+        writeMoveDataToROM(lanky_crankymoves)
+        writeMoveDataToROM(tiny_crankymoves)
+        writeMoveDataToROM(chunky_crankymoves)
+        writeMoveDataToROM(dk_funkymoves)
+        writeMoveDataToROM(diddy_funkymoves)
+        writeMoveDataToROM(lanky_funkymoves)
+        writeMoveDataToROM(tiny_funkymoves)
+        writeMoveDataToROM(chunky_funkymoves)
+        writeMoveDataToROM(dk_candymoves)
+        writeMoveDataToROM(diddy_candymoves)
+        writeMoveDataToROM(lanky_candymoves)
+        writeMoveDataToROM(tiny_candymoves)
+        writeMoveDataToROM(chunky_candymoves)
+        writeMoveDataToROM(training_moves)
+        writeMoveDataToROM(bfi_move)

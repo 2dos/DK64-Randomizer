@@ -466,6 +466,31 @@ def replaceROMFile(
         pointer_tables[pointer_table_index]["entries"][file_index]["filename"] = filename
 
 
+def clampCompressedTextures(rom: BinaryIO, cap: int):
+    """Clamps the size of pointer table 25 to reduce it's size to save space."""
+    original_length = len(pointer_tables[25]["entries"])
+    if original_length > cap:
+        print(f"- Compressing pointer table 25 to {cap} entries")
+        pointer_tables[25]["entries"] = pointer_tables[25]["entries"][:cap]
+        rom.seek(main_pointer_table_offset + (4 * len(pointer_tables)) + (4 * 25))
+        rom.write((cap).to_bytes(4, "big"))
+        pointer_tables[25]["num_entries"] = cap
+
+        # Update uncompressed pointer table entry
+        rom.seek(main_pointer_table_offset + (4 * 26))
+        uncompressed_table_location = main_pointer_table_offset + int.from_bytes(rom.read(4), "big")
+        rom.seek(uncompressed_table_location + (4 * 25))
+        uncompressed_start = main_pointer_table_offset + int.from_bytes(rom.read(4), "big")
+        uncompressed_finish = main_pointer_table_offset + int.from_bytes(rom.read(4), "big")
+        uncompressed_table_size = uncompressed_finish - uncompressed_start
+        if uncompressed_table_size > 0:
+            new_size = 4 * cap
+            print(f" - Compressing pointer table 25 from {uncompressed_table_size} bytes to {new_size} bytes")
+            rom.seek(uncompressed_start)
+            new_uncompressed_data = bytearray(rom.read(new_size))
+            replaceROMFile(rom, 26, 25, bytes(new_uncompressed_data), new_size)
+
+
 def shouldWritePointerTable(index: int):
     """Write to the pointer table."""
     # Table 6 is nonsense.

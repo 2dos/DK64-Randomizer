@@ -42,11 +42,11 @@ void openCoinDoor(void) {
 	if (Rando.coin_door_open == 1) { // Always Open
 		setPermFlag(FLAG_HELM_COINDOOR);
 	} else if (Rando.coin_door_open == 2) { // Only requires RW Coin
-		if (checkFlag(FLAG_COLLECTABLE_NINTENDOCOIN,0)) { // Has Nintendo Coin
+		if (checkFlagDuplicate(FLAG_COLLECTABLE_NINTENDOCOIN,0)) { // Has Nintendo Coin
 			setPermFlag(FLAG_HELM_COINDOOR);
 		}
 	} else if (Rando.coin_door_open == 3) { // Only requires Nin Coin
-		if (checkFlag(FLAG_COLLECTABLE_RAREWARECOIN,0)) { // Has Rareware Coin
+		if (checkFlagDuplicate(FLAG_COLLECTABLE_RAREWARECOIN,0)) { // Has Rareware Coin
 			setPermFlag(FLAG_HELM_COINDOOR);
 		}
 	}
@@ -58,8 +58,8 @@ static const short minigame_1_flags[] = {0x41,0x44,0x43,0x45,0x42};
 static const short item_setstate[] = {17,22,23,27,30};
 static const short item_medallook[] = {61,62,63,64,65};
 static const short item_laserlook[] = {16,19,20,26,29};
-static const short item_padset[] = {-1,33,34,35,36};
-static const short item_padlook[] = {-1,76,77,78,79};
+static const short item_padset[] = {42,33,34,35,36};
+static const short item_padlook[] = {1,76,77,78,79};
 
 void HelmInit(int init_stage) {
 	if (init_stage == 0) {
@@ -82,6 +82,10 @@ void HelmInit(int init_stage) {
 	} else if (init_stage == 1) {
 		// Modify Cutscenes
 		int has_ended = 0;
+		modifyCutscenePanPoint(0, 1, 0, 1150, -20, 3500, 0xEA48, 0xF000, 0x27F5, 45, 0);
+		modifyCutscenePanPoint(0, 1, 1, 777, -76, 3656, 0xEA48, 0, 0x27F5, 45, 0);
+		modifyCutscenePanPoint(0, 1, 2, 651, -68, 3775, 0xEA48, 0xC000, 0x27F5, 45, 0);
+		modifyCutsceneItem(0, 42, 0x15, 0x2C, 10);
 		for (int i = 0; i < 5; i++) {
 			if (!has_ended) {
 				int cutscene = 4 + i;
@@ -95,16 +99,17 @@ void HelmInit(int init_stage) {
 					cutscene = 8;
 				}
 				if (current_slot > -1) {
-					modifyCutsceneItem(0, cutscene, 0, item_setstate[current_slot]);
-					modifyCutsceneItem(0, cutscene, 1, item_medallook[current_slot]);
-					modifyCutsceneItem(0, cutscene, 2, item_laserlook[current_slot]);
+					modifyCutscenePoint(0, cutscene, 0, item_setstate[current_slot]);
+					modifyCutscenePoint(0, cutscene, 1, item_medallook[current_slot]);
+					modifyCutscenePoint(0, cutscene, 2, item_laserlook[current_slot]);
 				}
 				if (next_slot > -1) {
-					modifyCutsceneItem(0, cutscene, 4, item_padset[next_slot]);
-					modifyCutsceneItem(0, cutscene, 5, item_padlook[next_slot]);
+					modifyCutscenePoint(0, cutscene, 4, item_padset[next_slot]);
+					modifyCutscenePoint(0, cutscene, 5, item_padlook[next_slot]);
 				}
 			}
 		}
+		
 
 		/*
 			CS 4:
@@ -141,17 +146,6 @@ void HelmInit(int init_stage) {
 		*/
 	}
 }
-
-typedef struct bonus_paad {
-	/* 0x000 */ float oscillation_y;
-	/* 0x004 */ short unk4;
-	/* 0x006 */ short unk6;
-	/* 0x008 */ short unk8;
-	/* 0x00A */ short barrel_index;
-	/* 0x00C */ char other_timer;
-	/* 0x00D */ char destroy_timer;
-	/* 0x00E */ char raise_timer;
-} bonus_paad;
 
 void HelmBarrelCode(void) {
 	bonus_paad* paad = CurrentActorPointer_0->paad;

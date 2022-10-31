@@ -80,26 +80,16 @@ static const short highreq_flags[] = {
 };
 
 void qualityOfLife_shorteners(void) {
-	if (Rando.quality_of_life) {
+	if (Rando.quality_of_life.remove_cutscenes) {
 		// No FTTs
 		for (int i = 0; i < sizeof(ftt_flags) / 2; i++) {
 			setPermFlag(ftt_flags[i]);
 		}
-		// No Dance
-		if (
-			(CurrentMap == 14) ||
-			(CurrentMap == 27) ||
-			(CurrentMap == 39) ||
-			(CurrentMap == 82) ||
-			(CurrentMap == 185)
-		) {
-			SkipDance = 0;
-		} else {
-			SkipDance = 1;
-		}
-		// Shorter Boss Cutscenes
+        // Shorter Boss Cutscenes
 		TempFlagBlock[0xC] |= 0x80;
 		TempFlagBlock[0xD] |= 0x3F;
+    }
+	if (Rando.quality_of_life.reduce_lag) {
         if (CurrentMap == 0x57) {
             if (ObjectModel2Timer <= 5) {
                 actorData* lzcontroller = (actorData*)findActorWithType(0xC);
@@ -127,7 +117,12 @@ void qualityOfLife_shorteners(void) {
 
 void fastWarp(void* actor, int player_index) {
     unkMultiplayerWarpFunction(actor,player_index);
-    renderScreenTransition(6);
+    renderScreenTransition(3);
+}
+
+void fastWarp_playMusic(void* actor) {
+    clearTagSlide(actor);
+    playLevelMusic();
 }
 
 void fastWarpShockwaveFix(void) {

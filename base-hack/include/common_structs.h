@@ -46,12 +46,15 @@ typedef struct actorData {
 	/* 0x0BC */ char unk_BC[0xC0-0xBC];
 	/* 0x0C0 */ float yVelocity;
 	/* 0x0C4 */ float yAccel;
-	/* 0x0C8 */ char unk_C8[0xE6-0xC8];
+	/* 0x0C8 */ char unk_C8[0xCC-0xC8];
+	/* 0x0CC */ char unk_CC;
+	/* 0x0CD */ char unk_CD[0xE6-0xCD];
 	/* 0x0E6 */ short rot_y;
 	/* 0x0E8 */ short rot_z;
 	/* 0x0EA */ char unk_EA[0x4];
 	/* 0x0EE */ short rot_y_copy;
-	/* 0x0F0 */ char unk_F0[0x124-0xF0];
+	/* 0x0F0 */ short reward_index;
+	/* 0x0F2 */ char unk_F2[0x124-0xF2];
 	/* 0x124 */ actor_subdata* data_pointer;
 	/* 0x128 */ short shadow_intensity;
 	/* 0x12A */ char unk_12A[0x132-0x12A];
@@ -158,7 +161,9 @@ typedef struct playerData {
 	/* 0x084 */ float zPos;
 	/* 0x088 */ char unk_88[0xA4-0x88];
 	/* 0x0A4 */ float floor;
-	/* 0x0A8 */ char unk_A8[0xB8-0xA8];
+	/* 0x0A8 */ char unk_A8[0xAC-0xA8];
+	/* 0x0AC */ float water_floor;
+	/* 0x0B0 */ char unk_B0[0xB8-0xB0];
 	/* 0x0B8 */ float hSpeed;
 	/* 0x0BC */ char unk_BC[0x4];
 	/* 0x0C0 */ float yVelocity;
@@ -190,13 +195,17 @@ typedef struct playerData {
 	/* 0x16A */ unsigned char rgb_components[3];
 	/* 0x16D */ char unk_16D[0x18A-0x16D];
 	/* 0x18A */ short moving_angle;
-	/* 0x18C */ char unk_18C[0x1B8-0x18C];
+	/* 0x18C */ char unk_18C[0x1B0-0x18C];
+	/* 0x1B0 */ float unk_1B0;
+	/* 0x1B4 */ char unk_1B4[0x1B8-0x1B4];
 	/* 0x1B8 */ float velocity_cap;
 	/* 0x1BC */ char unk_1BC[0x1C8-0x1BC];
 	/* 0x1C8 */ short turn_speed;
 	/* 0x1CA */ char unk_1CA[0x1D0-0x1CA];
 	/* 0x1D0 */ short ostand_value;
-	/* 0x1D2 */ char unk_1D2[0x208-0x1D2];
+	/* 0x1D2 */ char unk_1D2[0x1E8-0x1D2];
+	/* 0x1E8 */ float unk_1E8;
+	/* 0x1EC */ char unk_1EC[0x208-0x1EC];
 	/* 0x208 */ void* vehicle_actor_pointer;
 	/* 0x20C */ char was_gun_out;
 	/* 0x20D */ char unk_20D[0x23C - 0x20D];
@@ -220,7 +229,8 @@ typedef struct playerData {
 	/* 0x370 */ int strong_kong_ostand_bitfield;
 	/* 0x374 */ char unk_374[0x37D-0x374];
 	/* 0x37D */ unsigned char rambi_enabled;
-	/* 0x37E */ char unk_37E[0x3BE - 0x37E];
+	/* 0x37E */ char unk_37E[0x3BC - 0x37E];
+	/* 0x3BC */ unsigned short try_again_timer;
 	/* 0x3BE */ unsigned char detransform_timer;
 } playerData; //size 0x630
 
@@ -303,6 +313,8 @@ typedef struct SwapObjectData {
 	/* 0x290 */ short chunk;
 	/* 0x292 */ char unk_292[0x29C-0x292];
 	/* 0x29C */ short action_type;
+	/* 0x29E */ char unk_29E[0x2E2 - 0x29E];
+	/* 0x2E2 */ unsigned short unk_2e2;
 } SwapObjectData;
 
 typedef struct ModelTwoData {
@@ -319,7 +331,8 @@ typedef struct ModelTwoData {
 	/* 0x086 */ char unk_86[0x2];
 	/* 0x088 */ short sub_id;
 	/* 0x08A */ short object_id;
-	/* 0x08C */ char unk_8C[0x4];
+	/* 0x08C */ unsigned char collectable_state;
+	/* 0x08D */ char unk_8D[0x3];
 } ModelTwoData;
 
 typedef struct WarpInfo {
@@ -336,10 +349,46 @@ typedef struct cutsceneInfo {
 	/* 0x000 */ char csdata[0xC];
 } cutsceneInfo;
 
+typedef struct cutscene_item {
+	/* 0x000 */ char unk0;
+	/* 0x001 */ unsigned char command;
+	/* 0x002 */ char unk2[4];
+	/* 0x006 */ short params[3];
+	/* 0x00C */ char unkC[0x14-0xC];
+} cutscene_item;
+
+typedef struct pan_data {
+	/* 0x000 */ short x;
+	/* 0x002 */ short y;
+	/* 0x004 */ short z;
+	/* 0x006 */ short rot_data[3];
+	/* 0x00C */ unsigned char zoom;
+	/* 0x00D */ unsigned char roll;
+} pan_data;
+
+typedef struct cutscene_pan_item {
+	/* 0x000 */ char unk0;
+	/* 0x001 */ unsigned char command;
+	/* 0x002 */ char unk2[2];
+	/* 0x004 */ short point_count;
+	/* 0x006 */ char unk6[2];
+	/* 0x008 */ pan_data* pan_content;
+	/* 0x00C */ char unkC[0x14-0xC];
+} cutscene_pan_item;
+
+typedef struct cutscene_item_data {
+	/* 0x000 */ short num_points;
+	/* 0x002 */ short unk_02;
+	/* 0x004 */ short* point_array;
+	/* 0x008 */ short* length_array;
+} cutscene_item_data;
+
 typedef struct cutsceneType {
 	/* 0x000 */ char unk_00[0xD0];
-	/* 0x0D0 */ cutsceneInfo* cutscene_databank;
-	/* 0x0D4 */ char unk_D4[0xE0-0xD4];
+	/* 0x0D0 */ cutscene_item_data* cutscene_databank;
+	/* 0x0D4 */ char unk_D4[0xD8-0xD4];
+	/* 0x0D8 */ cutscene_item* cutscene_funcbank;
+	/* 0x0DC */ int unk_DE;
 } cutsceneType;
 
 typedef struct submapInfo {
@@ -418,7 +467,9 @@ typedef struct actorSpawnerData {
 	/* 0x010 */ char unk_10[0x40-0x10];
 	/* 0x040 */ float barrel_resolved;
 	/* 0x044 */ void* tied_actor;
-	/* 0x048 */ char unk_48[0x5A-0x48];
+	/* 0x048 */ char unk_48[0x54-0x48];
+	/* 0x054 */ float spawn_range;
+	/* 0x058 */ char unk_58[0x5A-0x58];
 	/* 0x05A */ short id;
 	/* 0x05C */ char unk_5C[0x64-0x5C];
 	/* 0x064 */ void* previous_spawner;
@@ -617,6 +668,8 @@ typedef struct cannon {
 	/* 0x37A */ short destination_exit;
 } cannon;
 
+
+
 typedef struct blocker_cheat {
 	/* 0x000 */ unsigned char gb_count;
 	/* 0x001 */ char kong_index;
@@ -644,6 +697,13 @@ typedef struct race_exit_struct {
 	/* 0x008 */ int container_exit;
 } race_exit_struct;
 
+typedef struct exit_struct {
+	/* 0x000 */ short x;
+	/* 0x002 */ short y;
+	/* 0x004 */ short z;
+	/* 0x006 */ char unk_6[4];
+} exit_struct;
+
 typedef struct enemy_drop_struct {
 	/* 0x000 */ short source_object_type;
 	/* 0x002 */ short dropped_object_type;
@@ -670,23 +730,28 @@ typedef struct fileExtraStorage {
 	/* 0x001 */ unsigned char location_ab1_purchased;
 	/* 0x002 */ unsigned char location_ug1_purchased;
 	/* 0x003 */ unsigned char location_mln_purchased;
+	/* 0x004 */ unsigned int level_igt[9];
 } fileExtraStorage;
 
 typedef struct settingsData {
-	/* 0x000 */ fileExtraStorage file_extra[3];
+	/* 0x000 */ fileExtraStorage file_extra;
 } settingsData;
 
 typedef struct behaviour_data {
-	/* 0x000 */ char unk_00[0x38];
+	/* 0x000 */ void* extra_data;
+	/* 0x004 */ char unk_04[0x14-0x4];
+	/* 0x014 */ float unk_14;
+	/* 0x018 */ char unk_18[0x38-0x18];
 	/* 0x038 */ int unk_38;
 	/* 0x03C */ char unk_3C[0x44-0x3C];
 	/* 0x044 */ unsigned short timer;
 	/* 0x046 */ char unk_46[0x48-0x46];
 	/* 0x048 */ unsigned char current_state;
 	/* 0x049 */ char counter;
-	/* 0x04A */ char unk_4A[0x4B-0x4A];
+	/* 0x04A */ char unk_4A;
 	/* 0x04B */ unsigned char next_state;
-	/* 0x04C */ char unk_4C[0x54-0x4C];
+	/* 0x04C */ char counter_next;
+	/* 0x04D */ char unk_4D[0x54-0x4D];
 	/* 0x054 */ char pause_state;
 	/* 0x055 */ char unk_55[0x58-0x55];
 	/* 0x058 */ int distance_cap;
@@ -696,9 +761,13 @@ typedef struct behaviour_data {
 	/* 0x060 */ char unk_60;
 	/* 0x061 */ char unk_61;
 	/* 0x062 */ unsigned short unk_62;
-	/* 0x064 */ char unk_64[0x66-0x64];
+	/* 0x064 */ short unk_64;
 	/* 0x066 */ unsigned char unk_66;
-	/* 0x067 */ char unk_67[0x70-0x67];
+	/* 0x067 */ char unk_67;
+	/* 0x068 */ unsigned short unk_68;
+	/* 0x06A */ unsigned short unk_6A;
+	/* 0x06C */ unsigned short unk_6C;
+	/* 0x06E */ char unk_6E[0x70-0x6E];
 	/* 0x070 */ char unk_70;
 	/* 0x071 */ char unk_71;
 	/* 0x072 */ char unk_72[0x94-0x72];
@@ -737,14 +806,16 @@ typedef struct GBDictItem {
 } GBDictItem;
 
 typedef struct shop_paad {
-	/* 0x000 */ char unk_00[4];
+	/* 0x000 */ char unk_00[2];
+	/* 0x002 */ short flag;
 	/* 0x004 */ unsigned char kong;
 	/* 0x005 */ unsigned char price;
 	/* 0x006 */ char unk_06[0xB-0x6];
 	/* 0x00B */ char purchase_type;
 	/* 0x00C */ char level;
 	/* 0x00D */ unsigned char state;
-	/* 0x00E */ char unk_0E[0x10-0x0E];
+	/* 0x00E */ unsigned char unk_0E;
+	/* 0x00F */ char unk_0F;
 	/* 0x010 */ unsigned char melons;
 	/* 0x011 */ unsigned char purchase_value;
 } shop_paad;
@@ -760,6 +831,27 @@ typedef struct model2_collision_info {
 	/* 0x010 */ short unk10;
 	/* 0x012 */ short unk12;
 } model2_collision_info;
+
+typedef struct move_rom_item {
+	/* 0x000 */ unsigned char move_master_data; // tttl lkkk. t = Type (0 = Moves, 1 = Slam, 2 = Guns, 3 = Ammo Belt, 4 = Instrument, 5 = Flag, 6 = GB, 7 = Vacant), l = move level (reduced by 1), k = kong
+	/* 0x001 */ unsigned char price;
+	/* 0x002 */ short flag; // -1 = No Flag, -2 = Both Camera & Shockwave (Reserved)
+} move_rom_item;
+typedef struct move_block {
+	/* 0x000 */ move_rom_item cranky_moves[5][8];
+	/* 0x0A0 */ move_rom_item funky_moves[5][8];
+	/* 0x140 */ move_rom_item candy_moves[5][8];
+	/* 0x1E0 */ move_rom_item training_moves[4];
+	/* 0x1F0 */ move_rom_item bfi_move;
+} move_block;
+
+typedef enum location_list {
+	/* 0x000 */ LOCATION_DIVE,
+	/* 0x001 */ LOCATION_ORANGE,
+	/* 0x002 */ LOCATION_BARREL,
+	/* 0x003 */ LOCATION_VINE,
+	/* 0x004 */ LOCATION_BFI
+} location_list;
 
 typedef struct map_bitfield {
 	unsigned char test_map : 1;
@@ -1128,3 +1220,101 @@ typedef struct collected_item_struct {
 	/* 0x01B */ char unk_1B;
 	/* 0x01C */ void* next_item;
 } collected_item_struct;
+
+typedef struct quality_options {
+	unsigned char reduce_lag : 1;
+	unsigned char remove_cutscenes : 1;
+	unsigned char fast_picture : 1;
+	unsigned char aztec_lobby_bonus : 1;
+	unsigned char dance_skip : 1;
+	unsigned char fast_boot : 1;
+	unsigned char fast_transform : 1;
+	unsigned char ammo_swap : 1;
+	unsigned char cb_indicator : 1;
+	unsigned char galleon_star : 1;
+	unsigned char vanilla_fixes : 1;
+	unsigned char textbox_hold : 1;
+	unsigned char caves_kosha_dead : 1;
+	unsigned char rambi_enguarde_pickup : 1;
+	unsigned char hud_bp_multibunch : 1;
+} quality_options;
+
+typedef struct image_cache_struct {
+	/* 0x000 */ void* image_pointer;
+	/* 0x004 */ short image_index;
+	/* 0x006 */ unsigned char image_state;
+	/* 0x007 */ char unk7;
+} image_cache_struct;
+
+typedef struct kong_model_struct {
+	/* 0x000 */ int actor;
+	/* 0x004 */ int kong_index;
+	/* 0x008 */ int model;
+	/* 0x00C */ int unk0;
+} kong_model_struct;
+
+typedef struct bonus_barrel_info {
+	/* 0x000 */ short flag;
+	/* 0x002 */ unsigned char kong_actor;
+	/* 0x003 */ unsigned char spawn_actor;
+} bonus_barrel_info;
+
+typedef struct bonus_paad {
+	/* 0x000 */ float oscillation_y;
+	/* 0x004 */ short unk4;
+	/* 0x006 */ short unk6;
+	/* 0x008 */ short unk8;
+	/* 0x00A */ short barrel_index;
+	/* 0x00C */ char other_timer;
+	/* 0x00D */ char destroy_timer;
+	/* 0x00E */ char raise_timer;
+} bonus_paad;
+
+typedef struct tag_model_struct {
+	/* 0x000 */ short model;
+	/* 0x002 */ short actor;
+	/* 0x004 */ char unk0;
+	/* 0x005 */ char unk1;
+} tag_model_struct;
+
+typedef struct mtx_item {
+	/* 0x000 */ char unk_0[0x40];
+} mtx_item;
+
+typedef struct actor_behaviour_def {
+    /* 0x000 */ short actor_type;
+    /* 0x002 */ short model;
+    /* 0x004 */ char unk4[8];
+    /* 0x00C */ void* code;
+    /* 0x010 */ void* unk10;
+    /* 0x014 */ char str[0x1C];
+} actor_behaviour_def;
+
+typedef struct arbitrary_overlay {
+	/* 0x000 */ unsigned char type;
+	/* 0x001 */ unsigned char kong;
+	/* 0x002 */ short flag;
+} arbitrary_overlay;
+
+typedef struct rgb {
+	/* 0x000 */ unsigned char red;
+	/* 0x001 */ unsigned char green;
+	/* 0x002 */ unsigned char blue;
+} rgb;
+
+typedef struct skybox_blend_struct {
+	/* 0x000 */ rgb top;
+	/* 0x003 */ rgb bottom;
+	/* 0x006 */ rgb unk[2];
+} skybox_blend_struct;
+
+typedef struct menu_controller_paad {
+	/* 0x000 */ float screen_transition_progress;
+	/* 0x004 */ float unk_4;
+	/* 0x008 */ char unk_8[0x12-0x8];
+	/* 0x012 */ unsigned char current_screen;
+	/* 0x013 */ unsigned char next_screen;
+	/* 0x014 */ char unk_14[0x16-0x14];
+	/* 0x016 */ char prevent_action;
+	/* 0x017 */ char selected_action;
+} menu_controller_paad;

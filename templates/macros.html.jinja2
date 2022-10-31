@@ -45,7 +45,7 @@
                                     multiple
                                     size="16">
                                 {% for item in list %}
-                                    <option value="{{ item.value }}">
+                                    <option value="{{ item.value }}" title="{{ item.tooltip }}">
                                         {{ item.name }}
                                     </option>
                                 {% endfor %}

@@ -1,0 +1,5 @@
+.data
+id = 0x19
+.code
+EXEC 7 | 125 65535 25
+ENDBLOCK

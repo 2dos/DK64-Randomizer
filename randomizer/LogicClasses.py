@@ -3,7 +3,6 @@ from randomizer.Enums.Kongs import Kongs
 from randomizer.Enums.Levels import Levels
 from randomizer.Enums.Regions import Regions
 from randomizer.Enums.Time import Time
-from randomizer.Enums.Transitions import Transitions
 
 
 class LocationLogic:
@@ -201,5 +200,6 @@ class Sphere:
 
     def __init__(self):
         """Initialize with given parameters."""
+        self.seedBeaten = False
         self.availableGBs = 0
         self.locations = []

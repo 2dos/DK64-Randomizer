@@ -23,7 +23,7 @@ void randomizeLevelOrder(void) {
 								break;
 							}
 							j++;
-						};
+						}
 					} else if (focused_trigger->map == ISLES_OVERWORLD) {
 						// Change Exit
 						int k = 0;

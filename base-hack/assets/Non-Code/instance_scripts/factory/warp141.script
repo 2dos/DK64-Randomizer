@@ -1,0 +1,5 @@
+.data
+id = 0x141
+.code
+EXEC 7 | 125 65535 321
+ENDBLOCK

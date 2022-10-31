@@ -14,17 +14,7 @@ static float current_avg_lag = 0;
 static short past_crystals = 0;
 static char has_loaded = 0;
 static char good_eeprom = 0;
-
-void giveCollectables(void) {
-	int mult = 1;
-	if (MovesBase[0].ammo_belt > 0) {
-		mult = 2 * MovesBase[0].ammo_belt;
-	}
-	CollectableBase.StandardAmmo = 25 * mult;
-	CollectableBase.Oranges = 10;
-	CollectableBase.Crystals = 1500;
-	CollectableBase.Film = 5;
-}
+static char new_picture = 0;
 
 void cFuncLoop(void) {
 	DataIsCompressed[18] = 0;
@@ -42,13 +32,16 @@ void cFuncLoop(void) {
 	replace_zones(0);
 	alter_boss_key_flags();
 	if (ObjectModel2Timer <= 2) {
+		setFlag(0x78, 0, 2); // Clear K. Lumsy temp flag
+		KasplatSpawnBitfield = 0;
 		shiftBrokenJapesPortal();
 		openCoinDoor();
+		priceTransplant();
 		if (CurrentMap == 0x50) {
 			good_eeprom = EEPROMType == 2;
 		}
 	}
-	displayNumberOnTns();
+	// displayNumberOnTns();
 	if (Rando.music_rando_on) {
 		if (CurrentMap == 0x28) {
 			if (ObjectModel2Timer == 5) {
@@ -59,12 +52,28 @@ void cFuncLoop(void) {
 	if (CurrentMap == 0x50) {
 		colorMenuSky();
 	}
-	cancelMoveSoftlock();
 	fixDKFreeSoftlock();
 	callParentMapFilter();
 	recolorKongControl();
 	spawnCannonWrapper();
 	setCrusher();
+	if (Rando.win_condition == GOAL_POKESNAP) {
+		int picture_bitfield = 0;
+		if (Player) {
+			int control_state = Player->control_state;
+			EnemyInView = 0;
+			if ((control_state == 4) || (control_state == 5)) {
+				EnemyInView = isSnapEnemyInRange();
+			}
+			if (Player->strong_kong_ostand_bitfield & 0x8000) {
+				picture_bitfield = 1;
+				if (!new_picture) {
+					pokemonSnapMode();
+				}
+			}
+		}
+		new_picture = picture_bitfield;
+	}
 	if (Rando.perma_lose_kongs) {
 		preventBossCheese();
 		kong_has_died();
@@ -91,42 +100,20 @@ void cFuncLoop(void) {
 			}
 		}
 	}
-	if (Rando.quality_of_life) {
-		handleDPadFunctionality();
+	handleDPadFunctionality();
+	if (Rando.quality_of_life.fast_boot) {
 		if (Gamemode == 3) {
 			if (TransitionSpeed < 0) {
 				TransitionType = 1;
 			}
 		}
 	}
-	if (CurrentMap == MAIN_MENU) {
-		if (CutsceneActive == 6) {
-			if (!checkFlag(FLAG_ESCAPE,0)) {
-				// New File
-				unlockMoves();
-				applyFastStart();
-				openCrownDoor();
-				giveCollectables();
-				activateBananaports();
-				if(Rando.fast_gbs) {
-					setPermFlag(FLAG_RABBIT_ROUND1); //Start race at round 2
-				}
-				setPermFlag(FLAG_ESCAPE);
-				Character = Rando.starting_kong;
-				StoredSettings.file_extra[(int)FileIndex].location_sss_purchased = 0;
-				StoredSettings.file_extra[(int)FileIndex].location_ab1_purchased = 0;
-				StoredSettings.file_extra[(int)FileIndex].location_ug1_purchased = 0;
-				StoredSettings.file_extra[(int)FileIndex].location_mln_purchased = 0;
-				SaveToGlobal();
-			} else {
-				// Used File
-				Character = Rando.starting_kong;
-				determineStartKong_PermaLossMode();
-				giveCollectables();
-			}
-			ForceStandardAmmo = 0;
-		}
+	if (Rando.helm_hurry_mode) {
+		checkTotalCache();
 	}
+	// if (Rando.item_rando) {
+	// 	controlKeyText();
+	// }
 	if (CurrentMap == 0x11) {
 		if ((CutsceneActive == 1) && ((CutsceneStateBitfield & 4) != 0)) {
 			if ((CutsceneIndex == 0) || (CutsceneIndex == 4) || (CutsceneIndex == 7) || (CutsceneIndex == 8) || (CutsceneIndex == 9)) {
@@ -148,12 +135,10 @@ void cFuncLoop(void) {
 	}
 	current_avg_lag = lag_sum;
 	current_avg_lag /= LAG_CAP;
-};
+}
 
 void earlyFrame(void) {
 	if (ObjectModel2Timer == 2) {
-		updateProgressive();
-		price_rando();
 		setFlag(FLAG_KROOL_INTRO_DK,1,2); // DK Phase Intro
 		setFlag(FLAG_KROOL_INTRO_TINY,1,2); // Tiny Phase Intro
 		if (CurrentMap == 0x22) {
@@ -188,10 +173,11 @@ void earlyFrame(void) {
 			MapVoid_MaxX = 703;
 			MapVoid_MaxZ = 757;
 		}
-	}
-	if ((CurrentMap == 5) || (CurrentMap == 1) || (CurrentMap == 0x19)) {
-		if ((CutsceneActive) && (CutsceneIndex == 2)) {
-			updateProgressive();
+		if ((Rando.helm_hurry_mode) && (QueueHelmTimer)) {
+			if (HelmTimerShown == 0) {
+				initHelmTimer();
+			}
+			QueueHelmTimer = 0;
 		}
 	}
 	if (CurrentMap == 0x6F) { // Pufftoss
@@ -230,26 +216,43 @@ void earlyFrame(void) {
 	} else {
 		*(int*)(0x8074C3B0) = (int)&cutsceneDKCode;
 	}
-	// if (NewlyPressedControllerInput.Buttons & L_Button) {
-	// 	for (int i = 0; i < 0xF; i++) {
-	// 		displayItemOnHUD(i,0,0);
-	// 	}
-	// }
 	fastWarpShockwaveFix();
 	catchWarpHandle();
 	write_kutoutorder();
 	remove_blockers();
 	determine_krool_order();
 	disable_krool_health_refills();
-	pre_turn_keys();
 	CBDing();
 	if (Rando.auto_keys) {
 		auto_turn_keys();
 	}
+	if (Rando.item_rando) {
+		int has_sniper = 0;
+		int has_homing = 0;
+		for (int i = 0; i < 5; i++) {
+			int weap_val = MovesBase[i].weapon_bitfield;
+			if (weap_val & 2) {
+				has_homing = 1;
+			}
+			if (weap_val & 4) {
+				has_sniper = 1;
+			}
+		}
+		for (int i = 0; i < 5; i++) {
+			if (has_homing) {
+				MovesBase[i].weapon_bitfield |= 2;
+			}
+			if (has_sniper) {
+				MovesBase[i].weapon_bitfield |= 4;
+			}
+		}
+	}
 	handle_WTI();
 	adjust_galleon_water();
+	finalizeBeatGame();
 	if ((CurrentMap == MAIN_MENU) && (ObjectModel2Timer < 5)) {
 		FileScreenDLCode_Write();
+		initTracker();
 	}
 	if (CurrentMap == NFR_SCREEN) {
 		if (ObjectModel2Timer == 5) {
@@ -269,6 +272,7 @@ static char fpsStr[15] = "";
 static char bp_numerator = 0;
 static char bp_denominator = 0;
 static char bpStr[10] = "";
+static char pkmnStr[10] = "";
 static char hud_timer = 0;
 static char wait_progress_master = 0;
 static char wait_progress_timer = 0;
@@ -331,6 +335,9 @@ int* displayListModifiers(int* dl) {
 				dl = drawPixelTextContainer(dl, 0x34, 0x92, "THE WIKI TO FIX THIS ERROR.", 0xFF, 0xFF, 0xFF, 0xFF, 1);
 			}
 		} else {
+			if (Rando.item_rando) {
+				dl = controlKeyText(dl);
+			}
 			if (Rando.fps_on) {
 				float fps = HERTZ;
 				if (current_avg_lag != 0) {
@@ -365,8 +372,8 @@ int* displayListModifiers(int* dl) {
 						bp_numerator = 0;
 						bp_denominator = 0;
 						for (int i = 0; i < 8; i++) {
-							int bp_has = checkFlag(FLAG_BP_JAPES_DK_HAS + (i * 5) + Character,0);
-							int bp_turn = checkFlag(FLAG_BP_JAPES_DK_TURN + (i * 5) + Character,0);
+							int bp_has = checkFlagDuplicate(FLAG_BP_JAPES_DK_HAS + (i * 5) + Character,0);
+							int bp_turn = checkFlagDuplicate(FLAG_BP_JAPES_DK_TURN + (i * 5) + Character,0);
 							if ((bp_has) && (!bp_turn)) {
 								bp_numerator += 1;
 							}
@@ -389,10 +396,33 @@ int* displayListModifiers(int* dl) {
 					hud_timer = 0;
 				}
 			}
+			if (Rando.win_condition == GOAL_POKESNAP) {
+				int pkmn_f = 0;
+				int pkmn_n = 0;
+				int pkmn_d = 0;
+				if (getPkmnSnapData(&pkmn_f, &pkmn_n, &pkmn_d)) {
+					dk_strFormat((char *)pkmnStr, "%dl%d", pkmn_n, pkmn_d);
+					float opacity = 255.0f;
+					if (pkmn_f < 12) {
+						opacity = pkmn_f * 255;
+						opacity /= 12;
+					} else if (pkmn_f > 38) {
+						int diff = 12 - (pkmn_f - 38);
+						opacity = diff * 255;
+						opacity /= 12;
+					}
+					if (opacity > 255) {
+						opacity = 255;
+					} else if (opacity < 0) {
+						opacity = 0;
+					}
+					dl = drawText(dl, 1, 290, 370, pkmnStr, 0xFF, 0xFF, 0xFF, opacity);
+				}
+			}
 		}
 	}
 	return dl;
-};
+}
 
 void toggleStandardAmmo(void) {
 	if (Gamemode == 6) {

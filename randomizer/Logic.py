@@ -1,4 +1,5 @@
 """Contains the class which holds logic variables, and the master copy of regions."""
+from math import ceil
 import randomizer.CollectibleLogicFiles.AngryAztec
 import randomizer.CollectibleLogicFiles.CreepyCastle
 import randomizer.CollectibleLogicFiles.CrystalCaves
@@ -7,6 +8,7 @@ import randomizer.CollectibleLogicFiles.FranticFactory
 import randomizer.CollectibleLogicFiles.FungiForest
 import randomizer.CollectibleLogicFiles.GloomyGalleon
 import randomizer.CollectibleLogicFiles.JungleJapes
+from randomizer.Enums.Types import Types
 import randomizer.LogicFiles.AngryAztec
 import randomizer.LogicFiles.CreepyCastle
 import randomizer.LogicFiles.CrystalCaves
@@ -27,7 +29,7 @@ from randomizer.Enums.Time import Time
 from randomizer.Lists.Location import Location, LocationList
 from randomizer.Lists.MapsAndExits import Maps
 from randomizer.Lists.ShufflableExit import GetShuffledLevelIndex
-from randomizer.Prices import CanBuy, GetPriceOfMoveItem
+from randomizer.Prices import CanBuy, GetPriceAtLocation
 
 STARTING_SLAM = 1  # Currently we're assuming you always start with 1 slam
 
@@ -55,10 +57,10 @@ class LogicVarHolder:
         self.chunky = Kongs.chunky in self.settings.starting_kong_list
 
         # Right now assuming start with training barrels
-        self.vines = True  # self.settings.training_barrels == "startwith"
-        self.swim = True  # self.settings.training_barrels == "startwith"
-        self.oranges = True  # self.settings.training_barrels == "startwith"
-        self.barrels = True  # self.settings.training_barrels == "startwith"
+        self.vines = self.settings.training_barrels == "normal"
+        self.swim = self.settings.training_barrels == "normal"
+        self.oranges = self.settings.training_barrels == "normal"
+        self.barrels = self.settings.training_barrels == "normal"
 
         self.progDonkey = 3 if self.settings.unlock_all_moves else 0
         self.blast = self.settings.unlock_all_moves
@@ -100,8 +102,8 @@ class LogicVarHolder:
         self.nintendoCoin = False
         self.rarewareCoin = False
 
-        self.camera = self.settings.unlock_fairy_shockwave
-        self.shockwave = self.settings.unlock_fairy_shockwave
+        self.camera = self.settings.shockwave_status == "start_with"
+        self.shockwave = self.settings.shockwave_status == "start_with"
 
         self.scope = self.settings.unlock_all_moves
         self.homing = self.settings.unlock_all_moves
@@ -173,6 +175,8 @@ class LogicVarHolder:
         self.chunkyAccess = False
 
         self.kong = self.startkong
+
+        self.bananaHoard = False
 
         self.UpdateKongs()
 
@@ -258,8 +262,8 @@ class LogicVarHolder:
         self.BananaMedals = sum(1 for x in ownedItems if x == Items.BananaMedal)
         self.BattleCrowns = sum(1 for x in ownedItems if x == Items.BattleCrown)
 
-        self.camera = self.camera or Items.CameraAndShockwave in ownedItems
-        self.shockwave = self.shockwave or Items.CameraAndShockwave in ownedItems
+        self.camera = self.camera or Items.CameraAndShockwave in ownedItems or Items.Camera in ownedItems
+        self.shockwave = self.shockwave or Items.CameraAndShockwave in ownedItems or Items.Shockwave in ownedItems
 
         self.scope = self.scope or Items.SniperSight in ownedItems
         self.homing = self.homing or Items.HomingAmmo in ownedItems
@@ -268,6 +272,8 @@ class LogicVarHolder:
         self.superDuperSlam = self.Slam >= 3
 
         self.Blueprints = [x for x in ownedItems if x >= Items.JungleJapesDonkeyBlueprint]
+
+        self.bananaHoard = self.bananaHoard or Items.BananaHoard in ownedItems
 
     def AddEvent(self, event):
         """Add an event to events list so it can be checked for logically."""
@@ -335,16 +341,17 @@ class LogicVarHolder:
         """Check if logic currently is currently the specified kong and owns a gun for them."""
         if kong == Kongs.donkey:
             return self.coconut and self.isdonkey
-        if kong == Kongs.diddy:
+        elif kong == Kongs.diddy:
             return self.peanut and self.isdiddy
-        if kong == Kongs.lanky:
+        elif kong == Kongs.lanky:
             return self.grape and self.islanky
-        if kong == Kongs.tiny:
+        elif kong == Kongs.tiny:
             return self.feather and self.istiny
-        if kong == Kongs.chunky:
+        elif kong == Kongs.chunky:
             return self.pineapple and self.ischunky
-        if kong == Kongs.any:
+        elif kong == Kongs.any:
             return (self.coconut and self.isdonkey) or (self.peanut and self.isdiddy) or (self.grape and self.islanky) or (self.feather and self.istiny) or (self.pineapple and self.ischunky)
+        return False
 
     def HasInstrument(self, kong):
         """Check if logic currently is currently the specified kong and owns an instrument for them."""
@@ -375,9 +382,13 @@ class LogicVarHolder:
         elif self.settings.tiny_freeing_kong == Kongs.any:
             return True
 
+    def CanLlamaSpit(self):
+        """Check if the Llama spit can be triggered."""
+        return self.HasInstrument(self.settings.lanky_freeing_kong)
+
     def CanFreeLanky(self):
         """Check if kong at Lanky location can be freed, requires freeing kong to have its gun and instrument."""
-        return self.HasGun(self.settings.lanky_freeing_kong) and self.HasInstrument(self.settings.lanky_freeing_kong)
+        return self.swim and self.HasGun(self.settings.lanky_freeing_kong) and self.HasInstrument(self.settings.lanky_freeing_kong)
 
     def CanFreeChunky(self):
         """Check if kong at Chunky location can be freed."""
@@ -412,6 +423,7 @@ class LogicVarHolder:
     def AddCollectible(self, collectible, level):
         """Add a collectible."""
         if collectible.enabled:
+            added = False
             if collectible.type == Collectibles.coin:
                 # Rainbow coin, add 5 coins for each kong
                 if collectible.kong == Kongs.any:
@@ -428,13 +440,20 @@ class LogicVarHolder:
                 self.ColoredBananas[level][collectible.kong] += collectible.amount * 5
             # Add 10 bananas for a balloon
             elif collectible.type == Collectibles.balloon:
-                self.ColoredBananas[level][collectible.kong] += collectible.amount * 10
-            collectible.added = True
+                if self.HasGun(collectible.kong):
+                    self.ColoredBananas[level][collectible.kong] += collectible.amount * 10
+                    collectible.added = True
+                added = True
+            if not added:
+                collectible.added = True
 
-    def PurchaseShopItem(self, location: Location):
+    def PurchaseShopItem(self, location_id):
         """Purchase items from shops and subtract price from logical coin counts."""
+        location = LocationList[location_id]
         if location.item is not None and location.item is not Items.NoItem:
-            price = GetPriceOfMoveItem(location.item, self.settings, self.Slam, self.AmmoBelts, self.InstUpgrades)
+            price = GetPriceAtLocation(self.settings, location_id, location, self.Slam, self.AmmoBelts, self.InstUpgrades)
+            if price is None:  # This probably shouldn't happen but I think it's harmless
+                return  # TODO: solve this
             # print("BuyShopItem for location: " + location.name)
             # print("Item: " + ItemList[location.item].name + " has Price: " + str(price))
             # If shared move, take the price from all kongs EVEN IF THEY AREN'T FREED YET
@@ -464,10 +483,11 @@ class LogicVarHolder:
         else:  # if time == Time.Both
             return Regions[region].dayAccess or Regions[region].nightAccess
 
-    def KasplatAccess(self, location):
-        """Use the kasplat map to check kasplat logic for blueprint locations."""
-        kong = self.kasplat_map[location]
-        return self.IsKong(kong)
+    def BlueprintAccess(self, item):
+        """Check if we are the correct kong for this blueprint item."""
+        if item is None or item.type != Types.Blueprint:
+            return False
+        return self.settings.free_trade_blueprints or self.IsKong(item.kong)
 
     def CanBuy(self, location):
         """Check if there are enough coins to purchase this location."""
@@ -483,7 +503,7 @@ class LogicVarHolder:
 
     def HasEnoughKongs(self, level, forPreviousLevel=False):
         """Check if kongs are required for progression, do we have enough to reach the given level."""
-        if self.settings.kongs_for_progression and level != Levels.HideoutHelm:
+        if self.settings.kongs_for_progression and level != Levels.HideoutHelm and not self.settings.hard_level_progression:
             # Figure out where this level fits in the progression
             levelIndex = GetShuffledLevelIndex(level)
             if forPreviousLevel:
@@ -505,12 +525,47 @@ class LogicVarHolder:
         if bossFight == Maps.FactoryBoss and requiredKong == Kongs.tiny:
             hasRequiredMoves = self.twirl
         elif bossFight == Maps.FungiBoss:
-            hasRequiredMoves = self.hunkyChunky
+            hasRequiredMoves = self.hunkyChunky and self.barrels
+        elif bossFight == Maps.JapesBoss or bossFight == Maps.AztecBoss or bossFight == Maps.CavesBoss:
+            hasRequiredMoves = self.barrels
         return self.IsKong(requiredKong) and hasRequiredMoves
 
     def IsLevelEnterable(self, level):
         """Check if level entry requirement is met."""
         return self.HasEnoughKongs(level, forPreviousLevel=True) and self.GoldenBananas >= self.settings.EntryGBs[level]
+
+    def WinConditionMet(self):
+        """Check if the current game state has met the win condition."""
+        if self.settings.win_condition == "beat_krool":
+            return self.bananaHoard
+        elif self.settings.win_condition == "get_key8":
+            return self.HelmKey
+        elif self.settings.win_condition == "all_fairies":
+            return self.BananaFairies >= 20
+        elif self.settings.win_condition == "all_blueprints":
+            return len(self.Blueprints) >= 40
+        elif self.settings.win_condition == "all_medals":
+            return self.BananaMedals >= 40
+        elif self.settings.win_condition == "all_keys":
+            return (
+                Events.JapesKeyTurnedIn in self.Events
+                and Events.AztecKeyTurnedIn in self.Events
+                and Events.FactoryKeyTurnedIn in self.Events
+                and Events.GalleonKeyTurnedIn in self.Events
+                and Events.ForestKeyTurnedIn in self.Events
+                and Events.CavesKeyTurnedIn in self.Events
+                and Events.CastleKeyTurnedIn in self.Events
+                and Events.HelmKeyTurnedIn in self.Events
+            )
+        else:
+            return False
+
+    def CanGetRarewareCoin(self):
+        """Check if you meet the logical requirements to obtain the Rareware Coin."""
+        have_enough_medals = self.BananaMedals >= self.settings.medal_requirement
+        # Make sure you have access to enough levels to fit the locations in. This isn't super precise and doesn't need to be.
+        required_level = min(ceil(self.settings.medal_requirement / 5), 6)
+        return have_enough_medals and self.IsLevelEnterable(required_level)
 
 
 LogicVariables = LogicVarHolder()

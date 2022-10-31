@@ -11,7 +11,7 @@ def randomize_bananaport(spoiler: Spoiler):
     """Rando write bananaport locations."""
     pad_types = [0x214, 0x213, 0x211, 0x212, 0x210]
 
-    if spoiler.settings.bananaport_rando:
+    if spoiler.settings.bananaport_rando == "in_level":
         for cont_map in spoiler.bananaport_replacements:
             pad_vanilla = {}
             cont_map_id = int(cont_map["containing_map"])
@@ -80,3 +80,27 @@ def randomize_bananaport(spoiler: Spoiler):
                             print("ERROR: ID not found in pad location dump")
                     else:
                         print("ERROR: Vanilla ID not found")
+    elif spoiler.settings.bananaport_rando in ("crossmap_coupled", "crossmap_decoupled"):
+        data_start = 0x1FF0000
+        visual_warp_changes = []
+        maps_used = []
+        for port_index, port_new in enumerate(spoiler.bananaport_replacements):
+            ROM().seek(data_start + (port_index * 0xA))
+            map_id = int.from_bytes(ROM().readBytes(1), "big")
+            ROM().writeMultipleBytes(port_new[0], 1)
+            obj_id = int.from_bytes(ROM().readBytes(2), "big")
+            if map_id not in maps_used:
+                maps_used.append(map_id)
+            visual_warp_changes.append([map_id, obj_id, port_new[1]])
+        for cont_map_id in maps_used:
+            cont_map_setup_address = js.pointer_addresses[9]["entries"][cont_map_id]["pointing_to"]
+            ROM().seek(cont_map_setup_address)
+            model2_count = int.from_bytes(ROM().readBytes(4), "big")
+            for x in range(model2_count):
+                start = cont_map_setup_address + 4 + (x * 0x30)
+                ROM().seek(start + 0x2A)
+                obj_id = int.from_bytes(ROM().readBytes(2), "big")
+                for warp_change in visual_warp_changes:
+                    if warp_change[0] == cont_map_id and warp_change[1] == obj_id:
+                        ROM().seek(start + 0x28)
+                        ROM().writeMultipleBytes(pad_types[warp_change[2]], 2)

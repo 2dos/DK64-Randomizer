@@ -1,4 +1,6 @@
 """Set debugging vars to the build."""
+import os
+
 set_variables = {
     "level_order_rando_on": 0,
     "level_order": [1, 5, 4, 0, 6, 2, 3],
@@ -13,9 +15,25 @@ set_variables = {
     "fast_start_helm": 1,
     "crown_door_open": 0,
     "coin_door_open": 0,
-    "quality_of_life": 1,
+    "quality_of_life": {
+        "reduce_lag": True,
+        "remove_cutscenes": True,
+        "fast_picture": True,
+        "aztec_lobby_bonus": True,
+        "dance_skip": True,
+        "fast_boot": True,
+        "fast_transform": True,
+        "ammo_swap": True,
+        "cb_indicator": True,
+        "galleon_star": True,
+        "vanilla_fixes": True,
+        "textbox_hold": True,
+        "caves_kosha_dead": True,
+        "rambi_enguarde_pickup": True,
+        "hud_bp_multibunch": True,
+    },
     "price_rando_on": 1,
-    "k_rool_order": [0, 3, 1, 2, 4],
+    "k_rool_order": [1, -1, -1, -1, -1],
     "damage_multiplier": 0,
     "fps_on": 1,
     "no_health_refill": 0,
@@ -38,7 +56,7 @@ set_variables = {
     "starting_kong": 0,
     "free_target_llama": 0,
     "free_source_llama": 3,
-    "keys_preturned": 0x01,
+    "keys_preturned": 0x00,
     "short_bosses": 1,
     "fast_warp": 1,
     "activate_all_bananaports": 1,
@@ -48,7 +66,7 @@ set_variables = {
     "remove_high_requirements": 1,
     "open_level_sections": 1,
     "auto_keys": 0,
-    "test_zone": [0xAA, 0],
+    "test_zone": [0xCC, 0],
     "klaptrap_color_bbother": 0x96,
     "kut_out_phases": [3, 2, 0],
     "dpad_visual_enabled": 1,
@@ -59,7 +77,20 @@ set_variables = {
         [1, 2, 3],
         [4, 5, 6],
     ],
-    "helm_order": [2, 3, 1, 0xFF, 0xFF],
+    "tbarrel_prices": [1, 2, 3, 4],
+    "fairy_prices": [3, 6],
+    "helm_order": [2, 0, 0xFF, 0xFF, 0xFF],
+    "disco_chunky": 1,
+    "krusha_slot": 0x2,
+    "helm_hurry_mode": 0,
+    "win_condition": 5,
+    "version": 2,
+    "item_rando": 1,
+    "vulture_item": 72,
+    "japes_rock_item": 76,
+    "medal_cb_req": 5,
+    "hard_enemies": 1,
+    "remove_oscillation_effects": 1,
 }
 
 
@@ -156,6 +187,35 @@ with open("include/variable_space_structs.h", "r") as varspace:
                 if lz_type == 9 and lz_map == 0xB0 and lz_exit == 0:
                     writeToROMNoOffset(isles_list + (0x38 * lz_index) + 0x12, set_variables[x][0], 2, "Isles -> TGrounds Zone Map")
                     writeToROMNoOffset(isles_list + (0x38 * lz_index) + 0x14, set_variables[x][1], 2, "Isles -> TGrounds Zone Exit")
+        elif x == "quality_of_life":
+            order = [
+                "reduce_lag",
+                "remove_cutscenes",
+                "fast_picture",
+                "aztec_lobby_bonus",
+                "dance_skip",
+                "fast_boot",
+                "fast_transform",
+                "ammo_swap",
+                "cb_indicator",
+                "galleon_star",
+                "vanilla_fixes",
+                "textbox_hold",
+                "caves_kosha_dead",
+                "rambi_enguarde_pickup",
+                "hud_bp_multibunch",
+            ]
+            for y in set_variables["quality_of_life"]:
+                if set_variables["quality_of_life"][y]:
+                    index = order.index(y)
+                    offset = int(index >> 3)
+                    check = int(index % 8)
+                    pre = readFromROM(0x1FED020 + 0xB0 + offset, 1)
+                    pre_copy = pre
+                    pre |= 0x80 >> check
+                    print("")
+                    print(f"{y} ({index}): {offset} {check} | {pre_copy} -> {pre}")
+                    writeToROM(0xB0 + offset, pre, 1, y)
         else:
             for y in struct_data2:
                 if x == y[2]:
@@ -168,3 +228,15 @@ with open("include/variable_space_structs.h", "r") as varspace:
                             writeToROM(y[0] + (z * y[1]), set_variables[x][z], y[1], x)
                     # print(type(set_variables[x]))
     # print(struct_data2)
+
+# Editor: https://docs.google.com/spreadsheets/d/1UokoarKY6C56otoHMRUDCCMveaGUm8bGTOnaxjxDPR0/edit#gid=0
+move_csv = "move_placement.csv"
+permit = True  # Whether move csv overwrites data
+if os.path.exists(move_csv) and permit:
+    with open(move_csv, "r") as csv:
+        csv_lines = csv.readlines()
+        with open("rom/dk64-randomizer-base-dev.z64", "r+b") as rom:
+            rom.seek(0x1FEF000)
+            for x in csv_lines:
+                val = int(x.replace("\n", ""))
+                rom.write(val.to_bytes(4, "big"))
