@@ -4,10 +4,12 @@
 #define MODE_DKTV 3
 
 void qualityOfLife_fixes(void) {
-	if (Rando.quality_of_life) {
+	if (Rando.quality_of_life.remove_cutscenes) {
 		if (Gamemode == 0) {
 			StorySkip = 1;
 		}
+	}
+	if (Rando.quality_of_life.vanilla_fixes) {
 		setPermFlag(FLAG_FTT_CRANKY); // Cranky FTT
 		setPermFlag(FLAG_TBARREL_SPAWNED); // Training Barrels Spawned
 		setPermFlag(FLAG_MODIFIER_KOSHADEAD); // Giant Kosha Dead
@@ -25,7 +27,7 @@ void qualityOfLife_fixes(void) {
 }
 
 void checkNinWarp(void) {
-	if (Rando.quality_of_life) {
+	if (Rando.quality_of_life.fast_boot) {
 		WarpToDKTV();
 		TransitionType = 0;
 	} else {
@@ -123,7 +125,7 @@ void playCBDing(void) {
 }
 
 void CBDing(void) {
-	if (Rando.quality_of_life) {
+	if (Rando.quality_of_life.cb_indicator) {
 		int world = getWorld(CurrentMap, 1);
 		int total_cbs = 0;
 		if (world < 7) {
@@ -210,4 +212,27 @@ void updateMultibunchCount(void) {
 	if (HUD) {
 		HUD->item[0xA].visual_item_count = count;
 	}
+}
+
+void RabbitRaceInfiniteCode(void) {
+	initCharSpawnerActor();
+	if (checkFlag(FLAG_RABBIT_ROUND1,0)) {
+		if (CurrentActorPointer_0->control_state_progress == 0) {
+			int control_state = CurrentActorPointer_0->control_state;
+			if (control_state == 2) {
+				// Start
+				setHUDItemAsInfinite(5,0,1);
+			} else if ((control_state == 0x28) || (control_state == 0x1E)) {
+				// End
+				resetCoconutHUD();
+			}
+		}
+	}
+}
+
+int fixDilloTNTPads(void* actor) {
+	if ((CurrentMap == 8) || (CurrentMap == 0xC4)) {
+		return 0;
+	}
+	return getPadGravity(actor);
 }

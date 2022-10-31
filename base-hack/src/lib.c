@@ -131,6 +131,20 @@ void alterGBKong(int map, int id, int new_kong) {
 	}
 }
 
+int getLo(void* addr) {
+    return ((int)addr) & 0xFFFF;
+}
+
+int getHi(void* addr) {
+    int addr_0 = (int)addr;
+    int hi = (addr_0 >> 16) & 0xFFFF;
+    int lo = getLo(addr);
+    if (lo & 0x8000) {
+        hi += 1;
+    }
+    return hi;
+}
+
 void cancelCutscene(int enable_movement) {
 	if ((TBVoidByte & 2) == 0) {
 		if (CutsceneActive) {
@@ -151,18 +165,60 @@ void cancelCutscene(int enable_movement) {
 	}
 }
 
-typedef struct cutscene_item_data {
-	/* 0x000 */ short num_points;
-	/* 0x002 */ short unk_02;
-	/* 0x004 */ void* point_array;
-	/* 0x008 */ void* length_array;
-} cutscene_item_data;
-
-void modifyCutsceneItem(int bank, int cutscene, int point, int new_item) {
+void modifyCutscenePoint(int bank, int cutscene, int point, int new_item) {
 	if (CutsceneBanks[bank].cutscene_databank) {
 		void* databank = CutsceneBanks[bank].cutscene_databank;
 		cutscene_item_data* data = (cutscene_item_data*)getObjectArrayAddr(databank,0xC,cutscene);
 		short* write_spot = (short*)getObjectArrayAddr(data->point_array,2,point);
 		*(short*)write_spot = new_item;
 	}
+}
+
+void modifyCutsceneItem(int bank, int item, int new_param1, int new_param2, int new_param3) {
+	if (CutsceneBanks[bank].cutscene_funcbank) {
+		void* funcbank = CutsceneBanks[bank].cutscene_funcbank;
+		cutscene_item* data = (cutscene_item*)getObjectArrayAddr(funcbank,0x14,item);
+		data->params[0] = new_param1;
+		data->params[1] = new_param2;
+		data->params[2] = new_param3;
+	}
+}
+
+void modifyCutscenePanPoint(int bank, int item, int point_index, int x, int y, int z, int rot0, int rot1, int rot2, int zoom, int roll) {
+	if (CutsceneBanks[bank].cutscene_funcbank) {
+		cutscene_pan_item* funcbank = (cutscene_pan_item*)CutsceneBanks[bank].cutscene_funcbank;
+		cutscene_pan_item* cs_item = (cutscene_pan_item*)&funcbank[item];
+		pan_data* data = (pan_data*)&cs_item->pan_content[point_index];
+		data->x = x;
+		data->y = y;
+		data->z = z;
+		data->rot_data[0] = rot0;
+		data->rot_data[1] = rot1;
+		data->rot_data[2] = rot2;
+		data->zoom = zoom;
+		data->roll = roll;
+	}
+}
+
+int getWrinklyLevelIndex(void) {
+	return getWorld(CurrentMap, 0);
+}
+
+static const short normal_key_flags[] = {
+	FLAG_KEYHAVE_KEY1,
+	FLAG_KEYHAVE_KEY2,
+	FLAG_KEYHAVE_KEY3,
+	FLAG_KEYHAVE_KEY4,
+	FLAG_KEYHAVE_KEY5,
+	FLAG_KEYHAVE_KEY6,
+	FLAG_KEYHAVE_KEY7,
+	FLAG_KEYHAVE_KEY8
+};
+
+int getKeyFlag(int index) {
+    if ((Rando.level_order_rando_on) && (index < 7)) {
+        return Rando.key_flags[index];
+    } else {
+        return normal_key_flags[index];
+    }
 }

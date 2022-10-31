@@ -1,15 +1,8 @@
 #include "../../include/common.h"
 
-#define PURCHASE_MOVES 0
-#define PURCHASE_SLAM 1
-#define PURCHASE_GUN 2
-#define PURCHASE_AMMOBELT 3
-#define PURCHASE_INSTRUMENT 4
-#define PURCHASE_NOTHING -1
-
 int doesKongPossessMove(int purchase_type, int purchase_value, int kong) {
 	if (purchase_type != PURCHASE_NOTHING) {
-		if (purchase_value > 0) {
+		if (purchase_value != 0) {
 			if (purchase_type == PURCHASE_MOVES) {
 				if (MovesBase[kong].special_moves & (1 << (purchase_value - 1))) {
 					return 0;
@@ -48,11 +41,34 @@ int doesKongPossessMove(int purchase_type, int purchase_value, int kong) {
 						return 5;
 					}
 				}
+			} else if ((purchase_type == PURCHASE_FLAG) || (purchase_type == PURCHASE_GB)) {
+				if (purchase_value == -2) { // Shockwave & Camera Combo
+					if ((!checkFlagDuplicate(FLAG_ABILITY_CAMERA,0)) || (!checkFlagDuplicate(FLAG_ABILITY_SHOCKWAVE,0))) {
+						return 6;
+					}
+				} else {
+					if (!checkFlagDuplicate(purchase_value,0)) {
+						int is_shared = 0;
+						int tied_flags[] = {FLAG_TBARREL_DIVE,FLAG_TBARREL_ORANGE,FLAG_TBARREL_BARREL,FLAG_TBARREL_VINE,FLAG_ABILITY_CAMERA,FLAG_ABILITY_SHOCKWAVE};
+						for (int i = 0; i < (sizeof(tied_flags) / 4); i++) {
+							if (purchase_value == tied_flags[i]) {
+								is_shared = 1;
+							}
+						}
+						if (getMoveProgressiveFlagType(purchase_value) > -1) {
+							is_shared = 1;
+						}
+						if (is_shared) {
+							return 6;
+						}
+						return 1;
+					}
+				}
 			}
 		}
 	}
 	return 0;
-};
+}
 
 #define MOVEBTF_DK 1
 #define MOVEBTF_DIDDY 2
@@ -64,6 +80,53 @@ int doesKongPossessMove(int purchase_type, int purchase_value, int kong) {
 #define SHOPINDEX_CRANKY 0
 #define SHOPINDEX_FUNKY 1
 #define SHOPINDEX_CANDY 2
+
+int isSharedMove(int shop_index, int level) {
+	if (shop_index == SHOPINDEX_CRANKY) {
+		purchase_struct* targ = (purchase_struct*)&CrankyMoves_New[0][level];
+		for (int i = 1; i < 5; i++) {
+			purchase_struct* src = (purchase_struct*)&CrankyMoves_New[i][level];
+			if (targ->move_kong != src->move_kong) {
+				return 0;
+			}
+			if (targ->purchase_type != src->purchase_type) {
+				return 0;
+			}
+			if (targ->purchase_value != src->purchase_value) {
+				return 0;
+			}
+		}
+	} else if (shop_index == SHOPINDEX_FUNKY) {
+		purchase_struct* targ = (purchase_struct*)&FunkyMoves_New[0][level];
+		for (int i = 1; i < 5; i++) {
+			purchase_struct* src = (purchase_struct*)&FunkyMoves_New[i][level];
+			if (targ->move_kong != src->move_kong) {
+				return 0;
+			}
+			if (targ->purchase_type != src->purchase_type) {
+				return 0;
+			}
+			if (targ->purchase_value != src->purchase_value) {
+				return 0;
+			}
+		}
+	} else if (shop_index == SHOPINDEX_CANDY) {
+		purchase_struct* targ = (purchase_struct*)&CandyMoves_New[0][level];
+		for (int i = 1; i < 5; i++) {
+			purchase_struct* src = (purchase_struct*)&CandyMoves_New[i][level];
+			if (targ->move_kong != src->move_kong) {
+				return 0;
+			}
+			if (targ->purchase_type != src->purchase_type) {
+				return 0;
+			}
+			if (targ->purchase_value != src->purchase_value) {
+				return 0;
+			}
+		}
+	}
+	return 1;
+}
 
 int getMoveCountInShop(int shop_index) {
 	int level = getWorld(CurrentMap,0);
@@ -78,6 +141,9 @@ int getMoveCountInShop(int shop_index) {
 				possess = doesKongPossessMove(FunkyMoves_New[i][level].purchase_type, FunkyMoves_New[i][level].purchase_value, FunkyMoves_New[i][level].move_kong);
 			} else if (shop_index == SHOPINDEX_CANDY) {
 				possess = doesKongPossessMove(CandyMoves_New[i][level].purchase_type, CandyMoves_New[i][level].purchase_value, CandyMoves_New[i][level].move_kong);
+			}
+			if ((possess == 1) && (isSharedMove(shop_index, level))) {
+				possess = 7;
 			}
 			if (possess == 1) {
 				btf |= (1 << i);

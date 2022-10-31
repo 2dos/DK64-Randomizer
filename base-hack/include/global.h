@@ -1,4 +1,5 @@
 #include "vars.h"
+#include "text_items.h"
 
 extern void playSFX(short sfxIndex);
 extern void setPermFlag(short flagIndex);
@@ -12,6 +13,11 @@ extern void callParentMapFilter(void);
 extern void shiftBrokenJapesPortal(void);
 extern void quickInit(void);
 
+extern int getWrinklyLevelIndex(void);
+extern void initOptionScreen(void);
+extern int getLo(void* addr);
+extern int getHi(void* addr);
+
 extern void level_order_rando_funcs(void);
 extern void unlockKongs(void);
 extern void unlockMoves(void);
@@ -24,14 +30,11 @@ extern void openCoinDoor(void);
 extern void qualityOfLife_fixes(void);
 extern void qualityOfLife_shorteners(void);
 extern void decouple_moves_fixes(void);
-extern void price_rando(void);
 extern void determine_krool_order(void);
 extern void replace_zones(int init_flag);
 extern void randomize_bosses(void);
 extern void alter_boss_key_flags(void);
 extern void displayNumberOnTns(void);
-extern void replace_moves(void);
-extern void updateProgressive(void);
 extern void moveTransplant(void);
 extern void priceTransplant(void);
 
@@ -51,7 +54,6 @@ extern void pre_turn_keys(void);
 extern void auto_turn_keys(void);
 extern void handle_WTI(void);
 extern void no_enemy_drops(void);
-extern void cancelMoveSoftlock(void);
 extern void adjust_galleon_water(void);
 
 extern int convertSubIDToIndex(short obj_index);
@@ -74,6 +76,8 @@ extern int hasPermaLossGrace(void);
 extern void writeJetpacMedalReq(void);
 extern void resetMapContainer(void);
 extern void correctDKPortal(void);
+extern int canSaveHelmHurry(void);
+extern void blueprintCollect(int flag_index);
 
 extern int* drawTri(int* dl, short x1, short y1, short x2, short y2, short x3, short y3, int red, int green, int blue, int alpha);
 extern int* drawImage(int* dl, int text_index, codecs codec_index, int img_width, int img_height, int x, int y, float xScale, float yScale, int opacity);
@@ -86,6 +90,9 @@ extern int* drawDPad(int* dl);
 extern int* drawImageWithFilter(int* dl, int text_index, codecs codec_index, int img_width, int img_height, int x, int y, float xScale, float yScale, int red, int green, int blue, int opacity);
 extern void correctKongFaces(void);
 
+extern int getLo(void* addr);
+extern int getHi(void* addr);
+
 extern void displayNumberOnObject(int id, int param2, int imageindex, int param4, int subtype);
 extern void recolorKongControl(void);
 extern void newCounterCode(void);
@@ -94,6 +101,8 @@ extern void colorMenuSky(void);
 extern void getMoveHint(actorData* actor, int text_file, int text_index);
 extern void cutsceneDKCode(void);
 extern void getNextMovePurchase(shop_paad* paad, KongBase* movedata);
+
+extern void fastWarp_playMusic(void* actor);
 
 extern void guardCatch(void);
 extern void catchWarpHandle(void);
@@ -107,24 +116,106 @@ extern int getTagAnywhereKong(int direction);
 extern int getTAState(void);
 extern void toggleStandardAmmo(void);
 extern void initItemDropTable(void);
+extern void initCollectableCollision(void);
+extern void initActorDefs(void);
 extern void newGuardCode(void);
 extern void goldBeaverCode(void);
+extern void ninCoinCode(void);
+extern void rwCoinCode(void);
+extern void medalCode(void);
+extern void NothingCode(void);
 extern void beaverExtraHitHandle(void);
 extern void CBDing(void);
 extern void handleSpiderTrapCode(void);
 extern void fastWarpShockwaveFix(void);
+extern int fixDilloTNTPads(void* actor);
+
+extern move_block* getMoveBlock(void);
+extern void setLocationStatus(location_list location_index);
+extern int getLocationStatus(location_list location_index);
+extern void fixTBarrelsAndBFI(int init);
+extern void purchaseMove(shop_paad* paad);
+extern void getNextMoveText(void);
+extern void displayBFIMoveText(void);
+extern void showPostMoveText(shop_paad* paad, KongBase* kong_base, int intro_flag);
 extern void fixRBSlowTurn(void);
 extern void postKRoolSaveCheck(void);
+extern int* displayHeadTexture(int* dl, int texture, float x, float y, float scale);
+
 extern void tagBarrelBackgroundKong(int kong_actor);
 extern void tagAnywhereInit(int is_homing, int model2_id, int obj);
 extern void tagAnywhereAmmo(int player, int obj, int is_homing);
 extern void tagAnywhereBunch(int player, int obj, int player_index);
-extern void modifyCutsceneItem(int bank, int cutscene, int point, int new_item);
+extern void modifyCutscenePoint(int bank, int cutscene, int point, int new_item);
+extern void modifyCutsceneItem(int bank, int item, int new_param1, int new_param2, int new_param3);
+extern void modifyCutscenePanPoint(int bank, int item, int point_index, int x, int y, int z, int rot0, int rot1, int rot2, int zoom, int roll);
 extern void HelmInit(int init_stage);
+extern void initKRool(int phase);
 extern void handleSFXCache(void);
 extern void preventMedalHUD(int item, int unk0, int unk1);
 extern void initHUDDirection(placementData* hud_data, int item);
+extern int getObjectCollectability(int id, int unk1, int model2_type);
 extern void* getHUDSprite_HUD(int item);
 extern void updateMultibunchCount(void);
 extern void handleDPadFunctionality(void);
+extern void file_progress_screen_code(actorData* actor, int buttons);
+extern int* displayTopText(int* dl, short x, short y, float scale);
+extern void FileProgressInit(actorData* menu_controller);
+extern void checkTotalCache(void);
+extern void checkSeedVictory(void);
+extern void checkVictory_flaghook(int flag);
+extern void FileProgressInitSub(int file, int shuffle);
+extern void changeFileSelectAction(menu_controller_paad* paad, int cap, int buttons);
+extern void changeFileSelectAction_0(menu_controller_paad* paad, int cap);
+extern void checkSkippableCutscene(void);
+extern void updateSkippableCutscenes(void);
+extern void parseCutsceneData(void);
 //extern void getRandoNextMovePurchase(shop_paad* shop_info, KongBase* moves);
+extern void adjustAnimationTables(void);
+extern void adaptKrushaZBAnimation_PunchOStand(int action, void* player, int player_index);
+extern void adaptKrushaZBAnimation_Charge(actorData* actor, int anim);
+extern void updateCutsceneModels(actorData* actor, int size);
+extern void initTracker(void);
+extern void wipeFileMod(int file, int will_save);
+extern void enterFileProgress(int sfx);
+extern void pokemonSnapMode(void);
+extern int isSnapEnemyInRange(void);
+extern int getPkmnSnapData(int* frames, int* current, int* total);
+extern void updateSkippableCutscenes(void);
+extern void renderScreenTransitionCheck(int applied_transition);
+extern int updateLevelIGT(void);
+extern int* printLevelIGT(int* dl, int x, int y, float scale, char* str);
+extern void RabbitRaceInfiniteCode(void);
+extern void completeBonus(actorData* actor);
+extern void KasplatIndicator(int has_bp);
+extern void spawnBonusReward(int object, int x_f, int y_f, int z_f, int unk0, int cutscene, int flag, int unk1);
+extern void spawnCrownReward(int object, int x_f, int y_f, int z_f, int unk0, int cutscene, int flag, int unk1);
+extern void spawnBossReward(int object, int x_f, int y_f, int z_f, int unk0, int cutscene, int flag, int unk1);
+extern void spawnRewardAtActor(int object, int flag);
+extern void spawnMinecartReward(int object, int flag);
+extern int checkFlagDuplicate(short flag, int type);
+extern void setFlagDuplicate(short flag, int set, int type);
+extern void* updateFlag(int type, short* flag, void* fba, int source);
+extern void spawnEnemyDrops(actorData* actor);
+extern int countFlagsForKongFLUT(int startFlag, int start, int cap, int kong);
+extern int countFlagsDuplicate(int start, int count, int type);
+extern int getKongFromBonusFlag(int flag);
+extern void banana_medal_acquisition(int flag);
+extern void finalizeBeatGame(void);
+
+extern int getBPItem(int index);
+extern int getMedalItem(int index);
+extern int getCrownItem(int map);
+extern int getKeyItem(int old_flag);
+extern void initKeyText(int ki);
+extern int* controlKeyText(int* dl);
+extern void keyGrabHook(int song, int vol);
+extern int itemGrabHook(int collectable_type, int obj_type, int is_homing);
+extern int getKeyFlag(int index);
+extern void KLumsyText(void);
+extern void PotionCode(void);
+extern int getMoveProgressiveFlagType(int flag);
+extern void getItem(int object_type);
+
+extern unsigned int cs_skip_db[432];
+extern bonus_barrel_info bonus_data[95];

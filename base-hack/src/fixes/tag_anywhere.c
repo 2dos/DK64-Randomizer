@@ -373,7 +373,10 @@ int canTagAnywhere(int prev_crystals) {
     if (Player->collision_queue_pointer) {
         return 0;
     }
-    
+    if (LZFadeoutProgress > 15.0f) {
+        // Can cause inconsistent graphical crashes
+        return 0;
+    }
     if ((prev_crystals - 1) == CollectableBase.Crystals) {
         return 0;
     }
@@ -546,17 +549,21 @@ void tagAnywhere(int prev_crystals) {
                             Player->hand_state = 1;
                             Player->was_gun_out = 0;
                             // Without this, tags to and from Diddy mess up
-                            if (next_character == 1) {
+                            if ((Rando.krusha_slot == next_character) && (Rando.krusha_slot != -1)) {
+                                Player->hand_state = 2;
+                            } else if (next_character == 1) {
                                 Player->hand_state = 0;
                             }
                         } else {
                             Player->hand_state = 2;
                             Player->was_gun_out = 1;
                             // Without this, tags to and from Diddy mess up
-                            if (next_character == 1) {
+                            if ((Rando.krusha_slot == next_character) && (Rando.krusha_slot != -1)) {
+                                Player->hand_state = 1;
+                            } else if (next_character == 1) {
                                 Player->hand_state = 3;
                             }
-                        };
+                        }
                         // Fix HUD memes
                         if (CurrentMap == 0x2A) {
                             if (!hasTurnedInEnoughCBs()) {

@@ -13,3 +13,4 @@ beautifulsoup4
 wheel
 setuptools
 djlint
+cpplint

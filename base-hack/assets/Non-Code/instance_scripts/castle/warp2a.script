@@ -1,0 +1,5 @@
+.data
+id = 0x2A
+.code
+EXEC 7 | 125 65535 42
+ENDBLOCK

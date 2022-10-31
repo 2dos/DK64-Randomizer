@@ -1,6 +1,9 @@
 .definelabel dataStart, 0x01FED020
 .definelabel dataRDRAM, 0x807FF800
 .definelabel musicInfo, 0x01FFF000
+.definelabel itemROM, 0x01FF2000
+.definelabel codeEnd, 0x805FAE00
+.definelabel itemdatasize, 0x640
 
 START:
 	displacedBootCode:
@@ -12,6 +15,14 @@ START:
 		LUI a2, 0x807F
 		JAL dmaFileTransfer
 		ORI a2, a2, 0xF800 //RAM location to copy to
+		// Load item data
+		LUI a0, hi(itemROM)
+		LUI a1, hi(itemROM + itemdatasize)
+		ADDIU a1, a1, lo(itemROM + itemdatasize)
+		ADDIU a0, a0, lo(itemROM)
+		LUI a2, hi(codeEnd - itemdatasize)
+		JAL dmaFileTransfer
+		ADDIU a2, a2, lo(codeEnd - itemdatasize)
 		//
 		LUI v0, 0x8001
 		ADDIU v0, v0, 0xDCC4
@@ -24,6 +35,7 @@ START:
 		// Write LZ Update
 		LUI t3, 0x8075
 		SB r0, 0x8E21 (t3) // Setup
+		SB r0, 0x8E22 (t3) // M2 Scripts
 		SB r0, 0x8E24 (t3) // Text
 		SB r0, 0x8E2A (t3) // Loading Zones
 		SB r0, 0x8E28 (t3) // Character Spawners
@@ -133,15 +145,6 @@ AutowalkFixHook:
 LoadCodeReplacements:
 	J 	DynamicCodeFixes
 	NOP
-DanceSkipHook0:
-	J 	danceSkip0
-	NOP
-DanceSkipHook1:
-	J 	danceSkip1
-	NOP
-DanceSkipHook2:
-	J 	danceSkip2
-	NOP
 TagPermaLossCheckHook:
 	J 	permaLossTagCheck
 	NOP
@@ -199,6 +202,43 @@ GiveItemPointerToMultiHook:
 CoinHUDRepositionHook:
 	J 	CoinHUDReposition
 	NOP
+SaveHelmHurryCheckHook:
+	J 	SaveHelmHurryCheck
+	NOP
+InvertCameraControlsHook:
+	J 	InvertCameraControls
+	NOP
+VineCodeHook:
+	J 	VineCode
+	NOP
+VineShowHook:
+	J 	VineShowCode
+	NOP
+SkipCutscenePansHook:
+	J 	SkipCutscenePans
+	NOP
+ModifyCameraColorHook:
+	J 	ModifyCameraColor
+	NOP
+
+PlayCutsceneVelocityHook:
+	J 	PlayCutsceneVelocity
+	NOP
+ItemRandoFlagCheckHook:
+	J 	checkFlag_ItemRando
+	NOP
+ItemRandoFlagSetHook:
+	J 	setFlag_ItemRando
+	NOP
+ObjectRotateHook:
+	J 	ObjectRotate
+	NOP
+SpriteFixHook:
+	J 	SpriteFix
+	NOP
+CorrectCBCounterHook:
+	J 	CorrectCBCounter
+	NOP
 
 loadExtraHooks:
 	LUI t3, hi(InstanceScriptHook)
@@ -206,12 +246,66 @@ loadExtraHooks:
 	LUI t4, 0x8064
 	SW t3, 0xEE08 (t4) // Store Hook
 	SW r0, 0xEE0C (t4) // Store NOP
+	
+	LUI t3, hi(CorrectCBCounterHook)
+	LW t3, lo(CorrectCBCounterHook) (t3)
+	LUI t4, 0x8070
+	SW t3, 0x84AC (t4) // Store Hook
+	SW r0, 0x84B0 (t4) // Store NOP
+	
+	LUI t3, hi(ItemRandoFlagCheckHook)
+	LW t3, lo(ItemRandoFlagCheckHook) (t3)
+	LUI t4, 0x8073
+	SW t3, 0x1168 (t4) // Store Hook
+	SW r0, 0x116C (t4) // Store NOP
+	
+	LUI t3, hi(ItemRandoFlagSetHook)
+	LW t3, lo(ItemRandoFlagSetHook) (t3)
+	LUI t4, 0x8073
+	SW t3, 0x12F8 (t4) // Store Hook
+	SW r0, 0x12FC (t4) // Store NOP
+	
+	LUI t3, hi(VineCodeHook)
+	LW t3, lo(VineCodeHook) (t3)
+	LUI t4, 0x806A
+	SW t3, 0x840C (t4) // Store Hook
+	SW r0, 0x8410 (t4) // Store NOP
+	
+	LUI t3, hi(VineShowHook)
+	LW t3, lo(VineShowHook) (t3)
+	LUI t4, 0x806A
+	SW t3, 0x8420 (t4) // Store Hook
+	SW r0, 0x8424 (t4) // Store NOP
+	
+	LUI t3, hi(ModifyCameraColorHook)
+	LW t3, lo(ModifyCameraColorHook) (t3)
+	LUI t4, 0x8070
+	SW t3, 0xF384 (t4) // Store Hook
+	SW r0, 0xF388 (t4) // Store NOP
+	
+	LUI t3, hi(SkipCutscenePansHook)
+	LW t3, lo(SkipCutscenePansHook) (t3)
+	LUI t4, 0x8062
+	SW t3, 0xE684 (t4) // Store Hook
+	SW r0, 0xE688 (t4) // Store NOP
 
 	LUI t3, hi(ShopImageHandlerHook)
 	LW t3, lo(ShopImageHandlerHook) (t3)
 	LUI t4, 0x8065
 	SW t3, 0x8364 (t4) // Store Hook
 	SW r0, 0x8368 (t4) // Store NOP
+	
+	LUI t3, hi(InvertCameraControlsHook)
+	LW t3, lo(InvertCameraControlsHook) (t3)
+	LUI t4, 0x806F
+	SW t3, 0xA70C (t4) // Store Hook
+	SW r0, 0xA710 (t4) // Store NOP
+	
+	LUI t3, hi(PlayCutsceneVelocityHook)
+	LW t3, lo(PlayCutsceneVelocityHook) (t3)
+	LUI t4, 0x8062
+	SW t3, 0xCE38 (t4) // Store Hook
+	SW r0, 0xCE3C (t4) // Store NOP
 
 	LUI t3, hi(FixPufftossInvalidWallCollisionHook)
 	LW t3, lo(FixPufftossInvalidWallCollisionHook) (t3)
@@ -302,6 +396,12 @@ loadExtraHooks:
 	LUI t4, 0x806D
 	SW t3, 0x9A7C (t4) // Store Hook
 	SW r0, 0x9A80 (t4) // Store NOP
+	
+	LUI t3, hi(SaveHelmHurryCheckHook)
+	LW t3, lo(SaveHelmHurryCheckHook) (t3)
+	LUI t4, 0x8061
+	SW t3, 0xDEF4 (t4) // Store Hook
+	SW r0, 0xDEF8 (t4) // Store NOP
 
 	LUI t3, hi(WarpToIslesEnabled)
 	LBU t3, lo(WarpToIslesEnabled) (t3)
@@ -351,24 +451,6 @@ loadExtraHooks:
 	SW t3, 0x0948 (t4) // Store Hook
 	SW r0, 0x094C (t4) // Store NOP
 
-	LUI t3, hi(DanceSkipHook0)
-	LW t3, lo(DanceSkipHook0) (t3)
-	LUI t4, 0x806F
-	SW t3, 0xFB88 (t4) // Store Hook
-	SW r0, 0xFB8C (t4) // Store NOP
-
-	LUI t3, hi(DanceSkipHook1)
-	LW t3, lo(DanceSkipHook1) (t3)
-	LUI t4, 0x806F
-	SW t3, 0xFC08 (t4) // Store Hook
-	SW r0, 0xFC0C (t4) // Store NOP
-
-	LUI t3, hi(DanceSkipHook2)
-	LW t3, lo(DanceSkipHook2) (t3)
-	LUI t4, 0x806F
-	SW t3, 0xFC1C (t4) // Store Hook
-	SW r0, 0xFC20 (t4) // Store NOP
-
 	LUI t3, hi(permaLossMode)
 	LBU t3, lo(permaLossMode) (t3)
 	BEQZ t3, loadExtraHooks_1
@@ -404,11 +486,11 @@ loadExtraHooks:
 	BEQZ t3, loadExtraHooks_2
 	NOP
 
-	LUI t3, hi(BonusAutocompleteHook)
-	LW t3, lo(BonusAutocompleteHook) (t3)
-	LUI t4, 0x8068
-	SW t3, 0x0D10 (t4) // Store Hook
-	SW r0, 0x0D14 (t4) // Store NOP
+	//LUI t3, hi(BonusAutocompleteHook)
+	//LW t3, lo(BonusAutocompleteHook) (t3)
+	//LUI t4, 0x8068
+	//SW t3, 0x0D10 (t4) // Store Hook
+	//SW r0, 0x0D14 (t4) // Store NOP
 
 	loadExtraHooks_2:
 	LUI t3, hi(KeyCompressionHook)
@@ -452,17 +534,17 @@ loadExtraHooks:
 	LUI t4, 0x806B
 	SW t3, 0xF70C (t4) // Store Hook
 	SW r0, 0xF710 (t4) // Store NOP
-
-	LUI t3, hi(QoLOn)
-	LBU t3, lo(QoLOn) (t3)
-	BEQZ t3, loadExtraHooks_3
-	NOP
-
+	
 	LUI t3, hi(NinWarpHook)
 	LW t3, lo(NinWarpHook) (t3)
 	LUI t4, 0x8071
 	SW t3, 0x32BC (t4) // Store Hook
 	SW r0, 0x32C0 (t4) // Store NOP
+
+	LUI t3, hi(TextHoldOn)
+	LBU t3, lo(TextHoldOn) (t3)
+	BEQZ t3, loadExtraHooks_3
+	NOP
 
 	LUI t3, hi(TextHandlerHook)
 	LW t3, lo(TextHandlerHook) (t3)
@@ -476,6 +558,25 @@ loadExtraHooks:
 	LUI t4, 0x806B
 	SW t3, 0xE55C (t4) // Store Hook
 	SW r0, 0xE560 (t4) // Store NOP
+
+	LUI t3, hi(ItemRandoOn)
+	LBU t3, lo(ItemRandoOn) (t3)
+	BEQZ t3, loadExtraHooks_4
+	NOP
+
+	LUI t3, hi(ObjectRotateHook)
+	LW t3, lo(ObjectRotateHook) (t3)
+	LUI t4, 0x8063
+	SW t3, 0x7148 (t4) // Store Hook
+	SW r0, 0x714C (t4) // Store NOP
+	
+	LUI t3, hi(SpriteFixHook)
+	LW t3, lo(SpriteFixHook) (t3)
+	LUI t4, 0x806A
+	SW t3, 0x6708 (t4) // Store Hook
+	SW r0, 0x670C (t4) // Store NOP
+
+	loadExtraHooks_4:
 
 	JR ra
 	NOP

@@ -1,0 +1,5 @@
+.data
+id = 0xB1
+.code
+EXEC 7 | 125 65535 177
+ENDBLOCK

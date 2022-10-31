@@ -2,6 +2,7 @@
 from enum import IntEnum
 
 from randomizer.LogicClasses import Regions, TransitionBack
+from randomizer.Enums.Levels import Levels
 
 
 class Maps(IntEnum):
@@ -256,6 +257,8 @@ RegionMapList = {
     Regions.JapesBaboonBlast: Maps.JapesBaboonBlast,
     # Aztec
     Regions.AngryAztecStart: Maps.AngryAztec,
+    Regions.BetweenVinesByPortal: Maps.AngryAztec,
+    Regions.AngryAztecOasis: Maps.AngryAztec,
     Regions.TempleStart: Maps.AztecTinyTemple,
     Regions.TempleUnderwater: Maps.AztecTinyTemple,
     Regions.AngryAztecMain: Maps.AngryAztec,
@@ -283,8 +286,12 @@ RegionMapList = {
     Regions.FactoryBaboonBlast: Maps.FactoryBaboonBlast,
     # Galleon
     Regions.GloomyGalleonStart: Maps.GloomyGalleon,
+    Regions.GalleonPastVines: Maps.GloomyGalleon,
     Regions.GalleonBeyondPineappleGate: Maps.GloomyGalleon,
-    Regions.LighthouseArea: Maps.GloomyGalleon,
+    Regions.LighthouseSurface: Maps.GloomyGalleon,
+    Regions.LighthousePlatform: Maps.GloomyGalleon,
+    Regions.LighthouseUnderwater: Maps.GloomyGalleon,
+    Regions.LighthouseSnideAlcove: Maps.GloomyGalleon,
     Regions.Lighthouse: Maps.GalleonLighthouse,
     Regions.MermaidRoom: Maps.GalleonMermaidRoom,
     Regions.SickBay: Maps.GalleonSickBay,
@@ -371,6 +378,133 @@ RegionMapList = {
     Regions.Dungeon: Maps.CastleDungeon,
     Regions.CastleBaboonBlast: Maps.CastleBaboonBlast,
 }
+
+LevelMapTable = {
+    Levels.JungleJapes: [
+        Maps.JungleJapes,
+        Maps.JapesTinyHive,
+        Maps.JapesLankyCave,
+        Maps.JapesMountain,
+        Maps.JapesMinecarts,
+        Maps.JapesUnderGround,
+        Maps.JapesBaboonBlast,
+    ],
+    Levels.AngryAztec: [
+        Maps.AngryAztec,
+        Maps.AztecTinyTemple,
+        Maps.AztecDonkey5DTemple,
+        Maps.AztecDiddy5DTemple,
+        Maps.AztecLanky5DTemple,
+        Maps.AztecTiny5DTemple,
+        Maps.AztecChunky5DTemple,
+        Maps.AztecTinyRace,
+        Maps.AztecLlamaTemple,
+        Maps.AztecBaboonBlast,
+    ],
+    Levels.FranticFactory: [
+        Maps.FranticFactory,
+        Maps.FactoryTinyRace,
+        Maps.FactoryPowerHut,
+        Maps.FactoryCrusher,
+        Maps.FactoryBaboonBlast,
+    ],
+    Levels.GloomyGalleon: [
+        Maps.GloomyGalleon,
+        Maps.GalleonLighthouse,
+        Maps.GalleonMermaidRoom,
+        Maps.GalleonSickBay,
+        Maps.GalleonSealRace,
+        Maps.GalleonTreasureChest,
+        Maps.GalleonSubmarine,
+        Maps.GalleonMechafish,
+        Maps.Galleon5DShipDKTiny,
+        Maps.Galleon5DShipDiddyLankyChunky,
+        Maps.Galleon2DShip,
+        Maps.GalleonBaboonBlast,
+    ],
+    Levels.FungiForest: [
+        Maps.FungiForest,
+        Maps.ForestMinecarts,
+        Maps.ForestGiantMushroom,
+        Maps.ForestChunkyFaceRoom,
+        Maps.ForestLankyZingersRoom,
+        Maps.ForestLankyMushroomsRoom,
+        Maps.ForestAnthill,
+        Maps.ForestMillFront,
+        Maps.ForestMillBack,
+        Maps.ForestSpider,
+        Maps.ForestRafters,
+        Maps.ForestWinchRoom,
+        Maps.ForestMillAttic,
+        Maps.ForestThornvineBarn,
+        Maps.ForestBaboonBlast,
+    ],
+    Levels.CrystalCaves: [
+        Maps.CrystalCaves,
+        Maps.CavesLankyRace,
+        Maps.CavesFrozenCastle,
+        Maps.CavesDonkeyIgloo,
+        Maps.CavesDiddyIgloo,
+        Maps.CavesLankyIgloo,
+        Maps.CavesTinyIgloo,
+        Maps.CavesChunkyIgloo,
+        Maps.CavesRotatingCabin,
+        Maps.CavesDonkeyCabin,
+        Maps.CavesDiddyLowerCabin,
+        Maps.CavesDiddyUpperCabin,
+        Maps.CavesLankyCabin,
+        Maps.CavesTinyCabin,
+        Maps.CavesChunkyCabin,
+        Maps.CavesBaboonBlast,
+    ],
+    Levels.CreepyCastle: [
+        Maps.CreepyCastle,
+        Maps.CastleTree,
+        Maps.CastleLibrary,
+        Maps.CastleBallroom,
+        Maps.CastleMuseum,
+        Maps.CastleTinyRace,
+        Maps.CastleTower,
+        Maps.CastleGreenhouse,
+        Maps.CastleTrashCan,
+        Maps.CastleShed,
+        Maps.CastleLowerCave,
+        Maps.CastleCrypt,
+        Maps.CastleMinecarts,
+        Maps.CastleMausoleum,
+        Maps.CastleUpperCave,
+        Maps.CastleDungeon,
+        Maps.CastleBaboonBlast,
+    ],
+    Levels.DKIsles: [
+        Maps.Isles,
+        Maps.BananaFairyRoom,
+        Maps.JungleJapesLobby,
+        Maps.AngryAztecLobby,
+        Maps.IslesSnideRoom,
+        Maps.FranticFactoryLobby,
+        Maps.GloomyGalleonLobby,
+        Maps.FungiForestLobby,
+        Maps.CrystalCavesLobby,
+        Maps.CreepyCastleLobby,
+        Maps.HideoutHelmLobby,
+        Maps.TrainingGrounds,
+        Maps.Treehouse,
+        Maps.KLumsy,
+    ],
+    Levels.HideoutHelm: [
+        Maps.HideoutHelm,
+    ],
+}
+
+
+def getLevelFromMap(map_enum):
+    """Get level from map index referencing lookup table."""
+    for level in LevelMapTable:
+        if map_enum in LevelMapTable[level]:
+            return level
+    return None
+
 
 MapExitTable = {
     Maps.TrainingGrounds: ["From DK Isles", "From Treehouse"],

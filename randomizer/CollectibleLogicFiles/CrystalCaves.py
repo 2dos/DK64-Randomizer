@@ -28,8 +28,9 @@ LogicRegions = {
         Collectible(Collectibles.bunch, Kongs.chunky, lambda l: l.punch, None, 1),  # Gorilla Gone room
         Collectible(Collectibles.banana, Kongs.chunky, lambda l: l.punch, None, 3),  # Gorilla Gone room
         Collectible(Collectibles.bunch, Kongs.chunky, lambda l: True, None, 1),  # Warp 2
-        Collectible(Collectibles.bunch, Kongs.chunky, lambda l: True, None, 2),  # Small Boulder and switch
-        Collectible(Collectibles.banana, Kongs.chunky, lambda l: True, None, 3),  # Small Boulder and switch
+        Collectible(Collectibles.bunch, Kongs.chunky, lambda l: True, None, 1),  # On small boulder switch
+        Collectible(Collectibles.bunch, Kongs.chunky, lambda l: True, None, 1),  # Underneath small boulder
+        Collectible(Collectibles.banana, Kongs.chunky, lambda l: True, None, 3),  # On bridge to small boulder switch
 
         Collectible(Collectibles.coin, Kongs.donkey, lambda l: l.punch and l.chunky, None, 3),  # Gorilla Gone room
         Collectible(Collectibles.coin, Kongs.diddy, lambda l: True, None, 4),  # On ice castle
@@ -58,6 +59,8 @@ LogicRegions = {
     Regions.CavesBlueprintPillar: [
         Collectible(Collectibles.bunch, Kongs.lanky, lambda l: True, None, 4),  # Warp 5 platform
     ],
+    Regions.CavesBananaportSpire: [
+    ],
     Regions.CavesBaboonBlast: [
         Collectible(Collectibles.bunch, Kongs.donkey, lambda l: True, None, 4),
 
@@ -68,7 +71,7 @@ LogicRegions = {
         Collectible(Collectibles.balloon, Kongs.donkey, lambda l: l.coconut, None, 1),
 
         Collectible(Collectibles.banana, Kongs.chunky, lambda l: Events.CavesSmallBoulderButton in l.Events, None, 6),
-        Collectible(Collectibles.bunch, Kongs.chunky, lambda l: Events.CavesSmallBoulderButton in l.Events and l.hunkyChunky, None, 1),
+        Collectible(Collectibles.bunch, Kongs.chunky, lambda l: Events.CavesSmallBoulderButton in l.Events and l.hunkyChunky and l.barrels, None, 1),
 
         Collectible(Collectibles.coin, Kongs.donkey, lambda l: True, None, 3),
     ],

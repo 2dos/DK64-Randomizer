@@ -23,7 +23,7 @@ void determine_krool_order(void) {
 				for (int i = 0; i < 4; i++) {
 					containing = Rando.k_rool_order[i];
 					destination = Rando.k_rool_order[i + 1];
-					if ((containing > -1) && (destination > -1)) {
+					if ((containing > -1) && (destination > -1) && (containing < 4)) {
 						*(short*)(*(int*)((int)&krool_write_locations[containing])) = 0xCB + destination;
 					}
 				}
@@ -40,6 +40,41 @@ void disable_krool_health_refills(void) {
 					*(int*)(0x800289B0) = 0; // Between Phases
 				}
 			}
+		}
+	}
+}
+
+void initKRool(int phase) {
+	int is_last = 0;
+	int next_phase = -1;
+	int found_phase = 0;
+	int found_next = 0;
+	int microbuffer_cutscenes[] = {4,3,5,3,4};
+	for (int i = 0; i < 5; i++) {
+		if (Rando.k_rool_order[i] == phase) {
+			found_phase = 1;
+		} else {
+			if ((found_phase) && (!found_next)) {
+				if (Rando.k_rool_order[i] == -1) {
+					is_last = 1;
+				} else {
+					next_phase = Rando.k_rool_order[i];
+				}
+				found_next = 1;
+			}
+		}
+	}
+	if (phase == 4) {
+		if (!is_last) {
+			modifyCutsceneItem(0, 7, 8, 12, 0); // Set to Kremlings Running Out Cutscene
+			modifyCutsceneItem(0, 8, 0x29, 0xCB + next_phase, microbuffer_cutscenes[next_phase]); // Set to Kremlings Running Out Cutscene
+			modifyCutscenePoint(0, 22, 40, 7); // Overwrite playsong call with change of cutscene
+			modifyCutscenePoint(0, 12, 22, 8); // End of cutscene 12 should bring you to next phase
+		}
+	} else {
+		if (is_last) {
+			int phase_items[] = {134,102,111,174};
+			modifyCutsceneItem(0, phase_items[phase], 0x29, 0x22, 29);
 		}
 	}
 }

@@ -81,7 +81,15 @@ KasplatLocationList = {
             region=Regions.JapesBeyondCoconutGate1,
             vanilla=True,
         ),
-        KasplatLocation(name="Japes Kasplat: Underground", map_id=Maps.JapesUnderGround, kong_lst=[Kongs.chunky], coords=[427, 20, 456], region=Regions.JapesCatacomb, vanilla=True),
+        KasplatLocation(
+            name="Japes Kasplat: Underground",
+            map_id=Maps.JapesUnderGround,
+            kong_lst=[Kongs.chunky],
+            coords=[427, 20, 456],
+            region=Regions.JapesCatacomb,
+            additional_logic=lambda l: l.pineapple,
+            vanilla=True,
+        ),
         KasplatLocation(
             name="Japes Kasplat: Near Speedy Swing Sortie Bonus",
             map_id=Maps.JungleJapes,
@@ -142,6 +150,7 @@ KasplatLocationList = {
             zmin=1650,
             zmax=1800,
             region=Regions.JungleJapesMain,
+            additional_logic=lambda l: l.swim and (l.oranges or l.HasGun(Kongs.any)),
         ),
         KasplatLocation(
             name="Japes Kasplat: In the water near Rambi Wall",
@@ -153,6 +162,7 @@ KasplatLocationList = {
             zmin=2700,
             zmax=2900,
             region=Regions.BeyondRambiGate,
+            additional_logic=lambda l: l.swim and (l.oranges or l.HasGun(Kongs.any)),
         ),
         KasplatLocation(
             name="Japes Kasplat: Near Cranky's",
@@ -228,7 +238,7 @@ KasplatLocationList = {
             xmax=2500,
             zmin=880,
             zmax=1050,
-            region=Regions.AngryAztecStart,
+            region=Regions.AngryAztecOasis,
         ),
         KasplatLocation(
             name="Aztec Kasplat: On the Llama's Cage",
@@ -239,7 +249,7 @@ KasplatLocationList = {
             xmax=2155,
             zmin=1525,
             zmax=1590,
-            region=Regions.AngryAztecStart,
+            region=Regions.AngryAztecOasis,
         ),
         KasplatLocation(
             name="Aztec Kasplat: Near the giant boulder",
@@ -257,7 +267,7 @@ KasplatLocationList = {
             map_id=Maps.AngryAztec,
             kong_lst=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
             coords=[1363, 162, 738],
-            region=Regions.AngryAztecStart,
+            region=Regions.AngryAztecOasis,
             additional_logic=lambda l: l.coconut and ((l.strongKong and l.isdonkey) or l.settings.damage_amount == "default"),
             vanilla=True,
         ),
@@ -294,7 +304,7 @@ KasplatLocationList = {
             map_id=Maps.AngryAztec,
             kong_lst=[Kongs.diddy],
             coords=[3169, 445, 647],
-            region=Regions.AngryAztecStart,
+            region=Regions.AngryAztecOasis,
             additional_logic=lambda l: l.jetpack,
             vanilla=True,
         ),
@@ -307,7 +317,7 @@ KasplatLocationList = {
             xmax=420,
             zmin=650,
             zmax=750,
-            region=Regions.AngryAztecStart,
+            region=Regions.BetweenVinesByPortal,
             additional_logic=lambda l: l.chunky and l.pineapple,
         ),
         KasplatLocation(
@@ -386,18 +396,19 @@ KasplatLocationList = {
             region=Regions.LlamaTemple,
             additional_logic=lambda l: l.grape,
         ),
-        KasplatLocation(
-            name="Aztec Kasplat: Guarding Lanky's Cage",
-            map_id=Maps.AztecLlamaTemple,
-            kong_lst=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
-            coords=[2207, 303, 1692],
-            xmin=2135,
-            xmax=2260,
-            zmin=1664,
-            zmax=1743,
-            region=Regions.LlamaTemple,
-            additional_logic=lambda l: l.HasInstrument(l.settings.lanky_freeing_kong),
-        ),
+        # Problematic - too easy to miss if you play the instrument, race to the cage, and free the kong before the respawn
+        # KasplatLocation(
+        #     name="Aztec Kasplat: Guarding Lanky's Cage",
+        #     map_id=Maps.AztecLlamaTemple,
+        #     kong_lst=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
+        #     coords=[2207, 303, 1692],
+        #     xmin=2135,
+        #     xmax=2260,
+        #     zmin=1664,
+        #     zmax=1743,
+        #     region=Regions.LlamaTemple,
+        #     additional_logic=lambda l: l.HasInstrument(l.settings.lanky_freeing_kong),
+        # ),
         KasplatLocation(
             name="Aztec Kasplat: Inside Tiny Temple by Mini Monkey Barrel",
             map_id=Maps.AztecTinyTemple,
@@ -614,7 +625,7 @@ KasplatLocationList = {
             xmax=1670,
             zmin=4100,
             zmax=4185,
-            region=Regions.LighthouseArea,
+            region=Regions.LighthousePlatform,
         ),
         # Problematic - blueprint may fall through floor depending on water cycle
         # KasplatLocation(
@@ -641,7 +652,7 @@ KasplatLocationList = {
             map_id=Maps.GloomyGalleon,
             kong_lst=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
             coords=[699, 1564, 4093],
-            region=Regions.LighthouseArea,
+            region=Regions.LighthouseSurface,
             vanilla=True,
         ),
         KasplatLocation(
@@ -658,7 +669,7 @@ KasplatLocationList = {
             map_id=Maps.GloomyGalleon,
             kong_lst=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
             coords=[2806, 1890, 2969],
-            region=Regions.GloomyGalleonStart,
+            region=Regions.GalleonPastVines,
             vanilla=True,
         ),
         KasplatLocation(
@@ -930,6 +941,7 @@ KasplatLocationList = {
             zmin=540,
             zmax=630,
             region=Regions.GiantMushroomArea,
+            additional_logic=lambda l: l.swim and (l.oranges or l.HasGun(Kongs.any)),
         ),
         KasplatLocation(
             name="Forest Kasplat: At the very top of the Giant Mushroom",
@@ -1311,6 +1323,7 @@ KasplatLocationList = {
             zmin=150,
             zmax=300,
             region=Regions.CreepyCastleMain,
+            additional_logic=lambda l: l.swim and (l.oranges or l.HasGun(Kongs.any)),
         ),
         KasplatLocation(
             name="Castle Kasplat: Near Cranky's Hut",
@@ -1618,6 +1631,7 @@ KasplatLocationList = {
             zmin=1091,
             zmax=1137,
             region=Regions.IslesMain,
+            additional_logic=lambda l: l.swim and (l.oranges or l.HasGun(Kongs.any)),
         ),
     ],
 }

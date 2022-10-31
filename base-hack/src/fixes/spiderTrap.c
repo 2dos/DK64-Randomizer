@@ -60,12 +60,32 @@ static const unsigned char bad_movement_states[] = {
 	0x88, // Exiting Portal
 };
 
+static const unsigned char banned_trap_maps[] = {
+	0x3C, // Spider Fight
+	0x35, // Japes: Crown
+    0x49, // Aztec: Crown
+    0x9B, // Factory: Crown
+    0x9C, // Galleon: Crown
+    0x9F, // Fungi: Crown
+    0xA0, // Caves: Crown
+    0xA1, // Castle: Crown
+    0xA2, // Helm: Crown
+    0x9D, // Isles: Lobby Crown
+    0x9E, // Isles: Snide Crown
+};
+
 void handleSpiderTrapCode(void) {
-    if (CurrentMap != 0x3C) { // Only have custom behaviour outside of Spider fight
+	int is_banned = 0;
+	for (int i = 0; i < sizeof(banned_trap_maps); i++) {
+		if (CurrentMap == banned_trap_maps[i]) {
+			is_banned = 1;
+		}
+	}
+    if (!is_banned) { // Only have custom behaviour outside of banned maps
         int rng = 0;
         if (CurrentActorPointer_0->control_state == 0x23) {
             rng = getRNGLower31();
-            if (979 < ((rng >> 0xF) % 1000)) { // Chance they are gonna goop you (1%)
+            if (949 < ((rng >> 0xF) % 1000)) { // Chance they are gonna goop you (1%)
                 if (CurrentActorPointer_0->grounded & 1) {
                     CurrentActorPointer_0->control_state = 0x28;
                     CurrentActorPointer_0->control_state_progress = 0;

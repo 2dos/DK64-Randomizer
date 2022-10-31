@@ -1,20 +1,13 @@
-"""Apply barrel changes."""
+"""Apply misc setup changes."""
 import math
 import random
-import struct
 
 import js
 from randomizer.Lists.MapsAndExits import Maps
 from randomizer.Lists.Patches import DirtPatchLocations
 from randomizer.Patching.Patcher import ROM
 from randomizer.Spoiler import Spoiler
-
-
-def float_to_hex(f):
-    """Convert float to hex."""
-    if f == 0:
-        return "0x00000000"
-    return hex(struct.unpack("<I", struct.pack("<f", f))[0])
+from randomizer.Patching.Lib import float_to_hex
 
 
 def pickRandomPositionCircle(center_x, center_z, min_radius, max_radius):
@@ -226,7 +219,7 @@ def randomize_setup(spoiler: Spoiler):
 
     if enabled:
         diddy_5di_pads = pickRandomPositionsMult(287.94, 312.119, 0, 140, 6, 40)
-        lanky_fungi_mush = pickRandomPositionsMult(274.9, 316.505, 40, 160, 6, 40)
+        lanky_fungi_mush = pickRandomPositionsMult(274.9, 316.505, 40, 160, 5, 40)
         chunky_5dc_pads = pickChunkyCabinPadPositions()
         random.shuffle(vase_puzzle_positions)
         vase_puzzle_rando_progress = 0
@@ -415,7 +408,7 @@ def randomize_setup(spoiler: Spoiler):
                             dirt_bytes.append(int(float_to_hex(patch.x), 16))
                             dirt_bytes.append(int(float_to_hex(patch.y), 16))
                             dirt_bytes.append(int(float_to_hex(patch.z), 16))
-                            dirt_bytes.append(int(float_to_hex(1), 16))
+                            dirt_bytes.append(int(float_to_hex(patch.scale), 16))
                             for x in range(8):
                                 dirt_bytes.append(0)
                             rot_type_hex = hex(patch.rotation) + "007B"

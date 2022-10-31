@@ -1,6 +1,5 @@
 """Apply cosmetic elements of Kong Rando."""
 import random
-from imp import source_from_cache
 
 import js
 from randomizer.Enums.Kongs import Kongs
