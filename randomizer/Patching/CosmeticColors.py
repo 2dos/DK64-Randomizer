@@ -167,6 +167,7 @@ def apply_cosmetic_colors(spoiler: Spoiler):
                     {"name": "krusha_skin", "image": 4971, "fill_type": "block"},
                     {"name": "krusha_indicator", "image": 4966, "fill_type": "kong"},
                 ]
+                process = True
         if process:
             base_obj = {"kong": kong["kong"], "zones": []}
             for palette in kong["palettes"]:
@@ -366,3 +367,77 @@ def overwrite_object_colors(spoiler: Spoiler):
                 balloon_im.paste(dk_single, balloon_single_frames[file - 5819], dk_single)
                 balloon_start = [5835, 5827, 5843, 5851, 5819]
                 writeColorImageToROM(balloon_im, 25, balloon_start[kong_index] + (file - 5819), 32, 64)
+
+
+def placeKrushaHead(slot):
+    """Replace a kong's face with the Krusha face."""
+    kong_face_textures = [
+        [0x27C, 0x27B],
+        [0x279, 0x27A],
+        [0x277, 0x278],
+        [0x276, 0x275],
+        [0x273, 0x274],
+    ]
+    unc_face_textures = [
+        [579, 586],
+        [580, 587],
+        [581, 588],
+        [582, 589],
+        [577, 578],
+    ]
+    ROM().seek(0x1FF6000)
+    left = []
+    right = []
+    img32 = []
+    img32_rgba32 = []
+    y32 = []
+    y32_rgba32 = []
+    for y in range(64):
+        x32 = []
+        x32_rgba32 = []
+        for x in range(64):
+            data_hi = int.from_bytes(ROM().readBytes(1), "big")
+            data_lo = int.from_bytes(ROM().readBytes(1), "big")
+            val = (data_hi << 8) | data_lo
+            val_r = ((val >> 11) & 0x1F) << 3
+            val_g = ((val >> 6) & 0x1F) << 3
+            val_b = ((val >> 1) & 0x1F) << 3
+            val_a = 0
+            if val & 1:
+                val_a = 255
+            data_rgba32 = [val_r, val_g, val_b, val_a]
+            if x < 32:
+                right.extend([data_hi, data_lo])
+            else:
+                left.extend([data_hi, data_lo])
+            if ((x % 2) + (y % 2)) == 0:
+                x32.extend([data_hi, data_lo])
+                x32_rgba32.extend(data_rgba32)
+        if len(x32) > 0 and len(x32_rgba32):
+            y32.append(x32)
+            y32_rgba32.append(x32_rgba32)
+    y32.reverse()
+    for y in y32:
+        img32.extend(y)
+    y32_rgba32.reverse()
+    for y in y32_rgba32:
+        img32_rgba32.extend(y)
+    for x in range(2):
+        img_data = [right, left][x]
+        texture_index = kong_face_textures[slot][x]
+        unc_index = unc_face_textures[slot][x]
+        texture_addr = js.pointer_addresses[25]["entries"][texture_index]["pointing_to"]
+        unc_addr = js.pointer_addresses[7]["entries"][unc_index]["pointing_to"]
+        data = gzip.compress(bytearray(img_data), compresslevel=9)
+        ROM().seek(texture_addr)
+        ROM().writeBytes(data)
+        ROM().seek(unc_addr)
+        ROM().writeBytes(bytearray(img_data))
+    rgba32_addr32 = js.pointer_addresses[14]["entries"][0x22 + slot]["pointing_to"]
+    rgba16_addr32 = js.pointer_addresses[14]["entries"][190 + slot]["pointing_to"]
+    data32 = gzip.compress(bytearray(img32), compresslevel=9)
+    data32_rgba32 = gzip.compress(bytearray(img32_rgba32), compresslevel=9)
+    ROM().seek(rgba32_addr32)
+    ROM().writeBytes(bytearray(data32_rgba32))
+    ROM().seek(rgba16_addr32)
+    ROM().writeBytes(bytearray(data32))

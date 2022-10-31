@@ -90,6 +90,17 @@
     </body>
     <script>
         var target_rom;
+        var source_rom;
+        document.getElementById("input-file-rom").addEventListener("change", function() {
+			var fr = new FileReader();
+			fr.onload = function() {
+				var data = fr.result;
+				setup_data = fr.result;
+			    source_rom = new MarcFile(new Uint8Array(data));
+			};
+			fr.readAsArrayBuffer(document.getElementById("input-file-rom").files[0]);
+        })
+        
         document.getElementById("rando_rom").addEventListener("change", function() {
 			var fr = new FileReader();
 			fr.onload = function() {
@@ -170,9 +181,34 @@
             return new Uint8Array(byteArray.reverse());
         };
 
+        applyRawBPS = function(patchu8) {
+            var romFile = new MarcFile(source_rom._u8array, _parseROM);
+            romFile.convert();
+            var romFile_internal = new MarcFile(romFile._u8array);
+            var patchFile_internal = new MarcFile(patchu8);
+            bps = parseBPSFile(patchFile_internal);
+            try {
+                patchedRom = bps.apply(romFile_internal, false);
+            } catch (evt) {
+                errorMessage = evt.message;
+                console.log(evt);
+            }
+        }
+
         function buildDKP() {
-            webWorkerCreate=new Worker("./static/js/rompatcher/worker_create.js");
+            patch_file_start = 0
+            base_patch_size = 0
             target_rom_copy = new Uint8Array(target_rom._u8array)
+            targ_data = target_rom_copy.slice(0x1FF4000,0x1FF4008)
+            for (let i = 0; i < 4; i++) {
+                patch_file_start <<= 8;
+                patch_file_start += targ_data[i];
+                base_patch_size <<= 8;
+                base_patch_size += targ_data[4 + i];
+            }
+            base_patch = new Uint8Array(target_rom_copy.slice(patch_file_start, patch_file_start + base_patch_size));
+            applyRawBPS(base_patch);
+            webWorkerCreate=new Worker("./static/js/rompatcher/worker_create.js");
             webWorkerCreate.postMessage(
                 {
                     sourceFileU8Array:patchedRom._u8array,
@@ -185,18 +221,6 @@
             );
             webWorkerCreate.onmessage = event => { // listen for events from the worker
                 var newPatchFile=new MarcFile(event.data.patchFileU8Array);
-                patch_file_start = 0
-                base_patch_size = 0
-                console.log(target_rom_copy)
-                targ_data = target_rom_copy.slice(0x1FF4000,0x1FF4008)
-                for (let i = 0; i < 4; i++) {
-                    patch_file_start <<= 8;
-                    patch_file_start += targ_data[i];
-                    base_patch_size <<= 8;
-                    base_patch_size += targ_data[4 + i];
-                }
-                console.log(base_patch_size)
-                base_patch = new Uint8Array(target_rom_copy.slice(patch_file_start, patch_file_start + base_patch_size));
                 patch_data_bytes = intToByteArray(base_patch_size);
                 const dkp_data = [...patch_data_bytes, ...base_patch, ...newPatchFile._u8array];
                 downloadBlob(new Uint8Array(dkp_data),"output.dkp","application/octet-stream")

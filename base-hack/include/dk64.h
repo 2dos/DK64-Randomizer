@@ -474,6 +474,8 @@ extern short ChargeDeceleration[7];
 extern char* KongTextNames[8];
 
 extern actor_behaviour_def ActorBehaviourTable[128];
+extern float LedgeHangY[7];
+extern float LedgeHangY_0[7];
 
 //hack data
 extern int TestVariable;

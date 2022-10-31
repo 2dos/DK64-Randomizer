@@ -429,6 +429,8 @@ void initHack(int source) {
 				RollingSpeeds[slot] = 175; // Increase Krusha slide speed to 175
 				KongTagNames[slot] = 6; // Change kong name in Tag Barrel
 				KongTextNames[slot] = KongTextNames[5];
+				LedgeHangY[slot] = LedgeHangY[5];
+				LedgeHangY_0[slot] = LedgeHangY_0[5];
 				switch (slot) {
 					case 0:
 						// DK
@@ -463,6 +465,8 @@ void initHack(int source) {
 						*(int*)(0x806E49F0) = 0; // NOP Animation calls
 						*(short*)(0x806CF5F0) = 0x5000; // Prevent blink special cases
 						*(int*)(0x806CF76C) = 0; // Prevent blink special cases
+						*(int*)(0x806832B8) = 0; // Prevent tag blinking
+						*(int*)(0x806C1050) = 0; // Prevent Cutscene Kong blinking
 						*(unsigned char*)(0x8075D19F) = 0xA0; // Fix Gun Firing
 						break;
 					case 2:
@@ -489,6 +493,8 @@ void initHack(int source) {
 						*(short*)(0x806F0ADE) = 0; // Remove gun from hands in Tag Barrel
 						*(int*)(0x806E47F8) = 0; // Prevent slide bounce
 						*(short*)(0x806CF784) = 0x5000; // Prevent blink special cases
+						*(short*)(0x806832C0) = 0x5000; // Prevent tag blinking
+						*(int*)(0x806C1058) = 0; // Prevent Cutscene Kong blinking
 						*(int*)(0x806F0AD0) = 0x24050001; // Fix Hand State
 						break;
 					case 4:

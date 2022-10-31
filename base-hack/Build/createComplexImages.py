@@ -288,6 +288,11 @@ side_im = side_im.resize((32, 16))
 side_im = side_im.rotate(90, PIL.Image.Resampling.NEAREST, expand=1)
 side_im.save(f"{hash_dir}modified_coin_side.png")
 
+krusha_im = Image.open(f"{getDir('assets/Non-Code/displays/')}krusha_head.png")
+krusha_im = krusha_im.resize((64, 64))
+krusha_im = krusha_im.transpose(Image.Transpose.FLIP_TOP_BOTTOM)
+krusha_im.save(f"{getDir('assets/Non-Code/displays/')}krusha_head64.png")
+
 rmve = ["01234.png", "56789.png", "boss_key.png", "WXYL.png", "specialchars.png", "red_qmark_0.png", "red_qmark_1.png", "headphones.png", "film.png", "melon.png"]
 for kong in kongs:
     for x in range(2):

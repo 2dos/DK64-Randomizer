@@ -6,3 +6,5 @@
 .definelabel CrankyMoves, 0x80033260
 .definelabel CandyMoves, 0x80033334
 .definelabel FunkyMoves, 0x80033408
+.definelabel LedgeHangY, 0x80753D70
+.definelabel LedgeHangY_0, 0x80753D8C

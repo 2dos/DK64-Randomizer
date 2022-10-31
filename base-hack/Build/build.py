@@ -250,6 +250,14 @@ file_dict = [
         "source_file": "potion_any_om2.bin",
         "do_not_delete_source": True,
     },
+    {
+        "name": "Krusha Head",
+        "start": 0x1FF6000,
+        "source_file": "assets/Non-Code/displays/krusha_head64.png",
+        "do_not_delete_source": True,
+        "texture_format": "rgba5551",
+        "do_not_compress": True,
+    },
 ]
 
 number_game_changes = [
@@ -303,6 +311,9 @@ for ammo_index, ammo in enumerate(ammo_names):
 
 for kong_index, kong in enumerate(kong_names):
     for x_i, x in enumerate(["rgba32", "rgba5551"]):
+        size = 32 * 32 * 2
+        if x_i == 0:
+            size = 32 * 32 * 4
         file_dict.append(
             {
                 "name": f"{kong} Face ({x})",
@@ -310,6 +321,7 @@ for kong_index, kong in enumerate(kong_names):
                 "file_index": [0x22 + kong_index, 190 + kong_index][x_i],
                 "source_file": f"assets/Non-Code/displays/{kong.lower()}_face.png",
                 "texture_format": x,
+                "target_compressed_size": size,
             }
         )
 
@@ -589,6 +601,17 @@ for x in kong_palettes:
     if kong_palettes[x][0][0] == 32 and kong_palettes[x][0][1] == 32 and kong_palettes[x][1] == "block":
         x_s = BLOCK_COLOR_SIZE
     file_dict.append({"name": f"Palette Expansion ({hex(x)})", "pointer_table_index": 25, "file_index": x, "source_file": f"palette_{x}.bin", "target_compressed_size": x_s})
+
+for tex in range(0x273, 0x27D):
+    file_dict.append(
+        {
+            "name": f"Head Expansion ({hex(tex)})",
+            "pointer_table_index": 25,
+            "file_index": tex,
+            "source_file": f"head_{tex}.bin",
+            "target_compressed_size": 32 * 64 * 2,
+        }
+    )
 
 colorblind_changes = [
     [4120, 4124, 32, 44],
