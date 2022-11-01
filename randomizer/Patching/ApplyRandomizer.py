@@ -422,7 +422,7 @@ def patching_response(responded_data):
     ROM().seek(sav + 0x127)
     ROM().write(key_bitfield)
 
-    if spoiler.settings.coin_door_open in ["need_both", "need_rw"]:
+    if spoiler.settings.coin_door_open in ["need_both", "need_rw"] or "coin" in spoiler.settings.item_rando_list_selected:
         ROM().seek(sav + 0x150)
         ROM().write(spoiler.settings.medal_requirement)
 
