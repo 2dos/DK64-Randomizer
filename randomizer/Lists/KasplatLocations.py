@@ -250,7 +250,7 @@ KasplatLocationList = {
             zmin=1525,
             zmax=1590,
             region=Regions.AngryAztecOasis,
-            additional_logic=lambda l: l.vines or (l.jetpack and l.diddy),
+            additional_logic=lambda l: l.vines or (l.jetpack and l.isdiddy),
         ),
         KasplatLocation(
             name="Aztec Kasplat: Near the giant boulder",
@@ -306,7 +306,7 @@ KasplatLocationList = {
             kong_lst=[Kongs.diddy],
             coords=[3169, 445, 647],
             region=Regions.AngryAztecOasis,
-            additional_logic=lambda l: l.jetpack,
+            additional_logic=lambda l: l.jetpack and l.isdiddy,
             vanilla=True,
         ),
         KasplatLocation(
@@ -371,7 +371,7 @@ KasplatLocationList = {
             kong_lst=[Kongs.chunky],
             coords=[936, 122, 2027],
             region=Regions.ChunkyTemple,
-            additional_logic=lambda l: l.pineapple,
+            additional_logic=lambda l: l.ischunky and l.pineapple,
             vanilla=True,
         ),
         KasplatLocation(
@@ -395,7 +395,7 @@ KasplatLocationList = {
             zmin=2130,
             zmax=2332,
             region=Regions.LlamaTemple,
-            additional_logic=lambda l: l.grape,
+            additional_logic=lambda l: l.grape and l.lanky,
         ),
         # Problematic - too easy to miss if you play the instrument, race to the cage, and free the kong before the respawn
         # KasplatLocation(
@@ -431,7 +431,7 @@ KasplatLocationList = {
             zmin=321,
             zmax=450,
             region=Regions.DonkeyTemple,
-            additional_logic=lambda l: l.isdonkey,
+            additional_logic=lambda l: l.coconut and l.isdonkey,
         ),
     ],
     Levels.FranticFactory: [
@@ -579,7 +579,7 @@ KasplatLocationList = {
             zmin=859,
             zmax=942,
             region=Regions.Testing,
-            additional_logic=lambda l: l.mini,
+            additional_logic=lambda l: l.mini and l.tiny,
         ),
         KasplatLocation(
             name="Factory Kasplat: Inside the Crusher Room",
@@ -602,7 +602,7 @@ KasplatLocationList = {
             zmin=1589,
             zmax=1610,
             region=Regions.UpperCore,
-            additional_logic=lambda l: l.twirl,
+            additional_logic=lambda l: l.twirl and l.tiny,
         ),
         KasplatLocation(
             name="Factory Kasplat: In Lanky's Piano Game",
@@ -614,7 +614,7 @@ KasplatLocationList = {
             zmin=487,
             zmax=563,
             region=Regions.RandD,
-            additional_logic=lambda l: l.trombone,
+            additional_logic=lambda l: l.trombone and l.lanky,
         ),
     ],
     Levels.GloomyGalleon: [
@@ -1279,7 +1279,7 @@ KasplatLocationList = {
             kong_lst=[Kongs.donkey],
             coords=[937, 400, 1424],
             region=Regions.CastleTree,
-            additional_logic=lambda l: l.coconut,
+            additional_logic=lambda l: l.coconut and l.isdonkey,
             vanilla=True,
         ),
         KasplatLocation(
@@ -1369,7 +1369,7 @@ KasplatLocationList = {
             zmin=1430,
             zmax=1568,
             region=Regions.MuseumBehindGlass,
-            additional_logic=lambda l: l.monkeyport,
+            additional_logic=lambda l: l.monkeyport and l.istiny,
         ),
         KasplatLocation(
             name="Castle Kasplat: In a Cage in the Dungeon",
@@ -1393,7 +1393,7 @@ KasplatLocationList = {
             zmin=2265,
             zmax=2406,
             region=Regions.Crypt,
-            additional_logic=lambda l: l.coconut,
+            additional_logic=lambda l: l.coconut and l.isdonkey,
         ),
         KasplatLocation(
             name="Castle Kasplat: In the Library", map_id=Maps.CastleLibrary, kong_lst=[Kongs.donkey], coords=[354, 191, 495], xmin=257, xmax=430, zmin=456, zmax=573, region=Regions.Library
@@ -1408,7 +1408,7 @@ KasplatLocationList = {
             zmin=1335,
             zmax=1359,
             region=Regions.CreepyCastleMain,
-            additional_logic=lambda l: l.jetpack,
+            additional_logic=lambda l: l.jetpack and l.diddy,
         ),
     ],
     Levels.DKIsles: [
@@ -1534,7 +1534,7 @@ KasplatLocationList = {
             zmin=673,
             zmax=747,
             region=Regions.CrystalCavesLobby,
-            additional_logic=lambda l: l.jetpack,
+            additional_logic=lambda l: l.jetpack and l.diddy,
         ),
         # Problematic - Can block you from exiting the loading zone. May be salvageable with coordinate tweaks.
         # KasplatLocation(
@@ -1621,7 +1621,7 @@ KasplatLocationList = {
             zmin=1697,
             zmax=1765,
             region=Regions.CabinIsle,
-            additional_logic=lambda l: Events.IslesDiddyBarrelSpawn in l.Events and l.jetpack,
+            additional_logic=lambda l: Events.IslesDiddyBarrelSpawn in l.Events and l.jetpack and l.isdiddy,
         ),
         KasplatLocation(
             name="Isles Kasplat: Beneath the Waterfall",
