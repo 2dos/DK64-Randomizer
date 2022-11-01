@@ -497,11 +497,6 @@ ColoredBananaGroupList = [
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.JapesBeyondCoconutGate2,
         locations=[
-            [1, 1.0, 1264, 230, 2522],
-            [1, 1.0, 1214, 230, 2524],
-            [1, 1.0, 1164, 230, 2526],
-            [1, 1.0, 1114, 230, 2528],
-            [1, 1.0, 1064, 230, 2530],
             [1, 1.0, 1264, 230, 2680],
             [1, 1.0, 1214, 230, 2682],
             [1, 1.0, 1164, 230, 2684],
@@ -1076,12 +1071,12 @@ ColoredBananaGroupList = [
     ColoredBananaGroup(
         group=62,
         map_id=Maps.JungleJapes,
-        name="On top of snide",
-        konglist=[Kongs.donkey, Kongs.diddy, Kongs.tiny, Kongs.chunky],
+        name="Next to Snide",
+        konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.JungleJapesMain,
         locations=[
-            [5, 1.0, 2162, 809, 2544],
-            [5, 1.0, 2116, 807, 2582],
+            [5, 1.0, 2071, 690, 2565],
+            [5, 1.0, 2260, 690, 2523],
         ],
     ),
     ColoredBananaGroup(
