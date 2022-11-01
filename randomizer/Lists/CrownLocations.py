@@ -539,7 +539,7 @@ CrownLocations = {
             z=464,
             scale=0.4,
             region=Regions.DonkeyTemple,
-            logic=lambda l: l.coconut and l.donkey,
+            logic=lambda l: l.coconut and l.isdonkey,
         ),
         CrownLocation(
             map=Maps.AztecDiddy5DTemple,
@@ -549,7 +549,7 @@ CrownLocations = {
             z=493,
             scale=0.4,
             region=Regions.DiddyTemple,
-            logic=lambda l: l.peanut and l.diddy,
+            logic=lambda l: l.peanut and l.isdiddy,
         ),
         CrownLocation(
             map=Maps.AztecLanky5DTemple,
@@ -559,7 +559,7 @@ CrownLocations = {
             z=916,
             scale=0.3,
             region=Regions.LankyTemple,
-            logic=lambda l: l.grape and l.lanky,
+            logic=lambda l: l.grape and l.islanky,
         ),
         CrownLocation(
             map=Maps.AztecLanky5DTemple,
@@ -569,7 +569,7 @@ CrownLocations = {
             z=658,
             scale=0.45,
             region=Regions.LankyTemple,
-            logic=lambda l: l.grape and l.lanky,
+            logic=lambda l: l.grape and l.islanky,
         ),
         CrownLocation(
             map=Maps.AztecTiny5DTemple,
@@ -579,7 +579,7 @@ CrownLocations = {
             z=1420,
             scale=0.3,
             region=Regions.TinyTemple,
-            logic=lambda l: l.feather and l.tiny,
+            logic=lambda l: l.feather and l.istiny,
         ),
         CrownLocation(
             map=Maps.AztecChunky5DTemple,
@@ -589,7 +589,7 @@ CrownLocations = {
             z=321,
             scale=0.45,
             region=Regions.ChunkyTemple,
-            logic=lambda l: l.pineapple and l.chunky,
+            logic=lambda l: l.pineapple and l.ischunky,
         ),
         CrownLocation(
             map=Maps.AztecChunky5DTemple,
@@ -599,7 +599,7 @@ CrownLocations = {
             z=678,
             scale=0.45,
             region=Regions.ChunkyTemple,
-            logic=lambda l: l.pineapple and l.chunky,
+            logic=lambda l: l.pineapple and l.ischunky,
         ),
         CrownLocation(
             map=Maps.AztecLlamaTemple,
