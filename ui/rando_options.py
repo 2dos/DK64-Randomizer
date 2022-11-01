@@ -70,7 +70,7 @@ def max_randomized_medals(event):
 
 
 @bind("focusout", "medal_cb_req")
-def max_randomized_medals(event):
+def max_randomized_medal_cb_req(event):
     """Validate cb medal input on loss of focus."""
     medal_cb_req = js.document.getElementById("medal_cb_req")
     if not medal_cb_req.value:
@@ -438,6 +438,10 @@ def disable_coupled_camera_shockwave(evt):
     disabled = False
     selector = document.getElementById("item_rando_list_selected").options
     shockwave = document.getElementById("shockwave_status_shuffled")
+    door = document.getElementById("coin_door_open")
+    random = document.getElementById("random_medal_requirement")
+    medal = document.getElementById("medal_requirement")
+    coin_shuffled = False
     for option in selector:
         if option.value == "shop" and option.selected:
             if shockwave.selected is True:
@@ -447,6 +451,15 @@ def disable_coupled_camera_shockwave(evt):
         else:
             if not disabled:
                 shockwave.removeAttribute("disabled")
+        if option.value == "coin" and option.selected:
+            coin_shuffled = True
+    if coin_shuffled:
+        medal.removeAttribute("disabled")
+        random.removeAttribute("disabled")
+    elif door.value == "need_zero" or door.value == "need_nin":
+        random.setAttribute("disabled", "disabled")
+        random.checked = False
+        medal.setAttribute("disabled", "disabled")
 
 
 @bind("click", "apply_preset")
@@ -534,13 +547,19 @@ def disable_rw(evt):
     door = document.getElementById("coin_door_open")
     random = document.getElementById("random_medal_requirement")
     medal = document.getElementById("medal_requirement")
+    selector = document.getElementById("item_rando_list_selected").options
+    coin_shuffled = False
+    for option in selector:
+        if option.value == "coin" and option.selected:
+            coin_shuffled = True
     if door.value == "need_zero" or door.value == "need_nin":
-        try:
-            random.setAttribute("disabled", "disabled")
-            random.checked = False
-            medal.setAttribute("disabled", "disabled")
-        except Exception:
-            pass
+        if not coin_shuffled:
+            try:
+                random.setAttribute("disabled", "disabled")
+                random.checked = False
+                medal.setAttribute("disabled", "disabled")
+            except Exception:
+                pass
     else:
         try:
             random.removeAttribute("disabled")
