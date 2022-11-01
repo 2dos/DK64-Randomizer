@@ -2742,7 +2742,7 @@ CrownLocations = {
             z=1261,
             scale=0.5,
             region=Regions.HideoutHelmStart,
-            logic=lambda l: l.lanky and l.handstand 
+            logic=lambda l: l.lanky and l.handstand,
         ),
         CrownLocation(
             map=Maps.HideoutHelm,
