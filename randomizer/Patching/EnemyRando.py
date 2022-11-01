@@ -178,16 +178,18 @@ def getBalancedCrownEnemyRando(spoiler: Spoiler, crown_setting, damage_ohko_sett
                     count_disruptive = EnemyMetaData[new_enemy].disruptive + count_disruptive
                     enemy_swaps_library[map_id].append(new_enemy)
         elif crown_setting == "hard":
-            get_out_spawned_this_hard_map = False
             for map_id in enemy_swaps_library:
                 number_of_enemies = 3
                 if map_id == Maps.GalleonCrown or map_id == Maps.LobbyCrown or map_id == Maps.HelmCrown:
                     number_of_enemies = 4
+                get_out_spawned_this_hard_map = False
                 for count in range(number_of_enemies):
                     if get_out_spawned_this_hard_map:
                         enemy_to_place = random.choice([possible_enemy for possible_enemy in legacy_hard_mode if possible_enemy != Enemies.GetOut])
                     else:
                         enemy_to_place = random.choice(legacy_hard_mode)
+                        if enemy_to_place == Enemies.GetOut:
+                            get_out_spawned_this_hard_map = True
                     enemy_swaps_library[map_id].append(enemy_to_place)
         # one last shuffle, to make sure any enemy can spawn in any spot
         for map_id in enemy_swaps_library:
