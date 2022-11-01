@@ -149,7 +149,6 @@ def getBalancedCrownEnemyRando(spoiler: Spoiler, crown_setting, damage_ohko_sett
                 count_disruptive = 0
                 count_kasplats = 0
                 number_of_enemies = 3
-                get_out_spawned_this_map = False
                 if map_id == Maps.GalleonCrown or map_id == Maps.LobbyCrown or map_id == Maps.HelmCrown:
                     number_of_enemies = 4
                 for count in range(number_of_enemies):
@@ -173,10 +172,6 @@ def getBalancedCrownEnemyRando(spoiler: Spoiler, crown_setting, damage_ohko_sett
                     elif count_kasplats > 3 or (count_kasplats > 2 and count_disruptive > 1) or (count_kasplats == 2 and count_disruptive == 2):
                         print("This is a mistake in the crown enemy algorithm. Report this to the devs.")
                         new_enemy = Enemies.BeaverGold
-                    # Add in a chance for Get Out to appear in crown battles.
-                    if damage_ohko_setting is False and count_disruptive < 2 and get_out_spawned_this_map is False and random.randint(0, 1000) > 994:
-                        new_enemy = Enemies.GetOut
-                        get_out_spawned_this_map = True
                     # We picked a new enemy, let's update our information and add it to the list
                     if EnemyMetaData[new_enemy].kasplat is True:
                         count_kasplats = count_kasplats + 1
