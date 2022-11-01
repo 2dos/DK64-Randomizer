@@ -2188,7 +2188,7 @@ BalloonList = [
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.CreepyCastleMain,
         points=[
-            [586, 330, 340],
+            [586, 330, 325],
             [404, 330, 340],
         ],
     ),
