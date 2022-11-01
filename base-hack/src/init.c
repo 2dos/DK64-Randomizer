@@ -773,8 +773,9 @@ void initHack(int source) {
 			if (Rando.hard_enemies) {
 				*(int*)(0x806ADDC0) = 0x0C000000 | (((int)&handleSpiderTrapCode & 0xFFFFFF) >> 2);
 				*(int*)(0x806CBD78) = 0x18400005; // BLEZ $v0, 0x5 - Decrease in health occurs if trap bubble active
-				*(short*)(0x806B12DA) = 0x381; // Kasplat Shockwave Chance
-				*(short*)(0x806B12FE) = 0x38B; // Kasplat Shockwave Chance
+				*(short*)(0x806B12DA) = 0x3A9; // Kasplat Shockwave Chance
+				*(short*)(0x806B12FE) = 0x3B3; // Kasplat Shockwave Chance
+				*(short*)(0x8074D4D0) = 9; // Increase Guard Health
 			}
 			// Oscillation Effects
 			if (Rando.remove_oscillation_effects) {
