@@ -1014,3 +1014,93 @@ void getItem(int object_type) {
             break;
     }
 }
+
+#define STORED_COUNT 18
+static int stored_maps[STORED_COUNT] = {};
+static unsigned char stored_kasplat[STORED_COUNT] = {};
+
+int setupHook(int map) {
+    int index = getParentIndex(map);
+    int place_new = 1;
+    // Wipe array of items not in parent chain
+    for (int i = 0; i < STORED_COUNT; i++) {
+        if (stored_maps[i] != -1) {
+            if (getParentIndex(stored_maps[i]) == -1) {
+                stored_maps[i] = -1;
+                stored_kasplat[i] = -1;
+            }
+        }
+    }
+    // Store Old Bitfield
+    for (int i = 0; i < STORED_COUNT; i++) {
+        if (stored_maps[i] == PreviousMap) {
+            place_new = 0;
+            stored_kasplat[i] = KasplatSpawnBitfield;
+        }
+    }
+    if (place_new) {
+        for (int i = 0; i < STORED_COUNT; i++) {
+            if (place_new) {
+                if (stored_maps[i] == -1) {
+                    stored_kasplat[i] = KasplatSpawnBitfield;
+                    stored_maps[i] = PreviousMap;
+                }
+            }
+        }
+    }
+    // Place New
+    int in_chain = 0;
+    for (int i = 0; i < STORED_COUNT; i++) {
+        if (stored_maps[i] == map) {
+            in_chain = 1;
+            if (index == -1) {
+                // Setup refreshed
+                stored_kasplat[i] = 0;
+            }
+            KasplatSpawnBitfield = stored_kasplat[i];
+        }
+    }
+    if (!in_chain) {
+        KasplatSpawnBitfield = 0;
+    }
+    return index;
+}
+
+static const unsigned char actor_drops[] = {45, 78, 75, 77, 79, 76, 72, 86, 151, 152, 157, 158, 159, 160, 161, 162, 153, 154};
+
+void CheckKasplatSpawnBitfield(void) {
+    if (ActorSpawnerPointer) {
+        actorSpawnerData* referenced_spawner = ActorSpawnerPointer;
+        while (1 == 1) {
+            if (referenced_spawner) {
+                int actor_type = referenced_spawner->actor_type + 0x10;
+                int is_drop = 0;
+                int i = 0;
+                while (i < sizeof(actor_drops)) {
+                    if (actor_type == actor_drops[i]) {
+                        is_drop = 1;
+                        break;
+                    }
+                    i++;
+                }
+                if (is_drop) {
+                    int flag = referenced_spawner->flag;
+                    if ((flag >= FLAG_BP_JAPES_DK_HAS) && (flag < (FLAG_BP_JAPES_DK_HAS + 40))) {
+                        // Is Kasplat Drop
+                        int kong = (flag - FLAG_BP_JAPES_DK_HAS) % 5;
+                        int shift = 1 << kong;
+                        KasplatSpawnBitfield &= (0xFF - shift);
+                    }
+                }
+                // Get Next Spawner
+                if (referenced_spawner->next_spawner) {
+                    referenced_spawner = referenced_spawner->next_spawner;
+                } else {
+                    return;
+                }
+            } else {
+                return;
+            }
+        }
+    }
+}

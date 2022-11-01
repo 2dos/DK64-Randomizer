@@ -464,7 +464,9 @@ typedef struct actorSpawnerData {
 	/* 0x000 */ unsigned short actor_type; // Offset by 0x10
 	/* 0x002 */ char unk_02[2];
 	/* 0x004 */ floatPos positions;
-	/* 0x010 */ char unk_10[0x40-0x10];
+	/* 0x010 */ char unk_10[0x2C-0x10];
+	/* 0x02C */ float flag; // What?????
+	/* 0x030 */ char unk_30[0x40-0x30];
 	/* 0x040 */ float barrel_resolved;
 	/* 0x044 */ void* tied_actor;
 	/* 0x048 */ char unk_48[0x54-0x48];

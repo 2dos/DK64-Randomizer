@@ -52,3 +52,5 @@
 .definelabel getTextPointer, 0x8070E750
 .definelabel calculateScreenPosition, 0x80626F8C
 .definelabel getScreenPosition, 0x80626F8C
+.definelabel loadSetupNew, 0x80631D8C
+.definelabel getParentIndex, 0x80600080

@@ -67,7 +67,57 @@ void moveTransplant(void) {
 	move_block* move_data = getMoveBlock();
 	if (move_data) {
 		for (int i = 0; i < LEVEL_COUNT; i++) {
+			int stored_slam = slam_flag;
+			int stored_belt = belt_flag;
+			int stored_ins = ins_flag;
+			int cranky_type = (move_data->cranky_moves[0][i].move_master_data >> 5) & 7;
+			int funky_type = (move_data->funky_moves[0][i].move_master_data >> 5) & 7;
+			int candy_type = (move_data->candy_moves[0][i].move_master_data >> 5) & 7;
+			int cranky_shared = 1;
+			int funky_shared = 1;
+			int candy_shared = 1;
+			if ((cranky_type > 2) && (cranky_type < 5)) {
+				cranky_shared = cranky_type - 1;
+			} else if (cranky_type != 1) {
+				cranky_shared = 0;
+			}
+			if ((funky_type > 2) && (funky_type < 5)) {
+				funky_shared = funky_type - 1;
+			} else if (funky_type != 1) {
+				funky_shared = 0;
+			}
+			if ((candy_type > 2) && (candy_type < 5)) {
+				candy_shared = candy_type - 1;
+			} else if (candy_type != 1) {
+				candy_shared = 0;
+			}
+			int cranky_targ_data = move_data->cranky_moves[0][i].move_master_data & 0xF8;
+			int cranky_targ_flag = move_data->cranky_moves[0][i].flag;
+			int funky_targ_data = move_data->funky_moves[0][i].move_master_data & 0xF8;
+			int funky_targ_flag = move_data->funky_moves[0][i].flag;
+			int candy_targ_data = move_data->candy_moves[0][i].move_master_data & 0xF8;
+			int candy_targ_flag = move_data->candy_moves[0][i].flag;
+			for (int j = 1; j < 5; j++) {
+				if (((move_data->cranky_moves[j][i].move_master_data & 0xF8) != cranky_targ_data) || (move_data->cranky_moves[j][i].flag != cranky_targ_flag)) {
+					cranky_shared = 0;
+				}
+				if (((move_data->funky_moves[j][i].move_master_data & 0xF8) != funky_targ_data) || (move_data->funky_moves[j][i].flag != funky_targ_flag)) {
+					funky_shared = 0;
+				}
+				if (((move_data->candy_moves[j][i].move_master_data & 0xF8) != candy_targ_data) || (move_data->candy_moves[j][i].flag != candy_targ_flag)) {
+					candy_shared = 0;
+				}
+			}
 			for (int j = 0; j < 5; j++) {
+				if ((cranky_shared == 1) || (funky_shared == 1) || (candy_shared == 1)) {
+					slam_flag = stored_slam;
+				}
+				if ((cranky_shared == 2) || (funky_shared == 2) || (candy_shared == 2)) {
+					belt_flag = stored_belt;
+				}
+				if ((cranky_shared == 3) || (funky_shared == 3) || (candy_shared == 3)) {
+					ins_flag = stored_ins;
+				}
 				CrankyMoves_New[j][i].purchase_type = getMoveType(move_data->cranky_moves[j][i].move_master_data);
 				CrankyMoves_New[j][i].move_kong = getMoveKong(move_data->cranky_moves[j][i].move_master_data);
 				CrankyMoves_New[j][i].purchase_value = getMoveIndex((move_rom_item *)&move_data->cranky_moves[j][i]);
