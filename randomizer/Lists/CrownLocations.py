@@ -2304,6 +2304,7 @@ CrownLocations = {
             z=280.06,
             scale=0.43,
             region=Regions.IslesSnideRoom,
+            logic=lambda l: l.chunky and l.barrels,
             is_vanilla=True,
             default_index=1,
         ),

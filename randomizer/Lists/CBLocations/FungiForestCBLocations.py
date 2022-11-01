@@ -227,7 +227,7 @@ ColoredBananaGroupList = [
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.FungiForestStart,
         locations=[
-            [5, 1.0, 2047, 500, 2108],
+            [5, 1.0, 2047, 450, 2108],
         ],
     ),
     ColoredBananaGroup(
