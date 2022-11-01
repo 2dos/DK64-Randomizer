@@ -33,7 +33,6 @@ void cFuncLoop(void) {
 	alter_boss_key_flags();
 	if (ObjectModel2Timer <= 2) {
 		setFlag(0x78, 0, 2); // Clear K. Lumsy temp flag
-		KasplatSpawnBitfield = 0;
 		if (!Rando.tns_portal_rando_on) {
 			shiftBrokenJapesPortal();
 		}
@@ -41,6 +40,13 @@ void cFuncLoop(void) {
 		priceTransplant();
 		if (CurrentMap == 0x50) {
 			good_eeprom = EEPROMType == 2;
+		}
+	}
+	if (Rando.item_rando) {
+		if (TransitionSpeed > 0) {
+			if (LZFadeoutProgress == 30.0f) {
+				CheckKasplatSpawnBitfield();
+			}
 		}
 	}
 	// displayNumberOnTns();

@@ -216,6 +216,8 @@ extern void KLumsyText(void);
 extern void PotionCode(void);
 extern int getMoveProgressiveFlagType(int flag);
 extern void getItem(int object_type);
+extern int setupHook(int map);
+extern void CheckKasplatSpawnBitfield(void);
 
 extern unsigned int cs_skip_db[432];
 extern bonus_barrel_info bonus_data[95];

@@ -681,6 +681,7 @@ void initHack(int source) {
 				*(int*)(0x806A6CC0) = 0; // Prevent BP Despawn
 				*(int*)(0x806A6CDC) = 0; // Prevent BP Despawn
 				*(int*)(0x806A741C) = 0; // Prevent Key Twinkly Sound
+				*(int*)(0x80688714) = 0x0C000000 | (((int)&setupHook & 0xFFFFFF) >> 2); // Setup Load Hook
 				// BP Table
 				int bp_size = 0x28;
 				unsigned char* bp_write = dk_malloc(bp_size);

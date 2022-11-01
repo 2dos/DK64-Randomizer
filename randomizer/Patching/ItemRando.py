@@ -146,6 +146,30 @@ def place_randomized_items(spoiler: Spoiler):
                     elif item.location == Locations.RarewareCoin and item.new_item == Types.Banana:
                         ROM().seek(sav + 0x111)
                         ROM().write(1)
+                    elif item.location in (Locations.ForestDonkeyBaboonBlast, Locations.CavesDonkeyBaboonBlast):
+                        # Autocomplete bonus barrel fix
+                        if item.new_item is None:
+                            actor_index = 153
+                        elif item.new_item == Types.Blueprint:
+                            actor_index = actor_indexes[Types.Blueprint][item.new_kong]
+                        elif item.new_item == Types.Coin:
+                            actor_index = actor_indexes[Types.Coin][0]
+                            if item.new_flag == 379:  # Is RW Coin
+                                actor_index = actor_indexes[Types.Coin][1]
+                        elif item.new_item in (Types.Shop, Types.Shockwave, Types.TrainingBarrel):
+                            if (item.new_flag & 0x8000) == 0:
+                                slot = 5
+                            else:
+                                slot = (item.new_flag >> 12) & 7
+                                if item.shared or slot > 5:
+                                    slot = 5
+                            actor_index = actor_indexes[Types.Shop][slot]
+                        else:
+                            actor_index = actor_indexes[item.new_item]
+                        ROM().seek(0x1FF1200 + (4 * bonus_table_offset))
+                        ROM().writeMultipleBytes(item.old_flag, 2)
+                        ROM().writeMultipleBytes(actor_index, 1)
+                        bonus_table_offset += 1
                 else:
                     if item.old_item != Types.Medal:
                         if item.new_item is None:

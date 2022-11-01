@@ -259,6 +259,8 @@ extern void internalKasplatCode(int has_bp);
 
 extern void spriteActorGenericCode(float unk0);
 extern void assignGIFToActor(void* paad, void* sprite, int scale_f);
+extern int loadSetupNew(int map);
+extern int getParentIndex(int map);
 
 //vanilla data
 extern float TransitionSpeed;
