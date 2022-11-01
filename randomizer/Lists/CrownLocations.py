@@ -195,12 +195,13 @@ CrownLocations = {
         ),
         CrownLocation(
             map=Maps.JungleJapes,
-            name="Jungle Japes: Near T&S Alcove",
+            name="Jungle Japes: In T&S Alcove",
             x=770,
             y=538,
             z=2332,
             scale=0.35,
             region=Regions.JungleJapesMain,
+            logic=lambda l: l.vines,
         ),
         CrownLocation(
             map=Maps.JungleJapes,
@@ -538,7 +539,7 @@ CrownLocations = {
             z=464,
             scale=0.4,
             region=Regions.DonkeyTemple,
-            logic=lambda l: l.coconut and l.diddy,
+            logic=lambda l: l.coconut and l.donkey,
         ),
         CrownLocation(
             map=Maps.AztecDiddy5DTemple,
@@ -1107,6 +1108,7 @@ CrownLocations = {
             z=1307.16,
             scale=0.49,
             region=Regions.MushroomUpperExterior,
+            logic=lambda l: Events.Night in l.Events,
             is_vanilla=True,
         ),
         CrownLocation(
@@ -1654,7 +1656,7 @@ CrownLocations = {
             z=1002,
             scale=0.2,
             region=Regions.CrystalCavesMain,
-            logic=lambda l: l.balloon and l.islanky,
+            logic=lambda l: (l.balloon and l.islanky) or (l.jetpack and l.isdiddy),
         ),
         CrownLocation(
             map=Maps.CrystalCaves,
@@ -2218,7 +2220,7 @@ CrownLocations = {
             y=200,
             z=852,
             scale=0.4,
-            region=Regions.Mausoleum,
+            region=Regions.UpperCave,
         ),
         CrownLocation(
             map=Maps.CastleUpperCave,
@@ -2426,7 +2428,7 @@ CrownLocations = {
             y=550,
             z=3325,
             scale=0.5,
-            region=Regions.CrocodileIsleBeyondLift,
+            region=Regions.IslesMain,
         ),
         CrownLocation(
             map=Maps.Isles,
@@ -2720,6 +2722,7 @@ CrownLocations = {
             z=2545,
             scale=0.5,
             region=Regions.HideoutHelmStart,
+            logic=lambda l: l.lanky and l.handstand and l.chunky and l.pineapple and l.vines,
         ),
         CrownLocation(
             map=Maps.HideoutHelm,
@@ -2729,6 +2732,7 @@ CrownLocations = {
             z=2243,
             scale=0.5,
             region=Regions.HideoutHelmStart,
+            logic=lambda l: l.lanky and l.handstand and l.chunky and l.pineapple and l.vines,
         ),
         CrownLocation(
             map=Maps.HideoutHelm,
@@ -2738,6 +2742,7 @@ CrownLocations = {
             z=1261,
             scale=0.5,
             region=Regions.HideoutHelmStart,
+            logic=lambda l: l.lanky and l.handstand 
         ),
         CrownLocation(
             map=Maps.HideoutHelm,
