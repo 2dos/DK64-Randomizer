@@ -736,7 +736,7 @@ DirtPatchLocations = [
         rotation=3492,
         group=1,
         logicregion=Regions.AngryAztecOasis,
-        logic=lambda l: l.vines and l.shockwave,
+        logic=lambda l: l.shockwave,
     ),
     DirtPatchData(
         name="Angry Aztec: Next to Llama Temple",

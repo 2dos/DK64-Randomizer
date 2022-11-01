@@ -250,7 +250,7 @@ KasplatLocationList = {
             zmin=1525,
             zmax=1590,
             region=Regions.AngryAztecOasis,
-            additional_logic=lambda l: l.vines or l.jetpack,
+            additional_logic=lambda l: l.vines or (l.jetpack and l.isdiddy),
         ),
         KasplatLocation(
             name="Aztec Kasplat: Near the giant boulder",
