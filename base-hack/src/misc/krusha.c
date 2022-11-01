@@ -26,12 +26,24 @@ void adjustAnimationTables(void) {
                     // Punch - During Lanky Phase and Dogadon 2
                     excl_extra = 1;
                 }
+            } else if ((i == 0x30) && (slot == 2)) {
+                excl_extra = 1;
             }
             if (i < 0x6E) {
                 if (!excl_extra) {
                     AnimationTable2[(7 * i) + slot] = AnimationTable2[(7 * i) + 5];
                 }
             }
+            /*
+                Fixes a collision glitch with actors underwater if set to 2.
+                However, this causes the animation to be pretty bugged out.
+                if (slot == 2) {
+                    for (int i = 0; i < 3; i++) {
+                        int anim_targ = 0x30 + i;
+                        AnimationTable2[(7 * anim_targ) + slot] = AnimationTable2[(7 * *(int*)(0x807FF700)) + 5];
+                    }
+                }
+            */
             int excl_base = 0;
             if (i == 0x5A) {
                 // Instrument

@@ -363,6 +363,11 @@ def patching_response(responded_data):
         ROM().seek(sav + 0x12F)
         ROM().write(1)
 
+    # T&S Portal Rando
+    if spoiler.settings.tns_location_rando:
+        ROM().seek(sav + 0x10E)
+        ROM().write(1)
+
     # Krusha Slot
     kong_names = ["dk", "diddy", "lanky", "tiny", "chunky"]
     ROM().seek(sav + 0x11C)

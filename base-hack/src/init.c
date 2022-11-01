@@ -743,7 +743,7 @@ void initHack(int source) {
 						0x1A, 3,
 						0x1A, 4,
 						0x1A, 5,
-						0x26, 15,
+						0x26, 14,
 						0x40, 1,
 						0xA8, 0,
 					};
