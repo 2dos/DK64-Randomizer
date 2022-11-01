@@ -2267,7 +2267,7 @@ CrownLocations = {
             z=1525,
             scale=0.4,
             region=Regions.MuseumBehindGlass,
-            logic=lambda l: l.monkeyport,
+            logic=lambda l: l.monkeyport and l.tiny,
         ),
         CrownLocation(
             map=Maps.CastleMuseum,

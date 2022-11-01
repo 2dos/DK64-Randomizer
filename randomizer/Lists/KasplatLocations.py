@@ -150,7 +150,7 @@ KasplatLocationList = {
             zmin=1650,
             zmax=1800,
             region=Regions.JungleJapesMain,
-            additional_logic=lambda l: l.swim and (l.oranges or l.HasGun(Kongs.any)),
+            additional_logic=lambda l: l.swim and (l.oranges or l.HasGun(Kongs.any) or l.HasInstrument(Kongs.any)),
         ),
         KasplatLocation(
             name="Japes Kasplat: In the water near Rambi Wall",
@@ -162,7 +162,7 @@ KasplatLocationList = {
             zmin=2700,
             zmax=2900,
             region=Regions.BeyondRambiGate,
-            additional_logic=lambda l: l.swim and (l.oranges or l.HasGun(Kongs.any)),
+            additional_logic=lambda l: l.swim and (l.oranges or l.HasGun(Kongs.any) or l.HasInstrument(Kongs.any)),
         ),
         KasplatLocation(
             name="Japes Kasplat: Near Cranky's",
@@ -250,6 +250,7 @@ KasplatLocationList = {
             zmin=1525,
             zmax=1590,
             region=Regions.AngryAztecOasis,
+            additional_logic=lambda l: l.vines or (l.jetpack and l.isdiddy),
         ),
         KasplatLocation(
             name="Aztec Kasplat: Near the giant boulder",
@@ -305,7 +306,7 @@ KasplatLocationList = {
             kong_lst=[Kongs.diddy],
             coords=[3169, 445, 647],
             region=Regions.AngryAztecOasis,
-            additional_logic=lambda l: l.jetpack,
+            additional_logic=lambda l: l.jetpack and l.isdiddy,
             vanilla=True,
         ),
         KasplatLocation(
@@ -394,7 +395,7 @@ KasplatLocationList = {
             zmin=2130,
             zmax=2332,
             region=Regions.LlamaTemple,
-            additional_logic=lambda l: l.grape,
+            additional_logic=lambda l: l.grape and l.lanky,
         ),
         # Problematic - too easy to miss if you play the instrument, race to the cage, and free the kong before the respawn
         # KasplatLocation(
@@ -422,7 +423,7 @@ KasplatLocationList = {
         ),
         KasplatLocation(
             name="Aztec Kasplat: In Donkey 5-Door Temple",
-            map_id=Maps.AztecTinyTemple,
+            map_id=Maps.AztecDonkey5DTemple,
             kong_lst=[Kongs.donkey],
             coords=[99, 21, 390],
             xmin=68,
@@ -430,6 +431,7 @@ KasplatLocationList = {
             zmin=321,
             zmax=450,
             region=Regions.DonkeyTemple,
+            additional_logic=lambda l: l.coconut and l.isdonkey,
         ),
     ],
     Levels.FranticFactory: [
@@ -577,7 +579,7 @@ KasplatLocationList = {
             zmin=859,
             zmax=942,
             region=Regions.Testing,
-            additional_logic=lambda l: l.mini,
+            additional_logic=lambda l: l.mini and l.tiny,
         ),
         KasplatLocation(
             name="Factory Kasplat: Inside the Crusher Room",
@@ -600,7 +602,7 @@ KasplatLocationList = {
             zmin=1589,
             zmax=1610,
             region=Regions.UpperCore,
-            additional_logic=lambda l: l.twirl,
+            additional_logic=lambda l: l.twirl and l.tiny,
         ),
         KasplatLocation(
             name="Factory Kasplat: In Lanky's Piano Game",
@@ -612,7 +614,7 @@ KasplatLocationList = {
             zmin=487,
             zmax=563,
             region=Regions.RandD,
-            additional_logic=lambda l: l.trombone,
+            additional_logic=lambda l: l.trombone and l.lanky,
         ),
     ],
     Levels.GloomyGalleon: [
@@ -941,7 +943,7 @@ KasplatLocationList = {
             zmin=540,
             zmax=630,
             region=Regions.GiantMushroomArea,
-            additional_logic=lambda l: l.swim and (l.oranges or l.HasGun(Kongs.any)),
+            additional_logic=lambda l: l.swim and (l.oranges or l.HasGun(Kongs.any) or l.HasInstrument(Kongs.any)),
         ),
         KasplatLocation(
             name="Forest Kasplat: At the very top of the Giant Mushroom",
@@ -953,7 +955,7 @@ KasplatLocationList = {
             zmin=974,
             zmax=1063,
             region=Regions.MushroomUpperExterior,
-            additional_logic=lambda l: l.jetpack or l.handstand,
+            additional_logic=lambda l: (l.diddy and l.jetpack) or (l.lanky and l.handstand),
         ),
         KasplatLocation(
             name="Forest Kasplat: On the Mill Roof",
@@ -1033,7 +1035,6 @@ KasplatLocationList = {
             zmin=500,
             zmax=640,
             region=Regions.CavesSnideArea,
-            additional_logic=lambda l: True,
         ),
         KasplatLocation(
             name="Caves Kasplat: In the room with Tiny's Bonus Barrel",
@@ -1323,7 +1324,7 @@ KasplatLocationList = {
             zmin=150,
             zmax=300,
             region=Regions.CreepyCastleMain,
-            additional_logic=lambda l: l.swim and (l.oranges or l.HasGun(Kongs.any)),
+            additional_logic=lambda l: l.swim and (l.oranges or l.HasGun(Kongs.any) or l.HasInstrument(Kongs.any)),
         ),
         KasplatLocation(
             name="Castle Kasplat: Near Cranky's Hut",
@@ -1368,7 +1369,7 @@ KasplatLocationList = {
             zmin=1430,
             zmax=1568,
             region=Regions.MuseumBehindGlass,
-            additional_logic=lambda l: l.monkeyport,
+            additional_logic=lambda l: l.monkeyport and l.istiny,
         ),
         KasplatLocation(
             name="Castle Kasplat: In a Cage in the Dungeon",
@@ -1380,7 +1381,7 @@ KasplatLocationList = {
             zmin=2208,
             zmax=2232,
             region=Regions.Dungeon,
-            additional_logic=lambda l: l.punch,
+            additional_logic=lambda l: l.punch and l.chunky,
         ),
         KasplatLocation(
             name="Castle Kasplat: By the Entrance to the Minecart",
@@ -1392,7 +1393,7 @@ KasplatLocationList = {
             zmin=2265,
             zmax=2406,
             region=Regions.Crypt,
-            additional_logic=lambda l: l.coconut,
+            additional_logic=lambda l: l.coconut and l.isdonkey,
         ),
         KasplatLocation(
             name="Castle Kasplat: In the Library", map_id=Maps.CastleLibrary, kong_lst=[Kongs.donkey], coords=[354, 191, 495], xmin=257, xmax=430, zmin=456, zmax=573, region=Regions.Library
@@ -1407,7 +1408,7 @@ KasplatLocationList = {
             zmin=1335,
             zmax=1359,
             region=Regions.CreepyCastleMain,
-            additional_logic=lambda l: l.jetpack,
+            additional_logic=lambda l: l.jetpack and l.diddy,
         ),
     ],
     Levels.DKIsles: [
@@ -1533,7 +1534,7 @@ KasplatLocationList = {
             zmin=673,
             zmax=747,
             region=Regions.CrystalCavesLobby,
-            additional_logic=lambda l: l.jetpack,
+            additional_logic=lambda l: l.jetpack and l.diddy,
         ),
         # Problematic - Can block you from exiting the loading zone. May be salvageable with coordinate tweaks.
         # KasplatLocation(
@@ -1558,6 +1559,7 @@ KasplatLocationList = {
             zmin=653,
             zmax=708,
             region=Regions.AngryAztecLobby,
+            additional_logic=lambda l: l.feather and l.tiny,
         ),
         # Problematic - Can't tag anywhere in here in LZR which makes it super feels bad.
         # KasplatLocation(
@@ -1573,7 +1575,7 @@ KasplatLocationList = {
             zmin=372,
             zmax=374,
             region=Regions.Prison,
-            additional_logic=lambda l: l.sprint,
+            additional_logic=lambda l: l.sprint and l.lanky,
         ),
         KasplatLocation(
             name="Isles Kasplat: Inside Jungle Japes Lobby",
@@ -1619,7 +1621,7 @@ KasplatLocationList = {
             zmin=1697,
             zmax=1765,
             region=Regions.CabinIsle,
-            additional_logic=lambda l: Events.IslesDiddyBarrelSpawn in l.Events and l.jetpack and l.diddy,
+            additional_logic=lambda l: Events.IslesDiddyBarrelSpawn in l.Events and l.jetpack and l.isdiddy,
         ),
         KasplatLocation(
             name="Isles Kasplat: Beneath the Waterfall",
@@ -1631,7 +1633,7 @@ KasplatLocationList = {
             zmin=1091,
             zmax=1137,
             region=Regions.IslesMain,
-            additional_logic=lambda l: l.swim and (l.oranges or l.HasGun(Kongs.any)),
+            additional_logic=lambda l: l.swim and (l.oranges or l.HasGun(Kongs.any) or l.HasInstrument(Kongs.any)),
         ),
     ],
 }
