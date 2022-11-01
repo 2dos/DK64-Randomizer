@@ -34,7 +34,9 @@ void cFuncLoop(void) {
 	if (ObjectModel2Timer <= 2) {
 		setFlag(0x78, 0, 2); // Clear K. Lumsy temp flag
 		KasplatSpawnBitfield = 0;
-		shiftBrokenJapesPortal();
+		if (!Rando.tns_portal_rando_on) {
+			shiftBrokenJapesPortal();
+		}
 		openCoinDoor();
 		priceTransplant();
 		if (CurrentMap == 0x50) {
