@@ -127,27 +127,6 @@ file_dict = [
         "is_diff_patch": True,
     },
     {
-        "name": "No Face",
-        "pointer_table_index": 14,
-        "file_index": 0x21,
-        "source_file": "assets/Non-Code/displays/none.png",
-        "texture_format": "rgba32",
-    },
-    {
-        "name": "Shared Face",
-        "pointer_table_index": 14,
-        "file_index": 0x27,
-        "source_file": "assets/Non-Code/displays/shared.png",
-        "texture_format": "rgba32",
-    },
-    {
-        "name": "Sold Out Face",
-        "pointer_table_index": 14,
-        "file_index": 0x28,
-        "source_file": "assets/Non-Code/displays/soldout32.png",
-        "texture_format": "rgba32",
-    },
-    {
         "name": "End Sequence Credits",
         "pointer_table_index": 19,
         "file_index": 7,
@@ -310,20 +289,38 @@ for ammo_index, ammo in enumerate(ammo_names):
     )
 
 for kong_index, kong in enumerate(kong_names):
-    for x_i, x in enumerate(["rgba32", "rgba5551"]):
-        size = 32 * 32 * 2
-        if x_i == 0:
-            size = 32 * 32 * 4
-        file_dict.append(
-            {
-                "name": f"{kong} Face ({x})",
-                "pointer_table_index": 14,
-                "file_index": [0x22 + kong_index, 190 + kong_index][x_i],
-                "source_file": f"assets/Non-Code/displays/{kong.lower()}_face.png",
-                "texture_format": x,
-                "target_compressed_size": size,
-            }
-        )
+    file_dict.append(
+        {
+            "name": f"DPad - {kong} Face",
+            "pointer_table_index": 14,
+            "file_index": 190 + kong_index,
+            "source_file": f"assets/Non-Code/displays/{kong.lower()}_face.png",
+            "texture_format": "rgba5551",
+            "target_compressed_size": 32 * 32 * 2,
+        }
+    )
+
+shop_face_array = [
+    "none", # No Face
+    "dk_face",
+    "diddy_face",
+    "lanky_face",
+    "tiny_face",
+    "chunky_face",
+    "shared", # Shared Move
+    "soldout32", # Sold Out
+]
+for x, shop in enumerate(shop_face_array):
+    data = {
+        "name": f"Shop Indicator ({shop})",
+        "pointer_table_index": 14,
+        "file_index": 195 + x,
+        "source_file": f"assets/Non-Code/displays/{shop}.png",
+        "texture_format": "rgba32",
+    }
+    if "_face" in shop:
+        data["target_compressed_size"] = 32 * 32 * 4
+    file_dict.append(data)
 
 base_coin_sfx = "assets/Non-Code/music/Win95_startup.dk64song"
 new_coin_sfx = "assets/Non-Code/music/coin_sfx.bin"

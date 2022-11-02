@@ -165,8 +165,36 @@ typedef struct counter_paad {
 
 #define IMG_WIDTH 32
 
+#define COUNTER_CACHE_SIZE 32
+static void* texture_data[COUNTER_CACHE_SIZE] = {};
+static unsigned char texture_load[COUNTER_CACHE_SIZE] = {};
+
+void wipeCounterImageCache(void) {
+	for (int i = 0; i < COUNTER_CACHE_SIZE; i++) {
+		texture_data[i] = 0;
+		texture_load[i] = 0;
+	}
+}
+
+void* loadInternalTexture(int texture_start, int texture_offset) {
+	if (texture_load[texture_offset] == 0) {
+		texture_data[texture_offset] = getMapData(0xE, texture_start + texture_offset, 1, 1);
+	}
+	texture_load[texture_offset] = 3;
+	return texture_data[texture_offset];
+}
+
 void* loadFontTexture_Counter(void* slot, int index) {
-	return loadCounterFontTexture(0x21,slot,1,index,IMG_WIDTH);
+	void* texture = loadInternalTexture(195, index); // Load texture
+	if (slot) {
+		wipeTextureSlot(slot);
+	}
+	void* location = dk_malloc(IMG_WIDTH << 7);
+	copyImage(location, texture, IMG_WIDTH);
+	blink(CurrentActorPointer_0, 1, 0xFFFF);
+	applyImageToActor(CurrentActorPointer_0, 1, 0);
+	writeImageSlotToActor(CurrentActorPointer_0, 1, 0, location);
+	return location;
 }
 
 void updateCounterDisplay(void) {
