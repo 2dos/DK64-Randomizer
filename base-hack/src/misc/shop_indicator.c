@@ -329,6 +329,17 @@ float getShopScale(int index) {
 	return 1.0f;
 }
 
+/*
+	Golden Banana: 0x155C (44 x 44: RGBA16)
+	Medal: 0x156C (44 x 44: RGBA16)
+	BP: 0x15FC (48 x 42: RGBA16)
+	Key: 0x16F5 (44 x 44: RGBA16)
+	Crown: 0x1705 (44 x 44: RGBA16)
+	Nin Coin: 0x1718 (44 x 44: RGBA16)
+	RW Coin: 0x1711 (44 x 44: RGBA16)
+	Potion: None
+*/
+
 void newCounterCode(void) {
 	counter_paad* paad = CurrentActorPointer_0->paad;
 	if ((CurrentActorPointer_0->obj_props_bitfield & 0x10) == 0) {
