@@ -12,7 +12,7 @@ from randomizer.Enums.Types import Types
 from randomizer.Patching.BananaPortRando import randomize_bananaport
 from randomizer.Patching.BarrelRando import randomize_barrels
 from randomizer.Patching.BossRando import randomize_bosses
-from randomizer.Patching.CosmeticColors import apply_cosmetic_colors, overwrite_object_colors, placeKrushaHead
+from randomizer.Patching.CosmeticColors import apply_cosmetic_colors, overwrite_object_colors, applyKrushaKong
 from randomizer.Patching.DKTV import randomize_dktv
 from randomizer.Patching.EnemyRando import randomize_enemies
 from randomizer.Patching.EntranceRando import randomize_entrances
@@ -368,16 +368,6 @@ def patching_response(responded_data):
         ROM().seek(sav + 0x10E)
         ROM().write(1)
 
-    # Krusha Slot
-    kong_names = ["dk", "diddy", "lanky", "tiny", "chunky"]
-    ROM().seek(sav + 0x11C)
-    if spoiler.settings.krusha_slot == "no_slot":
-        ROM().write(255)
-    elif spoiler.settings.krusha_slot in kong_names:
-        krusha_index = kong_names.index(spoiler.settings.krusha_slot)
-        ROM().write(krusha_index)
-        placeKrushaHead(krusha_index)
-
     # Show CBs & Coins
     if spoiler.settings.cb_rando:
         ROM().seek(sav + 0xAF)
@@ -458,6 +448,7 @@ def patching_response(responded_data):
 
     random.seed(spoiler.settings.seed)
     randomize_music(spoiler)
+    applyKrushaKong(spoiler)
     apply_cosmetic_colors(spoiler)
     overwrite_object_colors(spoiler)
     random.seed(spoiler.settings.seed)

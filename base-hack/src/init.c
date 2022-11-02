@@ -496,6 +496,7 @@ void initHack(int source) {
 						*(short*)(0x806832C0) = 0x5000; // Prevent tag blinking
 						*(int*)(0x806C1058) = 0; // Prevent Cutscene Kong blinking
 						*(int*)(0x806F0AD0) = 0x24050001; // Fix Hand State
+						*(float*)(0x8075CC78) = 0.04f; // Reduce Tiny's Mini Monkey Size
 						break;
 					case 4:
 						// Chunky
@@ -773,8 +774,9 @@ void initHack(int source) {
 			if (Rando.hard_enemies) {
 				*(int*)(0x806ADDC0) = 0x0C000000 | (((int)&handleSpiderTrapCode & 0xFFFFFF) >> 2);
 				*(int*)(0x806CBD78) = 0x18400005; // BLEZ $v0, 0x5 - Decrease in health occurs if trap bubble active
-				*(short*)(0x806B12DA) = 0x381; // Kasplat Shockwave Chance
-				*(short*)(0x806B12FE) = 0x38B; // Kasplat Shockwave Chance
+				*(short*)(0x806B12DA) = 0x3A9; // Kasplat Shockwave Chance
+				*(short*)(0x806B12FE) = 0x3B3; // Kasplat Shockwave Chance
+				*(short*)(0x8074D4D0) = 9; // Increase Guard Health
 			}
 			// Oscillation Effects
 			if (Rando.remove_oscillation_effects) {

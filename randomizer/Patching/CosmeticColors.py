@@ -369,6 +369,24 @@ def overwrite_object_colors(spoiler: Spoiler):
                 writeColorImageToROM(balloon_im, 25, balloon_start[kong_index] + (file - 5819), 32, 64)
 
 
+def applyKrushaKong(spoiler: Spoiler):
+    """Apply Krusha Kong setting."""
+    kong_names = ["dk", "diddy", "lanky", "tiny", "chunky"]
+    if spoiler.settings.krusha_slot == "random":
+        slots = ["dk", "diddy", "tiny"]  # TODO: Add Lanky when we fix him
+        if not spoiler.settings.disco_chunky:
+            slots.append("chunky")  # Only add Chunky if Disco not on (People with disco on probably don't want Krusha as Chunky)
+        spoiler.settings.krusha_slot = random.choice(slots)
+    print(spoiler.settings.krusha_slot)
+    ROM().seek(spoiler.settings.rom_data + 0x11C)
+    if spoiler.settings.krusha_slot == "no_slot":
+        ROM().write(255)
+    elif spoiler.settings.krusha_slot in kong_names:
+        krusha_index = kong_names.index(spoiler.settings.krusha_slot)
+        ROM().write(krusha_index)
+        placeKrushaHead(krusha_index)
+
+
 def placeKrushaHead(slot):
     """Replace a kong's face with the Krusha face."""
     kong_face_textures = [

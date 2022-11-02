@@ -460,6 +460,9 @@ int getLocation(purchase_struct* purchase_data) {
 	int p_type = purchase_data->purchase_type;
 	int bitfield_index = purchase_data->purchase_value - 1;
 	int p_kong = purchase_data->move_kong;
+	if (p_kong > 4) {
+		p_kong = 0;
+	}
 	if (p_type != PURCHASE_NOTHING) {
 		if (p_type < PURCHASE_FLAG) {
 			switch(p_type) {

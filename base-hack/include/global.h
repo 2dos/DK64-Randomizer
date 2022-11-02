@@ -129,6 +129,7 @@ extern void CBDing(void);
 extern void handleSpiderTrapCode(void);
 extern void fastWarpShockwaveFix(void);
 extern int fixDilloTNTPads(void* actor);
+extern int canPlayJetpac(void);
 
 extern move_block* getMoveBlock(void);
 extern void setLocationStatus(location_list location_index);
