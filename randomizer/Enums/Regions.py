@@ -26,6 +26,7 @@ class Regions(IntEnum):
     KRool = auto()
 
     # Jungle Japes Regions
+    JungleJapesMedals = auto()
     JungleJapesMain = auto()
     JapesBeyondPeanutGate = auto()
     JapesBeyondCoconutGate1 = auto()
@@ -43,6 +44,7 @@ class Regions(IntEnum):
     JapesBaboonBlast = auto()
 
     # Angry Aztec Regions
+    AngryAztecMedals = auto()
     AngryAztecStart = auto()
     BetweenVinesByPortal = auto()
     AngryAztecOasis = auto()
@@ -63,6 +65,7 @@ class Regions(IntEnum):
     AztecBaboonBlast = auto()
 
     # Frantic Factory Regions
+    FranticFactoryMedals = auto()
     FranticFactoryStart = auto()
     Testing = auto()
     RandD = auto()
@@ -71,6 +74,7 @@ class Regions(IntEnum):
     ChunkyRoomPlatform = auto()
     PowerHut = auto()
     BeyondHatch = auto()
+    LowerCore = auto()
     InsideCore = auto()
     MiddleCore = auto()
     UpperCore = auto()
@@ -79,6 +83,7 @@ class Regions(IntEnum):
     FactoryBaboonBlast = auto()
 
     # Gloomy Galleon Regions
+    GloomyGalleonMedals = auto()
     GloomyGalleonStart = auto()
     GalleonPastVines = auto()
     GalleonBeyondPineappleGate = auto()
@@ -109,6 +114,7 @@ class Regions(IntEnum):
     GalleonBaboonBlast = auto()
 
     # Fungi Forest Regions
+    FungiForestMedals = auto()
     FungiForestStart = auto()
     ForestMinecarts = auto()
     GiantMushroomArea = auto()
@@ -139,6 +145,7 @@ class Regions(IntEnum):
     ForestBaboonBlast = auto()
 
     # Crystal Caves Regions
+    CrystalCavesMedals = auto()
     CrystalCavesMain = auto()
     CavesSnideArea = auto()
     CavesBlueprintCave = auto()
@@ -168,6 +175,7 @@ class Regions(IntEnum):
     CavesBaboonBlast = auto()
 
     # Creepy Castle Regions
+    CreepyCastleMedals = auto()
     CreepyCastleMain = auto()
     CastleWaterfall = auto()
     CastleTree = auto()

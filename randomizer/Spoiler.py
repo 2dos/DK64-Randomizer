@@ -32,6 +32,7 @@ class Spoiler:
         self.playthrough = {}
         self.woth = {}
         self.woth_locations = {}
+        self.woth_paths = {}
         self.shuffled_barrel_data = {}
         self.shuffled_exit_data = {}
         self.shuffled_exit_instructions = []
@@ -213,6 +214,16 @@ class Spoiler:
 
         # Woth data
         humanspoiler["Way of the Hoard"] = self.woth
+        # Paths for Woth items - does not show up on the site, just for debugging
+        humanspoiler["Paths"] = {}
+        for loc, path in self.woth_paths.items():
+            destination_item = ItemList[LocationList[loc].item]
+            path_dict = {}
+            for path_loc_id in path:
+                path_location = LocationList[path_loc_id]
+                path_item = ItemList[path_location.item]
+                path_dict[path_location.name] = path_item.name
+            humanspoiler["Paths"][destination_item.name] = path_dict
 
         for location_id, location in LocationList.items():
             # No need to spoiler constants

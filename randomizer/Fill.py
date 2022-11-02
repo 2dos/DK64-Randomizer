@@ -452,34 +452,69 @@ def ParePlaythrough(settings, PlaythroughLocations):
         LocationList[locationId].PlaceDelayedItem()
 
 
-def PareWoth(settings, PlaythroughLocations):
+def PareWoth(spoiler, PlaythroughLocations):
     """Pare playthrough to locations which are Way of the Hoard (hard required by logic)."""
     # The functionality is similar to ParePlaythrough, but we want to see if individual locations are
     # hard required, so items are added back after checking regardless of the outcome.
     WothLocations = []
     for sphere in PlaythroughLocations:
-        # Don't want constant locations in woth
-        for loc in [x for x in sphere.locations if not LocationList[x].constant]:
+        # Don't want constant locations in woth and we can filter out some types of items as not being essential to the woth
+        for loc in [
+            loc
+            for loc in sphere.locations
+            if not LocationList[loc].constant and ItemList[LocationList[loc].item].type not in (Types.Banana, Types.BlueprintBanana, Types.Crown, Types.Medal, Types.Blueprint)
+        ]:
             WothLocations.append(loc)
-    # Some items are required for the playthrough but not individually required - these checks are largely for performance, they'd (almost certainly) be removed anyway
-    WothLocations = [loc for loc in WothLocations if ItemList[LocationList[loc].item].type not in (Types.Banana, Types.BlueprintBanana, Types.Crown, Types.Medal, Types.Blueprint)]
     # Check every item location to see if removing it by itself makes the game unbeatable
     for i in range(len(WothLocations) - 1, -1, -1):
         locationId = WothLocations[i]
         location = LocationList[locationId]
         item = location.item
-        # ParePlaythrough already removes unnecessary slams. Any slams that get here are required.
-        if item == Items.ProgressiveSlam:
-            continue
         location.item = None
         # Check if game is still beatable
         Reset()
-        if GetAccessibleLocations(settings, [], SearchMode.CheckBeatable):
+        if GetAccessibleLocations(spoiler.settings, [], SearchMode.CheckBeatable):
             # If game is still beatable, this location is not hard required
             WothLocations.remove(locationId)
         # Either way, add location back
         location.PlaceItem(item)
+
+    CalculateWothPaths(spoiler, WothLocations)
     return WothLocations
+
+
+def CalculateWothPaths(spoiler, WothLocations):
+    """Calculate the Paths (dependencies) for each Way of the Hoard item."""
+    # Do not include bonus barrel logic in path hints
+    temp_helm_barrels_setting = spoiler.settings.helm_barrels
+    spoiler.settings.helm_barrels = "skip"
+    # Prep the dictionary that will contain the path for the key item
+    for locationId in WothLocations:
+        spoiler.woth_paths[locationId] = [locationId]  # The endpoint is on its own path
+    for locationId in WothLocations:
+        # Remove the item from the location
+        location = LocationList[locationId]
+        item_id = location.item
+        location.item = None
+        # We need to have some items assumed in order to get a "pure" path instead of most early paths being a subset of later paths.
+        # We assume Keys and Kongs because anything locked behind a them will then require everything that Key or Kong requires.
+        # This sort of defeats the purpose of paths, as it would put everything in a Key or Kong's path into the path of many, many items.
+        assumedItems = ItemPool.Keys() + ItemPool.Kongs(spoiler.settings)
+        # Find all accessible locations without this item placed
+        Reset()
+        # At this point we know there is no breaking purchase order
+        # Therefore moves required to get coins for shop purchases are not dependencies
+        # So give the logic infinite coins so it can purchase anything it needs
+        LogicVariables.GainInfiniteCoins()
+        accessible = GetAccessibleLocations(spoiler.settings, assumedItems, SearchMode.GetReachable)
+        # Then check every other WotH location for accessibility
+        for other_location in WothLocations:
+            # If it is no longer accessible, then this location is on the path of that other location
+            if other_location not in accessible:
+                spoiler.woth_paths[other_location].append(locationId)
+        # Put the item back for future calculations
+        location.PlaceItem(item_id)
+    spoiler.settings.helm_barrels = temp_helm_barrels_setting  # Reset the temporary change to this setting
 
 
 def RandomFill(settings, itemsToPlace, inOrder=False):
@@ -703,16 +738,16 @@ def GetMaxCoinsSpent(settings, purchasedShops):
     return MaxCoinsSpent
 
 
-def GetItemPrerequisites(spoiler, targetItemId, ownedKongs=[]):
+def GetItemPrerequisites(spoiler, targetItemId, ownedKongs=[], isOneSlamPlaced=False):
     """Given the target item and the current world state, find a valid, minimal, unplaced set of items required to reach the location it is in."""
-    # The most likely case - if no moves are needed, get out of here quickly
-    Reset()
-    if GetAccessibleLocations(spoiler.settings, [], SearchMode.CheckSpecificItemReachable, targetItemId=targetItemId):
-        return []
     # Settings-required moves are always owned in order to complete this method based on the settings
     settingsRequiredMoves = []
     if Types.Key in spoiler.settings.shuffled_location_types:  # If keys are to be shuffled, they won't be shuffled yet
-        settingsRequiredMoves = ItemPool.BlueprintAssumedItems().copy()  # We want KeysCompany Coins/Crowns here and this is a convenient collection
+        settingsRequiredMoves = ItemPool.BlueprintAssumedItems().copy()  # We want Keys/Company Coins/Crowns here and this is a convenient collection
+    # The most likely case - if no moves are needed, get out of here quickly
+    Reset()
+    if GetAccessibleLocations(spoiler.settings, settingsRequiredMoves, SearchMode.CheckSpecificItemReachable, targetItemId=targetItemId):
+        return []
     requiredMoves = []
     if ownedKongs == []:
         ownedKongs = GetKongs()
@@ -723,10 +758,16 @@ def GetItemPrerequisites(spoiler, targetItemId, ownedKongs=[]):
     #     You intentionally only look at DK/Diddy/Tiny moves so you don't find Grape as a prerequisite because you don't have Lanky
     #     In this example (with no other shuffles), there are two possible return values depending on the shuffle order.
     #     Either [Items.Guitar, Items.Coconut] OR [Items.Guitar, Items.Feather]
-    moveList = [move for move in ItemPool.AllMovesForOwnedKongs(ownedKongs) if move != targetItemId]
-    # Sometimes a move requires shockwave as a prerequisite to beat a bonus barrel
+    moveList = [move for move in ItemPool.AllMovesForOwnedKongs(ownedKongs)]
+    if targetItemId in moveList:
+        moveList.remove(targetItemId)
+    # Sometimes a move requires shockwave as a prerequisite
     if Types.Shockwave in spoiler.settings.shuffled_location_types:
         moveList.append(Items.Shockwave)
+    # You can get dangerously circular logic when one slam is placed here. Assume no slams when searching for accessibility and then add one later
+    if isOneSlamPlaced:
+        while Items.ProgressiveSlam in moveList:
+            moveList.remove(Items.ProgressiveSlam)
     random.shuffle(moveList)
     lastRequiredMove = None
     for move in moveList:
@@ -738,6 +779,12 @@ def GetItemPrerequisites(spoiler, targetItemId, ownedKongs=[]):
             # Note the last required move for later
             lastRequiredMove = move
             break
+    # If we haven't found it yet but have a slam placed, it might be super super locked so let's try that
+    if lastRequiredMove is None and isOneSlamPlaced:
+        requiredMoves.append(Items.ProgressiveSlam)
+        Reset()
+        if GetAccessibleLocations(spoiler.settings, settingsRequiredMoves.copy() + requiredMoves.copy(), SearchMode.CheckSpecificItemReachable, targetItemId=targetItemId):
+            lastRequiredMove = move
     # If we didn't find a required move, the item was placed improperly somehow (this shouldn't happen)
     if lastRequiredMove is None:
         # DEBUG CODE - This helps find where items are being placed
@@ -766,7 +813,7 @@ def GetItemPrerequisites(spoiler, targetItemId, ownedKongs=[]):
             # If it's no longer accessible, then re-add it to the end of the list
             requiredMoves.append(possiblyUnnecessaryItem)
         # Repeat until we find the last required move
-    # spoiler.settings.debug_prerequisites[targetItemId] = requiredMoves
+    spoiler.settings.debug_prerequisites[targetItemId] = requiredMoves
     return requiredMoves
 
 
@@ -871,7 +918,7 @@ def ShuffleSharedMoves(spoiler, placedMoves):
     # To avoid conflicts, first determine which level shops will have shared moves then remove these shops from each kong's valid locations list
     if spoiler.settings.training_barrels != "normal" and Items.Oranges not in placedMoves:
         # First place training moves that are not placed. By this point, only Oranges need to be placed here as the others are important to place even earlier than this
-        trainingMovesUnplaced = PlaceItems(spoiler.settings, "assumed", [Items.Oranges], [x for x in ItemPool.AllItems(spoiler.settings) if x != Items.Oranges])
+        trainingMovesUnplaced = PlaceItems(spoiler.settings, "assumed", [Items.Oranges], [x for x in ItemPool.AllItems(spoiler.settings) if x != Items.Oranges and x not in placedMoves])
         if trainingMovesUnplaced > 0:
             raise Ex.ItemPlacementException("Failed to place Orange training barrel move.")
     importantSharedToPlace = ItemPool.ImportantSharedMoves.copy()
@@ -884,7 +931,9 @@ def ShuffleSharedMoves(spoiler, placedMoves):
     for item in placedMoves:
         if item in importantSharedToPlace:
             importantSharedToPlace.remove(item)
-    importantSharedUnplaced = PlaceItems(spoiler.settings, "assumed", importantSharedToPlace, [x for x in ItemPool.AllItems(spoiler.settings) if x not in importantSharedToPlace])
+    importantSharedUnplaced = PlaceItems(
+        spoiler.settings, "assumed", importantSharedToPlace, [x for x in ItemPool.AllItems(spoiler.settings) if x not in importantSharedToPlace and x not in placedMoves]
+    )
     if importantSharedUnplaced > 0:
         raise Ex.ItemPlacementException(str(importantSharedUnplaced) + " unplaced shared important items.")
     junkSharedToPlace = ItemPool.JunkSharedMoves.copy()
@@ -927,7 +976,7 @@ def GeneratePlaythrough(spoiler):
     PlaythroughLocations = GetAccessibleLocations(spoiler.settings, [], SearchMode.GeneratePlaythrough)  # identify in the spheres where the win condition is met
     ParePlaythrough(spoiler.settings, PlaythroughLocations)
     # Generate and display woth
-    WothLocations = PareWoth(spoiler.settings, PlaythroughLocations)
+    WothLocations = PareWoth(spoiler, PlaythroughLocations)
     # Write data to spoiler and return
     spoiler.UpdateLocations(LocationList)
     if any(spoiler.settings.shuffled_location_types):
@@ -1103,6 +1152,7 @@ def FillKongsAndMoves(spoiler):
         Reset()
         possibleMovesBeforeBarrels = ItemPool.AllKongMoves().copy()
         possibleMovesBeforeBarrels.append(Items.Vines)  # If Aztec is 1, you could be required to get vines and then barrels in Aztec
+        possibleMovesBeforeBarrels.append(Items.Swim)  # More applicable to item rando
         unplacedBarrels = PlaceItems(spoiler.settings, "assumed", [Items.Barrels], ownedItems=possibleMovesBeforeBarrels)
         if unplacedBarrels > 0:
             raise Ex.ItemPlacementException("Failed to place barrel training somehow.")
@@ -1167,6 +1217,7 @@ def FillKongsAndMoves(spoiler):
                 latestLogicallyAllowedLevel = 100
             levelIndex = 1
             checkedAllLogicallyAvailableLevels = False
+            isOneSlamPlaced = False
             # Loop until we've logically unlocked all the kongs
             # It may take multiple loops through available levels before we unlock all kongs
             while len(ownedKongs) != 5:
@@ -1174,7 +1225,7 @@ def FillKongsAndMoves(spoiler):
                 # Logically we can always enter any level on hard level progression
                 if spoiler.settings.hard_level_progression:
                     latestLogicallyAllowedLevel = 100
-                priorityItemsToPlace = set()
+                priorityItemsToPlace = []
                 kongToBeGained = None
                 # For each level that has a locked kong, identify the items needed to unlock them
                 # We're about to place these items in accessible locations, so assume can we now own the kong
@@ -1185,17 +1236,23 @@ def FillKongsAndMoves(spoiler):
                 if spoiler.settings.level_order[levelIndex] == Levels.JungleJapes and Locations.DiddyKong in locationsLockingKongs and spoiler.settings.diddy_freeing_kong in ownedKongs:
                     locationsLockingKongs.remove(Locations.DiddyKong)
                     kongToBeGained = ItemPool.GetKongForItem(LocationList[Locations.DiddyKong].item)
-                    directPrerequisiteMoves = GetItemPrerequisites(spoiler, LocationList[Locations.DiddyKong].item, ownedKongs)
+                    directPrerequisiteMoves = GetItemPrerequisites(spoiler, LocationList[Locations.DiddyKong].item, ownedKongs, isOneSlamPlaced)
                     for move in directPrerequisiteMoves:
                         if move not in preplacedPriorityMoves:
-                            priorityItemsToPlace.add(move)
+                            priorityItemsToPlace.append(move)
+                        # If this would be the second slam placed AND this location needs two AND we haven't placed two yet
+                        elif move == Items.ProgressiveSlam and directPrerequisiteMoves.count(Items.ProgressiveSlam) == 2 and preplacedPriorityMoves.count(Items.ProgressiveSlam) < 2:
+                            priorityItemsToPlace.append(move)  # Then we can priority place the second slam
                 if spoiler.settings.level_order[levelIndex] == Levels.AngryAztec and Locations.TinyKong in locationsLockingKongs and spoiler.settings.tiny_freeing_kong in ownedKongs:
                     locationsLockingKongs.remove(Locations.TinyKong)
                     kongToBeGained = ItemPool.GetKongForItem(LocationList[Locations.TinyKong].item)
-                    directPrerequisiteMoves = GetItemPrerequisites(spoiler, LocationList[Locations.TinyKong].item, ownedKongs)
+                    directPrerequisiteMoves = GetItemPrerequisites(spoiler, LocationList[Locations.TinyKong].item, ownedKongs, isOneSlamPlaced)
                     for move in directPrerequisiteMoves:
                         if move not in preplacedPriorityMoves:
-                            priorityItemsToPlace.add(move)
+                            priorityItemsToPlace.append(move)
+                        # If this would be the second slam placed AND this location needs two AND we haven't placed two yet
+                        elif move == Items.ProgressiveSlam and directPrerequisiteMoves.count(Items.ProgressiveSlam) == 2 and preplacedPriorityMoves.count(Items.ProgressiveSlam) < 2:
+                            priorityItemsToPlace.append(move)  # Then we can priority place the second slam
                 elif (
                     spoiler.settings.level_order[levelIndex] == Levels.AngryAztec
                     and Locations.LankyKong in locationsLockingKongs
@@ -1206,10 +1263,13 @@ def FillKongsAndMoves(spoiler):
                 ):
                     locationsLockingKongs.remove(Locations.LankyKong)
                     kongToBeGained = ItemPool.GetKongForItem(LocationList[Locations.LankyKong].item)
-                    directPrerequisiteMoves = GetItemPrerequisites(spoiler, LocationList[Locations.LankyKong].item, ownedKongs)
+                    directPrerequisiteMoves = GetItemPrerequisites(spoiler, LocationList[Locations.LankyKong].item, ownedKongs, isOneSlamPlaced)
                     for move in directPrerequisiteMoves:
                         if move not in preplacedPriorityMoves:
-                            priorityItemsToPlace.add(move)
+                            priorityItemsToPlace.append(move)
+                        # If this would be the second slam placed AND this location needs two AND we haven't placed two yet
+                        elif move == Items.ProgressiveSlam and directPrerequisiteMoves.count(Items.ProgressiveSlam) == 2 and preplacedPriorityMoves.count(Items.ProgressiveSlam) < 2:
+                            priorityItemsToPlace.append(move)  # Then we can priority place the second slam
                 # Place the priority items and any items they may depend on
                 while any(priorityItemsToPlace):
                     # Do not allow anything here to be placed in levels that would break the level order kong logic
@@ -1228,22 +1288,30 @@ def FillKongsAndMoves(spoiler):
                     # This should prevent circular logic (e.g. the diddy-unlocking-gun being locked behind guitar which is already priority placed in Japes Cranky)
                     for item in preplacedPriorityMoves:
                         allOtherItems.remove(item)
-                    unplaced = PlaceItems(spoiler.settings, "assumed", list(priorityItemsToPlace), ownedItems=allOtherItems)
+                    unplaced = PlaceItems(spoiler.settings, "assumed", priorityItemsToPlace.copy(), ownedItems=allOtherItems)
                     if unplaced > 0:
                         raise Ex.ItemPlacementException("Failed to place items that would unlock Kong number " + str(len(ownedKongs) + 1) + ", " + kongToBeGained.name)
                     preplacedPriorityMoves.extend(list(priorityItemsToPlace))
+                    needSuperDuperPlaced = False
+                    isOneSlamPlaced = preplacedPriorityMoves.count(Items.ProgressiveSlam) == 1  # If and only if exactly one slam is placed
                     # After placing these priority items, the new locations may require some of those items we assumed we had
                     priorityItemDependencies = []
                     for item in priorityItemsToPlace:
                         # Find what items are needed to get this item
-                        dependencyPriorityMoves = GetItemPrerequisites(spoiler, item, ownedKongs)
+                        dependencyPriorityMoves = GetItemPrerequisites(spoiler, item, ownedKongs, isOneSlamPlaced)
                         # If there are any...
                         for move in dependencyPriorityMoves:
                             # If we haven't placed it already, find the possible locations and prep the dictionary for the next loop
                             if move not in preplacedPriorityMoves:
                                 priorityItemDependencies.append(move)
+                            # If this would be the second slam placed AND this location needs two AND we haven't placed two yet
+                            elif move == Items.ProgressiveSlam and directPrerequisiteMoves.count(Items.ProgressiveSlam) == 2 and preplacedPriorityMoves.count(Items.ProgressiveSlam) < 2:
+                                needSuperDuperPlaced = True  # Take note of it to priority place the second slam
                     # If we found any dependencies, we have to check for further dependencies
-                    priorityItemsToPlace = set(priorityItemDependencies)
+                    priorityItemsToPlace = list(set(priorityItemDependencies))
+                    # This sequence of casts removes duplicates so we have to account for possibly needing to priority place two slams
+                    if needSuperDuperPlaced:
+                        priorityItemsToPlace.append(Items.ProgressiveSlam)
                 # Update progression with any newly acquired Kongs
                 if kongToBeGained is not None:
                     ownedKongs.append(kongToBeGained)
@@ -1341,6 +1409,9 @@ def FillKongsAndMoves(spoiler):
                     if locationToVacate in spoiler.settings.debug_fill.keys():  # Should only fail in no logic
                         del spoiler.settings.debug_fill[locationToVacate]
                         spoiler.settings.debug_fill[emptyBarrel] = itemToBeMoved
+    spoiler.settings.debug_preplaced_priority_moves = preplacedPriorityMoves
+    if preplacedPriorityMoves.count(Items.ProgressiveSlam) > 2:
+        raise Ex.FillException("Somehow managed to place 3 slams? This shouldn't happen.")
 
 
 def FillKongsAndMovesForLevelOrder(spoiler):

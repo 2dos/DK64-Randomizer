@@ -198,7 +198,7 @@ LocationList = {
     Locations.AztecKasplatSandyBridge: Location(Levels.AngryAztec, "Aztec Kasplat Sandy Bridge", Items.AngryAztecDonkeyBlueprint, Types.Blueprint, Kongs.donkey, [Maps.AngryAztec]),
     Locations.AztecKasplatOnTinyTemple: Location(Levels.AngryAztec, "Aztec Kasplat On Tiny Temple", Items.AngryAztecDiddyBlueprint, Types.Blueprint, Kongs.diddy, [Maps.AngryAztec]),
     Locations.AztecTinyKlaptrapRoom: Location(Levels.AngryAztec, "Aztec Tiny Klaptrap Room", Items.GoldenBanana, Types.Banana, Kongs.tiny, [MapIDCombo(Maps.AztecTinyTemple, 0x7E, 65, Kongs.tiny)]),
-    Locations.AztecChunkyKlaptrapRoom: Location(Levels.AngryAztec, "Aztec Chunky Klaptrap Room", Items.GoldenBanana, Types.Banana, Kongs.tiny, [MapIDCombo(Maps.AztecTinyTemple, 0x9, 64, Kongs.chunky)]),
+    Locations.AztecChunkyKlaptrapRoom: Location(Levels.AngryAztec, "Aztec Chunky Klaptrap Room", Items.GoldenBanana, Types.Banana, Kongs.chunky, [MapIDCombo(Maps.AztecTinyTemple, 0x9, 64, Kongs.chunky)]),
     Locations.TinyKong: Location(Levels.AngryAztec, "Tiny Kong", Items.Tiny, Types.Kong),
     Locations.AztecDiddyFreeTiny: Location(Levels.AngryAztec, "Aztec Diddy Free Tiny", Items.GoldenBanana, Types.Banana, Kongs.any, [MapIDCombo(Maps.AztecTinyTemple, 0x5B, 67, Kongs.diddy)]),  # Can be assigned to other kongs
     Locations.AztecLankyVulture: Location(Levels.AngryAztec, "Aztec Lanky Vulture", Items.GoldenBanana, Types.Banana, Kongs.lanky, [MapIDCombo(0, -1, 68, Kongs.lanky)]),
