@@ -496,6 +496,7 @@ void initHack(int source) {
 						*(short*)(0x806832C0) = 0x5000; // Prevent tag blinking
 						*(int*)(0x806C1058) = 0; // Prevent Cutscene Kong blinking
 						*(int*)(0x806F0AD0) = 0x24050001; // Fix Hand State
+						*(float*)(0x8075CC78) = 0.04f; // Reduce Tiny's Mini Monkey Size
 						break;
 					case 4:
 						// Chunky
