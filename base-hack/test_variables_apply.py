@@ -48,7 +48,7 @@ set_variables = {
     "remove_blockers": 0x7F,
     "resolve_bonus": 0,
     "disable_drops": 0,
-    "shop_indicator_on": 1,
+    "shop_indicator_on": 2,
     "warp_to_isles_enabled": 1,
     "lobbies_open_bitfield": 0xFF,
     "perma_lose_kongs": 0,

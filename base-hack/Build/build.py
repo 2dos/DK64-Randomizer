@@ -301,14 +301,22 @@ for kong_index, kong in enumerate(kong_names):
     )
 
 shop_face_array = [
-    "none", # No Face
+    "none",  # No Face
     "dk_face",
     "diddy_face",
     "lanky_face",
     "tiny_face",
     "chunky_face",
-    "shared", # Shared Move
-    "soldout32", # Sold Out
+    "shared",  # Shared Move
+    "soldout32",  # Sold Out
+    "gb",
+    "dk_bp",
+    "crown_shop",
+    "key",
+    "medal",
+    "potion32",
+    "nin_coin",
+    "rw_coin",
 ]
 for x, shop in enumerate(shop_face_array):
     data = {
@@ -643,6 +651,7 @@ model_changes = [
     {"model_index": 0xF0, "model_file": "potion_tiny_om1.bin"},
     {"model_index": 0xF1, "model_file": "potion_chunky_om1.bin"},
     {"model_index": 0xF2, "model_file": "potion_any_om1.bin"},
+    {"model_index": 0xA3, "model_file": "counter.bin"},
 ]
 for x in model_changes:
     data = {
@@ -1224,9 +1233,20 @@ with open(newROMName, "r+b") as fh:
         "num_9_lit",
         "num_9_unlit",
         "standard_crate",
+        "crown",
+        "crown_shop",
+        "dk_bp",
+        "gb",
+        "key",
+        "krusha_head64",
+        "lanky_bp",
+        "medal",
+        "nin_coin",
+        "potion32",
+        "rw_coin",
     ]
     for disp in displays:
-        for ext in [".png", ".rgba32"]:
+        for ext in [".png", ".rgba32", ".rgba5551"]:
             other_remove.append(f"displays/{disp}{ext}")
     for x in range(8):
         other_remove.append(f"file_screen/key{x+1}.png")

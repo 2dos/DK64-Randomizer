@@ -284,7 +284,7 @@ def patching_response(responded_data):
     # Enables the counter for the shop indications
     if spoiler.settings.shop_indicator:
         ROM().seek(sav + 0x134)
-        ROM().write(1)
+        ROM().write(2)
 
     # Enable Perma Death
     if spoiler.settings.perma_death:

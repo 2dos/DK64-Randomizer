@@ -288,12 +288,52 @@ side_im = side_im.resize((32, 16))
 side_im = side_im.rotate(90, PIL.Image.Resampling.NEAREST, expand=1)
 side_im.save(f"{hash_dir}modified_coin_side.png")
 
-krusha_im = Image.open(f"{getDir('assets/Non-Code/displays/')}krusha_head.png")
+# Krusha Head
+krusha_im = Image.open(f"{disp_dir}krusha_head.png")
 krusha_im = krusha_im.resize((64, 64))
 krusha_im = krusha_im.transpose(Image.Transpose.FLIP_TOP_BOTTOM)
-krusha_im.save(f"{getDir('assets/Non-Code/displays/')}krusha_head64.png")
+krusha_im.save(f"{disp_dir}krusha_head64.png")
 
-rmve = ["01234.png", "56789.png", "boss_key.png", "WXYL.png", "specialchars.png", "red_qmark_0.png", "red_qmark_1.png", "headphones.png", "film.png", "melon.png"]
+# Blueprints
+for bp in ("dk_bp", "lanky_bp"):
+    bp_im = Image.open(f"{hash_dir}{bp}.png")
+    bp_im = bp_im.crop((8, 2, 40, 34))
+    bp_im.save(f"{disp_dir}{bp}.png")
+
+# Shop indicator items (44x44)
+for item in ("crown_shop", "gb", "key", "medal"):
+    item_im = Image.open(f"{hash_dir}{item}.png")
+    item_im = item_im.resize((32, 32))
+    item_im.save(f"{disp_dir}{item}.png")
+
+# Smaller potion image
+potion_im = Image.open(f"{disp_dir}potion.png")
+potion_im = potion_im.resize((32, 32))
+potion_im.save(f"{disp_dir}potion32.png")
+
+# Coins
+for coin in ("nin_coin", "rw_coin"):
+    coin_im = Image.open(f"{hash_dir}{coin}.png")
+    coin_im.save(f"{disp_dir}{coin}.png")
+
+rmve = [
+    "01234.png",
+    "56789.png",
+    "boss_key.png",
+    "WXYL.png",
+    "specialchars.png",
+    "red_qmark_0.png",
+    "red_qmark_1.png",
+    "headphones.png",
+    "film.png",
+    "melon.png",
+    "dk_bp.png",
+    "lanky_bp.png",
+    "crown_shop.png",
+    "gb.png",
+    "key.png",
+    "medal.png",
+]
 for kong in kongs:
     for x in range(2):
         rmve.append(f"{kong}_face_{x}.png")
