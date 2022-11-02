@@ -40,7 +40,7 @@ LogicRegions = {
         TransitionFront(Regions.BetweenVinesByPortal, lambda l: l.vines or (l.istiny and l.twirl)),
         TransitionFront(Regions.TempleStart, lambda l: (l.peanut and l.isdiddy) or (l.grape and l.islanky)
                         or (l.feather and l.istiny) or (l.pineapple and l.ischunky)),
-        TransitionFront(Regions.AngryAztecMain, lambda l: l.settings.open_levels or (l.vines and l.guitar and l.diddy)),
+        TransitionFront(Regions.AngryAztecMain, lambda l: l.settings.open_levels or ((l.vines or l.jetpack) and l.guitar and l.diddy)),
         TransitionFront(Regions.CandyAztec, lambda l: True),
         TransitionFront(Regions.AztecBossLobby, lambda l: not l.settings.tns_location_rando),
     ]),

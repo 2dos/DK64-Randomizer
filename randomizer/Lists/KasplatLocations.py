@@ -150,7 +150,7 @@ KasplatLocationList = {
             zmin=1650,
             zmax=1800,
             region=Regions.JungleJapesMain,
-            additional_logic=lambda l: l.swim and (l.oranges or l.HasGun(Kongs.any)),
+            additional_logic=lambda l: l.swim and (l.oranges or l.HasGun(Kongs.any) or l.HasInstrument(Kongs.any)),
         ),
         KasplatLocation(
             name="Japes Kasplat: In the water near Rambi Wall",
@@ -162,7 +162,7 @@ KasplatLocationList = {
             zmin=2700,
             zmax=2900,
             region=Regions.BeyondRambiGate,
-            additional_logic=lambda l: l.swim and (l.oranges or l.HasGun(Kongs.any)),
+            additional_logic=lambda l: l.swim and (l.oranges or l.HasGun(Kongs.any) or l.HasInstrument(Kongs.any)),
         ),
         KasplatLocation(
             name="Japes Kasplat: Near Cranky's",
@@ -250,6 +250,7 @@ KasplatLocationList = {
             zmin=1525,
             zmax=1590,
             region=Regions.AngryAztecOasis,
+            additional_logic=lambda l: l.vines or (l.jetpack and l.isdiddy),
         ),
         KasplatLocation(
             name="Aztec Kasplat: Near the giant boulder",
@@ -422,7 +423,7 @@ KasplatLocationList = {
         ),
         KasplatLocation(
             name="Aztec Kasplat: In Donkey 5-Door Temple",
-            map_id=Maps.AztecTinyTemple,
+            map_id=Maps.AztecDonkey5DTemple,
             kong_lst=[Kongs.donkey],
             coords=[99, 21, 390],
             xmin=68,
@@ -430,6 +431,7 @@ KasplatLocationList = {
             zmin=321,
             zmax=450,
             region=Regions.DonkeyTemple,
+            additional_logic=lambda l: l.coconut and l.isdonkey,
         ),
     ],
     Levels.FranticFactory: [
@@ -941,7 +943,7 @@ KasplatLocationList = {
             zmin=540,
             zmax=630,
             region=Regions.GiantMushroomArea,
-            additional_logic=lambda l: l.swim and (l.oranges or l.HasGun(Kongs.any)),
+            additional_logic=lambda l: l.swim and (l.oranges or l.HasGun(Kongs.any) or l.HasInstrument(Kongs.any)),
         ),
         KasplatLocation(
             name="Forest Kasplat: At the very top of the Giant Mushroom",
@@ -1033,7 +1035,6 @@ KasplatLocationList = {
             zmin=500,
             zmax=640,
             region=Regions.CavesSnideArea,
-            additional_logic=lambda l: True,
         ),
         KasplatLocation(
             name="Caves Kasplat: In the room with Tiny's Bonus Barrel",
@@ -1323,7 +1324,7 @@ KasplatLocationList = {
             zmin=150,
             zmax=300,
             region=Regions.CreepyCastleMain,
-            additional_logic=lambda l: l.swim and (l.oranges or l.HasGun(Kongs.any)),
+            additional_logic=lambda l: l.swim and (l.oranges or l.HasGun(Kongs.any) or l.HasInstrument(Kongs.any)),
         ),
         KasplatLocation(
             name="Castle Kasplat: Near Cranky's Hut",
@@ -1558,6 +1559,7 @@ KasplatLocationList = {
             zmin=653,
             zmax=708,
             region=Regions.AngryAztecLobby,
+            additional_logic=lambda l: l.feather,
         ),
         # Problematic - Can't tag anywhere in here in LZR which makes it super feels bad.
         # KasplatLocation(
@@ -1619,7 +1621,7 @@ KasplatLocationList = {
             zmin=1697,
             zmax=1765,
             region=Regions.CabinIsle,
-            additional_logic=lambda l: Events.IslesDiddyBarrelSpawn in l.Events and l.jetpack and l.diddy,
+            additional_logic=lambda l: Events.IslesDiddyBarrelSpawn in l.Events and l.jetpack and l.isdiddy,
         ),
         KasplatLocation(
             name="Isles Kasplat: Beneath the Waterfall",
@@ -1631,7 +1633,7 @@ KasplatLocationList = {
             zmin=1091,
             zmax=1137,
             region=Regions.IslesMain,
-            additional_logic=lambda l: l.swim and (l.oranges or l.HasGun(Kongs.any)),
+            additional_logic=lambda l: l.swim and (l.oranges or l.HasGun(Kongs.any) or l.HasInstrument(Kongs.any)),
         ),
     ],
 }
