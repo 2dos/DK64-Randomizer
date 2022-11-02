@@ -200,6 +200,7 @@ void decouple_moves_fixes(void) {
 }
 
 void parseCutsceneData(void) {
+	wipeCounterImageCache();
 	if ((CurrentMap >= 0xCB) && (CurrentMap <= 0xCF)) {
 		int phase = CurrentMap - 0xCB;
 		initKRool(phase);

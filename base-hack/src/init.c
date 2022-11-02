@@ -251,6 +251,7 @@ void initHack(int source) {
 				*(int*)(0x8064EC00) = 0x24020001;
 			}
 			*(int*)(0x8074C1B8) = (int)&newCounterCode;
+			*(short*)(0x8074DC84) = 0x53; // Increase PAAD size
 			fixMusicRando();
 			// In-Level IGT
 			*(int*)(0x8060DF28) = 0x0C000000 | (((int)&updateLevelIGT & 0xFFFFFF) >> 2); // Modify Function Call

@@ -8,7 +8,7 @@ set_variables = {
     "blocker_normal_count": [2, 3, 4, 5, 6, 7, 8, 9],
     "key_flags": [0x4A, 0x8A, 0xA8, 0xEC, 0x124, 0x13D, 0x1A],
     "unlock_kongs": 0x1F,
-    "unlock_moves": 1,
+    "unlock_moves": 0,
     "fast_start_beginning": 1,
     "camera_unlocked": 1,
     "tag_anywhere": 1,
@@ -48,7 +48,7 @@ set_variables = {
     "remove_blockers": 0x7F,
     "resolve_bonus": 0,
     "disable_drops": 0,
-    "shop_indicator_on": 1,
+    "shop_indicator_on": 2,
     "warp_to_isles_enabled": 1,
     "lobbies_open_bitfield": 0xFF,
     "perma_lose_kongs": 0,
@@ -231,7 +231,7 @@ with open("include/variable_space_structs.h", "r") as varspace:
 
 # Editor: https://docs.google.com/spreadsheets/d/1UokoarKY6C56otoHMRUDCCMveaGUm8bGTOnaxjxDPR0/edit#gid=0
 move_csv = "move_placement.csv"
-permit = True  # Whether move csv overwrites data
+permit = False  # Whether move csv overwrites data
 if os.path.exists(move_csv) and permit:
     with open(move_csv, "r") as csv:
         csv_lines = csv.readlines()

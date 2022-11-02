@@ -96,6 +96,7 @@ extern int getHi(void* addr);
 extern void displayNumberOnObject(int id, int param2, int imageindex, int param4, int subtype);
 extern void recolorKongControl(void);
 extern void newCounterCode(void);
+extern void wipeCounterImageCache(void);
 extern void writeCoinRequirements(int source);
 extern void colorMenuSky(void);
 extern void getMoveHint(actorData* actor, int text_file, int text_index);

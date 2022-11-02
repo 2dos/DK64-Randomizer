@@ -262,6 +262,12 @@ extern void assignGIFToActor(void* paad, void* sprite, int scale_f);
 extern int loadSetupNew(int map);
 extern int getParentIndex(int map);
 
+extern void wipeTextureSlot(void* location);
+extern void copyImage(void* location, void* image, int width);
+extern void blink(void* actor, int unk0, int unk1);
+extern void applyImageToActor(void* actor, int unk0, int unk1);
+extern void writeImageSlotToActor(void* actor, int unk0, int unk1, void* location);
+
 //vanilla data
 extern float TransitionSpeed;
 extern char CutsceneWillPlay;

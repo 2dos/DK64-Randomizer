@@ -47,7 +47,7 @@ LogicRegions = {
         TransitionFront(Regions.JungleJapesLobby, lambda l: l.settings.open_lobbies or Events.KLumsyTalkedTo in l.Events, Transitions.IslesMainToJapesLobby),
         TransitionFront(Regions.CrocodileIsleBeyondLift, lambda l: l.settings.open_lobbies or Events.AztecKeyTurnedIn in l.Events),
         TransitionFront(Regions.IslesMainUpper, lambda l: l.vines),
-        TransitionFront(Regions.GloomyGalleonLobby, lambda l: l.settings.open_lobbies or Events.AztecKeyTurnedIn in l.Events and l.swim, Transitions.IslesMainToGalleonLobby),
+        TransitionFront(Regions.GloomyGalleonLobby, lambda l: (l.settings.open_lobbies or Events.AztecKeyTurnedIn in l.Events) and l.swim, Transitions.IslesMainToGalleonLobby),
         TransitionFront(Regions.CabinIsle, lambda l: l.settings.open_lobbies or Events.GalleonKeyTurnedIn in l.Events),
         TransitionFront(Regions.CreepyCastleLobby, lambda l: l.settings.open_lobbies or Events.ForestKeyTurnedIn in l.Events, Transitions.IslesMainToCastleLobby),
         TransitionFront(Regions.HideoutHelmLobby, lambda l: l.monkeyport and l.istiny

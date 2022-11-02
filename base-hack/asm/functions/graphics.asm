@@ -11,3 +11,8 @@
 .definelabel addDLToOverlay, 0x8068C350
 .definelabel getTextStyleHeight, 0x806FD894
 .definelabel textDraw, 0x806FD490
+.definelabel wipeTextureSlot, 0x8061134C
+.definelabel copyImage, 0x8069DC10
+.definelabel blink, 0x8068842C
+.definelabel applyImageToActor, 0x80688370
+.definelabel writeImageSlotToActor, 0x80688320

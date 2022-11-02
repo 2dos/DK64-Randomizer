@@ -270,6 +270,9 @@ void getNextMovePurchase(shop_paad* paad, KongBase* movedata) {
 			int p_type = selected->purchase_type;
 			int p_kong = selected->move_kong;
 			int p_value = selected->purchase_value;
+			if (p_kong > 4) {
+				p_kong = 0;
+			}
 			if (p_type > PURCHASE_NOTHING) {
 				switch (p_type) {
 					case PURCHASE_MOVES:
