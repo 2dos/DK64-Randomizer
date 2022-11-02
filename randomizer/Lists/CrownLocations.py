@@ -195,12 +195,13 @@ CrownLocations = {
         ),
         CrownLocation(
             map=Maps.JungleJapes,
-            name="Jungle Japes: Near T&S Alcove",
+            name="Jungle Japes: In T&S Alcove",
             x=770,
             y=538,
             z=2332,
             scale=0.35,
             region=Regions.JungleJapesMain,
+            logic=lambda l: l.vines,
         ),
         CrownLocation(
             map=Maps.JungleJapes,
@@ -538,7 +539,7 @@ CrownLocations = {
             z=464,
             scale=0.4,
             region=Regions.DonkeyTemple,
-            logic=lambda l: l.coconut and l.diddy,
+            logic=lambda l: l.coconut and l.isdonkey,
         ),
         CrownLocation(
             map=Maps.AztecDiddy5DTemple,
@@ -548,7 +549,7 @@ CrownLocations = {
             z=493,
             scale=0.4,
             region=Regions.DiddyTemple,
-            logic=lambda l: l.peanut and l.diddy,
+            logic=lambda l: l.peanut and l.isdiddy,
         ),
         CrownLocation(
             map=Maps.AztecLanky5DTemple,
@@ -558,7 +559,7 @@ CrownLocations = {
             z=916,
             scale=0.3,
             region=Regions.LankyTemple,
-            logic=lambda l: l.grape and l.lanky,
+            logic=lambda l: l.grape and l.islanky,
         ),
         CrownLocation(
             map=Maps.AztecLanky5DTemple,
@@ -568,7 +569,7 @@ CrownLocations = {
             z=658,
             scale=0.45,
             region=Regions.LankyTemple,
-            logic=lambda l: l.grape and l.lanky,
+            logic=lambda l: l.grape and l.islanky,
         ),
         CrownLocation(
             map=Maps.AztecTiny5DTemple,
@@ -578,7 +579,7 @@ CrownLocations = {
             z=1420,
             scale=0.3,
             region=Regions.TinyTemple,
-            logic=lambda l: l.feather and l.tiny,
+            logic=lambda l: l.feather and l.istiny,
         ),
         CrownLocation(
             map=Maps.AztecChunky5DTemple,
@@ -588,7 +589,7 @@ CrownLocations = {
             z=321,
             scale=0.45,
             region=Regions.ChunkyTemple,
-            logic=lambda l: l.pineapple and l.chunky,
+            logic=lambda l: l.pineapple and l.ischunky,
         ),
         CrownLocation(
             map=Maps.AztecChunky5DTemple,
@@ -598,7 +599,7 @@ CrownLocations = {
             z=678,
             scale=0.45,
             region=Regions.ChunkyTemple,
-            logic=lambda l: l.pineapple and l.chunky,
+            logic=lambda l: l.pineapple and l.ischunky,
         ),
         CrownLocation(
             map=Maps.AztecLlamaTemple,
@@ -1107,6 +1108,7 @@ CrownLocations = {
             z=1307.16,
             scale=0.49,
             region=Regions.MushroomUpperExterior,
+            logic=lambda l: Events.Night in l.Events,
             is_vanilla=True,
         ),
         CrownLocation(
@@ -1654,7 +1656,7 @@ CrownLocations = {
             z=1002,
             scale=0.2,
             region=Regions.CrystalCavesMain,
-            logic=lambda l: l.balloon and l.islanky,
+            logic=lambda l: (l.balloon and l.islanky) or (l.jetpack and l.isdiddy),
         ),
         CrownLocation(
             map=Maps.CrystalCaves,
@@ -2218,7 +2220,7 @@ CrownLocations = {
             y=200,
             z=852,
             scale=0.4,
-            region=Regions.Mausoleum,
+            region=Regions.UpperCave,
         ),
         CrownLocation(
             map=Maps.CastleUpperCave,
@@ -2265,7 +2267,7 @@ CrownLocations = {
             z=1525,
             scale=0.4,
             region=Regions.MuseumBehindGlass,
-            logic=lambda l: l.monkeyport,
+            logic=lambda l: l.monkeyport and l.istiny,
         ),
         CrownLocation(
             map=Maps.CastleMuseum,
@@ -2304,6 +2306,7 @@ CrownLocations = {
             z=280.06,
             scale=0.43,
             region=Regions.IslesSnideRoom,
+            logic=lambda l: l.chunky and l.barrels,
             is_vanilla=True,
             default_index=1,
         ),
@@ -2425,7 +2428,7 @@ CrownLocations = {
             y=550,
             z=3325,
             scale=0.5,
-            region=Regions.CrocodileIsleBeyondLift,
+            region=Regions.IslesMain,
         ),
         CrownLocation(
             map=Maps.Isles,
@@ -2719,6 +2722,7 @@ CrownLocations = {
             z=2545,
             scale=0.5,
             region=Regions.HideoutHelmStart,
+            logic=lambda l: l.lanky and l.handstand and l.chunky and l.pineapple and l.vines,
         ),
         CrownLocation(
             map=Maps.HideoutHelm,
@@ -2728,6 +2732,7 @@ CrownLocations = {
             z=2243,
             scale=0.5,
             region=Regions.HideoutHelmStart,
+            logic=lambda l: l.lanky and l.handstand and l.chunky and l.pineapple and l.vines,
         ),
         CrownLocation(
             map=Maps.HideoutHelm,
@@ -2737,6 +2742,7 @@ CrownLocations = {
             z=1261,
             scale=0.5,
             region=Regions.HideoutHelmStart,
+            logic=lambda l: l.lanky and l.handstand,
         ),
         CrownLocation(
             map=Maps.HideoutHelm,
