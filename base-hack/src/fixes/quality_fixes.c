@@ -236,3 +236,11 @@ int fixDilloTNTPads(void* actor) {
 	}
 	return getPadGravity(actor);
 }
+
+int canPlayJetpac(void) {
+	if (checkFlag(FLAG_COLLECTABLE_RAREWARECOIN, 0)) {
+		return 0;
+	} else {
+		return countFlagArray(FLAG_MEDAL_JAPES_DK, 40, 0);
+	}
+}
