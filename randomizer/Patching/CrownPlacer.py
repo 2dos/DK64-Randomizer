@@ -73,8 +73,8 @@ def randomize_crown_pads(spoiler: Spoiler):
                         for int_index in range(int(0x30 / 4)):
                             data.append(int.from_bytes(ROM().readBytes(4), "big"))
                         persisted_m2.append(data)
+                crown_ids = []
                 for crown in placements:
-                    crown_ids = []
                     if crown.map == cont_map_id and not crown.vanilla:
                         # Place new crown
                         selected_id = getNextFreeID(cont_map_id, crown_ids)
