@@ -182,6 +182,7 @@ def ShuffleBossesBasedOnOwnedItems(settings, ownedKongs: dict, ownedMoves: dict)
             raise FillException("Invalid boss order with fewer than the 7 required main levels.")
     except Exception as ex:
         if isinstance(ex.args[0], str) and "index out of range" in ex.args[0]:
+            print("Unlucky move placement fill :(")
             raise BossOutOfLocationsException("No valid locations to place " + bossTryingToBePlaced)
         raise FillException(ex)
 

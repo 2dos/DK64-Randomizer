@@ -504,7 +504,7 @@ KasplatLocationList = {
             map_id=Maps.FranticFactory,
             kong_lst=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
             coords=[509, 0, 1591],
-            region=Regions.BeyondHatch,
+            region=Regions.LowerCore,
             vanilla=True,
         ),
         KasplatLocation(

@@ -47,9 +47,10 @@ class Collectible:
 class Region:
     """Region contains shufflable locations, events, and transitions to other regions."""
 
-    def __init__(self, name, level, tagbarrel, deathwarp, locations, events, transitionFronts, restart=None):
+    def __init__(self, name, hint_name, level, tagbarrel, deathwarp, locations, events, transitionFronts, restart=None):
         """Initialize with given parameters."""
         self.name = name
+        self.hint_name = hint_name
         self.level = level
         self.tagbarrel = tagbarrel
         self.deathwarp = None

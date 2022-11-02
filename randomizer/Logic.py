@@ -24,9 +24,8 @@ from randomizer.Enums.Events import Events
 from randomizer.Enums.Items import Items
 from randomizer.Enums.Kongs import Kongs
 from randomizer.Enums.Levels import Levels
-from randomizer.Enums.Locations import Locations
 from randomizer.Enums.Time import Time
-from randomizer.Lists.Location import Location, LocationList
+from randomizer.Lists.Location import LocationList
 from randomizer.Lists.MapsAndExits import Maps
 from randomizer.Lists.ShufflableExit import GetShuffledLevelIndex
 from randomizer.Prices import CanBuy, GetPriceAtLocation
@@ -50,6 +49,7 @@ class LogicVarHolder:
 
         Done between reachability searches and upon initialization.
         """
+        self.debug_owned_items = []
         self.donkey = Kongs.donkey in self.settings.starting_kong_list
         self.diddy = Kongs.diddy in self.settings.starting_kong_list
         self.lanky = Kongs.lanky in self.settings.starting_kong_list
@@ -182,6 +182,8 @@ class LogicVarHolder:
 
     def Update(self, ownedItems):
         """Update logic variables based on owned items."""
+        self.debug_owned_items = ownedItems
+
         self.donkey = self.donkey or Items.Donkey in ownedItems or self.startkong == Kongs.donkey
         self.diddy = self.diddy or Items.Diddy in ownedItems or self.startkong == Kongs.diddy
         self.lanky = self.lanky or Items.Lanky in ownedItems or self.startkong == Kongs.lanky
@@ -463,6 +465,11 @@ class LogicVarHolder:
             # If kong specific move, just that kong paid for it
             else:
                 self.Coins[location.kong] -= price
+
+    def GainInfiniteCoins(self):
+        """Add an arbitrarily large amount of coins to the current game state so as to effectively ignore any coin requirements."""
+        for i in range(len(self.Coins)):
+            self.Coins[i] += 10000
 
     @staticmethod
     def HasAccess(region, kong):

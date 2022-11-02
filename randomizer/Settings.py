@@ -317,7 +317,7 @@ class Settings:
         self.medal_requirement = 15
         self.medal_cb_req = 75
         self.bananaport_rando = "off"
-        self.activate_all_bananaports = False
+        self.activate_all_bananaports = "off"
         self.shop_indicator = False
         self.randomize_cb_required_amounts = False
         self.randomize_blocker_required_amounts = False
