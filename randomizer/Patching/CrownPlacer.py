@@ -42,7 +42,8 @@ def randomize_crown_pads(spoiler: Spoiler):
         for level in spoiler.crown_locations:
             for crown in spoiler.crown_locations[level]:
                 crown_data = CrownLocations[level][crown]
-                placements.append(CrownPlacementShortData(crown_data.map, crown_data.coords, crown_data.scale, crown_data.default_index, crown_data.is_vanilla))
+                idx = spoiler.crown_locations[level][crown]
+                placements.append(CrownPlacementShortData(crown_data.map, crown_data.coords, crown_data.scale, idx, crown_data.is_vanilla))
                 if crown_data.is_vanilla and crown_data.map in new_vanilla_crowns:
                     new_vanilla_crowns.append(crown_data.map)
                 if not crown_data.is_vanilla:

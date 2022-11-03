@@ -58,3 +58,14 @@ PauseExtraSlotCustomCode:
     PauseExtraSlotCustomCode_Finish:
         J 		0x806A880C
         ADDIU 	at, r0, 2
+
+PauseCounterCap:
+    ANDI    t4, s4, 0xFF
+    ADDIU   t8, r0, 4
+    BNE     t8, s3, PauseCounterCap_Finish
+    NOP
+    ADDIU   s3, r0, 3
+
+    PauseCounterCap_Finish:
+        J       0x806A98A0
+        OR      t8, t6, s2
