@@ -81,12 +81,12 @@ def ShufflePatches(spoiler: Spoiler, human_spoiler):
     for SingleDirtPatchLocation in range(5):
         area_key = random.choice(list(total_dirt_patch_list.keys()))
         area_dirt = total_dirt_patch_list[area_key]
-        select_random_dirt_from_area(area_dirt, len(area_dirt), spoiler, human_spoiler)
+        select_random_dirt_from_area(area_dirt, 2, spoiler, human_spoiler)
         del total_dirt_patch_list[area_key]
 
     for area_key in total_dirt_patch_list.keys():
         area_dirt = total_dirt_patch_list[area_key]
-        select_random_dirt_from_area(area_dirt, len(area_dirt), spoiler, human_spoiler)
+        select_random_dirt_from_area(area_dirt, 1, spoiler, human_spoiler)
     return human_spoiler.copy()
 
 
@@ -95,12 +95,12 @@ def select_random_dirt_from_area(area_dirt, amount, spoiler: Spoiler, human_spoi
     for iterations in range(amount):
         selected_patch = random.choice(area_dirt)  # selects a random patch from the list
         for patch in DirtPatchLocations:  # enables the selected patch
-            if patch.name == selected_patch.name and patch.test == 1:
+            if patch.name == selected_patch.name:
                 patch.setPatch(True)
                 addPatch(patch)
                 human_spoiler.append(patch.name)
                 spoiler.dirt_patch_placement.append(patch.name)
                 area_dirt.remove(selected_patch)
                 break
-        # if amount > 1:  # if multiple patches are picked, remove patches from the same group, prevent them from being picked
-        #     area_dirt = [dirt for dirt in area_dirt if dirt.group != selected_patch.group]
+        if amount > 1:  # if multiple patches are picked, remove patches from the same group, prevent them from being picked
+            area_dirt = [dirt for dirt in area_dirt if dirt.group != selected_patch.group]

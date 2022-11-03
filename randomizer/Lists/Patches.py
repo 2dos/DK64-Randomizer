@@ -10,7 +10,7 @@ from randomizer.Lists.MapsAndExits import Maps
 class DirtPatchData:
     """Information about the dirt patch location."""
 
-    def __init__(self, *, name="", level=0, map_id=0, vanilla=False, x=0, y=0, z=0, scale=1, rotation=0, group=0, logicregion="", logic=0, test=0):
+    def __init__(self, *, name="", level=0, map_id=0, vanilla=False, x=0, y=0, z=0, scale=1, rotation=0, group=0, logicregion="", logic=0):
         """Initialize with given parameters."""
         self.name = name
         self.level_name = level
@@ -25,7 +25,6 @@ class DirtPatchData:
         self.group = group
         self.logicregion = logicregion
         self.logic = logic
-        self.test=test
 
     def setPatch(self, used):
         """Set patch's state regarding rando."""
@@ -257,17 +256,17 @@ DirtPatchLocations = [
         logic=lambda l: l.CanAccessKRool() and l.shockwave,
     ),
     DirtPatchData(
-        name="DK Isles - Hideout Helm Lobby: Bonus Barrel Platform",
+        name="DK Isles - Hideout Helm Lobby: Next to Tag Barrel",
         level=Levels.DKIsles,
         map_id=Maps.HideoutHelmLobby,
-        x=683.0,
-        y=196.0,
-        z=638.0,
-        rotation=1024,
+        x=300.0,
+        y=191.0,
+        z=269.0,
+        rotation=2048,
         group=7,
         logicregion=Regions.HideoutHelmLobby,
         logic=lambda l: l.gorillaGone and l.ischunky and l.shockwave,
-        test=1,
+        
     ),
     DirtPatchData(
         name="DK Isles - Hideout Helm Lobby: Blueprint Platform",
@@ -309,14 +308,14 @@ DirtPatchLocations = [
         name="DK Isles - Frantic Factory Lobby: High Platform",
         level=Levels.DKIsles,
         map_id=Maps.FranticFactoryLobby,
-        x=674.0,
+        x=664.0,
         y=133.0,
-        z=376.0,
-        rotation=1024,
+        z=588.0,
+        rotation=2048,
         group=10,
         logicregion=Regions.FranticFactoryLobby,
         logic=lambda l: l.grab and l.shockwave,
-        test=1,
+        
     ),
     DirtPatchData(
         name="DK Isles - Gloomy Galleon Lobby: Behind Mini Monkey Gate",
@@ -475,19 +474,18 @@ DirtPatchLocations = [
     #     logicregion=Regions.JungleJapesMain,
     #     logic=lambda l: l.shockwave,
     # ),
-    DirtPatchData(
-        name="Jungle Japes: Under Chunky's Barrel",
-        level=Levels.JungleJapes,
-        map_id=Maps.JungleJapes,
-        x=2345.0,
-        y=551.0,
-        z=3152.0,
-        rotation=1160,
-        group=6,
-        logicregion=Regions.JapesBeyondFeatherGate,
-        logic=lambda l: l.shockwave,
-        test=1,
-    ),
+    # DirtPatchData(
+    #     name="Jungle Japes: Under Chunky's Barrel",
+    #     level=Levels.JungleJapes,
+    #     map_id=Maps.JungleJapes,
+    #     x=2345.0,
+    #     y=551.0,
+    #     z=3152.0,
+    #     rotation=1160,
+    #     group=6,
+    #     logicregion=Regions.JapesBeyondFeatherGate,
+    #     logic=lambda l: l.shockwave,
+    # ),
     DirtPatchData(
         name="Jungle Japes: Near Cannon to Diddy-freeing cage",
         level=Levels.JungleJapes,
@@ -501,30 +499,30 @@ DirtPatchLocations = [
         logic=lambda l: l.shockwave,
     ),
     DirtPatchData(
-        name="Jungle Japes: Fell off the vines",
+        name="Jungle Japes: Near the Vine Pit",
         level=Levels.JungleJapes,
         map_id=Maps.JungleJapes,
-        x=1166.0,
-        y=230.0,
-        z=2595.0,
-        rotation=3128,
+        x=796.0,
+        y=284.0,
+        z=2471.0,
+        rotation=2480,
         group=8,
         logicregion=Regions.JapesBeyondCoconutGate2,
         logic=lambda l: l.shockwave,
-        test=1,
+        
     ),
     DirtPatchData(
         name="Jungle Japes: On the useless Lanky ramp",
         level=Levels.JungleJapes,
         map_id=Maps.JungleJapes,
-        x=2234.0,
+        x=2263.0,
         y=338.0,
-        z=3242.0,
-        rotation=2241,
+        z=3158.0,
+        rotation=3305,
         group=2,
         logicregion=Regions.JapesBeyondCoconutGate2,
         logic=lambda l: l.handstand and l.shockwave,
-        test=1,
+        
     ),
     DirtPatchData(
         name="Jungle Japes: Cranky-tunnel Crossing",
@@ -573,7 +571,7 @@ DirtPatchLocations = [
         group=2,
         logicregion=Regions.JungleJapesMain,
         logic=lambda l: l.shockwave,
-        test=1,
+        
     ),
     DirtPatchData(
         name="Jungle Japes: Inside the first tunnel - later half",
@@ -660,7 +658,7 @@ DirtPatchLocations = [
         group=5,
         logicregion=Regions.AngryAztecMain,
         logic=lambda l: l.shockwave,
-        test=1,
+        
     ),
     DirtPatchData(
         name="Angry Aztec: Entrance tunnel - near DK door",
@@ -798,14 +796,14 @@ DirtPatchLocations = [
         name="Angry Aztec - Aztec Llama Temple: Next to Llama Left",
         level=Levels.AngryAztec,
         map_id=Maps.AztecLlamaTemple,
-        x=1729.0,
+        x=1795.0,
         y=472.0,
-        z=2198.0,
+        z=2158.0,
         rotation=1649,
         group=4,
         logicregion=Regions.LlamaTemple,
         logic=lambda l: l.shockwave,
-        test=1,
+        
     ),
     DirtPatchData(
         name="Angry Aztec - Aztec Llama Temple: Next to Llama Right",
@@ -832,19 +830,18 @@ DirtPatchLocations = [
         logicregion=Regions.BeyondHatch,
         logic=lambda l: l.punch and l.shockwave,
     ),
-    DirtPatchData(
-        name="Frantic Factory: Toy Room Under Stairs",
-        level=Levels.FranticFactory,
-        map_id=Maps.FranticFactory,
-        x=2015.0,
-        y=1026.0,
-        z=1364.0,
-        rotation=3026,
-        group=2,
-        logicregion=Regions.Testing,
-        logic=lambda l: l.shockwave,
-        test=1,
-    ),
+    # DirtPatchData(
+    #     name="Frantic Factory: Toy Room Under Stairs",
+    #     level=Levels.FranticFactory,
+    #     map_id=Maps.FranticFactory,
+    #     x=2015.0,
+    #     y=1026.0,
+    #     z=1364.0,
+    #     rotation=3026,
+    #     group=2,
+    #     logicregion=Regions.Testing,
+    #     logic=lambda l: l.shockwave,
+    # ),
     DirtPatchData(
         name="Frantic Factory: Middle of Entrance Room",
         level=Levels.FranticFactory,
@@ -1075,20 +1072,20 @@ DirtPatchLocations = [
         logicregion=Regions.LighthousePlatform,
         logic=lambda l: l.shockwave,
     ),
-    DirtPatchData(
-        name="Gloomy Galleon: Under Diddy Barrel",
-        level=Levels.GloomyGalleon,
-        map_id=Maps.GloomyGalleon,
-        x=1340.0,
-        y=1660.0,
-        z=4043.0,
-        scale=0.68,
-        rotation=910,
-        group=1,
-        logicregion=Regions.LighthousePlatform,
-        logic=lambda l: l.shockwave,
-        test=1,
-    ),
+    # DirtPatchData(
+    #     name="Gloomy Galleon: Under Diddy Barrel",
+    #     level=Levels.GloomyGalleon,
+    #     map_id=Maps.GloomyGalleon,
+    #     x=1340.0,
+    #     y=1660.0,
+    #     z=4043.0,
+    #     scale=0.68,
+    #     rotation=910,
+    #     group=1,
+    #     logicregion=Regions.LighthousePlatform,
+    #     logic=lambda l: l.shockwave,
+    #     
+    # ),
     DirtPatchData(
         name="Gloomy Galleon - Galleon Lighthouse: Behind Whomp's Fortress floor 2",
         level=Levels.GloomyGalleon,
@@ -1271,19 +1268,18 @@ DirtPatchLocations = [
         logicregion=Regions.HollowTreeArea,
         logic=lambda l: l.shockwave,
     ),
-    DirtPatchData(
-        name="Fungi Forest: Owl and Rabbit area - near Diddy Barrel",
-        level=Levels.FungiForest,
-        map_id=Maps.FungiForest,
-        x=549.0,
-        y=189.0,
-        z=3940.0,
-        rotation=1080,
-        group=5,
-        logicregion=Regions.HollowTreeArea,
-        logic=lambda l: l.shockwave,
-        test=1,
-    ),
+    # DirtPatchData(
+    #     name="Fungi Forest: Owl and Rabbit area - near Diddy Barrel",
+    #     level=Levels.FungiForest,
+    #     map_id=Maps.FungiForest,
+    #     x=549.0,
+    #     y=189.0,
+    #     z=3940.0,
+    #     rotation=1080,
+    #     group=5,
+    #     logicregion=Regions.HollowTreeArea,
+    #     logic=lambda l: l.shockwave,
+    # ),
     DirtPatchData(
         name="Fungi Forest: Next to Rabbit's house",
         level=Levels.FungiForest,
@@ -1500,21 +1496,21 @@ DirtPatchLocations = [
         group=1,
         logicregion=Regions.CabinArea,
         logic=lambda l: l.shockwave,
-        test=1,
+        
     ),
-    DirtPatchData(
-        name="Crystal Caves: Next to Donkey's 1DC - right",
-        level=Levels.CrystalCaves,
-        map_id=Maps.CrystalCaves,
-        x=2666.0,
-        y=282.0,
-        z=2494.0,
-        rotation=2225,
-        group=1,
-        logicregion=Regions.CabinArea,
-        logic=lambda l: l.shockwave,
-        test=1,
-    ),
+    # DirtPatchData(
+    #     name="Crystal Caves: Next to Donkey's 1DC - right",
+    #     level=Levels.CrystalCaves,
+    #     map_id=Maps.CrystalCaves,
+    #     x=2666.0,
+    #     y=282.0,
+    #     z=2494.0,
+    #     rotation=2225,
+    #     group=1,
+    #     logicregion=Regions.CabinArea,
+    #     logic=lambda l: l.shockwave,
+    #     
+    # ),
     DirtPatchData(
         name="Crystal Caves - Caves Frozen Castle: Next to Slam Puzzle - left",
         level=Levels.CrystalCaves,
