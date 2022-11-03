@@ -10,7 +10,7 @@ from randomizer.Lists.MapsAndExits import Maps
 class DirtPatchData:
     """Information about the dirt patch location."""
 
-    def __init__(self, *, name="", level=0, map_id=0, vanilla=False, x=0, y=0, z=0, scale=1, rotation=0, group=0, logicregion="", logic=0):
+    def __init__(self, *, name="", level=0, map_id=0, vanilla=False, x=0, y=0, z=0, scale=1, rotation=0, group=0, logicregion="", logic=0, test=0):
         """Initialize with given parameters."""
         self.name = name
         self.level_name = level
@@ -25,6 +25,7 @@ class DirtPatchData:
         self.group = group
         self.logicregion = logicregion
         self.logic = logic
+        self.test=test
 
     def setPatch(self, used):
         """Set patch's state regarding rando."""
@@ -266,6 +267,7 @@ DirtPatchLocations = [
         group=7,
         logicregion=Regions.HideoutHelmLobby,
         logic=lambda l: l.gorillaGone and l.ischunky and l.shockwave,
+        test=1,
     ),
     DirtPatchData(
         name="DK Isles - Hideout Helm Lobby: Blueprint Platform",
@@ -314,6 +316,7 @@ DirtPatchLocations = [
         group=10,
         logicregion=Regions.FranticFactoryLobby,
         logic=lambda l: l.grab and l.shockwave,
+        test=1,
     ),
     DirtPatchData(
         name="DK Isles - Gloomy Galleon Lobby: Behind Mini Monkey Gate",
@@ -483,6 +486,7 @@ DirtPatchLocations = [
         group=6,
         logicregion=Regions.JapesBeyondFeatherGate,
         logic=lambda l: l.shockwave,
+        test=1,
     ),
     DirtPatchData(
         name="Jungle Japes: Near Cannon to Diddy-freeing cage",
@@ -507,6 +511,7 @@ DirtPatchLocations = [
         group=8,
         logicregion=Regions.JapesBeyondCoconutGate2,
         logic=lambda l: l.shockwave,
+        test=1,
     ),
     DirtPatchData(
         name="Jungle Japes: On the useless Lanky ramp",
@@ -519,6 +524,7 @@ DirtPatchLocations = [
         group=2,
         logicregion=Regions.JapesBeyondCoconutGate2,
         logic=lambda l: l.handstand and l.shockwave,
+        test=1,
     ),
     DirtPatchData(
         name="Jungle Japes: Cranky-tunnel Crossing",
@@ -567,6 +573,7 @@ DirtPatchLocations = [
         group=2,
         logicregion=Regions.JungleJapesMain,
         logic=lambda l: l.shockwave,
+        test=1,
     ),
     DirtPatchData(
         name="Jungle Japes: Inside the first tunnel - later half",
@@ -653,6 +660,7 @@ DirtPatchLocations = [
         group=5,
         logicregion=Regions.AngryAztecMain,
         logic=lambda l: l.shockwave,
+        test=1,
     ),
     DirtPatchData(
         name="Angry Aztec: Entrance tunnel - near DK door",
@@ -797,6 +805,7 @@ DirtPatchLocations = [
         group=4,
         logicregion=Regions.LlamaTemple,
         logic=lambda l: l.shockwave,
+        test=1,
     ),
     DirtPatchData(
         name="Angry Aztec - Aztec Llama Temple: Next to Llama Right",
@@ -834,6 +843,7 @@ DirtPatchLocations = [
         group=2,
         logicregion=Regions.Testing,
         logic=lambda l: l.shockwave,
+        test=1,
     ),
     DirtPatchData(
         name="Frantic Factory: Middle of Entrance Room",
@@ -1077,6 +1087,7 @@ DirtPatchLocations = [
         group=1,
         logicregion=Regions.LighthousePlatform,
         logic=lambda l: l.shockwave,
+        test=1,
     ),
     DirtPatchData(
         name="Gloomy Galleon - Galleon Lighthouse: Behind Whomp's Fortress floor 2",
@@ -1271,6 +1282,7 @@ DirtPatchLocations = [
         group=5,
         logicregion=Regions.HollowTreeArea,
         logic=lambda l: l.shockwave,
+        test=1,
     ),
     DirtPatchData(
         name="Fungi Forest: Next to Rabbit's house",
@@ -1488,6 +1500,7 @@ DirtPatchLocations = [
         group=1,
         logicregion=Regions.CabinArea,
         logic=lambda l: l.shockwave,
+        test=1,
     ),
     DirtPatchData(
         name="Crystal Caves: Next to Donkey's 1DC - right",
@@ -1500,6 +1513,7 @@ DirtPatchLocations = [
         group=1,
         logicregion=Regions.CabinArea,
         logic=lambda l: l.shockwave,
+        test=1,
     ),
     DirtPatchData(
         name="Crystal Caves - Caves Frozen Castle: Next to Slam Puzzle - left",

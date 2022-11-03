@@ -8,7 +8,7 @@ from randomizer.Enums.Events import Events
 class CrownLocation:
     """Class to store information pertaining to a crown location."""
 
-    def __init__(self, *, map=0, name="", x=0, y=0, z=0, scale=1, region=0, logic=None, is_vanilla=False, is_rotating_room=False, default_index=0):
+    def __init__(self, *, map=0, name="", x=0, y=0, z=0, scale=1, region=0, logic=None, is_vanilla=False, is_rotating_room=False, default_index=0, test=0):
         """Initialize with given data."""
         self.map = map
         self.name = name
@@ -23,6 +23,7 @@ class CrownLocation:
             self.logic = lambda l: True
         else:
             self.logic = logic
+        self.test=test
 
 
 CrownLocations = {
@@ -73,6 +74,7 @@ CrownLocations = {
             z=3156,
             scale=0.6,
             region=Regions.JapesBeyondFeatherGate,
+            test=1,
         ),
         CrownLocation(
             map=Maps.JungleJapes,
@@ -110,6 +112,7 @@ CrownLocations = {
             scale=0.4,
             region=Regions.JapesBeyondCoconutGate2,
             logic=lambda l: l.handstand and l.lanky,
+            test=1,
         ),
         CrownLocation(
             map=Maps.JungleJapes,
@@ -437,6 +440,7 @@ CrownLocations = {
             z=2400,
             scale=0.4,
             region=Regions.AngryAztecMain,
+            test=1,
         ),
         CrownLocation(
             map=Maps.AngryAztec,
@@ -618,6 +622,7 @@ CrownLocations = {
             z=2200,
             scale=0.45,
             region=Regions.LlamaTemple,
+            test=1,
         ),
         CrownLocation(
             map=Maps.AztecLlamaTemple,
@@ -814,6 +819,7 @@ CrownLocations = {
             z=1348,
             scale=0.45,
             region=Regions.Testing,
+            test=1,
         ),
         CrownLocation(
             map=Maps.FranticFactory,
@@ -1014,6 +1020,7 @@ CrownLocations = {
             z=4071,
             scale=0.2,
             region=Regions.LighthousePlatform,
+            test=1,
         ),
         CrownLocation(
             map=Maps.GloomyGalleon,
@@ -1398,6 +1405,7 @@ CrownLocations = {
             z=3707,
             scale=0.6,
             region=Regions.HollowTreeArea,
+            test=1,
         ),
         CrownLocation(
             map=Maps.FungiForest,
@@ -1758,6 +1766,7 @@ CrownLocations = {
             z=2354,
             scale=0.35,
             region=Regions.CabinArea,
+            test=1,
         ),
         CrownLocation(
             map=Maps.CrystalCaves,
@@ -1767,6 +1776,7 @@ CrownLocations = {
             z=2500,
             scale=0.35,
             region=Regions.CabinArea,
+            test=1,
         ),
         CrownLocation(
             map=Maps.CrystalCaves,
@@ -2541,6 +2551,7 @@ CrownLocations = {
             scale=0.4,
             region=Regions.FranticFactoryLobby,
             logic=lambda l: l.grab and l.donkey,
+            test=1,
         ),
         CrownLocation(
             map=Maps.GloomyGalleonLobby,
@@ -2616,6 +2627,7 @@ CrownLocations = {
             scale=0.3,
             region=Regions.HideoutHelmLobby,
             logic=lambda l: l.vines and l.gorillaGone and l.ischunky,
+            test=1,
         ),
         CrownLocation(
             map=Maps.TrainingGrounds,
