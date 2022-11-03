@@ -638,10 +638,10 @@ class Settings:
                 self.valid_locations[Types.Shop][Kongs.tiny] = allKongMoveLocations
                 self.valid_locations[Types.Shop][Kongs.chunky] = allKongMoveLocations
             self.valid_locations[Types.Shop][Kongs.any] = SharedShopLocations
-            # if self.shockwave_status not in ("vanilla", "start_with") and Types.Shockwave not in self.shuffled_location_types:
-            # self.valid_locations[Types.Shop][Kongs.any].add(Locations.CameraAndShockwave)
-            # else:
-            # self.valid_locations[Types.Shop][Kongs.tiny].remove(Locations.CameraAndShockwave)
+            if self.shockwave_status not in ("vanilla", "start_with") and Types.Shockwave not in self.shuffled_location_types:
+                self.valid_locations[Types.Shop][Kongs.any].add(Locations.CameraAndShockwave)
+            else:
+                self.valid_locations[Types.Shop][Kongs.tiny].remove(Locations.CameraAndShockwave)
             if self.training_barrels == "shuffled" and Types.TrainingBarrel not in self.shuffled_location_types:
                 for kong in Kongs:
                     self.valid_locations[Types.Shop][kong].update(TrainingBarrelLocations.copy())
