@@ -151,6 +151,10 @@ static const int tracker_move_2[] = {TRACKER_TYPE_GRAB, TRACKER_TYPE_SPRING, TRA
 static const int tracker_instrument[] = {TRACKER_TYPE_BONGOS, TRACKER_TYPE_GUITAR, TRACKER_TYPE_TROMBONE, TRACKER_TYPE_SAX, TRACKER_TYPE_TRIANGLE};
 static const int tracker_gun[] = {TRACKER_TYPE_COCONUT, TRACKER_TYPE_PEANUT, TRACKER_TYPE_GRAPE, TRACKER_TYPE_FEATHER, TRACKER_TYPE_PINEAPPLE};
 
+static unsigned char slam_screen_level = 0;
+static unsigned char belt_screen_level = 0;
+static unsigned char ins_screen_level = 0;
+
 int getInitFileMove(int index) {
 	int found = 0;
 	for (int i = 0; i < 4; i++) {
@@ -218,6 +222,31 @@ int getInitFileMove(int index) {
 				} else if (move_value == -2) {
 					found |= (index == TRACKER_TYPE_CAMERA);
 					found |= (index == TRACKER_TYPE_SHOCKWAVE);
+				} else {
+					int subtype = getMoveProgressiveFlagType(move_value);
+					if (subtype == 0) {
+						// Slams
+						slam_screen_level += 1;
+						return slam_screen_level + 1;
+					} else if (subtype == 1) {
+						// Belts
+						if (belt_screen_level == 0) {
+							found |= index == TRACKER_TYPE_BELT_1;
+						} else {
+							found |= index == TRACKER_TYPE_BELT_2;
+						}
+						belt_screen_level += 1;
+					} else if (subtype == 2) {
+						// Ins Upg
+						if (ins_screen_level == 0) {
+							found |= index == TRACKER_TYPE_INSUPG_1;
+						} else if (ins_screen_level == 1) {
+							found |= index == TRACKER_TYPE_MELON_3;
+						} else {
+							found |= index == TRACKER_TYPE_INSUPG_2;
+						}
+						ins_screen_level += 1;
+					}
 				}
 				break;
 		}
@@ -414,6 +443,9 @@ int getEnabledState(int index) {
 }
 
 void updateEnabledStates(void) {
+	slam_screen_level = 0;
+	belt_screen_level = 0;
+	ins_screen_level = 0;
 	for (int i = 0; i < (int)(sizeof(tracker_info) / sizeof(tracker_struct)); i++) {
 		tracker_info[i].enabled = getEnabledState(tracker_info[i].type);
 	}
@@ -709,6 +741,10 @@ void initOptionScreen(void) {
 }
 
 static unsigned char previous_map_save = 0x22;
+
+void setPrevSaveMap(void) {
+	previous_map_save = Rando.starting_map;
+}
 
 int updateLevelIGT(void) {
 	int new_igt = getNewSaveTime();

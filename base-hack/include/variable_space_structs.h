@@ -49,7 +49,9 @@ typedef struct varspace {
 	/* 0x0AE */ char helm_hurry_mode; // 0 = Off, 1 = On: Starting a new file summons the helm timer, each BP adds 2 minutes to the clock, timing out disables saving.
 	/* 0x0AF */ char always_show_coin_cbs; // 0 = No (Vanilla), 1 = Yes
 	/* 0x0B0 */ quality_options quality_of_life; // Size: 2
-	/* 0x0B2 */ char unk_B0[0x10E - 0xB2];
+	/* 0x0B2 */ char unk_B0[0x10C - 0xB2];
+	/* 0x10C */ unsigned char starting_map; // 0 = Isles - from escape
+	/* 0x10D */ unsigned char starting_exit;
 	/* 0x10E */ unsigned char tns_portal_rando_on;
 	/* 0x10F */ unsigned char remove_oscillation_effects; // Removes water oscillation + Seasick Ship interior rocking
 	/* 0x110 */ unsigned char arcade_reward_is_gb; // Is reward for R2 of arcade a GB
@@ -74,7 +76,7 @@ typedef struct varspace {
 	/* 0x12F */ char disco_chunky; // 0 = Normal, 1 = Disco. Overriden by Krusha if Krusha replaces Chunky
 	/* 0x130 */ unsigned short ballroom_to_museum; // Same as "aztec_beetle_enter" but for the loading zone dictated by the name
 	/* 0x132 */ unsigned short museum_to_ballroom; // Same as "aztec_beetle_enter" but for the loading zone dictated by the nametc
-	/* 0x134 */ char shop_indicator_on; // 0 = Off, 1 = Render amount of moves that can be purchased from that shop
+	/* 0x134 */ char shop_indicator_on; // 0 = Off, 1 = Only kong displayed, 2 = Both item and kong
 	/* 0x135 */ char warp_to_isles_enabled; // 0 = Off, 1 = Add Warp to Isles option
 	/* 0x136 */ unsigned char klaptrap_color_bbother; // 0 = Green, 1 = Purple, 2 = Red
 	/* 0x137 */ char open_level_sections; // 0 = Off, 1 = On

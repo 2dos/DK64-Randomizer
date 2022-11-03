@@ -116,7 +116,7 @@ int isGoodTextbox(int text_file, int text_index) {
 	if (text_file == 7) { // Funky
 		return ((text_index >= 3) && (text_index <= 8)) || ((text_index >= 11 && (text_index <= 14)));
 	} else if (text_file == 8) { // Cranky
-		return (text_index == 4) || (text_index == 5) || (text_index == 9);
+		return (text_index == 4) || (text_index == 5) || (text_index == 8) || (text_index == 9);
 	} else if (text_file == 9)  { // Candy
 		return (text_index == 0) || ((text_index >= 3) && (text_index <= 9)) || ((text_index >= 12) && (text_index <= 15));
 	}

@@ -75,7 +75,6 @@ def ShuffleWarpsCrossMap(bananaport_replacements, human_ports, is_coupled):
                     is_enabled = False
                 if is_enabled:
                     available_warps.append(warp_check.swap_index)
-            print(f"{idx} ({len(available_warps)} | {len(full_warps)})")
             selected_index = random.choice(available_warps)
             warp_type_index = random.randint(0, 4)
             # Place Warp
@@ -89,8 +88,6 @@ def ShuffleWarpsCrossMap(bananaport_replacements, human_ports, is_coupled):
             bananaport_replacements[warp.swap_index] = [selected_index, warp_type_index]
             warp.destination_region_id = destination_warp.region_id
             selected_lst = [selected_index]
-            if selected_index in selected_warp_list:
-                print(f"Selected {selected_index} which is a duplicate")
             selected_warp_list.append(selected_index)
             if is_coupled:
                 warp.cross_map_placed = True
@@ -103,7 +100,4 @@ def ShuffleWarpsCrossMap(bananaport_replacements, human_ports, is_coupled):
                         human_ports[warp_check.name] = destination_warp.name
                         bananaport_replacements[warp_check.swap_index] = [warp.swap_index, warp_type_index]
                         warp.destination_region_id = destination_warp.region_id
-                        if warp.swap_index in selected_warp_list:
-                            print(f"Selected {warp.swap_index} which is a duplicate")
                         selected_warp_list.append(warp.swap_index)
-            print(f"Selected {selected_lst}")

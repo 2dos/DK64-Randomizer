@@ -22,7 +22,6 @@ void cFuncLoop(void) {
 	int crystal_count = CollectableBase.Crystals;
 	tagAnywhere(past_crystals);
 	past_crystals = crystal_count;
-	islesSpawn();
 	initHack(0);
 	//fixCastleAutowalk();
 	level_order_rando_funcs();

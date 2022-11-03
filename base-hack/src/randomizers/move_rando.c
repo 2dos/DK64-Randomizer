@@ -270,6 +270,9 @@ void getNextMovePurchase(shop_paad* paad, KongBase* movedata) {
 			int p_type = selected->purchase_type;
 			int p_kong = selected->move_kong;
 			int p_value = selected->purchase_value;
+			if (p_kong > 4) {
+				p_kong = 0;
+			}
 			if (p_type > PURCHASE_NOTHING) {
 				switch (p_type) {
 					case PURCHASE_MOVES:
@@ -460,6 +463,9 @@ int getLocation(purchase_struct* purchase_data) {
 	int p_type = purchase_data->purchase_type;
 	int bitfield_index = purchase_data->purchase_value - 1;
 	int p_kong = purchase_data->move_kong;
+	if (p_kong > 4) {
+		p_kong = 0;
+	}
 	if (p_type != PURCHASE_NOTHING) {
 		if (p_type < PURCHASE_FLAG) {
 			switch(p_type) {

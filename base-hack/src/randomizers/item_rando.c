@@ -141,7 +141,7 @@ void initCollectableCollision(void) {
     index = addCollisionInfo(index, 0x0098, COLLECTABLE_FILM, KONG_NONE, 0, 0, 0); // Film
     index = addCollisionInfo(index, 0x0090, COLLECTABLE_MEDAL, KONG_NONE, 154, 8, 4); // Medal
     index = addCollisionInfo(index, 0x00EC, COLLECTABLE_RACECOIN, KONG_NONE, 0x36, 0, 0); // Race Coin
-    index = addCollisionInfo(index, 0x013C, COLLECTABLE_NONE, KONG_NONE, 0x48, 10, 10); // Boss Key
+    index = addCollisionInfo(index, 0x013C, COLLECTABLE_NONE, KONG_NONE, 0x48, 8, 4); // Boss Key
     index = addCollisionInfo(index, 0x018D, COLLECTABLE_NONE, KONG_NONE, 0x56, 8, 4); // Battle Crown
     index = addCollisionInfo(index, 0x0288, COLLECTABLE_GB, KONG_NONE, 0x2D, 8, 4); // Rareware GB
     index = addCollisionInfo(index, 0x0048, COLLECTABLE_NONE, KONG_NONE, 151, 8, 4); // Nintendo Coin
@@ -1103,4 +1103,12 @@ void CheckKasplatSpawnBitfield(void) {
             }
         }
     }
+}
+
+int canItemPersist(void) {
+    int actor = CurrentActorPointer_0->actorType;
+    if ((actor == 0x2F) || (actor == 0x36)) {
+        return isCutsceneActive();
+    }
+    return 1;
 }

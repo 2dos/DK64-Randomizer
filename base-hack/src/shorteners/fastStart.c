@@ -1,11 +1,5 @@
 #include "../../include/common.h"
 
-void islesSpawn(void) {
-	if (Rando.fast_start_beginning) {
-		*(int*)(0x80714540) = 0;
-	}
-}
-
 static const short kong_flags[] = {FLAG_KONG_DK,FLAG_KONG_DIDDY,FLAG_KONG_LANKY,FLAG_KONG_TINY,FLAG_KONG_CHUNKY};
 
 void applyFastStart(void) {

@@ -45,6 +45,7 @@ extern void playSong(int songIndex, int volume);
 extern void playLevelMusic(void);
 extern void loadExtraHooks();
 extern void playCutscene(void* actor, int cutscene_index, int cutscene_type);
+extern int isCutsceneActive(void);
 extern void setHUDItemAsInfinite(int item_index, int player_index, char isInfinite);
 extern void resetCoconutHUD(void);
 extern void osWritebackDCacheAll();
@@ -261,6 +262,12 @@ extern void spriteActorGenericCode(float unk0);
 extern void assignGIFToActor(void* paad, void* sprite, int scale_f);
 extern int loadSetupNew(int map);
 extern int getParentIndex(int map);
+
+extern void wipeTextureSlot(void* location);
+extern void copyImage(void* location, void* image, int width);
+extern void blink(void* actor, int unk0, int unk1);
+extern void applyImageToActor(void* actor, int unk0, int unk1);
+extern void writeImageSlotToActor(void* actor, int unk0, int unk1, void* location);
 
 //vanilla data
 extern float TransitionSpeed;

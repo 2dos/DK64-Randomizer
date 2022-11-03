@@ -369,6 +369,23 @@ def overwrite_object_colors(spoiler: Spoiler):
                 writeColorImageToROM(balloon_im, 25, balloon_start[kong_index] + (file - 5819), 32, 64)
 
 
+def applyKrushaKong(spoiler: Spoiler):
+    """Apply Krusha Kong setting."""
+    kong_names = ["dk", "diddy", "lanky", "tiny", "chunky"]
+    if spoiler.settings.krusha_slot == "random":
+        slots = ["dk", "diddy", "tiny"]  # TODO: Add Lanky when we fix him
+        if not spoiler.settings.disco_chunky:
+            slots.append("chunky")  # Only add Chunky if Disco not on (People with disco on probably don't want Krusha as Chunky)
+        spoiler.settings.krusha_slot = random.choice(slots)
+    ROM().seek(spoiler.settings.rom_data + 0x11C)
+    if spoiler.settings.krusha_slot == "no_slot":
+        ROM().write(255)
+    elif spoiler.settings.krusha_slot in kong_names:
+        krusha_index = kong_names.index(spoiler.settings.krusha_slot)
+        ROM().write(krusha_index)
+        placeKrushaHead(krusha_index)
+
+
 def placeKrushaHead(slot):
     """Replace a kong's face with the Krusha face."""
     kong_face_textures = [
@@ -433,7 +450,7 @@ def placeKrushaHead(slot):
         ROM().writeBytes(data)
         ROM().seek(unc_addr)
         ROM().writeBytes(bytearray(img_data))
-    rgba32_addr32 = js.pointer_addresses[14]["entries"][0x22 + slot]["pointing_to"]
+    rgba32_addr32 = js.pointer_addresses[14]["entries"][196 + slot]["pointing_to"]
     rgba16_addr32 = js.pointer_addresses[14]["entries"][190 + slot]["pointing_to"]
     data32 = gzip.compress(bytearray(img32), compresslevel=9)
     data32_rgba32 = gzip.compress(bytearray(img32_rgba32), compresslevel=9)

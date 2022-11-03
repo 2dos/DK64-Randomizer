@@ -31,6 +31,7 @@ set_variables = {
         "caves_kosha_dead": True,
         "rambi_enguarde_pickup": True,
         "hud_bp_multibunch": True,
+        "homing_balloons": True,
     },
     "price_rando_on": 1,
     "k_rool_order": [1, -1, -1, -1, -1],
@@ -48,7 +49,7 @@ set_variables = {
     "remove_blockers": 0x7F,
     "resolve_bonus": 0,
     "disable_drops": 0,
-    "shop_indicator_on": 1,
+    "shop_indicator_on": 2,
     "warp_to_isles_enabled": 1,
     "lobbies_open_bitfield": 0xFF,
     "perma_lose_kongs": 0,
@@ -204,6 +205,7 @@ with open("include/variable_space_structs.h", "r") as varspace:
                 "caves_kosha_dead",
                 "rambi_enguarde_pickup",
                 "hud_bp_multibunch",
+                "homing_balloons",
             ]
             for y in set_variables["quality_of_life"]:
                 if set_variables["quality_of_life"][y]:
@@ -231,7 +233,7 @@ with open("include/variable_space_structs.h", "r") as varspace:
 
 # Editor: https://docs.google.com/spreadsheets/d/1UokoarKY6C56otoHMRUDCCMveaGUm8bGTOnaxjxDPR0/edit#gid=0
 move_csv = "move_placement.csv"
-permit = True  # Whether move csv overwrites data
+permit = False  # Whether move csv overwrites data
 if os.path.exists(move_csv) and permit:
     with open(move_csv, "r") as csv:
         csv_lines = csv.readlines()
