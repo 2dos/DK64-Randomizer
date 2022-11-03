@@ -1853,14 +1853,14 @@ door_locations = {
             group=5,
             logic=lambda l: True,
         ),
-        DoorData(
-            name="Fungi Forest: Inside the Mushroom - Along the Wall near Diddy's Kasplat",
-            map=Maps.ForestGiantMushroom,
-            logicregion=Regions.MushroomUpper,
-            location=[396.0, 610.0, 929.0, 174.0],
-            group=5,
-            logic=lambda l: True,
-        ),
+        # DoorData(
+        #     name="Fungi Forest: Inside the Mushroom - Along the Wall near Diddy's Kasplat",
+        #     map=Maps.ForestGiantMushroom,
+        #     logicregion=Regions.MushroomUpper,
+        #     location=[396.0, 610.0, 929.0, 174.0],
+        #     group=5,
+        #     logic=lambda l: True,
+        # ),
         DoorData(
             name="Fungi Forest: Inside the Mushroom - Along the Wall near Klump and Oranges",
             map=Maps.ForestGiantMushroom,

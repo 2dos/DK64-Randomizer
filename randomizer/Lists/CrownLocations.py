@@ -862,16 +862,16 @@ CrownLocations = {
             region=Regions.RandD,
             logic=lambda l: l.guitar and l.diddy,
         ),
-        CrownLocation(
-            map=Maps.FranticFactory,
-            name="Frantic Factory: Chunky R&D",
-            x=4574,
-            y=1336,
-            z=1350,
-            scale=0.4,
-            region=Regions.RandD,
-            logic=lambda l: l.triangle and l.chunky and l.punch,
-        ),
+        # CrownLocation(
+        #     map=Maps.FranticFactory,
+        #     name="Frantic Factory: Chunky R&D", # Entering a crown battle during the Toy Boss fight would break the fight until level re-entry
+        #     x=4574,
+        #     y=1336,
+        #     z=1350,
+        #     scale=0.4,
+        #     region=Regions.RandD,
+        #     logic=lambda l: l.triangle and l.chunky and l.punch,
+        # ),
         CrownLocation(
             map=Maps.FranticFactory,
             name="Frantic Factory: Near Car Race",
@@ -986,8 +986,7 @@ CrownLocations = {
             y=1890,
             z=2896,
             scale=0.25,
-            region=Regions.GloomyGalleonStart,
-            logic=lambda l: l.vines,
+            region=Regions.GalleonPastVines,
         ),
         CrownLocation(
             map=Maps.GloomyGalleon,
@@ -1537,7 +1536,7 @@ CrownLocations = {
         ),
         CrownLocation(
             map=Maps.ForestChunkyFaceRoom,
-            name="Fungi Forest - Faze Puzzle: Near Puzzle",
+            name="Fungi Forest - Face Puzzle: Near Puzzle",
             x=229,
             y=0,
             z=441,

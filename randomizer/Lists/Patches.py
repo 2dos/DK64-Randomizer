@@ -1414,7 +1414,7 @@ DirtPatchLocations = [
         z=1795.0,
         rotation=1103,
         group=1,
-        logicregion=Regions.CrystalCavesMain,
+        logicregion=Regions.CabinArea,
         logic=lambda l: l.shockwave,
     ),
     DirtPatchData(
@@ -1438,7 +1438,7 @@ DirtPatchLocations = [
         z=1761.0,
         rotation=3072,
         group=1,
-        logicregion=Regions.CrystalCavesMain,
+        logicregion=Regions.CabinArea,
         logic=lambda l: l.shockwave,
     ),
     DirtPatchData(
@@ -1450,7 +1450,7 @@ DirtPatchLocations = [
         z=1534.0,
         rotation=3111,
         group=1,
-        logicregion=Regions.CrystalCavesMain,
+        logicregion=Regions.CabinArea,
         logic=lambda l: l.shockwave,
     ),
     DirtPatchData(
@@ -1466,7 +1466,7 @@ DirtPatchLocations = [
         logic=lambda l: l.shockwave,
     ),
     DirtPatchData(
-        name="Crystal Caves: Next to Lankey's 1DC - upper",
+        name="Crystal Caves: Next to Lanky's 1DC - upper",
         level=Levels.CrystalCaves,
         map_id=Maps.CrystalCaves,
         x=2404.0,
@@ -1474,7 +1474,7 @@ DirtPatchLocations = [
         z=1947.0,
         rotation=227,
         group=1,
-        logicregion=Regions.CrystalCavesMain,
+        logicregion=Regions.CabinArea,
         logic=lambda l: l.shockwave,
     ),
     DirtPatchData(
@@ -1486,7 +1486,7 @@ DirtPatchLocations = [
         z=2370.0,
         rotation=2400,
         group=1,
-        logicregion=Regions.CrystalCavesMain,
+        logicregion=Regions.CabinArea,
         logic=lambda l: l.shockwave,
     ),
     DirtPatchData(
@@ -1498,7 +1498,7 @@ DirtPatchLocations = [
         z=2494.0,
         rotation=2225,
         group=1,
-        logicregion=Regions.CrystalCavesMain,
+        logicregion=Regions.CabinArea,
         logic=lambda l: l.shockwave,
     ),
     DirtPatchData(
@@ -1534,7 +1534,7 @@ DirtPatchLocations = [
         z=1285.0,
         rotation=1092,
         group=3,
-        logicregion=Regions.CrystalCavesMain,
+        logicregion=Regions.IglooArea,
         logic=lambda l: l.shockwave,
     ),
     DirtPatchData(
@@ -1546,7 +1546,7 @@ DirtPatchLocations = [
         z=1412.0,
         rotation=3276,
         group=3,
-        logicregion=Regions.CrystalCavesMain,
+        logicregion=Regions.IglooArea,
         logic=lambda l: l.shockwave,
     ),
     DirtPatchData(
