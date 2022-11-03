@@ -75,12 +75,11 @@ LogicRegions = {
     ]),
 
     Regions.Library: Region("Library", "Castle Interior", Levels.CreepyCastle, False, -1, [
-        # Another case where you're supposed to use Strong Kong but it can be brute forced
-        LocationLogic(Locations.CastleDonkeyLibrary, lambda l: l.superDuperSlam and l.isdonkey and (l.strongKong or l.settings.damage_amount == "default")),
+        LocationLogic(Locations.CastleDonkeyLibrary, lambda l: l.superDuperSlam and l.isdonkey and l.strongKong),
     ], [], [
         TransitionFront(Regions.CreepyCastleMedals, lambda l: True),
         TransitionFront(Regions.CreepyCastleMain, lambda l: True, Transitions.CastleLibraryStartToMain),
-        TransitionFront(Regions.CreepyCastleMain, lambda l: l.superDuperSlam and l.isdonkey and (l.strongKong or l.settings.damage_amount == "default"), Transitions.CastleLibraryEndToMain),
+        TransitionFront(Regions.CreepyCastleMain, lambda l: l.superDuperSlam and l.isdonkey and l.strongKong, Transitions.CastleLibraryEndToMain),
     ]),
 
     Regions.Ballroom: Region("Ballroom", "Castle Interior", Levels.CreepyCastle, False, -1, [
