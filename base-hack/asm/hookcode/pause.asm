@@ -48,9 +48,8 @@ PauseExtraSlotCustomCode:
     ADDIU 	at, r0, 3
     BNE 	at, v0, PauseExtraSlotCustomCode_Finish
     NOP
-    ADDIU 	a0, r0, 0x22
-    JAL 	0x805FF378 // Init Map Change
-    ADDIU 	a1, r0, 0
+    JAL 	warpToIsles // Init Map Change
+    NOP
     JAL 	resetMapContainer
     NOP
     J 		0x806A8A20
@@ -59,3 +58,14 @@ PauseExtraSlotCustomCode:
     PauseExtraSlotCustomCode_Finish:
         J 		0x806A880C
         ADDIU 	at, r0, 2
+
+PauseCounterCap:
+    ANDI    t4, s4, 0xFF
+    ADDIU   t8, r0, 4
+    BNE     t8, s3, PauseCounterCap_Finish
+    NOP
+    ADDIU   s3, r0, 3
+
+    PauseCounterCap_Finish:
+        J       0x806A98A0
+        OR      t8, t6, s2

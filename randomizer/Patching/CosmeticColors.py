@@ -377,7 +377,6 @@ def applyKrushaKong(spoiler: Spoiler):
         if not spoiler.settings.disco_chunky:
             slots.append("chunky")  # Only add Chunky if Disco not on (People with disco on probably don't want Krusha as Chunky)
         spoiler.settings.krusha_slot = random.choice(slots)
-    print(spoiler.settings.krusha_slot)
     ROM().seek(spoiler.settings.rom_data + 0x11C)
     if spoiler.settings.krusha_slot == "no_slot":
         ROM().write(255)

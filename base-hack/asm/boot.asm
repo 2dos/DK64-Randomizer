@@ -239,6 +239,9 @@ SpriteFixHook:
 CorrectCBCounterHook:
 	J 	CorrectCBCounter
 	NOP
+PauseCounterCapHook:
+	J 	PauseCounterCap
+	NOP
 
 loadExtraHooks:
 	LUI t3, hi(InstanceScriptHook)
@@ -437,6 +440,12 @@ loadExtraHooks:
 	LUI t4, 0x806B
 	SW t3, 0x8804 (t4) // Store Hook
 	SW r0, 0x8808 (t4) // Store NOP
+	
+	LUI t3, hi(PauseCounterCapHook)
+	LW t3, lo(PauseCounterCapHook) (t3)
+	LUI t4, 0x806B
+	SW t3, 0x9898 (t4) // Store Hook
+	SW r0, 0x989C (t4) // Store NOP
 
 	loadExtraHooks_0:
 	LUI t3, hi(AutowalkFixHook)

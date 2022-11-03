@@ -1239,6 +1239,7 @@ typedef struct quality_options {
 	unsigned char caves_kosha_dead : 1;
 	unsigned char rambi_enguarde_pickup : 1;
 	unsigned char hud_bp_multibunch : 1;
+	unsigned char homing_balloons : 1;
 } quality_options;
 
 typedef struct image_cache_struct {

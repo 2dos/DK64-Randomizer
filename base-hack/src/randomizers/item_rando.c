@@ -1104,3 +1104,11 @@ void CheckKasplatSpawnBitfield(void) {
         }
     }
 }
+
+int canItemPersist(void) {
+    int actor = CurrentActorPointer_0->actorType;
+    if ((actor == 0x2F) || (actor == 0x36)) {
+        return isCutsceneActive();
+    }
+    return 1;
+}

@@ -50,6 +50,8 @@ typedef struct varspace {
 	/* 0x0AF */ char always_show_coin_cbs; // 0 = No (Vanilla), 1 = Yes
 	/* 0x0B0 */ quality_options quality_of_life; // Size: 2
 	/* 0x0B2 */ char unk_B0[0x10E - 0xB2];
+	/* 0x10C */ unsigned char starting_map; // 0 = Isles - from escape
+	/* 0x10D */ unsigned char starting_exit;
 	/* 0x10E */ unsigned char tns_portal_rando_on;
 	/* 0x10F */ unsigned char remove_oscillation_effects; // Removes water oscillation + Seasick Ship interior rocking
 	/* 0x110 */ unsigned char arcade_reward_is_gb; // Is reward for R2 of arcade a GB
