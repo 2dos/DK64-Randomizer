@@ -872,6 +872,13 @@ static const unsigned char dance_skip_ban_maps[] = {
 };
 
 int canDanceSkip(void) {
+    if (Rando.quality_of_life.dance_skip) {
+        for (int i = 0; i < sizeof(dance_skip_ban_maps); i++) {
+            if (dance_skip_ban_maps[i] == CurrentMap) {
+                return 0;
+            }
+        }
+    }
     if ((Player->yPos - Player->floor) >= 100.0f) {
         return 1;
     }
@@ -880,17 +887,6 @@ int canDanceSkip(void) {
     }
     if ((Player->grounded_bitfield & 4) && ((Player->water_floor - Player->floor) > 20.0f)) {
         return 1;
-    }
-    if (Rando.quality_of_life.dance_skip) {
-        int is_banned_map = 0;
-        for (int i = 0; i < sizeof(dance_skip_ban_maps); i++) {
-            if (dance_skip_ban_maps[i] == CurrentMap) {
-                is_banned_map = 1;
-            }
-        }
-        if (!is_banned_map) {
-            return 1;
-        }
     }
     return 0;
 }
@@ -993,8 +989,14 @@ void getItem(int object_type) {
             // Key
             keyGrabHook(0x12, 0x3F800000);
             if (!canDanceSkip()) {
-                int action = 0x41; // Key Get
-                if (CurrentMap == 0x11) {
+                unsigned char boss_list[] = {0x08, 0xC5, 0x9A, 0x6F, 0x53, 0xC4, 0xC7};
+                int action = 0;
+                for (int i = 0; i < sizeof(boss_list); i++) {
+                    if (CurrentMap == boss_list[i]) {
+                        action = 0x41; // Key Get
+                    }
+                }
+                if (action == 0) {
                     action = 0x29; // GB Get
                 }
                 setAction(action, 0, 0);
@@ -1021,7 +1023,6 @@ static unsigned char stored_kasplat[STORED_COUNT] = {};
 
 int setupHook(int map) {
     int index = getParentIndex(map);
-    int place_new = 1;
     // Wipe array of items not in parent chain
     for (int i = 0; i < STORED_COUNT; i++) {
         if (stored_maps[i] != -1) {
@@ -1032,6 +1033,7 @@ int setupHook(int map) {
         }
     }
     // Store Old Bitfield
+    int place_new = 1;
     for (int i = 0; i < STORED_COUNT; i++) {
         if (stored_maps[i] == PreviousMap) {
             place_new = 0;
@@ -1044,6 +1046,7 @@ int setupHook(int map) {
                 if (stored_maps[i] == -1) {
                     stored_kasplat[i] = KasplatSpawnBitfield;
                     stored_maps[i] = PreviousMap;
+                    place_new = 0;
                 }
             }
         }

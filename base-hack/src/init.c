@@ -238,6 +238,10 @@ void initHack(int source) {
 				*(int*)(0x80681158) = 0x0C000000 | (((int)&completeBonus & 0xFFFFFF) >> 2); // Modify Function Call
 				*(short*)(0x80681962) = 1; // Make bonus noclip	
 			}
+			if (Rando.tns_portal_rando_on) {
+				// Adjust warp code to make camera be behind player, loading portal
+				*(int*)(0x806C97D0) = 0xA06E0007; // SB $t6, 0x7 ($v1)
+			}
 			// Item Get
 			*(int*)(0x806F64C8) = 0x0C000000 | (((int)&getItem & 0xFFFFFF) >> 2); // Modify Function Call
 			*(int*)(0x806F6BA8) = 0x0C000000 | (((int)&getItem & 0xFFFFFF) >> 2); // Modify Function Call
