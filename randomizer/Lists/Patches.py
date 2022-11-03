@@ -266,7 +266,6 @@ DirtPatchLocations = [
         group=7,
         logicregion=Regions.HideoutHelmLobby,
         logic=lambda l: l.gorillaGone and l.ischunky and l.shockwave,
-        
     ),
     DirtPatchData(
         name="DK Isles - Hideout Helm Lobby: Blueprint Platform",
@@ -315,7 +314,6 @@ DirtPatchLocations = [
         group=10,
         logicregion=Regions.FranticFactoryLobby,
         logic=lambda l: l.grab and l.shockwave,
-        
     ),
     DirtPatchData(
         name="DK Isles - Gloomy Galleon Lobby: Behind Mini Monkey Gate",
@@ -509,7 +507,6 @@ DirtPatchLocations = [
         group=8,
         logicregion=Regions.JapesBeyondCoconutGate2,
         logic=lambda l: l.shockwave,
-        
     ),
     DirtPatchData(
         name="Jungle Japes: On the useless Lanky ramp",
@@ -522,7 +519,6 @@ DirtPatchLocations = [
         group=2,
         logicregion=Regions.JapesBeyondCoconutGate2,
         logic=lambda l: l.handstand and l.shockwave,
-        
     ),
     DirtPatchData(
         name="Jungle Japes: Cranky-tunnel Crossing",
@@ -571,7 +567,6 @@ DirtPatchLocations = [
         group=2,
         logicregion=Regions.JungleJapesMain,
         logic=lambda l: l.shockwave,
-        
     ),
     DirtPatchData(
         name="Jungle Japes: Inside the first tunnel - later half",
@@ -658,7 +653,6 @@ DirtPatchLocations = [
         group=5,
         logicregion=Regions.AngryAztecMain,
         logic=lambda l: l.shockwave,
-        
     ),
     DirtPatchData(
         name="Angry Aztec: Entrance tunnel - near DK door",
@@ -803,7 +797,6 @@ DirtPatchLocations = [
         group=4,
         logicregion=Regions.LlamaTemple,
         logic=lambda l: l.shockwave,
-        
     ),
     DirtPatchData(
         name="Angry Aztec - Aztec Llama Temple: Next to Llama Right",
@@ -1084,7 +1077,7 @@ DirtPatchLocations = [
     #     group=1,
     #     logicregion=Regions.LighthousePlatform,
     #     logic=lambda l: l.shockwave,
-    #     
+    #
     # ),
     DirtPatchData(
         name="Gloomy Galleon - Galleon Lighthouse: Behind Whomp's Fortress floor 2",
@@ -1496,7 +1489,6 @@ DirtPatchLocations = [
         group=1,
         logicregion=Regions.CabinArea,
         logic=lambda l: l.shockwave,
-        
     ),
     # DirtPatchData(
     #     name="Crystal Caves: Next to Donkey's 1DC - right",
@@ -1509,7 +1501,7 @@ DirtPatchLocations = [
     #     group=1,
     #     logicregion=Regions.CabinArea,
     #     logic=lambda l: l.shockwave,
-    #     
+    #
     # ),
     DirtPatchData(
         name="Crystal Caves - Caves Frozen Castle: Next to Slam Puzzle - left",

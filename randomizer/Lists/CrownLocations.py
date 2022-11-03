@@ -628,7 +628,6 @@ CrownLocations = {
             z=2200,
             scale=0.45,
             region=Regions.LlamaTemple,
-            
         ),
         CrownLocation(
             map=Maps.AztecLlamaTemple,
@@ -825,7 +824,6 @@ CrownLocations = {
             z=1348,
             scale=0.45,
             region=Regions.Testing,
-            
         ),
         CrownLocation(
             map=Maps.FranticFactory,
@@ -1026,7 +1024,6 @@ CrownLocations = {
             z=4071,
             scale=0.2,
             region=Regions.LighthousePlatform,
-            
         ),
         CrownLocation(
             map=Maps.GloomyGalleon,
@@ -1771,7 +1768,6 @@ CrownLocations = {
             z=2312,
             scale=0.35,
             region=Regions.CabinArea,
-            
         ),
         CrownLocation(
             map=Maps.CrystalCaves,
@@ -2555,7 +2551,6 @@ CrownLocations = {
             scale=0.4,
             region=Regions.FranticFactoryLobby,
             logic=lambda l: l.grab and l.donkey,
-            
         ),
         CrownLocation(
             map=Maps.GloomyGalleonLobby,
@@ -2631,7 +2626,6 @@ CrownLocations = {
             scale=0.3,
             region=Regions.HideoutHelmLobby,
             logic=lambda l: l.vines and l.gorillaGone and l.ischunky,
-            
         ),
         CrownLocation(
             map=Maps.TrainingGrounds,
