@@ -133,6 +133,18 @@ void initHack(int source) {
 	if (LoadedHooks == 0) {
 		if ((source == 1) || (CurrentMap == 0x28)) {
 			DebugInfoOn = 1;
+			if (Rando.starting_map == 0) {
+				// Default
+				Rando.starting_map = 0x22;
+				Rando.starting_exit = 0;
+			} else {
+				*(short*)(0x8071454A) = Rando.starting_map;
+				*(int*)(0x80714550) = 0x24050000 | Rando.starting_exit;
+			}
+			setPrevSaveMap();
+			if (Rando.fast_start_beginning) {
+				*(int*)(0x80714540) = 0;
+			}
 			*(int*)(0x80731F78) = 0; // Debug 1 Column
 			*(int*)(0x8060E04C) = 0; // Prevent moves overwrite
 			*(short*)(0x8060DDAA) = 0; // Writes readfile data to moves
@@ -680,8 +692,7 @@ void initHack(int source) {
 				*(int*)(0x806F9394) = 0;
 				*(int*)(0x806F5564) = 0x0C000000 | (((int)&itemGrabHook & 0xFFFFFF) >> 2); // Item Get Hook - Post Flag
 				*(int*)(0x806BD798) = 0x0C000000 | (((int)&KLumsyText & 0xFFFFFF) >> 2); // K. Lumsy code hook
-				*(int*)(0x806A6CC0) = 0; // Prevent BP Despawn
-				*(int*)(0x806A6CDC) = 0; // Prevent BP Despawn
+				*(int*)(0x806A6CA8) = 0x0C000000 | (((int)&canItemPersist & 0xFFFFFF) >> 2); // Item Despawn Check
 				*(int*)(0x806A741C) = 0; // Prevent Key Twinkly Sound
 				*(int*)(0x80688714) = 0x0C000000 | (((int)&setupHook & 0xFFFFFF) >> 2); // Setup Load Hook
 				// BP Table
@@ -941,6 +952,14 @@ void initHack(int source) {
 				*(int*)(0x806F9D14) = 0x0C000000 | (((int)&initHUDDirection & 0xFFFFFF) >> 2); // HUD Direction
 				*(int*)(0x806FA62C) = 0; // NOP: Enable Number Rendering
 				*(int*)(0x806FA56C) = 0; // NOP: Prevent opacity check
+			}
+			if (Rando.quality_of_life.homing_balloons) {
+				// Make homing ammo target balloons
+				*(short*)(0x80694F6A) = 10; // Coconut
+				*(short*)(0x80692B82) = 10; // Peanuts
+				*(short*)(0x8069309A) = 10; // Grape
+				*(short*)(0x80695406) = 10; // Feather
+				*(short*)(0x80694706) = 10; // Pineapple
 			}
 			// GetOut Timer
 			*(unsigned short*)(0x806B7ECA) = 125; // 0x8078 for center-bottom ms timer

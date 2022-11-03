@@ -22,7 +22,6 @@ extern void level_order_rando_funcs(void);
 extern void unlockKongs(void);
 extern void unlockMoves(void);
 extern void tagAnywhere(int prev_crystals);
-extern void islesSpawn(void);
 extern void applyFastStart(void);
 extern void fixCastleAutowalk(void);
 extern void openCrownDoor(void);
@@ -53,8 +52,11 @@ extern void disable_krool_health_refills(void);
 extern void pre_turn_keys(void);
 extern void auto_turn_keys(void);
 extern void handle_WTI(void);
+extern void warpToIsles(void);
 extern void no_enemy_drops(void);
 extern void adjust_galleon_water(void);
+
+extern int canItemPersist(void);
 
 extern int convertSubIDToIndex(short obj_index);
 extern int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, int param2);
@@ -131,6 +133,7 @@ extern void handleSpiderTrapCode(void);
 extern void fastWarpShockwaveFix(void);
 extern int fixDilloTNTPads(void* actor);
 extern int canPlayJetpac(void);
+extern void setPrevSaveMap(void);
 
 extern move_block* getMoveBlock(void);
 extern void setLocationStatus(location_list location_index);

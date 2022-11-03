@@ -742,6 +742,10 @@ void initOptionScreen(void) {
 
 static unsigned char previous_map_save = 0x22;
 
+void setPrevSaveMap(void) {
+	previous_map_save = Rando.starting_map;
+}
+
 int updateLevelIGT(void) {
 	int new_igt = getNewSaveTime();
 	int sum = 0;

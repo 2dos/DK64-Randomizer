@@ -6,3 +6,4 @@
 .definelabel cancelPausedCutscene, 0x8061CB08
 .definelabel pauseCutscene, 0x8061CAD8
 .definelabel updateCutscene, 0x806F3DB0
+.definelabel isCutsceneActive, 0x8061CB50

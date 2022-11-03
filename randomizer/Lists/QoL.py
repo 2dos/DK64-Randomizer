@@ -23,6 +23,7 @@ QoLItems = [
     QoLItem("Fast Picture Taking", 2, "The picture taking sequence is heavily sped up, with lag being significantly reduced on BizHawk."),
     QoLItem("HUD Hotkey", 14, "Pressing D-Pad Up will show the total amount of colored bananas acquired in the level, as well as the blueprint count for that Kong."),
     QoLItem("Ammo Swap", 7, "Homing Ammo and Standard ammo can be swapped between (upon having Homing Ammo) by pressing D-Pad Down."),
+    QoLItem("Homing Balloons", 15, "Homing Ammo homes in on Banana Balloons."),
     QoLItem("Fast Transform Animation", 6, "Transform barrels will not go through the morphing animation."),
     QoLItem("Troff n Scoff Audio Indicator", 8, "A bell ding will play upon collecting enough colored bananas to unlock the level's boss."),
     QoLItem("Lowered Aztec Lobby Bonus", 3, "The bonus barrel in Aztec Lobby is lowered to make it easier to reach."),
