@@ -354,6 +354,7 @@ class Settings:
         self.helm_hurry = False
         self.colorblind_mode = "off"
         self.win_condition = "beat_krool"
+        self.key_8_helm = False
 
     def shuffle_prices(self):
         """Price randomization. Reuseable if we need to reshuffle prices."""
@@ -498,6 +499,8 @@ class Settings:
             ItemList[Items.CreepyCastleKey].playthrough = False
         if Events.HelmKeyTurnedIn not in self.krool_keys_required:
             ItemList[Items.HideoutHelmKey].playthrough = False
+        if self.key_8_helm:
+            LocationList[Locations.HelmKey].type = Types.Constant
 
         # Banana medals
         if self.random_medal_requirement:
