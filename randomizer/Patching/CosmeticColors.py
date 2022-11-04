@@ -306,6 +306,12 @@ def writeColorToROM(color, table_index, file_index):
     val_g = int((mask[1] >> 3) << 6)
     val_b = int((mask[2] >> 3) << 1)
     rgba_val = val_r | val_g | val_b | 1
+    color2 = "#FFFFFF"
+    mask2 = getRGBFromHash(color2)
+    val_r2= int((mask2[0] >> 3) << 11)
+    val_g2 = int((mask2[1] >> 3) << 6)
+    val_b2 = int((mask2[2] >> 3) << 1)
+    rgba_val2 = val_r2 | val_g2 | val_b2 | 1
     bytes_array = []
     for y in range(42):
         for x in range(32):
@@ -329,9 +335,9 @@ def overwrite_object_colors(spoiler: Spoiler):
     mode = spoiler.settings.colorblind_mode
     if mode != "off":
         if mode == "prot-deut":
-            color_bases = ["#FFB000", "#FF6666", "#00A3FF", "#E1F90C", "#4C2E2A"]
+            color_bases = ["#FFDC2B", "#0072FF", "#5A4C1C", "#FFFFFF", "#FFFFFF"]
         elif mode == "trit":
-            color_bases = ["#FFC302", "#FF0000", "#66C7FF", "#1D439E", "#000000"]
+            color_bases = ["#FFA4A4", "#C72020", "#13C4D8", "#FFFFFF", "#FFFFFF"]
         file = 175
         dk_single = getFile(7, file, False, 44, 44)
         dk_single = dk_single.resize((21, 21))
