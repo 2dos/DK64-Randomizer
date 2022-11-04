@@ -128,7 +128,6 @@ int getKeyItem(int old_flag) {
 	return 0;
 }
 
-static const short kong_flags[] = {385,6,70,66,117};
 void initHack(int source) {
 	if (LoadedHooks == 0) {
 		if ((source == 1) || (CurrentMap == 0x28)) {
@@ -195,17 +194,8 @@ void initHack(int source) {
 			WinCondition = Rando.win_condition;
 			ItemRandoOn = Rando.item_rando;
 			KrushaSlot = Rando.krusha_slot;
-			changeCharSpawnerFlag(0x14, 2, 93); // Tie llama spawn to lanky help me cutscene flag
-			changeCharSpawnerFlag(0x7, 1, kong_flags[(int)Rando.free_target_japes]);
-			changeCharSpawnerFlag(0x10, 0x13, kong_flags[(int)Rando.free_target_ttemple]);
-			changeCharSpawnerFlag(0x14, 1, kong_flags[(int)Rando.free_target_llama]);
-			changeCharSpawnerFlag(0x1A, 1, kong_flags[(int)Rando.free_target_factory]);
-			alterGBKong(0x22, 0x4, Rando.starting_kong); // First GB
-			alterGBKong(0x7, 0x69, Rando.free_source_japes); // Front of Diddy Cage GB
-			alterGBKong(0x7, 0x48, Rando.free_source_japes); // In Diddy's Cage
-			alterGBKong(0x10, 0x5B, Rando.free_source_ttemple); // In Tiny's Cage
-			alterGBKong(0x14, 0x6C, Rando.free_source_llama); // Free Lanky GB
-			alterGBKong(0x1A, 0x78, Rando.free_source_factory); // Free Chunky GB
+			// Kong Rando
+			initKongRando();
 			// Savefile Expansion		
 			int balloon_patch_count = 300; // Normally 121
 			expandSaveFile(0x100,balloon_patch_count);

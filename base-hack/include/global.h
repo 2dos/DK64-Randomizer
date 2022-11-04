@@ -57,6 +57,7 @@ extern void no_enemy_drops(void);
 extern void adjust_galleon_water(void);
 
 extern int canItemPersist(void);
+extern void initKongRando(void);
 
 extern int convertSubIDToIndex(short obj_index);
 extern int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, int param2);
@@ -217,6 +218,7 @@ extern int* controlKeyText(int* dl);
 extern void keyGrabHook(int song, int vol);
 extern int itemGrabHook(int collectable_type, int obj_type, int is_homing);
 extern int getKeyFlag(int index);
+extern int getKongFlag(int kong_index);
 extern void KLumsyText(void);
 extern void PotionCode(void);
 extern int getMoveProgressiveFlagType(int flag);
@@ -226,3 +228,5 @@ extern void CheckKasplatSpawnBitfield(void);
 
 extern unsigned int cs_skip_db[432];
 extern bonus_barrel_info bonus_data[95];
+
+extern const short kong_flags[5];
