@@ -178,6 +178,11 @@ void initHack(int source) {
 			// PPUnch
 			*(int*)(0x806E48F4) = 0x31810002; // ANDI $at $t4 2
 			*(int*)(0x806E48F8) = 0x50200074; // BEQL $at $r0 0xF
+			if (Rando.krusha_slot == 4) {
+				Rando.disco_chunky = 0;
+			} else if (Rando.krusha_slot > 4) {
+				Rando.krusha_slot = -1;
+			}
 			DamageMultiplier = Rando.damage_multiplier;
 			WarpToIslesEnabled = Rando.warp_to_isles_enabled;
 			permaLossMode = Rando.perma_lose_kongs;
@@ -189,11 +194,7 @@ void initHack(int source) {
 			ShorterBosses = Rando.short_bosses;
 			WinCondition = Rando.win_condition;
 			ItemRandoOn = Rando.item_rando;
-			if (Rando.krusha_slot == 4) {
-				Rando.disco_chunky = 0;
-			} else if (Rando.krusha_slot > 4) {
-				Rando.krusha_slot = -1;
-			}
+			KrushaSlot = Rando.krusha_slot;
 			changeCharSpawnerFlag(0x14, 2, 93); // Tie llama spawn to lanky help me cutscene flag
 			changeCharSpawnerFlag(0x7, 1, kong_flags[(int)Rando.free_target_japes]);
 			changeCharSpawnerFlag(0x10, 0x13, kong_flags[(int)Rando.free_target_ttemple]);
@@ -237,6 +238,13 @@ void initHack(int source) {
 			if (Rando.resolve_bonus) {
 				*(int*)(0x80681158) = 0x0C000000 | (((int)&completeBonus & 0xFFFFFF) >> 2); // Modify Function Call
 				*(short*)(0x80681962) = 1; // Make bonus noclip	
+			}
+			if (Rando.tns_portal_rando_on) {
+				// Adjust warp code to make camera be behind player, loading portal
+				*(int*)(0x806C97D0) = 0xA06E0007; // SB $t6, 0x7 ($v1)
+			}
+			if (Rando.remove_rock_bunch) {
+				*(int*)(0x8069C2FC) = 0;
 			}
 			// Item Get
 			*(int*)(0x806F64C8) = 0x0C000000 | (((int)&getItem & 0xFFFFFF) >> 2); // Modify Function Call

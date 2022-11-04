@@ -212,7 +212,9 @@ void spawnBonusReward(int object, int x_f, int y_f, int z_f, int unk0, int cutsc
     if ((index > 0) && (index < 95)) {
         object = bonus_data[index].spawn_actor;
     }
-    spawnActorWithFlag(object, x_f, y_f, z_f, unk0, cutscene, flag, unk1);
+    if (object != 153) {
+        spawnActorWithFlag(object, x_f, y_f, z_f, unk0, cutscene, flag, unk1);
+    }
 }
 
 void spawnRewardAtActor(int object, int flag) {
@@ -220,13 +222,17 @@ void spawnRewardAtActor(int object, int flag) {
     if ((index > 0) && (index < 95)) {
         object = bonus_data[index].spawn_actor;
     }
-    spawnObjectAtActor(object, flag);
+    if (object != 153) {
+        spawnObjectAtActor(object, flag);
+    }
 }
 
 void spawnMinecartReward(int object, int flag) {
     for (int i = 0; i < 95; i++) {
         if (bonus_data[i].flag == flag) {
-            spawnObjectAtActor(bonus_data[i].spawn_actor, flag);
+            if (bonus_data[i].spawn_actor != 153) {
+                spawnObjectAtActor(bonus_data[i].spawn_actor, flag);
+            }
             return;
         }
     }
@@ -237,7 +243,9 @@ void spawnCrownReward(int object, int x_f, int y_f, int z_f, int unk0, int cutsc
     if (new_obj != 0) {
         object = new_obj;
     }
-    spawnActorWithFlag(object, x_f, y_f, z_f, unk0, cutscene, flag, unk1);
+    if (object != 153) {
+        spawnActorWithFlag(object, x_f, y_f, z_f, unk0, cutscene, flag, unk1);
+    }
 }
 
 void spawnBossReward(int object, int x_f, int y_f, int z_f, int unk0, int cutscene, int flag, int unk1) {
@@ -872,6 +880,9 @@ static const unsigned char dance_skip_ban_maps[] = {
 };
 
 int canDanceSkip(void) {
+    if (CurrentMap == 0x6F) {
+        return 0;
+    }
     if ((Player->yPos - Player->floor) >= 100.0f) {
         return 1;
     }
@@ -993,8 +1004,14 @@ void getItem(int object_type) {
             // Key
             keyGrabHook(0x12, 0x3F800000);
             if (!canDanceSkip()) {
-                int action = 0x41; // Key Get
-                if (CurrentMap == 0x11) {
+                unsigned char boss_list[] = {0x08, 0xC5, 0x9A, 0x6F, 0x53, 0xC4, 0xC7};
+                int action = 0;
+                for (int i = 0; i < sizeof(boss_list); i++) {
+                    if (CurrentMap == boss_list[i]) {
+                        action = 0x41; // Key Get
+                    }
+                }
+                if (action == 0) {
                     action = 0x29; // GB Get
                 }
                 setAction(action, 0, 0);
@@ -1021,7 +1038,6 @@ static unsigned char stored_kasplat[STORED_COUNT] = {};
 
 int setupHook(int map) {
     int index = getParentIndex(map);
-    int place_new = 1;
     // Wipe array of items not in parent chain
     for (int i = 0; i < STORED_COUNT; i++) {
         if (stored_maps[i] != -1) {
@@ -1032,6 +1048,7 @@ int setupHook(int map) {
         }
     }
     // Store Old Bitfield
+    int place_new = 1;
     for (int i = 0; i < STORED_COUNT; i++) {
         if (stored_maps[i] == PreviousMap) {
             place_new = 0;
@@ -1044,6 +1061,7 @@ int setupHook(int map) {
                 if (stored_maps[i] == -1) {
                     stored_kasplat[i] = KasplatSpawnBitfield;
                     stored_maps[i] = PreviousMap;
+                    place_new = 0;
                 }
             }
         }

@@ -75,7 +75,19 @@ int* drawDPad(int* dl) {
     }
     if (Rando.quality_of_life.hud_bp_multibunch) {
         // Blueprint Show
-        dl = drawImage(dl, 116, RGBA16, 32, 32, DPAD_X + 75, DPAD_Y, ICON_SCALE, ICON_SCALE, 0xFF);
+        int applied_requirement = 75;
+        if (Rando.medal_cb_req > 0) {
+            applied_requirement = Rando.medal_cb_req;
+        }
+        int mdl_opacity = 0x80;
+        int world = getWorld(CurrentMap, 0);
+        if (world < 7) {
+            int kong_sum = MovesBase[(int)Character].tns_cb_count[world] + MovesBase[(int)Character].cb_count[world];
+            if (kong_sum >= applied_requirement) {
+                mdl_opacity = 0xFF;
+            }
+        }
+        dl = drawImage(dl, 116, RGBA16, 32, 32, DPAD_X + 75, DPAD_Y, ICON_SCALE, ICON_SCALE, mdl_opacity);
     }
     return dl;
 }

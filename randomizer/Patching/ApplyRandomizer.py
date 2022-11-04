@@ -370,7 +370,11 @@ def patching_response(responded_data):
 
     # Show CBs & Coins
     if spoiler.settings.cb_rando:
+        # Show CBs/Coins
         ROM().seek(sav + 0xAF)
+        ROM().write(1)
+        # Remove Rock Bunch
+        ROM().seek(sav + 0x10B)
         ROM().write(1)
 
     # Wrinkly Rando

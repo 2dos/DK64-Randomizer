@@ -105,10 +105,10 @@ file_dict = [
         "texture_format": "rgba5551",
     },
     {
-        "name": "Blueprint Image",
+        "name": "Medal Image",
         "pointer_table_index": 14,
         "file_index": 116,
-        "source_file": "assets/Non-Code/file_screen/blueprint.png",
+        "source_file": "assets/Non-Code/displays/medal.png",
         "texture_format": "rgba5551",
     },
     {
