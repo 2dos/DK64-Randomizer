@@ -16,7 +16,17 @@ ac_table = 5
 # G_MTX:
 # - Actor: 0x4
 # - M2: 0x9
+# G_DL:
+# - Actor: 0x5
+# - M2: ?
 
+class BoneVertex:
+    """Store information relating to bone vertices in actors."""
+
+    def __init__(self, start, count):
+        """Initialize with given data."""
+        self.start = start
+        self.count = count
 
 def portalModel_M2(vtx_file, dl_file, overlay_dl_file, model_name, base):
     """Convert model two model file from various source files."""
@@ -153,6 +163,76 @@ def portalModel_Actor(vtx_file, dl_file, model_name, base):
     if os.path.exists(temp_file):
         os.remove(temp_file)
 
+def portKongDL(base_file, new_file, base_vtx, new_vtx, dyn_textures, vtx_adjustments):
+    bone_slot = 0
+    bone_vtx_lst = []
+    bone_vtx = []
+    vtx_load_count = 0
+    with open(new_file, "w+b") as new:
+        data = [
+            0x01008010,
+            0x08000710,
+            0x03000000,
+            0x0000000E,
+        ]
+        # for d in data:
+        #     new.write(d.to_bytes(4, "big"))
+        with open(base_file, "rb") as old:
+            new.write(old.read())
+        dl_count = int(new.tell() / 0x8)
+        for func in range(dl_count):
+            new.seek(func * 8)
+            command_head = int.from_bytes(new.read(1), "big")
+            new.seek(func * 8)
+            if command_head == 0xDA:
+                new.write((0).to_bytes(8, "big"))
+            elif command_head == 0xFD:
+                new.seek((func * 8) + 4)
+                dyn_texture_head = int.from_bytes(new.read(1), "big")
+                new.seek((func * 8) + 4)
+                if dyn_texture_head in dyn_textures:
+                    tex_idx = dyn_textures[dyn_texture_head]
+                    new.write(tex_idx.to_bytes(4, "big"))
+            elif command_head == 0x01:
+                new.seek((func * 8) + 4)
+                new.write((8).to_bytes(1, "big"))
+                new.seek((func * 8) + 3)
+                vtx_chunk_count = int(int.from_bytes(new.read(1), "big") / 2)
+                vtx_chunk_start = int.from_bytes(new.read(4), "big") & 0xFFFFFF
+                bone_vtx.append(BoneVertex(vtx_chunk_start, vtx_chunk_count))
+                vtx_load_count += 1
+            elif command_head == 0xDE:
+                new.write((0).to_bytes(8, "big"))
+                bone_slot += 1
+                bone_vtx_lst.append(bone_vtx)
+                bone_vtx = []
+        bone_slot += 1
+        bone_vtx_lst.append(bone_vtx)
+    # print(len(bone_vtx_lst))
+    # print(hex(vtx_load_count))
+    # print(bone_vtx_lst)
+    with open(new_vtx, "w+b") as new:
+        with open(base_vtx, "rb") as old:
+            new.write(old.read())
+        adjusted = []
+        for adj_idx, adj_mtx in enumerate(vtx_adjustments):
+            if adj_idx < len(bone_vtx_lst) and len(adj_mtx) == 3:
+                bone_lst = bone_vtx_lst[adj_idx]
+                for vtx_info in bone_lst:
+                    for vtx in range(vtx_info.count):
+                        vtx_index = int(vtx_info.start / 0x10) + vtx
+                        if vtx_index not in adjusted:
+                            adjusted.append(vtx_index)
+                            for c in range(3):
+                                new.seek(vtx_info.start + (0x10 * vtx) + (c * 2))
+                                val = int.from_bytes(new.read(2), "big")
+                                if val > 0x7FFF:
+                                    val -= 65536
+                                val += list(adj_mtx)[c]
+                                if val < 0:
+                                    val += 65536
+                                new.seek(vtx_info.start + (0x10 * vtx) + (c * 2))
+                                new.write(val.to_bytes(2, "big"))
 
 model_dir = "assets/Non-Code/models/"
 # Coins
@@ -172,4 +252,56 @@ portalModel_Actor(f"{model_dir}potion_lanky.vtx", None, "potion_lanky", 0xB8)
 portalModel_Actor(f"{model_dir}potion_tiny.vtx", None, "potion_tiny", 0xB8)
 portalModel_Actor(f"{model_dir}potion_chunky.vtx", None, "potion_chunky", 0xB8)
 portalModel_Actor(f"{model_dir}potion_any.vtx", None, "potion_any", 0xB8)
+# Kongs
+
+base = (0, 0, 0)
+
+dk_jaw = (0, -16, 22) # 03
+dk_head = (0, 53, 54) # 02
+dk_tie = (0, 4, 55) # 05
+dk_arm_left0 = (42, 38, 26) # 08
+dk_arm_left1 = (5, -40, -1) # 09
+dk_arm_left2 = (0, -39, 10) # 0A
+dk_arm_right0 = (-42, 38, 26) # 0D
+dk_arm_right1 = (-5, -40, -1) # 0E
+dk_arm_right2 = (0, -39, 10) # 0F
+dk_leg_left0 = (15, -4, -1) # 13
+dk_leg_left1 = (6, -18, 4) # 14
+dk_leg_left2 = (1, -24, -1) # 15
+dk_leg_right0 = (-15, -4, -1) # 16
+dk_leg_right1 = (-6, -18, 4) # 17
+dk_leg_right2 = (-1, -24, -1) # 18
+
+
+portKongDL(f"{model_dir}dk_copy.dl", f"{model_dir}dk.dl", f"{model_dir}dk_copy.vtx", f"{model_dir}dk.vtx", {
+    0xC: 0xE8E,
+    0xD: 0xE8C,
+    0xE: 0x177D
+}, [
+    (),
+    dk_jaw, # Jaw
+    (0, 400, 20), # Face Skin
+    (0, 400, 20), # Face Fur
+    (0, 350, -20), # Tie Knot
+    (0, 350, -20), # Torso
+    (40, 250, -20), # Right Leg
+    (-40, 200, -20), # ?
+    (100, 300, -20), # ?
+    (100, 300, -20), # ?
+    (40, 200, 0), # ?
+    (-40, 250, 0), # ?
+
+    # (78, 27, 80 ),
+    # (78, 27, 65 ),
+    # (125, 25, 55),
+    # (-1, 36, 62 ),
+    # (-1, 36, 55 ),
+    # (78, 27, 125),
+    # (-17, 1, 30 ),
+    # (-20, 1, 30 ),
+    # (78, 27, 125),
+    # (0, 200, 0  ),
+    # (78, 27, 0  ),
+])
+portalModel_M2(f"{model_dir}dk.vtx", f"{model_dir}dk.dl", 0, "kong_dk", 0x90)
 # portalModel_Actor(f"{model_dir}coin.vtx", f"{model_dir}nin_coin.dl", "nintendo_coin", 0x66)

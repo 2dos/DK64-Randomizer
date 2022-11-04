@@ -19,6 +19,8 @@ class Types(IntEnum):
     Shockwave = auto()
     Constant = auto()
     NoItem = auto()
+    Bean = auto()
+    Pearl = auto()
 
 
 ItemRandoSelector = [

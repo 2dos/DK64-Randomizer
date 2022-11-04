@@ -231,3 +231,9 @@ int getKongFlag(int kong_index) {
 	}
 	return kong_flags[kong_index];
 }
+
+void initActor(int actor_index, void* func, int master_type, int paad_type) {
+	ActorFunctions[actor_index] = func;
+	ActorMasterType[actor_index] = master_type;
+	*(ActorPaadDefs[actor_index]) = paad_type;
+}

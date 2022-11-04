@@ -405,6 +405,10 @@ extern char FileIndex;
 extern int LockStackCount;
 extern char CutsceneBarState;
 
+extern void* ActorFunctions[345];
+extern unsigned char ActorMasterType[345];
+extern short* ActorPaadDefs[345];
+
 extern int* TriggerArray;
 extern short TriggerSize;
 extern cannon* CastleCannonPointer;

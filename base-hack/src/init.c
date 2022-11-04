@@ -101,6 +101,7 @@ static unsigned char key_item_table[8] = {};
 bonus_barrel_info bonus_data[95] = {};
 
 int getBPItem(int index) {
+	*(int*)(0x807FF700) = (int)&bp_item_table[index];
 	return bp_item_table[index];
 }
 
@@ -621,29 +622,20 @@ void initHack(int source) {
 			*(int*)(0x8074C5B0) = (int)&getNextMoveText;
 			*(int*)(0x8074C5A0) = (int)&getNextMoveText;
 			// New Actors
-			*(int*)(0x8074C2FC) = (int)&ninCoinCode; // Actor 151
-			*(char*)(0x8074D96B) = 4; // Is Sprite
-			*(char*)(0x8074DDD1) = 0x11; // Increase PAAD
-			*(int*)(0x8074C300) = (int)&rwCoinCode; // Actor 152
-			*(char*)(0x8074D96C) = 4; // Is Sprite
-			*(char*)(0x8074DDD5) = 0x11; // Increase PAAD
-			*(int*)(0x8074C304) = (int)&NothingCode; // Nothing - 153
-			*(char*)(0x8074D96D) = 0; // Is Sprite
-			*(int*)(0x8074C308) = (int)&medalCode; // Actor 154
-			*(char*)(0x8074D96E) = 4; // Is Sprite
-			*(char*)(0x8074DDDD) = 0x11; // Increase PAAD
-			*(int*)(0x8074C314) = (int)&PotionCode; // DK Potion - 157
-			*(short*)(0x8074DDE8) = 0x11;
-			*(int*)(0x8074C318) = (int)&PotionCode; // Diddy Potion - 158
-			*(short*)(0x8074DDEC) = 0x11;
-			*(int*)(0x8074C31C) = (int)&PotionCode; // Lanky Potion - 159
-			*(short*)(0x8074DDF0) = 0x11;
-			*(int*)(0x8074C320) = (int)&PotionCode; // Tiny Potion - 160
-			*(short*)(0x8074DDF4) = 0x11;
-			*(int*)(0x8074C324) = (int)&PotionCode; // Chunky Potion - 161
-			*(short*)(0x8074DDF8) = 0x11;
-			*(int*)(0x8074C328) = (int)&PotionCode; // Any Potion - 162
-			*(short*)(0x8074DDFC) = 0x11;
+			initActor(151, &ninCoinCode, ACTORMASTER_SPRITE, 0x11);
+			initActor(152, &rwCoinCode, ACTORMASTER_SPRITE, 0x11);
+			initActor(153, &NothingCode, ACTORMASTER_SPRITE, 0);
+			initActor(154, &medalCode, ACTORMASTER_SPRITE, 0x11);
+			for (int i = 0; i < 6; i++) {
+				initActor(157 + i, &PotionCode, ACTORMASTER_3D, 0x11);
+			}
+			initActor(141, &KongDropCode, ACTORMASTER_3D, 0x11);
+			initActor(142, &KongDropCode, ACTORMASTER_3D, 0x11);
+			initActor(143, &KongDropCode, ACTORMASTER_3D, 0x11);
+			initActor(144, &KongDropCode, ACTORMASTER_3D, 0x11);
+			initActor(155, &KongDropCode, ACTORMASTER_3D, 0x11);
+			initActor(172, &beanCode, ACTORMASTER_SPRITE, 0x11);
+			initActor(174, &pearlCode, ACTORMASTER_SPRITE, 0x11);
 			// Any Kong Items
 			if (Rando.any_kong_items & 1) {
 				// All excl. Blueprints

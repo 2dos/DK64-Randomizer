@@ -230,6 +230,46 @@ file_dict = [
         "do_not_delete_source": True,
     },
     {
+        "name": "Kong (DK) Model",
+        "pointer_table_index": 4,
+        "file_index": 0x257,
+        "source_file": "kong_dk_om2.bin",
+        "do_not_extract": True,
+        "do_not_delete_source": True,
+    },
+    {
+        "name": "Kong (Diddy) Model",
+        "pointer_table_index": 4,
+        "file_index": 0x258,
+        "source_file": "kong_dk_om2.bin",
+        "do_not_extract": True,
+        "do_not_delete_source": True,
+    },
+    {
+        "name": "Kong (Lanky) Model",
+        "pointer_table_index": 4,
+        "file_index": 0x259,
+        "source_file": "kong_dk_om2.bin",
+        "do_not_extract": True,
+        "do_not_delete_source": True,
+    },
+    {
+        "name": "Kong (Tiny) Model",
+        "pointer_table_index": 4,
+        "file_index": 0x25A,
+        "source_file": "kong_dk_om2.bin",
+        "do_not_extract": True,
+        "do_not_delete_source": True,
+    },
+    {
+        "name": "Kong (Chunky) Model",
+        "pointer_table_index": 4,
+        "file_index": 0x25B,
+        "source_file": "kong_dk_om2.bin",
+        "do_not_extract": True,
+        "do_not_delete_source": True,
+    },
+    {
         "name": "Krusha Head",
         "start": 0x1FF6000,
         "source_file": "assets/Non-Code/displays/krusha_head64.png",
@@ -640,7 +680,7 @@ model_changes = [
     {"model_index": 1, "model_file": "diddy_ins.bin"},
     {"model_index": 5, "model_file": "lanky_base.bin"},
     {"model_index": 6, "model_file": "lanky_ins.bin"},
-    {"model_index": 3, "model_file": "dk_base.bin"},
+    {"model_index": 3, "model_file": "dk_test.bin"},
     {"model_index": 8, "model_file": "tiny_base.bin"},
     {"model_index": 9, "model_file": "tiny_ins.bin"},
     {"model_index": 0xEC, "model_file": "disco_instrument.bin"},
@@ -1153,7 +1193,7 @@ with open(newROMName, "r+b") as fh:
     fh.seek(0x1FF1000)
     for level_index in range(8):
         for bp_item in (78, 75, 77, 79, 76):
-            fh.write(bp_item.to_bytes(1, "big"))
+            fh.write((141).to_bytes(1, "big")) # REVERT BACK YOU DINGUS
     # Medals
     fh.seek(0x1FF1080)
     for medal_item in range(40):
@@ -1305,9 +1345,9 @@ with open(newROMName, "r+b") as fh:
             os.remove(pth)
     if os.path.exists("assets/Non-Code/Gong/hint_door.bin"):
         os.remove("assets/Non-Code/Gong/hint_door.bin")
-    for x in model_changes:
-        if os.path.exists(x["model_file"]):
-            os.remove(x["model_file"])
+    # for x in model_changes:
+    #     if os.path.exists(x["model_file"]):
+    #         os.remove(x["model_file"])
     if os.path.exists(new_coin_sfx):
         os.remove(new_coin_sfx)
     if os.path.exists("helm.bin"):
