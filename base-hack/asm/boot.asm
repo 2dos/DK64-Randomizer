@@ -248,6 +248,9 @@ KrushaSizeHook:
 KrushaSpeedYHook:
 	J 	controlKrushaSpeedup_Y
 	NOP
+warpGrowFixHook:
+	J 	warpGrowFix
+	NOP
 
 loadExtraHooks:
 	LUI t3, hi(InstanceScriptHook)
@@ -609,6 +612,12 @@ loadExtraHooks:
 	LUI t4, 0x8066
 	SW t3, 0x5250 (t4) // Store Hook
 	SW r0, 0x5254 (t4) // Store NOP
+	
+	LUI t3, hi(warpGrowFixHook)
+	LW t3, lo(warpGrowFixHook) (t3)
+	LUI t4, 0x806E
+	SW t3, 0xC348 (t4) // Store Hook
+	SW r0, 0xC34C (t4) // Store NOP
 
 	loadExtraHooks_5:
 	JR ra

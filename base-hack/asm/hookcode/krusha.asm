@@ -29,3 +29,26 @@ controlKrushaSpeedup_Y:
     controlKrushaSpeedup_YFinish:
         J       0x8066525C
         NOP
+
+warpGrowFix:
+    LUI     at, hi(CurrentActorPointer_0)
+    LW      at, lo(CurrentActorPointer_0) (at)
+    BEQZ    at, warpGrowFix_Normal
+    NOP
+    LW      at, 0x58 (at)
+    ADDIU   v0, r0, 3
+    BNE     at, v0, warpGrowFix_Normal
+    NOP
+    LUI     at, 0x3C55
+    ADDIU   at, at, 0xFDF4
+    MTC1    at, f10
+    B       warpGrowFix_Finish
+    CVT.D.S f10, f10
+
+    warpGrowFix_Normal:
+        LUI     at, 0x8076
+        LDC1    f10, 0xCFA0 (at)
+
+    warpGrowFix_Finish:
+        J   0x806DC350
+        NOP
