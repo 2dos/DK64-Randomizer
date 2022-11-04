@@ -178,6 +178,11 @@ void initHack(int source) {
 			// PPUnch
 			*(int*)(0x806E48F4) = 0x31810002; // ANDI $at $t4 2
 			*(int*)(0x806E48F8) = 0x50200074; // BEQL $at $r0 0xF
+			if (Rando.krusha_slot == 4) {
+				Rando.disco_chunky = 0;
+			} else if (Rando.krusha_slot > 4) {
+				Rando.krusha_slot = -1;
+			}
 			DamageMultiplier = Rando.damage_multiplier;
 			WarpToIslesEnabled = Rando.warp_to_isles_enabled;
 			permaLossMode = Rando.perma_lose_kongs;
@@ -189,11 +194,7 @@ void initHack(int source) {
 			ShorterBosses = Rando.short_bosses;
 			WinCondition = Rando.win_condition;
 			ItemRandoOn = Rando.item_rando;
-			if (Rando.krusha_slot == 4) {
-				Rando.disco_chunky = 0;
-			} else if (Rando.krusha_slot > 4) {
-				Rando.krusha_slot = -1;
-			}
+			KrushaSlot = Rando.krusha_slot;
 			changeCharSpawnerFlag(0x14, 2, 93); // Tie llama spawn to lanky help me cutscene flag
 			changeCharSpawnerFlag(0x7, 1, kong_flags[(int)Rando.free_target_japes]);
 			changeCharSpawnerFlag(0x10, 0x13, kong_flags[(int)Rando.free_target_ttemple]);

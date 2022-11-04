@@ -880,12 +880,8 @@ static const unsigned char dance_skip_ban_maps[] = {
 };
 
 int canDanceSkip(void) {
-    if (Rando.quality_of_life.dance_skip) {
-        for (int i = 0; i < sizeof(dance_skip_ban_maps); i++) {
-            if (dance_skip_ban_maps[i] == CurrentMap) {
-                return 0;
-            }
-        }
+    if (CurrentMap == 0x6F) {
+        return 0;
     }
     if ((Player->yPos - Player->floor) >= 100.0f) {
         return 1;
@@ -895,6 +891,17 @@ int canDanceSkip(void) {
     }
     if ((Player->grounded_bitfield & 4) && ((Player->water_floor - Player->floor) > 20.0f)) {
         return 1;
+    }
+    if (Rando.quality_of_life.dance_skip) {
+        int is_banned_map = 0;
+        for (int i = 0; i < sizeof(dance_skip_ban_maps); i++) {
+            if (dance_skip_ban_maps[i] == CurrentMap) {
+                is_banned_map = 1;
+            }
+        }
+        if (!is_banned_map) {
+            return 1;
+        }
     }
     return 0;
 }
