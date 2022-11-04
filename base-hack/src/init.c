@@ -242,6 +242,9 @@ void initHack(int source) {
 				// Adjust warp code to make camera be behind player, loading portal
 				*(int*)(0x806C97D0) = 0xA06E0007; // SB $t6, 0x7 ($v1)
 			}
+			if (Rando.remove_rock_bunch) {
+				*(int*)(0x8069C2FC) = 0;
+			}
 			// Item Get
 			*(int*)(0x806F64C8) = 0x0C000000 | (((int)&getItem & 0xFFFFFF) >> 2); // Modify Function Call
 			*(int*)(0x806F6BA8) = 0x0C000000 | (((int)&getItem & 0xFFFFFF) >> 2); // Modify Function Call
