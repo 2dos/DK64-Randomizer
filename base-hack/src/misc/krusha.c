@@ -33,9 +33,11 @@ void adjustAnimationTables(void) {
                 if (!excl_extra) {
                     AnimationTable2[(7 * i) + slot] = AnimationTable2[(7 * i) + 5];
                 }
-                // if ((i >= 0x30) && (i <= 0x32)) {
-                //     AnimationTable2[(7 * i) + slot] = AnimationTable2[(7 * i)];
-                // }
+                if (slot == 1) {
+                    if (i == 0x32) {
+                        AnimationTable2[(7 * i) + slot] = AnimationTable2[(7 * i) + 6];
+                    }
+                }
             }
             /*
                 Fixes a collision glitch with actors underwater if set to 2.
