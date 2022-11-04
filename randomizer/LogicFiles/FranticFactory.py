@@ -52,7 +52,7 @@ LogicRegions = {
         TransitionFront(Regions.FactoryBossLobby, lambda l: not l.settings.tns_location_rando),
     ]),
 
-    Regions.RandD: Region("R&D", "R&D Area", Levels.FranticFactory, True, -1, [
+    Regions.RandD: Region("R&D", "Research and Development Area", Levels.FranticFactory, True, -1, [
         LocationLogic(Locations.FactoryDiddyRandD, lambda l: l.guitar and l.charge and l.isdiddy),
         LocationLogic(Locations.FactoryLankyRandD, lambda l: l.trombone and l.Slam and l.islanky),
         LocationLogic(Locations.FactoryChunkyRandD, lambda l: l.triangle and l.punch and l.hunkyChunky and l.ischunky),
@@ -66,13 +66,13 @@ LogicRegions = {
         TransitionFront(Regions.FactoryBossLobby, lambda l: not l.settings.tns_location_rando),
     ]),
 
-    Regions.FactoryTinyRaceLobby: Region("Factory Tiny Race Lobby", "R&D Area", Levels.FranticFactory, False, None, [], [], [
+    Regions.FactoryTinyRaceLobby: Region("Factory Tiny Race Lobby", "Research and Development Area", Levels.FranticFactory, False, None, [], [], [
         TransitionFront(Regions.FranticFactoryMedals, lambda l: True),
         TransitionFront(Regions.RandD, lambda l: l.mini and l.istiny),
         TransitionFront(Regions.FactoryTinyRace, lambda l: l.mini and l.istiny, Transitions.FactoryRandDToRace)
     ]),
 
-    Regions.FactoryTinyRace: Region("Factory Tiny Race", "R&D Area", Levels.FranticFactory, False, None, [
+    Regions.FactoryTinyRace: Region("Factory Tiny Race", "Research and Development Area", Levels.FranticFactory, False, None, [
         LocationLogic(Locations.FactoryTinyCarRace, lambda l: l.istiny or l.settings.free_trade_items),
     ], [], [
         TransitionFront(Regions.FranticFactoryMedals, lambda l: True),
