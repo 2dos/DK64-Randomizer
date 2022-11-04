@@ -212,7 +212,9 @@ void spawnBonusReward(int object, int x_f, int y_f, int z_f, int unk0, int cutsc
     if ((index > 0) && (index < 95)) {
         object = bonus_data[index].spawn_actor;
     }
-    spawnActorWithFlag(object, x_f, y_f, z_f, unk0, cutscene, flag, unk1);
+    if (object != 153) {
+        spawnActorWithFlag(object, x_f, y_f, z_f, unk0, cutscene, flag, unk1);
+    }
 }
 
 void spawnRewardAtActor(int object, int flag) {
@@ -220,13 +222,17 @@ void spawnRewardAtActor(int object, int flag) {
     if ((index > 0) && (index < 95)) {
         object = bonus_data[index].spawn_actor;
     }
-    spawnObjectAtActor(object, flag);
+    if (object != 153) {
+        spawnObjectAtActor(object, flag);
+    }
 }
 
 void spawnMinecartReward(int object, int flag) {
     for (int i = 0; i < 95; i++) {
         if (bonus_data[i].flag == flag) {
-            spawnObjectAtActor(bonus_data[i].spawn_actor, flag);
+            if (bonus_data[i].spawn_actor != 153) {
+                spawnObjectAtActor(bonus_data[i].spawn_actor, flag);
+            }
             return;
         }
     }
@@ -237,7 +243,9 @@ void spawnCrownReward(int object, int x_f, int y_f, int z_f, int unk0, int cutsc
     if (new_obj != 0) {
         object = new_obj;
     }
-    spawnActorWithFlag(object, x_f, y_f, z_f, unk0, cutscene, flag, unk1);
+    if (object != 153) {
+        spawnActorWithFlag(object, x_f, y_f, z_f, unk0, cutscene, flag, unk1);
+    }
 }
 
 void spawnBossReward(int object, int x_f, int y_f, int z_f, int unk0, int cutscene, int flag, int unk1) {
