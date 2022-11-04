@@ -26,13 +26,16 @@ void adjustAnimationTables(void) {
                     // Punch - During Lanky Phase and Dogadon 2
                     excl_extra = 1;
                 }
-            } else if ((i == 0x30) && (slot == 2)) {
+            } else if ((i >= 0x30) && (i <= 0x32)) {
                 excl_extra = 1;
             }
             if (i < 0x6E) {
                 if (!excl_extra) {
                     AnimationTable2[(7 * i) + slot] = AnimationTable2[(7 * i) + 5];
                 }
+                // if ((i >= 0x30) && (i <= 0x32)) {
+                //     AnimationTable2[(7 * i) + slot] = AnimationTable2[(7 * i)];
+                // }
             }
             /*
                 Fixes a collision glitch with actors underwater if set to 2.
