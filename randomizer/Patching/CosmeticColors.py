@@ -282,12 +282,13 @@ def maskImageTwoColorStripes(im_f, color1, color2, min_y):
     mask1 = getRGBFromHash(color1)
     mask2 = getRGBFromHash(color2)
     w, h = im_f.size
+    effective_h = h - min_y
     for x in range(w):
         for y in range(min_y, h):
             base = list(pix[x, y])
             if base[3] > 0:
                 for channel in range(3):
-                    if y < (h/2):
+                    if y-min_y < (effective_h/3) or y-min_y > ((2*effective_h)/3):
                         base[channel] = int(mask1[channel] * (base[channel] / 255))
                     else: base[channel] = int(mask2[channel] * (base[channel] / 255))
                 pix[x, y] = (base[0], base[1], base[2], base[3])
@@ -346,6 +347,38 @@ def writeColorToROM(color, table_index, file_index):
     ROM().seek(file_start)
     ROM().writeBytes(data)
 
+def writeWhiteKasplatColorToROM(color1, color2, table_index, file_index):
+    """Write color to ROM."""
+    file_start = js.pointer_addresses[table_index]["entries"][file_index]["pointing_to"]
+    mask = getRGBFromHash(color1)
+    val_r = int((mask[0] >> 3) << 11)
+    val_g = int((mask[1] >> 3) << 6)
+    val_b = int((mask[2] >> 3) << 1)
+    rgba_val = val_r | val_g | val_b | 1
+    mask2 = getRGBFromHash(color2)
+    val_r2 = int((mask2[0] >> 3) << 11)
+    val_g2 = int((mask2[1] >> 3) << 6)
+    val_b2 = int((mask2[2] >> 3) << 1)
+    rgba_val2 = val_r2 | val_g2 | val_b2 | 1
+    bytes_array = []
+    for y in range(42):
+        for x in range(32):
+            if y % 10 > 1:
+                bytes_array.extend([(rgba_val >> 8) & 0xFF, rgba_val & 0xFF])
+            else:
+                bytes_array.extend([(rgba_val2 >> 8) & 0xFF, rgba_val2 & 0xFF])
+    for i in range(18):
+        bytes_array.extend([(rgba_val >> 8) & 0xFF, rgba_val & 0xFF])
+    for i in range(4):
+        bytes_array.extend([0, 0])
+    for i in range(3):
+        bytes_array.extend([(rgba_val >> 8) & 0xFF, rgba_val & 0xFF])
+    data = bytearray(bytes_array)
+    if table_index == 25:
+        data = gzip.compress(data, compresslevel=9)
+    ROM().seek(file_start)
+    ROM().writeBytes(data)
+
 def writeColorStripePatternToROM(color1, color2, table_index, file_index):
     """Write color to ROM."""
     file_start = js.pointer_addresses[table_index]["entries"][file_index]["pointing_to"]
@@ -355,14 +388,14 @@ def writeColorStripePatternToROM(color1, color2, table_index, file_index):
     val_b = int((mask[2] >> 3) << 1)
     rgba_val = val_r | val_g | val_b | 1
     mask2 = getRGBFromHash(color2)
-    val_r2= int((mask2[0] >> 3) << 11)
+    val_r2 = int((mask2[0] >> 3) << 11)
     val_g2 = int((mask2[1] >> 3) << 6)
     val_b2 = int((mask2[2] >> 3) << 1)
     rgba_val2 = val_r2 | val_g2 | val_b2 | 1
     bytes_array = []
     for y in range(42):
         for x in range(32):
-            if (x + y) > ((42+32)/2):
+            if y > 20:
                 bytes_array.extend([(rgba_val >> 8) & 0xFF, rgba_val & 0xFF])
             else:
                 bytes_array.extend([(rgba_val2 >> 8) & 0xFF, rgba_val2 & 0xFF])
@@ -383,27 +416,27 @@ def overwrite_object_colors(spoiler: Spoiler):
     """Overwrite object colors."""
     global color_bases
     mode = spoiler.settings.colorblind_mode
-    colors_amount = 3
     if mode != "off":
         if mode == "prot-deut": #prot
             color_bases = ["#FDE400", "#0072FF", "#A4AEDD"]
-            colors_amount = 2
         elif mode == "deut":
             color_bases = ["E3A900", "#318DFF", "#FFDBB3"]
-            colors_amount = 2
         elif mode == "trit":
             color_bases = ["#FFA4A4", "#C72020", "#13C4D8"]
         file = 175
         dk_single = getFile(7, file, False, 44, 44)
         dk_single = dk_single.resize((21, 21))
         for kong_index in range(5):
-            if kong_index < colors_amount:
+            if kong_index < 3:
                 # file = 4120
                 # # Kasplat Hair
                 # hair_im = getFile(25, file, True, 32, 44)
                 # hair_im = maskImage(hair_im, kong_index, 0)
-                writeColorToROM(color_bases[kong_index], 25, [4124, 4122, 4123, 4120, 4121][kong_index])
-                # writeColorImageToROM(hair_im, 25, [4124, 4122, 4123, 4120, 4121][kong_index], 32, 44)
+                if kong_index == 2 and mode is not "trit":
+                    writeWhiteKasplatColorToROM(color_bases[kong_index], "#000000", 25, [4124, 4122, 4123, 4120, 4121][kong_index])
+                else:
+                    writeColorToROM(color_bases[kong_index], 25, [4124, 4122, 4123, 4120, 4121][kong_index])
+                    # writeColorImageToROM(hair_im, 25, [4124, 4122, 4123, 4120, 4121][kong_index], 32, 44)
                 for file in range(152, 160):
                     # Single
                     single_im = getFile(7, file, False, 44, 44)
