@@ -709,6 +709,7 @@ ColoredBananaGroupList = [
         name="In moat around giant mushroom",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.GiantMushroomArea,
+        logic=lambda l: l.swim,
         locations=[
             [1, 1.2, 1210, 100, 1362],
             [1, 1.2, 996, 105, 1464],
@@ -1145,6 +1146,7 @@ ColoredBananaGroupList = [
         name="On plank near entrance",
         konglist=[Kongs.diddy],
         region=Regions.MillRafters,
+        logic=lambda l: l.guitar,
         locations=[
             [1, 1.0, 390, 0, 163],
             [1, 1.0, 445, 0, 163],
@@ -1159,6 +1161,7 @@ ColoredBananaGroupList = [
         name="On long plank near GB",
         konglist=[Kongs.diddy],
         region=Regions.MillRafters,
+        logic=lambda l: l.guitar,
         locations=[
             [1, 1.0, 646, -24, 483],
             [1, 1.0, 594, -24, 483],
@@ -1763,6 +1766,7 @@ ColoredBananaGroupList = [
         name="On riverbed around mill (3 custom, 17 Tiny)",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.MillArea,
+        logic=lambda l: l.swim,
         locations=[
             [1, 1.2, 4800.55322265625, 82.83333587646484, 3363.297607421875],
             [1, 1.2, 4903.84716796875, 82.83333587646484, 3501.983154296875],
@@ -1850,6 +1854,7 @@ ColoredBananaGroupList = [
         name="Right side (Diddy)",
         konglist=[Kongs.diddy],
         region=Regions.MillRafters,
+        logic=lambda l: l.guitar,
         vanilla=True,
         locations=[
             [5, 1.0, 83.92961883544922, -37.16666793823242, 385.5804138183594],
@@ -1861,6 +1866,7 @@ ColoredBananaGroupList = [
         name="Left side (Diddy)",
         konglist=[Kongs.diddy],
         region=Regions.MillRafters,
+        logic=lambda l: l.guitar,
         vanilla=True,
         locations=[
             [5, 1.0, 650.434814453125, -18.33333396911621, 263.2375793457031],
