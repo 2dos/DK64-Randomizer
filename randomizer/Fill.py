@@ -1931,7 +1931,7 @@ def ShuffleMisc(spoiler):
         crown_human_replacements = {}
         ShuffleCrowns(crown_replacements, crown_human_replacements)
         spoiler.crown_locations = crown_replacements
-        spoiler.human_crowns = crown_human_replacements
+        spoiler.human_crowns = dict(sorted(crown_human_replacements.items()))
     # Handle kasplats - this is the first VerifyWorld check, all shuffles affecting Locations must be before this one
     KasplatShuffle(spoiler, LogicVariables)
     spoiler.human_kasplats = {}
