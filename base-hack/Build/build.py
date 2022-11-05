@@ -680,7 +680,7 @@ model_changes = [
     {"model_index": 1, "model_file": "diddy_ins.bin"},
     {"model_index": 5, "model_file": "lanky_base.bin"},
     {"model_index": 6, "model_file": "lanky_ins.bin"},
-    {"model_index": 3, "model_file": "dk_test.bin"},
+    {"model_index": 3, "model_file": "dk_base.bin"},
     {"model_index": 8, "model_file": "tiny_base.bin"},
     {"model_index": 9, "model_file": "tiny_ins.bin"},
     {"model_index": 0xEC, "model_file": "disco_instrument.bin"},
@@ -1193,7 +1193,7 @@ with open(newROMName, "r+b") as fh:
     fh.seek(0x1FF1000)
     for level_index in range(8):
         for bp_item in (78, 75, 77, 79, 76):
-            fh.write((141).to_bytes(1, "big")) # REVERT BACK YOU DINGUS
+            fh.write(bp_item.to_bytes(1, "big"))
     # Medals
     fh.seek(0x1FF1080)
     for medal_item in range(40):
