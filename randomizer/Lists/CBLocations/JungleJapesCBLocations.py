@@ -674,7 +674,7 @@ ColoredBananaGroupList = [
         name="Riverbed (5 custom, 5 Lanky)",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.JungleJapesMain,
-        logic = lambda l: l.swim,
+        logic=lambda l: l.swim,
         locations=[
             [1, 1.2, 2173, 160, 1810],
             [1, 1.2, 1998, 160, 1738],
@@ -694,7 +694,7 @@ ColoredBananaGroupList = [
         name="Riverbed bunches (on each end)",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.JungleJapesMain,
-        logic = lambda l: l.swim,
+        logic=lambda l: l.swim,
         locations=[
             [5, 1.2, 1099, 165, 1496],
             [5, 1.2, 2307, 165, 1895],
@@ -1064,7 +1064,7 @@ ColoredBananaGroupList = [
         name="3 bunches on riverbed",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.JungleJapesMain,
-        logic = lambda l: l.swim,
+        logic=lambda l: l.swim,
         locations=[
             [5, 1.0, 1755, 170, 1856],
             [5, 1.0, 1620, 170, 1922],
@@ -1474,7 +1474,7 @@ ColoredBananaGroupList = [
         name="Underwater bunches (Diddy)",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.JungleJapesMain,
-        logic = lambda l: l.swim,
+        logic=lambda l: l.swim,
         vanilla=True,
         locations=[
             [5, 1.1599998474121094, 1745.26123046875, 160.0, 2139.310791015625],

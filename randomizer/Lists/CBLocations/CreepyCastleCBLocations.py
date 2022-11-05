@@ -658,7 +658,7 @@ ColoredBananaGroupList = [
         name="In moat by warps",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.CreepyCastleMain,
-        logic = lambda l: l.swim,
+        logic=lambda l: l.swim,
         locations=[
             [1, 1.2, 1420, 427, 895],
             [1, 1.2, 1320, 427, 845],
@@ -678,7 +678,7 @@ ColoredBananaGroupList = [
         name="In moat by upper cave entrance",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.CreepyCastleMain,
-        logic = lambda l: l.swim,
+        logic=lambda l: l.swim,
         locations=[
             [5, 1.2, 1090, 430, 944],
             [5, 1.2, 1248, 430, 922],
