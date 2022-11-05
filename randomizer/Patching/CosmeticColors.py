@@ -362,7 +362,7 @@ def writeColorStripePatternToROM(color1, color2, table_index, file_index):
     bytes_array = []
     for y in range(42):
         for x in range(32):
-            if x < (21):
+            if (x + y) > ((42+32)/2):
                 bytes_array.extend([(rgba_val >> 8) & 0xFF, rgba_val & 0xFF])
             else:
                 bytes_array.extend([(rgba_val2 >> 8) & 0xFF, rgba_val2 & 0xFF])
@@ -387,6 +387,9 @@ def overwrite_object_colors(spoiler: Spoiler):
     if mode != "off":
         if mode == "prot-deut":
             color_bases = ["#FFDC2B", "#0072FF", "#5A4C1C"]
+            colors_amount = 2
+        elif mode == "deut":
+            color_bases = ["E3A900", "#318DFF", "#FFDBB3"]
             colors_amount = 2
         elif mode == "trit":
             color_bases = ["#FFA4A4", "#C72020", "#13C4D8"]
