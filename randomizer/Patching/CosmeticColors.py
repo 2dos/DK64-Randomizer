@@ -385,8 +385,8 @@ def overwrite_object_colors(spoiler: Spoiler):
     mode = spoiler.settings.colorblind_mode
     colors_amount = 3
     if mode != "off":
-        if mode == "prot-deut":
-            color_bases = ["#FFDC2B", "#0072FF", "#5A4C1C"]
+        if mode == "prot-deut": #prot
+            color_bases = ["#FDE400", "#0072FF", "#A4AEDD"]
             colors_amount = 2
         elif mode == "deut":
             color_bases = ["E3A900", "#318DFF", "#FFDBB3"]
