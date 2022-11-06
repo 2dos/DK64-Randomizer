@@ -1280,11 +1280,11 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 					if (Rando.fast_gbs) {
 						int pearls_collected = 0;
 						for (int i = 0; i < 5; i++) {
-							pearls_collected += checkFlag(FLAG_PEARL_0_COLLECTED + i,0);
+							pearls_collected += checkFlagDuplicate(FLAG_PEARL_0_COLLECTED + i,0);
 						}
 						if (pearls_collected >= 1) {
 							for (int i = 0; i < 5; i++) {
-								setPermFlag(FLAG_PEARL_0_COLLECTED + i);
+								setFlagDuplicate(FLAG_PEARL_0_COLLECTED + i, 1, 0);
 							}
 							behaviour_pointer->next_state = 2;
 						}

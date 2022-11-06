@@ -369,12 +369,14 @@ class Settings:
         self.shuffled_location_types = []
         if self.shuffle_items:
             if not self.item_rando_list_selected:
-                self.shuffled_location_types = [Types.Shop, Types.Banana, Types.Crown, Types.Blueprint, Types.Key, Types.Medal, Types.Coin]
+                self.shuffled_location_types = [Types.Shop, Types.Banana, Types.Crown, Types.Blueprint, Types.Key, Types.Medal, Types.Coin, Types.Kong, Types.Bean, Types.Pearl]
             else:
                 for item in self.item_rando_list_selected:
                     for type in Types:
                         if type.name == item.capitalize():
                             self.shuffled_location_types.append(type)
+                        if type in (Types.Bean, Types.Pearl) and item == "beanpearl":
+                            self.shuffled_location_types.extend([Types.Bean, Types.Pearl])
             if Types.Shop in self.shuffled_location_types:
                 if self.move_rando != "start_with":
                     self.move_rando = "item_shuffle"
@@ -650,6 +652,7 @@ class Settings:
 
         if any(self.shuffled_location_types):
             shuffledLocations = [location for location in LocationList if LocationList[location].type in self.shuffled_location_types]
+            nonKongLocations = [location for location in shuffledLocations if LocationList[location].type != Types.Kong]
             if Types.Shop in self.shuffled_location_types:
                 self.valid_locations[Types.Shop] = {}
                 # Cross-kong acquisition is assumed in full item rando, calculate the list of all Kong-specific shops
@@ -694,15 +697,21 @@ class Settings:
                 self.valid_locations[Types.Blueprint][Kongs.tiny] = [location for location in blueprintLocations if LocationList[location].kong == Kongs.tiny]
                 self.valid_locations[Types.Blueprint][Kongs.chunky] = [location for location in blueprintLocations if LocationList[location].kong == Kongs.chunky]
             if Types.Banana in self.shuffled_location_types:
-                self.valid_locations[Types.Banana] = shuffledLocations
+                self.valid_locations[Types.Banana] = nonKongLocations
             if Types.Crown in self.shuffled_location_types:
-                self.valid_locations[Types.Crown] = shuffledLocations
+                self.valid_locations[Types.Crown] = nonKongLocations
             if Types.Key in self.shuffled_location_types:
-                self.valid_locations[Types.Key] = shuffledLocations
+                self.valid_locations[Types.Key] = nonKongLocations
             if Types.Medal in self.shuffled_location_types:
-                self.valid_locations[Types.Medal] = shuffledLocations
+                self.valid_locations[Types.Medal] = nonKongLocations
             if Types.Coin in self.shuffled_location_types:
-                self.valid_locations[Types.Coin] = shuffledLocations
+                self.valid_locations[Types.Coin] = nonKongLocations
+            if Types.Kong in self.shuffled_location_types:
+                self.valid_locations[Types.Kong] = [location for location in shuffledLocations if location not in TrainingBarrelLocations]
+            if Types.Bean in self.shuffled_location_types:
+                self.valid_locations[Types.Bean] = nonKongLocations
+            if Types.Pearl in self.shuffled_location_types:
+                self.valid_locations[Types.Pearl] = nonKongLocations
 
     def GetValidLocationsForItem(self, item_id):
         """Return the valid locations the input item id can be placed in."""

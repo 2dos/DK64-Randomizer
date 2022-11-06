@@ -159,6 +159,7 @@ LogicRegions = {
 
     Regions.Anthill: Region("Anthill", "Owl Tree", Levels.FungiForest, False, -1, [
         LocationLogic(Locations.ForestTinyAnthill, lambda l: (l.istiny or l.settings.free_trade_items) and l.oranges),
+        LocationLogic(Locations.ForestBean, lambda l: (l.istiny or l.settings.free_trade_items) and l.oranges),
     ], [
         Event(Events.Bean, lambda l: (l.istiny or l.settings.free_trade_items) and l.oranges),
     ], [

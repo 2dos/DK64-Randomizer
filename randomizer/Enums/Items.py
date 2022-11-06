@@ -93,6 +93,9 @@ class Items(IntEnum):
     BananaMedal = auto()
     BattleCrown = auto()
 
+    Bean = auto()
+    Pearl = auto()
+
     BananaHoard = auto()
 
     # Blueprint items are intentionally grouped together in this specific order for Kasplat location logic.

@@ -188,7 +188,13 @@ LogicRegions = {
         TransitionFront(Regions.TreasureRoom, lambda l: True)
     ]),
 
-    Regions.TinyChest: Region("Tiny Chest", "Treasure Room", Levels.GloomyGalleon, False, -1, [], [
+    Regions.TinyChest: Region("Tiny Chest", "Treasure Room", Levels.GloomyGalleon, False, -1, [
+        LocationLogic(Locations.GalleonPearl0, lambda l: True),
+        LocationLogic(Locations.GalleonPearl1, lambda l: True),
+        LocationLogic(Locations.GalleonPearl2, lambda l: True),
+        LocationLogic(Locations.GalleonPearl3, lambda l: True),
+        LocationLogic(Locations.GalleonPearl4, lambda l: True),
+    ], [
         Event(Events.PearlsCollected, lambda l: True),
     ], [
         TransitionFront(Regions.GloomyGalleonMedals, lambda l: True),

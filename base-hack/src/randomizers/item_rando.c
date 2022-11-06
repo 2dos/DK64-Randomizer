@@ -392,7 +392,7 @@ int clampFlag(int flag) {
         return 1; // Galleon GBs (Group 1) + Key 4
     }
     if ((flag >= 0xB6) && (flag <= 0xEC)) {
-        return 1; // Galleon GBs (Group 2) + Fungi GBs (Group 1) + Key 5
+        return 1; // Galleon GBs (Group 2) + Fungi GBs (Group 1) + Key 5 + Pearls
     }
     if ((flag >= 0xF7) && (flag <= 0x119)) {
         return 1; // Fungi GBs (Group 2) + Caves GBs (Group 1)
@@ -408,6 +408,9 @@ int clampFlag(int flag) {
     }
     if ((flag >= 0x18E) && (flag <= 0x1AF)) {
         return 1; // Isles GBs
+    }
+    if (flag == 0x300) {
+        return 1; // Fungi Bean
     }
     return 0;
 }
@@ -966,6 +969,7 @@ int canDanceSkip(void) {
 
 void getItem(int object_type) {
     float pickup_volume = 1-(0.3f * *(char*)(0x80745838));
+    int song = -1;
     switch(object_type) {
         case 0x0A:
         case 0x0D:
@@ -1083,9 +1087,39 @@ void getItem(int object_type) {
             }
             CrownGet();
             break;
+        case 0x198:
+            // Bean
+            playSong(147, 0x3F800000);
+            break;
+        case 0x1B4:
+            // Pearl
+            playSong(128, 0x3F800000);
+            break;
         case 0x1D1:
             // Coin Powerup
             playSound(0xAE, 0x7FFF, 0x427C0000, 0x3F800000, 5, 0);
+            break;
+        case 0x257:
+            song = 11;
+        case 0x258:
+            if (song == -1) {
+                song = 10;
+            }
+        case 0x259:
+            if (song == -1) {
+                song = 12;
+            }
+        case 0x25A:
+            if (song == -1) {
+                song = 13;
+            }
+        case 0x25B:
+            if (song == -1) {
+                song = 9;
+            }
+            if (song >= 0) {
+                playSong(song, 0x3F800000);
+            }
             break;
     }
 }

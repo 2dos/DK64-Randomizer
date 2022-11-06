@@ -76,6 +76,8 @@ def place_randomized_items(spoiler: Spoiler):
             0x18D,  # Crown
             0x90,  # Medal
             0x288,  # Rareware GB
+            0x198,  # Bean
+            0x1B4,  # Pearls
         ]
         map_items = {}
         bonus_table_offset = 0
@@ -179,6 +181,12 @@ def place_randomized_items(spoiler: Spoiler):
                         ROM().writeMultipleBytes(item.old_flag, 2)
                         ROM().writeMultipleBytes(actor_index, 1)
                         bonus_table_offset += 1
+                elif item.old_item == Types.Kong:
+                    for i in range(4):
+                        if item.new_item is None or item.new_item == Types.NoItem:
+                            # Write Empty Cage
+                            ROM().seek(sav + 0x152 + (2 * i))
+                            ROM().writeMultipleBytes(0xFF, 1)
                 else:
                     if item.old_item != Types.Medal:
                         if item.new_item is None:
@@ -239,21 +247,21 @@ def place_randomized_items(spoiler: Spoiler):
                         # 13 = Pearl
                         # 14 = Nothing
                         slots = [
-                            Types.Banana, # GB
-                            Types.Blueprint, # BP
-                            Types.Key, # Key
-                            Types.Crown, # Crown
-                            Types.Coin, # Special Coin
-                            Types.Medal, # Medal
-                            Types.Shop, # Cranky Item
-                            Types.Shop, # Funky Item
-                            Types.Shop, # Candy Item
-                            Types.TrainingBarrel, # Training Move
-                            Types.Shockwave, # Fairy Item
-                            Types.Kong, # Kong
-                            Types.Bean, # Bean
-                            Types.Pearl, # Pearl
-                            None, # No Item
+                            Types.Banana,  # GB
+                            Types.Blueprint,  # BP
+                            Types.Key,  # Key
+                            Types.Crown,  # Crown
+                            Types.Coin,  # Special Coin
+                            Types.Medal,  # Medal
+                            Types.Shop,  # Cranky Item
+                            Types.Shop,  # Funky Item
+                            Types.Shop,  # Candy Item
+                            Types.TrainingBarrel,  # Training Move
+                            Types.Shockwave,  # Fairy Item
+                            Types.Kong,  # Kong
+                            Types.Bean,  # Bean
+                            Types.Pearl,  # Pearl
+                            None,  # No Item
                         ]
                         offset = item.old_flag - 549
                         ROM().seek(0x1FF1080 + offset)
@@ -281,7 +289,7 @@ def place_randomized_items(spoiler: Spoiler):
                         ROM().writeMultipleBytes(item.old_flag, 2)
                         ROM().writeMultipleBytes(actor_index, 1)
                         bonus_table_offset += 1
-            if not item.is_shop and item.can_have_item:
+            if not item.is_shop and item.can_have_item and item.old_item != Types.Kong:
                 # Write flag lookup table
                 data = [item.old_flag]
                 if item.new_item is None:
@@ -325,6 +333,12 @@ def place_randomized_items(spoiler: Spoiler):
                                     if item_slot["shared"] or slot > 5:
                                         slot = 5
                                 item_obj_index = model_two_indexes[Types.Shop][slot]
+                            elif item_slot["obj"] == Types.Kong:
+                                kong_flags = [385, 6, 70, 66, 117]
+                                slot = 0
+                                if item_slot["flag"] in kong_flags:
+                                    slot = kong_flags.index(item_slot["flag"])
+                                item_obj_index = model_two_indexes[Types.Kong][slot]
                             else:
                                 item_obj_index = model_two_indexes[item_slot["obj"]]
                             ROM().writeMultipleBytes(item_obj_index, 2)

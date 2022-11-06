@@ -20,6 +20,7 @@ ac_table = 5
 # - Actor: 0x5
 # - M2: ?
 
+
 class BoneVertex:
     """Store information relating to bone vertices in actors."""
 
@@ -27,6 +28,7 @@ class BoneVertex:
         """Initialize with given data."""
         self.start = start
         self.count = count
+
 
 def portalModel_M2(vtx_file, dl_file, overlay_dl_file, model_name, base):
     """Convert model two model file from various source files."""
@@ -163,7 +165,9 @@ def portalModel_Actor(vtx_file, dl_file, model_name, base):
     if os.path.exists(temp_file):
         os.remove(temp_file)
 
+
 def portKongDL(base_file, new_file, base_vtx, new_vtx, dyn_textures, vtx_adjustments):
+    """Port Kong DL to Model Two."""
     bone_slot = 0
     bone_vtx_lst = []
     bone_vtx = []
@@ -230,7 +234,7 @@ def portKongDL(base_file, new_file, base_vtx, new_vtx, dyn_textures, vtx_adjustm
                 print("NEW BUCKET")
         bone_slot += 1
         bone_set = set(bone_vtx)
-        unique_bones = (list(bone_set))
+        unique_bones = list(bone_set)
         bone_vtx_lst.append(unique_bones)
     # print(len(bone_vtx_lst))
     # print(hex(vtx_load_count))
@@ -268,6 +272,7 @@ def portKongDL(base_file, new_file, base_vtx, new_vtx, dyn_textures, vtx_adjustm
                         vtx_group = y_i
                 print(f"{hex(x)}: {vtx_group}")
 
+
 model_dir = "assets/Non-Code/models/"
 # Coins
 portalModel_M2(f"{model_dir}coin.vtx", f"{model_dir}nin_coin.dl", f"{model_dir}coin_overlay.dl", "nintendo_coin", 0x90)
@@ -290,21 +295,21 @@ portalModel_Actor(f"{model_dir}potion_any.vtx", None, "potion_any", 0xB8)
 
 base = (0, 0, 10)
 
-dk_jaw = (0, -16, 22) # 03
-dk_head = (0, 53, 54) # 02
-dk_tie = (0, 4, 55) # 05
-dk_arm_left0 = (42, 38, 26) # 08
-dk_arm_left1 = (5, -40, -1) # 09
-dk_arm_left2 = (0, -39, 10) # 0A
-dk_arm_right0 = (-42, 38, 26) # 0D
-dk_arm_right1 = (-5, -40, -1) # 0E
-dk_arm_right2 = (0, -39, 10) # 0F
-dk_leg_left0 = (15, -4, -1) # 13
-dk_leg_left1 = (6, -18, 4) # 14
-dk_leg_left2 = (1, -24, -1) # 15
-dk_leg_right0 = (-15, -4, -1) # 16
-dk_leg_right1 = (-6, -18, 4) # 17
-dk_leg_right2 = (-1, -24, -1) # 18
+dk_jaw = (0, -16, 22)  # 03
+dk_head = (0, 53, 54)  # 02
+dk_tie = (0, 4, 55)  # 05
+dk_arm_left0 = (42, 38, 26)  # 08
+dk_arm_left1 = (5, -40, -1)  # 09
+dk_arm_left2 = (0, -39, 10)  # 0A
+dk_arm_right0 = (-42, 38, 26)  # 0D
+dk_arm_right1 = (-5, -40, -1)  # 0E
+dk_arm_right2 = (0, -39, 10)  # 0F
+dk_leg_left0 = (15, -4, -1)  # 13
+dk_leg_left1 = (6, -18, 4)  # 14
+dk_leg_left2 = (1, -24, -1)  # 15
+dk_leg_right0 = (-15, -4, -1)  # 16
+dk_leg_right1 = (-6, -18, 4)  # 17
+dk_leg_right2 = (-1, -24, -1)  # 18
 
 
 # portKongDL(f"{model_dir}dk_copy.dl", f"{model_dir}dk.dl", f"{model_dir}dk_copy.vtx", f"{model_dir}dk.vtx", {

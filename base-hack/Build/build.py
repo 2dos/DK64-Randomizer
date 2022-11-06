@@ -350,7 +350,7 @@ shop_face_array = [
     "shared",  # Shared Move
     "soldout32",  # Sold Out
     "gb",
-    "dk_bp",
+    "lanky_bp",
     "crown_shop",
     "key",
     "medal",
