@@ -970,6 +970,7 @@ def compileHints(spoiler: Spoiler):
                 # Replace remaining move hints with WotH location hints, sounds like you'll need them
                 hint_distribution[HintType.FoolishMove] -= 1
                 hint_distribution[HintType.WothLocation] += 1
+                continue
             hinted_move_id = foolish_moves.pop()  # Don't hint the same move twice
             # Gotta hand-pick the name for Slam hints
             if hinted_move_id == Items.ProgressiveSlam:
