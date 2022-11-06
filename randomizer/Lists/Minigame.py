@@ -74,7 +74,12 @@ MinigameRequirements = {
     Minigames.MadMazeMaulEasy: Minigame(name="Mad Maze Maul (60 seconds, 5 enemies)", group="Mad Maze Maul", map_id=Maps.MadMazeMaulEasy, logic=lambda l: True),
     Minigames.MadMazeMaulNormal: Minigame(name="Mad Maze Maul (60 seconds, 7 enemies)", group="Mad Maze Maul", map_id=Maps.MadMazeMaulNormal, difficulty_lvl=1, logic=lambda l: True),
     Minigames.MadMazeMaulHard: Minigame(
-        name="Mad Maze Maul (120 seconds, 11 enemies)", group="Mad Maze Maul", map_id=Maps.MadMazeMaulHard, helm_enabled=False, difficulty_lvl=2, logic=lambda l: (l.shockwave or l.oranges) and l.HasGun(Kongs.any)
+        name="Mad Maze Maul (120 seconds, 11 enemies)",
+        group="Mad Maze Maul",
+        map_id=Maps.MadMazeMaulHard,
+        helm_enabled=False,
+        difficulty_lvl=2,
+        logic=lambda l: (l.shockwave or l.oranges) and l.HasGun(Kongs.any),
     ),
     Minigames.MadMazeMaulInsane: Minigame(name="Mad Maze Maul (125 seconds, 10 enemies)", group="Mad Maze Maul", map_id=Maps.MadMazeMaulInsane, difficulty_lvl=3, logic=lambda l: l.HasGun(Kongs.any)),
     # Minecart Mayhem - Higher two difficulties are too hard for those who don't have a guide to do in Helm

@@ -462,8 +462,7 @@ def PareWoth(spoiler, PlaythroughLocations):
         for loc in [
             loc
             for loc in sphere.locations
-            if not LocationList[loc].constant
-            and ItemList[LocationList[loc].item].type not in (Types.Banana, Types.BlueprintBanana, Types.Crown, Types.Medal, Types.Blueprint)
+            if not LocationList[loc].constant and ItemList[LocationList[loc].item].type not in (Types.Banana, Types.BlueprintBanana, Types.Crown, Types.Medal, Types.Blueprint)
         ]:
             WothLocations.append(loc)
     # Check every item location to see if removing it by itself makes the game unbeatable
@@ -1905,9 +1904,7 @@ def SetNewProgressionRequirementsUnordered(settings: Settings):
 
     # For any boss location behind a T&S we didn't lower...
     bossLocations = [
-        location
-        for id, location in LocationList.items()
-        if location.type == Types.Key and location.level in levelsProgressed and settings.BossBananas[location.level] >= initialTNS[location.level]
+        location for id, location in LocationList.items() if location.type == Types.Key and location.level in levelsProgressed and settings.BossBananas[location.level] >= initialTNS[location.level]
     ]
     for bossLocation in bossLocations:
         # For any level we explicitly blocked, undo the blocking
