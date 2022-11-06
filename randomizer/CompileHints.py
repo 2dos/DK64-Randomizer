@@ -353,18 +353,18 @@ def compileHints(spoiler: Spoiler):
         valid_types.append(HintType.Entrance)
     if Types.Key in spoiler.settings.shuffled_location_types:
         valid_types.append(HintType.RequiredKeyHint)
-        early_keys = 0
-        late_keys = 0
         # Only hint keys that are in the Way of the Hoard
-        woth_keys = [LocationList[woth_loc].item for woth_loc in spoiler.woth_locations if ItemList[LocationList[woth_loc].item].type == Types.Key]
-        for key in woth_keys:
-            # Early keys are keys logically forced to be early in a seed - this only applies to keys 1&2 in easy LO seeds
-            if not level_order_matters and not spoiler.settings.hard_level_progression and key >= Items.JungleJapesKey and key <= Items.AngryAztecKey:
-                early_keys += 1
-            else:
-                late_keys += 1
+        woth_key_ids = [LocationList[woth_loc].item for woth_loc in spoiler.woth_locations if ItemList[LocationList[woth_loc].item].type == Types.Key]
+        # If key acquisition order is non-linear, all keys are late keys
+        if not level_order_matters or spoiler.settings.hard_level_progression:
+            late_keys_required = woth_key_ids
+            early_keys_required = []
+        # If key acquisition order is linear, then some keys should be found very early
+        else:
+            early_keys_required = [key for key in woth_key_ids if key <= Items.AngryAztecKey]  # Keys 1-2
+            late_keys_required = [key for key in woth_key_ids if key > Items.AngryAztecKey]  # Keys 3-8
         # Hint easy keys once and hard keys twice
-        hint_distribution[HintType.RequiredKeyHint] = early_keys + (2 * late_keys)
+        hint_distribution[HintType.RequiredKeyHint] = len(early_keys_required) + (2 * len(late_keys_required))
 
     # Make sure we have exactly 35 hints placed
     hint_count = 0
@@ -549,16 +549,6 @@ def compileHints(spoiler: Spoiler):
 
     # Key location hints should be placed at or before the level they are for (e.g. Key 4 shows up in level 4 lobby or earlier)
     if hint_distribution[HintType.RequiredKeyHint] > 0:
-        woth_key_ids = [LocationList[woth_loc].item for woth_loc in spoiler.woth_locations if ItemList[LocationList[woth_loc].item].type == Types.Key]
-        # If key acquisition order is non-linear, all keys are late keys
-        if not level_order_matters or spoiler.settings.hard_level_progression:
-            late_keys_required = woth_key_ids
-            early_keys_required = []
-        # If key acquisition order is linear, then some keys should be found very early
-        else:
-            early_keys_required = [key for key in woth_key_ids if key <= Items.AngryAztecKey]  # Keys 1-2
-            late_keys_required = [key for key in woth_key_ids if key > Items.AngryAztecKey]  # Keys 3-8
-
         key_location_ids = {}
         # Find the locations of the Keys
         for location_id, location in LocationList.items():
