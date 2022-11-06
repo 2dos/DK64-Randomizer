@@ -522,8 +522,6 @@ class Settings:
             ItemList[Items.CreepyCastleKey].playthrough = False
         if Events.HelmKeyTurnedIn not in self.krool_keys_required:
             ItemList[Items.HideoutHelmKey].playthrough = False
-        if self.key_8_helm:
-            LocationList[Locations.HelmKey].type = Types.Constant
 
         # Banana medals
         if self.random_medal_requirement:
@@ -639,6 +637,11 @@ class Settings:
         # If shops are not shuffled into the larger pool, calculate shop locations for shop-bound moves
         if self.move_rando not in ("off", "item_shuffle"):
             self.valid_locations[Types.Shop] = {}
+            self.valid_locations[Types.Shop][Kongs.donkey] = []
+            self.valid_locations[Types.Shop][Kongs.diddy] = []
+            self.valid_locations[Types.Shop][Kongs.lanky] = []
+            self.valid_locations[Types.Shop][Kongs.tiny] = []
+            self.valid_locations[Types.Shop][Kongs.chunky] = []
             if self.move_rando == "on":
                 self.valid_locations[Types.Shop][Kongs.donkey] = DonkeyMoveLocations.copy()
                 self.valid_locations[Types.Shop][Kongs.diddy] = DiddyMoveLocations.copy()

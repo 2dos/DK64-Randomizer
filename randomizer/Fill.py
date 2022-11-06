@@ -462,7 +462,7 @@ def PareWoth(spoiler, PlaythroughLocations):
         for loc in [
             loc
             for loc in sphere.locations
-            if (not LocationList[loc].constant or loc == Locations.HelmKey)
+            if not LocationList[loc].constant
             and ItemList[LocationList[loc].item].type not in (Types.Banana, Types.BlueprintBanana, Types.Crown, Types.Medal, Types.Blueprint)
         ]:
             WothLocations.append(loc)
@@ -1748,7 +1748,7 @@ def SetNewProgressionRequirementsUnordered(settings: Settings):
                 lowroll = max(minimumBLockerGBs, round(runningGBTotal * BLOCKER_MIN))
                 if lowroll > highroll:
                     print("this shouldn't happen but here we are")
-                    highroll = lowroll
+                    lowroll = highroll
                 settings.EntryGBs[nextLevelToBeat] = random.randint(lowroll, highroll)
             accessibleIncompleteLevels = [nextLevelToBeat]
         else:
@@ -1832,6 +1832,8 @@ def SetNewProgressionRequirementsUnordered(settings: Settings):
                         for x in accessible
                         if LocationList[x].item != Items.NoItem and LocationList[x].item is not None and ItemList[LocationList[x].item].type in (Types.TrainingBarrel, Types.Shop, Types.Shockwave)
                     ]
+                    if priorityBossLocation.item in accessibleMoves:
+                        accessibleMoves.remove(priorityBossLocation.item)
                     ownedMoves[priorityBossLocation.level] = accessibleMoves
                     ownedKongs[priorityBossLocation.level] = LogicVariables.GetKongs()
                     # Now that this boss location is accessible, let's see what's new and then repeat this loop in case we didn't find a new key
@@ -1901,19 +1903,29 @@ def SetNewProgressionRequirementsUnordered(settings: Settings):
             ownedKongs[Levels(level)] = LogicVariables.GetKongs()
             ownedMoves[Levels(level)] = allMoves
 
-    # If boss rewards could be anything, we have to make sure they're accessible
-    if isKeyItemRando:
-        # For any boss location behind a T&S we didn't lower...
-        bossLocations = [
-            location
-            for id, location in LocationList.items()
-            if location.type == Types.Key and location.level in levelsProgressed and settings.BossBananas[location.level] == initialTNS[location.level]
-        ]
-        for bossLocation in bossLocations:
+    # For any boss location behind a T&S we didn't lower...
+    bossLocations = [
+        location
+        for id, location in LocationList.items()
+        if location.type == Types.Key and location.level in levelsProgressed and settings.BossBananas[location.level] >= initialTNS[location.level]
+    ]
+    for bossLocation in bossLocations:
+        # For any level we explicitly blocked, undo the blocking
+        if settings.BossBananas[bossLocation.level] > 500:
+            # We should have access to everything by this point
+            settings.BossBananas[bossLocation.level] = initialTNS[bossLocation.level]
+        if bossLocation.level not in ownedKongs.keys():
+            ownedKongs[bossLocation.level] = LogicVariables.GetKongs()
+            ownedMoves[bossLocation.level] = allMoves
+        # If boss rewards could be anything, we have to make sure they're accessible independent of all else
+        if isKeyItemRando:
             bossReward = bossLocation.item
             # If the boss reward doesn't contain progression, it's fine
             if bossReward is None or ItemList[bossReward].type not in (Types.TrainingBarrel, Types.Shop, Types.Shockwave, Types.Key):
                 continue
+            # You never have the boss reward when fighting it, so remove it from consideration for boss placement
+            if bossReward in ownedMoves[bossLocation.level]:
+                ownedMoves[bossLocation.level].remove(bossReward)
             # If it could contain progression, place a dummy item there and see if we can reach it
             bossLocation.PlaceItem(Items.TestItem)
             Reset()

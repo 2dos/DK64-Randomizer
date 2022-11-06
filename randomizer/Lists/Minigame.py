@@ -1,5 +1,6 @@
 """Stores the requirements for each minigame."""
 
+from randomizer.Enums.Kongs import Kongs
 from randomizer.Enums.Locations import Locations
 from randomizer.Enums.Minigames import Minigames
 from randomizer.Lists.MapsAndExits import Maps
@@ -73,9 +74,9 @@ MinigameRequirements = {
     Minigames.MadMazeMaulEasy: Minigame(name="Mad Maze Maul (60 seconds, 5 enemies)", group="Mad Maze Maul", map_id=Maps.MadMazeMaulEasy, logic=lambda l: True),
     Minigames.MadMazeMaulNormal: Minigame(name="Mad Maze Maul (60 seconds, 7 enemies)", group="Mad Maze Maul", map_id=Maps.MadMazeMaulNormal, difficulty_lvl=1, logic=lambda l: True),
     Minigames.MadMazeMaulHard: Minigame(
-        name="Mad Maze Maul (120 seconds, 11 enemies)", group="Mad Maze Maul", map_id=Maps.MadMazeMaulHard, helm_enabled=False, difficulty_lvl=2, logic=lambda l: l.shockwave
+        name="Mad Maze Maul (120 seconds, 11 enemies)", group="Mad Maze Maul", map_id=Maps.MadMazeMaulHard, helm_enabled=False, difficulty_lvl=2, logic=lambda l: (l.shockwave or l.oranges) and l.HasGun(Kongs.any)
     ),
-    Minigames.MadMazeMaulInsane: Minigame(name="Mad Maze Maul (125 seconds, 10 enemies)", group="Mad Maze Maul", map_id=Maps.MadMazeMaulInsane, difficulty_lvl=3, logic=lambda l: True),
+    Minigames.MadMazeMaulInsane: Minigame(name="Mad Maze Maul (125 seconds, 10 enemies)", group="Mad Maze Maul", map_id=Maps.MadMazeMaulInsane, difficulty_lvl=3, logic=lambda l: l.HasGun(Kongs.any)),
     # Minecart Mayhem - Higher two difficulties are too hard for those who don't have a guide to do in Helm
     Minigames.MinecartMayhemEasy: Minigame(name="Minecart Mayhem (30 seconds, 1 TNT)", group="Minecart Mayhem", map_id=Maps.MinecartMayhemEasy, logic=lambda l: True),
     Minigames.MinecartMayhemNormal: Minigame(
