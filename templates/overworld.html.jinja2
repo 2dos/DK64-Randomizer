@@ -25,7 +25,7 @@
                                value="True"/>
                         Shuffle Bonus Barrels
                     </label>
-                    {{ list_selector(minigames, "minigames_list", "MINIGAME SELECTOR", "This will open a popup that will let you customize what Bonus Games are in the pool.&#10;This defaults to All minigames.") }}
+                    {{ list_selector(minigames, "minigames_list", "MINIGAME SELECTOR", "This will open a popup that will let you customize what Bonus Games are in the pool.&#10;This defaults to All minigames.", 16) }}
                     {# Remove end </div> as it's included in the macro for formatting #}
                     <div class="form-check form-switch item-switch">
                         <label data-toggle="tooltip"
@@ -235,15 +235,18 @@
                 <div class="flex-container">
                     <div class="form-check form-switch item-switch center-flex">
                         <label data-toggle="tooltip"
-                               title="Required to get Key 8 from Helm to access K Rool or leave it up to chance.">
+                               title="Select the exact keys you start with.">
                             <input class="form-check-input"
                                    type="checkbox"
-                                   name="krool_access"
-                                   id="krool_access"
+                                   name="select_keys"
+                                   id="select_keys"
+                                   onchange="toggle_clicks()"
                                    value="True"/>
-                            Key 8 Required
+                            Select Starting Keys
                         </label>
-                    </div>
+                        {{ list_selector(keys, "starting_keys_list", "STARTING KEYS SELECTOR", "This will open a popup that will let you customize what Keys you start with.&#10;This defaults to starting with no keys if none are selected.", 8) }}
+                </div>
+                <div class="flex-container">
                     <div class="form-check form-switch item-switch center-flex">
                         <label data-toggle="tooltip"
                                title="If Key 8 were to be shuffled, force Key 8 to be in its vanilla location in Helm.">
@@ -253,6 +256,17 @@
                                    id="key_8_helm"
                                    value="True"/>
                             Lock Key 8 in Helm
+                        </label>
+                    </div>
+                    <div class="form-check form-switch item-switch center-flex">
+                        <label data-toggle="tooltip"
+                               title="Required to get Key 8 from Helm to access K Rool or leave it up to chance.">
+                            <input class="form-check-input"
+                                   type="checkbox"
+                                   name="krool_access"
+                                   id="krool_access"
+                                   value="True"/>
+                            Key 8 Required
                         </label>
                     </div>
                     <div class="form-check form-switch item-switch center-flex">
@@ -412,7 +426,7 @@
             } else {
                 $("#helm_phase_count").slider("enable")
             }
-            if (document.getElementById("keys_random").checked === true) {
+            if ((document.getElementById("keys_random").checked === true) || (document.getElementById("select_keys").checked === true)) {
                 $("#krool_key_count").slider("disable")
             } else {
                 $("#krool_key_count").slider("enable")
