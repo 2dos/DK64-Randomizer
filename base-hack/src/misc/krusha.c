@@ -33,11 +33,6 @@ void adjustAnimationTables(void) {
                 if (!excl_extra) {
                     AnimationTable2[(7 * i) + slot] = AnimationTable2[(7 * i) + 5];
                 }
-                if (slot == 1) {
-                    if (i == 0x32) {
-                        AnimationTable2[(7 * i) + slot] = AnimationTable2[(7 * i) + 6];
-                    }
-                }
             }
             /*
                 Fixes a collision glitch with actors underwater if set to 2.
@@ -124,4 +119,13 @@ void updateCutsceneModels(actorData* actor, int size) {
         clearGun(actor);
     }
     updateModelScales(actor, size);
+}
+
+void* DiddySwimFix(int ptr, int file, int c0, int c1) {
+    float* data = (float*)getMapData(ptr, file, c0, c1);
+    if (file == 210) {
+        // Diddy Swim Animation
+        *data = 1.0f;
+    }
+    return (void*)data;
 }

@@ -597,10 +597,13 @@ loadExtraHooks:
 	loadExtraHooks_4:
 	LUI t3, hi(KrushaSlot)
 	LBU t3, lo(KrushaSlot) (t3)
+	ADDIU t4, r0, 3
+	BEQ t3, t4, loadExtraHooks_5
 	ADDIU t4, r0, 1
-	BNE t3, t4, loadExtraHooks_5
+	BNE t3, t4, loadExtraHooks_6
 	NOP
 
+	loadExtraHooks_5:
 	LUI t3, hi(KrushaSizeHook)
 	LW t3, lo(KrushaSizeHook) (t3)
 	LUI t4, 0x8061
@@ -619,7 +622,7 @@ loadExtraHooks:
 	SW t3, 0xC348 (t4) // Store Hook
 	SW r0, 0xC34C (t4) // Store NOP
 
-	loadExtraHooks_5:
+	loadExtraHooks_6:
 	JR ra
 	NOP
 

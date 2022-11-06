@@ -226,8 +226,9 @@ int getInitFileMove(int index) {
 					int subtype = getMoveProgressiveFlagType(move_value);
 					if (subtype == 0) {
 						// Slams
-						slam_screen_level += 1;
-						return slam_screen_level + 1;
+						if (index == TRACKER_TYPE_SLAM) {
+							return slam_screen_level + 1;
+						}
 					} else if (subtype == 1) {
 						// Belts
 						if (belt_screen_level == 0) {
@@ -235,7 +236,6 @@ int getInitFileMove(int index) {
 						} else {
 							found |= index == TRACKER_TYPE_BELT_2;
 						}
-						belt_screen_level += 1;
 					} else if (subtype == 2) {
 						// Ins Upg
 						if (ins_screen_level == 0) {
@@ -245,7 +245,6 @@ int getInitFileMove(int index) {
 						} else {
 							found |= index == TRACKER_TYPE_INSUPG_2;
 						}
-						ins_screen_level += 1;
 					}
 				}
 				break;
@@ -446,6 +445,18 @@ void updateEnabledStates(void) {
 	slam_screen_level = 0;
 	belt_screen_level = 0;
 	ins_screen_level = 0;
+	for (int i = 0; i < 4; i++) {
+		if (TrainingMoves_New[i].purchase_type == PURCHASE_FLAG) {
+			int subtype = getMoveProgressiveFlagType(TrainingMoves_New[i].purchase_value);
+			if (subtype == 0) {
+				slam_screen_level += 1;
+			} else if (subtype == 1) {
+				belt_screen_level += 1;
+			} else if (subtype == 2) {
+				ins_screen_level += 1;
+			}
+		}
+	}
 	for (int i = 0; i < (int)(sizeof(tracker_info) / sizeof(tracker_struct)); i++) {
 		tracker_info[i].enabled = getEnabledState(tracker_info[i].type);
 	}
