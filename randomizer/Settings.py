@@ -719,7 +719,22 @@ class Settings:
             if Types.Banana in self.shuffled_location_types:
                 self.valid_locations[Types.Banana] = shuffledLocations
             if Types.Crown in self.shuffled_location_types:
-                self.valid_locations[Types.Crown] = shuffledLocations
+                banned_crown_locations = (
+                    Locations.HelmDonkeyMedal,
+                    Locations.HelmDiddyMedal,
+                    Locations.HelmLankyMedal,
+                    Locations.HelmTinyMedal,
+                    Locations.HelmChunkyMedal,
+                    Locations.JapesDiddyMinecarts,
+                    Locations.CastleDonkeyMinecarts,
+                    Locations.ForestChunkyMinecarts,
+                    Locations.IslesDonkeyInstrumentPad,
+                    Locations.IslesDiddyInstrumentPad,
+                    Locations.IslesLankyInstrumentPad,
+                    Locations.IslesTinyInstrumentPad,
+                    Locations.IslesChunkyInstrumentPad,
+                )
+                self.valid_locations[Types.Crown] = [location for location in shuffledLocations if location not in banned_crown_locations]
             if Types.Key in self.shuffled_location_types:
                 self.valid_locations[Types.Key] = shuffledLocations
             if Types.Medal in self.shuffled_location_types:

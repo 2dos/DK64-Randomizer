@@ -170,7 +170,7 @@ void progressiveChange(int flag) {
 					ins_level = i;
 				}
 			}
-			if (ins_level > 1) {
+			if (ins_level > 0) {
 				if (CollectableBase.Melons < 3) {
 					CollectableBase.Melons = 3;
 					CollectableBase.Health = CollectableBase.Melons << 2;
