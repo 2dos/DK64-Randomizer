@@ -1,4 +1,4 @@
-{% macro list_selector(list, name, title, tooltip) %}
+{% macro list_selector(list, name, title, tooltip, size) %}
     <!-- Icon triggers modal -->
     <input class="btn btn-primary customize"
            type="button"
@@ -43,7 +43,7 @@
                                     class="form-select multi-select selected"
                                     aria-label="List_Selector"
                                     multiple
-                                    size="16">
+                                    size="{{ size }}">
                                 {% for item in list %}
                                     <option value="{{ item.value }}" title="{{ item.tooltip }}">
                                         {{ item.name }}
