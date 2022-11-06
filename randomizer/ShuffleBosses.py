@@ -98,7 +98,7 @@ def ShuffleBossesBasedOnOwnedItems(settings, ownedKongs: dict, ownedMoves: dict)
     try:
         bossLevelOptions = {0, 1, 2, 3, 4, 5, 6}
         # Find levels we can place Dogadon 2 (most restrictive)
-        forestBossOptions = [x for x in bossLevelOptions if Kongs.chunky in ownedKongs[x] and Items.HunkyChunky in ownedMoves[x]]
+        forestBossOptions = [x for x in bossLevelOptions if Kongs.chunky in ownedKongs[x] and Items.HunkyChunky in ownedMoves[x] and Items.Barrels in ownedMoves[x]]
         if not settings.kong_rando and not settings.boss_location_rando and 4 not in forestBossOptions:
             raise ItemPlacementException("Items not placed to allow vanilla Dogadon 2.")
         # Then find levels we can place Mad jack (next most restrictive)
@@ -138,18 +138,27 @@ def ShuffleBossesBasedOnOwnedItems(settings, ownedKongs: dict, ownedMoves: dict)
 
         bossLevelOptions.remove(forestBossIndex)
         bossLevelOptions.remove(factoryBossIndex)
-        # Place the rest randomly
+
+        # Place the barrels-required bosses
+        bossTryingToBePlaced = "barrels-locked bosses"
+        barrelsBossOptions = [x for x in bossLevelOptions if Items.Barrels in ownedMoves[x]]
+        random.shuffle(barrelsBossOptions)
+        cavesBossIndex = barrelsBossOptions.pop()
+        cavesBossKong = random.choice(ownedKongs[cavesBossIndex])
+        bossLevelOptions.remove(cavesBossIndex)
+        japesBossIndex = barrelsBossOptions.pop()
+        japesBossKong = random.choice(ownedKongs[japesBossIndex])
+        bossLevelOptions.remove(japesBossIndex)
+        aztecBossIndex = barrelsBossOptions.pop()
+        aztecBossKong = random.choice(ownedKongs[aztecBossIndex])
+        bossLevelOptions.remove(aztecBossIndex)
+
+        # Place the last 2 freely
         bossTryingToBePlaced = "the easy bosses to place (if this breaks here something REALLY strange happened)"
         remainingBosses = list(bossLevelOptions)
         random.shuffle(remainingBosses)
         galleonBossIndex = remainingBosses.pop()
         galleonBossKong = random.choice(ownedKongs[galleonBossIndex])
-        cavesBossIndex = remainingBosses.pop()
-        cavesBossKong = random.choice(ownedKongs[cavesBossIndex])
-        japesBossIndex = remainingBosses.pop()
-        japesBossKong = random.choice(ownedKongs[japesBossIndex])
-        aztecBossIndex = remainingBosses.pop()
-        aztecBossKong = random.choice(ownedKongs[aztecBossIndex])
         castleBossIndex = remainingBosses.pop()
         castleBossKong = random.choice(ownedKongs[castleBossIndex])
         newBossMaps = []
@@ -184,7 +193,10 @@ def ShuffleBossesBasedOnOwnedItems(settings, ownedKongs: dict, ownedMoves: dict)
         if isinstance(ex.args[0], str) and "index out of range" in ex.args[0]:
             print("Unlucky move placement fill :(")
             raise BossOutOfLocationsException("No valid locations to place " + bossTryingToBePlaced)
-        raise FillException(ex)
+        if isinstance(ex.args[0], str) and "pop from empty list" in ex.args[0]:
+            print("Barrels bad.")
+            raise BossOutOfLocationsException("No valid locations to place " + bossTryingToBePlaced)
+        raise ex
 
     # Only apply this shuffle if the settings permit it
     # If kongs are random we have to shuffle bosses and locations or else we might break logic

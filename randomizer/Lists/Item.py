@@ -81,6 +81,7 @@ def KongFromItem(item):
 
 ItemList = {
     Items.NoItem: Item("No Item", False, Types.Constant, Kongs.any),
+    Items.TestItem: Item("Fill Helper Item - SHOULD NOT BE PLACED", False, Types.Constant, Kongs.any),
     Items.Donkey: Item("Donkey", True, Types.Kong, Kongs.any),
     Items.Diddy: Item("Diddy", True, Types.Kong, Kongs.any),
     Items.Lanky: Item("Lanky", True, Types.Kong, Kongs.any),
