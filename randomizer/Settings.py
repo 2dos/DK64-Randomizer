@@ -351,6 +351,8 @@ class Settings:
         self.item_rando_list_selected = []
         self.misc_changes_selected = []
         self.enemies_selected = []
+        self.starting_keys_list_selected = []
+        self.select_keys = False
         self.helm_hurry = False
         self.colorblind_mode = "off"
         self.win_condition = "beat_krool"
@@ -471,8 +473,28 @@ class Settings:
             Events.HelmKeyTurnedIn,
         ]
         key_list = KeyEvents.copy()
+        required_key_count = 0
         if self.keys_random:
             required_key_count = randint(0, 8)
+        if self.select_keys:
+            self.krool_keys_required = KeyEvents.copy()
+            for key in self.starting_keys_list_selected:
+                if key == "key1":
+                    self.krool_keys_required.remove(key_list[0])
+                if key == "key2":
+                    self.krool_keys_required.remove(key_list[1])
+                if key == "key3":
+                    self.krool_keys_required.remove(key_list[2])
+                if key == "key4":
+                    self.krool_keys_required.remove(key_list[3])
+                if key == "key5":
+                    self.krool_keys_required.remove(key_list[4])
+                if key == "key6":
+                    self.krool_keys_required.remove(key_list[5])
+                if key == "key7":
+                    self.krool_keys_required.remove(key_list[6])
+                if key == "key8":
+                    self.krool_keys_required.remove(key_list[7])
         else:
             required_key_count = self.krool_key_count
         if self.krool_access or self.win_condition == "get_key8":
@@ -480,9 +502,10 @@ class Settings:
             self.krool_keys_required.append(Events.HelmKeyTurnedIn)
             key_list.remove(Events.HelmKeyTurnedIn)
             required_key_count -= 1
-        random.shuffle(key_list)
-        for x in range(required_key_count):
-            self.krool_keys_required.append(key_list[x])
+        if not self.select_keys:
+            random.shuffle(key_list)
+            for x in range(required_key_count):
+                self.krool_keys_required.append(key_list[x])
         if Events.JapesKeyTurnedIn not in self.krool_keys_required:
             ItemList[Items.JungleJapesKey].playthrough = False
         if Events.AztecKeyTurnedIn not in self.krool_keys_required:
@@ -640,7 +663,7 @@ class Settings:
             self.valid_locations[Types.Shop][Kongs.any] = SharedShopLocations
             if self.shockwave_status not in ("vanilla", "start_with") and Types.Shockwave not in self.shuffled_location_types:
                 self.valid_locations[Types.Shop][Kongs.any].add(Locations.CameraAndShockwave)
-            else:
+            elif Locations.CameraAndShockwave in self.valid_locations[Types.Shop][Kongs.tiny]:
                 self.valid_locations[Types.Shop][Kongs.tiny].remove(Locations.CameraAndShockwave)
             if self.training_barrels == "shuffled" and Types.TrainingBarrel not in self.shuffled_location_types:
                 for kong in Kongs:
