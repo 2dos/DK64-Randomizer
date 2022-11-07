@@ -110,10 +110,16 @@ def getBalancedCrownEnemyRando(spoiler: Spoiler, crown_setting, damage_ohko_sett
         disruptive_0 = []  # the easiest enemies
         legacy_hard_mode = []  # legacy map with the exact same balance as the old "Hard" mode
 
+        # Determine whether any crown-enabled enemies have been selected
+        crown_enemy_found = False
+        for enemy in EnemyMetaData:
+            if convertEnemyName(EnemyMetaData[enemy].name) in spoiler.settings.enemies_selected and EnemyMetaData[enemy].crown_enabled is True:
+                crown_enemy_found = True
+                break
         # fill in the lists with the possibilities that belong in them.
         for enemy in EnemyMetaData:
             if EnemyMetaData[enemy].crown_enabled and enemy is not Enemies.GetOut:
-                if convertEnemyName(EnemyMetaData[enemy].name) in spoiler.settings.enemies_selected:
+                if convertEnemyName(EnemyMetaData[enemy].name) in spoiler.settings.enemies_selected or crown_enemy_found is False:
                     every_enemy.append(enemy)
                     if EnemyMetaData[enemy].disruptive <= 1:
                         disruptive_max_1.append(enemy)
@@ -122,11 +128,18 @@ def getBalancedCrownEnemyRando(spoiler: Spoiler, crown_setting, damage_ohko_sett
                     elif EnemyMetaData[enemy].disruptive == 0:
                         disruptive_at_most_kasplat.append(enemy)
                         disruptive_0.append(enemy)
+        # Make sure every list is populated, even if too few crown-enabled enemies have been selected
+        if len(disruptive_max_1) == 0:
+            disruptive_max_1.append(every_enemy.copy())
+        if len(disruptive_at_most_kasplat) == 0:
+            disruptive_at_most_kasplat.append(disruptive_max_1.copy())
+        if len(disruptive_0) == 0:
+            disruptive_max_1.append(disruptive_at_most_kasplat)
         # the legacy_hard_mode list is trickier to fill, but here goes:
         bias = 2
         for enemy in EnemyMetaData.keys():
             if EnemyMetaData[enemy].crown_enabled:
-                if convertEnemyName(EnemyMetaData[enemy].name) in spoiler.settings.enemies_selected:
+                if convertEnemyName(EnemyMetaData[enemy].name) in spoiler.settings.enemies_selected or crown_enemy_found is False:
                     base_weight = EnemyMetaData[enemy].crown_weight
                     weight_diff = abs(base_weight - bias)
                     new_weight = abs(10 - weight_diff)
