@@ -46,6 +46,8 @@
     "high_req": true,
     "item_rando_list_selected": [],
     "kasplat_rando_setting": "vanilla_locations",
+    "select_keys": false,
+    "starting_keys_list_selected": [],
     "key_8_helm": false,
     "keys_random": false,
     "kong_rando": true,

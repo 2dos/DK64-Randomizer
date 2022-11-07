@@ -476,7 +476,7 @@ class Settings:
         required_key_count = 0
         if self.keys_random:
             required_key_count = randint(0, 8)
-        elif self.select_keys:
+        if self.select_keys:
             self.krool_keys_required = KeyEvents.copy()
             for key in self.starting_keys_list_selected:
                 if key == "key1":
@@ -522,8 +522,6 @@ class Settings:
             ItemList[Items.CreepyCastleKey].playthrough = False
         if Events.HelmKeyTurnedIn not in self.krool_keys_required:
             ItemList[Items.HideoutHelmKey].playthrough = False
-        if self.key_8_helm:
-            LocationList[Locations.HelmKey].type = Types.Constant
 
         # Banana medals
         if self.random_medal_requirement:
@@ -639,6 +637,11 @@ class Settings:
         # If shops are not shuffled into the larger pool, calculate shop locations for shop-bound moves
         if self.move_rando not in ("off", "item_shuffle"):
             self.valid_locations[Types.Shop] = {}
+            self.valid_locations[Types.Shop][Kongs.donkey] = []
+            self.valid_locations[Types.Shop][Kongs.diddy] = []
+            self.valid_locations[Types.Shop][Kongs.lanky] = []
+            self.valid_locations[Types.Shop][Kongs.tiny] = []
+            self.valid_locations[Types.Shop][Kongs.chunky] = []
             if self.move_rando == "on":
                 self.valid_locations[Types.Shop][Kongs.donkey] = DonkeyMoveLocations.copy()
                 self.valid_locations[Types.Shop][Kongs.diddy] = DiddyMoveLocations.copy()
@@ -663,7 +666,7 @@ class Settings:
             self.valid_locations[Types.Shop][Kongs.any] = SharedShopLocations
             if self.shockwave_status not in ("vanilla", "start_with") and Types.Shockwave not in self.shuffled_location_types:
                 self.valid_locations[Types.Shop][Kongs.any].add(Locations.CameraAndShockwave)
-            else:
+            elif Locations.CameraAndShockwave in self.valid_locations[Types.Shop][Kongs.tiny]:
                 self.valid_locations[Types.Shop][Kongs.tiny].remove(Locations.CameraAndShockwave)
             if self.training_barrels == "shuffled" and Types.TrainingBarrel not in self.shuffled_location_types:
                 for kong in Kongs:
@@ -719,7 +722,22 @@ class Settings:
             if Types.Banana in self.shuffled_location_types:
                 self.valid_locations[Types.Banana] = shuffledLocations
             if Types.Crown in self.shuffled_location_types:
-                self.valid_locations[Types.Crown] = shuffledLocations
+                banned_crown_locations = (
+                    Locations.HelmDonkeyMedal,
+                    Locations.HelmDiddyMedal,
+                    Locations.HelmLankyMedal,
+                    Locations.HelmTinyMedal,
+                    Locations.HelmChunkyMedal,
+                    Locations.JapesDiddyMinecarts,
+                    Locations.CastleDonkeyMinecarts,
+                    Locations.ForestChunkyMinecarts,
+                    Locations.IslesDonkeyInstrumentPad,
+                    Locations.IslesDiddyInstrumentPad,
+                    Locations.IslesLankyInstrumentPad,
+                    Locations.IslesTinyInstrumentPad,
+                    Locations.IslesChunkyInstrumentPad,
+                )
+                self.valid_locations[Types.Crown] = [location for location in shuffledLocations if location not in banned_crown_locations]
             if Types.Key in self.shuffled_location_types:
                 self.valid_locations[Types.Key] = shuffledLocations
             if Types.Medal in self.shuffled_location_types:
