@@ -934,6 +934,12 @@ def Fill(spoiler):
         medalsUnplaced = PlaceItems(spoiler.settings, algo, ItemPool.BananaMedalItems(), ItemPool.MedalAssumedItems())
         if medalsUnplaced > 0:
             raise Ex.ItemPlacementException(str(medalsUnplaced) + " unplaced medals.")
+    # Then fill misc items
+    if Types.Bean in spoiler.settings.shuffled_location_types:
+        Reset()
+        miscUnplaced = PlaceItems(spoiler.settings, "random", ItemPool.MiscItemRandoItems(), [])
+        if miscUnplaced > 0:
+            raise Ex.ItemPlacementException(str(miscUnplaced) + " unplaced Miscellaneous Items.")
     # Then fill remaining locations with GBs
     if Types.Banana in spoiler.settings.shuffled_location_types:
         Reset()
@@ -1188,8 +1194,30 @@ def FillKongs(spoiler):
             LocationList[locationId].PlaceItem(Items.NoItem)
     # We place Kongs first so we know what Kong moves are most important to place next
     Reset()
-    # Specialized Kong placement function that will never fail to find a beatable combination of Kong unlocks for the vanilla locations
-    PlaceKongsInKongLocations(spoiler, kongItems, spoiler.settings.kong_locations.copy())
+    if Types.Kong in spoiler.settings.shuffled_location_types:
+        if len(kongItems) > 0:
+            kongs_in_inventory = startingKongItems.copy()
+            kongItemShuffle = kongItems.copy()
+            tries = 20
+            while len(kongs_in_inventory) != 5:
+                random.shuffle(kongItemShuffle)
+                original_shuffle = kongItemShuffle.copy()
+                kong = kongItemShuffle.pop()
+                kongsUnplaced = PlaceItems(spoiler.settings, spoiler.settings.algorithm, [kong], kongs_in_inventory)
+                if kongsUnplaced > 0:
+                    tries -= 1
+                    kongItemShuffle = original_shuffle.copy()
+                else:
+                    # Successfully placed kong
+                    print(f"Placed kong {kong}: {kongs_in_inventory}")
+                    kongs_in_inventory.append(kong)
+                if tries <= 0:
+                    print(f"Tried placing {kong}. Assortment {kongs_in_inventory}")
+                    raise Ex.ItemPlacementException(str(kongsUnplaced) + " unplaced kongs.")
+                    break
+    else:
+        # Specialized Kong placement function that will never fail to find a beatable combination of Kong unlocks for the vanilla locations
+        PlaceKongsInKongLocations(spoiler, kongItems, spoiler.settings.kong_locations.copy())
 
 
 def FillKongsAndMoves(spoiler):
@@ -1198,7 +1226,7 @@ def FillKongsAndMoves(spoiler):
     preplacedPriorityMoves = []
 
     # Handle kong rando
-    if spoiler.settings.kong_rando:
+    if spoiler.settings.kong_rando or Types.Kong in spoiler.settings.shuffled_location_types:
         FillKongs(spoiler)
 
     # Once Kongs are placed, the top priority is placing training barrel moves first. These (mostly) need to be very early because they block access to whole levels.
@@ -1263,7 +1291,7 @@ def FillKongsAndMoves(spoiler):
             if LocationList[sharedLocation].item is not None:
                 trainingMoveShops.append(sharedLocation)
 
-    if spoiler.settings.kong_rando:
+    if spoiler.settings.kong_rando and Types.Kong not in spoiler.settings.shuffled_location_types:
         # If kongs are our progression, then place moves that unlock those kongs before anything else
         # This logic only matters if the level order is critical to progression (i.e. not loading zone shuffled)
         if spoiler.settings.kongs_for_progression and spoiler.settings.shuffle_loading_zones != "all" and spoiler.settings.move_rando != "start_with":

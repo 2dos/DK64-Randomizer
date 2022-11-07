@@ -1,5 +1,7 @@
 #include "../include/common.h"
 
+const short kong_flags[] = {FLAG_KONG_DK,FLAG_KONG_DIDDY,FLAG_KONG_LANKY,FLAG_KONG_TINY,FLAG_KONG_CHUNKY};
+
 void playSFX(short sfxIndex) {
 	playSound(sfxIndex,0x7FFF,0x427C0000,0x3F800000,0,0);
 }
@@ -221,4 +223,17 @@ int getKeyFlag(int index) {
     } else {
         return normal_key_flags[index];
     }
+}
+
+int getKongFlag(int kong_index) {
+	if (kong_index < 0) {
+		return 0;
+	}
+	return kong_flags[kong_index];
+}
+
+void initActor(int actor_index, void* func, int master_type, int paad_type) {
+	ActorFunctions[actor_index] = func;
+	ActorMasterType[actor_index] = master_type;
+	*(ActorPaadDefs[actor_index]) = paad_type;
 }

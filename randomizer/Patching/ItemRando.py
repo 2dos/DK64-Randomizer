@@ -18,6 +18,9 @@ model_two_indexes = {
     Types.TrainingBarrel: 0x1F6,
     Types.Shockwave: 0x1F6,
     Types.NoItem: 0,  # No Item
+    Types.Kong: [0x257, 0x258, 0x259, 0x25A, 0x25B],
+    Types.Bean: 0x198,
+    Types.Pearl: 0x1B4,
 }
 
 model_two_scales = {
@@ -27,10 +30,13 @@ model_two_scales = {
     Types.Key: 0.17,
     Types.Crown: 0.25,
     Types.Medal: 0.22,
-    Types.Shop: 0.8,
-    Types.TrainingBarrel: 0.8,
-    Types.Shockwave: 0.8,
+    Types.Shop: 0.25,
+    Types.TrainingBarrel: 0.25,
+    Types.Shockwave: 0.25,
     Types.NoItem: 0.25,  # No Item
+    Types.Kong: 0.25,
+    Types.Bean: 0.25,
+    Types.Pearl: 0.25,
 }
 
 actor_indexes = {
@@ -44,6 +50,9 @@ actor_indexes = {
     Types.Shockwave: 162,
     Types.NoItem: 153,
     Types.Medal: 154,
+    Types.Kong: [141, 142, 143, 144, 155],
+    Types.Bean: 172,
+    Types.Pearl: 174,
 }
 
 
@@ -67,6 +76,8 @@ def place_randomized_items(spoiler: Spoiler):
             0x18D,  # Crown
             0x90,  # Medal
             0x288,  # Rareware GB
+            0x198,  # Bean
+            0x1B4,  # Pearls
         ]
         map_items = {}
         bonus_table_offset = 0
@@ -170,6 +181,12 @@ def place_randomized_items(spoiler: Spoiler):
                         ROM().writeMultipleBytes(item.old_flag, 2)
                         ROM().writeMultipleBytes(actor_index, 1)
                         bonus_table_offset += 1
+                elif item.old_item == Types.Kong:
+                    for i in range(4):
+                        if item.new_item is None or item.new_item == Types.NoItem:
+                            # Write Empty Cage
+                            ROM().seek(sav + 0x152 + (2 * i))
+                            ROM().writeMultipleBytes(0xFF, 1)
                 else:
                     if item.old_item != Types.Medal:
                         if item.new_item is None:
@@ -188,6 +205,12 @@ def place_randomized_items(spoiler: Spoiler):
                                 if item.shared or slot > 5:
                                     slot = 5
                             actor_index = actor_indexes[Types.Shop][slot]
+                        elif item.new_item == Types.Kong:
+                            kong_flags = [385, 6, 70, 66, 117]
+                            slot = 0
+                            if item.new_flag in kong_flags:
+                                slot = kong_flags.index(item.new_flag)
+                            actor_index = actor_indexes[Types.Kong][slot]
                         else:
                             actor_index = actor_indexes[item.new_item]
                     if item.old_item == Types.Blueprint:
@@ -219,8 +242,27 @@ def place_randomized_items(spoiler: Spoiler):
                         # 8 = Candy Item
                         # 9 = Training Barrel
                         # 10 = Shockwave
-                        # 11 = Nothing
-                        slots = [Types.Banana, Types.Blueprint, Types.Key, Types.Crown, Types.Coin, Types.Medal, Types.Shop, Types.Shop, Types.Shop, Types.TrainingBarrel, Types.Shockwave, None]
+                        # 11 = Kong
+                        # 12 = Bean
+                        # 13 = Pearl
+                        # 14 = Nothing
+                        slots = [
+                            Types.Banana,  # GB
+                            Types.Blueprint,  # BP
+                            Types.Key,  # Key
+                            Types.Crown,  # Crown
+                            Types.Coin,  # Special Coin
+                            Types.Medal,  # Medal
+                            Types.Shop,  # Cranky Item
+                            Types.Shop,  # Funky Item
+                            Types.Shop,  # Candy Item
+                            Types.TrainingBarrel,  # Training Move
+                            Types.Shockwave,  # Fairy Item
+                            Types.Kong,  # Kong
+                            Types.Bean,  # Bean
+                            Types.Pearl,  # Pearl
+                            None,  # No Item
+                        ]
                         offset = item.old_flag - 549
                         ROM().seek(0x1FF1080 + offset)
                         if item.new_item == Types.Shop:
@@ -247,7 +289,7 @@ def place_randomized_items(spoiler: Spoiler):
                         ROM().writeMultipleBytes(item.old_flag, 2)
                         ROM().writeMultipleBytes(actor_index, 1)
                         bonus_table_offset += 1
-            if not item.is_shop and item.can_have_item:
+            if not item.is_shop and item.can_have_item and item.old_item != Types.Kong:
                 # Write flag lookup table
                 data = [item.old_flag]
                 if item.new_item is None:
@@ -291,6 +333,12 @@ def place_randomized_items(spoiler: Spoiler):
                                     if item_slot["shared"] or slot > 5:
                                         slot = 5
                                 item_obj_index = model_two_indexes[Types.Shop][slot]
+                            elif item_slot["obj"] == Types.Kong:
+                                kong_flags = [385, 6, 70, 66, 117]
+                                slot = 0
+                                if item_slot["flag"] in kong_flags:
+                                    slot = kong_flags.index(item_slot["flag"])
+                                item_obj_index = model_two_indexes[Types.Kong][slot]
                             else:
                                 item_obj_index = model_two_indexes[item_slot["obj"]]
                             ROM().writeMultipleBytes(item_obj_index, 2)

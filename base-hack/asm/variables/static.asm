@@ -8,3 +8,6 @@
 .definelabel FunkyMoves, 0x80033408
 .definelabel LedgeHangY, 0x80753D70
 .definelabel LedgeHangY_0, 0x80753D8C
+.definelabel ActorFunctions, 0x8074C0A0
+.definelabel ActorMasterType, 0x8074D8D4
+.definelabel ActorPaadDefs, 0x8074E218

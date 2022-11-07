@@ -84,8 +84,11 @@ void spawnEnemyDrops(actorData* actor) {
                     if (Rando.item_rando) {
                         drop_type = getBPItem(flag - 469);
                         drop_count = 1;
-                        if ((drop_type == 45) || (drop_type == 72) || (drop_type == 86) || ((drop_type >= 157) && (drop_type <= 162))) {
-                            drop_arg = 2;
+                        unsigned char bounce_objects[] = {45, 72, 86, 157, 158, 159, 160, 161, 162, 141, 142, 143, 144, 155};
+                        for (int i = 0; i < sizeof(bounce_objects); i++) {
+                            if (drop_type == bounce_objects[i]) {
+                                drop_arg = 2;
+                            }
                         }
                         if (KasplatSpawnBitfield & (1 << (actor_index - 241))) {
                             drop_count = 0;
