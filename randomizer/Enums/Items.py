@@ -6,6 +6,7 @@ class Items(IntEnum):
     """Item enum."""
 
     NoItem = auto()
+    TestItem = auto()
 
     Donkey = auto()
     Diddy = auto()

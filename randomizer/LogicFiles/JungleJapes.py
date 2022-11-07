@@ -123,7 +123,7 @@ LogicRegions = {
     Regions.BeyondRambiGate: Region("Beyond Rambi Gate", "Japes Tunnels", Levels.JungleJapes, False, -1, [
         LocationLogic(Locations.JapesBananaFairyRambiCave, lambda l: l.camera),
     ], [
-        Event(Events.JapesChunkySwitch, lambda l: l.Slam and l.ischunky),
+        Event(Events.JapesChunkySwitch, lambda l: l.Slam and l.ischunky and l.barrels),
     ], [
         TransitionFront(Regions.JungleJapesMedals, lambda l: True),
         TransitionFront(Regions.JapesBeyondCoconutGate2, lambda l: True),

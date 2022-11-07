@@ -17,6 +17,8 @@ from randomizer.Lists.ShufflableExit import ShufflableExits
 def PlaceConstants(settings):
     """Place items which are to be put in a hard-coded location."""
     # Handle key placements
+    if settings.key_8_helm:
+        LocationList[Locations.HelmKey].PlaceItem(Items.HideoutHelmKey)
     if settings.shuffle_loading_zones == "levels" and Types.Key not in settings.shuffled_location_types:
         # Place keys in the lobbies they normally belong in
         # Ex. Whatever level is in the Japes lobby entrance will always have the Japes key

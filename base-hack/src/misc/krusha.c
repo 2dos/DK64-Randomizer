@@ -26,7 +26,7 @@ void adjustAnimationTables(void) {
                     // Punch - During Lanky Phase and Dogadon 2
                     excl_extra = 1;
                 }
-            } else if ((i == 0x30) && (slot == 2)) {
+            } else if ((i >= 0x30) && (i <= 0x32)) {
                 excl_extra = 1;
             }
             if (i < 0x6E) {
@@ -119,4 +119,13 @@ void updateCutsceneModels(actorData* actor, int size) {
         clearGun(actor);
     }
     updateModelScales(actor, size);
+}
+
+void* DiddySwimFix(int ptr, int file, int c0, int c1) {
+    float* data = (float*)getMapData(ptr, file, c0, c1);
+    if (file == 210) {
+        // Diddy Swim Animation
+        *data = 1.0f;
+    }
+    return (void*)data;
 }

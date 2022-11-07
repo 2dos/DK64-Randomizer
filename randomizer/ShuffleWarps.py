@@ -99,5 +99,5 @@ def ShuffleWarpsCrossMap(bananaport_replacements, human_ports, is_coupled):
                         destination_warp = getWarpFromSwapIndex(warp.swap_index)
                         human_ports[warp_check.name] = destination_warp.name
                         bananaport_replacements[warp_check.swap_index] = [warp.swap_index, warp_type_index]
-                        warp.destination_region_id = destination_warp.region_id
+                        warp_check.destination_region_id = destination_warp.region_id
                         selected_warp_list.append(warp.swap_index)

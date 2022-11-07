@@ -8,7 +8,6 @@ from ui.rando_options import (
     disable_colors,
     disable_music,
     disable_move_shuffles,
-    disable_rw,
     hide_rgb,
     max_randomized_blocker,
     max_randomized_medals,
@@ -20,6 +19,7 @@ from ui.rando_options import (
     toggle_medals_box,
     update_boss_required,
     disable_coupled_camera_shockwave,
+    toggle_key_settings,
 )
 
 # Call the generate_buttons function just to force loading of the file
@@ -43,5 +43,5 @@ hide_rgb(None)
 toggle_medals_box(None)
 max_randomized_medals(None)
 max_randomized_medal_cb_req(None)
-disable_rw(None)
 disable_coupled_camera_shockwave(None)
+toggle_key_settings(None)

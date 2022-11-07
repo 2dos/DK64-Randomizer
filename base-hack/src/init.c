@@ -458,6 +458,7 @@ void initHack(int source) {
 						*(int*)(0x8074C0A8) = 0x806C9F44; // Replace DK Code w/ Krusha Code
 						*(short*)(0x806F0AFE) = 0; // Remove gun from hands in Tag Barrel
 						*(int*)(0x806F0AF0) = 0x24050001; // Fix Hand State
+						*(int*)(0x806D5EC4) = 0; // Prevent Moving Ground Attack pop up
 						break;
 					case 1:
 						// Diddy
@@ -480,6 +481,7 @@ void initHack(int source) {
 						*(int*)(0x806832B8) = 0; // Prevent tag blinking
 						*(int*)(0x806C1050) = 0; // Prevent Cutscene Kong blinking
 						*(unsigned char*)(0x8075D19F) = 0xA0; // Fix Gun Firing
+						*(int*)(0x806141B4) = 0x0C000000 | (((int)&DiddySwimFix & 0xFFFFFF) >> 2); // Fix Diddy's Swim Animation
 						break;
 					case 2:
 						// Lanky

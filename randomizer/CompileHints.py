@@ -11,7 +11,7 @@ from randomizer.Enums.Transitions import Transitions
 from randomizer.Enums.Types import Types
 from randomizer.ItemPool import AllKongMoves
 from randomizer.Lists.Item import ItemList, NameFromKong
-from randomizer.Lists.Location import LocationList, SharedShopLocations
+from randomizer.Lists.Location import LocationList, SharedShopLocations, TrainingBarrelLocations
 from randomizer.Lists.MapsAndExits import GetMapId
 from randomizer.Lists.ShufflableExit import ShufflableExits
 from randomizer.Lists.WrinklyHints import hints
@@ -293,9 +293,9 @@ hint_distribution = {
     HintType.FullShop: 8,
     HintType.MoveLocation: 7,  # must be placed before you can buy the move
     # HintType.DirtPatch: 0,
-    HintType.BLocker: 3,  # must be placed on the path and before the level they hint
+    HintType.BLocker: 2,  # must be placed on the path and before the level they hint
     HintType.TroffNScoff: 0,
-    HintType.KongLocation: 2,  # must be placed before you find them and placed in a door of a free kong
+    HintType.KongLocation: 1,  # must be placed before you find them and placed in a door of a free kong
     # HintType.MedalsRequired: 1,
     HintType.Entrance: 8,
     HintType.RequiredKeyHint: -1,  # Fixed number based on the number of keys to be obtained over the seed
@@ -309,9 +309,11 @@ HINT_CAP = 35  # There are this many total slots for hints
 
 def compileHints(spoiler: Spoiler):
     """Create a hint distribution, generate buff hints, and place them in locations."""
+    # In level order (or vanilla) progression, there are hints that we want to be in the player's path
+    level_order_matters = not spoiler.settings.no_logic and spoiler.settings.shuffle_loading_zones != "all"
     # Determine what hint types are valid for these settings
     valid_types = [HintType.Joke]
-    if spoiler.settings.krool_phase_count < 5:
+    if spoiler.settings.krool_phase_count < 5 and spoiler.settings.win_condition == "beat_krool":
         valid_types.append(HintType.KRoolOrder)
     if spoiler.settings.helm_setting != "skip_all" and spoiler.settings.helm_phase_count < 5:
         valid_types.append(HintType.HelmOrder)
@@ -351,17 +353,18 @@ def compileHints(spoiler: Spoiler):
         valid_types.append(HintType.Entrance)
     if Types.Key in spoiler.settings.shuffled_location_types:
         valid_types.append(HintType.RequiredKeyHint)
-        early_keys = 0
-        late_keys = 0
         # Only hint keys that are in the Way of the Hoard
-        woth_keys = [LocationList[woth_loc].item for woth_loc in spoiler.woth_locations if ItemList[LocationList[woth_loc].item].type == Types.Key]
-        for key in woth_keys:
-            if key >= Items.JungleJapesKey and key <= Items.AngryAztecKey:
-                early_keys += 1
-            else:
-                late_keys += 1
-        # Hint keys 1-2 once and 3-8 twice
-        hint_distribution[HintType.RequiredKeyHint] = early_keys + (2 * late_keys)
+        woth_key_ids = [LocationList[woth_loc].item for woth_loc in spoiler.woth_locations if ItemList[LocationList[woth_loc].item].type == Types.Key]
+        # If key acquisition order is non-linear, all keys are late keys
+        if not level_order_matters or spoiler.settings.hard_level_progression:
+            late_keys_required = woth_key_ids
+            early_keys_required = []
+        # If key acquisition order is linear, then some keys should be found very early
+        else:
+            early_keys_required = [key for key in woth_key_ids if key <= Items.AngryAztecKey]  # Keys 1-2
+            late_keys_required = [key for key in woth_key_ids if key > Items.AngryAztecKey]  # Keys 3-8
+        # Hint easy keys once and hard keys twice
+        hint_distribution[HintType.RequiredKeyHint] = len(early_keys_required) + (2 * len(late_keys_required))
 
     # Make sure we have exactly 35 hints placed
     hint_count = 0
@@ -385,8 +388,7 @@ def compileHints(spoiler: Spoiler):
         if hint_distribution[removed_type] > 0:
             hint_distribution[removed_type] -= 1
             hint_count -= 1
-    # In level order (or vanilla) progression, there are hints that we want to be in the player's path
-    level_order_matters = not spoiler.settings.no_logic and spoiler.settings.shuffle_loading_zones != "all"
+
     progression_hint_locations = None
     if level_order_matters:
         # These hint locations are *much* more likely to be seen, as they'll be available as players pass through lobbies on their first visit
@@ -547,17 +549,13 @@ def compileHints(spoiler: Spoiler):
 
     # Key location hints should be placed at or before the level they are for (e.g. Key 4 shows up in level 4 lobby or earlier)
     if hint_distribution[HintType.RequiredKeyHint] > 0:
-        woth_key_ids = [LocationList[woth_loc].item for woth_loc in spoiler.woth_locations if ItemList[LocationList[woth_loc].item].type == Types.Key]
-        early_keys_required = [key for key in woth_key_ids if key <= Items.AngryAztecKey]  # Keys 1-2
-        late_keys_required = [key for key in woth_key_ids if key > Items.AngryAztecKey]  # Keys 3-8
-
         key_location_ids = {}
         # Find the locations of the Keys
         for location_id, location in LocationList.items():
             if location.item in woth_key_ids:
                 key_location_ids[location.item] = location_id
 
-        # For Keys 1-2, place hints with their required Kong and the level they're in
+        # For early Keys 1-2, place hints with their required Kong and the level they're in
         for key in early_keys_required:
             location = LocationList[key_location_ids[key]]
             key_item = ItemList[key]
@@ -593,7 +591,7 @@ def compileHints(spoiler: Spoiler):
             hint_location.hint_type = HintType.RequiredKeyHint
             UpdateHint(hint_location, message)
 
-        # For Keys 3-8, place two hints that hint the "path" to the key
+        # For later Keys, place two hints that hint the "path" to the key
         for key_id in late_keys_required:
             path = spoiler.woth_paths[key_location_ids[key_id]]
             key_item = ItemList[key_id]
@@ -602,7 +600,12 @@ def compileHints(spoiler: Spoiler):
                 region = GetRegionOfLocation(path_location_id)
                 hinted_location_text = region.hint_name
                 hint_location = getRandomHintLocation()
-                message = f"Investigating the {hinted_location_text} will aid in unlocking {key_item.name}."
+                if path_location_id in TrainingBarrelLocations:
+                    # Training Grounds will have 4 moves - instead of being super vague we'll hint the specific item directly.
+                    hinted_item_name = ItemList[LocationList[path_location_id].item].name
+                    message = f"Your training with {hinted_item_name} will aid in unlocking {key_item.name}."
+                else:
+                    message = f"Investigating the {hinted_location_text} will aid in unlocking {key_item.name}."
                 hint_location.hint_type = HintType.RequiredKeyHint
                 UpdateHint(hint_location, message)
 
@@ -967,6 +970,7 @@ def compileHints(spoiler: Spoiler):
                 # Replace remaining move hints with WotH location hints, sounds like you'll need them
                 hint_distribution[HintType.FoolishMove] -= 1
                 hint_distribution[HintType.WothLocation] += 1
+                continue
             hinted_move_id = foolish_moves.pop()  # Don't hint the same move twice
             # Gotta hand-pick the name for Slam hints
             if hinted_move_id == Items.ProgressiveSlam:

@@ -50,6 +50,8 @@ class LogicVarHolder:
         Done between reachability searches and upon initialization.
         """
         self.debug_owned_items = []
+        self.found_test_item = False
+
         self.donkey = Kongs.donkey in self.settings.starting_kong_list
         self.diddy = Kongs.diddy in self.settings.starting_kong_list
         self.lanky = Kongs.lanky in self.settings.starting_kong_list
@@ -183,6 +185,7 @@ class LogicVarHolder:
     def Update(self, ownedItems):
         """Update logic variables based on owned items."""
         self.debug_owned_items = ownedItems
+        self.found_test_item = self.found_test_item or Items.TestItem in ownedItems
 
         self.donkey = self.donkey or Items.Donkey in ownedItems or self.startkong == Kongs.donkey
         self.diddy = self.diddy or Items.Diddy in ownedItems or self.startkong == Kongs.diddy
