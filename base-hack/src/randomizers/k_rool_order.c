@@ -64,6 +64,10 @@ void initKRool(int phase) {
 			}
 		}
 	}
+	if ((found_phase) && (!found_next)) {
+		// If phase length is 5 phases
+		is_last = 1;
+	}
 	if (phase == 4) {
 		if (!is_last) {
 			modifyCutsceneItem(0, 7, 8, 12, 0); // Set to Kremlings Running Out Cutscene
