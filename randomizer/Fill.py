@@ -2080,7 +2080,11 @@ def Generate_Spoiler(spoiler):
 def ShuffleMisc(spoiler):
     """Shuffle miscellaneous objects outside of main fill algorithm, including Kasplats, Bonus barrels, and bananaport warps."""
     # T&S and Wrinkly Door Shuffle
-    if spoiler.settings.wrinkly_location_rando or spoiler.settings.tns_location_rando:
+    if (
+        spoiler.settings.wrinkly_location_rando
+        or spoiler.settings.tns_location_rando
+        or ("remove_wrinkly_puzzles" in spoiler.settings.misc_changes_selected or len(spoiler.settings.misc_changes_selected) == 0)
+    ):
         ShuffleDoors(spoiler)
     # Handle Crown Placement
     if spoiler.settings.crown_placement_rando:

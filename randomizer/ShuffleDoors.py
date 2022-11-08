@@ -34,6 +34,8 @@ def ShuffleDoors(spoiler):
         for door_index, door in enumerate(door_locations[level]):
             if door.placed == "none":
                 available_doors.append(door_index)
+            elif ("remove_wrinkly_puzzles" in spoiler.settings.misc_changes_selected or len(spoiler.settings.misc_changes_selected) == 0) and door.default_placed == "wrinkly":
+                available_doors.append(door_index)
         random.shuffle(available_doors)
         if spoiler.settings.wrinkly_location_rando:
             # Place one hint door per kong
@@ -49,6 +51,16 @@ def ShuffleDoors(spoiler):
                     selected_door.assignDoor(assignee)  # Clamp to within [0,4], preventing list index errors
                     human_hint_doors[level_list[level]][str(Kongs(kong % 5).name).capitalize()] = selected_door.name
                     shuffled_door_data[level].append((selected_door_index, "wrinkly", (kong % 5)))
+        elif "remove_wrinkly_puzzles" in spoiler.settings.misc_changes_selected or len(spoiler.settings.misc_changes_selected) == 0:
+            # place vanilla wrinkly doors
+            for kong in range(5):
+                if len(available_doors) > 0:  # Should only fail if we don't have enough door locations
+                    selected_door_index = available_doors.pop()
+                    selected_door = door_locations[level][selected_door_index]
+                    assignee = selected_door.default_kong
+                    selected_door.assignDoor(assignee)
+                    human_hint_doors[level_list[level]][str(assignee).capitalize()] = selected_door.name
+                    shuffled_door_data[level].append((selected_door_index, "wrinkly", assignee))
         if spoiler.settings.tns_location_rando:
             number_of_portals_in_level = random.choice([3, 4, 5])
             moveless_portal_selected = False

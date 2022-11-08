@@ -378,7 +378,7 @@ def patching_response(responded_data):
         ROM().write(1)
 
     # Wrinkly Rando
-    if spoiler.settings.wrinkly_location_rando:
+    if spoiler.settings.wrinkly_location_rando or ("remove_wrinkly_puzzles" in spoiler.settings.misc_changes_selected or len(spoiler.settings.misc_changes_selected) == 0):
         ROM().seek(sav + 0x11F)
         ROM().write(1)
 

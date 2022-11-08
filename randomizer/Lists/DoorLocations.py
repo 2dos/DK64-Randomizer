@@ -105,7 +105,7 @@ door_locations = {
             group=1,
             logic=lambda l: True,
             placed="wrinkly",
-            default_kong=Kongs.diddy
+            default_kong=Kongs.diddy,
         ),  # Diddy Door
         DoorData(
             name="Jungle Japes: Lobby - Close Right",
@@ -115,7 +115,7 @@ door_locations = {
             group=1,
             logic=lambda l: True,
             placed="wrinkly",
-            default_kong=Kongs.lanky
+            default_kong=Kongs.lanky,
         ),  # Lanky Door
         DoorData(
             name="Jungle Japes: Lobby - Far Right",
@@ -125,7 +125,7 @@ door_locations = {
             group=1,
             logic=lambda l: True,
             placed="wrinkly",
-            default_kong=Kongs.tiny
+            default_kong=Kongs.tiny,
         ),  # Tiny Door
         DoorData(
             name="Jungle Japes: Lobby - Close Left",
@@ -135,7 +135,7 @@ door_locations = {
             group=1,
             logic=lambda l: True,
             placed="wrinkly",
-            default_kong=Kongs.chunky
+            default_kong=Kongs.chunky,
         ),  # Chunky Door
         DoorData(
             name="Jungle Japes: Diddy Cave",
@@ -496,7 +496,7 @@ door_locations = {
             group=1,
             logic=lambda l: True,
             placed="wrinkly",
-            default_kong=Kongs.diddy
+            default_kong=Kongs.diddy,
         ),  # Diddy Door
         DoorData(
             name="Angry Aztec: Lobby - Left of Portal",
@@ -506,7 +506,7 @@ door_locations = {
             group=1,
             logic=lambda l: True,
             placed="wrinkly",
-            default_kong=Kongs.lanky
+            default_kong=Kongs.lanky,
         ),  # Lanky Door
         DoorData(
             name="Angry Aztec: Lobby - Right of Portal",
@@ -516,7 +516,7 @@ door_locations = {
             group=1,
             logic=lambda l: True,
             placed="wrinkly",
-            default_kong=Kongs.tiny
+            default_kong=Kongs.tiny,
         ),  # Tiny Door
         DoorData(
             name="Angry Aztec: Lobby - Behind Feather Door",
@@ -527,7 +527,7 @@ door_locations = {
             moveless=False,
             logic=lambda l: l.tiny and l.feather,
             placed="wrinkly",
-            default_kong=Kongs.chunky
+            default_kong=Kongs.chunky,
         ),  # Custom Chunky Door
         DoorData(
             name="Angry Aztec: Near Funky's",
@@ -905,7 +905,7 @@ door_locations = {
             moveless=False,
             logic=lambda l: True,
             placed="wrinkly",
-            default_kong=Kongs.diddy
+            default_kong=Kongs.diddy,
         ),  # Diddy Door
         DoorData(
             name="Frantic Factory: Lobby - Top Center",
@@ -916,7 +916,7 @@ door_locations = {
             moveless=False,
             logic=lambda l: True,
             placed="wrinkly",
-            default_kong=Kongs.lanky
+            default_kong=Kongs.lanky,
         ),  # Lanky Door
         DoorData(
             name="Frantic Factory: Lobby - Top Right",
@@ -927,7 +927,7 @@ door_locations = {
             moveless=False,
             logic=lambda l: True,
             placed="wrinkly",
-            default_kong=Kongs.tiny
+            default_kong=Kongs.tiny,
         ),  # Tiny Door
         DoorData(
             name="Frantic Factory: Lobby - Low Right",
@@ -937,7 +937,7 @@ door_locations = {
             group=1,
             logic=lambda l: True,
             placed="wrinkly",
-            default_kong=Kongs.chunky
+            default_kong=Kongs.chunky,
         ),  # Chunky Door
         DoorData(
             name="Frantic Factory: Arcade Room", map=Maps.FranticFactory, logicregion=Regions.BeyondHatch, location=[1778.702, 1106.667, 1220.515, 357.0], group=2, logic=lambda l: True, placed="tns"
@@ -1244,7 +1244,7 @@ door_locations = {
             group=1,
             logic=lambda l: True,
             placed="wrinkly",
-            default_kong=Kongs.diddy
+            default_kong=Kongs.diddy,
         ),  # Diddy Door
         DoorData(
             name="Gloomy Galleon: Lobby - Close Right",
@@ -1254,7 +1254,7 @@ door_locations = {
             group=1,
             logic=lambda l: True,
             placed="wrinkly",
-            default_kong=Kongs.lanky
+            default_kong=Kongs.lanky,
         ),  # Lanky Door
         DoorData(
             name="Gloomy Galleon: Lobby - Near DK Portal",
@@ -1264,7 +1264,7 @@ door_locations = {
             group=1,
             logic=lambda l: True,
             placed="wrinkly",
-            default_kong=Kongs.tiny
+            default_kong=Kongs.tiny,
         ),  # Tiny Door
         DoorData(
             name="Gloomy Galleon: Lobby - Close Left",
@@ -1274,7 +1274,7 @@ door_locations = {
             group=1,
             logic=lambda l: True,
             placed="wrinkly",
-            default_kong=Kongs.chunky
+            default_kong=Kongs.chunky,
         ),  # Chunky Door
         DoorData(
             name="Gloomy Galleon: Near Cranky's",
@@ -1644,7 +1644,7 @@ door_locations = {
             group=1,
             logic=lambda l: True,
             placed="wrinkly",
-            default_kong=Kongs.diddy
+            default_kong=Kongs.diddy,
         ),  # Custom Location (Removing Wheel)
         DoorData(
             name="Fungi Forest: Lobby - Opposite Gorilla Gone Door",
@@ -1654,7 +1654,7 @@ door_locations = {
             group=1,
             logic=lambda l: True,
             placed="wrinkly",
-            default_kong=Kongs.lanky
+            default_kong=Kongs.lanky,
         ),  # Custom Location (Removing Wheel)
         DoorData(
             name="Fungi Forest: Lobby - Near B. Locker",
@@ -1665,7 +1665,7 @@ door_locations = {
             group=1,
             logic=lambda l: True,
             placed="wrinkly",
-            default_kong=Kongs.tiny
+            default_kong=Kongs.tiny,
         ),  # Custom Location (Removing Wheel)
         DoorData(
             name="Fungi Forest: Lobby - Near Entrance",
@@ -1675,7 +1675,7 @@ door_locations = {
             group=1,
             logic=lambda l: True,
             placed="wrinkly",
-            default_kong=Kongs.chunky
+            default_kong=Kongs.chunky,
         ),  # Custom Location (Removing Wheel)
         DoorData(
             name="Fungi Forest: Behind DK Barn",
@@ -1984,7 +1984,7 @@ door_locations = {
             moveless=False,
             logic=lambda l: True,
             placed="wrinkly",
-            default_kong=Kongs.diddy
+            default_kong=Kongs.diddy,
         ),  # Diddy Door
         DoorData(
             name="Crystal Caves: Lobby - Near Left",
@@ -1995,7 +1995,7 @@ door_locations = {
             moveless=False,
             logic=lambda l: True,
             placed="wrinkly",
-            default_kong=Kongs.lanky
+            default_kong=Kongs.lanky,
         ),  # Lanky Door
         DoorData(
             name="Crystal Caves: Lobby - Far Right",
@@ -2006,7 +2006,7 @@ door_locations = {
             moveless=False,
             logic=lambda l: True,
             placed="wrinkly",
-            default_kong=Kongs.tiny
+            default_kong=Kongs.tiny,
         ),  # Tiny Door
         DoorData(
             name="Crystal Caves: Lobby - Near Right",
@@ -2017,7 +2017,7 @@ door_locations = {
             moveless=False,
             logic=lambda l: True,
             placed="wrinkly",
-            default_kong=Kongs.chunky
+            default_kong=Kongs.chunky,
         ),  # Chunky Door
         DoorData(
             name="Crystal Caves: On Rotating Room",
@@ -2437,7 +2437,7 @@ door_locations = {
             group=1,
             logic=lambda l: True,
             placed="wrinkly",
-            default_kong=Kongs.diddy
+            default_kong=Kongs.diddy,
         ),  # Diddy Door
         DoorData(
             name="Creepy Castle: Lobby - Central Pillar (3)",
@@ -2447,7 +2447,7 @@ door_locations = {
             group=1,
             logic=lambda l: True,
             placed="wrinkly",
-            default_kong=Kongs.lanky
+            default_kong=Kongs.lanky,
         ),  # Lanky Door
         DoorData(
             name="Creepy Castle: Lobby - Central Pillar (4)",
@@ -2457,7 +2457,7 @@ door_locations = {
             group=1,
             logic=lambda l: True,
             placed="wrinkly",
-            default_kong=Kongs.tiny
+            default_kong=Kongs.tiny,
         ),  # Tiny Door
         DoorData(
             name="Creepy Castle: Lobby - Central Pillar (5)",
@@ -2467,7 +2467,7 @@ door_locations = {
             group=1,
             logic=lambda l: True,
             placed="wrinkly",
-            default_kong=Kongs.chunky
+            default_kong=Kongs.chunky,
         ),  # Chunky Door
         DoorData(
             name="Creepy Castle: Near Greenhouse",
