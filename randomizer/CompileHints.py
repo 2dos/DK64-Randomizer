@@ -661,7 +661,7 @@ def compileHints(spoiler: Spoiler):
                     message = f"Your training with {hinted_item_name} is on the path to aiding your fight against K. Rool."
                 else:
                     message = f"An item in the {region.hint_name} is on the path to aiding your fight against K. Rool."
-                
+
                 hint_location = getRandomHintLocation()
                 hint_location.hint_type = HintType.RequiredKRoolHint
                 UpdateHint(hint_location, message)
