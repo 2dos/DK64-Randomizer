@@ -663,7 +663,7 @@ class Settings:
                 self.valid_locations[Types.Shop][Kongs.lanky] = allKongMoveLocations
                 self.valid_locations[Types.Shop][Kongs.tiny] = allKongMoveLocations
                 self.valid_locations[Types.Shop][Kongs.chunky] = allKongMoveLocations
-            self.valid_locations[Types.Shop][Kongs.any] = SharedShopLocations
+            self.valid_locations[Types.Shop][Kongs.any] = SharedShopLocations.copy()
             if self.shockwave_status not in ("vanilla", "start_with") and Types.Shockwave not in self.shuffled_location_types:
                 self.valid_locations[Types.Shop][Kongs.any].add(Locations.CameraAndShockwave)
             elif Locations.CameraAndShockwave in self.valid_locations[Types.Shop][Kongs.tiny]:
@@ -755,7 +755,7 @@ class Settings:
         else:
             valid_locations = self.valid_locations[item_obj.type]
         if self.progressives_locked_in_shops and item_obj in SharedShopLocations:
-            valid_locations = SharedShopLocations
+            valid_locations = SharedShopLocations.copy()
         return valid_locations
 
     def SelectKongLocations(self):

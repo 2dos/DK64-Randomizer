@@ -8,7 +8,6 @@ class HintType(IntEnum):
     Joke = auto()
     KRoolOrder = auto()
     HelmOrder = auto()
-    FullShop = auto()
     MoveLocation = auto()
     DirtPatch = auto()
     BLocker = auto()
