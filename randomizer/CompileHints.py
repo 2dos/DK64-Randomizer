@@ -290,7 +290,6 @@ hint_distribution = {
     HintType.Joke: 1,
     HintType.KRoolOrder: 2,
     HintType.HelmOrder: 2,  # must have one on the path
-    HintType.FullShop: 8,
     HintType.MoveLocation: 7,  # must be placed before you can buy the move
     # HintType.DirtPatch: 0,
     HintType.BLocker: 2,  # must be placed on the path and before the level they hint
@@ -318,7 +317,8 @@ def compileHints(spoiler: Spoiler):
     if spoiler.settings.helm_setting != "skip_all" and spoiler.settings.helm_phase_count < 5:
         valid_types.append(HintType.HelmOrder)
     if not spoiler.settings.unlock_all_moves and spoiler.settings.move_rando not in ("off", "item_shuffle"):
-        valid_types.append(HintType.FullShop)
+        hint_distribution[HintType.FullShopWithItems] *= 2  # To match the value of the old type
+        valid_types.append(HintType.FullShopWithItems)
         valid_types.append(HintType.MoveLocation)
     if spoiler.settings.shuffle_items and Types.Shop in spoiler.settings.shuffled_location_types:
         valid_types.append(HintType.FullShopWithItems)
@@ -376,6 +376,9 @@ def compileHints(spoiler: Spoiler):
     # Fill extra hints if we need them
     while hint_count < HINT_CAP:
         filler_type = random.choice(valid_types)
+        if filler_type == HintType.Joke:
+            # Make it roll joke twice to add an extra joke hint
+            filler_type = random.choice(valid_types)
         if filler_type in (HintType.RequiredKeyHint, HintType.RequiredKRoolHint):
             continue  # Always have a fixed number of required hints
         hint_distribution[filler_type] += 1
@@ -654,7 +657,7 @@ def compileHints(spoiler: Spoiler):
     while placed_move_hints < hint_distribution[HintType.MoveLocation]:
         # First pick a random item from the WOTH - valid items are moves (not kongs) and must not be one of our known impossible-to-place items
         woth_item = None
-        valid_woth_item_locations = [loc for loc in spoiler.woth.keys() if loc not in locationless_move_keys and any(shopName in loc for shopName in shop_owners)]
+        valid_woth_item_locations = [loc for loc in spoiler.woth_locations if loc not in locationless_move_keys and LocationList[loc].type == Types.Shop]
         if len(valid_woth_item_locations) == 0:
             # In the OBSCENELY rare case that we can't hint any more moves, then we'll settle for joke hints
             # This would only happen in the case where all moves are in early worlds, coins are plentiful, and the distribution here is insanely high
@@ -664,18 +667,12 @@ def compileHints(spoiler: Spoiler):
             hint_distribution[HintType.MoveLocation] -= hint_diff
             break
         woth_item_location = random.choice(valid_woth_item_locations)
-        # This gets the level of the location by matching names which is very bad but faster than the alternative of looping through every location for the item
-        # This matches "Caves", "Castl", "Isles", etc. and should only match one item
-        # This could be Isles, which has no hints, so we gotta be careful with this index
-        index_of_level_with_location = level_list_isles.index([name for name in level_list_isles if woth_item_location[:5] in name][0])
+        index_of_level_with_location = LocationList[woth_item_location].level
         # Now we need to find the Item object associated with this name
-        for item_id in ItemList:
-            if ItemList[item_id].name == spoiler.woth[woth_item_location]:
-                # Don't hint slams with these hints - it's slightly misleading and saves some headache to not do this
-                if item_id == Items.ProgressiveSlam:
-                    continue
-                woth_item = item_id
-                break
+        woth_item = LocationList[woth_item_location].item
+        # Don't hint slams with these hints - it's slightly misleading and saves some headache to not do this
+        if woth_item == Items.ProgressiveSlam:
+            continue
         # Determine what levels are before this level
         hintable_levels = all_levels.copy()
         # Only if we care about the level order do we restrict these hints' locations
@@ -729,16 +726,16 @@ def compileHints(spoiler: Spoiler):
         else:
             moves_hinted_and_lobbies[woth_item] = []
 
-        hint_location = getRandomHintLocation(levels=hintable_levels, move_name=spoiler.woth[woth_item_location])
+        hint_location = getRandomHintLocation(levels=hintable_levels, move_name=ItemList[woth_item].name)
         # If we've been too restrictive and ran out of spots for this move to be hinted in, don't bother trying to fix it. Just pick another move
         if hint_location is None:
             locationless_move_keys.append(woth_item_location)
             continue
 
-        shop_level = level_list_isles[index_of_level_with_location]
+        shop_level = level_list_helm_isles[index_of_level_with_location]
         if spoiler.settings.wrinkly_hints == "cryptic":
-            shop_level = random.choice(level_cryptic_isles[index_of_level_with_location])
-        shop_name = [name for name in shop_owners if name in woth_item_location][0]  # Should only match one
+            shop_level = random.choice(level_cryptic_helm_isles[index_of_level_with_location])
+        shop_name = shop_owners[LocationList[woth_item_location].vendor]
         message = f"On the Way of the Hoard, {ItemList[woth_item].name} is bought from {shop_name} in {shop_level}."
         moves_hinted_and_lobbies[woth_item].append(hint_location.level)
         hint_location.hint_type = HintType.MoveLocation
@@ -910,48 +907,6 @@ def compileHints(spoiler: Spoiler):
             hint_location = getRandomHintLocation()
             hint_location.hint_type = HintType.Entrance
             UpdateHint(hint_location, message)
-
-    # Precalculations are needed for this hint type so don't bother if we don't have any
-    if hint_distribution[HintType.FullShop] > 0:
-        # Collate nested lists for a list of shop moves
-        shop_dump_hints = []
-        for shop in range(3):  # Order: Cranky, Funky, Candy
-            for level in range(8):  # Order: Japes, Aztec, Factory, Galleon, Fungi, Caves, Castle, Isles
-                level_listing = []
-                for kong in range(5):
-                    # Get Moves in slot
-                    data_section = spoiler.move_data[0][shop][kong][level]
-                    for move in moves_data:
-                        if move.item_key == data_section:
-                            if move.name not in level_listing:
-                                level_listing.append(move.name)
-                # If there are no moves in this shop, definitely don't hint it (it might not even exist)
-                if len(level_listing) == 0:
-                    continue
-                move_series = level_listing[0]
-                if len(level_listing) > 1:
-                    move_series = f"{', '.join(level_listing[:-1])} and {level_listing[-1]}"
-                shop_name = shop_owners[shop]
-                level_name = level_list_isles[level]
-                if spoiler.settings.wrinkly_hints == "cryptic":
-                    level_name = random.choice(level_cryptic_isles[level])
-                shop_dump_hint = f"{shop_name}'s in {level_name} contains {move_series}"
-                shop_dump_hints.append(shop_dump_hint)
-        random.shuffle(shop_dump_hints)
-        # Locations for these hints are random - you may get useful information about moves you've left behind
-        placed_full_shop_hints = 0
-        while placed_full_shop_hints < hint_distribution[HintType.FullShop]:
-            hint_location = getRandomHintLocation()
-            # In the other OBSCENELY rare case where we run out of shops to hint (usually requires over 15 shop hints), convert remaining hints to joke hints
-            if len(shop_dump_hints) == 0:
-                hint_diff = hint_distribution[HintType.FullShop] - placed_full_shop_hints
-                hint_distribution[HintType.Joke] += hint_diff
-                hint_distribution[HintType.FullShop] -= hint_diff
-                break
-            message = shop_dump_hints.pop()
-            hint_location.hint_type = HintType.FullShop
-            UpdateHint(hint_location, message)
-            placed_full_shop_hints += 1
 
     # Foolish Move hints state that a move is foolish. Most applicable in item rando.
     if hint_distribution[HintType.FoolishMove] > 0:
