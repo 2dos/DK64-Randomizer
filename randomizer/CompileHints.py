@@ -298,7 +298,7 @@ hint_distribution = {
     # HintType.MedalsRequired: 1,
     HintType.Entrance: 8,
     HintType.RequiredKeyHint: -1,  # Fixed number based on the number of keys to be obtained over the seed
-    HintType.RequiredKRoolHint: 0,  # Fixed number based on what K. Rool phases you must defeat
+    HintType.RequiredWinConditionHint: 0,  # Fixed number based on what K. Rool phases you must defeat
     HintType.WothLocation: 8,
     HintType.FullShopWithItems: 4,
     HintType.FoolishMove: 4,
@@ -328,13 +328,17 @@ def compileHints(spoiler: Spoiler):
             valid_types.append(HintType.WothLocation)
             # K. Rool seeds could use some help finding the last pesky moves
             if spoiler.settings.win_condition == "beat_krool":
-                valid_types.append(HintType.RequiredKRoolHint)
+                valid_types.append(HintType.RequiredWinConditionHint)
                 if Kongs.diddy in spoiler.settings.krool_order:
-                    hint_distribution[HintType.RequiredKRoolHint] += 1  # Dedicated Rocketbarrel hint
+                    hint_distribution[HintType.RequiredWinConditionHint] += 1  # Dedicated Rocketbarrel hint
                 if Kongs.tiny in spoiler.settings.krool_order:
-                    hint_distribution[HintType.RequiredKRoolHint] += 1  # Dedicated Mini Monkey hint
+                    hint_distribution[HintType.RequiredWinConditionHint] += 1  # Dedicated Mini Monkey hint
                 if Kongs.chunky in spoiler.settings.krool_order:
-                    hint_distribution[HintType.RequiredKRoolHint] += 1  # Dedicated Gorilla Gone hint
+                    hint_distribution[HintType.RequiredWinConditionHint] += 1  # Dedicated Gorilla Gone hint
+            # All fairies seeds need help finding the camera - two hints for it
+            if spoiler.settings.win_condition == "all_fairies":
+                valid_types.append(HintType.RequiredWinConditionHint)
+                hint_distribution[HintType.RequiredWinConditionHint] = 2
     # if spoiler.settings.random_patches:
     #     valid_types.append(HintType.DirtPatch)
     if spoiler.settings.randomize_blocker_required_amounts:
@@ -379,14 +383,14 @@ def compileHints(spoiler: Spoiler):
         if filler_type == HintType.Joke:
             # Make it roll joke twice to add an extra joke hint
             filler_type = random.choice(valid_types)
-        if filler_type in (HintType.RequiredKeyHint, HintType.RequiredKRoolHint):
+        if filler_type in (HintType.RequiredKeyHint, HintType.RequiredWinConditionHint):
             continue  # Always have a fixed number of required hints
         hint_distribution[filler_type] += 1
         hint_count += 1
     # Remove random hints if we went over the cap
     while hint_count > HINT_CAP:
         removed_type = random.choice(valid_types)
-        if removed_type in (HintType.RequiredKeyHint, HintType.RequiredKRoolHint):
+        if removed_type in (HintType.RequiredKeyHint, HintType.RequiredWinConditionHint):
             continue  # Always have a fixed number of key location hints
         if hint_distribution[removed_type] > 0:
             hint_distribution[removed_type] -= 1
@@ -603,52 +607,87 @@ def compileHints(spoiler: Spoiler):
                 region = GetRegionOfLocation(path_location_id)
                 hinted_location_text = region.hint_name
                 hint_location = getRandomHintLocation()
-                if path_location_id in TrainingBarrelLocations:
+                if LocationList[path_location_id].type == Types.Medal:
+                    # Medals get special phrasing
+                    message = f"A {level_list[region.level]} Medal is on the path to {key_item.name}."
+                elif path_location_id in TrainingBarrelLocations:
                     # Training Grounds will have 4 moves - instead of being super vague we'll hint the specific item directly.
                     hinted_item_name = ItemList[LocationList[path_location_id].item].name
-                    message = f"Your training with {hinted_item_name} will aid in unlocking {key_item.name}."
+                    message = f"Your training with {hinted_item_name} is on the path to {key_item.name}."
                 else:
-                    message = f"Investigating the {hinted_location_text} will aid in unlocking {key_item.name}."
+                    message = f"An item in the {hinted_location_text} is on the path to {key_item.name}."
                 hint_location.hint_type = HintType.RequiredKeyHint
                 UpdateHint(hint_location, message)
 
-    # To aid K. Rool goals, always hint Rocketbarrel, Mini Monkey, and Gorilla Gone if they are needed to beat K. Rool
-    if hint_distribution[HintType.RequiredKRoolHint] > 0:
-        item_path_hint_dict = {}
-        rocketbarrel_location_id = None
-        mini_monkey_location_id = None
-        gorilla_gone_location_id = None
-        for location_id in spoiler.woth_paths.keys():
-            if LocationList[location_id].item == Items.RocketbarrelBoost:
-                rocketbarrel_location_id = location_id
-            if LocationList[location_id].item == Items.MiniMonkey:
-                mini_monkey_location_id = location_id
-            if LocationList[location_id].item == Items.GorillaGone:
-                gorilla_gone_location_id = location_id
-        # If Diddy must fight K. Rool, Rocketbarrel is likely to be the most hidden item
-        if Kongs.diddy in spoiler.settings.krool_order:
-            path = spoiler.woth_paths[rocketbarrel_location_id]
-            path_location_id = random.choice(path)
-            region = GetRegionOfLocation(path_location_id)
-            item_path_hint_dict["Rocketbarrel Boost"] = region.hint_name
-        # If Tiny must fight K. Rool, Mini Monkey is likely to be the most hidden item
-        if Kongs.tiny in spoiler.settings.krool_order:
-            path = spoiler.woth_paths[mini_monkey_location_id]
-            path_location_id = random.choice(path)
-            region = GetRegionOfLocation(path_location_id)
-            item_path_hint_dict["Mini Monkey"] = region.hint_name
-        # If Chunky must fight K. Rool, Gorilla Gone is likely to be the most hidden item
-        if Kongs.chunky in spoiler.settings.krool_order:
-            path = spoiler.woth_paths[gorilla_gone_location_id]
-            path_location_id = random.choice(path)
-            region = GetRegionOfLocation(path_location_id)
-            item_path_hint_dict["Gorilla Gone"] = region.hint_name
-        # Place a hint for each of the K. Rool required moves
-        for item_name, hinted_location_text in item_path_hint_dict.items():
-            hint_location = getRandomHintLocation()
-            message = f"Investigating the {hinted_location_text} will aid in your fight against K. Rool."
-            hint_location.hint_type = HintType.RequiredKRoolHint
-            UpdateHint(hint_location, message)
+    # Some win conditions need very specific items that we really should hint
+    if hint_distribution[HintType.RequiredWinConditionHint] > 0:
+        # To aid K. Rool goals, always hint Rocketbarrel, Mini Monkey, and Gorilla Gone if they are needed to beat K. Rool
+        if spoiler.settings.win_condition == "beat_krool":
+            item_path_hint_dict = {}
+            rocketbarrel_location_id = None
+            mini_monkey_location_id = None
+            gorilla_gone_location_id = None
+            for location_id in spoiler.woth_paths.keys():
+                if LocationList[location_id].item == Items.RocketbarrelBoost:
+                    rocketbarrel_location_id = location_id
+                if LocationList[location_id].item == Items.MiniMonkey:
+                    mini_monkey_location_id = location_id
+                if LocationList[location_id].item == Items.GorillaGone:
+                    gorilla_gone_location_id = location_id
+            # If Diddy must fight K. Rool, Rocketbarrel is likely to be the most hidden item
+            if Kongs.diddy in spoiler.settings.krool_order:
+                path = spoiler.woth_paths[rocketbarrel_location_id]
+                path_location_id = random.choice(path)
+                item_path_hint_dict["Rocketbarrel Boost"] = path_location_id
+            # If Tiny must fight K. Rool, Mini Monkey is likely to be the most hidden item
+            if Kongs.tiny in spoiler.settings.krool_order:
+                path = spoiler.woth_paths[mini_monkey_location_id]
+                path_location_id = random.choice(path)
+                item_path_hint_dict["Mini Monkey"] = path_location_id
+            # If Chunky must fight K. Rool, Gorilla Gone is likely to be the most hidden item
+            if Kongs.chunky in spoiler.settings.krool_order:
+                path = spoiler.woth_paths[gorilla_gone_location_id]
+                path_location_id = random.choice(path)
+                item_path_hint_dict["Gorilla Gone"] = path_location_id
+            # Place a hint for each of the K. Rool required moves
+            for item_name, path_location_id in item_path_hint_dict.items():
+                region = GetRegionOfLocation(path_location_id)
+                if "whole of" in region.hint_name:
+                    # Medals get special phrasing
+                    message = f"A {level_list[region.level]} Medal is on the path to {key_item.name}."
+                elif "Training Grounds" in hinted_location_text:
+                    # Training Grounds will have 4 moves - instead of being super vague we'll hint the specific item directly.
+                    hinted_item_name = ItemList[LocationList[path_location_id].item].name
+                    message = f"Your training with {hinted_item_name} is on the path to aiding your fight against K. Rool."
+                else:
+                    message = f"An item in the {region.hint_name} is on the path to aiding your fight against K. Rool."
+                
+                hint_location = getRandomHintLocation()
+                hint_location.hint_type = HintType.RequiredKRoolHint
+                UpdateHint(hint_location, message)
+        # All fairies seeds get 2 path hints for the camera
+        if spoiler.settings.win_condition == "all_fairies":
+            for location_id in spoiler.woth_paths.keys():
+                if LocationList[location_id].item == Items.Camera:
+                    camera_location_id = location_id
+                    break
+            path = spoiler.woth_paths[camera_location_id]
+            for i in range(hint_distribution[HintType.RequiredWinConditionHint]):
+                path_location_id = random.choice(path)
+                region = GetRegionOfLocation(path_location_id)
+                hinted_location_text = region.hint_name
+                hint_location = getRandomHintLocation()
+                if LocationList[path_location_id].type == Types.Medal:
+                    # Medals get special phrasing
+                    message = f"A {level_list[LocationList[path_location_id].level]} Medal is on the path to taking photos."
+                elif path_location_id in TrainingBarrelLocations:
+                    # Training Grounds will have 4 moves - instead of being super vague we'll hint the specific item directly.
+                    hinted_item_name = ItemList[LocationList[path_location_id].item].name
+                    message = f"Your training with {hinted_item_name} is on the path to taking photos."
+                else:
+                    message = f"An item in the {hinted_location_text} is on the path to taking photos."
+                hint_location.hint_type = HintType.RequiredKeyHint
+                UpdateHint(hint_location, message)
 
     # Moves should be hinted before they're available
     moves_hinted_and_lobbies = {}  # Avoid putting a hint for the same move in the same lobby twice
@@ -994,7 +1033,7 @@ def compileHints(spoiler: Spoiler):
             else:
                 move_series = item_names[0]
                 if len(item_names) > 1:
-                    move_series = f"{', '.join(item_names[:-1])} and {item_names[-1]}"
+                    move_series = f"{', '.join(item_names[:-1])}, and {item_names[-1]}"
         shop_vendor = shop_owners[shop_info.vendor]
         level_name = level_list_helm_isles[shop_info.level]
         if spoiler.settings.wrinkly_hints == "cryptic":
