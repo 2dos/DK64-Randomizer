@@ -663,7 +663,7 @@ def compileHints(spoiler: Spoiler):
                     message = f"An item in the {region.hint_name} is on the path to aiding your fight against K. Rool."
 
                 hint_location = getRandomHintLocation()
-                hint_location.hint_type = HintType.RequiredKRoolHint
+                hint_location.hint_type = HintType.RequiredWinConditionHint
                 UpdateHint(hint_location, message)
         # All fairies seeds get 2 path hints for the camera
         if spoiler.settings.win_condition == "all_fairies":
@@ -686,7 +686,7 @@ def compileHints(spoiler: Spoiler):
                     message = f"Your training with {hinted_item_name} is on the path to taking photos."
                 else:
                     message = f"An item in the {hinted_location_text} is on the path to taking photos."
-                hint_location.hint_type = HintType.RequiredKeyHint
+                hint_location.hint_type = HintType.RequiredWinConditionHint
                 UpdateHint(hint_location, message)
 
     # Moves should be hinted before they're available
