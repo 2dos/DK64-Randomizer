@@ -16,7 +16,7 @@ class HintType(IntEnum):
     MedalsRequired = auto()
     Entrance = auto()
     RequiredKeyHint = auto()
-    RequiredKRoolHint = auto()
+    RequiredWinConditionHint = auto()
     FullShopWithItems = auto()
     WothLocation = auto()
     FoolishMove = auto()

@@ -34,7 +34,7 @@ def generate_lo_rando_race_settings():
 
     # item shuffler options here
     data["move_rando"] = "on"  # usually "on" but i like "cross_purchase", rarely need to test with "start_with"
-    data["shuffle_items"] = False  # Must be true to trigger the list selector below
+    data["shuffle_items"] = True  # Must be true to trigger the list selector below
     data["item_rando_list_selected"] = ["shop", "banana", "crown", "blueprint", "key", "medal"]  # no coins because i hate rareware coin logic
 
     data["random_prices"] = "vanilla"  # usually "medium, might need free, rarely vanilla"
@@ -84,7 +84,7 @@ def generate_lo_rando_race_settings():
     data["helm_phase_count"] = 3  # usually 3
     data["krool_access"] = True  # usually True - this is the weirdly named key 8 required setting
     data["keys_random"] = False  # key count is random setting
-    data["krool_key_count"] = 5  # usually 5
+    data["krool_key_count"] = 8  # usually 5
     data["starting_random"] = False  # starting kong count is random setting
     data["starting_kongs_count"] = 2  # usually 2
 
@@ -109,9 +109,9 @@ def generate_lo_rando_race_settings():
     data["hard_blockers"] = False  # likely to be False
     data["hard_troff_n_scoff"] = False  # likely to be False
     data["cb_rando"] = False  # likely to be False?
-    data["win_condition"] = "all_keys"
-    data["wrinkly_location_rando"] = True
-    data["tns_location_rando"] = True
+    data["win_condition"] = "all_keys"  # lots of options: all_keys | get_key_8 | beat_krool | all_medals | all_fairies | all_blueprints
+    data["wrinkly_location_rando"] = False  # likely to be False
+    data["tns_location_rando"] = False  # likely to be False
     data["key_8_helm"] = True  # likely to be False? unclear as of yet
 
     data["hard_level_progression"] = False  # likely to be False
