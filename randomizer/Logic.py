@@ -546,7 +546,7 @@ class LogicVarHolder:
 
     def WinConditionMet(self):
         """Check if the current game state has met the win condition."""
-        if self.settings.win_condition == "beat_krool":
+        if self.settings.win_condition == "beat_krool" or self.settings.win_condition == "poke_snap":  # Photo taking doesn't have a clear wincon so this'll do
             return self.bananaHoard
         elif self.settings.win_condition == "get_key8":
             return self.HelmKey
