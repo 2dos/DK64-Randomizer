@@ -1016,7 +1016,7 @@ void getItem(int object_type) {
         case 0x1F5:
         case 0x1F6:
             // Potion
-            playSong(155, 0x3F800000);
+            playSong(115, 0x3F800000);
             if (!canDanceSkip()) {
                 setAction(0x29, 0, 0);
             }
