@@ -32,7 +32,7 @@ def ShuffleDoors(spoiler):
         # Get all door locations that can be given a door
         available_doors = []
         for door_index, door in enumerate(door_locations[level]):
-            if door.placed == "none":
+            if door.placed == "none" and (spoiler.settings.wrinkly_location_rando or spoiler.settings.tns_location_rando):
                 available_doors.append(door_index)
             elif ("remove_wrinkly_puzzles" in spoiler.settings.misc_changes_selected or len(spoiler.settings.misc_changes_selected) == 0) and door.default_placed == "wrinkly":
                 available_doors.append(door_index)
@@ -60,7 +60,7 @@ def ShuffleDoors(spoiler):
                     assignee = selected_door.default_kong
                     selected_door.assignDoor(assignee)
                     human_hint_doors[level_list[level]][str(assignee).capitalize()] = selected_door.name
-                    shuffled_door_data[level].append((selected_door_index, "wrinkly", assignee))
+                    shuffled_door_data[level].append((selected_door_index, "wrinkly", int(assignee)))
         if spoiler.settings.tns_location_rando:
             number_of_portals_in_level = random.choice([3, 4, 5])
             moveless_portal_selected = False

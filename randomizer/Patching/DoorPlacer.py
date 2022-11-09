@@ -12,7 +12,11 @@ from randomizer.Enums.ScriptTypes import ScriptTypes
 
 def place_door_locations(spoiler: Spoiler):
     """Place Wrinkly Doors, and eventually T&S Doors."""
-    if spoiler.settings.wrinkly_location_rando or spoiler.settings.tns_location_rando:
+    if (
+        spoiler.settings.wrinkly_location_rando
+        or spoiler.settings.tns_location_rando
+        or ("remove_wrinkly_puzzles" in spoiler.settings.misc_changes_selected or len(spoiler.settings.misc_changes_selected) == 0)
+    ):
         wrinkly_doors = [0xF0, 0xF2, 0xEF, 0x67, 0xF1]
         # Also remove
         #   0x23C: Spinning Door (Az Lobby)
@@ -33,7 +37,7 @@ def place_door_locations(spoiler: Spoiler):
                 ROM().seek(item_start + 0x28)
                 item_type = int.from_bytes(ROM().readBytes(2), "big")
                 retain = True
-                if spoiler.settings.wrinkly_location_rando:
+                if spoiler.settings.wrinkly_location_rando or ("remove_wrinkly_puzzles" in spoiler.settings.misc_changes_selected or len(spoiler.settings.misc_changes_selected) == 0):
                     if item_type in wrinkly_doors:
                         retain = False
                     if cont_map_id == Maps.AngryAztecLobby and item_type in (0x23C, 0x18):
@@ -74,7 +78,9 @@ def place_door_locations(spoiler: Spoiler):
                     door = door_locations[level][data[0]]
                     door_type = data[1]
                     if door.map == cont_map_id:
-                        if door_type == "wrinkly" and spoiler.settings.wrinkly_location_rando:
+                        if door_type == "wrinkly" and (
+                            spoiler.settings.wrinkly_location_rando or ("remove_wrinkly_puzzles" in spoiler.settings.misc_changes_selected or len(spoiler.settings.misc_changes_selected) == 0)
+                        ):
                             kong = data[2]
                             item_data = []
                             for coord_index in range(3):
