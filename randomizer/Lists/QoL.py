@@ -20,6 +20,7 @@ QoLItems = [
     QoLItem("Reduced Lag", 0, "Lag is reduced where possible without hindering gameplay."),
     QoLItem("Remove Extraneous Cutscenes", 1, "A lot of cutscenes are removed, enabling a fast-paced game."),
     QoLItem("Hint Textbox Hold", 11, "Hint Textboxes will not close automatically upon the game reaching the end of the text, requiring B to be pressed."),
+    QoLItem("Remove Wrinkly Puzzles", -1, "Removes the Wrinkly Puzzles from the Angry Aztec, Fungi Forest and Crystal Caves lobbies"),
     QoLItem("Fast Picture Taking", 2, "The picture taking sequence is heavily sped up, with lag being significantly reduced on BizHawk."),
     QoLItem("HUD Hotkey", 14, "Pressing D-Pad Up will show the total amount of colored bananas acquired in the level, as well as the blueprint count for that Kong."),
     QoLItem("Ammo Swap", 7, "Homing Ammo and Standard ammo can be swapped between (upon having Homing Ammo) by pressing D-Pad Down."),
