@@ -241,7 +241,7 @@ def patching_response(responded_data):
                 enabled_qol.append(item["value"])
         write_data = [0, 0]
         for item in QoLSelector:
-            if item["value"] in enabled_qol:
+            if item["value"] in enabled_qol and item["shift"] >= 0:
                 offset = int(item["shift"] >> 3)
                 check = int(item["shift"] % 8)
                 write_data[offset] |= 0x80 >> check
