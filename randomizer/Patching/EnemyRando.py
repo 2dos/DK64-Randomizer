@@ -110,10 +110,16 @@ def getBalancedCrownEnemyRando(spoiler: Spoiler, crown_setting, damage_ohko_sett
         disruptive_0 = []  # the easiest enemies
         legacy_hard_mode = []  # legacy map with the exact same balance as the old "Hard" mode
 
+        # Determine whether any crown-enabled enemies have been selected
+        crown_enemy_found = False
+        for enemy in EnemyMetaData:
+            if convertEnemyName(EnemyMetaData[enemy].name) in spoiler.settings.enemies_selected and EnemyMetaData[enemy].crown_enabled is True:
+                crown_enemy_found = True
+                break
         # fill in the lists with the possibilities that belong in them.
         for enemy in EnemyMetaData:
             if EnemyMetaData[enemy].crown_enabled and enemy is not Enemies.GetOut:
-                if convertEnemyName(EnemyMetaData[enemy].name) in spoiler.settings.enemies_selected:
+                if convertEnemyName(EnemyMetaData[enemy].name) in spoiler.settings.enemies_selected or crown_enemy_found is False:
                     every_enemy.append(enemy)
                     if EnemyMetaData[enemy].disruptive <= 1:
                         disruptive_max_1.append(enemy)
@@ -122,11 +128,18 @@ def getBalancedCrownEnemyRando(spoiler: Spoiler, crown_setting, damage_ohko_sett
                     elif EnemyMetaData[enemy].disruptive == 0:
                         disruptive_at_most_kasplat.append(enemy)
                         disruptive_0.append(enemy)
+        # Make sure every list is populated, even if too few crown-enabled enemies have been selected
+        if len(disruptive_max_1) == 0:
+            disruptive_max_1.append(every_enemy.copy())
+        if len(disruptive_at_most_kasplat) == 0:
+            disruptive_at_most_kasplat.append(disruptive_max_1.copy())
+        if len(disruptive_0) == 0:
+            disruptive_max_1.append(disruptive_at_most_kasplat)
         # the legacy_hard_mode list is trickier to fill, but here goes:
         bias = 2
         for enemy in EnemyMetaData.keys():
             if EnemyMetaData[enemy].crown_enabled:
-                if convertEnemyName(EnemyMetaData[enemy].name) in spoiler.settings.enemies_selected:
+                if convertEnemyName(EnemyMetaData[enemy].name) in spoiler.settings.enemies_selected or crown_enemy_found is False:
                     base_weight = EnemyMetaData[enemy].crown_weight
                     weight_diff = abs(base_weight - bias)
                     new_weight = abs(10 - weight_diff)
@@ -487,35 +500,36 @@ def randomize_enemies(spoiler: Spoiler):
                     for spawner in vanilla_spawners:
                         if spawner["enemy_id"] in class_types:
                             if cont_map_id != Maps.FranticFactory or spawner["index"] < 35 or spawner["index"] > 44:
-                                new_enemy_id = arr[sub_index]
-                                sub_index += 1
-                                if cont_map_id != Maps.ForestSpider or EnemyMetaData[new_enemy_id].aggro != 4:  # Prevent enemies being stuck in the ceiling
-                                    if new_enemy_id != Enemies.Book or cont_map_id not in (Maps.CavesDonkeyCabin, Maps.JapesLankyCave, Maps.AngryAztecLobby):
-                                        if new_enemy_id != Enemies.Kosha or cont_map_id not in (Maps.CavesDiddyLowerCabin, Maps.CavesTinyCabin):
-                                            if new_enemy_id != Enemies.Guard or cont_map_id not in (Maps.CavesDiddyLowerCabin, Maps.CavesTinyIgloo, Maps.CavesTinyCabin):
-                                                ROM().seek(cont_map_spawner_address + spawner["offset"])
-                                                ROM().writeMultipleBytes(new_enemy_id, 1)
-                                                if new_enemy_id in EnemyMetaData.keys():
-                                                    ROM().seek(cont_map_spawner_address + spawner["offset"] + 0x10)
-                                                    ROM().writeMultipleBytes(EnemyMetaData[new_enemy_id].aggro, 1)
-                                                    if new_enemy_id == Enemies.RoboKremling:
-                                                        ROM().seek(cont_map_spawner_address + spawner["offset"] + 0xB)
-                                                        ROM().writeMultipleBytes(0xC8, 1)
-                                                    ROM().seek(cont_map_spawner_address + spawner["offset"] + 0xF)
-                                                    default_scale = int.from_bytes(ROM().readBytes(1), "big")
-                                                    if EnemyMetaData[new_enemy_id].size_cap > 0:
-                                                        if default_scale > EnemyMetaData[new_enemy_id].size_cap:
-                                                            ROM().seek(cont_map_spawner_address + spawner["offset"] + 0xF)
-                                                            ROM().writeMultipleBytes(EnemyMetaData[new_enemy_id].size_cap, 1)
-                                                    if spoiler.settings.enemy_speed_rando:
-                                                        min_speed = EnemyMetaData[new_enemy_id].min_speed
-                                                        max_speed = EnemyMetaData[new_enemy_id].max_speed
-                                                        if min_speed > 0 and max_speed > 0:
-                                                            ROM().seek(cont_map_spawner_address + spawner["offset"] + 0xD)
-                                                            agg_speed = random.randint(min_speed, max_speed)
-                                                            ROM().writeMultipleBytes(agg_speed, 1)
-                                                            ROM().seek(cont_map_spawner_address + spawner["offset"] + 0xC)
-                                                            ROM().writeMultipleBytes(random.randint(min_speed, agg_speed), 1)
+                                if cont_map_id != Maps.AztecTinyTemple or spawner["index"] < 20 or spawner["index"] > 23:
+                                    new_enemy_id = arr[sub_index]
+                                    sub_index += 1
+                                    if cont_map_id != Maps.ForestSpider or EnemyMetaData[new_enemy_id].aggro != 4:  # Prevent enemies being stuck in the ceiling
+                                        if new_enemy_id != Enemies.Book or cont_map_id not in (Maps.CavesDonkeyCabin, Maps.JapesLankyCave, Maps.AngryAztecLobby):
+                                            if new_enemy_id != Enemies.Kosha or cont_map_id not in (Maps.CavesDiddyLowerCabin, Maps.CavesTinyCabin):
+                                                if new_enemy_id != Enemies.Guard or cont_map_id not in (Maps.CavesDiddyLowerCabin, Maps.CavesTinyIgloo, Maps.CavesTinyCabin):
+                                                    ROM().seek(cont_map_spawner_address + spawner["offset"])
+                                                    ROM().writeMultipleBytes(new_enemy_id, 1)
+                                                    if new_enemy_id in EnemyMetaData.keys():
+                                                        ROM().seek(cont_map_spawner_address + spawner["offset"] + 0x10)
+                                                        ROM().writeMultipleBytes(EnemyMetaData[new_enemy_id].aggro, 1)
+                                                        if new_enemy_id == Enemies.RoboKremling:
+                                                            ROM().seek(cont_map_spawner_address + spawner["offset"] + 0xB)
+                                                            ROM().writeMultipleBytes(0xC8, 1)
+                                                        ROM().seek(cont_map_spawner_address + spawner["offset"] + 0xF)
+                                                        default_scale = int.from_bytes(ROM().readBytes(1), "big")
+                                                        if EnemyMetaData[new_enemy_id].size_cap > 0:
+                                                            if default_scale > EnemyMetaData[new_enemy_id].size_cap:
+                                                                ROM().seek(cont_map_spawner_address + spawner["offset"] + 0xF)
+                                                                ROM().writeMultipleBytes(EnemyMetaData[new_enemy_id].size_cap, 1)
+                                                        if spoiler.settings.enemy_speed_rando:
+                                                            min_speed = EnemyMetaData[new_enemy_id].min_speed
+                                                            max_speed = EnemyMetaData[new_enemy_id].max_speed
+                                                            if min_speed > 0 and max_speed > 0:
+                                                                ROM().seek(cont_map_spawner_address + spawner["offset"] + 0xD)
+                                                                agg_speed = random.randint(min_speed, max_speed)
+                                                                ROM().writeMultipleBytes(agg_speed, 1)
+                                                                ROM().seek(cont_map_spawner_address + spawner["offset"] + 0xC)
+                                                                ROM().writeMultipleBytes(random.randint(min_speed, agg_speed), 1)
             if spoiler.settings.enemy_rando and cont_map_id in minigame_maps_total:
                 tied_enemy_list = []
                 if cont_map_id in minigame_maps_easy:
@@ -641,10 +655,20 @@ def randomize_enemies(spoiler: Spoiler):
                     elif spawner["enemy_id"] == Enemies.BattleCrownController:
                         ROM().seek(cont_map_spawner_address + spawner["offset"] + 0xB)
                         ROM().writeMultipleBytes(crown_timer, 1)  # Determine Crown length. DK64 caps at 255 seconds
-            if cont_map_id in valid_maps and cont_map_id != Maps.CastleBoss:
+            non_pkmn_snap_maps = [Maps.ForestSpider, Maps.CavesDiddyLowerCabin, Maps.CavesTinyCabin, Maps.CastleBoss]
+            if cont_map_id in valid_maps and cont_map_id not in non_pkmn_snap_maps:
                 # Check Pokemon Snap
                 for spawner in vanilla_spawners:
                     check = True
+                    if cont_map_id == Maps.AztecTinyTemple and spawner["index"] < 17:
+                        # Prevent One-Time-Only Enemies in Tiny Temple from being required
+                        check = False
+                    if cont_map_id == Maps.AztecTinyTemple and spawner["index"] > 19 and spawner["index"] < 24:
+                        # Prevent One-Time-Only Enemies in Tiny Temple from being required
+                        check = False
+                    if cont_map_id == Maps.FranticFactory and spawner["index"] > 34 and spawner["index"] < 45:
+                        # Prevent One-Time-Only Enemies in Toy Boss Fight from being required
+                        check = False
                     if cont_map_id == Maps.CrystalCaves and spawner["index"] < 10:
                         # Prevent Unused Enemies in Caves
                         check = False

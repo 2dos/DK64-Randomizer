@@ -164,7 +164,7 @@ EnemyMetaData = {
     Enemies.KlaptrapRed: EnemyData(name="Klaptrap (Red)", crown_weight=2, killable=False, disruptive=1),  #
     Enemies.BeaverGold: EnemyData(name="Beaver (Gold)", crown_weight=10, simple=True, bbbarrage_min_scale=70, beaver=True),  #
     Enemies.MushroomMan: EnemyData(name="Mushroom Man", aggro=4, size_cap=60, crown_weight=10, simple=True, bbbarrage_min_scale=50),
-    Enemies.Ruler: EnemyData(name="Beaver (Blue)", crown_weight=10, simple=True, bbbarrage_min_scale=50),  #
+    Enemies.Ruler: EnemyData(name="Ruler", crown_weight=10, simple=True, bbbarrage_min_scale=50),  #
     Enemies.RoboKremling: EnemyData(name="Robo-Kremling", crown_weight=2, killable=False, disruptive=1),  #
     Enemies.Kremling: EnemyData(name="Kremling", crown_weight=10, simple=True, bbbarrage_min_scale=50),  #
     Enemies.KasplatDK: EnemyData(name="Kasplat (DK)", crown_weight=6, kasplat=True),  #
