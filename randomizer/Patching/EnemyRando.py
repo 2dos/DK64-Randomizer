@@ -665,11 +665,14 @@ def randomize_enemies(spoiler: Spoiler):
                 # Check Pokemon Snap
                 for spawner in vanilla_spawners:
                     check = True
+                    if cont_map_id == Maps.AztecTinyTemple and spawner["index"] < 17:
+                        # Prevent One-Time-Only Enemies in Tiny Temple from being required
+                        check = False
                     if cont_map_id == Maps.AztecTinyTemple and spawner["index"] > 19 and spawner["index"] < 24:
-                        # Prevent One-Time-Only Enemies in Tiny Temple
+                        # Prevent One-Time-Only Enemies in Tiny Temple from being required
                         check = False
                     if cont_map_id == Maps.FranticFactory and spawner["index"] > 34 and spawner["index"] < 45:
-                        # Prevent One-Time-Only Enemies in Toy Boss Fight
+                        # Prevent One-Time-Only Enemies in Toy Boss Fight from being required
                         check = False
                     if cont_map_id == Maps.CrystalCaves and spawner["index"] < 10:
                         # Prevent Unused Enemies in Caves
