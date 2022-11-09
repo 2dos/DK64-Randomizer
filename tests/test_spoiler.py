@@ -34,6 +34,10 @@ def generate_lo_rando_race_settings():
 
     # item shuffler options here
     data["move_rando"] = "on"  # usually "on" but i like "cross_purchase", rarely need to test with "start_with"
+    # if start_with, next two are FORCED to be normal and vanilla
+    data["training_barrels"] = "shuffled"  # usually "normal", could be "shuffled"
+    data["shockwave_status"] = "shuffled_decoupled"  # usually "vanilla", could be "shuffled" or "shuffled_decoupled" or "start_with"
+    # If true, the above is always decoupled or vanilla
     data["shuffle_items"] = True  # Must be true to trigger the list selector below
     data["item_rando_list_selected"] = ["shop", "banana", "crown", "blueprint", "key", "medal"]  # no coins because i hate rareware coin logic
 
@@ -102,14 +106,12 @@ def generate_lo_rando_race_settings():
     data["random_patches"] = False  # usually False
     data["shuffle_shops"] = False  # usually False
 
-    data["training_barrels"] = "shuffled"  # usually "normal", could be "shuffled"
-    data["shockwave_status"] = "shuffled_decoupled"  # usually "vanilla", could be "shuffled" or "shuffled_decoupled" or "start_with"
     data["free_trade_setting"] = "none"  # none | not_blueprints | major_collectibles
     data["crown_placement_rando"] = False  # usually false
     data["hard_blockers"] = False  # likely to be False
     data["hard_troff_n_scoff"] = False  # likely to be False
     data["cb_rando"] = False  # likely to be False?
-    data["win_condition"] = "all_keys"  # lots of options: all_keys | get_key_8 | beat_krool | all_medals | all_fairies | all_blueprints
+    data["win_condition"] = "all_keys"  # lots of options: all_keys | get_key_8 | beat_krool | all_medals | all_fairies | all_blueprints | poke_snap
     data["wrinkly_location_rando"] = False  # likely to be False
     data["tns_location_rando"] = False  # likely to be False
     data["key_8_helm"] = True  # likely to be False? unclear as of yet
