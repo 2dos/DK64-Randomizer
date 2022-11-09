@@ -107,7 +107,8 @@ class Spoiler:
         settings["Crown Door Open"] = self.settings.crown_door_open
         settings["Coin Door Open"] = self.settings.coin_door_open
         settings["Shockwave Shuffle"] = self.settings.shockwave_status
-        settings["Random Medal Requirement"] = self.settings.random_medal_requirement
+        settings["Random Jetpac Medal Requirement"] = self.settings.random_medal_requirement
+        settings["Bananas Required for Medal"] = self.settings.medal_cb_req
         settings["Random Shop Prices"] = self.settings.random_prices
         settings["Banana Port Randomization"] = self.settings.bananaport_rando
         settings["Shuffle Shop Locations"] = self.settings.shuffle_shops
@@ -251,6 +252,9 @@ class Spoiler:
                         price = f"{self.settings.prices[Items.ProgressiveAmmoBelt][0]}->{self.settings.prices[Items.ProgressiveAmmoBelt][1]}"
                     elif location.item == Items.ProgressiveInstrumentUpgrade:
                         price = f"{self.settings.prices[Items.ProgressiveInstrumentUpgrade][0]}->{self.settings.prices[Items.ProgressiveInstrumentUpgrade][1]}->{self.settings.prices[Items.ProgressiveInstrumentUpgrade][2]}"
+                # Vanilla prices are by item, not by location
+                elif self.settings.random_prices == "vanilla":
+                    price = str(self.settings.prices[location.item])
                 else:
                     price = str(self.settings.prices[location_id])
                 humanspoiler["Items"]["Shops"][location.name] = item.name + f" ({price})"
@@ -566,6 +570,9 @@ class Spoiler:
                     price = 0
                     if id in self.settings.prices:
                         price = self.settings.prices[id]
+                    # Vanilla prices are by item, not by location
+                    if self.settings.random_prices == "vanilla":
+                        price = self.settings.prices[location.item]
                     # Moves that are set with a single flag (e.g. training barrels, shockwave) are handled differently
                     if move_type == MoveTypes.Flag:
                         for kong_index in kong_indices:

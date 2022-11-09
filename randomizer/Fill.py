@@ -727,6 +727,8 @@ def GetMaxCoinsSpent(settings, purchasedShops):
         elif location.item == Items.ProgressiveInstrumentUpgrade:
             movePrice = settings.prices[location.item][instUpgrades]
             instUpgrades += 1
+        elif settings.random_prices == "vanilla":
+            movePrice = settings.prices[location.item]
         else:
             movePrice = settings.prices[location_id]
         if movePrice is not None:
@@ -1892,16 +1894,6 @@ def SetNewProgressionRequirementsUnordered(settings: Settings):
                     ]
                     ownedMoves[bossCompletedLevel] = accessibleMoves
 
-    # We still need to set T&S for some levels, but we'll have access to every level by this point
-    for level in range(len(settings.BossBananas)):
-        # This means that the level hasn't been unset from completion blocking
-        if settings.BossBananas[level] > 500:
-            # We should have access to everything by this point
-            settings.BossBananas[level] = initialTNS[level]
-        if Levels(level) not in ownedKongs.keys():
-            ownedKongs[Levels(level)] = LogicVariables.GetKongs()
-            ownedMoves[Levels(level)] = allMoves
-
     # For any boss location behind a T&S we didn't lower...
     bossLocations = [
         location for id, location in LocationList.items() if location.type == Types.Key and location.level in levelsProgressed and settings.BossBananas[location.level] >= initialTNS[location.level]
@@ -1911,8 +1903,9 @@ def SetNewProgressionRequirementsUnordered(settings: Settings):
         if settings.BossBananas[bossLocation.level] > 500:
             # We should have access to everything by this point
             settings.BossBananas[bossLocation.level] = initialTNS[bossLocation.level]
+        # For any level we haven't lowered yet, assume we own everything
         if bossLocation.level not in ownedKongs.keys():
-            ownedKongs[bossLocation.level] = LogicVariables.GetKongs()
+            ownedKongs[bossLocation.level] = [Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky]
             ownedMoves[bossLocation.level] = allMoves
         # If boss rewards could be anything, we have to make sure they're accessible independent of all else
         if isKeyItemRando:
@@ -1950,6 +1943,12 @@ def SetNewProgressionRequirementsUnordered(settings: Settings):
     ShuffleBossesBasedOnOwnedItems(settings, ownedKongs, ownedMoves)
     settings.owned_kongs_by_level = ownedKongs
     settings.owned_moves_by_level = ownedMoves
+
+    # After setting all the progression, make sure we did it right
+    # Technically the coin logic check after this will cover it, but this will help identify issues better
+    Reset()
+    if not GetAccessibleLocations(settings, [], SearchMode.CheckAllReachable):
+        raise Ex.GameNotBeatableException("Complex progression generation prevented 101%.")
 
 
 def GetAccessibleOpenLevels(settings, accessible):
@@ -2080,7 +2079,11 @@ def Generate_Spoiler(spoiler):
 def ShuffleMisc(spoiler):
     """Shuffle miscellaneous objects outside of main fill algorithm, including Kasplats, Bonus barrels, and bananaport warps."""
     # T&S and Wrinkly Door Shuffle
-    if spoiler.settings.wrinkly_location_rando or spoiler.settings.tns_location_rando:
+    if (
+        spoiler.settings.wrinkly_location_rando
+        or spoiler.settings.tns_location_rando
+        or ("remove_wrinkly_puzzles" in spoiler.settings.misc_changes_selected or len(spoiler.settings.misc_changes_selected) == 0)
+    ):
         ShuffleDoors(spoiler)
     # Handle Crown Placement
     if spoiler.settings.crown_placement_rando:
