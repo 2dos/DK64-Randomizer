@@ -655,12 +655,7 @@ def randomize_enemies(spoiler: Spoiler):
                     elif spawner["enemy_id"] == Enemies.BattleCrownController:
                         ROM().seek(cont_map_spawner_address + spawner["offset"] + 0xB)
                         ROM().writeMultipleBytes(crown_timer, 1)  # Determine Crown length. DK64 caps at 255 seconds
-            non_pkmn_snap_maps = [
-                        Maps.ForestSpider, 
-                        Maps.CavesDiddyLowerCabin,
-                        Maps.CavesTinyCabin,
-                        Maps.CastleBoss
-                    ]
+            non_pkmn_snap_maps = [Maps.ForestSpider, Maps.CavesDiddyLowerCabin, Maps.CavesTinyCabin, Maps.CastleBoss]
             if cont_map_id in valid_maps and cont_map_id not in non_pkmn_snap_maps:
                 # Check Pokemon Snap
                 for spawner in vanilla_spawners:
