@@ -182,6 +182,25 @@ class LogicVarHolder:
 
         self.UpdateKongs()
 
+    def isPriorHelmComplete(self, kong: Kongs):
+        """Determine if there is access to the kong's helm room."""
+        room_seq = (Kongs.donkey, Kongs.chunky, Kongs.tiny, Kongs.lanky, Kongs.diddy)
+        kong_evt = (
+            Events.HelmDonkeyDone,
+            Events.HelmDiddyDone,
+            Events.HelmLankyDone,
+            Events.HelmTinyDone,
+            Events.HelmChunkyDone,
+        )
+        desired_index = room_seq.index(kong)
+        helm_order = self.settings.helm_order
+        if desired_index in helm_order:
+            sequence_slot = helm_order.index(desired_index)
+            if sequence_slot > 0:
+                prior_kong = room_seq[helm_order[sequence_slot - 1]]
+                return kong_evt[prior_kong] in self.Events
+        return Events.HelmDoorsOpened in self.Events
+
     def Update(self, ownedItems):
         """Update logic variables based on owned items."""
         self.debug_owned_items = ownedItems
