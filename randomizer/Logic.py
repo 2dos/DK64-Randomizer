@@ -403,14 +403,11 @@ class LogicVarHolder:
         caged_item_id = LocationList[Locations.JapesDonkeyFreeDiddy].item
         if caged_item_id == Items.NoItem:
             return True
-        return (
-            self.CanFreeDiddy()  # Otherwise you need to be able to open Diddy's cage and be able to pick up the item
-            and (
-                caged_item_id is None  # During the fill, this will be None so we need to assume we'll have to be able to free Diddy
-                or (ItemList[caged_item_id].type == Types.Blueprint and self.BlueprintAccess(ItemList[caged_item_id]))  # If it's a blueprint, check for blueprint access (this checks blueprint free trade)
-                or (ItemList[caged_item_id].type != Types.Blueprint and self.settings.free_trade_items)  # If it's not a blueprint, check for non-blueprint free trade
-                or self.IsKong(self.settings.diddy_freeing_kong)  # Otherwise you need to be the right Kong
-            )
+        return self.CanFreeDiddy() and (  # Otherwise you need to be able to open Diddy's cage and be able to pick up the item
+            caged_item_id is None  # During the fill, this will be None so we need to assume we'll have to be able to free Diddy
+            or (ItemList[caged_item_id].type == Types.Blueprint and self.BlueprintAccess(ItemList[caged_item_id]))  # If it's a blueprint, check for blueprint access (this checks blueprint free trade)
+            or (ItemList[caged_item_id].type != Types.Blueprint and self.settings.free_trade_items)  # If it's not a blueprint, check for non-blueprint free trade
+            or self.IsKong(self.settings.diddy_freeing_kong)  # Otherwise you need to be the right Kong
         )
 
     def CanFreeTiny(self):
