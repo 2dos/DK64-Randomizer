@@ -59,7 +59,7 @@ BananaportVanilla = {
     Warps.AztecNearTinyTemple: BananaportData(name="Angry Aztec: Outside Tiny Temple", map_id=Maps.AngryAztec, region_id=Regions.AngryAztecOasis, obj_id_vanilla=0x80, vanilla_warp=1, swap_index=22),
     Warps.AztecEndOfTunnel: BananaportData(name="Angry Aztec: End of the Tunnel", map_id=Maps.AngryAztec, region_id=Regions.AngryAztecMain, obj_id_vanilla=0x7F, vanilla_warp=1, swap_index=23),
     Warps.AztecTotemNearLeft: BananaportData(name="Angry Aztec: Near Totem Rocketbarrel", map_id=Maps.AngryAztec, region_id=Regions.AngryAztecMain, obj_id_vanilla=0x98, vanilla_warp=2, swap_index=24),
-    Warps.AztecCranky: BananaportData(name="Angry Aztec: Outside Cranky's", map_id=Maps.AngryAztec, region_id=Regions.AngryAztecMain, obj_id_vanilla=0x95, vanilla_warp=2, swap_index=25),
+    Warps.AztecCranky: BananaportData(name="Angry Aztec: Outside Cranky's", map_id=Maps.AngryAztec, region_id=Regions.AngryAztecConnectorTunnel, obj_id_vanilla=0x95, vanilla_warp=2, swap_index=25),
     Warps.AztecTotemNearRight: BananaportData(name="Angry Aztec: Near Llama Temple", map_id=Maps.AngryAztec, region_id=Regions.AngryAztecMain, obj_id_vanilla=0x73, vanilla_warp=3, swap_index=26),
     Warps.AztecFunky: BananaportData(name="Angry Aztec: Outside Funky's", map_id=Maps.AngryAztec, region_id=Regions.AngryAztecMain, obj_id_vanilla=0xB1, vanilla_warp=3, swap_index=27),
     Warps.AztecNearSnide: BananaportData(name="Angry Aztec: Near Snide's", map_id=Maps.AngryAztec, region_id=Regions.AngryAztecMain, obj_id_vanilla=0x82, vanilla_warp=4, swap_index=28),

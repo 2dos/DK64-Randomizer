@@ -8,7 +8,9 @@ import randomizer.CollectibleLogicFiles.FranticFactory
 import randomizer.CollectibleLogicFiles.FungiForest
 import randomizer.CollectibleLogicFiles.GloomyGalleon
 import randomizer.CollectibleLogicFiles.JungleJapes
+from randomizer.Enums.Locations import Locations
 from randomizer.Enums.Types import Types
+from randomizer.Lists.Item import ItemList
 import randomizer.LogicFiles.AngryAztec
 import randomizer.LogicFiles.CreepyCastle
 import randomizer.LogicFiles.CrystalCaves
@@ -393,8 +395,20 @@ class LogicVarHolder:
             return (self.bongos and self.isdonkey) or (self.guitar and self.isdiddy) or (self.trombone and self.islanky) or (self.saxophone and self.istiny) or (self.triangle and self.ischunky)
 
     def CanFreeDiddy(self):
-        """Check if kong at Diddy location can be freed."""
-        return self.HasGun(self.settings.diddy_freeing_kong)
+        """Check if the cage locking Diddy's vanilla location can be opened."""
+        return LocationList[Locations.DiddyKong].item == Items.NoItem or self.HasGun(self.settings.diddy_freeing_kong)
+
+    def CanOpenJapesGates(self):
+        """Check if we can pick up the item inside Diddy's cage, thus opening the gates in Japes."""
+        caged_item_id = LocationList[Locations.JapesDonkeyFreeDiddy].item
+        if caged_item_id == Items.NoItem:
+            return True
+        return self.CanFreeDiddy() and (  # Otherwise you need to be able to open Diddy's cage and be able to pick up the item
+            caged_item_id is None  # During the fill, this will be None so we need to assume we'll have to be able to free Diddy
+            or (ItemList[caged_item_id].type == Types.Blueprint and self.BlueprintAccess(ItemList[caged_item_id]))  # If it's a blueprint, check for blueprint access (this checks blueprint free trade)
+            or (ItemList[caged_item_id].type != Types.Blueprint and self.settings.free_trade_items)  # If it's not a blueprint, check for non-blueprint free trade
+            or self.IsKong(self.settings.diddy_freeing_kong)  # Otherwise you need to be the right Kong
+        )
 
     def CanFreeTiny(self):
         """Check if kong at Tiny location can be freed,r equires either chimpy charge or primate punch."""

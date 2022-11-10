@@ -6,6 +6,7 @@ from randomizer.Enums.HintType import HintType
 from randomizer.Enums.Items import Items
 from randomizer.Enums.Kongs import Kongs
 from randomizer.Enums.Levels import Levels
+from randomizer.Enums.Locations import Locations
 from randomizer.Enums.Regions import Regions
 from randomizer.Enums.Transitions import Transitions
 from randomizer.Enums.Types import Types
@@ -106,7 +107,6 @@ hint_list = [
     Hint(hint="Igloos can be found in Crystal Caves.", important=False, base=True),
     Hint(hint="Frantic Factory has multiple floors where things can be found.", important=False, base=True),
     Hint(hint="Angry Aztec has so much sand, it's even in the wind.", important=False, base=True),
-    Hint(hint="DK Isles does not have a key.", important=False, base=True),
     Hint(hint="You can find a rabbit in Fungi Forest and in Crystal Caves.", important=False, base=True),
     Hint(hint="You can find a beetle in Angry Aztec and in Crystal Caves.", important=False, base=True),
     Hint(hint="You can find a vulture in Angry Aztec.", important=False, base=True),
@@ -300,8 +300,9 @@ hint_distribution = {
     HintType.RequiredKeyHint: -1,  # Fixed number based on the number of keys to be obtained over the seed
     HintType.RequiredWinConditionHint: 0,  # Fixed number based on what K. Rool phases you must defeat
     HintType.WothLocation: 8,
-    HintType.FullShopWithItems: 4,
+    HintType.FullShopWithItems: 8,
     HintType.FoolishMove: 4,
+    HintType.FoolishRegion: 4,
 }
 HINT_CAP = 35  # There are this many total slots for hints
 
@@ -317,13 +318,12 @@ def compileHints(spoiler: Spoiler):
     if spoiler.settings.helm_setting != "skip_all" and spoiler.settings.helm_phase_count < 5:
         valid_types.append(HintType.HelmOrder)
     if not spoiler.settings.unlock_all_moves and spoiler.settings.move_rando not in ("off", "item_shuffle"):
-        hint_distribution[HintType.FullShopWithItems] *= 2  # To match the value of the old type
         valid_types.append(HintType.FullShopWithItems)
         valid_types.append(HintType.MoveLocation)
     if spoiler.settings.shuffle_items and Types.Shop in spoiler.settings.shuffled_location_types:
-        valid_types.append(HintType.FullShopWithItems)
         # With no logic WOTH isn't built correctly so we can't make any hints with it
         if not spoiler.settings.no_logic:
+            valid_types.append(HintType.FoolishRegion)
             valid_types.append(HintType.FoolishMove)
             valid_types.append(HintType.WothLocation)
             # K. Rool seeds could use some help finding the last pesky moves
@@ -607,10 +607,7 @@ def compileHints(spoiler: Spoiler):
                 region = GetRegionOfLocation(path_location_id)
                 hinted_location_text = region.hint_name
                 hint_location = getRandomHintLocation()
-                if LocationList[path_location_id].type == Types.Medal:
-                    # Medals get special phrasing
-                    message = f"A {level_list[region.level]} Medal is on the path to {key_item.name}."
-                elif path_location_id in TrainingBarrelLocations:
+                if path_location_id in TrainingBarrelLocations:
                     # Training Grounds will have 4 moves - instead of being super vague we'll hint the specific item directly.
                     hinted_item_name = ItemList[LocationList[path_location_id].item].name
                     message = f"Your training with {hinted_item_name} is on the path to {key_item.name}."
@@ -652,10 +649,7 @@ def compileHints(spoiler: Spoiler):
             # Place a hint for each of the K. Rool required moves
             for item_name, path_location_id in item_path_hint_dict.items():
                 region = GetRegionOfLocation(path_location_id)
-                if "whole of" in region.hint_name:
-                    # Medals get special phrasing
-                    message = f"A {level_list[region.level]} Medal is on the path to {key_item.name}."
-                elif "Training Grounds" in hinted_location_text:
+                if "Training Grounds" in hinted_location_text:
                     # Training Grounds will have 4 moves - instead of being super vague we'll hint the specific item directly.
                     hinted_item_name = ItemList[LocationList[path_location_id].item].name
                     message = f"Your training with {hinted_item_name} is on the path to aiding your fight against K. Rool."
@@ -677,10 +671,7 @@ def compileHints(spoiler: Spoiler):
                 region = GetRegionOfLocation(path_location_id)
                 hinted_location_text = region.hint_name
                 hint_location = getRandomHintLocation()
-                if LocationList[path_location_id].type == Types.Medal:
-                    # Medals get special phrasing
-                    message = f"A {level_list[LocationList[path_location_id].level]} Medal is on the path to taking photos."
-                elif path_location_id in TrainingBarrelLocations:
+                if path_location_id in TrainingBarrelLocations:
                     # Training Grounds will have 4 moves - instead of being super vague we'll hint the specific item directly.
                     hinted_item_name = ItemList[LocationList[path_location_id].item].name
                     message = f"Your training with {hinted_item_name} is on the path to taking photos."
@@ -956,7 +947,6 @@ def compileHints(spoiler: Spoiler):
             location = LocationList[location_id]
             if location.item in foolish_moves:
                 foolish_moves.remove(location.item)
-        number_of_woth_slams = 2 - foolish_moves.count(Items.ProgressiveSlam)
         random.shuffle(foolish_moves)
         for i in range(hint_distribution[HintType.FoolishMove]):
             # If you run out of foolish moves (maybe in an all medals run?)
@@ -966,14 +956,12 @@ def compileHints(spoiler: Spoiler):
                 hint_distribution[HintType.WothLocation] += 1
                 continue
             hinted_move_id = foolish_moves.pop()  # Don't hint the same move twice
-            # Gotta hand-pick the name for Slam hints
+            # We can only guarantee that Super Duper is foolish due to being progressive. It could be that a slam is required but neither is explicitly required.
             if hinted_move_id == Items.ProgressiveSlam:
-                # If we don't need either, we can say that Super is foolish
-                if number_of_woth_slams == 0:
-                    item_name = "Super Simian Slam"
-                # Otherwise exactly one is hinted, so we can say Super Duper is foolish
-                else:  # number_of_woth_slams == 1
-                    item_name = "Super Duper Simian Slam"
+                item_name = "Super Duper Simian Slam"
+                # Make sure we don't drop 2 Super Duper slam hints
+                if Items.ProgressiveSlam in foolish_moves:
+                    foolish_moves.remove(Items.ProgressiveSlam)
             else:
                 item_name = ItemList[hinted_move_id].name
             hint_location = getRandomHintLocation()
@@ -981,13 +969,42 @@ def compileHints(spoiler: Spoiler):
             hint_location.hint_type = HintType.FoolishMove
             UpdateHint(hint_location, message)
 
+    # Foolish Region hints state that a hint region is foolish. Useful in item rando.
+    if hint_distribution[HintType.FoolishRegion] > 0:
+        # Some regions are pointless/terrible to call foolish
+        banned_hint_regions = ["K. Rool Arena", "Snide"]  # No items here  # Always GB rewards
+        if Types.Coin not in spoiler.settings.shuffled_location_types:
+            banned_hint_regions.append("Jetpac Game")  # Irrelevant unless coins are shuffled
+        foolish_regions = []
+        for region_id, region in RegionList.items():
+            if (
+                region.hint_name not in banned_hint_regions
+                and region.hint_name not in foolish_regions
+                and any(region.locations)
+                and not any([loc for loc in region.locations if loc.id in spoiler.woth_locations])
+            ):
+                foolish_regions.append(region.hint_name)
+        random.shuffle(foolish_regions)
+        for i in range(hint_distribution[HintType.FoolishRegion]):
+            # If you run out of foolish regions (maybe in an all medals run?)
+            if len(foolish_regions) == 0:
+                # Replace remaining move hints with WotH location hints, sounds like you'll need them
+                hint_distribution[HintType.FoolishRegion] -= 1
+                hint_distribution[HintType.WothLocation] += 1
+                continue
+            hinted_region_name = foolish_regions.pop()
+            hint_location = getRandomHintLocation()
+            message = f"It would be foolish to explore the {hinted_region_name}."
+            hint_location.hint_type = HintType.FoolishRegion
+            UpdateHint(hint_location, message)
+
     # WotH Location hints list a location that is Way of the Hoard. Most applicable in item rando.
     if hint_distribution[HintType.WothLocation] > 0:
         hintable_locations = []
         for location_id in spoiler.woth_locations:
             location = LocationList[location_id]
-            # Only hint things that are in shuffled locations but don't hint training barrels because you can't know which move it refers to
-            if location.type in spoiler.settings.shuffled_location_types and location.type != Types.TrainingBarrel:
+            # Only hint things that are in shuffled locations - don't hint training barrels because you can't know which move it refers to and don't hint the Helm Key if you know key 8 is there
+            if location.type in spoiler.settings.shuffled_location_types and location.type != Types.TrainingBarrel and not (spoiler.settings.key_8_helm and location == Locations.HelmKey):
                 hintable_locations.append(location)
         random.shuffle(hintable_locations)
         for i in range(hint_distribution[HintType.WothLocation]):

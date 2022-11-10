@@ -942,6 +942,10 @@ def Fill(spoiler):
         gbsUnplaced = PlaceItems(spoiler.settings, "random", ItemPool.GoldenBananaItems(), [])
         if gbsUnplaced > 0:
             raise Ex.ItemPlacementException(str(gbsUnplaced) + " unplaced GBs.")
+    # Some locations require special care to make logic work correctly
+    # This is the only location that cares about None vs NoItem - it needs to be None so it fills correctly but NoItem for logic to generate progression correctly
+    if LocationList[Locations.JapesDonkeyFreeDiddy].item is None:
+        LocationList[Locations.JapesDonkeyFreeDiddy].PlaceItem(Items.NoItem)
     # Finally, check if game is beatable
     Reset()
     if not GetAccessibleLocations(spoiler.settings, [], SearchMode.CheckAllReachable):
