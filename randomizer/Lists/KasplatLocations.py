@@ -261,14 +261,14 @@ KasplatLocationList = {
             xmax=4060,
             zmin=2310,
             zmax=2510,
-            region=Regions.AngryAztecMain,
+            region=Regions.AngryAztecConnectorTunnel,
         ),
         KasplatLocation(
             name="Aztec Kasplat: Behind the DK Stone Door",
             map_id=Maps.AngryAztec,
             kong_lst=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
             coords=[1363, 162, 738],
-            region=Regions.AngryAztecOasis,
+            region=Regions.AztecTunnelBeforeOasis,
             additional_logic=lambda l: l.coconut and ((l.strongKong and l.isdonkey) or l.settings.damage_amount == "default"),
             vanilla=True,
         ),
@@ -285,7 +285,7 @@ KasplatLocationList = {
             map_id=Maps.AngryAztec,
             kong_lst=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
             coords=[3162, 120, 1845],
-            region=Regions.AngryAztecMain,
+            region=Regions.AngryAztecConnectorTunnel,
             vanilla=True,
         ),
         # Problematic - may fall through the floor, generally dangerous to get to
@@ -466,7 +466,7 @@ KasplatLocationList = {
             xmax=700,
             zmin=1740,
             zmax=1820,
-            region=Regions.BeyondHatch,
+            region=Regions.LowerCore,  # This guy is weird - no good logic region to put him in besides Production Room
         ),
         KasplatLocation(
             name="Factory Kasplat: In the Dark Room",

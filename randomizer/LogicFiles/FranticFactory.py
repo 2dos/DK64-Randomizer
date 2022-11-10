@@ -14,7 +14,7 @@ from randomizer.LogicClasses import (Event, LocationLogic, Region,
                                      TransitionFront)
 
 LogicRegions = {
-    Regions.FranticFactoryMedals: Region("Frantic Factory Medals", "whole of Frantic Factory", Levels.FranticFactory, False, None, [
+    Regions.FranticFactoryMedals: Region("Frantic Factory Medals", "Frantic Factory Medal Rewards", Levels.FranticFactory, False, None, [
         LocationLogic(Locations.FactoryDonkeyMedal, lambda l: l.ColoredBananas[Levels.FranticFactory][Kongs.donkey] >= l.settings.medal_cb_req),
         LocationLogic(Locations.FactoryDiddyMedal, lambda l: l.ColoredBananas[Levels.FranticFactory][Kongs.diddy] >= l.settings.medal_cb_req),
         LocationLogic(Locations.FactoryLankyMedal, lambda l: l.ColoredBananas[Levels.FranticFactory][Kongs.lanky] >= l.settings.medal_cb_req),
@@ -100,7 +100,7 @@ LogicRegions = {
     Regions.BeyondHatch: Region("Beyond Hatch", "Storage Room", Levels.FranticFactory, True, None, [
         LocationLogic(Locations.ChunkyKong, lambda l: l.CanFreeChunky()),
         LocationLogic(Locations.NintendoCoin, lambda l: Events.ArcadeLeverSpawned in l.Events and l.grab and l.isdonkey),
-        LocationLogic(Locations.FactoryDonkeyDKArcade, lambda l: Events.ArcadeLeverSpawned in l.Events and l.grab and l.isdonkey),
+        LocationLogic(Locations.FactoryDonkeyDKArcade, lambda l: not l.settings.fast_gbs and (Events.ArcadeLeverSpawned in l.Events and l.grab and l.isdonkey)),
         LocationLogic(Locations.FactoryLankyFreeChunky, lambda l: l.Slam and l.HasKong(l.settings.chunky_freeing_kong)),
         LocationLogic(Locations.FactoryTinybyArcade, lambda l: l.mini and l.tiny),
         LocationLogic(Locations.FactoryChunkyDarkRoom, lambda l: l.punch and l.Slam and l.ischunky),
@@ -118,7 +118,9 @@ LogicRegions = {
         TransitionFront(Regions.FactoryBaboonBlast, lambda l: l.blast and l.isdonkey)  # , Transitions.FactoryMainToBBlast)
     ]),
 
-    Regions.FactoryBaboonBlast: Region("Factory Baboon Blast", "Storage Room", Levels.FranticFactory, False, None, [], [
+    Regions.FactoryBaboonBlast: Region("Factory Baboon Blast", "Storage Room", Levels.FranticFactory, False, None, [
+        LocationLogic(Locations.FactoryDonkeyDKArcade, lambda l: l.settings.fast_gbs),  # The GB is moved here on fast GBs
+    ], [
         Event(Events.ArcadeLeverSpawned, lambda l: l.isdonkey)
     ], [
         TransitionFront(Regions.FranticFactoryMedals, lambda l: True),

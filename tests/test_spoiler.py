@@ -41,7 +41,7 @@ def generate_lo_rando_race_settings():
     data["shuffle_items"] = True  # Must be true to trigger the list selector below
     data["item_rando_list_selected"] = ["shop", "banana", "crown", "blueprint", "key", "medal"]  # no coins because i hate rareware coin logic
 
-    data["random_prices"] = "vanilla"  # usually "medium, might need free, rarely vanilla"
+    data["random_prices"] = "low"  # usually "medium, might need free, rarely vanilla"
     data["randomize_blocker_required_amounts"] = True  # usually True, if false set values below
     data["blocker_0"] = 0
     data["blocker_1"] = 0
