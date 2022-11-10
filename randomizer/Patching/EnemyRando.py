@@ -129,12 +129,19 @@ def getBalancedCrownEnemyRando(spoiler: Spoiler, crown_setting, damage_ohko_sett
                         disruptive_at_most_kasplat.append(enemy)
                         disruptive_0.append(enemy)
         # Make sure every list is populated, even if too few crown-enabled enemies have been selected
+        # This breaks the crown balancing, but what the player wants, the player gets
         if len(disruptive_max_1) == 0:
             disruptive_max_1.append(every_enemy.copy())
+            for enemy in EnemyMetaData:
+                if EnemyMetaData[enemy].disruptive > 1:
+                    EnemyMetaData[enemy].disruptive = 1
         if len(disruptive_at_most_kasplat) == 0:
             disruptive_at_most_kasplat.append(disruptive_max_1.copy())
         if len(disruptive_0) == 0:
-            disruptive_max_1.append(disruptive_at_most_kasplat)
+            disruptive_0.append(disruptive_at_most_kasplat)
+            for enemy in EnemyMetaData:
+                if EnemyMetaData[enemy].disruptive > 0:
+                    EnemyMetaData[enemy].disruptive = 0
         # the legacy_hard_mode list is trickier to fill, but here goes:
         bias = 2
         for enemy in EnemyMetaData.keys():
@@ -182,7 +189,7 @@ def getBalancedCrownEnemyRando(spoiler: Spoiler, crown_setting, damage_ohko_sett
                             new_enemy = random.choice(disruptive_at_most_kasplat)
                         elif count_kasplats == 1:
                             new_enemy = random.choice(disruptive_0)
-                    elif count_kasplats > 3 or (count_kasplats > 2 and count_disruptive > 1) or (count_kasplats == 2 and count_disruptive == 2):
+                    if count_kasplats > 3 or (count_kasplats > 2 and count_disruptive > 1) or (count_kasplats == 2 and count_disruptive == 2):
                         print("This is a mistake in the crown enemy algorithm. Report this to the devs.")
                         new_enemy = Enemies.BeaverGold
                     # We picked a new enemy, let's update our information and add it to the list
