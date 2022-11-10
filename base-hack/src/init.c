@@ -527,7 +527,7 @@ void initHack(int source) {
 						*(short*)(0x806832C0) = 0x5000; // Prevent tag blinking
 						*(int*)(0x806C1058) = 0; // Prevent Cutscene Kong blinking
 						*(int*)(0x806F0AD0) = 0x24050001; // Fix Hand State
-						*(float*)(0x8075CC78) = 0.035f; // Reduce Tiny's Mini Monkey Size
+						*(float*)(0x8075CC78) = 0.03f; // Reduce Tiny's Mini Monkey Size
 						*(int*)(0x806CAA2C) = 0x0C000000 | (((int)&UpdateCollisionDimensions_Krusha & 0xFFFFFF) >> 2); // Fix Collision
 						break;
 					case 4:
