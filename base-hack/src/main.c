@@ -257,6 +257,14 @@ void earlyFrame(void) {
 	handle_WTI();
 	adjust_galleon_water();
 	finalizeBeatGame();
+	*(float*)(0x8075D0D0) = 0.15f;
+	if (Rando.krusha_slot == Character) {
+		if (Character == 1) {
+			*(float*)(0x8075D0D0) = 0.13f;
+		} else if (Character == 3) {
+			*(float*)(0x8075D0D0) = 0.10f;
+		}
+	}
 	if ((CurrentMap == MAIN_MENU) && (ObjectModel2Timer < 5)) {
 		FileScreenDLCode_Write();
 		initTracker();

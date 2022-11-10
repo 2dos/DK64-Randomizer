@@ -28,6 +28,8 @@ void adjustAnimationTables(void) {
                 }
             } else if ((i >= 0x30) && (i <= 0x32)) {
                 excl_extra = 1;
+            } else if ((i >= 0x48) && (i <= 0x4E)) {
+                excl_extra = 1;
             }
             if (i < 0x6E) {
                 if (!excl_extra) {
@@ -123,9 +125,22 @@ void updateCutsceneModels(actorData* actor, int size) {
 
 void* DiddySwimFix(int ptr, int file, int c0, int c1) {
     float* data = (float*)getMapData(ptr, file, c0, c1);
-    if (file == 210) {
+    if ((file == 210) && (KrushaSlot == 1)) {
         // Diddy Swim Animation
+        *data = 1.0f;
+    } else if ((file == 359) && (KrushaSlot == 2)) {
         *data = 1.0f;
     }
     return (void*)data;
+}
+
+void UpdateCollisionDimensions_Krusha(int player, int x_f, int y_f, int z_f, float scale) {
+    if ((KrushaSlot + 2) == (CurrentActorPointer_0->actorType)) {
+        if (KrushaSlot == 1) {
+            scale *= (0.15f / 0.13f);
+        } else if (KrushaSlot == 3) {
+            scale *= (0.15f / 0.1f);
+        }
+    }
+    updateCollisionDimensions(player, x_f, y_f, z_f, scale);
 }

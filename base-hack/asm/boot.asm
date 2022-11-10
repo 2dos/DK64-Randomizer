@@ -236,9 +236,6 @@ ObjectRotateHook:
 SpriteFixHook:
 	J 	SpriteFix
 	NOP
-CorrectCBCounterHook:
-	J 	CorrectCBCounter
-	NOP
 PauseCounterCapHook:
 	J 	PauseCounterCap
 	NOP
@@ -258,12 +255,6 @@ loadExtraHooks:
 	LUI t4, 0x8064
 	SW t3, 0xEE08 (t4) // Store Hook
 	SW r0, 0xEE0C (t4) // Store NOP
-	
-	LUI t3, hi(CorrectCBCounterHook)
-	LW t3, lo(CorrectCBCounterHook) (t3)
-	LUI t4, 0x8070
-	SW t3, 0x84AC (t4) // Store Hook
-	SW r0, 0x84B0 (t4) // Store NOP
 	
 	LUI t3, hi(ItemRandoFlagCheckHook)
 	LW t3, lo(ItemRandoFlagCheckHook) (t3)

@@ -86,7 +86,7 @@ void newGuardCode(void) {
     unsigned int level_state = *(unsigned int*)(0x807FBB64);
     if (CurrentActorPointer_0->control_state <= 0x35) {
         if (Player) {
-            if ((Player->strong_kong_ostand_bitfield & 0x40) == 0) { // No GGone
+            if ((Player->strong_kong_ostand_bitfield & 0x60) == 0) { // No GGone / OSprint
                 handleGuardDetection(40.0f,70.0f);
             }
         }

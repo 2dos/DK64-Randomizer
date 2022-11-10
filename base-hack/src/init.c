@@ -491,6 +491,10 @@ void initHack(int source) {
 						*(int*)(0x806C1050) = 0; // Prevent Cutscene Kong blinking
 						*(unsigned char*)(0x8075D19F) = 0xA0; // Fix Gun Firing
 						*(int*)(0x806141B4) = 0x0C000000 | (((int)&DiddySwimFix & 0xFFFFFF) >> 2); // Fix Diddy's Swim Animation
+						*(short*)(0x80749764) = 10; // Fix Diddy Swimming (A)
+						*(short*)(0x80749758) = 10; // Fix Diddy Swimming (B)
+						*(short*)(0x8074974C) = 10; // Fix Diddy Swimming (Z/First Person)
+						*(int*)(0x806CAA2C) = 0x0C000000 | (((int)&UpdateCollisionDimensions_Krusha & 0xFFFFFF) >> 2); // Fix Collision
 						break;
 					case 2:
 						// Lanky
@@ -506,6 +510,10 @@ void initHack(int source) {
 						*(int*)(0x806E48BC) = 0x0C000000 | (((int)&adaptKrushaZBAnimation_PunchOStand & 0xFFFFFF) >> 2); // Allow Krusha to use slide move if fast enough (OStand)
 						*(int*)(0x806E48B4) = 0; // Always run `adaptKrushaZBAnimation`
 						*(int*)(0x806F0AB0) = 0x24050001; // Fix Hand State
+						*(short*)(0x80749C74) = 10; // Fix Lanky Swimming (A)
+						*(short*)(0x80749C80) = 10; // Fix Lanky Swimming (B)
+						*(short*)(0x80749CA4) = 10; // Fix Lanky Swimming (Z/First Person)
+						*(int*)(0x806141B4) = 0x0C000000 | (((int)&DiddySwimFix & 0xFFFFFF) >> 2); // Fix Lanky's Swim Animation
 						break;
 					case 3:
 						// Tiny
@@ -519,7 +527,8 @@ void initHack(int source) {
 						*(short*)(0x806832C0) = 0x5000; // Prevent tag blinking
 						*(int*)(0x806C1058) = 0; // Prevent Cutscene Kong blinking
 						*(int*)(0x806F0AD0) = 0x24050001; // Fix Hand State
-						*(float*)(0x8075CC78) = 0.04f; // Reduce Tiny's Mini Monkey Size
+						*(float*)(0x8075CC78) = 0.035f; // Reduce Tiny's Mini Monkey Size
+						*(int*)(0x806CAA2C) = 0x0C000000 | (((int)&UpdateCollisionDimensions_Krusha & 0xFFFFFF) >> 2); // Fix Collision
 						break;
 					case 4:
 						// Chunky

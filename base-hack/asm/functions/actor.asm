@@ -71,3 +71,4 @@
 .definelabel initMenuBackground, 0x8002FE08
 .definelabel unkBonusFunction, 0x8067ACB4
 .definelabel createCollision, 0x8067ABC0
+.definelabel updateCollisionDimensions, 0x806F4D70
