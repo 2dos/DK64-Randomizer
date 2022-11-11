@@ -176,7 +176,7 @@ KasplatLocationList = {
             region=Regions.JapesBeyondCoconutGate2,
         ),
         KasplatLocation(
-            name="Japes Kasplat: In the T&S Alcove",
+            name="Japes Kasplat: In the Troff 'n' Scoff Alcove",
             map_id=Maps.JungleJapes,
             kong_lst=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
             coords=[773, 538, 2320],
@@ -508,7 +508,7 @@ KasplatLocationList = {
             vanilla=True,
         ),
         KasplatLocation(
-            name="Factory Kasplat: In Research & Development",
+            name="Factory Kasplat: In Research and Development",
             map_id=Maps.FranticFactory,
             kong_lst=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
             coords=[4148, 1336, 1016],
@@ -559,7 +559,7 @@ KasplatLocationList = {
             name="Factory Kasplat: In the Power Shed", map_id=Maps.FactoryPowerHut, kong_lst=[Kongs.donkey], coords=[116, 2, 121], xmin=68, xmax=151, zmin=66, zmax=154, region=Regions.PowerHut
         ),
         KasplatLocation(
-            name="Factory Kasplat: In R&D by the Slot Car Race",
+            name="Factory Kasplat: In Research and Development by the Slot Car Race",
             map_id=Maps.FranticFactory,
             kong_lst=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
             coords=[3701, 1264, 1405],
@@ -667,7 +667,7 @@ KasplatLocationList = {
             vanilla=True,
         ),
         KasplatLocation(
-            name="Galleon Kasplat: Near the T&S near Cranky's",
+            name="Galleon Kasplat: Near the Troff 'n' Scoff near Cranky's",
             map_id=Maps.GloomyGalleon,
             kong_lst=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
             coords=[2806, 1890, 2969],
@@ -861,7 +861,7 @@ KasplatLocationList = {
             region=Regions.HollowTreeArea,
         ),
         KasplatLocation(
-            name="Forest Kasplat: Near the T&S near the Owl's Tree",
+            name="Forest Kasplat: Near the Troff 'n' Scoff near the Owl's Tree",
             map_id=Maps.FungiForest,
             kong_lst=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
             coords=[543, 194, 3748],
@@ -1241,7 +1241,7 @@ KasplatLocationList = {
             region=Regions.Dungeon,
         ),
         KasplatLocation(
-            name="Castle Kasplat: Near the T&S at the back of Castle",
+            name="Castle Kasplat: Near the Troff 'n' Scoff at the back of Castle",
             map_id=Maps.CreepyCastle,
             kong_lst=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
             coords=[1655, 371, 2048],

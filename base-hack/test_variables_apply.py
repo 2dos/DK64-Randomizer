@@ -47,7 +47,7 @@ set_variables = {
     "move_rando_on": 1,
     "kut_out_kong_order": [0, 0, 0, 0, 0],
     "remove_blockers": 0x7F,
-    "resolve_bonus": 1,
+    "resolve_bonus": 0,
     "disable_drops": 0,
     "shop_indicator_on": 2,
     "warp_to_isles_enabled": 1,
@@ -82,7 +82,7 @@ set_variables = {
     "fairy_prices": [3, 6],
     "helm_order": [2, 0, 0xFF, 0xFF, 0xFF],
     "disco_chunky": 1,
-    "krusha_slot": 2,
+    "krusha_slot": 3,
     "helm_hurry_mode": 0,
     "win_condition": 5,
     "version": 2,
@@ -92,6 +92,8 @@ set_variables = {
     "medal_cb_req": 5,
     "hard_enemies": 1,
     "remove_oscillation_effects": 1,
+    "starting_map": 46,
+    "starting_exit": 0,
 }
 
 

@@ -181,6 +181,8 @@ extern void adaptKrushaZBAnimation_PunchOStand(int action, void* player, int pla
 extern void adaptKrushaZBAnimation_Charge(actorData* actor, int anim);
 extern void updateCutsceneModels(actorData* actor, int size);
 extern void* DiddySwimFix(int ptr, int file, int c0, int c1);
+extern void UpdateCollisionDimensions_Krusha(int player, int x_f, int y_f, int z_f, float scale);
+extern void updateUnderwaterCollisions(actorData* player, int anim, int unk0, int unk1);
 extern void initTracker(void);
 extern void wipeFileMod(int file, int will_save);
 extern void enterFileProgress(int sfx);

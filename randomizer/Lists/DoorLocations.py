@@ -95,6 +95,7 @@ door_locations = {
             group=1,
             logic=lambda l: True,
             placed="wrinkly",
+            door_type="wrinkly",
             default_kong=Kongs.donkey,
         ),  # DK Door
         DoorData(
@@ -105,6 +106,7 @@ door_locations = {
             group=1,
             logic=lambda l: True,
             placed="wrinkly",
+            door_type="wrinkly",
             default_kong=Kongs.diddy,
         ),  # Diddy Door
         DoorData(
@@ -115,6 +117,7 @@ door_locations = {
             group=1,
             logic=lambda l: True,
             placed="wrinkly",
+            door_type="wrinkly",
             default_kong=Kongs.lanky,
         ),  # Lanky Door
         DoorData(
@@ -125,6 +128,7 @@ door_locations = {
             group=1,
             logic=lambda l: True,
             placed="wrinkly",
+            door_type="wrinkly",
             default_kong=Kongs.tiny,
         ),  # Tiny Door
         DoorData(
@@ -135,6 +139,7 @@ door_locations = {
             group=1,
             logic=lambda l: True,
             placed="wrinkly",
+            door_type="wrinkly",
             default_kong=Kongs.chunky,
         ),  # Chunky Door
         DoorData(
@@ -486,6 +491,7 @@ door_locations = {
             group=1,
             logic=lambda l: True,
             placed="wrinkly",
+            door_type="wrinkly",
             default_kong=Kongs.donkey,
         ),  # DK Door
         DoorData(
@@ -496,6 +502,7 @@ door_locations = {
             group=1,
             logic=lambda l: True,
             placed="wrinkly",
+            door_type="wrinkly",
             default_kong=Kongs.diddy,
         ),  # Diddy Door
         DoorData(
@@ -506,6 +513,7 @@ door_locations = {
             group=1,
             logic=lambda l: True,
             placed="wrinkly",
+            door_type="wrinkly",
             default_kong=Kongs.lanky,
         ),  # Lanky Door
         DoorData(
@@ -516,6 +524,7 @@ door_locations = {
             group=1,
             logic=lambda l: True,
             placed="wrinkly",
+            door_type="wrinkly",
             default_kong=Kongs.tiny,
         ),  # Tiny Door
         DoorData(
@@ -527,6 +536,7 @@ door_locations = {
             moveless=False,
             logic=lambda l: l.tiny and l.feather,
             placed="wrinkly",
+            door_type="wrinkly",
             default_kong=Kongs.chunky,
         ),  # Custom Chunky Door
         DoorData(
@@ -894,6 +904,7 @@ door_locations = {
             group=1,
             logic=lambda l: True,
             placed="wrinkly",
+            door_type="wrinkly",
             default_kong=Kongs.donkey,
         ),  # DK Door
         DoorData(
@@ -905,6 +916,7 @@ door_locations = {
             moveless=False,
             logic=lambda l: True,
             placed="wrinkly",
+            door_type="wrinkly",
             default_kong=Kongs.diddy,
         ),  # Diddy Door
         DoorData(
@@ -916,6 +928,7 @@ door_locations = {
             moveless=False,
             logic=lambda l: True,
             placed="wrinkly",
+            door_type="wrinkly",
             default_kong=Kongs.lanky,
         ),  # Lanky Door
         DoorData(
@@ -927,6 +940,7 @@ door_locations = {
             moveless=False,
             logic=lambda l: True,
             placed="wrinkly",
+            door_type="wrinkly",
             default_kong=Kongs.tiny,
         ),  # Tiny Door
         DoorData(
@@ -937,6 +951,7 @@ door_locations = {
             group=1,
             logic=lambda l: True,
             placed="wrinkly",
+            door_type="wrinkly",
             default_kong=Kongs.chunky,
         ),  # Chunky Door
         DoorData(
@@ -1234,6 +1249,7 @@ door_locations = {
             group=1,
             logic=lambda l: True,
             placed="wrinkly",
+            door_type="wrinkly",
             default_kong=Kongs.donkey,
         ),  # DK Door
         DoorData(
@@ -1244,6 +1260,7 @@ door_locations = {
             group=1,
             logic=lambda l: True,
             placed="wrinkly",
+            door_type="wrinkly",
             default_kong=Kongs.diddy,
         ),  # Diddy Door
         DoorData(
@@ -1254,6 +1271,7 @@ door_locations = {
             group=1,
             logic=lambda l: True,
             placed="wrinkly",
+            door_type="wrinkly",
             default_kong=Kongs.lanky,
         ),  # Lanky Door
         DoorData(
@@ -1264,6 +1282,7 @@ door_locations = {
             group=1,
             logic=lambda l: True,
             placed="wrinkly",
+            door_type="wrinkly",
             default_kong=Kongs.tiny,
         ),  # Tiny Door
         DoorData(
@@ -1274,6 +1293,7 @@ door_locations = {
             group=1,
             logic=lambda l: True,
             placed="wrinkly",
+            door_type="wrinkly",
             default_kong=Kongs.chunky,
         ),  # Chunky Door
         DoorData(
@@ -1634,6 +1654,7 @@ door_locations = {
             group=1,
             logic=lambda l: True,
             placed="wrinkly",
+            door_type="wrinkly",
             default_kong=Kongs.donkey,
         ),  # Custom Location (Removing Wheel)
         DoorData(
@@ -1644,6 +1665,7 @@ door_locations = {
             group=1,
             logic=lambda l: True,
             placed="wrinkly",
+            door_type="wrinkly",
             default_kong=Kongs.diddy,
         ),  # Custom Location (Removing Wheel)
         DoorData(
@@ -1654,6 +1676,7 @@ door_locations = {
             group=1,
             logic=lambda l: True,
             placed="wrinkly",
+            door_type="wrinkly",
             default_kong=Kongs.lanky,
         ),  # Custom Location (Removing Wheel)
         DoorData(
@@ -1665,6 +1688,7 @@ door_locations = {
             group=1,
             logic=lambda l: True,
             placed="wrinkly",
+            door_type="wrinkly",
             default_kong=Kongs.tiny,
         ),  # Custom Location (Removing Wheel)
         DoorData(
@@ -1675,6 +1699,7 @@ door_locations = {
             group=1,
             logic=lambda l: True,
             placed="wrinkly",
+            door_type="wrinkly",
             default_kong=Kongs.chunky,
         ),  # Custom Location (Removing Wheel)
         DoorData(
@@ -1973,6 +1998,7 @@ door_locations = {
             moveless=False,
             logic=lambda l: True,
             placed="wrinkly",
+            door_type="wrinkly",
             default_kong=Kongs.donkey,
         ),  # DK Door
         DoorData(
@@ -1984,6 +2010,7 @@ door_locations = {
             moveless=False,
             logic=lambda l: True,
             placed="wrinkly",
+            door_type="wrinkly",
             default_kong=Kongs.diddy,
         ),  # Diddy Door
         DoorData(
@@ -1995,6 +2022,7 @@ door_locations = {
             moveless=False,
             logic=lambda l: True,
             placed="wrinkly",
+            door_type="wrinkly",
             default_kong=Kongs.lanky,
         ),  # Lanky Door
         DoorData(
@@ -2006,6 +2034,7 @@ door_locations = {
             moveless=False,
             logic=lambda l: True,
             placed="wrinkly",
+            door_type="wrinkly",
             default_kong=Kongs.tiny,
         ),  # Tiny Door
         DoorData(
@@ -2017,6 +2046,7 @@ door_locations = {
             moveless=False,
             logic=lambda l: True,
             placed="wrinkly",
+            door_type="wrinkly",
             default_kong=Kongs.chunky,
         ),  # Chunky Door
         DoorData(
@@ -2427,6 +2457,7 @@ door_locations = {
             group=1,
             logic=lambda l: True,
             placed="wrinkly",
+            door_type="wrinkly",
             default_kong=Kongs.donkey,
         ),  # DK Door
         DoorData(
@@ -2437,6 +2468,7 @@ door_locations = {
             group=1,
             logic=lambda l: True,
             placed="wrinkly",
+            door_type="wrinkly",
             default_kong=Kongs.diddy,
         ),  # Diddy Door
         DoorData(
@@ -2447,6 +2479,7 @@ door_locations = {
             group=1,
             logic=lambda l: True,
             placed="wrinkly",
+            door_type="wrinkly",
             default_kong=Kongs.lanky,
         ),  # Lanky Door
         DoorData(
@@ -2457,6 +2490,7 @@ door_locations = {
             group=1,
             logic=lambda l: True,
             placed="wrinkly",
+            door_type="wrinkly",
             default_kong=Kongs.tiny,
         ),  # Tiny Door
         DoorData(
@@ -2467,6 +2501,7 @@ door_locations = {
             group=1,
             logic=lambda l: True,
             placed="wrinkly",
+            door_type="wrinkly",
             default_kong=Kongs.chunky,
         ),  # Chunky Door
         DoorData(

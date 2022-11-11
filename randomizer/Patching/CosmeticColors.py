@@ -373,7 +373,7 @@ def applyKrushaKong(spoiler: Spoiler):
     """Apply Krusha Kong setting."""
     kong_names = ["dk", "diddy", "lanky", "tiny", "chunky"]
     if spoiler.settings.krusha_slot == "random":
-        slots = ["dk", "diddy", "tiny"]  # TODO: Add Lanky when we fix him
+        slots = ["dk", "diddy", "lanky", "tiny"]
         if not spoiler.settings.disco_chunky:
             slots.append("chunky")  # Only add Chunky if Disco not on (People with disco on probably don't want Krusha as Chunky)
         spoiler.settings.krusha_slot = random.choice(slots)
