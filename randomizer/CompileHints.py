@@ -649,7 +649,7 @@ def compileHints(spoiler: Spoiler):
             # Place a hint for each of the K. Rool required moves
             for item_name, path_location_id in item_path_hint_dict.items():
                 region = GetRegionOfLocation(path_location_id)
-                if "Training Grounds" in hinted_location_text:
+                if "Training Grounds" in region.hint_name:
                     # Training Grounds will have 4 moves - instead of being super vague we'll hint the specific item directly.
                     hinted_item_name = ItemList[LocationList[path_location_id].item].name
                     message = f"Your training with {hinted_item_name} is on the path to aiding your fight against K. Rool."
