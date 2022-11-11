@@ -168,7 +168,7 @@ LogicRegions = {
 
     Regions.MillArea: Region("Mill Area", "Forest Mills", Levels.FungiForest, True, None, [
         LocationLogic(Locations.ForestDonkeyMill, lambda l: l.TimeAccess(Regions.MillArea, Time.Night) and Events.ConveyorActivated in l.Events and l.donkey),
-        LocationLogic(Locations.ForestDiddyCagedBanana, lambda l: l.TimeAccess(Regions.MillArea, Time.Night) and Events.WinchRaised in l.Events and l.diddy),
+        LocationLogic(Locations.ForestDiddyCagedBanana, lambda l: l.TimeAccess(Regions.MillArea, Time.Night) and Events.WinchRaised in l.Events and l.guitar and l.diddy),
     ], [], [
         TransitionFront(Regions.FungiForestMedals, lambda l: True),
         TransitionFront(Regions.FungiForestStart, lambda l: True),
