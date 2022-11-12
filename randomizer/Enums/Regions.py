@@ -5,6 +5,9 @@ from enum import IntEnum, auto
 class Regions(IntEnum):
     """Region enum."""
 
+    # Special region housing the Banana Hoard
+    Credits = auto()
+
     # DK Isles Regions
     Treehouse = auto()
     TrainingGrounds = auto()

@@ -301,14 +301,16 @@ hint_distribution = {
     HintType.RequiredWinConditionHint: 0,  # Fixed number based on what K. Rool phases you must defeat
     HintType.WothLocation: 8,
     HintType.FullShopWithItems: 8,
-    HintType.FoolishMove: 4,
-    HintType.FoolishRegion: 4,
+    HintType.FoolishMove: 2,
+    HintType.FoolishRegion: 6,
 }
 HINT_CAP = 35  # There are this many total slots for hints
 
 
 def compileHints(spoiler: Spoiler):
     """Create a hint distribution, generate buff hints, and place them in locations."""
+    locked_hint_types = [HintType.RequiredKeyHint, HintType.RequiredWinConditionHint]  # Some hint types cannot have their value changed
+    maxed_hint_types = []  # Some hint types cannot have additional hints placed
     # In level order (or vanilla) progression, there are hints that we want to be in the player's path
     level_order_matters = not spoiler.settings.no_logic and spoiler.settings.shuffle_loading_zones != "all"
     # Determine what hint types are valid for these settings
@@ -324,7 +326,15 @@ def compileHints(spoiler: Spoiler):
         # With no logic WOTH isn't built correctly so we can't make any hints with it
         if not spoiler.settings.no_logic:
             valid_types.append(HintType.FoolishRegion)
+            # If there are more foolish region hints than regions, lower this number and prevent more from being added
+            if len(spoiler.foolish_region_names) < hint_distribution[HintType.FoolishRegion]:
+                hint_distribution[HintType.FoolishRegion] = len(spoiler.foolish_region_names)
+                maxed_hint_types.append(HintType.FoolishRegion)
             valid_types.append(HintType.FoolishMove)
+            # If there are more foolish region hints than regions, lower this number and prevent more from being added
+            if len(spoiler.foolish_moves) < hint_distribution[HintType.FoolishMove]:
+                hint_distribution[HintType.FoolishMove] = len(spoiler.foolish_moves)
+                maxed_hint_types.append(HintType.FoolishMove)
             valid_types.append(HintType.WothLocation)
             # K. Rool seeds could use some help finding the last pesky moves
             if spoiler.settings.win_condition == "beat_krool":
@@ -383,15 +393,15 @@ def compileHints(spoiler: Spoiler):
         if filler_type == HintType.Joke:
             # Make it roll joke twice to add an extra joke hint
             filler_type = random.choice(valid_types)
-        if filler_type in (HintType.RequiredKeyHint, HintType.RequiredWinConditionHint):
-            continue  # Always have a fixed number of required hints
+        if filler_type in locked_hint_types or filler_type in maxed_hint_types:
+            continue  # Some hint types cannot be filled with
         hint_distribution[filler_type] += 1
         hint_count += 1
     # Remove random hints if we went over the cap
     while hint_count > HINT_CAP:
         removed_type = random.choice(valid_types)
-        if removed_type in (HintType.RequiredKeyHint, HintType.RequiredWinConditionHint):
-            continue  # Always have a fixed number of key location hints
+        if removed_type in locked_hint_types:
+            continue  # Some hint types cannot have fewer than specified by the settings
         if hint_distribution[removed_type] > 0:
             hint_distribution[removed_type] -= 1
             hint_count -= 1
@@ -939,29 +949,23 @@ def compileHints(spoiler: Spoiler):
             UpdateHint(hint_location, message)
 
     # Foolish Move hints state that a move is foolish. Most applicable in item rando.
+    # Foolish moves block no other progression, regardless of if the item itself is required
     if hint_distribution[HintType.FoolishMove] > 0:
-        foolish_moves = AllKongMoves()
-        foolish_moves.append(Items.Shockwave)
-        # Loop through woth locations, removing moves that are not foolish
-        for location_id in spoiler.woth_locations:
-            location = LocationList[location_id]
-            if location.item in foolish_moves:
-                foolish_moves.remove(location.item)
-        random.shuffle(foolish_moves)
+        random.shuffle(spoiler.foolish_moves)
         for i in range(hint_distribution[HintType.FoolishMove]):
-            # If you run out of foolish moves (maybe in an all medals run?)
-            if len(foolish_moves) == 0:
+            # If you run out of foolish moves (maybe in an all medals run?) - this *should* be covered by the distribution earlier but this is a good failsafe
+            if len(spoiler.foolish_moves) == 0:
                 # Replace remaining move hints with WotH location hints, sounds like you'll need them
                 hint_distribution[HintType.FoolishMove] -= 1
                 hint_distribution[HintType.WothLocation] += 1
                 continue
-            hinted_move_id = foolish_moves.pop()  # Don't hint the same move twice
+            hinted_move_id = spoiler.foolish_moves.pop()  # Don't hint the same move twice
             # We can only guarantee that Super Duper is foolish due to being progressive. It could be that a slam is required but neither is explicitly required.
             if hinted_move_id == Items.ProgressiveSlam:
                 item_name = "Super Duper Simian Slam"
                 # Make sure we don't drop 2 Super Duper slam hints
-                if Items.ProgressiveSlam in foolish_moves:
-                    foolish_moves.remove(Items.ProgressiveSlam)
+                if Items.ProgressiveSlam in spoiler.foolish_moves:
+                    spoiler.foolish_moves.remove(Items.ProgressiveSlam)
             else:
                 item_name = ItemList[hinted_move_id].name
             hint_location = getRandomHintLocation()
@@ -970,29 +974,17 @@ def compileHints(spoiler: Spoiler):
             UpdateHint(hint_location, message)
 
     # Foolish Region hints state that a hint region is foolish. Useful in item rando.
+    # Foolish regions contain no major items that would block any amount of progression, even non-required progression
     if hint_distribution[HintType.FoolishRegion] > 0:
-        # Some regions are pointless/terrible to call foolish
-        banned_hint_regions = ["K. Rool Arena", "Snide"]  # No items here  # Always GB rewards
-        if Types.Coin not in spoiler.settings.shuffled_location_types:
-            banned_hint_regions.append("Jetpac Game")  # Irrelevant unless coins are shuffled
-        foolish_regions = []
-        for region_id, region in RegionList.items():
-            if (
-                region.hint_name not in banned_hint_regions
-                and region.hint_name not in foolish_regions
-                and any(region.locations)
-                and not any([loc for loc in region.locations if loc.id in spoiler.woth_locations])
-            ):
-                foolish_regions.append(region.hint_name)
-        random.shuffle(foolish_regions)
+        random.shuffle(spoiler.foolish_region_names)
         for i in range(hint_distribution[HintType.FoolishRegion]):
-            # If you run out of foolish regions (maybe in an all medals run?)
-            if len(foolish_regions) == 0:
+            # If you run out of foolish regions (maybe in an all medals run?) - this *should* be covered by the distribution earlier but this is a good failsafe
+            if len(spoiler.foolish_region_names) == 0:
                 # Replace remaining move hints with WotH location hints, sounds like you'll need them
                 hint_distribution[HintType.FoolishRegion] -= 1
                 hint_distribution[HintType.WothLocation] += 1
                 continue
-            hinted_region_name = foolish_regions.pop()
+            hinted_region_name = spoiler.foolish_region_names.pop()
             hint_location = getRandomHintLocation()
             message = f"It would be foolish to explore the {hinted_region_name}."
             hint_location.hint_type = HintType.FoolishRegion
@@ -1004,11 +996,11 @@ def compileHints(spoiler: Spoiler):
         for location_id in spoiler.woth_locations:
             location = LocationList[location_id]
             # Only hint things that are in shuffled locations - don't hint training barrels because you can't know which move it refers to and don't hint the Helm Key if you know key 8 is there
-            if location.type in spoiler.settings.shuffled_location_types and location.type != Types.TrainingBarrel and not (spoiler.settings.key_8_helm and location == Locations.HelmKey):
-                hintable_locations.append(location)
+            if location.type in spoiler.settings.shuffled_location_types and location.type != Types.TrainingBarrel and not (spoiler.settings.key_8_helm and location_id == Locations.HelmKey):
+                hintable_locations.append(location)###############helm key still here madge
         random.shuffle(hintable_locations)
         for i in range(hint_distribution[HintType.WothLocation]):
-            # If you run out of hintable woth locations, just pile on joke hints - this should be extremely rare
+            # If you run out of hintable woth locations, just pile on joke hints - this *should* be covered by the distribution earlier but this is a good failsafe
             if len(hintable_locations) == 0:
                 hint_distribution[HintType.WothLocation] -= 1
                 hint_distribution[HintType.Joke] += 1

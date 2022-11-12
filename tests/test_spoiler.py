@@ -73,7 +73,7 @@ def generate_lo_rando_race_settings():
     data["hard_mad_jack"] = False
     data["perma_death"] = False
     data["crown_door_open"] = False  # usually True but False is better testing
-    data["coin_door_open"] = True
+    data["coin_door_open"] = "need_zero"  # usually need_zero, could be need_rw | need_nin | need_both
     data["bonus_barrel_rando"] = True
     data["gnawty_barrels"] = False
     data["bonus_barrel_auto_complete"] = False  # usually False
@@ -88,7 +88,7 @@ def generate_lo_rando_race_settings():
     data["helm_phase_count"] = 3  # usually 3
     data["krool_access"] = True  # usually True - this is the weirdly named key 8 required setting
     data["keys_random"] = False  # key count is random setting
-    data["krool_key_count"] = 8  # usually 5
+    data["krool_key_count"] = 6  # usually 5
     data["starting_random"] = False  # starting kong count is random setting
     data["starting_kongs_count"] = 2  # usually 2
 

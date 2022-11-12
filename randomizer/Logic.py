@@ -51,8 +51,9 @@ class LogicVarHolder:
 
         Done between reachability searches and upon initialization.
         """
-        self.debug_owned_items = []
+        self.latest_owned_items = []
         self.found_test_item = False
+        self.banned_item = None
 
         self.donkey = Kongs.donkey in self.settings.starting_kong_list
         self.diddy = Kongs.diddy in self.settings.starting_kong_list
@@ -205,7 +206,10 @@ class LogicVarHolder:
 
     def Update(self, ownedItems):
         """Update logic variables based on owned items."""
-        self.debug_owned_items = ownedItems
+        # Except for the banned item - this item isn't allowed to be used by the logic
+        while self.banned_item in ownedItems:
+            ownedItems.remove(self.banned_item)
+        self.latest_owned_items = ownedItems
         self.found_test_item = self.found_test_item or Items.TestItem in ownedItems
 
         self.donkey = self.donkey or Items.Donkey in ownedItems or self.startkong == Kongs.donkey
@@ -579,8 +583,8 @@ class LogicVarHolder:
 
     def WinConditionMet(self):
         """Check if the current game state has met the win condition."""
-        if self.settings.win_condition == "beat_krool" or self.settings.win_condition == "poke_snap":  # Photo taking doesn't have a clear wincon so this'll do
-            return self.bananaHoard
+        if self.settings.win_condition == "beat_krool" or self.settings.win_condition == "poke_snap":  # Photo taking doesn't have a clear wincon so this'll do until something better is concocted
+            return Events.KRoolDefeated in self.Events
         elif self.settings.win_condition == "get_key8":
             return self.HelmKey
         elif self.settings.win_condition == "all_fairies":
@@ -609,6 +613,26 @@ class LogicVarHolder:
         # Make sure you have access to enough levels to fit the locations in. This isn't super precise and doesn't need to be.
         required_level = min(ceil(self.settings.medal_requirement / 5), 6)
         return have_enough_medals and self.IsLevelEnterable(required_level)
+
+    def BanItem(self, item):
+        """Prevent an item from being picked up by the logic."""
+        self.banned_item = item
+
+    def HasAllItems(self):
+        """Return if you have all progression items."""
+        # You may now own the banned item
+        self.latest_owned_items.append(self.banned_item)
+        self.banned_item = None
+        self.Update(self.latest_owned_items)
+        # If you didn't beat the game, you obviously don't have all the progression items - this covers the possible need for camera and each key
+        if not self.WinConditionMet():
+            return False
+        # Otherwise return true if you have all major moves
+        return (self.donkey and self.diddy and self.lanky and self.tiny and self.chunky and self.vines and self.swim and self.barrels and self.oranges and self.blast and self.strongKong and self.grab
+            and self.charge and self.jetpack and self.spring and self.handstand and self.balloon and self.sprint and self.mini and self.twirl and self.monkeyport and self.hunkyChunky and self.punch and self.gorillaGone
+            and self.superDuperSlam and self.coconut and self.peanut and self.grape and self.feather and self.pineapple and self.homing and self.scope and self.shockwave
+            and self.bongos and self.guitar and self.trombone and self.saxophone and self.triangle
+        )
 
 
 LogicVariables = LogicVarHolder()
