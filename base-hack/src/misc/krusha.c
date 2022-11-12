@@ -29,7 +29,7 @@ void adjustAnimationTables(void) {
             } else if ((i >= 0x30) && (i <= 0x32)) {
                 excl_extra = 1;
             } else if ((i >= 0x48) && (i <= 0x4E)) {
-                excl_extra = 1;
+                // excl_extra = 1;
             }
             if (i < 0x6E) {
                 if (!excl_extra) {
@@ -143,4 +143,19 @@ void UpdateCollisionDimensions_Krusha(int player, int x_f, int y_f, int z_f, flo
         }
     }
     updateCollisionDimensions(player, x_f, y_f, z_f, scale);
+}
+
+void MinecartJumpFix(void* player, int anim) {
+    CurrentActorPointer_0->control_state_progress = 1;
+    playAnimation(player, anim);
+}
+
+void MinecartJumpFix_0(void) {
+    if (CurrentActorPointer_0->yVelocity < 0) {
+        CurrentActorPointer_0->yAccel = -20.f;
+    }
+    if (CurrentActorPointer_0->grounded & 1) {
+        CurrentActorPointer_0->control_state = 7;
+        CurrentActorPointer_0->control_state_progress = 0;
+    }
 }

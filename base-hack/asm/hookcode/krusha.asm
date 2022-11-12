@@ -31,8 +31,8 @@ KrushaConditionalScaleDown:
         NOP
 
 controlKrushaSpeedup_Y:
-    LW      at, 0x58 (s0)
     LWC1    f0, 0x38 (v0)
+    LW      at, 0x58 (s0)
     LUI     t8, hi(KrushaSlot)
     LBU     t8, lo(KrushaSlot) (t8)
     ADDIU   t8, t8, 2
