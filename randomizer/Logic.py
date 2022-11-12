@@ -628,10 +628,45 @@ class LogicVarHolder:
         if not self.WinConditionMet():
             return False
         # Otherwise return true if you have all major moves
-        return (self.donkey and self.diddy and self.lanky and self.tiny and self.chunky and self.vines and self.swim and self.barrels and self.oranges and self.blast and self.strongKong and self.grab
-            and self.charge and self.jetpack and self.spring and self.handstand and self.balloon and self.sprint and self.mini and self.twirl and self.monkeyport and self.hunkyChunky and self.punch and self.gorillaGone
-            and self.superDuperSlam and self.coconut and self.peanut and self.grape and self.feather and self.pineapple and self.homing and self.scope and self.shockwave
-            and self.bongos and self.guitar and self.trombone and self.saxophone and self.triangle
+        return (
+            self.donkey
+            and self.diddy
+            and self.lanky
+            and self.tiny
+            and self.chunky
+            and self.vines
+            and self.swim
+            and self.barrels
+            and self.oranges
+            and self.blast
+            and self.strongKong
+            and self.grab
+            and self.charge
+            and self.jetpack
+            and self.spring
+            and self.handstand
+            and self.balloon
+            and self.sprint
+            and self.mini
+            and self.twirl
+            and self.monkeyport
+            and self.hunkyChunky
+            and self.punch
+            and self.gorillaGone
+            and self.superDuperSlam
+            and self.coconut
+            and self.peanut
+            and self.grape
+            and self.feather
+            and self.pineapple
+            and self.homing
+            and self.scope
+            and self.shockwave
+            and self.bongos
+            and self.guitar
+            and self.trombone
+            and self.saxophone
+            and self.triangle
         )
 
 

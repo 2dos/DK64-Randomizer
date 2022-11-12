@@ -997,7 +997,7 @@ def compileHints(spoiler: Spoiler):
             location = LocationList[location_id]
             # Only hint things that are in shuffled locations - don't hint training barrels because you can't know which move it refers to and don't hint the Helm Key if you know key 8 is there
             if location.type in spoiler.settings.shuffled_location_types and location.type != Types.TrainingBarrel and not (spoiler.settings.key_8_helm and location_id == Locations.HelmKey):
-                hintable_locations.append(location)###############helm key still here madge
+                hintable_locations.append(location)
         random.shuffle(hintable_locations)
         for i in range(hint_distribution[HintType.WothLocation]):
             # If you run out of hintable woth locations, just pile on joke hints - this *should* be covered by the distribution earlier but this is a good failsafe

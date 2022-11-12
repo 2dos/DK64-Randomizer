@@ -529,7 +529,7 @@ def CalculateWothPaths(spoiler, WothLocations):
 
 
 def CalculateFoolish(spoiler, WothLocations):
-    """Calculate the items and regions that are foolish (blocking no major items)"""
+    """Calculate the items and regions that are foolish (blocking no major items)."""
     wothItems = [LocationList[loc].item for loc in WothLocations]
     # First we need to determine what Major Items are foolish
     foolishItems = []
@@ -572,7 +572,7 @@ def CalculateFoolish(spoiler, WothLocations):
     # ***if fairy locations are shuffled*** and there's a major item on Rareware GB or fairies are the win con
     # then we'd majorItems.append(Items.BananaFairy)
 
-    nonHintableNames = { "K. Rool Arena", "Snide", "Candy Generic", "Funky Generic", "Credits" }  # These regions never have anything useful so shouldn't be hinted
+    nonHintableNames = {"K. Rool Arena", "Snide", "Candy Generic", "Funky Generic", "Credits"}  # These regions never have anything useful so shouldn't be hinted
     if Types.Coin not in spoiler.settings.shuffled_location_types:
         nonHintableNames.add("Jetpac Game")  # If this is vanilla, it's never useful to hint
     # In order for a region to be foolish, it can contain none of these Major Items

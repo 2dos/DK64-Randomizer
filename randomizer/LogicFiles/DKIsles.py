@@ -14,7 +14,7 @@ LogicRegions = {
     Regions.Credits: Region("Credits", "Credits", Levels.DKIsles, False, None, [
         LocationLogic(Locations.BananaHoard, lambda l: l.WinConditionMet())
     ], [], []),
-    
+
     Regions.Treehouse: Region("Treehouse", "Training Grounds", Levels.DKIsles, False, None, [], [], [
         TransitionFront(Regions.TrainingGrounds, lambda l: True, Transitions.IslesTreehouseToStart)
     ]),
@@ -191,7 +191,6 @@ LogicRegions = {
         Event(Events.KRoolLanky, lambda l: not l.settings.krool_lanky or (l.trombone and l.lanky)),
         Event(Events.KRoolTiny, lambda l: not l.settings.krool_tiny or (l.mini and l.feather and l.tiny)),
         Event(Events.KRoolChunky, lambda l: not l.settings.krool_chunky or (l.superSlam and l.gorillaGone and l.hunkyChunky and l.punch and l.chunky)),
-        Event(Events.KRoolDefeated, lambda l: Events.KRoolDonkey in l.Events and Events.KRoolDiddy in l.Events
-                      and Events.KRoolLanky in l.Events and Events.KRoolTiny in l.Events and Events.KRoolChunky in l.Events)
+        Event(Events.KRoolDefeated, lambda l: Events.KRoolDonkey in l.Events and Events.KRoolDiddy in l.Events and Events.KRoolLanky in l.Events and Events.KRoolTiny in l.Events and Events.KRoolChunky in l.Events)
     ], []),
 }
