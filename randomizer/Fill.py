@@ -25,7 +25,6 @@ from randomizer.Enums.Warps import Warps
 from randomizer.Lists.Item import ItemList, KongFromItem
 from randomizer.Lists.Location import (
     LocationList,
-    SharedShopLocations,
     TrainingBarrelLocations,
     DonkeyMoveLocations,
     DiddyMoveLocations,
@@ -38,7 +37,8 @@ from randomizer.Lists.MapsAndExits import Maps
 from randomizer.Lists.Minigame import BarrelMetaData, MinigameRequirements
 from randomizer.Lists.ShufflableExit import GetLevelShuffledToIndex, GetShuffledLevelIndex
 from randomizer.Lists.Warps import BananaportVanilla
-from randomizer.Logic import STARTING_SLAM, LogicVarHolder, LogicVariables
+from randomizer.Logic import LogicVarHolder, LogicVariables
+from randomizer.Logic import Regions as RegionList
 from randomizer.LogicClasses import Sphere, TransitionFront
 from randomizer.Prices import GetMaxForKong
 from randomizer.Settings import Settings
@@ -109,7 +109,7 @@ def GetAccessibleLocations(settings, ownedItems, searchType=SearchMode.GetReacha
                 # If we want to generate the playthrough and the item is a playthrough item, add it to the sphere
                 if searchType == SearchMode.GeneratePlaythrough and ItemList[location.item].playthrough:
                     # Banana hoard in a sphere by itself
-                    if settings.win_condition == "beat_krool" and location.item == Items.BananaHoard:
+                    if location.item == Items.BananaHoard:
                         sphere.locations = [locationId]
                         break
                     if location.item == Items.GoldenBanana:
@@ -126,11 +126,11 @@ def GetAccessibleLocations(settings, ownedItems, searchType=SearchMode.GetReacha
         newItems = []
         if len(sphere.locations) > 0:
             if searchType == SearchMode.GeneratePlaythrough:
-                sphere.seedBeaten = LogicVariables.WinConditionMet()
+                sphere.seedBeaten = LogicVariables.bananaHoard
             playthroughLocations.append(sphere)
 
-        # If we're checking beatability, check the win condition after updating the last set of locations
-        if searchType == SearchMode.CheckBeatable and LogicVariables.WinConditionMet():
+        # If we're checking beatability, check for the Banana Hoard after updating the last set of locations
+        if searchType == SearchMode.CheckBeatable and LogicVariables.bananaHoard:
             return True
 
         # Do a search for each owned kong
@@ -324,8 +324,8 @@ def VerifyWorldWithWorstCoinUsage(settings):
             # print("Seed is valid, found enough coins with worst purchase order: " + str([LocationList[x].name + ": " + LocationList[x].item.name + ", " for x in locationsToPurchase]))
             Reset()
             return True
-        # If we meet the win condition, world is valid!
-        if LogicVariables.WinConditionMet():
+        # If we found the Banana Hoard, world is valid!
+        if LogicVariables.bananaHoard:
             # print("Seed is valid, found banana hoard with worst purchase order: " + str([LocationList[x].name + ": " + LocationList[x].item.name + ", " for x in locationsToPurchase]))
             Reset()
             return True
@@ -465,6 +465,7 @@ def PareWoth(spoiler, PlaythroughLocations):
             if not LocationList[loc].constant and ItemList[LocationList[loc].item].type not in (Types.Banana, Types.BlueprintBanana, Types.Crown, Types.Medal, Types.Blueprint)
         ]:
             WothLocations.append(loc)
+    WothLocations.append(Locations.BananaHoard)  # The Banana Hoard is the endpoint of the Way of the Hoard
     # Check every item location to see if removing it by itself makes the game unbeatable
     for i in range(len(WothLocations) - 1, -1, -1):
         locationId = WothLocations[i]
@@ -480,14 +481,13 @@ def PareWoth(spoiler, PlaythroughLocations):
         location.PlaceItem(item)
 
     CalculateWothPaths(spoiler, WothLocations)
+    CalculateFoolish(spoiler, WothLocations)
     return WothLocations
 
 
 def CalculateWothPaths(spoiler, WothLocations):
     """Calculate the Paths (dependencies) for each Way of the Hoard item."""
-    # Do not include bonus barrel logic in path hints
-    temp_helm_barrels_setting = spoiler.settings.helm_barrels
-    spoiler.settings.helm_barrels = "skip"
+    falseWothLocations = []
     # Prep the dictionary that will contain the path for the key item
     for locationId in WothLocations:
         spoiler.woth_paths[locationId] = [locationId]  # The endpoint is on its own path
@@ -500,6 +500,8 @@ def CalculateWothPaths(spoiler, WothLocations):
         # We assume Keys and Kongs because anything locked behind a them will then require everything that Key or Kong requires.
         # This sort of defeats the purpose of paths, as it would put everything in a Key or Kong's path into the path of many, many items.
         assumedItems = ItemPool.Keys() + ItemPool.Kongs(spoiler.settings)
+        # Vines and Swim invariably end up on long paths to many, many items because they can block whole levels, so we'll also assume these to shorten paths
+        assumedItems.extend([Items.Vines, Items.Swim])
         # Find all accessible locations without this item placed
         Reset()
         # At this point we know there is no breaking purchase order
@@ -507,14 +509,80 @@ def CalculateWothPaths(spoiler, WothLocations):
         # So give the logic infinite coins so it can purchase anything it needs
         LogicVariables.GainInfiniteCoins()
         accessible = GetAccessibleLocations(spoiler.settings, assumedItems, SearchMode.GetReachable)
+        isOnAnotherPath = False
         # Then check every other WotH location for accessibility
         for other_location in WothLocations:
             # If it is no longer accessible, then this location is on the path of that other location
             if other_location not in accessible:
                 spoiler.woth_paths[other_location].append(locationId)
+                isOnAnotherPath = True
         # Put the item back for future calculations
         location.PlaceItem(item_id)
-    spoiler.settings.helm_barrels = temp_helm_barrels_setting  # Reset the temporary change to this setting
+        # If this item doesn't show up on any other paths, it's not actually WotH
+        # This is rare, but could happen if the item at the location is needed for coins - it isn't *really* required
+        if item_id not in assumedItems and item_id != Items.BananaHoard and not isOnAnotherPath:
+            falseWothLocations.append(locationId)
+    # After everything is calculated, get rid of paths for false WotH locations
+    for locationId in falseWothLocations:
+        WothLocations.remove(locationId)
+        del spoiler.woth_paths[locationId]
+
+
+def CalculateFoolish(spoiler, WothLocations):
+    """Calculate the items and regions that are foolish (blocking no major items)."""
+    wothItems = [LocationList[loc].item for loc in WothLocations]
+    # First we need to determine what Major Items are foolish
+    foolishItems = []
+    # Determine which of our major items we need to check
+    majorItems = ItemPool.AllKongMoves()
+    if spoiler.settings.training_barrels != "normal":
+        # I don't trust oranges quite yet - you can put an item in Diddy's upper cabin and it might think oranges is foolish still
+        majorItems.extend([Items.Vines, Items.Swim, Items.Barrels])
+    if spoiler.settings.shockwave_status == "shuffled":
+        majorItems.append(Items.CameraAndShockwave)
+    if spoiler.settings.shockwave_status == "shuffled_decoupled":
+        majorItems.append(Items.Camera)
+        majorItems.append(Items.Shockwave)
+    for item in majorItems:
+        # If this item is in the WotH, it can't possibly be foolish so we can skip it
+        if item in wothItems:
+            continue
+        # Check the item to see if it locks *any* progression (even non-critical)
+        Reset()
+        LogicVariables.BanItem(item)  # Ban this item from being picked up
+        GetAccessibleLocations(spoiler.settings, [], SearchMode.GetReachable)  # Check what's reachable
+        if LogicVariables.HasAllItems():  # If you still have all the items, this one blocks no progression and is foolish
+            foolishItems.append(item)
+    spoiler.foolish_moves = foolishItems
+
+    # Use the settings to determine non-progression Major Items
+    majorItems = [item for item in majorItems if item not in foolishItems]
+    majorItems.extend(ItemPool.Keys())
+    majorItems.append(Items.Oranges)  # Again, not comfortable foolishing oranges yet
+    if Types.Coin in spoiler.settings.shuffled_location_types and spoiler.settings.coin_door_open in ["need_both", "need_rw"]:
+        majorItems.append(Items.RarewareCoin)
+    if Types.Coin in spoiler.settings.shuffled_location_types and spoiler.settings.coin_door_open in ["need_both", "need_nin"]:
+        majorItems.append(Items.NintendoCoin)
+    if Types.Blueprint in spoiler.settings.shuffled_location_types and spoiler.settings.win_condition == "all_blueprints":
+        majorItems.extend(ItemPool.Blueprints(spoiler.settings))
+    if Types.Medal in spoiler.settings.shuffled_location_types and spoiler.settings.win_condition == "all_medals":
+        majorItems.append(Items.BananaMedal)
+    if Types.Crown in spoiler.settings.shuffled_location_types and not spoiler.settings.crown_door_open:
+        majorItems.append(Items.BattleCrown)
+    # ***if fairy locations are shuffled*** and there's a major item on Rareware GB or fairies are the win con
+    # then we'd majorItems.append(Items.BananaFairy)
+
+    nonHintableNames = {"K. Rool Arena", "Snide", "Candy Generic", "Funky Generic", "Credits"}  # These regions never have anything useful so shouldn't be hinted
+    if Types.Coin not in spoiler.settings.shuffled_location_types:
+        nonHintableNames.add("Jetpac Game")  # If this is vanilla, it's never useful to hint
+    # In order for a region to be foolish, it can contain none of these Major Items
+    for id, region in RegionList.items():
+        locations = [loc for loc in region.locations if loc.id in LocationList.keys()]
+        # If this region DOES contain a major item, add it the name to the set of non-hintable hint regions
+        if any([loc for loc in locations if LocationList[loc.id].item in majorItems]):
+            nonHintableNames.add(region.hint_name)
+    # The regions that are foolish are all regions not in this list (that have locations in them!)
+    spoiler.foolish_region_names = list(set([region.hint_name for id, region in RegionList.items() if any(region.locations) and region.hint_name not in nonHintableNames]))
 
 
 def RandomFill(settings, itemsToPlace, inOrder=False):
@@ -1021,11 +1089,11 @@ def FillKongsAndMovesGeneric(spoiler):
             retries += 1
             if retries % 5 == 0:
                 js.postMessage("Retrying fill really hard. Tries: " + str(retries))
-                # Handle Loading Zones
-                if spoiler.settings.shuffle_loading_zones != "none":
-                    ShuffleExits.Reset()
-                    ShuffleExits.ExitShuffle(spoiler.settings)
-                    spoiler.UpdateExits()
+                # Handle Loading Zones - does not work right now but is something I want here eventually
+                # if spoiler.settings.shuffle_loading_zones != "none":
+                #     ShuffleExits.Reset()
+                #     ShuffleExits.ExitShuffle(spoiler.settings)
+                #     spoiler.UpdateExits()
                 spoiler.settings.shuffle_prices()
             else:
                 js.postMessage("Retrying fill. Tries: " + str(retries))
