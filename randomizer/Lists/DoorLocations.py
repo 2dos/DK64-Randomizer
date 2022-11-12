@@ -240,6 +240,7 @@ door_locations = {
             kong_lst=[Kongs.lanky],
             group=7,
             moveless=False,
+            door_type="wrinkly",
             logic=lambda l: l.islanky and l.handstand,
         ),
         DoorData(
@@ -250,6 +251,7 @@ door_locations = {
             kong_lst=[Kongs.lanky],
             group=7,
             moveless=False,
+            door_type="wrinkly",
             logic=lambda l: l.islanky and l.handstand,
         ),
         DoorData(
