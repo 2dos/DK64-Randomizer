@@ -92,7 +92,7 @@ set_variables = {
     "medal_cb_req": 5,
     "hard_enemies": 1,
     "remove_oscillation_effects": 1,
-    "starting_map": 0x6A,
+    "starting_map": 163,
     "starting_exit": 0,
 }
 

@@ -224,12 +224,19 @@ def place_randomized_items(spoiler: Spoiler):
                         offset = item.old_flag - 549
                         ROM().seek(0x1FF1080 + offset)
                         if item.new_item == Types.Shop:
-                            subtype = (item.new_flag >> 8) & 0xF
                             medal_index = 6
-                            if subtype == 4:
-                                medal_index = 8
-                            elif (subtype == 2) or (subtype == 3):
+                            if item.new_flag in (0x290, 0x291):
+                                medal_index = 6
+                            elif item.new_flag in (0x292, 0x293):
                                 medal_index = 7
+                            elif item.new_flag in (0x294, 0x295, 0x296):
+                                medal_index = 8
+                            else:
+                                subtype = (item.new_flag >> 8) & 0xF
+                                if subtype == 4:
+                                    medal_index = 8
+                                elif (subtype == 2) or (subtype == 3):
+                                    medal_index = 7
                             ROM().write(medal_index)
                         else:
                             ROM().write(slots.index(item.new_item))

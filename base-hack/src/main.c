@@ -265,6 +265,12 @@ void earlyFrame(void) {
 			*(float*)(0x8075D0D0) = 0.10f;
 		}
 	}
+	for (int kong = 0; kong < 5; kong++) {
+		for (int level = 0; level < 7; level++) {
+			MovesBase[kong].cb_count[level] &= 0xFF;
+			MovesBase[kong].tns_cb_count[level] &= 0xFF;
+		}
+	}
 	if ((CurrentMap == MAIN_MENU) && (ObjectModel2Timer < 5)) {
 		FileScreenDLCode_Write();
 		initTracker();

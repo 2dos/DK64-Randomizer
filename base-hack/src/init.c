@@ -468,6 +468,7 @@ void initHack(int source) {
 						*(short*)(0x806F0AFE) = 0; // Remove gun from hands in Tag Barrel
 						*(int*)(0x806F0AF0) = 0x24050001; // Fix Hand State
 						*(int*)(0x806D5EC4) = 0; // Prevent Moving Ground Attack pop up
+						*(short*)(0x8064AF5E) = 5; // Reduce slam range for DK Dungeon GB Slam
 						break;
 					case 1:
 						// Diddy
@@ -499,7 +500,6 @@ void initHack(int source) {
 						*(int*)(0x806D9520) = 0xC42ACC7C; // Fix Cannon Arc
 						*(int*)(0x806E903C) = 0x0C000000 | (((int)&MinecartJumpFix & 0xFFFFFF) >> 2); // Fix Diddy Minecart Jump
 						*(int*)(0x806D259C) = 0x0C000000 | (((int)&MinecartJumpFix_0 & 0xFFFFFF) >> 2); // Fix Diddy Minecart Jump
-
 						break;
 					case 2:
 						// Lanky
