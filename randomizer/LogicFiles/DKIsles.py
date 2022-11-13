@@ -11,6 +11,18 @@ from randomizer.LogicClasses import (Event, LocationLogic, Region,
                                      TransitionFront)
 
 LogicRegions = {
+    Regions.GameStart: Region("Game Start", "Training Grounds", Levels.DKIsles, False, None, [
+        LocationLogic(Locations.IslesVinesTrainingBarrel, lambda l: l.settings.fast_start_beginning_of_game),
+        LocationLogic(Locations.IslesSwimTrainingBarrel, lambda l: l.settings.fast_start_beginning_of_game),
+        LocationLogic(Locations.IslesOrangesTrainingBarrel, lambda l: l.settings.fast_start_beginning_of_game),
+        LocationLogic(Locations.IslesBarrelsTrainingBarrel, lambda l: l.settings.fast_start_beginning_of_game),
+    ], [], [
+        TransitionFront(Regions.Credits, lambda l: True),
+        # Replace these with the actual starting region if we choose to randomize it
+        TransitionFront(Regions.IslesMain, lambda l: l.settings.fast_start_beginning_of_game),
+        TransitionFront(Regions.Treehouse, lambda l: not l.settings.fast_start_beginning_of_game)
+    ]),
+
     Regions.Credits: Region("Credits", "Credits", Levels.DKIsles, False, None, [
         LocationLogic(Locations.BananaHoard, lambda l: l.WinConditionMet())
     ], [], []),
@@ -44,7 +56,6 @@ LogicRegions = {
     ], [
         Event(Events.IslesChunkyBarrelSpawn, lambda l: l.monkeyport and l.saxophone and l.tiny),
     ], [
-        TransitionFront(Regions.Credits, lambda l: True),
         TransitionFront(Regions.TrainingGrounds, lambda l: True, Transitions.IslesMainToStart),
         TransitionFront(Regions.Prison, lambda l: True),
         TransitionFront(Regions.BananaFairyRoom, lambda l: l.mini and l.istiny, Transitions.IslesMainToFairy),
@@ -137,8 +148,6 @@ LogicRegions = {
         LocationLogic(Locations.IslesTinyGalleonLobby, lambda l: l.chunky and l.superSlam and l.mini and l.twirl and l.swim and l.tiny),
         LocationLogic(Locations.IslesKasplatGalleonLobby, lambda l: not l.settings.kasplat_rando),
     ], [], [
-        # There exists a hellscape in the far flung future where you are trapped in Galleon and Galleon lobby because you cannot swim but your seed is beatable
-        TransitionFront(Regions.Credits, lambda l: True),  # For that reason, this lobby also gets access to the credits region
         TransitionFront(Regions.IslesMain, lambda l: l.swim, Transitions.IslesGalleonLobbyToMain),
         TransitionFront(Regions.GloomyGalleonStart, lambda l: l.IsLevelEnterable(Levels.GloomyGalleon), Transitions.IslesToGalleon),
     ]),

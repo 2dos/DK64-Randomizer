@@ -160,7 +160,6 @@ def AllMovesForOwnedKongs(kongs):
     if KongObject.Kongs.chunky in kongs:
         kongMoves.extend(ChunkyMoves)
     kongMoves.extend(ImportantSharedMoves)
-    kongMoves.extend(JunkSharedMoves)
     return kongMoves
 
 

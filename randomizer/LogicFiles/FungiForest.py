@@ -21,7 +21,7 @@ LogicRegions = {
         LocationLogic(Locations.ForestChunkyMedal, lambda l: l.ColoredBananas[Levels.FungiForest][Kongs.chunky] >= l.settings.medal_cb_req),
     ], [], []),
 
-    Regions.FungiForestStart: Region("Fungi Forest Start", "Forest Center", Levels.FungiForest, True, None, [], [
+    Regions.FungiForestStart: Region("Fungi Forest Start", "Forest Center and Beanstalk", Levels.FungiForest, True, None, [], [
         Event(Events.ForestEntered, lambda l: True),
         Event(Events.Night, lambda l: l.HasGun(Kongs.any)),
         Event(Events.WormGatesOpened, lambda l: (l.feather and l.tiny) and (l.pineapple and l.chunky)),
@@ -34,7 +34,7 @@ LogicRegions = {
         TransitionFront(Regions.WormArea, lambda l: l.settings.open_levels or Events.WormGatesOpened in l.Events),
     ]),
 
-    Regions.ForestMinecarts: Region("Forest Minecarts", "Forest Center", Levels.FungiForest, False, None, [
+    Regions.ForestMinecarts: Region("Forest Minecarts", "Forest Center and Beanstalk", Levels.FungiForest, False, None, [
         LocationLogic(Locations.ForestChunkyMinecarts, lambda l: l.ischunky or l.settings.free_trade_items),
     ], [], [
         TransitionFront(Regions.FungiForestMedals, lambda l: True),
@@ -256,7 +256,7 @@ LogicRegions = {
         TransitionFront(Regions.ThornvineArea, lambda l: True, Transitions.ForestBarnToMain),
     ]),
 
-    Regions.WormArea: Region("Worm Area", "Beanstalk Area", Levels.FungiForest, True, -1, [
+    Regions.WormArea: Region("Worm Area", "Forest Center and Beanstalk", Levels.FungiForest, True, -1, [
         LocationLogic(Locations.ForestTinyBeanstalk, lambda l: Events.Bean in l.Events and l.saxophone and l.mini and l.istiny),
         LocationLogic(Locations.ForestChunkyApple, lambda l: Events.WormGatesOpened in l.Events and l.hunkyChunky and l.ischunky and l.barrels),
     ], [], [
