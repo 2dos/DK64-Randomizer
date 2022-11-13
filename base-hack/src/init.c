@@ -468,6 +468,7 @@ void initHack(int source) {
 						*(short*)(0x806F0AFE) = 0; // Remove gun from hands in Tag Barrel
 						*(int*)(0x806F0AF0) = 0x24050001; // Fix Hand State
 						*(int*)(0x806D5EC4) = 0; // Prevent Moving Ground Attack pop up
+						*(short*)(0x8064AF5E) = 5; // Reduce slam range for DK Dungeon GB Slam
 						break;
 					case 1:
 						// Diddy
