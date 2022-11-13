@@ -365,7 +365,7 @@ def compileHints(spoiler: Spoiler):
         hint_distribution[HintType.BLocker] = max(1, hint_distribution[HintType.TroffNScoff])  # Always want a helm hint in there
         hint_distribution[HintType.TroffNScoff] = temp
         valid_types.append(HintType.Entrance)
-    if Types.Key in spoiler.settings.shuffled_location_types:
+    if spoiler.settings.shuffle_items and Types.Key in spoiler.settings.shuffled_location_types:
         valid_types.append(HintType.RequiredKeyHint)
         # Only hint keys that are in the Way of the Hoard
         woth_key_ids = [LocationList[woth_loc].item for woth_loc in spoiler.woth_locations if ItemList[LocationList[woth_loc].item].type == Types.Key]
@@ -612,6 +612,9 @@ def compileHints(spoiler: Spoiler):
         for key_id in late_keys_required:
             path = spoiler.woth_paths[key_location_ids[key_id]]
             key_item = ItemList[key_id]
+            # Don't put a path hint for Helm Key when you know it's there
+            if key_id == Items.HideoutHelmKey and spoiler.settings.key_8_helm:
+                path = [loc for loc in path if loc != Locations.HelmKey]
             for i in range(2):
                 path_location_id = random.choice(path)
                 region = GetRegionOfLocation(path_location_id)
@@ -665,7 +668,6 @@ def compileHints(spoiler: Spoiler):
                     message = f"Your training with {hinted_item_name} is on the path to aiding your fight against K. Rool."
                 else:
                     message = f"An item in the {region.hint_name} is on the path to aiding your fight against K. Rool."
-
                 hint_location = getRandomHintLocation()
                 hint_location.hint_type = HintType.RequiredWinConditionHint
                 UpdateHint(hint_location, message)

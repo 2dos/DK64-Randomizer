@@ -80,7 +80,7 @@ LogicRegions = {
     ], Transitions.FactoryRandDToRace
     ),
 
-    Regions.ChunkyRoomPlatform: Region("Chunky Room Platform", "Storage Room", Levels.FranticFactory, False, -1, [
+    Regions.ChunkyRoomPlatform: Region("Chunky Room Platform", "Storage Area", Levels.FranticFactory, False, -1, [
         LocationLogic(Locations.FactoryDiddyChunkyRoomBarrel, lambda l: l.Slam and l.isdiddy and l.vines, MinigameType.BonusBarrel),
     ], [], [
         TransitionFront(Regions.FranticFactoryMedals, lambda l: True),
@@ -88,7 +88,7 @@ LogicRegions = {
         TransitionFront(Regions.BeyondHatch, lambda l: True),
     ]),
 
-    Regions.PowerHut: Region("Power Hut", "Storage Room", Levels.FranticFactory, False, None, [
+    Regions.PowerHut: Region("Power Hut", "Storage Area", Levels.FranticFactory, False, None, [
         LocationLogic(Locations.FactoryDonkeyPowerHut, lambda l: Events.MainCoreActivated in l.Events and (l.isdonkey or l.settings.free_trade_items)),
     ], [
         Event(Events.MainCoreActivated, lambda l: l.coconut and l.grab and l.isdonkey),
@@ -97,7 +97,7 @@ LogicRegions = {
         TransitionFront(Regions.ChunkyRoomPlatform, lambda l: True, Transitions.FactoryPowerToChunkyRoom),
     ]),
 
-    Regions.BeyondHatch: Region("Beyond Hatch", "Storage Room", Levels.FranticFactory, True, None, [
+    Regions.BeyondHatch: Region("Beyond Hatch", "Storage Area", Levels.FranticFactory, True, None, [
         LocationLogic(Locations.ChunkyKong, lambda l: l.CanFreeChunky()),
         LocationLogic(Locations.NintendoCoin, lambda l: Events.ArcadeLeverSpawned in l.Events and l.grab and l.isdonkey),
         LocationLogic(Locations.FactoryDonkeyDKArcade, lambda l: not l.settings.fast_gbs and (Events.ArcadeLeverSpawned in l.Events and l.grab and l.isdonkey)),
@@ -118,7 +118,7 @@ LogicRegions = {
         TransitionFront(Regions.FactoryBaboonBlast, lambda l: l.blast and l.isdonkey)  # , Transitions.FactoryMainToBBlast)
     ]),
 
-    Regions.FactoryBaboonBlast: Region("Factory Baboon Blast", "Storage Room", Levels.FranticFactory, False, None, [
+    Regions.FactoryBaboonBlast: Region("Factory Baboon Blast", "Storage Area", Levels.FranticFactory, False, None, [
         LocationLogic(Locations.FactoryDonkeyDKArcade, lambda l: l.settings.fast_gbs),  # The GB is moved here on fast GBs
     ], [
         Event(Events.ArcadeLeverSpawned, lambda l: l.isdonkey)

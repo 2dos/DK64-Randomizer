@@ -20,7 +20,7 @@ LogicRegions = {
         LocationLogic(Locations.CastleChunkyMedal, lambda l: l.ColoredBananas[Levels.CreepyCastle][Kongs.chunky] >= l.settings.medal_cb_req),
     ], [], []),
 
-    Regions.CreepyCastleMain: Region("Creepy Castle Main", "Castle Exterior", Levels.CreepyCastle, True, None, [
+    Regions.CreepyCastleMain: Region("Creepy Castle Main", "Castle Surroundings", Levels.CreepyCastle, True, None, [
         LocationLogic(Locations.CastleDiddyAboveCastle, lambda l: l.jetpack and l.isdiddy, MinigameType.BonusBarrel),
         LocationLogic(Locations.CastleKasplatHalfway, lambda l: not l.settings.kasplat_rando),
         LocationLogic(Locations.CastleKasplatLowerLedge, lambda l: not l.settings.kasplat_rando),
@@ -48,7 +48,7 @@ LogicRegions = {
         TransitionFront(Regions.CastleBaboonBlast, lambda l: l.blast and l.isdonkey)  # , Transitions.CastleMainToBBlast)
     ]),
 
-    Regions.CastleBaboonBlast: Region("Castle Baboon Blast", "Castle Exterior", Levels.CreepyCastle, False, None, [], [
+    Regions.CastleBaboonBlast: Region("Castle Baboon Blast", "Castle Surroundings", Levels.CreepyCastle, False, None, [], [
         Event(Events.CastleTreeOpened, lambda l: l.isdonkey)
     ], [
         TransitionFront(Regions.CreepyCastleMedals, lambda l: True),
@@ -56,13 +56,13 @@ LogicRegions = {
     ]),
 
     # This region just exists to facilitate the multiple exits from the upper cave
-    Regions.CastleWaterfall: Region("Castle Waterfall", "Castle Exterior", Levels.CreepyCastle, False, None, [], [], [
+    Regions.CastleWaterfall: Region("Castle Waterfall", "Castle Surroundings", Levels.CreepyCastle, False, None, [], [], [
         TransitionFront(Regions.CreepyCastleMedals, lambda l: True),
         TransitionFront(Regions.CreepyCastleMain, lambda l: True),
         TransitionFront(Regions.UpperCave, lambda l: True, Transitions.CastleWaterfallToUpper),
     ]),
 
-    Regions.CastleTree: Region("Castle Tree", "Castle Exterior", Levels.CreepyCastle, False, -1, [
+    Regions.CastleTree: Region("Castle Tree", "Castle Surroundings", Levels.CreepyCastle, False, -1, [
         LocationLogic(Locations.CastleDonkeyTree, lambda l: l.scope and l.coconut and l.isdonkey),
         LocationLogic(Locations.CastleChunkyTree, lambda l: (l.scope or l.settings.hard_shooting) and l.pineapple and l.punch and l.ischunky, MinigameType.BonusBarrel),
         LocationLogic(Locations.CastleKasplatTree, lambda l: not l.settings.kasplat_rando and l.coconut and l.isdonkey),
@@ -74,7 +74,7 @@ LogicRegions = {
         TransitionFront(Regions.CreepyCastleMain, lambda l: l.coconut and l.isdonkey and l.swim, Transitions.CastleTreeDrainToMain),
     ]),
 
-    Regions.Library: Region("Library", "Castle Interior", Levels.CreepyCastle, False, -1, [
+    Regions.Library: Region("Library", "Castle Rooms", Levels.CreepyCastle, False, -1, [
         LocationLogic(Locations.CastleDonkeyLibrary, lambda l: l.superDuperSlam and l.isdonkey and l.strongKong),
     ], [], [
         TransitionFront(Regions.CreepyCastleMedals, lambda l: True),
@@ -82,7 +82,7 @@ LogicRegions = {
         TransitionFront(Regions.CreepyCastleMain, lambda l: l.superDuperSlam and l.isdonkey and l.strongKong, Transitions.CastleLibraryEndToMain),
     ]),
 
-    Regions.Ballroom: Region("Ballroom", "Castle Interior", Levels.CreepyCastle, False, -1, [
+    Regions.Ballroom: Region("Ballroom", "Castle Rooms", Levels.CreepyCastle, False, -1, [
         LocationLogic(Locations.CastleDiddyBallroom, lambda l: l.jetpack and l.isdiddy, MinigameType.BonusBarrel),
     ], [], [
         TransitionFront(Regions.CreepyCastleMedals, lambda l: True),
@@ -90,7 +90,7 @@ LogicRegions = {
         TransitionFront(Regions.MuseumBehindGlass, lambda l: l.monkeyport and l.mini and l.istiny, Transitions.CastleBallroomToMuseum),
     ]),
 
-    Regions.MuseumBehindGlass: Region("Museum Behind Glass", "Castle Interior", Levels.CreepyCastle, False, -1, [
+    Regions.MuseumBehindGlass: Region("Museum Behind Glass", "Castle Rooms", Levels.CreepyCastle, False, -1, [
         LocationLogic(Locations.CastleBananaFairyBallroom, lambda l: l.camera),
     ], [], [
         TransitionFront(Regions.CreepyCastleMedals, lambda l: True),
@@ -98,7 +98,7 @@ LogicRegions = {
         TransitionFront(Regions.CastleTinyRace, lambda l: l.mini and l.istiny, Transitions.CastleMuseumToCarRace),
     ]),
 
-    Regions.CastleTinyRace: Region("Castle Tiny Race", "Castle Interior", Levels.CreepyCastle, False, None, [
+    Regions.CastleTinyRace: Region("Castle Tiny Race", "Castle Rooms", Levels.CreepyCastle, False, None, [
         LocationLogic(Locations.CastleTinyCarRace, lambda l: l.istiny or l.settings.free_trade_items),
     ], [], [
         TransitionFront(Regions.CreepyCastleMedals, lambda l: True),
@@ -106,14 +106,14 @@ LogicRegions = {
     ], Transitions.CastleMuseumToCarRace
     ),
 
-    Regions.Tower: Region("Tower", "Castle Interior", Levels.CreepyCastle, False, -1, [
+    Regions.Tower: Region("Tower", "Castle Rooms", Levels.CreepyCastle, False, -1, [
         LocationLogic(Locations.CastleLankyTower, lambda l: (l.scope or l.homing) and l.balloon and l.grape and l.islanky, MinigameType.BonusBarrel),
     ], [], [
         TransitionFront(Regions.CreepyCastleMedals, lambda l: True),
         TransitionFront(Regions.CreepyCastleMain, lambda l: True, Transitions.CastleTowerToMain),
     ]),
 
-    Regions.Greenhouse: Region("Greenhouse", "Castle Exterior", Levels.CreepyCastle, False, -1, [
+    Regions.Greenhouse: Region("Greenhouse", "Castle Surroundings", Levels.CreepyCastle, False, -1, [
         # Sprint is not actually required
         LocationLogic(Locations.CastleLankyGreenhouse, lambda l: l.islanky or l.settings.free_trade_items),
         LocationLogic(Locations.CastleBattleArena, lambda l: not l.settings.crown_placement_rando and (l.islanky or l.settings.free_trade_items)),
@@ -123,21 +123,21 @@ LogicRegions = {
         TransitionFront(Regions.CreepyCastleMain, lambda l: l.islanky or l.settings.free_trade_items, Transitions.CastleGreenhouseEndToMain),
     ]),
 
-    Regions.TrashCan: Region("Trash Can", "Castle Exterior", Levels.CreepyCastle, False, -1, [
+    Regions.TrashCan: Region("Trash Can", "Castle Surroundings", Levels.CreepyCastle, False, -1, [
         LocationLogic(Locations.CastleTinyTrashCan, lambda l: (l.istiny and (l.saxophone or (l.feather and (l.homing or l.settings.hard_shooting)))) or (l.settings.free_trade_items and (l.HasInstrument(Kongs.any) or (l.HasGun(Kongs.any) and (l.homing or l.settings.hard_shooting))))),
     ], [], [
         TransitionFront(Regions.CreepyCastleMedals, lambda l: True),
         TransitionFront(Regions.CreepyCastleMain, lambda l: True, Transitions.CastleTrashToMain),
     ]),
 
-    Regions.Shed: Region("Shed", "Castle Exterior", Levels.CreepyCastle, False, None, [
+    Regions.Shed: Region("Shed", "Castle Surroundings", Levels.CreepyCastle, False, None, [
         LocationLogic(Locations.CastleChunkyShed, lambda l: l.punch and ((l.gorillaGone and l.pineapple) or l.triangle) and l.ischunky),
     ], [], [
         TransitionFront(Regions.CreepyCastleMedals, lambda l: True),
         TransitionFront(Regions.CreepyCastleMain, lambda l: True, Transitions.CastleShedToMain),
     ]),
 
-    Regions.Museum: Region("Museum", "Castle Interior", Levels.CreepyCastle, False, -1, [
+    Regions.Museum: Region("Museum", "Castle Rooms", Levels.CreepyCastle, False, -1, [
         LocationLogic(Locations.CastleChunkyMuseum, lambda l: l.punch and l.ischunky and l.barrels),
     ], [], [
         TransitionFront(Regions.CreepyCastleMedals, lambda l: True),

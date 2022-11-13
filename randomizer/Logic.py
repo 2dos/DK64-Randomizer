@@ -579,6 +579,17 @@ class LogicVarHolder:
 
     def IsLevelEnterable(self, level):
         """Check if level entry requirement is met."""
+        # Later levels can have some special requirements
+        if level >= 3:
+            level_order_matters = not self.settings.hard_level_progression and self.settings.shuffle_loading_zones in ("none", "levels")
+            # If level order matters...
+            if level_order_matters:
+                # Require barrels by level 3 to prevent boss barrel fill failures
+                if not self.barrels:
+                    return False
+                # Require one of twirl or hunky chunky by level 7 to prevent non-hard-boss fill failures
+                if not self.settings.hard_bosses and level >= 7 and not (self.twirl or self.hunkyChunky):
+                    return False
         return self.HasEnoughKongs(level, forPreviousLevel=True) and self.GoldenBananas >= self.settings.EntryGBs[level]
 
     def WinConditionMet(self):
@@ -611,7 +622,7 @@ class LogicVarHolder:
         """Check if you meet the logical requirements to obtain the Rareware Coin."""
         have_enough_medals = self.BananaMedals >= self.settings.medal_requirement
         # Make sure you have access to enough levels to fit the locations in. This isn't super precise and doesn't need to be.
-        required_level = min(ceil(self.settings.medal_requirement / 5), 6)
+        required_level = min(ceil(self.settings.medal_requirement / 4), 6)
         return have_enough_medals and self.IsLevelEnterable(required_level)
 
     def BanItem(self, item):

@@ -5,8 +5,9 @@ from enum import IntEnum, auto
 class Regions(IntEnum):
     """Region enum."""
 
-    # Special region housing the Banana Hoard
-    Credits = auto()
+    # Special regions
+    GameStart = auto()  # This holds your training barrels for fast start and sends you off to your starting region
+    Credits = auto()  # This holds the Banana Hoard
 
     # DK Isles Regions
     Treehouse = auto()
