@@ -29,6 +29,9 @@ def encrypt_settings_string(dict_data: dict):
         "enguarde_colors",
         "enguarde_custom_color",
         "klaptrap_model",
+        "krusha_slot",
+        "misc_cosmetics",
+        "disco_chunky",
         "lanky_colors",
         "lanky_custom_color",
         "rambi_colors",
@@ -41,6 +44,8 @@ def encrypt_settings_string(dict_data: dict):
         "tiny_colors",
         "tiny_custom_color",
         "override_cosmetics",
+        "remove_water_oscillation",
+        "colorblind_mode",
         "search",
     ]:
         dict_data.pop(pop)
