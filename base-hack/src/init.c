@@ -499,7 +499,6 @@ void initHack(int source) {
 						*(int*)(0x806D9520) = 0xC42ACC7C; // Fix Cannon Arc
 						*(int*)(0x806E903C) = 0x0C000000 | (((int)&MinecartJumpFix & 0xFFFFFF) >> 2); // Fix Diddy Minecart Jump
 						*(int*)(0x806D259C) = 0x0C000000 | (((int)&MinecartJumpFix_0 & 0xFFFFFF) >> 2); // Fix Diddy Minecart Jump
-
 						break;
 					case 2:
 						// Lanky
