@@ -43,6 +43,7 @@ class LogicVarHolder:
         if settings is None:
             return
         self.settings = settings
+        self.pathMode = False
         self.startkong = self.settings.starting_kong
         self.Reset()
 
@@ -580,7 +581,8 @@ class LogicVarHolder:
     def IsLevelEnterable(self, level):
         """Check if level entry requirement is met."""
         # Later levels can have some special requirements
-        if level >= 3:
+        # "pathMode" is so WotH paths can always enter levels regardless of owned items
+        if not self.pathMode and level >= 3:
             level_order_matters = not self.settings.hard_level_progression and self.settings.shuffle_loading_zones in ("none", "levels")
             # If level order matters...
             if level_order_matters:
