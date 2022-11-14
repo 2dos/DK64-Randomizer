@@ -537,6 +537,7 @@ def CalculateWothPaths(spoiler, WothLocations):
     LogicVariables.pathMode = False  # Don't carry this pathMode flag beyond this method ever
     spoiler.settings.open_lobbies = old_open_lobbies_temp  # Undo the open lobbies setting change too
 
+
 def CalculateFoolish(spoiler, WothLocations):
     """Calculate the items and regions that are foolish (blocking no major items)."""
     wothItems = [LocationList[loc].item for loc in WothLocations]
