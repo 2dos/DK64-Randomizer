@@ -356,7 +356,10 @@ def compileHints(spoiler: Spoiler):
     if spoiler.settings.randomize_cb_required_amounts and len(spoiler.settings.krool_keys_required) > 0 and spoiler.settings.krool_keys_required != [Events.HelmKeyTurnedIn]:
         valid_types.append(HintType.TroffNScoff)
     if spoiler.settings.kong_rando:
-        valid_types.append(HintType.KongLocation)
+        if spoiler.settings.shuffle_items and Types.Kong in spoiler.settings.shuffled_location_types:
+            print("item rando kong hints under construction")
+        else:
+            valid_types.append(HintType.KongLocation)
     # if spoiler.settings.coin_door_open == "need_both" or spoiler.settings.coin_door_open == "need_rw":
     #     valid_types.append(HintType.MedalsRequired)
     if spoiler.settings.shuffle_loading_zones == "all":

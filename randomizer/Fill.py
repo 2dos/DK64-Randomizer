@@ -489,6 +489,7 @@ def PareWoth(spoiler, PlaythroughLocations):
 
 def CalculateWothPaths(spoiler, WothLocations):
     """Calculate the Paths (dependencies) for each Way of the Hoard item."""
+    LogicVariables.pathMode = True  # Helps get more accurate paths by removing important obstacles to level entry
     falseWothLocations = []
     # Prep the dictionary that will contain the path for the key item
     for locationId in WothLocations:
@@ -528,6 +529,7 @@ def CalculateWothPaths(spoiler, WothLocations):
     for locationId in falseWothLocations:
         WothLocations.remove(locationId)
         del spoiler.woth_paths[locationId]
+    LogicVariables.pathMode = False  # Don't carry this pathMode flag beyond this method ever
 
 
 def CalculateFoolish(spoiler, WothLocations):
@@ -838,8 +840,7 @@ def GetUnplacedItemPrerequisites(spoiler, targetItemId, placedMoves, ownedKongs=
     # Often moves require training barrels as prerequisites
     if spoiler.settings.training_barrels != "normal":
         moveList.extend(ItemPool.TrainingBarrelAbilities())
-    for move in placedMoves:
-        moveList.remove(move)
+    moveList = [move for move in moveList if move not in placedMoves]
     if targetItemId in moveList:
         moveList.remove(targetItemId)
     # You can get dangerously circular logic when one slam is placed here. Assume no slams when searching for accessibility and then add one later
@@ -1315,15 +1316,37 @@ def FillKongs(spoiler):
     # Determine what kong items need to be placed
     startingKongItems = [ItemPool.ItemFromKong(kong) for kong in spoiler.settings.starting_kong_list]
     kongItems = [item for item in ItemPool.Kongs(spoiler.settings) if item not in startingKongItems]
-    # Determine what locations the kong items need to be placed in
-    if any(spoiler.settings.kong_locations):
-        emptyKongLocations = [location for location in [Locations.DiddyKong, Locations.LankyKong, Locations.TinyKong, Locations.ChunkyKong] if location not in spoiler.settings.kong_locations]
-        for locationId in emptyKongLocations:
-            LocationList[locationId].PlaceItem(Items.NoItem)
-    # We place Kongs first so we know what Kong moves are most important to place next
-    Reset()
-    # Specialized Kong placement function that will never fail to find a beatable combination of Kong unlocks for the vanilla locations
-    PlaceKongsInKongLocations(spoiler, kongItems, spoiler.settings.kong_locations.copy())
+    # If Kongs can be placed anywhere, we don't need anything special
+    if spoiler.settings.shuffle_items and Types.Kong in spoiler.settings.shuffled_location_types:
+        assumedItems = ItemPool.AllKongMoves().copy()
+        if spoiler.settings.training_barrels != "normal":
+            assumedItems.extend(ItemPool.TrainingBarrelAbilities())
+        if spoiler.settings.shockwave_status != "vanilla":
+            assumedItems.append(Items.Shockwave)
+        Reset()
+        PlaceItems(spoiler.settings, spoiler.settings.algorithm, kongItems, assumedItems)
+        # We don't care who gets the GBs for these locations anymore, just random it up
+        spoiler.settings.diddy_freeing_kong = random.choice(GetKongs())
+        spoiler.settings.lanky_freeing_kong = random.choice(GetKongs())
+        spoiler.settings.tiny_freeing_kong = random.choice([Kongs.diddy, Kongs.chunky])
+        spoiler.settings.chunky_freeing_kong = random.choice(GetKongs())
+        # Update the locations' assigned kong with the set freeing kong list
+        LocationList[Locations.JapesDonkeyFrontofCage].kong = spoiler.settings.diddy_freeing_kong
+        LocationList[Locations.JapesDonkeyFreeDiddy].kong = spoiler.settings.diddy_freeing_kong
+        LocationList[Locations.AztecDonkeyFreeLanky].kong = spoiler.settings.lanky_freeing_kong
+        LocationList[Locations.AztecDiddyFreeTiny].kong = spoiler.settings.tiny_freeing_kong
+        LocationList[Locations.FactoryLankyFreeChunky].kong = spoiler.settings.chunky_freeing_kong
+        spoiler.settings.update_valid_locations()
+    # If kongs must be in Kong cages, we need to be more careful
+    else:
+        # Determine what locations the kong items need to be placed in
+        if any(spoiler.settings.kong_locations):
+            emptyKongLocations = [location for location in [Locations.DiddyKong, Locations.LankyKong, Locations.TinyKong, Locations.ChunkyKong] if location not in spoiler.settings.kong_locations]
+            for locationId in emptyKongLocations:
+                LocationList[locationId].PlaceItem(Items.NoItem)
+        Reset()
+        # Specialized Kong placement function that will never fail to find a beatable combination of Kong unlocks for the vanilla locations
+        PlaceKongsInKongLocations(spoiler, kongItems, spoiler.settings.kong_locations.copy())
 
 
 def FillKongsAndMoves(spoiler):
@@ -1331,10 +1354,11 @@ def FillKongsAndMoves(spoiler):
     itemsToPlace = []
     preplacedPriorityMoves = []
 
-    # Handle kong rando
+    # Handle kong rando first so we know what moves are most important to place
     if spoiler.settings.kong_rando:
         FillKongs(spoiler)
 
+    levelBlockInPlace = False
     # Once Kongs are placed, the top priority is placing training barrel moves first. These (mostly) need to be very early because they block access to whole levels.
     if not spoiler.settings.unlock_all_moves and spoiler.settings.move_rando != "off" and spoiler.settings.training_barrels == "shuffled":
         # First place barrels - needed for most bosses
@@ -1343,6 +1367,7 @@ def FillKongsAndMoves(spoiler):
             # In standard level order, place barrels very early to prevent same-y boss orders
             needBarrelsByThisLevel = 2
             BlockAccessToLevel(spoiler.settings, needBarrelsByThisLevel)
+            levelBlockInPlace = True
         itemsPlacedForBarrels = PlacePriorityItems(spoiler, [Items.Barrels], preplacedPriorityMoves, levelBlock=needBarrelsByThisLevel)
         preplacedPriorityMoves.extend(itemsPlacedForBarrels)
         # Next place vines - needed to beat Aztec and maybe get to upper DK Isle
@@ -1360,6 +1385,7 @@ def FillKongsAndMoves(spoiler):
                     # The vine level is whatever comes first: Aztec or level 2
                     needVinesByThisLevel = min(2, needVinesByThisLevel)
                 BlockAccessToLevel(spoiler.settings, needVinesByThisLevel)
+                levelBlockInPlace = True
             itemsPlacedForVines = PlacePriorityItems(spoiler, [Items.Vines], preplacedPriorityMoves, levelBlock=needVinesByThisLevel)
             preplacedPriorityMoves.extend(itemsPlacedForVines)
         # Next place swim - needed to get into level 4
@@ -1369,101 +1395,28 @@ def FillKongsAndMoves(spoiler):
                 # In a standard level order seed, we need swim to access level 4 (whatever it is)
                 needSwimByThisLevel = 4
                 BlockAccessToLevel(spoiler.settings, needSwimByThisLevel)
+                levelBlockInPlace = True
             itemsPlacedForSwim = PlacePriorityItems(spoiler, [Items.Swim], preplacedPriorityMoves, levelBlock=needSwimByThisLevel)
             preplacedPriorityMoves.extend(itemsPlacedForSwim)
+    # If we had to put in a level block, undo it now - only settings that need progression fixed later will do this so this is fine
+    if levelBlockInPlace:
+        BlockAccessToLevel(spoiler.settings, 100)
 
     if spoiler.settings.kong_rando:
         # If kongs are our progression, then place moves that unlock those kongs before anything else
         # This logic only matters if the level order is critical to progression (i.e. not loading zone shuffled)
         if spoiler.settings.kongs_for_progression and spoiler.settings.shuffle_loading_zones != "all" and spoiler.settings.move_rando != "start_with":
-            debuginfo = {}
-            locationsLockingKongs = spoiler.settings.kong_locations.copy()
-            ownedKongs = [kong for kong in spoiler.settings.starting_kong_list]
-            latestLogicallyAllowedLevel = spoiler.settings.starting_kongs_count + 1
-            # Logically we can always enter any level on hard level progression
-            if spoiler.settings.hard_level_progression:
-                latestLogicallyAllowedLevel = 100
-            levelIndex = 1
-            checkedAllLogicallyAvailableLevels = False
-            # Loop until we've logically unlocked all the kongs
-            # It may take multiple loops through available levels before we unlock all kongs
-            while len(ownedKongs) != 5:
-                latestLogicallyAllowedLevel = len(ownedKongs) + 1
-                # Logically we can always enter any level on hard level progression
-                if spoiler.settings.hard_level_progression:
-                    latestLogicallyAllowedLevel = 100
-                priorityItemsToPlace = []
-                kongToBeGained = None
-                # For each level that has a locked kong, identify the items needed to unlock them
-                # We're about to place these items in accessible locations, so assume can we now own the kong
-                if spoiler.settings.level_order[levelIndex] == Levels.FranticFactory and Locations.ChunkyKong in locationsLockingKongs and spoiler.settings.chunky_freeing_kong in ownedKongs:
-                    locationsLockingKongs.remove(Locations.ChunkyKong)
-                    kongToBeGained = ItemPool.GetKongForItem(LocationList[Locations.ChunkyKong].item)
-                    # No prerequisites for Chunky's Cage (yet)
-                if spoiler.settings.level_order[levelIndex] == Levels.JungleJapes and Locations.DiddyKong in locationsLockingKongs and spoiler.settings.diddy_freeing_kong in ownedKongs:
-                    locationsLockingKongs.remove(Locations.DiddyKong)
-                    kongToBeGained = ItemPool.GetKongForItem(LocationList[Locations.DiddyKong].item)
-                    directPrerequisiteMoves = GetUnplacedItemPrerequisites(spoiler, LocationList[Locations.DiddyKong].item, preplacedPriorityMoves, ownedKongs)
-                    slamsRequired = directPrerequisiteMoves.count(Items.ProgressiveSlam)
-                    for move in directPrerequisiteMoves:
-                        if move not in priorityItemsToPlace:
-                            priorityItemsToPlace.append(move)
-                        # If this would be the second slam placed and this location needs two...
-                        elif move == Items.ProgressiveSlam and slamsRequired > 1 and priorityItemsToPlace.count(Items.ProgressiveSlam) < 2:
-                            priorityItemsToPlace.append(move)  # Then we can priority place the second slam
-                if spoiler.settings.level_order[levelIndex] == Levels.AngryAztec and Locations.TinyKong in locationsLockingKongs and spoiler.settings.tiny_freeing_kong in ownedKongs:
-                    locationsLockingKongs.remove(Locations.TinyKong)
-                    kongToBeGained = ItemPool.GetKongForItem(LocationList[Locations.TinyKong].item)
-                    directPrerequisiteMoves = GetUnplacedItemPrerequisites(spoiler, LocationList[Locations.TinyKong].item, preplacedPriorityMoves, ownedKongs)
-                    slamsRequired = directPrerequisiteMoves.count(Items.ProgressiveSlam)
-                    for move in directPrerequisiteMoves:
-                        if move not in priorityItemsToPlace:
-                            priorityItemsToPlace.append(move)
-                        # If this would be the second slam placed and this location needs two...
-                        elif move == Items.ProgressiveSlam and slamsRequired > 1 and priorityItemsToPlace.count(Items.ProgressiveSlam) < 2:
-                            priorityItemsToPlace.append(move)  # Then we can priority place the second slam
-                elif (
-                    spoiler.settings.level_order[levelIndex] == Levels.AngryAztec
-                    and Locations.LankyKong in locationsLockingKongs
-                    and spoiler.settings.lanky_freeing_kong in ownedKongs
-                    # Must be able to bypass Guitar door - the active bananaports condition is in case your only Llama Temple access is through the quicksand cave
-                    and (Kongs.diddy in ownedKongs or spoiler.settings.open_levels or (Kongs.donkey in ownedKongs and spoiler.settings.activate_all_bananaports == "all"))
-                    and (Kongs.donkey in ownedKongs or Kongs.lanky in ownedKongs or Kongs.tiny in ownedKongs)
-                ):
-                    locationsLockingKongs.remove(Locations.LankyKong)
-                    kongToBeGained = ItemPool.GetKongForItem(LocationList[Locations.LankyKong].item)
-                    directPrerequisiteMoves = GetUnplacedItemPrerequisites(spoiler, LocationList[Locations.LankyKong].item, preplacedPriorityMoves, ownedKongs)
-                    slamsRequired = priorityItemsToPlace.count(Items.ProgressiveSlam)
-                    for move in directPrerequisiteMoves:
-                        if move not in priorityItemsToPlace:
-                            priorityItemsToPlace.append(move)
-                        # If this would be the second slam placed and this location needs two...
-                        elif move == Items.ProgressiveSlam and slamsRequired > 1 and priorityItemsToPlace.count(Items.ProgressiveSlam) < 2:
-                            priorityItemsToPlace.append(move)  # Then we can priority place the second slam
-                # Place the priority items and any items they may depend on
-                if any(priorityItemsToPlace):
-                    BlockAccessToLevel(spoiler.settings, latestLogicallyAllowedLevel)
-                    newlyPlacedItems = PlacePriorityItems(spoiler, priorityItemsToPlace, preplacedPriorityMoves, levelBlock=latestLogicallyAllowedLevel)
-                    preplacedPriorityMoves.extend(newlyPlacedItems)
-                # Update progression with any newly acquired Kongs
-                if kongToBeGained is not None:
-                    ownedKongs.append(kongToBeGained)
-                    checkedAllLogicallyAvailableLevels = False
-                # If we didn't find progression here, check the next logically available level
-                else:
-                    # If we checked all the levels and don't have all the kongs, then we're logic-locked (somehow)
-                    if levelIndex == latestLogicallyAllowedLevel and checkedAllLogicallyAvailableLevels:
-                        raise Ex.ItemPlacementException("Kongs logically locked behind themselves. Only " + str(len(ownedKongs)) + " kongs logically accessible.")
-                    elif levelIndex == latestLogicallyAllowedLevel:
-                        checkedAllLogicallyAvailableLevels = True
-                    # Wrap back to level 1 if we hit the end - it's logically possible we've now unlocked a kong that frees an earlier kong
-                    if spoiler.settings.hard_level_progression:
-                        levelIndex = (levelIndex % 7) + 1
-                        checkedAllLogicallyAvailableLevels = levelIndex == 1
-                    else:
-                        levelIndex = (levelIndex % latestLogicallyAllowedLevel) + 1
-                # Undo any level blocking that may have been performed
-                BlockAccessToLevel(spoiler.settings, 100)
+            lockedKongs = [kong for kong in GetKongs() if kong not in spoiler.settings.starting_kong_list]
+            for kong in lockedKongs:
+                # We need the item representation of the kong
+                kongItem = ItemPool.ItemFromKong(kong)
+                # To save some cost on the coming method, we know none of the locked kong's moves can be prerequisites
+                otherKongs = [Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky]
+                otherKongs.remove(kong)
+                # Get the unplaced prerequisites to this Kong's location - this could indirectly include other Kongs' locations
+                directPrerequisiteMoves = GetUnplacedItemPrerequisites(spoiler, kongItem, preplacedPriorityMoves, otherKongs)
+                newlyPlacedItems = PlacePriorityItems(spoiler, directPrerequisiteMoves, preplacedPriorityMoves)
+                preplacedPriorityMoves.extend(newlyPlacedItems)
 
     # Handle shared moves before other moves in move rando
     if not spoiler.settings.unlock_all_moves and spoiler.settings.move_rando != "off":
