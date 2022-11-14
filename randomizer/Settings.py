@@ -386,7 +386,7 @@ class Settings:
                     self.shuffled_location_types.append(Types.TrainingBarrel)
             # DEBUG CODE for testing, put it in the list selector when it's completed
             # Uncomment the next line if you want Kongs in the item rando location pool
-            # self.shuffled_location_types.append(Types.Kong)  
+            # self.shuffled_location_types.append(Types.Kong)
         self.shuffle_prices()
 
         # B Locker and Troff n Scoff amounts Rando
@@ -756,7 +756,7 @@ class Settings:
                     Locations.IslesVinesTrainingBarrel,
                     Locations.IslesBarrelsTrainingBarrel,
                     Locations.IslesOrangesTrainingBarrel,
-                    Locations.IslesDonkeyJapesRock
+                    Locations.IslesDonkeyJapesRock,
                 )
                 self.valid_locations[Types.Kong].extend(shuffledLocations)  # No items can be in Kong cages but Kongs can be in all other locations
 
