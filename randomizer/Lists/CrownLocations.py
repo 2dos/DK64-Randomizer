@@ -2811,6 +2811,7 @@ CrownLocations = {
             z=3391.4,
             scale=0.25,
             region=Regions.HideoutHelmMain,
+            is_vanilla=True,
             logic=lambda l: l.jetpack
             and l.isdiddy
             and (

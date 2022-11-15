@@ -38,7 +38,7 @@ LogicRegions = {
         LocationLogic(Locations.HelmBananaFairy2, lambda l: l.camera and Events.HelmKeyAccess in l.Events),
         LocationLogic(Locations.HelmKey, lambda l: Events.HelmKeyAccess in l.Events),
     ], [
-        Event(Events.HelmDoorsOpened, lambda l: l.grab and l.donkey and l.jetpack and l.diddy and l.punch and l.chunky),
+        Event(Events.HelmDoorsOpened, lambda l: (l.grab and l.donkey and l.jetpack and l.diddy and l.punch and l.chunky) or l.settings.helm_setting != "default"),
         Event(Events.HelmDonkeyDone, lambda l: ((l.isPriorHelmComplete(Kongs.donkey) or l.settings.helm_setting == "skip_all") and l.HelmDonkey1 and l.HelmDonkey2) or not l.settings.helm_donkey),
         Event(Events.HelmChunkyDone, lambda l: ((l.isPriorHelmComplete(Kongs.chunky) or l.settings.helm_setting == "skip_all") and l.HelmChunky1 and l.HelmChunky2) or not l.settings.helm_chunky),
         Event(Events.HelmTinyDone, lambda l: ((l.isPriorHelmComplete(Kongs.tiny) or l.settings.helm_setting == "skip_all") and l.HelmTiny1 and l.HelmTiny2) or not l.settings.helm_tiny),
