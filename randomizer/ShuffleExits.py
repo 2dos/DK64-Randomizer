@@ -2,6 +2,7 @@
 import random
 
 import js
+from randomizer.Enums.Types import Types
 import randomizer.Fill as Fill
 import randomizer.Lists.Exceptions as Ex
 import randomizer.Logic as Logic
@@ -194,7 +195,8 @@ def ShuffleExits(settings: Settings):
     # Set up front and back entrance pools for each setting
     # Assume all shuffled exits reachable by default
     if settings.shuffle_loading_zones == "levels":
-        if settings.kongs_for_progression:
+        # If we are restricted on kong locations, we need to carefully place levels in order to meet the kongs-by-level requirement
+        if settings.kongs_for_progression and not (settings.shuffle_items and Types.Kong in settings.shuffled_location_types):
             ShuffleLevelOrderWithRestrictions(settings)
         else:
             ShuffleLevelExits(settings)
