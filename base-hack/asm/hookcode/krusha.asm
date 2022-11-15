@@ -97,3 +97,32 @@ warpGrowFix:
     warpGrowFix_Finish:
         J   0x806DC350
         NOP
+
+FallTooFarFix:
+    LWC1    f4, 0x38 (t7)
+    LW      t8, 0x58 (t6)
+    LUI     t9, hi(KrushaSlot)
+    LBU     t9, lo(KrushaSlot) (t9)
+    ADDIU   t9, t9, 2
+    BNE     t8, t9, FallTooFarFix_Finish
+    ADDIU   t9, r0, 3
+    BEQ     t8, t9, FallTooFarFix_Diddy
+    ADDIU   t9, r0, 5
+    BNE     t8, t9, FallTooFarFix_Finish
+    NOP
+
+    FallTooFarFix_Tiny:
+        B       FallTooFarFix_ApplyScale
+        LUI     t9, 0x3FC0
+
+    FallTooFarFix_Diddy:
+        LUI     t9, 0x3F94
+        ADDIU   t9, t9, 0xB13A
+
+    FallTooFarFix_ApplyScale:
+        MTC1    t9, f6
+        MUL.S   f4, f4, f6
+
+    FallTooFarFix_Finish:
+        J       0x806D362C
+        LUI     t8, 0x8080
