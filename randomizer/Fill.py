@@ -489,7 +489,14 @@ def PareWoth(spoiler, PlaythroughLocations):
 
 def CalculateWothPaths(spoiler, WothLocations):
     """Calculate the Paths (dependencies) for each Way of the Hoard item."""
-    LogicVariables.pathMode = True  # Helps get more accurate paths by removing important obstacles to level entry
+    # Helps get more accurate paths by removing important obstacles to level entry
+    # Removes the following:
+    # - The need for vines to progress in Aztec
+    # - The need for swim to get into level 4
+    # - The need for keys to open lobbies (this is done with open_lobbies)
+    LogicVariables.pathMode = True
+    old_open_lobbies_temp = spoiler.settings.open_lobbies
+    spoiler.settings.open_lobbies = True
     falseWothLocations = []
     # Prep the dictionary that will contain the path for the key item
     for locationId in WothLocations:
@@ -499,12 +506,10 @@ def CalculateWothPaths(spoiler, WothLocations):
         location = LocationList[locationId]
         item_id = location.item
         location.item = None
-        # We need to have some items assumed in order to get a "pure" path instead of most early paths being a subset of later paths.
-        # We assume Keys and Kongs because anything locked behind a them will then require everything that Key or Kong requires.
-        # This sort of defeats the purpose of paths, as it would put everything in a Key or Kong's path into the path of many, many items.
-        assumedItems = ItemPool.Keys() + ItemPool.Kongs(spoiler.settings)
-        # Vines and Swim invariably end up on long paths to many, many items because they can block whole levels, so we'll also assume these to shorten paths
-        assumedItems.extend([Items.Vines, Items.Swim])
+        # We also need to assume Kongs in order to get a "pure" path instead of Kong paths being a subset of most later paths.
+        # Anything locked behind a a Kong will then require everything that Kong requires.
+        # This sort of defeats the purpose of paths, as it would put everything in a Kong's path into the path of many, many items.
+        assumedItems = ItemPool.Kongs(spoiler.settings)
         # Find all accessible locations without this item placed
         Reset()
         # At this point we know there is no breaking purchase order
@@ -530,6 +535,7 @@ def CalculateWothPaths(spoiler, WothLocations):
         WothLocations.remove(locationId)
         del spoiler.woth_paths[locationId]
     LogicVariables.pathMode = False  # Don't carry this pathMode flag beyond this method ever
+    spoiler.settings.open_lobbies = old_open_lobbies_temp  # Undo the open lobbies setting change too
 
 
 def CalculateFoolish(spoiler, WothLocations):
@@ -1056,6 +1062,7 @@ def ShuffleSharedMoves(spoiler, placedMoves):
         trainingMovesUnplaced = PlaceItems(spoiler.settings, "assumed", [Items.Oranges], [x for x in ItemPool.AllItems(spoiler.settings) if x != Items.Oranges and x not in placedMoves])
         if trainingMovesUnplaced > 0:
             raise Ex.ItemPlacementException("Failed to place Orange training barrel move.")
+        placedMoves.append(Items.Oranges)
     importantSharedToPlace = ItemPool.ImportantSharedMoves.copy()
     # Next place any fairy moves that need placing, settings dependent
     if spoiler.settings.shockwave_status == "shuffled" and Items.CameraAndShockwave not in placedMoves:

@@ -43,7 +43,7 @@ class LogicVarHolder:
         if settings is None:
             return
         self.settings = settings
-        self.pathMode = False
+        self.pathMode = False  # See CalculateWothPaths method for details
         self.startkong = self.settings.starting_kong
         self.Reset()
 
