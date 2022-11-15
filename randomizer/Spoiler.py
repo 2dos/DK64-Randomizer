@@ -217,6 +217,7 @@ class Spoiler:
         humanspoiler["Way of the Hoard"] = self.woth
         # Paths for Woth items - does not show up on the site, just for debugging
         humanspoiler["Paths"] = {}
+        wothSlams = 0
         for loc, path in self.woth_paths.items():
             destination_item = ItemList[LocationList[loc].item]
             path_dict = {}
@@ -224,7 +225,11 @@ class Spoiler:
                 path_location = LocationList[path_loc_id]
                 path_item = ItemList[path_location.item]
                 path_dict[path_location.name] = path_item.name
-            humanspoiler["Paths"][destination_item.name] = path_dict
+            extra = ""
+            if LocationList[loc].item == Items.ProgressiveSlam:
+                wothSlams += 1
+                extra = " " + str(wothSlams)
+            humanspoiler["Paths"][destination_item.name + extra] = path_dict
 
         for location_id, location in LocationList.items():
             # No need to spoiler constants

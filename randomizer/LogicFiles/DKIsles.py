@@ -61,8 +61,8 @@ LogicRegions = {
         TransitionFront(Regions.BananaFairyRoom, lambda l: l.mini and l.istiny, Transitions.IslesMainToFairy),
         TransitionFront(Regions.JungleJapesLobby, lambda l: l.settings.open_lobbies or Events.KLumsyTalkedTo in l.Events, Transitions.IslesMainToJapesLobby),
         TransitionFront(Regions.CrocodileIsleBeyondLift, lambda l: l.settings.open_lobbies or Events.AztecKeyTurnedIn in l.Events),
-        TransitionFront(Regions.IslesMainUpper, lambda l: l.vines),
-        TransitionFront(Regions.GloomyGalleonLobby, lambda l: (l.settings.open_lobbies or Events.AztecKeyTurnedIn in l.Events) and l.swim, Transitions.IslesMainToGalleonLobby),
+        TransitionFront(Regions.IslesMainUpper, lambda l: l.vines or l.pathMode),
+        TransitionFront(Regions.GloomyGalleonLobby, lambda l: (l.settings.open_lobbies or Events.AztecKeyTurnedIn in l.Events) and (l.swim or l.pathMode), Transitions.IslesMainToGalleonLobby),
         TransitionFront(Regions.CabinIsle, lambda l: l.settings.open_lobbies or Events.GalleonKeyTurnedIn in l.Events),
         TransitionFront(Regions.CreepyCastleLobby, lambda l: l.settings.open_lobbies or Events.ForestKeyTurnedIn in l.Events, Transitions.IslesMainToCastleLobby),
         TransitionFront(Regions.HideoutHelmLobby, lambda l: l.monkeyport and l.istiny
@@ -113,7 +113,7 @@ LogicRegions = {
     ]),
 
     Regions.AngryAztecLobby: Region("Angry Aztec Lobby", "Level Lobbies", Levels.DKIsles, True, None, [
-        LocationLogic(Locations.IslesTinyAztecLobby, lambda l: l.charge and l.diddy and l.twirl and l.istiny, MinigameType.BonusBarrel),
+        LocationLogic(Locations.IslesTinyAztecLobby, lambda l: (((l.charge and l.diddy and l.twirl) or l.settings.bonus_barrels == "skip") and l.istiny) or (l.settings.bonus_barrels == "skip" and l.settings.free_trade_items), MinigameType.BonusBarrel),
     ], [], [
         TransitionFront(Regions.IslesMainUpper, lambda l: True, Transitions.IslesAztecLobbyToMain),
         TransitionFront(Regions.AngryAztecStart, lambda l: l.IsLevelEnterable(Levels.AngryAztec), Transitions.IslesToAztec),
@@ -128,7 +128,7 @@ LogicRegions = {
     ]),
 
     Regions.IslesSnideRoom: Region("Isles Snide Room", "Krem Isle", Levels.DKIsles, True, None, [
-        LocationLogic(Locations.IslesDiddySnidesLobby, lambda l: l.spring and l.isdiddy, MinigameType.BonusBarrel),
+        LocationLogic(Locations.IslesDiddySnidesLobby, lambda l: ((l.settings.bonus_barrels == "skip" or l.spring) and l.isdiddy) or (l.settings.bonus_barrels == "skip" and l.settings.free_trade_items), MinigameType.BonusBarrel),
         LocationLogic(Locations.IslesBattleArena1, lambda l: not l.settings.crown_placement_rando and l.chunky and l.barrels),
     ], [], [
         TransitionFront(Regions.CrocodileIsleBeyondLift, lambda l: True, Transitions.IslesSnideRoomToMain),
