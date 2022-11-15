@@ -159,3 +159,20 @@ void MinecartJumpFix_0(void) {
         CurrentActorPointer_0->control_state_progress = 0;
     }
 }
+
+void updateKongSize(void) {
+    float targ_scale = 0.15f;
+    if ((Rando.krusha_slot + 2) == Player->characterID) {
+        if (Player->characterID == 3) {
+            // Diddy
+            targ_scale = 0.13f;
+        } else if (Player->characterID == 5) {
+            // Tiny
+            targ_scale = 0.1f;
+        }
+    }
+    for (int i = 0; i < 6; i++) {
+        Player->scale[i] = targ_scale;
+    }
+    parseCheats(0);
+}

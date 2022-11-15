@@ -548,7 +548,7 @@ static const int crown_maps[] = {
 
 void CrownPadGenericCode(behaviour_data* behaviour, int index, int id, int crown_level_index) {
 	if (behaviour->current_state == 0) {
-		setScriptRunState(behaviour, 3, 300);
+		setScriptRunState(behaviour, 3, 900);
 		behaviour->next_state = 1;
 	}
 	int world = getWorld(CurrentMap, 1);

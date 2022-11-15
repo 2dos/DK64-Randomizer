@@ -263,6 +263,7 @@ extern void assignGIFToActor(void* paad, void* sprite, int scale_f);
 extern int loadSetupNew(int map);
 extern int getParentIndex(int map);
 extern void updateCollisionDimensions(int player, int x_f, int y_f, int z_f, float scale);
+extern void parseCheats(int unk0);
 
 extern void wipeTextureSlot(void* location);
 extern void copyImage(void* location, void* image, int width);
