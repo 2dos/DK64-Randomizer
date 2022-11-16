@@ -593,7 +593,7 @@ def CalculateFoolish(spoiler, WothLocations):
         if any([loc for loc in locations if LocationList[loc.id].item in majorItems]):
             nonHintableNames.add(region.hint_name)
     # The regions that are foolish are all regions not in this list (that have locations in them!)
-    spoiler.foolish_region_names = list(set([region.hint_name for id, region in RegionList.items() if any(region.locations) and region.hint_name not in nonHintableNames]))
+    spoiler.foolish_region_names = list({region.hint_name for id, region in RegionList.items() if any(region.locations) and region.hint_name not in nonHintableNames})
 
 
 def RandomFill(settings, itemsToPlace, inOrder=False):
@@ -2155,7 +2155,7 @@ def ShuffleMisc(spoiler):
     if spoiler.settings.activate_all_bananaports in ["all", "isles"]:
         # In simpler bananaport shuffling, we can rely on the map id and warp number to find pairs
         if spoiler.settings.bananaport_rando in ("in_level", "off"):
-            warpMapIds = set([BananaportVanilla[warp].map_id for warp in Warps])
+            warpMapIds = {BananaportVanilla[warp].map_id for warp in Warps}
             for map_id in warpMapIds:
                 mapWarps = [BananaportVanilla[warp] for warp in Warps if BananaportVanilla[warp].map_id == map_id]
                 for warpData in mapWarps:
