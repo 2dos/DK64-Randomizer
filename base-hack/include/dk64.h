@@ -35,7 +35,7 @@ extern int SaveToGlobal();
 extern int SaveToUnk();
 extern int DetectGameOver();
 extern int DetectAdventure();
-extern void displaySprite(void* control_pointer, void* sprite, int x, int y, int scale, int gif_updatefrequency, int movement_style);
+extern void displaySprite(void* control_pointer, void* sprite, int x, int y, float scale, int gif_updatefrequency, int movement_style);
 extern int* getOtherSpritePointer();
 extern void alterSize(void* object, int size);
 extern void unkSizeFunction(void* object);
@@ -225,6 +225,7 @@ extern int doAllKongsHaveMove(shop_paad* paad, int unk0);
 extern void getSequentialPurchase(shop_paad* paad, KongBase* movedata);
 extern int ReadFile(int data, int kong, int level, int file);
 extern int* printText(int* dl, short x, short y, float scale, char* str);
+extern int* printOutOfCounter(int x, int y, int top, int bottom, int* dl, int unk0, int scale);
 
 extern void assessFlagMapping(int map, int id);
 extern void coinCBCollectHandle(int player, int obj, int is_homing);
@@ -270,6 +271,9 @@ extern void copyImage(void* location, void* image, int width);
 extern void blink(void* actor, int unk0, int unk1);
 extern void applyImageToActor(void* actor, int unk0, int unk1);
 extern void writeImageSlotToActor(void* actor, int unk0, int unk1, void* location);
+extern void spriteControlCode(sprite_struct* sprite, char* render);
+extern int getPauseWheelRotationProgress(int unk0, int unk1);
+extern void updateFilePercentage(void);
 
 //vanilla data
 extern float TransitionSpeed;
@@ -487,6 +491,13 @@ extern char* KongTextNames[8];
 extern actor_behaviour_def ActorBehaviourTable[128];
 extern float LedgeHangY[7];
 extern float LedgeHangY_0[7];
+
+extern unsigned char ViewedPauseItem;
+extern unsigned char NextViewedPauseItem;
+extern unsigned char MenuActivatedItems[16];
+extern unsigned char ItemsInWheel;
+extern short RotationPerItem;
+extern short FileVariables[8];
 
 //hack data
 extern int TestVariable;
