@@ -10,7 +10,6 @@ from randomizer.Enums.Locations import Locations
 from randomizer.Enums.Regions import Regions
 from randomizer.Enums.Transitions import Transitions
 from randomizer.Enums.Types import Types
-from randomizer.ItemPool import AllKongMoves
 from randomizer.Lists.Item import ItemList, NameFromKong
 from randomizer.Lists.Location import LocationList, SharedShopLocations, TrainingBarrelLocations
 from randomizer.Lists.MapsAndExits import GetMapId

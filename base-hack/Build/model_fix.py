@@ -1,7 +1,6 @@
 """Generate corrected Diddy and Lanky models."""
 
 import zlib
-import os
 
 rom_file = "rom/dk64.z64"
 pointer_offset = 0x101C50

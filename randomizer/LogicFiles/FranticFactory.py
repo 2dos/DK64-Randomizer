@@ -1,8 +1,6 @@
 # fmt: off
 """Logic file for Frantic Factory."""
 
-from re import L
-
 from randomizer.Enums.Events import Events
 from randomizer.Enums.Kongs import Kongs
 from randomizer.Enums.Levels import Levels

@@ -1,6 +1,5 @@
 """List of enemies with in-game index."""
 from enum import IntEnum
-from os import kill
 
 
 class Enemies(IntEnum):

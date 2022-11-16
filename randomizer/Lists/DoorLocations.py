@@ -3,7 +3,6 @@ from randomizer.Enums.Events import Events
 from randomizer.Lists.MapsAndExits import Maps
 from randomizer.Enums.Levels import Levels
 from randomizer.Enums.Regions import Regions
-from randomizer.Enums.Time import Time
 from randomizer.Enums.Kongs import Kongs
 from randomizer.Logic import Regions as RegionList
 from randomizer.LogicClasses import TransitionFront

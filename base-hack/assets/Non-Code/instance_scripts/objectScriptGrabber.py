@@ -1,5 +1,4 @@
 """Grab object scripts."""
-import gzip
 import math
 import os
 import shutil

@@ -1,8 +1,6 @@
 """Randomize Music passed from Misc options."""
 import gzip
-import json
 import random
-from ast import And
 
 import js
 import randomizer.Lists.Exceptions as Ex

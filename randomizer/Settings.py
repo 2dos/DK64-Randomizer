@@ -3,7 +3,6 @@ import hashlib
 import inspect
 import json
 import random
-import sys
 from random import randint
 
 from randomizer.Enums.Events import Events

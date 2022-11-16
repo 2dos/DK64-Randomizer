@@ -1,8 +1,6 @@
 """Shuffle Wrinkly and T&S Doors based on settings."""
 import random
 from randomizer.Enums.Kongs import Kongs
-from randomizer.Enums.Levels import Levels
-from randomizer.Enums.Regions import Regions
 from randomizer.Lists.DoorLocations import door_locations
 
 level_list = ["Jungle Japes", "Angry Aztec", "Frantic Factory", "Gloomy Galleon", "Fungi Forest", "Crystal Caves", "Creepy Castle", "Hideout Helm"]

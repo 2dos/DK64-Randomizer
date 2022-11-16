@@ -1,6 +1,5 @@
 """Apply item rando changes."""
 import js
-from randomizer.Lists.MapsAndExits import Maps
 from randomizer.Patching.Patcher import ROM
 from randomizer.Spoiler import Spoiler
 from randomizer.Enums.Types import Types

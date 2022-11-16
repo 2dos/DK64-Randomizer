@@ -6,34 +6,18 @@ import shutil
 import subprocess
 import sys
 import zlib
-
-import create_helm_geo
-import generate_watch_file
-import shop_instance_script  # HAS TO BE BEFORE `instance_script_maker`
 from writeWarpData import generateDefaultPadPairing  # HAS TO BE BEFORE `instance_script_maker`
-import portal_instance_script  # HAS TO BE BEFORE `instance_script_maker`
-import instance_script_maker
-import model_fix
-import generate_disco_models
-import model_port
-
-# Patcher functions for the extracted files
-import patch_text
 from adjust_exits import adjustExits
 from convertPortalImage import convertPortalImage
 from convertSetup import convertSetup
 from end_seq_writer import createSquishFile, createTextFile
 from generate_yellow_wrinkly import generateYellowWrinkly
 from image_converter import convertToRGBA32
-
-# Infrastructure for recomputing DK64 global pointer tables
-from map_names import maps
 from populateSongData import writeVanillaSongData
 from recompute_overlays import isROMAddressOverlay, readOverlayOriginalData, replaceOverlayData, writeModifiedOverlaysToROM
 from recompute_pointer_table import (
     dumpPointerTableDetails,
     getFileInfo,
-    make_safe_filename,
     parsePointerTables,
     pointer_tables,
     replaceROMFile,
