@@ -19,13 +19,7 @@ def randomize_krool(spoiler: Spoiler):
 
     firstPhase = spoiler.settings.krool_order[0]
     if firstPhase != 0:  # If not starting with DK
-        KroolPhaseMaps = [
-            Maps.KroolDonkeyPhase,
-            Maps.KroolDiddyPhase,
-            Maps.KroolLankyPhase,
-            Maps.KroolTinyPhase,
-            Maps.KroolChunkyPhase,
-        ]
+        KroolPhaseMaps = [Maps.KroolDonkeyPhase, Maps.KroolDiddyPhase, Maps.KroolLankyPhase, Maps.KroolTinyPhase, Maps.KroolChunkyPhase]
         # Get new first phase map to write
         firstPhaseMap = KroolPhaseMaps[firstPhase]
 

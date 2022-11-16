@@ -25,6 +25,7 @@ with open("dk64-randomizer-base-dev.z64", "r+b") as fh:
         fh.seek(aztec_setup + 4 + (model2_count * 0x30) + 4 + (mystery_count * 0x24))
         actor_count = int.from_bytes(fh.read(4), "big")
         start_of_actor_range = aztec_setup + 4 + (model2_count * 0x30) + 4 + (mystery_count * 0x24) + 4
+        # print(hex(start_of_actor_range))
         for x in range(actor_count):
             start_of_actor = start_of_actor_range + (0x38 * x)
             fh.seek(start_of_actor)

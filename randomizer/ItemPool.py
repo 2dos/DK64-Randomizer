@@ -237,16 +237,7 @@ def MedalAssumedItems():
 
 def Keys():
     """Return all key items."""
-    return [
-        Items.JungleJapesKey,
-        Items.AngryAztecKey,
-        Items.FranticFactoryKey,
-        Items.GloomyGalleonKey,
-        Items.FungiForestKey,
-        Items.CrystalCavesKey,
-        Items.CreepyCastleKey,
-        Items.HideoutHelmKey,
-    ]
+    return [Items.JungleJapesKey, Items.AngryAztecKey, Items.FranticFactoryKey, Items.GloomyGalleonKey, Items.FungiForestKey, Items.CrystalCavesKey, Items.CreepyCastleKey, Items.HideoutHelmKey]
 
 
 def Kongs(settings):
@@ -334,7 +325,7 @@ def Upgrades(settings):
         upgrades.extend(itertools.repeat(Items.ProgressiveAmmoBelt, 2))
         upgrades.extend(itertools.repeat(Items.ProgressiveInstrumentUpgrade, 3))
     if settings.shockwave_status != "start_with":
-        if settings.shockwave_status in ("vanilla", "shuffled"):
+        if settings.shockwave_status == "vanilla" or settings.shockwave_status == "shuffled":
             upgrades.append(Items.CameraAndShockwave)
         else:
             upgrades.append(Items.Camera)
@@ -388,11 +379,5 @@ LankyMoves = [Items.Grape, Items.Trombone, Items.Orangstand, Items.BaboonBalloon
 TinyMoves = [Items.Feather, Items.Saxophone, Items.MiniMonkey, Items.PonyTailTwirl, Items.Monkeyport]
 ChunkyMoves = [Items.Pineapple, Items.Triangle, Items.HunkyChunky, Items.PrimatePunch, Items.GorillaGone]
 ImportantSharedMoves = [Items.ProgressiveSlam, Items.ProgressiveSlam, Items.SniperSight, Items.HomingAmmo]
-JunkSharedMoves = [
-    Items.ProgressiveAmmoBelt,
-    Items.ProgressiveAmmoBelt,
-    Items.ProgressiveInstrumentUpgrade,
-    Items.ProgressiveInstrumentUpgrade,
-    Items.ProgressiveInstrumentUpgrade,
-]
+JunkSharedMoves = [Items.ProgressiveAmmoBelt, Items.ProgressiveAmmoBelt, Items.ProgressiveInstrumentUpgrade, Items.ProgressiveInstrumentUpgrade, Items.ProgressiveInstrumentUpgrade]
 ProgressiveSharedMovesSet = {Items.ProgressiveAmmoBelt, Items.ProgressiveInstrumentUpgrade, Items.ProgressiveSlam}

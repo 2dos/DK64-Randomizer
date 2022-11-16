@@ -84,7 +84,7 @@ def ShufflePatches(spoiler: Spoiler, human_spoiler):
         select_random_dirt_from_area(area_dirt, 2, spoiler, human_spoiler)
         del total_dirt_patch_list[area_key]
 
-    for area_key in total_dirt_patch_list:
+    for area_key in total_dirt_patch_list.keys():
         area_dirt = total_dirt_patch_list[area_key]
         select_random_dirt_from_area(area_dirt, 1, spoiler, human_spoiler)
     return human_spoiler.copy()
