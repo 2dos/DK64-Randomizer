@@ -91,6 +91,7 @@ extern int* drawText(int* dl, int style, float x, float y, char* str, int red, i
 extern int* drawDPad(int* dl);
 extern int* drawImageWithFilter(int* dl, int text_index, codecs codec_index, int img_width, int img_height, int x, int y, float xScale, float yScale, int red, int green, int blue, int opacity);
 extern void correctKongFaces(void);
+extern int* display_file_images(int* dl, int y_offset);
 
 extern int getLo(void* addr);
 extern int getHi(void* addr);
@@ -187,6 +188,7 @@ extern void MinecartJumpFix(void* player, int anim);
 extern void MinecartJumpFix_0(void);
 extern void updateKongSize(void);
 extern void initTracker(void);
+extern void resetTracker(void);
 extern void wipeFileMod(int file, int will_save);
 extern void enterFileProgress(int sfx);
 extern void pokemonSnapMode(void);
@@ -238,6 +240,7 @@ extern void handleSpriteCode(int control_type);
 extern int changeSelectedLevel(int unk0, int unk1);
 extern void checkItemDB(void);
 extern void initPauseMenu(void);
+extern void changePauseScreen(void);
 
 extern unsigned int cs_skip_db[432];
 extern bonus_barrel_info bonus_data[95];

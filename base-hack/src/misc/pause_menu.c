@@ -97,6 +97,7 @@ static unsigned char check_data[2][9][PAUSE_ITEM_COUNT] = {}; // 8 items, 9 leve
 
 void checkItemDB(void) {
     renderScreenTransition(7);
+    initTracker();
     int in_flut = 0;
     for (int i = 0; i < PAUSE_ITEM_COUNT; i++) {
         in_flut = 0;
@@ -206,10 +207,15 @@ int* pauseScreen3And4Header(int* dl) {
     pause_paad* paad = CurrentActorPointer_0->paad;
     if (paad->screen == 3) {
         return printText(dl, 0x280, 0x3C, 0.65f, "TOTALS");
+    } else if (paad->screen == 4) {
+        dl = printText(dl, 0x280, 0x3C, 0.65f, "CHECKS");
+        dk_strFormat((char*)level_check_text, "w %s e", levels[(int)check_level % (sizeof(levels) / 4)]);
+        return printText(dl, 0x280, 160, 0.5f, level_check_text);
+    } else if (paad->screen == 5) {
+        dl = display_file_images(dl, -50);
+        return printText(dl, 0x280, 0x3C, 0.65f, "MOVES");
     }
-    dl = printText(dl, 0x280, 0x3C, 0.65f, "CHECKS");
-    dk_strFormat((char*)level_check_text, "w %s e", levels[(int)check_level % (sizeof(levels) / 4)]);
-    return printText(dl, 0x280, 160, 0.5f, level_check_text);
+    return dl;
 }
 
 int* pauseScreen3And4ItemName(int* dl, int x, int y, float scale, char* text) {
@@ -217,44 +223,46 @@ int* pauseScreen3And4ItemName(int* dl, int x, int y, float scale, char* text) {
     int item_index = MenuActivatedItems[ViewedPauseItem];
     if (paad->screen == 3) {
         return printText(dl, x, y, scale, raw_items[item_index]);
+    } else if (paad->screen == 4) {
+        return printText(dl, x, y, scale, items[item_index]);
     }
-    return printText(dl, x, y, scale, items[item_index]);
+    return dl;
 }
 
 int* pauseScreen3And4Counter(int x, int y, int top, int bottom, int* dl, int unk0, int scale) {
     pause_paad* paad = CurrentActorPointer_0->paad;
     if (paad->screen == 3) {
         return printOutOfCounter(x, y, top, bottom, dl, unk0, scale);
-    }
-    /*
-        0 = GB
-        1 = Crown
-        2 = Keys
-        3 = Medals
-        4 = RW Coin
-        5 = Fairies
-        6 = N Coin
-        7 = Blueprints
-    */
-    int item_index = MenuActivatedItems[ViewedPauseItem];
-    int top_num = 0;
-    int bottom_num = 0;
-    if (check_level == 0) {
-        // All
-        for (int i = 0; i < 9; i++) {
-            top_num += check_data[0][i][item_index];
-            bottom_num += check_data[1][i][item_index];
+    } else if (paad->screen == 4) {
+        int item_index = MenuActivatedItems[ViewedPauseItem];
+        int top_num = 0;
+        int bottom_num = 0;
+        if (check_level == 0) {
+            // All
+            for (int i = 0; i < 9; i++) {
+                top_num += check_data[0][i][item_index];
+                bottom_num += check_data[1][i][item_index];
+            }
+        } else {
+            int lvl = check_level - 1;
+            if ((item_index == 4) || (item_index == 6) || (item_index == 8)) {
+                // Nin/RW Coin, Kongs
+                lvl = 0;
+            }
+            top_num = check_data[0][lvl][item_index];
+            bottom_num = check_data[1][lvl][item_index];
         }
-    } else {
-        int lvl = check_level - 1;
-        if ((item_index == 4) || (item_index == 6) || (item_index == 8)) {
-            // Nin/RW Coin, Kongs
-            lvl = 0;
-        }
-        top_num = check_data[0][lvl][item_index];
-        bottom_num = check_data[1][lvl][item_index];
+        return printOutOfCounter(x, y, top_num, bottom_num, dl, unk0, scale);
     }
-    return printOutOfCounter(x, y, top_num, bottom_num, dl, unk0, scale);
+    return dl;
+}
+
+void changePauseScreen(void) {
+    pause_paad* paad = CurrentActorPointer_0->paad;
+    if ((paad->screen != 5) && (paad->next_screen == 5)) {
+        resetTracker();
+    }
+    playSFX(0x2C9);
 }
 
 void updatePauseScreenWheel(void* write_location, void* sprite, int x, int y, float scale, int local_index, int index) {
@@ -301,7 +309,7 @@ void newPauseSpriteCode(sprite_struct* sprite, char* render) {
         diff_mag = -pos_diff;
     }
     float diff_increment = pause_control->control % RotationPerItem;
-    diff_increment /= 6.375f;
+    diff_increment /= (RotationPerItem / 80.0f);
     if (diff_mag >= 3) {
         diff_increment /= 2;
     }

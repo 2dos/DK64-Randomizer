@@ -802,16 +802,18 @@ void initHack(int source) {
 					}
 				}
 				// Checks Screen
-				*(short*)(0x806A8672) = 4; // Screen decrease cap
-				*(short*)(0x806A8646) = 5; // Screen increase cap
+				int screen_count = 5;
+				*(short*)(0x806A8672) = screen_count; // Screen decrease cap
+				*(short*)(0x806A8646) = screen_count + 1; // Screen increase cap
 				*(int*)(0x806A94CC) = 0x2C610003; // SLTIU $at, $v1, 0x3 (Changes render check for <3 rather than == 3)
 				*(int*)(0x806A94D0) = 0x10200298; // BEQZ $at, 0x298 (Changes render check for <3 rather than == 3)
 				*(int*)(0x806A9F98) = 0x0C000000 | (((int)&pauseScreen3And4Header & 0xFFFFFF) >> 2); // Header
 				*(int*)(0x806AA03C) = 0x0C000000 | (((int)&pauseScreen3And4Counter & 0xFFFFFF) >> 2); // Counter
-				*(int*)(0x806A86F8) = 0x2CA10003; // SLTIU $at, $a1, 0x3 (Changes control check for <3 rather than == 3)
-				*(int*)(0x806A86FC) = 0x10200182; // BEQZ $at, 0x182 (Changes control check for <3 rather than == 3)
-				*(int*)(0x806AA410) = 0x2C410003; // SLTIU $at, $v0, 0x3 (Changes sprite check for <3 rather than == 3)
-				*(int*)(0x806AA414) = 0x102003AA; // BEQZ $at, 0x3AA (Changes sprite check for <3 rather than == 3)
+				*(int*)(0x806A86BC) = 0x0C000000 | (((int)&changePauseScreen & 0xFFFFFF) >> 2); // Change screen hook
+				// *(int*)(0x806A86F8) = 0x2CA10003; // SLTIU $at, $a1, 0x3 (Changes control check for <3 rather than == 3)
+				// *(int*)(0x806A86FC) = 0x10200182; // BEQZ $at, 0x182 (Changes control check for <3 rather than == 3)
+				// *(int*)(0x806AA410) = 0x2C410003; // SLTIU $at, $v0, 0x3 (Changes sprite check for <3 rather than == 3)
+				// *(int*)(0x806AA414) = 0x102003AA; // BEQZ $at, 0x3AA (Changes sprite check for <3 rather than == 3)
 				*(int*)(0x806A8D20) = 0x0C000000 | (((int)&changeSelectedLevel & 0xFFFFFF) >> 2); // Change selected level on checks screen
 				*(int*)(0x806A84F8) = 0x0C000000 | (((int)&checkItemDB & 0xFFFFFF) >> 2); // Populate Item Databases
 			}

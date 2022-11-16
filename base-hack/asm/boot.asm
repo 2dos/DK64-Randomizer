@@ -251,6 +251,12 @@ warpGrowFixHook:
 FallTooFarFixHook:
 	J 	FallTooFarFix
 	NOP
+PauseControlHook:
+	J 	PauseControl_Control
+	NOP
+PauseSpriteHook:
+	J 	PauseControl_Sprite
+	NOP
 
 loadExtraHooks:
 	LUI t3, hi(InstanceScriptHook)
@@ -587,6 +593,18 @@ loadExtraHooks:
 	LUI t4, 0x806A
 	SW t3, 0x6708 (t4) // Store Hook
 	SW r0, 0x670C (t4) // Store NOP
+	
+	LUI t3, hi(PauseControlHook)
+	LW t3, lo(PauseControlHook) (t3)
+	LUI t4, 0x806B
+	SW t3, 0x86FC (t4) // Store Hook
+	SW r0, 0x8700 (t4) // Store NOP
+	
+	LUI t3, hi(PauseSpriteHook)
+	LW t3, lo(PauseSpriteHook) (t3)
+	LUI t4, 0x806B
+	SW t3, 0xA414 (t4) // Store Hook
+	SW r0, 0xA418 (t4) // Store NOP
 
 	loadExtraHooks_4:
 	LUI t3, hi(KrushaSlot)

@@ -69,3 +69,31 @@ PauseCounterCap:
     PauseCounterCap_Finish:
         J       0x806A98A0
         OR      t8, t6, s2
+
+PauseControl_Control:
+    // 806A86FC
+    BEQ     a1, at, PauseControl_Control_Finish
+    LUI     t8, 0x8080
+    ADDIU   at, r0, 4
+    BEQ     a1, at, PauseControl_Control_Finish
+    NOP
+    J       0x806A8704
+    NOP
+
+    PauseControl_Control_Finish:
+        J       0x806A8D08
+        NOP
+
+PauseControl_Sprite:
+    // 806AA414
+    BEQ     v0, at, PauseControl_Sprite_Finish
+    OR      s0, r0, r0
+    ADDIU   at, r0, 4
+    BEQ     v0, at, PauseControl_Sprite_Finish
+    NOP
+    J       0x806AA41C
+    NOP
+
+    PauseControl_Sprite_Finish:
+        J       0x806AB2C0
+        NOP
