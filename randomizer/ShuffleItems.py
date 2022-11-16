@@ -186,7 +186,7 @@ def ShuffleItems(spoiler: Spoiler):
                 locations_not_needing_flags.append(location_selection)
             # Add this location's flag to the lists of available flags by location
             # Initialize relevant list if it doesn't exist
-            if item_location.type not in flag_dict.keys():
+            if item_location.type not in flag_dict:
                 if item_location.type == Types.Blueprint:
                     flag_dict[item_location.type] = {}
                     flag_dict[item_location.type][Kongs.donkey] = []

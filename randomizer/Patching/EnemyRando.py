@@ -144,7 +144,7 @@ def getBalancedCrownEnemyRando(spoiler: Spoiler, crown_setting, damage_ohko_sett
                     EnemyMetaData[enemy].disruptive = 0
         # the legacy_hard_mode list is trickier to fill, but here goes:
         bias = 2
-        for enemy in EnemyMetaData.keys():
+        for enemy in EnemyMetaData:
             if EnemyMetaData[enemy].crown_enabled:
                 if convertEnemyName(EnemyMetaData[enemy].name) in spoiler.settings.enemies_selected or crown_enemy_found is False:
                     base_weight = EnemyMetaData[enemy].crown_weight
@@ -516,7 +516,7 @@ def randomize_enemies(spoiler: Spoiler):
                                                 if new_enemy_id != Enemies.Guard or cont_map_id not in (Maps.CavesDiddyLowerCabin, Maps.CavesTinyIgloo, Maps.CavesTinyCabin):
                                                     ROM().seek(cont_map_spawner_address + spawner["offset"])
                                                     ROM().writeMultipleBytes(new_enemy_id, 1)
-                                                    if new_enemy_id in EnemyMetaData.keys():
+                                                    if new_enemy_id in EnemyMetaData:
                                                         ROM().seek(cont_map_spawner_address + spawner["offset"] + 0x10)
                                                         ROM().writeMultipleBytes(EnemyMetaData[new_enemy_id].aggro, 1)
                                                         if new_enemy_id == Enemies.RoboKremling:
@@ -564,7 +564,7 @@ def randomize_enemies(spoiler: Spoiler):
                             )
                         ROM().seek(cont_map_spawner_address + spawner["offset"])
                         ROM().writeMultipleBytes(new_enemy_id, 1)
-                        if new_enemy_id in EnemyMetaData.keys():
+                        if new_enemy_id in EnemyMetaData:
                             ROM().seek(cont_map_spawner_address + spawner["offset"] + 0x10)
                             ROM().writeMultipleBytes(EnemyMetaData[new_enemy_id].aggro, 1)
                             if new_enemy_id == Enemies.RoboKremling:
@@ -618,7 +618,7 @@ def randomize_enemies(spoiler: Spoiler):
                         new_enemy_id = crown_enemies_library[cont_map_id].pop()
                         ROM().seek(cont_map_spawner_address + spawner["offset"])
                         ROM().writeMultipleBytes(new_enemy_id, 1)
-                        if new_enemy_id in EnemyMetaData.keys():
+                        if new_enemy_id in EnemyMetaData:
                             ROM().seek(cont_map_spawner_address + spawner["offset"] + 0x10)
                             ROM().writeMultipleBytes(EnemyMetaData[new_enemy_id].aggro, 1)
                             if new_enemy_id == Enemies.RoboKremling:

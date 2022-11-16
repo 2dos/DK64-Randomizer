@@ -106,11 +106,11 @@ def BarrelShuffle(settings: Settings):
         }
         minigamePool = []
     else:
-        minigamePool = [x for x in MinigameRequirements.keys() if x != Minigames.NoGame]
+        minigamePool = [x for x in MinigameRequirements if x != Minigames.NoGame]
     if settings.bonus_barrels == "selected":
         for name, value in minigame_dict.items():
             if name in settings.minigames_list_selected:
-                minigamePool.extend([x for x in MinigameRequirements.keys() if x in value])
+                minigamePool.extend([x for x in MinigameRequirements if x in value])
     retries = 0
     while True:
         try:
