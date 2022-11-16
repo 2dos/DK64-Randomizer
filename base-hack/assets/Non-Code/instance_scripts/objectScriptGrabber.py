@@ -2,6 +2,7 @@
 import math
 import os
 import shutil
+import sys
 import tkinter as tk
 import zlib
 from tkinter import filedialog
@@ -2480,7 +2481,7 @@ def extractScripts():
         endianness = int.from_bytes(fh.read(1), "big")
         if endianness != 0x80:
             print("File is little endian. Convert to big endian and re-run")
-            exit()
+            sys.exit()
         else:
             fh.seek(0x3D)
             release_or_kiosk = int.from_bytes(fh.read(1), "big")
@@ -2497,12 +2498,12 @@ def extractScripts():
                     version = 1  # PAL
                 else:
                     print("Invalid version")
-                    exit()
+                    sys.exit()
             main_pointer_table_offset = pointer_table_offsets[version]
             append = folder_append[version]
     if version < 0 or version > 3:
         print("Invalid version")
-        exit()
+        sys.exit()
 
     folder_removal = []
     dump_path = f"./map_scripts{append}"
