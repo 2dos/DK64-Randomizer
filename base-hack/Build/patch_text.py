@@ -2,7 +2,6 @@
 
 from text_encoder import writeText
 from text_decoder import grabText
-import shutil
 
 from text_encoder import writeText
 

@@ -3,7 +3,6 @@
 from randomizer.Enums.Regions import Regions
 from randomizer.Enums.Warps import Warps
 from randomizer.Lists.MapsAndExits import Maps
-from randomizer.Enums.Kongs import Kongs
 
 
 class BananaportData:

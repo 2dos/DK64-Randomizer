@@ -13,7 +13,6 @@ from randomizer.Patching.BananaPortRando import randomize_bananaport
 from randomizer.Patching.BarrelRando import randomize_barrels
 from randomizer.Patching.BossRando import randomize_bosses
 from randomizer.Patching.CosmeticColors import apply_cosmetic_colors, overwrite_object_colors, applyKrushaKong
-from randomizer.Patching.DKTV import randomize_dktv
 from randomizer.Patching.EnemyRando import randomize_enemies
 from randomizer.Patching.EntranceRando import randomize_entrances
 from randomizer.Patching.Hash import get_hash_images
