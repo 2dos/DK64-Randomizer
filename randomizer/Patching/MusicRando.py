@@ -56,6 +56,7 @@ def randomize_music(spoiler: Spoiler):
                     # For testing, flip these two lines
                     # song_list.append(pointer_addresses[0]["entries"][song_data.index(song)])
                     song_list[song.channel - 1].append(js.pointer_addresses[0]["entries"][song_data.index(song)])
+            # ShuffleMusicWithSizeCheck(spoiler, song_list)
             for channel_index in range(12):
                 shuffled_music = song_list[channel_index].copy()
                 random.shuffle(shuffled_music)
@@ -214,8 +215,9 @@ def ShuffleMusicWithSizeCheck(spoiler: Spoiler, song_list: list):
                         song_map_vanillaTotalSize[groupName] += song_item["uncompressed_size"]
                         song_map_newTotalSize[groupName] += shuffled_song_item["uncompressed_size"]
                     # Fanfares have different rule for limiting size
-                    elif vanillaSong.type == SongType.Fanfare and shuffled_song_item["uncompressed_size"] > song_item["uncompressed_size"] * 1.5:
-                        continue
+                    elif vanillaSong.type == SongType.Fanfare:
+                        if shuffled_song_item["uncompressed_size"] > song_item["uncompressed_size"] * 1.5:
+                            continue
                     # If it gets this far, the assignment is good
                     shuffled_music.remove(shuffled_song_item)
                     vanilla_song_list.append(song_item)
@@ -304,3 +306,4 @@ def shuffle_music(spoiler: Spoiler, pool_to_shuffle, shuffled_list):
             spoiler.music_fanfare_data[song_data[originalIndex].name] = song_data[shuffledIndex].name
         elif song_data[originalIndex].type == SongType.Event:
             spoiler.music_event_data[song_data[originalIndex].name] = song_data[shuffledIndex].name
+        # print(f"Vanilla Index {originalIndex}: Song {shuffledIndex}")

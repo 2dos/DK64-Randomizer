@@ -186,7 +186,7 @@ def ShuffleItems(spoiler: Spoiler):
                 locations_not_needing_flags.append(location_selection)
             # Add this location's flag to the lists of available flags by location
             # Initialize relevant list if it doesn't exist
-            if item_location.type not in flag_dict:
+            if item_location.type not in flag_dict.keys():
                 if item_location.type == Types.Blueprint:
                     flag_dict[item_location.type] = {}
                     flag_dict[item_location.type][Kongs.donkey] = []
@@ -211,7 +211,7 @@ def ShuffleItems(spoiler: Spoiler):
                 location.new_flag = flag_dict[location.new_item].pop()
 
     # If we failed to give any location a flag, something is very wrong
-    if any(data for data in locations_needing_flags if data.new_flag is None):
+    if any([data for data in locations_needing_flags if data.new_flag is None]):
         debug_flags = [data for data in locations_needing_flags if data.new_flag is None]
         raise Ex.FillException("ERROR: Failed to create a valid flag assignment for this fill!")
     spoiler.item_assignment = locations_needing_flags + locations_not_needing_flags

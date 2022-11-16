@@ -34,18 +34,9 @@ def randomize_puzzles(spoiler: Spoiler):
         coin_req_info = [
             {"offset": 0x13C, "coins": random.randint(10, 50)},  # Caves Beetle
             {"offset": 0x13D, "coins": random.randint(20, 50)},  # Aztec Beetle
-            {
-                "offset": 0x13E,
-                "coins": random.randint(race_requirements["factory_race"][0], race_requirements["factory_race"][1]),
-            },  # Factory Car
-            {
-                "offset": 0x13F,
-                "coins": random.randint(race_requirements["seal_race"][0], race_requirements["seal_race"][1]),
-            },  # Seal Race
-            {
-                "offset": 0x140,
-                "coins": random.randint(race_requirements["castle_race"][0], race_requirements["castle_race"][1]),
-            },  # Castle Car
+            {"offset": 0x13E, "coins": random.randint(race_requirements["factory_race"][0], race_requirements["factory_race"][1])},  # Factory Car
+            {"offset": 0x13F, "coins": random.randint(race_requirements["seal_race"][0], race_requirements["seal_race"][1])},  # Seal Race
+            {"offset": 0x140, "coins": random.randint(race_requirements["castle_race"][0], race_requirements["castle_race"][1])},  # Castle Car
             {"offset": 0x141, "coins": random.randint(40, 70)},  # Japes Cart
             {"offset": 0x142, "coins": random.randint(25, 55)},  # Fungi Cart
             {"offset": 0x143, "coins": random.randint(5, 45)},  # Castle Cart

@@ -66,15 +66,7 @@ bosses = [
     {"name": "King Kut Out", "map": 0xC7},
 ]
 move_types = ["Special Move", "Slam", "Gun", "Ammo Belt", "Instrument"]
-key_goals = [
-    "Angry Aztec",
-    "Factory & Galleon",
-    "K. Rool Part 1",
-    "Fungi",
-    "Caves & Castle",
-    "Helm Part 1",
-    "Helm Part 2",
-]
+key_goals = ["Angry Aztec", "Factory & Galleon", "K. Rool Part 1", "Fungi", "Caves & Castle", "Helm Part 1", "Helm Part 2"]
 
 
 def getValue(fh, offset, size):
@@ -101,8 +93,9 @@ def getMapExit(fh, offset):
 def getKong(fh, offset):
     """Get the current kong."""
     val = getValue(fh, offset, 1)
-    if val >= 0 and val < 8:
-        return kongs[val]
+    if val >= 0:
+        if val < 8:
+            return kongs[val]
     return f"Kong {hex(val)}"
 
 
@@ -244,18 +237,7 @@ if ".z64" in f:
         output(f"\tFast Warps: {str(getTrueFalse(fh,0x13A,1))}")
         output(f"\tShort Bosses: {str(getTrueFalse(fh,0x13B,1))}")
         output(f"\tCoin Requirements")
-        for x_i, x in enumerate(
-            [
-                "Caves Beetle Race",
-                "Aztec Beetle Race",
-                "Factory Car Race",
-                "Seal Race",
-                "Castle Car Race",
-                "Japes Minecart",
-                "Fungi Minecart",
-                "Castle Minecart",
-            ]
-        ):
+        for x_i, x in enumerate(["Caves Beetle Race", "Aztec Beetle Race", "Factory Car Race", "Seal Race", "Castle Car Race", "Japes Minecart", "Fungi Minecart", "Castle Minecart"]):
             output(f"\t\t{x}: {str(getValue(fh,0x13C + x_i, 1))}")
         output(f"\tShop Hints: {str(getTrueFalse(fh,0x14B,1))}")
         output(f"\tLobbies Auto-opened:")

@@ -144,6 +144,7 @@ def convertColors():
                 for size_mult in range(3):
                     patch_start_x = int(6 / math.pow(2, size_mult))
                     patch_start_y = int(8 / math.pow(2, size_mult))
+                    # print(f"{patch_start_x} | {patch_start_y}")
                     patch_size = 3 - size_mult
                     if patch_size == 3:
                         patch_size = 5

@@ -7,15 +7,7 @@ from randomizer.Enums.Kongs import Kongs
 from randomizer.Lists.Exceptions import BossOutOfLocationsException, FillException, ItemPlacementException
 from randomizer.Lists.MapsAndExits import Maps
 
-BossMapList = [
-    Maps.JapesBoss,
-    Maps.AztecBoss,
-    Maps.FactoryBoss,
-    Maps.GalleonBoss,
-    Maps.FungiBoss,
-    Maps.CavesBoss,
-    Maps.CastleBoss,
-]
+BossMapList = [Maps.JapesBoss, Maps.AztecBoss, Maps.FactoryBoss, Maps.GalleonBoss, Maps.FungiBoss, Maps.CavesBoss, Maps.CastleBoss]
 
 
 def ShuffleBosses(boss_location_rando: bool):
@@ -193,6 +185,8 @@ def ShuffleBossesBasedOnOwnedItems(settings, ownedKongs: dict, ownedMoves: dict)
             elif level == castleBossIndex:
                 newBossMaps.append(Maps.CastleBoss)
                 newBossKongs.append(castleBossKong)
+        # print("New Boss Order: " + str(newBossMaps))
+        # print("New Boss Kongs: " + str(newBossKongs))
         if len(newBossMaps) < 7:
             raise FillException("Invalid boss order with fewer than the 7 required main levels.")
     except Exception as ex:
@@ -213,15 +207,7 @@ def ShuffleBossesBasedOnOwnedItems(settings, ownedKongs: dict, ownedMoves: dict)
     if settings.kong_rando or settings.boss_kong_rando:
         # If we shuffle kongs but not locations, we must forcibly sort the array with the known valid kongs
         if not settings.boss_location_rando:
-            settings.boss_kongs = [
-                japesBossKong,
-                aztecBossKong,
-                factoryBossKong,
-                galleonBossKong,
-                forestBossKong,
-                cavesBossKong,
-                castleBossKong,
-            ]
+            settings.boss_kongs = [japesBossKong, aztecBossKong, factoryBossKong, galleonBossKong, forestBossKong, cavesBossKong, castleBossKong]
         else:
             settings.boss_kongs = newBossKongs
     else:

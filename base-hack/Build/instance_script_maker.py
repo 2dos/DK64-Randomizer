@@ -205,13 +205,7 @@ with open(base_rom, "rb") as fh:
                                                 d = d % 65536
                                                 tp.write(d.to_bytes(2, "big"))
                                         with open(temp_file, "rb") as tp:
-                                            script_list.append(
-                                                {
-                                                    "id": script_data["id"],
-                                                    "behav_9C": script_data["behav_9C"],
-                                                    "data": tp.read(),
-                                                }
-                                            )
+                                            script_list.append({"id": script_data["id"], "behav_9C": script_data["behav_9C"], "data": tp.read()})
                                         if os.path.exists(temp_file):
                                             os.remove(temp_file)
                     with open(f"{f.replace('./','')}.raw", "wb") as new_raw:

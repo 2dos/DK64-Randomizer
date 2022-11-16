@@ -14,16 +14,7 @@ from randomizer.Enums.Locations import Locations
 from randomizer.Enums.Types import Types
 import randomizer.ItemPool as ItemPool
 from randomizer.Lists.Item import ItemList
-from randomizer.Lists.Location import (
-    ChunkyMoveLocations,
-    DiddyMoveLocations,
-    DonkeyMoveLocations,
-    LankyMoveLocations,
-    LocationList,
-    SharedShopLocations,
-    TinyMoveLocations,
-    TrainingBarrelLocations,
-)
+from randomizer.Lists.Location import ChunkyMoveLocations, DiddyMoveLocations, DonkeyMoveLocations, LankyMoveLocations, LocationList, SharedShopLocations, TinyMoveLocations, TrainingBarrelLocations
 from randomizer.Prices import CompleteVanillaPrices, RandomizePrices, VanillaPrices
 from randomizer.ShuffleBosses import ShuffleBosses, ShuffleBossKongs, ShuffleKKOPhaseOrder, ShuffleKutoutKongs
 
@@ -79,15 +70,7 @@ class Settings:
 
         CompleteVanillaPrices()
         self.prices = VanillaPrices.copy()
-        self.level_order = {
-            1: Levels.JungleJapes,
-            2: Levels.AngryAztec,
-            3: Levels.FranticFactory,
-            4: Levels.GloomyGalleon,
-            5: Levels.FungiForest,
-            6: Levels.CrystalCaves,
-            7: Levels.CreepyCastle,
-        }
+        self.level_order = {1: Levels.JungleJapes, 2: Levels.AngryAztec, 3: Levels.FranticFactory, 4: Levels.GloomyGalleon, 5: Levels.FungiForest, 6: Levels.CrystalCaves, 7: Levels.CreepyCastle}
 
         # Used by hints in level order rando
         # By default (and in LZR) assume you have access to everything everywhere so hints are unrestricted
@@ -167,25 +150,8 @@ class Settings:
                 self.blocker_7 = b_lockers[7]
 
         # Store banana values in array
-        self.EntryGBs = [
-            self.blocker_0,
-            self.blocker_1,
-            self.blocker_2,
-            self.blocker_3,
-            self.blocker_4,
-            self.blocker_5,
-            self.blocker_6,
-            self.blocker_7,
-        ]
-        self.BossBananas = [
-            self.troff_0,
-            self.troff_1,
-            self.troff_2,
-            self.troff_3,
-            self.troff_4,
-            self.troff_5,
-            self.troff_6,
-        ]
+        self.EntryGBs = [self.blocker_0, self.blocker_1, self.blocker_2, self.blocker_3, self.blocker_4, self.blocker_5, self.blocker_6, self.blocker_7]
+        self.BossBananas = [self.troff_0, self.troff_1, self.troff_2, self.troff_3, self.troff_4, self.troff_5, self.troff_6]
 
     def generate_main(self):
         """Set Default items on main page."""
@@ -258,6 +224,10 @@ class Settings:
         self.starting_kongs_count = 5
         self.starting_random = False
 
+        # bonus_barrels: str
+        # skip (auto-completed)
+        # normal
+        # random
         self.bonus_barrels = "normal"
         # helm_barrels: str
         # skip (helm skip all)
@@ -278,6 +248,10 @@ class Settings:
         # no_logic: bool
         self.no_logic = False
 
+        # shuffle_loading_zones: str
+        # none
+        # levels
+        # all
         self.shuffle_loading_zones = "none"
 
         # decoupled_loading_zones: bool
@@ -397,15 +371,7 @@ class Settings:
         self.shuffled_location_types = []
         if self.shuffle_items:
             if not self.item_rando_list_selected:
-                self.shuffled_location_types = [
-                    Types.Shop,
-                    Types.Banana,
-                    Types.Crown,
-                    Types.Blueprint,
-                    Types.Key,
-                    Types.Medal,
-                    Types.Coin,
-                ]
+                self.shuffled_location_types = [Types.Shop, Types.Banana, Types.Crown, Types.Blueprint, Types.Key, Types.Medal, Types.Coin]
             else:
                 for item in self.item_rando_list_selected:
                     for type in Types:
@@ -608,12 +574,7 @@ class Settings:
             self.tiny_freeing_kong = Kongs.any
             self.chunky_freeing_kong = Kongs.any
             if self.shuffle_items and Types.Kong in self.shuffled_location_types:
-                self.kong_locations = [
-                    Locations.DiddyKong,
-                    Locations.LankyKong,
-                    Locations.TinyKong,
-                    Locations.ChunkyKong,
-                ]
+                self.kong_locations = [Locations.DiddyKong, Locations.LankyKong, Locations.TinyKong, Locations.ChunkyKong]
             else:
                 self.kong_locations = self.SelectKongLocations()
         else:
@@ -641,7 +602,7 @@ class Settings:
         LocationList[Locations.IslesDonkeyJapesRock].kong = self.starting_kong
 
         # Kongs needed for level progression
-        if self.starting_kongs_count < 5 and self.shuffle_loading_zones in ("levels", "none") and not self.no_logic:
+        if self.starting_kongs_count < 5 and (self.shuffle_loading_zones == "levels" or self.shuffle_loading_zones == "none") and not self.no_logic:
             self.kongs_for_progression = True
 
         # Move Location Rando

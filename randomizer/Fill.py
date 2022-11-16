@@ -81,11 +81,7 @@ def GetExitLevelExit(region):
 def GetAccessibleLocations(settings, startingOwnedItems, searchType=SearchMode.GetReachable, purchaseList=None, targetItemId=None):
     """Search to find all reachable locations given owned items."""
     # No logic? Calls to this method that are checking things just return True
-    if settings.no_logic and searchType in [
-        SearchMode.CheckAllReachable,
-        SearchMode.CheckBeatable,
-        SearchMode.CheckSpecificItemReachable,
-    ]:
+    if settings.no_logic and searchType in [SearchMode.CheckAllReachable, SearchMode.CheckBeatable, SearchMode.CheckSpecificItemReachable]:
         return True
     if purchaseList is None:
         purchaseList = []
@@ -170,7 +166,7 @@ def GetAccessibleLocations(settings, startingOwnedItems, searchType=SearchMode.G
                     if event.name == Events.Night and event.logic(LogicVariables):
                         region.nightAccess = True
                 # Check accessibility for collectibles
-                if region.id in Logic.CollectibleRegions:
+                if region.id in Logic.CollectibleRegions.keys():
                     for collectible in Logic.CollectibleRegions[region.id]:
                         if not collectible.added and collectible.kong in (kong, Kongs.any) and collectible.logic(LogicVariables) and collectible.enabled:
                             LogicVariables.AddCollectible(collectible, region.level)
@@ -260,13 +256,25 @@ def GetAccessibleLocations(settings, startingOwnedItems, searchType=SearchMode.G
 
     if searchType in (SearchMode.GetReachable, SearchMode.GetReachableWithControlledPurchases):
         return accessible
-    elif searchType in (SearchMode.CheckBeatable, SearchMode.CheckSpecificItemReachable):
+    elif searchType == SearchMode.CheckBeatable or searchType == SearchMode.CheckSpecificItemReachable:
         # If the search has completed and the target item has not been found, then we failed to find it
         settings.debug_accessible = accessible
         return False
     elif searchType == SearchMode.GeneratePlaythrough:
         return playthroughLocations
     elif searchType == SearchMode.CheckAllReachable:
+        # settings.debug_accessible = accessible
+        # settings.debug_accessible_2 = []
+        # if len(accessible) > 300:
+        #     settings.debug_accessible_2 = accessible[300:]
+        # settings.debug_accessible_not = [location for location in LocationList if location not in accessible]
+        # settings.debug_accessible_not_2 = []
+        # if len(settings.debug_accessible_not) > 300:
+        #     settings.debug_accessible_not_2 = settings.debug_accessible_not[300:]
+        # settings.debug_enormous_pain_1 = [LocationList[location] for location in settings.debug_accessible]
+        # settings.debug_enormous_pain_2 = [LocationList[location] for location in settings.debug_accessible_2]
+        # settings.debug_enormous_pain_3 = [LocationList[location] for location in settings.debug_accessible_not]
+        # settings.debug_enormous_pain_4 = [LocationList[location] for location in settings.debug_accessible_not_2]
         return len(accessible) == len(LocationList)
     elif searchType == SearchMode.GetUnreachable:
         return [x for x in LocationList if x not in accessible]
@@ -314,10 +322,12 @@ def VerifyWorldWithWorstCoinUsage(settings):
             and coinsBefore[Kongs.tiny] >= coinsNeeded[Kongs.tiny]
             and coinsBefore[Kongs.chunky] >= coinsNeeded[Kongs.chunky]
         ):
+            # print("Seed is valid, found enough coins with worst purchase order: " + str([LocationList[x].name + ": " + LocationList[x].item.name + ", " for x in locationsToPurchase]))
             Reset()
             return True
         # If we found the Banana Hoard, world is valid!
         if LogicVariables.bananaHoard:
+            # print("Seed is valid, found banana hoard with worst purchase order: " + str([LocationList[x].name + ": " + LocationList[x].item.name + ", " for x in locationsToPurchase]))
             Reset()
             return True
         # For each accessible shop location
@@ -334,6 +344,7 @@ def VerifyWorldWithWorstCoinUsage(settings):
             Reset()
             return False
         locationToBuy = None
+        # print("Accessible Shops: " + str([LocationList[x].name for x in newReachableShops]))
         for shopLocation in newReachableShops:
             # print("Check buying " + LocationList[shopLocation].item.name + " from location " + LocationList[shopLocation].name)
             # Recheck accessible to see how many coins will be available afterward
@@ -346,6 +357,7 @@ def VerifyWorldWithWorstCoinUsage(settings):
             coinDifferential = [0, 0, 0, 0, 0]
             for kong in LogicVariables.GetKongs():
                 coinDifferential[kong] = coinsAfter[kong] - coinsBefore[kong]
+            # print("Coin differential: " + str(coinDifferential))
             shopDifferentials[shopLocation] = coinDifferential
             shopUnlocksItems[shopLocation] = [LocationList[x].item for x in reachableAfter if x not in reachable and LocationList[x].item is not None]
             # Determine if this is the new worst move
@@ -385,18 +397,7 @@ def Reset():
 def ParePlaythrough(settings, PlaythroughLocations):
     """Pare playthrough down to only the essential elements."""
     locationsToAddBack = []
-    mostExpensiveBLocker = max(
-        [
-            settings.blocker_0,
-            settings.blocker_1,
-            settings.blocker_2,
-            settings.blocker_3,
-            settings.blocker_4,
-            settings.blocker_5,
-            settings.blocker_6,
-            settings.blocker_7,
-        ]
-    )
+    mostExpensiveBLocker = max([settings.blocker_0, settings.blocker_1, settings.blocker_2, settings.blocker_3, settings.blocker_4, settings.blocker_5, settings.blocker_6, settings.blocker_7])
     # Check every location in the list of spheres.
     for i in range(len(PlaythroughLocations) - 1, -1, -1):
         # We can immediately ignore spheres past the first sphere that is beaten
@@ -569,15 +570,9 @@ def CalculateFoolish(spoiler, WothLocations):
     majorItems.extend(ItemPool.Keys())
     majorItems.extend(ItemPool.Kongs(spoiler.settings))
     majorItems.append(Items.Oranges)  # Again, not comfortable foolishing oranges yet
-    if Types.Coin in spoiler.settings.shuffled_location_types and spoiler.settings.coin_door_open in [
-        "need_both",
-        "need_rw",
-    ]:
+    if Types.Coin in spoiler.settings.shuffled_location_types and spoiler.settings.coin_door_open in ["need_both", "need_rw"]:
         majorItems.append(Items.RarewareCoin)
-    if Types.Coin in spoiler.settings.shuffled_location_types and spoiler.settings.coin_door_open in [
-        "need_both",
-        "need_nin",
-    ]:
+    if Types.Coin in spoiler.settings.shuffled_location_types and spoiler.settings.coin_door_open in ["need_both", "need_nin"]:
         majorItems.append(Items.NintendoCoin)
     if Types.Blueprint in spoiler.settings.shuffled_location_types and spoiler.settings.win_condition == "all_blueprints":
         majorItems.extend(ItemPool.Blueprints(spoiler.settings))
@@ -588,23 +583,17 @@ def CalculateFoolish(spoiler, WothLocations):
     # ***if fairy locations are shuffled*** and there's a major item on Rareware GB or fairies are the win con
     # then we'd majorItems.append(Items.BananaFairy)
 
-    nonHintableNames = {
-        "K. Rool Arena",
-        "Snide",
-        "Candy Generic",
-        "Funky Generic",
-        "Credits",
-    }  # These regions never have anything useful so shouldn't be hinted
+    nonHintableNames = {"K. Rool Arena", "Snide", "Candy Generic", "Funky Generic", "Credits"}  # These regions never have anything useful so shouldn't be hinted
     if Types.Coin not in spoiler.settings.shuffled_location_types:
         nonHintableNames.add("Jetpac Game")  # If this is vanilla, it's never useful to hint
     # In order for a region to be foolish, it can contain none of these Major Items
     for id, region in RegionList.items():
-        locations = [loc for loc in region.locations if loc.id in LocationList]
+        locations = [loc for loc in region.locations if loc.id in LocationList.keys()]
         # If this region DOES contain a major item, add it the name to the set of non-hintable hint regions
-        if any(loc for loc in locations if LocationList[loc.id].item in majorItems):
+        if any([loc for loc in locations if LocationList[loc.id].item in majorItems]):
             nonHintableNames.add(region.hint_name)
     # The regions that are foolish are all regions not in this list (that have locations in them!)
-    spoiler.foolish_region_names = list({region.hint_name for id, region in RegionList.items() if any(region.locations) and region.hint_name not in nonHintableNames})
+    spoiler.foolish_region_names = list(set([region.hint_name for id, region in RegionList.items() if any(region.locations) and region.hint_name not in nonHintableNames]))
 
 
 def RandomFill(settings, itemsToPlace, inOrder=False):
@@ -850,7 +839,7 @@ def GetUnplacedItemPrerequisites(spoiler, targetItemId, placedMoves, ownedKongs=
     #     You intentionally only look at DK/Diddy/Tiny moves so you don't find Grape as a prerequisite because you don't have Lanky
     #     In this example (with no other shuffles), there are two possible return values depending on the shuffle order.
     #     Either [Items.Guitar, Items.Coconut] OR [Items.Guitar, Items.Feather]
-    moveList = list(ItemPool.AllMovesForOwnedKongs(ownedKongs))
+    moveList = [move for move in ItemPool.AllMovesForOwnedKongs(ownedKongs)]
     # Sometimes a move requires shockwave as a prerequisite
     if spoiler.settings.shockwave_status != "vanilla":
         moveList.append(Items.Shockwave)
@@ -870,12 +859,7 @@ def GetUnplacedItemPrerequisites(spoiler, targetItemId, placedMoves, ownedKongs=
         # For each move, see if adding it to the list of required moves gives us access to the location
         requiredMoves.append(move)
         Reset()
-        if GetAccessibleLocations(
-            spoiler.settings,
-            settingsRequiredMoves.copy() + requiredMoves.copy(),
-            SearchMode.CheckSpecificItemReachable,
-            targetItemId=targetItemId,
-        ):
+        if GetAccessibleLocations(spoiler.settings, settingsRequiredMoves.copy() + requiredMoves.copy(), SearchMode.CheckSpecificItemReachable, targetItemId=targetItemId):
             # If it does give us access, then we don't need any more moves
             # Note the last required move for later
             lastRequiredMove = move
@@ -884,12 +868,7 @@ def GetUnplacedItemPrerequisites(spoiler, targetItemId, placedMoves, ownedKongs=
     if lastRequiredMove is None and placedMoves.count(Items.ProgressiveSlam) == 1:
         requiredMoves.append(Items.ProgressiveSlam)
         Reset()
-        if GetAccessibleLocations(
-            spoiler.settings,
-            settingsRequiredMoves.copy() + requiredMoves.copy(),
-            SearchMode.CheckSpecificItemReachable,
-            targetItemId=targetItemId,
-        ):
+        if GetAccessibleLocations(spoiler.settings, settingsRequiredMoves.copy() + requiredMoves.copy(), SearchMode.CheckSpecificItemReachable, targetItemId=targetItemId):
             lastRequiredMove = move
     # If we didn't find a required move, the item was placed improperly somehow (this shouldn't happen)
     if lastRequiredMove is None:
@@ -916,12 +895,7 @@ def GetUnplacedItemPrerequisites(spoiler, targetItemId, placedMoves, ownedKongs=
         # Remove the first item and see if we can still access the target
         possiblyUnnecessaryItem = requiredMoves.pop(0)
         Reset()
-        if not GetAccessibleLocations(
-            spoiler.settings,
-            settingsRequiredMoves.copy() + requiredMoves.copy(),
-            SearchMode.CheckSpecificItemReachable,
-            targetItemId=targetItemId,
-        ):
+        if not GetAccessibleLocations(spoiler.settings, settingsRequiredMoves.copy() + requiredMoves.copy(), SearchMode.CheckSpecificItemReachable, targetItemId=targetItemId):
             # If it's no longer accessible, then re-add it to the end of the list
             requiredMoves.append(possiblyUnnecessaryItem)
         # Repeat until we find the last required move
@@ -977,12 +951,7 @@ def FillShuffledKeys(spoiler):
         keysUnplaced += PlaceItems(spoiler.settings, spoiler.settings.algorithm, [Items.AngryAztecKey], assumedItems)
         # Keys 3 and 4 must be before level 5
         BlockAccessToLevel(spoiler.settings, 5)
-        keysUnplaced += PlaceItems(
-            spoiler.settings,
-            spoiler.settings.algorithm,
-            [Items.FranticFactoryKey, Items.GloomyGalleonKey],
-            assumedItems,
-        )
+        keysUnplaced += PlaceItems(spoiler.settings, spoiler.settings.algorithm, [Items.FranticFactoryKey, Items.GloomyGalleonKey], assumedItems)
         # Key 5 must be before level 6
         BlockAccessToLevel(spoiler.settings, 6)
         keysUnplaced += PlaceItems(spoiler.settings, spoiler.settings.algorithm, [Items.FungiForestKey], assumedItems)
@@ -1090,12 +1059,7 @@ def ShuffleSharedMoves(spoiler, placedMoves):
     # To avoid conflicts, first determine which level shops will have shared moves then remove these shops from each kong's valid locations list
     if spoiler.settings.training_barrels != "normal" and Items.Oranges not in placedMoves:
         # First place training moves that are not placed. By this point, only Oranges need to be placed here as the others are important to place even earlier than this
-        trainingMovesUnplaced = PlaceItems(
-            spoiler.settings,
-            "assumed",
-            [Items.Oranges],
-            [x for x in ItemPool.AllItems(spoiler.settings) if x != Items.Oranges and x not in placedMoves],
-        )
+        trainingMovesUnplaced = PlaceItems(spoiler.settings, "assumed", [Items.Oranges], [x for x in ItemPool.AllItems(spoiler.settings) if x != Items.Oranges and x not in placedMoves])
         if trainingMovesUnplaced > 0:
             raise Ex.ItemPlacementException("Failed to place Orange training barrel move.")
         placedMoves.append(Items.Oranges)
@@ -1110,10 +1074,7 @@ def ShuffleSharedMoves(spoiler, placedMoves):
         if item in importantSharedToPlace:
             importantSharedToPlace.remove(item)
     importantSharedUnplaced = PlaceItems(
-        spoiler.settings,
-        "assumed",
-        importantSharedToPlace,
-        [x for x in ItemPool.AllItems(spoiler.settings) if x not in importantSharedToPlace and x not in placedMoves],
+        spoiler.settings, "assumed", importantSharedToPlace, [x for x in ItemPool.AllItems(spoiler.settings) if x not in importantSharedToPlace and x not in placedMoves]
     )
     if importantSharedUnplaced > 0:
         raise Ex.ItemPlacementException(str(importantSharedUnplaced) + " unplaced shared important items.")
@@ -1121,12 +1082,7 @@ def ShuffleSharedMoves(spoiler, placedMoves):
     for item in placedMoves:
         if item in junkSharedToPlace:
             junkSharedToPlace.remove(item)
-    junkSharedUnplaced = PlaceItems(
-        spoiler.settings,
-        "random",
-        junkSharedToPlace,
-        [x for x in ItemPool.AllItems(spoiler.settings) if x not in junkSharedToPlace],
-    )
+    junkSharedUnplaced = PlaceItems(spoiler.settings, "random", junkSharedToPlace, [x for x in ItemPool.AllItems(spoiler.settings) if x not in junkSharedToPlace])
     if junkSharedUnplaced > 0:
         raise Ex.ItemPlacementException(str(junkSharedUnplaced) + " unplaced shared junk items.")
 
@@ -1253,7 +1209,7 @@ def PlacePriorityItems(spoiler, itemsToPlace, beforePlacedItems, levelBlock=None
 
 def PlaceKongsInKongLocations(spoiler, kongItems, kongLocations):
     """For these settings, Kongs to place, and locations to place them in, place the Kongs in such a way the generation will never error here."""
-    ownedKongs = list(spoiler.settings.starting_kong_list)
+    ownedKongs = [kong for kong in spoiler.settings.starting_kong_list]
     # In entrance randomizer, it's too complicated to quickly determine kong accessibility.
     # Instead, we place Kongs in a specific order to guarantee we'll at least have an eligible freer.
     # To be at least somewhat nice to no logic users, we also use this section here so kongs don't lock each other.
@@ -1327,7 +1283,7 @@ def PlaceKongsInKongLocations(spoiler, kongItems, kongLocations):
                     progressionKongItems = []
                     for kongItem in kongItems:
                         # Test each Kong by temporarily owning them and seeing what we can now reach
-                        tempOwnedKongs = list(ownedKongs)
+                        tempOwnedKongs = [x for x in ownedKongs]
                         tempOwnedKongs.append(ItemPool.GetKongForItem(kongItem))
                         newlyAccessibleKongLocations = GetLogicallyAccessibleKongLocations(spoiler, kongLocations, tempOwnedKongs, latestLogicallyAllowedLevel)
                         if any(newlyAccessibleKongLocations):
@@ -1618,8 +1574,9 @@ def GetAccessibleKongLocations(levels: list, ownedKongs: list):
                 kongLocations.append(Locations.LankyKong)
             if Kongs.diddy in ownedKongs:
                 kongLocations.append(Locations.TinyKong)
-        elif level == Levels.FranticFactory and Kongs.lanky in ownedKongs or Kongs.tiny in ownedKongs:
-            kongLocations.append(Locations.ChunkyKong)
+        elif level == Levels.FranticFactory:
+            if Kongs.lanky in ownedKongs or Kongs.tiny in ownedKongs:
+                kongLocations.append(Locations.ChunkyKong)
     return kongLocations
 
 
@@ -1685,30 +1642,12 @@ def SetNewProgressionRequirements(settings: Settings):
     firstBlocker = min(settings.blocker_0, 1, goldenBananaTotals[0])  # First B. Locker shouldn't be more than 1 GB but could be 0 in full item rando
     settings.EntryGBs = [
         firstBlocker,
-        min(
-            settings.blocker_1,
-            max(firstBlocker, round(random.uniform(BLOCKER_MIN, BLOCKER_MAX) * goldenBananaTotals[1])),
-        ),
-        min(
-            settings.blocker_2,
-            max(firstBlocker, round(random.uniform(BLOCKER_MIN, BLOCKER_MAX) * goldenBananaTotals[2])),
-        ),
-        min(
-            settings.blocker_3,
-            max(firstBlocker, round(random.uniform(BLOCKER_MIN, BLOCKER_MAX) * goldenBananaTotals[3])),
-        ),
-        min(
-            settings.blocker_4,
-            max(firstBlocker, round(random.uniform(BLOCKER_MIN, BLOCKER_MAX) * goldenBananaTotals[4])),
-        ),
-        min(
-            settings.blocker_5,
-            max(firstBlocker, round(random.uniform(BLOCKER_MIN, BLOCKER_MAX) * goldenBananaTotals[5])),
-        ),
-        min(
-            settings.blocker_6,
-            max(firstBlocker, round(random.uniform(BLOCKER_MIN, BLOCKER_MAX) * goldenBananaTotals[6])),
-        ),
+        min(settings.blocker_1, max(firstBlocker, round(random.uniform(BLOCKER_MIN, BLOCKER_MAX) * goldenBananaTotals[1]))),
+        min(settings.blocker_2, max(firstBlocker, round(random.uniform(BLOCKER_MIN, BLOCKER_MAX) * goldenBananaTotals[2]))),
+        min(settings.blocker_3, max(firstBlocker, round(random.uniform(BLOCKER_MIN, BLOCKER_MAX) * goldenBananaTotals[3]))),
+        min(settings.blocker_4, max(firstBlocker, round(random.uniform(BLOCKER_MIN, BLOCKER_MAX) * goldenBananaTotals[4]))),
+        min(settings.blocker_5, max(firstBlocker, round(random.uniform(BLOCKER_MIN, BLOCKER_MAX) * goldenBananaTotals[5]))),
+        min(settings.blocker_6, max(firstBlocker, round(random.uniform(BLOCKER_MIN, BLOCKER_MAX) * goldenBananaTotals[6]))),
         settings.blocker_7,  # Last B. Locker shouldn't be affected
     ]
     # Prevent scenario where B. Lockers randomize to not-always-increasing values
@@ -1721,41 +1660,13 @@ def SetNewProgressionRequirements(settings: Settings):
                 settings.EntryGBs[i] = settings.EntryGBs[i + 1]
                 settings.EntryGBs[i + 1] = temp
     settings.BossBananas = [
-        min(
-            settings.troff_0,
-            sum(coloredBananaCounts[0]),
-            round(settings.troff_0 / (settings.troff_max * settings.troff_weight_0) * sum(coloredBananaCounts[0])),
-        ),
-        min(
-            settings.troff_1,
-            sum(coloredBananaCounts[1]),
-            round(settings.troff_1 / (settings.troff_max * settings.troff_weight_1) * sum(coloredBananaCounts[1])),
-        ),
-        min(
-            settings.troff_2,
-            sum(coloredBananaCounts[2]),
-            round(settings.troff_2 / (settings.troff_max * settings.troff_weight_2) * sum(coloredBananaCounts[2])),
-        ),
-        min(
-            settings.troff_3,
-            sum(coloredBananaCounts[3]),
-            round(settings.troff_3 / (settings.troff_max * settings.troff_weight_3) * sum(coloredBananaCounts[3])),
-        ),
-        min(
-            settings.troff_4,
-            sum(coloredBananaCounts[4]),
-            round(settings.troff_4 / (settings.troff_max * settings.troff_weight_4) * sum(coloredBananaCounts[4])),
-        ),
-        min(
-            settings.troff_5,
-            sum(coloredBananaCounts[5]),
-            round(settings.troff_5 / (settings.troff_max * settings.troff_weight_5) * sum(coloredBananaCounts[5])),
-        ),
-        min(
-            settings.troff_6,
-            sum(coloredBananaCounts[6]),
-            round(settings.troff_6 / (settings.troff_max * settings.troff_weight_6) * sum(coloredBananaCounts[6])),
-        ),
+        min(settings.troff_0, sum(coloredBananaCounts[0]), round(settings.troff_0 / (settings.troff_max * settings.troff_weight_0) * sum(coloredBananaCounts[0]))),
+        min(settings.troff_1, sum(coloredBananaCounts[1]), round(settings.troff_1 / (settings.troff_max * settings.troff_weight_1) * sum(coloredBananaCounts[1]))),
+        min(settings.troff_2, sum(coloredBananaCounts[2]), round(settings.troff_2 / (settings.troff_max * settings.troff_weight_2) * sum(coloredBananaCounts[2]))),
+        min(settings.troff_3, sum(coloredBananaCounts[3]), round(settings.troff_3 / (settings.troff_max * settings.troff_weight_3) * sum(coloredBananaCounts[3]))),
+        min(settings.troff_4, sum(coloredBananaCounts[4]), round(settings.troff_4 / (settings.troff_max * settings.troff_weight_4) * sum(coloredBananaCounts[4]))),
+        min(settings.troff_5, sum(coloredBananaCounts[5]), round(settings.troff_5 / (settings.troff_max * settings.troff_weight_5) * sum(coloredBananaCounts[5]))),
+        min(settings.troff_6, sum(coloredBananaCounts[6]), round(settings.troff_6 / (settings.troff_max * settings.troff_weight_6) * sum(coloredBananaCounts[6]))),
     ]
     # Update values based on actual level progression
     ShuffleExits.UpdateLevelProgression(settings)
@@ -1971,11 +1882,7 @@ def SetNewProgressionRequirementsUnordered(settings: Settings):
                         break
                 foundKeyEvent = KeyEvents[lobbyIndex]
                 # If we need this key to open new lobbies, it's a progression key
-                if foundKeyEvent in settings.krool_keys_required and foundKeyEvent not in [
-                    Events.FactoryKeyTurnedIn,
-                    Events.CavesKeyTurnedIn,
-                    Events.CastleKeyTurnedIn,
-                ]:
+                if foundKeyEvent in settings.krool_keys_required and foundKeyEvent not in [Events.FactoryKeyTurnedIn, Events.CavesKeyTurnedIn, Events.CastleKeyTurnedIn]:
                     foundProgressionKeyEvents.append(foundKeyEvent)
 
             # If we've progressed through all open levels, then we need to pick a progression key we've found to acquire and set that level's Troff n Scoff
@@ -2025,19 +1932,14 @@ def SetNewProgressionRequirementsUnordered(settings: Settings):
             # We should have access to everything by this point
             settings.BossBananas[bossLocation.level] = initialTNS[bossLocation.level]
         # For any level we haven't lowered yet, assume we own everything
-        if bossLocation.level not in ownedKongs:
+        if bossLocation.level not in ownedKongs.keys():
             ownedKongs[bossLocation.level] = [Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky]
             ownedMoves[bossLocation.level] = allMoves
         # If boss rewards could be anything, we have to make sure they're accessible independent of all else
         if isKeyItemRando:
             bossReward = bossLocation.item
             # If the boss reward doesn't contain progression, it's fine
-            if bossReward is None or ItemList[bossReward].type not in (
-                Types.TrainingBarrel,
-                Types.Shop,
-                Types.Shockwave,
-                Types.Key,
-            ):
+            if bossReward is None or ItemList[bossReward].type not in (Types.TrainingBarrel, Types.Shop, Types.Shockwave, Types.Key):
                 continue
             # You never have the boss reward when fighting it, so remove it from consideration for boss placement
             if bossReward in ownedMoves[bossLocation.level]:
@@ -2127,8 +2029,9 @@ def GetAccessibleOpenLevels(settings, accessible):
     # Convert indexes to the shuffled levels
     accessibleOpenLevels = [settings.level_order[index] for index in openLobbyIndexes]
     # After converting to levels, double check that we can actually do anything in Aztec
-    if Levels.AngryAztec in accessibleOpenLevels and not LogicVariables.vines and not (LogicVariables.tiny and LogicVariables.twirl):  # Need vines or (tiny + twirl)
-        accessibleOpenLevels.remove(Levels.AngryAztec)
+    if Levels.AngryAztec in accessibleOpenLevels:
+        if not LogicVariables.vines and not (LogicVariables.tiny and LogicVariables.twirl):  # Need vines or (tiny + twirl)
+            accessibleOpenLevels.remove(Levels.AngryAztec)
     return accessibleOpenLevels
 
 
@@ -2252,7 +2155,7 @@ def ShuffleMisc(spoiler):
     if spoiler.settings.activate_all_bananaports in ["all", "isles"]:
         # In simpler bananaport shuffling, we can rely on the map id and warp number to find pairs
         if spoiler.settings.bananaport_rando in ("in_level", "off"):
-            warpMapIds = {BananaportVanilla[warp].map_id for warp in Warps}
+            warpMapIds = set([BananaportVanilla[warp].map_id for warp in Warps])
             for map_id in warpMapIds:
                 mapWarps = [BananaportVanilla[warp] for warp in Warps if BananaportVanilla[warp].map_id == map_id]
                 for warpData in mapWarps:
@@ -2270,7 +2173,7 @@ def ShuffleMisc(spoiler):
         else:
             for warp in BananaportVanilla.values():
                 warpRegion = Logic.Regions[warp.region_id]
-                if spoiler.settings.activate_all_bananaports != "isles" or (warp.region_id in IslesLogic.LogicRegions and warp.destination_region_id in IslesLogic.LogicRegions):
+                if spoiler.settings.activate_all_bananaports != "isles" or (warp.region_id in IslesLogic.LogicRegions.keys() and warp.destination_region_id in IslesLogic.LogicRegions.keys()):
                     bananaportExit = TransitionFront(warp.destination_region_id, lambda l: True)
                     warpRegion.exits.append(bananaportExit)
     spoiler.settings.update_valid_locations()

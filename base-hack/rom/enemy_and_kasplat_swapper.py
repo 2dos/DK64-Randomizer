@@ -18,71 +18,9 @@ enemy_replacements = [
             {"vanilla_location": 3, "replace_with": 2},
         ],
         "enemy_swaps": {
-            "ground_simple": [
-                4,
-                3,
-                2,
-                3,
-                6,
-                12,
-                7,
-                3,
-                8,
-                3,
-                3,
-                12,
-                0,
-                5,
-                6,
-                10,
-                4,
-                12,
-                6,
-                8,
-                11,
-                7,
-                5,
-                9,
-                1,
-                7,
-                5,
-                5,
-                8,
-                6,
-            ],
+            "ground_simple": [4, 3, 2, 3, 6, 12, 7, 3, 8, 3, 3, 12, 0, 5, 6, 10, 4, 12, 6, 8, 11, 7, 5, 9, 1, 7, 5, 5, 8, 6],
             "air": [1, 3, 2, 2, 2, 1, 2, 2, 1, 1, 3, 3, 1, 0, 0, 2, 0, 3, 2, 2, 1, 3, 0, 1, 1, 2, 3, 2, 2, 3],
-            "ground_beefyboys": [
-                1,
-                0,
-                2,
-                0,
-                1,
-                3,
-                0,
-                3,
-                3,
-                0,
-                0,
-                3,
-                0,
-                1,
-                2,
-                0,
-                0,
-                3,
-                0,
-                2,
-                0,
-                2,
-                3,
-                3,
-                2,
-                0,
-                3,
-                0,
-                2,
-                0,
-            ],
+            "ground_beefyboys": [1, 0, 2, 0, 1, 3, 0, 3, 3, 0, 0, 3, 0, 1, 2, 0, 0, 3, 0, 2, 0, 2, 3, 3, 2, 0, 3, 0, 2, 0],
             "water": [2, 1, 1, 0, 1, 0, 0, 0, 2, 0, 1, 1, 2, 0, 1, 1, 2, 1, 2, 1, 0, 1, 0, 0, 0, 1, 0, 2, 0, 0],
         },
     }
@@ -91,10 +29,13 @@ enemy_replacements = [
 enemy_classes = {
     "ground_simple": [
         0x00,  # Blue Beaver
+        # 0x06, # Klobber (General Barrel Hider)
+        # 0x10, # Kaboom (TNT Barrel Hider)
         0x1B,  # Klaptrap (Green)
         0x1E,  # Klaptrap (Purple)
         0x1F,  # Klaptrap (Red)
         0x21,  # Gold Beaver
+        # 0x2C, # Mushroom Man
         0x33,  # Ruler
         0x3B,  # Kremling
         0x54,  # Krossbones

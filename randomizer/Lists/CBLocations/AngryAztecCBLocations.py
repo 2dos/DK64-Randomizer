@@ -41,8 +41,7 @@ class Balloon:
             self.logic = logic
         self.spawnPoint = self.setSpawnPoint(points)
 
-    @staticmethod
-    def setSpawnPoint(points=[]):
+    def setSpawnPoint(self, points=[]):
         """Set the spawn point of a balloon based on its path."""
         spawnX = 0
         spawnY = 0

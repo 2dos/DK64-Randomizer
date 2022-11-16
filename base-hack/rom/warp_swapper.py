@@ -78,6 +78,10 @@ with open("dk64-randomizer-base-dev.z64", "r+b") as fh:
                                 if counter == source_counter:
                                     ref_pad = vanilla_pad0
                                 counter += 1
+                        # print("Source Pad:")
+                        # print(vanilla_pad)
+                        # print("Reference Pad:")
+                        # print(ref_pad)
                         fh.seek(start + 0x28)
                         fh.write(pad_types[vanilla_pad["pad_index"]].to_bytes(2, "big"))
                         fh.seek(start + 0)

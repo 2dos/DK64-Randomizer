@@ -141,10 +141,7 @@ def ShuffleExitsInPool(settings, frontpool, backpool):
             origins = [x for x in origins if ShufflableExits[ShufflableExits[x].back.reverse].category is not None]
             # Also validate the entry & region kongs overlap in reverse direction
             origins = [x for x in origins if ShufflableExits[backExit.back.reverse].entryKongs.issuperset(ShufflableExits[ShufflableExits[x].back.reverse].regionKongs)]
-        elif settings.decoupled_loading_zones and backExit.back.regionId in [
-            Regions.JapesMinecarts,
-            Regions.ForestMinecarts,
-        ]:
+        elif settings.decoupled_loading_zones and backExit.back.regionId in [Regions.JapesMinecarts, Regions.ForestMinecarts]:
             # In decoupled, we still have to prevent one-way minecart exits from leading to the minecarts themselves
             if Transitions.JapesCartsToMain in origins:
                 origins.remove(Transitions.JapesCartsToMain)
@@ -157,6 +154,7 @@ def ShuffleExitsInPool(settings, frontpool, backpool):
         for frontId in origins:
             frontExit = ShufflableExits[frontId]
             if AttemptConnect(settings, frontExit, frontId, backExit, backId):
+                # print("Assigned " + frontExit.name + " --> " + backExit.name)
                 frontpool.remove(frontId)
                 if not settings.decoupled_loading_zones:
                     # If coupled, the opposite pairing also needs to be removed from the pool
@@ -251,6 +249,7 @@ def UpdateLevelProgression(settings: Settings):
         if settings.shuffle_loading_zones == "levels":
             shuffledEntrance = ShufflableExits[LobbyEntrancePool[levelIndex]].shuffledId
             newDestRegion = ShufflableExits[shuffledEntrance].back.regionId
+            # print(LobbyEntrancePool[levelIndex].name + " goes to " + newDestRegion.name)
             newIndex = lobbies.index(newDestRegion)
         newEntryGBs[newIndex] = settings.EntryGBs[levelIndex]
         newBossBananas[newIndex] = settings.BossBananas[levelIndex]
@@ -334,15 +333,7 @@ def ShuffleLevelOrderUnrestricted(settings):
         6: None,
         7: None,
     }
-    allLevels = [
-        Levels.JungleJapes,
-        Levels.AngryAztec,
-        Levels.FranticFactory,
-        Levels.GloomyGalleon,
-        Levels.FungiForest,
-        Levels.CrystalCaves,
-        Levels.CreepyCastle,
-    ]
+    allLevels = [Levels.JungleJapes, Levels.AngryAztec, Levels.FranticFactory, Levels.GloomyGalleon, Levels.FungiForest, Levels.CrystalCaves, Levels.CreepyCastle]
     random.shuffle(allLevels)
     for i in range(len(allLevels)):
         newLevelOrder[i + 1] = allLevels[i]
@@ -475,8 +466,9 @@ def ShuffleLevelOrderForMultipleStartingKongs(settings: Settings):
                     tinyAccessible = Locations.TinyKong in settings.kong_locations
                     lankyAccessible = Locations.LankyKong in settings.kong_locations
                     # If a kong is in Tiny Temple, either Diddy or Chunky can free them
-                    if tinyAccessible and Kongs.diddy not in settings.starting_kong_list and Kongs.chunky not in settings.starting_kong_list:
-                        tinyAccessible = False
+                    if tinyAccessible:
+                        if Kongs.diddy not in settings.starting_kong_list and Kongs.chunky not in settings.starting_kong_list:
+                            tinyAccessible = False
                     # If a kong is in Llama temple, need to be able to get past the guitar door and one of Donkey, Lanky, or Tiny to open the Llama temple
                     if lankyAccessible:
                         guitarDoorAccess = (
