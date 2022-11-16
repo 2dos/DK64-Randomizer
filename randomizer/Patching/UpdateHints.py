@@ -1,5 +1,6 @@
 """Update wrinkly hints compressed file."""
 import random
+from io import BytesIO
 
 import js
 from randomizer.Enums.Kongs import Kongs

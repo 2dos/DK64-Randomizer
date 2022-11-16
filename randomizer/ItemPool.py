@@ -1,13 +1,16 @@
 """Contains functions related to setting up the pool of shuffled items."""
 import itertools
+from random import shuffle
+from randomizer.Enums.Events import Events
 
 import randomizer.Enums.Kongs as KongObject
 from randomizer.Enums.Items import Items
+from randomizer.Enums.Levels import Levels
 from randomizer.Enums.Locations import Locations
 from randomizer.Enums.Types import Types
 from randomizer.Lists.Item import ItemFromKong
 from randomizer.Lists.LevelInfo import LevelInfoList
-from randomizer.Lists.Location import LocationList
+from randomizer.Lists.Location import DonkeyMoveLocations, DiddyMoveLocations, LankyMoveLocations, TinyMoveLocations, ChunkyMoveLocations, SharedMoveLocations, TrainingBarrelLocations, LocationList
 from randomizer.Lists.ShufflableExit import ShufflableExits
 
 

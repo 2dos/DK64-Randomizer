@@ -1,6 +1,10 @@
 """Spoiler class and functions."""
+
+from email.policy import default
 import json
 from typing import OrderedDict
+
+import randomizer.ItemPool as ItemPool
 from randomizer.Enums.Events import Events
 from randomizer.Enums.Items import Items
 from randomizer.Enums.Kongs import Kongs

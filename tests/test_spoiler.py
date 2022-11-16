@@ -3,6 +3,8 @@ import json
 import random
 
 import pytest
+
+import randomizer.Lists.Exceptions as Ex
 from randomizer.Fill import Generate_Spoiler
 from randomizer.Settings import Settings
 from randomizer.Spoiler import Spoiler

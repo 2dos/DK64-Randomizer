@@ -1,5 +1,6 @@
 """Convert Dirt Patch CSV into a python list."""
 import csv
+import re
 
 with open("doors.csv", newline="") as csvfile:
     patch_data = csv.reader(csvfile, delimiter=",", quotechar="|")

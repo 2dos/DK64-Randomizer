@@ -1,10 +1,13 @@
 """Functions and data for setting and calculating prices."""
+
+from math import ceil
 import random
 
 from randomizer.Enums.Items import Items
 from randomizer.Enums.Kongs import Kongs
 from randomizer.Enums.Locations import Locations
 from randomizer.Enums.Types import Types
+from randomizer.ItemPool import TrainingBarrelAbilities
 from randomizer.Lists.Item import ItemList
 from randomizer.Lists.Location import (
     ChunkyMoveLocations,
@@ -13,6 +16,7 @@ from randomizer.Lists.Location import (
     LankyMoveLocations,
     LocationList,
     SharedMoveLocations,
+    SharedShopLocations,
     TinyMoveLocations,
     TrainingBarrelLocations,
 )

@@ -1,5 +1,7 @@
 """Place Shuffled Shops."""
 
+import math
+
 import js
 from randomizer.Enums.Regions import Regions
 from randomizer.Lists.MapsAndExits import Maps

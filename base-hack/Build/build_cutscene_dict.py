@@ -1,4 +1,5 @@
 """Builds Cutscene Database from CSV."""
+import os
 
 csv_file = "assets/Non-Code/cutscenes/cutscenes_skipped.csv"
 write_file = "src/misc/cutscene_database.c"

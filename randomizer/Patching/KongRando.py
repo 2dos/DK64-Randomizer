@@ -1,4 +1,5 @@
 """Apply cosmetic elements of Kong Rando."""
+import random
 
 import js
 from randomizer.Enums.Kongs import Kongs

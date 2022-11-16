@@ -1,5 +1,7 @@
 """Setting data related to DKTV."""
 import random
+
+import js
 from randomizer.Patching.Patcher import ROM
 
 

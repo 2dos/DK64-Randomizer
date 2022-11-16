@@ -1,4 +1,5 @@
 """Apply Door Locations."""
+import random
 
 import js
 from randomizer.Lists.MapsAndExits import Maps
