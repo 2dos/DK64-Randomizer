@@ -72,9 +72,7 @@ def randomize_bananaport(spoiler: Spoiler):
                                 vanilla_id = pad.obj_id_vanilla
                             pair_index += 1
                     if vanilla_id != -1:  # Found associated Warp
-                        if (
-                            vanilla_id in pad_vanilla and warp_id in pad_vanilla
-                        ):  # Search and reference warp in location dump
+                        if vanilla_id in pad_vanilla and warp_id in pad_vanilla:  # Search and reference warp in location dump
                             vanilla_idx = pad_vanilla[vanilla_id]["idx"]
                             start = cont_map_setup_address + (0x30 * vanilla_idx) + 4
                             ROM().seek(start)

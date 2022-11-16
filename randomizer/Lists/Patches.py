@@ -10,22 +10,7 @@ from randomizer.Lists.MapsAndExits import Maps
 class DirtPatchData:
     """Information about the dirt patch location."""
 
-    def __init__(
-        self,
-        *,
-        name="",
-        level=0,
-        map_id=0,
-        vanilla=False,
-        x=0,
-        y=0,
-        z=0,
-        scale=1,
-        rotation=0,
-        group=0,
-        logicregion="",
-        logic=0
-    ):
+    def __init__(self, *, name="", level=0, map_id=0, vanilla=False, x=0, y=0, z=0, scale=1, rotation=0, group=0, logicregion="", logic=0):
         """Initialize with given parameters."""
         self.name = name
         self.level_name = level

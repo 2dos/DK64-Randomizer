@@ -18,12 +18,8 @@ class LevelInfo:
 
 
 LevelInfoList = {
-    Levels.JungleJapes: LevelInfo(
-        Transitions.IslesMainToJapesLobby, Transitions.IslesJapesLobbyToMain, Locations.JapesKey, Items.JungleJapesKey
-    ),
-    Levels.AngryAztec: LevelInfo(
-        Transitions.IslesMainToAztecLobby, Transitions.IslesAztecLobbyToMain, Locations.AztecKey, Items.AngryAztecKey
-    ),
+    Levels.JungleJapes: LevelInfo(Transitions.IslesMainToJapesLobby, Transitions.IslesJapesLobbyToMain, Locations.JapesKey, Items.JungleJapesKey),
+    Levels.AngryAztec: LevelInfo(Transitions.IslesMainToAztecLobby, Transitions.IslesAztecLobbyToMain, Locations.AztecKey, Items.AngryAztecKey),
     Levels.FranticFactory: LevelInfo(
         Transitions.IslesMainToFactoryLobby,
         Transitions.IslesFactoryLobbyToMain,
@@ -42,9 +38,7 @@ LevelInfoList = {
         Locations.ForestKey,
         Items.FungiForestKey,
     ),
-    Levels.CrystalCaves: LevelInfo(
-        Transitions.IslesMainToCavesLobby, Transitions.IslesCavesLobbyToMain, Locations.CavesKey, Items.CrystalCavesKey
-    ),
+    Levels.CrystalCaves: LevelInfo(Transitions.IslesMainToCavesLobby, Transitions.IslesCavesLobbyToMain, Locations.CavesKey, Items.CrystalCavesKey),
     Levels.CreepyCastle: LevelInfo(
         Transitions.IslesMainToCastleLobby,
         Transitions.IslesCastleLobbyToMain,

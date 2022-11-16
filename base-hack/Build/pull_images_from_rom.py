@@ -8,9 +8,7 @@ from PIL import Image
 class ImageData:
     """Class to store information regarding images."""
 
-    def __init__(
-        self, name: str, format: str, table: int, index: int, width: int, height: int, resize: bool, flip: bool
-    ):
+    def __init__(self, name: str, format: str, table: int, index: int, width: int, height: int, resize: bool, flip: bool):
         """Initialize with given data."""
         self.name = name
         self.format = format

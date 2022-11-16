@@ -10,21 +10,7 @@ from randomizer.Lists.MapsAndExits import Maps
 class KasplatLocation:
     """Class which stores name and logic for a kasplat location."""
 
-    def __init__(
-        self,
-        *,
-        name="No Location",
-        map_id=0,
-        kong_lst=[],
-        coords=[0, 0, 0],
-        xmin=0,
-        xmax=0,
-        zmin=0,
-        zmax=0,
-        region,
-        additional_logic=None,
-        vanilla=False
-    ):
+    def __init__(self, *, name="No Location", map_id=0, kong_lst=[], coords=[0, 0, 0], xmin=0, xmax=0, zmin=0, zmax=0, region, additional_logic=None, vanilla=False):
         """Initialize with given parameters."""
         self.name = name
         self.map = map_id
@@ -299,8 +285,7 @@ KasplatLocationList = {
             kong_lst=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
             coords=[1363, 162, 738],
             region=Regions.AztecTunnelBeforeOasis,
-            additional_logic=lambda l: l.coconut
-            and ((l.strongKong and l.isdonkey) or l.settings.damage_amount == "default"),
+            additional_logic=lambda l: l.coconut and ((l.strongKong and l.isdonkey) or l.settings.damage_amount == "default"),
             vanilla=True,
         ),
         KasplatLocation(
@@ -1557,10 +1542,7 @@ KasplatLocationList = {
             zmin=1520,
             zmax=1780,
             region=Regions.IslesMain,
-            additional_logic=lambda l: Events.IslesChunkyBarrelSpawn in l.Events
-            and l.hunkyChunky
-            and l.Slam
-            and l.chunky,
+            additional_logic=lambda l: Events.IslesChunkyBarrelSpawn in l.Events and l.hunkyChunky and l.Slam and l.chunky,
         ),
         KasplatLocation(
             name="Isles Kasplat: At the back of Kroc Isle halfway up",

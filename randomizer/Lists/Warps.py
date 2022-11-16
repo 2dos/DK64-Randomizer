@@ -8,18 +8,7 @@ from randomizer.Lists.MapsAndExits import Maps
 class BananaportData:
     """Information about the bananaport."""
 
-    def __init__(
-        self,
-        *,
-        name="",
-        map_id=0,
-        region_id=0,
-        obj_id_vanilla=0,
-        locked=False,
-        vanilla_warp=0,
-        swap_index=None,
-        restricted=False
-    ):
+    def __init__(self, *, name="", map_id=0, region_id=0, obj_id_vanilla=0, locked=False, vanilla_warp=0, swap_index=None, restricted=False):
         """Initialize with given parameters."""
         self.name = name
         self.map_id = map_id
@@ -30,9 +19,7 @@ class BananaportData:
         self.vanilla_warp = vanilla_warp
         self.new_warp = vanilla_warp
         self.swap_index = swap_index
-        self.restricted = (
-            restricted  # Defined by whether all kongs can access the bananaport without tag anywhere or bananaports
-        )
+        self.restricted = restricted  # Defined by whether all kongs can access the bananaport without tag anywhere or bananaports
         self.cross_map_placed = False
         vanilla_pair_index = swap_index % 2
         if vanilla_pair_index == 0:

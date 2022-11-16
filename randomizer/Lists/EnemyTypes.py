@@ -151,12 +151,8 @@ class EnemyData:
 
 
 EnemyMetaData = {
-    Enemies.BeaverBlue: EnemyData(
-        name="Beaver (Blue)", crown_weight=10, simple=True, bbbarrage_min_scale=70, beaver=True
-    ),  #
-    Enemies.Book: EnemyData(
-        name="Book", aggro=6, crown_enabled=False, air=True, minigame_enabled=False, selector_enabled=False
-    ),
+    Enemies.BeaverBlue: EnemyData(name="Beaver (Blue)", crown_weight=10, simple=True, bbbarrage_min_scale=70, beaver=True),  #
+    Enemies.Book: EnemyData(name="Book", aggro=6, crown_enabled=False, air=True, minigame_enabled=False, selector_enabled=False),
     Enemies.ZingerCharger: EnemyData(name="Zinger (Charger)", air=True, crown_weight=7, disruptive=1),  #
     Enemies.Klobber: EnemyData(name="Klobber", aggro=4, crown_weight=2, killable=False, disruptive=2),
     Enemies.Klump: EnemyData(name="Klump", crown_weight=1, killable=False, disruptive=1),  #
@@ -165,12 +161,8 @@ EnemyMetaData = {
     Enemies.ZingerLime: EnemyData(name="Zinger (Lime Thrower)", air=True, crown_weight=5, disruptive=1),  #
     Enemies.KlaptrapPurple: EnemyData(name="Klaptrap (Purple)", crown_weight=2, killable=False, disruptive=1),  #
     Enemies.KlaptrapRed: EnemyData(name="Klaptrap (Red)", crown_weight=2, killable=False, disruptive=1),  #
-    Enemies.BeaverGold: EnemyData(
-        name="Beaver (Gold)", crown_weight=10, simple=True, bbbarrage_min_scale=70, beaver=True
-    ),  #
-    Enemies.MushroomMan: EnemyData(
-        name="Mushroom Man", aggro=4, size_cap=60, crown_weight=10, simple=True, bbbarrage_min_scale=50
-    ),
+    Enemies.BeaverGold: EnemyData(name="Beaver (Gold)", crown_weight=10, simple=True, bbbarrage_min_scale=70, beaver=True),  #
+    Enemies.MushroomMan: EnemyData(name="Mushroom Man", aggro=4, size_cap=60, crown_weight=10, simple=True, bbbarrage_min_scale=50),
     Enemies.Ruler: EnemyData(name="Ruler", crown_weight=10, simple=True, bbbarrage_min_scale=50),  #
     Enemies.RoboKremling: EnemyData(name="Robo-Kremling", crown_weight=2, killable=False, disruptive=1),  #
     Enemies.Kremling: EnemyData(name="Kremling", crown_weight=10, simple=True, bbbarrage_min_scale=50),  #
@@ -183,21 +175,13 @@ EnemyMetaData = {
     Enemies.Krossbones: EnemyData(name="Krossbones", crown_weight=10, simple=True, bbbarrage_min_scale=50),  #
     Enemies.Shuri: EnemyData(name="Shuri", crown_enabled=False, minigame_enabled=False),  #
     Enemies.Gimpfish: EnemyData(name="Gimpfish", aggro=1, crown_enabled=False, minigame_enabled=False),
-    Enemies.MrDice0: EnemyData(
-        name="Mr Dice (Green)", crown_weight=10, simple=True, bbbarrage_min_scale=80
-    ),  # Should be aggro 4, but I think this is because it normally spawns in the BHDM fight
+    Enemies.MrDice0: EnemyData(name="Mr Dice (Green)", crown_weight=10, simple=True, bbbarrage_min_scale=80),  # Should be aggro 4, but I think this is because it normally spawns in the BHDM fight
     Enemies.SirDomino: EnemyData(name="Sir Domino", crown_weight=10, simple=True, bbbarrage_min_scale=60),  #
     Enemies.MrDice1: EnemyData(name="Mr Dice (Red)", crown_weight=10, simple=True, bbbarrage_min_scale=100),  #
-    Enemies.FireballGlasses: EnemyData(
-        name="Fireball with Glasses", aggro=35, min_speed=100, max_speed=255, crown_weight=10, killable=False
-    ),  # 29 for if you want them to respond to the rabbit
-    Enemies.SpiderSmall: EnemyData(
-        name="Spider", crown_weight=7, disruptive=1
-    ),  # with projectiles, disruptive will need to be set to 2
+    Enemies.FireballGlasses: EnemyData(name="Fireball with Glasses", aggro=35, min_speed=100, max_speed=255, crown_weight=10, killable=False),  # 29 for if you want them to respond to the rabbit
+    Enemies.SpiderSmall: EnemyData(name="Spider", crown_weight=7, disruptive=1),  # with projectiles, disruptive will need to be set to 2
     Enemies.Bat: EnemyData(name="Bat", air=True, crown_weight=5, minigame_enabled=False, disruptive=1),  #
-    Enemies.EvilTomato: EnemyData(
-        name="Evil Tomato", aggro=4, crown_enabled=False, minigame_enabled=False, selector_enabled=False
-    ),
+    Enemies.EvilTomato: EnemyData(name="Evil Tomato", aggro=4, crown_enabled=False, minigame_enabled=False, selector_enabled=False),
     Enemies.Ghost: EnemyData(name="Ghost", crown_weight=10, simple=True, bbbarrage_min_scale=70),  #
     Enemies.Pufftup: EnemyData(name="Pufftup", crown_enabled=False, size_cap=40, minigame_enabled=False),  #
     Enemies.Kosha: EnemyData(name="Kosha", crown_weight=1, killable=False, disruptive=2),  #

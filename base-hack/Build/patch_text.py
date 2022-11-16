@@ -666,9 +666,7 @@ with open("src/randomizers/move_text.c", "w") as fh:
                 arr_item_type = "name_latin_struct"
                 divisor = 2
             fh.write(f"const {arr_item_type} {index_data[move_type]['arr_name']}[] = {{\n")
-            fg.write(
-                f"extern const {arr_item_type} {index_data[move_type]['arr_name']}[{int(len(index_data[move_type]['indexes']) / divisor)}];\n"
-            )
+            fg.write(f"extern const {arr_item_type} {index_data[move_type]['arr_name']}[{int(len(index_data[move_type]['indexes']) / divisor)}];\n")
             for item_index in range(int(len(index_data[move_type]["indexes"]) / divisor)):
                 if index_data[move_type]["has_latin"]:
                     fh.write("\t{\n")
@@ -711,11 +709,7 @@ move_explanations = [
     {
         "move": "vine_barrel",  # 0x27
         "explanation": [
-            {
-                "text": [
-                    "PAY ATTENTION, ~. YOU AND ALL THE OTHER KONGS CAN NOW SWING ON VINES. JUMP TO GRAB ONTO THE VINE AND PRESS "
-                ]
-            },
+            {"text": ["PAY ATTENTION, ~. YOU AND ALL THE OTHER KONGS CAN NOW SWING ON VINES. JUMP TO GRAB ONTO THE VINE AND PRESS "]},
             {"text": ["a_button"]},
             {"text": ["TO LAUNCH YOURSELF FROM IT."]},
         ],
@@ -723,11 +717,7 @@ move_explanations = [
     {
         "move": "camera_solo",  # 0x28
         "explanation": [
-            {
-                "text": [
-                    "PAY ATTENTION, ~. YOU AND ALL THE OTHER KONGS CAN NOW USE A CAMERA TO SNAP BANANA FAIRIES. PRESS"
-                ]
-            },
+            {"text": ["PAY ATTENTION, ~. YOU AND ALL THE OTHER KONGS CAN NOW USE A CAMERA TO SNAP BANANA FAIRIES. PRESS"]},
             {"text": ["z_button"]},
             {"text": ["THEN"]},
             {"text": ["c_down_button"]},
@@ -739,11 +729,7 @@ move_explanations = [
     {
         "move": "shockwave_solo",  # 0x29
         "explanation": [
-            {
-                "text": [
-                    "PAY ATTENTION, ~. YOU AND ALL THE OTHER KONGS CAN NOW RELEASE A SHOCKWAVE CHARGE. PRESS AND HOLD"
-                ]
-            },
+            {"text": ["PAY ATTENTION, ~. YOU AND ALL THE OTHER KONGS CAN NOW RELEASE A SHOCKWAVE CHARGE. PRESS AND HOLD"]},
             {"text": ["b_button"]},
             {"text": ["TO CHARGE THE SHOCKWAVE."]},
         ],
@@ -751,11 +737,7 @@ move_explanations = [
     {
         "move": "camera_shockwave_combo",  # 0x2A
         "explanation": [
-            {
-                "text": [
-                    "PAY ATTENTION, ~. YOU AND ALL THE OTHER KONGS CAN NOW RELEASE A SHOCKWAVE CHARGE AND USE A CAMERA TO SNAP BANANA FAIRIES. PRESS AND HOLD"
-                ]
-            },
+            {"text": ["PAY ATTENTION, ~. YOU AND ALL THE OTHER KONGS CAN NOW RELEASE A SHOCKWAVE CHARGE AND USE A CAMERA TO SNAP BANANA FAIRIES. PRESS AND HOLD"]},
             {"text": ["b_button"]},
             {"text": ["TO CHARGE THE SHOCKWAVE. PRESS "]},
             {"text": ["z_button"]},
@@ -767,11 +749,7 @@ move_explanations = [
     {
         "move": "generic_item",  # 0x2B
         "explanation": [
-            {
-                "text": [
-                    "PAY ATTENTION, ~. THERE'S PLENTY MORE ITEMS TO GATHER IN THIS GAME. GET MOVING SO WE CAN DISPENSE OF K. ROOL"
-                ]
-            },
+            {"text": ["PAY ATTENTION, ~. THERE'S PLENTY MORE ITEMS TO GATHER IN THIS GAME. GET MOVING SO WE CAN DISPENSE OF K. ROOL"]},
         ],
     },
 ]

@@ -830,12 +830,7 @@ with open(ROMName, "rb") as fh:
 
                 # Convert decoded_filename to encoded_filename using the encoder function
                 # Eg. exits.json to exits.bin
-                if (
-                    "encoder" in y
-                    and callable(y["encoder"])
-                    and "decoded_filename" in y
-                    and os.path.exists(x["map_folder"] + y["decoded_filename"])
-                ):
+                if "encoder" in y and callable(y["encoder"]) and "decoded_filename" in y and os.path.exists(x["map_folder"] + y["decoded_filename"]):
                     y["encoder"](x["map_folder"] + y["decoded_filename"], x["map_folder"] + y["encoded_filename"])
 
                 if os.path.exists(x["map_folder"] + y["encoded_filename"]):
@@ -991,9 +986,7 @@ with open(newROMName, "r+b") as fh:
             x["output_file"] = x["source_file"]
 
         if "use_external_gzip" in x and x["use_external_gzip"] and os.path.exists(x["source_file"]):
-            result = subprocess.check_output(
-                ["./build/gzip.exe", "-f", "-n", "-k", "-q", "-9", x["output_file"].replace(".gz", "")]
-            )
+            result = subprocess.check_output(["./build/gzip.exe", "-f", "-n", "-k", "-q", "-9", x["output_file"].replace(".gz", "")])
             if os.path.exists(x["output_file"]):
                 with open(x["output_file"], "r+b") as outputFile:
                     # Chop off gzip footer
@@ -1042,23 +1035,13 @@ with open(newROMName, "r+b") as fh:
                     fh.seek(x["start"])
                     fh.write(compress)
             else:
-                print(
-                    "  - WARNING: Can't find address information in file_dict entry to write "
-                    + x["output_file"]
-                    + " ("
-                    + hex(len(compress))
-                    + ") to ROM"
-                )
+                print("  - WARNING: Can't find address information in file_dict entry to write " + x["output_file"] + " (" + hex(len(compress)) + ") to ROM")
         else:
             print(x["output_file"] + " does not exist")
 
         # Cleanup temporary files
         if not ("do_not_delete" in x and x["do_not_delete"]):
-            if (
-                not ("do_not_delete_output" in x and x["do_not_delete_output"])
-                and os.path.exists(x["output_file"])
-                and x["output_file"] != x["source_file"]
-            ):
+            if not ("do_not_delete_output" in x and x["do_not_delete_output"]) and os.path.exists(x["output_file"]) and x["output_file"] != x["source_file"]:
                 os.remove(x["output_file"])
             if not ("do_not_delete_source" in x and x["do_not_delete_source"]) and os.path.exists(x["source_file"]):
                 os.remove(x["source_file"])

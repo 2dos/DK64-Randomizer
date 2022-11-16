@@ -73,12 +73,8 @@ def patching_response(responded_data):
     if spoiler.settings.download_patch_file:
         spoiler.settings.download_patch_file = False
 
-        js.save_text_as_file(
-            codecs.encode(pickle.dumps(spoiler), "base64").decode(), f"dk64-{spoiler.settings.seed_id}.lanky"
-        )
-    js.write_seed_history(
-        spoiler.settings.seed_id, codecs.encode(pickle.dumps(spoiler), "base64").decode(), spoiler.settings.public_hash
-    )
+        js.save_text_as_file(codecs.encode(pickle.dumps(spoiler), "base64").decode(), f"dk64-{spoiler.settings.seed_id}.lanky")
+    js.write_seed_history(spoiler.settings.seed_id, codecs.encode(pickle.dumps(spoiler), "base64").decode(), spoiler.settings.public_hash)
     # Starting index for our settings
     sav = spoiler.settings.rom_data
 
@@ -380,10 +376,7 @@ def patching_response(responded_data):
         ROM().write(1)
 
     # Wrinkly Rando
-    if spoiler.settings.wrinkly_location_rando or (
-        "remove_wrinkly_puzzles" in spoiler.settings.misc_changes_selected
-        or len(spoiler.settings.misc_changes_selected) == 0
-    ):
+    if spoiler.settings.wrinkly_location_rando or ("remove_wrinkly_puzzles" in spoiler.settings.misc_changes_selected or len(spoiler.settings.misc_changes_selected) == 0):
         ROM().seek(sav + 0x11F)
         ROM().write(1)
 
@@ -429,9 +422,7 @@ def patching_response(responded_data):
         ROM().seek(sav + 0x112)
         ROM().write(spoiler.settings.medal_cb_req)
 
-    if len(spoiler.settings.enemies_selected) == 0 and (
-        spoiler.settings.enemy_rando or spoiler.settings.crown_enemy_rando != "off"
-    ):
+    if len(spoiler.settings.enemies_selected) == 0 and (spoiler.settings.enemy_rando or spoiler.settings.crown_enemy_rando != "off"):
         lst = []
         for enemy in EnemySelector:
             lst.append(enemy["value"])

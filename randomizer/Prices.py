@@ -309,16 +309,12 @@ def KongCanBuy(location_id, logic, kong):
 
 def AnyKongCanBuy(location, logic):
     """Check if any kong can logically purchase this location."""
-    return any(
-        KongCanBuy(location, logic, kong) for kong in [Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky]
-    )
+    return any(KongCanBuy(location, logic, kong) for kong in [Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky])
 
 
 def EveryKongCanBuy(location, logic):
     """Check if any kong can logically purchase this location."""
-    return all(
-        KongCanBuy(location, logic, kong) for kong in [Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky]
-    )
+    return all(KongCanBuy(location, logic, kong) for kong in [Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky])
 
 
 def CanBuy(location, logic):

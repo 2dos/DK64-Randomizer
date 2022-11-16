@@ -211,9 +211,7 @@ if ".z64" in f:
         for shop in range(3):
             for kong in range(5):
                 for level in range(8):
-                    output(
-                        f"\t\t{kongs[kong]} {shops[shop]} {levels_isles[level]}: {getMove(fh,level + (8 * kong) + (40 * shop),kongs[kong],shops[shop],levels_isles[level])}"
-                    )
+                    output(f"\t\t{kongs[kong]} {shops[shop]} {levels_isles[level]}: {getMove(fh,level + (8 * kong) + (40 * shop),kongs[kong],shops[shop],levels_isles[level])}")
         for tbarrel in range(4):
             output(f"\t\tTraining Barrel {tbarrel}: {getMove(fh,120+tbarrel,0,0,0)}")
         output(f"\t\tBFI: {getMove(fh,124,0,0,0)}")

@@ -32,9 +32,7 @@ root = Regions.IslesMain
 
 def GetRootExit(exitId):
     """Query the world root to return an exit with a matching exit id."""
-    return [
-        x for x in Logic.Regions[root].exits if x.assumed and x.exitShuffleId is not None and x.exitShuffleId == exitId
-    ][0]
+    return [x for x in Logic.Regions[root].exits if x.assumed and x.exitShuffleId is not None and x.exitShuffleId == exitId][0]
 
 
 def RemoveRootExit(exit):
@@ -142,13 +140,7 @@ def ShuffleExitsInPool(settings, frontpool, backpool):
             # In coupled, if both front & back are leaves, the result will be invalid
             origins = [x for x in origins if ShufflableExits[ShufflableExits[x].back.reverse].category is not None]
             # Also validate the entry & region kongs overlap in reverse direction
-            origins = [
-                x
-                for x in origins
-                if ShufflableExits[backExit.back.reverse].entryKongs.issuperset(
-                    ShufflableExits[ShufflableExits[x].back.reverse].regionKongs
-                )
-            ]
+            origins = [x for x in origins if ShufflableExits[backExit.back.reverse].entryKongs.issuperset(ShufflableExits[ShufflableExits[x].back.reverse].regionKongs)]
         elif settings.decoupled_loading_zones and backExit.back.regionId in [
             Regions.JapesMinecarts,
             Regions.ForestMinecarts,
@@ -173,18 +165,10 @@ def ShuffleExitsInPool(settings, frontpool, backpool):
                     backpool.remove(frontExit.back.reverse)
                 break
         if not frontExit.shuffled:
-            print(
-                "Failed to connect to "
-                + backExit.name
-                + " from any of the remaining "
-                + str(len(origins))
-                + " origins!"
-            )
+            print("Failed to connect to " + backExit.name + " from any of the remaining " + str(len(origins)) + " origins!")
             raise Ex.EntranceOutOfDestinations
         if len(frontpool) != len(backpool):
-            print(
-                "Length of frontpool " + len(frontpool) + " and length of backpool " + len(backpool) + " do not match!"
-            )
+            print("Length of frontpool " + len(frontpool) + " and length of backpool " + len(backpool) + " do not match!")
             raise Ex.EntranceOutOfDestinations
 
 
@@ -214,9 +198,7 @@ def ShuffleExits(settings: Settings):
     # Assume all shuffled exits reachable by default
     if settings.shuffle_loading_zones == "levels":
         # If we are restricted on kong locations, we need to carefully place levels in order to meet the kongs-by-level requirement
-        if settings.kongs_for_progression and not (
-            settings.shuffle_items and Types.Kong in settings.shuffled_location_types
-        ):
+        if settings.kongs_for_progression and not (settings.shuffle_items and Types.Kong in settings.shuffled_location_types):
             ShuffleLevelOrderWithRestrictions(settings)
         else:
             ShuffleLevelExits(settings)
@@ -471,9 +453,7 @@ def ShuffleLevelOrderForMultipleStartingKongs(settings: Settings):
         Levels.CrystalCaves: 0,
         Levels.CreepyCastle: 0,
     }
-    levelsSortedByKongs = [
-        kongsInLevel[0] for kongsInLevel in sorted(kongsInLevels.items(), key=lambda x: x[1], reverse=True)
-    ]
+    levelsSortedByKongs = [kongsInLevel[0] for kongsInLevel in sorted(kongsInLevels.items(), key=lambda x: x[1], reverse=True)]
     # Iterate over levels to place them in the level order
     kongsUnplaced = sum(kongsInLevels.values())
     for levelToPlace in levelsSortedByKongs:
@@ -490,33 +470,20 @@ def ShuffleLevelOrderForMultipleStartingKongs(settings: Settings):
                 break
             if kongsOwned == settings.starting_kongs_count:
                 # If reached Aztec without freeing anyone yet, specific combinations of kongs are needed to open those cages (if they have any occupants)
-                if newLevelOrder[level] == Levels.AngryAztec and (
-                    Locations.TinyKong in settings.kong_locations or Locations.LankyKong in settings.kong_locations
-                ):
+                if newLevelOrder[level] == Levels.AngryAztec and (Locations.TinyKong in settings.kong_locations or Locations.LankyKong in settings.kong_locations):
                     # Assume we can free any locked kongs here
                     tinyAccessible = Locations.TinyKong in settings.kong_locations
                     lankyAccessible = Locations.LankyKong in settings.kong_locations
                     # If a kong is in Tiny Temple, either Diddy or Chunky can free them
-                    if (
-                        tinyAccessible
-                        and Kongs.diddy not in settings.starting_kong_list
-                        and Kongs.chunky not in settings.starting_kong_list
-                    ):
+                    if tinyAccessible and Kongs.diddy not in settings.starting_kong_list and Kongs.chunky not in settings.starting_kong_list:
                         tinyAccessible = False
                     # If a kong is in Llama temple, need to be able to get past the guitar door and one of Donkey, Lanky, or Tiny to open the Llama temple
                     if lankyAccessible:
                         guitarDoorAccess = (
-                            Kongs.diddy in settings.starting_kong_list
-                            or settings.open_levels
-                            or (
-                                Kongs.donkey in settings.starting_kong_list
-                                and settings.activate_all_bananaports == "all"
-                            )
+                            Kongs.diddy in settings.starting_kong_list or settings.open_levels or (Kongs.donkey in settings.starting_kong_list and settings.activate_all_bananaports == "all")
                         )
                         if not guitarDoorAccess or (
-                            Kongs.donkey not in settings.starting_kong_list
-                            and Kongs.lanky not in settings.starting_kong_list
-                            and Kongs.tiny not in settings.starting_kong_list
+                            Kongs.donkey not in settings.starting_kong_list and Kongs.lanky not in settings.starting_kong_list and Kongs.tiny not in settings.starting_kong_list
                         ):
                             lankyAccessible = False
                     # If we can unlock one kong then we can unlock both, so if we can't reach either then we can't assume we can unlock any kong from here

@@ -361,9 +361,7 @@ def CompanyCoinItems():
 def GoldenBananaItems():
     """Return a list of GBs to be placed."""
     itemPool = []
-    itemPool.extend(
-        itertools.repeat(Items.GoldenBanana, 161)
-    )  # 40 Blueprint GBs are always already placed (see Types.BlueprintBanana)
+    itemPool.extend(itertools.repeat(Items.GoldenBanana, 161))  # 40 Blueprint GBs are always already placed (see Types.BlueprintBanana)
     return itemPool
 
 

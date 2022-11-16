@@ -8,21 +8,7 @@ from randomizer.Enums.Events import Events
 class CrownLocation:
     """Class to store information pertaining to a crown location."""
 
-    def __init__(
-        self,
-        *,
-        map=0,
-        name="",
-        x=0,
-        y=0,
-        z=0,
-        scale=1,
-        region=0,
-        logic=None,
-        is_vanilla=False,
-        is_rotating_room=False,
-        default_index=0
-    ):
+    def __init__(self, *, map=0, name="", x=0, y=0, z=0, scale=1, region=0, logic=None, is_vanilla=False, is_rotating_room=False, default_index=0):
         """Initialize with given data."""
         self.map = map
         self.name = name
@@ -2242,17 +2228,7 @@ CrownLocations = {
             z=637.07,
             scale=0.35,
             region=Regions.FungiForestLobby,
-            logic=lambda l: l.coconut
-            and l.peanut
-            and l.grape
-            and l.feather
-            and l.pineapple
-            and l.donkey
-            and l.diddy
-            and l.lanky
-            and l.tiny
-            and l.chunky
-            and l.gorillaGone,
+            logic=lambda l: l.coconut and l.peanut and l.grape and l.feather and l.pineapple and l.donkey and l.diddy and l.lanky and l.tiny and l.chunky and l.gorillaGone,
             is_vanilla=True,
         ),
         CrownLocation(
@@ -2698,13 +2674,7 @@ CrownLocations = {
             logic=lambda l: l.lanky
             and l.handstand
             and l.settings.helm_setting == "skip_all"
-            or (
-                Events.HelmDonkeyDone in l.Events
-                and Events.HelmChunkyDone in l.Events
-                and Events.HelmTinyDone in l.Events
-                and Events.HelmLankyDone in l.Events
-                and Events.HelmDiddyDone in l.Events
-            ),
+            or (Events.HelmDonkeyDone in l.Events and Events.HelmChunkyDone in l.Events and Events.HelmTinyDone in l.Events and Events.HelmLankyDone in l.Events and Events.HelmDiddyDone in l.Events),
         ),
         CrownLocation(
             map=Maps.HideoutHelm,

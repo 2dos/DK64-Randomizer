@@ -43,11 +43,7 @@ def randomize_crown_pads(spoiler: Spoiler):
             for crown in spoiler.crown_locations[level]:
                 crown_data = CrownLocations[level][crown]
                 idx = spoiler.crown_locations[level][crown]
-                placements.append(
-                    CrownPlacementShortData(
-                        crown_data.map, crown_data.coords, crown_data.scale, idx, crown_data.is_vanilla
-                    )
-                )
+                placements.append(CrownPlacementShortData(crown_data.map, crown_data.coords, crown_data.scale, idx, crown_data.is_vanilla))
                 if crown_data.is_vanilla:
                     new_vanilla_crowns.append(crown_data.map)
                 if not crown_data.is_vanilla and crown_data.map not in action_maps:
@@ -69,11 +65,7 @@ def randomize_crown_pads(spoiler: Spoiler):
                     item_start = setup_table + 4 + (model2_item * 0x30)
                     ROM().seek(item_start + 0x28)
                     item_type = int.from_bytes(ROM().readBytes(2), "big")
-                    if (
-                        cont_map_id in vanilla_crown_maps
-                        and cont_map_id not in new_vanilla_crowns
-                        and item_type == 0x1C6
-                    ):
+                    if cont_map_id in vanilla_crown_maps and cont_map_id not in new_vanilla_crowns and item_type == 0x1C6:
                         accept = False  # Crown is being removed
                     if accept:
                         ROM().seek(item_start)

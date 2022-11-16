@@ -697,10 +697,7 @@ class Settings:
                 allKongMoveLocations.update(LankyMoveLocations.copy())
                 if self.training_barrels == "shuffled" and Types.TrainingBarrel not in self.shuffled_location_types:
                     allKongMoveLocations.update(TrainingBarrelLocations.copy())
-                if (
-                    self.shockwave_status in ("vanilla", "start_with")
-                    and Types.Shockwave not in self.shuffled_location_types
-                ):
+                if self.shockwave_status in ("vanilla", "start_with") and Types.Shockwave not in self.shuffled_location_types:
                     allKongMoveLocations.remove(Locations.CameraAndShockwave)
                 self.valid_locations[Types.Shop][Kongs.donkey] = allKongMoveLocations
                 self.valid_locations[Types.Shop][Kongs.diddy] = allKongMoveLocations
@@ -708,10 +705,7 @@ class Settings:
                 self.valid_locations[Types.Shop][Kongs.tiny] = allKongMoveLocations
                 self.valid_locations[Types.Shop][Kongs.chunky] = allKongMoveLocations
             self.valid_locations[Types.Shop][Kongs.any] = SharedShopLocations.copy()
-            if (
-                self.shockwave_status not in ("vanilla", "start_with")
-                and Types.Shockwave not in self.shuffled_location_types
-            ):
+            if self.shockwave_status not in ("vanilla", "start_with") and Types.Shockwave not in self.shuffled_location_types:
                 self.valid_locations[Types.Shop][Kongs.any].add(Locations.CameraAndShockwave)
             elif Locations.CameraAndShockwave in self.valid_locations[Types.Shop][Kongs.tiny]:
                 self.valid_locations[Types.Shop][Kongs.tiny].remove(Locations.CameraAndShockwave)
@@ -723,12 +717,7 @@ class Settings:
 
         if self.shuffle_items and any(self.shuffled_location_types):
             # All shuffled locations are valid except for Kong locations (the Kong inside the cage, not the GB) - those can only be Kongs
-            shuffledLocations = [
-                location
-                for location in LocationList
-                if LocationList[location].type in self.shuffled_location_types
-                and LocationList[location].type != Types.Kong
-            ]
+            shuffledLocations = [location for location in LocationList if LocationList[location].type in self.shuffled_location_types and LocationList[location].type != Types.Kong]
             if Types.Shop in self.shuffled_location_types:
                 self.valid_locations[Types.Shop] = {}
                 # Cross-kong acquisition is assumed in full item rando, calculate the list of all Kong-specific shops
@@ -738,9 +727,7 @@ class Settings:
                 allKongMoveLocations.update(ChunkyMoveLocations.copy())
                 allKongMoveLocations.update(LankyMoveLocations.copy())
                 # Generate a list of all valid locations EXCEPT the Kong-specific shops - these are valid locations for shared moves
-                locations_excluding_kong_shops = [
-                    location for location in shuffledLocations if location not in allKongMoveLocations
-                ]
+                locations_excluding_kong_shops = [location for location in shuffledLocations if location not in allKongMoveLocations]
                 self.valid_locations[Types.Shop][Kongs.any] = locations_excluding_kong_shops
                 # Shockwave and Training Barrels can only be shuffled if shops are shuffled and their valid locations are non-Kong-specific shops
                 if Types.Shockwave in self.shuffled_location_types:
@@ -749,9 +736,7 @@ class Settings:
                 if Types.TrainingBarrel in self.shuffled_location_types:
                     self.valid_locations[Types.TrainingBarrel] = locations_excluding_kong_shops
                 # Kong-specific moves can go in any non-shared shop location
-                locations_excluding_shared_shops = [
-                    location for location in shuffledLocations if location not in SharedShopLocations
-                ]
+                locations_excluding_shared_shops = [location for location in shuffledLocations if location not in SharedShopLocations]
                 self.valid_locations[Types.Shop][Kongs.donkey] = locations_excluding_shared_shops
                 self.valid_locations[Types.Shop][Kongs.diddy] = locations_excluding_shared_shops
                 self.valid_locations[Types.Shop][Kongs.lanky] = locations_excluding_shared_shops
@@ -759,9 +744,7 @@ class Settings:
                 self.valid_locations[Types.Shop][Kongs.chunky] = locations_excluding_shared_shops
             if Types.Blueprint in self.shuffled_location_types:
                 # Blueprints are banned from Key or Crown locations
-                blueprintValidTypes = [
-                    typ for typ in self.shuffled_location_types if typ not in (Types.Crown, Types.Key)
-                ]
+                blueprintValidTypes = [typ for typ in self.shuffled_location_types if typ not in (Types.Crown, Types.Key)]
                 # These locations do not have a set Kong assigned to them and can't have blueprints
                 badBPLocations = (
                     Locations.IslesDonkeyJapesRock,
@@ -771,27 +754,13 @@ class Settings:
                     Locations.AztecDonkeyFreeLanky,
                     Locations.FactoryLankyFreeChunky,
                 )
-                blueprintLocations = [
-                    location
-                    for location in LocationList
-                    if location not in badBPLocations and LocationList[location].type in blueprintValidTypes
-                ]
+                blueprintLocations = [location for location in LocationList if location not in badBPLocations and LocationList[location].type in blueprintValidTypes]
                 self.valid_locations[Types.Blueprint] = {}
-                self.valid_locations[Types.Blueprint][Kongs.donkey] = [
-                    location for location in blueprintLocations if LocationList[location].kong == Kongs.donkey
-                ]
-                self.valid_locations[Types.Blueprint][Kongs.diddy] = [
-                    location for location in blueprintLocations if LocationList[location].kong == Kongs.diddy
-                ]
-                self.valid_locations[Types.Blueprint][Kongs.lanky] = [
-                    location for location in blueprintLocations if LocationList[location].kong == Kongs.lanky
-                ]
-                self.valid_locations[Types.Blueprint][Kongs.tiny] = [
-                    location for location in blueprintLocations if LocationList[location].kong == Kongs.tiny
-                ]
-                self.valid_locations[Types.Blueprint][Kongs.chunky] = [
-                    location for location in blueprintLocations if LocationList[location].kong == Kongs.chunky
-                ]
+                self.valid_locations[Types.Blueprint][Kongs.donkey] = [location for location in blueprintLocations if LocationList[location].kong == Kongs.donkey]
+                self.valid_locations[Types.Blueprint][Kongs.diddy] = [location for location in blueprintLocations if LocationList[location].kong == Kongs.diddy]
+                self.valid_locations[Types.Blueprint][Kongs.lanky] = [location for location in blueprintLocations if LocationList[location].kong == Kongs.lanky]
+                self.valid_locations[Types.Blueprint][Kongs.tiny] = [location for location in blueprintLocations if LocationList[location].kong == Kongs.tiny]
+                self.valid_locations[Types.Blueprint][Kongs.chunky] = [location for location in blueprintLocations if LocationList[location].kong == Kongs.chunky]
             if Types.Banana in self.shuffled_location_types:
                 self.valid_locations[Types.Banana] = shuffledLocations
             if Types.Crown in self.shuffled_location_types:
@@ -811,9 +780,7 @@ class Settings:
                     Locations.IslesTinyInstrumentPad,
                     Locations.IslesChunkyInstrumentPad,
                 )
-                self.valid_locations[Types.Crown] = [
-                    location for location in shuffledLocations if location not in banned_crown_locations
-                ]
+                self.valid_locations[Types.Crown] = [location for location in shuffledLocations if location not in banned_crown_locations]
             if Types.Key in self.shuffled_location_types:
                 self.valid_locations[Types.Key] = shuffledLocations
             if Types.Medal in self.shuffled_location_types:
@@ -829,9 +796,7 @@ class Settings:
                     Locations.IslesOrangesTrainingBarrel,
                     Locations.IslesDonkeyJapesRock,
                 )
-                self.valid_locations[Types.Kong].extend(
-                    shuffledLocations
-                )  # No items can be in Kong cages but Kongs can be in all other locations
+                self.valid_locations[Types.Kong].extend(shuffledLocations)  # No items can be in Kong cages but Kongs can be in all other locations
 
     def GetValidLocationsForItem(self, item_id):
         """Return the valid locations the input item id can be placed in."""
@@ -874,12 +839,7 @@ class Settings:
             kongCageLocations.pop()
             kongCageLocations.append(random.choice(Locations.DiddyKong, Locations.ChunkyKong))
         # In case Diddy is the only kong to free, he can't be in the Llama Temple since it's behind the Guitar door
-        if (
-            not bypass_guitar_door
-            and self.starting_kongs_count == 4
-            and Kongs.diddy not in self.starting_kong_list
-            and Locations.LankyKong in kongCageLocations
-        ):
+        if not bypass_guitar_door and self.starting_kongs_count == 4 and Kongs.diddy not in self.starting_kong_list and Locations.LankyKong in kongCageLocations:
             # Move diddy kong from llama temple to another cage randomly chosen
             kongCageLocations.remove(Locations.LankyKong)
             kongCageLocations.append(random.choice(Locations.DiddyKong, Locations.TinyKong, Locations.ChunkyKong))

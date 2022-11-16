@@ -199,10 +199,7 @@ def apply_cosmetic_colors(spoiler: Spoiler):
                 process = False
         kong_names = ["dk", "diddy", "lanky", "tiny", "chunky"]
         is_krusha = False
-        if (
-            spoiler.settings.krusha_slot in kong_names
-            and kong_names.index(spoiler.settings.krusha_slot) == kong["kong_index"]
-        ):
+        if spoiler.settings.krusha_slot in kong_names and kong_names.index(spoiler.settings.krusha_slot) == kong["kong_index"]:
             is_krusha = True
             kong["palettes"] = [
                 {"name": "krusha_skin", "image": 4971, "fill_type": "block"},
@@ -418,9 +415,7 @@ def applyKrushaKong(spoiler: Spoiler):
     if spoiler.settings.krusha_slot == "random":
         slots = ["dk", "diddy", "lanky", "tiny"]
         if not spoiler.settings.disco_chunky:
-            slots.append(
-                "chunky"
-            )  # Only add Chunky if Disco not on (People with disco on probably don't want Krusha as Chunky)
+            slots.append("chunky")  # Only add Chunky if Disco not on (People with disco on probably don't want Krusha as Chunky)
         spoiler.settings.krusha_slot = random.choice(slots)
     ROM().seek(spoiler.settings.rom_data + 0x11C)
     if spoiler.settings.krusha_slot == "no_slot":

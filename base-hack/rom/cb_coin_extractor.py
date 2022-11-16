@@ -88,16 +88,12 @@ def dumpData(data, map):
             if "Bunch" in data["name"]:
                 cb_count = 5
             with open(cb_model2_name, "a") as fh:
-                fh.write(
-                    f"ColoredBananaGroup(group={cb_group},map_id={map},name=\"\",konglist=[{data['kong']}], region=\"\", locations=[[{cb_count,data['scale'],data['x'],data['y'],data['z']}]]),\n"
-                )
+                fh.write(f"ColoredBananaGroup(group={cb_group},map_id={map},name=\"\",konglist=[{data['kong']}], region=\"\", locations=[[{cb_count,data['scale'],data['x'],data['y'],data['z']}]]),\n")
             cb_group += 1
         else:
             handleCreate(coin_model2_name)
             with open(coin_model2_name, "a") as fh:
-                fh.write(
-                    f"CoinGroup(group={coin_group},map_id={map},name=\"\",konglist=[{data['kong']}], region=\"\", locations=[[{1,data['scale'],data['x'],data['y'],data['z']}]]),\n"
-                )
+                fh.write(f"CoinGroup(group={coin_group},map_id={map},name=\"\",konglist=[{data['kong']}], region=\"\", locations=[[{1,data['scale'],data['x'],data['y'],data['z']}]]),\n")
             coin_group += 1
     elif data["object_type"] == "actor":
         handleCreate(cb_actor_name)
@@ -105,9 +101,7 @@ def dumpData(data, map):
         for pt_i, point in enumerate(data["path"]["points"]):
             point_lst.append([pt_i, point["x"], point["y"], point["z"]])
         with open(cb_actor_name, "a") as fh:
-            fh.write(
-                f"Balloon(id={balloon_id},map_id={map},name=\"\",speed={data['speed']},konglist=[{data['kong']}], region=\"\", points={point_lst}, path={data['path']['id']}),\n"
-            )
+            fh.write(f"Balloon(id={balloon_id},map_id={map},name=\"\",speed={data['speed']},konglist=[{data['kong']}], region=\"\", points={point_lst}, path={data['path']['id']}),\n")
         balloon_id += 1
 
 

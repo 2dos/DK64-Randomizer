@@ -76,9 +76,7 @@ def FindLevel(location):
 
 def GetBlueprintItemForKongAndLevel(level, kong):
     """For the Level and Kong enum values, return the Blueprint Item enum tied to it."""
-    baseOffset = int(
-        Items.JungleJapesDonkeyBlueprint
-    )  # Japes/Donkey is the first Blueprint item and they're all grouped together
+    baseOffset = int(Items.JungleJapesDonkeyBlueprint)  # Japes/Donkey is the first Blueprint item and they're all grouped together
     levelOffset = int(level)
     # Other levels are 0-6 but Helm is 7, DK Isles is 8, and I'm too scared to change it so it's accounted for here
     if levelOffset > 7:
@@ -88,9 +86,7 @@ def GetBlueprintItemForKongAndLevel(level, kong):
 
 def GetBlueprintLocationForKongAndLevel(level, kong):
     """For the Level and Kong enum values, return the generic Blueprint Location enum tied to it."""
-    baseOffset = int(
-        Locations.JapesDonkeyKasplatRando
-    )  # Japes/Donkey is the first generic Blueprint location and they're all grouped together
+    baseOffset = int(Locations.JapesDonkeyKasplatRando)  # Japes/Donkey is the first generic Blueprint location and they're all grouped together
     levelOffset = int(level)
     # Other levels are 0-6 but Helm is 7, DK Isles is 8, and I'm too scared to change it so it's accounted for here
     if levelOffset > 7:
@@ -151,9 +147,7 @@ def ShuffleKasplatsInVanillaLocations(spoiler, LogicVariables):
     for level in KasplatLocationList:
         availableKongs = GetKongs().copy()
         five_vanilla_kasplats = [kasplat for kasplat in KasplatLocationList[level] if kasplat.vanilla]
-        five_vanilla_kasplats.sort(
-            key=lambda l: len(l.kong_lst)
-        )  # Make sure kasplats with fewer possible kongs get placed first
+        five_vanilla_kasplats.sort(key=lambda l: len(l.kong_lst))  # Make sure kasplats with fewer possible kongs get placed first
         # We go by location in this method because it will guarantee a fill
         for kasplat in five_vanilla_kasplats:
             chosenKong = random.choice([kong for kong in kasplat.kong_lst if kong in availableKongs])
@@ -181,11 +175,7 @@ def ResetShuffledKasplatLocations():
                 # Also reset the state of the kasplat, by the end of the loop we'll have no kasplats selected in preparation for the next fill attempt
                 kasplat.setKasplat(state=False)
                 randomKasplatRegion = Logic.Regions[kasplat.region_id]
-                randomKasplatRegion.locations = [
-                    loc
-                    for loc in randomKasplatRegion.locations
-                    if loc.id < Locations.JapesDonkeyKasplatRando or loc.id > Locations.IslesChunkyKasplatRando
-                ]
+                randomKasplatRegion.locations = [loc for loc in randomKasplatRegion.locations if loc.id < Locations.JapesDonkeyKasplatRando or loc.id > Locations.IslesChunkyKasplatRando]
 
 
 def ShuffleKasplats(LogicVariables):

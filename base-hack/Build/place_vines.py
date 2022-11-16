@@ -84,9 +84,7 @@ def generateVineSeries(map_id: int) -> dict:
                 vine_points.append(point)
             for pt_i, pt in enumerate(vine_points):
                 if pt_i >= len(series["ids"]):
-                    data["add"].append(
-                        {"x": pt["x"], "y": pt["y"], "z": pt["z"], "id_base": series["ids"][0], "id": new_id}
-                    )
+                    data["add"].append({"x": pt["x"], "y": pt["y"], "z": pt["z"], "id_base": series["ids"][0], "id": new_id})
                     new_id += 1
                 else:
                     data["change"].append({"x": pt["x"], "y": pt["y"], "z": pt["z"], "id": series["ids"][pt_i]})

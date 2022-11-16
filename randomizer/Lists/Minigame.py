@@ -9,17 +9,7 @@ from randomizer.Lists.MapsAndExits import Maps
 class Minigame:
     """Class which stores name and logic for a minigame."""
 
-    def __init__(
-        self,
-        *,
-        name="No Game",
-        group="No Group",
-        map_id=0,
-        helm_enabled=True,
-        can_repeat=True,
-        difficulty_lvl=0,
-        logic=0
-    ):
+    def __init__(self, *, name="No Game", group="No Group", map_id=0, helm_enabled=True, can_repeat=True, difficulty_lvl=0, logic=0):
         """Initialize with given parameters."""
         self.name = name
         self.map = map_id
@@ -76,9 +66,7 @@ MinigameRequirements = {
         logic=lambda l: True,
     ),
     # Big Bug Bash
-    Minigames.BigBugBashVEasy: Minigame(
-        name="Big Bug Bash (4 Bugs)", group="Big Bug Bash", map_id=Maps.BigBugBashVEasy, logic=lambda l: True
-    ),
+    Minigames.BigBugBashVEasy: Minigame(name="Big Bug Bash (4 Bugs)", group="Big Bug Bash", map_id=Maps.BigBugBashVEasy, logic=lambda l: True),
     Minigames.BigBugBashEasy: Minigame(
         name="Big Bug Bash (6 Bugs)",
         group="Big Bug Bash",
@@ -105,30 +93,21 @@ MinigameRequirements = {
         name="Busy Barrel Barrage (45 seconds, Slow Respawn)",
         group="Busy Barrel Barrage",
         map_id=Maps.BusyBarrelBarrageEasy,
-        logic=lambda l: (l.isdonkey and l.coconut)
-        or (l.isdiddy and l.peanut)
-        or (l.istiny and l.feather)
-        or (l.ischunky and l.pineapple),
+        logic=lambda l: (l.isdonkey and l.coconut) or (l.isdiddy and l.peanut) or (l.istiny and l.feather) or (l.ischunky and l.pineapple),
     ),
     Minigames.BusyBarrelBarrageNormal: Minigame(
         name="Busy Barrel Barrage (45 seconds, Medium Respawn)",
         group="Busy Barrel Barrage",
         map_id=Maps.BusyBarrelBarrageNormal,
         difficulty_lvl=1,
-        logic=lambda l: (l.isdonkey and l.coconut)
-        or (l.isdiddy and l.peanut)
-        or (l.istiny and l.feather)
-        or (l.ischunky and l.pineapple),
+        logic=lambda l: (l.isdonkey and l.coconut) or (l.isdiddy and l.peanut) or (l.istiny and l.feather) or (l.ischunky and l.pineapple),
     ),
     Minigames.BusyBarrelBarrageHard: Minigame(
         name="Busy Barrel Barrage (60 seconds, Random Spawns)",
         group="Busy Barrel Barrage",
         map_id=Maps.BusyBarrelBarrageHard,
         difficulty_lvl=2,
-        logic=lambda l: (l.isdonkey and l.coconut)
-        or (l.isdiddy and l.peanut)
-        or (l.istiny and l.feather)
-        or (l.ischunky and l.pineapple),
+        logic=lambda l: (l.isdonkey and l.coconut) or (l.isdiddy and l.peanut) or (l.istiny and l.feather) or (l.ischunky and l.pineapple),
     ),
     # Mad Maze Maul - 120/11 requires shockwave to beat, as such, banned from Helm
     Minigames.MadMazeMaulEasy: Minigame(
@@ -235,9 +214,7 @@ MinigameRequirements = {
         logic=lambda l: True,
     ),
     # Stealthy Snoop
-    Minigames.StealthySnoopVEasy: Minigame(
-        name="Stealthy Snoop (50 seconds)", group="Stealthy Snoop", map_id=Maps.StealthySnoopVEasy, logic=lambda l: True
-    ),
+    Minigames.StealthySnoopVEasy: Minigame(name="Stealthy Snoop (50 seconds)", group="Stealthy Snoop", map_id=Maps.StealthySnoopVEasy, logic=lambda l: True),
     Minigames.StealthySnoopEasy: Minigame(
         name="Stealthy Snoop (60 seconds)",
         group="Stealthy Snoop",
@@ -390,9 +367,7 @@ MinigameRequirements = {
         logic=lambda l: True,
     ),
     # Kremling Kosh
-    Minigames.KremlingKoshVEasy: Minigame(
-        name="Kremling Kosh (18 points)", group="Kremling Kosh", map_id=Maps.KremlingKoshVEasy, logic=lambda l: True
-    ),
+    Minigames.KremlingKoshVEasy: Minigame(name="Kremling Kosh (18 points)", group="Kremling Kosh", map_id=Maps.KremlingKoshVEasy, logic=lambda l: True),
     Minigames.KremlingKoshEasy: Minigame(
         name="Kremling Kosh (22 points)",
         group="Kremling Kosh",
@@ -484,11 +459,7 @@ MinigameRequirements = {
         group="Helm Minigames",
         map_id=Maps.HelmBarrelLankyShooting,
         can_repeat=True,
-        logic=lambda l: (l.isdonkey and l.coconut)
-        or (l.isdiddy and l.peanut)
-        or (l.islanky and l.grape)
-        or (l.istiny and l.feather)
-        or (l.ischunky and l.pineapple),
+        logic=lambda l: (l.isdonkey and l.coconut) or (l.isdiddy and l.peanut) or (l.islanky and l.grape) or (l.istiny and l.feather) or (l.ischunky and l.pineapple),
     ),
     Minigames.TinyMushroom: Minigame(
         name="Hideout Helm: Tiny Mushroom",
@@ -520,13 +491,7 @@ MinigameRequirements = {
         map_id=Maps.HelmBarrelChunkyShooting,
         can_repeat=True,
         logic=lambda l: (l.scope or l.homing or l.settings.hard_shooting)
-        and (
-            (l.isdonkey and l.coconut)
-            or (l.isdiddy and l.peanut)
-            or (l.islanky and l.grape)
-            or (l.istiny and l.feather)
-            or (l.ischunky and l.pineapple)
-        ),
+        and ((l.isdonkey and l.coconut) or (l.isdiddy and l.peanut) or (l.islanky and l.grape) or (l.istiny and l.feather) or (l.ischunky and l.pineapple)),
     ),
 }
 
@@ -558,46 +523,30 @@ BarrelMetaData = {
     Locations.JapesLankyGrapeGate: MinigameLocationData(Maps.JungleJapes, 32, Minigames.MadMazeMaulEasy),
     Locations.JapesChunkyGiantBonusBarrel: MinigameLocationData(Maps.JungleJapes, 33, Minigames.MinecartMayhemEasy),
     Locations.JapesLankySlope: MinigameLocationData(Maps.JungleJapes, 34, Minigames.SpeedySwingSortieEasy),
-    Locations.JapesTinyFeatherGateBarrel: MinigameLocationData(
-        Maps.JungleJapes, 31, Minigames.SplishSplashSalvageNormal
-    ),
+    Locations.JapesTinyFeatherGateBarrel: MinigameLocationData(Maps.JungleJapes, 31, Minigames.SplishSplashSalvageNormal),
     Locations.AztecLanky5DoorTemple: MinigameLocationData(Maps.AztecLanky5DTemple, 0, Minigames.BigBugBashVEasy),
     Locations.AztecChunkyCagedBarrel: MinigameLocationData(Maps.AngryAztec, 35, Minigames.BusyBarrelBarrageEasy),
     Locations.AztecChunky5DoorTemple: MinigameLocationData(Maps.AztecChunky5DTemple, 0, Minigames.KremlingKoshVEasy),
     Locations.AztecDonkeyQuicksandCave: MinigameLocationData(Maps.AngryAztec, 33, Minigames.StealthySnoopVEasy),
-    Locations.AztecLankyLlamaTempleBarrel: MinigameLocationData(
-        Maps.AztecLlamaTemple, 2, Minigames.TeeteringTurtleTroubleVEasy
-    ),
-    Locations.FactoryLankyTestingRoomBarrel: MinigameLocationData(
-        Maps.FranticFactory, 15, Minigames.BattyBarrelBanditEasy
-    ),
+    Locations.AztecLankyLlamaTempleBarrel: MinigameLocationData(Maps.AztecLlamaTemple, 2, Minigames.TeeteringTurtleTroubleVEasy),
+    Locations.FactoryLankyTestingRoomBarrel: MinigameLocationData(Maps.FranticFactory, 15, Minigames.BattyBarrelBanditEasy),
     Locations.FactoryDiddyChunkyRoomBarrel: MinigameLocationData(Maps.FranticFactory, 13, Minigames.BeaverBotherEasy),
     Locations.FactoryTinyProductionRoom: MinigameLocationData(Maps.FranticFactory, 16, Minigames.KrazyKongKlamourEasy),
     Locations.FactoryDiddyBlockTower: MinigameLocationData(Maps.FranticFactory, 0, Minigames.PerilPathPanicVEasy),
     Locations.FactoryChunkybyArcade: MinigameLocationData(Maps.FranticFactory, 14, Minigames.StashSnatchEasy),
-    Locations.GalleonChunky5DoorShip: MinigameLocationData(
-        Maps.Galleon5DShipDiddyLankyChunky, 1, Minigames.BattyBarrelBanditVEasy
-    ),
+    Locations.GalleonChunky5DoorShip: MinigameLocationData(Maps.Galleon5DShipDiddyLankyChunky, 1, Minigames.BattyBarrelBanditVEasy),
     Locations.GalleonTinySubmarine: MinigameLocationData(Maps.GalleonSubmarine, 3, Minigames.BigBugBashEasy),
     Locations.GalleonDonkey5DoorShip: MinigameLocationData(Maps.Galleon5DShipDKTiny, 0, Minigames.KrazyKongKlamourEasy),
     Locations.GalleonTiny2DoorShip: MinigameLocationData(Maps.Galleon2DShip, 0, Minigames.KremlingKoshEasy),
     Locations.GalleonLankyGoldTower: MinigameLocationData(Maps.GloomyGalleon, 7, Minigames.SearchlightSeekVEasy),
-    Locations.GalleonDiddy5DoorShip: MinigameLocationData(
-        Maps.Galleon5DShipDiddyLankyChunky, 0, Minigames.SplishSplashSalvageEasy
-    ),
+    Locations.GalleonDiddy5DoorShip: MinigameLocationData(Maps.Galleon5DShipDiddyLankyChunky, 0, Minigames.SplishSplashSalvageEasy),
     Locations.GalleonDiddyGoldTower: MinigameLocationData(Maps.GloomyGalleon, 6, Minigames.StealthySnoopNormal),
     Locations.ForestDiddyOwlRace: MinigameLocationData(Maps.FungiForest, 21, Minigames.BusyBarrelBarrageNormal),
-    Locations.ForestLankyColoredMushrooms: MinigameLocationData(
-        Maps.ForestLankyMushroomsRoom, 0, Minigames.KrazyKongKlamourHard
-    ),
+    Locations.ForestLankyColoredMushrooms: MinigameLocationData(Maps.ForestLankyMushroomsRoom, 0, Minigames.KrazyKongKlamourHard),
     Locations.ForestDonkeyBarn: MinigameLocationData(Maps.ForestThornvineBarn, 3, Minigames.MinecartMayhemNormal),
     Locations.ForestDonkeyBaboonBlast: MinigameLocationData(Maps.ForestBaboonBlast, 22, Minigames.PerilPathPanicEasy),
-    Locations.ForestTinyMushroomBarrel: MinigameLocationData(
-        Maps.ForestGiantMushroom, 8, Minigames.SpeedySwingSortieNormal
-    ),
-    Locations.ForestDiddyTopofMushroom: MinigameLocationData(
-        Maps.FungiForest, 18, Minigames.TeeteringTurtleTroubleEasy
-    ),
+    Locations.ForestTinyMushroomBarrel: MinigameLocationData(Maps.ForestGiantMushroom, 8, Minigames.SpeedySwingSortieNormal),
+    Locations.ForestDiddyTopofMushroom: MinigameLocationData(Maps.FungiForest, 18, Minigames.TeeteringTurtleTroubleEasy),
     Locations.CavesDonkeyBaboonBlast: MinigameLocationData(Maps.CavesBaboonBlast, 19, Minigames.BusyBarrelBarrageHard),
     Locations.CavesTinyCaveBarrel: MinigameLocationData(Maps.CrystalCaves, 7, Minigames.KrazyKongKlamourHard),
     Locations.CavesDiddyJetpackBarrel: MinigameLocationData(Maps.CrystalCaves, 6, Minigames.MadMazeMaulNormal),
@@ -608,9 +557,7 @@ BarrelMetaData = {
     Locations.CastleLankyDungeon: MinigameLocationData(Maps.CastleDungeon, 0, Minigames.KremlingKoshNormal),
     Locations.CastleDiddyBallroom: MinigameLocationData(Maps.CastleBallroom, 1, Minigames.MinecartMayhemHard),
     Locations.CastleChunkyCrypt: MinigameLocationData(Maps.CastleCrypt, 0, Minigames.SearchlightSeekHard),
-    Locations.CastleTinyOverChasm: MinigameLocationData(
-        Maps.CastleUpperCave, 0, Minigames.TeeteringTurtleTroubleNormal
-    ),
+    Locations.CastleTinyOverChasm: MinigameLocationData(Maps.CastleUpperCave, 0, Minigames.TeeteringTurtleTroubleNormal),
     Locations.HelmDonkey1: MinigameLocationData(Maps.HideoutHelm, 16, Minigames.DonkeyRambi),
     Locations.HelmDonkey2: MinigameLocationData(Maps.HideoutHelm, 15, Minigames.DonkeyTarget),
     Locations.HelmDiddy1: MinigameLocationData(Maps.HideoutHelm, 8, Minigames.DiddyKremling),

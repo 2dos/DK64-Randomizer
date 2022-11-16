@@ -31,9 +31,7 @@ def addPatch(patch):
     }
     level_data = level_to_enum[patch.level_name]
     if patch.logicregion in level_data:
-        level_data[patch.logicregion].append(
-            Collectible(Collectibles.coin, Kongs.any, patch.logic, None, 1, True, False)
-        )
+        level_data[patch.logicregion].append(Collectible(Collectibles.coin, Kongs.any, patch.logic, None, 1, True, False))
     else:
         level_data[patch.logicregion] = [Collectible(Collectibles.coin, Kongs.any, patch.logic, None, 1, True, False)]
 
@@ -104,7 +102,5 @@ def select_random_dirt_from_area(area_dirt, amount, spoiler: Spoiler, human_spoi
                 spoiler.dirt_patch_placement.append(patch.name)
                 area_dirt.remove(selected_patch)
                 break
-        if (
-            amount > 1
-        ):  # if multiple patches are picked, remove patches from the same group, prevent them from being picked
+        if amount > 1:  # if multiple patches are picked, remove patches from the same group, prevent them from being picked
             area_dirt = [dirt for dirt in area_dirt if dirt.group != selected_patch.group]

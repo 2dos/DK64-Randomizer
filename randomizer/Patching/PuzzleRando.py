@@ -68,15 +68,11 @@ def randomize_puzzles(spoiler: Spoiler):
         for face_puzzle_square in range(9):
             ROM().seek(sav + 0x17E + face_puzzle_square)  # DK Face Puzzle
             if face_puzzle_square == 8:
-                ROM().writeMultipleBytes(
-                    random.choice([0, 1, 3]), 1
-                )  # Lanky for this square glitches out the puzzle. Nice going Loser kong
+                ROM().writeMultipleBytes(random.choice([0, 1, 3]), 1)  # Lanky for this square glitches out the puzzle. Nice going Loser kong
             else:
                 ROM().writeMultipleBytes(random.randint(0, 3), 1)
             ROM().seek(sav + 0x187 + face_puzzle_square)  # Chunky Face Puzzle
             if face_puzzle_square == 2:
-                ROM().writeMultipleBytes(
-                    random.choice([0, 1, 3]), 1
-                )  # Lanky for this square glitches out the puzzle. Nice going Loser kong again
+                ROM().writeMultipleBytes(random.choice([0, 1, 3]), 1)  # Lanky for this square glitches out the puzzle. Nice going Loser kong again
             else:
                 ROM().writeMultipleBytes(random.randint(0, 3), 1)

@@ -121,20 +121,12 @@ def getBalancedCrownEnemyRando(spoiler: Spoiler, crown_setting, damage_ohko_sett
         # Determine whether any crown-enabled enemies have been selected
         crown_enemy_found = False
         for enemy in EnemyMetaData:
-            if (
-                convertEnemyName(EnemyMetaData[enemy].name) in spoiler.settings.enemies_selected
-                and EnemyMetaData[enemy].crown_enabled is True
-            ):
+            if convertEnemyName(EnemyMetaData[enemy].name) in spoiler.settings.enemies_selected and EnemyMetaData[enemy].crown_enabled is True:
                 crown_enemy_found = True
                 break
         # fill in the lists with the possibilities that belong in them.
         for enemy in EnemyMetaData:
-            if (
-                EnemyMetaData[enemy].crown_enabled
-                and enemy is not Enemies.GetOut
-                and convertEnemyName(EnemyMetaData[enemy].name) in spoiler.settings.enemies_selected
-                or crown_enemy_found is False
-            ):
+            if EnemyMetaData[enemy].crown_enabled and enemy is not Enemies.GetOut and convertEnemyName(EnemyMetaData[enemy].name) in spoiler.settings.enemies_selected or crown_enemy_found is False:
                 every_enemy.append(enemy)
                 if EnemyMetaData[enemy].disruptive <= 1:
                     disruptive_max_1.append(enemy)
@@ -160,11 +152,7 @@ def getBalancedCrownEnemyRando(spoiler: Spoiler, crown_setting, damage_ohko_sett
         # the legacy_hard_mode list is trickier to fill, but here goes:
         bias = 2
         for enemy in EnemyMetaData:
-            if (
-                EnemyMetaData[enemy].crown_enabled
-                and convertEnemyName(EnemyMetaData[enemy].name) in spoiler.settings.enemies_selected
-                or crown_enemy_found is False
-            ):
+            if EnemyMetaData[enemy].crown_enabled and convertEnemyName(EnemyMetaData[enemy].name) in spoiler.settings.enemies_selected or crown_enemy_found is False:
                 base_weight = EnemyMetaData[enemy].crown_weight
                 weight_diff = abs(base_weight - bias)
                 new_weight = abs(10 - weight_diff)
@@ -207,11 +195,7 @@ def getBalancedCrownEnemyRando(spoiler: Spoiler, crown_setting, damage_ohko_sett
                             new_enemy = random.choice(disruptive_at_most_kasplat)
                         elif count_kasplats == 1:
                             new_enemy = random.choice(disruptive_0)
-                    if (
-                        count_kasplats > 3
-                        or (count_kasplats > 2 and count_disruptive > 1)
-                        or (count_kasplats == 2 and count_disruptive == 2)
-                    ):
+                    if count_kasplats > 3 or (count_kasplats > 2 and count_disruptive > 1) or (count_kasplats == 2 and count_disruptive == 2):
                         print("This is a mistake in the crown enemy algorithm. Report this to the devs.")
                         new_enemy = Enemies.BeaverGold
                     # We picked a new enemy, let's update our information and add it to the list
@@ -227,9 +211,7 @@ def getBalancedCrownEnemyRando(spoiler: Spoiler, crown_setting, damage_ohko_sett
                 get_out_spawned_this_hard_map = False
                 for count in range(number_of_enemies):
                     if get_out_spawned_this_hard_map:
-                        enemy_to_place = random.choice(
-                            [possible_enemy for possible_enemy in legacy_hard_mode if possible_enemy != Enemies.GetOut]
-                        )
+                        enemy_to_place = random.choice([possible_enemy for possible_enemy in legacy_hard_mode if possible_enemy != Enemies.GetOut])
                     else:
                         enemy_to_place = random.choice(legacy_hard_mode)
                         if enemy_to_place == Enemies.GetOut:
@@ -473,9 +455,7 @@ def randomize_enemies(spoiler: Spoiler):
             crown_enemies.append(enemy)
     if spoiler.settings.enemy_rando or spoiler.settings.crown_enemy_rando != "off":
         boolean_damage_is_ohko = spoiler.settings.damage_amount == "ohko"
-        crown_enemies_library = getBalancedCrownEnemyRando(
-            spoiler, spoiler.settings.crown_enemy_rando, boolean_damage_is_ohko
-        )
+        crown_enemies_library = getBalancedCrownEnemyRando(spoiler, spoiler.settings.crown_enemy_rando, boolean_damage_is_ohko)
         minigame_enemies_simple = []
         minigame_enemies_beatable = []
         minigame_enemies_nolimit = []
@@ -548,8 +528,7 @@ def randomize_enemies(spoiler: Spoiler):
                                 and new_enemy_id != Enemies.Kosha
                                 or cont_map_id not in (Maps.CavesDiddyLowerCabin, Maps.CavesTinyCabin)
                                 and new_enemy_id != Enemies.Guard
-                                or cont_map_id
-                                not in (Maps.CavesDiddyLowerCabin, Maps.CavesTinyIgloo, Maps.CavesTinyCabin)
+                                or cont_map_id not in (Maps.CavesDiddyLowerCabin, Maps.CavesTinyIgloo, Maps.CavesTinyCabin)
                             ):
                                 ROM().seek(cont_map_spawner_address + spawner["offset"])
                                 ROM().writeMultipleBytes(new_enemy_id, 1)
@@ -561,10 +540,7 @@ def randomize_enemies(spoiler: Spoiler):
                                         ROM().writeMultipleBytes(0xC8, 1)
                                     ROM().seek(cont_map_spawner_address + spawner["offset"] + 0xF)
                                     default_scale = int.from_bytes(ROM().readBytes(1), "big")
-                                    if (
-                                        EnemyMetaData[new_enemy_id].size_cap > 0
-                                        and default_scale > EnemyMetaData[new_enemy_id].size_cap
-                                    ):
+                                    if EnemyMetaData[new_enemy_id].size_cap > 0 and default_scale > EnemyMetaData[new_enemy_id].size_cap:
                                         ROM().seek(cont_map_spawner_address + spawner["offset"] + 0xF)
                                         ROM().writeMultipleBytes(EnemyMetaData[new_enemy_id].size_cap, 1)
                                     if spoiler.settings.enemy_speed_rando:
@@ -613,25 +589,15 @@ def randomize_enemies(spoiler: Spoiler):
                                 ROM().writeMultipleBytes(300, 2)
                             ROM().seek(cont_map_spawner_address + spawner["offset"] + 0xF)
                             default_scale = int.from_bytes(ROM().readBytes(1), "big")
-                            if (
-                                EnemyMetaData[new_enemy_id].size_cap > 0
-                                and default_scale > EnemyMetaData[new_enemy_id].size_cap
-                            ):
+                            if EnemyMetaData[new_enemy_id].size_cap > 0 and default_scale > EnemyMetaData[new_enemy_id].size_cap:
                                 ROM().seek(cont_map_spawner_address + spawner["offset"] + 0xF)
                                 ROM().writeMultipleBytes(EnemyMetaData[new_enemy_id].size_cap, 1)
                             ROM().seek(cont_map_spawner_address + spawner["offset"] + 0xF)
                             pre_size = int.from_bytes(ROM().readBytes(1), "big")
-                            if (
-                                pre_size < EnemyMetaData[new_enemy_id].bbbarrage_min_scale
-                                and cont_map_id in bbbarrage_maps
-                            ):
+                            if pre_size < EnemyMetaData[new_enemy_id].bbbarrage_min_scale and cont_map_id in bbbarrage_maps:
                                 ROM().seek(cont_map_spawner_address + spawner["offset"] + 0xF)
                                 ROM().writeMultipleBytes(EnemyMetaData[new_enemy_id].bbbarrage_min_scale, 1)
-                            if (
-                                spoiler.settings.enemy_speed_rando
-                                and cont_map_id not in minigame_maps_beavers
-                                and cont_map_id not in bbbarrage_maps
-                            ):
+                            if spoiler.settings.enemy_speed_rando and cont_map_id not in minigame_maps_beavers and cont_map_id not in bbbarrage_maps:
                                 min_speed = EnemyMetaData[new_enemy_id].min_speed
                                 max_speed = EnemyMetaData[new_enemy_id].max_speed
                                 if min_speed > 0 and max_speed > 0:
@@ -686,19 +652,14 @@ def randomize_enemies(spoiler: Spoiler):
                                     }
                                     if spoiler.settings.damage_amount in damage_amts:
                                         damage_mult = damage_amts[spoiler.settings.damage_amount]
-                                    get_out_timer = random.randint(
-                                        int(crown_timer / (12 / damage_mult)) + 1, crown_timer - 1
-                                    )
+                                    get_out_timer = random.randint(int(crown_timer / (12 / damage_mult)) + 1, crown_timer - 1)
                                 if get_out_timer == 0:
                                     get_out_timer = 1
                                 ROM().writeMultipleBytes(get_out_timer, 1)
                                 ROM().writeMultipleBytes(get_out_timer, 1)
                             ROM().seek(cont_map_spawner_address + spawner["offset"] + 0xF)
                             default_scale = int.from_bytes(ROM().readBytes(1), "big")
-                            if (
-                                EnemyMetaData[new_enemy_id].size_cap > 0
-                                and default_scale > EnemyMetaData[new_enemy_id].size_cap
-                            ):
+                            if EnemyMetaData[new_enemy_id].size_cap > 0 and default_scale > EnemyMetaData[new_enemy_id].size_cap:
                                 ROM().seek(cont_map_spawner_address + spawner["offset"] + 0xF)
                                 ROM().writeMultipleBytes(EnemyMetaData[new_enemy_id].size_cap, 1)
                             if spoiler.settings.enemy_speed_rando:

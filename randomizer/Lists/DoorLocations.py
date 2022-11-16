@@ -38,9 +38,7 @@ class DoorData:
         self.rz = rz
         self.scale = scale
         self.kongs = kong_lst
-        self.group = (
-            group  # groups door locations to ensure troff n scoff portals don't generate right next to each other
-        )
+        self.group = group  # groups door locations to ensure troff n scoff portals don't generate right next to each other
         self.moveless = moveless  # moveless means that a door location can be accessed without any moves (except vines for in Aztec)
         if logic is None:
             self.logic = lambda l: True

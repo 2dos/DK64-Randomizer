@@ -1303,9 +1303,7 @@ def grabConditional(param_1, ScriptCommand, params, behaviour, param_3, file):
     if functionType == 0:
         display(file, "if (%strue) {" % (inverseFlagChar))
     elif functionType == 1:
-        display(
-            file, "if (*(byte *)(behaviour + %s) %s== %s) {" % (hex(params[1] + 0x48), inverseFlagChar, str(params[0]))
-        )
+        display(file, "if (*(byte *)(behaviour + %s) %s== %s) {" % (hex(params[1] + 0x48), inverseFlagChar, str(params[0])))
     elif functionType == 2:
         display(file, "x2_successful = 0")
         display(file, "x2_focusedPlayerNumber = 0")
@@ -1332,22 +1330,19 @@ def grabConditional(param_1, ScriptCommand, params, behaviour, param_3, file):
     elif functionType == 4:
         display(
             file,
-            "if (*(ushort *)(behaviour + %s) %s== %s) {"
-            % (hex((params[1] * 2) + 0x44), inverseFlagChar, str(params[0])),
+            "if (*(ushort *)(behaviour + %s) %s== %s) {" % (hex((params[1] * 2) + 0x44), inverseFlagChar, str(params[0])),
         )
     elif functionType == 5:
         display(file, "if (FUN_806425FC(%s,%s) %s== 0) {" % (str(params[0]), str(params[1]), inverseFlagInvertedChar))
     elif functionType == 6:
         display(
             file,
-            "if (*(code *)(%s)(behaviour,this->id,%s,%s) %s== 0) {"
-            % (hex(0x80748048 + (params[0] * 4)), str(params[1]), str(params[2]), inverseFlagInvertedChar),
+            "if (*(code *)(%s)(behaviour,this->id,%s,%s) %s== 0) {" % (hex(0x80748048 + (params[0] * 4)), str(params[1]), str(params[2]), inverseFlagInvertedChar),
         )
     elif functionType == 7:
         display(
             file,
-            "if (FUN_80642500(behaviour + 0x14,%s,%s) %s== 0) {"
-            % (str(params[0]), str(params[1]), inverseFlagInvertedChar),
+            "if (FUN_80642500(behaviour + 0x14,%s,%s) %s== 0) {" % (str(params[0]), str(params[1]), inverseFlagInvertedChar),
         )
     elif functionType == 8:
         display(file, "if (*(byte *)(behaviour + 0x51) %s== 0) {" % (inverseFlagInvertedChar))
@@ -1440,8 +1435,7 @@ def grabConditional(param_1, ScriptCommand, params, behaviour, param_3, file):
             x10_conditional_2 = "(FUN_8067ACC0(*(ushort *)(behaviour + 0x5E)) & %s)" % (str(params[0]))
             display(
                 file,
-                "if ((((*(byte *)(behaviour + 0x5C) == 0) || %s%s)) || (canHitSwitch() == 0)) {"
-                % (x10_conditional, x10_conditional_2),
+                "if ((((*(byte *)(behaviour + 0x5C) == 0) || %s%s)) || (canHitSwitch() == 0)) {" % (x10_conditional, x10_conditional_2),
             )
             display(file, "x10_uvar9 = 0")
             display(file, "} else {")
@@ -1470,9 +1464,7 @@ def grabConditional(param_1, ScriptCommand, params, behaviour, param_3, file):
         display(file, "}")
         display(file, "}")
         display(file, "}")
-        display(
-            file, "if ((&loadedActorArray + (loadedActorCount * 8) <= x11_focusedArraySlot) || (x11_successful)) break;"
-        )
+        display(file, "if ((&loadedActorArray + (loadedActorCount * 8) <= x11_focusedArraySlot) || (x11_successful)) break;")
         display(file, "}")
         display(file, "}")
         display(file, "if (%sx11_successful) {" % (inverseFlagChar))
@@ -1494,9 +1486,7 @@ def grabConditional(param_1, ScriptCommand, params, behaviour, param_3, file):
         display(file, "}")
         display(file, "}")
         display(file, "}")
-        display(
-            file, "if ((&loadedActorArray + (loadedActorCount * 8) <= x12_focusedArraySlot) || (x12_successful)) break;"
-        )
+        display(file, "if ((&loadedActorArray + (loadedActorCount * 8) <= x12_focusedArraySlot) || (x12_successful)) break;")
         display(file, "x12_focusedActor = *x12_focusedArraySlot")
         display(file, "}")
         display(file, "}")
@@ -1570,9 +1560,7 @@ def grabConditional(param_1, ScriptCommand, params, behaviour, param_3, file):
     elif functionType == 25:
         display(file, "if (*(int *)(PlayerPointer->ActorType) %s== %s) {" % (inverseFlagChar, str(params[0])))
     elif functionType == 26:
-        display(
-            file, "if (*(byte *)(character_change_pointer->unk0x2C0) %s== %s) {" % (inverseFlagChar, str(params[0]))
-        )
+        display(file, "if (*(byte *)(character_change_pointer->unk0x2C0) %s== %s) {" % (inverseFlagChar, str(params[0])))
     elif functionType == 27:
         display(file, "if (*(byte *)(character_change_pointer->unk0x2C1) %s== 0){" % (inverseFlagInvertedChar))
     elif functionType == 28:
@@ -1642,22 +1630,19 @@ def grabConditional(param_1, ScriptCommand, params, behaviour, param_3, file):
     elif functionType == 38:
         display(
             file,
-            "if ((*(uint *)(PlayerPointer->unk0x368) & %s) %s== 0) {"
-            % (hex((params[0] * 0x10000) + params[1]), inverseFlagInvertedChar),
+            "if ((*(uint *)(PlayerPointer->unk0x368) & %s) %s== 0) {" % (hex((params[0] * 0x10000) + params[1]), inverseFlagInvertedChar),
         )
     elif functionType == 39:
         display(
             file,
-            "if ((*(uint *)(PlayerPointer->effectBitfield) & %s) %s== 0) {"
-            % (hex((params[0] * 0x10000) + params[1]), inverseFlagInvertedChar),
+            "if ((*(uint *)(PlayerPointer->effectBitfield) & %s) %s== 0) {" % (hex((params[0] * 0x10000) + params[1]), inverseFlagInvertedChar),
         )
     elif functionType == 40:
         display(file, "if ((*(byte *)(behaviour + 0x9A) & 1) %s== 0) {" % (inverseFlagChar))
     elif functionType == 41:
         display(
             file,
-            "if (notTouchingActorSpawnerWithinRan(%s,%s,%s) %s== 0) {"
-            % (str(params[0]), str(params[1]), str(params[2]), inverseFlagInvertedChar),
+            "if (notTouchingActorSpawnerWithinRan(%s,%s,%s) %s== 0) {" % (str(params[0]), str(params[1]), str(params[2]), inverseFlagInvertedChar),
         )
     elif functionType == 42:
         if inverseFlag == 0:
@@ -1671,14 +1656,12 @@ def grabConditional(param_1, ScriptCommand, params, behaviour, param_3, file):
     elif functionType == 45:
         display(
             file,
-            "if (checkFlag(%s>%s,'Permanent') %s== 0) {"
-            % (hex(math.floor(params[0] / 8)), str(params[0] % 8), inverseFlagInvertedChar),
+            "if (checkFlag(%s>%s,'Permanent') %s== 0) {" % (hex(math.floor(params[0] / 8)), str(params[0] % 8), inverseFlagInvertedChar),
         )
     elif functionType == 46:
         display(
             file,
-            "if (getAndSetActorSpawnerControlStateFromActorSpawnerID(%s,0,'%s') %s== %s) {"
-            % (str(params[0]), getSetOrNot(0), inverseFlagChar, str(params[1])),
+            "if (getAndSetActorSpawnerControlStateFromActorSpawnerID(%s,0,'%s') %s== %s) {" % (str(params[0]), getSetOrNot(0), inverseFlagChar, str(params[1])),
         )
     elif functionType == 47:
         display(
@@ -1691,8 +1674,7 @@ def grabConditional(param_1, ScriptCommand, params, behaviour, param_3, file):
         display(file, "x31_ivar10_4 = id2index(&WORD_807F6240[%s])" % (str(params[0])))
         display(
             file,
-            "if (ObjectModel2ArrayPointer[x31_ivar10_4]->behaviour_pointer[%s] %s== %s) {"
-            % (hex(0x48 + params[2]), inverseFlagChar, str(params[1])),
+            "if (ObjectModel2ArrayPointer[x31_ivar10_4]->behaviour_pointer[%s] %s== %s) {" % (hex(0x48 + params[2]), inverseFlagChar, str(params[1])),
         )
     elif functionType == 50:
         display(file, "if (*(ushort *)PreviousMap %s== %s) {" % (inverseFlagChar, str(params[0])))
@@ -1714,22 +1696,19 @@ def grabConditional(param_1, ScriptCommand, params, behaviour, param_3, file):
         if inverseFlag == 0:
             display(
                 file,
-                "if (%s <= &character_collectable_base[(BYTE_807FC929 * 0x5E) + (0x306 * x34_uvar4)] {"
-                % (str(params[1])),
+                "if (%s <= &character_collectable_base[(BYTE_807FC929 * 0x5E) + (0x306 * x34_uvar4)] {" % (str(params[1])),
             )
         else:
             display(
                 file,
-                "if (%s > &character_collectable_base[(BYTE_807FC929 * 0x5E) + (0x306 * x34_uvar4)] {"
-                % (str(params[1])),
+                "if (%s > &character_collectable_base[(BYTE_807FC929 * 0x5E) + (0x306 * x34_uvar4)] {" % (str(params[1])),
             )
     elif functionType == 53:
         display(file, "if (*(byte *)PlayerPointer->0xD0 %s== %s) {" % (inverseFlagChar, str(params[0])))
     elif functionType == 54:
         display(
             file,
-            "if (checkFlag(%s>%s,'Temporary') %s== 0) {"
-            % (hex(math.floor(params[0] / 8)), str(params[0] % 8), inverseFlagInvertedChar),
+            "if (checkFlag(%s>%s,'Temporary') %s== 0) {" % (hex(math.floor(params[0] / 8)), str(params[0] % 8), inverseFlagInvertedChar),
         )
     elif functionType == 55:
         display(file, "FUN_80650D8C(this->id,%s,austack30,austack36)" % (str(params[0])))
@@ -1739,16 +1718,14 @@ def grabConditional(param_1, ScriptCommand, params, behaviour, param_3, file):
     elif functionType == 57:
         display(
             file,
-            "if ((%s& *(ushort *)PlayerPointer->CollisionQueue->TypeBitfield) %s== 0) {"
-            % (str(params[0]), inverseFlagInvertedChar),
+            "if ((%s& *(ushort *)PlayerPointer->CollisionQueue->TypeBitfield) %s== 0) {" % (str(params[0]), inverseFlagInvertedChar),
         )
     elif functionType == 58:
         display(file, "if (((1 << %s) & BYTE_807F693E) %s== 0) {" % (str(params[0]), inverseFlagInvertedChar))
     elif functionType == 59:
         display(
             file,
-            "if (checkFlag(%s>%s,'Global') %s== 0) {"
-            % (hex(math.floor(params[0] / 8)), str(params[0] % 8), inverseFlagInvertedChar),
+            "if (checkFlag(%s>%s,'Global') %s== 0) {" % (hex(math.floor(params[0] / 8)), str(params[0] % 8), inverseFlagInvertedChar),
         )
     elif functionType == 60:
         display(file, "if (PlayerPointer->chunk %s== %s) {" % (inverseFlagChar, str(params[0])))
@@ -1773,8 +1750,7 @@ def grabExecution(param_1, ScriptCommand, params, behaviour, param_3, file):
         else:
             display(
                 file,
-                "*(short *)(behaviour + %s) = *(short *)(behaviour + %s)"
-                % (hex((params[2] * 2) + 0x44), hex((params[1] * 4) + 0x14)),
+                "*(short *)(behaviour + %s) = *(short *)(behaviour + %s)" % (hex((params[2] * 2) + 0x44), hex((params[1] * 4) + 0x14)),
             )
     elif functionType == 4:
         display(file, "FUN_80723484(*(int *)(behaviour + 0x38))")
@@ -1786,8 +1762,7 @@ def grabExecution(param_1, ScriptCommand, params, behaviour, param_3, file):
     elif functionType == 7:
         display(
             file,
-            "*(code *)(%s)(behaviour,this->id,%s,%s)"
-            % (hex(0x80747E70 + (params[0] * 4)), str(params[1]), str(params[2])),
+            "*(code *)(%s)(behaviour,this->id,%s,%s)" % (hex(0x80747E70 + (params[0] * 4)), str(params[1]), str(params[2])),
         )
     elif functionType == 8:
         display(file, "FUN_80642844(%s,%s,behaviour)" % (str(params[0]), str(params[1])))
@@ -1812,8 +1787,7 @@ def grabExecution(param_1, ScriptCommand, params, behaviour, param_3, file):
         display(file, "if (*(short *)(behaviour + %s) < 0) {" % (hex(((params[0] & 1) * 2) + 0x10)))
         display(
             file,
-            "*(short *)(behaviour + %s) = FUN_80605044(this->id,%s,%s,%s)"
-            % (hex(((params[0] & 1) * 2) + 0x10), str(params[0]), str(params[2] & 0x7F), str(params[1] & 2)),
+            "*(short *)(behaviour + %s) = FUN_80605044(this->id,%s,%s,%s)" % (hex(((params[0] & 1) * 2) + 0x10), str(params[0]), str(params[2] & 0x7F), str(params[1] & 2)),
         )
         display(file, "}")
     elif functionType == 0xF:
@@ -1974,14 +1948,12 @@ def grabExecution(param_1, ScriptCommand, params, behaviour, param_3, file):
     elif functionType == 0x3A:
         display(
             file,
-            "// Execution Type 0x3A stripped from final. Parameters: %s, %s, %s"
-            % (str(params[0]), str(params[1]), str(params[2])),
+            "// Execution Type 0x3A stripped from final. Parameters: %s, %s, %s" % (str(params[0]), str(params[1]), str(params[2])),
         )
     elif functionType == 0x3B:
         display(
             file,
-            "*(uint *)(PlayerPointer->unk0x368) = *(uint *)(PlayerPointer->unk0x368) & ~%s"
-            % (hex((params[0] * 0x10000) + params[1])),
+            "*(uint *)(PlayerPointer->unk0x368) = *(uint *)(PlayerPointer->unk0x368) & ~%s" % (hex((params[0] * 0x10000) + params[1])),
         )
     elif functionType == 0x3C:
         display(file, "if (*(int *)(behaviour + 0x94) != 0) {")
@@ -2026,8 +1998,7 @@ def grabExecution(param_1, ScriptCommand, params, behaviour, param_3, file):
     elif functionType == 0x48:
         display(
             file,
-            "FUN_80604BE8(*(byte *)(behaviour + %s,%s,%s)"
-            % (hex((params[0] * 2) + 0x11), str(params[1] / 100), str(params[2])),
+            "FUN_80604BE8(*(byte *)(behaviour + %s,%s,%s)" % (hex((params[0] * 2) + 0x11), str(params[1] / 100), str(params[2])),
         )
     elif functionType == 0x49:
         display(file, "FUN_8067ABC0(%s,FLOAT_807F621C,FLOAT_807F6220,FLOAT_807F6224)" % (str(params[2])))
@@ -2070,21 +2041,17 @@ def grabExecution(param_1, ScriptCommand, params, behaviour, param_3, file):
     elif functionType == 0x52:
         display(
             file,
-            "// Execution Type 0x52 stripped from final. Parameters: %s,%s,%s"
-            % (str(params[0]), str(params[1]), str(params[2])),
+            "// Execution Type 0x52 stripped from final. Parameters: %s,%s,%s" % (str(params[0]), str(params[1]), str(params[2])),
         )
     elif functionType == 0x53:
         display(
             file,
-            "// Execution Type 0x53 stripped from final. Parameters: %s,%s,%s"
-            % (str(params[0]), str(params[1]), str(params[2])),
+            "// Execution Type 0x53 stripped from final. Parameters: %s,%s,%s" % (str(params[0]), str(params[1]), str(params[2])),
         )
     elif functionType == 0x54:
         display(file, "x54_ivar7 = id2index((&WORD_807F6240)[%s])" % (str(params[0])))
         display(file, "if (x54_ivar7 != -1) {")
-        display(
-            file, "FUN_8064199C(ObjectModel2ArrayPointer[x54_ivar7].behaviour,%s,%s)" % (str(params[1]), str(params[2]))
-        )
+        display(file, "FUN_8064199C(ObjectModel2ArrayPointer[x54_ivar7].behaviour,%s,%s)" % (str(params[1]), str(params[2])))
         display(file, "}")
     elif functionType == 0x55:
         display(file, "FUN_8062B630(%s,%s)" % (str(params[0]), str(params[1])))
@@ -2094,8 +2061,7 @@ def grabExecution(param_1, ScriptCommand, params, behaviour, param_3, file):
         display(file, "FUN_80659620(&uStack52,&uStack56,&uStack60,WORD_807F693A)")
         display(
             file,
-            "FUN_80659670(%s + fStack32, %s + fStack56,extraout_a0,extraout_a1, %s + fStack60, WORD_807F693A)"
-            % (str(params[0] / 1000), str(params[1] / 1000), str(params[0] / 1000)),
+            "FUN_80659670(%s + fStack32, %s + fStack56,extraout_a0,extraout_a1, %s + fStack60, WORD_807F693A)" % (str(params[0] / 1000), str(params[1] / 1000), str(params[0] / 1000)),
         )
     elif functionType == 0x58:
         display(file, "x58_temp = FUN_805FFE50(%s,%s,%s)" % (str(params[0]), str(params[1]), str(params[2])))
@@ -2119,8 +2085,7 @@ def grabExecution(param_1, ScriptCommand, params, behaviour, param_3, file):
     elif functionType == 0x5F:
         display(
             file,
-            "*(uint *)(PlayerPointer->ExtraInfo->unk0x1F0) = *(uint *)(PlayerPointer->ExtraInfo->unk0x1F0 | %s"
-            % (hex((params[0] * 0x10000) + params[1])),
+            "*(uint *)(PlayerPointer->ExtraInfo->unk0x1F0) = *(uint *)(PlayerPointer->ExtraInfo->unk0x1F0 | %s" % (hex((params[0] * 0x10000) + params[1])),
         )
     elif functionType == 0x60:
         display(file, "FUN_8065F134()")
@@ -2138,8 +2103,7 @@ def grabExecution(param_1, ScriptCommand, params, behaviour, param_3, file):
     elif functionType == 0x65:
         display(
             file,
-            "*(byte *)(behaviour + %s) = (byte *)(behaviour + %s) + %s"
-            % (hex(params[1] + 0x4B), hex(params[1] + 0x4B), str(params[0])),
+            "*(byte *)(behaviour + %s) = (byte *)(behaviour + %s) + %s" % (hex(params[1] + 0x4B), hex(params[1] + 0x4B), str(params[0])),
         )
     elif functionType == 0x66:
         display(file, "if (BYTE_807F61F8 == 0) {")
@@ -2185,8 +2149,7 @@ def grabExecution(param_1, ScriptCommand, params, behaviour, param_3, file):
     elif functionType == 0x72:
         display(
             file,
-            "getAndSetActorSpawnerControlStateFromActorSpawnerID(%s,%s,'%s')"
-            % (str(params[0]), str(params[1] & 0xFF), getSetOrNot(1)),
+            "getAndSetActorSpawnerControlStateFromActorSpawnerID(%s,%s,'%s')" % (str(params[0]), str(params[1] & 0xFF), getSetOrNot(1)),
         )
     elif functionType == 0x73:
         display(file, "FUN_806EB178(0,%s,%s,%s)" % (str(params[0]), str(params[1]), str(params[2])))
@@ -2215,9 +2178,7 @@ def grabExecution(param_1, ScriptCommand, params, behaviour, param_3, file):
         display(file, "} while (x76_counter < loadedActorCount)")
         display(file, "}")
     elif functionType == 0x77:
-        display(
-            file, "FUN_80650794(this->id,%s,%s,%s)" % (str(params[0]), str(params[1] & 0xFF), str(params[2] / 1000))
-        )
+        display(file, "FUN_80650794(this->id,%s,%s,%s)" % (str(params[0]), str(params[1] & 0xFF), str(params[2] / 1000)))
     elif functionType == 0x78:
         display(file, "FUN_806335B0(this->id,1,%s)" % (str(params[0])))
         display(file, "PlayerPointer->unk0x3A4 = uStack40")
@@ -2239,8 +2200,7 @@ def grabExecution(param_1, ScriptCommand, params, behaviour, param_3, file):
         display(file, "if (*(short *)(behaviour + %s) < 0) {" % (hex((2 * params[1]) + 0x10)))
         display(
             file,
-            "*(short *)(behaviour + %s) = FUN_80605044(this->id,%s,%s,%s)"
-            % (hex((2 * params[1]) + 0x10), str(params[0]), str(params[2] & 0x7F), str(params[1] & 2)),
+            "*(short *)(behaviour + %s) = FUN_80605044(this->id,%s,%s,%s)" % (hex((2 * params[1]) + 0x10), str(params[0]), str(params[2] & 0x7F), str(params[1] & 2)),
         )
         display(file, "}")
     elif functionType == 0x7E:
@@ -2264,8 +2224,7 @@ def grabExecution(param_1, ScriptCommand, params, behaviour, param_3, file):
         display(file, "FUN_806335B0(this->id,1,BYTE_80748094)")
         display(
             file,
-            "FUN_806086CC(%s,%s,%s,%s,0.3,0)"
-            % (str(x7e_bvar15), str(x7e_uvar9), str(params[1] & 0x7F), str(params[2] & 0x7F)),
+            "FUN_806086CC(%s,%s,%s,%s,0.3,0)" % (str(x7e_bvar15), str(x7e_uvar9), str(params[1] & 0x7F), str(params[2] & 0x7F)),
         )
         display(file, "}")
     elif functionType == 0x7F:
@@ -2312,14 +2271,12 @@ def grabExecution(param_1, ScriptCommand, params, behaviour, param_3, file):
     elif functionType == 0x8B:
         display(
             file,
-            "*(uint *)(PlayerPointer->unk0x36C) = *(uint *)(PlayerPointer->unk0x36C) & ~%s"
-            % (hex((params[0] * 0x10000) + params[1])),
+            "*(uint *)(PlayerPointer->unk0x36C) = *(uint *)(PlayerPointer->unk0x36C) & ~%s" % (hex((params[0] * 0x10000) + params[1])),
         )
     elif functionType == 0x8C:
         display(
             file,
-            "*(uint *)(PlayerPointer->unk0x36C) = *(uint *)(PlayerPointer->unk0x36C) | %s"
-            % (hex((params[0] * 0x10000) + params[1])),
+            "*(uint *)(PlayerPointer->unk0x36C) = *(uint *)(PlayerPointer->unk0x36C) | %s" % (hex((params[0] * 0x10000) + params[1])),
         )
     elif functionType == 0x8D:
         display(file, "next_transition_type = 'Fade'")
@@ -2567,9 +2524,7 @@ def parsePointerTables(fh: BinaryIO):
                 if absolute_size > 0:
                     fh.seek(y["absolute_address"])
                     data = fh.read(absolute_size)
-                    addFileToDatabase(
-                        y["absolute_address"], data, getOriginalUncompressedSize(fh, x["index"], y["index"])
-                    )
+                    addFileToDatabase(y["absolute_address"], data, getOriginalUncompressedSize(fh, x["index"], y["index"]))
 
 
 def make_safe_filename(s):
