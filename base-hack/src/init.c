@@ -801,6 +801,19 @@ void initHack(int source) {
 						cs_skip_db[(2 * cs_map) + cs_offset] &= comp;
 					}
 				}
+				// Checks Screen
+				*(short*)(0x806A8672) = 4; // Screen decrease cap
+				*(short*)(0x806A8646) = 5; // Screen increase cap
+				*(int*)(0x806A94CC) = 0x2C610003; // SLTIU $at, $v1, 0x3 (Changes render check for <3 rather than == 3)
+				*(int*)(0x806A94D0) = 0x10200298; // BEQZ $at, 0x298 (Changes render check for <3 rather than == 3)
+				*(int*)(0x806A9F98) = 0x0C000000 | (((int)&pauseScreen3And4Header & 0xFFFFFF) >> 2); // Header
+				*(int*)(0x806AA03C) = 0x0C000000 | (((int)&pauseScreen3And4Counter & 0xFFFFFF) >> 2); // Counter
+				*(int*)(0x806A86F8) = 0x2CA10003; // SLTIU $at, $a1, 0x3 (Changes control check for <3 rather than == 3)
+				*(int*)(0x806A86FC) = 0x10200182; // BEQZ $at, 0x182 (Changes control check for <3 rather than == 3)
+				*(int*)(0x806AA410) = 0x2C410003; // SLTIU $at, $v0, 0x3 (Changes sprite check for <3 rather than == 3)
+				*(int*)(0x806AA414) = 0x102003AA; // BEQZ $at, 0x3AA (Changes sprite check for <3 rather than == 3)
+				*(int*)(0x806A8D20) = 0x0C000000 | (((int)&changeSelectedLevel & 0xFFFFFF) >> 2); // Change selected level on checks screen
+				*(int*)(0x806A84F8) = 0x0C000000 | (((int)&checkItemDB & 0xFFFFFF) >> 2); // Populate Item Databases
 			}
 			*(int*)(0x80681910) = 0x0C000000 | (((int)&spawnBonusReward & 0xFFFFFF) >> 2); // Spawn Bonus Reward
 			*(int*)(0x806C63BC) = 0x0C000000 | (((int)&spawnRewardAtActor & 0xFFFFFF) >> 2); // Spawn Squawks Reward
@@ -810,6 +823,23 @@ void initHack(int source) {
 				- Change bonus aesthetic based on reward
 			*/
 
+			// Pause Totals/Checks Revamp
+			*(int*)(0x806AB3C4) = 0x0C000000 | (((int)&updatePauseScreenWheel & 0xFFFFFF) >> 2); // Change Wheel to scroller
+			*(int*)(0x806AB3B4) = 0xAFB00018; // SW $s0, 0x18 ($sp). Change last param to index
+			*(int*)(0x806AB3A0) = 0xAFA90014; // SW $t1, 0x14 ($sp). Change 2nd-to-last param to local index
+			*(int*)(0x806AB444) = 0; // Prevent joystick sprite rendering
+			*(int*)(0x806AB528) = 0x0C000000 | (((int)&handleSpriteCode & 0xFFFFFF) >> 2); // Change sprite control function
+			*(int*)(0x806AB52C) = 0x8FA40060; // LW $a0, 0x60 ($sp). Change param
+			*(short*)(0x806A8DB2) = 0x0029; // Swap left/right direction
+			*(short*)(0x806A8DBA) = 0xFFD8; // Swap left/right direction
+			*(short*)(0x806A8DB4) = 0x5420; // BEQL -> BNEL
+			*(short*)(0x806A8DF0) = 0x1020; // BNE -> BEQ
+			*(int*)(0x806A9F74) = 0x0C000000 | (((int)&pauseScreen3And4ItemName & 0xFFFFFF) >> 2); // Item Name
+			// Disable Item Checks
+			*(int*)(0x806AB2E8) = 0;
+			*(int*)(0x806AB360) = 0;
+			*(short*)(0x806ABFCE) = FLAG_BP_JAPES_DK_HAS; // Change BP trigger to being collecting BP rather than turning it in
+			initPauseMenu(); // Changes to enable more items
 			// Spider Projectile
 			if (Rando.hard_enemies) {
 				*(int*)(0x806ADDC0) = 0x0C000000 | (((int)&handleSpiderTrapCode & 0xFFFFFF) >> 2);
