@@ -1166,9 +1166,11 @@ def compileHintsOld(spoiler: Spoiler):
                     # Get Moves in slot
                     data_section = spoiler.move_data[0][shop][kong][level]
                     for move in moves_data:
-                        if move.item_key == data_section:
-                            if move.name not in level_listing:
-                                level_listing.append(move.name)
+                        if (
+                            move.item_key == data_section
+                            and move.name not in level_listing
+                        ):
+                            level_listing.append(move.name)
                 shop_listing.append(level_listing)
             shop_data.append(shop_listing)
 
@@ -1207,12 +1209,14 @@ def compileHintsOld(spoiler: Spoiler):
         for dump_hint in dump_hints:
             if shop_importance:
                 hint_list.append(Hint(hint=dump_hint["hint"], important=False, keywords=dump_hint["moves"], subtype="shop_dump"))
-            if shop_priority <= len(priority_barriers):
-                if (shop_index + 1) >= priority_barriers[shop_priority - 1]:
-                    if shop_priority == len(priority_barriers):
-                        shop_importance = False
-                    else:
-                        shop_priority += 1
+            if (
+                shop_priority <= len(priority_barriers)
+                and (shop_index + 1) >= priority_barriers[shop_priority - 1]
+            ):
+                if shop_priority == len(priority_barriers):
+                    shop_importance = False
+                else:
+                    shop_priority += 1
         # Shuffle and add single hints to list
         random.shuffle(single_hints)
         for single_hint in single_hints:
@@ -1716,7 +1720,9 @@ def GetRegionOfLocation(location_id):
                 return region
     for region_id in Regions:
         region = RegionList[region_id]
-        if region.level == location.level:
-            if location_id in [location_logic.id for location_logic in region.locations]:
-                return region
+        if (
+            region.level == location.level
+            and location_id in [location_logic.id for location_logic in region.locations]
+        ):
+            return region
     raise Exception("Unable to find Region for Location")  # This should never trigger!

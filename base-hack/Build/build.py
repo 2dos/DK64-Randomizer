@@ -404,17 +404,16 @@ for x in maps_to_expand:
         )
 
 for x in range(175):
-    if x > 0:
-        if x not in changed_song_indexes:
-            file_dict.append(
-                {
-                    "name": "Song " + str(x),
-                    "pointer_table_index": 0,
-                    "file_index": x,
-                    "source_file": "song" + str(x) + ".bin",
-                    "target_compressed_size": 0x2DDE,
-                }
-            )
+    if x > 0 and x not in changed_song_indexes:
+        file_dict.append(
+            {
+                "name": "Song " + str(x),
+                "pointer_table_index": 0,
+                "file_index": x,
+                "source_file": "song" + str(x) + ".bin",
+                "target_compressed_size": 0x2DDE,
+            }
+        )
 for x in range(6):
     file_dict.append(
         {
@@ -787,9 +786,13 @@ with open(ROMName, "rb") as fh:
 
                 # Convert decoded_filename to encoded_filename using the encoder function
                 # Eg. exits.json to exits.bin
-                if "encoder" in y and callable(y["encoder"]):
-                    if "decoded_filename" in y and os.path.exists(x["map_folder"] + y["decoded_filename"]):
-                        y["encoder"](x["map_folder"] + y["decoded_filename"], x["map_folder"] + y["encoded_filename"])
+                if (
+                    "encoder" in y
+                    and callable(y["encoder"])
+                    and "decoded_filename" in y
+                    and os.path.exists(x["map_folder"] + y["decoded_filename"])
+                ):
+                    y["encoder"](x["map_folder"] + y["decoded_filename"], x["map_folder"] + y["encoded_filename"])
 
                 if os.path.exists(x["map_folder"] + y["encoded_filename"]):
                     if y["index"] == 1:
@@ -943,13 +946,16 @@ with open(newROMName, "r+b") as fh:
                 fg.write(compress)
             x["output_file"] = x["source_file"]
 
-        if "use_external_gzip" in x and x["use_external_gzip"]:
-            if os.path.exists(x["source_file"]):
-                result = subprocess.check_output(["./build/gzip.exe", "-f", "-n", "-k", "-q", "-9", x["output_file"].replace(".gz", "")])
-                if os.path.exists(x["output_file"]):
-                    with open(x["output_file"], "r+b") as outputFile:
-                        # Chop off gzip footer
-                        outputFile.truncate(len(outputFile.read()) - 8)
+        if (
+            "use_external_gzip" in x
+            and x["use_external_gzip"]
+            and os.path.exists(x["source_file"])
+        ):
+            result = subprocess.check_output(["./build/gzip.exe", "-f", "-n", "-k", "-q", "-9", x["output_file"].replace(".gz", "")])
+            if os.path.exists(x["output_file"]):
+                with open(x["output_file"], "r+b") as outputFile:
+                    # Chop off gzip footer
+                    outputFile.truncate(len(outputFile.read()) - 8)
 
         if os.path.exists(x["output_file"]):
             byte_read = bytes()
@@ -1000,12 +1006,17 @@ with open(newROMName, "r+b") as fh:
 
         # Cleanup temporary files
         if not ("do_not_delete" in x and x["do_not_delete"]):
-            if not ("do_not_delete_output" in x and x["do_not_delete_output"]):
-                if os.path.exists(x["output_file"]) and x["output_file"] != x["source_file"]:
-                    os.remove(x["output_file"])
-            if not ("do_not_delete_source" in x and x["do_not_delete_source"]):
-                if os.path.exists(x["source_file"]):
-                    os.remove(x["source_file"])
+            if (
+                not ("do_not_delete_output" in x and x["do_not_delete_output"])
+                and os.path.exists(x["output_file"])
+                and x["output_file"] != x["source_file"]
+            ):
+                os.remove(x["output_file"])
+            if (
+                not ("do_not_delete_source" in x and x["do_not_delete_source"])
+                and os.path.exists(x["source_file"])
+            ):
+                os.remove(x["source_file"])
 
     print("[5 / 7] - Writing recomputed pointer tables to ROM")
     writeModifiedPointerTablesToROM(fh)
@@ -1269,9 +1280,8 @@ with open(newROMName, "r+b") as fh:
         for file in os.listdir(folder):
             file = f"{folder}/{file}"
             for shop in shop_files:
-                if shop in file:
-                    if os.path.exists(file):
-                        os.remove(file)
+                if shop in file and os.path.exists(file):
+                    os.remove(file)
     for hash_item in hash_items:
         for f_t in ["rgba5551", "png"]:
             pth = f"assets/Non-Code/hash/{hash_item}.{f_t}"

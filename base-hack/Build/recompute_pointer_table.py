@@ -525,11 +525,10 @@ def writeModifiedPointerTablesToROM(fh: BinaryIO):
         for y in x["entries"]:
             file_info = getFileInfo(x["index"], y["index"])
             y["new_absolute_address"] = write_pointer
-            if file_info:
-                if len(file_info["data"]) > 0:
-                    write_pointer += len(file_info["data"])
-                    fh.seek(y["new_absolute_address"])
-                    fh.write(file_info["data"])
+            if file_info and len(file_info["data"]) > 0:
+                write_pointer += len(file_info["data"])
+                fh.seek(y["new_absolute_address"])
+                fh.write(file_info["data"])
 
         # If the files have been appended to ROM, we need to move the free space pointer along by the number of bytes written
         if should_relocate:

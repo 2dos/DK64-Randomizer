@@ -1558,9 +1558,12 @@ def GetAccessibleKongLocations(levels: list, ownedKongs: list):
                 kongLocations.append(Locations.LankyKong)
             if Kongs.diddy in ownedKongs:
                 kongLocations.append(Locations.TinyKong)
-        elif level == Levels.FranticFactory:
-            if Kongs.lanky in ownedKongs or Kongs.tiny in ownedKongs:
-                kongLocations.append(Locations.ChunkyKong)
+        elif (
+            level == Levels.FranticFactory
+            and Kongs.lanky in ownedKongs
+            or Kongs.tiny in ownedKongs
+        ):
+            kongLocations.append(Locations.ChunkyKong)
     return kongLocations
 
 
@@ -2013,9 +2016,12 @@ def GetAccessibleOpenLevels(settings, accessible):
     # Convert indexes to the shuffled levels
     accessibleOpenLevels = [settings.level_order[index] for index in openLobbyIndexes]
     # After converting to levels, double check that we can actually do anything in Aztec
-    if Levels.AngryAztec in accessibleOpenLevels:
-        if not LogicVariables.vines and not (LogicVariables.tiny and LogicVariables.twirl):  # Need vines or (tiny + twirl)
-            accessibleOpenLevels.remove(Levels.AngryAztec)
+    if (
+        Levels.AngryAztec in accessibleOpenLevels
+        and not LogicVariables.vines
+        and not (LogicVariables.tiny and LogicVariables.twirl)
+    ):  # Need vines or (tiny + twirl)
+        accessibleOpenLevels.remove(Levels.AngryAztec)
     return accessibleOpenLevels
 
 

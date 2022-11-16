@@ -1276,9 +1276,8 @@ def display(file, string):
     """Display function upon being passed a string."""
     global tab_indentation
 
-    if string[-1:] != "{":
-        if string[-1:] != "}":
-            string += ";"
+    if string[-1:] != "{" and string[-1:] != "}":
+        string += ";"
     for x in range(tab_indentation):
         string = "\t" + string
     if string[-1:] == "{":

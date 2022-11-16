@@ -113,9 +113,8 @@ def convertItem(item: dict, kong: int) -> int:
         move_kong = kong & 7
         if item.type in shared_types:
             move_kong = 0
-        elif item.type == "instrument":
-            if item.index > 1:
-                move_kong = 0
+        elif item.type == "instrument" and item.index > 1:
+            move_kong = 0
         move_lvl = (item.index - 1) & 3
         master_info |= move_lvl << 3
         master_info |= move_kong

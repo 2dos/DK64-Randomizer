@@ -23,20 +23,19 @@ def read_h_file(symbols_data):
         c = fh.readlines()
         for x in symbols_data:
             for y in c:
-                if "extern " in y:
-                    if ("(" not in y) and (")" not in y):
-                        y = y.split("extern ")[1]
-                        if "//" in y:
-                            y = y.split("//")[0]
-                        z = y.split(" ")
-                        s = ""
-                        n = z[-1].split(";")[-1]
-                        if n == list(x)[1]:
-                            for i in range(len(z) - 1):
-                                s += z[i] + " "
-                            if s not in type_set:
-                                type_set.append(s)
-                            addr_set.append([list(x)[0], list(x)[1], s])
+                if "extern " in y and ("(" not in y) and (")" not in y):
+                    y = y.split("extern ")[1]
+                    if "//" in y:
+                        y = y.split("//")[0]
+                    z = y.split(" ")
+                    s = ""
+                    n = z[-1].split(";")[-1]
+                    if n == list(x)[1]:
+                        for i in range(len(z) - 1):
+                            s += z[i] + " "
+                        if s not in type_set:
+                            type_set.append(s)
+                        addr_set.append([list(x)[0], list(x)[1], s])
     return addr_set
 
 

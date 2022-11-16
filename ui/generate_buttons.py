@@ -183,9 +183,12 @@ def serialize_settings():
                 form_data[obj.name] = obj.value
     # find all input boxes and verify their checked status
     for element in js.document.getElementsByTagName("input"):
-        if element.type == "checkbox" and not element.checked:
-            if not form_data.get(element.name):
-                form_data[element.name] = False
+        if (
+            element.type == "checkbox"
+            and not element.checked
+            and not form_data.get(element.name)
+        ):
+            form_data[element.name] = False
     # Re disable all previously disabled options
     for element in disabled_options:
         element.setAttribute("disabled", "disabled")

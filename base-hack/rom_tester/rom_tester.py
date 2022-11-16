@@ -93,9 +93,8 @@ def getMapExit(fh, offset):
 def getKong(fh, offset):
     """Get the current kong."""
     val = getValue(fh, offset, 1)
-    if val >= 0:
-        if val < 8:
-            return kongs[val]
+    if val >= 0 and val < 8:
+        return kongs[val]
     return f"Kong {hex(val)}"
 
 
