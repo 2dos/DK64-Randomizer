@@ -5,6 +5,10 @@ name = "javascript"
 enabled = true
 
 [[analyzers]]
+name = "ruby"
+enabled = true
+
+[[analyzers]]
 name = "python"
 enabled = true
 
