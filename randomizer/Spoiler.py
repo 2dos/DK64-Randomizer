@@ -81,7 +81,6 @@ class Spoiler:
         # Settings data
         settings = OrderedDict()
         settings["Seed"] = self.settings.seed_id
-        # settings["algorithm"] = self.settings.algorithm # Don't need this for now, probably
         settings["No Logic"] = self.settings.no_logic
         settings["Shuffle Enemies"] = self.settings.enemy_rando
         settings["Move Randomization type"] = self.settings.move_rando
@@ -583,7 +582,6 @@ class Spoiler:
                         move_level = updated_item.index - 1
                         move_kong = updated_item.kong
                         for kong_index in kong_indices:
-                            # print(f"Shop {shop_index}, Kong {kong_index}, Level {level_index} | Move: {move_type} lvl {move_level} for kong {move_kong}")
                             if (
                                 move_type == MoveTypes.Slam
                                 or move_type == MoveTypes.AmmoBelt

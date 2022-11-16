@@ -336,12 +336,7 @@ def overwrite_object_colors(spoiler: Spoiler):
         dk_single = getFile(7, file, False, 44, 44)
         dk_single = dk_single.resize((21, 21))
         for kong_index in range(5):
-            # file = 4120
-            # # Kasplat Hair
-            # hair_im = getFile(25, file, True, 32, 44)
-            # hair_im = maskImage(hair_im, kong_index, 0)
             writeColorToROM(color_bases[kong_index], 25, [4124, 4122, 4123, 4120, 4121][kong_index])
-            # writeColorImageToROM(hair_im, 25, [4124, 4122, 4123, 4120, 4121][kong_index], 32, 44)
             for file in range(152, 160):
                 # Single
                 single_im = getFile(7, file, False, 44, 44)

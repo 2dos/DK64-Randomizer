@@ -166,7 +166,6 @@ def modify(file_name, map_index):
             if map_index == 0x1A and _id == 0x24:
                 repl_byte = b""
                 coord = [0, 0, 0]
-                # raw_coords = [1418,725,6.5,522.716]
                 raw_coords = [1455.853, 6.5, 522.716]
                 coord[0] = int(float_to_hex(raw_coords[0]), 16)
                 coord[1] = int(float_to_hex(raw_coords[1]), 16)
@@ -267,8 +266,6 @@ def modify(file_name, map_index):
             read_location += 0x30
         shop_signs = getMoveSignData(map_index, base_stream)
         vine_data = generateVineSeries(map_index)
-        # if len(shop_signs) != 0:
-        #     print(shop_signs)
         for sign in shop_signs:
             added_actor.append(sign)
         mystery_count = int.from_bytes(byte_read[read_location : read_location + 4], "big")
@@ -437,9 +434,6 @@ def modify(file_name, map_index):
             new_data_2 = [0x0, 0x1, 0x0, 0x0]
             for y in new_data_2:
                 byte_stream_arr.append(y)
-            # byte_stream_arr = []
-            # for y in range(0x30):
-            # 	byte_stream_arr.append(0)
             byte_stream_arr = writedatatoarr(byte_stream_arr, x["type"], 2, 0x28)
             byte_stream_arr = writedatatoarr(byte_stream_arr, x["id"], 2, 0x2A)
             byte_stream_arr = writedatatoarr(byte_stream_arr, x["scale"], 4, 0xC)

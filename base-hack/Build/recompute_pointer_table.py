@@ -205,26 +205,6 @@ for x in pointer_tables:
     pointer_table_files.append({})
 
 force_table_rewrite = [
-    # 0, # Music MIDI
-    # 1, # Map Geometry
-    # 2, # Map Walls
-    # 3, # Map Floors
-    # 4, # Object Model 2 Geometry
-    # 5, # Actor Geometry
-    # 7, # Textures (Uncompressed)
-    # 8, # Map Cutscenes
-    # 9, # Map Object Setups
-    # 10, # Map Object Model 2 Behaviour Scripts
-    # 11, # Animations
-    # 12, # Text
-    # 14, # Textures
-    # 15, # Map Paths
-    # 16, # Map Character Spawners
-    # 18, # Map Loading Zones
-    # 21, # Map Autowalk Data
-    # 23, # Map Exits
-    # 24, # Map Race Checkpoints
-    # 25, # Textures
 ]
 
 
@@ -247,7 +227,6 @@ def getOriginalUncompressedSize(fh: BinaryIO, pointer_table_index: int, file_ind
 
     ROMAddress = pointer_tables[26]["entries"][pointer_table_index]["absolute_address"] + file_index * 4
 
-    # print("Reading size for file " + str(pointer_table_index) + "->" + str(file_index) + " from ROM address " + hex(ROMAddress))
 
     fh.seek(ROMAddress)
     return int.from_bytes(fh.read(4), "big")
@@ -353,7 +332,6 @@ def parsePointerTables(fh: BinaryIO):
                     if file_info:
                         y["original_sha1"] = file_info["sha1"]
                         y["new_sha1"] = file_info["sha1"]
-                        # y["bit_set"] = False # We'll turn this back on later when recomputing pointer tables
 
 
 def addFileToDatabase(

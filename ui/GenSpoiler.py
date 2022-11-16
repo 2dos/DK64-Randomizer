@@ -26,9 +26,6 @@ async def GenerateSpoiler(spoiler):
     for x in spoiler.split("\n"):
         trimmed_spoiler += x.strip()
     formatted_spoiler = json.loads(trimmed_spoiler)
-    # modified_spoiler = formatted_spoiler.pop("Settings")
-    # modified_spoiler.update(formatted_spoiler)
-    # print(modified_spoiler)
 
     lzr_type = "none"
     if formatted_spoiler["Settings"]["Loading Zones Shuffled"] == "all":

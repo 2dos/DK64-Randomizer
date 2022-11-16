@@ -348,8 +348,6 @@ def compileHints(spoiler: Spoiler):
             if spoiler.settings.win_condition == "all_fairies":
                 valid_types.append(HintType.RequiredWinConditionHint)
                 hint_distribution[HintType.RequiredWinConditionHint] = 2
-    # if spoiler.settings.random_patches:
-    #     valid_types.append(HintType.DirtPatch)
     if spoiler.settings.randomize_blocker_required_amounts:
         valid_types.append(HintType.BLocker)
     if spoiler.settings.randomize_cb_required_amounts and len(spoiler.settings.krool_keys_required) > 0 and spoiler.settings.krool_keys_required != [Events.HelmKeyTurnedIn]:
@@ -359,8 +357,6 @@ def compileHints(spoiler: Spoiler):
             print("item rando kong hints under construction")
         else:
             valid_types.append(HintType.KongLocation)
-    # if spoiler.settings.coin_door_open == "need_both" or spoiler.settings.coin_door_open == "need_rw":
-    #     valid_types.append(HintType.MedalsRequired)
     if spoiler.settings.shuffle_loading_zones == "all":
         # In entrance rando, we care more about T&S than B. Locker
         temp = hint_distribution[HintType.BLocker]
@@ -1371,7 +1367,6 @@ def compileHintsOld(spoiler: Spoiler):
             if count == 1:
                 gb_name = "Golden Banana"
             level_name = level_list[x]
-            # current_level_position = level_positions.index(level_name)
             gb_importance = False
             permitted_levels = all_levels.copy()
             priority_level = x + 1

@@ -124,31 +124,6 @@ def randomize_setup(spoiler: Spoiler):
             "type": 0x11,
             "weight": 2,
         },
-        # {
-        #     "item": "feather_single",
-        #     "type": 0x15D,
-        #     "weight": 3,
-        # },
-        # {
-        #     "item": "grape_single",
-        #     "type": 0x15E,
-        #     "weight": 3,
-        # },
-        # {
-        #     "item": "pineapple_single",
-        #     "type": 0x15F,
-        #     "weight": 3,
-        # },
-        # {
-        #     "item": "coconut_single",
-        #     "type": 0x160,
-        #     "weight": 3,
-        # },
-        # {
-        #     "item": "peanut_single",
-        #     "type": 0x91,
-        #     "weight": 3,
-        # },
     ]
     pickup_list = []
     for pickup in pickup_weights:
@@ -207,7 +182,6 @@ def randomize_setup(spoiler: Spoiler):
         },
     ]
     vase_puzzle_positions = [
-        # [365.533, 138.167, 717.282], # Exclude center to force it to be a vase
         [212.543, 120.5, 963.536],
         [100.017, 120.5, 569.51],
         [497.464, 120.5, 458.709],

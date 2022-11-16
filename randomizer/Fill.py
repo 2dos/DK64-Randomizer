@@ -263,18 +263,6 @@ def GetAccessibleLocations(settings, startingOwnedItems, searchType=SearchMode.G
     elif searchType == SearchMode.GeneratePlaythrough:
         return playthroughLocations
     elif searchType == SearchMode.CheckAllReachable:
-        # settings.debug_accessible = accessible
-        # settings.debug_accessible_2 = []
-        # if len(accessible) > 300:
-        #     settings.debug_accessible_2 = accessible[300:]
-        # settings.debug_accessible_not = [location for location in LocationList if location not in accessible]
-        # settings.debug_accessible_not_2 = []
-        # if len(settings.debug_accessible_not) > 300:
-        #     settings.debug_accessible_not_2 = settings.debug_accessible_not[300:]
-        # settings.debug_enormous_pain_1 = [LocationList[location] for location in settings.debug_accessible]
-        # settings.debug_enormous_pain_2 = [LocationList[location] for location in settings.debug_accessible_2]
-        # settings.debug_enormous_pain_3 = [LocationList[location] for location in settings.debug_accessible_not]
-        # settings.debug_enormous_pain_4 = [LocationList[location] for location in settings.debug_accessible_not_2]
         return len(accessible) == len(LocationList)
     elif searchType == SearchMode.GetUnreachable:
         return [x for x in LocationList if x not in accessible]
@@ -322,12 +310,10 @@ def VerifyWorldWithWorstCoinUsage(settings):
             and coinsBefore[Kongs.tiny] >= coinsNeeded[Kongs.tiny]
             and coinsBefore[Kongs.chunky] >= coinsNeeded[Kongs.chunky]
         ):
-            # print("Seed is valid, found enough coins with worst purchase order: " + str([LocationList[x].name + ": " + LocationList[x].item.name + ", " for x in locationsToPurchase]))
             Reset()
             return True
         # If we found the Banana Hoard, world is valid!
         if LogicVariables.bananaHoard:
-            # print("Seed is valid, found banana hoard with worst purchase order: " + str([LocationList[x].name + ": " + LocationList[x].item.name + ", " for x in locationsToPurchase]))
             Reset()
             return True
         # For each accessible shop location
@@ -344,7 +330,6 @@ def VerifyWorldWithWorstCoinUsage(settings):
             Reset()
             return False
         locationToBuy = None
-        # print("Accessible Shops: " + str([LocationList[x].name for x in newReachableShops]))
         for shopLocation in newReachableShops:
             # print("Check buying " + LocationList[shopLocation].item.name + " from location " + LocationList[shopLocation].name)
             # Recheck accessible to see how many coins will be available afterward
@@ -357,7 +342,6 @@ def VerifyWorldWithWorstCoinUsage(settings):
             coinDifferential = [0, 0, 0, 0, 0]
             for kong in LogicVariables.GetKongs():
                 coinDifferential[kong] = coinsAfter[kong] - coinsBefore[kong]
-            # print("Coin differential: " + str(coinDifferential))
             shopDifferentials[shopLocation] = coinDifferential
             shopUnlocksItems[shopLocation] = [LocationList[x].item for x in reachableAfter if x not in reachable and LocationList[x].item is not None]
             # Determine if this is the new worst move

@@ -899,7 +899,6 @@ with open(newROMName, "r+b") as fh:
                 byte_read = fg.read()
                 uncompressed_size = len(byte_read)
             subprocess.Popen(["build\\flips.exe", "--apply", x["bps_file"], x["source_file"], x["source_file"]]).wait()
-            # shutil.copyfile(x["source_file"], x["source_file"].replace(".bin", ".raw"))
 
         if "texture_format" in x:
             if x["texture_format"] in ["rgba5551", "i4", "ia4", "i8", "ia8"]:
@@ -1040,10 +1039,6 @@ with open(newROMName, "r+b") as fh:
     fh.write(("?").encode("ascii"))
     for i in range(0x15):
         fh.write(("\0").encode("ascii"))
-    # for x in file_dict:
-    #     if "is_diff_patch" in x and x["is_diff_patch"]:
-    #         if os.path.exists(x["source_file"]):
-    #             os.remove(x["source_file"])
 
     # Wipe Space
     fh.seek(0x1FED020)
@@ -1299,9 +1294,6 @@ with open(newROMName, "r+b") as fh:
     for x in range(216):
         if os.path.exists(f"exit{x}.bin"):
             os.remove(f"exit{x}.bin")
-    # pth = "assets/Non-Code/displays/soldout_bismuth.rgba32"
-    # if os.path.exists(pth):
-    #     os.remove(pth)
 
 # Get BPS Data
 with open(newROMName, "r+b") as fh:

@@ -37,8 +37,6 @@ def apply_kongrando_cosmetic(spoiler: Spoiler):
             factoryLockedKong = Kongs.chunky
 
         llama_entrance_switch = []
-        # if llamaPuzzleKong in [1, 4]:
-        #     llama_entrance_switch.append({"index": 0xD, "new_type": gunswitches[llamaPuzzleKong]})
 
         kongrando_changes = [
             {
@@ -81,14 +79,6 @@ def apply_kongrando_cosmetic(spoiler: Spoiler):
             {
                 "map_index": 0x10,
                 "model2_changes": [
-                    # {
-                    #     "index": 0x0,
-                    #     "new_type": greenslamswitches[tinyTemplePuzzleKong],
-                    # },
-                    # {
-                    #     "index": 0x4,
-                    #     "new_type": instrumentpads[tinyTemplePuzzleKong],
-                    # },
                     {"index": 0x14, "new_type": forceSwitches[tinyTemplePuzzleKong]}
                 ],
                 "charspawner_changes": [

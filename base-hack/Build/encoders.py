@@ -341,7 +341,6 @@ def decodePaths(decoded_filename: str, encoded_filename: str):
                 "id": int.from_bytes(this_path[0x0:0x2], byteorder="big"),
                 "unk4": int.from_bytes(this_path[0x4:0x6], byteorder="big"),
             }
-            # sampleValue("path->unk4", path["unk4"])
             path_base += 0x6
 
             if num_points > 0:
@@ -509,7 +508,6 @@ def decodeCharacterSpawners(decoded_filename: str, encoded_filename: str):
                     fence_data["points_0xA"] = readStructArray(byte_read, read_header, num_points_0xA, character_spawner_point_0xA_struct)
                     read_header += num_points_0xA * 0xA
 
-                # fence_data["unkFooterAddress"] = hex(read_header)
                 fence_data["unkFooter"] = byte_read[read_header : read_header + 0x4].hex(" ").upper()  # TODO: Break this down into smaller fields
                 read_header += 4
 
@@ -618,7 +616,6 @@ setup_actor_spawner_struct = [
     {"name": "z_pos", "type": float},
     {"name": "scale", "type": float},
     {"name": "unk10", "type": bytes, "size": 0x32 - 0x10},  # TODO: 0x10 is sometimes a float, how do we integrate this?
-    # {"name": "destination_map", "type": "byte"}, # TODO: At 0x13, Only for bonus barrels, how do we integrate this?
     {"name": "behaviour", "type": "ushort", "index_of": actor_names, "index_offset": 0x10},
     {"name": "unk34", "type": bytes, "size": 0x38 - 0x34},  # TODO: Break this down into smaller fields
 ]

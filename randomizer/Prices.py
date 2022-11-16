@@ -302,9 +302,6 @@ def KongCanBuy(location_id, logic, kong):
 
     # Simple price check - combination of purchases will be considered outside this method
     if price is not None:
-        # print("KongCanBuy checking item: " + str(LocationList[location].item))
-        # print("for kong: " + kong.name + " with " + str(coins[kong]) + " coins")
-        # print("has price: " + str(price))
         return logic.Coins[kong] >= price
     else:
         return False

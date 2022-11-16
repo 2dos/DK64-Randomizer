@@ -223,10 +223,6 @@ class Settings:
         self.starting_kongs_count = 5
         self.starting_random = False
 
-        # bonus_barrels: str
-        # skip (auto-completed)
-        # normal
-        # random
         self.bonus_barrels = "normal"
         # helm_barrels: str
         # skip (helm skip all)
@@ -247,10 +243,6 @@ class Settings:
         # no_logic: bool
         self.no_logic = False
 
-        # shuffle_loading_zones: str
-        # none
-        # levels
-        # all
         self.shuffle_loading_zones = "none"
 
         # decoupled_loading_zones: bool

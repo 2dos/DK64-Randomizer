@@ -239,7 +239,6 @@ def randomize_cbs(spoiler: Spoiler):
             for x in persisted_act_data:
                 for y in x:
                     ROM().writeMultipleBytes(y, 4)
-            # print(f"{hex(cont_map_id)}: {hex(path_table)}")
             ROM().seek(path_table)
             ROM().writeMultipleBytes(len(persisted_paths), 2)
             for x in persisted_paths:

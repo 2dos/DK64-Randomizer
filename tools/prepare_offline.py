@@ -48,5 +48,3 @@ for f in [*get_files(os.getcwd(), "html.jinja2", recursive=True), *get_files(os.
                 with open(f, "w") as writer:
                     writer.write(html)
 
-# subprocess.run(["css-html-js-minify", "static/styles/", "--overwrite"])
-# subprocess.run(["pyminify", "-i", "."])
