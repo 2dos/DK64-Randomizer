@@ -160,14 +160,16 @@ def apply_cosmetic_colors(spoiler: Spoiler):
                 process = False
         kong_names = ["dk", "diddy", "lanky", "tiny", "chunky"]
         is_krusha = False
-        if spoiler.settings.krusha_slot in kong_names:
-            if kong_names.index(spoiler.settings.krusha_slot) == kong["kong_index"]:
-                is_krusha = True
-                kong["palettes"] = [
-                    {"name": "krusha_skin", "image": 4971, "fill_type": "block"},
-                    {"name": "krusha_indicator", "image": 4966, "fill_type": "kong"},
-                ]
-                process = True
+        if (
+            spoiler.settings.krusha_slot in kong_names
+            and kong_names.index(spoiler.settings.krusha_slot) == kong["kong_index"]
+        ):
+            is_krusha = True
+            kong["palettes"] = [
+                {"name": "krusha_skin", "image": 4971, "fill_type": "block"},
+                {"name": "krusha_indicator", "image": 4966, "fill_type": "kong"},
+            ]
+            process = True
         if process:
             base_obj = {"kong": kong["kong"], "zones": []}
             for palette in kong["palettes"]:

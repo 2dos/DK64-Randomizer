@@ -223,6 +223,8 @@ def adjustExits(fh):
                         fg.write(shortToUshort(exit["x"]).to_bytes(2, "big"))
                         fg.write(shortToUshort(exit["y"]).to_bytes(2, "big"))
                         fg.write(shortToUshort(exit["z"]).to_bytes(2, "big"))
-        if os.path.exists(file_name):
-            if os.path.getsize(file_name) == 0:
-                os.remove(file_name)
+        if (
+            os.path.exists(file_name)
+            and os.path.getsize(file_name) == 0
+        ):
+            os.remove(file_name)

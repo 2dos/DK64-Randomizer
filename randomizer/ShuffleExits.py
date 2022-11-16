@@ -464,9 +464,12 @@ def ShuffleLevelOrderForMultipleStartingKongs(settings: Settings):
                     tinyAccessible = Locations.TinyKong in settings.kong_locations
                     lankyAccessible = Locations.LankyKong in settings.kong_locations
                     # If a kong is in Tiny Temple, either Diddy or Chunky can free them
-                    if tinyAccessible:
-                        if Kongs.diddy not in settings.starting_kong_list and Kongs.chunky not in settings.starting_kong_list:
-                            tinyAccessible = False
+                    if (
+                        tinyAccessible
+                        and Kongs.diddy not in settings.starting_kong_list
+                        and Kongs.chunky not in settings.starting_kong_list
+                    ):
+                        tinyAccessible = False
                     # If a kong is in Llama temple, need to be able to get past the guitar door and one of Donkey, Lanky, or Tiny to open the Llama temple
                     if lankyAccessible:
                         guitarDoorAccess = (

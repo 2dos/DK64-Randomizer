@@ -556,9 +556,8 @@ for move in move_names:
     move_names_arr.append([{"text": [move["name"].upper()]}])
     if "latin" in move:
         move_names_arr.append([{"text": [f"({move['latin'].upper()})"]}])
-    if "print" in move:
-        if move["print"]:
-            print(f"{move['name']}: {init_len}")
+    if "print" in move and move["print"]:
+        print(f"{move['name']}: {init_len}")
 index_data = {
     "slam": {
         "indexes": [],

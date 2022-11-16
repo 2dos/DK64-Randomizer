@@ -46,9 +46,11 @@ def randomize_crown_pads(spoiler: Spoiler):
                 placements.append(CrownPlacementShortData(crown_data.map, crown_data.coords, crown_data.scale, idx, crown_data.is_vanilla))
                 if crown_data.is_vanilla:
                     new_vanilla_crowns.append(crown_data.map)
-                if not crown_data.is_vanilla:
-                    if crown_data.map not in action_maps:
-                        action_maps.append(crown_data.map)
+                if (
+                    not crown_data.is_vanilla
+                    and crown_data.map not in action_maps
+                ):
+                    action_maps.append(crown_data.map)
         for cont_map_id in action_maps:
             if cont_map_id == Maps.CavesRotatingCabin:
                 if cont_map_id not in new_vanilla_crowns:

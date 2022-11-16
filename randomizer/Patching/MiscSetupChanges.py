@@ -361,15 +361,17 @@ def randomize_setup(spoiler: Spoiler):
                 actor_start = actor_block_start + 4 + (actor_item * 0x38)
                 ROM().seek(actor_start + 0x32)
                 actor_type = int.from_bytes(ROM().readBytes(2), "big") + 0x10
-                if spoiler.settings.random_patches:
-                    if not actor_type == 139:
-                        byte_list = []
-                        ROM().seek(actor_start + 0x34)
-                        used_actor_ids.append(int.from_bytes(ROM().readBytes(2), "big"))
-                        ROM().seek(actor_start)
-                        for x in range(int(0x38 / 4)):
-                            byte_list.append(int.from_bytes(ROM().readBytes(4), "big"))
-                        actor_bytes.append(byte_list.copy())
+                if (
+                    spoiler.settings.random_patches
+                    and not actor_type == 139
+                ):
+                    byte_list = []
+                    ROM().seek(actor_start + 0x34)
+                    used_actor_ids.append(int.from_bytes(ROM().readBytes(2), "big"))
+                    ROM().seek(actor_start)
+                    for x in range(int(0x38 / 4)):
+                        byte_list.append(int.from_bytes(ROM().readBytes(4), "big"))
+                    actor_bytes.append(byte_list.copy())
             if spoiler.settings.random_patches:
                 new_actor_id = 0x20
                 for dirt_item in spoiler.dirt_patch_placement:

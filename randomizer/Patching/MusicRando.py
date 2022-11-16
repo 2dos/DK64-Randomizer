@@ -212,9 +212,11 @@ def ShuffleMusicWithSizeCheck(spoiler: Spoiler, song_list: list):
                         song_map_vanillaTotalSize[groupName] += song_item["uncompressed_size"]
                         song_map_newTotalSize[groupName] += shuffled_song_item["uncompressed_size"]
                     # Fanfares have different rule for limiting size
-                    elif vanillaSong.type == SongType.Fanfare:
-                        if shuffled_song_item["uncompressed_size"] > song_item["uncompressed_size"] * 1.5:
-                            continue
+                    elif (
+                        vanillaSong.type == SongType.Fanfare
+                        and shuffled_song_item["uncompressed_size"] > song_item["uncompressed_size"] * 1.5
+                    ):
+                        continue
                     # If it gets this far, the assignment is good
                     shuffled_music.remove(shuffled_song_item)
                     vanilla_song_list.append(song_item)
