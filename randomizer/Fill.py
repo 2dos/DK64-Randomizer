@@ -839,7 +839,7 @@ def GetUnplacedItemPrerequisites(spoiler, targetItemId, placedMoves, ownedKongs=
     #     You intentionally only look at DK/Diddy/Tiny moves so you don't find Grape as a prerequisite because you don't have Lanky
     #     In this example (with no other shuffles), there are two possible return values depending on the shuffle order.
     #     Either [Items.Guitar, Items.Coconut] OR [Items.Guitar, Items.Feather]
-    moveList = [move for move in ItemPool.AllMovesForOwnedKongs(ownedKongs)]
+    moveList = list(ItemPool.AllMovesForOwnedKongs(ownedKongs))
     # Sometimes a move requires shockwave as a prerequisite
     if spoiler.settings.shockwave_status != "vanilla":
         moveList.append(Items.Shockwave)
@@ -1209,7 +1209,7 @@ def PlacePriorityItems(spoiler, itemsToPlace, beforePlacedItems, levelBlock=None
 
 def PlaceKongsInKongLocations(spoiler, kongItems, kongLocations):
     """For these settings, Kongs to place, and locations to place them in, place the Kongs in such a way the generation will never error here."""
-    ownedKongs = [kong for kong in spoiler.settings.starting_kong_list]
+    ownedKongs = list(spoiler.settings.starting_kong_list)
     # In entrance randomizer, it's too complicated to quickly determine kong accessibility.
     # Instead, we place Kongs in a specific order to guarantee we'll at least have an eligible freer.
     # To be at least somewhat nice to no logic users, we also use this section here so kongs don't lock each other.
@@ -1283,7 +1283,7 @@ def PlaceKongsInKongLocations(spoiler, kongItems, kongLocations):
                     progressionKongItems = []
                     for kongItem in kongItems:
                         # Test each Kong by temporarily owning them and seeing what we can now reach
-                        tempOwnedKongs = [x for x in ownedKongs]
+                        tempOwnedKongs = list(ownedKongs)
                         tempOwnedKongs.append(ItemPool.GetKongForItem(kongItem))
                         newlyAccessibleKongLocations = GetLogicallyAccessibleKongLocations(spoiler, kongLocations, tempOwnedKongs, latestLogicallyAllowedLevel)
                         if any(newlyAccessibleKongLocations):
