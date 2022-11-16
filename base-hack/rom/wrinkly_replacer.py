@@ -50,7 +50,6 @@ with open("dk64-randomizer-base-dev.z64", "r+b") as fh:
             fh.write(len(string).to_bytes(2, "big"))
             fh.write(bytearray([0, 0]))
             position += len(string)
-            # fh.write(position.to_bytes(2,"big"))
         fh.write(bytearray([0, 0, 0, 0]))
     fh.write(bytearray([0xA, 0xC3]))
     for textbox in text:

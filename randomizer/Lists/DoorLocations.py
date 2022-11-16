@@ -151,7 +151,6 @@ door_locations = {
             logic=lambda l: True,
             placed="tns",
         ),  # T&S Door in Diddy Cave
-        # DoorData(name="Jungle Japes: Near Painting Room", map=Maps.JungleJapes, logicregion=Regions.JungleJapesMain, location=[722.473, 538.0, 2386.608, 141.0], group=3, moveless=False, logic=lambda l: l.vines, placed="tns"),  # T&S Door in Near Painting Room. Omitted because the indicator is weird
         DoorData(
             name="Jungle Japes: Fairy Cave",
             map=Maps.JungleJapes,
@@ -1907,14 +1906,6 @@ door_locations = {
             group=5,
             logic=lambda l: True,
         ),
-        # DoorData(
-        #     name="Fungi Forest: Inside the Mushroom - Along the Wall near Diddy's Kasplat",
-        #     map=Maps.ForestGiantMushroom,
-        #     logicregion=Regions.MushroomUpper,
-        #     location=[396.0, 610.0, 929.0, 174.0],
-        #     group=5,
-        #     logic=lambda l: True,
-        # ),
         DoorData(
             name="Fungi Forest: Inside the Mushroom - Along the Wall near Klump and Oranges",
             map=Maps.ForestGiantMushroom,

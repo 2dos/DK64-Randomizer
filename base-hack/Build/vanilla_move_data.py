@@ -142,7 +142,6 @@ def getWrite(value, kong):
         move_v = (value & 0xF) - 1
 
     ret = ((type & 7) << 5) | ((move_v & 3) << 3) | (kong & 7)
-    # print(f"{hex(ret)}: {type} | {move_v} | {kong}")
     return ret
 
 

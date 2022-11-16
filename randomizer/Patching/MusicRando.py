@@ -54,7 +54,6 @@ def randomize_music(spoiler: Spoiler):
                     # For testing, flip these two lines
                     # song_list.append(pointer_addresses[0]["entries"][song_data.index(song)])
                     song_list[song.channel - 1].append(js.pointer_addresses[0]["entries"][song_data.index(song)])
-            # ShuffleMusicWithSizeCheck(spoiler, song_list)
             for channel_index in range(12):
                 shuffled_music = song_list[channel_index].copy()
                 random.shuffle(shuffled_music)
@@ -304,4 +303,3 @@ def shuffle_music(spoiler: Spoiler, pool_to_shuffle, shuffled_list):
             spoiler.music_fanfare_data[song_data[originalIndex].name] = song_data[shuffledIndex].name
         elif song_data[originalIndex].type == SongType.Event:
             spoiler.music_event_data[song_data[originalIndex].name] = song_data[shuffledIndex].name
-        # print(f"Vanilla Index {originalIndex}: Song {shuffledIndex}")

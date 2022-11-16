@@ -29,13 +29,10 @@ enemy_replacements = [
 enemy_classes = {
     "ground_simple": [
         0x00,  # Blue Beaver
-        # 0x06, # Klobber (General Barrel Hider)
-        # 0x10, # Kaboom (TNT Barrel Hider)
         0x1B,  # Klaptrap (Green)
         0x1E,  # Klaptrap (Purple)
         0x1F,  # Klaptrap (Red)
         0x21,  # Gold Beaver
-        # 0x2C, # Mushroom Man
         0x33,  # Ruler
         0x3B,  # Kremling
         0x54,  # Krossbones

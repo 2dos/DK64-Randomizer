@@ -154,7 +154,6 @@ def ShuffleExitsInPool(settings, frontpool, backpool):
         for frontId in origins:
             frontExit = ShufflableExits[frontId]
             if AttemptConnect(settings, frontExit, frontId, backExit, backId):
-                # print("Assigned " + frontExit.name + " --> " + backExit.name)
                 frontpool.remove(frontId)
                 if not settings.decoupled_loading_zones:
                     # If coupled, the opposite pairing also needs to be removed from the pool
@@ -249,7 +248,6 @@ def UpdateLevelProgression(settings: Settings):
         if settings.shuffle_loading_zones == "levels":
             shuffledEntrance = ShufflableExits[LobbyEntrancePool[levelIndex]].shuffledId
             newDestRegion = ShufflableExits[shuffledEntrance].back.regionId
-            # print(LobbyEntrancePool[levelIndex].name + " goes to " + newDestRegion.name)
             newIndex = lobbies.index(newDestRegion)
         newEntryGBs[newIndex] = settings.EntryGBs[levelIndex]
         newBossBananas[newIndex] = settings.BossBananas[levelIndex]

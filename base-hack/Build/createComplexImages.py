@@ -61,7 +61,6 @@ for kong in kongs:
             x_p = 32 - x_p
         Image.Image.paste(im, im1, (x_p, 0))
     im = im.resize(kong_res)
-    # im = im.resize((32,32))
     im.save(f"{base_dir}{kong}_face.png")
 
 # Generate Shared Image
@@ -148,7 +147,6 @@ for crate in crate_names:
             y_p = crate_r_offset
         Image.Image.paste(im, im1, (x_p, y_p))
     im = im.resize(kong_res)
-    # im = im.resize((32,32))
     im.save(f"{base_dir}{crate}.png")
 
 # Number Game Images

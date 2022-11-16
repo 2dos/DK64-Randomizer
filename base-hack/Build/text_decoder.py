@@ -216,7 +216,6 @@ def grabText(file_index: int) -> list:
             section_1_count = int.from_bytes(fh.read(1), "big")
             section_2_count = int.from_bytes(fh.read(1), "big")
             section_3_count = int.from_bytes(fh.read(1), "big")
-            # print(str(section_1_count) + " > " + str(section_2_count) + " > " + str(section_3_count))
             fh.seek(data_start + 5)
             start = int.from_bytes(fh.read(2), "big")
             size = int.from_bytes(fh.read(2), "big")
@@ -227,7 +226,6 @@ def grabText(file_index: int) -> list:
                 sec2ct = int.from_bytes(fh.read(1), "big")
                 offset = 0
                 if (sec2ct & 4) != 0:
-                    # print("Adding offset")
                     offset += 4
                 text_blocks = []
                 if (sec2ct & 1) == 0:
@@ -278,13 +276,11 @@ def grabText(file_index: int) -> list:
                 for item3 in item2["text"]:
                     if item3["type"] == "normal":
                         start = item3["start"] + data_start + 2
-                        # print(hex(start))
                         end = start + item3["size"]
                         fh.seek(start)
                         temp.append(fh.read(item3["size"]).decode())
                     elif item3["type"] == "sprite":
                         temp.append(item3["sprite"])
-                        # print(fh.read(item3["size"]))
                 text_block.append(temp)
             text.append(text_block)
     if os.path.exists(temp_file):
