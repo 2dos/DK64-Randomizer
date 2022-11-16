@@ -430,7 +430,7 @@ def placeKrushaHead(slot):
             if ((x % 2) + (y % 2)) == 0:
                 x32.extend([data_hi, data_lo])
                 x32_rgba32.extend(data_rgba32)
-        if len(x32) > 0 and len(x32_rgba32):
+        if len(x32) > 0 and x32_rgba32:
             y32.append(x32)
             y32_rgba32.append(x32_rgba32)
     y32.reverse()
