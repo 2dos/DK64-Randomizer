@@ -574,7 +574,7 @@ class LogicVarHolder:
             hasRequiredMoves = self.twirl
         elif bossFight == Maps.FungiBoss:
             hasRequiredMoves = self.hunkyChunky and self.barrels
-        elif bossFight == Maps.JapesBoss or bossFight == Maps.AztecBoss or bossFight == Maps.CavesBoss:
+        elif bossFight in (Maps.JapesBoss, Maps.AztecBoss, Maps.CavesBoss):
             hasRequiredMoves = self.barrels
         return self.IsKong(requiredKong) and hasRequiredMoves
 
@@ -596,7 +596,7 @@ class LogicVarHolder:
 
     def WinConditionMet(self):
         """Check if the current game state has met the win condition."""
-        if self.settings.win_condition == "beat_krool" or self.settings.win_condition == "poke_snap":  # Photo taking doesn't have a clear wincon so this'll do until something better is concocted
+        if self.settings.win_condition in ("beat_krool", "poke_snap"):  # Photo taking doesn't have a clear wincon so this'll do until something better is concocted
             return Events.KRoolDefeated in self.Events
         elif self.settings.win_condition == "get_key8":
             return self.HelmKey

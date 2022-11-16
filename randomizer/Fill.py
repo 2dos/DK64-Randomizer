@@ -256,7 +256,7 @@ def GetAccessibleLocations(settings, startingOwnedItems, searchType=SearchMode.G
 
     if searchType in (SearchMode.GetReachable, SearchMode.GetReachableWithControlledPurchases):
         return accessible
-    elif searchType == SearchMode.CheckBeatable or searchType == SearchMode.CheckSpecificItemReachable:
+    elif searchType in (SearchMode.CheckBeatable, SearchMode.CheckSpecificItemReachable):
         # If the search has completed and the target item has not been found, then we failed to find it
         settings.debug_accessible = accessible
         return False

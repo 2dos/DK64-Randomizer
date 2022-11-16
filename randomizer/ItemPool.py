@@ -325,7 +325,7 @@ def Upgrades(settings):
         upgrades.extend(itertools.repeat(Items.ProgressiveAmmoBelt, 2))
         upgrades.extend(itertools.repeat(Items.ProgressiveInstrumentUpgrade, 3))
     if settings.shockwave_status != "start_with":
-        if settings.shockwave_status == "vanilla" or settings.shockwave_status == "shuffled":
+        if settings.shockwave_status in ("vanilla", "shuffled"):
             upgrades.append(Items.CameraAndShockwave)
         else:
             upgrades.append(Items.Camera)

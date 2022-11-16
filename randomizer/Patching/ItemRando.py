@@ -235,7 +235,7 @@ def place_randomized_items(spoiler: Spoiler):
                                 subtype = (item.new_flag >> 8) & 0xF
                                 if subtype == 4:
                                     medal_index = 8
-                                elif (subtype == 2) or (subtype == 3):
+                                elif subtype in (2, 3):
                                     medal_index = 7
                             ROM().write(medal_index)
                         else:
