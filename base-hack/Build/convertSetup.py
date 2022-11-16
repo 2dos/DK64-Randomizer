@@ -203,7 +203,7 @@ def modify(file_name, map_index):
                 byte_stream = repl_byte
                 _ay = int(float_to_hex(180), 16)
             if map_index == 0x48:
-                if _id == 0x57 or _id == 0xCF:
+                if _id in (0x57, 0xCF):
                     # Move W3 and Tiny bunch near 5DI
                     repl_byte = b""
                     loc_x = 176.505

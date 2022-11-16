@@ -161,7 +161,7 @@ def getBalancedCrownEnemyRando(spoiler: Spoiler, crown_setting, damage_ohko_sett
                 enemy_swaps_library[map_id].append(random.choice(disruptive_max_1))
                 enemy_swaps_library[map_id].append(random.choice(disruptive_0))
                 enemy_swaps_library[map_id].append(random.choice(disruptive_0))
-                if map_id == Maps.GalleonCrown or map_id == Maps.LobbyCrown or map_id == Maps.HelmCrown:
+                if map_id in (Maps.GalleonCrown, Maps.LobbyCrown, Maps.HelmCrown):
                     enemy_swaps_library[map_id].append(random.choice(disruptive_0))
         elif crown_setting == "medium":
             new_enemy = 0
@@ -169,7 +169,7 @@ def getBalancedCrownEnemyRando(spoiler: Spoiler, crown_setting, damage_ohko_sett
                 count_disruptive = 0
                 count_kasplats = 0
                 number_of_enemies = 3
-                if map_id == Maps.GalleonCrown or map_id == Maps.LobbyCrown or map_id == Maps.HelmCrown:
+                if map_id in (Maps.GalleonCrown, Maps.LobbyCrown, Maps.HelmCrown):
                     number_of_enemies = 4
                 for count in range(number_of_enemies):
                     if count_disruptive == 0:
@@ -200,7 +200,7 @@ def getBalancedCrownEnemyRando(spoiler: Spoiler, crown_setting, damage_ohko_sett
         elif crown_setting == "hard":
             for map_id in enemy_swaps_library:
                 number_of_enemies = 3
-                if map_id == Maps.GalleonCrown or map_id == Maps.LobbyCrown or map_id == Maps.HelmCrown:
+                if map_id in (Maps.GalleonCrown, Maps.LobbyCrown, Maps.HelmCrown):
                     number_of_enemies = 4
                 get_out_spawned_this_hard_map = False
                 for count in range(number_of_enemies):
