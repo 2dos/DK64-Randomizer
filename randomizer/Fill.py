@@ -590,7 +590,7 @@ def CalculateFoolish(spoiler, WothLocations):
     for id, region in RegionList.items():
         locations = [loc for loc in region.locations if loc.id in LocationList.keys()]
         # If this region DOES contain a major item, add it the name to the set of non-hintable hint regions
-        if any([loc for loc in locations if LocationList[loc.id].item in majorItems]):
+        if any(loc for loc in locations if LocationList[loc.id].item in majorItems):
             nonHintableNames.add(region.hint_name)
     # The regions that are foolish are all regions not in this list (that have locations in them!)
     spoiler.foolish_region_names = list({region.hint_name for id, region in RegionList.items() if any(region.locations) and region.hint_name not in nonHintableNames})
