@@ -39,7 +39,6 @@ from randomizer.Patching.DoorPlacer import place_door_locations
 from randomizer.Lists.QoL import QoLSelector
 from randomizer.Lists.EnemyTypes import EnemySelector
 
-# from randomizer.Spoiler import Spoiler
 from randomizer.Settings import Settings
 from ui.GenTracker import generateTracker
 from ui.progress_bar import ProgressBar
@@ -430,7 +429,6 @@ def patching_response(responded_data):
             lst.append(enemy["value"])
         spoiler.settings.enemies_selected = lst
 
-    # randomize_dktv()
     randomize_entrances(spoiler)
     randomize_moves(spoiler)
     randomize_prices(spoiler)

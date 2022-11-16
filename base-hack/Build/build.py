@@ -29,7 +29,12 @@ from image_converter import convertToRGBA32
 # Infrastructure for recomputing DK64 global pointer tables
 from map_names import maps
 from populateSongData import writeVanillaSongData
-from recompute_overlays import isROMAddressOverlay, readOverlayOriginalData, replaceOverlayData, writeModifiedOverlaysToROM
+from recompute_overlays import (
+    isROMAddressOverlay,
+    readOverlayOriginalData,
+    replaceOverlayData,
+    writeModifiedOverlaysToROM,
+)
 from recompute_pointer_table import (
     dumpPointerTableDetails,
     getFileInfo,
@@ -140,7 +145,13 @@ file_dict = [
         "source_file": "assets/Non-Code/Gong/hint_door.bin",
         "do_not_delete_source": True,
     },
-    {"name": "WXY_Slash", "pointer_table_index": 14, "file_index": 12, "source_file": "assets/Non-Code/displays/wxys.png", "texture_format": "rgba5551"},
+    {
+        "name": "WXY_Slash",
+        "pointer_table_index": 14,
+        "file_index": 12,
+        "source_file": "assets/Non-Code/displays/wxys.png",
+        "texture_format": "rgba5551",
+    },
     {
         "name": "DK Tie Palette",
         "pointer_table_index": 25,
@@ -285,7 +296,13 @@ ammo_names = ["standard_crate", "homing_crate"]
 
 for ammo_index, ammo in enumerate(ammo_names):
     file_dict.append(
-        {"name": f"{ammo.replace('_',' ')} Image", "pointer_table_index": 14, "file_index": 188 + ammo_index, "source_file": f"assets/Non-Code/displays/{ammo}.png", "texture_format": "rgba5551"}
+        {
+            "name": f"{ammo.replace('_',' ')} Image",
+            "pointer_table_index": 14,
+            "file_index": 188 + ammo_index,
+            "source_file": f"assets/Non-Code/displays/{ammo}.png",
+            "texture_format": "rgba5551",
+        }
     )
 
 for kong_index, kong in enumerate(kong_names):
@@ -420,17 +437,16 @@ for x in maps_to_expand:
         )
 
 for x in range(175):
-    if x > 0:
-        if x not in changed_song_indexes:
-            file_dict.append(
-                {
-                    "name": "Song " + str(x),
-                    "pointer_table_index": 0,
-                    "file_index": x,
-                    "source_file": "song" + str(x) + ".bin",
-                    "target_compressed_size": 0x2DDE,
-                }
-            )
+    if x > 0 and x not in changed_song_indexes:
+        file_dict.append(
+            {
+                "name": "Song " + str(x),
+                "pointer_table_index": 0,
+                "file_index": x,
+                "source_file": "song" + str(x) + ".bin",
+                "target_compressed_size": 0x2DDE,
+            }
+        )
 for x in range(6):
     file_dict.append(
         {
@@ -605,7 +621,15 @@ for x in kong_palettes:
     x_s = kong_palettes[x][0][0] * kong_palettes[x][0][1] * 2
     if kong_palettes[x][0][0] == 32 and kong_palettes[x][0][1] == 32 and kong_palettes[x][1] == "block":
         x_s = BLOCK_COLOR_SIZE
-    file_dict.append({"name": f"Palette Expansion ({hex(x)})", "pointer_table_index": 25, "file_index": x, "source_file": f"palette_{x}.bin", "target_compressed_size": x_s})
+    file_dict.append(
+        {
+            "name": f"Palette Expansion ({hex(x)})",
+            "pointer_table_index": 25,
+            "file_index": x,
+            "source_file": f"palette_{x}.bin",
+            "target_compressed_size": x_s,
+        }
+    )
 
 for tex in range(0x273, 0x27D):
     file_dict.append(
@@ -690,11 +714,30 @@ for x in range(2):
                 }
             )
 
-hash_icons = ["bongos.png", "crown.png", "dkcoin.png", "fairy.png", "guitar.png", "nin_coin.png", "orange.png", "rainbow_coin.png", "rw_coin.png", "sax.png"]
+hash_icons = [
+    "bongos.png",
+    "crown.png",
+    "dkcoin.png",
+    "fairy.png",
+    "guitar.png",
+    "nin_coin.png",
+    "orange.png",
+    "rainbow_coin.png",
+    "rw_coin.png",
+    "sax.png",
+]
 hash_indexes = [48, 49, 50, 51, 55, 62, 63, 64, 65, 76]
 for x in range(len(hash_indexes)):
     idx = hash_indexes[x]
-    file_dict.append({"name": f"Hash Icon {x+1}", "pointer_table_index": 14, "file_index": idx, "source_file": f"assets/Non-Code/hash/{hash_icons[x]}", "texture_format": "rgba5551"})
+    file_dict.append(
+        {
+            "name": f"Hash Icon {x+1}",
+            "pointer_table_index": 14,
+            "file_index": idx,
+            "source_file": f"assets/Non-Code/hash/{hash_icons[x]}",
+            "texture_format": "rgba5551",
+        }
+    )
 file_dict.append(
     {
         "name": "Dolby Text",
@@ -803,9 +846,8 @@ with open(ROMName, "rb") as fh:
 
                 # Convert decoded_filename to encoded_filename using the encoder function
                 # Eg. exits.json to exits.bin
-                if "encoder" in y and callable(y["encoder"]):
-                    if "decoded_filename" in y and os.path.exists(x["map_folder"] + y["decoded_filename"]):
-                        y["encoder"](x["map_folder"] + y["decoded_filename"], x["map_folder"] + y["encoded_filename"])
+                if "encoder" in y and callable(y["encoder"]) and "decoded_filename" in y and os.path.exists(x["map_folder"] + y["decoded_filename"]):
+                    y["encoder"](x["map_folder"] + y["decoded_filename"], x["map_folder"] + y["encoded_filename"])
 
                 if os.path.exists(x["map_folder"] + y["encoded_filename"]):
                     if y["index"] == 1:
@@ -915,7 +957,6 @@ with open(newROMName, "r+b") as fh:
                 byte_read = fg.read()
                 uncompressed_size = len(byte_read)
             subprocess.Popen(["build\\flips.exe", "--apply", x["bps_file"], x["source_file"], x["source_file"]]).wait()
-            # shutil.copyfile(x["source_file"], x["source_file"].replace(".bin", ".raw"))
 
         if "texture_format" in x:
             if x["texture_format"] in ["rgba5551", "i4", "ia4", "i8", "ia8"]:
@@ -960,13 +1001,12 @@ with open(newROMName, "r+b") as fh:
                 fg.write(compress)
             x["output_file"] = x["source_file"]
 
-        if "use_external_gzip" in x and x["use_external_gzip"]:
-            if os.path.exists(x["source_file"]):
-                result = subprocess.check_output(["./build/gzip.exe", "-f", "-n", "-k", "-q", "-9", x["output_file"].replace(".gz", "")])
-                if os.path.exists(x["output_file"]):
-                    with open(x["output_file"], "r+b") as outputFile:
-                        # Chop off gzip footer
-                        outputFile.truncate(len(outputFile.read()) - 8)
+        if "use_external_gzip" in x and x["use_external_gzip"] and os.path.exists(x["source_file"]):
+            result = subprocess.check_output(["./build/gzip.exe", "-f", "-n", "-k", "-q", "-9", x["output_file"].replace(".gz", "")])
+            if os.path.exists(x["output_file"]):
+                with open(x["output_file"], "r+b") as outputFile:
+                    # Chop off gzip footer
+                    outputFile.truncate(len(outputFile.read()) - 8)
 
         if os.path.exists(x["output_file"]):
             byte_read = bytes()
@@ -1017,12 +1057,10 @@ with open(newROMName, "r+b") as fh:
 
         # Cleanup temporary files
         if not ("do_not_delete" in x and x["do_not_delete"]):
-            if not ("do_not_delete_output" in x and x["do_not_delete_output"]):
-                if os.path.exists(x["output_file"]) and x["output_file"] != x["source_file"]:
-                    os.remove(x["output_file"])
-            if not ("do_not_delete_source" in x and x["do_not_delete_source"]):
-                if os.path.exists(x["source_file"]):
-                    os.remove(x["source_file"])
+            if not ("do_not_delete_output" in x and x["do_not_delete_output"]) and os.path.exists(x["output_file"]) and x["output_file"] != x["source_file"]:
+                os.remove(x["output_file"])
+            if not ("do_not_delete_source" in x and x["do_not_delete_source"]) and os.path.exists(x["source_file"]):
+                os.remove(x["source_file"])
 
     print("[5 / 7] - Writing recomputed pointer tables to ROM")
     writeModifiedPointerTablesToROM(fh)
@@ -1056,10 +1094,6 @@ with open(newROMName, "r+b") as fh:
     fh.write(("?").encode("ascii"))
     for i in range(0x15):
         fh.write(("\0").encode("ascii"))
-    # for x in file_dict:
-    #     if "is_diff_patch" in x and x["is_diff_patch"]:
-    #         if os.path.exists(x["source_file"]):
-    #             os.remove(x["source_file"])
 
     # Wipe Space
     fh.seek(0x1FED020)
@@ -1290,9 +1324,8 @@ with open(newROMName, "r+b") as fh:
         for file in os.listdir(folder):
             file = f"{folder}/{file}"
             for shop in shop_files:
-                if shop in file:
-                    if os.path.exists(file):
-                        os.remove(file)
+                if shop in file and os.path.exists(file):
+                    os.remove(file)
     for hash_item in hash_items:
         for f_t in ["rgba5551", "png"]:
             pth = f"assets/Non-Code/hash/{hash_item}.{f_t}"
@@ -1315,9 +1348,6 @@ with open(newROMName, "r+b") as fh:
     for x in range(216):
         if os.path.exists(f"exit{x}.bin"):
             os.remove(f"exit{x}.bin")
-    # pth = "assets/Non-Code/displays/soldout_bismuth.rgba32"
-    # if os.path.exists(pth):
-    #     os.remove(pth)
 
 # Get BPS Data
 with open(newROMName, "r+b") as fh:

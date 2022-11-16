@@ -113,9 +113,8 @@ def convertItem(item: dict, kong: int) -> int:
         move_kong = kong & 7
         if item.type in shared_types:
             move_kong = 0
-        elif item.type == "instrument":
-            if item.index > 1:
-                move_kong = 0
+        elif item.type == "instrument" and item.index > 1:
+            move_kong = 0
         move_lvl = (item.index - 1) & 3
         master_info |= move_lvl << 3
         master_info |= move_kong
@@ -142,7 +141,6 @@ def getWrite(value, kong):
         move_v = (value & 0xF) - 1
 
     ret = ((type & 7) << 5) | ((move_v & 3) << 3) | (kong & 7)
-    # print(f"{hex(ret)}: {type} | {move_v} | {kong}")
     return ret
 
 

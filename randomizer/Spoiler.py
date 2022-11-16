@@ -85,7 +85,6 @@ class Spoiler:
         # Settings data
         settings = OrderedDict()
         settings["Seed"] = self.settings.seed_id
-        # settings["algorithm"] = self.settings.algorithm # Don't need this for now, probably
         settings["No Logic"] = self.settings.no_logic
         settings["Shuffle Enemies"] = self.settings.enemy_rando
         settings["Move Randomization type"] = self.settings.move_rando
@@ -165,7 +164,16 @@ class Spoiler:
         humanspoiler["Requirements"] = {}
         # GB Counts
         gb_counts = {}
-        level_list = ["Jungle Japes", "Angry Aztec", "Frantic Factory", "Gloomy Galleon", "Fungi Forest", "Crystal Caves", "Creepy Castle", "Hideout Helm"]
+        level_list = [
+            "Jungle Japes",
+            "Angry Aztec",
+            "Frantic Factory",
+            "Gloomy Galleon",
+            "Fungi Forest",
+            "Crystal Caves",
+            "Creepy Castle",
+            "Hideout Helm",
+        ]
         for level_index, amount in enumerate(self.settings.EntryGBs):
             gb_counts[level_list[level_index]] = amount
         humanspoiler["Requirements"]["B Locker GBs"] = gb_counts
@@ -430,7 +438,12 @@ class Spoiler:
             for level in self.shuffled_shop_locations:
                 level_name = "Unknown Level"
 
-                shop_dict = {Regions.CrankyGeneric: "Cranky", Regions.CandyGeneric: "Candy", Regions.FunkyGeneric: "Funky", Regions.Snide: "Snide"}
+                shop_dict = {
+                    Regions.CrankyGeneric: "Cranky",
+                    Regions.CandyGeneric: "Candy",
+                    Regions.FunkyGeneric: "Funky",
+                    Regions.Snide: "Snide",
+                }
                 if level in level_dict:
                     level_name = level_dict[level]
                 for shop in self.shuffled_shop_locations[level]:
@@ -581,13 +594,16 @@ class Spoiler:
                     # Moves that are set with a single flag (e.g. training barrels, shockwave) are handled differently
                     if move_type == MoveTypes.Flag:
                         for kong_index in kong_indices:
-                            self.move_data[0][shop_index][kong_index][level_index] = {"move_type": "flag", "flag": updated_item.flag, "price": price}
+                            self.move_data[0][shop_index][kong_index][level_index] = {
+                                "move_type": "flag",
+                                "flag": updated_item.flag,
+                                "price": price,
+                            }
                     # This is for every other move typically purchased in a shop
                     else:
                         move_level = updated_item.index - 1
                         move_kong = updated_item.kong
                         for kong_index in kong_indices:
-                            # print(f"Shop {shop_index}, Kong {kong_index}, Level {level_index} | Move: {move_type} lvl {move_level} for kong {move_kong}")
                             if (
                                 move_type == MoveTypes.Slam
                                 or move_type == MoveTypes.AmmoBelt

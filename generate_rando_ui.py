@@ -62,7 +62,13 @@ async def initialize():
 
     templateEnv = Environment(loader=FunctionLoader(loader_func), enable_async=True)
     template = templateEnv.get_template("base.html.jinja2")
-    rendered = await template.render(minigames=MinigameSelector, misc_changes=QoLSelector, enemies=EnemySelector, itemRando=ItemRandoSelector, keys=KeySelector)
+    rendered = await template.render(
+        minigames=MinigameSelector,
+        misc_changes=QoLSelector,
+        enemies=EnemySelector,
+        itemRando=ItemRandoSelector,
+        keys=KeySelector,
+    )
     js.document.documentElement.innerHTML = ""
     js.document.open()
     js.document.write(rendered)

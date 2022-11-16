@@ -108,10 +108,9 @@ def modify(file_name, map_index):
                 _ay = int.from_bytes(byte_read[read_location + 0x1C : read_location + 0x20], "big")
                 _az = int.from_bytes(byte_read[read_location + 0x20 : read_location + 0x24], "big")
                 _id = int.from_bytes(byte_read[read_location + 0x2A : read_location + 0x2C], "big")
-                if map_index == 7:
-                    if model2_index == 0x220:
-                        _x = int(float_to_hex(805.6618), 16)
-                        _z = int(float_to_hex(2226.797), 16)
+                if map_index == 7 and model2_index == 0x220:
+                    _x = int(float_to_hex(805.6618), 16)
+                    _z = int(float_to_hex(2226.797), 16)
                 added_model2.append(
                     {
                         "base_byte_stream": byte_stream,
@@ -166,7 +165,6 @@ def modify(file_name, map_index):
             if map_index == 0x1A and _id == 0x24:
                 repl_byte = b""
                 coord = [0, 0, 0]
-                # raw_coords = [1418,725,6.5,522.716]
                 raw_coords = [1455.853, 6.5, 522.716]
                 coord[0] = int(float_to_hex(raw_coords[0]), 16)
                 coord[1] = int(float_to_hex(raw_coords[1]), 16)
@@ -202,19 +200,18 @@ def modify(file_name, map_index):
                     repl_byte += byte_stream[x + 0x20].to_bytes(1, "big")
                 byte_stream = repl_byte
                 _ay = int(float_to_hex(180), 16)
-            if map_index == 0x48:
-                if _id == 0x57 or _id == 0xCF:
-                    # Move W3 and Tiny bunch near 5DI
-                    repl_byte = b""
-                    loc_x = 176.505
-                    loc_z = 1089.408
-                    repl_byte += int(float_to_hex(loc_x), 16).to_bytes(4, "big")
-                    for x in range(4):
-                        repl_byte += byte_stream[x + 4].to_bytes(1, "big")
-                    repl_byte += int(float_to_hex(loc_z), 16).to_bytes(4, "big")
-                    for x in range(0x30 - 0xC):
-                        repl_byte += byte_stream[x + 0xC].to_bytes(1, "big")
-                    byte_stream = repl_byte
+            if map_index == 0x48 and _id in (0x57, 0xCF):
+                # Move W3 and Tiny bunch near 5DI
+                repl_byte = b""
+                loc_x = 176.505
+                loc_z = 1089.408
+                repl_byte += int(float_to_hex(loc_x), 16).to_bytes(4, "big")
+                for x in range(4):
+                    repl_byte += byte_stream[x + 4].to_bytes(1, "big")
+                repl_byte += int(float_to_hex(loc_z), 16).to_bytes(4, "big")
+                for x in range(0x30 - 0xC):
+                    repl_byte += byte_stream[x + 0xC].to_bytes(1, "big")
+                byte_stream = repl_byte
             if map_index == 0xCD:
                 # Standardize lanky phase buttons
                 buttons = (0xE, 0xF, 0x10, 0x11)
@@ -267,8 +264,6 @@ def modify(file_name, map_index):
             read_location += 0x30
         shop_signs = getMoveSignData(map_index, base_stream)
         vine_data = generateVineSeries(map_index)
-        # if len(shop_signs) != 0:
-        #     print(shop_signs)
         for sign in shop_signs:
             added_actor.append(sign)
         mystery_count = int.from_bytes(byte_read[read_location : read_location + 4], "big")
@@ -437,9 +432,6 @@ def modify(file_name, map_index):
             new_data_2 = [0x0, 0x1, 0x0, 0x0]
             for y in new_data_2:
                 byte_stream_arr.append(y)
-            # byte_stream_arr = []
-            # for y in range(0x30):
-            # 	byte_stream_arr.append(0)
             byte_stream_arr = writedatatoarr(byte_stream_arr, x["type"], 2, 0x28)
             byte_stream_arr = writedatatoarr(byte_stream_arr, x["id"], 2, 0x2A)
             byte_stream_arr = writedatatoarr(byte_stream_arr, x["scale"], 4, 0xC)

@@ -42,7 +42,15 @@ def writeMoveDataToROM(arr: list):
     """Write move data to ROM."""
     for x in arr:
         if x["move_type"] == "flag":
-            flag_dict = {"dive": 0x182, "orange": 0x184, "barrel": 0x185, "vine": 0x183, "camera": 0x2FD, "shockwave": 0x179, "camera_shockwave": 0xFFFE}
+            flag_dict = {
+                "dive": 0x182,
+                "orange": 0x184,
+                "barrel": 0x185,
+                "vine": 0x183,
+                "camera": 0x2FD,
+                "shockwave": 0x179,
+                "camera_shockwave": 0xFFFE,
+            }
             flag_index = 0xFFFF
             if x["flag"] in flag_dict:
                 flag_index = flag_dict[x["flag"]]

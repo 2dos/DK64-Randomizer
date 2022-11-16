@@ -204,28 +204,7 @@ pointer_table_files = []
 for x in pointer_tables:
     pointer_table_files.append({})
 
-force_table_rewrite = [
-    # 0, # Music MIDI
-    # 1, # Map Geometry
-    # 2, # Map Walls
-    # 3, # Map Floors
-    # 4, # Object Model 2 Geometry
-    # 5, # Actor Geometry
-    # 7, # Textures (Uncompressed)
-    # 8, # Map Cutscenes
-    # 9, # Map Object Setups
-    # 10, # Map Object Model 2 Behaviour Scripts
-    # 11, # Animations
-    # 12, # Text
-    # 14, # Textures
-    # 15, # Map Paths
-    # 16, # Map Character Spawners
-    # 18, # Map Loading Zones
-    # 21, # Map Autowalk Data
-    # 23, # Map Exits
-    # 24, # Map Race Checkpoints
-    # 25, # Textures
-]
+force_table_rewrite = []
 
 
 def make_safe_filename(s: str):
@@ -246,8 +225,6 @@ def getOriginalUncompressedSize(fh: BinaryIO, pointer_table_index: int, file_ind
         return 0
 
     ROMAddress = pointer_tables[26]["entries"][pointer_table_index]["absolute_address"] + file_index * 4
-
-    # print("Reading size for file " + str(pointer_table_index) + "->" + str(file_index) + " from ROM address " + hex(ROMAddress))
 
     fh.seek(ROMAddress)
     return int.from_bytes(fh.read(4), "big")
@@ -353,7 +330,6 @@ def parsePointerTables(fh: BinaryIO):
                     if file_info:
                         y["original_sha1"] = file_info["sha1"]
                         y["new_sha1"] = file_info["sha1"]
-                        # y["bit_set"] = False # We'll turn this back on later when recomputing pointer tables
 
 
 def addFileToDatabase(
@@ -547,11 +523,10 @@ def writeModifiedPointerTablesToROM(fh: BinaryIO):
         for y in x["entries"]:
             file_info = getFileInfo(x["index"], y["index"])
             y["new_absolute_address"] = write_pointer
-            if file_info:
-                if len(file_info["data"]) > 0:
-                    write_pointer += len(file_info["data"])
-                    fh.seek(y["new_absolute_address"])
-                    fh.write(file_info["data"])
+            if file_info and len(file_info["data"]) > 0:
+                write_pointer += len(file_info["data"])
+                fh.seek(y["new_absolute_address"])
+                fh.write(file_info["data"])
 
         # If the files have been appended to ROM, we need to move the free space pointer along by the number of bytes written
         if should_relocate:

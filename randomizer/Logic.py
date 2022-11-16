@@ -574,7 +574,7 @@ class LogicVarHolder:
             hasRequiredMoves = self.twirl
         elif bossFight == Maps.FungiBoss:
             hasRequiredMoves = self.hunkyChunky and self.barrels
-        elif bossFight == Maps.JapesBoss or bossFight == Maps.AztecBoss or bossFight == Maps.CavesBoss:
+        elif bossFight in (Maps.JapesBoss, Maps.AztecBoss, Maps.CavesBoss):
             hasRequiredMoves = self.barrels
         return self.IsKong(requiredKong) and hasRequiredMoves
 
@@ -583,7 +583,10 @@ class LogicVarHolder:
         # Later levels can have some special requirements
         # "pathMode" is so WotH paths can always enter levels regardless of owned items
         if not self.pathMode and level >= 3:
-            level_order_matters = not self.settings.hard_level_progression and self.settings.shuffle_loading_zones in ("none", "levels")
+            level_order_matters = not self.settings.hard_level_progression and self.settings.shuffle_loading_zones in (
+                "none",
+                "levels",
+            )
             # If level order matters...
             if level_order_matters:
                 # Require barrels by level 3 to prevent boss barrel fill failures
@@ -596,7 +599,10 @@ class LogicVarHolder:
 
     def WinConditionMet(self):
         """Check if the current game state has met the win condition."""
-        if self.settings.win_condition == "beat_krool" or self.settings.win_condition == "poke_snap":  # Photo taking doesn't have a clear wincon so this'll do until something better is concocted
+        if self.settings.win_condition in (
+            "beat_krool",
+            "poke_snap",
+        ):  # Photo taking doesn't have a clear wincon so this'll do until something better is concocted
             return Events.KRoolDefeated in self.Events
         elif self.settings.win_condition == "get_key8":
             return self.HelmKey
@@ -721,7 +727,6 @@ def ResetCollectibleRegions():
     for region in CollectibleRegions.values():
         for collectible in region:
             collectible.added = False
-            # collectible.enabled = collectible.vanilla
 
 
 def ClearAllLocations():

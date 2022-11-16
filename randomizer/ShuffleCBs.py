@@ -96,9 +96,7 @@ def ShuffleCBs(spoiler: Spoiler):
             balloon_upper = min(int(balloons_left / (7 - level_index)) + 3, int(balloons_left / global_divisor))
         balloon_lst = level_data[level]["balloons"].copy()
         selected_balloon_count = min(random.randint(min(balloon_lower, balloon_upper), max(balloon_lower, balloon_upper)), len(balloon_lst))
-        # selected_balloon_count = 22 # Test all balloon locations
         random.shuffle(balloon_lst)  # TODO: Maybe make this more advanced?
-        # selects all balloons
         placed_balloons = 0
         for balloon in balloon_lst:
             if placed_balloons < selected_balloon_count:
@@ -109,7 +107,16 @@ def ShuffleCBs(spoiler: Spoiler):
                 if len(balloon_kongs) > 0:  # Has a kong who can be assigned to this balloon
                     selected_kong = random.choice(balloon_kongs)
                     kong_specific_left[selected_kong] -= 10  # Remove CBs for Balloon
-                    level_placement.append({"id": balloon.id, "name": balloon.name, "kong": selected_kong, "level": level, "type": "balloons", "map": balloon.map})
+                    level_placement.append(
+                        {
+                            "id": balloon.id,
+                            "name": balloon.name,
+                            "kong": selected_kong,
+                            "level": level,
+                            "type": "balloons",
+                            "map": balloon.map,
+                        }
+                    )
                     placed_balloons += 1
                     level_data[level]["logic"][balloon.region].append(Collectible(Collectibles.balloon, selected_kong, balloon.logic, None, 1))
         # Model Two CBs
@@ -163,7 +170,17 @@ def ShuffleCBs(spoiler: Spoiler):
                         level_data[level]["logic"][group.region].append(Collectible(Collectibles.bunch, selected_kong, group.logic, None, bunches_in_lesser_group))
                     if singles_in_lesser_group > 0:
                         level_data[level]["logic"][group.region].append(Collectible(Collectibles.banana, selected_kong, group.logic, None, singles_in_lesser_group))
-                    level_placement.append({"group": group.group, "name": group.name, "kong": selected_kong, "level": level, "type": "cb", "map": group.map, "locations": group.locations})
+                    level_placement.append(
+                        {
+                            "group": group.group,
+                            "name": group.name,
+                            "kong": selected_kong,
+                            "level": level,
+                            "type": "cb",
+                            "map": group.map,
+                            "locations": group.locations,
+                        }
+                    )
                 placed_bunches += bunches_in_group
                 placed_singles += singles_in_group
             # If all kongs have 0 unplaced, we're done here

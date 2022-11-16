@@ -182,7 +182,16 @@ with open(dk64_rom, "rb") as fh:
                 model2_y = intf_to_float(int.from_bytes(setup_raw[read_location + 4 : read_location + 8], "big"))
                 model2_z = intf_to_float(int.from_bytes(setup_raw[read_location + 8 : read_location + 12], "big"))
                 model2_scale = intf_to_float(int.from_bytes(setup_raw[read_location + 12 : read_location + 16], "big"))
-                data = {"name": model2_name, "type": hex(model2_type), "x": model2_x, "y": model2_y, "z": model2_z, "scale": model2_scale, "kong": kong_name, "object_type": "model_two"}
+                data = {
+                    "name": model2_name,
+                    "type": hex(model2_type),
+                    "x": model2_x,
+                    "y": model2_y,
+                    "z": model2_z,
+                    "scale": model2_scale,
+                    "kong": kong_name,
+                    "object_type": "model_two",
+                }
                 current_map_data["objects"].append(data)
                 dumpData(data, map_index)
             read_location += 0x30
@@ -217,7 +226,17 @@ with open(dk64_rom, "rb") as fh:
                     if path["id"] == actor_path:
                         found_path = path
                 prev_len = len(current_map_data["objects"])
-                data = {"name": actor_name, "type": hex(actor_type), "x": actor_x, "y": actor_y, "z": actor_z, "speed": actor_speed, "path": found_path, "kong": kong_name, "object_type": "actor"}
+                data = {
+                    "name": actor_name,
+                    "type": hex(actor_type),
+                    "x": actor_x,
+                    "y": actor_y,
+                    "z": actor_z,
+                    "speed": actor_speed,
+                    "path": found_path,
+                    "kong": kong_name,
+                    "object_type": "actor",
+                }
                 current_map_data["objects"].append(data)
                 dumpData(data, map_index)
             read_location += 0x38

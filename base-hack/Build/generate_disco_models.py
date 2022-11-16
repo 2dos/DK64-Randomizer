@@ -185,21 +185,6 @@ beater_new_dl = """
     06 1C 1A 28 00 1C 28 26
 """
 
-# beater_new_dl = """
-#     E7 00 00 00 00 00 00 00
-#     01 01 50 2A 03 00 3B 90
-#     FD 10 00 00 00 00 0E BF
-#     E6 00 00 00 00 00 00 00
-#     F3 00 00 00 07 3F F1 00
-#     E7 00 00 00 00 00 00 00
-#     E3 00 10 01 00 00 00 00
-#     06 1A 1C 1E 00 1A 1E 20
-#     06 22 24 26 00 22 26 28
-#     06 1A 20 22 00 1A 22 28
-#     06 20 1E 24 00 20 24 22
-#     06 1E 1C 26 00 1E 26 24
-#     06 1C 1A 28 00 1C 28 26
-# """
 
 with open(rom_file, "rb") as rom:
     rom.seek(pointer_offset + (5 * 4))
@@ -244,15 +229,6 @@ with open(rom_file, "rb") as rom:
         dl_data_1 = fh.read(dl_end - dl_mid)
         with open(temp_file, "wb") as fg:
             fg.write(dl_data_0)
-            # for dl_block in beater_new_dl:
-            #     fix_arr = dl_block.split("\n")
-            #     fix_lst = []
-            #     for f in fix_arr:
-            #         if not f == "":
-            #             for x in f.strip().split(" "):
-            #                 if x.strip() != "":
-            #                     fix_lst.append(int(f"0x{x}", 16))
-            #     fg.write(bytearray(fix_lst))
             fg.write(dl_data_1)
             pos = fg.tell()
             fg.seek(pos - 8)

@@ -226,12 +226,9 @@ with open("include/variable_space_structs.h", "r") as varspace:
                     if type(set_variables[x]) is int:
                         if y[3] == 1:
                             writeToROM(y[0], set_variables[x], y[1], x)
-                        # print(type(set_variables[x]))
                     elif type(set_variables[x]) is list:
                         for z in range(min([int(y[3]), len(set_variables[x])])):
                             writeToROM(y[0] + (z * y[1]), set_variables[x][z], y[1], x)
-                    # print(type(set_variables[x]))
-    # print(struct_data2)
 
 # Editor: https://docs.google.com/spreadsheets/d/1UokoarKY6C56otoHMRUDCCMveaGUm8bGTOnaxjxDPR0/edit#gid=0
 move_csv = "move_placement.csv"

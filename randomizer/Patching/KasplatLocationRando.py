@@ -9,7 +9,13 @@ from randomizer.Spoiler import Spoiler
 
 def randomize_kasplat_locations(spoiler: Spoiler):
     """Write replaced enemies to ROM."""
-    kasplat_types = [Enemies.KasplatDK, Enemies.KasplatDiddy, Enemies.KasplatLanky, Enemies.KasplatTiny, Enemies.KasplatChunky]
+    kasplat_types = [
+        Enemies.KasplatDK,
+        Enemies.KasplatDiddy,
+        Enemies.KasplatLanky,
+        Enemies.KasplatTiny,
+        Enemies.KasplatChunky,
+    ]
     vanilla_kasplat_maps = [
         Maps.JungleJapes,
         Maps.JapesUnderGround,
@@ -32,7 +38,7 @@ def randomize_kasplat_locations(spoiler: Spoiler):
         Maps.GloomyGalleonLobby,
     ]
     if spoiler.settings.kasplat_rando:
-        selected_kasplat_names = [name for name in spoiler.shuffled_kasplat_map.keys()]
+        selected_kasplat_names = list(spoiler.shuffled_kasplat_map.keys())
         for cont_map_id in range(216):
             cont_map_spawner_address = js.pointer_addresses[16]["entries"][cont_map_id]["pointing_to"]
             ROM().seek(cont_map_spawner_address)

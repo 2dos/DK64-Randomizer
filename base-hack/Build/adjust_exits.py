@@ -186,7 +186,11 @@ def adjustExits(fh):
                     if item_type >= 0x210 and item_type <= 0x214:
                         if item_id == 0x57 and map_index == 0x48:
                             fg.seek(item_start + 4)
-                            coords = [int(176.505), int(int_to_float(int.from_bytes(fg.read(4), "big"))) + 5, int(1089.408)]
+                            coords = [
+                                int(176.505),
+                                int(int_to_float(int.from_bytes(fg.read(4), "big"))) + 5,
+                                int(1089.408),
+                            ]
                         else:
                             fg.seek(item_start)
                             coords = []
@@ -223,6 +227,5 @@ def adjustExits(fh):
                         fg.write(shortToUshort(exit["x"]).to_bytes(2, "big"))
                         fg.write(shortToUshort(exit["y"]).to_bytes(2, "big"))
                         fg.write(shortToUshort(exit["z"]).to_bytes(2, "big"))
-        if os.path.exists(file_name):
-            if os.path.getsize(file_name) == 0:
-                os.remove(file_name)
+        if os.path.exists(file_name) and os.path.getsize(file_name) == 0:
+            os.remove(file_name)

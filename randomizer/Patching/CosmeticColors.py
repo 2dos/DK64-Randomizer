@@ -70,32 +70,71 @@ def apply_cosmetic_colors(spoiler: Spoiler):
     color_obj = {}
     colors_dict = {}
     kong_settings = [
-        {"kong": "dk", "palettes": [{"name": "base", "image": 3724, "fill_type": "block"}], "base_setting": "dk_colors", "custom_setting": "dk_custom_color", "kong_index": 0},
-        {"kong": "diddy", "palettes": [{"name": "cap_shirt", "image": 3686, "fill_type": "block"}], "base_setting": "diddy_colors", "custom_setting": "diddy_custom_color", "kong_index": 1},
+        {
+            "kong": "dk",
+            "palettes": [{"name": "base", "image": 3724, "fill_type": "block"}],
+            "base_setting": "dk_colors",
+            "custom_setting": "dk_custom_color",
+            "kong_index": 0,
+        },
+        {
+            "kong": "diddy",
+            "palettes": [{"name": "cap_shirt", "image": 3686, "fill_type": "block"}],
+            "base_setting": "diddy_colors",
+            "custom_setting": "diddy_custom_color",
+            "kong_index": 1,
+        },
         {
             "kong": "lanky",
-            "palettes": [{"name": "overalls", "image": 3689, "fill_type": "block"}, {"name": "patch", "image": 3734, "fill_type": "patch"}],
+            "palettes": [
+                {"name": "overalls", "image": 3689, "fill_type": "block"},
+                {"name": "patch", "image": 3734, "fill_type": "patch"},
+            ],
             "base_setting": "lanky_colors",
             "custom_setting": "lanky_custom_color",
             "kong_index": 2,
         },
-        {"kong": "tiny", "palettes": [{"name": "overalls", "image": 6014, "fill_type": "block"}], "base_setting": "tiny_colors", "custom_setting": "tiny_custom_color", "kong_index": 3},
+        {
+            "kong": "tiny",
+            "palettes": [{"name": "overalls", "image": 6014, "fill_type": "block"}],
+            "base_setting": "tiny_colors",
+            "custom_setting": "tiny_custom_color",
+            "kong_index": 3,
+        },
         {
             "kong": "chunky",
-            "palettes": [{"name": "shirt_back", "image": 3769, "fill_type": "checkered"}, {"name": "shirt_front", "image": 3687, "fill_type": "block"}],
+            "palettes": [
+                {"name": "shirt_back", "image": 3769, "fill_type": "checkered"},
+                {"name": "shirt_front", "image": 3687, "fill_type": "block"},
+            ],
             "base_setting": "chunky_colors",
             "custom_setting": "chunky_custom_color",
             "kong_index": 4,
         },
         {
             "kong": "disco_chunky",
-            "palettes": [{"name": "shirt", "image": 3777, "fill_type": "sparkle"}, {"name": "gloves", "image": 3778, "fill_type": "sparkle"}],
+            "palettes": [
+                {"name": "shirt", "image": 3777, "fill_type": "sparkle"},
+                {"name": "gloves", "image": 3778, "fill_type": "sparkle"},
+            ],
             "base_setting": "chunky_colors",
             "custom_setting": "chunky_custom_color",
             "kong_index": 4,
         },
-        {"kong": "rambi", "palettes": [{"name": "base", "image": 3826, "fill_type": "block"}], "base_setting": "rambi_colors", "custom_setting": "rambi_custom_color", "kong_index": 5},
-        {"kong": "enguarde", "palettes": [{"name": "base", "image": 3847, "fill_type": "block"}], "base_setting": "enguarde_colors", "custom_setting": "enguarde_custom_color", "kong_index": 6},
+        {
+            "kong": "rambi",
+            "palettes": [{"name": "base", "image": 3826, "fill_type": "block"}],
+            "base_setting": "rambi_colors",
+            "custom_setting": "rambi_custom_color",
+            "kong_index": 5,
+        },
+        {
+            "kong": "enguarde",
+            "palettes": [{"name": "base", "image": 3847, "fill_type": "block"}],
+            "base_setting": "enguarde_colors",
+            "custom_setting": "enguarde_custom_color",
+            "kong_index": 6,
+        },
     ]
 
     if js.document.getElementById("override_cosmetics").checked:
@@ -160,14 +199,13 @@ def apply_cosmetic_colors(spoiler: Spoiler):
                 process = False
         kong_names = ["dk", "diddy", "lanky", "tiny", "chunky"]
         is_krusha = False
-        if spoiler.settings.krusha_slot in kong_names:
-            if kong_names.index(spoiler.settings.krusha_slot) == kong["kong_index"]:
-                is_krusha = True
-                kong["palettes"] = [
-                    {"name": "krusha_skin", "image": 4971, "fill_type": "block"},
-                    {"name": "krusha_indicator", "image": 4966, "fill_type": "kong"},
-                ]
-                process = True
+        if spoiler.settings.krusha_slot in kong_names and kong_names.index(spoiler.settings.krusha_slot) == kong["kong_index"]:
+            is_krusha = True
+            kong["palettes"] = [
+                {"name": "krusha_skin", "image": 4971, "fill_type": "block"},
+                {"name": "krusha_indicator", "image": 4966, "fill_type": "kong"},
+            ]
+            process = True
         if process:
             base_obj = {"kong": kong["kong"], "zones": []}
             for palette in kong["palettes"]:
@@ -177,7 +215,14 @@ def apply_cosmetic_colors(spoiler: Spoiler):
                 elif palette["fill_type"] == "kong":
                     kong_colors = ["#ffd700", "#ff0000", "#1699ff", "#B045ff", "#41ff25"]
                     arr = [kong_colors[kong["kong_index"]]]
-                base_obj["zones"].append({"zone": palette["name"], "image": palette["image"], "fill_type": palette["fill_type"], "colors": arr})
+                base_obj["zones"].append(
+                    {
+                        "zone": palette["name"],
+                        "image": palette["image"],
+                        "fill_type": palette["fill_type"],
+                        "colors": arr,
+                    }
+                )
             if colors_dict[kong["base_setting"]] != "vanilla":
                 if colors_dict[kong["base_setting"]] == "randomized":
                     color = f"#{format(randint(0, 0xFFFFFF), '06x')}"
@@ -336,12 +381,7 @@ def overwrite_object_colors(spoiler: Spoiler):
         dk_single = getFile(7, file, False, 44, 44)
         dk_single = dk_single.resize((21, 21))
         for kong_index in range(5):
-            # file = 4120
-            # # Kasplat Hair
-            # hair_im = getFile(25, file, True, 32, 44)
-            # hair_im = maskImage(hair_im, kong_index, 0)
             writeColorToROM(color_bases[kong_index], 25, [4124, 4122, 4123, 4120, 4121][kong_index])
-            # writeColorImageToROM(hair_im, 25, [4124, 4122, 4123, 4120, 4121][kong_index], 32, 44)
             for file in range(152, 160):
                 # Single
                 single_im = getFile(7, file, False, 44, 44)
@@ -430,7 +470,7 @@ def placeKrushaHead(slot):
             if ((x % 2) + (y % 2)) == 0:
                 x32.extend([data_hi, data_lo])
                 x32_rgba32.extend(data_rgba32)
-        if len(x32) > 0 and len(x32_rgba32):
+        if len(x32) > 0 and x32_rgba32:
             y32.append(x32)
             y32_rgba32.append(x32_rgba32)
     y32.reverse()

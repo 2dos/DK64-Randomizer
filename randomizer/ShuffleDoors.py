@@ -5,7 +5,16 @@ from randomizer.Enums.Levels import Levels
 from randomizer.Enums.Regions import Regions
 from randomizer.Lists.DoorLocations import door_locations
 
-level_list = ["Jungle Japes", "Angry Aztec", "Frantic Factory", "Gloomy Galleon", "Fungi Forest", "Crystal Caves", "Creepy Castle", "Hideout Helm"]
+level_list = [
+    "Jungle Japes",
+    "Angry Aztec",
+    "Frantic Factory",
+    "Gloomy Galleon",
+    "Fungi Forest",
+    "Crystal Caves",
+    "Creepy Castle",
+    "Hideout Helm",
+]
 
 
 def ShuffleDoors(spoiler):
@@ -20,12 +29,10 @@ def ShuffleDoors(spoiler):
     for level in door_locations:
         for door in door_locations[level]:
             door.placed = door.default_placed
-            if spoiler.settings.wrinkly_location_rando:
-                if door.placed == "wrinkly":
-                    door.placed = "none"
-            if spoiler.settings.tns_location_rando:
-                if door.placed == "tns":
-                    door.placed = "none"
+            if spoiler.settings.wrinkly_location_rando and door.placed == "wrinkly":
+                door.placed = "none"
+            if spoiler.settings.tns_location_rando and door.placed == "tns":
+                door.placed = "none"
     # Assign Wrinkly Doors & T&S Portals
     for level in door_locations:
         shuffled_door_data[level] = []

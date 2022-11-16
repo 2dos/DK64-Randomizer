@@ -46,10 +46,8 @@ def place_door_locations(spoiler: Spoiler):
                         retain = False
                     if cont_map_id == Maps.CrystalCavesLobby and item_type in (0x35, 0xCE):
                         retain = False
-                if spoiler.settings.tns_location_rando:
-                    if cont_map_id != 0x2A:
-                        if item_type in (0x2AB, 0x2AC):
-                            retain = False
+                if spoiler.settings.tns_location_rando and cont_map_id != 0x2A and item_type in (0x2AB, 0x2AC):
+                    retain = False
                 if retain:
                     ROM().seek(item_start)
                     item_data = []
