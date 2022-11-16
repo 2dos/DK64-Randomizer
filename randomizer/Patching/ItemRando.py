@@ -219,7 +219,20 @@ def place_randomized_items(spoiler: Spoiler):
                         # 9 = Training Barrel
                         # 10 = Shockwave
                         # 11 = Nothing
-                        slots = [Types.Banana, Types.Blueprint, Types.Key, Types.Crown, Types.Coin, Types.Medal, Types.Shop, Types.Shop, Types.Shop, Types.TrainingBarrel, Types.Shockwave, None]
+                        slots = [
+                            Types.Banana,
+                            Types.Blueprint,
+                            Types.Key,
+                            Types.Crown,
+                            Types.Coin,
+                            Types.Medal,
+                            Types.Shop,
+                            Types.Shop,
+                            Types.Shop,
+                            Types.TrainingBarrel,
+                            Types.Shockwave,
+                            None,
+                        ]
                         offset = item.old_flag - 549
                         ROM().seek(0x1FF1080 + offset)
                         if item.new_item == Types.Shop:

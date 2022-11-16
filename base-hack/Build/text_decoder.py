@@ -238,7 +238,14 @@ def grabText(file_index: int) -> list:
                             _pos = int.from_bytes(fh.read(2), "big")
                             fh.seek(data_start + _block)
                             _dat = int.from_bytes(fh.read(4), "big")
-                            text_blocks.append({"type": "sprite", "position": _pos, "data": hex(_dat), "sprite": icon_db[(_dat >> 8) & 0xFF]})
+                            text_blocks.append(
+                                {
+                                    "type": "sprite",
+                                    "position": _pos,
+                                    "data": hex(_dat),
+                                    "sprite": icon_db[(_dat >> 8) & 0xFF],
+                                }
+                            )
                         added = block_start + 2 + offset + (4 * sec3ct) + 4
                 else:
                     fh.seek(data_start + block_start + offset + 1)
@@ -257,14 +264,31 @@ def grabText(file_index: int) -> list:
                             }
                         )
                     added = block_start + 2 + offset + (8 * sec3ct) + 4
-                blocks.append({"block_start": hex(block_start + data_start), "section2count": sec2ct, "section3count": sec3ct, "offset": offset, "text": text_blocks})
+                blocks.append(
+                    {
+                        "block_start": hex(block_start + data_start),
+                        "section2count": sec2ct,
+                        "section3count": sec3ct,
+                        "offset": offset,
+                        "text": text_blocks,
+                    }
+                )
                 block_start = added
             fh.seek(data_start)
             if added < data_start:
                 info = b""
             else:
                 info = fh.read(added - data_start)
-            text_data.append({"arr": info, "text": blocks, "section1count": section_1_count, "section2count": section_2_count, "section3count": section_3_count, "data_start": hex(data_start)})
+            text_data.append(
+                {
+                    "arr": info,
+                    "text": blocks,
+                    "section1count": section_1_count,
+                    "section2count": section_2_count,
+                    "section3count": section_3_count,
+                    "data_start": hex(data_start),
+                }
+            )
             text_start += added - data_start
             data_start += block_start
         for item in text_data:

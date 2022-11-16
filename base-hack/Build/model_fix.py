@@ -86,7 +86,12 @@ counter_adjustment_2 = """
 modifications = [
     {"model_index": 0, "model_file": "diddy_base.bin", "wipe": [[0x47D0, 0x4878]], "add": [diddy_fix]},
     {"model_index": 1, "model_file": "diddy_ins.bin", "wipe": [[0x4598, 0x4620]], "add": [diddy_fix]},
-    {"model_index": 5, "model_file": "lanky_base.bin", "wipe": [[0x5204, 0x5208], [0x541C, 0x5420], [0x56CC, 0x56D0]], "add": [lanky_fix5, lanky_fix5, lanky_fix5]},
+    {
+        "model_index": 5,
+        "model_file": "lanky_base.bin",
+        "wipe": [[0x5204, 0x5208], [0x541C, 0x5420], [0x56CC, 0x56D0]],
+        "add": [lanky_fix5, lanky_fix5, lanky_fix5],
+    },
     {
         "model_index": 6,
         "model_file": "lanky_ins.bin",
@@ -99,14 +104,46 @@ modifications = [
     {
         "model_index": 0xDA,
         "model_file": "krusha_base.bin",
-        "wipe": [[0x2E96, 0x2E98], [0x3A5E, 0x3A60], [0x3126, 0x3128], [0x354E, 0x3550], [0x37FE, 0x3800], [0x41E6, 0x41E8]],
-        "add": [krusha_adjustment_0, krusha_adjustment_0, krusha_adjustment_1, krusha_adjustment_1, krusha_adjustment_1, krusha_adjustment_1],
+        "wipe": [
+            [0x2E96, 0x2E98],
+            [0x3A5E, 0x3A60],
+            [0x3126, 0x3128],
+            [0x354E, 0x3550],
+            [0x37FE, 0x3800],
+            [0x41E6, 0x41E8],
+        ],
+        "add": [
+            krusha_adjustment_0,
+            krusha_adjustment_0,
+            krusha_adjustment_1,
+            krusha_adjustment_1,
+            krusha_adjustment_1,
+            krusha_adjustment_1,
+        ],
     },
     {
         "model_index": 0xA3,
         "model_file": "counter.bin",
-        "wipe": [[0x68, 0x6A], [0x78, 0x7A], [0x88, 0x8A], [0x98, 0x9A], [0xA8, 0xAA], [0xB8, 0xBA], [0xC8, 0xCA], [0xD8, 0xDA]],
-        "add": [counter_adjustment_0, counter_adjustment_1, counter_adjustment_1, counter_adjustment_0, counter_adjustment_2, counter_adjustment_2, counter_adjustment_0, counter_adjustment_0],
+        "wipe": [
+            [0x68, 0x6A],
+            [0x78, 0x7A],
+            [0x88, 0x8A],
+            [0x98, 0x9A],
+            [0xA8, 0xAA],
+            [0xB8, 0xBA],
+            [0xC8, 0xCA],
+            [0xD8, 0xDA],
+        ],
+        "add": [
+            counter_adjustment_0,
+            counter_adjustment_1,
+            counter_adjustment_1,
+            counter_adjustment_0,
+            counter_adjustment_2,
+            counter_adjustment_2,
+            counter_adjustment_0,
+            counter_adjustment_0,
+        ],
     },
 ]
 

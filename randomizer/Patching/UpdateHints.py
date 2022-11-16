@@ -90,7 +90,9 @@ def PushHints(spoiler):
             replacement_hint = "PLACEHOLDER HINT"
         hint_arr.append([replacement_hint.upper()])
     writeWrinklyHints(js.pointer_addresses[12]["entries"][41]["pointing_to"], hint_arr)
-    spoiler.hint_list.pop("First Time Talk")  # The FTT needs to be written to the ROM but should not be found in the spoiler log
+    spoiler.hint_list.pop(
+        "First Time Talk"
+    )  # The FTT needs to be written to the ROM but should not be found in the spoiler log
 
 
 def wipeHints():

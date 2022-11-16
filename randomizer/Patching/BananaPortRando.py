@@ -45,7 +45,16 @@ def randomize_bananaport(spoiler: Spoiler):
                         if warp.map_id == cont_map_id and warp.obj_id_vanilla == obj_id and warp.locked:
                             banned = True
                     if not banned:
-                        pad_vanilla[obj_id] = {"x": obj_x, "y": obj_y, "z": obj_z, "scale": obj_scale, "rx": obj_rotx, "ry": obj_roty, "rz": obj_rotz, "idx": x}
+                        pad_vanilla[obj_id] = {
+                            "x": obj_x,
+                            "y": obj_y,
+                            "z": obj_z,
+                            "scale": obj_scale,
+                            "rx": obj_rotx,
+                            "ry": obj_roty,
+                            "rz": obj_rotz,
+                            "idx": x,
+                        }
             for y in cont_map["pads"]:
                 warp_idx = y["warp_index"]
                 for assortment_index, warp_id in enumerate(y["warp_ids"]):
@@ -63,7 +72,9 @@ def randomize_bananaport(spoiler: Spoiler):
                                 vanilla_id = pad.obj_id_vanilla
                             pair_index += 1
                     if vanilla_id != -1:  # Found associated Warp
-                        if vanilla_id in pad_vanilla and warp_id in pad_vanilla:  # Search and reference warp in location dump
+                        if (
+                            vanilla_id in pad_vanilla and warp_id in pad_vanilla
+                        ):  # Search and reference warp in location dump
                             vanilla_idx = pad_vanilla[vanilla_id]["idx"]
                             start = cont_map_setup_address + (0x30 * vanilla_idx) + 4
                             ROM().seek(start)

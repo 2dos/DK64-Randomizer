@@ -94,23 +94,33 @@ ItemList = {
     Items.Oranges: Item("Oranges", True, Types.TrainingBarrel, Kongs.any, [MoveTypes.Flag, "orange", 388]),
     Items.Barrels: Item("Barrels", True, Types.TrainingBarrel, Kongs.any, [MoveTypes.Flag, "barrel", 389]),
     Items.ProgressiveSlam: Item("Progressive Slam", True, Types.Shop, Kongs.any, [MoveTypes.Slam, 2, -1]),
-    Items.ProgressiveDonkeyPotion: Item("Progressive Donkey Potion", True, Types.Shop, Kongs.donkey, [MoveTypes.Moves, 1, -1]),
+    Items.ProgressiveDonkeyPotion: Item(
+        "Progressive Donkey Potion", True, Types.Shop, Kongs.donkey, [MoveTypes.Moves, 1, -1]
+    ),
     Items.BaboonBlast: Item("Baboon Blast", True, Types.Shop, Kongs.donkey, [MoveTypes.Moves, 1, 0x8001]),
     Items.StrongKong: Item("Strong Kong", True, Types.Shop, Kongs.donkey, [MoveTypes.Moves, 2, 0x8002]),
     Items.GorillaGrab: Item("Gorilla Grab", True, Types.Shop, Kongs.donkey, [MoveTypes.Moves, 3, 0x8003]),
-    Items.ProgressiveDiddyPotion: Item("Progressive Diddy Potion", True, Types.Shop, Kongs.diddy, [MoveTypes.Moves, 1, -1]),
+    Items.ProgressiveDiddyPotion: Item(
+        "Progressive Diddy Potion", True, Types.Shop, Kongs.diddy, [MoveTypes.Moves, 1, -1]
+    ),
     Items.ChimpyCharge: Item("Chimpy Charge", True, Types.Shop, Kongs.diddy, [MoveTypes.Moves, 1, 0x9001]),
     Items.RocketbarrelBoost: Item("Rocketbarrel Boost", True, Types.Shop, Kongs.diddy, [MoveTypes.Moves, 2, 0x9002]),
     Items.SimianSpring: Item("Simian Spring", True, Types.Shop, Kongs.diddy, [MoveTypes.Moves, 3, 0x9003]),
-    Items.ProgressiveLankyPotion: Item("Progressive Lanky Potion", True, Types.Shop, Kongs.lanky, [MoveTypes.Moves, 1, -1]),
+    Items.ProgressiveLankyPotion: Item(
+        "Progressive Lanky Potion", True, Types.Shop, Kongs.lanky, [MoveTypes.Moves, 1, -1]
+    ),
     Items.Orangstand: Item("Orangstand", True, Types.Shop, Kongs.lanky, [MoveTypes.Moves, 1, 0xA001]),
     Items.BaboonBalloon: Item("Baboon Balloon", True, Types.Shop, Kongs.lanky, [MoveTypes.Moves, 2, 0xA002]),
     Items.OrangstandSprint: Item("Orangstand Sprint", True, Types.Shop, Kongs.lanky, [MoveTypes.Moves, 3, 0xA003]),
-    Items.ProgressiveTinyPotion: Item("Progressive Tiny Potion", True, Types.Shop, Kongs.tiny, [MoveTypes.Moves, 1, -1]),
+    Items.ProgressiveTinyPotion: Item(
+        "Progressive Tiny Potion", True, Types.Shop, Kongs.tiny, [MoveTypes.Moves, 1, -1]
+    ),
     Items.MiniMonkey: Item("Mini Monkey", True, Types.Shop, Kongs.tiny, [MoveTypes.Moves, 1, 0xB001]),
     Items.PonyTailTwirl: Item("Pony Tail Twirl", True, Types.Shop, Kongs.tiny, [MoveTypes.Moves, 2, 0xB002]),
     Items.Monkeyport: Item("Monkeyport", True, Types.Shop, Kongs.tiny, [MoveTypes.Moves, 3, 0xB003]),
-    Items.ProgressiveChunkyPotion: Item("Progressive Chunky Potion", True, Types.Shop, Kongs.chunky, [MoveTypes.Moves, 1, -1]),
+    Items.ProgressiveChunkyPotion: Item(
+        "Progressive Chunky Potion", True, Types.Shop, Kongs.chunky, [MoveTypes.Moves, 1, -1]
+    ),
     Items.HunkyChunky: Item("Hunky Chunky", True, Types.Shop, Kongs.chunky, [MoveTypes.Moves, 1, 0xC001]),
     Items.PrimatePunch: Item("Primate Punch", True, Types.Shop, Kongs.chunky, [MoveTypes.Moves, 2, 0xC002]),
     Items.GorillaGone: Item("Gorilla Gone", True, Types.Shop, Kongs.chunky, [MoveTypes.Moves, 3, 0xC003]),
@@ -127,7 +137,9 @@ ItemList = {
     Items.Trombone: Item("Trombone", True, Types.Shop, Kongs.lanky, [MoveTypes.Instruments, 1, 0xA401]),
     Items.Saxophone: Item("Saxophone", True, Types.Shop, Kongs.tiny, [MoveTypes.Instruments, 1, 0xB401]),
     Items.Triangle: Item("Triangle", True, Types.Shop, Kongs.chunky, [MoveTypes.Instruments, 1, 0xC401]),
-    Items.ProgressiveInstrumentUpgrade: Item("Progressive Instrument Upgrade", False, Types.Shop, Kongs.any, [MoveTypes.Instruments, 2, -1]),
+    Items.ProgressiveInstrumentUpgrade: Item(
+        "Progressive Instrument Upgrade", False, Types.Shop, Kongs.any, [MoveTypes.Instruments, 2, -1]
+    ),
     Items.Camera: Item("Fairy Camera", True, Types.Shockwave, Kongs.any, [MoveTypes.Flag, "camera", 0x2FD]),
     Items.Shockwave: Item("Shockwave", True, Types.Shockwave, Kongs.any, [MoveTypes.Flag, "shockwave", 377]),
     Items.CameraAndShockwave: Item(

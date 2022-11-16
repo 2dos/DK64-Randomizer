@@ -55,7 +55,13 @@ move_hints = [
         "funky": "THIS'LL BE THE PERFECT UPPER BODY WORKOUT!",
         "candy": "THIS DRINK WILL LET YOU MAKE USE OF THESE BIG LONG ARMS OF YOURS.",
     },
-    {"move": "Baboon Balloon", "kong": "Lanky", "cranky": "THE BUBBLES IN THIS POTION ARE HELIUM.", "funky": "THIS MAGIC POTION WILL BLOW YOU AWAY!", "candy": "THIS WILL GET YOU FEELING FLOATY!"},
+    {
+        "move": "Baboon Balloon",
+        "kong": "Lanky",
+        "cranky": "THE BUBBLES IN THIS POTION ARE HELIUM.",
+        "funky": "THIS MAGIC POTION WILL BLOW YOU AWAY!",
+        "candy": "THIS WILL GET YOU FEELING FLOATY!",
+    },
     {
         "move": "Orangstand Sprint",
         "kong": "Lanky",
@@ -476,7 +482,14 @@ writeText(
     "dk_text.bin",
     [
         [{"text": ["WHAT DID CRANKY MEAN ABOUT TRAINING? DONKEY ALL CONFUSED..."]}],
-        [{"text": ["AW NO! SO THAT WHAT CRANKY MEAN ABOUT REPTILE...", "DONKEY NOT BELIEVE IT. KING K.ROOL? WE FINISHED K. ROOL OFF IN LAST GAME!"]}],
+        [
+            {
+                "text": [
+                    "AW NO! SO THAT WHAT CRANKY MEAN ABOUT REPTILE...",
+                    "DONKEY NOT BELIEVE IT. KING K.ROOL? WE FINISHED K. ROOL OFF IN LAST GAME!",
+                ]
+            }
+        ],
         [
             {"text": ["OKAY!", "DONKEY IS FREE NOW. THANK YOU, MY FRIEND.", "DONKEY CAN COLLECT YELLOW BANANAS."]},
             {"text": ["dk_coloured_banana"]},
@@ -653,7 +666,9 @@ with open("src/randomizers/move_text.c", "w") as fh:
                 arr_item_type = "name_latin_struct"
                 divisor = 2
             fh.write(f"const {arr_item_type} {index_data[move_type]['arr_name']}[] = {{\n")
-            fg.write(f"extern const {arr_item_type} {index_data[move_type]['arr_name']}[{int(len(index_data[move_type]['indexes']) / divisor)}];\n")
+            fg.write(
+                f"extern const {arr_item_type} {index_data[move_type]['arr_name']}[{int(len(index_data[move_type]['indexes']) / divisor)}];\n"
+            )
             for item_index in range(int(len(index_data[move_type]["indexes"]) / divisor)):
                 if index_data[move_type]["has_latin"]:
                     fh.write("\t{\n")
@@ -669,7 +684,11 @@ writeText("move_names.bin", move_names_arr)
 move_explanations = [
     {
         "move": "dive_barrel",  # 0x24
-        "explanation": [{"text": ["PAY ATTENTION, ~. YOU AND ALL THE OTHER KONGS CAN NOW DIVE UNDERWATER. PRESS"]}, {"text": ["z_button"]}, {"text": ["TO SUBMERGE YOURSELF."]}],
+        "explanation": [
+            {"text": ["PAY ATTENTION, ~. YOU AND ALL THE OTHER KONGS CAN NOW DIVE UNDERWATER. PRESS"]},
+            {"text": ["z_button"]},
+            {"text": ["TO SUBMERGE YOURSELF."]},
+        ],
     },
     {
         "move": "orange_barrel",  # 0x25
@@ -683,12 +702,20 @@ move_explanations = [
     },
     {
         "move": "barrel_barrel",  # 0x26
-        "explanation": [{"text": ["PAY ATTENTION, ~. YOU AND ALL THE OTHER KONGS CAN NOW PICK UP OBJECTS. PRESS"]}, {"text": ["b_button"]}, {"text": ["TO GRAB AN OBJECT WITH RELATIVE EASE."]}],
+        "explanation": [
+            {"text": ["PAY ATTENTION, ~. YOU AND ALL THE OTHER KONGS CAN NOW PICK UP OBJECTS. PRESS"]},
+            {"text": ["b_button"]},
+            {"text": ["TO GRAB AN OBJECT WITH RELATIVE EASE."]},
+        ],
     },
     {
         "move": "vine_barrel",  # 0x27
         "explanation": [
-            {"text": ["PAY ATTENTION, ~. YOU AND ALL THE OTHER KONGS CAN NOW SWING ON VINES. JUMP TO GRAB ONTO THE VINE AND PRESS "]},
+            {
+                "text": [
+                    "PAY ATTENTION, ~. YOU AND ALL THE OTHER KONGS CAN NOW SWING ON VINES. JUMP TO GRAB ONTO THE VINE AND PRESS "
+                ]
+            },
             {"text": ["a_button"]},
             {"text": ["TO LAUNCH YOURSELF FROM IT."]},
         ],
@@ -696,7 +723,11 @@ move_explanations = [
     {
         "move": "camera_solo",  # 0x28
         "explanation": [
-            {"text": ["PAY ATTENTION, ~. YOU AND ALL THE OTHER KONGS CAN NOW USE A CAMERA TO SNAP BANANA FAIRIES. PRESS"]},
+            {
+                "text": [
+                    "PAY ATTENTION, ~. YOU AND ALL THE OTHER KONGS CAN NOW USE A CAMERA TO SNAP BANANA FAIRIES. PRESS"
+                ]
+            },
             {"text": ["z_button"]},
             {"text": ["THEN"]},
             {"text": ["c_down_button"]},
@@ -707,12 +738,24 @@ move_explanations = [
     },
     {
         "move": "shockwave_solo",  # 0x29
-        "explanation": [{"text": ["PAY ATTENTION, ~. YOU AND ALL THE OTHER KONGS CAN NOW RELEASE A SHOCKWAVE CHARGE. PRESS AND HOLD"]}, {"text": ["b_button"]}, {"text": ["TO CHARGE THE SHOCKWAVE."]}],
+        "explanation": [
+            {
+                "text": [
+                    "PAY ATTENTION, ~. YOU AND ALL THE OTHER KONGS CAN NOW RELEASE A SHOCKWAVE CHARGE. PRESS AND HOLD"
+                ]
+            },
+            {"text": ["b_button"]},
+            {"text": ["TO CHARGE THE SHOCKWAVE."]},
+        ],
     },
     {
         "move": "camera_shockwave_combo",  # 0x2A
         "explanation": [
-            {"text": ["PAY ATTENTION, ~. YOU AND ALL THE OTHER KONGS CAN NOW RELEASE A SHOCKWAVE CHARGE AND USE A CAMERA TO SNAP BANANA FAIRIES. PRESS AND HOLD"]},
+            {
+                "text": [
+                    "PAY ATTENTION, ~. YOU AND ALL THE OTHER KONGS CAN NOW RELEASE A SHOCKWAVE CHARGE AND USE A CAMERA TO SNAP BANANA FAIRIES. PRESS AND HOLD"
+                ]
+            },
             {"text": ["b_button"]},
             {"text": ["TO CHARGE THE SHOCKWAVE. PRESS "]},
             {"text": ["z_button"]},
@@ -724,7 +767,11 @@ move_explanations = [
     {
         "move": "generic_item",  # 0x2B
         "explanation": [
-            {"text": ["PAY ATTENTION, ~. THERE'S PLENTY MORE ITEMS TO GATHER IN THIS GAME. GET MOVING SO WE CAN DISPENSE OF K. ROOL"]},
+            {
+                "text": [
+                    "PAY ATTENTION, ~. THERE'S PLENTY MORE ITEMS TO GATHER IN THIS GAME. GET MOVING SO WE CAN DISPENSE OF K. ROOL"
+                ]
+            },
         ],
     },
 ]

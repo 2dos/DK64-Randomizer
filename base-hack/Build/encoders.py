@@ -83,14 +83,20 @@ def readStruct(byte_read: bytes, offset: int, struct_fields: list):
 
         # Actual reads
         if field["type"] == int:
-            decoded_struct[field["name"]] = int.from_bytes(byte_read[read_head : read_head + field["size"]], byteorder="big", signed=True)
+            decoded_struct[field["name"]] = int.from_bytes(
+                byte_read[read_head : read_head + field["size"]], byteorder="big", signed=True
+            )
         elif field["type"] == "uint":
-            decoded_struct[field["name"]] = int.from_bytes(byte_read[read_head : read_head + field["size"]], byteorder="big")
+            decoded_struct[field["name"]] = int.from_bytes(
+                byte_read[read_head : read_head + field["size"]], byteorder="big"
+            )
         elif field["type"] == float:
             field["size"] = 4
             decoded_struct[field["name"]] = struct.unpack(">f", byte_read[read_head : read_head + 4])[0]
         elif field["type"] == bool:
-            decoded_struct[field["name"]] = True if int.from_bytes(byte_read[read_head : read_head + field["size"]], byteorder="big") else False
+            decoded_struct[field["name"]] = (
+                True if int.from_bytes(byte_read[read_head : read_head + field["size"]], byteorder="big") else False
+            )
         elif field["type"] == bytes:
             decoded_struct[field["name"]] = byte_read[read_head : read_head + field["size"]].hex(" ").upper()
         else:
@@ -102,7 +108,9 @@ def readStruct(byte_read: bytes, offset: int, struct_fields: list):
                 index_offset = field["index_offset"]
 
             if decoded_struct[field["name"]] + index_offset < len(field["index_of"]):
-                decoded_struct[field["name"] + "_name"] = field["index_of"][decoded_struct[field["name"]] + index_offset]
+                decoded_struct[field["name"] + "_name"] = field["index_of"][
+                    decoded_struct[field["name"]] + index_offset
+                ]
             else:
                 decoded_struct[field["name"] + "_name"] = "Unknown " + hex(decoded_struct[field["name"]] + index_offset)
 
@@ -115,12 +123,16 @@ def readStruct(byte_read: bytes, offset: int, struct_fields: list):
     if dump_struct_debug_info:
         decoded_struct["DEBUG_File_Address"] = hex(offset)
         if "x_pos" in decoded_struct and "y_pos" in decoded_struct and "z_pos" in decoded_struct:
-            decoded_struct["DEBUG_Set_Position"] = ScriptHawkSetPosition(decoded_struct["x_pos"], decoded_struct["y_pos"], decoded_struct["z_pos"])
+            decoded_struct["DEBUG_Set_Position"] = ScriptHawkSetPosition(
+                decoded_struct["x_pos"], decoded_struct["y_pos"], decoded_struct["z_pos"]
+            )
 
     return decoded_struct
 
 
-def writeStructArray(fh: BinaryIO, struct_array: list, struct_fields: list, include_count: bool = False, count_bytes: int = 0):
+def writeStructArray(
+    fh: BinaryIO, struct_array: list, struct_fields: list, include_count: bool = False, count_bytes: int = 0
+):
     """Write the struct Array."""
     if include_count:
         fh.write(len(struct_array).to_bytes(count_bytes, byteorder="big"))
@@ -497,7 +509,9 @@ def decodeCharacterSpawners(decoded_filename: str, encoded_filename: str):
                 read_header += 2
 
                 if num_points > 0:
-                    fence_data["points_0x6"] = readStructArray(byte_read, read_header, num_points, character_spawner_point_0x6_struct)
+                    fence_data["points_0x6"] = readStructArray(
+                        byte_read, read_header, num_points, character_spawner_point_0x6_struct
+                    )
                     read_header += num_points * 0x6
 
                 # Points_0xA
@@ -505,10 +519,14 @@ def decodeCharacterSpawners(decoded_filename: str, encoded_filename: str):
                 read_header += 2
 
                 if num_points_0xA > 0:
-                    fence_data["points_0xA"] = readStructArray(byte_read, read_header, num_points_0xA, character_spawner_point_0xA_struct)
+                    fence_data["points_0xA"] = readStructArray(
+                        byte_read, read_header, num_points_0xA, character_spawner_point_0xA_struct
+                    )
                     read_header += num_points_0xA * 0xA
 
-                fence_data["unkFooter"] = byte_read[read_header : read_header + 0x4].hex(" ").upper()  # TODO: Break this down into smaller fields
+                fence_data["unkFooter"] = (
+                    byte_read[read_header : read_header + 0x4].hex(" ").upper()
+                )  # TODO: Break this down into smaller fields
                 read_header += 4
 
                 extract["fences"].append(fence_data)
@@ -533,7 +551,9 @@ def decodeCharacterSpawners(decoded_filename: str, encoded_filename: str):
                 if extra_count > 0:
                     spawner_data["extra_data"] = []
                     for j in range(extra_count):
-                        spawner_data["extra_data"].append(int.from_bytes(byte_read[read_header : read_header + 2], byteorder="big"))
+                        spawner_data["extra_data"].append(
+                            int.from_bytes(byte_read[read_header : read_header + 2], byteorder="big")
+                        )
                         read_header += 2
 
                 extract["character_spawners"].append(spawner_data)

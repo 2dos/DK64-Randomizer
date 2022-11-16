@@ -52,8 +52,12 @@ available_shops = {
     ],
     Levels.GloomyGalleon: [
         ShopLocation(Regions.CrankyGeneric, Maps.GloomyGalleon, Regions.GloomyGalleonStart, Regions.CrankyGalleon),
-        ShopLocation(Regions.CandyGeneric, Maps.GloomyGalleon, Regions.Shipyard, Regions.CandyGalleon, locked=True),  # Locked because on water
-        ShopLocation(Regions.FunkyGeneric, Maps.GloomyGalleon, Regions.Shipyard, Regions.FunkyGalleon, locked=True),  # Locked because on water
+        ShopLocation(
+            Regions.CandyGeneric, Maps.GloomyGalleon, Regions.Shipyard, Regions.CandyGalleon, locked=True
+        ),  # Locked because on water
+        ShopLocation(
+            Regions.FunkyGeneric, Maps.GloomyGalleon, Regions.Shipyard, Regions.FunkyGalleon, locked=True
+        ),  # Locked because on water
         ShopLocation(Regions.Snide, Maps.GloomyGalleon, Regions.LighthouseSnideAlcove, Regions.Snide),
     ],
     Levels.FungiForest: [

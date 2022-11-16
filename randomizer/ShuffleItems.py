@@ -122,7 +122,8 @@ def ShuffleItems(spoiler: Spoiler):
         item_location = LocationList[location_enum]
         # If location is a shuffled one...
         if (
-            item_location.default_mapid_data is not None or item_location.type in (Types.Shop, Types.TrainingBarrel, Types.Shockwave)
+            item_location.default_mapid_data is not None
+            or item_location.type in (Types.Shop, Types.TrainingBarrel, Types.Shockwave)
         ) and item_location.type in spoiler.settings.shuffled_location_types:
             # Create placement info for the patcher to use
             placement_info = {}

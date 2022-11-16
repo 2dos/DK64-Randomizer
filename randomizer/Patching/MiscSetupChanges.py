@@ -77,8 +77,14 @@ def pickChunkyCabinPadPositions():
                     pad = random.choice([[suggested_x, pad[1]], [pad[0], suggested_z]])
             # check if the pad is far inside and near the lamp radius (not in it, as that's what we fixed above)
             # top right has a Low X and Low Z coordinate, bottom left has a high X and High Z coordinate
-            is_far_inside_top_right = lamp_halfway_points[0][0] < pad[0] < center_of_room[0] and lamp_halfway_points[0][1] < pad[1] < center_of_room[1]
-            is_far_inside_bottom_left = center_of_room[0] < pad[0] < lamp_halfway_points[1][0] and center_of_room[1] < pad[1] < lamp_halfway_points[1][1]
+            is_far_inside_top_right = (
+                lamp_halfway_points[0][0] < pad[0] < center_of_room[0]
+                and lamp_halfway_points[0][1] < pad[1] < center_of_room[1]
+            )
+            is_far_inside_bottom_left = (
+                center_of_room[0] < pad[0] < lamp_halfway_points[1][0]
+                and center_of_room[1] < pad[1] < lamp_halfway_points[1][1]
+            )
             if is_far_inside_top_right or is_far_inside_bottom_left:
                 # flip the coordinates horizontally, this effectively moves the pad one quadrant clockwise
                 mirror_line = 294.594
@@ -245,7 +251,10 @@ def randomize_setup(spoiler: Spoiler):
                         ROM().seek(item_start + 0x1C)
                         ry = int.from_bytes(ROM().readBytes(4), "big")
                         positions.append([x, y, z, ry])
-                elif item_type == 0x235 and ((cont_map_id == Maps.GalleonBoss and spoiler.settings.hard_bosses) or (cont_map_id == Maps.HideoutHelm and spoiler.settings.puzzle_rando)):
+                elif item_type == 0x235 and (
+                    (cont_map_id == Maps.GalleonBoss and spoiler.settings.hard_bosses)
+                    or (cont_map_id == Maps.HideoutHelm and spoiler.settings.puzzle_rando)
+                ):
                     if cont_map_id == Maps.HideoutHelm:
                         star_donut_center = [1055.704, 3446.966]
                         star_donut_boundaries = [123.128, 235.971]
@@ -254,7 +263,9 @@ def randomize_setup(spoiler: Spoiler):
                         star_donut_center = [1216, 1478]
                         star_donut_boundaries = [200, 460]
                         star_height_boundaries = []
-                    star_pos = pickRandomPositionCircle(star_donut_center[0], star_donut_center[1], star_donut_boundaries[0], star_donut_boundaries[1])
+                    star_pos = pickRandomPositionCircle(
+                        star_donut_center[0], star_donut_center[1], star_donut_boundaries[0], star_donut_boundaries[1]
+                    )
                     star_a = random.uniform(0, 360)
                     if star_a == 360:
                         star_a = 0
@@ -275,7 +286,12 @@ def randomize_setup(spoiler: Spoiler):
                     for coord_i, coord in enumerate(new_gb_coords):
                         ROM().seek(item_start + (coord_i * 4))
                         ROM().writeMultipleBytes(int(float_to_hex(coord), 16), 4)
-                elif cont_map_id == Maps.FranticFactory and spoiler.settings.puzzle_rando and item_type >= 0xF4 and item_type <= 0x103:
+                elif (
+                    cont_map_id == Maps.FranticFactory
+                    and spoiler.settings.puzzle_rando
+                    and item_type >= 0xF4
+                    and item_type <= 0x103
+                ):
                     for subtype_item in number_gb_data:
                         for num_item in subtype_item["numbers"]:
                             if num_item["number"] == (item_type - 0xF3):
@@ -284,8 +300,12 @@ def randomize_setup(spoiler: Spoiler):
                                 x = int.from_bytes(ROM().readBytes(4), "big")
                                 y = int.from_bytes(ROM().readBytes(4), "big")
                                 z = int.from_bytes(ROM().readBytes(4), "big")
-                                number_replacement_data[subtype_name]["offsets"].append({"offset": item_start, "rotation": num_item["rot"], "number": item_type - 0xF3})
-                                number_replacement_data[subtype_name]["positions"].append({"coords": [x, y, z], "rotation": num_item["rot"]})
+                                number_replacement_data[subtype_name]["offsets"].append(
+                                    {"offset": item_start, "rotation": num_item["rot"], "number": item_type - 0xF3}
+                                )
+                                number_replacement_data[subtype_name]["positions"].append(
+                                    {"coords": [x, y, z], "rotation": num_item["rot"]}
+                                )
                 elif cont_map_id == Maps.ForestLankyMushroomsRoom and spoiler.settings.puzzle_rando:
                     if item_type >= 0x1BA and item_type <= 0x1BE:  # Mushrooms
                         spawner_pos = lanky_fungi_mush["picked"][lanky_fungi_mush["index"]]
@@ -300,11 +320,17 @@ def randomize_setup(spoiler: Spoiler):
                         ROM().writeMultipleBytes(int(float_to_hex(spawner_pos[0]), 16), 4)
                         ROM().seek(item_start + 8)
                         ROM().writeMultipleBytes(int(float_to_hex(spawner_pos[1]), 16), 4)
-                elif cont_map_id == Maps.AngryAztec and spoiler.settings.puzzle_rando and (item_type == 0x121 or (item_type >= 0x226 and item_type <= 0x228)):
+                elif (
+                    cont_map_id == Maps.AngryAztec
+                    and spoiler.settings.puzzle_rando
+                    and (item_type == 0x121 or (item_type >= 0x226 and item_type <= 0x228))
+                ):
                     # Is Vase Pad
                     ROM().seek(item_start)
                     for coord in range(3):
-                        ROM().writeMultipleBytes(int(float_to_hex(vase_puzzle_positions[vase_puzzle_rando_progress][coord]), 16), 4)
+                        ROM().writeMultipleBytes(
+                            int(float_to_hex(vase_puzzle_positions[vase_puzzle_rando_progress][coord]), 16), 4
+                        )
                     vase_puzzle_rando_progress += 1
                 elif cont_map_id == Maps.CavesChunkyCabin and spoiler.settings.puzzle_rando and item_type == 0x203:
                     spawner_pos = chunky_5dc_pads["picked"][chunky_5dc_pads["index"]]
@@ -361,10 +387,7 @@ def randomize_setup(spoiler: Spoiler):
                 actor_start = actor_block_start + 4 + (actor_item * 0x38)
                 ROM().seek(actor_start + 0x32)
                 actor_type = int.from_bytes(ROM().readBytes(2), "big") + 0x10
-                if (
-                    spoiler.settings.random_patches
-                    and not actor_type == 139
-                ):
+                if spoiler.settings.random_patches and not actor_type == 139:
                     byte_list = []
                     ROM().seek(actor_start + 0x34)
                     used_actor_ids.append(int.from_bytes(ROM().readBytes(2), "big"))
@@ -407,16 +430,28 @@ def randomize_setup(spoiler: Spoiler):
                 actor_start = actor_block_start + 4 + (actor_item * 0x38)
                 ROM().seek(actor_start + 0x32)
                 actor_type = int.from_bytes(ROM().readBytes(2), "big") + 0x10
-                if actor_type >= 100 and actor_type <= 105 and spoiler.settings.puzzle_rando and cont_map_id == Maps.CavesDiddyIgloo:  # 5DI Spawner
+                if (
+                    actor_type >= 100
+                    and actor_type <= 105
+                    and spoiler.settings.puzzle_rando
+                    and cont_map_id == Maps.CavesDiddyIgloo
+                ):  # 5DI Spawner
                     spawner_pos = diddy_5di_pads["picked"][diddy_5di_pads["index"]]
                     ROM().seek(actor_start)
                     ROM().writeMultipleBytes(int(float_to_hex(spawner_pos[0]), 16), 4)
                     ROM().seek(actor_start + 8)
                     ROM().writeMultipleBytes(int(float_to_hex(spawner_pos[1]), 16), 4)
                     diddy_5di_pads["index"] += 1
-                elif actor_type >= 64 and actor_type <= 66 and spoiler.settings.puzzle_rando and cont_map_id == Maps.AngryAztec:  # Exclude O Vase to force it to be vanilla
+                elif (
+                    actor_type >= 64
+                    and actor_type <= 66
+                    and spoiler.settings.puzzle_rando
+                    and cont_map_id == Maps.AngryAztec
+                ):  # Exclude O Vase to force it to be vanilla
                     # Vase
                     ROM().seek(actor_start)
                     for coord in range(3):
-                        ROM().writeMultipleBytes(int(float_to_hex(vase_puzzle_positions[vase_puzzle_rando_progress][coord]), 16), 4)
+                        ROM().writeMultipleBytes(
+                            int(float_to_hex(vase_puzzle_positions[vase_puzzle_rando_progress][coord]), 16), 4
+                        )
                     vase_puzzle_rando_progress += 1

@@ -61,10 +61,7 @@ with open("dk64-randomizer-base-dev.z64", "r+b") as fh:
                 fh.seek(dk_isles_lzs + start + 0x14)
                 lz_exit = int.from_bytes(fh.read(2), "big")
                 for y in cont_map["zones"]:
-                    if (
-                        lz_map == y["vanilla_map"]
-                        and lz_exit == y["vanilla_exit"]
-                    ):
+                    if lz_map == y["vanilla_map"] and lz_exit == y["vanilla_exit"]:
                         fh.seek(dk_isles_lzs + start + 0x12)
                         map_bytes = intToArr(y["new_map"], 2)
                         fh.write(bytearray(map_bytes))

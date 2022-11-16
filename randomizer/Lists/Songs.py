@@ -88,7 +88,9 @@ song_data = [
     Song("Frantic Factory (Crusher Room)", type=SongType.BGM, memory=0x100, channel=1),
     Song("Jungle Japes (Baboon Blast)", type=SongType.BGM, memory=0x100, channel=1),  # 50
     Song("Frantic Factory (R&D)", type=SongType.BGM, group=SongGroup.FranticFactory, memory=0x18A, channel=2),
-    Song("Frantic Factory (Production Room)", type=SongType.BGM, group=SongGroup.FranticFactory, memory=0x18A, channel=2),
+    Song(
+        "Frantic Factory (Production Room)", type=SongType.BGM, group=SongGroup.FranticFactory, memory=0x18A, channel=2
+    ),
     Song("Troff 'n' Scoff", type=SongType.BGM, memory=0x100, channel=1),
     Song("Boss Defeat", type=SongType.Event, memory=0x89A),
     Song("Angry Aztec (Baboon Blast)", type=SongType.BGM, memory=0x100, channel=1),  # 55
@@ -120,7 +122,9 @@ song_data = [
     Song("Fungi Forest (Dogadon)", type=SongType.BGM, memory=0x188, channel=2),
     Song("Mad Maze Maul", type=SongType.BGM, memory=0x188, channel=2),
     Song("Crystal Caves", type=SongType.BGM, group=SongGroup.CrystalCaves, memory=0x101, channel=1),
-    Song("Crystal Caves (Giant Kosha Tantrum)", type=SongType.BGM, group=SongGroup.CrystalCaves, memory=0x193, channel=3),
+    Song(
+        "Crystal Caves (Giant Kosha Tantrum)", type=SongType.BGM, group=SongGroup.CrystalCaves, memory=0x193, channel=3
+    ),
     Song("Nintendo Logo (Old?)", type=SongType.System, memory=0x102),  # 85
     Song("Success (Races)", type=SongType.Event, memory=0x118),
     Song("Failure (Races & Try Again)", type=SongType.Event, memory=0x118),

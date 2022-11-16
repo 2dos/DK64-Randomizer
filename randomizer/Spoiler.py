@@ -126,7 +126,9 @@ class Spoiler:
                 if color_item == "dk":
                     humanspoiler["Cosmetics"]["Colors and Models"]["DK Color"] = self.settings.colors[color_item]
                 else:
-                    humanspoiler["Cosmetics"]["Colors and Models"][f"{color_item.capitalize()} Color"] = self.settings.colors[color_item]
+                    humanspoiler["Cosmetics"]["Colors and Models"][
+                        f"{color_item.capitalize()} Color"
+                    ] = self.settings.colors[color_item]
             klap_models = {
                 0x19: "Beaver",
                 0x1E: "Klobber",
@@ -153,14 +155,27 @@ class Spoiler:
                 0xBD: "Rareware Logo",
             }
             if self.settings.klaptrap_model_index in klap_models:
-                humanspoiler["Cosmetics"]["Colors and Models"]["Klaptrap Model"] = klap_models[self.settings.klaptrap_model_index]
+                humanspoiler["Cosmetics"]["Colors and Models"]["Klaptrap Model"] = klap_models[
+                    self.settings.klaptrap_model_index
+                ]
             else:
-                humanspoiler["Cosmetics"]["Colors and Models"]["Klaptrap Model"] = f"Unknown Model {hex(self.settings.klaptrap_model_index)}"
+                humanspoiler["Cosmetics"]["Colors and Models"][
+                    "Klaptrap Model"
+                ] = f"Unknown Model {hex(self.settings.klaptrap_model_index)}"
 
         humanspoiler["Requirements"] = {}
         # GB Counts
         gb_counts = {}
-        level_list = ["Jungle Japes", "Angry Aztec", "Frantic Factory", "Gloomy Galleon", "Fungi Forest", "Crystal Caves", "Creepy Castle", "Hideout Helm"]
+        level_list = [
+            "Jungle Japes",
+            "Angry Aztec",
+            "Frantic Factory",
+            "Gloomy Galleon",
+            "Fungi Forest",
+            "Crystal Caves",
+            "Creepy Castle",
+            "Hideout Helm",
+        ]
         for level_index, amount in enumerate(self.settings.EntryGBs):
             gb_counts[level_list[level_index]] = amount
         humanspoiler["Requirements"]["B Locker GBs"] = gb_counts
@@ -172,14 +187,24 @@ class Spoiler:
         humanspoiler["Requirements"]["Miscellaneous"] = {}
         humanspoiler["Kongs"] = {}
         humanspoiler["Kongs"]["Starting Kong List"] = startKongList
-        humanspoiler["Kongs"]["Japes Kong Puzzle Solver"] = ItemList[ItemFromKong(self.settings.diddy_freeing_kong)].name
-        humanspoiler["Kongs"]["Tiny Temple Puzzle Solver"] = ItemList[ItemFromKong(self.settings.tiny_freeing_kong)].name
-        humanspoiler["Kongs"]["Llama Temple Puzzle Solver"] = ItemList[ItemFromKong(self.settings.lanky_freeing_kong)].name
-        humanspoiler["Kongs"]["Factory Kong Puzzle Solver"] = ItemList[ItemFromKong(self.settings.chunky_freeing_kong)].name
+        humanspoiler["Kongs"]["Japes Kong Puzzle Solver"] = ItemList[
+            ItemFromKong(self.settings.diddy_freeing_kong)
+        ].name
+        humanspoiler["Kongs"]["Tiny Temple Puzzle Solver"] = ItemList[
+            ItemFromKong(self.settings.tiny_freeing_kong)
+        ].name
+        humanspoiler["Kongs"]["Llama Temple Puzzle Solver"] = ItemList[
+            ItemFromKong(self.settings.lanky_freeing_kong)
+        ].name
+        humanspoiler["Kongs"]["Factory Kong Puzzle Solver"] = ItemList[
+            ItemFromKong(self.settings.chunky_freeing_kong)
+        ].name
         if self.settings.coin_door_open in ["need_both", "need_rw"]:
             humanspoiler["Requirements"]["Miscellaneous"]["Medal Requirement"] = self.settings.medal_requirement
         humanspoiler["End Game"] = {}
-        humanspoiler["End Game"]["Keys Required for K Rool"] = self.GetKroolKeysRequired(self.settings.krool_keys_required)
+        humanspoiler["End Game"]["Keys Required for K Rool"] = self.GetKroolKeysRequired(
+            self.settings.krool_keys_required
+        )
         krool_order = []
         for phase in self.settings.krool_order:
             krool_order.append(ItemList[ItemFromKong(phase)].name.capitalize())
@@ -359,19 +384,25 @@ class Spoiler:
                 "CastleBoss": "King Kut Out",
             }
             for i in range(7):
-                shuffled_bosses["".join(map(lambda x: x if x.islower() else " " + x, Levels(i).name)).strip()] = boss_names[Maps(self.settings.boss_maps[i]).name]
+                shuffled_bosses[
+                    "".join(map(lambda x: x if x.islower() else " " + x, Levels(i).name)).strip()
+                ] = boss_names[Maps(self.settings.boss_maps[i]).name]
             humanspoiler["Bosses"]["Shuffled Boss Order"] = shuffled_bosses
 
         humanspoiler["Bosses"]["King Kut Out Properties"] = {}
         if self.settings.boss_kong_rando:
             shuffled_boss_kongs = OrderedDict()
             for i in range(7):
-                shuffled_boss_kongs["".join(map(lambda x: x if x.islower() else " " + x, Levels(i).name)).strip()] = Kongs(self.settings.boss_kongs[i]).name.capitalize()
+                shuffled_boss_kongs[
+                    "".join(map(lambda x: x if x.islower() else " " + x, Levels(i).name)).strip()
+                ] = Kongs(self.settings.boss_kongs[i]).name.capitalize()
             humanspoiler["Bosses"]["Shuffled Boss Kongs"] = shuffled_boss_kongs
             kutout_order = ""
             for kong in self.settings.kutout_kongs:
                 kutout_order = kutout_order + Kongs(kong).name.capitalize() + ", "
-            humanspoiler["Bosses"]["King Kut Out Properties"]["Shuffled Kutout Kong Order"] = kutout_order.removesuffix(", ")
+            humanspoiler["Bosses"]["King Kut Out Properties"]["Shuffled Kutout Kong Order"] = kutout_order.removesuffix(
+                ", "
+            )
 
         if self.settings.hard_bosses:
             phase_names = []
@@ -425,7 +456,12 @@ class Spoiler:
             for level in self.shuffled_shop_locations:
                 level_name = "Unknown Level"
 
-                shop_dict = {Regions.CrankyGeneric: "Cranky", Regions.CandyGeneric: "Candy", Regions.FunkyGeneric: "Funky", Regions.Snide: "Snide"}
+                shop_dict = {
+                    Regions.CrankyGeneric: "Cranky",
+                    Regions.CandyGeneric: "Candy",
+                    Regions.FunkyGeneric: "Funky",
+                    Regions.Snide: "Snide",
+                }
                 if level in level_dict:
                     level_name = level_dict[level]
                 for shop in self.shuffled_shop_locations[level]:
@@ -540,14 +576,23 @@ class Spoiler:
         trainingGrounds = {"locked": startkong}
         self.shuffled_kong_placement["TrainingGrounds"] = trainingGrounds
         # Write additional starting kongs to empty cages, if any
-        emptyCages = [x for x in [Locations.DiddyKong, Locations.LankyKong, Locations.TinyKong, Locations.ChunkyKong] if x not in self.settings.kong_locations]
+        emptyCages = [
+            x
+            for x in [Locations.DiddyKong, Locations.LankyKong, Locations.TinyKong, Locations.ChunkyKong]
+            if x not in self.settings.kong_locations
+        ]
         for emptyCage in emptyCages:
             self.WriteKongPlacement(emptyCage, Items.NoItem)
 
         # Loop through locations and set necessary data
         for id, location in locations.items():
             # (There must be an item here) AND (It must not be a constant item expected to be here) AND (It must be in a location not handled by the full item rando shuffler)
-            if location.item is not None and location.item is not Items.NoItem and not location.constant and location.type not in self.settings.shuffled_location_types:
+            if (
+                location.item is not None
+                and location.item is not Items.NoItem
+                and not location.constant
+                and location.type not in self.settings.shuffled_location_types
+            ):
                 self.location_data[id] = location.item
                 if location.type == Types.Shop:
                     # Get indices from the location
@@ -576,7 +621,11 @@ class Spoiler:
                     # Moves that are set with a single flag (e.g. training barrels, shockwave) are handled differently
                     if move_type == MoveTypes.Flag:
                         for kong_index in kong_indices:
-                            self.move_data[0][shop_index][kong_index][level_index] = {"move_type": "flag", "flag": updated_item.flag, "price": price}
+                            self.move_data[0][shop_index][kong_index][level_index] = {
+                                "move_type": "flag",
+                                "flag": updated_item.flag,
+                                "price": price,
+                            }
                     # This is for every other move typically purchased in a shop
                     else:
                         move_level = updated_item.index - 1

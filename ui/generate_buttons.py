@@ -116,7 +116,9 @@ def lanky_file_changed(event):
 def generate_previous_seed(event):
     """Generate a seed from a previous seed file."""
     # Check if the rom filebox has a file loaded in it.
-    if len(str(js.document.getElementById("rom").value).strip()) == 0 or "is-valid" not in list(js.document.getElementById("rom").classList):
+    if len(str(js.document.getElementById("rom").value).strip()) == 0 or "is-valid" not in list(
+        js.document.getElementById("rom").classList
+    ):
         js.document.getElementById("rom").select()
         if "is-invalid" not in list(js.document.getElementById("rom").classList):
             js.document.getElementById("rom").classList.add("is-invalid")
@@ -131,7 +133,9 @@ def generate_previous_seed(event):
 def generate_seed_from_patch(event):
     """Generate a seed from a patch file."""
     # Check if the rom filebox has a file loaded in it.
-    if len(str(js.document.getElementById("rom").value).strip()) == 0 or "is-valid" not in list(js.document.getElementById("rom").classList):
+    if len(str(js.document.getElementById("rom").value).strip()) == 0 or "is-valid" not in list(
+        js.document.getElementById("rom").classList
+    ):
         js.document.getElementById("rom").select()
         if "is-invalid" not in list(js.document.getElementById("rom").classList):
             js.document.getElementById("rom").classList.add("is-invalid")
@@ -183,11 +187,7 @@ def serialize_settings():
                 form_data[obj.name] = obj.value
     # find all input boxes and verify their checked status
     for element in js.document.getElementsByTagName("input"):
-        if (
-            element.type == "checkbox"
-            and not element.checked
-            and not form_data.get(element.name)
-        ):
+        if element.type == "checkbox" and not element.checked and not form_data.get(element.name):
             form_data[element.name] = False
     # Re disable all previously disabled options
     for element in disabled_options:
@@ -211,7 +211,9 @@ def generate_seed(event):
         event (event): Javascript click event.
     """
     # Check if the rom filebox has a file loaded in it.
-    if len(str(js.document.getElementById("rom").value).strip()) == 0 or "is-valid" not in list(js.document.getElementById("rom").classList):
+    if len(str(js.document.getElementById("rom").value).strip()) == 0 or "is-valid" not in list(
+        js.document.getElementById("rom").classList
+    ):
         js.document.getElementById("rom").select()
         if "is-invalid" not in list(js.document.getElementById("rom").classList):
             js.document.getElementById("rom").classList.add("is-invalid")
@@ -223,7 +225,9 @@ def generate_seed(event):
         if not form_data.get("seed"):
             form_data["seed"] = str(random.randint(100000, 999999))
         js.apply_bps_javascript()
-        loop.run_until_complete(ProgressBar().update_progress(2, "Randomizing, this may take some time depending on settings."))
+        loop.run_until_complete(
+            ProgressBar().update_progress(2, "Randomizing, this may take some time depending on settings.")
+        )
         background(generate_playthrough, ["'''" + json.dumps(form_data) + "'''"], patching_response)
 
 

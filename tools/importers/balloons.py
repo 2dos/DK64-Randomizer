@@ -31,7 +31,9 @@ with open("import.csv", newline="") as csvfile:
                     "tiny": convertTruthiness(rowdata[26]),
                     "chunky": convertTruthiness(rowdata[27]),
                 }
-                dataset.append({"balloon": int(balloon), "map": map, "name": name, "speed": int(speed), "kongs": kongs, "path": []})
+                dataset.append(
+                    {"balloon": int(balloon), "map": map, "name": name, "speed": int(speed), "kongs": kongs, "path": []}
+                )
             if rowdata[19] != "":
                 newentry["order"] = int(rowdata[19])
                 newentry["x"] = int(float(rowdata[20]))

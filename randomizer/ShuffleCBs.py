@@ -23,7 +23,9 @@ import random
 
 max_balloons = 105
 max_singles = 780  # 793 Singles in Vanilla, under-representing this to help with the calculation formula
-max_bunches = 790 - max_balloons * 2 - round(max_singles / 5)  # 334 bunches in vanilla, biasing this for now to help with calculation formula
+max_bunches = (
+    790 - max_balloons * 2 - round(max_singles / 5)
+)  # 334 bunches in vanilla, biasing this for now to help with calculation formula
 
 level_data = {
     Levels.JungleJapes: {
@@ -88,28 +90,45 @@ def ShuffleCBs(spoiler: Spoiler):
         # Balloons
         # Pick random amount of balloons assigned to level
         balloons_left = max_balloons - total_balloons
-        balloon_lower = max(int(balloons_left / (7 - level_index)) - 3, 0)  # Select lower bound for randomization as max between 0, and balloons left distributed amongst the remaining levels minus 3
+        balloon_lower = max(
+            int(balloons_left / (7 - level_index)) - 3, 0
+        )  # Select lower bound for randomization as max between 0, and balloons left distributed amongst the remaining levels minus 3
         if global_divisor == 0:
             # Last Level
             balloon_upper = balloons_left
         else:
             balloon_upper = min(int(balloons_left / (7 - level_index)) + 3, int(balloons_left / global_divisor))
         balloon_lst = level_data[level]["balloons"].copy()
-        selected_balloon_count = min(random.randint(min(balloon_lower, balloon_upper), max(balloon_lower, balloon_upper)), len(balloon_lst))
+        selected_balloon_count = min(
+            random.randint(min(balloon_lower, balloon_upper), max(balloon_lower, balloon_upper)), len(balloon_lst)
+        )
         random.shuffle(balloon_lst)  # TODO: Maybe make this more advanced?
         placed_balloons = 0
         for balloon in balloon_lst:
             if placed_balloons < selected_balloon_count:
                 balloon_kongs = balloon.kongs.copy()
                 for kong in kong_specific_left:
-                    if kong_specific_left[kong] < 10 and kong in balloon_kongs:  # Not enough Colored Bananas to place a balloon:
+                    if (
+                        kong_specific_left[kong] < 10 and kong in balloon_kongs
+                    ):  # Not enough Colored Bananas to place a balloon:
                         balloon_kongs.remove(kong)  # Remove kong from permitted list
                 if len(balloon_kongs) > 0:  # Has a kong who can be assigned to this balloon
                     selected_kong = random.choice(balloon_kongs)
                     kong_specific_left[selected_kong] -= 10  # Remove CBs for Balloon
-                    level_placement.append({"id": balloon.id, "name": balloon.name, "kong": selected_kong, "level": level, "type": "balloons", "map": balloon.map})
+                    level_placement.append(
+                        {
+                            "id": balloon.id,
+                            "name": balloon.name,
+                            "kong": selected_kong,
+                            "level": level,
+                            "type": "balloons",
+                            "map": balloon.map,
+                        }
+                    )
                     placed_balloons += 1
-                    level_data[level]["logic"][balloon.region].append(Collectible(Collectibles.balloon, selected_kong, balloon.logic, None, 1))
+                    level_data[level]["logic"][balloon.region].append(
+                        Collectible(Collectibles.balloon, selected_kong, balloon.logic, None, 1)
+                    )
         # Model Two CBs
         bunches_left = max_bunches - total_bunches
         singles_left = max_singles - total_singles
@@ -117,7 +136,9 @@ def ShuffleCBs(spoiler: Spoiler):
         singles_lower = max(int(singles_left / (7 - level_index)) - 10, 0)
         if global_divisor == 0:
             bunches_upper = bunches_left
-            singles_upper = min(singles_left, int((5 * (1127 - total_bunches - total_singles) - sum(kong_specific_left)) / 4))  # Places a hard cap of 1127 total singles+bunches
+            singles_upper = min(
+                singles_left, int((5 * (1127 - total_bunches - total_singles) - sum(kong_specific_left)) / 4)
+            )  # Places a hard cap of 1127 total singles+bunches
         else:
             bunches_upper = min(int(bunches_left / (7 - level_index)) + 15, int(bunches_left / global_divisor))
             singles_upper = min(int(singles_left / (7 - level_index)) + 10, int(singles_left / global_divisor))
@@ -142,9 +163,17 @@ def ShuffleCBs(spoiler: Spoiler):
             for kong in kong_specific_left:
                 if kong in cb_kongs:
                     # If this kong doesn't have space for this group, remove it. Also if this kong is close to cap, don't use this kong unless it's the last one.
-                    if kong_specific_left[kong] < group_weight or (len(cb_kongs) > 1 and kong_specific_left[kong] <= 10 and (kong_specific_left[kong] - group_weight) > 0):
+                    if kong_specific_left[kong] < group_weight or (
+                        len(cb_kongs) > 1
+                        and kong_specific_left[kong] <= 10
+                        and (kong_specific_left[kong] - group_weight) > 0
+                    ):
                         cb_kongs.remove(kong)
-            if len(cb_kongs) > 0 and selected_single_count >= placed_singles + singles_in_group and selected_bunch_count >= placed_bunches + bunches_in_group:
+            if (
+                len(cb_kongs) > 0
+                and selected_single_count >= placed_singles + singles_in_group
+                and selected_bunch_count >= placed_bunches + bunches_in_group
+            ):
                 selected_kong = random.choice(cb_kongs)
                 kong_specific_left[selected_kong] -= group_weight  # Remove CBs for kong
                 # When a kong hits 0 remaining in this level, we no longer need to consider it
@@ -158,10 +187,24 @@ def ShuffleCBs(spoiler: Spoiler):
                         bunches_in_lesser_group += int(loc[0] == 5)
                         singles_in_lesser_group += int(loc[0] == 1)
                     if bunches_in_lesser_group > 0:
-                        level_data[level]["logic"][group.region].append(Collectible(Collectibles.bunch, selected_kong, group.logic, None, bunches_in_lesser_group))
+                        level_data[level]["logic"][group.region].append(
+                            Collectible(Collectibles.bunch, selected_kong, group.logic, None, bunches_in_lesser_group)
+                        )
                     if singles_in_lesser_group > 0:
-                        level_data[level]["logic"][group.region].append(Collectible(Collectibles.banana, selected_kong, group.logic, None, singles_in_lesser_group))
-                    level_placement.append({"group": group.group, "name": group.name, "kong": selected_kong, "level": level, "type": "cb", "map": group.map, "locations": group.locations})
+                        level_data[level]["logic"][group.region].append(
+                            Collectible(Collectibles.banana, selected_kong, group.logic, None, singles_in_lesser_group)
+                        )
+                    level_placement.append(
+                        {
+                            "group": group.group,
+                            "name": group.name,
+                            "kong": selected_kong,
+                            "level": level,
+                            "type": "cb",
+                            "map": group.map,
+                            "locations": group.locations,
+                        }
+                    )
                 placed_bunches += bunches_in_group
                 placed_singles += singles_in_group
             # If all kongs have 0 unplaced, we're done here

@@ -37,7 +37,11 @@ def ShuffleBarrels(settings: Settings, barrelLocations, minigamePool):
         for minigame in minigamePool:
             BarrelMetaData[location].minigame = minigame
             # If there is a minigame that can be placed in Helm, skip banned minigames, otherwise continue as normal
-            if not MinigameRequirements[minigame].helm_enabled and BarrelMetaData[location].map == Maps.HideoutHelm and helm is True:
+            if (
+                not MinigameRequirements[minigame].helm_enabled
+                and BarrelMetaData[location].map == Maps.HideoutHelm
+                and helm is True
+            ):
                 continue
             # If world is still valid, keep minigame associated there
             if settings.bonus_barrels != "selected":
@@ -76,21 +80,87 @@ def BarrelShuffle(settings: Settings):
     barrelLocations = list(BarrelMetaData.keys())
     if settings.bonus_barrels == "selected":
         minigame_dict = {
-            "batty_barrel_bandit": [Minigames.BattyBarrelBanditVEasy, Minigames.BattyBarrelBanditEasy, Minigames.BattyBarrelBanditNormal, Minigames.BattyBarrelBanditHard],
-            "big_bug_bash": [Minigames.BigBugBashVEasy, Minigames.BigBugBashEasy, Minigames.BigBugBashNormal, Minigames.BigBugBashHard],
-            "busy_barrel_barrage": [Minigames.BusyBarrelBarrageEasy, Minigames.BusyBarrelBarrageNormal, Minigames.BusyBarrelBarrageHard],
-            "mad_maze_maul": [Minigames.MadMazeMaulEasy, Minigames.MadMazeMaulNormal, Minigames.MadMazeMaulHard, Minigames.MadMazeMaulInsane],
-            "minecart_mayhem": [Minigames.MinecartMayhemEasy, Minigames.MinecartMayhemNormal, Minigames.MinecartMayhemHard],
+            "batty_barrel_bandit": [
+                Minigames.BattyBarrelBanditVEasy,
+                Minigames.BattyBarrelBanditEasy,
+                Minigames.BattyBarrelBanditNormal,
+                Minigames.BattyBarrelBanditHard,
+            ],
+            "big_bug_bash": [
+                Minigames.BigBugBashVEasy,
+                Minigames.BigBugBashEasy,
+                Minigames.BigBugBashNormal,
+                Minigames.BigBugBashHard,
+            ],
+            "busy_barrel_barrage": [
+                Minigames.BusyBarrelBarrageEasy,
+                Minigames.BusyBarrelBarrageNormal,
+                Minigames.BusyBarrelBarrageHard,
+            ],
+            "mad_maze_maul": [
+                Minigames.MadMazeMaulEasy,
+                Minigames.MadMazeMaulNormal,
+                Minigames.MadMazeMaulHard,
+                Minigames.MadMazeMaulInsane,
+            ],
+            "minecart_mayhem": [
+                Minigames.MinecartMayhemEasy,
+                Minigames.MinecartMayhemNormal,
+                Minigames.MinecartMayhemHard,
+            ],
             "beaver_bother": [Minigames.BeaverBotherEasy, Minigames.BeaverBotherNormal, Minigames.BeaverBotherHard],
-            "teetering_turtle_trouble": [Minigames.TeeteringTurtleTroubleVEasy, Minigames.TeeteringTurtleTroubleEasy, Minigames.TeeteringTurtleTroubleNormal, Minigames.TeeteringTurtleTroubleHard],
-            "stealthy_snoop": [Minigames.StealthySnoopVEasy, Minigames.StealthySnoopEasy, Minigames.StealthySnoopNormal, Minigames.StealthySnoopHard],
-            "stash_snatch": [Minigames.StashSnatchEasy, Minigames.StashSnatchNormal, Minigames.StashSnatchHard, Minigames.StashSnatchInsane],
-            "splish_splash_salvage": [Minigames.SplishSplashSalvageEasy, Minigames.SplishSplashSalvageNormal, Minigames.SplishSplashSalvageHard],
-            "speedy_swing_sortie": [Minigames.SpeedySwingSortieEasy, Minigames.SpeedySwingSortieNormal, Minigames.SpeedySwingSortieHard],
-            "krazy_kong_klamour": [Minigames.KrazyKongKlamourEasy, Minigames.KrazyKongKlamourNormal, Minigames.KrazyKongKlamourHard, Minigames.KrazyKongKlamourInsane],
-            "searchlight_seek": [Minigames.SearchlightSeekVEasy, Minigames.SearchlightSeekEasy, Minigames.SearchlightSeekNormal, Minigames.SearchlightSeekHard],
-            "kremling_kosh": [Minigames.KremlingKoshVEasy, Minigames.KremlingKoshEasy, Minigames.KremlingKoshNormal, Minigames.KremlingKoshHard],
-            "peril_path_panic": [Minigames.PerilPathPanicVEasy, Minigames.PerilPathPanicEasy, Minigames.PerilPathPanicNormal, Minigames.PerilPathPanicHard],
+            "teetering_turtle_trouble": [
+                Minigames.TeeteringTurtleTroubleVEasy,
+                Minigames.TeeteringTurtleTroubleEasy,
+                Minigames.TeeteringTurtleTroubleNormal,
+                Minigames.TeeteringTurtleTroubleHard,
+            ],
+            "stealthy_snoop": [
+                Minigames.StealthySnoopVEasy,
+                Minigames.StealthySnoopEasy,
+                Minigames.StealthySnoopNormal,
+                Minigames.StealthySnoopHard,
+            ],
+            "stash_snatch": [
+                Minigames.StashSnatchEasy,
+                Minigames.StashSnatchNormal,
+                Minigames.StashSnatchHard,
+                Minigames.StashSnatchInsane,
+            ],
+            "splish_splash_salvage": [
+                Minigames.SplishSplashSalvageEasy,
+                Minigames.SplishSplashSalvageNormal,
+                Minigames.SplishSplashSalvageHard,
+            ],
+            "speedy_swing_sortie": [
+                Minigames.SpeedySwingSortieEasy,
+                Minigames.SpeedySwingSortieNormal,
+                Minigames.SpeedySwingSortieHard,
+            ],
+            "krazy_kong_klamour": [
+                Minigames.KrazyKongKlamourEasy,
+                Minigames.KrazyKongKlamourNormal,
+                Minigames.KrazyKongKlamourHard,
+                Minigames.KrazyKongKlamourInsane,
+            ],
+            "searchlight_seek": [
+                Minigames.SearchlightSeekVEasy,
+                Minigames.SearchlightSeekEasy,
+                Minigames.SearchlightSeekNormal,
+                Minigames.SearchlightSeekHard,
+            ],
+            "kremling_kosh": [
+                Minigames.KremlingKoshVEasy,
+                Minigames.KremlingKoshEasy,
+                Minigames.KremlingKoshNormal,
+                Minigames.KremlingKoshHard,
+            ],
+            "peril_path_panic": [
+                Minigames.PerilPathPanicVEasy,
+                Minigames.PerilPathPanicEasy,
+                Minigames.PerilPathPanicNormal,
+                Minigames.PerilPathPanicHard,
+            ],
             "helm_minigames": [
                 Minigames.DonkeyRambi,
                 Minigames.DonkeyTarget,

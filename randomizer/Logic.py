@@ -284,9 +284,19 @@ class LogicVarHolder:
         self.HelmChunky1 = self.HelmChunky1 or Items.HelmChunky1 in ownedItems
         self.HelmChunky2 = self.HelmChunky2 or Items.HelmChunky2 in ownedItems
 
-        self.Slam = 3 if self.settings.unlock_all_moves else sum(1 for x in ownedItems if x == Items.ProgressiveSlam) + STARTING_SLAM
-        self.AmmoBelts = 2 if self.settings.unlock_all_moves else sum(1 for x in ownedItems if x == Items.ProgressiveAmmoBelt)
-        self.InstUpgrades = 3 if self.settings.unlock_all_moves else sum(1 for x in ownedItems if x == Items.ProgressiveInstrumentUpgrade)
+        self.Slam = (
+            3
+            if self.settings.unlock_all_moves
+            else sum(1 for x in ownedItems if x == Items.ProgressiveSlam) + STARTING_SLAM
+        )
+        self.AmmoBelts = (
+            2 if self.settings.unlock_all_moves else sum(1 for x in ownedItems if x == Items.ProgressiveAmmoBelt)
+        )
+        self.InstUpgrades = (
+            3
+            if self.settings.unlock_all_moves
+            else sum(1 for x in ownedItems if x == Items.ProgressiveInstrumentUpgrade)
+        )
 
         self.GoldenBananas = sum(1 for x in ownedItems if x == Items.GoldenBanana)
         self.BananaFairies = sum(1 for x in ownedItems if x == Items.BananaFairy)
@@ -381,7 +391,13 @@ class LogicVarHolder:
         elif kong == Kongs.chunky:
             return self.pineapple and self.ischunky
         elif kong == Kongs.any:
-            return (self.coconut and self.isdonkey) or (self.peanut and self.isdiddy) or (self.grape and self.islanky) or (self.feather and self.istiny) or (self.pineapple and self.ischunky)
+            return (
+                (self.coconut and self.isdonkey)
+                or (self.peanut and self.isdiddy)
+                or (self.grape and self.islanky)
+                or (self.feather and self.istiny)
+                or (self.pineapple and self.ischunky)
+            )
         return False
 
     def HasInstrument(self, kong):
@@ -397,7 +413,13 @@ class LogicVarHolder:
         if kong == Kongs.chunky:
             return self.triangle and self.ischunky
         if kong == Kongs.any:
-            return (self.bongos and self.isdonkey) or (self.guitar and self.isdiddy) or (self.trombone and self.islanky) or (self.saxophone and self.istiny) or (self.triangle and self.ischunky)
+            return (
+                (self.bongos and self.isdonkey)
+                or (self.guitar and self.isdiddy)
+                or (self.trombone and self.islanky)
+                or (self.saxophone and self.istiny)
+                or (self.triangle and self.ischunky)
+            )
 
     def CanFreeDiddy(self):
         """Check if the cage locking Diddy's vanilla location can be opened."""
@@ -408,11 +430,19 @@ class LogicVarHolder:
         caged_item_id = LocationList[Locations.JapesDonkeyFreeDiddy].item
         if caged_item_id == Items.NoItem:
             return True
-        return self.CanFreeDiddy() and (  # Otherwise you need to be able to open Diddy's cage and be able to pick up the item
-            caged_item_id is None  # During the fill, this will be None so we need to assume we'll have to be able to free Diddy
-            or (ItemList[caged_item_id].type == Types.Blueprint and self.BlueprintAccess(ItemList[caged_item_id]))  # If it's a blueprint, check for blueprint access (this checks blueprint free trade)
-            or (ItemList[caged_item_id].type != Types.Blueprint and self.settings.free_trade_items)  # If it's not a blueprint, check for non-blueprint free trade
-            or self.IsKong(self.settings.diddy_freeing_kong)  # Otherwise you need to be the right Kong
+        return (
+            self.CanFreeDiddy()
+            and (  # Otherwise you need to be able to open Diddy's cage and be able to pick up the item
+                caged_item_id
+                is None  # During the fill, this will be None so we need to assume we'll have to be able to free Diddy
+                or (
+                    ItemList[caged_item_id].type == Types.Blueprint and self.BlueprintAccess(ItemList[caged_item_id])
+                )  # If it's a blueprint, check for blueprint access (this checks blueprint free trade)
+                or (
+                    ItemList[caged_item_id].type != Types.Blueprint and self.settings.free_trade_items
+                )  # If it's not a blueprint, check for non-blueprint free trade
+                or self.IsKong(self.settings.diddy_freeing_kong)  # Otherwise you need to be the right Kong
+            )
         )
 
     def CanFreeTiny(self):
@@ -431,7 +461,11 @@ class LogicVarHolder:
 
     def CanFreeLanky(self):
         """Check if kong at Lanky location can be freed, requires freeing kong to have its gun and instrument."""
-        return self.swim and self.HasGun(self.settings.lanky_freeing_kong) and self.HasInstrument(self.settings.lanky_freeing_kong)
+        return (
+            self.swim
+            and self.HasGun(self.settings.lanky_freeing_kong)
+            and self.HasInstrument(self.settings.lanky_freeing_kong)
+        )
 
     def CanFreeChunky(self):
         """Check if kong at Chunky location can be freed."""
@@ -494,7 +528,9 @@ class LogicVarHolder:
         """Purchase items from shops and subtract price from logical coin counts."""
         location = LocationList[location_id]
         if location.item is not None and location.item is not Items.NoItem:
-            price = GetPriceAtLocation(self.settings, location_id, location, self.Slam, self.AmmoBelts, self.InstUpgrades)
+            price = GetPriceAtLocation(
+                self.settings, location_id, location, self.Slam, self.AmmoBelts, self.InstUpgrades
+            )
             if price is None:  # This probably shouldn't happen but I think it's harmless
                 return  # TODO: solve this
             # print("BuyShopItem for location: " + location.name)
@@ -551,7 +587,11 @@ class LogicVarHolder:
 
     def HasEnoughKongs(self, level, forPreviousLevel=False):
         """Check if kongs are required for progression, do we have enough to reach the given level."""
-        if self.settings.kongs_for_progression and level != Levels.HideoutHelm and not self.settings.hard_level_progression:
+        if (
+            self.settings.kongs_for_progression
+            and level != Levels.HideoutHelm
+            and not self.settings.hard_level_progression
+        ):
             # Figure out where this level fits in the progression
             levelIndex = GetShuffledLevelIndex(level)
             if forPreviousLevel:
@@ -583,7 +623,10 @@ class LogicVarHolder:
         # Later levels can have some special requirements
         # "pathMode" is so WotH paths can always enter levels regardless of owned items
         if not self.pathMode and level >= 3:
-            level_order_matters = not self.settings.hard_level_progression and self.settings.shuffle_loading_zones in ("none", "levels")
+            level_order_matters = not self.settings.hard_level_progression and self.settings.shuffle_loading_zones in (
+                "none",
+                "levels",
+            )
             # If level order matters...
             if level_order_matters:
                 # Require barrels by level 3 to prevent boss barrel fill failures
@@ -596,7 +639,10 @@ class LogicVarHolder:
 
     def WinConditionMet(self):
         """Check if the current game state has met the win condition."""
-        if self.settings.win_condition in ("beat_krool", "poke_snap"):  # Photo taking doesn't have a clear wincon so this'll do until something better is concocted
+        if self.settings.win_condition in (
+            "beat_krool",
+            "poke_snap",
+        ):  # Photo taking doesn't have a clear wincon so this'll do until something better is concocted
             return Events.KRoolDefeated in self.Events
         elif self.settings.win_condition == "get_key8":
             return self.HelmKey

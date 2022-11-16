@@ -234,7 +234,16 @@ def MedalAssumedItems():
 
 def Keys():
     """Return all key items."""
-    return [Items.JungleJapesKey, Items.AngryAztecKey, Items.FranticFactoryKey, Items.GloomyGalleonKey, Items.FungiForestKey, Items.CrystalCavesKey, Items.CreepyCastleKey, Items.HideoutHelmKey]
+    return [
+        Items.JungleJapesKey,
+        Items.AngryAztecKey,
+        Items.FranticFactoryKey,
+        Items.GloomyGalleonKey,
+        Items.FungiForestKey,
+        Items.CrystalCavesKey,
+        Items.CreepyCastleKey,
+        Items.HideoutHelmKey,
+    ]
 
 
 def Kongs(settings):
@@ -352,7 +361,9 @@ def CompanyCoinItems():
 def GoldenBananaItems():
     """Return a list of GBs to be placed."""
     itemPool = []
-    itemPool.extend(itertools.repeat(Items.GoldenBanana, 161))  # 40 Blueprint GBs are always already placed (see Types.BlueprintBanana)
+    itemPool.extend(
+        itertools.repeat(Items.GoldenBanana, 161)
+    )  # 40 Blueprint GBs are always already placed (see Types.BlueprintBanana)
     return itemPool
 
 
@@ -376,5 +387,11 @@ LankyMoves = [Items.Grape, Items.Trombone, Items.Orangstand, Items.BaboonBalloon
 TinyMoves = [Items.Feather, Items.Saxophone, Items.MiniMonkey, Items.PonyTailTwirl, Items.Monkeyport]
 ChunkyMoves = [Items.Pineapple, Items.Triangle, Items.HunkyChunky, Items.PrimatePunch, Items.GorillaGone]
 ImportantSharedMoves = [Items.ProgressiveSlam, Items.ProgressiveSlam, Items.SniperSight, Items.HomingAmmo]
-JunkSharedMoves = [Items.ProgressiveAmmoBelt, Items.ProgressiveAmmoBelt, Items.ProgressiveInstrumentUpgrade, Items.ProgressiveInstrumentUpgrade, Items.ProgressiveInstrumentUpgrade]
+JunkSharedMoves = [
+    Items.ProgressiveAmmoBelt,
+    Items.ProgressiveAmmoBelt,
+    Items.ProgressiveInstrumentUpgrade,
+    Items.ProgressiveInstrumentUpgrade,
+    Items.ProgressiveInstrumentUpgrade,
+]
 ProgressiveSharedMovesSet = {Items.ProgressiveAmmoBelt, Items.ProgressiveInstrumentUpgrade, Items.ProgressiveSlam}

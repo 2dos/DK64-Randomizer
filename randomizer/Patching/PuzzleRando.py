@@ -34,9 +34,18 @@ def randomize_puzzles(spoiler: Spoiler):
         coin_req_info = [
             {"offset": 0x13C, "coins": random.randint(10, 50)},  # Caves Beetle
             {"offset": 0x13D, "coins": random.randint(20, 50)},  # Aztec Beetle
-            {"offset": 0x13E, "coins": random.randint(race_requirements["factory_race"][0], race_requirements["factory_race"][1])},  # Factory Car
-            {"offset": 0x13F, "coins": random.randint(race_requirements["seal_race"][0], race_requirements["seal_race"][1])},  # Seal Race
-            {"offset": 0x140, "coins": random.randint(race_requirements["castle_race"][0], race_requirements["castle_race"][1])},  # Castle Car
+            {
+                "offset": 0x13E,
+                "coins": random.randint(race_requirements["factory_race"][0], race_requirements["factory_race"][1]),
+            },  # Factory Car
+            {
+                "offset": 0x13F,
+                "coins": random.randint(race_requirements["seal_race"][0], race_requirements["seal_race"][1]),
+            },  # Seal Race
+            {
+                "offset": 0x140,
+                "coins": random.randint(race_requirements["castle_race"][0], race_requirements["castle_race"][1]),
+            },  # Castle Car
             {"offset": 0x141, "coins": random.randint(40, 70)},  # Japes Cart
             {"offset": 0x142, "coins": random.randint(25, 55)},  # Fungi Cart
             {"offset": 0x143, "coins": random.randint(5, 45)},  # Castle Cart
@@ -59,11 +68,15 @@ def randomize_puzzles(spoiler: Spoiler):
         for face_puzzle_square in range(9):
             ROM().seek(sav + 0x17E + face_puzzle_square)  # DK Face Puzzle
             if face_puzzle_square == 8:
-                ROM().writeMultipleBytes(random.choice([0, 1, 3]), 1)  # Lanky for this square glitches out the puzzle. Nice going Loser kong
+                ROM().writeMultipleBytes(
+                    random.choice([0, 1, 3]), 1
+                )  # Lanky for this square glitches out the puzzle. Nice going Loser kong
             else:
                 ROM().writeMultipleBytes(random.randint(0, 3), 1)
             ROM().seek(sav + 0x187 + face_puzzle_square)  # Chunky Face Puzzle
             if face_puzzle_square == 2:
-                ROM().writeMultipleBytes(random.choice([0, 1, 3]), 1)  # Lanky for this square glitches out the puzzle. Nice going Loser kong again
+                ROM().writeMultipleBytes(
+                    random.choice([0, 1, 3]), 1
+                )  # Lanky for this square glitches out the puzzle. Nice going Loser kong again
             else:
                 ROM().writeMultipleBytes(random.randint(0, 3), 1)
