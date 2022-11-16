@@ -166,7 +166,7 @@ def GetAccessibleLocations(settings, startingOwnedItems, searchType=SearchMode.G
                     if event.name == Events.Night and event.logic(LogicVariables):
                         region.nightAccess = True
                 # Check accessibility for collectibles
-                if region.id in Logic.CollectibleRegions.keys():
+                if region.id in Logic.CollectibleRegions:
                     for collectible in Logic.CollectibleRegions[region.id]:
                         if not collectible.added and collectible.kong in (kong, Kongs.any) and collectible.logic(LogicVariables) and collectible.enabled:
                             LogicVariables.AddCollectible(collectible, region.level)
@@ -588,7 +588,7 @@ def CalculateFoolish(spoiler, WothLocations):
         nonHintableNames.add("Jetpac Game")  # If this is vanilla, it's never useful to hint
     # In order for a region to be foolish, it can contain none of these Major Items
     for id, region in RegionList.items():
-        locations = [loc for loc in region.locations if loc.id in LocationList.keys()]
+        locations = [loc for loc in region.locations if loc.id in LocationList]
         # If this region DOES contain a major item, add it the name to the set of non-hintable hint regions
         if any(loc for loc in locations if LocationList[loc.id].item in majorItems):
             nonHintableNames.add(region.hint_name)
@@ -1932,7 +1932,7 @@ def SetNewProgressionRequirementsUnordered(settings: Settings):
             # We should have access to everything by this point
             settings.BossBananas[bossLocation.level] = initialTNS[bossLocation.level]
         # For any level we haven't lowered yet, assume we own everything
-        if bossLocation.level not in ownedKongs.keys():
+        if bossLocation.level not in ownedKongs:
             ownedKongs[bossLocation.level] = [Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky]
             ownedMoves[bossLocation.level] = allMoves
         # If boss rewards could be anything, we have to make sure they're accessible independent of all else
@@ -2173,7 +2173,7 @@ def ShuffleMisc(spoiler):
         else:
             for warp in BananaportVanilla.values():
                 warpRegion = Logic.Regions[warp.region_id]
-                if spoiler.settings.activate_all_bananaports != "isles" or (warp.region_id in IslesLogic.LogicRegions.keys() and warp.destination_region_id in IslesLogic.LogicRegions.keys()):
+                if spoiler.settings.activate_all_bananaports != "isles" or (warp.region_id in IslesLogic.LogicRegions and warp.destination_region_id in IslesLogic.LogicRegions):
                     bananaportExit = TransitionFront(warp.destination_region_id, lambda l: True)
                     warpRegion.exits.append(bananaportExit)
     spoiler.settings.update_valid_locations()
