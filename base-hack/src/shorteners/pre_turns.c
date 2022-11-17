@@ -52,11 +52,30 @@ void apply_key(int index, int remove_troff, int set_key) {
 }
 
 void pre_turn_keys(void) {
+	int keys_in_item_pool = 0;
+	if (Rando.item_rando) {
+		for (int i = 0; i < 7; i++) {
+			int j = 0;
+			while (j < 400) {
+				int vanilla_flag = ItemRando_FLUT[2 * j];
+				if (normal_key_flags[i] == vanilla_flag) {
+					keys_in_item_pool = 1;
+					int new_flag = ItemRando_FLUT[(2 * j) + 1];
+					if (checkFlagDuplicate(new_flag, 0)) {
+						setPermFlag(tnsportal_flags[i]);
+					}
+				} else if (vanilla_flag == -1) {
+					break;
+				}
+				j++;
+			}
+		}
+	}
 	int check = 1;
 	if (Rando.keys_preturned) {
 		for (int i = 0; i < 8; i++) {
 			if (Rando.keys_preturned & check) {
-				apply_key(i,!Rando.item_rando,1);
+				apply_key(i,!keys_in_item_pool,1);
 			}
 			check <<= 1;
 		}

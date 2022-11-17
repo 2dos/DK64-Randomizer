@@ -12,6 +12,7 @@ from ui.rando_options import (
     max_randomized_blocker,
     max_randomized_medals,
     max_randomized_medal_cb_req,
+    max_randomized_fairies,
     max_randomized_troff,
     set_preset_options,
     toggle_b_locker_boxes,
@@ -43,5 +44,6 @@ hide_rgb(None)
 toggle_medals_box(None)
 max_randomized_medals(None)
 max_randomized_medal_cb_req(None)
+max_randomized_fairies(None)
 disable_coupled_camera_shockwave(None)
 toggle_key_settings(None)

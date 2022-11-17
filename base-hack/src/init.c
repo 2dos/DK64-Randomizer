@@ -452,6 +452,7 @@ void initHack(int source) {
 				KongTextNames[slot] = KongTextNames[5];
 				LedgeHangY[slot] = LedgeHangY[5];
 				LedgeHangY_0[slot] = LedgeHangY_0[5];
+				*(short*)(0x8074AB5A) = 0x0040; // Enables Krusha's spin attack to knock kasplats down
 				switch (slot) {
 					case 0:
 						// DK

@@ -752,6 +752,7 @@ int itemGrabHook(int collectable_type, int obj_type, int is_homing) {
                     }
                 }
             }
+            auto_turn_keys();
         } else {
             for (int i = 0; i < 7; i++) {
                 if (CurrentMap == boss_maps[i]) {
@@ -1016,6 +1017,7 @@ void getItem(int object_type) {
                 }
                 setAction(action, 0, 0);
             }
+            auto_turn_keys();
             break;
         case 0x18D:
             // Crown

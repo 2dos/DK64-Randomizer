@@ -80,6 +80,17 @@ def max_randomized_medal_cb_req(event):
     elif int(medal_cb_req.value) > 100:
         medal_cb_req.value = 100
 
+@bind("focusout", "rareware_gb_fairies")
+def max_randomized_fairies(event):
+    """Validate fairy input on loss of focus."""
+    fairy_req = js.document.getElementById("rareware_gb_fairies")
+    if not fairy_req.value:
+        fairy_req.value = 20
+    elif 1 > int(fairy_req.value):
+        fairy_req.value = 1
+    elif int(fairy_req.value) > 20:
+        fairy_req.value = 20
+
 
 def min_max(event, min, max):
     """Check if the data is within bounds of requirements.
