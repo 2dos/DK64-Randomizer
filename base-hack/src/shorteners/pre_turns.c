@@ -106,7 +106,7 @@ void writeKeyFlags(int index) {
 }
 
 void auto_turn_keys(void) {
-	if (ObjectModel2Timer < 5) {
+	if (Rando.auto_keys) {
 		for (int i = 0; i < 8; i++) {
 			if (Rando.level_order_rando_on) {
 				if (i < 7) {

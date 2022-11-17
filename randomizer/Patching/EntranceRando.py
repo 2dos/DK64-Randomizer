@@ -190,6 +190,7 @@ def randomize_entrances(spoiler: Spoiler):
         ROM().write(GetMapId(shuffledBack.regionId))
         ROM().write(GetExitId(shuffledBack))
 
+
 def filterEntranceType():
     """Change LZ Type for some entrances so that warps from crown pads work correctly."""
     for cont_map_id in range(216):

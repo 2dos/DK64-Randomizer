@@ -80,6 +80,7 @@ def max_randomized_medal_cb_req(event):
     elif int(medal_cb_req.value) > 100:
         medal_cb_req.value = 100
 
+
 @bind("focusout", "rareware_gb_fairies")
 def max_randomized_fairies(event):
     """Validate fairy input on loss of focus."""
