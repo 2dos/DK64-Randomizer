@@ -316,6 +316,7 @@ class Settings:
         self.random_medal_requirement = False
         self.medal_requirement = 15
         self.medal_cb_req = 75
+        self.rareware_gb_fairies = 20
         self.bananaport_rando = "off"
         self.activate_all_bananaports = "off"
         self.shop_indicator = False

@@ -109,6 +109,7 @@ class Spoiler:
         settings["Shockwave Shuffle"] = self.settings.shockwave_status
         settings["Random Jetpac Medal Requirement"] = self.settings.random_medal_requirement
         settings["Bananas Required for Medal"] = self.settings.medal_cb_req
+        settings["Fairies Required for Rareware GB"] = self.settings.rareware_gb_fairies
         settings["Random Shop Prices"] = self.settings.random_prices
         settings["Banana Port Randomization"] = self.settings.bananaport_rando
         settings["Shuffle Shop Locations"] = self.settings.shuffle_shops

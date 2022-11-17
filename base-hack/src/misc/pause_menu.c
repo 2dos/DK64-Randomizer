@@ -92,6 +92,7 @@ static char level_check_text[0x18] = "";
 #define CHECK_PEARLS 10
 
 #define PAUSE_ITEM_COUNT 11
+#define ROTATION_SPLIT 372 // 0x1000 / PAUSE_ITEM_COUNT
 
 static unsigned char check_data[2][9][PAUSE_ITEM_COUNT] = {}; // 8 items, 9 levels, numerator + denominator
 
@@ -209,7 +210,7 @@ int* pauseScreen3And4Header(int* dl) {
         return printText(dl, 0x280, 0x3C, 0.65f, "TOTALS");
     } else if (paad->screen == 4) {
         dl = printText(dl, 0x280, 0x3C, 0.65f, "CHECKS");
-        dk_strFormat((char*)level_check_text, "w %s e", levels[(int)check_level % (sizeof(levels) / 4)]);
+        dk_strFormat((char*)level_check_text, "w %s e", levels[(int)check_level]);
         return printText(dl, 0x280, 160, 0.5f, level_check_text);
     } else if (paad->screen == 5) {
         dl = display_file_images(dl, -50);
@@ -281,23 +282,17 @@ void newPauseSpriteCode(sprite_struct* sprite, char* render) {
     //     opacity_scale = test_opacity;
     // }
     // sprite->alpha = opacity_scale * 255.0f;
-    int wheel_items = ItemsInWheel;
-    if (wheel_items == 0) {
-        wheel_items = 1;
-    }
     int index = sprite->unk384[2] / 4;
-    int viewed_item = ((float)(pause_control->control) / RotationPerItem);
+    int viewed_item = ((float)(pause_control->control) / ROTATION_SPLIT);
     int diff = index - viewed_item;
-    if (wheel_items >= 5) {
-        if (diff == (wheel_items - 1)) {
-            diff = -1;
-        } else if (diff == (wheel_items - 2)) {
-            diff = -2;
-        } else if (diff == (1 - wheel_items)) {
-            diff = 1;
-        } else if (diff == (2 - wheel_items)) {
-            diff = 2;
-        }
+    if (diff == (PAUSE_ITEM_COUNT - 1)) {
+        diff = -1;
+    } else if (diff == (PAUSE_ITEM_COUNT - 2)) {
+        diff = -2;
+    } else if (diff == (1 - PAUSE_ITEM_COUNT)) {
+        diff = 1;
+    } else if (diff == (2 - PAUSE_ITEM_COUNT)) {
+        diff = 2;
     }
     int pos_diff = diff;
     int diff_mag = diff;
@@ -308,8 +303,7 @@ void newPauseSpriteCode(sprite_struct* sprite, char* render) {
         pos_diff -= 1;
         diff_mag = -pos_diff;
     }
-    float diff_increment = pause_control->control % RotationPerItem;
-    diff_increment /= (RotationPerItem / 80.0f);
+    float diff_increment = ((pause_control->control - (ROTATION_SPLIT * viewed_item)) * 80 * PAUSE_ITEM_COUNT) >> 12;
     if (diff_mag >= 3) {
         diff_increment /= 2;
     }

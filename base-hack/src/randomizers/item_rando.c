@@ -2,7 +2,7 @@
 
 int getObjectCollectability(int id, int unk1, int model2_type) {
     int index = indexOfNextObj(id);
-    int* m2location = ObjectModel2Pointer;
+    int* m2location = (int*)ObjectModel2Pointer;
     ModelTwoData* _object = getObjectArrayAddr(m2location,0x90,index);
     if (model2_type == 0x11) {
         // Homing
@@ -646,7 +646,7 @@ void banana_medal_acquisition(int flag) {
         10 - Shockwave,
         11 - Nothing,
     */
-    int item_type = getMedalItem(flag - 549);
+    int item_type = getMedalItem(flag - FLAG_MEDAL_JAPES_DK);
     if (!checkFlag(flag, 0)) {
         // Display and play effects if you don't have item
         if (item_type < 12) {
@@ -675,7 +675,7 @@ void banana_medal_acquisition(int flag) {
                 setFlag(flag, 1, 0);
             }
             if (item_type == 0) {
-                MovesBase[(int)Character].gb_count[getWorld(CurrentMap,1)] += 1;
+                MovesBase[getKong(0)].gb_count[getWorld(CurrentMap,1)] += 1;
             }
             if (item_type < 11) {
                 playSFX(0xF2);
@@ -736,6 +736,10 @@ void keyGrabHook(int song, int vol) {
     old_keys = val;
 }
 
+int getFlagIndex_Corrected(int start, int level) {
+    return start + (5 * level) + getKong(0);
+}
+
 static const short boss_maps[] = {0x8,0xC5,0x9A,0x6F,0x53,0xC4,0xC7};
 static const short acceptable_items[] = {0x74,0xDE,0xE0,0xE1,0xDD,0xDF,0x48,0x28F,0x13C,0x18D,0x90,0x5B,0x1F2,0x59,0x1F3,0x1F5,0x1F6};
 
@@ -752,6 +756,7 @@ int itemGrabHook(int collectable_type, int obj_type, int is_homing) {
                     }
                 }
             }
+            auto_turn_keys();
         } else {
             for (int i = 0; i < 7; i++) {
                 if (CurrentMap == boss_maps[i]) {
@@ -1016,6 +1021,7 @@ void getItem(int object_type) {
                 }
                 setAction(action, 0, 0);
             }
+            auto_turn_keys();
             break;
         case 0x18D:
             // Crown

@@ -3,10 +3,10 @@ import os
 
 set_variables = {
     "level_order_rando_on": 0,
-    "level_order": [1, 5, 4, 0, 6, 2, 3],
+    # "level_order": [1, 5, 4, 0, 6, 2, 3],
     "troff_scoff_count": [25, 200, 300, 400, 410, 420, 8],
     "blocker_normal_count": [2, 3, 4, 5, 6, 7, 8, 9],
-    "key_flags": [0x4A, 0x8A, 0xA8, 0xEC, 0x124, 0x13D, 0x1A],
+    # "key_flags": [0x4A, 0x8A, 0xA8, 0xEC, 0x124, 0x13D, 0x1A],
     "unlock_kongs": 0x1F,
     "unlock_moves": 1,
     "fast_start_beginning": 1,
@@ -55,7 +55,7 @@ set_variables = {
     "jetpac_medal_requirement": 1,
     "free_target_llama": 0,
     "free_source_llama": 3,
-    "keys_preturned": 0xFF,
+    "keys_preturned": 0,
     "short_bosses": 1,
     "fast_warp": 1,
     "activate_all_bananaports": 1,
@@ -69,15 +69,6 @@ set_variables = {
     "klaptrap_color_bbother": 0x96,
     "kut_out_phases": [3, 2, 0],
     "dpad_visual_enabled": 1,
-    "special_move_prices": [
-        [1, 2, 3],
-        [4, 5, 6],
-        [7, 8, 9],
-        [1, 2, 3],
-        [4, 5, 6],
-    ],
-    "tbarrel_prices": [1, 2, 3, 4],
-    "fairy_prices": [3, 6],
     "helm_order": [2, 0, 0xFF, 0xFF, 0xFF],
     "disco_chunky": 1,
     "krusha_slot": 2,
@@ -94,6 +85,7 @@ set_variables = {
     "remove_oscillation_effects": 1,
     "starting_map": 0x1A,
     "starting_exit": 1,
+    "rareware_gb_fairies": 1,
 }
 
 
@@ -167,16 +159,7 @@ with open("include/variable_space_structs.h", "r") as varspace:
     # print(struct_data2)
     test_keys = set_variables.keys()
     for x in test_keys:
-        if x == "special_move_prices":
-            for y in struct_data2:
-                if x == y[2]:
-                    size = y[1]
-                    offset = y[0]
-                    for kong in set_variables["special_move_prices"]:
-                        for lvl in kong:
-                            writeToROM(offset, lvl, size, x)
-                            offset += size
-        elif x == "test_zone":
+        if x == "test_zone":
             ptr_table_offset = 0x101C50
             lz_table = ptr_table_offset + readFromROM(ptr_table_offset + (18 * 4), 4)
             isles_list = ptr_table_offset + readFromROM(lz_table + (0x22 * 4), 4)

@@ -230,7 +230,7 @@ void earlyFrame(void) {
 	determine_krool_order();
 	disable_krool_health_refills();
 	CBDing();
-	if (Rando.auto_keys) {
+	if (ObjectModel2Timer < 5) {
 		auto_turn_keys();
 	}
 	if (Rando.item_rando) {
