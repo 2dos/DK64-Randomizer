@@ -2,7 +2,7 @@
 
 int getObjectCollectability(int id, int unk1, int model2_type) {
     int index = indexOfNextObj(id);
-    int* m2location = ObjectModel2Pointer;
+    int* m2location = (int*)ObjectModel2Pointer;
     ModelTwoData* _object = getObjectArrayAddr(m2location,0x90,index);
     if (model2_type == 0x11) {
         // Homing

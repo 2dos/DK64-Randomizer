@@ -29,6 +29,7 @@
 #define CASTLE_TREE 0xA4
 #define CAVES_ROTATING 0x59
 #define FUNGI_ANTHILL 0x34
+#define TROFF_N_SCOFF 0x2A
 
 #define FUNGI_MINECART_GRATE 0x22
 #define SEASICK_SHIP 0x27
@@ -186,6 +187,9 @@
 #define TREE_DOOR_DK 0x1
 #define TREE_DOOR_CHUNKY 0x9
 
+#define TNS_NUMBER 0x15
+#define TNS_ITEMINDICATOR 0xF
+
 void hideObject(behaviour_data* behaviour_pointer) {
 	behaviour_pointer->unk_60 = 1;
 	behaviour_pointer->unk_62 = 0;
@@ -209,11 +213,51 @@ typedef struct warp_extra_info {
 	/* 0x002 */ unsigned short tied_index;
 } warp_extra_info;
 
+typedef struct item_conversion_info {
+	/* 0x000 */ short actor;
+	/* 0x002 */ short model_two;
+	/* 0x004 */ float scale;
+} item_conversion_info;
+
+#define COIN_SCALE 0.4f
+#define BP_SCALE 2.0f
+#define POTION_SCALE 0.8f
+
+static const item_conversion_info item_conversions[] = {
+	{.actor=45, .model_two=0x74, .scale=0.25f}, // GB
+	{.actor=78, .model_two=0xDE, .scale=BP_SCALE}, // DK BP
+	{.actor=75, .model_two=0xE0, .scale=BP_SCALE}, // Diddy BP
+	{.actor=77, .model_two=0xE1, .scale=BP_SCALE}, // Lanky BP
+	{.actor=79, .model_two=0xDD, .scale=BP_SCALE}, // Tiny BP
+	{.actor=76, .model_two=0xDF, .scale=BP_SCALE}, // Chunky BP
+	{.actor=72, .model_two=0x13C, .scale=0.17f}, // Key
+	{.actor=86, .model_two=0x18D, .scale=0.25f}, // Crown
+	{.actor=151, .model_two=0x48, .scale=COIN_SCALE}, // Nintendo Coin
+	{.actor=152, .model_two=0x28F, .scale=COIN_SCALE}, // Rareware Coin
+	{.actor=157, .model_two=0x5B, .scale=POTION_SCALE}, // DK Potion
+	{.actor=158, .model_two=0x1F2, .scale=POTION_SCALE}, // Diddy Potion
+	{.actor=159, .model_two=0x59, .scale=POTION_SCALE}, // Lanky Potion
+	{.actor=160, .model_two=0x1F3, .scale=POTION_SCALE}, // Tiny Potion
+	{.actor=161, .model_two=0x1F5, .scale=POTION_SCALE}, // Chunky Potion
+	{.actor=162, .model_two=0x1F6, .scale=POTION_SCALE}, // Any Potion
+	{.actor=154, .model_two=0x90, .scale=0.22f}, // Medal
+};
+
+void getModelTwoItemFromActor(int actor, short* item, float* scale) {
+	for (int i = 0; i < (sizeof(item_conversions) / sizeof(item_conversion_info)); i++) {
+		if (actor == item_conversions[i].actor) {
+			*item = item_conversions[i].model_two;
+			*scale = item_conversions[i].scale;
+			return;
+		}	
+	}
+}
+
 void bananaportGenericCode(behaviour_data* behaviour, int index, int id) {
 	int current_index = 0;
 	int tied_index = 0;
 	int* warploc = WarpData;
-	int* m2location = ObjectModel2Pointer;
+	int* m2location = (int*)ObjectModel2Pointer;
 	warp_extra_info* cached_data = (warp_extra_info*)behaviour->extra_data;
 	if (!cached_data) {
 		cached_data = dk_malloc(4);
@@ -501,7 +545,7 @@ void TNSIndicatorGenericCode(behaviour_data* behaviour, int index, int id) {
 		}
 		if (CurrentMap == 7) {
 			if (id == 0x220) {
-				int* m2location = ObjectModel2Pointer;
+				int* m2location = (int*)ObjectModel2Pointer;
 				int slot = convertIDToIndex(0x220);
 				ModelTwoData* _object = getObjectArrayAddr(m2location,0x90,slot);
 				model_struct* _model = _object->model_pointer;
@@ -607,7 +651,7 @@ int getPressedSwitch(behaviour_data* behaviour_pointer, int bullet_type, int ID)
 		if (behaviour_pointer->contact_actor_type == bullet_type) {
 			if (canHitSwitch()) {
 				int index = convertSubIDToIndex(ID);
-				int* m2location = ObjectModel2Pointer;
+				int* m2location = (int*)ObjectModel2Pointer;
 				ModelTwoData* _object = getObjectArrayAddr(m2location,0x90,index);
 				setSomeTimer(_object->object_type);
 				return 1;
@@ -621,7 +665,7 @@ void setCrusher(void) {
 	if (CurrentMap == MILL_FRONT) {
 		if ((ObjectModel2Timer < 10) && (ObjectModel2Timer > 5)) {
 			int crusher_index = convertIDToIndex(8);
-			int* m2location = ObjectModel2Pointer;
+			int* m2location = (int*)ObjectModel2Pointer;
 			if (crusher_index > -1) {
 				ModelTwoData* _object = getObjectArrayAddr(m2location,0x90,crusher_index);
 				if (_object) {
@@ -952,6 +996,42 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 					}
 				}
 				break;
+			case TROFF_N_SCOFF:
+				if (param2 == TNS_NUMBER) {
+					float x = 600.0f;
+					float y = 300.0f;
+					float z = 400.0f;
+					short item = -1;
+					float scale = 0.0f;
+					int world = getWorld(CurrentMap, 0);
+					if (world < 7) {
+						int flag = normal_key_flags[world];
+						getModelTwoItemFromActor(getKeyItem(flag), &item, &scale);
+						if (item >= 0) {
+							spawnModelTwo(item, *(int*)&x, *(int*)&y, *(int*)&z, scale, 0x16);
+							int i = 0;
+							while (i < ObjectModel2Count) {
+								ModelTwoData* object = (ModelTwoData*)&ObjectModel2Pointer[i];
+								if (object) {
+									if (object->object_id == 0xF) {
+										model_struct* _model = object->model_pointer;
+										if (_model) {
+											_model->scale = 2 * scale;
+										}
+										break;
+									}
+								}
+								i++;
+							}
+
+						}
+					}
+				} else if (param2 == TNS_ITEMINDICATOR) {
+					behaviour_pointer->unk_70 = 0;
+					behaviour_pointer->unk_60 = 1;
+					behaviour_pointer->unk_62 = 100;
+				}
+				break;
 			case HELM_LOBBY:
 				if (param2 == HELMLOBBY_GGONE) {
 					return isBonus(PreviousMap);
@@ -1102,7 +1182,7 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 					} else if (index == 1) {
 						// Check if GB is in a state >= 3, this means it was spawned.
 						int index = convertIDToIndex(96);
-						int* m2location = ObjectModel2Pointer;
+						int* m2location = (int*)ObjectModel2Pointer;
 						if (index > -1) {
 							ModelTwoData* _object = getObjectArrayAddr(m2location,0x90,index);
 							behaviour_data* behaviour = (behaviour_data*)_object->behaviour_pointer;
@@ -1125,7 +1205,7 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 							if (behaviour_pointer->contact_actor_type == 43) {
 								if (canHitSwitch()) {
 									int index = convertSubIDToIndex(id);
-									int* m2location = ObjectModel2Pointer;
+									int* m2location = (int*)ObjectModel2Pointer;
 									ModelTwoData* _object = getObjectArrayAddr(m2location,0x90,index);
 									setSomeTimer(_object->object_type);
 									return 1;
@@ -1138,7 +1218,7 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 					if (Rando.quality_of_life.vanilla_fixes) {
 						behaviour_pointer->current_state = 10;
 						unsigned char crusher_compontents[] = {1,3,8,9,4,10,11,12,13,2,5,6,7};
-						int* m2location = ObjectModel2Pointer;
+						int* m2location = (int*)ObjectModel2Pointer;
 						for (int component = 0; component < sizeof(crusher_compontents); component++) {
 							int index = convertIDToIndex(crusher_compontents[component]);
 							if (index > -1) {
@@ -1298,7 +1378,7 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 						if ((behaviour_pointer->contact_actor_type >= 2) && (behaviour_pointer->contact_actor_type <= 6)) { // isKong
 							if (canHitSwitch()) {
 								int index = convertSubIDToIndex(id);
-								int* m2location = ObjectModel2Pointer;
+								int* m2location = (int*)ObjectModel2Pointer;
 								ModelTwoData* _object = getObjectArrayAddr(m2location,0x90,index);
 								setSomeTimer(_object->object_type);
 								return 1;
@@ -1438,7 +1518,7 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 		if (!cached_data) {
 			cached_data = dk_malloc(2);
 			int wrinkly_index = convertIDToIndex(param2);
-			int* m2location = ObjectModel2Pointer;
+			int* m2location = (int*)ObjectModel2Pointer;
 			int wrinkly_doors[] = {0xF0, 0xF2, 0xEF, 0x67, 0xF1};
 			if (wrinkly_index > -1) {
 				ModelTwoData* _object = getObjectArrayAddr(m2location,0x90,wrinkly_index);
@@ -1535,7 +1615,7 @@ int spawnCannonWrapper(void) {
 void disableDiddyRDDoors(void) {
 	for(int i = 63; i < 66; ++i) {
 		int index = convertIDToIndex(i);
-		int* m2location = ObjectModel2Pointer;
+		int* m2location = (int*)ObjectModel2Pointer;
 		ModelTwoData* _object = getObjectArrayAddr(m2location,0x90,index);
 		behaviour_data* behaviour = (behaviour_data*)_object->behaviour_pointer;
 		if (behaviour) {

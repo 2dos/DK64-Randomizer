@@ -275,6 +275,7 @@ extern void spriteControlCode(sprite_struct* sprite, char* render);
 extern int getPauseWheelRotationProgress(int unk0, int unk1);
 extern void updateFilePercentage(void);
 extern int getKong(int player_index);
+extern int spawnModelTwo(int type, int x_f, int y_f, int z_f, float scale, int id);
 
 //vanilla data
 extern float TransitionSpeed;
@@ -303,7 +304,7 @@ extern char BetaNinRWSkip;
 extern char LogosDestMap;
 extern char LogosDestMode;
 extern char Gamemode;
-extern int* ObjectModel2Pointer;
+extern ModelTwoData* ObjectModel2Pointer;
 extern int ObjectModel2Timer;
 extern int ObjectModel2Count;
 extern int ObjectModel2Count_Dupe;
