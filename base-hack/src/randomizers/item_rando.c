@@ -646,7 +646,7 @@ void banana_medal_acquisition(int flag) {
         10 - Shockwave,
         11 - Nothing,
     */
-    int item_type = getMedalItem(flag - 549);
+    int item_type = getMedalItem(flag - FLAG_MEDAL_JAPES_DK);
     if (!checkFlag(flag, 0)) {
         // Display and play effects if you don't have item
         if (item_type < 12) {
@@ -675,7 +675,7 @@ void banana_medal_acquisition(int flag) {
                 setFlag(flag, 1, 0);
             }
             if (item_type == 0) {
-                MovesBase[(int)Character].gb_count[getWorld(CurrentMap,1)] += 1;
+                MovesBase[getKong(0)].gb_count[getWorld(CurrentMap,1)] += 1;
             }
             if (item_type < 11) {
                 playSFX(0xF2);
@@ -734,6 +734,10 @@ void keyGrabHook(int song, int vol) {
         }
     }
     old_keys = val;
+}
+
+int getFlagIndex_Corrected(int start, int level) {
+    return start + (5 * level) + getKong(0);
 }
 
 static const short boss_maps[] = {0x8,0xC5,0x9A,0x6F,0x53,0xC4,0xC7};

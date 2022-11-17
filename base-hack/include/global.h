@@ -216,6 +216,7 @@ extern int getKongFromBonusFlag(int flag);
 extern void banana_medal_acquisition(int flag);
 extern void finalizeBeatGame(void);
 
+extern int getFlagIndex_Corrected(int start, int level);
 extern int getBPItem(int index);
 extern int getMedalItem(int index);
 extern int getCrownItem(int map);

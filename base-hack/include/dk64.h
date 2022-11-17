@@ -274,6 +274,7 @@ extern void writeImageSlotToActor(void* actor, int unk0, int unk1, void* locatio
 extern void spriteControlCode(sprite_struct* sprite, char* render);
 extern int getPauseWheelRotationProgress(int unk0, int unk1);
 extern void updateFilePercentage(void);
+extern int getKong(int player_index);
 
 //vanilla data
 extern float TransitionSpeed;
