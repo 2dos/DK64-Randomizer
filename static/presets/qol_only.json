@@ -80,6 +80,7 @@
     "medal_cb_req": 75,
     "medal_requirement": 15,
     "rareware_gb_fairies": 20,
+    "random_starting_region":false,
     "fast_warps":true,
     "dpad_display":true,
     "auto_keys":true,

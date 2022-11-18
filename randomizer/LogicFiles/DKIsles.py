@@ -62,7 +62,7 @@ LogicRegions = {
         TransitionFront(Regions.JungleJapesLobby, lambda l: l.settings.open_lobbies or Events.KLumsyTalkedTo in l.Events, Transitions.IslesMainToJapesLobby),
         TransitionFront(Regions.CrocodileIsleBeyondLift, lambda l: l.settings.open_lobbies or Events.AztecKeyTurnedIn in l.Events),
         TransitionFront(Regions.IslesMainUpper, lambda l: l.vines or l.pathMode),
-        TransitionFront(Regions.GloomyGalleonLobby, lambda l: (l.settings.open_lobbies or Events.AztecKeyTurnedIn in l.Events) and (l.swim or l.pathMode), Transitions.IslesMainToGalleonLobby),
+        TransitionFront(Regions.GloomyGalleonLobbyEntrance, lambda l: (l.settings.open_lobbies or Events.AztecKeyTurnedIn in l.Events) and (l.swim or l.pathMode), Transitions.IslesMainToGalleonLobby),
         TransitionFront(Regions.CabinIsle, lambda l: l.settings.open_lobbies or Events.GalleonKeyTurnedIn in l.Events),
         TransitionFront(Regions.CreepyCastleLobby, lambda l: l.settings.open_lobbies or Events.ForestKeyTurnedIn in l.Events, Transitions.IslesMainToCastleLobby),
         TransitionFront(Regions.HideoutHelmLobby, lambda l: l.monkeyport and l.istiny
@@ -144,11 +144,16 @@ LogicRegions = {
         TransitionFront(Regions.FranticFactoryStart, lambda l: l.IsLevelEnterable(Levels.FranticFactory), Transitions.IslesToFactory),
     ]),
 
+    Regions.GloomyGalleonLobbyEntrance: Region("Gloomy Galleon Lobby Entrance", "Level Lobbies", Levels.DKIsles, False, None, [], [], [
+        TransitionFront(Regions.IslesMain, lambda l: True, Transitions.IslesGalleonLobbyToMain),
+        TransitionFront(Regions.GloomyGalleonLobby, lambda l: True, Transitions.IslesToGalleon),
+    ]),
+
     Regions.GloomyGalleonLobby: Region("Gloomy Galleon Lobby", "Level Lobbies", Levels.DKIsles, True, None, [
         LocationLogic(Locations.IslesTinyGalleonLobby, lambda l: l.chunky and l.superSlam and l.mini and l.twirl and l.swim and l.tiny),
         LocationLogic(Locations.IslesKasplatGalleonLobby, lambda l: not l.settings.kasplat_rando),
     ], [], [
-        TransitionFront(Regions.IslesMain, lambda l: l.swim, Transitions.IslesGalleonLobbyToMain),
+        TransitionFront(Regions.GloomyGalleonLobbyEntrance, lambda l: l.swim),
         TransitionFront(Regions.GloomyGalleonStart, lambda l: l.IsLevelEnterable(Levels.GloomyGalleon), Transitions.IslesToGalleon),
     ]),
 

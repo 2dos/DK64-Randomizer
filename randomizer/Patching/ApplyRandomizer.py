@@ -434,6 +434,11 @@ def patching_response(responded_data):
             lst.append(enemy["value"])
         spoiler.settings.enemies_selected = lst
 
+    if spoiler.settings.random_starting_region:
+        ROM().seek(sav + 0x10C)
+        ROM().write(spoiler.settings.starting_region["map"])
+        ROM().write(spoiler.settings.starting_region["exit"])
+
     # randomize_dktv()
     randomize_entrances(spoiler)
     randomize_moves(spoiler)

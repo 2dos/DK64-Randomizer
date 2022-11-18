@@ -164,6 +164,11 @@ class Spoiler:
                 humanspoiler["Cosmetics"]["Colors and Models"]["Klaptrap Model"] = f"Unknown Model {hex(self.settings.klaptrap_model_index)}"
 
         humanspoiler["Requirements"] = {}
+        if self.settings.random_starting_region:
+            humanspoiler["Game Start"] = {}
+            humanspoiler["Game Start"]["Starting Kong List"] = startKongList
+            humanspoiler["Game Start"]["Starting Region"] = self.settings.starting_region["region_name"]
+            humanspoiler["Game Start"]["Starting Exit"] = self.settings.starting_region["exit_name"]
         # GB Counts
         gb_counts = {}
         level_list = ["Jungle Japes", "Angry Aztec", "Frantic Factory", "Gloomy Galleon", "Fungi Forest", "Crystal Caves", "Creepy Castle", "Hideout Helm"]

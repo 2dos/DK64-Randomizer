@@ -1,6 +1,7 @@
 #include "../include/common.h"
 
 static const char exittoisles[] = "EXIT TO ISLES";
+static const char exittospawn[] = "EXIT TO SPAWN";
 
 typedef struct musicInfo {
 	/* 0x000 */ short data[0xB0];
@@ -133,10 +134,12 @@ void initHack(int source) {
 	if (LoadedHooks == 0) {
 		if ((source == 1) || (CurrentMap == 0x28)) {
 			DebugInfoOn = 1;
+			int starting_map_rando_on = 1;
 			if (Rando.starting_map == 0) {
 				// Default
 				Rando.starting_map = 0x22;
 				Rando.starting_exit = 0;
+				starting_map_rando_on = 0;
 			} else {
 				*(short*)(0x8071454A) = Rando.starting_map;
 				*(int*)(0x80714550) = 0x24050000 | Rando.starting_exit;
@@ -319,7 +322,11 @@ void initHack(int source) {
 				//*(short*)(0x806A8766) = 4;
 				*(short*)(0x806A986A) = 4; // Yes/No Prompt
 				*(int*)(0x806A9990) = 0x2A210270; // SLTI $at, $s1, 0x2A8
-				PauseSlot3TextPointer = (char*)&exittoisles;
+				if (!starting_map_rando_on) {
+					PauseSlot3TextPointer = (char*)&exittoisles;
+				} else {
+					PauseSlot3TextPointer = (char*)&exittospawn;
+				}
 			}
 			if (Rando.quality_of_life.reduce_lag) {
 				*(int*)(0x80748010) = 0x8064F2F0; // Cancel Sandstorm
