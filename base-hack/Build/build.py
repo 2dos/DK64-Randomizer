@@ -230,6 +230,46 @@ file_dict = [
         "do_not_delete_source": True,
     },
     {
+        "name": "Kong (DK) Model",
+        "pointer_table_index": 4,
+        "file_index": 0x257,
+        "source_file": "kong_dk_om2.bin",
+        "do_not_extract": True,
+        "do_not_delete_source": True,
+    },
+    {
+        "name": "Kong (Diddy) Model",
+        "pointer_table_index": 4,
+        "file_index": 0x258,
+        "source_file": "kong_dk_om2.bin",
+        "do_not_extract": True,
+        "do_not_delete_source": True,
+    },
+    {
+        "name": "Kong (Lanky) Model",
+        "pointer_table_index": 4,
+        "file_index": 0x259,
+        "source_file": "kong_dk_om2.bin",
+        "do_not_extract": True,
+        "do_not_delete_source": True,
+    },
+    {
+        "name": "Kong (Tiny) Model",
+        "pointer_table_index": 4,
+        "file_index": 0x25A,
+        "source_file": "kong_dk_om2.bin",
+        "do_not_extract": True,
+        "do_not_delete_source": True,
+    },
+    {
+        "name": "Kong (Chunky) Model",
+        "pointer_table_index": 4,
+        "file_index": 0x25B,
+        "source_file": "kong_dk_om2.bin",
+        "do_not_extract": True,
+        "do_not_delete_source": True,
+    },
+    {
         "name": "Krusha Head",
         "start": 0x1FF6000,
         "source_file": "assets/Non-Code/displays/krusha_head64.png",
@@ -310,7 +350,7 @@ shop_face_array = [
     "shared",  # Shared Move
     "soldout32",  # Sold Out
     "gb",
-    "dk_bp",
+    "lanky_bp",
     "crown_shop",
     "key",
     "medal",
@@ -1305,9 +1345,9 @@ with open(newROMName, "r+b") as fh:
             os.remove(pth)
     if os.path.exists("assets/Non-Code/Gong/hint_door.bin"):
         os.remove("assets/Non-Code/Gong/hint_door.bin")
-    for x in model_changes:
-        if os.path.exists(x["model_file"]):
-            os.remove(x["model_file"])
+    # for x in model_changes:
+    #     if os.path.exists(x["model_file"]):
+    #         os.remove(x["model_file"])
     if os.path.exists(new_coin_sfx):
         os.remove(new_coin_sfx)
     if os.path.exists("helm.bin"):

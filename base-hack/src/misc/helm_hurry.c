@@ -2,7 +2,6 @@
 
 static unsigned short gb_total = 0;
 static unsigned char kong_bitfield = 0;
-static const unsigned short kong_flags[] = {FLAG_KONG_DK, FLAG_KONG_DIDDY, FLAG_KONG_LANKY, FLAG_KONG_TINY, FLAG_KONG_CHUNKY};
 
 void blueprintCollect(int flag_index) {
     if (Rando.helm_hurry_mode) {

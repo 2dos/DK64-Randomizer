@@ -6,6 +6,7 @@ from randomizer.Enums.Kongs import Kongs
 from randomizer.Lists.EnemyTypes import Enemies
 from randomizer.Patching.Patcher import ROM
 from randomizer.Spoiler import Spoiler
+from randomizer.Enums.Types import Types
 
 
 def apply_kongrando_cosmetic(spoiler: Spoiler):

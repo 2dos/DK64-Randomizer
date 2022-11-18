@@ -208,6 +208,11 @@ int getCounterItem(int shop_index, int kong, int level) {
 								return COUNTER_KEY;
 							}
 						}
+						for (int i = 0; i < 5; i++) {
+							if (flag == getKongFlag(i)) {
+								return 1 + i;
+							}
+						}
 					}
 				}
 				break;

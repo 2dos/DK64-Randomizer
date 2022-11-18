@@ -115,6 +115,10 @@ def AllItems(settings):
         allItems.extend(Keys())
     if Types.Medal in settings.shuffled_location_types:
         allItems.extend(BananaMedalItems())
+    if Types.Kong in settings.shuffled_location_types:
+        allItems.extend(KongItems())
+    if Types.Bean in settings.shuffled_location_types:  # Could check for pearls as well
+        allItems.extend(MiscItemRandoItems())
     if settings.move_rando != "off":
         allItems.extend(DonkeyMoves)
         allItems.extend(DiddyMoves)
@@ -370,6 +374,21 @@ def BattleCrownItems():
     """Return a list of Crowns to be placed."""
     itemPool = []
     itemPool.extend(itertools.repeat(Items.BattleCrown, 10))
+    return itemPool
+
+
+def KongItems():
+    """Return a list of Kongs to be placed."""
+    itemPool = []
+    itemPool.extend([Items.Donkey, Items.Diddy, Items.Lanky, Items.Chunky])
+    return itemPool
+
+
+def MiscItemRandoItems():
+    """Return a list of Items that are classed as miscellaneous."""
+    itemPool = []
+    itemPool.append(Items.Bean)
+    itemPool.extend(itertools.repeat(Items.Pearl, 5))
     return itemPool
 
 
