@@ -157,9 +157,9 @@ LogicRegions = {
         TransitionFront(Regions.Mechafish, lambda l: Events.MechafishSummoned in l.Events and l.isdiddy),
         TransitionFront(Regions.LankyShip, lambda l: Events.GalleonLankySwitch in l.Events and l.islanky, Transitions.GalleonShipyardToLanky),
         TransitionFront(Regions.TinyShip, lambda l: Events.GalleonTinySwitch in l.Events and l.istiny, Transitions.GalleonShipyardToTiny),
-        TransitionFront(Regions.BongosShip, lambda l: Events.GalleonDonkeyPad in l.Events  and l.isdonkey, Transitions.GalleonShipyardToBongos),
-        TransitionFront(Regions.GuitarShip, lambda l: Events.GalleonDiddyPad in l.Events  and l.isdiddy, Transitions.GalleonShipyardToGuitar),
-        TransitionFront(Regions.TromboneShip, lambda l: Events.GalleonLankyPad in l.Events  and l.islanky, Transitions.GalleonShipyardToTrombone),
+        TransitionFront(Regions.BongosShip, lambda l: Events.GalleonDonkeyPad in l.Events and l.isdonkey, Transitions.GalleonShipyardToBongos),
+        TransitionFront(Regions.GuitarShip, lambda l: Events.GalleonDiddyPad in l.Events and l.isdiddy, Transitions.GalleonShipyardToGuitar),
+        TransitionFront(Regions.TromboneShip, lambda l: Events.GalleonLankyPad in l.Events and l.islanky, Transitions.GalleonShipyardToTrombone),
         TransitionFront(Regions.SaxophoneShip, lambda l: Events.GalleonTinyPad in l.Events and l.istiny, Transitions.GalleonShipyardToSaxophone),
         TransitionFront(Regions.TriangleShip, lambda l: Events.GalleonChunkyPad in l.Events and l.ischunky, Transitions.GalleonShipyardToTriangle),
         TransitionFront(Regions.GalleonBossLobby, lambda l: not l.settings.tns_location_rando),
@@ -186,7 +186,7 @@ LogicRegions = {
         LocationLogic(Locations.GalleonDiddyGoldTower, lambda l: l.spring and l.isdiddy, MinigameType.BonusBarrel),
         LocationLogic(Locations.GalleonKasplatGoldTower, lambda l: not l.settings.kasplat_rando),
     ], [
-        Event(Events.TreasureRoomTeleporterUnlocked, lambda l: l.spring and l.isdiddy), # TODO: Add logic to ensure bonus barrel reward is collectable, like if it's the diddy jetpack helm minigame
+        Event(Events.TreasureRoomTeleporterUnlocked, lambda l: l.spring and l.isdiddy),  # TODO: Add logic to ensure bonus barrel reward is collectable, like if it's the diddy jetpack helm minigame
     ], [
         TransitionFront(Regions.GloomyGalleonMedals, lambda l: True),
         TransitionFront(Regions.TreasureRoom, lambda l: True)
