@@ -135,18 +135,7 @@ DirtPatchLocations = [
         logicregion=Regions.IslesMainUpper,
         logic=lambda l: l.vines and l.shockwave,
     ),
-    DirtPatchData(
-        name="DK Isles: Behind BFI",
-        level=Levels.DKIsles,
-        map_id=Maps.Isles,
-        x=754.0,
-        y=500.0,
-        z=2386.0,
-        rotation=807,
-        group=4,
-        logicregion=Regions.IslesMain,
-        logic=lambda l: l.shockwave,
-    ),
+    DirtPatchData(name="DK Isles: Behind BFI", level=Levels.DKIsles, map_id=Maps.Isles, x=754.0, y=500.0, z=2386.0, rotation=807, group=4, logicregion=Regions.IslesMain, logic=lambda l: l.shockwave),
     DirtPatchData(
         name="DK Isles: Back of Kroc Isle (Lower)",
         level=Levels.DKIsles,
@@ -196,16 +185,7 @@ DirtPatchLocations = [
         logic=lambda l: l.GalleonKey and l.shockwave,
     ),
     DirtPatchData(
-        name="DK Isles: Behind Fungi Building",
-        level=Levels.DKIsles,
-        map_id=Maps.Isles,
-        x=2436.0,
-        y=1498.0,
-        z=817.0,
-        rotation=637,
-        group=2,
-        logicregion=Regions.CabinIsle,
-        logic=lambda l: l.shockwave,
+        name="DK Isles: Behind Fungi Building", level=Levels.DKIsles, map_id=Maps.Isles, x=2436.0, y=1498.0, z=817.0, rotation=637, group=2, logicregion=Regions.CabinIsle, logic=lambda l: l.shockwave
     ),
     DirtPatchData(
         name="DK Isles: Behind Aztec Building",

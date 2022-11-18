@@ -37,17 +37,6 @@ with open("asm/objects.asm", "w") as obj_asm:
                 _o = os.path.join(root, file).replace("/", "_").replace("\\", "_").replace(".c", ".o")
                 print(os.path.join(root, file))
                 obj_asm.write('.importobj "obj/' + _o + '"\n')
-                cmd = [
-                    f"{cwd}\\n64chain\\tools\\bin\\mips64-elf-gcc",
-                    "-Wall",
-                    "-O1",
-                    "-mtune=vr4300",
-                    "-march=vr4300",
-                    "-mabi=32",
-                    "-fomit-frame-pointer",
-                    "-G0",
-                    "-c",
-                    os.path.join(root, file),
-                ]
+                cmd = [f"{cwd}\\n64chain\\tools\\bin\\mips64-elf-gcc", "-Wall", "-O1", "-mtune=vr4300", "-march=vr4300", "-mabi=32", "-fomit-frame-pointer", "-G0", "-c", os.path.join(root, file)]
                 subprocess.Popen(cmd).wait()
                 shutil.move("./" + file.replace(".c", ".o"), "./obj/" + _o)

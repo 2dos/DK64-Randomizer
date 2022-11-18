@@ -41,16 +41,7 @@ cranky_1 = [
     MoveType("nothing"),
 ]
 
-funky = [
-    MoveType("gun", 1, 3),
-    MoveType("nothing"),
-    MoveType("ammo_belt", 1, 3),
-    MoveType("nothing"),
-    MoveType("gun", 2, 5),
-    MoveType("ammo_belt", 2, 5),
-    MoveType("gun", 3, 7),
-    MoveType("nothing"),
-]
+funky = [MoveType("gun", 1, 3), MoveType("nothing"), MoveType("ammo_belt", 1, 3), MoveType("nothing"), MoveType("gun", 2, 5), MoveType("ammo_belt", 2, 5), MoveType("gun", 3, 7), MoveType("nothing")]
 
 candy = [
     MoveType("nothing"),
@@ -63,40 +54,15 @@ candy = [
     MoveType("nothing"),
 ]
 
-cranky_moves = {
-    "dk": cranky_0.copy(),
-    "diddy": cranky_0.copy(),
-    "lanky": cranky_1.copy(),
-    "tiny": cranky_1.copy(),
-    "chunky": cranky_1.copy(),
-}
+cranky_moves = {"dk": cranky_0.copy(), "diddy": cranky_0.copy(), "lanky": cranky_1.copy(), "tiny": cranky_1.copy(), "chunky": cranky_1.copy()}
 
-funky_moves = {
-    "dk": funky.copy(),
-    "diddy": funky.copy(),
-    "lanky": funky.copy(),
-    "tiny": funky.copy(),
-    "chunky": funky.copy(),
-}
+funky_moves = {"dk": funky.copy(), "diddy": funky.copy(), "lanky": funky.copy(), "tiny": funky.copy(), "chunky": funky.copy()}
 
-candy_moves = {
-    "dk": candy.copy(),
-    "diddy": candy.copy(),
-    "lanky": candy.copy(),
-    "tiny": candy.copy(),
-    "chunky": candy.copy(),
-}
+candy_moves = {"dk": candy.copy(), "diddy": candy.copy(), "lanky": candy.copy(), "tiny": candy.copy(), "chunky": candy.copy()}
 
-training = {
-    "dive": MoveType("flag", 0x182),
-    "orange": MoveType("flag", 0x184),
-    "barrel": MoveType("flag", 0x185),
-    "vine": MoveType("flag", 0x183),
-}
+training = {"dive": MoveType("flag", 0x182), "orange": MoveType("flag", 0x184), "barrel": MoveType("flag", 0x185), "vine": MoveType("flag", 0x183)}
 
-bfi = {
-    "bfi": MoveType("flag", -2),
-}
+bfi = {"bfi": MoveType("flag", -2)}
 
 
 def convertItem(item: dict, kong: int) -> int:

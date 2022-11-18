@@ -116,30 +116,12 @@ def place_randomized_items(spoiler: Spoiler):
                         if map_id not in map_items:
                             map_items[map_id] = []
                         if item.new_item is None:
-                            map_items[map_id].append(
-                                {
-                                    "id": item.placement_data[map_id],
-                                    "obj": Types.NoItem,
-                                    "kong": 0,
-                                    "flag": 0,
-                                    "upscale": 1,
-                                    "shared": False,
-                                }
-                            )
+                            map_items[map_id].append({"id": item.placement_data[map_id], "obj": Types.NoItem, "kong": 0, "flag": 0, "upscale": 1, "shared": False})
                         else:
                             numerator = model_two_scales[item.new_item]
                             denominator = model_two_scales[item.old_item]
                             upscale = numerator / denominator
-                            map_items[map_id].append(
-                                {
-                                    "id": item.placement_data[map_id],
-                                    "obj": item.new_item,
-                                    "kong": item.new_kong,
-                                    "flag": item.new_flag,
-                                    "upscale": upscale,
-                                    "shared": item.shared,
-                                }
-                            )
+                            map_items[map_id].append({"id": item.placement_data[map_id], "obj": item.new_item, "kong": item.new_kong, "flag": item.new_flag, "upscale": upscale, "shared": item.shared})
                     if item.location == Locations.NintendoCoin and item.new_item == Types.Banana:
                         ROM().seek(sav + 0x110)
                         ROM().write(1)

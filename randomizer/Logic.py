@@ -189,13 +189,7 @@ class LogicVarHolder:
     def isPriorHelmComplete(self, kong: Kongs):
         """Determine if there is access to the kong's helm room."""
         room_seq = (Kongs.donkey, Kongs.chunky, Kongs.tiny, Kongs.lanky, Kongs.diddy)
-        kong_evt = (
-            Events.HelmDonkeyDone,
-            Events.HelmDiddyDone,
-            Events.HelmLankyDone,
-            Events.HelmTinyDone,
-            Events.HelmChunkyDone,
-        )
+        kong_evt = (Events.HelmDonkeyDone, Events.HelmDiddyDone, Events.HelmLankyDone, Events.HelmTinyDone, Events.HelmChunkyDone)
         desired_index = room_seq.index(kong)
         helm_order = self.settings.helm_order
         if desired_index in helm_order:

@@ -105,11 +105,7 @@ move_list = {
     Items.SniperSight: MoveData(2, Kongs.any, 3, True, 1),
 }
 
-progressive_move_flag_dict = {
-    Items.ProgressiveSlam: [0x290, 0x291],
-    Items.ProgressiveAmmoBelt: [0x292, 0x293],
-    Items.ProgressiveInstrumentUpgrade: [0x294, 0x295, 0x296],
-}
+progressive_move_flag_dict = {Items.ProgressiveSlam: [0x290, 0x291], Items.ProgressiveAmmoBelt: [0x292, 0x293], Items.ProgressiveInstrumentUpgrade: [0x294, 0x295, 0x296]}
 
 
 def ShuffleItems(spoiler: Spoiler):

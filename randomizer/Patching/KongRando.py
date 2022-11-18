@@ -45,39 +45,17 @@ def apply_kongrando_cosmetic(spoiler: Spoiler):
             {
                 "map_index": 7,
                 "model2_changes": [
-                    {
-                        "index": 0x30,
-                        "new_type": gunswitches[japesPuzzleKong],
-                    },
-                    {
-                        "index": 0x31,
-                        "new_type": gunswitches[japesPuzzleKong],
-                    },
-                    {
-                        "index": 0x32,
-                        "new_type": gunswitches[japesPuzzleKong],
-                    },
+                    {"index": 0x30, "new_type": gunswitches[japesPuzzleKong]},
+                    {"index": 0x31, "new_type": gunswitches[japesPuzzleKong]},
+                    {"index": 0x32, "new_type": gunswitches[japesPuzzleKong]},
                 ],
-                "charspawner_changes": [
-                    {"type": Enemies.CutsceneDiddy, "new_type": actors[japesLockedKong]},
-                ],
+                "charspawner_changes": [{"type": Enemies.CutsceneDiddy, "new_type": actors[japesLockedKong]}],
             },
             {"map_index": 0x26, "model2_changes": llama_entrance_switch, "charspawner_changes": []},
             {
                 "map_index": 0x14,
-                "model2_changes": [
-                    {
-                        "index": 0x16,
-                        "new_type": instrumentpads[llamaPuzzleKong],
-                    },
-                    {
-                        "index": 0x12,
-                        "new_type": gunswitches[llamaPuzzleKong],
-                    },
-                ],
-                "charspawner_changes": [
-                    {"type": Enemies.CutsceneLanky, "new_type": actors[llamaLockedKong]},
-                ],
+                "model2_changes": [{"index": 0x16, "new_type": instrumentpads[llamaPuzzleKong]}, {"index": 0x12, "new_type": gunswitches[llamaPuzzleKong]}],
+                "charspawner_changes": [{"type": Enemies.CutsceneLanky, "new_type": actors[llamaLockedKong]}],
             },
             {
                 "map_index": 0x10,
@@ -92,21 +70,12 @@ def apply_kongrando_cosmetic(spoiler: Spoiler):
                     # },
                     {"index": 0x14, "new_type": forceSwitches[tinyTemplePuzzleKong]}
                 ],
-                "charspawner_changes": [
-                    {"type": Enemies.CutsceneTiny, "new_type": actors[tinyTempleLockedKong]},
-                ],
+                "charspawner_changes": [{"type": Enemies.CutsceneTiny, "new_type": actors[tinyTempleLockedKong]}],
             },
             {
                 "map_index": 0x1A,
-                "model2_changes": [
-                    {
-                        "index": 0x24,
-                        "new_type": greenslamswitches[factoryPuzzleKong],
-                    },
-                ],
-                "charspawner_changes": [
-                    {"type": Enemies.CutsceneChunky, "new_type": actors[factoryLockedKong]},
-                ],
+                "model2_changes": [{"index": 0x24, "new_type": greenslamswitches[factoryPuzzleKong]}],
+                "charspawner_changes": [{"type": Enemies.CutsceneChunky, "new_type": actors[factoryLockedKong]}],
             },
         ]
 

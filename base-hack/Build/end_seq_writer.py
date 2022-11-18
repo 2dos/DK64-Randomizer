@@ -61,10 +61,7 @@ beta_testers = [
     CreditItem("bottom", "normal", ["SirSmackStrikesBack", "UsedPizza", "VidyaJames", "Wex", "Zorulda"]),
 ]
 
-bbb_contest = [
-    CreditItem("top", "header", ["Big Bug Bashers"]),
-    CreditItem("right", "normal", basher_names),
-]
+bbb_contest = [CreditItem("top", "header", ["Big Bug Bashers"]), CreditItem("right", "normal", basher_names)]
 
 additional_thanks = [
     CreditItem("top", "header", ["Additional Thanks"]),
@@ -73,10 +70,7 @@ additional_thanks = [
     CreditItem("right", "normal", ["SpikeVegeta", "KeiperDontCare"]),
 ]
 
-links = [
-    CreditItem("top", "longheader", ["You have been playing", "DK64 Randomizer", "dk64randomizer.com"]),
-    CreditItem("bottom", "longheader", ["Discord", " ", "discord.dk64randomizer.com"]),
-]
+links = [CreditItem("top", "longheader", ["You have been playing", "DK64 Randomizer", "dk64randomizer.com"]), CreditItem("bottom", "longheader", ["Discord", " ", "discord.dk64randomizer.com"])]
 
 end_sequence_cards = []
 end_sequence_cards.extend(main_devs)

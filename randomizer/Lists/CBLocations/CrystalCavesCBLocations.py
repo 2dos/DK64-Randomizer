@@ -84,13 +84,7 @@ ColoredBananaGroupList = [
         name="Around room by ice wall to Gorilla Gone GB",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.CrystalCavesMain,
-        locations=[
-            [1, 1.0, 2262, 13, 352],
-            [1, 1.0, 2307, 13, 283],
-            [1, 1.0, 2306, 13, 158],
-            [1, 1.0, 2185, 13, 119],
-            [1, 1.0, 2078, 13, 124],
-        ],
+        locations=[[1, 1.0, 2262, 13, 352], [1, 1.0, 2307, 13, 283], [1, 1.0, 2306, 13, 158], [1, 1.0, 2185, 13, 119], [1, 1.0, 2078, 13, 124]],
     ),
     ColoredBananaGroup(
         group=3,
@@ -152,10 +146,7 @@ ColoredBananaGroupList = [
         name="On crystals on each side of W4 Mini Monkey room",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.CrystalCavesMain,
-        locations=[
-            [5, 1.0, 3066, 305, 673],
-            [5, 1.0, 3197, 310, 772],
-        ],
+        locations=[[5, 1.0, 3066, 305, 673], [5, 1.0, 3197, 310, 772]],
     ),
     ColoredBananaGroup(
         group=7,
@@ -163,10 +154,7 @@ ColoredBananaGroupList = [
         name="On Mini Monkey barrel ledge",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.CrystalCavesMain,
-        locations=[
-            [5, 1.0, 3171, 275, 1026],
-            [5, 1.0, 3102, 265, 1149],
-        ],
+        locations=[[5, 1.0, 3171, 275, 1026], [5, 1.0, 3102, 265, 1149]],
     ),
     ColoredBananaGroup(
         group=8,
@@ -174,34 +162,16 @@ ColoredBananaGroupList = [
         name="Next to Funky's store",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.CrystalCavesMain,
-        locations=[
-            [5, 1.0, 2859, 285, 1327],
-            [5, 1.0, 2862, 285, 1287],
-        ],
+        locations=[[5, 1.0, 2859, 285, 1327], [5, 1.0, 2862, 285, 1287]],
     ),
-    ColoredBananaGroup(
-        group=9,
-        map_id=Maps.CrystalCaves,
-        name="On monkeyport pad by W4",
-        konglist=[Kongs.diddy, Kongs.tiny],
-        region=Regions.CavesBlueprintCave,
-        locations=[
-            [5, 1.0, 3530, 300, 731],
-        ],
-    ),
+    ColoredBananaGroup(group=9, map_id=Maps.CrystalCaves, name="On monkeyport pad by W4", konglist=[Kongs.diddy, Kongs.tiny], region=Regions.CavesBlueprintCave, locations=[[5, 1.0, 3530, 300, 731]]),
     ColoredBananaGroup(
         group=10,
         map_id=Maps.CrystalCaves,
         name="Mini Monkey tunnel to W4",
         konglist=[Kongs.diddy, Kongs.tiny],
         region=Regions.CavesBlueprintCave,
-        locations=[
-            [1, 1.0, 3179, 287, 647],
-            [1, 1.0, 3206, 287, 581],
-            [1, 1.0, 3233, 287, 516],
-            [1, 1.0, 3296, 287, 553],
-            [1, 1.0, 3377, 287, 602],
-        ],
+        locations=[[1, 1.0, 3179, 287, 647], [1, 1.0, 3206, 287, 581], [1, 1.0, 3233, 287, 516], [1, 1.0, 3296, 287, 553], [1, 1.0, 3377, 287, 602]],
     ),
     ColoredBananaGroup(
         group=11,
@@ -209,13 +179,7 @@ ColoredBananaGroupList = [
         name="On crystal platforms to Funky",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.CrystalCavesMain,
-        locations=[
-            [1, 1.0, 2617, 151, 1229],
-            [1, 1.0, 2659, 197, 1249],
-            [1, 1.0, 2537, 157, 1280],
-            [1, 1.0, 2581, 177, 1304],
-            [1, 1.0, 2458, 148, 1331],
-        ],
+        locations=[[1, 1.0, 2617, 151, 1229], [1, 1.0, 2659, 197, 1249], [1, 1.0, 2537, 157, 1280], [1, 1.0, 2581, 177, 1304], [1, 1.0, 2458, 148, 1331]],
     ),
     ColoredBananaGroup(
         group=12,
@@ -223,13 +187,7 @@ ColoredBananaGroupList = [
         name="On crystal platforms to Ice castle",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.CrystalCavesMain,
-        locations=[
-            [1, 1.0, 2401, 90, 1319],
-            [1, 1.0, 2358, 122, 1303],
-            [1, 1.0, 2364, 178, 1344],
-            [1, 1.0, 2317, 155, 1282],
-            [1, 1.0, 2322, 228, 1329],
-        ],
+        locations=[[1, 1.0, 2401, 90, 1319], [1, 1.0, 2358, 122, 1303], [1, 1.0, 2364, 178, 1344], [1, 1.0, 2317, 155, 1282], [1, 1.0, 2322, 228, 1329]],
     ),
     ColoredBananaGroup(
         group=13,
@@ -237,9 +195,7 @@ ColoredBananaGroupList = [
         name="On ice tomato switch",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.CrystalCavesMain,
-        locations=[
-            [5, 1.0, 2292, 270, 1065],
-        ],
+        locations=[[5, 1.0, 2292, 270, 1065]],
     ),
     ColoredBananaGroup(
         group=14,
@@ -247,9 +203,7 @@ ColoredBananaGroupList = [
         name="On Beetle Race switch",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.CrystalCavesMain,
-        locations=[
-            [5, 1.0, 2275, 270, 900],
-        ],
+        locations=[[5, 1.0, 2275, 270, 900]],
     ),
     ColoredBananaGroup(
         group=15,
@@ -257,10 +211,7 @@ ColoredBananaGroupList = [
         name="On Baboon Balloon pads",
         konglist=[Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.CrystalCavesMain,
-        locations=[
-            [5, 1.0, 2129, 270, 900],
-            [5, 1.0, 2179, 355, 943],
-        ],
+        locations=[[5, 1.0, 2129, 270, 900], [5, 1.0, 2179, 355, 943]],
     ),
     ColoredBananaGroup(
         group=16,
@@ -301,13 +252,7 @@ ColoredBananaGroupList = [
         name="On plank to DK BP",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.CrystalCavesMain,
-        locations=[
-            [1, 1.0, 1698, 285, 903],
-            [1, 1.0, 1697, 286, 877],
-            [1, 1.0, 1695, 288, 852],
-            [1, 1.0, 1693, 290, 827],
-            [1, 1.0, 1691, 292, 802],
-        ],
+        locations=[[1, 1.0, 1698, 285, 903], [1, 1.0, 1697, 286, 877], [1, 1.0, 1695, 288, 852], [1, 1.0, 1693, 290, 827], [1, 1.0, 1691, 292, 802]],
     ),
     ColoredBananaGroup(
         group=19,
@@ -348,10 +293,7 @@ ColoredBananaGroupList = [
         name="Next to headphones by Snide's",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.CavesSnideArea,
-        locations=[
-            [5, 1.0, 1394, 70, 516],
-            [5, 1.0, 1375, 70, 443],
-        ],
+        locations=[[5, 1.0, 1394, 70, 516], [5, 1.0, 1375, 70, 443]],
     ),
     ColoredBananaGroup(
         group=22,
@@ -359,10 +301,7 @@ ColoredBananaGroupList = [
         name="On slippery slope to Cranky",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.CrystalCavesMain,
-        locations=[
-            [5, 1.0, 1240, 200, 1483],
-            [5, 1.0, 1294, 200, 1545],
-        ],
+        locations=[[5, 1.0, 1240, 200, 1483], [5, 1.0, 1294, 200, 1545]],
     ),
     ColoredBananaGroup(
         group=23,
@@ -371,11 +310,7 @@ ColoredBananaGroupList = [
         konglist=[Kongs.diddy, Kongs.lanky],
         region=Regions.CrystalCavesMain,
         logic=lambda l: (l.jetpack and l.isdiddy) or (l.balloon and l.islanky),
-        locations=[
-            [5, 1.0, 1326, 428, 2174],
-            [5, 1.0, 1356, 431, 2263],
-            [5, 1.0, 1386, 434, 2352],
-        ],
+        locations=[[5, 1.0, 1326, 428, 2174], [5, 1.0, 1356, 431, 2263], [5, 1.0, 1386, 434, 2352]],
     ),
     ColoredBananaGroup(
         group=24,
@@ -383,13 +318,7 @@ ColoredBananaGroupList = [
         name="From BBlast pad to Cranky",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.CrystalCavesMain,
-        locations=[
-            [1, 1.0, 1301, 301, 2147],
-            [1, 1.0, 1274, 318, 2045],
-            [1, 1.0, 1259, 327, 1933],
-            [1, 1.0, 1238, 312, 1848],
-            [1, 1.0, 1186, 294, 1747],
-        ],
+        locations=[[1, 1.0, 1301, 301, 2147], [1, 1.0, 1274, 318, 2045], [1, 1.0, 1259, 327, 1933], [1, 1.0, 1238, 312, 1848], [1, 1.0, 1186, 294, 1747]],
     ),
     ColoredBananaGroup(
         group=25,
@@ -459,9 +388,7 @@ ColoredBananaGroupList = [
         name="In front of Mini Monkey W3 tunnel",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.CrystalCavesMain,
-        locations=[
-            [5, 1.0, 822, 185, 2348],
-        ],
+        locations=[[5, 1.0, 822, 185, 2348]],
     ),
     ColoredBananaGroup(
         group=29,
@@ -469,13 +396,7 @@ ColoredBananaGroupList = [
         name="On path between BBlast and Mini Monkey W3",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.CrystalCavesMain,
-        locations=[
-            [1, 1.0, 1109, 197, 2385],
-            [1, 1.0, 1158, 219, 2433],
-            [1, 1.0, 1195, 236, 2463],
-            [1, 1.0, 1271, 271, 2477],
-            [1, 1.0, 1319, 290, 2475],
-        ],
+        locations=[[1, 1.0, 1109, 197, 2385], [1, 1.0, 1158, 219, 2433], [1, 1.0, 1195, 236, 2463], [1, 1.0, 1271, 271, 2477], [1, 1.0, 1319, 290, 2475]],
     ),
     ColoredBananaGroup(
         group=30,
@@ -521,13 +442,7 @@ ColoredBananaGroupList = [
         name="In Mini Monkey W3 tunnel",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.CavesBonusCave,
-        locations=[
-            [1, 1.0, 801, 180, 2434],
-            [1, 1.0, 795, 180, 2504],
-            [1, 1.0, 788, 180, 2574],
-            [1, 1.0, 710, 180, 2557],
-            [1, 1.0, 633, 180, 2539],
-        ],
+        locations=[[1, 1.0, 801, 180, 2434], [1, 1.0, 795, 180, 2504], [1, 1.0, 788, 180, 2574], [1, 1.0, 710, 180, 2557], [1, 1.0, 633, 180, 2539]],
     ),
     ColoredBananaGroup(
         group=33,
@@ -554,13 +469,7 @@ ColoredBananaGroupList = [
         name="Around W1 in 5DI area",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.IglooArea,
-        locations=[
-            [1, 1.0, 425, 48, 1005],
-            [1, 1.0, 369, 48, 1023],
-            [1, 1.0, 330, 48, 961],
-            [1, 1.0, 364, 48, 908],
-            [1, 1.0, 425, 48, 922],
-        ],
+        locations=[[1, 1.0, 425, 48, 1005], [1, 1.0, 369, 48, 1023], [1, 1.0, 330, 48, 961], [1, 1.0, 364, 48, 908], [1, 1.0, 425, 48, 922]],
     ),
     ColoredBananaGroup(
         group=35,
@@ -568,13 +477,7 @@ ColoredBananaGroupList = [
         name="Around W3 in 5DI area",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.IglooArea,
-        locations=[
-            [1, 1.0, 169, 50, 1056],
-            [1, 1.0, 207, 50, 1080],
-            [1, 1.0, 202, 50, 1140],
-            [1, 1.0, 172, 50, 1189],
-            [1, 1.0, 136, 50, 1196],
-        ],
+        locations=[[1, 1.0, 169, 50, 1056], [1, 1.0, 207, 50, 1080], [1, 1.0, 202, 50, 1140], [1, 1.0, 172, 50, 1189], [1, 1.0, 136, 50, 1196]],
     ),
     ColoredBananaGroup(
         group=36,
@@ -582,13 +485,7 @@ ColoredBananaGroupList = [
         name="Around Tag Barrel in 5DI area",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.IglooArea,
-        locations=[
-            [1, 1.0, 279, 48, 1385],
-            [1, 1.0, 219, 48, 1360],
-            [1, 1.0, 165, 48, 1408],
-            [1, 1.0, 186, 48, 1465],
-            [1, 1.0, 265, 48, 1450],
-        ],
+        locations=[[1, 1.0, 279, 48, 1385], [1, 1.0, 219, 48, 1360], [1, 1.0, 165, 48, 1408], [1, 1.0, 186, 48, 1465], [1, 1.0, 265, 48, 1450]],
     ),
     ColoredBananaGroup(
         group=37,
@@ -610,25 +507,10 @@ ColoredBananaGroupList = [
         ],
     ),
     ColoredBananaGroup(
-        group=38,
-        map_id=Maps.CrystalCaves,
-        name="On 5DI",
-        konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
-        region=Regions.IglooArea,
-        locations=[
-            [5, 1.0, 577, 150, 1285],
-        ],
+        group=38, map_id=Maps.CrystalCaves, name="On 5DI", konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky], region=Regions.IglooArea, locations=[[5, 1.0, 577, 150, 1285]]
     ),
     ColoredBananaGroup(
-        group=39,
-        map_id=Maps.CrystalCaves,
-        name="On pointy pillar by Chunky igloo",
-        konglist=[Kongs.diddy],
-        region=Regions.IglooArea,
-        logic=lambda l: l.jetpack,
-        locations=[
-            [5, 1.0, 731, 150, 994],
-        ],
+        group=39, map_id=Maps.CrystalCaves, name="On pointy pillar by Chunky igloo", konglist=[Kongs.diddy], region=Regions.IglooArea, logic=lambda l: l.jetpack, locations=[[5, 1.0, 731, 150, 994]]
     ),
     ColoredBananaGroup(
         group=40,
@@ -636,13 +518,7 @@ ColoredBananaGroupList = [
         name="In water around Chunky Igloo",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.IglooArea,
-        locations=[
-            [1, 1.2, 600, 0, 813],
-            [1, 1.2, 685, 0, 690],
-            [1, 1.2, 837, 0, 688],
-            [1, 1.2, 868, 0, 806],
-            [1, 1.2, 822, 0, 905],
-        ],
+        locations=[[1, 1.2, 600, 0, 813], [1, 1.2, 685, 0, 690], [1, 1.2, 837, 0, 688], [1, 1.2, 868, 0, 806], [1, 1.2, 822, 0, 905]],
     ),
     ColoredBananaGroup(
         group=41,
@@ -650,13 +526,7 @@ ColoredBananaGroupList = [
         name="In water around Tiny Igloo",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.IglooArea,
-        locations=[
-            [1, 1.2, 419, 0, 1677],
-            [1, 1.2, 341, 0, 1838],
-            [1, 1.2, 208, 0, 1805],
-            [1, 1.2, 210, 0, 1680],
-            [1, 1.2, 228, 0, 1623],
-        ],
+        locations=[[1, 1.2, 419, 0, 1677], [1, 1.2, 341, 0, 1838], [1, 1.2, 208, 0, 1805], [1, 1.2, 210, 0, 1680], [1, 1.2, 228, 0, 1623]],
     ),
     ColoredBananaGroup(
         group=42,
@@ -664,13 +534,7 @@ ColoredBananaGroupList = [
         name="On edge of useless platform on the right side of waterfall",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.CabinArea,
-        locations=[
-            [1, 1.0, 2997, 130, 1476],
-            [1, 1.0, 3014, 126, 1533],
-            [1, 1.0, 3035, 120, 1606],
-            [1, 1.0, 3037, 120, 1653],
-            [1, 1.0, 3029, 120, 1723],
-        ],
+        locations=[[1, 1.0, 2997, 130, 1476], [1, 1.0, 3014, 126, 1533], [1, 1.0, 3035, 120, 1606], [1, 1.0, 3037, 120, 1653], [1, 1.0, 3029, 120, 1723]],
     ),
     ColoredBananaGroup(
         group=43,
@@ -678,13 +542,7 @@ ColoredBananaGroupList = [
         name="On other edge of useless platform on the right side of waterfall",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.CabinArea,
-        locations=[
-            [1, 1.0, 2810, 148, 1881],
-            [1, 1.0, 2768, 157, 1881],
-            [1, 1.0, 2702, 172, 1863],
-            [1, 1.0, 2632, 183, 1866],
-            [1, 1.0, 2554, 190, 1885],
-        ],
+        locations=[[1, 1.0, 2810, 148, 1881], [1, 1.0, 2768, 157, 1881], [1, 1.0, 2702, 172, 1863], [1, 1.0, 2632, 183, 1866], [1, 1.0, 2554, 190, 1885]],
     ),
     ColoredBananaGroup(
         group=44,
@@ -692,9 +550,7 @@ ColoredBananaGroupList = [
         name="On baboon balloon pad by 1DC",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.CabinArea,
-        locations=[
-            [5, 1.0, 2493, 290, 1808],
-        ],
+        locations=[[5, 1.0, 2493, 290, 1808]],
     ),
     ColoredBananaGroup(
         group=45,
@@ -703,13 +559,7 @@ ColoredBananaGroupList = [
         konglist=[Kongs.diddy, Kongs.lanky],
         region=Regions.CabinArea,
         logic=lambda l: (l.jetpack and l.isdiddy) or (l.balloon and l.islanky),
-        locations=[
-            [1, 1.0, 2237, 394, 1969],
-            [1, 1.0, 2220, 394, 1903],
-            [1, 1.0, 2272, 394, 1880],
-            [1, 1.0, 2312, 394, 1864],
-            [1, 1.0, 2356, 394, 1843],
-        ],
+        locations=[[1, 1.0, 2237, 394, 1969], [1, 1.0, 2220, 394, 1903], [1, 1.0, 2272, 394, 1880], [1, 1.0, 2312, 394, 1864], [1, 1.0, 2356, 394, 1843]],
     ),
     ColoredBananaGroup(
         group=46,
@@ -717,13 +567,7 @@ ColoredBananaGroupList = [
         name="Next to Lanky 1DC",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.CabinArea,
-        locations=[
-            [1, 1.0, 2354, 278, 2034],
-            [1, 1.0, 2396, 278, 1996],
-            [1, 1.0, 2456, 278, 1949],
-            [1, 1.0, 2498, 278, 1903],
-            [1, 1.0, 2510, 278, 1847],
-        ],
+        locations=[[1, 1.0, 2354, 278, 2034], [1, 1.0, 2396, 278, 1996], [1, 1.0, 2456, 278, 1949], [1, 1.0, 2498, 278, 1903], [1, 1.0, 2510, 278, 1847]],
     ),
     ColoredBananaGroup(
         group=47,
@@ -731,13 +575,7 @@ ColoredBananaGroupList = [
         name="Plank to Lanky 1DC",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.CabinArea,
-        locations=[
-            [1, 1.0, 2333, 286, 2079],
-            [1, 1.0, 2347, 287, 2115],
-            [1, 1.0, 2360, 287, 2151],
-            [1, 1.0, 2373, 287, 2187],
-            [1, 1.0, 2386, 288, 2222],
-        ],
+        locations=[[1, 1.0, 2333, 286, 2079], [1, 1.0, 2347, 287, 2115], [1, 1.0, 2360, 287, 2151], [1, 1.0, 2373, 287, 2187], [1, 1.0, 2386, 288, 2222]],
     ),
     ColoredBananaGroup(
         group=48,
@@ -745,13 +583,7 @@ ColoredBananaGroupList = [
         name="From Waterfall tag to W2",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.CabinArea,
-        locations=[
-            [1, 1.0, 2383, 280, 2270],
-            [1, 1.0, 2416, 287, 2244],
-            [1, 1.0, 2461, 290, 2218],
-            [1, 1.0, 2516, 291, 2197],
-            [1, 1.0, 2577, 281, 2185],
-        ],
+        locations=[[1, 1.0, 2383, 280, 2270], [1, 1.0, 2416, 287, 2244], [1, 1.0, 2461, 290, 2218], [1, 1.0, 2516, 291, 2197], [1, 1.0, 2577, 281, 2185]],
     ),
     ColoredBananaGroup(
         group=49,
@@ -759,13 +591,7 @@ ColoredBananaGroupList = [
         name="W2 to Tiny BP",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.CabinArea,
-        locations=[
-            [1, 1.0, 2691, 283, 2117],
-            [1, 1.0, 2717, 300, 2084],
-            [1, 1.0, 2758, 330, 2040],
-            [1, 1.0, 2781, 354, 2008],
-            [1, 1.0, 2817, 371, 1970],
-        ],
+        locations=[[1, 1.0, 2691, 283, 2117], [1, 1.0, 2717, 300, 2084], [1, 1.0, 2758, 330, 2040], [1, 1.0, 2781, 354, 2008], [1, 1.0, 2817, 371, 1970]],
     ),
     ColoredBananaGroup(
         group=50,
@@ -773,30 +599,16 @@ ColoredBananaGroupList = [
         name="Each side of DK 1DC",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.CabinArea,
-        locations=[
-            [5, 1.0, 2965, 287, 2382],
-            [5, 1.0, 2677, 287, 2523],
-        ],
+        locations=[[5, 1.0, 2965, 287, 2382], [5, 1.0, 2677, 287, 2523]],
     ),
-    ColoredBananaGroup(
-        group=51,
-        map_id=Maps.CrystalCaves,
-        name="In front of the T&S on DK 1DC",
-        konglist=[Kongs.diddy],
-        region=Regions.CabinArea,
-        locations=[
-            [5, 1.0, 2837, 432, 2509],
-        ],
-    ),
+    ColoredBananaGroup(group=51, map_id=Maps.CrystalCaves, name="In front of the T&S on DK 1DC", konglist=[Kongs.diddy], region=Regions.CabinArea, locations=[[5, 1.0, 2837, 432, 2509]]),
     ColoredBananaGroup(
         group=52,
         map_id=Maps.CrystalCaves,
         name="On crystal platform near waterfall RB",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.CabinArea,
-        locations=[
-            [5, 1.0, 2463, 215, 2530],
-        ],
+        locations=[[5, 1.0, 2463, 215, 2530]],
     ),
     ColoredBananaGroup(
         group=53,
@@ -804,9 +616,7 @@ ColoredBananaGroupList = [
         name="Lower crystal platform to waterfall tag",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.CabinArea,
-        locations=[
-            [5, 1.0, 2403, 193, 2402],
-        ],
+        locations=[[5, 1.0, 2403, 193, 2402]],
     ),
     ColoredBananaGroup(
         group=54,
@@ -876,9 +686,7 @@ ColoredBananaGroupList = [
         name="In river in corner near Ice castle",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.CrystalCavesMain,
-        locations=[
-            [5, 1.2, 2139, 5, 1110],
-        ],
+        locations=[[5, 1.2, 2139, 5, 1110]],
     ),
     ColoredBananaGroup(
         group=58,
@@ -919,9 +727,7 @@ ColoredBananaGroupList = [
         name="Behind pillar in giant boulder room",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.BoulderCave,
-        locations=[
-            [5, 1.0, 2090, 282, 2739],
-        ],
+        locations=[[5, 1.0, 2090, 282, 2739]],
     ),
     ColoredBananaGroup(
         group=61,
@@ -948,13 +754,7 @@ ColoredBananaGroupList = [
         name="Near ledge by waterfall",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.CabinArea,
-        locations=[
-            [1, 1.0, 2390, 180, 2265],
-            [1, 1.0, 2436, 180, 2241],
-            [1, 1.0, 2484, 180, 2218],
-            [1, 1.0, 2541, 180, 2191],
-            [1, 1.0, 2636, 171, 2172],
-        ],
+        locations=[[1, 1.0, 2390, 180, 2265], [1, 1.0, 2436, 180, 2241], [1, 1.0, 2484, 180, 2218], [1, 1.0, 2541, 180, 2191], [1, 1.0, 2636, 171, 2172]],
     ),
     ColoredBananaGroup(
         group=63,
@@ -962,9 +762,7 @@ ColoredBananaGroupList = [
         name="Crystal platform at the end of fence in front of 5DC",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.CabinArea,
-        locations=[
-            [5, 1.0, 3356, 160, 1803],
-        ],
+        locations=[[5, 1.0, 3356, 160, 1803]],
     ),
     ColoredBananaGroup(
         group=64,
@@ -972,9 +770,7 @@ ColoredBananaGroupList = [
         name="Lone small crystal platform close to 5DC",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.CabinArea,
-        locations=[
-            [5, 1.0, 3251, 170, 1472],
-        ],
+        locations=[[5, 1.0, 3251, 170, 1472]],
     ),
     ColoredBananaGroup(
         group=65,
@@ -982,13 +778,7 @@ ColoredBananaGroupList = [
         name="Along fence in front of 5DC",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.CabinArea,
-        locations=[
-            [1, 1.0, 3390, 116, 2003],
-            [1, 1.0, 3367, 116, 1967],
-            [1, 1.0, 3336, 117, 1917],
-            [1, 1.0, 3341, 121, 1870],
-            [1, 1.0, 3356, 124, 1828],
-        ],
+        locations=[[1, 1.0, 3390, 116, 2003], [1, 1.0, 3367, 116, 1967], [1, 1.0, 3336, 117, 1917], [1, 1.0, 3341, 121, 1870], [1, 1.0, 3356, 124, 1828]],
     ),
     ColoredBananaGroup(
         group=66,
@@ -996,9 +786,7 @@ ColoredBananaGroupList = [
         name="5DC Triangle pad",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.CabinArea,
-        locations=[
-            [5, 1.0, 3452, 180, 1821],
-        ],
+        locations=[[5, 1.0, 3452, 180, 1821]],
     ),
     ColoredBananaGroup(
         group=67,
@@ -1006,9 +794,7 @@ ColoredBananaGroupList = [
         name="5DC Saxophone pad",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.CabinArea,
-        locations=[
-            [5, 1.0, 3537, 275, 1839],
-        ],
+        locations=[[5, 1.0, 3537, 275, 1839]],
     ),
     ColoredBananaGroup(
         group=68,
@@ -1016,9 +802,7 @@ ColoredBananaGroupList = [
         name="5DC Lower Guitar pad",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.CabinArea,
-        locations=[
-            [5, 1.0, 3525, 275, 1686],
-        ],
+        locations=[[5, 1.0, 3525, 275, 1686]],
     ),
     ColoredBananaGroup(
         group=69,
@@ -1026,9 +810,7 @@ ColoredBananaGroupList = [
         name="5DC Upper Guitar pad",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.CabinArea,
-        locations=[
-            [5, 1.0, 3602, 357, 1680],
-        ],
+        locations=[[5, 1.0, 3602, 357, 1680]],
     ),
     ColoredBananaGroup(
         group=70,
@@ -1036,19 +818,10 @@ ColoredBananaGroupList = [
         name="W5",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.CavesBlueprintPillar,
-        locations=[
-            [5, 1.0, 2761, 380, 954],
-        ],
+        locations=[[5, 1.0, 2761, 380, 954]],
     ),
     ColoredBananaGroup(
-        group=70,
-        map_id=Maps.CrystalCaves,
-        name="W5",
-        konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
-        region=Regions.CabinArea,
-        locations=[
-            [5, 1.0, 3614, 357, 1839],
-        ],
+        group=70, map_id=Maps.CrystalCaves, name="W5", konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky], region=Regions.CabinArea, locations=[[5, 1.0, 3614, 357, 1839]]
     ),
     ColoredBananaGroup(
         group=71,
@@ -1056,9 +829,7 @@ ColoredBananaGroupList = [
         name="Corner by W5",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.CabinArea,
-        locations=[
-            [5, 1.0, 3695, 350, 1901],
-        ],
+        locations=[[5, 1.0, 3695, 350, 1901]],
     ),
     ColoredBananaGroup(
         group=72,
@@ -1066,13 +837,7 @@ ColoredBananaGroupList = [
         name="Line on middle floor of 5DC",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.CabinArea,
-        locations=[
-            [1, 1.0, 3574, 260, 1909],
-            [1, 1.0, 3569, 260, 1831],
-            [1, 1.0, 3565, 260, 1753],
-            [1, 1.0, 3561, 260, 1676],
-            [1, 1.0, 3556, 260, 1599],
-        ],
+        locations=[[1, 1.0, 3574, 260, 1909], [1, 1.0, 3569, 260, 1831], [1, 1.0, 3565, 260, 1753], [1, 1.0, 3561, 260, 1676], [1, 1.0, 3556, 260, 1599]],
     ),
     ColoredBananaGroup(
         group=73,
@@ -1080,13 +845,7 @@ ColoredBananaGroupList = [
         name="Line on upper floor of 5DC",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.CabinArea,
-        locations=[
-            [1, 1.0, 3698, 343, 1588],
-            [1, 1.0, 3629, 343, 1595],
-            [1, 1.0, 3634, 343, 1666],
-            [1, 1.0, 3638, 343, 1737],
-            [1, 1.0, 3642, 343, 1809],
-        ],
+        locations=[[1, 1.0, 3698, 343, 1588], [1, 1.0, 3629, 343, 1595], [1, 1.0, 3634, 343, 1666], [1, 1.0, 3638, 343, 1737], [1, 1.0, 3642, 343, 1809]],
     ),
     ColoredBananaGroup(
         group=74,
@@ -1095,9 +854,7 @@ ColoredBananaGroupList = [
         konglist=[Kongs.diddy],
         region=Regions.CabinArea,
         logic=lambda l: l.jetpack,
-        locations=[
-            [5, 1.0, 3637, 500, 1677],
-        ],
+        locations=[[5, 1.0, 3637, 500, 1677]],
     ),
     ColoredBananaGroup(
         group=75,
@@ -1105,9 +862,7 @@ ColoredBananaGroupList = [
         name="Blue lonely crystal platform by 5DC",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.CabinArea,
-        locations=[
-            [5, 1.0, 3387, 185, 1470],
-        ],
+        locations=[[5, 1.0, 3387, 185, 1470]],
     ),
     ColoredBananaGroup(
         group=76,
@@ -1115,20 +870,10 @@ ColoredBananaGroupList = [
         name="Crystal platform by 5DC",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.CabinArea,
-        locations=[
-            [5, 1.0, 3448, 195, 1470],
-        ],
+        locations=[[5, 1.0, 3448, 195, 1470]],
     ),
     ColoredBananaGroup(
-        group=77,
-        map_id=Maps.CrystalCaves,
-        name="2 ends of the Giant Kosha area",
-        konglist=[Kongs.tiny],
-        region=Regions.GiantKosha,
-        locations=[
-            [5, 1.0, 2210, 265, 3638],
-            [5, 1.0, 1430, 265, 3595],
-        ],
+        group=77, map_id=Maps.CrystalCaves, name="2 ends of the Giant Kosha area", konglist=[Kongs.tiny], region=Regions.GiantKosha, locations=[[5, 1.0, 2210, 265, 3638], [5, 1.0, 1430, 265, 3595]]
     ),
     ColoredBananaGroup(
         group=78,
@@ -1136,10 +881,7 @@ ColoredBananaGroupList = [
         name="2 other ends of the Giant Kosha area",
         konglist=[Kongs.tiny],
         region=Regions.GiantKosha,
-        locations=[
-            [5, 1.0, 1845, 265, 3217],
-            [5, 1.0, 1800, 265, 4006],
-        ],
+        locations=[[5, 1.0, 1845, 265, 3217], [5, 1.0, 1800, 265, 4006]],
     ),
     ColoredBananaGroup(
         group=79,
@@ -1161,29 +903,14 @@ ColoredBananaGroupList = [
             [1, 1.0, 1939.1451416015625, 280.3333435058594, 2471.535888671875],
         ],
     ),
-    ColoredBananaGroup(
-        group=80,
-        map_id=Maps.CavesBaboonBlast,
-        name="Middle path first barrel",
-        konglist=[Kongs.donkey],
-        region=Regions.CavesBaboonBlast,
-        locations=[
-            [5, 1.2, 1281, 355, 568],
-        ],
-    ),
+    ColoredBananaGroup(group=80, map_id=Maps.CavesBaboonBlast, name="Middle path first barrel", konglist=[Kongs.donkey], region=Regions.CavesBaboonBlast, locations=[[5, 1.2, 1281, 355, 568]]),
     ColoredBananaGroup(
         group=81,
         map_id=Maps.CavesBaboonBlast,
         name="Line that misses a barrel in slow path",
         konglist=[Kongs.donkey],
         region=Regions.CavesBaboonBlast,
-        locations=[
-            [1, 1.2, 645, 583, 2106],
-            [1, 1.2, 711, 582, 2028],
-            [1, 1.2, 776, 569, 1950],
-            [1, 1.2, 841, 537, 1874],
-            [1, 1.2, 905, 488, 1797],
-        ],
+        locations=[[1, 1.2, 645, 583, 2106], [1, 1.2, 711, 582, 2028], [1, 1.2, 776, 569, 1950], [1, 1.2, 841, 537, 1874], [1, 1.2, 905, 488, 1797]],
     ),
     ColoredBananaGroup(
         group=82,
@@ -1191,13 +918,7 @@ ColoredBananaGroupList = [
         name="Line of singles through ring",
         konglist=[Kongs.donkey],
         region=Regions.CavesBaboonBlast,
-        locations=[
-            [1, 1.2, 957, 505, 1253],
-            [1, 1.2, 1009, 505, 1126],
-            [1, 1.2, 1048, 503, 1031],
-            [1, 1.2, 1086, 487, 938],
-            [1, 1.2, 1124, 452, 845],
-        ],
+        locations=[[1, 1.2, 957, 505, 1253], [1, 1.2, 1009, 505, 1126], [1, 1.2, 1048, 503, 1031], [1, 1.2, 1086, 487, 938], [1, 1.2, 1124, 452, 845]],
     ),
     ColoredBananaGroup(
         group=83,
@@ -1219,15 +940,7 @@ ColoredBananaGroupList = [
         ],
     ),
     ColoredBananaGroup(
-        group=84,
-        map_id=Maps.CavesFrozenCastle,
-        name="Each side of the tomato's chair",
-        konglist=[Kongs.lanky],
-        region=Regions.FrozenCastle,
-        locations=[
-            [5, 1.0, 425, 20, 305],
-            [5, 1.0, 385, 20, 407],
-        ],
+        group=84, map_id=Maps.CavesFrozenCastle, name="Each side of the tomato's chair", konglist=[Kongs.lanky], region=Regions.FrozenCastle, locations=[[5, 1.0, 425, 20, 305], [5, 1.0, 385, 20, 407]]
     ),
     ColoredBananaGroup(
         group=85,
@@ -1249,28 +962,10 @@ ColoredBananaGroupList = [
         ],
     ),
     ColoredBananaGroup(
-        group=86,
-        map_id=Maps.CavesDiddyIgloo,
-        name="Numbers 1 5 6",
-        konglist=[Kongs.diddy],
-        region=Regions.DiddyIgloo,
-        locations=[
-            [5, 1.0, 387, 5, 351],
-            [5, 1.0, 272, 5, 209],
-            [5, 1.0, 209, 5, 368],
-        ],
+        group=86, map_id=Maps.CavesDiddyIgloo, name="Numbers 1 5 6", konglist=[Kongs.diddy], region=Regions.DiddyIgloo, locations=[[5, 1.0, 387, 5, 351], [5, 1.0, 272, 5, 209], [5, 1.0, 209, 5, 368]]
     ),
     ColoredBananaGroup(
-        group=87,
-        map_id=Maps.CavesDiddyIgloo,
-        name="Numbers 2 3 4",
-        konglist=[Kongs.diddy],
-        region=Regions.DiddyIgloo,
-        locations=[
-            [5, 1.0, 368, 5, 242],
-            [5, 1.0, 185, 5, 261],
-            [5, 1.0, 307, 5, 408],
-        ],
+        group=87, map_id=Maps.CavesDiddyIgloo, name="Numbers 2 3 4", konglist=[Kongs.diddy], region=Regions.DiddyIgloo, locations=[[5, 1.0, 368, 5, 242], [5, 1.0, 185, 5, 261], [5, 1.0, 307, 5, 408]]
     ),
     ColoredBananaGroup(
         group=88,
@@ -1310,17 +1005,7 @@ ColoredBananaGroupList = [
             [1, 1.0, 172, 0, 533],
         ],
     ),
-    ColoredBananaGroup(
-        group=90,
-        map_id=Maps.CavesLankyIgloo,
-        name="On crystal tower",
-        konglist=[Kongs.lanky],
-        region=Regions.LankyIgloo,
-        locations=[
-            [5, 1.0, 218, 65, 282],
-            [5, 1.0, 274, 135, 246],
-        ],
-    ),
+    ColoredBananaGroup(group=90, map_id=Maps.CavesLankyIgloo, name="On crystal tower", konglist=[Kongs.lanky], region=Regions.LankyIgloo, locations=[[5, 1.0, 218, 65, 282], [5, 1.0, 274, 135, 246]]),
     ColoredBananaGroup(
         group=91,
         map_id=Maps.CavesTinyIgloo,
@@ -1340,79 +1025,20 @@ ColoredBananaGroupList = [
             [1, 1.0, 201, 0, 125],
         ],
     ),
+    ColoredBananaGroup(group=92, map_id=Maps.CavesLankyCabin, name="Stack of books in entrance corner", konglist=[Kongs.lanky], region=Regions.LankyCabin, locations=[[5, 1.0, 530, 35, 118]]),
     ColoredBananaGroup(
-        group=92,
-        map_id=Maps.CavesLankyCabin,
-        name="Stack of books in entrance corner",
-        konglist=[Kongs.lanky],
-        region=Regions.LankyCabin,
-        locations=[
-            [5, 1.0, 530, 35, 118],
-        ],
+        group=93, map_id=Maps.CavesLankyCabin, name="Stacks of books on shelves", konglist=[Kongs.lanky], region=Regions.LankyCabin, locations=[[5, 1.0, 400, 72, 505], [5, 1.0, 150, 72, 335]]
     ),
     ColoredBananaGroup(
-        group=93,
-        map_id=Maps.CavesLankyCabin,
-        name="Stacks of books on shelves",
-        konglist=[Kongs.lanky],
-        region=Regions.LankyCabin,
-        locations=[
-            [5, 1.0, 400, 72, 505],
-            [5, 1.0, 150, 72, 335],
-        ],
+        group=94, map_id=Maps.CavesChunkyCabin, name="Stacks of books on shelves", konglist=[Kongs.chunky], region=Regions.ChunkyCabin, locations=[[5, 1.0, 177, 72, 116], [5, 1.0, 77, 72, 356]]
     ),
     ColoredBananaGroup(
-        group=94,
-        map_id=Maps.CavesChunkyCabin,
-        name="Stacks of books on shelves",
-        konglist=[Kongs.chunky],
-        region=Regions.ChunkyCabin,
-        locations=[
-            [5, 1.0, 177, 72, 116],
-            [5, 1.0, 77, 72, 356],
-        ],
+        group=95, map_id=Maps.CavesChunkyCabin, name="Books on floor and back shelf", konglist=[Kongs.chunky], region=Regions.ChunkyCabin, locations=[[5, 1.0, 402, 50, 561], [5, 1.0, 445, 15, 112]]
     ),
+    ColoredBananaGroup(group=96, map_id=Maps.CavesDiddyUpperCabin, name="Books on shelf near entrance", konglist=[Kongs.diddy], region=Regions.DiddyUpperCabin, locations=[[5, 1.0, 201, 70, 119]]),
+    ColoredBananaGroup(group=97, map_id=Maps.CavesDiddyUpperCabin, name="Books on shelf on back wall", konglist=[Kongs.diddy], region=Regions.DiddyUpperCabin, locations=[[5, 1.0, 469, 70, 606]]),
     ColoredBananaGroup(
-        group=95,
-        map_id=Maps.CavesChunkyCabin,
-        name="Books on floor and back shelf",
-        konglist=[Kongs.chunky],
-        region=Regions.ChunkyCabin,
-        locations=[
-            [5, 1.0, 402, 50, 561],
-            [5, 1.0, 445, 15, 112],
-        ],
-    ),
-    ColoredBananaGroup(
-        group=96,
-        map_id=Maps.CavesDiddyUpperCabin,
-        name="Books on shelf near entrance",
-        konglist=[Kongs.diddy],
-        region=Regions.DiddyUpperCabin,
-        locations=[
-            [5, 1.0, 201, 70, 119],
-        ],
-    ),
-    ColoredBananaGroup(
-        group=97,
-        map_id=Maps.CavesDiddyUpperCabin,
-        name="Books on shelf on back wall",
-        konglist=[Kongs.diddy],
-        region=Regions.DiddyUpperCabin,
-        locations=[
-            [5, 1.0, 469, 70, 606],
-        ],
-    ),
-    ColoredBananaGroup(
-        group=98,
-        map_id=Maps.CavesDonkeyCabin,
-        name="On books on shelves",
-        konglist=[Kongs.donkey],
-        region=Regions.DonkeyCabin,
-        locations=[
-            [5, 1.0, 190, 70, 486],
-            [5, 1.0, 143, 70, 119],
-        ],
+        group=98, map_id=Maps.CavesDonkeyCabin, name="On books on shelves", konglist=[Kongs.donkey], region=Regions.DonkeyCabin, locations=[[5, 1.0, 190, 70, 486], [5, 1.0, 143, 70, 119]]
     ),
     ColoredBananaGroup(
         group=99,
@@ -1422,9 +1048,7 @@ ColoredBananaGroupList = [
         region=Regions.IglooArea,
         vanilla=True,
         logic=lambda l: l.jetpack,
-        locations=[
-            [5, 1.0, 572.9354248046875, 253.16668701171875, 1286.8638916015625],
-        ],
+        locations=[[5, 1.0, 572.9354248046875, 253.16668701171875, 1286.8638916015625]],
     ),
     ColoredBananaGroup(
         group=100,
@@ -1434,9 +1058,7 @@ ColoredBananaGroupList = [
         region=Regions.CrystalCavesMain,
         vanilla=True,
         logic=lambda l: l.jetpack,
-        locations=[
-            [5, 1.0, 3031.996826171875, 329.8321228027344, 1366.2552490234375],
-        ],
+        locations=[[5, 1.0, 3031.996826171875, 329.8321228027344, 1366.2552490234375]],
     ),
     ColoredBananaGroup(
         group=101,
@@ -1445,10 +1067,7 @@ ColoredBananaGroupList = [
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.CrystalCavesMain,
         vanilla=True,
-        locations=[
-            [5, 1.0, 2258.80712890625, 90.08489227294922, 652.76220703125],
-            [5, 1.0, 2651.197021484375, 295.0, 2181.504638671875],
-        ],
+        locations=[[5, 1.0, 2258.80712890625, 90.08489227294922, 652.76220703125], [5, 1.0, 2651.197021484375, 295.0, 2181.504638671875]],
     ),
     ColoredBananaGroup(
         group=102,
@@ -1487,10 +1106,7 @@ ColoredBananaGroupList = [
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.CrystalCavesMain,
         vanilla=True,
-        locations=[
-            [5, 1.0, 2168.7314453125, 84.12599182128906, 657.947998046875],
-            [5, 1.0, 386.0030212402344, 73.5, 970.0894165039062],
-        ],
+        locations=[[5, 1.0, 2168.7314453125, 84.12599182128906, 657.947998046875], [5, 1.0, 386.0030212402344, 73.5, 970.0894165039062]],
     ),
     ColoredBananaGroup(
         group=105,
@@ -1499,9 +1115,7 @@ ColoredBananaGroupList = [
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.CabinArea,
         vanilla=True,
-        locations=[
-            [5, 1.0, 3432.132568359375, 178.8333282470703, 1580.23095703125],
-        ],
+        locations=[[5, 1.0, 3432.132568359375, 178.8333282470703, 1580.23095703125]],
     ),
     ColoredBananaGroup(
         group=106,
@@ -1511,9 +1125,7 @@ ColoredBananaGroupList = [
         region=Regions.IglooArea,
         vanilla=True,
         logic=lambda l: (l.jetpack and l.isdiddy) or (l.twirl and l.istiny),
-        locations=[
-            [5, 1.0, 327.7669372558594, 154.5, 1521.9307861328125],
-        ],
+        locations=[[5, 1.0, 327.7669372558594, 154.5, 1521.9307861328125]],
     ),
     ColoredBananaGroup(
         group=107,
@@ -1537,9 +1149,7 @@ ColoredBananaGroupList = [
         region=Regions.CrystalCavesMain,
         vanilla=True,
         logic=lambda l: l.superSlam and l.balloon,
-        locations=[
-            [5, 1.0199991464614868, 2205.302978515625, 399.8333435058594, 971.8466796875],
-        ],
+        locations=[[5, 1.0199991464614868, 2205.302978515625, 399.8333435058594, 971.8466796875]],
     ),
     ColoredBananaGroup(
         group=109,
@@ -1549,9 +1159,7 @@ ColoredBananaGroupList = [
         region=Regions.CabinArea,
         vanilla=True,
         logic=lambda l: (l.jetpack and l.isdiddy) or (l.balloon and l.islanky),
-        locations=[
-            [5, 1.0, 2382.422119140625, 414.1666564941406, 1830.9127197265625],
-        ],
+        locations=[[5, 1.0, 2382.422119140625, 414.1666564941406, 1830.9127197265625]],
     ),
     ColoredBananaGroup(
         group=110,
@@ -1590,9 +1198,7 @@ ColoredBananaGroupList = [
         konglist=[Kongs.diddy, Kongs.tiny],
         region=Regions.CavesBlueprintCave,
         vanilla=True,
-        locations=[
-            [5, 1.0, 3340.275634765625, 296.6666564941406, 570.8076782226562],
-        ],
+        locations=[[5, 1.0, 3340.275634765625, 296.6666564941406, 570.8076782226562]],
     ),
     ColoredBananaGroup(
         group=112,
@@ -1601,9 +1207,7 @@ ColoredBananaGroupList = [
         konglist=[Kongs.diddy, Kongs.tiny],
         region=Regions.CavesBananaportSpire,
         vanilla=True,
-        locations=[
-            [5, 1.0, 1197.610107421875, 142.5, 1924.6083984375],
-        ],
+        locations=[[5, 1.0, 1197.610107421875, 142.5, 1924.6083984375]],
     ),
     ColoredBananaGroup(
         group=113,
@@ -1613,10 +1217,7 @@ ColoredBananaGroupList = [
         region=Regions.IglooArea,
         vanilla=True,
         logic=lambda l: l.jetpack,
-        locations=[
-            [5, 1.0, 289.3224792480469, 208.5, 1743.85107421875],
-            [5, 1.0, 757.3706665039062, 208.5, 791.2725219726562],
-        ],
+        locations=[[5, 1.0, 289.3224792480469, 208.5, 1743.85107421875], [5, 1.0, 757.3706665039062, 208.5, 791.2725219726562]],
     ),
     ColoredBananaGroup(
         group=114,
@@ -1656,9 +1257,7 @@ ColoredBananaGroupList = [
         region=Regions.CrystalCavesMain,
         vanilla=True,
         logic=lambda l: l.punch and l.chunky,
-        locations=[
-            [5, 1.0, 2581.2197265625, 33.5, 586.1724243164062],
-        ],
+        locations=[[5, 1.0, 2581.2197265625, 33.5, 586.1724243164062]],
     ),
     ColoredBananaGroup(
         group=117,
@@ -1667,9 +1266,7 @@ ColoredBananaGroupList = [
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.CrystalCavesMain,
         vanilla=True,
-        locations=[
-            [5, 1.0, 1376.521484375, 350.8470153808594, 1167.5355224609375],
-        ],
+        locations=[[5, 1.0, 1376.521484375, 350.8470153808594, 1167.5355224609375]],
     ),
     ColoredBananaGroup(
         group=118,
@@ -1679,9 +1276,7 @@ ColoredBananaGroupList = [
         region=Regions.BoulderCave,
         vanilla=True,
         logic=lambda l: l.barrels and l.hunkyChunky and l.chunky,
-        locations=[
-            [5, 1.0, 1922.93359375, 290.3333435058594, 2504.288330078125],
-        ],
+        locations=[[5, 1.0, 1922.93359375, 290.3333435058594, 2504.288330078125]],
     ),
     ColoredBananaGroup(
         group=119,
@@ -1690,9 +1285,7 @@ ColoredBananaGroupList = [
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.CavesBonusCave,
         vanilla=True,
-        locations=[
-            [5, 1.0, 541.8216552734375, 210.3333282470703, 2511.490966796875],
-        ],
+        locations=[[5, 1.0, 541.8216552734375, 210.3333282470703, 2511.490966796875]],
     ),
     ColoredBananaGroup(
         group=119,
@@ -1701,9 +1294,7 @@ ColoredBananaGroupList = [
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.IglooArea,
         vanilla=True,
-        locations=[
-            [5, 1.0, 177, 70, 1089],
-        ],
+        locations=[[5, 1.0, 177, 70, 1089]],
     ),
     ColoredBananaGroup(
         group=120,
@@ -1767,9 +1358,7 @@ ColoredBananaGroupList = [
         region=Regions.IglooArea,
         vanilla=True,
         logic=lambda l: l.monkeyport,
-        locations=[
-            [5, 1.0, 261.5770263671875, 48.5, 1772.1956787109375],
-        ],
+        locations=[[5, 1.0, 261.5770263671875, 48.5, 1772.1956787109375]],
     ),
     ColoredBananaGroup(
         group=124,
@@ -1779,9 +1368,7 @@ ColoredBananaGroupList = [
         region=Regions.CrystalCavesMain,
         vanilla=True,
         logic=lambda l: l.punch and l.chunky,
-        locations=[
-            [5, 1.0, 1658.8216552734375, 291.8333435058594, 1007.8945922851562],
-        ],
+        locations=[[5, 1.0, 1658.8216552734375, 291.8333435058594, 1007.8945922851562]],
     ),
     ColoredBananaGroup(
         group=125,
@@ -1798,15 +1385,7 @@ ColoredBananaGroupList = [
         ],
     ),
     ColoredBananaGroup(
-        group=126,
-        map_id=Maps.CavesTinyIgloo,
-        name="In middle (Tiny)",
-        konglist=[Kongs.tiny],
-        region=Regions.TinyIgloo,
-        vanilla=True,
-        locations=[
-            [5, 1.0, 272.8538513183594, 65.0, 305.7542724609375],
-        ],
+        group=126, map_id=Maps.CavesTinyIgloo, name="In middle (Tiny)", konglist=[Kongs.tiny], region=Regions.TinyIgloo, vanilla=True, locations=[[5, 1.0, 272.8538513183594, 65.0, 305.7542724609375]]
     ),
     ColoredBananaGroup(
         group=127,
@@ -1831,9 +1410,7 @@ ColoredBananaGroupList = [
         konglist=[Kongs.donkey],
         region=Regions.DonkeyIgloo,
         vanilla=True,
-        locations=[
-            [5, 1.0, 111.83493041992188, 52.0, 369.4170227050781],
-        ],
+        locations=[[5, 1.0, 111.83493041992188, 52.0, 369.4170227050781]],
     ),
     ColoredBananaGroup(
         group=129,
@@ -1842,9 +1419,7 @@ ColoredBananaGroupList = [
         konglist=[Kongs.donkey],
         region=Regions.RotatingCabin,
         vanilla=True,
-        locations=[
-            [5, 1.0, 318.0190124511719, 135.0, 297.6553955078125],
-        ],
+        locations=[[5, 1.0, 318.0190124511719, 135.0, 297.6553955078125]],
     ),
     ColoredBananaGroup(
         group=130,
@@ -1868,9 +1443,7 @@ ColoredBananaGroupList = [
         konglist=[Kongs.donkey],
         region=Regions.DonkeyCabin,
         vanilla=True,
-        locations=[
-            [5, 1.0, 302.6053771972656, 20.0, 443.752197265625],
-        ],
+        locations=[[5, 1.0, 302.6053771972656, 20.0, 443.752197265625]],
     ),
     ColoredBananaGroup(
         group=132,
@@ -1894,9 +1467,7 @@ ColoredBananaGroupList = [
         konglist=[Kongs.diddy],
         region=Regions.DiddyLowerCabin,
         vanilla=True,
-        locations=[
-            [5, 1.0, 300.0310363769531, 101.0, 291.0983581542969],
-        ],
+        locations=[[5, 1.0, 300.0310363769531, 101.0, 291.0983581542969]],
     ),
     ColoredBananaGroup(
         group=134,
@@ -1905,10 +1476,7 @@ ColoredBananaGroupList = [
         konglist=[Kongs.tiny],
         region=Regions.TinyCabin,
         vanilla=True,
-        locations=[
-            [5, 1.0, 412.1592102050781, 40.166664123535156, 358.9884338378906],
-            [5, 1.0, 175.46046447753906, 40.166664123535156, 360.0655212402344],
-        ],
+        locations=[[5, 1.0, 412.1592102050781, 40.166664123535156, 358.9884338378906], [5, 1.0, 175.46046447753906, 40.166664123535156, 360.0655212402344]],
     ),
     ColoredBananaGroup(
         group=135,
@@ -1917,9 +1485,7 @@ ColoredBananaGroupList = [
         konglist=[Kongs.lanky],
         region=Regions.LankyCabin,
         vanilla=True,
-        locations=[
-            [5, 1.0, 89.70840454101562, 20.0, 423.5394592285156],
-        ],
+        locations=[[5, 1.0, 89.70840454101562, 20.0, 423.5394592285156]],
     ),
     ColoredBananaGroup(
         group=136,
@@ -1928,11 +1494,7 @@ ColoredBananaGroupList = [
         konglist=[Kongs.donkey],
         region=Regions.CavesBaboonBlast,
         vanilla=True,
-        locations=[
-            [5, 1.119999885559082, 1230.7186279296875, 344.0, 447.0163879394531],
-            [5, 1.0, 898.5409545898438, 509.0, 1734.1337890625],
-            [5, 1.0, 881.0941772460938, 393.0, 1655.2952880859375],
-        ],
+        locations=[[5, 1.119999885559082, 1230.7186279296875, 344.0, 447.0163879394531], [5, 1.0, 898.5409545898438, 509.0, 1734.1337890625], [5, 1.0, 881.0941772460938, 393.0, 1655.2952880859375]],
     ),
     ColoredBananaGroup(
         group=137,
@@ -1941,9 +1503,7 @@ ColoredBananaGroupList = [
         konglist=[Kongs.donkey],
         region=Regions.CavesBaboonBlast,
         vanilla=True,
-        locations=[
-            [5, 1.0, 1483.0496826171875, 329.0, 912.5014038085938],
-        ],
+        locations=[[5, 1.0, 1483.0496826171875, 329.0, 912.5014038085938]],
     ),
     ColoredBananaGroup(
         group=138,
@@ -1969,12 +1529,7 @@ BalloonList = [
         speed=5,
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.CrystalCavesMain,
-        points=[
-            [1825, 50, 120],
-            [1734, 60, 82],
-            [1632, 65, 136],
-            [1734, 60, 82],
-        ],
+        points=[[1825, 50, 120], [1734, 60, 82], [1632, 65, 136], [1734, 60, 82]],
     ),
     Balloon(
         id=2,
@@ -1983,12 +1538,7 @@ BalloonList = [
         speed=5,
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.CrystalCavesMain,
-        points=[
-            [2085, 100, 301],
-            [2085, 100, 137],
-            [2285, 105, 185],
-            [2206, 105, 344],
-        ],
+        points=[[2085, 100, 301], [2085, 100, 137], [2285, 105, 185], [2206, 105, 344]],
     ),
     Balloon(
         id=3,
@@ -1997,10 +1547,7 @@ BalloonList = [
         speed=7,
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.CrystalCavesMain,
-        points=[
-            [3000, 160, 724],
-            [3093, 160, 848],
-        ],
+        points=[[3000, 160, 724], [3093, 160, 848]],
     ),
     Balloon(
         id=4,
@@ -2009,13 +1556,7 @@ BalloonList = [
         speed=6,
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.CrystalCavesMain,
-        points=[
-            [2701, 245, 923],
-            [2787, 240, 882],
-            [2832, 235, 978],
-            [2769, 240, 1041],
-            [2691, 245, 991],
-        ],
+        points=[[2701, 245, 923], [2787, 240, 882], [2832, 235, 978], [2769, 240, 1041], [2691, 245, 991]],
     ),
     Balloon(
         id=5,
@@ -2024,14 +1565,7 @@ BalloonList = [
         speed=6,
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.CavesBlueprintPillar,
-        points=[
-            [2693, 420, 862],
-            [2850, 425, 850],
-            [2866, 420, 1012],
-            [2765, 420, 1090],
-            [2671, 415, 1045],
-            [2622, 420, 964],
-        ],
+        points=[[2693, 420, 862], [2850, 425, 850], [2866, 420, 1012], [2765, 420, 1090], [2671, 415, 1045], [2622, 420, 964]],
     ),
     Balloon(
         id=6,
@@ -2040,10 +1574,7 @@ BalloonList = [
         speed=5,
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.CrystalCavesMain,
-        points=[
-            [2105, 350, 648],
-            [2347, 360, 698],
-        ],
+        points=[[2105, 350, 648], [2347, 360, 698]],
     ),
     Balloon(
         id=7,
@@ -2052,12 +1583,7 @@ BalloonList = [
         speed=5,
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.CrystalCavesMain,
-        points=[
-            [1651, 370, 903],
-            [1763, 375, 1039],
-            [1590, 370, 1078],
-            [1561, 365, 978],
-        ],
+        points=[[1651, 370, 903], [1763, 375, 1039], [1590, 370, 1078], [1561, 365, 978]],
     ),
     Balloon(
         id=8,
@@ -2066,12 +1592,7 @@ BalloonList = [
         speed=6,
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.CrystalCavesMain,
-        points=[
-            [1350, 350, 1483],
-            [1450, 350, 1483],
-            [1450, 350, 1583],
-            [1350, 350, 1583],
-        ],
+        points=[[1350, 350, 1483], [1450, 350, 1483], [1450, 350, 1583], [1350, 350, 1583]],
     ),
     Balloon(
         id=9,
@@ -2080,11 +1601,7 @@ BalloonList = [
         speed=5,
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.CrystalCavesMain,
-        points=[
-            [1762, 170, 1158],
-            [1822, 165, 995],
-            [1994, 170, 979],
-        ],
+        points=[[1762, 170, 1158], [1822, 165, 995], [1994, 170, 979]],
     ),
     Balloon(
         id=10,
@@ -2093,10 +1610,7 @@ BalloonList = [
         speed=6,
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.CrystalCavesMain,
-        points=[
-            [1300, 160, 2395],
-            [1467, 160, 2277],
-        ],
+        points=[[1300, 160, 2395], [1467, 160, 2277]],
     ),
     Balloon(
         id=11,
@@ -2105,10 +1619,7 @@ BalloonList = [
         speed=5,
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.CrystalCavesMain,
-        points=[
-            [1029, 380, 2347],
-            [981, 370, 2107],
-        ],
+        points=[[1029, 380, 2347], [981, 370, 2107]],
     ),
     Balloon(
         id=12,
@@ -2117,12 +1628,7 @@ BalloonList = [
         speed=6,
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.IglooArea,
-        points=[
-            [801, 150, 1478],
-            [929, 160, 1333],
-            [880, 150, 1180],
-            [929, 160, 1333],
-        ],
+        points=[[801, 150, 1478], [929, 160, 1333], [880, 150, 1180], [929, 160, 1333]],
     ),
     Balloon(
         id=13,
@@ -2131,14 +1637,7 @@ BalloonList = [
         speed=8,
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.IglooArea,
-        points=[
-            [347, 220, 1816],
-            [236, 225, 1835],
-            [193, 220, 1720],
-            [279, 225, 1629],
-            [369, 220, 1668],
-            [390, 225, 1751],
-        ],
+        points=[[347, 220, 1816], [236, 225, 1835], [193, 220, 1720], [279, 225, 1629], [369, 220, 1668], [390, 225, 1751]],
     ),
     Balloon(
         id=14,
@@ -2147,12 +1646,7 @@ BalloonList = [
         speed=6,
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.IglooArea,
-        points=[
-            [230, 180, 1355],
-            [208, 190, 1096],
-            [438, 180, 994],
-            [208, 190, 1096],
-        ],
+        points=[[230, 180, 1355], [208, 190, 1096], [438, 180, 994], [208, 190, 1096]],
     ),
     Balloon(
         id=15,
@@ -2161,12 +1655,7 @@ BalloonList = [
         speed=5,
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.IglooArea,
-        points=[
-            [638, 190, 722],
-            [688, 190, 904],
-            [878, 190, 824],
-            [760, 190, 650],
-        ],
+        points=[[638, 190, 722], [688, 190, 904], [878, 190, 824], [760, 190, 650]],
     ),
     Balloon(
         id=16,
@@ -2175,10 +1664,7 @@ BalloonList = [
         speed=6,
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.CrystalCavesMain,
-        points=[
-            [2966, 250, 1228],
-            [3079, 260, 1509],
-        ],
+        points=[[2966, 250, 1228], [3079, 260, 1509]],
     ),
     Balloon(
         id=17,
@@ -2187,10 +1673,7 @@ BalloonList = [
         speed=5,
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.CabinArea,
-        points=[
-            [3372, 280, 1572],
-            [3429, 280, 1907],
-        ],
+        points=[[3372, 280, 1572], [3429, 280, 1907]],
     ),
     Balloon(
         id=18,
@@ -2199,10 +1682,7 @@ BalloonList = [
         speed=5,
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.CabinArea,
-        points=[
-            [3500, 360, 1560],
-            [3520, 360, 1888],
-        ],
+        points=[[3500, 360, 1560], [3520, 360, 1888]],
     ),
     Balloon(
         id=19,
@@ -2211,10 +1691,7 @@ BalloonList = [
         speed=6,
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.CabinArea,
-        points=[
-            [3110, 110, 1708],
-            [3076, 120, 1507],
-        ],
+        points=[[3110, 110, 1708], [3076, 120, 1507]],
     ),
     Balloon(
         id=20,
@@ -2223,14 +1700,7 @@ BalloonList = [
         speed=8,
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.CabinArea,
-        points=[
-            [2974, 230, 1762],
-            [2845, 235, 1778],
-            [2768, 230, 1905],
-            [2900, 225, 2000],
-            [3023, 220, 1945],
-            [3023, 225, 1828],
-        ],
+        points=[[2974, 230, 1762], [2845, 235, 1778], [2768, 230, 1905], [2900, 225, 2000], [3023, 220, 1945], [3023, 225, 1828]],
     ),
     Balloon(
         id=21,
@@ -2239,12 +1709,7 @@ BalloonList = [
         speed=6,
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.CabinArea,
-        points=[
-            [3000, 240, 1562],
-            [2944, 245, 1646],
-            [2818, 250, 1731],
-            [2944, 245, 1646],
-        ],
+        points=[[3000, 240, 1562], [2944, 245, 1646], [2818, 250, 1731], [2944, 245, 1646]],
     ),
     Balloon(
         id=22,
@@ -2253,11 +1718,7 @@ BalloonList = [
         speed=6,
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.CabinArea,
-        points=[
-            [2572, 550, 1885],
-            [2508, 555, 2071],
-            [2361, 545, 2087],
-        ],
+        points=[[2572, 550, 1885], [2508, 555, 2071], [2361, 545, 2087]],
     ),
     Balloon(
         id=23,
@@ -2266,10 +1727,7 @@ BalloonList = [
         speed=6,
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.CabinArea,
-        points=[
-            [2486, 360, 2478],
-            [2612, 370, 2293],
-        ],
+        points=[[2486, 360, 2478], [2612, 370, 2293]],
     ),
     Balloon(
         id=24,
@@ -2278,10 +1736,7 @@ BalloonList = [
         speed=6,
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.CabinArea,
-        points=[
-            [2677, 460, 2413],
-            [2861, 455, 2293],
-        ],
+        points=[[2677, 460, 2413], [2861, 455, 2293]],
     ),
     Balloon(
         id=25,
@@ -2290,11 +1745,7 @@ BalloonList = [
         speed=5,
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.CabinArea,
-        points=[
-            [3308, 240, 1978],
-            [3100, 240, 2144],
-            [3147, 235, 1940],
-        ],
+        points=[[3308, 240, 1978], [3100, 240, 2144], [3147, 235, 1940]],
     ),
     Balloon(
         id=26,
@@ -2303,14 +1754,7 @@ BalloonList = [
         speed=8,
         konglist=[Kongs.lanky],
         region=Regions.LankyIgloo,
-        points=[
-            [387, 100, 348],
-            [359, 105, 211],
-            [227, 110, 188],
-            [139, 105, 272],
-            [153, 100, 377],
-            [258, 95, 412],
-        ],
+        points=[[387, 100, 348], [359, 105, 211], [227, 110, 188], [139, 105, 272], [153, 100, 377], [258, 95, 412]],
     ),
     Balloon(
         id=27,
@@ -2319,12 +1763,7 @@ BalloonList = [
         speed=10,
         konglist=[Kongs.lanky],
         region=Regions.LankyCabin,
-        points=[
-            [117, 90, 422],
-            [440, 80, 422],
-            [440, 90, 160],
-            [440, 80, 422],
-        ],
+        points=[[117, 90, 422], [440, 80, 422], [440, 90, 160], [440, 80, 422]],
     ),
     Balloon(
         id=28,
@@ -2333,12 +1772,7 @@ BalloonList = [
         speed=8,
         konglist=[Kongs.diddy],
         region=Regions.DiddyLowerCabin,
-        points=[
-            [306, 200, 184],
-            [441, 200, 305],
-            [304, 200, 431],
-            [154, 200, 298],
-        ],
+        points=[[306, 200, 184], [441, 200, 305], [304, 200, 431], [154, 200, 298]],
     ),
     Balloon(
         id=29,
@@ -2348,24 +1782,9 @@ BalloonList = [
         konglist=[Kongs.diddy],
         region=Regions.DiddyUpperCabin,
         logic=lambda l: l.jetpack or l.scope,
-        points=[
-            [420, 460, 151],
-            [197, 460, 157],
-        ],
+        points=[[420, 460, 151], [197, 460, 157]],
     ),
-    Balloon(
-        id=30,
-        map_id=Maps.CavesDonkeyCabin,
-        name="Around room",
-        speed=10,
-        konglist=[Kongs.donkey],
-        region=Regions.DonkeyCabin,
-        points=[
-            [180, 100, 180],
-            [446, 100, 275],
-            [247, 100, 407],
-        ],
-    ),
+    Balloon(id=30, map_id=Maps.CavesDonkeyCabin, name="Around room", speed=10, konglist=[Kongs.donkey], region=Regions.DonkeyCabin, points=[[180, 100, 180], [446, 100, 275], [247, 100, 407]]),
     Balloon(
         id=31,
         map_id=Maps.CrystalCaves,
@@ -2374,14 +1793,7 @@ BalloonList = [
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.CrystalCavesMain,
         vanilla=True,
-        points=[
-            [1222, 80, 1837],
-            [1295, 76, 1925],
-            [1221, 72, 2026],
-            [1153, 70, 2007],
-            [1127, 72, 1911],
-            [1196, 72, 1839],
-        ],
+        points=[[1222, 80, 1837], [1295, 76, 1925], [1221, 72, 2026], [1153, 70, 2007], [1127, 72, 1911], [1196, 72, 1839]],
     ),
     Balloon(
         id=32,
@@ -2391,12 +1803,7 @@ BalloonList = [
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.CavesSnideArea,
         vanilla=True,
-        points=[
-            [1153, 158, 468],
-            [1310, 150, 395],
-            [1305, 156, 547],
-            [1210, 150, 610],
-        ],
+        points=[[1153, 158, 468], [1310, 150, 395], [1305, 156, 547], [1210, 150, 610]],
     ),
     Balloon(
         id=33,
@@ -2406,15 +1813,7 @@ BalloonList = [
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.CabinArea,
         vanilla=True,
-        points=[
-            [3001, 447, 1910],
-            [2943, 453, 1968],
-            [2869, 451, 1969],
-            [2823, 451, 1911],
-            [2814, 445, 1829],
-            [2866, 435, 1773],
-            [2946, 445, 1776],
-        ],
+        points=[[3001, 447, 1910], [2943, 453, 1968], [2869, 451, 1969], [2823, 451, 1911], [2814, 445, 1829], [2866, 435, 1773], [2946, 445, 1776]],
     ),
     Balloon(
         id=34,
@@ -2424,10 +1823,7 @@ BalloonList = [
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.CabinArea,
         vanilla=True,
-        points=[
-            [2297, 116, 2243],
-            [2265, 114, 2119],
-        ],
+        points=[[2297, 116, 2243], [2265, 114, 2119]],
     ),
     Balloon(
         id=35,
@@ -2438,10 +1834,7 @@ BalloonList = [
         region=Regions.CrystalCavesMain,
         vanilla=True,
         logic=lambda l: l.punch and l.chunky,
-        points=[
-            [2698, 83, 501],
-            [2519, 81, 572],
-        ],
+        points=[[2698, 83, 501], [2519, 81, 572]],
     ),
     Balloon(
         id=36,
@@ -2451,11 +1844,7 @@ BalloonList = [
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.CabinArea,
         vanilla=True,
-        points=[
-            [3629, 603, 1597],
-            [3606, 601, 1730],
-            [3614, 599, 1832],
-        ],
+        points=[[3629, 603, 1597], [3606, 601, 1730], [3614, 599, 1832]],
     ),
     Balloon(
         id=37,
@@ -2465,14 +1854,7 @@ BalloonList = [
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.CavesBonusCave,
         vanilla=True,
-        points=[
-            [382, 234, 2575],
-            [349, 234, 2457],
-            [429, 238, 2377],
-            [511, 224, 2425],
-            [528, 248, 2546],
-            [475, 222, 2583],
-        ],
+        points=[[382, 234, 2575], [349, 234, 2457], [429, 238, 2377], [511, 224, 2425], [528, 248, 2546], [475, 222, 2583]],
     ),
     Balloon(
         id=38,
@@ -2482,14 +1864,7 @@ BalloonList = [
         konglist=[Kongs.diddy, Kongs.tiny],
         region=Regions.CavesBlueprintCave,
         vanilla=True,
-        points=[
-            [3509, 320, 605],
-            [3589, 326, 669],
-            [3617, 330, 750],
-            [3538, 338, 815],
-            [3459, 342, 767],
-            [3430, 332, 641],
-        ],
+        points=[[3509, 320, 605], [3589, 326, 669], [3617, 330, 750], [3538, 338, 815], [3459, 342, 767], [3430, 332, 641]],
     ),
     Balloon(
         id=39,
@@ -2499,13 +1874,7 @@ BalloonList = [
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.BoulderCave,
         vanilla=True,
-        points=[
-            [2047, 380, 2375],
-            [2085, 372, 2573],
-            [1875, 358, 2677],
-            [1755, 364, 2477],
-            [1896, 366, 2325],
-        ],
+        points=[[2047, 380, 2375], [2085, 372, 2573], [1875, 358, 2677], [1755, 364, 2477], [1896, 366, 2325]],
     ),
     Balloon(
         id=40,
@@ -2515,12 +1884,7 @@ BalloonList = [
         konglist=[Kongs.tiny],
         region=Regions.TinyIgloo,
         vanilla=True,
-        points=[
-            [239, 82, 450],
-            [175, 84, 269],
-            [344, 80, 181],
-            [378, 82, 375],
-        ],
+        points=[[239, 82, 450], [175, 84, 269], [344, 80, 181], [378, 82, 375]],
     ),
     Balloon(
         id=41,
@@ -2530,13 +1894,7 @@ BalloonList = [
         konglist=[Kongs.lanky],
         region=Regions.LankyIgloo,
         vanilla=True,
-        points=[
-            [328, 312, 426],
-            [204, 302, 440],
-            [124, 308, 342],
-            [196, 294, 172],
-            [374, 308, 214],
-        ],
+        points=[[328, 312, 426], [204, 302, 440], [124, 308, 342], [196, 294, 172], [374, 308, 214]],
     ),
     Balloon(
         id=42,
@@ -2546,26 +1904,9 @@ BalloonList = [
         konglist=[Kongs.donkey],
         region=Regions.DonkeyIgloo,
         vanilla=True,
-        points=[
-            [415, 90, 507],
-            [463, 80, 445],
-            [533, 90, 487],
-            [479, 82, 565],
-        ],
+        points=[[415, 90, 507], [463, 80, 445], [533, 90, 487], [479, 82, 565]],
     ),
-    Balloon(
-        id=43,
-        map_id=Maps.CavesTinyCabin,
-        name="In Tiny 5DC (Tiny)",
-        speed=15,
-        konglist=[Kongs.tiny],
-        region=Regions.TinyCabin,
-        vanilla=True,
-        points=[
-            [455, -99, 385],
-            [432, 51, 384],
-        ],
-    ),
+    Balloon(id=43, map_id=Maps.CavesTinyCabin, name="In Tiny 5DC (Tiny)", speed=15, konglist=[Kongs.tiny], region=Regions.TinyCabin, vanilla=True, points=[[455, -99, 385], [432, 51, 384]]),
     Balloon(
         id=44,
         map_id=Maps.CavesChunkyIgloo,
@@ -2574,27 +1915,9 @@ BalloonList = [
         konglist=[Kongs.chunky],
         region=Regions.ChunkyIgloo,
         vanilla=True,
-        points=[
-            [201, 76, 198],
-            [324, 78, 196],
-            [375, 70, 348],
-            [269, 74, 407],
-            [173, 72, 350],
-        ],
+        points=[[201, 76, 198], [324, 78, 196], [375, 70, 348], [269, 74, 407], [173, 72, 350]],
     ),
-    Balloon(
-        id=45,
-        map_id=Maps.CavesFrozenCastle,
-        name="In frozen castle (Lanky)",
-        speed=8,
-        konglist=[Kongs.lanky],
-        region=Regions.FrozenCastle,
-        vanilla=True,
-        points=[
-            [96, 94, 283],
-            [151, 94, 173],
-        ],
-    ),
+    Balloon(id=45, map_id=Maps.CavesFrozenCastle, name="In frozen castle (Lanky)", speed=8, konglist=[Kongs.lanky], region=Regions.FrozenCastle, vanilla=True, points=[[96, 94, 283], [151, 94, 173]]),
     Balloon(
         id=46,
         map_id=Maps.CavesDiddyIgloo,
@@ -2603,13 +1926,6 @@ BalloonList = [
         konglist=[Kongs.diddy],
         region=Regions.DiddyIgloo,
         vanilla=True,
-        points=[
-            [288, 120, 174],
-            [383, 110, 224],
-            [411, 100, 323],
-            [287, 102, 451],
-            [161, 102, 375],
-            [183, 124, 242],
-        ],
+        points=[[288, 120, 174], [383, 110, 224], [411, 100, 323], [287, 102, 451], [161, 102, 375], [183, 124, 242]],
     ),
 ]

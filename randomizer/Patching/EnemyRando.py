@@ -228,14 +228,8 @@ def randomize_enemies(spoiler: Spoiler):
                     "vanilla_location": 0,  # Kong index which is tied to the kasplat. Eg. This would take the DK Kasplat location (DK is kong 0)
                     "replace_with": 1,  # Which Kasplat will go in that position (0 = DK, 1 = Diddy etc)
                 },
-                {
-                    "vanilla_location": 1,
-                    "replace_with": 3,
-                },
-                {
-                    "vanilla_location": 2,
-                    "replace_with": 0,
-                },
+                {"vanilla_location": 1, "replace_with": 3},
+                {"vanilla_location": 2, "replace_with": 0},
                 {"vanilla_location": 3, "replace_with": 2},
             ],
         }
@@ -330,18 +324,7 @@ def randomize_enemies(spoiler: Spoiler):
         Maps.ForestLankyZingersRoom,
         Maps.CastleBoss,
     ]
-    crown_maps = [
-        Maps.JapesCrown,
-        Maps.AztecCrown,
-        Maps.FactoryCrown,
-        Maps.GalleonCrown,
-        Maps.ForestCrown,
-        Maps.CavesCrown,
-        Maps.CastleCrown,
-        Maps.HelmCrown,
-        Maps.SnidesCrown,
-        Maps.LobbyCrown,
-    ]
+    crown_maps = [Maps.JapesCrown, Maps.AztecCrown, Maps.FactoryCrown, Maps.GalleonCrown, Maps.ForestCrown, Maps.CavesCrown, Maps.CastleCrown, Maps.HelmCrown, Maps.SnidesCrown, Maps.LobbyCrown]
     minigame_maps_easy = [
         Maps.BusyBarrelBarrageEasy,
         Maps.BusyBarrelBarrageHard,
@@ -350,24 +333,9 @@ def randomize_enemies(spoiler: Spoiler):
         Maps.HelmBarrelChunkyHidden,
         Maps.HelmBarrelChunkyShooting,
     ]
-    minigame_maps_beatable = [
-        Maps.MadMazeMaulEasy,
-        Maps.MadMazeMaulNormal,
-        Maps.MadMazeMaulHard,
-        Maps.MadMazeMaulInsane,
-    ]
-    minigame_maps_nolimit = [
-        Maps.HelmBarrelLankyMaze,
-        Maps.StashSnatchEasy,
-        Maps.StashSnatchNormal,
-        Maps.StashSnatchHard,
-        Maps.StashSnatchInsane,
-    ]
-    minigame_maps_beavers = [
-        Maps.BeaverBotherEasy,
-        Maps.BeaverBotherNormal,
-        Maps.BeaverBotherHard,
-    ]
+    minigame_maps_beatable = [Maps.MadMazeMaulEasy, Maps.MadMazeMaulNormal, Maps.MadMazeMaulHard, Maps.MadMazeMaulInsane]
+    minigame_maps_nolimit = [Maps.HelmBarrelLankyMaze, Maps.StashSnatchEasy, Maps.StashSnatchNormal, Maps.StashSnatchHard, Maps.StashSnatchInsane]
+    minigame_maps_beavers = [Maps.BeaverBotherEasy, Maps.BeaverBotherNormal, Maps.BeaverBotherHard]
     minigame_maps_total = minigame_maps_easy.copy()
     minigame_maps_total.extend(minigame_maps_beatable)
     minigame_maps_total.extend(minigame_maps_nolimit)
@@ -409,11 +377,7 @@ def randomize_enemies(spoiler: Spoiler):
             Enemies.KlaptrapRed,
             Enemies.Guard,
         ],
-        EnemySubtype.Water: [
-            Enemies.Shuri,
-            Enemies.Gimpfish,
-            Enemies.Pufftup,
-        ],
+        EnemySubtype.Water: [Enemies.Shuri, Enemies.Gimpfish, Enemies.Pufftup],
     }
     replacement_priority = {
         EnemySubtype.GroundSimple: [EnemySubtype.GroundBeefy, EnemySubtype.Water, EnemySubtype.Air],
@@ -555,13 +519,7 @@ def randomize_enemies(spoiler: Spoiler):
                         new_enemy_id = random.choice(tied_enemy_list)
                         # Balance beaver bother so it's a 2:1 ratio of blue to gold beavers
                         if cont_map_id in minigame_maps_beavers:
-                            new_enemy_id = random.choice(
-                                [
-                                    Enemies.BeaverBlue,
-                                    Enemies.BeaverBlue,
-                                    Enemies.BeaverGold,
-                                ]
-                            )
+                            new_enemy_id = random.choice([Enemies.BeaverBlue, Enemies.BeaverBlue, Enemies.BeaverGold])
                         ROM().seek(cont_map_spawner_address + spawner["offset"])
                         ROM().writeMultipleBytes(new_enemy_id, 1)
                         if new_enemy_id in EnemyMetaData.keys():
@@ -632,11 +590,7 @@ def randomize_enemies(spoiler: Spoiler):
                                 get_out_timer = 20
                                 if crown_timer > 20:
                                     damage_mult = 1
-                                    damage_amts = {
-                                        "double": 2,
-                                        "quad": 4,
-                                        "ohko": 12,
-                                    }
+                                    damage_amts = {"double": 2, "quad": 4, "ohko": 12}
                                     if spoiler.settings.damage_amount in damage_amts:
                                         damage_mult = damage_amts[spoiler.settings.damage_amount]
                                     get_out_timer = random.randint(int(crown_timer / (12 / damage_mult)) + 1, crown_timer - 1)

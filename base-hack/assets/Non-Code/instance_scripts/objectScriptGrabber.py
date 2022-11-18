@@ -1174,61 +1174,17 @@ trigger_types = [
 ]
 
 relevant_pointer_tables = [
-    {
-        "index": 1,
-        "name": "Map Geometry",
-        "output_filename": "geometry.bin",
-    },
-    {
-        "index": 2,
-        "name": "Map Walls",
-        "output_filename": "walls.bin",
-    },
-    {
-        "index": 3,
-        "name": "Map Floors",
-        "output_filename": "floors.bin",
-    },
-    {
-        "index": 8,
-        "name": "Map Cutscenes",
-        "output_filename": "cutscenes.bin",
-    },
-    {
-        "index": 9,
-        "name": "Map Setups",
-        "output_filename": "setup.bin",
-    },
-    {
-        "index": 10,
-        "name": "Map Data 0xA",
-        "output_filename": "map_0x0a.bin",
-    },
-    {
-        "index": 15,
-        "name": "Map Paths",
-        "output_filename": "paths.bin",
-    },
-    {
-        "index": 16,
-        "name": "Map Paths",
-        "output_filename": "character_spawners.bin",
-    },
-    {
-        "index": 18,
-        "name": "Map Loading Zones",
-        "output_filename": "loading_zones.bin",
-    },
-    {
-        "index": 21,
-        "name": "Map Data 0x15",
-        "output_filename": "map_0x15.bin",
-    },
-    {
-        "index": 23,
-        "name": "Map Exits",
-        "output_filename": "exits.bin",
-    },
+    {"index": 1, "name": "Map Geometry", "output_filename": "geometry.bin"},
+    {"index": 2, "name": "Map Walls", "output_filename": "walls.bin"},
+    {"index": 3, "name": "Map Floors", "output_filename": "floors.bin"},
+    {"index": 8, "name": "Map Cutscenes", "output_filename": "cutscenes.bin"},
+    {"index": 9, "name": "Map Setups", "output_filename": "setup.bin"},
+    {"index": 10, "name": "Map Data 0xA", "output_filename": "map_0x0a.bin"},
+    {"index": 15, "name": "Map Paths", "output_filename": "paths.bin"},
+    {"index": 16, "name": "Map Paths", "output_filename": "character_spawners.bin"},
+    {"index": 18, "name": "Map Loading Zones", "output_filename": "loading_zones.bin"},
+    {"index": 21, "name": "Map Data 0x15", "output_filename": "map_0x15.bin"},
+    {"index": 23, "name": "Map Exits", "output_filename": "exits.bin"},
 ]
 
 num_tables = 32
@@ -2336,15 +2292,7 @@ def parsePointerTables(fh: BinaryIO):
     i = 0
     while i < num_tables:
         absolute_address = int.from_bytes(fh.read(4), "big") + main_pointer_table_offset
-        pointer_tables.append(
-            {
-                "index": i,
-                "absolute_address": absolute_address,
-                "new_absolute_address": absolute_address,
-                "num_entries": 0,
-                "entries": [],
-            }
-        )
+        pointer_tables.append({"index": i, "absolute_address": absolute_address, "new_absolute_address": absolute_address, "num_entries": 0, "entries": []})
         i += 1
 
     # Read pointer table lengths
@@ -2362,14 +2310,7 @@ def parsePointerTables(fh: BinaryIO):
                 raw_int = int.from_bytes(fh.read(4), "big")
                 absolute_address = (raw_int & 0x7FFFFFFF) + main_pointer_table_offset
                 next_absolute_address = (int.from_bytes(fh.read(4), "big") & 0x7FFFFFFF) + main_pointer_table_offset
-                x["entries"].append(
-                    {
-                        "index": i,
-                        "absolute_address": absolute_address,
-                        "next_absolute_address": next_absolute_address,
-                        "bit_set": (raw_int & 0x80000000) > 0,
-                    }
-                )
+                x["entries"].append({"index": i, "absolute_address": absolute_address, "next_absolute_address": next_absolute_address, "bit_set": (raw_int & 0x80000000) > 0})
                 i += 1
 
     # Read data and original uncompressed size
