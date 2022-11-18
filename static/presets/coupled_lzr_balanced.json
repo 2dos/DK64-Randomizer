@@ -31,6 +31,8 @@
     "blocker_7":40,
     "medal_cb_req": 75,
     "medal_requirement": 15,
+    "rareware_gb_fairies": 20,
+    "random_starting_region":false,
     "damage_amount":"default",
     "no_healing":false,
     "no_melons":false,
@@ -87,5 +89,6 @@
     "crown_placement_rando": false,
     "wrinkly_location_rando": false,
     "tns_location_rando": false,
-    "helm_hurry": false
+    "helm_hurry": false,
+    "no_logic": false
  }

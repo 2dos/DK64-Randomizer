@@ -30,3 +30,4 @@
 .definelabel checkContactSublocation, 0x8064AB1C
 .definelabel setWaterHeight, 0x80661398
 .definelabel updateModelScales, 0x807248B0
+.definelabel spawnModelTwo, 0x80632630

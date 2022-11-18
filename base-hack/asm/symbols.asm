@@ -206,4 +206,9 @@
 .definelabel menuHeadScale, 0x80033F98
 .definelabel LatestCollectedObject, 0x807FD734
 .definelabel ImageCache, 0x807FC690
-
+.definelabel ViewedPauseItem, 0x807FC80C
+.definelabel NextViewedPauseItem, 0x807FC80D
+.definelabel MenuActivatedItems, 0x807FC818
+.definelabel ItemsInWheel, 0x807FC83C
+.definelabel RotationPerItem, 0x807FC83A
+.definelabel FileVariables, 0x807FC828

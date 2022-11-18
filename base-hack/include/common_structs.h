@@ -222,7 +222,9 @@ typedef struct playerData {
 	/* 0x324 */ char unk_324[0x328 - 0x324];
 	/* 0x328 */ actorData* krool_timer_pointer;
 	/* 0x32C */ actorData* held_actor;
-	/* 0x330 */ char unk_330[0x36C - 0x330];
+	/* 0x330 */ char unk_330[0x340 - 0x330];
+	/* 0x340 */ float scale[6];
+	/* 0x358 */ char unk_358[0x36C - 0x358];
 	/* 0x36C */ char fairy_state;
 	/* 0x36D */ char unk_36D[0x36F - 0x36D];
 	/* 0x36F */ char new_kong;
@@ -1321,3 +1323,38 @@ typedef struct menu_controller_paad {
 	/* 0x016 */ char prevent_action;
 	/* 0x017 */ char selected_action;
 } menu_controller_paad;
+
+typedef struct pause_paad {
+	/* 0x000 */ float unk0;
+	/* 0x004 */ char unk4[0xC-0x4];
+	/* 0x00C */ short unkC[2];
+	/* 0x010 */ unsigned short control;
+	/* 0x012 */ char screen;
+	/* 0x013 */ char next_screen;
+	/* 0x014 */ char unk14;
+	/* 0x015 */ char unk15;
+} pause_paad;
+
+typedef struct sprite_struct {
+	/* 0x000 */ char unk0[0x340];
+	/* 0x340 */ float x;
+	/* 0x344 */ float y;
+	/* 0x348 */ float z;
+	/* 0x34C */ char unk34C[0x35C-0x34C];
+	/* 0x35C */ void* control;
+	/* 0x360 */ float scale_x;
+	/* 0x364 */ float scale_z;
+	/* 0x368 */ char unk360[0x36A-0x368];
+	/* 0x36A */ unsigned char red;
+	/* 0x36B */ unsigned char green;
+	/* 0x36C */ unsigned char blue;
+	/* 0x36D */ unsigned char alpha;
+	/* 0x36E */ char unk36E[0x384-0x36E];
+	/* 0x384 */ float* unk384;
+} sprite_struct;
+
+typedef struct check_struct {
+    /* 0x000 */ short flag;
+    /* 0x002 */ unsigned char type;
+    /* 0x003 */ char associated_level;
+} check_struct;

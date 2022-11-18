@@ -113,7 +113,16 @@
                             Helm Hurry Mode
                         </label>
                     </div>
-                    <div class="spacer"></div>
+                    <div class="form-check form-switch item-switch">
+                        <label data-toggle="tooltip"
+                               title="Randomizes the location you spawn in when starting a new file and when selecting the 'Exit to Spawn' option.">
+                            <input class="form-check-input"
+                                   type="checkbox"
+                                   name="random_starting_region"
+                                   value="True"/>
+                            Random Starting Location
+                        </label>
+                    </div>
                 </div>
                 <div class="flex-container">
                     <div class="item-select">
@@ -398,7 +407,20 @@
                                 </option>
                             </select>
                         </div>
-                        <div class="spacer"></div>
+                        <div class="item-select">
+                            <p class="select-title">Fairies for Rareware GB</p>
+                            <input min="0"
+                                   max="40"
+                                   name="rareware_gb_fairies"
+                                   id="rareware_gb_fairies"
+                                   style="width: 15%;"
+                                   class="form-control center-div"
+                                   type="number"
+                                   data-toggle="tooltip"
+                                   title="Amount of fairies required to open the Rareware Door in Fairy Island."
+                                   default="20"
+                                   placeholder="20"/>
+                        </div>
                     </div>
                 </div>
             </div>

@@ -53,6 +53,8 @@
     "starting_kongs_count":2,
     "medal_cb_req": 75,
     "medal_requirement": 15,
+    "rareware_gb_fairies": 20,
+    "random_starting_region":false,
     "crown_door_open":true,
     "coin_door_open":"need_zero",
     "item_rando_list_selected": [],
@@ -97,5 +99,6 @@
     "crown_placement_rando": false,
     "wrinkly_location_rando": false,
     "tns_location_rando": false,
-    "helm_hurry": false
+    "helm_hurry": false,
+    "no_logic": false
 }

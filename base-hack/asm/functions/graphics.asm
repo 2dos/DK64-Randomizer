@@ -8,6 +8,7 @@
 .definelabel getPtr14Texture, 0x8068C12C
 .definelabel renderImage_Internal, 0x80702464
 .definelabel printText, 0x806ABB98
+.definelabel printOutOfCounter, 0x806AA09C
 .definelabel addDLToOverlay, 0x8068C350
 .definelabel getTextStyleHeight, 0x806FD894
 .definelabel textDraw, 0x806FD490

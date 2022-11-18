@@ -236,9 +236,6 @@ ObjectRotateHook:
 SpriteFixHook:
 	J 	SpriteFix
 	NOP
-CorrectCBCounterHook:
-	J 	CorrectCBCounter
-	NOP
 PauseCounterCapHook:
 	J 	PauseCounterCap
 	NOP
@@ -251,6 +248,15 @@ KrushaSpeedYHook:
 warpGrowFixHook:
 	J 	warpGrowFix
 	NOP
+FallTooFarFixHook:
+	J 	FallTooFarFix
+	NOP
+PauseControlHook:
+	J 	PauseControl_Control
+	NOP
+PauseSpriteHook:
+	J 	PauseControl_Sprite
+	NOP
 
 loadExtraHooks:
 	LUI t3, hi(InstanceScriptHook)
@@ -258,12 +264,6 @@ loadExtraHooks:
 	LUI t4, 0x8064
 	SW t3, 0xEE08 (t4) // Store Hook
 	SW r0, 0xEE0C (t4) // Store NOP
-	
-	LUI t3, hi(CorrectCBCounterHook)
-	LW t3, lo(CorrectCBCounterHook) (t3)
-	LUI t4, 0x8070
-	SW t3, 0x84AC (t4) // Store Hook
-	SW r0, 0x84B0 (t4) // Store NOP
 	
 	LUI t3, hi(ItemRandoFlagCheckHook)
 	LW t3, lo(ItemRandoFlagCheckHook) (t3)
@@ -593,6 +593,18 @@ loadExtraHooks:
 	LUI t4, 0x806A
 	SW t3, 0x6708 (t4) // Store Hook
 	SW r0, 0x670C (t4) // Store NOP
+	
+	LUI t3, hi(PauseControlHook)
+	LW t3, lo(PauseControlHook) (t3)
+	LUI t4, 0x806B
+	SW t3, 0x86FC (t4) // Store Hook
+	SW r0, 0x8700 (t4) // Store NOP
+	
+	LUI t3, hi(PauseSpriteHook)
+	LW t3, lo(PauseSpriteHook) (t3)
+	LUI t4, 0x806B
+	SW t3, 0xA414 (t4) // Store Hook
+	SW r0, 0xA418 (t4) // Store NOP
 
 	loadExtraHooks_4:
 	LUI t3, hi(KrushaSlot)
@@ -621,6 +633,12 @@ loadExtraHooks:
 	LUI t4, 0x806E
 	SW t3, 0xC348 (t4) // Store Hook
 	SW r0, 0xC34C (t4) // Store NOP
+	
+	LUI t3, hi(FallTooFarFixHook)
+	LW t3, lo(FallTooFarFixHook) (t3)
+	LUI t4, 0x806D
+	SW t3, 0x3624 (t4) // Store Hook
+	SW r0, 0x3628 (t4) // Store NOP
 
 	loadExtraHooks_6:
 	JR ra

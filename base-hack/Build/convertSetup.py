@@ -215,6 +215,41 @@ def modify(file_name, map_index):
                     for x in range(0x30 - 0xC):
                         repl_byte += byte_stream[x + 0xC].to_bytes(1, "big")
                     byte_stream = repl_byte
+            if map_index == 0xCD:
+                # Standardize lanky phase buttons
+                buttons = (0xE, 0xF, 0x10, 0x11)
+                platforms = (0xD, 0x13, 0x14, 0x12)
+                button_loc = (
+                    (780, 419.629),
+                    (1135.232, 780),
+                    (780, 1116.334),
+                    (438.904, 780),
+                )
+                platform_loc = (
+                    (778.365, 396.901),
+                    (1158.427, 778.632),
+                    (780.283, 1138.851),
+                    (416.092, 778.456),
+                )
+                if _id >= 0xD and _id <= 0x14:
+                    x = 0
+                    z = 0
+                    if _id in buttons:
+                        index = buttons.index(_id)
+                        x = button_loc[index][0]
+                        z = button_loc[index][1]
+                    else:
+                        index = platforms.index(_id)
+                        x = platform_loc[index][0]
+                        z = platform_loc[index][1]
+                    repl_byte = b""
+                    repl_byte += int(float_to_hex(x), 16).to_bytes(4, "big")
+                    for x in range(4):
+                        repl_byte += byte_stream[x + 4].to_bytes(1, "big")
+                    repl_byte += int(float_to_hex(z), 16).to_bytes(4, "big")
+                    for x in range(0x30 - 0xC):
+                        repl_byte += byte_stream[x + 0xC].to_bytes(1, "big")
+                    byte_stream = repl_byte
             if map_index == 0x7 and _id == 0xC9:
                 repl_byte = b""
                 new_y = int(float_to_hex(400), 16)

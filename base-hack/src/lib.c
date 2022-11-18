@@ -13,7 +13,7 @@ void setPermFlag(short flagIndex) {
 int convertIDToIndex(short obj_index) {
 	int _count = ObjectModel2Count;
 	int index = -1;
-	int* m2location = ObjectModel2Pointer;
+	int* m2location = (int*)ObjectModel2Pointer;
 	for (int i = 0; i < _count; i++) {
 		ModelTwoData* _object = getObjectArrayAddr(m2location,0x90,i);
 		if (_object->object_id == obj_index) {
@@ -27,7 +27,7 @@ int convertIDToIndex(short obj_index) {
 int convertSubIDToIndex(short obj_index) {
 	int _count = ObjectModel2Count;
 	int index = -1;
-	int* m2location = ObjectModel2Pointer;
+	int* m2location = (int*)ObjectModel2Pointer;
 	for (int i = 0; i < _count; i++) {
 		ModelTwoData* _object = getObjectArrayAddr(m2location,0x90,i);
 		if (_object->sub_id == obj_index) {
@@ -109,7 +109,7 @@ void correctDKPortal(void) {
 			portal_state = 0;
 		}
 		int _count = ObjectModel2Count;
-		int* m2location = ObjectModel2Pointer;
+		int* m2location = (int*)ObjectModel2Pointer;
 		for (int i = 0; i < _count; i++) {
 			ModelTwoData* _object = getObjectArrayAddr(m2location,0x90,i);
 			if (_object->object_type == 0x2AD) {

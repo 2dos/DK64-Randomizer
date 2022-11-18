@@ -230,7 +230,7 @@ void earlyFrame(void) {
 	determine_krool_order();
 	disable_krool_health_refills();
 	CBDing();
-	if (Rando.auto_keys) {
+	if (ObjectModel2Timer < 5) {
 		auto_turn_keys();
 	}
 	if (Rando.item_rando) {
@@ -257,6 +257,32 @@ void earlyFrame(void) {
 	handle_WTI();
 	adjust_galleon_water();
 	finalizeBeatGame();
+	if ((Rando.krusha_slot == 1) || (Rando.krusha_slot == 3)) {
+		float normal_scale = 0.15f;
+		if (Rando.krusha_slot == Character) {
+			if (Character == 1) {
+				normal_scale = 0.13f;
+			} else if (Character == 3) {
+				normal_scale = 0.10f;
+			}
+		}
+		*(float*)(0x8075D0D0) = normal_scale; // Portal Size
+		*(float*)(0x8075CC7C) = normal_scale; // Normal Scale
+		*(float*)(0x8075C4B0) = normal_scale; // Normal Scale
+		if (Player) {
+			if (ObjectModel2Timer == 2) {
+				for (int i = 0; i < 6; i++) {
+					Player->scale[i] = normal_scale;
+				}
+			}
+		}
+	}
+	for (int kong = 0; kong < 5; kong++) {
+		for (int level = 0; level < 7; level++) {
+			MovesBase[kong].cb_count[level] &= 0xFF;
+			MovesBase[kong].tns_cb_count[level] &= 0xFF;
+		}
+	}
 	if ((CurrentMap == MAIN_MENU) && (ObjectModel2Timer < 5)) {
 		FileScreenDLCode_Write();
 		initTracker();

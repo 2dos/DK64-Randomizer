@@ -13,7 +13,7 @@ from randomizer.LogicClasses import (Event, LocationLogic, Region,
                                      TransitionFront)
 
 LogicRegions = {
-    Regions.FungiForestMedals: Region("Fungi Forest Medals", "whole of Fungi Forest", Levels.FungiForest, False, None, [
+    Regions.FungiForestMedals: Region("Fungi Forest Medals", "Fungi Forest Medal Rewards", Levels.FungiForest, False, None, [
         LocationLogic(Locations.ForestDonkeyMedal, lambda l: l.ColoredBananas[Levels.FungiForest][Kongs.donkey] >= l.settings.medal_cb_req),
         LocationLogic(Locations.ForestDiddyMedal, lambda l: l.ColoredBananas[Levels.FungiForest][Kongs.diddy] >= l.settings.medal_cb_req),
         LocationLogic(Locations.ForestLankyMedal, lambda l: l.ColoredBananas[Levels.FungiForest][Kongs.lanky] >= l.settings.medal_cb_req),
@@ -21,7 +21,7 @@ LogicRegions = {
         LocationLogic(Locations.ForestChunkyMedal, lambda l: l.ColoredBananas[Levels.FungiForest][Kongs.chunky] >= l.settings.medal_cb_req),
     ], [], []),
 
-    Regions.FungiForestStart: Region("Fungi Forest Start", "Forest Center", Levels.FungiForest, True, None, [], [
+    Regions.FungiForestStart: Region("Fungi Forest Start", "Forest Center and Beanstalk", Levels.FungiForest, True, None, [], [
         Event(Events.ForestEntered, lambda l: True),
         Event(Events.Night, lambda l: l.HasGun(Kongs.any)),
         Event(Events.WormGatesOpened, lambda l: (l.feather and l.tiny) and (l.pineapple and l.chunky)),
@@ -34,7 +34,7 @@ LogicRegions = {
         TransitionFront(Regions.WormArea, lambda l: l.settings.open_levels or Events.WormGatesOpened in l.Events),
     ]),
 
-    Regions.ForestMinecarts: Region("Forest Minecarts", "Forest Center", Levels.FungiForest, False, None, [
+    Regions.ForestMinecarts: Region("Forest Minecarts", "Forest Center and Beanstalk", Levels.FungiForest, False, None, [
         LocationLogic(Locations.ForestChunkyMinecarts, lambda l: l.ischunky or l.settings.free_trade_items),
     ], [], [
         TransitionFront(Regions.FungiForestMedals, lambda l: True),
@@ -167,7 +167,7 @@ LogicRegions = {
 
     Regions.MillArea: Region("Mill Area", "Forest Mills", Levels.FungiForest, True, None, [
         LocationLogic(Locations.ForestDonkeyMill, lambda l: l.TimeAccess(Regions.MillArea, Time.Night) and Events.ConveyorActivated in l.Events and l.donkey),
-        LocationLogic(Locations.ForestDiddyCagedBanana, lambda l: l.TimeAccess(Regions.MillArea, Time.Night) and Events.WinchRaised in l.Events and l.diddy),
+        LocationLogic(Locations.ForestDiddyCagedBanana, lambda l: l.TimeAccess(Regions.MillArea, Time.Night) and Events.WinchRaised in l.Events and l.guitar and l.diddy),
     ], [], [
         TransitionFront(Regions.FungiForestMedals, lambda l: True),
         TransitionFront(Regions.FungiForestStart, lambda l: True),

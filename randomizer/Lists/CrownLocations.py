@@ -2701,7 +2701,7 @@ CrownLocations = {
             z=1227,
             scale=0.6,
             region=Regions.BananaFairyRoom,
-            logic=lambda l: l.BananaFairies >= 20 and l.istiny,
+            logic=lambda l: l.BananaFairies >= l.settings.rareware_gb_fairies and l.istiny,
         ),
         CrownLocation(
             map=Maps.KLumsy,
@@ -2811,6 +2811,7 @@ CrownLocations = {
             z=3391.4,
             scale=0.25,
             region=Regions.HideoutHelmMain,
+            is_vanilla=True,
             logic=lambda l: l.jetpack
             and l.isdiddy
             and (

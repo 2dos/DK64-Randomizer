@@ -11,6 +11,22 @@ from randomizer.LogicClasses import (Event, LocationLogic, Region,
                                      TransitionFront)
 
 LogicRegions = {
+    Regions.GameStart: Region("Game Start", "Training Grounds", Levels.DKIsles, False, None, [
+        LocationLogic(Locations.IslesVinesTrainingBarrel, lambda l: l.settings.fast_start_beginning_of_game),
+        LocationLogic(Locations.IslesSwimTrainingBarrel, lambda l: l.settings.fast_start_beginning_of_game),
+        LocationLogic(Locations.IslesOrangesTrainingBarrel, lambda l: l.settings.fast_start_beginning_of_game),
+        LocationLogic(Locations.IslesBarrelsTrainingBarrel, lambda l: l.settings.fast_start_beginning_of_game),
+    ], [], [
+        TransitionFront(Regions.Credits, lambda l: True),
+        # Replace these with the actual starting region if we choose to randomize it
+        TransitionFront(Regions.IslesMain, lambda l: l.settings.fast_start_beginning_of_game),
+        TransitionFront(Regions.Treehouse, lambda l: not l.settings.fast_start_beginning_of_game)
+    ]),
+
+    Regions.Credits: Region("Credits", "Credits", Levels.DKIsles, False, None, [
+        LocationLogic(Locations.BananaHoard, lambda l: l.WinConditionMet())
+    ], [], []),
+
     Regions.Treehouse: Region("Treehouse", "Training Grounds", Levels.DKIsles, False, None, [], [], [
         TransitionFront(Regions.TrainingGrounds, lambda l: True, Transitions.IslesTreehouseToStart)
     ]),
@@ -45,8 +61,8 @@ LogicRegions = {
         TransitionFront(Regions.BananaFairyRoom, lambda l: l.mini and l.istiny, Transitions.IslesMainToFairy),
         TransitionFront(Regions.JungleJapesLobby, lambda l: l.settings.open_lobbies or Events.KLumsyTalkedTo in l.Events, Transitions.IslesMainToJapesLobby),
         TransitionFront(Regions.CrocodileIsleBeyondLift, lambda l: l.settings.open_lobbies or Events.AztecKeyTurnedIn in l.Events),
-        TransitionFront(Regions.IslesMainUpper, lambda l: l.vines),
-        TransitionFront(Regions.GloomyGalleonLobby, lambda l: (l.settings.open_lobbies or Events.AztecKeyTurnedIn in l.Events) and l.swim, Transitions.IslesMainToGalleonLobby),
+        TransitionFront(Regions.IslesMainUpper, lambda l: l.vines or l.pathMode),
+        TransitionFront(Regions.GloomyGalleonLobbyEntrance, lambda l: (l.settings.open_lobbies or Events.AztecKeyTurnedIn in l.Events) and (l.swim or l.pathMode), Transitions.IslesMainToGalleonLobby),
         TransitionFront(Regions.CabinIsle, lambda l: l.settings.open_lobbies or Events.GalleonKeyTurnedIn in l.Events),
         TransitionFront(Regions.CreepyCastleLobby, lambda l: l.settings.open_lobbies or Events.ForestKeyTurnedIn in l.Events, Transitions.IslesMainToCastleLobby),
         TransitionFront(Regions.HideoutHelmLobby, lambda l: l.monkeyport and l.istiny
@@ -81,9 +97,9 @@ LogicRegions = {
         TransitionFront(Regions.IslesMain, lambda l: True),
     ]),
 
-    Regions.BananaFairyRoom: Region("Banana Fairy Room", "Banana Fairy", Levels.DKIsles, False, None, [
+    Regions.BananaFairyRoom: Region("Banana Fairy Room", "Banana Fairy Room", Levels.DKIsles, False, None, [
         LocationLogic(Locations.CameraAndShockwave, lambda l: True),
-        LocationLogic(Locations.RarewareBanana, lambda l: l.BananaFairies >= 20 and (l.istiny or l.settings.free_trade_items)),
+        LocationLogic(Locations.RarewareBanana, lambda l: l.BananaFairies >= l.settings.rareware_gb_fairies and (l.istiny or l.settings.free_trade_items)),
     ], [], [
         TransitionFront(Regions.IslesMain, lambda l: True, Transitions.IslesFairyToMain),
     ]),
@@ -97,7 +113,7 @@ LogicRegions = {
     ]),
 
     Regions.AngryAztecLobby: Region("Angry Aztec Lobby", "Level Lobbies", Levels.DKIsles, True, None, [
-        LocationLogic(Locations.IslesTinyAztecLobby, lambda l: l.charge and l.diddy and l.twirl and l.istiny, MinigameType.BonusBarrel),
+        LocationLogic(Locations.IslesTinyAztecLobby, lambda l: (((l.charge and l.diddy and l.twirl) or l.settings.bonus_barrels == "skip") and l.istiny) or (l.settings.bonus_barrels == "skip" and l.settings.free_trade_items), MinigameType.BonusBarrel),
     ], [], [
         TransitionFront(Regions.IslesMainUpper, lambda l: True, Transitions.IslesAztecLobbyToMain),
         TransitionFront(Regions.AngryAztecStart, lambda l: l.IsLevelEnterable(Levels.AngryAztec), Transitions.IslesToAztec),
@@ -112,7 +128,7 @@ LogicRegions = {
     ]),
 
     Regions.IslesSnideRoom: Region("Isles Snide Room", "Krem Isle", Levels.DKIsles, True, None, [
-        LocationLogic(Locations.IslesDiddySnidesLobby, lambda l: l.spring and l.isdiddy, MinigameType.BonusBarrel),
+        LocationLogic(Locations.IslesDiddySnidesLobby, lambda l: ((l.settings.bonus_barrels == "skip" or l.spring) and l.isdiddy) or (l.settings.bonus_barrels == "skip" and l.settings.free_trade_items), MinigameType.BonusBarrel),
         LocationLogic(Locations.IslesBattleArena1, lambda l: not l.settings.crown_placement_rando and l.chunky and l.barrels),
     ], [], [
         TransitionFront(Regions.CrocodileIsleBeyondLift, lambda l: True, Transitions.IslesSnideRoomToMain),
@@ -128,11 +144,16 @@ LogicRegions = {
         TransitionFront(Regions.FranticFactoryStart, lambda l: l.IsLevelEnterable(Levels.FranticFactory), Transitions.IslesToFactory),
     ]),
 
+    Regions.GloomyGalleonLobbyEntrance: Region("Gloomy Galleon Lobby Entrance", "Level Lobbies", Levels.DKIsles, False, None, [], [], [
+        TransitionFront(Regions.IslesMain, lambda l: True, Transitions.IslesGalleonLobbyToMain),
+        TransitionFront(Regions.GloomyGalleonLobby, lambda l: True, Transitions.IslesToGalleon),
+    ]),
+
     Regions.GloomyGalleonLobby: Region("Gloomy Galleon Lobby", "Level Lobbies", Levels.DKIsles, True, None, [
         LocationLogic(Locations.IslesTinyGalleonLobby, lambda l: l.chunky and l.superSlam and l.mini and l.twirl and l.swim and l.tiny),
         LocationLogic(Locations.IslesKasplatGalleonLobby, lambda l: not l.settings.kasplat_rando),
     ], [], [
-        TransitionFront(Regions.IslesMain, lambda l: l.swim, Transitions.IslesGalleonLobbyToMain),
+        TransitionFront(Regions.GloomyGalleonLobbyEntrance, lambda l: l.swim),
         TransitionFront(Regions.GloomyGalleonStart, lambda l: l.IsLevelEnterable(Levels.GloomyGalleon), Transitions.IslesToGalleon),
     ]),
 
@@ -178,14 +199,12 @@ LogicRegions = {
         TransitionFront(Regions.HideoutHelmStart, lambda l: l.gorillaGone and l.chunky and l.IsLevelEnterable(Levels.HideoutHelm)),
     ]),
 
-    Regions.KRool: Region("K. Rool", "K. Rool Arena", Levels.DKIsles, True, None, [
-        LocationLogic(Locations.BananaHoard, lambda l: Events.KRoolDonkey in l.Events and Events.KRoolDiddy in l.Events
-                      and Events.KRoolLanky in l.Events and Events.KRoolTiny in l.Events and Events.KRoolChunky in l.Events),
-    ], [
+    Regions.KRool: Region("K. Rool", "K. Rool Arena", Levels.DKIsles, True, None, [], [
         Event(Events.KRoolDonkey, lambda l: not l.settings.krool_donkey or l.donkey),
         Event(Events.KRoolDiddy, lambda l: not l.settings.krool_diddy or (l.jetpack and l.peanut and l.diddy)),
         Event(Events.KRoolLanky, lambda l: not l.settings.krool_lanky or (l.trombone and l.lanky)),
         Event(Events.KRoolTiny, lambda l: not l.settings.krool_tiny or (l.mini and l.feather and l.tiny)),
-        Event(Events.KRoolChunky, lambda l: not l.settings.krool_chunky or (l.superSlam and l.gorillaGone and l.hunkyChunky and l.punch and l.chunky))
+        Event(Events.KRoolChunky, lambda l: not l.settings.krool_chunky or (l.superSlam and l.gorillaGone and l.hunkyChunky and l.punch and l.chunky)),
+        Event(Events.KRoolDefeated, lambda l: Events.KRoolDonkey in l.Events and Events.KRoolDiddy in l.Events and Events.KRoolLanky in l.Events and Events.KRoolTiny in l.Events and Events.KRoolChunky in l.Events)
     ], []),
 }

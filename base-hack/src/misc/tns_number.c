@@ -1,7 +1,7 @@
 #include "../../include/common.h"
 
 void displayNumberOnObject(int id, int param2, int imageindex, int param4, int subtype) {
-	int* m2location = ObjectModel2Pointer;
+	int* m2location = (int*)ObjectModel2Pointer;
 	int slot = convertIDToIndex(id);
 	ModelTwoData* _object = getObjectArrayAddr(m2location,0x90,slot);
 	model_struct* _model = _object->model_pointer;
@@ -16,7 +16,7 @@ void displayNumberOnObject(int id, int param2, int imageindex, int param4, int s
 
 void shiftBrokenJapesPortal(void) {
 	if (CurrentMap == 7) {
-		int* m2location = ObjectModel2Pointer;
+		int* m2location = (int*)ObjectModel2Pointer;
 		int slot = convertIDToIndex(0x220);
 		ModelTwoData* _object = getObjectArrayAddr(m2location,0x90,slot);
 		model_struct* _model = _object->model_pointer;
@@ -83,7 +83,7 @@ void displayNumberOnTns(void) {
 					}
 				}
 			} else {
-				int* m2location = ObjectModel2Pointer;
+				int* m2location = (int*)ObjectModel2Pointer;
 				for (int j = 0; j < tns_count[in_tns_map]; j++) {
 					int slot = convertIDToIndex(0x220 + j);
 					ModelTwoData* _object = getObjectArrayAddr(m2location,0x90,slot);

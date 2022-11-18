@@ -152,6 +152,9 @@ def GetMaxForKong(settings, kong):
             elif item_id == Items.ProgressiveAmmoBelt:
                 total_price += settings.prices[item_id][found_ammo_belts]
                 found_ammo_belts += 1
+            # Vanilla prices are by item, not by location
+            elif settings.random_prices == "vanilla":
+                total_price += settings.prices[item_id]
             else:
                 total_price += settings.prices[location]
 
@@ -179,6 +182,9 @@ def GetMaxForKong(settings, kong):
             elif item_id == Items.ProgressiveAmmoBelt:
                 total_price += settings.prices[item_id][found_ammo_belts]
                 found_ammo_belts += 1
+            # Vanilla prices are by item, not by location
+            elif settings.random_prices == "vanilla":
+                total_price += settings.prices[item_id]
             else:
                 total_price += settings.prices[location]
     return total_price
@@ -283,6 +289,9 @@ def GetPriceAtLocation(settings, location_id, location, slamLevel, ammoBelts, in
         else:
             # If already have max instrument upgrade, there's move to buy
             return 0
+    # Vanilla prices are by item, not by location
+    elif settings.random_prices == "vanilla":
+        return settings.prices[item]
     else:
         return settings.prices[location_id]
 

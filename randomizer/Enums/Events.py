@@ -98,6 +98,7 @@ class Events(IntEnum):
     KRoolLanky = auto()
     KRoolTiny = auto()
     KRoolChunky = auto()
+    KRoolDefeated = auto()
 
     # Level entered events for shops
     JapesEntered = auto()

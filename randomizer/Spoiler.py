@@ -107,7 +107,9 @@ class Spoiler:
         settings["Crown Door Open"] = self.settings.crown_door_open
         settings["Coin Door Open"] = self.settings.coin_door_open
         settings["Shockwave Shuffle"] = self.settings.shockwave_status
-        settings["Random Medal Requirement"] = self.settings.random_medal_requirement
+        settings["Random Jetpac Medal Requirement"] = self.settings.random_medal_requirement
+        settings["Bananas Required for Medal"] = self.settings.medal_cb_req
+        settings["Fairies Required for Rareware GB"] = self.settings.rareware_gb_fairies
         settings["Random Shop Prices"] = self.settings.random_prices
         settings["Banana Port Randomization"] = self.settings.bananaport_rando
         settings["Shuffle Shop Locations"] = self.settings.shuffle_shops
@@ -162,6 +164,11 @@ class Spoiler:
                 humanspoiler["Cosmetics"]["Colors and Models"]["Klaptrap Model"] = f"Unknown Model {hex(self.settings.klaptrap_model_index)}"
 
         humanspoiler["Requirements"] = {}
+        if self.settings.random_starting_region:
+            humanspoiler["Game Start"] = {}
+            humanspoiler["Game Start"]["Starting Kong List"] = startKongList
+            humanspoiler["Game Start"]["Starting Region"] = self.settings.starting_region["region_name"]
+            humanspoiler["Game Start"]["Starting Exit"] = self.settings.starting_region["exit_name"]
         # GB Counts
         gb_counts = {}
         level_list = ["Jungle Japes", "Angry Aztec", "Frantic Factory", "Gloomy Galleon", "Fungi Forest", "Crystal Caves", "Creepy Castle", "Hideout Helm"]
@@ -216,6 +223,7 @@ class Spoiler:
         humanspoiler["Way of the Hoard"] = self.woth
         # Paths for Woth items - does not show up on the site, just for debugging
         humanspoiler["Paths"] = {}
+        wothSlams = 0
         for loc, path in self.woth_paths.items():
             destination_item = ItemList[LocationList[loc].item]
             path_dict = {}
@@ -223,7 +231,11 @@ class Spoiler:
                 path_location = LocationList[path_loc_id]
                 path_item = ItemList[path_location.item]
                 path_dict[path_location.name] = path_item.name
-            humanspoiler["Paths"][destination_item.name] = path_dict
+            extra = ""
+            if LocationList[loc].item == Items.ProgressiveSlam:
+                wothSlams += 1
+                extra = " " + str(wothSlams)
+            humanspoiler["Paths"][destination_item.name + extra] = path_dict
 
         for location_id, location in LocationList.items():
             # No need to spoiler constants
@@ -251,6 +263,9 @@ class Spoiler:
                         price = f"{self.settings.prices[Items.ProgressiveAmmoBelt][0]}->{self.settings.prices[Items.ProgressiveAmmoBelt][1]}"
                     elif location.item == Items.ProgressiveInstrumentUpgrade:
                         price = f"{self.settings.prices[Items.ProgressiveInstrumentUpgrade][0]}->{self.settings.prices[Items.ProgressiveInstrumentUpgrade][1]}->{self.settings.prices[Items.ProgressiveInstrumentUpgrade][2]}"
+                # Vanilla prices are by item, not by location
+                elif self.settings.random_prices == "vanilla":
+                    price = str(self.settings.prices[location.item])
                 else:
                     price = str(self.settings.prices[location_id])
                 humanspoiler["Items"]["Shops"][location.name] = item.name + f" ({price})"
@@ -566,6 +581,9 @@ class Spoiler:
                     price = 0
                     if id in self.settings.prices:
                         price = self.settings.prices[id]
+                    # Vanilla prices are by item, not by location
+                    if self.settings.random_prices == "vanilla":
+                        price = self.settings.prices[location.item]
                     # Moves that are set with a single flag (e.g. training barrels, shockwave) are handled differently
                     if move_type == MoveTypes.Flag:
                         for kong_index in kong_indices:

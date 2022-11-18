@@ -11,12 +11,23 @@ from randomizer.Enums.Items import Items
 from randomizer.Enums.Kongs import GetKongs, Kongs
 from randomizer.Enums.Levels import Levels
 from randomizer.Enums.Locations import Locations
+from randomizer.Enums.Regions import Regions
 from randomizer.Enums.Types import Types
 import randomizer.ItemPool as ItemPool
 from randomizer.Lists.Item import ItemList
 from randomizer.Lists.Location import ChunkyMoveLocations, DiddyMoveLocations, DonkeyMoveLocations, LankyMoveLocations, LocationList, SharedShopLocations, TinyMoveLocations, TrainingBarrelLocations
+from randomizer.Lists.ShufflableExit import ShufflableExits
+from randomizer.Lists.MapsAndExits import GetMapId, GetExitId, RegionMapList
 from randomizer.Prices import CompleteVanillaPrices, RandomizePrices, VanillaPrices
 from randomizer.ShuffleBosses import ShuffleBosses, ShuffleBossKongs, ShuffleKKOPhaseOrder, ShuffleKutoutKongs
+import randomizer.LogicFiles.DKIsles
+import randomizer.LogicFiles.JungleJapes
+import randomizer.LogicFiles.AngryAztec
+import randomizer.LogicFiles.FranticFactory
+import randomizer.LogicFiles.GloomyGalleon
+import randomizer.LogicFiles.FungiForest
+import randomizer.LogicFiles.CrystalCaves
+import randomizer.LogicFiles.CreepyCastle
 
 
 class Settings:
@@ -316,6 +327,7 @@ class Settings:
         self.random_medal_requirement = False
         self.medal_requirement = 15
         self.medal_cb_req = 75
+        self.rareware_gb_fairies = 20
         self.bananaport_rando = "off"
         self.activate_all_bananaports = "off"
         self.shop_indicator = False
@@ -357,6 +369,8 @@ class Settings:
         self.colorblind_mode = "off"
         self.win_condition = "beat_krool"
         self.key_8_helm = False
+        self.random_starting_region = False
+        self.starting_region = {}
 
     def shuffle_prices(self):
         """Price randomization. Reuseable if we need to reshuffle prices."""
@@ -386,8 +400,9 @@ class Settings:
                     self.shuffled_location_types.append(Types.Shockwave)
                 if self.training_barrels != "normal":
                     self.shuffled_location_types.append(Types.TrainingBarrel)
-        self.progressives_locked_in_shops = False  # Technical limitation: for now (hopefully) progressive moves must be found in shops
-
+            # DEBUG CODE for testing, put it in the list selector when it's completed
+            # Uncomment the next line if you want Kongs in the item rando location pool
+            # self.shuffled_location_types.append(Types.Kong)
         self.shuffle_prices()
 
         # B Locker and Troff n Scoff amounts Rando
@@ -462,6 +477,44 @@ class Settings:
                 self.helm_chunky = True
                 orderedRooms.append(1)
         self.helm_order = orderedRooms
+
+        # Start Region
+        if self.random_starting_region:
+            region_data = [
+                randomizer.LogicFiles.DKIsles.LogicRegions,
+                randomizer.LogicFiles.JungleJapes.LogicRegions,
+                randomizer.LogicFiles.AngryAztec.LogicRegions,
+                randomizer.LogicFiles.FranticFactory.LogicRegions,
+                randomizer.LogicFiles.GloomyGalleon.LogicRegions,
+                randomizer.LogicFiles.FungiForest.LogicRegions,
+                randomizer.LogicFiles.CrystalCaves.LogicRegions,
+                randomizer.LogicFiles.CreepyCastle.LogicRegions,
+            ]
+            selected_region_world = random.choice(region_data)
+            valid_starting_regions = []
+            for region in selected_region_world:
+                region_data = selected_region_world[region]
+                transitions = [
+                    x.exitShuffleId for x in region_data.exits if x.exitShuffleId is not None and x.exitShuffleId in ShufflableExits and ShufflableExits[x.exitShuffleId].back.reverse is not None
+                ]
+                if region in RegionMapList:
+                    # Has tied map
+                    tied_map = GetMapId(region)
+                    for transition in transitions:
+                        relevant_transition = ShufflableExits[transition].back.reverse
+                        tied_exit = GetExitId(ShufflableExits[relevant_transition].back)
+                        valid_starting_regions.append(
+                            {
+                                "region": region,
+                                "map": tied_map,
+                                "exit": tied_exit,
+                                "region_name": region_data.name,
+                                "exit_name": ShufflableExits[relevant_transition].back.name,
+                            }
+                        )
+            self.starting_region = random.choice(valid_starting_regions)
+            for x in range(2):
+                randomizer.LogicFiles.DKIsles.LogicRegions[Regions.GameStart].exits[x + 1].dest = self.starting_region["region"]
 
         # Set keys required for KRool
         KeyEvents = [
@@ -574,8 +627,10 @@ class Settings:
             self.lanky_freeing_kong = Kongs.any
             self.tiny_freeing_kong = Kongs.any
             self.chunky_freeing_kong = Kongs.any
-            # Kong locations are adjusted in the fill, set all possible for now
-            self.kong_locations = self.SelectKongLocations()
+            if self.shuffle_items and Types.Kong in self.shuffled_location_types:
+                self.kong_locations = [Locations.DiddyKong, Locations.LankyKong, Locations.TinyKong, Locations.ChunkyKong]
+            else:
+                self.kong_locations = self.SelectKongLocations()
         else:
             self.possible_kong_list = kongs.copy()
             self.possible_kong_list.remove(0)
@@ -635,7 +690,7 @@ class Settings:
     def update_valid_locations(self):
         """Calculate (or recalculate) valid locations for items by type."""
         self.valid_locations = {}
-        self.valid_locations[Types.Kong] = [Locations.DiddyKong, Locations.LankyKong, Locations.TinyKong, Locations.ChunkyKong]
+        self.valid_locations[Types.Kong] = self.kong_locations.copy()
         # If shops are not shuffled into the larger pool, calculate shop locations for shop-bound moves
         if self.move_rando not in ("off", "item_shuffle"):
             self.valid_locations[Types.Shop] = {}
@@ -665,7 +720,7 @@ class Settings:
                 self.valid_locations[Types.Shop][Kongs.lanky] = allKongMoveLocations
                 self.valid_locations[Types.Shop][Kongs.tiny] = allKongMoveLocations
                 self.valid_locations[Types.Shop][Kongs.chunky] = allKongMoveLocations
-            self.valid_locations[Types.Shop][Kongs.any] = SharedShopLocations
+            self.valid_locations[Types.Shop][Kongs.any] = SharedShopLocations.copy()
             if self.shockwave_status not in ("vanilla", "start_with") and Types.Shockwave not in self.shuffled_location_types:
                 self.valid_locations[Types.Shop][Kongs.any].add(Locations.CameraAndShockwave)
             elif Locations.CameraAndShockwave in self.valid_locations[Types.Shop][Kongs.tiny]:
@@ -676,9 +731,9 @@ class Settings:
             self.valid_locations[Types.Shockwave] = self.valid_locations[Types.Shop][Kongs.any]
             self.valid_locations[Types.TrainingBarrel] = self.valid_locations[Types.Shop][Kongs.any]
 
-        if any(self.shuffled_location_types):
-            shuffledLocations = [location for location in LocationList if LocationList[location].type in self.shuffled_location_types]
-            nonKongLocations = [location for location in shuffledLocations if LocationList[location].type != Types.Kong]
+        if self.shuffle_items and any(self.shuffled_location_types):
+            # All shuffled locations are valid except for Kong locations (the Kong inside the cage, not the GB) - those can only be Kongs
+            shuffledLocations = [location for location in LocationList if LocationList[location].type in self.shuffled_location_types and LocationList[location].type != Types.Kong]
             if Types.Shop in self.shuffled_location_types:
                 self.valid_locations[Types.Shop] = {}
                 # Cross-kong acquisition is assumed in full item rando, calculate the list of all Kong-specific shops
@@ -725,6 +780,7 @@ class Settings:
             if Types.Banana in self.shuffled_location_types:
                 self.valid_locations[Types.Banana] = nonKongLocations
             if Types.Crown in self.shuffled_location_types:
+                # Banned for technical reasons
                 banned_crown_locations = (
                     Locations.HelmDonkeyMedal,
                     Locations.HelmDiddyMedal,
@@ -746,13 +802,17 @@ class Settings:
             if Types.Medal in self.shuffled_location_types:
                 self.valid_locations[Types.Medal] = nonKongLocations
             if Types.Coin in self.shuffled_location_types:
-                self.valid_locations[Types.Coin] = nonKongLocations
+                self.valid_locations[Types.Coin] = shuffledLocations
             if Types.Kong in self.shuffled_location_types:
-                self.valid_locations[Types.Kong] = [location for location in shuffledLocations if location not in TrainingBarrelLocations]
-            if Types.Bean in self.shuffled_location_types:
-                self.valid_locations[Types.Bean] = nonKongLocations
-            if Types.Pearl in self.shuffled_location_types:
-                self.valid_locations[Types.Pearl] = nonKongLocations
+                # Banned because it defeats the purpose of starting with X Kongs
+                banned_kong_locations = (
+                    Locations.IslesSwimTrainingBarrel,
+                    Locations.IslesVinesTrainingBarrel,
+                    Locations.IslesBarrelsTrainingBarrel,
+                    Locations.IslesOrangesTrainingBarrel,
+                    Locations.IslesDonkeyJapesRock,
+                )
+                self.valid_locations[Types.Kong].extend(shuffledLocations)  # No items can be in Kong cages but Kongs can be in all other locations
 
     def GetValidLocationsForItem(self, item_id):
         """Return the valid locations the input item id can be placed in."""
@@ -763,8 +823,6 @@ class Settings:
             valid_locations = self.valid_locations[item_obj.type][item_obj.kong]
         else:
             valid_locations = self.valid_locations[item_obj.type]
-        if self.progressives_locked_in_shops and item_obj in SharedShopLocations:
-            valid_locations = SharedShopLocations
         return valid_locations
 
     def SelectKongLocations(self):

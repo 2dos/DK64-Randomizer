@@ -20,6 +20,7 @@
 .importobj "obj/src_misc_enemy_drop_table.o"
 .importobj "obj/src_misc_file_screen.o"
 .importobj "obj/src_misc_helm_hurry.o"
+.importobj "obj/src_misc_item_db.o"
 .importobj "obj/src_misc_krusha.o"
 .importobj "obj/src_misc_move_hints.o"
 .importobj "obj/src_misc_no_enemy_drops.o"
