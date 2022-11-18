@@ -100,7 +100,7 @@ LogicRegions = {
         LocationLogic(Locations.JapesTinyBeehive, lambda l: l.Slam and l.istiny and (l.saxophone or l.oranges)),
     ], [], [
         TransitionFront(Regions.JungleJapesMedals, lambda l: True),
-        TransitionFront(Regions.JapesBeyondFeatherGate, lambda l: True, Transitions.JapesTinyHiveToMain),
+        TransitionFront(Regions.JapesBeyondFeatherGate, lambda l: l.isdiddy or l.istiny or l.islanky, Transitions.JapesTinyHiveToMain),  # It is technically possible to leave with DK and Chunky, just tricky
     ]),
 
     Regions.JapesBeyondCoconutGate2: Region("Japes Beyond Coconut Gate 2", "Japes Tunnels", Levels.JungleJapes, True, None, [

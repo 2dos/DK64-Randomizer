@@ -155,7 +155,7 @@ LogicRegions = {
 
     Regions.TinyIgloo: Region("Tiny Igloo", "Igloo Area", Levels.CrystalCaves, False, -1, [
         LocationLogic(Locations.CavesTiny5DoorIgloo, lambda l: l.Slam and (l.istiny or l.settings.free_trade_items)),
-        LocationLogic(Locations.CavesBananaFairyIgloo, lambda l: l.camera),
+        LocationLogic(Locations.CavesBananaFairyIgloo, lambda l: l.Slam and (l.istiny or l.settings.free_trade_items) and l.camera),
     ], [], [
         TransitionFront(Regions.CrystalCavesMedals, lambda l: True),
         TransitionFront(Regions.IglooArea, lambda l: True, Transitions.CavesTinyToIgloo),
@@ -183,8 +183,8 @@ LogicRegions = {
     ]),
 
     Regions.RotatingCabin: Region("Rotating Cabin", "Caves Cabins", Levels.CrystalCaves, False, None, [
-        LocationLogic(Locations.CavesDonkeyRotatingCabin, lambda l: l.Slam and (l.isdonkey or l.settings.free_trade_items)),
-        LocationLogic(Locations.CavesBattleArena, lambda l: not l.settings.crown_placement_rando and l.Slam),
+        LocationLogic(Locations.CavesDonkeyRotatingCabin, lambda l: l.Slam and l.isdonkey),
+        LocationLogic(Locations.CavesBattleArena, lambda l: not l.settings.crown_placement_rando and l.Slam and l.isdonkey),
     ], [], [
         TransitionFront(Regions.CrystalCavesMedals, lambda l: True),
         TransitionFront(Regions.CabinArea, lambda l: True, Transitions.CavesRotatingToCabin),

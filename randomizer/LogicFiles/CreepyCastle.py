@@ -87,14 +87,14 @@ LogicRegions = {
     ], [], [
         TransitionFront(Regions.CreepyCastleMedals, lambda l: True),
         TransitionFront(Regions.CreepyCastleMain, lambda l: True, Transitions.CastleBallroomToMain),
-        TransitionFront(Regions.MuseumBehindGlass, lambda l: l.monkeyport and l.mini and l.istiny, Transitions.CastleBallroomToMuseum),
+        TransitionFront(Regions.MuseumBehindGlass, lambda l: l.monkeyport and l.istiny, Transitions.CastleBallroomToMuseum),
     ]),
 
     Regions.MuseumBehindGlass: Region("Museum Behind Glass", "Castle Rooms", Levels.CreepyCastle, False, -1, [
         LocationLogic(Locations.CastleBananaFairyBallroom, lambda l: l.camera),
     ], [], [
         TransitionFront(Regions.CreepyCastleMedals, lambda l: True),
-        TransitionFront(Regions.Ballroom, lambda l: l.monkeyport and l.mini and l.istiny, Transitions.CastleMuseumToBallroom),
+        TransitionFront(Regions.Ballroom, lambda l: l.monkeyport and l.istiny, Transitions.CastleMuseumToBallroom),
         TransitionFront(Regions.CastleTinyRace, lambda l: l.mini and l.istiny, Transitions.CastleMuseumToCarRace),
     ]),
 
@@ -173,7 +173,7 @@ LogicRegions = {
     ),
 
     Regions.Mausoleum: Region("Mausoleum", "Castle Underground", Levels.CreepyCastle, False, None, [
-        LocationLogic(Locations.CastleLankyMausoleum, lambda l: l.grape and l.sprint and l.trombone and l.islanky),
+        LocationLogic(Locations.CastleLankyMausoleum, lambda l: l.grape and l.sprint and l.trombone and l.vines and l.islanky),
         LocationLogic(Locations.CastleTinyMausoleum, lambda l: l.superDuperSlam and l.twirl and l.istiny),
     ], [], [
         TransitionFront(Regions.CreepyCastleMedals, lambda l: True),
