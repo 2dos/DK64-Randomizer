@@ -26,6 +26,7 @@
     "medal_cb_req": 75,
     "medal_requirement": 15,
     "rareware_gb_fairies": 20,
+    "random_starting_region":false,
     "damage_amount":"default",
     "no_healing":false,
     "no_melons":false,

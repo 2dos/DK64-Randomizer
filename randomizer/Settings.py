@@ -11,12 +11,23 @@ from randomizer.Enums.Items import Items
 from randomizer.Enums.Kongs import GetKongs, Kongs
 from randomizer.Enums.Levels import Levels
 from randomizer.Enums.Locations import Locations
+from randomizer.Enums.Regions import Regions
 from randomizer.Enums.Types import Types
 import randomizer.ItemPool as ItemPool
 from randomizer.Lists.Item import ItemList
 from randomizer.Lists.Location import ChunkyMoveLocations, DiddyMoveLocations, DonkeyMoveLocations, LankyMoveLocations, LocationList, SharedShopLocations, TinyMoveLocations, TrainingBarrelLocations
+from randomizer.Lists.ShufflableExit import ShufflableExits
+from randomizer.Lists.MapsAndExits import GetMapId, GetExitId, RegionMapList
 from randomizer.Prices import CompleteVanillaPrices, RandomizePrices, VanillaPrices
 from randomizer.ShuffleBosses import ShuffleBosses, ShuffleBossKongs, ShuffleKKOPhaseOrder, ShuffleKutoutKongs
+import randomizer.LogicFiles.DKIsles
+import randomizer.LogicFiles.JungleJapes
+import randomizer.LogicFiles.AngryAztec
+import randomizer.LogicFiles.FranticFactory
+import randomizer.LogicFiles.GloomyGalleon
+import randomizer.LogicFiles.FungiForest
+import randomizer.LogicFiles.CrystalCaves
+import randomizer.LogicFiles.CreepyCastle
 
 
 class Settings:
@@ -358,6 +369,8 @@ class Settings:
         self.colorblind_mode = "off"
         self.win_condition = "beat_krool"
         self.key_8_helm = False
+        self.random_starting_region = False
+        self.starting_region = {}
 
     def shuffle_prices(self):
         """Price randomization. Reuseable if we need to reshuffle prices."""
@@ -462,6 +475,44 @@ class Settings:
                 self.helm_chunky = True
                 orderedRooms.append(1)
         self.helm_order = orderedRooms
+
+        # Start Region
+        if self.random_starting_region:
+            region_data = [
+                randomizer.LogicFiles.DKIsles.LogicRegions,
+                randomizer.LogicFiles.JungleJapes.LogicRegions,
+                randomizer.LogicFiles.AngryAztec.LogicRegions,
+                randomizer.LogicFiles.FranticFactory.LogicRegions,
+                randomizer.LogicFiles.GloomyGalleon.LogicRegions,
+                randomizer.LogicFiles.FungiForest.LogicRegions,
+                randomizer.LogicFiles.CrystalCaves.LogicRegions,
+                randomizer.LogicFiles.CreepyCastle.LogicRegions,
+            ]
+            selected_region_world = random.choice(region_data)
+            valid_starting_regions = []
+            for region in selected_region_world:
+                region_data = selected_region_world[region]
+                transitions = [
+                    x.exitShuffleId for x in region_data.exits if x.exitShuffleId is not None and x.exitShuffleId in ShufflableExits and ShufflableExits[x.exitShuffleId].back.reverse is not None
+                ]
+                if region in RegionMapList:
+                    # Has tied map
+                    tied_map = GetMapId(region)
+                    for transition in transitions:
+                        relevant_transition = ShufflableExits[transition].back.reverse
+                        tied_exit = GetExitId(ShufflableExits[relevant_transition].back)
+                        valid_starting_regions.append(
+                            {
+                                "region": region,
+                                "map": tied_map,
+                                "exit": tied_exit,
+                                "region_name": region_data.name,
+                                "exit_name": ShufflableExits[relevant_transition].back.name,
+                            }
+                        )
+            self.starting_region = random.choice(valid_starting_regions)
+            for x in range(2):
+                randomizer.LogicFiles.DKIsles.LogicRegions[Regions.GameStart].exits[x + 1].dest = self.starting_region["region"]
 
         # Set keys required for KRool
         KeyEvents = [

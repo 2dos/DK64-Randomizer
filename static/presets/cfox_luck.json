@@ -45,6 +45,7 @@
     "medal_cb_req": 75,
     "medal_requirement": 15,
     "rareware_gb_fairies": 20,
+    "random_starting_region":false,
     "krool_random":false,
     "krool_phase_count":3,
     "helm_random":false,
