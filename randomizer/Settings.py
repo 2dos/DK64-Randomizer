@@ -492,10 +492,8 @@ class Settings:
             valid_starting_regions = []
             for region in selected_region_world:
                 region_data = selected_region_world[region]
-                transitions = [x.exitShuffleId for x in region_data.exits if
-                    x.exitShuffleId is not None and
-                    x.exitShuffleId in ShufflableExits and
-                    ShufflableExits[x.exitShuffleId].back.reverse is not None
+                transitions = [
+                    x.exitShuffleId for x in region_data.exits if x.exitShuffleId is not None and x.exitShuffleId in ShufflableExits and ShufflableExits[x.exitShuffleId].back.reverse is not None
                 ]
                 if region in RegionMapList:
                     # Has tied map
@@ -503,16 +501,18 @@ class Settings:
                     for transition in transitions:
                         relevant_transition = ShufflableExits[transition].back.reverse
                         tied_exit = GetExitId(ShufflableExits[relevant_transition].back)
-                        valid_starting_regions.append({
-                            "region": region,
-                            "map": tied_map,
-                            "exit": tied_exit,
-                            "region_name": region_data.name,
-                            "exit_name": ShufflableExits[relevant_transition].back.name,
-                        })
+                        valid_starting_regions.append(
+                            {
+                                "region": region,
+                                "map": tied_map,
+                                "exit": tied_exit,
+                                "region_name": region_data.name,
+                                "exit_name": ShufflableExits[relevant_transition].back.name,
+                            }
+                        )
             self.starting_region = random.choice(valid_starting_regions)
             for x in range(2):
-                randomizer.LogicFiles.DKIsles.LogicRegions[Regions.GameStart].exits[x+1].dest = self.starting_region["region"]
+                randomizer.LogicFiles.DKIsles.LogicRegions[Regions.GameStart].exits[x + 1].dest = self.starting_region["region"]
 
         # Set keys required for KRool
         KeyEvents = [
