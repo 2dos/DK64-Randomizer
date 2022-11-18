@@ -510,6 +510,14 @@ void* checkMove(short* flag, void* fba, int source) {
                 spawn_overlay = 1;
                 item_type = 5;
                 item_index = flag_index;
+            } else {
+                for (int i = 0; i < 5; i++) {
+                    if (flag_index == kong_flags[i]) {
+                        spawn_overlay = 1;
+                        item_type = 5;
+                        item_index = flag_index;
+                    }
+                }
             }
             if (spawn_overlay) {
                 spawnActor(324, 0);
@@ -743,7 +751,13 @@ void banana_medal_acquisition(int flag) {
             } else {
                 used_sprite = sprite_indexes[item_type];
             }
-            displaySpriteAtXYZ(sprite_table[used_sprite], 0x3F800000, 160.0f, 120.0f, -10.0f);
+            void* sprite_addr = sprite_table[used_sprite];
+            if (item_type == 12) {
+                sprite_addr = &bean_sprite;
+            } else if (item_type == 3) {
+                sprite_addr = &pearl_sprite;
+            }
+            displaySpriteAtXYZ(sprite_addr, 0x3F800000, 160.0f, 120.0f, -10.0f);
         }
     } else {
         // No item or pre-given item
@@ -840,9 +854,9 @@ void initKeyText(int ki) {
     key_timer = 100;
 }
 
-void spriteCode(int sprite_index) {
+void spriteCode(int sprite_index, float scale) {
     void* paad = CurrentActorPointer_0->paad;
-    spriteActorGenericCode(4.5f);
+    spriteActorGenericCode(scale);
     if ((CurrentActorPointer_0->obj_props_bitfield & 0x10) == 0) {
         assignGIFToActor(paad, sprite_table[sprite_index], 0x3F800000);
         if (CurrentActorPointer_0->control_state == 99) {
@@ -853,23 +867,39 @@ void spriteCode(int sprite_index) {
 }
 
 void ninCoinCode(void) {
-    spriteCode(0x8D);
+    spriteCode(0x8D, 4.5f);
 }
 
 void rwCoinCode(void) {
-    spriteCode(0x8C);
+    spriteCode(0x8C, 4.5f);
 }
 
 void medalCode(void) {
-    spriteCode(0x3C);
+    spriteCode(0x3C, 12.0f);
 }
 
 void beanCode(void) {
-    spriteCode(0x92);
+    void* paad = CurrentActorPointer_0->paad;
+    spriteActorGenericCode(12.0f);
+    if ((CurrentActorPointer_0->obj_props_bitfield & 0x10) == 0) {
+        assignGIFToActor(paad, &bean_sprite, 0x3F800000);
+        if (CurrentActorPointer_0->control_state == 99) {
+            CurrentActorPointer_0->control_state = 1;
+            CurrentActorPointer_0->sub_state = 2;
+        }
+    }
 }
 
 void pearlCode(void) {
-    spriteCode(0x92);
+    void* paad = CurrentActorPointer_0->paad;
+    spriteActorGenericCode(12.0f);
+    if ((CurrentActorPointer_0->obj_props_bitfield & 0x10) == 0) {
+        assignGIFToActor(paad, &pearl_sprite, 0x3F800000);
+        if (CurrentActorPointer_0->control_state == 99) {
+            CurrentActorPointer_0->control_state = 1;
+            CurrentActorPointer_0->sub_state = 2;
+        }
+    }
 }
 
 void NothingCode(void) {

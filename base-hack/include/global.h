@@ -253,3 +253,6 @@ extern unsigned int cs_skip_db[432];
 extern bonus_barrel_info bonus_data[95];
 extern const short kong_flags[5];
 extern const check_struct item_db[292];
+
+extern sprite_data_struct bean_sprite;
+extern sprite_data_struct pearl_sprite;

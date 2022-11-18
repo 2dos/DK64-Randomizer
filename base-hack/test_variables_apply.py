@@ -75,8 +75,8 @@ set_variables = {
     "helm_order": [2, 0, 0xFF, 0xFF, 0xFF],
     "disco_chunky": 1,
     "krusha_slot": 3,
-    "starting_kong": 3,
-    "kut_out_kong_order": [3, 0, 0, 0, 0],
+    "starting_kong": 4,
+    "kut_out_kong_order": [4, 0, 0, 0, 0],
     "helm_hurry_mode": 0,
     "win_condition": 5,
     "version": 2,
@@ -86,8 +86,8 @@ set_variables = {
     "medal_cb_req": 5,
     "hard_enemies": 1,
     "remove_oscillation_effects": 1,
-    "starting_map": 199,
-    "starting_exit": 0,
+    "starting_map": 0xAE,
+    "starting_exit": 1,
     "rareware_gb_fairies": 1,
 }
 

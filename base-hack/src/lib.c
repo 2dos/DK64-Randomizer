@@ -237,3 +237,29 @@ void initActor(int actor_index, void* func, int master_type, int paad_type) {
 	ActorMasterType[actor_index] = master_type;
 	*(ActorPaadDefs[actor_index]) = paad_type;
 }
+
+sprite_data_struct bean_sprite = {
+	.unk0 = 0xC4,
+	.images_per_frame_horizontal = 1,
+	.images_per_frame_vertical = 1,
+	.codec = 2,
+	.unk8 = -1,
+	.table = 1,
+	.width = 64,
+	.height = 32,
+	.image_count = 1,
+	.images = 6020,
+};
+
+sprite_data_struct pearl_sprite = {
+	.unk0 = 0xC5,
+	.images_per_frame_horizontal = 1,
+	.images_per_frame_vertical = 1,
+	.codec = 2,
+	.unk8 = -1,
+	.table = 1,
+	.width = 32,
+	.height = 32,
+	.image_count = 1,
+	.images = 6021,
+};

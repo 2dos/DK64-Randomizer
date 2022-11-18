@@ -221,7 +221,8 @@ typedef struct item_conversion_info {
 
 #define COIN_SCALE 0.4f
 #define BP_SCALE 2.0f
-#define POTION_SCALE 0.8f
+#define POTION_SCALE 0.25f
+#define KONG_SCALE 0.25f
 
 static const item_conversion_info item_conversions[] = {
 	{.actor=45, .model_two=0x74, .scale=0.25f}, // GB
@@ -241,6 +242,13 @@ static const item_conversion_info item_conversions[] = {
 	{.actor=161, .model_two=0x1F5, .scale=POTION_SCALE}, // Chunky Potion
 	{.actor=162, .model_two=0x1F6, .scale=POTION_SCALE}, // Any Potion
 	{.actor=154, .model_two=0x90, .scale=0.22f}, // Medal
+	{.actor=141, .model_two=0x257, .scale=KONG_SCALE}, // DK
+	{.actor=142, .model_two=0x258, .scale=KONG_SCALE}, // Diddy
+	{.actor=143, .model_two=0x259, .scale=KONG_SCALE}, // Lanky
+	{.actor=144, .model_two=0x25A, .scale=KONG_SCALE}, // Tiny
+	{.actor=155, .model_two=0x25B, .scale=KONG_SCALE}, // Chunky
+	{.actor=172, .model_two=0x198, .scale=0.25f}, // Bean
+	{.actor=174, .model_two=0x1B4, .scale=0.25f}, // Pearl
 };
 
 void getModelTwoItemFromActor(int actor, short* item, float* scale) {

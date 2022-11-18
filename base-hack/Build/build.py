@@ -160,6 +160,22 @@ file_dict = [
         "target_compressed_size": BLOCK_COLOR_SIZE,
     },
     {
+        "name": "Bean Sprite",
+        "pointer_table_index": 25,
+        "file_index": 6020,
+        "source_file": "assets/Non-Code/displays/bean.png",
+        "do_not_extract": True,
+        "texture_format": "rgba5551",
+    },
+    {
+        "name": "Pearl Sprite",
+        "pointer_table_index": 25,
+        "file_index": 6021,
+        "source_file": "assets/Non-Code/displays/pearl.png",
+        "do_not_extract": True,
+        "texture_format": "rgba5551",
+    },
+    {
         "name": "DPad Image",
         "pointer_table_index": 14,
         "file_index": 187,
