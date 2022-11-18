@@ -135,26 +135,25 @@ def GetAccessibleLocations(settings, startingOwnedItems, searchType=SearchMode.G
             return True
 
         # Do a search for each owned kong
-        for kong in LogicVariables.GetKongs():
+        for kong in set(LogicVariables.GetKongs()):
             LogicVariables.SetKong(kong)
 
             startRegion = Logic.Regions[Regions.GameStart]
             startRegion.id = Regions.GameStart
             startRegion.dayAccess = True
             startRegion.nightAccess = Events.Night in LogicVariables.Events
-            regionPool = [startRegion]
+            regionPool = set([startRegion])
             addedRegions = [Regions.GameStart]
 
             tagAccess = [(key, value) for (key, value) in Logic.Regions.items() if value.HasAccess(kong) and key not in addedRegions]
             addedRegions.extend([x[0] for x in tagAccess])  # first value is the region key
-            regionPool.extend([x[1] for x in tagAccess])  # second value is the region itself
+            regionPool.update([x[1] for x in tagAccess])  # second value is the region itself
 
             # Loop for each region until no more accessible regions found
             while len(regionPool) > 0:
                 region = regionPool.pop()
                 region.UpdateAccess(kong, LogicVariables)  # Set that this kong has access to this region
                 LogicVariables.UpdateCurrentRegionAccess(region)  # Set in logic as well
-
                 # Check accessibility for each event in this region
                 for event in region.events:
                     if event.name not in LogicVariables.Events and event.logic(LogicVariables):
@@ -229,7 +228,7 @@ def GetAccessibleLocations(settings, startingOwnedItems, searchType=SearchMode.G
                             addedRegions.append(destination)
                             newRegion = Logic.Regions[destination]
                             newRegion.id = destination
-                            regionPool.append(newRegion)
+                            regionPool.add(newRegion)
                     # If it's accessible, update time of day access whether already added or not
                     # This way if a region has access from 2 different regions, one time-restricted and one not,
                     # it will be known that it can be accessed during either time of day
@@ -252,7 +251,7 @@ def GetAccessibleLocations(settings, startingOwnedItems, searchType=SearchMode.G
                         addedRegions.append(destination)
                         newRegion = Logic.Regions[destination]
                         newRegion.id = destination
-                        regionPool.append(newRegion)
+                        regionPool.add(newRegion)
 
     if searchType in (SearchMode.GetReachable, SearchMode.GetReachableWithControlledPurchases):
         return accessible
