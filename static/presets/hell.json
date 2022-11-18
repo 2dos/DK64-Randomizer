@@ -57,6 +57,8 @@
     "misc_changes_selected":[],
     "enemies_selected":[],
     "medal_requirement":15,
+    "rareware_gb_fairies":20,
+    "random_starting_region":false,
     "medal_cb_req": 75,
     "quality_of_life":true,
     "shorten_boss":true,

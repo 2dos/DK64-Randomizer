@@ -26,7 +26,9 @@ def generate_lo_rando_race_settings():
     data["boss_kong_rando"] = True  # usually True
     data["boss_location_rando"] = True  # usually True
     data["random_medal_requirement"] = False
-    data["kasplat_rando_setting"] = "vanilla_locations"  # usually vanilla_locations but i like location_shuffle
+    data["medal_requirement"] = 15  # vanilla is 15
+    data["medal_cb_req"] = 75  # vanilla is 75
+    data["kasplat_rando_setting"] = "location_shuffle"  # usually vanilla_locations but i like location_shuffle
     data["kong_rando"] = True  # usually True - FORCED True if level_order shuffle
 
     data["bananaport_rando"] = "off"  # usually "off", could be "in_level" "crossmap_coupled" "crossmap_decoupled"
@@ -39,7 +41,7 @@ def generate_lo_rando_race_settings():
     data["shockwave_status"] = "shuffled_decoupled"  # usually "vanilla", could be "shuffled" or "shuffled_decoupled" or "start_with"
     # If true, the above is always decoupled or vanilla
     data["shuffle_items"] = True  # Must be true to trigger the list selector below
-    data["item_rando_list_selected"] = ["shop", "banana", "crown", "blueprint", "key", "medal"]  # no coins because i hate rareware coin logic
+    # data["item_rando_list_selected"] = ["shop", "banana", "crown", "blueprint", "key", "medal"]  # no coins because i hate rareware coin logic
 
     data["random_prices"] = "low"  # usually "medium, might need free, rarely vanilla"
     data["randomize_blocker_required_amounts"] = True  # usually True, if false set values below
@@ -88,7 +90,7 @@ def generate_lo_rando_race_settings():
     data["helm_phase_count"] = 3  # usually 3
     data["krool_access"] = True  # usually True - this is the weirdly named key 8 required setting
     data["keys_random"] = False  # key count is random setting
-    data["krool_key_count"] = 6  # usually 5
+    data["krool_key_count"] = 8  # usually 5
     data["starting_random"] = False  # starting kong count is random setting
     data["starting_kongs_count"] = 2  # usually 2
 
@@ -115,6 +117,7 @@ def generate_lo_rando_race_settings():
     data["wrinkly_location_rando"] = False  # likely to be False
     data["tns_location_rando"] = False  # likely to be False
     data["key_8_helm"] = True  # likely to be False? unclear as of yet
+    data["misc_changes_selected"] = []  # a whole suite of things it includes
 
     data["hard_level_progression"] = False  # likely to be False
 

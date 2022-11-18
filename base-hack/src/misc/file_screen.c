@@ -560,8 +560,7 @@ void modifyTrackerImage(int dl_offset) {
 	}
 }
 
-int* display_images(int* dl) {
-	int y_offset = FileScreenDLOffset - 720;
+int* display_file_images(int* dl, int y_offset) {
 	dl = drawImage(dl, IMAGE_TRACKER, RGBA16, TRACKER_WIDTH, TRACKER_HEIGHT, 160, y_offset + 150,1.0f, 1.0f,0xFF);
 	modifyTrackerImage(y_offset);
 	return dl;
@@ -582,7 +581,7 @@ int* display_text(int* dl) {
 	// Percentage Counter
 	dk_strFormat((char*)perc_str, "%d%%", FilePercentage);
 	dl = drawText(dl, 1, 410, y + 50, (char*)perc_str, 0xFF, 0xFF, 0xFF, 0xFF);
-	dl = display_images(dl);
+	dl = display_file_images(dl, FileScreenDLOffset - 720);
 	return dl;
 }
 

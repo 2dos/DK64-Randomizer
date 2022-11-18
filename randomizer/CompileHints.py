@@ -345,8 +345,8 @@ def compileHints(spoiler: Spoiler):
                     hint_distribution[HintType.RequiredWinConditionHint] += 1  # Dedicated Mini Monkey hint
                 if Kongs.chunky in spoiler.settings.krool_order:
                     hint_distribution[HintType.RequiredWinConditionHint] += 1  # Dedicated Gorilla Gone hint
-            # All fairies seeds need help finding the camera - two hints for it
-            if spoiler.settings.win_condition == "all_fairies":
+            # All fairies seeds need help finding the camera (if you don't start with it) - two hints for it
+            if spoiler.settings.win_condition == "all_fairies" and spoiler.settings.shockwave_status != "start_with":
                 valid_types.append(HintType.RequiredWinConditionHint)
                 hint_distribution[HintType.RequiredWinConditionHint] = 2
     # if spoiler.settings.random_patches:

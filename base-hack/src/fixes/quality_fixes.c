@@ -217,12 +217,14 @@ void updateMultibunchCount(void) {
 void RabbitRaceInfiniteCode(void) {
 	initCharSpawnerActor();
 	if (checkFlag(FLAG_RABBIT_ROUND1,0)) {
-		if (CurrentActorPointer_0->control_state_progress == 0) {
-			int control_state = CurrentActorPointer_0->control_state;
-			if (control_state == 2) {
+		int control_state = CurrentActorPointer_0->control_state;
+		if (control_state == 0x1F) {
+			if (CurrentActorPointer_0->control_state_progress == 2) {
 				// Start
 				setHUDItemAsInfinite(5,0,1);
-			} else if ((control_state == 0x28) || (control_state == 0x1E)) {
+			}
+		} else if ((control_state == 0x28) || (control_state == 0x1E)) {
+			if (CurrentActorPointer_0->control_state_progress == 0) {
 				// End
 				resetCoconutHUD();
 			}

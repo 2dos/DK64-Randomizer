@@ -189,3 +189,23 @@ def randomize_entrances(spoiler: Spoiler):
         shuffledBack = spoiler.shuffled_exit_data[Transitions.CastleMuseumToBallroom]
         ROM().write(GetMapId(shuffledBack.regionId))
         ROM().write(GetExitId(shuffledBack))
+
+
+def filterEntranceType():
+    """Change LZ Type for some entrances so that warps from crown pads work correctly."""
+    for cont_map_id in range(216):
+        cont_map_lzs_address = js.pointer_addresses[18]["entries"][cont_map_id]["pointing_to"]
+        ROM().seek(cont_map_lzs_address)
+        lz_count = int.from_bytes(ROM().readBytes(2), "big")
+        for lz_id in range(lz_count):
+            start = (lz_id * 0x38) + 2
+            ROM().seek(cont_map_lzs_address + start + 0x10)
+            lz_type = int.from_bytes(ROM().readBytes(2), "big")
+            lz_map = int.from_bytes(ROM().readBytes(2), "big")
+            if lz_type == 0x10 and lz_map not in (Maps.Cranky, Maps.Candy, Maps.Funky, Maps.Snide):
+                # Change type to 0xC
+                ROM().seek(cont_map_lzs_address + start + 0x10)
+                ROM().writeMultipleBytes(0xC, 2)
+                # Change fade type to spin
+                ROM().seek(cont_map_lzs_address + start + 0x16)
+                ROM().writeMultipleBytes(0, 2)

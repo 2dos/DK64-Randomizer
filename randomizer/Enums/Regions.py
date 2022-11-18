@@ -22,6 +22,7 @@ class Regions(IntEnum):
     IslesSnideRoom = auto()
     FranticFactoryLobby = auto()
     GloomyGalleonLobby = auto()
+    GloomyGalleonLobbyEntrance = auto()
     CabinIsle = auto()
     FungiForestLobby = auto()
     CrystalCavesLobby = auto()

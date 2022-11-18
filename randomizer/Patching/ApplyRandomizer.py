@@ -15,7 +15,7 @@ from randomizer.Patching.BossRando import randomize_bosses
 from randomizer.Patching.CosmeticColors import apply_cosmetic_colors, overwrite_object_colors, applyKrushaKong
 from randomizer.Patching.DKTV import randomize_dktv
 from randomizer.Patching.EnemyRando import randomize_enemies
-from randomizer.Patching.EntranceRando import randomize_entrances
+from randomizer.Patching.EntranceRando import randomize_entrances, filterEntranceType
 from randomizer.Patching.Hash import get_hash_images
 from randomizer.Patching.KasplatLocationRando import randomize_kasplat_locations
 from randomizer.Patching.KongRando import apply_kongrando_cosmetic
@@ -420,6 +420,10 @@ def patching_response(responded_data):
         ROM().seek(sav + 0x150)
         ROM().write(spoiler.settings.medal_requirement)
 
+    if spoiler.settings.rareware_gb_fairies != 20:
+        ROM().seek(sav + 0x36)
+        ROM().write(spoiler.settings.rareware_gb_fairies)
+
     if spoiler.settings.medal_cb_req != 75:
         ROM().seek(sav + 0x112)
         ROM().write(spoiler.settings.medal_cb_req)
@@ -429,6 +433,11 @@ def patching_response(responded_data):
         for enemy in EnemySelector:
             lst.append(enemy["value"])
         spoiler.settings.enemies_selected = lst
+
+    if spoiler.settings.random_starting_region:
+        ROM().seek(sav + 0x10C)
+        ROM().write(spoiler.settings.starting_region["map"])
+        ROM().write(spoiler.settings.starting_region["exit"])
 
     # randomize_dktv()
     randomize_entrances(spoiler)
@@ -449,6 +458,7 @@ def patching_response(responded_data):
     place_randomized_items(spoiler)
     place_door_locations(spoiler)
     randomize_crown_pads(spoiler)
+    filterEntranceType()
 
     random.seed(spoiler.settings.seed)
     randomize_music(spoiler)

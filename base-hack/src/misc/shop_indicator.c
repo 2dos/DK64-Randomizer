@@ -328,7 +328,7 @@ int getClosestShop(void) {
 		Snide's HQ: 0x79
 	*/
 	unsigned int dists[4] = {0xFFFFFFFF,0xFFFFFFFF,0xFFFFFFFF,0xFFFFFFFF};
-	int* m2location = ObjectModel2Pointer;
+	int* m2location = (int*)ObjectModel2Pointer;
 	int found_counter = 0;
 	behaviour_data* behavs[4] = {};
 	counter_paad* paad = CurrentActorPointer_0->paad;
@@ -380,7 +380,7 @@ typedef struct ModelData {
 } ModelData;
 
 float getShopScale(int index) {
-	int* m2location = ObjectModel2Pointer;
+	int* m2location = (int*)ObjectModel2Pointer;
 	for (int i = 0; i < ObjectModel2Count; i++) {
 		ModelTwoData* _object = getObjectArrayAddr(m2location,0x90,i);
 		if (_object) {
@@ -505,7 +505,7 @@ void newCounterCode(void) {
 			}
 			if (CurrentMap == 0x1E) {
 				int shop = paad->shop;
-				int* m2location = ObjectModel2Pointer;
+				int* m2location = (int*)ObjectModel2Pointer;
 				if (shop == 1) {
 					int funky = convertIDToIndex(0x1F4);
 					if (funky > -1) {
