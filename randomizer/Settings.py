@@ -803,6 +803,10 @@ class Settings:
                 self.valid_locations[Types.Medal] = shuffledLocations
             if Types.Coin in self.shuffled_location_types:
                 self.valid_locations[Types.Coin] = shuffledLocations
+            if Types.Pearl in self.shuffled_location_types:
+                self.valid_locations[Types.Pearl] = shuffledLocations
+            if Types.Bean in self.shuffled_location_types:
+                self.valid_locations[Types.Bean] = shuffledLocations
             if Types.Kong in self.shuffled_location_types:
                 # Banned because it defeats the purpose of starting with X Kongs
                 banned_kong_locations = (
