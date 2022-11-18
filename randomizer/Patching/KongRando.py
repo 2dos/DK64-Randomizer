@@ -11,7 +11,7 @@ from randomizer.Enums.Types import Types
 
 def apply_kongrando_cosmetic(spoiler: Spoiler):
     """Rando write bananaport locations."""
-    if spoiler.settings.kong_rando and Types.Kong not in spoiler.settings.shuffled_location_types:
+    if spoiler.settings.kong_rando:
         gunswitches = [0x129, 0x126, 0x128, 0x127, 0x125]
         greenslamswitches = [0x94, 0x93, 0x95, 0x96, 0x92]
         instrumentpads = [0xA8, 0xA9, 0xAC, 0xAA, 0xAB]

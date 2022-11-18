@@ -1415,7 +1415,7 @@ def FillKongsAndMoves(spoiler):
     if levelBlockInPlace:
         BlockAccessToLevel(spoiler.settings, 100)
 
-    if spoiler.settings.kong_rando and Types.Kong not in spoiler.settings.shuffled_location_types:
+    if spoiler.settings.kong_rando:
         # If kongs are our progression, then place moves that unlock those kongs before anything else
         # This logic only matters if the level order is critical to progression (i.e. not loading zone shuffled)
         if spoiler.settings.kongs_for_progression and spoiler.settings.shuffle_loading_zones != "all" and spoiler.settings.move_rando != "start_with":

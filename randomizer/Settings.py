@@ -778,7 +778,7 @@ class Settings:
                 self.valid_locations[Types.Blueprint][Kongs.tiny] = [location for location in blueprintLocations if LocationList[location].kong == Kongs.tiny]
                 self.valid_locations[Types.Blueprint][Kongs.chunky] = [location for location in blueprintLocations if LocationList[location].kong == Kongs.chunky]
             if Types.Banana in self.shuffled_location_types:
-                self.valid_locations[Types.Banana] = nonKongLocations
+                self.valid_locations[Types.Banana] = shuffledLocations
             if Types.Crown in self.shuffled_location_types:
                 # Banned for technical reasons
                 banned_crown_locations = (
@@ -796,11 +796,11 @@ class Settings:
                     Locations.IslesTinyInstrumentPad,
                     Locations.IslesChunkyInstrumentPad,
                 )
-                self.valid_locations[Types.Crown] = [location for location in nonKongLocations if location not in banned_crown_locations]
+                self.valid_locations[Types.Crown] = [location for location in shuffledLocations if location not in banned_crown_locations]
             if Types.Key in self.shuffled_location_types:
-                self.valid_locations[Types.Key] = nonKongLocations
+                self.valid_locations[Types.Key] = shuffledLocations
             if Types.Medal in self.shuffled_location_types:
-                self.valid_locations[Types.Medal] = nonKongLocations
+                self.valid_locations[Types.Medal] = shuffledLocations
             if Types.Coin in self.shuffled_location_types:
                 self.valid_locations[Types.Coin] = shuffledLocations
             if Types.Kong in self.shuffled_location_types:
