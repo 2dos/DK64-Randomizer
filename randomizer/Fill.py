@@ -69,10 +69,10 @@ def GetExitLevelExit(region):
         return ShuffleExits.ShufflableExits[Transitions.CastleToIsles].shuffledId
 
 
-import pyprofilers as pp
+#import pyprofilers as pp
 
 
-# @pp.profile_by_line()
+
 def GetAccessibleLocations(settings, startingOwnedItems, searchType=SearchMode.GetReachable, purchaseList=None, targetItemId=None):
     """Search to find all reachable locations given owned items."""
     # No logic? Calls to this method that are checking things just return True
@@ -817,7 +817,7 @@ def GetMaxCoinsSpent(settings, purchasedShops):
     MaxCoinsSpent.pop()  # Remove the shared total, as it was just for numbers keeping
     return MaxCoinsSpent
 
-
+#@pp.profile_by_line()
 def GetUnplacedItemPrerequisites(spoiler, targetItemId, placedMoves, ownedKongs=[]):
     """Given the target item and the current world state, find a valid, minimal, unplaced set of items required to reach the location it is in."""
     # Settings-required moves are always owned in order to complete this method based on the settings
