@@ -516,6 +516,8 @@ def CalculateWothPaths(spoiler, WothLocations):
         # Therefore moves required to get coins for shop purchases are not dependencies
         # So give the logic infinite coins so it can purchase anything it needs
         LogicVariables.GainInfiniteCoins()
+        # Also assume max GBs so no B. Lockers can get in your way, leading to items that are only needed for GBs to be on paths
+        LogicVariables.GoldenBananas = 201
         accessible = GetAccessibleLocations(spoiler.settings, assumedItems, SearchMode.GetReachable)
         isOnAnotherPath = False
         # Then check every other WotH location for accessibility
@@ -527,7 +529,7 @@ def CalculateWothPaths(spoiler, WothLocations):
         # Put the item back for future calculations
         location.PlaceItem(item_id)
         # If this item doesn't show up on any other paths, it's not actually WotH
-        # This is rare, but could happen if the item at the location is needed for coins - it isn't *really* required
+        # This is rare, but could happen if the item at the location is needed for coins or B. Lockers - it's usually required, but not helpful to hint at all
         if item_id not in assumedItems and item_id != Items.BananaHoard and not isOnAnotherPath:
             falseWothLocations.append(locationId)
     # After everything is calculated, get rid of paths for false WotH locations
@@ -1343,6 +1345,10 @@ def FillKongs(spoiler):
         LocationList[Locations.AztecDonkeyFreeLanky].kong = spoiler.settings.lanky_freeing_kong
         LocationList[Locations.AztecDiddyFreeTiny].kong = spoiler.settings.tiny_freeing_kong
         LocationList[Locations.FactoryLankyFreeChunky].kong = spoiler.settings.chunky_freeing_kong
+        # If we didn't put an item in a kong location, then it gets a NoItem
+        # This matters specifically so the logic around Diddy's cage behaves properly
+        if LocationList[Locations.DiddyKong].item is None:
+            LocationList[Locations.DiddyKong].PlaceItem(Items.NoItem)
         spoiler.settings.update_valid_locations()
     # If kongs must be in Kong cages, we need to be more careful
     else:

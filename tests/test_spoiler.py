@@ -28,7 +28,7 @@ def generate_lo_rando_race_settings():
     data["random_medal_requirement"] = False
     data["medal_requirement"] = 15  # vanilla is 15
     data["medal_cb_req"] = 75  # vanilla is 75
-    data["kasplat_rando_setting"] = "location_shuffle"  # usually vanilla_locations but i like location_shuffle
+    data["kasplat_rando_setting"] = "vanilla_locations"  # usually vanilla_locations but i like location_shuffle
     data["kong_rando"] = True  # usually True - FORCED True if level_order shuffle
 
     data["bananaport_rando"] = "off"  # usually "off", could be "in_level" "crossmap_coupled" "crossmap_decoupled"
