@@ -27,7 +27,7 @@ def apply_kongrando_cosmetic(spoiler: Spoiler):
             if x.new_flag in kong_flag_data:
                 new_item = kong_flag_data[x.new_flag]
             spoiler.WriteKongPlacement(x.location, new_item)
-        
+
     if spoiler.settings.kong_rando:
         gunswitches = [0x129, 0x126, 0x128, 0x127, 0x125]
         greenslamswitches = [0x94, 0x93, 0x95, 0x96, 0x92]

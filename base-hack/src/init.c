@@ -454,6 +454,7 @@ void initHack(int source) {
 				LedgeHangY[slot] = LedgeHangY[5];
 				LedgeHangY_0[slot] = LedgeHangY_0[5];
 				*(short*)(0x8074AB5A) = 0x0040; // Enables Krusha's spin attack to knock kasplats down
+				PotionAnimations[slot] = PotionAnimations[4];
 				switch (slot) {
 					case 0:
 						// DK

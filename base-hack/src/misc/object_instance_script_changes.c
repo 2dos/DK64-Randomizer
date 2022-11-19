@@ -213,44 +213,6 @@ typedef struct warp_extra_info {
 	/* 0x002 */ unsigned short tied_index;
 } warp_extra_info;
 
-typedef struct item_conversion_info {
-	/* 0x000 */ short actor;
-	/* 0x002 */ short model_two;
-	/* 0x004 */ float scale;
-} item_conversion_info;
-
-#define COIN_SCALE 0.4f
-#define BP_SCALE 2.0f
-#define POTION_SCALE 0.25f
-#define KONG_SCALE 0.25f
-
-static const item_conversion_info item_conversions[] = {
-	{.actor=45, .model_two=0x74, .scale=0.25f}, // GB
-	{.actor=78, .model_two=0xDE, .scale=BP_SCALE}, // DK BP
-	{.actor=75, .model_two=0xE0, .scale=BP_SCALE}, // Diddy BP
-	{.actor=77, .model_two=0xE1, .scale=BP_SCALE}, // Lanky BP
-	{.actor=79, .model_two=0xDD, .scale=BP_SCALE}, // Tiny BP
-	{.actor=76, .model_two=0xDF, .scale=BP_SCALE}, // Chunky BP
-	{.actor=72, .model_two=0x13C, .scale=0.17f}, // Key
-	{.actor=86, .model_two=0x18D, .scale=0.25f}, // Crown
-	{.actor=151, .model_two=0x48, .scale=COIN_SCALE}, // Nintendo Coin
-	{.actor=152, .model_two=0x28F, .scale=COIN_SCALE}, // Rareware Coin
-	{.actor=157, .model_two=0x5B, .scale=POTION_SCALE}, // DK Potion
-	{.actor=158, .model_two=0x1F2, .scale=POTION_SCALE}, // Diddy Potion
-	{.actor=159, .model_two=0x59, .scale=POTION_SCALE}, // Lanky Potion
-	{.actor=160, .model_two=0x1F3, .scale=POTION_SCALE}, // Tiny Potion
-	{.actor=161, .model_two=0x1F5, .scale=POTION_SCALE}, // Chunky Potion
-	{.actor=162, .model_two=0x1F6, .scale=POTION_SCALE}, // Any Potion
-	{.actor=154, .model_two=0x90, .scale=0.22f}, // Medal
-	{.actor=141, .model_two=0x257, .scale=KONG_SCALE}, // DK
-	{.actor=142, .model_two=0x258, .scale=KONG_SCALE}, // Diddy
-	{.actor=143, .model_two=0x259, .scale=KONG_SCALE}, // Lanky
-	{.actor=144, .model_two=0x25A, .scale=KONG_SCALE}, // Tiny
-	{.actor=155, .model_two=0x25B, .scale=KONG_SCALE}, // Chunky
-	{.actor=172, .model_two=0x198, .scale=0.25f}, // Bean
-	{.actor=174, .model_two=0x1B4, .scale=0.25f}, // Pearl
-};
-
 void getModelTwoItemFromActor(int actor, short* item, float* scale) {
 	for (int i = 0; i < (sizeof(item_conversions) / sizeof(item_conversion_info)); i++) {
 		if (actor == item_conversions[i].actor) {

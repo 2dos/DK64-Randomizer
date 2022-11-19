@@ -1372,3 +1372,9 @@ typedef struct sprite_data_struct {
 	/* 0x012 */ short image_count;
 	/* 0x014 */ short images;
 } sprite_data_struct;
+
+typedef struct item_conversion_info {
+	/* 0x000 */ short actor;
+	/* 0x002 */ short model_two;
+	/* 0x004 */ float scale;
+} item_conversion_info;

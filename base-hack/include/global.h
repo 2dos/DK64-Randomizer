@@ -1,5 +1,6 @@
 #include "vars.h"
 #include "text_items.h"
+#include "item_data.h"
 
 extern void playSFX(short sfxIndex);
 extern void setPermFlag(short flagIndex);

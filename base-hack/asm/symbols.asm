@@ -214,3 +214,4 @@
 .definelabel FileVariables, 0x807FC828
 
 .definelabel CannonArcSize, 0x80753CD0
+.definelabel PotionAnimations, 0x8075D380

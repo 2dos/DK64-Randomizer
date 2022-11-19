@@ -789,7 +789,6 @@ int getFlagIndex_Corrected(int start, int level) {
 }
 
 static const short boss_maps[] = {0x8,0xC5,0x9A,0x6F,0x53,0xC4,0xC7};
-static const short acceptable_items[] = {0x74,0xDE,0xE0,0xE1,0xDD,0xDF,0x48,0x28F,0x13C,0x18D,0x90,0x5B,0x1F2,0x59,0x1F3,0x1F5,0x1F6};
 
 int itemGrabHook(int collectable_type, int obj_type, int is_homing) {
     if (Rando.item_rando) {
@@ -1156,6 +1155,10 @@ void getItem(int object_type) {
             if (song >= 0) {
                 playSong(song, 0x3F800000);
             }
+            if (!canDanceSkip()) {
+                setAction(0x42, 0, 0);
+            }
+            refreshItemVisibility();
             break;
     }
 }
@@ -1211,8 +1214,6 @@ int setupHook(int map) {
     }
     return index;
 }
-
-static const unsigned char actor_drops[] = {45, 78, 75, 77, 79, 76, 72, 86, 151, 152, 157, 158, 159, 160, 161, 162, 153, 154, 141, 142, 143, 144, 155, 172, 172};
 
 void CheckKasplatSpawnBitfield(void) {
     if (ActorSpawnerPointer) {

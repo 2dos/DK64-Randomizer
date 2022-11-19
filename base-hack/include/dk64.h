@@ -276,6 +276,7 @@ extern int getPauseWheelRotationProgress(int unk0, int unk1);
 extern void updateFilePercentage(void);
 extern int getKong(int player_index);
 extern int spawnModelTwo(int type, int x_f, int y_f, int z_f, float scale, int id);
+extern void refreshItemVisibility(void);
 
 //vanilla data
 extern float TransitionSpeed;
@@ -506,6 +507,7 @@ extern short RotationPerItem;
 extern short FileVariables[8];
 
 extern float CannonArcSize[7];
+extern unsigned short PotionAnimations[6];
 
 //hack data
 extern int TestVariable;

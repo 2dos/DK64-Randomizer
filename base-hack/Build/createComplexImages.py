@@ -359,6 +359,8 @@ rmve = [
     "gb.png",
     "key.png",
     "medal.png",
+    "bean.png",
+    "pearl.png",
 ]
 for kong in kongs:
     for x in range(2):

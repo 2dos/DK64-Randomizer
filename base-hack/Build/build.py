@@ -1300,6 +1300,8 @@ with open(newROMName, "r+b") as fh:
         "nin_coin",
         "potion32",
         "rw_coin",
+        "bean",
+        "pearl",
     ]
     for disp in displays:
         for ext in [".png", ".rgba32", ".rgba5551"]:
