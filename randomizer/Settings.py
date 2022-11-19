@@ -810,7 +810,7 @@ class Settings:
                     Locations.IslesOrangesTrainingBarrel,
                     Locations.IslesDonkeyJapesRock,
                 )
-                self.valid_locations[Types.Kong].extend(shuffledLocations)  # No items can be in Kong cages but Kongs can be in all other locations
+                self.valid_locations[Types.Kong].extend([loc for loc in shuffledLocations if loc not in banned_kong_locations])  # No items can be in Kong cages but Kongs can be in all other locations
 
     def GetValidLocationsForItem(self, item_id):
         """Return the valid locations the input item id can be placed in."""

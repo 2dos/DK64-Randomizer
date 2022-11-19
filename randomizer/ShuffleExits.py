@@ -239,7 +239,7 @@ def UpdateLevelProgression(settings: Settings):
         Regions.JungleJapesLobby,
         Regions.AngryAztecLobby,
         Regions.FranticFactoryLobby,
-        Regions.GloomyGalleonLobby,
+        Regions.GloomyGalleonLobbyEntrance,
         Regions.FungiForestLobby,
         Regions.CrystalCavesLobby,
         Regions.CreepyCastleLobby,
