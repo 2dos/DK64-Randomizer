@@ -269,6 +269,27 @@ move_hints = [
     {"move": "Rareware Coin", "kong": "~", "cranky": "RAREWARE COIN CRANKY", "funky": "RAREWARE COIN FUNKY", "candy": "RAREWARE COIN CANDY"},
     {"move": "Bean", "kong": "~", "cranky": "BEAN CRANKY", "funky": "BEAN FUNKY", "candy": "BEAN CANDY"},
     {
+        "move": "Pearl",
+        "kong": "~",
+        "cranky": "PEARL CRANKY",
+        "funky": "PEARL FUNKY",
+        "candy": "PEARL CANDY",
+    },
+    {
+        "move": "Kong",
+        "kong": "~",
+        "cranky": "KONG CRANKY",
+        "funky": "KONG FUNKY",
+        "candy": "KONG CANDY",
+    },
+    {
+        "move": "Fairy",
+        "kong": "~",
+        "cranky": "FAIRY CRANKY",
+        "funky": "FAIRY FUNKY",
+        "candy": "FAIRY CANDY",
+    },
+    {
         "move": "Not enough coins - Special Move",
         "kong": "~",
         "cranky": "YOU'RE UNLUCKY TO BE SO POOR YOU CAN'T AFFORD MY SPECIAL MOVE.",
@@ -344,6 +365,13 @@ move_hints = [
         "cranky": "YOU'RE UNLUCKY TO BE SO POOR YOU CAN'T AFFORD THIS BANANA MEDAL.",
         "funky": "'FRAID I CAN'T JUST GIVE IT TO YA, THOUGH. BANANA MEDALS DON'T GROW ON TREES!",
         "candy": "BUT YOU'LL NEED TO SCRAPE TOGETHER SOME MORE COINS TO GET THIS BANANA MEDAL.",
+    },
+    {
+        "move": "Not enough coins - Kong",
+        "kong": "~",
+        "cranky": "YOU'RE UNLUCKY TO BE SO POOR YOU CAN'T AFFORD TO SAVE YOUR FRIEND.",
+        "funky": "'FRAID I CAN'T JUST GIVE IT TO YA, THOUGH. FRIENDS DON'T GROW ON TREES!",
+        "candy": "BUT YOU'LL NEED TO SCRAPE TOGETHER SOME MORE COINS TO FREE YOUR FRIEND.",
     },
 ]
 
@@ -455,13 +483,13 @@ move_names = [
     {"name": "Trombone Tremor", "move_type": "instrument"},
     {"name": "Saxophone Slam", "move_type": "instrument"},
     {"name": "Triangle Trample", "move_type": "instrument"},
-    {"name": "All Kongs - Homing Ammo", "move_type": "gun_upg"},
-    {"name": "All Kongs - Sniper", "move_type": "gun_upg"},
-    {"name": "All Kongs - Ammo Belt 1", "move_type": "ammo_belt"},
-    {"name": "All Kongs - Ammo Belt 2", "move_type": "ammo_belt"},
+    {"name": "Homing Ammo", "move_type": "gun_upg"},
+    {"name": "Sniper Scope", "move_type": "gun_upg"},
+    {"name": "Ammo Belt 1", "move_type": "ammo_belt"},
+    {"name": "Ammo Belt 2", "move_type": "ammo_belt"},
     {"name": "3rd Melon", "move_type": "ins_upg"},
-    {"name": "All Kongs - Upgrade 1", "move_type": "ins_upg"},
-    {"name": "All Kongs - Upgrade 2", "move_type": "ins_upg"},
+    {"name": "Instrument Upgrade 1", "move_type": "ins_upg"},
+    {"name": "Instrument Upgrade 2", "move_type": "ins_upg"},
     {"name": "Diving", "move_type": "tbarrel_bfi"},
     {"name": "Orange Throwing", "move_type": "tbarrel_bfi"},
     {"name": "Barrel Throwing", "move_type": "tbarrel_bfi"},
@@ -489,6 +517,13 @@ move_names = [
     {"name": "Key 6", "move_type": "item"},  # 77
     {"name": "Key 7", "move_type": "item"},  # 78
     {"name": "Key 8", "move_type": "item"},  # 79
+    {"name": "Pearl", "move_type": "item"},  # 80
+    {"name": "Donkey Kong", "move_type": "item"},  # 81
+    {"name": "Diddy Kong", "move_type": "item"},  # 82
+    {"name": "Lanky Kong", "move_type": "item"},  # 83
+    {"name": "Tiny Kong", "move_type": "item"},  # 84
+    {"name": "Chunky Kong", "move_type": "item"},  # 85
+    {"name": "Banana Fairy", "move_type": "item"},  # 86
 ]
 
 move_names_arr = []

@@ -361,7 +361,6 @@ static const movement_bitfield banned_movement_btf = {
     .exiting_portal = 1, // Reason: Locked Movement
 };
 
-static const short kong_flags[] = {0x181,0x6,0x46,0x42,0x75};
 static unsigned char tag_countdown = 0;
 static char can_tag_anywhere = 0;
 

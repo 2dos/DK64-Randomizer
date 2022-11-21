@@ -594,7 +594,6 @@ int* displayHash(int* dl, int y_offset) {
 	return dl;
 }
 
-static const short kong_flags[] = {FLAG_KONG_DK,FLAG_KONG_DIDDY,FLAG_KONG_LANKY,FLAG_KONG_TINY,FLAG_KONG_CHUNKY};
 void correctKongFaces(void) {
 	if (Rando.unlock_kongs) {
 		for (int i = 0; i < 5; i++) {

@@ -747,11 +747,25 @@ void getNextMoveText(void) {
 							} else if (p_flag == FLAG_COLLECTABLE_BEAN) {
 								// Fungi Bean
 								top_item = 71;
+							} else if ((p_flag >= FLAG_PEARL_0_COLLECTED) && (p_flag < (FLAG_PEARL_0_COLLECTED + 5))) {
+								// Galleon Pearls
+								top_item = 80;
+							} else if ((p_flag >= FLAG_FAIRY_1) && (p_flag < (FLAG_FAIRY_1 + 20))) {
+								// Banana Fairy
+								top_item = 86;
 							} else {
 								// Key Number
 								for (int i = 0; i < 8; i++) {
 									if (p_flag == getKeyFlag(i)) {
 										top_item = 72 + i;
+									}
+								}
+								// Kongs
+								if (top_item == -1) {
+									for (int i = 0; i < 5; i++) {
+										if (p_flag == kong_flags[i]) {
+											top_item = 81 + i;
+										}
 									}
 								}
 								if (top_item == -1) {

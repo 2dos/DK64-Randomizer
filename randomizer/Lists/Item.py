@@ -157,6 +157,8 @@ ItemList = {
     Items.BananaFairy: Item("Banana Fairy", False, Types.Fairy, Kongs.any),
     Items.BananaMedal: Item("Banana Medal", False, Types.Medal, Kongs.any),
     Items.BattleCrown: Item("Battle Crown", False, Types.Crown, Kongs.any),
+    Items.Bean: Item("Bean", False, Types.Bean, Kongs.any),
+    Items.Pearl: Item("Pearl", False, Types.Pearl, Kongs.any),
     Items.DKIslesDonkeyBlueprint: Item("DK Isles Donkey Blueprint", False, Types.Blueprint, Kongs.donkey),
     Items.DKIslesDiddyBlueprint: Item("DK Isles Diddy Blueprint", False, Types.Blueprint, Kongs.diddy),
     Items.DKIslesLankyBlueprint: Item("DK Isles Lanky Blueprint", False, Types.Blueprint, Kongs.lanky),

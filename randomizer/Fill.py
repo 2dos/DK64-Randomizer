@@ -1016,6 +1016,12 @@ def Fill(spoiler):
         medalsUnplaced = PlaceItems(spoiler.settings, algo, ItemPool.BananaMedalItems(), ItemPool.MedalAssumedItems())
         if medalsUnplaced > 0:
             raise Ex.ItemPlacementException(str(medalsUnplaced) + " unplaced medals.")
+    # Then fill misc items
+    if Types.Bean in spoiler.settings.shuffled_location_types:
+        Reset()
+        miscUnplaced = PlaceItems(spoiler.settings, "random", ItemPool.MiscItemRandoItems(), [])
+        if miscUnplaced > 0:
+            raise Ex.ItemPlacementException(str(miscUnplaced) + " unplaced Miscellaneous Items.")
     # Then fill remaining locations with GBs
     if Types.Banana in spoiler.settings.shuffled_location_types:
         Reset()

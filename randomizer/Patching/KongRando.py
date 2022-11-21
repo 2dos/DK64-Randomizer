@@ -5,11 +5,29 @@ import js
 from randomizer.Enums.Kongs import Kongs
 from randomizer.Lists.EnemyTypes import Enemies
 from randomizer.Patching.Patcher import ROM
+from randomizer.Enums.Locations import Locations
+from randomizer.Enums.Items import Items
 from randomizer.Spoiler import Spoiler
+from randomizer.Enums.Types import Types
 
 
 def apply_kongrando_cosmetic(spoiler: Spoiler):
     """Rando write bananaport locations."""
+    if Types.Kong in spoiler.settings.shuffled_location_types:
+        kong_locations = [x for x in spoiler.item_assignment if x.location in (Locations.DiddyKong, Locations.LankyKong, Locations.TinyKong, Locations.ChunkyKong)]
+        kong_flag_data = {
+            385: Items.Donkey,
+            6: Items.Diddy,
+            70: Items.Lanky,
+            66: Items.Tiny,
+            117: Items.Chunky,
+        }
+        for x in kong_locations:
+            new_item = Items.NoItem
+            if x.new_flag in kong_flag_data:
+                new_item = kong_flag_data[x.new_flag]
+            spoiler.WriteKongPlacement(x.location, new_item)
+
     if spoiler.settings.kong_rando:
         gunswitches = [0x129, 0x126, 0x128, 0x127, 0x125]
         greenslamswitches = [0x94, 0x93, 0x95, 0x96, 0x92]
