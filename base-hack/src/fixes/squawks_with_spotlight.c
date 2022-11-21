@@ -9,13 +9,13 @@ void squawks_with_spotlight_actor_code() {
 
 void shine_light_at_kong(unsigned short height_variance, short min_follow_distance, unsigned short param_3) {
     spotlight_hold_paad* pointerLightBrightness = 0;
-    unsigned int half_speed = 0;
+    int half_speed = 0;
     int param_2_variable = 0;
     float distance_x = 0;
     float distance_z = 0;
     int distance = 0;
     float actor_height_variance = 0;
-    float height_variance_multiplier = 0.03;
+    float height_variance_multiplier = 0.03; //TODO: figure out good value
     
     initCharSpawnerActor();
     distance_x = (CurrentActorPointer_0->xPos) - (PlayerPointer_0->xPos);
@@ -49,8 +49,8 @@ void shine_light_at_kong(unsigned short height_variance, short min_follow_distan
     } else {
         param_2_variable = (int)min_follow_distance;
     }
-    distance = (distance & 0xffff) - param_2_variable;
-    half_speed = distance & 0xffff;
+    distance = (distance & 0xffffffff) - param_2_variable;
+    half_speed = distance & 0xffffffff;
     if (distance < 0) {
         half_speed = 0;
     }
