@@ -8,5 +8,5 @@ def postMessage(message):
 
 def getFile(filename):
     """Fake function for loading files with Javascript."""
-    with open(filename, "r") as file:
+    with open(filename, "rb") as file:
         return file.read()
