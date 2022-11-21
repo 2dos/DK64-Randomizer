@@ -54,6 +54,8 @@ void shine_light_at_kong(unsigned short height_variance, short min_follow_distan
     if (distance < 0) {
         half_speed = 0;
     }
+    //TODO: remove this line
+    *(int*)(0x807FF70C) = half_speed * 2;
     setActorSpeed(CurrentActorPointer_0,(half_speed + half_speed));
                         /* 0 if spotlight fish, height_variance = 10 if squawks */
     actor_height_variance = height_variance * height_variance_multiplier;

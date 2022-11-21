@@ -258,7 +258,7 @@ extern void spriteActorGenericCode(float unk0);
 extern void assignGIFToActor(void* paad, void* sprite, int scale_f);
 
 extern void unkLightFunc_0(actorData* actor, int unk0, char unk1, char unk2, unsigned char); //80604cbc
-extern void unkLightFunc_1(int unk0, unsigned short height_variance, float payerX, float PlayerY, float PlayerZ, unsigned short unk2, float unk3, int unk4); //8072a920
+extern void unkLightFunc_1(int unk0, unsigned short height_variance, float payerX, float PlayerY, float PlayerZ, unsigned short unk2, float unk3, unsigned int unk4); //8072a920
 extern void unkLightFunc_2(void); //806c6530
 
 //vanilla data
