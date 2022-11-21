@@ -14,34 +14,13 @@ import randomizer.Lists.CBLocations.CrystalCavesCBLocations
 import randomizer.Lists.CBLocations.CreepyCastleCBLocations
 
 level_data = {
-    Levels.JungleJapes: {
-        "cb": randomizer.Lists.CBLocations.JungleJapesCBLocations.ColoredBananaGroupList,
-        "balloons": randomizer.Lists.CBLocations.JungleJapesCBLocations.BalloonList,
-    },
-    Levels.AngryAztec: {
-        "cb": randomizer.Lists.CBLocations.AngryAztecCBLocations.ColoredBananaGroupList,
-        "balloons": randomizer.Lists.CBLocations.AngryAztecCBLocations.BalloonList,
-    },
-    Levels.FranticFactory: {
-        "cb": randomizer.Lists.CBLocations.FranticFactoryCBLocations.ColoredBananaGroupList,
-        "balloons": randomizer.Lists.CBLocations.FranticFactoryCBLocations.BalloonList,
-    },
-    Levels.GloomyGalleon: {
-        "cb": randomizer.Lists.CBLocations.GloomyGalleonCBLocations.ColoredBananaGroupList,
-        "balloons": randomizer.Lists.CBLocations.GloomyGalleonCBLocations.BalloonList,
-    },
-    Levels.FungiForest: {
-        "cb": randomizer.Lists.CBLocations.FungiForestCBLocations.ColoredBananaGroupList,
-        "balloons": randomizer.Lists.CBLocations.FungiForestCBLocations.BalloonList,
-    },
-    Levels.CrystalCaves: {
-        "cb": randomizer.Lists.CBLocations.CrystalCavesCBLocations.ColoredBananaGroupList,
-        "balloons": randomizer.Lists.CBLocations.CrystalCavesCBLocations.BalloonList,
-    },
-    Levels.CreepyCastle: {
-        "cb": randomizer.Lists.CBLocations.CreepyCastleCBLocations.ColoredBananaGroupList,
-        "balloons": randomizer.Lists.CBLocations.CreepyCastleCBLocations.BalloonList,
-    },
+    Levels.JungleJapes: {"cb": randomizer.Lists.CBLocations.JungleJapesCBLocations.ColoredBananaGroupList, "balloons": randomizer.Lists.CBLocations.JungleJapesCBLocations.BalloonList},
+    Levels.AngryAztec: {"cb": randomizer.Lists.CBLocations.AngryAztecCBLocations.ColoredBananaGroupList, "balloons": randomizer.Lists.CBLocations.AngryAztecCBLocations.BalloonList},
+    Levels.FranticFactory: {"cb": randomizer.Lists.CBLocations.FranticFactoryCBLocations.ColoredBananaGroupList, "balloons": randomizer.Lists.CBLocations.FranticFactoryCBLocations.BalloonList},
+    Levels.GloomyGalleon: {"cb": randomizer.Lists.CBLocations.GloomyGalleonCBLocations.ColoredBananaGroupList, "balloons": randomizer.Lists.CBLocations.GloomyGalleonCBLocations.BalloonList},
+    Levels.FungiForest: {"cb": randomizer.Lists.CBLocations.FungiForestCBLocations.ColoredBananaGroupList, "balloons": randomizer.Lists.CBLocations.FungiForestCBLocations.BalloonList},
+    Levels.CrystalCaves: {"cb": randomizer.Lists.CBLocations.CrystalCavesCBLocations.ColoredBananaGroupList, "balloons": randomizer.Lists.CBLocations.CrystalCavesCBLocations.BalloonList},
+    Levels.CreepyCastle: {"cb": randomizer.Lists.CBLocations.CreepyCastleCBLocations.ColoredBananaGroupList, "balloons": randomizer.Lists.CBLocations.CreepyCastleCBLocations.BalloonList},
 }
 
 
@@ -139,14 +118,7 @@ def randomize_cbs(spoiler: Spoiler):
                         bunches = [0x2B, 0x208, 0x205, 0x207, 0x206]
                         for loc in new_cb["locations"]:
                             item_data = []
-                            item_data.extend(
-                                [
-                                    int(float_to_hex(loc[2]), 16),
-                                    int(float_to_hex(loc[3]), 16),
-                                    int(float_to_hex(loc[4]), 16),
-                                    int(float_to_hex(loc[1]), 16),
-                                ]
-                            )
+                            item_data.extend([int(float_to_hex(loc[2]), 16), int(float_to_hex(loc[3]), 16), int(float_to_hex(loc[4]), 16), int(float_to_hex(loc[1]), 16)])
                             item_data.append(2)
                             item_data.append(0x01C7FFFF)
                             for x in range(int((0x24 - 0x18) / 4)):

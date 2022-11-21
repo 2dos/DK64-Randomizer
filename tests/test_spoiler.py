@@ -130,7 +130,7 @@ def generate_lo_rando_race_settings():
 def generate_settings():
     """Asdf."""
     # Setting test settings
-    data = json.load(open('static/presets/default.json'))
+    data = json.load(open("static/presets/default.json"))
     data["seed"] = random.randint(0, 100000000)
     return data
 

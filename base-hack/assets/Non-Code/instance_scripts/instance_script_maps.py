@@ -12,51 +12,19 @@ instance_script_maps = [
             {"name": "snoop_door", "id": 0xA1},
         ],
     },
-    {
-        "name": "ballroom",
-        "map": 88,
-        "scripts": [
-            {"name": "monkeyport", "id": 0x5},
-        ],
-    },
+    {"name": "ballroom", "map": 88, "scripts": [{"name": "monkeyport", "id": 0x5}]},
     {
         "name": "caves",
         "map": 0x48,
-        "scripts": [
-            {"name": "big_boulder_pad", "id": 0x2F},
-            {"name": "boulder_dome", "id": 0x2B},
-            {"name": "gb_dome", "id": 0x27},
-            {"name": "small_boulder_pad", "id": 0x2E},
-        ],
+        "scripts": [{"name": "big_boulder_pad", "id": 0x2F}, {"name": "boulder_dome", "id": 0x2B}, {"name": "gb_dome", "id": 0x27}, {"name": "small_boulder_pad", "id": 0x2E}],
     },
     {
         "name": "chunky_phase",
         "map": 207,
-        "scripts": [
-            {"name": "ggone_B", "id": 0xB},
-            {"name": "ggone_C", "id": 0xC},
-            {"name": "ggone_D", "id": 0xD},
-            {"name": "ggone_E", "id": 0xE},
-            {"name": "slam_pad", "id": 0xA},
-        ],
+        "scripts": [{"name": "ggone_B", "id": 0xB}, {"name": "ggone_C", "id": 0xC}, {"name": "ggone_D", "id": 0xD}, {"name": "ggone_E", "id": 0xE}, {"name": "slam_pad", "id": 0xA}],
     },
-    {
-        "name": "diddy_5dc_upper",
-        "map": 200,
-        "scripts": [
-            {"name": "sspring", "id": 0x3},
-        ],
-    },
-    {
-        "name": "dungeon",
-        "map": 163,
-        "scripts": [
-            {"name": "bballoon_8", "id": 0x8},
-            {"name": "bballoon_9", "id": 0x9},
-            {"name": "bballoon_A", "id": 0xA},
-            {"name": "bballoon_B", "id": 0xB},
-        ],
-    },
+    {"name": "diddy_5dc_upper", "map": 200, "scripts": [{"name": "sspring", "id": 0x3}]},
+    {"name": "dungeon", "map": 163, "scripts": [{"name": "bballoon_8", "id": 0x8}, {"name": "bballoon_9", "id": 0x9}, {"name": "bballoon_A", "id": 0xA}, {"name": "bballoon_B", "id": 0xB}]},
     {
         "name": "factory",
         "map": 0x1A,
@@ -69,29 +37,9 @@ instance_script_maps = [
             {"name": "neutral_switch_gate", "id": 0xB0},
         ],
     },
-    {
-        "name": "fungi",
-        "map": 0x30,
-        "scripts": [
-            {"name": "minecart_grate", "id": 0x22},
-        ],
-    },
-    {
-        "name": "galleon",
-        "map": 0x1E,
-        "scripts": [
-            {"name": "seasick_ship", "id": 0x27},
-            {"name": "seal_race_gate.script", "id": 0x56},
-            {"name": "dk_star", "id": 0xC},
-        ],
-    },
-    {
-        "name": "giant_mushroom",
-        "map": 64,
-        "scripts": [
-            {"name": "mush_board", "id": 0xB},
-        ],
-    },
+    {"name": "fungi", "map": 0x30, "scripts": [{"name": "minecart_grate", "id": 0x22}]},
+    {"name": "galleon", "map": 0x1E, "scripts": [{"name": "seasick_ship", "id": 0x27}, {"name": "seal_race_gate.script", "id": 0x56}, {"name": "dk_star", "id": 0xC}]},
+    {"name": "giant_mushroom", "map": 64, "scripts": [{"name": "mush_board", "id": 0xB}]},
     {
         "name": "helm",
         "map": 0x11,
@@ -135,53 +83,16 @@ instance_script_maps = [
             {"name": "mountain_gb", "id": 0x52},
         ],
     },
-    {
-        "name": "japes_mountain",
-        "map": 4,
-        "scripts": [
-            {"name": "gb_switch", "id": 0x6},
-        ],
-    },
+    {"name": "japes_mountain", "map": 4, "scripts": [{"name": "gb_switch", "id": 0x6}]},
     {
         "name": "llama_temple",
         "map": 0x14,
-        "scripts": [
-            {"name": "bamboo_free", "id": 0x11},
-            {"name": "bongo_pad", "id": 0x16},
-            {"name": "coconutswitch_free", "id": 0x12},
-            {"name": "snoop_switch", "id": 0x69},
-        ],
+        "scripts": [{"name": "bamboo_free", "id": 0x11}, {"name": "bongo_pad", "id": 0x16}, {"name": "coconutswitch_free", "id": 0x12}, {"name": "snoop_switch", "id": 0x69}],
     },
-    {
-        "name": "mill_front",
-        "map": 61,
-        "scripts": [
-            {"name": "crusher", "id": 0x8},
-            {"name": "warning_lights", "id": 0xC},
-        ],
-    },
-    {
-        "name": "mill_rear",
-        "map": 62,
-        "scripts": [
-            {"name": "triangle_pad", "id": 0x0},
-        ],
-    },
-    {
-        "name": "museum",
-        "map": 113,
-        "scripts": [
-            {"name": "monkeyport_8", "id": 0x8},
-        ],
-    },
-    {
-        "name": "tgrounds",
-        "map": 0xB0,
-        "scripts": [
-            {"name": "bamboo_gate", "id": 0x49},
-            {"name": "slam_switch", "id": 0x39},
-        ],
-    },
+    {"name": "mill_front", "map": 61, "scripts": [{"name": "crusher", "id": 0x8}, {"name": "warning_lights", "id": 0xC}]},
+    {"name": "mill_rear", "map": 62, "scripts": [{"name": "triangle_pad", "id": 0x0}]},
+    {"name": "museum", "map": 113, "scripts": [{"name": "monkeyport_8", "id": 0x8}]},
+    {"name": "tgrounds", "map": 0xB0, "scripts": [{"name": "bamboo_gate", "id": 0x49}, {"name": "slam_switch", "id": 0x39}]},
     {
         "name": "tiny_temple",
         "map": 0x10,
@@ -196,77 +107,14 @@ instance_script_maps = [
             {"name": "kong_f", "id": 0xF},
         ],
     },
-    {
-        "name": "wind_tower",
-        "map": 105,
-        "scripts": [
-            {"name": "bballoon", "id": 0x1},
-        ],
-    },
-    {
-        "name": "japes_lobby",
-        "map": 0xA9,
-        "scripts": [
-            {"name": "japes_dk_wrinkly", "id": 0x5},
-        ],
-    },
-    {
-        "name": "aztec_lobby",
-        "map": 0xAD,
-        "scripts": [
-            {"name": "aztec_dk_wrinkly", "id": 0x0},
-        ],
-    },
-    {
-        "name": "factory_lobby",
-        "map": 0xAF,
-        "scripts": [
-            {"name": "factory_dk_wrinkly", "id": 0x0},
-        ],
-    },
-    {
-        "name": "galleon_lobby",
-        "map": 0xAE,
-        "scripts": [
-            {"name": "galleon_dk_wrinkly", "id": 0x5},
-        ],
-    },
-    {
-        "name": "caves_lobby",
-        "map": 0xC2,
-        "scripts": [
-            {"name": "caves_dk_wrinkly", "id": 0x14},
-        ],
-    },
-    {
-        "name": "castle_lobby",
-        "map": 0xC1,
-        "scripts": [
-            {"name": "castle_dk_wrinkly", "id": 0x6},
-        ],
-    },
-    {
-        "name": "chunky_5dc",
-        "map": 0x5A,
-        "scripts": [
-            {"name": "ggone_pad", "id": 0x6},
-            {"name": "target_3", "id": 0x3},
-            {"name": "target_4", "id": 0x4},
-            {"name": "target_5", "id": 0x5},
-        ],
-    },
-    {
-        "name": "helm_lobby",
-        "map": 0xAA,
-        "scripts": [
-            {"name": "ggone_pad", "id": 0x3},
-        ],
-    },
-    {
-        "name": "galleon_bblast",
-        "map": 54,
-        "scripts": [
-            {"name": "star", "id": 0x0},
-        ],
-    },
+    {"name": "wind_tower", "map": 105, "scripts": [{"name": "bballoon", "id": 0x1}]},
+    {"name": "japes_lobby", "map": 0xA9, "scripts": [{"name": "japes_dk_wrinkly", "id": 0x5}]},
+    {"name": "aztec_lobby", "map": 0xAD, "scripts": [{"name": "aztec_dk_wrinkly", "id": 0x0}]},
+    {"name": "factory_lobby", "map": 0xAF, "scripts": [{"name": "factory_dk_wrinkly", "id": 0x0}]},
+    {"name": "galleon_lobby", "map": 0xAE, "scripts": [{"name": "galleon_dk_wrinkly", "id": 0x5}]},
+    {"name": "caves_lobby", "map": 0xC2, "scripts": [{"name": "caves_dk_wrinkly", "id": 0x14}]},
+    {"name": "castle_lobby", "map": 0xC1, "scripts": [{"name": "castle_dk_wrinkly", "id": 0x6}]},
+    {"name": "chunky_5dc", "map": 0x5A, "scripts": [{"name": "ggone_pad", "id": 0x6}, {"name": "target_3", "id": 0x3}, {"name": "target_4", "id": 0x4}, {"name": "target_5", "id": 0x5}]},
+    {"name": "helm_lobby", "map": 0xAA, "scripts": [{"name": "ggone_pad", "id": 0x3}]},
+    {"name": "galleon_bblast", "map": 54, "scripts": [{"name": "star", "id": 0x0}]},
 ]

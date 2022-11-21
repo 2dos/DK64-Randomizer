@@ -54,16 +54,8 @@ sign_data = [
             {"sign_type": "snide", "data": [1210.936, 64.5, 411.259, 110]},
         ],
     },
-    {
-        "map_index": 0x57,
-        "signs": [{"sign_type": "cranky", "data": [235.221, 1135.469, 1412.605, 278]}, {"sign_type": "snide", "data": [784.377, 1794.167, 1362.74, 180]}],
-    },
-    {
-        "map_index": 0xB7,
-        "signs": [
-            {"sign_type": "funky", "data": [1456.806, 200, 246.614, 274]},
-        ],
-    },
+    {"map_index": 0x57, "signs": [{"sign_type": "cranky", "data": [235.221, 1135.469, 1412.605, 278]}, {"sign_type": "snide", "data": [784.377, 1794.167, 1362.74, 180]}]},
+    {"map_index": 0xB7, "signs": [{"sign_type": "funky", "data": [1456.806, 200, 246.614, 274]}]},
     {"map_index": 0x97, "signs": [{"sign_type": "candy", "data": [1191.144, 300, 2142.678, 269]}]},
     {"map_index": 0xB0, "signs": [{"sign_type": "cranky", "data": [602.935, 75, 1870.478, 309]}]},
     {"map_index": 0xC3, "signs": [{"sign_type": "snide", "data": [449.519, 0, 468.524, 268]}]},

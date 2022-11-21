@@ -7,16 +7,7 @@ from randomizer.Spoiler import Spoiler
 
 def chooseSFX():
     """Choose random SFX from bank of acceptable SFX."""
-    banks = [
-        [98, 138],
-        [166, 252],
-        [398, 411],
-        [471, 476],
-        [519, 535],
-        [547, 575],
-        [614, 631],
-        [644, 650],
-    ]
+    banks = [[98, 138], [166, 252], [398, 411], [471, 476], [519, 535], [547, 575], [614, 631], [644, 650]]
     bank = random.choice(banks)
     return random.randint(bank[0], bank[1])
 

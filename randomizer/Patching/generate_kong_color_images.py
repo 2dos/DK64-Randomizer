@@ -163,17 +163,7 @@ def convertColors(color_palettes):
                                     if pix_channel > 31:
                                         pix_channel = 31
                                 pix_rgba.append(pix_channel)
-                        sparkle_px = [
-                            [28, 5],
-                            [27, 10],
-                            [21, 11],
-                            [25, 14],
-                            [23, 15],
-                            [23, 16],
-                            [26, 18],
-                            [20, 19],
-                            [25, 25],
-                        ]
+                        sparkle_px = [[28, 5], [27, 10], [21, 11], [25, 14], [23, 15], [23, 16], [26, 18], [20, 19], [25, 25]]
                         for px in sparkle_px:
                             if px[0] == x and px[1] == y:
                                 pix_rgba = [0xFF, 0xFF, 0xFF, 1]

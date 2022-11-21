@@ -382,7 +382,7 @@ class Spoiler:
             kutout_order = ""
             for kong in self.settings.kutout_kongs:
                 kutout_order = kutout_order + Kongs(kong).name.capitalize() + ", "
-            humanspoiler["Bosses"]["King Kut Out Properties"]["Shuffled Kutout Kong Order"] = kutout_order.removesuffix(", ")
+            humanspoiler["Bosses"]["King Kut Out Properties"]["Shuffled Kutout Kong Order"] = kutout_order
 
         if self.settings.hard_bosses:
             phase_names = []
@@ -458,19 +458,13 @@ class Spoiler:
                 del humanspoiler[spoiler_dict]
 
         if self.settings.cb_rando:
-            human_cb_type_map = {
-                "cb": " Bananas",
-                "balloons": " Balloons",
-            }
+            human_cb_type_map = {"cb": " Bananas", "balloons": " Balloons"}
             humanspoiler["Colored Banana Locations"] = {}
             cb_levels = ["Japes", "Aztec", "Factory", "Galleon", "Fungi", "Caves", "Castle"]
             cb_kongs = ["Donkey", "Diddy", "Lanky", "Tiny", "Chunky"]
             for lvl in cb_levels:
                 for kng in cb_kongs:
-                    humanspoiler["Colored Banana Locations"][f"{lvl} {kng}"] = {
-                        "Balloons": "",
-                        "Bananas": "",
-                    }
+                    humanspoiler["Colored Banana Locations"][f"{lvl} {kng}"] = {"Balloons": "", "Bananas": ""}
             for group in self.cb_placements:
                 lvl_name = level_dict[group["level"]]
                 idx = 1

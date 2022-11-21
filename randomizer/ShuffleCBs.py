@@ -78,13 +78,7 @@ def ShuffleCBs(spoiler: Spoiler):
                     collectible.enabled = False
         level_placement = []
         global_divisor = 6 - level_index
-        kong_specific_left = {
-            Kongs.donkey: 100,
-            Kongs.diddy: 100,
-            Kongs.lanky: 100,
-            Kongs.tiny: 100,
-            Kongs.chunky: 100,
-        }
+        kong_specific_left = {Kongs.donkey: 100, Kongs.diddy: 100, Kongs.lanky: 100, Kongs.tiny: 100, Kongs.chunky: 100}
         # Balloons
         # Pick random amount of balloons assigned to level
         balloons_left = max_balloons - total_balloons

@@ -72,18 +72,7 @@ warp_info_data = [
     WarpInfo(0x70, [0x001A, 0x001B], [4, 5], [0x0155, 0x0156]),  # 58 Start -> Chunky
 ]
 
-script_folder_list = {
-    0x7: "japes",
-    0x26: "aztec",
-    0x14: "llama_temple",
-    0x1A: "factory",
-    0x1E: "galleon",
-    0x30: "fungi",
-    0x48: "caves",
-    0x57: "castle",
-    0x70: "crypt_ddc",
-    0x22: "isles",
-}
+script_folder_list = {0x7: "japes", 0x26: "aztec", 0x14: "llama_temple", 0x1A: "factory", 0x1E: "galleon", 0x30: "fungi", 0x48: "caves", 0x57: "castle", 0x70: "crypt_ddc", 0x22: "isles"}
 
 for pad_pair in warp_info_data:
     for sub_index in range(2):

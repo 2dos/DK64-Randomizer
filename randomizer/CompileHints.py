@@ -137,18 +137,8 @@ hint_list = [
 kong_list = ["Donkey", "Diddy", "Lanky", "Tiny", "Chunky", "Any kong"]
 
 kong_cryptic = [
-    [
-        "The kong who is bigger, faster and potentially stronger too",
-        "The kong who fires in spurts",
-        "The kong with a tie",
-        "The kong who slaps their instrument to the jungle beat",
-    ],
-    [
-        "The kong who can fly real high",
-        "The kong who features in the first two Donkey Kong Country games",
-        "The kong who wants to see red",
-        "The kong who frees the only female playable kong",
-    ],
+    ["The kong who is bigger, faster and potentially stronger too", "The kong who fires in spurts", "The kong with a tie", "The kong who slaps their instrument to the jungle beat"],
+    ["The kong who can fly real high", "The kong who features in the first two Donkey Kong Country games", "The kong who wants to see red", "The kong who frees the only female playable kong"],
     [
         "The kong who inflates like a balloon, just like a balloon",
         "The kong who waddles in his overalls",
@@ -156,12 +146,7 @@ kong_cryptic = [
         "The kong who lacks style, grace but not a funny face",
     ],
     ["The kong who likes jazz", "The kong who shoots K. Rool's tiny toes", "The kong who has ammo that is light as a feather", "The kong who can shrink in size"],
-    [
-        "The kong who is one hell of a guy",
-        "The kong who can pick up boulders",
-        "The kong who fights a blocky boss",
-        "The kong who bows down to a dragonfly",
-    ],
+    ["The kong who is one hell of a guy", "The kong who can pick up boulders", "The kong who fights a blocky boss", "The kong who bows down to a dragonfly"],
     ["Members of the DK Crew", "A specific set of relatives", "A number of playable characters"],
 ]
 
@@ -171,20 +156,12 @@ level_list_isles = ["Jungle Japes", "Angry Aztec", "Frantic Factory", "Gloomy Ga
 level_list_helm_isles = ["Jungle Japes", "Angry Aztec", "Frantic Factory", "Gloomy Galleon", "Fungi Forest", "Crystal Caves", "Creepy Castle", "Hideout Helm", "DK Isles"]
 
 level_cryptic = [
-    [
-        "The level with a localized storm",
-        "The level with a dirt mountain",
-        "The level which has two retailers and no race",
-    ],
+    ["The level with a localized storm", "The level with a dirt mountain", "The level which has two retailers and no race"],
     ["The level with four vases", "The level with two kongs cages", "The level with a spinning totem"],
     ["The level with a toy production facility", "The level with a tower of blocks", "The level with a game from 1981", "The level where you need two quarters to play"],
     ["The level with the most water", "The level where you free a water dweller", "The level with stacks of gold"],
     ["The level with only two retailers and two races", "The level where night can be acquired at will", "The level with a nocturnal tree dweller"],
-    [
-        "The level with two inches of water",
-        "The level with two ice shields",
-        "The level with an Ice Tomato",
-    ],
+    ["The level with two inches of water", "The level with two ice shields", "The level with an Ice Tomato"],
     ["The level with battlements", "The level with a dungeon, ballroom and a library", "The level with drawbridge and a moat"],
     ["The timed level", "The level with no boss", "The level with no small bananas"],
 ]
@@ -197,18 +174,8 @@ level_cryptic_helm_isles.append(level_cryptic_isles[-1])
 
 shop_owners = ["Cranky", "Funky", "Candy"]
 shop_cryptic = [
-    [
-        "The shop owner with a walking stick",
-        "The shop owner who is old",
-        "The shop owner who is persistently grumpy",
-        "The shop owner who resides near your Treehouse",
-    ],
-    [
-        "The shop owner who has an armory",
-        "The shop owner who has a banana on his shop",
-        "The shop owner with sunglasses",
-        "The shop owner who calls everyone Dude",
-    ],
+    ["The shop owner with a walking stick", "The shop owner who is old", "The shop owner who is persistently grumpy", "The shop owner who resides near your Treehouse"],
+    ["The shop owner who has an armory", "The shop owner who has a banana on his shop", "The shop owner with sunglasses", "The shop owner who calls everyone Dude"],
     ["The shop owner who is flirtatious", "The shop owner who is not present in Fungi Forest", "The shop owner who is not present in Jungle Japes", "The shop owner with blonde hair"],
 ]
 
@@ -264,24 +231,7 @@ moves_data = [
     MoveInfo(name="Instrument Upgrade", move_level=4, move_type="instrument", kong=Kongs.any),
 ]
 
-kong_placement_levels = [
-    {
-        "name": "Jungle Japes",
-        "level": 0,
-    },
-    {
-        "name": "Llama Temple",
-        "level": 1,
-    },
-    {
-        "name": "Tiny Temple",
-        "level": 1,
-    },
-    {
-        "name": "Frantic Factory",
-        "level": 2,
-    },
-]
+kong_placement_levels = [{"name": "Jungle Japes", "level": 0}, {"name": "Llama Temple", "level": 1}, {"name": "Tiny Temple", "level": 1}, {"name": "Frantic Factory", "level": 2}]
 
 
 # Hint distribution that will be adjusted based on settings
@@ -844,54 +794,19 @@ def compileHints(spoiler: Spoiler):
     # We must hint each of Japes, Aztec, and Factory at least once
     # The rest of the hints are tied to a variety of important locations
     if hint_distribution[HintType.Entrance] > 0:
-        criticalJapesRegions = [
-            Regions.JungleJapesMain,
-            Regions.JapesBeyondFeatherGate,
-            Regions.TinyHive,
-            Regions.JapesLankyCave,
-            Regions.Mine,
-        ]
-        criticalAztecRegions = [
-            Regions.AngryAztecStart,
-            Regions.AngryAztecOasis,
-            Regions.AngryAztecMain,
-        ]
-        criticalFactoryRegions = [
-            Regions.FranticFactoryStart,
-            Regions.ChunkyRoomPlatform,
-            Regions.PowerHut,
-            Regions.BeyondHatch,
-            Regions.InsideCore,
-        ]
+        criticalJapesRegions = [Regions.JungleJapesMain, Regions.JapesBeyondFeatherGate, Regions.TinyHive, Regions.JapesLankyCave, Regions.Mine]
+        criticalAztecRegions = [Regions.AngryAztecStart, Regions.AngryAztecOasis, Regions.AngryAztecMain]
+        criticalFactoryRegions = [Regions.FranticFactoryStart, Regions.ChunkyRoomPlatform, Regions.PowerHut, Regions.BeyondHatch, Regions.InsideCore]
         usefulRegions = [
             criticalJapesRegions,
             criticalAztecRegions,
             criticalFactoryRegions,
             [Regions.BananaFairyRoom],
             [Regions.TrainingGrounds],
-            [
-                Regions.GloomyGalleonStart,
-                Regions.LighthousePlatform,
-                Regions.LighthouseUnderwater,
-                Regions.Shipyard,
-            ],
-            [
-                Regions.FungiForestStart,
-                Regions.GiantMushroomArea,
-                Regions.MushroomLowerExterior,
-                Regions.MushroomNightExterior,
-                Regions.MushroomUpperExterior,
-                Regions.MillArea,
-            ],
-            [
-                Regions.CrystalCavesMain,
-                Regions.IglooArea,
-                Regions.CabinArea,
-            ],
-            [
-                Regions.CreepyCastleMain,
-                Regions.CastleWaterfall,
-            ],
+            [Regions.GloomyGalleonStart, Regions.LighthousePlatform, Regions.LighthouseUnderwater, Regions.Shipyard],
+            [Regions.FungiForestStart, Regions.GiantMushroomArea, Regions.MushroomLowerExterior, Regions.MushroomNightExterior, Regions.MushroomUpperExterior, Regions.MillArea],
+            [Regions.CrystalCavesMain, Regions.IglooArea, Regions.CabinArea],
+            [Regions.CreepyCastleMain, Regions.CastleWaterfall],
             [Regions.LowerCave],
             [Regions.UpperCave],
         ]
@@ -1224,24 +1139,7 @@ def compileHintsOld(spoiler: Spoiler):
             hint_list.append(Hint(hint=single_hint["hint"], priority=2, important=single_hint["important"], keywords=[single_hint["move"]], subtype="move_location"))
     if spoiler.settings.kong_rando:
         kong_json = spoiler.shuffled_kong_placement
-        placement_levels = [
-            {
-                "name": "Jungle Japes",
-                "level": 0,
-            },
-            {
-                "name": "Llama Temple",
-                "level": 1,
-            },
-            {
-                "name": "Tiny Temple",
-                "level": 1,
-            },
-            {
-                "name": "Frantic Factory",
-                "level": 2,
-            },
-        ]
+        placement_levels = [{"name": "Jungle Japes", "level": 0}, {"name": "Llama Temple", "level": 1}, {"name": "Tiny Temple", "level": 1}, {"name": "Frantic Factory", "level": 2}]
         for kong_map in placement_levels:
             kong_index = kong_json[kong_map["name"]]["locked"]["kong"]
             free_kong = kong_json[kong_map["name"]]["puzzle"]["kong"]
@@ -1260,16 +1158,7 @@ def compileHintsOld(spoiler: Spoiler):
                 hint_priority = 3
             hint_list.append(Hint(hint=f"{kong_name} can be found in {level_name}.", kongs=[free_kong], priority=hint_priority, subtype="kong_location"))
     if spoiler.settings.random_patches:
-        level_patches = {
-            "DK Isles": 0,
-            "Jungle Japes": 0,
-            "Angry Aztec": 0,
-            "Frantic Factory": 0,
-            "Gloomy Galleon": 0,
-            "Fungi Forest": 0,
-            "Crystal Caves": 0,
-            "Creepy Castle": 0,
-        }
+        level_patches = {"DK Isles": 0, "Jungle Japes": 0, "Angry Aztec": 0, "Frantic Factory": 0, "Gloomy Galleon": 0, "Fungi Forest": 0, "Crystal Caves": 0, "Creepy Castle": 0}
         for patch in spoiler.dirt_patch_placement:
             for level in level_patches:
                 if level in patch:
@@ -1323,13 +1212,7 @@ def compileHintsOld(spoiler: Spoiler):
         wothPriority += random.randint(1, 2)
 
     # PADDED HINTS
-    cb_list = [
-        {"kong": "Donkey", "color": "Yellow"},
-        {"kong": "Diddy", "color": "Red"},
-        {"kong": "Lanky", "color": "Blue"},
-        {"kong": "Tiny", "color": "Purple"},
-        {"kong": "Chunky", "color": "Green"},
-    ]
+    cb_list = [{"kong": "Donkey", "color": "Yellow"}, {"kong": "Diddy", "color": "Red"}, {"kong": "Lanky", "color": "Blue"}, {"kong": "Tiny", "color": "Purple"}, {"kong": "Chunky", "color": "Green"}]
     # hint_list.append(Hint(hint=f"Your seed is {spoiler.settings.seed}")
     hint_list.append(Hint(hint=f"You can find bananas in {level_list[random.randint(0,6)]}, but also in other levels.", important=False, subtype="joke", joke=True, joke_defined=True))
     cb_hint = random.choice(cb_list)
@@ -1524,25 +1407,9 @@ def compileHintsOld(spoiler: Spoiler):
 def AddLoadingZoneHints(spoiler: Spoiler):
     """Add hints for loading zone transitions and their destinations."""
     # One hint for each of the critical areas: Japes, Aztec, Factory
-    criticalJapesRegions = [
-        Regions.JungleJapesMain,
-        Regions.JapesBeyondFeatherGate,
-        Regions.TinyHive,
-        Regions.JapesLankyCave,
-        Regions.Mine,
-    ]
-    criticalAztecRegions = [
-        Regions.AngryAztecStart,
-        Regions.AngryAztecOasis,
-        Regions.AngryAztecMain,
-    ]
-    criticalFactoryRegions = [
-        Regions.FranticFactoryStart,
-        Regions.ChunkyRoomPlatform,
-        Regions.PowerHut,
-        Regions.BeyondHatch,
-        Regions.InsideCore,
-    ]
+    criticalJapesRegions = [Regions.JungleJapesMain, Regions.JapesBeyondFeatherGate, Regions.TinyHive, Regions.JapesLankyCave, Regions.Mine]
+    criticalAztecRegions = [Regions.AngryAztecStart, Regions.AngryAztecOasis, Regions.AngryAztecMain]
+    criticalFactoryRegions = [Regions.FranticFactoryStart, Regions.ChunkyRoomPlatform, Regions.PowerHut, Regions.BeyondHatch, Regions.InsideCore]
     japesHintEntrances = [entrance for entrance, back in spoiler.shuffled_exit_data.items() if back.regionId in criticalJapesRegions]
     random.shuffle(japesHintEntrances)
     japesHintPlaced = False
@@ -1579,29 +1446,10 @@ def AddLoadingZoneHints(spoiler: Spoiler):
     # Three hints for any of these useful areas: Banana Fairy, Galleon, Fungi, Caves, Castle, Crypt, Tunnel
     usefulRegions = [
         [Regions.BananaFairyRoom],
-        [
-            Regions.GloomyGalleonStart,
-            Regions.LighthousePlatform,
-            Regions.LighthouseUnderwater,
-            Regions.Shipyard,
-        ],
-        [
-            Regions.FungiForestStart,
-            Regions.GiantMushroomArea,
-            Regions.MushroomLowerExterior,
-            Regions.MushroomNightExterior,
-            Regions.MushroomUpperExterior,
-            Regions.MillArea,
-        ],
-        [
-            Regions.CrystalCavesMain,
-            Regions.IglooArea,
-            Regions.CabinArea,
-        ],
-        [
-            Regions.CreepyCastleMain,
-            Regions.CastleWaterfall,
-        ],
+        [Regions.GloomyGalleonStart, Regions.LighthousePlatform, Regions.LighthouseUnderwater, Regions.Shipyard],
+        [Regions.FungiForestStart, Regions.GiantMushroomArea, Regions.MushroomLowerExterior, Regions.MushroomNightExterior, Regions.MushroomUpperExterior, Regions.MillArea],
+        [Regions.CrystalCavesMain, Regions.IglooArea, Regions.CabinArea],
+        [Regions.CreepyCastleMain, Regions.CastleWaterfall],
         [Regions.LowerCave],
         [Regions.UpperCave],
     ]
@@ -1620,10 +1468,7 @@ def AddLoadingZoneHints(spoiler: Spoiler):
 
     # Remaining hints for any shuffled exits in the game
     # Restrict DK isles main areas from being hinted
-    uselessDkIslesRegions = [
-        Regions.IslesMain,
-        Regions.IslesMainUpper,
-    ]
+    uselessDkIslesRegions = [Regions.IslesMain, Regions.IslesMainUpper]
     remainingTransitions = [entrance for entrance, back in spoiler.shuffled_exit_data.items() if back.regionId not in uselessDkIslesRegions]
     random.shuffle(remainingTransitions)
     remainingHintCount = 4

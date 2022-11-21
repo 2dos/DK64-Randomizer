@@ -1,19 +1,5 @@
 """Bananaport Swapper."""
-bananaport_replacements = [
-    {
-        "containing_map": 0x14,
-        "pads": [
-            {
-                "warp_index": 0,
-                "warp_ids": [0x58, 0x99],
-            },
-            {
-                "warp_index": 1,
-                "warp_ids": [0x4E, 0x9A],
-            },
-        ],
-    }
-]
+bananaport_replacements = [{"containing_map": 0x14, "pads": [{"warp_index": 0, "warp_ids": [0x58, 0x99]}, {"warp_index": 1, "warp_ids": [0x4E, 0x9A]}]}]
 
 pad_types = [0x214, 0x213, 0x211, 0x212, 0x210]
 
@@ -47,20 +33,7 @@ with open("dk64-randomizer-base-dev.z64", "r+b") as fh:
                 fh.seek(start + 0x20)
                 obj_rotz = int.from_bytes(fh.read(4), "big")
                 obj_index = x
-                pad_vanilla.append(
-                    {
-                        "pad_index": pad_index,
-                        "_id": obj_id,
-                        "x": obj_x,
-                        "y": obj_y,
-                        "z": obj_z,
-                        "scale": obj_scale,
-                        "rx": obj_rotx,
-                        "ry": obj_roty,
-                        "rz": obj_rotz,
-                        "idx": obj_index,
-                    }
-                )
+                pad_vanilla.append({"pad_index": pad_index, "_id": obj_id, "x": obj_x, "y": obj_y, "z": obj_z, "scale": obj_scale, "rx": obj_rotx, "ry": obj_roty, "rz": obj_rotz, "idx": obj_index})
     for x in bananaport_replacements:
         for y in x["pads"]:
             warp_idx = y["warp_index"]

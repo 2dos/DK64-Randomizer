@@ -991,26 +991,10 @@ KasplatLocationList = {
             region=Regions.MushroomLankyMushroomsRoom,
         ),
         KasplatLocation(
-            name="Forest Kasplat: In the Spider Boss",
-            map_id=Maps.ForestSpider,
-            kong_lst=[Kongs.tiny],
-            coords=[275, 173, 722],
-            xmin=208,
-            xmax=358,
-            zmin=653,
-            zmax=780,
-            region=Regions.SpiderRoom,
+            name="Forest Kasplat: In the Spider Boss", map_id=Maps.ForestSpider, kong_lst=[Kongs.tiny], coords=[275, 173, 722], xmin=208, xmax=358, zmin=653, zmax=780, region=Regions.SpiderRoom
         ),
         KasplatLocation(
-            name="Forest Kasplat: In the Winch Room",
-            map_id=Maps.ForestWinchRoom,
-            kong_lst=[Kongs.diddy],
-            coords=[300, 1, 280],
-            xmin=267,
-            xmax=336,
-            zmin=227,
-            zmax=335,
-            region=Regions.WinchRoom,
+            name="Forest Kasplat: In the Winch Room", map_id=Maps.ForestWinchRoom, kong_lst=[Kongs.diddy], coords=[300, 1, 280], xmin=267, xmax=336, zmin=227, zmax=335, region=Regions.WinchRoom
         ),
         KasplatLocation(
             name="Forest Kasplat: In Chunky's Face Shooting Room",
@@ -1161,26 +1145,10 @@ KasplatLocationList = {
             region=Regions.CavesLankyRace,
         ),
         KasplatLocation(
-            name="Caves Kasplat: With the Giant Kosha",
-            map_id=Maps.CrystalCaves,
-            kong_lst=[Kongs.tiny],
-            coords=[1768, 232, 3645],
-            xmin=1753,
-            xmax=1892,
-            zmin=3543,
-            zmax=3675,
-            region=Regions.GiantKosha,
+            name="Caves Kasplat: With the Giant Kosha", map_id=Maps.CrystalCaves, kong_lst=[Kongs.tiny], coords=[1768, 232, 3645], xmin=1753, xmax=1892, zmin=3543, zmax=3675, region=Regions.GiantKosha
         ),
         KasplatLocation(
-            name="Caves Kasplat: In Diddy's Igloo",
-            map_id=Maps.CavesDiddyIgloo,
-            kong_lst=[Kongs.diddy],
-            coords=[265, 1, 290],
-            xmin=192,
-            xmax=333,
-            zmin=201,
-            zmax=391,
-            region=Regions.DiddyIgloo,
+            name="Caves Kasplat: In Diddy's Igloo", map_id=Maps.CavesDiddyIgloo, kong_lst=[Kongs.diddy], coords=[265, 1, 290], xmin=192, xmax=333, zmin=201, zmax=391, region=Regions.DiddyIgloo
         ),
         KasplatLocation(
             name="Caves Kasplat: In Donkey's Shooting Cabin",

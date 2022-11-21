@@ -5,29 +5,8 @@ import math
 color_palettes = [
     {"kong": "dk", "zones": [{"zone": "base", "image": 3724, "colors": ["#2da1ad"], "fill_type": "block"}]},  # 2da1ad
     {"kong": "diddy", "zones": [{"zone": "cap_shirt", "image": 3686, "colors": ["#00ff37"], "fill_type": "block"}]},
-    {
-        "kong": "lanky",
-        "zones": [
-            {
-                "zone": "overalls",
-                "image": 3689,
-                "colors": ["#3e1c73"],
-                "fill_type": "block",
-            },
-            {"zone": "patch", "image": 3734, "colors": ["#3e1c73"], "fill_type": "patch"},
-        ],
-    },
-    {
-        "kong": "tiny",
-        "zones": [
-            {
-                "zone": "overalls",
-                "image": 6014,
-                "colors": ["#ff3beb"],
-                "fill_type": "block",
-            }
-        ],
-    },
+    {"kong": "lanky", "zones": [{"zone": "overalls", "image": 3689, "colors": ["#3e1c73"], "fill_type": "block"}, {"zone": "patch", "image": 3734, "colors": ["#3e1c73"], "fill_type": "patch"}]},
+    {"kong": "tiny", "zones": [{"zone": "overalls", "image": 6014, "colors": ["#ff3beb"], "fill_type": "block"}]},
     {
         "kong": "chunky",
         "zones": [
@@ -37,18 +16,9 @@ color_palettes = [
     },
     {
         "kong": "discochunky",
-        "zones": [
-            {"zone": "shirt", "image": 3777, "colors": ["#00237D"], "fill_type": "sparkle"},
-            {"zone": "gloves", "image": 3778, "colors": ["#FFFFFF"], "fill_type": "sparkle"},
-        ],
+        "zones": [{"zone": "shirt", "image": 3777, "colors": ["#00237D"], "fill_type": "sparkle"}, {"zone": "gloves", "image": 3778, "colors": ["#FFFFFF"], "fill_type": "sparkle"}],
     },
-    {
-        "kong": "krusha",
-        "zones": [
-            {"zone": "skin", "image": 4971, "colors": ["#003631"], "fill_type": "block"},
-            {"zone": "belt", "image": 4966, "colors": ["#FFD700"], "fill_type": "block"},
-        ],
-    },
+    {"kong": "krusha", "zones": [{"zone": "skin", "image": 4971, "colors": ["#003631"], "fill_type": "block"}, {"zone": "belt", "image": 4966, "colors": ["#FFD700"], "fill_type": "block"}]},
     {"kong": "rambi", "zones": [{"zone": "top", "image": 3826, "colors": ["#070657"], "fill_type": "block"}]},
     {"kong": "enguarde", "zones": [{"zone": "top", "image": 3847, "colors": ["FF0000"], "fill_type": "block"}]},
 ]
@@ -211,17 +181,7 @@ def convertColors():
                                     if pix_channel > 31:
                                         pix_channel = 31
                                 pix_rgba.append(pix_channel)
-                        sparkle_px = [
-                            [28, 5],
-                            [27, 10],
-                            [21, 11],
-                            [25, 14],
-                            [23, 15],
-                            [23, 16],
-                            [26, 18],
-                            [20, 19],
-                            [25, 25],
-                        ]
+                        sparkle_px = [[28, 5], [27, 10], [21, 11], [25, 14], [23, 15], [23, 16], [26, 18], [20, 19], [25, 25]]
                         for px in sparkle_px:
                             if px[0] == x and px[1] == y:
                                 pix_rgba = [0xFF, 0xFF, 0xFF, 1]
