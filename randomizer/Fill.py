@@ -69,10 +69,6 @@ def GetExitLevelExit(region):
         return ShuffleExits.ShufflableExits[Transitions.CastleToIsles].shuffledId
 
 
-#import pyprofilers as pp
-
-
-
 def GetAccessibleLocations(settings, startingOwnedItems, searchType=SearchMode.GetReachable, purchaseList=None, targetItemId=None):
     """Search to find all reachable locations given owned items."""
     # No logic? Calls to this method that are checking things just return True
@@ -81,7 +77,6 @@ def GetAccessibleLocations(settings, startingOwnedItems, searchType=SearchMode.G
     if purchaseList is None:
         purchaseList = []
     accessible = set()
-    local_locations = LocationList
     newLocations = set()
     ownedItems = startingOwnedItems.copy()
     newItems = []  # debug code utility
@@ -95,7 +90,7 @@ def GetAccessibleLocations(settings, startingOwnedItems, searchType=SearchMode.G
             sphere.availableGBs = playthroughLocations[-1].availableGBs
         for locationId in newLocations:
             accessible.add(locationId)
-            location = local_locations[locationId]
+            location = LocationList[locationId]
             # If this location has an item placed, add it to owned items
             if location.item is not None:
                 # In search mode GetReachableWithControlledPurchases, only allowed to purchase items as prescribed by purchaseOrder
@@ -172,7 +167,7 @@ def GetAccessibleLocations(settings, startingOwnedItems, searchType=SearchMode.G
                 # Check accessibility for each location in this region
                 for location in region.locations:
                     if location.id not in newLocations and location.id not in accessible and location.logic(LogicVariables):
-                        location_obj = local_locations[location.id]
+                        location_obj = LocationList[location.id]
                         # If this location is a bonus barrel, must make sure its logic is met as well
                         if (
                             (location.bonusBarrel is MinigameType.BonusBarrel and settings.bonus_barrels != "skip")
@@ -180,8 +175,8 @@ def GetAccessibleLocations(settings, startingOwnedItems, searchType=SearchMode.G
                         ) and (not MinigameRequirements[BarrelMetaData[location.id].minigame].logic(LogicVariables)):
                             continue
                         # If this location has a blueprint, then make sure this is the correct kong
-                        elif (location_obj.item is not None and ItemList[local_locations[location.id].item].type == Types.Blueprint) and (
-                            not LogicVariables.BlueprintAccess(ItemList[local_locations[location.id].item])
+                        elif (location_obj.item is not None and ItemList[LocationList[location.id].item].type == Types.Blueprint) and (
+                            not LogicVariables.BlueprintAccess(ItemList[LocationList[location.id].item])
                         ):
                             continue
                         # If this location is a Kasplat but doesn't have a blueprint, still make sure this is the correct kong to be accessible at all
@@ -274,9 +269,9 @@ def GetAccessibleLocations(settings, startingOwnedItems, searchType=SearchMode.G
         # settings.debug_enormous_pain_2 = [LocationList[location] for location in settings.debug_accessible_2]
         # settings.debug_enormous_pain_3 = [LocationList[location] for location in settings.debug_accessible_not]
         # settings.debug_enormous_pain_4 = [LocationList[location] for location in settings.debug_accessible_not_2]
-        return len(accessible) == len(local_locations)
+        return len(accessible) == len(LocationList)
     elif searchType == SearchMode.GetUnreachable:
-        return [x for x in local_locations if x not in accessible]
+        return [x for x in LocationList if x not in accessible]
 
 
 def VerifyWorld(settings):
@@ -817,7 +812,8 @@ def GetMaxCoinsSpent(settings, purchasedShops):
     MaxCoinsSpent.pop()  # Remove the shared total, as it was just for numbers keeping
     return MaxCoinsSpent
 
-#@pp.profile_by_line()
+
+# @pp.profile_by_line()
 def GetUnplacedItemPrerequisites(spoiler, targetItemId, placedMoves, ownedKongs=[]):
     """Given the target item and the current world state, find a valid, minimal, unplaced set of items required to reach the location it is in."""
     # Settings-required moves are always owned in order to complete this method based on the settings
@@ -1046,11 +1042,11 @@ def ShuffleSharedMoves(spoiler, placedMoves):
     if len(availableSharedShops) < len(ItemPool.ImportantSharedMoves) + len(ItemPool.JunkSharedMoves) - len(placedSharedMoves):
         raise Ex.ItemPlacementException(
             "Too many kong moves placed before shared moves. Only "
-            + len(availableSharedShops)
+            + str(len(availableSharedShops))
             + " available for "
-            + len(ItemPool.ImportantSharedMoves)
-            + len(ItemPool.JunkSharedMoves)
-            - len(placedSharedMoves)
+            + str(len(ItemPool.ImportantSharedMoves))
+            + str(len(ItemPool.JunkSharedMoves))
+            + str(len(placedSharedMoves))
             + " remaining shared moves."
         )
 
