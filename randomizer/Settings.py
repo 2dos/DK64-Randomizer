@@ -3,7 +3,7 @@ import hashlib
 import inspect
 import json
 import random
-import sys
+from version import whl_hash
 from random import randint
 
 from randomizer.Enums.Events import Events
@@ -859,19 +859,7 @@ class Settings:
     @staticmethod
     def __get_hash():
         """Get the hash value of all of the source code loaded."""
-        hash_value = []
-        files = []
-        files.append(inspect.getsource(Settings))
-        files.append(inspect.getsource(__import__("randomizer.Spoiler")))
-        files.append(inspect.getsource(__import__("randomizer.Fill")))
-        files.append(inspect.getsource(__import__("randomizer.BackgroundRandomizer")))
-        try:
-            files.append(inspect.getsource(__import__("version")))
-        except Exception:  # Fails if running python by itself
-            pass
-        for file in sorted(files):
-            hash_value.append(hashlib.md5(file.encode("utf-8")).hexdigest())
-        return "".join(hash_value)
+        return whl_hash
 
     def compare_hash(self, hash):
         """Compare our hash with a passed hash value."""
