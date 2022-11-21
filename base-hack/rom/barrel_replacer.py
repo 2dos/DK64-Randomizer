@@ -1,16 +1,6 @@
 """Replace Barrels in ROM."""
 
-barrel_replacements = [
-    {
-        "containing_map": 0x26,
-        "barrels": [
-            {
-                "instance_id": 33,
-                "new_map": 0x11,
-            }
-        ],
-    }
-]
+barrel_replacements = [{"containing_map": 0x26, "barrels": [{"instance_id": 33, "new_map": 0x11}]}]
 
 barrels = [12, 91]
 

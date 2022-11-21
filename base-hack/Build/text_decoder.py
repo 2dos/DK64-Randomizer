@@ -251,13 +251,7 @@ def grabText(file_index: int) -> list:
                         _start = int.from_bytes(fh.read(2), "big")
                         fh.seek(data_start + _block + 5)
                         _size = int.from_bytes(fh.read(2), "big")
-                        text_blocks.append(
-                            {
-                                "type": "normal",
-                                "start": _start,
-                                "size": _size,
-                            }
-                        )
+                        text_blocks.append({"type": "normal", "start": _start, "size": _size})
                     added = block_start + 2 + offset + (8 * sec3ct) + 4
                 blocks.append({"block_start": hex(block_start + data_start), "section2count": sec2ct, "section3count": sec3ct, "offset": offset, "text": text_blocks})
                 block_start = added

@@ -112,20 +112,7 @@ def modify(file_name, map_index):
                     if model2_index == 0x220:
                         _x = int(float_to_hex(805.6618), 16)
                         _z = int(float_to_hex(2226.797), 16)
-                added_model2.append(
-                    {
-                        "base_byte_stream": byte_stream,
-                        "type": 0x2AB,
-                        "x": _x,
-                        "y": _y,
-                        "z": _z,
-                        "rx": 0,
-                        "ry": _ay,
-                        "rz": 0,
-                        "id": model2_index,
-                        "scale": int(float_to_hex(0.35), 16),
-                    }
-                )
+                added_model2.append({"base_byte_stream": byte_stream, "type": 0x2AB, "x": _x, "y": _y, "z": _z, "rx": 0, "ry": _ay, "rz": 0, "id": model2_index, "scale": int(float_to_hex(0.35), 16)})
                 model2_index += 1
             if map_index == 0x22 and not added_factory_barracade and _id == 0x6:
                 added_factory_barracade = True
@@ -219,18 +206,8 @@ def modify(file_name, map_index):
                 # Standardize lanky phase buttons
                 buttons = (0xE, 0xF, 0x10, 0x11)
                 platforms = (0xD, 0x13, 0x14, 0x12)
-                button_loc = (
-                    (780, 419.629),
-                    (1135.232, 780),
-                    (780, 1116.334),
-                    (438.904, 780),
-                )
-                platform_loc = (
-                    (778.365, 396.901),
-                    (1158.427, 778.632),
-                    (780.283, 1138.851),
-                    (416.092, 778.456),
-                )
+                button_loc = ((780, 419.629), (1135.232, 780), (780, 1116.334), (438.904, 780))
+                platform_loc = ((778.365, 396.901), (1158.427, 778.632), (780.283, 1138.851), (416.092, 778.456))
                 if _id >= 0xD and _id <= 0x14:
                     x = 0
                     z = 0
@@ -259,10 +236,7 @@ def modify(file_name, map_index):
                 for x in range(0x30 - 0x8):
                     repl_byte += byte_stream[x + 0x8].to_bytes(1, "big")
                 byte_stream = repl_byte
-            data = {
-                "stream": byte_stream,
-                "type": _type,
-            }
+            data = {"stream": byte_stream, "type": _type}
             model2.append(data)
             read_location += 0x30
         shop_signs = getMoveSignData(map_index, base_stream)
@@ -275,9 +249,7 @@ def modify(file_name, map_index):
         read_location += 4
         for x in range(mystery_count):
             byte_stream = byte_read[read_location : read_location + 0x24]
-            data = {
-                "stream": byte_stream,
-            }
+            data = {"stream": byte_stream}
             mystery.append(data)
             read_location += 0x24
         actor_count = int.from_bytes(byte_read[read_location : read_location + 4], "big")
@@ -320,13 +292,7 @@ def modify(file_name, map_index):
                 face_z = 5423.538
                 face_hi = 160
                 face_lo = 104.5
-                face_coords = [
-                    [575.763, face_hi],
-                    [494.518, face_hi],
-                    [606.161, face_lo],
-                    [534.567, face_lo],
-                    [463.642, face_lo],
-                ]
+                face_coords = [[575.763, face_hi], [494.518, face_hi], [606.161, face_lo], [534.567, face_lo], [463.642, face_lo]]
                 for face_index, face in enumerate(face_coords):
                     added_actor.append(
                         {
@@ -412,24 +378,7 @@ def modify(file_name, map_index):
             byte_stream_arr = []
             for y in range(0x10):
                 byte_stream_arr.append(0)
-            new_data_1 = [
-                0xFF,
-                0xFB,
-                0x00,
-                0x00,
-                0x15,
-                0x00,
-                0x00,
-                0x00,
-                0x40,
-                0xC0,
-                0x00,
-                0x00,
-                0x43,
-                0xB3,
-                0x00,
-                0x00,
-            ]
+            new_data_1 = [0xFF, 0xFB, 0x00, 0x00, 0x15, 0x00, 0x00, 0x00, 0x40, 0xC0, 0x00, 0x00, 0x43, 0xB3, 0x00, 0x00]
             for y in new_data_1:
                 byte_stream_arr.append(y)
             for y in range(0xC):

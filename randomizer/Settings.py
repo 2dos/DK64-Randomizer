@@ -504,13 +504,7 @@ class Settings:
                         relevant_transition = ShufflableExits[transition].back.reverse
                         tied_exit = GetExitId(ShufflableExits[relevant_transition].back)
                         valid_starting_regions.append(
-                            {
-                                "region": region,
-                                "map": tied_map,
-                                "exit": tied_exit,
-                                "region_name": region_data.name,
-                                "exit_name": ShufflableExits[relevant_transition].back.name,
-                            }
+                            {"region": region, "map": tied_map, "exit": tied_exit, "region_name": region_data.name, "exit_name": ShufflableExits[relevant_transition].back.name}
                         )
             self.starting_region = random.choice(valid_starting_regions)
             for x in range(2):
@@ -816,7 +810,7 @@ class Settings:
                     Locations.IslesOrangesTrainingBarrel,
                     Locations.IslesDonkeyJapesRock,
                 )
-                self.valid_locations[Types.Kong].extend(shuffledLocations)  # No items can be in Kong cages but Kongs can be in all other locations
+                self.valid_locations[Types.Kong].extend([loc for loc in shuffledLocations if loc not in banned_kong_locations])  # No items can be in Kong cages but Kongs can be in all other locations
 
     def GetValidLocationsForItem(self, item_id):
         """Return the valid locations the input item id can be placed in."""
@@ -832,12 +826,7 @@ class Settings:
     def SelectKongLocations(self):
         """Select which random kong locations to use depending on number of starting kongs."""
         # First determine which kong cages will have a kong to free
-        kongCageLocations = [
-            Locations.DiddyKong,
-            Locations.LankyKong,
-            Locations.TinyKong,
-            Locations.ChunkyKong,
-        ]
+        kongCageLocations = [Locations.DiddyKong, Locations.LankyKong, Locations.TinyKong, Locations.ChunkyKong]
         # Randomly decide which kong cages will not have kongs in them
         for i in range(0, self.starting_kongs_count - 1):
             kongLocation = random.choice(kongCageLocations)
