@@ -4,7 +4,7 @@ void squawks_with_spotlight_actor_code() {
     //float local4; //sw ra, local4(sp)
 
     shine_light_at_kong(10, 0x14, 0x240);
-
+    return;
 }
 
 void shine_light_at_kong(unsigned short height_variance, short min_follow_distance, unsigned short param_3) {
