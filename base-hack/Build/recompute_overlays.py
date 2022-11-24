@@ -11,60 +11,15 @@ overlays = [
         # codeCompressedData: [], // Will be written to ROM
         # dataCompressedData: [], // Will be written to ROM directly after .code, regardless of the original .data address
     },
-    {
-        "name": "menu",
-        "codeROMAddress": 0xCBE70,
-        "dataROMAddress": 0xD4554,
-        "dataCompressedSize": 0x5A2,  # - 8 for length without gzip footer
-    },
-    {
-        "name": "multiplayer",
-        "codeROMAddress": 0xD4B00,
-        "dataROMAddress": 0xD69F8,
-        "dataCompressedSize": 0xFB,  # - 8 for length without gzip footer
-    },
-    {
-        "name": "minecart",
-        "codeROMAddress": 0xD6B00,
-        "dataROMAddress": 0xD98A0,
-        "dataCompressedSize": 0x197,  # - 8 for length without gzip footer
-    },
-    {
-        "name": "bonus",
-        "codeROMAddress": 0xD9A40,
-        "dataROMAddress": 0xDF346,
-        "dataCompressedSize": 0x2AA,  # - 8 for length without gzip footer
-    },
-    {
-        "name": "race",
-        "codeROMAddress": 0xDF600,
-        "dataROMAddress": 0xE649A,
-        "dataCompressedSize": 0x2DB,  # - 8 for length without gzip footer
-    },
-    {
-        "name": "?",
-        "codeROMAddress": 0xE6780,
-        "dataROMAddress": 0xE9D17,
-        "dataCompressedSize": 0x38C,  # - 8 for length without gzip footer
-    },
-    {
-        "name": "boss",
-        "codeROMAddress": 0xEA0B0,
-        "dataROMAddress": 0xF388F,
-        "dataCompressedSize": 0x90A,  # - 8 for length without gzip footer
-    },
-    {
-        "name": "arcade",
-        "codeROMAddress": 0xF41A0,
-        "dataROMAddress": 0xFB42C,
-        "dataCompressedSize": 0x1EC4,  # - 8 for length without gzip footer
-    },
-    {
-        "name": "jetpac",
-        "codeROMAddress": 0xFD2F0,
-        "dataROMAddress": 0x1010FD,
-        "dataCompressedSize": 0x936,  # - 8 for length without gzip footer
-    },
+    {"name": "menu", "codeROMAddress": 0xCBE70, "dataROMAddress": 0xD4554, "dataCompressedSize": 0x5A2},  # - 8 for length without gzip footer
+    {"name": "multiplayer", "codeROMAddress": 0xD4B00, "dataROMAddress": 0xD69F8, "dataCompressedSize": 0xFB},  # - 8 for length without gzip footer
+    {"name": "minecart", "codeROMAddress": 0xD6B00, "dataROMAddress": 0xD98A0, "dataCompressedSize": 0x197},  # - 8 for length without gzip footer
+    {"name": "bonus", "codeROMAddress": 0xD9A40, "dataROMAddress": 0xDF346, "dataCompressedSize": 0x2AA},  # - 8 for length without gzip footer
+    {"name": "race", "codeROMAddress": 0xDF600, "dataROMAddress": 0xE649A, "dataCompressedSize": 0x2DB},  # - 8 for length without gzip footer
+    {"name": "?", "codeROMAddress": 0xE6780, "dataROMAddress": 0xE9D17, "dataCompressedSize": 0x38C},  # - 8 for length without gzip footer
+    {"name": "boss", "codeROMAddress": 0xEA0B0, "dataROMAddress": 0xF388F, "dataCompressedSize": 0x90A},  # - 8 for length without gzip footer
+    {"name": "arcade", "codeROMAddress": 0xF41A0, "dataROMAddress": 0xFB42C, "dataCompressedSize": 0x1EC4},  # - 8 for length without gzip footer
+    {"name": "jetpac", "codeROMAddress": 0xFD2F0, "dataROMAddress": 0x1010FD, "dataCompressedSize": 0x936},  # - 8 for length without gzip footer
 ]
 
 

@@ -61,11 +61,7 @@ VanillaPrices = {
     Items.ProgressiveInstrumentUpgrade: [5, 7, 9],
 }
 
-ProgressiveMoves = {
-    Items.ProgressiveSlam: 2,
-    Items.ProgressiveAmmoBelt: 2,
-    Items.ProgressiveInstrumentUpgrade: 3,
-}
+ProgressiveMoves = {Items.ProgressiveSlam: 2, Items.ProgressiveAmmoBelt: 2, Items.ProgressiveInstrumentUpgrade: 3}
 
 
 def CompleteVanillaPrices():
@@ -152,6 +148,9 @@ def GetMaxForKong(settings, kong):
             elif item_id == Items.ProgressiveAmmoBelt:
                 total_price += settings.prices[item_id][found_ammo_belts]
                 found_ammo_belts += 1
+            # Vanilla prices are by item, not by location
+            elif settings.random_prices == "vanilla":
+                total_price += settings.prices[item_id]
             else:
                 total_price += settings.prices[location]
 
@@ -179,6 +178,9 @@ def GetMaxForKong(settings, kong):
             elif item_id == Items.ProgressiveAmmoBelt:
                 total_price += settings.prices[item_id][found_ammo_belts]
                 found_ammo_belts += 1
+            # Vanilla prices are by item, not by location
+            elif settings.random_prices == "vanilla":
+                total_price += settings.prices[item_id]
             else:
                 total_price += settings.prices[location]
     return total_price
@@ -192,47 +194,13 @@ FunkySequence = [
     Locations.AmmoBelt2,
     Locations.SniperSight,
 ]
-CandySequence = [
-    [Locations.Bongos, Locations.Guitar, Locations.Trombone, Locations.Saxophone, Locations.Triangle],
-    Locations.MusicUpgrade1,
-    Locations.ThirdMelon,
-    Locations.MusicUpgrade2,
-]
-DonkeySequence = [
-    Locations.BaboonBlast,
-    Locations.StrongKong,
-    Locations.GorillaGrab,
-]
-DiddySequence = [
-    Locations.ChimpyCharge,
-    Locations.RocketbarrelBoost,
-    Locations.SimianSpring,
-]
-LankySequence = [
-    Locations.Orangstand,
-    Locations.BaboonBalloon,
-    Locations.OrangstandSprint,
-]
-TinySequence = [
-    Locations.MiniMonkey,
-    Locations.PonyTailTwirl,
-    Locations.Monkeyport,
-]
-ChunkySequence = [
-    Locations.HunkyChunky,
-    Locations.PrimatePunch,
-    Locations.GorillaGone,
-]
-Sequences = [
-    SlamProgressiveSequence,
-    FunkySequence,
-    CandySequence,
-    DonkeySequence,
-    DiddySequence,
-    LankySequence,
-    TinySequence,
-    ChunkySequence,
-]
+CandySequence = [[Locations.Bongos, Locations.Guitar, Locations.Trombone, Locations.Saxophone, Locations.Triangle], Locations.MusicUpgrade1, Locations.ThirdMelon, Locations.MusicUpgrade2]
+DonkeySequence = [Locations.BaboonBlast, Locations.StrongKong, Locations.GorillaGrab]
+DiddySequence = [Locations.ChimpyCharge, Locations.RocketbarrelBoost, Locations.SimianSpring]
+LankySequence = [Locations.Orangstand, Locations.BaboonBalloon, Locations.OrangstandSprint]
+TinySequence = [Locations.MiniMonkey, Locations.PonyTailTwirl, Locations.Monkeyport]
+ChunkySequence = [Locations.HunkyChunky, Locations.PrimatePunch, Locations.GorillaGone]
+Sequences = [SlamProgressiveSequence, FunkySequence, CandySequence, DonkeySequence, DiddySequence, LankySequence, TinySequence, ChunkySequence]
 
 """
 So for coin logic, we want to make sure the player can't spend coins incorrectly and lock themselves out.
@@ -283,6 +251,9 @@ def GetPriceAtLocation(settings, location_id, location, slamLevel, ammoBelts, in
         else:
             # If already have max instrument upgrade, there's move to buy
             return 0
+    # Vanilla prices are by item, not by location
+    elif settings.random_prices == "vanilla":
+        return settings.prices[item]
     else:
         return settings.prices[location_id]
 

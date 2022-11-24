@@ -128,6 +128,10 @@ void decouple_moves_fixes(void) {
 	}
 	if (CurrentMap == 0xBD) {
 		*(int*)(0x80028080) = 0x0C000000 | (((int)&displayBFIMoveText & 0xFFFFFF) >> 2); // BFI Text Display
+		if (Rando.rareware_gb_fairies > 0) {
+			*(int*)(0x80027E70) = 0x2C410000 | Rando.rareware_gb_fairies; // SLTIU $at, $v0, count
+			*(short*)(0x80027E74) = 0x1420; // BNEZ $at, 0x6
+		}
 	}
 	int in_boss = 0;
 	for (int i = 0; i < sizeof(boss_maps); i++) {

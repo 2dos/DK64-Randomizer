@@ -14,7 +14,7 @@ from randomizer.LogicClasses import (Event, LocationLogic, Region,
                                      TransitionFront)
 
 LogicRegions = {
-    Regions.FranticFactoryMedals: Region("Frantic Factory Medals", "whole of Frantic Factory", Levels.FranticFactory, False, None, [
+    Regions.FranticFactoryMedals: Region("Frantic Factory Medals", "Frantic Factory Medal Rewards", Levels.FranticFactory, False, None, [
         LocationLogic(Locations.FactoryDonkeyMedal, lambda l: l.ColoredBananas[Levels.FranticFactory][Kongs.donkey] >= l.settings.medal_cb_req),
         LocationLogic(Locations.FactoryDiddyMedal, lambda l: l.ColoredBananas[Levels.FranticFactory][Kongs.diddy] >= l.settings.medal_cb_req),
         LocationLogic(Locations.FactoryLankyMedal, lambda l: l.ColoredBananas[Levels.FranticFactory][Kongs.lanky] >= l.settings.medal_cb_req),
@@ -36,7 +36,7 @@ LogicRegions = {
     Regions.Testing: Region("Testing", "Testing Area", Levels.FranticFactory, True, None, [
         LocationLogic(Locations.FactoryDonkeyNumberGame, lambda l: l.Slam and l.isdonkey),
         LocationLogic(Locations.FactoryDiddyBlockTower, lambda l: l.spring and l.isdiddy, MinigameType.BonusBarrel),
-        LocationLogic(Locations.FactoryLankyTestingRoomBarrel, lambda l: l.balloon and l.islanky, MinigameType.BonusBarrel),
+        LocationLogic(Locations.FactoryLankyTestingRoomBarrel, lambda l: ((l.balloon or l.settings.bonus_barrels == "skip") and l.islanky) or (l.settings.bonus_barrels == "skip" and l.settings.free_trade_items), MinigameType.BonusBarrel),
         LocationLogic(Locations.FactoryTinyDartboard, lambda l: Events.DartsPlayed in l.Events and l.tiny),
         LocationLogic(Locations.FactoryKasplatBlocks, lambda l: not l.settings.kasplat_rando),
         LocationLogic(Locations.FactoryBananaFairybyCounting, lambda l: l.camera),
@@ -52,7 +52,7 @@ LogicRegions = {
         TransitionFront(Regions.FactoryBossLobby, lambda l: not l.settings.tns_location_rando),
     ]),
 
-    Regions.RandD: Region("R&D", "R&D Area", Levels.FranticFactory, True, -1, [
+    Regions.RandD: Region("R&D", "Research and Development Area", Levels.FranticFactory, True, -1, [
         LocationLogic(Locations.FactoryDiddyRandD, lambda l: l.guitar and l.charge and l.isdiddy),
         LocationLogic(Locations.FactoryLankyRandD, lambda l: l.trombone and l.Slam and l.islanky),
         LocationLogic(Locations.FactoryChunkyRandD, lambda l: l.triangle and l.punch and l.hunkyChunky and l.ischunky),
@@ -66,13 +66,13 @@ LogicRegions = {
         TransitionFront(Regions.FactoryBossLobby, lambda l: not l.settings.tns_location_rando),
     ]),
 
-    Regions.FactoryTinyRaceLobby: Region("Factory Tiny Race Lobby", "R&D Area", Levels.FranticFactory, False, None, [], [], [
+    Regions.FactoryTinyRaceLobby: Region("Factory Tiny Race Lobby", "Research and Development Area", Levels.FranticFactory, False, None, [], [], [
         TransitionFront(Regions.FranticFactoryMedals, lambda l: True),
         TransitionFront(Regions.RandD, lambda l: l.mini and l.istiny),
         TransitionFront(Regions.FactoryTinyRace, lambda l: l.mini and l.istiny, Transitions.FactoryRandDToRace)
     ]),
 
-    Regions.FactoryTinyRace: Region("Factory Tiny Race", "R&D Area", Levels.FranticFactory, False, None, [
+    Regions.FactoryTinyRace: Region("Factory Tiny Race", "Research and Development Area", Levels.FranticFactory, False, None, [
         LocationLogic(Locations.FactoryTinyCarRace, lambda l: l.istiny or l.settings.free_trade_items),
     ], [], [
         TransitionFront(Regions.FranticFactoryMedals, lambda l: True),
@@ -80,15 +80,15 @@ LogicRegions = {
     ], Transitions.FactoryRandDToRace
     ),
 
-    Regions.ChunkyRoomPlatform: Region("Chunky Room Platform", "Storage Room", Levels.FranticFactory, False, -1, [
-        LocationLogic(Locations.FactoryDiddyChunkyRoomBarrel, lambda l: l.Slam and l.isdiddy and l.vines, MinigameType.BonusBarrel),
+    Regions.ChunkyRoomPlatform: Region("Chunky Room Platform", "Storage Area", Levels.FranticFactory, False, -1, [
+        LocationLogic(Locations.FactoryDiddyChunkyRoomBarrel, lambda l: l.Slam and l.isdiddy and (l.vines or l.settings.bonus_barrels == "skip"), MinigameType.BonusBarrel),
     ], [], [
         TransitionFront(Regions.FranticFactoryMedals, lambda l: True),
         TransitionFront(Regions.PowerHut, lambda l: l.coconut and l.isdonkey, Transitions.FactoryChunkyRoomToPower),
         TransitionFront(Regions.BeyondHatch, lambda l: True),
     ]),
 
-    Regions.PowerHut: Region("Power Hut", "Storage Room", Levels.FranticFactory, False, None, [
+    Regions.PowerHut: Region("Power Hut", "Storage Area", Levels.FranticFactory, False, None, [
         LocationLogic(Locations.FactoryDonkeyPowerHut, lambda l: Events.MainCoreActivated in l.Events and (l.isdonkey or l.settings.free_trade_items)),
     ], [
         Event(Events.MainCoreActivated, lambda l: l.coconut and l.grab and l.isdonkey),
@@ -97,10 +97,10 @@ LogicRegions = {
         TransitionFront(Regions.ChunkyRoomPlatform, lambda l: True, Transitions.FactoryPowerToChunkyRoom),
     ]),
 
-    Regions.BeyondHatch: Region("Beyond Hatch", "Storage Room", Levels.FranticFactory, True, None, [
+    Regions.BeyondHatch: Region("Beyond Hatch", "Storage Area", Levels.FranticFactory, True, None, [
         LocationLogic(Locations.ChunkyKong, lambda l: l.CanFreeChunky()),
         LocationLogic(Locations.NintendoCoin, lambda l: Events.ArcadeLeverSpawned in l.Events and l.grab and l.isdonkey),
-        LocationLogic(Locations.FactoryDonkeyDKArcade, lambda l: Events.ArcadeLeverSpawned in l.Events and l.grab and l.isdonkey),
+        LocationLogic(Locations.FactoryDonkeyDKArcade, lambda l: not l.settings.fast_gbs and (Events.ArcadeLeverSpawned in l.Events and l.grab and l.isdonkey)),
         LocationLogic(Locations.FactoryLankyFreeChunky, lambda l: l.Slam and l.HasKong(l.settings.chunky_freeing_kong)),
         LocationLogic(Locations.FactoryTinybyArcade, lambda l: l.mini and l.tiny),
         LocationLogic(Locations.FactoryChunkyDarkRoom, lambda l: l.punch and l.Slam and l.ischunky),
@@ -118,7 +118,9 @@ LogicRegions = {
         TransitionFront(Regions.FactoryBaboonBlast, lambda l: l.blast and l.isdonkey)  # , Transitions.FactoryMainToBBlast)
     ]),
 
-    Regions.FactoryBaboonBlast: Region("Factory Baboon Blast", "Storage Room", Levels.FranticFactory, False, None, [], [
+    Regions.FactoryBaboonBlast: Region("Factory Baboon Blast", "Storage Area", Levels.FranticFactory, False, None, [
+        LocationLogic(Locations.FactoryDonkeyDKArcade, lambda l: l.settings.fast_gbs),  # The GB is moved here on fast GBs
+    ], [
         Event(Events.ArcadeLeverSpawned, lambda l: l.isdonkey)
     ], [
         TransitionFront(Regions.FranticFactoryMedals, lambda l: True),

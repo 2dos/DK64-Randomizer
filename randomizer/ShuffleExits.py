@@ -2,6 +2,7 @@
 import random
 
 import js
+from randomizer.Enums.Types import Types
 import randomizer.Fill as Fill
 import randomizer.Lists.Exceptions as Ex
 import randomizer.Logic as Logic
@@ -194,7 +195,8 @@ def ShuffleExits(settings: Settings):
     # Set up front and back entrance pools for each setting
     # Assume all shuffled exits reachable by default
     if settings.shuffle_loading_zones == "levels":
-        if settings.kongs_for_progression:
+        # If we are restricted on kong locations, we need to carefully place levels in order to meet the kongs-by-level requirement
+        if settings.kongs_for_progression and not (settings.shuffle_items and Types.Kong in settings.shuffled_location_types):
             ShuffleLevelOrderWithRestrictions(settings)
         else:
             ShuffleLevelExits(settings)
@@ -237,7 +239,7 @@ def UpdateLevelProgression(settings: Settings):
         Regions.JungleJapesLobby,
         Regions.AngryAztecLobby,
         Regions.FranticFactoryLobby,
-        Regions.GloomyGalleonLobby,
+        Regions.GloomyGalleonLobbyEntrance,
         Regions.FungiForestLobby,
         Regions.CrystalCavesLobby,
         Regions.CreepyCastleLobby,
@@ -276,15 +278,7 @@ def ShuffleLevelExits(settings: Settings, newLevelOrder: dict = None):
         Transitions.IslesMainToCavesLobby: Levels.CrystalCaves,
         Transitions.IslesMainToCastleLobby: Levels.CreepyCastle,
     }
-    shuffledLevelOrder = {
-        1: None,
-        2: None,
-        3: None,
-        4: None,
-        5: None,
-        6: None,
-        7: None,
-    }
+    shuffledLevelOrder = {1: None, 2: None, 3: None, 4: None, 5: None, 6: None, 7: None}
 
     # For each back exit, select a random valid front entrance to attach to it
     # Assuming there are no inherently invalid level orders, but if there are, validation will check after this
@@ -322,15 +316,7 @@ def ShuffleLevelOrderWithRestrictions(settings: Settings):
 
 def ShuffleLevelOrderUnrestricted(settings):
     """Shuffle the level order without Kong placement restrictions."""
-    newLevelOrder = {
-        1: None,
-        2: None,
-        3: None,
-        4: None,
-        5: None,
-        6: None,
-        7: None,
-    }
+    newLevelOrder = {1: None, 2: None, 3: None, 4: None, 5: None, 6: None, 7: None}
     allLevels = [Levels.JungleJapes, Levels.AngryAztec, Levels.FranticFactory, Levels.GloomyGalleon, Levels.FungiForest, Levels.CrystalCaves, Levels.CreepyCastle]
     random.shuffle(allLevels)
     for i in range(len(allLevels)):
@@ -423,15 +409,7 @@ def ShuffleLevelOrderForMultipleStartingKongs(settings: Settings):
     """Determine level order given starting with 2 to 4 kongs and the need to find more kongs along the way."""
     levelIndicesToFill = {1, 2, 3, 4, 5, 6, 7}
     # Initialize level order
-    newLevelOrder = {
-        1: None,
-        2: None,
-        3: None,
-        4: None,
-        5: None,
-        6: None,
-        7: None,
-    }
+    newLevelOrder = {1: None, 2: None, 3: None, 4: None, 5: None, 6: None, 7: None}
     # Sort levels by most to least kongs
     kongsInLevels = {
         Levels.JungleJapes: 1 if Locations.DiddyKong in settings.kong_locations else 0,

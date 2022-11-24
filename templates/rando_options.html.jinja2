@@ -25,7 +25,7 @@
                                value="True"/>
                         Shuffle Enemies
                     </label>
-                    {{ list_selector(enemies, "enemies", "ENEMIES", "This will open a popup that will let you customize what enemies appear in the game.&#10;This defaults to All options.") }}
+                    {{ list_selector(enemies, "enemies", "ENEMIES", "This will open a popup that will let you customize what enemies appear in the game.&#10;This defaults to All options.", 16) }}
                     {# Remove end </div> as it's included in the macro for formatting #}
                     <div class="form-check form-switch item-switch">
                         <label data-toggle="tooltip" title="Enemy speeds are randomized.">
@@ -196,7 +196,7 @@
                                    value="True"/>
                             Item Randomizer
                         </label>
-                        {{ list_selector(itemRando, "item_rando_list", "ITEM RANDO SELECTOR", "This will open a popup that will let you customize what items are shuffled in the pool.&#10;This defaults to All options.") }}
+                        {{ list_selector(itemRando, "item_rando_list", "ITEM RANDO SELECTOR", "This will open a popup that will let you customize what items are shuffled in the pool.&#10;This defaults to All options.", 8) }}
                         {# Remove end </div> as it's included in the macro for formatting #}
                     </div>
                     <div class="flex-container">
@@ -268,7 +268,7 @@
                                     aria-label="Randomization type"
                                     data-toggle="tooltip"
                                     title="All prices in shops are randomized to a random number.&#10;-Vanilla: Same cost as base game.&#10;-Free: All moves are free.&#10;-Low: Moves cost 1-4 coins most of the time. (Avg: 2.5)&#10;-Medium: Moves cost 1-8 coins most of the time. (Avg: 4.5)&#10;-High: Moves cost 1-12 coins most of the time. (Avg: 6.5)&#10;-Extreme: Moves cost 10+ coins most of the time. (Avg: 11, starting Shockwave required!)&#10;WARNING: High Prices restricts move placements quite a bit and therefore Seeds have a hard time generating, Extreme even more so. Might take a few tries to generate a seed!">
-                                <option disabled value="vanilla">
+                                <option value="vanilla">
                                     Vanilla
                                 </option>
                                 <option value="free">

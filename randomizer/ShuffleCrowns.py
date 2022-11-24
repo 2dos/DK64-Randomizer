@@ -10,7 +10,19 @@ from randomizer.LogicClasses import LocationLogic
 
 def ShuffleCrowns(crown_selection, human_crowns):
     """Generate Crown Placement Assortment."""
-    location_id = Locations.JapesBattleArena
+    crown_locations = (
+        Locations.JapesBattleArena,
+        Locations.AztecBattleArena,
+        Locations.FactoryBattleArena,
+        Locations.GalleonBattleArena,
+        Locations.ForestBattleArena,
+        Locations.CavesBattleArena,
+        Locations.CastleBattleArena,
+        Locations.IslesBattleArena2,
+        Locations.IslesBattleArena1,
+        Locations.HelmBattleArena,
+    )
+    global_crown_idx = 0
     for level in CrownLocations:
         level_lst = CrownLocations[level]
         index_lst = list(range(len(level_lst)))
@@ -47,5 +59,5 @@ def ShuffleCrowns(crown_selection, human_crowns):
             human_crowns[crown_name] = level_lst[crown].name
             crown_obj = level_lst[crown]
             crownRegion = Logic.Regions[crown_obj.region]
-            crownRegion.locations.append(LocationLogic(Locations(location_id), crown_obj.logic))
-            location_id += 1  # Iterate through crown locations *in order* - this aligns with the loop through levels
+            crownRegion.locations.append(LocationLogic(crown_locations[global_crown_idx], crown_obj.logic))
+            global_crown_idx += 1

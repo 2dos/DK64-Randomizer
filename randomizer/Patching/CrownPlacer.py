@@ -44,7 +44,7 @@ def randomize_crown_pads(spoiler: Spoiler):
                 crown_data = CrownLocations[level][crown]
                 idx = spoiler.crown_locations[level][crown]
                 placements.append(CrownPlacementShortData(crown_data.map, crown_data.coords, crown_data.scale, idx, crown_data.is_vanilla))
-                if crown_data.is_vanilla and crown_data.map in new_vanilla_crowns:
+                if crown_data.is_vanilla:
                     new_vanilla_crowns.append(crown_data.map)
                 if not crown_data.is_vanilla:
                     if crown_data.map not in action_maps:

@@ -226,8 +226,9 @@ int getInitFileMove(int index) {
 					int subtype = getMoveProgressiveFlagType(move_value);
 					if (subtype == 0) {
 						// Slams
-						slam_screen_level += 1;
-						return slam_screen_level + 1;
+						if (index == TRACKER_TYPE_SLAM) {
+							return slam_screen_level + 1;
+						}
 					} else if (subtype == 1) {
 						// Belts
 						if (belt_screen_level == 0) {
@@ -235,7 +236,6 @@ int getInitFileMove(int index) {
 						} else {
 							found |= index == TRACKER_TYPE_BELT_2;
 						}
-						belt_screen_level += 1;
 					} else if (subtype == 2) {
 						// Ins Upg
 						if (ins_screen_level == 0) {
@@ -245,7 +245,6 @@ int getInitFileMove(int index) {
 						} else {
 							found |= index == TRACKER_TYPE_INSUPG_2;
 						}
-						ins_screen_level += 1;
 					}
 				}
 				break;
@@ -446,6 +445,18 @@ void updateEnabledStates(void) {
 	slam_screen_level = 0;
 	belt_screen_level = 0;
 	ins_screen_level = 0;
+	for (int i = 0; i < 4; i++) {
+		if (TrainingMoves_New[i].purchase_type == PURCHASE_FLAG) {
+			int subtype = getMoveProgressiveFlagType(TrainingMoves_New[i].purchase_value);
+			if (subtype == 0) {
+				slam_screen_level += 1;
+			} else if (subtype == 1) {
+				belt_screen_level += 1;
+			} else if (subtype == 2) {
+				ins_screen_level += 1;
+			}
+		}
+	}
 	for (int i = 0; i < (int)(sizeof(tracker_info) / sizeof(tracker_struct)); i++) {
 		tracker_info[i].enabled = getEnabledState(tracker_info[i].type);
 	}
@@ -549,8 +560,7 @@ void modifyTrackerImage(int dl_offset) {
 	}
 }
 
-int* display_images(int* dl) {
-	int y_offset = FileScreenDLOffset - 720;
+int* display_file_images(int* dl, int y_offset) {
 	dl = drawImage(dl, IMAGE_TRACKER, RGBA16, TRACKER_WIDTH, TRACKER_HEIGHT, 160, y_offset + 150,1.0f, 1.0f,0xFF);
 	modifyTrackerImage(y_offset);
 	return dl;
@@ -571,7 +581,7 @@ int* display_text(int* dl) {
 	// Percentage Counter
 	dk_strFormat((char*)perc_str, "%d%%", FilePercentage);
 	dl = drawText(dl, 1, 410, y + 50, (char*)perc_str, 0xFF, 0xFF, 0xFF, 0xFF);
-	dl = display_images(dl);
+	dl = display_file_images(dl, FileScreenDLOffset - 720);
 	return dl;
 }
 

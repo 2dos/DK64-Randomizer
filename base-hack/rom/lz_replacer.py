@@ -1,18 +1,6 @@
 """Replace LZs in ROM."""
 
-lz_replacements = [
-    {
-        "container_map": 0x22,  # DK Isles
-        "zones": [
-            {
-                "vanilla_map": 0xB0,
-                "vanilla_exit": 0,
-                "new_map": 0x11,
-                "new_exit": 1,
-            }
-        ],
-    }
-]
+lz_replacements = [{"container_map": 0x22, "zones": [{"vanilla_map": 0xB0, "vanilla_exit": 0, "new_map": 0x11, "new_exit": 1}]}]  # DK Isles
 
 valid_lz_types = [9, 12, 13, 16]
 

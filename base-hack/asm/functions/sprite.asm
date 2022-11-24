@@ -6,3 +6,4 @@
 .definelabel displayMenuSprite, 0x80030894
 .definelabel DisplayExplosionSprite, 0x8067DCC0
 .definelabel displaySprite, 0x806AB4EC
+.definelabel spriteControlCode, 0x806AC07C

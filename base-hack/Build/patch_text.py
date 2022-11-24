@@ -260,62 +260,14 @@ move_hints = [
         "funky": "I GOT A BONZA DEAL FOR YOU. TWO MOVES FOR THE PRICE OF.. TWO. WHAT DO YOU SAY?",
         "candy": "TWO MOVES? WELL I GUESS SINCE YOU'VE BEEN WORKING HARD, WHAT DO YOU SAY?",
     },
-    {
-        "move": "Golden Banana",
-        "kong": "~",
-        "cranky": "GB CRANKY",
-        "funky": "GB FUNKY",
-        "candy": "GB CANDY",
-    },
-    {
-        "move": "Battle Crown",
-        "kong": "~",
-        "cranky": "CROWN CRANKY",
-        "funky": "CROWN FUNKY",
-        "candy": "CROWN CANDY",
-    },
-    {
-        "move": "Banana Medal",
-        "kong": "~",
-        "cranky": "MEDAL CRANKY",
-        "funky": "MEDAL FUNKY",
-        "candy": "MEDAL CANDY",
-    },
-    {
-        "move": "Boss Key",
-        "kong": "~",
-        "cranky": "KEY CRANKY",
-        "funky": "KEY FUNKY",
-        "candy": "KEY CANDY",
-    },
-    {
-        "move": "Blueprint",
-        "kong": "~",
-        "cranky": "BP CRANKY",
-        "funky": "BP FUNKY",
-        "candy": "BP CANDY",
-    },
-    {
-        "move": "Nintendo Coin",
-        "kong": "~",
-        "cranky": "NINTENDO COIN CRANKY",
-        "funky": "NINTENDO COIN FUNKY",
-        "candy": "NINTENDO COIN CANDY",
-    },
-    {
-        "move": "Rareware Coin",
-        "kong": "~",
-        "cranky": "RAREWARE COIN CRANKY",
-        "funky": "RAREWARE COIN FUNKY",
-        "candy": "RAREWARE COIN CANDY",
-    },
-    {
-        "move": "Bean",
-        "kong": "~",
-        "cranky": "BEAN CRANKY",
-        "funky": "BEAN FUNKY",
-        "candy": "BEAN CANDY",
-    },
+    {"move": "Golden Banana", "kong": "~", "cranky": "GB CRANKY", "funky": "GB FUNKY", "candy": "GB CANDY"},
+    {"move": "Battle Crown", "kong": "~", "cranky": "CROWN CRANKY", "funky": "CROWN FUNKY", "candy": "CROWN CANDY"},
+    {"move": "Banana Medal", "kong": "~", "cranky": "MEDAL CRANKY", "funky": "MEDAL FUNKY", "candy": "MEDAL CANDY"},
+    {"move": "Boss Key", "kong": "~", "cranky": "KEY CRANKY", "funky": "KEY FUNKY", "candy": "KEY CANDY"},
+    {"move": "Blueprint", "kong": "~", "cranky": "BP CRANKY", "funky": "BP FUNKY", "candy": "BP CANDY"},
+    {"move": "Nintendo Coin", "kong": "~", "cranky": "NINTENDO COIN CRANKY", "funky": "NINTENDO COIN FUNKY", "candy": "NINTENDO COIN CANDY"},
+    {"move": "Rareware Coin", "kong": "~", "cranky": "RAREWARE COIN CRANKY", "funky": "RAREWARE COIN FUNKY", "candy": "RAREWARE COIN CANDY"},
+    {"move": "Bean", "kong": "~", "cranky": "BEAN CRANKY", "funky": "BEAN FUNKY", "candy": "BEAN CANDY"},
     {
         "move": "Not enough coins - Special Move",
         "kong": "~",
@@ -395,11 +347,7 @@ move_hints = [
     },
 ]
 
-pre_amble = {
-    "cranky": "YOU'RE BACK AGAIN, ~? YOU'RE LUCKY I HAVE SOMETHING FOR YOU. ",
-    "funky": "WHAT'S UP, ~-DUDE! I JUST FINISHED MAKIN' THIS! ",
-    "candy": "WHY, ~, HAVE I GOT A TREAT FOR YOU. ",
-}
+pre_amble = {"cranky": "YOU'RE BACK AGAIN, ~? YOU'RE LUCKY I HAVE SOMETHING FOR YOU. ", "funky": "WHAT'S UP, ~-DUDE! I JUST FINISHED MAKIN' THIS! ", "candy": "WHY, ~, HAVE I GOT A TREAT FOR YOU. "}
 
 moves = [
     "Baboon Blast",
@@ -448,11 +396,7 @@ moves = [
     "Not enough coins - Fairy Moves",
 ]
 
-shop_owners = [
-    "cranky",
-    "funky",
-    "candy",
-]
+shop_owners = ["cranky", "funky", "candy"]
 
 hint_text = []
 
@@ -464,11 +408,7 @@ for move in move_hints:
 
 writeText(
     "dolby_text.bin",
-    [
-        [{"text": ["DONKEY KONG 64 RANDOMIZER"]}],
-        [{"text": ["DEVELOPERS - 2DOS, BALLAAM, BISMUTH, CFOX, KILLKLLI, LRAUQ, SHADOWSHINE, ZNERNICUS"]}],
-        [{"text": ["DK64RANDOMIZER.COM"]}],
-    ],
+    [[{"text": ["DONKEY KONG 64 RANDOMIZER"]}], [{"text": ["DEVELOPERS - 2DOS, BALLAAM, BISMUTH, CFOX, KILLKLLI, LRAUQ, SHADOWSHINE, ZNERNICUS"]}], [{"text": ["DK64RANDOMIZER.COM"]}]],
 )
 
 writeText("custom_text.bin", hint_text)
@@ -561,41 +501,13 @@ for move in move_names:
         if move["print"]:
             print(f"{move['name']}: {init_len}")
 index_data = {
-    "slam": {
-        "indexes": [],
-        "arr_name": "SimianSlamNames",
-        "has_latin": True,
-    },
-    "special": {
-        "indexes": [],
-        "arr_name": "SpecialMovesNames",
-        "has_latin": True,
-    },
-    "gun": {
-        "indexes": [],
-        "arr_name": "GunNames",
-        "has_latin": False,
-    },
-    "gun_upg": {
-        "indexes": [],
-        "arr_name": "GunUpgNames",
-        "has_latin": False,
-    },
-    "ammo_belt": {
-        "indexes": [],
-        "arr_name": "AmmoBeltNames",
-        "has_latin": False,
-    },
-    "instrument": {
-        "indexes": [],
-        "arr_name": "InstrumentNames",
-        "has_latin": False,
-    },
-    "ins_upg": {
-        "indexes": [],
-        "arr_name": "InstrumentUpgNames",
-        "has_latin": False,
-    },
+    "slam": {"indexes": [], "arr_name": "SimianSlamNames", "has_latin": True},
+    "special": {"indexes": [], "arr_name": "SpecialMovesNames", "has_latin": True},
+    "gun": {"indexes": [], "arr_name": "GunNames", "has_latin": False},
+    "gun_upg": {"indexes": [], "arr_name": "GunUpgNames", "has_latin": False},
+    "ammo_belt": {"indexes": [], "arr_name": "AmmoBeltNames", "has_latin": False},
+    "instrument": {"indexes": [], "arr_name": "InstrumentNames", "has_latin": False},
+    "ins_upg": {"indexes": [], "arr_name": "InstrumentUpgNames", "has_latin": False},
 }
 for kong_index in range(5):
     # Special Moves
@@ -634,12 +546,7 @@ with open("src/randomizers/move_text.c", "w") as fh:
     with open("include/text_items.h", "w") as fg:
         fh.write('#include "../../include/common.h"\n\n')
         fg.write('#include "common.h"\n\n')
-        disclaimer = [
-            "/*\n",
-            "\tFile is automatically generated from build/patch_text.py\n",
-            "\tIf you wish to modify this file, please modify the code there\n",
-            "*/\n\n",
-        ]
+        disclaimer = ["/*\n", "\tFile is automatically generated from build/patch_text.py\n", "\tIf you wish to modify this file, please modify the code there\n", "*/\n\n"]
         for line in disclaimer:
             fh.write(line)
             fg.write(line)
@@ -723,12 +630,7 @@ move_explanations = [
             {"text": ["TO PULL OUT THE CAMERA."]},
         ],
     },
-    {
-        "move": "generic_item",  # 0x2B
-        "explanation": [
-            {"text": ["PAY ATTENTION, ~. THERE'S PLENTY MORE ITEMS TO GATHER IN THIS GAME. GET MOVING SO WE CAN DISPENSE OF K. ROOL"]},
-        ],
-    },
+    {"move": "generic_item", "explanation": [{"text": ["PAY ATTENTION, ~. THERE'S PLENTY MORE ITEMS TO GATHER IN THIS GAME. GET MOVING SO WE CAN DISPENSE OF K. ROOL"]}]},  # 0x2B
 ]
 
 cranky_text = grabText(8)

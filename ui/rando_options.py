@@ -81,6 +81,18 @@ def max_randomized_medal_cb_req(event):
         medal_cb_req.value = 100
 
 
+@bind("focusout", "rareware_gb_fairies")
+def max_randomized_fairies(event):
+    """Validate fairy input on loss of focus."""
+    fairy_req = js.document.getElementById("rareware_gb_fairies")
+    if not fairy_req.value:
+        fairy_req.value = 20
+    elif 1 > int(fairy_req.value):
+        fairy_req.value = 1
+    elif int(fairy_req.value) > 20:
+        fairy_req.value = 20
+
+
 def min_max(event, min, max):
     """Check if the data is within bounds of requirements.
 
@@ -434,14 +446,10 @@ def disable_items_modal(evt):
 
 @bind("click", "item_rando_list_selected")
 def disable_coupled_camera_shockwave(evt):
-    """Disable Item Rando Selector when Item Rando is off."""
+    """Change shockwave/camera selection to decoupled if shops are shuffled."""
     disabled = False
     selector = document.getElementById("item_rando_list_selected").options
     shockwave = document.getElementById("shockwave_status_shuffled")
-    door = document.getElementById("coin_door_open")
-    random = document.getElementById("random_medal_requirement")
-    medal = document.getElementById("medal_requirement")
-    coin_shuffled = False
     for option in selector:
         if option.value == "shop" and option.selected:
             if shockwave.selected is True:
@@ -451,15 +459,6 @@ def disable_coupled_camera_shockwave(evt):
         else:
             if not disabled:
                 shockwave.removeAttribute("disabled")
-        if option.value == "coin" and option.selected:
-            coin_shuffled = True
-    if coin_shuffled:
-        medal.removeAttribute("disabled")
-        random.removeAttribute("disabled")
-    elif door.value == "need_zero" or door.value == "need_nin":
-        random.setAttribute("disabled", "disabled")
-        random.checked = False
-        medal.setAttribute("disabled", "disabled")
 
 
 @bind("click", "apply_preset")
@@ -541,33 +540,6 @@ def toggle_medals_box(event):
         medal.removeAttribute("disabled")
 
 
-@bind("change", "coin_door_open")
-def disable_rw(evt):
-    """Disable Banana Medal values from being changed if RW coin not needed."""
-    door = document.getElementById("coin_door_open")
-    random = document.getElementById("random_medal_requirement")
-    medal = document.getElementById("medal_requirement")
-    selector = document.getElementById("item_rando_list_selected").options
-    coin_shuffled = False
-    for option in selector:
-        if option.value == "coin" and option.selected:
-            coin_shuffled = True
-    if door.value == "need_zero" or door.value == "need_nin":
-        if not coin_shuffled:
-            try:
-                random.setAttribute("disabled", "disabled")
-                random.checked = False
-                medal.setAttribute("disabled", "disabled")
-            except Exception:
-                pass
-    else:
-        try:
-            random.removeAttribute("disabled")
-            medal.removeAttribute("disabled")
-        except Exception:
-            pass
-
-
 @bind("change", "shockwave_status")
 def toggle_extreme_prices_option(event):
     """Determine the visibility of the extreme prices option."""
@@ -603,3 +575,23 @@ def toggle_patch_ui(event):
     for tab in ["nav-started-tab", "nav-random-tab", "nav-overworld-tab", "nav-difficulty-tab", "nav-qol-tab"]:
         document.getElementById(tab).removeAttribute("disabled")
     document.getElementById("override_div").setAttribute("hidden", "hidden")
+
+
+@bind("click", "select_keys")
+def toggle_key_settings(event):
+    """Disable other keys settings when selecting keys. Toggle Key Selector Modal."""
+    disabled = False
+    if js.document.getElementById("select_keys").checked:
+        disabled = True
+    krool_access = js.document.getElementById("krool_access")
+    keys_random = js.document.getElementById("keys_random")
+    selector = js.document.getElementById("starting_keys_list_modal")
+    if disabled:
+        krool_access.setAttribute("disabled", "disabled")
+        krool_access.checked = False
+        keys_random.setAttribute("disabled", "disabled")
+        selector.removeAttribute("disabled")
+    else:
+        krool_access.removeAttribute("disabled")
+        keys_random.removeAttribute("disabled")
+        selector.setAttribute("disabled", "disabled")

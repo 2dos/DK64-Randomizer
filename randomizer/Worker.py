@@ -19,11 +19,4 @@ def background(function, args, returning_func):
     run_func = inspect.getsource(module)
     run_func += str(function.__name__) + "(" + ",".join(args) + ")"
     returning_mod = inspect.getmodule(returning_func)
-    js.background_worker.postMessage(
-        json.dumps(
-            {
-                "func": run_func,
-                "returning_func": "from " + returning_mod.__name__ + " import " + returning_func.__name__,
-            }
-        )
-    )
+    js.background_worker.postMessage(json.dumps({"func": run_func, "returning_func": "from " + returning_mod.__name__ + " import " + returning_func.__name__}))

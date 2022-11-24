@@ -12,7 +12,7 @@ from randomizer.LogicClasses import (Event, LocationLogic, Region,
                                      TransitionFront)
 
 LogicRegions = {
-    Regions.GloomyGalleonMedals: Region("Gloomy Galleon Medals", "whole of Gloomy Galleon", Levels.GloomyGalleon, False, None, [
+    Regions.GloomyGalleonMedals: Region("Gloomy Galleon Medals", "Gloomy Galleon Medal Rewards", Levels.GloomyGalleon, False, None, [
         LocationLogic(Locations.GalleonDonkeyMedal, lambda l: l.ColoredBananas[Levels.GloomyGalleon][Kongs.donkey] >= l.settings.medal_cb_req),
         LocationLogic(Locations.GalleonDiddyMedal, lambda l: l.ColoredBananas[Levels.GloomyGalleon][Kongs.diddy] >= l.settings.medal_cb_req),
         LocationLogic(Locations.GalleonLankyMedal, lambda l: l.ColoredBananas[Levels.GloomyGalleon][Kongs.lanky] >= l.settings.medal_cb_req),
@@ -60,7 +60,7 @@ LogicRegions = {
     Regions.LighthouseSurface: Region("Lighthouse Surface", "Lighthouse Area", Levels.GloomyGalleon, False, -1, [
         LocationLogic(Locations.GalleonKasplatLighthouseArea, lambda l: not l.settings.kasplat_rando),
     ], [
-        Event(Events.GalleonChunkyPad, lambda l: l.triangle and l.chunky),
+        Event(Events.GalleonChunkyPad, lambda l: (l.triangle and l.chunky) and (l.swim or l.settings.high_req)),
     ], [
         TransitionFront(Regions.GloomyGalleonMedals, lambda l: True),
         TransitionFront(Regions.GloomyGalleonStart, lambda l: l.settings.open_levels or Events.LighthouseGateOpened in l.Events),
@@ -135,6 +135,10 @@ LogicRegions = {
         LocationLogic(Locations.GalleonKasplatNearSub, lambda l: not l.settings.kasplat_rando),
     ], [
         Event(Events.ShipyardTreasureRoomOpened, lambda l: Events.ShipyardEnguarde in l.Events and Events.WaterSwitch in l.Events),
+        Event(Events.GalleonDonkeyPad, lambda l: l.bongos and l.isdonkey and (l.swim or l.settings.high_req)),
+        Event(Events.GalleonDiddyPad, lambda l: l.guitar and l.isdiddy and (l.swim or l.settings.high_req)),
+        Event(Events.GalleonLankyPad, lambda l: l.trombone and l.islanky and (l.swim or l.settings.high_req)),
+        Event(Events.GalleonTinyPad, lambda l: l.saxophone and l.istiny and (l.swim or l.settings.high_req)),
     ], [
         TransitionFront(Regions.GloomyGalleonMedals, lambda l: True),
         TransitionFront(Regions.GloomyGalleonStart, lambda l: l.settings.shuffle_loading_zones == "all" or Events.ShipyardGateOpened in l.Events),
@@ -153,10 +157,10 @@ LogicRegions = {
         TransitionFront(Regions.Mechafish, lambda l: Events.MechafishSummoned in l.Events and l.isdiddy),
         TransitionFront(Regions.LankyShip, lambda l: Events.GalleonLankySwitch in l.Events and l.islanky, Transitions.GalleonShipyardToLanky),
         TransitionFront(Regions.TinyShip, lambda l: Events.GalleonTinySwitch in l.Events and l.istiny, Transitions.GalleonShipyardToTiny),
-        TransitionFront(Regions.BongosShip, lambda l: l.bongos and l.isdonkey, Transitions.GalleonShipyardToBongos),
-        TransitionFront(Regions.GuitarShip, lambda l: l.guitar and l.isdiddy, Transitions.GalleonShipyardToGuitar),
-        TransitionFront(Regions.TromboneShip, lambda l: l.trombone and l.islanky, Transitions.GalleonShipyardToTrombone),
-        TransitionFront(Regions.SaxophoneShip, lambda l: l.saxophone and l.istiny, Transitions.GalleonShipyardToSaxophone),
+        TransitionFront(Regions.BongosShip, lambda l: Events.GalleonDonkeyPad in l.Events and l.isdonkey, Transitions.GalleonShipyardToBongos),
+        TransitionFront(Regions.GuitarShip, lambda l: Events.GalleonDiddyPad in l.Events and l.isdiddy, Transitions.GalleonShipyardToGuitar),
+        TransitionFront(Regions.TromboneShip, lambda l: Events.GalleonLankyPad in l.Events and l.islanky, Transitions.GalleonShipyardToTrombone),
+        TransitionFront(Regions.SaxophoneShip, lambda l: Events.GalleonTinyPad in l.Events and l.istiny, Transitions.GalleonShipyardToSaxophone),
         TransitionFront(Regions.TriangleShip, lambda l: Events.GalleonChunkyPad in l.Events and l.ischunky, Transitions.GalleonShipyardToTriangle),
         TransitionFront(Regions.GalleonBossLobby, lambda l: not l.settings.tns_location_rando),
     ]),
@@ -170,7 +174,7 @@ LogicRegions = {
     ),
 
     Regions.TreasureRoom: Region("Treasure Room", "Treasure Room", Levels.GloomyGalleon, True, None, [
-        LocationLogic(Locations.GalleonLankyGoldTower, lambda l: l.balloon and l.islanky, MinigameType.BonusBarrel),
+        LocationLogic(Locations.GalleonLankyGoldTower, lambda l: Events.WaterSwitch in l.Events and l.balloon and l.islanky, MinigameType.BonusBarrel),
     ], [], [
         TransitionFront(Regions.GloomyGalleonMedals, lambda l: True),
         TransitionFront(Regions.ShipyardUnderwater, lambda l: Events.ShipyardTreasureRoomOpened in l.Events and l.swim),
@@ -182,7 +186,7 @@ LogicRegions = {
         LocationLogic(Locations.GalleonDiddyGoldTower, lambda l: l.spring and l.isdiddy, MinigameType.BonusBarrel),
         LocationLogic(Locations.GalleonKasplatGoldTower, lambda l: not l.settings.kasplat_rando),
     ], [
-        Event(Events.TreasureRoomTeleporterUnlocked, lambda l: l.spring and l.isdiddy),
+        Event(Events.TreasureRoomTeleporterUnlocked, lambda l: l.spring and l.isdiddy),  # TODO: Add logic to ensure bonus barrel reward is collectable, like if it's the diddy jetpack helm minigame
     ], [
         TransitionFront(Regions.GloomyGalleonMedals, lambda l: True),
         TransitionFront(Regions.TreasureRoom, lambda l: True)

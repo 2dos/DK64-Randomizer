@@ -15,7 +15,7 @@ from randomizer.Patching.BossRando import randomize_bosses
 from randomizer.Patching.CosmeticColors import apply_cosmetic_colors, overwrite_object_colors, applyKrushaKong
 from randomizer.Patching.DKTV import randomize_dktv
 from randomizer.Patching.EnemyRando import randomize_enemies
-from randomizer.Patching.EntranceRando import randomize_entrances
+from randomizer.Patching.EntranceRando import randomize_entrances, filterEntranceType
 from randomizer.Patching.Hash import get_hash_images
 from randomizer.Patching.KasplatLocationRando import randomize_kasplat_locations
 from randomizer.Patching.KongRando import apply_kongrando_cosmetic
@@ -241,7 +241,7 @@ def patching_response(responded_data):
                 enabled_qol.append(item["value"])
         write_data = [0, 0]
         for item in QoLSelector:
-            if item["value"] in enabled_qol:
+            if item["value"] in enabled_qol and item["shift"] >= 0:
                 offset = int(item["shift"] >> 3)
                 check = int(item["shift"] % 8)
                 write_data[offset] |= 0x80 >> check
@@ -370,11 +370,15 @@ def patching_response(responded_data):
 
     # Show CBs & Coins
     if spoiler.settings.cb_rando:
+        # Show CBs/Coins
         ROM().seek(sav + 0xAF)
+        ROM().write(1)
+        # Remove Rock Bunch
+        ROM().seek(sav + 0x10B)
         ROM().write(1)
 
     # Wrinkly Rando
-    if spoiler.settings.wrinkly_location_rando:
+    if spoiler.settings.wrinkly_location_rando or ("remove_wrinkly_puzzles" in spoiler.settings.misc_changes_selected or len(spoiler.settings.misc_changes_selected) == 0):
         ROM().seek(sav + 0x11F)
         ROM().write(1)
 
@@ -412,9 +416,13 @@ def patching_response(responded_data):
     ROM().seek(sav + 0x127)
     ROM().write(key_bitfield)
 
-    if spoiler.settings.coin_door_open in ["need_both", "need_rw"] or "coin" in spoiler.settings.item_rando_list_selected:
+    if spoiler.settings.medal_requirement != 15:
         ROM().seek(sav + 0x150)
         ROM().write(spoiler.settings.medal_requirement)
+
+    if spoiler.settings.rareware_gb_fairies != 20:
+        ROM().seek(sav + 0x36)
+        ROM().write(spoiler.settings.rareware_gb_fairies)
 
     if spoiler.settings.medal_cb_req != 75:
         ROM().seek(sav + 0x112)
@@ -425,6 +433,11 @@ def patching_response(responded_data):
         for enemy in EnemySelector:
             lst.append(enemy["value"])
         spoiler.settings.enemies_selected = lst
+
+    if spoiler.settings.random_starting_region:
+        ROM().seek(sav + 0x10C)
+        ROM().write(spoiler.settings.starting_region["map"])
+        ROM().write(spoiler.settings.starting_region["exit"])
 
     # randomize_dktv()
     randomize_entrances(spoiler)
@@ -445,6 +458,7 @@ def patching_response(responded_data):
     place_randomized_items(spoiler)
     place_door_locations(spoiler)
     randomize_crown_pads(spoiler)
+    filterEntranceType()
 
     random.seed(spoiler.settings.seed)
     randomize_music(spoiler)
@@ -486,10 +500,7 @@ def patching_response(responded_data):
         js.document.getElementById(f"settings_table_{i}").innerHTML = ""
         tables[i] = js.document.getElementById(f"settings_table_{i}")
     for setting, value in loaded_settings.items():
-        hidden_settings = [
-            "Seed",
-            "algorithm",
-        ]
+        hidden_settings = ["Seed", "algorithm"]
         if setting not in hidden_settings:
             if tables[t].rows.length > math.ceil((len(loaded_settings.items()) - len(hidden_settings)) / len(tables)):
                 t += 1

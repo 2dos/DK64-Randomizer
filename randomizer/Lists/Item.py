@@ -29,6 +29,8 @@ class Item:
         if type == Types.Key:
             self.rando_flag = data[0]
             self.index = data[1]  # Key 1 = 1, Key 2 = 2, etc
+        if type == Types.Kong:
+            self.rando_flag = data[0]
 
 
 def ItemFromKong(kong):
@@ -81,11 +83,12 @@ def KongFromItem(item):
 
 ItemList = {
     Items.NoItem: Item("No Item", False, Types.Constant, Kongs.any),
-    Items.Donkey: Item("Donkey", True, Types.Kong, Kongs.any),
-    Items.Diddy: Item("Diddy", True, Types.Kong, Kongs.any),
-    Items.Lanky: Item("Lanky", True, Types.Kong, Kongs.any),
-    Items.Tiny: Item("Tiny", True, Types.Kong, Kongs.any),
-    Items.Chunky: Item("Chunky", True, Types.Kong, Kongs.any),
+    Items.TestItem: Item("Fill Helper Item - SHOULD NOT BE PLACED", False, Types.Constant, Kongs.any),
+    Items.Donkey: Item("Donkey", True, Types.Kong, Kongs.any, [385]),
+    Items.Diddy: Item("Diddy", True, Types.Kong, Kongs.any, [6]),
+    Items.Lanky: Item("Lanky", True, Types.Kong, Kongs.any, [70]),
+    Items.Tiny: Item("Tiny", True, Types.Kong, Kongs.any, [66]),
+    Items.Chunky: Item("Chunky", True, Types.Kong, Kongs.any, [117]),
     Items.Vines: Item("Vines", True, Types.TrainingBarrel, Kongs.any, [MoveTypes.Flag, "vine", 387]),
     Items.Swim: Item("Swim", True, Types.TrainingBarrel, Kongs.any, [MoveTypes.Flag, "dive", 386]),
     Items.Oranges: Item("Oranges", True, Types.TrainingBarrel, Kongs.any, [MoveTypes.Flag, "orange", 388]),

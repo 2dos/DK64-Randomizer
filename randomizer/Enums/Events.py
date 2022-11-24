@@ -56,6 +56,10 @@ class Events(IntEnum):
     LighthouseEnguarde = auto()
     SealReleased = auto()
     MechafishSummoned = auto()
+    GalleonDonkeyPad = auto()
+    GalleonDiddyPad = auto()
+    GalleonLankyPad = auto()
+    GalleonTinyPad = auto()
     GalleonChunkyPad = auto()
     ActivatedLighthouse = auto()
     ShipyardEnguarde = auto()
@@ -98,6 +102,7 @@ class Events(IntEnum):
     KRoolLanky = auto()
     KRoolTiny = auto()
     KRoolChunky = auto()
+    KRoolDefeated = auto()
 
     # Level entered events for shops
     JapesEntered = auto()

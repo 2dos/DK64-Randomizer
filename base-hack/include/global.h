@@ -91,6 +91,7 @@ extern int* drawText(int* dl, int style, float x, float y, char* str, int red, i
 extern int* drawDPad(int* dl);
 extern int* drawImageWithFilter(int* dl, int text_index, codecs codec_index, int img_width, int img_height, int x, int y, float xScale, float yScale, int red, int green, int blue, int opacity);
 extern void correctKongFaces(void);
+extern int* display_file_images(int* dl, int y_offset);
 
 extern int getLo(void* addr);
 extern int getHi(void* addr);
@@ -180,7 +181,14 @@ extern void adjustAnimationTables(void);
 extern void adaptKrushaZBAnimation_PunchOStand(int action, void* player, int player_index);
 extern void adaptKrushaZBAnimation_Charge(actorData* actor, int anim);
 extern void updateCutsceneModels(actorData* actor, int size);
+extern void* DiddySwimFix(int ptr, int file, int c0, int c1);
+extern void UpdateCollisionDimensions_Krusha(int player, int x_f, int y_f, int z_f, float scale);
+extern void updateUnderwaterCollisions(actorData* player, int anim, int unk0, int unk1);
+extern void MinecartJumpFix(void* player, int anim);
+extern void MinecartJumpFix_0(void);
+extern void updateKongSize(void);
 extern void initTracker(void);
+extern void resetTracker(void);
 extern void wipeFileMod(int file, int will_save);
 extern void enterFileProgress(int sfx);
 extern void pokemonSnapMode(void);
@@ -208,6 +216,7 @@ extern int getKongFromBonusFlag(int flag);
 extern void banana_medal_acquisition(int flag);
 extern void finalizeBeatGame(void);
 
+extern int getFlagIndex_Corrected(int start, int level);
 extern int getBPItem(int index);
 extern int getMedalItem(int index);
 extern int getCrownItem(int map);
@@ -224,5 +233,16 @@ extern void getItem(int object_type);
 extern int setupHook(int map);
 extern void CheckKasplatSpawnBitfield(void);
 
+extern int* pauseScreen3And4Header(int* dl);
+extern int* pauseScreen3And4Counter(int x, int y, int top, int bottom, int* dl, int unk0, int scale);
+extern void updatePauseScreenWheel(void* write_location, void* sprite, int x, int y, float scale, int local_index, int index);
+extern int* pauseScreen3And4ItemName(int* dl, int x, int y, float scale, char* text);
+extern void handleSpriteCode(int control_type);
+extern int changeSelectedLevel(int unk0, int unk1);
+extern void checkItemDB(void);
+extern void initPauseMenu(void);
+extern void changePauseScreen(void);
+
 extern unsigned int cs_skip_db[432];
 extern bonus_barrel_info bonus_data[95];
+extern const check_struct item_db[292];

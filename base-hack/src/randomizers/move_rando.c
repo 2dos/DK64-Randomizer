@@ -153,6 +153,10 @@ void progressiveChange(int flag) {
 		if (subtype == 0) {
 			// Slam
 			int slam_level = MovesBase[0].simian_slam + 1;
+			if (slam_level == 1) {
+				// Fix if initial slam is slam 0
+				slam_level = 2;
+			}
 			for (int i = 0; i < 5; i++) {
 				MovesBase[i].simian_slam = slam_level;
 			}
@@ -170,7 +174,7 @@ void progressiveChange(int flag) {
 					ins_level = i;
 				}
 			}
-			if (ins_level > 1) {
+			if (ins_level > 0) {
 				if (CollectableBase.Melons < 3) {
 					CollectableBase.Melons = 3;
 					CollectableBase.Health = CollectableBase.Melons << 2;

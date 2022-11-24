@@ -105,11 +105,7 @@ move_list = {
     Items.SniperSight: MoveData(2, Kongs.any, 3, True, 1),
 }
 
-progressive_move_flag_dict = {
-    Items.ProgressiveSlam: [0x290, 0x291],
-    Items.ProgressiveAmmoBelt: [0x292, 0x293],
-    Items.ProgressiveInstrumentUpgrade: [0x294, 0x295, 0x296],
-}
+progressive_move_flag_dict = {Items.ProgressiveSlam: [0x290, 0x291], Items.ProgressiveAmmoBelt: [0x292, 0x293], Items.ProgressiveInstrumentUpgrade: [0x294, 0x295, 0x296]}
 
 
 def ShuffleItems(spoiler: Spoiler):
@@ -140,7 +136,13 @@ def ShuffleItems(spoiler: Spoiler):
                 placement_index = item_location.placement_index
             price = 0
             if item_location.type == Types.Shop:
-                price = spoiler.settings.prices[location_enum]
+                # Vanilla prices are based on item, not location
+                if spoiler.settings.random_prices == "vanilla":
+                    # If it's not in the prices dictionary, the item is free
+                    if item_location.item in spoiler.settings.prices.keys():
+                        price = spoiler.settings.prices[item_location.item]
+                else:
+                    price = spoiler.settings.prices[location_enum]
             location_selection = LocationSelection(
                 vanilla_item=item_location.type,
                 flag=old_flag,

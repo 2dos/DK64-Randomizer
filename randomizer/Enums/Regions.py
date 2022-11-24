@@ -5,6 +5,10 @@ from enum import IntEnum, auto
 class Regions(IntEnum):
     """Region enum."""
 
+    # Special regions
+    GameStart = auto()  # This holds your training barrels for fast start and sends you off to your starting region
+    Credits = auto()  # This holds the Banana Hoard
+
     # DK Isles Regions
     Treehouse = auto()
     TrainingGrounds = auto()
@@ -18,6 +22,7 @@ class Regions(IntEnum):
     IslesSnideRoom = auto()
     FranticFactoryLobby = auto()
     GloomyGalleonLobby = auto()
+    GloomyGalleonLobbyEntrance = auto()
     CabinIsle = auto()
     FungiForestLobby = auto()
     CrystalCavesLobby = auto()
@@ -47,9 +52,11 @@ class Regions(IntEnum):
     AngryAztecMedals = auto()
     AngryAztecStart = auto()
     BetweenVinesByPortal = auto()
+    AztecTunnelBeforeOasis = auto()
     AngryAztecOasis = auto()
     TempleStart = auto()
     TempleUnderwater = auto()
+    AngryAztecConnectorTunnel = auto()
     AngryAztecMain = auto()
     AztecDonkeyQuicksandCave = auto()
     DonkeyTemple = auto()

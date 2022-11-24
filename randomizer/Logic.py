@@ -8,7 +8,9 @@ import randomizer.CollectibleLogicFiles.FranticFactory
 import randomizer.CollectibleLogicFiles.FungiForest
 import randomizer.CollectibleLogicFiles.GloomyGalleon
 import randomizer.CollectibleLogicFiles.JungleJapes
+from randomizer.Enums.Locations import Locations
 from randomizer.Enums.Types import Types
+from randomizer.Lists.Item import ItemList
 import randomizer.LogicFiles.AngryAztec
 import randomizer.LogicFiles.CreepyCastle
 import randomizer.LogicFiles.CrystalCaves
@@ -41,6 +43,7 @@ class LogicVarHolder:
         if settings is None:
             return
         self.settings = settings
+        self.pathMode = False  # See CalculateWothPaths method for details
         self.startkong = self.settings.starting_kong
         self.Reset()
 
@@ -49,7 +52,10 @@ class LogicVarHolder:
 
         Done between reachability searches and upon initialization.
         """
-        self.debug_owned_items = []
+        self.latest_owned_items = []
+        self.found_test_item = False
+        self.banned_item = None
+
         self.donkey = Kongs.donkey in self.settings.starting_kong_list
         self.diddy = Kongs.diddy in self.settings.starting_kong_list
         self.lanky = Kongs.lanky in self.settings.starting_kong_list
@@ -180,9 +186,26 @@ class LogicVarHolder:
 
         self.UpdateKongs()
 
+    def isPriorHelmComplete(self, kong: Kongs):
+        """Determine if there is access to the kong's helm room."""
+        room_seq = (Kongs.donkey, Kongs.chunky, Kongs.tiny, Kongs.lanky, Kongs.diddy)
+        kong_evt = (Events.HelmDonkeyDone, Events.HelmDiddyDone, Events.HelmLankyDone, Events.HelmTinyDone, Events.HelmChunkyDone)
+        desired_index = room_seq.index(kong)
+        helm_order = self.settings.helm_order
+        if desired_index in helm_order:
+            sequence_slot = helm_order.index(desired_index)
+            if sequence_slot > 0:
+                prior_kong = room_seq[helm_order[sequence_slot - 1]]
+                return kong_evt[prior_kong] in self.Events
+        return Events.HelmDoorsOpened in self.Events
+
     def Update(self, ownedItems):
         """Update logic variables based on owned items."""
-        self.debug_owned_items = ownedItems
+        # Except for the banned item - this item isn't allowed to be used by the logic
+        while self.banned_item in ownedItems:
+            ownedItems.remove(self.banned_item)
+        self.latest_owned_items = ownedItems
+        self.found_test_item = self.found_test_item or Items.TestItem in ownedItems
 
         self.donkey = self.donkey or Items.Donkey in ownedItems or self.startkong == Kongs.donkey
         self.diddy = self.diddy or Items.Diddy in ownedItems or self.startkong == Kongs.diddy
@@ -371,8 +394,34 @@ class LogicVarHolder:
             return (self.bongos and self.isdonkey) or (self.guitar and self.isdiddy) or (self.trombone and self.islanky) or (self.saxophone and self.istiny) or (self.triangle and self.ischunky)
 
     def CanFreeDiddy(self):
-        """Check if kong at Diddy location can be freed."""
-        return self.HasGun(self.settings.diddy_freeing_kong)
+        """Check if the cage locking Diddy's vanilla location can be opened."""
+        return LocationList[Locations.DiddyKong].item == Items.NoItem or self.HasGun(self.settings.diddy_freeing_kong)
+
+    def CanOpenJapesGates(self):
+        """Check if we can pick up the item inside Diddy's cage, thus opening the gates in Japes."""
+        caged_item_id = LocationList[Locations.JapesDonkeyFreeDiddy].item
+        # If it's NoItem, then the gates are already open
+        if caged_item_id == Items.NoItem:
+            return True
+        # If we can't free Diddy, then we can't access the item so we can't reach the item
+        if not self.CanFreeDiddy():
+            return False
+        # If we are the right kong, then we can always get the item
+        if self.IsKong(self.settings.diddy_freeing_kong):
+            return True
+        # If we aren't the right kong, we need free trade to be on
+        elif self.settings.free_trade_items:
+            # During the fill we can't assume this item is accessible quite yet - this could cause errors with placing items in the back of Japes
+            if caged_item_id is None:
+                return False
+            # If it's not a blueprint, free trade gets us the item
+            if ItemList[caged_item_id].type != Types.Blueprint:
+                return True
+            # But if it is a blueprint, we need to check blueprint access (which checks blueprint free trade)
+            else:
+                return self.BlueprintAccess(ItemList[caged_item_id])
+        # If we failed to hit a successful condition, we failed to reach the caged item
+        return False
 
     def CanFreeTiny(self):
         """Check if kong at Tiny location can be freed,r equires either chimpy charge or primate punch."""
@@ -539,12 +588,24 @@ class LogicVarHolder:
 
     def IsLevelEnterable(self, level):
         """Check if level entry requirement is met."""
+        # Later levels can have some special requirements
+        # "pathMode" is so WotH paths can always enter levels regardless of owned items
+        if not self.pathMode and level >= 3:
+            level_order_matters = not self.settings.hard_level_progression and self.settings.shuffle_loading_zones in ("none", "levels")
+            # If level order matters...
+            if level_order_matters:
+                # Require barrels by level 3 to prevent boss barrel fill failures
+                if not self.barrels:
+                    return False
+                # Require one of twirl or hunky chunky by level 7 to prevent non-hard-boss fill failures
+                if not self.settings.hard_bosses and level >= 7 and not (self.twirl or self.hunkyChunky):
+                    return False
         return self.HasEnoughKongs(level, forPreviousLevel=True) and self.GoldenBananas >= self.settings.EntryGBs[level]
 
     def WinConditionMet(self):
         """Check if the current game state has met the win condition."""
-        if self.settings.win_condition == "beat_krool":
-            return self.bananaHoard
+        if self.settings.win_condition == "beat_krool" or self.settings.win_condition == "poke_snap":  # Photo taking doesn't have a clear wincon so this'll do until something better is concocted
+            return Events.KRoolDefeated in self.Events
         elif self.settings.win_condition == "get_key8":
             return self.HelmKey
         elif self.settings.win_condition == "all_fairies":
@@ -571,8 +632,63 @@ class LogicVarHolder:
         """Check if you meet the logical requirements to obtain the Rareware Coin."""
         have_enough_medals = self.BananaMedals >= self.settings.medal_requirement
         # Make sure you have access to enough levels to fit the locations in. This isn't super precise and doesn't need to be.
-        required_level = min(ceil(self.settings.medal_requirement / 5), 6)
+        required_level = min(ceil(self.settings.medal_requirement / 4), 6)
         return have_enough_medals and self.IsLevelEnterable(required_level)
+
+    def BanItem(self, item):
+        """Prevent an item from being picked up by the logic."""
+        self.banned_item = item
+
+    def HasAllItems(self):
+        """Return if you have all progression items."""
+        # You may now own the banned item
+        self.latest_owned_items.append(self.banned_item)
+        self.banned_item = None
+        self.Update(self.latest_owned_items)
+        # If you didn't beat the game, you obviously don't have all the progression items - this covers the possible need for camera and each key
+        if not self.WinConditionMet():
+            return False
+        # Otherwise return true if you have all major moves
+        return (
+            self.donkey
+            and self.diddy
+            and self.lanky
+            and self.tiny
+            and self.chunky
+            and self.vines
+            and self.swim
+            and self.barrels
+            and self.oranges
+            and self.blast
+            and self.strongKong
+            and self.grab
+            and self.charge
+            and self.jetpack
+            and self.spring
+            and self.handstand
+            and self.balloon
+            and self.sprint
+            and self.mini
+            and self.twirl
+            and self.monkeyport
+            and self.hunkyChunky
+            and self.punch
+            and self.gorillaGone
+            and self.superDuperSlam
+            and self.coconut
+            and self.peanut
+            and self.grape
+            and self.feather
+            and self.pineapple
+            and self.homing
+            and self.scope
+            and self.shockwave
+            and self.bongos
+            and self.guitar
+            and self.trombone
+            and self.saxophone
+            and self.triangle
+        )
 
 
 LogicVariables = LogicVarHolder()

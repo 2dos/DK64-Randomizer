@@ -163,10 +163,7 @@ def apply_cosmetic_colors(spoiler: Spoiler):
         if spoiler.settings.krusha_slot in kong_names:
             if kong_names.index(spoiler.settings.krusha_slot) == kong["kong_index"]:
                 is_krusha = True
-                kong["palettes"] = [
-                    {"name": "krusha_skin", "image": 4971, "fill_type": "block"},
-                    {"name": "krusha_indicator", "image": 4966, "fill_type": "kong"},
-                ]
+                kong["palettes"] = [{"name": "krusha_skin", "image": 4971, "fill_type": "block"}, {"name": "krusha_indicator", "image": 4966, "fill_type": "kong"}]
                 process = True
         if process:
             base_obj = {"kong": kong["kong"], "zones": []}
@@ -205,16 +202,7 @@ def apply_cosmetic_colors(spoiler: Spoiler):
 
 
 color_bases = []
-balloon_single_frames = [
-    (4, 38),
-    (5, 38),
-    (5, 38),
-    (5, 38),
-    (5, 38),
-    (5, 38),
-    (4, 38),
-    (4, 38),
-]
+balloon_single_frames = [(4, 38), (5, 38), (5, 38), (5, 38), (5, 38), (5, 38), (4, 38), (4, 38)]
 
 
 def getFile(table_index: int, file_index: int, compressed: bool, width: int, height: int):
@@ -500,7 +488,7 @@ def applyKrushaKong(spoiler: Spoiler):
     """Apply Krusha Kong setting."""
     kong_names = ["dk", "diddy", "lanky", "tiny", "chunky"]
     if spoiler.settings.krusha_slot == "random":
-        slots = ["dk", "diddy", "tiny"]  # TODO: Add Lanky when we fix him
+        slots = ["dk", "diddy", "lanky", "tiny"]
         if not spoiler.settings.disco_chunky:
             slots.append("chunky")  # Only add Chunky if Disco not on (People with disco on probably don't want Krusha as Chunky)
         spoiler.settings.krusha_slot = random.choice(slots)
@@ -515,20 +503,8 @@ def applyKrushaKong(spoiler: Spoiler):
 
 def placeKrushaHead(slot):
     """Replace a kong's face with the Krusha face."""
-    kong_face_textures = [
-        [0x27C, 0x27B],
-        [0x279, 0x27A],
-        [0x277, 0x278],
-        [0x276, 0x275],
-        [0x273, 0x274],
-    ]
-    unc_face_textures = [
-        [579, 586],
-        [580, 587],
-        [581, 588],
-        [582, 589],
-        [577, 578],
-    ]
+    kong_face_textures = [[0x27C, 0x27B], [0x279, 0x27A], [0x277, 0x278], [0x276, 0x275], [0x273, 0x274]]
+    unc_face_textures = [[579, 586], [580, 587], [581, 588], [582, 589], [577, 578]]
     ROM().seek(0x1FF6000)
     left = []
     right = []

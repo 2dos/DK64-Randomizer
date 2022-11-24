@@ -1,5 +1,6 @@
 """Holds the version for DK64 Rando."""
 import js
+from hashlib import md5
 
 stable_version = "1.5"
 dev_version = "2.0"
@@ -26,3 +27,8 @@ try:
     js.document.getElementById("live-version").text = current_version + " | "
 except Exception:
     pass
+try:
+    resp = js.getFile("./static/py_libraries/dk64rando-1.0.0-py3-none-any.whl")
+    whl_hash = md5(resp).hexdigest()
+except Exception as e:
+    whl_hash = "no_file_using_filler_hash"

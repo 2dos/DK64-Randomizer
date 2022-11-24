@@ -2,7 +2,7 @@
 
 int getObjectCollectability(int id, int unk1, int model2_type) {
     int index = indexOfNextObj(id);
-    int* m2location = ObjectModel2Pointer;
+    int* m2location = (int*)ObjectModel2Pointer;
     ModelTwoData* _object = getObjectArrayAddr(m2location,0x90,index);
     if (model2_type == 0x11) {
         // Homing
@@ -212,7 +212,9 @@ void spawnBonusReward(int object, int x_f, int y_f, int z_f, int unk0, int cutsc
     if ((index > 0) && (index < 95)) {
         object = bonus_data[index].spawn_actor;
     }
-    spawnActorWithFlag(object, x_f, y_f, z_f, unk0, cutscene, flag, unk1);
+    if (object != 153) {
+        spawnActorWithFlag(object, x_f, y_f, z_f, unk0, cutscene, flag, unk1);
+    }
 }
 
 void spawnRewardAtActor(int object, int flag) {
@@ -220,13 +222,17 @@ void spawnRewardAtActor(int object, int flag) {
     if ((index > 0) && (index < 95)) {
         object = bonus_data[index].spawn_actor;
     }
-    spawnObjectAtActor(object, flag);
+    if (object != 153) {
+        spawnObjectAtActor(object, flag);
+    }
 }
 
 void spawnMinecartReward(int object, int flag) {
     for (int i = 0; i < 95; i++) {
         if (bonus_data[i].flag == flag) {
-            spawnObjectAtActor(bonus_data[i].spawn_actor, flag);
+            if (bonus_data[i].spawn_actor != 153) {
+                spawnObjectAtActor(bonus_data[i].spawn_actor, flag);
+            }
             return;
         }
     }
@@ -237,7 +243,9 @@ void spawnCrownReward(int object, int x_f, int y_f, int z_f, int unk0, int cutsc
     if (new_obj != 0) {
         object = new_obj;
     }
-    spawnActorWithFlag(object, x_f, y_f, z_f, unk0, cutscene, flag, unk1);
+    if (object != 153) {
+        spawnActorWithFlag(object, x_f, y_f, z_f, unk0, cutscene, flag, unk1);
+    }
 }
 
 void spawnBossReward(int object, int x_f, int y_f, int z_f, int unk0, int cutscene, int flag, int unk1) {
@@ -638,7 +646,7 @@ void banana_medal_acquisition(int flag) {
         10 - Shockwave,
         11 - Nothing,
     */
-    int item_type = getMedalItem(flag - 549);
+    int item_type = getMedalItem(flag - FLAG_MEDAL_JAPES_DK);
     if (!checkFlag(flag, 0)) {
         // Display and play effects if you don't have item
         if (item_type < 12) {
@@ -667,7 +675,7 @@ void banana_medal_acquisition(int flag) {
                 setFlag(flag, 1, 0);
             }
             if (item_type == 0) {
-                MovesBase[(int)Character].gb_count[getWorld(CurrentMap,1)] += 1;
+                MovesBase[getKong(0)].gb_count[getWorld(CurrentMap,1)] += 1;
             }
             if (item_type < 11) {
                 playSFX(0xF2);
@@ -728,6 +736,10 @@ void keyGrabHook(int song, int vol) {
     old_keys = val;
 }
 
+int getFlagIndex_Corrected(int start, int level) {
+    return start + (5 * level) + getKong(0);
+}
+
 static const short boss_maps[] = {0x8,0xC5,0x9A,0x6F,0x53,0xC4,0xC7};
 static const short acceptable_items[] = {0x74,0xDE,0xE0,0xE1,0xDD,0xDF,0x48,0x28F,0x13C,0x18D,0x90,0x5B,0x1F2,0x59,0x1F3,0x1F5,0x1F6};
 
@@ -744,6 +756,7 @@ int itemGrabHook(int collectable_type, int obj_type, int is_homing) {
                     }
                 }
             }
+            auto_turn_keys();
         } else {
             for (int i = 0; i < 7; i++) {
                 if (CurrentMap == boss_maps[i]) {
@@ -872,6 +885,9 @@ static const unsigned char dance_skip_ban_maps[] = {
 };
 
 int canDanceSkip(void) {
+    if (CurrentMap == 0x6F) {
+        return 0;
+    }
     if ((Player->yPos - Player->floor) >= 100.0f) {
         return 1;
     }
@@ -993,12 +1009,19 @@ void getItem(int object_type) {
             // Key
             keyGrabHook(0x12, 0x3F800000);
             if (!canDanceSkip()) {
-                int action = 0x41; // Key Get
-                if (CurrentMap == 0x11) {
+                unsigned char boss_list[] = {0x08, 0xC5, 0x9A, 0x6F, 0x53, 0xC4, 0xC7};
+                int action = 0;
+                for (int i = 0; i < sizeof(boss_list); i++) {
+                    if (CurrentMap == boss_list[i]) {
+                        action = 0x41; // Key Get
+                    }
+                }
+                if (action == 0) {
                     action = 0x29; // GB Get
                 }
                 setAction(action, 0, 0);
             }
+            auto_turn_keys();
             break;
         case 0x18D:
             // Crown
@@ -1021,7 +1044,6 @@ static unsigned char stored_kasplat[STORED_COUNT] = {};
 
 int setupHook(int map) {
     int index = getParentIndex(map);
-    int place_new = 1;
     // Wipe array of items not in parent chain
     for (int i = 0; i < STORED_COUNT; i++) {
         if (stored_maps[i] != -1) {
@@ -1032,6 +1054,7 @@ int setupHook(int map) {
         }
     }
     // Store Old Bitfield
+    int place_new = 1;
     for (int i = 0; i < STORED_COUNT; i++) {
         if (stored_maps[i] == PreviousMap) {
             place_new = 0;
@@ -1044,6 +1067,7 @@ int setupHook(int map) {
                 if (stored_maps[i] == -1) {
                     stored_kasplat[i] = KasplatSpawnBitfield;
                     stored_maps[i] = PreviousMap;
+                    place_new = 0;
                 }
             }
         }

@@ -1,6 +1,7 @@
 #include "../include/common.h"
 
 static const char exittoisles[] = "EXIT TO ISLES";
+static const char exittospawn[] = "EXIT TO SPAWN";
 
 typedef struct musicInfo {
 	/* 0x000 */ short data[0xB0];
@@ -133,10 +134,12 @@ void initHack(int source) {
 	if (LoadedHooks == 0) {
 		if ((source == 1) || (CurrentMap == 0x28)) {
 			DebugInfoOn = 1;
+			int starting_map_rando_on = 1;
 			if (Rando.starting_map == 0) {
 				// Default
 				Rando.starting_map = 0x22;
 				Rando.starting_exit = 0;
+				starting_map_rando_on = 0;
 			} else {
 				*(short*)(0x8071454A) = Rando.starting_map;
 				*(int*)(0x80714550) = 0x24050000 | Rando.starting_exit;
@@ -178,6 +181,11 @@ void initHack(int source) {
 			// PPUnch
 			*(int*)(0x806E48F4) = 0x31810002; // ANDI $at $t4 2
 			*(int*)(0x806E48F8) = 0x50200074; // BEQL $at $r0 0xF
+			if (Rando.krusha_slot == 4) {
+				Rando.disco_chunky = 0;
+			} else if (Rando.krusha_slot > 4) {
+				Rando.krusha_slot = -1;
+			}
 			DamageMultiplier = Rando.damage_multiplier;
 			WarpToIslesEnabled = Rando.warp_to_isles_enabled;
 			permaLossMode = Rando.perma_lose_kongs;
@@ -189,11 +197,7 @@ void initHack(int source) {
 			ShorterBosses = Rando.short_bosses;
 			WinCondition = Rando.win_condition;
 			ItemRandoOn = Rando.item_rando;
-			if (Rando.krusha_slot == 4) {
-				Rando.disco_chunky = 0;
-			} else if (Rando.krusha_slot > 4) {
-				Rando.krusha_slot = -1;
-			}
+			KrushaSlot = Rando.krusha_slot;
 			changeCharSpawnerFlag(0x14, 2, 93); // Tie llama spawn to lanky help me cutscene flag
 			changeCharSpawnerFlag(0x7, 1, kong_flags[(int)Rando.free_target_japes]);
 			changeCharSpawnerFlag(0x10, 0x13, kong_flags[(int)Rando.free_target_ttemple]);
@@ -237,6 +241,13 @@ void initHack(int source) {
 			if (Rando.resolve_bonus) {
 				*(int*)(0x80681158) = 0x0C000000 | (((int)&completeBonus & 0xFFFFFF) >> 2); // Modify Function Call
 				*(short*)(0x80681962) = 1; // Make bonus noclip	
+			}
+			if (Rando.tns_portal_rando_on) {
+				// Adjust warp code to make camera be behind player, loading portal
+				*(int*)(0x806C97D0) = 0xA06E0007; // SB $t6, 0x7 ($v1)
+			}
+			if (Rando.remove_rock_bunch) {
+				*(int*)(0x8069C2FC) = 0;
 			}
 			// Item Get
 			*(int*)(0x806F64C8) = 0x0C000000 | (((int)&getItem & 0xFFFFFF) >> 2); // Modify Function Call
@@ -311,7 +322,11 @@ void initHack(int source) {
 				//*(short*)(0x806A8766) = 4;
 				*(short*)(0x806A986A) = 4; // Yes/No Prompt
 				*(int*)(0x806A9990) = 0x2A210270; // SLTI $at, $s1, 0x2A8
-				PauseSlot3TextPointer = (char*)&exittoisles;
+				if (!starting_map_rando_on) {
+					PauseSlot3TextPointer = (char*)&exittoisles;
+				} else {
+					PauseSlot3TextPointer = (char*)&exittospawn;
+				}
 			}
 			if (Rando.quality_of_life.reduce_lag) {
 				*(int*)(0x80748010) = 0x8064F2F0; // Cancel Sandstorm
@@ -398,6 +413,9 @@ void initHack(int source) {
 				*(int*)(0x806396D0) = 0x95CD036E; // Rendering
 				*(int*)(0x80639690) = 0x9519036E; // Rendering
 			}
+			*(int*)(0x806F56E0) = 0x0C000000 | (((int)&getFlagIndex_Corrected & 0xFFFFFF) >> 2); // BP Acquisition - Correct for character
+			*(int*)(0x806F9374) = 0x0C000000 | (((int)&getFlagIndex_Corrected & 0xFFFFFF) >> 2); // Medal Acquisition - Correct for character
+
 			*(int*)(0x805FEBC0) = 0x0C000000 | (((int)&parseCutsceneData & 0xFFFFFF) >> 2); // modifyCutsceneHook
 			*(int*)(0x807313A4) = 0x0C000000 | (((int)&checkVictory_flaghook & 0xFFFFFF) >> 2); // perm flag set hook
 			if (Rando.helm_hurry_mode) {
@@ -444,6 +462,7 @@ void initHack(int source) {
 				KongTextNames[slot] = KongTextNames[5];
 				LedgeHangY[slot] = LedgeHangY[5];
 				LedgeHangY_0[slot] = LedgeHangY_0[5];
+				*(short*)(0x8074AB5A) = 0x0040; // Enables Krusha's spin attack to knock kasplats down
 				switch (slot) {
 					case 0:
 						// DK
@@ -459,6 +478,8 @@ void initHack(int source) {
 						*(int*)(0x8074C0A8) = 0x806C9F44; // Replace DK Code w/ Krusha Code
 						*(short*)(0x806F0AFE) = 0; // Remove gun from hands in Tag Barrel
 						*(int*)(0x806F0AF0) = 0x24050001; // Fix Hand State
+						*(int*)(0x806D5EC4) = 0; // Prevent Moving Ground Attack pop up
+						*(short*)(0x8064AF5E) = 5; // Reduce slam range for DK Dungeon GB Slam
 						break;
 					case 1:
 						// Diddy
@@ -481,6 +502,16 @@ void initHack(int source) {
 						*(int*)(0x806832B8) = 0; // Prevent tag blinking
 						*(int*)(0x806C1050) = 0; // Prevent Cutscene Kong blinking
 						*(unsigned char*)(0x8075D19F) = 0xA0; // Fix Gun Firing
+						*(int*)(0x806141B4) = 0x0C000000 | (((int)&DiddySwimFix & 0xFFFFFF) >> 2); // Fix Diddy's Swim Animation
+						*(short*)(0x80749764) = 10; // Fix Diddy Swimming (A)
+						*(short*)(0x80749758) = 10; // Fix Diddy Swimming (B)
+						*(short*)(0x8074974C) = 10; // Fix Diddy Swimming (Z/First Person)
+						*(int*)(0x806CAA2C) = 0x0C000000 | (((int)&UpdateCollisionDimensions_Krusha & 0xFFFFFF) >> 2); // Fix Collision
+						*(int*)(0x806D958C) = 0xC428CC7C; // Fix Cannon Arc
+						*(int*)(0x806D9520) = 0xC42ACC7C; // Fix Cannon Arc
+						*(int*)(0x806E903C) = 0x0C000000 | (((int)&MinecartJumpFix & 0xFFFFFF) >> 2); // Fix Diddy Minecart Jump
+						*(int*)(0x806D259C) = 0x0C000000 | (((int)&MinecartJumpFix_0 & 0xFFFFFF) >> 2); // Fix Diddy Minecart Jump
+						*(int*)(0x806C90A8) = 0x0C000000 | (((int)&updateKongSize & 0xFFFFFF) >> 2); // Fix Scaling Issues
 						break;
 					case 2:
 						// Lanky
@@ -496,6 +527,10 @@ void initHack(int source) {
 						*(int*)(0x806E48BC) = 0x0C000000 | (((int)&adaptKrushaZBAnimation_PunchOStand & 0xFFFFFF) >> 2); // Allow Krusha to use slide move if fast enough (OStand)
 						*(int*)(0x806E48B4) = 0; // Always run `adaptKrushaZBAnimation`
 						*(int*)(0x806F0AB0) = 0x24050001; // Fix Hand State
+						*(short*)(0x80749C74) = 10; // Fix Lanky Swimming (A)
+						*(short*)(0x80749C80) = 10; // Fix Lanky Swimming (B)
+						*(short*)(0x80749CA4) = 10; // Fix Lanky Swimming (Z/First Person)
+						*(int*)(0x806141B4) = 0x0C000000 | (((int)&DiddySwimFix & 0xFFFFFF) >> 2); // Fix Lanky's Swim Animation
 						break;
 					case 3:
 						// Tiny
@@ -509,7 +544,11 @@ void initHack(int source) {
 						*(short*)(0x806832C0) = 0x5000; // Prevent tag blinking
 						*(int*)(0x806C1058) = 0; // Prevent Cutscene Kong blinking
 						*(int*)(0x806F0AD0) = 0x24050001; // Fix Hand State
-						*(float*)(0x8075CC78) = 0.04f; // Reduce Tiny's Mini Monkey Size
+						*(float*)(0x8075CC78) = 0.03f; // Reduce Tiny's Mini Monkey Size
+						*(int*)(0x806CAA2C) = 0x0C000000 | (((int)&UpdateCollisionDimensions_Krusha & 0xFFFFFF) >> 2); // Fix Collision
+						*(int*)(0x806D958C) = 0xC428CC7C; // Fix Cannon Arc
+						*(int*)(0x806D9520) = 0xC42ACC7C; // Fix Cannon Arc
+						*(int*)(0x806C90A8) = 0x0C000000 | (((int)&updateKongSize & 0xFFFFFF) >> 2); // Fix Scaling Issues
 						break;
 					case 4:
 						// Chunky
@@ -773,6 +812,21 @@ void initHack(int source) {
 						cs_skip_db[(2 * cs_map) + cs_offset] &= comp;
 					}
 				}
+				// Checks Screen
+				int screen_count = 5;
+				*(short*)(0x806A8672) = screen_count; // Screen decrease cap
+				*(short*)(0x806A8646) = screen_count + 1; // Screen increase cap
+				*(int*)(0x806A94CC) = 0x2C610003; // SLTIU $at, $v1, 0x3 (Changes render check for <3 rather than == 3)
+				*(int*)(0x806A94D0) = 0x10200298; // BEQZ $at, 0x298 (Changes render check for <3 rather than == 3)
+				*(int*)(0x806A9F98) = 0x0C000000 | (((int)&pauseScreen3And4Header & 0xFFFFFF) >> 2); // Header
+				*(int*)(0x806AA03C) = 0x0C000000 | (((int)&pauseScreen3And4Counter & 0xFFFFFF) >> 2); // Counter
+				*(int*)(0x806A86BC) = 0x0C000000 | (((int)&changePauseScreen & 0xFFFFFF) >> 2); // Change screen hook
+				// *(int*)(0x806A86F8) = 0x2CA10003; // SLTIU $at, $a1, 0x3 (Changes control check for <3 rather than == 3)
+				// *(int*)(0x806A86FC) = 0x10200182; // BEQZ $at, 0x182 (Changes control check for <3 rather than == 3)
+				// *(int*)(0x806AA410) = 0x2C410003; // SLTIU $at, $v0, 0x3 (Changes sprite check for <3 rather than == 3)
+				// *(int*)(0x806AA414) = 0x102003AA; // BEQZ $at, 0x3AA (Changes sprite check for <3 rather than == 3)
+				*(int*)(0x806A8D20) = 0x0C000000 | (((int)&changeSelectedLevel & 0xFFFFFF) >> 2); // Change selected level on checks screen
+				*(int*)(0x806A84F8) = 0x0C000000 | (((int)&checkItemDB & 0xFFFFFF) >> 2); // Populate Item Databases
 			}
 			*(int*)(0x80681910) = 0x0C000000 | (((int)&spawnBonusReward & 0xFFFFFF) >> 2); // Spawn Bonus Reward
 			*(int*)(0x806C63BC) = 0x0C000000 | (((int)&spawnRewardAtActor & 0xFFFFFF) >> 2); // Spawn Squawks Reward
@@ -782,6 +836,23 @@ void initHack(int source) {
 				- Change bonus aesthetic based on reward
 			*/
 
+			// Pause Totals/Checks Revamp
+			*(int*)(0x806AB3C4) = 0x0C000000 | (((int)&updatePauseScreenWheel & 0xFFFFFF) >> 2); // Change Wheel to scroller
+			*(int*)(0x806AB3B4) = 0xAFB00018; // SW $s0, 0x18 ($sp). Change last param to index
+			*(int*)(0x806AB3A0) = 0xAFA90014; // SW $t1, 0x14 ($sp). Change 2nd-to-last param to local index
+			*(int*)(0x806AB444) = 0; // Prevent joystick sprite rendering
+			*(int*)(0x806AB528) = 0x0C000000 | (((int)&handleSpriteCode & 0xFFFFFF) >> 2); // Change sprite control function
+			*(int*)(0x806AB52C) = 0x8FA40060; // LW $a0, 0x60 ($sp). Change param
+			*(short*)(0x806A8DB2) = 0x0029; // Swap left/right direction
+			*(short*)(0x806A8DBA) = 0xFFD8; // Swap left/right direction
+			*(short*)(0x806A8DB4) = 0x5420; // BEQL -> BNEL
+			*(short*)(0x806A8DF0) = 0x1020; // BNE -> BEQ
+			*(int*)(0x806A9F74) = 0x0C000000 | (((int)&pauseScreen3And4ItemName & 0xFFFFFF) >> 2); // Item Name
+			// Disable Item Checks
+			*(int*)(0x806AB2E8) = 0;
+			*(int*)(0x806AB360) = 0;
+			*(short*)(0x806ABFCE) = FLAG_BP_JAPES_DK_HAS; // Change BP trigger to being collecting BP rather than turning it in
+			initPauseMenu(); // Changes to enable more items
 			// Spider Projectile
 			if (Rando.hard_enemies) {
 				*(int*)(0x806ADDC0) = 0x0C000000 | (((int)&handleSpiderTrapCode & 0xFFFFFF) >> 2);

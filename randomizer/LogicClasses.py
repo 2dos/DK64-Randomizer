@@ -173,14 +173,7 @@ class TransitionBack:
 class TransitionFront:
     """The entered side of a transition between regions."""
 
-    def __init__(
-        self,
-        dest,
-        logic,
-        exitShuffleId=None,
-        assumed=False,
-        time=Time.Both,
-    ):
+    def __init__(self, dest, logic, exitShuffleId=None, assumed=False, time=Time.Both):
         """Initialize with given parameters."""
         self.dest = dest  # Planning to remove this
         self.logic = logic  # Lambda function for accessibility
