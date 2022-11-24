@@ -41,7 +41,7 @@ extern void updateProgressive(void);
 extern void moveTransplant(void);
 extern void priceTransplant(void);
 extern void squawks_with_spotlight_actor_code(void);
-extern void shine_light_at_kong(unsigned short height_variance, short min_follow_distance, unsigned short param_3);
+extern void shine_light_at_kong(unsigned short height_variance, unsigned short min_follow_distance, unsigned short param_3);
 
 extern void changeCharSpawnerFlag(int map, int spawner_id, int new_flag);
 extern void changeHelmLZ(void);

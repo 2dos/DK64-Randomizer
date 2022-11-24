@@ -7,13 +7,13 @@ void squawks_with_spotlight_actor_code() {
     return;
 }
 
-void shine_light_at_kong(unsigned short height_variance, short min_follow_distance, unsigned short param_3) {
+void shine_light_at_kong(unsigned short height_variance, unsigned short min_follow_distance, unsigned short param_3) {
     spotlight_hold_paad* pointerLightBrightness = 0;
-    int half_speed = 0;
-    int param_2_variable = 0;
+    unsigned int half_speed = 0;
+    unsigned int param_2_variable = 0;
     float distance_x = 0;
     float distance_z = 0;
-    int distance = 0;
+    unsigned int distance = 0;
     float actor_height_variance = 0;
     float height_variance_multiplier = 0.03; //TODO: figure out good value
     
@@ -42,15 +42,15 @@ void shine_light_at_kong(unsigned short height_variance, short min_follow_distan
                         /* if actor_type == 0xf0 (240) means if actor_type == spotlight fish */
         if (CurrentActorPointer_0->actorType == 0xf0) {
             unkLightFunc_0(CurrentActorPointer_0, 0x132, 0, 0, 0); //80604cbc
-            param_2_variable = (int)min_follow_distance;
+            param_2_variable = (unsigned int)min_follow_distance;
         } else {
-            param_2_variable = (int)min_follow_distance;
+            param_2_variable = (unsigned int)min_follow_distance;
         }
     } else {
-        param_2_variable = (int)min_follow_distance;
+        param_2_variable = (unsigned int)min_follow_distance;
     }
-    distance = (distance & 0xffffffff) - param_2_variable;
-    half_speed = distance & 0xffffffff;
+    distance = (distance & 0xffff) - param_2_variable;
+    half_speed = distance & 0xffff;
     if (distance < 0) {
         half_speed = 0;
     }
