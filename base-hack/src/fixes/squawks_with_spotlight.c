@@ -9,11 +9,11 @@ void squawks_with_spotlight_actor_code() {
 
 void shine_light_at_kong(unsigned short height_variance, unsigned short min_follow_distance, unsigned short param_3) {
     spotlight_hold_paad* pointerLightBrightness = 0;
-    unsigned int half_speed = 0;
-    unsigned int param_2_variable = 0;
+    short half_speed = 0;
+    int param_2_variable = 0;
     float distance_x = 0;
     float distance_z = 0;
-    unsigned int distance = 0;
+    int distance = 0;
     float actor_height_variance = 0;
     float height_variance_multiplier = 0.03; //TODO: figure out good value
     
@@ -42,12 +42,12 @@ void shine_light_at_kong(unsigned short height_variance, unsigned short min_foll
                         /* if actor_type == 0xf0 (240) means if actor_type == spotlight fish */
         if (CurrentActorPointer_0->actorType == 0xf0) {
             unkLightFunc_0(CurrentActorPointer_0, 0x132, 0, 0, 0); //80604cbc
-            param_2_variable = (unsigned int)min_follow_distance;
+            param_2_variable = (int)min_follow_distance;
         } else {
-            param_2_variable = (unsigned int)min_follow_distance;
+            param_2_variable = (int)min_follow_distance;
         }
     } else {
-        param_2_variable = (unsigned int)min_follow_distance;
+        param_2_variable = (int)min_follow_distance;
     }
     distance = (distance & 0xffff) - param_2_variable;
     half_speed = distance & 0xffff;
@@ -55,13 +55,13 @@ void shine_light_at_kong(unsigned short height_variance, unsigned short min_foll
         half_speed = 0;
     }
     //TODO: remove this line
-    *(int*)(0x807FF70C) = half_speed * 2;
+    *(short*)(0x807FF70C) = half_speed * 2;
     setActorSpeed(CurrentActorPointer_0,(half_speed + half_speed));
                         /* 0 if spotlight fish, height_variance = 10 if squawks */
     actor_height_variance = height_variance * height_variance_multiplier;
     unkLightFunc_1(0x23, height_variance, (PlayerPointer_0->xPos), (PlayerPointer_0->yPos + actor_height_variance), (PlayerPointer_0->zPos), 0x1e, *(float*)(0x8075c398), param_3 | 0x2000); //8072a920
     float movement_cycle_height = determineXRatioMovement((ObjectModel2Timer * 0x280000) >> 0x10);
-    CurrentActorPointer_0->yPos = CurrentActorPointer_0->yPos + (actor_height_variance * movement_cycle_height);
+    CurrentActorPointer_0->yPos = CurrentActorPointer_0->yPos + (actor_height_variance * movement_cycle_height);  // goal is ~38 to 49 currently is ~7 to 17
     unkLightFunc_2(); //806c6530
     renderActor(CurrentActorPointer_0, 0);
 

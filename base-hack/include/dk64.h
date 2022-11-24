@@ -175,7 +175,7 @@ extern int guardShouldMove(void);
 extern void guardUnkFunction(int unk0);
 extern void generalActorHandle(int control_state, int x, int z, int unk0, float unk1);
 extern void handleGuardDefaultAnimation(void);
-extern void setActorSpeed(void* actor, int speed);
+extern void setActorSpeed(void* actor, short speed);
 extern void playActorAnimation(void* actor, int animation);
 extern void actorUnkFunction(void);
 extern int getRNGLower31(void);
