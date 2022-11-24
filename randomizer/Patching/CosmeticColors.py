@@ -269,7 +269,7 @@ def maskImage(im_f, base_index, min_y):
                 pix[x, y] = (base[0], base[1], base[2], base[3])
     return im_f
 
-def maskImageTwoColorStripes(im_f, color1, color2, min_y):
+def maskImageTwoColorReplColor(im_f, color1, color2, min_y):
     """Apply RGB mask to image."""
     w, h = im_f.size
     converter = ImageEnhance.Color(im_f)
@@ -288,7 +288,7 @@ def maskImageTwoColorStripes(im_f, color1, color2, min_y):
             base = list(pix[x, y])
             if base[3] > 0:
                 for channel in range(3):
-                    if y-min_y < (effective_h/3) or y-min_y > ((2*effective_h)/3):
+                    if base[0] + base[1] + base[2] > 500:
                         base[channel] = int(mask1[channel] * (base[channel] / 255))
                     else: base[channel] = int(mask2[channel] * (base[channel] / 255))
                 pix[x, y] = (base[0], base[1], base[2], base[3])
@@ -472,25 +472,25 @@ def overwrite_object_colors(spoiler: Spoiler):
                 for file in range(152, 160):
                     # Single
                     single_im = getFile(7, file, False, 44, 44)
-                    single_im = maskImageTwoColorStripes(single_im, color_bases[0], color_bases[((kong_index % 2) + 1)], 0)
+                    single_im = maskImageTwoColorReplColor(single_im, color_bases[0], color_bases[((kong_index % 2) + 1)], 0)
                     single_start = [168, 152, 232, 208, 240]
                     writeColorImageToROM(single_im, 7, single_start[kong_index] + (file - 152), 44, 44)
                 for file in range(216, 224):
                     # Coin
                     coin_im = getFile(7, file, False, 48, 42)
-                    coin_im = maskImageTwoColorStripes(coin_im, color_bases[0], color_bases[((kong_index % 2) + 1)], 0)
+                    coin_im = maskImageTwoColorReplColor(coin_im, color_bases[0], color_bases[((kong_index % 2) + 1)], 0)
                     coin_start = [224, 256, 248, 216, 264]
                     writeColorImageToROM(coin_im, 7, coin_start[kong_index] + (file - 216), 48, 42)
                 for file in range(274, 286):
                     # Bunch
                     bunch_im = getFile(7, file, False, 44, 44)
-                    bunch_im = maskImageTwoColorStripes(bunch_im, color_bases[0], color_bases[((kong_index % 2) + 1)], 0)
+                    bunch_im = maskImageTwoColorReplColor(bunch_im, color_bases[0], color_bases[((kong_index % 2) + 1)], 0)
                     bunch_start = [274, 854, 818, 842, 830]
                     writeColorImageToROM(bunch_im, 7, bunch_start[kong_index] + (file - 274), 44, 44)
                 for file in range(5819, 5827):
                     # Balloon
                     balloon_im = getFile(25, file, True, 32, 64)
-                    balloon_im = maskImageTwoColorStripes(balloon_im, color_bases[0], color_bases[((kong_index % 2) + 1)], 33)
+                    balloon_im = maskImageTwoColorReplColor(balloon_im, color_bases[0], color_bases[((kong_index % 2) + 1)], 33)
                     balloon_im.paste(dk_single, balloon_single_frames[file - 5819], dk_single)
                     balloon_start = [5835, 5827, 5843, 5851, 5819]
                     writeColorImageToROM(balloon_im, 25, balloon_start[kong_index] + (file - 5819), 32, 64)
