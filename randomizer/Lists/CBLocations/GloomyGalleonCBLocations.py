@@ -679,7 +679,7 @@ ColoredBananaGroupList = [
         name="In corner behind cactus above the water surface",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.Shipyard,
-        logic = lambda l: Events.WaterSwitch in l.Events,
+        logic=lambda l: Events.WaterSwitch in l.Events,
         locations=[[5, 1.0, 4389, 1600, 778], [5, 1.0, 4605, 1600, 1038]],
     ),
     ColoredBananaGroup(

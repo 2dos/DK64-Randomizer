@@ -931,7 +931,12 @@ ColoredBananaGroupList = [
         locations=[[5, 1.0, 2550, 885, 2186], [5, 1.0, 2636, 762, 1200]],
     ),
     ColoredBananaGroup(
-        group=80, map_id=Maps.ForestWinchRoom, name="On boxes in winch room", konglist=[Kongs.diddy], region=Regions.WinchRoom, locations=[[5, 1.0, 236, 55, 135], [5, 1.0, 342, 26, 394], [5, 1.0, 388, 26, 173]]
+        group=80,
+        map_id=Maps.ForestWinchRoom,
+        name="On boxes in winch room",
+        konglist=[Kongs.diddy],
+        region=Regions.WinchRoom,
+        locations=[[5, 1.0, 236, 55, 135], [5, 1.0, 342, 26, 394], [5, 1.0, 388, 26, 173]],
     ),
     ColoredBananaGroup(
         group=81,
