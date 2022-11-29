@@ -925,7 +925,7 @@ ColoredBananaGroupList = [
     ColoredBananaGroup(
         group=74,
         map_id=Maps.CastleBallroom,
-        name="Entrance path",
+        name="Ball Room - Entrance path",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.Ballroom,
         locations=[
@@ -1057,7 +1057,7 @@ ColoredBananaGroupList = [
     ColoredBananaGroup(
         group=86,
         map_id=Maps.CastleShed,
-        name="Around room",
+        name="Shed - Around room",
         konglist=[Kongs.chunky],
         region=Regions.Shed,
         locations=[
@@ -1078,7 +1078,7 @@ ColoredBananaGroupList = [
             [1, 1.0, 402, 0, 495],
         ],
     ),
-    ColoredBananaGroup(group=87, map_id=Maps.CastleShed, name="On GG pad", konglist=[Kongs.chunky], region=Regions.Shed, logic=lambda l: l.punch, locations=[[5, 1.0, 304, 12, 354]]),
+    ColoredBananaGroup(group=87, map_id=Maps.CastleShed, name="On Gorilla Gone pad", konglist=[Kongs.chunky], region=Regions.Shed, logic=lambda l: l.punch, locations=[[5, 1.0, 304, 12, 354]]),
     ColoredBananaGroup(
         group=88,
         map_id=Maps.CastleLowerCave,
@@ -1144,7 +1144,7 @@ ColoredBananaGroupList = [
     ColoredBananaGroup(
         group=93,
         map_id=Maps.CastleCrypt,
-        name="W1 (1 custom, 1 Diddy)",
+        name="Crypt - W1 (1 custom, 1 Diddy)",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.chunky],
         region=Regions.Crypt,
         locations=[[5, 1.0, 734, 254, 1564], [5, 1.0, 1738.5306396484375, 15.0, 378.6136169433594]],
@@ -1152,18 +1152,18 @@ ColoredBananaGroupList = [
     ColoredBananaGroup(
         group=94,
         map_id=Maps.CastleCrypt,
-        name="W2 (1 custom, 1 Donkey)",
+        name="Crypt - W2 (1 custom, 1 Donkey)",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.chunky],
         region=Regions.Crypt,
         locations=[[5, 1.0, 732, 254, 1661], [5, 1.0, 1511.1583251953125, 105.0, 2047.6162109375]],
     ),
     ColoredBananaGroup(
-        group=95, map_id=Maps.CastleCrypt, name="W3", konglist=[Kongs.donkey, Kongs.diddy, Kongs.chunky], region=Regions.Crypt, locations=[[5, 1.0, 731, 254, 1769], [5, 1.0, 1076, 174, 2479]]
+        group=95, map_id=Maps.CastleCrypt, name="Crypt - W3", konglist=[Kongs.donkey, Kongs.diddy, Kongs.chunky], region=Regions.Crypt, locations=[[5, 1.0, 731, 254, 1769], [5, 1.0, 1076, 174, 2479]]
     ),
     ColoredBananaGroup(
         group=96,
         map_id=Maps.CastleCrypt,
-        name="Path from warps to T intersection",
+        name="Crypt - Path from warps to T intersection",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.chunky],
         region=Regions.Crypt,
         locations=[[1, 1.0, 730, 240, 1492], [1, 1.0, 730, 240, 1357], [1, 1.0, 815, 236, 1357], [1, 1.0, 900, 201, 1357], [1, 1.0, 985, 166, 1357]],
@@ -1171,7 +1171,7 @@ ColoredBananaGroupList = [
     ColoredBananaGroup(
         group=97,
         map_id=Maps.CastleCrypt,
-        name="Path to W2",
+        name="Crypt - Path to W2",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.chunky],
         region=Regions.Crypt,
         locations=[
@@ -1190,7 +1190,7 @@ ColoredBananaGroupList = [
     ColoredBananaGroup(
         group=98,
         map_id=Maps.CastleCrypt,
-        name="Path to W1",
+        name="Crypt - Path to W1",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.chunky],
         region=Regions.Crypt,
         locations=[
@@ -1214,7 +1214,7 @@ ColoredBananaGroupList = [
     ColoredBananaGroup(
         group=99,
         map_id=Maps.CastleCrypt,
-        name="Path to W3",
+        name="Crypt - Path to W3",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.chunky],
         region=Regions.Crypt,
         locations=[
@@ -1338,7 +1338,7 @@ ColoredBananaGroupList = [
     ColoredBananaGroup(
         group=113,
         map_id=Maps.CastleMuseum,
-        name="Path from entrance to main room",
+        name="Museum - Path from entrance to main room",
         konglist=[Kongs.chunky],
         region=Regions.Museum,
         locations=[
@@ -1383,7 +1383,7 @@ ColoredBananaGroupList = [
         name="In wind column",
         konglist=[Kongs.lanky],
         region=Regions.Tower,
-        logic=lambda l: (l.scope or l.homing) and l.balloon,
+        logic=lambda l: (l.scope or l.homing) and l.balloon and l.grape,
         locations=[[5, 1.3, 400, 460, 400], [5, 1.3, 400, 580, 400]],
     ),
     ColoredBananaGroup(group=117, map_id=Maps.CastleTower, name="On baboon balloon pad", konglist=[Kongs.lanky], region=Regions.Tower, locations=[[5, 1.0, 511, 239, 342]]),
@@ -1409,7 +1409,7 @@ ColoredBananaGroupList = [
     ColoredBananaGroup(
         group=119,
         map_id=Maps.CastleTree,
-        name="Middle of first room",
+        name="Big Tree - Middle of first room",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.CastleTree,
         locations=[[5, 1.0, 979, 405, 884]],
