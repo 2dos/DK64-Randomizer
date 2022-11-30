@@ -36,6 +36,7 @@ class NoCacheHTTPRequestHandler(http.server.SimpleHTTPRequestHandler):
 
 
 def generate_data(setting_data):
+    """Generate a seed from a set of json data."""
     global seed_response
     settings = Settings(setting_data)
     spoiler = Spoiler(settings)
@@ -46,6 +47,7 @@ def generate_data(setting_data):
 
 @app.route("/generate", methods=["POST", "GET"])
 def generator():
+    """Web events for generating seeds peers the actual web app."""
     if request.method == "POST":
         global seed_response
         seed_response = None
@@ -62,6 +64,7 @@ def generator():
 
 
 def start_webserver():
+    """Start the standard web server."""
     http.server.test(HandlerClass=NoCacheHTTPRequestHandler, port=PORT)
 
 
