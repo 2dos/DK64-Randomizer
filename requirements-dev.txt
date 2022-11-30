@@ -14,3 +14,5 @@ wheel
 setuptools
 djlint
 cpplint
+flask
+flask-cors
