@@ -340,6 +340,7 @@ ColoredBananaGroupList = [
         name="Cannon game room underwater",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.GalleonBeyondPineappleGate,
+        logic=lambda l: l.swim,
         locations=[[5, 1.2, 1245, 1530, 3289], [5, 1.2, 1360, 1495, 2561]],
     ),
     ColoredBananaGroup(
@@ -678,6 +679,7 @@ ColoredBananaGroupList = [
         name="In corner behind cactus above the water surface",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.Shipyard,
+        logic=lambda l: Events.WaterSwitch in l.Events,
         locations=[[5, 1.0, 4389, 1600, 778], [5, 1.0, 4605, 1600, 1038]],
     ),
     ColoredBananaGroup(
@@ -724,7 +726,7 @@ ColoredBananaGroupList = [
     ColoredBananaGroup(
         group=61,
         map_id=Maps.GloomyGalleon,
-        name="Bottom of water near mermaid on seashells",
+        name="Bottom of water near mermaid on seashells (Right)",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.LighthouseUnderwater,
         locations=[[5, 1.2, 790, 148, 4175], [5, 1.2, 893, 148, 4161]],
@@ -732,7 +734,7 @@ ColoredBananaGroupList = [
     ColoredBananaGroup(
         group=62,
         map_id=Maps.GloomyGalleon,
-        name="Bottom of water near mermaid on seashells",
+        name="Bottom of water near mermaid on seashells (Center)",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.LighthouseUnderwater,
         locations=[[5, 1.2, 1042, 148, 4196], [5, 1.2, 1136, 148, 4303], [5, 1.2, 1184, 148, 4444]],
@@ -740,7 +742,7 @@ ColoredBananaGroupList = [
     ColoredBananaGroup(
         group=63,
         map_id=Maps.GloomyGalleon,
-        name="Bottom of water near mermaid on seashells",
+        name="Bottom of water near mermaid on seashells (Left)",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.LighthouseUnderwater,
         locations=[[5, 1.2, 1154, 148, 4574], [5, 1.2, 1058, 148, 4631]],
@@ -756,7 +758,7 @@ ColoredBananaGroupList = [
     ColoredBananaGroup(
         group=65,
         map_id=Maps.GloomyGalleon,
-        name="Mermaid area top of pilars on each side",
+        name="Mermaid area top of pillars on each side",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.LighthouseUnderwater,
         locations=[[5, 1.2, 889, 420, 4618], [5, 1.2, 714, 420, 4361]],
