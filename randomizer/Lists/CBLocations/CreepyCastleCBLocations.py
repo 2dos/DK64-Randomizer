@@ -925,7 +925,7 @@ ColoredBananaGroupList = [
     ColoredBananaGroup(
         group=74,
         map_id=Maps.CastleBallroom,
-        name="Ball Room - Entrance path",
+        name="Ballroom - Entrance path",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.Ballroom,
         locations=[

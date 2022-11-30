@@ -630,7 +630,7 @@ def randomize_enemies(spoiler: Spoiler):
                         # Prevent One-Time-Only Enemies in Tiny Temple from being required
                         check = False
                     if cont_map_id == Maps.CastleBallroom and spawner["index"] < 6:
-                        # Prevent One-Time-Only Enemies in Castle Ball Room from being required
+                        # Prevent One-Time-Only Enemies in Castle BallRoom from being required
                         check = False
                     if cont_map_id == Maps.CastleLibrary and spawner["index"] < 5:
                         # Prevent One-Time-Only Enemies in Castle Library from being required
