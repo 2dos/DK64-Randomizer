@@ -257,7 +257,7 @@ def maskImage(im_f, base_index, min_y):
                 pix[x, y] = (base[0], base[1], base[2], base[3])
     return im_f
 
-def maskImageTwoColorReplColor(im_f, color1, color2, min_y):
+def maskImageTwoColorDarkenColor(im_f, color, min_y):
     """Apply RGB mask to image in two colors."""
     w, h = im_f.size
     converter = ImageEnhance.Color(im_f)
@@ -267,22 +267,18 @@ def maskImageTwoColorReplColor(im_f, color1, color2, min_y):
     im_dupe = brightener.enhance(2)
     im_f.paste(im_dupe, (0, min_y), im_dupe)
     pix = im_f.load()
-    mask1 = getRGBFromHash(color1)
-    mask2 = getRGBFromHash(color2)
+    mask = getRGBFromHash(color)
     w, h = im_f.size
-    effective_h = h - min_y
     for x in range(w):
         for y in range(min_y, h):
             base = list(pix[x, y])
             if base[3] > 0:
                 for channel in range(3):
-                    if base[0] + base[1] + base[2] > 300:
-                        base[channel] = int(mask1[channel] * (base[channel] / 255))
-                    else: base[channel] = int(mask2[channel] * (base[channel] / 255))
+                    base[channel] = int(mask[channel] * (base[channel] / 255))
                 pix[x, y] = (base[0], base[1], base[2], base[3])
     return im_f
 
-def maskImageBlackWhite(im_f, base_index, min_y):
+def maskImageMonochrome(im_f, base_index, min_y):
     """Apply RGB mask to image in Black and White."""
     w, h = im_f.size
     converter = ImageEnhance.Color(im_f)
@@ -292,9 +288,12 @@ def maskImageBlackWhite(im_f, base_index, min_y):
     im_dupe = brightener.enhance(2)
     im_f.paste(im_dupe, (0, min_y), im_dupe)
     pix = im_f.load()
-    mask = getRGBFromHash(color_bases[base_index])
+    mask = getRGBFromHash("#FFFFFF")
     mask2 = mask.copy()
     previous_pixel_opaque = False
+    invert = False
+    if color_bases[base_index] == "#000000":
+        invert = True
     for channel in range(3):
         mask2[channel] = int(255 - mask2[channel])
     w, h = im_f.size
@@ -306,12 +305,12 @@ def maskImageBlackWhite(im_f, base_index, min_y):
                     #create an outline that contrasts the main color (black if white, white if black)
                     for channel in range(3):
                         base[channel] = int(mask2[channel])
-                elif int(base[0] + base[1] + base[2]) == 0:
-                    for channel in range(3):
-                        base[channel] = int(255)
                 else:
                     for channel in range(3):
                         base[channel] = int(mask[channel] * (base[channel] / 255))
+                if invert:
+                    for channel in range(3):
+                        base[channel] = int(255 - base[channel])
                 pix[x, y] = (base[0], base[1], base[2], base[3])
                 previous_pixel_opaque = True
             else: 
@@ -371,7 +370,6 @@ def writeColorToROM(color, table_index, file_index):
     ROM().seek(file_start)
     ROM().writeBytes(data)
 
-# Unused, get rid of this one before you pull!
 def writeWhiteKasplatColorToROM(color1, color2, table_index, file_index):
     """Write color to ROM."""
     file_start = js.pointer_addresses[table_index]["entries"][file_index]["pointing_to"]
@@ -443,47 +441,15 @@ def overwrite_object_colors(spoiler: Spoiler):
     mode = spoiler.settings.colorblind_mode
     if mode != "off":
         if mode == "prot-deut": #prot
-            color_bases = ["#FDE400", "#0072FF", "#A4AEDD", "#FFFFFF", "#000000"]
+            color_bases = ["#FDE400", "#0072FF", "#766D5A", "#FFFFFF", "#000000"]
         elif mode == "deut":
-            color_bases = ["#E3A900", "#318DFF", "#FFDBB3", "#FFFFFF", "#000000"]
+            color_bases = ["#E3A900", "#318DFF", "#7F6D59", "#FFFFFF", "#000000"]
         elif mode == "trit":
             color_bases = ["#FFA4A4", "#C72020", "#13C4D8", "#FFFFFF", "#000000"]
         file = 175
         dk_single = getFile(7, file, False, 44, 44)
         dk_single = dk_single.resize((21, 21))
         for kong_index in range(5):
-            if kong_index == 2 and mode is not "trit":
-                # file = 4120
-                # # Kasplat Hair
-                # hair_im = getFile(25, file, True, 32, 44)
-                # hair_im = maskImage(hair_im, kong_index, 0)
-                writeColorStripePatternToROM(color_bases[0], color_bases[kong_index], 25, [4124, 4122, 4123, 4120, 4121][kong_index])
-                # writeColorImageToROM(hair_im, 25, [4124, 4122, 4123, 4120, 4121][kong_index], 32, 44)
-                for file in range(152, 160):
-                    # Single
-                    single_im = getFile(7, file, False, 44, 44)
-                    single_im = maskImageTwoColorReplColor(single_im, color_bases[0], color_bases[kong_index], 0)
-                    single_start = [168, 152, 232, 208, 240]
-                    writeColorImageToROM(single_im, 7, single_start[kong_index] + (file - 152), 44, 44)
-                for file in range(216, 224):
-                    # Coin
-                    coin_im = getFile(7, file, False, 48, 42)
-                    coin_im = maskImageTwoColorReplColor(coin_im, color_bases[0], color_bases[kong_index], 0)
-                    coin_start = [224, 256, 248, 216, 264]
-                    writeColorImageToROM(coin_im, 7, coin_start[kong_index] + (file - 216), 48, 42)
-                for file in range(274, 286):
-                    # Bunch
-                    bunch_im = getFile(7, file, False, 44, 44)
-                    bunch_im = maskImageTwoColorReplColor(bunch_im, color_bases[0], color_bases[kong_index], 0)
-                    bunch_start = [274, 854, 818, 842, 830]
-                    writeColorImageToROM(bunch_im, 7, bunch_start[kong_index] + (file - 274), 44, 44)
-                for file in range(5819, 5827):
-                    # Balloon
-                    balloon_im = getFile(25, file, True, 32, 64)
-                    balloon_im = maskImageTwoColorReplColor(balloon_im, color_bases[0], color_bases[kong_index], 33)
-                    balloon_im.paste(dk_single, balloon_single_frames[file - 5819], dk_single)
-                    balloon_start = [5835, 5827, 5843, 5851, 5819]
-                    writeColorImageToROM(balloon_im, 25, balloon_start[kong_index] + (file - 5819), 32, 64)
             if kong_index == 3 or kong_index == 4:
                 # file = 4120
                 # # Kasplat Hair
@@ -497,25 +463,25 @@ def overwrite_object_colors(spoiler: Spoiler):
                 for file in range(152, 160):
                     # Single
                     single_im = getFile(7, file, False, 44, 44)
-                    single_im = maskImageBlackWhite(single_im, kong_index, 0)
+                    single_im = maskImageMonochrome(single_im, kong_index, 0)
                     single_start = [168, 152, 232, 208, 240]
                     writeColorImageToROM(single_im, 7, single_start[kong_index] + (file - 152), 44, 44)
                 for file in range(216, 224):
                     # Coin
                     coin_im = getFile(7, file, False, 48, 42)
-                    coin_im = maskImageBlackWhite(coin_im, kong_index, 0)
+                    coin_im = maskImageMonochrome(coin_im, kong_index, 0)
                     coin_start = [224, 256, 248, 216, 264]
                     writeColorImageToROM(coin_im, 7, coin_start[kong_index] + (file - 216), 48, 42)
                 for file in range(274, 286):
                     # Bunch
                     bunch_im = getFile(7, file, False, 44, 44)
-                    bunch_im = maskImageBlackWhite(bunch_im, kong_index, 0)
+                    bunch_im = maskImageMonochrome(bunch_im, kong_index, 0)
                     bunch_start = [274, 854, 818, 842, 830]
                     writeColorImageToROM(bunch_im, 7, bunch_start[kong_index] + (file - 274), 44, 44)
                 for file in range(5819, 5827):
                     # Balloon
                     balloon_im = getFile(25, file, True, 32, 64)
-                    balloon_im = maskImageBlackWhite(balloon_im, kong_index, 33)
+                    balloon_im = maskImageMonochrome(balloon_im, kong_index, 33)
                     balloon_im.paste(dk_single, balloon_single_frames[file - 5819], dk_single)
                     balloon_start = [5835, 5827, 5843, 5851, 5819]
                     writeColorImageToROM(balloon_im, 25, balloon_start[kong_index] + (file - 5819), 32, 64)
