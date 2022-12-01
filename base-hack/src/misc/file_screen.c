@@ -698,6 +698,9 @@ void file_progress_screen_code(actorData* actor, int buttons) {
 					for (int i = 0; i < 9; i++) {
 						StoredSettings.file_extra.level_igt[i] = 0;
 					}
+					if (checkFlag(FLAG_ARCADE_ROUND1, 0)) {
+						setPermFlag(FLAG_ARCADE_LEVER);
+					}
 					SaveToGlobal();
 				} else {
 					// Dirty File

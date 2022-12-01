@@ -501,6 +501,8 @@ extern unsigned char ItemsInWheel;
 extern short RotationPerItem;
 extern short FileVariables[8];
 
+extern char ArcadeBackgrounds[4];
+
 //hack data
 extern int TestVariable;
 extern char LoadedHooks;

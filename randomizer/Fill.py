@@ -2099,7 +2099,7 @@ def ShuffleMisc(spoiler):
     spoiler.human_kasplats = {}
     spoiler.UpdateKasplats(LogicVariables.kasplat_map)
     # Handle bonus barrels
-    if spoiler.settings.bonus_barrels in ("random", "selected"):
+    if spoiler.settings.bonus_barrels in ("random", "selected") or spoiler.settings.helm_barrels == "random":
         BarrelShuffle(spoiler.settings)
         spoiler.UpdateBarrels()
     # CB Shuffle

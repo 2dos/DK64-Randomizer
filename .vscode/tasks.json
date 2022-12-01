@@ -60,5 +60,11 @@
         "isDefault": true
       }
     },
+    {
+      "label": "Run Server",
+      "type": "shell",
+      "command": "${command:python.interpreterPath} ./NoCacheHTTPServer.py",
+      "problemMatcher": [],
+    },
   ]
 }

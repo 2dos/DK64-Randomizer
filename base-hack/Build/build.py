@@ -128,6 +128,16 @@ for num in number_game_changes:
             "do_not_compress": True,
         }
     )
+for x in range(5):
+    file_dict.append(
+        {
+            "name": f"Blueprint Model ({x})",
+            "pointer_table_index": 4,
+            "file_index": 0xDD + x,
+            "source_file": f"blueprint{x}.bin",
+            "do_not_delete_source": True,
+        }
+    )
 
 for ci, coin in enumerate(["nin_coin", "rw_coin"]):
     for item in range(2):
@@ -910,6 +920,9 @@ with open(newROMName, "r+b") as fh:
     for coinreq in vanilla_coin_reqs:
         fh.seek(0x1FED020 + coinreq["offset"])
         fh.write(coinreq["coins"].to_bytes(1, "big"))
+    fh.seek(0x1FED020 + 0x48)
+    for lvl in (1, 4, 3, 2):  # Arcade Order
+        fh.write(lvl.to_bytes(1, "big"))
     for x in range(5):
         # Write default Helm Order
         fh.seek(0x1FED020 + x)

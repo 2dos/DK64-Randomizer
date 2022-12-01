@@ -109,7 +109,7 @@ int isPreventCutscenePlaying(void) {
 }
 
 void callParentMapFilter(void) {
-	if (Rando.randomize_more_loading_zones) {
+	if (Rando.call_parent_filter) {
 		if (ObjectModel2Timer == 2) {
 			int curr = CurrentMap;
 			int level = levelIndexMapping[curr];

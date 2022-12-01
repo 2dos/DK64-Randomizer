@@ -212,3 +212,5 @@
 .definelabel ItemsInWheel, 0x807FC83C
 .definelabel RotationPerItem, 0x807FC83A
 .definelabel FileVariables, 0x807FC828
+
+.definelabel ArcadeBackgrounds, 0x8004A788

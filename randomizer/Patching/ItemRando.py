@@ -289,10 +289,3 @@ def place_randomized_items(spoiler: Spoiler):
                             new_scale = old_scale * item_slot["upscale"]
                             ROM().seek(start + 0xC)
                             ROM().writeMultipleBytes(int(float_to_hex(new_scale), 16), 4)
-                            # Y Offset Fix
-                            if item_slot["obj"] == Types.Blueprint:
-                                ROM().seek(start + 0x4)
-                                old_y = intf_to_float(int.from_bytes(ROM().readBytes(4), "big"))
-                                new_y = old_y + (item_slot["upscale"] * 1.25)
-                                ROM().seek(start + 0x4)
-                                ROM().writeMultipleBytes(int(float_to_hex(new_y), 16), 4)

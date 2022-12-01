@@ -63,9 +63,11 @@ def randomize_entrances(spoiler: Spoiler):
                                 ROM().seek(cont_map_lzs_address + start + 0x14)
                                 exit_bytes = intToArr(zone["new_exit"], 2)
                                 ROM().writeBytes(bytearray(exit_bytes))
-
-        # /* 0x05D */ char randomize_more_loading_zones; // 0 = Not randomizing loading zones inside levels. 1 = On
         varspaceOffset = spoiler.settings.rom_data
+        # Force call parent filter
+        ROM().seek(varspaceOffset + 0x47)
+        ROM().write(1)
+        # /* 0x05D */ char randomize_more_loading_zones; // 0 = Not randomizing loading zones inside levels. 1 = On
         moreLoadingZonesOffset = 0x05D
         ROM().seek(varspaceOffset + moreLoadingZonesOffset)
         ROM().write(1)

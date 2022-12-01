@@ -390,7 +390,7 @@ class Spoiler:
                 phase_names.append(f"Phase {phase+1}")
             humanspoiler["Bosses"]["King Kut Out Properties"]["Shuffled Kutout Phases"] = ", ".join(phase_names)
 
-        if self.settings.bonus_barrels in ("random", "selected"):
+        if self.settings.bonus_barrels in ("random", "selected") or self.settings.helm_barrels == "random":
             shuffled_barrels = OrderedDict()
             for location, minigame in self.shuffled_barrel_data.items():
                 if location in HelmMinigameLocations and self.settings.helm_barrels == "skip":
