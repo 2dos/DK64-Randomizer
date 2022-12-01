@@ -173,6 +173,14 @@ def apply_cosmetic_colors(spoiler: Spoiler):
                     arr = ["#000000", "#000000"]
                 elif palette["fill_type"] == "kong":
                     kong_colors = ["#ffd700", "#ff0000", "#1699ff", "#B045ff", "#41ff25"]
+                    mode = spoiler.settings.colorblind_mode
+                    if mode != "off":
+                        if mode == "prot":
+                            kong_colors = ["#FDE400", "#0072FF", "#766D5A", "#FFFFFF", "#000000"]
+                        elif mode == "deut":
+                            kong_colors = ["#E3A900", "#318DFF", "#7F6D59", "#FFFFFF", "#000000"]
+                        elif mode == "trit":
+                            kong_colors = ["#FFA4A4", "#C72020", "#13C4D8", "#FFFFFF", "#000000"]
                     arr = [kong_colors[kong["kong_index"]]]
                 base_obj["zones"].append({"zone": palette["name"], "image": palette["image"], "fill_type": palette["fill_type"], "colors": arr})
             if colors_dict[kong["base_setting"]] != "vanilla":
@@ -247,27 +255,6 @@ def maskImage(im_f, base_index, min_y):
     im_f.paste(im_dupe, (0, min_y), im_dupe)
     pix = im_f.load()
     mask = getRGBFromHash(color_bases[base_index])
-    w, h = im_f.size
-    for x in range(w):
-        for y in range(min_y, h):
-            base = list(pix[x, y])
-            if base[3] > 0:
-                for channel in range(3):
-                    base[channel] = int(mask[channel] * (base[channel] / 255))
-                pix[x, y] = (base[0], base[1], base[2], base[3])
-    return im_f
-
-def maskImageTwoColorDarkenColor(im_f, color, min_y):
-    """Apply RGB mask to image in two colors."""
-    w, h = im_f.size
-    converter = ImageEnhance.Color(im_f)
-    im_f = converter.enhance(0)
-    im_dupe = im_f.crop((0, min_y, w, h))
-    brightener = ImageEnhance.Brightness(im_dupe)
-    im_dupe = brightener.enhance(2)
-    im_f.paste(im_dupe, (0, min_y), im_dupe)
-    pix = im_f.load()
-    mask = getRGBFromHash(color)
     w, h = im_f.size
     for x in range(w):
         for y in range(min_y, h):
@@ -440,7 +427,7 @@ def overwrite_object_colors(spoiler: Spoiler):
     global color_bases
     mode = spoiler.settings.colorblind_mode
     if mode != "off":
-        if mode == "prot-deut": #prot
+        if mode == "prot":
             color_bases = ["#FDE400", "#0072FF", "#766D5A", "#FFFFFF", "#000000"]
         elif mode == "deut":
             color_bases = ["#E3A900", "#318DFF", "#7F6D59", "#FFFFFF", "#000000"]
@@ -451,15 +438,10 @@ def overwrite_object_colors(spoiler: Spoiler):
         dk_single = dk_single.resize((21, 21))
         for kong_index in range(5):
             if kong_index == 3 or kong_index == 4:
-                # file = 4120
-                # # Kasplat Hair
-                # hair_im = getFile(25, file, True, 32, 44)
-                # hair_im = maskImage(hair_im, kong_index, 0)
                 if color_bases[kong_index] == "#FFFFFF":
                     writeWhiteKasplatColorToROM(color_bases[kong_index], "#000000", 25, [4124, 4122, 4123, 4120, 4121][kong_index])
                 else:
                     writeColorToROM(color_bases[kong_index], 25, [4124, 4122, 4123, 4120, 4121][kong_index])
-                # writeColorImageToROM(hair_im, 25, [4124, 4122, 4123, 4120, 4121][kong_index], 32, 44)
                 for file in range(152, 160):
                     # Single
                     single_im = getFile(7, file, False, 44, 44)
