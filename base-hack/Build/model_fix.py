@@ -138,6 +138,8 @@ modifications = [
 with open(rom_file, "rb") as rom:
     rom.seek(pointer_offset + (5 * 4))
     actor_table = pointer_offset + int.from_bytes(rom.read(4), "big")
+    rom.seek(pointer_offset + (4 * 4))
+    modeltwo_table = pointer_offset + int.from_bytes(rom.read(4), "big")
     for model in modifications:
         idx = model["model_index"]
         rom.seek(actor_table + (idx * 4))
@@ -179,3 +181,30 @@ with open(rom_file, "rb") as rom:
                 fh.seek(wipe[0])
                 fh.write(bytearray(fix_lst))
                 sub_idx += 1
+    for bp_index in range(5):
+        file_index = bp_index + 0xDD
+        rom.seek(modeltwo_table + (file_index * 4))
+        model_start = pointer_offset + int.from_bytes(rom.read(4), "big")
+        model_end = pointer_offset + int.from_bytes(rom.read(4), "big")
+        model_size = model_end - model_start
+        rom.seek(model_start)
+        with open(f"blueprint{bp_index}.bin", "wb") as fh:
+            compress = rom.read(model_size)
+            decompress = zlib.decompress(compress, (15 + 32))
+            fh.write(decompress)
+        with open(f"blueprint{bp_index}.bin", "r+b") as fh:
+            fh.seek(0x48)
+            vtx_start = int.from_bytes(fh.read(4), "big")
+            vtx_end = int.from_bytes(fh.read(4), "big")
+            vtx_count = int((vtx_end - vtx_start) / 0x10)
+            for vtx_i in range(vtx_count):
+                vtx_addr = vtx_start + (vtx_i * 0x10) + 2
+                fh.seek(vtx_addr)
+                bp_y = int.from_bytes(fh.read(2), "big")
+                if bp_y > 0x7FFF:
+                    bp_y -= 65536
+                bp_y += 4
+                if bp_y < 0:
+                    bp_y += 65536
+                fh.seek(vtx_addr)
+                fh.write(bp_y.to_bytes(2, "big"))

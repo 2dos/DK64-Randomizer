@@ -128,6 +128,16 @@ for num in number_game_changes:
             "do_not_compress": True,
         }
     )
+for x in range(5):
+    file_dict.append(
+        {
+            "name": f"Blueprint Model ({x})",
+            "pointer_table_index": 4,
+            "file_index": 0xDD + x,
+            "source_file": f"blueprint{x}.bin",
+            "do_not_delete_source": True,
+        }
+    )
 
 for ci, coin in enumerate(["nin_coin", "rw_coin"]):
     for item in range(2):
