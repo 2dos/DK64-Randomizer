@@ -43,13 +43,6 @@ from recompute_pointer_table import (
 from staticcode import patchStaticCode
 from vanilla_move_data import writeVanillaMoveData
 
-# Profiling
-# import cProfile
-# import pstats
-
-# profile = cProfile.Profile()
-# profile.enable()
-
 ROMName = "rom/dk64.z64"
 newROMName = "rom/dk64-randomizer-base.z64"
 
@@ -67,86 +60,55 @@ generateYellowWrinkly()
 
 BLOCK_COLOR_SIZE = 64  # Bytes allocated to a block 32x32 image. Brute forcer says we can go as low as 0x25 bytes, but leaving some room for me to have left out something
 
-class NewFile:
-    """Stores information regarding new file in file_dict."""
-
-    def __init__(self, *, 
-        name="",
-        start=None,
-        compressed_size=None,
-        source_file="",
-        output_file=None,
-        use_external_gzip=False,
-        use_zlib=False,
-        patcher=None,
-        texture_format=None,
-        pointer_table_index=None,
-        file_index=None,
-        bps_file=None,
-        do_not_delete_source=False,
-        do_not_delete_output=False,
-        do_not_delete=False,
-        do_not_extract=False,
-        do_not_recompress=False,
-        do_not_compress=False,
-        target_compressed_size=None,
-        target_uncompressed_size=None,
-        ):
-        self.name = name
-        self.start = start
-        self.compressed_size = compressed_size
-        self.source_file = source_file
-        self.output_file = output_file
-        self.use_external_gzip = use_external_gzip
-        self.use_zlib = use_zlib
-        self.patcher = patcher
-        self.texture_format = texture_format
-        self.pointer_table_index = pointer_table_index
-        self.file_index = file_index
-        self.bps_file = bps_file
-        self.is_diff_patch = bps_file != None
-        self.do_not_delete_source = do_not_delete_source
-        self.do_not_delete_output = do_not_delete_output
-        self.do_not_delete = do_not_delete
-        self.do_not_extract = do_not_extract
-        self.do_not_recompress = do_not_recompress
-        self.do_not_compress = do_not_compress
-        self.target_compressed_size = target_compressed_size
-        self.target_uncompressed_size = target_uncompressed_size
-
 file_dict = [
-    NewFile(name="Static ASM Code", start=0x113F0, compressed_size=0xB15E4, source_file="StaticCode.bin", use_external_gzip=True, patcher=patchStaticCode),
-    NewFile(name="Dolby Logo", pointer_table_index=14, file_index=176, source_file="assets/Non-Code/Dolby/DolbyThin.png", texture_format="ia4"),
-    NewFile(name="Thumb Image", pointer_table_index=14, file_index=94, source_file="assets/Non-Code/Nintendo Logo/Nintendo4.png", texture_format="rgba5551"),
-    NewFile(name="DKTV Image", pointer_table_index=14, file_index=44, source_file="assets/Non-Code/DKTV/logo3.png", texture_format="rgba5551"),
-    NewFile(name="Spin Transition Image", pointer_table_index=14, file_index=95, source_file="assets/Non-Code/transition/transition-body.png", texture_format="ia4"),
-    NewFile(name="Moves Image", pointer_table_index=14, file_index=115, source_file="assets/Non-Code/file_screen/moves.png", texture_format="rgba5551"),
-    NewFile(name="Medal Image", pointer_table_index=14, file_index=116, source_file="assets/Non-Code/displays/medal.png", texture_format="rgba5551"),
-    NewFile(name="Tag Barrel Shell Texture", pointer_table_index=25, file_index=4938, source_file="assets/Non-Code/tagbarrel/shell.png", texture_format="rgba5551"),
-    NewFile(name="Gong Geometry", pointer_table_index=4, file_index=195, source_file="assets/Non-Code/Gong/gong_geometry.bin", bps_file="assets/Non-Code/Gong/gong_geometry.bps"),
-    NewFile(name="End Sequence Credits", pointer_table_index=19, file_index=7, source_file="assets/Non-Code/credits/credits.bin", do_not_delete_source=True),
-    NewFile(name="DK Wrinkly Door", pointer_table_index=4, file_index=0xF0, source_file="assets/Non-Code/Gong/hint_door.bin", do_not_delete_source=True),
-    NewFile(name="WXY_Slash", pointer_table_index=14, file_index=12, source_file="assets/Non-Code/displays/wxys.png", texture_format="rgba5551"),
-    NewFile(name="DK Tie Palette", pointer_table_index=25, file_index=6013, source_file="assets/Non-Code/hash/dk_tie_palette.png", do_not_extract=True, texture_format="rgba5551", target_compressed_size=BLOCK_COLOR_SIZE),     
-    NewFile(name="Tiny Overalls Palette", pointer_table_index=25, file_index=6014, source_file="assets/Non-Code/hash/tiny_palette.png", do_not_extract=True, texture_format="rgba5551", target_compressed_size=BLOCK_COLOR_SIZE),
-    NewFile(name="Bean Sprite", pointer_table_index=25, file_index=6020, source_file="assets/Non-Code/displays/bean.png", do_not_extract=True, texture_format="rgba5551"),  
-    NewFile(name="Pearl Sprite", pointer_table_index=25, file_index=6021, source_file="assets/Non-Code/displays/pearl.png", do_not_extract=True, texture_format="rgba5551"),
-    NewFile(name="Kong (DK) Model", pointer_table_index=4, file_index=599, source_file="kong_dk_om2.bin", do_not_extract=True, do_not_delete_source=True),
-    NewFile(name="Kong (Diddy) Model", pointer_table_index=4, file_index=600, source_file="kong_dk_om2.bin", do_not_extract=True, do_not_delete_source=True),
-    NewFile(name="Kong (Lanky) Model", pointer_table_index=4, file_index=601, source_file="kong_dk_om2.bin", do_not_extract=True, do_not_delete_source=True),
-    NewFile(name="Kong (Tiny) Model", pointer_table_index=4, file_index=602, source_file="kong_dk_om2.bin", do_not_extract=True, do_not_delete_source=True),
-    NewFile(name="Kong (Chunky) Model", pointer_table_index=4, file_index=603, source_file="kong_dk_om2.bin", do_not_extract=True, do_not_delete_source=True),
-    NewFile(name="DPad Image", pointer_table_index=14, file_index=187, source_file="assets/Non-Code/displays/dpad.png", texture_format="rgba5551"),
-    NewFile(name="Tracker Image", pointer_table_index=14, file_index=161, source_file="assets/Non-Code/file_screen/tracker.png", texture_format="rgba5551"),
-    NewFile(name="Nintendo Coin Model", pointer_table_index=4, file_index=72, source_file="nintendo_coin_om2.bin", do_not_delete_source=True),
-    NewFile(name="Rareware Coin Model", pointer_table_index=4, file_index=655, source_file="rareware_coin_om2.bin", do_not_delete_source=True),
-    NewFile(name="Potion (DK) Model", pointer_table_index=4, file_index=91, source_file="potion_dk_om2.bin", do_not_delete_source=True),
-    NewFile(name="Potion (Diddy) Model", pointer_table_index=4, file_index=498, source_file="potion_diddy_om2.bin", do_not_delete_source=True),
-    NewFile(name="Potion (Lanky) Model", pointer_table_index=4, file_index=89, source_file="potion_lanky_om2.bin", do_not_delete_source=True),
-    NewFile(name="Potion (Tiny) Model", pointer_table_index=4, file_index=499, source_file="potion_tiny_om2.bin", do_not_delete_source=True),
-    NewFile(name="Potion (Chunky) Model", pointer_table_index=4, file_index=501, source_file="potion_chunky_om2.bin", do_not_delete_source=True),
-    NewFile(name="Potion (Any) Model", pointer_table_index=4, file_index=502, source_file="potion_any_om2.bin", do_not_delete_source=True),
-    NewFile(name="Krusha Head", start=0x1FF6000, source_file="assets/Non-Code/displays/krusha_head64.png", do_not_delete_source=True, texture_format="rgba5551", do_not_compress=True),
+    {"name": "Static ASM Code", "start": 0x113F0, "compressed_size": 0xB15E4, "source_file": "StaticCode.bin", "use_external_gzip": True, "patcher": patchStaticCode},
+    {"name": "Dolby Logo", "pointer_table_index": 14, "file_index": 176, "source_file": "assets/Non-Code/Dolby/DolbyThin.png", "texture_format": "ia4"},
+    {"name": "Thumb Image", "pointer_table_index": 14, "file_index": 94, "source_file": "assets/Non-Code/Nintendo Logo/Nintendo4.png", "texture_format": "rgba5551"},
+    {"name": "DKTV Image", "pointer_table_index": 14, "file_index": 44, "source_file": "assets/Non-Code/DKTV/logo3.png", "texture_format": "rgba5551"},
+    {"name": "Spin Transition Image", "pointer_table_index": 14, "file_index": 95, "source_file": "assets/Non-Code/transition/transition-body.png", "texture_format": "ia4"},
+    {"name": "Moves Image", "pointer_table_index": 14, "file_index": 115, "source_file": "assets/Non-Code/file_screen/moves.png", "texture_format": "rgba5551"},
+    {"name": "Medal Image", "pointer_table_index": 14, "file_index": 116, "source_file": "assets/Non-Code/displays/medal.png", "texture_format": "rgba5551"},
+    {"name": "Tag Barrel Shell Texture", "pointer_table_index": 25, "file_index": 4938, "source_file": "assets/Non-Code/tagbarrel/shell.png", "texture_format": "rgba5551"},
+    {
+        "name": "Gong Geometry",
+        "pointer_table_index": 4,
+        "file_index": 195,
+        "source_file": "assets/Non-Code/Gong/gong_geometry.bin",
+        "bps_file": "assets/Non-Code/Gong/gong_geometry.bps",
+        "is_diff_patch": True,
+    },
+    {"name": "End Sequence Credits", "pointer_table_index": 19, "file_index": 7, "source_file": "assets/Non-Code/credits/credits.bin", "do_not_delete_source": True},
+    {"name": "DK Wrinkly Door", "pointer_table_index": 4, "file_index": 0xF0, "source_file": "assets/Non-Code/Gong/hint_door.bin", "do_not_delete_source": True},
+    {"name": "WXY_Slash", "pointer_table_index": 14, "file_index": 12, "source_file": "assets/Non-Code/displays/wxys.png", "texture_format": "rgba5551"},
+    {
+        "name": "DK Tie Palette",
+        "pointer_table_index": 25,
+        "file_index": 6013,
+        "source_file": "assets/Non-Code/hash/dk_tie_palette.png",
+        "do_not_extract": True,
+        "texture_format": "rgba5551",
+        "target_compressed_size": BLOCK_COLOR_SIZE,
+    },
+    {
+        "name": "Tiny Overalls Palette",
+        "pointer_table_index": 25,
+        "file_index": 6014,
+        "source_file": "assets/Non-Code/hash/tiny_palette.png",
+        "do_not_extract": True,
+        "texture_format": "rgba5551",
+        "target_compressed_size": BLOCK_COLOR_SIZE,
+    },
+    {"name": "DPad Image", "pointer_table_index": 14, "file_index": 187, "source_file": "assets/Non-Code/displays/dpad.png", "texture_format": "rgba5551"},
+    {"name": "Tracker Image", "pointer_table_index": 14, "file_index": 0xA1, "source_file": "assets/Non-Code/file_screen/tracker.png", "texture_format": "rgba5551"},
+    {"name": "Nintendo Coin Model", "pointer_table_index": 4, "file_index": 0x48, "source_file": "nintendo_coin_om2.bin", "do_not_delete_source": True},
+    {"name": "Rareware Coin Model", "pointer_table_index": 4, "file_index": 0x28F, "source_file": "rareware_coin_om2.bin", "do_not_delete_source": True},
+    {"name": "Potion (DK) Model", "pointer_table_index": 4, "file_index": 0x5B, "source_file": "potion_dk_om2.bin", "do_not_delete_source": True},
+    {"name": "Potion (Diddy) Model", "pointer_table_index": 4, "file_index": 0x1F2, "source_file": "potion_diddy_om2.bin", "do_not_delete_source": True},
+    {"name": "Potion (Lanky) Model", "pointer_table_index": 4, "file_index": 0x59, "source_file": "potion_lanky_om2.bin", "do_not_delete_source": True},
+    {"name": "Potion (Tiny) Model", "pointer_table_index": 4, "file_index": 0x1F3, "source_file": "potion_tiny_om2.bin", "do_not_delete_source": True},
+    {"name": "Potion (Chunky) Model", "pointer_table_index": 4, "file_index": 0x1F5, "source_file": "potion_chunky_om2.bin", "do_not_delete_source": True},
+    {"name": "Potion (Any) Model", "pointer_table_index": 4, "file_index": 0x1F6, "source_file": "potion_any_om2.bin", "do_not_delete_source": True},
+    {"name": "Krusha Head", "start": 0x1FF6000, "source_file": "assets/Non-Code/displays/krusha_head64.png", "do_not_delete_source": True, "texture_format": "rgba5551", "do_not_compress": True},
 ]
 
 number_game_changes = [
@@ -157,37 +119,30 @@ number_game_changes = [
 ]
 for num in number_game_changes:
     file_dict.append(
-        NewFile(
-            name=f"Number Game ({num['number']}, {num['state']})", 
-            pointer_table_index=7, 
-            file_index=num["texture"], 
-            source_file=f"assets/Non-Code/displays/num_{num['number']}_{num['state']}.png", 
-            texture_format="rgba5551", 
-            do_not_compress=True
-        )
+        {
+            "name": f"Number Game ({num['number']}, {num['state']})",
+            "pointer_table_index": 7,
+            "file_index": num["texture"],
+            "source_file": f"assets/Non-Code/displays/num_{num['number']}_{num['state']}.png",
+            "texture_format": "rgba5551",
+            "do_not_compress": True,
+        }
     )
 
 for ci, coin in enumerate(["nin_coin", "rw_coin"]):
     for item in range(2):
         file_dict.append(
-            NewFile(
-                name=f"{coin.replace('_',' ').capitalize()} ({item})", 
-                pointer_table_index=25, 
-                file_index=6015 + item + (2 * ci), 
-                source_file=f"assets/Non-Code/hash/{coin}_{item}.png", 
-                do_not_extract=True, 
-                texture_format="rgba5551"
-            )
+            {
+                "name": f"{coin.replace('_',' ').capitalize()} ({item})",
+                "pointer_table_index": 25,
+                "file_index": 6015 + item + (2 * ci),
+                "source_file": f"assets/Non-Code/hash/{coin}_{item}.png",
+                "do_not_extract": True,
+                "texture_format": "rgba5551",
+            }
         )
 file_dict.append(
-    NewFile(
-        name="Special Coin Side",
-        pointer_table_index=25,
-        file_index=6019,
-        source_file="assets/Non-Code/hash/modified_coin_side.png",
-        do_not_extract=True,
-        texture_format="rgba5551"
-    )
+    {"name": "Special Coin Side", "pointer_table_index": 25, "file_index": 6019, "source_file": f"assets/Non-Code/hash/modified_coin_side.png", "do_not_extract": True, "texture_format": "rgba5551"}
 )
 
 kong_names = ["DK", "Diddy", "Lanky", "Tiny", "Chunky"]
@@ -195,25 +150,19 @@ ammo_names = ["standard_crate", "homing_crate"]
 
 for ammo_index, ammo in enumerate(ammo_names):
     file_dict.append(
-        NewFile(
-            name=f"{ammo.replace('_',' ')} Image",
-            pointer_table_index=14,
-            file_index=188 + ammo_index,
-            source_file=f"assets/Non-Code/displays/{ammo}.png",
-            texture_format="rgba5551"
-        )
+        {"name": f"{ammo.replace('_',' ')} Image", "pointer_table_index": 14, "file_index": 188 + ammo_index, "source_file": f"assets/Non-Code/displays/{ammo}.png", "texture_format": "rgba5551"}
     )
 
 for kong_index, kong in enumerate(kong_names):
     file_dict.append(
-        NewFile(
-            name=f"DPad - {kong} Face",
-            pointer_table_index=14,
-            file_index=190 + kong_index,
-            source_file=f"assets/Non-Code/displays/{kong.lower()}_face.png",
-            texture_format="rgba5551",
-            target_compressed_size=32*32*2
-        )
+        {
+            "name": f"DPad - {kong} Face",
+            "pointer_table_index": 14,
+            "file_index": 190 + kong_index,
+            "source_file": f"assets/Non-Code/displays/{kong.lower()}_face.png",
+            "texture_format": "rgba5551",
+            "target_compressed_size": 32 * 32 * 2,
+        }
     )
 
 shop_face_array = [
@@ -235,15 +184,9 @@ shop_face_array = [
     "rw_coin",
 ]
 for x, shop in enumerate(shop_face_array):
-    data = NewFile(
-        name=f"Shop Indicator ({shop})",
-        pointer_table_index=14,
-        file_index=195 + x,
-        source_file=f"assets/Non-Code/displays/{shop}.png",
-        texture_format="rgba32"
-    )
+    data = {"name": f"Shop Indicator ({shop})", "pointer_table_index": 14, "file_index": 195 + x, "source_file": f"assets/Non-Code/displays/{shop}.png", "texture_format": "rgba32"}
     if "_face" in shop:
-        data.target_compressed_size = 32*32*4
+        data["target_compressed_size"] = 32 * 32 * 4
     file_dict.append(data)
 
 base_coin_sfx = "assets/Non-Code/music/Win95_startup.dk64song"
@@ -267,19 +210,13 @@ song_replacements = [
 changed_song_indexes = []
 
 for song in song_replacements:
-    item = NewFile(
-        name=song["name"].replace("_", " "),
-        pointer_table_index=0,
-        file_index=song["index"],
-        source_file=f"assets/Non-Code/music/{song['name']}.bin",
-        target_compressed_size=0x2DDE
-    )
+    item = {"name": song["name"].replace("_", " "), "pointer_table_index": 0, "file_index": song["index"], "source_file": f"assets/Non-Code/music/{song['name']}.bin", "target_compressed_size": 0x2DDE}
     if song["bps"]:
-        item.bps_file = f"assets/Non-Code/music/{song['name']}.bps"
-        item.is_diff_patch = True
+        item["is_diff_patch"] = True
+        item["bps_file"] = f"assets/Non-Code/music/{song['name']}.bps"
     else:
-        item.do_not_delete_source = True
-        item.do_not_extract = True
+        item["do_not_delete_source"] = True
+        item["do_not_extract"] = True
     file_dict.append(item)
     changed_song_indexes.append(song["index"])
 
@@ -297,16 +234,16 @@ for x in instance_script_maps:
         compress = gzip.compress(data, compresslevel=9)
         expand_size = len(data) + script_expansion_size
     file_dict.append(
-        NewFile(
-            name=f"{x['name'].replace('_',' ')} Instance Scripts",
-            pointer_table_index=10,
-            file_index=x["map"],
-            source_file=script_file_name,
-            target_compressed_size=expand_size,
-            target_uncompressed_size=expand_size,
-            do_not_recompress=True,
-            do_not_delete_source=True,
-        )
+        {
+            "name": f"{x['name'].replace('_',' ')} Instance Scripts",
+            "pointer_table_index": 10,
+            "file_index": x["map"],
+            "source_file": script_file_name,
+            "target_compressed_size": expand_size,
+            "target_uncompressed_size": expand_size,
+            "do_not_recompress": True,
+            "do_not_delete_source": True,
+        }
     )
 for x in maps_to_expand:
     with open(ROMName, "rb") as fh:
@@ -324,50 +261,25 @@ for x in maps_to_expand:
             data = zlib.decompress(data, (15 + 32))
             item_size = len(data)
         file_dict.append(
-            NewFile(
-                name=f"Script {x}",
-                pointer_table_index=10,
-                file_index=x,
-                source_file=f"script{x}.bin",
-                target_compressed_size=item_size + script_expansion_size,
-                target_uncompressed_size=item_size + script_expansion_size,
-                do_not_recompress=True,
-            )
+            {
+                "name": f"Script {x}",
+                "pointer_table_index": 10,
+                "file_index": x,
+                "source_file": f"script{x}.bin",
+                "target_compressed_size": item_size + script_expansion_size,
+                "target_uncompressed_size": item_size + script_expansion_size,
+                "do_not_recompress": True,
+            }
         )
 
 for x in range(175):
     if x > 0:
         if x not in changed_song_indexes:
-            file_dict.append(
-                NewFile(
-                    name=f"Song {x}",
-                    pointer_table_index=0,
-                    file_index=x,
-                    source_file=f"song{x}.bin",
-                    target_compressed_size=0x2DDE,
-                )
-            )
+            file_dict.append({"name": "Song " + str(x), "pointer_table_index": 0, "file_index": x, "source_file": "song" + str(x) + ".bin", "target_compressed_size": 0x2DDE})
 for x in range(6):
-    file_dict.append(
-        NewFile(
-            name=f"DKTV Inputs {x}",
-            pointer_table_index=17,
-            file_index=x,
-            source_file=f"dktv{x}.bin",
-            target_compressed_size=0x718,
-        )
-    )
+    file_dict.append({"name": "DKTV Inputs " + str(x), "pointer_table_index": 17, "file_index": x, "source_file": "dktv" + str(x) + ".bin", "target_compressed_size": 0x718})
 for x in range(221):
-    file_dict.append(
-        NewFile(
-            name=f"Zones for map {x}",
-            pointer_table_index=18,
-            file_index=x,
-            source_file=f"lz{x}.bin",
-            target_compressed_size=0x850,
-            do_not_recompress=True,
-        )
-    )
+    file_dict.append({"name": "Zones for map " + str(x), "pointer_table_index": 18, "file_index": x, "source_file": "lz" + str(x) + ".bin", "target_compressed_size": 0x850, "do_not_recompress": True})
 # Setup
 setup_expansion_size = 0x12C0
 for x in range(221):
@@ -390,94 +302,86 @@ for x in range(221):
             data = zlib.decompress(data, (15 + 32))
             item_size = len(data)
         file_dict.append(
-            NewFile(
-                name=f"Setup for map {x}",
-                pointer_table_index=9,
-                file_index=x,
-                source_file=f"setup{x}.bin",
-                target_compressed_size=item_size + local_expansion,
-                target_uncompressed_size=item_size + local_expansion,
-                do_not_recompress=True,
-            )
+            {
+                "name": "Setup for map " + str(x),
+                "pointer_table_index": 9,
+                "file_index": x,
+                "source_file": "setup" + str(x) + ".bin",
+                "target_compressed_size": item_size + local_expansion,
+                "target_uncompressed_size": item_size + local_expansion,
+                "do_not_recompress": True,
+            }
         )
 for x in range(221):
     if x != 2:  # DK Arcade path file is massive
         file_dict.append(
-            NewFile(
-                name=f"Paths for map {x}",
-                pointer_table_index=15,
-                file_index=x,
-                source_file=f"paths{x}.bin",
-                target_uncompressed_size=0x600,
-                target_compressed_size=0x600,
-                do_not_recompress=True
-            )
+            {
+                "name": "Paths for map " + str(x),
+                "pointer_table_index": 15,
+                "file_index": x,
+                "source_file": "paths" + str(x) + ".bin",
+                "target_uncompressed_size": 0x600,
+                "target_compressed_size": 0x600,
+                "do_not_recompress": True,
+            }
         )
 for x in range(221):
     file_dict.append(
-        NewFile(
-            name=f"Character Spawners for map {x}",
-            pointer_table_index=16,
-            file_index=x,
-            source_file=f"charspawners{x}.bin",
-            target_compressed_size=0x1400,
-            target_uncompressed_size=0x1400,
-            do_not_recompress=True,
-        )
+        {
+            "name": "Character Spawners for map " + str(x),
+            "pointer_table_index": 16,
+            "file_index": x,
+            "source_file": "charspawners" + str(x) + ".bin",
+            "target_compressed_size": 0x1400,
+            "target_uncompressed_size": 0x1400,
+            "do_not_recompress": True,
+        }
     )
 for x in range(8):
     file_dict.append(
-        NewFile(
-            name=f"Key {x+1} (File Screen)",
-            pointer_table_index=14,
-            file_index=107+x,
-            source_file=f"assets/Non-Code/file_screen/key{x+1}.png",
-            texture_format="rgba5551"
-        )
+        {
+            "name": "Key " + str(x + 1) + " file screen",
+            "pointer_table_index": 14,
+            "file_index": 107 + x,
+            "source_file": "assets/Non-Code/file_screen/key" + str(x + 1) + ".png",
+            "texture_format": "rgba5551",
+        }
     )
 for x in range(43):
     if x not in (13, 32, 0x18, 0x27, 8, 37, 2):
-        NewFile(
-            name=f"Text {x}",
-            pointer_table_index=12,
-            file_index=x,
-            source_file=f"text{x}.bin",
-            target_compressed_size=0x2000,
-            target_uncompressed_size=0x2000,
-            do_not_recompress=True,
+        file_dict.append(
+            {
+                "name": "Text " + str(x),
+                "pointer_table_index": 12,
+                "file_index": x,
+                "source_file": "text" + str(x) + ".bin",
+                "target_compressed_size": 0x2000,
+                "target_uncompressed_size": 0x2000,
+                "do_not_recompress": True,
+            }
         )
 for x in range(10):
     file_dict.append(
-        NewFile(
-            name=f"Tag Barrel Bottom Texture ({x+1})",
-            pointer_table_index=25,
-            file_index=4749+x,
-            source_file="assets/Non-Code/tagbarrel/bottom.png",
-            texture_format="rgba5551"
-        )
+        {"name": f"Tag Barrel Bottom Texture ({x+1})", "pointer_table_index": 25, "file_index": 4749 + x, "source_file": "assets/Non-Code/tagbarrel/bottom.png", "texture_format": "rgba5551"}
     )
 for x in range(4761, 4768):
-    file_dict.append(
-        NewFile(
-            name=f"Portal Ripple Texture ({x})",
-            pointer_table_index=25,
-            file_index=x,
-            source_file=f"assets/Non-Code/displays/empty11.png",
-            texture_format="rgba5551"
-        )
-    )
+    file_dict.append({"name": f"Portal Ripple Texture ({x})", "pointer_table_index": 25, "file_index": x, "source_file": f"assets/Non-Code/displays/empty11.png", "texture_format": "rgba5551"})
+for x in range(0xB50, 0xB56):
+    file_dict.append({"name": f"Unused Texture ({x})", "pointer_table_index": 25, "file_index": x, "source_file": f"assets/Non-Code/displays/empty11.png", "texture_format": "rgba5551"})
+for x in range(0xDD1, 0xDD6):
+    file_dict.append({"name": f"Unused Texture ({x})", "pointer_table_index": 25, "file_index": x, "source_file": f"assets/Non-Code/displays/empty11.png", "texture_format": "rgba5551"})
 barrel_faces = ["Dk", "Diddy", "Lanky", "Tiny", "Chunky"]
 barrel_offsets = [4817, 4815, 4819, 4769, 4747]
 for x in range(5):
     for y in range(2):
         file_dict.append(
-            NewFile(
-                name=f"{barrel_faces[x]} Transform Barrel Shell ({y+1})",
-                pointer_table_index=25,
-                file_index=barrel_offsets[x] + y,
-                source_file=f"assets/Non-Code/tagbarrel/{barrel_faces[x]} barrel {y}a.png",
-                texture_format="rgba5551"
-            )
+            {
+                "name": f"{barrel_faces[x]} Transform Barrel Shell ({y+1})",
+                "pointer_table_index": 25,
+                "file_index": barrel_offsets[x] + y,
+                "source_file": f"assets/Non-Code/tagbarrel/{barrel_faces[x]} barrel {y}a.png",
+                "texture_format": "rgba5551",
+            }
         )
 
 
@@ -499,38 +403,22 @@ for x in kong_palettes:
     x_s = kong_palettes[x][0][0] * kong_palettes[x][0][1] * 2
     if kong_palettes[x][0][0] == 32 and kong_palettes[x][0][1] == 32 and kong_palettes[x][1] == "block":
         x_s = BLOCK_COLOR_SIZE
-    file_dict.append(
-        NewFile(
-            name=f"Palette Expansion ({hex(x)})",
-            pointer_table_index=25,
-            file_index=x,
-            source_file=f"palette_{x}.bin",
-            target_compressed_size=x_s
-        )
-    )
+    file_dict.append({"name": f"Palette Expansion ({hex(x)})", "pointer_table_index": 25, "file_index": x, "source_file": f"palette_{x}.bin", "target_compressed_size": x_s})
 
 for tex in range(0x273, 0x27D):
-    file_dict.append(
-        NewFile(
-            name=f"Head Expansion ({hex(tex)})",
-            pointer_table_index=25,
-            file_index=tex,
-            source_file=f"head_{tex}.bin",
-            target_compressed_size=32*64*2
-        )
-    )
+    file_dict.append({"name": f"Head Expansion ({hex(tex)})", "pointer_table_index": 25, "file_index": tex, "source_file": f"head_{tex}.bin", "target_compressed_size": 32 * 64 * 2})
 
 colorblind_changes = [[4120, 4124, 32, 44], [5819, 5858, 32, 64]]
 for change in colorblind_changes:
-    for idx in range(change[0], change[1] + 1):
+    for file_index in range(change[0], change[1] + 1):
         file_dict.append(
-            NewFile(
-                name=f"Colorblind Expansion {idx}",
-                pointer_table_index=25,
-                file_index=idx,
-                source_file=f"colorblind_exp_{idx}.bin",
-                target_compressed_size=2 * change[2] * change[3],
-            )
+            {
+                "name": f"Colorblind Expansion {file_index}",
+                "pointer_table_index": 25,
+                "file_index": file_index,
+                "source_file": f"colorblind_exp_{file_index}.bin",
+                "target_compressed_size": 2 * change[2] * change[3],
+            }
         )
 
 
@@ -553,15 +441,9 @@ model_changes = [
     {"model_index": 0xA3, "model_file": "counter.bin"},
 ]
 for x in model_changes:
-    data = NewFile(
-        name=f"Model {x['model_index']}",
-        pointer_table_index=5,
-        file_index=x["model_index"],
-        source_file=x["model_file"],
-        do_not_delete_source=True
-    )
+    data = {"name": f"Model {x['model_index']}", "pointer_table_index": 5, "file_index": x["model_index"], "source_file": x["model_file"], "do_not_delete_source": True}
     if x["model_index"] > 0xEB:
-        data.do_not_extract = True
+        data["do_not_extract"] = True
     file_dict.append(data)
 
 portal_image_order = [["SE", "NE", "SW", "NW"], ["NW", "SW", "NE", "SE"]]
@@ -576,115 +458,35 @@ for x in range(2):
                 found_image = image
         if found_image != "":
             file_dict.append(
-                NewFile(
-                    name=f"Portal Image {x+1} - {segment}",
-                    pointer_table_index=7,
-                    file_index=931 + (4*x) + y,
-                    source_file=found_image,
-                    texture_format="rgba5551",
-                    do_not_compress=True,
-                )
+                {
+                    "name": f"Portal Image {x+1} - {segment}",
+                    "pointer_table_index": 7,
+                    "file_index": 931 + (4 * x) + y,
+                    "source_file": found_image,
+                    "texture_format": "rgba5551",
+                    "do_not_compress": True,
+                }
             )
 
 hash_icons = ["bongos.png", "crown.png", "dkcoin.png", "fairy.png", "guitar.png", "nin_coin.png", "orange.png", "rainbow_coin.png", "rw_coin.png", "sax.png"]
 hash_indexes = [48, 49, 50, 51, 55, 62, 63, 64, 65, 76]
 for x in range(len(hash_indexes)):
     idx = hash_indexes[x]
-    file_dict.append(
-        NewFile(
-            name=f"Hash Icon {x+1}",
-            pointer_table_index=14,
-            file_index=idx,
-            source_file=f"assets/Non-Code/hash/{hash_icons[x]}",
-            texture_format="rgba5551"
-        )
-    )
-file_dict.append(
-    NewFile(
-        name="Dolby Text",
-        pointer_table_index=12,
-        file_index=13,
-        source_file="dolby_text.bin",
-        do_not_compress=True,
-        do_not_delete_source=True
-    )
-)
-file_dict.append(
-    NewFile(
-        name="Custom Text",
-        pointer_table_index=12,
-        file_index=32,
-        source_file="custom_text.bin",
-        do_not_compress=True,
-        do_not_delete_source=True
-    )
-)
-file_dict.append(
-    NewFile(
-        name="DK Text",
-        pointer_table_index=12,
-        file_index=0x18,
-        source_file="dk_text.bin",
-        do_not_compress=True,
-        do_not_delete_source=True
-    )
-)
-file_dict.append(
-    NewFile(
-        name="Move Names Text",
-        pointer_table_index=12,
-        file_index=0x27,
-        source_file="move_names.bin",
-        do_not_compress=True,
-        do_not_delete_source=True
-    )
-)
-file_dict.append(
-    NewFile(
-        name="Cranky Text",
-        pointer_table_index=12,
-        file_index=8,
-        source_file="cranky_text.bin",
-        do_not_compress=True,
-        do_not_delete_source=True
-    )
-)
-file_dict.append(
-    NewFile(
-        name="Menu Text",
-        pointer_table_index=12,
-        file_index=37,
-        source_file="menu_text.bin",
-        do_not_compress=True,
-        do_not_delete_source=True
-    )
-)
-file_dict.append(
-    NewFile(
-        name="Kong Name Text",
-        pointer_table_index=12,
-        file_index=2,
-        source_file="kongname_text.bin",
-        do_not_compress=True,
-        do_not_delete_source=True
-    )
-)
+    file_dict.append({"name": f"Hash Icon {x+1}", "pointer_table_index": 14, "file_index": idx, "source_file": f"assets/Non-Code/hash/{hash_icons[x]}", "texture_format": "rgba5551"})
+file_dict.append({"name": "Dolby Text", "pointer_table_index": 12, "file_index": 13, "source_file": "dolby_text.bin", "do_not_compress": True, "do_not_delete_source": True})
+file_dict.append({"name": "Custom Text", "pointer_table_index": 12, "file_index": 32, "source_file": "custom_text.bin", "do_not_compress": True, "do_not_delete_source": True})
+file_dict.append({"name": "DK Text", "pointer_table_index": 12, "file_index": 0x18, "source_file": "dk_text.bin", "do_not_compress": True, "do_not_delete_source": True})
+file_dict.append({"name": "Move Names Text", "pointer_table_index": 12, "file_index": 0x27, "source_file": "move_names.bin", "do_not_compress": True, "do_not_delete_source": True})
+file_dict.append({"name": "Cranky Text", "pointer_table_index": 12, "file_index": 8, "source_file": "cranky_text.bin", "do_not_compress": True, "do_not_delete_source": True})
+file_dict.append({"name": "Menu Text", "pointer_table_index": 12, "file_index": 37, "source_file": "menu_text.bin", "do_not_compress": True, "do_not_delete_source": True})
+file_dict.append({"name": "Kong Name Text", "pointer_table_index": 12, "file_index": 2, "source_file": "kongname_text.bin", "do_not_compress": True, "do_not_delete_source": True})
 
 with open(ROMName, "rb") as fh:
     adjustExits(fh)
 
 for x in range(216):
     if os.path.exists(f"exit{x}.bin"):
-        file_dict.append(
-            NewFile(
-                name=f"Map {x} Exits",
-                pointer_table_index=23,
-                file_index=x,
-                source_file=f"exit{x}.bin",
-                do_not_compress=True,
-                do_not_delete_source=True,
-            )
-        )
+        file_dict.append({"name": f"Map {x} Exits", "pointer_table_index": 23, "file_index": x, "source_file": f"exit{x}.bin", "do_not_compress": True, "do_not_delete_source": True})
 
 print("\nDK64 Extractor\nBuilt by Isotarge")
 
@@ -702,102 +504,102 @@ with open(ROMName, "rb") as fh:
             should_compress_walls = True
             should_compress_floors = True
             for y in pointer_tables:
-                if y.encoded_filename is None:
+                if "encoded_filename" not in y:
                     continue
 
                 # Convert decoded_filename to encoded_filename using the encoder function
                 # Eg. exits.json to exits.bin
-                if y.encoder is not None and callable(y.encoder):
-                    if y.decoded_filename is not None and os.path.exists(x["map_folder"] + y.decoded_filename):
-                        y.encoder(x["map_folder"] + y.decoded_filename, x["map_folder"] + y.encoded_filename)
+                if "encoder" in y and callable(y["encoder"]):
+                    if "decoded_filename" in y and os.path.exists(x["map_folder"] + y["decoded_filename"]):
+                        y["encoder"](x["map_folder"] + y["decoded_filename"], x["map_folder"] + y["encoded_filename"])
 
-                if os.path.exists(x["map_folder"] + y.encoded_filename):
-                    if y.index == 1:
-                        with open(x["map_folder"] + y.encoded_filename, "rb") as fg:
+                if os.path.exists(x["map_folder"] + y["encoded_filename"]):
+                    if y["index"] == 1:
+                        with open(x["map_folder"] + y["encoded_filename"], "rb") as fg:
                             byte_read = fg.read(10)
                             should_compress_walls = (byte_read[9] & 0x1) != 0
                             should_compress_floors = (byte_read[9] & 0x2) != 0
                         found_geometry = True
-                    elif y.index == 2:
+                    elif y["index"] == 2:
                         found_walls = True
-                    elif y.index == 3:
+                    elif y["index"] == 3:
                         found_floors = True
 
             # Check that all walls|floors|geometry files exist on disk, or that none of them do
             walls_floors_geometry_valid = (found_geometry == found_walls) and (found_geometry == found_floors)
 
             if not walls_floors_geometry_valid:
-                print(f"  - WARNING: In map replacement: {x['name']}")
+                print("  - WARNING: In map replacement: " + x["name"])
                 print("    - Need all 3 files present to replace walls, floors, and geometry.")
                 print("    - Only found 1 or 2 of them out of 3. Make sure all 3 exist on disk.")
                 print("    - Will skip replacing walls, floors, and geometry to prevent crashes.")
 
             for y in pointer_tables:
-                if y.encoded_filename is None:
+                if "encoded_filename" not in y:
                     continue
 
-                if os.path.exists(x["map_folder"] + y.encoded_filename):
+                if os.path.exists(x["map_folder"] + y["encoded_filename"]):
                     # Special case to prevent crashes with custom level geometry, walls, and floors
                     # Some of the files are compressed in ROM, some are not
-                    if y.index in (1, 2, 3) and not walls_floors_geometry_valid:
+                    if y["index"] in [1, 2, 3] and not walls_floors_geometry_valid:
                         continue
 
-                    do_not_compress = y.do_not_compress
-                    if y.index == 2:
+                    do_not_compress = "do_not_compress" in y and y["do_not_compress"]
+                    if y["index"] == 2:
                         do_not_compress = not should_compress_walls
-                    elif y.index == 3:
+                    elif y["index"] == 3:
                         do_not_compress = not should_compress_floors
 
-                    print(f"  - Found {x['map_folder']}{y.encoded_filename}")
+                    print("  - Found " + x["map_folder"] + y["encoded_filename"])
                     file_dict.append(
-                        NewFile(
-                            name=f"{x['name']}{y.name}",
-                            pointer_table_index=y.index,
-                            file_index=x["map_index"],
-                            source_file=f"{x['map_folder']}{y.encoded_filename}",
-                            do_not_extract=True,
-                            do_not_compress=do_not_compress,
-                            use_external_gzip=y.use_external_gzip,
-                        )
+                        {
+                            "name": x["name"] + y["name"],
+                            "pointer_table_index": y["index"],
+                            "file_index": x["map_index"],
+                            "source_file": x["map_folder"] + y["encoded_filename"],
+                            "do_not_extract": True,
+                            "do_not_compress": do_not_compress,
+                            "use_external_gzip": "use_external_gzip" in y and y["use_external_gzip"],
+                        }
                     )
 
     print("[2 / 7] - Extracting files from ROM")
     for x in file_dict:
         # N64Tex conversions do not need to be extracted to disk from ROM
-        if x.texture_format is not None:
-            x.do_not_extract = True
-            x.output_file = x.source_file.replace(".png", "." + x.texture_format)
+        if "texture_format" in x:
+            x["do_not_extract"] = True
+            x["output_file"] = x["source_file"].replace(".png", "." + x["texture_format"])
 
-        if x.output_file is None:
-            x.output_file = x.source_file
+        if "output_file" not in x:
+            x["output_file"] = x["source_file"]
 
         # gzip.exe appends .gz to the filename, we'll do the same
-        if x.use_external_gzip:
-            x.output_file = x.output_file + ".gz"
+        if "use_external_gzip" in x and x["use_external_gzip"]:
+            x["output_file"] = x["output_file"] + ".gz"
 
         # If we're not extracting the file to disk, we're using a custom .bin that shoudn't be deleted
-        if x.do_not_extract:
-            x.do_not_delete_source = True
+        if "do_not_extract" in x and x["do_not_extract"]:
+            x["do_not_delete_source"] = True
 
         # Extract the compressed file from ROM
-        if not x.do_not_extract:
+        if not ("do_not_extract" in x and x["do_not_extract"]):
             byte_read = bytes()
-            if x.pointer_table_index is not None and x.file_index is not None:
-                file_info = getFileInfo(x.pointer_table_index, x.file_index)
+            if "pointer_table_index" in x and "file_index" in x:
+                file_info = getFileInfo(x["pointer_table_index"], x["file_index"])
                 if file_info:
-                    x.start = file_info["new_absolute_address"]
-                    x.compressed_size = len(file_info["data"])
-            if x.start is None:
+                    x["start"] = file_info["new_absolute_address"]
+                    x["compressed_size"] = len(file_info["data"])
+            if "start" not in x:
                 print(x)
-            fh.seek(x.start)
-            byte_read = fh.read(x.compressed_size)
+            fh.seek(x["start"])
+            byte_read = fh.read(x["compressed_size"])
 
-            if not x.do_not_delete_source:
-                if os.path.exists(x.source_file):
-                    os.remove(x.source_file)
+            if not ("do_not_delete_source" in x and x["do_not_delete_source"]):
+                if os.path.exists(x["source_file"]):
+                    os.remove(x["source_file"])
 
-                with open(x.source_file, "wb") as fg:
-                    fh.seek(x.start)
+                with open(x["source_file"], "wb") as fg:
+                    fh.seek(x["start"])
                     if int.from_bytes(fh.read(2), "big") == 0x1F8B:
                         dec = zlib.decompress(byte_read, 15 + 32)
                     else:
@@ -806,52 +608,52 @@ with open(ROMName, "rb") as fh:
 
 print("[3 / 7] - Patching Extracted Files")
 for x in file_dict:
-    if x.patcher:
-        print(" - Running patcher for " + x.source_file)
-        x.patcher(x.source_file)
+    if "patcher" in x and callable(x["patcher"]):
+        print(" - Running patcher for " + x["source_file"])
+        x["patcher"](x["source_file"])
 
 with open(newROMName, "r+b") as fh:
     print("[4 / 7] - Writing patched files to ROM")
     clampCompressedTextures(fh, 6030)
     for x in file_dict:
-        if x.is_diff_patch:
-            with open(x.bps_file, "rb") as fg:
+        if "is_diff_patch" in x and x["is_diff_patch"]:
+            with open(x["source_file"], "rb") as fg:
                 byte_read = fg.read()
                 uncompressed_size = len(byte_read)
-            subprocess.Popen(["build\\flips.exe", "--apply", x.bps_file, x.source_file, x.source_file]).wait()
-            # shutil.copyfile(x.source_file, x.source_file.replace(".bin", ".raw"))
+            subprocess.Popen(["build\\flips.exe", "--apply", x["bps_file"], x["source_file"], x["source_file"]]).wait()
+            # shutil.copyfile(x["source_file"], x["source_file"].replace(".bin", ".raw"))
 
-        if x.texture_format is not None:
-            if x.texture_format in ("rgba5551", "i4", "ia4", "i8", "ia8"):
-                result = subprocess.check_output(["./build/n64tex.exe", x.texture_format, x.source_file])
-                if x.target_compressed_size is not None:
-                    x.source_file = x.source_file.replace(".png", f".{x.texture_format}")
-            elif x.texture_format == "rgba32":
-                convertToRGBA32(x.source_file)
-                x.source_file = x.source_file.replace(".png", ".rgba32")
+        if "texture_format" in x:
+            if x["texture_format"] in ["rgba5551", "i4", "ia4", "i8", "ia8"]:
+                result = subprocess.check_output(["./build/n64tex.exe", x["texture_format"], x["source_file"]])
+                if "target_compressed_size" in x:
+                    x["source_file"] = x["source_file"].replace(".png", f".{x['texture_format']}")
+            elif x["texture_format"] == "rgba32":
+                convertToRGBA32(x["source_file"])
+                x["source_file"] = x["source_file"].replace(".png", ".rgba32")
             else:
-                print(" - ERROR: Unsupported texture format " + x.texture_format)
+                print(" - ERROR: Unsupported texture format " + x["texture_format"])
 
-        if x.target_compressed_size is not None:
-            x.do_not_compress = True
-            if x.source_file[:5] == "setup":
-                convertSetup(x.source_file)
-            with open(x.source_file, "rb") as fg:
+        if "target_compressed_size" in x:
+            x["do_not_compress"] = True
+            if x["source_file"][:5] == "setup":
+                convertSetup(x["source_file"])
+            with open(x["source_file"], "rb") as fg:
                 byte_read = fg.read()
                 uncompressed_size = len(byte_read)
-            if x.do_not_recompress:
+            if "do_not_recompress" in x and x["do_not_recompress"]:
                 compress = bytearray(byte_read)
-                if x.target_uncompressed_size is not None:
-                    diff = x.target_uncompressed_size - len(byte_read)
+                if "target_uncompressed_size" in x:
+                    diff = x["target_uncompressed_size"] - len(byte_read)
                     byte_append = 0
                     if diff > 0:
                         byte_read += byte_append.to_bytes(diff, "big")
                     compress = bytearray(byte_read)
-                    uncompressed_size = x.target_uncompressed_size
+                    uncompressed_size = x["target_uncompressed_size"]
             else:
                 precomp = gzip.compress(byte_read, compresslevel=9)
                 byte_append = 0
-                diff = x.target_compressed_size - len(precomp)
+                diff = x["target_compressed_size"] - len(precomp)
                 if diff > 0:
                     precomp += byte_append.to_bytes(diff, "big")
                 compress = bytearray(precomp)
@@ -860,32 +662,32 @@ with open(newROMName, "r+b") as fh:
                 compress[5] = 0
                 compress[6] = 0
                 compress[7] = 0
-            with open(x.source_file, "wb") as fg:
+            with open(x["source_file"], "wb") as fg:
                 fg.write(compress)
-            x.output_file = x.source_file
+            x["output_file"] = x["source_file"]
 
-        if x.use_external_gzip:
-            if os.path.exists(x.source_file):
-                result = subprocess.check_output(["./build/gzip.exe", "-f", "-n", "-k", "-q", "-9", x.output_file.replace(".gz", "")])
-                if os.path.exists(x.output_file):
-                    with open(x.output_file, "r+b") as outputFile:
+        if "use_external_gzip" in x and x["use_external_gzip"]:
+            if os.path.exists(x["source_file"]):
+                result = subprocess.check_output(["./build/gzip.exe", "-f", "-n", "-k", "-q", "-9", x["output_file"].replace(".gz", "")])
+                if os.path.exists(x["output_file"]):
+                    with open(x["output_file"], "r+b") as outputFile:
                         # Chop off gzip footer
                         outputFile.truncate(len(outputFile.read()) - 8)
 
-        if os.path.exists(x.output_file):
+        if os.path.exists(x["output_file"]):
             byte_read = bytes()
-            if x.target_compressed_size is None:
+            if "target_compressed_size" not in x:
                 uncompressed_size = 0
-            with open(x.output_file, "rb") as fg:
+            with open(x["output_file"], "rb") as fg:
                 byte_read = fg.read()
-                if x.target_compressed_size is None:
+                if "target_compressed_size" not in x:
                     uncompressed_size = len(byte_read)
 
-            if x.do_not_compress:
+            if "do_not_compress" in x and x["do_not_compress"]:
                 compress = bytearray(byte_read)
-            elif x.use_external_gzip:
+            elif "use_external_gzip" in x and x["use_external_gzip"]:
                 compress = bytearray(byte_read)
-            elif x.use_zlib:
+            elif "use_zlib" in x and x["use_zlib"]:
                 compressor = zlib.compressobj(zlib.Z_BEST_COMPRESSION, zlib.DEFLATED, 25)
                 compress = compressor.compress(byte_read)
                 compress += compressor.flush()
@@ -903,30 +705,30 @@ with open(newROMName, "r+b") as fh:
                 compress[6] = 0
                 compress[7] = 0
 
-            print(" - Writing " + x.output_file + " (" + hex(len(compress)) + ") to ROM")
-            if x.pointer_table_index is not None and x.file_index is not None:
+            print(" - Writing " + x["output_file"] + " (" + hex(len(compress)) + ") to ROM")
+            if "pointer_table_index" in x and "file_index" in x:
                 # More complicated write, update the pointer tables to point to the new data
-                replaceROMFile(fh, x.pointer_table_index, x.file_index, compress, uncompressed_size)
-            elif x.start is not None:
-                if isROMAddressOverlay(x.start):
-                    replaceOverlayData(x.start, compress)
+                replaceROMFile(fh, x["pointer_table_index"], x["file_index"], compress, uncompressed_size)
+            elif "start" in x:
+                if isROMAddressOverlay(x["start"]):
+                    replaceOverlayData(x["start"], compress)
                 else:
-                    # Simply write the bytes at the absolute address in ROM specified by x.start
-                    fh.seek(x.start)
+                    # Simply write the bytes at the absolute address in ROM specified by x["start"]
+                    fh.seek(x["start"])
                     fh.write(compress)
             else:
-                print("  - WARNING: Can't find address information in file_dict entry to write " + x.output_file + " (" + hex(len(compress)) + ") to ROM")
+                print("  - WARNING: Can't find address information in file_dict entry to write " + x["output_file"] + " (" + hex(len(compress)) + ") to ROM")
         else:
-            print(x.output_file + " does not exist")
+            print(x["output_file"] + " does not exist")
 
         # Cleanup temporary files
-        if not x.do_not_delete:
-            if not x.do_not_delete_output:
-                if os.path.exists(x.output_file) and x.output_file != x.source_file:
-                    os.remove(x.output_file)
-            if not x.do_not_delete_source:
-                if os.path.exists(x.source_file):
-                    os.remove(x.source_file)
+        if not ("do_not_delete" in x and x["do_not_delete"]):
+            if not ("do_not_delete_output" in x and x["do_not_delete_output"]):
+                if os.path.exists(x["output_file"]) and x["output_file"] != x["source_file"]:
+                    os.remove(x["output_file"])
+            if not ("do_not_delete_source" in x and x["do_not_delete_source"]):
+                if os.path.exists(x["source_file"]):
+                    os.remove(x["source_file"])
 
     print("[5 / 7] - Writing recomputed pointer tables to ROM")
     writeModifiedPointerTablesToROM(fh)
@@ -1236,9 +1038,5 @@ with open(newROMName, "r+b") as fh:
     fh.write(size.to_bytes(4, "big"))
 
 print("[7 / 7] - Generating BizHawk RAM watch")
-
-# profile.disable()
-# ps = pstats.Stats(profile)
-# ps.print_stats()
 
 sys.exit()
