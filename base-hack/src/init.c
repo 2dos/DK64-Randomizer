@@ -237,6 +237,8 @@ void initHack(int source) {
 				*(int*)(0x8068188C) = 0; // Prevent disjoint mechanic for Caves/Fungi BBlast Bonus
 				*(short*)(0x80681898) = 0x1000;
 				*(int*)(0x8068191C) = 0; // Remove Oh Banana
+				*(short*)(0x80680986) = 0xFFFE; // Prevent Factory BBBandit Bonus dropping
+				*(short*)(0x806809C8) = 0x1000; // Prevent Fungi TTTrouble Bonus dropping
 			}
 			if (Rando.resolve_bonus) {
 				*(int*)(0x80681158) = 0x0C000000 | (((int)&completeBonus & 0xFFFFFF) >> 2); // Modify Function Call
@@ -509,6 +511,7 @@ void initHack(int source) {
 						*(int*)(0x806CAA2C) = 0x0C000000 | (((int)&UpdateCollisionDimensions_Krusha & 0xFFFFFF) >> 2); // Fix Collision
 						*(int*)(0x806D958C) = 0xC428CC7C; // Fix Cannon Arc
 						*(int*)(0x806D9520) = 0xC42ACC7C; // Fix Cannon Arc
+						CannonArcSize[1] = -17.3f; // -20.0f * (0.13f / 0.15f)
 						*(int*)(0x806E903C) = 0x0C000000 | (((int)&MinecartJumpFix & 0xFFFFFF) >> 2); // Fix Diddy Minecart Jump
 						*(int*)(0x806D259C) = 0x0C000000 | (((int)&MinecartJumpFix_0 & 0xFFFFFF) >> 2); // Fix Diddy Minecart Jump
 						*(int*)(0x806C90A8) = 0x0C000000 | (((int)&updateKongSize & 0xFFFFFF) >> 2); // Fix Scaling Issues
@@ -548,6 +551,7 @@ void initHack(int source) {
 						*(int*)(0x806CAA2C) = 0x0C000000 | (((int)&UpdateCollisionDimensions_Krusha & 0xFFFFFF) >> 2); // Fix Collision
 						*(int*)(0x806D958C) = 0xC428CC7C; // Fix Cannon Arc
 						*(int*)(0x806D9520) = 0xC42ACC7C; // Fix Cannon Arc
+						CannonArcSize[3] = -13.3f; // -20.0f * (0.1f / 0.15f)
 						*(int*)(0x806C90A8) = 0x0C000000 | (((int)&updateKongSize & 0xFFFFFF) >> 2); // Fix Scaling Issues
 						break;
 					case 4:
