@@ -91,6 +91,7 @@
 #define LLAMA_BAMBOOGATE 0x11
 #define LLAMA_GUNSWITCH 0x12
 #define LLAMA_BONGOPAD 0x16
+#define LLAMA_LAVAGATE 0x18
 #define TTEMPLE_SWITCH 0x0
 #define TTEMPLE_GUITARPAD 0x4
 #define TTEMPLE_KONGLETTER0 0xC
@@ -937,6 +938,10 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 					}
 				} else if (param2 == LLAMA_BONGOPAD) {
 					return Character == Rando.free_source_llama;
+				} else if (param2 == LLAMA_LAVAGATE) {
+					if (Rando.quality_of_life.remove_cutscenes) {
+						hideObject(behaviour_pointer);
+					}
 				} else if (param2 == LLAMA_BAMBOOGATE) {
 					if (index == 0) {
 						return checkFlag(kong_flags[(int)Rando.free_target_llama],0);

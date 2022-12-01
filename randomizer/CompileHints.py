@@ -446,24 +446,25 @@ def compileHints(spoiler: Spoiler):
                 hint_distribution[HintType.KongLocation] -= 1
                 continue
 
-        freeing_kong_name = kong_list[free_kong]
-        if spoiler.settings.wrinkly_hints == "cryptic":
-            if not kong_index == Kongs.any:
-                kong_name = random.choice(kong_cryptic[kong_index])
-            level_name = random.choice(level_cryptic[level_index])
-        else:
-            if not kong_index == Kongs.any:
-                kong_name = kong_list[kong_index]
-            level_name = level_list[level_index]
-        unlock_verb = "frees"
-        if kong_index == Kongs.any:
-            unlock_verb = "accesses"
-            kong_name = "an empty cage"
-        message = f"{freeing_kong_name} {unlock_verb} {kong_name} in {level_name}."
-        hinted_kongs.append(kong_index)
-        hint_location.hint_type = HintType.KongLocation
-        UpdateHint(hint_location, message)
-        placed_kong_hints += 1
+        if hint_location is not None:
+            freeing_kong_name = kong_list[free_kong]
+            if spoiler.settings.wrinkly_hints == "cryptic":
+                if not kong_index == Kongs.any:
+                    kong_name = random.choice(kong_cryptic[kong_index])
+                level_name = random.choice(level_cryptic[level_index])
+            else:
+                if not kong_index == Kongs.any:
+                    kong_name = kong_list[kong_index]
+                level_name = level_list[level_index]
+            unlock_verb = "frees"
+            if kong_index == Kongs.any:
+                unlock_verb = "accesses"
+                kong_name = "an empty cage"
+            message = f"{freeing_kong_name} {unlock_verb} {kong_name} in {level_name}."
+            hinted_kongs.append(kong_index)
+            hint_location.hint_type = HintType.KongLocation
+            UpdateHint(hint_location, message)
+            placed_kong_hints += 1
 
     # B. Locker hints need to be on the player's path to be useful
     hinted_blocker_combos = []

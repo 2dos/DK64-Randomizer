@@ -1119,7 +1119,7 @@ ColoredBananaGroupList = [
     ColoredBananaGroup(
         group=69,
         map_id=Maps.AztecLlamaTemple,
-        name="W2",
+        name="W2 in Llama temple",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.LlamaTempleBack,
         locations=[[5, 1.0, 2638, 385, 2632]],
@@ -1127,7 +1127,7 @@ ColoredBananaGroupList = [
     ColoredBananaGroup(
         group=69,
         map_id=Maps.AztecLlamaTemple,
-        name="W2",
+        name="W2 in Llama temple",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.LlamaTemple,
         locations=[[5, 1.0, 1409, 434, 3754]],

@@ -8,7 +8,10 @@ if (window.location.protocol != "https:") {
     location.href = location.href.replace("http://", "https://");
   }
 }
-if (location.hostname == "dev.dk64randomizer.com" || location.hostname == "dk64randomizer.com") {
+if (
+  location.hostname == "dev.dk64randomizer.com" ||
+  location.hostname == "dk64randomizer.com"
+) {
   var _LTracker = _LTracker || [];
   _LTracker.push({
     logglyKey: "5d3aa1b3-6ef7-4bc3-80ae-778d48a571b0",
@@ -48,7 +51,7 @@ window.onerror = function (error) {
 };
 function toast_alert(text) {
   try {
-    _LTracker.push({"text": text, "agent": user_agent});
+    _LTracker.push({ text: text, agent: user_agent });
   } catch {}
   Toastify({
     text: text,
@@ -395,3 +398,69 @@ function site_version_checker() {
   }
 }
 site_version_checker();
+function generate_seed(url, json, git_branch, run_id) {
+  $.ajax(url, {
+    data: JSON.stringify({
+      task_id: run_id,
+      branch: git_branch,
+      post_body: json,
+    }),
+    contentType: "application/json",
+    type: "POST",
+    success: function (xhr, textStatus) {
+      if (xhr.status == 202) {
+        $("#progress-text").text(
+          "Waiting in queue for other seeds to generate."
+        );
+        $("#patchprogress").width("40%");
+        setTimeout(generate_seed(json, git_branch, run_id), 5000);
+      } else {
+        $("#progress-text").text("Seed Gen Started");
+        $("#patchprogress").width("50%");
+        setTimeout(function () {
+          var check_status = setInterval(function () {
+            $.ajax(url + "?" + $.param({ task_id: run_id }), {
+              type: "GET",
+              success: function (response) {
+                // Start Patching
+                event_response_data = response;
+                pyodide.runPython(
+                  `
+                import js
+                from randomizer.Patching.ApplyRandomizer import patching_response
+                patching_response(str(js.event_response_data))
+                `
+                );
+                clearInterval(check_status);
+              },
+              error: function (xhr, textStatus) {
+                if (xhr.status == 425) {
+                  $("#progress-text").text("Seed Generating");
+                  $("#patchprogress").width("70%");
+                } else {
+                  $("#patchprogress").addClass("bg-danger");
+                  $("#progress-text").text(
+                    "Something went wrong please try again"
+                  );
+                  $("#patchprogress").width("100%");
+                  setTimeout(function () {
+                    $("#progressmodal").modal("hide");
+                  }, 1000);
+                  clearInterval(check_status);
+                }
+              },
+            });
+          }, 10000);
+        }, 1000);
+      }
+    },
+    error: function (xhr, textStatus) {
+      $("#patchprogress").addClass("bg-danger");
+      $("#progress-text").text("Something went wrong please try again");
+      $("#patchprogress").width("100%");
+      setTimeout(function () {
+        $("#progressmodal").modal("hide");
+      }, 1000);
+    },
+  });
+}

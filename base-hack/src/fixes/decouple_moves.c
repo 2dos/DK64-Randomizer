@@ -30,6 +30,15 @@ void crossKongInit(void) {
 
 static const unsigned char boss_maps[] = {0x8,0xC5,0x9A,0x6F,0x53,0xC4,0xC7,0xCB,0xCC,0xCD,0xCE,0xCF,0xD6};
 
+void initArcade(void) {
+	*(int*)(0x80024F10) = 0x240E0005; // ADDIU $t6, $r0, 0x5
+	*(short*)(0x80024F2A) = 0xC71B;
+	*(int*)(0x80024F2C) = 0xA0CEC71B; // SB $t6, 0xC71B ($a2)
+	for (int i = 0; i < 4; i++) {
+		ArcadeBackgrounds[i] = Rando.arcade_order[i];
+	}
+}
+
 void decouple_moves_fixes(void) {
 	if ((CurrentMap == CRANKY) || (CurrentMap == CANDY) || (CurrentMap == FUNKY)) {
 		PatchCrankyCode();
@@ -116,6 +125,9 @@ void decouple_moves_fixes(void) {
 	}
 	if (ObjectModel2Timer < 2) {
 		WarpData = 0;
+	}
+	if (CurrentMap == 2) {
+		initArcade();
 	}
 	writeCoinRequirements(1);
 	fixTBarrelsAndBFI(0);

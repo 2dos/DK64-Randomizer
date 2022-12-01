@@ -527,7 +527,7 @@ ColoredBananaGroupList = [
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.BeyondHatch,
         logic=lambda l: l.punch,
-        locations=[[5, 1.0, 2730, 52, 528]],
+        locations=[[5, 1.0, 2130, 52, 528]],
     ),
     ColoredBananaGroup(
         group=47,
@@ -541,7 +541,7 @@ ColoredBananaGroupList = [
     ColoredBananaGroup(
         group=48,
         map_id=Maps.FranticFactory,
-        name="On box in stack of boxes to Candy/Cranky",
+        name="On box in stack of boxes to Candy/Cranky - left",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.BeyondHatch,
         locations=[[5, 1.0, 976, 52, 868]],
@@ -549,7 +549,7 @@ ColoredBananaGroupList = [
     ColoredBananaGroup(
         group=49,
         map_id=Maps.FranticFactory,
-        name="On box in stack of boxes to Candy/Cranky",
+        name="On box in stack of boxes to Candy/Cranky - right",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.BeyondHatch,
         locations=[[5, 1.0, 972, 52, 628]],
@@ -1057,7 +1057,7 @@ ColoredBananaGroupList = [
         locations=[[5, 1.0, 540.67431640625, 623.0, 1692.7386474609375], [5, 1.0, 376.5771484375, 615.0, 1563.20947265625], [5, 1.0, 302.7023010253906, 615.0, 1410.3233642578125]],
     ),
     ColoredBananaGroup(
-        group=92,
+        group=91,
         map_id=Maps.FranticFactory,
         name="R&D upper walkway (Lanky)",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],

@@ -97,6 +97,7 @@ ColoredBananaGroupList = [
         name="Mushroom with vines leading to minecart",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.FungiForestStart,
+        logic=lambda l: l.vines,
         locations=[[5, 1.0, 2573, 410, 2733]],
     ),
     ColoredBananaGroup(
@@ -105,6 +106,7 @@ ColoredBananaGroupList = [
         name="On vines between two shrooms",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.FungiForestStart,
+        logic=lambda l: l.vines,
         locations=[[5, 1.2, 2140, 430, 2619], [5, 1.2, 2078, 445, 2434]],
     ),
     ColoredBananaGroup(
@@ -931,7 +933,12 @@ ColoredBananaGroupList = [
         locations=[[5, 1.0, 2550, 885, 2186], [5, 1.0, 2636, 762, 1200]],
     ),
     ColoredBananaGroup(
-        group=80, map_id=Maps.ForestWinchRoom, name="On boxes", konglist=[Kongs.diddy], region=Regions.WinchRoom, locations=[[5, 1.0, 236, 55, 135], [5, 1.0, 342, 26, 394], [5, 1.0, 388, 26, 173]]
+        group=80,
+        map_id=Maps.ForestWinchRoom,
+        name="On boxes in winch room",
+        konglist=[Kongs.diddy],
+        region=Regions.WinchRoom,
+        locations=[[5, 1.0, 236, 55, 135], [5, 1.0, 342, 26, 394], [5, 1.0, 388, 26, 173]],
     ),
     ColoredBananaGroup(
         group=81,
@@ -979,7 +986,7 @@ ColoredBananaGroupList = [
     ColoredBananaGroup(
         group=86,
         map_id=Maps.ForestThornvineBarn,
-        name="Near melon crate",
+        name="Near melon crate in thornvine area",
         konglist=[Kongs.donkey],
         region=Regions.ThornvineBarn,
         locations=[[1, 1.0, 512, 4, 620], [1, 1.0, 512, 4, 565], [1, 1.0, 512, 4, 510], [1, 1.0, 512, 4, 455], [1, 1.0, 512, 4, 400]],
@@ -1085,7 +1092,7 @@ ColoredBananaGroupList = [
     ColoredBananaGroup(
         group=97,
         map_id=Maps.ForestMillAttic,
-        name="On boxes",
+        name="On boxes in Lanky attic",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.MillAttic,
         locations=[[5, 1.0, 398, 42, 437], [5, 1.0, 164, 32, 251]],
@@ -1513,7 +1520,7 @@ ColoredBananaGroupList = [
     ColoredBananaGroup(
         group=128,
         map_id=Maps.ForestRafters,
-        name="Right side (Diddy)",
+        name="Rafters Right side (Diddy)",
         konglist=[Kongs.diddy],
         region=Regions.MillRafters,
         logic=lambda l: l.guitar,
@@ -1523,7 +1530,7 @@ ColoredBananaGroupList = [
     ColoredBananaGroup(
         group=129,
         map_id=Maps.ForestRafters,
-        name="Left side (Diddy)",
+        name="Rafters Left side (Diddy)",
         konglist=[Kongs.diddy],
         region=Regions.MillRafters,
         logic=lambda l: l.guitar,

@@ -397,6 +397,11 @@ def patching_response(responded_data):
         ROM().seek(sav + 0x116)
         ROM().write(1)
 
+    # Anything which requires calling the parent filter
+    if spoiler.settings.bananaport_rando in ("crossmap_coupled", "crossmap_decoupled"):
+        ROM().seek(sav + 0x47)
+        ROM().write(1)
+
     # Win Condition
     conditions = ["beat_krool", "get_key8", "all_fairies", "all_blueprints", "all_medals", "poke_snap", "all_keys"]
     if spoiler.settings.win_condition in conditions:
