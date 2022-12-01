@@ -97,6 +97,7 @@ ColoredBananaGroupList = [
         name="Mushroom with vines leading to minecart",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.FungiForestStart,
+        logic=lambda l: l.vines,
         locations=[[5, 1.0, 2573, 410, 2733]],
     ),
     ColoredBananaGroup(
@@ -105,6 +106,7 @@ ColoredBananaGroupList = [
         name="On vines between two shrooms",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.FungiForestStart,
+        logic=lambda l: l.vines,
         locations=[[5, 1.2, 2140, 430, 2619], [5, 1.2, 2078, 445, 2434]],
     ),
     ColoredBananaGroup(

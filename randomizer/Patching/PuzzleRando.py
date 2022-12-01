@@ -59,7 +59,7 @@ def randomize_puzzles(spoiler: Spoiler):
             else:
                 ROM().writeMultipleBytes(random.randint(0, 3), 1)
         # Arcade Level Order Rando
-        arcade_levels = ["25m","50m","75m","100m"]
+        arcade_levels = ["25m", "50m", "75m", "100m"]
         arcade_level_data = {
             "25m": 1,
             "50m": 4,

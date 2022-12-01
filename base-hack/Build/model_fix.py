@@ -4,6 +4,7 @@ import zlib
 import os
 import struct
 
+
 def intf_to_float(intf):
     """Convert float as int format to float."""
     if intf == 0:
@@ -11,11 +12,13 @@ def intf_to_float(intf):
     else:
         return struct.unpack("!f", bytes.fromhex("{:08X}".format(intf)))[0]
 
+
 def float_to_hex(f):
     """Convert float to hex."""
     if f == 0:
         return "0x00000000"
     return hex(struct.unpack("<I", struct.pack("<f", f))[0])
+
 
 rom_file = "rom/dk64.z64"
 pointer_offset = 0x101C50
@@ -154,15 +157,15 @@ with open(rom_file, "rb") as rom:
         with open(model["model_file"], "r+b") as fh:
             if idx == 0xDA:
                 # Write Krusha
-                for i in range(int(0x220/4)):
+                for i in range(int(0x220 / 4)):
                     fh.seek(0x4504 + (i * 4))
                     val = int.from_bytes(fh.read(4), "big")
                     if val != 0xFFFFFFFF and val > 0x10000000:
                         # My messed up way to ensure value is float
                         val_f = intf_to_float(val)
-                        val_f *= 0.55 # Scale down coordinates
+                        val_f *= 0.55  # Scale down coordinates
                         fh.seek(0x4504 + (i * 4))
-                        fh.write(int(float_to_hex(val_f),16).to_bytes(4, "big"))
+                        fh.write(int(float_to_hex(val_f), 16).to_bytes(4, "big"))
             fh.seek(0)
             sub_idx = 0
             for wipe in model["wipe"]:

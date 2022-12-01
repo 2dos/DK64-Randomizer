@@ -921,7 +921,7 @@ with open(newROMName, "r+b") as fh:
         fh.seek(0x1FED020 + coinreq["offset"])
         fh.write(coinreq["coins"].to_bytes(1, "big"))
     fh.seek(0x1FED020 + 0x48)
-    for lvl in (1,4,3,2): # Arcade Order
+    for lvl in (1, 4, 3, 2):  # Arcade Order
         fh.write(lvl.to_bytes(1, "big"))
     for x in range(5):
         # Write default Helm Order
