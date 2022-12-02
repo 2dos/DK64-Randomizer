@@ -265,6 +265,7 @@ def maskImage(im_f, base_index, min_y):
                 pix[x, y] = (base[0], base[1], base[2], base[3])
     return im_f
 
+
 def maskImageMonochrome(im_f, base_index, min_y):
     """Apply RGB mask to image in Black and White."""
     w, h = im_f.size
@@ -289,7 +290,7 @@ def maskImageMonochrome(im_f, base_index, min_y):
             base = list(pix[x, y])
             if base[3] > 0:
                 if not previous_pixel_opaque or (x < (w - 1) and list(pix[(x + 1), y])[3] == 0):
-                    #create an outline that contrasts the main color (black if white, white if black)
+                    # create an outline that contrasts the main color (black if white, white if black)
                     for channel in range(3):
                         base[channel] = int(mask2[channel])
                 else:
@@ -300,7 +301,7 @@ def maskImageMonochrome(im_f, base_index, min_y):
                         base[channel] = int(255 - base[channel])
                 pix[x, y] = (base[0], base[1], base[2], base[3])
                 previous_pixel_opaque = True
-            else: 
+            else:
                 previous_pixel_opaque = False
     return im_f
 
@@ -334,7 +335,7 @@ def writeColorImageToROM(im_f, table_index, file_index, width, height):
 
 
 def writeColorToROM(color, table_index, file_index):
-    """Write color to ROM."""
+    """Write color to ROM for kasplats."""
     file_start = js.pointer_addresses[table_index]["entries"][file_index]["pointing_to"]
     mask = getRGBFromHash(color)
     val_r = int((mask[0] >> 3) << 11)
@@ -357,8 +358,9 @@ def writeColorToROM(color, table_index, file_index):
     ROM().seek(file_start)
     ROM().writeBytes(data)
 
+
 def writeWhiteKasplatColorToROM(color1, color2, table_index, file_index):
-    """Write color to ROM."""
+    """Write color to ROM for white kasplats."""
     file_start = js.pointer_addresses[table_index]["entries"][file_index]["pointing_to"]
     mask = getRGBFromHash(color1)
     val_r = int((mask[0] >> 3) << 11)
@@ -374,38 +376,6 @@ def writeWhiteKasplatColorToROM(color1, color2, table_index, file_index):
     for y in range(42):
         for x in range(32):
             if y % 10 > 1:
-                bytes_array.extend([(rgba_val >> 8) & 0xFF, rgba_val & 0xFF])
-            else:
-                bytes_array.extend([(rgba_val2 >> 8) & 0xFF, rgba_val2 & 0xFF])
-    for i in range(18):
-        bytes_array.extend([(rgba_val >> 8) & 0xFF, rgba_val & 0xFF])
-    for i in range(4):
-        bytes_array.extend([0, 0])
-    for i in range(3):
-        bytes_array.extend([(rgba_val >> 8) & 0xFF, rgba_val & 0xFF])
-    data = bytearray(bytes_array)
-    if table_index == 25:
-        data = gzip.compress(data, compresslevel=9)
-    ROM().seek(file_start)
-    ROM().writeBytes(data)
-
-def writeColorStripePatternToROM(color1, color2, table_index, file_index):
-    """Write color to ROM."""
-    file_start = js.pointer_addresses[table_index]["entries"][file_index]["pointing_to"]
-    mask = getRGBFromHash(color1)
-    val_r = int((mask[0] >> 3) << 11)
-    val_g = int((mask[1] >> 3) << 6)
-    val_b = int((mask[2] >> 3) << 1)
-    rgba_val = val_r | val_g | val_b | 1
-    mask2 = getRGBFromHash(color2)
-    val_r2 = int((mask2[0] >> 3) << 11)
-    val_g2 = int((mask2[1] >> 3) << 6)
-    val_b2 = int((mask2[2] >> 3) << 1)
-    rgba_val2 = val_r2 | val_g2 | val_b2 | 1
-    bytes_array = []
-    for y in range(42):
-        for x in range(32):
-            if y > 20:
                 bytes_array.extend([(rgba_val >> 8) & 0xFF, rgba_val & 0xFF])
             else:
                 bytes_array.extend([(rgba_val2 >> 8) & 0xFF, rgba_val2 & 0xFF])
@@ -467,7 +437,7 @@ def overwrite_object_colors(spoiler: Spoiler):
                     balloon_im.paste(dk_single, balloon_single_frames[file - 5819], dk_single)
                     balloon_start = [5835, 5827, 5843, 5851, 5819]
                     writeColorImageToROM(balloon_im, 25, balloon_start[kong_index] + (file - 5819), 32, 64)
-            else: 
+            else:
                 # file = 4120
                 # # Kasplat Hair
                 # hair_im = getFile(25, file, True, 32, 44)
