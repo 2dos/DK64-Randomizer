@@ -104,7 +104,7 @@ LogicRegions = {
         Collectible(Collectibles.coin, Kongs.tiny, lambda l: True, None, 3),
     ],
     Regions.DonkeyIgloo: [
-        Collectible(Collectibles.banana, Kongs.donkey, lambda l: True, None, 7),
+        Collectible(Collectibles.banana, Kongs.donkey, lambda l: l.strongKong and l.isdonkey, None, 7),
         Collectible(Collectibles.bunch, Kongs.donkey, lambda l: True, None, 1),
         Collectible(Collectibles.balloon, Kongs.donkey, lambda l: l.coconut, None, 1),
     ],

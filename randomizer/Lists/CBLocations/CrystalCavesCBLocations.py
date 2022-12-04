@@ -978,6 +978,7 @@ ColoredBananaGroupList = [
         name="Center of igloo group with 7 singles",
         konglist=[Kongs.donkey],
         region=Regions.DonkeyIgloo,
+        logic=lambda l: l.strongKong and l.isdonkey,
         locations=[
             [1, 1.0, 506, 0, 515],
             [1, 1.0, 469, 0, 526],
