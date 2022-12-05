@@ -203,8 +203,9 @@ def convertColors():
                 comp = gzip.compress(bytearray(bytes_array), compresslevel=9)
                 fh.write(comp)
 
+
 def hueShift(im, amount):
-    """Applies a hue shift on an image."""
+    """Apply a hue shift on an image."""
     hsv_im = im.convert("HSV")
     im_px = im.load()
     w, h = hsv_im.size
@@ -223,8 +224,9 @@ def hueShift(im, amount):
             im_px[x, y] = (new[0], new[1], new[2], new[3])
     return im
 
+
 def applyMelonMask(shift: int):
-    """Applies a mask to the melon sprites."""
+    """Apply a mask to the melon sprites."""
     with open("rom/dk64-randomizer-base-dev.z64", "r+b") as fh:
         ptr_offset = 0x101C50
         data = {
@@ -235,7 +237,7 @@ def applyMelonMask(shift: int):
             fh.seek(ptr_offset + (table * 0x4))
             texture_table = ptr_offset + int.from_bytes(fh.read(4), "big")
             table_data = list(data[table])
-            for img in range(table_data[0], table_data[1]+1):
+            for img in range(table_data[0], table_data[1] + 1):
                 fh.seek(texture_table + (img * 4))
                 file_start = ptr_offset + int.from_bytes(fh.read(4), "big")
                 file_end = ptr_offset + int.from_bytes(fh.read(4), "big")
@@ -243,13 +245,13 @@ def applyMelonMask(shift: int):
                 fh.seek(file_start)
                 file_data = fh.read(file_size)
                 if table == 14:
-                    file_data = zlib.decompress(file_data, (15+32))
+                    file_data = zlib.decompress(file_data, (15 + 32))
                 temp_name = "temp.bin"
-                with open(temp_name,"wb") as fg:
+                with open(temp_name, "wb") as fg:
                     fg.write(file_data)
                 melon_im = Image.new(mode="RGBA", size=(48, 42))
                 px = melon_im.load()
-                with open(temp_name,"rb") as fg:
+                with open(temp_name, "rb") as fg:
                     for y in range(42):
                         for x in range(48):
                             px_info = int.from_bytes(fg.read(2), "big")
@@ -259,7 +261,7 @@ def applyMelonMask(shift: int):
                             px_alpha = int((px_info & 1) * 255)
                             px[x, y] = (px_red, px_green, px_blue, px_alpha)
                     melon_im = hueShift(melon_im, shift)
-                with open(temp_name,"wb") as fg:
+                with open(temp_name, "wb") as fg:
                     for y in range(42):
                         for x in range(48):
                             px_info = list(px[x, y])
@@ -277,6 +279,7 @@ def applyMelonMask(shift: int):
                     fh.write(new_data)
                 if os.path.exists(temp_name):
                     os.remove(temp_name)
+
 
 applyMelonMask(60)
 convertColors()

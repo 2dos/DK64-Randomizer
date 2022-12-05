@@ -265,8 +265,9 @@ def maskImage(im_f, base_index, min_y):
                 pix[x, y] = (base[0], base[1], base[2], base[3])
     return im_f
 
+
 def hueShift(im, amount):
-    """Applies a hue shift on an image."""
+    """Apply a hue shift on an image."""
     hsv_im = im.convert("HSV")
     im_px = im.load()
     w, h = hsv_im.size
@@ -569,8 +570,9 @@ def placeKrushaHead(slot):
     ROM().seek(rgba16_addr32)
     ROM().writeBytes(bytearray(data32))
 
+
 def writeMiscCosmeticChanges(spoiler: Spoiler):
-    """Write miscellaneous changes to the cosmetic colors"""
+    """Write miscellaneous changes to the cosmetic colors."""
     if spoiler.settings.misc_cosmetics:
         # Melon HUD
         data = {
@@ -581,7 +583,7 @@ def writeMiscCosmeticChanges(spoiler: Spoiler):
         for table in data:
             table_data = data[table]
             for img in range(table_data[0], table_data[1] + 1):
-                melon_im = getFile(table, img, table!=7, 48, 42)
+                melon_im = getFile(table, img, table != 7, 48, 42)
                 melon_im = hueShift(melon_im, shift)
                 melon_px = melon_im.load()
                 bytes_array = []
