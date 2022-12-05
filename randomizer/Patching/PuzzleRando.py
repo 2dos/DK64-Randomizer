@@ -67,7 +67,6 @@ def randomize_puzzles(spoiler: Spoiler):
             "100m": 2,
         }
         random.shuffle(arcade_levels)
-        print(arcade_levels)
         for lvl_index, lvl in enumerate(arcade_levels):
             ROM().seek(sav + 0x48 + lvl_index)
             ROM().writeMultipleBytes(arcade_level_data[lvl], 1)
