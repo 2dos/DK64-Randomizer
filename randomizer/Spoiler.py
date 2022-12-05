@@ -68,9 +68,9 @@ class Spoiler:
             elif move_master_type == 2:
                 # BFI
                 if self.settings.shockwave_status == "vanilla":
-                    master_moves.append({"move_type": "flag", "flag": "camera_shockwave", "price": 0})
+                    master_moves = [{"move_type": "flag", "flag": "camera_shockwave", "price": 0}]
                 else:
-                    master_moves.append({"move_type": None})
+                    master_moves = [{"move_type": None}]
             self.move_data.append(master_moves)
 
         self.hint_list = {}
@@ -632,7 +632,7 @@ class Spoiler:
                     price = 0
                     # Moves that are set with a single flag (e.g. training barrels, shockwave) are handled differently
                     if move_type == MoveTypes.Flag:
-                        self.move_data[2].append({"move_type": "flag", "flag": updated_item.flag, "price": price})
+                        self.move_data[2] = [{"move_type": "flag", "flag": updated_item.flag, "price": price}]
                     # This is for every other move typically purchased in a shop
                     else:
                         move_level = updated_item.index - 1
