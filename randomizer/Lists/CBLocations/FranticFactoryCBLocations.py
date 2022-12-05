@@ -533,9 +533,9 @@ ColoredBananaGroupList = [
         group=47,
         map_id=Maps.FranticFactory,
         name="On Simian Spring ledge with coins",
-        konglist=[Kongs.diddy, Kongs.tiny],
+        konglist=[Kongs.diddy],
         region=Regions.BeyondHatch,
-        logic=lambda l: (l.spring and l.isdiddy) or (l.twirl and l.istiny),
+        logic=lambda l: l.spring and l.isdiddy,
         locations=[[5, 1.0, 1072, 182, 478], [5, 1.0, 1092, 182, 478]],
     ),
     ColoredBananaGroup(
