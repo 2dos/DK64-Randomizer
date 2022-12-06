@@ -266,6 +266,27 @@ def maskImage(im_f, base_index, min_y):
     return im_f
 
 
+def hueShift(im, amount):
+    """Apply a hue shift on an image."""
+    hsv_im = im.convert("HSV")
+    im_px = im.load()
+    w, h = hsv_im.size
+    hsv_px = hsv_im.load()
+    for y in range(h):
+        for x in range(w):
+            old = list(hsv_px[x, y]).copy()
+            old[0] = (old[0] + amount) % 360
+            hsv_px[x, y] = (old[0], old[1], old[2])
+    rgb_im = hsv_im.convert("RGB")
+    rgb_px = rgb_im.load()
+    for y in range(h):
+        for x in range(w):
+            new = list(rgb_px[x, y])
+            new.append(list(im_px[x, y])[3])
+            im_px[x, y] = (new[0], new[1], new[2], new[3])
+    return im
+
+
 def maskImageMonochrome(im_f, base_index, min_y):
     """Apply RGB mask to image in Black and White."""
     w, h = im_f.size
@@ -548,3 +569,35 @@ def placeKrushaHead(slot):
     ROM().writeBytes(bytearray(data32_rgba32))
     ROM().seek(rgba16_addr32)
     ROM().writeBytes(bytearray(data32))
+
+
+def writeMiscCosmeticChanges(spoiler: Spoiler):
+    """Write miscellaneous changes to the cosmetic colors."""
+    if spoiler.settings.misc_cosmetics:
+        # Melon HUD
+        data = {
+            7: [0x13C, 0x147],
+            14: [0x5A, 0x5D],
+        }
+        shift = random.randint(0, 359)
+        for table in data:
+            table_data = data[table]
+            for img in range(table_data[0], table_data[1] + 1):
+                melon_im = getFile(table, img, table != 7, 48, 42)
+                melon_im = hueShift(melon_im, shift)
+                melon_px = melon_im.load()
+                bytes_array = []
+                for y in range(42):
+                    for x in range(48):
+                        pix_data = list(melon_px[x, y])
+                        red = int((pix_data[0] >> 3) << 11)
+                        green = int((pix_data[1] >> 3) << 6)
+                        blue = int((pix_data[2] >> 3) << 1)
+                        alpha = int(pix_data[3] != 0)
+                        value = red | green | blue | alpha
+                        bytes_array.extend([(value >> 8) & 0xFF, value & 0xFF])
+                px_data = bytearray(bytes_array)
+                if table != 7:
+                    px_data = gzip.compress(px_data, compresslevel=9)
+                ROM().seek(js.pointer_addresses[table]["entries"][img]["pointing_to"])
+                ROM().writeBytes(px_data)

@@ -83,9 +83,10 @@ set_variables = {
     "medal_cb_req": 5,
     "hard_enemies": 1,
     "remove_oscillation_effects": 1,
-    "starting_map": 0x1E,
-    "starting_exit": 4,
+    # "starting_map": 0x1E,
+    # "starting_exit": 4,
     "rareware_gb_fairies": 1,
+    "call_parent_filter": 1,
 }
 
 

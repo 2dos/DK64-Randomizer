@@ -138,6 +138,8 @@ for x in range(5):
             "do_not_delete_source": True,
         }
     )
+for x in range(0x5A, 0x5E):
+    file_dict.append({"name": f"Melon Slice ({hex(x)})", "pointer_table_index": 14, "file_index": x, "source_file": f"melon{x}.bin", "target_compressed_size": 48 * 42 * 2})
 
 for ci, coin in enumerate(["nin_coin", "rw_coin"]):
     for item in range(2):

@@ -30,14 +30,41 @@ void crossKongInit(void) {
 
 static const unsigned char boss_maps[] = {0x8,0xC5,0x9A,0x6F,0x53,0xC4,0xC7,0xCB,0xCC,0xCD,0xCE,0xCF,0xD6};
 
+void arcadeExit(void) {
+	if (!ArcadeExited) {
+		if ((ArcadeEnableReward) && (ArcadeStoryMode)) {
+			if (!checkFlag(FLAG_ARCADE_ROUND1, 0)) {
+				setFlag(0x10, 1, 2);
+			} else if (!checkFlag(FLAG_COLLECTABLE_NINTENDOCOIN, 0)) {
+				setFlag(0x11, 1, 2);
+			}
+		}
+		if (!ArcadeStoryMode) {
+			initiateTransition(0x50, 0);
+		} else {
+			ExitFromBonus();
+		}
+		ArcadeExited = 1;
+	}
+}
+
 void initArcade(void) {
 	*(int*)(0x80024F10) = 0x240E0005; // ADDIU $t6, $r0, 0x5
 	*(short*)(0x80024F2A) = 0xC71B;
 	*(int*)(0x80024F2C) = 0xA0CEC71B; // SB $t6, 0xC71B ($a2)
+	*(int*)(0x80024D5C) = 0x0C000000 | (((int)&arcadeExit & 0xFFFFFF) >> 2);
+	*(int*)(0x800257B4) = 0x0C000000 | (((int)&arcadeExit & 0xFFFFFF) >> 2);
+	*(int*)(0x8002B6D4) = 0x0C000000 | (((int)&arcadeExit & 0xFFFFFF) >> 2);
+	*(int*)(0x8002FA58) = 0x0C000000 | (((int)&arcadeExit & 0xFFFFFF) >> 2);
+	*(short*)(0x80024F32) = 0x82; // Swap flags
+	*(short*)(0x80024F56) = 0x84; // Swap flags
+	*(short*)(0x80024F4A) = 4; // Swap levels
+	*(short*)(0x80024F6E) = 8; // Swap levels
 	for (int i = 0; i < 4; i++) {
 		ArcadeBackgrounds[i] = Rando.arcade_order[i];
 	}
 }
+
 
 void decouple_moves_fixes(void) {
 	if ((CurrentMap == CRANKY) || (CurrentMap == CANDY) || (CurrentMap == FUNKY)) {

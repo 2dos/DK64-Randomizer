@@ -106,6 +106,9 @@ void correctDKPortal(void) {
 		if (portal_exit == exit) {
 			portal_state = 0;
 		}
+		if ((CurrentMap == 7) && (exit == 15)) {
+			portal_state = 0;
+		}
 		int _count = ObjectModel2Count;
 		int* m2location = (int*)ObjectModel2Pointer;
 		for (int i = 0; i < _count; i++) {
