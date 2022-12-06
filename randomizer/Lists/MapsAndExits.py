@@ -239,6 +239,7 @@ RegionMapList = {
     Regions.AngryAztecLobby: Maps.AngryAztecLobby,
     Regions.FranticFactoryLobby: Maps.FranticFactoryLobby,
     Regions.GloomyGalleonLobby: Maps.GloomyGalleonLobby,
+    Regions.GloomyGalleonLobbyEntrance: Maps.GloomyGalleonLobby,
     Regions.FungiForestLobby: Maps.FungiForestLobby,
     Regions.CrystalCavesLobby: Maps.CrystalCavesLobby,
     Regions.CreepyCastleLobby: Maps.CreepyCastleLobby,
@@ -286,7 +287,6 @@ RegionMapList = {
     Regions.FactoryBaboonBlast: Maps.FactoryBaboonBlast,
     # Galleon
     Regions.GloomyGalleonStart: Maps.GloomyGalleon,
-    Regions.GloomyGalleonLobbyEntrance: Maps.GloomyGalleon,
     Regions.GalleonPastVines: Maps.GloomyGalleon,
     Regions.GalleonBeyondPineappleGate: Maps.GloomyGalleon,
     Regions.LighthouseSurface: Maps.GloomyGalleon,
@@ -574,7 +574,6 @@ MapExitTable = {
         "From Factory Lobby",
     ],
     Maps.GloomyGalleon: [
-        "From DK Isles",
         "From Galleon Lobby",
         "From Diddy 5DShip",
         "From Chunky 5DShip",
