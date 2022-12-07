@@ -191,3 +191,4 @@ balloons.txt
 static/py_libraries/dk64rando*.whl
 !cutscenes_skipped.csv
 test.bps
+rom_tester.html

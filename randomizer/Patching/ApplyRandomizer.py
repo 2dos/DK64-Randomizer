@@ -77,6 +77,14 @@ def patching_response(responded_data):
 
         js.save_text_as_file(codecs.encode(pickle.dumps(spoiler), "base64").decode(), f"dk64-{spoiler.settings.seed_id}.lanky")
     js.write_seed_history(spoiler.settings.seed_id, codecs.encode(pickle.dumps(spoiler), "base64").decode(), spoiler.settings.public_hash)
+    # Write date to ROM for debugging purposes
+    dt = js.getDate()
+    temp_json = json.loads(spoiler.json)
+    temp_json["Settings"]["Generation Timestamp"] = dt
+    spoiler.json = json.dumps(temp_json, indent=4)
+    ROM().seek(0x1FFF200)
+    ROM().writeBytes(dt.encode("ascii"))
+
     # Starting index for our settings
     sav = spoiler.settings.rom_data
 

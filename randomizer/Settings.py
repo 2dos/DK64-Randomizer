@@ -2,6 +2,7 @@
 import hashlib
 import inspect
 import json
+import js
 import random
 from version import whl_hash
 from random import randint
