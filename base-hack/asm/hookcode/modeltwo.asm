@@ -1,43 +1,43 @@
 ObjectRotate:
-    BEQ     v0, at, ObjectRotate_ApplyRotate
-    ADDIU   at, r0, 0x288
-    BEQ     v0, at, ObjectRotate_ApplyRotate
-    ADDIU   at, r0, 0x90
-    BEQ     v0, at, ObjectRotate_ApplyRotate
-    ADDIU   at, r0, 0x18D
-    BEQ     v0, at, ObjectRotate_ApplyRotate
-    ADDIU   at, r0, 0x13C
-    BEQ     v0, at, ObjectRotate_ApplyRotate
-    ADDIU   at, r0, 0xDE
-    BEQ     v0, at, ObjectRotate_ApplyRotate
-    ADDIU   at, r0, 0xE0
-    BEQ     v0, at, ObjectRotate_ApplyRotate
-    ADDIU   at, r0, 0xE1
-    BEQ     v0, at, ObjectRotate_ApplyRotate
-    ADDIU   at, r0, 0xDD
-    BEQ     v0, at, ObjectRotate_ApplyRotate
-    ADDIU   at, r0, 0xDF
-    BEQ     v0, at, ObjectRotate_ApplyRotate
-    ADDIU   at, r0, 0x48
-    BEQ     v0, at, ObjectRotate_ApplyRotate
-    ADDIU   at, r0, 0x28F
-    BEQ     v0, at, ObjectRotate_ApplyRotate
-    ADDIU   at, r0, 0x5B
-    BEQ     v0, at, ObjectRotate_ApplyRotate
-    ADDIU   at, r0, 0x1F2
-    BEQ     v0, at, ObjectRotate_ApplyRotate
-    ADDIU   at, r0, 0x1F3
-    BEQ     v0, at, ObjectRotate_ApplyRotate
-    ADDIU   at, r0, 0x1F5
-    BEQ     v0, at, ObjectRotate_ApplyRotate
-    ADDIU   at, r0, 0x1F6
-    BEQ     v0, at, ObjectRotate_ApplyRotate
-    ADDIU   at, r0, 0x59
-    BEQ     v0, at, ObjectRotate_ApplyRotate
-    NOP
-    J       0x80637150
-    NOP
+    beq v0, $at, ObjectRotate_ApplyRotate
+    addiu $at, $zero, 0x288
+    beq v0, $at, ObjectRotate_ApplyRotate
+    addiu $at, $zero, 0x90
+    beq v0, $at, ObjectRotate_ApplyRotate
+    addiu $at, $zero, 0x18D
+    beq v0, $at, ObjectRotate_ApplyRotate
+    addiu $at, $zero, 0x13C
+    beq v0, $at, ObjectRotate_ApplyRotate
+    addiu $at, $zero, 0xDE
+    beq v0, $at, ObjectRotate_ApplyRotate
+    addiu $at, $zero, 0xE0
+    beq v0, $at, ObjectRotate_ApplyRotate
+    addiu $at, $zero, 0xE1
+    beq v0, $at, ObjectRotate_ApplyRotate
+    addiu $at, $zero, 0xDD
+    beq v0, $at, ObjectRotate_ApplyRotate
+    addiu $at, $zero, 0xDF
+    beq v0, $at, ObjectRotate_ApplyRotate
+    addiu $at, $zero, 0x48
+    beq v0, $at, ObjectRotate_ApplyRotate
+    addiu $at, $zero, 0x28F
+    beq v0, $at, ObjectRotate_ApplyRotate
+    addiu $at, $zero, 0x5B
+    beq v0, $at, ObjectRotate_ApplyRotate
+    addiu $at, $zero, 0x1F2
+    beq v0, $at, ObjectRotate_ApplyRotate
+    addiu $at, $zero, 0x1F3
+    beq v0, $at, ObjectRotate_ApplyRotate
+    addiu $at, $zero, 0x1F5
+    beq v0, $at, ObjectRotate_ApplyRotate
+    addiu $at, $zero, 0x1F6
+    beq v0, $at, ObjectRotate_ApplyRotate
+    addiu $at, $zero, 0x59
+    beq v0, $at, ObjectRotate_ApplyRotate
+    nop
+    j 0x80637150
+    nop
 
     ObjectRotate_ApplyRotate:
-        J       0x80637160
-        NOP
+        j 0x80637160
+        nop
