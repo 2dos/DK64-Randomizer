@@ -357,6 +357,7 @@ void initHack(int source) {
 				*(int*)(0x806BE8D8) = 0x0C000000 | (((int)&RabbitRaceInfiniteCode & 0xFFFFFF) >> 2); // Modify Function Call
 				*(int*)(0x8067C168) = 0x0C000000 | (((int)&fixDilloTNTPads & 0xFFFFFF) >> 2); // Modify Function Call
 			}
+			*(int*)(0x806A7564) = 0xC4440080; // Crown default floor will be it's initial Y spawn position. Fixes a crash on N64
 			if (Rando.quality_of_life.fast_picture) {
 				// Fast Camera Photo
 				*(short*)(0x80699454) = 0x5000; // Fast tick/no mega-slowdown on Biz

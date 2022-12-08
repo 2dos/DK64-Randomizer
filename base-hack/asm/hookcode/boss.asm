@@ -1,316 +1,316 @@
 Jump_KRoolLankyPhaseFix:
-    J 			KRoolLankyPhaseFix
-    NOP
+    j KRoolLankyPhaseFix
+    nop
 Jump_KKOPhaseHandler:
-    J 			KKOPhaseHandler
-    NOP
+    j KKOPhaseHandler
+    nop
 Jump_KKOInitPhase:
-    J 			KKOInitPhase
-    NOP
+    j KKOInitPhase
+    nop
 Jump_MadJackShort:
-    J 			MadJackShort
-    NOP
+    j MadJackShort
+    nop
 Jump_PufftossShort:
-    J 			PufftossShort
-    NOP
+    j PufftossShort
+    nop
 Jump_DogadonRematchShort:
-    J 			DogadonRematchShort
-    NOP
+    j DogadonRematchShort
+    nop
 Jump_DilloRematchShort:
-    J 			DilloRematchShort
-    NOP
+    j DilloRematchShort
+    nop
 Jump_DKPhaseShort:
-    J 			DKPhaseShort
-    NOP
+    j DKPhaseShort
+    nop
 Jump_ChunkyPhaseShort:
-    J 			ChunkyPhaseShort
-    NOP
+    j ChunkyPhaseShort
+    nop
 Jump_TinyPhaseShort:
-    J 			TinyPhaseShort
-    NOP
+    j TinyPhaseShort
+    nop
 Jump_ChunkyPhaseAddedSave:
-    J 			ChunkyPhaseAddedSave
-    NOP
+    j ChunkyPhaseAddedSave
+    nop
     
 
 PatchKRoolCode:
-    LUI 		t3, hi(Jump_KRoolLankyPhaseFix)
-    LW 			t3, lo(Jump_KRoolLankyPhaseFix) (t3)
-    LUI 		t4, 0x8003
-    SW 			t3, 0x8CCC (t4)
-    SW 			r0, 0x8CD0 (t4)
+    lui $t3, hi(Jump_KRoolLankyPhaseFix)
+    lw $t3, lo(Jump_KRoolLankyPhaseFix) ($t3)
+    lui $t4, 0x8003
+    sw $t3, 0x8CCC ($t4)
+    sw $zero, 0x8CD0 ($t4)
 
-    LUI 		t3, hi(KKOPhaseRandoOn)
-    LBU 		t3, lo(KKOPhaseRandoOn) (t3)
-    BEQZ 		t3, PatchKRoolCode_0
-    NOP
+    lui $t3, hi(KKOPhaseRandoOn)
+    lbu $t3, lo(KKOPhaseRandoOn) ($t3)
+    beqz $t3, PatchKRoolCode_0
+    nop
 
-    LUI 		t3, hi(Jump_KKOPhaseHandler)
-    LW 			t3, lo(Jump_KKOPhaseHandler) (t3)
-    LUI 		t4, 0x8003
-    SW 			t3, 0x2570 (t4)
-    SW 			r0, 0x2574 (t4)
+    lui $t3, hi(Jump_KKOPhaseHandler)
+    lw $t3, lo(Jump_KKOPhaseHandler) ($t3)
+    lui $t4, 0x8003
+    sw $t3, 0x2570 ($t4)
+    sw $zero, 0x2574 ($t4)
 
-    LUI 		t3, hi(Jump_KKOInitPhase)
-    LW 			t3, lo(Jump_KKOInitPhase) (t3)
-    LUI 		t4, 0x8003
-    SW 			t3, 0x1B2C (t4)
-    SW 			r0, 0x1B30 (t4)
+    lui $t3, hi(Jump_KKOInitPhase)
+    lw $t3, lo(Jump_KKOInitPhase) ($t3)
+    lui $t4, 0x8003
+    sw $t3, 0x1B2C ($t4)
+    sw $zero, 0x1B30 ($t4)
 
-    // KKO Last Phase Check
-    LUI 		t3, 0x8003
-    ADDIU 		t4, r0, 4
-    SH 			t4, 0x259A (t3)
+    ; KKO Last Phase Check
+    lui $t3, 0x8003
+    addiu $t4, $zero, 4
+    sh $t4, 0x259A ($t3)
 
-    // KKO Enemy Check
-    LUI 		t3, hi(KKOPhaseOrder + 1)
-    LBU 		t3, lo(KKOPhaseOrder + 1) (t3)
-    LUI 		t4, 0x8003
-    SH 			t3, 0x2566 (t4)
+    ; KKO Enemy Check
+    lui $t3, hi(KKOPhaseOrder + 1)
+    lbu $t3, lo(KKOPhaseOrder + 1) ($t3)
+    lui $t4, 0x8003
+    sh $t3, 0x2566 ($t4)
 
     PatchKRoolCode_0:
-        LUI 		t3, hi(ShorterBosses)
-        LBU 		t3, lo(ShorterBosses) (t3)
-        BEQZ 		t3, PatchKRoolCode_1
-        NOP
+        lui $t3, hi(ShorterBosses)
+        lbu $t3, lo(ShorterBosses) ($t3)
+        beqz $t3, PatchKRoolCode_1
+        nop
 
-        LUI 		t3, hi(Jump_MadJackShort)
-        LW 			t3, lo(Jump_MadJackShort) (t3)
-        LUI 		t4, 0x8003
-        SW 			t3, 0x5120 (t4)
-        SW 			r0, 0x5124 (t4)
+        lui $t3, hi(Jump_MadJackShort)
+        lw $t3, lo(Jump_MadJackShort) ($t3)
+        lui $t4, 0x8003
+        sw $t3, 0x5120 ($t4)
+        sw $zero, 0x5124 ($t4)
 
-        // Mad Jack Cutscene Memery
-        LUI 		t3, 0x8003
-        ADDIU 		t4, r0, 2
-        SH 			t4, 0x50D2 (t3)
+        ; Mad Jack Cutscene Memery
+        lui $t3, 0x8003
+        addiu $t4, $zero, 2
+        sh $t4, 0x50D2 ($t3)
 
-        LUI 		t3, hi(Jump_PufftossShort)
-        LW 			t3, lo(Jump_PufftossShort) (t3)
-        LUI 		t4, 0x8003
-        SW 			t3, 0x9AAC (t4)
-        SW 			r0, 0x9AB0 (t4)
+        lui $t3, hi(Jump_PufftossShort)
+        lw $t3, lo(Jump_PufftossShort) ($t3)
+        lui $t4, 0x8003
+        sw $t3, 0x9AAC ($t4)
+        sw $zero, 0x9AB0 ($t4)
 
-        LUI 		t3, hi(Jump_DogadonRematchShort)
-        LW 			t3, lo(Jump_DogadonRematchShort) (t3)
-        LUI 		t4, 0x8003
-        SW 			t3, 0xACB0 (t4)
-        SW 			r0, 0xACB4 (t4)
+        lui $t3, hi(Jump_DogadonRematchShort)
+        lw $t3, lo(Jump_DogadonRematchShort) ($t3)
+        lui $t4, 0x8003
+        sw $t3, 0xACB0 ($t4)
+        sw $zero, 0xACB4 ($t4)
 
-        LUI 		t3, hi(Jump_DilloRematchShort)
-        LW 			t3, lo(Jump_DilloRematchShort) (t3)
-        LUI 		t4, 0x8002
-        SW 			t3, 0x57CC (t4)
-        SW 			r0, 0x57D0 (t4)
+        lui $t3, hi(Jump_DilloRematchShort)
+        lw $t3, lo(Jump_DilloRematchShort) ($t3)
+        lui $t4, 0x8002
+        sw $t3, 0x57CC ($t4)
+        sw $zero, 0x57D0 ($t4)
 
-        // KKO Phase Hit Limit
-        LUI 		t3, 0x8003
-        ADDIU 		t4, r0, 2
-        SH 			t4, 0x22BA (t3)
+        ; KKO Phase Hit Limit
+        lui $t3, 0x8003
+        addiu $t4, $zero, 2
+        sh $t4, 0x22BA ($t3)
 
-        LUI 		t3, hi(Jump_DKPhaseShort)
-        LW 			t3, lo(Jump_DKPhaseShort) (t3)
-        LUI 		t4, 0x8003
-        SW 			t3, 0xDB10 (t4)
-        SW 			r0, 0xDB14 (t4)
+        lui $t3, hi(Jump_DKPhaseShort)
+        lw $t3, lo(Jump_DKPhaseShort) ($t3)
+        lui $t4, 0x8003
+        sw $t3, 0xDB10 ($t4)
+        sw $zero, 0xDB14 ($t4)
 
-        // Diddy Phase Hit Count
-        LUI 		t3, 0x8003
-        ADDIU 		t4, r0, 2
-        SH 			t4, 0xE52A (t3)
+        ; Diddy Phase Hit Count
+        lui $t3, 0x8003
+        addiu $t4, $zero, 2
+        sh $t4, 0xE52A ($t3)
 
-        // Lanky Phase Hit Count
-        LUI 		t3, 0x8003
-        ADDIU 		t4, r0, 2
-        SH 			t4, 0xEF02 (t3)
+        ; Lanky Phase Hit Count
+        lui $t3, 0x8003
+        addiu $t4, $zero, 2
+        sh $t4, 0xEF02 ($t3)
 
-        LUI 		t3, hi(Jump_TinyPhaseShort)
-        LW 			t3, lo(Jump_TinyPhaseShort) (t3)
-        LUI 		t4, 0x8003
-        SW 			t3, 0x0370 (t4)
-        SW 			r0, 0x0374 (t4)
+        lui $t3, hi(Jump_TinyPhaseShort)
+        lw $t3, lo(Jump_TinyPhaseShort) ($t3)
+        lui $t4, 0x8003
+        sw $t3, 0x0370 ($t4)
+        sw $zero, 0x0374 ($t4)
 
-        LUI 		t3, hi(Jump_ChunkyPhaseShort)
-        LW 			t3, lo(Jump_ChunkyPhaseShort) (t3)
-        LUI 		t4, 0x8003
-        SW 			t3, 0x14B4 (t4)
-        SW 			r0, 0x14B8 (t4)
+        lui $t3, hi(Jump_ChunkyPhaseShort)
+        lw $t3, lo(Jump_ChunkyPhaseShort) ($t3)
+        lui $t4, 0x8003
+        sw $t3, 0x14B4 ($t4)
+        sw $zero, 0x14B8 ($t4)
 
     PatchKRoolCode_1:
-        LUI 		t3, hi(Jump_ChunkyPhaseAddedSave)
-        LW 			t3, lo(Jump_ChunkyPhaseAddedSave) (t3)
-        LUI 		t4, 0x8003
-        SW 			t3, 0x1378 (t4)
-        SW 			r0, 0x137C (t4)
+        lui $t3, hi(Jump_ChunkyPhaseAddedSave)
+        lw $t3, lo(Jump_ChunkyPhaseAddedSave) ($t3)
+        lui $t4, 0x8003
+        sw $t3, 0x1378 ($t4)
+        sw $zero, 0x137C ($t4)
 
 
-        JR 			ra
-        NOP
+        jr ra
+        nop
 
 KRoolLankyPhaseFix:
-    LUI 		a1, 0x8003
-    LBU 		a2, 0x43 (sp)
-    SLL 		a2, a2, 1
-    ADDU 		a1, a1, a2
-    J 			0x80028CD4
-    LH 			a1, 0x59A0 (a1)
+    lui $a1, 0x8003
+    lbu $a2, 0x43 ($sp)
+    sll $a2, $a2, 1
+    addu $a1, $a1, $a2
+    j 0x80028CD4
+    lh $a1, 0x59A0 ($a1)
 
 KKOPhaseHandler:
-    LUI 		v0, hi(KKOPhaseOrder)
-    ADDIU 		v0, v0, lo(KKOPhaseOrder)
-    LB 			a0, 0x0 (v0)
-    BNE 		t7, a0, KKOPhaseHandler_Slot2
-    NOP
-    B 			KKOPhaseHandler_Finish
-    LB 			t8, 0x1 (v0)
+    lui v0, hi(KKOPhaseOrder)
+    addiu v0, v0, lo(KKOPhaseOrder)
+    lb $a0, 0x0 (v0)
+    bne $t7, $a0, KKOPhaseHandler_Slot2
+    nop
+    b KKOPhaseHandler_Finish
+    lb $t8, 0x1 (v0)
 
     KKOPhaseHandler_Slot2:
-        LB 		a0, 0x1 (v0)
-        BNE 	t7, a0, KKOPhaseHandler_Slot3
-        NOP
-        B 		KKOPhaseHandler_Finish
-        LB 		t8, 0x2 (v0)
+        lb $a0, 0x1 (v0)
+        bne $t7, $a0, KKOPhaseHandler_Slot3
+        nop
+        b KKOPhaseHandler_Finish
+        lb $t8, 0x2 (v0)
 
     KKOPhaseHandler_Slot3:
-        LB 		a0, 0x2 (v0)
-        BNE 	t7, a0, KKOPhaseHandler_Finish
-        NOP
-        B 		KKOPhaseHandler_Finish
-        ADDIU 	t8, r0, 4
+        lb $a0, 0x2 (v0)
+        bne $t7, $a0, KKOPhaseHandler_Finish
+        nop
+        b KKOPhaseHandler_Finish
+        addiu $t8, $zero, 4
 
     KKOPhaseHandler_Finish:
-        SB 		t8, 0x12 (s0)
-        J 		0x80032578
-        LB 		v0, 0x12 (s0)
+        sb $t8, 0x12 ($s0)
+        j 0x80032578
+        lb v0, 0x12 ($s0)
 
 KKOInitPhase:
-    LUI 		at, hi(KKOPhaseOrder)
-    LB 			at, lo(KKOPhaseOrder) (at)
-    SB 			at, 0x12 (s0)
-    J 			0x80031B34
-    LUI 		at, 0x8003
+    lui $at, hi(KKOPhaseOrder)
+    lb $at, lo(KKOPhaseOrder) ($at)
+    sb $at, 0x12 ($s0)
+    j 0x80031B34
+    lui $at, 0x8003
 
 MadJackShort:
-    ADDIU 		t1, r0, 1 // Phase 2
-    BEQ 		t1, t8, MadJackShort_Skip
-    NOP
-    ADDIU 		t1, r0, 3 // Phase 4
-    BNE 		t1, t8, MadJackShort_Finish
-    NOP
+    addiu $t1, $zero, 1 ; Phase 2
+    beq $t1, $t8, MadJackShort_Skip
+    nop
+    addiu $t1, $zero, 3 ; Phase 4
+    bne $t1, $t8, MadJackShort_Finish
+    nop
 
     MadJackShort_Skip:
-        ADDIU 		t8, t8, 1
+        addiu $t8, $t8, 1
 
     MadJackShort_Finish:
-        ANDI 		t1, t8, 0xFF
-        J 			0x80035128
-        SLL 		t0, t1, 2
+        andi $t1, $t8, 0xFF
+        j 0x80035128
+        sll $t0, $t1, 2
 
 PufftossShort:
-    ADDIU 		t6, r0, 1 // Phase 2
-    BEQ 		t5, t6, PufftossShort_Skip
-    NOP
-    ADDIU 		t6, r0, 3 // Phase 4
-    BNE 		t5, t6, PufftossShort_Finish
-    NOP
+    addiu $t6, $zero, 1 ; Phase 2
+    beq $t5, $t6, PufftossShort_Skip
+    nop
+    addiu $t6, $zero, 3 ; Phase 4
+    bne $t5, $t6, PufftossShort_Finish
+    nop
 
     PufftossShort_Skip:
-        ADDIU 		t5, t5, 1
+        addiu $t5, $t5, 1
 
     PufftossShort_Finish:
-        ANDI 		t6, t5, 0xFF
-        J 			0x80029AB4
-        SLL 		t7, t6, 2
+        andi $t6, $t5, 0xFF
+        j 0x80029AB4
+        sll $t7, $t6, 2
 
 DogadonRematchShort:
-    ADDIU 		v0, r0, 0x53 // Dogadon 2 Map
-    LUI 		t1, hi(CurrentMap)
-    LW 			t1, lo(CurrentMap) (t1)
-    BNE 		v0, t1, DogadonRematchShort_Finish
-    NOP
-    ADDIU 		v0, r0, 1 // Phase 2
-    BNE 		t0, v0, DogadonRematchShort_Finish
-    NOP
-    ADDIU 		t0, t0, 1
+    addiu v0, $zero, 0x53 ; Dogadon 2 Map
+    lui $t1, hi(CurrentMap)
+    lw $t1, lo(CurrentMap) ($t1)
+    bne v0, $t1, DogadonRematchShort_Finish
+    nop
+    addiu v0, $zero, 1 ; Phase 2
+    bne $t0, v0, DogadonRematchShort_Finish
+    nop
+    addiu $t0, $t0, 1
 
     DogadonRematchShort_Finish:
-        ANDI 	v0, t0, 0xFF
-        J 		0x8002ACB8
-        SLL 	t1, v0, 2
+        andi v0, $t0, 0xFF
+        j 0x8002ACB8
+        sll $t1, v0, 2
 
 DilloRematchShort:
-    ADDIU 		t4, t3, 1
-    ADDIU 		t5, r0, 0xC4 // Dillo 2 Map
-    LUI 		at, hi(CurrentMap)
-    LW 			at, lo(CurrentMap) (at)
-    BNE 		t5, at, DilloRematchShort_Finish
-    NOP
-    ADDIU 		t5, r0, 1 // Phase 2
-    BNE 		t5, t4, DilloRematchShort_Finish
-    NOP
-    ADDIU 		t4, t4, 1
+    addiu $t4, $t3, 1
+    addiu $t5, $zero, 0xC4 ; Dillo 2 Map
+    lui $at, hi(CurrentMap)
+    lw $at, lo(CurrentMap) ($at)
+    bne $t5, $at, DilloRematchShort_Finish
+    nop
+    addiu $t5, $zero, 1 ; Phase 2
+    bne $t5, $t4, DilloRematchShort_Finish
+    nop
+    addiu $t4, $t4, 1
 
     DilloRematchShort_Finish:
-        J 		0x800257D4
-        LUI 	t5, 0x8077
+        j 0x800257D4
+        lui $t5, 0x8077
 
 DKPhaseShort:
-    ADDIU 		t4, r0, 2 // Phase 3
-    BNE 		t4, t3, DKPhaseShort_Finish
-    NOP
-    ADDIU 		t3, t3, 1
+    addiu $t4, $zero, 2 ; Phase 3
+    bne $t4, $t3, DKPhaseShort_Finish
+    nop
+    addiu $t3, $t3, 1
 
     DKPhaseShort_Finish:
-        ANDI 	t4, t3, 0xFF
-        J 		0x8002DB18
-        SLL 	t5, t4, 2
+        andi $t4, $t3, 0xFF
+        j 0x8002DB18
+        sll $t5, $t4, 2
 
 TinyPhaseShort:
-    JAL 		handleFootProgress
-    OR 			a0, s0, r0
-    J 			0x800303DC
-    NOP
+    jal handleFootProgress
+    or $a0, $s0, $zero
+    j 0x800303DC
+    nop
 
 ChunkyPhaseShort:
-    ADDIU 		t6, r0, 2 // Phase 3
-    BNE 		t6, t5, ChunkyPhaseShort_Finish
-    NOP
-    ADDIU 		t5, t5, 1
+    addiu $t6, $zero, 2 ; Phase 3
+    bne $t6, $t5, ChunkyPhaseShort_Finish
+    nop
+    addiu $t5, $t5, 1
 
     ChunkyPhaseShort_Finish:
-        ANDI 	t6, t5, 0xFF
-        J 		0x800314BC
-        SLL 	t7, t6, 2
+        andi $t6, $t5, 0xFF
+        j 0x800314BC
+        sll $t7, $t6, 2
 
 ChunkyPhaseAddedSave:
-    LUI 		a2, hi(WinCondition)
-    LBU 		a2, lo(WinCondition) (a2)
-    BNEZ 		a2, ChunkyPhaseAddedSave_Finish
-    NOP
-    JAL 		setFlag
-    OR 			a2, r0, r0
+    lui $a2, hi(WinCondition)
+    lbu $a2, lo(WinCondition) ($a2)
+    bnez $a2, ChunkyPhaseAddedSave_Finish
+    nop
+    jal setFlag
+    or $a2, $zero, $zero
 
     ChunkyPhaseAddedSave_Finish:
-        JAL 	0x8060DEC8
-        NOP
-        J 		0x80031380
-        NOP
+        jal 0x8060DEC8
+        nop
+        j 0x80031380
+        nop
 
 FixPufftossInvalidWallCollision:
-    LW 		s0, 0x8C (s6)
-    BEQZ 	s0, FixPufftossInvalidWallCollision_Invalid
-    NOP
-    SRA 	t9, s0, 16
-    SLTIU 	t9, t9, 0x8000 // 1 if < 0x80000000
-    BNEZ 	t9, FixPufftossInvalidWallCollision_Invalid
-    NOP
-    SRA 	t9, s0, 16
-    SLTIU 	t9, t9, 0x8080 // 0 if > 0x80800000
-    BEQZ 	t9, FixPufftossInvalidWallCollision_Invalid
-    NOP
-    J 		0x80677C20
-    NOP
+    lw $s0, 0x8C ($s6)
+    beqz $s0, FixPufftossInvalidWallCollision_Invalid
+    nop
+    sra $t9, $s0, 16
+    sltiu $t9, $t9, 0x8000 ; 1 if < 0x80000000
+    bnez $t9, FixPufftossInvalidWallCollision_Invalid
+    nop
+    sra $t9, $s0, 16
+    sltiu $t9, $t9, 0x8080 ; 0 if > 0x80800000
+    beqz $t9, FixPufftossInvalidWallCollision_Invalid
+    nop
+    j 0x80677C20
+    nop
 
     FixPufftossInvalidWallCollision_Invalid:
-        J 	0x80677C78
-        NOP
+        j 0x80677C78
+        nop

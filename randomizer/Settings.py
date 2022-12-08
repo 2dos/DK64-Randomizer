@@ -2,6 +2,7 @@
 import hashlib
 import inspect
 import json
+import js
 import random
 from version import whl_hash
 from random import randint
@@ -779,14 +780,6 @@ class Settings:
                     Locations.HelmLankyMedal,
                     Locations.HelmTinyMedal,
                     Locations.HelmChunkyMedal,
-                    Locations.JapesDiddyMinecarts,
-                    Locations.CastleDonkeyMinecarts,
-                    Locations.ForestChunkyMinecarts,
-                    Locations.IslesDonkeyInstrumentPad,
-                    Locations.IslesDiddyInstrumentPad,
-                    Locations.IslesLankyInstrumentPad,
-                    Locations.IslesTinyInstrumentPad,
-                    Locations.IslesChunkyInstrumentPad,
                 )
                 self.valid_locations[Types.Crown] = [location for location in shuffledLocations if location not in banned_crown_locations]
             if Types.Key in self.shuffled_location_types:

@@ -179,3 +179,6 @@ function concatTypedArrays(a, b) {
   c.set(b, a.length);
   return c;
 }
+function getDate() {
+  return new Date().toUTCString();
+}
