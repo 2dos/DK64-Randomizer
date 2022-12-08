@@ -604,7 +604,7 @@ def writeMiscCosmeticChanges(spoiler: Spoiler):
 
 
 def applyHolidayMode(spoiler: Spoiler):
-    """Changes grass texture to snow."""
+    """Change grass texture to snow."""
     if spoiler.settings.holiday_mode:
         ROM().seek(0x1FF8000)
         snow_im = Image.new(mode="RGBA", size=((32, 32)))
