@@ -373,6 +373,7 @@ class Settings:
         self.key_8_helm = False
         self.random_starting_region = False
         self.starting_region = {}
+        self.holiday_mode = False
 
     def shuffle_prices(self):
         """Price randomization. Reuseable if we need to reshuffle prices."""

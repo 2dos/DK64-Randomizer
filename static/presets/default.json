@@ -42,6 +42,7 @@
     "helm_hurry": false,
     "helm_setting": "skip_start",
     "high_req": true,
+    "holiday_mode": false,
     "item_rando_list_selected": [],
     "kasplat_rando_setting": "vanilla_locations",
     "select_keys": false,
