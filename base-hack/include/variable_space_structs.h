@@ -19,7 +19,8 @@ typedef struct varspace {
 	/* 0x045 */ unsigned char slam_prices[2]; // Array of simian slam upgrade prices: [1,2]. First item is super simian slam (blue), 2nd is super duper simian slam (red)
 	/* 0x047 */ char call_parent_filter; // Calls filter to remove "unnecessary" links from the parent chain
 	/* 0x048 */ char arcade_order[4]; // 01 = 25m, 04 = 50m, 03 = 75m, 02 = 100m
-	/* 0x04C */ char unk4C[0x53-0x4C];
+	/* 0x04C */ char unk4C[0x52-0x4C];
+	/* 0x052 */ char disable_wrinkly_kong_requirement; // Disable Kongs being required to access a wrinkly door
 	/* 0x053 */ unsigned char ammo_belt_prices[2]; // Array of ammo belt prices: [1,2]. 1 item for each level of ammo belt
 	/* 0x055 */ unsigned char instrument_upgrade_prices[3]; // Array of instrument upgrade prices: [1,2,3]. 1st and 3rd items are the Upgrades 1 and 2 respectively. 2nd item is the 3rd melon cost
 	/* 0x058 */ char k_rool_order[5]; // Order of K. Rool phases: [0,1,2,3,4] dictates DK->Diddy->Lanky->Tiny->Chunky. If K. Rool is being shortened to less than 5 phases, put the unused phases as -1

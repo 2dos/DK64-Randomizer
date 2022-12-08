@@ -1545,7 +1545,7 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 			displayImageOnObject(id, 2, 1, 0);
 			unkObjFunction0(id, 1, 1);
 			unkObjFunction1(id, 1, 10);
-			if (checkFlag(kong_flags[kong],0) == 0) {
+			if ((!checkFlag(kong_flags[kong],0)) && (!Rando.disable_wrinkly_kong_requirement)) {
 				behaviour_pointer->next_state = 20;
 			} else {
 				displayImageOnObject(id, 1, 0, 0);
@@ -1587,6 +1587,8 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 		CrownPadGenericCode(behaviour_pointer, id, param2, 0);
 	} else if (index == -6) {
 		CrownPadGenericCode(behaviour_pointer, id, param2, 1);
+	} else if (index == -7) {
+		return checkFlag(kong_flags[param2], 0) || Rando.disable_wrinkly_kong_requirement;
 	}
 	InstanceScriptParams[1] = id;
 	InstanceScriptParams[2] = index;
