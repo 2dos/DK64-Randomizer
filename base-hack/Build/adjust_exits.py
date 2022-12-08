@@ -92,7 +92,14 @@ exit_adjustments = [
                 "x": 3464,
                 "y": 1040,
                 "z": 1716,
-            }
+            },
+            {
+                # Galleon Lobby
+                "exit_index": 5,
+                "x": 1947,
+                "y": 406,
+                "z": 3229,
+            },
         ],
     },
     {

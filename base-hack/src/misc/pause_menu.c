@@ -99,9 +99,7 @@ static unsigned char check_data[2][9][PAUSE_ITEM_COUNT] = {}; // 8 items, 9 leve
 void checkItemDB(void) {
     renderScreenTransition(7);
     initTracker();
-    int in_flut = 0;
     for (int i = 0; i < PAUSE_ITEM_COUNT; i++) {
-        in_flut = 0;
         // Wipe data upon every search
         for (int j = 0; j < 9; j++) {
             check_data[0][j][i] = 0;
@@ -111,94 +109,70 @@ void checkItemDB(void) {
         for (int k = 0; k < (sizeof(item_db) / sizeof(check_struct)); k++) {
             if (item_db[k].type == i) {
                 int search_flag = item_db[k].flag;
-                int j = 0;
-                while (j < 400) {
-                    int vanilla_flag = ItemRando_FLUT[(2 * j)];
-                    if (vanilla_flag == search_flag) {
-                        in_flut = 1;
-                        int new_flag = ItemRando_FLUT[(2 * j) + 1];
-                        int lvl = item_db[k].associated_level;
-                        check_data[1][lvl][i] += 1;
-                        if (new_flag == 0) {
-                            check_data[0][lvl][i] += 1;
-                        } else {
-                            check_data[0][lvl][i] += checkFlagDuplicate(new_flag, 0);
-                        }
-                        break;
-                    } else if (vanilla_flag == -1) {
-                        break;
-                    }
-                    j++;
-                }
+                int lvl = item_db[k].associated_level;
+                check_data[1][lvl][i] += 1;
+                check_data[0][lvl][i] += checkFlag(search_flag, 0);
             }
         }
-        if (!in_flut) {
-            // Get Denominator
-            for (int j = 0; j < 9; j++) {
-                switch (i) {
-                    case CHECK_GB:
-                        if (j < 8) {
-                            if (j == 7) {
-                                check_data[1][j][CHECK_GB] = 21;
-                            } else {
-                                check_data[1][j][CHECK_GB] = 20;
-                            }
-                        }
-                        break;
-                    case CHECK_CROWN:
+        // Get Denominator
+        for (int j = 0; j < 9; j++) {
+            switch (i) {
+                case CHECK_GB:
+                    if (j < 8) {
                         if (j == 7) {
-                            check_data[1][j][CHECK_CROWN] = 2;
+                            check_data[1][j][CHECK_GB] = 21;
                         } else {
-                            check_data[1][j][CHECK_CROWN] = 1;
+                            check_data[1][j][CHECK_GB] = 20;
                         }
-                        break;
-                    case CHECK_KEY:
-                        if (j != 7) {
-                            check_data[1][j][CHECK_KEY] = 1;
-                        }
-                        break;
-                    case CHECK_MEDAL:
-                        if (j != 7) {
-                            check_data[1][j][CHECK_MEDAL] = 5;
-                        }
-                        break;
-                    case CHECK_RWCOIN:
-                    case CHECK_NINCOIN:
-                        check_data[1][0][i] = 1;
-                        break;
-                    case CHECK_FAIRY:
-                        if (j == 7) {
-                            check_data[1][j][CHECK_FAIRY] = 4;
-                        } else {
-                            check_data[1][j][CHECK_FAIRY] = 2;
-                        }
-                        break;
-                    case CHECK_BP:
-                        if (j < 8) {
-                            check_data[1][j][CHECK_BP] = 5;
-                        }
-                        break;
-                    case CHECK_KONG:
-                        check_data[1][0][i] = 5;
-                        break;
-                    case CHECK_BEAN:
-                        if (j == 4) {
-                            check_data[1][j][CHECK_BEAN] = 1;
-                        }
-                        break;
-                    case CHECK_PEARLS:
-                        if (j == 3) {
-                            check_data[1][j][CHECK_PEARLS] = 5;
-                        }
-                        break;
+                    }
                     break;
-                }
-            }
-            for (int j = 0; j < (sizeof(item_db) / sizeof(check_struct)); j++) {
-                if (item_db[j].type == i) {
-                    int lvl = item_db[j].associated_level;
-                    check_data[0][lvl][i] += checkFlagDuplicate(item_db[j].flag, 0);
-                }
+                case CHECK_CROWN:
+                    if (j == 7) {
+                        check_data[1][j][CHECK_CROWN] = 2;
+                    } else {
+                        check_data[1][j][CHECK_CROWN] = 1;
+                    }
+                    break;
+                case CHECK_KEY:
+                    if (j != 7) {
+                        check_data[1][j][CHECK_KEY] = 1;
+                    }
+                    break;
+                case CHECK_MEDAL:
+                    if (j != 7) {
+                        check_data[1][j][CHECK_MEDAL] = 5;
+                    }
+                    break;
+                case CHECK_RWCOIN:
+                case CHECK_NINCOIN:
+                    check_data[1][0][i] = 1;
+                    break;
+                case CHECK_FAIRY:
+                    if (j == 7) {
+                        check_data[1][j][CHECK_FAIRY] = 4;
+                    } else {
+                        check_data[1][j][CHECK_FAIRY] = 2;
+                    }
+                    break;
+                case CHECK_BP:
+                    if (j < 8) {
+                        check_data[1][j][CHECK_BP] = 5;
+                    }
+                    break;
+                case CHECK_KONG:
+                    check_data[1][0][i] = 5;
+                    break;
+                case CHECK_BEAN:
+                    if (j == 4) {
+                        check_data[1][j][CHECK_BEAN] = 1;
+                    }
+                    break;
+                case CHECK_PEARLS:
+                    if (j == 3) {
+                        check_data[1][j][CHECK_PEARLS] = 5;
+                    }
+                    break;
+                break;
             }
         }
     }
@@ -423,6 +397,15 @@ void updateFileVariables(void) {
     }
 }
 
+int* handleOutOfCounters(int x, int y, int top, int bottom, int* dl, int unk0, int scale) {
+    if (Rando.item_rando) {
+        char text[4] = "";
+        dk_strFormat((char*)&text, "%d", top);
+        return displayText(dl, 1, x, y, &text, 0x80);
+    }
+    return printOutOfCounter(x, y, top, bottom, dl, unk0, scale);
+}
+
 void initPauseMenu(void) {
     *(short*)(0x806AB35A) = getHi(&file_sprites[0]);
     *(short*)(0x806AB35E) = getLo(&file_sprites[0]);
@@ -436,4 +419,14 @@ void initPauseMenu(void) {
     *(short*)(0x806AB2CE) = getHi(&file_items[PAUSE_ITEM_COUNT]);
     *(short*)(0x806AB2D6) = getLo(&file_items[PAUSE_ITEM_COUNT]);
     *(short*)(0x806AB3F6) = PAUSE_ITEM_COUNT;
+    if (Rando.item_rando) {
+        *(int*)(0x806A9D50) = 0x0C000000 | (((int)&handleOutOfCounters & 0xFFFFFF) >> 2); // Print out of counter, depending on item rando state
+        *(int*)(0x806A9EFC) = 0x0C000000 | (((int)&handleOutOfCounters & 0xFFFFFF) >> 2); // Print out of counter, depending on item rando state
+        *(int*)(0x806A9C80) = 0; // Show counter on Helm Menu - Kong specific screeen
+        *(int*)(0x806A9E54) = 0; // Show counter on Helm Menu - All Kongs screen
+        // *(int*)(0x806AA860) = 0x31EF0007; // ANDI $t7, $t7, 7 - Show GB (Kong Specific)
+        // *(int*)(0x806AADC4) = 0x33390007; // ANDI $t9, $t9, 7 - Show GB (All Kongs)
+        // *(int*)(0x806AADC8) = 0xAFB90058; // SW $t9, 0x58 ($sp) - Show GB (All Kongs)
+
+    }
 }
