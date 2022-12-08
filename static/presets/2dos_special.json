@@ -90,5 +90,6 @@
     "wrinkly_location_rando": false,
     "tns_location_rando": false,
     "helm_hurry": false,
+    "wrinkly_available": false,
     "no_logic": false
  }

@@ -93,5 +93,6 @@
     "crown_placement_rando": false,
     "wrinkly_location_rando": false,
     "tns_location_rando": false,
+    "wrinkly_available": false,
     "helm_hurry": false
  }

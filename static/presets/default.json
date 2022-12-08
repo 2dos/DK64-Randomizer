@@ -101,6 +101,7 @@
     "troff_text": 300,
     "warp_to_isles": true,
     "win_condition": "beat_krool",
+    "wrinkly_available": false,
     "wrinkly_hints": "standard",
     "wrinkly_location_rando": false
 }

@@ -405,6 +405,10 @@ def patching_response(responded_data):
         ROM().seek(sav + 0x116)
         ROM().write(1)
 
+    if spoiler.settings.wrinkly_available:
+        ROM().seek(sav + 0x52)
+        ROM().write(1)
+
     # Anything which requires calling the parent filter
     if spoiler.settings.bananaport_rando in ("crossmap_coupled", "crossmap_decoupled"):
         ROM().seek(sav + 0x47)
