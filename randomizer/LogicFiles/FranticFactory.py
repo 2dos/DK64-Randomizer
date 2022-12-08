@@ -36,7 +36,7 @@ LogicRegions = {
     Regions.Testing: Region("Testing", "Testing Area", Levels.FranticFactory, True, None, [
         LocationLogic(Locations.FactoryDonkeyNumberGame, lambda l: l.Slam and l.isdonkey),
         LocationLogic(Locations.FactoryDiddyBlockTower, lambda l: l.spring and l.isdiddy, MinigameType.BonusBarrel),
-        LocationLogic(Locations.FactoryLankyTestingRoomBarrel, lambda l: ((l.balloon or l.settings.bonus_barrels == "skip") and l.islanky) or (l.settings.bonus_barrels == "skip" and l.settings.free_trade_items), MinigameType.BonusBarrel),
+        LocationLogic(Locations.FactoryLankyTestingRoomBarrel, lambda l: l.balloon and l.islanky, MinigameType.BonusBarrel),
         LocationLogic(Locations.FactoryTinyDartboard, lambda l: Events.DartsPlayed in l.Events and l.tiny),
         LocationLogic(Locations.FactoryKasplatBlocks, lambda l: not l.settings.kasplat_rando),
         LocationLogic(Locations.FactoryBananaFairybyCounting, lambda l: l.camera),

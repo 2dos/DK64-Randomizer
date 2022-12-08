@@ -13,7 +13,7 @@ jobs:
     - name: Setup python
       uses: actions/setup-python@v4.1.0
       with:
-          python-version: 3.6
+          python-version: 3.10.9
           architecture: x64
 
     - name: Install packages
