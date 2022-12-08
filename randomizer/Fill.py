@@ -605,7 +605,7 @@ def RandomFill(settings, itemsToPlace, inOrder=False):
     while len(itemsToPlace) > 0:
         item = itemsToPlace.pop()
         validLocations = settings.GetValidLocationsForItem(item)
-        itemEmpty = [x for x in empty if x in validLocations]
+        itemEmpty = [x for x in empty if x in validLocations and LocationList[x].item is None]
         if len(itemEmpty) == 0:
             return len(itemsToPlace)
         shuffle(itemEmpty)
