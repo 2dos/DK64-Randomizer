@@ -316,6 +316,25 @@ for coin in ("nin_coin", "rw_coin"):
     coin_im = Image.open(f"{hash_dir}{coin}.png")
     coin_im.save(f"{disp_dir}{coin}.png")
 
+# # Christmas Theme
+# snow_by = []
+# snow_im = Image.open(f"{disp_dir}snow.png")
+# for dim in (32, 16, 8, 4):
+#     snow_im = snow_im.resize((dim, dim))
+#     snow_px = snow_im.load()
+#     for y in range(dim):
+#         for x in range(dim):
+#             px_data = list(snow_px[x, y])
+#             data = 0
+#             for c in range(3):
+#                 data |= (px_data[c] >> 3) << (1 + (5 * c))
+#             if px_data[3] != 0:
+#                 data |= 1
+#             snow_by.extend([(data >> 8), (data & 0xFF)])
+# with open(f"{disp_dir}snow.bin","wb") as fh:
+#     fh.write(bytearray(snow_by))
+
+
 rmve = [
     "01234.png",
     "56789.png",

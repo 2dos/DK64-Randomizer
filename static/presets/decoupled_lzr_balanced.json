@@ -79,6 +79,7 @@
     "shop_indicator":true,
     "fast_warps":true,
     "dpad_display":true,
+    "wrinkly_available": false,
     "auto_keys":true,
     "win_condition": "beat_krool",
     "cb_rando":false,

@@ -601,3 +601,37 @@ def writeMiscCosmeticChanges(spoiler: Spoiler):
                     px_data = gzip.compress(px_data, compresslevel=9)
                 ROM().seek(js.pointer_addresses[table]["entries"][img]["pointing_to"])
                 ROM().writeBytes(px_data)
+
+
+def applyHolidayMode(spoiler: Spoiler):
+    """Change grass texture to snow."""
+    if spoiler.settings.holiday_mode:
+        ROM().seek(0x1FF8000)
+        snow_im = Image.new(mode="RGBA", size=((32, 32)))
+        snow_px = snow_im.load()
+        snow_by = []
+        for y in range(32):
+            for x in range(32):
+                rgba_px = int.from_bytes(ROM().readBytes(2), "big")
+                red = ((rgba_px >> 11) & 31) << 3
+                green = ((rgba_px >> 6) & 31) << 3
+                blue = ((rgba_px >> 1) & 31) << 3
+                alpha = (rgba_px & 1) * 255
+                snow_px[x, y] = (red, green, blue, alpha)
+        for dim in (32, 16, 8, 4):
+            snow_im = snow_im.resize((dim, dim))
+            px = snow_im.load()
+            for y in range(dim):
+                for x in range(dim):
+                    rgba_data = list(px[x, y])
+                    data = 0
+                    for c in range(3):
+                        data |= (rgba_data[c] >> 3) << (1 + (5 * c))
+                    if rgba_data[3] != 0:
+                        data |= 1
+                    snow_by.extend([(data >> 8), (data & 0xFF)])
+        byte_data = gzip.compress(bytearray(snow_by), compresslevel=9)
+        for img in (0x4DD, 0x4E4, 0x6B, 0xF0, 0x8B2, 0x5C2, 0x66E, 0x66F, 0x685, 0x6A1, 0xF8, 0x136):
+            start = js.pointer_addresses[25]["entries"][img]["pointing_to"]
+            ROM().seek(start)
+            ROM().writeBytes(byte_data)

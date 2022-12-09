@@ -317,6 +317,7 @@ class Settings:
         self.fast_start_beginning_of_game = None
         self.helm_setting = None
         self.quality_of_life = None
+        self.wrinkly_available = False
         self.shorten_boss = False
         self.enable_tag_anywhere = None
         self.krool_phase_order_rando = None
@@ -372,6 +373,7 @@ class Settings:
         self.key_8_helm = False
         self.random_starting_region = False
         self.starting_region = {}
+        self.holiday_mode = False
 
     def shuffle_prices(self):
         """Price randomization. Reuseable if we need to reshuffle prices."""

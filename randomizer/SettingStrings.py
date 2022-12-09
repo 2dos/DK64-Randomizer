@@ -47,6 +47,7 @@ def encrypt_settings_string(dict_data: dict):
         "remove_water_oscillation",
         "colorblind_mode",
         "search",
+        "holiday_mode",
     ]:
         dict_data.pop(pop)
     ordered_dict = collections.OrderedDict(sorted(dict_data.items()))

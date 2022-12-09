@@ -12,7 +12,7 @@ from randomizer.Enums.Types import Types
 from randomizer.Patching.BananaPortRando import randomize_bananaport
 from randomizer.Patching.BarrelRando import randomize_barrels
 from randomizer.Patching.BossRando import randomize_bosses
-from randomizer.Patching.CosmeticColors import apply_cosmetic_colors, overwrite_object_colors, applyKrushaKong, writeMiscCosmeticChanges
+from randomizer.Patching.CosmeticColors import apply_cosmetic_colors, overwrite_object_colors, applyKrushaKong, writeMiscCosmeticChanges, applyHolidayMode
 from randomizer.Patching.DKTV import randomize_dktv
 from randomizer.Patching.EnemyRando import randomize_enemies
 from randomizer.Patching.EntranceRando import randomize_entrances, filterEntranceType
@@ -43,6 +43,16 @@ from randomizer.Lists.EnemyTypes import EnemySelector
 from randomizer.Settings import Settings
 from ui.GenTracker import generateTracker
 from ui.progress_bar import ProgressBar
+
+
+class BooleanProperties:
+    """Class to store data relating to boolean properties."""
+
+    def __init__(self, check, offset, target=1):
+        """Initialize with given data."""
+        self.check = check
+        self.offset = offset
+        self.target = target
 
 
 def patching_response(responded_data):
@@ -176,59 +186,56 @@ def patching_response(responded_data):
         ROM().seek(sav + 0x02C)
         ROM().write(bin_value)
 
-    # Unlock All Moves
-    if spoiler.settings.unlock_all_moves:
-        ROM().seek(sav + 0x02D)
-        ROM().write(1)
+    boolean_props = [
+        BooleanProperties(spoiler.settings.unlock_all_moves, 0x2D),  # Unlock All Moves
+        BooleanProperties(True, 0x2E),  # Fast Start Game
+        BooleanProperties(spoiler.settings.shockwave_status == "start_with", 0x2F),  # Unlock Shockwave
+        BooleanProperties(spoiler.settings.enable_tag_anywhere, 0x30),  # Tag Anywhere
+        BooleanProperties(spoiler.settings.fps_display, 0x96),  # FPS Display
+        BooleanProperties(spoiler.settings.crown_door_open, 0x32),  # Crown Door Open
+        BooleanProperties(spoiler.settings.no_healing, 0xA6),  # Disable Healing
+        BooleanProperties(spoiler.settings.no_melons, 0x128),  # No Melon Drops
+        BooleanProperties(spoiler.settings.bonus_barrel_auto_complete, 0x126),  # Auto-Complete Bonus Barrels
+        BooleanProperties(spoiler.settings.warp_to_isles, 0x135),  # Warp to Isles
+        BooleanProperties(spoiler.settings.perma_death, 0x14D),  # Permadeath
+        BooleanProperties(spoiler.settings.perma_death, 0x14E),  # Disable Boss Door Check
+        BooleanProperties(spoiler.settings.disable_tag_barrels, 0x14F),  # Disable Tag Spawning
+        BooleanProperties(spoiler.settings.open_levels, 0x137),  # Open Levels
+        BooleanProperties(spoiler.settings.shorten_boss, 0x13B),  # Shorten Boss Fights
+        BooleanProperties(spoiler.settings.fast_warps, 0x13A),  # Fast Warps
+        BooleanProperties(spoiler.settings.dpad_display, 0x139),  # DPad Display
+        BooleanProperties(spoiler.settings.high_req, 0x179),  # Remove High Requirements
+        BooleanProperties(spoiler.settings.fast_gbs, 0x17A),  # Fast GBs
+        BooleanProperties(spoiler.settings.auto_keys, 0x15B),  # Auto-Turn Keys
+        BooleanProperties(spoiler.settings.disco_chunky, 0x12F),  # Disco Chunky
+        BooleanProperties(spoiler.settings.tns_location_rando, 0x10E),  # T&S Portal Location Rando
+        BooleanProperties(spoiler.settings.cb_rando, 0xAF),  # Show CBs/Coins
+        BooleanProperties(spoiler.settings.cb_rando, 0x10B),  # Remove Rock Bunch
+        BooleanProperties(
+            spoiler.settings.wrinkly_location_rando or ("remove_wrinkly_puzzles" in spoiler.settings.misc_changes_selected or len(spoiler.settings.misc_changes_selected) == 0), 0x11F
+        ),  # Wrinkly Rando
+        BooleanProperties(spoiler.settings.helm_hurry, 0xAE),  # Helm Hurry
+        BooleanProperties(spoiler.settings.remove_water_oscillation, 0x10F),  # Remove Water Oscillation
+        BooleanProperties(spoiler.settings.hard_enemies, 0x116),  # Hard Enemies
+        BooleanProperties(spoiler.settings.wrinkly_available, 0x52),  # Remove Wrinkly Kong Checks
+        BooleanProperties(spoiler.settings.bananaport_rando in ("crossmap_coupled", "crossmap_decoupled"), 0x47),  # Parent Map Filter
+        BooleanProperties(spoiler.settings.shop_indicator, 0x134, 2),  # Shop Indicator
+        BooleanProperties(spoiler.settings.open_lobbies, 0x14C, 0xFF),  # Open Lobbies
+        BooleanProperties(spoiler.settings.disable_shop_hints, 0x14B, 0),  # Disable Shop Hints
+    ]
 
-    # Fast Start game
-    ROM().seek(sav + 0x02E)
-    ROM().write(1)
-
-    # Unlock Shockwave
-    if spoiler.settings.shockwave_status == "start_with":
-        ROM().seek(sav + 0x02F)
-        ROM().write(1)
-
-    # Enable Tag Anywhere
-    if spoiler.settings.enable_tag_anywhere:
-        ROM().seek(sav + 0x030)
-        ROM().write(1)
-
-    # Enable FPS Display
-    if spoiler.settings.fps_display:
-        ROM().seek(sav + 0x096)
-        ROM().write(1)
+    for prop in boolean_props:
+        if prop.check:
+            ROM().seek(sav + prop.offset)
+            ROM().write(prop.target)
 
     # Fast Hideout
-    if spoiler.settings.helm_setting == "skip_start":
-        ROM().seek(sav + 0x031)
-        ROM().write(1)
-    elif spoiler.settings.helm_setting == "skip_all":
-        ROM().seek(sav + 0x031)
-        ROM().write(2)
-
-    # Crown Door Open
-    if spoiler.settings.crown_door_open:
-        ROM().seek(sav + 0x032)
-        ROM().write(1)
+    ROM().seek(sav + 0x031)
+    ROM().write(("default", "skip_start", "skip_all").index(spoiler.settings.helm_setting))
 
     # Coin Door Requirements
-    if spoiler.settings.coin_door_open == "need_both":
-        ROM().seek(sav + 0x033)
-        ROM().write(0)
-
-    elif spoiler.settings.coin_door_open == "need_zero":
-        ROM().seek(sav + 0x033)
-        ROM().write(1)
-
-    elif spoiler.settings.coin_door_open == "need_nin":
-        ROM().seek(sav + 0x033)
-        ROM().write(2)
-
-    elif spoiler.settings.coin_door_open == "need_rw":
-        ROM().seek(sav + 0x033)
-        ROM().write(3)
+    ROM().seek(sav + 0x033)
+    ROM().write(("need_both", "need_zero", "need_nin", "need_rw").index(spoiler.settings.coin_door_open))
 
     # Free Trade Agreement
     if spoiler.settings.free_trade_items:
@@ -258,157 +265,24 @@ def patching_response(responded_data):
             ROM().writeMultipleBytes(byte_data, 1)
 
     # Damage amount
+    damage_multipliers = {
+        "default": 1,
+        "double": 2,
+        "quad": 4,
+        "ohko": 12,
+    }
     ROM().seek(sav + 0x0A5)
-    if spoiler.settings.damage_amount != "default":
-        if spoiler.settings.damage_amount == "double":
-            ROM().write(2)
-        elif spoiler.settings.damage_amount == "ohko":
-            ROM().write(12)
-        elif spoiler.settings.damage_amount == "quad":
-            ROM().write(4)
-    else:
-        ROM().write(1)
-
-    # Disable healing
-    if spoiler.settings.no_healing:
-        ROM().seek(sav + 0x0A6)
-        ROM().write(1)
-
-    # Disable melon drops
-    if spoiler.settings.no_melons:
-        ROM().seek(sav + 0x128)
-        ROM().write(1)
-
-    # Auto complete bonus barrels
-    if spoiler.settings.bonus_barrel_auto_complete:
-        ROM().seek(sav + 0x126)
-        ROM().write(1)
-
-    # Enable or disable the warp to isles option in the UI
-    if spoiler.settings.warp_to_isles:
-        ROM().seek(sav + 0x135)
-        ROM().write(1)
-
-    # Enables the counter for the shop indications
-    if spoiler.settings.shop_indicator:
-        ROM().seek(sav + 0x134)
-        ROM().write(2)
-
-    # Enable Perma Death
-    if spoiler.settings.perma_death:
-        ROM().seek(sav + 0x14D)
-        ROM().write(1)
-        ROM().seek(sav + 0x14E)
-        ROM().write(1)
-
-    # Enable Open Lobbies
-    if spoiler.settings.open_lobbies:
-        ROM().seek(sav + 0x14C)
-        ROM().write(0xFF)
-
-    # Disable Tag Barrels from spawning
-    if spoiler.settings.disable_tag_barrels:
-        ROM().seek(sav + 0x14F)
-        ROM().write(1)
-
-    # Turn off Shop Hints
-    if spoiler.settings.disable_shop_hints:
-        ROM().seek(sav + 0x14B)
-        ROM().write(0)
-
-    # Enable Open Levels
-    if spoiler.settings.open_levels:
-        ROM().seek(sav + 0x137)
-        ROM().write(1)
-
-    # Enable Shorten Boss Fights
-    if spoiler.settings.shorten_boss:
-        ROM().seek(sav + 0x13B)
-        ROM().write(1)
-
-    # Enable Fast Warps
-    if spoiler.settings.fast_warps:
-        ROM().seek(sav + 0x13A)
-        ROM().write(1)
-
-    # Enable D-Pad Display
-    if spoiler.settings.dpad_display:
-        ROM().seek(sav + 0x139)
-        ROM().write(1)
+    ROM().write(damage_multipliers[spoiler.settings.damage_amount])
 
     # Activate Bananaports
-    if spoiler.settings.activate_all_bananaports == "all":
-        ROM().seek(sav + 0x138)
-        ROM().write(1)
-
-    if spoiler.settings.activate_all_bananaports == "isles":
-        ROM().seek(sav + 0x138)
-        ROM().write(2)
-
-    # Enable Remove High Requirements
-    if spoiler.settings.high_req:
-        ROM().seek(sav + 0x179)
-        ROM().write(1)
-
-    # Enable Fast GBs
-    if spoiler.settings.fast_gbs:
-        ROM().seek(sav + 0x17A)
-        ROM().write(1)
-
-    # Enable Auto Key Turn ins
-    if spoiler.settings.auto_keys:
-        ROM().seek(sav + 0x15B)
-        ROM().write(1)
+    ROM().seek(sav + 0x138)
+    ROM().write(("off", "all", "isles").index(spoiler.settings.activate_all_bananaports))
 
     # KKO Phase Order
     if spoiler.settings.hard_bosses:
         for phase_slot in range(3):
             ROM().seek(sav + 0x17B + phase_slot)
             ROM().write(spoiler.settings.kko_phase_order[phase_slot])
-
-    # Disco Chunky
-    if spoiler.settings.disco_chunky:
-        ROM().seek(sav + 0x12F)
-        ROM().write(1)
-
-    # T&S Portal Rando
-    if spoiler.settings.tns_location_rando:
-        ROM().seek(sav + 0x10E)
-        ROM().write(1)
-
-    # Show CBs & Coins
-    if spoiler.settings.cb_rando:
-        # Show CBs/Coins
-        ROM().seek(sav + 0xAF)
-        ROM().write(1)
-        # Remove Rock Bunch
-        ROM().seek(sav + 0x10B)
-        ROM().write(1)
-
-    # Wrinkly Rando
-    if spoiler.settings.wrinkly_location_rando or ("remove_wrinkly_puzzles" in spoiler.settings.misc_changes_selected or len(spoiler.settings.misc_changes_selected) == 0):
-        ROM().seek(sav + 0x11F)
-        ROM().write(1)
-
-    # Helm Hurry Mode
-    if spoiler.settings.helm_hurry:
-        ROM().seek(sav + 0xAE)
-        ROM().write(1)
-
-    # Water Oscillation Accessibility:
-    if spoiler.settings.remove_water_oscillation:
-        ROM().seek(sav + 0x10F)
-        ROM().write(1)
-
-    # Hard Enemies
-    if spoiler.settings.hard_enemies:
-        ROM().seek(sav + 0x116)
-        ROM().write(1)
-
-    # Anything which requires calling the parent filter
-    if spoiler.settings.bananaport_rando in ("crossmap_coupled", "crossmap_decoupled"):
-        ROM().seek(sav + 0x47)
-        ROM().write(1)
 
     # Win Condition
     conditions = ["beat_krool", "get_key8", "all_fairies", "all_blueprints", "all_medals", "poke_snap", "all_keys"]
@@ -479,6 +353,7 @@ def patching_response(responded_data):
     apply_cosmetic_colors(spoiler)
     overwrite_object_colors(spoiler)
     writeMiscCosmeticChanges(spoiler)
+    applyHolidayMode(spoiler)
     random.seed(spoiler.settings.seed)
 
     if spoiler.settings.wrinkly_hints in ["standard", "cryptic"]:
