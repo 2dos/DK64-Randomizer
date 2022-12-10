@@ -947,24 +947,24 @@ ColoredBananaGroupList = [
         region=Regions.JungleJapesMain,
         locations=[[1, 1.0, 1204, 853, 2350], [1, 1.0, 1134, 853, 2300], [1, 1.0, 1041, 853, 2297], [1, 1.0, 929, 853, 2328], [1, 1.0, 907, 853, 2454]],
     ),
-    ColoredBananaGroup(
-        group=65,
-        map_id=Maps.JungleJapes,
-        name="Tiny's caged GB",
-        konglist=[Kongs.tiny],
-        region=Regions.JungleJapesMain,
-        logic=lambda l: Events.JapesTinySwitch in l.Events and l.Slam,
-        locations=[[5, 1.0, 1335, 285, 1974], [5, 1.0, 1300, 285, 1946]],
-    ),
-    ColoredBananaGroup(
-        group=66,
-        map_id=Maps.JungleJapes,
-        name="Lanky's caged GB",
-        konglist=[Kongs.lanky],
-        region=Regions.JungleJapesMain,
-        logic=lambda l: Events.JapesLankySwitch in l.Events and l.Slam,
-        locations=[[5, 1.0, 1140, 525, 2346], [5, 1.0, 1186, 525, 2326]],
-    ),
+    # ColoredBananaGroup(
+    #     group=65,
+    #     map_id=Maps.JungleJapes,
+    #     name="Tiny's caged GB",
+    #     konglist=[Kongs.tiny],
+    #     region=Regions.JungleJapesMain,
+    #     logic=lambda l: Events.JapesTinySwitch in l.Events and l.Slam,
+    #     locations=[[5, 1.0, 1335, 285, 1974], [5, 1.0, 1300, 285, 1946]],
+    # ),  # Temporarily disabled
+    # ColoredBananaGroup(
+    #     group=66,
+    #     map_id=Maps.JungleJapes,
+    #     name="Lanky's caged GB",
+    #     konglist=[Kongs.lanky],
+    #     region=Regions.JungleJapesMain,
+    #     logic=lambda l: Events.JapesLankySwitch in l.Events and l.Slam,
+    #     locations=[[5, 1.0, 1140, 525, 2346], [5, 1.0, 1186, 525, 2326]],
+    # ),  # Temporarily disabled
     ColoredBananaGroup(
         group=67,
         map_id=Maps.JungleJapes,
@@ -974,24 +974,24 @@ ColoredBananaGroupList = [
         logic=lambda l: l.vines,
         locations=[[5, 1.0, 801, 543, 2356], [5, 1.0, 729, 543, 2295], [5, 1.0, 774.623291015625, 543.0, 2313.9326171875]],
     ),
-    ColoredBananaGroup(
-        group=68,
-        map_id=Maps.JungleJapes,
-        name="Diddy's Caged GB",
-        konglist=[Kongs.diddy],
-        region=Regions.JungleJapesMain,
-        logic=lambda l: Events.JapesDiddySwitch1 in l.Events and l.Slam,
-        locations=[[5, 1.0, 2305, 525, 2101], [5, 1.0, 2310, 525, 2142]],
-    ),
-    ColoredBananaGroup(
-        group=69,
-        map_id=Maps.JungleJapes,
-        name="Chunky's Caged GB",
-        konglist=[Kongs.chunky],
-        region=Regions.JungleJapesMain,
-        logic=lambda l: Events.JapesChunkySwitch in l.Events and l.Slam,
-        locations=[[5, 1.0, 2335, 685, 2207], [5, 1.0, 2362, 685, 2253]],
-    ),
+    # ColoredBananaGroup(
+    #     group=68,
+    #     map_id=Maps.JungleJapes,
+    #     name="Diddy's Caged GB",
+    #     konglist=[Kongs.diddy],
+    #     region=Regions.JungleJapesMain,
+    #     logic=lambda l: Events.JapesDiddySwitch1 in l.Events and l.Slam,
+    #     locations=[[5, 1.0, 2305, 525, 2101], [5, 1.0, 2310, 525, 2142]],
+    # ),  # Temporarily disabled
+    # ColoredBananaGroup(
+    #     group=69,
+    #     map_id=Maps.JungleJapes,
+    #     name="Chunky's Caged GB",
+    #     konglist=[Kongs.chunky],
+    #     region=Regions.JungleJapesMain,
+    #     logic=lambda l: Events.JapesChunkySwitch in l.Events and l.Slam,
+    #     locations=[[5, 1.0, 2335, 685, 2207], [5, 1.0, 2362, 685, 2253]],
+    # ),  # Temporarily disabled
     ColoredBananaGroup(
         group=70,
         map_id=Maps.JungleJapes,
@@ -1745,7 +1745,7 @@ BalloonList = [
     Balloon(
         id=37,
         map_id=Maps.JungleJapes,
-        name="In boulder cave (Chunky)",
+        name="In boulder cave 1 (Chunky)",
         speed=4,
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.BeyondRambiGate,
@@ -1815,7 +1815,7 @@ BalloonList = [
     Balloon(
         id=44,
         map_id=Maps.JungleJapes,
-        name="In boulder cave (Chunky)",
+        name="In boulder cave 2 (Chunky)",
         speed=3,
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.BeyondRambiGate,
@@ -1825,7 +1825,7 @@ BalloonList = [
     Balloon(
         id=45,
         map_id=Maps.JungleJapes,
-        name="In boulder cave (Chunky)",
+        name="In boulder cave 3 (Chunky)",
         speed=3,
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.BeyondRambiGate,

@@ -2825,17 +2825,17 @@ door_locations = {
             logic=lambda l: True,
             door_type="wrinkly",
         ),
-        DoorData(
-            name="Creepy Castle: Dungeon - Diddy's Chain Swinging Room - Behind Throne",
-            map=Maps.CastleDungeon,
-            logicregion=Regions.Dungeon,
-            location=[535.0, 93.0, 3580.0, 180.0],
-            scale=0.64,
-            kong_lst=[Kongs.diddy],
-            group=18,
-            moveless=False,
-            logic=lambda l: l.isdiddy and l.superDuperSlam,
-            door_type="wrinkly",
-        ),  # A tad too easy to accidentally activate perhaps
+        # DoorData(
+        #     name="Creepy Castle: Dungeon - Diddy's Chain Swinging Room - Behind Throne",
+        #     map=Maps.CastleDungeon,
+        #     logicregion=Regions.Dungeon,
+        #     location=[535.0, 93.0, 3580.0, 180.0],
+        #     scale=0.64,
+        #     kong_lst=[Kongs.diddy],
+        #     group=18,
+        #     moveless=False,
+        #     logic=lambda l: l.isdiddy and l.superDuperSlam,
+        #     door_type="wrinkly",
+        # ),  # Disabled until we find a way to make it only activate when the throne is rotated away
     ],
 }

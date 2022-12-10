@@ -1,9 +1,5 @@
 #include "../../include/common.h"
 
-/*
-	This is a 
-*/
-
 const check_struct item_db[] = {
 	{.flag=1, .type=0, .associated_level=0},
 	{.flag=2, .type=0, .associated_level=0},

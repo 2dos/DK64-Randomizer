@@ -605,7 +605,7 @@ def RandomFill(settings, itemsToPlace, inOrder=False):
     while len(itemsToPlace) > 0:
         item = itemsToPlace.pop()
         validLocations = settings.GetValidLocationsForItem(item)
-        itemEmpty = [x for x in empty if x in validLocations]
+        itemEmpty = [x for x in empty if x in validLocations and LocationList[x].item is None]
         if len(itemEmpty) == 0:
             return len(itemsToPlace)
         shuffle(itemEmpty)
@@ -2105,7 +2105,7 @@ def ShuffleMisc(spoiler):
     spoiler.human_kasplats = {}
     spoiler.UpdateKasplats(LogicVariables.kasplat_map)
     # Handle bonus barrels
-    if spoiler.settings.bonus_barrels in ("random", "selected"):
+    if spoiler.settings.bonus_barrels in ("random", "selected") or spoiler.settings.helm_barrels == "random":
         BarrelShuffle(spoiler.settings)
         spoiler.UpdateBarrels()
     # CB Shuffle

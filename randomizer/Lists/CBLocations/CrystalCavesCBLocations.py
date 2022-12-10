@@ -490,7 +490,7 @@ ColoredBananaGroupList = [
     ColoredBananaGroup(
         group=37,
         map_id=Maps.CrystalCaves,
-        name="On 5DI",
+        name="Singles on 5DI",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.IglooArea,
         locations=[
@@ -507,7 +507,12 @@ ColoredBananaGroupList = [
         ],
     ),
     ColoredBananaGroup(
-        group=38, map_id=Maps.CrystalCaves, name="On 5DI", konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky], region=Regions.IglooArea, locations=[[5, 1.0, 577, 150, 1285]]
+        group=38,
+        map_id=Maps.CrystalCaves,
+        name="Bunch on 5DI",
+        konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
+        region=Regions.IglooArea,
+        locations=[[5, 1.0, 577, 150, 1285]],
     ),
     ColoredBananaGroup(
         group=39, map_id=Maps.CrystalCaves, name="On pointy pillar by Chunky igloo", konglist=[Kongs.diddy], region=Regions.IglooArea, logic=lambda l: l.jetpack, locations=[[5, 1.0, 731, 150, 994]]
@@ -973,6 +978,7 @@ ColoredBananaGroupList = [
         name="Center of igloo group with 7 singles",
         konglist=[Kongs.donkey],
         region=Regions.DonkeyIgloo,
+        logic=lambda l: l.strongKong and l.isdonkey,
         locations=[
             [1, 1.0, 506, 0, 515],
             [1, 1.0, 469, 0, 526],
@@ -1009,7 +1015,7 @@ ColoredBananaGroupList = [
     ColoredBananaGroup(
         group=91,
         map_id=Maps.CavesTinyIgloo,
-        name="Around igloo",
+        name="Inside Tiny's igloo room",
         konglist=[Kongs.tiny],
         region=Regions.TinyIgloo,
         locations=[
@@ -1027,18 +1033,52 @@ ColoredBananaGroupList = [
     ),
     ColoredBananaGroup(group=92, map_id=Maps.CavesLankyCabin, name="Stack of books in entrance corner", konglist=[Kongs.lanky], region=Regions.LankyCabin, locations=[[5, 1.0, 530, 35, 118]]),
     ColoredBananaGroup(
-        group=93, map_id=Maps.CavesLankyCabin, name="Stacks of books on shelves", konglist=[Kongs.lanky], region=Regions.LankyCabin, locations=[[5, 1.0, 400, 72, 505], [5, 1.0, 150, 72, 335]]
+        group=93,
+        map_id=Maps.CavesLankyCabin,
+        name="Stacks of books on shelves in Lanky's cabin",
+        konglist=[Kongs.lanky],
+        region=Regions.LankyCabin,
+        locations=[[5, 1.0, 400, 72, 505], [5, 1.0, 150, 72, 335]],
     ),
     ColoredBananaGroup(
-        group=94, map_id=Maps.CavesChunkyCabin, name="Stacks of books on shelves", konglist=[Kongs.chunky], region=Regions.ChunkyCabin, locations=[[5, 1.0, 177, 72, 116], [5, 1.0, 77, 72, 356]]
+        group=94,
+        map_id=Maps.CavesChunkyCabin,
+        name="Stacks of books on shelves in Chunky's cabin",
+        konglist=[Kongs.chunky],
+        region=Regions.ChunkyCabin,
+        locations=[[5, 1.0, 177, 72, 116], [5, 1.0, 77, 72, 356]],
     ),
     ColoredBananaGroup(
-        group=95, map_id=Maps.CavesChunkyCabin, name="Books on floor and back shelf", konglist=[Kongs.chunky], region=Regions.ChunkyCabin, locations=[[5, 1.0, 402, 50, 561], [5, 1.0, 445, 15, 112]]
+        group=95,
+        map_id=Maps.CavesChunkyCabin,
+        name="Books on floor and back shelf in Chunky's cabin",
+        konglist=[Kongs.chunky],
+        region=Regions.ChunkyCabin,
+        locations=[[5, 1.0, 402, 50, 561], [5, 1.0, 445, 15, 112]],
     ),
-    ColoredBananaGroup(group=96, map_id=Maps.CavesDiddyUpperCabin, name="Books on shelf near entrance", konglist=[Kongs.diddy], region=Regions.DiddyUpperCabin, locations=[[5, 1.0, 201, 70, 119]]),
-    ColoredBananaGroup(group=97, map_id=Maps.CavesDiddyUpperCabin, name="Books on shelf on back wall", konglist=[Kongs.diddy], region=Regions.DiddyUpperCabin, locations=[[5, 1.0, 469, 70, 606]]),
     ColoredBananaGroup(
-        group=98, map_id=Maps.CavesDonkeyCabin, name="On books on shelves", konglist=[Kongs.donkey], region=Regions.DonkeyCabin, locations=[[5, 1.0, 190, 70, 486], [5, 1.0, 143, 70, 119]]
+        group=96,
+        map_id=Maps.CavesDiddyUpperCabin,
+        name="Books on shelf near entrance in Diddy's upper cabin",
+        konglist=[Kongs.diddy],
+        region=Regions.DiddyUpperCabin,
+        locations=[[5, 1.0, 201, 70, 119]],
+    ),
+    ColoredBananaGroup(
+        group=97,
+        map_id=Maps.CavesDiddyUpperCabin,
+        name="Books on shelf on back wall in Diddy's upper cabin",
+        konglist=[Kongs.diddy],
+        region=Regions.DiddyUpperCabin,
+        locations=[[5, 1.0, 469, 70, 606]],
+    ),
+    ColoredBananaGroup(
+        group=98,
+        map_id=Maps.CavesDonkeyCabin,
+        name="On books on shelves in DK's cabin",
+        konglist=[Kongs.donkey],
+        region=Regions.DonkeyCabin,
+        locations=[[5, 1.0, 190, 70, 486], [5, 1.0, 143, 70, 119]],
     ),
     ColoredBananaGroup(
         group=99,
@@ -1367,7 +1407,7 @@ ColoredBananaGroupList = [
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.CrystalCavesMain,
         vanilla=True,
-        logic=lambda l: l.punch and l.chunky,
+        logic=lambda l: l.barrels and l.chunky,
         locations=[[5, 1.0, 1658.8216552734375, 291.8333435058594, 1007.8945922851562]],
     ),
     ColoredBananaGroup(

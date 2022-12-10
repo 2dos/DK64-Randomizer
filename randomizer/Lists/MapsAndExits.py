@@ -239,6 +239,7 @@ RegionMapList = {
     Regions.AngryAztecLobby: Maps.AngryAztecLobby,
     Regions.FranticFactoryLobby: Maps.FranticFactoryLobby,
     Regions.GloomyGalleonLobby: Maps.GloomyGalleonLobby,
+    Regions.GloomyGalleonLobbyEntrance: Maps.GloomyGalleonLobby,
     Regions.FungiForestLobby: Maps.FungiForestLobby,
     Regions.CrystalCavesLobby: Maps.CrystalCavesLobby,
     Regions.CreepyCastleLobby: Maps.CreepyCastleLobby,

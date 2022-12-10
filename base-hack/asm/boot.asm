@@ -239,18 +239,6 @@ SpriteFixHook:
 PauseCounterCapHook:
 	J 	PauseCounterCap
 	NOP
-KrushaSizeHook:
-	J 	KrushaConditionalScaleDown
-	NOP
-KrushaSpeedYHook:
-	J 	controlKrushaSpeedup_Y
-	NOP
-warpGrowFixHook:
-	J 	warpGrowFix
-	NOP
-FallTooFarFixHook:
-	J 	FallTooFarFix
-	NOP
 PauseControlHook:
 	J 	PauseControl_Control
 	NOP
@@ -607,40 +595,6 @@ loadExtraHooks:
 	SW r0, 0xA418 (t4) // Store NOP
 
 	loadExtraHooks_4:
-	LUI t3, hi(KrushaSlot)
-	LBU t3, lo(KrushaSlot) (t3)
-	ADDIU t4, r0, 3
-	BEQ t3, t4, loadExtraHooks_5
-	ADDIU t4, r0, 1
-	BNE t3, t4, loadExtraHooks_6
-	NOP
-
-	loadExtraHooks_5:
-	LUI t3, hi(KrushaSizeHook)
-	LW t3, lo(KrushaSizeHook) (t3)
-	LUI t4, 0x8061
-	SW t3, 0x35B0 (t4) // Store Hook
-	SW r0, 0x35B4 (t4) // Store NOP
-	
-	LUI t3, hi(KrushaSpeedYHook)
-	LW t3, lo(KrushaSpeedYHook) (t3)
-	LUI t4, 0x8066
-	SW t3, 0x5250 (t4) // Store Hook
-	SW r0, 0x5254 (t4) // Store NOP
-	
-	LUI t3, hi(warpGrowFixHook)
-	LW t3, lo(warpGrowFixHook) (t3)
-	LUI t4, 0x806E
-	SW t3, 0xC348 (t4) // Store Hook
-	SW r0, 0xC34C (t4) // Store NOP
-	
-	LUI t3, hi(FallTooFarFixHook)
-	LW t3, lo(FallTooFarFixHook) (t3)
-	LUI t4, 0x806D
-	SW t3, 0x3624 (t4) // Store Hook
-	SW r0, 0x3628 (t4) // Store NOP
-
-	loadExtraHooks_6:
 	JR ra
 	NOP
 

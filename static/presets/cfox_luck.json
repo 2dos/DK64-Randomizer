@@ -62,6 +62,7 @@
     "misc_changes_selected":[],
     "enemies_selected":[],
     "quality_of_life":true,
+    "wrinkly_available": false,
     "shorten_boss":true,
     "enable_tag_anywhere":true,
     "wrinkly_hints":"standard",

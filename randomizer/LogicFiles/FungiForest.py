@@ -158,8 +158,8 @@ LogicRegions = {
     ]),
 
     Regions.Anthill: Region("Anthill", "Owl Tree", Levels.FungiForest, False, -1, [
-        LocationLogic(Locations.ForestTinyAnthill, lambda l: (l.istiny or l.settings.free_trade_items) and l.oranges),
-        LocationLogic(Locations.ForestBean, lambda l: (l.istiny or l.settings.free_trade_items) and l.oranges),
+        LocationLogic(Locations.ForestTinyAnthill, lambda l: (l.istiny or l.settings.free_trade_items) and (l.oranges or l.HasInstrument(Kongs.any))),
+        LocationLogic(Locations.ForestBean, lambda l: (l.istiny or l.settings.free_trade_items) and (l.oranges or l.HasInstrument(Kongs.any))),
     ], [], [
         TransitionFront(Regions.FungiForestMedals, lambda l: True),
         TransitionFront(Regions.HollowTreeArea, lambda l: True, Transitions.ForestAnthillToTree),

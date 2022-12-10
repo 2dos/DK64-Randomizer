@@ -7,7 +7,7 @@ set_variables = {
     "troff_scoff_count": [25, 200, 300, 400, 410, 420, 8],
     "blocker_normal_count": [2, 3, 4, 5, 6, 7, 8, 9],
     # "key_flags": [0x4A, 0x8A, 0xA8, 0xEC, 0x124, 0x13D, 0x1A],
-    "unlock_kongs": 0x1F,
+    "unlock_kongs": 0x0,
     "unlock_moves": 1,
     "fast_start_beginning": 1,
     "camera_unlocked": 1,
@@ -75,8 +75,8 @@ set_variables = {
     "helm_order": [2, 0, 0xFF, 0xFF, 0xFF],
     "disco_chunky": 1,
     "krusha_slot": 3,
-    "starting_kong": 4,
-    "kut_out_kong_order": [4, 0, 0, 0, 0],
+    "starting_kong": 0,
+    "kut_out_kong_order": [1, 0, 0, 0, 0],
     "helm_hurry_mode": 0,
     "win_condition": 5,
     "version": 2,
@@ -86,9 +86,10 @@ set_variables = {
     "medal_cb_req": 5,
     "hard_enemies": 1,
     "remove_oscillation_effects": 1,
-    "starting_map": 0xAE,
-    "starting_exit": 1,
+    # "starting_map": 0x1E,
+    # "starting_exit": 4,
     "rareware_gb_fairies": 1,
+    "call_parent_filter": 1,
 }
 
 

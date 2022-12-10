@@ -508,6 +508,10 @@ extern short FileVariables[8];
 
 extern float CannonArcSize[7];
 extern unsigned short PotionAnimations[6];
+extern char ArcadeBackgrounds[4];
+extern unsigned char ArcadeExited;
+extern unsigned char ArcadeStoryMode;
+extern unsigned char ArcadeEnableReward;
 
 //hack data
 extern int TestVariable;

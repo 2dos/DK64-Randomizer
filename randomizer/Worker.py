@@ -1,11 +1,10 @@
 """Task file to run functions in the background via webworkers."""
-import inspect
 import json
-
+import uuid
 import js
 
 
-def background(function, args, returning_func):
+def background(body):
     """Background a function via a webworker.
 
     This is a fully isolated function, you can not access the UIs DOM.
@@ -15,8 +14,13 @@ def background(function, args, returning_func):
         args (list): List of args to pass to the function.
         returning_func (func): Function to run once we complete the main function.
     """
-    module = inspect.getmodule(function)
-    run_func = inspect.getsource(module)
-    run_func += str(function.__name__) + "(" + ",".join(args) + ")"
-    returning_mod = inspect.getmodule(returning_func)
-    js.background_worker.postMessage(json.dumps({"func": run_func, "returning_func": "from " + returning_mod.__name__ + " import " + returning_func.__name__}))
+    if js.location.hostname == "dev.dk64randomizer.com" or js.location.hostname == "dk64randomizer.com":
+        branch = "dev"
+        if "dev" not in str(js.location.hostname).lower():
+            branch = "master"
+        url = "https://dk64-seed-generator.adaptable.app/generate"
+    else:
+        url = "http://" + str(js.window.location.hostname) + ":5000/generate"
+        branch = "dev"
+    id = str(uuid.uuid1())
+    js.generate_seed(url, json.dumps(body), branch, id)

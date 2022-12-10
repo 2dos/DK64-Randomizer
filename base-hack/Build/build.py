@@ -165,7 +165,21 @@ file_dict = [
     {"name": "Potion (Chunky) Model", "pointer_table_index": 4, "file_index": 0x1F5, "source_file": "potion_chunky_om2.bin", "do_not_delete_source": True},
     {"name": "Potion (Any) Model", "pointer_table_index": 4, "file_index": 0x1F6, "source_file": "potion_any_om2.bin", "do_not_delete_source": True},
     {"name": "Krusha Head", "start": 0x1FF6000, "source_file": "assets/Non-Code/displays/krusha_head64.png", "do_not_delete_source": True, "texture_format": "rgba5551", "do_not_compress": True},
+    {"name": "Snow Texture", "start": 0x1FF8000, "source_file": "assets/Non-Code/displays/snow32.png", "do_not_delete_source": True, "texture_format": "rgba5551", "do_not_compress": True},
 ]
+
+for img in (0x4DD, 0x4E4, 0x6B, 0xF0, 0x8B2, 0x5C2, 0x66E, 0x66F, 0x685, 0x6A1, 0xF8, 0x136):
+    file_dict.append(
+        {
+            "name": f"Snow Texture {hex(img)}",
+            "pointer_table_index": 25,
+            "file_index": img,
+            "source_file": f"grass{img}.bin",
+            # "source_file": "assets/Non-Code/displays/snow.bin",
+            # "do_not_delete_source": True,
+            "target_compressed_size": 0xAA0,
+        }
+    )
 
 number_game_changes = [
     {"number": 6, "state": "unlit", "texture": 520},
@@ -184,6 +198,18 @@ for num in number_game_changes:
             "do_not_compress": True,
         }
     )
+for x in range(5):
+    file_dict.append(
+        {
+            "name": f"Blueprint Model ({x})",
+            "pointer_table_index": 4,
+            "file_index": 0xDD + x,
+            "source_file": f"blueprint{x}.bin",
+            "do_not_delete_source": True,
+        }
+    )
+for x in range(0x5A, 0x5E):
+    file_dict.append({"name": f"Melon Slice ({hex(x)})", "pointer_table_index": 14, "file_index": x, "source_file": f"melon{x}.bin", "target_compressed_size": 48 * 42 * 2})
 
 for ci, coin in enumerate(["nin_coin", "rw_coin"]):
     for item in range(2):
@@ -966,6 +992,9 @@ with open(newROMName, "r+b") as fh:
     for coinreq in vanilla_coin_reqs:
         fh.seek(0x1FED020 + coinreq["offset"])
         fh.write(coinreq["coins"].to_bytes(1, "big"))
+    fh.seek(0x1FED020 + 0x48)
+    for lvl in (1, 4, 3, 2):  # Arcade Order
+        fh.write(lvl.to_bytes(1, "big"))
     for x in range(5):
         # Write default Helm Order
         fh.seek(0x1FED020 + x)

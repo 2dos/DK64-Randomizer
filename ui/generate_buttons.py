@@ -221,7 +221,8 @@ def generate_seed(event):
             form_data["seed"] = str(random.randint(100000, 999999))
         js.apply_bps_javascript()
         loop.run_until_complete(ProgressBar().update_progress(2, "Randomizing, this may take some time depending on settings."))
-        background(generate_playthrough, ["'''" + json.dumps(form_data) + "'''"], patching_response)
+        # background(generate_playthrough, ["'''" + json.dumps(form_data) + "'''"], patching_response)
+        background(form_data)
 
 
 @bind("click", "download_patch_file")

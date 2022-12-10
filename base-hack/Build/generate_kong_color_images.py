@@ -1,6 +1,9 @@
 """Convert RGB colors into a kong color palette."""
 import gzip
+import zlib
 import math
+import os
+from PIL import Image
 
 color_palettes = [
     {"kong": "dk", "zones": [{"zone": "base", "image": 3724, "colors": ["#2da1ad"], "fill_type": "block"}]},  # 2da1ad
@@ -201,4 +204,82 @@ def convertColors():
                 fh.write(comp)
 
 
+def hueShift(im, amount):
+    """Apply a hue shift on an image."""
+    hsv_im = im.convert("HSV")
+    im_px = im.load()
+    w, h = hsv_im.size
+    hsv_px = hsv_im.load()
+    for y in range(h):
+        for x in range(w):
+            old = list(hsv_px[x, y]).copy()
+            old[0] = (old[0] + amount) % 360
+            hsv_px[x, y] = (old[0], old[1], old[2])
+    rgb_im = hsv_im.convert("RGB")
+    rgb_px = rgb_im.load()
+    for y in range(h):
+        for x in range(w):
+            new = list(rgb_px[x, y])
+            new.append(list(im_px[x, y])[3])
+            im_px[x, y] = (new[0], new[1], new[2], new[3])
+    return im
+
+
+def applyMelonMask(shift: int):
+    """Apply a mask to the melon sprites."""
+    with open("rom/dk64-randomizer-base-dev.z64", "r+b") as fh:
+        ptr_offset = 0x101C50
+        data = {
+            7: (0x13C, 0x147),
+            14: (0x5A, 0x5D),
+        }
+        for table in data:
+            fh.seek(ptr_offset + (table * 0x4))
+            texture_table = ptr_offset + int.from_bytes(fh.read(4), "big")
+            table_data = list(data[table])
+            for img in range(table_data[0], table_data[1] + 1):
+                fh.seek(texture_table + (img * 4))
+                file_start = ptr_offset + int.from_bytes(fh.read(4), "big")
+                file_end = ptr_offset + int.from_bytes(fh.read(4), "big")
+                file_size = file_end - file_start
+                fh.seek(file_start)
+                file_data = fh.read(file_size)
+                if table == 14:
+                    file_data = zlib.decompress(file_data, (15 + 32))
+                temp_name = "temp.bin"
+                with open(temp_name, "wb") as fg:
+                    fg.write(file_data)
+                melon_im = Image.new(mode="RGBA", size=(48, 42))
+                px = melon_im.load()
+                with open(temp_name, "rb") as fg:
+                    for y in range(42):
+                        for x in range(48):
+                            px_info = int.from_bytes(fg.read(2), "big")
+                            px_red = int(((px_info >> 11) << 3) & 0xFF)
+                            px_green = int(((px_info >> 6) << 3) & 0xFF)
+                            px_blue = int(((px_info >> 1) << 3) & 0xFF)
+                            px_alpha = int((px_info & 1) * 255)
+                            px[x, y] = (px_red, px_green, px_blue, px_alpha)
+                    melon_im = hueShift(melon_im, shift)
+                with open(temp_name, "wb") as fg:
+                    for y in range(42):
+                        for x in range(48):
+                            px_info = list(px[x, y])
+                            px_red = (px_info[0] >> 3) << 11
+                            px_green = (px_info[1] >> 3) << 6
+                            px_blue = (px_info[2] >> 3) << 1
+                            px_alpha = 1 if px_info[3] > 0 else 0
+                            px_word = px_red | px_green | px_blue | px_alpha
+                            fg.write(px_word.to_bytes(2, "big"))
+                with open(temp_name, "rb") as fg:
+                    new_data = fg.read()
+                    if table == 14:
+                        new_data = gzip.compress(new_data, compresslevel=9)
+                    fh.seek(file_start)
+                    fh.write(new_data)
+                if os.path.exists(temp_name):
+                    os.remove(temp_name)
+
+
+applyMelonMask(60)
 convertColors()

@@ -2,8 +2,9 @@
 import hashlib
 import inspect
 import json
+import js
 import random
-import sys
+from version import whl_hash
 from random import randint
 
 from randomizer.Enums.Events import Events
@@ -316,6 +317,7 @@ class Settings:
         self.fast_start_beginning_of_game = None
         self.helm_setting = None
         self.quality_of_life = None
+        self.wrinkly_available = False
         self.shorten_boss = False
         self.enable_tag_anywhere = None
         self.krool_phase_order_rando = None
@@ -371,6 +373,7 @@ class Settings:
         self.key_8_helm = False
         self.random_starting_region = False
         self.starting_region = {}
+        self.holiday_mode = False
 
     def shuffle_prices(self):
         """Price randomization. Reuseable if we need to reshuffle prices."""
@@ -772,7 +775,7 @@ class Settings:
                 self.valid_locations[Types.Blueprint][Kongs.tiny] = [location for location in blueprintLocations if LocationList[location].kong == Kongs.tiny]
                 self.valid_locations[Types.Blueprint][Kongs.chunky] = [location for location in blueprintLocations if LocationList[location].kong == Kongs.chunky]
             if Types.Banana in self.shuffled_location_types:
-                self.valid_locations[Types.Banana] = shuffledLocations
+                self.valid_locations[Types.Banana] = [location for location in shuffledLocations if LocationList[location].level != Levels.HideoutHelm]
             if Types.Crown in self.shuffled_location_types:
                 # Banned for technical reasons
                 banned_crown_locations = (
@@ -781,14 +784,6 @@ class Settings:
                     Locations.HelmLankyMedal,
                     Locations.HelmTinyMedal,
                     Locations.HelmChunkyMedal,
-                    Locations.JapesDiddyMinecarts,
-                    Locations.CastleDonkeyMinecarts,
-                    Locations.ForestChunkyMinecarts,
-                    Locations.IslesDonkeyInstrumentPad,
-                    Locations.IslesDiddyInstrumentPad,
-                    Locations.IslesLankyInstrumentPad,
-                    Locations.IslesTinyInstrumentPad,
-                    Locations.IslesChunkyInstrumentPad,
                 )
                 self.valid_locations[Types.Crown] = [location for location in shuffledLocations if location not in banned_crown_locations]
             if Types.Key in self.shuffled_location_types:
@@ -865,19 +860,7 @@ class Settings:
     @staticmethod
     def __get_hash():
         """Get the hash value of all of the source code loaded."""
-        hash_value = []
-        files = []
-        files.append(inspect.getsource(Settings))
-        files.append(inspect.getsource(__import__("randomizer.Spoiler")))
-        files.append(inspect.getsource(__import__("randomizer.Fill")))
-        files.append(inspect.getsource(__import__("randomizer.BackgroundRandomizer")))
-        try:
-            files.append(inspect.getsource(__import__("version")))
-        except Exception:  # Fails if running python by itself
-            pass
-        for file in sorted(files):
-            hash_value.append(hashlib.md5(file.encode("utf-8")).hexdigest())
-        return "".join(hash_value)
+        return whl_hash
 
     def compare_hash(self, hash):
         """Compare our hash with a passed hash value."""

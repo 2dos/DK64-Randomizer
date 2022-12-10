@@ -91,6 +91,7 @@
 #define LLAMA_BAMBOOGATE 0x11
 #define LLAMA_GUNSWITCH 0x12
 #define LLAMA_BONGOPAD 0x16
+#define LLAMA_LAVAGATE 0x18
 #define TTEMPLE_SWITCH 0x0
 #define TTEMPLE_GUITARPAD 0x4
 #define TTEMPLE_KONGLETTER0 0xC
@@ -906,6 +907,10 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 					}
 				} else if (param2 == LLAMA_BONGOPAD) {
 					return Character == Rando.free_source_llama;
+				} else if (param2 == LLAMA_LAVAGATE) {
+					if (Rando.quality_of_life.remove_cutscenes) {
+						hideObject(behaviour_pointer);
+					}
 				} else if (param2 == LLAMA_BAMBOOGATE) {
 					if (index == 0) {
 						return checkFlag(getKongFlag(Rando.free_target_llama),0);
@@ -1509,7 +1514,7 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 			displayImageOnObject(id, 2, 1, 0);
 			unkObjFunction0(id, 1, 1);
 			unkObjFunction1(id, 1, 10);
-			if (checkFlag(kong_flags[kong],0) == 0) {
+			if ((!checkFlag(kong_flags[kong],0)) && (!Rando.disable_wrinkly_kong_requirement)) {
 				behaviour_pointer->next_state = 20;
 			} else {
 				displayImageOnObject(id, 1, 0, 0);
@@ -1551,6 +1556,8 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 		CrownPadGenericCode(behaviour_pointer, id, param2, 0);
 	} else if (index == -6) {
 		CrownPadGenericCode(behaviour_pointer, id, param2, 1);
+	} else if (index == -7) {
+		return checkFlag(kong_flags[param2], 0) || Rando.disable_wrinkly_kong_requirement;
 	}
 	InstanceScriptParams[1] = id;
 	InstanceScriptParams[2] = index;

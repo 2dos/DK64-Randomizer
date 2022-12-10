@@ -134,17 +134,6 @@ void* DiddySwimFix(int ptr, int file, int c0, int c1) {
     return (void*)data;
 }
 
-void UpdateCollisionDimensions_Krusha(int player, int x_f, int y_f, int z_f, float scale) {
-    if ((KrushaSlot + 2) == (CurrentActorPointer_0->actorType)) {
-        if (KrushaSlot == 1) {
-            scale *= (0.15f / 0.13f);
-        } else if (KrushaSlot == 3) {
-            scale *= (0.15f / 0.1f);
-        }
-    }
-    updateCollisionDimensions(player, x_f, y_f, z_f, scale);
-}
-
 void MinecartJumpFix(void* player, int anim) {
     CurrentActorPointer_0->control_state_progress = 1;
     playAnimation(player, anim);
@@ -158,21 +147,4 @@ void MinecartJumpFix_0(void) {
         CurrentActorPointer_0->control_state = 7;
         CurrentActorPointer_0->control_state_progress = 0;
     }
-}
-
-void updateKongSize(void) {
-    float targ_scale = 0.15f;
-    if ((Rando.krusha_slot + 2) == Player->characterID) {
-        if (Player->characterID == 3) {
-            // Diddy
-            targ_scale = 0.13f;
-        } else if (Player->characterID == 5) {
-            // Tiny
-            targ_scale = 0.1f;
-        }
-    }
-    for (int i = 0; i < 6; i++) {
-        Player->scale[i] = targ_scale;
-    }
-    parseCheats(0);
 }

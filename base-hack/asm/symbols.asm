@@ -215,3 +215,7 @@
 
 .definelabel CannonArcSize, 0x80753CD0
 .definelabel PotionAnimations, 0x8075D380
+.definelabel ArcadeBackgrounds, 0x8004A788
+.definelabel ArcadeExited, 0x8004A73C
+.definelabel ArcadeStoryMode, 0x8004A740
+.definelabel ArcadeEnableReward, 0x8004A770

@@ -342,6 +342,24 @@ for y in range(32):
             pix_pearl[x, y] = (0, 0, 0, 0)
 pearl_im.transpose(Image.Transpose.FLIP_TOP_BOTTOM).save(f"{disp_dir}pearl.png")
 
+# # Christmas Theme
+# snow_by = []
+# snow_im = Image.open(f"{disp_dir}snow.png")
+# for dim in (32, 16, 8, 4):
+#     snow_im = snow_im.resize((dim, dim))
+#     snow_px = snow_im.load()
+#     for y in range(dim):
+#         for x in range(dim):
+#             px_data = list(snow_px[x, y])
+#             data = 0
+#             for c in range(3):
+#                 data |= (px_data[c] >> 3) << (1 + (5 * c))
+#             if px_data[3] != 0:
+#                 data |= 1
+#             snow_by.extend([(data >> 8), (data & 0xFF)])
+# with open(f"{disp_dir}snow.bin","wb") as fh:
+#     fh.write(bytearray(snow_by))
+
 rmve = [
     "01234.png",
     "56789.png",

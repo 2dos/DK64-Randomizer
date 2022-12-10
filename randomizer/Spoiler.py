@@ -68,9 +68,9 @@ class Spoiler:
             elif move_master_type == 2:
                 # BFI
                 if self.settings.shockwave_status == "vanilla":
-                    master_moves.append({"move_type": "flag", "flag": "camera_shockwave", "price": 0})
+                    master_moves = [{"move_type": "flag", "flag": "camera_shockwave", "price": 0}]
                 else:
-                    master_moves.append({"move_type": None})
+                    master_moves = [{"move_type": None}]
             self.move_data.append(master_moves)
 
         self.hint_list = {}
@@ -390,7 +390,7 @@ class Spoiler:
                 phase_names.append(f"Phase {phase+1}")
             humanspoiler["Bosses"]["King Kut Out Properties"]["Shuffled Kutout Phases"] = ", ".join(phase_names)
 
-        if self.settings.bonus_barrels in ("random", "selected"):
+        if self.settings.bonus_barrels in ("random", "selected") or self.settings.helm_barrels == "random":
             shuffled_barrels = OrderedDict()
             for location, minigame in self.shuffled_barrel_data.items():
                 if location in HelmMinigameLocations and self.settings.helm_barrels == "skip":
@@ -632,7 +632,7 @@ class Spoiler:
                     price = 0
                     # Moves that are set with a single flag (e.g. training barrels, shockwave) are handled differently
                     if move_type == MoveTypes.Flag:
-                        self.move_data[2].append({"move_type": "flag", "flag": updated_item.flag, "price": price})
+                        self.move_data[2] = [{"move_type": "flag", "flag": updated_item.flag, "price": price}]
                     # This is for every other move typically purchased in a shop
                     else:
                         move_level = updated_item.index - 1

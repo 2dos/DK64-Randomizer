@@ -42,6 +42,7 @@
     "helm_hurry": false,
     "helm_setting": "skip_start",
     "high_req": true,
+    "holiday_mode": false,
     "item_rando_list_selected": [],
     "kasplat_rando_setting": "vanilla_locations",
     "select_keys": false,
@@ -101,6 +102,7 @@
     "troff_text": 300,
     "warp_to_isles": true,
     "win_condition": "beat_krool",
+    "wrinkly_available": false,
     "wrinkly_hints": "standard",
     "wrinkly_location_rando": false
 }
