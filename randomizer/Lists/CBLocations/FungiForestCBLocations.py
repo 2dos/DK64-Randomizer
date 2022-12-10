@@ -97,7 +97,6 @@ ColoredBananaGroupList = [
         name="Mushroom with vines leading to minecart",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.FungiForestStart,
-        logic=lambda l: l.vines,
         locations=[[5, 1.0, 2573, 410, 2733]],
     ),
     ColoredBananaGroup(
@@ -115,6 +114,7 @@ ColoredBananaGroupList = [
         name="Vines to minecart",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.FungiForestStart,
+        logic=lambda l: l.vines,
         locations=[[1, 1.2, 2489, 428, 2813], [1, 1.2, 2410, 415, 2895], [1, 1.2, 2348, 410, 2962], [1, 1.2, 2289, 405, 3024], [1, 1.2, 2226, 405, 3088]],
     ),
     ColoredBananaGroup(
@@ -123,6 +123,7 @@ ColoredBananaGroupList = [
         name="Around the roof of minecart",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.FungiForestStart,
+        logic=lambda l: l.vines,
         locations=[
             [1, 1.0, 2092, 280, 3251],
             [1, 1.0, 2050, 280, 3192],
@@ -305,7 +306,13 @@ ColoredBananaGroupList = [
         locations=[[5, 1.0, 5001, 392, 3651]],
     ),
     ColoredBananaGroup(
-        group=27, map_id=Maps.FungiForest, name="Top of Minecart exit", konglist=[Kongs.donkey, Kongs.tiny], region=Regions.MillArea, locations=[[5, 1.0, 5354, 395, 3644], [5, 1.0, 5331, 392, 3712]]
+        group=27,
+        map_id=Maps.FungiForest,
+        name="Top of Minecart exit",
+        konglist=[Kongs.donkey, Kongs.tiny],
+        region=Regions.MillArea,
+        logic=lambda l: l.isdonkey or (l.istiny and l.twirl),
+        locations=[[5, 1.0, 5354, 395, 3644], [5, 1.0, 5331, 392, 3712]],
     ),
     ColoredBananaGroup(
         group=28,
