@@ -186,6 +186,11 @@ class Locations(IntEnum):
     GalleonTiny5DoorShip = auto()
     GalleonBananaFairy5DoorShip = auto()
     GalleonChunky5DoorShip = auto()
+    GalleonPearl0 = auto()
+    GalleonPearl1 = auto()
+    GalleonPearl2 = auto()
+    GalleonPearl3 = auto()
+    GalleonPearl4 = auto()
     GalleonKey = auto()
 
     # Fungi Forest locations
@@ -221,6 +226,7 @@ class Locations(IntEnum):
     ForestBananaFairyThornvines = auto()
     ForestTinyBeanstalk = auto()
     ForestChunkyApple = auto()
+    ForestBean = auto()
     ForestKey = auto()
 
     # Crystal Caves locations

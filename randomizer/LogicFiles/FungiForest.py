@@ -159,9 +159,8 @@ LogicRegions = {
 
     Regions.Anthill: Region("Anthill", "Owl Tree", Levels.FungiForest, False, -1, [
         LocationLogic(Locations.ForestTinyAnthill, lambda l: (l.istiny or l.settings.free_trade_items) and (l.oranges or l.HasInstrument(Kongs.any))),
-    ], [
-        Event(Events.Bean, lambda l: (l.istiny or l.settings.free_trade_items) and (l.oranges or l.HasInstrument(Kongs.any))),
-    ], [
+        LocationLogic(Locations.ForestBean, lambda l: (l.istiny or l.settings.free_trade_items) and (l.oranges or l.HasInstrument(Kongs.any))),
+    ], [], [
         TransitionFront(Regions.FungiForestMedals, lambda l: True),
         TransitionFront(Regions.HollowTreeArea, lambda l: True, Transitions.ForestAnthillToTree),
     ]),
@@ -256,8 +255,8 @@ LogicRegions = {
         TransitionFront(Regions.ThornvineArea, lambda l: True, Transitions.ForestBarnToMain),
     ]),
 
-    Regions.WormArea: Region("Worm Area", "Forest Center and Beanstalk", Levels.FungiForest, True, -1, [
-        LocationLogic(Locations.ForestTinyBeanstalk, lambda l: Events.Bean in l.Events and l.saxophone and l.mini and l.istiny),
+    Regions.WormArea: Region("Worm Area", "Beanstalk Area", Levels.FungiForest, True, -1, [
+        LocationLogic(Locations.ForestTinyBeanstalk, lambda l: l.saxophone and l.mini and l.istiny and l.Beans >= 1),
         LocationLogic(Locations.ForestChunkyApple, lambda l: Events.WormGatesOpened in l.Events and l.hunkyChunky and l.ischunky and l.barrels),
     ], [], [
         TransitionFront(Regions.FungiForestMedals, lambda l: True),

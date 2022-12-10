@@ -1,5 +1,6 @@
 #include "vars.h"
 #include "text_items.h"
+#include "item_data.h"
 
 extern void playSFX(short sfxIndex);
 extern void setPermFlag(short flagIndex);
@@ -57,6 +58,7 @@ extern void no_enemy_drops(void);
 extern void adjust_galleon_water(void);
 
 extern int canItemPersist(void);
+extern void initKongRando(void);
 
 extern int convertSubIDToIndex(short obj_index);
 extern int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, int param2);
@@ -127,6 +129,8 @@ extern void goldBeaverCode(void);
 extern void ninCoinCode(void);
 extern void rwCoinCode(void);
 extern void medalCode(void);
+extern void beanCode(void);
+extern void pearlCode(void);
 extern void NothingCode(void);
 extern void beaverExtraHitHandle(void);
 extern void CBDing(void);
@@ -224,12 +228,15 @@ extern int* controlKeyText(int* dl);
 extern void keyGrabHook(int song, int vol);
 extern int itemGrabHook(int collectable_type, int obj_type, int is_homing);
 extern int getKeyFlag(int index);
+extern int getKongFlag(int kong_index);
 extern void KLumsyText(void);
 extern void PotionCode(void);
+extern void KongDropCode(void);
 extern int getMoveProgressiveFlagType(int flag);
 extern void getItem(int object_type);
 extern int setupHook(int map);
 extern void CheckKasplatSpawnBitfield(void);
+extern void initActor(int actor_index, void* func, int master_type, int paad_type);
 
 extern int* pauseScreen3And4Header(int* dl);
 extern int* pauseScreen3And4Counter(int x, int y, int top, int bottom, int* dl, int unk0, int scale);
@@ -243,4 +250,8 @@ extern void changePauseScreen(void);
 
 extern unsigned int cs_skip_db[432];
 extern bonus_barrel_info bonus_data[95];
+extern const short kong_flags[5];
 extern const check_struct item_db[292];
+
+extern sprite_data_struct bean_sprite;
+extern sprite_data_struct pearl_sprite;

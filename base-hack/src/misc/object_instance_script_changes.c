@@ -214,36 +214,6 @@ typedef struct warp_extra_info {
 	/* 0x002 */ unsigned short tied_index;
 } warp_extra_info;
 
-typedef struct item_conversion_info {
-	/* 0x000 */ short actor;
-	/* 0x002 */ short model_two;
-	/* 0x004 */ float scale;
-} item_conversion_info;
-
-#define COIN_SCALE 0.4f
-#define BP_SCALE 2.0f
-#define POTION_SCALE 0.8f
-
-static const item_conversion_info item_conversions[] = {
-	{.actor=45, .model_two=0x74, .scale=0.25f}, // GB
-	{.actor=78, .model_two=0xDE, .scale=BP_SCALE}, // DK BP
-	{.actor=75, .model_two=0xE0, .scale=BP_SCALE}, // Diddy BP
-	{.actor=77, .model_two=0xE1, .scale=BP_SCALE}, // Lanky BP
-	{.actor=79, .model_two=0xDD, .scale=BP_SCALE}, // Tiny BP
-	{.actor=76, .model_two=0xDF, .scale=BP_SCALE}, // Chunky BP
-	{.actor=72, .model_two=0x13C, .scale=0.17f}, // Key
-	{.actor=86, .model_two=0x18D, .scale=0.25f}, // Crown
-	{.actor=151, .model_two=0x48, .scale=COIN_SCALE}, // Nintendo Coin
-	{.actor=152, .model_two=0x28F, .scale=COIN_SCALE}, // Rareware Coin
-	{.actor=157, .model_two=0x5B, .scale=POTION_SCALE}, // DK Potion
-	{.actor=158, .model_two=0x1F2, .scale=POTION_SCALE}, // Diddy Potion
-	{.actor=159, .model_two=0x59, .scale=POTION_SCALE}, // Lanky Potion
-	{.actor=160, .model_two=0x1F3, .scale=POTION_SCALE}, // Tiny Potion
-	{.actor=161, .model_two=0x1F5, .scale=POTION_SCALE}, // Chunky Potion
-	{.actor=162, .model_two=0x1F6, .scale=POTION_SCALE}, // Any Potion
-	{.actor=154, .model_two=0x90, .scale=0.22f}, // Medal
-};
-
 void getModelTwoItemFromActor(int actor, short* item, float* scale) {
 	for (int i = 0; i < (sizeof(item_conversions) / sizeof(item_conversion_info)); i++) {
 		if (actor == item_conversions[i].actor) {
@@ -642,7 +612,6 @@ int isBonus(int map) {
 	return (level == 9) || (level == 0xD);
 }
 
-static const short kong_flags[] = {FLAG_KONG_DK,FLAG_KONG_DIDDY,FLAG_KONG_LANKY,FLAG_KONG_TINY,FLAG_KONG_CHUNKY};
 static const unsigned char kong_press_states[] = {0x29,0x2E,0x26,0x29,0x24};
 static const unsigned char kong_pellets[] = {48,36,42,43,38};
 #define MILL_CRUSHER_PROGRESS 1
@@ -944,17 +913,17 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 					}
 				} else if (param2 == LLAMA_BAMBOOGATE) {
 					if (index == 0) {
-						return checkFlag(kong_flags[(int)Rando.free_target_llama],0);
+						return checkFlag(getKongFlag(Rando.free_target_llama),0);
 					} else if (index == 1) {
-						return !checkFlag(kong_flags[(int)Rando.free_target_llama],0);
+						return !checkFlag(getKongFlag(Rando.free_target_llama),0);
 					}
 				} else if (param2 == LLAMA_GUNSWITCH) {
 					if (index == 0) {
-						return checkFlag(kong_flags[(int)Rando.free_target_llama],0);
+						return checkFlag(getKongFlag(Rando.free_target_llama),0);
 					} else if (index == 1) {
-						return !checkFlag(kong_flags[(int)Rando.free_target_llama],0);
+						return !checkFlag(getKongFlag(Rando.free_target_llama),0);
 					} else if (index == 2) {
-						setPermFlag(kong_flags[(int)Rando.free_target_llama]);
+						setPermFlag(getKongFlag(Rando.free_target_llama));
 					} else if ((index >= 3) && (index <= 6)) {
 						return getPressedSwitch(behaviour_pointer,kong_pellets[(int)Rando.free_source_llama],id);
 					}
@@ -1073,17 +1042,17 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 					}
 				} else if (param2 == JAPES_DIDDYBAMBOOGATE) {
 					if (index == 0) {
-						return checkFlag(kong_flags[(int)Rando.free_target_japes],0);
+						return checkFlag(getKongFlag(Rando.free_target_japes),0);
 					} else if (index == 1) {
-						return !checkFlag(kong_flags[(int)Rando.free_target_japes],0);
+						return !checkFlag(getKongFlag(Rando.free_target_japes),0);
 					} else if (index == 2) {
-						setPermFlag(kong_flags[(int)Rando.free_target_japes]);
+						setPermFlag(getKongFlag(Rando.free_target_japes));
 					}
 				} else if ((param2 == JAPES_GUNSWITCH0) || (param2 == JAPES_GUNSWITCH1) || (param2 == JAPES_GUNSWITCH2)) {
 					if (index == 0) {
-						return checkFlag(kong_flags[(int)Rando.free_target_japes],0);
+						return checkFlag(getKongFlag(Rando.free_target_japes),0);
 					} else if (index == 1) {
-						return !checkFlag(kong_flags[(int)Rando.free_target_japes],0);
+						return !checkFlag(getKongFlag(Rando.free_target_japes),0);
 					} else if ((index == 2) || (index == 3)) {
 						return getPressedSwitch(behaviour_pointer, kong_pellets[(int)Rando.free_source_japes], id);
 					} else if (index == 4) {
@@ -1096,9 +1065,9 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 					}
 				} else if (param2 == JAPES_DIDDYFREEGB) {
 					if (index == 0) {
-						return checkFlag(kong_flags[(int)Rando.free_target_japes],0);
+						return checkFlag(getKongFlag(Rando.free_target_japes),0);
 					} else if (index == 1) {
-						return !checkFlag(kong_flags[(int)Rando.free_target_japes],0);
+						return !checkFlag(getKongFlag(Rando.free_target_japes),0);
 					}
 				} else if ((param2 == JAPES_CAVE_GATE) || (param2 == JAPES_PEANUT_MOUNTAIN) || (param2 == JAPES_COCONUT_RAMBI)) {
 					return !Rando.tag_anywhere;
@@ -1138,25 +1107,25 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 					}
 				} else if (param2 == FACTORY_FREESWITCH) {
 					if (index == 0) {
-						return checkFlag(kong_flags[(int)Rando.free_target_factory],0);
+						return checkFlag(getKongFlag(Rando.free_target_factory),0);
 					} else if (index == 1) {
-						return !checkFlag(kong_flags[(int)Rando.free_target_factory],0);
+						return !checkFlag(getKongFlag(Rando.free_target_factory),0);
 					} else if (index == 2) {
 						return Character == Rando.free_source_factory;
 					} else if (index == 3) {
-						setPermFlag(kong_flags[(int)Rando.free_target_factory]);
+						setPermFlag(getKongFlag(Rando.free_target_factory));
 					}
 				} else if (param2 == FACTORY_CAGE) {
 					if (index == 0) {
-						return checkFlag(kong_flags[(int)Rando.free_target_factory],0);
+						return checkFlag(getKongFlag(Rando.free_target_factory),0);
 					} else if (index == 1) {
-						return !checkFlag(kong_flags[(int)Rando.free_target_factory],0);
+						return !checkFlag(getKongFlag(Rando.free_target_factory),0);
 					}
 				} else if (param2 == FACTORY_FREEGB) {
 					if (index == 0) {
-						return checkFlag(kong_flags[(int)Rando.free_target_factory],0);
+						return checkFlag(getKongFlag(Rando.free_target_factory),0);
 					} else if (index == 1) {
-						return !checkFlag(kong_flags[(int)Rando.free_target_factory],0);
+						return !checkFlag(getKongFlag(Rando.free_target_factory),0);
 					}
 				} else if (param2 == FACTORY_PIANO) {
 					if (index < 7) {
@@ -1330,17 +1299,17 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 			case TRAINING_GROUNDS:
 				if (param2 == TGROUNDS_SWITCH) {
 					if (index == 0) {
-						return checkFlag(kong_flags[(int)Rando.starting_kong],0);
+						return checkFlag(getKongFlag(Rando.starting_kong),0);
 					} else if (index == 1) {
-						return !checkFlag(kong_flags[(int)Rando.starting_kong],0);
+						return !checkFlag(getKongFlag(Rando.starting_kong),0);
 					} else if (index == 2) {
-						setPermFlag(kong_flags[(int)Rando.starting_kong]);
+						setPermFlag(getKongFlag(Rando.starting_kong));
 					}
 				} else if (param2 == TGROUNDS_BAMBOOGATE) {
 					if (index == 0) {
-						return checkFlag(kong_flags[(int)Rando.starting_kong],0);
+						return checkFlag(getKongFlag(Rando.starting_kong),0);
 					} else if (index == 1) {
-						return !checkFlag(kong_flags[(int)Rando.starting_kong],0);
+						return !checkFlag(getKongFlag(Rando.starting_kong),0);
 					}
 				}
 				break;
@@ -1366,11 +1335,11 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 					if (Rando.fast_gbs) {
 						int pearls_collected = 0;
 						for (int i = 0; i < 5; i++) {
-							pearls_collected += checkFlag(FLAG_PEARL_0_COLLECTED + i,0);
+							pearls_collected += checkFlagDuplicate(FLAG_PEARL_0_COLLECTED + i,0);
 						}
 						if (pearls_collected >= 1) {
 							for (int i = 0; i < 5; i++) {
-								setPermFlag(FLAG_PEARL_0_COLLECTED + i);
+								setFlagDuplicate(FLAG_PEARL_0_COLLECTED + i, 1, 0);
 							}
 							behaviour_pointer->next_state = 2;
 						}
@@ -1400,15 +1369,15 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 					return Character == 1;
 				} else if (param2 == TTEMPLE_BAMBOOGATE) {
 					if (index == 0) {
-						return checkFlag(kong_flags[(int)Rando.free_target_ttemple],0);
+						return checkFlag(getKongFlag(Rando.free_target_ttemple),0);
 					} else if (index == 1) {
-						setPermFlag(kong_flags[(int)Rando.free_target_ttemple]);
+						setPermFlag(getKongFlag(Rando.free_target_ttemple));
 					}
 				} else if (param2 == TTEMPLE_CHARGESWITCH) {
 					if (index == 0) {
-						return checkFlag(kong_flags[(int)Rando.free_target_ttemple],0);
+						return checkFlag(getKongFlag(Rando.free_target_ttemple),0);
 					} else if (index == 1) {
-						return !checkFlag(kong_flags[(int)Rando.free_target_ttemple],0);
+						return !checkFlag(getKongFlag(Rando.free_target_ttemple),0);
 					} else if (index == 2) {
 						return checkControlState(kong_press_states[(int)Rando.free_source_ttemple]);
 					}

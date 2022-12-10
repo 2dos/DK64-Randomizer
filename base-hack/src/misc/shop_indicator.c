@@ -159,6 +159,9 @@ typedef enum counter_items {
 	/* 0x00D */ COUNTER_POTION,
 	/* 0x00E */ COUNTER_NINCOIN,
 	/* 0x00F */ COUNTER_RWCOIN,
+	/* 0x010 */ COUNTER_BEAN,
+	/* 0x011 */ COUNTER_PEARL,
+	/* 0x012 */ COUNTER_FAIRY,
 } counter_items;
 
 int getCounterItem(int shop_index, int kong, int level) {
@@ -206,6 +209,11 @@ int getCounterItem(int shop_index, int kong, int level) {
 						for (int i = 0; i < 8; i++) {
 							if (flag == getKeyFlag(i)) {
 								return COUNTER_KEY;
+							}
+						}
+						for (int i = 0; i < 5; i++) {
+							if (flag == getKongFlag(i)) {
+								return 1 + i;
 							}
 						}
 					}

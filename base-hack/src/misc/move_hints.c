@@ -27,27 +27,35 @@ int getHintTextIndex(int shop_owner, shop_paad* shop_data) {
 	int kong = shop_data->kong;
 	if (shop_data->price > MovesBase[(int)Character].coins) {
 		if (purchase_type < 5) {
-			base = 45 + purchase_type;
+			base = 48 + purchase_type;
 		} else {
 			int subtype = getMoveProgressiveFlagType(shop_data->flag);
 			if (isTBarrelFlag(shop_data->flag)) {
-				base = 50;
-			} else if (isFairyFlag(shop_data->flag)) {
-				base = 51;
-			} else if (purchase_type == PURCHASE_GB) {
 				base = 53;
-			} else if ((shop_data->flag >= FLAG_BP_JAPES_DK_HAS) && (shop_data->flag < (FLAG_BP_JAPES_DK_HAS + 40))) {
+			} else if (isFairyFlag(shop_data->flag)) {
 				base = 54;
+			} else if (purchase_type == PURCHASE_GB) {
+				base = 56;
+			} else if ((shop_data->flag >= FLAG_BP_JAPES_DK_HAS) && (shop_data->flag < (FLAG_BP_JAPES_DK_HAS + 40))) {
+				base = 57;
 			} else if ((shop_data->flag >= FLAG_MEDAL_JAPES_DK) && (shop_data->flag < (FLAG_MEDAL_JAPES_DK + 40))) {
-				base = 55;
+				base = 58;
 			} else if (subtype == 0) {
-				base = 46;
-			} else if (subtype == 1) {
-				base = 48;
-			} else if (subtype == 2) {
 				base = 49;
-			} else {
+			} else if (subtype == 1) {
+				base = 51;
+			} else if (subtype == 2) {
 				base = 52;
+			} else {
+				for (int i = 0; i < 5; i++) {
+					if (shop_data->flag == kong_flags[i]) {
+						base = 59;
+					}
+				}
+				if (base == 0) {
+					// Generic Item Hint
+					base = 55;
+				}
 			}
 		}
 	} else {
@@ -95,7 +103,17 @@ int getHintTextIndex(int shop_owner, shop_paad* shop_data) {
 						base = 38;
 					} else if (flag == FLAG_COLLECTABLE_BEAN) {
 						base = 44;
+					} else if ((flag >= FLAG_PEARL_0_COLLECTED) && (flag < (FLAG_PEARL_0_COLLECTED + 5))) {
+						base = 45;
+					} else if ((flag >= FLAG_FAIRY_1) && (flag < (FLAG_FAIRY_1 + 20))) {
+						base = 47;
 					} else {
+						// Kongs
+						for (int i = 0; i < 5; i++) {
+							if (flag == kong_flags[i]) {
+								base = 46;
+							}
+						}
 						// Key
 						for (int i = 0; i < 8; i++) {
 							if (flag == getKeyFlag(i)) {

@@ -342,7 +342,7 @@ def patching_response(responded_data):
     randomize_puzzles(spoiler)
     randomize_cbs(spoiler)
     ApplyShopRandomizer(spoiler)
-    place_randomized_items(spoiler)
+    place_randomized_items(spoiler)  # Has to be after kong rando cosmetic and moves
     place_door_locations(spoiler)
     randomize_crown_pads(spoiler)
     filterEntranceType()

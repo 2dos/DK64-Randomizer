@@ -72,6 +72,8 @@ images = [
     ImageData("lanky_bp", "rgba16", 25, 0x1593, 48, 42, False, True),
     ImageData("key", "rgba16", 25, 0x16F5, 44, 44, False, True),
     ImageData("crown_shop", "rgba16", 25, 0x1705, 44, 44, False, True),
+    ImageData("pearl", "rgba16", 25, 0xD5F, 32, 32, False, True),
+    ImageData("bean", "rgba16", 25, 0xD3C, 64, 32, False, True),
 ]
 
 kong_tex = ["chunky", "tiny", "lanky", "diddy", "dk"]

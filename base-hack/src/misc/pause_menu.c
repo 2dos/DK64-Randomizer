@@ -269,16 +269,13 @@ void newPauseSpriteCode(sprite_struct* sprite, char* render) {
         diff = 2;
     }
     int pos_diff = diff;
-    int diff_mag = diff;
     if (pos_diff > 0) {
         pos_diff += 1;
-        diff_mag = pos_diff;
     } else  if (pos_diff < 0) {
         pos_diff -= 1;
-        diff_mag = -pos_diff;
     }
     float diff_increment = ((pause_control->control - (ROTATION_SPLIT * viewed_item)) * 80 * PAUSE_ITEM_COUNT) >> 12;
-    if (diff_mag >= 3) {
+    if ((pos_diff >= 3) || (pos_diff <= -2)) {
         diff_increment /= 2;
     }
     sprite->x = (0xA0 + (pos_diff * 0x28) - diff_increment) * 4;
@@ -369,8 +366,8 @@ static int file_sprites[17] = {
     0x80721134, // Nintendo
     0xC, // BP
     0x807214A0, // Kong
-    0x807211D0, // Bean
-    0x807211D0, // Pearls
+    (int)&bean_sprite, // Bean
+    (int)&pearl_sprite, // Pearls
     0,
     0, 0, 0, 0,
     0, // Null Item, Leave Empty
@@ -382,7 +379,6 @@ static short file_item_caps[16] = {
     0, 0, 0, 0,
 };
 
-static const short kong_flags[] = {FLAG_KONG_DK,FLAG_KONG_DIDDY,FLAG_KONG_LANKY,FLAG_KONG_TINY,FLAG_KONG_CHUNKY};
 void updateFileVariables(void) {
     updateFilePercentage();
     for (int i = 0; i < 8; i++) {

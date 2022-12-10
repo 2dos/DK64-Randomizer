@@ -3,7 +3,7 @@
 import os
 
 import PIL
-from PIL import Image
+from PIL import Image, ImageDraw
 
 pre = "../"
 cwd = os.getcwd()
@@ -316,6 +316,32 @@ for coin in ("nin_coin", "rw_coin"):
     coin_im = Image.open(f"{hash_dir}{coin}.png")
     coin_im.save(f"{disp_dir}{coin}.png")
 
+# Bean
+bean_im = Image.open(f"{hash_dir}bean.png")
+bean_mask_im = Image.open(f"{disp_dir}bean_mask.png")
+pix_bean = bean_im.load()
+pix_mask = bean_mask_im.load()
+for y in range(32):
+    for x in range(64):
+        r, g, b, a = bean_mask_im.getpixel((x, y))
+        if a > 128:
+            pix_bean[x, y] = (0, 0, 0, 0)
+bean_im.transpose(Image.Transpose.FLIP_TOP_BOTTOM).save(f"{disp_dir}bean.png")
+
+# Pearl
+pearl_im = Image.open(f"{hash_dir}pearl.png")
+pearl_mask_im = Image.new("RGBA", (32, 32), (0, 0, 0, 255))
+draw = ImageDraw.Draw(pearl_mask_im)
+draw.ellipse((0, 0, 31, 31), fill=(0, 0, 0, 0), outline=(0, 0, 0, 0))
+pix_pearl = pearl_im.load()
+pix_mask = pearl_mask_im.load()
+for y in range(32):
+    for x in range(32):
+        r, g, b, a = pearl_mask_im.getpixel((x, y))
+        if a > 128:
+            pix_pearl[x, y] = (0, 0, 0, 0)
+pearl_im.transpose(Image.Transpose.FLIP_TOP_BOTTOM).save(f"{disp_dir}pearl.png")
+
 # # Christmas Theme
 # snow_by = []
 # snow_im = Image.open(f"{disp_dir}snow.png")
@@ -334,7 +360,6 @@ for coin in ("nin_coin", "rw_coin"):
 # with open(f"{disp_dir}snow.bin","wb") as fh:
 #     fh.write(bytearray(snow_by))
 
-
 rmve = [
     "01234.png",
     "56789.png",
@@ -352,6 +377,8 @@ rmve = [
     "gb.png",
     "key.png",
     "medal.png",
+    "bean.png",
+    "pearl.png",
 ]
 for kong in kongs:
     for x in range(2):

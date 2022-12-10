@@ -388,12 +388,14 @@ class Settings:
         self.shuffled_location_types = []
         if self.shuffle_items:
             if not self.item_rando_list_selected:
-                self.shuffled_location_types = [Types.Shop, Types.Banana, Types.Crown, Types.Blueprint, Types.Key, Types.Medal, Types.Coin]
+                self.shuffled_location_types = [Types.Shop, Types.Banana, Types.Crown, Types.Blueprint, Types.Key, Types.Medal, Types.Coin, Types.Kong, Types.Bean, Types.Pearl]
             else:
                 for item in self.item_rando_list_selected:
                     for type in Types:
                         if type.name == item.capitalize():
                             self.shuffled_location_types.append(type)
+                        if type in (Types.Bean, Types.Pearl) and item == "beanpearl":
+                            self.shuffled_location_types.extend([Types.Bean, Types.Pearl])
             if Types.Shop in self.shuffled_location_types:
                 if self.move_rando != "start_with":
                     self.move_rando = "item_shuffle"
@@ -790,6 +792,10 @@ class Settings:
                 self.valid_locations[Types.Medal] = shuffledLocations
             if Types.Coin in self.shuffled_location_types:
                 self.valid_locations[Types.Coin] = shuffledLocations
+            if Types.Pearl in self.shuffled_location_types:
+                self.valid_locations[Types.Pearl] = shuffledLocations
+            if Types.Bean in self.shuffled_location_types:
+                self.valid_locations[Types.Bean] = shuffledLocations
             if Types.Kong in self.shuffled_location_types:
                 # Banned because it defeats the purpose of starting with X Kongs
                 banned_kong_locations = (
