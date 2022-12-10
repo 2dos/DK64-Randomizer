@@ -501,8 +501,6 @@ void initHack(int source) {
 						*(short*)(0x80749764) = 10; // Fix Diddy Swimming (A)
 						*(short*)(0x80749758) = 10; // Fix Diddy Swimming (B)
 						*(short*)(0x8074974C) = 10; // Fix Diddy Swimming (Z/First Person)
-						*(int*)(0x806CAA2C) = 0x0C000000 | (((int)&UpdateCollisionDimensions_Krusha & 0xFFFFFF) >> 2); // Fix Collision
-
 						*(int*)(0x806E903C) = 0x0C000000 | (((int)&MinecartJumpFix & 0xFFFFFF) >> 2); // Fix Diddy Minecart Jump
 						*(int*)(0x806D259C) = 0x0C000000 | (((int)&MinecartJumpFix_0 & 0xFFFFFF) >> 2); // Fix Diddy Minecart Jump
 						break;
@@ -538,8 +536,6 @@ void initHack(int source) {
 						*(int*)(0x806C1058) = 0; // Prevent Cutscene Kong blinking
 						*(int*)(0x806F0AD0) = 0x24050001; // Fix Hand State
 						*(float*)(0x8075CC78) = 0.03f; // Reduce Tiny's Mini Monkey Size
-						*(int*)(0x806CAA2C) = 0x0C000000 | (((int)&UpdateCollisionDimensions_Krusha & 0xFFFFFF) >> 2); // Fix Collision
-						*(int*)(0x806C90A8) = 0x0C000000 | (((int)&updateKongSize & 0xFFFFFF) >> 2); // Fix Scaling Issues
 						break;
 					case 4:
 						// Chunky
