@@ -21,6 +21,7 @@ class Types(IntEnum):
     NoItem = auto()
     Bean = auto()
     Pearl = auto()
+    RainbowCoin = auto()
 
 
 ItemRandoSelector = [

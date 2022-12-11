@@ -195,6 +195,10 @@ int getCounterItem(int shop_index, int kong, int level) {
 						return COUNTER_NINCOIN;
 					} else if (flag == FLAG_COLLECTABLE_RAREWARECOIN) {
 						return COUNTER_RWCOIN;
+					} else if (flag == FLAG_COLLECTABLE_BEAN) {
+						return COUNTER_BEAN;
+					} else if ((flag >= FLAG_PEARL_0_COLLECTED) && (flag < (FLAG_PEARL_0_COLLECTED + 5))) {
+						return COUNTER_PEARL;
 					} else {
 						if ((flag == FLAG_TBARREL_BARREL) || (flag == FLAG_TBARREL_DIVE) || (flag == FLAG_TBARREL_ORANGE) || (flag == FLAG_TBARREL_VINE)) {
 							return COUNTER_POTION;

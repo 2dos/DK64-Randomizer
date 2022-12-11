@@ -57,8 +57,8 @@ typedef struct varspace {
 	/* 0x10D */ unsigned char starting_exit;
 	/* 0x10E */ unsigned char tns_portal_rando_on;
 	/* 0x10F */ unsigned char remove_oscillation_effects; // Removes water oscillation + Seasick Ship interior rocking
-	/* 0x110 */ unsigned char arcade_reward_is_gb; // Is reward for R2 of arcade a GB
-	/* 0x111 */ unsigned char jetpac_reward_is_gb; // Is reward for 5000 pts in Jetpac a GB
+	/* 0x110 */ unsigned char arcade_reward; // Reward Index for R2 of Arcade
+	/* 0x111 */ unsigned char jetpac_reward; // Reward Index for Jetpac 5000 Pts
 	/* 0x112 */ unsigned char medal_cb_req; // 0 = default (75). int (1-100)
 	/* 0x113 */ unsigned char any_kong_items; // Bitfield 0000 00ba. a = All items except blueprints disabling kong check. b = Blueprints disable kong check.
 	/* 0x114 */ unsigned char japes_rock_item; // Actor ID of item that spawns from destroying the rock covering Japes Underground

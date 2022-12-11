@@ -48,7 +48,52 @@ void arcadeExit(void) {
 	}
 }
 
+/*
+	Arcade Reward Indexes:
+	0 - Nintendo Coin / No Item
+	1 - Bean
+	2 - Blueprint
+	3 - Crown
+	4 - Fairy
+	5 - GB
+	6 - Key
+	7 - Medal
+	8 - Pearl
+	9 - Potion (DK)
+	10 - Potion (Diddy)
+	11 - Potion (Lanky)
+	12 - Potion (Tiny)
+	13 - Potion (Chunky)
+	14 - Potion (Any)
+	15 - DK
+	16 - Diddy
+	17 - Lanky
+	18 - Tiny
+	19 - Chunky
+	20 - Rainbow Coin
+	21 - RW Coin
+
+	Jetpac Reward Indexes:
+	0 - Rareware Coin / No Item
+	1 - Bean
+	2 - Blueprint
+	3 - Crown
+	4 - Fairy
+	5 - GB
+	6 - Key
+	7 - Medal
+	8 - Pearl
+	9 - Potion
+	10 - Kong
+	11 - Rainbow Coin
+	12 - Nintendo Coin
+*/
+
+#define BASE_IMAGE_INDEX 6021
+#define ARCADE_IMAGE_COUNT 21
+
 void initArcade(void) {
+	// Address of Nintendo Coin Image write: 0x8002E8B4/0x8002E8C0
 	*(int*)(0x80024F10) = 0x240E0005; // ADDIU $t6, $r0, 0x5
 	*(short*)(0x80024F2A) = 0xC71B;
 	*(int*)(0x80024F2C) = 0xA0CEC71B; // SB $t6, 0xC71B ($a2)
@@ -62,6 +107,19 @@ void initArcade(void) {
 	*(short*)(0x80024F6E) = 8; // Swap levels
 	for (int i = 0; i < 4; i++) {
 		ArcadeBackgrounds[i] = Rando.arcade_order[i];
+	}
+	if ((*(unsigned short*)(0x8002E8B6) == 0x8004) && (*(unsigned short*)(0x8002E8BA) == 0xAE58) && (Rando.arcade_reward > 0)) {
+		// Ensure code is only run once
+		void* addr = getMapData(25, BASE_IMAGE_INDEX + Rando.arcade_reward, 1, 0);
+		*(unsigned short*)(0x8002E8B6) = getHi(addr);
+		*(unsigned short*)(0x8002E8BA) = getLo(addr);
+	}
+}
+
+void initJetpac(void) {
+	if ((*(int*)(0x8002D9F8) == 0x8002D868) && (Rando.jetpac_reward > 0)) {
+		// Ensure code is only run once
+		*(int*)(0x8002D9F8) = (int)getMapData(25, BASE_IMAGE_INDEX + Rando.jetpac_reward + ARCADE_IMAGE_COUNT, 1, 0);
 	}
 }
 
@@ -155,6 +213,8 @@ void decouple_moves_fixes(void) {
 	}
 	if (CurrentMap == 2) {
 		initArcade();
+	} else if (CurrentMap == 9) {
+		initJetpac();
 	}
 	writeCoinRequirements(1);
 	fixTBarrelsAndBFI(0);

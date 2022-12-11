@@ -264,6 +264,8 @@ shop_face_array = [
     "potion32",
     "nin_coin",
     "rw_coin",
+    "bean32",
+    "pearl32",
 ]
 for x, shop in enumerate(shop_face_array):
     data = {"name": f"Shop Indicator ({shop})", "pointer_table_index": 14, "file_index": 195 + x, "source_file": f"assets/Non-Code/displays/{shop}.png", "texture_format": "rgba32"}
@@ -276,6 +278,67 @@ new_coin_sfx = "assets/Non-Code/music/coin_sfx.bin"
 if os.path.exists(new_coin_sfx):
     os.remove(new_coin_sfx)
 shutil.copyfile(base_coin_sfx, new_coin_sfx)
+
+arcade_rewards = [
+    # 0 - Nintendo Coin / No Item
+	"bean", # 1 - Bean
+	"blueprint", # 2 - Blueprint
+	"crown", # 3 - Crown
+	"fairy", # 4 - Fairy
+	"gb", # 5 - GB
+	"key", # 6 - Key
+	"medal", # 7 - Medal
+	"pearl", # 8 - Pearl
+	"potion_dk", # 9 - Potion (DK)
+	"potion_diddy", # 10 - Potion (Diddy)
+	"potion_lanky", # 11 - Potion (Lanky)
+	"potion_tiny", # 12 - Potion (Tiny)
+	"potion_chunky", # 13 - Potion (Chunky)
+	"potion_any", # 14 - Potion (Any)
+	"dk", # 15 - DK
+	"diddy", # 16 - Diddy
+	"lanky", # 17 - Lanky
+	"tiny", # 18 - Tiny
+	"chunky", # 19 - Chunky
+	"rainbow", # 20 - Rainbow Coin
+	"rwcoin", # 21 - RW Coin
+]
+
+jetpac_rewards = [
+    # 0 - Rareware Coin / No Item
+	"bean", # 1 - Bean
+	"blueprint", # 2 - Blueprint
+	"crown", # 3 - Crown
+	"fairy", # 4 - Fairy
+	"gb", # 5 - GB
+	"key", # 6 - Key
+	"medal", # 7 - Medal
+	"pearl", # 8 - Pearl
+	"potion", # 9 - Potion
+	"kong", # 10 - Kong
+	"rainbow", # 11 - Rainbow Coin
+	"nintendo", # 12 - Nintendo Coin
+]
+
+for rwd_index, rwd in enumerate(arcade_rewards):
+    file_dict.append({
+        "name": f"Arcade Reward - {rwd.capitalize()}",
+        "pointer_table_index": 25,
+        "file_index": 6022 + rwd_index,
+        "source_file": f"assets/Non-Code/arcade_jetpac/arcade/{rwd}.png",
+        "texture_format": "rgba5551",
+        "do_not_delete_source": True,
+    })
+for rwd_index, rwd in enumerate(jetpac_rewards):
+    file_dict.append({
+        "name": f"Jetpac Reward - {rwd.capitalize()}",
+        "pointer_table_index": 25,
+        "file_index": 6022 + rwd_index + len(arcade_rewards),
+        "source_file": f"assets/Non-Code/arcade_jetpac/jetpac/{rwd}.png",
+        "texture_format": "i8",
+        "do_not_delete_source": True,
+    })
+
 
 map_replacements = []
 song_replacements = [
@@ -696,7 +759,7 @@ for x in file_dict:
 
 with open(newROMName, "r+b") as fh:
     print("[4 / 7] - Writing patched files to ROM")
-    clampCompressedTextures(fh, 6030)
+    clampCompressedTextures(fh, 6060)
     for x in file_dict:
         if "is_diff_patch" in x and x["is_diff_patch"]:
             with open(x["source_file"], "rb") as fg:
@@ -1037,6 +1100,8 @@ with open(newROMName, "r+b") as fh:
         "rw_coin",
         "bean",
         "pearl",
+        "bean32",
+        "pearl32",
     ]
     for disp in displays:
         for ext in [".png", ".rgba32", ".rgba5551"]:
@@ -1076,6 +1141,7 @@ with open(newROMName, "r+b") as fh:
         "rw_coin_0",
         "rw_coin_1",
         "special_coin_side",
+        "fairy_0",
     ]
     script_files = [x[0] for x in os.walk("assets/Non-Code/instance_scripts/")]
     shop_files = ["snide.script", "cranky.script", "funky.script", "candy.script"]
@@ -1094,6 +1160,20 @@ with open(newROMName, "r+b") as fh:
     credits_bins = ["credits", "squish"]
     for x in credits_bins:
         pth = f"assets/Non-Code/credits/{x}.bin"
+        if os.path.exists(pth):
+            os.remove(pth)
+    arcade_images = [
+        "blueprint",
+        "crown",
+        "fairy",
+        "gb",
+        "key",
+        "medal",
+        "rainbow",
+        "rwcoin",
+    ]
+    for img in arcade_images:
+        pth = f"assets/Non-Code/arcade_jetpac/arcade/{img}.png"
         if os.path.exists(pth):
             os.remove(pth)
     if os.path.exists("assets/Non-Code/Gong/hint_door.bin"):

@@ -617,9 +617,9 @@ void* updateFlag(int type, short* flag, void* fba, int source) {
                         *flag = ItemRando_FLUT[(2 * i) + 1];
                         if (source == 1) {
                             int give_gb = 0;
-                            if ((vanilla_flag == FLAG_COLLECTABLE_NINTENDOCOIN) && (Rando.arcade_reward_is_gb)) {
+                            if ((vanilla_flag == FLAG_COLLECTABLE_NINTENDOCOIN) && (Rando.arcade_reward == 5)) {
                                 give_gb = 1;
-                            } else if ((vanilla_flag == FLAG_COLLECTABLE_RAREWARECOIN) && (Rando.jetpac_reward_is_gb)) {
+                            } else if ((vanilla_flag == FLAG_COLLECTABLE_RAREWARECOIN) && (Rando.jetpac_reward == 5)) {
                                 give_gb = 1;
                             }
                             if (give_gb) {

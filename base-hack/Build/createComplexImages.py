@@ -327,6 +327,8 @@ for y in range(32):
         if a > 128:
             pix_bean[x, y] = (0, 0, 0, 0)
 bean_im.transpose(Image.Transpose.FLIP_TOP_BOTTOM).save(f"{disp_dir}bean.png")
+bean_im.resize((32, 32)).save(f"{disp_dir}bean32.png")
+
 
 # Pearl
 pearl_im = Image.open(f"{hash_dir}pearl.png")
@@ -340,7 +342,30 @@ for y in range(32):
         r, g, b, a = pearl_mask_im.getpixel((x, y))
         if a > 128:
             pix_pearl[x, y] = (0, 0, 0, 0)
-pearl_im.transpose(Image.Transpose.FLIP_TOP_BOTTOM).save(f"{disp_dir}pearl.png")
+pearl_im = pearl_im.transpose(Image.Transpose.FLIP_TOP_BOTTOM)
+pearl_im.save(f"{disp_dir}pearl.png")
+pearl_im.resize((32, 32)).save(f"{disp_dir}pearl32.png")
+
+# Arcade Sprites
+# blueprint
+# crown
+# fairy
+# gb
+# key
+# medal
+# rainbow
+# rw coin
+
+arcade_dir = getDir("assets/Non-Code/arcade_jetpac/arcade/")
+dim = (20, 20)
+Image.open(f"{disp_dir}lanky_bp.png").resize(dim).save(f"{arcade_dir}blueprint.png") # BP
+Image.open(f"{hash_dir}crown.png").resize(dim).save(f"{arcade_dir}crown.png") # Crown
+Image.open(f"{hash_dir}fairy_0.png").resize(dim).save(f"{arcade_dir}fairy.png") # Fairy
+Image.open(f"{hash_dir}gb.png").resize(dim).save(f"{arcade_dir}gb.png") # GB
+Image.open(f"{hash_dir}boss_key.png").resize(dim).save(f"{arcade_dir}key.png") # Key
+Image.open(f"{hash_dir}medal.png").resize(dim).save(f"{arcade_dir}medal.png") # Medal
+Image.open(f"{hash_dir}rainbow_coin.png").resize(dim).save(f"{arcade_dir}rainbow.png") # Rainbow Coin
+Image.open(f"{hash_dir}rw_coin.png").resize(dim).save(f"{arcade_dir}rwcoin.png") # Rareware Coin
 
 # # Christmas Theme
 # snow_by = []

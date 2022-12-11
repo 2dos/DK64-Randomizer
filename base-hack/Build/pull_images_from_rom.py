@@ -27,6 +27,7 @@ images = [
     ImageData("crown", "rgba16", 25, 5893, 44, 44, True, True),
     ImageData("dkcoin", "rgba16", 7, 500, 48, 44, True, True),
     ImageData("fairy", "rgba32", 25, 5869, 32, 32, True, True),
+    ImageData("fairy_0", "rgba32", 25, 0x16ED, 32, 32, True, True),
     ImageData("guitar", "rgba16", 25, 5547, 40, 40, True, True),
     ImageData("triangle", "rgba16", 25, 5550, 40, 40, True, True),
     ImageData("trombone", "rgba16", 25, 5551, 40, 40, True, True),
