@@ -56,6 +56,7 @@ actor_indexes = {
 }
 kong_flags = (385, 6, 70, 66, 117)
 
+
 def place_randomized_items(spoiler: Spoiler):
     """Place randomized items into ROM."""
     if spoiler.settings.shuffle_items:
@@ -135,7 +136,7 @@ def place_randomized_items(spoiler: Spoiler):
                             map_items[map_id].append({"id": item.placement_data[map_id], "obj": item.new_item, "kong": item.new_kong, "flag": item.new_flag, "upscale": upscale, "shared": item.shared})
                     if item.location == Locations.NintendoCoin:
                         arcade_rewards = (
-                            Types.NoItem, # Or Nintendo Coin
+                            Types.NoItem,  # Or Nintendo Coin
                             Types.Bean,
                             Types.Blueprint,
                             Types.Crown,
@@ -144,23 +145,23 @@ def place_randomized_items(spoiler: Spoiler):
                             Types.Key,
                             Types.Medal,
                             Types.Pearl,
-                            Types.Shop, # Handled in special case
-                            Types.Shop, # Handled in special case
-                            Types.Shop, # Handled in special case
-                            Types.Shop, # Handled in special case
-                            Types.Shop, # Handled in special case
-                            Types.Shop, # Handled in special case
-                            Types.Kong, # Handled in special case
-                            Types.Kong, # Handled in special case
-                            Types.Kong, # Handled in special case
-                            Types.Kong, # Handled in special case
-                            Types.Kong, # Handled in special case
+                            Types.Shop,  # Handled in special case
+                            Types.Shop,  # Handled in special case
+                            Types.Shop,  # Handled in special case
+                            Types.Shop,  # Handled in special case
+                            Types.Shop,  # Handled in special case
+                            Types.Shop,  # Handled in special case
+                            Types.Kong,  # Handled in special case
+                            Types.Kong,  # Handled in special case
+                            Types.Kong,  # Handled in special case
+                            Types.Kong,  # Handled in special case
+                            Types.Kong,  # Handled in special case
                             Types.RainbowCoin,
-                            Types.Coin, # Flag check handled separately
+                            Types.Coin,  # Flag check handled separately
                         )
                         arcade_reward_index = 0
                         if item.new_item == Types.Coin:
-                            if item.new_flag == 379: # RW Coin
+                            if item.new_flag == 379:  # RW Coin
                                 arcade_reward_index = 21
                         elif item.new_item == Types.Kong:
                             if item.new_flag in kong_flags:
@@ -179,7 +180,7 @@ def place_randomized_items(spoiler: Spoiler):
                         ROM().write(arcade_reward_index)
                     elif item.location == Locations.RarewareCoin:
                         jetpac_rewards = (
-                            Types.NoItem, # Or RW Coin
+                            Types.NoItem,  # Or RW Coin
                             Types.Bean,
                             Types.Blueprint,
                             Types.Crown,
@@ -188,16 +189,16 @@ def place_randomized_items(spoiler: Spoiler):
                             Types.Key,
                             Types.Medal,
                             Types.Pearl,
-                            Types.Shop, # Shockwave/Training handled separately
+                            Types.Shop,  # Shockwave/Training handled separately
                             Types.Kong,
                             Types.RainbowCoin,
-                            Types.Coin, # Flag check handled separately
+                            Types.Coin,  # Flag check handled separately
                         )
                         jetpac_reward_index = 0
                         if item.new_item in (Types.Shop, Types.TrainingBarrel, Types.Shockwave):
                             jetpac_reward_index = 9
                         elif item.new_item == Types.Coin:
-                            if item.new_flag == 132: # Nintendo Coin
+                            if item.new_flag == 132:  # Nintendo Coin
                                 jetpac_reward_index = 12
                         else:
                             jetpac_reward_index = jetpac_rewards.index(item.new_item)

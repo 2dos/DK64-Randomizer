@@ -281,63 +281,67 @@ shutil.copyfile(base_coin_sfx, new_coin_sfx)
 
 arcade_rewards = [
     # 0 - Nintendo Coin / No Item
-	"bean", # 1 - Bean
-	"blueprint", # 2 - Blueprint
-	"crown", # 3 - Crown
-	"fairy", # 4 - Fairy
-	"gb", # 5 - GB
-	"key", # 6 - Key
-	"medal", # 7 - Medal
-	"pearl", # 8 - Pearl
-	"potion_dk", # 9 - Potion (DK)
-	"potion_diddy", # 10 - Potion (Diddy)
-	"potion_lanky", # 11 - Potion (Lanky)
-	"potion_tiny", # 12 - Potion (Tiny)
-	"potion_chunky", # 13 - Potion (Chunky)
-	"potion_any", # 14 - Potion (Any)
-	"dk", # 15 - DK
-	"diddy", # 16 - Diddy
-	"lanky", # 17 - Lanky
-	"tiny", # 18 - Tiny
-	"chunky", # 19 - Chunky
-	"rainbow", # 20 - Rainbow Coin
-	"rwcoin", # 21 - RW Coin
+    "bean",  # 1 - Bean
+    "blueprint",  # 2 - Blueprint
+    "crown",  # 3 - Crown
+    "fairy",  # 4 - Fairy
+    "gb",  # 5 - GB
+    "key",  # 6 - Key
+    "medal",  # 7 - Medal
+    "pearl",  # 8 - Pearl
+    "potion_dk",  # 9 - Potion (DK)
+    "potion_diddy",  # 10 - Potion (Diddy)
+    "potion_lanky",  # 11 - Potion (Lanky)
+    "potion_tiny",  # 12 - Potion (Tiny)
+    "potion_chunky",  # 13 - Potion (Chunky)
+    "potion_any",  # 14 - Potion (Any)
+    "dk",  # 15 - DK
+    "diddy",  # 16 - Diddy
+    "lanky",  # 17 - Lanky
+    "tiny",  # 18 - Tiny
+    "chunky",  # 19 - Chunky
+    "rainbow",  # 20 - Rainbow Coin
+    "rwcoin",  # 21 - RW Coin
 ]
 
 jetpac_rewards = [
     # 0 - Rareware Coin / No Item
-	"bean", # 1 - Bean
-	"blueprint", # 2 - Blueprint
-	"crown", # 3 - Crown
-	"fairy", # 4 - Fairy
-	"gb", # 5 - GB
-	"key", # 6 - Key
-	"medal", # 7 - Medal
-	"pearl", # 8 - Pearl
-	"potion", # 9 - Potion
-	"kong", # 10 - Kong
-	"rainbow", # 11 - Rainbow Coin
-	"nintendo", # 12 - Nintendo Coin
+    "bean",  # 1 - Bean
+    "blueprint",  # 2 - Blueprint
+    "crown",  # 3 - Crown
+    "fairy",  # 4 - Fairy
+    "gb",  # 5 - GB
+    "key",  # 6 - Key
+    "medal",  # 7 - Medal
+    "pearl",  # 8 - Pearl
+    "potion",  # 9 - Potion
+    "kong",  # 10 - Kong
+    "rainbow",  # 11 - Rainbow Coin
+    "nintendo",  # 12 - Nintendo Coin
 ]
 
 for rwd_index, rwd in enumerate(arcade_rewards):
-    file_dict.append({
-        "name": f"Arcade Reward - {rwd.capitalize()}",
-        "pointer_table_index": 25,
-        "file_index": 6022 + rwd_index,
-        "source_file": f"assets/Non-Code/arcade_jetpac/arcade/{rwd}.png",
-        "texture_format": "rgba5551",
-        "do_not_delete_source": True,
-    })
+    file_dict.append(
+        {
+            "name": f"Arcade Reward - {rwd.capitalize()}",
+            "pointer_table_index": 25,
+            "file_index": 6022 + rwd_index,
+            "source_file": f"assets/Non-Code/arcade_jetpac/arcade/{rwd}.png",
+            "texture_format": "rgba5551",
+            "do_not_delete_source": True,
+        }
+    )
 for rwd_index, rwd in enumerate(jetpac_rewards):
-    file_dict.append({
-        "name": f"Jetpac Reward - {rwd.capitalize()}",
-        "pointer_table_index": 25,
-        "file_index": 6022 + rwd_index + len(arcade_rewards),
-        "source_file": f"assets/Non-Code/arcade_jetpac/jetpac/{rwd}.png",
-        "texture_format": "i8",
-        "do_not_delete_source": True,
-    })
+    file_dict.append(
+        {
+            "name": f"Jetpac Reward - {rwd.capitalize()}",
+            "pointer_table_index": 25,
+            "file_index": 6022 + rwd_index + len(arcade_rewards),
+            "source_file": f"assets/Non-Code/arcade_jetpac/jetpac/{rwd}.png",
+            "texture_format": "i8",
+            "do_not_delete_source": True,
+        }
+    )
 
 
 map_replacements = []

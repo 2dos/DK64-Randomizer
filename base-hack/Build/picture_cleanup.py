@@ -11,8 +11,8 @@ rwd_im = Image.open(file)
 w, h = rwd_im.size
 rwd_px = rwd_im.load()
 for y in range(h):
-	for x in range(w):
-		px_data = list(rwd_px[x, y])
-		if (px_data[3] == 0):
-			rwd_px[x, y] = (0, 0, 0, 0)
+    for x in range(w):
+        px_data = list(rwd_px[x, y])
+        if px_data[3] == 0:
+            rwd_px[x, y] = (0, 0, 0, 0)
 rwd_im.save(file)

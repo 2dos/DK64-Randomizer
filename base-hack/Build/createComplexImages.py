@@ -358,14 +358,14 @@ pearl_im.resize((32, 32)).save(f"{disp_dir}pearl32.png")
 
 arcade_dir = getDir("assets/Non-Code/arcade_jetpac/arcade/")
 dim = (20, 20)
-Image.open(f"{disp_dir}lanky_bp.png").resize(dim).save(f"{arcade_dir}blueprint.png") # BP
-Image.open(f"{hash_dir}crown.png").resize(dim).save(f"{arcade_dir}crown.png") # Crown
-Image.open(f"{hash_dir}fairy_0.png").resize(dim).save(f"{arcade_dir}fairy.png") # Fairy
-Image.open(f"{hash_dir}gb.png").resize(dim).save(f"{arcade_dir}gb.png") # GB
-Image.open(f"{hash_dir}boss_key.png").resize(dim).save(f"{arcade_dir}key.png") # Key
-Image.open(f"{hash_dir}medal.png").resize(dim).save(f"{arcade_dir}medal.png") # Medal
-Image.open(f"{hash_dir}rainbow_coin.png").resize(dim).save(f"{arcade_dir}rainbow.png") # Rainbow Coin
-Image.open(f"{hash_dir}rw_coin.png").resize(dim).save(f"{arcade_dir}rwcoin.png") # Rareware Coin
+Image.open(f"{disp_dir}lanky_bp.png").resize(dim).save(f"{arcade_dir}blueprint.png")  # BP
+Image.open(f"{hash_dir}crown.png").resize(dim).save(f"{arcade_dir}crown.png")  # Crown
+Image.open(f"{hash_dir}fairy_0.png").resize(dim).save(f"{arcade_dir}fairy.png")  # Fairy
+Image.open(f"{hash_dir}gb.png").resize(dim).save(f"{arcade_dir}gb.png")  # GB
+Image.open(f"{hash_dir}boss_key.png").resize(dim).save(f"{arcade_dir}key.png")  # Key
+Image.open(f"{hash_dir}medal.png").resize(dim).save(f"{arcade_dir}medal.png")  # Medal
+Image.open(f"{hash_dir}rainbow_coin.png").resize(dim).save(f"{arcade_dir}rainbow.png")  # Rainbow Coin
+Image.open(f"{hash_dir}rw_coin.png").resize(dim).save(f"{arcade_dir}rwcoin.png")  # Rareware Coin
 
 # # Christmas Theme
 # snow_by = []
