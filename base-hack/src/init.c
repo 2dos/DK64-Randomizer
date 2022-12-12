@@ -870,8 +870,8 @@ void initHack(int source) {
 			*(int*)(0x8060CF40) = 0x240D0000; // Slot 0
 			*(int*)(0x8060D3AC) = 0; // Prevent EEPROM Shuffle
 			*(int*)(0x8060DCE8) = 0; // Prevent EEPROM Shuffle
-			*(int*)(0x8060C760) = 0x24900000; // Always load file 0
-			// s*(short*)(0x8060CC22) = 1; // File Loop Cancel 1
+			// *(int*)(0x8060C760) = 0x24900000; // Always load file 0
+			// *(short*)(0x8060CC22) = 1; // File Loop Cancel 1
 			*(short*)(0x8060CD1A) = 1; // File Loop Cancel 2
 			*(short*)(0x8060CE7E) = 1; // File Loop Cancel 3
 			*(short*)(0x8060CE5A) = 1; // File Loop Cancel 4
@@ -897,6 +897,7 @@ void initHack(int source) {
 			*(int*)(0x8060C664) = 0xAFA00034; // Force file 0 - Save
 			*(int*)(0x8060C6C4) = 0x24040000; // Force file 0 - Read
 			*(int*)(0x8060C6D4) = 0xAFA00034; // Force file 0 - Read
+			*(int*)(0x8060D294) = 0; // Cartridge EEPROM Wipe cancel
 
 			// for (int i = 0; i < 10; i++) {
 			// 	*(int*)(0x8060D6A0 + (4 * i)) = 0;
