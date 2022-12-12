@@ -58,8 +58,8 @@ typedef struct collision_info {
     /* 0x012 */ short hitbox_scale;
 } collision_info;
 
-#define COLLISION_LIMIT 50
-#define DEFS_LIMIT 138
+#define COLLISION_LIMIT 57
+#define DEFS_LIMIT 145
 static collision_info object_collisions[COLLISION_LIMIT] = {};
 static actor_behaviour_def actor_defs[DEFS_LIMIT] = {};
 
@@ -131,6 +131,19 @@ void initCollectableCollision(void) {
     index = addCollisionInfo(index, 0x01D0, COLLECTABLE_NONE, KONG_NONE, 0x77, 0, 0); // Blue CB Powerup
     index = addCollisionInfo(index, 0x01D1, COLLECTABLE_NONE, KONG_NONE, 0x76, 0, 0); // Coin Powerup
     index = addCollisionInfo(index, 0x01D2, COLLECTABLE_COIN, KONG_NONE, 0x7A, 0, 0); // Coin Multiplayer
+    // Potions
+    index = addCollisionInfo(index, 0x005B, COLLECTABLE_NONE, KONG_NONE, 157, 8, 4); // Potion DK
+    index = addCollisionInfo(index, 0x01F2, COLLECTABLE_NONE, KONG_NONE, 158, 8, 4); // Potion Diddy
+    index = addCollisionInfo(index, 0x0059, COLLECTABLE_NONE, KONG_NONE, 159, 8, 4); // Potion Lanky
+    index = addCollisionInfo(index, 0x01F3, COLLECTABLE_NONE, KONG_NONE, 160, 8, 4); // Potion Tiny
+    index = addCollisionInfo(index, 0x01F5, COLLECTABLE_NONE, KONG_NONE, 161, 8, 4); // Potion Chunky
+    index = addCollisionInfo(index, 0x01F6, COLLECTABLE_NONE, KONG_NONE, 162, 8, 4); // Potion Any
+    // Kongs
+    index = addCollisionInfo(index, 0x0257, COLLECTABLE_NONE, KONG_NONE, 141, 8, 4); // DK
+    index = addCollisionInfo(index, 0x0258, COLLECTABLE_NONE, KONG_NONE, 142, 8, 4); // Diddy
+    index = addCollisionInfo(index, 0x0259, COLLECTABLE_NONE, KONG_NONE, 143, 8, 4); // Lanky
+    index = addCollisionInfo(index, 0x025A, COLLECTABLE_NONE, KONG_NONE, 144, 8, 4); // Tiny
+    index = addCollisionInfo(index, 0x025B, COLLECTABLE_NONE, KONG_NONE, 155, 8, 4); // Chunky
     // Others
     index = addCollisionInfo(index, 0x0074, COLLECTABLE_GB, KONG_NONE, 0x2D, 8, 4); // Golden Banana
     index = addCollisionInfo(index, 0x0056, COLLECTABLE_ORANGE, KONG_NONE, 0x34, 0, 0); // Orange
@@ -146,12 +159,9 @@ void initCollectableCollision(void) {
     index = addCollisionInfo(index, 0x0288, COLLECTABLE_GB, KONG_NONE, 0x2D, 8, 4); // Rareware GB
     index = addCollisionInfo(index, 0x0048, COLLECTABLE_NONE, KONG_NONE, 151, 8, 4); // Nintendo Coin
     index = addCollisionInfo(index, 0x028F, COLLECTABLE_NONE, KONG_NONE, 152, 8, 4); // Rareware Coin
-    index = addCollisionInfo(index, 0x005B, COLLECTABLE_NONE, KONG_NONE, 157, 8, 4); // Potion DK
-    index = addCollisionInfo(index, 0x01F2, COLLECTABLE_NONE, KONG_NONE, 158, 8, 4); // Potion Diddy
-    index = addCollisionInfo(index, 0x0059, COLLECTABLE_NONE, KONG_NONE, 159, 8, 4); // Potion Lanky
-    index = addCollisionInfo(index, 0x01F3, COLLECTABLE_NONE, KONG_NONE, 160, 8, 4); // Potion Tiny
-    index = addCollisionInfo(index, 0x01F5, COLLECTABLE_NONE, KONG_NONE, 161, 8, 4); // Potion Chunky
-    index = addCollisionInfo(index, 0x01F6, COLLECTABLE_NONE, KONG_NONE, 162, 8, 4); // Potion Any
+    index = addCollisionInfo(index, 0x0198, COLLECTABLE_NONE, KONG_NONE, 172, 8, 4); // Bean
+    index = addCollisionInfo(index, 0x01B4, COLLECTABLE_NONE, KONG_NONE, 174, 8, 4); // Pearl
+    
     // Write new table to ROM
     int hi = getHi(&object_collisions[0].type);
     int lo = getLo(&object_collisions[0].type);
@@ -186,16 +196,26 @@ int addActorDef(int index, int actor, int model, unsigned int func_0, unsigned i
 
 void initActorDefs(void) {
     dk_memcpy(&actor_defs[0], &ActorBehaviourTable[0], 128*sizeof(actor_behaviour_def));
-    int index = addActorDef(128, 151, 0, 0x80689F80, 0x8068A10C);
-    index = addActorDef(index, 152, 0, 0x80689F80, 0x8068A10C);
-    index = addActorDef(index, 157, 0xEE, 0x80689F80, 0x80689FEC);
-    index = addActorDef(index, 158, 0xEF, 0x80689F80, 0x80689FEC);
-    index = addActorDef(index, 159, 0xF0, 0x80689F80, 0x80689FEC);
-    index = addActorDef(index, 160, 0xF1, 0x80689F80, 0x80689FEC);
-    index = addActorDef(index, 161, 0xF2, 0x80689F80, 0x80689FEC);
-    index = addActorDef(index, 162, 0xF3, 0x80689F80, 0x80689FEC);
-    index = addActorDef(index, 153, 0, 0x80689F80, 0x8068A10C);
-    index = addActorDef(index, 154, 0, 0x80689F80, 0x8068A10C);
+    int index = addActorDef(128, 151, 0, 0x80689F80, 0x8068A10C); // Nintendo Coin
+    index = addActorDef(index, 152, 0, 0x80689F80, 0x8068A10C); // Rareware Coin
+    // Potions
+    index = addActorDef(index, 157, 0xEE, 0x80689F80, 0x80689FEC); // DK Potion
+    index = addActorDef(index, 158, 0xEF, 0x80689F80, 0x80689FEC); // Diddy Potion
+    index = addActorDef(index, 159, 0xF0, 0x80689F80, 0x80689FEC); // Lanky Potion
+    index = addActorDef(index, 160, 0xF1, 0x80689F80, 0x80689FEC); // Tiny Potion
+    index = addActorDef(index, 161, 0xF2, 0x80689F80, 0x80689FEC); // Chunky Potion
+    index = addActorDef(index, 162, 0xF3, 0x80689F80, 0x80689FEC); // Any Potion
+    index = addActorDef(index, 153, 0, 0x80689F80, 0x8068A10C); // Nothing
+    index = addActorDef(index, 154, 0, 0x80689F80, 0x8068A10C); // Medal
+    // Kongs
+    index = addActorDef(index, 141, 0x4, 0x80689F80, 0x80689FEC); // DK
+    index = addActorDef(index, 142, 0x1, 0x80689F80, 0x80689FEC); // Diddy
+    index = addActorDef(index, 143, 0x6, 0x80689F80, 0x80689FEC); // Lanky
+    index = addActorDef(index, 144, 0x9, 0x80689F80, 0x80689FEC); // Tiny
+    index = addActorDef(index, 155, 0xC, 0x80689F80, 0x80689FEC); // Chunky
+    // Misc
+    index = addActorDef(index, 172, 0, 0x80689F80, 0x8068A10C); // Bean
+    index = addActorDef(index, 174, 0, 0x80689F80, 0x8068A10C); // Pearl
     *(unsigned short*)(0x8068926A) = getHi(&actor_defs[0].actor_type);
     *(unsigned short*)(0x8068927A) = getLo(&actor_defs[0].actor_type);
     *(unsigned short*)(0x806892D2) = getHi(&actor_defs[0].actor_type);
@@ -255,14 +275,7 @@ void spawnBossReward(int object, int x_f, int y_f, int z_f, int unk0, int cutsce
     }
     if (object != 153) {
         // Protect against null objects
-        unsigned char sprite_obj[] = {75,76,77,78,79,151,152,154};
-        int is_sprite = 0;
-        for (int i = 0; i < sizeof(sprite_obj); i++) {
-            if (sprite_obj[i] == object) {
-                is_sprite = 1;
-            }
-        }
-        if ((is_sprite) && ((CurrentMap == 0x53) || (CurrentMap == 0xC5))) {
+        if ((ActorMasterType[object] == ACTORMASTER_SPRITE) && ((CurrentMap == 0x53) || (CurrentMap == 0xC5))) {
             // Sprite & Dogadon Fight
             cutscene = 1;
             x_f = 0x43ED8000;
@@ -379,7 +392,7 @@ int clampFlag(int flag) {
         return 1; // Galleon GBs (Group 1) + Key 4
     }
     if ((flag >= 0xB6) && (flag <= 0xEC)) {
-        return 1; // Galleon GBs (Group 2) + Fungi GBs (Group 1) + Key 5
+        return 1; // Galleon GBs (Group 2) + Fungi GBs (Group 1) + Key 5 + Pearls
     }
     if ((flag >= 0xF7) && (flag <= 0x119)) {
         return 1; // Fungi GBs (Group 2) + Caves GBs (Group 1)
@@ -395,6 +408,9 @@ int clampFlag(int flag) {
     }
     if ((flag >= 0x18E) && (flag <= 0x1AF)) {
         return 1; // Isles GBs
+    }
+    if (flag == 0x300) {
+        return 1; // Fungi Bean
     }
     return 0;
 }
@@ -494,6 +510,14 @@ void* checkMove(short* flag, void* fba, int source) {
                 spawn_overlay = 1;
                 item_type = 5;
                 item_index = flag_index;
+            } else {
+                for (int i = 0; i < 5; i++) {
+                    if (flag_index == kong_flags[i]) {
+                        spawn_overlay = 1;
+                        item_type = 5;
+                        item_index = flag_index;
+                    }
+                }
             }
             if (spawn_overlay) {
                 spawnActor(324, 0);
@@ -593,9 +617,9 @@ void* updateFlag(int type, short* flag, void* fba, int source) {
                         *flag = ItemRando_FLUT[(2 * i) + 1];
                         if (source == 1) {
                             int give_gb = 0;
-                            if ((vanilla_flag == FLAG_COLLECTABLE_NINTENDOCOIN) && (Rando.arcade_reward_is_gb)) {
+                            if ((vanilla_flag == FLAG_COLLECTABLE_NINTENDOCOIN) && (Rando.arcade_reward == 5)) {
                                 give_gb = 1;
-                            } else if ((vanilla_flag == FLAG_COLLECTABLE_RAREWARECOIN) && (Rando.jetpac_reward_is_gb)) {
+                            } else if ((vanilla_flag == FLAG_COLLECTABLE_RAREWARECOIN) && (Rando.jetpac_reward == 5)) {
                                 give_gb = 1;
                             }
                             if (give_gb) {
@@ -644,12 +668,25 @@ void banana_medal_acquisition(int flag) {
         8 - Candy,
         9 - Training Barrel,
         10 - Shockwave,
-        11 - Nothing,
+        11 - Kong,
+        12 - Bean,
+        13 - Pearl,
+        14 - Nothing,
     */
     int item_type = getMedalItem(flag - FLAG_MEDAL_JAPES_DK);
     if (!checkFlag(flag, 0)) {
         // Display and play effects if you don't have item
-        if (item_type < 12) {
+        if (item_type < 15) {
+            int kong = -1;
+            short flut_flag = flag;
+            updateFlag(0, (short*)&flut_flag, (void*)0, -1);
+            if (item_type == 11) {
+                for (int i = 0; i < 5; i++) {
+                    if (flut_flag == kong_flags[i]) {
+                        kong = i;
+                    }
+                }
+            }
             if (item_type == 2) {
                 // Display key text
                 int key_bitfield = 0;
@@ -671,17 +708,20 @@ void banana_medal_acquisition(int flag) {
                         }
                     }
                 }
-            } else if (item_type < 11) {
+            } else if (item_type < 14) {
                 setFlag(flag, 1, 0);
             }
             if (item_type == 0) {
                 MovesBase[getKong(0)].gb_count[getWorld(CurrentMap,1)] += 1;
             }
-            if (item_type < 11) {
+            if (item_type < 14) {
                 playSFX(0xF2);
                 int used_song = 0x97;
-                int songs[] = {18,69,18,0x97,22,115,115,115,115,115,0x97};
-                if (item_type < 11) {
+                int kong_songs[] = {11, 10, 12, 13, 9};
+                int songs[] = {18,69,18,0x97,22,115,115,115,115,115,0x97, 0, 147, 128};
+                if (item_type == 11) {
+                    used_song = kong_songs[kong];
+                } else if (item_type < 14) {
                     used_song = songs[item_type];
                 }
                 playSong(used_song, 0x3F800000);
@@ -690,7 +730,7 @@ void banana_medal_acquisition(int flag) {
             unkSpriteRenderFunc_0();
             loadSpriteFunction(0x8071EFDC);
             int bp_sprites[] = {0x5C,0x5A,0x4A,0x5D,0x5B};
-            int sprite_indexes[] = {0x3B, 0, 0x8A, 0x8B, 0, 0x3C, 0x94, 0x96, 0x93, 0x94, 0x3A, 0x8E};
+            int sprite_indexes[] = {0x3B, 0, 0x8A, 0x8B, 0, 0x3C, 0x94, 0x96, 0x93, 0x94, 0x3A, 0x8E, 0, 0x92, 0x92};
             int used_sprite = 0x3B;
             if (item_type == 1) {
                 int character_val = Character;
@@ -699,17 +739,25 @@ void banana_medal_acquisition(int flag) {
                 }
                 used_sprite = bp_sprites[character_val];
             } else if (item_type == 4) {
-                if (flag == 132) {
+                if (flut_flag == 132) {
                     // Nintendo Coin
                     used_sprite = 0x8C;
                 } else {
                     // Rareware Coin
                     used_sprite = 0x8D;
                 }
+            } else if (item_type == 11) {
+                used_sprite = 0xA9 + kong;
             } else {
                 used_sprite = sprite_indexes[item_type];
             }
-            displaySpriteAtXYZ(sprite_table[used_sprite], 0x3F800000, 160.0f, 120.0f, -10.0f);
+            void* sprite_addr = sprite_table[used_sprite];
+            if (item_type == 12) {
+                sprite_addr = &bean_sprite;
+            } else if (item_type == 3) {
+                sprite_addr = &pearl_sprite;
+            }
+            displaySpriteAtXYZ(sprite_addr, 0x3F800000, 160.0f, 120.0f, -10.0f);
         }
     } else {
         // No item or pre-given item
@@ -741,7 +789,6 @@ int getFlagIndex_Corrected(int start, int level) {
 }
 
 static const short boss_maps[] = {0x8,0xC5,0x9A,0x6F,0x53,0xC4,0xC7};
-static const short acceptable_items[] = {0x74,0xDE,0xE0,0xE1,0xDD,0xDF,0x48,0x28F,0x13C,0x18D,0x90,0x5B,0x1F2,0x59,0x1F3,0x1F5,0x1F6};
 
 int itemGrabHook(int collectable_type, int obj_type, int is_homing) {
     if (Rando.item_rando) {
@@ -806,9 +853,9 @@ void initKeyText(int ki) {
     key_timer = 100;
 }
 
-void spriteCode(int sprite_index) {
+void spriteCode(int sprite_index, float scale) {
     void* paad = CurrentActorPointer_0->paad;
-    spriteActorGenericCode(4.5f);
+    spriteActorGenericCode(scale);
     if ((CurrentActorPointer_0->obj_props_bitfield & 0x10) == 0) {
         assignGIFToActor(paad, sprite_table[sprite_index], 0x3F800000);
         if (CurrentActorPointer_0->control_state == 99) {
@@ -819,19 +866,62 @@ void spriteCode(int sprite_index) {
 }
 
 void ninCoinCode(void) {
-    spriteCode(0x8D);
+    spriteCode(0x8D, 4.5f);
 }
 
 void rwCoinCode(void) {
-    spriteCode(0x8C);
+    spriteCode(0x8C, 4.5f);
 }
 
 void medalCode(void) {
-    spriteCode(0x3C);
+    spriteCode(0x3C, 12.0f);
+}
+
+void beanCode(void) {
+    void* paad = CurrentActorPointer_0->paad;
+    spriteActorGenericCode(12.0f);
+    if ((CurrentActorPointer_0->obj_props_bitfield & 0x10) == 0) {
+        assignGIFToActor(paad, &bean_sprite, 0x3F800000);
+        if (CurrentActorPointer_0->control_state == 99) {
+            CurrentActorPointer_0->control_state = 1;
+            CurrentActorPointer_0->sub_state = 2;
+        }
+    }
+}
+
+void pearlCode(void) {
+    void* paad = CurrentActorPointer_0->paad;
+    spriteActorGenericCode(12.0f);
+    if ((CurrentActorPointer_0->obj_props_bitfield & 0x10) == 0) {
+        assignGIFToActor(paad, &pearl_sprite, 0x3F800000);
+        if (CurrentActorPointer_0->control_state == 99) {
+            CurrentActorPointer_0->control_state = 1;
+            CurrentActorPointer_0->sub_state = 2;
+        }
+    }
 }
 
 void NothingCode(void) {
     deleteActorContainer(CurrentActorPointer_0);
+}
+
+void scaleBounceDrop(float scale) {
+    if ((CurrentActorPointer_0->obj_props_bitfield & 0x10) == 0) {
+        renderingParamsData* render = CurrentActorPointer_0->render;
+        if (render) {
+            render->scale_x = scale;
+            render->scale_y = scale;
+            render->scale_z = scale;
+        }
+    }
+}
+
+void KongDropCode(void) {
+    GoldenBananaCode();
+    scaleBounceDrop(0.15f);
+    if (CurrentActorPointer_0->yVelocity > 500.0f) {
+        CurrentActorPointer_0->yVelocity = 500.0f;
+    }
 }
 
 void PotionCode(void) {
@@ -913,6 +1003,7 @@ int canDanceSkip(void) {
 
 void getItem(int object_type) {
     float pickup_volume = 1-(0.3f * *(char*)(0x80745838));
+    int song = -1;
     switch(object_type) {
         case 0x0A:
         case 0x0D:
@@ -959,7 +1050,7 @@ void getItem(int object_type) {
         case 0x1F5:
         case 0x1F6:
             // Potion
-            playSong(155, 0x3F800000);
+            playSong(115, 0x3F800000);
             if (!canDanceSkip()) {
                 setAction(0x29, 0, 0);
             }
@@ -1031,9 +1122,43 @@ void getItem(int object_type) {
             }
             CrownGet();
             break;
+        case 0x198:
+            // Bean
+            playSong(147, 0x3F800000);
+            break;
+        case 0x1B4:
+            // Pearl
+            playSong(128, 0x3F800000);
+            break;
         case 0x1D1:
             // Coin Powerup
             playSound(0xAE, 0x7FFF, 0x427C0000, 0x3F800000, 5, 0);
+            break;
+        case 0x257:
+            song = 11;
+        case 0x258:
+            if (song == -1) {
+                song = 10;
+            }
+        case 0x259:
+            if (song == -1) {
+                song = 12;
+            }
+        case 0x25A:
+            if (song == -1) {
+                song = 13;
+            }
+        case 0x25B:
+            if (song == -1) {
+                song = 9;
+            }
+            if (song >= 0) {
+                playSong(song, 0x3F800000);
+            }
+            if (!canDanceSkip()) {
+                setAction(0x42, 0, 0);
+            }
+            refreshItemVisibility();
             break;
     }
 }
@@ -1089,8 +1214,6 @@ int setupHook(int map) {
     }
     return index;
 }
-
-static const unsigned char actor_drops[] = {45, 78, 75, 77, 79, 76, 72, 86, 151, 152, 157, 158, 159, 160, 161, 162, 153, 154};
 
 void CheckKasplatSpawnBitfield(void) {
     if (ActorSpawnerPointer) {

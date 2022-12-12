@@ -27,6 +27,7 @@ images = [
     ImageData("crown", "rgba16", 25, 5893, 44, 44, True, True),
     ImageData("dkcoin", "rgba16", 7, 500, 48, 44, True, True),
     ImageData("fairy", "rgba32", 25, 5869, 32, 32, True, True),
+    ImageData("fairy_0", "rgba32", 25, 0x16ED, 32, 32, True, True),
     ImageData("guitar", "rgba16", 25, 5547, 40, 40, True, True),
     ImageData("triangle", "rgba16", 25, 5550, 40, 40, True, True),
     ImageData("trombone", "rgba16", 25, 5551, 40, 40, True, True),
@@ -72,6 +73,8 @@ images = [
     ImageData("lanky_bp", "rgba16", 25, 0x1593, 48, 42, False, True),
     ImageData("key", "rgba16", 25, 0x16F5, 44, 44, False, True),
     ImageData("crown_shop", "rgba16", 25, 0x1705, 44, 44, False, True),
+    ImageData("pearl", "rgba16", 25, 0xD5F, 32, 32, False, True),
+    ImageData("bean", "rgba16", 25, 0xD3C, 64, 32, False, True),
 ]
 
 kong_tex = ["chunky", "tiny", "lanky", "diddy", "dk"]

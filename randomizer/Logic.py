@@ -297,6 +297,8 @@ class LogicVarHolder:
         self.superDuperSlam = self.Slam >= 3
 
         self.Blueprints = [x for x in ownedItems if x >= Items.JungleJapesDonkeyBlueprint]
+        self.Beans = sum(1 for x in ownedItems if x == Items.Bean)
+        self.Pearls = sum(1 for x in ownedItems if x == Items.Pearl)
 
         self.bananaHoard = self.bananaHoard or Items.BananaHoard in ownedItems
 

@@ -276,6 +276,7 @@ extern int getPauseWheelRotationProgress(int unk0, int unk1);
 extern void updateFilePercentage(void);
 extern int getKong(int player_index);
 extern int spawnModelTwo(int type, int x_f, int y_f, int z_f, float scale, int id);
+extern void refreshItemVisibility(void);
 
 //vanilla data
 extern float TransitionSpeed;
@@ -413,6 +414,10 @@ extern char FileIndex;
 extern int LockStackCount;
 extern char CutsceneBarState;
 
+extern void* ActorFunctions[345];
+extern unsigned char ActorMasterType[345];
+extern short* ActorPaadDefs[345];
+
 extern int* TriggerArray;
 extern short TriggerSize;
 extern cannon* CastleCannonPointer;
@@ -501,6 +506,8 @@ extern unsigned char ItemsInWheel;
 extern short RotationPerItem;
 extern short FileVariables[8];
 
+extern float CannonArcSize[7];
+extern unsigned short PotionAnimations[6];
 extern char ArcadeBackgrounds[4];
 extern unsigned char ArcadeExited;
 extern unsigned char ArcadeStoryMode;

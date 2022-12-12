@@ -3,7 +3,7 @@
 import os
 
 import PIL
-from PIL import Image
+from PIL import Image, ImageDraw
 
 pre = "../"
 cwd = os.getcwd()
@@ -316,6 +316,57 @@ for coin in ("nin_coin", "rw_coin"):
     coin_im = Image.open(f"{hash_dir}{coin}.png")
     coin_im.save(f"{disp_dir}{coin}.png")
 
+# Bean
+bean_im = Image.open(f"{hash_dir}bean.png")
+bean_mask_im = Image.open(f"{disp_dir}bean_mask.png")
+pix_bean = bean_im.load()
+pix_mask = bean_mask_im.load()
+for y in range(32):
+    for x in range(64):
+        r, g, b, a = bean_mask_im.getpixel((x, y))
+        if a > 128:
+            pix_bean[x, y] = (0, 0, 0, 0)
+bean_im.transpose(Image.Transpose.FLIP_TOP_BOTTOM).save(f"{disp_dir}bean.png")
+bean_im.resize((32, 32)).save(f"{disp_dir}bean32.png")
+
+
+# Pearl
+pearl_im = Image.open(f"{hash_dir}pearl.png")
+pearl_mask_im = Image.new("RGBA", (32, 32), (0, 0, 0, 255))
+draw = ImageDraw.Draw(pearl_mask_im)
+draw.ellipse((0, 0, 31, 31), fill=(0, 0, 0, 0), outline=(0, 0, 0, 0))
+pix_pearl = pearl_im.load()
+pix_mask = pearl_mask_im.load()
+for y in range(32):
+    for x in range(32):
+        r, g, b, a = pearl_mask_im.getpixel((x, y))
+        if a > 128:
+            pix_pearl[x, y] = (0, 0, 0, 0)
+pearl_im = pearl_im.transpose(Image.Transpose.FLIP_TOP_BOTTOM)
+pearl_im.save(f"{disp_dir}pearl.png")
+pearl_im.resize((32, 32)).save(f"{disp_dir}pearl32.png")
+
+# Arcade Sprites
+# blueprint
+# crown
+# fairy
+# gb
+# key
+# medal
+# rainbow
+# rw coin
+
+arcade_dir = getDir("assets/Non-Code/arcade_jetpac/arcade/")
+dim = (20, 20)
+Image.open(f"{disp_dir}lanky_bp.png").resize(dim).save(f"{arcade_dir}blueprint.png")  # BP
+Image.open(f"{hash_dir}crown.png").resize(dim).save(f"{arcade_dir}crown.png")  # Crown
+Image.open(f"{hash_dir}fairy_0.png").resize(dim).save(f"{arcade_dir}fairy.png")  # Fairy
+Image.open(f"{hash_dir}gb.png").resize(dim).save(f"{arcade_dir}gb.png")  # GB
+Image.open(f"{hash_dir}boss_key.png").resize(dim).save(f"{arcade_dir}key.png")  # Key
+Image.open(f"{hash_dir}medal.png").resize(dim).save(f"{arcade_dir}medal.png")  # Medal
+Image.open(f"{hash_dir}rainbow_coin.png").resize(dim).save(f"{arcade_dir}rainbow.png")  # Rainbow Coin
+Image.open(f"{hash_dir}rw_coin.png").resize(dim).save(f"{arcade_dir}rwcoin.png")  # Rareware Coin
+
 # # Christmas Theme
 # snow_by = []
 # snow_im = Image.open(f"{disp_dir}snow.png")
@@ -334,7 +385,6 @@ for coin in ("nin_coin", "rw_coin"):
 # with open(f"{disp_dir}snow.bin","wb") as fh:
 #     fh.write(bytearray(snow_by))
 
-
 rmve = [
     "01234.png",
     "56789.png",
@@ -352,6 +402,8 @@ rmve = [
     "gb.png",
     "key.png",
     "medal.png",
+    "bean.png",
+    "pearl.png",
 ]
 for kong in kongs:
     for x in range(2):

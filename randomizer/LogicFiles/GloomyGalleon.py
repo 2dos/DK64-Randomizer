@@ -117,7 +117,7 @@ LogicRegions = {
     ]),
 
     Regions.MermaidRoom: Region("Mermaid Room", "Lighthouse Area", Levels.GloomyGalleon, False, None, [
-        LocationLogic(Locations.GalleonTinyPearls, lambda l: Events.PearlsCollected in l.Events and (l.istiny or l.settings.free_trade_items)),
+        LocationLogic(Locations.GalleonTinyPearls, lambda l: ((l.Pearls >= 1 and l.settings.fast_gbs) or l.Pearls >= 5) and (l.istiny or l.settings.free_trade_items)),
     ], [], [
         TransitionFront(Regions.GloomyGalleonMedals, lambda l: True),
         TransitionFront(Regions.LighthouseUnderwater, lambda l: True, Transitions.GalleonMermaidToLighthouseArea),
@@ -192,9 +192,13 @@ LogicRegions = {
         TransitionFront(Regions.TreasureRoom, lambda l: True)
     ]),
 
-    Regions.TinyChest: Region("Tiny Chest", "Treasure Room", Levels.GloomyGalleon, False, -1, [], [
-        Event(Events.PearlsCollected, lambda l: True),
-    ], [
+    Regions.TinyChest: Region("Tiny Chest", "Treasure Room", Levels.GloomyGalleon, False, -1, [
+        LocationLogic(Locations.GalleonPearl0, lambda l: True),
+        LocationLogic(Locations.GalleonPearl1, lambda l: True),
+        LocationLogic(Locations.GalleonPearl2, lambda l: True),
+        LocationLogic(Locations.GalleonPearl3, lambda l: True),
+        LocationLogic(Locations.GalleonPearl4, lambda l: True),
+    ], [], [
         TransitionFront(Regions.GloomyGalleonMedals, lambda l: True),
         TransitionFront(Regions.TreasureRoom, lambda l: True, Transitions.GalleonChestToTreasure),
     ]),
