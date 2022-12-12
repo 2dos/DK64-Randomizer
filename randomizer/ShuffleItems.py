@@ -105,11 +105,10 @@ move_list = {
     Items.SniperSight: MoveData(2, Kongs.any, 3, True, 1),
 }
 
-progressive_move_flag_dict = {Items.ProgressiveSlam: [0x290, 0x291], Items.ProgressiveAmmoBelt: [0x292, 0x293], Items.ProgressiveInstrumentUpgrade: [0x294, 0x295, 0x296]}
-
 
 def ShuffleItems(spoiler: Spoiler):
     """Shuffle items into assortment."""
+    progressive_move_flag_dict = {Items.ProgressiveSlam: [0x290, 0x291], Items.ProgressiveAmmoBelt: [0x292, 0x293], Items.ProgressiveInstrumentUpgrade: [0x294, 0x295, 0x296]}
     flag_dict = {}
     locations_not_needing_flags = []
     locations_needing_flags = []
@@ -167,6 +166,8 @@ def ShuffleItems(spoiler: Spoiler):
                 # If this item has a dedicated specific flag, then set it now (Keys and Coins right now)
                 if new_item.rando_flag is not None:
                     if new_item.rando_flag == -1:  # This means it's a progressive move and they need special flags
+                        print(progressive_move_flag_dict)
+                        print(item_location.item)
                         location_selection.new_flag = progressive_move_flag_dict[item_location.item].pop()
                     else:
                         location_selection.new_flag = new_item.rando_flag

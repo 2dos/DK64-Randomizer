@@ -248,6 +248,8 @@ extern void checkItemDB(void);
 extern void initPauseMenu(void);
 extern void changePauseScreen(void);
 
+extern void handleDynamicItemText(char* location, char* format, int character);
+
 extern unsigned int cs_skip_db[432];
 extern bonus_barrel_info bonus_data[95];
 extern const short kong_flags[5];

@@ -410,6 +410,8 @@ void initHack(int source) {
 			*(int*)(0x806F56E0) = 0x0C000000 | (((int)&getFlagIndex_Corrected & 0xFFFFFF) >> 2); // BP Acquisition - Correct for character
 			*(int*)(0x806F9374) = 0x0C000000 | (((int)&getFlagIndex_Corrected & 0xFFFFFF) >> 2); // Medal Acquisition - Correct for character
 
+			*(int*)(0x8070E1F0) = 0x0C000000 | (((int)&handleDynamicItemText & 0xFFFFFF) >> 2); // Handle Dynamic Text Item Name
+
 			*(int*)(0x805FEBC0) = 0x0C000000 | (((int)&parseCutsceneData & 0xFFFFFF) >> 2); // modifyCutsceneHook
 			*(int*)(0x807313A4) = 0x0C000000 | (((int)&checkVictory_flaghook & 0xFFFFFF) >> 2); // perm flag set hook
 			if (Rando.helm_hurry_mode) {
