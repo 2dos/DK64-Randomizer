@@ -754,7 +754,7 @@ void banana_medal_acquisition(int flag) {
             void* sprite_addr = sprite_table[used_sprite];
             if (item_type == 12) {
                 sprite_addr = &bean_sprite;
-            } else if (item_type == 3) {
+            } else if (item_type == 13) {
                 sprite_addr = &pearl_sprite;
             }
             displaySpriteAtXYZ(sprite_addr, 0x3F800000, 160.0f, 120.0f, -10.0f);
