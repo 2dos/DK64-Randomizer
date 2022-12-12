@@ -174,7 +174,7 @@ def place_randomized_items(spoiler: Spoiler):
                                 if item.shared or slot > 5:
                                     slot = 5
                             arcade_reward_index = 9 + slot
-                        else:
+                        elif item.new_item in arcade_rewards:
                             arcade_reward_index = arcade_rewards.index(item.new_item)
                         ROM().seek(sav + 0x110)
                         ROM().write(arcade_reward_index)
@@ -200,7 +200,7 @@ def place_randomized_items(spoiler: Spoiler):
                         elif item.new_item == Types.Coin:
                             if item.new_flag == 132:  # Nintendo Coin
                                 jetpac_reward_index = 12
-                        else:
+                        elif item.new_item in arcade_rewards:
                             jetpac_reward_index = jetpac_rewards.index(item.new_item)
                         ROM().seek(sav + 0x111)
                         ROM().write(jetpac_reward_index)
@@ -387,7 +387,6 @@ def place_randomized_items(spoiler: Spoiler):
                                         slot = 5
                                 item_obj_index = model_two_indexes[Types.Shop][slot]
                             elif item_slot["obj"] == Types.Kong:
-                                kong_flags = [385, 6, 70, 66, 117]
                                 slot = 0
                                 if item_slot["flag"] in kong_flags:
                                     slot = kong_flags.index(item_slot["flag"])
