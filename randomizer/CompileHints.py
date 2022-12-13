@@ -559,9 +559,10 @@ def compileHints(spoiler: Spoiler):
             #   This situation isn't that scary because Key 1 is likely in a very small set of locations
             if hint_location is None:
                 hint_location = getRandomHintLocation()
-            message = f"{key_item.name} can be acquired with {kong_name} in {level_name}."
-            hint_location.hint_type = HintType.RequiredKeyHint
-            UpdateHint(hint_location, message)
+            if hint_location is not None:
+                message = f"{key_item.name} can be acquired with {kong_name} in {level_name}."
+                hint_location.hint_type = HintType.RequiredKeyHint
+                UpdateHint(hint_location, message)
 
         # For later Keys, place two hints that hint the "path" to the key
         for key_id in late_keys_required:

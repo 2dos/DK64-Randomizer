@@ -124,6 +124,36 @@ text_rewards = {
     Types.NoItem: ("NOTHING", "DIDDLY SQUAT"),
 }
 
+def getTextRewardIndex(item) -> int:
+    """Get reward index for text item."""
+    if item.new_item == Types.Coin:
+        if item.new_flag == 379:
+            return 5
+        return 6
+    elif item.new_item in (Types.Shop, Types.Shockwave, Types.TrainingBarrel):
+        return 8
+    elif item.new_item is None:
+        return 13
+    else:
+        item_text_indexes = (
+            Types.Banana,
+            Types.Blueprint,
+            Types.Key,
+            Types.Crown,
+            Types.Fairy,
+            Types.Coin,
+            Types.Coin,
+            Types.Medal,
+            Types.Shop,
+            Types.Kong,
+            Types.Bean,
+            Types.Pearl,
+            Types.RainbowCoin,
+            Types.NoItem
+        )
+        if item.new_item in item_text_indexes:
+            return item_text_indexes.index(item.new_item)
+        return 13
 
 def place_randomized_items(spoiler: Spoiler):
     """Place randomized items into ROM."""
@@ -296,6 +326,13 @@ def place_randomized_items(spoiler: Spoiler):
                         ROM().writeMultipleBytes(item.old_flag, 2)
                         ROM().writeMultipleBytes(actor_index, 1)
                         bonus_table_offset += 1
+                    elif item.location in (Locations.AztecTinyBeetleRace, Locations.CavesLankyBeetleRace):
+                        text_index = getTextRewardIndex(item)
+                        if item.location == Locations.AztecTinyBeetleRace:
+                            ROM().seek(sav + 0x50)
+                        else:
+                            ROM().seek(sav + 0x51)
+                        ROM().write(text_index)
                 elif item.old_item == Types.Kong:
                     for i in range(4):
                         if item.new_item is None or item.new_item == Types.NoItem:
