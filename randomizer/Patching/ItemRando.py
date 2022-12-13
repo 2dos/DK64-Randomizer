@@ -124,6 +124,7 @@ text_rewards = {
     Types.NoItem: ("NOTHING", "DIDDLY SQUAT"),
 }
 
+
 def getTextRewardIndex(item) -> int:
     """Get reward index for text item."""
     if item.new_item == Types.Coin:
@@ -149,11 +150,12 @@ def getTextRewardIndex(item) -> int:
             Types.Bean,
             Types.Pearl,
             Types.RainbowCoin,
-            Types.NoItem
+            Types.NoItem,
         )
         if item.new_item in item_text_indexes:
             return item_text_indexes.index(item.new_item)
         return 13
+
 
 def place_randomized_items(spoiler: Spoiler):
     """Place randomized items into ROM."""
