@@ -57,6 +57,106 @@ actor_indexes = {
 kong_flags = (385, 6, 70, 66, 117)
 
 
+class TextboxChange:
+    """Class to store information which pertains to a change of textbox information."""
+
+    def __init__(self, file_index, textbox_index, text_replace, replacement_text="|", force_pipe=False):
+        """Initialize with given paremeters."""
+        self.file_index = file_index
+        self.textbox_index = textbox_index
+        self.text_replace = text_replace  # Text which is going to be replaced with replacement_text
+        self.replacement_text = replacement_text
+        self.force_pipe = force_pipe  # If True, don't replace with item name upon checking later. Instead, will be replaced in RDRAM dynamically
+
+
+textboxes = {
+    Locations.AztecTinyBeetleRace: TextboxChange(14, 0, "GOLDEN BANANA", "|", True),
+    Locations.CavesLankyBeetleRace: TextboxChange(14, 0, "GOLDEN BANANA", "|", True),
+    Locations.JapesDiddyMinecarts: TextboxChange(16, 2, "GOLDEN BANANA"),
+    Locations.JapesDiddyMinecarts: TextboxChange(16, 3, "BANANA"),
+    Locations.JapesDiddyMinecarts: TextboxChange(16, 4, "BANANA"),
+    Locations.ForestChunkyMinecarts: TextboxChange(16, 5, "GOLDEN BANANA"),
+    Locations.ForestChunkyMinecarts: TextboxChange(16, 7, "BANANA"),
+    Locations.CastleDonkeyMinecarts: TextboxChange(16, 8, "BE A WINNER", "WIN A |"),
+    Locations.CastleDonkeyMinecarts: TextboxChange(16, 9, "BANANA"),
+    Locations.IslesDonkeyInstrumentPad: TextboxChange(16, 18, "ANOTHER BANANA", "SOMETHING"),
+    Locations.IslesDiddyInstrumentPad: TextboxChange(16, 18, "ANOTHER BANANA", "SOMETHING"),
+    Locations.IslesLankyInstrumentPad: TextboxChange(16, 18, "ANOTHER BANANA", "SOMETHING"),
+    Locations.IslesTinyInstrumentPad: TextboxChange(16, 18, "ANOTHER BANANA", "SOMETHING"),
+    Locations.IslesChunkyInstrumentPad: TextboxChange(16, 18, "ANOTHER BANANA", "SOMETHING"),
+    Locations.FactoryTinyCarRace: TextboxChange(17, 4, "GOLDEN BANANA"),
+    Locations.GalleonTinyPearls: TextboxChange(23, 0, "PLEASE TRY AND GET THEM BACK", "IF YOU HELP ME FIND THEM, I WILL REWARD YOU WITH A |"),
+    Locations.GalleonTinyPearls: TextboxChange(23, 1, "GOLDEN BANANA"),
+    Locations.AztecDiddyVultureRace: TextboxChange(15, 0, "TEST OF YOUR FLYING SKILL"),
+    Locations.AztecDonkeyFreeLlama: TextboxChange(10, 1, "ALL THIS SAND", "THIS |"),
+    Locations.AztecDonkeyFreeLlama: TextboxChange(10, 2, "BANANA"),
+    Locations.RarewareCoin: TextboxChange(8, 2, "RAREWARE COIN"),
+    Locations.RarewareCoin: TextboxChange(8, 34, "RAREWARE COIN"),
+    Locations.ForestLankyRabbitRace: TextboxChange(20, 1, "TROPHY", "| TROPHY"),
+    Locations.ForestLankyRabbitRace: TextboxChange(20, 2, "TROPHY", "| TROPHY"),
+    Locations.ForestLankyRabbitRace: TextboxChange(20, 3, "TROPHY", "| TROPHY"),
+    Locations.ForestChunkyApple: TextboxChange(22, 0, "BANANA"),
+    Locations.ForestChunkyApple: TextboxChange(22, 1, "BANANA"),
+    Locations.ForestChunkyApple: TextboxChange(22, 4, "BANANA"),
+    Locations.GalleonDonkeySealRace: TextboxChange(28, 2, "CHEST O' GOLD"),
+    Locations.RarewareBanana: TextboxChange(30, 0, "REWARD ANYONE", "REWARD ANYONE WITH A |"),
+    Locations.CavesLankyCastle: TextboxChange(33, 0, "HOW ABOUT IT", "HOW ABOUT A |"),
+    Locations.CastleTinyCarRace: TextboxChange(34, 4, "BANANA"),
+}
+
+rareware_coin_reward = ("RAREWARE COIN", "DOUBLOON OF THE RAREST KIND")
+nintendo_coin_reward = ("NINTENDO COIN", "ANCIENT DOUBLOON")
+
+text_rewards = {
+    Types.Banana: ("GOLDEN BANANA", "BANANA OF PURE GOLD"),
+    Types.Blueprint: ("BLUEPRINT", "MAP O' DEATH MACHINE"),
+    Types.Key: ("BOSS KEY", "KEY TO DAVY JONES LOCKER"),
+    Types.Crown: ("BATTLE CROWN", "CROWN TO PLACE ATOP YER HEAD"),
+    Types.Fairy: ("BANANA FAIRY", "MAGICAL FLYING PIXIE"),
+    Types.Medal: ("BANANA MEDAL", "MEDALLION"),
+    Types.Shop: ("POTION", "BOTTLE OF GROG"),
+    Types.Shockwave: ("POTION", "BOTTLE OF GROG"),
+    Types.TrainingBarrel: ("POTION", "BOTTLE OF GROG"),
+    Types.Kong: ("KONG", "WEIRD MONKEY"),
+    Types.Bean: ("BEAN", "QUESTIONABLE VEGETABLE"),
+    Types.Pearl: ("PEARL", "BLACK PEARL"),
+    Types.RainbowCoin: ("RAINBOW COIN", "COLORFUL COIN HIDDEN FOR 17 YEARS"),
+    Types.NoItem: ("NOTHING", "DIDDLY SQUAT"),
+}
+
+
+def getTextRewardIndex(item) -> int:
+    """Get reward index for text item."""
+    if item.new_item == Types.Coin:
+        if item.new_flag == 379:
+            return 5
+        return 6
+    elif item.new_item in (Types.Shop, Types.Shockwave, Types.TrainingBarrel):
+        return 8
+    elif item.new_item is None:
+        return 13
+    else:
+        item_text_indexes = (
+            Types.Banana,
+            Types.Blueprint,
+            Types.Key,
+            Types.Crown,
+            Types.Fairy,
+            Types.Coin,
+            Types.Coin,
+            Types.Medal,
+            Types.Shop,
+            Types.Kong,
+            Types.Bean,
+            Types.Pearl,
+            Types.RainbowCoin,
+            Types.NoItem,
+        )
+        if item.new_item in item_text_indexes:
+            return item_text_indexes.index(item.new_item)
+        return 13
+
+
 def place_randomized_items(spoiler: Spoiler):
     """Place randomized items into ROM."""
     if spoiler.settings.shuffle_items:
@@ -200,7 +300,7 @@ def place_randomized_items(spoiler: Spoiler):
                         elif item.new_item == Types.Coin:
                             if item.new_flag == 132:  # Nintendo Coin
                                 jetpac_reward_index = 12
-                        elif item.new_item in arcade_rewards:
+                        elif item.new_item in jetpac_rewards:
                             jetpac_reward_index = jetpac_rewards.index(item.new_item)
                         ROM().seek(sav + 0x111)
                         ROM().write(jetpac_reward_index)
@@ -228,6 +328,13 @@ def place_randomized_items(spoiler: Spoiler):
                         ROM().writeMultipleBytes(item.old_flag, 2)
                         ROM().writeMultipleBytes(actor_index, 1)
                         bonus_table_offset += 1
+                    elif item.location in (Locations.AztecTinyBeetleRace, Locations.CavesLankyBeetleRace):
+                        text_index = getTextRewardIndex(item)
+                        if item.location == Locations.AztecTinyBeetleRace:
+                            ROM().seek(sav + 0x50)
+                        else:
+                            ROM().seek(sav + 0x51)
+                        ROM().write(text_index)
                 elif item.old_item == Types.Kong:
                     for i in range(4):
                         if item.new_item is None or item.new_item == Types.NoItem:
@@ -350,6 +457,32 @@ def place_randomized_items(spoiler: Spoiler):
                 else:
                     data.append(item.new_flag)
                 flut_items.append(data)
+            # Text stuff
+            if item.location in textboxes:
+                textbox = textboxes[item.location]
+                replacement = textbox.replacement_text
+                if not textbox.force_pipe:
+                    reward_text = "|"
+                    reference = None
+                    if item.new_item in text_rewards:
+                        reference = text_rewards[item.new_item]
+                    elif item.new_item == Types.Coin:
+                        reference = nintendo_coin_reward
+                        if item.new_flag == 379:
+                            reference = rareware_coin_reward
+                    if reference is not None:
+                        # Found reference
+                        reward_text = reference[0]
+                        if item.location == Locations.GalleonDonkeySealRace:
+                            # Use pirate text
+                            reward_text = reference[1]
+                    replacement = replacement.replace("|", reward_text)
+                data = {"textbox_index": textbox.textbox_index, "mode": "replace", "search": textbox.text_replace, "target": replacement}
+                if textbox.file_index in spoiler.text_changes:
+                    spoiler.text_changes[textbox.file_index].append(data)
+                else:
+                    spoiler.text_changes[textbox.file_index] = [data]
+
         # Terminate FLUT
         flut_items.append([0xFFFF, 0xFFFF])
         ROM().seek(0x1FF2000)

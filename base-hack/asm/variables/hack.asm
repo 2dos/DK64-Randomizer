@@ -34,6 +34,7 @@
 .definelabel ChunkyModel, 0x807FFFD5
 .definelabel EnemyInView, 0x807FFFD4
 .definelabel ItemRandoOn, 0x807FFFD3
+.definelabel TextItemName, 0x807FFFD2
 .definelabel ItemRando_FLUT, 0x805FAE00-0x640
 .definelabel TextOverlayData, 0x807FFFA0
 

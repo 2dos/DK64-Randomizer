@@ -314,7 +314,7 @@ class Settings:
 
         #  Misc
         self.generate_spoilerlog = None
-        self.fast_start_beginning_of_game = None
+        self.fast_start_beginning_of_game = True
         self.helm_setting = None
         self.quality_of_life = None
         self.wrinkly_available = False

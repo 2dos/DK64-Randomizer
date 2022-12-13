@@ -477,18 +477,19 @@ def compileHints(spoiler: Spoiler):
         hintable_levels = []
         while len(hintable_levels) == 0:
             hint_location = getRandomHintLocation(location_list=location_restriction)
-            # Only hint levels more expensive than the current one AND we care about level order AND this hint's lobby doesn't already hint this level
-            hintable_levels = [
-                level
-                for level in all_levels
-                if (not level_order_matters or spoiler.settings.EntryGBs[level] > spoiler.settings.EntryGBs[hint_location.level]) and (hint_location.level, level) not in hinted_blocker_combos
-            ]
-            # If Helm is random, always place at least one Helm hint - this helps non-maximized Helm seeds and slightly nerfs this category of hints otherwise.
-            if not spoiler.settings.maximize_helm_blocker:
-                if i == 0:
-                    hintable_levels = [Levels.HideoutHelm]
-                else:
-                    hintable_levels.append(Levels.HideoutHelm)
+            if hint_location is not None:
+                # Only hint levels more expensive than the current one AND we care about level order AND this hint's lobby doesn't already hint this level
+                hintable_levels = [
+                    level
+                    for level in all_levels
+                    if (not level_order_matters or spoiler.settings.EntryGBs[level] > spoiler.settings.EntryGBs[hint_location.level]) and (hint_location.level, level) not in hinted_blocker_combos
+                ]
+                # If Helm is random, always place at least one Helm hint - this helps non-maximized Helm seeds and slightly nerfs this category of hints otherwise.
+                if not spoiler.settings.maximize_helm_blocker:
+                    if i == 0:
+                        hintable_levels = [Levels.HideoutHelm]
+                    else:
+                        hintable_levels.append(Levels.HideoutHelm)
         hinted_level = random.choice(hintable_levels)
         hinted_blocker_combos.append((hint_location.level, hinted_level))
         level_name = level_list[hinted_level]
@@ -558,9 +559,10 @@ def compileHints(spoiler: Spoiler):
             #   This situation isn't that scary because Key 1 is likely in a very small set of locations
             if hint_location is None:
                 hint_location = getRandomHintLocation()
-            message = f"{key_item.name} can be acquired with {kong_name} in {level_name}."
-            hint_location.hint_type = HintType.RequiredKeyHint
-            UpdateHint(hint_location, message)
+            if hint_location is not None:
+                message = f"{key_item.name} can be acquired with {kong_name} in {level_name}."
+                hint_location.hint_type = HintType.RequiredKeyHint
+                UpdateHint(hint_location, message)
 
         # For later Keys, place two hints that hint the "path" to the key
         for key_id in late_keys_required:
