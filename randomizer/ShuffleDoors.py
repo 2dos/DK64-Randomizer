@@ -37,6 +37,33 @@ def ShuffleDoors(spoiler):
             elif ("remove_wrinkly_puzzles" in spoiler.settings.misc_changes_selected or len(spoiler.settings.misc_changes_selected) == 0) and door.default_placed == "wrinkly":
                 available_doors.append(door_index)
         random.shuffle(available_doors)
+        if spoiler.settings.tns_location_rando:
+            number_of_portals_in_level = random.choice([3, 4, 5])
+            # Make sure selected locations will be suitable to be a T&S portal
+            available_portals = [door for door in available_doors if door_locations[level][door].door_type != "wrinkly"]
+            for new_portal in range(number_of_portals_in_level):
+                if len(available_portals) > 0:  # Should only fail if we don't have enough door locations
+                    if new_portal > 0:
+                        selected_door_index = available_portals.pop()
+                        selected_portal = door_locations[level][selected_door_index]
+                        # Only place one T&S portal per group so we don't stack portals too heavily
+                        available_portals = [door for door in available_portals if door_locations[level][door].group != selected_portal.group]
+                        # update available_doors separately as wrinkly doors should not be affected by the T&S grouping
+                        available_doors.remove(selected_door_index)
+                        selected_portal.assignPortal()
+                        human_portal_doors[level_list[level]][" T&S #" + str(new_portal + 1)] = selected_portal.name
+                        shuffled_door_data[level].append((selected_door_index, "tns"))
+                    else:
+                        # On the first iteration, make sure at least 1 TnS portal is accessible without any moves
+                        selected_door_index = random.choice([door for door in available_portals if door_locations[level][door].moveless is True])
+                        selected_portal = door_locations[level][selected_door_index]
+                        # Only place one T&S portal per group so we don't stack portals too heavily
+                        available_portals = [door for door in available_portals if door_locations[level][door].group != selected_portal.group]
+                        # update available_doors separately as wrinkly doors should not be affected by the T&S grouping
+                        available_doors.remove(selected_door_index)
+                        selected_portal.assignPortal()
+                        human_portal_doors[level_list[level]][" T&S #" + str(new_portal + 1)] = selected_portal.name
+                        shuffled_door_data[level].append((selected_door_index, "tns"))
         if spoiler.settings.wrinkly_location_rando:
             # Place one hint door per kong
             for kong in range(5):  # NOTE: If testing all locations, replace "range(5) with range(len(door_locations[level]))"
@@ -62,30 +89,6 @@ def ShuffleDoors(spoiler):
                     selected_door.assignDoor(assignee)
                     human_hint_doors[level_list[level]][str(assignee).capitalize()] = selected_door.name
                     shuffled_door_data[level].append((selected_door_index, "wrinkly", int(assignee)))
-        if spoiler.settings.tns_location_rando:
-            number_of_portals_in_level = random.choice([3, 4, 5])
-            moveless_portal_selected = False
-            # Make sure selected locations will be suitable to be a T&S portal
-            available_doors = [door for door in available_doors if door_locations[level][door].door_type != "wrinkly"]
-            for new_portal in range(number_of_portals_in_level):
-                if len(available_doors) > 0:  # Should only fail if we don't have enough door locations
-                    if new_portal < (number_of_portals_in_level - 1) or moveless_portal_selected is True:
-                        selected_door_index = available_doors.pop()
-                        selected_portal = door_locations[level][selected_door_index]
-                        if selected_portal.moveless is True:
-                            moveless_portal_selected = True
-                        # Only place one T&S portal per group so we don't stack portals too heavily
-                        available_doors = [door for door in available_doors if door_locations[level][door].group != selected_portal.group]
-                        selected_portal.assignPortal()
-                        human_portal_doors[level_list[level]][" T&S #" + str(new_portal + 1)] = selected_portal.name
-                        shuffled_door_data[level].append((selected_door_index, "tns"))
-                    else:
-                        # On the last iteration, make sure at least 1 TnS portal is accessible without any moves
-                        selected_door_index = random.choice([door for door in available_doors if door_locations[level][door].moveless is True])
-                        selected_portal = door_locations[level][selected_door_index]
-                        selected_portal.assignPortal()
-                        human_portal_doors[level_list[level]][" T&S #" + str(new_portal + 1)] = selected_portal.name
-                        shuffled_door_data[level].append((selected_door_index, "tns"))
 
     # Track all touched doors in a variable and put it in the spoiler because changes to the static list do not save
     spoiler.shuffled_door_data = shuffled_door_data
