@@ -156,6 +156,7 @@ def getTextRewardIndex(item) -> int:
             return item_text_indexes.index(item.new_item)
         return 13
 
+
 def getActorIndex(item):
     """Get actor index from item."""
     if item.new_item is None:
@@ -180,6 +181,7 @@ def getActorIndex(item):
             slot = kong_flags.index(item.new_flag)
         return actor_indexes[Types.Kong][slot]
     return actor_indexes[item.new_item]
+
 
 def place_randomized_items(spoiler: Spoiler):
     """Place randomized items into ROM."""
