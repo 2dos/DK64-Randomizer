@@ -62,16 +62,16 @@
                                     </table>
                                 </div>
                             {% endfor %}
-                        {% elif item in ("Cosmetics","Requirements","Bosses","Items","Shuffled Exits (Sorted by destination)","Colored Banana Locations","Wrinkly Door Locations","T&S Portal Locations") %}
+                        {% elif item in ("Cosmetics","Requirements","Bosses","Items","Items (Sorted by Item)","Shuffled Exits (Sorted by destination)","Colored Banana Locations","Wrinkly Door Locations","T&S Portal Locations") %}
                             {# Attributes with sub-dicts #}
                             {% for sub_group in spoiler[item] %}
                                 {% if spoiler[item][sub_group] != {} %}
                                     <div class="playthrough-head collapsed"
-                                         id="playthroughhead-{{ item.lower().replace(' ','_').replace('&','') }}-{{ sub_group.lower().replace(' ','_') }}"
+                                         id="playthroughhead-{{ item.lower().replace(' ','_').replace('&','').replace('(','').replace(')','') }}-{{ sub_group.lower().replace(' ','_') }}"
                                          data-bs-toggle="collapse"
-                                         data-bs-target="#playthroughitem-{{ item.lower().replace(' ','_').replace('&','') }}-{{ sub_group.lower().replace(' ','_') }}"
+                                         data-bs-target="#playthroughitem-{{ item.lower().replace(' ','_').replace('&','').replace('(','').replace(')','') }}-{{ sub_group.lower().replace(' ','_') }}"
                                          aria-expanded="false"
-                                         aria-controls="playthroughitem-{{ item.lower().replace(' ','_').replace('&','') }}-{{ sub_group.lower().replace(' ','_') }}">
+                                         aria-controls="playthroughitem-{{ item.lower().replace(' ','_').replace('&','').replace('(','').replace(')','') }}-{{ sub_group.lower().replace(' ','_') }}">
                                         <div class="playthrough-head-container">
                                             <div class="playthrough-head-name">{{ sub_group }}</div>
                                             <div class="playthrough-head-caret">
@@ -81,7 +81,7 @@
                                         </div>
                                     </div>
                                     <div class="playthrough-item collapse"
-                                         id="playthroughitem-{{ item.lower().replace(' ','_').replace('&','') }}-{{ sub_group.lower().replace(' ','_') }}">
+                                         id="playthroughitem-{{ item.lower().replace(' ','_').replace('&','').replace('(','').replace(')','') }}-{{ sub_group.lower().replace(' ','_') }}">
                                         <table class="table table-striped table-dark settings-table ignore-width">
                                             <tbody>
                                                 {% for item2 in spoiler[item][sub_group] %}

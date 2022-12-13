@@ -822,7 +822,7 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 						initiateTransition_0(55, 0, 0, 0);
 					}
 				} else if (param2 == FUNGI_BEANCONTROLLER) {
-					return checkFlag(FLAG_COLLECTABLE_BEAN, 0);
+					return checkFlagDuplicate(FLAG_COLLECTABLE_BEAN, 0);
 				}
 				break;
 			case CASTLE_BALLROOM:
@@ -1330,22 +1330,22 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 					behaviour_pointer->next_state = fish_state;
 				}
 				break;
-			case TREASURE_CHEST:
-				if (param2 == CHEST_PEARL_0) {
-					if (Rando.fast_gbs) {
-						int pearls_collected = 0;
-						for (int i = 0; i < 5; i++) {
-							pearls_collected += checkFlagDuplicate(FLAG_PEARL_0_COLLECTED + i,0);
-						}
-						if (pearls_collected >= 1) {
-							for (int i = 0; i < 5; i++) {
-								setFlagDuplicate(FLAG_PEARL_0_COLLECTED + i, 1, 0);
-							}
-							behaviour_pointer->next_state = 2;
-						}
-					}
-				}
-				break;
+			// case TREASURE_CHEST:
+			// 	if (param2 == CHEST_PEARL_0) {
+			// 		if (Rando.fast_gbs) {
+			// 			int pearls_collected = 0;
+			// 			for (int i = 0; i < 5; i++) {
+			// 				pearls_collected += checkFlagDuplicate(FLAG_PEARL_0_COLLECTED + i,0);
+			// 			}
+			// 			if (pearls_collected >= 1) {
+			// 				for (int i = 0; i < 5; i++) {
+			// 					setFlagDuplicate(FLAG_PEARL_0_COLLECTED + i, 1, 0);
+			// 				}
+			// 				behaviour_pointer->next_state = 2;
+			// 			}
+			// 		}
+			// 	}
+			// 	break;
 			case CAVES_DK5DI:
 				if (param2 == ICE_MAZE) {
 					if (behaviour_pointer->switch_pressed == index) {

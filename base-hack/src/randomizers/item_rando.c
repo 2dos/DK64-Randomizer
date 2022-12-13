@@ -754,7 +754,7 @@ void banana_medal_acquisition(int flag) {
             void* sprite_addr = sprite_table[used_sprite];
             if (item_type == 12) {
                 sprite_addr = &bean_sprite;
-            } else if (item_type == 3) {
+            } else if (item_type == 13) {
                 sprite_addr = &pearl_sprite;
             }
             displaySpriteAtXYZ(sprite_addr, 0x3F800000, 160.0f, 120.0f, -10.0f);
@@ -1128,7 +1128,22 @@ void getItem(int object_type) {
             break;
         case 0x1B4:
             // Pearl
-            playSong(128, 0x3F800000);
+            {
+                playSong(128, 0x3F800000);
+                if (CurrentMap == 0x2C) { // Treasure Chest
+                    int requirement = 5;
+                    if (Rando.fast_gbs) {
+                        requirement = 1;
+                    }
+                    int count = 0;
+                    for (int i = 0; i < 5; i++) {
+                        count += checkFlagDuplicate(FLAG_PEARL_0_COLLECTED + i, 0);
+                    }
+                    if (count == (requirement - 1)) {
+                        playCutscene((void*)0, 1, 0);
+                    }
+                }
+            }
             break;
         case 0x1D1:
             // Coin Powerup
@@ -1258,4 +1273,112 @@ int canItemPersist(void) {
         return isCutsceneActive();
     }
     return 1;
+}
+
+static char* text_rewards[] = {
+    "GOLDEN BANANA",
+    "BLUEPRINT",
+    "BOSS KEY",
+    "BATTLE CROWN",
+    "BANANA FAIRY",
+    "RAREWARE COIN",
+    "NINTENDO COIN",
+    "BANANA MEDAL",
+    "POTION",
+    "KONG",
+    "BEAN",
+    "PEARL",
+    "RAINBOW COIN",
+    "NOTHING",
+};
+
+void handleDynamicItemText(char* location, char* format, int character) {
+    if (character == 0x7C) {
+        // Dynamic Text
+        if (TextItemName >= 14) {
+            TextItemName = 0;
+        }
+        dk_strFormat(location, "%s", text_rewards[(int)TextItemName]);
+    } else {
+        dk_strFormat(location, format, character);
+    }
+}
+
+void mermaidCheck(void) {
+    int requirement = 5;
+    if (Rando.fast_gbs) {
+        requirement = 1;
+    }
+    int count = 0;
+    for (int i = 0; i < 5; i++) {
+        count += checkFlagDuplicate(FLAG_PEARL_0_COLLECTED + i, 0);
+    }
+    if (count == 0) {
+        CurrentActorPointer_0->control_state = 0x1E;
+    } else if (count < requirement) {
+        CurrentActorPointer_0->control_state = 0x1F;
+    } else {
+        CurrentActorPointer_0->control_state = 0x27;
+    }
+    CurrentActorPointer_0->control_state_progress = 0;
+}
+
+#define GB_DICTIONARY_COUNT 119
+static GBDictItem NewGBDictionary[GB_DICTIONARY_COUNT] = {};
+
+int addDictionaryItem(int index, int map, int id, int flag, int kong) {
+    NewGBDictionary[index].map = map;
+    NewGBDictionary[index].model2_id = id;
+    NewGBDictionary[index].flag_index = flag;
+    NewGBDictionary[index].intended_kong_actor = kong + 2;
+    return index + 1;
+}
+
+void initItemDictionary(void) {
+    // Copy old dictionary
+    for (int i = 0; i < 113; i++) {
+        NewGBDictionary[i].map = GBDictionary[i].map;
+        NewGBDictionary[i].unk_01 = GBDictionary[i].unk_01;
+        NewGBDictionary[i].model2_id = GBDictionary[i].model2_id;
+        
+        NewGBDictionary[i].unk_07 = GBDictionary[i].unk_07;
+        // Base Dict Alterations
+        int map = GBDictionary[i].map;
+        int id = GBDictionary[i].model2_id;
+        int kong = GBDictionary[i].intended_kong_actor - 2;
+        int flag = GBDictionary[i].flag_index;
+        if ((map == 0x22) && (id == 4)) {
+            kong = Rando.starting_kong;
+        } else if ((map == 0x7) && ((id == 0x69) || (id == 0x48))) {
+            kong = Rando.free_source_japes;
+        } else if ((map == 0x10) && (id == 0x5B)) {
+            kong = Rando.free_source_ttemple;
+        } else if ((map == 0x14) && (id == 0x6C)) {
+            kong = Rando.free_source_llama;
+        } else if ((map == 0x1A) && (id == 0x78)) {
+            kong = Rando.free_source_factory;
+        } else if ((map == 0x11) && (id == 0x5E)) {
+            flag = 0x24C;
+        } else if ((map == 0x11) && (id == 0x61)) {
+            flag = 0x249;
+        }
+        NewGBDictionary[i].intended_kong_actor = kong + 2;
+        NewGBDictionary[i].flag_index = flag;
+    }
+    // Add new entries
+    int size = addDictionaryItem(113, 0x2C, 0, FLAG_PEARL_0_COLLECTED, -2);
+    for (int i = 1; i < 5; i++) {
+        size = addDictionaryItem(size, 0x2C, i, FLAG_PEARL_0_COLLECTED + i, -2);
+    }
+    size = addDictionaryItem(size, 0x34, 5, FLAG_COLLECTABLE_BEAN, -2);
+    // Initialize addresses
+    *(short*)(0x8073150A) = getHi(&NewGBDictionary[0].map);
+    *(short*)(0x8073151E) = getLo(&NewGBDictionary[0].map);
+    *(short*)(0x8073151A) = GB_DICTIONARY_COUNT;
+    *(short*)(0x807315EA) = getHi(&NewGBDictionary[0].map);
+    *(short*)(0x807315FE) = getLo(&NewGBDictionary[0].map);
+    *(short*)(0x807315FA) = GB_DICTIONARY_COUNT;
+    *(short*)(0x80731666) = getHi(&NewGBDictionary[0].map);
+    *(short*)(0x80731676) = getLo(&NewGBDictionary[0].map);
+    *(short*)(0x80731672) = GB_DICTIONARY_COUNT;
 }

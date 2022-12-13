@@ -75,6 +75,32 @@ class Spoiler:
 
         self.hint_list = {}
 
+    def getItemGroup(self, item):
+        """Get item group from item."""
+        if item is None:
+            item = Items.NoItem
+        if item == Items.NoItem:
+            return "Empty"
+        item_type = ItemList[item].type
+        type_dict = {
+            Types.Kong: "Kongs",
+            Types.Shop: "Moves",
+            Types.Shockwave: "Moves",
+            Types.TrainingBarrel: "Moves",
+            Types.Banana: "Golden Bananas",
+            Types.Blueprint: "Blueprints",
+            Types.Fairy: "Fairies",
+            Types.Key: "Keys",
+            Types.Crown: "Crowns",
+            Types.Medal: "Medals",
+            Types.Coin: "Coins",
+            Types.Bean: "Miscellaneous Items",
+            Types.Pearl: "Miscellaneous Items",
+        }
+        if item_type in type_dict:
+            return type_dict[item_type]
+        return "Unknown"
+
     def createJson(self):
         """Convert spoiler to JSON and save it."""
         # Verify we match our hash
@@ -215,6 +241,21 @@ class Spoiler:
             "Hideout Helm": {},
             "Special": {},
         }
+        sorted_item_name = "Items (Sorted by Item)"
+        humanspoiler[sorted_item_name] = {
+            "Kongs": {},
+            "Moves": {},
+            "Golden Bananas": {},
+            "Blueprints": {},
+            "Fairies": {},
+            "Keys": {},
+            "Crowns": {},
+            "Coins": {},
+            "Medals": {},
+            "Miscellaneous Items": {},
+            "Empty": {},
+            "Unknown": {},
+        }
 
         # Playthrough data
         humanspoiler["Playthrough"] = self.playthrough
@@ -249,6 +290,7 @@ class Spoiler:
             # Separate Kong locations
             if location.type == Types.Kong:
                 humanspoiler["Items"]["Kongs"][location.name] = item.name
+                humanspoiler[sorted_item_name][self.getItemGroup(location.item)][location.name] = item.name
             # Separate Shop locations
             elif location.type == Types.Shop:
                 # Ignore shop locations with no items
@@ -269,6 +311,7 @@ class Spoiler:
                 else:
                     price = str(self.settings.prices[location_id])
                 humanspoiler["Items"]["Shops"][location.name] = item.name + f" ({price})"
+                humanspoiler[sorted_item_name][self.getItemGroup(location.item)][location.name] = item.name
             # Filter everything else by level - each location conveniently contains a level-identifying bit in their name
             else:
                 level = "Special"
@@ -291,6 +334,7 @@ class Spoiler:
                 elif "Helm" in location.name:
                     level = "Hideout Helm"
                 humanspoiler["Items"][level][location.name] = item.name
+                humanspoiler[sorted_item_name][self.getItemGroup(location.item)][location.name] = item.name
 
         if self.settings.shuffle_loading_zones == "levels":
             # Just show level order

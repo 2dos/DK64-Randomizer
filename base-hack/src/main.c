@@ -39,6 +39,10 @@ void cFuncLoop(void) {
 		priceTransplant();
 		if (CurrentMap == 0x50) {
 			good_eeprom = EEPROMType == 2;
+		} else if (CurrentMap == 0xE) {
+			TextItemName = Rando.aztec_beetle_reward;
+		} else if (CurrentMap == 0x52) {
+			TextItemName = Rando.caves_beetle_reward;
 		}
 	}
 	if (Rando.item_rando) {

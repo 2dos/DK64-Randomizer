@@ -410,8 +410,17 @@ void initHack(int source) {
 			*(int*)(0x806F56E0) = 0x0C000000 | (((int)&getFlagIndex_Corrected & 0xFFFFFF) >> 2); // BP Acquisition - Correct for character
 			*(int*)(0x806F9374) = 0x0C000000 | (((int)&getFlagIndex_Corrected & 0xFFFFFF) >> 2); // Medal Acquisition - Correct for character
 
+			*(int*)(0x8070E1F0) = 0x0C000000 | (((int)&handleDynamicItemText & 0xFFFFFF) >> 2); // Handle Dynamic Text Item Name
+
 			*(int*)(0x805FEBC0) = 0x0C000000 | (((int)&parseCutsceneData & 0xFFFFFF) >> 2); // modifyCutsceneHook
 			*(int*)(0x807313A4) = 0x0C000000 | (((int)&checkVictory_flaghook & 0xFFFFFF) >> 2); // perm flag set hook
+			
+			// New Mermaid Checking Code
+			*(int*)(0x806C3B5C) = 0x0C000000 | (((int)&mermaidCheck & 0xFFFFFF) >> 2); // Mermaid Check
+			*(short*)(0x806C3B64) = 0x1000; // Force to branch
+			*(short*)(0x806C3BD0) = 0x1000; // Force to branch
+			*(int*)(0x806C3C20) = 0; // NOP - Cancel control state write
+			*(int*)(0x806C3C2C) = 0; // NOP - Cancel control state progress write
 			if (Rando.helm_hurry_mode) {
 				*(int*)(0x80713CCC) = 0; // Prevent Helm Timer Disable
 				*(int*)(0x80713CD8) = 0; // Prevent Shutdown Song Playing
@@ -535,7 +544,6 @@ void initHack(int source) {
 						*(short*)(0x806832C0) = 0x5000; // Prevent tag blinking
 						*(int*)(0x806C1058) = 0; // Prevent Cutscene Kong blinking
 						*(int*)(0x806F0AD0) = 0x24050001; // Fix Hand State
-						*(float*)(0x8075CC78) = 0.03f; // Reduce Tiny's Mini Monkey Size
 						break;
 					case 4:
 						// Chunky
@@ -618,9 +626,8 @@ void initHack(int source) {
 			*(unsigned char*)(0x8075054D) = 0xD7; // Change DK Q Mark to #FFD700
 			// Guard Animation Fix
 			*(short*)(0x806AF8C6) = 0x2C1;
-			// Fix Diddy/Chunky Helm Medal Flag Mapping
-			*(short*)(0x80755D8C) = 0x024C;
-			*(short*)(0x80755DA4) = 0x0249;
+			// Init New Item Dictionary
+			initItemDictionary();
 			// Remove flare effect from guards
 			*(int*)(0x806AE440) = 0;
 			// Boost Diddy/Tiny's Barrel Speed
