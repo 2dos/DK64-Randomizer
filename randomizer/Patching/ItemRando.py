@@ -157,6 +157,32 @@ def getTextRewardIndex(item) -> int:
         return 13
 
 
+def getActorIndex(item):
+    """Get actor index from item."""
+    if item.new_item is None:
+        return actor_indexes[Types.NoItem]
+    elif item.new_item == Types.Blueprint:
+        return actor_indexes[Types.Blueprint][item.new_kong]
+    elif item.new_item == Types.Coin:
+        if item.new_flag == 379:  # Is RW Coin
+            return actor_indexes[Types.Coin][1]
+        return actor_indexes[Types.Coin][0]
+    elif item.new_item in (Types.Shop, Types.Shockwave, Types.TrainingBarrel):
+        if (item.new_flag & 0x8000) == 0:
+            slot = 5
+        else:
+            slot = (item.new_flag >> 12) & 7
+            if item.shared or slot > 5:
+                slot = 5
+        return actor_indexes[Types.Shop][slot]
+    elif item.new_item == Types.Kong:
+        slot = 0
+        if item.new_flag in kong_flags:
+            slot = kong_flags.index(item.new_flag)
+        return actor_indexes[Types.Kong][slot]
+    return actor_indexes[item.new_item]
+
+
 def place_randomized_items(spoiler: Spoiler):
     """Place randomized items into ROM."""
     if spoiler.settings.shuffle_items:
@@ -306,24 +332,7 @@ def place_randomized_items(spoiler: Spoiler):
                         ROM().write(jetpac_reward_index)
                     elif item.location in (Locations.ForestDonkeyBaboonBlast, Locations.CavesDonkeyBaboonBlast):
                         # Autocomplete bonus barrel fix
-                        if item.new_item is None:
-                            actor_index = 153
-                        elif item.new_item == Types.Blueprint:
-                            actor_index = actor_indexes[Types.Blueprint][item.new_kong]
-                        elif item.new_item == Types.Coin:
-                            actor_index = actor_indexes[Types.Coin][0]
-                            if item.new_flag == 379:  # Is RW Coin
-                                actor_index = actor_indexes[Types.Coin][1]
-                        elif item.new_item in (Types.Shop, Types.Shockwave, Types.TrainingBarrel):
-                            if (item.new_flag & 0x8000) == 0:
-                                slot = 5
-                            else:
-                                slot = (item.new_flag >> 12) & 7
-                                if item.shared or slot > 5:
-                                    slot = 5
-                            actor_index = actor_indexes[Types.Shop][slot]
-                        else:
-                            actor_index = actor_indexes[item.new_item]
+                        actor_index = getActorIndex(item)
                         ROM().seek(0x1FF1200 + (4 * bonus_table_offset))
                         ROM().writeMultipleBytes(item.old_flag, 2)
                         ROM().writeMultipleBytes(actor_index, 1)
@@ -343,29 +352,7 @@ def place_randomized_items(spoiler: Spoiler):
                             ROM().writeMultipleBytes(0xFF, 1)
                 else:
                     if item.old_item != Types.Medal:
-                        if item.new_item is None:
-                            actor_index = 153
-                        elif item.new_item == Types.Blueprint:
-                            actor_index = actor_indexes[Types.Blueprint][item.new_kong]
-                        elif item.new_item == Types.Coin:
-                            actor_index = actor_indexes[Types.Coin][0]
-                            if item.new_flag == 379:  # Is RW Coin
-                                actor_index = actor_indexes[Types.Coin][1]
-                        elif item.new_item in (Types.Shop, Types.Shockwave, Types.TrainingBarrel):
-                            if (item.new_flag & 0x8000) == 0:
-                                slot = 5
-                            else:
-                                slot = (item.new_flag >> 12) & 7
-                                if item.shared or slot > 5:
-                                    slot = 5
-                            actor_index = actor_indexes[Types.Shop][slot]
-                        elif item.new_item == Types.Kong:
-                            slot = 0
-                            if item.new_flag in kong_flags:
-                                slot = kong_flags.index(item.new_flag)
-                            actor_index = actor_indexes[Types.Kong][slot]
-                        else:
-                            actor_index = actor_indexes[item.new_item]
+                        actor_index = getActorIndex(item)
                     if item.old_item == Types.Blueprint:
                         # Write to BP Table
                         # Just needs to store an array of actors spawned
