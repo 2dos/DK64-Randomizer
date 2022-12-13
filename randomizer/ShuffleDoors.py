@@ -43,7 +43,7 @@ def ShuffleDoors(spoiler):
             available_portals = [door for door in available_doors if door_locations[level][door].door_type != "wrinkly"]
             for new_portal in range(number_of_portals_in_level):
                 if len(available_portals) > 0:  # Should only fail if we don't have enough door locations
-                    if new_portal < 1:
+                    if new_portal > 0:
                         selected_door_index = available_portals.pop()
                         selected_portal = door_locations[level][selected_door_index]
                         # Only place one T&S portal per group so we don't stack portals too heavily
