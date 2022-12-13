@@ -166,8 +166,6 @@ def ShuffleItems(spoiler: Spoiler):
                 # If this item has a dedicated specific flag, then set it now (Keys and Coins right now)
                 if new_item.rando_flag is not None:
                     if new_item.rando_flag == -1:  # This means it's a progressive move and they need special flags
-                        print(progressive_move_flag_dict)
-                        print(item_location.item)
                         location_selection.new_flag = progressive_move_flag_dict[item_location.item].pop()
                     else:
                         location_selection.new_flag = new_item.rando_flag
