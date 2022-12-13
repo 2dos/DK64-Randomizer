@@ -54,7 +54,7 @@ void buildItemDrops(void) {
     drop_total = addItemDrop(0x121,0x2F,0x2F,1,drop_total); // Ghost
     drop_total = addItemDrop(0xB6,0x2F,0x2F,1,drop_total); // Klobber
     drop_total = addItemDrop(0xAF,0x2F,0x2F,1,drop_total); // Kaboom
-    drop_total = addItemDrop(0x103,0x33,0x0,1,drop_total); // Guard
+    drop_total = addItemDrop(0x103,0x79,0x0,1,drop_total); // Guard
     drop_total = addItemDrop(0,0,0,0,drop_total);
 }
 
