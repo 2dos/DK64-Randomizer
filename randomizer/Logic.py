@@ -45,6 +45,20 @@ class LogicVarHolder:
         self.settings = settings
         self.pathMode = False  # See CalculateWothPaths method for details
         self.startkong = self.settings.starting_kong
+        # Glitch Logic
+        self.phasewalk = False
+        self.phaseswim = False
+        self.moonkick = False
+        self.ledgeclip = False
+        self.generalclips = False  # General clips which have no real category
+        self.lanky_blocker_skip = False  # Also includes ppunch skip
+        self.dk_blocker_skip = False
+        self.troff_skip = False
+        self.spawn_snags = False
+        self.advanced_platforming = False
+        self.tbs = False
+        self.swim_through_shores = False
+        # Reset
         self.Reset()
 
     def Reset(self):
@@ -302,6 +316,26 @@ class LogicVarHolder:
 
         self.bananaHoard = self.bananaHoard or Items.BananaHoard in ownedItems
 
+    def CanPhaseswim(self):
+        """Determine whether the player can perform phase swim."""
+        return self.phaseswim and self.swim
+
+    def CanMoonkick(self):
+        """Determine whether the player can perform a moonkick."""
+        return self.moonkick and self.isdonkey
+
+    def CanOStandTBSNoclip(self):
+        """Determine whether the player can perform Orangstand TBS Noclip."""
+        return self.tbs and self.handstand and self.islanky
+
+    def CanAccessRNDRoom(self):
+        """Determine whether the player can enter an R&D Room with glitches."""
+        return self.phasewalk or self.generalclips or self.CanOStandTBSNoclip()
+
+    def CanGetOnCannonGamePlatform(self):
+        """Determine whether the player can get on the platform in Cannon Game Room in Gloomy Galleon."""
+        return Events.WaterSwitch in self.Events or (self.advanced_platforming and (self.ischunky or self.islanky))
+
     def AddEvent(self, event):
         """Add an event to events list so it can be checked for logically."""
         self.Events.append(event)
@@ -441,7 +475,7 @@ class LogicVarHolder:
 
     def CanFreeLanky(self):
         """Check if kong at Lanky location can be freed, requires freeing kong to have its gun and instrument."""
-        return self.swim and self.HasGun(self.settings.lanky_freeing_kong) and self.HasInstrument(self.settings.lanky_freeing_kong)
+        return self.HasGun(self.settings.lanky_freeing_kong) and ((self.swim and self.HasInstrument(self.settings.lanky_freeing_kong)) or self.phasewalk or self.CanPhaseswim())
 
     def CanFreeChunky(self):
         """Check if kong at Chunky location can be freed."""
@@ -557,7 +591,7 @@ class LogicVarHolder:
 
     def IsBossReachable(self, level):
         """Check if the boss banana requirement is met."""
-        return self.HasEnoughKongs(level) and sum(self.ColoredBananas[level]) >= self.settings.BossBananas[level]
+        return self.HasEnoughKongs(level) and ((sum(self.ColoredBananas[level]) >= self.settings.BossBananas[level]) or self.troff_skip)
 
     def HasEnoughKongs(self, level, forPreviousLevel=False):
         """Check if kongs are required for progression, do we have enough to reach the given level."""
@@ -602,7 +636,13 @@ class LogicVarHolder:
                 # Require one of twirl or hunky chunky by level 7 to prevent non-hard-boss fill failures
                 if not self.settings.hard_bosses and level >= 7 and not (self.twirl or self.hunkyChunky):
                     return False
-        return self.HasEnoughKongs(level, forPreviousLevel=True) and self.GoldenBananas >= self.settings.EntryGBs[level]
+        dk_skip_levels = [Levels.AngryAztec, Levels.GloomyGalleon, Levels.FungiForest, Levels.CrystalCaves, Levels.CreepyCastle]
+        if self.CanMoonkick():
+            dk_skip_levels.append(Levels.HideoutHelm)
+        can_dk_skip = self.isdonkey and self.dk_blocker_skip and level in dk_skip_levels
+        can_lanky_skip = self.islanky and self.lanky_blocker_skip
+        can_chunky_skip = self.ischunky and self.lanky_blocker_skip and self.punch
+        return self.HasEnoughKongs(level, forPreviousLevel=True) and ((self.GoldenBananas >= self.settings.EntryGBs[level]) or can_dk_skip or can_lanky_skip or can_chunky_skip)
 
     def WinConditionMet(self):
         """Check if the current game state has met the win condition."""

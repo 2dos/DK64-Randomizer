@@ -208,6 +208,12 @@ class Regions(IntEnum):
     # Hideout Helm Regions
     HideoutHelmStart = auto()
     HideoutHelmMain = auto()
+    HideoutHelmDonkeyRoom = auto()
+    HideoutHelmDiddyRoom = auto()
+    HideoutHelmLankyRoom = auto()
+    HideoutHelmTinyRoom = auto()
+    HideoutHelmChunkyRoom = auto()
+    HideoutHelmAfterBoM = auto()
 
     # Shop Regions
     FunkyGeneric = auto()

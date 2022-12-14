@@ -31,12 +31,30 @@ CrownLocations = {
         CrownLocation(map=Maps.JungleJapes, name="Jungle Japes: Near Funky", x=1989.7, y=520, z=2086.71, scale=0.45, region=Regions.JungleJapesMain, is_vanilla=True),
         CrownLocation(map=Maps.JungleJapes, name="Jungle Japes: On Tree (Starting Area)", x=1101, y=478, z=266, scale=0.25, region=Regions.JungleJapesMain),
         CrownLocation(map=Maps.JungleJapes, name="Jungle Japes: Diddy Cavern", x=2381, y=280, z=392, scale=0.35, region=Regions.JapesBeyondPeanutGate),
-        CrownLocation(map=Maps.JungleJapes, name="Jungle Japes: Painting Hill", x=554, y=370, z=1804, scale=0.35, region=Regions.JungleJapesMain, logic=lambda l: l.handstand and l.lanky),
+        CrownLocation(
+            map=Maps.JungleJapes,
+            name="Jungle Japes: Painting Hill",
+            x=554,
+            y=370,
+            z=1804,
+            scale=0.35,
+            region=Regions.JungleJapesMain,
+            logic=lambda l: (l.handstand and l.islanky) or l.CanMoonkick() or ((l.phasewalk or l.generalclips) and (l.istiny or l.isdiddy)),
+        ),
         CrownLocation(map=Maps.JungleJapes, name="Jungle Japes: Shellhive Island", x=2337, y=551, z=3156, scale=0.6, region=Regions.JapesBeyondFeatherGate),
         CrownLocation(map=Maps.JungleJapes, name="Jungle Japes: Near Stump", x=1912, y=539, z=3289, scale=0.45, region=Regions.JapesBeyondFeatherGate),
         CrownLocation(map=Maps.JungleJapes, name="Jungle Japes: Near Log", x=2419, y=539, z=2834, scale=0.45, region=Regions.JapesBeyondFeatherGate),
         CrownLocation(map=Maps.JungleJapes, name="Jungle Japes: Vine Pit", x=1150, y=230, z=2613, scale=0.45, region=Regions.JapesBeyondCoconutGate2),
-        CrownLocation(map=Maps.JungleJapes, name="Jungle Japes: Lanky Alcove Hill", x=2209, y=339, z=3205, scale=0.4, region=Regions.JapesBeyondCoconutGate2, logic=lambda l: l.handstand and l.lanky),
+        CrownLocation(
+            map=Maps.JungleJapes,
+            name="Jungle Japes: Lanky Alcove Hill",
+            x=2209,
+            y=339,
+            z=3205,
+            scale=0.4,
+            region=Regions.JapesBeyondCoconutGate2,
+            logic=lambda l: (l.handstand and l.lanky) or (l.phasewalk and (l.isdiddy or l.istiny)),
+        ),
         CrownLocation(map=Maps.JungleJapes, name="Jungle Japes: Fairy Pool", x=597, y=240, z=3123, scale=0.4, region=Regions.BeyondRambiGate),
         CrownLocation(map=Maps.JungleJapes, name="Jungle Japes: Behind Lanky Hut", x=2052, y=280, z=4350, scale=0.35, region=Regions.JapesBeyondCoconutGate2),
         CrownLocation(map=Maps.JungleJapes, name="Jungle Japes: Behind DK Hut", x=1307, y=280, z=4327, scale=0.35, region=Regions.JapesBeyondCoconutGate2),
@@ -47,7 +65,7 @@ CrownLocations = {
         CrownLocation(map=Maps.JungleJapes, name="Jungle Japes: On Mountain", x=1616, y=989, z=2439, scale=0.5, region=Regions.JapesTopOfMountain),
         CrownLocation(map=Maps.JungleJapes, name="Jungle Japes: Near Kong Cage", x=949, y=852, z=2384, scale=0.35, region=Regions.JungleJapesMain),
         CrownLocation(map=Maps.JungleJapes, name="Jungle Japes: Near Cannon Platform", x=1282, y=520, z=2262, scale=0.35, region=Regions.JungleJapesMain),
-        CrownLocation(map=Maps.JungleJapes, name="Jungle Japes: In T&S Alcove", x=770, y=538, z=2332, scale=0.35, region=Regions.JungleJapesMain, logic=lambda l: l.vines),
+        CrownLocation(map=Maps.JungleJapes, name="Jungle Japes: In T&S Alcove", x=770, y=538, z=2332, scale=0.35, region=Regions.JungleJapesMain, logic=lambda l: l.vines or l.advanced_platforming),
         # CrownLocation(
         #     map=Maps.JungleJapes,
         #     name="Jungle Japes: Near Underground Entrance",
@@ -65,11 +83,13 @@ CrownLocations = {
         CrownLocation(map=Maps.JapesMountain, name="Jungle Japes - Mountain: Near Entrance (Ground)", x=328, y=40, z=471, scale=0.3, region=Regions.Mine),
         CrownLocation(map=Maps.JapesMountain, name="Jungle Japes - Mountain: Near Entrance (High)", x=497, y=140, z=512, scale=0.35, region=Regions.Mine),
         CrownLocation(map=Maps.JapesMountain, name="Jungle Japes - Mountain: On Barrel", x=690, y=135, z=757, scale=0.4, region=Regions.Mine),
-        CrownLocation(map=Maps.JapesMountain, name="Jungle Japes - Mountain: Near HiLo Machine", x=326, y=133, z=1510, scale=0.2, region=Regions.Mine, logic=lambda l: l.charge and l.diddy),
-        CrownLocation(map=Maps.JapesMountain, name="Jungle Japes - Mountain: Under Conveyor", x=42, y=220, z=1056, scale=0.3, region=Regions.Mine, logic=lambda l: l.Slam and l.diddy),
+        CrownLocation(
+            map=Maps.JapesMountain, name="Jungle Japes - Mountain: Near HiLo Machine", x=326, y=133, z=1510, scale=0.2, region=Regions.Mine, logic=lambda l: (l.charge or l.phasewalk) and l.diddy
+        ),
+        CrownLocation(map=Maps.JapesMountain, name="Jungle Japes - Mountain: Under Conveyor", x=42, y=220, z=1056, scale=0.3, region=Regions.Mine, logic=lambda l: (l.Slam or l.phasewalk) and l.diddy),
         CrownLocation(map=Maps.JapesTinyHive, name="Jungle Japes - Shell: Main Room", x=1385, y=212, z=1381, scale=0.7, region=Regions.TinyHive),
         CrownLocation(map=Maps.JapesTinyHive, name="Jungle Japes - Shell: 1st Room", x=610, y=130, z=1279, scale=0.6, region=Regions.TinyHive),
-        CrownLocation(map=Maps.JapesTinyHive, name="Jungle Japes - Shell: 3rd Room", x=2547, y=254, z=1354, scale=0.6, region=Regions.TinyHive, logic=lambda l: l.Slam and l.tiny),
+        CrownLocation(map=Maps.JapesTinyHive, name="Jungle Japes - Shell: 3rd Room", x=2547, y=254, z=1354, scale=0.6, region=Regions.TinyHive, logic=lambda l: (l.Slam or l.phasewalk) and l.tiny),
     ],
     Levels.AngryAztec: [
         CrownLocation(
@@ -96,41 +116,85 @@ CrownLocations = {
             z=740,
             scale=0.25,
             region=Regions.AngryAztecOasis,
-            logic=lambda l: l.coconut and ((l.strongKong and l.isdonkey) or l.settings.damage_amount == "default"),
+            logic=lambda l: (l.coconut or l.phasewalk) and ((l.strongKong and l.isdonkey) or l.settings.damage_amount == "default"),
         ),
         CrownLocation(map=Maps.AngryAztec, name="Angry Aztec: Oasis", x=2151, y=120, z=983, scale=0.35, region=Regions.AngryAztecOasis),
         CrownLocation(map=Maps.AngryAztec, name="Angry Aztec: Behind Tiny Temple", x=3345, y=153, z=507, scale=0.3, region=Regions.AngryAztecOasis),
-        CrownLocation(map=Maps.AngryAztec, name="Angry Aztec: On Tiny Temple", x=3192, y=352, z=500, scale=0.3, region=Regions.AngryAztecOasis, logic=lambda l: l.jetpack and l.diddy),
+        CrownLocation(
+            map=Maps.AngryAztec, name="Angry Aztec: On Tiny Temple", x=3192, y=352, z=500, scale=0.3, region=Regions.AngryAztecOasis, logic=lambda l: (l.jetpack and l.diddy) or l.CanMoonkick()
+        ),
         CrownLocation(map=Maps.AngryAztec, name="Angry Aztec: Near Oasis Shop", x=2430, y=120, z=509, scale=0.35, region=Regions.CandyAztec),
         CrownLocation(map=Maps.AngryAztec, name="Angry Aztec: Near Hunky Chunky Barrel", x=3216, y=120, z=1490, scale=0.35, region=Regions.AngryAztecMain),
         CrownLocation(map=Maps.AngryAztec, name="Angry Aztec: Next to Chunky Cage (1)", x=4276.6, y=120, z=2266, scale=0.4, region=Regions.AngryAztecMain),
         CrownLocation(map=Maps.AngryAztec, name="Angry Aztec: Next to Chunky Cage (2)", x=4283, y=120, z=2543.6, scale=0.4, region=Regions.AngryAztecMain),
         CrownLocation(map=Maps.AngryAztec, name="Angry Aztec: Near Llama Temple (Left)", x=2781, y=160, z=3264, scale=0.35, region=Regions.AngryAztecMain),
         CrownLocation(map=Maps.AngryAztec, name="Angry Aztec: Near Llama Temple (Right)", x=3154, y=160, z=3172, scale=0.35, region=Regions.AngryAztecMain),
-        CrownLocation(map=Maps.AngryAztec, name="Angry Aztec: On Llama Temple", x=2884, y=437, z=2903, scale=0.4, region=Regions.AngryAztecMain, logic=lambda l: l.jetpack and l.diddy),
+        CrownLocation(
+            map=Maps.AngryAztec, name="Angry Aztec: On Llama Temple", x=2884, y=437, z=2903, scale=0.4, region=Regions.AngryAztecMain, logic=lambda l: (l.jetpack and l.diddy) or l.CanMoonkick()
+        ),
         CrownLocation(map=Maps.AngryAztec, name="Angry Aztec: Near Snoop Tunnel Shop", x=3000, y=120, z=4532, scale=0.35, region=Regions.AngryAztecMain),
-        CrownLocation(map=Maps.AngryAztec, name="Angry Aztec: On 5-Door Temple", x=2056, y=420, z=3648, scale=0.3, region=Regions.AngryAztecMain, logic=lambda l: l.jetpack and l.diddy),
+        CrownLocation(
+            map=Maps.AngryAztec, name="Angry Aztec: On 5-Door Temple", x=2056, y=420, z=3648, scale=0.3, region=Regions.AngryAztecMain, logic=lambda l: (l.jetpack and l.diddy) or l.CanMoonkick()
+        ),
         CrownLocation(map=Maps.AngryAztec, name="Angry Aztec: Near Snoop Tunnel Exterior Warp", x=3422, y=120, z=4514, scale=0.35, region=Regions.AngryAztecMain),
         CrownLocation(map=Maps.AngryAztec, name="Angry Aztec: Near Vulture Cage", x=4013, y=226, z=4589, scale=0.18, region=Regions.AngryAztecMain, logic=lambda l: l.vines),
         CrownLocation(map=Maps.AngryAztec, name="Angry Aztec: Under Vulture Cage", x=4102, y=120, z=4548, scale=0.4, region=Regions.AngryAztecMain),
         CrownLocation(map=Maps.AngryAztec, name="Angry Aztec: Near Gong Tower", x=4212, y=80, z=2959, scale=0.4, region=Regions.AngryAztecMain),
         CrownLocation(map=Maps.AngryAztec, name="Angry Aztec: Snoop Tunnel", x=2783, y=120, z=4817, scale=0.35, region=Regions.AztecDonkeyQuicksandCave),
-        CrownLocation(map=Maps.AztecDonkey5DTemple, name="Angry Aztec - DK 5DT: Dead End", x=99, y=20, z=464, scale=0.4, region=Regions.DonkeyTemple, logic=lambda l: l.coconut and l.isdonkey),
-        CrownLocation(map=Maps.AztecDiddy5DTemple, name="Angry Aztec - Diddy 5DT: Dead End", x=1060, y=20, z=493, scale=0.4, region=Regions.DiddyTemple, logic=lambda l: l.peanut and l.isdiddy),
-        CrownLocation(map=Maps.AztecLanky5DTemple, name="Angry Aztec - Lanky 5DT: Dead End", x=767, y=122, z=916, scale=0.3, region=Regions.LankyTemple, logic=lambda l: l.grape and l.islanky),
         CrownLocation(
-            map=Maps.AztecLanky5DTemple, name="Angry Aztec - Lanky 5DT: Near Vanilla Balloon", x=180, y=47, z=658, scale=0.45, region=Regions.LankyTemple, logic=lambda l: l.grape and l.islanky
-        ),
-        CrownLocation(map=Maps.AztecTiny5DTemple, name="Angry Aztec - Tiny 5DT: Dead End", x=329, y=123, z=1420, scale=0.3, region=Regions.TinyTemple, logic=lambda l: l.feather and l.istiny),
-        CrownLocation(
-            map=Maps.AztecChunky5DTemple, name="Angry Aztec - Chunky 5DT: Path Split (1)", x=375, y=20, z=321, scale=0.45, region=Regions.ChunkyTemple, logic=lambda l: l.pineapple and l.ischunky
+            map=Maps.AztecDonkey5DTemple, name="Angry Aztec - DK 5DT: Dead End", x=99, y=20, z=464, scale=0.4, region=Regions.DonkeyTemple, logic=lambda l: (l.coconut and l.isdonkey) or l.phasewalk
         ),
         CrownLocation(
-            map=Maps.AztecChunky5DTemple, name="Angry Aztec - Chunky 5DT: Path Split (2)", x=779, y=47, z=678, scale=0.45, region=Regions.ChunkyTemple, logic=lambda l: l.pineapple and l.ischunky
+            map=Maps.AztecDiddy5DTemple, name="Angry Aztec - Diddy 5DT: Dead End", x=1060, y=20, z=493, scale=0.4, region=Regions.DiddyTemple, logic=lambda l: (l.peanut and l.isdiddy) or l.phasewalk
+        ),
+        CrownLocation(
+            map=Maps.AztecLanky5DTemple, name="Angry Aztec - Lanky 5DT: Dead End", x=767, y=122, z=916, scale=0.3, region=Regions.LankyTemple, logic=lambda l: (l.grape and l.islanky) or l.phasewalk
+        ),
+        CrownLocation(
+            map=Maps.AztecLanky5DTemple,
+            name="Angry Aztec - Lanky 5DT: Near Vanilla Balloon",
+            x=180,
+            y=47,
+            z=658,
+            scale=0.45,
+            region=Regions.LankyTemple,
+            logic=lambda l: (l.grape and l.islan) or l.phasewalkky,
+        ),
+        CrownLocation(
+            map=Maps.AztecTiny5DTemple, name="Angry Aztec - Tiny 5DT: Dead End", x=329, y=123, z=1420, scale=0.3, region=Regions.TinyTemple, logic=lambda l: (l.feather and l.istiny) or l.phasewalk
+        ),
+        CrownLocation(
+            map=Maps.AztecChunky5DTemple,
+            name="Angry Aztec - Chunky 5DT: Path Split (1)",
+            x=375,
+            y=20,
+            z=321,
+            scale=0.45,
+            region=Regions.ChunkyTemple,
+            logic=lambda l: (l.pineapple and l.ischunky) or l.phasewalk,
+        ),
+        CrownLocation(
+            map=Maps.AztecChunky5DTemple,
+            name="Angry Aztec - Chunky 5DT: Path Split (2)",
+            x=779,
+            y=47,
+            z=678,
+            scale=0.45,
+            region=Regions.ChunkyTemple,
+            logic=lambda l: (l.pineapple and l.ischunky) or l.phasewalk,
         ),
         CrownLocation(map=Maps.AztecLlamaTemple, name="Angry Aztec - Llama Temple: Llama Right", x=1737, y=472, z=2548, scale=0.45, region=Regions.LlamaTemple),
         CrownLocation(map=Maps.AztecLlamaTemple, name="Angry Aztec - Llama Temple: Llama Left", x=1737, y=472, z=2200, scale=0.45, region=Regions.LlamaTemple),
-        CrownLocation(map=Maps.AztecLlamaTemple, name="Angry Aztec - Llama Temple: Matching Room", x=1082, y=641, z=2186, scale=0.45, region=Regions.LlamaTemple, logic=lambda l: l.grape and l.lanky),
+        CrownLocation(
+            map=Maps.AztecLlamaTemple,
+            name="Angry Aztec - Llama Temple: Matching Room",
+            x=1082,
+            y=641,
+            z=2186,
+            scale=0.45,
+            region=Regions.LlamaTemple,
+            logic=lambda l: (l.grape and l.lanky) or l.phasewalk,
+        ),
         CrownLocation(map=Maps.AztecLlamaTemple, name="Angry Aztec - Llama Temple: Snoop Switch", x=1695, y=433, z=1704, scale=0.3, region=Regions.LlamaTemple),
         CrownLocation(map=Maps.AztecLlamaTemple, name="Angry Aztec - Llama Temple: Lava Room", x=1227, y=420, z=3572, scale=0.35, region=Regions.LlamaTempleBack),
     ],
@@ -149,7 +213,7 @@ CrownLocations = {
         CrownLocation(map=Maps.FranticFactory, name="Frantic Factory: On Production outside box", x=988, y=322, z=1175, scale=0.25, region=Regions.UpperCore),
         CrownLocation(map=Maps.FranticFactory, name="Frantic Factory: Storage Room Corner", x=974, y=66.5, z=908, scale=0.2, region=Regions.BeyondHatch),
         CrownLocation(map=Maps.FranticFactory, name="Frantic Factory: Cranky/Candy Room", x=316, y=165, z=805, scale=0.4, region=Regions.BeyondHatch),
-        CrownLocation(map=Maps.FranticFactory, name="Frantic Factory: Dark Room", x=1850, y=6, z=525, scale=0.45, region=Regions.BeyondHatch, logic=lambda l: l.punch and l.chunky),
+        CrownLocation(map=Maps.FranticFactory, name="Frantic Factory: Dark Room", x=1850, y=6, z=525, scale=0.45, region=Regions.BeyondHatch, logic=lambda l: (l.punch and l.chunky) or l.phasewalk),
         CrownLocation(map=Maps.FranticFactory, name="Frantic Factory: Arcade Room Bench", x=1922, y=1143, z=1515, scale=0.25, region=Regions.BeyondHatch),
         CrownLocation(map=Maps.FranticFactory, name="Frantic Factory: Snide's Room", x=1702, y=810, z=2240, scale=0.3, region=Regions.Testing),
         CrownLocation(map=Maps.FranticFactory, name="Frantic Factory: Right Corridor", x=1710, y=837, z=2328, scale=0.3, region=Regions.Testing),
@@ -188,10 +252,26 @@ CrownLocations = {
         #     region=Regions.RandD,
         #     logic=lambda l: l.triangle and l.chunky and l.punch,
         # ),
-        CrownLocation(map=Maps.FranticFactory, name="Frantic Factory: Near Car Race", x=3553, y=1264, z=1383, scale=0.3, region=Regions.RandD, logic=lambda l: l.mini and l.istiny),
-        CrownLocation(map=Maps.FranticFactory, name="Frantic Factory: Under R&D Grate (2)", x=4054, y=1313, z=776, scale=0.5, region=Regions.RandD, logic=lambda l: l.grab and l.donkey),
+        CrownLocation(map=Maps.FranticFactory, name="Frantic Factory: Near Car Race", x=3553, y=1264, z=1383, scale=0.3, region=Regions.RandD, logic=lambda l: (l.mini and l.istiny) or l.phasewalk),
         CrownLocation(
-            map=Maps.FactoryCrusher, name="Frantic Factory - Crusher: Central Safehaven", x=116, y=0.5, z=468, scale=0.45, region=Regions.InsideCore, logic=lambda l: l.strongKong and l.isdonkey
+            map=Maps.FranticFactory,
+            name="Frantic Factory: Under R&D Grate (2)",
+            x=4054,
+            y=1313,
+            z=776,
+            scale=0.5,
+            region=Regions.RandD,
+            logic=lambda l: (l.grab and l.donkey) or l.phasewalk or l.generalclips,
+        ),
+        CrownLocation(
+            map=Maps.FactoryCrusher,
+            name="Frantic Factory - Crusher: Central Safehaven",
+            x=116,
+            y=0.5,
+            z=468,
+            scale=0.45,
+            region=Regions.InsideCore,
+            logic=lambda l: (l.strongKong and l.isdonkey) or l.phasewalk or l.generalclips,
         ),
         CrownLocation(map=Maps.FactoryPowerHut, name="Frantic Factory - Power Shed: Corner", x=62, y=0, z=64, scale=0.3, region=Regions.PowerHut),
     ],
@@ -204,7 +284,7 @@ CrownLocations = {
             z=2450.29,
             scale=0.53,
             region=Regions.GloomyGalleonStart,
-            logic=lambda l: l.punch and l.chunky,
+            logic=lambda l: (l.punch and l.chunky) or l.phasewalk,
             is_vanilla=True,
         ),
         CrownLocation(map=Maps.GloomyGalleon, name="Gloomy Galleon: Near Chest Cannon (1)", x=3072, y=1790, z=3501, scale=0.3, region=Regions.GloomyGalleonStart),
@@ -241,7 +321,14 @@ CrownLocations = {
         #     region=Regions.SickBay,
         # ),
         CrownLocation(
-            map=Maps.GalleonSickBay, name="Gloomy Galleon - Seasick Ship: Behind Spinning Barrels", x=142, y=20, z=851, scale=0.4, region=Regions.SickBay, logic=lambda l: l.punch and l.ischunky
+            map=Maps.GalleonSickBay,
+            name="Gloomy Galleon - Seasick Ship: Behind Spinning Barrels",
+            x=142,
+            y=20,
+            z=851,
+            scale=0.4,
+            region=Regions.SickBay,
+            logic=lambda l: (l.punch and l.ischunky) or l.phasewalk,
         ),
         CrownLocation(map=Maps.GalleonLighthouse, name="Gloomy Galleon - Lighthouse: Bottom Left", x=703, y=0, z=469, scale=0.5, region=Regions.Lighthouse),
         CrownLocation(map=Maps.GalleonLighthouse, name="Gloomy Galleon - Lighthouse: Back Right", x=282, y=0, z=670, scale=0.5, region=Regions.Lighthouse),
@@ -255,7 +342,7 @@ CrownLocations = {
             z=1307.16,
             scale=0.49,
             region=Regions.MushroomUpperExterior,
-            logic=lambda l: Events.Night in l.Events,
+            logic=lambda l: Events.Night in l.Events or l.advanced_platforming,
             is_vanilla=True,
         ),
         CrownLocation(map=Maps.FungiForest, name="Fungi Forest: Near Well", x=2399, y=110, z=3186, scale=0.6, region=Regions.FungiForestStart),
@@ -327,10 +414,17 @@ CrownLocations = {
             z=1719,
             scale=0.2,
             region=Regions.CrystalCavesMain,
-            logic=lambda l: l.monkeyport and l.mini and l.twirl and l.tiny,
+            logic=lambda l: (l.monkeyport and l.mini and l.twirl and l.tiny) or l.CanPhaseswim(),
         ),
         CrownLocation(
-            map=Maps.CrystalCaves, name="Crystal Caves: In Chunky Ice Shield", x=755, y=48, z=818, scale=0.2, region=Regions.IglooArea, logic=lambda l: Events.CavesLargeBoulderButton in l.Events
+            map=Maps.CrystalCaves,
+            name="Crystal Caves: In Chunky Ice Shield",
+            x=755,
+            y=48,
+            z=818,
+            scale=0.2,
+            region=Regions.IglooArea,
+            logic=lambda l: Events.CavesLargeBoulderButton in l.Events or l.CanPhaseswim() or l.generalclips,
         ),
         CrownLocation(
             map=Maps.CrystalCaves,
@@ -356,7 +450,7 @@ CrownLocations = {
             z=1002,
             scale=0.2,
             region=Regions.CrystalCavesMain,
-            logic=lambda l: (l.balloon and l.islanky) or (l.jetpack and l.isdiddy),
+            logic=lambda l: (l.balloon and l.islanky) or (l.jetpack and l.isdiddy) or l.advanced_platforming,
         ),
         CrownLocation(map=Maps.CrystalCaves, name="Crystal Caves: Near Small Boulder", x=1598, y=276, z=970, scale=0.35, region=Regions.CrystalCavesMain),
         CrownLocation(map=Maps.CrystalCaves, name="Crystal Caves: Near Snide's HQ", x=1220, y=64, z=587, scale=0.4, region=Regions.CavesSnideArea),
@@ -450,13 +544,26 @@ CrownLocations = {
         CrownLocation(map=Maps.CastleBallroom, name="Creepy Castle - Ballroom: Near Right Candle", x=847, y=40, z=454, scale=0.55, region=Regions.Ballroom),
         # CrownLocation(map=Maps.CastleDungeon, name="Creepy Castle - Dungeon: Diddy Room (OoB)", x=403, y=90, z=3307, scale=0.45, region=0,),
         CrownLocation(map=Maps.CastleDungeon, name="Creepy Castle - Dungeon: Near Diddy Room Entrance", x=442, y=115, z=2595, scale=0.4, region=Regions.Dungeon),
-        CrownLocation(map=Maps.CastleDungeon, name="Creepy Castle - Dungeon: DK Dungeon Room", x=1492, y=170, z=2000, scale=0.5, region=Regions.Dungeon, logic=lambda l: l.superDuperSlam and l.donkey),
+        CrownLocation(
+            map=Maps.CastleDungeon,
+            name="Creepy Castle - Dungeon: DK Dungeon Room",
+            x=1492,
+            y=170,
+            z=2000,
+            scale=0.5,
+            region=Regions.Dungeon,
+            logic=lambda l: (l.superDuperSlam and l.donkey) or l.phasewalk,
+        ),
         CrownLocation(map=Maps.CastleShed, name="Creepy Castle - Shed: Near Entrance", x=179, y=0, z=219, scale=0.4, region=Regions.Shed),
         CrownLocation(map=Maps.CastleLowerCave, name="Creepy Castle - Crypt Hub: Lower Portion", x=559, y=90, z=1153, scale=0.4, region=Regions.LowerCave),
         CrownLocation(map=Maps.CastleLowerCave, name="Creepy Castle - Crypt Hub: Behind Lanky Crypt", x=1848, y=320, z=1186, scale=0.4, region=Regions.LowerCave),
         CrownLocation(map=Maps.CastleLowerCave, name="Creepy Castle - Crypt Hub: Near Funky's", x=1359, y=200, z=433, scale=0.4, region=Regions.LowerCave),
-        CrownLocation(map=Maps.CastleCrypt, name="Creepy Castle - Chunky Crypt: Near Coffin", x=1280, y=160, z=2867, scale=0.45, region=Regions.Crypt, logic=lambda l: l.pineapple and l.ischunky),
-        CrownLocation(map=Maps.CastleCrypt, name="Creepy Castle - Diddy Crypt: Near Coffin", x=2069, y=0, z=593, scale=0.45, region=Regions.Crypt, logic=lambda l: l.peanut and l.isdiddy),
+        CrownLocation(
+            map=Maps.CastleCrypt, name="Creepy Castle - Chunky Crypt: Near Coffin", x=1280, y=160, z=2867, scale=0.45, region=Regions.Crypt, logic=lambda l: (l.pineapple and l.ischunky) or l.phasewalk
+        ),
+        CrownLocation(
+            map=Maps.CastleCrypt, name="Creepy Castle - Diddy Crypt: Near Coffin", x=2069, y=0, z=593, scale=0.45, region=Regions.Crypt, logic=lambda l: (l.peanut and l.isdiddy) or l.phasewalk
+        ),
         CrownLocation(map=Maps.CastleMausoleum, name="Creepy Castle - Lanky Crypt: Lanky Tunnel", x=1186, y=160, z=130, scale=0.4, region=Regions.Mausoleum),
         CrownLocation(map=Maps.CastleUpperCave, name="Creepy Castle - Tunnel: Near Pit", x=704, y=200, z=852, scale=0.4, region=Regions.UpperCave),
         CrownLocation(map=Maps.CastleUpperCave, name="Creepy Castle - Tunnel: Near Candy's", x=1104, y=300, z=2241, scale=0.4, region=Regions.UpperCave),
@@ -469,11 +576,18 @@ CrownLocations = {
             z=500,
             scale=0.4,
             region=Regions.Library,
-            logic=lambda l: l.superDuperSlam and l.isdonkey and (l.strongKong or l.settings.damage_amount == "default"),
+            logic=lambda l: (l.superDuperSlam and l.isdonkey and (l.strongKong or l.settings.damage_amount == "default")) or l.phasewalk,
         ),
         CrownLocation(map=Maps.CastleMuseum, name="Creepy Castle - Museum: Near Race", x=312, y=200, z=1784, scale=0.4, region=Regions.MuseumBehindGlass),
         CrownLocation(
-            map=Maps.CastleMuseum, name="Creepy Castle - Museum: Behind Pillar", x=1265, y=200, z=1525, scale=0.4, region=Regions.MuseumBehindGlass, logic=lambda l: l.monkeyport and l.istiny
+            map=Maps.CastleMuseum,
+            name="Creepy Castle - Museum: Behind Pillar",
+            x=1265,
+            y=200,
+            z=1525,
+            scale=0.4,
+            region=Regions.MuseumBehindGlass,
+            logic=lambda l: (l.monkeyport and l.istiny) or l.phasewalk,
         ),
         CrownLocation(map=Maps.CastleMuseum, name="Creepy Castle - Museum: Main Room", x=595, y=100, z=440, scale=0.6, region=Regions.Museum),
         CrownLocation(map=Maps.CastleTrashCan, name="Creepy Castle - Trash Can: Near Cheese", x=465, y=15, z=510, scale=0.6, region=Regions.TrashCan),
@@ -500,7 +614,7 @@ CrownLocations = {
             z=637.07,
             scale=0.35,
             region=Regions.FungiForestLobby,
-            logic=lambda l: l.coconut and l.peanut and l.grape and l.feather and l.pineapple and l.donkey and l.diddy and l.lanky and l.tiny and l.chunky and l.gorillaGone,
+            logic=lambda l: ((l.coconut and l.peanut and l.grape and l.feather and l.pineapple and l.donkey and l.diddy and l.lanky and l.tiny) or l.phasewalk) and l.chunky and l.gorillaGone,
             is_vanilla=True,
         ),
         CrownLocation(map=Maps.Isles, name="DK Isles: Fungi Platform", x=2683, y=1498, z=818, scale=0.4, region=Regions.CabinIsle),
@@ -512,7 +626,7 @@ CrownLocations = {
             z=1234,
             scale=0.4,
             region=Regions.CabinIsle,
-            logic=lambda l: Events.IslesDiddyBarrelSpawn in l.Events and l.jetpack and l.peanut and l.isdiddy,
+            logic=lambda l: (Events.IslesDiddyBarrelSpawn in l.Events and l.jetpack and l.isdiddy) or (l.advanced_platforming and (l.isdonkey or l.isdiddy or l.ischunky or (l.istiny and l.twirl))),
         ),
         CrownLocation(map=Maps.Isles, name="DK Isles: Near Caves Lobby Tree (1)", x=2497, y=507, z=1903, scale=0.4, region=Regions.IslesMain),
         CrownLocation(map=Maps.Isles, name="DK Isles: Near K. Rool", x=3005, y=500, z=855, scale=0.5, region=Regions.IslesMain),
@@ -534,26 +648,56 @@ CrownLocations = {
         CrownLocation(map=Maps.Isles, name="DK Isles: Under DK Caged GB", x=2000, y=550, z=3325, scale=0.5, region=Regions.IslesMain),
         CrownLocation(map=Maps.Isles, name="DK Isles: Behind Factory Lobby Entrance", x=2395, y=1200, z=3899, scale=0.4, region=Regions.CrocodileIsleBeyondLift),
         CrownLocation(map=Maps.Isles, name="DK Isles: Right of Factory Lobby Entrance", x=2159, y=1200, z=3518, scale=0.4, region=Regions.CrocodileIsleBeyondLift),
-        CrownLocation(map=Maps.Isles, name="DK Isles: Behind Helm Lobby Entrance", x=2370, y=1720, z=3809, scale=0.25, region=Regions.IslesMain, logic=lambda l: l.monkeyport and l.istiny),
-        CrownLocation(map=Maps.Isles, name="DK Isles: Left Kroc Isle Arm", x=2218, y=1620, z=3488, scale=0.5, region=Regions.IslesMain, logic=lambda l: l.monkeyport and l.istiny),
-        CrownLocation(map=Maps.Isles, name="DK Isles: Right Kroc Isle Arm", x=2700, y=1620, z=3315, scale=0.5, region=Regions.IslesMain, logic=lambda l: l.monkeyport and l.istiny),
+        CrownLocation(map=Maps.Isles, name="DK Isles: Behind Helm Lobby Entrance", x=2370, y=1720, z=3809, scale=0.25, region=Regions.IslesMain, logic=lambda l: (l.monkeyport and l.istiny) or l.tbs),
+        CrownLocation(map=Maps.Isles, name="DK Isles: Left Kroc Isle Arm", x=2218, y=1620, z=3488, scale=0.5, region=Regions.IslesMain, logic=lambda l: (l.monkeyport and l.istiny) or l.tbs),
+        CrownLocation(map=Maps.Isles, name="DK Isles: Right Kroc Isle Arm", x=2700, y=1620, z=3315, scale=0.5, region=Regions.IslesMain, logic=lambda l: (l.monkeyport and l.istiny) or l.tbs),
         CrownLocation(map=Maps.Isles, name="DK Isles: Fairy Isle", x=885, y=500, z=2307, scale=0.4, region=Regions.IslesMain),
         CrownLocation(map=Maps.Isles, name="DK Isles: Small Island", x=965, y=500, z=1410, scale=0.5, region=Regions.IslesMain),
         CrownLocation(map=Maps.JungleJapesLobby, name="DK Isles - Japes Lobby: Near Portal", x=711, y=0, z=632, scale=0.4, region=Regions.JungleJapesLobby),
         CrownLocation(map=Maps.AngryAztecLobby, name="DK Isles - Aztec Lobby: In Front of Feather Door", x=680, y=0, z=439, scale=0.4, region=Regions.AngryAztecLobby),
-        CrownLocation(map=Maps.AngryAztecLobby, name="DK Isles - Aztec Lobby: Behind Feather Door", x=930, y=0, z=637, scale=0.4, region=Regions.AngryAztecLobby, logic=lambda l: l.feather and l.tiny),
+        CrownLocation(
+            map=Maps.AngryAztecLobby,
+            name="DK Isles - Aztec Lobby: Behind Feather Door",
+            x=930,
+            y=0,
+            z=637,
+            scale=0.4,
+            region=Regions.AngryAztecLobby,
+            logic=lambda l: (l.feather and l.tiny) or l.phasewalk,
+        ),
         CrownLocation(map=Maps.FranticFactoryLobby, name="DK Isles - Factory Lobby: Near Lever", x=280, y=0, z=292, scale=0.4, region=Regions.FranticFactoryLobby),
         CrownLocation(
-            map=Maps.FranticFactoryLobby, name="DK Isles - Factory Lobby: Above Portal", x=677, y=134, z=367, scale=0.4, region=Regions.FranticFactoryLobby, logic=lambda l: l.grab and l.donkey
+            map=Maps.FranticFactoryLobby,
+            name="DK Isles - Factory Lobby: Above Portal",
+            x=677,
+            y=134,
+            z=367,
+            scale=0.4,
+            region=Regions.FranticFactoryLobby,
+            logic=lambda l: ((l.grab and l.donkey) or (l.advanced_platforming and (l.isdiddy or l.istiny or l.ischunky))),
         ),
         CrownLocation(map=Maps.GloomyGalleonLobby, name="DK Isles - Galleon Lobby: Right of Portal", x=429, y=139.6, z=942, scale=0.4, region=Regions.GloomyGalleonLobby),
         CrownLocation(map=Maps.GloomyGalleonLobby, name="DK Isles - Galleon Lobby: Left of Portal", x=855, y=119.6, z=886, scale=0.35, region=Regions.GloomyGalleonLobby),
         CrownLocation(map=Maps.CrystalCavesLobby, name="DK Isles - Caves Lobby: Right of Portal", x=1091, y=118, z=541, scale=0.4, region=Regions.CrystalCavesLobby),
         CrownLocation(
-            map=Maps.CrystalCavesLobby, name="DK Isles - Caves Lobby: High Platform", x=794, y=280.4, z=739, scale=0.35, region=Regions.CrystalCavesLobby, logic=lambda l: l.jetpack and l.isdiddy
+            map=Maps.CrystalCavesLobby,
+            name="DK Isles - Caves Lobby: High Platform",
+            x=794,
+            y=280.4,
+            z=739,
+            scale=0.35,
+            region=Regions.CrystalCavesLobby,
+            logic=lambda l: (l.jetpack and l.isdiddy) or l.CanMoonkick(),
         ),
         CrownLocation(
-            map=Maps.CrystalCavesLobby, name="DK Isles - Caves Lobby: Blueprint Room", x=1751, y=13.5, z=532, scale=0.4, region=Regions.CrystalCavesLobby, logic=lambda l: l.punch and l.chunky
+            map=Maps.CrystalCavesLobby,
+            name="DK Isles - Caves Lobby: Blueprint Room",
+            x=1751,
+            y=13.5,
+            z=532,
+            scale=0.4,
+            region=Regions.CrystalCavesLobby,
+            logic=lambda l: (l.punch and l.chunky) or l.phasewalk or l.ledgeclip,
         ),
         CrownLocation(map=Maps.CreepyCastleLobby, name="DK Isles - Castle Lobby: Right of Entrance", x=355, y=60, z=269, scale=0.4, region=Regions.CreepyCastleLobby),
         CrownLocation(map=Maps.CreepyCastleLobby, name="DK Isles - Castle Lobby: Left of Portal", x=803, y=60, z=1066, scale=0.4, region=Regions.CreepyCastleLobby),
@@ -565,16 +709,32 @@ CrownLocations = {
             z=638,
             scale=0.3,
             region=Regions.HideoutHelmLobby,
-            logic=lambda l: l.vines and l.gorillaGone and l.ischunky,
+            logic=lambda l: (l.vines and l.gorillaGone and l.ischunky) or (l.advanced_platforming and (l.isdonkey or l.istiny)),
         ),
         CrownLocation(
-            map=Maps.TrainingGrounds, name="DK Isles - Training Grounds: Far Mountain", x=1153, y=252, z=1822, scale=0.45, region=Regions.TrainingGrounds, logic=lambda l: l.twirl and l.istiny
+            map=Maps.TrainingGrounds,
+            name="DK Isles - Training Grounds: Far Mountain",
+            x=1153,
+            y=252,
+            z=1822,
+            scale=0.45,
+            region=Regions.TrainingGrounds,
+            logic=lambda l: (l.twirl and l.istiny) or (l.advanced_platforming and l.isdonkey),
         ),
         CrownLocation(
-            map=Maps.TrainingGrounds, name="DK Isles - Training Grounds: Near Mountain", x=1187, y=225, z=734, scale=0.45, region=Regions.TrainingGrounds, logic=lambda l: l.twirl and l.istiny
+            map=Maps.TrainingGrounds,
+            name="DK Isles - Training Grounds: Near Mountain",
+            x=1187,
+            y=225,
+            z=734,
+            scale=0.45,
+            region=Regions.TrainingGrounds,
+            logic=lambda l: (l.twirl and l.istiny) or (l.advanced_platforming and l.isdonkey),
         ),
         CrownLocation(map=Maps.TrainingGrounds, name="DK Isles - Training Grounds: Rear Cave", x=1196, y=36.4, z=2119, scale=0.35, region=Regions.TrainingGrounds),
-        CrownLocation(map=Maps.TrainingGrounds, name="DK Isles - Training Grounds: Banana Hoard", x=2500, y=211, z=920, scale=0.35, region=Regions.TrainingGrounds, logic=lambda l: l.vines),
+        CrownLocation(
+            map=Maps.TrainingGrounds, name="DK Isles - Training Grounds: Banana Hoard", x=2500, y=211, z=920, scale=0.35, region=Regions.TrainingGrounds, logic=lambda l: l.vines or l.CanMoonkick()
+        ),
         CrownLocation(map=Maps.TrainingGrounds, name="DK Isles - Training Grounds: Near Pool", x=1625, y=36, z=1585, scale=0.45, region=Regions.TrainingGrounds),
         CrownLocation(map=Maps.BananaFairyRoom, name="DK Isles - Fairy Island: Right of Queen", x=648, y=37.5, z=133, scale=0.5, region=Regions.BananaFairyRoom),
         CrownLocation(map=Maps.BananaFairyRoom, name="DK Isles - Fairy Island: Behind Queen", x=1025, y=37.5, z=508, scale=0.5, region=Regions.BananaFairyRoom),
@@ -602,9 +762,7 @@ CrownLocations = {
             region=Regions.HideoutHelmStart,
             logic=lambda l: l.lanky
             and l.handstand
-            and l.chunky
-            and l.pineapple
-            and l.vines
+            and ((l.chunky and l.pineapple and l.vines) or l.phasewalk)
             and (
                 l.settings.helm_setting == "skip_all"
                 or (
@@ -626,9 +784,7 @@ CrownLocations = {
             region=Regions.HideoutHelmStart,
             logic=lambda l: l.lanky
             and l.handstand
-            and l.chunky
-            and l.pineapple
-            and l.vines
+            and ((l.chunky and l.pineapple and l.vines) or l.phasewalk)
             and (
                 l.settings.helm_setting == "skip_all"
                 or (
@@ -808,17 +964,7 @@ CrownLocations = {
             y=10,
             z=4467,
             scale=0.75,
-            region=Regions.HideoutHelmMain,
-            logic=lambda l: (
-                l.settings.helm_setting == "skip_all"
-                or (
-                    Events.HelmDonkeyDone in l.Events
-                    and Events.HelmChunkyDone in l.Events
-                    and Events.HelmTinyDone in l.Events
-                    and Events.HelmLankyDone in l.Events
-                    and Events.HelmDiddyDone in l.Events
-                )
-            ),
+            region=Regions.HideoutHelmAfterBoM,
         ),
         CrownLocation(
             map=Maps.HideoutHelm,
@@ -827,17 +973,7 @@ CrownLocations = {
             y=10,
             z=4349,
             scale=0.5,
-            region=Regions.HideoutHelmMain,
-            logic=lambda l: (
-                l.settings.helm_setting == "skip_all"
-                or (
-                    Events.HelmDonkeyDone in l.Events
-                    and Events.HelmChunkyDone in l.Events
-                    and Events.HelmTinyDone in l.Events
-                    and Events.HelmLankyDone in l.Events
-                    and Events.HelmDiddyDone in l.Events
-                )
-            ),
+            region=Regions.HideoutHelmAfterBoM,
         ),
         CrownLocation(
             map=Maps.HideoutHelm,
@@ -846,17 +982,7 @@ CrownLocations = {
             y=10,
             z=4593,
             scale=0.5,
-            region=Regions.HideoutHelmMain,
-            logic=lambda l: (
-                l.settings.helm_setting == "skip_all"
-                or (
-                    Events.HelmDonkeyDone in l.Events
-                    and Events.HelmChunkyDone in l.Events
-                    and Events.HelmTinyDone in l.Events
-                    and Events.HelmLankyDone in l.Events
-                    and Events.HelmDiddyDone in l.Events
-                )
-            ),
+            region=Regions.HideoutHelmAfterBoM,
         ),
         CrownLocation(
             map=Maps.HideoutHelm,
@@ -865,17 +991,8 @@ CrownLocations = {
             y=74,
             z=5341,
             scale=0.6,
-            region=Regions.HideoutHelmMain,
-            logic=lambda l: (
-                l.settings.helm_setting == "skip_all"
-                or (
-                    Events.HelmDonkeyDone in l.Events
-                    and Events.HelmChunkyDone in l.Events
-                    and Events.HelmTinyDone in l.Events
-                    and Events.HelmLankyDone in l.Events
-                    and Events.HelmDiddyDone in l.Events
-                )
-            ),
+            region=Regions.HideoutHelmAfterBoM,
+            logic=lambda l: (((l.settings.crown_door_open or l.BattleCrowns >= 4) and (l.settings.coin_door_open or l.nintendoCoin and l.rarewareCoin)) or l.generalclips),
         ),
         CrownLocation(
             map=Maps.HideoutHelm,
@@ -884,17 +1001,8 @@ CrownLocations = {
             y=74,
             z=5036,
             scale=0.6,
-            region=Regions.HideoutHelmMain,
-            logic=lambda l: (
-                l.settings.helm_setting == "skip_all"
-                or (
-                    Events.HelmDonkeyDone in l.Events
-                    and Events.HelmChunkyDone in l.Events
-                    and Events.HelmTinyDone in l.Events
-                    and Events.HelmLankyDone in l.Events
-                    and Events.HelmDiddyDone in l.Events
-                )
-            ),
+            region=Regions.HideoutHelmAfterBoM,
+            logic=lambda l: (((l.settings.crown_door_open or l.BattleCrowns >= 4) and (l.settings.coin_door_open or l.nintendoCoin and l.rarewareCoin)) or l.generalclips),
         ),
     ],
 }

@@ -128,7 +128,11 @@ MinigameRequirements = {
     # Speedy Swing Sortie
     Minigames.SpeedySwingSortieEasy: Minigame(name="Speedy Swing Sortie (40 seconds, 9 coins)", group="Speedy Swing Sortie", map_id=Maps.SpeedySwingSortieEasy, logic=lambda l: l.vines),
     Minigames.SpeedySwingSortieNormal: Minigame(
-        name="Speedy Swing Sortie (45 seconds, 14 coins)", group="Speedy Swing Sortie", map_id=Maps.SpeedySwingSortieNormal, difficulty_lvl=1, logic=lambda l: l.vines and l.twirl and l.istiny
+        name="Speedy Swing Sortie (45 seconds, 14 coins)",
+        group="Speedy Swing Sortie",
+        map_id=Maps.SpeedySwingSortieNormal,
+        difficulty_lvl=1,
+        logic=lambda l: l.vines and (l.twirl and l.istiny) or (l.advanced_platforming and l.isdonkey),
     ),
     Minigames.SpeedySwingSortieHard: Minigame(
         name="Speedy Swing Sortie (60 seconds, 6 coins)", group="Speedy Swing Sortie", map_id=Maps.SpeedySwingSortieHard, helm_enabled=False, difficulty_lvl=2, logic=lambda l: l.vines
@@ -164,7 +168,11 @@ MinigameRequirements = {
     Minigames.DonkeyTarget: Minigame(name="Hideout Helm: DK Targets", group="Helm Minigames", map_id=Maps.HelmBarrelDKTarget, can_repeat=True, logic=lambda l: l.isdonkey),
     Minigames.DiddyKremling: Minigame(name="Hideout Helm: Diddy Kremlings", group="Helm Minigames", map_id=Maps.HelmBarrelDiddyKremling, can_repeat=True, logic=lambda l: l.Slam),
     Minigames.DiddyRocketbarrel: Minigame(
-        name="Hideout Helm: Diddy Rocketbarrel", group="Helm Minigames", map_id=Maps.HelmBarrelDiddyRocketbarrel, can_repeat=True, logic=lambda l: l.Slam and l.jetpack and l.peanut and l.isdiddy
+        name="Hideout Helm: Diddy Rocketbarrel",
+        group="Helm Minigames",
+        map_id=Maps.HelmBarrelDiddyRocketbarrel,
+        can_repeat=True,
+        logic=lambda l: l.Slam and (l.jetpack and l.peanut and l.isdiddy) or l.phasewalk,
     ),
     # Supposed to use sprint but can make it without), even with Chunky
     Minigames.LankyMaze: Minigame(name="Hideout Helm: Lanky Maze", group="Helm Minigames", map_id=Maps.HelmBarrelLankyMaze, can_repeat=True, logic=lambda l: True),

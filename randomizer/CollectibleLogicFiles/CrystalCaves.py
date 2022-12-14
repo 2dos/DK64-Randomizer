@@ -11,28 +11,28 @@ LogicRegions = {
     Regions.CrystalCavesMain: [
         Collectible(Collectibles.bunch, Kongs.donkey, lambda l: True, None, 1),  # Warp 1
         Collectible(Collectibles.banana, Kongs.donkey, lambda l: True, None, 5),  # Near BBlast
-        Collectible(Collectibles.balloon, Kongs.donkey, lambda l: l.punch and l.chunky and l.coconut, None, 1),  # Warp 1
+        Collectible(Collectibles.balloon, Kongs.donkey, lambda l: ((l.punch and l.chunky) or l.phasewalk or l.CanPhaseswim()) and l.coconut, None, 1),  # Warp 1
 
         Collectible(Collectibles.banana, Kongs.diddy, lambda l: True, None, 5),  # Near Funky
         Collectible(Collectibles.bunch, Kongs.diddy, lambda l: l.jetpack, None, 1),  # Near Bonus
-        Collectible(Collectibles.bunch, Kongs.diddy, lambda l: l.jetpack, None, 1),  # Warp 4 pillar
+        Collectible(Collectibles.bunch, Kongs.diddy, lambda l: l.jetpack or l.advanced_platforming, None, 1),  # Warp 4 pillar
         Collectible(Collectibles.balloon, Kongs.diddy, lambda l: l.peanut, None, 1),  # Near Warp 4 pillar
 
         Collectible(Collectibles.banana, Kongs.lanky, lambda l: True, None, 5),  # Level Start
-        Collectible(Collectibles.bunch, Kongs.lanky, lambda l: l.balloon and l.superSlam, None, 1),  # Beetle Race entry
+        Collectible(Collectibles.bunch, Kongs.lanky, lambda l: (l.balloon or l.advanced_platforming) and l.superSlam, None, 1),  # Beetle Race entry
         Collectible(Collectibles.bunch, Kongs.lanky, lambda l: l.balloon, None, 3),  # Near Cranky
 
         Collectible(Collectibles.banana, Kongs.tiny, lambda l: True, None, 10),  # River To Igloo
-        Collectible(Collectibles.bunch, Kongs.tiny, lambda l: l.mini, None, 1),  # Warp 3 cave
+        Collectible(Collectibles.bunch, Kongs.tiny, lambda l: l.mini or l.phasewalk, None, 1),  # Warp 3 cave
 
-        Collectible(Collectibles.bunch, Kongs.chunky, lambda l: l.punch, None, 1),  # Gorilla Gone room
-        Collectible(Collectibles.banana, Kongs.chunky, lambda l: l.punch, None, 3),  # Gorilla Gone room
+        Collectible(Collectibles.bunch, Kongs.chunky, lambda l: l.punch or l.phasewalk or l.CanPhaseswim(), None, 1),  # Gorilla Gone room
+        Collectible(Collectibles.banana, Kongs.chunky, lambda l: l.punch or l.phasewalk or l.CanPhaseswim(), None, 3),  # Gorilla Gone room
         Collectible(Collectibles.bunch, Kongs.chunky, lambda l: True, None, 1),  # Warp 2
         Collectible(Collectibles.bunch, Kongs.chunky, lambda l: True, None, 1),  # On small boulder switch
         Collectible(Collectibles.bunch, Kongs.chunky, lambda l: True, None, 1),  # Underneath small boulder
         Collectible(Collectibles.banana, Kongs.chunky, lambda l: True, None, 3),  # On bridge to small boulder switch
 
-        Collectible(Collectibles.coin, Kongs.donkey, lambda l: l.punch and l.chunky, None, 3),  # Gorilla Gone room
+        Collectible(Collectibles.coin, Kongs.donkey, lambda l: (l.punch or l.phasewalk or l.CanPhaseswim()) and l.chunky, None, 3),  # Gorilla Gone room
         Collectible(Collectibles.coin, Kongs.diddy, lambda l: True, None, 4),  # On ice castle
         Collectible(Collectibles.coin, Kongs.lanky, lambda l: True, None, 3),  # In water below Funky
         Collectible(Collectibles.coin, Kongs.tiny, lambda l: l.twirl, None, 2),  # Pillar above warps
@@ -40,10 +40,10 @@ LogicRegions = {
         Collectible(Collectibles.coin, Kongs.chunky, lambda l: True, None, 3),  # On slippery slope to Cranky
     ],
     Regions.CavesSnideArea: [
-        Collectible(Collectibles.banana, Kongs.chunky, lambda l: l.punch, None, 3),  # Near Snide
-        Collectible(Collectibles.balloon, Kongs.chunky, lambda l: l.punch and l.pineapple, None, 1),  # Near Snide
+        Collectible(Collectibles.banana, Kongs.chunky, lambda l: True, None, 3),  # Near Snide
+        Collectible(Collectibles.balloon, Kongs.chunky, lambda l: l.pineapple, None, 1),  # Near Snide
 
-        Collectible(Collectibles.coin, Kongs.chunky, lambda l: l.punch, None, 3),  # Snide's room
+        Collectible(Collectibles.coin, Kongs.chunky, lambda l: True, None, 3),  # Snide's room
     ],
     Regions.CavesBlueprintCave: [
         Collectible(Collectibles.bunch, Kongs.diddy, lambda l: True, None, 1),  # Warp 4 cave
@@ -70,8 +70,8 @@ LogicRegions = {
         Collectible(Collectibles.banana, Kongs.donkey, lambda l: True, None, 3),
         Collectible(Collectibles.balloon, Kongs.donkey, lambda l: l.coconut, None, 1),
 
-        Collectible(Collectibles.banana, Kongs.chunky, lambda l: Events.CavesSmallBoulderButton in l.Events, None, 6),
-        Collectible(Collectibles.bunch, Kongs.chunky, lambda l: Events.CavesSmallBoulderButton in l.Events and l.hunkyChunky and l.barrels, None, 1),
+        Collectible(Collectibles.banana, Kongs.chunky, lambda l: Events.CavesSmallBoulderButton in l.Events or l.phasewalk, None, 6),
+        Collectible(Collectibles.bunch, Kongs.chunky, lambda l: (Events.CavesSmallBoulderButton in l.Events and l.hunkyChunky and l.barrels) or l.phasewalk, None, 1),
 
         Collectible(Collectibles.coin, Kongs.donkey, lambda l: True, None, 3),
     ],
@@ -89,9 +89,9 @@ LogicRegions = {
         Collectible(Collectibles.bunch, Kongs.diddy, lambda l: l.jetpack, None, 4),  # Above igloos
 
         Collectible(Collectibles.bunch, Kongs.tiny, lambda l: True, None, 1),  # Warp 3
-        Collectible(Collectibles.bunch, Kongs.tiny, lambda l: l.monkeyport and l.mini and l.twirl, None, 1),  # Monkeyport Ice Shield
+        Collectible(Collectibles.bunch, Kongs.tiny, lambda l: (l.monkeyport and l.mini and l.twirl) or l.CanPhaseswim(), None, 1),  # Monkeyport Ice Shield
 
-        Collectible(Collectibles.banana, Kongs.chunky, lambda l: Events.CavesLargeBoulderButton in l.Events, None, 5),  # Ice Shield
+        Collectible(Collectibles.banana, Kongs.chunky, lambda l: Events.CavesLargeBoulderButton in l.Events or l.generalclips or l.CanPhaseswim(), None, 5),  # Ice Shield
 
         Collectible(Collectibles.coin, Kongs.lanky, lambda l: True, None, 3),  # In water by pillar
         Collectible(Collectibles.coin, Kongs.tiny, lambda l: True, None, 3),  # In water behind W1
@@ -104,7 +104,7 @@ LogicRegions = {
         Collectible(Collectibles.coin, Kongs.tiny, lambda l: True, None, 3),
     ],
     Regions.DonkeyIgloo: [
-        Collectible(Collectibles.banana, Kongs.donkey, lambda l: l.strongKong and l.isdonkey, None, 7),
+        Collectible(Collectibles.banana, Kongs.donkey, lambda l: (l.strongKong or l.CanMoonkick()) and l.isdonkey, None, 7),
         Collectible(Collectibles.bunch, Kongs.donkey, lambda l: True, None, 1),
         Collectible(Collectibles.balloon, Kongs.donkey, lambda l: l.coconut, None, 1),
     ],
@@ -113,7 +113,7 @@ LogicRegions = {
     ],
     Regions.LankyIgloo: [
         Collectible(Collectibles.banana, Kongs.lanky, lambda l: True, None, 1),  # First single
-        Collectible(Collectibles.banana, Kongs.lanky, lambda l: l.balloon, None, 4),  # Upper singles
+        Collectible(Collectibles.banana, Kongs.lanky, lambda l: l.balloon or l.advanced_platforming, None, 4),  # Upper singles
         Collectible(Collectibles.balloon, Kongs.lanky, lambda l: l.grape, None, 1),
     ],
     Regions.TinyIgloo: [
@@ -144,7 +144,7 @@ LogicRegions = {
         Collectible(Collectibles.coin, Kongs.donkey, lambda l: True, None, 2),
     ],
     Regions.DiddyLowerCabin: [
-        Collectible(Collectibles.bunch, Kongs.diddy, lambda l: l.jetpack, None, 1),
+        Collectible(Collectibles.bunch, Kongs.diddy, lambda l: l.jetpack or l.advanced_platforming, None, 1),
         Collectible(Collectibles.banana, Kongs.diddy, lambda l: True, None, 5),
 
         Collectible(Collectibles.coin, Kongs.diddy, lambda l: True, None, 4),
