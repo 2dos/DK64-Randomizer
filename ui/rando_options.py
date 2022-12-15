@@ -161,7 +161,7 @@ def set_preset_options():
     toggle_counts_boxes(None)
     toggle_b_locker_boxes(None)
     toggle_logic_type(None)
-    
+
     js.load_cookies()
 
 
@@ -554,7 +554,6 @@ def toggle_extreme_prices_option(event):
         price_option = document.getElementById("random_prices")
         if price_option.value == "extreme":
             price_option.value = "high"
-    
 
 
 @bind("change", "logic_type")

@@ -113,11 +113,7 @@ class Spoiler:
         settings = OrderedDict()
         settings["Seed"] = self.settings.seed_id
         # settings["algorithm"] = self.settings.algorithm # Don't need this for now, probably
-        logic_types = {
-            "nologic": "No Logic",
-            "glitch": "Glitched Logic",
-            "glitchless": "Glitchless Logic"
-        }
+        logic_types = {"nologic": "No Logic", "glitch": "Glitched Logic", "glitchless": "Glitchless Logic"}
         if self.settings.logic_type in logic_types:
             settings["Logic Type"] = logic_types[self.settings.logic_type]
         else:

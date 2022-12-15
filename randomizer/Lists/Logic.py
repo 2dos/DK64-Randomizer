@@ -1,5 +1,6 @@
 """Logic information for glitch logic."""
 
+
 class GlitchLogicItem:
     """Glitch Logic multiselector information."""
 
@@ -8,6 +9,7 @@ class GlitchLogicItem:
         self.name = name
         self.shorthand = name.lower().replace(" ", "_")
         self.tooltip = tooltip
+
 
 GlitchSelector = []
 GlitchLogicItems = [

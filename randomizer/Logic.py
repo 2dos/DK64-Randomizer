@@ -34,8 +34,11 @@ from randomizer.Prices import CanBuy, GetPriceAtLocation
 
 STARTING_SLAM = 1  # Currently we're assuming you always start with 1 slam
 
+
 def IsGlitchEnabled(settings, encoded_name):
+    """Check if glitch is enabled in the settings."""
     return len(settings.glitches_selected) == 0 or encoded_name in settings.glitches_selected
+
 
 class LogicVarHolder:
     """Used to store variables when checking logic conditions."""
