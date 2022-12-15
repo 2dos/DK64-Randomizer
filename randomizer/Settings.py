@@ -257,8 +257,11 @@ class Settings:
         # damage multiplier
         self.damage_amount = "default"
 
-        # no_logic: bool
-        self.no_logic = False
+        # logic_type: str
+        # nologic - No Logical considerations
+        # glitch - Glitch logic factored in
+        # glitchless - Glitchless ruleset
+        self.logic_type = "glitchless"
 
         # shuffle_loading_zones: str
         # none
@@ -365,6 +368,7 @@ class Settings:
         self.item_rando_list_selected = []
         self.misc_changes_selected = []
         self.enemies_selected = []
+        self.glitches_selected = []
         self.starting_keys_list_selected = []
         self.select_keys = False
         self.helm_hurry = False
@@ -653,7 +657,7 @@ class Settings:
         LocationList[Locations.IslesDonkeyJapesRock].kong = self.starting_kong
 
         # Kongs needed for level progression
-        if self.starting_kongs_count < 5 and (self.shuffle_loading_zones == "levels" or self.shuffle_loading_zones == "none") and not self.no_logic:
+        if self.starting_kongs_count < 5 and (self.shuffle_loading_zones == "levels" or self.shuffle_loading_zones == "none") and self.logic_type != "nologic":
             self.kongs_for_progression = True
 
         # Move Location Rando

@@ -72,7 +72,7 @@ def GetExitLevelExit(region):
 def GetAccessibleLocations(settings, startingOwnedItems, searchType=SearchMode.GetReachable, purchaseList=None, targetItemId=None):
     """Search to find all reachable locations given owned items."""
     # No logic? Calls to this method that are checking things just return True
-    if settings.no_logic and searchType in [SearchMode.CheckAllReachable, SearchMode.CheckBeatable, SearchMode.CheckSpecificItemReachable]:
+    if settings.logic_type == "nologic" and searchType in [SearchMode.CheckAllReachable, SearchMode.CheckBeatable, SearchMode.CheckSpecificItemReachable]:
         return True
     if purchaseList is None:
         purchaseList = []
@@ -276,7 +276,7 @@ def GetAccessibleLocations(settings, startingOwnedItems, searchType=SearchMode.G
 
 def VerifyWorld(settings):
     """Make sure all item locations are reachable on current world graph with constant items placed and all other items owned."""
-    if settings.no_logic:
+    if settings.logic_type == "nologic":
         return True  # Don't verify world in no logic
     ItemPool.PlaceConstants(settings)
     unreachables = GetAccessibleLocations(settings, ItemPool.AllItems(settings), SearchMode.GetUnreachable)
@@ -287,7 +287,7 @@ def VerifyWorld(settings):
 
 def VerifyWorldWithWorstCoinUsage(settings):
     """Make sure the game is beatable without it being possible to run out of coins for required moves."""
-    if settings.no_logic:
+    if settings.logic_type == "nologic":
         return True  # Don't verify world in no logic
     locationsToPurchase = []
     reachable = []
@@ -905,7 +905,7 @@ def PlaceItems(settings, algorithm, itemsToPlace, ownedItems=None, inOrder=False
     if ownedItems is None:
         ownedItems = []
     # Always use random fill with no logic
-    if settings.no_logic:
+    if settings.logic_type == "nologic":
         algorithm = "random"
     if algorithm == "assumed":
         return AssumedFill(settings, itemsToPlace, ownedItems, inOrder)
@@ -924,7 +924,7 @@ def FillShuffledKeys(spoiler):
     # - No logic (totally random)
     # - Loading Zone randomizer (key unlocks are typically of lesser importance)
     # - Complex level progression (key order is non-linear)
-    if spoiler.settings.no_logic or spoiler.settings.shuffle_loading_zones == "all" or spoiler.settings.hard_level_progression:
+    if spoiler.settings.logic_type == "nologic" or spoiler.settings.shuffle_loading_zones == "all" or spoiler.settings.hard_level_progression:
         # Place keys in a random order except...
         shuffle(keysToPlace)
         # Keys 3 and 8 should be placed last to give them higher location potential
@@ -1216,7 +1216,7 @@ def PlaceKongsInKongLocations(spoiler, kongItems, kongLocations):
     # In entrance randomizer, it's too complicated to quickly determine kong accessibility.
     # Instead, we place Kongs in a specific order to guarantee we'll at least have an eligible freer.
     # To be at least somewhat nice to no logic users, we also use this section here so kongs don't lock each other.
-    if spoiler.settings.shuffle_loading_zones == "all" or spoiler.settings.no_logic:
+    if spoiler.settings.shuffle_loading_zones == "all" or spoiler.settings.logic_type == "nologic":
         shuffle(kongItems)
         if Locations.ChunkyKong in kongLocations:
             kongItemToBeFreed = kongItems.pop()
@@ -1375,7 +1375,7 @@ def FillKongsAndMoves(spoiler):
     if not spoiler.settings.unlock_all_moves and spoiler.settings.move_rando != "off" and spoiler.settings.training_barrels == "shuffled":
         # First place barrels - needed for most bosses
         needBarrelsByThisLevel = None
-        if not spoiler.settings.no_logic and spoiler.settings.shuffle_loading_zones != "all" and not spoiler.settings.hard_level_progression:
+        if spoiler.settings.logic_type != "nologic" and spoiler.settings.shuffle_loading_zones != "all" and not spoiler.settings.hard_level_progression:
             # In standard level order, place barrels very early to prevent same-y boss orders
             needBarrelsByThisLevel = 2
             BlockAccessToLevel(spoiler.settings, needBarrelsByThisLevel)
@@ -1385,7 +1385,7 @@ def FillKongsAndMoves(spoiler):
         # Next place vines - needed to beat Aztec and maybe get to upper DK Isle
         if Items.Vines not in preplacedPriorityMoves:
             needVinesByThisLevel = None
-            if not spoiler.settings.no_logic and spoiler.settings.shuffle_loading_zones != "all" and not spoiler.settings.hard_level_progression:
+            if spoiler.settings.logic_type != "nologic" and spoiler.settings.shuffle_loading_zones != "all" and not spoiler.settings.hard_level_progression:
                 needVinesByThisLevel = 2
                 # In a standard level order seed, we need to place vines before Aztec (or else it isn't beatable)
                 for i in range(1, 8):
@@ -1403,7 +1403,7 @@ def FillKongsAndMoves(spoiler):
         # Next place swim - needed to get into level 4
         if Items.Swim not in preplacedPriorityMoves:
             needSwimByThisLevel = None
-            if not spoiler.settings.no_logic and spoiler.settings.shuffle_loading_zones != "all" and not spoiler.settings.hard_level_progression:
+            if spoiler.settings.logic_type != "nologic" and spoiler.settings.shuffle_loading_zones != "all" and not spoiler.settings.hard_level_progression:
                 # In a standard level order seed, we need swim to access level 4 (whatever it is)
                 needSwimByThisLevel = 4
                 BlockAccessToLevel(spoiler.settings, needSwimByThisLevel)

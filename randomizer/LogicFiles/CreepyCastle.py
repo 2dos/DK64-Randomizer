@@ -34,12 +34,12 @@ LogicRegions = {
         TransitionFront(Regions.Library, lambda l: (l.superDuperSlam and l.isdonkey) or l.phasewalk or l.ledgeclip, Transitions.CastleMainToLibraryStart),
         # Special Case for back door - it's only open right when you leave
         # TransitionFront(Regions.Library, lambda l: True, Transitions.CastleMainToLibraryEnd),
-        TransitionFront(Regions.Ballroom, lambda l: (l.superDuperSlam and l.diddy) or l.phasewalk, Transitions.CastleMainToBallroom),  # Stays open
-        TransitionFront(Regions.Tower, lambda l: (l.superDuperSlam and l.islanky) or l.phasewalk, Transitions.CastleMainToTower),
-        TransitionFront(Regions.Greenhouse, lambda l: (l.superDuperSlam and l.islanky) or l.phasewalk or l.ledgeclip, Transitions.CastleMainToGreenhouse),
-        TransitionFront(Regions.TrashCan, lambda l: (l.mini and l.istiny) or l.phasewalk, Transitions.CastleMainToTrash),
-        TransitionFront(Regions.Shed, lambda l: (l.punch and l.ischunky) or l.phasewalk, Transitions.CastleMainToShed),
-        TransitionFront(Regions.Museum, lambda l: (l.superDuperSlam and l.ischunky) or l.phasewalk, Transitions.CastleMainToMuseum),
+        TransitionFront(Regions.Ballroom, lambda l: (l.superDuperSlam and l.diddy) or l.phasewalk or l.CanSkew(True), Transitions.CastleMainToBallroom),  # Stays open
+        TransitionFront(Regions.Tower, lambda l: (l.superDuperSlam and l.islanky) or l.phasewalk or l.CanSkew(True), Transitions.CastleMainToTower),
+        TransitionFront(Regions.Greenhouse, lambda l: (l.superDuperSlam and l.islanky) or l.phasewalk or l.ledgeclip or l.CanSkew(True), Transitions.CastleMainToGreenhouse),
+        TransitionFront(Regions.TrashCan, lambda l: (l.mini and l.istiny) or l.phasewalk or l.CanSkew(True), Transitions.CastleMainToTrash),
+        TransitionFront(Regions.Shed, lambda l: (l.punch and l.ischunky) or l.phasewalk or l.CanSkew(True), Transitions.CastleMainToShed),
+        TransitionFront(Regions.Museum, lambda l: (l.superDuperSlam and l.ischunky) or l.phasewalk or l.CanSkew(True), Transitions.CastleMainToMuseum),
         TransitionFront(Regions.LowerCave, lambda l: True, Transitions.CastleMainToLower),
         TransitionFront(Regions.UpperCave, lambda l: True, Transitions.CastleMainToUpper),
         TransitionFront(Regions.CrankyCastle, lambda l: True),

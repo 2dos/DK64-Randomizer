@@ -69,7 +69,7 @@ LogicRegions = {
     Regions.TempleUnderwater: Region("Temple Underwater", "Tiny Temple", Levels.AngryAztec, False, -1, [
         LocationLogic(Locations.AztecTinyKlaptrapRoom, lambda l: ((l.mini and l.istiny) or l.phasewalk or l.generalclips or l.CanPhaseswim())),
         LocationLogic(Locations.TinyKong, lambda l: l.CanFreeTiny()),
-        LocationLogic(Locations.AztecDiddyFreeTiny, lambda l: l.CanFreeTiny()),
+        LocationLogic(Locations.AztecDiddyFreeTiny, lambda l: l.CanFreeTiny() or l.phasewalk or l.ledgeclip or l.CanPhaseswim()),
         LocationLogic(Locations.AztecLankyVulture, lambda l: l.Slam and l.grape and l.islanky),
         LocationLogic(Locations.AztecBattleArena, lambda l: not l.settings.crown_placement_rando and l.Slam and l.grape and l.lanky),
     ], [], [
@@ -170,8 +170,8 @@ LogicRegions = {
     ),
 
     Regions.LlamaTemple: Region("Llama Temple", "Llama Temple", Levels.AngryAztec, True, -1, [
-        LocationLogic(Locations.LankyKong, lambda l: l.CanFreeLanky()),
-        LocationLogic(Locations.AztecDonkeyFreeLanky, lambda l: l.CanFreeLanky()),
+        LocationLogic(Locations.LankyKong, lambda l: l.CanFreeLanky(True)),
+        LocationLogic(Locations.AztecDonkeyFreeLanky, lambda l: l.CanFreeLanky(False)),
         LocationLogic(Locations.AztecLankyLlamaTempleBarrel, lambda l: l.trombone and ((l.handstand and l.islanky) or (l.settings.free_trade_items and ((l.twirl and l.istiny and l.advanced_platforming) or l.CanMoonkick()))), MinigameType.BonusBarrel),
         LocationLogic(Locations.AztecLankyMatchingGame, lambda l: l.grape and l.Slam and l.lanky),
         LocationLogic(Locations.AztecBananaFairyLlamaTemple, lambda l: l.camera),
@@ -181,7 +181,7 @@ LogicRegions = {
     ], [
         TransitionFront(Regions.AngryAztecMedals, lambda l: True),
         TransitionFront(Regions.AngryAztecMain, lambda l: True),
-        TransitionFront(Regions.LlamaTempleBack, lambda l: (l.mini and l.tiny) or l.phasewalk or l.ledgeclip or l.CanPhaseswim()),
+        TransitionFront(Regions.LlamaTempleBack, lambda l: (l.mini and l.tiny) or l.phasewalk or l.ledgeclip or l.CanPhaseswim() or l.CanOStandTBSNoclip()),
     ]),
 
     Regions.LlamaTempleBack: Region("Llama Temple Back", "Llama Temple", Levels.AngryAztec, False, -1, [

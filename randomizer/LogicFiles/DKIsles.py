@@ -46,10 +46,10 @@ LogicRegions = {
         # Don't check for donkey for rock- If lobbies are closed and first B.Locker is not 0, this banana must be grabbable by
         # the starting kong, so for logic we assume any kong can grab it since that's practically true.
         LocationLogic(Locations.IslesDonkeyJapesRock, lambda l: (l.settings.open_lobbies or Events.KLumsyTalkedTo in l.Events)),
-        LocationLogic(Locations.IslesTinyCagedBanana, lambda l: (l.feather and l.tiny) or ((l.phasewalk or l.swim_through_shores) and (l.istiny or l.settings.free_trade_items))),
+        LocationLogic(Locations.IslesTinyCagedBanana, lambda l: (l.feather and l.tiny) or ((l.phasewalk or l.CanSTS()) and (l.istiny or l.settings.free_trade_items))),
         LocationLogic(Locations.IslesTinyInstrumentPad, lambda l: Events.IslesChunkyBarrelSpawn in l.Events and l.tiny),
         LocationLogic(Locations.IslesLankyCagedBanana, lambda l: ((l.grape or l.CanPhaseswim() or l.phasewalk) and l.lanky) or (l.phasewalk and l.settings.free_trade_items)),
-        LocationLogic(Locations.IslesChunkyCagedBanana, lambda l: (l.pineapple and l.chunky) or ((l.swim_through_shores or l.phasewalk) and (l.ischunky or l.settings.free_trade_items))),
+        LocationLogic(Locations.IslesChunkyCagedBanana, lambda l: (l.pineapple and l.chunky) or ((l.CanSTS() or l.phasewalk) and (l.ischunky or l.settings.free_trade_items))),
         LocationLogic(Locations.IslesChunkyPoundtheX, lambda l: Events.IslesChunkyBarrelSpawn in l.Events and l.hunkyChunky and l.Slam and l.chunky),
         LocationLogic(Locations.IslesBananaFairyIsland, lambda l: l.camera),
         LocationLogic(Locations.IslesBananaFairyCrocodisleIsle, lambda l: l.camera and ((l.monkeyport and l.tiny) or l.tbs)),
@@ -58,8 +58,8 @@ LogicRegions = {
     ], [
         TransitionFront(Regions.TrainingGrounds, lambda l: True, Transitions.IslesMainToStart),
         TransitionFront(Regions.Prison, lambda l: True),
-        TransitionFront(Regions.BananaFairyRoom, lambda l: (l.mini and l.istiny) or l.phasewalk or l.swim_through_shores, Transitions.IslesMainToFairy),
-        TransitionFront(Regions.JungleJapesLobby, lambda l: l.settings.open_lobbies or Events.KLumsyTalkedTo in l.Events or l.phasewalk or l.swim_through_shores, Transitions.IslesMainToJapesLobby),
+        TransitionFront(Regions.BananaFairyRoom, lambda l: (l.mini and l.istiny) or l.phasewalk or l.CanSTS(), Transitions.IslesMainToFairy),
+        TransitionFront(Regions.JungleJapesLobby, lambda l: l.settings.open_lobbies or Events.KLumsyTalkedTo in l.Events or l.phasewalk or l.CanSTS(), Transitions.IslesMainToJapesLobby),
         TransitionFront(Regions.CrocodileIsleBeyondLift, lambda l: l.settings.open_lobbies or Events.AztecKeyTurnedIn in l.Events or l.CanMoonkick() or l.tbs),
         TransitionFront(Regions.IslesMainUpper, lambda l: l.vines or l.CanMoonkick() or l.pathMode),
         TransitionFront(Regions.GloomyGalleonLobbyEntrance, lambda l: (l.settings.open_lobbies or Events.AztecKeyTurnedIn in l.Events or l.CanPhaseswim()) and (l.swim or l.pathMode), Transitions.IslesMainToGalleonLobby),
@@ -119,11 +119,11 @@ LogicRegions = {
     ]),
 
     Regions.CrocodileIsleBeyondLift: Region("Crocodile Isle Beyond Lift", "Krem Isle", Levels.DKIsles, False, None, [
-        LocationLogic(Locations.IslesDonkeyCagedBanana, lambda l: l.coconut and l.isdonkey),
+        LocationLogic(Locations.IslesDonkeyCagedBanana, lambda l: (l.coconut and l.isdonkey) or ((l.CanSkew(True) and l.CanSTS()) and (l.isdonkey or l.settings.free_trade_items))),
     ], [], [
         TransitionFront(Regions.IslesMain, lambda l: True),
         TransitionFront(Regions.IslesSnideRoom, lambda l: True, Transitions.IslesMainToSnideRoom),
-        TransitionFront(Regions.FranticFactoryLobby, lambda l: l.settings.open_lobbies or Events.AztecKeyTurnedIn in l.Events, Transitions.IslesMainToFactoryLobby),
+        TransitionFront(Regions.FranticFactoryLobby, lambda l: l.settings.open_lobbies or Events.AztecKeyTurnedIn in l.Events or (l.CanSkew(True) and l.CanSTS()), Transitions.IslesMainToFactoryLobby),
     ]),
 
     Regions.IslesSnideRoom: Region("Isles Snide Room", "Krem Isle", Levels.DKIsles, True, None, [

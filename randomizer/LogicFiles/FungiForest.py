@@ -54,6 +54,7 @@ LogicRegions = {
         TransitionFront(Regions.MushroomLowerExterior, lambda l: (l.jetpack and l.isdiddy) or (l.advanced_platforming and l.twirl and l.istiny)),
         TransitionFront(Regions.MushroomUpperExterior, lambda l: l.jetpack and l.isdiddy),
         TransitionFront(Regions.HollowTreeArea, lambda l: l.settings.open_levels or Events.HollowTreeGateOpened in l.Events or l.CanPhaseswim() or l.phasewalk or l.CanOStandTBSNoclip()),
+        TransitionFront(Regions.Anthill, lambda l: l.CanSkew(True), Transitions.ForestTreeToAnthill),
         TransitionFront(Regions.CrankyForest, lambda l: True),
     ]),
 
