@@ -66,6 +66,7 @@ class Events(IntEnum):
     ShipyardTreasureRoomOpened = auto()
     TreasureRoomTeleporterUnlocked = auto()
     PearlsCollected = auto()
+    GalleonCannonRoomOpened = auto()
 
     # Fungi Forest events
     Night = auto()

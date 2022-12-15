@@ -121,7 +121,7 @@ def generate_lo_rando_race_settings():
 
     data["hard_level_progression"] = False  # likely to be False
 
-    data["no_logic"] = False  # CURSED -------------- DO NOT DO LOGIC TESTING WITH THIS GUY HERE
+    data["logic_type"] = "glitchless"  # CURSED -------------- DO NOT DO LOGIC TESTING WITH THIS GUY HERE
 
     return data
 

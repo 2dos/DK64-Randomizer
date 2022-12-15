@@ -39,6 +39,7 @@ async def initialize():
     from randomizer.Lists.Minigame import MinigameSelector
     from randomizer.Lists.QoL import QoLSelector
     from randomizer.Lists.EnemyTypes import EnemySelector
+    from randomizer.Lists.Logic import GlitchSelector
     from randomizer.Enums.Types import ItemRandoSelector, KeySelector
 
     js.listeners = []
@@ -62,7 +63,7 @@ async def initialize():
 
     templateEnv = Environment(loader=FunctionLoader(loader_func), enable_async=True)
     template = templateEnv.get_template("base.html.jinja2")
-    rendered = await template.render(minigames=MinigameSelector, misc_changes=QoLSelector, enemies=EnemySelector, itemRando=ItemRandoSelector, keys=KeySelector)
+    rendered = await template.render(minigames=MinigameSelector, misc_changes=QoLSelector, enemies=EnemySelector, itemRando=ItemRandoSelector, keys=KeySelector, glitches=GlitchSelector)
     js.document.documentElement.innerHTML = ""
     js.document.open()
     js.document.write(rendered)

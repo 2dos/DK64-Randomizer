@@ -12,7 +12,7 @@ LogicRegions = {
         Collectible(Collectibles.balloon, Kongs.donkey, lambda l: l.coconut, None, 1),
         Collectible(Collectibles.bunch, Kongs.diddy, lambda l: True, None, 2),
         Collectible(Collectibles.banana, Kongs.lanky, lambda l: True, None, 5),
-        Collectible(Collectibles.balloon, Kongs.lanky, lambda l: l.grape and l.punch and l.chunky, None, 2),
+        Collectible(Collectibles.balloon, Kongs.lanky, lambda l: l.grape and ((l.punch and l.chunky) or l.phasewalk), None, 2),
         Collectible(Collectibles.banana, Kongs.tiny, lambda l: True, None, 5),  # tunnel side 1
         Collectible(Collectibles.banana, Kongs.tiny, lambda l: True, None, 4),  # tunnel side 2
         Collectible(Collectibles.banana, Kongs.chunky, lambda l: True, None, 2),  # Near Warp 1
@@ -28,8 +28,8 @@ LogicRegions = {
         Collectible(Collectibles.banana, Kongs.chunky, lambda l: True, None, 3),  # Near Warp 3
     ],
     Regions.GalleonBeyondPineappleGate: [
-        Collectible(Collectibles.bunch, Kongs.tiny, lambda l: Events.WaterSwitch in l.Events, None, 3),
-        Collectible(Collectibles.balloon, Kongs.chunky, lambda l: l.pineapple and Events.WaterSwitch in l.Events, None, 1),
+        Collectible(Collectibles.bunch, Kongs.tiny, lambda l: (Events.WaterSwitch in l.Events or (l.advanced_platforming and (l.ischunky or l.islanky))), None, 3),
+        Collectible(Collectibles.balloon, Kongs.chunky, lambda l: l.pineapple and (Events.WaterSwitch in l.Events or (l.advanced_platforming and (l.islanky or l.ischunky))), None, 1),
 
         Collectible(Collectibles.coin, Kongs.tiny, lambda l: True, None, 3),
         Collectible(Collectibles.coin, Kongs.chunky, lambda l: True, None, 3),
@@ -43,16 +43,16 @@ LogicRegions = {
         Collectible(Collectibles.bunch, Kongs.diddy, lambda l: l.jetpack, None, 2),  # Top lighthouse
 
         Collectible(Collectibles.coin, Kongs.diddy, lambda l: l.jetpack, None, 3),  # On seal cage
-        Collectible(Collectibles.coin, Kongs.chunky, lambda l: Events.WaterSwitch in l.Events, None, 3),  # Around W1
+        Collectible(Collectibles.coin, Kongs.chunky, lambda l: (Events.WaterSwitch in l.Events or (l.advanced_platforming and (l.ischunky or l.islanky))), None, 3),  # Around W1
     ],
     Regions.LighthouseUnderwater: [
-        Collectible(Collectibles.banana, Kongs.donkey, lambda l: Events.LighthouseEnguarde in l.Events, None, 10),  # Behind Enguarde wall
+        Collectible(Collectibles.banana, Kongs.donkey, lambda l: (Events.LighthouseEnguarde in l.Events or l.CanPhaseswim()), None, 10),  # Behind Enguarde wall
         Collectible(Collectibles.banana, Kongs.lanky, lambda l: True, None, 5),  # Near Enguarde
         Collectible(Collectibles.bunch, Kongs.lanky, lambda l: True, None, 4),  # Enguarde chests
         Collectible(Collectibles.banana, Kongs.chunky, lambda l: True, None, 10),  # Underwater
 
         Collectible(Collectibles.coin, Kongs.lanky, lambda l: True, None, 3),  # Under enguarde box
-        Collectible(Collectibles.coin, Kongs.lanky, lambda l: Events.LighthouseEnguarde in l.Events, None, 3),  # Behind Enguarde wall
+        Collectible(Collectibles.coin, Kongs.lanky, lambda l: (Events.LighthouseEnguarde in l.Events or l.CanPhaseswim()), None, 3),  # Behind Enguarde wall
         Collectible(Collectibles.coin, Kongs.tiny, lambda l: True, None, 5),  # In front of Mermaid room
         Collectible(Collectibles.coin, Kongs.chunky, lambda l: True, None, 5),  # Under tag barrel by Mermaid room
         Collectible(Collectibles.coin, Kongs.chunky, lambda l: True, None, 3),  # By T&S in the deep hole
@@ -77,8 +77,8 @@ LogicRegions = {
     ],
     Regions.SickBay: [
         Collectible(Collectibles.bunch, Kongs.chunky, lambda l: True, None, 4),
-        Collectible(Collectibles.bunch, Kongs.chunky, lambda l: l.punch, None, 1),  # One bunch behind gate
-        Collectible(Collectibles.coin, Kongs.chunky, lambda l: l.punch, None, 3),
+        Collectible(Collectibles.bunch, Kongs.chunky, lambda l: l.punch or l.phasewalk, None, 1),  # One bunch behind gate
+        Collectible(Collectibles.coin, Kongs.chunky, lambda l: l.punch or l.phasewalk, None, 3),
     ],
     Regions.Shipyard: [
         Collectible(Collectibles.balloon, Kongs.diddy, lambda l: l.peanut, None, 1),  # Cactus
@@ -88,7 +88,7 @@ LogicRegions = {
         Collectible(Collectibles.balloon, Kongs.chunky, lambda l: l.pineapple, None, 1),  # Near Warp 2
         Collectible(Collectibles.balloon, Kongs.chunky, lambda l: l.pineapple, None, 1),  # Cactus
 
-        Collectible(Collectibles.coin, Kongs.donkey, lambda l: Events.WaterSwitch in l.Events, None, 4),  # On floating plank near W5
+        Collectible(Collectibles.coin, Kongs.donkey, lambda l: Events.WaterSwitch in l.Events or l.CanMoonkick(), None, 4),  # On floating plank near W5
         Collectible(Collectibles.coin, Kongs.chunky, lambda l: True, None, 5),  # Near Chunky BP
     ],
     Regions.ShipyardUnderwater: [

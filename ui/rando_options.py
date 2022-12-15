@@ -160,7 +160,8 @@ def set_preset_options():
     js.jq("#presets").val("-- Select a Preset --")
     toggle_counts_boxes(None)
     toggle_b_locker_boxes(None)
-    toggle_extreme_prices_option(None)
+    toggle_logic_type(None)
+
     js.load_cookies()
 
 
@@ -544,9 +545,9 @@ def toggle_medals_box(event):
 def toggle_extreme_prices_option(event):
     """Determine the visibility of the extreme prices option."""
     unlocked_shockwave = document.getElementById("shockwave_status").value == "start_with"
-    no_logic = document.getElementById("no_logic").checked
+    logic_disabled = document.getElementById("logic_type").value == "nologic"
     option = document.getElementById("extreme_price_option")
-    if unlocked_shockwave or no_logic:
+    if unlocked_shockwave or logic_disabled:
         option.removeAttribute("disabled")
     else:
         option.setAttribute("disabled", "disabled")
@@ -555,10 +556,15 @@ def toggle_extreme_prices_option(event):
             price_option.value = "high"
 
 
-@bind("change", "no_logic")
-def toggle_no_logic(event):
+@bind("change", "logic_type")
+def toggle_logic_type(event):
     """Toggle settings based on the presence of logic."""
     toggle_extreme_prices_option(event)
+    glitch_customization = document.getElementById("glitches_modal")
+    if document.getElementById("logic_type").value == "glitch":
+        glitch_customization.removeAttribute("disabled")
+    else:
+        glitch_customization.setAttribute("disabled", "disabled")
 
 
 @bind("click", "nav-patch-tab")

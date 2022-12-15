@@ -66,6 +66,7 @@
     "coin_door_open":"need_zero",
     "minigames_list_selected":[],
     "misc_changes_selected":[],
+    "glitches_selected":[],
     "enemies_selected":[],
     "quality_of_life":true,
     "wrinkly_available": false,
@@ -91,5 +92,5 @@
     "wrinkly_location_rando": false,
     "tns_location_rando": false,
     "helm_hurry": false,
-    "no_logic": false
+    "logic_type": "glitchless"
  }

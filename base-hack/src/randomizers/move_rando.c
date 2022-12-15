@@ -361,7 +361,7 @@ void purchaseMove(shop_paad* paad) {
 			}
 			break;
 		case PURCHASE_GB:
-			MovesBase[(int)Character].gb_count[getWorld(CurrentMap,1)] += 1;
+			giveGB(Character, getWorld(CurrentMap, 1));
 		case PURCHASE_FLAG:
 			progressiveChange(paad->flag);
 			setFlagDuplicate(paad->flag, 1, 0);
@@ -457,7 +457,7 @@ void setLocation(purchase_struct* purchase_data) {
 				if (world > 7) {
 					world = 7;
 				}
-				MovesBase[p_kong].gb_count[world] += 1;
+				giveGB(p_kong, world);
 			}
 		}
 	}

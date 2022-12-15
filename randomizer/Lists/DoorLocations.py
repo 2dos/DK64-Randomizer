@@ -171,7 +171,7 @@ door_locations = {
             location=[703.0, 538.0, 2293.0, 54.0],
             group=3,
             moveless=False,
-            logic=lambda l: l.vines,
+            logic=lambda l: l.vines or l.advanced_platforming,
         ),
         DoorData(
             name="Jungle Japes: Alcove Above Diddy Tunnel - left",
@@ -180,7 +180,7 @@ door_locations = {
             location=[817.0, 538.0, 2372.0, 232.0],
             group=3,
             moveless=False,
-            logic=lambda l: l.vines,
+            logic=lambda l: l.vines or l.advanced_platforming,
         ),
         DoorData(
             name="Jungle Japes: Next to Minecart Exit -right", map=Maps.JungleJapes, logicregion=Regions.JungleJapesMain, location=[1029.0, 287.0, 2032.0, 251.5], rx=-10, group=3, logic=lambda l: True
@@ -424,7 +424,7 @@ door_locations = {
             kong_lst=[Kongs.tiny],
             group=8,
             moveless=False,
-            logic=lambda l: l.Slam,
+            logic=lambda l: l.Slam or l.phasewalk or l.generalclips,
             door_type="wrinkly",
         ),
         DoorData(
@@ -438,7 +438,7 @@ door_locations = {
             kong_lst=[Kongs.tiny],
             group=8,
             moveless=False,
-            logic=lambda l: l.Slam,
+            logic=lambda l: l.Slam or l.phasewalk or l.generalclips,
             door_type="wrinkly",
         ),
         DoorData(
@@ -537,7 +537,7 @@ door_locations = {
             location=[1070.018, 0.0, 738.609, 190.0],
             group=1,
             moveless=False,
-            logic=lambda l: l.tiny and l.feather,
+            logic=lambda l: (l.tiny and l.feather) or l.phasewalk,
             placed="wrinkly",
             door_type="wrinkly",
             default_kong=Kongs.chunky,
@@ -563,7 +563,13 @@ door_locations = {
             placed="tns",
         ),  # T&S Portal by Cranky
         DoorData(
-            name="Angry Aztec: Near Candy's", map=Maps.AngryAztec, logicregion=Regions.AngryAztecOasis, location=[2268.343, 120.0, 448.669, 59.0], group=4, logic=lambda l: l.vines, placed="tns"
+            name="Angry Aztec: Near Candy's",
+            map=Maps.AngryAztec,
+            logicregion=Regions.AngryAztecOasis,
+            location=[2268.343, 120.0, 448.669, 59.0],
+            group=4,
+            logic=lambda l: l.vines or l.advanced_platforming,
+            placed="tns",
         ),  # T&S Portal by Candy
         DoorData(
             name="Angry Aztec: Near Snide's",
@@ -585,7 +591,14 @@ door_locations = {
             logic=lambda l: True,
             placed="tns",
         ),  # T&S Portal behind 5DT
-        DoorData(name="Angry Aztec: Next to Candy - right", map=Maps.AngryAztec, logicregion=Regions.AngryAztecOasis, location=[2468.0, 120.0, 473.5, 298.75], group=4, logic=lambda l: l.vines),
+        DoorData(
+            name="Angry Aztec: Next to Candy - right",
+            map=Maps.AngryAztec,
+            logicregion=Regions.AngryAztecOasis,
+            location=[2468.0, 120.0, 473.5, 298.75],
+            group=4,
+            logic=lambda l: l.vines or l.advanced_platforming,
+        ),
         DoorData(
             name="Angry Aztec: Under Diddy's Tiny Temple Switch",
             map=Maps.AngryAztec,
@@ -726,7 +739,7 @@ door_locations = {
             kong_lst=[Kongs.donkey],
             group=2,
             moveless=False,
-            logic=lambda l: l.isdonkey and l.strongKong,
+            logic=lambda l: (l.isdonkey and l.strongKong) or l.phasewalk or l.generalclips,
             door_type="wrinkly",
         ),
         DoorData(
@@ -737,7 +750,7 @@ door_locations = {
             kong_lst=[Kongs.donkey],
             group=2,
             moveless=False,
-            logic=lambda l: l.isdonkey and l.strongKong,
+            logic=lambda l: (l.isdonkey and l.strongKong) or l.phasewalk or l.generalclips,
             door_type="wrinkly",
         ),
         DoorData(
@@ -748,7 +761,7 @@ door_locations = {
             kong_lst=[Kongs.lanky],
             group=9,
             moveless=False,
-            logic=lambda l: l.islanky and l.grape,
+            logic=lambda l: (l.islanky and l.grape) or l.phasewalk,
             door_type="wrinkly",
         ),
         DoorData(
@@ -759,7 +772,7 @@ door_locations = {
             kong_lst=[Kongs.lanky],
             group=9,
             moveless=False,
-            logic=lambda l: l.islanky and l.grape,
+            logic=lambda l: (l.islanky and l.grape) or l.phasewalk,
             door_type="wrinkly",
         ),
         DoorData(name="Angry Aztec: Next to Tiny Temple - front left", map=Maps.AngryAztec, logicregion=Regions.AngryAztecOasis, location=[2893.0, 153.0, 478.0, 28.0], group=4, logic=lambda l: True),
@@ -988,7 +1001,7 @@ door_locations = {
             kong_lst=[Kongs.chunky],
             group=4,
             moveless=False,
-            logic=lambda l: l.ischunky and l.punch and l.triangle,
+            logic=lambda l: (l.ischunky and l.punch and l.triangle) or l.CanAccessRNDRoom(),
             door_type="wrinkly",
         ),
         DoorData(
@@ -1206,7 +1219,7 @@ door_locations = {
             kong_lst=[Kongs.diddy],
             group=4,
             moveless=False,
-            logic=lambda l: l.isdiddy and l.guitar,
+            logic=lambda l: l.isdiddy and (l.guitar or l.CanAccessRNDRoom()),
             door_type="wrinkly",
         ),
         DoorData(
@@ -1217,7 +1230,7 @@ door_locations = {
             kong_lst=[Kongs.lanky],
             group=4,
             moveless=False,
-            logic=lambda l: l.islanky and l.trombone,
+            logic=lambda l: l.islanky and (l.trombone or l.CanAccessRNDRoom()),
             door_type="wrinkly",
         ),
         DoorData(
@@ -1228,7 +1241,7 @@ door_locations = {
             kong_lst=[Kongs.lanky],
             group=4,
             moveless=False,
-            logic=lambda l: l.islanky and l.trombone,
+            logic=lambda l: l.islanky and (l.trombone or l.CanAccessRNDRoom()),
             door_type="wrinkly",
         ),
         DoorData(
@@ -1239,7 +1252,7 @@ door_locations = {
             kong_lst=[Kongs.chunky],
             group=6,
             moveless=False,
-            logic=lambda l: l.chunky and l.punch,
+            logic=lambda l: (l.chunky and l.punch) or l.phasewalk or l.generalclips,
         ),
         DoorData(name="Frantic Factory: Crusher Room - start", map=Maps.FactoryCrusher, logicregion=Regions.InsideCore, location=[475.0, 0.0, 539.0, 180.0], group=3, logic=lambda l: True),
     ],
@@ -1386,7 +1399,7 @@ door_locations = {
             location=[1334.0, 1610.0, 2523.0, 0.0],
             group=8,
             moveless=False,
-            logic=lambda l: Events.WaterSwitch in l.Events,
+            logic=lambda l: Events.WaterSwitch in l.Events or (l.advanced_platforming and (l.islanky or l.ischunky)),
         ),
         DoorData(
             name="Gloomy Galleon: Next to Coconut switch", map=Maps.GloomyGalleon, logicregion=Regions.GloomyGalleonStart, location=[2065.75, 1628.0, 3418.75, 28.0], group=2, logic=lambda l: True
@@ -1481,7 +1494,7 @@ door_locations = {
             kong_lst=[Kongs.chunky],
             group=2,
             moveless=False,
-            logic=lambda l: l.chunky and l.punch,
+            logic=lambda l: (l.chunky and l.punch) or l.phasewalk,
         ),
         DoorData(
             name="Gloomy Galleon: Low water alcove in lighthouse area",
@@ -1722,7 +1735,7 @@ door_locations = {
             location=[3665.871, 186.833, 945.745, 252.0],
             group=3,
             moveless=False,
-            logic=lambda l: Events.Night in l.Events,
+            logic=lambda l: Events.Night in l.Events or l.phasewalk,
             placed="tns",
         ),  # T&S Portal in Beanstalk Area
         DoorData(
@@ -1956,7 +1969,7 @@ door_locations = {
             kong_lst=[Kongs.donkey],
             group=11,
             moveless=False,
-            logic=lambda l: l.isdonkey and l.superSlam,
+            logic=lambda l: (l.isdonkey and l.superSlam) or l.phasewalk or l.generalclips,
             door_type="wrinkly",
         ),
         DoorData(
@@ -2060,7 +2073,7 @@ door_locations = {
             kong_lst=[Kongs.diddy],
             group=2,
             moveless=False,
-            logic=lambda l: l.isdiddy and l.jetpack,
+            logic=lambda l: (l.isdiddy and l.jetpack) or l.CanMoonkick() or (l.twirl and l.istiny and l.advanced_platforming),
             placed="tns",
         ),  # T&S Portal on Rotating Room
         DoorData(
@@ -2091,7 +2104,7 @@ door_locations = {
             kong_lst=[Kongs.diddy, Kongs.lanky],
             group=2,
             moveless=False,
-            logic=lambda l: (l.isdiddy and l.jetpack) or (l.islanky and l.balloon),
+            logic=lambda l: (l.isdiddy and l.jetpack) or (l.islanky and l.balloon) or l.CanMoonkick(),
             placed="tns",
         ),  # T&S Portal on Sprint Cabin
         DoorData(
@@ -2301,7 +2314,7 @@ door_locations = {
             kong_lst=[Kongs.diddy, Kongs.lanky],
             group=6,
             moveless=False,
-            logic=lambda l: l.isdiddy or (l.islanky and l.balloon),
+            logic=lambda l: l.isdiddy or (l.islanky and l.balloon) or l.advanced_platforming,
             door_type="tns",
         ),
         DoorData(
@@ -2313,7 +2326,7 @@ door_locations = {
             kong_lst=[Kongs.diddy, Kongs.lanky],
             group=6,
             moveless=False,
-            logic=lambda l: l.isdiddy or (l.islanky and l.balloon),
+            logic=lambda l: l.isdiddy or (l.islanky and l.balloon) or l.advanced_platforming,
             door_type="tns",
         ),
         DoorData(

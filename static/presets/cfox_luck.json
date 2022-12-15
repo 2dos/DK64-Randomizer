@@ -60,6 +60,7 @@
     "coin_door_open":"need_zero",
     "minigames_list_selected":["big_bug_bash", "splish_splash_salvage", "speedy_swing_sortie", "searchlight_seek", "kremling_kosh", "helm_minigames"],
     "misc_changes_selected":[],
+    "glitches_selected":[],
     "enemies_selected":[],
     "quality_of_life":true,
     "wrinkly_available": false,
@@ -85,5 +86,5 @@
     "wrinkly_location_rando": false,
     "tns_location_rando": false,
     "helm_hurry": false,
-    "no_logic": false
+    "logic_type": "glitchless"
 }

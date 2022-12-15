@@ -54,7 +54,7 @@ LogicRegions = {
 
     ],
     Regions.CreepyCastleLobby: [
-        Collectible(Collectibles.coin, Kongs.any, lambda l: l.shockwave and l.balloon, None, ),  # In Castle lobby
+        Collectible(Collectibles.coin, Kongs.any, lambda l: l.shockwave and ((l.balloon and l.islanky) or l.CanMoonkick()), None, ),  # In Castle lobby
 
     ],
     Regions.HideoutHelmLobby: [

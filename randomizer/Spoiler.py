@@ -21,6 +21,7 @@ from randomizer.Lists.Minigame import BarrelMetaData, HelmMinigameLocations, Min
 from randomizer.Prices import ProgressiveMoves
 from randomizer.Settings import Settings
 from randomizer.ShuffleExits import ShufflableExits
+from randomizer.Lists.Logic import GlitchLogicItems
 
 
 class Spoiler:
@@ -112,7 +113,12 @@ class Spoiler:
         settings = OrderedDict()
         settings["Seed"] = self.settings.seed_id
         # settings["algorithm"] = self.settings.algorithm # Don't need this for now, probably
-        settings["No Logic"] = self.settings.no_logic
+        logic_types = {"nologic": "No Logic", "glitch": "Glitched Logic", "glitchless": "Glitchless Logic"}
+        if self.settings.logic_type in logic_types:
+            settings["Logic Type"] = logic_types[self.settings.logic_type]
+        else:
+            settings["Logic Type"] = self.settings.logic_type
+        settings["Glitches Enabled"] = ", ".join([x.name for x in GlitchLogicItems if x.shorthand in self.settings.glitches_selected or len(self.settings.glitches_selected) == 0])
         settings["Shuffle Enemies"] = self.settings.enemy_rando
         settings["Move Randomization type"] = self.settings.move_rando
         settings["Loading Zones Shuffled"] = self.settings.shuffle_loading_zones

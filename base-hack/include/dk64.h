@@ -91,6 +91,7 @@ extern void initCharSpawnerActor(void);
 extern void cutsceneKongGenericCode(void);
 extern void DisplayTextFlagCheck(short text_file, char text_index, short flag);
 extern void handleCutsceneKong(void* actor, int index);
+extern void playTagActorAnimation(void* actor, void* paad, int index);
 extern void alterCutsceneKongProperties(void);
 extern void unkCutsceneKongFunction(int unk0, int unk1, void* actor, int unk2, int unk3);
 extern void spawnCutsceneKongText(int text_index, int text_file, int unk0);
