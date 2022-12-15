@@ -6,6 +6,7 @@ import pickle
 import random
 import os
 import sys
+import traceback
 
 from randomizer.Fill import Generate_Spoiler
 from randomizer.Settings import Settings
@@ -63,7 +64,24 @@ def main():
         setting_data = json.loads(os.environ.get("POST_BODY"))
         if not setting_data.get("seed"):
             setting_data["seed"] = random.randint(0, 100000000)
-    generate(setting_data, args.output)
+    try:
+        generate(setting_data, args.output)
+    except Exception as e:
+        with open("error.log", "w") as file_object:
+            file_object.write(e)
+        with open("traceback.log", "w") as file_object:
+            file_object.write(traceback.format_exc())
+        print(traceback.format_exc())
+        if os.environ.get("DISCORD_WEBHOOK"):
+            from discord_webhook import DiscordWebhook, DiscordEmbed
+
+            webhook = DiscordWebhook(url=os.environ.get("DISCORD_WEBHOOK"))
+            embed = DiscordEmbed(title="Error Generating Seed", description=e, color="800020")
+            embed.set_timestamp()
+            webhook.add_file(file=traceback.format_exc(), filename="traceback.log")
+            webhook.add_embed(embed)
+            webhook.execute()
+        sys.exit(1)
 
 
 if __name__ == "__main__":
