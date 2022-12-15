@@ -41,6 +41,7 @@
 .definelabel initCharSpawnerActor, 0x80729B00
 .definelabel cutsceneKongGenericCode, 0x806BFBF4
 .definelabel handleCutsceneKong, 0x806F09F0
+.definelabel playTagActorAnimation, 0x80682DF4
 .definelabel alterCutsceneKongProperties, 0x806C15E8
 .definelabel unkCutsceneKongFunction, 0x80714C08
 .definelabel spawnCutsceneKongText, 0x806C10A0

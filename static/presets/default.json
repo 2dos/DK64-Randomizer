@@ -59,7 +59,7 @@
     "helm_random": false,
     "helm_phase_count": 3,
     "level_randomization": "level_order",
-    "logic_type": "glichless",
+    "logic_type": "glitchless",
     "maximize_helm_blocker": true,
     "medal_cb_req": 75,
     "medal_requirement": 15,

@@ -266,3 +266,13 @@ sprite_data_struct pearl_sprite = {
 	.image_count = 1,
 	.images = 6021,
 };
+
+void giveGB(int kong, int level) {
+	MovesBase[kong].gb_count[level] += 1;
+	if (HUD) {
+		short* counter = (short*)&HUD->item[8].item_count_pointer;
+		if (counter) {
+			*counter = *counter + 1;
+		}
+	}
+}
