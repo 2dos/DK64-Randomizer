@@ -262,7 +262,7 @@ def compileHints(spoiler: Spoiler):
     locked_hint_types = [HintType.RequiredKeyHint, HintType.RequiredWinConditionHint]  # Some hint types cannot have their value changed
     maxed_hint_types = []  # Some hint types cannot have additional hints placed
     # In level order (or vanilla) progression, there are hints that we want to be in the player's path
-    level_order_matters = not spoiler.settings.no_logic and spoiler.settings.shuffle_loading_zones != "all"
+    level_order_matters = spoiler.settings.logic_type != "nologic" and spoiler.settings.shuffle_loading_zones != "all"
     # Determine what hint types are valid for these settings
     valid_types = [HintType.Joke]
     if spoiler.settings.krool_phase_count < 5 and spoiler.settings.win_condition == "beat_krool":
@@ -274,7 +274,7 @@ def compileHints(spoiler: Spoiler):
         valid_types.append(HintType.MoveLocation)
     if spoiler.settings.shuffle_items and Types.Shop in spoiler.settings.shuffled_location_types:
         # With no logic WOTH isn't built correctly so we can't make any hints with it
-        if not spoiler.settings.no_logic:
+        if spoiler.settings.logic_type != "nologic":
             valid_types.append(HintType.FoolishRegion)
             # If there are more foolish region hints than regions, lower this number and prevent more from being added
             if len(spoiler.foolish_region_names) < hint_distribution[HintType.FoolishRegion]:

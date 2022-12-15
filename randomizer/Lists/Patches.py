@@ -43,7 +43,7 @@ DirtPatchLocations = [
         vanilla=True,
         group=3,
         logicregion=Regions.CabinIsle,
-        logic=lambda l: Events.IslesDiddyBarrelSpawn in l.Events and l.jetpack and l.isdiddy and l.shockwave,
+        logic=lambda l: ((Events.IslesDiddyBarrelSpawn in l.Events and l.jetpack and l.isdiddy) or (l.twirl and l.istiny and l.advanced_platforming)) and l.shockwave,
     ),
     DirtPatchData(
         name="DK Isles: Under Caves Lobby Entrance",
@@ -82,7 +82,7 @@ DirtPatchLocations = [
         vanilla=True,
         group=1,
         logicregion=Regions.TrainingGrounds,
-        logic=lambda l: l.vines and l.shockwave,
+        logic=lambda l: (l.vines or l.CanMoonkick()) and l.shockwave,
     ),
     DirtPatchData(
         name="DK Isles - Training Grounds: Rear Inside Tunnel",
@@ -121,7 +121,7 @@ DirtPatchLocations = [
         vanilla=True,
         group=14,
         logicregion=Regions.CreepyCastleLobby,
-        logic=lambda l: l.chunky and l.balloon and l.islanky and l.shockwave,
+        logic=lambda l: ((l.chunky and l.balloon and l.islanky) or l.CanMoonkick()) and l.shockwave,
     ),
     DirtPatchData(
         name="DK Isles: Isles Boulders",
@@ -170,7 +170,7 @@ DirtPatchLocations = [
         rotation=3891,
         group=6,
         logicregion=Regions.IslesMain,
-        logic=lambda l: l.monkeyport and l.istiny and l.shockwave,
+        logic=lambda l: ((l.monkeyport and l.istiny) or l.tbs) and l.shockwave,
     ),
     DirtPatchData(
         name="DK Isles: In Fungi Boulder",
@@ -182,7 +182,7 @@ DirtPatchLocations = [
         rotation=1934,
         group=2,
         logicregion=Regions.IslesMain,
-        logic=lambda l: l.GalleonKey and l.shockwave,
+        logic=lambda l: (l.GalleonKey or l.phasewalk) and l.shockwave,
     ),
     DirtPatchData(
         name="DK Isles: Behind Fungi Building", level=Levels.DKIsles, map_id=Maps.Isles, x=2436.0, y=1498.0, z=817.0, rotation=637, group=2, logicregion=Regions.CabinIsle, logic=lambda l: l.shockwave
@@ -233,7 +233,7 @@ DirtPatchLocations = [
         rotation=682,
         group=5,
         logicregion=Regions.Prison,
-        logic=lambda l: l.CanAccessKRool() and l.shockwave,
+        logic=lambda l: (l.CanAccessKRool() or l.phasewalk) and l.shockwave,
     ),
     DirtPatchData(
         name="DK Isles - Hideout Helm Lobby: Next to Tag Barrel",
@@ -257,7 +257,7 @@ DirtPatchLocations = [
         rotation=0,
         group=7,
         logicregion=Regions.HideoutHelmLobby,
-        logic=lambda l: l.coconut and l.scope and l.shockwave,
+        logic=lambda l: ((l.coconut and l.scope) or (l.twirl and l.istiny and l.advanced_platforming)) and l.shockwave,
     ),
     DirtPatchData(
         name="DK Isles - Jungle Japes Lobby: Near Tag Barrel",
@@ -293,7 +293,7 @@ DirtPatchLocations = [
         rotation=2048,
         group=10,
         logicregion=Regions.FranticFactoryLobby,
-        logic=lambda l: l.grab and l.shockwave,
+        logic=lambda l: ((l.grab and l.isdonkey) or l.CanMoonkick() or (l.advanced_platforming and (l.isdiddy or l.istiny or l.ischunky))) and l.shockwave,
     ),
     DirtPatchData(
         name="DK Isles - Gloomy Galleon Lobby: Behind Mini Monkey Gate",
@@ -305,7 +305,7 @@ DirtPatchLocations = [
         rotation=978,
         group=11,
         logicregion=Regions.GloomyGalleonLobby,
-        logic=lambda l: l.mini and l.superSlam and l.shockwave,
+        logic=lambda l: ((l.mini and l.superSlam and l.istiny and l.chunky) or l.CanPhaseswim()) and l.shockwave,
     ),
     DirtPatchData(
         name="DK Isles - Fungi Forest Lobby: Behind Gorilla Gone Door",
@@ -317,7 +317,7 @@ DirtPatchLocations = [
         rotation=1024,
         group=12,
         logicregion=Regions.FungiForestLobby,
-        logic=lambda l: l.coconut and l.peanut and l.grape and l.feather and l.pineapple and l.shockwave,
+        logic=lambda l: ((l.coconut and l.peanut and l.grape and l.feather and l.pineapple) or l.phasewalk) and l.shockwave,
     ),
     DirtPatchData(
         name="DK Isles - Fungi Forest Lobby: On Tag Crate",
@@ -341,7 +341,7 @@ DirtPatchLocations = [
         rotation=785,
         group=13,
         logicregion=Regions.CrystalCavesLobby,
-        logic=lambda l: l.punch and l.strongKong and l.isdonkey and l.shockwave,
+        logic=lambda l: ((l.punch and l.strongKong and l.isdonkey) or l.phasewalk or l.ledgeclip) and l.shockwave,
     ),
     DirtPatchData(
         name="DK Isles - Creepy Castle Lobby: Behind the entrance",
@@ -414,7 +414,7 @@ DirtPatchLocations = [
         vanilla=True,
         group=1,
         logicregion=Regions.JungleJapesMain,
-        logic=lambda l: l.handstand or l.twirl and l.shockwave,
+        logic=lambda l: ((l.handstand and l.islanky) or (l.twirl and l.istiny) or l.CanMoonkick() or ((l.phasewalk or l.generalclips) and (l.istiny or l.isdiddy))) and l.shockwave,
     ),
     DirtPatchData(
         name="Jungle Japes: Inside Diddy's Cavern",
@@ -498,7 +498,7 @@ DirtPatchLocations = [
         rotation=3305,
         group=2,
         logicregion=Regions.JapesBeyondCoconutGate2,
-        logic=lambda l: l.handstand and l.shockwave,
+        logic=lambda l: (l.handstand and l.islanky) and l.shockwave,
     ),
     DirtPatchData(
         name="Jungle Japes: Cranky-tunnel Crossing",
@@ -620,7 +620,7 @@ DirtPatchLocations = [
         vanilla=True,
         group=7,
         logicregion=Regions.ChunkyTemple,
-        logic=lambda l: l.pineapple and l.ischunky and l.shockwave,
+        logic=lambda l: ((l.pineapple and l.ischunky) or l.phasewalk) and l.shockwave,
     ),
     DirtPatchData(
         name="Angry Aztec: Behind Chunky Cage",
@@ -801,7 +801,7 @@ DirtPatchLocations = [
         vanilla=True,
         group=3,
         logicregion=Regions.BeyondHatch,
-        logic=lambda l: l.punch and l.shockwave,
+        logic=lambda l: ((l.punch and l.chunky) or l.phasewalk) and l.shockwave,
     ),
     # DirtPatchData(
     #     name="Frantic Factory: Toy Room Under Stairs",
@@ -910,7 +910,7 @@ DirtPatchLocations = [
         rotation=2013,
         group=2,
         logicregion=Regions.Testing,
-        logic=lambda l: l.spring and l.shockwave,
+        logic=lambda l: (l.spring or l.CanMoonkick()) and l.shockwave,
     ),
     DirtPatchData(
         name="Frantic Factory: In Lanky's Piano Room",
@@ -922,7 +922,7 @@ DirtPatchLocations = [
         rotation=113,
         group=3,
         logicregion=Regions.RandD,
-        logic=lambda l: l.trombone and l.shockwave,
+        logic=lambda l: ((l.trombone and l.islanky) or l.CanAccessRNDRoom()) and l.shockwave,
     ),
     DirtPatchData(
         name="Frantic Factory: In Diddy's Pincode enemies room",
@@ -934,7 +934,7 @@ DirtPatchLocations = [
         rotation=3528,
         group=3,
         logicregion=Regions.RandD,
-        logic=lambda l: l.guitar and l.shockwave,
+        logic=lambda l: ((l.guitar and l.isdiddy) or l.CanAccessRNDRoom()) and l.shockwave,
     ),
     DirtPatchData(
         name="Frantic Factory: In front of Chunky's toy boss room",
@@ -946,7 +946,7 @@ DirtPatchLocations = [
         rotation=2654,
         group=3,
         logicregion=Regions.RandD,
-        logic=lambda l: l.punch and l.shockwave,
+        logic=lambda l: ((l.punch and l.ischunky) or l.CanAccessRNDRoom()) and l.shockwave,
     ),
     DirtPatchData(
         name="Frantic Factory: Near Funky",
@@ -970,7 +970,7 @@ DirtPatchLocations = [
         rotation=95,
         group=3,
         logicregion=Regions.FactoryTinyRaceLobby,
-        logic=lambda l: l.mini and l.shockwave,
+        logic=lambda l: ((l.mini and l.istiny) or l.phasewalk) and l.shockwave,
     ),
     DirtPatchData(
         name="Frantic Factory: R&D lever room - by Tiny's barrel",
@@ -1019,7 +1019,7 @@ DirtPatchLocations = [
         rotation=2048,
         group=4,
         logicregion=Regions.GalleonBeyondPineappleGate,
-        logic=lambda l: Events.WaterSwitch in l.Events and l.shockwave,
+        logic=lambda l: (Events.WaterSwitch in l.Events or (l.advanced_platforming and (l.islanky or l.ischunky))) and l.shockwave,
     ),
     DirtPatchData(
         name="Gloomy Galleon: Entrance tunnel - under tag barrel",
@@ -1117,7 +1117,7 @@ DirtPatchLocations = [
         rotation=978,
         group=2,
         logicregion=Regions.SickBay,
-        logic=lambda l: l.punch and l.shockwave,
+        logic=lambda l: ((l.punch and l.ischunky) or l.phasewalk) and l.shockwave,
     ),
     DirtPatchData(
         name="Gloomy Galleon: Next to Cannonball - in front",
@@ -1129,7 +1129,7 @@ DirtPatchLocations = [
         rotation=0,
         group=4,
         logicregion=Regions.GalleonBeyondPineappleGate,
-        logic=lambda l: Events.WaterSwitch in l.Events and l.shockwave,
+        logic=lambda l: (Events.WaterSwitch in l.Events or (l.advanced_platforming and (l.ischunky or l.islanky))) and l.shockwave,
     ),
     DirtPatchData(
         name="Gloomy Galleon: Next to Cannonball - behind",
@@ -1141,7 +1141,7 @@ DirtPatchLocations = [
         rotation=0,
         group=4,
         logicregion=Regions.GalleonBeyondPineappleGate,
-        logic=lambda l: Events.WaterSwitch in l.Events and l.shockwave,
+        logic=lambda l: (Events.WaterSwitch in l.Events or (l.advanced_platforming and (l.ischunky or l.islanky))) and l.shockwave,
     ),
     DirtPatchData(
         name="Gloomy Galleon: Behind Chunky's Big GB Chest",
@@ -1215,7 +1215,7 @@ DirtPatchLocations = [
         rotation=34,
         group=5,
         logicregion=Regions.HollowTreeArea,
-        logic=lambda l: l.jetpack and l.isdiddy and l.shockwave,
+        logic=lambda l: ((l.jetpack and l.isdiddy) or l.CanMoonkick()) and l.shockwave,
     ),
     DirtPatchData(
         name="Fungi Forest: Near BBlast",
@@ -1650,7 +1650,7 @@ DirtPatchLocations = [
         rotation=2969,
         group=2,
         logicregion=Regions.MuseumBehindGlass,
-        logic=lambda l: l.monkeyport and l.istiny and l.shockwave,
+        logic=lambda l: ((l.monkeyport and l.istiny) or l.phasewalk) and l.shockwave,
     ),
     DirtPatchData(
         name="Creepy Castle - Castle Museum: Museum - Pillar Back Right",
@@ -1662,7 +1662,7 @@ DirtPatchLocations = [
         rotation=2628,
         group=2,
         logicregion=Regions.MuseumBehindGlass,
-        logic=lambda l: l.monkeyport and l.istiny and l.shockwave,
+        logic=lambda l: ((l.monkeyport and l.istiny) or l.phasewalk) and l.shockwave,
     ),
     DirtPatchData(
         name="Creepy Castle - Castle Museum: Museum - Pillar Back Left",
@@ -1674,7 +1674,7 @@ DirtPatchLocations = [
         rotation=3697,
         group=2,
         logicregion=Regions.MuseumBehindGlass,
-        logic=lambda l: l.monkeyport and l.istiny and l.shockwave,
+        logic=lambda l: ((l.monkeyport and l.istiny) or l.phasewalk) and l.shockwave,
     ),
     DirtPatchData(
         name="Creepy Castle: Next to Greenhouse",
@@ -1758,6 +1758,6 @@ DirtPatchLocations = [
         rotation=1024,
         group=3,
         logicregion=Regions.Dungeon,
-        logic=lambda l: l.punch and l.shockwave,
+        logic=lambda l: ((l.punch and l.ischunky) or l.phasewalk) and l.shockwave,
     ),
 ]

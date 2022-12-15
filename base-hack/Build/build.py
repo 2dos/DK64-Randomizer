@@ -324,9 +324,10 @@ for rwd_index, rwd in enumerate(arcade_rewards):
     file_dict.append(
         {
             "name": f"Arcade Reward - {rwd.capitalize()}",
-            "pointer_table_index": 25,
-            "file_index": 6022 + rwd_index,
+            "pointer_table_index": 6,
+            "file_index": rwd_index,
             "source_file": f"assets/Non-Code/arcade_jetpac/arcade/{rwd}.png",
+            "do_not_compress": True,
             "texture_format": "rgba5551",
             "do_not_delete_source": True,
         }
@@ -335,9 +336,10 @@ for rwd_index, rwd in enumerate(jetpac_rewards):
     file_dict.append(
         {
             "name": f"Jetpac Reward - {rwd.capitalize()}",
-            "pointer_table_index": 25,
-            "file_index": 6022 + rwd_index + len(arcade_rewards),
+            "pointer_table_index": 6,
+            "file_index": rwd_index + len(arcade_rewards),
             "source_file": f"assets/Non-Code/arcade_jetpac/jetpac/{rwd}.png",
+            "do_not_compress": True,
             "texture_format": "i8",
             "do_not_delete_source": True,
         }

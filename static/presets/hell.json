@@ -55,6 +55,7 @@
     "coin_door_open":"need_both",
     "minigames_list_selected":["stealthy_snoop", "beaver_bother"],
     "misc_changes_selected":[],
+    "glitches_selected":[],
     "enemies_selected":[],
     "medal_requirement":15,
     "rareware_gb_fairies":20,
@@ -84,5 +85,5 @@
     "tns_location_rando": false,
     "helm_hurry": false,
     "wrinkly_available": false,
-    "no_logic": false
+    "logic_type": "glitchless"
  }

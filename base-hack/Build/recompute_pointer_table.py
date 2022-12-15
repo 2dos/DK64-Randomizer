@@ -379,8 +379,8 @@ def shouldWritePointerTable(index: int):
     """Write to the pointer table."""
     # Table 6 is nonsense.
     # This fixes heap corruption caused by a buffer overrun when decompressing a replaced file into a malloc'd buffer
-    if index == 6:
-        return False
+    # if index == 6:
+    #     return False
 
     # No need to recompute pointer tables with no entries in them
     if pointer_tables[index]["num_entries"] == 0:

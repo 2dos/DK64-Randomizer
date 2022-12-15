@@ -88,9 +88,26 @@ void arcadeExit(void) {
 	11 - Rainbow Coin
 	12 - Nintendo Coin
 */
-
-#define BASE_IMAGE_INDEX 6021
 #define ARCADE_IMAGE_COUNT 21
+
+void* getFile(int size, int rom) {
+	int* file_size;
+	*(int*)(&file_size) = size;
+	void* loc = dk_malloc(size);
+	copyFromROM(rom,loc,&file_size,0,0,0,0);
+	return loc;
+}
+
+void* getPointerFile(int table, int file) {
+	int ptr_offset = 0x101C50;
+	int* ptr_table = getFile(32*4, ptr_offset);
+	int table_addr = ptr_table[table] + ptr_offset;
+	int* table_loc = getFile(8, table_addr + (file * 4));
+	int file_start = table_loc[0] + ptr_offset;
+	int file_end = table_loc[1] + ptr_offset;
+	int file_size = file_end - file_start;
+	return getFile(file_size, file_start);
+}
 
 void initArcade(void) {
 	// Address of Nintendo Coin Image write: 0x8002E8B4/0x8002E8C0
@@ -110,7 +127,7 @@ void initArcade(void) {
 	}
 	if ((*(unsigned short*)(0x8002E8B6) == 0x8004) && (*(unsigned short*)(0x8002E8BA) == 0xAE58) && (Rando.arcade_reward > 0)) {
 		// Ensure code is only run once
-		void* addr = getMapData(25, BASE_IMAGE_INDEX + Rando.arcade_reward, 1, 0);
+		void* addr = getPointerFile(6, Rando.arcade_reward - 1);
 		*(unsigned short*)(0x8002E8B6) = getHi(addr);
 		*(unsigned short*)(0x8002E8BA) = getLo(addr);
 	}
@@ -119,7 +136,7 @@ void initArcade(void) {
 void initJetpac(void) {
 	if ((*(int*)(0x8002D9F8) == 0x8002D868) && (Rando.jetpac_reward > 0)) {
 		// Ensure code is only run once
-		*(int*)(0x8002D9F8) = (int)getMapData(25, BASE_IMAGE_INDEX + Rando.jetpac_reward + ARCADE_IMAGE_COUNT, 1, 0);
+		*(int*)(0x8002D9F8) = (int)getPointerFile(6, Rando.jetpac_reward - 1 + ARCADE_IMAGE_COUNT);
 	}
 }
 

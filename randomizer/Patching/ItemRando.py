@@ -60,8 +60,9 @@ kong_flags = (385, 6, 70, 66, 117)
 class TextboxChange:
     """Class to store information which pertains to a change of textbox information."""
 
-    def __init__(self, file_index, textbox_index, text_replace, replacement_text="|", force_pipe=False):
+    def __init__(self, location, file_index, textbox_index, text_replace, replacement_text="|", force_pipe=False):
         """Initialize with given paremeters."""
+        self.location = location
         self.file_index = file_index
         self.textbox_index = textbox_index
         self.text_replace = text_replace  # Text which is going to be replaced with replacement_text
@@ -69,40 +70,41 @@ class TextboxChange:
         self.force_pipe = force_pipe  # If True, don't replace with item name upon checking later. Instead, will be replaced in RDRAM dynamically
 
 
-textboxes = {
-    Locations.AztecTinyBeetleRace: TextboxChange(14, 0, "GOLDEN BANANA", "|", True),
-    Locations.CavesLankyBeetleRace: TextboxChange(14, 0, "GOLDEN BANANA", "|", True),
-    Locations.JapesDiddyMinecarts: TextboxChange(16, 2, "GOLDEN BANANA"),
-    Locations.JapesDiddyMinecarts: TextboxChange(16, 3, "BANANA"),
-    Locations.JapesDiddyMinecarts: TextboxChange(16, 4, "BANANA"),
-    Locations.ForestChunkyMinecarts: TextboxChange(16, 5, "GOLDEN BANANA"),
-    Locations.ForestChunkyMinecarts: TextboxChange(16, 7, "BANANA"),
-    Locations.CastleDonkeyMinecarts: TextboxChange(16, 8, "BE A WINNER", "WIN A |"),
-    Locations.CastleDonkeyMinecarts: TextboxChange(16, 9, "BANANA"),
-    Locations.IslesDonkeyInstrumentPad: TextboxChange(16, 18, "ANOTHER BANANA", "SOMETHING"),
-    Locations.IslesDiddyInstrumentPad: TextboxChange(16, 18, "ANOTHER BANANA", "SOMETHING"),
-    Locations.IslesLankyInstrumentPad: TextboxChange(16, 18, "ANOTHER BANANA", "SOMETHING"),
-    Locations.IslesTinyInstrumentPad: TextboxChange(16, 18, "ANOTHER BANANA", "SOMETHING"),
-    Locations.IslesChunkyInstrumentPad: TextboxChange(16, 18, "ANOTHER BANANA", "SOMETHING"),
-    Locations.FactoryTinyCarRace: TextboxChange(17, 4, "GOLDEN BANANA"),
-    Locations.GalleonTinyPearls: TextboxChange(23, 0, "PLEASE TRY AND GET THEM BACK", "IF YOU HELP ME FIND THEM, I WILL REWARD YOU WITH A |"),
-    Locations.GalleonTinyPearls: TextboxChange(23, 1, "GOLDEN BANANA"),
-    Locations.AztecDiddyVultureRace: TextboxChange(15, 0, "TEST OF YOUR FLYING SKILL"),
-    Locations.AztecDonkeyFreeLlama: TextboxChange(10, 1, "ALL THIS SAND", "THIS |"),
-    Locations.AztecDonkeyFreeLlama: TextboxChange(10, 2, "BANANA"),
-    Locations.RarewareCoin: TextboxChange(8, 2, "RAREWARE COIN"),
-    Locations.RarewareCoin: TextboxChange(8, 34, "RAREWARE COIN"),
-    Locations.ForestLankyRabbitRace: TextboxChange(20, 1, "TROPHY", "| TROPHY"),
-    Locations.ForestLankyRabbitRace: TextboxChange(20, 2, "TROPHY", "| TROPHY"),
-    Locations.ForestLankyRabbitRace: TextboxChange(20, 3, "TROPHY", "| TROPHY"),
-    Locations.ForestChunkyApple: TextboxChange(22, 0, "BANANA"),
-    Locations.ForestChunkyApple: TextboxChange(22, 1, "BANANA"),
-    Locations.ForestChunkyApple: TextboxChange(22, 4, "BANANA"),
-    Locations.GalleonDonkeySealRace: TextboxChange(28, 2, "CHEST O' GOLD"),
-    Locations.RarewareBanana: TextboxChange(30, 0, "REWARD ANYONE", "REWARD ANYONE WITH A |"),
-    Locations.CavesLankyCastle: TextboxChange(33, 0, "HOW ABOUT IT", "HOW ABOUT A |"),
-    Locations.CastleTinyCarRace: TextboxChange(34, 4, "BANANA"),
-}
+textboxes = [
+    TextboxChange(Locations.AztecTinyBeetleRace, 14, 0, "GOLDEN BANANA", "|", True),
+    TextboxChange(Locations.CavesLankyBeetleRace, 14, 0, "GOLDEN BANANA", "|", True),
+    TextboxChange(Locations.JapesDiddyMinecarts, 16, 2, "GOLDEN BANANA"),
+    TextboxChange(Locations.JapesDiddyMinecarts, 16, 3, "BANANA"),
+    TextboxChange(Locations.JapesDiddyMinecarts, 16, 4, "BANANA"),
+    TextboxChange(Locations.ForestChunkyMinecarts, 16, 5, "GOLDEN BANANA"),
+    TextboxChange(Locations.ForestChunkyMinecarts, 16, 7, "BANANA"),
+    TextboxChange(Locations.CastleDonkeyMinecarts, 16, 8, "BE A WINNER", "WIN A |"),
+    TextboxChange(Locations.CastleDonkeyMinecarts, 16, 9, "BANANA"),
+    TextboxChange(Locations.IslesDonkeyInstrumentPad, 16, 18, "ANOTHER BANANA", "SOMETHING"),
+    TextboxChange(Locations.IslesDiddyInstrumentPad, 16, 18, "ANOTHER BANANA", "SOMETHING"),
+    TextboxChange(Locations.IslesLankyInstrumentPad, 16, 18, "ANOTHER BANANA", "SOMETHING"),
+    TextboxChange(Locations.IslesTinyInstrumentPad, 16, 18, "ANOTHER BANANA", "SOMETHING"),
+    TextboxChange(Locations.IslesChunkyInstrumentPad, 16, 18, "ANOTHER BANANA", "SOMETHING"),
+    TextboxChange(Locations.FactoryTinyCarRace, 17, 4, "GOLDEN BANANA"),
+    TextboxChange(Locations.GalleonTinyPearls, 23, 0, "PLEASE TRY AND GET THEM BACK", "IF YOU HELP ME FIND THEM, I WILL REWARD YOU WITH A |"),
+    TextboxChange(Locations.GalleonTinyPearls, 23, 1, "GOLDEN BANANA"),
+    TextboxChange(Locations.AztecDiddyVultureRace, 15, 0, "TEST OF YOUR FLYING SKILL"),
+    TextboxChange(Locations.AztecDonkeyFreeLlama, 10, 1, "ALL THIS SAND", "THIS |"),
+    TextboxChange(Locations.AztecDonkeyFreeLlama, 10, 2, "BANANA"),
+    TextboxChange(Locations.RarewareCoin, 8, 2, "RAREWARE COIN"),
+    TextboxChange(Locations.RarewareCoin, 8, 34, "RAREWARE COIN"),
+    TextboxChange(Locations.ForestLankyRabbitRace, 20, 1, "TROPHY", "| TROPHY"),
+    TextboxChange(Locations.ForestLankyRabbitRace, 20, 2, "TROPHY", "| TROPHY"),
+    TextboxChange(Locations.ForestLankyRabbitRace, 20, 3, "TROPHY", "| TROPHY"),
+    TextboxChange(Locations.ForestChunkyApple, 22, 0, "BANANA"),
+    TextboxChange(Locations.ForestChunkyApple, 22, 1, "BANANA"),
+    TextboxChange(Locations.ForestChunkyApple, 22, 4, "BANANA"),
+    TextboxChange(Locations.GalleonDonkeySealRace, 28, 2, "CHEST O' GOLD"),
+    TextboxChange(Locations.RarewareBanana, 30, 0, "REWARD ANYONE", "REWARD ANYONE WITH A |"),
+    TextboxChange(Locations.CavesLankyCastle, 33, 0, "HOW ABOUT IT", "HOW ABOUT A |"),
+    TextboxChange(Locations.CastleTinyCarRace, 34, 4, "BANANA"),
+    TextboxChange(Locations.ForestDiddyOwlRace, 21, 0, "WHEN YOU CAN FLY", "WHEN YOU CAN FLY TO HAVE A CHANCE TO RECEIVE A |"),
+]
 
 rareware_coin_reward = ("RAREWARE COIN", "DOUBLOON OF THE RAREST KIND")
 nintendo_coin_reward = ("NINTENDO COIN", "ANCIENT DOUBLOON")
@@ -445,30 +447,30 @@ def place_randomized_items(spoiler: Spoiler):
                     data.append(item.new_flag)
                 flut_items.append(data)
             # Text stuff
-            if item.location in textboxes:
-                textbox = textboxes[item.location]
-                replacement = textbox.replacement_text
-                if not textbox.force_pipe:
-                    reward_text = "|"
-                    reference = None
-                    if item.new_item in text_rewards:
-                        reference = text_rewards[item.new_item]
-                    elif item.new_item == Types.Coin:
-                        reference = nintendo_coin_reward
-                        if item.new_flag == 379:
-                            reference = rareware_coin_reward
-                    if reference is not None:
-                        # Found reference
-                        reward_text = reference[0]
-                        if item.location == Locations.GalleonDonkeySealRace:
-                            # Use pirate text
-                            reward_text = reference[1]
-                    replacement = replacement.replace("|", reward_text)
-                data = {"textbox_index": textbox.textbox_index, "mode": "replace", "search": textbox.text_replace, "target": replacement}
-                if textbox.file_index in spoiler.text_changes:
-                    spoiler.text_changes[textbox.file_index].append(data)
-                else:
-                    spoiler.text_changes[textbox.file_index] = [data]
+            for textbox in textboxes:
+                if textbox.location == item.location:
+                    replacement = textbox.replacement_text
+                    if not textbox.force_pipe:
+                        reward_text = "|"
+                        reference = None
+                        if item.new_item in text_rewards.keys():
+                            reference = text_rewards[item.new_item]
+                        elif item.new_item == Types.Coin:
+                            reference = nintendo_coin_reward
+                            if item.new_flag == 379:
+                                reference = rareware_coin_reward
+                        if reference is not None:
+                            # Found reference
+                            reward_text = reference[0]
+                            if item.location == Locations.GalleonDonkeySealRace:
+                                # Use pirate text
+                                reward_text = reference[1]
+                        replacement = replacement.replace("|", reward_text)
+                    data = {"textbox_index": textbox.textbox_index, "mode": "replace", "search": textbox.text_replace, "target": replacement}
+                    if textbox.file_index in spoiler.text_changes:
+                        spoiler.text_changes[textbox.file_index].append(data)
+                    else:
+                        spoiler.text_changes[textbox.file_index] = [data]
 
         # Terminate FLUT
         flut_items.append([0xFFFF, 0xFFFF])

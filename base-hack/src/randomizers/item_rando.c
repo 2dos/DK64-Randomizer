@@ -626,7 +626,7 @@ void* updateFlag(int type, short* flag, void* fba, int source) {
                                 if (!checkFlag(vanilla_flag, 0)) {
                                     int world = getWorld(CurrentMap, 1);
                                     if (world < 8) {
-                                        MovesBase[(int)Character].gb_count[world] += 1;
+                                        giveGB(Character, world);
                                     }
                                 }
                             }
@@ -712,7 +712,7 @@ void banana_medal_acquisition(int flag) {
                 setFlag(flag, 1, 0);
             }
             if (item_type == 0) {
-                MovesBase[getKong(0)].gb_count[getWorld(CurrentMap,1)] += 1;
+                giveGB(getKong(0), getWorld(CurrentMap, 1));
             }
             if (item_type < 14) {
                 playSFX(0xF2);
@@ -921,6 +921,26 @@ void KongDropCode(void) {
     scaleBounceDrop(0.15f);
     if (CurrentActorPointer_0->yVelocity > 500.0f) {
         CurrentActorPointer_0->yVelocity = 500.0f;
+    }
+    if ((CurrentActorPointer_0->obj_props_bitfield & 0x10) == 0) {
+        int current_type = CurrentActorPointer_0->actorType;
+        int kong = -1;
+        if (current_type == 141) {
+            kong = 0;
+        } else if (current_type == 142) {
+            kong = 1;
+        } else if (current_type == 143) {
+            kong = 2;
+        } else if (current_type == 144) {
+            kong = 3;
+        } else if (current_type == 155) {
+            kong = 4;
+        }
+        TestVariable = kong;
+        if (kong >= 0) {
+            handleCutsceneKong(CurrentActorPointer_0, kong);
+            playActorAnimation(CurrentActorPointer_0, AnimationTable1[(0x8B * 7) + kong]);
+        }
     }
 }
 
