@@ -443,6 +443,7 @@ function generate_seed(url, json, git_branch, run_id) {
                   $("#patchprogress").width("100%");
                   setTimeout(function () {
                     $("#progressmodal").modal("hide");
+                    $("#patchprogress").removeClass("bg-danger");
                   }, 3000);
                   clearInterval(check_status);
                 }
