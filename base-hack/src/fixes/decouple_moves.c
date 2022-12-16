@@ -249,6 +249,15 @@ void decouple_moves_fixes(void) {
 			*(short*)(0x80027E74) = 0x1420; // BNEZ $at, 0x6
 		}
 	}
+	if (CurrentMap == 0xD6) {
+		// Shoe
+		if (Rando.randomize_toes) {
+			for (int i = 0; i < 5; i++) {
+				ToeSet1[(4 * i) + 2] = Rando.k_rool_toes[i];
+				ToeSet2[(4 * i) + 2] = Rando.k_rool_toes[5 + i];
+			}
+		}
+	}
 	int in_boss = 0;
 	for (int i = 0; i < sizeof(boss_maps); i++) {
 		if (CurrentMap == boss_maps[i]) {

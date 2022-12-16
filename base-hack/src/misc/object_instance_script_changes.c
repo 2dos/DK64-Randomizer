@@ -191,6 +191,14 @@
 #define TNS_NUMBER 0x15
 #define TNS_ITEMINDICATOR 0xF
 
+#define FACTORY_BLOCKELEVATOR_0 0x18
+#define FACTORY_BLOCKELEVATOR_1 0x19
+#define FACTORY_BLOCKELEVATOR_2 0x1A
+#define FACTORY_BLOCKELEVATOR_3 0x1B
+#define FACTORY_BLOCKELEVATOR_4 0x1C
+#define FACTORY_BLOCKELEVATOR_5 0x27
+#define FACTORY_BLOCKELEVATOR_6 0x28
+
 void hideObject(behaviour_data* behaviour_pointer) {
 	behaviour_pointer->unk_60 = 1;
 	behaviour_pointer->unk_62 = 0;
@@ -1206,6 +1214,8 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 					}
 				} else if ((param2 == FACTORY_SNATCH_GRATE) || (param2 == FACTORY_PAD_GUITAR) || (param2 == FACTORY_PAD_TRIANGLE) || (param2 == FACTORY_PAD_TROMBONE)) {
 					return !Rando.tag_anywhere;
+				} else if (((param2 >= FACTORY_BLOCKELEVATOR_0) && (param2 <= FACTORY_BLOCKELEVATOR_4)) || (param2 == FACTORY_BLOCKELEVATOR_5) || (param2 == FACTORY_BLOCKELEVATOR_6)) {
+					behaviour_pointer->timer = (RNG & 63) + 15;
 				}
 				break;
 			case MILL_FRONT:

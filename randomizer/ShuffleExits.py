@@ -27,7 +27,7 @@ LobbyEntrancePool = [
 ]
 
 # Root is the starting spawn, which is the main area of DK Isles.
-root = Regions.IslesMain
+root = Regions.GameStart
 
 
 def GetRootExit(exitId):
