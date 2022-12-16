@@ -2,6 +2,8 @@
 import http.server
 from flask import Flask, Response, request
 from flask_cors import CORS
+from os.path import exists
+from os import remove
 import threading
 import codecs
 import json
@@ -58,7 +60,13 @@ def generator():
         return "Build Started", 201
     else:
         if not seed_response:
-            return "Pending", 425
+            if exists("error.log"):
+                with open("error.log", "r") as file_object:
+                    content = file_object.read()
+                remove("error.log")
+                return content, 400
+            else:
+                return "Pending", 425
         else:
             return Response(seed_response, mimetype="text/plain", direct_passthrough=True)
 
