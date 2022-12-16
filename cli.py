@@ -68,7 +68,7 @@ def main():
         generate(setting_data, args.output)
     except Exception as e:
         with open("error.log", "w") as file_object:
-            file_object.write(str(e))
+            print(e, file=file_object)
         with open("traceback.log", "w") as file_object:
             file_object.write(str(traceback.format_exc()))
         print(traceback.format_exc())
