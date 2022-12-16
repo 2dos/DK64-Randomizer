@@ -935,9 +935,8 @@ void KongDropCode(void) {
         } else if (current_type == 155) {
             kong = 4;
         }
-        TestVariable = kong;
         if (kong >= 0) {
-            handleCutsceneKong(CurrentActorPointer_0, kong);
+            handleCutsceneKong(CurrentActorPointer_0, kong + 2);
             playActorAnimation(CurrentActorPointer_0, AnimationTable1[(0x8B * 7) + kong]);
         }
     }
