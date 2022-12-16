@@ -76,7 +76,7 @@ def main():
             from discord_webhook import DiscordWebhook, DiscordEmbed
 
             webhook = DiscordWebhook(url=os.environ.get("DISCORD_WEBHOOK"))
-            embed = DiscordEmbed(title="Error Generating Seed", description=e, color="800020")
+            embed = DiscordEmbed(title="Error Generating Seed", description=str(repr(e)), color="800020")
             embed.set_timestamp()
             webhook.add_file(file=str(traceback.format_exc()), filename="traceback.log")
             webhook.add_embed(embed)

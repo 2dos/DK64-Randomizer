@@ -439,13 +439,12 @@ function generate_seed(url, json, git_branch, run_id) {
                   $("#patchprogress").width("70%");
                 } else {
                   $("#patchprogress").addClass("bg-danger");
-                  $("#progress-text").text(
-                    "Something went wrong please try again"
-                  );
+                  $("#progress-text").text(xhr.responseText);
                   $("#patchprogress").width("100%");
                   setTimeout(function () {
                     $("#progressmodal").modal("hide");
-                  }, 1000);
+                    $("#patchprogress").removeClass("bg-danger");
+                  }, 3000);
                   clearInterval(check_status);
                 }
               },
