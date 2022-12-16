@@ -68,9 +68,9 @@ def main():
         generate(setting_data, args.output)
     except Exception as e:
         with open("error.log", "w") as file_object:
-            file_object.write(e)
+            file_object.write(str(e))
         with open("traceback.log", "w") as file_object:
-            file_object.write(traceback.format_exc())
+            file_object.write(str(traceback.format_exc()))
         print(traceback.format_exc())
         if os.environ.get("DISCORD_WEBHOOK"):
             from discord_webhook import DiscordWebhook, DiscordEmbed
@@ -78,7 +78,7 @@ def main():
             webhook = DiscordWebhook(url=os.environ.get("DISCORD_WEBHOOK"))
             embed = DiscordEmbed(title="Error Generating Seed", description=e, color="800020")
             embed.set_timestamp()
-            webhook.add_file(file=traceback.format_exc(), filename="traceback.log")
+            webhook.add_file(file=str(traceback.format_exc()), filename="traceback.log")
             webhook.add_embed(embed)
             webhook.execute()
         sys.exit(1)
