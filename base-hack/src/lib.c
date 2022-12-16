@@ -275,4 +275,5 @@ void giveGB(int kong, int level) {
 			*counter = *counter + 1;
 		}
 	}
+	// displayItemOnHUD(8, 0, 0);
 }
