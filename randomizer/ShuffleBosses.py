@@ -216,7 +216,7 @@ def ShuffleBossesBasedOnOwnedItems(settings, ownedKongs: dict, ownedMoves: dict)
 
 
 def ShuffleTinyPhaseToes():
-    """Generates random assortment of toes for Tiny Phase."""
+    """Generate random assortment of toes for Tiny Phase."""
     toe_sequence = []
     for toe in range(10):
         mode = random.randint(0, 10)
