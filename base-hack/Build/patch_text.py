@@ -236,7 +236,7 @@ move_hints = [
         "move": "Vine Barrel",
         "kong": "~",
         "cranky": "I DON'T REMEMBER THIS GAME BEING CALLED JUNGLE SWING, BUT THIS WILL CERTAINLY LET YOU SWING.",
-        "funky": "IS THIS THE 1920S? CAUSE THIS WILL LET YOU SWING LIKE IT'S THOSE DAYS.",
+        "funky": "SOME WOULD CALL THIS THE TWENTIES, CAUSE YOU GONNA BE SWINGING.",
         "candy": "THIS MOVE WILL ALLOW YOU TO GRAB ROPES.",
     },
     {
