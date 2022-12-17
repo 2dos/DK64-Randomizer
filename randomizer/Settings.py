@@ -351,7 +351,7 @@ class Settings:
         self.fast_gbs = False
         self.auto_keys = False
         self.kko_phase_order = [0, 0, 0]
-        self.toe_order = [0]*10
+        self.toe_order = [0] * 10
         self.enemy_rando = False
         self.crown_enemy_rando = "off"
         self.enemy_speed_rando = False
