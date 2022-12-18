@@ -507,6 +507,9 @@ extern unsigned char ItemsInWheel;
 extern short RotationPerItem;
 extern short FileVariables[8];
 
+extern char ToeSet1[24];
+extern char ToeSet2[24];
+
 extern float CannonArcSize[7];
 extern unsigned short PotionAnimations[6];
 extern char ArcadeBackgrounds[4];

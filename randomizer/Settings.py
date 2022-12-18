@@ -20,7 +20,7 @@ from randomizer.Lists.Location import ChunkyMoveLocations, DiddyMoveLocations, D
 from randomizer.Lists.ShufflableExit import ShufflableExits
 from randomizer.Lists.MapsAndExits import GetMapId, GetExitId, RegionMapList
 from randomizer.Prices import CompleteVanillaPrices, RandomizePrices, VanillaPrices
-from randomizer.ShuffleBosses import ShuffleBosses, ShuffleBossKongs, ShuffleKKOPhaseOrder, ShuffleKutoutKongs
+from randomizer.ShuffleBosses import ShuffleBosses, ShuffleBossKongs, ShuffleKKOPhaseOrder, ShuffleKutoutKongs, ShuffleTinyPhaseToes
 import randomizer.LogicFiles.DKIsles
 import randomizer.LogicFiles.JungleJapes
 import randomizer.LogicFiles.AngryAztec
@@ -351,6 +351,7 @@ class Settings:
         self.fast_gbs = False
         self.auto_keys = False
         self.kko_phase_order = [0, 0, 0]
+        self.toe_order = [0] * 10
         self.enemy_rando = False
         self.crown_enemy_rando = "off"
         self.enemy_speed_rando = False
@@ -589,6 +590,7 @@ class Settings:
         self.boss_kongs = ShuffleBossKongs(self)
         self.kutout_kongs = ShuffleKutoutKongs(self.boss_maps, self.boss_kongs, self.boss_kong_rando)
         self.kko_phase_order = ShuffleKKOPhaseOrder(self)
+        self.toe_order = ShuffleTinyPhaseToes()
 
         # Bonus Barrel Rando
         if self.bonus_barrel_auto_complete:

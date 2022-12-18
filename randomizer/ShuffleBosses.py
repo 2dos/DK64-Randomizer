@@ -213,3 +213,29 @@ def ShuffleBossesBasedOnOwnedItems(settings, ownedKongs: dict, ownedMoves: dict)
     else:
         settings.boss_kongs = ShuffleBossKongs(settings)
     settings.kutout_kongs = ShuffleKutoutKongs(settings.boss_maps, settings.boss_kongs, settings.boss_kong_rando)
+
+
+def ShuffleTinyPhaseToes():
+    """Generate random assortment of toes for Tiny Phase."""
+    toe_sequence = []
+    for toe in range(10):
+        mode = random.randint(0, 10)
+        if (toe % 5) == 0:
+            # Prevent player position mode on the first toe
+            mode += 1
+        if mode == 0:
+            # Use player position
+            toe_sequence.append(0xFF)
+        else:
+            # Determine random assortment
+            toe_list = list(range(4))
+            if (toe % 5) == 0:
+                # First toe
+                toe_list = [0, 2, 3]
+            toe_count = random.randint(1, 3)
+            activated_toes = random.sample(toe_list, toe_count)
+            toe_bitfield = 0
+            for toe in activated_toes:
+                toe_bitfield |= 1 << toe
+            toe_sequence.append(toe_bitfield)
+    return toe_sequence.copy()

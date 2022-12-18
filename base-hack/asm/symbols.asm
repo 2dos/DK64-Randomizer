@@ -213,6 +213,9 @@
 .definelabel RotationPerItem, 0x807FC83A
 .definelabel FileVariables, 0x807FC828
 
+.definelabel ToeSet1, 0x80036950
+.definelabel ToeSet2, 0x80036968
+
 .definelabel CannonArcSize, 0x80753CD0
 .definelabel PotionAnimations, 0x8075D380
 .definelabel ArcadeBackgrounds, 0x8004A788

@@ -415,7 +415,7 @@ int clampFlag(int flag) {
     return 0;
 }
 
-void* checkMove(short* flag, void* fba, int source) {
+void* checkMove(short* flag, void* fba, int source, int vanilla_flag) {
     if (*flag & 0x8000) {
         // Is Move
         int item_kong = (*flag >> 12) & 7;
@@ -519,6 +519,21 @@ void* checkMove(short* flag, void* fba, int source) {
                     }
                 }
             }
+            // Jetpac/Arcade GB Give
+            int give_gb = 0;
+            if ((vanilla_flag == FLAG_COLLECTABLE_NINTENDOCOIN) && (Rando.arcade_reward == 5)) {
+                give_gb = 1;
+            } else if ((vanilla_flag == FLAG_COLLECTABLE_RAREWARECOIN) && (Rando.jetpac_reward == 5)) {
+                give_gb = 1;
+            }
+            if (give_gb) {
+                if (!checkFlag(vanilla_flag, 0)) {
+                    int world = getWorld(CurrentMap, 1);
+                    if (world < 8) {
+                        giveGB(Character, world);
+                    }
+                }
+            }
             if (spawn_overlay) {
                 spawnActor(324, 0);
                 TextOverlayData.type = item_type;
@@ -573,7 +588,7 @@ void* searchFlag(int old_flag, short* flag_write, int source, void* fba) {
             if (old_flag == lookup) {
                 *flag_write = ItemRando_FLUT[(2 * i) + 1];
                 cacheFlag(old_flag, *flag_write);
-                return checkMove(flag_write, fba, source);
+                return checkMove(flag_write, fba, source, lookup);
             } else if (lookup == -1) {
                 cacheFlag(old_flag, -1);
                 return fba;
@@ -587,7 +602,7 @@ void* searchFlag(int old_flag, short* flag_write, int source, void* fba) {
             if (old_flag == lookup) {
                 *flag_write = ItemRando_FLUT[(2 * index) + 1];
                 cacheFlag(old_flag, *flag_write);
-                return checkMove(flag_write, fba, source);
+                return checkMove(flag_write, fba, source, lookup);
             }
         }
     }
@@ -608,31 +623,15 @@ void* updateFlag(int type, short* flag, void* fba, int source) {
                         if (flut_cache[(2 * i) + 1] != -1) {
                             *flag = flut_cache[(2 * i) + 1];
                         }
-                        return checkMove(flag, fba, source);
+                        return checkMove(flag, fba, source, vanilla_flag);
                     }
                 }
                 for (int i = 0; i < flut_size; i++) {
                     int lookup = ItemRando_FLUT[(2 * i)];
                     if (vanilla_flag == lookup) {
                         *flag = ItemRando_FLUT[(2 * i) + 1];
-                        if (source == 1) {
-                            int give_gb = 0;
-                            if ((vanilla_flag == FLAG_COLLECTABLE_NINTENDOCOIN) && (Rando.arcade_reward == 5)) {
-                                give_gb = 1;
-                            } else if ((vanilla_flag == FLAG_COLLECTABLE_RAREWARECOIN) && (Rando.jetpac_reward == 5)) {
-                                give_gb = 1;
-                            }
-                            if (give_gb) {
-                                if (!checkFlag(vanilla_flag, 0)) {
-                                    int world = getWorld(CurrentMap, 1);
-                                    if (world < 8) {
-                                        giveGB(Character, world);
-                                    }
-                                }
-                            }
-                        }
                         cacheFlag(vanilla_flag, *flag);
-                        return checkMove(flag, fba, source);
+                        return checkMove(flag, fba, source, vanilla_flag);
                     } else if (lookup == -1) {
                         cacheFlag(vanilla_flag, -1);
                         return fba;
@@ -936,9 +935,8 @@ void KongDropCode(void) {
         } else if (current_type == 155) {
             kong = 4;
         }
-        TestVariable = kong;
         if (kong >= 0) {
-            handleCutsceneKong(CurrentActorPointer_0, kong);
+            handleCutsceneKong(CurrentActorPointer_0, kong + 2);
             playActorAnimation(CurrentActorPointer_0, AnimationTable1[(0x8B * 7) + kong]);
         }
     }

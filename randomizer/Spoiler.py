@@ -118,7 +118,8 @@ class Spoiler:
             settings["Logic Type"] = logic_types[self.settings.logic_type]
         else:
             settings["Logic Type"] = self.settings.logic_type
-        settings["Glitches Enabled"] = ", ".join([x.name for x in GlitchLogicItems if x.shorthand in self.settings.glitches_selected or len(self.settings.glitches_selected) == 0])
+        if self.settings.logic_type == "glitch":
+            settings["Glitches Enabled"] = ", ".join([x.name for x in GlitchLogicItems if x.shorthand in self.settings.glitches_selected or len(self.settings.glitches_selected) == 0])
         settings["Shuffle Enemies"] = self.settings.enemy_rando
         settings["Move Randomization type"] = self.settings.move_rando
         settings["Loading Zones Shuffled"] = self.settings.shuffle_loading_zones

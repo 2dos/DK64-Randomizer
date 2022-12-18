@@ -280,11 +280,17 @@ def patching_response(responded_data):
     ROM().seek(sav + 0x138)
     ROM().write(("off", "all", "isles").index(spoiler.settings.activate_all_bananaports))
 
-    # KKO Phase Order
     if spoiler.settings.hard_bosses:
+        # KKO Phase Order
         for phase_slot in range(3):
             ROM().seek(sav + 0x17B + phase_slot)
             ROM().write(spoiler.settings.kko_phase_order[phase_slot])
+        # Random Toe Sequence
+        ROM().seek(sav + 0x41)
+        ROM().write(1)
+        for slot in range(10):
+            ROM().seek(sav + 0x37 + slot)
+            ROM().write(spoiler.settings.toe_order[slot])
 
     # Win Condition
     conditions = ["beat_krool", "get_key8", "all_fairies", "all_blueprints", "all_medals", "poke_snap", "all_keys"]
