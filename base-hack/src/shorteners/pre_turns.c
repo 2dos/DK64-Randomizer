@@ -80,6 +80,23 @@ void pre_turn_keys(void) {
 			check <<= 1;
 		}
 	}
+	if ((Rando.item_rando) && (keys_in_item_pool)) {
+		for (int i = 0; i < 7; i++) {
+			int j = 0;
+			while (j < 400) {
+				int vanilla_flag = ItemRando_FLUT[2 * j];
+				if (normal_key_flags[i] == vanilla_flag) {
+					int new_flag = ItemRando_FLUT[(2 * j) + 1];
+					if (checkFlagDuplicate(new_flag, 0)) {
+						setPermFlag(tnsportal_flags[i]);
+					}
+				} else if (vanilla_flag == -1) {
+					break;
+				}
+				j++;
+			}
+		}
+	}
 	/*
 		NOTE: This doesn't work for some reason?
 		Need to figure this out.
