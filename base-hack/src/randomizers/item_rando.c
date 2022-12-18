@@ -921,6 +921,7 @@ void KongDropCode(void) {
     if (CurrentActorPointer_0->yVelocity > 500.0f) {
         CurrentActorPointer_0->yVelocity = 500.0f;
     }
+    CurrentActorPointer_0->hSpeed = 0.0f;
     if ((CurrentActorPointer_0->obj_props_bitfield & 0x10) == 0) {
         int current_type = CurrentActorPointer_0->actorType;
         int kong = -1;
@@ -1341,7 +1342,7 @@ void mermaidCheck(void) {
     CurrentActorPointer_0->control_state_progress = 0;
 }
 
-#define GB_DICTIONARY_COUNT 119
+#define GB_DICTIONARY_COUNT 120
 static GBDictItem NewGBDictionary[GB_DICTIONARY_COUNT] = {};
 
 int addDictionaryItem(int index, int map, int id, int flag, int kong) {
@@ -1389,6 +1390,9 @@ void initItemDictionary(void) {
         size = addDictionaryItem(size, 0x2C, i, FLAG_PEARL_0_COLLECTED + i, -2);
     }
     size = addDictionaryItem(size, 0x34, 5, FLAG_COLLECTABLE_BEAN, -2);
+    if (Rando.quality_of_life.vanilla_fixes) {
+        size = addDictionaryItem(size, 0x11, 0x5A, FLAG_KEYHAVE_KEY8, -2);
+    }
     // Initialize addresses
     *(short*)(0x8073150A) = getHi(&NewGBDictionary[0].map);
     *(short*)(0x8073151E) = getLo(&NewGBDictionary[0].map);

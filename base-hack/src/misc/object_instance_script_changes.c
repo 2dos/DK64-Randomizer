@@ -415,16 +415,6 @@ static const short tnsportal_flags[] = {
 	FLAG_PORTAL_CAVES,
 	FLAG_PORTAL_CASTLE,
 };
-static const short normal_key_flags[] = {
-	FLAG_KEYHAVE_KEY1,
-	FLAG_KEYHAVE_KEY2,
-	FLAG_KEYHAVE_KEY3,
-	FLAG_KEYHAVE_KEY4,
-	FLAG_KEYHAVE_KEY5,
-	FLAG_KEYHAVE_KEY6,
-	FLAG_KEYHAVE_KEY7,
-	FLAG_KEYHAVE_KEY8
-};
 
 void TNSPortalGenericCode(behaviour_data* behaviour, int index, int id) {
 	int world = getWorld(CurrentMap, 0);

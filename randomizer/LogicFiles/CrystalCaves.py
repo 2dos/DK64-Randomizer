@@ -33,7 +33,7 @@ LogicRegions = {
         TransitionFront(Regions.CrystalCavesLobby, lambda l: True, Transitions.CavesToIsles),
         TransitionFront(Regions.CavesBlueprintCave, lambda l: (l.mini and l.twirl and l.tiny) or l.phasewalk or l.CanSkew(True)),
         TransitionFront(Regions.CavesBonusCave, lambda l: (l.mini and l.tiny) or l.phasewalk or l.CanSkew(True)),
-        TransitionFront(Regions.CavesBlueprintPillar, lambda l: (l.jetpack or l.advanced_platforming) and l.diddy),
+        TransitionFront(Regions.CavesBlueprintPillar, lambda l: l.jetpack and l.diddy),
         TransitionFront(Regions.CavesBananaportSpire, lambda l: (l.jetpack or l.advanced_platforming) and l.diddy),
         TransitionFront(Regions.BoulderCave, lambda l: (l.punch and l.chunky) or l.CanSkew(True)),
         TransitionFront(Regions.CavesLankyRace, lambda l: (l.superSlam and l.balloon and l.islanky) or l.phasewalk or l.CanSkew(True), Transitions.CavesMainToRace),

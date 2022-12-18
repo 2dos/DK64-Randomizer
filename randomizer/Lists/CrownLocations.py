@@ -158,7 +158,7 @@ CrownLocations = {
             z=658,
             scale=0.45,
             region=Regions.LankyTemple,
-            logic=lambda l: (l.grape and l.islan) or l.phasewalkky,
+            logic=lambda l: (l.grape and l.islanky) or l.phasewalk,
         ),
         CrownLocation(
             map=Maps.AztecTiny5DTemple, name="Angry Aztec - Tiny 5DT: Dead End", x=329, y=123, z=1420, scale=0.3, region=Regions.TinyTemple, logic=lambda l: (l.feather and l.istiny) or l.phasewalk

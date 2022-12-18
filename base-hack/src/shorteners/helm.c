@@ -177,3 +177,73 @@ void HelmBarrelCode(void) {
 		}
 	}
 }
+
+#define DOORITEM_DEFAULT 0 // Default
+#define DOORITEM_GB 1 // 1 - GBs
+#define DOORITEM_BP 2 // 2 - BP
+#define DOORITEM_BEAN 3 // 3 - Bean
+#define DOORITEM_PEARL 4 // 4 - Pearls
+#define DOORITEM_FAIRY 5 // 5 - Fairy
+#define DOORITEM_KEY 6 // 6 - Key
+#define DOORITEM_MEDAL 7 // 7 - Medal
+#define DOORITEM_RAINBOWCOIN 8 // 8 - Rainbow Coins
+#define DOORITEM_CROWN 9 // 9 - Crowns
+#define DOORITEM_COMPANYCOIN 10 // 10 - Company Coins
+
+int checkDoorItem(int index, int count) {
+	switch (index) {
+		case DOORITEM_DEFAULT:
+			return 1;
+		case DOORITEM_GB:
+			{
+				int gb_count = 0;
+				for (int level = 0; level < 8; level++) {
+					for (int kong = 0; kong < 5; kong++) {
+						gb_count += MovesBase[kong].gb_count[level];
+					}
+				}
+				return gb_count >= count;
+			}
+		case DOORITEM_BP:
+			return countFlagsDuplicate(FLAG_BP_JAPES_DK_HAS, 40, 0) >= count;
+		case DOORITEM_BEAN:
+			return checkFlagDuplicate(FLAG_COLLECTABLE_BEAN, 0);
+		case DOORITEM_PEARL:
+			return countFlagsDuplicate(FLAG_PEARL_0_COLLECTED, 5, 0) >= count;
+		case DOORITEM_FAIRY:
+			return countFlagsDuplicate(FLAG_FAIRY_1, 20, 0) >= count;
+		case DOORITEM_KEY:
+			{
+				int key_count = 0;
+				for (int i = 0; i < 8; i++) {
+					key_count += checkFlagDuplicate(normal_key_flags[i], 0);
+				}
+				return key_count >= count;
+			}
+		case DOORITEM_MEDAL:
+			return countFlagsDuplicate(FLAG_MEDAL_JAPES_DK, 40, 0) >= count;
+		case DOORITEM_RAINBOWCOIN:
+			return 1;
+		case DOORITEM_CROWN:
+			return countFlagsDuplicate(FLAG_CROWN_JAPES, 10, 0) >= count;
+		case DOORITEM_COMPANYCOIN:
+			return (checkFlagDuplicate(FLAG_COLLECTABLE_NINTENDOCOIN, 0) + checkFlagDuplicate(FLAG_COLLECTABLE_RAREWARECOIN, 0)) >= count;
+	}
+	return 1;
+}
+
+int CrownDoorCheck(void) {
+	if ((Rando.crown_door_item == DOORITEM_DEFAULT) && (Rando.crown_door_item_count == 0)) {
+		Rando.crown_door_item = DOORITEM_CROWN;
+		Rando.crown_door_item_count = 4;
+	}
+	return checkDoorItem(Rando.crown_door_item, Rando.crown_door_item_count);
+}
+
+int CoinDoorCheck(void) {
+	if ((Rando.coin_door_item == DOORITEM_DEFAULT) && (Rando.coin_door_item_count == 0)) {
+		Rando.coin_door_item = DOORITEM_COMPANYCOIN;
+		Rando.coin_door_item_count = 2;
+	}
+	return checkDoorItem(Rando.coin_door_item, Rando.coin_door_item_count);
+}
