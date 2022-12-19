@@ -1414,9 +1414,9 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 					switch(param2) {
 						case HELM_COIN_DOOR:
 							if (index == 0) {
-								return checkFlagDuplicate(FLAG_COLLECTABLE_NINTENDOCOIN,0);
+								return CoinDoorCheck();
 							} else if (index == 1) {
-								return checkFlagDuplicate(FLAG_COLLECTABLE_RAREWARECOIN,0);
+								return checkFlagDuplicate(FLAG_HELM_COINDOOR, 0) || Rando.coin_door_open == 1;
 							}
 							break;
 						case HELM_PAD_BONGO:

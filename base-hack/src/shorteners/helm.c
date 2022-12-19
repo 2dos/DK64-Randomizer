@@ -39,6 +39,12 @@ void openCrownDoor(void) {
 }
 
 void openCoinDoor(void) {
+	/*
+		0 - Vanilla
+		1 - Open
+		2 - Requires 1 Coin
+		3 - Random
+	*/
 	if (Rando.coin_door_open == 1) { // Always Open
 		setPermFlag(FLAG_HELM_COINDOOR);
 	} else if (Rando.coin_door_open == 2) { // Only requires RW Coin

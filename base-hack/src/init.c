@@ -414,6 +414,8 @@ void initHack(int source) {
 
 			*(int*)(0x805FEBC0) = 0x0C000000 | (((int)&parseCutsceneData & 0xFFFFFF) >> 2); // modifyCutsceneHook
 			*(int*)(0x807313A4) = 0x0C000000 | (((int)&checkVictory_flaghook & 0xFFFFFF) >> 2); // perm flag set hook
+
+			*(int*)(0x80748088) = (int)&CrownDoorCheck; // Update check on Crown Door
 			
 			// New Mermaid Checking Code
 			*(int*)(0x806C3B5C) = 0x0C000000 | (((int)&mermaidCheck & 0xFFFFFF) >> 2); // Mermaid Check
