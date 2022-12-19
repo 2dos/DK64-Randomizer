@@ -256,6 +256,7 @@ extern void giveGB(int kong, int level);
 extern unsigned int cs_skip_db[432];
 extern bonus_barrel_info bonus_data[95];
 extern const short kong_flags[5];
+extern const short normal_key_flags[8];
 extern const check_struct item_db[292];
 
 extern sprite_data_struct bean_sprite;

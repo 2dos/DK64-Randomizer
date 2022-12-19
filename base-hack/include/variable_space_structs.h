@@ -21,7 +21,10 @@ typedef struct varspace {
 	/* 0x045 */ unsigned char slam_prices[2]; // Array of simian slam upgrade prices: [1,2]. First item is super simian slam (blue), 2nd is super duper simian slam (red)
 	/* 0x047 */ char call_parent_filter; // Calls filter to remove "unnecessary" links from the parent chain
 	/* 0x048 */ char arcade_order[4]; // 01 = 25m, 04 = 50m, 03 = 75m, 02 = 100m
-	/* 0x04C */ char unk4C[0x50-0x4C];
+	/* 0x04C */ char crown_door_item;
+	/* 0x04D */ unsigned char crown_door_item_count;
+	/* 0x04E */ char coin_door_item;
+	/* 0x04F */ unsigned char coin_door_item_count;
 	/* 0x050 */ unsigned char aztec_beetle_reward;
 	/* 0x051 */ unsigned char caves_beetle_reward;
 	/* 0x052 */ char disable_wrinkly_kong_requirement; // Disable Kongs being required to access a wrinkly door

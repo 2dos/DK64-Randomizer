@@ -364,7 +364,12 @@ void purchaseMove(shop_paad* paad) {
 			giveGB(Character, getWorld(CurrentMap, 1));
 		case PURCHASE_FLAG:
 			progressiveChange(paad->flag);
-			setFlagDuplicate(paad->flag, 1, 0);
+			if (paad->flag == -2) {
+				setFlagDuplicate(FLAG_ABILITY_CAMERA, 1, 0);
+				setFlagDuplicate(FLAG_ABILITY_SHOCKWAVE, 1, 0);
+			} else {
+				setFlagDuplicate(paad->flag, 1, 0);
+			}
 		break;
 	}
 	if (p_type == PURCHASE_INSTRUMENT) {
