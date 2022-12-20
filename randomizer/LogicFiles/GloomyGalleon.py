@@ -182,7 +182,7 @@ LogicRegions = {
         TransitionFront(Regions.GloomyGalleonMedals, lambda l: True),
         TransitionFront(Regions.ShipyardUnderwater, lambda l: (Events.ShipyardTreasureRoomOpened in l.Events or l.CanPhaseswim()) and l.swim),
         TransitionFront(Regions.TinyChest, lambda l: (l.mini and l.istiny and l.swim) or l.CanPhaseswim(), Transitions.GalleonTreasureToChest),
-        TransitionFront(Regions.TreasureRoomDiddyGoldTower, lambda l: (Events.WaterSwitch in l.Events and l.spring and l.diddy) or l.CanMoonkick() or (Events.ShipyardEnguarde in l.Events and Events.ShipyardTreasureRoomOpened in l.Events and l.advanced_platforming and l.balloon and l.lanky)
+        TransitionFront(Regions.TreasureRoomDiddyGoldTower, lambda l: (Events.WaterSwitch in l.Events and l.spring and l.diddy) or l.CanMoonkick() or (Events.ShipyardEnguarde in l.Events and Events.ShipyardTreasureRoomOpened in l.Events and l.advanced_platforming and l.balloon and l.islanky)
     ]),
 
     Regions.TreasureRoomDiddyGoldTower: Region("Treasure Room Diddy Gold Tower", "Treasure Room", Levels.GloomyGalleon, False, -1, [  # Deathwarp is possible without the kasplat, but you can only take fall damage once
