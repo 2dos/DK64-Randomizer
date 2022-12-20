@@ -992,7 +992,7 @@ CrownLocations = {
             z=5341,
             scale=0.6,
             region=Regions.HideoutHelmAfterBoM,
-            logic=lambda l: (((l.settings.crown_door_open or l.BattleCrowns >= 4) and (l.settings.coin_door_open or l.nintendoCoin and l.rarewareCoin)) or l.generalclips),
+            logic=lambda l: ((l.CrownDoorOpened() and l.CoinDoorOpened()) or l.generalclips),
         ),
         CrownLocation(
             map=Maps.HideoutHelm,
@@ -1002,7 +1002,7 @@ CrownLocations = {
             z=5036,
             scale=0.6,
             region=Regions.HideoutHelmAfterBoM,
-            logic=lambda l: (((l.settings.crown_door_open or l.BattleCrowns >= 4) and (l.settings.coin_door_open or l.nintendoCoin and l.rarewareCoin)) or l.generalclips),
+            logic=lambda l: ((l.CrownDoorOpened() and l.CoinDoorOpened()) or l.generalclips),
         ),
     ],
 }

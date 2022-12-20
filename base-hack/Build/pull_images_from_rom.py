@@ -45,6 +45,8 @@ images = [
     ImageData("boss_key", "rgba16", 25, 5877, 44, 44, False, True),
     ImageData("01234", "rgba16", 14, 15, 76, 24, False, False),
     ImageData("56789", "rgba16", 14, 16, 76, 24, False, False),
+    ImageData("MNO", "rgba16", 14, 9, 76, 24, False, False),
+    ImageData("PQRS", "rgba16", 14, 10, 76, 24, False, False),
     ImageData("WXYL", "rgba16", 14, 12, 76, 24, False, False),
     ImageData("specialchars", "rgba16", 14, 30, 64, 32, False, False),
     ImageData("red_qmark_0", "rgba16", 7, 508, 32, 64, False, False),
@@ -75,6 +77,9 @@ images = [
     ImageData("crown_shop", "rgba16", 25, 0x1705, 44, 44, False, True),
     ImageData("pearl", "rgba16", 25, 0xD5F, 32, 32, False, True),
     ImageData("bean", "rgba16", 25, 0xD3C, 64, 32, False, True),
+    ImageData("rw_coin_noresize", "rgba16", 25, 5905, 44, 44, False, True),
+    ImageData("nin_coin_noresize", "rgba16", 25, 5912, 44, 44, False, True),
+    ImageData("crown_noresize", "rgba16", 25, 5893, 44, 44, False, True),
 ]
 
 kong_tex = ["chunky", "tiny", "lanky", "diddy", "dk"]

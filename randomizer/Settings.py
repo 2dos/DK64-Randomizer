@@ -219,10 +219,14 @@ class Settings:
     def generate_misc(self):
         """Set default items on misc page."""
         #  Settings which affect logic
-        # crown_door_open: bool
-        self.crown_door_open = None
-        # coin_door_open: bool
-        self.coin_door_open = None
+        # crown_door_item: str
+        # crown_door_item_count: int
+        self.crown_door_item = "vanilla"
+        self.crown_door_item_count = 1
+        # coin_door_item: str
+        # coin_door_item_count: int
+        self.coin_door_item = "vanilla"
+        self.coin_door_item_count = 1
         # krool_phase_count: int, [1-5]
         self.krool_phase_count = 5
         self.krool_random = False
@@ -388,6 +392,40 @@ class Settings:
 
     def resolve_settings(self):
         """Resolve settings which are not directly set through the UI."""
+        # Helm Doors
+        helmdoor_items = {
+            "req_gb": {"max": 201, "random_max": 100},
+            "req_bp": {"max": 40, "random_max": 30},
+            "req_companycoins": {"max": 2, "random_max": 2},
+            "req_key": {"max": 8, "random_max": 6},
+            "req_medal": {"max": 40, "random_max": 20},
+            "req_crown": {"max": 10, "random_max": 5},
+            "req_fairy": {"max": 18, "random_max": 10},  # Remove two fairies since you can't get the final two fairies glitchless if on the crown door
+            # "req_rainbowcoin": {"max": 16, "random_max": 16},
+            "req_bean": {"max": 1, "random_max": 1},
+            "req_pearl": {"max": 5, "random_max": 3},
+        }
+        if self.crown_door_item == "random" and self.coin_door_item == "random":
+            selected_items = random.sample(helmdoor_items.keys(), 2)
+            self.crown_door_item = selected_items[0]
+            self.coin_door_item = selected_items[1]
+            self.crown_door_item_count = random.randint(1, helmdoor_items[self.crown_door_item]["random_max"])
+            self.coin_door_item_count = random.randint(1, helmdoor_items[self.coin_door_item]["random_max"])
+        elif self.crown_door_item == "random":
+            self.crown_door_item = random.choice(helmdoor_items.keys())
+            self.crown_door_item_count = random.randint(1, helmdoor_items[self.crown_door_item]["random_max"])
+        elif self.coin_door_item == "random":
+            self.coin_door_item = random.choice(helmdoor_items.keys())
+            self.coin_door_item_count = random.randint(1, helmdoor_items[self.coin_door_item]["random_max"])
+        if self.crown_door_item in helmdoor_items.keys():
+            if self.crown_door_item_count > helmdoor_items[self.crown_door_item]["max"]:
+                self.crown_door_item_count = helmdoor_items[self.crown_door_item]["max"]
+        if self.coin_door_item in helmdoor_items.keys():
+            if self.coin_door_item_count > helmdoor_items[self.coin_door_item]["max"]:
+                self.coin_door_item_count = helmdoor_items[self.coin_door_item]["max"]
+        print(self.coin_door_item)
+        print(self.crown_door_item)
+
         kongs = GetKongs()
 
         self.shuffled_location_types = []
@@ -684,7 +722,7 @@ class Settings:
                     ItemList[item_index].playthrough = True
         if self.win_condition == "all_medals":
             ItemList[Items.BananaMedal].playthrough = True
-        if not self.crown_door_open:
+        if self.crown_door_item in ("vanilla", "req_crown") or self.coin_door_item == "req_crown":
             ItemList[Items.BattleCrown].playthrough = True
 
         self.free_trade_items = self.free_trade_setting != "none"
