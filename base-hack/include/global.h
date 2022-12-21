@@ -159,6 +159,8 @@ extern void tagAnywhereBunch(int player, int obj, int player_index);
 extern void modifyCutscenePoint(int bank, int cutscene, int point, int new_item);
 extern void modifyCutsceneItem(int bank, int item, int new_param1, int new_param2, int new_param3);
 extern void modifyCutscenePanPoint(int bank, int item, int point_index, int x, int y, int z, int rot0, int rot1, int rot2, int zoom, int roll);
+extern void modifyCutscenePointTime(int bank, int cutscene, int point, int new_time);
+extern void modifyCutscenePointCount(int bank, int cutscene, int point_count);
 extern void HelmInit(int init_stage);
 extern void initKRool(int phase);
 extern void handleSFXCache(void);

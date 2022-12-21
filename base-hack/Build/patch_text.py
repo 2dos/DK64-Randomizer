@@ -684,3 +684,8 @@ writeText("kongname_text.bin", kongname_text)
 fairy_text = grabText(40)
 fairy_text[4] = [{"text": ["~ REMEMBER, MUST GET FAIRIES TO OBTAIN SPECIAL REWARD."]}]
 writeText("fairy_rw_text.bin", fairy_text)
+
+squawks_text = grabText(19)
+squawks_text.append([{"text": ["YOU CAN FIND GORILLA GONE IN CAVES CRANKY."]}])
+squawks_text.append([{"text": ["YOU CAN FIND MONKEYPORT IN CAVES CRANKY."]}])
+writeText("misc_squawks_text.bin", squawks_text)

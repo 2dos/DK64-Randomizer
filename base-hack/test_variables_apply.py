@@ -66,7 +66,7 @@ set_variables = {
     "remove_high_requirements": 1,
     "open_level_sections": 1,
     "auto_keys": 0,
-    "starting_map": 0xBD,
+    "starting_map": 0xAA,
     "starting_exit": 0x0,
     "test_zone": [0xAE, 1],
     "klaptrap_color_bbother": 0x96,

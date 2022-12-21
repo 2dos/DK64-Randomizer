@@ -193,6 +193,7 @@ void modifyCutsceneItem(int bank, int item, int new_param1, int new_param2, int 
 	if (CutsceneBanks[bank].cutscene_funcbank) {
 		void* funcbank = CutsceneBanks[bank].cutscene_funcbank;
 		cutscene_item* data = (cutscene_item*)getObjectArrayAddr(funcbank,0x14,item);
+		data->command = 0xD;
 		data->params[0] = new_param1;
 		data->params[1] = new_param2;
 		data->params[2] = new_param3;
@@ -212,6 +213,25 @@ void modifyCutscenePanPoint(int bank, int item, int point_index, int x, int y, i
 		data->rot_data[2] = rot2;
 		data->zoom = zoom;
 		data->roll = roll;
+	}
+}
+
+void modifyCutscenePointTime(int bank, int cutscene, int point, int new_time) {
+	cutscene_item_data* databank = CutsceneBanks[bank].cutscene_databank;
+	cutscene_item_data* data = (cutscene_item_data*)&databank[cutscene];
+	if (data) {
+		short* write_spot = (short*)&data->length_array[point];
+		if (write_spot) {
+			*(short*)write_spot = new_time;
+		}
+	}
+}
+
+void modifyCutscenePointCount(int bank, int cutscene, int point_count) {
+	cutscene_item_data* databank = CutsceneBanks[bank].cutscene_databank;
+	cutscene_item_data* data = (cutscene_item_data*)&databank[cutscene];
+	if (data) {
+		data->num_points = point_count;
 	}
 }
 

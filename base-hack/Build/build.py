@@ -541,7 +541,7 @@ for x in range(8):
         }
     )
 for x in range(43):
-    if x not in (13, 32, 0x18, 0x27, 8, 37, 2, 40):
+    if x not in (13, 32, 0x18, 0x27, 8, 37, 2, 40, 19):
         file_dict.append(
             {
                 "name": "Text " + str(x),
@@ -674,6 +674,7 @@ file_dict.append({"name": "Cranky Text", "pointer_table_index": 12, "file_index"
 file_dict.append({"name": "Menu Text", "pointer_table_index": 12, "file_index": 37, "source_file": "menu_text.bin", "do_not_compress": True, "do_not_delete_source": True})
 file_dict.append({"name": "Kong Name Text", "pointer_table_index": 12, "file_index": 2, "source_file": "kongname_text.bin", "do_not_compress": True, "do_not_delete_source": True})
 file_dict.append({"name": "BFI Rareware Door Text", "pointer_table_index": 12, "file_index": 40, "source_file": "fairy_rw_text.bin", "do_not_compress": True, "do_not_delete_source": True})
+file_dict.append({"name": "Misc Squawks Text", "pointer_table_index": 12, "file_index": 19, "source_file": "misc_squawks_text.bin", "do_not_compress": True, "do_not_delete_source": True})
 
 with open(ROMName, "rb") as fh:
     adjustExits(fh)
@@ -1151,6 +1152,10 @@ with open(newROMName, "r+b") as fh:
         "pearl",
         "bean32",
         "pearl32",
+        "door_combocoin",
+        "door_crown",
+        "num_2",
+        "num_4",
     ]
     for disp in displays:
         for ext in [".png", ".rgba32", ".rgba5551"]:

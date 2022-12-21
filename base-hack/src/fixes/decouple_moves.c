@@ -346,7 +346,21 @@ void parseCutsceneData(void) {
 		modifyCutscenePanPoint(0, 14, 0, 915, 40, 1323, 0xD800, 0, 0, 45, 0);
 		modifyCutscenePanPoint(0, 14, 1, 417, 169, 1290, 0x2000, 0xF000, 0xF000, 45, 0);
 	} else if (CurrentMap == 0xAA) {
-		
+		// Helm Lobby - Hint Cutscene
+		modifyCutsceneItem(0, 3, 0x1C, 0, 0);
+		modifyCutsceneItem(0, 0, 0x1E, 19, 25);
+		modifyCutscenePoint(0, 2, 1, 0);
+		modifyCutscenePoint(0, 2, 3, 5);
+		modifyCutscenePointTime(0, 2, 1, 0);
+		modifyCutscenePointTime(0, 2, 2, 99);
+		modifyCutscenePointTime(0, 2, 3, 100);
+		modifyCutscenePointCount(0, 2, 4);
+		// Helm Lobby - Remove song from CS 0
+		modifyCutscenePoint(0, 0, 0, 1);
+		if (!Rando.quality_of_life.remove_cutscenes) {
+			modifyCutscenePointTime(0, 0, 0, 100);
+		}
+		modifyCutscenePointCount(0, 0, 1);
 	}
 	loadDKTVData(); // Has to be last
 }
