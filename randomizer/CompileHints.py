@@ -10,7 +10,7 @@ from randomizer.Enums.Locations import Locations
 from randomizer.Enums.Regions import Regions
 from randomizer.Enums.Transitions import Transitions
 from randomizer.Enums.Types import Types
-from randomizer.ItemPool import AllKongMoves
+from randomizer.ItemPool import GetKongForItem
 from randomizer.Lists.Item import ItemList, NameFromKong
 from randomizer.Lists.Location import LocationList, SharedShopLocations, TrainingBarrelLocations
 from randomizer.Lists.MapsAndExits import GetMapId
@@ -247,6 +247,7 @@ hint_distribution = {
     HintType.KongLocation: 1,  # must be placed before you find them and placed in a door of a free kong
     # HintType.MedalsRequired: 1,
     HintType.Entrance: 8,
+    HintType.RequiredKongHint: -1,  # Fixed number based on the number of locked kongs
     HintType.RequiredKeyHint: -1,  # Fixed number based on the number of keys to be obtained over the seed
     HintType.RequiredWinConditionHint: 0,  # Fixed number based on what K. Rool phases you must defeat
     HintType.WothLocation: 8,
@@ -259,7 +260,7 @@ HINT_CAP = 35  # There are this many total slots for hints
 
 def compileHints(spoiler: Spoiler):
     """Create a hint distribution, generate buff hints, and place them in locations."""
-    locked_hint_types = [HintType.RequiredKeyHint, HintType.RequiredWinConditionHint]  # Some hint types cannot have their value changed
+    locked_hint_types = [HintType.RequiredKongHint, HintType.RequiredKeyHint, HintType.RequiredWinConditionHint]  # Some hint types cannot have their value changed
     maxed_hint_types = []  # Some hint types cannot have additional hints placed
     # In level order (or vanilla) progression, there are hints that we want to be in the player's path
     level_order_matters = spoiler.settings.logic_type != "nologic" and spoiler.settings.shuffle_loading_zones != "all"
@@ -295,10 +296,24 @@ def compileHints(spoiler: Spoiler):
                     hint_distribution[HintType.RequiredWinConditionHint] += 1  # Dedicated Mini Monkey hint
                 if Kongs.chunky in spoiler.settings.krool_order:
                     hint_distribution[HintType.RequiredWinConditionHint] += 1  # Dedicated Gorilla Gone hint
-            # All fairies seeds need help finding the camera (if you don't start with it) - two hints for it
+            # All fairies seeds need help finding the camera (if you don't start with it) - variable amount of unique hints for it
             if spoiler.settings.win_condition == "all_fairies" and spoiler.settings.shockwave_status != "start_with":
                 valid_types.append(HintType.RequiredWinConditionHint)
-                hint_distribution[HintType.RequiredWinConditionHint] = 2
+                camera_location_id = None
+                for id, loc in LocationList.items():
+                    if loc.item in (Items.Camera, Items.CameraAndShockwave):
+                        camera_location_id = id
+                        break
+                # Same rules as key path amounts
+                path_length = len(spoiler.woth_paths[camera_location_id]) - 1  # Don't include the camera itself in the path length
+                if path_length <= 1:  # 1-2
+                    hint_distribution[HintType.RequiredWinConditionHint] = 1
+                elif path_length <= 5:  # 3-6
+                    hint_distribution[HintType.RequiredWinConditionHint] = 2
+                elif path_length <= 9:  # 7-10
+                    hint_distribution[HintType.RequiredWinConditionHint] = 3
+                else:  # 11+
+                    hint_distribution[HintType.RequiredWinConditionHint] = 4
     # if spoiler.settings.random_patches:
     #     valid_types.append(HintType.DirtPatch)
     if spoiler.settings.randomize_blocker_required_amounts:
@@ -307,7 +322,8 @@ def compileHints(spoiler: Spoiler):
         valid_types.append(HintType.TroffNScoff)
     if spoiler.settings.kong_rando:
         if spoiler.settings.shuffle_items and Types.Kong in spoiler.settings.shuffled_location_types:
-            print("item rando kong hints under construction")
+            valid_types.append(HintType.RequiredKongHint)
+            hint_distribution[HintType.RequiredKongHint] = 5 - spoiler.settings.starting_kongs_count
         else:
             valid_types.append(HintType.KongLocation)
     # if spoiler.settings.coin_door_open == "need_both" or spoiler.settings.coin_door_open == "need_rw":
@@ -441,7 +457,41 @@ def compileHints(spoiler: Spoiler):
                 progression_hint_locations.append(hint_for_location)
 
     # Now place hints by type from most-restrictive to least restrictive. Usually anything we want on the player's path should get placed first
-    # Kongs should be hinted before they're available and should only be hinted to free Kongs, making them very restrictive
+    # Item rando kong hints are required and highly restrictive, only hinted to free kongs before (or as) the location is available
+    if hint_distribution[HintType.RequiredKongHint] > 0:
+        # The length of this list should match hint_distribution[HintType.RequiredKongHint]
+        kong_locations = [location for id, location in LocationList.items() if location.item in (Items.Donkey, Items.Diddy, Items.Lanky, Items.Tiny, Items.Chunky)]
+        for kong_location in kong_locations:
+            level_restriction = None
+            # Put hints in or before the level the location is (or levels 1-2) (regardless of whether or not you can read it, we'll sort that out later)
+            # This only matters if level order matters
+            if level_order_matters:
+                if kong_location.level in (Levels.DKIsles, Levels.Shops):
+                    level_restriction = [spoiler.settings.level_order[1], spoiler.settings.level_order[2]]
+                else:
+                    level_restriction = [level for level in all_levels if spoiler.settings.EntryGBs[level] <= spoiler.settings.EntryGBs[kong_location.level]]
+            # We could put a kong door restriction on this, but I'm choosing not to due to a hint rework coming
+            # Try to get a hint door in the requested levels
+            hint_location = getRandomHintLocation(levels=level_restriction)
+            # This is STAGGERINGLY unlikely to fail, so just give up if it fails
+            if hint_location is None:
+                hint_location = getRandomHintLocation()
+            freeing_kong_name = kong_list[kong_location.kong]
+            if spoiler.settings.wrinkly_hints == "cryptic":
+                if kong_location.level == Levels.Shops:  # Exactly Jetpac
+                    level_name = random.choice(crankys_cryptic)
+                else:
+                    level_name = random.choice(level_cryptic_helm_isles[kong_location.level])
+            else:
+                if kong_location.level == Levels.Shops:  # Exactly Jetpac
+                    level_name = "Cranky's Lab"
+                else:
+                    level_name = level_list_helm_isles[kong_location.level]
+            freed_kong = kong_list[GetKongForItem(kong_location.item)]
+            message = f"{freeing_kong_name} finds {freed_kong} in {level_name}."
+            hint_location.hint_type = HintType.KongLocation
+            UpdateHint(hint_location, message)
+    # In non-item rando, Kongs should be hinted before they're available and should only be hinted to free Kongs, making them very restrictive
     hinted_kongs = []
     placed_kong_hints = 0
     while placed_kong_hints < hint_distribution[HintType.KongLocation]:
@@ -659,8 +709,10 @@ def compileHints(spoiler: Spoiler):
                     camera_location_id = location_id
                     break
             path = spoiler.woth_paths[camera_location_id]
+            already_chosen_camera_path_locations = []
             for i in range(hint_distribution[HintType.RequiredWinConditionHint]):
-                path_location_id = random.choice(path)
+                path_location_id = random.choice([loc for loc in path if loc not in already_chosen_camera_path_locations])
+                already_chosen_camera_path_locations.append(path_location_id)
                 region = GetRegionOfLocation(path_location_id)
                 hinted_location_text = region.hint_name
                 hint_location = getRandomHintLocation()
@@ -901,7 +953,8 @@ def compileHints(spoiler: Spoiler):
     if hint_distribution[HintType.FoolishMove] > 0:
         random.shuffle(spoiler.foolish_moves)
         for i in range(hint_distribution[HintType.FoolishMove]):
-            # If you run out of foolish moves (maybe in an all medals run?) - this *should* be covered by the distribution earlier but this is a good failsafe
+            # If you run out of foolish moves (maybe in a near 101% run?)
+            # This is often covered by the distribution earlier but is needed due to slams and the homing/sniper merger
             if len(spoiler.foolish_moves) == 0:
                 # Replace remaining move hints with WotH location hints, sounds like you'll need them
                 hint_distribution[HintType.FoolishMove] -= 1
@@ -914,6 +967,12 @@ def compileHints(spoiler: Spoiler):
                 # Make sure we don't drop 2 Super Duper slam hints
                 if Items.ProgressiveSlam in spoiler.foolish_moves:
                     spoiler.foolish_moves.remove(Items.ProgressiveSlam)
+            elif hinted_move_id in (Items.HomingAmmo, Items.SniperSight):
+                item_name = "Homing Ammo and Sniper Scope"
+                if Items.HomingAmmo in spoiler.foolish_moves:
+                    spoiler.foolish_moves.remove(Items.HomingAmmo)
+                if Items.SniperSight in spoiler.foolish_moves:
+                    spoiler.foolish_moves.remove(Items.SniperSight)
             else:
                 item_name = ItemList[hinted_move_id].name
             hint_location = getRandomHintLocation()

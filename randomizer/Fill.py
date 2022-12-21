@@ -555,7 +555,11 @@ def CalculateFoolish(spoiler, WothLocations):
             continue
         # Check the item to see if it locks *any* progression (even non-critical)
         Reset()
-        LogicVariables.BanItem(item)  # Ban this item from being picked up
+        # Because of how much overlap there is between these two, either they're both foolish or neither is
+        if item in (Items.HomingAmmo, Items.SniperSight):
+            LogicVariables.BanItems([Items.HomingAmmo, Items.SniperSight])
+        else:
+            LogicVariables.BanItems([item])  # Ban this item from being picked up
         GetAccessibleLocations(spoiler.settings, [], SearchMode.GetReachable)  # Check what's reachable
         if LogicVariables.HasAllItems():  # If you still have all the items, this one blocks no progression and is foolish
             foolishItems.append(item)
@@ -1469,33 +1473,11 @@ def FillKongsAndMoves(spoiler):
         if spoiler.settings.training_barrels == "shuffled":
             emptyTrainingBarrels = [loc for loc in TrainingBarrelLocations if LocationList[loc].item is None]
             if len(emptyTrainingBarrels) > 0:
-                # Find the list of shops that have a kong move in them
+                # Find the list of locations that have a kong move in them
                 kongMoveLocationsList = []
-                for location in DonkeyMoveLocations:
-                    item_at_location = LocationList[location].item
-                    if item_at_location is not None and item_at_location != Items.NoItem:
-                        kongMoveLocationsList.append(location)
-                for location in DiddyMoveLocations:
-                    item_at_location = LocationList[location].item
-                    if item_at_location is not None and item_at_location != Items.NoItem:
-                        kongMoveLocationsList.append(location)
-                for location in LankyMoveLocations:
-                    item_at_location = LocationList[location].item
-                    if item_at_location is not None and item_at_location != Items.NoItem:
-                        kongMoveLocationsList.append(location)
-                for location in TinyMoveLocations:
-                    item_at_location = LocationList[location].item
-                    if item_at_location is not None and item_at_location != Items.NoItem:
-                        kongMoveLocationsList.append(location)
-                for location in ChunkyMoveLocations:
-                    item_at_location = LocationList[location].item
-                    if item_at_location is not None and item_at_location != Items.NoItem:
-                        kongMoveLocationsList.append(location)
-                # If no shops have a kong move (can happen in item rando), then we gotta dig deeper for moves - this can place some shared moves earlier but that's cool too
-                if len(kongMoveLocationsList) == 0:
-                    for location_id, location in LocationList.items():
-                        if location.item in ItemPool.AllKongMoves():
-                            kongMoveLocationsList.append(location_id)
+                for location_id, location in LocationList.items():
+                    if location.item in ItemPool.AllKongMoves() and location_id not in TrainingBarrelLocations:
+                        kongMoveLocationsList.append(location_id)
                 # Worth noting that moving a move to the training barrels will always make it more accessible, and thus doesn't need any additional logic
                 for emptyBarrel in emptyTrainingBarrels:
                     # Pick a random Kong move to put in the training barrel. This should be both more interesting than a shared move and lead to fewer empty shops.
