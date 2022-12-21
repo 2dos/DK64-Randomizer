@@ -76,7 +76,7 @@ class LogicVarHolder:
         """
         self.latest_owned_items = []
         self.found_test_item = False
-        self.banned_item = None
+        self.banned_items = []
 
         self.donkey = Kongs.donkey in self.settings.starting_kong_list
         self.diddy = Kongs.diddy in self.settings.starting_kong_list
@@ -223,9 +223,9 @@ class LogicVarHolder:
 
     def Update(self, ownedItems):
         """Update logic variables based on owned items."""
-        # Except for the banned item - this item isn't allowed to be used by the logic
-        while self.banned_item in ownedItems:
-            ownedItems.remove(self.banned_item)
+        # Except for banned items - these items aren't allowed to be used by the logic
+        ownedItems = [item for item in ownedItems if item not in self.banned_items]
+
         self.latest_owned_items = ownedItems
         self.found_test_item = self.found_test_item or Items.TestItem in ownedItems
 
@@ -699,15 +699,15 @@ class LogicVarHolder:
         required_level = min(ceil(self.settings.medal_requirement / 4), 6)
         return have_enough_medals and self.IsLevelEnterable(required_level)
 
-    def BanItem(self, item):
+    def BanItems(self, items):
         """Prevent an item from being picked up by the logic."""
-        self.banned_item = item
+        self.banned_items = items
 
     def HasAllItems(self):
         """Return if you have all progression items."""
         # You may now own the banned item
-        self.latest_owned_items.append(self.banned_item)
-        self.banned_item = None
+        self.latest_owned_items.extend(self.banned_items)
+        self.banned_items = []
         self.Update(self.latest_owned_items)
         # If you didn't beat the game, you obviously don't have all the progression items - this covers the possible need for camera and each key
         if not self.WinConditionMet():

@@ -15,6 +15,7 @@ class HintType(IntEnum):
     KongLocation = auto()
     MedalsRequired = auto()
     Entrance = auto()
+    RequiredKongHint = auto()
     RequiredKeyHint = auto()
     RequiredWinConditionHint = auto()
     FullShopWithItems = auto()
