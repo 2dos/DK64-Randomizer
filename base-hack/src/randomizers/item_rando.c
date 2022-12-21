@@ -747,6 +747,7 @@ void banana_medal_acquisition(int flag) {
                 }
             } else if (item_type == 11) {
                 used_sprite = 0xA9 + kong;
+                refreshItemVisibility();
             } else {
                 used_sprite = sprite_indexes[item_type];
             }
@@ -921,7 +922,6 @@ void KongDropCode(void) {
     if (CurrentActorPointer_0->yVelocity > 500.0f) {
         CurrentActorPointer_0->yVelocity = 500.0f;
     }
-    CurrentActorPointer_0->hSpeed = 0.0f;
     if ((CurrentActorPointer_0->obj_props_bitfield & 0x10) == 0) {
         int current_type = CurrentActorPointer_0->actorType;
         int kong = -1;
@@ -1149,19 +1149,19 @@ void getItem(int object_type) {
             // Pearl
             {
                 playSong(128, 0x3F800000);
-                if (CurrentMap == 0x2C) { // Treasure Chest
-                    int requirement = 5;
-                    if (Rando.fast_gbs) {
-                        requirement = 1;
-                    }
-                    int count = 0;
-                    for (int i = 0; i < 5; i++) {
-                        count += checkFlagDuplicate(FLAG_PEARL_0_COLLECTED + i, 0);
-                    }
-                    if (count == (requirement - 1)) {
-                        playCutscene((void*)0, 1, 0);
-                    }
-                }
+                // if (CurrentMap == 0x2C) { // Treasure Chest
+                //     int requirement = 5;
+                //     if (Rando.fast_gbs) {
+                //         requirement = 1;
+                //     }
+                //     int count = 0;
+                //     for (int i = 0; i < 5; i++) {
+                //         count += checkFlagDuplicate(FLAG_PEARL_0_COLLECTED + i, 0);
+                //     }
+                //     if (count == (requirement - 1)) {
+                //         playCutscene((void*)0, 1, 0);
+                //     }
+                // }
             }
             break;
         case 0x1D1:

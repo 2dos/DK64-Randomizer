@@ -13,6 +13,10 @@ from ui.rando_options import (
     max_randomized_medals,
     max_randomized_medal_cb_req,
     max_randomized_fairies,
+    max_doorone_requirement,
+    max_doortwo_requirement,
+    updateDoorOneNumAccess,
+    updateDoorTwoNumAccess,
     max_randomized_troff,
     set_preset_options,
     toggle_b_locker_boxes,
@@ -45,5 +49,9 @@ toggle_medals_box(None)
 max_randomized_medals(None)
 max_randomized_medal_cb_req(None)
 max_randomized_fairies(None)
+max_doorone_requirement(None)
+max_doortwo_requirement(None)
+updateDoorOneNumAccess(None)
+updateDoorTwoNumAccess(None)
 disable_coupled_camera_shockwave(None)
 toggle_key_settings(None)

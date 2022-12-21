@@ -13,8 +13,8 @@ set_variables = {
     "camera_unlocked": 1,
     "tag_anywhere": 1,
     "fast_start_helm": 1,
-    "crown_door_open": 0,
-    "coin_door_open": 0,
+    "crown_door_open": 1,
+    "coin_door_open": 1,
     "quality_of_life": {
         "reduce_lag": True,
         "remove_cutscenes": True,

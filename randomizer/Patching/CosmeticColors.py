@@ -359,7 +359,7 @@ def maskImageMonochrome(im_f, base_index, min_y):
     return im_f
 
 
-def writeColorImageToROM(im_f, table_index, file_index, width, height):
+def writeColorImageToROM(im_f, table_index, file_index, width, height, transparent_border:bool):
     """Write texture to ROM."""
     file_start = js.pointer_addresses[table_index]["entries"][file_index]["pointing_to"]
     file_end = js.pointer_addresses[table_index]["entries"][file_index + 1]["pointing_to"]
@@ -370,7 +370,10 @@ def writeColorImageToROM(im_f, table_index, file_index, width, height):
     bytes_array = []
     for y in range(height):
         for x in range(width):
-            pix_data = list(pix[x, y])
+            if transparent_border and ((x == 0) or (y == 0) or (x == (width - 1)) or (y == (height - 1))):
+                pix_data = [0,0,0,0]
+            else:
+                pix_data = list(pix[x, y])
             red = int((pix_data[0] >> 3) << 11)
             green = int((pix_data[1] >> 3) << 6)
             blue = int((pix_data[2] >> 3) << 1)
@@ -470,58 +473,58 @@ def overwrite_object_colors(spoiler: Spoiler):
                     single_im = getFile(7, file, False, 44, 44, "rgba5551")
                     single_im = maskImageMonochrome(single_im, kong_index, 0)
                     single_start = [168, 152, 232, 208, 240]
-                    writeColorImageToROM(single_im, 7, single_start[kong_index] + (file - 152), 44, 44)
+                    writeColorImageToROM(single_im, 7, single_start[kong_index] + (file - 152), 44, 44, False)
                 for file in range(216, 224):
                     # Coin
                     coin_im = getFile(7, file, False, 48, 42, "rgba5551")
                     coin_im = maskImageMonochrome(coin_im, kong_index, 0)
                     coin_start = [224, 256, 248, 216, 264]
-                    writeColorImageToROM(coin_im, 7, coin_start[kong_index] + (file - 216), 48, 42)
+                    writeColorImageToROM(coin_im, 7, coin_start[kong_index] + (file - 216), 48, 42, False)
                 for file in range(274, 286):
                     # Bunch
                     bunch_im = getFile(7, file, False, 44, 44, "rgba5551")
                     bunch_im = maskImageMonochrome(bunch_im, kong_index, 0)
                     bunch_start = [274, 854, 818, 842, 830]
-                    writeColorImageToROM(bunch_im, 7, bunch_start[kong_index] + (file - 274), 44, 44)
+                    writeColorImageToROM(bunch_im, 7, bunch_start[kong_index] + (file - 274), 44, 44, False)
                 for file in range(5819, 5827):
                     # Balloon
                     balloon_im = getFile(25, file, True, 32, 64, "rgba5551")
                     balloon_im = maskImageMonochrome(balloon_im, kong_index, 33)
                     balloon_im.paste(dk_single, balloon_single_frames[file - 5819], dk_single)
                     balloon_start = [5835, 5827, 5843, 5851, 5819]
-                    writeColorImageToROM(balloon_im, 25, balloon_start[kong_index] + (file - 5819), 32, 64)
+                    writeColorImageToROM(balloon_im, 25, balloon_start[kong_index] + (file - 5819), 32, 64, False)
             else:
                 # file = 4120
                 # # Kasplat Hair
                 # hair_im = getFile(25, file, True, 32, 44, "rgba5551")
                 # hair_im = maskImage(hair_im, kong_index, 0)
                 writeColorToROM(color_bases[kong_index], 25, [4124, 4122, 4123, 4120, 4121][kong_index])
-                # writeColorImageToROM(hair_im, 25, [4124, 4122, 4123, 4120, 4121][kong_index], 32, 44)
+                # writeColorImageToROM(hair_im, 25, [4124, 4122, 4123, 4120, 4121][kong_index], 32, 44, False)
                 for file in range(152, 160):
                     # Single
                     single_im = getFile(7, file, False, 44, 44, "rgba5551")
                     single_im = maskImage(single_im, kong_index, 0)
                     single_start = [168, 152, 232, 208, 240]
-                    writeColorImageToROM(single_im, 7, single_start[kong_index] + (file - 152), 44, 44)
+                    writeColorImageToROM(single_im, 7, single_start[kong_index] + (file - 152), 44, 44, False)
                 for file in range(216, 224):
                     # Coin
                     coin_im = getFile(7, file, False, 48, 42, "rgba5551")
                     coin_im = maskImage(coin_im, kong_index, 0)
                     coin_start = [224, 256, 248, 216, 264]
-                    writeColorImageToROM(coin_im, 7, coin_start[kong_index] + (file - 216), 48, 42)
+                    writeColorImageToROM(coin_im, 7, coin_start[kong_index] + (file - 216), 48, 42, False)
                 for file in range(274, 286):
                     # Bunch
                     bunch_im = getFile(7, file, False, 44, 44, "rgba5551")
                     bunch_im = maskImage(bunch_im, kong_index, 0)
                     bunch_start = [274, 854, 818, 842, 830]
-                    writeColorImageToROM(bunch_im, 7, bunch_start[kong_index] + (file - 274), 44, 44)
+                    writeColorImageToROM(bunch_im, 7, bunch_start[kong_index] + (file - 274), 44, 44, False)
                 for file in range(5819, 5827):
                     # Balloon
                     balloon_im = getFile(25, file, True, 32, 64, "rgba5551")
                     balloon_im = maskImage(balloon_im, kong_index, 33)
                     balloon_im.paste(dk_single, balloon_single_frames[file - 5819], dk_single)
                     balloon_start = [5835, 5827, 5843, 5851, 5819]
-                    writeColorImageToROM(balloon_im, 25, balloon_start[kong_index] + (file - 5819), 32, 64)
+                    writeColorImageToROM(balloon_im, 25, balloon_start[kong_index] + (file - 5819), 32, 64, False)
 
 
 def applyKrushaKong(spoiler: Spoiler):
@@ -681,14 +684,14 @@ def applyHelmDoorCosmetics(spoiler: Spoiler):
     Images = [
         HelmDoorImages("req_gb", [0x155C]),
         HelmDoorImages("req_bp", [x + 4 for x in (0x15F8, 0x15E8, 0x158F, 0x1600, 0x15F0)], False, 25, (48, 42)),
-        HelmDoorImages("req_bean", [0], False, 6, (20, 20), False),
+        HelmDoorImages("req_bean", [0], True, 6, (20, 20)),
         HelmDoorImages("req_pearl", [0xD5F], False, 25, (32, 32)),
         HelmDoorImages("req_fairy", [0x16ED], False, 25, (32, 32), "rgba32"),
         HelmDoorImages("req_key", [5877]),
         HelmDoorImages("req_medal", [0x156C]),
         HelmDoorImages("req_rainbowcoin", [5963], False, 25, (48, 42)),
         HelmDoorImages("req_crown", [5893]),
-        HelmDoorImages("req_companycoins", [5905, 5912], True),
+        HelmDoorImages("req_companycoins", [5905, 5912]),
     ]
     for door in Doors:
         for image_data in Images:
@@ -704,7 +707,8 @@ def applyHelmDoorCosmetics(spoiler: Spoiler):
                         finish_x = int((image_slot + 1) * (image_data.dimensions[0] / len(image_data.image_indexes)))
                         item_im = item_im.crop((start_x, 0, finish_x, image_data.dimensions[1]))
                     base_overlay.paste(item_im, (start_x, 0), item_im)
-                # base_overlay = base_overlay.transpose(Image.FLIP_TOP_BOTTOM)
+                if image_data.flip:
+                    base_overlay = base_overlay.transpose(Image.FLIP_TOP_BOTTOM)
                 if image_data.dimensions[0] > image_data.dimensions[1]:
                     # Width shrinked to 44
                     new_height = image_data.dimensions[1] * (44 / image_data.dimensions[0])
@@ -725,8 +729,8 @@ def applyHelmDoorCosmetics(spoiler: Spoiler):
                             r, g, b, a = pearl_mask_im.getpixel((x, y))
                             if a > 128:
                                 pix_pearl[x, y] = (0, 0, 0, 0)
-                writeColorImageToROM(base, 25, door.item_image, 44, 44)
-                writeColorImageToROM(numberToImage(door.count, (44, 44)).transpose(Image.FLIP_TOP_BOTTOM), 25, door.number_image, 44, 44)
+                writeColorImageToROM(base, 25, door.item_image, 44, 44, True)
+                writeColorImageToROM(numberToImage(door.count, (44, 44)).transpose(Image.FLIP_TOP_BOTTOM), 25, door.number_image, 44, 44, True)
 
 
 def applyHolidayMode(spoiler: Spoiler):
