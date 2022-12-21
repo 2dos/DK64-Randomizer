@@ -361,6 +361,21 @@ void parseCutsceneData(void) {
 			modifyCutscenePointTime(0, 0, 0, 100);
 		}
 		modifyCutscenePointCount(0, 0, 1);
+	} else if (CurrentMap == 0x22) {
+		// DK Isles - Hint Cutscene
+		createCutscene(0, 24, 4);
+		// Points
+		modifyCutsceneItem(0, 243, 0x1C, 0, 0);
+		modifyCutsceneItem(0, 244, 0x1E, 19, 26);
+		modifyCutscenePoint(0, 24, 0, 243);
+		modifyCutscenePoint(0, 24, 1, 244);
+		modifyCutscenePoint(0, 24, 2, 3);
+		modifyCutscenePoint(0, 24, 3, 0);
+		// Lengths
+		modifyCutscenePointTime(0, 24, 0, 0);
+		modifyCutscenePointTime(0, 24, 1, 0);
+		modifyCutscenePointTime(0, 24, 2, 99);
+		modifyCutscenePointTime(0, 24, 3, 100);
 	}
 	loadDKTVData(); // Has to be last
 }

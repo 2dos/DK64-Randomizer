@@ -235,6 +235,20 @@ void modifyCutscenePointCount(int bank, int cutscene, int point_count) {
 	}
 }
 
+void createCutscene(int bank, int cutscene, int point_count) {
+	if (cutscene < CutsceneBanks[bank].cutscene_count) {
+		cutscene_item_data* databank = CutsceneBanks[bank].cutscene_databank;
+		cutscene_item_data* data = (cutscene_item_data*)&databank[cutscene];
+		if (data) {
+			data->num_points = point_count;
+			data->length_array = dk_malloc(point_count * 2);
+			data->point_array = dk_malloc(point_count * 2);
+			data->unk_02 = 0;
+		}
+	}
+	// Else - Can't create cutscene
+}
+
 int getWrinklyLevelIndex(void) {
 	return getWorld(CurrentMap, 0);
 }
