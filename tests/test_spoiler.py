@@ -90,7 +90,7 @@ def generate_lo_rando_race_settings():
     data["helm_phase_count"] = 3  # usually 3
     data["krool_access"] = True  # usually True - this is the weirdly named key 8 required setting
     data["keys_random"] = False  # key count is random setting
-    data["krool_key_count"] = 8  # usually 5
+    data["krool_key_count"] = 5  # usually 5
     data["starting_random"] = False  # starting kong count is random setting
     data["starting_kongs_count"] = 2  # usually 2
 
