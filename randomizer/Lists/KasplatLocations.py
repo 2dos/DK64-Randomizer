@@ -87,7 +87,7 @@ KasplatLocationList = {
             kong_lst=[Kongs.chunky],
             coords=[427, 20, 456],
             region=Regions.JapesCatacomb,
-            additional_logic=lambda l: l.pineapple and l.vines or l.advanced_platforming,
+            additional_logic=lambda l: (l.pineapple and l.vines) or l.advanced_platforming,
             vanilla=True,
         ),
         KasplatLocation(
@@ -692,7 +692,7 @@ KasplatLocationList = {
             zmin=2370,
             zmax=2500,
             region=Regions.GloomyGalleonStart,
-            additional_logic=lambda l: (l.punch and l.chunky) or l.advanced_platforming,
+            additional_logic=lambda l: (l.punch and l.chunky) or l.phasewalk or l.CanSkew(False),
         ),
         # Problematic - insanely hard to kill and get blueprint, maybe move to entrance and reduce wander?
         # KasplatLocation(
@@ -741,7 +741,8 @@ KasplatLocationList = {
             zmin=481,
             zmax=498,
             region=Regions.TreasureRoom,
-            additional_logic=lambda l: l.balloon,
+            additional_logic=lambda l: (Events.WaterSwitch in l.Events or (Events.ShipyardEnguarde in l.Events and Events.ShipyardTreasureRoomOpened in l.Events and l.advanced_platforming))
+            and l.balloon,
         ),
         KasplatLocation(
             name="Galleon Kasplat: In Chunky's Drunk Ship", map_id=Maps.GalleonSickBay, kong_lst=[Kongs.chunky], coords=[571, 21, 922], xmin=522, xmax=637, zmin=852, zmax=944, region=Regions.SickBay
@@ -1401,7 +1402,7 @@ KasplatLocationList = {
             zmin=330,
             zmax=430,
             region=Regions.FranticFactoryLobby,
-            additional_logic=lambda l: (l.grab and l.donkey) or l.CanMoonkick() or (l.advanced_platforming or (l.istiny or l.isdiddy or l.ischunky)),
+            additional_logic=lambda l: (l.grab and l.donkey) or l.CanMoonkick() or (l.advanced_platforming and (l.istiny or l.isdiddy or l.ischunky)),
         ),
         KasplatLocation(
             name="Isles Kasplat: Inside Hideout Helm Lobby",
