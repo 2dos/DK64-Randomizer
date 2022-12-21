@@ -318,20 +318,45 @@ def compileHints(spoiler: Spoiler):
         hint_distribution[HintType.BLocker] = max(1, hint_distribution[HintType.TroffNScoff])  # Always want a helm hint in there
         hint_distribution[HintType.TroffNScoff] = temp
         valid_types.append(HintType.Entrance)
+
+    # Stores the number of hints each key will get
+    key_hint_dict = {
+        Items.JungleJapesKey: 0,
+        Items.AngryAztecKey: 0,
+        Items.FranticFactoryKey: 0,
+        Items.GloomyGalleonKey: 0,
+        Items.FungiForestKey: 0,
+        Items.CrystalCavesKey: 0,
+        Items.CreepyCastleKey: 0,
+        Items.HideoutHelmKey: 0,
+    }
+
     if spoiler.settings.shuffle_items and Types.Key in spoiler.settings.shuffled_location_types:
         valid_types.append(HintType.RequiredKeyHint)
         # Only hint keys that are in the Way of the Hoard
         woth_key_ids = [LocationList[woth_loc].item for woth_loc in spoiler.woth_locations if ItemList[LocationList[woth_loc].item].type == Types.Key]
-        # If key acquisition order is non-linear, all keys are late keys
-        if not level_order_matters or spoiler.settings.hard_level_progression:
-            late_keys_required = woth_key_ids
-            early_keys_required = []
-        # If key acquisition order is linear, then some keys should be found very early
-        else:
-            early_keys_required = [key for key in woth_key_ids if key <= Items.AngryAztecKey]  # Keys 1-2
-            late_keys_required = [key for key in woth_key_ids if key > Items.AngryAztecKey]  # Keys 3-8
-        # Hint easy keys once and hard keys twice
-        hint_distribution[HintType.RequiredKeyHint] = len(early_keys_required) + (2 * len(late_keys_required))
+        key_location_ids = {}
+        # Find the locations of the Keys
+        for location_id, location in LocationList.items():
+            if location.item in woth_key_ids:
+                key_location_ids[location.item] = location_id
+
+        for key_id in woth_key_ids:
+            # Keys you are expected to find early only get one direct hint
+            if key_id in (Items.JungleJapesKey, Items.AngryAztecKey) and level_order_matters and not spoiler.settings.hard_level_progression:
+                key_hint_dict[key_id] = 1
+            # Late or complex keys get a number of hints based on the length of the path to them
+            else:
+                path_length = len(spoiler.woth_paths[key_location_ids[key_id]]) - 1  # Don't include the key itself in the path length
+                if path_length <= 1:  # 1-2
+                    key_hint_dict[key_id] = 1
+                elif path_length <= 5:  # 3-6
+                    key_hint_dict[key_id] = 2
+                elif path_length <= 9:  # 7-10
+                    key_hint_dict[key_id] = 3
+                else:  # 11+
+                    key_hint_dict[key_id] = 4
+        hint_distribution[HintType.RequiredKeyHint] = sum(key_hint_dict.values())
 
     # Make sure we have exactly 35 hints placed
     hint_count = 0
@@ -521,69 +546,69 @@ def compileHints(spoiler: Spoiler):
 
     # Key location hints should be placed at or before the level they are for (e.g. Key 4 shows up in level 4 lobby or earlier)
     if hint_distribution[HintType.RequiredKeyHint] > 0:
-        key_location_ids = {}
-        # Find the locations of the Keys
-        for location_id, location in LocationList.items():
-            if location.item in woth_key_ids:
-                key_location_ids[location.item] = location_id
-
-        # For early Keys 1-2, place hints with their required Kong and the level they're in
-        for key in early_keys_required:
-            location = LocationList[key_location_ids[key]]
-            key_item = ItemList[key]
-            kong_index = location.kong
-            # Boss locations actually have a specific kong, go look it up
-            if location.kong == Kongs.any and location.type == Types.Key:
-                kong_index = spoiler.settings.boss_kongs[location.level]
-            if spoiler.settings.wrinkly_hints == "cryptic":
-                if location.level == Levels.Shops:
-                    level_name = "Cranky's Lab"
+        for key_id in key_hint_dict:
+            if key_hint_dict[key_id] == 0:
+                continue
+            # For early Keys 1-2, place one hint with their required Kong and the level they're in
+            if key_id in (Items.JungleJapesKey, Items.AngryAztecKey) and level_order_matters and not spoiler.settings.hard_level_progression:
+                location = LocationList[key_location_ids[key_id]]
+                key_item = ItemList[key_id]
+                kong_index = location.kong
+                # Boss locations actually have a specific kong, go look it up
+                if location.kong == Kongs.any and location.type == Types.Key:
+                    kong_index = spoiler.settings.boss_kongs[location.level]
+                if spoiler.settings.wrinkly_hints == "cryptic":
+                    if location.level == Levels.Shops:
+                        level_name = "Cranky's Lab"
+                    else:
+                        level_name = random.choice(level_cryptic_helm_isles[location.level])
+                    kong_name = random.choice(kong_cryptic[kong_index])
                 else:
-                    level_name = random.choice(level_cryptic_helm_isles[location.level])
-                kong_name = random.choice(kong_cryptic[kong_index])
+                    if location.level == Levels.Shops:
+                        level_name = random.choice(crankys_cryptic)
+                    else:
+                        level_name = level_list_helm_isles[location.level]
+                    kong_name = kong_list[kong_index]
+                # Find the levels are are before the level this key is for
+                hintable_levels = []
+                for order, level in spoiler.settings.level_order.items():  # We don't know what order the level order is stored in, unfortunately
+                    if order <= key_item.index:
+                        hintable_levels.append(level)
+                # Pick a random hint location in any of the hintable levels
+                hint_location = getRandomHintLocation(levels=hintable_levels)
+                # If in the unfathomably rare situation all doors are unavailable, just pick a random door
+                # This might be something like Key 1 needing a hint and all level 1 hint doors are taken
+                #   This situation isn't that scary because Key 1 is likely in a very small set of locations
+                if hint_location is None:
+                    hint_location = getRandomHintLocation()
+                if hint_location is not None:
+                    message = f"{key_item.name} can be acquired with {kong_name} in {level_name}."
+                    hint_location.hint_type = HintType.RequiredKeyHint
+                    UpdateHint(hint_location, message)
+            # For later or complex Keys, place hints that hint the "path" to the key
             else:
-                if location.level == Levels.Shops:
-                    level_name = random.choice(crankys_cryptic)
-                else:
-                    level_name = level_list_helm_isles[location.level]
-                kong_name = kong_list[kong_index]
-            # Find the levels are are before the level this key is for
-            hintable_levels = []
-            for order, level in spoiler.settings.level_order.items():  # We don't know what order the level order is stored in, unfortunately
-                if order <= key_item.index:
-                    hintable_levels.append(level)
-            # Pick a random hint location in any of the hintable levels
-            hint_location = getRandomHintLocation(levels=hintable_levels)
-            # If in the unfathomably rare situation all doors are unavailable, just pick a random door
-            # This might be something like Key 1 needing a hint and all level 1 hint doors are taken
-            #   This situation isn't that scary because Key 1 is likely in a very small set of locations
-            if hint_location is None:
-                hint_location = getRandomHintLocation()
-            if hint_location is not None:
-                message = f"{key_item.name} can be acquired with {kong_name} in {level_name}."
-                hint_location.hint_type = HintType.RequiredKeyHint
-                UpdateHint(hint_location, message)
-
-        # For later Keys, place two hints that hint the "path" to the key
-        for key_id in late_keys_required:
-            path = spoiler.woth_paths[key_location_ids[key_id]]
-            key_item = ItemList[key_id]
-            # Don't put a path hint for Helm Key when you know it's there
-            if key_id == Items.HideoutHelmKey and spoiler.settings.key_8_helm:
-                path = [loc for loc in path if loc != Locations.HelmKey]
-            for i in range(2):
-                path_location_id = random.choice(path)
-                region = GetRegionOfLocation(path_location_id)
-                hinted_location_text = region.hint_name
-                hint_location = getRandomHintLocation()
-                if path_location_id in TrainingBarrelLocations:
-                    # Training Grounds will have 4 moves - instead of being super vague we'll hint the specific item directly.
-                    hinted_item_name = ItemList[LocationList[path_location_id].item].name
-                    message = f"Your training with {hinted_item_name} is on the path to {key_item.name}."
-                else:
-                    message = f"An item in the {hinted_location_text} is on the path to {key_item.name}."
-                hint_location.hint_type = HintType.RequiredKeyHint
-                UpdateHint(hint_location, message)
+                # Prevent the same hint referring to the same location twice
+                # This means if you get a duplicate path hint, each hint refers to a different item
+                already_hinted_locations = []
+                for i in range(key_hint_dict[key_id]):
+                    path = spoiler.woth_paths[key_location_ids[key_id]]
+                    key_item = ItemList[key_id]
+                    # Don't hint the Helm Key in Helm when you know it's there
+                    if key_id == Items.HideoutHelmKey and spoiler.settings.key_8_helm:
+                        path = [loc for loc in path if loc != Locations.HelmKey]
+                    path_location_id = random.choice([loc for loc in path if loc not in already_hinted_locations])
+                    already_hinted_locations.append(path_location_id)
+                    region = GetRegionOfLocation(path_location_id)
+                    hinted_location_text = region.hint_name
+                    hint_location = getRandomHintLocation()
+                    if path_location_id in TrainingBarrelLocations:
+                        # Training Grounds will have 4 moves - instead of being super vague we'll hint the specific item directly.
+                        hinted_item_name = ItemList[LocationList[path_location_id].item].name
+                        message = f"Your training with {hinted_item_name} is on the path to {key_item.name}."
+                    else:
+                        message = f"An item in the {hinted_location_text} is on the path to {key_item.name}."
+                    hint_location.hint_type = HintType.RequiredKeyHint
+                    UpdateHint(hint_location, message)
 
     # Some win conditions need very specific items that we really should hint
     if hint_distribution[HintType.RequiredWinConditionHint] > 0:
