@@ -121,7 +121,10 @@ def generate_lo_rando_race_settings():
 
     data["hard_level_progression"] = False  # likely to be False
 
-    data["logic_type"] = "glitchless"  # CURSED -------------- DO NOT DO LOGIC TESTING WITH THIS GUY HERE
+    data["logic_type"] = "glitchless"  # "glitchless", "glitch", "nologic"
+    # glitch options:
+    # "advanced_platforming", "b_locker_skips", "general_clips", "ledge_clips", "moonkicks", "phase_swimming", "phase_walking", "skew", "spawn_snags", "swim_through_shores", "tag_barrel_storage", "troff_n_scoff_skips"
+    data["glitches_selected"] = [""]
 
     return data
 
