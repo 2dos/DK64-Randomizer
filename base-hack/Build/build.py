@@ -25,6 +25,7 @@ from convertSetup import convertSetup
 from end_seq_writer import createSquishFile, createTextFile
 from generate_yellow_wrinkly import generateYellowWrinkly
 from image_converter import convertToRGBA32
+from helm_doors import getHelmDoorModel
 
 # Infrastructure for recomputing DK64 global pointer tables
 from map_names import maps
@@ -57,6 +58,9 @@ portal_images.append(convertPortalImage("assets/Non-Code/portals/DK_rando_portal
 createTextFile("assets/Non-Code/credits")
 createSquishFile("assets/Non-Code/credits")
 generateYellowWrinkly()
+
+getHelmDoorModel(6022, 6023, "crown_door.bin")
+getHelmDoorModel(6024, 6025, "coin_door.bin")
 
 BLOCK_COLOR_SIZE = 64  # Bytes allocated to a block 32x32 image. Brute forcer says we can go as low as 0x25 bytes, but leaving some room for me to have left out something
 
@@ -166,6 +170,44 @@ file_dict = [
     {"name": "Potion (Any) Model", "pointer_table_index": 4, "file_index": 0x1F6, "source_file": "potion_any_om2.bin", "do_not_delete_source": True},
     {"name": "Krusha Head", "start": 0x1FF6000, "source_file": "assets/Non-Code/displays/krusha_head64.png", "do_not_delete_source": True, "texture_format": "rgba5551", "do_not_compress": True},
     {"name": "Snow Texture", "start": 0x1FF8000, "source_file": "assets/Non-Code/displays/snow32.png", "do_not_delete_source": True, "texture_format": "rgba5551", "do_not_compress": True},
+    {"name": "Crown Door Model", "pointer_table_index": 4, "file_index": 0x1A6, "source_file": "crown_door.bin", "do_not_delete_source": True},
+    {"name": "Coin Door Model", "pointer_table_index": 4, "file_index": 0x1A7, "source_file": "coin_door.bin", "do_not_delete_source": True},
+    {
+        "name": "Crown Door Image 1",
+        "pointer_table_index": 25,
+        "file_index": 6022,
+        "source_file": "assets/Non-Code/displays/door_crown.png",
+        "texture_format": "rgba5551",
+        "do_not_delete_source": True,
+        "target_compressed_size": 44 * 44 * 2,
+    },
+    {
+        "name": "Crown Door Image 2",
+        "pointer_table_index": 25,
+        "file_index": 6023,
+        "source_file": "assets/Non-Code/displays/num_4.png",
+        "texture_format": "rgba5551",
+        "do_not_delete_source": True,
+        "target_compressed_size": 44 * 44 * 2,
+    },
+    {
+        "name": "Coin Door Image 1",
+        "pointer_table_index": 25,
+        "file_index": 6024,
+        "source_file": "assets/Non-Code/displays/door_combocoin.png",
+        "texture_format": "rgba5551",
+        "do_not_delete_source": True,
+        "target_compressed_size": 44 * 44 * 2,
+    },
+    {
+        "name": "Coin Door Image 2",
+        "pointer_table_index": 25,
+        "file_index": 6025,
+        "source_file": "assets/Non-Code/displays/num_2.png",
+        "texture_format": "rgba5551",
+        "do_not_delete_source": True,
+        "target_compressed_size": 44 * 44 * 2,
+    },
 ]
 
 for img in (0x4DD, 0x4E4, 0x6B, 0xF0, 0x8B2, 0x5C2, 0x66E, 0x66F, 0x685, 0x6A1, 0xF8, 0x136):

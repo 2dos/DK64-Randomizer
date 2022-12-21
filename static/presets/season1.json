@@ -55,8 +55,8 @@
     "medal_requirement": 15,
     "rareware_gb_fairies": 20,
     "random_starting_region":false,
-    "crown_door_open":true,
-    "coin_door_open":"need_zero",
+    "crown_door_item":"opened",
+    "coin_door_item":"opened",
     "item_rando_list_selected": [],
     "minigames_list_selected":[
         "batty_barrel_bandit", 

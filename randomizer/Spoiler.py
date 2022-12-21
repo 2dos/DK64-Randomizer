@@ -137,8 +137,8 @@ class Spoiler:
         settings["Randomize Patches"] = self.settings.random_patches
         settings["Randomize CB Locations"] = self.settings.cb_rando
         settings["Puzzle Randomization"] = self.settings.puzzle_rando
-        settings["Crown Door Open"] = self.settings.crown_door_open
-        settings["Coin Door Open"] = self.settings.coin_door_open
+        settings["Crown Door Open"] = self.settings.crown_door_item == "opened"
+        settings["Coin Door Open"] = self.settings.coin_door_item == "opened"
         settings["Shockwave Shuffle"] = self.settings.shockwave_status
         settings["Random Jetpac Medal Requirement"] = self.settings.random_medal_requirement
         settings["Bananas Required for Medal"] = self.settings.medal_cb_req
@@ -220,7 +220,7 @@ class Spoiler:
         humanspoiler["Kongs"]["Tiny Temple Puzzle Solver"] = ItemList[ItemFromKong(self.settings.tiny_freeing_kong)].name
         humanspoiler["Kongs"]["Llama Temple Puzzle Solver"] = ItemList[ItemFromKong(self.settings.lanky_freeing_kong)].name
         humanspoiler["Kongs"]["Factory Kong Puzzle Solver"] = ItemList[ItemFromKong(self.settings.chunky_freeing_kong)].name
-        if self.settings.coin_door_open in ["need_both", "need_rw"]:
+        if self.settings.coin_door_item in ["vanilla", "req_companycoins"] or self.settings.crown_door_item == "req_companycoins":
             humanspoiler["Requirements"]["Miscellaneous"]["Medal Requirement"] = self.settings.medal_requirement
         humanspoiler["End Game"] = {}
         humanspoiler["End Game"]["Keys Required for K Rool"] = self.GetKroolKeysRequired(self.settings.krool_keys_required)

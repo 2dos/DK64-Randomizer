@@ -89,7 +89,7 @@ LogicRegions = {
         LocationLogic(Locations.HelmBananaFairy1, lambda l: l.camera and Events.HelmKeyAccess in l.Events),
         LocationLogic(Locations.HelmBananaFairy2, lambda l: l.camera and Events.HelmKeyAccess in l.Events),
     ], [
-        Event(Events.HelmKeyAccess, lambda l: ((l.settings.crown_door_open or l.BattleCrowns >= 4) and (l.settings.coin_door_open or l.nintendoCoin and l.rarewareCoin)) or l.generalclips),
+        Event(Events.HelmKeyAccess, lambda l: (l.CrownDoorOpened() and l.CoinDoorOpened()) or l.generalclips),
     ], [
         TransitionFront(Regions.HideoutHelmMain, lambda l: l.settings.helm_setting == "skip_all" or (Events.HelmDonkeyDone in l.Events and Events.HelmChunkyDone in l.Events and Events.HelmTinyDone in l.Events and Events.HelmLankyDone in l.Events and Events.HelmDiddyDone in l.Events) or (l.generalclips or l.phasewalk)),
         TransitionFront(Regions.HideoutHelmDonkeyRoom, lambda l: l.generalclips or l.phasewalk),
