@@ -102,7 +102,6 @@ static unsigned char key_item_table[8] = {};
 bonus_barrel_info bonus_data[95] = {};
 
 int getBPItem(int index) {
-	*(int*)(0x807FF700) = (int)&bp_item_table[index];
 	return bp_item_table[index];
 }
 

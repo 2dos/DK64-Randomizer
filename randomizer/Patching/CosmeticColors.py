@@ -359,7 +359,7 @@ def maskImageMonochrome(im_f, base_index, min_y):
     return im_f
 
 
-def writeColorImageToROM(im_f, table_index, file_index, width, height, transparent_border:bool):
+def writeColorImageToROM(im_f, table_index, file_index, width, height, transparent_border: bool):
     """Write texture to ROM."""
     file_start = js.pointer_addresses[table_index]["entries"][file_index]["pointing_to"]
     file_end = js.pointer_addresses[table_index]["entries"][file_index + 1]["pointing_to"]
@@ -371,7 +371,7 @@ def writeColorImageToROM(im_f, table_index, file_index, width, height, transpare
     for y in range(height):
         for x in range(width):
             if transparent_border and ((x == 0) or (y == 0) or (x == (width - 1)) or (y == (height - 1))):
-                pix_data = [0,0,0,0]
+                pix_data = [0, 0, 0, 0]
             else:
                 pix_data = list(pix[x, y])
             red = int((pix_data[0] >> 3) << 11)

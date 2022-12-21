@@ -541,7 +541,7 @@ for x in range(8):
         }
     )
 for x in range(43):
-    if x not in (13, 32, 0x18, 0x27, 8, 37, 2):
+    if x not in (13, 32, 0x18, 0x27, 8, 37, 2, 40):
         file_dict.append(
             {
                 "name": "Text " + str(x),
@@ -673,6 +673,7 @@ file_dict.append({"name": "Move Names Text", "pointer_table_index": 12, "file_in
 file_dict.append({"name": "Cranky Text", "pointer_table_index": 12, "file_index": 8, "source_file": "cranky_text.bin", "do_not_compress": True, "do_not_delete_source": True})
 file_dict.append({"name": "Menu Text", "pointer_table_index": 12, "file_index": 37, "source_file": "menu_text.bin", "do_not_compress": True, "do_not_delete_source": True})
 file_dict.append({"name": "Kong Name Text", "pointer_table_index": 12, "file_index": 2, "source_file": "kongname_text.bin", "do_not_compress": True, "do_not_delete_source": True})
+file_dict.append({"name": "BFI Rareware Door Text", "pointer_table_index": 12, "file_index": 40, "source_file": "fairy_rw_text.bin", "do_not_compress": True, "do_not_delete_source": True})
 
 with open(ROMName, "rb") as fh:
     adjustExits(fh)

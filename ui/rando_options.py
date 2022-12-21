@@ -92,6 +92,7 @@ def max_randomized_fairies(event):
     elif int(fairy_req.value) > 20:
         fairy_req.value = 20
 
+
 @bind("click", "crown_door_item")
 def updateDoorOneNumAccess(event):
     """Toggle the textboxes for the first helm door."""
@@ -101,6 +102,7 @@ def updateDoorOneNumAccess(event):
         doorone_num.setAttribute("disabled", "disabled")
     else:
         doorone_num.removeAttribute("disabled")
+
 
 @bind("click", "coin_door_item")
 def updateDoorTwoNumAccess(event):
@@ -112,6 +114,7 @@ def updateDoorTwoNumAccess(event):
     else:
         doortwo_num.removeAttribute("disabled")
 
+
 @bind("focusout", "crown_door_item_count")
 def max_doorone_requirement(event):
     """Validate Door 1 input on loss of focus."""
@@ -122,6 +125,7 @@ def max_doorone_requirement(event):
         door_one_req.value = 1
     elif int(door_one_req.value) > 201:
         door_one_req.value = 201
+
 
 @bind("focusout", "coin_door_item_count")
 def max_doortwo_requirement(event):

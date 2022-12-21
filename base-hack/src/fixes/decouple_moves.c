@@ -248,6 +248,10 @@ void decouple_moves_fixes(void) {
 			*(int*)(0x80027E70) = 0x2C410000 | Rando.rareware_gb_fairies; // SLTIU $at, $v0, count
 			*(short*)(0x80027E74) = 0x1420; // BNEZ $at, 0x6
 		}
+		if (Rando.item_rando) {
+			*(int*)(0x80027E68) = 0x0C000000 | (((int)&fairyQueenCutsceneInit & 0xFFFFFF) >> 2); // BFI, Init Cutscene Setup
+			*(int*)(0x80028104) = 0x0C000000 | (((int)&fairyQueenCutsceneCheck & 0xFFFFFF) >> 2); // BFI, Cutscene Play
+		}
 	}
 	if (CurrentMap == 0xD6) {
 		// Shoe
@@ -336,6 +340,13 @@ void parseCutsceneData(void) {
 	}
 	if (Rando.quality_of_life.remove_cutscenes) {
 		updateSkippableCutscenes();
+	}
+	if (CurrentMap == 0xBD) {
+		// BFI - Rareware Reward Show
+		modifyCutscenePanPoint(0, 14, 0, 915, 40, 1323, 0xD800, 0, 0, 45, 0);
+		modifyCutscenePanPoint(0, 14, 1, 417, 169, 1290, 0x2000, 0xF000, 0xF000, 45, 0);
+	} else if (CurrentMap == 0xAA) {
+		
 	}
 	loadDKTVData(); // Has to be last
 }

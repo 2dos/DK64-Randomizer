@@ -1404,3 +1404,32 @@ void initItemDictionary(void) {
     *(short*)(0x80731676) = getLo(&NewGBDictionary[0].map);
     *(short*)(0x80731672) = GB_DICTIONARY_COUNT;
 }
+
+int fairyQueenCutsceneInit(int start, int count, int type) {
+    int fairies_in_possession = countFlagsDuplicate(start, count, type); 
+    int fairy_limit = 20;
+    if (Rando.rareware_gb_fairies > 0) {
+        fairy_limit = Rando.rareware_gb_fairies;
+    }
+    if (fairies_in_possession < fairy_limit) {
+        // Not enough fairies
+        CurrentActorPointer_0->control_state = 10;
+    }
+    return fairies_in_possession;
+}
+
+void fairyQueenCutsceneCheck(void) {
+    if (CurrentActorPointer_0->control_state == 10) {
+        float dx = CurrentActorPointer_0->xPos - Player->xPos;
+        float dz = CurrentActorPointer_0->zPos - Player->zPos;
+        if ((dx * dx) + (dz * dz) < 10000.0f) {
+            // In Range
+            if (!checkFlag(0x79, 2)) {
+                playCutscene(Player, 3, 1);
+                CurrentActorPointer_0->control_state = 11;
+                setFlag(0x79, 1, 2);
+            }
+        }
+    }
+    renderActor(CurrentActorPointer_0, 0);
+}
