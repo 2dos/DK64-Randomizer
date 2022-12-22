@@ -135,8 +135,8 @@ LogicRegions = {
 
     # Lanky Cave deathwarp: Requires you to be lanky and have simian slam so you can slam the pegs and summon zingers to kill you
     Regions.JapesLankyCave: Region("Japes Lanky Cave", "Japes Underground", Levels.JungleJapes, False, TransitionFront(Regions.JungleJapesMain, lambda l: (l.Slam and l.islanky) or l.phasewalk or (l.generalclips and l.islanky)), [
-        LocationLogic(Locations.JapesLankyFairyCave, lambda l: ((l.grape and l.Slam) or l.generalclips) and l.islanky),
-        LocationLogic(Locations.JapesBananaFairyLankyCave, lambda l: ((l.grape and l.Slam) or l.generalclips) and l.islanky and l.camera),
+        LocationLogic(Locations.JapesLankyFairyCave, lambda l: (((l.grape or l.trombone) and l.Slam) or l.generalclips) and l.islanky),
+        LocationLogic(Locations.JapesBananaFairyLankyCave, lambda l: (((l.grape or l.trombone) and l.Slam) or l.generalclips) and l.islanky and l.camera),
     ], [], [
         TransitionFront(Regions.JungleJapesMedals, lambda l: True),
         TransitionFront(Regions.JungleJapesMain, lambda l: True, Transitions.JapesLankyCaveToMain),
