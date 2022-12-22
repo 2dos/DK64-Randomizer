@@ -39,7 +39,11 @@ CrownLocations = {
             z=1804,
             scale=0.35,
             region=Regions.JungleJapesMain,
-            logic=lambda l: (l.donkey and l.advanced_platforming) or (l.lanky and l.handstand) or (l.tiny and l.twirl) or l.CanMoonkick() or ((l.phasewalk or l.generalclips) and (l.istiny or l.isdiddy)),
+            logic=lambda l: (l.donkey and l.advanced_platforming)
+            or (l.lanky and l.handstand)
+            or (l.tiny and l.twirl)
+            or l.CanMoonkick()
+            or ((l.phasewalk or l.generalclips) and (l.istiny or l.isdiddy)),
         ),
         CrownLocation(map=Maps.JungleJapes, name="Jungle Japes: Shellhive Island", x=2337, y=551, z=3156, scale=0.6, region=Regions.JapesBeyondFeatherGate),
         CrownLocation(map=Maps.JungleJapes, name="Jungle Japes: Near Stump", x=1912, y=539, z=3289, scale=0.45, region=Regions.JapesBeyondFeatherGate),
