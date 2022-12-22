@@ -4,20 +4,20 @@ heap_size = 0x24000
 flut_size = 0x640
 code_end = 0x805FAE00
 
-variables = {
-    "start": code_end - heap_size,
-    "upper": ((code_end - heap_size) >> 16) & 0xFFFF,
-    "lower": (code_end - heap_size) & 0xFFFF
-}
+variables = {"start": code_end - heap_size, "upper": ((code_end - heap_size) >> 16) & 0xFFFF, "lower": (code_end - heap_size) & 0xFFFF}
+
 
 def getHeapSize() -> int:
     return heap_size
 
+
 def getHeapData() -> dict:
     return variables
 
+
 def getLabel(label: str, value: int):
     return f".definelabel {label}, {hex(value)}\n"
+
 
 def handleHeap(size: int, rando_flut_size: int):
     """Write data regarding heap size."""
@@ -31,5 +31,6 @@ def handleHeap(size: int, rando_flut_size: int):
     with open("asm/header.asm", "w") as fh:
         fh.write(f".headersize {hex(0x7E000000 | (variables['start'] & 0xFFFFFF))}\n")
         fh.write(f".org {hex(variables['start'])}")
+
 
 handleHeap(0x24000, 0x640)

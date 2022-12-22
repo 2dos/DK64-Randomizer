@@ -443,7 +443,7 @@ rmve = [
     "MNO.png",
     "nin_coin_noresize.png",
     "PQRS.png",
-    "rw_coin_noresize.png"
+    "rw_coin_noresize.png",
 ]
 for kong in kongs:
     for x in range(2):
