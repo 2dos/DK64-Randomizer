@@ -196,7 +196,7 @@ LogicRegions = {
     Regions.Dungeon: Region("Dungeon", "Castle Underground", Levels.CreepyCastle, True, None, [
         LocationLogic(Locations.CastleDonkeyDungeon, lambda l: (l.superDuperSlam or (l.Slam and l.phasewalk)) and l.donkey),
         LocationLogic(Locations.CastleDiddyDungeon, lambda l: (l.superDuperSlam and l.scope and l.peanut and l.diddy and l.vines) or (l.phasewalk and (l.isdiddy or l.settings.free_trade_items))),
-        LocationLogic(Locations.CastleLankyDungeon, lambda l: (l.superDuperSlam or l.phasewalk) and l.trombone and l.balloon and l.islanky, MinigameType.BonusBarrel),
+        LocationLogic(Locations.CastleLankyDungeon, lambda l: (l.superDuperSlam or l.phasewalk) and l.trombone and (l.balloon or (not l.settings.disable_tag_barrels and l.tiny and l.twirl and l.advanced_platforming and l.settings.free_trade_items)) and l.islanky, MinigameType.BonusBarrel),
     ], [], [
         TransitionFront(Regions.CreepyCastleMedals, lambda l: True),
         TransitionFront(Regions.UpperCave, lambda l: True, Transitions.CastleDungeonToUpper),
