@@ -52,7 +52,9 @@ class Settings:
         for k, v in form_data.items():
             setattr(self, k, v)
         self.seed_id = str(self.seed)
-        self.seed = str(self.seed) + self.__hash
+        if self.generate_spoilerlog is None:
+            self.generate_spoilerlog = False
+        self.seed = str(self.seed) + self.__hash + str(json.dumps(form_data))
         self.set_seed()
         self.seed_hash = [random.randint(0, 9) for i in range(5)]
         self.krool_keys_required = []
