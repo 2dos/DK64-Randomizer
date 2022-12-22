@@ -32,7 +32,7 @@ LogicRegions = {
         Collectible(Collectibles.coin, Kongs.donkey, lambda l: True, None, 5),
     ],
     Regions.CastleTree: [
-        Collectible(Collectibles.bunch, Kongs.donkey, lambda l: True, None, 1),  # On plank in water
+        Collectible(Collectibles.bunch, Kongs.donkey, lambda l: l.coconut, None, 1),  # On plank in water
         Collectible(Collectibles.balloon, Kongs.donkey, lambda l: l.coconut, None, 1),  # By BP
         Collectible(Collectibles.bunch, Kongs.chunky, lambda l: True, None, 1),  # By punchable wall
         Collectible(Collectibles.balloon, Kongs.chunky, lambda l: (l.punch or l.phasewalk) and l.pineapple, None, 1),  # In Chunky's room

@@ -519,17 +519,33 @@ def CalculateWothPaths(spoiler, WothLocations):
             # If it is no longer accessible, then this location is on the path of that other location
             if other_location not in accessible:
                 spoiler.woth_paths[other_location].append(locationId)
-                isOnAnotherPath = True
         # Put the item back for future calculations
         location.PlaceItem(item_id)
-        # If this item doesn't show up on any other paths, it's not actually WotH
-        # This is rare, but could happen if the item at the location is needed for coins or B. Lockers - it's usually required, but not helpful to hint at all
-        if item_id not in assumedItems and item_id != Items.BananaHoard and not isOnAnotherPath:
-            falseWothLocations.append(locationId)
     # After everything is calculated, get rid of paths for false WotH locations
-    for locationId in falseWothLocations:
-        WothLocations.remove(locationId)
-        del spoiler.woth_paths[locationId]
+    # If an item doesn't show up on any other paths, it's not actually WotH
+    # This is rare, but could happen if the item at the location is needed for coins or B. Lockers - it's often required, but not helpful to hint at all
+    anything_removed = True
+    while anything_removed:
+        anything_removed = False
+        # Check every WotH location
+        for locationId in WothLocations:
+            location = LocationList[locationId]
+            # If this item doesn't normally show up on paths but is definitely needed, no need to calculate it, it's definitely WotH
+            if location.item in assumedItems or location.item == Items.BananaHoard:
+                continue
+            # Check every other path to see if this location is on any other path
+            inAnotherPath = False
+            for otherLocationId in [loc for loc in WothLocations if loc != locationId]:
+                if locationId in spoiler.woth_paths[otherLocationId]:
+                    inAnotherPath = True
+                    break
+            # If it's not on any other path, it's not WotH
+            if not inAnotherPath:
+                WothLocations.remove(locationId)
+                del spoiler.woth_paths[locationId]
+                # If we remove anything, we have to check the whole list again
+                anything_removed = True
+                break
     LogicVariables.pathMode = False  # Don't carry this pathMode flag beyond this method ever
     spoiler.settings.open_lobbies = old_open_lobbies_temp  # Undo the open lobbies setting change too
 
@@ -555,7 +571,11 @@ def CalculateFoolish(spoiler, WothLocations):
             continue
         # Check the item to see if it locks *any* progression (even non-critical)
         Reset()
-        LogicVariables.BanItem(item)  # Ban this item from being picked up
+        # Because of how much overlap there is between these two, either they're both foolish or neither is
+        if item in (Items.HomingAmmo, Items.SniperSight):
+            LogicVariables.BanItems([Items.HomingAmmo, Items.SniperSight])
+        else:
+            LogicVariables.BanItems([item])  # Ban this item from being picked up
         GetAccessibleLocations(spoiler.settings, [], SearchMode.GetReachable)  # Check what's reachable
         if LogicVariables.HasAllItems():  # If you still have all the items, this one blocks no progression and is foolish
             foolishItems.append(item)
@@ -1469,33 +1489,11 @@ def FillKongsAndMoves(spoiler):
         if spoiler.settings.training_barrels == "shuffled":
             emptyTrainingBarrels = [loc for loc in TrainingBarrelLocations if LocationList[loc].item is None]
             if len(emptyTrainingBarrels) > 0:
-                # Find the list of shops that have a kong move in them
+                # Find the list of locations that have a kong move in them
                 kongMoveLocationsList = []
-                for location in DonkeyMoveLocations:
-                    item_at_location = LocationList[location].item
-                    if item_at_location is not None and item_at_location != Items.NoItem:
-                        kongMoveLocationsList.append(location)
-                for location in DiddyMoveLocations:
-                    item_at_location = LocationList[location].item
-                    if item_at_location is not None and item_at_location != Items.NoItem:
-                        kongMoveLocationsList.append(location)
-                for location in LankyMoveLocations:
-                    item_at_location = LocationList[location].item
-                    if item_at_location is not None and item_at_location != Items.NoItem:
-                        kongMoveLocationsList.append(location)
-                for location in TinyMoveLocations:
-                    item_at_location = LocationList[location].item
-                    if item_at_location is not None and item_at_location != Items.NoItem:
-                        kongMoveLocationsList.append(location)
-                for location in ChunkyMoveLocations:
-                    item_at_location = LocationList[location].item
-                    if item_at_location is not None and item_at_location != Items.NoItem:
-                        kongMoveLocationsList.append(location)
-                # If no shops have a kong move (can happen in item rando), then we gotta dig deeper for moves - this can place some shared moves earlier but that's cool too
-                if len(kongMoveLocationsList) == 0:
-                    for location_id, location in LocationList.items():
-                        if location.item in ItemPool.AllKongMoves():
-                            kongMoveLocationsList.append(location_id)
+                for location_id, location in LocationList.items():
+                    if location.item in ItemPool.AllKongMoves() and location_id not in TrainingBarrelLocations:
+                        kongMoveLocationsList.append(location_id)
                 # Worth noting that moving a move to the training barrels will always make it more accessible, and thus doesn't need any additional logic
                 for emptyBarrel in emptyTrainingBarrels:
                     # Pick a random Kong move to put in the training barrel. This should be both more interesting than a shared move and lead to fewer empty shops.
