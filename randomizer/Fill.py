@@ -519,17 +519,33 @@ def CalculateWothPaths(spoiler, WothLocations):
             # If it is no longer accessible, then this location is on the path of that other location
             if other_location not in accessible:
                 spoiler.woth_paths[other_location].append(locationId)
-                isOnAnotherPath = True
         # Put the item back for future calculations
         location.PlaceItem(item_id)
-        # If this item doesn't show up on any other paths, it's not actually WotH
-        # This is rare, but could happen if the item at the location is needed for coins or B. Lockers - it's usually required, but not helpful to hint at all
-        if item_id not in assumedItems and item_id != Items.BananaHoard and not isOnAnotherPath:
-            falseWothLocations.append(locationId)
     # After everything is calculated, get rid of paths for false WotH locations
-    for locationId in falseWothLocations:
-        WothLocations.remove(locationId)
-        del spoiler.woth_paths[locationId]
+    # If an item doesn't show up on any other paths, it's not actually WotH
+    # This is rare, but could happen if the item at the location is needed for coins or B. Lockers - it's often required, but not helpful to hint at all
+    anything_removed = True
+    while anything_removed:
+        anything_removed = False
+        # Check every WotH location
+        for locationId in WothLocations:
+            location = LocationList[locationId]
+            # If this item doesn't normally show up on paths but is definitely needed, no need to calculate it, it's definitely WotH
+            if location.item in assumedItems or location.item == Items.BananaHoard:
+                continue
+            # Check every other path to see if this location is on any other path
+            inAnotherPath = False
+            for otherLocationId in [loc for loc in WothLocations if loc != locationId]:
+                if locationId in spoiler.woth_paths[otherLocationId]:
+                    inAnotherPath = True
+                    break
+            # If it's not on any other path, it's not WotH
+            if not inAnotherPath:
+                WothLocations.remove(locationId)
+                del spoiler.woth_paths[locationId]
+                # If we remove anything, we have to check the whole list again
+                anything_removed = True
+                break
     LogicVariables.pathMode = False  # Don't carry this pathMode flag beyond this method ever
     spoiler.settings.open_lobbies = old_open_lobbies_temp  # Undo the open lobbies setting change too
 
