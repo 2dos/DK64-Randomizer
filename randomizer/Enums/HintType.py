@@ -18,6 +18,7 @@ class HintType(IntEnum):
     RequiredKongHint = auto()
     RequiredKeyHint = auto()
     RequiredWinConditionHint = auto()
+    RequiredHelmDoorHint = auto()
     FullShopWithItems = auto()
     WothLocation = auto()
     FoolishMove = auto()

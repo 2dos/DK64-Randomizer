@@ -451,7 +451,7 @@ class LogicVarHolder:
         """Check if item requirement has been fulfilled with regards to a Helm door item."""
         helmdoor_vars = {
             "req_gb": self.GoldenBananas,
-            "req_bp": self.Blueprints,
+            "req_bp": len(self.Blueprints),
             "req_companycoins": sum([self.nintendoCoin, self.rarewareCoin]),
             "req_key": sum([self.JapesKey, self.AztecKey, self.FactoryKey, self.GalleonKey, self.ForestKey, self.CavesKey, self.CastleKey, self.HelmKey]),
             "req_medal": self.BananaMedals,
