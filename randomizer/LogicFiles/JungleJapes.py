@@ -154,7 +154,7 @@ LogicRegions = {
 
     Regions.JapesMinecarts: Region("Japes Minecarts", "Japes Underground", Levels.JungleJapes, False, None, [
         # DK and Chunky are too big for the minecart and break if they try to jump
-        LocationLogic(Locations.JapesDiddyMinecarts, lambda l: l.isdiddy or (l.settings.free_trade_items and (l.islanky or l.istiny))), 
+        LocationLogic(Locations.JapesDiddyMinecarts, lambda l: l.isdiddy or (l.settings.free_trade_items and (l.islanky or l.istiny))),
     ], [], [
         TransitionFront(Regions.JungleJapesMedals, lambda l: True),
         TransitionFront(Regions.JungleJapesMain, lambda l: True),
