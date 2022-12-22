@@ -203,11 +203,7 @@ KasplatLocationList = {
             zmin=1778,
             zmax=1927,
             region=Regions.JungleJapesMain,
-            additional_logic=lambda l: (l.donkey and l.advanced_platforming)
-            or (l.lanky and l.handstand)
-            or (l.tiny and l.twirl)
-            or l.CanMoonkick()
-            or ((l.phasewalk or l.generalclips) and (l.istiny or l.isdiddy)),
+            additional_logic=lambda l: (l.donkey and l.advanced_platforming) or (l.lanky and l.handstand) or (l.tiny and l.twirl) or l.CanMoonkick() or ((l.phasewalk or l.generalclips) and (l.istiny or l.isdiddy)),
         ),
         KasplatLocation(
             name="Japes Kasplat: In the Minecart Exit",
