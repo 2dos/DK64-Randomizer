@@ -32,6 +32,7 @@ void cFuncLoop(void) {
 	alter_boss_key_flags();
 	if (ObjectModel2Timer <= 2) {
 		setFlag(0x78, 0, 2); // Clear K. Lumsy temp flag
+		setFlag(0x79, 0, 2); // Clear BFI Reward Cutscene temp flag
 		if (!Rando.tns_portal_rando_on) {
 			shiftBrokenJapesPortal();
 		}

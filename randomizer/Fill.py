@@ -586,15 +586,22 @@ def CalculateFoolish(spoiler, WothLocations):
     majorItems.extend(ItemPool.Keys())
     majorItems.extend(ItemPool.Kongs(spoiler.settings))
     majorItems.append(Items.Oranges)  # Again, not comfortable foolishing oranges yet
-    if Types.Coin in spoiler.settings.shuffled_location_types and spoiler.settings.coin_door_open in ["need_both", "need_rw"]:
+    requires_rareware = spoiler.settings.coin_door_item == "vanilla"
+    requires_nintendo = spoiler.settings.coin_door_item == "vanilla"
+    requires_crowns = spoiler.settings.crown_door_item in ("vanilla", "req_crown") or spoiler.settings.coin_door_item == "req_crown"
+    for x in (spoiler.settings.crown_door_item, spoiler.settings.coin_door_item):
+        if x == "req_companycoins":
+            requires_rareware = True
+            requires_nintendo = True
+    if Types.Coin in spoiler.settings.shuffled_location_types and requires_rareware:
         majorItems.append(Items.RarewareCoin)
-    if Types.Coin in spoiler.settings.shuffled_location_types and spoiler.settings.coin_door_open in ["need_both", "need_nin"]:
+    if Types.Coin in spoiler.settings.shuffled_location_types and requires_nintendo:
         majorItems.append(Items.NintendoCoin)
     if Types.Blueprint in spoiler.settings.shuffled_location_types and spoiler.settings.win_condition == "all_blueprints":
         majorItems.extend(ItemPool.Blueprints(spoiler.settings))
     if Types.Medal in spoiler.settings.shuffled_location_types and spoiler.settings.win_condition == "all_medals":
         majorItems.append(Items.BananaMedal)
-    if Types.Crown in spoiler.settings.shuffled_location_types and not spoiler.settings.crown_door_open:
+    if Types.Crown in spoiler.settings.shuffled_location_types and requires_crowns:
         majorItems.append(Items.BattleCrown)
     # ***if fairy locations are shuffled*** and there's a major item on Rareware GB or fairies are the win con
     # then we'd majorItems.append(Items.BananaFairy)
@@ -1019,7 +1026,7 @@ def Fill(spoiler):
         Reset()
         # Crowns can be placed randomly if the crown door is open
         algo = "random"
-        if not spoiler.settings.crown_door_open:
+        if spoiler.settings.coin_door_item == "req_crown" or spoiler.settings.crown_door_item in ("vanilla", "req_crown"):
             algo = spoiler.settings.algorithm
         crownsUnplaced = PlaceItems(spoiler.settings, algo, ItemPool.BattleCrownItems(), ItemPool.CrownAssumedItems())
         if crownsUnplaced > 0:

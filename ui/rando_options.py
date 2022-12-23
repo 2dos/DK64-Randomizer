@@ -93,6 +93,52 @@ def max_randomized_fairies(event):
         fairy_req.value = 20
 
 
+@bind("click", "crown_door_item")
+def updateDoorOneNumAccess(event):
+    """Toggle the textboxes for the first helm door."""
+    disabled = js.document.getElementById("crown_door_item").value == "random"
+    doorone_num = js.document.getElementById("crown_door_item_count")
+    if disabled:
+        doorone_num.setAttribute("disabled", "disabled")
+    else:
+        doorone_num.removeAttribute("disabled")
+
+
+@bind("click", "coin_door_item")
+def updateDoorTwoNumAccess(event):
+    """Toggle the textboxes for the second helm door."""
+    disabled = js.document.getElementById("coin_door_item").value == "random"
+    doortwo_num = js.document.getElementById("coin_door_item_count")
+    if disabled:
+        doortwo_num.setAttribute("disabled", "disabled")
+    else:
+        doortwo_num.removeAttribute("disabled")
+
+
+@bind("focusout", "crown_door_item_count")
+def max_doorone_requirement(event):
+    """Validate Door 1 input on loss of focus."""
+    door_one_req = js.document.getElementById("crown_door_item_count")
+    if not door_one_req.value:
+        door_one_req.value = 4
+    elif 1 > int(door_one_req.value):
+        door_one_req.value = 1
+    elif int(door_one_req.value) > 201:
+        door_one_req.value = 201
+
+
+@bind("focusout", "coin_door_item_count")
+def max_doortwo_requirement(event):
+    """Validate Door 2 input on loss of focus."""
+    door_two_req = js.document.getElementById("coin_door_item_count")
+    if not door_two_req.value:
+        door_two_req.value = 2
+    elif 1 > int(door_two_req.value):
+        door_two_req.value = 1
+    elif int(door_two_req.value) > 201:
+        door_two_req.value = 201
+
+
 def min_max(event, min, max):
     """Check if the data is within bounds of requirements.
 
@@ -161,6 +207,8 @@ def set_preset_options():
     toggle_counts_boxes(None)
     toggle_b_locker_boxes(None)
     toggle_logic_type(None)
+    updateDoorOneNumAccess(None)
+    updateDoorTwoNumAccess(None)
 
     js.load_cookies()
 

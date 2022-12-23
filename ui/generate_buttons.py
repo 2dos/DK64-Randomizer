@@ -20,6 +20,8 @@ from ui.rando_options import (
     max_randomized_blocker,
     max_randomized_troff,
     toggle_b_locker_boxes,
+    updateDoorOneNumAccess,
+    updateDoorTwoNumAccess,
     toggle_counts_boxes,
     update_boss_required,
 )

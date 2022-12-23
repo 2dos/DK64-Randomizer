@@ -447,6 +447,40 @@ class LogicVarHolder:
         if kong == Kongs.any:
             return (self.bongos and self.isdonkey) or (self.guitar and self.isdiddy) or (self.trombone and self.islanky) or (self.saxophone and self.istiny) or (self.triangle and self.ischunky)
 
+    def DoorItemCheck(self, item, count):
+        """Check if item requirement has been fulfilled with regards to a Helm door item."""
+        helmdoor_vars = {
+            "req_gb": self.GoldenBananas,
+            "req_bp": len(self.Blueprints),
+            "req_companycoins": sum([self.nintendoCoin, self.rarewareCoin]),
+            "req_key": sum([self.JapesKey, self.AztecKey, self.FactoryKey, self.GalleonKey, self.ForestKey, self.CavesKey, self.CastleKey, self.HelmKey]),
+            "req_medal": self.BananaMedals,
+            "req_crown": self.BattleCrowns,
+            "req_fairy": self.BananaFairies,
+            # "req_rainbowcoin": self.BattleCrowns,
+            "req_bean": self.Beans,
+            "req_pearl": self.Pearls,
+        }
+        if item in helmdoor_vars.keys():
+            return helmdoor_vars[item] >= count
+        return True
+
+    def CrownDoorOpened(self):
+        """Check if Crown Door is opened."""
+        if self.settings.crown_door_item == "opened":
+            return True
+        elif self.settings.crown_door_item == "vanilla":
+            return self.BattleCrowns >= 4
+        return self.DoorItemCheck(self.settings.crown_door_item, self.settings.crown_door_item_count)
+
+    def CoinDoorOpened(self):
+        """Check if Coin Door is opened."""
+        if self.settings.coin_door_item == "opened":
+            return True
+        elif self.settings.coin_door_item == "vanilla":
+            return self.nintendoCoin and self.rarewareCoin
+        return self.DoorItemCheck(self.settings.coin_door_item, self.settings.coin_door_item_count)
+
     def CanFreeDiddy(self):
         """Check if the cage locking Diddy's vanilla location can be opened."""
         return LocationList[Locations.DiddyKong].item == Items.NoItem or self.HasGun(self.settings.diddy_freeing_kong)

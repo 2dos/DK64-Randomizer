@@ -242,7 +242,7 @@ hint_distribution = {
     HintType.HelmOrder: 2,  # must have one on the path
     HintType.MoveLocation: 7,  # must be placed before you can buy the move
     # HintType.DirtPatch: 0,
-    HintType.BLocker: 2,  # must be placed on the path and before the level they hint
+    HintType.BLocker: 1,  # must be placed on the path and before the level they hint
     HintType.TroffNScoff: 0,
     HintType.KongLocation: 1,  # must be placed before you find them and placed in a door of a free kong
     # HintType.MedalsRequired: 1,
@@ -250,6 +250,7 @@ hint_distribution = {
     HintType.RequiredKongHint: -1,  # Fixed number based on the number of locked kongs
     HintType.RequiredKeyHint: -1,  # Fixed number based on the number of keys to be obtained over the seed
     HintType.RequiredWinConditionHint: 0,  # Fixed number based on what K. Rool phases you must defeat
+    HintType.RequiredHelmDoorHint: 0,  # Fixed number based on how many Helm doors have random requirements
     HintType.WothLocation: 8,
     HintType.FullShopWithItems: 8,
     HintType.FoolishMove: 2,
@@ -260,7 +261,7 @@ HINT_CAP = 35  # There are this many total slots for hints
 
 def compileHints(spoiler: Spoiler):
     """Create a hint distribution, generate buff hints, and place them in locations."""
-    locked_hint_types = [HintType.RequiredKongHint, HintType.RequiredKeyHint, HintType.RequiredWinConditionHint]  # Some hint types cannot have their value changed
+    locked_hint_types = [HintType.RequiredKongHint, HintType.RequiredKeyHint, HintType.RequiredWinConditionHint, HintType.RequiredHelmDoorHint]  # Some hint types cannot have their value changed
     maxed_hint_types = []  # Some hint types cannot have additional hints placed
     # In level order (or vanilla) progression, there are hints that we want to be in the player's path
     level_order_matters = spoiler.settings.logic_type != "nologic" and spoiler.settings.shuffle_loading_zones != "all"
@@ -314,6 +315,12 @@ def compileHints(spoiler: Spoiler):
                     hint_distribution[HintType.RequiredWinConditionHint] = 3
                 else:  # 11+
                     hint_distribution[HintType.RequiredWinConditionHint] = 4
+    if spoiler.settings.crown_door_random or spoiler.settings.coin_door_random:
+        valid_types.append(HintType.RequiredHelmDoorHint)
+        if spoiler.settings.crown_door_random:
+            hint_distribution[HintType.RequiredHelmDoorHint] += 1
+        if spoiler.settings.coin_door_random:
+            hint_distribution[HintType.RequiredHelmDoorHint] += 1
     # if spoiler.settings.random_patches:
     #     valid_types.append(HintType.DirtPatch)
     if spoiler.settings.randomize_blocker_required_amounts:
@@ -1018,6 +1025,43 @@ def compileHints(spoiler: Spoiler):
             hint_location.hint_type = HintType.WothLocation
             UpdateHint(hint_location, message)
 
+    # If any Helm doors are random, place a hint for each random door somewhere
+    if hint_distribution[HintType.RequiredHelmDoorHint] > 0:
+        helmdoor_vars = {
+            "req_gb": "Golden Banana",
+            "req_bp": "Blueprint",
+            "req_companycoins": "Special Coin",
+            "req_key": "Key",
+            "req_medal": "Medal",
+            "req_crown": "Crown",
+            "req_fairy": "Fairy",
+            "req_rainbowcoin": "Rainbow Coin",
+            "req_bean": "Bean",
+            "req_pearl": "Pearl",
+        }
+        if spoiler.settings.crown_door_random:
+            item_name = helmdoor_vars[spoiler.settings.crown_door_item]
+            if spoiler.settings.crown_door_item_count > 1:
+                if spoiler.settings.crown_door_item == "req_fairy":
+                    item_name = "Fairies"  # English is so rude sometimes
+                else:
+                    item_name = item_name + "s"
+            hint_location = getRandomHintLocation()
+            message = f"There lies a gate in Hideout Helm that requires {spoiler.settings.crown_door_item_count} {item_name}."
+            hint_location.hint_type = HintType.RequiredHelmDoorHint
+            UpdateHint(hint_location, message)
+        if spoiler.settings.coin_door_random:
+            item_name = helmdoor_vars[spoiler.settings.coin_door_item]
+            if spoiler.settings.coin_door_item_count > 1:
+                if spoiler.settings.coin_door_item == "req_fairy":
+                    item_name = "Fairies"  # Plurals? Consistency? A pipe dream
+                else:
+                    item_name = item_name + "s"
+            hint_location = getRandomHintLocation()
+            message = f"There lies a gate in Hideout Helm that requires {spoiler.settings.coin_door_item_count} {item_name}."
+            hint_location.hint_type = HintType.RequiredHelmDoorHint
+            UpdateHint(hint_location, message)
+
     # Full Shop With Items hints are essentially a rework of shop dump hints but with the ability to list any item instead of just moves.
     chosen_shops = []
     for i in range(hint_distribution[HintType.FullShopWithItems]):
@@ -1273,7 +1317,11 @@ def compileHintsOld(spoiler: Spoiler):
                 hint_list.append(Hint(hint=patch_text, priority=index + 4, important=importance == 0, subtype="patch_location"))
     if spoiler.settings.shuffle_loading_zones == "all":
         AddLoadingZoneHints(spoiler)
-    if spoiler.settings.coin_door_open == "need_both" or spoiler.settings.coin_door_open == "need_rw":
+    requires_rw = spoiler.settings.coin_door_item == "vanilla"
+    for x in (spoiler.settings.coin_door_item, spoiler.settings.crown_door_item):
+        if x == "req_companycoins":
+            requires_rw = True
+    if requires_rw:
         hint_list.append(Hint(hint=f"{spoiler.settings.medal_requirement} medals are required to access Jetpac.", priority=4, subtype="medal"))
     if spoiler.settings.perma_death:
         hint_list.append(Hint(hint="The curse can only be removed upon disabling K. Rools machine.", subtype="permadeath"))

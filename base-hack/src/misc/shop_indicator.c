@@ -304,10 +304,10 @@ void updateCounterDisplay(void) {
 	if (paad->cap > 0) {
 		int kong_image = paad->kong_images[index];
 		int item_image = paad->item_images[index];
-		if ((kong_image < 0) || (kong_image > 0xF)) {
+		if ((kong_image < 0) || (kong_image > 0x12)) {
 			kong_image = 0;
 		}
-		if ((item_image < 0) || (item_image > 0xF)) {
+		if ((item_image < 0) || (item_image > 0x12)) {
 			item_image = 0;
 		}
 		if (paad->use_item_display) {

@@ -12,7 +12,7 @@ from randomizer.Enums.Types import Types
 from randomizer.Patching.BananaPortRando import randomize_bananaport
 from randomizer.Patching.BarrelRando import randomize_barrels
 from randomizer.Patching.BossRando import randomize_bosses
-from randomizer.Patching.CosmeticColors import apply_cosmetic_colors, overwrite_object_colors, applyKrushaKong, writeMiscCosmeticChanges, applyHolidayMode
+from randomizer.Patching.CosmeticColors import apply_cosmetic_colors, overwrite_object_colors, applyKrushaKong, writeMiscCosmeticChanges, applyHolidayMode, applyHelmDoorCosmetics
 from randomizer.Patching.DKTV import randomize_dktv
 from randomizer.Patching.EnemyRando import randomize_enemies
 from randomizer.Patching.EntranceRando import randomize_entrances, filterEntranceType
@@ -194,7 +194,7 @@ def patching_response(responded_data):
         BooleanProperties(spoiler.settings.shockwave_status == "start_with", 0x2F),  # Unlock Shockwave
         BooleanProperties(spoiler.settings.enable_tag_anywhere, 0x30),  # Tag Anywhere
         BooleanProperties(spoiler.settings.fps_display, 0x96),  # FPS Display
-        BooleanProperties(spoiler.settings.crown_door_open, 0x32),  # Crown Door Open
+        BooleanProperties(spoiler.settings.crown_door_item == "opened", 0x32),  # Crown Door Open
         BooleanProperties(spoiler.settings.no_healing, 0xA6),  # Disable Healing
         BooleanProperties(spoiler.settings.no_melons, 0x128),  # No Melon Drops
         BooleanProperties(spoiler.settings.bonus_barrel_auto_complete, 0x126),  # Auto-Complete Bonus Barrels
@@ -224,6 +224,7 @@ def patching_response(responded_data):
         BooleanProperties(spoiler.settings.shop_indicator, 0x134, 2),  # Shop Indicator
         BooleanProperties(spoiler.settings.open_lobbies, 0x14C, 0xFF),  # Open Lobbies
         BooleanProperties(spoiler.settings.disable_shop_hints, 0x14B, 0),  # Disable Shop Hints
+        BooleanProperties(spoiler.settings.coin_door_item == "opened", 0x33),  # Coin Door Open
     ]
 
     for prop in boolean_props:
@@ -235,9 +236,41 @@ def patching_response(responded_data):
     ROM().seek(sav + 0x031)
     ROM().write(("default", "skip_start", "skip_all").index(spoiler.settings.helm_setting))
 
-    # Coin Door Requirements
-    ROM().seek(sav + 0x033)
-    ROM().write(("need_both", "need_zero", "need_nin", "need_rw").index(spoiler.settings.coin_door_open))
+    # Crown Door & Coin Door
+    # define DOORITEM_DEFAULT 0 // Default
+    # define DOORITEM_GB 1 // 1 - GBs
+    # define DOORITEM_BP 2 // 2 - BP
+    # define DOORITEM_BEAN 3 // 3 - Bean
+    # define DOORITEM_PEARL 4 // 4 - Pearls
+    # define DOORITEM_FAIRY 5 // 5 - Fairy
+    # define DOORITEM_KEY 6 // 6 - Key
+    # define DOORITEM_MEDAL 7 // 7 - Medal
+    # define DOORITEM_RAINBOWCOIN 8 // 8 - Rainbow Coins
+    # define DOORITEM_CROWN 9 // 9 - Crowns
+    # define DOORITEM_COMPANYCOIN 10 // 10 - Company Coins
+    door_checks = {
+        "vanilla": 0,
+        "req_gb": 1,
+        "req_bp": 2,
+        "req_bean": 3,
+        "req_pearl": 4,
+        "req_fairy": 5,
+        "req_key": 6,
+        "req_medal": 7,
+        "req_rainbowcoin": 8,
+        "req_crown": 9,
+        "req_companycoins": 10,
+    }
+    if spoiler.settings.crown_door_item in door_checks.keys():
+        ROM().seek(sav + 0x4C)
+        ROM().write(door_checks[spoiler.settings.crown_door_item])
+        ROM().seek(sav + 0x4D)
+        ROM().write(spoiler.settings.crown_door_item_count)
+    if spoiler.settings.coin_door_item in door_checks.keys():
+        ROM().seek(sav + 0x4E)
+        ROM().write(door_checks[spoiler.settings.coin_door_item])
+        ROM().seek(sav + 0x4F)
+        ROM().write(spoiler.settings.coin_door_item_count)
 
     # Free Trade Agreement
     if spoiler.settings.free_trade_items:
@@ -363,6 +396,7 @@ def patching_response(responded_data):
     overwrite_object_colors(spoiler)
     writeMiscCosmeticChanges(spoiler)
     applyHolidayMode(spoiler)
+    applyHelmDoorCosmetics(spoiler)
     random.seed(spoiler.settings.seed)
 
     if spoiler.settings.wrinkly_hints in ["standard", "cryptic"]:
