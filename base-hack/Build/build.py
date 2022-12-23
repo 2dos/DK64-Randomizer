@@ -674,7 +674,19 @@ file_dict.append({"name": "Cranky Text", "pointer_table_index": 12, "file_index"
 file_dict.append({"name": "Menu Text", "pointer_table_index": 12, "file_index": 37, "source_file": "menu_text.bin", "do_not_compress": True, "do_not_delete_source": True})
 file_dict.append({"name": "Kong Name Text", "pointer_table_index": 12, "file_index": 2, "source_file": "kongname_text.bin", "do_not_compress": True, "do_not_delete_source": True})
 file_dict.append({"name": "BFI Rareware Door Text", "pointer_table_index": 12, "file_index": 40, "source_file": "fairy_rw_text.bin", "do_not_compress": True, "do_not_delete_source": True})
-file_dict.append({"name": "Misc Squawks Text", "pointer_table_index": 12, "file_index": 19, "source_file": "misc_squawks_text.bin", "do_not_compress": True, "do_not_delete_source": True})
+file_dict.append(
+    {
+        "name": "Misc Squawks Text",
+        "pointer_table_index": 12,
+        "file_index": 19,
+        "source_file": "misc_squawks_text.bin",
+        "do_not_compress": True,
+        "do_not_recompress": True,
+        "do_not_delete_source": True,
+        "target_uncompressed_size": 0x1200,
+        "target_compressed_size": 0x1200,
+    }
+)
 
 with open(ROMName, "rb") as fh:
     adjustExits(fh)
