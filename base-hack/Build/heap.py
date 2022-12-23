@@ -8,14 +8,17 @@ variables = {"start": code_end - heap_size, "upper": ((code_end - heap_size) >> 
 
 
 def getHeapSize() -> int:
+    """Get heap size."""
     return heap_size
 
 
 def getHeapData() -> dict:
+    """Get dict of heap variables."""
     return variables
 
 
 def getLabel(label: str, value: int):
+    """Get formatted asm label."""
     return f".definelabel {label}, {hex(value)}\n"
 
 

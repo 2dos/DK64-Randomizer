@@ -140,25 +140,19 @@ level_names = {
     Levels.CrystalCaves: "Crystal Caves",
     Levels.CreepyCastle: "Creepy Castle",
     Levels.DKIsles: "DK Isles",
-    Levels.HideoutHelm: "Hideout Helm"
+    Levels.HideoutHelm: "Hideout Helm",
 }
 
-kong_names = {
-    Kongs.donkey: "Donkey Kong",
-    Kongs.diddy: "Diddy",
-    Kongs.lanky: "Lanky",
-    Kongs.tiny: "Tiny",
-    Kongs.chunky: "Chunky",
-    Kongs.any: "Any Kong"
-}
+kong_names = {Kongs.donkey: "Donkey Kong", Kongs.diddy: "Diddy", Kongs.lanky: "Lanky", Kongs.tiny: "Tiny", Kongs.chunky: "Chunky", Kongs.any: "Any Kong"}
+
 
 def pushItemMicrohints(spoiler: Spoiler, item):
     """Push hint for the micro-hints system."""
-    move = Items.NoItem # Using no item for the purpose of a default
+    move = Items.NoItem  # Using no item for the purpose of a default
     hinted_items = {
         # Key = Item, Value = Textbox index in text file 19
         Items.Monkeyport: 26,
-        Items.GorillaGone: 25
+        Items.GorillaGone: 25,
     }
     for item_hint in hinted_items:
         if item.new_flag == ItemList[item_hint].rando_flag:
@@ -172,11 +166,7 @@ def pushItemMicrohints(spoiler: Spoiler, item):
             level_name = level_names[level_enum]
         if kong_enum in kong_names:
             kong_name = kong_names[kong_enum]
-        data = {
-            "textbox_index": hinted_items[move],
-            "mode": "replace_whole",
-            "target": f"You would be better off looking in {level_name} with {kong_name} for this.".upper()
-        }
+        data = {"textbox_index": hinted_items[move], "mode": "replace_whole", "target": f"You would be better off looking in {level_name} with {kong_name} for this.".upper()}
         if 19 in spoiler.text_changes:
             spoiler.text_changes[19].append(data)
         else:

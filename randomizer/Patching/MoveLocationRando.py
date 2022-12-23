@@ -51,23 +51,17 @@ level_names = [
     "DK Isles",
 ]
 
-kong_names = {
-    Kongs.donkey: "Donkey Kong",
-    Kongs.diddy: "Diddy",
-    Kongs.lanky: "Lanky",
-    Kongs.tiny: "Tiny",
-    Kongs.chunky: "Chunky",
-    Kongs.any: "Any Kong"
-}
+kong_names = {Kongs.donkey: "Donkey Kong", Kongs.diddy: "Diddy", Kongs.lanky: "Lanky", Kongs.tiny: "Tiny", Kongs.chunky: "Chunky", Kongs.any: "Any Kong"}
+
 
 def pushItemMicrohints(spoiler: Spoiler, move_dict: dict, level: int, kong: int, slot: int):
     """Push hint for the micro-hints system."""
     if kong != Kongs.any or slot == 0:
-        move = None # Using no item for the purpose of a default
+        move = None  # Using no item for the purpose of a default
         hinted_items = {
             # Key = Item, Value = Textbox index in text file 19
             "Monkeyport": [("special", 2, Kongs.tiny), 26],
-            "Gorilla Gone": [("special", 2, Kongs.chunky), 25]
+            "Gorilla Gone": [("special", 2, Kongs.chunky), 25],
         }
         for item_hint in hinted_items:
             move_data = hinted_items[item_hint][0]
@@ -78,15 +72,12 @@ def pushItemMicrohints(spoiler: Spoiler, move_dict: dict, level: int, kong: int,
             level_name = level_names[level]
             if kong in kong_names:
                 kong_name = kong_names[kong]
-            data = {
-                "textbox_index": hinted_items[move][1],
-                "mode": "replace_whole",
-                "target": f"You would be better off looking in {level_name} with {kong_name} for this.".upper()
-            }
+            data = {"textbox_index": hinted_items[move][1], "mode": "replace_whole", "target": f"You would be better off looking in {level_name} with {kong_name} for this.".upper()}
             if 19 in spoiler.text_changes:
                 spoiler.text_changes[19].append(data)
             else:
                 spoiler.text_changes[19] = [data]
+
 
 def writeMoveDataToROM(arr: list, enable_hints: bool, spoiler: Spoiler, kong_slot: int, kongs: list, level_override=None):
     """Write move data to ROM."""
@@ -115,6 +106,7 @@ def writeMoveDataToROM(arr: list, enable_hints: bool, spoiler: Spoiler, kong_slo
             else:
                 pushItemMicrohints(spoiler, x, xi, kongs[xi], kong_slot)
 
+
 def dictEqual(dict1: dict, dict2: dict) -> bool:
     """Determine if two dictionaries are equal."""
     if len(dict1) != len(dict2):
@@ -124,6 +116,7 @@ def dictEqual(dict1: dict, dict2: dict) -> bool:
             if dict1.get(i) != dict2.get(i):
                 return False
     return True
+
 
 def randomize_moves(spoiler: Spoiler):
     """Randomize Move locations based on move_data from spoiler."""
