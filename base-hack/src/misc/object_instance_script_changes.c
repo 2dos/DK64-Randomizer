@@ -901,7 +901,13 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 							gb_count += MovesBase[kong].gb_count[level];
 						}
 					}
-					return gb_count >= BLockerDefaultArray[7]; 
+					int max_gbs = 0;
+					for (int level = 0; level < 7; level++) {
+						if (BLockerDefaultArray[level] > max_gbs) {
+							max_gbs = BLockerDefaultArray[level];
+						}
+					}
+					return gb_count >= max_gbs; 
 				} else {
 					// TestVariable = (int)behaviour_pointer;
 					// *(int*)(0x807FF700) = id;
