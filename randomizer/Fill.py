@@ -1712,6 +1712,8 @@ def SetNewProgressionRequirementsUnordered(settings: Settings):
     # Reset B. Lockers and T&S to initial values
     settings.EntryGBs = [settings.blocker_0, settings.blocker_1, settings.blocker_2, settings.blocker_3, settings.blocker_4, settings.blocker_5, settings.blocker_6, settings.blocker_7]
     settings.BossBananas = [settings.troff_0, settings.troff_1, settings.troff_2, settings.troff_3, settings.troff_4, settings.troff_5, settings.troff_6]
+    if settings.randomize_blocker_required_amounts:  # If amounts are random, they need to be maxed out to properly generate random values
+        settings.EntryGBs = [1000, 1000, 1000, 1000, 1000, 1000, 1000, settings.blocker_7]
     # We also need to remember T&S values in an array as we'll overwrite the settings value in the process of determining location availability
     initialTNS = [settings.troff_0, settings.troff_1, settings.troff_2, settings.troff_3, settings.troff_4, settings.troff_5, settings.troff_6]
 
@@ -1727,9 +1729,10 @@ def SetNewProgressionRequirementsUnordered(settings: Settings):
 
     # Until we've completed every level...
     while len(levelsProgressed) < 7:
+        maxEnterableBlocker = round(runningGBTotal * BLOCKER_MAX)
         openLevels = GetAccessibleOpenLevels(settings, accessible)
         # Pick a random accessible B. Locker
-        accessibleIncompleteLevels = [level for level in openLevels if level not in levelsProgressed and settings.EntryGBs[level] <= round(runningGBTotal * BLOCKER_MAX)]
+        accessibleIncompleteLevels = [level for level in openLevels if level not in levelsProgressed and settings.EntryGBs[level] <= maxEnterableBlocker]
         # If we have no levels accessible, we need to lower a B. Locker count to make one accessible
         if len(accessibleIncompleteLevels) == 0:
             openUnprogressedLevels = [level for level in openLevels if level not in levelsProgressed]
@@ -1737,21 +1740,12 @@ def SetNewProgressionRequirementsUnordered(settings: Settings):
                 raise Ex.FillException("E1: Hard level order shuffler failed to progress through levels.")
             # Next level chosen randomly (possible room for improvement here?) from accessible levels
             nextLevelToBeat = choice(openUnprogressedLevels)
-            # If we are allowed to randomize B. Lockers as we please, try to swap a lower random B. Locker value with this level's
-            if settings.randomize_blocker_required_amounts:
-                # Find the lowest GB B. Locker
-                incompleteLevelWithLowestBLocker = nextLevelToBeat
-                for level in range(0, len(settings.EntryGBs)):
-                    if level not in levelsProgressed and settings.EntryGBs[level] < settings.EntryGBs[incompleteLevelWithLowestBLocker]:
-                        incompleteLevelWithLowestBLocker = level
-                # Swap B. Locker values with the randomly chosen accessible level
-                temp = settings.EntryGBs[incompleteLevelWithLowestBLocker]
-                settings.EntryGBs[incompleteLevelWithLowestBLocker] = settings.EntryGBs[nextLevelToBeat]
-                settings.EntryGBs[nextLevelToBeat] = temp
             # If the level still isn't accessible, we have to truncate the required amount
-            if settings.EntryGBs[nextLevelToBeat] > round(runningGBTotal * BLOCKER_MAX):
+            if settings.EntryGBs[nextLevelToBeat] > maxEnterableBlocker:
                 # Each B. Locker must be greater than the previous one and at least a specified percentage of availalbe GBs
-                highroll = round(runningGBTotal * BLOCKER_MAX)
+                highroll = maxEnterableBlocker
+                if settings.randomize_blocker_required_amounts:
+                    highroll = min(highroll, settings.blocker_max)  # When there are more GBs available than the max B. Locker value
                 lowroll = max(minimumBLockerGBs, round(runningGBTotal * BLOCKER_MIN))
                 if lowroll > highroll:
                     print("this shouldn't happen but here we are")
