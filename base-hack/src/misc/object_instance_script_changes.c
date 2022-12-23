@@ -119,6 +119,8 @@
 #define ISLES_HELMJAW 0x1C
 #define ISLES_FACTORYDOORCOLLISION 0x100
 
+#define ISLES_LOWMONKEYPORT 0x38
+
 #define CHUNKY5DC_GGONE 0x6
 #define CHUNKY5DC_TARGET0 0x3
 #define CHUNKY5DC_TARGET1 0x4
@@ -892,6 +894,14 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 					}
 				} else if ((param2 == ISLES_SWITCH_COCONUT) || (param2 == ISLES_SWITCH_PEANUT) || (param2 == ISLES_SWITCH_GRAPE) || (param2 == ISLES_SWITCH_FEATHER) || (param2 == ISLES_SWITCH_PINEAPPLE)) {
 					return !Rando.tag_anywhere;
+				} else if (param2 == ISLES_LOWMONKEYPORT) {
+					int gb_count = 0;
+					for (int kong = 0; kong < 5; kong++) {
+						for (int level = 0; level < 8; level++) {
+							gb_count += MovesBase[kong].gb_count[level];
+						}
+					}
+					return gb_count >= BLockerDefaultArray[7]; 
 				} else {
 					// TestVariable = (int)behaviour_pointer;
 					// *(int*)(0x807FF700) = id;
