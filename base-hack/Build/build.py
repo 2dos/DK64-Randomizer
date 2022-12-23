@@ -558,7 +558,10 @@ for x in range(10):
         {"name": f"Tag Barrel Bottom Texture ({x+1})", "pointer_table_index": 25, "file_index": 4749 + x, "source_file": "assets/Non-Code/tagbarrel/bottom.png", "texture_format": "rgba5551"}
     )
 for x in range(4761, 4768):
-    file_dict.append({"name": f"Portal Ripple Texture ({x})", "pointer_table_index": 25, "file_index": x, "source_file": f"assets/Non-Code/displays/empty11.png", "texture_format": "rgba5551"})
+    sz = "44"
+    if x == 4761:
+        sz = "3264"
+    file_dict.append({"name": f"Portal Ripple Texture ({x})", "pointer_table_index": 25, "file_index": x, "source_file": f"assets/Non-Code/displays/empty{sz}.png", "texture_format": "rgba5551"})
 for x in range(0xB50, 0xB56):
     file_dict.append({"name": f"Unused Texture ({x})", "pointer_table_index": 25, "file_index": x, "source_file": f"assets/Non-Code/displays/empty11.png", "texture_format": "rgba5551"})
 for x in range(0xDD1, 0xDD6):
