@@ -9,6 +9,7 @@ import randomizer.CollectibleLogicFiles.FungiForest
 import randomizer.CollectibleLogicFiles.GloomyGalleon
 import randomizer.CollectibleLogicFiles.JungleJapes
 from randomizer.Enums.Locations import Locations
+from randomizer.Enums.Regions import Regions as RegionEnum
 from randomizer.Enums.Types import Types
 from randomizer.Lists.Item import ItemList
 import randomizer.LogicFiles.AngryAztec
@@ -172,6 +173,8 @@ class LogicVarHolder:
 
         self.Events = []
 
+        self.Hints = []
+
         # Set key events for keys which are given to the player at start of game
         keyEvents = [
             Events.JapesKeyTurnedIn,
@@ -318,7 +321,8 @@ class LogicVarHolder:
         self.superSlam = self.Slam >= 2
         self.superDuperSlam = self.Slam >= 3
 
-        self.Blueprints = [x for x in ownedItems if x >= Items.JungleJapesDonkeyBlueprint]
+        self.Blueprints = [x for x in ownedItems if x >= Items.JungleJapesDonkeyBlueprint and x <= Items.DKIslesChunkyBlueprint]
+        self.Hints = [x for x in ownedItems if x >= Items.JapesDonkeyHint and x <= Items.CastleChunkyHint]
         self.Beans = sum(1 for x in ownedItems if x == Items.Bean)
         self.Pearls = sum(1 for x in ownedItems if x == Items.Pearl)
 
@@ -632,6 +636,15 @@ class LogicVarHolder:
         if item is None or item.type != Types.Blueprint:
             return False
         return self.settings.free_trade_blueprints or self.IsKong(item.kong)
+
+    def HintAccess(self, location, region_id):
+        """Check if we are the right kong for this hint door."""
+        if location.item is None:
+            return False
+        # The only weird exception: vanilla Fungi Lobby hint doors only check for Chunky, not the current Kong, and all besides Chunky's needs grab
+        if not self.settings.wrinkly_location_rando and not self.settings.remove_wrinkly_puzzles and region_id == RegionEnum.FungiForestLobby:
+            return self.chunky and (location.kong == Kongs.chunky or (self.donkey and self.grab))
+        return self.settings.wrinkly_available or self.HasKong(location.kong)
 
     def CanBuy(self, location):
         """Check if there are enough coins to purchase this location."""

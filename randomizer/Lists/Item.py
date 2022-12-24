@@ -2,6 +2,7 @@
 
 from randomizer.Enums.Items import Items
 from randomizer.Enums.Kongs import Kongs
+from randomizer.Enums.Levels import Levels
 from randomizer.Enums.MoveTypes import MoveTypes
 from randomizer.Enums.Types import Types
 
@@ -31,6 +32,8 @@ class Item:
             self.index = data[1]  # Key 1 = 1, Key 2 = 2, etc
         if type == Types.Kong:
             self.rando_flag = data[0]
+        if type == Types.Hint:
+            self.level = data[0]
 
 
 def ItemFromKong(kong):
@@ -199,5 +202,40 @@ ItemList = {
     Items.CreepyCastleLankyBlueprint: Item("Creepy Castle Lanky Blueprint", False, Types.Blueprint, Kongs.lanky),
     Items.CreepyCastleTinyBlueprint: Item("Creepy Castle Tiny Blueprint", False, Types.Blueprint, Kongs.tiny),
     Items.CreepyCastleChunkyBlueprint: Item("Creepy Castle Chunky Blueprint", False, Types.Blueprint, Kongs.chunky),
+    Items.JapesDonkeyHint: Item("Japes Donkey Hint", False, Types.Hint, Kongs.donkey, [Levels.JungleJapes]),
+    Items.JapesDiddyHint: Item("Japes Diddy Hint", False, Types.Hint, Kongs.diddy, [Levels.JungleJapes]),
+    Items.JapesLankyHint: Item("Japes Lanky Hint", False, Types.Hint, Kongs.lanky, [Levels.JungleJapes]),
+    Items.JapesTinyHint: Item("Japes Tiny Hint", False, Types.Hint, Kongs.tiny, [Levels.JungleJapes]),
+    Items.JapesChunkyHint: Item("Japes Chunky Hint", False, Types.Hint, Kongs.chunky, [Levels.JungleJapes]),
+    Items.AztecDonkeyHint: Item("Aztec Donkey Hint", False, Types.Hint, Kongs.donkey, [Levels.AngryAztec]),
+    Items.AztecDiddyHint: Item("Aztec Diddy Hint", False, Types.Hint, Kongs.diddy, [Levels.AngryAztec]),
+    Items.AztecLankyHint: Item("Aztec Lanky Hint", False, Types.Hint, Kongs.lanky, [Levels.AngryAztec]),
+    Items.AztecTinyHint: Item("Aztec Tiny Hint", False, Types.Hint, Kongs.tiny, [Levels.AngryAztec]),
+    Items.AztecChunkyHint: Item("Aztec Chunky Hint", False, Types.Hint, Kongs.chunky, [Levels.AngryAztec]),
+    Items.FactoryDonkeyHint: Item("Factory Donkey Hint", False, Types.Hint, Kongs.donkey, [Levels.FranticFactory]),
+    Items.FactoryDiddyHint: Item("Factory Diddy Hint", False, Types.Hint, Kongs.diddy, [Levels.FranticFactory]),
+    Items.FactoryLankyHint: Item("Factory Lanky Hint", False, Types.Hint, Kongs.lanky, [Levels.FranticFactory]),
+    Items.FactoryTinyHint: Item("Factory Tiny Hint", False, Types.Hint, Kongs.tiny, [Levels.FranticFactory]),
+    Items.FactoryChunkyHint: Item("Factory Chunky Hint", False, Types.Hint, Kongs.chunky, [Levels.FranticFactory]),
+    Items.GalleonDonkeyHint: Item("Galleon Donkey Hint", False, Types.Hint, Kongs.donkey, [Levels.GloomyGalleon]),
+    Items.GalleonDiddyHint: Item("Galleon Diddy Hint", False, Types.Hint, Kongs.diddy, [Levels.GloomyGalleon]),
+    Items.GalleonLankyHint: Item("Galleon Lanky Hint", False, Types.Hint, Kongs.lanky, [Levels.GloomyGalleon]),
+    Items.GalleonTinyHint: Item("Galleon Tiny Hint", False, Types.Hint, Kongs.tiny, [Levels.GloomyGalleon]),
+    Items.GalleonChunkyHint: Item("Galleon Chunky Hint", False, Types.Hint, Kongs.chunky, [Levels.GloomyGalleon]),
+    Items.ForestDonkeyHint: Item("Forest Donkey Hint", False, Types.Hint, Kongs.donkey, [Levels.FungiForest]),
+    Items.ForestDiddyHint: Item("Forest Diddy Hint", False, Types.Hint, Kongs.diddy, [Levels.FungiForest]),
+    Items.ForestLankyHint: Item("Forest Lanky Hint", False, Types.Hint, Kongs.lanky, [Levels.FungiForest]),
+    Items.ForestTinyHint: Item("Forest Tiny Hint", False, Types.Hint, Kongs.tiny, [Levels.FungiForest]),
+    Items.ForestChunkyHint: Item("Forest Chunky Hint", False, Types.Hint, Kongs.chunky, [Levels.FungiForest]),
+    Items.CavesDonkeyHint: Item("Caves Donkey Hint", False, Types.Hint, Kongs.donkey, [Levels.CrystalCaves]),
+    Items.CavesDiddyHint: Item("Caves Diddy Hint", False, Types.Hint, Kongs.diddy, [Levels.CrystalCaves]),
+    Items.CavesLankyHint: Item("Caves Lanky Hint", False, Types.Hint, Kongs.lanky, [Levels.CrystalCaves]),
+    Items.CavesTinyHint: Item("Caves Tiny Hint", False, Types.Hint, Kongs.tiny, [Levels.CrystalCaves]),
+    Items.CavesChunkyHint: Item("Caves Chunky Hint", False, Types.Hint, Kongs.chunky, [Levels.CrystalCaves]),
+    Items.CastleDonkeyHint: Item("Castle Donkey Hint", False, Types.Hint, Kongs.donkey, [Levels.CreepyCastle]),
+    Items.CastleDiddyHint: Item("Castle Diddy Hint", False, Types.Hint, Kongs.diddy, [Levels.CreepyCastle]),
+    Items.CastleLankyHint: Item("Castle Lanky Hint", False, Types.Hint, Kongs.lanky, [Levels.CreepyCastle]),
+    Items.CastleTinyHint: Item("Castle Tiny Hint", False, Types.Hint, Kongs.tiny, [Levels.CreepyCastle]),
+    Items.CastleChunkyHint: Item("Castle Chunky Hint", False, Types.Hint, Kongs.chunky, [Levels.CreepyCastle]),
     Items.BananaHoard: Item("Banana Hoard", True, Types.Constant, Kongs.any),
 }

@@ -4,7 +4,9 @@ from array import array
 
 from randomizer.Enums.Items import Items
 from randomizer.Enums.Kongs import Kongs
+from randomizer.Enums.Locations import Locations
 from randomizer.Lists.Exceptions import BossOutOfLocationsException, FillException, ItemPlacementException
+from randomizer.Lists.Location import LocationList
 from randomizer.Lists.MapsAndExits import Maps
 
 BossMapList = [Maps.JapesBoss, Maps.AztecBoss, Maps.FactoryBoss, Maps.GalleonBoss, Maps.FungiBoss, Maps.CavesBoss, Maps.CastleBoss]
@@ -239,3 +241,14 @@ def ShuffleTinyPhaseToes():
                 toe_bitfield |= 1 << toe
             toe_sequence.append(toe_bitfield)
     return toe_sequence.copy()
+
+
+def CorrectBossKongLocations(spoiler):
+    """Correct the Kong assigned to each boss Location for more accurate hints."""
+    LocationList[Locations.JapesKey].kong = spoiler.settings.boss_kongs[0]
+    LocationList[Locations.AztecKey].kong = spoiler.settings.boss_kongs[1]
+    LocationList[Locations.FactoryKey].kong = spoiler.settings.boss_kongs[2]
+    LocationList[Locations.GalleonKey].kong = spoiler.settings.boss_kongs[3]
+    LocationList[Locations.ForestKey].kong = spoiler.settings.boss_kongs[4]
+    LocationList[Locations.CavesKey].kong = spoiler.settings.boss_kongs[5]
+    LocationList[Locations.CastleKey].kong = spoiler.settings.boss_kongs[6]

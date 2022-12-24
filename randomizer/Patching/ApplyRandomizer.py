@@ -213,9 +213,7 @@ def patching_response(responded_data):
         BooleanProperties(spoiler.settings.tns_location_rando, 0x10E),  # T&S Portal Location Rando
         BooleanProperties(spoiler.settings.cb_rando, 0xAF),  # Show CBs/Coins
         BooleanProperties(spoiler.settings.cb_rando, 0x10B),  # Remove Rock Bunch
-        BooleanProperties(
-            spoiler.settings.wrinkly_location_rando or ("remove_wrinkly_puzzles" in spoiler.settings.misc_changes_selected or len(spoiler.settings.misc_changes_selected) == 0), 0x11F
-        ),  # Wrinkly Rando
+        BooleanProperties(spoiler.settings.wrinkly_location_rando or spoiler.settings.remove_wrinkly_puzzles, 0x11F),  # Wrinkly Rando
         BooleanProperties(spoiler.settings.helm_hurry, 0xAE),  # Helm Hurry
         BooleanProperties(spoiler.settings.remove_water_oscillation, 0x10F),  # Remove Water Oscillation
         BooleanProperties(spoiler.settings.hard_enemies, 0x116),  # Hard Enemies

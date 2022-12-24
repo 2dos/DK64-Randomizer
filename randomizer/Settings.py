@@ -389,6 +389,7 @@ class Settings:
         self.random_starting_region = False
         self.starting_region = {}
         self.holiday_mode = False
+        self.remove_wrinkly_puzzles = False
 
     def shuffle_prices(self):
         """Price randomization. Reuseable if we need to reshuffle prices."""
@@ -736,6 +737,9 @@ class Settings:
 
         self.free_trade_items = self.free_trade_setting != "none"
         self.free_trade_blueprints = self.free_trade_setting == "major_collectibles"
+
+        if "remove_wrinkly_puzzles" in self.misc_changes_selected or len(self.misc_changes_selected) == 0:
+            self.remove_wrinkly_puzzles = True
 
     def update_valid_locations(self):
         """Calculate (or recalculate) valid locations for items by type."""
