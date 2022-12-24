@@ -1,11 +1,19 @@
 """Shuffle Wrinkly and T&S Doors based on settings."""
 import random
+import randomizer.Logic as Logic
 from randomizer.Enums.Kongs import Kongs
-from randomizer.Enums.Levels import Levels
-from randomizer.Enums.Regions import Regions
+from randomizer.Enums.Locations import Locations
 from randomizer.Lists.DoorLocations import door_locations
+from randomizer.LogicClasses import LocationLogic
 
 level_list = ["Jungle Japes", "Angry Aztec", "Frantic Factory", "Gloomy Galleon", "Fungi Forest", "Crystal Caves", "Creepy Castle", "Hideout Helm"]
+
+
+def GetDoorLocationForKongAndLevel(kong, level):
+    """For the Level and Kong enum values, return the generic Blueprint Location enum tied to it."""
+    baseOffset = int(Locations.JapesDonkeyDoor)  # Japes/Donkey is the first door location and they're all grouped together
+    levelOffset = int(level)
+    return Locations(baseOffset + (5 * levelOffset) + int(kong))
 
 
 def ShuffleDoors(spoiler):
@@ -34,7 +42,7 @@ def ShuffleDoors(spoiler):
         for door_index, door in enumerate(door_locations[level]):
             if door.placed == "none" and (spoiler.settings.wrinkly_location_rando or spoiler.settings.tns_location_rando):
                 available_doors.append(door_index)
-            elif ("remove_wrinkly_puzzles" in spoiler.settings.misc_changes_selected or len(spoiler.settings.misc_changes_selected) == 0) and door.default_placed == "wrinkly":
+            elif spoiler.settings.remove_wrinkly_puzzles and door.default_placed == "wrinkly":
                 available_doors.append(door_index)
         random.shuffle(available_doors)
         if spoiler.settings.tns_location_rando:
@@ -78,7 +86,11 @@ def ShuffleDoors(spoiler):
                     selected_door.assignDoor(assignee)  # Clamp to within [0,4], preventing list index errors
                     human_hint_doors[level_list[level]][str(Kongs(kong % 5).name).capitalize()] = selected_door.name
                     shuffled_door_data[level].append((selected_door_index, "wrinkly", (kong % 5)))
-        elif "remove_wrinkly_puzzles" in spoiler.settings.misc_changes_selected or len(spoiler.settings.misc_changes_selected) == 0:
+                    # Add logic for the new door location
+                    doorLocation = GetDoorLocationForKongAndLevel(kong, level)
+                    region = Logic.Regions[selected_door.logicregion]
+                    region.locations.append(LocationLogic(doorLocation, selected_door.logic))
+        elif spoiler.settings.remove_wrinkly_puzzles:
             # place vanilla wrinkly doors
             vanilla_wrinkly_doors = [door for door in available_doors if door_locations[level][door].default_placed == "wrinkly"]
             for kong in range(5):

@@ -23,7 +23,7 @@ from randomizer.Enums.Transitions import Transitions
 from randomizer.Enums.Types import Types
 from randomizer.Enums.Warps import Warps
 from randomizer.Lists.Item import ItemList, KongFromItem
-from randomizer.Lists.Location import LocationList, TrainingBarrelLocations, DonkeyMoveLocations, DiddyMoveLocations, LankyMoveLocations, TinyMoveLocations, ChunkyMoveLocations, SharedMoveLocations
+from randomizer.Lists.Location import LocationList, TrainingBarrelLocations, SharedMoveLocations
 from randomizer.Lists.MapsAndExits import Maps
 from randomizer.Lists.Minigame import BarrelMetaData, MinigameRequirements
 from randomizer.Lists.ShufflableExit import GetLevelShuffledToIndex, GetShuffledLevelIndex
@@ -34,7 +34,7 @@ from randomizer.LogicClasses import Sphere, TransitionFront
 from randomizer.Prices import GetMaxForKong
 from randomizer.Settings import Settings
 from randomizer.ShuffleBarrels import BarrelShuffle
-from randomizer.ShuffleBosses import ShuffleBossesBasedOnOwnedItems
+from randomizer.ShuffleBosses import CorrectBossKongLocations, ShuffleBossesBasedOnOwnedItems
 from randomizer.ShuffleKasplats import InitKasplatMap, KasplatShuffle
 from randomizer.ShufflePatches import ShufflePatches
 from randomizer.ShuffleShopLocations import ShuffleShopLocations
@@ -174,10 +174,11 @@ def GetAccessibleLocations(settings, startingOwnedItems, searchType=SearchMode.G
                             or (location.bonusBarrel is MinigameType.HelmBarrel and settings.helm_barrels != "skip")
                         ) and (not MinigameRequirements[BarrelMetaData[location.id].minigame].logic(LogicVariables)):
                             continue
+                        # If this location is a hint door, then make sure we're the right Kong
+                        elif location_obj.item is not None and location_obj.type == Types.Hint and not LogicVariables.HintAccess(location_obj, region.id):
+                            continue
                         # If this location has a blueprint, then make sure this is the correct kong
-                        elif (location_obj.item is not None and ItemList[LocationList[location.id].item].type == Types.Blueprint) and (
-                            not LogicVariables.BlueprintAccess(ItemList[LocationList[location.id].item])
-                        ):
+                        elif (location_obj.item is not None and ItemList[location_obj.item].type == Types.Blueprint) and (not LogicVariables.BlueprintAccess(ItemList[location_obj.item])):
                             continue
                         # If this location is a Kasplat but doesn't have a blueprint, still make sure this is the correct kong to be accessible at all
                         elif (location_obj.type == Types.Blueprint) and (not LogicVariables.IsKong(location_obj.kong) and not settings.free_trade_items):
@@ -452,6 +453,7 @@ def PareWoth(spoiler, PlaythroughLocations):
     # The functionality is similar to ParePlaythrough, but we want to see if individual locations are
     # hard required, so items are added back after checking regardless of the outcome.
     WothLocations = []
+    AccessibleHintsForLocation = {}
     for sphere in PlaythroughLocations:
         # Don't want constant locations in woth and we can filter out some types of items as not being essential to the woth
         for loc in [
@@ -472,12 +474,16 @@ def PareWoth(spoiler, PlaythroughLocations):
         if GetAccessibleLocations(spoiler.settings, [], SearchMode.CheckBeatable):
             # If game is still beatable, this location is not hard required
             WothLocations.remove(locationId)
+        # If this is a WotH candidate, take note of what hints are available without this location
+        else:
+            AccessibleHintsForLocation[locationId] = LogicVariables.Hints.copy()
         # Either way, add location back
         location.PlaceItem(item)
     # Only need to build paths for item rando
     if spoiler.settings.shuffle_items:
         CalculateWothPaths(spoiler, WothLocations)
         CalculateFoolish(spoiler, WothLocations)
+    spoiler.accessible_hints_for_location = AccessibleHintsForLocation
     return WothLocations
 
 
@@ -2073,6 +2079,7 @@ def Generate_Spoiler(spoiler):
             ItemPool.PlaceConstants(spoiler.settings)
             if not GetAccessibleLocations(spoiler.settings, [], SearchMode.CheckBeatable):
                 raise Ex.VanillaItemsGameNotBeatableException("Game unbeatable.")
+    CorrectBossKongLocations(spoiler)
     GeneratePlaythrough(spoiler)
     if spoiler.settings.wrinkly_hints in ["standard", "cryptic"]:
         compileHints(spoiler)
@@ -2086,11 +2093,7 @@ def Generate_Spoiler(spoiler):
 def ShuffleMisc(spoiler):
     """Shuffle miscellaneous objects outside of main fill algorithm, including Kasplats, Bonus barrels, and bananaport warps."""
     # T&S and Wrinkly Door Shuffle
-    if (
-        spoiler.settings.wrinkly_location_rando
-        or spoiler.settings.tns_location_rando
-        or ("remove_wrinkly_puzzles" in spoiler.settings.misc_changes_selected or len(spoiler.settings.misc_changes_selected) == 0)
-    ):
+    if spoiler.settings.wrinkly_location_rando or spoiler.settings.tns_location_rando or spoiler.settings.remove_wrinkly_puzzles:
         ShuffleDoors(spoiler)
     # Handle Crown Placement
     if spoiler.settings.crown_placement_rando:

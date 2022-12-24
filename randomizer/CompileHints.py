@@ -238,8 +238,8 @@ kong_placement_levels = [{"name": "Jungle Japes", "level": 0}, {"name": "Llama T
 # These values are "if this is an option, then you must have at least X of this hint"
 hint_distribution = {
     HintType.Joke: 1,
-    HintType.KRoolOrder: 2,
-    HintType.HelmOrder: 2,  # must have one on the path
+    HintType.KRoolOrder: 1,
+    HintType.HelmOrder: 1,  # must have one on the path
     HintType.MoveLocation: 7,  # must be placed before you can buy the move
     # HintType.DirtPatch: 0,
     HintType.BLocker: 1,  # must be placed on the path and before the level they hint
@@ -263,6 +263,7 @@ def compileHints(spoiler: Spoiler):
     """Create a hint distribution, generate buff hints, and place them in locations."""
     locked_hint_types = [HintType.RequiredKongHint, HintType.RequiredKeyHint, HintType.RequiredWinConditionHint, HintType.RequiredHelmDoorHint]  # Some hint types cannot have their value changed
     maxed_hint_types = []  # Some hint types cannot have additional hints placed
+    minned_hint_types = []  # Some hint types cannot have all their hints removed
     # In level order (or vanilla) progression, there are hints that we want to be in the player's path
     level_order_matters = spoiler.settings.logic_type != "nologic" and spoiler.settings.shuffle_loading_zones != "all"
     # Determine what hint types are valid for these settings
@@ -271,6 +272,7 @@ def compileHints(spoiler: Spoiler):
         valid_types.append(HintType.KRoolOrder)
     if spoiler.settings.helm_setting != "skip_all" and spoiler.settings.helm_phase_count < 5:
         valid_types.append(HintType.HelmOrder)
+        minned_hint_types.append(HintType.HelmOrder)
     if not spoiler.settings.unlock_all_moves and spoiler.settings.move_rando not in ("off", "item_shuffle"):
         valid_types.append(HintType.FullShopWithItems)
         valid_types.append(HintType.MoveLocation)
@@ -403,6 +405,8 @@ def compileHints(spoiler: Spoiler):
         removed_type = random.choice(valid_types)
         if removed_type in locked_hint_types:
             continue  # Some hint types cannot have fewer than specified by the settings
+        if removed_type in minned_hint_types and hint_distribution[removed_type] == 1:
+            continue  # Some hint types cannot have 0 hints if they're a possible hint type
         if hint_distribution[removed_type] > 0:
             hint_distribution[removed_type] -= 1
             hint_count -= 1
@@ -467,8 +471,9 @@ def compileHints(spoiler: Spoiler):
     # Item rando kong hints are required and highly restrictive, only hinted to free kongs before (or as) the location is available
     if hint_distribution[HintType.RequiredKongHint] > 0:
         # The length of this list should match hint_distribution[HintType.RequiredKongHint]
-        kong_locations = [location for id, location in LocationList.items() if location.item in (Items.Donkey, Items.Diddy, Items.Lanky, Items.Tiny, Items.Chunky)]
-        for kong_location in kong_locations:
+        kong_location_ids = [id for id, location in LocationList.items() if location.item in (Items.Donkey, Items.Diddy, Items.Lanky, Items.Tiny, Items.Chunky)]
+        for kong_location_id in kong_location_ids:
+            kong_location = LocationList[kong_location_id]
             level_restriction = None
             # Put hints in or before the level the location is (or levels 1-2) (regardless of whether or not you can read it, we'll sort that out later)
             # This only matters if level order matters
@@ -480,8 +485,12 @@ def compileHints(spoiler: Spoiler):
             # We could put a kong door restriction on this, but I'm choosing not to due to a hint rework coming
             # Try to get a hint door in the requested levels
             hint_location = getRandomHintLocation(levels=level_restriction)
-            # This is STAGGERINGLY unlikely to fail, so just give up if it fails
-            if hint_location is None:
+            # Attempt to find a door that will be accessible before the Kong
+            hint_options = getHintLocationsForAccessibleHintItems(spoiler.accessible_hints_for_location[kong_location_id])
+            if len(hint_options) > 0:
+                hint_location = random.choice(hint_options)
+            # If there are no doors available early (very rare) then just get a random one. Tough luck.
+            else:
                 hint_location = getRandomHintLocation()
             freeing_kong_name = kong_list[kong_location.kong]
             if spoiler.settings.wrinkly_hints == "cryptic":
@@ -626,22 +635,16 @@ def compileHints(spoiler: Spoiler):
                     else:
                         level_name = level_list_helm_isles[location.level]
                     kong_name = kong_list[kong_index]
-                # Find the levels are are before the level this key is for
-                hintable_levels = []
-                for order, level in spoiler.settings.level_order.items():  # We don't know what order the level order is stored in, unfortunately
-                    if order <= key_item.index:
-                        hintable_levels.append(level)
-                # Pick a random hint location in any of the hintable levels
-                hint_location = getRandomHintLocation(levels=hintable_levels)
-                # If in the unfathomably rare situation all doors are unavailable, just pick a random door
-                # This might be something like Key 1 needing a hint and all level 1 hint doors are taken
-                #   This situation isn't that scary because Key 1 is likely in a very small set of locations
-                if hint_location is None:
+                # Attempt to find a door that will be accessible before the Key
+                hint_options = getHintLocationsForAccessibleHintItems(spoiler.accessible_hints_for_location[key_location_ids[key_id]])
+                if len(hint_options) > 0:
+                    hint_location = random.choice(hint_options)
+                # If there are no doors available (pretty unlikely) then just get a random one. Tough luck.
+                else:
                     hint_location = getRandomHintLocation()
-                if hint_location is not None:
-                    message = f"{key_item.name} can be acquired with {kong_name} in {level_name}."
-                    hint_location.hint_type = HintType.RequiredKeyHint
-                    UpdateHint(hint_location, message)
+                message = f"{key_item.name} can be acquired with {kong_name} in {level_name}."
+                hint_location.hint_type = HintType.RequiredKeyHint
+                UpdateHint(hint_location, message)
             # For later or complex Keys, place hints that hint the "path" to the key
             else:
                 # Prevent the same hint referring to the same location twice
@@ -657,7 +660,13 @@ def compileHints(spoiler: Spoiler):
                     already_hinted_locations.append(path_location_id)
                     region = GetRegionOfLocation(path_location_id)
                     hinted_location_text = region.hint_name
-                    hint_location = getRandomHintLocation()
+                    # Attempt to find a door that will be accessible before the Key
+                    hint_options = getHintLocationsForAccessibleHintItems(spoiler.accessible_hints_for_location[key_location_ids[key_id]])
+                    if len(hint_options) > 0:
+                        hint_location = random.choice(hint_options)
+                    # If there are no doors available (very unlikely) then just get a random one. Tough luck.
+                    else:
+                        hint_location = getRandomHintLocation()
                     if path_location_id in TrainingBarrelLocations:
                         # Training Grounds will have 4 moves - instead of being super vague we'll hint the specific item directly.
                         hinted_item_name = ItemList[LocationList[path_location_id].item].name
@@ -707,6 +716,13 @@ def compileHints(spoiler: Spoiler):
                 else:
                     message = f"An item in the {region.hint_name} is on the path to aiding your fight against K. Rool."
                 hint_location = getRandomHintLocation()
+                # Attempt to find a door that will be accessible before the move
+                hint_options = getHintLocationsForAccessibleHintItems(spoiler.accessible_hints_for_location[path_location_id])
+                if len(hint_options) > 0:
+                    hint_location = random.choice(hint_options)
+                # If there are no doors available (unlikely by now) then just get a random one. Tough luck.
+                else:
+                    hint_location = getRandomHintLocation()
                 hint_location.hint_type = HintType.RequiredWinConditionHint
                 UpdateHint(hint_location, message)
         # All fairies seeds get 2 path hints for the camera
@@ -722,7 +738,13 @@ def compileHints(spoiler: Spoiler):
                 already_chosen_camera_path_locations.append(path_location_id)
                 region = GetRegionOfLocation(path_location_id)
                 hinted_location_text = region.hint_name
-                hint_location = getRandomHintLocation()
+                # Attempt to find a door that will be accessible before the Camera
+                hint_options = getHintLocationsForAccessibleHintItems(spoiler.accessible_hints_for_location[camera_location_id])
+                if len(hint_options) > 0:
+                    hint_location = random.choice(hint_options)
+                # If there are no doors available (unlikely by now) then just get a random one. Tough luck.
+                else:
+                    hint_location = getRandomHintLocation()
                 if path_location_id in TrainingBarrelLocations:
                     # Training Grounds will have 4 moves - instead of being super vague we'll hint the specific item directly.
                     hinted_item_name = ItemList[LocationList[path_location_id].item].name
@@ -877,6 +899,84 @@ def compileHints(spoiler: Spoiler):
             UpdateHint(hint_location, message)
             placed_tns_hints += 1
 
+    # Foolish Move hints state that a move is foolish. Most applicable in item rando.
+    # Foolish moves block no other progression, regardless of if the item itself is required
+    if hint_distribution[HintType.FoolishMove] > 0:
+        random.shuffle(spoiler.foolish_moves)
+        for i in range(hint_distribution[HintType.FoolishMove]):
+            # If you run out of foolish moves (maybe in a near 101% run?)
+            # This is often covered by the distribution earlier but is needed due to slams and the homing/sniper merger
+            if len(spoiler.foolish_moves) == 0:
+                # Replace remaining move hints with WotH location hints, sounds like you'll need them
+                hint_distribution[HintType.FoolishMove] -= 1
+                hint_distribution[HintType.WothLocation] += 1
+                continue
+            hinted_move_id = spoiler.foolish_moves.pop()  # Don't hint the same move twice
+            # We can only guarantee that Super Duper is foolish due to being progressive. It could be that a slam is required but neither is explicitly required.
+            if hinted_move_id == Items.ProgressiveSlam:
+                item_name = "Super Duper Simian Slam"
+                # Make sure we don't drop 2 Super Duper slam hints
+                if Items.ProgressiveSlam in spoiler.foolish_moves:
+                    spoiler.foolish_moves.remove(Items.ProgressiveSlam)
+            elif hinted_move_id in (Items.HomingAmmo, Items.SniperSight):
+                item_name = "Homing Ammo and Sniper Scope"
+                if Items.HomingAmmo in spoiler.foolish_moves:
+                    spoiler.foolish_moves.remove(Items.HomingAmmo)
+                if Items.SniperSight in spoiler.foolish_moves:
+                    spoiler.foolish_moves.remove(Items.SniperSight)
+            else:
+                item_name = ItemList[hinted_move_id].name
+            hint_location = getRandomHintLocation()
+            message = f"It would be foolish to seek out {item_name}."
+            hint_location.hint_type = HintType.FoolishMove
+            UpdateHint(hint_location, message)
+
+    # Foolish Region hints state that a hint region is foolish. Useful in item rando.
+    # Foolish regions contain no major items that would block any amount of progression, even non-required progression
+    if hint_distribution[HintType.FoolishRegion] > 0:
+        random.shuffle(spoiler.foolish_region_names)
+        for i in range(hint_distribution[HintType.FoolishRegion]):
+            # If you run out of foolish regions (maybe in an all medals run?) - this *should* be covered by the distribution earlier but this is a good failsafe
+            if len(spoiler.foolish_region_names) == 0:
+                # Replace remaining move hints with WotH location hints, sounds like you'll need them
+                hint_distribution[HintType.FoolishRegion] -= 1
+                hint_distribution[HintType.WothLocation] += 1
+                continue
+            hinted_region_name = spoiler.foolish_region_names.pop()
+            hint_location = getRandomHintLocation()
+            message = f"It would be foolish to explore the {hinted_region_name}."
+            hint_location.hint_type = HintType.FoolishRegion
+            UpdateHint(hint_location, message)
+
+    # WotH Location hints list a location that is Way of the Hoard. Most applicable in item rando.
+    if hint_distribution[HintType.WothLocation] > 0:
+        hintable_location_ids = []
+        for location_id in spoiler.woth_locations:
+            location = LocationList[location_id]
+            # Only hint things that are in shuffled locations - don't hint training barrels because you can't know which move it refers to and don't hint the Helm Key if you know key 8 is there
+            if location.type in spoiler.settings.shuffled_location_types and location.type != Types.TrainingBarrel and not (spoiler.settings.key_8_helm and location_id == Locations.HelmKey):
+                hintable_location_ids.append(location_id)
+        random.shuffle(hintable_location_ids)
+        placed_woth_hints = 0
+        while placed_woth_hints < hint_distribution[HintType.WothLocation]:
+            # If you run out of hintable woth locations, just pile on joke hints - this should only happen if there's very few late woth locations
+            if len(hintable_location_ids) == 0:
+                hint_distribution[HintType.WothLocation] -= 1
+                hint_distribution[HintType.Joke] += 1
+                continue
+            hinted_loc_id = hintable_location_ids.pop()
+            # Attempt to find a door that will be accessible before the location is
+            hint_options = getHintLocationsForAccessibleHintItems(spoiler.accessible_hints_for_location[hinted_loc_id])
+            if len(hint_options) > 0:
+                hint_location = random.choice(hint_options)
+            # If there are no doors available, it's likely a very early woth location. Go find a better location to hint.
+            else:
+                continue
+            message = f"{LocationList[hinted_loc_id].name} is on the Way of the Hoard."
+            hint_location.hint_type = HintType.WothLocation
+            UpdateHint(hint_location, message)
+            placed_woth_hints += 1
+
     # Entrance hints are tricky, there's some requirements we must hit:
     # We must hint each of Japes, Aztec, and Factory at least once
     # The rest of the hints are tied to a variety of important locations
@@ -953,76 +1053,6 @@ def compileHints(spoiler: Spoiler):
                     print(f"Useful LZR hint to {usefulHinted.name} unable to be placed!")
             hint_location = getRandomHintLocation()
             hint_location.hint_type = HintType.Entrance
-            UpdateHint(hint_location, message)
-
-    # Foolish Move hints state that a move is foolish. Most applicable in item rando.
-    # Foolish moves block no other progression, regardless of if the item itself is required
-    if hint_distribution[HintType.FoolishMove] > 0:
-        random.shuffle(spoiler.foolish_moves)
-        for i in range(hint_distribution[HintType.FoolishMove]):
-            # If you run out of foolish moves (maybe in a near 101% run?)
-            # This is often covered by the distribution earlier but is needed due to slams and the homing/sniper merger
-            if len(spoiler.foolish_moves) == 0:
-                # Replace remaining move hints with WotH location hints, sounds like you'll need them
-                hint_distribution[HintType.FoolishMove] -= 1
-                hint_distribution[HintType.WothLocation] += 1
-                continue
-            hinted_move_id = spoiler.foolish_moves.pop()  # Don't hint the same move twice
-            # We can only guarantee that Super Duper is foolish due to being progressive. It could be that a slam is required but neither is explicitly required.
-            if hinted_move_id == Items.ProgressiveSlam:
-                item_name = "Super Duper Simian Slam"
-                # Make sure we don't drop 2 Super Duper slam hints
-                if Items.ProgressiveSlam in spoiler.foolish_moves:
-                    spoiler.foolish_moves.remove(Items.ProgressiveSlam)
-            elif hinted_move_id in (Items.HomingAmmo, Items.SniperSight):
-                item_name = "Homing Ammo and Sniper Scope"
-                if Items.HomingAmmo in spoiler.foolish_moves:
-                    spoiler.foolish_moves.remove(Items.HomingAmmo)
-                if Items.SniperSight in spoiler.foolish_moves:
-                    spoiler.foolish_moves.remove(Items.SniperSight)
-            else:
-                item_name = ItemList[hinted_move_id].name
-            hint_location = getRandomHintLocation()
-            message = f"It would be foolish to seek out {item_name}."
-            hint_location.hint_type = HintType.FoolishMove
-            UpdateHint(hint_location, message)
-
-    # Foolish Region hints state that a hint region is foolish. Useful in item rando.
-    # Foolish regions contain no major items that would block any amount of progression, even non-required progression
-    if hint_distribution[HintType.FoolishRegion] > 0:
-        random.shuffle(spoiler.foolish_region_names)
-        for i in range(hint_distribution[HintType.FoolishRegion]):
-            # If you run out of foolish regions (maybe in an all medals run?) - this *should* be covered by the distribution earlier but this is a good failsafe
-            if len(spoiler.foolish_region_names) == 0:
-                # Replace remaining move hints with WotH location hints, sounds like you'll need them
-                hint_distribution[HintType.FoolishRegion] -= 1
-                hint_distribution[HintType.WothLocation] += 1
-                continue
-            hinted_region_name = spoiler.foolish_region_names.pop()
-            hint_location = getRandomHintLocation()
-            message = f"It would be foolish to explore the {hinted_region_name}."
-            hint_location.hint_type = HintType.FoolishRegion
-            UpdateHint(hint_location, message)
-
-    # WotH Location hints list a location that is Way of the Hoard. Most applicable in item rando.
-    if hint_distribution[HintType.WothLocation] > 0:
-        hintable_locations = []
-        for location_id in spoiler.woth_locations:
-            location = LocationList[location_id]
-            # Only hint things that are in shuffled locations - don't hint training barrels because you can't know which move it refers to and don't hint the Helm Key if you know key 8 is there
-            if location.type in spoiler.settings.shuffled_location_types and location.type != Types.TrainingBarrel and not (spoiler.settings.key_8_helm and location_id == Locations.HelmKey):
-                hintable_locations.append(location)
-        random.shuffle(hintable_locations)
-        for i in range(hint_distribution[HintType.WothLocation]):
-            # If you run out of hintable woth locations, just pile on joke hints - this *should* be covered by the distribution earlier but this is a good failsafe
-            if len(hintable_locations) == 0:
-                hint_distribution[HintType.WothLocation] -= 1
-                hint_distribution[HintType.Joke] += 1
-                continue
-            hinted_loc = hintable_locations.pop()
-            hint_location = getRandomHintLocation()
-            message = f"{hinted_loc.name} is on the Way of the Hoard."
-            hint_location.hint_type = HintType.WothLocation
             UpdateHint(hint_location, message)
 
     # If any Helm doors are random, place a hint for each random door somewhere
@@ -1161,6 +1191,16 @@ def getRandomHintLocation(location_list=None, kongs=None, levels=None, move_name
         if hint.name == hint_location.name:
             return hint
     return None
+
+
+def getHintLocationsForAccessibleHintItems(hint_item_ids):
+    """Given a list of hint item ids, return unoccupied HintLocation objects they correspond to, possibly returning an empty list."""
+    accessible_hints = []
+    for item_id in hint_item_ids:
+        item = ItemList[item_id]
+        matching_hint = [hint for hint in hints if hint.level == item.level and hint.kong == item.kong][0]  # Should only match one
+        accessible_hints.append(matching_hint)
+    return [hint for hint in accessible_hints if hint.hint == ""]  # Filter out the occupied ones
 
 
 def pushHintToList(hint: Hint):

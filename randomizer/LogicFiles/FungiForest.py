@@ -173,8 +173,8 @@ LogicRegions = {
     ], [], [
         TransitionFront(Regions.FungiForestMedals, lambda l: True),
         TransitionFront(Regions.FungiForestStart, lambda l: True),
-        TransitionFront(Regions.MillChunkyArea, lambda l: (l.punch and l.ischunky) or l.phasewalk or l.CanPhaseswim() or l.ledgeclip, Transitions.ForestMainToChunkyMill, time=Time.Day),
-        TransitionFront(Regions.MillTinyArea, lambda l: (Events.MillBoxBroken in l.Events and l.mini and l.istiny) or l.phasewalk or l.CanPhaseswim() or l.ledgeclip, Transitions.ForestMainToTinyMill),
+        TransitionFront(Regions.MillChunkyTinyArea, lambda l: (l.punch and l.ischunky) or l.phasewalk or l.CanPhaseswim() or l.ledgeclip, Transitions.ForestMainToChunkyMill, time=Time.Day),
+        TransitionFront(Regions.MillChunkyTinyArea, lambda l: (Events.MillBoxBroken in l.Events and l.mini and l.istiny) or l.phasewalk or l.CanPhaseswim() or l.ledgeclip, Transitions.ForestMainToTinyMill),
         TransitionFront(Regions.GrinderRoom, lambda l: True, Transitions.ForestMainToGrinder, time=Time.Day),
         TransitionFront(Regions.MillRafters, lambda l: l.spring and l.isdiddy, Transitions.ForestMainToRafters, time=Time.Night),
         TransitionFront(Regions.WinchRoom, lambda l: (l.superSlam and l.isdiddy) or (l.CanMoonkick()), Transitions.ForestMainToWinch, time=Time.Night),
@@ -185,28 +185,23 @@ LogicRegions = {
         TransitionFront(Regions.ThornvineBarn, lambda l: l.CanPhaseswim(), Transitions.ForestMainToBarn),
     ]),
 
-    # Physically chunky and tiny share an area but they're split for logical convenience
-    Regions.MillChunkyArea: Region("Mill Chunky Area", "Forest Mills", Levels.FungiForest, False, -1, [], [
+    Regions.MillChunkyTinyArea: Region("Mill Back Room", "Forest Mills", Levels.FungiForest, False, -1, [], [
         Event(Events.GrinderActivated, lambda l: l.triangle and l.ischunky),
         Event(Events.MillBoxBroken, lambda l: l.punch and l.ischunky),
     ], [
         TransitionFront(Regions.FungiForestMedals, lambda l: True),
         TransitionFront(Regions.MillArea, lambda l: l.ischunky, Transitions.ForestChunkyMillToMain, time=Time.Day),
-        TransitionFront(Regions.MillTinyArea, lambda l: True),
-    ]),
-
-    Regions.MillTinyArea: Region("Mill Tiny Area", "Forest Mills", Levels.FungiForest, False, -1, [], [], [
         TransitionFront(Regions.MillArea, lambda l: (Events.MillBoxBroken in l.Events and l.mini and l.istiny) or l.phasewalk or l.ledgeclip, Transitions.ForestTinyMillToMain),
-        TransitionFront(Regions.MillChunkyArea, lambda l: True),
         TransitionFront(Regions.SpiderRoom, lambda l: True, Transitions.ForestTinyMillToSpider, time=Time.Night),
         TransitionFront(Regions.GrinderRoom, lambda l: (l.mini and l.istiny) or l.phasewalk or l.ledgeclip, Transitions.ForestTinyMillToGrinder),
     ]),
 
-    Regions.SpiderRoom: Region("Spider Room", "Forest Mills", Levels.FungiForest, False, Regions.MillTinyArea, [
-        LocationLogic(Locations.ForestTinySpiderBoss, lambda l: l.HasGun(Kongs.tiny) or (l.settings.free_trade_items and l.HasGun(Kongs.any))),
+    Regions.SpiderRoom: Region("Spider Room", "Forest Mills", Levels.FungiForest, False, Regions.MillChunkyTinyArea, [
+        # FTA Spider boss temporarily disabled for Night rework, will also need: or (l.settings.free_trade_items and l.HasGun(Kongs.any))),
+        LocationLogic(Locations.ForestTinySpiderBoss, lambda l: l.HasGun(Kongs.tiny)),
     ], [], [
         TransitionFront(Regions.FungiForestMedals, lambda l: True),
-        TransitionFront(Regions.MillTinyArea, lambda l: True, Transitions.ForestSpiderToTinyMill),
+        TransitionFront(Regions.MillChunkyTinyArea, lambda l: True, Transitions.ForestSpiderToTinyMill),
     ]),
 
     Regions.GrinderRoom: Region("Grinder Room", "Forest Mills", Levels.FungiForest, True, -1, [
@@ -216,7 +211,7 @@ LogicRegions = {
     ], [
         TransitionFront(Regions.FungiForestMedals, lambda l: True),
         TransitionFront(Regions.MillArea, lambda l: True, Transitions.ForestGrinderToMain, time=Time.Day),
-        TransitionFront(Regions.MillTinyArea, lambda l: (l.mini and l.istiny) or l.phasewalk or l.generalclips, Transitions.ForestGrinderToTinyMill),
+        TransitionFront(Regions.MillChunkyTinyArea, lambda l: (l.mini and l.istiny) or l.phasewalk or l.generalclips, Transitions.ForestGrinderToTinyMill),
     ]),
 
     Regions.MillRafters: Region("Mill Rafters", "Forest Mills", Levels.FungiForest, False, None, [
