@@ -120,14 +120,12 @@ LogicRegions = {
         Collectible(Collectibles.coin, Kongs.lanky, lambda l: True, None, 3),  # On mushroom near rafters attic
         Collectible(Collectibles.coin, Kongs.chunky, lambda l: True, None, 3),  # On mushroom near Chunky minecart exit
     ],
-    Regions.MillChunkyArea: [
+    Regions.MillChunkyTinyArea: [
         Collectible(Collectibles.bunch, Kongs.chunky, lambda l: l.punch or l.phasewalk, None, 1),
-
-        Collectible(Collectibles.coin, Kongs.chunky, lambda l: True, None, 3),
-    ],
-    Regions.MillTinyArea: [
         Collectible(Collectibles.bunch, Kongs.tiny, lambda l: True, None, 2),  # Near Spider
         Collectible(Collectibles.bunch, Kongs.tiny, lambda l: Events.MillBoxBroken in l.Events or l.phasewalk, None, 1),  # Inside Box
+
+        Collectible(Collectibles.coin, Kongs.chunky, lambda l: True, None, 3),
     ],
     Regions.SpiderRoom: [
         Collectible(Collectibles.bunch, Kongs.tiny, lambda l: True, None, 1),

@@ -1118,7 +1118,7 @@ ColoredBananaGroupList = [
         map_id=Maps.ForestMillBack,
         name="On boxes by Mini Monkey barrels",
         konglist=[Kongs.tiny, Kongs.chunky],
-        region=Regions.MillTinyArea,  # Or MillChunkyArea
+        region=Regions.MillChunkyTinyArea,
         locations=[[5, 1.0, 474, 55, 115], [5, 1.0, 192, 40, 659]],
     ),
     ColoredBananaGroup(
@@ -1586,7 +1586,7 @@ ColoredBananaGroupList = [
         map_id=Maps.ForestMillBack,
         name="On boxes by spider room (Tiny)",
         konglist=[Kongs.tiny, Kongs.chunky],
-        region=Regions.MillTinyArea,
+        region=Regions.MillChunkyTinyArea,
         vanilla=True,
         locations=[[5, 1.0, 124.76998138427734, 54.86122131347656, 156.70054626464844]],
     ),
@@ -1595,7 +1595,7 @@ ColoredBananaGroupList = [
         map_id=Maps.ForestMillBack,
         name="By Mini Monkey entrance to front mill (Tiny)",
         konglist=[Kongs.tiny, Kongs.chunky],
-        region=Regions.MillTinyArea,
+        region=Regions.MillChunkyTinyArea,
         vanilla=True,
         locations=[[5, 1.0, 101.95130157470703, 3.0, 454.1036682128906]],
     ),
@@ -1604,7 +1604,7 @@ ColoredBananaGroupList = [
         map_id=Maps.ForestMillBack,
         name="Inside punchable box (Tiny)",
         konglist=[Kongs.tiny, Kongs.chunky],
-        region=Regions.MillChunkyArea,
+        region=Regions.MillChunkyTinyArea,
         vanilla=True,
         logic=lambda l: l.punch and l.chunky,
         locations=[[5, 1.0, 390.7475891113281, 0, 114.15646362304688]],
@@ -1614,7 +1614,7 @@ ColoredBananaGroupList = [
         map_id=Maps.ForestMillBack,
         name="On triangle pad (Chunky)",
         konglist=[Kongs.tiny, Kongs.chunky],
-        region=Regions.MillChunkyArea,
+        region=Regions.MillChunkyTinyArea,
         vanilla=True,
         logic=lambda l: l.punch and l.chunky,
         locations=[[5, 1.0, 622.750732421875, 18.0, 167.2416534423828]],
@@ -2090,7 +2090,7 @@ BalloonList = [
         name="Middle of room",
         speed=5,
         konglist=[Kongs.tiny, Kongs.chunky],
-        region=Regions.MillTinyArea,  # Or MillChunkyArea
+        region=Regions.MillChunkyTinyArea,
         points=[[423, 120, 317], [454, 120, 558]],
     ),
     Balloon(

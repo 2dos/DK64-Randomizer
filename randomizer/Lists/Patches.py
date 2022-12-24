@@ -1286,7 +1286,7 @@ DirtPatchLocations = [
         z=585.0,
         rotation=2707,
         group=3,
-        logicregion=Regions.MillChunkyArea,
+        logicregion=Regions.MillChunkyTinyArea,
         logic=lambda l: l.shockwave,
     ),
     DirtPatchData(

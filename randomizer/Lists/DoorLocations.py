@@ -1975,7 +1975,7 @@ door_locations = {
         DoorData(
             name="Fungi Forest: Mill - back side - Near Chunky Coins",
             map=Maps.ForestMillBack,
-            logicregion=Regions.MillChunkyArea,
+            logicregion=Regions.MillChunkyTinyArea,
             location=[450.0, 0.0, 673.3, 180.0],
             kong_lst=[Kongs.tiny, Kongs.chunky],
             group=11,
