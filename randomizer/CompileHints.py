@@ -263,6 +263,7 @@ def compileHints(spoiler: Spoiler):
     """Create a hint distribution, generate buff hints, and place them in locations."""
     locked_hint_types = [HintType.RequiredKongHint, HintType.RequiredKeyHint, HintType.RequiredWinConditionHint, HintType.RequiredHelmDoorHint]  # Some hint types cannot have their value changed
     maxed_hint_types = []  # Some hint types cannot have additional hints placed
+    minned_hint_types = []  # Some hint types cannot have all their hints removed
     # In level order (or vanilla) progression, there are hints that we want to be in the player's path
     level_order_matters = spoiler.settings.logic_type != "nologic" and spoiler.settings.shuffle_loading_zones != "all"
     # Determine what hint types are valid for these settings
@@ -271,6 +272,7 @@ def compileHints(spoiler: Spoiler):
         valid_types.append(HintType.KRoolOrder)
     if spoiler.settings.helm_setting != "skip_all" and spoiler.settings.helm_phase_count < 5:
         valid_types.append(HintType.HelmOrder)
+        minned_hint_types.append(HintType.HelmOrder)
     if not spoiler.settings.unlock_all_moves and spoiler.settings.move_rando not in ("off", "item_shuffle"):
         valid_types.append(HintType.FullShopWithItems)
         valid_types.append(HintType.MoveLocation)
@@ -403,6 +405,8 @@ def compileHints(spoiler: Spoiler):
         removed_type = random.choice(valid_types)
         if removed_type in locked_hint_types:
             continue  # Some hint types cannot have fewer than specified by the settings
+        if removed_type in minned_hint_types and hint_distribution[removed_type] == 1:
+            continue  # Some hint types cannot have 0 hints if they're a possible hint type
         if hint_distribution[removed_type] > 0:
             hint_distribution[removed_type] -= 1
             hint_count -= 1
