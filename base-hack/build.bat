@@ -17,7 +17,7 @@ IF NOT DEFINED python_ver (set python_ver="python3")
 IF DEFINED test_on (echo "Building patch file" >> rom/build.log)  ELSE (set test_on="")
 @REM %python_ver% build\build_offset_file.py
 echo.
-
+call :runscript "Define Heap", "build\heap.py"
 call :runscript "Installing Packages", "build\install_packages.py"
 call :runscript "Pulling Images from ROM", "build\pull_images_from_rom.py"
 call :runscript "Modifying images from ROM", "build\createComplexImages.py"

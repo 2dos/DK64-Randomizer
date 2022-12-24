@@ -747,6 +747,7 @@ void banana_medal_acquisition(int flag) {
                 }
             } else if (item_type == 11) {
                 used_sprite = 0xA9 + kong;
+                refreshItemVisibility();
             } else {
                 used_sprite = sprite_indexes[item_type];
             }
@@ -921,7 +922,6 @@ void KongDropCode(void) {
     if (CurrentActorPointer_0->yVelocity > 500.0f) {
         CurrentActorPointer_0->yVelocity = 500.0f;
     }
-    CurrentActorPointer_0->hSpeed = 0.0f;
     if ((CurrentActorPointer_0->obj_props_bitfield & 0x10) == 0) {
         int current_type = CurrentActorPointer_0->actorType;
         int kong = -1;
@@ -1149,19 +1149,19 @@ void getItem(int object_type) {
             // Pearl
             {
                 playSong(128, 0x3F800000);
-                if (CurrentMap == 0x2C) { // Treasure Chest
-                    int requirement = 5;
-                    if (Rando.fast_gbs) {
-                        requirement = 1;
-                    }
-                    int count = 0;
-                    for (int i = 0; i < 5; i++) {
-                        count += checkFlagDuplicate(FLAG_PEARL_0_COLLECTED + i, 0);
-                    }
-                    if (count == (requirement - 1)) {
-                        playCutscene((void*)0, 1, 0);
-                    }
-                }
+                // if (CurrentMap == 0x2C) { // Treasure Chest
+                //     int requirement = 5;
+                //     if (Rando.fast_gbs) {
+                //         requirement = 1;
+                //     }
+                //     int count = 0;
+                //     for (int i = 0; i < 5; i++) {
+                //         count += checkFlagDuplicate(FLAG_PEARL_0_COLLECTED + i, 0);
+                //     }
+                //     if (count == (requirement - 1)) {
+                //         playCutscene((void*)0, 1, 0);
+                //     }
+                // }
             }
             break;
         case 0x1D1:
@@ -1403,4 +1403,33 @@ void initItemDictionary(void) {
     *(short*)(0x80731666) = getHi(&NewGBDictionary[0].map);
     *(short*)(0x80731676) = getLo(&NewGBDictionary[0].map);
     *(short*)(0x80731672) = GB_DICTIONARY_COUNT;
+}
+
+int fairyQueenCutsceneInit(int start, int count, int type) {
+    int fairies_in_possession = countFlagsDuplicate(start, count, type); 
+    int fairy_limit = 20;
+    if (Rando.rareware_gb_fairies > 0) {
+        fairy_limit = Rando.rareware_gb_fairies;
+    }
+    if (fairies_in_possession < fairy_limit) {
+        // Not enough fairies
+        CurrentActorPointer_0->control_state = 10;
+    }
+    return fairies_in_possession;
+}
+
+void fairyQueenCutsceneCheck(void) {
+    if (CurrentActorPointer_0->control_state == 10) {
+        float dx = CurrentActorPointer_0->xPos - Player->xPos;
+        float dz = CurrentActorPointer_0->zPos - Player->zPos;
+        if ((dx * dx) + (dz * dz) < 10000.0f) {
+            // In Range
+            if (!checkFlag(0x79, 2)) {
+                playCutscene(Player, 3, 1);
+                CurrentActorPointer_0->control_state = 11;
+                setFlag(0x79, 1, 2);
+            }
+        }
+    }
+    renderActor(CurrentActorPointer_0, 0);
 }

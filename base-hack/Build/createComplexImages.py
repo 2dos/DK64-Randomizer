@@ -385,6 +385,41 @@ Image.open(f"{hash_dir}rw_coin.png").resize(dim).save(f"{arcade_dir}rwcoin.png")
 # with open(f"{disp_dir}snow.bin","wb") as fh:
 #     fh.write(bytearray(snow_by))
 
+# Coin Door and Crown Door
+# num_0_bounds = [0, 20, 30, 45, 58, 76]
+# for x in range(5):
+#     Image.open(f"{hash_dir}01234.png").crop((num_0_bounds[x], 0, num_0_bounds[x+1], 24)).save(f"{disp_dir}num{x}.png")
+# num_1_bounds = [0, 15, 28, 43, 58, 76]
+# for x in range(5):
+#     Image.open(f"{hash_dir}56789.png").crop((num_1_bounds[x], 0, num_1_bounds[x+1], 24)).save(f"{disp_dir}num{x+5}.png")
+# Image.open(f"{hash_dir}MNO.png").crop((45, 0, 65, 24)).save(f"{disp_dir}letter_O.png")
+# Image.open(f"{hash_dir}PQRS.png").crop((36, 0, 53, 24)).save(f"{disp_dir}letter_R.png")
+
+rw_im = Image.open(f"{hash_dir}rw_coin_noresize.png").crop((0, 0, 22, 44))
+nin_im = Image.open(f"{hash_dir}nin_coin_noresize.png").crop((22, 0, 44, 44))
+combo_im = Image.new(mode="RGBA", size=(44, 44))
+combo_im.paste(rw_im, (0, 0), rw_im)
+combo_im.paste(nin_im, (22, 0), nin_im)
+combo_im.transpose(Image.Transpose.FLIP_TOP_BOTTOM).save(f"{disp_dir}door_combocoin.png")
+Image.open(f"{hash_dir}crown_noresize.png").transpose(Image.Transpose.FLIP_TOP_BOTTOM).save(f"{disp_dir}door_crown.png")
+# Number 4
+num4_im = Image.open(f"{hash_dir}01234.png").crop((58, 0, 76, 24))
+num4_w, num4_h = num4_im.size
+new_width = (44 / num4_h) * num4_w
+num4_im = num4_im.resize((int(new_width), 44))
+num4_base = Image.new(mode="RGBA", size=(44, 44))
+num4_base.paste(num4_im, (int(22 - (new_width / 2)), 0), num4_im)
+num4_base.transpose(Image.Transpose.FLIP_TOP_BOTTOM).save(f"{disp_dir}num_4.png")
+# Number 2
+num2_im = Image.open(f"{hash_dir}01234.png").crop((30, 0, 45, 24))
+num2_w, num2_h = num2_im.size
+new_width = (44 / num2_h) * num2_w
+num2_im = num2_im.resize((int(new_width), 44))
+num2_base = Image.new(mode="RGBA", size=(44, 44))
+num2_base.paste(num2_im, (int(22 - (new_width / 2)), 0), num2_im)
+num2_base.transpose(Image.Transpose.FLIP_TOP_BOTTOM).save(f"{disp_dir}num_2.png")
+
+
 rmve = [
     "01234.png",
     "56789.png",
@@ -404,6 +439,11 @@ rmve = [
     "medal.png",
     "bean.png",
     "pearl.png",
+    "crown_noresize.png",
+    "MNO.png",
+    "nin_coin_noresize.png",
+    "PQRS.png",
+    "rw_coin_noresize.png",
 ]
 for kong in kongs:
     for x in range(2):

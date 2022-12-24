@@ -11,6 +11,7 @@
 
 .include "asm/variables/actor.asm"
 .include "asm/variables/hack.asm"
+.include "asm/variables/heap.asm"
 .include "asm/variables/modeltwo.asm"
 .include "asm/variables/static.asm"
 

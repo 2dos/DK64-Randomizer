@@ -65,27 +65,27 @@
 <script>
     $('#{{ name }}_selected option').mousedown(function(e) {
         var el = e.target
-
+    
         $(this).prop('selected', !$(this).prop('selected'));
         $(this).trigger('change');
-
+    
         // fixes erratic scroll behavior in Chrome
         var scrollTop = el.parentNode.scrollTop;
         setTimeout(() => el.parentNode.scrollTo(0, scrollTop), 0);
-
+    
         return false;
     });
-
+    
     $('#{{ name }}_select_all').click(function() {
         $('#{{ name }}_selected option').prop('selected', true);
         $('#{{ name }}_selected').trigger('change');
     });
-
+    
     $('#{{ name }}_reset').click(function() {
         $('#{{ name }}_selected option:selected').prop('selected', false);
         $('#{{ name }}_selected').trigger('change');
     });
-
+    
     $('#{{ name }}_search_box').keyup(function() {
         var keyword = document.getElementById("{{ name }}_search_box").value;
         var select = document.getElementById("{{ name }}_selected");

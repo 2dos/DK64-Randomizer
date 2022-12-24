@@ -25,6 +25,7 @@ from convertSetup import convertSetup
 from end_seq_writer import createSquishFile, createTextFile
 from generate_yellow_wrinkly import generateYellowWrinkly
 from image_converter import convertToRGBA32
+from helm_doors import getHelmDoorModel
 
 # Infrastructure for recomputing DK64 global pointer tables
 from map_names import maps
@@ -57,6 +58,9 @@ portal_images.append(convertPortalImage("assets/Non-Code/portals/DK_rando_portal
 createTextFile("assets/Non-Code/credits")
 createSquishFile("assets/Non-Code/credits")
 generateYellowWrinkly()
+
+getHelmDoorModel(6022, 6023, "crown_door.bin")
+getHelmDoorModel(6024, 6025, "coin_door.bin")
 
 BLOCK_COLOR_SIZE = 64  # Bytes allocated to a block 32x32 image. Brute forcer says we can go as low as 0x25 bytes, but leaving some room for me to have left out something
 
@@ -166,6 +170,44 @@ file_dict = [
     {"name": "Potion (Any) Model", "pointer_table_index": 4, "file_index": 0x1F6, "source_file": "potion_any_om2.bin", "do_not_delete_source": True},
     {"name": "Krusha Head", "start": 0x1FF6000, "source_file": "assets/Non-Code/displays/krusha_head64.png", "do_not_delete_source": True, "texture_format": "rgba5551", "do_not_compress": True},
     {"name": "Snow Texture", "start": 0x1FF8000, "source_file": "assets/Non-Code/displays/snow32.png", "do_not_delete_source": True, "texture_format": "rgba5551", "do_not_compress": True},
+    {"name": "Crown Door Model", "pointer_table_index": 4, "file_index": 0x1A6, "source_file": "crown_door.bin", "do_not_delete_source": True},
+    {"name": "Coin Door Model", "pointer_table_index": 4, "file_index": 0x1A7, "source_file": "coin_door.bin", "do_not_delete_source": True},
+    {
+        "name": "Crown Door Image 1",
+        "pointer_table_index": 25,
+        "file_index": 6022,
+        "source_file": "assets/Non-Code/displays/door_crown.png",
+        "texture_format": "rgba5551",
+        "do_not_delete_source": True,
+        "target_compressed_size": 44 * 44 * 2,
+    },
+    {
+        "name": "Crown Door Image 2",
+        "pointer_table_index": 25,
+        "file_index": 6023,
+        "source_file": "assets/Non-Code/displays/num_4.png",
+        "texture_format": "rgba5551",
+        "do_not_delete_source": True,
+        "target_compressed_size": 44 * 44 * 2,
+    },
+    {
+        "name": "Coin Door Image 1",
+        "pointer_table_index": 25,
+        "file_index": 6024,
+        "source_file": "assets/Non-Code/displays/door_combocoin.png",
+        "texture_format": "rgba5551",
+        "do_not_delete_source": True,
+        "target_compressed_size": 44 * 44 * 2,
+    },
+    {
+        "name": "Coin Door Image 2",
+        "pointer_table_index": 25,
+        "file_index": 6025,
+        "source_file": "assets/Non-Code/displays/num_2.png",
+        "texture_format": "rgba5551",
+        "do_not_delete_source": True,
+        "target_compressed_size": 44 * 44 * 2,
+    },
 ]
 
 for img in (0x4DD, 0x4E4, 0x6B, 0xF0, 0x8B2, 0x5C2, 0x66E, 0x66F, 0x685, 0x6A1, 0xF8, 0x136):
@@ -499,7 +541,7 @@ for x in range(8):
         }
     )
 for x in range(43):
-    if x not in (13, 32, 0x18, 0x27, 8, 37, 2):
+    if x not in (13, 32, 0x18, 0x27, 8, 37, 2, 40, 19):
         file_dict.append(
             {
                 "name": "Text " + str(x),
@@ -516,7 +558,10 @@ for x in range(10):
         {"name": f"Tag Barrel Bottom Texture ({x+1})", "pointer_table_index": 25, "file_index": 4749 + x, "source_file": "assets/Non-Code/tagbarrel/bottom.png", "texture_format": "rgba5551"}
     )
 for x in range(4761, 4768):
-    file_dict.append({"name": f"Portal Ripple Texture ({x})", "pointer_table_index": 25, "file_index": x, "source_file": f"assets/Non-Code/displays/empty11.png", "texture_format": "rgba5551"})
+    sz = "44"
+    if x == 4761:
+        sz = "3264"
+    file_dict.append({"name": f"Portal Ripple Texture ({x})", "pointer_table_index": 25, "file_index": x, "source_file": f"assets/Non-Code/displays/empty{sz}.png", "texture_format": "rgba5551"})
 for x in range(0xB50, 0xB56):
     file_dict.append({"name": f"Unused Texture ({x})", "pointer_table_index": 25, "file_index": x, "source_file": f"assets/Non-Code/displays/empty11.png", "texture_format": "rgba5551"})
 for x in range(0xDD1, 0xDD6):
@@ -631,6 +676,20 @@ file_dict.append({"name": "Move Names Text", "pointer_table_index": 12, "file_in
 file_dict.append({"name": "Cranky Text", "pointer_table_index": 12, "file_index": 8, "source_file": "cranky_text.bin", "do_not_compress": True, "do_not_delete_source": True})
 file_dict.append({"name": "Menu Text", "pointer_table_index": 12, "file_index": 37, "source_file": "menu_text.bin", "do_not_compress": True, "do_not_delete_source": True})
 file_dict.append({"name": "Kong Name Text", "pointer_table_index": 12, "file_index": 2, "source_file": "kongname_text.bin", "do_not_compress": True, "do_not_delete_source": True})
+file_dict.append({"name": "BFI Rareware Door Text", "pointer_table_index": 12, "file_index": 40, "source_file": "fairy_rw_text.bin", "do_not_compress": True, "do_not_delete_source": True})
+file_dict.append(
+    {
+        "name": "Misc Squawks Text",
+        "pointer_table_index": 12,
+        "file_index": 19,
+        "source_file": "misc_squawks_text.bin",
+        "do_not_compress": True,
+        "do_not_recompress": True,
+        "do_not_delete_source": True,
+        "target_uncompressed_size": 0x1200,
+        "target_compressed_size": 0x1200,
+    }
+)
 
 with open(ROMName, "rb") as fh:
     adjustExits(fh)
@@ -1108,6 +1167,10 @@ with open(newROMName, "r+b") as fh:
         "pearl",
         "bean32",
         "pearl32",
+        "door_combocoin",
+        "door_crown",
+        "num_2",
+        "num_4",
     ]
     for disp in displays:
         for ext in [".png", ".rgba32", ".rgba5551"]:

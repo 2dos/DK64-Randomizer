@@ -5,6 +5,11 @@ from randomizer.Patching.Patcher import ROM
 from randomizer.Spoiler import Spoiler
 from randomizer.Enums.Types import Types
 from randomizer.Enums.Locations import Locations
+from randomizer.Lists.Item import ItemList
+from randomizer.Lists.Location import LocationList
+from randomizer.Enums.Items import Items
+from randomizer.Enums.Levels import Levels
+from randomizer.Enums.Kongs import Kongs
 from randomizer.Patching.Lib import intf_to_float, float_to_hex
 
 model_two_indexes = {
@@ -126,6 +131,47 @@ text_rewards = {
     Types.NoItem: ("NOTHING", "DIDDLY SQUAT"),
 }
 
+level_names = {
+    Levels.JungleJapes: "Jungle Japes",
+    Levels.AngryAztec: "Angry Aztec",
+    Levels.FranticFactory: "Frantic Factory",
+    Levels.GloomyGalleon: "Gloomy Galleon",
+    Levels.FungiForest: "Fungi Forest",
+    Levels.CrystalCaves: "Crystal Caves",
+    Levels.CreepyCastle: "Creepy Castle",
+    Levels.DKIsles: "DK Isles",
+    Levels.HideoutHelm: "Hideout Helm",
+}
+
+kong_names = {Kongs.donkey: "Donkey Kong", Kongs.diddy: "Diddy", Kongs.lanky: "Lanky", Kongs.tiny: "Tiny", Kongs.chunky: "Chunky", Kongs.any: "Any Kong"}
+
+
+def pushItemMicrohints(spoiler: Spoiler, item):
+    """Push hint for the micro-hints system."""
+    move = Items.NoItem  # Using no item for the purpose of a default
+    hinted_items = {
+        # Key = Item, Value = Textbox index in text file 19
+        Items.Monkeyport: 26,
+        Items.GorillaGone: 25,
+    }
+    for item_hint in hinted_items:
+        if item.new_flag == ItemList[item_hint].rando_flag:
+            move = item_hint
+    if move != Items.NoItem:
+        level_enum = LocationList[item.location].level
+        kong_enum = LocationList[item.location].kong
+        level_name = "Unknown Level"
+        kong_name = "Unknown Kong"
+        if level_enum in level_names:
+            level_name = level_names[level_enum]
+        if kong_enum in kong_names:
+            kong_name = kong_names[kong_enum]
+        data = {"textbox_index": hinted_items[move], "mode": "replace_whole", "target": f"You would be better off looking in {level_name} with {kong_name} for this.".upper()}
+        if 19 in spoiler.text_changes:
+            spoiler.text_changes[19].append(data)
+        else:
+            spoiler.text_changes[19] = [data]
+
 
 def getTextRewardIndex(item) -> int:
     """Get reward index for text item."""
@@ -213,6 +259,9 @@ def place_randomized_items(spoiler: Spoiler):
         flut_items = []
         for item in item_data:
             if item.can_have_item:
+                # Handle Item Hints in specific spots
+                if item.new_item == Types.Shop:
+                    pushItemMicrohints(spoiler, item)
                 if item.is_shop:
                     # Write in placement index
                     ROM().seek(sav + 0xA7)

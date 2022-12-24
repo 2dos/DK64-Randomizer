@@ -74,8 +74,8 @@ def generate_lo_rando_race_settings():
     data["hard_shooting"] = False
     data["hard_mad_jack"] = False
     data["perma_death"] = False
-    data["crown_door_open"] = False  # usually True but False is better testing
-    data["coin_door_open"] = "need_zero"  # usually need_zero, could be need_rw | need_nin | need_both
+    data["crown_door_item"] = "random"  # opened | random | specify the item: need_xxx
+    data["coin_door_item"] = "random"  # opened | random | specify the item: need_xxx
     data["bonus_barrel_rando"] = True
     data["gnawty_barrels"] = False
     data["bonus_barrel_auto_complete"] = False  # usually False

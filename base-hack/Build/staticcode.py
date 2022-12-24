@@ -1,4 +1,6 @@
 """Static code patching."""
+from heap import getHeapData
+
 jump_data_start = 0x1FFF000
 with open("rom/dk64-randomizer-base-temp.z64", "rb") as fg:
     fg.seek(jump_data_start + 0x00)
@@ -12,7 +14,9 @@ def patchStaticCode(filename):
         fh.seek(0xE64)
         fh.write(bytearray([0x8, 0x0, 0x37, 0xA2]))  # Code Hook
         fh.seek(0x15212)
-        fh.write(bytearray([0x80, 0x5D]))  # Heap Shrink
+        fh.write(getHeapData()["upper"].to_bytes(2, "big"))  # Heap Shrink
+        fh.seek(0x1521A)
+        fh.write(getHeapData()["lower"].to_bytes(2, "big"))  # Heap Shrink
         # fh.seek(0x119247)
         # fh.write(bytearray([0x22])) # File Start Map
         # fh.seek(0x11925B)
