@@ -1380,11 +1380,10 @@ ColoredBananaGroupList = [
     ColoredBananaGroup(
         group=116,
         map_id=Maps.CastleTower,
-        name="In wind column",
+        name="By the entrance",
         konglist=[Kongs.lanky],
         region=Regions.Tower,
-        logic=lambda l: (l.scope or l.homing) and l.balloon and l.grape,
-        locations=[[5, 1.3, 400, 460, 400], [5, 1.3, 400, 580, 400]],
+        locations=[[5, 1.0, 478, 230, 639], [5, 1.0, 307, 230, 645]],
     ),
     ColoredBananaGroup(group=117, map_id=Maps.CastleTower, name="On baboon balloon pad", konglist=[Kongs.lanky], region=Regions.Tower, locations=[[5, 1.0, 511, 239, 342]]),
     ColoredBananaGroup(
