@@ -74,8 +74,10 @@ def generate_lo_rando_race_settings():
     data["hard_shooting"] = False
     data["hard_mad_jack"] = False
     data["perma_death"] = False
-    data["crown_door_item"] = "random"  # opened | random | specify the item: need_xxx
-    data["coin_door_item"] = "random"  # opened | random | specify the item: need_xxx
+    data["crown_door_item"] = "random"  # opened | random | specify the item: req_xxx
+    data["crown_door_item_count"] = 1  # no need to specify when random
+    data["coin_door_item"] = "random"  # opened | random | specify the item: req_xxx
+    data["coin_door_item_count"] = 1  # no need to specify when random
     data["bonus_barrel_rando"] = True
     data["gnawty_barrels"] = False
     data["bonus_barrel_auto_complete"] = False  # usually False

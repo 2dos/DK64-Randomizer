@@ -186,7 +186,7 @@ LogicRegions = {
     ]),
 
     Regions.MillChunkyTinyArea: Region("Mill Back Room", "Forest Mills", Levels.FungiForest, False, -1, [], [
-        Event(Events.GrinderActivated, lambda l: l.triangle and l.ischunky),
+        Event(Events.GrinderActivated, lambda l: l.punch and l.triangle and l.ischunky),
         Event(Events.MillBoxBroken, lambda l: l.punch and l.ischunky),
     ], [
         TransitionFront(Regions.FungiForestMedals, lambda l: True),

@@ -724,16 +724,20 @@ class Settings:
             self.kasplat_location_rando = True
 
         # Some settings (mostly win conditions) require modification of items in order to better generate the spoiler log
-        if self.win_condition == "all_fairies":
+        if self.win_condition == "all_fairies" or self.crown_door_item == "req_fairy" or self.coin_door_item == "req_fairy":
             ItemList[Items.BananaFairy].playthrough = True
-        if self.win_condition == "all_blueprints":
+        if self.win_condition == "all_blueprints" or self.crown_door_item == "req_bp" or self.coin_door_item == "req_bp":
             for item_index in ItemList:
                 if ItemList[item_index].type == Types.Blueprint:
                     ItemList[item_index].playthrough = True
-        if self.win_condition == "all_medals":
+        if self.win_condition == "all_medals" or self.crown_door_item == "req_medal" or self.coin_door_item == "req_medal":
             ItemList[Items.BananaMedal].playthrough = True
         if self.crown_door_item in ("vanilla", "req_crown") or self.coin_door_item == "req_crown":
             ItemList[Items.BattleCrown].playthrough = True
+        if self.crown_door_item == "req_bean" or self.coin_door_item == "req_bean":
+            ItemList[Items.Bean].playthrough = True
+        if self.crown_door_item == "req_pearl" or self.coin_door_item == "req_pearl":
+            ItemList[Items.Pearl].playthrough = True
 
         self.free_trade_items = self.free_trade_setting != "none"
         self.free_trade_blueprints = self.free_trade_setting == "major_collectibles"
