@@ -171,7 +171,7 @@ BananaportVanilla = {
     Warps.IslesRing1: BananaportData(name="DK Isles: Ring (1)", map_id=Maps.Isles, region_id=Regions.IslesMain, obj_id_vanilla=0x10, vanilla_warp=0, swap_index=0),
     Warps.IslesKLumsy: BananaportData(name="DK Isles: Outside K. Lumsy's Prison", map_id=Maps.Isles, region_id=Regions.IslesMain, obj_id_vanilla=0x11, vanilla_warp=0, swap_index=1),
     Warps.IslesRing2: BananaportData(name="DK Isles: Ring (2)", map_id=Maps.Isles, region_id=Regions.IslesMain, obj_id_vanilla=0x12, vanilla_warp=1, swap_index=2),
-    Warps.IslesAztecLobby: BananaportData(name="DK Isles: Outside Aztec Lobby", map_id=Maps.Isles, region_id=Regions.IslesMain, obj_id_vanilla=0x13, vanilla_warp=1, swap_index=3),
+    Warps.IslesAztecLobby: BananaportData(name="DK Isles: Outside Aztec Lobby", map_id=Maps.Isles, region_id=Regions.IslesMainUpper, obj_id_vanilla=0x13, vanilla_warp=1, swap_index=3),
     Warps.IslesRing3: BananaportData(name="DK Isles: Ring (3)", map_id=Maps.Isles, region_id=Regions.IslesMain, obj_id_vanilla=0x16, vanilla_warp=2, swap_index=5),
     Warps.IslesWaterfall: BananaportData(name="DK Isles: Waterfall", map_id=Maps.Isles, region_id=Regions.IslesMain, obj_id_vanilla=0x14, vanilla_warp=2, swap_index=4),
     Warps.IslesRing4: BananaportData(name="DK Isles: Ring (4)", map_id=Maps.Isles, region_id=Regions.IslesMain, obj_id_vanilla=0x17, vanilla_warp=3, swap_index=6),
