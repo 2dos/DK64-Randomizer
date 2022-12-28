@@ -17,7 +17,7 @@ static const map_bitfield banned_map_btf = {
     .stealthy_snoop_normal_no_logo = 0,
     .jungle_japes_shell = 0,
     .jungle_japes_lankys_cave = 0,
-    .angry_aztec_beetle_race = 1, // Reason: Locked Movement
+    .angry_aztec_beetle_race = 0, // Reason: Locked Movement
     .snides_hq = 1, // Reason: Shop
     .angry_aztec_tinys_temple = 0,
     .hideout_helm = 0,
@@ -85,7 +85,7 @@ static const map_bitfield banned_map_btf = {
     .busy_barrel_barrage_normal = 1, // Reason: Locked Movement
     .main_menu = 1, // Reason: Locked Movement
     .title_screen_not_for_resale_version = 1, // Reason: Cutscene Map
-    .crystal_caves_beetle_race = 1, // Reason: Locked Movement
+    .crystal_caves_beetle_race = 0, // Reason: Locked Movement
     .fungi_forest_dogadon = 1, // Reason: Boss Map
     .crystal_caves_igloo_tiny = 0,
     .crystal_caves_igloo_lanky = 0,
@@ -237,12 +237,12 @@ static const movement_bitfield banned_movement_btf = {
     .idle = 0,
     .walking = 0,
     .skidding = 0,
-    .sliding_beetle_race = 0,
-    .sliding_beetle_race_left = 0,
-    .sliding_beetle_race_right = 0,
-    .sliding_beetle_race_forward = 0,
-    .sliding_beetle_race_back = 0,
-    .jumping_beetle_race = 0,
+    .sliding_beetle_race = 1,
+    .sliding_beetle_race_left = 1,
+    .sliding_beetle_race_right = 1,
+    .sliding_beetle_race_forward = 1,
+    .sliding_beetle_race_back = 1,
+    .jumping_beetle_race = 1,
     .slipping = 1, // Reason: Visual
     .slipping_helm_slope = 1, // Reason: Visual
     .jumping = 0,
@@ -364,7 +364,26 @@ static const movement_bitfield banned_movement_btf = {
 static unsigned char tag_countdown = 0;
 static char can_tag_anywhere = 0;
 
-int canTagAnywhere(int prev_crystals) {
+int inTransform(void) {
+    if (Player) {
+        if (Player->strong_kong_ostand_bitfield & 0x30) {
+            // 0x10 - Strong Kong
+            // 0x20 - Orangstand Sprint
+            return 1;
+        }
+        if (Player->control_state == 0x63) {
+            // Rocketbarrel
+            return 1;
+        }
+    }
+    if (SwapObject) {
+        // 0 = Mini Monkey, 2 = Hunky Chunky
+        return SwapObject->size != 1;
+    }
+    return 0;
+}
+
+int canTagAnywhere(void) {
     if (Player->strong_kong_ostand_bitfield & 0x100) {
         // Seasick
         return 0;
@@ -376,7 +395,7 @@ int canTagAnywhere(int prev_crystals) {
         // Can cause inconsistent graphical crashes
         return 0;
     }
-    if ((prev_crystals - 1) == CollectableBase.Crystals) {
+    if (inTransform()) {
         return 0;
     }
     if (CutsceneActive) {
@@ -489,7 +508,7 @@ int getTagAnywhereKong(int direction) {
 static const unsigned char important_huds[] = {0,1};
 static unsigned char important_huds_changed[] = {0,0};
 
-void tagAnywhere(int prev_crystals) {
+void tagAnywhere(void) {
 	if (Rando.tag_anywhere) {
 		if (Player) {
             if (tag_countdown > 0) {
@@ -527,7 +546,7 @@ void tagAnywhere(int prev_crystals) {
                     }
                 }
             }
-            int can_ta = canTagAnywhere(prev_crystals);
+            int can_ta = canTagAnywhere();
             can_tag_anywhere = can_ta;
             if (!can_ta) {
                 return;

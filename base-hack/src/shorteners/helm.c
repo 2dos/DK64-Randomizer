@@ -225,7 +225,7 @@ int checkDoorItem(int index, int count) {
 }
 
 int CrownDoorCheck(void) {
-	if ((Rando.crown_door_item == DOORITEM_DEFAULT) && (Rando.crown_door_item_count == 0)) {
+	if (Rando.crown_door_item == DOORITEM_DEFAULT) {
 		Rando.crown_door_item = DOORITEM_CROWN;
 		Rando.crown_door_item_count = 4;
 	}
@@ -233,7 +233,7 @@ int CrownDoorCheck(void) {
 }
 
 int CoinDoorCheck(void) {
-	if ((Rando.coin_door_item == DOORITEM_DEFAULT) && (Rando.coin_door_item_count == 0)) {
+	if (Rando.coin_door_item == DOORITEM_DEFAULT) {
 		Rando.coin_door_item = DOORITEM_COMPANYCOIN;
 		Rando.coin_door_item_count = 2;
 	}

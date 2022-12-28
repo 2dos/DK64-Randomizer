@@ -824,6 +824,10 @@ int itemGrabHook(int collectable_type, int obj_type, int is_homing) {
                 }
             }
         }
+        if ((obj_type >= 0x257) && (obj_type <= 0x25B)) {
+            // Kong Items
+            refreshItemVisibility();
+        }
     }
     return getCollectableOffset(collectable_type, obj_type, is_homing);
 }

@@ -155,17 +155,6 @@ with open(rom_file, "rb") as rom:
             decompress = zlib.decompress(compress, (15 + 32))
             fh.write(decompress)
         with open(model["model_file"], "r+b") as fh:
-            if idx == 0xDA:
-                # Write Krusha
-                for i in range(int(0x220 / 4)):
-                    fh.seek(0x4504 + (i * 4))
-                    val = int.from_bytes(fh.read(4), "big")
-                    if val != 0xFFFFFFFF and val > 0x10000000:
-                        # My messed up way to ensure value is float
-                        val_f = intf_to_float(val)
-                        val_f *= 0.55  # Scale down coordinates
-                        fh.seek(0x4504 + (i * 4))
-                        fh.write(int(float_to_hex(val_f), 16).to_bytes(4, "big"))
             fh.seek(0)
             sub_idx = 0
             for wipe in model["wipe"]:

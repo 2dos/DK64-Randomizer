@@ -22,7 +22,7 @@ extern int getHi(void* addr);
 extern void level_order_rando_funcs(void);
 extern void unlockKongs(void);
 extern void unlockMoves(void);
-extern void tagAnywhere(int prev_crystals);
+extern void tagAnywhere(void);
 extern void applyFastStart(void);
 extern void fixCastleAutowalk(void);
 extern void openCrownDoor(void);
