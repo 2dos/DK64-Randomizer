@@ -11,7 +11,6 @@
 static short past_lag[LAG_CAP] = {};
 static char lag_counter = 0;
 static float current_avg_lag = 0;
-static short past_crystals = 0;
 static char has_loaded = 0;
 static char good_eeprom = 0;
 static char new_picture = 0;
@@ -19,9 +18,7 @@ static char new_picture = 0;
 void cFuncLoop(void) {
 	DataIsCompressed[18] = 0;
 	unlockKongs();
-	int crystal_count = CollectableBase.Crystals;
-	tagAnywhere(past_crystals);
-	past_crystals = crystal_count;
+	tagAnywhere();
 	initHack(0);
 	//fixCastleAutowalk();
 	level_order_rando_funcs();

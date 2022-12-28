@@ -213,6 +213,17 @@ def ushort_to_short(ushort):
     return ushort
 
 
+def int_to_list(num: int, size: int):
+    """Convert an integer to a list."""
+    arr = [0] * size
+    for a in range(size):
+        slot = (size - 1) - a
+        val = num % 256
+        num = int((num - val) / 256)
+        arr[slot] = val
+    return arr
+
+
 def getNextFreeID(cont_map_id: int, ignore=[]):
     """Get next available Model 2 ID."""
     setup_table = js.pointer_addresses[9]["entries"][cont_map_id]["pointing_to"]

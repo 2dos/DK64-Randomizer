@@ -315,7 +315,9 @@ typedef struct SwapObjectData {
 	/* 0x290 */ short chunk;
 	/* 0x292 */ char unk_292[0x29C-0x292];
 	/* 0x29C */ short action_type;
-	/* 0x29E */ char unk_29E[0x2E2 - 0x29E];
+	/* 0x29E */ char unk_29E[0x2C0 - 0x29E];
+	/* 0x2C0 */ char size;
+	/* 0x2C1 */ char unk_2C1[0x2E2 - 0x2C1];
 	/* 0x2E2 */ unsigned short unk_2e2;
 } SwapObjectData;
 

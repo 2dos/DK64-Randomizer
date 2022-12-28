@@ -640,6 +640,9 @@ for x in model_changes:
     data = {"name": f"Model {x['model_index']}", "pointer_table_index": 5, "file_index": x["model_index"], "source_file": x["model_file"], "do_not_delete_source": True}
     if x["model_index"] > 0xEB:
         data["do_not_extract"] = True
+    if x["model_index"] == 0xDA:
+        data["target_compressed_size"] = 0x4740
+        data["target_UNcompressed_size"] = 0x4740
     file_dict.append(data)
 
 portal_image_order = [["SE", "NE", "SW", "NW"], ["NW", "SW", "NE", "SE"]]

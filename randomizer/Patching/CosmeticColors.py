@@ -5,6 +5,7 @@ from random import randint
 import js
 from randomizer.Patching.generate_kong_color_images import convertColors
 from randomizer.Patching.Patcher import ROM
+from randomizer.Patching.Lib import intf_to_float, float_to_hex, int_to_list
 from randomizer.Spoiler import Spoiler
 from PIL import Image, ImageEnhance, ImageDraw
 import zlib
@@ -542,6 +543,40 @@ def applyKrushaKong(spoiler: Spoiler):
         krusha_index = kong_names.index(spoiler.settings.krusha_slot)
         ROM().write(krusha_index)
         placeKrushaHead(krusha_index)
+        if spoiler.settings.krusha_slot != "lanky":
+            changeKrushaModel()
+
+
+def changeKrushaModel():
+    """Modify Krusha Model to be smaller to enable him to fit through smaller gaps."""
+    krusha_model_start = js.pointer_addresses[5]["entries"][0xDA]["pointing_to"]
+    krusha_model_finish = js.pointer_addresses[5]["entries"][0xDB]["pointing_to"]
+    krusha_model_size = krusha_model_finish - krusha_model_start
+    ROM().seek(krusha_model_start)
+    indicator = int.from_bytes(ROM().readBytes(2), "big")
+    ROM().seek(krusha_model_start)
+    data = ROM().readBytes(krusha_model_size)
+    if indicator == 0x1F8B:
+        data = zlib.decompress(data, (15 + 32))
+    num_data = []  # data, but represented as nums rather than b strings
+    for d in data:
+        num_data.append(d)
+    for i in range(int(0x220 / 4)):
+        val = 0
+        for j in range(4):
+            val = (val * 256) + num_data[0x4504 + (i * 4) + j]
+        if val != 0xFFFFFFFF and val > 0x10000000:
+            # My messed up way to ensure value is float
+            val_f = intf_to_float(val)
+            val_f *= 0.55  # Scale down coordinates
+            val_i = int(float_to_hex(val_f), 16)
+            for di, d in enumerate(int_to_list(val_i, 4)):
+                num_data[0x4504 + (i * 4) + di] = d
+    data = bytearray(num_data)  # convert num_data back to binary string
+    if indicator == 0x1F8B:
+        data = gzip.compress(data, compresslevel=9)
+    ROM().seek(krusha_model_start)
+    ROM().writeBytes(data)
 
 
 def placeKrushaHead(slot):

@@ -608,6 +608,9 @@ void CrownPadGenericCode(behaviour_data* behaviour, int index, int id, int crown
 }
 
 int isBonus(int map) {
+	if (map == 0x50) {
+		return 0;
+	}
 	int level = levelIndexMapping[map];
 	return (level == 9) || (level == 0xD);
 }
