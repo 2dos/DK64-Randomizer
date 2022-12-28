@@ -1381,6 +1381,13 @@ def FillKongs(spoiler):
         # This matters specifically so the logic around Diddy's cage behaves properly
         if LocationList[Locations.DiddyKong].item is None:
             LocationList[Locations.DiddyKong].PlaceItem(Items.NoItem)
+        # And this matters specifically for the logic around the freeing the other kongs rewards
+        if LocationList[Locations.TinyKong].item is None:
+            LocationList[Locations.TinyKong].PlaceItem(Items.NoItem)
+        if LocationList[Locations.LankyKong].item is None:
+            LocationList[Locations.LankyKong].PlaceItem(Items.NoItem)
+        if LocationList[Locations.ChunkyKong].item is None:
+            LocationList[Locations.ChunkyKong].PlaceItem(Items.NoItem)
         spoiler.settings.update_valid_locations()
     # If kongs must be in Kong cages, we need to be more careful
     else:

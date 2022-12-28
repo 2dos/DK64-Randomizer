@@ -516,8 +516,10 @@ class LogicVarHolder:
         return False
 
     def CanFreeTiny(self):
-        """Check if kong at Tiny location can be freed,r equires either chimpy charge or primate punch."""
-        if self.settings.tiny_freeing_kong == Kongs.diddy:
+        """Check if kong at Tiny location can be freed, requires either chimpy charge or primate punch."""
+        if LocationList[Locations.TinyKong].item == Items.NoItem:
+            return self.IsKong(self.settings.tiny_freeing_kong)
+        elif self.settings.tiny_freeing_kong == Kongs.diddy:
             return self.charge and self.isdiddy
         elif self.settings.tiny_freeing_kong == Kongs.chunky:
             return self.punch and self.ischunky
@@ -529,13 +531,15 @@ class LogicVarHolder:
         """Check if the Llama spit can be triggered."""
         return self.HasInstrument(self.settings.lanky_freeing_kong)
 
-    def CanFreeLanky(self, require_gun):
+    def CanFreeLanky(self):
         """Check if kong at Lanky location can be freed, requires freeing kong to have its gun and instrument."""
-        return (self.HasGun(self.settings.lanky_freeing_kong) or not require_gun) and ((self.swim and self.HasInstrument(self.settings.lanky_freeing_kong)) or self.phasewalk or self.CanPhaseswim())
+        return (self.HasGun(self.settings.lanky_freeing_kong) or LocationList[Locations.LankyKong].item == Items.NoItem) and (
+            (self.swim and self.HasInstrument(self.settings.lanky_freeing_kong)) or self.phasewalk or self.CanPhaseswim()
+        )
 
     def CanFreeChunky(self):
         """Check if kong at Chunky location can be freed."""
-        return self.Slam and self.IsKong(self.settings.chunky_freeing_kong)
+        return (LocationList[Locations.ChunkyKong].item == Items.NoItem or self.Slam) and self.IsKong(self.settings.chunky_freeing_kong)
 
     def UpdateCurrentRegionAccess(self, region):
         """Set access of current region."""

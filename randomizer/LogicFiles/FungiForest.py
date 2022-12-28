@@ -253,7 +253,7 @@ LogicRegions = {
         TransitionFront(Regions.ThornvineArea, lambda l: True, Transitions.ForestBarnToMain),
     ]),
 
-    Regions.WormArea: Region("Worm Area", "Beanstalk Area", Levels.FungiForest, True, -1, [
+    Regions.WormArea: Region("Worm Area", "Forest Center and Beanstalk", Levels.FungiForest, True, -1, [
         LocationLogic(Locations.ForestTinyBeanstalk, lambda l: l.saxophone and l.mini and l.istiny and l.Beans >= 1),
         LocationLogic(Locations.ForestChunkyApple, lambda l: Events.WormGatesOpened in l.Events and l.hunkyChunky and l.ischunky and l.barrels),
     ], [], [
