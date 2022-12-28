@@ -158,15 +158,7 @@ def pushItemMicrohints(spoiler: Spoiler, item):
         if item.new_flag == ItemList[item_hint].rando_flag:
             move = item_hint
     if move != Items.NoItem:
-        level_enum = LocationList[item.location].level
-        kong_enum = LocationList[item.location].kong
-        level_name = "Unknown Level"
-        kong_name = "Unknown Kong"
-        if level_enum in level_names:
-            level_name = level_names[level_enum]
-        if kong_enum in kong_names:
-            kong_name = kong_names[kong_enum]
-        data = {"textbox_index": hinted_items[move], "mode": "replace_whole", "target": f"You would be better off looking in {level_name} with {kong_name} for this.".upper()}
+        data = {"textbox_index": hinted_items[move], "mode": "replace_whole", "target": spoiler.microhints[ItemList[move].name]}
         if 19 in spoiler.text_changes:
             spoiler.text_changes[19].append(data)
         else:

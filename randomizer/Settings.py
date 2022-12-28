@@ -454,6 +454,7 @@ class Settings:
                     self.move_rando = "item_shuffle"
                 if self.shockwave_status not in ("vanilla", "start_with"):
                     self.shuffled_location_types.append(Types.Shockwave)
+                    self.shockwave_status = "shuffled_decoupled"  # Forced to be decoupled in item rando
                 if self.training_barrels != "normal":
                     self.shuffled_location_types.append(Types.TrainingBarrel)
             # DEBUG CODE for testing, put it in the list selector when it's completed

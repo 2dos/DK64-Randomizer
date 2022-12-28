@@ -693,18 +693,32 @@ class LogicVarHolder:
 
     def IsLevelEnterable(self, level):
         """Check if level entry requirement is met."""
-        # Later levels can have some special requirements
         # "pathMode" is so WotH paths can always enter levels regardless of owned items
-        if not self.pathMode and level >= 3:
+        if not self.pathMode:
             level_order_matters = not self.settings.hard_level_progression and self.settings.shuffle_loading_zones in ("none", "levels")
             # If level order matters...
             if level_order_matters:
-                # Require barrels by level 3 to prevent boss barrel fill failures
-                if not self.barrels:
+                # Levels have some special requirements depending on where they fall in the level order
+                order_of_level = 0
+                order_of_aztec = 0
+                for level_order in self.settings.level_order:
+                    if self.settings.level_order[level_order] == level:
+                        order_of_level = level_order
+                    if self.settings.level_order[level_order] == Levels.AngryAztec:
+                        order_of_aztec = level_order
+                # You need to have vines or twirl before you can enter Aztec or any level beyond it
+                if order_of_level >= order_of_aztec and not (self.vines or (self.istiny and self.twirl)):
                     return False
-                # Require one of twirl or hunky chunky by level 7 to prevent non-hard-boss fill failures
-                if not self.settings.hard_bosses and level >= 7 and not (self.twirl or self.hunkyChunky):
-                    return False
+                if order_of_level >= 3:
+                    # Require barrels by level 3 to prevent boss barrel fill failures
+                    if not self.barrels:
+                        return False
+                    # Require swim by level 4 to prevent T&S being zero'd out
+                    if order_of_level >= 4 and not self.swim:  # and not "the ability to dive without dive" whenever we get that squared away
+                        return False
+                    # Require one of twirl or hunky chunky by level 7 to prevent non-hard-boss fill failures
+                    if not self.settings.hard_bosses and order_of_level >= 7 and not (self.twirl or self.hunkyChunky):
+                        return False
         dk_skip_levels = [Levels.AngryAztec, Levels.GloomyGalleon, Levels.FungiForest, Levels.CrystalCaves, Levels.CreepyCastle]
         if self.CanMoonkick():
             dk_skip_levels.append(Levels.HideoutHelm)

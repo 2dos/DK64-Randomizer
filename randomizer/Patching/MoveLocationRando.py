@@ -68,11 +68,7 @@ def pushItemMicrohints(spoiler: Spoiler, move_dict: dict, level: int, kong: int,
             if move_dict["move_type"] == move_data[0] and move_dict["move_lvl"] == move_data[1] and move_dict["move_kong"] == move_data[2]:
                 move = item_hint
         if move is not None:
-            kong_name = "Unknown Kong"
-            level_name = level_names[level]
-            if kong in kong_names:
-                kong_name = kong_names[kong]
-            data = {"textbox_index": hinted_items[move][1], "mode": "replace_whole", "target": f"You would be better off looking in {level_name} with {kong_name} for this.".upper()}
+            data = {"textbox_index": hinted_items[move][1], "mode": "replace_whole", "target": spoiler.microhints[move]}
             if 19 in spoiler.text_changes:
                 spoiler.text_changes[19].append(data)
             else:

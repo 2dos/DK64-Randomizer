@@ -127,36 +127,55 @@ class Spoiler:
         startKongList = []
         for x in self.settings.starting_kong_list:
             startKongList.append(x.name.capitalize())
+        settings["Hard B Lockers"] = self.settings.hard_blockers
         if self.settings.randomize_blocker_required_amounts:
             settings["Maximum B Locker"] = self.settings.blocker_text
+        settings["Hard Troff N Scoff"] = self.settings.hard_troff_n_scoff
         if self.settings.randomize_cb_required_amounts:
             settings["Maximum Troff N Scoff"] = self.settings.troff_text
         settings["Open Lobbies"] = self.settings.open_lobbies
         settings["Open Levels"] = self.settings.open_levels
+        settings["Auto Complete Bonus Barrels"] = self.settings.bonus_barrel_auto_complete
+        settings["Complex Level Order"] = self.settings.hard_level_progression
+        settings["Hard Bosses"] = self.settings.hard_bosses
+        settings["Hard Shooting"] = self.settings.hard_shooting
+        settings["Free Trade Agreement"] = self.settings.free_trade_setting
         settings["Randomize Pickups"] = self.settings.randomize_pickups
         settings["Randomize Patches"] = self.settings.random_patches
         settings["Randomize CB Locations"] = self.settings.cb_rando
         settings["Puzzle Randomization"] = self.settings.puzzle_rando
         settings["Crown Door Open"] = self.settings.crown_door_item == "opened"
+        if self.settings.crown_door_item != "opened":
+            settings["Crown Door Item"] = self.settings.crown_door_item
+            settings["Crown Door Item Amount"] = self.settings.crown_door_item_count
         settings["Coin Door Open"] = self.settings.coin_door_item == "opened"
+        if self.settings.coin_door_item != "opened":
+            settings["Coin Door Item"] = self.settings.coin_door_item
+            settings["Coin Door Item Amount"] = self.settings.coin_door_item_count
         settings["Shockwave Shuffle"] = self.settings.shockwave_status
         settings["Random Jetpac Medal Requirement"] = self.settings.random_medal_requirement
         settings["Bananas Required for Medal"] = self.settings.medal_cb_req
         settings["Fairies Required for Rareware GB"] = self.settings.rareware_gb_fairies
         settings["Random Shop Prices"] = self.settings.random_prices
         settings["Banana Port Randomization"] = self.settings.bananaport_rando
+        settings["Activated Warps"] = self.settings.activate_all_bananaports
         settings["Shuffle Shop Locations"] = self.settings.shuffle_shops
         settings["Shuffle Kasplats"] = self.settings.kasplat_rando_setting
 
         settings["Key 8 Required"] = self.settings.krool_access
+        settings["Key 8 in Helm"] = self.settings.key_8_helm
+        settings["Select Starting Keys"] = self.settings.select_keys
         settings["Number of Keys Required"] = self.settings.krool_key_count
         settings["Fast Start"] = self.settings.fast_start_beginning_of_game
         settings["Helm Setting"] = self.settings.helm_setting
         settings["Quality of Life"] = self.settings.quality_of_life
         settings["Tag Anywhere"] = self.settings.enable_tag_anywhere
+        settings["Kongless Hint Doors"] = self.settings.wrinkly_available
         settings["Fast GBs"] = self.settings.fast_gbs
         settings["High Requirements"] = self.settings.high_req
         settings["Win Condition"] = self.settings.win_condition
+        if self.settings.helm_hurry:
+            settings["Game Mode"] = "Helm Hurry"
         humanspoiler["Settings"] = settings
         humanspoiler["Cosmetics"] = {}
         if self.settings.colors != {} or self.settings.klaptrap_model_index:
@@ -220,8 +239,7 @@ class Spoiler:
         humanspoiler["Kongs"]["Tiny Temple Puzzle Solver"] = ItemList[ItemFromKong(self.settings.tiny_freeing_kong)].name
         humanspoiler["Kongs"]["Llama Temple Puzzle Solver"] = ItemList[ItemFromKong(self.settings.lanky_freeing_kong)].name
         humanspoiler["Kongs"]["Factory Kong Puzzle Solver"] = ItemList[ItemFromKong(self.settings.chunky_freeing_kong)].name
-        if self.settings.coin_door_item in ["vanilla", "req_companycoins"] or self.settings.crown_door_item == "req_companycoins":
-            humanspoiler["Requirements"]["Miscellaneous"]["Medal Requirement"] = self.settings.medal_requirement
+        humanspoiler["Requirements"]["Miscellaneous"]["Jetpac Medal Requirement"] = self.settings.medal_requirement
         humanspoiler["End Game"] = {}
         humanspoiler["End Game"]["Keys Required for K Rool"] = self.GetKroolKeysRequired(self.settings.krool_keys_required)
         krool_order = []
@@ -286,8 +304,8 @@ class Spoiler:
             humanspoiler["Paths"][destination_item.name + extra] = path_dict
 
         for location_id, location in LocationList.items():
-            # No need to spoiler constants
-            if location.type == Types.Constant:
+            # No need to spoiler constants or hints
+            if location.type == Types.Constant or location.type == Types.Hint:
                 continue
             # Prevent weird null issues but get the item at the location
             if location.item is None:
@@ -441,6 +459,11 @@ class Spoiler:
                 phase_names.append(f"Phase {phase+1}")
             humanspoiler["Bosses"]["King Kut Out Properties"]["Shuffled Kutout Phases"] = ", ".join(phase_names)
 
+        if self.settings.bonus_barrels == "selected" and len(self.settings.minigames_list_selected) > 0:
+            selected_minigames = []
+            for name in self.settings.minigames_list_selected:
+                selected_minigames.append(name)
+            humanspoiler["Selected Minigames"] = selected_minigames
         if self.settings.bonus_barrels in ("random", "selected") or self.settings.helm_barrels == "random":
             shuffled_barrels = OrderedDict()
             for location, minigame in self.shuffled_barrel_data.items():
@@ -464,6 +487,8 @@ class Spoiler:
             humanspoiler["Shuffled Dirt Patches"] = self.human_patches
         if self.settings.bananaport_rando != "off":
             humanspoiler["Shuffled Bananaports"] = self.human_warp_locations
+        if len(self.microhints) > 0:
+            humanspoiler["Direct Item Hints"] = self.microhints
         if len(self.hint_list) > 0:
             humanspoiler["Wrinkly Hints"] = self.hint_list
         if self.settings.wrinkly_location_rando:
