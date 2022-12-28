@@ -15,7 +15,7 @@ from randomizer.Lists.Item import ItemList, NameFromKong
 from randomizer.Lists.Location import LocationList, SharedShopLocations, TrainingBarrelLocations
 from randomizer.Lists.MapsAndExits import GetMapId
 from randomizer.Lists.ShufflableExit import ShufflableExits
-from randomizer.Lists.WrinklyHints import hints
+from randomizer.Lists.WrinklyHints import ClearHintMessages, hints
 from randomizer.Logic import Regions as RegionList
 from randomizer.Patching.UpdateHints import UpdateHint, updateRandomHint
 from randomizer.Spoiler import Spoiler
@@ -154,6 +154,7 @@ all_levels = [Levels.JungleJapes, Levels.AngryAztec, Levels.FranticFactory, Leve
 level_list = ["Jungle Japes", "Angry Aztec", "Frantic Factory", "Gloomy Galleon", "Fungi Forest", "Crystal Caves", "Creepy Castle", "Hideout Helm"]
 level_list_isles = ["Jungle Japes", "Angry Aztec", "Frantic Factory", "Gloomy Galleon", "Fungi Forest", "Crystal Caves", "Creepy Castle", "DK Isles"]
 level_list_helm_isles = ["Jungle Japes", "Angry Aztec", "Frantic Factory", "Gloomy Galleon", "Fungi Forest", "Crystal Caves", "Creepy Castle", "Hideout Helm", "DK Isles"]
+level_list_everything = ["Jungle Japes", "Angry Aztec", "Frantic Factory", "Gloomy Galleon", "Fungi Forest", "Crystal Caves", "Creepy Castle", "Hideout Helm", "DK Isles", "Cranky's Lab"]
 
 level_cryptic = [
     ["The level with a localized storm", "The level with a dirt mountain", "The level which has two retailers and no race"],
@@ -261,6 +262,7 @@ HINT_CAP = 35  # There are this many total slots for hints
 
 def compileHints(spoiler: Spoiler):
     """Create a hint distribution, generate buff hints, and place them in locations."""
+    ClearHintMessages()
     locked_hint_types = [HintType.RequiredKongHint, HintType.RequiredKeyHint, HintType.RequiredWinConditionHint, HintType.RequiredHelmDoorHint]  # Some hint types cannot have their value changed
     maxed_hint_types = []  # Some hint types cannot have additional hints placed
     minned_hint_types = []  # Some hint types cannot have all their hints removed
@@ -482,9 +484,6 @@ def compileHints(spoiler: Spoiler):
                     level_restriction = [spoiler.settings.level_order[1], spoiler.settings.level_order[2]]
                 else:
                     level_restriction = [level for level in all_levels if spoiler.settings.EntryGBs[level] <= spoiler.settings.EntryGBs[kong_location.level]]
-            # We could put a kong door restriction on this, but I'm choosing not to due to a hint rework coming
-            # Try to get a hint door in the requested levels
-            hint_location = getRandomHintLocation(levels=level_restriction)
             # Attempt to find a door that will be accessible before the Kong
             hint_options = getHintLocationsForAccessibleHintItems(spoiler.accessible_hints_for_location[kong_location_id])
             if len(hint_options) > 0:
@@ -1168,6 +1167,12 @@ def compileHints(spoiler: Spoiler):
 
     UpdateSpoilerHintList(spoiler)
     spoiler.hint_distribution = hint_distribution
+
+    # DEBUG CODE to alert when a hint is empty
+    # for hint in hints:
+    #     if hint.hint == "":
+    #         print("RED ALERT")
+
     return True
 
 
@@ -1218,6 +1223,25 @@ def resetHintList():
             hint.important = hint.was_important
             hint.repeats = hint.original_repeats
             hint.priority = hint.original_priority
+
+
+def compileMicrohints(spoiler: Spoiler):
+    """Create guaranteed level + kong hints for various items."""
+    spoiler.microhints = {}
+    mp_location = None
+    gg_location = None
+    # Loop through locations looking for the items that need a microhint
+    for id, location in LocationList.items():
+        if location.item == Items.Monkeyport:
+            mp_location = location
+        if location.item == Items.GorillaGone:
+            gg_location = location
+        if mp_location is not None and gg_location is not None:
+            break
+    mp_hint = f"You would be better off looking in {level_list_everything[mp_location.level]} with {kong_list[mp_location.kong]} for this.".upper()
+    gg_hint = f"You would be better off looking in {level_list_everything[gg_location.level]} with {kong_list[gg_location.kong]} for this.".upper()
+    spoiler.microhints["Monkeyport"] = mp_hint
+    spoiler.microhints["Gorilla Gone"] = gg_hint
 
 
 def compileHintsOld(spoiler: Spoiler):

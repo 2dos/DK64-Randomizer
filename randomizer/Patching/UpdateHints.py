@@ -120,6 +120,6 @@ def replaceIngameText(spoiler: Spoiler):
                     new_textbox.append({"text": text.copy()})
                 old_text[mod["textbox_index"]] = new_textbox.copy()
             elif mod["mode"] == "replace_whole":
-                print(mod["target"])
+                # print(mod["target"])
                 old_text[mod["textbox_index"]] = ({"text": [mod["target"]]},)
         writeText(file_index, old_text)

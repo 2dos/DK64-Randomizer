@@ -86,14 +86,16 @@ def generate_lo_rando_race_settings():
     data["randomize_pickups"] = True
 
     data["krool_phase_order_rando"] = True  # usually True
-    data["krool_random"] = False  # phase count is random setting
+    data["krool_random"] = False  # "phase count is random" setting
     data["krool_phase_count"] = 3  # usually 3
-    data["helm_random"] = False  # room count is random setting
+    data["helm_random"] = False  # "room count is random" setting
     data["helm_phase_count"] = 3  # usually 3
     data["krool_access"] = True  # usually True - this is the weirdly named key 8 required setting
-    data["keys_random"] = False  # key count is random setting
+    data["keys_random"] = False  # "key count is random" setting
     data["krool_key_count"] = 5  # usually 5
-    data["starting_random"] = False  # starting kong count is random setting
+    data["select_keys"] = False  # usually False, if True use below
+    # data["starting_keys_list_selected"] = ["key1"]  # key1, key2, etc.
+    data["starting_random"] = False  # "starting kong count is random" setting
     data["starting_kongs_count"] = 2  # usually 2
 
     data["quality_of_life"] = True
@@ -110,15 +112,15 @@ def generate_lo_rando_race_settings():
     data["random_patches"] = False  # usually False
     data["shuffle_shops"] = False  # usually False
 
-    data["free_trade_setting"] = "none"  # none | not_blueprints | major_collectibles
+    data["free_trade_setting"] = "not_blueprints"  # none | not_blueprints | major_collectibles
     data["crown_placement_rando"] = False  # usually false
     data["hard_blockers"] = False  # likely to be False
     data["hard_troff_n_scoff"] = False  # likely to be False
     data["cb_rando"] = False  # likely to be False?
-    data["win_condition"] = "all_keys"  # lots of options: all_keys | get_key_8 | beat_krool | all_medals | all_fairies | all_blueprints | poke_snap
+    data["win_condition"] = "beat_krool"  # lots of options: all_keys | get_key_8 | beat_krool | all_medals | all_fairies | all_blueprints | poke_snap
     data["wrinkly_location_rando"] = False  # likely to be False
     data["tns_location_rando"] = False  # likely to be False
-    data["key_8_helm"] = True  # likely to be False? unclear as of yet
+    data["key_8_helm"] = True  # likely to be True? unclear as of yet
     data["misc_changes_selected"] = []  # a whole suite of things it includes
 
     data["hard_level_progression"] = False  # likely to be False

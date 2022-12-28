@@ -9,7 +9,7 @@ import randomizer.Logic as Logic
 from randomizer.ShuffleDoors import ShuffleDoors
 import randomizer.ShuffleExits as ShuffleExits
 import randomizer.LogicFiles.DKIsles as IslesLogic
-from randomizer.CompileHints import compileHints
+from randomizer.CompileHints import compileHints, compileMicrohints
 from randomizer.Enums.Events import Events
 from randomizer.Enums.Items import Items
 from randomizer.Enums.Kongs import GetKongs, Kongs
@@ -259,17 +259,20 @@ def GetAccessibleLocations(settings, startingOwnedItems, searchType=SearchMode.G
         return playthroughLocations
     elif searchType == SearchMode.CheckAllReachable:
         # settings.debug_accessible = accessible
-        # settings.debug_accessible_2 = []
-        # if len(accessible) > 300:
-        #     settings.debug_accessible_2 = accessible[300:]
+        # # settings.debug_accessible_2 = []
+        # # if len(accessible) > 300:
+        # #     settings.debug_accessible_2 = accessible[300:]
         # settings.debug_accessible_not = [location for location in LocationList if location not in accessible]
-        # settings.debug_accessible_not_2 = []
-        # if len(settings.debug_accessible_not) > 300:
-        #     settings.debug_accessible_not_2 = settings.debug_accessible_not[300:]
+        # # settings.debug_accessible_not_2 = []
+        # # if len(settings.debug_accessible_not) > 300:
+        # #     settings.debug_accessible_not_2 = settings.debug_accessible_not[300:]
         # settings.debug_enormous_pain_1 = [LocationList[location] for location in settings.debug_accessible]
-        # settings.debug_enormous_pain_2 = [LocationList[location] for location in settings.debug_accessible_2]
+        # # settings.debug_enormous_pain_2 = [LocationList[location] for location in settings.debug_accessible_2]
         # settings.debug_enormous_pain_3 = [LocationList[location] for location in settings.debug_accessible_not]
-        # settings.debug_enormous_pain_4 = [LocationList[location] for location in settings.debug_accessible_not_2]
+        # # settings.debug_enormous_pain_4 = [LocationList[location] for location in settings.debug_accessible_not_2]
+        # if len(accessible) != len(LocationList):
+        #     return False
+        # return True
         return len(accessible) == len(LocationList)
     elif searchType == SearchMode.GetUnreachable:
         return [x for x in LocationList if x not in accessible]
@@ -872,36 +875,34 @@ def GetUnplacedItemPrerequisites(spoiler, targetItemId, placedMoves, ownedKongs=
     moveList = [move for move in ItemPool.AllMovesForOwnedKongs(ownedKongs)]
     # Sometimes a move requires shockwave as a prerequisite
     if spoiler.settings.shockwave_status != "vanilla":
-        moveList.append(Items.Shockwave)
+        if spoiler.settings.shockwave_status == "shuffled_decoupled":
+            moveList.append(Items.Shockwave)
+        else:
+            moveList.append(Items.CameraAndShockwave)
     # Often moves require training barrels as prerequisites
     if spoiler.settings.training_barrels != "normal":
         moveList.extend(ItemPool.TrainingBarrelAbilities())
-    moveList = [move for move in moveList if move not in placedMoves]
-    if targetItemId in moveList:
-        moveList.remove(targetItemId)
-    # You can get dangerously circular logic when one slam is placed here. Assume no slams when searching for accessibility and then add one later
-    if Items.ProgressiveSlam in placedMoves:
-        while Items.ProgressiveSlam in moveList:
-            moveList.remove(Items.ProgressiveSlam)
+    for move in placedMoves:
+        if move in moveList:
+            moveList.remove(move)
     shuffle(moveList)
-    lastRequiredMove = None
-    for move in moveList:
-        # For each move, see if adding it to the list of required moves gives us access to the location
-        requiredMoves.append(move)
+    itemWasFound = False
+    # Every item in moveList could be a required item
+    for i in range(0, len(moveList)):
+        # Remove one item from the moveList
+        possiblyUnnecessaryItem = moveList[i]
+        moveList[i] = Items.NoItem
+        # Check if the target is still accessible without this item
         Reset()
-        if GetAccessibleLocations(spoiler.settings, settingsRequiredMoves.copy() + requiredMoves.copy(), SearchMode.CheckSpecificItemReachable, targetItemId=targetItemId):
-            # If it does give us access, then we don't need any more moves
-            # Note the last required move for later
-            lastRequiredMove = move
-            break
-    # If we haven't found it yet but have a slam placed, it might be super duper locked so let's try that
-    if lastRequiredMove is None and placedMoves.count(Items.ProgressiveSlam) == 1:
-        requiredMoves.append(Items.ProgressiveSlam)
-        Reset()
-        if GetAccessibleLocations(spoiler.settings, settingsRequiredMoves.copy() + requiredMoves.copy(), SearchMode.CheckSpecificItemReachable, targetItemId=targetItemId):
-            lastRequiredMove = move
+        if not GetAccessibleLocations(spoiler.settings, settingsRequiredMoves.copy() + moveList.copy(), SearchMode.CheckSpecificItemReachable, targetItemId=targetItemId):
+            # If it's no longer accessible, then this item is required
+            requiredMoves.append(possiblyUnnecessaryItem)
+            # Restore the item to the move list ONLY if it's required - this will cover either/or items
+            moveList[i] = possiblyUnnecessaryItem
+        else:
+            itemWasFound = True
     # If we didn't find a required move, the item was placed improperly somehow (this shouldn't happen)
-    if lastRequiredMove is None:
+    if not itemWasFound:
         # DEBUG CODE - This helps find where items are being placed
         mysteryLocation = None
         itemobj = ItemList[targetItemId]
@@ -919,16 +920,7 @@ def GetUnplacedItemPrerequisites(spoiler, targetItemId, placedMoves, ownedKongs=
             raise Ex.ItemPlacementException("Target item not placed??")
         print("Item placed in an inaccessible location: " + str(mysteryLocation.name))
         raise Ex.ItemPlacementException("Item placed in an inaccessible location: " + str(mysteryLocation.name))
-    # requiredMoves now contains all items that are required, but probably a bunch of useless stuff too
-    # Time to cull moves until we get to only exactly what we need
-    while requiredMoves != [] and requiredMoves[0] != lastRequiredMove:
-        # Remove the first item and see if we can still access the target
-        possiblyUnnecessaryItem = requiredMoves.pop(0)
-        Reset()
-        if not GetAccessibleLocations(spoiler.settings, settingsRequiredMoves.copy() + requiredMoves.copy(), SearchMode.CheckSpecificItemReachable, targetItemId=targetItemId):
-            # If it's no longer accessible, then re-add it to the end of the list
-            requiredMoves.append(possiblyUnnecessaryItem)
-        # Repeat until we find the last required move
+
     spoiler.settings.debug_prerequisites[targetItemId] = requiredMoves
     return requiredMoves
 
@@ -1414,41 +1406,15 @@ def FillKongsAndMoves(spoiler):
     # Once Kongs are placed, the top priority is placing training barrel moves first. These (mostly) need to be very early because they block access to whole levels.
     if not spoiler.settings.unlock_all_moves and spoiler.settings.move_rando != "off" and spoiler.settings.training_barrels == "shuffled":
         # First place barrels - needed for most bosses
-        needBarrelsByThisLevel = None
-        if spoiler.settings.logic_type != "nologic" and spoiler.settings.shuffle_loading_zones != "all" and not spoiler.settings.hard_level_progression:
-            # In standard level order, place barrels very early to prevent same-y boss orders
-            needBarrelsByThisLevel = 2
-            BlockAccessToLevel(spoiler.settings, needBarrelsByThisLevel)
-            levelBlockInPlace = True
-        itemsPlacedForBarrels = PlacePriorityItems(spoiler, [Items.Barrels], preplacedPriorityMoves, levelBlock=needBarrelsByThisLevel)
+        itemsPlacedForBarrels = PlacePriorityItems(spoiler, [Items.Barrels], preplacedPriorityMoves)  # , levelBlock=needBarrelsByThisLevel)
         preplacedPriorityMoves.extend(itemsPlacedForBarrels)
         # Next place vines - needed to beat Aztec and maybe get to upper DK Isle
         if Items.Vines not in preplacedPriorityMoves:
-            needVinesByThisLevel = None
-            if spoiler.settings.logic_type != "nologic" and spoiler.settings.shuffle_loading_zones != "all" and not spoiler.settings.hard_level_progression:
-                needVinesByThisLevel = 2
-                # In a standard level order seed, we need to place vines before Aztec (or else it isn't beatable)
-                for i in range(1, 8):
-                    if spoiler.settings.level_order[i] == Levels.AngryAztec:
-                        needVinesByThisLevel = i
-                        break
-                # If we don't have at least Isles warps on, we also need it to access level 2 (and 6)
-                if spoiler.settings.activate_all_bananaports == "off":
-                    # The vine level is whatever comes first: Aztec or level 2
-                    needVinesByThisLevel = min(2, needVinesByThisLevel)
-                BlockAccessToLevel(spoiler.settings, needVinesByThisLevel)
-                levelBlockInPlace = True
-            itemsPlacedForVines = PlacePriorityItems(spoiler, [Items.Vines], preplacedPriorityMoves, levelBlock=needVinesByThisLevel)
+            itemsPlacedForVines = PlacePriorityItems(spoiler, [Items.Vines], preplacedPriorityMoves)  # , levelBlock=needVinesByThisLevel)
             preplacedPriorityMoves.extend(itemsPlacedForVines)
         # Next place swim - needed to get into level 4
         if Items.Swim not in preplacedPriorityMoves:
-            needSwimByThisLevel = None
-            if spoiler.settings.logic_type != "nologic" and spoiler.settings.shuffle_loading_zones != "all" and not spoiler.settings.hard_level_progression:
-                # In a standard level order seed, we need swim to access level 4 (whatever it is)
-                needSwimByThisLevel = 4
-                BlockAccessToLevel(spoiler.settings, needSwimByThisLevel)
-                levelBlockInPlace = True
-            itemsPlacedForSwim = PlacePriorityItems(spoiler, [Items.Swim], preplacedPriorityMoves, levelBlock=needSwimByThisLevel)
+            itemsPlacedForSwim = PlacePriorityItems(spoiler, [Items.Swim], preplacedPriorityMoves)  # , levelBlock=needSwimByThisLevel)
             preplacedPriorityMoves.extend(itemsPlacedForSwim)
     # If we had to put in a level block, undo it now - only settings that need progression fixed later will do this so this is fine
     if levelBlockInPlace:
@@ -1640,7 +1606,7 @@ def SetNewProgressionRequirements(settings: Settings):
     accessible = GetAccessibleLocations(settings, [])
     goldenBananaTotals.append(LogicVariables.GoldenBananas)
     for level in range(1, 8):
-        BlockAccessToLevel(settings, level)
+        BlockAccessToLevel(settings, level + 1)
         Reset()
         accessible = GetAccessibleLocations(settings, [])
         previousLevel = GetLevelShuffledToIndex(level - 1)
@@ -2030,7 +1996,7 @@ def GetAccessibleOpenLevels(settings, accessible):
 def BlockAccessToLevel(settings: Settings, level):
     """Assume the level index passed in is the furthest level you have access to in the level order."""
     for i in range(0, 8):
-        if i >= level:
+        if i >= level - 1:
             # This level and those after it are locked out
             settings.EntryGBs[i] = 1000
             if i < 7:
@@ -2090,6 +2056,7 @@ def Generate_Spoiler(spoiler):
     GeneratePlaythrough(spoiler)
     if spoiler.settings.wrinkly_hints in ["standard", "cryptic"]:
         compileHints(spoiler)
+    compileMicrohints(spoiler)
     Reset()
     ShuffleExits.Reset()
     spoiler.createJson()
