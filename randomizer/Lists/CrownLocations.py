@@ -709,7 +709,7 @@ CrownLocations = {
             z=638,
             scale=0.3,
             region=Regions.HideoutHelmLobby,
-            logic=lambda l: (l.vines and l.gorillaGone and l.ischunky) or (l.advanced_platforming and (l.isdonkey or l.istiny)),
+            logic=lambda l: (l.vines and l.gorillaGone and l.ischunky) or (l.advanced_platforming and l.istiny and l.twirl),
         ),
         CrownLocation(
             map=Maps.TrainingGrounds,
