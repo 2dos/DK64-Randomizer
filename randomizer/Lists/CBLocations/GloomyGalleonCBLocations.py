@@ -293,7 +293,7 @@ ColoredBananaGroupList = [
         map_id=Maps.GloomyGalleon,
         name="To Tiny BP (2 custom, 3 Tiny)",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
-        region=Regions.GloomyGalleonStart,
+        region=Regions.GalleonPastVines,
         locations=[
             [1, 1.0, 2997, 1890, 2933],
             [1, 1.0, 3033, 1890, 2924],
@@ -307,7 +307,7 @@ ColoredBananaGroupList = [
         map_id=Maps.GloomyGalleon,
         name="Cranky's Room to T&S (2 custom, 3 Chunky)",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
-        region=Regions.GloomyGalleonStart,
+        region=Regions.GalleonPastVines,
         locations=[
             [1, 1.0, 3106, 1890, 2934],
             [1, 1.0, 3143, 1890, 2940],
@@ -590,7 +590,7 @@ ColoredBananaGroupList = [
         map_id=Maps.GloomyGalleon,
         name="On stalactite between 5DS and mech fish",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
-        region=Regions.Shipyard,
+        region=Regions.ShipyardUnderwater,
         locations=[[5, 1.2, 2808, 845, 1470]],
     ),
     ColoredBananaGroup(
@@ -1296,7 +1296,7 @@ ColoredBananaGroupList = [
         map_id=Maps.GloomyGalleon,
         name="W3 (Tiny)",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
-        region=Regions.GloomyGalleonStart,
+        region=Regions.GalleonPastVines,
         vanilla=True,
         locations=[[5, 1.0, 3067.403076171875, 1912.0, 2924.8515625]],
     ),

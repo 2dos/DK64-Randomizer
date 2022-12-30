@@ -300,7 +300,7 @@ def compileHints(spoiler: Spoiler):
                 if Kongs.tiny in spoiler.settings.krool_order:
                     hint_distribution[HintType.RequiredWinConditionHint] += 1  # Dedicated Mini Monkey hint
                 if Kongs.chunky in spoiler.settings.krool_order:
-                    hint_distribution[HintType.RequiredWinConditionHint] += 1  # Dedicated Gorilla Gone hint
+                    hint_distribution[HintType.RequiredWinConditionHint] += 1  # Dedicated Hunky Chunky hint
             # All fairies seeds need help finding the camera (if you don't start with it) - variable amount of unique hints for it
             if spoiler.settings.win_condition == "all_fairies" and spoiler.settings.shockwave_status != "start_with":
                 valid_types.append(HintType.RequiredWinConditionHint)
@@ -677,19 +677,19 @@ def compileHints(spoiler: Spoiler):
 
     # Some win conditions need very specific items that we really should hint
     if hint_distribution[HintType.RequiredWinConditionHint] > 0:
-        # To aid K. Rool goals, always hint Rocketbarrel, Mini Monkey, and Gorilla Gone if they are needed to beat K. Rool
+        # To aid K. Rool goals, always hint Rocketbarrel, Mini Monkey, and Hunky Chunky if they are needed to beat K. Rool
         if spoiler.settings.win_condition == "beat_krool":
             item_path_hint_dict = {}
             rocketbarrel_location_id = None
             mini_monkey_location_id = None
-            gorilla_gone_location_id = None
+            hunky_chunky_location_id = None
             for location_id in spoiler.woth_paths.keys():
                 if LocationList[location_id].item == Items.RocketbarrelBoost:
                     rocketbarrel_location_id = location_id
                 if LocationList[location_id].item == Items.MiniMonkey:
                     mini_monkey_location_id = location_id
-                if LocationList[location_id].item == Items.GorillaGone:
-                    gorilla_gone_location_id = location_id
+                if LocationList[location_id].item == Items.HunkyChunky:
+                    hunky_chunky_location_id = location_id
             # If Diddy must fight K. Rool, Rocketbarrel is likely to be the most hidden item
             if Kongs.diddy in spoiler.settings.krool_order:
                 path = spoiler.woth_paths[rocketbarrel_location_id]
@@ -702,7 +702,7 @@ def compileHints(spoiler: Spoiler):
                 item_path_hint_dict["Mini Monkey"] = path_location_id
             # If Chunky must fight K. Rool, Gorilla Gone is likely to be the most hidden item
             if Kongs.chunky in spoiler.settings.krool_order:
-                path = spoiler.woth_paths[gorilla_gone_location_id]
+                path = spoiler.woth_paths[hunky_chunky_location_id]
                 path_location_id = random.choice(path)
                 item_path_hint_dict["Gorilla Gone"] = path_location_id
             # Place a hint for each of the K. Rool required moves
@@ -1227,21 +1227,14 @@ def resetHintList():
 
 def compileMicrohints(spoiler: Spoiler):
     """Create guaranteed level + kong hints for various items."""
+    items_needing_microhints = [Items.Monkeyport, Items.GorillaGone, Items.Bongos, Items.Guitar, Items.Trombone, Items.Saxophone, Items.Triangle]
     spoiler.microhints = {}
-    mp_location = None
-    gg_location = None
     # Loop through locations looking for the items that need a microhint
     for id, location in LocationList.items():
-        if location.item == Items.Monkeyport:
-            mp_location = location
-        if location.item == Items.GorillaGone:
-            gg_location = location
-        if mp_location is not None and gg_location is not None:
-            break
-    mp_hint = f"You would be better off looking in {level_list_everything[mp_location.level]} with {kong_list[mp_location.kong]} for this.".upper()
-    gg_hint = f"You would be better off looking in {level_list_everything[gg_location.level]} with {kong_list[gg_location.kong]} for this.".upper()
-    spoiler.microhints["Monkeyport"] = mp_hint
-    spoiler.microhints["Gorilla Gone"] = gg_hint
+        if location.item in items_needing_microhints:
+            item = ItemList[location.item]
+            hint_text = f"You would be better off looking in {level_list_everything[location.level]} with {kong_list[location.kong]} for this.".upper()
+            spoiler.microhints[item.name] = hint_text
 
 
 def compileHintsOld(spoiler: Spoiler):
