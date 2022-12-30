@@ -145,13 +145,7 @@ class Spoiler:
         settings["Randomize CB Locations"] = self.settings.cb_rando
         settings["Puzzle Randomization"] = self.settings.puzzle_rando
         settings["Crown Door Open"] = self.settings.crown_door_item == "opened"
-        if self.settings.crown_door_item != "opened":
-            settings["Crown Door Item"] = self.settings.crown_door_item
-            settings["Crown Door Item Amount"] = self.settings.crown_door_item_count
         settings["Coin Door Open"] = self.settings.coin_door_item == "opened"
-        if self.settings.coin_door_item != "opened":
-            settings["Coin Door Item"] = self.settings.coin_door_item
-            settings["Coin Door Item Amount"] = self.settings.coin_door_item_count
         settings["Shockwave Shuffle"] = self.settings.shockwave_status
         settings["Random Jetpac Medal Requirement"] = self.settings.random_medal_requirement
         settings["Bananas Required for Medal"] = self.settings.medal_cb_req
@@ -252,6 +246,12 @@ class Spoiler:
         for room in self.settings.helm_order:
             helm_new_order.append(helm_default_order[room].name.capitalize())
         humanspoiler["End Game"]["Helm Rooms"] = helm_new_order
+        if self.settings.crown_door_item != "opened":
+            humanspoiler["End Game"]["Crown Door Item"] = self.settings.crown_door_item
+            humanspoiler["End Game"]["Crown Door Item Amount"] = self.settings.crown_door_item_count
+        if self.settings.coin_door_item != "opened":
+            humanspoiler["End Game"]["Coin Door Item"] = self.settings.coin_door_item
+            humanspoiler["End Game"]["Coin Door Item Amount"] = self.settings.coin_door_item_count
         humanspoiler["Items"] = {
             "Kongs": {},
             "Shops": {},
