@@ -87,7 +87,7 @@ KasplatLocationList = {
             kong_lst=[Kongs.chunky],
             coords=[427, 20, 456],
             region=Regions.JapesCatacomb,
-            additional_logic=lambda l: (l.pineapple and l.vines) or l.advanced_platforming,
+            additional_logic=lambda l: (l.pineapple and l.vines),
             vanilla=True,
         ),
         KasplatLocation(
