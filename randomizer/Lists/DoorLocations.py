@@ -152,7 +152,7 @@ door_locations = {
             logic=lambda l: True,
             placed="tns",
         ),  # T&S Door in Diddy Cave
-        # DoorData(name="Jungle Japes: Near Painting Room", map=Maps.JungleJapes, logicregion=Regions.JungleJapesMain, location=[722.473, 538.0, 2386.608, 141.0], group=3, moveless=False, logic=lambda l: l.vines, placed="tns"),  # T&S Door in Near Painting Room. Omitted because the indicator is weird
+        # DoorData(name="Jungle Japes: Near Painting Room", map=Maps.JungleJapes, logicregion=Regions.JungleJapesMain, location=[722.473, 538.0, 2386.608, 141.0], group=3, placed="tns"),  # T&S Door in Near Painting Room. Omitted because the indicator is weird
         DoorData(
             name="Jungle Japes: Fairy Cave",
             map=Maps.JungleJapes,
@@ -170,8 +170,6 @@ door_locations = {
             logicregion=Regions.JungleJapesMain,
             location=[703.0, 538.0, 2293.0, 54.0],
             group=3,
-            moveless=False,
-            logic=lambda l: l.vines or l.advanced_platforming,
         ),
         DoorData(
             name="Jungle Japes: Alcove Above Diddy Tunnel - left",
@@ -179,8 +177,6 @@ door_locations = {
             logicregion=Regions.JungleJapesMain,
             location=[817.0, 538.0, 2372.0, 232.0],
             group=3,
-            moveless=False,
-            logic=lambda l: l.vines or l.advanced_platforming,
         ),
         DoorData(
             name="Jungle Japes: Next to Minecart Exit -right", map=Maps.JungleJapes, logicregion=Regions.JungleJapesMain, location=[1029.0, 287.0, 2032.0, 251.5], rx=-10, group=3, logic=lambda l: True
@@ -459,7 +455,7 @@ door_locations = {
             kong_lst=[Kongs.diddy],
             group=10,
             moveless=False,
-            logic=lambda l: True,
+            logic=lambda l: l.charge and l.isdiddy,
             door_type="wrinkly",
         ),
         DoorData(
@@ -739,7 +735,7 @@ door_locations = {
             kong_lst=[Kongs.donkey],
             group=2,
             moveless=False,
-            logic=lambda l: (l.isdonkey and l.strongKong) or l.phasewalk or l.generalclips,
+            logic=lambda l: l.isdonkey and l.strongKong,
             door_type="wrinkly",
         ),
         DoorData(
@@ -750,7 +746,7 @@ door_locations = {
             kong_lst=[Kongs.donkey],
             group=2,
             moveless=False,
-            logic=lambda l: (l.isdonkey and l.strongKong) or l.phasewalk or l.generalclips,
+            logic=lambda l: l.isdonkey and l.strongKong,
             door_type="wrinkly",
         ),
         DoorData(
@@ -826,6 +822,7 @@ door_locations = {
             group=11,
             moveless=False,
             logic=lambda l: True,
+            door_type="wrinkly",
         ),
         DoorData(
             name="Angry Aztec: Tiny Temple - Across from Slope to Tiny Cage - left",
@@ -1349,7 +1346,7 @@ door_locations = {
             location=[645.832, 1460.0, 4960.476, 133.0],
             group=5,
             moveless=False,
-            logic=lambda l: True,
+            logic=lambda l: lambda l: Events.LighthouseEnguarde in l.Events and l.lanky,
             placed="tns",
         ),  # T&S Door behind Enguarde Door
         DoorData(
@@ -1399,7 +1396,7 @@ door_locations = {
             location=[1334.0, 1610.0, 2523.0, 0.0],
             group=8,
             moveless=False,
-            logic=lambda l: Events.WaterSwitch in l.Events or (l.advanced_platforming and (l.islanky or l.ischunky)),
+            logic=lambda l: l.CanGetOnCannonGamePlatform(),
         ),
         DoorData(
             name="Gloomy Galleon: Next to Coconut switch", map=Maps.GloomyGalleon, logicregion=Regions.GloomyGalleonStart, location=[2065.75, 1628.0, 3418.75, 28.0], group=2, logic=lambda l: True
@@ -1565,7 +1562,7 @@ door_locations = {
             location=[1524.1, 1461.0, 2898.0, 278.0],
             group=8,
             moveless=False,
-            logic=lambda l: True,
+            logic=lambda l: l.swim,
         ),
         DoorData(
             name="Gloomy Galleon: 2Dship's secret 3rd door",
@@ -2073,9 +2070,9 @@ door_locations = {
             kong_lst=[Kongs.diddy],
             group=2,
             moveless=False,
-            logic=lambda l: (l.isdiddy and l.jetpack) or l.CanMoonkick() or (l.twirl and l.istiny and l.advanced_platforming),
+            logic=lambda l: (l.isdiddy and l.jetpack) or l.CanMoonkick() or ((l.isdiddy or l.istiny or l.islanky) and l.advanced_platforming),
             placed="tns",
-        ),  # T&S Portal on Rotating Room
+        ),  # T&S Portal on Rotating Room | Lanky can backflip onto the building from the window sill
         DoorData(
             name="Crystal Caves: Near Snide's",
             map=Maps.CrystalCaves,
