@@ -859,9 +859,9 @@ void initKeyText(int ki) {
 
 void spriteCode(int sprite_index, float scale) {
     void* paad = CurrentActorPointer_0->paad;
-    spriteActorGenericCode(scale);
+    spriteActorGenericCode(4.5f);
     if ((CurrentActorPointer_0->obj_props_bitfield & 0x10) == 0) {
-        assignGIFToActor(paad, sprite_table[sprite_index], 0x3F800000);
+        assignGIFToActor(paad, sprite_table[sprite_index], *(int*)(&scale));
         if (CurrentActorPointer_0->control_state == 99) {
             CurrentActorPointer_0->control_state = 1;
             CurrentActorPointer_0->sub_state = 2;
@@ -870,15 +870,15 @@ void spriteCode(int sprite_index, float scale) {
 }
 
 void ninCoinCode(void) {
-    spriteCode(0x8D, 4.5f);
+    spriteCode(0x8D, 1.0f);
 }
 
 void rwCoinCode(void) {
-    spriteCode(0x8C, 4.5f);
+    spriteCode(0x8C, 1.0f);
 }
 
 void medalCode(void) {
-    spriteCode(0x3C, 12.0f);
+    spriteCode(0x3C, 2.0f);
 }
 
 void beanCode(void) {
