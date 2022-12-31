@@ -87,7 +87,7 @@ KasplatLocationList = {
             kong_lst=[Kongs.chunky],
             coords=[427, 20, 456],
             region=Regions.JapesCatacomb,
-            additional_logic=lambda l: (l.pineapple and l.vines) or l.advanced_platforming,
+            additional_logic=lambda l: (l.pineapple and l.vines),
             vanilla=True,
         ),
         KasplatLocation(
@@ -185,7 +185,6 @@ KasplatLocationList = {
             zmin=2295,
             zmax=2380,
             region=Regions.JungleJapesMain,
-            additional_logic=lambda l: l.vines or l.advanced_platforming,
         ),
         KasplatLocation(
             name="Japes Kasplat: Inside the Mountain", map_id=Maps.JapesMountain, kong_lst=[Kongs.diddy], coords=[551, 101, 1192], xmin=525, xmax=576, zmin=1078, zmax=1236, region=Regions.Mine

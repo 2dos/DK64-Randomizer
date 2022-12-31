@@ -65,7 +65,7 @@ CrownLocations = {
         CrownLocation(map=Maps.JungleJapes, name="Jungle Japes: On Mountain", x=1616, y=989, z=2439, scale=0.5, region=Regions.JapesTopOfMountain),
         CrownLocation(map=Maps.JungleJapes, name="Jungle Japes: Near Kong Cage", x=949, y=852, z=2384, scale=0.35, region=Regions.JungleJapesMain),
         CrownLocation(map=Maps.JungleJapes, name="Jungle Japes: Near Cannon Platform", x=1282, y=520, z=2262, scale=0.35, region=Regions.JungleJapesMain),
-        CrownLocation(map=Maps.JungleJapes, name="Jungle Japes: In T&S Alcove", x=770, y=538, z=2332, scale=0.35, region=Regions.JungleJapesMain, logic=lambda l: l.vines or l.advanced_platforming),
+        CrownLocation(map=Maps.JungleJapes, name="Jungle Japes: In T&S Alcove", x=770, y=538, z=2332, scale=0.35, region=Regions.JungleJapesMain),
         # CrownLocation(
         #     map=Maps.JungleJapes,
         #     name="Jungle Japes: Near Underground Entrance",
@@ -709,7 +709,7 @@ CrownLocations = {
             z=638,
             scale=0.3,
             region=Regions.HideoutHelmLobby,
-            logic=lambda l: (l.vines and l.gorillaGone and l.ischunky) or (l.advanced_platforming and (l.isdonkey or l.istiny)),
+            logic=lambda l: (l.vines and l.gorillaGone and l.ischunky) or (l.advanced_platforming and l.istiny and l.twirl),
         ),
         CrownLocation(
             map=Maps.TrainingGrounds,
