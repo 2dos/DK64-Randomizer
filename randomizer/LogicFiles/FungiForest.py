@@ -51,7 +51,7 @@ LogicRegions = {
         TransitionFront(Regions.FungiForestMedals, lambda l: True),
         TransitionFront(Regions.FungiForestStart, lambda l: True),
         TransitionFront(Regions.MushroomLower, lambda l: True, Transitions.ForestMainToLowerMushroom),
-        TransitionFront(Regions.MushroomLowerExterior, lambda l: (l.jetpack and l.isdiddy) or (l.advanced_platforming and l.twirl and l.istiny)),
+        TransitionFront(Regions.MushroomLowerExterior, lambda l: (l.jetpack and l.isdiddy) or (l.advanced_platforming and ((l.twirl and l.istiny) or l.isdonkey or l.ischunky))),  # Diddy and Lanky can also just barely make this jump without lag
         TransitionFront(Regions.MushroomUpperExterior, lambda l: l.jetpack and l.isdiddy),
         TransitionFront(Regions.HollowTreeArea, lambda l: l.settings.open_levels or Events.HollowTreeGateOpened in l.Events or l.CanPhaseswim() or l.phasewalk or l.CanOStandTBSNoclip()),
         TransitionFront(Regions.Anthill, lambda l: l.CanSkew(True), Transitions.ForestTreeToAnthill),

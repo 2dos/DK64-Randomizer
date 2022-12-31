@@ -84,10 +84,10 @@ KasplatLocationList = {
         KasplatLocation(
             name="Japes Kasplat: Underground",
             map_id=Maps.JapesUnderGround,
-            kong_lst=[Kongs.donkey, Kongs.tiny, Kongs.chunky],
+            kong_lst=[Kongs.chunky],
             coords=[427, 20, 456],
             region=Regions.JapesCatacomb,
-            additional_logic=lambda l: (l.pineapple and l.vines and l.ischunky) or (l.advanced_platforming and (l.isdonkey or (l.istiny and l.twirl))),
+            additional_logic=lambda l: (l.pineapple and l.vines and l.ischunky),
             vanilla=True,
         ),
         KasplatLocation(
@@ -196,18 +196,14 @@ KasplatLocationList = {
         KasplatLocation(
             name="Japes Kasplat: Up the Hill to the Painting Room",
             map_id=Maps.JungleJapes,
-            kong_lst=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny],
+            kong_lst=[Kongs.lanky, Kongs.tiny],
             coords=[544, 370, 1815],
             xmin=508,
             xmax=583,
             zmin=1778,
             zmax=1927,
             region=Regions.JungleJapesMain,
-            additional_logic=lambda l: (l.donkey and l.advanced_platforming)
-            or (l.lanky and l.handstand)
-            or (l.tiny and l.twirl)
-            or l.CanMoonkick()
-            or ((l.phasewalk or l.generalclips) and (l.istiny or l.isdiddy)),
+            additional_logic=lambda l: (l.lanky and l.handstand) or (l.tiny and l.twirl) or l.CanMoonkick() or ((l.phasewalk or l.generalclips) and (l.istiny or l.isdiddy)),
         ),
         KasplatLocation(
             name="Japes Kasplat: In the Minecart Exit",
@@ -392,14 +388,14 @@ KasplatLocationList = {
         KasplatLocation(
             name="Aztec Kasplat: Inside the Llama Temple Matching Game",
             map_id=Maps.AztecLlamaTemple,
-            kong_lst=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
+            kong_lst=[Kongs.lanky],
             coords=[1080, 642, 2240],
             xmin=1009,
             xmax=1161,
             zmin=2130,
             zmax=2332,
             region=Regions.LlamaTemple,
-            additional_logic=lambda l: (l.grape and ((not l.settings.disable_tag_barrels and (l.isdonkey or l.isdiddy or l.istiny or l.ischunky)) or l.islanky)) or l.phasewalk,
+            additional_logic=lambda l: l.grape or l.phasewalk,
         ),
         # Problematic - too easy to miss if you play the instrument, race to the cage, and free the kong before the respawn
         # KasplatLocation(

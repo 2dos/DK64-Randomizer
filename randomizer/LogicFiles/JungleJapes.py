@@ -43,7 +43,7 @@ LogicRegions = {
         TransitionFront(Regions.JapesBeyondCoconutGate2, lambda l: l.settings.open_levels or Events.JapesFreeKongOpenGates in l.Events or l.phasewalk or l.CanPhaseswim() or l.CanSkew(False) or l.generalclips),
         TransitionFront(Regions.Mine, lambda l: l.peanut and l.isdiddy, Transitions.JapesMainToMine),
         TransitionFront(Regions.JapesTopOfMountain, lambda l: (l.peanut and l.isdiddy) or l.CanMoonkick()),
-        TransitionFront(Regions.JapesLankyCave, lambda l: (((l.peanut and l.diddy) or l.CanSkew(False)) and ((l.isdonkey and l.advanced_platforming) or (l.handstand and l.islanky) or (l.twirl and l.istiny) or l.CanMoonkick())) or (l.CanMoonkick() and (l.phasewalk or l.CanSkew(False))) or ((l.phasewalk or l.generalclips or l.CanSkew(False)) and (l.isdiddy or l.istiny)), Transitions.JapesMainToLankyCave),
+        TransitionFront(Regions.JapesLankyCave, lambda l: (((l.peanut and l.diddy) or l.CanSkew(False)) and ((l.handstand and l.islanky) or (l.twirl and l.istiny) or l.CanMoonkick())) or (l.CanMoonkick() and (l.phasewalk or l.CanSkew(False))) or ((l.phasewalk or l.generalclips or l.CanSkew(False)) and (l.isdiddy or l.istiny)), Transitions.JapesMainToLankyCave),
         TransitionFront(Regions.JapesCatacomb, lambda l: (l.Slam and l.chunky and l.barrels) or l.CanPhaseswim() or l.CanSkew(False), Transitions.JapesMainToCatacomb),
         TransitionFront(Regions.FunkyJapes, lambda l: True),
         TransitionFront(Regions.Snide, lambda l: True),
