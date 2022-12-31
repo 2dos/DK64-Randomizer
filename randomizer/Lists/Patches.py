@@ -308,18 +308,6 @@ DirtPatchLocations = [
         logic=lambda l: ((l.mini and l.superSlam and l.istiny and l.chunky) or l.CanPhaseswim()) and l.shockwave,
     ),
     DirtPatchData(
-        name="DK Isles - Fungi Forest Lobby: Behind Gorilla Gone Door",
-        level=Levels.DKIsles,
-        map_id=Maps.FungiForestLobby,
-        x=99.0,
-        y=4.0,
-        z=533.0,
-        rotation=1024,
-        group=12,
-        logicregion=Regions.FungiForestLobby,
-        logic=lambda l: ((l.coconut and l.peanut and l.grape and l.feather and l.pineapple) or l.phasewalk) and l.shockwave,
-    ),
-    DirtPatchData(
         name="DK Isles - Fungi Forest Lobby: On Tag Crate",
         level=Levels.DKIsles,
         map_id=Maps.FungiForestLobby,
