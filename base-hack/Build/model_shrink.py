@@ -1,7 +1,21 @@
 """Shrink Models and create a duplicate."""
 import zlib
+import struct
 
-def shrinkModel(is_file: bool, file_name: str, file_index: int, scale: float, output_file: str):
+def intf_to_float(intf):
+    """Convert float as int format to float."""
+    if intf == 0:
+        return 0
+    else:
+        return struct.unpack("!f", bytes.fromhex("{:08X}".format(intf)))[0]
+
+def float_to_hex(f):
+    """Convert float to hex."""
+    if f == 0:
+        return "0x00000000"
+    return hex(struct.unpack("<I", struct.pack("<f", f))[0])
+
+def shrinkModel(is_file: bool, file_name: str, file_index: int, scale: float, output_file: str, realign_bones: bool):
     """Shrink Model according to scale."""
     data = b""
     # Get data
@@ -45,7 +59,19 @@ def shrinkModel(is_file: bool, file_name: str, file_index: int, scale: float, ou
                 if val < 0:
                     val += 65536
                 fh.write(int(val).to_bytes(2, "big"))
-                
+        if realign_bones:
+            fh.seek(8)
+            bones_start = (int.from_bytes(fh.read(4), "big") - offset) + 0x28
+            bones_end = (int.from_bytes(fh.read(4), "big") - offset) + 0x28
+            bones_count = int((bones_end - bones_start) / 0x10)                
+            for b in range(bones_count):
+                fh.seek(bones_start + (0x10 * b) + 4)
+                bones = [0]*3
+                for bi in range(3):
+                    bones[bi] = intf_to_float(int.from_bytes(fh.read(4), "big")) * scale
+                fh.seek(bones_start + (0x10 * b) + 4)
+                for bv in bones:
+                    fh.write(int(float_to_hex(bv), 16).to_bytes(4, "big"))
 
     
             

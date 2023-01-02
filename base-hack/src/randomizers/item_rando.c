@@ -725,7 +725,23 @@ void banana_medal_acquisition(int flag) {
                 playSFX(0xF2);
                 int used_song = 0x97;
                 int kong_songs[] = {11, 10, 12, 13, 9};
-                int songs[] = {18,69,18,0x97,22,115,115,115,115,115,0x97, 0, 147, 128, 46};
+                int songs[] = {
+                    18, // GB (GB/Key Get)
+                    69, // BP (BP Get)
+                    18, // Key (GB/Key Get)
+                    0x97, // Crown (Banana Medal Get)
+                    22, // Company Coin
+                    0x97, // Medal (Banana Medal Get)
+                    115, // Cranky (Gun Get)
+                    115, // Funky (Gun Get)
+                    115, // Candy (Gun Get)
+                    115, // Training (Gun Get)
+                    115, // Shockwave (Gun Get)
+                    0, // Kong - Use kong array
+                    147, // Bean (Bean Get)
+                    128, // Pearl (Pearl Get)
+                    46, // Fairy (Fairy Tick)
+                };
                 if (item_type == 11) {
                     used_song = kong_songs[kong];
                 } else if (item_type < BANANA_MEDAL_ITEM_COUNT) {
@@ -737,7 +753,23 @@ void banana_medal_acquisition(int flag) {
             unkSpriteRenderFunc_0();
             loadSpriteFunction(0x8071EFDC);
             int bp_sprites[] = {0x5C,0x5A,0x4A,0x5D,0x5B};
-            int sprite_indexes[] = {0x3B, 0, 0x8A, 0x8B, 0, 0x3C, 0x94, 0x96, 0x93, 0x94, 0x3A, 0x8E, 0, 0x92, 0x92, 0x89};
+            int sprite_indexes[] = {
+                0x3B, // GB
+                0, // BP - Use bp sprite array
+                0x8A,  // Key
+                0x8B,  // Crown
+                0, // Company Coin - Use separate check
+                0x3C, // Medal
+                0x94, // Cranky
+                0x96, // Funky
+                0x93, // Candy
+                0x94, // Training Barrel
+                0x3A, // Shockwave
+                0, // Kong - Use separate check
+                0x92, // Bean
+                0x92, // Pearl
+                0x89, // Fairy
+            };
             int used_sprite = 0x3B;
             if (item_type == 1) {
                 int character_val = Character;
@@ -756,6 +788,8 @@ void banana_medal_acquisition(int flag) {
             } else if (item_type == 11) {
                 used_sprite = 0xA9 + kong;
                 refreshItemVisibility();
+            } else if (item_type == BANANA_MEDAL_ITEM_COUNT) {
+                used_sprite = 0x8E;
             } else {
                 used_sprite = sprite_indexes[item_type];
             }
