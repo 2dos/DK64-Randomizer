@@ -1002,6 +1002,7 @@ void fairyDuplicateCode(void) {
     if ((CurrentActorPointer_0->obj_props_bitfield & 0x10) == 0) {
         CurrentActorPointer_0->obj_props_bitfield &= 0xFFFFEFFF; // Make color blends work
     }
+    playActorAnimation(CurrentActorPointer_0, 0x2B5);
 }
 
 void KLumsyText(void) {
