@@ -235,16 +235,16 @@ def portActorToModelTwo(actor_index: int, output_file: str, base_file_index: int
                     vert_bones[bone_index].append(focused_vert)
         # Grab Bones
         for b in range(bone_count):
-            fh.seek(bone_start + (b * 0x10) + 0)
+            fh.seek(bone_start + (b * 0x10))
             base_bone = int.from_bytes(fh.read(1), "big")
             local_bone = int.from_bytes(fh.read(1), "big")
             master_bone = int.from_bytes(fh.read(1), "big")
             coords = [0, 0, 0]
             if base_bone != 0xFF:
-                coords = bone_offsets[base_bone]
+                coords = bone_offsets[base_bone].copy()
             fh.seek(bone_start + (b * 0x10) + 4)
             for c in range(3):
-                coords[c] = intf_to_float(int.from_bytes(fh.read(4), "big"))
+                coords[c] += intf_to_float(int.from_bytes(fh.read(4), "big"))
             bone_offsets[local_bone] = coords.copy()
             bone_bases[master_bone] = coords.copy()
             bone_master[local_bone] = master_bone
