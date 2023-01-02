@@ -58,8 +58,8 @@ typedef struct collision_info {
     /* 0x012 */ short hitbox_scale;
 } collision_info;
 
-#define COLLISION_LIMIT 57
-#define DEFS_LIMIT 145
+#define COLLISION_LIMIT 58
+#define DEFS_LIMIT 146
 static collision_info object_collisions[COLLISION_LIMIT] = {};
 static actor_behaviour_def actor_defs[DEFS_LIMIT] = {};
 
@@ -161,6 +161,7 @@ void initCollectableCollision(void) {
     index = addCollisionInfo(index, 0x028F, COLLECTABLE_NONE, KONG_NONE, 152, 8, 4); // Rareware Coin
     index = addCollisionInfo(index, 0x0198, COLLECTABLE_NONE, KONG_NONE, 172, 8, 4); // Bean
     index = addCollisionInfo(index, 0x01B4, COLLECTABLE_NONE, KONG_NONE, 174, 8, 4); // Pearl
+    index = addCollisionInfo(index, 0x025C, COLLECTABLE_NONE, KONG_NONE, 88, 8, 4); // Fairy
     
     // Write new table to ROM
     int hi = getHi(&object_collisions[0].type);
@@ -205,8 +206,6 @@ void initActorDefs(void) {
     index = addActorDef(index, 160, 0xF1, 0x80689F80, 0x80689FEC); // Tiny Potion
     index = addActorDef(index, 161, 0xF2, 0x80689F80, 0x80689FEC); // Chunky Potion
     index = addActorDef(index, 162, 0xF3, 0x80689F80, 0x80689FEC); // Any Potion
-    index = addActorDef(index, 153, 0, 0x80689F80, 0x8068A10C); // Nothing
-    index = addActorDef(index, 154, 0, 0x80689F80, 0x8068A10C); // Medal
     // Kongs
     index = addActorDef(index, 141, 0x4, 0x80689F80, 0x80689FEC); // DK
     index = addActorDef(index, 142, 0x1, 0x80689F80, 0x80689FEC); // Diddy
@@ -216,6 +215,9 @@ void initActorDefs(void) {
     // Misc
     index = addActorDef(index, 172, 0, 0x80689F80, 0x8068A10C); // Bean
     index = addActorDef(index, 174, 0, 0x80689F80, 0x8068A10C); // Pearl
+    index = addActorDef(index, 88, 0xFC, 0x80689F80, 0x80689FEC); // Fairy
+    index = addActorDef(index, 153, 0, 0x80689F80, 0x8068A10C); // Nothing
+    index = addActorDef(index, 154, 0, 0x80689F80, 0x8068A10C); // Medal
     *(unsigned short*)(0x8068926A) = getHi(&actor_defs[0].actor_type);
     *(unsigned short*)(0x8068927A) = getLo(&actor_defs[0].actor_type);
     *(unsigned short*)(0x806892D2) = getHi(&actor_defs[0].actor_type);
@@ -375,6 +377,9 @@ int clampFlag(int flag) {
     }
     if ((flag >= 0x261) && (flag <= 0x26A)) {
         return 1; // Crown
+    }
+    if ((flag >= 589) && (flag <= 608)) {
+        return 1; // Fairy
     }
     if (flag == 0x17B) {
         return 1; // RW Coin
@@ -654,6 +659,8 @@ int getKongFromBonusFlag(int flag) {
     return 0;
 }
 
+#define BANANA_MEDAL_ITEM_COUNT 15 // Discount nothing item
+
 void banana_medal_acquisition(int flag) {
     /* 
         0 - GB,
@@ -670,12 +677,13 @@ void banana_medal_acquisition(int flag) {
         11 - Kong,
         12 - Bean,
         13 - Pearl,
-        14 - Nothing,
+        14 - Fairy,
+        15 - Nothing,
     */
     int item_type = getMedalItem(flag - FLAG_MEDAL_JAPES_DK);
     if (!checkFlag(flag, 0)) {
         // Display and play effects if you don't have item
-        if (item_type < 15) {
+        if (item_type < (BANANA_MEDAL_ITEM_COUNT + 1)) {
             int kong = -1;
             short flut_flag = flag;
             updateFlag(0, (short*)&flut_flag, (void*)0, -1);
@@ -707,20 +715,20 @@ void banana_medal_acquisition(int flag) {
                         }
                     }
                 }
-            } else if (item_type < 14) {
+            } else if (item_type < BANANA_MEDAL_ITEM_COUNT) {
                 setFlag(flag, 1, 0);
             }
             if (item_type == 0) {
                 giveGB(getKong(0), getWorld(CurrentMap, 1));
             }
-            if (item_type < 14) {
+            if (item_type < BANANA_MEDAL_ITEM_COUNT) {
                 playSFX(0xF2);
                 int used_song = 0x97;
                 int kong_songs[] = {11, 10, 12, 13, 9};
-                int songs[] = {18,69,18,0x97,22,115,115,115,115,115,0x97, 0, 147, 128};
+                int songs[] = {18,69,18,0x97,22,115,115,115,115,115,0x97, 0, 147, 128, 46};
                 if (item_type == 11) {
                     used_song = kong_songs[kong];
-                } else if (item_type < 14) {
+                } else if (item_type < BANANA_MEDAL_ITEM_COUNT) {
                     used_song = songs[item_type];
                 }
                 playSong(used_song, 0x3F800000);
@@ -729,7 +737,7 @@ void banana_medal_acquisition(int flag) {
             unkSpriteRenderFunc_0();
             loadSpriteFunction(0x8071EFDC);
             int bp_sprites[] = {0x5C,0x5A,0x4A,0x5D,0x5B};
-            int sprite_indexes[] = {0x3B, 0, 0x8A, 0x8B, 0, 0x3C, 0x94, 0x96, 0x93, 0x94, 0x3A, 0x8E, 0, 0x92, 0x92};
+            int sprite_indexes[] = {0x3B, 0, 0x8A, 0x8B, 0, 0x3C, 0x94, 0x96, 0x93, 0x94, 0x3A, 0x8E, 0, 0x92, 0x92, 0x89};
             int used_sprite = 0x3B;
             if (item_type == 1) {
                 int character_val = Character;
@@ -954,6 +962,14 @@ void PotionCode(void) {
     }
 }
 
+void fairyDuplicateCode(void) {
+    /* Duplicate fairy actor purely used for item drops */
+    GoldenBananaCode();
+    if ((CurrentActorPointer_0->obj_props_bitfield & 0x10) == 0) {
+        CurrentActorPointer_0->obj_props_bitfield &= 0xFFFFEFFF; // Make color blends work
+    }
+}
+
 void KLumsyText(void) {
     /*
         NOTE: Re-add this once we get some text for this
@@ -970,6 +986,57 @@ void KLumsyText(void) {
         }
     */
     renderActor(CurrentActorPointer_0, 0);
+}
+
+void spawnCharSpawnerActor(int actor, SpawnerInfo* spawner) {
+    // Change Character Spawner Information account for fairy rando
+    /*
+        INFORMATION:
+            +----------------+----------------------------+--------+---------------+
+            |   Model Name   |         Base Model         | Tested |   New Model   |
+            +----------------+----------------------------+--------+---------------+
+            | Golden Banana  | 0x69                       | True   | See Left      |
+            | Boss Key       | 0xA5                       | True   | 0xF5          |
+            | Crown          | 0xAF                       | True   | 0xF4          |
+            | Potions        | 0xEE-0xF3                  | True   | 0xF6-0xFB     |
+            | Kong Items     | 4, 1, 6, 9, 0xC, 0xE, 0xDB | True   | See Left      |
+            +----------------+----------------------------+--------+---------------+
+            Some items are excluded because when they're actors, they are sprites which can't easily be rendered with the fairy stuff. I might have a way around this,
+            but we'll have to wait and see for probably a secondary update after the first push.
+        TODO:
+            FAIRY MODEL TWO
+                Adjust re-scaled actor's bone positions
+                Adjust model two vert positions
+
+            LOGIC & WRITER
+                - Lrauq might have to add some additional logic to effectively place fairies without bricking generation?
+                    - Will have to wait for response from him or wait until implemented to see success rates
+
+    */
+    if (actor == 248) {
+        // Fairy
+        int model = 0x3D;
+        for (int i = 0; i < 31; i++) {
+            if ((charspawnerflags[i].map == CurrentMap) && (charspawnerflags[i].spawner_id == spawner->spawn_trigger)) {
+                model = getFairyModel(charspawnerflags[i].tied_flag);
+            }
+        }
+        spawnActor(actor, model);
+    } else {
+        spawnActor(actor, CharSpawnerActorData[spawner->alt_enemy_value].model);
+    }
+}
+
+void giveFairyItem(int flag, int state, int type) {
+    int model = getFairyModel(flag);
+    if (model == 0x69) {
+        // GB
+        int world = getWorld(CurrentMap, 1);
+        if (world < 8) {
+            giveGB(Character, world);
+        }
+    }
+    setFlag(flag, state, type);
 }
 
 static const unsigned char dance_skip_ban_maps[] = {

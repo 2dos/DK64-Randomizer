@@ -26,6 +26,7 @@ from end_seq_writer import createSquishFile, createTextFile
 from generate_yellow_wrinkly import generateYellowWrinkly
 from image_converter import convertToRGBA32
 from helm_doors import getHelmDoorModel
+from model_shrink import shrinkModel
 
 # Infrastructure for recomputing DK64 global pointer tables
 from map_names import maps
@@ -155,6 +156,14 @@ file_dict = [
         "pointer_table_index": 4,
         "file_index": 0x25B,
         "source_file": "kong_dk_om2.bin",
+        "do_not_extract": True,
+        "do_not_delete_source": True,
+    },
+    {
+        "name": "Fairy Model",
+        "pointer_table_index": 4,
+        "file_index": 0x25C,
+        "source_file": "fairy_om2.bin",
         "do_not_extract": True,
         "do_not_delete_source": True,
     },
@@ -617,6 +626,15 @@ for change in colorblind_changes:
             }
         )
 
+shrinkModel(False, "", 0xAE, 0.15, "shrink_crown.bin") # Battle Crown
+shrinkModel(False, "", 0xA4, 0.1, "shrink_key.bin") # Boss Key
+shrinkModel(True, "potion_dk_om1.bin", 0, 0.2, "shrink_potion_dk.bin") # Potion (DK)
+shrinkModel(True, "potion_diddy_om1.bin", 0, 0.2, "shrink_potion_diddy.bin") # Potion (Diddy)
+shrinkModel(True, "potion_lanky_om1.bin", 0, 0.2, "shrink_potion_lanky.bin") # Potion (Lanky)
+shrinkModel(True, "potion_tiny_om1.bin", 0, 0.2, "shrink_potion_tiny.bin") # Potion (Tiny)
+shrinkModel(True, "potion_chunky_om1.bin", 0, 0.2, "shrink_potion_chunky.bin") # Potion (Chunky)
+shrinkModel(True, "potion_any_om1.bin", 0, 0.2, "shrink_potion_any.bin") # Potion (Any)
+shrinkModel(False, "", 0x3C, 5, "shrink_fairy.bin") # Fairy
 
 model_changes = [
     {"model_index": 0, "model_file": "diddy_base.bin"},
@@ -634,6 +652,15 @@ model_changes = [
     {"model_index": 0xF0, "model_file": "potion_tiny_om1.bin"},
     {"model_index": 0xF1, "model_file": "potion_chunky_om1.bin"},
     {"model_index": 0xF2, "model_file": "potion_any_om1.bin"},
+    {"model_index": 0xF3, "model_file": "shrink_crown.bin"},
+    {"model_index": 0xF4, "model_file": "shrink_key.bin"},
+    {"model_index": 0xF5, "model_file": "shrink_potion_dk.bin"},
+    {"model_index": 0xF6, "model_file": "shrink_potion_diddy.bin"},
+    {"model_index": 0xF7, "model_file": "shrink_potion_lanky.bin"},
+    {"model_index": 0xF8, "model_file": "shrink_potion_tiny.bin"},
+    {"model_index": 0xF9, "model_file": "shrink_potion_chunky.bin"},
+    {"model_index": 0xFA, "model_file": "shrink_potion_any.bin"},
+    {"model_index": 0xFB, "model_file": "shrink_fairy.bin"},
     {"model_index": 0xA3, "model_file": "counter.bin"},
 ]
 for x in model_changes:
@@ -1089,6 +1116,10 @@ with open(newROMName, "r+b") as fh:
     fh.seek(0x1FED020 + 0x114)
     for x in range(2):
         fh.write((45).to_bytes(1, "big"))
+    # Fairies
+    fh.seek(0x1FF1040)
+    for x in range(20):
+        fh.write((0x3D).to_bytes(2, "big"))
     # Shop Hints
     fh.seek(0x1FED020 + 0x14B)
     fh.write((1).to_bytes(1, "big"))

@@ -5,8 +5,8 @@
 Thanks,
 		Ballaam
 */
-extern const short acceptable_items[24];
-extern const item_conversion_info item_conversions[24];
-extern const unsigned char bounce_objects[14];
-extern const unsigned char actor_drops[25];
+extern const short acceptable_items[25];
+extern const item_conversion_info item_conversions[25];
+extern const unsigned char bounce_objects[15];
+extern const unsigned char actor_drops[26];
 extern const unsigned char danceless_items[2];

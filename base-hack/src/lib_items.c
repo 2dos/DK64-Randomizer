@@ -8,7 +8,7 @@ Thanks,
 		Ballaam
 */
 
-const short acceptable_items[] = {0x74,0xde,0xe0,0xe1,0xdd,0xdf,0x48,0x28f,0x13c,0x18d,0x90,0x5b,0x1f2,0x59,0x1f3,0x1f5,0x1f6,0x257,0x258,0x259,0x25a,0x25b,0x198,0x1b4};
+const short acceptable_items[] = {0x74,0xde,0xe0,0xe1,0xdd,0xdf,0x48,0x28f,0x13c,0x18d,0x90,0x5b,0x1f2,0x59,0x1f3,0x1f5,0x1f6,0x257,0x258,0x259,0x25a,0x25b,0x198,0x1b4,0x25c};
 const item_conversion_info item_conversions[] = {
 	{.actor=45, .model_two=116, .scale=0.25f},
 	{.actor=78, .model_two=222, .scale=2.00f},
@@ -33,8 +33,9 @@ const item_conversion_info item_conversions[] = {
 	{.actor=144, .model_two=602, .scale=0.25f},
 	{.actor=155, .model_two=603, .scale=0.25f},
 	{.actor=172, .model_two=408, .scale=0.25f},
-	{.actor=174, .model_two=436, .scale=0.25f}
+	{.actor=174, .model_two=436, .scale=0.25f},
+	{.actor=88, .model_two=604, .scale=0.25f}
 };
-const unsigned char bounce_objects[] = {45,72,86,157,158,159,160,161,162,141,142,143,144,155};
-const unsigned char actor_drops[] = {45,78,75,77,79,76,151,152,72,86,154,157,158,159,160,161,162,153,141,142,143,144,155,172,174};
+const unsigned char bounce_objects[] = {45,72,86,157,158,159,160,161,162,141,142,143,144,155,88};
+const unsigned char actor_drops[] = {45,78,75,77,79,76,151,152,72,86,154,157,158,159,160,161,162,153,141,142,143,144,155,172,174,88};
 const unsigned char danceless_items[] = {172,174};

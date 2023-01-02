@@ -517,6 +517,9 @@ extern unsigned char ArcadeExited;
 extern unsigned char ArcadeStoryMode;
 extern unsigned char ArcadeEnableReward;
 
+extern unsigned char CharSpawnerActorSubtypes[113];
+extern charSpawnerActorInfo CharSpawnerActorData[113];
+
 //hack data
 extern int TestVariable;
 extern char LoadedHooks;

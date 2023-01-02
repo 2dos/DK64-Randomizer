@@ -1382,3 +1382,12 @@ typedef struct item_conversion_info {
 	/* 0x002 */ short model_two;
 	/* 0x004 */ float scale;
 } item_conversion_info;
+
+typedef struct charSpawnerActorInfo {
+	/* 0x000 */ short actor;
+	/* 0x002 */ short model;
+	/* 0x004 */ short animation;
+	/* 0x006 */ short unk_6;
+	/* 0x008 */ int unk_8;
+	/* 0x00C */ char unk_C[0x18-0xC];
+} charSpawnerActorInfo;

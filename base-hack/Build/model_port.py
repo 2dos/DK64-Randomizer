@@ -284,6 +284,8 @@ portalModel_M2(f"{model_dir}potion_lanky.vtx", f"{model_dir}potion.dl", 0, "poti
 portalModel_M2(f"{model_dir}potion_tiny.vtx", f"{model_dir}potion.dl", 0, "potion_tiny", 0x90)
 portalModel_M2(f"{model_dir}potion_chunky.vtx", f"{model_dir}potion.dl", 0, "potion_chunky", 0x90)
 portalModel_M2(f"{model_dir}potion_any.vtx", f"{model_dir}potion.dl", 0, "potion_any", 0x90)
+# Fairy
+portalModel_M2(f"{model_dir}fairy.vtx", f"{model_dir}fairy.dl", 0, "fairy", 0x90)
 # Potions - Actors (Ignore Chunky Model)
 portalModel_Actor(f"{model_dir}potion_dk.vtx", None, "potion_dk", 0xB8)
 portalModel_Actor(f"{model_dir}potion_diddy.vtx", None, "potion_diddy", 0xB8)
