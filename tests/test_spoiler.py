@@ -130,6 +130,8 @@ def generate_lo_rando_race_settings():
     # "advanced_platforming", "b_locker_skips", "general_clips", "ledge_clips", "moonkicks", "phase_swimming", "phase_walking", "skew", "spawn_snags", "swim_through_shores", "tag_barrel_storage", "troff_n_scoff_skips"
     data["glitches_selected"] = [""]
 
+    data["smaller_shops"] = False  # could be true or false, unclear
+
     return data
 
 

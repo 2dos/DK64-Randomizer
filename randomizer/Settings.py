@@ -16,7 +16,18 @@ from randomizer.Enums.Regions import Regions
 from randomizer.Enums.Types import Types
 import randomizer.ItemPool as ItemPool
 from randomizer.Lists.Item import ItemList
-from randomizer.Lists.Location import ChunkyMoveLocations, DiddyMoveLocations, DonkeyMoveLocations, LankyMoveLocations, LocationList, SharedShopLocations, TinyMoveLocations, TrainingBarrelLocations
+from randomizer.Lists.Location import (
+    ChunkyMoveLocations,
+    DiddyMoveLocations,
+    DonkeyMoveLocations,
+    LankyMoveLocations,
+    LocationList,
+    RemovedShopLocations,
+    SharedShopLocations,
+    ShopLocationReference,
+    TinyMoveLocations,
+    TrainingBarrelLocations,
+)
 from randomizer.Lists.ShufflableExit import ShufflableExits
 from randomizer.Lists.MapsAndExits import GetMapId, GetExitId, RegionMapList
 from randomizer.Prices import CompleteVanillaPrices, RandomizePrices, VanillaPrices
@@ -29,6 +40,7 @@ import randomizer.LogicFiles.GloomyGalleon
 import randomizer.LogicFiles.FungiForest
 import randomizer.LogicFiles.CrystalCaves
 import randomizer.LogicFiles.CreepyCastle
+import randomizer.LogicFiles.Shops
 
 
 class Settings:
@@ -390,6 +402,7 @@ class Settings:
         self.starting_region = {}
         self.holiday_mode = False
         self.remove_wrinkly_puzzles = False
+        self.smaller_shops = False
 
     def shuffle_prices(self):
         """Price randomization. Reuseable if we need to reshuffle prices."""
@@ -457,10 +470,53 @@ class Settings:
                     self.shockwave_status = "shuffled_decoupled"  # Forced to be decoupled in item rando
                 if self.training_barrels != "normal":
                     self.shuffled_location_types.append(Types.TrainingBarrel)
-            # DEBUG CODE for testing, put it in the list selector when it's completed
-            # Uncomment the next line if you want Kongs in the item rando location pool
-            # self.shuffled_location_types.append(Types.Kong)
         self.shuffle_prices()
+
+        # Smaller shop setting deletes 2 Kong-specific locations from each shop randomly but is only valid if item rando is on and includes shops
+        if self.smaller_shops and self.shuffle_items and Types.Shop in self.shuffled_location_types:
+            # To evenly distribute the locations deleted, we can use the fact there are 20 shops to our advantage
+            # These evenly distributed pairs will represent "locations to delete" for each shop
+            kongPairs = [
+                (Kongs.donkey, Kongs.diddy),
+                (Kongs.donkey, Kongs.diddy),
+                (Kongs.donkey, Kongs.lanky),
+                (Kongs.donkey, Kongs.lanky),
+                (Kongs.donkey, Kongs.tiny),
+                (Kongs.donkey, Kongs.tiny),
+                (Kongs.donkey, Kongs.chunky),
+                (Kongs.donkey, Kongs.chunky),
+                (Kongs.diddy, Kongs.lanky),
+                (Kongs.diddy, Kongs.lanky),
+                (Kongs.diddy, Kongs.tiny),
+                (Kongs.diddy, Kongs.tiny),
+                (Kongs.diddy, Kongs.chunky),
+                (Kongs.diddy, Kongs.chunky),
+                (Kongs.lanky, Kongs.tiny),
+                (Kongs.lanky, Kongs.tiny),
+                (Kongs.lanky, Kongs.chunky),
+                (Kongs.lanky, Kongs.chunky),
+                (Kongs.tiny, Kongs.chunky),
+                (Kongs.tiny, Kongs.chunky),
+            ]
+            random.shuffle(kongPairs)  # Shuffle this list so we don't delete the same locations every time
+
+            # First we identify the locations we need to remove and delete them from the list of locations we care about (LocationList)
+            for level in ShopLocationReference:
+                for vendor in ShopLocationReference[level]:
+                    # For each shop, get a pair of kongs
+                    kongsToBeRemoved = kongPairs.pop()
+                    # Remove the first kong's location
+                    del LocationList[ShopLocationReference[level][vendor][kongsToBeRemoved[0]]]
+                    RemovedShopLocations.append(ShopLocationReference[level][vendor][kongsToBeRemoved[0]])
+                    # Remove the second kong's location
+                    del LocationList[ShopLocationReference[level][vendor][kongsToBeRemoved[1]]]
+                    RemovedShopLocations.append(ShopLocationReference[level][vendor][kongsToBeRemoved[1]])
+            # Next we remove the locations from the logic so they are not found as accessible locations
+            # Because they're deleted from LocationList, it will error if the location logic is left alone
+            for region in randomizer.LogicFiles.Shops.LogicRegions:
+                randomizer.LogicFiles.Shops.LogicRegions[region].locations = [
+                    location for location in randomizer.LogicFiles.Shops.LogicRegions[region].locations if location.id not in RemovedShopLocations
+                ]
 
         # B Locker and Troff n Scoff amounts Rando
         self.update_progression_totals()
@@ -803,13 +859,13 @@ class Settings:
                 allKongMoveLocations.update(LankyMoveLocations.copy())
                 # Generate a list of all valid locations EXCEPT the Kong-specific shops - these are valid locations for shared moves
                 locations_excluding_kong_shops = [location for location in shuffledLocations if location not in allKongMoveLocations]
-                self.valid_locations[Types.Shop][Kongs.any] = locations_excluding_kong_shops
                 # Shockwave and Training Barrels can only be shuffled if shops are shuffled and their valid locations are non-Kong-specific shops
                 if Types.Shockwave in self.shuffled_location_types:
                     locations_excluding_kong_shops.append(Locations.CameraAndShockwave)
                     self.valid_locations[Types.Shockwave] = locations_excluding_kong_shops
                 if Types.TrainingBarrel in self.shuffled_location_types:
                     self.valid_locations[Types.TrainingBarrel] = locations_excluding_kong_shops
+                self.valid_locations[Types.Shop][Kongs.any] = locations_excluding_kong_shops
                 # Kong-specific moves can go in any non-shared shop location
                 locations_excluding_shared_shops = [location for location in shuffledLocations if location not in SharedShopLocations]
                 self.valid_locations[Types.Shop][Kongs.donkey] = locations_excluding_shared_shops
@@ -829,7 +885,7 @@ class Settings:
                     Locations.AztecDonkeyFreeLanky,
                     Locations.FactoryLankyFreeChunky,
                 )
-                blueprintLocations = [location for location in LocationList if location not in badBPLocations and LocationList[location].type in blueprintValidTypes]
+                blueprintLocations = [location for location in shuffledLocations if location not in badBPLocations and LocationList[location].type in blueprintValidTypes]
                 self.valid_locations[Types.Blueprint] = {}
                 self.valid_locations[Types.Blueprint][Kongs.donkey] = [location for location in blueprintLocations if LocationList[location].kong == Kongs.donkey]
                 self.valid_locations[Types.Blueprint][Kongs.diddy] = [location for location in blueprintLocations if LocationList[location].kong == Kongs.diddy]

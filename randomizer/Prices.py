@@ -15,6 +15,7 @@ from randomizer.Lists.Location import (
     DonkeyMoveLocations,
     LankyMoveLocations,
     LocationList,
+    RemovedShopLocations,
     SharedMoveLocations,
     SharedShopLocations,
     TinyMoveLocations,
@@ -167,6 +168,8 @@ def GetMaxForKong(settings, kong):
         kongMoveLocations = ChunkyMoveLocations.copy()
 
     for location in kongMoveLocations:
+        if location in RemovedShopLocations:  # Ignore any shop locations that don't even exist anymore
+            continue
         item_id = LocationList[location].item
         if item_id is not None and item_id != Items.NoItem:
             if item_id == Items.ProgressiveSlam:

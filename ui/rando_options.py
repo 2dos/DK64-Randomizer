@@ -478,36 +478,73 @@ def disable_enemy_modal(evt):
 
 
 @bind("click", "shuffle_items")
-def disable_items_modal(evt):
-    """Disable Item Rando Selector when Item Rando is off."""
+def toggle_item_rando(evt):
+    """Enable and disable settings based on Item Rando being on/off."""
     disabled = True
     selector = js.document.getElementById("item_rando_list_modal")
+    item_rando_pool = document.getElementById("item_rando_list_selected").options
+    smaller_shops = document.getElementById("smaller_shops")
+    shockwave = document.getElementById("shockwave_status_shuffled")
+    shops_in_pool = False
+    nothing_selected = True
+    for option in item_rando_pool:
+        if option.value == "shop":
+            if option.selected:
+                shops_in_pool = True
+                break
+        if option.selected:
+            nothing_selected = False
+    if nothing_selected:
+        shops_in_pool = True
     if js.document.getElementById("shuffle_items").checked:
         disabled = False
     try:
         if disabled:
+            # Prevent item rando modal from opening and smaller shop setting
             selector.setAttribute("disabled", "disabled")
+            smaller_shops.setAttribute("disabled", "disabled")
+            smaller_shops.checked = False
+            shockwave.removeAttribute("disabled")
         else:
+            # Enable item rando modal, prevent shockwave/camera coupling, and enable smaller shops if it's in the pool
             selector.removeAttribute("disabled")
+            if shops_in_pool:
+                if shockwave.selected is True:
+                    document.getElementById("shockwave_status_shuffled_decoupled").selected = True
+                shockwave.setAttribute("disabled", "disabled")
+                smaller_shops.removeAttribute("disabled")
     except AttributeError:
         pass
 
 
 @bind("click", "item_rando_list_selected")
-def disable_coupled_camera_shockwave(evt):
-    """Change shockwave/camera selection to decoupled if shops are shuffled."""
-    disabled = False
-    selector = document.getElementById("item_rando_list_selected").options
+def item_rando_list_changed(evt):
+    """Enable and disable settings based on the Item Rando pool changing."""
+    item_rando_pool = document.getElementById("item_rando_list_selected").options
     shockwave = document.getElementById("shockwave_status_shuffled")
-    for option in selector:
-        if option.value == "shop" and option.selected:
-            if shockwave.selected is True:
-                document.getElementById("shockwave_status_shuffled_decoupled").selected = True
-            shockwave.setAttribute("disabled", "disabled")
-            disabled = True
-        else:
-            if not disabled:
-                shockwave.removeAttribute("disabled")
+    smaller_shops = document.getElementById("smaller_shops")
+    shops_in_pool = False
+    nothing_selected = True
+    for option in item_rando_pool:
+        if option.value == "shop":
+            if option.selected:
+                shops_in_pool = True
+                break
+        if option.selected:
+            nothing_selected = False
+    if nothing_selected:
+        shops_in_pool = True
+    if shops_in_pool:
+        # Prevent camera/shockwave from being coupled and enable smaller shops if shops are in the pool
+        if shockwave.selected is True:
+            document.getElementById("shockwave_status_shuffled_decoupled").selected = True
+        shockwave.setAttribute("disabled", "disabled")
+        smaller_shops.removeAttribute("disabled")
+    else:
+        # Enable coupled camera/shockwave and disable smaller shops if shops are not in the pool
+        shockwave.removeAttribute("disabled")
+        smaller_shops.setAttribute("disabled", "disabled")
+        smaller_shops.checked = False
 
 
 @bind("click", "apply_preset")
