@@ -484,11 +484,13 @@ def compileHints(spoiler: Spoiler):
                     level_restriction = [spoiler.settings.level_order[1], spoiler.settings.level_order[2]]
                 else:
                     level_restriction = [level for level in all_levels if spoiler.settings.EntryGBs[level] <= spoiler.settings.EntryGBs[kong_location.level]]
+            hint_options = []
             # Attempt to find a door that will be accessible before the Kong
-            hint_options = getHintLocationsForAccessibleHintItems(spoiler.accessible_hints_for_location[kong_location_id])
+            if kong_location_id in spoiler.accessible_hints_for_location.keys():  # This will fail if the Kong is not WotH
+                hint_options = getHintLocationsForAccessibleHintItems(spoiler.accessible_hints_for_location[kong_location_id])  # This will return [] if there are no hint doors available
             if len(hint_options) > 0:
                 hint_location = random.choice(hint_options)
-            # If there are no doors available early (very rare) then just get a random one. Tough luck.
+            # If there are no doors available early (very rare) or the Kong is not WotH (obscenely rare) then just get a random one. Tough luck.
             else:
                 hint_location = getRandomHintLocation()
             freeing_kong_name = kong_list[kong_location.kong]
@@ -943,7 +945,11 @@ def compileHints(spoiler: Spoiler):
                 continue
             hinted_region_name = spoiler.foolish_region_names.pop()
             hint_location = getRandomHintLocation()
-            message = f"It would be foolish to explore the {hinted_region_name}."
+            if "Medal Rewards" in hinted_region_name:
+                cutoff = hinted_region_name.index(" Medal Rewards")
+                message = f"It would be foolish to collect colored bananas in {hinted_region_name[0:cutoff]}."
+            else:
+                message = f"It would be foolish to explore the {hinted_region_name}."
             hint_location.hint_type = HintType.FoolishRegion
             UpdateHint(hint_location, message)
 
