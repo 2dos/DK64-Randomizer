@@ -1265,6 +1265,9 @@ void getItem(int object_type) {
             }
             refreshItemVisibility();
             break;
+        case 0x25C:
+            playSong(46, 0x3F800000);
+            break;
     }
 }
 
