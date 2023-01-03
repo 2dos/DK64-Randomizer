@@ -223,3 +223,6 @@
 .definelabel ArcadeExited, 0x8004A73C
 .definelabel ArcadeStoryMode, 0x8004A740
 .definelabel ArcadeEnableReward, 0x8004A770
+
+.definelabel CharSpawnerActorSubtypes, 0x80755698
+.definelabel CharSpawnerActorData, 0x8075EB80

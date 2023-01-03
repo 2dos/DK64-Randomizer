@@ -327,7 +327,9 @@ for y in range(32):
         if a > 128:
             pix_bean[x, y] = (0, 0, 0, 0)
 bean_im.transpose(Image.Transpose.FLIP_TOP_BOTTOM).save(f"{disp_dir}bean.png")
-bean_im.resize((32, 32)).save(f"{disp_dir}bean32.png")
+bean_small_im = Image.new(mode="RGBA", size=(32, 32))
+bean_small_im.paste(bean_im.resize((32, 16)), (0, 8), bean_im.resize((32, 16)))
+bean_small_im.save(f"{disp_dir}bean32.png")
 
 
 # Pearl
@@ -344,7 +346,7 @@ for y in range(32):
             pix_pearl[x, y] = (0, 0, 0, 0)
 pearl_im = pearl_im.transpose(Image.Transpose.FLIP_TOP_BOTTOM)
 pearl_im.save(f"{disp_dir}pearl.png")
-pearl_im.resize((32, 32)).save(f"{disp_dir}pearl32.png")
+pearl_im.resize((32, 32)).transpose(Image.Transpose.FLIP_TOP_BOTTOM).save(f"{disp_dir}pearl32.png")
 
 # Arcade Sprites
 # blueprint
@@ -366,6 +368,54 @@ Image.open(f"{hash_dir}boss_key.png").resize(dim).save(f"{arcade_dir}key.png")  
 Image.open(f"{hash_dir}medal.png").resize(dim).save(f"{arcade_dir}medal.png")  # Medal
 Image.open(f"{hash_dir}rainbow_coin.png").resize(dim).save(f"{arcade_dir}rainbow.png")  # Rainbow Coin
 Image.open(f"{hash_dir}rw_coin.png").resize(dim).save(f"{arcade_dir}rwcoin.png")  # Rareware Coin
+
+# Barrel Skins
+barrel_skin = Image.open(f"{hash_dir}bonus_skin.png")
+barrel_top = barrel_skin.crop((14, 0, 15, 32))
+barrel_bottom = barrel_skin.crop((8, 32, 9, 64))
+for x in range(16):
+    barrel_skin.paste(barrel_top, (x, 0), barrel_top)
+    if x < 8:
+        barrel_skin.paste(barrel_bottom, (x, 32), barrel_bottom)
+barrel_skin_0 = barrel_skin.transpose(Image.Transpose.FLIP_LEFT_RIGHT)
+
+skins = {
+    "dk": ("dk_face_1", "dk_face_0", "hash"),
+    "diddy": ("diddy_face_0", "diddy_face_1", "hash"),
+    "lanky": ("lanky_face_0", "lanky_face_1", "hash"),
+    "tiny": ("tiny_face_1", "tiny_face_0", "hash"),
+    "chunky": ("chunky_face_0", "chunky_face_1", "hash"),
+    "bp": ("lanky_bp", None, "hash"),
+    "nin_coin": ("nin_coin_noresize", None, "hash"),
+    "rw_coin": ("rw_coin_noresize", None, "hash"),
+    "key": ("key", None, "hash"),
+    "crown": ("crown_noresize", None, "hash"),
+    "medal": ("medal", None, "hash"),
+    "potion": ("potion32", None, "displays"),
+    "bean": ("bean32", None, "displays"),
+    "pearl": ("pearl32", None, "displays"),
+    "fairy": ("fairy", None, "hash"),
+}
+for skin_type in skins:
+    skin_data = list(skins[skin_type])
+    skin_dir = getDir(f"assets/Non-Code/{skin_data[2]}/")
+    print(skin_data)
+    print(skin_dir)
+    if skin_data[1] is None:
+        whole = Image.open(f"{skin_dir}{skin_data[0]}.png").resize((32, 32))
+        left = whole.crop((0, 0, 16, 32))
+        right = whole.crop((16, 0, 32, 32))
+    else:
+        left = Image.open(f"{skin_dir}{skin_data[0]}.png").resize((16, 32))
+        right = Image.open(f"{skin_dir}{skin_data[1]}.png").resize((16, 32))
+    left = left.transpose(Image.Transpose.FLIP_LEFT_RIGHT).transpose(Image.Transpose.FLIP_TOP_BOTTOM)
+    right = right.transpose(Image.Transpose.FLIP_LEFT_RIGHT).transpose(Image.Transpose.FLIP_TOP_BOTTOM)
+    barrel_0 = barrel_skin.copy()
+    barrel_1 = barrel_skin_0.copy()
+    barrel_0.paste(left, (0, 16), left)
+    barrel_1.paste(right, (0, 16), right)
+    barrel_0.save(f"{disp_dir}barrel_{skin_type}_0.png")
+    barrel_1.save(f"{disp_dir}barrel_{skin_type}_1.png")
 
 # # Christmas Theme
 # snow_by = []

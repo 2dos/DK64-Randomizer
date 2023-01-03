@@ -633,6 +633,12 @@ void getNextMoveText(void) {
 		p_type = shop_data->purchase_type;
 		p_kong = shop_data->kong;
 		p_flag = shop_data->flag;
+	} else if (TextOverlayData.flag != 0) {
+		has_data = 1;
+		p_type = TextOverlayData.type;
+		p_value = TextOverlayData.flag;
+		p_kong = TextOverlayData.kong;
+		p_flag = p_value;
 	} else if (CurrentMap == 0xBD) {
 		has_data = 1;
 		p_type = BFIMove_New.purchase_type;
@@ -650,16 +656,12 @@ void getNextMoveText(void) {
 				p_flag = p_value;
 			}
 		}
-		if (!has_data) {
-			has_data = 1;
-			p_type = TextOverlayData.type;
-			p_value = TextOverlayData.flag;
-			p_kong = TextOverlayData.kong;
-			p_flag = p_value;
-		}
 	}
-	if (has_data) {
+	if ((has_data) || (paad->upper_text) || (paad->lower_text)) {
 		if ((CurrentActorPointer_0->obj_props_bitfield & 0x10) == 0) {
+			TextOverlayData.kong = 0;
+			TextOverlayData.flag = 0;
+			TextOverlayData.type = 0;
 			int overlay_count = 0;
 			for (int i = 0; i < LoadedActorCount; i++) {
 				actorData* actor = (actorData*)LoadedActorArray[i].actor;

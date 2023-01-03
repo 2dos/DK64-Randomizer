@@ -1048,6 +1048,11 @@ def Fill(spoiler):
         if medalsUnplaced > 0:
             raise Ex.ItemPlacementException(str(medalsUnplaced) + " unplaced medals.")
     # Then fill misc items
+    if Types.Fairy in spoiler.settings.shuffled_location_types:
+        Reset()
+        fairyUnplaced = PlaceItems(spoiler.settings, "random", ItemPool.FairyItems(), [])
+        if fairyUnplaced > 0:
+            raise Ex.ItemPlacementException(str(fairyUnplaced) + "unplaced Fairies.")
     if Types.Bean in spoiler.settings.shuffled_location_types:
         Reset()
         miscUnplaced = PlaceItems(spoiler.settings, "random", ItemPool.MiscItemRandoItems(), [])

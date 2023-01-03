@@ -99,6 +99,7 @@ static unsigned char bp_item_table[40] = {};
 static unsigned char medal_item_table[40] = {};
 static unsigned char crown_item_table[10] = {};
 static unsigned char key_item_table[8] = {};
+static short fairy_item_table[20] = {};
 bonus_barrel_info bonus_data[95] = {};
 
 int getBPItem(int index) {
@@ -127,6 +128,13 @@ int getKeyItem(int old_flag) {
 		}
 	}
 	return 0;
+}
+
+int getFairyModel(int flag) {
+	if ((flag >= 589) && (flag <= 608)) {
+		return fairy_item_table[flag - 589];
+	}
+	return 0x3D;
 }
 
 void initHack(int source) {
@@ -671,6 +679,7 @@ void initHack(int source) {
 			initActor(155, &KongDropCode, ACTORMASTER_3D, 0x11);
 			initActor(172, &beanCode, ACTORMASTER_SPRITE, 0x11);
 			initActor(174, &pearlCode, ACTORMASTER_SPRITE, 0x11);
+			initActor(88, &fairyDuplicateCode, ACTORMASTER_3D, 0x11);
 			// Any Kong Items
 			if (Rando.any_kong_items & 1) {
 				// All excl. Blueprints
@@ -686,6 +695,7 @@ void initHack(int source) {
 				BonusBarrelData[i].spawn_actor = 45; // Spawn GB - Have as default
 				bonus_data[i].flag = BonusBarrelData[i].flag;
 				bonus_data[i].spawn_actor = BonusBarrelData[i].spawn_actor;
+				// bonus_data[i].spawn_actor = 88;
 				bonus_data[i].kong_actor = BonusBarrelData[i].kong_actor;
 			}
 			// Add Chunky Minecart GB
@@ -720,6 +730,20 @@ void initHack(int source) {
 				*(int*)(0x806A6CA8) = 0x0C000000 | (((int)&canItemPersist & 0xFFFFFF) >> 2); // Item Despawn Check
 				*(int*)(0x806A741C) = 0; // Prevent Key Twinkly Sound
 				*(int*)(0x80688714) = 0x0C000000 | (((int)&setupHook & 0xFFFFFF) >> 2); // Setup Load Hook
+				// Fairy Adjustments
+				*(int*)(0x8072728C) = 0x0C000000 | (((int)&spawnCharSpawnerActor & 0xFFFFFF) >> 2); // Spawn 1
+				*(int*)(0x80727290) = 0x36050000; // ORI $a1, $s0, 0x0 -> Change second parameter to the spawner
+				*(int*)(0x8072777C) = 0x0C000000 | (((int)&spawnCharSpawnerActor & 0xFFFFFF) >> 2); // Spawn 2
+				*(int*)(0x80727780) = 0x36050000; // ORI $a1, $s0, 0x0 -> Change second parameter to the spawner
+				*(int*)(0x807277D0) = 0x0C000000 | (((int)&spawnCharSpawnerActor & 0xFFFFFF) >> 2); // Spawn 3
+				*(int*)(0x807277D4) = 0x36050000; // ORI $a1, $s0, 0x0 -> Change second parameter to the spawner
+				*(int*)(0x80727B88) = 0x0C000000 | (((int)&spawnCharSpawnerActor & 0xFFFFFF) >> 2); // Spawn 4
+				*(int*)(0x80727B8C) = 0x36050000; // ORI $a1, $s0, 0x0 -> Change second parameter to the spawner
+				*(int*)(0x80727C10) = 0x0C000000 | (((int)&spawnCharSpawnerActor & 0xFFFFFF) >> 2); // Spawn 4
+				*(int*)(0x80727C14) = 0x36050000; // ORI $a1, $s0, 0x0 -> Change second parameter to the spawner
+				*(int*)(0x806C5F04) = 0x0C000000 | (((int)&giveFairyItem & 0xFFFFFF) >> 2); // Fairy Flag Set
+				// Barrel Aesthetic
+				initBarrelChange();
 				// BP Table
 				int bp_size = 0x28;
 				unsigned char* bp_write = dk_malloc(bp_size);
@@ -755,6 +779,15 @@ void initHack(int source) {
 				copyFromROM(0x1FF10D0,key_write,&key_file_size,0,0,0,0);
 				for (int i = 0; i < key_size; i++) {
 					key_item_table[i] = key_write[i];
+				}
+				// Fairy Table
+				int fairy_size = 40;
+				unsigned short* fairy_write = dk_malloc(fairy_size);
+				int* fairy_file_size;
+				*(int*)(&fairy_file_size) = fairy_size;
+				copyFromROM(0x1FF1040,fairy_write,&fairy_file_size,0,0,0,0);
+				for (int i = 0; i < (fairy_size>>1); i++) {
+					fairy_item_table[i] = fairy_write[i];
 				}
 				// Reward Table
 				for (int i = 0; i < 40; i++) {

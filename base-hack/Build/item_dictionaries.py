@@ -58,6 +58,7 @@ db = [
     InGameItem(name="Chunky Item", actor=155, model_two=0x25B, base=base_kong, bounce=True),
     InGameItem(name="Bean", actor=172, model_two=0x198, scale=0.25, will_dance=False),
     InGameItem(name="Pearl", actor=174, model_two=0x1B4, scale=0.25, will_dance=False),
+    InGameItem(name="Fairy", actor=88, model_two=0x25C, bounce=True, scale=0.25),
 ]
 
 dance_acceptable_items = [x for x in db if x.force_dance]

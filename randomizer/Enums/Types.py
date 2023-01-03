@@ -34,6 +34,7 @@ ItemRandoSelector = [
     {"name": "Banana Medals", "value": "medal", "tooltip": ""},
     {"name": "Nintendo/Rareware Coins", "value": "coin", "tooltip": ""},
     {"name": "Kongs", "value": "kong", "tooltip": ""},
+    {"name": "Fairies", "value": "fairy", "tooltip": ""},
     {"name": "Miscellaneous Items", "value": "beanpearl", "tooltip": ""},
 ]
 

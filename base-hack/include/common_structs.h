@@ -477,12 +477,18 @@ typedef struct actorSpawnerData {
 	/* 0x044 */ void* tied_actor;
 	/* 0x048 */ char unk_48[0x54-0x48];
 	/* 0x054 */ float spawn_range;
-	/* 0x058 */ char unk_58[0x5A-0x58];
+	/* 0x058 */ short model;
 	/* 0x05A */ short id;
 	/* 0x05C */ char unk_5C[0x64-0x5C];
 	/* 0x064 */ void* previous_spawner;
 	/* 0x068 */ void* next_spawner;
 } actorSpawnerData;
+
+typedef struct spawnerPacket {
+	/* 0x000 */ int model;
+	/* 0x004 */ char unk_4[0x18-4];
+	/* 0x018 */ void* extra_data;
+} spawnerPacket;
 
 typedef struct heap {
 	/* 0x000 */ void* unk;
@@ -1382,3 +1388,12 @@ typedef struct item_conversion_info {
 	/* 0x002 */ short model_two;
 	/* 0x004 */ float scale;
 } item_conversion_info;
+
+typedef struct charSpawnerActorInfo {
+	/* 0x000 */ short actor;
+	/* 0x002 */ short model;
+	/* 0x004 */ short animation;
+	/* 0x006 */ short unk_6;
+	/* 0x008 */ int unk_8;
+	/* 0x00C */ char unk_C[0x18-0xC];
+} charSpawnerActorInfo;

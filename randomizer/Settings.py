@@ -454,7 +454,7 @@ class Settings:
         self.shuffled_location_types = []
         if self.shuffle_items:
             if not self.item_rando_list_selected:
-                self.shuffled_location_types = [Types.Shop, Types.Banana, Types.Crown, Types.Blueprint, Types.Key, Types.Medal, Types.Coin, Types.Kong, Types.Bean, Types.Pearl]
+                self.shuffled_location_types = [Types.Shop, Types.Banana, Types.Crown, Types.Blueprint, Types.Key, Types.Medal, Types.Coin, Types.Kong, Types.Bean, Types.Pearl, Types.Fairy]
             else:
                 for item in self.item_rando_list_selected:
                     for type in Types:
@@ -849,6 +849,7 @@ class Settings:
         if self.shuffle_items and any(self.shuffled_location_types):
             # All shuffled locations are valid except for Kong locations (the Kong inside the cage, not the GB) - those can only be Kongs
             shuffledLocations = [location for location in LocationList if LocationList[location].type in self.shuffled_location_types and LocationList[location].type != Types.Kong]
+            fairyBannedLocations = [location for location in shuffledLocations if LocationList[location].type != Types.Fairy]
             if Types.Shop in self.shuffled_location_types:
                 self.valid_locations[Types.Shop] = {}
                 # Cross-kong acquisition is assumed in full item rando, calculate the list of all Kong-specific shops
@@ -874,8 +875,8 @@ class Settings:
                 self.valid_locations[Types.Shop][Kongs.tiny] = locations_excluding_shared_shops
                 self.valid_locations[Types.Shop][Kongs.chunky] = locations_excluding_shared_shops
             if Types.Blueprint in self.shuffled_location_types:
-                # Blueprints are banned from Key or Crown locations
-                blueprintValidTypes = [typ for typ in self.shuffled_location_types if typ not in (Types.Crown, Types.Key)]
+                # Blueprints are banned from Key, Crown and Fairy locations
+                blueprintValidTypes = [typ for typ in self.shuffled_location_types if typ not in (Types.Crown, Types.Key, Types.Fairy)]
                 # These locations do not have a set Kong assigned to them and can't have blueprints
                 badBPLocations = (
                     Locations.IslesDonkeyJapesRock,
@@ -907,13 +908,15 @@ class Settings:
             if Types.Key in self.shuffled_location_types:
                 self.valid_locations[Types.Key] = shuffledLocations
             if Types.Medal in self.shuffled_location_types:
-                self.valid_locations[Types.Medal] = shuffledLocations
+                self.valid_locations[Types.Medal] = fairyBannedLocations
             if Types.Coin in self.shuffled_location_types:
-                self.valid_locations[Types.Coin] = shuffledLocations
+                self.valid_locations[Types.Coin] = fairyBannedLocations
             if Types.Pearl in self.shuffled_location_types:
-                self.valid_locations[Types.Pearl] = shuffledLocations
+                self.valid_locations[Types.Pearl] = fairyBannedLocations
             if Types.Bean in self.shuffled_location_types:
-                self.valid_locations[Types.Bean] = shuffledLocations
+                self.valid_locations[Types.Bean] = fairyBannedLocations
+            if Types.Fairy in self.shuffled_location_types:
+                self.valid_locations[Types.Fairy] = shuffledLocations
             if Types.Kong in self.shuffled_location_types:
                 # Banned because it defeats the purpose of starting with X Kongs
                 banned_kong_locations = (
