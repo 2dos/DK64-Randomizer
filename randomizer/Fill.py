@@ -573,7 +573,7 @@ def CalculateFoolish(spoiler, WothLocations):
         majorItems.append(Items.CameraAndShockwave)
     if spoiler.settings.shockwave_status == "shuffled_decoupled":
         majorItems.append(Items.Camera)
-        majorItems.append(Items.Shockwave)
+        # majorItems.append(Items.Shockwave)  # Shockwave foolish is virtually useless until we get rainbow coins in the pool
     for item in majorItems:
         # If this item is in the WotH, it can't possibly be foolish so we can skip it
         if item in wothItems:
@@ -618,12 +618,18 @@ def CalculateFoolish(spoiler, WothLocations):
     nonHintableNames = {"K. Rool Arena", "Snide", "Candy Generic", "Funky Generic", "Credits"}  # These regions never have anything useful so shouldn't be hinted
     if Types.Coin not in spoiler.settings.shuffled_location_types:
         nonHintableNames.add("Jetpac Game")  # If this is vanilla, it's never useful to hint
+    bossLocations = [location for id, location in LocationList.items() if location.type == Types.Key]
     # In order for a region to be foolish, it can contain none of these Major Items
     for id, region in RegionList.items():
         locations = [loc for loc in region.locations if loc.id in LocationList.keys()]
         # If this region DOES contain a major item, add it the name to the set of non-hintable hint regions
         if any([loc for loc in locations if LocationList[loc.id].item in majorItems]):
             nonHintableNames.add(region.hint_name)
+        # In addition to being empty, medal regions need the corresponding boss location to be empty to be hinted foolish - this lets us say "CBs are foolish" which is more helpful
+        elif "Medal Rewards" in region.hint_name:
+            bossLocation = [location for location in bossLocations if location.level == region.level][0]  # Matches only one
+            if bossLocation.item in majorItems:
+                nonHintableNames.add(region.hint_name)
     # The regions that are foolish are all regions not in this list (that have locations in them!)
     spoiler.foolish_region_names = list(set([region.hint_name for id, region in RegionList.items() if any(region.locations) and region.hint_name not in nonHintableNames]))
 
@@ -805,7 +811,7 @@ def AssumedFill(settings, itemsToPlace, ownedItems=None, inOrder=False):
                 reachable.remove(validReachable[0])  # Remove one so same location can't be "used" twice
             # If world is not valid, undo item placement and try next location
             if not valid:
-                LocationList[locationId].item = None
+                LocationList[locationId].UnplaceItem()
                 itemShuffled = False
                 continue
             # Debug code utility for very important items

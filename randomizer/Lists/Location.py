@@ -83,6 +83,8 @@ class Location:
         # If we're placing a real move here, lock out mutually exclusive shop locations
         if item != Items.NoItem and self.type == Types.Shop:
             for location in ShopLocationReference[self.level][self.vendor]:
+                if location in RemovedShopLocations:
+                    continue
                 # If this is a shared spot, lock out kong-specific locations in this shop
                 if self.kong == Kongs.any and LocationList[location].kong != Kongs.any:
                     LocationList[location].PlaceItem(Items.NoItem)
@@ -109,6 +111,23 @@ class Location:
         """Place whatever this location's default (vanilla) item is at it."""
         self.PlaceItem(self.default)
         self.constant = True
+
+    def UnplaceItem(self):
+        """Unplace an item here, which may affect the placement of other items."""
+        self.item = None
+        # If this is a shop location, we may have locked out a location we now need to undo
+        if self.type == Types.Shop:
+            # Check other locations in this shop
+            for location in ShopLocationReference[self.level][self.vendor]:
+                if location in RemovedShopLocations:
+                    continue
+                if LocationList[location].kong == Kongs.any and location.item == Items.NoItem:
+                    itemsInThisShop = len([location for location in ShopLocationReference[self.level][self.vendor] if LocationList[location].item not in (None, Items.NoItem)])
+                    if itemsInThisShop == 0:
+                        location.item = None
+                # Items.NoItem are only placed when locking out locations. If any exist, they're because this location caused them to be placed here
+                elif location.item == Items.NoItem:
+                    location.item = None
 
 
 LocationList = {
@@ -810,163 +829,165 @@ SharedShopLocations = {
 # Dictionary to speed up lookups of related shop locations
 ShopLocationReference = {}
 ShopLocationReference[Levels.JungleJapes] = {}
-ShopLocationReference[Levels.JungleJapes][VendorType.Cranky] = {
+ShopLocationReference[Levels.JungleJapes][VendorType.Cranky] = [
     Locations.BaboonBlast,
     Locations.ChimpyCharge,
     Locations.Orangstand,
     Locations.MiniMonkey,
     Locations.HunkyChunky,
     Locations.SharedJapesPotion,
-}
-ShopLocationReference[Levels.JungleJapes][VendorType.Funky] = {
+]
+ShopLocationReference[Levels.JungleJapes][VendorType.Funky] = [
     Locations.CoconutGun,
     Locations.PeanutGun,
     Locations.GrapeGun,
     Locations.FeatherGun,
     Locations.PineappleGun,
     Locations.SharedJapesGun,
-}
+]
 ShopLocationReference[Levels.AngryAztec] = {}
-ShopLocationReference[Levels.AngryAztec][VendorType.Cranky] = {
+ShopLocationReference[Levels.AngryAztec][VendorType.Cranky] = [
     Locations.StrongKong,
     Locations.RocketbarrelBoost,
     Locations.LankyAztecPotion,
     Locations.TinyAztecPotion,
     Locations.ChunkyAztecPotion,
     Locations.SharedAztecPotion,
-}
-ShopLocationReference[Levels.AngryAztec][VendorType.Candy] = {
+]
+ShopLocationReference[Levels.AngryAztec][VendorType.Candy] = [
     Locations.Bongos,
     Locations.Guitar,
     Locations.Trombone,
     Locations.Saxophone,
     Locations.Triangle,
     Locations.SharedAztecInstrument,
-}
-ShopLocationReference[Levels.AngryAztec][VendorType.Funky] = {
+]
+ShopLocationReference[Levels.AngryAztec][VendorType.Funky] = [
     Locations.DonkeyAztecGun,
     Locations.DiddyAztecGun,
     Locations.LankyAztecGun,
     Locations.TinyAztecGun,
     Locations.ChunkyAztecGun,
     Locations.SharedAztecGun,
-}
+]
 ShopLocationReference[Levels.FranticFactory] = {}
-ShopLocationReference[Levels.FranticFactory][VendorType.Cranky] = {
+ShopLocationReference[Levels.FranticFactory][VendorType.Cranky] = [
     Locations.GorillaGrab,
     Locations.SimianSpring,
     Locations.BaboonBalloon,
     Locations.PonyTailTwirl,
     Locations.PrimatePunch,
     Locations.SharedFactoryPotion,
-}
-ShopLocationReference[Levels.FranticFactory][VendorType.Candy] = {
+]
+ShopLocationReference[Levels.FranticFactory][VendorType.Candy] = [
     Locations.DonkeyFactoryInstrument,
     Locations.DiddyFactoryInstrument,
     Locations.LankyFactoryInstrument,
     Locations.TinyFactoryInstrument,
     Locations.ChunkyFactoryInstrument,
     Locations.SharedFactoryInstrument,
-}
-ShopLocationReference[Levels.FranticFactory][VendorType.Funky] = {
+]
+ShopLocationReference[Levels.FranticFactory][VendorType.Funky] = [
     Locations.DonkeyFactoryGun,
     Locations.DiddyFactoryGun,
     Locations.LankyFactoryGun,
     Locations.TinyFactoryGun,
     Locations.ChunkyFactoryGun,
     Locations.AmmoBelt1,
-}
+]
 ShopLocationReference[Levels.GloomyGalleon] = {}
-ShopLocationReference[Levels.GloomyGalleon][VendorType.Cranky] = {
+ShopLocationReference[Levels.GloomyGalleon][VendorType.Cranky] = [
     Locations.DonkeyGalleonPotion,
     Locations.DiddyGalleonPotion,
     Locations.LankyGalleonPotion,
     Locations.TinyGalleonPotion,
     Locations.ChunkyGalleonPotion,
     Locations.SharedGalleonPotion,
-}
-ShopLocationReference[Levels.GloomyGalleon][VendorType.Candy] = {
+]
+ShopLocationReference[Levels.GloomyGalleon][VendorType.Candy] = [
     Locations.DonkeyGalleonInstrument,
     Locations.DiddyGalleonInstrument,
     Locations.LankyGalleonInstrument,
     Locations.TinyGalleonInstrument,
     Locations.ChunkyGalleonInstrument,
     Locations.MusicUpgrade1,
-}
-ShopLocationReference[Levels.GloomyGalleon][VendorType.Funky] = {
+]
+ShopLocationReference[Levels.GloomyGalleon][VendorType.Funky] = [
     Locations.DonkeyGalleonGun,
     Locations.DiddyGalleonGun,
     Locations.LankyGalleonGun,
     Locations.TinyGalleonGun,
     Locations.ChunkyGalleonGun,
     Locations.SharedGalleonGun,
-}
+]
 ShopLocationReference[Levels.FungiForest] = {}
-ShopLocationReference[Levels.FungiForest][VendorType.Cranky] = {
+ShopLocationReference[Levels.FungiForest][VendorType.Cranky] = [
     Locations.DonkeyForestPotion,
     Locations.DiddyForestPotion,
     Locations.LankyForestPotion,
     Locations.TinyForestPotion,
     Locations.ChunkyForestPotion,
     Locations.SuperSimianSlam,
-}
-ShopLocationReference[Levels.FungiForest][VendorType.Funky] = {
+]
+ShopLocationReference[Levels.FungiForest][VendorType.Funky] = [
     Locations.DonkeyForestGun,
     Locations.DiddyForestGun,
     Locations.LankyForestGun,
     Locations.TinyForestGun,
     Locations.ChunkyForestGun,
     Locations.HomingAmmo,
-}
+]
 ShopLocationReference[Levels.CrystalCaves] = {}
-ShopLocationReference[Levels.CrystalCaves][VendorType.Cranky] = {
+ShopLocationReference[Levels.CrystalCaves][VendorType.Cranky] = [
     Locations.DonkeyCavesPotion,
     Locations.DiddyCavesPotion,
     Locations.OrangstandSprint,
     Locations.Monkeyport,
     Locations.GorillaGone,
     Locations.SharedCavesPotion,
-}
-ShopLocationReference[Levels.CrystalCaves][VendorType.Candy] = {
+]
+ShopLocationReference[Levels.CrystalCaves][VendorType.Candy] = [
     Locations.DonkeyCavesInstrument,
     Locations.DiddyCavesInstrument,
     Locations.LankyCavesInstrument,
     Locations.TinyCavesInstrument,
     Locations.ChunkyCavesInstrument,
     Locations.ThirdMelon,
-}
-ShopLocationReference[Levels.CrystalCaves][VendorType.Funky] = {
+]
+ShopLocationReference[Levels.CrystalCaves][VendorType.Funky] = [
     Locations.DonkeyCavesGun,
     Locations.DiddyCavesGun,
     Locations.LankyCavesGun,
     Locations.TinyCavesGun,
     Locations.ChunkyCavesGun,
     Locations.AmmoBelt2,
-}
+]
 ShopLocationReference[Levels.CreepyCastle] = {}
-ShopLocationReference[Levels.CreepyCastle][VendorType.Cranky] = {
+ShopLocationReference[Levels.CreepyCastle][VendorType.Cranky] = [
     Locations.DonkeyCastlePotion,
     Locations.DiddyCastlePotion,
     Locations.LankyCastlePotion,
     Locations.TinyCastlePotion,
     Locations.ChunkyCastlePotion,
     Locations.SuperDuperSimianSlam,
-}
-ShopLocationReference[Levels.CreepyCastle][VendorType.Candy] = {
+]
+ShopLocationReference[Levels.CreepyCastle][VendorType.Candy] = [
     Locations.DonkeyCastleInstrument,
     Locations.DiddyCastleInstrument,
     Locations.LankyCastleInstrument,
     Locations.TinyCastleInstrument,
     Locations.ChunkyCastleInstrument,
     Locations.MusicUpgrade2,
-}
-ShopLocationReference[Levels.CreepyCastle][VendorType.Funky] = {
+]
+ShopLocationReference[Levels.CreepyCastle][VendorType.Funky] = [
     Locations.DonkeyCastleGun,
     Locations.DiddyCastleGun,
     Locations.LankyCastleGun,
     Locations.TinyCastleGun,
     Locations.ChunkyCastleGun,
     Locations.SniperSight,
-}
+]
 ShopLocationReference[Levels.DKIsles] = {}
-ShopLocationReference[Levels.DKIsles][VendorType.Cranky] = {Locations.DonkeyIslesPotion, Locations.DiddyIslesPotion, Locations.LankyIslesPotion, Locations.TinyIslesPotion, Locations.ChunkyIslesPotion, Locations.SimianSlam}
+ShopLocationReference[Levels.DKIsles][VendorType.Cranky] = [Locations.DonkeyIslesPotion, Locations.DiddyIslesPotion, Locations.LankyIslesPotion, Locations.TinyIslesPotion, Locations.ChunkyIslesPotion, Locations.SimianSlam]
+
+RemovedShopLocations = []
