@@ -265,6 +265,8 @@ extern int fairyQueenCutsceneInit(int start, int count, int type);
 extern void fairyQueenCutsceneCheck(void);
 extern void spawnCharSpawnerActor(int actor, SpawnerInfo* spawner);
 extern void giveFairyItem(int flag, int state, int type);
+extern void SpawnBarrel(spawnerPacket* packet);
+extern void initBarrelChange(void);
 
 extern unsigned int cs_skip_db[432];
 extern bonus_barrel_info bonus_data[95];

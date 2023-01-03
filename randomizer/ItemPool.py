@@ -393,11 +393,13 @@ def MiscItemRandoItems():
     itemPool.extend(itertools.repeat(Items.Pearl, 5))
     return itemPool
 
+
 def FairyItems():
     """Return a list of Fairies to be placed."""
     itemPool = []
     itemPool.extend(itertools.repeat(Items.BananaFairy, 20))
     return itemPool
+
 
 DonkeyMoves = [Items.Coconut, Items.Bongos, Items.BaboonBlast, Items.StrongKong, Items.GorillaGrab]
 DiddyMoves = [Items.Peanut, Items.Guitar, Items.ChimpyCharge, Items.RocketbarrelBoost, Items.SimianSpring]

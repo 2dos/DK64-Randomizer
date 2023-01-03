@@ -220,7 +220,7 @@ def ShuffleBossesBasedOnOwnedItems(settings, ownedKongs: dict, ownedMoves: dict)
 def ShuffleTinyPhaseToes():
     """Generate random assortment of toes for Tiny Phase."""
     toe_sequence = []
-    previous_toe = 1 # Use 1 as the index as it's within distance of all toes, so all toes for the first in the sequence will be valid
+    previous_toe = 1  # Use 1 as the index as it's within distance of all toes, so all toes for the first in the sequence will be valid
     for toe in range(10):
         mode = random.randint(0, 10)
         if (toe % 5) == 0:
@@ -236,8 +236,8 @@ def ShuffleTinyPhaseToes():
             if (toe % 5) == 0:
                 # First toe
                 toe_list = [0, 2, 3]
-            toe_list = [x for x in toe_list if abs(x - previous_toe) < 3] # Prevent toes being selected that 
-            toe_count = random.randint(1, min(3, len(toe_list)-1))
+            toe_list = [x for x in toe_list if abs(x - previous_toe) < 3]  # Prevent toes being selected that
+            toe_count = random.randint(1, min(3, len(toe_list) - 1))
             if len(toe_list) <= 1:
                 toe_bitfield = 0
             else:

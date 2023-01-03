@@ -104,7 +104,6 @@ bonus_barrel_info bonus_data[95] = {};
 
 int getBPItem(int index) {
 	return bp_item_table[index];
-	// return TestVariable;
 }
 
 int getMedalItem(int index) {
@@ -696,6 +695,7 @@ void initHack(int source) {
 				BonusBarrelData[i].spawn_actor = 45; // Spawn GB - Have as default
 				bonus_data[i].flag = BonusBarrelData[i].flag;
 				bonus_data[i].spawn_actor = BonusBarrelData[i].spawn_actor;
+				// bonus_data[i].spawn_actor = 88;
 				bonus_data[i].kong_actor = BonusBarrelData[i].kong_actor;
 			}
 			// Add Chunky Minecart GB
@@ -742,6 +742,8 @@ void initHack(int source) {
 				*(int*)(0x80727C10) = 0x0C000000 | (((int)&spawnCharSpawnerActor & 0xFFFFFF) >> 2); // Spawn 4
 				*(int*)(0x80727C14) = 0x36050000; // ORI $a1, $s0, 0x0 -> Change second parameter to the spawner
 				*(int*)(0x806C5F04) = 0x0C000000 | (((int)&giveFairyItem & 0xFFFFFF) >> 2); // Fairy Flag Set
+				// Barrel Aesthetic
+				initBarrelChange();
 				// BP Table
 				int bp_size = 0x28;
 				unsigned char* bp_write = dk_malloc(bp_size);

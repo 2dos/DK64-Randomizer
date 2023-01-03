@@ -80,6 +80,7 @@ images = [
     ImageData("rw_coin_noresize", "rgba16", 25, 5905, 44, 44, False, True),
     ImageData("nin_coin_noresize", "rgba16", 25, 5912, 44, 44, False, True),
     ImageData("crown_noresize", "rgba16", 25, 5893, 44, 44, False, True),
+    ImageData("bonus_skin", "rgba16", 25, 0x128A, 16, 64, False, False),
 ]
 
 kong_tex = ["chunky", "tiny", "lanky", "diddy", "dk"]

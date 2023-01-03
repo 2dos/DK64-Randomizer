@@ -2,6 +2,7 @@
 import zlib
 import struct
 
+
 def intf_to_float(intf):
     """Convert float as int format to float."""
     if intf == 0:
@@ -9,11 +10,13 @@ def intf_to_float(intf):
     else:
         return struct.unpack("!f", bytes.fromhex("{:08X}".format(intf)))[0]
 
+
 def float_to_hex(f):
     """Convert float to hex."""
     if f == 0:
         return "0x00000000"
     return hex(struct.unpack("<I", struct.pack("<f", f))[0])
+
 
 def shrinkModel(is_file: bool, file_name: str, file_index: int, scale: float, output_file: str, realign_bones: bool):
     """Shrink Model according to scale."""
@@ -36,7 +39,7 @@ def shrinkModel(is_file: bool, file_name: str, file_index: int, scale: float, ou
             fh.seek(file_start)
             data = fh.read(file_size)
             if indicator == 0x1F8B:
-                data = zlib.decompress(data, (15+32))
+                data = zlib.decompress(data, (15 + 32))
     with open(output_file, "wb") as fh:
         fh.write(data)
     with open(output_file, "r+b") as fh:
@@ -47,7 +50,7 @@ def shrinkModel(is_file: bool, file_name: str, file_index: int, scale: float, ou
         vert_count = int((vert_end - 0x28) / 0x10)
         for v in range(vert_count):
             fh.seek(0x28 + (0x10 * v))
-            coords = [0]*3
+            coords = [0] * 3
             for ci in range(3):
                 val = int.from_bytes(fh.read(2), "big")
                 if val > 32767:
@@ -63,15 +66,12 @@ def shrinkModel(is_file: bool, file_name: str, file_index: int, scale: float, ou
             fh.seek(8)
             bones_start = (int.from_bytes(fh.read(4), "big") - offset) + 0x28
             bones_end = (int.from_bytes(fh.read(4), "big") - offset) + 0x28
-            bones_count = int((bones_end - bones_start) / 0x10)                
+            bones_count = int((bones_end - bones_start) / 0x10)
             for b in range(bones_count):
                 fh.seek(bones_start + (0x10 * b) + 4)
-                bones = [0]*3
+                bones = [0] * 3
                 for bi in range(3):
                     bones[bi] = intf_to_float(int.from_bytes(fh.read(4), "big")) * scale
                 fh.seek(bones_start + (0x10 * b) + 4)
                 for bv in bones:
                     fh.write(int(float_to_hex(bv), 16).to_bytes(4, "big"))
-
-    
-            

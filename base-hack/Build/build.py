@@ -625,16 +625,28 @@ for change in colorblind_changes:
                 "target_compressed_size": 2 * change[2] * change[3],
             }
         )
+barrel_skins = ("dk", "diddy", "lanky", "tiny", "chunky", "bp", "nin_coin", "rw_coin", "key", "crown", "medal", "potion", "bean", "pearl", "fairy")
+for bi, b in enumerate(barrel_skins):
+    for x in range(2):
+        file_dict.append(
+            {
+                "name": f"Barrel Skin ({b.capitalize()} - {x + 1})",
+                "pointer_table_index": 25,
+                "file_index": 6026 + (2 * bi) + x,
+                "source_file": f"assets/Non-Code/displays/barrel_{b}_{x}.png",
+                "texture_format": "rgba5551",
+            }
+        )
 
-shrinkModel(False, "", 0xAE, 0.15, "shrink_crown.bin", False) # Battle Crown
-shrinkModel(False, "", 0xA4, 0.1, "shrink_key.bin", False) # Boss Key
-shrinkModel(True, "potion_dk_om1.bin", 0, 0.2, "shrink_potion_dk.bin", False) # Potion (DK)
-shrinkModel(True, "potion_diddy_om1.bin", 0, 0.2, "shrink_potion_diddy.bin", False) # Potion (Diddy)
-shrinkModel(True, "potion_lanky_om1.bin", 0, 0.2, "shrink_potion_lanky.bin", False) # Potion (Lanky)
-shrinkModel(True, "potion_tiny_om1.bin", 0, 0.2, "shrink_potion_tiny.bin", False) # Potion (Tiny)
-shrinkModel(True, "potion_chunky_om1.bin", 0, 0.2, "shrink_potion_chunky.bin", False) # Potion (Chunky)
-shrinkModel(True, "potion_any_om1.bin", 0, 0.2, "shrink_potion_any.bin", False) # Potion (Any)
-shrinkModel(False, "", 0x3C, 5, "shrink_fairy.bin", True) # Fairy
+shrinkModel(False, "", 0xAE, 0.15, "shrink_crown.bin", False)  # Battle Crown
+shrinkModel(False, "", 0xA4, 0.1, "shrink_key.bin", False)  # Boss Key
+shrinkModel(True, "potion_dk_om1.bin", 0, 0.2, "shrink_potion_dk.bin", False)  # Potion (DK)
+shrinkModel(True, "potion_diddy_om1.bin", 0, 0.2, "shrink_potion_diddy.bin", False)  # Potion (Diddy)
+shrinkModel(True, "potion_lanky_om1.bin", 0, 0.2, "shrink_potion_lanky.bin", False)  # Potion (Lanky)
+shrinkModel(True, "potion_tiny_om1.bin", 0, 0.2, "shrink_potion_tiny.bin", False)  # Potion (Tiny)
+shrinkModel(True, "potion_chunky_om1.bin", 0, 0.2, "shrink_potion_chunky.bin", False)  # Potion (Chunky)
+shrinkModel(True, "potion_any_om1.bin", 0, 0.2, "shrink_potion_any.bin", False)  # Potion (Any)
+shrinkModel(False, "", 0x3C, 5, "shrink_fairy.bin", True)  # Fairy
 
 model_changes = [
     {"model_index": 0, "model_file": "diddy_base.bin"},
@@ -663,6 +675,14 @@ model_changes = [
     {"model_index": 0xFB, "model_file": "shrink_fairy.bin"},
     {"model_index": 0xA3, "model_file": "counter.bin"},
 ]
+for bi, b in enumerate(barrel_skins):
+    model_changes.append(
+        {
+            "model_index": 0xFC + bi,
+            "model_file": f"barrel_skin_{b}.bin",
+        }
+    )
+
 for x in model_changes:
     data = {"name": f"Model {x['model_index']}", "pointer_table_index": 5, "file_index": x["model_index"], "source_file": x["model_file"], "do_not_delete_source": True}
     if x["model_index"] > 0xEB:
@@ -1205,7 +1225,10 @@ with open(newROMName, "r+b") as fh:
         "door_crown",
         "num_2",
         "num_4",
+        "bonus_skin",
     ]
+    for b in barrel_skins:
+        displays.extend([f"barrel_{b}_0", f"barrel_{b}_1"])
     for disp in displays:
         for ext in [".png", ".rgba32", ".rgba5551"]:
             other_remove.append(f"displays/{disp}{ext}")
@@ -1245,6 +1268,7 @@ with open(newROMName, "r+b") as fh:
         "rw_coin_1",
         "special_coin_side",
         "fairy_0",
+        "bonus_Skin",
     ]
     script_files = [x[0] for x in os.walk("assets/Non-Code/instance_scripts/")]
     shop_files = ["snide.script", "cranky.script", "funky.script", "candy.script"]

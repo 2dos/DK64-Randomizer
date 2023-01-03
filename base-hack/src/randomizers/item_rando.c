@@ -1005,6 +1005,113 @@ void fairyDuplicateCode(void) {
     playActorAnimation(CurrentActorPointer_0, 0x2B5);
 }
 
+static unsigned char master_copy[345] = {};
+
+typedef struct packet_extra_data {
+    /* 0x000 */ char unk_00[0xA];
+    /* 0x00A */ short index;
+} packet_extra_data;
+
+int getBarrelModel(int index) {
+    if (index < 95) {
+        int actor = bonus_data[index].spawn_actor;
+        switch (actor) {
+            case 78:
+            case 75:
+            case 77:
+            case 79:
+            case 76:
+                return 0x102; // Blueprint
+            case 151:
+                return 0x103; // Nintendo Coin
+            case 152:
+                return 0x104; // Rareware Coin
+            case 72:
+                return 0x105; // Key
+            case 86:
+                return 0x106; // Crown
+            case 154:
+                return 0x107; // Medal
+            case 157:
+            case 158:
+            case 159:
+            case 160:
+            case 161:
+            case 162:
+                return 0x108; // Potion
+            case 141:
+            case 142:
+            case 143:
+            case 144:
+                return 0xFD + (actor - 141); // DK-Tiny
+            case 155:
+                return 0x101; // Chunky
+            case 172:
+                return 0x109; // Bean
+            case 174:
+                return 0x10A; // Pearl
+            case 88:
+                return 0x10B; // Fairy
+        }
+    }
+    return 0x76;
+}
+
+typedef struct spawnerExtraInfo {
+    /* 0x000 */ char unk_0[8];
+    /* 0x008 */ int index;
+} spawnerExtraInfo;
+
+int SpawnPreSpawnedBarrel(
+        float x, float y, int z, int unk0,
+        int sp10, int sp14, int sp18, int sp1c,
+        int sp20, int sp24, int sp28, actorSpawnerData* spawner,
+        int sp30, int sp34, int sp38, int sp3c,
+        int sp40, int sp44, spawnerExtraInfo* extra_data
+    ) {
+    if (Rando.item_rando) {
+        if (spawner) {
+            if ((spawner->actor_type + 0x10) == 0x1C) {
+                int index = extra_data->index;
+                if (index < 95) {
+                    int model = getBarrelModel(index);
+                    if (model != 0) {
+                        spawner->model = model;
+                    }
+                }
+            }
+        }
+    }
+    return getChunk(x, y, z, unk0);
+}
+
+void SpawnBarrel(spawnerPacket* packet) {
+    if ((Rando.item_rando)) {
+        packet_extra_data* data = (packet_extra_data*)packet->extra_data;
+        if (data) {
+            int index = data->index;
+            if (index < 95) {
+                int model = getBarrelModel(index);
+                if (model != 0) {
+                    packet->model = model;
+                }
+            }
+        }
+    }
+    spawn3DActor(packet);
+}
+
+void initBarrelChange(void) {
+    for (int i = 0; i < 345; i++) {
+        master_copy[i] = ActorMasterType[i];
+    }
+    master_copy[0x1C] = 5;
+    *(short*)(0x80677EF6) = getHi(&master_copy[0]);
+    *(short*)(0x80677F02) = getLo(&master_copy[0]);
+    *(int*)(0x8074DA44) = (int)&SpawnBarrel;
+    *(int*)(0x80689368) = 0x0C000000 | (((int)&SpawnPreSpawnedBarrel & 0xFFFFFF) >> 2); // Change model if barrel is being reloaded
+}
+
 void KLumsyText(void) {
     /*
         NOTE: Re-add this once we get some text for this
@@ -1038,15 +1145,6 @@ void spawnCharSpawnerActor(int actor, SpawnerInfo* spawner) {
             +----------------+----------------------------+--------+---------------+
             Some items are excluded because when they're actors, they are sprites which can't easily be rendered with the fairy stuff. I might have a way around this,
             but we'll have to wait and see for probably a secondary update after the first push.
-        TODO:
-            FAIRY MODEL TWO
-                Adjust re-scaled actor's bone positions
-                Adjust model two vert positions
-
-            LOGIC & WRITER
-                - Lrauq might have to add some additional logic to effectively place fairies without bricking generation?
-                    - Will have to wait for response from him or wait until implemented to see success rates
-
     */
     if (actor == 248) {
         // Fairy

@@ -21,6 +21,7 @@ ac_table = 5
 # - Actor: 0x5
 # - M2: ?
 
+
 def intf_to_float(intf):
     """Convert float as int format to float."""
     if intf == 0:
@@ -217,9 +218,9 @@ def portActorToModelTwo(actor_index: int, input_file: str, output_file: str, bas
         bone_master = [0] * bone_count
         bone_bases = []
         for b in range(bone_count):
-            vert_bones.append([]) # Can't do [[]] * bone_count because of referencing errors
-            bone_offsets.append([0, 0, 0]) # Same ^
-            bone_bases.append([0, 0, 0]) # Same ^
+            vert_bones.append([])  # Can't do [[]] * bone_count because of referencing errors
+            bone_offsets.append([0, 0, 0])  # Same ^
+            bone_bases.append([0, 0, 0])  # Same ^
         bone_index = 0
         used_verts = []
         # Grab Verts which are assigned to each bone
@@ -325,9 +326,10 @@ def portActorToModelTwo(actor_index: int, input_file: str, output_file: str, bas
     with open("temp.dl", "wb") as fh:
         fh.write(dl_data)
     portalModel_M2("temp.vtx", "temp.dl", 0, output_file, base_file_index)
-    for f in ("temp.vtx","temp.dl","temp.bin"):
+    for f in ("temp.vtx", "temp.dl", "temp.bin"):
         if os.path.exists(f):
-            os.remove(f)              
+            os.remove(f)
+
 
 model_dir = "assets/Non-Code/models/"
 # Coins

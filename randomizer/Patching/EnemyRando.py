@@ -563,7 +563,7 @@ def randomize_enemies(spoiler: Spoiler):
                                     speeds.append(int.from_bytes(ROM().readBytes(1), "big"))
                                 ROM().seek(cont_map_spawner_address + spawner["offset"] + 0xC)
                                 for x in speeds:
-                                    ROM().writeMultipleBytes(int(x * 0.75), 1)    
+                                    ROM().writeMultipleBytes(int(x * 0.75), 1)
                             if new_enemy_id == Enemies.BeaverGold and cont_map_id in minigame_maps_beavers:
                                 for speed_offset in [0xC, 0xD]:
                                     ROM().seek(cont_map_spawner_address + spawner["offset"] + speed_offset)

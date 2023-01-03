@@ -458,7 +458,7 @@ def place_randomized_items(spoiler: Spoiler):
                             Types.Kong,  # Kong
                             Types.Bean,  # Bean
                             Types.Pearl,  # Pearl
-                            Types.Fairy, # Fairy
+                            Types.Fairy,  # Fairy
                             None,  # No Item
                         ]
                         offset = item.old_flag - 549

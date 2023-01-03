@@ -204,6 +204,10 @@ extern void controlStateControl(int unk0);
 extern void save(void);
 extern void getObjectPosition(int index, int unk0, int unk1, void* x, void* y, void* z);
 
+extern void setActorModel(void* actor, int index);
+extern void spawn3DActor(spawnerPacket* packet);
+extern int getChunk(float x, float y, int z, int unk0);
+
 extern int crystalsUnlocked(int kong);
 extern void setMovesForAllKongs(shop_paad* paad, int is_bitfield);
 extern void setMoveProgressive(shop_paad* paad, int kong);
