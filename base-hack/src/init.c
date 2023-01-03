@@ -103,8 +103,8 @@ static short fairy_item_table[20] = {};
 bonus_barrel_info bonus_data[95] = {};
 
 int getBPItem(int index) {
-	// return bp_item_table[index];
-	return 88;
+	return bp_item_table[index];
+	// return TestVariable;
 }
 
 int getMedalItem(int index) {

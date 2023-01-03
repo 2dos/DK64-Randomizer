@@ -174,29 +174,38 @@ def portalModel_Actor(vtx_file, dl_file, model_name, base):
         os.remove(temp_file)
 
 
-def portActorToModelTwo(actor_index: int, output_file: str, base_file_index: int, vtx_bottom_is_zero: bool, scale: float):
+def portActorToModelTwo(actor_index: int, input_file: str, output_file: str, base_file_index: int, vtx_bottom_is_zero: bool, scale: float):
     """Port Actor to Model Two."""
-    with open(rom_file, "rb") as rom:
-        rom.seek(ptr_offset + (ac_table * 4))
-        table = ptr_offset + int.from_bytes(rom.read(4), "big")
-        rom.seek(table + (actor_index * 4))
-        start = ptr_offset + (int.from_bytes(rom.read(4), "big") & 0x7FFFFFFF)
-        finish = ptr_offset + (int.from_bytes(rom.read(4), "big") & 0x7FFFFFFF)
-        size = finish - start
-        rom.seek(start)
-        data = rom.read(size)
-        rom.seek(start)
-        indic = int.from_bytes(rom.read(2), "big")
-        if indic == 0x1F8B:
-            data = zlib.decompress(data, (15 + 32))
-        with open(temp_file, "wb") as fh:
-            fh.write(data)
+    if input_file == "":
+        # Use Actor Index
+        with open(rom_file, "rb") as rom:
+            rom.seek(ptr_offset + (ac_table * 4))
+            table = ptr_offset + int.from_bytes(rom.read(4), "big")
+            rom.seek(table + (actor_index * 4))
+            start = ptr_offset + (int.from_bytes(rom.read(4), "big") & 0x7FFFFFFF)
+            finish = ptr_offset + (int.from_bytes(rom.read(4), "big") & 0x7FFFFFFF)
+            size = finish - start
+            rom.seek(start)
+            data = rom.read(size)
+            rom.seek(start)
+            indic = int.from_bytes(rom.read(2), "big")
+            if indic == 0x1F8B:
+                data = zlib.decompress(data, (15 + 32))
+            with open(temp_file, "wb") as fh:
+                fh.write(data)
+    else:
+        # Use provided input file
+        with open(input_file, "rb") as fh:
+            with open(temp_file, "wb") as fg:
+                fg.write(fh.read())
     vert_data = b""
     dl_data = b""
     with open(temp_file, "r+b") as fh:
         offset = int.from_bytes(fh.read(4), "big")
         dl_end = (int.from_bytes(fh.read(4), "big") + 0x28) - offset
         bone_start = (int.from_bytes(fh.read(4), "big") + 0x28) - offset
+        fh.seek(0x10)
+        texturing_start = (int.from_bytes(fh.read(4), "big") + 0x28) - offset
         fh.seek(0x20)
         bone_count = int.from_bytes(fh.read(1), "big")
         fh.seek(dl_end)
@@ -276,6 +285,18 @@ def portActorToModelTwo(actor_index: int, output_file: str, base_file_index: int
                 fh.seek(0x28 + (vert * 0x10))
                 for c in coords:
                     fh.write(c.to_bytes(2, "big"))
+        # Get Dynamic Textures
+        fh.seek(texturing_start)
+        dyn_tex = {}
+        dyn_tex_count = int.from_bytes(fh.read(2), "big")
+        for d in range(dyn_tex_count):
+            tex_count = int.from_bytes(fh.read(2), "big")
+            header = int.from_bytes(fh.read(2), "big")
+            layers = int.from_bytes(fh.read(2), "big")
+            dyn_tex[header] = []
+            for l in range(layers):
+                for t in range(tex_count):
+                    dyn_tex[header].append(int.from_bytes(fh.read(2), "big"))
         # Prune DL of bad instructions and segmented addresses
         for d in range(dl_count):
             fh.seek(vert_end + (d * 8))
@@ -288,6 +309,13 @@ def portActorToModelTwo(actor_index: int, output_file: str, base_file_index: int
                 # Change seg address header from 3 to 8
                 fh.seek(vert_end + (d * 8) + 4)
                 fh.write((8).to_bytes(1, "big"))
+            elif instruction == 0xFD:
+                # Handle Dynamic Texturing
+                fh.seek(vert_end + (d * 8) + 4)
+                seg = int.from_bytes(fh.read(1), "big")
+                if seg in dyn_tex:
+                    fh.seek(vert_end + (d * 8) + 4)
+                    fh.write(dyn_tex[seg][0].to_bytes(4, "big"))
         # Get vert data and dl data for porting
         fh.seek(0x28)
         vert_data = fh.read(vert_end - 0x28)
@@ -313,9 +341,7 @@ portalModel_M2(f"{model_dir}potion_tiny.vtx", f"{model_dir}potion.dl", 0, "potio
 portalModel_M2(f"{model_dir}potion_chunky.vtx", f"{model_dir}potion.dl", 0, "potion_chunky", 0x90)
 portalModel_M2(f"{model_dir}potion_any.vtx", f"{model_dir}potion.dl", 0, "potion_any", 0x90)
 # Fairy
-portActorToModelTwo(0x3C, "fairy", 0x90, True, 0.5)
-
-# portalModel_M2(f"{model_dir}fairy_new.vtx", f"{model_dir}fairy.dl", 0, "fairy", 0x90)
+portActorToModelTwo(0x3C, "", "fairy", 0x90, True, 0.5)
 # Potions - Actors (Ignore Chunky Model)
 portalModel_Actor(f"{model_dir}potion_dk.vtx", None, "potion_dk", 0xB8)
 portalModel_Actor(f"{model_dir}potion_diddy.vtx", None, "potion_diddy", 0xB8)
@@ -324,4 +350,9 @@ portalModel_Actor(f"{model_dir}potion_tiny.vtx", None, "potion_tiny", 0xB8)
 portalModel_Actor(f"{model_dir}potion_chunky.vtx", None, "potion_chunky", 0xB8)
 portalModel_Actor(f"{model_dir}potion_any.vtx", None, "potion_any", 0xB8)
 # Kongs
-portalModel_M2(f"{model_dir}dk_head.vtx", f"{model_dir}dk_head.dl", 0, "kong_dk", 0x90)
+portActorToModelTwo(3, "dk_base.bin", "kong_dk", 0x90, True, 0.5)
+portActorToModelTwo(0, "diddy_base.bin", "kong_diddy", 0x90, True, 0.5)
+portActorToModelTwo(5, "lanky_base.bin", "kong_lanky", 0x90, True, 0.5)
+portActorToModelTwo(8, "tiny_base.bin", "kong_tiny", 0x90, True, 0.5)
+portActorToModelTwo(0xB, "", "kong_chunky", 0x90, True, 0.5)
+# portalModel_M2(f"{model_dir}dk_head.vtx", f"{model_dir}dk_head.dl", 0, "kong_dk", 0x90)
