@@ -113,9 +113,14 @@ def getBalancedCrownEnemyRando(spoiler: Spoiler, crown_setting, damage_ohko_sett
         # Determine whether any crown-enabled enemies have been selected
         crown_enemy_found = False
         for enemy in EnemyMetaData:
-            if convertEnemyName(EnemyMetaData[enemy].name) in spoiler.settings.enemies_selected and EnemyMetaData[enemy].crown_enabled is True:
+            if convertEnemyName(EnemyMetaData[enemy].name) in spoiler.settings.enemies_selected and EnemyMetaData[enemy].crown_enabled is True and enemy is not Enemies.GetOut:
                 crown_enemy_found = True
                 break
+        # Determine whether only GetOut is the only selected enemy that can appear in crown battles
+        # If True, guarantees that there is 1 GetOut in every crown battle
+        oops_all_get_out = False
+        if crown_enemy_found is False and convertEnemyName(EnemyMetaData[Enemies.GetOut].name) in spoiler.settings.enemies_selected and damage_ohko_setting is False:
+            oops_all_get_out = True
         # fill in the lists with the possibilities that belong in them.
         for enemy in EnemyMetaData:
             if EnemyMetaData[enemy].crown_enabled and enemy is not Enemies.GetOut:
@@ -159,7 +164,10 @@ def getBalancedCrownEnemyRando(spoiler: Spoiler, crown_setting, damage_ohko_sett
         if crown_setting == "easy":
             for map_id in enemy_swaps_library:
                 enemy_swaps_library[map_id].append(random.choice(disruptive_max_1))
-                enemy_swaps_library[map_id].append(random.choice(disruptive_0))
+                if oops_all_get_out is True:
+                    enemy_swaps_library[map_id].append(Enemies.GetOut)
+                else:
+                    enemy_swaps_library[map_id].append(random.choice(disruptive_0))
                 enemy_swaps_library[map_id].append(random.choice(disruptive_0))
                 if map_id == Maps.GalleonCrown or map_id == Maps.LobbyCrown or map_id == Maps.HelmCrown:
                     enemy_swaps_library[map_id].append(random.choice(disruptive_0))
@@ -172,7 +180,9 @@ def getBalancedCrownEnemyRando(spoiler: Spoiler, crown_setting, damage_ohko_sett
                 if map_id == Maps.GalleonCrown or map_id == Maps.LobbyCrown or map_id == Maps.HelmCrown:
                     number_of_enemies = 4
                 for count in range(number_of_enemies):
-                    if count_disruptive == 0:
+                    if count == 0 and oops_all_get_out is True:
+                        new_enemy = Enemies.GetOut
+                    elif count_disruptive == 0:
                         if count_kasplats < 2:
                             new_enemy = random.choice(every_enemy)
                         elif count_kasplats == 2:
@@ -204,7 +214,10 @@ def getBalancedCrownEnemyRando(spoiler: Spoiler, crown_setting, damage_ohko_sett
                     number_of_enemies = 4
                 get_out_spawned_this_hard_map = False
                 for count in range(number_of_enemies):
-                    if get_out_spawned_this_hard_map:
+                    if count == 0 and oops_all_get_out is True:
+                        enemy_to_place = Enemies.GetOut
+                        get_out_spawned_this_hard_map = True
+                    elif get_out_spawned_this_hard_map:
                         enemy_to_place = random.choice([possible_enemy for possible_enemy in legacy_hard_mode if possible_enemy != Enemies.GetOut])
                     else:
                         enemy_to_place = random.choice(legacy_hard_mode)
