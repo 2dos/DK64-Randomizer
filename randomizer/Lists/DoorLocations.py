@@ -420,7 +420,7 @@ door_locations = {
             kong_lst=[Kongs.tiny],
             group=8,
             moveless=False,
-            logic=lambda l: l.Slam or l.phasewalk or l.generalclips,
+            logic=lambda l: l.CanSlamSwitch(Levels.JungleJapes, 1) or l.phasewalk or l.generalclips,
             door_type="wrinkly",
         ),
         DoorData(
@@ -434,7 +434,7 @@ door_locations = {
             kong_lst=[Kongs.tiny],
             group=8,
             moveless=False,
-            logic=lambda l: l.Slam or l.phasewalk or l.generalclips,
+            logic=lambda l: l.CanSlamSwitch(Levels.JungleJapes, 1) or l.phasewalk or l.generalclips,
             door_type="wrinkly",
         ),
         DoorData(
@@ -1966,7 +1966,7 @@ door_locations = {
             kong_lst=[Kongs.donkey],
             group=11,
             moveless=False,
-            logic=lambda l: (l.isdonkey and l.superSlam) or l.phasewalk or l.generalclips,
+            logic=lambda l: (l.isdonkey and l.CanSlamSwitch(Levels.FungiForest, 2)) or l.phasewalk or l.generalclips,
             door_type="wrinkly",
         ),
         DoorData(
@@ -2844,7 +2844,7 @@ door_locations = {
         #     kong_lst=[Kongs.diddy],
         #     group=18,
         #     moveless=False,
-        #     logic=lambda l: l.isdiddy and l.superDuperSlam,
+        #     logic=lambda l: l.isdiddy and l.CanSlamSwitch(Levels.CreepyCastle, 3),
         #     door_type="wrinkly",
         # ),  # Disabled until we find a way to make it only activate when the throne is rotated away
     ],

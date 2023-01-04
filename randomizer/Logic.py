@@ -328,6 +328,19 @@ class LogicVarHolder:
 
         self.bananaHoard = self.bananaHoard or Items.BananaHoard in ownedItems
 
+    def CanSlamSwitch(self, level: Levels, default_requirement_level: int):
+        """Determine whether the player can operate the necessary slam operation.
+
+        Keyword arguments:
+        level -- level which the switch takes place
+        default_requirement_level -- Default requirement for the switch without randomization. 0 - Base slam, 1 - Super, 2 - Super Duper.
+        """
+        if default_requirement_level == 1:
+            return self.superSlam
+        elif default_requirement_level == 2:
+            return self.superDuperSlam
+        return self.Slam
+
     def CanPhaseswim(self):
         """Determine whether the player can perform phase swim."""
         return self.phaseswim and self.swim

@@ -305,7 +305,7 @@ DirtPatchLocations = [
         rotation=978,
         group=11,
         logicregion=Regions.GloomyGalleonLobby,
-        logic=lambda l: ((l.mini and l.superSlam and l.istiny and l.chunky) or l.CanPhaseswim()) and l.shockwave,
+        logic=lambda l: ((l.mini and l.CanSlamSwitch(Levels.GloomyGalleon, 2) and l.istiny and l.chunky) or l.CanPhaseswim()) and l.shockwave,
     ),
     DirtPatchData(
         name="DK Isles - Fungi Forest Lobby: On Tag Crate",

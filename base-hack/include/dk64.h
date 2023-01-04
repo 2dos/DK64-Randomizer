@@ -571,3 +571,5 @@ extern arbitrary_overlay TextOverlayData;
 extern unsigned char KasplatSpawnBitfield;
 extern char KrushaSlot;
 extern unsigned char TextItemName;
+extern unsigned char RandomSwitches;
+extern unsigned char SwitchLevel[7];

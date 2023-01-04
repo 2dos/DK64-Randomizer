@@ -205,6 +205,10 @@ void initHack(int source) {
 			WinCondition = Rando.win_condition;
 			ItemRandoOn = Rando.item_rando;
 			KrushaSlot = Rando.krusha_slot;
+			RandomSwitches = Rando.random_switches;
+			for (int i = 0; i < 7; i++) {
+				SwitchLevel[i] = Rando.slam_level[i];
+			}
 			// Kong Rando
 			initKongRando();
 			// Savefile Expansion		
