@@ -199,6 +199,8 @@ int getCounterItem(int shop_index, int kong, int level) {
 						return COUNTER_BEAN;
 					} else if ((flag >= FLAG_PEARL_0_COLLECTED) && (flag < (FLAG_PEARL_0_COLLECTED + 5))) {
 						return COUNTER_PEARL;
+					} else if ((flag >= FLAG_FAIRY_1) && (flag < (FLAG_FAIRY_1 + 20))) {
+						return COUNTER_FAIRY;
 					} else {
 						if ((flag == FLAG_TBARREL_BARREL) || (flag == FLAG_TBARREL_DIVE) || (flag == FLAG_TBARREL_ORANGE) || (flag == FLAG_TBARREL_VINE)) {
 							return COUNTER_POTION;
@@ -217,7 +219,7 @@ int getCounterItem(int shop_index, int kong, int level) {
 						}
 						for (int i = 0; i < 5; i++) {
 							if (flag == getKongFlag(i)) {
-								return 1 + i;
+								return COUNTER_DK_FACE + i;
 							}
 						}
 					}

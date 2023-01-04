@@ -317,6 +317,7 @@ shop_face_array = [
     "rw_coin",
     "bean32",
     "pearl32",
+    "fairy",
 ]
 for x, shop in enumerate(shop_face_array):
     data = {"name": f"Shop Indicator ({shop})", "pointer_table_index": 14, "file_index": 195 + x, "source_file": f"assets/Non-Code/displays/{shop}.png", "texture_format": "rgba32"}
@@ -1226,6 +1227,7 @@ with open(newROMName, "r+b") as fh:
         "num_2",
         "num_4",
         "bonus_skin",
+        "fairy",
     ]
     for b in barrel_skins:
         displays.extend([f"barrel_{b}_0", f"barrel_{b}_1"])
